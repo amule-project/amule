@@ -1,79 +1,41 @@
-
 Summary:        aMule - another eMule p2p client
 Name:           aMule
-
-Version:        2.0.0
-Release:        1
-
-Group:          Applications/Internet
+Version:        2.1.0
+Release:        0
 License:        GPL
-URL:            http://www.amule.org
-Source0:        aMule-%{version}.tar.bz2
+Group:          Applications/Internet
+Packager:       The aMule Team (http://forum.amule.org/)
+Vendor:         The aMule Project
+URL:            http://www.amule.org/
+Source:         %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:  grep, automake >= 1.7, wxGTK2-devel
-Requires:       wxGTK2
 
 %description
 aMule is a peer to peer file sharing client, based on the well known eMule.
-Starting with 2.0.0 aMule works on Linux, Mac, *BSD and Windows, which makes it the first multi-platform edonkey network client.
-
+Starting with 2.0.0 aMule works on Linux, Mac, *BSD and Windows, which makes it
+the first multi-platform edonkey network client.
 
 %prep
 %setup -q
 
-
 %build
-#
-# Tests for Fedora Core distro and then for UTF-8 enabled locale.
-# For some reason, rpmbuild sets LANG="C" before executing prep section,
-# so, don't waste your time :)
-#
-# I can put other hacks here to identify the distro and the LANG, just provide me the test.
-#
-if test -f /etc/redhat-release; then 
-	DISTRO=FedoraCore
-elif test -f /etc/whatever; then
-	DISTRO=Whatever
-fi
-
-case $DISTRO in
-	FedoraCore)
-		if grep -i "LANG" /etc/sysconfig/i18n | grep -i "UTF-8"; then
-			UTF8_SYSTRAY="--enable-utf8-systray"
-		fi
-		;;
-	Whatever)
-		# Do whatever.
-		;;
-	*)
-		# Unable to determine system locale, will not use UTF-8 systray.
-		;;
-esac
-#
-# ./configure
-#
 %configure \
-        $UTF8_SYSTRAY \
         --enable-optimize \
         --disable-debug \
         --enable-cas \
-	--enable-wxcas \
+        --enable-wxcas \
         --enable-amulecmd \
         --enable-webserver \
-	--enable-ccache \
-        --with-wx-config=`rpm -ql wxGTK-devel|grep 'wxgtk-2\.[0-9]-config'`
-make %{?_smp_mflags}
-
+        --enable-ccache
+%{__make} %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
-
+[ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
+%makeinstall
+%find_lang amule
 
 %clean
-rm -rf $RPM_BUILD_ROOT
-
+[ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
 
 %files
 %defattr(-,root,root,-)
@@ -85,17 +47,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/amuleweb
 %{_libdir}/xchat/plugins/xas.pl
 %{_datadir}/applications/*
-%{_datadir}/locale/*
 %{_datadir}/pixmaps/*
-%{_prefix}/man/*/*
-%dir %{_datadir}/doc/%{name}-%{version}
-%doc %{_datadir}/doc/%{name}-%{version}/*
-%dir %{_datadir}/cas
-%{_datadir}/cas/*
-%dir %{_datadir}/amule
-%dir %{_datadir}/amule/webserver
-%{_datadir}/amule/webserver/*
-
+%{_mandir}/man1/*
+%{_mandir}/*/man1/*
+%docdir %{_datadir}/doc/%{name}-%{version}
+%{_datadir}/doc/%{name}-%{version}
+%{_datadir}/cas
+%{_datadir}/amule
 
 %changelog
 * Fri May 13 2005 Marcelo Jimenez <phoenix@amule.org>
@@ -109,8 +67,8 @@ rm -rf $RPM_BUILD_ROOT
 - Tests for UTF-8 enabled LANG to use UTF-8 systray.
 
 * Mon Mar 21 2005 Marcelo Jimenez <phoenix@amule.org>
-- Removed krb5-libs require and krb5-devel buildprereq. curl-lib and 
-curl-devel is enough.
+- Removed krb5-libs require and krb5-devel buildprereq. curl-lib and
+  curl-devel is enough.
 
 * Tue Mar 08 2005 Marcelo Jimenez <phoenix@amule.org>
 - Made it work with cvs snapshots at their very same day.
@@ -127,11 +85,10 @@ curl-devel is enough.
   with people using wxGTK-2.5.
   Idea taken from aMule-2.0.0rc1.spec done by
   deltaHF <deltahf@users.sourceforge.net> and
-  pure_ascii <pure_ascii@users.sourceforge.net> 
+  pure_ascii <pure_ascii@users.sourceforge.net>
 
 * Tue Feb 10 2004 Ariano Bertacca <ariano@hirnriss.net>
 - modified the BuildPreReq to satisfy amulecmd build requirements.
 
 * Sat Jan 23 2004 Ariano Bertacca <ariano@hirnriss.net>
 - initial amule.spec release
-
