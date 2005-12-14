@@ -23,17 +23,23 @@
 
 using namespace muleunit;
 
-
 wxString GetFullMuleVersion()
 {
 	return wxT("UnitTest");
 }
 
 
-int main(int WXUNUSED(argc), char** WXUNUSED(argv))
+class UnitTestApp : public wxAppConsole
 {
-	InstallMuleExceptionHandler();
+public:
+	int OnRun() {
+		InstallMuleExceptionHandler();
 
-	const TestResult* result = TestRegistry::runAndPrint();
-	return result->getFailures();
-}
+		return TestRegistry::runAndPrint()->getFailures();
+	}
+};
+
+
+DECLARE_APP(UnitTestApp);
+IMPLEMENT_APP(UnitTestApp);
+
