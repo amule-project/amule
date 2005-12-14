@@ -656,9 +656,6 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 			break;
 		
 		// notification
-		case SHOW_NOTIFIER:
-			amuledlg->ShowNotifier(event.string_value,event.long_value,event.byte_value);
-			break;
 		case SHOW_CONN_STATE:
 			#ifdef CLIENT_GUI
 				theApp.m_ConnState = event.long_value;

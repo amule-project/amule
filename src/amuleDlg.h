@@ -134,7 +134,6 @@ public:
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
 
-	void ShowNotifier(wxString Text, int MsgType, bool ForceSoundOFF = false); // Should be removed or implemented!
 	void Hide_aMule(bool iconize = true);
 	void Show_aMule(bool uniconize = true);
 	

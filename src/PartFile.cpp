@@ -2284,10 +2284,6 @@ void CPartFile::CompleteFileEnded(int result, wxString* newname)
 		completedsize = m_nFileSize;
 
 		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
-		
-#ifndef AMULE_DAEMON
-		Notify_ShowNotifier( CFormat( _("Downloaded:\n%s") ) % GetFileName(), TBN_DLOAD, 0);
-#endif
 	} else {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);

@@ -435,6 +435,10 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	}
 #endif
 
+	#ifdef CLIENT_GUI
+	// Send preferences to core.
+	theApp.glob_prefs->SendToRemote();
+	#endif
 	
 	return true;
 }
