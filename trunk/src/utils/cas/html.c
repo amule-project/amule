@@ -39,7 +39,7 @@
 #include "version.h"
 
 
-int create_html(char stats[20][80], char *lines[6], char template[120])
+int create_html(char *stats[20], char *lines[6], char template[120])
 {
 	/* Strings */
 	char version[25], upload[25], download[25];
@@ -49,11 +49,11 @@ int create_html(char stats[20][80], char *lines[6], char template[120])
 		"#PORT#" };
 
 	snprintf(version, 25, "cas %s", CAS_VERSION);
-	snprintf(upload, 25, "%s kB/s", stats[6]);
-	snprintf(download, 25, "%s kB/s", stats[5]);
+	snprintf(upload, 25, "%s kB/s", stats[7]);
+	snprintf(download, 25, "%s kB/s", stats[6]);
 
-	char *repl[] = { version , lines[0] , stats[9] , upload , download ,
-		stats[7] , stats[8] , stats[14] , stats[13] , stats[11] , stats[10] ,
+	char *repl[] = { version , lines[0] , stats[10] , upload , download ,
+		stats[8] , stats[9] , stats[15] , stats[14] , stats[12] , stats[11] ,
 		stats[1] , stats[2] , stats[3] };
 
 	/* get some memory to read the template into */

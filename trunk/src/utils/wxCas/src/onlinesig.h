@@ -64,6 +64,7 @@ private:
 	wxString m_serverIP;
 	wxString m_serverPort;
 	wxString m_connexionID;
+	int		 m_kadInfo;
 	wxString m_ULRate;
 	wxString m_DLRate;
 	wxString m_queue;
@@ -98,6 +99,9 @@ public:
 
 	/// Return TRUE if aMule is running
 	int GetAmuleState () const;
+
+	/// Return kad stat
+	int GetKadState () const;
 
 	/// Get server name
 	wxString GetServerName () const;
