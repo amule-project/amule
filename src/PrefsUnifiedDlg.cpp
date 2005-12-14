@@ -568,6 +568,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 			_("Both ED2K and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them.")));
 	}	
 	
+	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
+		wxMessageBox(wxString::wxString(
+			_("Kad will not start if your UDP port is disabled.\nEnable UDP port or disable Kad.")));
+	}
+	
 	if (restart_needed) {
 		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION);
 	}
