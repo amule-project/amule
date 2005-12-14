@@ -456,8 +456,21 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
 	TransferFromWindow();
 
+	bool restart_needed = false;
+	wxString restart_needed_msg = _("aMule must be restarted to enable these changes:\n\n");
+	
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
+
+	if ( CfgChanged(IDC_PORT) ) {
+		restart_needed = true;
+		restart_needed_msg += _("- TCP port changed.\n");
+	}
+
+	if ( CfgChanged(IDC_UDPPORT) ) {
+		restart_needed = true;
+		restart_needed_msg += _("- UDP port changed.\n");
+	}
 
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
@@ -486,10 +499,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if ( CfgChanged(IDC_LANGUAGE) ) {
-		wxMessageBox(wxString::wxString(
-			_("Language change will not be applied until aMule is restarted.")));
+		restart_needed = true;
+		restart_needed_msg += _("- Language changed.\n");
 	}
 
+	if ( CfgChanged(IDC_TEMPFILES) ) {
+		restart_needed = true;
+		restart_needed_msg += _("- Temp folder changed.\n");
+	}
 
 	if (	CfgChanged(IDC_INCFILES) ||
 		CfgChanged(IDC_TEMPFILES) ||
@@ -545,6 +562,15 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (!thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
 		theApp.StopKad();
 	}	
+
+	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
+		wxMessageBox(wxString::wxString(
+			_("Both ED2K and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them.")));
+	}	
+	
+	if (restart_needed) {
+		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION);
+	}
 	
 	Show(false);
 }
