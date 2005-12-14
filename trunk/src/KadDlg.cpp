@@ -180,7 +180,7 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 			}
 		}
 		#else
-			wxMessageBox(_("You can't bootstrap from remote GUI yet."));
+			wxMessageBox(_("You can't bootstrap an specific ip from remote GUI yet."));
 		#endif		
 	} else {
 		wxMessageBox(_("Please fill all fields required"));
@@ -190,21 +190,13 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 
 void CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt))
 {
-	#ifndef CLIENT_GUI
-	if ( !Kademlia::CKademlia::isRunning() ) {
-		Kademlia::CKademlia::start();
-	}	
-	#endif
+	theApp.StartKad();
 }
 
 
 void CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt))
 {
-	#ifndef CLIENT_GUI
-	if ( Kademlia::CKademlia::isRunning() ) {
-		Kademlia::CKademlia::stop();
-	}
-	#endif
+	theApp.StopKad();
 }
 
 
@@ -229,4 +221,3 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 	wxMessageBox(_("You can't update server.met from remote GUI yet."));
 	#endif		
 }
-
