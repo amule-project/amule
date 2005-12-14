@@ -27,6 +27,7 @@
 
 #include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/log.h>
 
 enum DebugType 
 {
@@ -207,6 +208,21 @@ namespace CLogger
 	 */
 	unsigned int 			GetDebugCategoryCount();
 }
+
+
+/**
+ * This class forwards log-lines from wxWidgets to CLogger.
+ */
+class CLoggerTarget : public wxLog
+{
+public:
+	CLoggerTarget();
+	
+	/**
+	 * @see wxLog::DoLogString
+	 */
+	void DoLogString(const wxChar *msg, time_t);
+};
 
 
 #if defined(MULEUNIT)
