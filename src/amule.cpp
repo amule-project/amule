@@ -45,13 +45,14 @@
 #include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/socket.h>			// Needed for wxSocket
-#include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
 #include <wx/filename.h>
+#include <wx/snglinst.h>
+
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
@@ -92,21 +93,10 @@
 #include "Timer.h"
 
 #ifndef AMULE_DAEMON
-	#include <wx/splash.h>			// Needed for wxSplashScreen
-	#include <wx/gauge.h>
-	#include <wx/textctrl.h>
-	#include <wx/clipbrd.h>			// Needed for wxClipBoard	
-	#include <wx/msgdlg.h>			// Needed for wxMessageBox
-
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>
 		#include <wx/mac/corefoundation/cfstring.h>
 	#endif
-
-	#include "TransferWnd.h"		// Needed for CTransferWnd
-	#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
-	#include "ServerWnd.h"			// Needed for CServerWnd
-	#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
 #endif
 
 
@@ -192,7 +182,7 @@ CamuleApp::CamuleApp()
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
 	ECServerHandler = NULL;
-	localserver	= NULL;
+	m_singleInstance = NULL;
 	glob_prefs	= NULL;
 	
 	m_dwPublicIP	=  0;
@@ -292,8 +282,8 @@ int CamuleApp::OnExit()
 	glob_prefs = NULL;
 	CPreferences::EraseItemList();
 
-	delete localserver;
-	localserver = NULL;
+	delete m_singleInstance;
+	m_singleInstance = NULL;
 	
 	delete applog; // deleting a wxFFileOutputStream closes it
 	applog = NULL;
@@ -423,15 +413,10 @@ bool CamuleApp::OnInit()
 	}
 	
 	if ( cmdline.Found(wxT("version")) ) {
-#ifndef AMULE_DAEMON		
-		printf("aMule %s (OS: %s)\n",
-			(const char *)unicode2char(GetMuleVersion()),
+		printf("%s (OS: %s)\n",
+			(const char*)unicode2char(GetFullMuleVersion()),
 			(const char*)unicode2char(OSType));
-#else
-		printf("aMule Daemon %s (OS: %s)\n",
-			(const char *)unicode2char(GetMuleVersion()),
-			(const char*)unicode2char(OSType));
-#endif
+		
 		return false;
 	}
 	
@@ -457,52 +442,30 @@ bool CamuleApp::OnInit()
 	}
 
 	printf("Checking if there is an instance already running...\n");
-	// see if there is another instance running
-	wxString server =
-#if !wxUSE_DDE_FOR_IPC
-		ConfigDir +
-#endif
-		wxT("muleconn");
-	wxString host = wxT("localhost");
-	wxString IPC = wxT("aMule IPC TESTRUN");
 
-	{
-		wxClient client;
+	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
+	if (m_singleInstance->IsAnotherRunning()) {
+		printf("There is an instance of aMule already running\n");
 		
-		// Log to stderr
-		wxLog* oldLog = wxLog::SetActiveTarget(new wxLogStderr);
-		wxConnectionBase* conn = client.MakeConnection(host, server, IPC);
-		delete wxLog::SetActiveTarget(oldLog); // Restore old log
-		
-		// If the connection failed, conn is NULL
-		if ( conn ) {
-			// An instance is already running!
-			printf("There is an instance of aMule already running\n");
-			// This is very tricky. The most secure way to communicate is via ED2K links file
-			FILE *ed2kfile;
-			char filename[1024];
-	
-			sprintf(filename,"%s/.aMule/ED2KLinks",(const char*)unicode2char(wxGetHomeDir()));
-			ed2kfile = fopen(filename,"a");
-			if (ed2kfile != NULL) {
-				fprintf(ed2kfile,"RAISE_DIALOG");
-				printf("Raised current running aMule\n");
-				fclose(ed2kfile);
-			} else {
-				printf("Error opening file %s.Cannot raise active aMule\n", filename);
-			}
-			
-			conn->Disconnect();
-	
-			printf("aMule already running: exiting\n");
-			delete conn;
-			return false;
+		// This is very tricky. The most secure way to communicate is via ED2K links file
+		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
+		if (!ed2kFile.Exists()) {
+			ed2kFile.Create();
 		}
+			
+		if (ed2kFile.Open()) {
+			ed2kFile.AddLine(wxT("RAISE_DIALOG"));
+			ed2kFile.Write();
+			
+			printf("Raising current running instance.\n");
+		} else {
+			printf("Failed to open 'ED2KFile', cannot signal running instance.\n");
+		}
+			
+		return false;
+	} else {
+		printf("No other instances are running.\n");
 	}
-
-	// If there was no server, start one
-	localserver = new wxServer();
-	localserver->Create(server);
 
 	// Close standard-input
 	if ( !cmdline.Found(wxT("enable-stdin")) ) {

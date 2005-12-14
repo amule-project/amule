@@ -68,6 +68,7 @@ class wxFile;
 class CUpDownClient;
 class CTimer;
 class wxTimerEvent;
+class wxSingleInstanceChecker;
 
 #define theApp wxGetApp()
 
@@ -145,9 +146,6 @@ public:
 	void		Localize_mule();
 	void		Trigger_New_version(wxString newMule);
 
-	// Used to detect a previous running instance of aMule
-	wxServer*	localserver;
-
 	// shakraw - new EC code using wxSocketBase
 	ExternalConn*	ECServerHandler;
 
@@ -207,6 +205,9 @@ public:
 	bool CryptoAvailable() const;
 	
 protected:
+	// Used to detect a previous running instance of aMule
+	wxSingleInstanceChecker*	m_singleInstance;
+	
 #ifdef __WXDEBUG__
 	/**
 	 * Handles asserts in a thread-safe manner.
