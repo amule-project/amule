@@ -156,11 +156,11 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		return;
 	} else if (!StringIPtoUint32(addr.IPAddress())) {
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n", (const char*)unicode2char(addr.IPAddress()));
-		wxASSERT(0);
+		//wxASSERT(0);
 		return;
 	} else if (!addr.Service()) {
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
-		wxASSERT(0);
+		//wxASSERT(0);
 		return;
 	}
 
