@@ -337,13 +337,10 @@ void CamuleDlg::CreateSystray()
 }	
 	
 
-// This one is common to both implementations
 void CamuleDlg::RemoveSystray()
 {
-	if (m_wndTaskbarNotifier) {
-		delete m_wndTaskbarNotifier;
-		m_wndTaskbarNotifier = NULL;
-	}
+	delete m_wndTaskbarNotifier;
+	m_wndTaskbarNotifier = NULL;
 }
 
 
@@ -445,21 +442,16 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 {
 	if (is_safe_state) {
-		if (m_prefsDialog) {
-			m_prefsDialog->Show(true);
-			m_prefsDialog->Raise();
-		} else {
+		if (m_prefsDialog == NULL) {
 			m_prefsDialog = new PrefsUnifiedDlg(this);
-			
 			m_prefsDialog->TransferToWindow();
-			if (m_prefsDialog->ShowModal() == wxOK){
-				#ifdef CLIENT_GUI
-				theApp.glob_prefs->SendToRemote();
-				#endif
-			}
 		}
+		
+		m_prefsDialog->Show(true);
+		m_prefsDialog->Raise();
 	}
 }
+
 
 #ifndef CLIENT_GUI
 void CamuleDlg::OnImportButton(wxCommandEvent& WXUNUSED(ev))
@@ -551,14 +543,8 @@ void CamuleDlg::ResetLog(int id)
 
 void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 {
-	// Max 1000 chars
-	wxString bufferline = line.Left(1000);
-	
-	// Remove newlines at end, they cause problems with the layout...
-	// You should not call Last() in an empty string.
-	while ( !bufferline.IsEmpty() && bufferline.Last() == wxT('\n') ) {
-		bufferline.RemoveLast();
-	}
+	// Remove newspace at end, it causes problems with the layout...
+	wxString bufferline = line.Strip(wxString::trailing);
 
 	// Create the timestamp
 	wxString stamp = wxDateTime::Now().FormatISODate() + wxT(" ") + wxDateTime::Now().FormatISOTime() + wxT(": ");
@@ -848,12 +834,6 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	
 	theApp.ShutDown(evt);
 }
-
-//BEGIN - enkeyDEV(kei-kun) -TaskbarNotifier-
-void CamuleDlg::ShowNotifier(wxString WXUNUSED(Text), int WXUNUSED(MsgType), bool WXUNUSED(ForceSoundOFF))
-{
-}
-//END - enkeyDEV(kei-kun) -TaskbarNotifier-
 
 
 void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))

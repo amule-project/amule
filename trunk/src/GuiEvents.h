@@ -84,7 +84,6 @@ enum GUI_Event_ID {
 	CHAT_CONN_RESULT,
 	CHAT_PROCESS_MSG,
 	// notification
-	SHOW_NOTIFIER,
 	SHOW_CONN_STATE,
 	SHOW_USER_COUNT,
 	SHOW_QUEUE_COUNT,
@@ -367,7 +366,6 @@ class GUIEvent : public wxEvent {
 #define Notify_ChatProcessMsg(val0, s)             Notify_3_ValEvent(CHAT_PROCESS_MSG, (byte)0, (uint64)val0, s)
 
 // misc
-#define Notify_ShowNotifier(str, val0, val1)        Notify_3_ValEvent(SHOW_NOTIFIER, val0, str, val1)
 #define Notify_ShowConnState(val)             		Notify_1_ValEvent(SHOW_CONN_STATE, (uint32)val)
 #define Notify_ShowUserCount(str)                   Notify_2_ValEvent(SHOW_USER_COUNT, (byte)0, str)
 #define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
