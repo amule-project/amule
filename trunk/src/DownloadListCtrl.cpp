@@ -591,7 +591,7 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 	if (files.size()) {	
 		wxString question = 
 			_("Are you sure that you wish to delete the selected file(s)?");	
-		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES) {
+		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 				CPartFile* file = (CPartFile*)(*it)->value;		
 				switch (file->GetStatus()) {
@@ -2261,7 +2261,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 			"Please set your prefered video player on preferences.\n"
 			"Meanwhile, aMule will attempt to use mplayer"
 			" and you will get this warning on every preview"),
-			_("File preview"), wxOK);
+			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output decivce and needs a parameter, go figure...
 		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer");

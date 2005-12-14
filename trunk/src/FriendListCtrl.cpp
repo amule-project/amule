@@ -281,7 +281,7 @@ void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 void CFriendListCtrl::OnRemoveFriend(wxCommandEvent& WXUNUSED(event))
 {
 	wxString question = _("Are you sure that you wish to delete the selected friend(s)?");
-	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+	if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 		long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 		while( index != -1 ) {
@@ -362,7 +362,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
 	#endif
 	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (index != -1) {
-		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxICON_ERROR);
+		wxMessageBox(_("You are not allowed to set more than one friendslot.\n Only one slot was assigned."), _("Multiple selection"), wxICON_ERROR, this);
 	}
 }
 
@@ -390,4 +390,3 @@ void CFriendListCtrl::OnKeyPressed(wxKeyEvent& event)
 		event.Skip();
 	}
 }
-

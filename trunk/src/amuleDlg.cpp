@@ -437,7 +437,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" http://kademlia.scs.cs.nyu.edu\n");
 	
 	if (is_safe_state) {
-		wxMessageBox(msg);
+		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 }
 
@@ -528,7 +528,7 @@ void CamuleDlg::OnBnStatusText(wxCommandEvent& WXUNUSED(evt))
 	wxString line = CastChild(wxT("infoLabel"), wxStaticText)->GetLabel();
 
 	if (!line.IsEmpty()) {
-		wxMessageBox(line, wxString(_("Status text")), wxOK|wxICON_INFORMATION);
+		wxMessageBox(line, wxString(_("Status text")), wxOK|wxICON_INFORMATION, this);
 	}
 }
 
@@ -840,7 +840,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 	// This will be here till the core close is != app close
 	if (evt.CanVeto() && thePrefs::IsConfirmExitEnabled() ) {
 		if (wxNO == wxMessageBox(wxString(_("Do you really want to exit aMule?")),
-				wxString(_("Exit confirmation")), wxYES_NO)) {
+				wxString(_("Exit confirmation")), wxYES_NO, this)) {
 			evt.Veto();
 			return;
 		}
@@ -1135,7 +1135,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		if (!ok) {
 			wxMessageBox(
 				_("Could not determine the command for running the browser."),
-				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION);
+				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION, this);
 			return;
 		}
 
@@ -1372,7 +1372,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 		
 		skinfile.Close();
 	} catch (const wxString& error) {
-		wxMessageBox(error);
+		wxMessageBox(error, _("Error"), wxOK | wxICON_ERROR, this);
 		
 		// Load defaults
 		for (uint32 i = 0; i < ClientItemNumber; i++) {

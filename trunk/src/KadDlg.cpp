@@ -166,7 +166,7 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 					wxT(".") + 
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
 		if (ip == 0) {
-			wxMessageBox(_("Invalid ip to bootstrap"));
+			wxMessageBox(_("Invalid ip to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 		} else {
 			unsigned long port;
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
@@ -176,14 +176,14 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 				}
 				Kademlia::CKademlia::bootstrap(ip, port);				
 			} else {
-				wxMessageBox(_("Invalid port to bootstrap"));
+				wxMessageBox(_("Invalid port to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 			}
 		}
 		#else
-			wxMessageBox(_("You can't bootstrap an specific ip from remote GUI yet."));
+			wxMessageBox(_("You can't bootstrap an specific ip from remote GUI yet."), _("Message"), wxOK | wxICON_INFORMATION, this);
 		#endif		
 	} else {
-		wxMessageBox(_("Please fill all fields required"));
+		wxMessageBox(_("Please fill all fields required"), _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 }
 
@@ -206,7 +206,7 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 	#ifndef CLIENT_GUI
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")
-					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO) == wxYES ) {
+					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO, this) == wxYES ) {
 		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
 		if (strURL.Find(wxT("://")) == -1) {
 			AddLogLineM(true, _("Invalid URL"));
@@ -218,6 +218,6 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 		downloader->Run();
 	}
 	#else
-	wxMessageBox(_("You can't update server.met from remote GUI yet."));
+	wxMessageBox(_("You can't update server.met from remote GUI yet."), _("Message"), wxOK | wxICON_INFORMATION, this);
 	#endif		
 }

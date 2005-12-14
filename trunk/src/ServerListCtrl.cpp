@@ -120,7 +120,7 @@ void CServerListCtrl::RemoveServer( const CServer* server, bool ask_static)
 	if ( result != -1 ) {
 		CServer* cur_server = (CServer*) GetItemData( result );
 		bool is_static = cur_server->IsStaticMember();
-		if ( !ask_static || !is_static || (is_static && (wxMessageBox( CFormat(_("Are you sure you want to delete the static server %s") ) % cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
+		if ( !ask_static || !is_static || (is_static && (wxMessageBox( CFormat(_("Are you sure you want to delete the static server %s") ) % cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ))) {
 			theApp.serverlist->RemoveServer( cur_server );
 			DeleteItem( result );
 		}
@@ -137,13 +137,13 @@ void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
 
 	while ( pos != -1 ) {
 		if ( (long)GetItemData(pos) == m_connected && connected == true) {
-			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK);
+			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
 			++pos;
 		} else {
 			CServer* cur_server = (CServer*) GetItemData( pos );
 			bool is_static = cur_server->IsStaticMember();
 			const wxString server_name = cur_server->GetListName().IsEmpty() ? wxString(_("(Unknown name)")) : cur_server->GetListName();
-			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % server_name, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ))) {
+			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % server_name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ))) {
 				theApp.serverlist->RemoveServer( cur_server );
 				DeleteItem( pos );
 			} else {
@@ -482,7 +482,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 		if ( GetItemCount() ) {
 			wxString question = _("Are you sure that you wish to delete all servers?");
 	
-			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 				if ( theApp.serverconnect->IsConnecting() ) {
 					theApp.downloadqueue->StopUDPRequests();
 					theApp.serverconnect->StopConnectionTry();
@@ -496,7 +496,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 		if ( GetSelectedItemCount() ) {
 			wxString question = _("Are you sure that you wish to delete the selected server(s)?");
 	
-			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO) == wxYES ) {
+			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 				RemoveAllServers( wxLIST_STATE_SELECTED, true);
 			}
 		}

@@ -150,7 +150,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	// No empty names
 	if ( newname.IsEmpty() ) {
-		wxMessageBox(_("You must specify a name for the category!"), _("Info"), wxOK);
+		wxMessageBox(_("You must specify a name for the category!"), _("Info"), wxOK, this);
 		
 		return;
 	}
@@ -159,14 +159,14 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	// No empty dirs please 
 	if ( newpath.IsEmpty() ) {
-		wxMessageBox(_("You must specify a path for the category!"), _("Info"), wxOK);
+		wxMessageBox(_("You must specify a path for the category!"), _("Info"), wxOK, this);
 		
 		return;
 	}
 
 	if ( !::wxDirExists( newpath ) ) {
 		if ( !wxMkdir( newpath, thePrefs::GetDirPermissions() ) ) {
-			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Info"), wxOK);
+			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Info"), wxOK, this);
 			
 			return;
 		}
