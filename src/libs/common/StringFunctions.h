@@ -30,6 +30,7 @@
 #include <wx/defs.h>
 #include <wx/string.h>
 #include <wx/strconv.h>
+#include <wx/filename.h>
 
 // UTF8 types: No UTF8, BOM prefix, or Raw UTF8
 enum EUtf8Str
@@ -171,7 +172,16 @@ inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
  */
 wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
 
-wxString CleanupFilename(const wxString& filename, bool keepSpaces = true);
+/**
+ * Removes invalid chars from the filename.
+ *
+ * @param filename the filename to clean.
+ * @param keepSpace If false, spaces are replaced with underscores.
+ * @param fat32 If true, chars invalid on fat32 are also replaced.
+ *
+ * Note that fat32 is always considered to be true on wxMSW.
+ */ 
+wxString CleanupFilename(const wxString& filename, bool keepSpaces = true, bool fat32 = false);
 
 /**
  * Joins two path with the operating system specific path-separator.
