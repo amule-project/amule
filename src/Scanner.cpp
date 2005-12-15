@@ -1967,6 +1967,7 @@ void LexFree()
 	yy_hold_char = '\0';
 	yy_n_chars = 0;
 	yy_c_buf_p = NULL;
+	yy_delete_buffer(YY_CURRENT_BUFFER);
 	yy_init = 1;
 	yy_start = 0;
 	yy_did_buffer_switch_on_eof = 0;
