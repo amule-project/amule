@@ -218,12 +218,6 @@ void* CAICHSyncThread::Entry()
 		}
 	}
 
-	// warn the user if he just upgraded
-	// TODO
-	//	if ( theApp.glob_prefs->Prefs.IsFirstStart() && !queue.empty() ) {
-	//		theApp.QueueLogLine(false, GetResString(IDS_AICH_WARNUSER));
-	//	}
-
 	if ( !queue.empty() ) {
 		AddLogLineM( false, wxString::Format( _("AICH Thread: Starting to hash files. %li files found."), (long int)queue.size() ) );
 		while ( !queue.empty() && !TestDestroy() ) {
