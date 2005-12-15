@@ -29,6 +29,7 @@
 #include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/fs_zip.h>		// Needed for wxZipFSHandler
 #include <wx/file.h>		// Needed for wxFile
+#include <wx/thread.h>		// Needed for wxMutex
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,6 +37,7 @@
 #include <errno.h>
 #include <algorithm>
 #include <cctype>
+#include <map>
 
 #include "FileFunctions.h"
 #include <common/StringFunctions.h>
@@ -499,13 +501,17 @@ UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
 }
 
 
+#ifdef __WXMSW__
+
 FSCheckResult CheckFileSystem(const wxString& path) 
 {
-	wxCHECK_MSG(path.Length(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
-
-#ifdef __WXMSW__
 	return FS_IsFAT32;
-#else	
+}
+
+#else
+
+FSCheckResult DoCheckFileSystem(const wxString& path)
+{
 	// This is an invalid filename on FAT32
 	wxString fullName = JoinPaths(path, wxT(":"));
 
@@ -532,7 +538,29 @@ FSCheckResult CheckFileSystem(const wxString& path)
 			// Something else failed, couldn't check
 			return FS_Failed;
 	}
-#endif
 }
 
+
+typedef std::map<wxString, FSCheckResult> CPathCache;
+
+//! Lock used to ensure the integrity of the cache.
+static wxMutex		s_lock;
+//! Cache of results from checking various paths.
+static CPathCache	s_cache;
+
+
+FSCheckResult CheckFileSystem(const wxString& path) 
+{
+	wxCHECK_MSG(path.Length(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
+
+	wxMutexLocker locker(s_lock);
+	CPathCache::iterator it = s_cache.find(path);
+	if (it != s_cache.end()) {
+		return it->second;
+	}
+
+	return s_cache[path] = DoCheckFileSystem(path);
+}
+
+#endif
 
