@@ -1,7 +1,7 @@
 # Translation of amule interface to Korean
 # Copyright (C) 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# Lee, Eun-ho <hoenny@daum.net>, 2005.
+# Lee, Eun-ho <hoenny@daum.net>, 2005. 
 #: src/TextClient.cpp:616 src/TextClient.cpp:619 src/TextClient.cpp:634
 #: src/TextClient.cpp:637 src/TextClient.cpp:649 src/TextClient.cpp:652
 #: src/TextClient.cpp:655
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-23 21:36+0100\n"
-"PO-Revision-Date: 2005-12-06 01:02+0900\n"
+"PO-Revision-Date: 2005-12-14 01:19+0900\n"
 "Last-Translator: Lee, Eun-ho <hoenny@daum.net>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgstr "%u 카드 접속을 읽었습니다."
 
 #: src/kademlia/routing/RoutingZone.cpp:162
 msgid "Error while reading Kad contacts - 0 entries"
-msgstr "카드 접속을 읽는동안 에러가생겼습니다. - 완전히 0"
+msgstr "카드 접속을 읽는동안 오류가생겼습니다. - 완전히 0"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:97
 #: src/utils/aLinkCreator/src/alcframe.cpp:85
@@ -228,7 +228,7 @@ msgstr "공유함: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:794
 msgid " file(s), Clients on queue: "
-msgstr " 파일, 큐에있는 클라이언트: "
+msgstr " 파일, 대기열에있는 클라이언트: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:803
 #: src/utils/wxCas/src/wxcasframe.cpp:813 src/FileDetailDialog.cpp:109
@@ -617,11 +617,11 @@ msgstr "%d"
 #: src/webserver/src/WebServer.cpp:319
 #, c-format
 msgid "Request failed with the following error: %s."
-msgstr "다음과 같은 에러로 요청 실패함: %s."
+msgstr "다음과 같은 오류로 요청 실패함: %s."
 
 #: src/webserver/src/WebServer.cpp:322 src/TextClient.cpp:410
 msgid "Request failed with an unknown error."
-msgstr "알수없는 에러로 요청이 실패함."
+msgstr "알수없는 오류로 요청이 실패함."
 
 #: src/webserver/src/WebServer.cpp:1664
 msgid "Index file not found: bad template\n"
@@ -780,7 +780,8 @@ msgid ""
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 "\n"
-"이 명령은 완전하지 않습니다. 당신은 반드시 아래의 확장중 하나를 사용해야 합니다.\n"
+"이 명령은 완전하지 않습니다. 당신은 반드시 아래의 확장중 하나를 사용해야 합니"
+"다.\n"
 
 #: src/ExternalConnector.cpp:176
 msgid ""
@@ -951,37 +952,37 @@ msgstr "프로그램 버전을 프린트합니다."
 
 #: src/PartFile.cpp:339
 msgid "ERROR: Failed to create partfile)"
-msgstr "에러: 부분파일을 생성하는데 실패하였습니다.)"
+msgstr "오류: 부분파일을 생성하는데 실패하였습니다.)"
 
 #: src/PartFile.cpp:345
 msgid "ERROR: Failed to open partfile)"
-msgstr "에러: 부분파일을 여는데 실패하였습니다.)"
+msgstr "오류: 부분파일을 여는데 실패하였습니다.)"
 
 #: src/PartFile.cpp:386 src/PartFile.cpp:417
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
 msgstr ""
-"에러: 예비파일을 읽는데 실패하였습니다. .part.met회복 방법을 위해 http://"
+"오류: 예비파일을 읽는데 실패하였습니다. .part.met회복 방법을 위해 http://"
 "forum.amule.org에서 검색하세요."
 
 #: src/PartFile.cpp:389
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "에러: part.met파일을 여는데 실패하였습니다: %s ==> %s"
+msgstr "오류: part.met파일을 여는데 실패하였습니다: %s ==> %s"
 
 #: src/PartFile.cpp:398
 msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
 msgstr ""
-"에러: 예비 part.met파일은 크기가 0입니다. .part.met회복 방법을 위해 http://"
+"오류: 예비 part.met파일은 크기가 0입니다. .part.met회복 방법을 위해 http://"
 "forum.amule.org에서 검색하세요."
 
 #: src/PartFile.cpp:401
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "에러: part.met파일은 크기가 0입니다: %s ==> %s"
+msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
 
 #: src/PartFile.cpp:411
 #, c-format
@@ -991,18 +992,18 @@ msgstr "%s로부터 met파일의 예비을 읽을려고 합니다."
 #: src/PartFile.cpp:422
 #, c-format
 msgid "Error: part.met backup file is 0 size: %s ==> %s"
-msgstr "에러: part.met 예비 파일은 크기가 0입니다: %s ==> %s"
+msgstr "오류: part.met 예비 파일은 크기가 0입니다: %s ==> %s"
 
 #: src/PartFile.cpp:436
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "에러: 유효하지 안은 part.met 파일버전: %s ==> %s"
+msgstr "오류: 유효하지 안은 part.met 파일버전: %s ==> %s"
 
 #: src/PartFile.cpp:674
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
-"에러: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
+"오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
 
 #: src/PartFile.cpp:677
 msgid "Trying to recover file info..."
@@ -1034,7 +1035,7 @@ msgstr "경고: %s는 분명히 손상되었습니다. (%i)"
 #: src/PartFile.cpp:960 src/PartFile.cpp:965
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
-msgstr "부분파일을 저장하는 동안에 에러: %s (%s ==> %s)"
+msgstr "부분파일을 저장하는 동안에 오류: %s (%s ==> %s)"
 
 #: src/PartFile.cpp:989
 #, c-format
@@ -1097,7 +1098,7 @@ msgstr "%s의 재해시가 완료되었습니다."
 #: src/PartFile.cpp:2280
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr "%s가 완료되는중 예상되지 않은 파일에러가 발생하였습니다. 파일 중지"
+msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
 
 #: src/PartFile.cpp:2286 src/PartFile.cpp:2290
 #, c-format
@@ -1148,7 +1149,7 @@ msgstr "\t공유로부터 삭제됨"
 
 #: src/PartFile.cpp:2487
 msgid "\tRemoved from download queue"
-msgstr "\t내려받기 큐로부터 삭제됨"
+msgstr "\t내려받기 대기열로부터 삭제됨"
 
 #: src/PartFile.cpp:2489
 msgid "\tRemoved transferwnd"
@@ -1200,7 +1201,7 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"에러: 내려받은 부분의 해시가 불가능합니다. - %s의 내려받기 해시설정 이것은 결"
+"오류: 내려받은 부분의 해시가 불가능합니다. - %s의 내려받기 해시설정 이것은 결"
 "코 일어나지 않습니다."
 
 #: src/PartFile.cpp:2569
@@ -1248,7 +1249,7 @@ msgstr "중지됨"
 #: src/PartFile.cpp:3811 src/TransferWnd.cpp:346 src/OtherFunctions.cpp:771
 #: src/libs/ec/ECSpecialTags.cpp:52
 msgid "Erroneous"
-msgstr "에러투성이"
+msgstr "오류투성이"
 
 #: src/PartFile.cpp:3814
 msgid "Insufficient Diskspace"
@@ -1289,7 +1290,7 @@ msgstr "다음에 연결이 되었습니다: %s"
 #: src/ServerConnect.cpp:306
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
-"연결하는 동안 치명적 에러가 발생하였습니다. 인터넷 연결이 분명히 끊겼습니다."
+"연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 분명히 끊겼습니다."
 
 #: src/ServerConnect.cpp:310
 #, c-format
@@ -1322,7 +1323,7 @@ msgstr "%s(%s:%i)에 연결이 실패하였습니다."
 
 #: src/ServerConnect.cpp:416
 msgid "Error: Socket invalid at timeoutcheck"
-msgstr "에러: 시간초가검사에 유효하지 않은 소켓입니다."
+msgstr "오류: 시간초가검사에 유효하지 않은 소켓입니다."
 
 #: src/ServerConnect.cpp:426
 #, c-format
@@ -1481,7 +1482,7 @@ msgstr "올려주기"
 
 #: src/TransferWnd.cpp:445 src/DataToText.cpp:65 src/ClientListCtrl.cpp:605
 msgid "On Queue"
-msgstr "큐에"
+msgstr "대기열에"
 
 #: src/TransferWnd.cpp:449 src/Statistics.cpp:674 src/ClientListCtrl.cpp:208
 msgid "Clients"
@@ -1594,7 +1595,7 @@ msgstr "해시: 마지막 스레드를 유지하도록 시호를 보냅니다."
 
 #: src/AddFileThread.cpp:243
 msgid "Hasher: No files on queue, stopping thread."
-msgstr "해시: 큐에서 파일을 찾을수 없어서 스레드를 중단합니다."
+msgstr "해시: 대기열에서 파일을 찾을수 없어서 스레드를 중단합니다."
 
 #: src/AddFileThread.cpp:302
 #, c-format
@@ -1643,7 +1644,7 @@ msgstr "%.2f%% 완료"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
-msgstr "에러: TCP포트를 열수없습니다."
+msgstr "오류: TCP포트를 열수없습니다."
 
 #: src/BaseClient.cpp:1206
 #, c-format
@@ -1725,7 +1726,7 @@ msgstr "TB"
 #: src/OtherFunctions.cpp:183 src/amule.cpp:756 src/amule.cpp:872
 #: src/amule.cpp:1188 src/amule-remote-gui.cpp:276
 msgid "Error"
-msgstr "에러"
+msgstr "오류"
 
 #: src/OtherFunctions.cpp:147
 msgid "k"
@@ -1847,8 +1848,7 @@ msgstr "새로운 nodes.dat 파일을 내려받기 원하시나요?\n"
 #: src/KadDlg.cpp:216
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
-msgstr ""
-"당신의 현재노드는 제거되고 카뎀리아 연결이 다시 시작될것입니다."
+msgstr "당신의 현재노드는 제거되고 카뎀리아 연결이 다시 시작될것입니다."
 
 #: src/KadDlg.cpp:217
 msgid "Continue?"
@@ -2161,7 +2161,7 @@ msgid ""
 "Clients in queue:\t%d\n"
 msgstr ""
 "\n"
-"큐의 클라이언트:/t %d\n"
+"대기열의 클라이언트:/t %d\n"
 
 #: src/TextClient.cpp:506
 #, c-format
@@ -2201,7 +2201,8 @@ msgid ""
 "type.\n"
 msgstr ""
 "부가적으로, 0-255 범위에 있는 숫자는 이 검사를 통가할수 있습니다.\n"
-"명령어, 어떤것은 얼마나 많은 클라이언트 버젼 진입 내부구조를 보여는것을 말할수 있습니다.\n"
+"명령어, 어떤것은 얼마나 많은 클라이언트 버젼 진입 내부구조를 보여는것을 말할"
+"수 있습니다.\n"
 "0이나 생략은 '무제한'의 의미로 통합니다.\n"
 "예: '정적 5'는 단지 각 클라이언트 종류를 위한 상위 5 버젼을 보여줄것입니다.\n"
 
@@ -2218,7 +2219,6 @@ msgstr ""
 "원격으로 동작하는 핵심 (어뮬)이 종료합니다.\n"
 "동작하는 핵심없이는 불안정하기 때문에,\n"
 "이것은 문자기반 클라이언트도 종료될것입니다.\n"
-""
 
 #: src/TextClient.cpp:591
 msgid "Reloads the given object."
@@ -2245,8 +2245,7 @@ msgid ""
 "or a resolvable DNS name."
 msgstr ""
 "이것은 설정되어 있는 가능한 모든 통신망에 연결할것입니다.\n"
-"또한 당신은 부가적으로 특정 아이피:포트 형식의 서버에 "
-"연결할수 있습니다.\n"
+"또한 당신은 부가적으로 특정 아이피:포트 형식의 서버에 연결할수 있습니다.\n"
 "아이피는 점과 십진수 아이피v4주소나, 알려진 DNS이름 이어야 합니다.\n"
 " "
 
@@ -2288,10 +2287,9 @@ msgid ""
 "   server list.\n"
 msgstr ""
 "ed2k 링크는 추가할수 있음:\n"
-"*) 파일링크 (ed2k://|file|...), 이것은 내려받기 큐에 추가될것입니다,\n"
+"*) 파일링크 (ed2k://|file|...), 이것은 내려받기 대기열에 추가될것입니다,\n"
 "*) 서버링크 (ed2k://|server|...), 이것은 서버 목록에 추가될것입니다,\n"
-"*) 혹은 서버 목록 링크, 이것은 모든 서버가 서버목록에 추가될것입니다."
-"\n"
+"*) 혹은 서버 목록 링크, 이것은 모든 서버가 서버목록에 추가될것입니다.\n"
 "\n"
 
 #: src/TextClient.cpp:615
@@ -2319,7 +2317,8 @@ msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
-""
+"유효한 차단 수준은 0-255범위야 하고, 이것의 기본(초기)값은\n"
+"127입니다.\n"
 
 #: src/TextClient.cpp:626
 msgid "Set bandwidth limits."
@@ -2371,19 +2370,19 @@ msgstr "내려받기 취소."
 
 #: src/TextClient.cpp:657
 msgid "Show queues/lists."
-msgstr "큐/목록 보기."
+msgstr "대기열/목록 보기."
 
 #: src/TextClient.cpp:658
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "올려주기/내려받기 큐, 서버 목록이나 공유된 파일 목록 보여줍니다.\n"
+msgstr "올려주기/내려받기 대기열, 서버 목록이나 공유된 파일 목록 보여줍니다.\n"
 
 #: src/TextClient.cpp:659
 msgid "Show upload queue."
-msgstr "올려주기 큐 보기."
+msgstr "올려주기 대기열 보기."
 
 #: src/TextClient.cpp:660
 msgid "Show download queue."
-msgstr "내려받기 큐 보기."
+msgstr "내려받기 대기열 보기."
 
 #: src/TextClient.cpp:661
 msgid "Show servers list."
@@ -2503,14 +2502,14 @@ msgid ""
 "To enable External Connections, use either a normal aMule or set the key"
 "\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
 msgstr ""
-"에러: 외부 연결이 비활성화 될때에는 어뮬 데몬을 사용할수 없습니다.외부 연결"
+"오류: 외부 연결이 비활성화 될때에는 어뮬 데몬을 사용할수 없습니다.외부 연결"
 "을 활성화하기 위해, 일반적인 어뮬을 사용하거나, ~/.aMule/amule.conf파일의 "
 "\"AcceptExternalConnections\"를 1로 설정하세요."
 
 #: src/amuled.cpp:486
 #, c-format
 msgid "ERROR: %s"
-msgstr "에러: %s"
+msgstr "오류: %s"
 
 #: src/SysTray.cpp:117 src/amule.cpp:684 src/amuleDlg.cpp:610
 #: src/amuleDlg.cpp:815 src/DataToText.cpp:62 src/ClientListCtrl.cpp:588
@@ -2627,7 +2626,7 @@ msgstr "공유된 파일: %d"
 #: src/SysTray.cpp:316 src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Queued Clients: %d"
-msgstr "큐에있는 클라이언트: %d"
+msgstr "대기열에있는 클라이언트: %d"
 
 #: src/SysTray.cpp:325 src/MuleTrayIcon.cpp:457
 #, c-format
@@ -2784,7 +2783,7 @@ msgstr "완전한 명령을 실행하는데 실패했습니다. 원형은: %s"
 
 #: src/amule.cpp:1570
 msgid "ERROR: can't open logfile"
-msgstr "에러: 로그파일을 열수없습니다."
+msgstr "오류: 로그파일을 열수없습니다."
 
 #: src/amule.cpp:1574
 msgid "WARNING: logfile is empty. Something is wrong."
@@ -2918,7 +2917,7 @@ msgstr "http://www.amule.org에 방문하셔서 새로운버전이 있는지 확
 
 #: src/amuleDlg.cpp:231
 msgid "Fatal Error: Failed to create Timer"
-msgstr "치명적 에러: 타이머생성이 실패하였습니다."
+msgstr "치명적 오류: 타이머생성이 실패하였습니다."
 
 #: src/amuleDlg.cpp:346
 msgid "Desktop integration"
@@ -3118,8 +3117,8 @@ msgstr "선택된파일을 지우시겠습니까?"
 
 #: src/DownloadListCtrl.cpp:744
 #, c-format
-msgid "Feedback from: %s\n"
-msgstr "피드백 받음: %s\n"
+msgid "Feedback from: %s"
+msgstr "다음에서 귀환: %s"
 
 #: src/DownloadListCtrl.cpp:745
 #, c-format
@@ -3208,11 +3207,11 @@ msgstr "더이상 필요하지않는 자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:966
 msgid "Drop Full Queue Sources now"
-msgstr "가득찬 큐자료를 제거합니다."
+msgstr "가득찬 대기열자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:968
 msgid "Drop High Queue Rating Sources now"
-msgstr "큐 사용이 많은 자료를 제거합니다."
+msgstr "대기열 사용이 많은 자료를 제거합니다."
 
 #: src/DownloadListCtrl.cpp:970
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
@@ -3250,7 +3249,7 @@ msgstr "ed2k링크를 클립보드로 복사(&html)"
 
 #: src/DownloadListCtrl.cpp:993
 msgid "Copy feedback to clipboard"
-msgstr "피드백을 클립보드에 복사"
+msgstr "귀환을 클립보드에 복사"
 
 #: src/DownloadListCtrl.cpp:1000
 msgid "unassign"
@@ -3295,7 +3294,7 @@ msgstr "A4AF"
 #: src/DownloadListCtrl.cpp:1722 src/DataToText.cpp:65
 #: src/ClientListCtrl.cpp:626
 msgid "Queue Full"
-msgstr "큐가 가득차다"
+msgstr "대기열이 가득차다"
 
 #: src/DownloadListCtrl.cpp:1741
 #, c-format
@@ -3326,7 +3325,7 @@ msgstr "미리보기"
 
 #: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
-msgstr "에러: 외부 재생기를 실행하는데 실패하였습니다."
+msgstr "오류: 외부 재생기를 실행하는데 실패하였습니다."
 
 #: src/DownloadListCtrl.cpp:2313
 #, c-format
@@ -3375,7 +3374,7 @@ msgstr "받음"
 msgid ""
 "Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
-"당신의 내려받기 큐를 하기위해 ed2k 링크를 텍스트컨트롤에 추가하고 클릭하십시"
+"당신의 내려받기 대기열를 하기위해 ed2k 링크를 텍스트컨트롤에 추가하고 클릭하십시"
 "요."
 
 #: src/muuli_wdr.cpp:121
@@ -3428,7 +3427,7 @@ msgid ""
 "optimal connection type)."
 msgstr ""
 "연결상태와 활성화된 정송을 보여줍니다.빨간 화살은 당신이접속되지 않았음을 의"
-"미합니다.노란 화살은 당신이 로우아이디임을 의미합니다.초록 화살은 당신이 하이"
+"미합니다.노란 화살은 당신이 낮은아이디임을 의미합니다.초록 화살은 당신이 하이"
 "아이디임을 나타냅니다."
 
 #: src/muuli_wdr.cpp:161
@@ -3538,11 +3537,11 @@ msgstr "내려받기가 완료한것을 깨끗이합니다."
 
 #: src/muuli_wdr.cpp:493
 msgid "Shows Upload / Up-queue"
-msgstr "올려주기 / 올려주기 큐 보이기"
+msgstr "올려주기 / 올려주기 대기열 보이기"
 
 #: src/muuli_wdr.cpp:502
 msgid "Clients on queue :"
-msgstr "큐속의 클라이언트 :"
+msgstr "대기열속의 클라이언트 :"
 
 #: src/muuli_wdr.cpp:505
 msgid "0"
@@ -3894,7 +3893,7 @@ msgstr "속도 (전체)"
 
 #: src/muuli_wdr.cpp:1591
 msgid "Queue score:"
-msgstr "큐 점수:"
+msgstr "대기열 점수:"
 
 #: src/muuli_wdr.cpp:1626
 msgid "General Settings"
@@ -4039,8 +4038,8 @@ msgid "User Defined"
 msgstr "사용자 설정"
 
 #: src/muuli_wdr.cpp:1718
-msgid "Select your browser here\n"
-msgstr "당신의 브라우저를 선택하세요\n"
+msgid "Select your browser here"
+msgstr "당신의 브라우저를 여기서 선택하세요"
 
 #: src/muuli_wdr.cpp:1724
 msgid "Custom Browser:"
@@ -4056,7 +4055,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1737
 msgid "Open in new tab if possible"
-msgstr "가능하면 새로운 탭을 생성합니다."
+msgstr "가능하면 새로운 탭을 생성함"
 
 #: src/muuli_wdr.cpp:1739
 msgid "Open the web page in a new tab instead of in a new window when possible"
@@ -4495,7 +4494,7 @@ msgstr "파일 버퍼 크기: 240000 바이트"
 
 #: src/muuli_wdr.cpp:2520
 msgid "Upload Queue Size: 5000 clients"
-msgstr "올려주기 큐 크기: 5000 클라이언트"
+msgstr "올려주기 대기열 크기: 5000 클라이언트"
 
 #: src/muuli_wdr.cpp:2526
 msgid "Server connection refresh interval: Disable"
@@ -4507,7 +4506,7 @@ msgstr "GUI 조정"
 
 #: src/muuli_wdr.cpp:2558
 msgid "Download Queue Files Progress"
-msgstr "내려받기 큐 파일 진행"
+msgstr "내려받기 대기열 파일 진행"
 
 #: src/muuli_wdr.cpp:2561
 msgid "Show percentage"
@@ -4547,7 +4546,7 @@ msgstr "열 정렬"
 
 #: src/muuli_wdr.cpp:2617
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr "내려받기큐를 자동으로 정렬합니다. (높은 CPU)"
+msgstr "내려받기대기열를 자동으로 정렬합니다. (높은 CPU)"
 
 #: src/muuli_wdr.cpp:2619
 msgid "aMule will sort the columns in your download list automatically"
@@ -4595,23 +4594,23 @@ msgstr "필요없는 파일부분의 자료"
 
 #: src/muuli_wdr.cpp:2677
 msgid "Full Queue Sources Handling"
-msgstr "자료 핸들큐를 채웁니다."
+msgstr "자료 핸들대기열를 채웁니다."
 
 #: src/muuli_wdr.cpp:2680
 msgid "Enable auto drop Full Queue Sources"
-msgstr "큐가찬 자료를 자동으로 버리는것을 활성화합니다."
+msgstr "대기열이찬 자료를 자동으로 버리는것을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2686
 msgid "High Queue Rating Sources Handling"
-msgstr "자료핸들의 큐속도를 빠르게 합니다."
+msgstr "자료핸들의 대기열속도를 빠르게 합니다."
 
 #: src/muuli_wdr.cpp:2689
 msgid "Enable auto drop High Queue Rating Sources"
-msgstr "큐속도가 빠른 자료를 자동으로 버리는것을 활성화합니다."
+msgstr "대기열속도가 빠른 자료를 자동으로 버리는것을 활성화합니다."
 
 #: src/muuli_wdr.cpp:2695
 msgid "High Queue Rating value"
-msgstr "큐속도 값을 빠르게합니다."
+msgstr "대기열속도 값을 빠르게합니다."
 
 #: src/muuli_wdr.cpp:2701
 msgid "(Min 300 / Max 3000)"
@@ -4655,7 +4654,7 @@ msgstr "gzip압축을 활성화"
 
 #: src/muuli_wdr.cpp:2779
 msgid "Enable Low rights User"
-msgstr "로우권한 유저 활성화"
+msgstr "낮은권한 유저 활성화"
 
 #: src/muuli_wdr.cpp:2785
 msgid "Full rights password"
@@ -4663,7 +4662,7 @@ msgstr "모든권한 암호"
 
 #: src/muuli_wdr.cpp:2791
 msgid "Low rights password"
-msgstr "로우권한 암호"
+msgstr "낮은권한 암호"
 
 #: src/muuli_wdr.cpp:2801
 msgid "External Connection Parameters"
@@ -4821,8 +4820,8 @@ msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
 "update the list of known nodes."
 msgstr ""
-"이곳에 nodes.dat 파일 주소를 입력하고, 왼쪽에 있는 버튼을 누르면"
-"알려진 노드의 목록이 갱신될것입니다."
+"이곳에 nodes.dat 파일 주소를 입력하고, 왼쪽에 있는 버튼을 누르면알려진 노드"
+"의 목록이 갱신될것입니다."
 
 #: src/muuli_wdr.cpp:3269
 msgid "Nodes stats"
@@ -5246,7 +5245,8 @@ msgstr "클립보드에 ed2k링크를 복사(html)"
 
 #: src/KnownFileList.cpp:68
 msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr "경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고있습니다."
+msgstr ""
+"경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고있습니다."
 
 #: src/KnownFileList.cpp:93
 #, c-format
@@ -5510,7 +5510,7 @@ msgstr "새로운 외부연결이 승인되었습니다."
 
 #: src/ExternalConn.cpp:175
 msgid "Error: couldn't accept a new external connection"
-msgstr "에러: 외부연결이 승인되지않았습니다."
+msgstr "오류: 외부연결이 승인되지않았습니다."
 
 #: src/ExternalConn.cpp:193
 msgid "External connection refused due to empty password in preferences!"
@@ -5573,7 +5573,7 @@ msgstr "파일해시가 발격되지않음: %s"
 
 #: src/ExternalConn.cpp:568 src/ExternalConn.cpp:653
 msgid "OOPS! OpCode processing error!"
-msgstr "이론 명령코드 처리 에러!"
+msgstr "이론 명령코드 처리 오류!"
 
 #: src/ExternalConn.cpp:598
 msgid "Server not added"
@@ -5818,7 +5818,7 @@ msgstr "파일 버퍼 크기: %d 바이트"
 #: src/PrefsUnifiedDlg.cpp:980
 #, c-format
 msgid "Upload Queue Size: %d clients"
-msgstr "올려주기 큐 크기: %d 클라이언트"
+msgstr "올려주기 대기열 크기: %d 클라이언트"
 
 #: src/PrefsUnifiedDlg.cpp:987
 #, c-format
@@ -5836,7 +5836,7 @@ msgstr "theApp.serverlist->GetServerByAddress()가 빈값을 반환했습니다.
 #: src/ServerSocket.cpp:262
 #, c-format
 msgid "Error: %s (%s) - %s"
-msgstr "에러: %s(%s) - %s"
+msgstr "오류: %s(%s) - %s"
 
 #: src/ServerSocket.cpp:277
 #, c-format
@@ -5873,7 +5873,7 @@ msgstr "가짜 패킷을 서버로부터 받았습니다: %s"
 #: src/ServerSocket.cpp:558
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
-msgstr "서버로부터 패킷을 처리하는동안 핸들링할수 없는 에러가 생겼습니다: %s"
+msgstr "서버로부터 패킷을 처리하는동안 핸들링할수 없는 오류가 생겼습니다: %s"
 
 #: src/ServerSocket.cpp:575
 #, c-format
@@ -6028,11 +6028,11 @@ msgstr "매우 많은 카드 연결"
 
 #: src/DataToText.cpp:75
 msgid "Connection Error"
-msgstr "연결 에러"
+msgstr "연결 오류"
 
 #: src/DataToText.cpp:76
 msgid "Remote Queue Full"
-msgstr "원격 큐가 참"
+msgstr "원격 대기열가 참"
 
 #: src/DataToText.cpp:106
 msgid "Old MLDonkey"
@@ -6184,7 +6184,7 @@ msgstr "알려진 공유 파일 %i가 발견되었습니다. 알수없는 %i"
 #: src/SharedFileList.cpp:411
 #, c-format
 msgid "ERROR! Attempted to share %s"
-msgstr "에러! %s 공유를 시도하였습니다."
+msgstr "오류! %s 공유를 시도하였습니다."
 
 #: src/DownloadQueue.cpp:157
 msgid "No part files found"
@@ -6218,7 +6218,7 @@ msgstr "이미 당신은 %s 파일을 내려받으려고 하고있습니다."
 #: src/DownloadQueue.cpp:1221
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
-msgstr "유효하지 않은 ed2k링크입니다. 에러: %s"
+msgstr "유효하지 않은 ed2k링크입니다. 오류: %s"
 
 #: src/OScopeCtrl.cpp:287
 #, c-format
@@ -6235,7 +6235,7 @@ msgstr "올려주기 보기"
 
 #: src/ClientListCtrl.cpp:219
 msgid "Show Queue"
-msgstr "큐 보기"
+msgstr "대기열 보기"
 
 #: src/ClientListCtrl.cpp:220
 msgid "Show Clients"
@@ -6274,7 +6274,7 @@ msgstr "원격 상태"
 #: src/ClientListCtrl.cpp:629
 #, c-format
 msgid "QR: %u"
-msgstr "큐: %u"
+msgstr "대기열: %u"
 
 #: src/ClientListCtrl.cpp:754
 msgid "File Priority"
@@ -6294,7 +6294,7 @@ msgstr "보인 마지막"
 
 #: src/ClientListCtrl.cpp:759
 msgid "Entered Queue"
-msgstr "큐 입력"
+msgstr "대기열 입력"
 
 #: src/ClientListCtrl.cpp:928
 msgid "Upload Status"
@@ -6342,7 +6342,8 @@ msgstr "server.met파일을 여는데 실패!"
 #: src/ServerList.cpp:125
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr "Server.met 파일이 손상됨, 유효하지 않는 버전정보를 발견함: 0x%x, size %i"
+msgstr ""
+"Server.met 파일이 손상됨, 유효하지 않는 버전정보를 발견함: 0x%x, size %i"
 
 #: src/ServerList.cpp:180
 #, c-format
@@ -6464,19 +6465,19 @@ msgstr "에어: 디스크 공간 부족"
 
 #: src/PartFileConvert.cpp:648
 msgid "Error: Partmet not found"
-msgstr "에러: 부분메트가 발견되지 않음"
+msgstr "오류: 부분메트가 발견되지 않음"
 
 #: src/PartFileConvert.cpp:649
 msgid "Error: IO error!"
-msgstr "에러: 입출력장치 에러!"
+msgstr "오류: 입출력장치 오류!"
 
 #: src/PartFileConvert.cpp:650
 msgid "Error: Failed!"
-msgstr "에러: 실패함!"
+msgstr "오류: 실패함!"
 
 #: src/PartFileConvert.cpp:651
 msgid "Queued"
-msgstr "큐화함"
+msgstr "대기열화함"
 
 #: src/PartFileConvert.cpp:652
 msgid "Already downloading"
@@ -6704,7 +6705,7 @@ msgstr "사용자 %s(%u)는 %s 폴더의 공유파일 목록을 보냅니다."
 #: src/ClientTCPSocket.cpp:1023
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr "사용자%s(%u)는 전송중인 공유파일 목록을 마쳤습니다."
+msgstr "사용자%s(%u)는 공유파일 목록 전송을 마쳤습니다."
 
 #: src/ClientTCPSocket.cpp:1028
 #, c-format
@@ -6726,7 +6727,7 @@ msgstr "원격 어뮬은 연결이 끊겼습니다. 지금 종료합니다."
 
 #: src/amule-remote-gui.cpp:168
 msgid "Error: connection lost"
-msgstr "에러: 연결 끊김"
+msgstr "오류: 연결 끊김"
 
 #: src/amule-remote-gui.cpp:742
 #, c-format
