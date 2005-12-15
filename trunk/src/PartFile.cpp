@@ -2308,7 +2308,7 @@ public:
 	 * @param owner The partfile owning the download.
 	 */
 	CCompletingThread(wxString filename, wxString metPath, uint8 category, void* owner)
-		: m_filename(CleanupFilename(filename)),
+		: m_filename(filename),
 		  m_metPath(metPath),
 		  m_category(category),
 		  m_owner(owner),
@@ -2327,9 +2327,25 @@ private:
 			targetPath = thePrefs::GetIncomingDir();
 		}	
 		
-		wxString newName = JoinPaths(targetPath, m_filename);
+		// Check if the target directory is on a Fat32 FS, since that needs extra cleanups.
+		bool isFat32 = (CheckFileSystem(targetPath) == FS_IsFAT32);
+		
+		wxString oldName = m_filename;
+		m_filename = CleanupFilename(m_filename, true, isFat32).Strip(wxString::both);
+
+		// Avoid empty filenames ...
+		if (m_filename.IsEmpty()) {
+			m_filename = wxT("Unknown");
+		}
+
+		if (m_filename != oldName) {
+			AddLogLineM(true, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
+				% oldName % m_filename);
+		}
+		
 		
 		// Avoid saving to an already existing filename
+		wxString newName = JoinPaths(targetPath, m_filename);
 		if (CheckFileExists(newName)) {
 			wxString prefix  = wxFileName(m_filename).GetName();
 			wxString postfix = m_filename.Mid(prefix.Length());
