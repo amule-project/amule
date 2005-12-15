@@ -556,12 +556,18 @@ void CamuleDlg::AddLogLine(bool addtostatusbar, const wxString& line)
 			// If it's empty we just write a blank line with no timestamp.
 			ct->AppendText( wxT("\n") );
 		} else {
+			// Bold critical log-lines
+			wxTextAttr style = ct->GetDefaultStyle();
+			wxFont font = style.GetFont();
+			font.SetWeight(addtostatusbar ? wxFONTWEIGHT_BOLD : wxFONTWEIGHT_NORMAL);
+			style.SetFont(font);
+			ct->SetDefaultStyle(style);
+			
 			// Split multi-line messages into individual lines
 			wxStringTokenizer tokens( bufferline, wxT("\n") );		
-		
 			while ( tokens.HasMoreTokens() ) {
-				ct->AppendText( stamp + tokens.GetNextToken() + wxT("\n") );	
-			} 
+				ct->AppendText( stamp + tokens.GetNextToken() + wxT("\n") );
+			}
 		}
 			
 		ct->ShowPosition( ct->GetLastPosition() - 1 );
