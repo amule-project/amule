@@ -141,7 +141,7 @@ void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 	// These are the IDs of the search-fields 
 	int textfields[] = { ID_NODE_IP1, ID_NODE_IP2, ID_NODE_IP3, ID_NODE_IP4, ID_NODE_PORT};
 
-	bool enable = false;
+	bool enable = true;
 	for ( uint16 i = 0; i < itemsof(textfields); i++ ) {
 		enable &= !CastChild(textfields[i], wxTextCtrl)->GetValue().IsEmpty();
 	}
@@ -156,15 +156,16 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
 		#warning TODO EC
 		#ifndef CLIENT_GUI
-		// Connect to node
+		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP4 ))->GetValue() +
 					wxT(".") + 
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP3 ))->GetValue() +
 					wxT(".") + 
-					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() +
+					((wxTextCtrl*)FindWindowById( ID_NODE_IP2 ))->GetValue() +
 					wxT(".") + 
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
+		
 		if (ip == 0) {
 			wxMessageBox(_("Invalid ip to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 		} else {
