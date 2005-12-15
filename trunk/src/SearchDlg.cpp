@@ -506,11 +506,9 @@ void CSearchDlg::StartNewSearch()
 			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability);
 			if (!error.IsEmpty()) {
 				// Search failed / Remote in progress
-				wxMessageDialog* dlg = new wxMessageDialog(this, error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION);
-				dlg->ShowModal();
-				delete dlg;
+				wxMessageBox(error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION,this);
 				FindWindow(IDC_STARTS)->Enable();
-				FindWindow(IDC_SDOWNLOAD)->Enable();
+				FindWindow(IDC_SDOWNLOAD)->Disable();
 				FindWindow(IDC_CANCELS)->Disable();
 				return;
 			}
