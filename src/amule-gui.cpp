@@ -27,10 +27,6 @@
 #include <wx/gauge.h>
 #include <wx/textctrl.h>
 
-#ifdef __WXGTK__
-	#include <X11/Xlib.h>		// Needed for XParseGeometry
-#endif
-
 #ifdef HAVE_CONFIG_H
 	#include "config.h"			//   VERSION
 #endif
@@ -180,19 +176,15 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 
 	if ( geometry_enabled ) {
 		// I plan on moving this to a seperate function, as it just clutters up OnInit()
-#ifdef __WXGTK__
-		// Nothing we can do against this unicode2char either.
-		XParseGeometry(unicode2char(geom_string), &geometry_x, &geometry_y, &geometry_width, &geometry_height);
-		geometry_enabled = true;
-#elif defined (__WXMSW__)
 		/*
 		This implementation might work with mac, provided that the
 		SetSize() function works as expected.
 		*/
 
 		// Remove possible prefix
-		if ( geom_string.GetChar(0) == '=' )
+		if ( geom_string.GetChar(0) == '=' ) {
 			geom_string.Remove( 0, 1 );
+		}
 
 		// Stupid ToLong functions forces me to use longs =(
 		long width = geometry_width;
@@ -239,9 +231,6 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 				}
 			}
 		}
-#else
-		#warning Need to parse the geometry for non-GTK/WIN platforms
-#endif
 	}
 	
 	// Should default/last-used position be overridden?
