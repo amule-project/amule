@@ -33,6 +33,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <errno.h>
 #include <algorithm>
 #include <cctype>
 
@@ -496,4 +497,42 @@ UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
 			return UnpackResult(false, type);
 	}
 }
+
+
+FSCheckResult CheckFileSystem(const wxString& path) 
+{
+	wxCHECK_MSG(path.Length(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
+
+#ifdef __WXMSW__
+	return FS_IsFAT32;
+#else	
+	// This is an invalid filename on FAT32
+	wxString fullName = JoinPaths(path, wxT(":"));
+
+	// Try to open the file, without overwriting existing files.
+	int fd = open(fullName.fn_str(), O_WRONLY | O_CREAT | O_EXCL);
+	if (fd != -1) {
+		// Success, the file-system cant be FAT32
+		close(fd);
+		unlink(fullName.fn_str());
+		
+		return FS_NotFAT32;
+	}
+
+	switch (errno) {
+		case EINVAL:
+			// File-name was invalid, file-system is FAT32
+			return FS_IsFAT32;
+			
+		case EEXIST:
+			// File already exists, file-system cant be FAT32
+			return FS_NotFAT32;
+
+		default:
+			// Something else failed, couldn't check
+			return FS_Failed;
+	}
+#endif
+}
+
 

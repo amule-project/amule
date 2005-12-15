@@ -122,4 +122,23 @@ typedef std::pair<bool, EFileType> UnpackResult;
  */
 UnpackResult UnpackArchive(const wxString& file, const wxChar* files[]);
 
+
+enum FSCheckResult {
+	//! The file-system is FAT32, so certain chars have to be stripped.
+	FS_IsFAT32,
+	//! The file-system is not FAT32.
+	FS_NotFAT32,
+	//! Failed to check the specified file-system.
+	FS_Failed
+};
+
+
+/**
+ * Checks if the specified path is on a FAT32 file-system.
+ *
+ * Note that CheckFileSystem always returns FS_IsFAT32 on wxMSW.
+ */
+FSCheckResult CheckFileSystem(const wxString& path);
+
+
 #endif
