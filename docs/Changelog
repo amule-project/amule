@@ -7,7 +7,7 @@ Version 2.1.0 - The "???" version
 
 	Gerd78:
 		* Fix linkage with static wx libraries.
-		* 
+		* Fix aMule.spec files 
 
 	GonoszTopi:
 		* Fixed a small GUI glitch
@@ -238,6 +238,10 @@ Version 2.1.0 - The "???" version
 
 	shakraw:
 		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
+	
+	stefanero:
+		* Fixed cas,xas and wxCas infos for Kad when only connected to
+		Kad
 
 	thedude0001:
 		* Added CVS snapshot date to frame title.
@@ -944,6 +948,9 @@ Version 2.1.0 - The "???" version
 		  was causing a specific crash.
 		* Imported the UploadBandwidthThrottler from eMule, which should help
 		  ensure that upload-limits are more closely followed.
+
+	Special Thanks To:
+		* All the translaters who did such a great and fast job.	
 
 --------------------------------------------------------------------------------
 

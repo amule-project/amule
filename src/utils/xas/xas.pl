@@ -10,6 +10,7 @@ IRC::print "\0035 (#amule @ irc.freenode.net)\003";
 # command that we use
 IRC::add_command_handler("xas","xas");
 
+#16.12.2005 - stefanero : some kad cleanups
 #06.05.2005 - niet      : file handle change
 #12.10.2004 - bisley    : added session/total ratios
 #16.06.2004 - niet      : added support for memory usage and binary name
