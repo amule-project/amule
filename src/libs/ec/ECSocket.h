@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2004-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2004-2005 Angel Vidal Veiga ( kry@users.sourceforge.net )
-// Copyright (c) 2005 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2005 Dï¿½vai Tamï¿½s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -32,25 +32,90 @@
 #include <wx/thread.h>		// Needed for MT-Safe API.
 #include "Types.h"
 
-#include <zlib.h>			// Needed for packet (de)compression
+#include "zlib.h"			// Needed for packet (de)compression
 
-// By default we use event driven sockets.
-#ifndef ECSOCKET_USE_EVENTS
-#	define ECSOCKET_USE_EVENTS	1
-#endif
+class CECPacket;
 
-
-#if ECSOCKET_USE_EVENTS
 #include <deque>			// Needed for std::deque
 #include <set>				// Needed for std::set
 #include <utility>			// Needed for std::pair
 
-class CQueuedData;
+//void DumpMemToStr(const void *buff, int n);
 
-#endif /* ECSOCKET_USE_EVENTS */
+class CQueuedData {
+		unsigned char *m_data, *m_rd_ptr, *m_wr_ptr;
+		size_t m_len;
+	public:
+		CQueuedData(size_t len)
+		{
+			m_data = new unsigned char [len];
+			m_rd_ptr = m_wr_ptr = m_data;
+			m_len = len;
+		}
+		
+		~CQueuedData()
+		{
+			delete [] m_data;
+		}
+		
+		void Rewind()
+		{
+			m_rd_ptr = m_wr_ptr = m_data;
+		}
+		
+		void Write(const void *data, size_t len)
+		{
+			memcpy(m_wr_ptr, data, len);
+			m_wr_ptr += len;
+		}
 
+		void WriteAt(const void *data, size_t len, size_t off)
+		{
+			memcpy(m_data + off, data, len);
+		}
 
-class CECPacket;
+		void Read(void *data, size_t len)
+		{
+			memcpy(data, m_rd_ptr, len);
+			m_rd_ptr += len;
+		}
+
+		/*
+		 * Pass pointers to zlib. From now on, no Read() calls are allowed
+		 */
+		void ToZlib(z_stream &m_z)
+		{
+			m_z.avail_in = GetUnreadDataLength();
+			m_z.next_in = m_rd_ptr;
+		}
+		
+		void WriteToSocket(wxSocketBase *sock)
+		{
+			sock->Write(m_rd_ptr, m_wr_ptr - m_rd_ptr);
+			m_rd_ptr += sock->LastCount();
+		}
+
+		void ReadFromSocket(wxSocketBase *sock, int len)
+		{
+			sock->Read(m_wr_ptr, len);
+			m_wr_ptr += sock->LastCount();
+		}
+		
+		size_t ReadFromSocketAll(wxSocketBase *sock, size_t len);
+		
+		size_t GetLength()	{ return m_len; }
+		size_t GetDataLength()	{ return m_wr_ptr - m_data; }
+		size_t GetRemLength()	{ return m_len - GetDataLength(); }
+		size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
+		
+		//
+		// Dump mem in dword format
+//		void DumpMem()
+//		{
+//			DumpMemToStr(m_data, GetDataLength());
+//			printf("RD ptr @ offset %04x\n", m_rd_ptr - m_data);
+//		}
+};
 
 
 /*! \class CECSocket
@@ -66,32 +131,10 @@ class CECSocket : public wxSocketClient {
 	friend class CECSocketHandler;
 
  public:
-	CECSocket();
+	CECSocket(bool use_events);
 	virtual ~CECSocket();
 
-#if !ECSOCKET_USE_EVENTS
-	// TODO: Get rid of this
-	bool	WaitOnConnect(long seconds = -1, long milliseconds = 0)
-		{
-			if (wxSocketClient::WaitOnConnect(seconds, milliseconds)) {
-				OnConnect();
-				return true;
-			}
-			return false;
-		}
-#endif
-
-	 /**
-	 * Close the socket.
-	 *
-	 * This is just an extension to wxSocketBase::Close(),
-	 * to call OnClose().
-	 */
-	bool	Close()
-		{
-			OnClose();
-			return wxSocketClient::Close();
-		}
+	bool Connect(wxSockAddress& address);
 
 	/**
 	 * Destroy socket.
@@ -105,15 +148,7 @@ class CECSocket : public wxSocketClient {
 	 * @param raiseLostEvent When \c true, OnLost() will be called for
 	 * the first Destroy() call on the socket.
 	 */
-	void	Destroy(bool raiseLostEvent = false);
-
-	/**
-	 * Check whether the socket is marked to be deleted.
-	 *
-	 * @return \c true if Destroy() was called on the socket, but the
-	 * socket isn't yet deleted.
-	 */
-	bool	IsDestroying() { return m_destroying; }
+	void Destroy();
 
 	/**
 	 * Sends an EC packet and returns immediately.
@@ -126,7 +161,7 @@ class CECSocket : public wxSocketClient {
 	 * @note It's the caller's responsibilty to \c delete
 	 * the \e packet.
 	 */
-	void		SendPacket(const CECPacket *packet);
+	void SendPacket(const CECPacket *packet);
 
 	/**
 	 * Sends an EC packet and waits for a reply.
@@ -150,8 +185,6 @@ class CECSocket : public wxSocketClient {
 	 */
 	const CECPacket *SendRecvPacket(const CECPacket *request);
 
-#if ECSOCKET_USE_EVENTS
-
 	/**
 	 * Event handler function called when a new packet is received.
 	 *
@@ -167,16 +200,7 @@ class CECSocket : public wxSocketClient {
 	 * @note This function won't be called for packets received via the
 	 * SendRecvPacket() function.
 	 */
-	virtual const CECPacket *OnPacketReceived(const CECPacket *WXUNUSED(packet)) { return NULL; }
-
-#endif /* ECSOCKET_USE_EVENTS */
-
-	/**
-	 * Get the last error code.
-	 *
-	 * @return The error code of the last error happened.
-	 */
-	wxSocketError	GetLastError() { return m_lastError; }
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
 
 	/**
 	 * Get a message describing the error.
@@ -187,15 +211,6 @@ class CECSocket : public wxSocketClient {
 	wxString	GetErrorMsg(wxSocketError error);
 
 	/**
-	 * Event handler for connection events.
-	 *
-	 * This function is called when a connection attempt succeeds. When CECSocket
-	 * is compiled with ECSOCKET_USE_EVENTS == 0, WaitOnConnect() should be called
-	 * for this to work.
-	 */
-	virtual void	OnConnect() {}
-
-	/**
 	 * Error handler.
 	 *
 	 * This function is called when an error occurs. Use GetLastError() and
@@ -204,15 +219,8 @@ class CECSocket : public wxSocketClient {
 	 * The default error handler prints out an error message in debug builds,
 	 * and destroys the socket.
 	 */
-	virtual void	OnError();
+	virtual void OnError();
 
-	/**
-	 * Close event handler.
-	 *
-	 * This function is called when the connection is closed (i.e. Close() was
-	 * called). Use this to clean up anything you did in OnConnect().
-	 */
-	virtual void	OnClose() {};
 
 	/**
 	 * Socket lost event handler.
@@ -222,19 +230,24 @@ class CECSocket : public wxSocketClient {
 	 *
 	 * The default handler destroys the socket.
 	 */
-	virtual void	OnLost();
+	virtual void OnLost();
+
+	/**
+	 * Event handler for connection events.
+	 *
+	 * This function is called when a connection attempt succeeds. When CECSocket
+	 * is compiled with ECSOCKET_USE_EVENTS == 0, WaitOnConnect() should be called
+	 * for this to work.
+	 */
+	virtual void OnConnect();
+
+	void OnInput();
+	void OnOutput();
 
  private:
-#if ECSOCKET_USE_EVENTS
-	typedef std::pair<const CECPacket *, uint32>	packet_desc;
 
-	// Packet I/O
-	void	ReadPacket();
-	void	WritePacket(packet_desc);
-#else
 	const CECPacket *ReadPacket();
-	void	WritePacket(const CECPacket *packet);
-#endif
+	void WritePacket(const CECPacket *packet);
 
 	// These 4 methods are to be used by CECPacket & CECTag
 	bool	ReadNumber(void *buffer, size_t len);
@@ -245,71 +258,30 @@ class CECSocket : public wxSocketClient {
 
 	// Internal stuff
 	bool	FlushBuffers();
-	void	InitBuffers();
 
-	uint32	ReadFlags();
-	void	WriteFlags(uint32);		
-
-	size_t	ReadBufferFromSocket(void *buffer, size_t required_len, size_t max_len);
+	size_t	ReadBufferFromSocket(void *buffer, size_t len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
 
-	void	CheckDestroy();
-
-	void	PushBack(const void * data, size_t len);
-
-	wxSocketError	m_lastError;
-	bool		m_destroying;
-	bool		m_isWorking;
-
-#if ECSOCKET_USE_EVENTS
-
-	// Event handlers
-	void	DoConnect()	{ m_canSend = true; OnConnect(); }
-	void	DoInput();
-	void	DoOutput();
-	void	DoLost()	{ m_canSend = false; OnLost(); }
-	void	DoSendPacket();
-	void	DoReceivePacket();
-	void	HandlePacket();
-
-	bool	CanReadNBytes(size_t len);
-
-	uint32	m_id;
-
-	wxCRIT_SECT_DECLARE_MEMBER(m_cs_packet_out);
-	wxCRIT_SECT_DECLARE_MEMBER(m_cs_id_list);
-	wxCRIT_SECT_DECLARE_MEMBER(m_cs_waited_packets);
-
-	// Input related data
-	bool	m_canUseIDs;
-	std::deque<CQueuedData*>	m_input_queue;
-	std::deque<packet_desc>		m_input_packet_queue;
-
-	std::set<uint32>		m_waited_ids;
-	std::set<uint32>		m_abandoned_ids;
-	std::deque<packet_desc>		m_waited_packets;
-
+	bool m_use_events;
+	
 	// Output related data
-	bool	m_canSend;
-	std::deque<CQueuedData*>	m_output_queue;
-	std::deque<packet_desc>		m_output_packet_queue;
+	std::deque<CQueuedData*> m_output_queue;
 
-#endif /* ECSOCKET_USE_EVENTS */
-
-	// Transfer specific data
-#if wxUSE_THREADS
-	bool	m_transfer_in_progress;
-	wxMutex	m_transfer_lock;
-#endif
-	// Common between all transfers
-	bool			m_firsttransfer;
-	uint32			m_my_flags;
-	uint32			m_accepts;
-	unsigned char *		m_in_ptr;
-	unsigned char *		m_out_ptr;
+	int m_bytes_needed;
+	bool m_in_header;
+	
+	// zlib (deflation) buffers
+	unsigned char *m_in_ptr, *m_out_ptr;
+	
+	CQueuedData *m_curr_rx_data, *m_curr_tx_data;
+	
 	// This transfer only
-	uint32			m_used_flags;
-	z_stream		m_z;
+	uint32 m_rx_flags, m_tx_flags;
+	uint32 m_my_flags;
+	
+	uint32 m_curr_packet_len;
+	
+	z_stream m_z;
 };
 
 #endif // ECSOCKET_H

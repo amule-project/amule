@@ -73,7 +73,7 @@ class CECServerSocket : public CECSocket {
 	CObjTagMap		m_obj_tagmap;
 };
 
-CECServerSocket::CECServerSocket()
+CECServerSocket::CECServerSocket() : CECSocket(true)
 {
 	m_authenticated = false;
 }

@@ -27,13 +27,41 @@
 #define REMOTECONNECT_H
 
 #include <wx/string.h>
+#include <list>
 
 #include "ECSocket.h"
+#include "ECPacket.h"		// Needed for CECPacket
 
-class CECPacket;
+class CECPacketHandlerBase {
+	public:
+		virtual ~CECPacketHandlerBase() { }
+		virtual void HandlePacket(const CECPacket *) = 0;
+};
+
+class CECLoginPacket : public CECPacket {
+	public:
+		CECLoginPacket(const wxString &pass,
+						const wxString& client, const wxString& version);
+};
 
 class CRemoteConnect : public CECSocket {
+	// State enums for connection SM ( client side ) in case of async processing
+	enum { 
+		EC_INIT,         // initial state
+		EC_CONNECT_SENT, // socket connect request sent
+		EC_REQ_SENT,     // sent auth request to core, waiting for reply
+		EC_OK,           // core replyed "ok"
+		EC_FAIL          // core replyed "bad"
+	} m_ec_state;
+	
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	
+	bool ConnectionEstablished(const CECPacket *reply);
 
+	// fifo of handlers for no-the-air requests. all EC consept is working in fcfs
+	// order, so it is ok to assume that order of replies is same as order of requests
+	std::list<CECPacketHandlerBase *> m_req_fifo;
+	int m_req_count, m_req_fifo_thr;
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);
@@ -42,15 +70,18 @@ public:
 						const wxString& login, const wxString &pass,
 						const wxString& client, const wxString& version);
 
-	bool ConnectionEstablished();
-
-	bool Busy() { return m_busy; }
-
 	const wxString& GetServerReply() const { return server_reply; }
 
+	bool RequestFifoFull()
+	{
+		return m_req_count > m_req_fifo_thr;
+	}
+	
 	virtual void OnConnect(); // To override connection events
 	virtual void OnClose(); // To override close events
 
+	void SendRequest(CECPacketHandlerBase *handler, CECPacket *request);
+	void SendPacket(CECPacket *request);
 	
 	/********************* EC API ********************/
 	
@@ -82,7 +113,6 @@ public:
 private:
 
 	wxEvtHandler* notifier;
-	bool m_busy;
 	wxString ConnectionPassword;
 	wxString server_reply;
 	wxString m_client;

@@ -124,12 +124,15 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 	evt.Skip();
 }
 
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE);
+
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
 	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnPollTimer)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
+	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
 
 END_EVENT_TABLE()
 
@@ -147,7 +150,7 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
-	if ( connect->Busy() ) {
+	if ( connect->RequestFifoFull() ) {
 		return;
 	}
 	// always query connection state and stats
@@ -155,22 +158,13 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 
 	{
 		CECPacket stats_req(EC_OP_STAT_REQ);
-		auto_ptr<const CECPacket> stats(connect->SendRecvPacket(&stats_req));
-		if ( !stats.get() ) {
-			poll_timer->Stop();
-			wxMessageBox(_("Connection to remote aMule is lost. Exiting now."),
-				_("Error: connection lost"), wxICON_ERROR);
-			ExitMainLoop();
-			return;
-		}
-		theStats::UpdateStats(stats.get());
+		connect->SendRequest(&m_stats_updater, &stats_req);
 	}
 	
 	if ( amuledlg->sharedfileswnd->IsShown() ) {
 		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 	} else if ( amuledlg->serverwnd->IsShown() ) {
 		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-		//serverlist->ReloadControl();
 	} else if ( amuledlg->transferwnd->IsShown() ) {
 		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
 		switch(amuledlg->transferwnd->clientlistctrl->GetListView()) {
@@ -191,7 +185,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 		}
 	}
-	//amuledlg->ShowTransferRate();
+	amuledlg->ShowTransferRate();
 	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
 }
 
@@ -263,21 +257,18 @@ bool CamuleRemoteGuiApp::CryptoAvailable() const
 bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 	
 	dialog = new CEConnectDlg;
-	bool onprogress = false;
-	do {
-		if ( dialog->ShowModal() != wxID_OK ) {
-			dialog->Destroy();
+
+	if ( dialog->ShowModal() != wxID_OK ) {
+		dialog->Destroy();
+		return false;
+	}
+		printf("Connecting...\n");
+		if ( !connect->ConnectToCore(dialog->Host(), dialog->Port(),
+							dialog->Login(), dialog->PassHash(),
+							wxT("amule-remote"), wxT("0x0001")) ) {
+			wxMessageBox(_("Connection failed "),_("Error"),wxOK);
 			return false;
 		}
-		printf("Connecting...\n");
-		onprogress = connect->ConnectToCore(
-			dialog->Host(), dialog->Port(), 
-			dialog->Login(), dialog->PassHash(),
-			wxT("amule-remote"), wxT("0x0001"));
-		if (!onprogress) {
-			wxMessageBox(connect->GetServerReply(),_("Error"),wxOK);
-		}
-	} while ( !onprogress );
 
 	return true;	
 }
@@ -287,12 +278,17 @@ void CamuleRemoteGuiApp::OnECConnection(wxEvent& event) {
 	printf("Remote GUI EC event handler\n");
 	AddLogLineM(true,evt.GetServerReply());
 	if (evt.GetResult() == true) {
-		// Connected
-		Startup();
+		// Connected - go to next init step
+		glob_prefs->LoadRemote();
 	} else {
 		printf("Going down\n");
 		ExitMainLoop();
 	}
+}
+
+void CamuleRemoteGuiApp::OnECInitDone(wxEvent& )
+{
+	Startup();
 }
 
 void CamuleRemoteGuiApp::Startup() {
@@ -303,8 +299,6 @@ void CamuleRemoteGuiApp::Startup() {
 		wxConfig::Get()->Write(wxT("/EC/Password" ), dialog->PassHash());
 	}
 	dialog->Destroy();
-	
-	glob_prefs->LoadRemote();
 	
 	m_ConnState = 0;
 
@@ -343,7 +337,7 @@ void CamuleRemoteGuiApp::Startup() {
 	InitGui(0, geom_string);
 
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-	serverlist->ReloadControl();
+
 	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
 
 	// Start the Poll Timer
@@ -544,24 +538,13 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 	m_exchange_recv_selected_prefs = m_exchange_send_selected_prefs | EC_PREFS_CATEGORIES;
 }
 
-bool CPreferencesRem::LoadRemote()
+void CPreferencesRem::HandlePacket(const CECPacket *packet)
 {
-	//
-	// override local settings with remote
-	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_UPDATE);
+	((CEC_Prefs_Packet *)packet)->Apply();
 
-	// bring categories too
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
-	auto_ptr<const CECPacket> prefs(m_conn->SendRecvPacket(&req));
-	
-	if ( !prefs.get() ) {
-		return false;
-	}
-	((CEC_Prefs_Packet *)prefs.get())->Apply();
-
-	if ( prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
-		for (int i = 0; i < prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
-			const CECTag *cat_tag = prefs->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
+	if ( packet->GetTagByName(EC_TAG_PREFS_CATEGORIES) != 0 ) {
+		for (int i = 0; i < packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagCount(); i++) {
+			const CECTag *cat_tag = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
 			cat->incomingpath = cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData();
@@ -579,6 +562,21 @@ bool CPreferencesRem::LoadRemote()
 		cat->prio = PR_NORMAL;
 		theApp.glob_prefs->AddCat(cat);
 	}
+	wxECInitDoneEvent event;
+	theApp.AddPendingEvent(event);
+	
+}
+
+bool CPreferencesRem::LoadRemote()
+{
+	//
+	// override local settings with remote
+	CECPacket req(EC_OP_GET_PREFERENCES, EC_DETAIL_UPDATE);
+
+	// bring categories too
+	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, m_exchange_recv_selected_prefs));
+	
+	m_conn->SendRequest(this, &req);
 	
 	return true;
 }
@@ -639,6 +637,7 @@ void CPreferencesRem::RemoveCat(uint8 cat)
 //
 CServerConnectRem::CServerConnectRem(CRemoteConnect *conn)
 {
+	m_CurrServer = 0;
 	m_Conn = conn;
 }
 
@@ -667,13 +666,16 @@ void CServerConnectRem::ConnectToServer(CServer *server)
 bool CServerConnectRem::ReQuery()
 {
 	CECPacket stat_req(EC_OP_STAT_REQ);
-	const CECPacket *stats = m_Conn->SendRecvPacket(&stat_req);
-	if ( !stats ) {
-		return false;
-	}
-	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)stats->GetTagByName(EC_TAG_CONNSTATE);
+	m_Conn->SendRequest(this, &stat_req);
+
+	return true;
+}
+	
+void CServerConnectRem::HandlePacket(const CECPacket *packet)
+{
+	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)packet->GetTagByName(EC_TAG_CONNSTATE);
     if (!tag) {
-            return false;
+		return ;
     }
 
 	theApp.m_ConnState = 0;
@@ -683,7 +685,7 @@ bool CServerConnectRem::ReQuery()
 	if (tag->IsConnectedED2K()) {
 		CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
 		if ( !srvtag ) {
-			return false;
+			return ;
 		}
 		server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
 		if ( m_CurrServer && (server != m_CurrServer) ) {
@@ -712,7 +714,6 @@ bool CServerConnectRem::ReQuery()
 	}
 	
 	theApp.amuledlg->ShowConnectionState();
-	return true;
 }
 
 /*
@@ -720,6 +721,12 @@ bool CServerConnectRem::ReQuery()
  */
 CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
 {
+}
+
+void CServerListRem::HandlePacket(const CECPacket *packet)
+{
+	CRemoteContainer<CServer, uint32, CEC_Server_Tag>::HandlePacket(packet);
+	ReloadControl();
 }
 
 void CServerListRem::UpdateServerMetFromURL(wxString WXUNUSED(url))
@@ -1418,6 +1425,20 @@ void CSearchListRem::RemoveResults(long nSearchID)
         m_Results.erase(it);
 	}
 }
+
+void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
+{
+	theStats::UpdateStats(packet);
+}
+
+/*
+void CStatsUpdaterRem::ReQuery()
+{
+	//		CECPacket stats_req(EC_OP_STAT_REQ);
+//		auto_ptr<const CECPacket> stats(connect->SendRecvPacket(&stats_req));
+	
+}
+*/
 
 bool CUpDownClient::IsBanned() const
 {

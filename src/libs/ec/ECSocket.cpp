@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2004-2005 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2004-2005 Angel Vidal Veiga ( kry@users.sourceforge.net )
-// Copyright (c) 2005 Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (c) 2005 Dï¿½vai Tamï¿½s ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -38,20 +38,10 @@
 
 #include <wx/app.h>		// Needed for wxTheApp
 
-#if ECSOCKET_USE_EVENTS
-#	include <wx/event.h>		// Needed for wxEvtHandler
-#	include <wx/debug.h>		// Needed for wxCHECK_RET
-#	include <wx/stopwatch.h>	// Needed for wxStopWatch
-#	include <wx/utils.h>		// Needed for wxMilliSleep
-#endif
+#include "OtherFunctions.h"
+#include "common/StringFunctions.h"	// Needed for unicode2char()
 
-#include <wx/apptrait.h>	// Needed for wxAppTraits
-
-#ifdef __DEBUG__
-#	include "common/StringFunctions.h"	// Needed for unicode2char()
-#endif
-
-#define EC_SOCKET_BUFFER_SIZE	32768
+#define EC_SOCKET_BUFFER_SIZE	2048
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
 
@@ -155,8 +145,29 @@ int utf8_mb_remain(char c)
 	return i;
 }
 
-
-#if ECSOCKET_USE_EVENTS
+size_t CQueuedData::ReadFromSocketAll(wxSocketBase *sock, size_t len)
+{
+	size_t read_rem = len;
+	//
+	// We get here when socket is truly blocking
+	//
+	do {
+		//
+		// Give socket a 10 sec chance to recv more data.
+		if ( !sock->WaitForRead(10, 0) ) {
+			break;
+		}
+		sock->Read(m_wr_ptr, read_rem);
+		m_wr_ptr += sock->LastCount();
+		read_rem -= sock->LastCount();
+		if (sock->Error()) {
+			if (sock->LastError() != wxSOCKET_WOULDBLOCK) {
+				break;
+			}
+		}
+	} while ( read_rem );
+	return len - read_rem;
+}
 
 //-------------------- CECSocketHandler --------------------
 
@@ -186,135 +197,60 @@ void CECSocketHandler::SocketHandler(wxSocketEvent& event)
         wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
 
         switch(event.GetSocketEvent()) {
-                case wxSOCKET_LOST:
-                        socket->DoLost();
-                        break;
-                case wxSOCKET_INPUT:
-                        socket->DoInput();
-                        break;
-                case wxSOCKET_OUTPUT:
-                        socket->DoOutput();
-                        break;
-                case wxSOCKET_CONNECTION:
-                        socket->DoConnect();
-                        break;
-		case ECSOCKET_SENDPACKET:
-			socket->DoSendPacket();
-			break;
-		case ECSOCKET_RECEIVEDPACKET:
-			socket->HandlePacket();
-			break;
-		case ECSOCKET_RECEIVEDDATA:
-			socket->DoReceivePacket();
-			break;
-                default:
-                        // Nothing should arrive here...
-                        wxFAIL;
-                        break;
+        case wxSOCKET_LOST:
+            socket->OnLost();
+            break;
+        case wxSOCKET_INPUT:
+            socket->OnInput();
+            break;
+        case wxSOCKET_OUTPUT:
+            socket->OnOutput();
+            break;
+        case wxSOCKET_CONNECTION:
+            socket->OnConnect();
+            break;
+            
+        default:
+            // Nothing should arrive here...
+            wxFAIL;
+            break;
         }
 }
 
 static CECSocketHandler	g_ECSocketHandler;
 
 
-//-------------------- CQueuedData --------------------
-
-class CQueuedData {
-      public:
-	CQueuedData(const void *data, size_t len);
-	~CQueuedData()			{ delete [] m_data; }
-	void	Advance(size_t len)
-	{
-		if (len > m_len) len = m_len;
-		m_current += len;
-		m_len -= len;
-	}
-	const void *	GetData()	{ return m_current; }
-	size_t		GetLength()	{ return m_len; }
-      private:
-	const char *	m_data;
-	const char *	m_current;
-	size_t		m_len;
-};
-
-CQueuedData::CQueuedData(const void *data, size_t len)
-{
-	m_data = new char [len];
-	m_current = m_data;
-	m_len = len;
-	memcpy((void *)m_data, data, len);
-}
-
-
-//-------------------- CECSocket --------------------
-
-#define POST_INPUT_EVENT()                                \
-	{                                                 \
-		wxSocketEvent event(EC_SOCKET_HANDLER);   \
-		event.m_event = wxSOCKET_INPUT;           \
-		event.m_clientData = GetClientData();     \
-		event.SetEventObject(this);               \
-		g_ECSocketHandler.AddPendingEvent(event); \
-	}
-
-#if wxUSE_THREADS
-#	define PROCESS_EVENTS()                           \
-	{                                                 \
-		if ( wxThread::IsMain() ) {               \
-                        POST_INPUT_EVENT();               \
-			wxTheApp->ProcessPendingEvents(); \
-		} else                                    \
-			wxThread::Yield();                \
-	}
-#else
-#	define PROCESS_EVENTS()                   \
-	{                                         \
-		POST_INPUT_EVENT();               \
-		wxTheApp->ProcessPendingEvents(); \
-	}
-#endif
-
-
-#endif /* ECSOCKET_USE_EVENTS */
-
-
 //
 // CECSocket API - User interface functions
 //
 
-CECSocket::CECSocket()
-	: wxSocketClient(wxSOCKET_NOWAIT)
+CECSocket::CECSocket(bool use_events) : wxSocketClient()
 {
-#if wxUSE_THREADS
-	m_transfer_in_progress = false;
-#endif
-	m_firsttransfer = true;
-	m_my_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS
-#if ECSOCKET_USE_EVENTS
-		| EC_FLAG_HAS_ID
-#endif
-		;
-	m_accepts = 0;
-	m_in_ptr = NULL;
-	m_out_ptr = NULL;
-	m_used_flags = 0;
-	m_z.zalloc = Z_NULL;
-	m_z.zfree = Z_NULL;
-	m_z.opaque = Z_NULL;
-	m_lastError = wxSOCKET_NOERROR;
-	m_destroying = false;
-	m_isWorking = false;
-#if ECSOCKET_USE_EVENTS
-	m_canUseIDs = false;
-	m_canSend = IsConnected();
-	m_id = 0;
-	SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
-	SetNotify(wxSOCKET_CONNECTION_FLAG |
-		  wxSOCKET_INPUT_FLAG |
-		  wxSOCKET_OUTPUT_FLAG |
-		  wxSOCKET_LOST_FLAG);
-	Notify(true);
-#endif
+	m_rx_flags = m_rx_flags = 0;
+	m_my_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS;
+
+	// setup initial state: 4 flags + 4 length
+	m_bytes_needed = 8;
+	m_in_header = true;
+
+	m_in_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
+	m_out_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
+	
+	m_curr_rx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
+	m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
+
+	m_use_events = use_events;
+	
+	if ( use_events ) {
+		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
+		SetNotify(wxSOCKET_CONNECTION_FLAG |
+			  wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
+		Notify(true);
+		SetFlags(wxSOCKET_NOWAIT);
+	} else {
+		SetFlags(wxSOCKET_WAITALL | wxSOCKET_BLOCK);
+		Notify(false);
+	}
 }
 
 CECSocket::~CECSocket()
@@ -326,104 +262,61 @@ CECSocket::~CECSocket()
 		delete [] m_out_ptr;
 	}
 
-#if ECSOCKET_USE_EVENTS
-	while (!m_input_queue.empty()) {
-		CQueuedData *data = m_input_queue.front();
-		m_input_queue.pop_front();
-		delete data;
-	}
-
 	while (!m_output_queue.empty()) {
 		CQueuedData *data = m_output_queue.front();
 		m_output_queue.pop_front();
 		delete data;
 	}
+}
 
-	while (!m_output_packet_queue.empty()) {
-		packet_desc data = m_output_packet_queue.front();
-		m_output_queue.pop_front();
-		delete data.first;
+bool CECSocket::Connect(wxSockAddress& address)
+{
+	bool res = wxSocketClient::Connect(address, false);
+	if ( !m_use_events ) {
+		res = WaitOnConnect(10, 0);
+		if ( res ) {
+			OnConnect();
+		} else {
+			OnLost();
+		}
 	}
-
-	m_waited_ids.clear();
-	m_abandoned_ids.clear();
-#endif
+	return res;
 }
 
 void CECSocket::SendPacket(const CECPacket *packet)
 {
-#if ECSOCKET_USE_EVENTS
-	wxENTER_CRIT_SECT(m_cs_packet_out);
-
-	m_output_packet_queue.push_back(packet_desc(new CECPacket(*packet), 0));
-
-	wxLEAVE_CRIT_SECT(m_cs_packet_out);
-
-	wxSocketEvent event(EC_SOCKET_HANDLER);
-	event.m_event = (wxSocketNotify)ECSOCKET_SENDPACKET;
-	event.m_clientData = GetClientData();
-	event.SetEventObject(this);
-	g_ECSocketHandler.AddPendingEvent(event);
-#else
-	m_isWorking = true;
 	WritePacket(packet);
-	delete ReadPacket();
-	m_isWorking = false;
-	CheckDestroy();
-#endif
+	OnOutput();
 }
 
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
-	const CECPacket *reply = NULL;
-	m_isWorking = true;
-
-#if ECSOCKET_USE_EVENTS
-	wxENTER_CRIT_SECT(m_cs_packet_out);
-	uint32 id = m_canUseIDs ? ++m_id : 0;
-	m_output_packet_queue.push_front(packet_desc(new CECPacket(*packet), id));
-	wxLEAVE_CRIT_SECT(m_cs_packet_out);
-
-	wxENTER_CRIT_SECT(m_cs_id_list);
-	m_waited_ids.insert(id);
-	wxLEAVE_CRIT_SECT(m_cs_id_list);
-
-	DoSendPacket();
-
-	wxStopWatch swatch;
-	while (!reply) {
-		wxMilliSleep(100);
-		PROCESS_EVENTS();
-		wxENTER_CRIT_SECT(m_cs_waited_packets);
-		for (std::deque<packet_desc>::iterator it = m_waited_packets.begin(); it != m_waited_packets.end(); ++it) {
-			if (it->second == id) {
-				reply = it->first;
-				m_waited_packets.erase(it);
-				break;
-			}
-		}
-		wxLEAVE_CRIT_SECT(m_cs_waited_packets);
-		if (reply) break;
-		// Wait at most 10 sec
-		if (swatch.Time() > 10000) {
-			if (id != 0) {
-				wxENTER_CRIT_SECT(m_cs_id_list);
-				m_abandoned_ids.insert(id);
-				m_waited_ids.erase(id);
-				wxLEAVE_CRIT_SECT(m_cs_id_list);
-			}
-			m_lastError = wxSOCKET_TIMEDOUT;
-			OnError();
-			break;
-		}
+	wxASSERT(!m_use_events);
+	
+	SendPacket(packet);
+	
+	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32));
+	if (Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
+		OnError();
+		return 0;
 	}
 
-#else
-	WritePacket(packet);
-	reply = ReadPacket();
-#endif
-	m_isWorking = false;
-	CheckDestroy();
+	m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
+	m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
+	m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
+	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
+	
+	if ( m_curr_rx_data->GetLength() < (m_curr_packet_len+2*sizeof(uint32)) ) {
+		delete m_curr_rx_data;
+		m_curr_rx_data = new CQueuedData(m_curr_packet_len);
+	}
+	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
+	if (Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
+		OnError();
+		return 0;
+	}
+	const CECPacket *reply = ReadPacket();
+	m_curr_rx_data->Rewind();
 	return reply;
 }
 
@@ -451,8 +344,7 @@ wxString CECSocket::GetErrorMsg(wxSocketError code)
 		case wxSOCKET_MEMERR:
 			return wxT("Memory exhausted");
 		case wxSOCKET_DUMMY:
-			// abusing this error code for our purposes
-			return wxT("Data error");
+			return wxT("Dummy code - should not happen");
 	}
 	return wxString::Format(wxT("Error code 0x%08x unknown"), code);
 }
@@ -460,393 +352,135 @@ wxString CECSocket::GetErrorMsg(wxSocketError code)
 void CECSocket::OnError()
 {
 #ifdef __DEBUG__
-	printf("CECSocket error: %s\n", (const char *)unicode2char(GetErrorMsg(GetLastError())));
+	printf("CECSocket error: %s\n", (const char *)unicode2char(GetErrorMsg(LastError())));
 #endif
-	Destroy(true);
 }
 
 void CECSocket::OnLost()
 {
-	Destroy();
 }
 
-void CECSocket::Destroy(bool raiseLostEvent)
+void CECSocket::Destroy()
 {
-	if (!m_destroying) {
-		m_destroying = true;
-		Close();
-		Notify(false);
-		if (raiseLostEvent) {
-			OnLost();
-		}
-		if (!m_isWorking) {
-			// Do the real thing if it's safe.
-			CheckDestroy();
-		}
-	}
+	wxSocketBase::Destroy();
 }
-
-//
-// Implementation from now on
-//
-
-void CECSocket::CheckDestroy()
-{
-	if (m_destroying) {
-		wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
-		if (traits) {
-			traits->ScheduleForDestroy(this);
-		} else {
-			delete this;
-		}
-	}
-}
-
-#if ECSOCKET_USE_EVENTS
 
 //
 // Event handlers
 //
-
-void CECSocket::DoInput()
+void CECSocket::OnConnect()
 {
-	char *buffer = new char [EC_SOCKET_BUFFER_SIZE];
-	Read(buffer, EC_SOCKET_BUFFER_SIZE);
-	if (Error()) {
-		m_lastError = LastError();
-		if (m_lastError != wxSOCKET_WOULDBLOCK && m_lastError != wxSOCKET_NOERROR) {
-			OnError();
-			delete [] buffer;
-			return;
-		} else {
-			m_lastError = wxSOCKET_NOERROR;
-		}
-	}
-	size_t LastIO = LastCount();
-	if (LastIO > 0) {
-		CQueuedData *data = new CQueuedData(buffer, LastIO);
-		m_input_queue.push_back(data);
-
-		wxSocketEvent event(EC_SOCKET_HANDLER);
-		event.m_event = (wxSocketNotify)ECSOCKET_RECEIVEDDATA;
-		event.m_clientData = GetClientData();
-		event.SetEventObject(this);
-		g_ECSocketHandler.AddPendingEvent(event);
-	}
-	delete [] buffer;
 }
 
-void CECSocket::DoOutput()
+void CECSocket::OnInput()
+{
+	int bytes_rx = 0;
+	do {
+		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
+		if ( Error() ) {
+			if (LastError() != wxSOCKET_WOULDBLOCK && LastError() != wxSOCKET_NOERROR) {
+				OnError();
+				// socket already disconnected in this point
+				delete m_curr_rx_data;
+				m_curr_rx_data = 0;
+				return;
+			}
+		}
+	} while ( m_bytes_needed && bytes_rx );
+	bytes_rx = LastCount();
+	m_bytes_needed -= bytes_rx;
+
+	if ( !m_bytes_needed ) {
+		if ( m_in_header ) {
+			m_in_header = false;
+			m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
+			m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
+			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
+			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
+			m_bytes_needed = m_curr_packet_len;
+			if ( !m_curr_rx_data || (m_curr_rx_data->GetLength() < (m_bytes_needed+8)) ) {
+				delete m_curr_rx_data;
+				m_curr_rx_data = new CQueuedData(m_bytes_needed);
+			}
+		} else {
+			//m_curr_rx_data->DumpMem();
+			const CECPacket *packet = ReadPacket();
+			m_curr_rx_data->Rewind();
+			const CECPacket *reply = OnPacketReceived(packet);
+			if ( reply ) {
+				SendPacket(reply);
+				delete reply;
+			}
+			m_bytes_needed = 8;
+			m_in_header = true;
+		}
+	}
+}
+
+void CECSocket::OnOutput()
 {
 	while (!m_output_queue.empty()) {
 		CQueuedData* data = m_output_queue.front();
-		Write(data->GetData(), data->GetLength());
-		data->Advance(LastCount());
-		if (!data->GetLength()) {
+		data->WriteToSocket(this);
+		if (!data->GetUnreadDataLength()) {
 			m_output_queue.pop_front();
 			delete data;
 		}
 		if (Error()) {
-			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK || m_lastError == wxSOCKET_NOERROR) {
-				m_lastError = wxSOCKET_NOERROR;
-				return;
+			if (LastError() == wxSOCKET_WOULDBLOCK || LastError() == wxSOCKET_NOERROR) {
+				if ( m_use_events ) {
+					return;
+				} else {
+					if ( !WaitForWrite(10, 0) ) {
+                        if (LastError() == wxSOCKET_WOULDBLOCK) {
+                                continue;
+                        } else {
+                                OnError();
+                                break;
+                        }
+	                }
+				}
 			} else {
 				OnError();
 				return;
 			}
 		}
 	}
-	m_canSend = true;
 }
-
-void CECSocket::DoReceivePacket()
-{
-#if wxUSE_THREADS
-	if (m_transfer_in_progress || (m_transfer_lock.TryLock() == wxMUTEX_BUSY)) {
-		return;
-	}
-	m_transfer_in_progress = true;
-	m_transfer_lock.Unlock();
-#endif
-
-	if (!m_input_queue.empty()) {
-		ReadPacket();
-		if (!m_input_queue.empty()) {
-			wxSocketEvent event(EC_SOCKET_HANDLER);
-			event.m_event = (wxSocketNotify)ECSOCKET_RECEIVEDDATA;
-			event.m_clientData = GetClientData();
-			event.SetEventObject(this);
-			g_ECSocketHandler.AddPendingEvent(event);
-		}
-	}
-
-#if wxUSE_THREADS
-	m_transfer_in_progress = false;
-#endif
-}
-
-void CECSocket::HandlePacket()
-{
-	packet_desc packet = m_input_packet_queue.front();
-	m_input_packet_queue.pop_front();
-
-	if (m_canUseIDs) {
-		wxENTER_CRIT_SECT(m_cs_id_list);
-		if (m_abandoned_ids.erase(packet.second) > 0) {
-			delete packet.first;
-		} else if (m_waited_ids.erase(packet.second) > 0) {
-			wxENTER_CRIT_SECT(m_cs_waited_packets);
-			m_waited_packets.push_back(packet);
-			wxLEAVE_CRIT_SECT(m_cs_waited_packets);
-		} else {
-			wxLEAVE_CRIT_SECT(m_cs_id_list);
-			const CECPacket *reply = OnPacketReceived(packet.first);
-			if (packet.second) {
-				if (!reply) {
-					reply = new CECPacket(EC_OP_NOOP);
-				}
-				wxENTER_CRIT_SECT(m_cs_packet_out);
-				m_output_packet_queue.push_front(packet_desc(reply, packet.second));
-				wxLEAVE_CRIT_SECT(m_cs_packet_out);
-				wxSocketEvent event(EC_SOCKET_HANDLER);
-				event.m_event = (wxSocketNotify)ECSOCKET_SENDPACKET;
-				event.m_clientData = GetClientData();
-				event.SetEventObject(this);
-				g_ECSocketHandler.AddPendingEvent(event);
-			} else {
-				delete reply;
-			}
-			wxENTER_CRIT_SECT(m_cs_id_list);
-		}
-		wxLEAVE_CRIT_SECT(m_cs_id_list);
-	} else {
-		wxENTER_CRIT_SECT(m_cs_id_list);
-		if (m_waited_ids.empty()) {
-			wxLEAVE_CRIT_SECT(m_cs_id_list);
-			const CECPacket *reply = OnPacketReceived(packet.first);
-			if (!reply) {
-				reply = new CECPacket(EC_OP_NOOP);
-			}
-			wxENTER_CRIT_SECT(m_cs_packet_out);
-			m_output_packet_queue.push_front(packet_desc(reply, packet.second));
-			wxLEAVE_CRIT_SECT(m_cs_packet_out);
-			wxSocketEvent event(EC_SOCKET_HANDLER);
-			event.m_event = (wxSocketNotify)ECSOCKET_SENDPACKET;
-			event.m_clientData = GetClientData();
-			event.SetEventObject(this);
-			g_ECSocketHandler.AddPendingEvent(event);
-			wxENTER_CRIT_SECT(m_cs_id_list);
-		} else {
-			wxENTER_CRIT_SECT(m_cs_waited_packets);
-			m_waited_packets.push_back(packet);
-			wxLEAVE_CRIT_SECT(m_cs_waited_packets);
-			m_waited_ids.erase(m_waited_ids.begin());
-		}
-		wxLEAVE_CRIT_SECT(m_cs_id_list);
-	}
-
-	m_canUseIDs = (m_accepts & EC_FLAG_HAS_ID);
-}
-
-void CECSocket::DoSendPacket()
-{
-#if wxUSE_THREADS
-	if (m_transfer_in_progress || (m_transfer_lock.TryLock() == wxMUTEX_BUSY)) {
-		return;
-	}
-	m_transfer_in_progress = true;
-	m_transfer_lock.Unlock();
-#endif
-
-	wxENTER_CRIT_SECT(m_cs_packet_out);
-	if (!m_output_packet_queue.empty()) {
-		packet_desc this_packet = m_output_packet_queue.front();
-		m_output_packet_queue.pop_front();
-		wxLEAVE_CRIT_SECT(m_cs_packet_out);
-		WritePacket(this_packet);
-		delete this_packet.first;
-		wxENTER_CRIT_SECT(m_cs_packet_out);
-		if (!m_output_packet_queue.empty()) {
-			wxSocketEvent event(EC_SOCKET_HANDLER);
-			event.m_event = (wxSocketNotify)ECSOCKET_SENDPACKET;
-			event.m_clientData = GetClientData();
-			event.SetEventObject(this);
-			g_ECSocketHandler.AddPendingEvent(event);
-		}
-	}
-	wxLEAVE_CRIT_SECT(m_cs_packet_out);
-
-#if wxUSE_THREADS
-	m_transfer_in_progress = false;
-#endif
-}
-
 
 //
 // Socket I/O
 //
 
-bool CECSocket::CanReadNBytes(size_t len)
+size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 {
-	if (len == 0) return true;
-	for (std::deque<CQueuedData*>::iterator it = m_input_queue.begin(); it != m_input_queue.end(); ++it) {
-		if ((*it)->GetLength() >= len) {
-			return true;
-		} else {
-			len -= (*it)->GetLength();
-		}
-	}
-	return false;
-}
+	wxASSERT(required_len);
 
-#endif /* ECSOCKET_USE_EVENTS */
-
-void CECSocket::PushBack(const void * data, size_t len)
-{
-#if ECSOCKET_USE_EVENTS
-	CQueuedData * dta = new CQueuedData(data, len);
-	m_input_queue.push_front(dta);
-#else
-	Unread(data, len);
-#endif
-}
-
-size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len, size_t max_len)
-{
-	char *iobuf = (char *)buffer;
-	size_t ReadBytes = 0;
-
-#if ECSOCKET_USE_EVENTS
-	wxStopWatch swatch;
-	// Wait at most 10 seconds
-	while ((GetLastError() == wxSOCKET_NOERROR) && !CanReadNBytes(required_len) && (swatch.Time() < 10000)) {
-		// GTK's event processing is halted as long as we're in an event handler.
-		// So, we cannot wait for a wxSOCKET_INPUT event. Therefore we could use the
-		// WaitForXXX functions with a 0 timeout, so wxYield wouldn't get called,
-		// or post a fake wxSOCKET_INPUT event and prepare the handler for it.
-		wxMilliSleep(100);
-		PROCESS_EVENTS();
-	}
-	if (GetLastError() != wxSOCKET_NOERROR) {
-		return 0;
-	} else if (!CanReadNBytes(required_len)) {
-		m_lastError = wxSOCKET_TIMEDOUT;
-		OnError();
+	if ( m_curr_rx_data->GetUnreadDataLength() < required_len ) {
+		// need more data that we have. Looks like nothing will help here
 		return 0;
 	}
-
-	// If required_len == 0, CanReadNBytes() returns immediately with true.
-	if (m_input_queue.empty()) {
-		return 0;
-	}
-
-	do {
-		CQueuedData *data = m_input_queue.front();
-		size_t len = data->GetLength();
-		if (len > max_len) len = max_len;
-		memcpy(iobuf, data->GetData(), len);
-		data->Advance(len);
-		iobuf += len;
-		if (len >= required_len) {
-			required_len = 0;
-		} else {
-			required_len -= len;
-		}
-		max_len -= len;
-		ReadBytes += len;
-		if (!data->GetLength()) {
-			m_input_queue.pop_front();
-			delete data;
-		}
-	} while (required_len > 0);
-	m_lastError = wxSOCKET_NOERROR;
-#else
-	do {
-		//
-		// Give socket a 10 sec chance to recv more data.
-		if (required_len > 0) {
-			if ( !WaitForRead(10, 0) ) {
-				m_lastError = LastError();
-				OnError();
-				break;
-			}
-		}
-		Read(iobuf, max_len);
-		size_t LastIO = LastCount();
-		ReadBytes += LastIO;
-		iobuf += LastIO;
-		max_len -= LastIO;
-		if (Error()) {
-			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK) {
-				m_lastError = wxSOCKET_NOERROR;
-			} else {
-				OnError();
-				break;
-			}
-		}
-	} while (ReadBytes < required_len);
-#endif
-	return ReadBytes;
+	m_curr_rx_data->Read(buffer, required_len);
+	return required_len;
 }
 
 void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 {
-	const char *iobuf = (const char *)buffer;
+	unsigned char *wr_ptr = (unsigned char *)buffer;
+	while ( len ) {
+		size_t curr_free = m_curr_tx_data->GetRemLength();
+		if ( len > curr_free ) {
 
-#if ECSOCKET_USE_EVENTS
-	if (m_canSend) {
-		Write(buffer, len);
-		size_t sentBytes = LastCount();
-		if (Error()) {
-			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK) {
-				m_lastError = wxSOCKET_NOERROR;
-				m_canSend = false;
-			} else {
-				OnError();
-				// Hmmmm.....
-			}
-		}
-		if (sentBytes == len) {
-			return;
+			m_curr_tx_data->Write(wr_ptr, curr_free);
+			len -= curr_free;
+			wr_ptr += curr_free;
+			m_output_queue.push_back(m_curr_tx_data);
+			m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
 		} else {
-			iobuf += sentBytes;
-			len -= sentBytes;
+			m_curr_tx_data->Write(wr_ptr, len);
+			break;
 		}
 	}
-	CQueuedData *data = new CQueuedData(iobuf, len);
-	m_output_queue.push_back(data);
-#else
-	while (len > 0) {
-		//
-		// Give socket a 10 sec chance to send more data.
-		if ( !WaitForWrite(10, 0) ) {
-			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK) {
-				m_lastError = wxSOCKET_NOERROR;
-				continue;
-			} else {
-				OnError();
-				break;
-			}
-		}
-		Write(iobuf, len);
-		size_t LastIO = LastCount();
-		len -= LastIO;
-		iobuf += LastIO;
-		if (Error()) {
-			m_lastError = LastError();
-			if (m_lastError == wxSOCKET_WOULDBLOCK) {
-				m_lastError = wxSOCKET_NOERROR;
-			} else {
-				OnError();
-				break;
-			}
-		}
-	}
-#endif
 }
 
 
@@ -854,7 +488,6 @@ void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 // ZLib "error handler"
 //
 
-#ifdef __DEBUG__
 void ShowZError(int zerror, z_streamp strm)
 {
 	char *p = NULL;
@@ -874,37 +507,11 @@ void ShowZError(int zerror, z_streamp strm)
 	printf("zstream state:\n\tnext_in=%p\n\tavail_in=%u\n\ttotal_in=%lu\n\tnext_out=%p\n\tavail_out=%u\n\ttotal_out=%lu\n",
 		strm->next_in, strm->avail_in, strm->total_in, strm->next_out, strm->avail_out, strm->total_out);
 }
-#else
-#define ShowZError(a, b)
-#endif
 
-
-//
-// Working buffers
-//
-
-void CECSocket::InitBuffers()
-{
-	if (!m_in_ptr) {
-		m_in_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	}
-	if (!m_out_ptr) {
-		m_out_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	}
-
-	wxASSERT(m_in_ptr && m_out_ptr);
-
-	m_z.next_in = m_in_ptr;
-	m_z.avail_in = 0;
-	m_z.total_in = 0;
-	m_z.next_out = m_out_ptr;
-	m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-	m_z.total_out = 0;
-}
 
 bool CECSocket::ReadNumber(void *buffer, size_t len)
 {
-	if (m_used_flags & EC_FLAG_UTF8_NUMBERS) {
+	if (m_rx_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
 		uint32 wc;
 		if (!ReadBuffer(mb, 1)) return false;
@@ -934,7 +541,7 @@ bool CECSocket::ReadNumber(void *buffer, size_t len)
 
 bool CECSocket::WriteNumber(const void *buffer, size_t len)
 {
-	if (m_used_flags & EC_FLAG_UTF8_NUMBERS) {
+	if (m_tx_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
 		uint32 wc = 0;
 		int mb_len;
@@ -960,236 +567,117 @@ bool CECSocket::WriteNumber(const void *buffer, size_t len)
 
 bool CECSocket::ReadBuffer(void *buffer, size_t len)
 {
-	if (m_used_flags & EC_FLAG_ZLIB) {
-		// using zlib compressed i/o
-		// Here we pretty much misuse the z.next_out and z.avail_out values,
-		// but it doesn't matter as long a we always call inflate() with an
-		// empty output buffer.
-		while (m_z.avail_out < len) {
-			if (m_z.avail_out) {
-				memcpy(buffer, m_z.next_out, m_z.avail_out);
-				buffer = (unsigned char *)buffer + m_z.avail_out;
-				len -= m_z.avail_out;
-			}
-			// consumed all output
-			m_z.next_out = m_out_ptr;
-			m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			unsigned min_read = 1;
-			if (m_z.avail_in) {
-				memmove(m_in_ptr, m_z.next_in, m_z.avail_in);
-				min_read = 0;
-			}
-			m_z.next_in = m_in_ptr;
-			m_z.avail_in += ReadBufferFromSocket(m_z.next_in + m_z.avail_in, min_read, EC_SOCKET_BUFFER_SIZE - m_z.avail_in);
-			if (GetLastError() != wxSOCKET_NOERROR) {
-				return false;
-			}
-			int zerror = inflate(&m_z, Z_SYNC_FLUSH);
-			if (zerror != Z_OK) {
-				if (zerror == Z_STREAM_END) {
-					if (m_z.avail_in > 0) {
-						PushBack(m_z.next_in, m_z.avail_in);
-						m_z.avail_in = 0;
-					}
-				} else {
-					ShowZError(zerror, &m_z);
-					m_lastError = wxSOCKET_DUMMY;
-					OnError();
-					return false;
-				}
-			}
-			m_z.next_out = m_out_ptr;
-			m_z.avail_out = EC_SOCKET_BUFFER_SIZE - m_z.avail_out;
+	if (m_rx_flags & EC_FLAG_ZLIB) {
+		if ( !m_z.avail_in ) {
+			// no reason for this situation: all packet should be
+			// buffered by now
+			return false;
 		}
-		memcpy(buffer, m_z.next_out, len);
-		m_z.next_out += len;
-		m_z.avail_out -= len;
+		m_z.avail_out = len;
+		m_z.next_out = (Bytef*)buffer;
+		int zerror = inflate(&m_z, Z_SYNC_FLUSH);
+		if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
+			ShowZError(zerror, &m_z);
+			return false;
+		}
 		return true;
 	} else {
 		// using uncompressed buffered i/o
-		if (m_z.avail_in < len) {
-			// get more data
-			if (m_z.avail_in) {
-				memcpy(buffer, m_z.next_in, m_z.avail_in);
-				len -= m_z.avail_in;
-				buffer = (Bytef*)buffer + m_z.avail_in;
-			}
-			if (len >= EC_SOCKET_BUFFER_SIZE) {
-				// read directly to app mem, to avoid unnecessary memcpy()s
-				m_z.avail_in = 0;
-				m_z.next_in = m_in_ptr;
-				return ReadBufferFromSocket(buffer, len, len) == len;
-			} else {
-				m_z.avail_in = ReadBufferFromSocket(m_in_ptr, len, EC_SOCKET_BUFFER_SIZE);
-				m_z.next_in = m_in_ptr;
-				if (GetLastError() != wxSOCKET_NOERROR) {
-					m_z.avail_in = 0;
-					return false;
-				}
-			}
-		}
-		memcpy(buffer, m_z.next_in, len);
-		m_z.next_in += len;
-		m_z.avail_in -= len;
+		return ReadBufferFromSocket(buffer, len) == len;
 		return true;
 	}
 }
 
 bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 {
-	unsigned int remain_in;
+	if (m_tx_flags & EC_FLAG_ZLIB) {
 
-	if (m_used_flags & EC_FLAG_ZLIB) {
-		// using zlib compressed i/o
-		while ((remain_in = (EC_SOCKET_BUFFER_SIZE - (m_z.next_in - m_in_ptr) - m_z.avail_in)) < len) {
-			memcpy(m_z.next_in + m_z.avail_in, buffer, remain_in);
-			buffer = (Bytef*)buffer + remain_in;
-			len -= remain_in;
-			m_z.avail_in += remain_in;
-			int zerror = deflate(&m_z, Z_NO_FLUSH);
-			if ( zerror != Z_OK ) {
-				ShowZError(zerror, &m_z);
-				m_lastError = wxSOCKET_DUMMY;
-				OnError();
-				return false;
-			}
-			if (!m_z.avail_out) {
-				WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE);
-				if (GetLastError() != wxSOCKET_NOERROR) {
-					return false;
-				}
-				m_z.next_out = m_out_ptr;
-				m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			}
-			if (m_z.next_in != m_in_ptr) {
-				if (m_z.avail_in) {
-					memmove(m_in_ptr, m_z.next_in, m_z.avail_in);
-				}
+		unsigned char *rd_ptr = (unsigned char *)buffer;
+		do {
+			unsigned int remain_in = EC_SOCKET_BUFFER_SIZE - m_z.avail_in;
+			if ( remain_in >= len ) {
+				memcpy(m_z.next_in+m_z.avail_in, rd_ptr, len);
+				m_z.avail_in += len;
+				len = 0;
+			} else {
+				memcpy(m_z.next_in+m_z.avail_in, rd_ptr, remain_in);
+				m_z.avail_in += remain_in;
+				len -= remain_in;
+				rd_ptr += remain_in;
+				// buffer is full, calling zlib
+				do {
+				    m_z.next_out = m_out_ptr;
+				    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
+					int zerror = deflate(&m_z, Z_NO_FLUSH);
+					if ( zerror != Z_OK ) {
+						ShowZError(zerror, &m_z);
+						return false;
+					}
+					WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
+				} while ( m_z.avail_out == 0 );
+				// all input should be used by now
+				wxASSERT(m_z.avail_in == 0);
 				m_z.next_in = m_in_ptr;
 			}
-		}
-		memcpy(m_z.next_in + m_z.avail_in, buffer, len);
-		m_z.avail_in += len;
+		} while ( len );
 		return true;
 	} else {
 		// using uncompressed buffered i/o
-		if (m_z.avail_out < len) {
-			// send some data
-			if (m_z.avail_out) {
-				memcpy(m_z.next_out, buffer, m_z.avail_out);
-				len -= m_z.avail_out;
-				buffer = (Bytef*)buffer + m_z.avail_out;
-			}
-			m_z.next_out = m_out_ptr;
-			m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-			WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE);
-			if (GetLastError() != wxSOCKET_NOERROR) {
-				return false;
-			}
-			if (len >= EC_SOCKET_BUFFER_SIZE) {
-				// direct write from app mem, to avoid unnecessary memcpy()s
-				WriteBufferToSocket(buffer, len);
-				return true;
-			}
-		}
-		memcpy(m_z.next_out, buffer, len);
-		m_z.next_out += len;
-		m_z.avail_out -= len;
+		WriteBufferToSocket(buffer, len);
 		return true;
 	}
 }
 
 bool CECSocket::FlushBuffers()
 {
-	if (m_used_flags & EC_FLAG_ZLIB) {
-		int zerror;
+	if (m_tx_flags & EC_FLAG_ZLIB) {
 		do {
-			zerror = deflate(&m_z, Z_FINISH);
+		    m_z.next_out = m_out_ptr;
+		    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
+			int zerror = deflate(&m_z, Z_FINISH);
+			if ( zerror == Z_STREAM_ERROR ) {
+				ShowZError(zerror, &m_z);
+				return false;
+			}
 			WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
-			m_z.next_out = m_out_ptr;
-			m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-		} while (zerror == Z_OK);
-		if (zerror == Z_STREAM_END) return true;
-		else {
-			ShowZError(zerror, &m_z);
-			m_lastError = wxSOCKET_DUMMY;
-			OnError();
-			return false;
-		}
-	} else {
-		if (m_z.avail_out != EC_SOCKET_BUFFER_SIZE) {
-			WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
-			m_z.next_out = m_out_ptr;
-			m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
-		}
+		} while ( m_z.avail_out == 0 );
 	}
-	// report success if there's nothing to do
+	if ( m_curr_tx_data->GetDataLength() ) {
+		m_output_queue.push_back(m_curr_tx_data);
+		m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
+	}
 	return true;
 }
-
-uint32 CECSocket::ReadFlags()
-{
-	int i = 0;
-	uint32 flags = 0;
-	uint8 b;
-
-	do {
-		if (!ReadBufferFromSocket(&b, 1, 1)) return 0;
-		flags += (uint32)b << i;
-		i += 8;
-	} while ((b & 0x80) && (i < 32));
-	return flags;
-}
-
-void CECSocket::WriteFlags(uint32 flags)
-{
-	uint8 b;
-
-	flags |= 0x20;		// Setting bit 5
-	flags &= 0xffffffbf;	// Clearing bit 6
-	do {
-		b = flags & 0xff;
-		flags >>= 8;
-		if (flags) b |= 0x80;
-		WriteBufferToSocket(&b, 1);
-	} while (flags);
-}
-
 
 //
 // Packet I/O
 //
 
-#if ECSOCKET_USE_EVENTS
-void CECSocket::WritePacket(packet_desc packet)
-#define PACKET	(packet.first)
-#else
 void CECSocket::WritePacket(const CECPacket *packet)
-#define PACKET	(packet)
-#endif
 {
-	if (GetLastError() != wxSOCKET_NOERROR) {
+	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
 		return;
 	}
 
 	uint32 flags = 0x20;
 
-	if ((PACKET->GetPacketLength() > EC_MAX_UNCOMPRESSED) && (m_my_flags & EC_FLAG_ZLIB)) {
+	if ( packet->GetPacketLength() > EC_MAX_UNCOMPRESSED ) {
 		flags |= EC_FLAG_ZLIB;
 	} else {
 		flags |= EC_FLAG_UTF8_NUMBERS;
 	}
 
-#if ECSOCKET_USE_EVENTS
-	if (packet.second != 0) flags |= EC_FLAG_HAS_ID;
-#endif
-
-	InitBuffers();
-
-	// ensure we won't use anything the other end cannot accept
-	flags &= m_accepts;
-
+	flags &= m_my_flags;
+	m_tx_flags = flags;
+	
 	if (flags & EC_FLAG_ZLIB) {
+	    m_z.zalloc = Z_NULL;
+	    m_z.zfree = Z_NULL;
+	    m_z.opaque = Z_NULL;
+	    m_z.avail_in = 0;
+	    
+	    m_z.next_in = m_in_ptr;
+	    
 		int zerror = deflateInit(&m_z, EC_COMPRESSION_LEVEL);
 		if (zerror != Z_OK) {
 			// don't use zlib if init failed
@@ -1198,27 +686,31 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		}
 	}
 
-	m_used_flags = flags;
-
-	if (m_firsttransfer) {
-		m_firsttransfer = false;
-		flags |= EC_FLAG_ACCEPTS;
-		WriteFlags(flags);
-		WriteFlags(m_my_flags);
-	} else {
-		WriteFlags(flags);
-	}
-
-#if ECSOCKET_USE_EVENTS
-	if (flags & EC_FLAG_HAS_ID) {
-		WriteBuffer(&packet.second, 4);
-	}
-#endif
-
-	PACKET->WritePacket(*this);
+	uint32 tmp_flags = ENDIAN_HTONL(flags);
+	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
+	
+	// preallocate 4 bytes in buffer for packet length
+	uint32 packet_len = 0;
+	WriteBufferToSocket(&packet_len, sizeof(uint32));
+	
+	packet->WritePacket(*this);
 
 	FlushBuffers();
 
+	// now calculate actual size of data
+	packet_len = m_curr_tx_data->GetDataLength();
+	for(std::deque<CQueuedData*>::iterator i = m_output_queue.begin(); i != m_output_queue.end(); i++) {
+		packet_len += (*i)->GetDataLength();
+	}
+	// 4 flags and 4 length are not counted
+	packet_len -= 8;
+	// now write actual length @ offset 4
+	packet_len = ENDIAN_HTONL(packet_len);
+	
+	CQueuedData *first_buff = m_output_queue.front();
+	if ( !first_buff ) first_buff = m_curr_tx_data;
+	first_buff->WriteAt(&packet_len, sizeof(uint32), sizeof(uint32));
+	
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
@@ -1229,80 +721,54 @@ void CECSocket::WritePacket(const CECPacket *packet)
 }
 
 
-#if ECSOCKET_USE_EVENTS
-void CECSocket::ReadPacket()
-#define INVALID_PACKET
-#else
 const CECPacket *CECSocket::ReadPacket()
-#define INVALID_PACKET	NULL
-#endif
 {
-	CECPacket *tmp_packet;
-#if ECSOCKET_USE_EVENTS
-	uint32 tmp_id = 0;
-#endif
+	CECPacket *packet = 0;
 
-	if (GetLastError() != wxSOCKET_NOERROR) {
-		return INVALID_PACKET;
+	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
+		return 0;
 	}
 
-	InitBuffers();
-
-	uint32 flags = ReadFlags();
-
+	uint32 flags = m_rx_flags;
+	
 	if ((flags & 0x60) != 0x20) {
 		// Protocol error - other end might use an older protocol
 		Close();
-		return INVALID_PACKET;
-	}
-
-	// check if the other end sends an "accepts" value
-	if (flags & EC_FLAG_ACCEPTS) {
-		m_accepts = ReadFlags();
+		return 0;
 	}
 
 	if (flags & EC_FLAG_UNKNOWN_MASK) {
 		// Received a packet with an unknown extension
 		Close();
-		return INVALID_PACKET;
+		return 0;
 	}
 
-	if (((flags & m_my_flags) ^ flags) & ~EC_FLAG_ACCEPTS) {
-		// Received packet uses a flag that we cannot accept
-		Close();
-		return INVALID_PACKET;
-	}
-
-	m_used_flags = flags;
 	if (flags & EC_FLAG_ZLIB) {
+
+	    m_z.zalloc = Z_NULL;
+	    m_z.zfree = Z_NULL;
+	    m_z.opaque = Z_NULL;
+	    m_z.avail_in = 0;
+	    m_z.next_in = 0;
+	    
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
-			// unable to uncompress compressed input
 			ShowZError(zerror, &m_z);
 			Close();
-			return INVALID_PACKET;
-		} else {
-			// misusing z parameters - read more at ReadBuffer()
-			m_z.avail_out = 0;
+			return 0;
 		}
 	}
 
-#if ECSOCKET_USE_EVENTS
-	if (flags & EC_FLAG_HAS_ID) {
-		ReadBuffer(&tmp_id, 4);
-	}
-#endif
-
-	tmp_packet = new CECPacket(*this);
-	tmp_packet->ReadFromSocket(*this);
-
-#ifndef KEEP_PARTIAL_PACKETS
-	if (tmp_packet->m_error != 0 || !tmp_packet->IsOk()) {
-		delete tmp_packet;
-		tmp_packet = NULL;
+    m_curr_rx_data->ToZlib(m_z);
+	packet = new CECPacket(*this);
+	packet->ReadFromSocket(*this);
+	
+	if (packet->m_error != 0) {
+		delete packet;
+		packet = NULL;
 		Close();
 	}
-#endif
+
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = inflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
@@ -1311,20 +777,10 @@ const CECPacket *CECSocket::ReadPacket()
 		}
 	}
 
-	if (m_z.avail_in > 0) {
-		PushBack(m_z.next_in, m_z.avail_in);
-	}
+	return packet;
+}
 
-#if ECSOCKET_USE_EVENTS
-	if (tmp_packet) {
-		m_input_packet_queue.push_back(packet_desc(tmp_packet, tmp_id));
-		wxSocketEvent event(EC_SOCKET_HANDLER);
-		event.m_event = (wxSocketNotify)ECSOCKET_RECEIVEDPACKET;
-		event.m_clientData = GetClientData();
-		event.SetEventObject(this);
-		g_ECSocketHandler.AddPendingEvent(event);
-	}
-#else
-	return tmp_packet;
-#endif
+const CECPacket *CECSocket::OnPacketReceived(const CECPacket *)
+{
+	return 0;
 }
