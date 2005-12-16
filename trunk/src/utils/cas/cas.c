@@ -48,6 +48,7 @@
  * 2004.08.27 - GonoszTopi: New line handling routines, to cope with lines
  *		longer than 80 characters. Fixes buffer overflow.
  * 2005.12.10 - fulgas: added kad info support
+ * 2005,12,16 - stefanero: fixed Kad related stuff and some other things
  */
 
 #include "lines.h"
