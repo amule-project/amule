@@ -533,6 +533,14 @@ class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_
 
 class CSharedFilesRem : public CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag> {
 		std::map<CMD4Hash, RLE_Data> m_enc_map;
+		
+		virtual void HandlePacket(const CECPacket *);
+		
+		//
+		// For file renaming operation
+		//
+		CKnownFile* m_rename_file;
+		wxString m_new_name;
 	public:
 		CSharedFilesRem(CRemoteConnect *);
 		
@@ -614,6 +622,7 @@ class CIPFilterRem {
 };
 
 class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag> {
+		virtual void HandlePacket(const CECPacket *);
 	public:
 		CSearchListRem(CRemoteConnect *);
 		
