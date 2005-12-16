@@ -142,8 +142,76 @@ Version 2.1.0 - The "???" version
 		* Updated and centralized client emule compatible numbers.
 		* Fixed wxWidgets includes based on version.
 		* Fixed clicking "No" on shutdown confirmation... doing a shutdown.
-		* 
-		* Fxied Open File command on categories.
+		* Adding a link over EC now gets proper feedback on duplicates.
+		* Added YASO (Yet Another Shareaza Opcode).
+		* Allow binding EC and ed2k/kad sockets to an specific address. 
+		   Use Address= and ECAddress= on [eMule] section of the amule.conf file.
+		* Warn for outdated version on daemon, too.
+		* Added Kademlia network to aMule daemon.
+		  This required an split of core/GUI of the initial import.
+		* Removed a big bunch of duplicated EC calls to connection status.
+		* Show Kad status on remote apps.
+		* Fixed a possible memleak on CKnownFile creation.
+		* Added hashing protection about hashing more than one part at a time.
+		* Fixed a memleak on global search packet.
+		* Fixed Kad crash based on wrong STL iterator usage.
+		* Compilation fixes for SafeFile classes.
+		* Chat icon on toolbar now blinks red/blue on new message till we press 
+		   the button to check the message.
+		* Make compressed HTTP files be decompressed transparently after download. 
+		   Allows for server.met.gz and similar downloads.
+		* Fixed the statusbar taking too much space.
+		* Default server.met uses gruk.org now, to avoid fake servers.
+		* Reverted phoenix false fix for my kad iterator fix and adding my fix which 
+		   was before his fix. Try to say that drunk.
+		* Several cosmetic minor changes to GUI.
+		* Fixes on wxHTTP crashes caused by heap creation of sockets class.
+		* Moved ECAddr to ExternalConnect section and made GUI for selecting the ip.
+		* Fixed korean translation compilation failure.
+		* Several 2.4 compilation fixes, which turned out to be not used because we 
+		  now require wxWidgets 2.6.0 at least.
+		* Fix NetBSD compilation (fwprintf not implemented on NetBSD).
+		* Fixed some unneeded ansi strings conversion to wide chars.
+		* Endian fix on Kad UDP packets being sent... elsewhere.
+		* Several fixes on endianess over source exchange and ip filtering.
+		* Debug output and crash fix for HTTP streams on download.
+		* Fixes on keyword hashing on Kademlia.
+		* Fixed Kad tag names using ansi chars instead of unicode names,
+		   which will be sent as ansi anyway but CTag creation is based on 
+		   wxStrings, so using a char* uses the int constructor.
+		* Removed the CTagNameString, using wxString everywhere.
+		* Fix for GUI systray option being enabled when systray compilation 
+		   is disabled.
+		* Server ed2k link (and any link) must be '/' terminated, fixed on
+		   generation.
+		* Debug output on EC protocol version mismatch.
+		* Changed servers toolbar button to networks. Now this has two tabs,
+		   one for ed2k and one for Kad. 
+		* Created Kad GUI from scratch.
+		* OP_REASKCALLBACKUDP implementation for Kad lowid
+		* 64bits archs fix on webserver image generation.
+		* Removed CT_PORT usage on server login - is ignored by eservers now.
+		* Removed Kad search list ctrl - it's just debug output user won't need.
+		* Removed Kad nodes list ctrl - it's just debug output user won't need.
+		* Modification's to lupz's patches on Kademlia sources search.
+		* Compilation fixes on ClientList for Kad contacts.
+		* Checks for 0-port UDP packets to avoid 100% CPU usage.
+		* Lots of Kad cleaning on the imported code, contacts, searches,
+		   UDP packets processing and routing bin
+		* Removed kademlia/utils/Ping.* - unused on this implementation.
+		* Fixed a crash on Kad exit caused by double-removal.
+		* Fixed remote GUI compilation with Kad enabled.
+		* Changed invalid rating on a file to non-critical (keep source!).
+		* CPU fixes on duplicated calls to rating updates.
+		* Some fixes to rating icons.
+		* Killed muuli's pragmas.
+		* Moved search id's setting to search class itself.
+		* No more --enable-kad-compile. Flag is no more, and kad is always compiled.
+		* Reworked src/Makefile.am to handle common files.
+		* You can change toolbar to vertical/horizontal on GUI tweaks now.
+		* Removed fakecheck (sites down).
+		* Fixing ED2K link handler colliding with status bar.
+		* Fixed Open File command on categories.
 		* Fixed detail level on EC tags failing silently on lower values.
 		* Fixed crash on remote gui if not config folder not existant.
 		* Created, fixed, killed the --enable-kad-compile switch to enable 
@@ -204,6 +272,7 @@ Version 2.1.0 - The "???" version
 		
 	lupz:
 		* Kad speed improvements.
+		* Kad sources search improvements.
 
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
@@ -225,7 +294,7 @@ Version 2.1.0 - The "???" version
 		  compatibility with old HP-UX systems.
 
 	Ramiro:
-		* Patch to compile on a NSLU2.
+		* Patches to compile on a NSLU2 (ARM).
 
 	schtroumpf:
 		* File rating in search dialog.
