@@ -81,10 +81,26 @@ class CEConnectDlg : public wxDialog {
 		bool SaveUserPass() { return m_save_user_pass; }
 };
 
-class CPreferencesRem : public CPreferences {
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE, wxEVT_USER_FIRST + 1001)
+
+class wxECInitDoneEvent : public wxEvent {
+public:
+	wxECInitDoneEvent() : wxEvent(-1, wxEVT_EC_INIT_DONE)
+	{
+	}
+
+	wxEvent *Clone(void) const
+	{
+		return new wxECInitDoneEvent(*this);
+	}
+};
+
+class CPreferencesRem : public CPreferences, public CECPacketHandlerBase {
 		CRemoteConnect *m_conn;
 		uint32 m_exchange_send_selected_prefs;
 		uint32 m_exchange_recv_selected_prefs;
+
+		virtual void HandlePacket(const CECPacket *packet);
 	public:
 		CPreferencesRem(CRemoteConnect *);
 
@@ -106,8 +122,14 @@ class CPreferencesRem : public CPreferences {
 // G - type of tag used to create/update items
 //
 template <class T, class I, class G = CECTag>
-class CRemoteContainer {
+class CRemoteContainer : public CECPacketHandlerBase {
 	protected:
+		enum {
+			IDLE,            // no request in the air
+			STATUS_REQ_SENT, // sent request for item status
+			FULL_REQ_SENT,   // sent request for full info
+		} m_state;
+		
 		CRemoteConnect *m_conn;
 
 		std::list<T *> m_items;
@@ -121,9 +143,42 @@ class CRemoteContainer {
 		
 		// use incremental tags algorithm
 		bool m_inc_tags;
+		
+		// command that will be used in full request
+		int m_full_req_cmd, m_full_req_tag;
+		
+		virtual void HandlePacket(const CECPacket *packet)
+		{
+			switch(this->m_state) {
+				case IDLE: wxASSERT(0); // not expecting anything
+				case STATUS_REQ_SENT:
+					// if derived class choose not to proceed, return - but with good status
+					this->m_state = IDLE;
+					if ( this->Phase1Done(packet) ) {
+						CECPacket req_full(this->m_full_req_cmd);
+					
+						ProcessUpdate(packet, &req_full, m_full_req_tag);
+						
+						if ( !this->m_inc_tags ) {
+							// Phase 3: request full info about files we don't have yet
+							if ( req_full.GetTagCount() ) {
+								m_conn->SendRequest(this, &req_full);
+								this->m_state = FULL_REQ_SENT;
+							}
+						}
+					}
+					break;
+				case FULL_REQ_SENT:
+					ProcessFull(packet);
+					m_state = IDLE;
+					break;
+			}
+		}
 	public:
 		CRemoteContainer(CRemoteConnect *conn, bool inc_tags = false)
 		{
+			m_state = IDLE;
+			
 			m_conn = conn;
 			m_item_count = 0;
 			
@@ -169,6 +224,7 @@ class CRemoteContainer {
 		//
 		// Flush & reload
 		//
+		/*
 		bool FullReload(int cmd)
 		{
 			CECPacket req(cmd);
@@ -186,11 +242,41 @@ class CRemoteContainer {
 			
 			return true;
 		}
+		*/
+		void FullReload(int cmd)
+		{
+			if ( this->m_state != IDLE ) {
+				return;
+			}
+
+			for(typename std::list<T *>::iterator j = this->m_items.begin(); j != this->m_items.end(); j++) {
+				this->DeleteItem(*j);
+			}
+			
+			Flush();
+
+			CECPacket req(cmd);
+			this->m_conn->SendRequest(this, &req);
+			this->m_state = FULL_REQ_SENT;
+			this->m_full_req_cmd = cmd;
+		}
 		
 		//
 		// Following are like basicly same code as in webserver. Eventually it must
 		// be same class
 		//
+		void DoRequery(int cmd, int tag)
+		{
+			if ( this->m_state != IDLE ) {
+				return;
+			}
+			CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
+			this->m_conn->SendRequest(this, &req_sts);
+			this->m_state = STATUS_REQ_SENT;
+			this->m_full_req_cmd = cmd;
+			this->m_full_req_tag = tag;
+		}
+		/*
 		bool DoRequery(int cmd, int tag)
 		{
 			CECPacket req_sts(cmd, m_inc_tags ? EC_DETAIL_INC_UPDATE : EC_DETAIL_UPDATE);
@@ -226,6 +312,7 @@ class CRemoteContainer {
 			}
 			return true;
 		}
+		*/
 
 		void ProcessFull(const CECPacket *reply)
 		{
@@ -310,11 +397,14 @@ class CRemoteContainer {
 		}
 };
 
-class CServerConnectRem {
+class CServerConnectRem : public CECPacketHandlerBase {
 		CRemoteConnect *m_Conn;
 		uint32 m_ID;
 		
 		CServer *m_CurrServer;
+		
+		virtual void HandlePacket(const CECPacket *packet);
+		
 	public:
 		CServerConnectRem(CRemoteConnect *);
 		bool ReQuery();
@@ -336,6 +426,8 @@ class CServerConnectRem {
 
 class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> {
 		uint32 m_TotalUser, m_TotalFile;
+		
+		virtual void HandlePacket(const CECPacket *packet);
 	public:
 		CServerListRem(CRemoteConnect *);
 		void GetUserFileStatus(uint32 &total_user, uint32 &total_file)
@@ -389,8 +481,8 @@ class CUpQueueRem {
 	public:
 		CUpQueueRem(CRemoteConnect *);
 		
-		bool ReQueryUp() { return m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
-		bool ReQueryWait() { return m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
+		void ReQueryUp() { m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
+		void ReQueryWait() { m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		
 		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }
 		CUpDownClient *GetNextFromUploadList(POSITION &curpos) { return m_up_list.GetNextFromList(curpos); }
@@ -548,6 +640,12 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		bool Phase1Done(const CECPacket *);
 };
 
+class CStatsUpdaterRem : public CECPacketHandlerBase {
+		virtual void HandlePacket(const CECPacket *);
+	public:
+		CStatsUpdaterRem() {}
+};
+
 class CListenSocketRem {
 		uint32 m_peak_connections;
 	public:
@@ -566,7 +664,9 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	void OnPollTimer(wxTimerEvent& evt);
 	
 	void OnECConnection(wxEvent& event);
-
+	void OnECInitDone(wxEvent& event);
+	
+	CStatsUpdaterRem m_stats_updater;
 public:
 
 	void Startup();

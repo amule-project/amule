@@ -168,6 +168,10 @@ class CEC_Server_Tag : public CECTag {
  		uint32 GetFiles() { return GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt32Data(); }
  		uint32 GetUsers() { return GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt32Data(); }
  		uint32 GetMaxUsers() { return GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt32Data(); }
+ 		
+ 		// we're not using incremental update on server list,
+ 		// but template code needs it
+ 		uint32 ID() { return 0; }
 };
 
 
