@@ -336,6 +336,9 @@ void CamuleRemoteGuiApp::Startup() {
 	// Create main dialog
 	InitGui(0, geom_string);
 
+	// Forward wxLog events to CLogger
+	wxLog::SetActiveTarget(new CLoggerTarget);
+	
 	serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 
 	sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
