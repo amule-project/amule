@@ -55,36 +55,36 @@ sub xas
 	#kad on
 	if($amulesigdata[5]==2) {
 		if ($amulesigdata[0]==0) {
-			$amulestatus="offline";
-			$amulextatus="( kad: on )";
+			#$amulestatus="Not Connected";
+			$amulextatus="Kad: ok";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
 			$amulestatus="connecting"; 
-		    $amulextatus="( kad: on )" 
+		    $amulextatus="| Kad: ok"; 
 		} else {
 			$amulestatus="online";
-			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: on )";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] | Kad: ok";
 		}
 	} elsif ($amulesigdata[5]==1) {
 		if ($amulesigdata[0]==0) {
-			$amulestatus="offline";
-			$amulextatus="( kad: firewalled )" 
+			#$amulestatus="Not Connected";
+			$amulextatus="Kad: firewalled";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
 			$amulestatus="connecting"; 
-            $amulextatus="( kad: firewalled )"; 
+            		$amulextatus="| Kad: firewalled"; 
 		} else {
 			$amulestatus="online";
-			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: firewalled )";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] | Kad: firewalled";
 		}
 	} else {
 		if ($amulesigdata[0]==0) {
-			$amulestatus="offline";
-			$amulextatus="( kad: off )";
+			$amulestatus="Not Connected";
+			$amulextatus="| Kad: off";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
 			$amulestatus="connecting"; 
-			$amulextatus="( kad: off )" ;
+			$amulextatus="| Kad: off" ;
 		} else {
 			$amulestatus="online";
-			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] ( kad: off )";
+			$amulextatus="with $amuleid ID on server $amulesigdata[1] [ $amulesigdata[2]:$amulesigdata[3] ] | Kad: off";
 		}
 	}
 
@@ -128,7 +128,7 @@ sub xas
 	# and display it
 
 	# if current user isn't running aMule
-	if ( ! `ps --no-header -u $ENV{USER} | grep amule`) {
+		if ( ! `ps --no-header -u $ENV{USER} | grep amule`) {
 		IRC::command "/say $amulesigdata[10] is not running";
 		# Crash detection is implemented since v2-rc4, so XAS should be backwards compatible
 		if ( grep(/^1./,$amulesigdata[13]) || $amulesigdata[13]=="2.0.0rc1" || $amulesigdata[13]=="2.0.0rc2" || $amulesigdata[13]=="2.0.0rc3" ) {
@@ -141,7 +141,7 @@ sub xas
 		IRC::command "/say Total upload traffic:   $tul Gb" }
 	# if aMule is running
 	else {
-		IRC::command "/say $amulesigdata[10] is $amulestatus $amulextatus";
+		IRC::command "/say $amulesigdata[10] is connected to $amulestatus $amulextatus";
 		IRC::command "/say aMule $amulesigdata[13] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
 		# we only display "number of cpus" when we have more then one
