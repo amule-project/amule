@@ -156,6 +156,8 @@ void CServer::Init() {
 	m_uDescReqChallenge = 0;
 	lastdescpingedcout = 0;
 	m_auxPorts.Clear();
+	m_lastdnssolve = 0;
+	m_dnsfailure = false;
 }	
 
 

@@ -315,19 +315,59 @@ void CServerUDPSocket::SendQueue()
 		wxASSERT(item.ip xor !item.addr.IsEmpty());
 		if (!item.addr.IsEmpty()) {
 			// This not an ip but a hostname. Resolve it.
-			CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, &theApp, this);
-			if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
+			CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
+			if (update) {
+				if (update->GetLastDNSSolve() + DNS_SOLVE_TIME < ::GetTickCount64()) {
+					// Its time for a new check.
+					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, &theApp, this);
+					if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
+						// Not much we can do here, just drop the packet.
+						m_queue.pop_front();
+			
+						continue;
+					}
+					update->SetDNSError(false);
+					update->SetLastDNSSolve(::GetTickCount64());
+					// Wait for the DNS query to be resolved
+					return;
+				} else {
+					// It has been checked recently, don't re-check yet.
+					if (update->GetDNSError()) {
+						// Drop the packet, dns failed last time
+						AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that failed DNS: ")+item.addr);
+						m_queue.pop_front();
+						continue;
+					} else {
+						// It has been solved or is solving.
+						if (update->GetIP()) {
+							// It has been solved and ok
+							AddDebugLogLineM(false, logServerUDP, wxT("Sending a UDP packet to a resolved DNS server host: ")+item.addr);
+							CMuleUDPSocket::SendPacket(packet, update->GetIP(), item.port + 4);
+							m_queue.pop_front();
+							continue;
+						} else {
+							AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that is checking DNS: ")+item.addr);
+							// Let the packet queued, and wait for resultion
+							return;
+						}
+					}
+				}
+			} else {
+				AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that is not on serverlist"));
 				// Not much we can do here, just drop the packet.
 				m_queue.pop_front();
 			
 				continue;
 			}
-
-			// Wait for the DNS query to be resolved
-			return;
 		}
 		
-		CMuleUDPSocket::SendPacket(packet, item.ip, item.port + 4);
+		CServer* update = theApp.serverlist->GetServerByIP(item.ip, item.port);
+		if (update) {
+			AddDebugLogLineM(false, logServerUDP, wxT("Sending an UDP packet to a server: ")+update->GetAddress());
+			CMuleUDPSocket::SendPacket(packet, item.ip, item.port + 4);
+		} else {
+			AddDebugLogLineM(false, logServerUDP, wxT("Sending an UDP packet to a server no in serverlist: ")+Uint32_16toStringIP_Port(item.ip,item.port));
+		}
 		
 		m_queue.pop_front();
 	}
@@ -342,10 +382,11 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 	wxCHECK_RET(!item.ip and !item.addr.IsEmpty(), wxT("DNS resolution not expected."));
 		
 	/* An asynchronous database routine completed. */
+	CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
 	if (ip == 0) { 
+		update->SetDNSError(true);
 		m_queue.pop_front();	
 	} else {
-		CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
 		if (update) {
 			update->SetID(ip);
 		}
