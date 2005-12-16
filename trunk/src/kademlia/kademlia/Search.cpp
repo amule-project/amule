@@ -267,6 +267,11 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 		AddDebugLogLineM(false, logKadSearch, wxT("Node type search result, discarding."));
 		m_answers++;
 		m_possible.clear();
+		// Clear the created contacts
+		ContactList::const_iterator it2;
+		for (it2 = results->begin(); it2 != results->end(); ++it2) {
+			delete (*it2);
+		}
 		delete results;
 		return;
 	}
@@ -287,7 +292,7 @@ void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 			m_responded[fromDistance] = from;
 
 			// Loop through their responses
-			for (response = results->begin(); response != results->end(); response++) {
+			for (response = results->begin(); response != results->end(); ++response) {
 				c = *response;
 
 				distance = c->getClientID();
