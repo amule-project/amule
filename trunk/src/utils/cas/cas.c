@@ -154,12 +154,14 @@ int main(int argc, char *argv[])
 	/* if amule isnt running say that and exit else print out the stuff
 	 * [ToDo] States 0 & 2 mean offline/connecting not "not running"...
 	 */
-	if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) == 0) {
+	
+	//if amule uptime is 0, then its not running...
+	if (strncmp(stats[16],"0",1) == 0 ) {
 		perror("aMule is not running\n");
 		exit(3);
 	}
-
-
+	
+	
 	if (strncmp(stats[0],"2",1) == 0)
 		CreateLine(lines, 0 ,"aMule %s is connecting\n", stats[13]);
 	else
@@ -167,32 +169,37 @@ int main(int argc, char *argv[])
 				stats[13], timeconv(stats[16]));
 
 	
-	if (strncmp(stats[0],"0",1) == 0)
+	
+	if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) == 0)
+		CreateLine(lines, 1, "%s is not connected ", stats[10]);
+	else if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) != 0)
 		CreateLine(lines, 1, "%s is connected to ", stats[10]);
 	else
-		CreateLine(lines, 1, "%s is connected to %s [%s:%s] with ", stats[10],
+		CreateLine(lines, 1, "%s is connnnected to %s [%s:%s] with ", stats[10],
 			stats[1], stats[2], stats[3]);
 	
 	
 	if (strncmp(stats[5],"2",1) == 0) {
 		if (strncmp(stats[4],"H",1) == 0)
 			AppendToLine(lines, 1, "HighID | Kad: ok \n");
-		if (strncmp(stats[4],"L",1) == 0)
+		else if (strncmp(stats[4],"L",1) == 0)
                         AppendToLine(lines, 1, "LowID | Kad: ok \n");
 		else
 			AppendToLine(lines, 1, "Kad: ok \n");
 	} else if (strncmp(stats[5],"1",1) == 0) {
 		if (strncmp(stats[4],"H",1) == 0)
 			AppendToLine(lines, 1, "HighID | Kad: firewalled \n");
-		if (strncmp(stats[4],"L",1) == 0)
+		else if (strncmp(stats[4],"L",1) == 0)
                         AppendToLine(lines, 1, "LowID | Kad: firewalled \n");
-        else
+        	else
 			AppendToLine(lines, 1, "Kad: firewalled \n");
 	} else {
 		if (strncmp(stats[4],"H",1) == 0)
-			AppendToLine(lines, 1, "HighID ( Kad: off )\n");
-        else
-			AppendToLine(lines, 1, "LowID ( Kad: off )\n");
+			AppendToLine(lines, 1, "HighID | Kad: off \n");
+		else if (strncmp(stats[4],"L",1) == 0)
+                        AppendToLine(lines, 1, "LowID | Kad: off \n");
+		else
+			AppendToLine(lines, 1, "but running\n");
 	}
 
 	strcpy(stats[11],convbytes(stats[11]));
