@@ -142,7 +142,7 @@ void CMuleListCtrl::LoadSettings()
 		column = order = 0;
 	}
 
-	// Set the column widts
+	// Set the column widths
 	wxString buffer;
 	if (cfg->Read( wxT("/eMule/TableWidths") + m_name, &buffer, wxEmptyString)) {
 		int counter = 0;
