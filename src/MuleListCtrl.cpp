@@ -100,7 +100,7 @@ CMuleListCtrl::~CMuleListCtrl()
 
 void CMuleListCtrl::SaveSettings()
 {
-	// Dont save tables with no specified name
+	// Don't save tables with no specified name
 	if ( m_name.IsEmpty() ) {
 		return;
 	}
@@ -137,7 +137,7 @@ void CMuleListCtrl::LoadSettings()
 	unsigned column = setting & COLUMN_MASK;
 	unsigned order  = setting & SORTING_MASK;
 	
-	// Sainity checking, to avoid asserting due to wrong saved settings
+	// Sanity checking, to avoid asserting due to wrong saved settings
 	if (column >= (unsigned)GetColumnCount()) {
 		column = order = 0;
 	}
