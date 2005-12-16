@@ -144,15 +144,7 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 	HitTest(evt.GetPoint(),flags);
 	// this event is launched _after_ checkbox value is set.. if it is set at all
 	if ((hItem.IsOk()) && (flags &  wxTREE_HITTEST_ONITEMICON)) {
-		bool share_it = !IsBold(hItem);
-		wxTreeItemId hChild;
-		wxTreeItemIdValue cookie;
-		hChild = GetFirstChild(hItem,cookie);
-		while (hChild.IsOk()) {
-			MarkChildren(hChild,share_it);
-			hChild=GetNextSibling(hChild);
-		}
-		CheckChanged(hItem, share_it);		
+		MarkChildren(hItem,!IsBold(hItem));
 		Refresh();
 	}
 	HasChanged = true;
@@ -161,21 +153,15 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 
 void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
 {
-	CheckChanged(hChild, mark);
-
-	Toggle(hChild);
-
 	wxTreeItemId hChild2;
 	wxTreeItemIdValue cookie;
 	hChild2 = GetFirstChild(hChild,cookie);
-	int i=0;
 	while(hChild2.IsOk()) {
 		MarkChildren(hChild2,mark);
-		i++;
 		hChild2 = GetNextSibling(hChild2);
 	}
 
-	Toggle(hChild);
+	CheckChanged(hChild, mark);
 }
 
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strText)
