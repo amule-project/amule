@@ -143,6 +143,12 @@ public:
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
 	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
 	
+	uint64 GetLastDNSSolve() const { return m_lastdnssolve; }
+	void SetLastDNSSolve(uint64 value) { m_lastdnssolve = value; }
+	
+	bool GetDNSError() const { return m_dnsfailure; }
+	void SetDNSError(bool value) { m_dnsfailure = value; }
+	
 private:
 	uint32		challenge;
 	uint32		lastpinged;
@@ -172,6 +178,9 @@ private:
 	uint32		m_uUDPFlags;
 	uint32		m_uLowIDUsers;
 	wxString	m_auxPorts;
+	
+	uint64		m_lastdnssolve;
+	bool		m_dnsfailure;
 	
 	void Init();
 

@@ -41,6 +41,11 @@ enum DnsSolveType {
 	DNS_SERVER_CONNECT
 };
 
+// Time between DNS solving the same address
+// 30 minutes * 60 s/m * 1000 ms/s
+#define DNS_SOLVE_TIME 30*60*1000
+
+
 class CAsyncDNS : public wxThread
 {
 public:
