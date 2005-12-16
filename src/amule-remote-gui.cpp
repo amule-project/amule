@@ -835,18 +835,23 @@ bool CSharedFilesRem::RenameFile(CKnownFile* file, const wxString& newName)
 	CECPacket request(EC_OP_RENAME_FILE);
 	request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 	request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
-	const CECPacket *reply = theApp.connect->SendRecvPacket(&request);
-	if (reply) {
-		if (reply->GetOpCode() == EC_OP_NOOP) {
-			file->SetFileName(newName);
 
-			return true;
-		}
-	}
-
-	return false;
+	m_conn->SendRequest(this, &request);
+	m_rename_file = file;
+	m_new_name = newName;
+	
+	return true;
 }
 
+void CSharedFilesRem::HandlePacket(const CECPacket *packet)
+{
+	if ( m_rename_file && (packet->GetOpCode() == EC_OP_NOOP) ) {
+		m_rename_file->SetFileName(m_new_name);
+		m_rename_file = 0;
+	} else if ( packet->GetOpCode() != EC_OP_FAILED ) {
+		CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>::HandlePacket(packet);
+	}
+}
 
 CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 {
@@ -1363,6 +1368,15 @@ void CSearchListRem::StopGlobalSearch()
 	}
 }
 
+void CSearchListRem::HandlePacket(const CECPacket *packet)
+{
+	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
+		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt32Data())
+	} else {
+		CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>::HandlePacket(packet);
+	}
+}
+
 CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 {
 	m_strFileName = tag->FileName();
@@ -1407,8 +1421,8 @@ void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *fil
 bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 {
 	CECPacket progress_req(EC_OP_SEARCH_PROGRESS);
-	const CECPacket *progress_reply = m_conn->SendRecvPacket(&progress_req);
-	CoreNotify_Search_Update_Progress(progress_reply->GetTagByIndex(0)->GetInt32Data());
+	m_conn->SendRequest(this, &progress_req);
+
 	return true;
 }
 
@@ -1431,14 +1445,6 @@ void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 	theStats::UpdateStats(packet);
 }
 
-/*
-void CStatsUpdaterRem::ReQuery()
-{
-	//		CECPacket stats_req(EC_OP_STAT_REQ);
-//		auto_ptr<const CECPacket> stats(connect->SendRecvPacket(&stats_req));
-	
-}
-*/
 
 bool CUpDownClient::IsBanned() const
 {
