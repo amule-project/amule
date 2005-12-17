@@ -615,7 +615,7 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	entry->keyID.setValue(m_target);
 	entry->sourceID.setValue(answer);
 	
-	#warning KAD TODO: Filter Kad notes.
+	bool bFilterComment = false;
 	
 	CTag *tag;
 	TagList::const_iterator it;
@@ -631,6 +631,8 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 			entry->fileName	= tag->GetStr();
 			delete tag;
 		} else if (!tag->m_name.Cmp(wxT(TAG_DESCRIPTION))) {
+			wxString strComment(tag->GetStr());
+			bFilterComment = thePrefs::IsMessageFiltered(strComment);
 			entry->taglist.push_front(tag);
 		} else if (!tag->m_name.Cmp(wxT(TAG_FILERATING))) {
 			entry->taglist.push_front(tag);
@@ -639,6 +641,13 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 		}
 	}
 	delete info;
+
+	if(bFilterComment)
+	{
+		delete entry;
+		return;
+	}
+	
 	byte fileid[16];
 	m_target.toByteArray(fileid);
 	const CMD4Hash fileHash(fileid);
