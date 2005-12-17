@@ -471,17 +471,8 @@ public:
 	static void		SetFilterByKeywords(bool val)	{ s_FilterSomeMessages = val; }
 	static const wxString&	GetMessageFilterString()	{ return s_MessageFilterString; }
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
-	static wxString 	MessageFilter() { 
-		if (s_FilterAllMessages) { 
-			return wxT("*");
-		} else {
-			if (s_FilterSomeMessages) {
-				return s_MessageFilterString;
-			} else {
-				return wxEmptyString;
-			}
-		}
-	}
+	static bool		IsMessageFiltered(const wxString& message);
+
 	// I cant have it return a reference, I'll need a pointer later.
 	static const CProxyData *GetProxyData()			{ return &s_ProxyData; }
 	
