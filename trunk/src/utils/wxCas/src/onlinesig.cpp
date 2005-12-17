@@ -220,6 +220,12 @@ wxString OnLineSig::GetSessionDL () const
 	return m_sessionDL;
 }
 
+//only used to check if aMule is running or not
+int OnLineSig::GetUpStatus () const
+{
+	return m_runTimeS;
+}
+
 wxString OnLineSig::GetRunTime ()
 {
 	unsigned int seconds = m_runTimeS;
@@ -262,8 +268,11 @@ wxString OnLineSig::GetConnexionIDType () const
 {
 	if ( m_connexionID == wxT( "H" ) ) {
 		return ( wxString ( _( "HighID" ) ) );
-	} else {
-		return ( wxString ( _( "LowID" ) ) );
+	} else if ( m_connexionID == wxT( "L" ) ) {
+                return ( wxString ( _( "LowID" ) ) );
+	}	
+	else {
+		return ( wxString ( _( "Not Connected" ) ) );
 	}
 }
 

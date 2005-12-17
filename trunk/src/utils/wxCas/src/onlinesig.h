@@ -64,7 +64,7 @@ private:
 	wxString m_serverIP;
 	wxString m_serverPort;
 	wxString m_connexionID;
-	int		 m_kadInfo;
+	int m_kadInfo;
 	wxString m_ULRate;
 	wxString m_DLRate;
 	wxString m_queue;
@@ -144,6 +144,9 @@ public:
 
 	/// Get session Download
 	wxString GetSessionDL () const;
+
+	/// Getrunnin Status
+	int GetUpStatus () const;
 
 	/// Get aMule runtime
 	wxString GetRunTime ();
