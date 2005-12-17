@@ -519,7 +519,7 @@ void CSearchListCtrl::OnColumnResize( wxListEvent& WXUNUSED(event) )
 }
 
 
-void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& event )
+void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 {
 	wxString URIs;	
 	

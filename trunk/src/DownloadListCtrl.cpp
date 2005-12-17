@@ -706,7 +706,7 @@ void CDownloadListCtrl::OnClearCompleted( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-void CDownloadListCtrl::OnGetED2KLink( wxCommandEvent& event )
+void CDownloadListCtrl::OnGetED2KLink(wxCommandEvent& WXUNUSED(event))
 {
 	ItemList files = ::GetSelectedItems( this, itFILES );
 

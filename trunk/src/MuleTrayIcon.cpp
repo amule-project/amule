@@ -153,17 +153,19 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 	}
 }
 
-void CMuleTrayIcon::ServerConnection(wxCommandEvent& event){
-	
+
+void CMuleTrayIcon::ServerConnection(wxCommandEvent& WXUNUSED(event))
+{	
 	wxCommandEvent evt;
 	theApp.amuledlg->OnBnConnect(evt);
 }
-void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event)){
 
-	if ( theApp.amuledlg->IsShown() ) {
+
+void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event))
+{
+	if (theApp.amuledlg->IsShown()) {
 		theApp.amuledlg->Hide_aMule();
-	}
-	else {
+	} else {
 		theApp.amuledlg->Show_aMule();
 	}
 }
