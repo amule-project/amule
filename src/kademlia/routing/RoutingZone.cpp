@@ -406,6 +406,9 @@ void CRoutingZone::merge(void)
 		m_subZones[0]->m_superZone = NULL;
 		m_subZones[1]->m_superZone = NULL;
 
+		m_subZones[0]->m_bin->m_dontDeleteContacts = true;
+		m_subZones[1]->m_bin->m_dontDeleteContacts = true;	
+		
 		delete m_subZones[0];
 		delete m_subZones[1];
 
