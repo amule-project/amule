@@ -342,8 +342,8 @@ function GotoCat(cat) {
  <td valign=middle class="down-header-left"><a href="downloads.php?sort=name"><b>File Name</b></a></td>
 
  <td valign=middle class="down-header"><a href="downloads.php?sort=size"><b>Size</b></a></td>
- <td valign=middle class="down-header"><a href="downloads.php?sort=completed"><b>Complete</b></a></td>
- <td valign=middle class="down-header"><a href="downloads.php?sort=transferred"><b>Transferred</b></a></td>
+ <td valign=middle class="down-header"><a href="downloads.php?sort=size_done"><b>Complete</b></a></td>
+ <td valign=middle class="down-header"><a href="downloads.php?sort=size_xfer"><b>Transferred</b></a></td>
  <td valign=middle class="down-header"><a href="downloads.php?sort=progress"><b>Progress</b></a></td>
  <td valign=middle class="down-header"><a href="downloads.php?sort=speed"><b>Speed</b></a></td>
  <td valign=middle class="down-header"><b>Sources</b></td>
@@ -386,6 +386,34 @@ function GotoCat(cat) {
 		}
 	}
 
+	//
+	// declare it here, before any function reffered it in "global"
+	//
+	$sort_order;$sort_reverse;
+
+	function my_cmp($a, $b)
+	{
+		global $sort_order, $sort_reverse;
+		
+		switch ( $sort_order) {
+			case "size": $result = $a->size > $b->size; break;
+			case "size_done": $result = $a->size_done > $b->size_done; break;
+			case "size_xfer": $result = $a->size_xfer > $b->size_xfer; break;
+			case "progress": $result = (((float)$a->size_done)/((float)$a->size)) > (((float)$b->size_done)/((float)$b->size)); break;
+			case "name": $result = $a->name > $b->name; break;
+			case "speed": $result = $a->speed > $b->speed; break;
+			case "scrcount": $result = $a->src_count > $b->src_count; break;
+			case "status": $result = StatusString($a) > StatusString($b); break;
+			case "prio": $result = PrioString($a) > PrioString($b); break;
+		}
+
+		if ( $sort_reverse ) {
+			$result = !$result;
+		}
+		//var_dump($sort_reverse);
+		return $result;
+	}
+
 	if ( ($HTTP_GET_VARS["cmd"] != "") && ($_SESSION["guest_login"] == 0) ) {
 		$name = $HTTP_GET_VARS['file'];
 		if ( strlen($name) == 32 ) {
@@ -394,6 +422,26 @@ function GotoCat(cat) {
 	}
 	
 	$downloads = amule_load_vars("downloads");
+
+	$sort_order = $HTTP_GET_VARS["sort"];
+
+	if ( $sort_order == "" ) {
+		$sort_order = $_SESSION["download_sort"];
+	}
+	$reverse_sort_key = "download_sort_reverse" . $sort_order;
+	if ( $_SESSION[$reverse_sort_key] == "" ) {
+		$_SESSION[$reverse_sort_key] = 0;
+	} else {
+		$_SESSION[$reverse_sort_key] = !$_SESSION[$reverse_sort_key];
+	}
+
+	//var_dump($_SESSION);
+	$sort_reverse = $_SESSION[$reverse_sort_key];
+	
+	if ( $sort_order != "" ) {
+		$_SESSION["download_sort"] = $sort_order;
+		usort(&$downloads, "my_cmp");
+	}
 
 	foreach ($downloads as $file) {
 		$status = StatusString($file);
