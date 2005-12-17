@@ -561,9 +561,20 @@ WxCasFrame::UpdateStatsPanel ()
 	m_statLine_1->SetLabel ( newline );
 
 	newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+	// aMule is stopped 
+	//if ( m_aMuleSig->GetRunTime () == 0 
+	
+	// aMule is not running
+	if ( m_aMuleSig->GetUpStatus () == 0) {
+		status = _( "Oh Oh, aMule is not running..." );
+		newline = MakeStatLine_2();
+		m_statLine_2->SetLabel ( newline );
 
-	// aMule is running
-	if ( m_aMuleSig->GetAmuleState () == 1 ) {
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+	}
+	// aMule is running, ed2k and kad are connected
+	else if ( (m_aMuleSig->GetAmuleState () == 1 ) && (m_aMuleSig->GetKadState () == 1 || m_aMuleSig->GetKadState () == 2)) {
 		// Stat line 2
 		newline = MakeStatLine_2();
 		m_statLine_2->SetLabel ( newline );
@@ -628,12 +639,264 @@ WxCasFrame::UpdateStatsPanel ()
 
 		status = _( "aMule is running" );
 	}
-	// aMule is stopped
-	else if ( m_aMuleSig->GetAmuleState () == 0 ) {
-		status = _( "WARNING: aMule is stopped !" );
+	// aMule is running, ed2k is off, but kad connected
+	else if ( (m_aMuleSig->GetAmuleState () == 0) && (m_aMuleSig->GetKadState () == 1 || m_aMuleSig->GetKadState () == 2 )) {
+		// Stat line 2
+		newline = MakeStatLine_2();
+		m_statLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 3
+		newline = MakeStatLine_3();
+		m_statLine_3->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 4
+		newline = MakeStatLine_4();
+		m_statLine_4->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 5
+		newline = MakeStatLine_5();
+		m_statLine_5->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 6
+		newline = MakeStatLine_6();
+		m_statLine_6->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
+
+		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+			newline = MakeHitsLine_1();
+			m_hitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		}
+
+		// Hits line 2
+		if ( m_aMuleSig->IsAbsoluteMaxDlChanged() ) {
+			newline = MakeHitsLine_2();
+			m_absHitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+			// Save new records
+			SaveAbsoluteHits();
+		}
+
+#ifdef __LINUX__		// System monitoring on Linux
+		newline = MakeSysLine_1();
+		m_sysLine_1->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		newline = MakeSysLine_2();
+		m_sysLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+#endif
+		status = _( "aMule is running" );
+	}
+	else if ( (m_aMuleSig->GetAmuleState () == 1) && (m_aMuleSig->GetKadState () == 0)) {
+		// Stat line 2
+		newline = MakeStatLine_2();
+		m_statLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 3
+		newline = MakeStatLine_3();
+		m_statLine_3->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 4
+		newline = MakeStatLine_4();
+		m_statLine_4->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 5
+		newline = MakeStatLine_5();
+		m_statLine_5->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 6
+		newline = MakeStatLine_6();
+		m_statLine_6->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
+
+		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+			newline = MakeHitsLine_1();
+			m_hitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		}
+
+		// Hits line 2
+		if ( m_aMuleSig->IsAbsoluteMaxDlChanged() ) {
+			newline = MakeHitsLine_2();
+			m_absHitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+			// Save new records
+			SaveAbsoluteHits();
+		}
+
+#ifdef __LINUX__		// System monitoring on Linux
+		newline = MakeSysLine_1();
+		m_sysLine_1->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		newline = MakeSysLine_2();
+		m_sysLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+#endif
+		status = _( "aMule is running" );
+	}	
+	//both disconnected
+	else if ( (m_aMuleSig->GetAmuleState () == 0) && (m_aMuleSig->GetKadState () == 0)) {
+		// Stat line 2
+		newline = MakeStatLine_2();
+		m_statLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 3
+		newline = MakeStatLine_3();
+		m_statLine_3->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 4
+		newline = MakeStatLine_4();
+		m_statLine_4->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 5
+		newline = MakeStatLine_5();
+		m_statLine_5->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 6
+		newline = MakeStatLine_6();
+		m_statLine_6->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
+
+		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+			newline = MakeHitsLine_1();
+			m_hitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		}
+
+		// Hits line 2
+		if ( m_aMuleSig->IsAbsoluteMaxDlChanged() ) {
+			newline = MakeHitsLine_2();
+			m_absHitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+			// Save new records
+			SaveAbsoluteHits();
+		}
+
+#ifdef __LINUX__		// System monitoring on Linux
+		newline = MakeSysLine_1();
+		m_sysLine_1->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		newline = MakeSysLine_2();
+		m_sysLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+#endif
+		status = _( "aMule is running, but disconnected" );
 	}
 	// aMule is connecting
 	else if ( m_aMuleSig->GetAmuleState () == 2 ) {
+		// Stat line 2
+		newline = MakeStatLine_2();
+		m_statLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 3
+		newline = MakeStatLine_3();
+		m_statLine_3->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 4
+		newline = MakeStatLine_4();
+		m_statLine_4->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 5
+		newline = MakeStatLine_5();
+		m_statLine_5->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Stat line 6
+		newline = MakeStatLine_6();
+		m_statLine_6->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
+
+		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
+			newline = MakeHitsLine_1();
+			m_hitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+		}
+
+		// Hits line 2
+		if ( m_aMuleSig->IsAbsoluteMaxDlChanged() ) {
+			newline = MakeHitsLine_2();
+			m_absHitLine->SetLabel ( newline );
+
+			newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+			// Save new records
+			SaveAbsoluteHits();
+		}
+
+#ifdef __LINUX__		// System monitoring on Linux
+		newline = MakeSysLine_1();
+		m_sysLine_1->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		newline = MakeSysLine_2();
+		m_sysLine_2->SetLabel ( newline );
+
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+#endif
+
 		status = _( "aMule is connecting..." );
 	}
 	// aMule status is unknown
@@ -708,16 +971,19 @@ wxString
 WxCasFrame::MakeStatLine_1() const
 {
 	wxString newline;
-	if ( m_aMuleSig->GetAmuleState () == 1 ) {
+	if ( m_aMuleSig->GetAmuleState () == 1 || m_aMuleSig->GetKadState () == 1 || m_aMuleSig->GetKadState () == 2 ) {
 		newline = _( "aMule " )
 		          + m_aMuleSig->GetVersion ()
 		          + _( " has been running for " )
 		          + m_aMuleSig->GetRunTime ();
-	} else if ( m_aMuleSig->GetAmuleState () == 0 ) {
-
+	} else if ( m_aMuleSig->GetUpStatus () == 0 ) {
+		newline  = _( "aMule " )
+		          + m_aMuleSig->GetVersion ()
+		          + _( " is stopped !" );
+	} else if ( m_aMuleSig->GetAmuleState () == 0 && m_aMuleSig->GetKadState () == 0 ) {
 		newline = _( "aMule " )
 		          + m_aMuleSig->GetVersion ()
-		          + _( " is STOPPED !" );
+		          + _( " is not connected !" );
 	} else if ( m_aMuleSig->GetAmuleState () == 2 ) {
 		newline = _( "aMule " )
 		          + m_aMuleSig->GetVersion ()
@@ -738,7 +1004,26 @@ WxCasFrame::MakeStatLine_2() const
 	if ( notTooLongName.Length() > 32 ) {
 		notTooLongName = notTooLongName.Left( 32 ) + wxT( "..." );
 	}
-
+	
+	if ((m_aMuleSig->GetAmuleState () == 0) && (m_aMuleSig->GetKadState() == 0)){
+	wxString newline = m_aMuleSig->GetUser ()
+	                   + _( " is not connected !" );
+	return ( newline );
+	}	
+	if (m_aMuleSig->GetAmuleState () == 0) {
+	wxString newline = m_aMuleSig->GetUser ()
+	                   + _( " is connected to " )
+			   + _( " Kad: " );
+	if(m_aMuleSig->GetKadState() == 2) {
+		newline += _( "ok");
+	} else if (m_aMuleSig->GetKadState() == 1) {
+			newline += _( "firewalled");
+		} else {
+		newline += _( "off");
+		}
+	return ( newline );
+	}
+	else {
 	wxString newline = m_aMuleSig->GetUser ()
 	                   + _( " is on " )
 	                   + notTooLongName
@@ -748,16 +1033,16 @@ WxCasFrame::MakeStatLine_2() const
 			   + m_aMuleSig->GetServerPort ()
 			   + _( "] with " )
 			   + m_aMuleSig->GetConnexionIDType ()
-			   + _( " ( Kad: " );
+			   + _( " | Kad: " );
 	if(m_aMuleSig->GetKadState() == 2) {
-		newline += _( "on");
+		newline += _( "ok");
 	} else if (m_aMuleSig->GetKadState() == 1) {
 		newline += _( "firewalled");
 	} else {
 		newline += _( "off");
 	}
-	newline += _( " )");
 	return ( newline );
+	}
 }
 
 wxString
