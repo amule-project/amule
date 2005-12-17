@@ -250,7 +250,7 @@ void CSearch::jumpStart(void)
 
 void CSearch::processResponse(uint32 fromIP, uint16 fromPort, ContactList *results)
 {
-	AddDebugLogLineM(false, logKadSearch, wxT("Process search response from ") + Uint32_16toStringIP_Port(fromIP, fromPort));
+	AddDebugLogLineM(false, logKadSearch, wxT("Process search response from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP), fromPort));
 
 	if (results) {
 		m_lastResponse = time(NULL);
@@ -367,10 +367,10 @@ void CSearch::StorePacket()
 		case KEYWORD: {
 			if (m_type == FILE) {
 				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: File"));
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (File) ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));
 			} else {
 				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Keyword"));
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));
+				AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchReq (Keyword) ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));
 			}
 			wxASSERT( m_searchTerms->GetLength() > 0 );
 			// The data in 'm_searchTerms' is to be sent several times, so use the don't detach flag.
@@ -443,15 +443,15 @@ void CSearch::StorePacket()
 				break;
 			}
 			if( bio1 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
+				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));								
 				CKademlia::getUDPListener()->sendPacket( packet1, ((1024*50)-bio1->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			if( bio2 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));											
+				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));											
 				CKademlia::getUDPListener()->sendPacket( packet2, ((1024*50)-bio2->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			if( bio3 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ")  + Uint32_16toStringIP_Port(from->getIPAddress(), from->getUDPPort()));								
+				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ")  + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));								
 				CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->getAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			m_totalRequestAnswers++;
@@ -554,7 +554,7 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 			processResultNotes(fromIP, fromPort, answer, info);
 			break;
 	}
-	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT(" from ") + Uint32_16toStringIP_Port(fromIP,fromPort));
+	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT(" from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP),fromPort));
 }
 
 void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
@@ -842,7 +842,7 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 			default:
 				Type = wxT("KadReqUnknown");
 		}
-		AddDebugLogLineM(false, logClientKadUDP, Type + wxT(" to ") + Uint32_16toStringIP_Port(ip,port));
+		AddDebugLogLineM(false, logClientKadUDP, Type + wxT(" to ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
 		#endif
 
 		CKademlia::getUDPListener()->sendPacket(&bio, KADEMLIA_REQ, ip, port);

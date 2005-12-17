@@ -972,7 +972,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 						count++;
 						if( count % 50 == 0 ) {
 							uint32 len = sizeof(packet)-bio.getAvailable();
-							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
+							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 							CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 							bio.reset();
 							bio.writeByte(OP_KADEMLIAHEADER);
@@ -989,7 +989,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			uint32 len = sizeof(packet)-bio.getAvailable();
 			ENDIAN_SWAP_I_16(ccount);
 			memcpy(packet+18, &ccount, 2);
-			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 		}
 		clean();
@@ -1022,7 +1022,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 					count++;
 					if( count % 50 == 0 ) {
 						uint32 len = sizeof(packet)-bio.getAvailable();
-						AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip , port));
+						AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip) , port));
 						CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 						bio.reset();
 						bio.writeByte(OP_KADEMLIAHEADER);
@@ -1038,7 +1038,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			ENDIAN_SWAP_I_16(ccount);
 			uint32 len = sizeof(packet)-bio.getAvailable();
 			memcpy(packet+18, &ccount, 2);
-			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 		}
 		clean();
@@ -1071,7 +1071,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 				}
 				if( count % 50 == 0 ) {
 					uint32 len = sizeof(packet)-bio.getAvailable();
-					AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
+					AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 					CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 					bio.reset();
 					bio.writeByte(OP_KADEMLIAHEADER);
@@ -1086,7 +1086,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 			ENDIAN_SWAP_I_16(ccount);
 			uint32 len = sizeof(packet)-bio.getAvailable();
 			memcpy(packet+18, &ccount, 2);
-			AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(ip, port));
+			AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 		}
 		//clean(); //Not needed at the moment.
