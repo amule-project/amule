@@ -1870,18 +1870,7 @@ bool CClientTCPSocket::IsMessageFiltered(const wxString& Message, CUpDownClient*
 		} else if (thePrefs::MsgOnlySecure() && client->GetUserName().IsEmpty() ) {
 			filtered = true;
 		} else if (thePrefs::MustFilterMessages()) {
-			if (thePrefs::MessageFilter().IsSameAs(wxT("*"))){  
-				// Filter anything
-				filtered = true;
-			} else {
-				wxStringTokenizer tokenizer( thePrefs::MessageFilter(), wxT(",") );
-				while (tokenizer.HasMoreTokens() && !filtered) {
-					if ( Message.Lower().Trim(false).Trim(true).Contains(
-							tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
-						filtered = true;
-					}
-				}
-			}
+			filtered = thePrefs::IsMessageFiltered(Message);
 		}
 	}
 	return filtered;

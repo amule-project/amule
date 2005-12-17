@@ -1528,3 +1528,27 @@ void CPreferences::ReloadSharedFolders() {
 		sdirfile.Close();
 	}
 }
+
+bool CPreferences::IsMessageFiltered(const wxString& message) { 
+	if (s_FilterAllMessages) { 
+		return true;
+	} else {
+		if (s_FilterSomeMessages) {
+			if (s_MessageFilterString.IsSameAs(wxT("*"))){  
+				// Filter anything
+				return true;
+			} else {
+				wxStringTokenizer tokenizer( s_MessageFilterString, wxT(",") );
+				while (tokenizer.HasMoreTokens()) {
+					if ( message.Lower().Trim(false).Trim(true).Contains(
+							tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
+						return true;
+					}
+				}
+				return false;
+			}			
+		} else {
+			return false;
+		}
+	}
+}
