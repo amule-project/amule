@@ -337,7 +337,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
-	FindWindow( IDC_IPFILTERURL )->Enable( thePrefs::IPFilterAutoLoad() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 	
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
@@ -659,10 +658,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			}
 			break;
 
-		case IDC_AUTOIPFILTER:
-			FindWindow( IDC_IPFILTERURL )->Enable(value);;
-			break;
-		
 		case IDC_MSGFILTER:
 			// Toogle All filter options
 			FindWindow(IDC_MSGFILTER_ALL)->Enable(value);
