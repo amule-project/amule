@@ -2709,6 +2709,11 @@ void CPartFile::ResumeFile()
 		
 	lastsearchtime = 0;
 	SetStatus(status);
+
+	if (gaplist.IsEmpty()) {
+		// The file has already been hashed at this point
+		CompleteFile(true);
+	}
 	
 	UpdateDisplayedInfo(true);
 }
