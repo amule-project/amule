@@ -1,73 +1,102 @@
 dnl ---------------------------------------------------------------------------
 dnl Macros for wxWidgets detection. Typically used in configure.in as:
 dnl
-dnl 	AC_ARG_ENABLE(...)
-dnl 	AC_ARG_WITH(...)
-dnl	...
-dnl	AM_OPTIONS_WXCONFIG
-dnl	...
-dnl	...
-dnl	AM_PATH_WXCONFIG(2.3.4, wxWin=1)
+dnl     AC_ARG_ENABLE(...)
+dnl     AC_ARG_WITH(...)
+dnl        ...
+dnl     AM_OPTIONS_WXCONFIG
+dnl        ...
+dnl        ...
+dnl     AM_PATH_WXCONFIG(2.6.0, wxWin=1)
 dnl     if test "$wxWin" != 1; then
 dnl        AC_MSG_ERROR([
-dnl     	   wxWidgets must be installed on your system
-dnl     	   but wx-config script couldn't be found.
-dnl     
-dnl     	   Please check that wx-config is in path, the directory
-dnl     	   where wxWidgets libraries are installed (returned by
-dnl     	   'wx-config --libs' command) is in LD_LIBRARY_PATH or
-dnl     	   equivalent variable and wxWidgets version is 2.3.4 or above.
+dnl                wxWidgets must be installed on your system
+dnl                but wx-config script couldn't be found.
+dnl
+dnl                Please check that wx-config is in path, the directory
+dnl                where wxWidgets libraries are installed (returned by
+dnl                'wx-config --libs' command) is in LD_LIBRARY_PATH or
+dnl                equivalent variable and wxWidgets version is 2.3.4 or above.
 dnl        ])
 dnl     fi
 dnl     CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS"
 dnl     CXXFLAGS="$CXXFLAGS $WX_CXXFLAGS_ONLY"
 dnl     CFLAGS="$CFLAGS $WX_CFLAGS_ONLY"
-dnl     
-dnl     LDFLAGS="$LDFLAGS $WX_LIBS"
+dnl
+dnl     LIBS="$LIBS $WX_LIBS"
 dnl ---------------------------------------------------------------------------
 
 dnl ---------------------------------------------------------------------------
 dnl AM_OPTIONS_WXCONFIG
 dnl
-dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config 
-dnl command line options
+dnl adds support for --wx-prefix, --wx-exec-prefix, --with-wxdir and
+dnl --wx-config command line options
 dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_WXCONFIG],
 [
-   AC_ARG_WITH(wx-prefix, [  --with-wx-prefix=PREFIX          prefix where wxWidgets is installed],
-               wx_config_prefix="$withval", wx_config_prefix="")
-   AC_ARG_WITH(wx-exec-prefix,[  --with-wx-exec-prefix=PREFIX     exec prefix where wxWidgets is installed],
-               wx_config_exec_prefix="$withval", wx_config_exec_prefix="")
-   AC_ARG_WITH(wx-config,[  --with-wx-config=CONFIG          wx-config script to use],
-               wx_config_name="$withval", wx_config_name="")
+    AC_ARG_WITH(wxdir,
+                [  --with-wxdir=PATH       Use uninstalled version of wxWidgets in PATH],
+                [ wx_config_name="$withval/wx-config"
+                  wx_config_args="--inplace"])
+    AC_ARG_WITH(wx-config,
+                [  --with-wx-config=CONFIG wx-config script to use (optional)],
+                wx_config_name="$withval" )
+    AC_ARG_WITH(wx-prefix,
+                [  --with-wx-prefix=PREFIX Prefix where wxWidgets is installed (optional)],
+                wx_config_prefix="$withval", wx_config_prefix="")
+    AC_ARG_WITH(wx-exec-prefix,
+                [  --with-wx-exec-prefix=PREFIX
+                          Exec prefix where wxWidgets is installed (optional)],
+                wx_config_exec_prefix="$withval", wx_config_exec_prefix="")
 ])
 
-dnl ---------------------------------------------------------------------------
-dnl AM_OPTIONS_WXBASECONFIG
-dnl
-dnl adds support for --wx-prefix, --wx-exec-prefix and --wx-config
-dnl command line options
-dnl ---------------------------------------------------------------------------
-
-AC_DEFUN([AM_OPTIONS_WXBASECONFIG],
+dnl Helper macro for checking if wx version is at least $1.$2.$3, set's
+dnl wx_ver_ok=yes if it is:
+AC_DEFUN([_WX_PRIVATE_CHECK_VERSION],
 [
-   AC_ARG_WITH(wxbase-prefix, [  --with-wxbase-prefix=PREFIX      prefix where wxWidgets base is installed],
-               wxbase_config_prefix="$withval", wxbase_config_prefix="")
-   AC_ARG_WITH(wxbase-exec-prefix,[  --with-wxbase-exec-prefix=PREFIX exec prefix where wxWidgetsbase  is installed],
-               wxbase_config_exec_prefix="$withval", wxbase_config_exec_prefix="")
-   AC_ARG_WITH(wxbase-config,[  --with-wxbase-config=CONFIG      wxbase-config script to use],
-               wxbase_config_name="$withval", wxbase_config_name="")
+    wx_ver_ok=""
+    if test "x$WX_VERSION" != x ; then
+      if test $wx_config_major_version -gt $1; then
+        wx_ver_ok=yes
+      else
+        if test $wx_config_major_version -eq $1; then
+           if test $wx_config_minor_version -gt $2; then
+              wx_ver_ok=yes
+           else
+              if test $wx_config_minor_version -eq $2; then
+                 if test $wx_config_micro_version -ge $3; then
+                    wx_ver_ok=yes
+                 fi
+              fi
+           fi
+        fi
+      fi
+    fi
 ])
 
 dnl ---------------------------------------------------------------------------
-dnl AM_PATH_WXCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl AM_PATH_WXCONFIG(VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND
+dnl                  [, WX-LIBS [, ADDITIONAL-WX-CONFIG-FLAGS]]]])
 dnl
-dnl Test for wxWidgets, and define WX_C*FLAGS and WX_LIBS (this will also be
-dnl used for static linking against wxWidgets). Set WX_CONFIG_NAME
+dnl Test for wxWidgets, and define WX_C*FLAGS, WX_LIBS and WX_LIBS_STATIC
+dnl (the latter is for static linking against wxWidgets). Set WX_CONFIG_NAME
 dnl environment variable to override the default name of the wx-config script
 dnl to use. Set WX_CONFIG_PATH to specify the full path to wx-config - in this
 dnl case the macro won't even waste time on tests for its existence.
+dnl
+dnl Optional WX-LIBS argument contains comma- or space-separated list of
+dnl wxWidgets libraries to link against (it may include contrib libraries). If
+dnl it is not specified then WX_LIBS and WX_LIBS_STATIC will contain flags to
+dnl link with all of the core wxWidgets libraries.
+dnl
+dnl Optional ADDITIONAL-WX-CONFIG-FLAGS argument is appended to wx-config
+dnl invocation command in present. It can be used to fine-tune lookup of
+dnl best wxWidgets build available.
+dnl
+dnl Example use:
+dnl   AM_PATH_WXCONFIG([2.6.0], [wxWin=1], [wxWin=0], [html,core,net]
+dnl                    [--unicode --debug])
 dnl ---------------------------------------------------------------------------
 
 dnl
@@ -75,12 +104,11 @@ dnl Get the cflags and libraries from the wx-config script
 dnl
 AC_DEFUN([AM_PATH_WXCONFIG],
 [
-  AC_REQUIRE([AC_PROG_AWK])
-
   dnl do we have wx-config name: it can be wx-config or wxd-config or ...
   if test x${WX_CONFIG_NAME+set} != xset ; then
      WX_CONFIG_NAME=wx-config
   fi
+
   if test "x$wx_config_name" != x ; then
      WX_CONFIG_NAME="$wx_config_name"
   fi
@@ -94,6 +122,9 @@ AC_DEFUN([AM_PATH_WXCONFIG],
      wx_config_args="$wx_config_args --prefix=$wx_config_prefix"
      WX_LOOKUP_PATH="$WX_LOOKUP_PATH:$wx_config_prefix/bin"
   fi
+  if test "$cross_compiling" = "yes"; then
+     wx_config_args="$wx_config_args --host=$host_alias"
+  fi
 
   dnl don't search the PATH if WX_CONFIG_NAME is absolute filename
   if test -x "$WX_CONFIG_NAME" ; then
@@ -106,270 +137,212 @@ AC_DEFUN([AM_PATH_WXCONFIG],
 
   if test "$WX_CONFIG_PATH" != "no" ; then
     WX_VERSION=""
-    no_wx=""
 
-    min_wx_version=ifelse([$1], ,2.6.0,$1)
+    min_wx_version=ifelse([$1], ,2.2.1,$1)
+    if test -z "$5" ; then
+      AC_MSG_CHECKING([for wxWidgets version >= $min_wx_version])
+    else
+      AC_MSG_CHECKING([for wxWidgets version >= $min_wx_version ($5)])
+    fi
 
-    WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args"
+    WX_CONFIG_WITH_ARGS="$WX_CONFIG_PATH $wx_config_args $5 $4"
 
-    WX_VERSION=`$WX_CONFIG_WITH_ARGS --version`
-    
-    vers=`echo $WX_VERSION | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
-    minvers=`echo $min_wx_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
+    WX_VERSION=`$WX_CONFIG_WITH_ARGS --version 2>/dev/null`
+    wx_config_major_version=`echo $WX_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    wx_config_minor_version=`echo $WX_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    wx_config_micro_version=`echo $WX_VERSION | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
 
-    if test "x${need_gui:-yes}" = "xyes" ; then
-    
-      AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
-      if test -n "$vers" && test "$vers" -ge $minvers; then
+    wx_requested_major_version=`echo $min_wx_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+    wx_requested_minor_version=`echo $min_wx_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+    wx_requested_micro_version=`echo $min_wx_version | \
+           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
 
-        case "$USE_DEBUG_STATIC" in
-          yes)
-            WX_LIBS=`$WX_CONFIG_WITH_ARGS --static --libs`
-            ;;
-          *)
-            WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
-            ;;
-        esac
+    _WX_PRIVATE_CHECK_VERSION([$wx_requested_major_version],
+                              [$wx_requested_minor_version],
+                              [$wx_requested_micro_version])
 
-        dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-        WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
-        WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
-        WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+    if test -n "$wx_ver_ok"; then
 
-        WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
-        WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+      AC_MSG_RESULT(yes (version $WX_VERSION))
+      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
+
+      dnl is this even still appropriate?  --static is a real option now
+      dnl and WX_CONFIG_WITH_ARGS is likely to contain it if that is
+      dnl what the user actually wants, making this redundant at best.
+      dnl For now keep it in case anyone actually used it in the past.
+      AC_MSG_CHECKING([for wxWidgets static library])
+      WX_LIBS_STATIC=`$WX_CONFIG_WITH_ARGS --static --libs 2>/dev/null`
+      if test "x$WX_LIBS_STATIC" = "x"; then
+        AC_MSG_RESULT(no)
       else
-        no_wx=yes
+        AC_MSG_RESULT(yes)
       fi
 
-      if test "x$no_wx" = x ; then
-        AC_MSG_RESULT(yes (version $WX_VERSION))
-        ifelse([$2], , :, [$2])
+      dnl starting with version 2.2.6 wx-config has --cppflags argument
+      wx_has_cppflags=""
+      if test $wx_config_major_version -gt 2; then
+        wx_has_cppflags=yes
       else
-        if test "x$WX_VERSION" = x; then
-          dnl no wx-config at all
-          AC_MSG_RESULT(no)
-        else
-          AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
+        if test $wx_config_major_version -eq 2; then
+           if test $wx_config_minor_version -gt 2; then
+              wx_has_cppflags=yes
+           else
+              if test $wx_config_minor_version -eq 2; then
+                 if test $wx_config_micro_version -ge 6; then
+                    wx_has_cppflags=yes
+                 fi
+              fi
+           fi
         fi
-
-        WX_CFLAGS=""
-        WX_CPPFLAGS=""
-        WX_CXXFLAGS=""
-        WX_LIBS=""
-        ifelse([$3], , :, [$3])
-
-        AC_MSG_ERROR([
-         Please check that wx-config is in path, the directory
-         where wxWidgets libraries are installed (returned by
-         'wx-config --libs' command) is in LD_LIBRARY_PATH or
-         equivalent variable and wxWidgets version is new enough.
-         Or this might also be a bug in our configure. Please try again
-         with --with-wx-config=/usr/bin/wx-config
-         (replace /usr/bin/wx-config with a valid path to your wx-config)
-         * Note:
-         Most probably, either one of the above aren't correct, you don't
-         have wxGTK installed, or are missing wxGTK-devel (or equivalent) package.
-         ])
       fi
+
+      if test "x$wx_has_cppflags" = x ; then
+         dnl no choice but to define all flags like CFLAGS
+         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+         WX_CPPFLAGS=$WX_CFLAGS
+         WX_CXXFLAGS=$WX_CFLAGS
+
+         WX_CFLAGS_ONLY=$WX_CFLAGS
+         WX_CXXFLAGS_ONLY=$WX_CFLAGS
+      else
+         dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
+         WX_CPPFLAGS=`$WX_CONFIG_WITH_ARGS --cppflags`
+         WX_CXXFLAGS=`$WX_CONFIG_WITH_ARGS --cxxflags`
+         WX_CFLAGS=`$WX_CONFIG_WITH_ARGS --cflags`
+
+         WX_CFLAGS_ONLY=`echo $WX_CFLAGS | sed "s@^$WX_CPPFLAGS *@@"`
+         WX_CXXFLAGS_ONLY=`echo $WX_CXXFLAGS | sed "s@^$WX_CFLAGS *@@"`
+      fi
+
+      ifelse([$2], , :, [$2])
 
     else
 
-      if test "$vers" -ge 2005000; then
-        AC_MSG_CHECKING(for wxWidgets version >= $min_wx_version)
-        if test "x$no_wx" = x ; then
-          AC_MSG_RESULT(yes (version $WX_VERSION))
-        else
-          if test "x$WX_VERSION" = x; then
-            dnl no wx-config at all
-            AC_MSG_RESULT(no)
-          else
-            AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
-          fi
-        fi
-      fi
-      WX_CFLAGS=""
-      WX_CPPFLAGS=""
-      WX_CXXFLAGS=""
-      WX_LIBS=""
+       if test "x$WX_VERSION" = x; then
+          dnl no wx-config at all
+          AC_MSG_RESULT(no)
+       else
+          AC_MSG_RESULT(no (version $WX_VERSION is not new enough))
+       fi
+
+       WX_CFLAGS=""
+       WX_CPPFLAGS=""
+       WX_CXXFLAGS=""
+       WX_LIBS=""
+       WX_LIBS_STATIC=""
+       ifelse([$3], , :, [$3])
 
     fi
   else
-    AC_MSG_ERROR([
-	You need wxWidgets (http://www.wxwidgets.org/) to compile aMule. If you
-	have wxWidgets installed, please check that wx-config is in path, and
-	the directory where wxWidgets libraries are installed is in
-	LD_LIBRARY_PATH or equivalent variable. If you have wx-config in a
-	non-standard location please use the --with-wx-config=/path/to/wx-config
-	configure option.
-	])
+
+    WX_CFLAGS=""
+    WX_CPPFLAGS=""
+    WX_CXXFLAGS=""
+    WX_LIBS=""
+    WX_LIBS_STATIC=""
+    ifelse([$3], , :, [$3])
+
   fi
-  
+
   AC_SUBST(WX_CPPFLAGS)
   AC_SUBST(WX_CFLAGS)
   AC_SUBST(WX_CXXFLAGS)
   AC_SUBST(WX_CFLAGS_ONLY)
   AC_SUBST(WX_CXXFLAGS_ONLY)
   AC_SUBST(WX_LIBS)
+  AC_SUBST(WX_LIBS_STATIC)
   AC_SUBST(WX_VERSION)
-  
-  dnl Now checking if it is a 2.5 or more version
-  dnl Then take wx-config itself
-  
-  if test "$vers" -ge 2005000; then
-    if test "$vers" -ge 2005003; then
-      wx_conig_base_libs="--libs net,base";
-    else
-      wx_conig_base_libs="--libs=net,base";
-    fi
-  
-    WXBASE_CONFIG_NAME=$WX_CONFIG_NAME
-    WXBASE_CONFIG_WITH_ARGS=$WX_CONFIG_WITH_ARGS
-
-    case "$USE_DEBUG_STATIC" in
-	  yes)
-        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --static ${wx_conig_base_libs}`
-		;;
-	 *)
-        WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS ${wx_conig_base_libs}`
-		;;
-	esac
-      
-    dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-    WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
-    WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
-    WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-
-    WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
-    WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
-  
-    WXBASE24FOUND=0
-    WXBASE25FOUND=1
-  
-    AC_SUBST(WXBASE_CPPFLAGS)
-    AC_SUBST(WXBASE_CFLAGS)
-    AC_SUBST(WXBASE_CXXFLAGS)
-    AC_SUBST(WXBASE_CFLAGS_ONLY)
-    AC_SUBST(WXBASE_CXXFLAGS_ONLY)
-    AC_SUBST(WXBASE_LIBS)
-    AC_SUBST(WXBASE_VERSION)
-  else
-  
-    dnl For wx  < 2.5.0, looking for wxbase-config
-  
-    dnl do we have wxbase-config name: it can be wxbase-config or wxd-config or ...
-    if test x${WXBASE_CONFIG_NAME+set} != xset ; then
-     WXBASE_CONFIG_NAME=wxbase-2.4-config
-    fi
-    if test "x$wxbase_config_name" != x ; then
-       WXBASE_CONFIG_NAME="$wxbase_config_name"
-    fi
-
-    dnl deal with optional prefixes
-    if test x$wxbase_config_exec_prefix != x ; then
-       wxbase_config_args="$wxbase_config_args --exec-prefix=$wxbase_config_exec_prefix"
-       WXBASE_LOOKUP_PATH="$wxbase_config_exec_prefix/bin"
-    fi
-    if test x$wxbase_config_prefix != x ; then
-       wxbase_config_args="$wxbase_config_args --prefix=$wxbase_config_prefix"
-       WXBASE_LOOKUP_PATH="$WXBASE_LOOKUP_PATH:$wxbase_config_prefix/bin"
-    fi
-
-    dnl don't search the PATH if WXBASE_CONFIG_NAME is absolute filename
-    if test -x "$WXBASE_CONFIG_NAME" ; then
-       AC_MSG_CHECKING(for wxbase-config)
-       WXBASE_CONFIG_PATH="$WXBASE_CONFIG_NAME"
-       AC_MSG_RESULT($WXBASE_CONFIG_PATH)
-    else
-       AC_PATH_PROG(WXBASE_CONFIG_PATH, $WXBASE_CONFIG_NAME, no, "$WXBASE_LOOKUP_PATH:$PATH")
-    fi
-
-    if test "$WXBASE_CONFIG_PATH" != "no" ; then
-      WXBASE_VERSION=""
-      no_wxbase=""
-
-      min_wxbase_version=ifelse([$1], ,2.6.0,$1)
-      AC_MSG_CHECKING(for wxWidgets base version >= $min_wxbase_version)
-
-      WXBASE_CONFIG_WITH_ARGS="$WXBASE_CONFIG_PATH $wxbase_config_args"
-
-      WXBASE_VERSION=`$WXBASE_CONFIG_WITH_ARGS --version`
-      vers=`echo $WXBASE_VERSION | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
-      minvers=`echo $min_wxbase_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
-    
-      if test -n "$vers" && test "$vers" -ge $minvers; then
-	WXBASE24FOUND=1
-        WXBASE25FOUND=0
-
-        case "$USE_DEBUG_STATIC" in
-		  yes)
-            WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --static --libs`
-			;;
-		  *)
-            WXBASE_LIBS=`$WXBASE_CONFIG_WITH_ARGS --libs`
-			;;
-		esac
-
-        dnl we have CPPFLAGS included in CFLAGS included in CXXFLAGS
-        WXBASE_CPPFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cppflags`
-        WXBASE_CXXFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cxxflags`
-        WXBASE_CFLAGS=`$WXBASE_CONFIG_WITH_ARGS --cflags`
-
-        WXBASE_CFLAGS_ONLY=`echo $WXBASE_CFLAGS | sed "s@^$WXBASE_CPPFLAGS *@@"`
-        WXBASE_CXXFLAGS_ONLY=`echo $WXBASE_CXXFLAGS | sed "s@^$WXBASE_CFLAGS *@@"`
-      else 
-        no_wxbase=yes    
-      fi
-
-      if test "x$no_wxbase" = x ; then
-         AC_MSG_RESULT(yes (version $WXBASE_VERSION))
-         ifelse([$2], , :, [$2])
-      else
-         if test "x$WXBASE_VERSION" = x; then
-	    dnl no wxbase-config at all
-	    AC_MSG_RESULT(no)
-         else
-	    AC_MSG_RESULT(no (version $WXBASE_VERSION is not new enough))
-         fi
-
-	 WXBASE24FOUND=0
-         WXBASE25FOUND=0
-  
-         WXBASE_CFLAGS=""
-         WXBASE_CPPFLAGS=""
-         WXBASE_CXXFLAGS=""
-         WXBASE_LIBS=""
-         ifelse([$3], , :, [$3])
-	 
-         AC_MSG_NOTICE([
-	  WARNING: A usable libwx_base was not found.
-	  This is not needed for compiling aMule, but it is for compiling amulecmd.
-	  If you have no wxbase, amulecmd will be linked against wxgtk, thus removing
-	  all the non-graphical client meaning at all.
-          Please check that wxbase-2.X-config is in path, the directory
-          where wxWidgets base libraries are installed (returned by
-          'wxbase-2.X-config --libs' command) is in LD_LIBRARY_PATH or
-          equivalent variable and wxWidgets base version is new enough.
-	  Or this might also be that your wxbase-config has other name.
-	  Please try again with --with-wxbase-config=/usr/bin/wxbase-config
-	  (replace /usr/bin/wxbase-config with a valid path to your wxbase-config)
-	  * Note:
-	  Most probably, either one of the above aren't correct, you don't
-	  have wxbase installed, or are missing wxbase-devel (or equivalent) package.
-	 ])
-      fi
-    fi
-    
-    AC_SUBST(WXBASE_CPPFLAGS)
-    AC_SUBST(WXBASE_CFLAGS)
-    AC_SUBST(WXBASE_CXXFLAGS)
-    AC_SUBST(WXBASE_CFLAGS_ONLY)
-    AC_SUBST(WXBASE_CXXFLAGS_ONLY)
-    AC_SUBST(WXBASE_LIBS)
-    AC_SUBST(WXBASE_VERSION)
-  fi
 ])
 
+dnl ---------------------------------------------------------------------------
+dnl Get information on the wxrc program for making C++, Python and xrs
+dnl resource files.
+dnl
+dnl     AC_ARG_ENABLE(...)
+dnl     AC_ARG_WITH(...)
+dnl        ...
+dnl     AM_OPTIONS_WXCONFIG
+dnl     AM_OPTIONS_WXRC
+dnl        ...
+dnl     AM_PATH_WXCONFIG(2.6.0, wxWin=1)
+dnl     if test "$wxWin" != 1; then
+dnl        AC_MSG_ERROR([
+dnl                wxWidgets must be installed on your system
+dnl                but wx-config script couldn't be found.
+dnl
+dnl                Please check that wx-config is in path, the directory
+dnl                where wxWidgets libraries are installed (returned by
+dnl                'wx-config --libs' command) is in LD_LIBRARY_PATH or
+dnl                equivalent variable and wxWidgets version is 2.6.0 or above.
+dnl        ])
+dnl     fi
+dnl
+dnl     AM_PATH_WXRC([HAVE_WXRC=1], [HAVE_WXRC=0])
+dnl     if test "x$HAVE_WXRC" != x1; then
+dnl         AC_MSG_ERROR([
+dnl                The wxrc program was not installed or not found.
+dnl     
+dnl                Please check the wxWidgets installation.
+dnl         ])
+dnl     fi
+dnl
+dnl     CPPFLAGS="$CPPFLAGS $WX_CPPFLAGS"
+dnl     CXXFLAGS="$CXXFLAGS $WX_CXXFLAGS_ONLY"
+dnl     CFLAGS="$CFLAGS $WX_CFLAGS_ONLY"
+dnl
+dnl     LDFLAGS="$LDFLAGS $WX_LIBS"
+dnl ---------------------------------------------------------------------------
+
+
+
+dnl ---------------------------------------------------------------------------
+dnl AM_PATH_WXRC([ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl
+dnl Test for wxWidgets' wxrc program for creating either C++, Python or XRS
+dnl resources.  The variable WXRC will be set and substituted in the configure
+dnl script and Makefiles.
+dnl
+dnl Example use:
+dnl   AM_PATH_WXRC([wxrc=1], [wxrc=0])
+dnl ---------------------------------------------------------------------------
+
+dnl
+dnl wxrc program from the wx-config script
+dnl
+AC_DEFUN([AM_PATH_WXRC],
+[
+  AC_ARG_VAR([WXRC], [Path to wxWidget's wxrc resource compiler])
+    
+  if test "x$WX_CONFIG_NAME" = x; then
+    AC_MSG_ERROR([The wxrc tests must run after wxWidgets test.])
+  else
+    
+    AC_MSG_CHECKING([for wxrc])
+    
+    if test "x$WXRC" = x ; then
+      dnl wx-config --utility is a new addition to wxWidgets:
+      _WX_PRIVATE_CHECK_VERSION(2,5,3)
+      if test -n "$wx_ver_ok"; then
+        WXRC=`$WX_CONFIG_WITH_ARGS --utility=wxrc`
+      fi
+    fi
+
+    if test "x$WXRC" = x ; then
+      AC_MSG_RESULT([not found])
+      ifelse([$2], , :, [$2])
+    else
+      AC_MSG_RESULT([$WXRC])
+      ifelse([$1], , :, [$1])
+    fi
+    
+    AC_SUBST(WXRC)
+  fi
+])
 
 dnl ---------------------------------------------------------------------------
 dnl AM_WXCONFIG_LARGEFILE()
@@ -381,75 +354,36 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 [
 	AC_LANG_PUSH(C++)
 	
-	if test "x${no_wx}" = "x";
-	then
-		dnl Backup current flags and setup flags for testing
-		__CPPFLAGS=${CXXFLAGS}
-		CPPFLAGS=${WXBASE_CPPFLAGS}
-		
-		AC_MSG_CHECKING(that wxWidgets has support for large files)
-		AC_PREPROC_IFELSE([
-			#include <wx/wx.h>
-
-			int main() {
-			#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
-				#error No LargeFile support!;
-			#endif
-				exit(0);
-			}
-		], , NO_LF="true")
-
-    	if test "x${NO_LF}" != "x";
-		then
-			AC_MSG_RESULT(no)
-    		AC_MSG_ERROR([
-			Support for large files in wxWidgets is required by aMule.
-			To continue you must recompile wxWidgets with support for 
-			large files enabled.
-			])
-		else
-			AC_MSG_RESULT(yes)
-		fi
-
-		dnl Restore backup'd flags
-		CPPFLAGS=${__CPPFLAGS}	
-	fi
+	dnl Backup current flags and setup flags for testing
+	__CPPFLAGS=${CXXFLAGS}
+	CPPFLAGS=${WX_CPPFLAGS}
 	
-	dnl Test wxBase
-	if test "x${no_wxbase}" = "x";
+	AC_MSG_CHECKING(that wxWidgets has support for large files)
+	AC_PREPROC_IFELSE([
+		#include <wx/wx.h>
+
+		int main() {
+		#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
+			#error No LargeFile support!;
+		#endif
+			exit(0);
+		}
+	], , NO_LF="true")
+
+	if test "x${NO_LF}" != "x";
 	then
-		dnl Backup current flags and setup flags for testing
-		__CPPFLAGS=${CXXFLAGS}
-		CPPFLAGS=${WXBASE_CPPFLAGS}
-		
-		AC_MSG_CHECKING(that wxBase has support for large files)
-		AC_PREPROC_IFELSE([
-			#include <wx/wx.h>
-
-			int main() {
-			#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
-				#error No LargeFile support!;
-			#endif
-				exit(0);
-			}
-		], , NO_LF="true")
-
-    	if test "x${NO_LF}" != "x";
-		then
-			AC_MSG_RESULT(no)
-    		AC_MSG_ERROR([
-			Support for large files in wxBase is required by aMule.
-			To continue you must recompile wxWidgets with support for 
-			large files enabled.
-			])
-		else
-			AC_MSG_RESULT(yes)
-		fi
-
-		dnl Restore backup'd flags
-		CPPFLAGS=${__CPPFLAGS}
+		AC_MSG_RESULT(no)
+		AC_MSG_ERROR([
+		Support for large files in wxWidgets is required by aMule.
+		To continue you must recompile wxWidgets with support for 
+		large files enabled.
+		])
+	else
+		AC_MSG_RESULT(yes)
 	fi
+
+	dnl Restore backup'd flags
+	CPPFLAGS=${__CPPFLAGS}	
 
 	AC_LANG_POP(C++)
 ])
-
