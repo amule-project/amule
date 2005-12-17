@@ -473,7 +473,12 @@ bool CamuleApp::OnInit()
 
 	// Close standard-input
 	if ( !cmdline.Found(wxT("enable-stdin")) ) {
-		close(0);
+		// The full daemon will close all std file-descriptors by itself,
+		// so closing it here would lead to the closing on the first open
+		// file, which is the logfile opened below
+		if (!enable_daemon_fork) {
+			close(0);
+		}
 	}
 
 	// This creates the CFG file we shall use
