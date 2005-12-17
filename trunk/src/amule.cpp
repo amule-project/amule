@@ -674,11 +674,11 @@ bool CamuleApp::OnInit()
 #ifdef AMULE_DAEMON
 		int pid = fork();
 		if ( pid == -1 ) {
-			printf("ERROR: fork failed with code %d\n", errno);
+			printf("ERROR: fork failed with error '%s'\n", strerror(errno));
 		} else {
 			if ( pid == 0 ) {
 				execlp("amuleweb", "amuleweb", (const char *)unicode2char(wxT("--amule-config-file=") + aMuleConfigFile), NULL);
-				printf("execlp failed with code %d\n", errno);
+				printf("execlp failed with error '%s'\n", strerror(errno));
 				exit(0);
 			} else {
 				webserver_pid = pid;
