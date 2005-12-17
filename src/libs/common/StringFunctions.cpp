@@ -103,7 +103,7 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 // Strips specific chars to ensure legal filenames
 wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 {
-#if __WXMSW__
+#ifdef __WXMSW__
 	fat32 = true;
 #endif
 	wxString result;
