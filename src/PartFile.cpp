@@ -2431,7 +2431,9 @@ void CPartFile::PerformFileComplete()
 	FlushBuffer();
 
 	// close permanent handle
-	m_hpartfile.Close();
+	if (m_hpartfile.IsOpened()) {
+		m_hpartfile.Close();
+	}
 	
 	// Call thread for completion
 	CCompletingThread* thread = new CCompletingThread(GetFileName(), m_fullname, GetCategory(), this);
@@ -2710,7 +2712,7 @@ void CPartFile::ResumeFile()
 	lastsearchtime = 0;
 	SetStatus(status);
 
-	if (gaplist.IsEmpty()) {
+	if (gaplist.IsEmpty() and (GetStatus() == PS_ERROR)) {
 		// The file has already been hashed at this point
 		CompleteFile(true);
 	}
