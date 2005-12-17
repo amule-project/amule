@@ -232,6 +232,8 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	
 	if ( newfile && newfile->GetStatus() != PS_ERROR ) {
 		AddDownload( newfile, thePrefs::AddNewFilesPaused(), category );
+	} else {
+		delete newfile;
 	}
 }
 
@@ -312,17 +314,29 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const 
 {
-	if (const CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid)) {
+	if (CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
 			AddLogLineM(true, CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
+			// Check if the file exists, since otherwise the user is forced to 
+			// manually reload the shares to download a file again.
+			wxString fullpath = JoinPaths(file->GetFilePath(), file->GetFileName());
+			if (!CheckFileExists(fullpath)) {
+				// The file is no longer available, unshare it
+				theApp.sharedfiles->RemoveFile(file);
+				
+				return false;
+			}
+			
 			AddLogLineM(true, CFormat( _("You already have the file '%s'") ) % file->GetFileName());
 		}
+		
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
 		AddLogLineM(true, CFormat( _("You are already trying to download the file %s") ) % file->GetFileName());
 		return true;
 	}
+	
 	return false;
 }
 
@@ -1261,6 +1275,11 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 	} else {
 		file = new CPartFile(link);
 	
+		if (file->GetStatus() == PS_ERROR) {
+			delete file;
+			return false;
+		}
+		
 		AddDownload(file, thePrefs::AddNewFilesPaused(), category);
 	}
 	
