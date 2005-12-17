@@ -214,7 +214,7 @@ bool CRoutingZone::canSplit(void) const
 bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
 {
 	
-	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact (routing) with ip ") + Uint32_16toStringIP_Port(ip,port));
+	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact (routing) with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
 	
 	if (id == me) {
 		return false;
@@ -538,7 +538,7 @@ void CRoutingZone::onSmallTimer(void)
 	
 	if(c != NULL) {
 		c->checkingType();
-		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(c->getIPAddress(), c->getUDPPort()));
+		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(c->getIPAddress()), c->getUDPPort()));
 		CKademlia::getUDPListener()->sendMyDetails(KADEMLIA_HELLO_REQ, c->getIPAddress(), c->getUDPPort());
 	}
 }
