@@ -136,7 +136,7 @@ END_EVENT_TABLE()
 CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wxSize dlg_size) : wxFrame(
 	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
-	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") )
+	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") ), transferwnd(NULL)
 {
 	is_safe_state = false;
 	
@@ -1392,9 +1392,6 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 	
 	wxFrame::OnSize(evt);	
 	
-	#if !defined(__WXMAC__) && !defined(__WXCOCOA__)
-	// Crashing on mac, why?
-	
 	if (transferwnd && transferwnd->clientlistctrl) {
 	
 		// Transfer window's splitter set again if it's hidden.
@@ -1407,7 +1404,6 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt) {
 			splitter->SetSashPosition( height );
 		}
 	}
-	#endif
 	
 }
 
