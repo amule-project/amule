@@ -266,8 +266,8 @@ function GotoCat(cat) {
 <tr>
  <td valign=middle class="down-header-left"><a href="?sort=name"><b>File Name</b></a></td>
  <td valign=middle class="down-header"><a href="?sort=size"><b>Size</b></a></td>
- <td valign=middle class="down-header"><a href="?sort=completed"><b>Complete</b></a></td>
- <td valign=middle class="down-header"><a href="?sort=transferred"><b>Transferred</b></a></td>
+ <td valign=middle class="down-header"><a href="?sort=size_done"><b>Complete</b></a></td>
+ <td valign=middle class="down-header"><a href="?sort=size_xfer"><b>Transferred</b></a></td>
  <td valign=middle class="down-header"><a href="?sort=progress"><b>Progress</b></a></td>
 
  <td valign=middle class="down-header">&nbsp;&nbsp;<a href="?sort=speed"><b>Speed</b></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -323,6 +323,7 @@ function GotoCat(cat) {
 		switch ( $sort_order) {
 			case "size": $result = $a->size > $b->size; break;
 			case "size_done": $result = $a->size_done > $b->size_done; break;
+			case "size_xfer": $result = $a->size_xfer > $b->size_xfer; break;
 			case "progress": $result = (((float)$a->size_done)/((float)$a->size)) > (((float)$b->size_done)/((float)$b->size)); break;
 			case "name": $result = $a->name > $b->name; break;
 			case "speed": $result = $a->speed > $b->speed; break;
