@@ -139,8 +139,6 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
-	Parser.cpp \
-	Scanner.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
 	ServerList.cpp \
