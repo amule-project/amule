@@ -996,6 +996,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 			(file->GetStatus() != PS_COMPLETE);
 		bool fileResumable =
 			(file->GetStatus() == PS_PAUSED) ||
+			(file->GetStatus() == PS_ERROR) ||
 			(file->GetStatus() == PS_INSUFFICIENT);
 		
 		wxMenu* menu = m_menu;
