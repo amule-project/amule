@@ -338,8 +338,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
 	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
-	
+
+#ifdef __WXMAC__
+	FindWindow(IDC_ENABLETRAYICON)->Enable(false);
+	FindWindow(IDC_MINTRAY)->Enable(false);
+#else
 	FindWindow(IDC_MINTRAY)->Enable(thePrefs::UseTrayIcon());
+#endif
 
 	if (!CastChild(IDC_MSGFILTER, wxCheckBox)->IsChecked()) {
 		FindWindow(IDC_MSGFILTER_ALL)->Enable(false);

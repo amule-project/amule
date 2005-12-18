@@ -82,6 +82,8 @@ Version 2.1.0 - The "???" version
 		  for truly heroic debugging efforts.
 		* Fixed a crash in amuleweb when the template isn't found
 		* Contributed to improvements in the new CTimer class
+		* Disabled the tray icon preference settings on the Mac since they're
+		  dangerous (can cause crashes)
 
 	KingFish:
 		* Fixed systray shared files count.
