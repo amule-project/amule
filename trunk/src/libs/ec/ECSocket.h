@@ -267,7 +267,7 @@ class CECSocket : public wxSocketClient {
 	// Output related data
 	std::deque<CQueuedData*> m_output_queue;
 
-	int m_bytes_needed;
+	size_t m_bytes_needed;
 	bool m_in_header;
 	
 	// zlib (deflation) buffers

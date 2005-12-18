@@ -40,6 +40,8 @@
 
 #include "OtherFunctions.h"
 #include "common/StringFunctions.h"	// Needed for unicode2char()
+#include "Logger.h"
+#include <common/Format.h>
 
 #define EC_SOCKET_BUFFER_SIZE	2048
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -280,7 +282,7 @@ bool CECSocket::Connect(wxSockAddress& address)
 			OnLost();
 		}
 	}
-	return res;
+	return !Error();
 }
 
 void CECSocket::SendPacket(const CECPacket *packet)
@@ -374,7 +376,7 @@ void CECSocket::OnConnect()
 
 void CECSocket::OnInput()
 {
-	int bytes_rx = 0;
+	size_t bytes_rx = 0;
 	do {
 		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
 		if ( Error() ) {
@@ -726,19 +728,16 @@ const CECPacket *CECSocket::ReadPacket()
 	CECPacket *packet = 0;
 
 	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
+		printf((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: error [%s] in socket")) %
+			GetErrorMsg(LastError()))));
 		return 0;
 	}
 
 	uint32 flags = m_rx_flags;
 	
-	if ((flags & 0x60) != 0x20) {
+	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
-		Close();
-		return 0;
-	}
-
-	if (flags & EC_FLAG_UNKNOWN_MASK) {
-		// Received a packet with an unknown extension
+		printf((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: packet have invalid flags %08x")) % flags)));
 		Close();
 		return 0;
 	}
@@ -754,6 +753,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
 			ShowZError(zerror, &m_z);
+			printf((const char *)unicode2char(_("ReadPacket: failed zlib init")));
 			Close();
 			return 0;
 		}
@@ -764,6 +764,7 @@ const CECPacket *CECSocket::ReadPacket()
 	packet->ReadFromSocket(*this);
 	
 	if (packet->m_error != 0) {
+		printf((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: error %d in packet read")) % packet->m_error)));
 		delete packet;
 		packet = NULL;
 		Close();
@@ -773,6 +774,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
 			ShowZError(zerror, &m_z);
+			printf((const char *)unicode2char(_("ReadPacket: failed zlib free")));
 			Close();
 		}
 	}
