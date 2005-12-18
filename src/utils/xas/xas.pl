@@ -57,8 +57,8 @@ sub xas
 	#kad on
 	if($amulesigdata[5]==2) {
 		if ($amulesigdata[0]==0) {
-			#$amulestatus="Not Connected";
-			$amulextatus="Kad: ok";
+			$amulestatus="Not Connected";
+			$amulextatus="| Kad: ok";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
 			$amulestatus="connecting"; 
 		    $amulextatus="| Kad: ok"; 
