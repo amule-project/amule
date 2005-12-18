@@ -90,7 +90,9 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Hostname(host);
 	addr.Service(port);
 
-	Connect(addr);
+	if ( !Connect(addr) ) {
+		return false;
+	}
 	
 	// if we're using blocking calls - enter login sequence now. Else, 
 	// we will wait untill OnConnect gets called
