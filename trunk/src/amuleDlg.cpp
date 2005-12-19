@@ -657,11 +657,7 @@ void CamuleDlg::ShowConnectionState()
 		wxStaticBitmap* conn_bitmap = CastChild( wxT("connImage"), wxStaticBitmap );
 		wxASSERT(conn_bitmap);
 		
-		#ifdef __WXMSW__
-		bitmap_dc.SelectObject(conn_bitmap->GetIcon());	
-		#else
 		bitmap_dc.SelectObject(conn_bitmap->GetBitmap());	
-		#endif
 		
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
 		
