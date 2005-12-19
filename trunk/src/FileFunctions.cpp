@@ -375,16 +375,12 @@ bool BackupFile(const wxString& filename, const wxString& appendix)
 EFileType GuessFiletype(const wxString& file)
 {
 	wxFile archive(file, wxFile::read);
-	char head[10];
+	char head[10] = {0};
+	int read = archive.Read(head, std::min<off_t>(10, archive.Length()));
 
-	// We start by reading only the first two chars
-	if (archive.Read(head, 2) != 2) {
-		// Probably just an empty text-file
-		return EFT_Text;
-	}
-
-	// Attempt to guess the filetype.
-	if ((head[0] == 'P') && (head[1] == 'K')) {
+	if (read == wxInvalidOffset) {
+		return EFT_Unknown;
+	} else if ((head[0] == 'P') && (head[1] == 'K')) {
 		// Zip-archives have a header of "PK".
 		return EFT_Zip;
 	} else if (head[0] == (char)0x1F && head[1] == (char)0x8B) {
@@ -393,25 +389,17 @@ EFileType GuessFiletype(const wxString& file)
 	} else if (head[0] == (char)0xE0 || head[0] == (char)0x0E) {
 		// MET files have either of these headers
 		return EFT_Met;
-	} else {
-		// Check the first ten chars, if all are printable, 
-		// then we can probably safely assume that this is 
-		// a ascii text-file.
-		archive.Seek(0, wxFromStart);
-		size_t read = archive.Read(head, (archive.Length() > 10) ? 10 : archive.Length());
+	}
 
-		if (read == (size_t)wxInvalidOffset) {
+	// Check at most the first ten chars, if all are printable, 
+	// then we can probably assume it is ascii text-file.
+	for (int i = 0; i < read; ++i) {
+		if (!isprint(head[i]) && !isspace(head[i])) {
 			return EFT_Unknown;
 		}
-		
-		for (size_t i = 0; i < read; ++i) {
-			if (!isprint(head[i]) && !isspace(head[i])) {
-				return EFT_Unknown;
-			}
-		}
-		
-		return EFT_Text;
 	}
+	
+	return EFT_Text;
 }
 
 
