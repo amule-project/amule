@@ -69,7 +69,7 @@ class CHTTPDownloadThreadBase : public wxThread
 	int						m_result;
 	HTTP_Download_File	m_file_type;
 
-	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location);
+	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy);
 
 	virtual void ProgressCallback(int WXUNUSED(dltotal), int WXUNUSED(dlnow)) { }
 

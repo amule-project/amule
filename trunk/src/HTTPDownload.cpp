@@ -42,6 +42,8 @@
 #include "Logger.h"		// Needed for AddLogLine*
 #include <common/Format.h>		// Needed for CFormat
 #include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "Proxy.h"
+#include "Preferences.h"
 
 #ifndef AMULE_DAEMON 
 	#include "inetdownload.h"	// Needed for inetDownload
@@ -178,6 +180,9 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	
 	printf("HTTP download thread started\n");
 	
+	const CProxyData* proxy_data = thePrefs::GetProxyData();
+	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
+	
 	try {	
 		
 		wxFFileOutputStream outfile(m_tempfile,wxT("w"));
@@ -192,8 +197,10 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		}
 
 		url_handler = new wxHTTP;
+		
+		url_handler->SetProxyMode(use_proxy);
 	
-		url_read_stream = GetInputStream(&url_handler, m_url);
+		url_read_stream = GetInputStream(&url_handler, m_url,use_proxy);
 		
 		if (!url_read_stream) {
 			throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
@@ -253,7 +260,7 @@ void CHTTPDownloadThreadBase::OnExit()
 	wxPostEvent(&theApp,evt);
 }
 
-wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, const wxString& location) {
+wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy) {
 	// This function's purpose is to handle redirections in a proper way.
 	
 	if (TestDestroy()) {
@@ -336,7 +343,8 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 		(*url_handler)->Destroy();
 		if (!new_location.IsEmpty()) {
 			(*url_handler) = new wxHTTP;
-			url_read_stream = GetInputStream(url_handler, new_location);
+			(*url_handler)->SetProxyMode(proxy);
+			url_read_stream = GetInputStream(url_handler, new_location, proxy);
 		} else {
 			printf("ERROR: Redirection code received with no URL\n");
 			url_handler = NULL;
