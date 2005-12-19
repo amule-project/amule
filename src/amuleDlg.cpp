@@ -606,7 +606,7 @@ void CamuleDlg::ShowConnectionState()
 	enum kad_state { sKadUnknown = -1, sOff = 4, sFirewalled = 5, sOK = 6 };
 	static ed2k_state LastED2KState = sED2KUnknown;
 	static kad_state LastKadState = sKadUnknown;
-	static wxImageList status_arrows;
+	static wxImageList status_arrows(16,16);
 	static wxMemoryDC bitmap_dc;
 	
 	if (!status_arrows.GetImageCount()) {
