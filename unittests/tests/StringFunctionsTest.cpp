@@ -9,7 +9,7 @@ DECLARE_SIMPLE(StringFunctions)
 
 TEST(StringFunctions, JoinPaths)
 {
-	const wxString sep = wxFileName::GetPathSeparators();
+	const wxString sep = wxFileName::GetPathSeparator();
 
 	ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a"), wxT("b")));
 	ASSERT_EQUALS(wxT("a") + sep + wxT("b"), JoinPaths(wxT("a") + sep, wxT("b")));
