@@ -185,7 +185,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	
 	try {	
 		
-		wxFFileOutputStream outfile(m_tempfile,wxT("w"));
+		wxFFileOutputStream outfile(m_tempfile);
 		
 		if (!outfile.Ok()) {
 			throw(wxString(CFormat(wxT("Unable to create destination file %s for download!\n")) % m_tempfile));
