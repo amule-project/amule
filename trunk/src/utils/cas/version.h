@@ -26,5 +26,5 @@
 */
 
 #ifndef CAS_VERSION
-#define CAS_VERSION	"0.6"
+#define CAS_VERSION	"0.7"
 #endif
