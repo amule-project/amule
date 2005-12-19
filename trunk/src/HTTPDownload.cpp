@@ -30,6 +30,7 @@
 
 
 #include <wx/intl.h>
+#include <wx/wfstream.h>
 #include <wx/protocol/http.h>
 #include <cmath>
 #include <memory>
@@ -172,8 +173,6 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		return NULL;
 	}
 	
-	FILE *outfile = NULL; 
-	
 	wxHTTP* url_handler = NULL;
 	wxInputStream* url_read_stream = NULL;
 	
@@ -181,9 +180,9 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	
 	try {	
 		
-		outfile = fopen(unicode2char(m_tempfile), "w");
+		wxFFileOutputStream outfile(m_tempfile,wxT("w"));
 		
-		if (outfile == NULL) {
+		if (!outfile.Ok()) {
 			throw(wxString(CFormat(wxT("Unable to create destination file %s for download!\n")) % m_tempfile));
 		}
 			
@@ -215,7 +214,8 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 			current_read = url_read_stream->LastRead();
 			if (current_read) {
 				total_read += current_read;
-				int current_write = fwrite(buffer,1,current_read,outfile);
+				outfile.Write(buffer,current_read);
+				int current_write = outfile.LastWrite();
 				if (current_read != current_write) {
 					throw(wxString(wxT("Critical error while writing downloaded file")));
 				} else {
@@ -223,10 +223,8 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 				}
 			}
 		} while (current_read && !TestDestroy());
-		fclose(outfile);
 	} catch (const wxString& download_error) {
-		if (outfile) {
-			fclose(outfile);
+		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
 		m_result = -1;		
