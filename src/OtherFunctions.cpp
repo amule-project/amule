@@ -152,7 +152,7 @@ wxString CastItoIShort(uint64 count)
 	else if (count < 1000000000)
 		return wxString::Format(wxT("%.2f"),(float)(uint32)count/1000000) + _("M") ;
 	else if (count < 1000000000000LL)
-		return wxString::Format(wxT("%.2f%s"),(float)((uint32)(count/1000))/1000000) + _("G") ;
+		return wxString::Format(wxT("%.2f"),(float)((uint32)(count/1000))/1000000) + _("G") ;
 	else if (count < 1000000000000000LL)
 		return wxString::Format(wxT("%.2f"),(float)count/1000000000000LL) + _("T");
 
