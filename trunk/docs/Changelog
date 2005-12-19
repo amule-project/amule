@@ -279,6 +279,10 @@ Version 2.1.0 - The "???" version
 	lupz:
 		* Kad speed improvements.
 		* Kad sources search improvements.
+		* Fixed manual bootstrapping via the Kad dialog.
+		* Properly swap IPs when doing logging in Kad.
+		* Avoid trying to close the file multiple times when resuming a
+		  part-file that failed to complete.
 
 	Phoenix:
 		* Removed wxGTK and wxGTK-devel dependencies from the spec
@@ -327,6 +331,24 @@ Version 2.1.0 - The "???" version
 		* A4AF transfer speed display fix
 
 	Xaignar:
+		* Made the ipfilter.dat URL field independant of the auto-update
+		  check-box, to allow for easier manual updates.
+		* Fixed logging not working on full daemon.
+		* Improved displaying of errors when starting the webserver from
+		  amuled.
+		* Allow resuming of files that error'd out during completetion.
+		* When checking if a file is already being downloaded/shared, check if
+		  the actual file is still available. This allows redownloading of
+		  shared files that have been removed, without having to reload the
+		  list of shared files.
+		* Added checks to see if the target filesystem is fat32 when
+		  completing files, and removing known illegal chars in that case.
+		* Important log-lines are now bolded in the log textctrl.
+		* Redirect wxWidget log-events to the aMule log. This avoid the popups
+		  that wxWidgets would display by default.
+		* Made the unittests proper wxConsoleApps.
+		* Open the preferences dialog non-modally, so that it doesn't block
+		  the main GUI.
 		* Switched manual path-joining to using the generic function.
 		* Fixed the "pause all" and "cancel all" commands via remote.
 		* Fixed bad replies on sharedfiles-list requests when public viewing
