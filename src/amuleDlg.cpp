@@ -654,7 +654,10 @@ void CamuleDlg::ShowConnectionState()
 	
 	if ( (LastED2KState != NewED2KState) || (LastKadState != NewKadState)) {
 		
-		bitmap_dc.SelectObject(CastChild( wxT("connImage"), wxStaticBitmap )->GetBitmap());	
+		wxStaticBitmap* conn_bitmap = CastChild( wxT("connImage"), wxStaticBitmap );
+		wxASSERT(conn_bitmap);
+		
+		bitmap_dc.SelectObject(conn_bitmap->GetBitmap());	
 		
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
 		
