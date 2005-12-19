@@ -448,21 +448,40 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
  */
 bool UnpackGZipFile(const wxString& file)
 {
-	wxFileInputStream source(file);
-	wxZlibInputStream inputStream(source);
-	
+
 	char buffer[10240];
 	wxTempFile target(file);
-	
-	while (!inputStream.Eof()) {
+
+	bool write;	
+{
+	AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
+
+	wxFileInputStream source(file);
+	wxZlibInputStream inputStream(source);
+
+	do {
 		inputStream.Read(buffer, sizeof(buffer));
 
-		target.Write(buffer, inputStream.LastRead());
+		AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
+
+		if (inputStream.IsOk()) {
+			target.Write(buffer, inputStream.LastRead());
+			AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Wrote %u bytes"),inputStream.LastRead()) );
+		}
+
+	} while (!inputStream.Eof() && inputStream.LastRead() && inputStream.IsOk());
+
+	AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
+
+	write = inputStream.IsOk() || inputStream.Eof();
+}
+
+	if (write) {
+		target.Commit();
+		AddDebugLogLineM( false, logFileIO, wxT("Commited gzip stream") );
 	}
 
-	target.Commit();
-
-	return true;
+	return write;
 }
 
 
