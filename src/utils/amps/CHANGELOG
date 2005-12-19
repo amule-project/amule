@@ -1,5 +1,9 @@
 AMPS Changelog
 
+version 0.7.6
+
+- fulgas: added Kad info to amps
+
 version 0.7.5
 -------------
 - Fixed parsing of ps output to take into account other processes with 'amule'
