@@ -955,7 +955,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 
 	wxTextFile amulesig_out;
 	wxTextFile emulesig_out;
-
+	
 	// Open both files if needed
 	if ( !emulesig_out.Create( m_emulesig_path) ) {
 		AddLogLineM(true, _("Failed to create OnlineSig File"));
@@ -974,13 +974,16 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}
 
 	wxString emulesig_string;
-
+	wxString temp;
+	
 	if (zero) {
 		emulesig_string = wxT("0\xA0.0|0.0|0");
 		amulesig_out.AddLine(wxT("0\n0\n0\n0\n0\n0\n0.0\n0.0\n0\n0"));
 	} else {
 		if (IsConnectedED2K()) {
 
+			temp = wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort());
+			
 			// We are online
 			emulesig_string =
 				// Connected
@@ -991,7 +994,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 				// IP and port of the server
 				+ serverconnect->GetCurrentServer()->GetFullIP()
 				+ wxT("|")
-				+ wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort());
+				+ temp;
 
 
 			// Now for amule sig
@@ -1003,7 +1006,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			// Server IP
 			amulesig_out.AddLine(serverconnect->GetCurrentServer()->GetFullIP());
 			// Server Port
-			amulesig_out.AddLine(wxString::Format(wxT("%d"),serverconnect->GetCurrentServer()->GetPort()));
+			amulesig_out.AddLine(temp);
 
 			if (serverconnect->IsLowID()) {
 				amulesig_out.AddLine(wxT("L"));
@@ -1036,8 +1039,6 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			amulesig_out.AddLine(wxT("0"));
 		}
 		emulesig_string += wxT("\xA");
-
-		wxString temp;
 
 		// Datarate for downloads
 		temp = wxString::Format(wxT("%.1f"), theStats::GetDownloadRate() / 1024.0);
@@ -1627,10 +1628,12 @@ void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
 				if (wxFileExists(file)) {
 					wxRemoveFile(file);
 				}
-				wxRenameFile(file + wxT(".download"),file);
+
 				if ( Kademlia::CKademlia::isRunning() ) {
 					Kademlia::CKademlia::stop();
 				}
+
+				wxRenameFile(file + wxT(".download"),file);
 				
 				Kademlia::CKademlia::start();
 				theApp.ShowConnectionState();
