@@ -4,6 +4,10 @@ Version 2.1.0 - The "???" version
 
 	ender:
 		* Fix adding AICH links with amulecmd.
+	
+	fulgas:
+		* Added Kad info to amulesig
+		* Fix for reading Kad info on the amule-utils: amps,cas,wxCas,xas
 
 	Gerd78:
 		* Fix linkage with static wx libraries.
@@ -311,8 +315,9 @@ Version 2.1.0 - The "???" version
 		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
 	
 	stefanero:
-		* Fixed cas,xas and wxCas infos for Kad when only connected to
+		* Fixed cas,wxCas and xas infos for Kad when only connected to
 		Kad
+		* Imported amps in aMule source
 
 	thedude0001:
 		* Added CVS snapshot date to frame title.
