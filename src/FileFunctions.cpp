@@ -398,8 +398,12 @@ EFileType GuessFiletype(const wxString& file)
 		// then we can probably safely assume that this is 
 		// a ascii text-file.
 		archive.Seek(0, wxFromStart);
-		size_t read = archive.Read(head, 10);
+		size_t read = archive.Read(head, (archive.Length() > 10) ? 10 : archive.Length());
 
+		if (read == (size_t)wxInvalidOffset) {
+			return EFT_Unknown;
+		}
+		
 		for (size_t i = 0; i < read; ++i) {
 			if (!isprint(head[i]) && !isspace(head[i])) {
 				return EFT_Unknown;
@@ -563,4 +567,3 @@ FSCheckResult CheckFileSystem(const wxString& path)
 }
 
 #endif
-
