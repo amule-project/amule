@@ -57,8 +57,8 @@ sub xas
 	#kad on
 	if($amulesigdata[5]==2) {
 		if ($amulesigdata[0]==0) {
-			$amulestatus="Not Connected";
-			$amulextatus="| Kad: ok";
+			#$amulestatus="Not Connected";
+			$amulextatus="Kad: ok";
 		} elsif ($amulesigdata[0]==2) {	# Since aMule v2-rc4
 			$amulestatus="connecting"; 
 		    $amulextatus="| Kad: ok"; 
@@ -143,7 +143,12 @@ sub xas
 		IRC::command "/say Total upload traffic:   $tul Gb" }
 	# if aMule is running
 	else {
-		IRC::command "/say $amulesigdata[10] is connected to $amulestatus $amulextatus";
+		if ($amulesigdata[0]==0 && $amulesigdata[5]==0){
+		IRC::command "/say $amulesigdata[10] is not connected";
+		}
+		else {
+		IRC::command "/say $amulesigdata[10] is connected to $amulestatus $amulextatus";}
+	
 		IRC::command "/say aMule $amulesigdata[13] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
 		# we only display "number of cpus" when we have more then one
