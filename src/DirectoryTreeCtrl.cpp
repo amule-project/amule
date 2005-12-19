@@ -170,12 +170,6 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strT
 	
 	wxString strDir = GetFullPath(hBranch);
 
-	#ifndef __WXMSW__
-	wxASSERT(!strDir.IsEmpty()); // non-empty path (cannot add root dir)
-	#else 
-	// On windows, we get an empty path for drives.
-	#endif
-	
 	wxASSERT(strText.Find(ROOT_CHAR) == -1); // Folder label has no '/' on the name
 	
 	strDir += strText + ROOT_CHAR;
