@@ -386,4 +386,3 @@ TEST(Format, Overfeeding)
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 }
-
