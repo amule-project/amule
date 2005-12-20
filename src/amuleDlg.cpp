@@ -657,7 +657,9 @@ void CamuleDlg::ShowConnectionState()
 		wxStaticBitmap* conn_bitmap = CastChild( wxT("connImage"), wxStaticBitmap );
 		wxASSERT(conn_bitmap);
 		
-		bitmap_dc.SelectObject(conn_bitmap->GetBitmap());	
+		wxBitmap conn_image = conn_bitmap->GetBitmap();
+		
+		bitmap_dc.SelectObject(conn_image);	
 		
 		m_wndToolbar->DeleteTool(ID_BUTTONCONNECT);
 		
@@ -723,7 +725,7 @@ void CamuleDlg::ShowConnectionState()
 			}
 			/* Draw ED2K arrow */
 			status_arrows.Draw(NewED2KState, bitmap_dc, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
-		
+			
 			LastED2KState = NewED2KState;
 			
 		}
@@ -751,6 +753,8 @@ void CamuleDlg::ShowConnectionState()
 		connLabel->GetParent()->Layout();
 		
 		bitmap_dc.SelectObject(wxNullBitmap);
+		
+		conn_bitmap->SetBitmap(conn_image);
 		
 	} else {
 		if (theApp.IsConnectedED2K()) {
