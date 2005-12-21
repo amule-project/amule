@@ -92,7 +92,7 @@ void CStatisticsDlg::InitGraphs()
 	pscopeConn->SetRanges(0.0, (float)(thePrefs::GetStatsMax()));
 	pscopeConn->SetYUnits(wxEmptyString);
 
-	SetUpdatePeriod();
+	SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
 }
 
 
@@ -180,15 +180,14 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 void CStatisticsDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
-	double sStep = step ? step : thePrefs::GetTrafficOMeterInterval();
-	if (sStep == 0.0) {
+	if (step == 0) {
 	 	pscopeDL->Stop();
  		pscopeUL->Stop();
 	 	pscopeConn->Stop();
 	} else {
-	 	pscopeDL->Reset(sStep);
- 		pscopeUL->Reset(sStep);
-	 	pscopeConn->Reset(sStep);
+	 	pscopeDL->Reset(step);
+ 		pscopeUL->Reset(step);
+	 	pscopeConn->Reset(step);
 	}
 }
 

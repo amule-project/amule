@@ -51,7 +51,7 @@ public:
 	~CStatisticsDlg();
 
 	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update);
-	void SetUpdatePeriod(int step = 0);
+	void SetUpdatePeriod(int step);
 	void ResetAveragingTime();
 	void ShowStatistics(bool init = false);
 	void SetARange(bool SetDownload, int maxValue);
