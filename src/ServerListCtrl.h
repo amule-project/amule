@@ -91,16 +91,18 @@ public:
 	 * @param server The server to be removed.
 	 *
 	 * Please note that this function ALSO removes the server from the actual
-	 * server list, not just from the displayed one!
+	 * server list, not just from the displayed one! Also note that this
+	 * function does not request user confirmation upon removing static
+	 * servers, nor does it check if the server removed is the connected server.
 	 */
-	void	RemoveServer( const CServer* server, bool ask_static = false);
+	void	RemoveServer(CServer* server);
 	
 	/**
 	 * Removes all servers with the specified state. 
 	 *
 	 * @param state All items with this state will be removed, default being all.
 	 */
-	void	RemoveAllServers( int state = wxLIST_STATE_DONTCARE, bool ask_static = false );
+	void	RemoveAllServers(int state = wxLIST_STATE_DONTCARE);
 	
 	
 	/**
