@@ -114,44 +114,46 @@ void CServerListCtrl::AddServer( CServer* toadd )
 }
 
 
-void CServerListCtrl::RemoveServer( const CServer* server, bool ask_static)
+void CServerListCtrl::RemoveServer(CServer* server)
 {
-	long result = FindItem( -1, (long)server );
+	long result = FindItem(-1, (long)server);
 	if ( result != -1 ) {
-		CServer* cur_server = (CServer*) GetItemData( result );
-		bool is_static = cur_server->IsStaticMember();
-		if ( !ask_static || !is_static || (is_static && (wxMessageBox( CFormat(_("Are you sure you want to delete the static server %s") ) % cur_server->GetListName(), _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ))) {
-			theApp.serverlist->RemoveServer( cur_server );
-			DeleteItem( result );
-		}
+		theApp.serverlist->RemoveServer(server);
+		DeleteItem(result);
 	}
+	
 	ShowServerCount();
 }
 
 
-void CServerListCtrl::RemoveAllServers( int state, bool ask_static )
+void CServerListCtrl::RemoveAllServers(int state)
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
 	bool connected = theApp.IsConnectedED2K() ||
 	  theApp.serverconnect->IsConnecting();
 
 	while ( pos != -1 ) {
-		if ( (long)GetItemData(pos) == m_connected && connected == true) {
+		CServer* server = (CServer*)GetItemData(pos);
+		
+		if ((long)server == m_connected && connected) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
 			++pos;
-		} else {
-			CServer* cur_server = (CServer*) GetItemData( pos );
-			bool is_static = cur_server->IsStaticMember();
-			const wxString server_name = cur_server->GetListName().IsEmpty() ? wxString(_("(Unknown name)")) : cur_server->GetListName();
-			if ( !ask_static || !is_static || (is_static && (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % server_name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ))) {
-				theApp.serverlist->RemoveServer( cur_server );
+		} else if (server->IsStaticMember()) {
+			const wxString name = (!server->GetListName() ? wxString(_("(Unknown name)")) : server->GetListName());
+			
+			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
+				SetStaticServer(server, false);
+				theApp.serverlist->RemoveServer( server );
 				DeleteItem( pos );
 			} else {
 				++pos;
 			}
+		} else {
+			theApp.serverlist->RemoveServer( server );
+			DeleteItem( pos );
 		}
 		
-		pos = GetNextItem( pos-1, wxLIST_NEXT_ALL, state );
+		pos = GetNextItem(pos - 1, wxLIST_NEXT_ALL, state);
 	}
 
 	ShowServerCount();
@@ -489,7 +491,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 					theApp.serverconnect->Disconnect();
 				}
 			
-				RemoveAllServers( wxLIST_STATE_DONTCARE, true);
+				RemoveAllServers(wxLIST_STATE_DONTCARE);
 			}
 		}
 	} else if ( event.GetId() == MP_REMOVE ) {
@@ -497,7 +499,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 			wxString question = _("Are you sure that you wish to delete the selected server(s)?");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
-				RemoveAllServers( wxLIST_STATE_SELECTED, true);
+				RemoveAllServers(wxLIST_STATE_SELECTED);
 			}
 		}
 	}
