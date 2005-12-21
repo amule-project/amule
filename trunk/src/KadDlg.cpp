@@ -75,7 +75,7 @@ void CKadDlg::Init()
 	m_kad_scope->SetRanges(0.0, thePrefs::GetStatsMax());
 	m_kad_scope->SetYUnits(wxT("Nodes"));
 
-	SetUpdatePeriod();
+	SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
 	SetGraphColors();
 }
 
@@ -83,11 +83,10 @@ void CKadDlg::Init()
 void CKadDlg::SetUpdatePeriod(int step)
 {
 	// this gets called after the value in Preferences/Statistics/Update delay has been changed
-	double sStep = step ? step : thePrefs::GetTrafficOMeterInterval();
-		if (sStep == 0.0) {
+	if (step == 0) {
 	 	m_kad_scope->Stop();
 	} else {
-	 	m_kad_scope->Reset(sStep);
+	 	m_kad_scope->Reset(step);
 	}
 }
 
