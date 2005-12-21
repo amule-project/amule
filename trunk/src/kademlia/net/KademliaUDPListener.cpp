@@ -734,7 +734,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	//Keyword and File are Stored..
 	// Verify packet is expected size
 	if (lenPacket < 37) {
-		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in %s"), lenPacket, __FUNCTION__);
+		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in "), lenPacket) + wxString::FromAscii(__FUNCTION__);
 	}
 
 	//Used Pointers
