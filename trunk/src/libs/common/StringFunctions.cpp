@@ -143,6 +143,30 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 }
 
 
+/**
+ * Strips all path seperators from the specified end of a path.
+ *
+ * Note: type must be either leading or trailing.
+ */
+wxString StripSeperators(wxString path, wxString::stripType type)
+{
+	wxASSERT((type == wxString::leading) or (type == wxString::trailing));
+	const wxString seps = wxFileName::GetPathSeparators();
+
+	while (!path.IsEmpty()) {
+		size_t pos = ((type == wxString::leading) ? 0 : path.Length() - 1);
+
+		if (seps.Contains(path.GetChar(pos))) {
+			path.Remove(pos, 1);
+		} else {
+			break;
+		}
+	}
+	
+	return path;
+}
+
+
 wxString JoinPaths(const wxString& path, const wxString& file)
 {
 	if (path.IsEmpty()) {
@@ -150,17 +174,10 @@ wxString JoinPaths(const wxString& path, const wxString& file)
 	} else if (file.IsEmpty()) {
 		return path;
 	} 
-	
-	bool pathOk = (path.Last() == wxFileName::GetPathSeparator());
-	bool fileOk = (file.GetChar(0) == wxFileName::GetPathSeparator());
 
-	if (pathOk and fileOk) {
-		return wxString(path).RemoveLast() + file;
-	} else if (pathOk or fileOk) {
-		return path + file;
-	} else {
-		return path + wxFileName::GetPathSeparator() + file;
-	}
+	return StripSeperators(path, wxString::trailing)
+	   + wxFileName::GetPathSeparator()
+	   + StripSeperators(file, wxString::leading);
 }
 
 
