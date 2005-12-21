@@ -155,9 +155,11 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received by "));
 		return;
 	} else if (!StringIPtoUint32(addr.IPAddress())) {
+		// wxASSERT(0);
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n", (const char*)unicode2char(addr.IPAddress()));
 		return;
 	} else if (!addr.Service()) {
+		// wxASSERT(0);
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
 		return;
 	}
