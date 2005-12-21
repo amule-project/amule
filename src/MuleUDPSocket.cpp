@@ -156,11 +156,9 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		return;
 	} else if (!StringIPtoUint32(addr.IPAddress())) {
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n", (const char*)unicode2char(addr.IPAddress()));
-		//wxASSERT(0);
 		return;
 	} else if (!addr.Service()) {
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
-		//wxASSERT(0);
 		return;
 	}
 
@@ -180,16 +178,16 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
 
 	if (!Ok()) {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet discarded (socket not Ok): ")) 
-			<< IP << wxT(":") << port << wxT(" ") << packet->GetPacketSize()
-			<< wxT("b"));		
+			<< Uint32toStringIP(IP) << wxT(":") << port << wxT(" ") << packet->GetPacketSize()
+			<< wxT("b"));
 	
-		delete packet;		
+		delete packet;
 		return;
 	}
 	
 	AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet queued: ")) 
-		<< IP << wxT(":") << port << wxT(" ") << packet->GetPacketSize()
-		<< wxT("b"));
+		<< Uint32toStringIP(IP) << wxT(":") << port << wxT(" ") 
+		<< packet->GetPacketSize() << wxT("b"));
 		
 	
 	UDPPack newpending;
