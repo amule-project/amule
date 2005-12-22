@@ -365,7 +365,7 @@ esac
 
 # For proper compilation flags
 
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net,html,xml`
 
 WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
 WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
