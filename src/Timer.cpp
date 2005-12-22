@@ -129,6 +129,7 @@ bool CTimer::Start(int millisecs, bool oneShot)
 
 	// Something went wrong ...
 	m_thread->Delete();
+	delete m_thread;
 	m_thread = NULL;
 
 	return false;
