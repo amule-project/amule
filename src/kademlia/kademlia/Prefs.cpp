@@ -225,7 +225,7 @@ void CPrefs::setKademliaFiles()
 #endif
 	if( nKadAverage < 108 ) {
 #ifdef __DEBUG__
-		method = wxString::Format(wxT("Kad file estimate used default avg(108, min value)"));
+		method = wxString(wxT("Kad file estimate used default avg(108, min value)"));
 #endif
 		nKadAverage = 108;
 	}
