@@ -693,7 +693,7 @@ PHP_VAR_NODE *array_get_by_int_key(PHP_VALUE_NODE *array, int key)
 		return 0;
 	}
 	char s_key[32];
-	sprintf(s_key, "%d", key);	
+	snprintf(s_key, sizeof(s_key), "%d", key);	
 	return array_get_by_str_key(array, s_key);
 }
 
@@ -754,7 +754,7 @@ void array_remove_at_str_key(PHP_VALUE_NODE *array, std::string key)
 void array_add_to_int_key(PHP_VALUE_NODE *array, int key, PHP_VAR_NODE *node)
 {
 	char s_key[32];
-	sprintf(s_key, "%d", key);	
+	snprintf(s_key, sizeof(s_key), "%d", key);	
 	array_add_to_str_key(array, s_key, node);
 }
 
@@ -928,8 +928,8 @@ void cast_value_str(PHP_VALUE_NODE *val)
 	switch(val->type) {
 		case PHP_VAL_NONE: buff[0] = 0; break;
 		case PHP_VAL_BOOL:
-		case PHP_VAL_INT: sprintf(buff, "%d", val->int_val); break;
-		case PHP_VAL_FLOAT: sprintf(buff, "%.02f", val->float_val); break;
+		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%d", val->int_val); break;
+		case PHP_VAL_FLOAT: snprintf(buff, sizeof(buff), "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {
 			delete ((PHP_ARRAY_TYPE *)val->ptr_val);
@@ -1024,7 +1024,7 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	for(int i = 0; i < def->param_count;i++) {
 		PHP_VAR_NODE *func_param = make_var_node();
 		char param_name[32];
-		sprintf(param_name, "__param_%d", i);
+		snprintf(param_name, sizeof(param_name), "__param_%d", i);
 
 		decl_node->func_decl->params[i].def_value.type = PHP_VAL_NONE;
 		decl_node->func_decl->params[i].var = func_param;
@@ -1979,7 +1979,7 @@ void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 	
 	va_list args;
 	va_start(args, msg);
-	vsprintf(msgbuf, msg, args);
+	vsnprintf(msgbuf, sizeof(msgbuf), msg, args);
 
 	printf("%s %s\n", type_msg, msgbuf);
 	assert(err_type != PHP_INTERNAL_ERROR);

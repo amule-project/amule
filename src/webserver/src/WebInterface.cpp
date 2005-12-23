@@ -244,7 +244,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
-			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: ") + aMuleConfigFile + wxT(" does not exist.\n")));
+			fprintf(stderr, "FATAL ERROR: %s does not exist.\n", (const char*)unicode2char(aMuleConfigFile));
 			return false;
 		}
 		CECFileConfig cfg(aMuleConfigFile);
@@ -253,7 +253,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
-			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
+			fprintf(stderr, "FATAL ERROR: Cannot find template: %s\n", (const char *)unicode2char(m_TemplateName));
 			return true;
 		}
 		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));
@@ -266,8 +266,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (CaMuleExternalConnector::OnCmdLineParsed(parser)) {
 
 		if ( parser.Found(wxT("no-php")) ) {
-			fprintf(stderr,
-				(const char *)unicode2char(wxT("WARNING: --no-php switch have no effect. Long live PHP\n")));
+			fprintf(stderr, "WARNING: --no-php switch have no effect. Long live PHP\n");
 		}
 
 		parser.Found(wxT("template"), &m_TemplateName);
@@ -276,7 +275,7 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		}
 		if (!(m_TemplateOk = GetTemplateDir(m_TemplateName, m_TemplateDir))) {
 			// no reason to run webserver without a template
-			fprintf(stderr, (const char *)unicode2char(wxT("FATAL ERROR: Cannot find template: ") + m_TemplateName + wxT("\n")));
+			fprintf(stderr, "FATAL ERROR: Cannot find template: %s\n", (const char *)unicode2char(m_TemplateName));
 			return true;
 		}
 		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));

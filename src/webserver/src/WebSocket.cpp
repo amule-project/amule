@@ -353,7 +353,7 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 
 void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize) {
 	char szBuf[0x1000]; // 0x1000 is safe because it's just used for the header
-	int nLen = sprintf(szBuf, "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
+	int nLen = snprintf(szBuf, sizeof(szBuf), "HTTP/1.1 200 OK\r\n%sContent-Length: %d\r\n\r\n", szStdResponse, dwContentSize);
 	SendData(szBuf, nLen);
 	SendData(pContent, dwContentSize);
 }
@@ -364,12 +364,12 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 
 	char cookie[256];
 	if ( session_id ) {
-		sprintf(cookie, "Set-Cookie: SESSID=%d\r\n", session_id);
+		snprintf(cookie, sizeof(cookie), "Set-Cookie: SESSID=%d\r\n", session_id);
 	} else {
 		cookie[0] = 0;
 	}
 
-	sprintf(szBuf, "HTTP/1.1 200 OK\r\nServer: aMule\r\nPragma: no-cache\r\nExpires: 0\r\n"
+	snprintf(szBuf, sizeof(szBuf), "HTTP/1.1 200 OK\r\nServer: aMule\r\nPragma: no-cache\r\nExpires: 0\r\n"
 		"Cache-Control: no-cache, no-store, must-revalidate\r\n"
 		"%s"
 		"Connection: close\r\nContent-Type: text/html\r\n"
