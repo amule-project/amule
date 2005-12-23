@@ -5413,57 +5413,57 @@ msgstr "Total: %i Conhecidos: %i"
 #: src/Statistics.cpp:687
 #, c-format
 msgid "Working Servers: %i"
-msgstr ""
+msgstr "Servidores ativos: %i"
 
 #: src/Statistics.cpp:688
 #, c-format
 msgid "Failed Servers: %i"
-msgstr ""
+msgstr "Servidores que falharam: %i"
 
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Total: %s"
-msgstr ""
+msgstr "Total: %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Deleted Servers: %s"
-msgstr ""
+msgstr "Servidores eliminados: %s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Filtered Servers: %s"
-msgstr ""
+msgstr "Servidores Filtrados: %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Users on Working Servers: %llu"
-msgstr ""
+msgstr "Usuários em servidores ativos: %llu"
 
 #: src/Statistics.cpp:693
 #, c-format
 msgid "Files on Working Servers: %llu"
-msgstr ""
+msgstr "Arquivos nos servidores ativos: %llu"
 
 #: src/Statistics.cpp:694
 #, c-format
 msgid "Total Users: %llu"
-msgstr ""
+msgstr "Total de usuários: %llu"
 
 #: src/Statistics.cpp:695
 #, c-format
 msgid "Total Files: %llu"
-msgstr ""
+msgstr "Total de arquivos: %llu"
 
 #: src/Statistics.cpp:696
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr "Ocupação Servidor: %.2f%%"
+msgstr "Ocupação do Servidor: %.2f%%"
 
 #: src/Statistics.cpp:700
 #, c-format
 msgid "Number of Shared Files: %s"
-msgstr ""
+msgstr "Número de arquivos compartilhados: %s"
 
 #: src/Statistics.cpp:701
 #, c-format
@@ -5549,7 +5549,7 @@ msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"Você não pode se conectar a um release oficial com um cliente CVS!Possível "
+"Você não pode se conectar a um release oficial com um cliente CVS! Possível "
 "*droga* de travamento evitada"
 
 #: src/ExternalConn.cpp:227
@@ -5588,12 +5588,12 @@ msgstr "OOPS! Processando erro OpCode!"
 
 #: src/ExternalConn.cpp:598
 msgid "Server not added"
-msgstr ""
+msgstr "Servidor não adicionado"
 
 #: src/ExternalConn.cpp:616
 #, c-format
 msgid "server not found: %s"
-msgstr "servidor não encontradp: %s"
+msgstr "servidor não encontrado: %s"
 
 #: src/ExternalConn.cpp:633
 msgid "need to define server to be removed"
@@ -5601,7 +5601,7 @@ msgstr "precisa definir o servidor a ser removido"
 
 #: src/ExternalConn.cpp:647
 msgid "ED2K is disabled in preferences."
-msgstr ""
+msgstr "ED2K está desabilitado nas preferências"
 
 #: src/ExternalConn.cpp:740
 msgid "aMule is not connected! Cannot do search."
@@ -5617,15 +5617,15 @@ msgstr "Pesquisa web pela interface remota não faz sentido."
 
 #: src/ExternalConn.cpp:798
 msgid "Kad is disabled in preferences."
-msgstr ""
+msgstr "Kad está desabilitado nas preferências"
 
 #: src/ExternalConn.cpp:956
 msgid "No points for graph."
-msgstr ""
+msgstr "Sem dados para gráfico."
 
 #: src/ExternalConn.cpp:965
 msgid "Your client is not configured for this detail level."
-msgstr ""
+msgstr "Seu cliente não está configurado para esse nível de detalhes."
 
 #: src/ExternalConn.cpp:993
 msgid "ExternalConn: shutdown requested"
@@ -5633,65 +5633,65 @@ msgstr "ExternalConn: desligamento solicitado"
 
 #: src/ExternalConn.cpp:1005
 msgid "Already shutting down."
-msgstr ""
+msgstr "Já estou desligando."
 
 #: src/ExternalConn.cpp:1013
 #, c-format
 msgid "ExternalConn: adding ed2k link '%s'."
-msgstr ""
+msgstr "ExternalConn: adicionando link ed2k '%s'."
 
 #: src/ExternalConn.cpp:1019
 msgid "Invalid link or already on list."
-msgstr ""
+msgstr "Link inválido ou já está na lista."
 
 #: src/ExternalConn.cpp:1096
 msgid "File not found."
-msgstr ""
+msgstr "Arquivo não encontrado."
 
 #: src/ExternalConn.cpp:1101
 msgid "Invalid file name."
-msgstr ""
+msgstr "Nome de arquivo inválido."
 
 #: src/ExternalConn.cpp:1113
 msgid "Unable to rename file."
-msgstr ""
+msgstr "Não foi possível renomear o arquivo."
 
 #: src/ExternalConn.cpp:1296
 msgid "Already connected to ED2K."
-msgstr ""
+msgstr "Já conectado a rede ED2K."
 
 #: src/ExternalConn.cpp:1299
 msgid "Connecting to ED2K..."
-msgstr ""
+msgstr "Conectando a rede ED2K..."
 
 #: src/ExternalConn.cpp:1307
 msgid "Already connected to Kad."
-msgstr ""
+msgstr "Já conectado a rede Kad."
 
 #: src/ExternalConn.cpp:1310
 msgid "Connecting to Kad..."
-msgstr ""
+msgstr "Conectando a rede Kad..."
 
 #: src/ExternalConn.cpp:1315
 msgid "All networks are disabled."
-msgstr ""
+msgstr "Todas as redes estão DESATIVADAS."
 
 #: src/ExternalConn.cpp:1323
 msgid "Disconnected from ED2K."
-msgstr ""
+msgstr "Desconectado da rede ED2k."
 
 #: src/ExternalConn.cpp:1327
 msgid "Disconnected from Kad."
-msgstr ""
+msgstr "Desconectado da rede Kad."
 
 #: src/ExternalConn.cpp:1335
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
-msgstr ""
+msgstr "ExternalConn: opcode inválido recebido: %#x"
 
 #: src/ExternalConn.cpp:1338
 msgid "Invalid opcode (wrong protocol version?)"
-msgstr ""
+msgstr "opcode inválido (versão errada do protocolo?)"
 
 #: src/FriendList.cpp:123
 msgid "Failed to open friendlist file 'emfriends.met' for reading!"
@@ -5744,7 +5744,7 @@ msgid ""
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
 "Sua lista de atualização de servidores está em branco.\n"
-"Coloque pelo menos uma linah que aponte para um server.met válido.\n"
+"Coloque pelo menos uma linha que aponte para um server.met válido.\n"
 "Clique no botão \"Lista\" para abrir a caixa para digitar uma URL."
 
 #: src/PrefsUnifiedDlg.cpp:799
@@ -5938,7 +5938,7 @@ msgstr ""
 
 #: src/SearchDlg.cpp:523
 msgid "You are not connected to a server!"
-msgstr "Você não esta conectado em um servidor!"
+msgstr "Você não está conectado em um servidor!"
 
 #: src/SearchDlg.cpp:525
 msgid "Search not possible"
@@ -6051,19 +6051,19 @@ msgstr "MlDonkey velho"
 
 #: src/DataToText.cpp:109
 msgid "New MLDonkey"
-msgstr ""
+msgstr "Novo MLDonkey"
 
 #: src/DataToText.cpp:119
 msgid "eMule Compatible"
-msgstr ""
+msgstr "Compatível com eMule"
 
 #: src/DataToText.cpp:129
 msgid "Local Server"
-msgstr ""
+msgstr "Servidor Local"
 
 #: src/DataToText.cpp:130
 msgid "Remote Server"
-msgstr ""
+msgstr "Servidor Remoto"
 
 #: src/DataToText.cpp:132
 msgid "Source Exchange"
@@ -6079,7 +6079,7 @@ msgstr "Link"
 
 #: src/DataToText.cpp:135
 msgid "Source Seeds"
-msgstr ""
+msgstr "Fontes de arquivo"
 
 #: src/ServerListCtrl.cpp:85
 msgid "Server Name"
@@ -6344,7 +6344,7 @@ msgstr "Arquivo server.met não encontrado!"
 #: src/ServerList.cpp:108
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr ""
+msgstr "Falha ao carregar arquivo server.met '%s', formato desconhecido."
 
 #: src/ServerList.cpp:114
 msgid "Failed to open server.met!"
@@ -6353,7 +6353,7 @@ msgstr "Falha ao abrir arquivo server.met !"
 #: src/ServerList.cpp:125
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
+msgstr "Arquivo server.met corrompido, encontrada tag de versão inválida: 0x%x, tamanho %i"
 
 #: src/ServerList.cpp:180
 #, c-format
@@ -6559,11 +6559,11 @@ msgstr "Caminho completo"
 
 #: src/SharedFilesCtrl.cpp:137
 msgid "Add Comment/Rating"
-msgstr ""
+msgstr "Adicionar Comentário/Avaliação"
 
 #: src/SharedFilesCtrl.cpp:139
 msgid "Edit Comment/Rating"
-msgstr ""
+msgstr "Editar Comentário/Avaliação"
 
 #: src/SharedFilesCtrl.cpp:150
 msgid "Copy ED2k link to clipboard (&Source)"
@@ -6583,7 +6583,7 @@ msgstr "[PartFile]"
 
 #: src/SharedFilesCtrl.cpp:298
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "Você precisa ter HighID para criar uma fonte ED2Kválida"
+msgstr "Você precisa ter HighID para criar uma fonte ED2K válida"
 
 #: src/SharedFilesCtrl.cpp:446
 #, c-format
