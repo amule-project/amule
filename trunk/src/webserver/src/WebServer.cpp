@@ -1141,7 +1141,7 @@ CDynProgressImage::~CDynProgressImage()
 wxString CDynProgressImage::GetHTML()
 {
 	// template contain %s (name) %d (width)
-	return wxString::Format(m_template, m_name.GetData(), m_width);
+	return (CFormat(m_template) % m_name % m_width).GetString();
 }
 	
 void CDynProgressImage::DrawImage()
@@ -1213,8 +1213,8 @@ wxString CDynProgressImage::GetHTML()
 					}
 				}
 			}
-			str += wxString::Format(m_template,
-				progresscolor[color_idx], i - lastindex);
+			str += (CFormat(m_template) % progresscolor[color_idx]
+				   		% i - lastindex).GetString();
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
@@ -1706,7 +1706,7 @@ void CScriptWebServer::StopServer()
 char *CScriptWebServer::GetErrorPage(const char *message, long &size)
 {
 	char *buf = new char [1024];
-	sprintf(buf,
+	snprintf(buf, 1024,
 		"<html><title> Error -%s </title></html>", message);
 
 	size = strlen(buf);
