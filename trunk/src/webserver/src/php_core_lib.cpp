@@ -1608,10 +1608,10 @@ void CPhPLibContext::Printf(const char *str, ...)
         
 	va_start(args, str);
 	if ( !g_curr_context || !g_curr_context->m_curr_str_buffer ) {
-		printf(str, args);
+		vprintf(str, args);
 	} else {
 		char buf[4096];
-		sprintf(buf, str, args);
+		vsnprintf(buf, sizeof(buf), str, args);
 		g_curr_context->m_curr_str_buffer->Write(buf);
 	}
 }
@@ -1619,7 +1619,7 @@ void CPhPLibContext::Printf(const char *str, ...)
 void CPhPLibContext::Print(const char *str)
 {
 	if ( !g_curr_context || !g_curr_context->m_curr_str_buffer ) {
-		printf(str);
+		printf("%s", str);
 	} else {
 		g_curr_context->m_curr_str_buffer->Write(str);
 	}

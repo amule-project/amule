@@ -2007,7 +2007,7 @@ int main(int argc, char *argv[])
 	int size = buffer.Length();
 	char *buf = new char [size+1];
 	buffer.CopyAll(buf);
-	printf(buf);
+	printf("%s", buf);
 	delete [] buf;
 	
 	return 0;
