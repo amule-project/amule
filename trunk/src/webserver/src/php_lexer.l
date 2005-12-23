@@ -186,7 +186,7 @@ EOL ("\r"|"\n"|"\r\n")
 
 {HEX_NUM} {
 	int val;
-	sscanf("0x%x", yytext, &val);
+	sscanf(yytext, "0x%x", &val);
 	yylval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}
