@@ -772,7 +772,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 				} else {
 					wxString strZipError;
 					if (cur_block->zStream && cur_block->zStream->msg) {
-						strZipError = wxString::Format(wxT(" - %s"), cur_block->zStream->msg);
+						strZipError = wxT(" - ") + wxString::FromAscii(cur_block->zStream->msg);
 					} 
 					
 					AddDebugLogLineM( false, logZLib, wxString(wxT("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(wxT("received (error %i) ") , result) + strZipError );
@@ -911,7 +911,7 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 		wxString strZipError;
 		
 		if ( zS->msg ) {
-			strZipError = wxString::Format(wxT(" %d '%s'"), err, zS->msg);
+			strZipError = wxString::Format(wxT(" %d '"), err) + wxString::FromAscii(zS->msg) + wxT("'");
 		} else if (err != Z_OK) {
 			strZipError = wxString::Format(wxT(" %d"), err);
 		}

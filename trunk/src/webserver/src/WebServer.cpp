@@ -158,10 +158,10 @@ CUrlDecodeTable::CUrlDecodeTable()
 {
 	for (int i = 0 ; i < 256 ; i++) {
 		char fromReplace[4];		// decode URL
-		sprintf(fromReplace, "%%%02x", i);
+		snprintf(fromReplace, sizeof(fromReplace), "%%%02x", i);
 		m_enc_l_str[i] = char2unicode(fromReplace);
 
-		sprintf(fromReplace, "%%%02X", i);
+		snprintf(fromReplace, sizeof(fromReplace), "%%%02X", i);
 		m_enc_u_str[i] = char2unicode(fromReplace);
 
 		char toReplace[2] = {(char)i, 0};	// decode URL
@@ -494,7 +494,7 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 		return err;
 	}
 	
-	sprintf((char*)dest , "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
+	snprintf((char*)dest, *destLen, "%c%c%c%c%c%c%c%c%c%c", gz_magic[0], gz_magic[1],
 		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
 
 	// wire buffers

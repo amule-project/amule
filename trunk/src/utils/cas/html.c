@@ -88,7 +88,7 @@ int create_html(char *stats[20], char *lines[6], char template[120])
 	FILE *fTmpl = fopen(template,"r");
 	while ((ler=fgetc(fTmpl)) != EOF)
 	{
-		sprintf(mem,"%s%c",mem,ler);
+		snprintf(mem,size,"%s%c",mem,ler);
 	}
 	fclose(fTmpl);
 	
