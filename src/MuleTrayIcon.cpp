@@ -485,7 +485,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 			
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_ul_speed / 5) * (5 - i);
-			wxString temp = wxString::Format(wxT("%u%s "), tempspeed, wxT("kB/s"));
+			wxString temp = wxString::Format(wxT("%u kB/s"), tempspeed);
 			UploadSpeedMenu->Append((int)UPLOAD_ITEM1+i+1,temp);
 		}
 	}
@@ -506,7 +506,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 		for ( int i = 0; i < 5; i++ ) {
 			unsigned int tempspeed = (unsigned int)((double)max_dl_speed / 5) * (5 - i);
-			wxString temp = wxString::Format(wxT("%d%s "), tempspeed, wxT("kB/s"));
+			wxString temp = wxString::Format(wxT("%d kB/s"), tempspeed);
 			DownloadSpeedMenu->Append((int)DOWNLOAD_ITEM1+i+1,temp);
 		}
 	}

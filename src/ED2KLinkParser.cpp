@@ -54,7 +54,7 @@ string GetLinksFilePath()
 	if (FSFindFolder(kUserDomain, kApplicationSupportFolderType, kCreateFolder, &fsRef) == noErr) {
 		CFURLRef urlRef = CFURLCreateFromFSRef(NULL, &fsRef);
 		if (urlRef != NULL) {
-			UInt8 buffer[PATH_MAX];
+			UInt8 buffer[PATH_MAX + 1];
 			if (CFURLGetFileSystemRepresentation(urlRef, true, buffer, sizeof(buffer))) {
 				strDir.assign((char*) buffer);
 			}
@@ -68,7 +68,7 @@ string GetLinksFilePath()
 
 	std::string strDir;
 	LPITEMIDLIST pidl;
-	char buffer[MAX_PATH];
+	char buffer[MAX_PATH + 1];
 
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
 

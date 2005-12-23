@@ -401,7 +401,7 @@ int CamuleDaemonApp::OnRun()
 			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
 		
 		AddLogLineM(true, warning);
-		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
+		printf("\n%s\n\n", (const char*)unicode2char(warning));
 		return 0;
 	} else if (thePrefs::ECPassword().IsEmpty()) {
 		wxString warning = wxT("ERROR: A valid password is required to use "
@@ -412,7 +412,7 @@ int CamuleDaemonApp::OnRun()
 			"http://wiki.amule.org");
 	
 		AddLogLineM(true, warning);
-		printf((const char*)unicode2char(wxT("\n") + warning + wxT("\n\n")));
+		printf("\n%s\n\n", (const char*)unicode2char(warning));
 		return 0;
 	}
 	
