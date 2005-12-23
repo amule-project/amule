@@ -1250,7 +1250,7 @@ YY_RULE_SETUP
 #line 187 "php_lexer.l"
 {
 	int val;
-	sscanf("0x%x", yytext, &val);
+	sscanf(yytext, "0x%x", &val);
 	yylval.exp_node = make_const_exp_dnum(val);
 	return DNUMBER;
 	}
