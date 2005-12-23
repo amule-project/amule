@@ -300,11 +300,25 @@ CSharedFileList::CSharedFileList(CKnownFileList* in_filelist){
 	m_currFileKey = 0;
 }
 
-CSharedFileList::~CSharedFileList(){
+
+CSharedFileList::~CSharedFileList()
+{
 	delete m_keywords;
 }
 
-void CSharedFileList::FindSharedFiles() {
+
+wxString ReadyPath(const wxString& path)
+{
+	if (path.Last() != wxFileName::GetPathSeparator()) {
+		path + wxFileName::GetPathSeparator();
+	}
+
+	return path;
+}
+
+
+void CSharedFileList::FindSharedFiles() 
+{
 	/* Abort loading if we are shutting down. */
 	if(theApp.IsOnShutDown()) {
 		return;
@@ -340,32 +354,37 @@ void CSharedFileList::FindSharedFiles() {
 		}
 	}
 
-	/* Global incoming dir and all category incoming directories are automatically shared. */
+	
+	// Create a list of all shared paths and weed out duplicates.
+	std::list<wxString> sharedPaths;
 
-	AddFilesFromDirectory(thePrefs::GetIncomingDir());
+	
+	// Global incoming dir and all category incoming directories are automatically shared.
+	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir()));
 	for (unsigned int i = 1;i < theApp.glob_prefs->GetCatCount(); ++i) {
-		AddFilesFromDirectory(theApp.glob_prefs->GetCatPath(i));
+		sharedPaths.push_back(ReadyPath(theApp.glob_prefs->GetCatPath(i)));
 	}
 
-	// remove bogus entries first
-	for (unsigned int i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
-		const wxString &fileName = theApp.glob_prefs->shareddir_list.Item(i);
-		// In ANSI builds, the first call is enough. In UNICODE builds,
-		// the second call makes sure we are able to read an extended
-		// ANSI chars directory name.
-		if(	!wxFileName::DirExists(fileName)
-			&& !CheckDirExists(fileName)
-			) {
-			theApp.glob_prefs->shareddir_list.RemoveAt(i);
-		} else {
+	// Also remove bogus entries
+	for (size_t i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
+		const wxString& path = theApp.glob_prefs->shareddir_list.Item(i);
+		
+		if (CheckDirExists(path)) {
+			sharedPaths.push_back(ReadyPath(path));
 			++i;
+		} else {
+			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		}
 	}
 
-	for (unsigned int i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ++i) {
-		AddFilesFromDirectory(theApp.glob_prefs->shareddir_list.Item(i));
-	}
+	sharedPaths.sort();
+	sharedPaths.unique();
 
+	std::list<wxString>::iterator it = sharedPaths.begin();
+	for (; it != sharedPaths.end(); ++it) {
+		AddFilesFromDirectory(*it);
+	}
+	
 	uint32 newFiles = CAddFileThread::GetFileCount();
 	if (!newFiles) {
 		AddLogLineM(false,
@@ -384,12 +403,7 @@ void CSharedFileList::FindSharedFiles() {
 // Checks if the dir a is the same as b. If they are, then logs the message and returns true.
 bool CheckDirectory(const wxString& a, const wxString& b)
 {
-	wxString tmp = a;
-	if ( tmp.Last() != wxFileName::GetPathSeparator() ) {
-		tmp += wxFileName::GetPathSeparator();
-	}
-	
-	if (tmp == b) {
+	if (ReadyPath(a) == ReadyPath(b)) {
 		AddLogLineM(true, CFormat( _("ERROR! Attempted to share %s") ) % a);
 		
 		return true;
@@ -405,10 +419,7 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		return;
 	}
 
-	if (directory.Last() != wxFileName::GetPathSeparator()) {
-		directory += wxFileName::GetPathSeparator();
-	}
-
+	directory = ReadyPath(directory);
 
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
