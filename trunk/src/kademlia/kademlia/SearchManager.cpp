@@ -173,7 +173,7 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		m_searches[s->m_target] = s;
 		s->go();
 	} catch (const CIOException& ioe) {
-		wxString strError = wxString::Format(wxT("IO-Exception in %s: Error %u") , __FUNCTION__, ioe.m_cause);
+		wxString strError = wxString(wxT("IO-Exception in ")) + wxString::FromAscii(__FUNCTION__) + wxString::Format(wxT(": Error %u"), ioe.m_cause);
 		delete s;
 		throw strError;
 	} catch (...) {
