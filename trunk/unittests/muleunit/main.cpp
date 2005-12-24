@@ -33,9 +33,11 @@ class UnitTestApp : public wxAppConsole
 {
 public:
 	int OnRun() {
-		InstallMuleExceptionHandler();
-
 		return TestRegistry::runAndPrint()->getFailures();
+	}
+
+	void OnUnhandledException() {
+		::OnUnhandledException();
 	}
 };
 
