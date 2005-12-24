@@ -365,7 +365,10 @@ esac
 
 # For proper compilation flags
 
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs html,adv,core,xml,net`
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+# The following is here to work around a library dependency wx bug.
+# Please remove when they have it fixed.
+WX_LIBS="$WX_LIBS -Wl,-rpath-link,`$WX_CONFIG_WITH_ARGS --prefix`/lib"
 
 WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
 WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
@@ -470,7 +473,7 @@ if test x$BUILDAMULECMD = xyes -o x$WEB = xyes; then
 	VL_LIB_READLINE
 fi
 
-# DO NOT MOVE UP...THAT'S A REASON TO BE HERE!!
+# DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
 AM_OPTIONS_CCACHE_PFX
 
