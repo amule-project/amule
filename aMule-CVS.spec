@@ -1,4 +1,5 @@
 %define cvsdate %(date +%Y%m%d)
+%define optflags %{nil}
 
 Summary:        aMule - another eMule p2p client
 Name:           aMule
@@ -73,6 +74,9 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 %{_datadir}/amule
 
 %changelog
+* Sum Dec 25 2005 Gerd78 <aMule forum>
+- Really disable optimizations by defining optflags to nil.
+
 * Mon Apr 19 2005 Marcelo Jimenez <phoenix@amule.org>
 - Removed curl dependency, aMule now uses wxHTTP.
 
@@ -106,3 +110,4 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 
 * Sat Jan 23 2004 Ariano Bertacca <ariano@hirnriss.net>
 - initial amule.spec release
+
