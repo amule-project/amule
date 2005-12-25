@@ -365,10 +365,7 @@ esac
 
 # For proper compilation flags
 
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
-# The following is here to work around a library dependency wx bug.
-# Please remove when they have it fixed.
-WX_LIBS="$WX_LIBS -Wl,-rpath-link,`$WX_CONFIG_WITH_ARGS --prefix`/lib"
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
 
 WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
 WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
