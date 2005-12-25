@@ -727,8 +727,8 @@ const CECPacket *CECSocket::ReadPacket()
 	CECPacket *packet = 0;
 
 	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
-		puts((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: error [%s] in socket")) %
-			GetErrorMsg(LastError()))));
+		fputs((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: error [%s] in socket")) %
+			GetErrorMsg(LastError()))), stdout);
 		return 0;
 	}
 
@@ -736,7 +736,7 @@ const CECPacket *CECSocket::ReadPacket()
 	
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
-		puts((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: packet have invalid flags %08x")) % flags)));
+		fputs((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: packet have invalid flags %08x")) % flags)), stdout);
 		Close();
 		return 0;
 	}
@@ -752,7 +752,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
 			ShowZError(zerror, &m_z);
-			puts((const char *)unicode2char(_("ReadPacket: failed zlib init")));
+			fputs((const char *)unicode2char(_("ReadPacket: failed zlib init")), stdout);
 			Close();
 			return 0;
 		}
@@ -763,7 +763,7 @@ const CECPacket *CECSocket::ReadPacket()
 	packet->ReadFromSocket(*this);
 	
 	if (packet->m_error != 0) {
-		puts((const char *)unicode2char((wxString::Format(_("ReadPacket: error %d in packet read"), packet->m_error))));
+		fputs((const char *)unicode2char((wxString::Format(_("ReadPacket: error %d in packet read"), packet->m_error))), stdout);
 		delete packet;
 		packet = NULL;
 		Close();
@@ -773,7 +773,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
 			ShowZError(zerror, &m_z);
-			puts((const char *)unicode2char(_("ReadPacket: failed zlib free")));
+			fputs((const char *)unicode2char(_("ReadPacket: failed zlib free")), stdout);
 			Close();
 		}
 	}
