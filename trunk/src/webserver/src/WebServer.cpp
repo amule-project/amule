@@ -1214,7 +1214,7 @@ wxString CDynProgressImage::GetHTML()
 				}
 			}
 			str += (CFormat(m_template) % progresscolor[color_idx]
-				   		% i - lastindex).GetString();
+				   		% (i - lastindex)).GetString();
 			lastindex = i;
 			lastcolor = m_ColorLine[i];
 		}
