@@ -257,6 +257,9 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	// Stop if no sorter-function has been defined
 	if (!m_sort_func) {
 		return;
+	} else if (evt.GetColumn() == -1) {
+		// This happens if a user clicks past the last column header.
+  		return;
 	}
 
 	// Get the currently focused item
