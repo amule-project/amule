@@ -167,11 +167,6 @@ void CAddFileThread::Stop()
 	if ( s_thread ) {
 		AddLogLineM( false, _("Hasher: Signaling for remaining threads to terminate.") );
 		
-		// We will be blocking the main thread, so we need to leave the
-		// gui mutex, so that events can still be processed while we are
-		// waiting.
-		wxMutexGuiLeave();
-		
 		// Wait for all threads to die
 		while ( s_thread ) {
 			// Sleep for 1/100 of a second to avoid clobbering the mutex
@@ -180,11 +175,6 @@ void CAddFileThread::Stop()
 			// Flush any pending log-entries caused by the thread.
 			CLogger::FlushPendingEntries();
 		}
-
-#ifdef __WXGTK__
-		// Re-claim the GUI mutex.
-		wxMutexGuiEnter();
-#endif		
 	}
 }
 
