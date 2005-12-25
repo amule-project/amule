@@ -247,12 +247,8 @@ wxThread::ExitCode CPartFileConvert::Entry()
 
 
 			UpdateGUI(s_pfconverting);
-			wxMutexGuiEnter();
 
 			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetReturncodeText(s_pfconverting->state));
-
-			wxMutexGuiLeave();
-
 		} else {
 			break; // nothing more to do now
 		}
@@ -265,11 +261,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 		theApp.sharedfiles->PublishNextTurn();
 	}
 
-	wxMutexGuiEnter();
-
 	AddDebugLogLineM(false, logPfConvert, wxT("No more jobs on queue, exiting from thread."));
-
-	wxMutexGuiLeave();
 
 	s_convertPfThread = NULL;
 
