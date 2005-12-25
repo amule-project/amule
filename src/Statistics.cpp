@@ -455,8 +455,11 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 	
 	HR	**pphr = new HR *[cntPoints];
 
-	do {
-		while (pos != listHR.rend() && pos->sTimestamp > sTarget) ++pos;	// find next history record
+	while (pos != listHR.rend()) {
+		if (pos->sTimestamp > sTarget) {
+			++pos;	// find next history record
+			continue;
+		}
 		pphr[cntFilled] = &(*pos);
 		if (++cntFilled  == cntPoints)		// enough points 
 			break;
@@ -466,7 +469,7 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 			pphr[cntFilled++] = NULL;
 			break;
 		}
-	} while (pos != listHR.rend());
+	}
 
 	if (cntFilled) {
 		*graphData = new uint32 [4 * cntFilled];
@@ -523,7 +526,11 @@ void CStatistics::ComputeAverages(
 	runningAvg->m_total = 0;
 	runningAvg->m_tmp_sum = 0;
 
-	sTarget = std::max(0.0, pos->sTimestamp - sStep);
+	if (pos == listHR.rend()) {
+		sTarget = 0.0;
+	} else {
+		sTarget = std::max(0.0, pos->sTimestamp - sStep);
+	}
 	
 	while (nBtPoints--) {
 		while (pos != listHR.rend() && pos->sTimestamp > sTarget) ++pos;	// find next history record
