@@ -105,6 +105,9 @@ COLORREF crPreset [ 16 ] = {
 	graph_type = type;
 	
 	timerRedraw.SetOwner(this);
+
+	// Ensure that various size-constraints are calculated (via OnSize).
+	SetClientSize(GetClientSize());
 }  // COScopeCtrl
 
 
@@ -382,6 +385,7 @@ void COScopeCtrl::DoBlit()
 	// Ready.
 	
 }
+
 
 void COScopeCtrl::OnSize(wxSizeEvent& evt)
 {
