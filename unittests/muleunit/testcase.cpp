@@ -91,6 +91,8 @@ void Print(const wxChar *pszFormat, ...)
     va_start(argptr, pszFormat);
 
 	wxPuts(wxString::FormatV(pszFormat, argptr).c_str());
+
+	va_end(argptr);
 }
 
 

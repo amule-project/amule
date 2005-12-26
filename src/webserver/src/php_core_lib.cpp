@@ -1614,6 +1614,7 @@ void CPhPLibContext::Printf(const char *str, ...)
 		vsnprintf(buf, sizeof(buf), str, args);
 		g_curr_context->m_curr_str_buffer->Write(buf);
 	}
+	va_end(args);
 }
 
 void CPhPLibContext::Print(const char *str)

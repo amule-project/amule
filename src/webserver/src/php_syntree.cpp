@@ -1980,6 +1980,7 @@ void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 	va_list args;
 	va_start(args, msg);
 	vsnprintf(msgbuf, sizeof(msgbuf), msg, args);
+	va_end(args);
 
 	printf("%s %s\n", type_msg, msgbuf);
 	assert(err_type != PHP_INTERNAL_ERROR);
