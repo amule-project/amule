@@ -1682,10 +1682,10 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			
 			if (curVer < newVer) {
 				AddLogLineM(true, _("You are using an outdated version of aMule!"));
-				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
+				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
 				AddLogLineM(false, _("The latest version can always be found at http://www.amule.org"));
 				#ifdef AMULE_DAEMON
-				puts(unicode2UTF8(wxString::Format(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %i.%i.%i"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2])));
+				puts(unicode2UTF8(wxString::Format(_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2])));
 				#endif
 			} else {
 				AddLogLineM(false, _("Your copy of aMule is up to date."));
