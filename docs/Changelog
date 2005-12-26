@@ -331,9 +331,32 @@ Version 2.1.0 - The "???" version
 		* A4AF transfer speed display fix
 
 	Xaignar:
+		* Added missing calls to va_end at places where va_start is called.
+		* Remove unneeded calls to wxMutexGuiEnter/Leave.
+		* Fixed the listctrls asserting if one were to click past the end of
+		  the last column header.
+		* Fixed unhandled-exception handling in unittests, which had been
+		  broken when they were made console apps.
+		* Fixed sscanf call in PHP lexer, which had switched the source and
+		  the format arguments.
+		* Performed audit of printf type calls. Serveral bugs caused by using
+		  the wrong printf variant were fixed in the webserver. All instances
+		  of calls to sprintf variants were changed to snprintf to prevent
+		  buffer overruns and calls to printf that passed a dynamic string as
+		  the format string were changed to prevent using untrusted format
+		  strings. Lastly a few places where widechar and char where mixed
+		  were fixed.
+		* Avoided checking the same folders multiple times when looking for
+		  shared files, by ensuring that duplicate entries (from categories,
+		  etc) are ignored.
+		* Fixed minor mem-leak in CTimer.
+		* Deleting a static server now also removes it from the static list.
+		* Fixed disabling of graphs while the prefs-dialog is still open.
+		* Fixed logging on UDP-sockets displaying an integer value rather
+		  than a dot-IP.
 		* Made the ipfilter.dat URL field independant of the auto-update
 		  check-box, to allow for easier manual updates.
-		* Fixed logging not working on full daemon.
+		* Fixed log-events not being written the logfile on full daemon.
 		* Improved displaying of errors when starting the webserver from
 		  amuled.
 		* Allow resuming of files that error'd out during completetion.
@@ -360,8 +383,7 @@ Version 2.1.0 - The "???" version
 		* Cleaned up the file-completion thread and fixed the following:
 		  * If creation or starting of the thread failed, the file would
 		    silently fail to complete.
-		  * If the file was renamed, the downloadlistctrl would still show the
-		    old name.
+		  * If the file was renamed, the download queue show the old name.
 		  * If the file was renamed and didn't have an extension, the "(x)"
 		    component would be added to the front of the filename.
 		  * When checking for unused filenames, if an file with the same name
@@ -382,16 +404,15 @@ Version 2.1.0 - The "???" version
 		* Added generic function for joining two paths.
 		* Dont allow renaming of downloads that are being completed.
 		* Made the comment-list dialog resizable.
-		* Enabled use of tool-tips on all variants. Sure, it doesn't work on
-		  all, but that's an issue for the wx-folks.
+		* Enabled use of tool-tips on all wx-variants.
 		* Fixed Kad-Info and ED2K-Info lists not having any scroll-bars.
 		* Fixed compressed Kad packets having the wrong procotol set. Thanks
-		  to Gnucco for the heads-up.
+		  to Gnucco for the pointing this out.
 		* Only show the root-item circle for incomplete part-files.
 		* Prevent the adding of friends without IPs, via the clientlistctrl.
 		* Fixed serveral problems caused by the reuse of the preferences
 		  dialog window.
-		* Improved the popup menu on the downloadlistctrl.
+		* Improved the popup menu on the downloads listctrl.
 		* Fixed starting of next download being called under the wrong
 		  conditions when files were deleted via remote.
 		* Dropped the HTML version of ed2k-links.
@@ -412,7 +433,7 @@ Version 2.1.0 - The "???" version
 		  the clientobject disconnected.
 		* Ensures that both the downloadlistctrl and sharedfileslistctrl are
 		  both up to date when a file has been renamed. Also switched to using
-		  the same dialog on both listsctrl.
+		  the same dialog on both listctrls.
 		* Check for items being sorted was moved to the CMuleListCtrl class,
 		  and to fix flickering on the server-list and and searchresult-lists,
 		  which is caused by insertions and deletions, the list is resorted
@@ -422,15 +443,14 @@ Version 2.1.0 - The "???" version
 		  search-results. The 'Reset' button now takes care of the text-field
 		  and any extra parameter-fields. Serveral fixes were made to make
 		  sure all fields were properly cleared.
-		* Properly set filtering on newly added searches.
-		* Fixed broken sainitycheck in AddDownload
+		* Properly set filtering on newly added search-results.
+		* Fixed broken sanity check in AddDownload
 		* Bug #688. Made the popup menu on the searchlistctrl similar to those
 		  on the downloadlistctrl and sharedfileslist. 
-		* Added serveral missing exception-handlers, which would cause aMule
-		  to terminate with an uncaught exception-error.
+		* Added serveral missing exception-handlers.
 		* Ensured that the internal libs are only built when needed.
 		* Fixed ed2k-links causing duplicate entries on the download-queue and
-		  made the sainity checks in AddDownload safer.
+		  made the sanity checks in AddDownload safer.
 		* Made the interal CryptoPP files part of the one of the temporary
 		  libraries to avoid building it three times (amule, amuled, amulegui).
 		* Removed printf-call from signal-handler.
@@ -442,7 +462,7 @@ Version 2.1.0 - The "???" version
 		  building autopackages (since we can patch the sources). 
 		* Improved logging in case of clients requesting invalid file-data.
 		* Cleaned up autoconfigure files a bit.
-		* Added sainity checks to the downloadqueue's AddDownload function to
+		* Added sanity checks to the downloadqueue's AddDownload function to
 		  catch this, should the problem appear again.
 		* Added checks to avoid loading duplicate partfiles, since downloads
 		  are identified by the hash. A warning is now issued when this
@@ -495,8 +515,7 @@ Version 2.1.0 - The "???" version
 		* Changed failure on file-seeking into a catchable exception,
 		  rather than a runtime error. 
 		* Fixed a crash on shutdown caused by the listensocket now being
-		  closed which caused a call to Accept to return NULL, and since
-		  we didn't check the pointer ...
+		  closed which caused a call to Accept to return NULL.
 		* Fixed compilation with GCC-4.1 (snapshot).
 		* Syncronized look of client-icons on download-queue and the
 		  client-lists (upload, queued, all), so that all display the same
@@ -517,7 +536,7 @@ Version 2.1.0 - The "???" version
 			* Improved thread-safely a lot and made the threads detachable.
 			* Added function for terminating all timer-thread on shutdown, so
 			  that no timer-threads will be left running.
-		* Fixed the check for SSE2 support in the embedded cryptoPP code.
+		* Fixed SSE2 support check in the embedded cryptoPP code, for gcc-4.
 		* Fixed a couple of bugs caused by variable-shadowing.
 		* Flush log-buffers when waiting for either of the hashing threads to
 		  terminate.
@@ -537,7 +556,7 @@ Version 2.1.0 - The "???" version
 		* Fixed clearing of background for list-items that do not have a
 		  background color set.
 		* Resized a couple of buttons that were too small to display their
-		  image. This fixes bug 648.
+		  image. This fixes bug #648.
 		* Improved double-buffering of listctrls a bit.
 		* Fixed auto-sorting checks on the server-list, which were inverted,
 		  causing items that were already sorted to be re-position and so
@@ -550,7 +569,7 @@ Version 2.1.0 - The "???" version
 		* Changing kad-nodes label to display "Nodes (0)" by default.
 		* Force the UBT to take a increasingly longer nap between loops when
 		  it fails to send anything, which ensures that it wont go bananas it
-		  is unable to upload at the specified rate, which happens for
+		  is unable to upload at the specified rate. This would happen for
 		  instance if the limit is set to a value higher than the physical
 		  connection limit. This fixes bug #606.
 		* Re-added the node count above the kad-graph, and a few other changes. 
@@ -565,7 +584,7 @@ Version 2.1.0 - The "???" version
 		* Reworked the ED2KLink class:
 			* Simplified parsing a lot.
  			* Moved the task of handling sources specified in file-links
-			  almost entirely to the downloadqueue.
+			  almost entirely to the download queue.
 			* Improved error checking.
  			* Implemented handling (not just parsing) of part-hashes and
 			  master-hashes specified via file-links.
@@ -584,7 +603,7 @@ Version 2.1.0 - The "???" version
 		  search-string if filtering is toggled on and off.
 		* Fixed the kad-statistics using the colors of the download-statistics
 		  rather than its own settings.
-		* Implementing kad-node graph. This patch does not handle support for
+		* Implementing kad-node graph. This patch does not add support for the
 		  graphs on the webserver.
 		* Removing trailing "i"s from time values created by CastSecondsToHM.
 		* Reduced log verbosity when deleting downloads.
@@ -596,7 +615,7 @@ Version 2.1.0 - The "???" version
 		  the ed2k network.
 		* Fixed compilation on the x86 version of MacOSX.
 		* Added specialization of the CRangeMap class which doesn't contain a
-		  uservalue per range, dubbed CRangeSet.
+		  user-value per range, dubbed CRangeSet.
 		* Added the IP and port of friends to the initial text when opening a
 		  chat window. This should more easily allow for adding of clients to
 		  the friends list if they message us. This is not a final solution.
@@ -609,40 +628,38 @@ Version 2.1.0 - The "???" version
 			* Documentation of the classes and functions completed.
 			* Completed unittests for CSafeFileIO, CFile, CMemFile.
 			* Changed systems calls to explicitly use 64b calls on win32
-			  systems, since win32 uses 32b calls by default. 
+			  systems, since win32 uses 32b calls by default.
 			* Lots of other small improvements.
 		* When sorting search-results by type, sort items with the same type
 		  by their extensions.
 		* Added the hotkey Ctrl-Q for closing aMule.
-		* Dont store the results of unittest that didn't fail when running
-		  unittests, since we ignore successes anyway. This causes a great
-		  speedup on some tests, where a large number of checks are made.
+		* Dont store the results of unittest that didn't fail when executed,
+		  since we ignore successes anyway. This causes a great speedup on
+		  some tests, where a large number of checks are made.
 		* Set the update frequency for the statistics, fixing bug #637. 
 		* Strip 's from paths set via amule-config-file, resolving bug #638.
 		* Reworked the TTS implementation, so that control-sequences are
-		  passed to the widget, that walking through the list by repeatedly
-		  pressing a letter better works and finally fixed the use of
+		  passed to the widget, improved walking through the list by
+		  repeatedly pressing a letter and finally fixed the use of
 		  arrow-keys on some locales.
-		* Now we also clear the log-line (lower-left) when the log-textctrl is
-		  is reset.
-		* Replaces a few "wxASSERT(x);if (!x) return" with wxCHECK(x)s.
+		* Also clear the log-line (lower-left) when the log is reset.
+		* Replaces a few "wxASSERT(x); if (!x) return" with wxCHECK(x)s.
 		* Force an update when the file has been completed, which allows the
 		  DownloadListCtrl to detect that a file has been completed.
 		* Optimized the unicode-conversion functions, which were causing
-		  unneeded string-copies to be made.
+		  unneeded copies to be made.
 		* Only enable the clear-completed button and menu-item when there are
 		  completed items. This resolves bug #403.
 		* Fixes deadlock triggered when a UDP socket tried to recover.
 		* Fixed compilation for 64b systems, caused by mismatching parameter
 		  types in a pure-virtual function.
-		* Improved sanity checking of DNS resolutions in the server-udp
-		  socket.
+		* Improved sanity checking of DNS resolutions in CServerUDPSocket.
 		* Fixed a few calls to CFile's Create function, which were using a
 		  wrong parameter type for the second argument.
-		* Changed MuleUnit to output results immediatly. 
+		* Changed MuleUnit to output results as soon as possible.
 		* Added generic CMuleUDPSocket class, which unifies common tasks such
-		  sending, receiving (including error-handling) and interfacing with
-		  the UploadBandwidthThrottler. I also included a recovery mechanism
+		  sending, receiving, error-handling and interfacing with the 
+		  UploadBandwidthThrottler. I also included a recovery mechanism
 		  for when a socket becomes invalid, which fixes bug #489.
 		* Fixed crashes when kad is enabled but the ClientUDP-socket is not.
 		* Fixes names not being prepended to debug messages.
@@ -661,7 +678,6 @@ Version 2.1.0 - The "???" version
 		  leads to deadlocks.
 		* Fixed race-condition in the download-queue, where multiple DNS
 		  resolution threads could be created for the same hostname.
-		* Some code-cleanups.
 		* Fixed an assertion in the kad-dialog caused by an insertion at an
 		  invalid index. This only happened for some versions of wxWidgets.
 		* Fixed color-updating of items being downloaded from the search-lists.
@@ -690,28 +706,26 @@ Version 2.1.0 - The "???" version
 			* Removed a unnescesarry call to Notify_DownloadCtrlUpdateItem in
 			  the function ProcessMuleCommentPacket, since this is already
 			  done in the UpdateFileRatingCommentAvail function.
-		* Added sanity checks to the code that made use of said file-ratings,
-		  to ensure that screw-ups would be caught.
+		* Added sanity checks to the code that made use of said file-ratings.
 		* Added sanity checks against file-ratings read from other clients,
-		  since we later rely on these values to be in a specific range, and
-		  them not being that would result in crashes.
+		  since we later rely on these values to be in a specific range.
 		* Fixed some uninitialized variables.
-		* Make ascending the default order and fixed loading sort-order in
-		  the CMuleListCtrl class.
+		* Make ascending the default sort-order and fixed loading of the
+		  sort-order in the CMuleListCtrl class.
 		* Added a missing call to Skip in the TTS event-handler for item
-		  selections, so that subclasses would still be notified.
+		  selections, so that subclasses will still be notified.
 		* Reworked CMuleListCtrl and added support for "Type To Select", or
 		  the ability to select items by typing parts of their name. The
-		  selection is made against the start of the text-strings and are not
-		  case-sensitive.
+		  selection is made against the start of the text-strings and is
+		  case-insensitive.
 		* Fixed some more warnings.
 		* Fixed compilation problems with external CryptoPP sources, caused by
 		  a preprocessor define which clashed with a variable name. 
-		* Changed the length parameters of the read-funtions in CFileDataIO
-		  and implementations to be unsigned, since signed lengths doesn't
-		  make any sense in this regard and makes error-checking easier.
-		* Merged checks for the ARM or Sparc architectures.
-		* Changed a call to bzero to memset, since win32 doesn't have this.
+		* Changed the length parameters of the read-funtions in the CFileDataIO
+		  interface to be unsigned, since signed lengths doesn't
+		  make any sense in this regard and makes error-checking harder.
+		* Merged checks for the ARM and Sparc architectures.
+		* Changed a call to bzero to memset, since win32 doesn't have bzero.
 		* Fixed remaning issues with template usage in MuleUnit.
 		* Cleaned up error handling in CClientUDPSocket a bit, and added
 		  error-checks to CServerUDPSocket. This should allow us to see if the
@@ -721,11 +735,11 @@ Version 2.1.0 - The "???" version
 		  function, since we apprently tried to send to port 0 once in a
 		  while.
 		* Moved adding of sources read from seeds files out of the
-		  exception-handler, to avoid the obscuring of possible bugs.
+		  exception-handler, to avoid the obscuring of possible bugs elsewhere.
 		* Final touches made on the CMemFile class, which includes cleanups, 
 		  improved error-checking and complete documentation.
-		* Added destructor to CUInt128, which was causing compilation failure
-		  for some GCC-4 users.
+		* Added missing destructor to CUInt128, which was causing compilation 
+		  failure for some GCC-4 users.
 		* Fixed an attempt to fprintf a wide-char string.
 		* Enabled the use of kad with wxWidget versions 2.5.x.
 		* Improved handling of uncaught exceptions in MuleUnit and changed the
@@ -752,16 +766,16 @@ Version 2.1.0 - The "???" version
 		  functions to the CFileDataIO unittests.
 		* Removed the RepeatLastAction stuff from CClientReqSocket.
 		* Fixed the check for BOM-header failing on strings that were
-		  3 bytes long, which would an empty string.
+		  3 bytes long (an empty string).
 		* Fixed empty UTF8 strings with BOM headers not having the header
-		  written, even though we had already written the length which
+		  written, even though we had already written a length which
 		  included the header.
 		* Changed CSafeFileIO's ReadUInt128 to return an instance, which
 		  simplified usage and matches the other Read-functions.
 		* Added missing exception-handler to CIndexed in case of invalid tags.
 		* Marked the log-event triggered when an IP was filtered as
-		  non-crticial, since this event isn't and can be very common
-		  depending on the filters used.
+		  non-crticial, since this event isn't critical and can be very common
+		  depending on the ipfilters used.
 		* Changed unittests for CFormat when empty strings were specified for
 		  a field of type '%s', since some implementations of printf produced
 		  different results than others, making it impossible to check against
@@ -771,7 +785,7 @@ Version 2.1.0 - The "???" version
 		* Changed the use of Cmp to either '==' or '!=' to improve
 		  readability, and simplified the sorting of the server-list when
 		  sorting by name to only use the displayed name, since the special
-		  cases that were being considered let to unpredictable results.
+		  cases that were being considered led to unpredictable results.
 		* Fixed non-wxbase apps not terminating properly.
 		* Fixed adding of comments to shared files.
 		* Properly implemented a couple of functions for the remote version of
@@ -779,8 +793,8 @@ Version 2.1.0 - The "???" version
 		  class.
 		* Changed CMuleListCtrl's SetSortFunc to public, so that subclassing
 		  isn't required in order to sort a list.
-		* Dropped the "otherfunctions" namespace, which we overrode almost
-		  everywhere anyway, by use of "using" declarations.
+		* Dropped the "otherfunctions" namespace, since we ignored it almost
+		  everywhere anyway, via the "using" keyword.
 		* Updated CFileDataIO unit-tests.
 		* Fixed UpdateState getting called on clients after they had been
 		  deleted (in some cases) and moved the call to the CUpDownClient
@@ -799,8 +813,8 @@ Version 2.1.0 - The "???" version
 			  seek'd past the end.
 			* Made the class uncopyable and unassignable.
 			* Changed the constructor that takes an external buffer to take a
-			  char* rather than a const char*, since the class allow
-			  modification of attached buffers.
+			  char* rather than a const char*, since the class allow for
+			  modifications of attached buffers.
 			* Removed the growth-rate from the attached-buffer constuctor, as
 			  we dont make use of it and should avoid it in any case.
 			* Added sanity check for the length passed to the SetLength
@@ -809,7 +823,7 @@ Version 2.1.0 - The "???" version
 		* Removed the ability to detach a buffer from a CMemFile and the
 		  accessor function that returned the current buffer. Instead, we now
 		  simply use the Read function, which is equivalent of what we did
-		  before in any case.
+		  before in any case, but safer.
 		* Unified the logging of packets received from other clients, so that
 		  the type of packet received is always logged, as is the cause in
 		  case of an error.
@@ -820,7 +834,7 @@ Version 2.1.0 - The "???" version
 		  EOF exceptions. This completes the majority of the changes
 		  resolving around the usage of exceptions.
 		* Fix compilation error that would only trigger on some versions of
-		  GCC, even though it seems to be illegal.
+		  GCC, even though the code appears to be illegal.
 		* Disabled pragmas when building unittests.
 		* More fixes in MuleUnit for templates.
 		* Disabled logging when running unittests.
@@ -828,10 +842,10 @@ Version 2.1.0 - The "???" version
 		  for better error handling (i.e. EOF exceptions, IO read/write
 		  failures) and prepared for making use of the IO failure exceptions.
 		* Reorganized, and removed some includes.
-		* Changed a couple of places that threw exceptions by pointer.
+		* Fixed a couple of places that threw exceptions by pointer.
 		* Moved exception handling from CServer to CServerList when loading
 		  servers, which better allows for handling of invalid servers.
-		* Changed some debug-strings marked for translation.
+		* Fixed some debug-strings which were wrongly marked for translation.
 		* Added IO-exception types, which will be used by CFileDataIO.
 		* Moved exception handling from CFriend to CFriendList when loading
 		  the list of friends, so we can stop trying to read a bad list.
@@ -839,8 +853,9 @@ Version 2.1.0 - The "???" version
 		* Changed some runtime-error checks from throwing the CInvalidPacket
 		  class to instead using the MULE_VALIDATE_* checks.
 		* Simplified the usage of CTags by changing the getter functions to
-		  throw if the function didn't match the type of the tag. This allowed
-		  for the elimination of explicit checks in most places reading CTags. 
+		  throw an exception if the function didn't match the type of the tag.
+		  This allowed for the elimination of explicit checks in most places
+		  where CTags are used.
 		* Initialized an uninitialized variable in CContact.
 		* Fixed stack-trace parsing for files with '+' in the name.
 		* Improved exception handling in the CTag constructor would could leak
@@ -855,42 +870,37 @@ Version 2.1.0 - The "???" version
 		  length of the unknown tag, and thus can't skip it, making further
 		  reads from the input file suspect.
 		* Largely reworked the use of exceptions. Catch(...) is out, only to
-		  be used for memory management issues, instead handlers now only
-		  catch the appropriate exceptions in order to avoid black holes where
-		  bug can hide.
+		  be used when memory-leaks are to be avoided. This insures that
+		  unexpected exceptions can be detected.
 		* Removed an exception handler that didn't have anything to catch.
 		* Changed CreateHashFromInput to use the CSafeFileIO interface and to
 		  safely handle exceptions without leaking. Also removed some
 		  definitions of MFC debug-macros and replaced them with wx macros.
-		* Fixed the largefile-check under windows.
+		* Fixed the largefile-checks under windows.
 		* Changed CMemFile and CFile to implemenations of the CSafeFileIO
 		  interface. CSafeFile was moved to CFile.* to avoid circular
 		  dependancies.
 		* Dropped the CSafeMemFile which didn't provide any extra
-		  functionality and instead made CMemFile derive from CSafeFile. Later
-		  CSafeFile will be dropped and both CFile and CMemFile will derive
-		  from CSafeFileIO.
-		* Misc source-code cleanups.
+		  functionality and instead made CMemFile derive from CSafeFile.
 		* Simplified CFile a bit, in preparation for larger changes:
 			* Removed the Length() function, since there is also GetLength().
 			* Removed duplicate definition of seek enums.
-		* Change the checks for large-file support so that users wouldn't have
-		  to export the LD_LIBRARY_PATH variable or similar when running
+		* Changed the checks for large-file support so that users wouldn't
+		  have to export the LD_LIBRARY_PATH variable or similar when running
 		  configure.
-		* Updated CIPFilter javadocs.
+		* Updated CIPFilter documentation.
 		* Changed the ipfilter class from just asserting on invalid ranges to
 		  not actually inserting them, since that would cause undefined
-		  behavoir.
+		  behavior.
 		* Compilation-fix for Mandrake Linux.
-		* Added checks against largefile support.
+		* Added checks against largefile support to configure.
 		* Added helper-function that returns the length of a file, without
-		  having to open it with a CFile first.
+		  having to open it first.
 		* Moved the loading of the ipfilter-files so that they are loaded
 		  before the server.met file is loaded. This ensures that the servers
-		  are filtered when starting up.
+		  are filtered when start aMule.
 		* Fixed some problems in MuleUnit when used with templates.
-		* Fixed the CHeckNewVersion function, which would crash and burn if
-		  anything went wrong.
+		* Fixed the CheckNewVersion function, which would crash on failure.
 		* Dropped extra verbosity from CFormat's assertions, since they now
 		  produce backtraces anyway.
 		* Moved backtrace functions to the MuleDebug.* files and added
@@ -900,8 +910,9 @@ Version 2.1.0 - The "???" version
 		* Fixed the "Is Textfile?" check which didn't handle whitespace.
 		* Added support for gzipped ipfilter.dat files and added checks that
 		  should ensure that we only try to parse text-files.
-		* Added function for converting long-longs to strings to MuleUnit.
-		* Moved some non-CFile stuf from CFile.* to FileFunctions.*.
+		* Added function for converting long-longs to strings in MuleUnit.
+		* Moved some functions not part of the CFile class from the CFile.*
+		  files to FileFunctions.*.
 		* Fixed a bug where shared files could be added to the shared-files
 		  ctrl multiple times.
 		* Fixed the hasher-thread, where the wxMutexGuiLeave function was
@@ -909,14 +920,14 @@ Version 2.1.0 - The "???" version
 		  moved static variables from the header, since they need not be
 		  specified there.
 		* Removed non-functional hack from CClientUDPSocket, which would cause
-		  an infinate loop if triggered.
+		  an infinate loop when triggered.
 		* Improved handling of assertions that occur during startup.
 		* When adding sources, add the source to the appropriate file first,
 		  before trying to update comments and ratings availability.
 		* Removed a couple of checks against 'this' being NULL.
 		* Changed the handling of UDP requests for sources, so that the
 		  locally connected server would be entirely skipped, instead of the
-		  packets just being discarded when sending.
+		  packets just being discarded.
 		* Fixed a number of places where attempts were made to catch by
 		  pointer, even though the exception was thrown by value.
 		* Removed various unused variables.
@@ -931,7 +942,7 @@ Version 2.1.0 - The "???" version
 		* Added unittests for CSimpleParser.
 		* Removed the need for exception-handling in CSafeFileIO's
 		  ReadOnlyString function, by allocating the buffer on the stack.
-		* Fixed popential deadlock in CClientUDPSocket that could trigger when
+		* Fixed potential deadlock in CClientUDPSocket that could trigger when
 		  an error occured during receiving.
 		* Removed a number of overloaded functions from the CSafeMemFile,
 		  since neither of those added any functionality. Also fixed a bug in
@@ -941,9 +952,7 @@ Version 2.1.0 - The "???" version
 		* Removed the unused class CSafeBufferedFile, which didn't implement
 		  buffered file-IO anyway.
 		* Added the ability to filter search-results. The filter select which
-		  entries are displayed and supports regular-expressions. For
-		  instance, the filter "a" will show all entries containing "a", and
-		  the string "a|b" will show all entries containing "a" or "b". See
+		  entries are displayed and supports regular-expressions. See
 		  www.wxwidgets.org/manuals/2.6.2/wx_wxresyn.html for an overview of
 		  the syntax. Also added the ability to filter known files from the
 		  results.
@@ -962,11 +971,11 @@ Version 2.1.0 - The "???" version
 			* In order to allow for ip-ranges specified by the user, a second
 			  file has been added (ipfilter_static.dat), which is always loaded
 			  after the normal ipfilter.dat file, so that it takes precedense.
-			* When either of the two ipfilter files dont exist, a template
+			* When either of the two ipfilter files don't exist, a template
 			  file is created which contains a description of the use that
 			  that file.
-			* When loading zipped ipfilter files, unpack the file in place
-			  first. Doing so largely elimates the overhead compared to
+			* When loading zipped ipfilter files, the files are unpacked in
+			  place. Doing so largely elimates the overhead compared to
 			  loading normal files.
 			* Moved loading of the ipfilter.dat files, so that it done after
 			  the GUI has been loaded.
@@ -975,37 +984,35 @@ Version 2.1.0 - The "???" version
 		  and fixed a mem-leak.
 		* Simplified the Update() function in the ipfilter-class, removing the
 		  use of special cases when calling it.
-		* Changed custom tokenizing code from the ipfilter-class to a seperate
+		* Moved custom tokenizing code from the ipfilter-class to a seperate
 		  class and dropped a couple of custom functions that didn't provide
 		  enough of a performance boost to warrent the extra code.
 		* Added unittests for the StringIPtoUint32 function, updated the
-		  javadocs for the function and fixed the bugs that appeared:
+		  documentation for the function and fixed the bugs that appeared:
 			* The last field was not restricted to the range 0..255.
 			* Fields containing huge values could overflow to negative values
-			  and would not be caught.		  
+			  and would not be caught by the sanity checks.
 		* Changed ASSERT_EQUALS so that descriptions only gets created in case
 		  of a failed comparison, since this would otherwise result in the
 		  attempted deference of end iterators and the like.
 		* Moved the RLE classes to a seperate set of source files.
 		* Removed probematic operator<() template function from WebServer.*,
-		  and replaced it with a specialized struct that doesnt instantize at
-		  random for wrong data-types.
+		  and replaced it with a specialized struct. This was required since
+		  the < operator would be instantiated for incorrect data-types.
 		* Updated documentation for the CFormat class.
 		* Dropped support for long doubles in CFormat and merged handling of
-		  floats and doubles, since we can live with any impresission this
-		  might introduce.
-		* Improved CFormat test, which was cluttered by serveral variables
+		  the other floating-point types.
+		* Improved CFormat unittest, which was cluttered by serveral variables
 		  with too similar names.
-		* Changed the ASSERT_EQUALS macro in MuleUnit, so that parameters are
-		  evaluated only once, which previously caused unexpected behavoir
-		  when either of the arguments were a modifying function call.
+		* Fixed the ASSERT_EQUALS macro in MuleUnit, which would previously
+		  evaluate parameters multiple times.
 		* Removed the unused NeedUTF8String() function.
 		* Fixed master-hash parsing for ed2klinks, which would always fail due
 		  to a couple of assertions that had been badly translated into
 		  exception.
 		* Changed the way clients are deleted on shutdown, to help detect the
 		  presence of dangling pointers caused by incorrect removals.
-		* Fixed bug #494: Clients with score zero not being considered as
+		* Fixed bug #494. Clients with score zero not being considered as
 		  candidates for uploading.
 		* Fixed a few warnings.
 		* Improved handling of uncaught exceptions in the MuleUnit framework.
@@ -1026,13 +1033,12 @@ Version 2.1.0 - The "???" version
 		  builds.
 		* Added a minimalistic unittesting framework called MuleUnit, which is
 		  based on the EasyUnit framework (http://easyunit.sourceforge.net/).
-		  The build target 'check' builds and runs all existing unittests.
+		  The build target 'check' compiles and runs all existing unittests.
 		* Fixed crash in CClientUDPSocket caused by two threads trying to send
 		  and receive at the same time.
 		* Removed unused Pause() function from UBT.
-		* Fixed infinate loop in CClientUDPSocket, caused by poor
-		  error-handling.
-		* Fixed some Engrish messages.
+		* Fixed inf. loop in CClientUDPSocket, caused by poor error-handling.
+		* Rewrote some poorly phrased messages.
 		* Fixed uploaded data not being recorded in statistics.
 		* Compilation fixes for wxGTK-2.4.2.
 		* Removed the unused 'MakefileWin32' file.
@@ -1040,7 +1046,7 @@ Version 2.1.0 - The "???" version
 		* Improved source handling for known-files:
 			* Fixed the possibility of source-counts getting out of sync.
 			* Optimized source-removal slightly.
-			* Added extra debugging checks to spot potentail problems.
+			* Added extra debugging checks to spot potential problems.
 		* Changed access to vector of source statuses from using the []
 		  operator to using the at function, to see if out-of-bounds access
 		  was causing a specific crash.
