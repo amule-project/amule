@@ -205,6 +205,8 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	}
 	CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(evt.GetSelection()));
 	wxASSERT(ctrl);
+	// Zero to avoid results added while destructing.
+	ctrl->ShowResults(0);
 	theApp.searchlist->RemoveResults(ctrl->GetSearchId());
 	
 	// Do cleanups if this was the last tab
