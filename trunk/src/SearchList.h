@@ -183,7 +183,7 @@ public:
 	
 private:
 
-	CMemFile *CreateSearchData(const wxString &searchString, const wxString& typeText,
+	CMemFile *CreateSearchData(const wxString &searchString, wxString typeText,
 				const wxString &extension, uint32 min, uint32 max, uint32 availability, bool kad);
 
 	CPacket* m_searchpacket;
