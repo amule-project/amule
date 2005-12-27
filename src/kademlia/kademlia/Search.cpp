@@ -642,8 +642,7 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	}
 	delete info;
 
-	if(bFilterComment)
-	{
+	if (bFilterComment) {
 		delete entry;
 		return;
 	}
@@ -959,8 +958,10 @@ void CSearch::PreparePacket(void)
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
+					bio3->writeByte(0);
+				} else {
+					PreparePacketForTags( bio3, file );
 				}
-				PreparePacketForTags( bio3, file );
 			}
 		}
 		if( count > 50 ) {
@@ -977,8 +978,10 @@ void CSearch::PreparePacket(void)
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
+					bio2->writeByte(0);
+				} else {
+					PreparePacketForTags( bio2, file );
 				}
-				PreparePacketForTags( bio2, file );
 			}
 		}
 		if( count > 0 ) {
@@ -995,8 +998,10 @@ void CSearch::PreparePacket(void)
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
+					bio1->writeByte(0);
+				} else {
+					PreparePacketForTags( bio1, file );
 				}
-				PreparePacketForTags( bio1, file );
 			}
 		}
 	} catch (const CIOException& ioe ) {
