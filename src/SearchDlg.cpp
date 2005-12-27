@@ -422,7 +422,7 @@ void CSearchDlg::StartNewSearch()
 		return;
 	}
 
-	wxString typeText(wxT("Any")), extension;
+	wxString typeText, extension;
 	uint32 min = 0, max = 0, availability = 0;
 	
 	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
@@ -449,30 +449,14 @@ void CSearchDlg::StartNewSearch()
 		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-			case 0: 
-				typeText = wxT("Any"); 
-				break;
-			case 1: 
-				typeText = wxT("Archives"); 
-				break;
-			case 2: 
-				typeText = wxT("Audio"); 
-				break;
-			case 3: 
-				typeText = wxT("CD-Images"); 
-				break;
-			case 4: 
-				typeText = wxT("Pictures"); 
-				break;
-			case 5: 
-				typeText = wxT("Programs"); 
-				break;
-			case 6: 
-				typeText = wxT("Texts"); 
-				break;
-			case 7: 
-				typeText = wxT("Videos"); 
-				break;
+			case 0:	typeText = wxEmptyString;		break;
+			case 1:	typeText = ED2KFTSTR_ARCHIVE; 	break;
+			case 2: typeText = ED2KFTSTR_AUDIO;		break;
+			case 3:	typeText = ED2KFTSTR_CDIMAGE;	break;
+			case 4: typeText = ED2KFTSTR_IMAGE;		break;
+			case 5: typeText = ED2KFTSTR_PROGRAM;	break;
+			case 6:	typeText = ED2KFTSTR_DOCUMENT;	break;
+			case 7:	typeText = ED2KFTSTR_VIDEO;		break;
 			default:
 				AddDebugLogLineM( true, logGeneral,
 					CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
