@@ -822,7 +822,7 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CMemFile* CSearchList::CreateSearchData(const wxString& searchString, const wxString& typeText,
+CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString typeText,
 				const wxString& extension, uint32 min, uint32 max, uint32 availability, bool kad)
 {
 	// Count the number of used parameters
