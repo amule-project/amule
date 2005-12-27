@@ -426,9 +426,6 @@ void CSearchDlg::StartNewSearch()
 	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
 
 		extension = CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->GetValue();
-		if ( !extension.IsEmpty() && !extension.StartsWith(wxT(".")) ) {
-			extension = wxT(".") + extension;
-		}		
 
 		uint32 sizemin = GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
 		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
