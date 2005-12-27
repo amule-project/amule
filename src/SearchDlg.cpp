@@ -469,11 +469,6 @@ void CSearchDlg::StartNewSearch()
 		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
-	if (typeText == wxT("Any")) {
-		// "Any" is the default, so don't send that parameter.
-		typeText.Clear();
-	}
-	
 	SearchType search_type = KadSearch;
 	
 	uint32 real_id = m_nSearchID;
