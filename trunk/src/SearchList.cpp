@@ -527,7 +527,11 @@ wxString CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, 
 		return _("aMule is not connected!");
 	}
 	
-	m_resultType = typeText;
+	if (typeText != ED2KFTSTR_PROGRAM) {
+		// No check is to be made on returned results
+		m_resultType = typeText;
+	}
+	
 	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
 
 	CMemFile* search_data = CreateSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
@@ -828,6 +832,16 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, const wxSt
 	if ( max > 0 ) 			++parametercount;
 	if ( availability > 0 )		++parametercount;
 	if ( !extension.IsEmpty() )	++parametercount;
+	
+	if (typeText == ED2KFTSTR_ARCHIVE){
+		// eDonkeyHybrid 0.48 uses type "Pro" for archives files
+		// www.filedonkey.com uses type "Pro" for archives files
+		typeText = ED2KFTSTR_PROGRAM;
+	} else if (typeText == ED2KFTSTR_CDIMAGE){
+		// eDonkeyHybrid 0.48 uses *no* type for iso/nrg/cue/img files
+		// www.filedonkey.com uses type "Pro" for CD-image files
+		typeText = ED2KFTSTR_PROGRAM;
+	}
 	
 	// Must write parametercount - 1 parameter headers
 	CMemFile* data =  new CMemFile(100);
