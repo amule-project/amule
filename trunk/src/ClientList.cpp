@@ -155,7 +155,7 @@ void CClientList::AddToDeleteQueue(CUpDownClient* client)
 
 void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 {
-	// Sainity check
+	// Sanity check
 	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserIDHybrid() == newID ) )
 		return;
 
@@ -169,7 +169,7 @@ void CClientList::UpdateClientID( CUpDownClient* client, uint32 newID )
 
 void CClientList::UpdateClientIP( CUpDownClient* client, uint32 newIP )
 {
-	// Sainity check
+	// Sanity check
 	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetIP() == newIP ) )
 		return;
 
@@ -184,7 +184,7 @@ void CClientList::UpdateClientIP( CUpDownClient* client, uint32 newIP )
 	
 void CClientList::UpdateClientHash( CUpDownClient* client, const CMD4Hash& newHash )
 {
-	// Sainity check
+	// Sanity check
 	if ( ( client->GetClientState() != CS_LISTED ) || ( client->GetUserHash() == newHash ) )
 		return;
 
