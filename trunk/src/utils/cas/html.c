@@ -86,9 +86,11 @@ int create_html(char *stats[20], char *lines[6], char template[120])
 	/* read the template into the memory */
 	int ler;
 	FILE *fTmpl = fopen(template,"r");
+	char buffer[size];
 	while ((ler=fgetc(fTmpl)) != EOF)
 	{
-		snprintf(mem,size,"%s%c",mem,ler);
+		snprintf(buffer, size,"%s%c",mem,ler);
+		memcpy(mem, buffer, size);
 	}
 	fclose(fTmpl);
 	
