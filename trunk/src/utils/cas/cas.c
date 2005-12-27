@@ -203,13 +203,13 @@ int main(int argc, char *argv[])
 			AppendToLine(lines, 1, "but running\n");
 	}
 
-	strcpy(stats[11],convbytes(stats[11]));
-	stats[12] = convbytes(stats[12]);
+	stats[11] = strdup(convbytes(stats[11]));
+	stats[12] = strdup(convbytes(stats[12]));
 
 	CreateLine(lines, 2, "Total Download: %s, Upload: %s\n",stats[11] , stats[12]);
 
-	strcpy(stats[15],convbytes(stats[15]));
-	stats[14] = convbytes(stats[14]);
+	stats[15] = strdup(convbytes(stats[15]));
+	stats[14] = strdup(convbytes(stats[14]));
 
 	CreateLine(lines, 3, "Session Download: %s, Upload: %s\n",stats[14], stats[15]);
 
