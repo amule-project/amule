@@ -108,7 +108,9 @@ int readconfig(CONF *config)
 		ler = fgetc(conf);
 		if (ler == 13); /* Jacobo221 - Make it DOS compatible */
 		else if (ler != 10) {
-			snprintf(buffer, sizeof(buffer), "%s%c", buffer, ler);
+			char tmpbuffer[sizeof(buffer)];
+			snprintf(tmpbuffer, sizeof(buffer), "%s%c", buffer, ler);
+			memcpy(buffer, tmpbuffer, sizeof(buffer));
 		} else {
 			/* Jacobo221 - [ToDo] Only first char per line is comment... */
 			if (buffer[0] != '#') {
