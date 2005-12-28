@@ -726,12 +726,6 @@ const CECPacket *CECSocket::ReadPacket()
 {
 	CECPacket *packet = 0;
 
-	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
-		fputs((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: error [%s] in socket")) %
-			GetErrorMsg(LastError()))), stdout);
-		return 0;
-	}
-
 	uint32 flags = m_rx_flags;
 	
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
