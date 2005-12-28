@@ -75,22 +75,20 @@ int create_html(char *stats[20], char *lines[6], char template[120])
 
 	/* 2 times the size of the template should be enougth */
 	int size = sb.st_size*2;
-	char *mem = malloc(size);
+	char *mem = calloc(size, 1);
 	if (NULL == mem)
 	{
-		perror("Could not malloc\n");
+		perror("Could not calloc\n");
 		exit(44);
 	}
-	memset(mem, '\0', size);
 
 	/* read the template into the memory */
+	size_t len = 0;
 	int ler;
 	FILE *fTmpl = fopen(template,"r");
-	char buffer[size];
-	while ((ler=fgetc(fTmpl)) != EOF)
+	while ((ler=fgetc(fTmpl)) != EOF && len+1 < size)
 	{
-		snprintf(buffer, size,"%s%c",mem,ler);
-		memcpy(mem, buffer, size);
+		mem[len++] = ler;
 	}
 	fclose(fTmpl);
 	

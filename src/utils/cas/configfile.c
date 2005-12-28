@@ -80,6 +80,7 @@ int readconfig(CONF *config)
 	char buffer[120], option[15], *path;
 	FILE *conf;
 	int i = 0, ler;
+	size_t len;
 	char lines[IMG_TEXTLINES][12] = {
 		"first_line",
 		"second_line",
@@ -104,13 +105,15 @@ int readconfig(CONF *config)
 	free(path);
 
 	buffer[0] = 0;
+	len = 0;
 	while (!feof(conf)) {
 		ler = fgetc(conf);
 		if (ler == 13); /* Jacobo221 - Make it DOS compatible */
 		else if (ler != 10) {
-			char tmpbuffer[sizeof(buffer)];
-			snprintf(tmpbuffer, sizeof(buffer), "%s%c", buffer, ler);
-			memcpy(buffer, tmpbuffer, sizeof(buffer));
+			if (len+1 < sizeof(buffer)) {
+				buffer[len++] = ler;
+				buffer[len] = '\0';
+			}
 		} else {
 			/* Jacobo221 - [ToDo] Only first char per line is comment... */
 			if (buffer[0] != '#') {
@@ -135,6 +138,7 @@ int readconfig(CONF *config)
 								&config->enabled[i]);
 			}
 			buffer[0] = 0;
+			len = 0;
 		}
 	}
 
