@@ -74,7 +74,7 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 %{_datadir}/amule
 
 %changelog
-* Sum Dec 25 2005 Gerd78 <aMule forum>
+* Sun Dec 25 2005 Gerd78 <aMule forum>
 - Really disable optimizations by defining optflags to nil.
 
 * Mon Apr 19 2005 Marcelo Jimenez <phoenix@amule.org>
