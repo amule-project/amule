@@ -184,14 +184,21 @@ CamuleApp::CamuleApp()
 	ECServerHandler = NULL;
 	m_singleInstance = NULL;
 	glob_prefs	= NULL;
+	statistics = NULL;
+	uploadBandwidthThrottler = NULL;
+	core_timer = NULL;
+	applog = NULL;
 	
-	m_dwPublicIP	=  0;
-
+	m_localip		= 0;
+	m_dwPublicIP	= 0;
 	webserver_pid	= 0;
+
+	enable_stdout_log = false;
+	enable_daemon_fork = false;
+	
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
-
 }
 
 CamuleApp::~CamuleApp()
