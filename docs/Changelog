@@ -331,6 +331,12 @@ Version 2.1.0 - The "???" version
 		* A4AF transfer speed display fix
 
 	Xaignar:
+		* Fixed crash when '--version' was used, caused by an uninitialized
+		  pointer. Serveral other uninitialized pointers were also fixed.
+		* Fixed assert in the Type-To-Select code which would trigger when
+		  items were removed and the old tts index pointed past the last item.
+		* Fixed kad-searches with a filetype specified not producing any
+		  results, caused by using obsolete type-strings.
 		* Added missing calls to va_end at places where va_start is called.
 		* Remove unneeded calls to wxMutexGuiEnter/Leave.
 		* Fixed the listctrls asserting if one were to click past the end of
