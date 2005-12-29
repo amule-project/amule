@@ -270,9 +270,11 @@ protected:
 	 */
 	void OnChar(wxKeyEvent& evt);
 	/**
-	 * Event handler for item selection, needed by TTS.
+	 * Event handler for item selection/deletion, needed by TTS.
 	 */
 	void OnItemSelected(wxListEvent& evt);
+	void OnItemDeleted(wxListEvent& evt);
+	void OnAllItemsDeleted(wxListEvent& evt);
 
 	
 private:

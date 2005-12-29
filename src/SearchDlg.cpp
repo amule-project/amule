@@ -167,9 +167,11 @@ void CSearchDlg::UpdateResult(CSearchFile* toupdate)
 }
 
 
-void CSearchDlg::OnListItemSelected(wxListEvent& WXUNUSED(event))
+void CSearchDlg::OnListItemSelected(wxListEvent& event)
 {
 	FindWindow(IDC_SDOWNLOAD)->Enable(true);
+
+	event.Skip();
 }
 
 

@@ -67,7 +67,6 @@ protected:
 	void	OnRightClick(wxMouseEvent& event);
 		
 private:
-	void 	OnItemSelected(wxListEvent& event);
 	void	OnItemActivated(wxListEvent& event);
 
 	// Menu Items

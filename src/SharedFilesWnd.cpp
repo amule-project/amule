@@ -144,10 +144,13 @@ void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 }
 
 
-void CSharedFilesWnd::OnItemActivated(wxListEvent& WXUNUSED(evt))
+void CSharedFilesWnd::OnItemActivated(wxListEvent& evt)
 {
 	SelectionUpdated();
+
+	evt.Skip();
 }
+
 
 void CSharedFilesWnd::RemoveAllSharedFiles() {
 	sharedfilesctrl->DeleteAllItems();
