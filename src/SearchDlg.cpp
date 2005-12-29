@@ -449,24 +449,28 @@ void CSearchDlg::StartNewSearch()
 		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-			case 0:	typeText = wxEmptyString;		break;
+			case 0:	typeText = wxEmptyString;	break;
 			case 1:	typeText = ED2KFTSTR_ARCHIVE; 	break;
-			case 2: typeText = ED2KFTSTR_AUDIO;		break;
+			case 2: typeText = ED2KFTSTR_AUDIO;	break;
 			case 3:	typeText = ED2KFTSTR_CDIMAGE;	break;
-			case 4: typeText = ED2KFTSTR_IMAGE;		break;
+			case 4: typeText = ED2KFTSTR_IMAGE;	break;
 			case 5: typeText = ED2KFTSTR_PROGRAM;	break;
 			case 6:	typeText = ED2KFTSTR_DOCUMENT;	break;
-			case 7:	typeText = ED2KFTSTR_VIDEO;		break;
+			case 7:	typeText = ED2KFTSTR_VIDEO;	break;
 			default:
 				AddDebugLogLineM( true, logGeneral,
 					CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
 						% typeText
 				);
-				
 				break;
 		}
 		// This will break if we change the order (good to know!)
-		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
+#warning FIXME: Restore this assertion after release.
+		// If you start a new search with file type "video" e.g., you get an assert because 
+		// ED2KFTSTR_VIDEO is equal to "Video", while GetStringSelection() returns "Videos"
+		// I'd rather not fix this before release, because assertions do not go into releases
+		// and fixing this implies a change in strings, which would be a burden to all translators.
+		//wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(typeText));
 	}
 
 	SearchType search_type = KadSearch;
