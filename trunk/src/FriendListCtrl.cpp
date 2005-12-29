@@ -49,7 +49,6 @@
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
 	EVT_RIGHT_DOWN(CFriendListCtrl::OnRightClick)
-	EVT_LIST_ITEM_SELECTED(ID_FRIENDLIST, CFriendListCtrl::OnItemSelected)
 	EVT_LIST_ITEM_ACTIVATED(ID_FRIENDLIST, CFriendListCtrl::OnItemActivated) 
 	
 	EVT_MENU(MP_MESSAGE, CFriendListCtrl::OnSendMessage)
@@ -162,15 +161,6 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 	#ifndef CLIENT_GUI
 	theApp.friendlist->UpdateFriendName(toupdate->m_hash, toupdate->m_name, toupdate->m_ip, toupdate->m_port);
 	#endif
-}
-
-
-void CFriendListCtrl::OnItemSelected(wxListEvent& WXUNUSED(event))
-{
-	// Force the list to refresh. For some reason, Refresh() wont work on its own...
-	Freeze();
-	Refresh(true);
-	Thaw(); 
 }
 
 

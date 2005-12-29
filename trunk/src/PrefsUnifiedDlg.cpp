@@ -902,6 +902,8 @@ void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 	m_CurrentPanel->Show( true );
 
 	Layout();
+
+	event.Skip();
 }
 
 

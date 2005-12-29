@@ -60,6 +60,8 @@ BEGIN_EVENT_TABLE(CMuleListCtrl, MuleExtern::wxGenericListCtrl)
 	EVT_LIST_COL_CLICK( -1, 		CMuleListCtrl::OnColumnLClick)
 	EVT_LIST_COL_RIGHT_CLICK( -1,	CMuleListCtrl::OnColumnRClick)
 	EVT_LIST_ITEM_SELECTED(-1,		CMuleListCtrl::OnItemSelected)
+	EVT_LIST_DELETE_ITEM(-1,		CMuleListCtrl::OnItemDeleted)
+	EVT_LIST_DELETE_ALL_ITEMS(-1,	CMuleListCtrl::OnAllItemsDeleted)
 	EVT_CHAR(						CMuleListCtrl::OnChar)
 	EVT_MENU_RANGE(MP_LISTCOL_1, MP_LISTCOL_15, CMuleListCtrl::OnMenuSelected)
 	EVT_MOUSEWHEEL(CMuleListCtrl::OnMouseWheel)
@@ -505,6 +507,22 @@ void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 	}
 
 	evt.Skip();
+}
+
+
+void CMuleListCtrl::OnItemDeleted(wxListEvent& evt)
+{	
+	if (evt.GetIndex() < m_tts_item) {
+		m_tts_item--;
+	}
+
+	evt.Skip();
+}
+
+
+void CMuleListCtrl::OnAllItemsDeleted(wxListEvent& evt)
+{
+	ResetTTS();
 }
 
 
