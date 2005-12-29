@@ -81,4 +81,6 @@ void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 			SetItemState(pos, wxLIST_STATE_DESELECTED, wxLIST_STATE_SELECTED);
 		}
 	}
+
+	event.Skip();
 }
