@@ -226,22 +226,22 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		
 		m_menu->Enable( MP_DETAIL,		index > -1 );
 		m_menu->Enable( MP_SHOWLIST,	index > -1 );
-		m_menu->Enable( MP_SENDMESSAGE,	index > -1 );
 		
 		
 		bool banned = false;
-		bool canAddFriend = false;
+		bool validIP = false;
 
 		// Check if the client is banned
 		if ( index > -1 ) {
 			CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 
 			banned = client->IsBanned();
-			canAddFriend = client->GetIP();
+			validIP = client->GetIP();
 		}
 		
 		m_menu->Enable( MP_UNBAN, 		banned );		
-		m_menu->Enable( MP_ADDFRIEND,	canAddFriend );
+		m_menu->Enable( MP_ADDFRIEND,	validIP );
+		m_menu->Enable( MP_SENDMESSAGE,	validIP );
 
 		PopupMenu( m_menu, event.GetPosition() );
 		
@@ -318,12 +318,17 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
+		CUpDownClient* client = (CUpDownClient*)GetItemData(index);
+
+		// These values are cached, since calling wxGetTextFromUser will
+		// start an event-loop, in which the client may be deleted.
+		wxString userName = client->GetUserName();
+		uint64 userID = GUI_ID(client->GetIP(),client->GetUserPort());
 
 		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:") );
 		
-		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->chatwnd->SendMessage(message, client->GetUserName(),GUI_ID(client->GetIP(),client->GetUserPort()));
+		if (!message.IsEmpty()) {
+			theApp.amuledlg->chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
