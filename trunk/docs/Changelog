@@ -331,6 +331,10 @@ Version 2.1.0 - The "???" version
 		* A4AF transfer speed display fix
 
 	Xaignar:
+		* Fixed the possibility of crashing when sending a message to a non-
+		  friend client, caused by the fact that the client could be deleted
+		  before the user entered the message. Also prevented attempts at
+		  sending messages clients that wern't ready.
 		* Fixed crash when '--version' was used, caused by an uninitialized
 		  pointer. Serveral other uninitialized pointers were also fixed.
 		* Fixed assert in the Type-To-Select code which would trigger when

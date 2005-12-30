@@ -840,12 +840,16 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 
 	if ( sources.size() == 1 ) {
 		CUpDownClient* source = (CUpDownClient*)(sources.front())->value;
-	
-		wxString message = ::wxGetTextFromUser(
-			_("Send message to user"),
+
+		// These values are cached, since calling wxGetTextFromUser will
+		// start an event-loop, in which the client may be deleted.
+		wxString userName = source->GetUserName();
+		uint64 userID = GUI_ID(source->GetIP(), source->GetUserPort());
+		
+		wxString message = ::wxGetTextFromUser(_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->chatwnd->SendMessage(message, source->GetUserName(),GUI_ID(source->GetIP(),source->GetUserPort()));
+			theApp.amuledlg->chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
@@ -1039,6 +1043,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		PopupMenu(m_menu, evt.GetPoint());
 
 	} else {
+		CUpDownClient* client = (CUpDownClient*)item->value;
 		
 		m_menu = new wxMenu(wxT("Clients"));
 		m_menu->Append(MP_DETAIL, _("Show &Details"));
@@ -1048,8 +1053,11 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));
 		
 		// Only enable the Swap option for A4AF sources
-		m_menu->Enable(MP_CHANGE2FILE, ( item->type == A4AF_SOURCE ) );
-
+		m_menu->Enable(MP_CHANGE2FILE, (item->type == A4AF_SOURCE));
+		// We need a valid IP if we are to message the client
+		m_menu->Enable(MP_SENDMESSAGE, client->GetIP());
+		
+		
 		PopupMenu(m_menu, evt.GetPoint());
 					
 	}
