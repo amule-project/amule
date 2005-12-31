@@ -357,7 +357,9 @@ function GotoCat(cat) {
 	if ( $_SESSION[$reverse_sort_key] == "" ) {
 		$_SESSION[$reverse_sort_key] = 0;
 	} else {
-		$_SESSION[$reverse_sort_key] = !$_SESSION[$reverse_sort_key];
+		if ( $HTTP_GET_VARS["sort"] != '') {
+			$_SESSION[$reverse_sort_key] = !$_SESSION[$reverse_sort_key];
+		}
 	}
 
 	//var_dump($_SESSION);

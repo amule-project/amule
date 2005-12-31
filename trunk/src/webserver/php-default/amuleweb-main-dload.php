@@ -280,7 +280,9 @@ function formCommandSubmit(command)
 			if ( $_SESSION["download_sort_reverse"] == "" ) {
 				$_SESSION["download_sort_reverse"] = 0;
 			} else {
-				$_SESSION["download_sort_reverse"] = !$_SESSION["download_sort_reverse"];
+				if ( $HTTP_GET_VARS["sort"] != '') {
+					$_SESSION["download_sort_reverse"] = !$_SESSION["download_sort_reverse"];
+				}
 			}
 		}
 		//var_dump($_SESSION);
