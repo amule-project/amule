@@ -173,7 +173,7 @@ function formCommandSubmit(command)
 				
 				amule_do_search_start_cmd($HTTP_GET_VARS["searchval"],
 					//$HTTP_GET_VARS["ext"], $HTTP_GET_VARS["filetype"],
-					"", "Any",
+					"", "",
 					$search_type, $HTTP_GET_VARS["avail"], $min_size, $max_size);
 			} elseif ( $HTTP_GET_VARS["command"] == "download") {
 				foreach ( $HTTP_GET_VARS as $name => $val) {
