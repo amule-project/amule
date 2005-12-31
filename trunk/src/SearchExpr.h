@@ -23,6 +23,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifndef SEARCHEXPR_H
+#define SEARCHEXPR_H
+
 #include <wx/string.h>
 #include <wx/arrstr.h>
 
@@ -81,3 +84,5 @@ public:
 	
 	wxArrayString m_aExpr;
 };
+
+#endif
