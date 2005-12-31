@@ -387,7 +387,7 @@ border-color: black;
   <tr><td class=tabs>Type</td>
   <td>
   <select name="type">
-  	<option value="Any">Any</option>
+  	<option value=""></option>
   	<option value="Archives">Archive</option>
 	<option value="Audio">Audio</option>
   	<option value="CD-Images">CD-Images</option>
