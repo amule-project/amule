@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-23 21:36+0100\n"
-"PO-Revision-Date: 2005-05-12 21:30+0100\n"
+"PO-Revision-Date: 2005-12-30 16:07+0100\n"
 "Last-Translator: GhePeU <ghepeu@virgilio.it>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -1328,7 +1328,7 @@ msgstr "Riconnessione automatica al server tra %d secondi"
 
 #: src/ServerConnect.cpp:374
 msgid "Connection lost"
-msgstr "Connessione perduta"
+msgstr "Connessione persa"
 
 #: src/ServerConnect.cpp:381
 #, c-format
@@ -1647,7 +1647,7 @@ msgstr "*** Connessione al client in corso ***"
 
 #: src/ChatSelector.cpp:291
 msgid "*** Failed to Connect to client / Connection lost ***"
-msgstr "*** Impossibile connettersi al client / Connessione perduta ***"
+msgstr "*** Impossibile connettersi al client / Connessione persa ***"
 
 #: src/FileDetailDialog.cpp:61
 msgid "File Details"
@@ -2959,7 +2959,7 @@ msgid ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
-" 'All-Platform' p2p client basato on eMule \n"
+" Client p2p 'All-Platform' basato su eMule \n"
 "\n"
 " Sito web: http://www.amule.org \n"
 " Forum: http://forum.amule.org \n"
@@ -4128,7 +4128,7 @@ msgid "disable"
 msgstr "disabilita"
 
 #: src/muuli_wdr.cpp:1881
-msgid "UDP port for extended server requests (TCP+3): 4665"
+msgid "UDP port for extended server requests (TCP+3):4665"
 msgstr "Porta UDP per richieste avanzate del server (TCP+3): 4665"
 
 #: src/muuli_wdr.cpp:1888
@@ -4242,7 +4242,7 @@ msgstr "Aggiungi i nuovi file da scaricare con priorità automatica"
 
 #: src/muuli_wdr.cpp:2093
 msgid "Try to download first and last chunks first"
-msgstr "Tenta di scaricare prima la parte iniziale e finale del file"
+msgstr "Cerca di scaricare prima la parte iniziale e finale del file"
 
 #: src/muuli_wdr.cpp:2097
 msgid "Add new shared files with auto priority"
@@ -4250,7 +4250,7 @@ msgstr "Assegna priorità automatica ai nuovi file condivisi"
 
 #: src/muuli_wdr.cpp:2100
 msgid "Try to transfer full chunks to all uploads"
-msgstr "Tenta di trasferire parti complete per ogni upload"
+msgstr "Cerca di trasferire parti complete per ogni upload"
 
 #: src/muuli_wdr.cpp:2104
 msgid "Start next paused file when a file completed"
@@ -4261,8 +4261,8 @@ msgid "From the same category"
 msgstr "Della stessa categoria"
 
 #: src/muuli_wdr.cpp:2111
-msgid "Save 5 sources on rare files (< 20 sources)"
-msgstr "Salva 5 fonti per i file rari (< 20 fonti)"
+msgid "Save 10 sources on rare files (< 20 sources)"
+msgstr "Salva 10 fonti per i file rari (< 20 fonti)"
 
 #: src/muuli_wdr.cpp:2117
 msgid "Disk Space"
@@ -4462,7 +4462,7 @@ msgstr "Nuova versione di aMule disponibile"
 
 #: src/muuli_wdr.cpp:2422
 msgid "Urgent OOD, serverconnection lost"
-msgstr "OOD Urgente, perduta connessione al server"
+msgstr "OOD Urgente, persa connessione al server"
 
 #: src/muuli_wdr.cpp:2431
 msgid "Notify by Mail"
@@ -5775,7 +5775,7 @@ msgstr "Firme online"
 #: src/PrefsUnifiedDlg.cpp:817
 #, c-format
 msgid "Choose a folder for %s"
-msgstr "Scegli una directory per %s"
+msgstr "Scegli una directory per i %s"
 
 #: src/PrefsUnifiedDlg.cpp:833
 msgid "Browse wav"
@@ -6132,7 +6132,7 @@ msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
 msgstr ""
-"Sei connesso al server che stai tentando di cancellare. Disconnettiti prima. "
+"Sei connesso al server che stai cercando di cancellare. Disconnettiti prima. "
 "Il server NON è stato cancellato"
 
 #: src/ServerListCtrl.cpp:145
@@ -6227,7 +6227,7 @@ msgstr "Download di %s"
 #: src/DownloadQueue.cpp:311
 #, c-format
 msgid "You are already trying to download the file '%s'"
-msgstr "Stai già tentando di scaricare il file '%s'"
+msgstr "Stai già cercando di scaricare il file '%s'"
 
 #: src/DownloadQueue.cpp:313
 #, c-format
@@ -6237,7 +6237,7 @@ msgstr "Hai già il file '%s'"
 #: src/DownloadQueue.cpp:317
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr "Stai già tentando di scaricare il file '%s'"
+msgstr "Stai già cercando di scaricare il file '%s'"
 
 #: src/DownloadQueue.cpp:1221
 #, c-format
