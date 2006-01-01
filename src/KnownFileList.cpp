@@ -230,10 +230,31 @@ CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint
 	return NULL;
 }
 
+
 bool CKnownFileList::IsKnownFile(const CKnownFile* file) 
 {
-	if (file) {
-		return FindKnownFileByID(file->GetFileHash()) != NULL;
+	wxCHECK(file, false);
+
+	wxMutexLocker sLock(list_mut);
+
+	{
+		CKnownFileMap::iterator it = m_map.begin();
+		for (; it != m_map.end(); ++it) {
+			if (it->second == file) {
+				return true;
+			}
+		}
 	}
+	
+	{
+		KnownFileList::iterator it = m_duplicates.begin();
+		for (; it != m_duplicates.end(); ++it) {
+			if (*it == file) {
+				return true;
+			}
+		}
+	}
+
+	
 	return false;
 }
