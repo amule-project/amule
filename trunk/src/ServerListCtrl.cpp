@@ -189,7 +189,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
-		SetItem( itemnr, COLUMN_SERVER_PING, wxString::Format( wxT("%u"), server->GetPing() ) );
+		SetItem( itemnr, COLUMN_SERVER_PING, CastSecondsToHM(server->GetPing()/1000 ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
 	}
