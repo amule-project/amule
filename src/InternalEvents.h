@@ -38,60 +38,54 @@ DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE, wxEVT_USER_FIRST+SOURCE_DNS
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE, wxEVT_USER_FIRST+UDP_DNS_DONE)
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE, wxEVT_USER_FIRST+SERVER_DNS_DONE)
 
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER, wxEVT_USER_FIRST+EVENT_TIMER)
 
-class CMuleInternalEvent : public wxEvent
-{
-public:
-	CMuleInternalEvent(int event, int id = wxID_ANY)
-		: wxEvent(id, event),
-		  m_ptr(NULL),
-		  m_value(0),
-		  m_commandInt(0)
+
+class wxMuleInternalEvent : public wxEvent {
+	void *m_ptr;
+	long m_value;
+	int  m_commandInt;
+	public:
+	wxMuleInternalEvent(int id, int event_id) : wxEvent(event_id, id)
 	{
 	}
-	
-	wxEvent* Clone(void) const {
-		return new CMuleInternalEvent(*this);
+	wxMuleInternalEvent(int id) : wxEvent(-1, id)
+	{
 	}
-	
-	void SetExtraLong(long value) {
+	wxMuleInternalEvent(int id, void *ptr, long value) : wxEvent(-1, id)
+	{
+		m_ptr = ptr;
 		m_value = value;
 	}
-	
-	long GetExtraLong() {
+	wxEvent *Clone(void) const
+	{
+		return new wxMuleInternalEvent(*this);
+	}
+	void SetExtraLong(long value)
+	{
+		m_value = value;
+	}
+	long GetExtraLong()
+	{
 		return m_value;
 	}
-	
-	void SetInt(int i) {
+	void SetInt(int i)
+	{
 		m_commandInt = i;
 	}
-	
-	long GetInt() const {
+	long GetInt() const
+	{
 		return m_commandInt; 
 	}
 
-	void SetClientData(void *ptr) {
+	void SetClientData(void *ptr)
+	{
 		m_ptr = ptr;
 	}
-	
-	void *GetClientData() {
+	void *GetClientData()
+	{
 		return m_ptr;
 	}
-
-private:
-	void*	m_ptr;
-	long	m_value;
-	int		m_commandInt;
 };
-
-
-typedef void (wxEvtHandler::*MuleInternalEventFunction)(CMuleInternalEvent&);
-
-//! Event-handler for completed hashings of new shared files and partfiles.
-#define EVT_MULE_INTERNAL(event, id, func) \
-	DECLARE_EVENT_TABLE_ENTRY(event, id, -1, \
-	(wxObjectEventFunction) (wxEventFunction) \
-	wxStaticCastEvent(MuleInternalEventFunction, &func), (wxObject*) NULL),
-
 
 #endif /* INTERNALEVENTS_H */

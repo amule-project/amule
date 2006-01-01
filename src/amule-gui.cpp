@@ -111,32 +111,34 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
-	EVT_MULE_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
 
 	// Core timer
-	EVT_MULE_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
+	EVT_CUSTOM(wxEVT_AMULE_TIMER, ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
 
 	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
 
 	// Async dns handling
-	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
+	EVT_CUSTOM(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
 
-	EVT_MULE_INTERNAL(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleGuiApp::OnSourceDnsDone)
+	EVT_CUSTOM(wxEVT_CORE_SOURCE_DNS_DONE, -1, CamuleGuiApp::OnSourceDnsDone)
 
-	EVT_MULE_INTERNAL(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)
+	EVT_CUSTOM(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)
 
 	// Hash ended notifier
 
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleGuiApp::OnFinishedHashing)
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleGuiApp::OnFinishedHashing)
 
 	// Hashing thread finished and dead
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleGuiApp::OnHashingShutdown)
+
+	EVT_CUSTOM(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleGuiApp::OnHashingShutdown)
 
 	// File completion ended notifier
-	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleGuiApp::OnFinishedCompletion)
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleGuiApp::OnFinishedCompletion)
 
 	// HTTPDownload finished
-	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)
+	EVT_CUSTOM(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)
+
 END_EVENT_TABLE()
 
 

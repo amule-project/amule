@@ -139,7 +139,9 @@ enum Core_Event_ID {
 	
 	SOURCE_DNS_DONE,
 	UDP_DNS_DONE,
-	SERVER_DNS_DONE
+	SERVER_DNS_DONE,
+			
+	EVENT_TIMER
 };
 
 enum HTTP_Download_File {
