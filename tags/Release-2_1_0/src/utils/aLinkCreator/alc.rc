@@ -1,3 +1,0 @@
-alc    ICON    "alc.ico"
-
-#include "wx/msw/wx.rc"

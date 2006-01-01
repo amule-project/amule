@@ -1,3 +1,0 @@
-wxcas    ICON    "wxcas.ico"
-
-#include "wx/msw/wx.rc"
