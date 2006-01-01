@@ -1,6 +1,6 @@
 # translation of amule-2005-11-13.po to librezale.org
 # translation of source_strings-04-08-2005.po to
-# Copyright (C) 2005 Free Software Foundation, Inc.
+# Copyright (C) 2005-2006Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # , 2005.
 # Piarres Beobide <pi@beobide.net>, 2005.
@@ -3147,7 +3147,7 @@ msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 " Contact: admin@amule.org (administrative issues) \n"
-" Copyright (C) 2003-2005 aMule Team \n"
+" Copyright (C) 2003-2006 aMule Team \n"
 "\n"
 " Part of aMule is based on \n"
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -3161,7 +3161,7 @@ msgstr ""
 "FAQ: http://wiki.amule.org\n"
 "\n"
 "Harremanak: admin@amule.org (adimnistrazio gertaerak)\n"
-"Copyright (C) 2003-2005 aMule Taldea\n"
+"Copyright (C) 2003-2006 aMule Taldea\n"
 "\n"
 "aMule zati bat honetan oinarriturik:\n"
 "Kademlia: bezero-bezer bideratzean oinarrituriko XOR metrika.\n"
