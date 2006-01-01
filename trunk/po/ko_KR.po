@@ -1,5 +1,5 @@
 # Translation of amule interface to Korean
-# Copyright (C) 2005 Free Software Foundation, Inc.
+# Copyright (C) 2005-2006Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # Lee, Eun-ho <hoenny@daum.net>, 2005. 
 #: src/TextClient.cpp:616 src/TextClient.cpp:619 src/TextClient.cpp:634
@@ -2940,7 +2940,7 @@ msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 " Contact: admin@amule.org (administrative issues) \n"
-" Copyright (C) 2003-2005 aMule Team \n"
+" Copyright (C) 2003-2006 aMule Team \n"
 "\n"
 " Part of aMule is based on \n"
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -2954,7 +2954,7 @@ msgstr ""
 " 질문과 답변: http://wiki.amule.org \n"
 "\n"
 " 연락: admin@amule.org (행정적인 문제) \n"
-" 저작권 (C) 2003-2005 어뮬 팀 \n"
+" 저작권 (C) 2003-2006 어뮬 팀 \n"
 "\n"
 " 어뮬의 일부분은 카뎀리아기반입니다.\n"
 " 카뎀리아: XOR 측정 기반으로 사람간을 연결합니다.\n"

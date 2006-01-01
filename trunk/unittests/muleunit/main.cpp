@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005 Mikkel Schubert (Xaignar@amule.org)
+// Copyright (C) 2005-2006Mikkel Schubert (Xaignar@amule.org)
 // Copyright (C) 2004 Barthelemy Dagenais (barthelemy@prologique.com)
 //
 // This library is free software; you can redistribute it and/or

@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2004-2005 Angel Vidal Veiga (kry@users.sourceforge.net)
-// Copyright (c) 2004-2005 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2004-2006 Angel Vidal Veiga (kry@users.sourceforge.net)
+// Copyright (c) 2004-2006 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -282,7 +282,7 @@ void CMuleNotebook::MouseMotion(wxMouseEvent &event)
 }
 #else
 /**
- * Copyright (c) 2004-2005 Alo Sarv <madcat_@users.sourceforge.net>
+ * Copyright (c) 2004-2006 Alo Sarv <madcat_@users.sourceforge.net>
  * Most important function in this class. Here we do some serious math to figure
  * out where pages are located, where close-buttons are located etc.
  * @widths array contains the width in pixels of each page
@@ -344,7 +344,7 @@ void CMuleNotebook::CalculatePositions()
 }
 
 /**
- * Copyright (c) 2004-2005 Alo Sarv <madcat_@users.sourceforge.net>
+ * Copyright (c) 2004-2006 Alo Sarv <madcat_@users.sourceforge.net>
  * This method handles mouse clicks on tabs. We need to detect here if the
  * click happened to be on our close button, thus we first request positions
  * recalculation, and then compare the event position to our known close
@@ -390,7 +390,7 @@ void CMuleNotebook::MouseClick(wxMouseEvent &event)
 }
 
 /**
- * Copyright (c) 2004-2005 Alo Sarv <madcat_@users.sourceforge.net>
+ * Copyright (c) 2004-2006 Alo Sarv <madcat_@users.sourceforge.net>
  * This method handles mouse moving events. Since we can't recalculate positions
  * in EVT_MOUSE_ENTER (for some reason, wxNotebook doesn't receive those events)
  * we have to request recalculation here also, which is rather CPU-heavy.
