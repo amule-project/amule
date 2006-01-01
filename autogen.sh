@@ -34,13 +34,6 @@ if expr "$confver" \> "$gettext_version" >/dev/null; then
   exit 1
 fi
 
-if [ -d intl/CVS ]; then
-    echo "WARNING: You should have checked out CVS with -P."
-    echo "Running cvs update -P"
-    rm -rf intl
-    cvs update -P
-fi
-
 # Force intl regenration to get last update from installed gettext templates
 rm -rf intl
 #if [ ! -d intl ]; then
