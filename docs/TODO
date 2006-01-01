@@ -6,7 +6,6 @@
 
 	- Configure Stuff:
 	    + Add gtk-prefix and prefix for every lib used <- ?
-            + Clean options no more used (gtk above all) <- GTK is used for old tray...
 
 	- Import mldonkey partfiles.
 
@@ -16,6 +15,3 @@
 	- Add Scheduler Tab (Being done by geeko at http://forum.amule.org/thread.php?threadid=5284 )
  	    + add actions menu
 	    + add time and details menu
-
-- Kry 
-	- Implement Kademlia support (preferences too) (medium-high priority)	
