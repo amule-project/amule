@@ -273,6 +273,7 @@ Version 2.1.0 - The "I just teased you with this release till 2006" version
 		* Tooltips, proper names, and layouts for the connection ports.
 		* Fixed compilation flags for base-only apps.
 		* Lots of GUI visual glitches fixed.
+		* Fixed ping times on servers being in ms instead of secs.
 		* Now core timer is on a thread, and it behaves much better.
 		* Fixed core timer silliness on time count. Much more acurate now.
 		* Workarounded the memleak caused by wx < 2.6.2
