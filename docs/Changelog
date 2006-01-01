@@ -221,6 +221,8 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 		* Reworked src/Makefile.am to handle common files.
 		* You can change toolbar to vertical/horizontal on GUI tweaks now.
 		* Removed fakecheck (sites down).
+		* Fixed a crash on HTTP download dialog caused by wrong usage of delete.
+		* Fixed toolbar orientation change not showing proper connection state.
 		* Fixing ED2K link handler colliding with status bar.
 		* Added 7z to types.
 		* Mantain a list of already-known mods to avoid "Compatible client found" 
