@@ -91,6 +91,6 @@ echo "Libs info updated, aMule.app is ready to package."
 echo ""
 cd ../..
 echo -n "Creating aMule.zip... "
-zip -9 -r aMule.zip aMule.app/ > /dev/null
+zip -9 -r aMule.zip aMule.app/ -j docs/README.Mac.txt > /dev/null
 echo "Done"
 echo ""
