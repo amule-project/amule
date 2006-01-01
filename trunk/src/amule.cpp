@@ -293,7 +293,11 @@ int CamuleApp::OnExit()
 	glob_prefs = NULL;
 	CPreferences::EraseItemList();
 
+#if defined(__WXMAC__) && defined(AMULE_DAEMON)
+	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
+#else
 	delete m_singleInstance;
+#endif
 	m_singleInstance = NULL;
 	
 	delete uploadBandwidthThrottler;
@@ -452,6 +456,11 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 
+#if defined(__WXMAC__) && defined(AMULE_DAEMON)
+	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
+	printf("WARNING: The check for other instances is currently disabled in amuled.\n"
+		"Please make sure that no other instance of aMule is running or your files might be corrupted.\n");
+#else
 	printf("Checking if there is an instance already running...\n");
 
 	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
@@ -477,6 +486,7 @@ bool CamuleApp::OnInit()
 	} else {
 		printf("No other instances are running.\n");
 	}
+#endif
 
 	// Close standard-input
 	if ( !cmdline.Found(wxT("enable-stdin")) ) {
