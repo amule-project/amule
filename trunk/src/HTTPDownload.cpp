@@ -41,7 +41,7 @@
 #include "OtherFunctions.h" 	// Needed for CastChild
 #include "Logger.h"		// Needed for AddLogLine*
 #include <common/Format.h>		// Needed for CFormat
-#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 #include "Proxy.h"
 #include "Preferences.h"
 
@@ -254,7 +254,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 void CHTTPDownloadThreadBase::OnExit() 
 {
 	// Kry - Notice the app that the file finished download
-	wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
+	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
 	evt.SetInt((int)m_file_type);
 	evt.SetExtraLong((long)m_result);
 	wxPostEvent(&theApp,evt);
