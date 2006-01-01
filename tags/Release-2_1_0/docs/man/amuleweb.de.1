@@ -1,0 +1,178 @@
+.TH AMULEWEB 1 "March 2005" "aMule webserver v2.0.0" "aMule utilities"
+.SH NAME
+amuleweb \- aMule web server
+.SH SYNOPSIS
+.B amuleweb
+.RB [ \-h " " \fI<host> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<pass> ]
+.RB [ \-f " " \fI<path> ]
+.RB [ \-l " " \fI<lang> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-w ]
+.RB [ \-t " " \fI<name> ]
+.RB [ \-s " " \fI<port> ]
+.RB [ \-z ]
+.RB [ \-Z ]
+.RB [ \-A " " \fI<pass> ]
+.RB [ \-G " " \fI<pass> ]
+.RB [ \-a ]
+.RB [ \-d ]
+.RB [ \-L ]
+.PP
+.B amuleweb
+.RB [ \-f " " \fI<path> ]
+.B \-\-create-config-from=\fI<path>
+.PP
+.B amuleweb
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.PP
+.B amuleweb
+.RB [ \-\-amule\-config\-file=\fI<path> ]
+.SH BESCHREIBUNG
+\fBamuleweb\fR ermöglicht es aMule mithilfe eines Webservers zu steuern.
+Du kannst amuleweb beim \fBaMule\fR start oder jederzeit später starten.
+Optionen können über die Kommandozeile oder über eine Konfigurationsdatei angegeben werden.
+Kommandozeilen Optionen haben hierbei eine höhere Priorität als die Konfigurationsdatei Optionen.
+.PP
+\fBamulewebDLG\fR ist die GUI Version von \fBamuleweb\fR, und beide sind identisch (ausser das Interface natürlich).
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
+Host auf dem aMule läuft (standart: \fIlocalhost\fR). 
+\fI<host>\fR es kann sich um eine IP-Address oder DNS Namen handeln
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
+aMules Port für Externe Verbindungen, wie eingestellt unter Einstellungen-> Remote Controls (standart: \fI4712\fR)
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<passwd>\fR
+Passwort für die Externe Verbindung
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
+Nutze die vorgegebene Konfigurationsdatei. 
+Standart Konfigurationsdatei ist \fI~/.aMule/remote.conf\fR
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
+setzt die Programm locale (Sprache).
+Siehe die Sektion \fBANMERKUNG\fRfür eine Beschreibung des \fI<lang>\fR Parameters.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+Gibt keine Infos nach stdout.
+Man kann diese Option nutzen um den Webserver zum Daemon zu machen,
+z.B mit '\fBamuleweb \-q &\fR'
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Sei verbose \- zeige ebenfalls Debug Ausgaben.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+Schreibe Kommandozeilen Optionen in die Konfigurationsdatei und beende.
+.TP
+\fB\-\-create\-config\-from\fR=\fI<path>\fR
+Erstelle eine Konfigurationsdatei basierend auf\fI<path>\fR, dieser Pfad muss auf eine gültige aMule Konfigurationsdatei zeigen.Danach wird amuleweb beendet.
+.TP
+\fB\-t\fR, \fB\-\-template\fR=\fI<name>\fR
+Lädt das Template mit dem Namen \fI<name>\fR. Siehe hierzu den Abschnitt
+.B SKIN UNTERSTUETZUNG
+.TP
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<port>\fR
+Webservers HTTP port. Dies ist der Port wohin man später seinen Webbrowser richtet (standart: \fI4711\fR)
+.TP
+\fB\-z\fR, \fB\-\-enable\-gzip\fR
+Aktiviert gzip kompremierung im HTTP Verkehr um Bandbreite zu sparen.
+.TP
+\fB\-Z\fR, \fB\-\-disable\-gzip\fR
+Deaktiviert die gzip Komprimierung (standard: an)
+.TP
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<passwd>\fR
+Volle Zugriffsrechte Nutzer Passwort für den Webserver
+.TP
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<passwd>\fR
+Gast Passwort für den Webserver
+.TP
+\fB\-a\fR, \fB\-\-allow\-guest\fR
+Gestatte Gast Zugang
+.TP
+\fB\-d\fR, \fB\-\-deny\-guest\fR
+Verbiete Gast Zugang (standart)
+.TP
+\fB\-L\fR, \fB\-\-load\-settings\fR
+Lade/speichere webserver Einstellungen von/nach remote aMule.
+Dies bewirkt dass amuleweb alle Kommandozeilen und Optionen aus der Konfigurationsdatei ignoriert, und diese direkt von aMule lädt.
+Beim Speichern werden die Einstellungen nicht in die Konfigurationsdatei gespeichert sondern direkt in aMule.
+(Natürlich funktioniert dies nur für die Optionen, welche auch unter aMules Einstellunge->Remote Controls eingestellt werden können!)
+.TP
+\fB\-\-amule\-config\-file\fR=\fI<path>\fR
+aMule Konfigdatei Pfad.
+.B NICHT DIREKT BENUTZEN!
+aMule nutzt diese Option wenn amuleweb automatisch beim Programmstart gestartet wird.
+Diese Option bewirkt das alle anderen Kommandozeilen und Konfigurationsdatei Einstellungen ignoriert werden, Einstellungen werden von der angegebenen Datei gelesen, und zusätzlich werden die \fB\-q \-L\fR Optionen gesetzt.
+.TP
+\fB\-\-help\fR
+Zeigt diese Hilfe an
+.TP
+\fB\-\-version\fR
+Zeigt die Versionsnummer an und beendet
+.SH ANMERKUNGEN
+.SS Pfade
+Wenn eine Datei ohne absoluten Pfad angegeben wird (z.B. nur eine normale Textdatei wie \fB\-\-path\fR=\fIremote.conf\fR) dann wird die Datei im aMule Konfigurationsverzeichnis \fI~/.aMule gesucht.
+.SS Sprachen
+Der \fI<lang>\fR Parameter für die \fB\-l\fR Option hat folgende Form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
+wobei \fIlang\fR die primäre Sprache ist, \fILANG\fR ist eine Untersprache oder Region, \fIencoding\fR ist das Chrakterset welches benutzt wird \fImodifier\fR
+"erlaubt dem User einen bestimmten Instanz der Localen Data in einer Kategorie zu nutzen".
+.PP
+Zum Beispiel, folgende Eingaben sind gültig:
+.br
+fr
+.br
+fr_FR
+.br
+de_DE.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+Trotzdessen das alle Eingaben oben akzeptiert werden, sind die Parameter \fIencoding\fR and \fImodifier\fR noch nicht nutzbar.
+.PP
+Zum oben angegebenen Schema kann man auch den vollen Sprachennamen angeben in Englisch - so ist \fB\-l german\fR gültig und entspricht \fB-l de_DE\fR.
+.PP
+When keine Locale angegeben wird über die Kommandozeile oder Konfigurationsdatei, wird die Standart Systemlocale genutzt.
+.SH SKIN UNTERSTUETZUNG
+\fBamuleweb\fR hat die Möglichkeit die Webseiten in verschiedenen Skins darzustellen.
+Diese Skins nennen sich Templates, und man kann amuleweb eine komplett anderes Gesicht geben mit der \fB\-t\fR Option.
+Templates werden an zwei Stellen zuerste gesucht: erstens \fI~/.aMule/webserver/\fR und dannach in \fI$(pkgdatadir)/webserver/\fR
+(\fI$(pkgdatadir)\fR ist das Installations unabhängige Verzeichnis für von der Architektur unabhängige Daten, meistens wird dies in etwas wie /usr/share/amule sein).
+Jedes Template muss in einem eigenen Unterverzeichniss liegen mit dem Template Namen, darin müssen alle Dateien enthalten sein welche das Template benötigt.
+Die Template Datei muss immer aMule.tmpl heißen.
+.PP
+Zum Beispiel, die standart Template (Name 'default') befindet sich in webserver/default/, und dieses Verzeichniss beinhaltet aMule.tmpl und die zusätzlichen Grafiken.
+.SH DATEIEN
+~/.aMule/remote.conf
+.br
+~/.eMule
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH BEISPIEL
+Normalerweise wird amuleweb das erste mal ungefähr so gestartet:
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-s\fR \fIHTTPport\fR \fB\-A\fR \fIAdminPassword\fR \fB\-w\fR
+.PP
+oder
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Dies wird alle Einstellungen in die \fI$HOME/.aMule/remote.conf\fR Datei speichern, und später braucht man nur noch aufrufen:
+.PP
+.B amuleweb
+.PP
+Natürlich kann man es auch anders machen, dies ist nur ein Beispiel.
+.SH PROBLEME BERICHTEN
+Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
+Bitte berichte keine Fehler per E-Mail, auch nicht an unsere Mailingliste oder direkt an ein Teammitglied.
+.SH COPYRIGHT
+aMule und alle seine Tools stehen unter der GNU General Public License.
+.SH SIEHE AUCH
+\fBamule\fR(1), \fBamulecmd\fR(1), \fBamulewebDLG\fR(1)
