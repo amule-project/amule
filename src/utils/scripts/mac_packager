@@ -34,6 +34,7 @@ echo -n "Step 2: Copying aMule to app bundle... "
 cp src/amule aMule.app/Contents/MacOS/
 cp src/webserver/src/amuleweb aMule.app/Contents/MacOS/
 cp src/ed2k aMule.app/Contents/MacOS/
+cp src/amulecmd aMule.app/Contents/MacOS/
 cp -R src/webserver aMule.app/Contents/Resources
 find aMule.app/Contents/Resources/webserver \( -name .svn -o -name "Makefile*" -o -name src \) -print0 | xargs -0 rm -rf
 echo "Done"
@@ -48,7 +49,11 @@ echo ""
 echo "Step 4: Copying libs to Framework"
 echo "    wxWidgets..."
 # wxWidgets libs to frameworks
-for i in $( otool -L aMule.app/Contents/MacOS/amule | grep libwx_ | cut -d " " -f 1 ); do 
+for i in $( otool -L	aMule.app/Contents/MacOS/amule \
+						aMule.app/Contents/MacOS/amuleweb \
+						aMule.app/Contents/MacOS/ed2k \
+						aMule.app/Contents/MacOS/amulecmd \
+			| sort -u | grep libwx_ | cut -d " " -f 1 ); do 
 	cp $i aMule.app/Contents/Frameworks; 
 done
 echo "Libs copy done."
@@ -59,7 +64,7 @@ cd aMule.app/Contents/
 for i in $( ls Frameworks | grep -v CVS); do
 	echo "    Updating $i"
 	#update library id
-        install_name_tool -id @executable_path/../Frameworks/$i Frameworks/$i
+	install_name_tool -id @executable_path/../Frameworks/$i Frameworks/$i
 	#update library links
 	for j in $( otool -L Frameworks/$i | grep libwx_ | cut -d " " -f 1 ); do
 	        install_name_tool -change \
@@ -72,9 +77,15 @@ for i in $( ls Frameworks | grep -v CVS); do
 	install_name_tool -change \
 		`otool -L MacOS/amule | grep $i | cut -d " " -f 1` \
 		@executable_path/../Frameworks/$i MacOS/amule 1> /dev/null 2> /dev/null
-        install_name_tool -change \
-                `otool -L MacOS/amuleweb | grep $i | cut -d " " -f 1` \
-                @executable_path/../Frameworks/$i MacOS/amuleweb 1> /dev/null 2> /dev/null
+	install_name_tool -change \
+		`otool -L MacOS/amuleweb | grep $i | cut -d " " -f 1` \
+		@executable_path/../Frameworks/$i MacOS/amuleweb 1> /dev/null 2> /dev/null
+	install_name_tool -change \
+		`otool -L MacOS/ed2k | grep $i | cut -d " " -f 1` \
+		@executable_path/../Frameworks/$i MacOS/ed2k 1> /dev/null 2> /dev/null
+	install_name_tool -change \
+		`otool -L MacOS/amulecmd | grep $i | cut -d " " -f 1` \
+		@executable_path/../Frameworks/$i MacOS/amulecmd 1> /dev/null 2> /dev/null
 done
 echo "Libs info updated, aMule.app is ready to package."
 echo ""
