@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>amule control page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	background-color: #3399FF;
+}
+.style1 {font-family: Arial, Helvetica, sans-serif}
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+</head>
+
+<body onLoad="MM_preloadImages('toolbutton-download-pressed.jpeg','toolbutton-servers-pressed.jpeg','toolbutton-search-pressed.jpeg','toolbutton-shared-pressed.jpeg','toolbutton-stats-pressed.jpeg','toolbutton-settings-pressed.jpeg','toolbutton-kad-pressed.jpeg','toolbutton-logout-pressed.jpeg')">
+<table width="100%" height="70" border="0" cellpadding="0" cellspacing="0" bordercolor="#111111" bgcolor="#6699CC" style="border-collapse: collapse">
+  <!--DWLayoutTable-->
+  <tr>
+    <td width="171" height="50"></td>
+    <td width="787" valign="top"><table border="0" cellpadding="0" cellspacing="0">
+        <!--DWLayoutTable-->
+        <tr>
+          <td width="100" height="50" valign="top"><a href="amuleweb-main-dload.php" target="mainFrame" onClick="MM_nbGroup('down','group1','download','',1)" onMouseOver="MM_nbGroup('over','download','toolbutton-download-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img src="toolbutton-download.jpeg" alt="Download list" name="download" border="0" onload=""></a></td>
+          <td><a href="amuleweb-main-search.php" target="mainFrame" onClick="MM_nbGroup('down','group1','search','',1)" onMouseOver="MM_nbGroup('over','search','toolbutton-search-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="search" src="toolbutton-search.jpeg" border="0" alt="" onload=""></a></td>
+          <td><a href="amuleweb-main-servers.php" target="mainFrame" onClick="MM_nbGroup('down','group1','servers','',1)" onMouseOver="MM_nbGroup('over','servers','toolbutton-servers-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img src="toolbutton-servers.jpeg" alt="Server list" name="servers" border="0" onload=""></a></td>
+          <td><a href="amuleweb-main-shared.php" target="mainFrame" onClick="MM_nbGroup('down','group1','shared','',1)" onMouseOver="MM_nbGroup('over','shared','toolbutton-shared-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="shared" src="toolbutton-shared.jpeg" border="0" alt="" onLoad=""></a></td>
+          <td><a href="amuleweb-main-stats.php" target="mainFrame" onClick="MM_nbGroup('down','group1','stats','',1)" onMouseOver="MM_nbGroup('over','stats','toolbutton-stats-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="stats" src="toolbutton-stats.jpeg" border="0" alt="" onLoad=""></a></td>
+          <td><a href="amuleweb-main-kad.php" target="mainFrame" onClick="MM_nbGroup('down','group1','kad','',1)" onMouseOver="MM_nbGroup('over','kad','toolbutton-kad-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="kad" src="toolbutton-kad.jpeg" border="0" alt="" onLoad=""></a></td>
+          <td><a href="amuleweb-main-prefs.php" target="mainFrame" onClick="MM_nbGroup('down','group1','settings','',1)" onMouseOver="MM_nbGroup('over','settings','toolbutton-settings-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="settings" src="toolbutton-settings.jpeg" border="0" alt="" onLoad=""></a></td>
+          <td><a href="login.html" target="_top" onClick="MM_nbGroup('down','group1','logout','',1)" onMouseOver="MM_nbGroup('over','logout','toolbutton-logout-pressed.jpeg','',1)" onMouseOut="MM_nbGroup('out')"><img name="logout" src="toolbutton-logout.jpeg" border="0" alt="" onLoad=""></a></td>
+        </tr>
+    </table></td>
+    <td width="11"></td>
+  </tr>
+  <tr>
+    <td height="5"></td>
+    <td height="50"><iframe name="stats" src="stats.php" height="50" width="100%" scrolling="no" frameborder="0"></iframe></td>
+    <td></td>
+  </tr>
+</table>
+</body>
+</html>

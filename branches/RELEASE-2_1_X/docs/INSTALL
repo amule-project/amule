@@ -1,0 +1,104 @@
+
+
+                              -------
+                              INSTALL
+                              -------
+
+
+ Requirements
+--------------
+
+  You will need glib/gtk-1.2.10 (package names like glib and glibdev
+  or glib-devel, gtk and gtkdev or gtk-devel or similar) or gtk2
+  (package names correspond to gtk ones), libexpat (package name
+  should be expat) and gettext to compile aMule. Also wxWidgets-2.4.2 or greater (wxGTK-2.6.x is recommended),
+  linked against glib/gtk-1.2.10 is needed (package names wxGTK and
+  wxGTK-devel or similar).
+
+  If you compile with wxGTK-2.4.2, you will need wxBase-2.4.2
+  package,  too, if you want to use amulecmd (the TextClient).
+  You can link it to wxgtk too, but it won't run on non-graphical consoles,
+  thus removing all the fun ;)
+  Since wxWidgets-2.5.x you don't need wxBase anymore.
+
+  It is known to compile in GCC 3.2, 3.3 and 3.4, older GCC's probably 
+  can't handle Microsoft C++ well enough.
+
+ How to compile wxWidgets
+--------------------------
+
+  Only GTK1 is supported. GTK2 with wxWidgets 2.6 and greater, but it is known
+  to have lots of leaks and so is not supported.
+
+  For GTK1:
+  ./configure  --prefix=/usr --disable-gtk2 --with-gtk && make
+
+  After wxWidgets has compiled and you have installed it, you can compile aMule.
+  Do "./configure && make" as usual. If for some reason, wx-config cannot be 
+  found, use ./configure --with-wx-config=/path/wx-config. Sometimes it will be
+  named wxgtk-2.4-config.
+
+  To install it, as root type "make install" anyway, you don't have to install
+  if you don't want to. It will run fine from the source directory too.
+
+  Note: If you are using a CVS version, you will have to run ./autogen.sh before
+  ./configure to generate configure script. Automake > 1.5, Autoconf >= 2.57 and
+  gettext are required.
+
+  And if you want to remote-administer it, you should definitely try VNC (or 
+  TightVNC). You probably won't get disappointed :)
+  * http://www.realvnc.org/
+  * http://www.tightvnc.org/
+
+  If you change the chart colors and want to select a custom color... be sure to 
+  press "Add to custom color"-button and select the color from there. Otherwise 
+  color will not change :) 
+
+ ADVANCED OPTIONS
+------------------
+
+  This are some of the availabe configure options:
+
+    --disable-debug           disable additional debugging output
+    --enable-optimize         enable code optimizing
+    --enable-profile          enable code profiling
+    --enable-static           produce a statically linked executable
+    --enable-embedded_crypto  use embedded Crypto code (default)
+    --enable-amulecmd         compile aMule command line client
+    --enable-amulecmdgui      compile aMule command line client (GUI version)
+    --enable-amule-gui        compile aMule remote GUI (EXPERIMENTAL)
+    --enable-amule-daemon     compile aMule daemon version
+    --enable-webserver        compile aMule WebServer
+    --enable-webservergui     compile aMule WebServer GUI
+    --enable-cas              compile C aMule Statistics
+    --enable-wxcas            compile aMule GUI Statistics
+    --disable-ed2k            don't compile aMule ed2k links handler
+    --enable-alc              compile aMuleLinkCreator GUI version
+    --enable-alcc             compile aMuleLinkCreator for console
+    --disable-gsocket         disable gsocket.c linking
+    --disable-gtk             disable pure GTK code in amule
+    --enable-utf8-systray     use UTF-8 encoded strings in the systray
+    --disable-systray         disable SysTray compilation
+    --disable-monolithic      disable building of the monolithic aMule app
+    --disable-gtktest         do not try to compile and run a test GTK+ program
+    --disable-gtktest         do not try to compile and run a test GTK program
+    --disable-rpath           do not hardcode runtime library paths
+    --disable-nls             do not use Native Language Support
+    --enable-ccache           enable ccache support for fast recompilation
+	
+  With --enable-optimize, -O flag will be added to the compilation options. If not 
+  given, no optimization will occur. It is currently preferable not to optimise (in
+  fact, it is not supported), because if aMule crashes, the optimised code will not
+  produce usable stack trace. -O2 is reported to work fine, -O3 will totally crash
+  on start up, don't waste your time as of now.
+
+  With --enable-profile, -pg flag will be added to the compilation options. aMule 
+  will then record profiling data in gmon.out, from which one can see where aMule 
+  spends its time. You probably do not want to turn this on, unless you want to 
+  help the devs figure out where your CPU time is going :P
+
+ Links
+-------
+
+  Compiling aMule and wxWidgets
+    http://www.amule.org/wiki/index.php/Compile

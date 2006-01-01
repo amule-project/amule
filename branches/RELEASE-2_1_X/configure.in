@@ -1,0 +1,605 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_INIT([aMule],[CVS],[admin@amule.org])
+AC_CANONICAL_TARGET
+AM_INIT_AUTOMAKE
+
+AC_CONFIG_SRCDIR([src/amule.cpp])
+AM_CONFIG_HEADER([config.h])
+AM_MAINTAINER_MODE
+
+# Removing -fomit since it causes problems with CryptoPP
+CFLAGS="`echo $CFLAGS | sed "s/-fomit-frame-pointer//g"`"
+CXXFLAGS="`echo $CXXFLAGS | sed "s/-fomit-frame-pointer//g"`"
+
+# System detection, need AC_CANONICAL_TARGET
+case "${target_os}" in
+"")
+	SYS=unknown
+	;;
+darwin*)
+	SYS=darwin
+	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
+	LDFLAGS="$LDFLAGS -bind_at_load"
+	;;
+openbsd*) 
+	SYS=openbsd
+	LIBS="$LIBS -L/usr/local/lib"
+	X11LIBS="-lX11 -L/usr/X11R6/lib"
+	CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
+	if test "$DEBUG_FLAGS" != ""; then
+		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
+	fi
+	;;
+*cygwin* | *mingw32*)
+	SYS=win32
+	CFLAGS="$CFLAGS -DNOMINMAX"
+	CXXFLAGS="$CXXFLAGS -DNOMINMAX"
+	;;
+solaris*)
+	RESOLV_LIB="-lresolv -lnsl"
+	X11LIBS="-lX11"
+	LIBS="$LIBS -lrt"
+esac
+
+AC_SUBST(RESOLV_LIB)
+AC_SUBST(X11LIBS)
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_CC
+AC_PROG_CPP
+if test x$SYS = xwin32; then
+	AC_PROG_AWK
+fi
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_PROG_YACC
+
+# Find the right ranlib, even when cross-compiling
+# And for some other tools for cross compilation
+AC_CHECK_TOOL(RANLIB, ranlib)
+AC_CHECK_TOOL(STRIP, strip)
+AC_CHECK_TOOL(AR, ar)
+AC_CHECK_TOOL(LD, ld)
+
+AC_ARG_ENABLE(ccache, [  --enable-ccache            enable ccache support for fast recompilation],
+		ccache="$enableval", ccache="no")
+
+# Add args to configure
+AC_ARG_ENABLE(debug,   [  --disable-debug            disable additional debugging output],
+              USE_DEBUG="$enableval", USE_DEBUG="yes")
+
+AC_ARG_ENABLE(optimize, [  --enable-optimize          enable code optimizing],
+		USE_OPTIMIZE="$enableval", USE_OPTIMIZE="no")
+
+AC_ARG_ENABLE(profile, [  --enable-profile           enable code profiling],
+		USE_PROFILE="$enableval", USE_PROFILE="no")
+
+AC_ARG_ENABLE(static,  [  --enable-static            produce a statically linked executable],
+              USE_DEBUG_STATIC="$enableval", USE_DEBUG_STATIC="no")
+
+AC_ARG_ENABLE(monolithic, [  --disable-monolithic       disable building of the monolithic aMule app],
+	MONOLITHIC="$enableval", MONOLITHIC="yes")
+
+AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon      compile aMule daemon version],
+             AMULE_DAEMON="$enableval", AMULE_DAEMON="no")
+
+AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd          compile aMule command line client],
+              BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
+
+AC_ARG_ENABLE(webserver,  [  --enable-webserver         compile aMule WebServer],
+              WEB="$enableval", WEB="no")
+
+AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui         compile aMule remote GUI (EXPERIMENTAL)],
+             AMULE_GUI="$enableval", AMULE_GUI="no")
+
+AC_ARG_ENABLE(cas,  [  --enable-cas               compile C aMule Statistics],
+              CAS="$enableval", CAS="no")
+
+AC_ARG_ENABLE(wxcas,  [  --enable-wxcas             compile aMule GUI Statistics],
+              WXCAS="$enableval", WXCAS="no")
+
+AC_ARG_ENABLE(ed2k,  [  --disable-ed2k             don't compile aMule ed2k links handler],
+              ED2K="$enableval", ED2K="yes")
+
+AC_ARG_ENABLE(alc,  [  --enable-alc               compile aMuleLinkCreator GUI version],
+              ALC="$enableval", ALC="no")
+	      
+AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for console],
+              ALCC="$enableval", ALCC="no")
+
+AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
+		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
+
+# Checking for libs before all other stuff to break
+# configure as soon as possible in case of a missing one
+# to avoid losing to much time
+
+# Sets gettext version.
+AM_GNU_GETTEXT_VERSION(0.11.5)
+
+# Check for zlib
+CHECK_ZLIB
+
+if test x$CAS = xyes -o x$WEB = xyes; then
+# Check for gd
+AM_OPTIONS_GDLIBCONFIG
+
+AM_PATH_GDLIBCONFIG(2.0.0,GDLIBFOUND=1)
+
+case "$GDLIBFOUND" in
+1)	CAS_DEFS="-D__GD__"
+	GDLIB_LIBS="$GDLIB_LIBS -lgd"
+	;;
+*)AC_MSG_NOTICE([
+	WARNING: gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
+	Please check that gdlib-config is in your default path, check out
+	LD_LIBRARY_PATH or equivalent variable.
+	Or this might also be that your gdlib-config has other name.
+	Please try again with --with-gdlib-config=/usr/bin/gdlib-config
+        (replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
+        If you use compiled packages check if you have devel pack installed.
+        To download the latest version check http://www.boutell.com/gd
+	for sources.
+        ])
+	
+	CAS_DEFS=""
+	GDLIB_LIBS=""
+	GDLIB_CFLAGS=""
+	GDLIB_LDFLAGS=""
+	;;
+esac
+
+else
+	CAS_DEFS=""
+	GDLIB_LIBS=""
+	GDLIB_CFLAGS=""
+	GDLIB_LDFLAGS=""
+	GDLIB_VERSION="not_needed"
+fi
+
+AC_SUBST(CAS_DEFS)
+
+
+if test x$WEB = xyes; then
+# Check for libpng
+# This check _must_ occur *after* the check for gd
+AM_OPTIONS_LIBPNGCONFIG
+
+AM_PATH_LIBPNGCONFIG(1.2.0,LIBPNGFOUND=1)
+
+case "$LIBPNGFOUND" in
+1)	AMULEWEB_DEFS="-DWITH_LIBPNG"
+	;;
+*)AC_MSG_NOTICE([
+	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
+        ])
+	AMULEWEB_DEFS=""
+	LIBPNG_LIBS=""
+	LIBPNG_CFLAGS=""
+	LIBPNG_CXXFLAGS=""
+	LIBPNG_LDFLAGS=""
+	;;
+esac
+else
+	AMULEWEB_DEFS=""
+	LIBPNG_LIBS=""
+	LIBPNG_CFLAGS=""
+	LIBPNG_CXXFLAGS=""
+	LIBPNG_LDFLAGS=""
+	LIBPNG_VERSION="not_needed"
+fi
+
+AC_SUBST(AMULEWEB_DEFS)
+
+
+# Check if we need the GUI
+AC_MSG_CHECKING([whether we need the GUI])
+if test x"$MONOLITHIC" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$WXCAS" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$ALC" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test x"$AMULE_GUI" = x"yes" ; then
+  need_gui="yes"
+fi
+
+if test "x${need_gui:+set}" != "xset" ; then
+  need_gui="no"
+fi
+AC_MSG_RESULT($need_gui)
+
+
+# Check for wx
+AM_OPTIONS_WXCONFIG
+AM_PATH_WXCONFIG(2.6.0)
+AM_WXCONFIG_LARGEFILE
+
+GET_WX_VERSION
+
+dnl Get flags for windres
+if test x$SYS = xwin32; then
+	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
+else
+	RCFLAGS=""
+fi
+AC_SUBST(RCFLAGS)
+
+# Check for Crypto++
+AM_OPTIONS_CRYPTO
+
+CHECK_CRYPTO(5.1)
+
+case "$CRYPTO_PP_STYLE" in
+ 
+ gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix/include -D__CRYPTO_DEBIAN_GENTOO__"
+                # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
+                LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
+		CRYPTOLIBS="-lcrypto++"
+ ;;
+ mdk_suse_fc) CXXFLAGS="$CXXFLAGS -I$crypto_prefix/include -D__CRYPTO_MDK_SUSE_FC__"
+              LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
+	      CRYPTOLIBS="-lcryptopp"
+ ;;
+ sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
+	  LDFLAGS="$LDFLAGS -L$crypto_prefix/cryptopp"
+          CRYPTOLIBS="-lcryptopp"
+ ;;
+ embedded) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
+ ;;
+ *) AC_MSG_ERROR([
+          WARNING: crypto++ >= $min_crypto_version is not found.
+          Please check that cryptopp-headers are in your default include path,
+	  check out LD_LIBRARY_PATH or equivalent variable.
+          Or this might also be that your cryptopp is installed on other path.
+          Please try again with --with-crypto-prefix=/my_crypto_prefix
+          (replace /my_crypto_prefix with a valid path to your crypto directory).
+          The crypto include folder must be named cryptopp.
+	  Sorry about the mess but it's the only way because libcrypto has no make install.
+          To download the latest version check http://www.cryptopp.com for sources.
+	  ])
+ ;;
+esac
+
+AC_SUBST(CRYPTOLIBS)
+
+# Check for bfd.h (to have proper backtraces without using wxExecute)
+CHECK_BFD
+
+# Ok, we have all needed libs, now checking for other stuff
+
+CHECK_AUTOPOINT
+
+CHECK_FLEX_EXTENDED
+
+# Flush standard test results for speeding cache
+AC_CACHE_SAVE
+
+dnl -------------------------------------------------------------------------------
+dnl Start of autoscan stuff
+dnl -------------------------------------------------------------------------------
+# Checks for header files.
+AC_PATH_X
+AC_FUNC_ALLOCA
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mount.h sys/param.h sys/socket.h sys/statvfs.h sys/time.h unistd.h])
+AC_HEADER_SYS_WAIT
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_MODE_T
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+AC_STRUCT_TM
+AC_TYPE_UID_T
+AC_C_VOLATILE
+AC_CHECK_TYPES([ptrdiff_t])
+
+# Checks for library functions.
+AC_FUNC_CLOSEDIR_VOID
+AM_GNU_GETTEXT
+AC_FUNC_GETMNTENT
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_FORK
+if test x$SYS != xwin32; then
+AC_FUNC_LSTAT
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
+fi
+AC_FUNC_MALLOC
+AC_FUNC_MEMCMP
+AC_FUNC_MMAP
+AC_FUNC_REALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_SETVBUF_REVERSED
+AC_TYPE_SIGNAL
+AC_FUNC_STAT
+AC_FUNC_STRFTIME
+AC_FUNC_STRTOD
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa memmove mempcpy memset munmap nl_langinfo select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
+#-------------------------------------------------------------------------------
+# End of autoscan stuff
+#-------------------------------------------------------------------------------
+
+dnl
+dnl autoscan has missed these ones. Maybe because it's win32 stuff?
+dnl
+AC_CHECK_HEADERS([sys/resource.h sys/timeb.h])
+AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
+
+# Flush standard test results for speeding cache
+AC_CACHE_SAVE
+
+# Other tests
+
+case "$USE_DEBUG" in
+yes)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
+    ;;
+*)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef"
+    ;;
+esac
+
+#aMule options
+
+# Command line tools
+case "$BUILDAMULECMD" in
+yes)	BUILD_AMULECMD="yes"
+	;;
+*)	BUILD_AMULECMD="no"
+	;;
+esac
+
+# For proper compilation flags
+
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+
+WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
+WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
+WXBASE_CFLAGS="$WX_CFLAGS -DwxUSE_GUI=0"
+
+AC_SUBST(WXBASE_LIBS)
+AC_SUBST(WXBASE_CFLAGS)
+AC_SUBST(WXBASE_CXXFLAGS)
+
+case "$USE_OPTIMIZE" in
+yes)	OPTIMIZE_FLAGS="-O2"
+	;;
+*)	OPTIMIZE_FLAGS=""
+	;;
+esac
+
+# Profiling
+case "$USE_PROFILE" in
+yes)	PROFILE_FLAGS="-pg"
+	;;
+*)	PROFILE_FLAGS=""
+	;;
+esac
+
+AC_MSG_CHECKING([if the applications should be statically linked])
+case "$USE_DEBUG_STATIC" in
+yes)	LDFLAGS="$LDFLAGS -static"
+	;;
+esac
+AC_MSG_RESULT($USE_DEBUG_STATIC)
+
+if test "x$prefix" != "xNONE"; then
+	aMuleInstallPrefix=$prefix
+else
+	aMuleInstallPrefix=$ac_default_prefix
+fi
+
+AC_DEFINE_UNQUOTED(AMULE_INSTALL_PREFIX, "${aMuleInstallPrefix}", [aMule installation prefix])
+AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales are.])
+	
+# Try to set the CVS checkout-date
+AC_MSG_CHECKING([for CVSDATE])
+if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs
+then
+	cvsdate=`cat $srcdir/CVSDATE`
+elif test -f "$srcdir/CVS/Entries" # CVSDATE for cvs
+then
+	cvsdate="$(stat -Lc %y $srcdir/CVS/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
+elif test -d $srcdir/.svn # CVSDATE for svn
+then
+	cvsdate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
+fi
+AC_MSG_RESULT(${cvsdate:-None required})
+test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date or svn revision number.])
+
+XRCFLAGS="-Isrc"
+CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
+CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS"
+
+LDFLAGS="$LDFLAGS $PROFILE_FLAGS"
+dnl -lpthread is needed by Debian but FreeBSD < 5 doesnt support it
+if test x$SYS != xwin32; then
+	AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
+	if test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5; then
+		LDFLAGS="$LDFLAGS -pthread"
+		AC_MSG_RESULT(yes)
+	else
+		LDFLAGS="$LDFLAGS -lpthread"
+		AC_MSG_RESULT(no)
+	fi
+fi
+
+case "$USE_NLS" in
+
+yes)
+	;;
+*)
+	HAVE_GETTEXT="no"
+esac
+
+
+AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
+AM_CONDITIONAL(WEB, test x$WEB = xyes)
+AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
+AM_CONDITIONAL(CAS, test x$CAS = xyes)
+AM_CONDITIONAL(WXCAS, test x$WXCAS = xyes)
+AM_CONDITIONAL(ALC, test x$ALC = xyes)
+AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
+AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
+AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
+AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
+AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
+AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
+AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
+AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
+AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
+
+dnl
+dnl Check for readline library
+dnl
+if test x$BUILDAMULECMD = xyes -o x$WEB = xyes; then
+	VL_LIB_READLINE
+fi
+
+# DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
+
+AM_OPTIONS_CCACHE_PFX
+
+AC_MSG_CHECKING([whether ccache support should be added])
+AC_MSG_RESULT($ccache)
+AC_SUBST(ccache)
+
+case "$ccache" in
+
+yes)
+	CHECK_CCACHE
+	if [[ $CCACHE = 0 ]]; then
+	GCC="$ccache_prefix/ccache $GCC"
+	CC="$ccache_prefix/ccache $CC"
+	GXX="$ccache_prefix/ccache $GXX"
+	CXX="$ccache_prefix/ccache $CXX"
+	else
+	GCC="$GCC"
+	CC="$CC"
+	GXX="$GXX"
+	CXX="$CXX"
+	fi
+	;;
+*)      GCC="$GCC"
+	CC="$CC"
+	GXX="$GXX"
+	CXX="$CXX"
+esac
+
+dnl
+dnl Generate the Makefiles
+dnl
+AC_CONFIG_FILES([Makefile
+		 docs/Makefile
+		 docs/man/Makefile
+		 intl/Makefile
+		 m4/Makefile
+		 src/Makefile
+		 src/kademlia/Makefile
+		 src/kademlia/utils/Makefile
+		 src/kademlia/io/Makefile
+		 src/kademlia/kademlia/Makefile
+		 src/kademlia/routing/Makefile
+		 src/kademlia/net/Makefile
+		 src/pixmaps/Makefile
+		 src/libs/Makefile
+		 src/libs/ec/Makefile
+		 src/libs/common/Makefile
+		 src/utils/Makefile
+		 src/utils/aLinkCreator/Makefile
+		 src/utils/aLinkCreator/docs/Makefile
+		 src/utils/aLinkCreator/src/Makefile
+		 src/utils/cas/Makefile
+		 src/utils/cas/docs/Makefile
+		 src/utils/wxCas/Makefile
+		 src/utils/wxCas/docs/Makefile
+		 src/utils/wxCas/src/Makefile
+		 src/utils/xas/Makefile
+		 src/utils/xas/docs/Makefile
+		 src/webserver/Makefile
+		 src/webserver/src/Makefile
+		 src/webserver/default/Makefile
+		 src/webserver/php-default/Makefile
+		 src/webserver/chicane/Makefile
+		 unittests/Makefile
+		 unittests/muleunit/Makefile
+		 unittests/tests/Makefile])
+dnl
+dnl autoscan has missed these, i wonder why...
+dnl
+AC_CONFIG_FILES([po/Makefile.in
+		 Compilation.flags])
+AC_OUTPUT
+
+echo
+echo
+echo "  Configure script has finished system check."
+echo
+echo "  Configured aMule ${PACKAGE_VERSION} for '${host}'."
+echo
+echo "  aMule enabled options:"
+echo 
+echo "  **** aMule Core ****" 
+echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
+echo "  Should aMule be compiled with i18n support?                ${HAVE_GETTEXT:-no}"
+echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
+echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
+echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
+echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
+echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
+echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
+echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
+
+echo
+echo "  **** aMule TextClient ****"
+echo "  Should aMule Command Line Client be built?                 ${BUILD_AMULECMD:-no}"
+echo
+echo "  **** aMule WebServer ****"
+echo "  Should aMule WebServer be built?                           ${WEB:-no}"
+echo
+echo "  **** aMule ED2K Links Handler ****"
+echo "  Should aMule ED2K Links Handler be built?                  ${ED2K:-yes}"
+echo
+echo "  **** aMuleLinkCreator ****"
+echo "  Should aMuleLinkCreator GUI version (alc) be built?        ${ALC:-no}"
+echo "  Should aMuleLinkCreator for console (alcc) be built?       ${ALCC:-no}"
+echo
+echo "  **** aMule Statistics ****"
+echo "  Should C aMule Statistics (CAS) be built?                  ${CAS:-no}"
+echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
+
+echo
+echo "  **** General Libraries and Tools ****"
+echo "  Should ccache support be enabled?                          ${ccache:-no}"
+echo "  Libraries aMule will use to build:"
+echo "                                       wxWidgets             ${WX_VERSION_FULL:-Not detected}"
+echo "                                       crypto++              ${crypto_version:-embedded}"
+if test x$LIBPNG_VERSION != xnot_needed; then
+	echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
+fi
+if test x$GDLIB_VERSION != xnot_needed; then
+	echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
+fi
+echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
+
+if test x"$LIBPNG_VERSION" = x""; then
+echo ""
+echo ""
+echo " WARNING! libpng >= 1.2.0 not found."
+echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
+echo ""
+fi
