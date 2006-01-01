@@ -1,0 +1,1 @@
+SUBDIRS = ec common

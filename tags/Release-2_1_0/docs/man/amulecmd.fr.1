@@ -1,0 +1,86 @@
+.TH AMULECMD 1 "Mars 2005" "aMuleCmd v2.0.0" "Outil pour aMule"
+.SH NOM
+amulecmd \- programme de contrôle d'aMule en mode texte
+.SH SYNOPSIS
+.B amulecmd
+.RB [ \-h " " \fI<hôte> ]
+.RB [ \-p " " \fI<port> ]
+.RB [ \-P " " \fI<motdepasse> ]
+.RB [ \-f " " \fI<chemin> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-w ]
+.RB [ \-c " " \fI<commande> ]
+.PP
+.B amulecmd
+.RB [ \-f " " \fI<chemin> ]
+.B \-\-create-config-from=\fI<chemin>
+.PP
+.B amulecmd
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.SH DESCRIPTION
+\fBamulecmd\fR est un client en mode texte pour contrôler aMule.
+Une aide utile peut être obtenue au lancement du programme.
+.PP
+\fBamulecmdDLG\fR est la version graphique d'\fBamulecmd\fR, et l'unique différence est qu'il n'accepte pas l'option \fB\-c\fR.
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<hôte>\fR
+Hôte où aMule tourne (défaut: \fIlocalhost\fR). \fI<hôte>\fR peut être une adresse IP ou un nom DNS.
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
+Port d'aMule pour les Connexions Externes, tel que défini dans Preferences->Contrôles à Distance (défaut: \fI4712\fR).
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<motdepasse>\fR
+Mot de passe pour les Connexions Externes.
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<chemin>\fR
+Utiliser le fichier de configuration désigné. Le fichier de configuration par défaut est \fI~/.aMule/remote.conf\fR.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+N'afficher aucune sortie sur stdout. Ceci est une option complètement inutile avec \fBamulecmd\fR.
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+Mode bavard \- affiche aussi les messages de debugage.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+Ecrire les options de la ligne de commande dans le fichier de configuration et quitter.
+.TP
+\fB\-c\fR, \fB\-\-command\fR=\fI<commande>\fR
+Executer la \fI<commande>\fR comme si elle avait été entrée au prompt d'amumecmd et quitter (non disponible dans la version graphique).
+.TP
+\fB\-\-create\-config\-from\fR=\fI<chemin>\fR
+Créer un fichier de configuration basé sur \fI<chemin>\fR, qui doit pointer sur un fichier de configration d'aMule valide, et quitter ensuite.
+.TP
+\fB\-\-help\fR
+Afficher l'aide d'utilisation et quitter.
+.TP
+\fB\-\-version\fR
+Afficher les informations sur la version courante et quitter.
+.SH NOTE
+Pour toutes les options prenant en paramètre un \fI<chemin>\fR, si le \fIchemin\fR ne contient pas de répertoire (i.e. juste un nom de fichier), alors il sera considéré comme étant dans le répertoire de configuration d'aMule, \fI~/.aMule\fR.
+.SH FICHIERS
+~/.aMule/remote.conf
+.SH EXEMPLE
+Typiquement amulecmd sera lancé la première fois de la façon suivante:
+.PP
+\fBamulecmd\fR \fB\-h\fR \fIhostname\fR \fB\-p\fR \fIECport\fR \fB\-P\fR \fIECpassword\fR \fB\-w\fR
+.PP
+ou
+.PP
+\fBamulecmd\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Cela sauvegardera les options dans \fI$HOME/.aMule/remote.conf\fR, et les fois suivantes, vous n'aurez à taper que:
+.PP
+.B amulecmd
+.PP
+Bien sûr, rien ne vous oblige à suivre cet exemple.
+.SH SIGNALEMENT DES BUGS
+Reportez les bugs sur notre forum (\fIhttp://forum.amule.org/\fR), ou dans notre bugtracker (\fIhttp://bugs.amule.org/\fR).
+N'utilisez ni un e-mail, ni notre liste de diffusion ni ne reportez directement un bug à un membre de notre equipe.
+.SH COPYRIGHT
+aMule et tous les utilitaires associés sont distribués sous licence GNU General Public License.
+.SH VOIR AUSSI
+\fBamule\fR(1), \fBamuleweb\fR(1)
+.SH TRADUCTION
+ThePolish, 2005

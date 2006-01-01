@@ -1,0 +1,146 @@
+#!/bin/bash
+
+# This file is part of the aMule project.
+#
+# Copyright (c) 2004-2006 aMule Project ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2004-2006 Jacobo Vilella aka Jacobo221
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+#
+
+###################################################################
+#                                                                 #
+#     linkcvs will link the whole cvs tree to the given path      #
+#  allowing keeping several compilations from a single cvs tree   #
+#                                                                 #
+#    Warning: This script overwrites old files in target_path     #
+#                                                                 #
+###################################################################
+#                                                                 #
+#           Script valid as of 4rd June 2004 aMule CVS            #
+#         Suggestions go to Jacobo221 at @amule dot .org          #
+#                                                                 #
+###################################################################
+#                                                                 #
+#     This code is distributed under terms of the GPL License     #
+#               http://www.gnu.org/copyleft/gpl.html              #
+#                                                                 #
+###################################################################
+#                                                                 #
+#   EXEC is a list of the files which will be called as scripts   #
+#       EXEC_NUMBER is the amount of EXEC files in the list       #
+#    EXEC_PREFIX is the command to prefix the call of the EXEC    #
+#   EXEC_POSTFIX is the command to postfix the call of the EXEC   #
+#    COPY is a list of files which will be copies, not linked     #
+#         Priviledge order (max to min): EXEC, COPY, CVS          #
+#                                                                 #
+###################################################################
+
+EXEC_NUMBER=0
+# The follwing four lines were needed for aMule versions previous to 2.0.0
+# EXEC_NUMBER=1
+# EXEC=("autogen.sh")
+# EXEC_PREFIX=("original=\`readlink src/SharedFileList.h\` && cp -d --remove-destination \"\$original\" src/ && ")
+# EXEC_POSTFIX=("ln -sf \"\$original\" src/SharedFileList.h")
+COPY=""
+
+if [ $# -ne 2 ]; then
+        echo "`basename $0`: invalid number of arguments"
+        echo "Try \``basename $0` <cvs_tree_path> <target_path>'"
+	exit 1
+elif [ ! -e "$1" ]; then
+        echo "`basename $0`: $1 doesn't exist!"
+	exit 2
+elif [ ! -d "${1}/CVS" ]; then
+        echo "`basename $0`: $1 isn't a CVS tree!"
+	exit 3
+elif [ ! -e "${1}/CVS/Entries" ]; then
+        echo "`basename $0`: $1 has no Entries file!"
+	exit 4
+fi
+
+SOURCE="$1"
+TARGET="$2"
+
+if [ "`echo \"$SOURCE\" | cut -c 1`" != "/" ] && [ "`echo \"$SOURCE\" | cut -c 1`" != "~" ]; then
+                                        SOURCE="`pwd`/$SOURCE"
+fi
+if [ "`echo \"$TARGET\" | cut -c 1`" != "/" ] && [ "`echo \"$TARGET\" | cut -c 1`" != "~" ]; then
+                                        TARGET="`pwd`/$TARGET"
+fi
+
+cvs_rec()
+{
+	local FILES=`cat "${SOURCE}/$1"/CVS/Entries | cut -f 2 -d "/" -s`
+	# Alternative option would be to place `grep "^D/"` and `grep "^"`
+	for file in $FILES; do
+		if [ -d "${SOURCE}/${1}/$file" ]; then
+			mkdir -p "${TARGET}/${1}/$file"
+			cvs_rec "${1}/$file"
+		else
+			target="${TARGET}/${subfile/$SOURCE}/${1}"
+			if [ ! -e "${SOURCE}/${1}/$file" ]; then
+                                echo "${SOURCE}/${1}/$file not found!"
+                        else
+                                ln -sf "${SOURCE}/${1}/$file" "$target"
+                        fi
+		fi
+	done
+}
+
+if [ ! -e "$TARGET" ]; then
+        echo -n "$TARGET doesn't exist. Should I create it? [y/n]"
+        read -s -n 1 opt
+        if [ $opt = Y -o $opt = y ]; then
+                echo " Copying..."
+                mkdir -p "$TARGET"
+        else
+                echo "`basename $0`: target_path invalid"
+                exit 5
+        fi
+fi
+
+cvs_rec ""
+
+for file in $COPY; do
+        mkdir -p "${TARGET}/`dirname $file`"
+        for subfile in ${SOURCE}/$file; do
+                if [ ! -e "$subfile" ]; then
+                        echo "$subfile not found!"
+                else
+                        # -d --remove-destination is esential for links handling
+                        cp -d --remove-destination "$subfile" "${TARGET}/${subfile/$SOURCE}"
+                fi
+        done
+done
+
+i=0
+while [ "$i" -lt "$EXEC_NUMBER" ]; do
+        mkdir -p "${TARGET}/`dirname $file`"
+        for subfile in "${SOURCE}"/${EXEC[$i]}; do
+                if [ ! -e "$subfile" ]; then
+                        echo "$subfile not found!"
+                else
+                        target="${TARGET}/${subfile/$SOURCE}"
+                        rm -f "$target" # Necessary in case $target is a link
+			echo ${EXEC_PREFIX[$i]} > "$target"
+                        echo -n "$subfile && " >> "$target"
+			echo ${EXEC_POSTFIX[$i]} >> "$target"
+                        chmod a+x "$target"
+                fi
+        done
+	i=`expr $i + 1`
+done
+
