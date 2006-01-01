@@ -12,6 +12,7 @@ Version 2.1.0 - The "???" version
 	Gerd78:
 		* Fix linkage with static wx libraries.
 		* Fix aMule.spec files 
+		* Fix amule.desktop file
 
 	GonoszTopi:
 		* Fixed a small GUI glitch
@@ -105,6 +106,9 @@ Version 2.1.0 - The "???" version
 		* Proper shutdown of Kad on exit.
 		* Kad firewalled sources are now contacted properly.
 		* Fixed a crash on search manager, caused by erase invalidating an iterator.
+		* Proper arrows for ed2k/kad state, using alpha drawing. This means that 
+		   the little arrows on world globe on status bar are now separate: the lower
+		   one is for ed2k and the higher one for Kad.
 		* Fixed another wrong usage of stl classes and some cleaning on clientlist.
 		* Added GUI checkbox to show/hide Filter options.
 		* Added -D_GLIBCXX_DEBUG to compilation flags.
@@ -212,16 +216,130 @@ Version 2.1.0 - The "???" version
 		* Some fixes to rating icons.
 		* Killed muuli's pragmas.
 		* Moved search id's setting to search class itself.
-		* No more --enable-kad-compile. Flag is no more, and kad is always compiled.
+		* Fixed searches' timspan on CParfile::Process
 		* Reworked src/Makefile.am to handle common files.
 		* You can change toolbar to vertical/horizontal on GUI tweaks now.
 		* Removed fakecheck (sites down).
 		* Fixing ED2K link handler colliding with status bar.
+		* Added 7z to types.
+		* Mantain a list of already-known mods to avoid "Compatible client found" 
+		   messages spamming the console.
+		* Revamping of UpDownClient interface. Proper private vars and public 
+		  accessors, merged the public/private sections, and decoupled credits classes.
+		* Fixed possible crashes on dereferencing NULL pointer, specially on EC 
+		   tag creation on UpDownClients.
+		* Separated CClientCredits and CClientCreditsList to diferent files:
+		   the later is not needed on remote GUI while the former is.
+		* Moved some functions for ID check to theApp, to remove the
+		   includes needed on each file, cutting down compilation time.
+		* CClientCredits is not more a friend class of CClientCreditsList.
+		* Split CClientReqSocket from ListenSocket.*, and renamed to 
+		   CClienTCPSocket to keep coherence with CClientUDPSocket.
+		* Removed event handler local vars on server and client sockets, and moved 
+		   the classes out of the .h, because those are no needed anywhere else.
+		* Removed the possibility of bootstrapping Kad from a host.
+		* Fixed the stale unknown clients caused by unanswered kad-buddy requests.
+		   The new KADEMLIABUDDYTIMEOUT is 10 minutes. More than enough.
+		* Connect/Disconnect button works properly now. Disconnection happens on any 
+		   network connected, and connection on the selected networks on preferences.
+		* Added a Disconnect button for ED2K too.
+		* Fixed possible crash on startup.
+		* Tray icon is now shown as connected if any network is (ed2k or kad)
+		* A lot of class separation and file/class renaming, to prepare the build for...
+		* Build system changed:
+		   - Added some intermediate libs to avoid double-compiles:
+			     (Binary compatible files only)
+			   - libmuleappcommon.a -> Common to all aMule derived apps
+			   - libmuleappcore.a -> Common to amuled/amule
+			   - libmuleappgui.a -> Common to amulegui/amule
+		   - Also changed some files to increase the amount of 
+		     binary compatible files. Would be great to increase 
+			 this number, but sadly theApp. access is not binary
+			 compatible (different base classes).
+		   - Created two amule-independant libs:
+			   - libcommon.a -> Common to all apps
+			   - libecc.a -> Common to all EC apps
+			 Those are now on libs/ folder.
+		* More changes to build and libs. libeccommon now includes ECSocket, 
+		   and CRemoteConnection is used to connect to a remote core.
+		* Make libec independant from libmulecommon
+		* Call realize to fix toolbar on Mac.
+		* Open wiki on F1 for help :)
+		* Stats have a 64bits, not 32bits, uptime number.
+		* No more EC extra needed for having a remote app, yay. Just link to 
+		   libec.a and use the CRemoteConnector->ConenctToCore and stuff. This
+		   will be expanded for a proper EC API.
+		* Did some EC API examples so someone can expand it.
+		* Tooltips, proper names, and layouts for the connection ports.
+		* Fixed compilation flags for base-only apps.
+		* Lots of GUI visual glitches fixed.
+		* Now core timer is on a thread, and it behaves much better.
+		* Fixed core timer silliness on time count. Much more acurate now.
+		* Workarounded the memleak caused by wx < 2.6.2
+		* Fixed it.po (twice).
+		* Some debug to aid locating rogue clients and know if it's actually us.
+		* Save source seeds now saves 10 sources, but only keeps them for a
+		   Max of 2 hours.
+		* Added search expressions class and parsers.
+		* Fixed flex usage when --header-file is not available.
+		* Proper POTFILES.in
+		* Fixed systray's Connect/Disconenct to include Kad.
+		* Fixed a huge bug that was sending TOO MUCH packets (UDP) to 
+		   servers. This alone is a reason for a release. Fixes the server list flicker, too.
+		* Kad status fixed for remote apps, and included "running" status.
+		* Kad info is shown on Kad tab on remote GUI.
+		* Avoid ping storms by lugdunummaster request, adding a random value
+		   to server UDP ping.
+		* We should not publish FT_FILEFORMAT at all. Fixed.
+		* Publish only file rating if we have any.
+		* Update on server flags - added related search and type tag integer.
+		* FT_FILETYPE can be an integer for newer servers, added support.
+		* As for lug request, newer servers get a integer filetype tag if supported.
+		* Enable connect/disconnect Kad from remote gui.
+		* Some basic warnings on value changes for preferences.
+		   Now, if you request a change on preferences that requires restart, like
+		   ports, incoming/temp folders, and others, aMule will warn you on "OK".
+		* Don't connect to ed2k on server double click if the network is disabled
+		* More warnings: Kad without UDP port, and Kad conenct while disabled on 
+		   preferences now raise a log warning message.
+		* Dynamic set of GUI options to avoid visiting prefs multiple times.
+		* Warn if UDP disabled and Kad enabled on preferences.
+		* Fixed Scanner.y to allow compilation with old flex versions.
+		* Fix installation or webserver's Kad page.
+		* Use the generic function instead of X11-specific one for geometry parsing.
+		   Fixes compilation on several platforms and removes dependency on X11 headers.
+		* Removed duplicated code and cleaned CDirectoryTreeCtrl
+		* Fix for continuously trying to solve a DNS server.
+		* Fixed some memleak on contact results.
+		* Fixed mem corruption, and contact asserts on the new merge code
+		  for kad contact trees.
+		* Kad notes filtering
+		* Fixes crash on startup onMac and Windows caused by an unitialized
+		   variable being used at dialog construction. But not on wxGTK. Go figure.
+		* Update on wxwin.m4 to wx-cvs of 15/12/2005 and proper base flags usage.
+		* Minor amount of libs to link for wx, instead of all libs.
+		* Fixed a crash on wxGetTranslation usage on Windows.
+		* Fixed an assert on folders tree control on windows.
+		* Fixed the initiazlization of status_arrows to proper size (16x16) on Windows.
+		* Fixed the status arrows on windows, and fixed wxWidgets bug that caused it.
+		* Changed file to output stream on HTTP download.
+		* Fixed a endless loop on downloading files < 10 bytes on HTTP.
+		* Fixed Kad nodes download by stopping Kad before the file is renamed.
+		* Fixed crashes on HTTP download.
+		* Added support for proxy usage on HTTP download, via environment variables.
+		* Fixed input streams on FileFunction's handling of gziped files.
+		* Fixed download of gziped files on windows.
+		* Fixed extension Kad search
+		* Fixed crash on search
+		* Removed the sending of "Any" type to server - is the default.
+		* Fix search types and return values on ed2k/kad search.
+		* Fixed a wrong Kad packet being created on a race condition caused by the 
+		   removal of a file from shares that will just get published. To be added on eMule, too.
 		* Fixed Open File command on categories.
 		* Fixed detail level on EC tags failing silently on lower values.
 		* Fixed crash on remote gui if not config folder not existant.
 		* Created, fixed, killed the --enable-kad-compile switch to enable 
-		   non-kad compilations during test phase.
+		   non-kad compilations during test phase. Now is always compiled.
 		* Removed platform specific getlocalhost usage.
 		* Fixed ntohl usage on gap list saving.
 		* Removed wrong Merkur (c) from php libs (sorry Merkur, but those are ours :P)
@@ -266,12 +384,28 @@ Version 2.1.0 - The "???" version
 		* Fixed the RSB of this release. you know, one per release.
 		   (for those that are new to aMule, RSB = random socket bug)
 		* Cleaned, cleaned, cleaned code.
-		
 		* Fixed:
 			0000492: aMule gui fails to compile when using wxMotif 2.6.1
 			0000514: Not all common file types recognized as Audio
 			0000516: crash after repeated search
-
+			0000646: right click on transfer files randomly disabled
+			0000659: disconnect button might not disconnect kad and block it's function			
+			0000661: windows consistency
+			0000662: amulecmd crashes on invalid pause command
+			0000671: open file on double-click
+			0000691: connect/disconnect button is still broken
+			0000704: servers connection cancel button
+			0000715: prefs -> general -> "downloadlist dblclick to expand" option is 
+			                broken or something
+			0000716: prefs -> seeds save, wrong text			
+			0000718: more systray ignoring kad
+			0000719: searches -> extended -> min size vs max size
+			0000730: statistics connections graph Range requires restart
+			0000729: search query string parser
+			0000732: more brackets related bugs
+			0000733: download button activated when search fails
+			0000734: non-restored icon in Directories -> share
+			
 	lfroen:
 		* PHP engine implementation for amuleweb
 		* Porting web templates to PHP script
@@ -305,6 +439,11 @@ Version 2.1.0 - The "???" version
 
 	Ramiro:
 		* Patches to compile on a NSLU2 (ARM).
+
+	RazZziel:
+		* Changes on parent ownership on windows. Partially fixes 
+		   0000690: List of windows that can be overlapped by main 
+		                   window and leave aMule apparently freezed
 
 	schtroumpf:
 		* File rating in search dialog.
