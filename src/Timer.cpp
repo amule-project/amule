@@ -23,11 +23,8 @@
 //
 
 #include "Timer.h"		// Interface declaration
-#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 #include "GetTickCount.h"	// Needed for GetTickCountFullRes
 
-
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_AMULE_TIMER)
 
 //////////////////////// Timer Thread ////////////////////
 
@@ -40,7 +37,7 @@ public:
 	}
 
 	void* Entry() {
-		CMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
+		CTimerEvent evt(m_id);
 
 		uint64 lastEvent = GetTickCountFullRes();
 		do {
@@ -145,5 +142,19 @@ void CTimer::Stop()
 		delete m_thread;
 		m_thread = NULL;
 	}
+}
+
+
+DEFINE_EVENT_TYPE(MULE_EVT_TIMER);
+
+CTimerEvent::CTimerEvent(int id)
+	: wxEvent(MULE_EVT_TIMER, id)
+{
+}
+
+
+wxEvent* CTimerEvent::Clone() const
+{
+	return new CTimerEvent(GetId());
 }
 

@@ -111,10 +111,10 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
-	EVT_MULE_INTERNAL(wxEVT_AMULE_TIMER, TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
+	EVT_MULE_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
 
 	// Core timer
-	EVT_MULE_INTERNAL(wxEVT_AMULE_TIMER, ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
+	EVT_MULE_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
 
 	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
 

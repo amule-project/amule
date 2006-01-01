@@ -70,6 +70,7 @@ class CTimer;
 class wxTimerEvent;
 class wxSingleInstanceChecker;
 class CMuleInternalEvent;
+class CTimerEvent;
 
 
 #define theApp wxGetApp()
@@ -234,9 +235,8 @@ protected:
 	void OnSourceDnsDone(CMuleInternalEvent& evt);
 	void OnServerDnsDone(CMuleInternalEvent& evt);
 
-	void OnTCPTimer(CMuleInternalEvent& evt);
-
-	void OnCoreTimer(CMuleInternalEvent& evt);
+	void OnTCPTimer(CTimerEvent& evt);
+	void OnCoreTimer(CTimerEvent& evt);
 
 	void OnFinishedHashing(CMuleInternalEvent& evt);
 	void OnFinishedCompletion(CMuleInternalEvent& evt);
