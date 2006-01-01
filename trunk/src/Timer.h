@@ -29,6 +29,8 @@ class wxEvtHandler;
 class CTimerThread;
 
 #include <wx/thread.h>
+#include <wx/event.h>
+
 
 /**
  * Replacement for wxTimer as it doesn't work on non-X builds
@@ -66,5 +68,28 @@ private:
 	wxEvtHandler* m_owner;
 	int m_id;
 };
+
+
+
+class CTimerEvent : public wxEvent
+{
+public:	
+	CTimerEvent(int id = 0);
+
+	virtual wxEvent* Clone() const;
+};
+
+
+BEGIN_DECLARE_EVENT_TYPES()
+	DECLARE_EVENT_TYPE(MULE_EVT_TIMER, -1)
+END_DECLARE_EVENT_TYPES()
+
+	
+typedef void (wxEvtHandler::*MuleTimerEventFunction)(CTimerEvent&);
+
+#define EVT_MULE_TIMER(id, func) \
+	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_TIMER, id, -1, \
+	(wxObjectEventFunction) (wxEventFunction) \
+	wxStaticCastEvent(MuleTimerEventFunction, &func), (wxObject*) NULL),
 
 #endif /* TIMER_H */

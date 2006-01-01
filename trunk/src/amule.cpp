@@ -1253,7 +1253,7 @@ void CamuleApp::OnNotifyEvent(wxEvent& e)
 }
 
 
-void CamuleApp::OnTCPTimer(CMuleInternalEvent& WXUNUSED(evt))
+void CamuleApp::OnTCPTimer(CTimerEvent& WXUNUSED(evt))
 {
 	if(!IsRunning()) {
 		return;
@@ -1266,7 +1266,7 @@ void CamuleApp::OnTCPTimer(CMuleInternalEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnCoreTimer(CMuleInternalEvent& WXUNUSED(evt))
+void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 	static uint64	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
