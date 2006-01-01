@@ -39,7 +39,7 @@
 #include "AICHSyncThread.h"	// Needed for CAICHSyncThread
 #include "Logger.h"		// Needed for AddLogLine
 #include <common/Format.h>
-#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 
 #include <algorithm>
 #include <list>
@@ -346,7 +346,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 			
 			
 			// Pass on the completion
-			wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
+			CMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_FINISHED);
 			evt.SetClientData( knownfile );
 			evt.SetExtraLong( (long)current.m_owner );
 
@@ -369,7 +369,7 @@ wxThread::ExitCode CAddFileThread::Entry()
 
 
 	// Notify the core.
-	wxMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
+	CMuleInternalEvent evt(wxEVT_CORE_FILE_HASHING_SHUTDOWN);
 	wxPostEvent(&theApp, evt);
 
 

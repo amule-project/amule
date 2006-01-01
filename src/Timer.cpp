@@ -23,7 +23,7 @@
 //
 
 #include "Timer.h"		// Interface declaration
-#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 #include "GetTickCount.h"	// Needed for GetTickCountFullRes
 
 
@@ -40,7 +40,7 @@ public:
 	}
 
 	void* Entry() {
-		wxMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
+		CMuleInternalEvent evt(wxEVT_AMULE_TIMER, m_id);
 
 		uint64 lastEvent = GetTickCountFullRes();
 		do {
