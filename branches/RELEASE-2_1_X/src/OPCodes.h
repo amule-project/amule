@@ -70,7 +70,7 @@ enum {
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 // AND FIX THE MOD_VERSION_LONG
 
-#define __CVS__
+//#define __CVS__
 
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
