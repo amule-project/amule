@@ -723,6 +723,8 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 		case IDC_VERTTOOLBAR:
 			theApp.amuledlg->Create_Toolbar(wxEmptyString, value);
+			// Update the first tool (conn button)
+			theApp.amuledlg->ShowConnectionState();
 			break;
 	}
 }
