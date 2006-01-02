@@ -109,6 +109,37 @@ CAbstractFile::CAbstractFile() :
 }
 
 
+CAbstractFile::CAbstractFile(const CAbstractFile& other)
+{
+	m_strFileName	= other.m_strFileName;
+	m_abyFileHash	= other.m_abyFileHash;
+	m_nFileSize		= other.m_nFileSize;
+	m_strComment	= other.m_strComment;
+	m_iRating		= other.m_iRating;
+	m_hasComment	= other.m_hasComment;
+	m_iUserRating	= other.m_iUserRating;
+	
+	for (unsigned int i = 0; i < other.taglist.Count(); i++) {
+		taglist.Add(new CTag(*other.taglist[i]));
+	}
+
+/* // TODO: Currently it's not safe to duplicate the entries, but isn't needed either.
+	CKadEntryPtrList::const_iterator it = other.m_kadNotes.begin();
+	for (; it != other.m_kadNotes.end(); ++it) {
+		m_kadNotes.push_back(new Kademlia::CEntry(**it));
+	}
+*/
+}
+
+
+CAbstractFile::~CAbstractFile()
+{
+	for (size_t i = 0; i < taglist.size(); ++i) {
+		delete taglist[i];
+	}
+}
+
+
 void CAbstractFile::SetFileName(const wxString& strFileName)
 { 
 	m_strFileName = strFileName;
@@ -310,10 +341,6 @@ CKnownFile::~CKnownFile(){
 	
 	hashlist.Clear();
 			
-	for (size_t i = 0; i != taglist.GetCount(); i++) {
-		delete taglist[i];
-	}		
-	
 	SourceSet::iterator it = m_ClientUploadList.begin();
 	for ( ; it != m_ClientUploadList.end(); ++it ) {
 		(*it)->ClearUploadFileID();
