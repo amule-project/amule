@@ -117,7 +117,8 @@ class CAbstractFile
 {
 public:
 	CAbstractFile();
-	virtual ~CAbstractFile() {};
+	explicit CAbstractFile(const CAbstractFile& other);
+	virtual ~CAbstractFile();
 
 	virtual const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
@@ -152,6 +153,9 @@ public:
 	void	UpdateFileRatingCommentAvail();
 
 protected:
+	//! CAbstractFile is not assignable.
+	CAbstractFile& operator=(const CAbstractFile);
+	
 	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
 	uint32		m_nFileSize;
