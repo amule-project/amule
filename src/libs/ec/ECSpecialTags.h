@@ -337,8 +337,8 @@ class CEC_SearchFile_Tag : public CECTag {
 class CEC_Search_Tag : public CECTag {
 	public:
 		// search request
-		CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
-			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
+		CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type, const wxString &file_type,
+			const wxString &extension, uint32 avail, uint32 min_size, uint32 max_size);
 			
 		wxString SearchText() { return GetTagByNameSafe(EC_TAG_SEARCH_NAME)->GetStringData(); }
 		EC_SEARCH_TYPE SearchType() { return (EC_SEARCH_TYPE)GetInt32Data(); }

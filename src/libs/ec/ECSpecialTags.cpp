@@ -64,8 +64,8 @@ wxString CEC_PartFile_Tag::GetFileStatusString()
 //
 // Search request
 //
-CEC_Search_Tag::CEC_Search_Tag(wxString &name, EC_SEARCH_TYPE search_type, wxString &file_type,
-			wxString &extension, uint32 avail, uint32 min_size, uint32 max_size) : CECTag(EC_TAG_SEARCH_TYPE, (uint32)search_type)
+CEC_Search_Tag::CEC_Search_Tag(const wxString &name, EC_SEARCH_TYPE search_type, const wxString &file_type,
+			const wxString &extension, uint32 avail, uint32 min_size, uint32 max_size) : CECTag(EC_TAG_SEARCH_TYPE, (uint32)search_type)
 {
 	AddTag(CECTag(EC_TAG_SEARCH_NAME, name));
 	AddTag(CECTag(EC_TAG_SEARCH_FILE_TYPE, file_type));
