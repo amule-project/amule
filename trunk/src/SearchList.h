@@ -85,8 +85,6 @@ public:
 	uint32  GetFileSize() { return m_nFileSize; }
 #else
 
-	uint32	GetIntTagValue(uint8 tagname) const;
-	wxString	GetStrTagValue(uint8 tagname) const;
 	void	AddSources(uint32 count, uint32 count_complete);
 	
 	uint32	GetSourceCount() const;
@@ -112,9 +110,6 @@ private:
 	
 #ifdef CLIENT_GUI
 	uint32 m_SourceCount, m_CompleteSourceCount;
-#else
-	typedef		std::vector<CTag*> TagList;
-	TagList		m_taglist;
 #endif
 	uint32		m_nClientID;
 	uint16		m_nClientPort;
