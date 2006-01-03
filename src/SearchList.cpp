@@ -352,8 +352,7 @@ CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID,
 	uint32 tagcount = in_data.ReadUInt32();
 
 	for (unsigned int i = 0; i != tagcount; ++i){
-		CTag* toadd = new CTag(in_data,bOptUTF8 );
-		m_taglist.push_back(toadd);
+		AddTagUnique(new CTag(in_data, bOptUTF8));
 	}
 
 	// here we have two choices
@@ -375,39 +374,13 @@ CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID,
 
 CSearchFile::~CSearchFile()
 {	
-	for ( unsigned int i = 0; i < m_taglist.size(); ++i )
-		delete m_taglist[i];
-	
-	m_taglist.clear();
-}
-
-
-uint32 CSearchFile::GetIntTagValue(uint8 tagname) const
-{
-	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->GetNameID() == tagname && m_taglist[i]->IsInt() )
-			return m_taglist[i]->GetInt();
-	}
-	
-	return 0;
-}
-
-
-wxString CSearchFile::GetStrTagValue(uint8 tagname) const
-{
-	for (unsigned int i = 0; i != m_taglist.size(); ++i) {
-		if ( m_taglist[i]->GetNameID() == tagname && m_taglist[i]->IsStr() )
-			return m_taglist[i]->GetStr();
-	}
-	
-	return wxEmptyString;
 }
 
 
 void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 {
-	for ( unsigned int i = 0; i < m_taglist.size(); ++i ) {
-		CTag* tag = m_taglist[i];
+	for ( unsigned int i = 0; i < taglist.size(); ++i ) {
+		CTag* tag = taglist[i];
 	
 		switch ( tag->GetNameID() ) {
 			case FT_SOURCES:
