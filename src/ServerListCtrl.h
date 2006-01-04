@@ -86,14 +86,7 @@ public:
 	void	AddServer( CServer* toadd );
 	
 	/**
-	 * Removes a server from the list.
-	 *
-	 * @param server The server to be removed.
-	 *
-	 * Please note that this function ALSO removes the server from the actual
-	 * server list, not just from the displayed one! Also note that this
-	 * function does not request user confirmation upon removing static
-	 * servers, nor does it check if the server removed is the connected server.
+	 * Removes a server from the displayed list.
 	 */
 	void	RemoveServer(CServer* server);
 	
