@@ -229,13 +229,13 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxString strs16[] = 
     {
         _("Any"), 
-        _("Archive"), 
+        _("Archives"), 
         _("Audio"), 
-        _("CD-Image"), 
-        _("Picture"), 
-        _("Program"), 
-        _("Text"), 
-        _("Video")
+        _("CD-Images"), 
+        _("Pictures"), 
+        _("Programs"), 
+        _("Texts"), 
+        _("Videos")
     };
     wxChoice *item16 = new wxChoice( parent, IDC_TypeSearch, wxDefaultPosition, wxDefaultSize, 8, strs16, 0 );
     item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
