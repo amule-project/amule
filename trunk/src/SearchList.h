@@ -41,6 +41,7 @@ class CMD4Hash;
 class CServer;
 class CSearchList;
 class CPacket;
+class CSearchFile;
 	
 namespace Kademlia {
 	class CUInt128;
@@ -67,6 +68,8 @@ private:
 	virtual void* Entry();
 };
 
+
+typedef std::vector<CSearchFile*> CSearchResultList;
 
 class CSearchFile : public CAbstractFile
 {
@@ -120,9 +123,6 @@ private:
 
 class CSearchList
 {
-friend class CSearchListCtrl;
-typedef std::vector<CSearchFile*> SearchList;
-
 public:
 	CSearchList();
 	~CSearchList();
@@ -143,7 +143,7 @@ public:
 
 	void	RemoveResults(long nSearchID);
 
-	const SearchList GetSearchResults(long nSearchID);
+	const CSearchResultList& GetSearchResults(long nSearchID) const;
 	
 	void	AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat = 0);
 	void	LocalSearchEnd();
@@ -185,7 +185,7 @@ private:
 
 	bool AddToList(CSearchFile* toadd, bool bClientResponse = false);
 
-	typedef std::map<long, SearchList> ResultMap;
+	typedef std::map<long, CSearchResultList> ResultMap;
 	
 	ResultMap	m_Results;
 	

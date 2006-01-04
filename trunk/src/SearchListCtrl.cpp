@@ -263,14 +263,10 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 	m_nResultsID = ResultsID;
 
 	if ( ResultsID ) {
-		CSearchList::ResultMap::iterator it = theApp.searchlist->m_Results.find( m_nResultsID );
-
-		if ( it != theApp.searchlist->m_Results.end() ) {
-			CSearchList::SearchList& list = it->second;
-
-			for ( unsigned int i = 0; i < list.size(); i++ ) {
-				AddResult( list[i] );
-			}
+		const CSearchResultList& list = theApp.searchlist->GetSearchResults(ResultsID);
+		
+		for ( unsigned int i = 0; i < list.size(); i++ ) {
+			AddResult( list[i] );
 		}
 	}
 }

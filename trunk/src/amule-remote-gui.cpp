@@ -1429,12 +1429,13 @@ bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 	return true;
 }
 
+
 void CSearchListRem::RemoveResults(long nSearchID)
 {
-	std::map<long, std::vector<CSearchFile *> >::iterator it = m_Results.find(nSearchID);
+	std::map<long, CSearchResultList>::iterator it = m_Results.find(nSearchID);
 	
 	if ( it != m_Results.end() ) {
-        std::vector<CSearchFile *> &list = it->second;
+        CSearchResultList& list = it->second;
 
         for (unsigned int i = 0; i < list.size(); i++) {
 			delete list[i];
@@ -1442,6 +1443,20 @@ void CSearchListRem::RemoveResults(long nSearchID)
         m_Results.erase(it);
 	}
 }
+
+
+const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID) const
+{
+	std::map<long, CSearchResultList>::const_iterator it = m_Results.find(nSearchID);
+	if (it != m_Results.end()) {
+		return it->second;
+	}
+
+	// TODO: Should we assert in this case?
+	static CSearchResultList list;
+	return list;
+}
+
 
 void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 {

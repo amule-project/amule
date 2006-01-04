@@ -463,7 +463,7 @@ void CSearchList::Clear()
 	ResultMap::iterator it = m_Results.begin();
 	
 	for ( ; it != m_Results.end(); ++it ) {
-		SearchList& list = it->second;
+		CSearchResultList& list = it->second;
 	
 		for ( unsigned int i = 0; i < list.size(); ++i ) 
 			delete list[i];
@@ -481,7 +481,7 @@ void CSearchList::RemoveResults(long nSearchID)
 	ResultMap::iterator it = m_Results.find( nSearchID );
 
 	if ( it != m_Results.end() ) {
-		SearchList& list = it->second;
+		CSearchResultList& list = it->second;
 	
 		for ( unsigned int i = 0; i < list.size(); ++i ) 
 			delete list[i];
@@ -698,7 +698,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 	ResultMap::iterator it = m_Results.find( toadd->GetSearchID() );
 
 	if ( it != m_Results.end() ) {
-		SearchList& list = it->second;
+		CSearchResultList& list = it->second;
 	
 		for ( unsigned int i = 0; i < list.size(); ++i ) {
 			if ( toadd->GetFileHash() == list[i]->GetFileHash() ) {
@@ -753,21 +753,25 @@ private:
 	int		m_type;
 };
 
-const std::vector<CSearchFile*> CSearchList::GetSearchResults(long nSearchID)
+
+const CSearchResultList& CSearchList::GetSearchResults(long nSearchID) const
 {
 	ResultMap::const_iterator it = m_Results.find(nSearchID);
-
-	if ( it != m_Results.end() ) {
+	if (it != m_Results.end()) {
 		return it->second;
 	}
-	return std::vector<CSearchFile*>();
+	
+	// TODO: Should we assert in this case?
+	static CSearchResultList list;
+	return list;
 }
+
 
 void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 {
 	ResultMap::iterator it = m_Results.begin();
 	for ( ; it != m_Results.end(); ++it ) {
-		SearchList& list = it->second;
+		CSearchResultList& list = it->second;
 	
 		for ( unsigned int i = 0; i < list.size(); ++i ) {
 			if ( list[i]->GetFileHash() == hash ) {
