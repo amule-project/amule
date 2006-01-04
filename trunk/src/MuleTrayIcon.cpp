@@ -303,7 +303,7 @@ void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 
 void CMuleTrayIcon::UpdateTray() {
 	// Icon update and Tip update
-	SetIcon(CurrentIcon, CurrentTip);
+	if (IsOk()) SetIcon(CurrentIcon, CurrentTip);
 }
 
 wxMenu* CMuleTrayIcon::CreatePopupMenu() 
