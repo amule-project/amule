@@ -60,7 +60,8 @@ END_EVENT_TABLE()
 
 
 CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
-: wxDialog(parent,-1,_("File Details"),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER )
+: wxDialog(parent,-1,_("File Details"),wxDefaultPosition,wxDefaultSize,
+	wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
 {
 	m_file = file;
 	m_timer.SetOwner(this,ID_MY_TIMER);
