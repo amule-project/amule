@@ -477,11 +477,11 @@ enum OP_ClientToServer {
 
 #define	ED2KFTSTR_AUDIO			wxT("Audio")	// value for eD2K tag FT_FILETYPE
 #define	ED2KFTSTR_VIDEO			wxT("Video")	// value for eD2K tag FT_FILETYPE
-#define	ED2KFTSTR_IMAGE			wxT("Image")	// value for eD2K tag FT_FILETYPE
-#define	ED2KFTSTR_DOCUMENT		wxT("Doc")	// value for eD2K tag FT_FILETYPE
-#define	ED2KFTSTR_PROGRAM		wxT("Pro")	// value for eD2K tag FT_FILETYPE
-#define	ED2KFTSTR_ARCHIVE		wxT("Arc")	// eMule internal use only
-#define	ED2KFTSTR_CDIMAGE		wxT("Iso")	// eMule internal use only
+#define	ED2KFTSTR_IMAGE			wxT("Picture")	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_DOCUMENT		wxT("Text")	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_PROGRAM		wxT("Program")	// value for eD2K tag FT_FILETYPE
+#define	ED2KFTSTR_ARCHIVE		wxT("Archive")	// eMule internal use only
+#define	ED2KFTSTR_CDIMAGE		wxT("CD-Image")	// eMule internal use only
 
 // additional media meta data tags from eDonkeyHybrid (note also the uppercase/lowercase)
 #define	FT_ED2K_MEDIA_ARTIST		"Artist"	// <string>

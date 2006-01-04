@@ -1,3 +1,15 @@
+--------------------------------------------------------------------------------
+
+Version 2.2.0 - ??? version.
+----------
+2006-??-??
+
+	Phoenix:
+		* Fixed inconsistency of ed2k search type strings between core
+		and gui.
+
+--------------------------------------------------------------------------------
+
 Version 2.1.0 - The "I just teased you with this release till 2006" version
 ----------
 2006-01-01
@@ -5,7 +17,7 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 
 	ender:
 		* Fix adding AICH links with amulecmd.
-	
+
 	fulgas:
 		* Added Kad info to amulesig
 		* Fix for reading Kad info on the amule-utils: amps,cas,wxCas,xas
@@ -413,7 +425,7 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 	lfroen:
 		* PHP engine implementation for amuleweb
 		* Porting web templates to PHP script
-		
+
 	lupz:
 		* Kad speed improvements.
 		* Kad sources search improvements.
@@ -460,7 +472,7 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 
 	shakraw:
 		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
-	
+
 	stefanero:
 		* Fixed cas,wxCas and xas infos for Kad when only connected to
 		Kad
@@ -736,10 +748,10 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 		* Allow previewing of audio-files, fixing bug #654.
 		* Reworked the ED2KLink class:
 			* Simplified parsing a lot.
- 			* Moved the task of handling sources specified in file-links
+			* Moved the task of handling sources specified in file-links
 			  almost entirely to the download queue.
 			* Improved error checking.
- 			* Implemented handling (not just parsing) of part-hashes and
+			* Implemented handling (not just parsing) of part-hashes and
 			  master-hashes specified via file-links.
 			* Fixed support for multiple sources in a file link, which fixes
 			  bug #506
