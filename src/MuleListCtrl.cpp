@@ -455,8 +455,14 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	
 	m_tts_time = GetTickCount();
 	m_tts_text.Append(tolower(evt.GetKeyCode()));
-	unsigned next = (m_tts_item == -1) ? 0 : m_tts_item;
+
+	// May happen if the subclass does not forward deletion events.
+	if (m_tts_item >= GetItemCount()) {
+		wxASSERT(0);
+		m_tts_item = 0;
+	}
 	
+	unsigned next = (m_tts_item == -1) ? 0 : m_tts_item;
 	for (unsigned i = 0, count = GetItemCount(); i < count; ++i) {
 		wxString text = GetTTSText((next + i) % count).MakeLower();
 
