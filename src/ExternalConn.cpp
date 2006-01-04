@@ -661,8 +661,8 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_SEARCHFILE> queryitems(request);
 
-	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffffffff));
-	std::vector<CSearchFile*>::const_iterator it = list.begin();
+	const CSearchResultList& list = theApp.searchlist->GetSearchResults(0xffffffff);
+	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
 		if ( !queryitems.empty() && !queryitems.count(sf->GetFileHash()) ) {
@@ -677,8 +677,8 @@ CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
-	std::vector<CSearchFile*> list(theApp.searchlist->GetSearchResults(0xffffffff));
-	std::vector<CSearchFile*>::const_iterator it = list.begin();
+	const CSearchResultList& list = theApp.searchlist->GetSearchResults(0xffffffff);
+	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
 		CValueMap &valuemap = tagmap.GetValueMap(sf);

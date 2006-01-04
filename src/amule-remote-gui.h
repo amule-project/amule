@@ -627,9 +627,10 @@ class CSearchListRem : public CRemoteContainer<CSearchFile, CMD4Hash, CEC_Search
 		CSearchListRem(CRemoteConnect *);
 		
 		int m_curr_search;
-		std::map<long, std::vector<CSearchFile *> > m_Results;
+		std::map<long, CSearchResultList> m_Results;
 
 		void RemoveResults(long nSearchID);
+		const CSearchResultList& GetSearchResults(long nSearchID) const;
 		//
 		// Actions
 		//
