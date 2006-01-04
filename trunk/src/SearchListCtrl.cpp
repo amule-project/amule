@@ -43,14 +43,6 @@
 #include <algorithm>
 
 
-// For arrow-pixmaps
-#include "pixmaps/sort_dn.xpm"
-#include "pixmaps/sort_up.xpm"
-#include "pixmaps/sort_dnx2.xpm"
-#include "pixmaps/sort_upx2.xpm"
-
-
-
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
 	EVT_LIST_COL_CLICK( -1,       CSearchListCtrl::OnColumnLClick)
@@ -63,11 +55,6 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 
 	EVT_LIST_ITEM_ACTIVATED( -1,  CSearchListCtrl::OnItemActivated)
 END_EVENT_TABLE()
-
-//! Shared list of arrow-pixmaps + 
-static wxImageListType s_imgList(16, 16, true, 0);
-//! The index of the first rating icon
-static int s_ratingOffset = 0;
 
 
 std::list<CSearchListCtrl*> CSearchListCtrl::s_lists;
@@ -83,7 +70,7 @@ enum SearchListColumns {
 
 
 CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
-	: CMuleListCtrl( parent, winid, pos, size, style, validator, name),
+	: CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name),
 	  m_filterKnown(false),
 	  m_invert(false),
 	  m_filterEnabled(false)
@@ -115,23 +102,6 @@ CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPo
 
 	// Add the list so that it will be synced with the other lists
 	s_lists.push_back( this );
-
-	
-	if (s_imgList.GetImageCount() == 0) {
-		s_imgList.Add(wxBitmap(sort_dn_xpm));
-		s_imgList.Add(wxBitmap(sort_up_xpm));
-		s_imgList.Add(wxBitmap(sort_dnx2_xpm));
-		s_imgList.Add(wxBitmap(sort_upx2_xpm));
-		
-		// Add rating icons
-		s_ratingOffset = s_imgList.Add(wxBitmap(clientImages(Client_InvalidRating_Smiley)));
-		s_imgList.Add(wxBitmap(clientImages(Client_PoorRating_Smiley)));
-		s_imgList.Add(wxBitmap(clientImages(Client_GoodRating_Smiley)));
-		s_imgList.Add(wxBitmap(clientImages(Client_FairRating_Smiley)));
-		s_imgList.Add(wxBitmap(clientImages(Client_ExcellentRating_Smiley)));		
-	}
-
-	SetImageList(&s_imgList, wxIMAGE_LIST_SMALL);
 }
 
 
@@ -152,25 +122,38 @@ CSearchListCtrl::~CSearchListCtrl()
 
 void CSearchListCtrl::AddResult(CSearchFile* toshow)
 {
-	// Ensure that only the right results gets added
-	if ( toshow->GetSearchID() != m_nResultsID )
-		return;
+	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
 
 	// Check if the result should be shown
-	if (!IsFiltered(toshow)) {
-		m_filteredOut.push_back(toshow);
-		
+	if (FindItem(-1, (long)toshow) != -1) {
 		return;
+	} else if (toshow->GetParent() and not toshow->GetParent()->ShowChildren()) {
+		return;
+	} else if (!IsFiltered(toshow)) {
+		if (toshow->HasChildren() and toshow->ShowChildren()) {
+			// Only filter the parent if none of the children are shown.
+			bool foundChild = false;
+			const CSearchResultList& children = toshow->GetChildren();
+			for (size_t i = 0; i < children.size(); ++i) {
+				if (IsFiltered(children.at(i))) {
+					foundChild = true;
+					break;
+				}
+			}
+
+			if (not foundChild) {
+				// No children left, and the parent is filtered.
+				m_filteredOut.push_back(toshow);
+				return;
+			}			
+		} else {		
+			m_filteredOut.push_back(toshow);
+			return;
+		}
 	}
 
-	// Rating
-	int image = -1;
-	if (toshow->HasRating()) {
-		image = s_ratingOffset + toshow->UserRating() - 1;
-	}
-	
 	// Insert the item before the item found by the search
-	uint32 newid = InsertItem( GetInsertPos( (long)toshow ), toshow->GetFileName(), image );
+	uint32 newid = InsertItem(GetInsertPos( (long)toshow ), toshow->GetFileName());
 
 	SetItemData( newid, (long)toshow );
 
@@ -192,10 +175,29 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 }
 
 
+void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
+{
+	ShowChildren(toremove, false);
+	
+	long index = FindItem(-1, (long)toremove);
+	if (index != -1) {
+		DeleteItem(index);
+	} else {
+		ResultList::iterator it = std::find(m_filteredOut.begin(), m_filteredOut.end(), toremove);
+		if ( it != m_filteredOut.end()) {
+			m_filteredOut.erase(it);
+		}
+	}
+}
+
+
 void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 {
 	long index = FindItem(-1, (long)toupdate);
 	if (index != -1) {
+		// Update the filename, which may be changed in case of multiple variants.
+		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName());
+		
 		wxString temp = wxString::Format( wxT("%d (%d)"), toupdate->GetSourceCount(), toupdate->GetCompleteSourceCount());
 		SetItem(index, ID_SEARCH_COL_SOURCES, temp);
 		
@@ -218,7 +220,7 @@ void CSearchListCtrl::UpdateItemColor( long index )
 	item.SetMask( wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT );
 
 	if ( GetItem(item) ) {
-		wxColour newcol = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+		wxColour newcol = SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT);
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
 
@@ -251,7 +253,6 @@ void CSearchListCtrl::UpdateItemColor( long index )
 		wxListItem newitem;
 		newitem.SetId( index );
 		newitem.SetTextColour( wxColour( red, green, blue ) );
-		newitem.SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX));
 		SetItem( newitem );	
 	}
 }
@@ -262,9 +263,9 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
 
-	if ( ResultsID ) {
+	if (ResultsID) {
 		const CSearchResultList& list = theApp.searchlist->GetSearchResults(ResultsID);
-		
+
 		for ( unsigned int i = 0; i < list.size(); i++ ) {
 			AddResult( list[i] );
 		}
@@ -377,20 +378,42 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 	int modifier = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	bool alternate = (sortData & CMuleListCtrl::SORT_ALT);
 
+	// Decide if which should files we should sort by.
+	CSearchFile* parent1 = file1->GetParent();
+	CSearchFile* parent2 = file2->GetParent();
+	if (parent1 and parent2) {
+		if (parent1 != parent2) {
+			return SortProc((long)parent1, (long)parent2, sortData);
+		}
+	} else if (parent1) {
+		if (parent1 == file2) {
+			return modifier * -1;
+		} else {
+			return SortProc((long)parent1, (long)file2, sortData);
+		}
+	} else if (parent2) {
+		if (parent2 == file1) {
+			return modifier * 1;
+		} else {
+			return SortProc((long)file1, (long)parent2, sortData);
+		}
+	}
+
+	int result = 0;
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by filename
 		case ID_SEARCH_COL_NAME:
-			return modifier * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			result = file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			break;
 
 		// Sort file-size
 		case ID_SEARCH_COL_SIZE:
-			return modifier * CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+			result = CmpAny( file1->GetFileSize(), file2->GetFileSize() );
+			break;
 
 		// Sort by sources
 		case ID_SEARCH_COL_SOURCES: {
-			
 			int cmp = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() );
-
 			int cmp2 = CmpAny( file1->GetCompleteSourceCount(), file2->GetCompleteSourceCount() );
 
 			if ( alternate ) {
@@ -404,7 +427,8 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 				cmp = cmp2;
 			}
 
-			return modifier * cmp;
+			result = cmp;
+			break;
 		}
 		
 		// Sort by file-types
@@ -412,22 +436,23 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 			wxString fileName1 = wxT(".") + file1->GetFileName().AfterLast('.').MakeLower();
 			wxString fileName2 = wxT(".") + file2->GetFileName().AfterLast('.').MakeLower();
 			
-			int result = GetFiletypeByName(fileName1).Cmp(GetFiletypeByName(fileName2));
+			result = GetFiletypeByName(fileName1).Cmp(GetFiletypeByName(fileName2));
 			if (result == 0) {
 				// Same file-type, sort by extension
 				result = fileName1.Cmp(fileName2);
 			}
 
-			return modifier * result;
+			break;
 		}
 
 		// Sort by file-hash
 		case ID_SEARCH_COL_FILEID:
-			return modifier * file2->GetFileHash().Encode().Cmp( file1->GetFileHash().Encode() );
-
-		default:
-			return 0;
+			result = file2->GetFileHash().Encode().Cmp( file1->GetFileHash().Encode() );
 	}
+
+	// Compares should never return 'equals' for different instances,
+	// since that can cause positioning of child-items to be off.
+	return modifier * (result ? result : CmpAny(item1, item2));
 }
 
 
@@ -559,9 +584,14 @@ void CSearchListCtrl::OnPopupDownload(wxCommandEvent& event)
 }
 
 
-void CSearchListCtrl::OnItemActivated( wxListEvent& WXUNUSED(event) )
+void CSearchListCtrl::OnItemActivated(wxListEvent& event)
 {
-	DownloadSelected();
+	CSearchFile* file = ((CSearchFile*)GetItemData(event.GetIndex()));
+	if (file->HasChildren()) {
+		ShowChildren(file, not file->ShowChildren());
+	} else {
+		DownloadSelected();
+	}
 }
 
 
@@ -593,12 +623,200 @@ void CSearchListCtrl::DownloadSelected(int category)
 	
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
-		CoreNotify_Search_Add_Download((CSearchFile*)GetItemData(index), category);
+		CSearchFile* file = (CSearchFile*)GetItemData(index);
 		
-		UpdateItemColor(index);
+		CoreNotify_Search_Add_Download(file, category);
+		
+		// Update the colors of all assosiated items, which means parents and/or siblings.
+		if ((file->ShowChildren() and file->HasChildren()) or file->GetParent()) {
+			CSearchFile* parent = (file->GetParent() ? file->GetParent() : file);
+		
+			const CSearchResultList& list = parent->GetChildren();
+			for (size_t j = 0; j < list.size(); ++j) {
+				UpdateItemColor(FindItem(-1, (long)list.at(j)));
+			}
 
+			UpdateItemColor(FindItem(-1, (long)parent));
+		} else {		
+			UpdateItemColor(index);
+		}
+		
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
+}
 
+
+const wxBrush& GetBrush(wxSystemColour index)
+{
+	return *wxTheBrushList->FindOrCreateBrush(SYSCOLOR(index));
+}
+
+
+void CSearchListCtrl::OnDrawItem(
+	int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
+{
+	CSearchFile* file = (CSearchFile*)GetItemData(item);
+
+	// Define text-color and background
+	if (highlighted) {
+		if (GetFocus()) {
+			dc->SetBackground(GetBrush(wxSYS_COLOUR_HIGHLIGHT));
+			dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+		} else {
+			dc->SetBackground(GetBrush(wxSYS_COLOUR_BTNSHADOW));
+			dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+		}
+	} else {
+		dc->SetBackground(GetBrush(wxSYS_COLOUR_LISTBOX));
+		dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT));
+	}
+
+	// Define the border of the drawn area
+	if ( highlighted ) {
+		dc->SetPen(wxPen(BLEND(dc->GetBackground().GetColour(), 65)));
+	} else {
+		dc->SetPen(*wxTRANSPARENT_PEN);
+		dc->SetTextForeground(GetItemTextColour(item));
+	}
+
+	// Clear the background, not done automatically since the drawing is buffered.
+	dc->SetBrush( dc->GetBackground() );
+	dc->DrawRectangle( rectHL.x, rectHL.y, rectHL.width, rectHL.height );
+
+	// Various constant values we use
+	const int iTextOffset = ( rect.GetHeight() - dc->GetCharHeight() ) / 2;
+	const int iOffset = 4;
+	const int treeOffset = 11;
+	const int treeCenter = 6;
+	bool tree_show = false;
+
+	wxRect cur_rec(iOffset, 0, 0, rect.height );
+	for (int i = 0; i < GetColumnCount(); i++) {
+		wxListItem listitem;
+		GetColumn(i, listitem);
+
+		if ( listitem.GetWidth() > 0 ) {
+			cur_rec.width = listitem.GetWidth() - 2*iOffset;
+
+			// Make a copy of the current rectangle so we can apply specific tweaks
+			wxRect target_rec = cur_rec;
+			
+			// will ensure that text is about in the middle ;)
+			target_rec.y += iTextOffset;
+			
+			if (i == 0) {
+				if (file->HasChildren() or file->GetParent()) {
+					tree_show = (listitem.GetWidth() > 0);
+					target_rec.x += treeOffset;
+					target_rec.width -= treeOffset;
+
+					// Children are indented a bit
+					if (file->GetParent()) {
+						target_rec.x += 4;
+						target_rec.width -= 4;
+					}
+				}
+
+				// Check if the rating icon should be drawn
+				if (file->HasRating()) {
+					int image = Client_InvalidRating_Smiley + file->UserRating() - 1;
+					
+					int imgWidth = 8;
+					if (file->UserRating() <= 1 || file->UserRating() == 5 ) {
+						imgWidth = 16;
+					}
+					
+					theApp.amuledlg->imagelist.Draw(image, *dc, target_rec.GetX(),
+							target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
+
+					// Move the text past the icon.
+					target_rec.x += imgWidth + 4;
+					target_rec.width -= imgWidth + 4;
+				}
+			}
+		
+			wxListItem cellitem;
+			cellitem.SetColumn(i);
+			cellitem.SetId(item);
+
+			// Force clipper (clip 2 px more than the rectangle from the right side)
+			wxDCClipper clipper(*dc, target_rec.x, target_rec.y, target_rec.width - 2, target_rec.height);
+			
+			if (GetItem(cellitem)) {
+				dc->DrawText(cellitem.GetText(), target_rec.GetX(), target_rec.GetY());
+			} else {
+				dc->DrawText(wxT("GetItem failed!"), target_rec.GetX(), target_rec.GetY());
+			}
+			
+			// Increment to the next column
+			cur_rec.x += listitem.GetWidth();
+		}
+	}
+
+	// Draw tree last so it draws over selected and focus (looks better)
+	if ( tree_show ) {
+		// Gather some information
+		const bool notLast = (item + 1 < GetItemCount());
+		const bool notFirst = (item != 0);
+		const bool hasNext = notLast and ((CSearchFile*)GetItemData(item + 1))->GetParent();
+		const int middle = ( cur_rec.height + 1 ) / 2;
+
+		// Set up a new pen for drawing the tree
+		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
+
+		if (file->GetParent()) {
+			// Draw the line to the filename
+			dc->DrawLine(treeCenter, middle, treeOffset + 4, middle);
+
+			// Draw the line to the child node
+			if (hasNext) {
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
+			}
+
+			// Draw the line back up to parent node
+			if (notFirst) {
+				dc->DrawLine(treeCenter, middle, treeCenter, -1);
+			}
+		} else if (file->HasChildren()) {
+		   	if (file->ShowChildren()) {
+				// Draw empty circle
+				dc->SetBrush(*wxTRANSPARENT_BRUSH);
+			} else {
+				dc->SetBrush(GetItemTextColour(item));
+			}
+
+			dc->DrawCircle( treeCenter, middle, 3 );
+
+			// Draw the line to the child node if there are any children
+			if (hasNext and file->ShowChildren()) {
+				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
+			}
+		}
+	}
+}
+
+
+void CSearchListCtrl::ShowChildren(CSearchFile* file, bool show)
+{
+	Freeze();
+		
+	file->SetShowChildren(show);
+
+	const CSearchResultList& results = file->GetChildren();
+	for (size_t i = 0; i < results.size(); ++i) {
+		if (show) {
+			AddResult(results[i]);
+		} else {
+			RemoveResult(results[i]);
+		}
+	}
+
+	Thaw();
+}
+
+
+wxString CSearchListCtrl::GetTTSText(unsigned item) const
+{
+	return GetItemText(item);
 }
 
