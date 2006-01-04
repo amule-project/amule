@@ -459,7 +459,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	// May happen if the subclass does not forward deletion events.
 	if (m_tts_item >= GetItemCount()) {
 		wxASSERT(0);
-		m_tts_item = 0;
+		m_tts_item = -1;
 	}
 	
 	unsigned next = (m_tts_item == -1) ? 0 : m_tts_item;
