@@ -94,7 +94,6 @@ public:
 	uint32	GetCompleteSourceCount() const;
 	uint32  GetFileSize() const;
 #endif
-	long	GetSearchID() const				{ return m_nSearchID; }
 	uint32	GetClientID() const				{ return m_nClientID; }
 	void	SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
 	uint16	GetClientPort() const			{ return m_nClientPort; }
@@ -107,6 +106,19 @@ public:
 	// i.e. 50 sources and none complete.
 	int IsComplete() const;
 	int IsComplete(uint32 uSources, uint32 uCompleteSources) const;
+	
+	/** Returns the ID of the search, used to select the right list when displaying. */
+	inline long			GetSearchID() const;
+	/** Returns the parent of this file. */
+	inline CSearchFile*	GetParent() const;
+	/** Returns the list of children belonging to this file. */
+	inline const CSearchResultList&	GetChildren() const;
+	/** Returns true if this item has children. */
+	inline bool			HasChildren() const;
+	/** Returns true if children should be displayed. */
+	inline bool			ShowChildren() const;
+	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
+	inline void			SetShowChildren(bool show);
 	
 private:
 	long		m_nSearchID;
@@ -197,5 +209,48 @@ private:
 
 	bool m_SearchInProgress;
 };
+
+
+
+
+////////////////////////////////////////////////////////////
+// Implementations
+
+
+long CSearchFile::GetSearchID() const
+{
+	return m_nSearchID;
+}
+
+
+CSearchFile* CSearchFile::GetParent() const
+{
+	return NULL;
+}
+
+
+bool CSearchFile::ShowChildren() const
+{
+	return false;
+}
+
+
+void CSearchFile::SetShowChildren(bool)
+{
+}
+
+
+const CSearchResultList& CSearchFile::GetChildren() const
+{
+	static CSearchResultList tmpList;
+	
+	return tmpList;
+}
+
+
+bool CSearchFile::HasChildren() const
+{
+	return false;
+}
 
 #endif // SEARCHLIST_H

@@ -86,6 +86,12 @@ public:
 	void	AddResult(CSearchFile* toshow);
 
 	/**
+	 * Removes the specified file from the list.
+	 */
+	void	RemoveResult(CSearchFile* toshow);
+
+	
+	/**
 	 * Updates the specified source.
 	 *
 	 * @param The search result to be updated.
@@ -187,11 +193,12 @@ protected:
 	 */
 	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 
-	/**
-	 * Override default AltSortAllowed method . See CMuleListCtrl.cpp.
-	 */
+	/** @see CMuleListCtrl::AltSortAllowed */
 	virtual bool AltSortAllowed(unsigned column) const;
 
+	/** @see CMuleListCtrl::GetTTSText */
+	virtual wxString GetTTSText(unsigned item) const;
+	
 
 	/**
 	 * Helper function which syncs two lists.
@@ -227,6 +234,15 @@ protected:
 	//! The ID of the search-results which the list is displaying or zero if unset. 
 	long	m_nResultsID;
 
+
+	//! Custom drawing, needed to display children of search-results.
+	void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
+
+
+	/**
+	 * Removes or adds child-entries for the given file.
+	 */
+	void ShowChildren(CSearchFile* file, bool show);
 
 	/**
 	 * Event handler for right mouse clicks.
