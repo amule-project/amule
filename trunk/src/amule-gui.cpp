@@ -22,73 +22,39 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <unistd.h>			// Needed for close(2) and sleep(3)
-#include <wx/defs.h>
-#include <wx/gauge.h>
-#include <wx/textctrl.h>
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"			//   VERSION
+	#include "config.h"			// Needed for VERSION
 #endif
 
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
-#include <wx/log.h>
-#include <wx/timer.h>
-#include <wx/config.h>
+#include <wx/defs.h>
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
-#include <wx/socket.h>			// Needed for wxSocket
-#include <wx/splash.h>			// Needed for wxSplashScreen
-#include <wx/utils.h>
-#include <wx/ipc.h>
 #include <wx/intl.h>			// Needed for i18n
 #include <wx/mimetype.h>		// For launching default browser
-#include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 #include <wx/msgdlg.h>			// Needed for wxMessageBox
-#include <wx/url.h>
 #include <wx/dataobj.h> 		// Needed on wxMotif
 
-#include "amule.h"			// Interface declarations.
-#include "GetTickCount.h"		// Needed for GetTickCount
-#include "Server.h"			// Needed for GetListName
-#include "OtherFunctions.h"		// Needed for GetTickCount
+#include "amule.h"				// Interface declarations.
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "ServerWnd.h"			// Needed for CServerWnd
-#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
-#include "UploadQueue.h"		// Needed for CUploadQueue
-#include "DownloadQueue.h"		// Needed for CDownloadQueue
-#include "ClientCredits.h"		// Needed for CClientCreditsList
-#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
-#include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "Timer.h"				// Needed for CTimer
 #include "ServerList.h"			// Needed for CServerList
-#include "KnownFileList.h"		// Needed for CKnownFileList
-#include "SearchList.h"			// Needed for CSearchList
-#include "ClientList.h"			// Needed for CClientList
 #include "Preferences.h"		// Needed for CPreferences
-#include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerSocket.h"		// Needed for CServerSocket
-#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
-#include "AddFileThread.h"		// Needed for CAddFileThread
 #include "updownclient.h"		// Needed for CUpDownClient
-#include "Packet.h"
-#include "AICHSyncThread.h"
 
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "SearchDlg.h"			// Needed for CSearchDlg
 #include "ServerListCtrl.h"		// Needed for CServerListCtrl
-#include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
-#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
+#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
-#include <common/Format.h>
 #include "PartFileConvert.h"
 
 #ifdef __WXMAC__
