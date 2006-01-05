@@ -27,21 +27,17 @@
 #define SEARCHLIST_H
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
-#include "KnownFile.h"		// Needed for CAbstractFile
 #include "Tag.h"		// Needed for TagPtrList
+#include "SearchFile.h"	// Needed for CSearchFile
 
 #include <wx/thread.h>
 
 #include <map>
-#include <vector>
-#include <list>
 
 class CMemFile;
 class CMD4Hash;
 class CServer;
-class CSearchList;
 class CPacket;
-class CSearchFile;
 	
 namespace Kademlia {
 	class CUInt128;
@@ -52,6 +48,7 @@ enum SearchType {
 	GlobalSearch,
 	KadSearch
 };
+
 
 class CGlobalSearchThread : public wxThread 
 {	
@@ -68,69 +65,6 @@ private:
 	virtual void* Entry();
 };
 
-
-typedef std::vector<CSearchFile*> CSearchResultList;
-
-class CSearchFile : public CAbstractFile
-{
-	friend class CPartFile;
-public:
-	CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 nServerIP=0, uint16 nServerPort=0, const wxString& pszDirectory = wxEmptyString, bool nKademlia = false);
-	
-	virtual ~CSearchFile();
-
-#ifdef CLIENT_GUI
-	friend class CSearchListRem;
-	CSearchFile(class CEC_SearchFile_Tag *);
-	
-	uint32	GetSourceCount() { return m_SourceCount; }
-	uint32	GetCompleteSourceCount() { return m_CompleteSourceCount; }
-	uint32  GetFileSize() { return m_nFileSize; }
-#else
-
-	void	AddSources(uint32 count, uint32 count_complete);
-	
-	uint32	GetSourceCount() const;
-	uint32	GetCompleteSourceCount() const;
-	uint32  GetFileSize() const;
-#endif
-	uint32	GetClientID() const				{ return m_nClientID; }
-	void	SetClientID(uint32 nClientID)	{ m_nClientID = nClientID; }
-	uint16	GetClientPort() const			{ return m_nClientPort; }
-	void	SetClientPort(uint16 nPort)		{ m_nClientPort = nPort; }
-	
-	// This is used for some Kad checks on the child search results also, but 
-	// as we don't implement any child search results, it's not used there :)
-	bool	IsKademlia() const { return m_nKademlia; }
-	// This can be used to raise a warning on downloading a file with 
-	// i.e. 50 sources and none complete.
-	int IsComplete() const;
-	int IsComplete(uint32 uSources, uint32 uCompleteSources) const;
-	
-	/** Returns the ID of the search, used to select the right list when displaying. */
-	inline long			GetSearchID() const;
-	/** Returns the parent of this file. */
-	inline CSearchFile*	GetParent() const;
-	/** Returns the list of children belonging to this file. */
-	inline const CSearchResultList&	GetChildren() const;
-	/** Returns true if this item has children. */
-	inline bool			HasChildren() const;
-	/** Returns true if children should be displayed. */
-	inline bool			ShowChildren() const;
-	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
-	inline void			SetShowChildren(bool show);
-	
-private:
-	long		m_nSearchID;
-	
-#ifdef CLIENT_GUI
-	uint32 m_SourceCount, m_CompleteSourceCount;
-#endif
-	uint32		m_nClientID;
-	uint16		m_nClientPort;
-	wxString	m_Directory;
-	bool m_nKademlia;
-};
 
 
 class CSearchList
@@ -209,48 +143,5 @@ private:
 
 	bool m_SearchInProgress;
 };
-
-
-
-
-////////////////////////////////////////////////////////////
-// Implementations
-
-
-long CSearchFile::GetSearchID() const
-{
-	return m_nSearchID;
-}
-
-
-CSearchFile* CSearchFile::GetParent() const
-{
-	return NULL;
-}
-
-
-bool CSearchFile::ShowChildren() const
-{
-	return false;
-}
-
-
-void CSearchFile::SetShowChildren(bool)
-{
-}
-
-
-const CSearchResultList& CSearchFile::GetChildren() const
-{
-	static CSearchResultList tmpList;
-	
-	return tmpList;
-}
-
-
-bool CSearchFile::HasChildren() const
-{
-	return false;
-}
 
 #endif // SEARCHLIST_H

@@ -41,6 +41,7 @@
 #include "Preferences.h"
 #include "Packet.h"			// Neeed for CPacket
 #include "kademlia/utils/UInt128.h" // Needed for CUInt128
+#include "SearchFile.h"
 
 #include <algorithm>
 
@@ -333,108 +334,6 @@ void *CGlobalSearchThread::Entry()
 	}
 		
 	return NULL;
-}
-
-CSearchFile::CSearchFile(const CMemFile& in_data, bool bOptUTF8, long nSearchID, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort), const wxString& pszDirectory, bool nKademlia)
-{
-	m_nSearchID = nSearchID;
-	m_nKademlia = nKademlia;
-	
-	m_abyFileHash = in_data.ReadHash();
-	m_nClientID = in_data.ReadUInt32();
-	m_nClientPort = in_data.ReadUInt16();
-	
-	if (( m_nClientID || m_nClientPort ) && ( !IsGoodIP(m_nClientID, thePrefs::FilterLanIPs()) || !m_nClientPort ) ) {
-		m_nClientID = 0;
-		m_nClientPort = 0;
-	}
-	
-	uint32 tagcount = in_data.ReadUInt32();
-
-	for (unsigned int i = 0; i != tagcount; ++i){
-		AddTagUnique(new CTag(in_data, bOptUTF8));
-	}
-
-	// here we have two choices
-	//	- if the server/client sent us a filetype, we could use it (though it could be wrong)
-	//	- we always trust our filetype list and determine the filetype by the extension of the file
-	wxString tempName = GetStrTagValue(FT_FILENAME);
-	
-	if (tempName.IsEmpty()) {
-		throw CInvalidPacket(wxT("No filename in search result"));
-	}
-		
-	SetFileName(tempName);
-	SetFileSize(GetIntTagValue(FT_FILESIZE));
-
-	m_iUserRating = (GetIntTagValue(FT_FILERATING) & 0xF) / 3;
-	m_Directory = pszDirectory;
-}
-
-
-CSearchFile::~CSearchFile()
-{	
-}
-
-
-void CSearchFile::AddSources(uint32 count, uint32 count_complete)
-{
-	for ( unsigned int i = 0; i < taglist.size(); ++i ) {
-		CTag* tag = taglist[i];
-	
-		switch ( tag->GetNameID() ) {
-			case FT_SOURCES:
-				if (m_nKademlia) {
-					if (count > tag->GetInt()) {
-						tag->SetInt(count);
-					}
-				} else {
-					tag->SetInt(tag->GetInt() + count);
-				}
-				break;
-				
-			case FT_COMPLETE_SOURCES:
-				if (m_nKademlia) {
-					if (count > tag->GetInt()) {
-						tag->SetInt(count_complete);
-					}
-				} else { 
-					tag->SetInt(tag->GetInt() + count_complete);
-				}
-				break;
-		}
-	}
-}
-
-
-uint32 CSearchFile::GetSourceCount() const
-{
-	return GetIntTagValue(FT_SOURCES);
-}
-
-
-uint32 CSearchFile::GetCompleteSourceCount() const
-{
-	return GetIntTagValue(FT_COMPLETE_SOURCES);
-}
-
-uint32 CSearchFile::GetFileSize() const 
-{
-	return GetIntTagValue(FT_FILESIZE);
-}
-
-int CSearchFile::IsComplete() const {
-	return IsComplete(GetSourceCount(), GetIntTagValue(FT_COMPLETE_SOURCES));
-}
-
-int CSearchFile::IsComplete(uint32 uSources, uint32 uCompleteSources) const {
-	if (IsKademlia()) {
-		return -1;		// unknown
-	} else if (uSources > 0 && uCompleteSources > 0) {
-		return 1;		// complete
-	} else {
-		return 0;		// not complete
-	}
 }
 
 //
