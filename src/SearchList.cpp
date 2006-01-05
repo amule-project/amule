@@ -571,9 +571,14 @@ void CSearchList::ProcessUDPSearchanswer(const CMemFile& packet, bool bOptUTF8, 
 
 bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 {
-	uint32 fileSize = toadd->GetIntTagValue(FT_FILESIZE);
+	const uint32 fileSize = toadd->GetFileSize();
 	// If filesize is 0, or file is too large for the network, drop it 
 	if ((fileSize == 0) or (fileSize > MAX_FILE_SIZE)) {
+		AddDebugLogLineM(false, logSearch,
+				CFormat(wxT("Dropped result with filesize %u: %s"))
+					% fileSize
+					% toadd->GetFileName());
+		
 		delete toadd;
 		return false;
 	}
