@@ -139,6 +139,7 @@ core_sources = \
 	KnownFileList.cpp \
 	ListenSocket.cpp \
 	MuleUDPSocket.cpp \
+	SearchFile.cpp \
 	SearchList.cpp \
 	ServerConnect.cpp \
 	ServerList.cpp \
@@ -360,6 +361,7 @@ noinst_HEADERS = AddFileThread.h \
 		SafeFile.h \
 		SearchDlg.h \
 		SearchListCtrl.h \
+		SearchFile.h \
 		SearchList.h \
 		Server.h \
 		ServerConnect.h \

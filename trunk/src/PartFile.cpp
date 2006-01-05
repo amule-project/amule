@@ -156,96 +156,90 @@ void CPartFile::Init()
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
-	m_abyFileHash = searchresult->GetFileHash();
+	m_abyFileHash	= searchresult->GetFileHash();
+	m_strFileName	= searchresult->GetFileName();
+	m_nFileSize		= searchresult->GetFileSize();
+	
 	for (unsigned int i = 0; i < searchresult->taglist.size();++i){
-		const CTag pTag(*searchresult->taglist[i]);
-		switch (pTag.GetNameID()){
-			case FT_FILENAME: {
-				SetFileName(pTag.GetStr());
-				break;
-			}
-			case FT_FILESIZE: {
-				SetFileSize(pTag.GetInt());
-				break;
-			}
-			default: {
-				bool bTagAdded = false;
-				if (pTag.GetNameID() == 0 && pTag.GetName() != NULL && (pTag.IsStr() || pTag.IsInt())) {
-					static const struct {
-						char*	pszName;
-						uint8	nType;
-					} _aMetaTags[] = 
-						{
-							{ FT_ED2K_MEDIA_ARTIST,  2 },
-							{ FT_ED2K_MEDIA_ALBUM,   2 },
-							{ FT_ED2K_MEDIA_TITLE,   2 },
-							{ FT_ED2K_MEDIA_LENGTH,  2 },
-							{ FT_ED2K_MEDIA_BITRATE, 3 },
-							{ FT_ED2K_MEDIA_CODEC,   2 }
-						};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
-						if (	pTag.GetType() == _aMetaTags[t].nType &&
-							!strcasecmp(pTag.GetName(), _aMetaTags[t].pszName)) {
-							// skip string tags with empty string values
-							if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
-								break;
-							}
+		const CTag& pTag = *searchresult->taglist[i];
+		
+		bool bTagAdded = false;
+		if (pTag.GetNameID() == 0 && pTag.GetName() != NULL && (pTag.IsStr() || pTag.IsInt())) {
+			static const struct {
+				char*	pszName;
+				uint8	nType;
+			} _aMetaTags[] = 
+				{
+					{ FT_ED2K_MEDIA_ARTIST,  2 },
+					{ FT_ED2K_MEDIA_ALBUM,   2 },
+					{ FT_ED2K_MEDIA_TITLE,   2 },
+					{ FT_ED2K_MEDIA_LENGTH,  2 },
+					{ FT_ED2K_MEDIA_BITRATE, 3 },
+					{ FT_ED2K_MEDIA_CODEC,   2 }
+				};
+			
+			for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+				if (	pTag.GetType() == _aMetaTags[t].nType &&
+					!strcasecmp(pTag.GetName(), _aMetaTags[t].pszName)) {
+					// skip string tags with empty string values
+					if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
+						break;
+					}
 
-							// skip "length" tags with "0: 0" values
-							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH)) {
-								if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
-									pTag.GetStr().IsSameAs(wxT("0:0"))) {
-									break;
-								}
-							}
-
-							// skip "bitrate" tags with '0' values
-							if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
-								break;
-							}
-
-							AddDebugLogLineM( false, logPartFile,
-								wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
-								pTag.GetFullInfo() );
-							taglist.Add(new CTag(pTag));
-							bTagAdded = true;
+					// skip "length" tags with "0: 0" values
+					if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH)) {
+						if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
+							pTag.GetStr().IsSameAs(wxT("0:0"))) {
 							break;
 						}
 					}
-				} else if (pTag.GetNameID() != 0 && pTag.GetName() == NULL && (pTag.IsStr() || pTag.IsInt())) {
-					static const struct {
-						uint8	nID;
-						uint8	nType;
-					} _aMetaTags[] = 
-						{
-							{ FT_FILETYPE,		2 },
-							{ FT_FILEFORMAT,	2 }
-						};
-					for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
-						if (pTag.GetType() == _aMetaTags[t].nType && pTag.GetNameID() == _aMetaTags[t].nID) {
-							// skip string tags with empty string values
-							if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
-								break;
-							}
 
-							AddDebugLogLineM( false, logPartFile,
-								wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
-								pTag.GetFullInfo() );
-							taglist.Add(new CTag(pTag));
-							bTagAdded = true;
-							break;
-						}
+					// skip "bitrate" tags with '0' values
+					if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
+						break;
 					}
-				}
 
-				if (!bTagAdded) {
 					AddDebugLogLineM( false, logPartFile,
-						wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") +
+						wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
 						pTag.GetFullInfo() );
+					taglist.Add(new CTag(pTag));
+					bTagAdded = true;
+					break;
+				}
+			}
+		} else if (pTag.GetNameID() != 0 && pTag.GetName() == NULL && (pTag.IsStr() || pTag.IsInt())) {
+			static const struct {
+				uint8	nID;
+				uint8	nType;
+			} _aMetaTags[] = 
+				{
+					{ FT_FILETYPE,		2 },
+					{ FT_FILEFORMAT,	2 }
+				};
+			for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+				if (pTag.GetType() == _aMetaTags[t].nType && pTag.GetNameID() == _aMetaTags[t].nID) {
+					// skip string tags with empty string values
+					if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
+						break;
+					}
+
+					AddDebugLogLineM( false, logPartFile,
+						wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
+						pTag.GetFullInfo() );
+					taglist.Add(new CTag(pTag));
+					bTagAdded = true;
+					break;
 				}
 			}
 		}
+
+		if (!bTagAdded) {
+			AddDebugLogLineM( false, logPartFile,
+				wxT("CPartFile::CPartFile(CSearchFile*): ignored tag ") +
+				pTag.GetFullInfo() );
+		}
 	}
+
 	CreatePartFile();
 }
 

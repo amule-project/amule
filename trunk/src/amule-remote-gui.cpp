@@ -1386,7 +1386,7 @@ CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 	m_abyFileHash = tag->ID();
 	m_nFileSize = tag->SizeFull();
 	
-	m_nSearchID = theApp.searchlist->m_curr_search;
+	m_searchID = theApp.searchlist->m_curr_search;
 
 }
 
@@ -1417,8 +1417,8 @@ CMD4Hash CSearchListRem::GetItemID(CSearchFile *file)
 
 void CSearchListRem::ProcessItemUpdate(CEC_SearchFile_Tag *tag, CSearchFile *file)
 {
-	file->m_SourceCount = tag->SourceCount();
-	file->m_CompleteSourceCount = tag->CompleteSourceCount();
+	file->m_sourceCount = tag->SourceCount();
+	file->m_completeSourceCount = tag->CompleteSourceCount();
 }
 
 bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
