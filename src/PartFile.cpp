@@ -3763,7 +3763,7 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 {
 	SetFileName(tag->FileName());
-	SetFileHash(tag->ID());
+	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	m_showSources = false;
 	m_partmetfilename = tag->PartMetName();
