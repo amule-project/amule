@@ -316,7 +316,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	m_pAICHHashSet = new CAICHHashSet(this);
 	
 	SetFileName(tag->FileName());
-	SetFileHash(tag->ID());
+	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	m_AvailPartFrequency.SetCount(m_iPartCount);
 	m_iUpPriority = tag->Prio();
