@@ -108,9 +108,6 @@
 	#include <sys/statvfs.h>
 #endif
 
-#ifdef  HAVE_SYS_WAIT_H
-	#include <sys/wait.h>
-#endif
 
 #ifdef __GLIBC__
 # define RLIMIT_RESOURCE __rlimit_resource
@@ -692,21 +689,7 @@ bool CamuleApp::OnInit()
 #ifndef __WXMSW__
 	// Run webserver?
 	if (thePrefs::GetWSIsEnabled()) {
-		wxString aMuleConfigFile(ConfigDir + wxT("amule.conf"));
-#ifdef AMULE_DAEMON
-		int pid = fork();
-		if ( pid == -1 ) {
-			printf("ERROR: fork failed with error '%s'\n", strerror(errno));
-		} else {
-			if ( pid == 0 ) {
-				execlp("amuleweb", "amuleweb", (const char *)unicode2char(wxT("--amule-config-file=") + aMuleConfigFile), NULL);
-				printf("execlp failed with error '%s'\n", strerror(errno));
-				exit(0);
-			} else {
-				webserver_pid = pid;
-			}
-		}
-#else
+		wxString aMuleConfigFile = ConfigDir + wxT("amule.conf");
 		wxString amulewebPath = wxT("amuleweb");
 
 #ifdef __WXMAC__
@@ -727,22 +710,6 @@ bool CamuleApp::OnInit()
 #endif
 
 		webserver_pid = wxExecute(wxT("'") + amulewebPath + wxT("' '--amule-config-file=") + aMuleConfigFile + wxT("'"));
-#endif
-		// give amuleweb chance to start or forked child to exit
-		// 1 second if enough time to fail on "path not found"
-		wxSleep(1);
-		int status, result;
-//#ifdef HAVE_SYS_WAIT_H
-		if ( (result = waitpid(webserver_pid, &status, WNOHANG)) == -1 ) {
-			printf("ERROR: waitpid call failed\n");
-		} else {
-			if ( status && WIFEXITED(status) ) {
-				webserver_pid = 0;
-			}
-		}
-//#else
-//#warning wtf to do here?
-//#endif
 		if (webserver_pid) {
 			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
 		} else {

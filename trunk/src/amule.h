@@ -71,6 +71,7 @@ class wxTimerEvent;
 class wxSingleInstanceChecker;
 class CMuleInternalEvent;
 class CTimerEvent;
+class wxExecuteData;
 
 
 #define theApp wxGetApp()
@@ -371,6 +372,10 @@ class CDaemonAppTraits : public wxConsoleAppTraits {
 		virtual void RemoveFromPendingDelete(wxObject *object);
 
 		void DeletePending();
+
+#ifndef __WXMSW__
+		virtual int WaitForChild(wxExecuteData& execData);
+#endif
 
 #ifdef __WXMAC__
 	    virtual wxStandardPathsBase& GetStandardPaths();
