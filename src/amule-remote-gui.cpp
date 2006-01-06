@@ -1381,6 +1381,13 @@ void CSearchListRem::HandlePacket(const CECPacket *packet)
 }
 
 CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
+	: m_parent(NULL),
+	  m_showChildren(false),
+	  m_sourceCount(0),
+	  m_completeSourceCount(0),
+	  m_kademlia(false),
+	  m_clientID(0),
+	  m_clientPort(0)
 {
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
