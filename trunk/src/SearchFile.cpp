@@ -28,14 +28,18 @@
 #include "MemFile.h"			// Needed for CMemFile
 #include "Preferences.h"		// Needed for thePrefs
 #include "Tag.h"				// Needed for CTag
+#include "GuiEvents.h"
+#include "amule.h"				// Needed for theApp
 
 #include <algorithm>			// Needed for std::max
 
 
 
 
-CSearchFile::CSearchFile(const CMemFile& data, bool bOptUTF8, long searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
-	: m_searchID(searchID),
+CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
+	: m_parent(NULL),
+	  m_showChildren(false),
+	  m_searchID(searchID),
 	  m_sourceCount(0),
 	  m_completeSourceCount(0),
 	  m_kademlia(kademlia),
@@ -54,7 +58,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool bOptUTF8, long searchID, uin
 	
 	uint32 tagcount = data.ReadUInt32();
 	for (unsigned int i = 0; i < tagcount; ++i) {
-		std::auto_ptr<CTag> tag(new CTag(data, bOptUTF8));
+		std::auto_ptr<CTag> tag(new CTag(data, optUTF8));
 
 		switch (tag->GetNameID()) {
 			case FT_FILENAME:			SetFileName(tag->GetStr());	break;
@@ -76,6 +80,8 @@ CSearchFile::CSearchFile(const CMemFile& data, bool bOptUTF8, long searchID, uin
 
 CSearchFile::CSearchFile(const CSearchFile& other)
 	: CAbstractFile(other),
+	  m_parent(other.m_parent),
+	  m_showChildren(other.m_showChildren),
 	  m_searchID(other.m_searchID),
 	  m_sourceCount(other.m_sourceCount),
 	  m_completeSourceCount(other.m_completeSourceCount),
@@ -84,11 +90,17 @@ CSearchFile::CSearchFile(const CSearchFile& other)
 	  m_clientPort(other.m_clientPort),
 	  m_directory(other.m_directory)
 {
+	for (size_t i = 0; i < other.m_children.size(); ++i) {
+		m_children.push_back(new CSearchFile(*other.m_children.at(i)));
+	}
 }
 
 
 CSearchFile::~CSearchFile()
 {	
+	for (size_t i = 0; i < m_children.size(); ++i) {
+		delete m_children.at(i);
+	}
 }
 
 
@@ -103,3 +115,49 @@ void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 	}
 }
 
+
+void CSearchFile::AddChild(CSearchFile* file)
+{
+	wxCHECK_RET(file, wxT("Not a valid child!"));
+	wxCHECK_RET(not file->GetParent(), wxT("Search-result can only be child of one other result"));
+	wxCHECK_RET(not file->HasChildren(), wxT("Result already has children, cannot become child."));
+	wxCHECK_RET(not GetParent(), wxT("A child cannot have children of its own"));
+	wxCHECK_RET(GetFileHash() == file->GetFileHash(), wxT("Mismatching child/parent hashes"));
+	wxCHECK_RET(GetFileSize() == file->GetFileSize(), wxT("Mismatching child/parent sizes"));
+	
+	file->m_parent = this;
+
+	for (size_t i = 0; i < m_children.size(); ++i) {
+		CSearchFile* other = m_children.at(i);
+		
+		if (other->GetFileName() == file->GetFileName()) {
+			other->AddSources(file->GetSourceCount(), file->GetCompleteSourceCount());
+			UpdateFileName();
+			Notify_Search_Update_Sources(other);
+			delete file;
+			return;
+		}
+	}
+
+	// New unique child.	
+	m_children.push_back(file);
+	UpdateFileName();
+	
+	if (ShowChildren()) {
+		Notify_Search_Add_Result(file);
+	}
+}
+
+
+void CSearchFile::UpdateFileName()
+{
+	size_t max = 0, index = 0;
+	for (size_t i = 0; i < m_children.size(); ++i) {
+		if (m_children.at(index)->GetSourceCount() > max) {
+			max = m_children.at(index)->GetSourceCount();
+			index = i;
+		}
+	}
+
+	SetFileName(m_children.at(index)->GetFileName());
+}
