@@ -101,10 +101,10 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 /* Abstract File (base class)*/
 
 CAbstractFile::CAbstractFile() :
-	m_nFileSize(0),
 	m_iRating(0),
 	m_hasComment(false),
-	m_iUserRating(0)
+	m_iUserRating(0),
+	m_nFileSize(0)
 {
 }
 
@@ -315,10 +315,9 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 {
 	m_pAICHHashSet = new CAICHHashSet(this);
 	
-	m_strFileName = tag->FileName();
-	m_abyFileHash = tag->ID();
-	m_nFileSize = tag->SizeFull();
-	m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	SetFileName(tag->FileName());
+	SetFileHash(tag->ID());
+	SetFileSize(tag->SizeFull());
 	m_AvailPartFrequency.SetCount(m_iPartCount);
 	m_iUpPriority = tag->Prio();
 	if ( m_iUpPriority >= 10 ) {
@@ -382,7 +381,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	}
 
 	// create aichhashset
-	uint32 togo = m_nFileSize;
+	uint32 togo = GetFileSize();
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
@@ -746,7 +745,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	CTag nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);
 	
-	CTag sizetag(FT_FILESIZE, m_nFileSize);
+	CTag sizetag(FT_FILESIZE, GetFileSize());
 	sizetag.WriteTagToFile(file);
 	
 	// statistic

@@ -156,15 +156,20 @@ protected:
 	//! CAbstractFile is not assignable.
 	CAbstractFile& operator=(const CAbstractFile);
 	
-	wxString	m_strFileName;
 	CMD4Hash	m_abyFileHash;
-	uint32		m_nFileSize;
 	wxString	m_strComment;
 	int8		m_iRating;
 	bool		m_hasComment;
 	int8		m_iUserRating;
 	ArrayOfCTag taglist;
 	CKadEntryPtrList m_kadNotes;
+
+private:
+	// Note: These variables have virtual accessor functions,
+	//       and thus should only be accesed via those.
+	
+	uint32		m_nFileSize;
+	wxString	m_strFileName;
 };
 
 
