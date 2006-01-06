@@ -27,7 +27,7 @@
 #define SEARCHFILE_H
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
-#include "KnownFile.h"		// Needed for CAbstractFile
+#include "KnownFile.h"	// Needed for CAbstractFile
 
 #include <vector>
 
@@ -39,26 +39,60 @@ class CSearchFile;
 typedef std::vector<CSearchFile*> CSearchResultList;
 
 
+/**
+ * Represents a search-result returned from a server or client.
+ * 
+ * A file may have either a parent or any number of children.
+ * When a child is added to a result, the parent becomes a generic
+ * representation of all its children, which will include a copy
+ * of the original result. The parent object will contain the sum
+ * of sources (total/complete) and will have the most common 
+ * filename. Children are owned by their parents, and can be
+ * displayed on CSearchListCtrl.
+ * 
+ * Basic file parameters (hash, name, size, rating) can be read 
+ * via the CAbstractFile functions. Tags pertaining to meta-data
+ * are stored in the taglist inherited from CAbstractFile.
+ *
+ * TODO: Server IP/Port are currently not used.
+ * TODO: Client ID/Port are currently not used.
+ * TODO: Directories are currently not used.
+ */
 class CSearchFile : public CAbstractFile
-{
-	friend class CPartFile;
+{	
 public:
+	/** Constructor used to create results on the remote GUI. */
+	CSearchFile(class CEC_SearchFile_Tag* tag);
+	/** Copy constructor, also copies children. */
 	CSearchFile(const CSearchFile& other);
-	CSearchFile(const CMemFile& data, bool bOptUTF8, long nSearchID, uint32 nServerIP = 0, uint16 nServerPort = 0, const wxString& pszDirectory = wxEmptyString, bool nKademlia = false);
 	
+	/**
+	 * Normal constructor, reads a result from a packet.
+	 *
+	 * @param data Source of results-packet.
+	 * @param optUTF8 Specifies if text-strings are to be read as UTF8.
+	 * @param searchID searchID The 
+	 * @param serverIP The IP of the server that sent this result.
+	 * @param serverPort The port of the server that sent this result.
+	 * @param directory If from a clients shared files, the directory this file is in.
+	 * @param kademlia Specifies if this was from a kad-search.
+	 */
+	CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint32 serverIP = 0, uint16 serverPort = 0, const wxString& directory = wxEmptyString, bool kademlia = false);
+
+	
+	/** Frees all children owned by this file. */
 	virtual ~CSearchFile();
 
-#ifdef CLIENT_GUI
-	friend class CSearchListRem;
-	CSearchFile(class CEC_SearchFile_Tag* tag);
-#else
-	void	AddSources(uint32 count, uint32 count_complete);
-#endif
 	
-	uint32	GetClientID() const				{ return m_clientID; }
-	void	SetClientID(uint32 clientID)	{ m_clientID = clientID; }
-	uint16	GetClientPort() const			{ return m_clientPort; }
-	void	SetClientPort(uint16 port)		{ m_clientPort = port; }
+	/**
+	 * Adds the given sources to the file.
+	 *
+	 * @param count Total source count.
+	 * @param count_complete Number of sources that have the complete file.
+	 *
+	 * Note that for Kademlia results, only the largest value is used.
+	 */
+	void	AddSources(uint32 count, uint32 count_complete);
 
 	/** Returns the total number of sources. */
 	inline uint32		GetSourceCount() const;
@@ -68,6 +102,8 @@ public:
 	inline long			GetSearchID() const;
 	/** Returns true if the result is from a Kademlia search. */
 	inline bool			IsKademlia() const;
+	
+		
 	/** Returns the parent of this file. */
 	inline CSearchFile*	GetParent() const;
 	/** Returns the list of children belonging to this file. */
@@ -79,8 +115,40 @@ public:
 	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
 	inline void			SetShowChildren(bool show);
 	
-private:
+	/**
+	 * Adds the given file as a child of this file.
+	 *
+	 * Note that a file can either be a parent _or_
+	 * a child, but not both. Also note that it is 
+	 * only legal to add children whoose filesize and
+	 * filehash matches the parent's. AddChild takes
+	 * ownership of the file.
+	 */
+	void				AddChild(CSearchFile* file);
 
+	
+	//@{
+	//! TODO: Currently not used.
+	inline uint32		GetClientID() const;
+	inline void			SetClientID(uint32 clientID);
+	inline uint16		GetClientPort() const;
+	inline void			SetClientPort(uint16 port);
+	//@}
+	
+private:
+	//! CSearchFile is not assignable.
+	CSearchFile& operator=(const CSearchFile& other);
+
+	//! Sets the filename to the most common one from the file's children.
+	void	UpdateFileName();
+
+	
+	//! The parent of this result.
+	CSearchFile*		m_parent;
+	//! Any children this result may have.
+	CSearchResultList	m_children;
+	//! If true, children will be shown on the GUI.
+	bool				m_showChildren;
 	//! The unique ID of this search owning this result.
 	long				m_searchID;
 	//! The total number of sources for this file.
@@ -88,13 +156,20 @@ private:
 	//! The number of sources that have the complete file.
 	uint32				m_completeSourceCount;
 	//! Specifies if the result is from a kademlia search.
-	bool				m_kademlia;	
+	bool				m_kademlia;
 
-	uint32		m_clientID;
-	uint16		m_clientPort;
-	wxString	m_directory;
+
+	//@{
+	//! TODO: Currently not used.
+	uint32				m_clientID;
+	uint16				m_clientPort;
+	wxString			m_directory;
+	//@}
+	
+
+	friend class CPartFile;
+	friend class CSearchListRem;
 };
-
 
 
 
@@ -122,38 +197,61 @@ long CSearchFile::GetSearchID() const
 
 bool CSearchFile::IsKademlia() const
 {
-   return m_kademlia;
+	return m_kademlia;
 }
 
 
 CSearchFile* CSearchFile::GetParent() const
 {
-	return NULL;
+	return m_parent;
 }
 
 
 bool CSearchFile::ShowChildren() const
 {
-	return false;
+	return m_showChildren;
 }
 
 
-void CSearchFile::SetShowChildren(bool)
+void CSearchFile::SetShowChildren(bool show)
 {
+	m_showChildren = show;
 }
 
 
 const CSearchResultList& CSearchFile::GetChildren() const
 {
-	static CSearchResultList tmpList;
-	
-	return tmpList;
+	return m_children;
 }
 
 
 bool CSearchFile::HasChildren() const
 {
-	return false;
+	return not m_children.empty();
+}
+
+
+uint32 CSearchFile::GetClientID() const
+{
+   return m_clientID;
+}
+
+
+void CSearchFile::SetClientID(uint32 clientID)
+{
+	m_clientID = clientID;
+}
+
+
+uint16 CSearchFile::GetClientPort() const
+{
+	return m_clientPort;
+}
+
+
+void CSearchFile::SetClientPort(uint16 port)
+{
+	m_clientPort = port;
 }
 
 #endif // SEARCHLIST_H
