@@ -17,7 +17,7 @@ utildir = $(datadir)/applications
 
 ACLOCAL_AMFLAGS = -I m4
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-amulecmdgui --enable-webserver --enable-webservergui
+DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-webserver
 
 
 # Avoid everything getting built when doing "make check"
