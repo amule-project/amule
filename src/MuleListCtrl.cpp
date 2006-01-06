@@ -518,7 +518,7 @@ void CMuleListCtrl::OnItemSelected(wxListEvent& evt)
 
 void CMuleListCtrl::OnItemDeleted(wxListEvent& evt)
 {	
-	if (evt.GetIndex() < m_tts_item) {
+	if (evt.GetIndex() <= m_tts_item) {
 		m_tts_item--;
 	}
 
