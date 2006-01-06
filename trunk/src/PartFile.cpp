@@ -156,9 +156,10 @@ void CPartFile::Init()
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
-	m_abyFileHash	= searchresult->GetFileHash();
-	m_strFileName	= searchresult->GetFileName();
-	m_nFileSize		= searchresult->GetFileSize();
+	
+	m_abyFileHash = searchresult->GetFileHash();
+	SetFileName(searchresult->GetFileName());
+	SetFileSize(searchresult->GetFileSize());
 	
 	for (unsigned int i = 0; i < searchresult->taglist.size();++i){
 		const CTag& pTag = *searchresult->taglist[i];
@@ -313,7 +314,7 @@ void CPartFile::CreatePartFile()
 	
 	Gap_Struct* gap = new Gap_Struct;
 	gap->start = 0;
-	gap->end = m_nFileSize - 1;
+	gap->end = GetFileSize() - 1;
 	
 	gaplist.AddTail(gap);
 	
@@ -372,7 +373,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		} else {
 			AddLogLineM(false, CFormat( _("Error: Failed to open part.met file: %s ==> %s") )
 				% m_partmetfilename
-				% m_strFileName );
+				% GetFileName() );
 		}
 		return false;
 	} else {
@@ -384,7 +385,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			} else {
 				AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
 					% m_partmetfilename
-					% m_strFileName );
+					% GetFileName() );
 			}
 			metFile.Close();
 			return false;
@@ -405,7 +406,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			if (!(metFile.GetLength()>0)) {
 				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
 					% m_partmetfilename
-					% m_strFileName );
+					% GetFileName() );
 				metFile.Close();
 				return false;
 			}
@@ -419,7 +420,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			//if (version == 83) return ImportShareazaTempFile(...)
 			AddLogLineM(false, CFormat( _("Error: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
-				% m_strFileName );
+				% GetFileName() );
 			return false;
 		}
 
@@ -652,7 +653,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	} catch (const CInvalidPacket& e) {
 		AddLogLineM(true, CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
 			% m_partmetfilename
-			% m_strFileName
+			% GetFileName()
 			% e.what());
 		return false;		
 	} catch (const CIOFailureException& e) {
@@ -663,7 +664,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	} catch (const CEOFException& e) {
 		AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
 			% m_partmetfilename
-			% m_strFileName );
+			% GetFileName() );
 		AddLogLineM(true, _("Trying to recover file info..."));
 		
 		// Safe file is that who have 
@@ -702,9 +703,9 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		if (	((int)gap->start) != -1 &&
 			((int)gap->end) != -1 &&
 			gap->start <= gap->end &&
-			gap->start < m_nFileSize) {
-			if (gap->end >= m_nFileSize) {
-				gap->end = m_nFileSize-1; // Clipping
+			gap->start < GetFileSize()) {
+			if (gap->end >= GetFileSize()) {
+				gap->end = GetFileSize()-1; // Clipping
 			}
 			AddGap(gap->start, gap->end); // All tags accounted for, use safe adding
 		}
@@ -722,7 +723,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	if ( !m_hpartfile.Open(strSearchPath, CFile::read_write)) {
 		AddLogLineM(false, CFormat( _("Failed to open %s (%s)") )
 			% m_fullname
-			% m_strFileName );
+			% GetFileName() );
 		return false;
 	}
 	
@@ -732,12 +733,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 
 	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
-	if (m_hpartfile.GetLength() < m_nFileSize)
-		AddGap(m_hpartfile.GetLength(), m_nFileSize-1);
+	if (m_hpartfile.GetLength() < GetFileSize())
+		AddGap(m_hpartfile.GetLength(), GetFileSize()-1);
 	// Goes both ways - Partfile should never be too large
-	if (m_hpartfile.GetLength() > m_nFileSize){
-		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % (m_hpartfile.GetLength() - m_nFileSize));
-		m_hpartfile.SetLength(m_nFileSize);
+	if (m_hpartfile.GetLength() > GetFileSize()){
+		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % (m_hpartfile.GetLength() - GetFileSize()));
+		m_hpartfile.SetLength(GetFileSize());
 	}
 	// SLUGFILLER: SafeHash
 
@@ -859,11 +860,11 @@ bool CPartFile::SavePartFile(bool Initial)
 		#if wxUSE_UNICODE					
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
-		CTag( FT_FILENAME, m_strFileName ).WriteTagToFile( &file, utf8strOptBOM );
+		CTag( FT_FILENAME, GetFileName() ).WriteTagToFile( &file, utf8strOptBOM );
 		#endif
 		
-		CTag( FT_FILENAME,		m_strFileName	).WriteTagToFile( &file );	// 1
-		CTag( FT_FILESIZE,		m_nFileSize		).WriteTagToFile( &file );	// 2
+		CTag( FT_FILENAME,		GetFileName()	).WriteTagToFile( &file );	// 1
+		CTag( FT_FILESIZE,		GetFileSize()		).WriteTagToFile( &file );	// 2
 		CTag( FT_TRANSFERED,	transfered		).WriteTagToFile( &file );	// 3
 		CTag( FT_STATUS,		(m_paused?1:0)	).WriteTagToFile( &file );	// 4
 
@@ -950,12 +951,12 @@ bool CPartFile::SavePartFile(bool Initial)
 		AddLogLineM(false, CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
-			% m_strFileName );
+			% GetFileName() );
 
 		wxString err = CFormat( _("ERROR while saving partfile: %s (%s ==> %s)") )
 			% error
 			% m_partmetfilename
-			% m_strFileName;
+			% GetFileName();
 		
 		printf("%s\n", (const char*)unicode2char(err));
 		
@@ -1083,7 +1084,7 @@ void CPartFile::SaveSourceSeeds()
 		AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
 			% n_sources
 			% m_fullname
-			% m_strFileName);
+			% GetFileName());
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logPartFile, CFormat( wxT("Error saving partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
@@ -1112,14 +1113,14 @@ void CPartFile::LoadSourceSeeds()
 	if (!file.IsOpened()) {
 		AddLogLineM(false, CFormat( _("Partfile %s (%s) has no seeds file") )
 			% m_partmetfilename
-			% m_strFileName );
+			% GetFileName() );
 		return;
 	}	
 	
 	if (file.GetLength() <= 1) {
 		AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
 			% m_partmetfilename
-			% m_strFileName );
+			% GetFileName() );
 		file.Close();
 		return;
 	}	
@@ -1159,7 +1160,7 @@ void CPartFile::LoadSourceSeeds()
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
-				% m_strFileName
+				% GetFileName()
 				% e.what() );
 		return;
 	}
@@ -1178,15 +1179,15 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	newdate = true;
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
-		if (IsComplete(0, m_nFileSize-1)){
+		if (IsComplete(0, GetFileSize()-1)){
 			if (result->GetFileHash() != GetFileHash()){
 				AddLogLineM(false, CFormat( _("Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|") )
 					% 1
 					% 0
-					% m_strFileName
+					% GetFileName()
 					% result->GetFileHash().Encode()
 					% GetFileHash().Encode() );
-				AddGap(0, m_nFileSize-1);
+				AddGap(0, GetFileSize()-1);
 				errorfound = true;
 			}
 		}
@@ -1206,27 +1207,27 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					AddLogLineM(false, CFormat( _("Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|") )
 						% ( i + 1 )
 						% GetED2KPartHashCount()
-						% m_strFileName
+						% GetFileName()
 						% wronghash.Encode()
 						% GetPartHash(i).Encode() );
 				
 					AddGap(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= m_nFileSize) ?
-							m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
 			} else {
 				if (!IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)){
 					AddLogLineM(false, CFormat( _("Found completed part (%i) in %s") )
 						% ( i + 1 )
-						% m_strFileName );
+						% GetFileName() );
 
 					FillGap(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= m_nFileSize) ?
-							m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 					RemoveBlockFromList(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= m_nFileSize) ?
-							m_nFileSize-1 : ((i+1)*PARTSIZE)-1);
+						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 				}
 			}						
 		}
@@ -1254,7 +1255,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 			return;
 		}
 		else {
-			AddLogLineM(false, CFormat( _("Finished rehashing %s") ) % m_strFileName);
+			AddLogLineM(false, CFormat( _("Finished rehashing %s") ) % GetFileName());
 		}
 	}
 	else{
@@ -1428,18 +1429,18 @@ void CPartFile::UpdateCompletedInfos()
 	for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;) {
 		POSITION prev = pos;
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);
-		if ((cur_gap->end > m_nFileSize) || (cur_gap->start >= m_nFileSize)) {
+		if ((cur_gap->end > GetFileSize()) || (cur_gap->start >= GetFileSize())) {
 			gaplist.RemoveAt(prev);
 		} else {
 			allgaps += cur_gap->end - cur_gap->start + 1;
 		}
 	}
 	if (gaplist.GetCount() || requestedblocks_list.GetCount()) {
-		percentcompleted = (1.0f-(double)allgaps/m_nFileSize) * 100;
-		completedsize = m_nFileSize - allgaps;
+		percentcompleted = (1.0f-(double)allgaps/GetFileSize()) * 100;
+		completedsize = GetFileSize() - allgaps;
 	} else {
 		percentcompleted = 100;
-		completedsize = m_nFileSize;
+		completedsize = GetFileSize();
 	}
 }
 
@@ -2255,8 +2256,8 @@ void CPartFile::CompleteFileEnded(int result, wxString* newname)
 	if (!(result & UNEXP_FILE_ERROR)) {
 		m_fullname = (*newname);	
 
-		m_strFilePath = wxFileName(m_fullname).GetPath();
-		m_strFileName = wxFileName(m_fullname).GetFullName();
+		SetFilePath(wxFileName(m_fullname).GetPath());
+		SetFileName(wxFileName(m_fullname).GetFullName());
 		
 		SetPartFileStatus(PS_COMPLETE);
 		m_paused = false;
@@ -2275,13 +2276,13 @@ void CPartFile::CompleteFileEnded(int result, wxString* newname)
 		theApp.sharedfiles->RepublishFile(this);		
 		
 		// Ensure that completed shows the correct value
-		completedsize = m_nFileSize;
+		completedsize = GetFileSize();
 
 		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	} else {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);
-		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% m_strFileName ); 
+		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% GetFileName() ); 
 	}
 	
 	theApp.downloadqueue->StartNextFile(this);	
@@ -2545,11 +2546,11 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
 		AddLogLineM(true,
 			CFormat( _("Warning: Unable to hash downloaded part - hashset incomplete for '%s'") )
-				% m_strFileName );
+				% GetFileName() );
 		hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		AddLogLineM(true, CFormat( _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % m_strFileName );
+		AddLogLineM(true, CFormat( _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
 		hashsetneeded = true;
 		return true;		
 	} else {
@@ -2565,7 +2566,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("IO failure while hashing downloaded part of partfile '%s': %s"))
-				% m_strFileName % e.what());
+				% GetFileName() % e.what());
 		}
 
 		if (GetPartCount() > 1) {
@@ -3042,7 +3043,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint32 start, uint3
 
 	// Occasionally packets are duplicated, no point writing it twice
 	if (IsComplete(start, end)) {
-		AddDebugLogLineM(false, logPartFile, wxT("File '") + m_strFileName +
+		AddDebugLogLineM(false, logPartFile, wxT("File '") + GetFileName() +
 			wxString::Format(wxT("' has already been written from %lu to %lu\n"),
 				(long)start, (long)end));
 		return 0;
@@ -3128,7 +3129,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	
 	if ( !CheckFreeDiskSpace( newData ) ) {
 		// Not enough free space to write the last item, bail
-		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % m_strFileName);
+		AddLogLineM(true, CFormat( _("WARNING: Not enough free disk-space! Pausing file: %s") ) % GetFileName());
 	
 		PauseFile( true );
 		return;
@@ -3171,9 +3172,9 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 
 	
 	// Partfile should never be too large
-	if (m_hpartfile.GetLength() > m_nFileSize){
+	if (m_hpartfile.GetLength() > GetFileSize()){
 		// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
-		m_hpartfile.SetLength(m_nFileSize);
+		m_hpartfile.SetLength(GetFileSize());
 	}		
 	
 	// Check each part of the file
@@ -3206,7 +3207,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 			} else {
 				if (!hashsetneeded) {
 					AddDebugLogLineM(false, logPartFile, wxString::Format(
-						wxT("Finished part %u of "), partNumber) + m_strFileName);
+						wxT("Finished part %u of "), partNumber) + GetFileName());
 				}
 				
 				// if this part was successfully completed (although ICH is active), remove from corrupted list
@@ -3239,7 +3240,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				
 				AddLogLineM(true, CFormat( _("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
 					% partNumber
-					% m_strFileName
+					% GetFileName()
 					% CastItoXBytes(uMissingInPart));
 				
 				if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
@@ -3431,8 +3432,8 @@ uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) c
 {
 	uint32 uTotalGapSize = 0;
 
-	if (uRangeEnd >= m_nFileSize) {
-		uRangeEnd = m_nFileSize - 1;
+	if (uRangeEnd >= GetFileSize()) {
+		uRangeEnd = GetFileSize() - 1;
 	}
 
 	POSITION pos = gaplist.GetHeadPosition();
@@ -3461,8 +3462,8 @@ uint32 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
 {
 	uint32 uRangeStart = uPart * PARTSIZE;
 	uint32 uRangeEnd = uRangeStart + PARTSIZE - 1;
-	if (uRangeEnd >= m_nFileSize) {
-		uRangeEnd = m_nFileSize;
+	if (uRangeEnd >= GetFileSize()) {
+		uRangeEnd = GetFileSize();
 	}
 	return GetTotalGapSizeInRange(uRangeStart, uRangeEnd);
 }
@@ -3761,15 +3762,14 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 
 CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 {
-	m_strFileName = tag->FileName();
-	m_abyFileHash = tag->ID();
-	m_nFileSize = tag->SizeFull();
-	m_iPartCount = (m_nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	SetFileName(tag->FileName());
+	SetFileHash(tag->ID());
+	SetFileSize(tag->SizeFull());
 	m_showSources = false;
 	m_partmetfilename = tag->PartMetName();
 
 	transfered = tag->SizeXfer();
-	percentcompleted = (100.0*completedsize) / m_nFileSize;
+	percentcompleted = (100.0*completedsize) / GetFileSize();
 	completedsize = tag->SizeDone();
 
 	m_category = tag->FileCat();
@@ -3948,8 +3948,8 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 
 bool CPartFile::IsComplete(uint32 start, uint32 end)
 {
-	if (end >= m_nFileSize) {
-		end = m_nFileSize-1;
+	if (end >= GetFileSize()) {
+		end = GetFileSize()-1;
 	}
 	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);
@@ -3964,8 +3964,8 @@ bool CPartFile::IsComplete(uint32 start, uint32 end)
 
 bool CPartFile::IsPureGap(uint32 start, uint32 end)
 {
-	if (end >= m_nFileSize) {
-		end = m_nFileSize-1;
+	if (end >= GetFileSize()) {
+		end = GetFileSize()-1;
 	}
 	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);

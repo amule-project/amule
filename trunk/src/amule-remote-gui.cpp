@@ -1203,7 +1203,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		
 		file->m_iDownPriority = tag->Prio();
 	}
-	file->percentcompleted = (100.0*file->completedsize) / file->m_nFileSize;
+	file->percentcompleted = (100.0*file->completedsize) / file->GetFileSize();
 	if ( file->m_iDownPriority >= 10 ) {
 		file->m_iDownPriority -= 10;
 		file->m_bAutoUpPriority = true;
@@ -1382,9 +1382,9 @@ void CSearchListRem::HandlePacket(const CECPacket *packet)
 
 CSearchFile::CSearchFile(CEC_SearchFile_Tag *tag)
 {
-	m_strFileName = tag->FileName();
+	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
-	m_nFileSize = tag->SizeFull();
+	SetFileSize(tag->SizeFull());
 	
 	m_searchID = theApp.searchlist->m_curr_search;
 
