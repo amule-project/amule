@@ -41,12 +41,12 @@ keywordchar		[^ \"()]
 "NOT"			{ return TOK_NOT; }
 
 "ed2k::"[a-fA-F0-9]{32}	{
-					yylval.pstr = new wxString(char2unicode(yytext));
+					yylval.pstr = new wxString(UTF82unicode(yytext));
 					return TOK_ED2K_LINK;
 				}
 
 {keywordchar}*  {
-					yylval.pstr = new wxString(char2unicode(yytext));
+					yylval.pstr = new wxString(UTF82unicode(yytext));
 					return TOK_STRING;
                 }
 
@@ -146,7 +146,7 @@ keywordchar		[^ \"()]
 						}
 					}
 					psz[i] = '\0';
-					yylval.pstr = new wxString(char2unicode(psz));
+					yylval.pstr = new wxString(UTF82unicode(psz));
 					free(psz);
 					return TOK_STRING;
 				}
