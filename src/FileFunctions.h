@@ -30,11 +30,7 @@
 #include <wx/string.h>
 #include <dirent.h>
 #include <utility>
-
-struct stat;
-
-// This is to avoid wxStat
-int UTF8_Stat(const wxString& file_name, struct stat *buf);
+#include "Types.h"
 
 // Move file with safe UTF8 name.
 bool UTF8_MoveFile(const wxString& from, const wxString& to); 
@@ -57,7 +53,7 @@ time_t GetLastModificationTime(const wxString& file);
  * GetFileSize will fail if the file doesn't exist, if we
  * dont have read-access to it, or if the path was invalid.
  */
-off_t GetFileSize(const wxString& fullPath);
+sint64 GetFileSize(const wxString& fullPath);
 
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
