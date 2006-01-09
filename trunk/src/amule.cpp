@@ -692,7 +692,7 @@ bool CamuleApp::OnInit()
 		wxString aMuleConfigFile = ConfigDir + wxT("amule.conf");
 		wxString amulewebPath = wxT("amuleweb");
 
-#ifdef __WXMAC__
+#if defined(__WXMAC__) && !defined(AMULE_DAEMON)
 		// For the Mac GUI application, look for amuleweb in the bundle
 		CFURLRef amulewebUrl = CFBundleCopyAuxiliaryExecutableURL(
 			CFBundleGetMainBundle(), CFSTR("amuleweb"));
