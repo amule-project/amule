@@ -48,18 +48,27 @@
 #include "Logger.h"
 
 
-int UTF8_Stat(const wxString& file_name, struct stat *buf)
+#ifdef __WSMSW__
+	#define STAT_FUNC _stat64
+	#define STAT_STRUCT struct __stat64
+#else
+	#define STAT_FUNC stat
+	#define STAT_STRUCT struct stat
+#endif
+
+
+int UTF8_Stat(const wxString& file_name, STAT_STRUCT *buf)
 {
 	Unicode2CharBuf tmpFile(unicode2char(file_name));
 	
 	int stat_error = -1;
 	
 	if (tmpFile) {
-		stat_error = stat(tmpFile, buf);
+		stat_error = STAT_FUNC(tmpFile, buf);
 	}
 	
 	if (stat_error) {
-		stat_error = stat(unicode2UTF8(file_name), buf);
+		stat_error = STAT_FUNC(unicode2UTF8(file_name), buf);
 	}
 
 	return stat_error;
@@ -101,7 +110,7 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to)
 bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
 	// Get file permissions
-	struct stat fileStats;
+	STAT_STRUCT fileStats;
 	if (UTF8_Stat(from, &fileStats)) {
 		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't stat original file: ") + from );
 	}
@@ -136,10 +145,9 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 }
 
 
-// Note: Supports only 2gb files on windows.
-off_t GetFileSize(const wxString& fullPath)
+sint64 GetFileSize(const wxString& fullPath)
 {
-	struct stat buf;
+	STAT_STRUCT buf;
 	
 	if (!UTF8_Stat(fullPath, &buf)) {
 		return buf.st_size;
@@ -206,7 +214,7 @@ wxString  CDirIterator::GetNextFile()
 	
 	bool found = false;
 	wxString FoundName;
-	struct stat buf;
+	STAT_STRUCT buf;
 	while (dp!=NULL && !found) {
 		if (type == CDirIterator::Any) {
 			// return anything.
@@ -246,7 +254,7 @@ wxString  CDirIterator::GetNextFile()
 				Unicode2CharBuf tmpFullName(unicode2char(FullName));		
 				int stat_error = -1;
 				if (tmpFullName) {
-					stat_error = stat(tmpFullName, &buf);
+					stat_error = STAT_FUNC(tmpFullName, &buf);
 #ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
@@ -262,7 +270,7 @@ wxString  CDirIterator::GetNextFile()
 				// Fallback to UTF-8
 				if (stat_error) {
 					Unicode2CharBuf tmpUTF8FullName(unicode2UTF8(FullName));
-					stat_error = stat(tmpUTF8FullName, &buf);
+					stat_error = STAT_FUNC(tmpUTF8FullName, &buf);
 #ifndef __WXMSW__
 					// Check if it is a broken symlink
 					if (stat_error) {
@@ -328,7 +336,7 @@ wxString  CDirIterator::GetNextFile()
 // First try an ANSI name, only then try UTF-8.
 time_t GetLastModificationTime(const wxString& file)
 {
-	struct stat buf;
+	STAT_STRUCT buf;
 		
 	int stat_error = UTF8_Stat(file, &buf);
 	
@@ -342,14 +350,14 @@ time_t GetLastModificationTime(const wxString& file)
 
 bool CheckDirExists(const wxString& dir)
 {
-	struct stat st;
+	STAT_STRUCT st;
 	return (UTF8_Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
 }
 
 
 bool CheckFileExists(const wxString& file)
 {
-	struct stat st;
+	STAT_STRUCT st;
 	return (UTF8_Stat(file, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFREG));
 }
 
