@@ -191,7 +191,7 @@ void yyfree (void *  );
 
 /* Begin user sect3 */
 
-#define yywrap() 1
+#define yywrap(n) 1
 #define YY_SKIP_YYWRAP
 
 extern int yylineno;
@@ -204,13 +204,11 @@ extern char *yytext;
 
 #endif
 
-#ifndef YY_NO_UNISTD_H
 /* Special case for "unistd.h", since it is non-ANSI. We include it way
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
 #include <unistd.h>
-#endif
 
 #ifndef YY_EXTRA_TYPE
 #define YY_EXTRA_TYPE void *
@@ -268,7 +266,6 @@ extern int yylex (void);
 #undef yy_set_bol
 #undef yy_new_buffer
 #undef yy_set_interactive
-#undef yytext_ptr
 #undef YY_DO_BEFORE_ACTION
 
 #ifdef YY_DECL_IS_OURS
@@ -278,6 +275,6 @@ extern int yylex (void);
 #line 156 "./Scanner.l"
 
 
-#line 282 "./Scanner.h"
+#line 279 "./Scanner.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
