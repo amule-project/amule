@@ -713,10 +713,15 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
 	theApp.searchlist->RemoveResults(0xffffffff);
 
-	wxString text = search_request->SearchText();
-	wxString file_type = search_request->SearchFileType();
-	wxString ext = search_request->SearchExt();
-		
+	CSearchList::CSearchParams params;
+	params.searchString	= search_request->SearchText();
+	params.typeText		= search_request->SearchFileType();
+	params.extension	= search_request->SearchExt();
+	params.minSize		= search_request->MinSize();
+	params.maxSize		= search_request->MaxSize();
+	params.availability	= search_request->Avail();
+	
+	
 	EC_SEARCH_TYPE search_type = search_request->SearchType();
 	SearchType core_search_type = LocalSearch;
 	switch (search_type) {
@@ -728,9 +733,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			}
 		case EC_SEARCH_LOCAL: {
 			uint32 search_id = 0xffffffff;
-			wxString error = theApp.searchlist->StartNewSearch(&search_id, core_search_type, text,
-						file_type, ext, search_request->MinSize(), search_request->MaxSize(),
-						search_request->Avail());
+			wxString error = theApp.searchlist->StartNewSearch(&search_id, core_search_type, params);
 			if (!error.IsEmpty()) {
 				response = error;
 			} else {
@@ -1165,7 +1168,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SEARCH_PROGRESS:
 			response = new CECPacket(EC_OP_SEARCH_PROGRESS);
 			response->AddTag(CECTag(EC_TAG_SEARCH_STATUS,
-				(uint32)theApp.searchlist->Progress()));
+				theApp.searchlist->GetSearchProgress()));
 			break;
 			
 		case EC_OP_DOWNLOAD_SEARCH_RESULT:

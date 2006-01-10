@@ -404,7 +404,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				theStats::AddDownOverheadServer(size);
 				CServer* cur_srv = (serverconnect) ? 
 					serverconnect->GetCurrentServer() : NULL;
-				theApp.searchlist->ProcessSearchanswer(
+				theApp.searchlist->ProcessSearchAnswer(
 					packet,
 					size, 
 					true /*(cur_srv && cur_srv->GetUnicodeSupport())*/,

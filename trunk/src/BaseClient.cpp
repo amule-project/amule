@@ -1731,12 +1731,15 @@ void CUpDownClient::RequestSharedFileList()
 	}
 }
 
-void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, wxString& pszDirectory) {
+
+void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, wxString& pszDirectory)
+{
 	if (m_iFileListRequested > 0) {
 		m_iFileListRequested--;
-		theApp.searchlist->ProcessSearchanswer(pachPacket,nSize,this,NULL,pszDirectory);
+		theApp.searchlist->ProcessSharedFileList(pachPacket, nSize, this, NULL, pszDirectory);
 	}
 }
+
 
 void CUpDownClient::ResetFileStatusInfo()
 {

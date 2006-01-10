@@ -98,7 +98,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				// process all search result packets
 
 				do{
-					theApp.searchlist->ProcessUDPSearchanswer(packet, true, StringIPtoUint32(host), port - 4);
+					theApp.searchlist->ProcessUDPSearchAnswer(packet, true, StringIPtoUint32(host), port - 4);
 					
 					if (packet.GetPosition() + 2 < size) {
 						// An additional packet?

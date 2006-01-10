@@ -25,32 +25,26 @@
 
 #include "SearchList.h"		// Interface declarations.
 #include "OtherFunctions.h"	// Needed for GetFiletypeByName
-#include "NetworkFunctions.h" // Needed for IsGoodIP
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp
-#include "ServerSocket.h"
-#include "Server.h"
-#include "ServerList.h"
-#include "SharedFileList.h" // Needed for GetFileByID
-#include "DownloadQueue.h"  // Needed for GetFileByID
+#include "ServerSocket.h"	// Needed for theApp.serverconnect
+#include "Server.h"			// Needed for CServer
+#include "ServerList.h"		// Needed for theApp.serverlist
 #include "Statistics.h"		// Needed for theStats
 #include "ObservableQueue.h"// Needed for CQueueObserver
-#include <common/Format.h>
-#include "Logger.h"
-#include "Preferences.h"
-#include "Packet.h"			// Neeed for CPacket
+#include <common/Format.h>	
+#include "Logger.h"			// Needed for AddLogLineM/...
+#include "Preferences.h"	// Needed for thePrefs
+#include "Packet.h"			// Needed for CPacket
 #include "kademlia/utils/UInt128.h" // Needed for CUInt128
-#include "SearchFile.h"
+#include "SearchFile.h"		// Needed for CSearchFile
 
 #include <algorithm>
 
 #ifndef AMULE_DAEMON
-#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "MuleNotebook.h"	// Needed for CMuleNotebook
-#include "SearchListCtrl.h"	// Needed for CSearchListCtrl
-#include "muuli_wdr.h"		// Needed for ID_NOTEBOOK
+#include "SearchDlg.h"		// Needed for CSearchDlg
 #endif
 
 #include "kademlia/kademlia/Kademlia.h"
@@ -58,9 +52,9 @@
 #include "kademlia/kademlia/Search.h"
 
 #include "SearchExpr.h"
-
 #include "Scanner.h.in"
 #include "Scanner.h"
+
 
 extern int yyparse();
 extern int yyerror(const char* errstr);
@@ -72,8 +66,8 @@ static CSearchExpr _SearchExpr;
 
 wxArrayString _astrParserErrors;
 
-// Helper function for lexer.
 
+// Helper function for lexer.
 void ParsedSearchExpression(const CSearchExpr* pexpr)
 {
 	int iOpAnd = 0;
@@ -136,8 +130,8 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 	}
 }
 
-// Helper class for packet creation
 
+//! Helper class for packet creation
 class CSearchExprTarget
 {
 public:
@@ -265,311 +259,257 @@ protected:
 };
 
 
-// Search classes
-
-CGlobalSearchThread::CGlobalSearchThread( CPacket* packet )
-	: wxThread(wxTHREAD_DETACHED)
-{
-	m_packet = packet;
-	
-	CServer* current = theApp.serverconnect->GetCurrentServer();
-	current = theApp.serverlist->GetServerByIP( current->GetIP(), current->GetPort() );
-	
-	m_packet->SetOpCode(OP_GLOBSEARCHREQ);
-
-	m_progress = 0;
-}
 
 
-CGlobalSearchThread::~CGlobalSearchThread()
-{
-	// Delete the packet whose ownerwhip we got on constructor.
-	delete m_packet;
-}
-
-
-void *CGlobalSearchThread::Entry()
-{
-	CServer* current = theApp.serverconnect->GetCurrentServer();
-	// If we are not lucky, GetCurrentServer() may return NULL
-	if (current) {
-		current = theApp.serverlist->GetServerByIP(
-			current->GetIP(), current->GetPort() );
-	} else {
-		return NULL;
-	}
-
-	// Create the a queue of servers
-	CQueueObserver<CServer*> queue;
-
-	// Initialize it with the current servers
-	theApp.serverlist->AddObserver( &queue );
-
-	while ( !TestDestroy() ) {
-		if ( !queue.GetRemaining() ) {
-			break;
-		} else {
-			CServer* server = queue.GetNext();
-
-			if ( server != current ) {
-	
-				theStats::AddUpOverheadServer( m_packet->GetPacketSize() );
-				theApp.serverconnect->SendUDPPacket( m_packet, server, false );
-		
-				m_progress = 100 - ( queue.GetRemaining() * 100 ) / theApp.serverlist->GetServerCount();
-				CoreNotify_Search_Update_Progress( m_progress );
-			}	
-		}
-		
-		Sleep(750);
-	}
-	
-	// Global search ended, reset progress and controls
-	CoreNotify_Search_Update_Progress(0xffff);
-	
-	// When shutting down, the searchlist may have been deleted
-	// by the time the sleep() call returns, so a check is needed.
-	if (theApp.searchlist) {
-		theApp.searchlist->ClearThreadData(this);
-	}
-		
-	return NULL;
-}
-
-//
+///////////////////////////////////////////////////////////
 // CSearchList
-//
+
+BEGIN_EVENT_TABLE(CSearchList, wxEvtHandler)
+	EVT_MULE_TIMER(wxID_ANY, CSearchList::OnGlobalSearchTimer)
+END_EVENT_TABLE()
+
 
 CSearchList::CSearchList()
+	: m_searchTimer(this, 0 /* Timer-id doesn't matter. */ ), 
+	  m_searchType(LocalSearch),
+	  m_searchInProgress(false),
+	  m_currentSearch(-1),
+	  m_searchPacket(NULL)
 {
-	m_CurrentSearch = 0;
-	m_searchpacket = NULL;
-	m_searchthread = NULL;
-	m_SearchInProgress = false;
 }
 
 
 CSearchList::~CSearchList()
 {
 	StopGlobalSearch();
-	delete m_searchpacket;
-	Clear();
-}
 
-
-void CSearchList::Clear()
-{
-	ResultMap::iterator it = m_Results.begin();
-	
-	for ( ; it != m_Results.end(); ++it ) {
-		CSearchResultList& list = it->second;
-	
-		for ( unsigned int i = 0; i < list.size(); ++i ) 
-			delete list[i];
+	while (not m_results.empty()) {
+		RemoveResults(m_results.begin()->first);
 	}
-		
-	m_Results.clear();
 }
 
 
-void CSearchList::RemoveResults(long nSearchID)
+void CSearchList::RemoveResults(long searchID)
 {
 	// A non-existant search id will just be ignored
-	Kademlia::CSearchManager::stopSearch(nSearchID,true);
+	Kademlia::CSearchManager::stopSearch(searchID, true);
 	
-	ResultMap::iterator it = m_Results.find( nSearchID );
-
-	if ( it != m_Results.end() ) {
+	ResultMap::iterator it = m_results.find(searchID);
+	if ( it != m_results.end() ) {
 		CSearchResultList& list = it->second;
 	
-		for ( unsigned int i = 0; i < list.size(); ++i ) 
-			delete list[i];
+		for (size_t i = 0; i < list.size(); ++i) {
+			delete list.at(i);
+		}
 	
-		m_Results.erase( it );
+		m_results.erase( it );
 	}
 }
 
 
-wxString CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, const wxString& searchString, const wxString& typeText, 
-											const wxString& extension, uint32 min, uint32 max, uint32 availability)
+wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params)
 {
-	
-	if(!theApp.IsConnected()) {
-		// Failed!
-		return _("aMule is not connected!");
-	}
-	
-	if (typeText != ED2KFTSTR_PROGRAM) {
-		// No check is to be made on returned results
-		m_resultType = typeText;
-	}
-	
-	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
-
-	CMemFile* search_data = CreateSearchData(searchString, typeText, extension, min, max, availability, (search_type == KadSearch));
-	
-	if (!search_data) {
-		wxASSERT(_astrParserErrors.Count());
-		wxString error;
-		for (unsigned int i = 0; i < _astrParserErrors.Count(); ++i) {
-			error += _astrParserErrors[i] + wxT("\n");
-		}
-		return error;
-	}
-	
-	if (search_type == KadSearch) {
-		if (Kademlia::CKademlia::isRunning()) {
-			try {
-				if ( *nSearchID == 0xffffffff ) {
-					Kademlia::CSearchManager::stopSearch(0xffffffff, false);
-				}
-				// Kad search takes ownership of data and searchstring will get tokenized there
-				Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(searchString,
-					search_data, *nSearchID);
-				*(nSearchID) = search->getSearchID(); // The tab must be created with the Kad search id
-			} catch(wxString& what) {
-				AddLogLineM(true,what);
-				delete search_data;
-				return _("Unexpected error while attempting Kad search: ") + what;				
-			}
-			return wxEmptyString;
-		} else {
-			delete search_data;
-			return _("Kad search can't be done if Kad is not running");
-		}
-	}
-	
-	// This is ed2k search...
-	
-	if(!theApp.IsConnectedED2K()) {
-		// Failed!
-		delete search_data;
+	// Check that we can actually perform the specified desired search.
+	if ((type == KadSearch) and not Kademlia::CKademlia::isRunning()) {
+		return _("Kad search can't be done if Kad is not running");
+	} else if ((type != KadSearch) and not theApp.IsConnectedED2K()) {
 		return _("ED2K search can't be done if ED2K is not connected");
 	}
 	
-	// Packet takes ownership of data
-	CPacket* searchpacket = new CPacket(search_data);
-	delete search_data;
-	searchpacket->SetOpCode(OP_SEARCHREQUEST);
-	
+	if (params.typeText != ED2KFTSTR_PROGRAM) {
+		// No check is to be made on returned results if the 
+		// type is 'Programs', since this returns multiple types.
+		m_resultType = params.typeText;
+	}
 
-	theStats::AddUpOverheadServer(searchpacket->GetPacketSize());
-	// Send packet. If it's not a global search, delete it after sending.
-	theApp.serverconnect->SendPacket(searchpacket, (search_type == LocalSearch) ); 
+	// This MemFile is automatically free'd, except for kad searches.	
+	CMemFilePtr data = CreateSearchData(params, type);
 	
-	wxASSERT(m_searchthread == NULL);
-	
-	if (m_searchthread) {
-		m_searchthread->Delete();
+	if (data.get() == NULL) {
+		wxASSERT(_astrParserErrors.Count());
+		wxString error;
+		
+		for (unsigned int i = 0; i < _astrParserErrors.Count(); ++i) {
+			error += _astrParserErrors[i] + wxT("\n");
+		}
+		
+		return error;
 	}
 	
-	ClearThreadData();
+	m_searchType = type;
+	if (type == KadSearch) {
+		try {
+			if (*searchID == 0xffffffff) {
+				Kademlia::CSearchManager::stopSearch(0xffffffff, false);
+			}
+		
+			// Kad search takes ownership of data and searchstring will get tokenized there
+			// The tab must be created with the Kad search ID, so seardhID is updated.
+			Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(
+										 params.searchString, data.release(), *searchID);
+
+			*searchID = search->getSearchID();
+		} catch (const wxString& what) {
+			AddLogLineM(true, what);
+			return _("Unexpected error while attempting Kad search: ") + what;				
+		}
+	} else {
+		// This is an ed2k search, local or global
+		m_currentSearch = *(searchID);
+		m_searchInProgress = true;
 	
-	if ( search_type == GlobalSearch ) {
-		m_searchpacket = searchpacket;
+		CPacket* searchPacket = new CPacket(data.get());
+		searchPacket->SetOpCode(OP_SEARCHREQUEST);
+		
+		theStats::AddUpOverheadServer(searchPacket->GetPacketSize());
+		theApp.serverconnect->SendPacket(searchPacket, (type == LocalSearch));
+
+		if (type == GlobalSearch) {
+			m_searchPacket = searchPacket;
+			
+			// The OPCode must be changed since global searches are UDP requests
+			m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ);
+		}
 	}
-	
-	m_SearchInProgress = true;
-	
+
 	return wxEmptyString;
 }
 
 
 void CSearchList::LocalSearchEnd()
 {
-	wxThreadError result;
-	
-	if ( m_searchpacket ) {
-		m_searchthread = new CGlobalSearchThread(m_searchpacket);
-		if ( (result =  m_searchthread->Create()) == wxTHREAD_NO_ERROR) {
-			m_searchthread->Run();
-		} else {
-			printf("THREAD CREATION ERROR FOR GLOBAL SEARCH: ");
-			switch (result) {
-				case wxTHREAD_NO_RESOURCE:
-					printf("NOT ENOUGH RESOURCES!\n");
-					break;
-				case wxTHREAD_RUNNING:
-					printf("ALREADY RUNNING!\n");
-					break;
-				default:
-					break;
-			}
-			// Free resources.
-			delete m_searchpacket;			
-		}
-		// Thread takes ownership
-		m_searchpacket = NULL;
-	}
-	if (!IsGlobalSearch()) {
-		m_SearchInProgress = false;
-		// On global search, we must not reset the GUI controls.
+	if (m_searchType == GlobalSearch) {
+		wxCHECK_RET(m_searchPacket, wxT("Global search, but no packet"));
+		
+		// Ensure that every global search starts over.	
+		theApp.serverlist->RemoveObserver(&m_serverQueue);
+		m_searchTimer.Start(750);
+ 	} else {
+		m_searchInProgress = false;
 		Notify_SearchLocalEnd();
 	}
 }
 
 
-void CSearchList::ProcessSearchanswer(const char *in_packet, uint32 size, 
-	CUpDownClient *Sender, bool *pbMoreResultsAvailable, const wxString& pszDirectory)
+uint32 CSearchList::GetSearchProgress() const
 {
-	wxASSERT( Sender != NULL );
+	if (m_searchInProgress == false) {
+		// No search, no progress ;)
+		return 0;
+	}
 	
-	long nSearchID = (long)Sender;
+	switch (m_searchType) {
+		case LocalSearch:
+			return 0xffff;
+
+		case GlobalSearch:
+			return 100 - (m_serverQueue.GetRemaining() * 100) 
+					/ theApp.serverlist->GetServerCount();
+
+		case KadSearch:
+			// We cannot meassure the progress of Kad searches.
+			return 0;
+		
+		default:
+			wxCHECK(false, 0);
+	}
+}
+
+
+void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
+{
+	// Ensure that the server-queue contains the current servers.
+	if (not m_serverQueue.IsActive()) {
+		theApp.serverlist->AddObserver(&m_serverQueue);		
+	}
+
+	// UDP requests must not be sent to this server.
+	const CServer* localServer = theApp.serverconnect->GetCurrentServer();
+	uint32 localIP = localServer->GetIP();
+	uint16 localPort = localServer->GetPort();
+
+
+	while (m_serverQueue.GetRemaining()) {
+		CServer* server = m_serverQueue.GetNext();
+
+		// Compare against the currently connected server.
+		if ((server->GetPort() == localPort) and (server->GetIP() == localIP)) {
+			// We've already requested from the local server.
+			continue;
+		} else {
+			theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
+			theApp.serverconnect->SendUDPPacket(m_searchPacket, server, false);
+			
+			CoreNotify_Search_Update_Progress(GetSearchProgress());					
+			
+			return;
+		}
+	}
+	
+	// No more servers left to ask.
+	StopGlobalSearch();
+}
+
+
+void CSearchList::ProcessSharedFileList(const char *in_packet, uint32 size, 
+	CUpDownClient* sender, bool *moreResultsAvailable, const wxString& directory)
+{
+	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
+	
+	long searchID = (long)sender;
 
 #ifndef AMULE_DAEMON
-	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(Sender->GetUserName())) {
-		theApp.amuledlg->searchwnd->CreateNewTab(Sender->GetUserName() + wxT(" (0)"),nSearchID);
+	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(sender->GetUserName())) {
+		theApp.amuledlg->searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
 	}
 #endif
 
 	const CMemFile packet((byte*)in_packet, size);
 	uint32 results = packet.ReadUInt32();
-	bool unicoded = (Sender && Sender->GetUnicodeSupport());
+	bool unicoded = sender->GetUnicodeSupport();
 	for (unsigned int i = 0; i != results; ++i){			
-		CSearchFile* toadd = new CSearchFile(packet, unicoded, nSearchID,  0, 0, pszDirectory);
-		if (Sender){
-			toadd->SetClientID(Sender->GetUserIDHybrid());
-			toadd->SetClientPort(Sender->GetUserPort());
+		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
+		if (sender){
+			toadd->SetClientID(sender->GetUserIDHybrid());
+			toadd->SetClientPort(sender->GetUserPort());
 		}
-		AddToList(toadd, true);
+
+		AddToList(toadd, true);	
 	}
 
-	if (pbMoreResultsAvailable)
-		*pbMoreResultsAvailable = false;
+	if (moreResultsAvailable)
+		*moreResultsAvailable = false;
 	
 	int iAddData = (int)(packet.GetLength() - packet.GetPosition());
 	if (iAddData == 1) {
 		uint8 ucMore = packet.ReadUInt8();
 		if (ucMore == 0x00 || ucMore == 0x01){
-			if (pbMoreResultsAvailable)
-				*pbMoreResultsAvailable = (bool)ucMore;
+			if (moreResultsAvailable) {
+				*moreResultsAvailable = (bool)ucMore;
+			}
 		}
 	}
 }
 
 
-void CSearchList::ProcessSearchanswer(const char* in_packet, uint32 size, bool bOptUTF8, uint32 WXUNUSED(nServerIP), uint16 WXUNUSED(nServerPort))
+void CSearchList::ProcessSearchAnswer(const char* in_packet, uint32 size, bool optUTF8, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort))
 {
 	CMemFile packet((byte*)in_packet,size);
 
 	uint32 results = packet.ReadUInt32();
-
 	for (unsigned int i = 0; i != results; ++i) {
-		CSearchFile* toadd = new CSearchFile(packet, bOptUTF8, m_CurrentSearch);
-		AddToList(toadd, false);
+		AddToList(new CSearchFile(packet, optUTF8, m_currentSearch));
 	}
-	
 }
 
 
-void CSearchList::ProcessUDPSearchanswer(const CMemFile& packet, bool bOptUTF8, uint32 nServerIP, uint16 nServerPort)
+void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, uint32 serverIP, uint16 serverPort)
 {
-	CSearchFile* toadd = new CSearchFile(packet, bOptUTF8, m_CurrentSearch, nServerIP, nServerPort);
-	AddToList(toadd);
+	AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort));
 }
 
 
-bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
+bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 {
 	const uint32 fileSize = toadd->GetFileSize();
 	// If filesize is 0, or file is too large for the network, drop it 
@@ -583,85 +523,89 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool bClientResponse)
 		return false;
 	}
 	
-	// If the result was not the type user wanted, drop it.
-	if (	!bClientResponse &&
-		!(m_resultType.IsEmpty() ||
-		GetFileTypeByName(toadd->GetFileName()) == m_resultType)) {
-		AddDebugLogLineM( false, logSearch,
-			CFormat( wxT("Dropped result type %s != %s, file %s") )
-				% GetFileTypeByName(toadd->GetFileName())
-				% m_resultType
-				% toadd->GetFileName() 
-		);
-		delete toadd;
-		return false;
-	}
-
-
-
-	ResultMap::iterator it = m_Results.find( toadd->GetSearchID() );
-
-	if ( it != m_Results.end() ) {
-		CSearchResultList& list = it->second;
-	
-		for ( unsigned int i = 0; i < list.size(); ++i ) {
-			if ( toadd->GetFileHash() == list[i]->GetFileHash() ) {
-				list[i]->AddSources( toadd->GetSourceCount(), toadd->GetCompleteSourceCount() );
-				
-				Notify_Search_Update_Sources( list[i] );
-				
-				delete toadd;
-				
-				return true;
-			}
+	// If the result was not the type the user wanted, drop it.
+	if ((clientResponse == false) and not m_resultType.IsEmpty()) {
+		if (GetFileTypeByName(toadd->GetFileName()) == m_resultType) {
+			AddDebugLogLineM( false, logSearch,
+				CFormat( wxT("Dropped result type %s != %s, file %s") )
+					% GetFileTypeByName(toadd->GetFileName())
+					% m_resultType
+					% toadd->GetFileName());
+			
+			delete toadd;
+			return false;
 		}
 	}
 
-		
-	m_Results[ toadd->GetSearchID() ].push_back( toadd );
+
+	// Get, or implictly create, the map of results for this search
+	CSearchResultList& results = m_results[toadd->GetSearchID()];
 	
+	for (size_t i = 0; i < results.size(); ++i) {
+		CSearchFile* item = results.at(i);
+		
+		if ((toadd->GetFileHash() == item->GetFileHash())
+			and (toadd->GetFileSize() == item->GetFileSize())) {
+			
+			AddDebugLogLineM(false, logSearch, 
+				CFormat(wxT("Received duplicate results for '%s' : %s"))
+					% item->GetFileName() % item->GetFileHash().Encode());
+				
+			// If no children exists, then we add the current item. The
+			// "parent" item will show the most common filename and the 
+			// sum of sources for all variants.
+			if (item->GetChildren().empty()) {
+				if (toadd->GetFileName() == item->GetFileName()) {
+					AddDebugLogLineM( false, logSearch, 
+						CFormat(wxT("Merged results for '%s'")) 
+							% item->GetFileName());
+					
+					// Merge duplicate items rather than creating a child item
+					item->AddSources(toadd->GetSourceCount(), toadd->GetCompleteSourceCount());
+					Notify_Search_Update_Sources(item);
+					delete toadd;
+					return true;
+				} else {
+					AddDebugLogLineM(false, logSearch, 
+						CFormat(wxT("Created initial child for result '%s'")) 
+							% item->GetFileName());
+				
+					// The first child will always be the first result we received.
+					item->AddChild(new CSearchFile(*item));
+				}
+			}
+
+			AddDebugLogLineM( false, logSearch,
+				CFormat(wxT("Adding child '%s' to result '%s'"))
+					% toadd->GetFileName() % item->GetFileName());
+			
+			// Parent item includes sum of all sources for this file
+			item->AddSources(toadd->GetSourceCount(), toadd->GetCompleteSourceCount());
+			// Add the child, possibly updating the parents filename.
+			item->AddChild(toadd);			
+			
+			Notify_Search_Update_Sources(item);
+			
+			return true;
+		}
+	}
+
+	AddDebugLogLineM(false, logSearch,
+		CFormat(wxT("Added new result '%s' : %s")) 
+			% toadd->GetFileName() % toadd->GetFileHash().Encode());
+	
+	// New unique result, simply add and display.
+	results.push_back(toadd);
 	Notify_Search_Add_Result(toadd);
 	
-		
 	return true;
 }
 
 
-
-class CmpFiles
+const CSearchResultList& CSearchList::GetSearchResults(long searchID) const
 {
-public:
-	CmpFiles( int sortBy = 0, bool ascending = true )
-	{
-		m_type = sortBy;
-		m_asc = ascending;
-	}
-
-	bool operator()( CSearchFile* file1, CSearchFile* file2 )
-	{
-		int mod = ( m_asc ? 1 : -1 );
-		int result = 0;
-	
-		switch ( m_type ) {
-			case 0: result = file1->GetFileName().CmpNoCase( file2->GetFileName() ); break;				
-			case 1: result = CmpAny( file1->GetFileSize(), file2->GetFileSize() ); break;
-			case 2: result = file1->GetFileHash().Encode().Cmp( file2->GetFileHash().Encode() ); break;
-			case 3: result = CmpAny( file1->GetSourceCount(), file2->GetSourceCount() ); break;
-		}
-
-		return (result * mod) < 0;
-	}
-
-private:
-	bool	m_asc;
-	int		m_type;
-};
-
-
-const CSearchResultList& CSearchList::GetSearchResults(long nSearchID) const
-{
-	ResultMap::const_iterator it = m_Results.find(nSearchID);
-	if (it != m_Results.end()) {
+	ResultMap::const_iterator it = m_results.find(searchID);
+	if (it != m_results.end()) {
 		return it->second;
 	}
 	
@@ -673,8 +617,8 @@ const CSearchResultList& CSearchList::GetSearchResults(long nSearchID) const
 
 void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 {
-	ResultMap::iterator it = m_Results.begin();
-	for ( ; it != m_Results.end(); ++it ) {
+	ResultMap::iterator it = m_results.begin();
+	for ( ; it != m_results.end(); ++it ) {
 		CSearchResultList& list = it->second;
 	
 		for ( unsigned int i = 0; i < list.size(); ++i ) {
@@ -687,33 +631,33 @@ void CSearchList::AddFileToDownloadByHash(const CMD4Hash& hash, uint8 cat)
 	}
 }
 
+
 void CSearchList::StopGlobalSearch()
 {
- 	if (IsGlobalSearch()) {
-		m_searchthread->Delete();
-		ClearThreadData();
- 	} else {
-		// Maybe this was a global search that didn't
-		// get a reply from local server yet.
-		if (m_searchpacket) {
-			delete m_searchpacket;
-			m_searchpacket = NULL;
-		}
-	}
+	m_searchTimer.Stop();
+
+	m_currentSearch = -1;
+	delete m_searchPacket;
+	m_searchPacket = NULL;
+	m_searchInProgress = false;
+	
+	CoreNotify_Search_Update_Progress(0xffff);
 }
 
 
-CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString typeText,
-				const wxString& extension, uint32 min, uint32 max, uint32 availability, bool kad)
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type)
 {
+	const bool kad = (type == KadSearch);
+	
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
-	if ( !typeText.IsEmpty() )	++parametercount;
-	if ( min > 0 )			++parametercount;
-	if ( max > 0 ) 			++parametercount;
-	if ( availability > 0 )		++parametercount;
-	if ( !extension.IsEmpty() )	++parametercount;
+	if ( !params.typeText.IsEmpty() )	++parametercount;
+	if ( params.minSize > 0 )			++parametercount;
+	if ( params.maxSize > 0 )			++parametercount;
+	if ( params.availability > 0 )		++parametercount;
+	if ( !params.extension.IsEmpty() )	++parametercount;
 	
+	wxString typeText = params.typeText;
 	if (typeText == ED2KFTSTR_ARCHIVE){
 		// eDonkeyHybrid 0.48 uses type "Pro" for archives files
 		// www.filedonkey.com uses type "Pro" for archives files
@@ -725,9 +669,9 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 	}
 	
 	// Must write parametercount - 1 parameter headers
-	CMemFile* data =  new CMemFile(100);
+	CMemFilePtr data(new CMemFile(100));
 
-	if (kad) {
+	if (type == KadSearch) {
 		// We need to make some room for the keyword hash
 		data->WriteUInt128(CUInt128());
 		// and the search type (0/1 if there is ed2k data or not)		
@@ -738,25 +682,25 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 	_astrParserErrors.Empty();	
 	_SearchExpr.m_aExpr.Empty();
 	
-    LexInit(searchString);
+    LexInit(params.searchString);
     int iParseResult = yyparse();
     LexFree();
 	
 	#ifdef __DEBUG__
-	printf("Search parsing resultfor \"%s\": %i\n",(const char*)unicode2char(searchString),iParseResult);
+	printf("Search parsing resultfor \"%s\": %i\n",(const char*)unicode2UTF8(params.searchString),iParseResult);
 	#endif
 	if (_astrParserErrors.Count() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
-			printf("Error %u: %s\n",i,(const char*)unicode2char(_astrParserErrors[i]));
+			printf("Error %u: %s\n",i,(const char*)unicode2UTF8(_astrParserErrors[i]));
 		}
-		delete data;
-		return NULL;
+		
+		return CMemFilePtr(NULL);
 	}
 
 	if (iParseResult != 0) {
 		_astrParserErrors.Add(wxString::Format(wxT("Undefined error %i on search expression"),iParseResult));
-		delete data;
-		return NULL;
+	
+		return CMemFilePtr(NULL);
 	}
 	
 	#ifdef __DEBUG__
@@ -774,7 +718,7 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 	#endif
 	
 	/* Leave the unicode comment there, please... */
-	CSearchExprTarget target(data, true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone);
+	CSearchExprTarget target(data.get(), true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone);
 
 	unsigned int iParameterCount = 0;
 	if (_SearchExpr.m_aExpr.GetCount() <= 1) {
@@ -804,32 +748,32 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 			target.WriteMetaDataSearchParamASCII(FT_FILETYPE, typeText);
 		}
 		
-		if (min > 0) {
+		if (params.minSize > 0) {
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, min, !kad);
+			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, params.minSize, !kad);
 		}
 
-		if (max > 0){
+		if (params.maxSize > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, max, !kad);
+			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, params.maxSize, !kad);
 		}
 		
-		if (availability > 0){
+		if (params.availability > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, availability, !kad);
+			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, params.availability, !kad);
 		}
 
-		if (!extension.IsEmpty()){
+		if (!params.extension.IsEmpty()){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteMetaDataSearchParam(FT_FILEFORMAT, extension);
+			target.WriteMetaDataSearchParam(FT_FILEFORMAT, params.extension);
 		}
 
 		#warning TODO - I keep this here, ready if we ever allow such searches...
@@ -889,25 +833,25 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 		wxASSERT( iParameterCount == parametercount );
 		
 	} else {
-		if (!extension.IsEmpty()) {
+		if (!params.extension.IsEmpty()) {
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
 		}
 
-		if (availability > 0) {
+		if (params.availability > 0) {
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
 		}
 	  
-		if (max > 0){
+		if (params.maxSize > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
 		}
         
-		if (min > 0) {
+		if (params.minSize > 0) {
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
@@ -979,25 +923,25 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 			}
 		}
 
-		if (!typeText.IsEmpty()) {
+		if (!params.typeText.IsEmpty()) {
 			// Type is always ASCII string
-			target.WriteMetaDataSearchParamASCII(FT_FILETYPE, typeText);
+			target.WriteMetaDataSearchParamASCII(FT_FILETYPE, params.typeText);
 		}
 
-		if (min > 0) {
-			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, min, !kad);
+		if (params.minSize > 0) {
+			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, params.minSize, !kad);
 		}
 
-		if (max > 0) {
-			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, max, !kad);
+		if (params.maxSize > 0) {
+			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, params.maxSize, !kad);
 		}
 
-		if (availability > 0) {
-			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, availability, !kad);
+		if (params.availability > 0) {
+			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, params.availability, !kad);
 		}
 
-		if (!extension.IsEmpty()) {
-			target.WriteMetaDataSearchParam(FT_FILEFORMAT, extension);
+		if (!params.extension.IsEmpty()) {
+			target.WriteMetaDataSearchParam(FT_FILEFORMAT, params.extension);
 		}
 
 		#warning TODO - third and last warning of the same series.
@@ -1034,20 +978,15 @@ CMemFile* CSearchList::CreateSearchData(const wxString& searchString, wxString t
 	}
 	
 	// Packet ready to go.
-	
 	return data;
 }
+
 
 void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
 										const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
 {
+	EUtf8Str eStrEncode = (wxUSE_UNICODE ? utf8strRaw : utf8strNone);
 
-#if wxUSE_UNICODE
-	EUtf8Str eStrEncode = utf8strRaw;
-#else
-	EUtf8Str eStrEncode = utf8strNone;
-#endif
-	
 	CMemFile temp(250);
 	byte fileid[16];
 	fileID->toByteArray(fileid);
@@ -1087,7 +1026,6 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	
 	temp.Seek(0, wxFromStart);
 	
-	CSearchFile* tempFile = new CSearchFile(temp, eStrEncode == utf8strRaw, searchID , 0, 0, wxEmptyString, true);
-	AddToList(tempFile);
-	
+	AddToList(new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true));
 }
+
