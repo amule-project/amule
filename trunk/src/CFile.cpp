@@ -97,6 +97,8 @@ char* mktemp( char * path ) { return path ;}
 #	error  "Please specify the header with file functions declarations."
 #endif  //Win/UNIX
 
+#include <sys/types.h>
+#include <sys/stat.h>
 
 // Windows compilers don't have these constants
 #ifndef W_OK
@@ -375,18 +377,17 @@ uint64 CFile::GetLength() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot get length of closed file."));
 
-	sint64 pos = GetPosition();
-	sint64 len = SEEK_FD(m_fd, 0, SEEK_END);
-
-	if (len == -1) {
-		throw CSeekFailureException(wxString(wxT("Failed to retrieve length of file: ")) + wxSysErrorMsg());
+#ifdef __WXMSW__
+	struct __stat64 buf;
+	if (_fstat64(m_fd, &buf) == -1) {
+#else
+	struct stat buf;	
+	if (fstat(m_fd, &buf) == -1) {
+#endif
+		throw CIOFailureException(wxString(wxT("Failed to retrieve length of file: ")) + wxSysErrorMsg());
 	}
-
-	if (SEEK_FD(m_fd, pos, SEEK_SET) != pos) {
-		throw CSeekFailureException(wxString(wxT("Failed to restore pointer position: ")) + wxSysErrorMsg());
-	}	
 	
-	return len;
+	return buf.st_size;
 }
 
 
