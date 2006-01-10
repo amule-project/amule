@@ -2765,10 +2765,13 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	
 	// Kad reviewed
 	
-	if (forClient->GetRequestFile() != this) {
+	if ((forClient->GetRequestFile() != this)
+		&& (forClient->GetUploadFile() != this)) {
 		wxString file1 = _("Unknown");
 		if (forClient->GetRequestFile() && !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
 			file1 = forClient->GetRequestFile()->GetFileName();
+		} else if (forClient->GetUploadFile() &&  !forClient->GetUploadFile()->GetFileName().IsEmpty()) {
+			file1 = forClient->GetUploadFile()->GetFileName();
 		}
 		wxString file2 = _("Unknown");
 		if (!GetFileName().IsEmpty()) {
