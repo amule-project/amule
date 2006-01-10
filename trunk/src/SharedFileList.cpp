@@ -459,18 +459,18 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;
 		}
 		
+		CFile new_file(fname, CFile::read);
+		if (!new_file.IsOpened()) {
+			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
+			fname = SharedDir.GetNextFile();
+			continue;
+		}
+		
 		// Take just the file from the path
 		fname = wxFileName(fname).GetFullName();
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
-			fname = SharedDir.GetNextFile();
-			continue;
-		}
-
-		CFile new_file(fname, CFile::read);
-		if (!new_file.IsOpened()) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
