@@ -118,11 +118,9 @@ void CServerListCtrl::RemoveServer(CServer* server)
 {
 	long result = FindItem(-1, (long)server);
 	if ( result != -1 ) {
-		theApp.serverlist->RemoveServer(server);
 		DeleteItem(result);
-	}
-	
-	ShowServerCount();
+		ShowServerCount();
+	}	
 }
 
 
@@ -143,14 +141,14 @@ void CServerListCtrl::RemoveAllServers(int state)
 			
 			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 				SetStaticServer(server, false);
-				theApp.serverlist->RemoveServer( server );
 				DeleteItem( pos );
+				theApp.serverlist->RemoveServer( server );
 			} else {
 				++pos;
 			}
 		} else {
-			theApp.serverlist->RemoveServer( server );
 			DeleteItem( pos );
+			theApp.serverlist->RemoveServer( server );
 		}
 		
 		pos = GetNextItem(pos - 1, wxLIST_NEXT_ALL, state);
