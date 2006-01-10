@@ -139,8 +139,13 @@ private:
 	//! CSearchFile is not assignable.
 	CSearchFile& operator=(const CSearchFile& other);
 
-	//! Sets the filename to the most common one from the file's children.
-	void	UpdateFileName();
+	/**
+	 * Updates a parent file so that it shows various common traits.
+	 *
+	 * Currently, the most common filename is selected, and an average
+	 * of fileratings is set, based on files that have a rating only.
+	 */
+	void	UpdateParent();
 
 	
 	//! The parent of this result.

@@ -127,12 +127,13 @@ void CSearchFile::AddChild(CSearchFile* file)
 	
 	file->m_parent = this;
 
+	// TODO: Doesn't handle results with same name but diff. rating.
 	for (size_t i = 0; i < m_children.size(); ++i) {
 		CSearchFile* other = m_children.at(i);
 		
 		if (other->GetFileName() == file->GetFileName()) {
 			other->AddSources(file->GetSourceCount(), file->GetCompleteSourceCount());
-			UpdateFileName();
+			UpdateParent();
 			Notify_Search_Update_Sources(other);
 			delete file;
 			return;
@@ -141,7 +142,7 @@ void CSearchFile::AddChild(CSearchFile* file)
 
 	// New unique child.	
 	m_children.push_back(file);
-	UpdateFileName();
+	UpdateParent();
 	
 	if (ShowChildren()) {
 		Notify_Search_Add_Result(file);
@@ -149,15 +150,32 @@ void CSearchFile::AddChild(CSearchFile* file)
 }
 
 
-void CSearchFile::UpdateFileName()
+void CSearchFile::UpdateParent()
 {
+	wxCHECK_RET(not m_parent, wxT("UpdateParent called on child item"));
+	
+	size_t ratingCount = 0, ratingTotal = 0;
 	size_t max = 0, index = 0;
 	for (size_t i = 0; i < m_children.size(); ++i) {
-		if (m_children.at(index)->GetSourceCount() > max) {
-			max = m_children.at(index)->GetSourceCount();
+		const CSearchFile* child = m_children.at(index);
+		
+		// Locate the most common name
+		if (child->GetSourceCount() > max) {
+			max = child->GetSourceCount();
 			index = i;
 		}
+
+		// Create sum of ratings so that the parent contains the avg.
+		if (child->HasRating()) {
+			ratingCount += 1;
+			ratingTotal += child->UserRating();
+		}
+	}
+
+	if (ratingCount) {
+		m_iUserRating = (ratingTotal / ratingCount);
 	}
 
 	SetFileName(m_children.at(index)->GetFileName());
 }
+
