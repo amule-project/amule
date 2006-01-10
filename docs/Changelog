@@ -6,6 +6,8 @@ Version 2.1.1 - The "???" version
 		* Fixed Mac aMule showing erroneous version number in Get Info.
 		* Disabled the HTTP download progress dialog on Mac (again) because
 		  it causes crashes.
+		* Suppressed an error dialog on failure to lookup the host's domain
+		  name.  Demoted it to just a message in the log.
 
 	Special Thanks To:
 		* All the translaters who did such a great and fast job.	

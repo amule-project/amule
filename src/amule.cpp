@@ -342,8 +342,6 @@ char *CamuleApp::strOSDescription = new char[wxGetOsDescription().Length()+1];
 
 bool CamuleApp::OnInit()
 {
-	m_localip = StringHosttoUint32(::wxGetFullHostName());
-
 #if wxUSE_MEMORY_TRACING
 	printf("Checkpoint set on app init for memory debug\n");
 	wxDebugContext::SetCheckpoint();
@@ -352,6 +350,8 @@ bool CamuleApp::OnInit()
 	// Forward wxLog events to CLogger
 	wxLog::SetActiveTarget(new CLoggerTarget);
 	
+	m_localip = StringHosttoUint32(::wxGetFullHostName());
+
 #ifndef __WXMSW__
 	// get rid of sigpipe
 	signal(SIGPIPE, SIG_IGN);
