@@ -94,7 +94,8 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logKadMain,		wxT("Kademlia Main Thread") ),
 	CDebugCategory( logKadPrefs,		wxT("Kademlia Preferences") ),
 	CDebugCategory( logPfConvert,		wxT("PartFileConvert") ),
-	CDebugCategory( logMuleUDP,			wxT("MuleUDPSocket" ) )
+	CDebugCategory( logMuleUDP,			wxT("MuleUDPSocket" ) ),
+	CDebugCategory( logThreads,			wxT("ThreadScheduler" ) )
 };
 
 
@@ -202,7 +203,7 @@ void CLogger::FlushPendingEntries()
 }
 
 
-void CLogger::AddLogLine(bool critical, const wxString str)
+void CLogger::AddLogLine(bool critical, const wxString& str)
 {
 	PushEntry(ADDLOGLINE, critical, str);
 
@@ -212,7 +213,7 @@ void CLogger::AddLogLine(bool critical, const wxString str)
 }
 
 
-void CLogger::AddDebugLogLine( bool critical, DebugType type, const wxString& str )
+void CLogger::AddLogLine(bool critical, DebugType type, const wxString& str)
 {
 	int index = (int)type;
 	
