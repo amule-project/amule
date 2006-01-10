@@ -1,3 +1,17 @@
+Version 2.1.1 - The "???" version
+----------
+2006-01-??
+
+	ken:
+		* Fixed Mac aMule showing erroneous version number in Get Info.
+		* Disabled the HTTP download progress dialog on Mac (again) because
+		  it causes crashes.
+
+	Special Thanks To:
+		* All the translaters who did such a great and fast job.	
+
+--------------------------------------------------------------------------------
+
 Version 2.1.0 - The "I just teased you with this release till 2006" version
 ----------
 2006-01-01
