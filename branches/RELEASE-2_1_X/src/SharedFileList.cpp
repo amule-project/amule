@@ -459,24 +459,32 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;
 		}
 		
-		CFile new_file(fname, CFile::read);
-
-		if (!new_file.IsOpened()) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
-			fname = SharedDir.GetNextFile();
-			continue;
-		}
-
 		// Take just the file from the path
 		fname = wxFileName(fname).GetFullName();
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
 			fname = SharedDir.GetNextFile();
-			continue;			
+			continue;
+		}
+
+		CFile new_file(fname, CFile::read);
+		if (!new_file.IsOpened()) {
+			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
+			fname = SharedDir.GetNextFile();
+			continue;
+		}
+
+		uint32 fileLength = 0;
+		try {
+			fileLength = new_file.GetLength();
+		} catch (const CIOFailureException& e) {
+			AddDebugLogLineM(true, logKnownFiles, wxT("Failed to get filesize, skipping: ") + fname);
+			fname = SharedDir.GetNextFile();
+			continue;
 		}
 		
-		CKnownFile* toadd=filelist->FindKnownFile(fname,fdate,new_file.GetLength());
+		CKnownFile* toadd=filelist->FindKnownFile(fname, fdate, fileLength);
 		//theApp.Yield();
 		if (toadd) {
 			if ( AddFile(toadd) ) {
