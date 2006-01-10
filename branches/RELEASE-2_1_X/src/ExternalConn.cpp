@@ -622,7 +622,6 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 			break;
 		case EC_OP_SERVER_REMOVE:
 			if ( srv ) {
-				Notify_ServerRemove(srv);
 				theApp.serverlist->RemoveServer(srv);
 				response = new CECPacket(EC_OP_NOOP);
 			} else {

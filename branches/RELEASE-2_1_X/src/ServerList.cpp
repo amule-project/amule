@@ -278,7 +278,7 @@ void CServerList::ServerStats()
 			}
 		}
 		if(ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer() && !ping_server->IsStaticMember()) {
-			Notify_ServerRemove(ping_server);
+			RemoveServer(ping_server);
 			return;
 		}
 				
@@ -333,6 +333,8 @@ void CServerList::RemoveServer(CServer* in_server)
 			}
 			m_servers.erase(it);
 			theStats::DeleteServer();
+			
+			Notify_ServerRemove(in_server);
 			delete in_server;
 		}
 	}
@@ -691,10 +693,9 @@ void CServerList::RemoveDeadServers()
 {
 	if ( thePrefs::DeadServer() ) {
 		for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ) {
-			CServer* const cur_server = *it;
-			++it;
-			if ( cur_server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !cur_server->IsStaticMember()) {
-				RemoveServer(cur_server);
+			CServer* server = *it++;
+			if ( server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !server->IsStaticMember()) {
+				RemoveServer(server);
 			}
 		}
 	}
