@@ -79,6 +79,14 @@
 #include <sys/resource.h>
 #endif
 
+#ifndef __WXMSW__
+	#ifdef  HAVE_SYS_WAIT_H
+		#include <sys/wait.h>
+	#endif
+
+	#include <wx/unix/execute.h>
+#endif
+
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	//
@@ -366,6 +374,34 @@ void CDaemonAppTraits::DeletePending()
 	}
 	//m_sched_delete.erase(m_sched_delete.begin(), m_sched_delete.end());
 }
+
+
+#ifndef __WXMSW__
+int CDaemonAppTraits::WaitForChild(wxExecuteData& execData)
+{
+    if (execData.flags & wxEXEC_SYNC) {
+	    int exitcode = 0;
+    	if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
+        	wxLogSysError(_("Waiting for subprocess termination failed"));
+	    }	
+
+    	return exitcode;
+	} else /** wxEXEC_ASYNC */ {
+		// Give the process a chance to start or forked child to exit
+		// 1 second is enough time to fail on "path not found"
+		wxSleep(1);
+
+		int status = 0, result = 0; 
+		if ( (result = waitpid(execData.pid, &status, WNOHANG)) == -1) {
+			printf("ERROR: waitpid call failed\n");
+		} else if (status && WIFEXITED(status)) {
+			return 0;
+		}
+		
+		return execData.pid;
+	}
+}
+#endif
 
 
 #ifdef __WXMAC__
