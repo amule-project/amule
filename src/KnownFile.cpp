@@ -888,10 +888,13 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 {
 	// Kad reviewed
 	
-	if ((CKnownFile*)forClient->GetRequestFile() != this) {
+	if (((CKnownFile*)forClient->GetRequestFile() != this)
+		&& ((CKnownFile*)forClient->GetUploadFile() != this)) {
 		wxString file1 = _("Unknown");
 		if (forClient->GetRequestFile() &&  !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
 			file1 = forClient->GetRequestFile()->GetFileName();
+		} else if (forClient->GetUploadFile() &&  !forClient->GetUploadFile()->GetFileName().IsEmpty()) {
+			file1 = forClient->GetUploadFile()->GetFileName();
 		}
 		wxString file2 = _("Unknown");
 		if (!GetFileName().IsEmpty()) {
