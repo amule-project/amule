@@ -2640,7 +2640,7 @@ void CPartFile::StopPausedFile()
 			case PS_ERROR:
 				if (time(NULL) - m_iLastPausePurge > (60*60)) {
 					m_iLastPausePurge = time(NULL);
-					StopFile(true);
+					StopFile();
 				}
 		}
 	}
