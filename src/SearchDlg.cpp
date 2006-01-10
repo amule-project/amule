@@ -416,53 +416,52 @@ void CSearchDlg::StartNewSearch()
 	FindWindow(IDC_STARTS)->Disable();
 	FindWindow(IDC_SDOWNLOAD)->Disable();
 	FindWindow(IDC_CANCELS)->Enable();
+
+	CSearchList::CSearchParams params;
 	
-	wxString searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
-	searchString.Trim(true);
-	searchString.Trim(false);	
-	if ( searchString.IsEmpty() ) {
+	params.searchString = CastChild( IDC_SEARCHNAME, wxTextCtrl )->GetValue();
+	params.searchString.Trim(true);
+	params.searchString.Trim(false);
+	
+	if (params.searchString.IsEmpty()) {
 		return;
 	}
 
-	wxString typeText, extension;
-	uint32 min = 0, max = 0, availability = 0;
-	
 	if (CastChild(IDC_EXTENDEDSEARCHCHECK, wxCheckBox)->GetValue()) {
-
-		extension = CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->GetValue();
+		params.extension = CastChild( IDC_EDITSEARCHEXTENSION, wxTextCtrl )->GetValue();
 
 		uint32 sizemin = GetTypeSize( (uint8) CastChild( IDC_SEARCHMINSIZE, wxChoice )->GetSelection() ); 
 		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
 
 		// Parameter Minimum Size
-		min = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * sizemin;
+		params.minSize = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * sizemin;
 
 		// Parameter Maximum Size
-		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
+		params.maxSize = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
-		if ( max < min ) {
-			wxMessageDialog* dlg = new wxMessageDialog(this, _("Min size must be smaller than max size. Max size ignored."), _("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
-			dlg->ShowModal();
-			delete dlg;
-			max = 0;
+		if ((params.maxSize < params.minSize) and (params.maxSize)) {
+			wxMessageDialog dlg(this, _("Min size must be smaller than max size. Max size ignored."), _("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
+			dlg.ShowModal();
+			
+			params.maxSize = 0;
 		}
 
 		// Parameter Availability
-		availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
+		params.availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
 
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-			case 0:	typeText = wxEmptyString;	break;
-			case 1:	typeText = ED2KFTSTR_ARCHIVE; 	break;
-			case 2: typeText = ED2KFTSTR_AUDIO;	break;
-			case 3:	typeText = ED2KFTSTR_CDIMAGE;	break;
-			case 4: typeText = ED2KFTSTR_IMAGE;	break;
-			case 5: typeText = ED2KFTSTR_PROGRAM;	break;
-			case 6:	typeText = ED2KFTSTR_DOCUMENT;	break;
-			case 7:	typeText = ED2KFTSTR_VIDEO;	break;
+			case 0:	params.typeText = wxEmptyString;		break;
+			case 1:	params.typeText = ED2KFTSTR_ARCHIVE;	break;
+			case 2: params.typeText = ED2KFTSTR_AUDIO;		break;
+			case 3:	params.typeText = ED2KFTSTR_CDIMAGE;	break;
+			case 4: params.typeText = ED2KFTSTR_IMAGE;		break;
+			case 5: params.typeText = ED2KFTSTR_PROGRAM;	break;
+			case 6:	params.typeText = ED2KFTSTR_DOCUMENT;	break;
+			case 7:	params.typeText = ED2KFTSTR_VIDEO;		break;
 			default:
 				AddDebugLogLineM( true, logGeneral,
 					CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
-						% typeText
+						% params.typeText
 				);
 				break;
 		}
@@ -487,7 +486,7 @@ void CSearchDlg::StartNewSearch()
 				search_type = GlobalSearch;
 			}
 		case 2: { // Kad search 
-			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, searchString, typeText, extension, min, max, availability);
+			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, params);
 			if (!error.IsEmpty()) {
 				// Search failed / Remote in progress
 				wxMessageBox(error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION,this);
@@ -504,7 +503,7 @@ void CSearchDlg::StartNewSearch()
 			break;
 	}
 	
-	CreateNewTab(searchString + wxT(" (0)"), real_id);
+	CreateNewTab(params.searchString + wxT(" (0)"), real_id);
 }
 
 

@@ -1342,18 +1342,19 @@ CSearchListRem::CSearchListRem(CRemoteConnect *conn) : CRemoteContainer<CSearchF
 	m_curr_search = -1;
 }
 
-wxString CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, wxString &searchString,
-	wxString& typeText, wxString &extension, uint32 min_size, uint32 max_size, uint32 availability)
+wxString CSearchListRem::StartNewSearch(uint32* nSearchID, SearchType search_type, 
+	const CSearchList::CSearchParams& params)
 {
 	CECPacket search_req(EC_OP_SEARCH_START);
-	EC_SEARCH_TYPE ec_search_type;
+	EC_SEARCH_TYPE ec_search_type = EC_SEARCH_LOCAL;
 	switch(search_type) {
 		case LocalSearch: ec_search_type = EC_SEARCH_LOCAL; break;
 		case GlobalSearch: ec_search_type =  EC_SEARCH_GLOBAL; break;
 		case KadSearch: ec_search_type =  EC_SEARCH_KAD; break;
 	}
-	search_req.AddTag(CEC_Search_Tag(searchString,
-		ec_search_type, typeText, extension, availability, min_size, max_size));
+	search_req.AddTag(CEC_Search_Tag(params.searchString, ec_search_type,
+				params.typeText, params.extension, params.availability,
+				params.minSize, params.maxSize));
 		
 	m_conn->SendPacket(&search_req);
 	m_curr_search = *(nSearchID); // No kad remote search yet.
@@ -1439,23 +1440,23 @@ bool CSearchListRem::Phase1Done(const CECPacket *WXUNUSED(reply))
 
 void CSearchListRem::RemoveResults(long nSearchID)
 {
-	std::map<long, CSearchResultList>::iterator it = m_Results.find(nSearchID);
+	ResultMap::iterator it = m_results.find(nSearchID);
 	
-	if ( it != m_Results.end() ) {
+	if ( it != m_results.end() ) {
         CSearchResultList& list = it->second;
 
         for (unsigned int i = 0; i < list.size(); i++) {
 			delete list[i];
 		}
-        m_Results.erase(it);
+        m_results.erase(it);
 	}
 }
 
 
-const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID) const
+const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
 {
-	std::map<long, CSearchResultList>::const_iterator it = m_Results.find(nSearchID);
-	if (it != m_Results.end()) {
+	ResultMap::const_iterator it = m_results.find(nSearchID);
+	if (it != m_results.end()) {
 		return it->second;
 	}
 
