@@ -94,7 +94,9 @@ enum DebugType
 	//! Warnings/Errors related to partfile importer
 	logPfConvert,
 	//! Warnings/Errors related to the basic UDP socket-class.
-	logMuleUDP
+	logMuleUDP,
+	//! Warnings/Errors related to the thread-scheduler.
+	logThreads,
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };
@@ -173,10 +175,10 @@ namespace CLogger
 	 * event will be sent directly to the application, otherwise it will be
 	 * queued in the event-loop.
 	 */
-	void		AddLogLine( bool critical, const wxString str );
-	
+	void		AddLogLine( bool critical, const wxString& str );
+
 	/**
-	 * Logs the specified line of text as debug-info.
+	 * Logs the specified line of text, prefixed with the name of the DebugType.
 	 *
 	 * @param critical If true, then the message will be made visible directly to the user.
 	 * @param type The debug-category, the name of which will be prepended to the line.
@@ -186,7 +188,7 @@ namespace CLogger
 	 * event will be sent directly to the application, otherwise it will be
 	 * queued in the event-loop.
 	 */
-	void		AddDebugLogLine( bool critical, DebugType type, const wxString& str );
+	void		AddLogLine( bool critical, DebugType type, const wxString& str );
 
 
 	/**
@@ -225,29 +227,36 @@ public:
 };
 
 
+/**
+ * These macros should be used when logging. The 
+ * AddLogLineM macro will simply call one of the
+ * two CLogger::AddLogLine functions depending on
+ * paramteres, but AddDebugLogLineM will only log
+ * a message if the message is either critical or
+ * the specified debug-type is enabled in the 
+ * preferences.
+ */
 #if defined(MULEUNIT)
 	#define AddDebugLogLineM(critical, type, string) do {} while (false)
-	#define AddLogLineM(critical, string) do {} while (false)
-#elif defined(__DEBUG__)
-	#define AddDebugLogLineM(critical, type, string) \
-	do { \
-		if (critical || CLogger::IsEnabled(type)) { \
-			CLogger::AddDebugLogLine(critical, type, string); \
-		} \
-	} while (false)
-
-	#define AddLogLineM(critical, string) \
-		CLogger::AddLogLine(critical, string)
+	#define AddLogLineM(...) do {} while (false)
 #else
-	#define AddDebugLogLineM(critical, type, string) \
-	do { \
-		if (critical) { \
-			CLogger::AddDebugLogLine(critical, type, string); \
-		} \
-	} while (false)
+	#ifdef __DEBUG__
+		#define AddDebugLogLineM(critical, type, string) \
+		do { \
+			if (critical || CLogger::IsEnabled(type)) { \
+				CLogger::AddLogLine(critical, type, string); \
+			} \
+		} while (false)
+	#else
+		#define AddDebugLogLineM(critical, type, string) \
+		do { \
+			if (critical) { \
+				CLogger::AddLogLine(critical, type, string); \
+			} \
+		} while (false)
+	#endif
 
-	#define AddLogLineM(critical, string) \
-		CLogger::AddLogLine(critical, string)
+	#define AddLogLineM(...) CLogger::AddLogLine(__VA_ARGS__)
 #endif
 
 #endif
