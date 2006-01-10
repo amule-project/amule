@@ -355,7 +355,7 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 	AC_LANG_PUSH(C++)
 	
 	dnl Backup current flags and setup flags for testing
-	__CPPFLAGS=${CXXFLAGS}
+	__CPPFLAGS=${CPPFLAGS}
 	CPPFLAGS=${WX_CPPFLAGS}
 	
 	AC_MSG_CHECKING(that wxWidgets has support for large files)
