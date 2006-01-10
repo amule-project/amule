@@ -525,7 +525,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	
 	// If the result was not the type the user wanted, drop it.
 	if ((clientResponse == false) and not m_resultType.IsEmpty()) {
-		if (GetFileTypeByName(toadd->GetFileName()) == m_resultType) {
+		if (GetFileTypeByName(toadd->GetFileName()) != m_resultType) {
 			AddDebugLogLineM( false, logSearch,
 				CFormat( wxT("Dropped result type %s != %s, file %s") )
 					% GetFileTypeByName(toadd->GetFileName())
