@@ -125,25 +125,31 @@ void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow)
 CHTTPDownloadThreadGUI::CHTTPDownloadThreadGUI(wxString urlname, wxString filename,HTTP_Download_File file_id)
 : CHTTPDownloadThreadBase(urlname,filename,file_id)
 {
+#ifndef __WXMAC__
 	m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
 	m_myDlg->Show(true);
+#endif
 }
 
 CHTTPDownloadThreadGUI::~CHTTPDownloadThreadGUI()
 {	
+#ifndef __WXMAC__
 	wxMutexGuiEnter();
 	if (m_myDlg != NULL) {
 		m_myDlg->StopAnimation();
 		m_myDlg->Destroy();
 	}
 	wxMutexGuiLeave();
+#endif
 }
 
 void CHTTPDownloadThreadGUI::ProgressCallback(int dltotal, int dlnow) 
 {
+#ifndef __WXMAC__
 	wxMutexGuiEnter();
 	m_myDlg->UpdateGauge(dltotal,dlnow);
 	wxMutexGuiLeave();
+#endif
 }
 
 #endif
