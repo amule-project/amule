@@ -190,10 +190,9 @@ void CLogger::FlushPendingEntries()
 		theApp.NotifyEvent(event);
 #else
 		// Try to handle events immediatly when possible (to save to file).
-		if (theApp.IsRunning() or theApp.IsOnShutDown()) {
+		if (theApp.applog) {
 			theApp.NotifyEvent(event);			
 		} else {
-			// The log-file may not yet have been created.
 			theApp.AddPendingEvent(event);
 		}
 #endif
