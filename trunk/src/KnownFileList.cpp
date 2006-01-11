@@ -72,19 +72,12 @@ bool CKnownFileList::Init()
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
 		for (uint32 i = 0; i < RecordsNumber; i++) {
-			CKnownFile* pRecord =  new CKnownFile();
-			bool loaded = false;
-			try {
-				loaded = pRecord->LoadFromFile(&file);
-			} catch (...) {
-				delete pRecord;
-				throw;
-			}
-				
-			if (loaded) {
-				Append(pRecord);
-			} else {			
-				delete pRecord;
+			std::auto_ptr<CKnownFile> record(new CKnownFile());
+			
+			if (record->LoadFromFile(&file)) {
+				Append(record.release());
+			} else {
+				AddLogLineM(true, wxT("Failed to load entry in knownfilelist, file may be corrupt"));
 			}
 		}
 	
@@ -111,15 +104,16 @@ void CKnownFileList::Save()
 		file.WriteUInt8(MET_HEADER);
 		file.WriteUInt32(m_map.size() + m_duplicates.size());
 
-		CKnownFileMap::iterator it = m_map.begin();
-		for (; it != m_map.end(); ++it) {
-			it->second->WriteToFile(&file);
-		}
-	
-		// Kry - Duplicates handling.
+		// Duplicates handling. Duplicates needs to be saved first,
+		// since it is the last entry that gets used.
 		KnownFileList::iterator itDup = m_duplicates.begin();
 		for ( ; itDup != m_duplicates.end(); ++itDup ) {
 			(*itDup)->WriteToFile(&file);
+		}
+		
+		CKnownFileMap::iterator it = m_map.begin();
+		for (; it != m_map.end(); ++it) {
+			it->second->WriteToFile(&file);
 		}
 	} catch (const CIOFailureException& e) {
 		AddLogLineM(true, CFormat(_("Error while saving known.met file: %s")) % e.what());
