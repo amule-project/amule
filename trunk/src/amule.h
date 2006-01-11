@@ -208,6 +208,8 @@ public:
 	
 	bool CryptoAvailable() const;
 	
+	//! TODO: Move to CLogger
+	wxFFileOutputStream* applog;
 protected:
 	// Used to detect a previous running instance of aMule
 	wxSingleInstanceChecker*	m_singleInstance;
@@ -267,7 +269,6 @@ protected:
 
 	long webserver_pid;
 
-	wxFFileOutputStream* applog;
 	bool enable_stdout_log;
 	bool enable_daemon_fork;
 	wxString server_msg;
