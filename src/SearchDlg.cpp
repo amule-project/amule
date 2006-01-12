@@ -440,7 +440,7 @@ void CSearchDlg::StartNewSearch()
 		// Parameter Maximum Size
 		max = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
-		if ( max < min ) {
+		if ((max < min) and max) {
 			wxMessageDialog* dlg = new wxMessageDialog(this, _("Min size must be smaller than max size. Max size ignored."), _("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
 			dlg->ShowModal();
 			delete dlg;
