@@ -359,6 +359,7 @@ noinst_HEADERS = AddFileThread.h \
 		PrefsUnifiedDlg.h \
 		Proxy.h \
 		SafeFile.h \
+		ScopedPtr.h \
 		SearchDlg.h \
 		SearchListCtrl.h \
 		SearchFile.h \
