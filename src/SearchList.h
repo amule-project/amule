@@ -34,6 +34,7 @@
 #include "SearchFile.h"			// Needed for CSearchFile
 
 #include <map>
+#include <memory>
 
 
 class CMemFile;
