@@ -34,6 +34,8 @@
 #include "Logger.h"
 #include <common/Format.h>
 
+#include <memory>
+
 
 CKnownFileList::CKnownFileList()
 {

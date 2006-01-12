@@ -41,7 +41,6 @@
 #include "SearchFile.h"		// Needed for CSearchFile
 
 #include <algorithm>
-#include <memory>
 
 #ifndef AMULE_DAEMON
 #include "amuleDlg.h"		// Needed for CamuleDlg
