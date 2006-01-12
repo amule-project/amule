@@ -90,7 +90,7 @@ public:
 	
 	
 	/** Accessor. */
-	TYPE& operator[](long int i) const;
+	TYPE& operator[](unsigned i) const;
 	
 	
 	/** @see CScopedPtr::get */
