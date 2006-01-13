@@ -1398,7 +1398,7 @@ void CamuleApp::OnFinishedCompletion(CMuleInternalEvent& evt)
 	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
 
 	// Check if we should execute an script/app/whatever.
-	if (thePrefs::CommandOnCompletion()) {
+	if (thePrefs::CommandOnCompletion() and not evt.GetInt()) {
 		wxString command = thePrefs::GetCommandOnCompletion();
 
 		command.Replace(wxT("%FILE"), completed->GetFullName());
