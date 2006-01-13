@@ -124,14 +124,24 @@ enum {
 // The following defines handle different names across platforms,
 // and ensures that we use 64b IO on windows (only 32b by default).
 #ifdef __WXMSW__
-	#define FLUSH_FD(x)			_commit(x)
 	#define SEEK_FD(x, y, z)	_lseeki64(x, y, z)
 	#define TELL_FD(x)			_telli64(x)
+
+	#if (__MSVCRT_VERSION__ < 0x0601)
+		#warning MSCVRT-Version smaller than 6.01
+		#define STAT_FD(x, y)		_fstati64(x, y)
+		#define STAT_STRUCT			struct _stati64
+	#else
+		#define STAT_FD(x, y)		_fstat64(x, y)
+		#define STAT_STRUCT			struct __stat64
+	#endif
 #else
-	#define FLUSH_FD(x)			fsync(x)
 	#define SEEK_FD(x, y, z)	lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
+	#define STAT_FD(x, y)		fstat(x, y)
+	#define STAT_STRUCT			struct stat
 #endif
+
 
 // This macro is used to check if a syscall failed, in that case
 // log an appropriate message containing the errno string.
@@ -295,7 +305,7 @@ bool CFile::Flush()
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
 	
-	bool flushed = (FLUSH_FD(m_fd) != -1);
+	bool flushed = (wxFsync(m_fd) != -1);
 	SYSCALL_CHECK(flushed, wxT("flushing file"));
 
 	return flushed;	
@@ -377,13 +387,8 @@ uint64 CFile::GetLength() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot get length of closed file."));
 
-#ifdef __WXMSW__
-	struct __stat64 buf;
-	if (_fstat64(m_fd, &buf) == -1) {
-#else
-	struct stat buf;	
-	if (fstat(m_fd, &buf) == -1) {
-#endif
+	STAT_STRUCT buf;
+	if (STAT_FD(m_fd, &buf) == -1) {
 		throw CIOFailureException(wxString(wxT("Failed to retrieve length of file: ")) + wxSysErrorMsg());
 	}
 	
