@@ -32,6 +32,7 @@
 #include "amule.h"				// Needed for theApp
 
 #include <algorithm>			// Needed for std::max
+#include <memory>				// Needed for std::auto_ptr
 
 
 
