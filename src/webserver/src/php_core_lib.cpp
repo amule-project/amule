@@ -35,6 +35,7 @@
 #include <algorithm>
 
 #ifndef PHP_STANDALONE_EN
+	#include "config.h"
 	#include "WebServer.h"
 	#include <ec/ECSpecialTags.h>
 #endif
@@ -1424,6 +1425,17 @@ void amule_search_file_prop_get(void *obj, char *prop_name, PHP_VALUE_NODE *resu
 
 #endif
 
+void amule_version(PHP_VALUE_NODE *val)
+{
+	if ( !val ) {
+		return;
+	}
+	value_value_free(val);
+
+	val->type = PHP_VAL_STRING;
+	val->str_val = strdup(PACKAGE_VERSION);
+}
+
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
@@ -1513,6 +1525,10 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"amule_get_serverinfo",
 		1, php_get_serverinfo,
+	},
+	{
+		"amule_get_version",
+		0, amule_version,
 	},
 	{ 0, 0, 0, },
 };
