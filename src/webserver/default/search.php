@@ -3,8 +3,9 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="PRAGMAS" CONTENT="NO-CACHE">
-<title>aMule CVS - Web Control Panel</title>
-
+<?php
+	echo "<title>aMule " , amule_get_version(), " - Web Control Panel</title>";
+?>
 <style type="text/css">
 img
 {
