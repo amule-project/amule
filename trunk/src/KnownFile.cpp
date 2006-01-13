@@ -318,6 +318,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
+	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
 	m_AvailPartFrequency.SetCount(m_iPartCount);
 	m_iUpPriority = tag->Prio();
 	if ( m_iUpPriority >= 10 ) {

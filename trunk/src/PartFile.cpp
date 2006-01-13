@@ -3767,7 +3767,6 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	SetFileSize(tag->SizeFull());
 	m_showSources = false;
 	m_partmetfilename = tag->PartMetName();
-
 	transfered = tag->SizeXfer();
 	percentcompleted = (100.0*completedsize) / GetFileSize();
 	completedsize = tag->SizeDone();
@@ -3777,6 +3776,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
     // is it ok ?
     m_stopped = 0;
 
+	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
 	m_SrcpartFrequency.SetCount(m_iPartCount);
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
