@@ -3,8 +3,9 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragmas" content="no-cache">
-<title>aMule CVS - Web Control Panel</title>
 <?php
+	echo "<title>aMule " , amule_get_version(), " - Web Control Panel</title>";
+	
 	if ( $_SESSION["auto_refresh"] > 0 ) {
 		echo "<meta http-equiv=\"refresh\" content=\"", $_SESSION["auto_refresh"],
 			'; url=downloads.php', '">';
