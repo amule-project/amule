@@ -124,6 +124,7 @@ enum {
 // The following defines handle different names across platforms,
 // and ensures that we use 64b IO on windows (only 32b by default).
 #ifdef __WXMSW__
+	#define FLUSH_FD(x)			_commit(x)
 	#define SEEK_FD(x, y, z)	_lseeki64(x, y, z)
 	#define TELL_FD(x)			_telli64(x)
 
@@ -136,6 +137,7 @@ enum {
 		#define STAT_STRUCT			struct __stat64
 	#endif
 #else
+	#define FLUSH_FD(x)			fsync(x)
 	#define SEEK_FD(x, y, z)	lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
 	#define STAT_FD(x, y)		fstat(x, y)
@@ -305,7 +307,7 @@ bool CFile::Flush()
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
 	
-	bool flushed = (wxFsync(m_fd) != -1);
+	bool flushed = (FLUSH_FD(m_fd) != -1);
 	SYSCALL_CHECK(flushed, wxT("flushing file"));
 
 	return flushed;	
