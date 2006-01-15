@@ -1377,6 +1377,8 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			
 			dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 
+			// Due to a bug in wxMemoryDC, we musn't set Null values for both bitmap and brush.
+			cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
 			cdcStatus.SelectObject(wxNullBitmap);
 		}
 		
@@ -1666,6 +1668,8 @@ void CDownloadListCtrl::DrawSourceItem(
 
 					dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
 					
+					// Due to a bug in wxMemoryDC, we musn't set Null values for both bitmap and brush.
+					cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
 					cdcStatus.SelectObject(wxNullBitmap);
 				} else {
 					buffer = _("A4AF");
