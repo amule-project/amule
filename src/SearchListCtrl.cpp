@@ -155,6 +155,33 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	// Insert the item before the item found by the search
 	uint32 newid = InsertItem(GetInsertPos( (long)toshow ), toshow->GetFileName());
 
+	// Sanity checks to ensure that results/children are properly positioned.
+#if __WXDEBUG__
+	{
+		CSearchFile* parent = toshow->GetParent();
+
+		if (newid > 0) {
+			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);			
+		
+			if (parent) {
+				wxASSERT((before->GetParent() == parent) or (before == parent));
+			} else {
+				wxASSERT(before->GetParent() != toshow);
+			}
+		}
+		
+		if (newid < GetItemCount() - 1) {
+			CSearchFile* after = (CSearchFile*)GetItemData(newid + 1);
+	
+			if (parent) {
+				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
+			} else {
+				wxASSERT((after->GetParent() == toshow) or (not after->GetParent()));
+			}
+		}
+	}
+#endif
+
 	SetItemData( newid, (long)toshow );
 
 	// Filesize
@@ -387,13 +414,13 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 		}
 	} else if (parent1) {
 		if (parent1 == file2) {
-			return modifier * -1;
+			return 1;
 		} else {
 			return SortProc((long)parent1, (long)file2, sortData);
 		}
 	} else if (parent2) {
 		if (parent2 == file1) {
-			return modifier * 1;
+			return -1;
 		} else {
 			return SortProc((long)file1, (long)parent2, sortData);
 		}
@@ -447,7 +474,7 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 
 		// Sort by file-hash
 		case ID_SEARCH_COL_FILEID:
-			result = file2->GetFileHash().Encode().Cmp( file1->GetFileHash().Encode() );
+			result = CmpAny(file2->GetFileHash(), file1->GetFileHash());
 	}
 
 	// Compares should never return 'equals' for different instances,
@@ -793,6 +820,33 @@ void CSearchListCtrl::OnDrawItem(
 			}
 		}
 	}
+
+	// Sanity checks to ensure that results/children are properly positioned.
+#if __WXDEBUG__
+	{
+		CSearchFile* parent = file->GetParent();
+
+		if (item > 0) {
+			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);			
+		
+			if (parent) {
+				wxASSERT((before->GetParent() == parent) or (before == parent));
+			} else {
+				wxASSERT(before->GetParent() != file);
+			}
+		}
+		
+		if (item < GetItemCount() - 1) {
+			CSearchFile* after = (CSearchFile*)GetItemData(item + 1);
+	
+			if (parent) {
+				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
+			} else {
+				wxASSERT((after->GetParent() == file) or (not after->GetParent()));
+			}
+		}
+	}
+#endif
 }
 
 
