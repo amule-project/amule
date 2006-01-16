@@ -3088,7 +3088,7 @@ msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 " Contact: admin@amule.org (administrative issues) \n"
-" Copyright (C) 2003-2006 aMule Team \n"
+" Copyright (C) 2003-2005 aMule Team \n"
 "\n"
 " Part of aMule is based on \n"
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -3102,7 +3102,7 @@ msgstr ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 " Contact: admin@amule.org (administratieve zaken) \n"
-" Copyright (C) 2003-2006 aMule Team \n"
+" Copyright (C) 2003-2005 aMule Team \n"
 "\n"
 " Een deel van aMule is gebaseerd op \n"
 " Kademlia: Peer-to-peer routing gebaseerd op het XOR metriek.\n"
@@ -3644,7 +3644,7 @@ msgstr "Uitgebreide Parameters"
 
 #: src/muuli_wdr.cpp:254
 msgid "Filtering"
-msgstr "Aan het filteren"
+msgstr "Filters"
 
 #: src/muuli_wdr.cpp:263
 msgid "File Type"
@@ -3922,7 +3922,7 @@ msgstr "Geen commenta(a)r(en)"
 
 #: src/muuli_wdr.cpp:982
 msgid "Refresh"
-msgstr "V0sen"
+msgstr "Verversen"
 
 #: src/muuli_wdr.cpp:1009
 msgid "Downloading, please wait ..."
@@ -3961,7 +3961,7 @@ msgstr "Gebruikershash :"
 #: src/Statistics.cpp:699
 #: src/SharedFilesCtrl.cpp:122
 msgid "Shared Files"
-msgstr "Gedeelde Bestanden"
+msgstr "Gedeeld"
 
 #: src/muuli_wdr.cpp:1117
 msgid "Reload your shared files"
@@ -6994,7 +6994,7 @@ msgstr "Totaal Gebruikers: %s | Totaal Bestanden: %s"
 #~ " FAQ: http://wiki.amule.org \n"
 #~ "\n"
 #~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
+#~ " Copyright (C) 2003-2005 aMule Team \n"
 #~ msgstr ""
 #~ " 'Alle-Platformen' p2p client gebaseerd op eMule \n"
 #~ "\n"
@@ -7003,7 +7003,7 @@ msgstr "Totaal Gebruikers: %s | Totaal Bestanden: %s"
 #~ " FAQ: http://wiki.amule.org \n"
 #~ "\n"
 #~ " Contact: admin@amule.org (administratieve zaken) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
+#~ " Copyright (C) 2003-2005 aMule Team \n"
 #~ msgid "Disconnect from current server"
 #~ msgstr "Verbreek verbinding met huidige server"
 #~ msgid "Users: %s (%s) | Files %s (%s)"
