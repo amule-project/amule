@@ -1991,21 +1991,15 @@ int CDownloadListCtrl::Compare(
 		
 		// Sort by client version
 		case 6: {
-			if ( client1->GetClientSoft() == client2->GetClientSoft() ) {
-				if (client1->IsEmuleClient()) {
-					return CmpAny(
-						client2->GetMuleVersion(),
-						client1->GetMuleVersion() );
-				} else {
-					return CmpAny(
-						client2->GetVersion(),
-						client1->GetVersion() );
-				}
-			} else {
-				return CmpAny(
-					client1->GetClientSoft(),
-					client2->GetClientSoft() );
+			if (client1->GetClientSoft() != client2->GetClientSoft()) {
+				return client1->GetSoftStr().Cmp(client2->GetSoftStr());
 			}
+
+			if (client1->GetVersion() != client2->GetVersion()) {
+				return CmpAny(client1->GetVersion(), client2->GetVersion());
+			}
+
+			return client1->GetClientModString().Cmp(client2->GetClientModString());
 		}
 		
 		// Sort by Queue-Rank

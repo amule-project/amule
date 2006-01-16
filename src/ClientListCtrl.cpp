@@ -44,6 +44,31 @@
 #include <wx/dc.h>
 
 
+
+
+////////////////////////////////////////////////////////////
+// Sorter functions.
+
+int CompareVersions(const CUpDownClient* client1, const CUpDownClient* client2)
+{
+	if (client1->GetClientSoft() != client2->GetClientSoft()) {
+		return client1->GetSoftStr().Cmp(client2->GetSoftStr());
+	}
+
+	if (client1->GetVersion() != client2->GetVersion()) {
+		return CmpAny(client1->GetVersion(), client2->GetVersion());
+	}
+
+	return client1->GetClientModString().Cmp(client2->GetClientModString());
+}
+
+
+
+
+////////////////////////////////////////////////////////////
+// CClientLitCtrl
+
+
 BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 	EVT_RIGHT_DOWN(CClientListCtrl::OnRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(-1, CClientListCtrl::OnMiddleClick)
@@ -697,15 +722,7 @@ int CUploadingView::SortProc(long item1, long item2, long sortData)
 		}
 		
 		// Sort by client software
-		case 2: {
-			if ( client1->GetClientSoft() != client2->GetClientSoft() )
-				return mode * CmpAny( client1->GetClientSoft(), client2->GetClientSoft() );
-
-			if (client1->GetVersion() != client2->GetVersion())
-				return mode * CmpAny( client1->GetVersion(), client2->GetVersion() );
-
-			return mode * client1->GetClientModString().CmpNoCase( client2->GetClientModString() );
-		}
+		case 2: return mode * CompareVersions(client1, client2);
 		
 		// Sort by speed
 		case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
@@ -895,15 +912,7 @@ int CQueuedView::SortProc( long item1, long item2, long sortData )
 		}
 		
 		// Sort by client software
-		case 2: {
-			if (client1->GetClientSoft() != client2->GetClientSoft())
-				return mode * CmpAny( client1->GetClientSoft(), client2->GetClientSoft() );
-
-			if (client1->GetVersion() != client2->GetVersion())
-				return mode * CmpAny( client1->GetVersion(), client2->GetVersion() );
-
-			return mode * client1->GetClientModString().CmpNoCase( client2->GetClientModString() );
-		}
+		case 2:	return mode * CompareVersions(client1, client2);
 		
 		// Sort by file upload-priority
 		case 3: {
@@ -1059,21 +1068,13 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		
 		
 		// Sort by client-software
-		case 5:
-			if (client1->GetClientSoft() != client2->GetClientSoft())
-				return mode * CmpAny( client1->GetClientSoft(), client2->GetClientSoft() );
-
-			if (client1->GetVersion() != client2->GetVersion())
-				return mode * CmpAny( client1->GetVersion(), client2->GetVersion() );
-
-			return mode * client1->GetClientModString().CmpNoCase( client2->GetClientModString() );
+		case 5: return mode * CompareVersions(client1, client2);
 		
 		// Sort by connection
 		case 6: return mode * CmpAny( client1->IsConnected(), client2->IsConnected() );
 
-		
-		case 7:
-			return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
+		// Sort by user-hash
+		case 7: return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
 		
 		default:
 			return 0;
