@@ -1812,8 +1812,10 @@ int CDownloadListCtrl::SortProc(long param1, long param2, long sortData)
 				// available and an unavailable
 				comp = ( item2->type - item1->type );
 
-				// Do we need to futher compare them? Happens if both have same type.
-				if ( !comp ) {
+				if (comp) {
+					// A4AF and non-A4AF. The order is fixed regardless of sort-order.
+					return comp;
+				} else {
 					comp = Compare(
 						(CUpDownClient*)item1->value,
 						(CUpDownClient*)item2->value,
