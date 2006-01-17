@@ -44,9 +44,6 @@ public:
     
 	uint64 GetNumberOfSentBytesSinceLastCallAndReset();
     uint64 GetNumberOfSentBytesOverheadSinceLastCallAndReset();
-    uint32 GetHighestNumberOfFullyActivatedSlotsSinceLastCallAndReset();
-    
-	uint32 GetStandardListSize();
 
     void AddToStandardList(uint32 index, ThrottledFileSocket* socket);
     bool RemoveFromStandardList(ThrottledFileSocket* socket);
@@ -86,7 +83,6 @@ private:
 
     uint64 m_SentBytesSinceLastCall;
     uint64 m_SentBytesSinceLastCallOverhead;
-    uint32 m_highestNumberOfFullyActivatedSlots;
 };
 
 
