@@ -477,16 +477,13 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 			result = CmpAny(file2->GetFileHash(), file1->GetFileHash());
 	}
 
-	// Compares should never return 'equals' for different instances,
-	// since that can cause positioning of child-items to be off.
-	return modifier * (result ? result : CmpAny(item1, item2));
+	return modifier * result;
 }
 
 
 void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 {
-	wxASSERT( src );
-	wxASSERT( dst );
+	wxCHECK_RET(src and dst, wxT("NULL argument in SyncLists"));
 
 	// Column widths
 	for ( int i = 0; i < src->GetColumnCount(); i++ ) {
@@ -501,7 +498,6 @@ void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 	unsigned order  = src->GetSortOrder();
 	if (column != dst->GetSortColumn() || order != dst->GetSortOrder()) {
 		dst->SetSorting(column, order);
-		dst->SortList();
 	}
 }
 

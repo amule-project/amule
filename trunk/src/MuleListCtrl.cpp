@@ -31,11 +31,12 @@
 #include <wx/imaglist.h>
 
 #include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
-#include <common/StringFunctions.h>	// Needed for StrToLong
+#include <common/StringFunctions.h>		// Needed for StrToLong
 
 #include "MuleListCtrl.h"		// Interface declarations
 #include "OPCodes.h"			// Needed for MP_LISTCOL_1
 #include "GetTickCount.h"		// Needed for GetTickCount()
+#include "OtherFunctions.h"
 
 #include <cctype>				// Needed for isprint() and tolower
 
@@ -52,7 +53,7 @@
 #elif defined(__WXMSW__) || defined(__WXMAC__) || defined(__WXCOCOA__)
 	const int COL_SIZE_MIN = 0;
 #else
-	#error Need to set col_minsize for your OS
+	#error Need to define COL_SIZE_MIN for your OS
 #endif
 
 
@@ -76,8 +77,6 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 	: MuleExtern::wxGenericListCtrl(parent, winid, pos, size, style, validator, name)
 {
 	m_sort_func = NULL;
-	m_sort_order = 0;
-	m_sort_column = 0;
 	m_tts_time = 0;
 	m_tts_item = -1;
 
@@ -87,6 +86,9 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 		imgList.Add(wxBitmap(sort_dnx2_xpm));
 		imgList.Add(wxBitmap(sort_upx2_xpm));
 	}
+
+	// Default sort-order is to sort by the first column (asc).
+	m_sort_orders.push_back(CColPair(0, 0));
 	
 	SetImageList(&imgList, wxIMAGE_LIST_SMALL);
 }
@@ -94,23 +96,25 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 
 CMuleListCtrl::~CMuleListCtrl()
 {
-	// If the user specified a name for the list, then its options will be
-	// saved upon destruction of the listctrl.
-	SaveSettings();
+	if (not m_name.IsEmpty()) {
+		SaveSettings();
+	}
 }
 
 
 void CMuleListCtrl::SaveSettings()
 {
-	// Don't save tables with no specified name
-	if ( m_name.IsEmpty() ) {
-		return;
-	}
+	wxCHECK_RET(not m_name.IsEmpty(), wxT("Cannot save settings for unnamed list"));
 	
 	wxConfigBase* cfg = wxConfigBase::Get();
 
 	// Save sorting, column and order
-	cfg->Write(wxT("/eMule/TableSorting") + m_name, (long)(m_sort_column | m_sort_order));
+	wxString sortOrder;
+	for (CSortingList::iterator it = m_sort_orders.begin(); it != m_sort_orders.end(); ++it) {
+		sortOrder += wxString::Format(wxT("%u %u, "), it->first, it->second);
+	}
+	
+	cfg->Write(wxT("/eMule/TableOrdering") + m_name, sortOrder);
 
 	// Save column widths. ATM this is also used to signify hidden columns.
 	wxString buffer;
@@ -126,23 +130,46 @@ void CMuleListCtrl::SaveSettings()
 
 void CMuleListCtrl::LoadSettings()
 {
-	// Dont save tables with no specified name
-	if (m_name.IsEmpty()) {
-		return;
-	}
+	wxCHECK_RET(not m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
 	// Load sort order (including sort-column)
-	long setting = cfg->Read(wxT("/eMule/TableSorting") + m_name, 0l);
+	m_sort_orders.clear();
+	wxString setting = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
 	
-	unsigned column = setting & COLUMN_MASK;
-	unsigned order  = setting & SORTING_MASK;
+	// Prevent sorting from occuring when calling SetSorting
+	wxListCtrlCompare sortFunc = m_sort_func;
+	m_sort_func = NULL;
 	
-	// Sanity checking, to avoid asserting due to wrong saved settings
-	if (column >= (unsigned)GetColumnCount()) {
-		column = order = 0;
+	wxStringTokenizer tokens(setting, wxT(","));
+	while (tokens.HasMoreTokens()) {
+		wxString token = tokens.GetNextToken();
+
+		unsigned long column = 0, order = 0;
+
+		if (token.BeforeFirst(wxT(' ')).Strip(wxString::both).ToULong(&column)) {
+			if (token.AfterFirst(wxT(' ')).Strip(wxString::both).ToULong(&order)) {
+				// Sanity checking, to avoid asserting if column count changes.
+				if (column < (unsigned)GetColumnCount()) {
+					// Sanity checking, to avoid asserting if data-format changes.
+					if ((order & ~SORTING_MASK) == 0) {
+						// SetSorting will take care of duplicate entries
+						SetSorting(column, order);
+					}
+				}
+			}
+		}
 	}
+	
+	// Must have at least one sort-order specified
+	if (m_sort_orders.empty()) {
+		m_sort_orders.push_back(CColPair(0, 0));
+	}
+
+	// Re-enable sorting and resort the contents (if any).
+	m_sort_func = sortFunc;
+	SortList();	
 
 	// Set the column widths
 	wxString buffer;
@@ -154,32 +181,23 @@ void CMuleListCtrl::LoadSettings()
 			SetColumnWidth(counter++, StrToLong( tokenizer.GetNextToken()));
 		}
 	}
-	
-	if (GetColumnCount()) {
-		// Update the sorting
-		SetSorting(column, order);
-		SortList();
-	}
 }
 
 
 long CMuleListCtrl::GetInsertPos(long data)
 {
-	// Get the sort-function pointer
-	wxListCtrlCompare compare = m_sort_func;
-
 	// Find the best place to position the item through a binary search
 	int Min = 0;
 	int Max = GetItemCount();
 
 	// Only do this if there are any items and a sorter function
-	if (Max && compare) {
+	if (Max && m_sort_func) {
 		// This search will narrow down the best place to position the new
 		// item. The result will be the item after that position, which is
 		// the format expected by the insertion function.
 		do {
 			int cur_pos = ( Max - Min ) / 2 + Min;
-			int cmp = compare(data, GetItemData(cur_pos), m_sort_column | m_sort_order);
+			int cmp = CompareItems(data, GetItemData(cur_pos));
 			
 			// Value is lesser than the one at the current pos
 			if ( cmp < 0 ) {
@@ -194,13 +212,59 @@ long CMuleListCtrl::GetInsertPos(long data)
 }
 
 
+
+int CMuleListCtrl::CompareItems(long item1, long item2)
+{
+	CSortingList::const_iterator it = m_sort_orders.begin();
+	for (; it != m_sort_orders.end(); ++it) {
+		int result = m_sort_func(item1, item2, it->first | it->second);
+		if (result != 0) {
+			return result;
+		}
+	}
+
+	// Ensure that different items are never considered equal.
+	return CmpAny(item1, item2);
+}
+
+
+wxListCtrlCompare	g_sort_func = NULL;
+CMuleListCtrl*		g_sort_list = NULL;
+
+
+int CMuleListCtrl::SortProc(long item1, long item2, long)
+{
+	const CSortingList& orders = g_sort_list->m_sort_orders;
+	
+	CSortingList::const_iterator it = orders.begin();
+	for (; it != orders.end(); ++it) {
+		int result = g_sort_func(item1, item2, it->first | it->second);
+		if (result != 0) {
+			return result;
+		}
+	}
+
+	// Ensure that different items are never considered equal.
+	return CmpAny(item1, item2);
+}
+
+
 void CMuleListCtrl::SortList()
 {
-	if (m_sort_func) {
+	wxCHECK_RET(g_sort_func == NULL, wxT("Sort-function already set"));
+	wxCHECK_RET(g_sort_list == NULL, wxT("Sort-list already set"));
+	
+	if (m_sort_func and GetColumnCount()) {
 		// Positions are likely to be invalid after sorting.
 		ResetTTS();
 		
-		SortItems(m_sort_func, m_sort_column | m_sort_order);
+		g_sort_func = m_sort_func;
+		g_sort_list = this;
+		
+		SortItems(SortProc, 0);
+
+		g_sort_func = NULL;
+		g_sort_list = NULL;
 	}
 }
 
@@ -270,28 +334,37 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	if (pos != -1) {
 		item = GetItemData(pos);
 	}
-	
-	// If the user clicked on the same column, then revert the order, 
-	// otherwise sort ascending.
-	if ((unsigned)evt.GetColumn() == m_sort_column) {
-		if (m_sort_order & SORT_DES) {
-			if (AltSortAllowed(m_sort_column)) {
-				m_sort_order = (~m_sort_order) & SORT_ALT;
+
+
+	unsigned sort_order = 0;
+	if (m_sort_orders.front().first == (unsigned)evt.GetColumn()) {
+		// Same column as before, flip the sort-order
+		sort_order = m_sort_orders.front().second;
+		
+		if (sort_order & SORT_DES) {
+			if (AltSortAllowed(evt.GetColumn())) {
+				sort_order = (~sort_order) & SORT_ALT;
 			} else {
-				m_sort_order = 0;
+				sort_order = 0;
 			}
 		} else {
-			m_sort_order = SORT_DES | (m_sort_order & SORT_ALT);
+			sort_order = SORT_DES | (sort_order & SORT_ALT);
 		}
+
+		m_sort_orders.pop_front();
 	} else {
-		m_sort_order = 0;
+		// Check if the column has already been set
+		CSortingList::iterator it = m_sort_orders.begin();
+		for (; it != m_sort_orders.end(); ++it) {
+			if ((unsigned)evt.GetColumn() == it->first) {
+				sort_order = it->second;
+				break;
+			}
+		}	
 	}
-
-	SetSorting(evt.GetColumn(), m_sort_order);
 	
-
-	// The sortlist function does the acutal work
-	SortList();
+	SetSorting(evt.GetColumn(), sort_order);
+	
 	
 	// Set focus on item if any was focused
 	if (item != -1) {
@@ -323,13 +396,13 @@ void CMuleListCtrl::SetTableName(const wxString& name)
 
 unsigned CMuleListCtrl::GetSortColumn() const
 {
-	return m_sort_column;
+	return m_sort_orders.front().first;
 }
 
 
 unsigned CMuleListCtrl::GetSortOrder() const
 {
-	return m_sort_order;
+	return m_sort_orders.front().second;
 }
 
 
@@ -350,36 +423,44 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), wxT("Invalid column to sort by."));
 	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), wxT("Sorting order contains invalid data."));
 	
-	// Unset old column
-	SetColumnImage(m_sort_column, -1);
+	SetColumnImage(m_sort_orders.front().first, -1);
 	
-	m_sort_column = column;
-	m_sort_order  = order;
+	CSortingList::iterator it = m_sort_orders.begin();
+	for (; it != m_sort_orders.end(); ++it) {
+		if (it->first == column) {
+			m_sort_orders.erase(it);
+			break;
+		}
+	}
 
+	m_sort_orders.push_front(CColPair(column, order));	
+	
 	if (order & SORT_DES) {
 		SetColumnImage(column, (order & SORT_ALT) ? 2 : 0);
 	} else {
 		SetColumnImage(column, (order & SORT_ALT) ? 3 : 1);
 	}
+
+	SortList();
 }
 
 
 bool CMuleListCtrl::IsItemSorted(long item)
 {
 	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
+	wxCHECK_MSG((item >= 0) and (item < GetItemCount()), true, wxT("Invalid item"));
 	
-	int sortby = m_sort_column | m_sort_order;
 	bool sorted = true;
 	long data = GetItemData(item);
 
 	// Check that the item before the current item is smaller (or equal)
 	if (item > 0) {
-		sorted &= (m_sort_func(GetItemData(item - 1), data, sortby) <= 0);
+		sorted &= (CompareItems(GetItemData(item - 1), data) <= 0);
 	}
 
 	// Check that the item after the current item is greater (or equal)
 	if (sorted and (item < GetItemCount() - 1)) {
-		sorted &= (m_sort_func(GetItemData(item + 1), data, sortby) >= 0);
+		sorted &= (CompareItems(GetItemData(item + 1), data) >= 0);
 	}
 
 	return sorted;
@@ -529,6 +610,8 @@ void CMuleListCtrl::OnItemDeleted(wxListEvent& evt)
 void CMuleListCtrl::OnAllItemsDeleted(wxListEvent& evt)
 {
 	ResetTTS();
+	
+	evt.Skip();
 }
 
 

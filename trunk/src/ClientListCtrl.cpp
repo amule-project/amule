@@ -184,9 +184,10 @@ ViewType CClientListCtrl::GetListView()
 void CClientListCtrl::SetListView( ViewType newView )
 {
 	if ( m_viewType != newView ) {
-		SaveSettings();
-		
-		ClearAll();
+		if (m_viewType != vtNone) {
+			SaveSettings();
+			ClearAll();
+		}
 		
 		m_viewType = newView;
 
@@ -197,13 +198,12 @@ void CClientListCtrl::SetListView( ViewType newView )
 			view.m_init( this );
 		}
 	
-		SetTableName( view.m_title );
-			
+		SetTableName( view.m_title );	
 		SetSortFunc( view.m_sort );
 
-		LoadSettings();
-
-		SortList();
+		if (newView != vtNone) {
+			LoadSettings();
+		}
 	}
 }
 
