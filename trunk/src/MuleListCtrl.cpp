@@ -423,13 +423,15 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), wxT("Invalid column to sort by."));
 	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), wxT("Sorting order contains invalid data."));
 	
-	SetColumnImage(m_sort_orders.front().first, -1);
+	if (not m_sort_orders.empty()) {
+		SetColumnImage(m_sort_orders.front().first, -1);
 	
-	CSortingList::iterator it = m_sort_orders.begin();
-	for (; it != m_sort_orders.end(); ++it) {
-		if (it->first == column) {
-			m_sort_orders.erase(it);
-			break;
+		CSortingList::iterator it = m_sort_orders.begin();
+		for (; it != m_sort_orders.end(); ++it) {
+			if (it->first == column) {
+				m_sort_orders.erase(it);
+				break;
+			}
 		}
 	}
 
