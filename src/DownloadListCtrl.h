@@ -210,12 +210,6 @@ private:
 	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
 
-	//! Used to keep track of which sorting order was last used.
-	static int s_lastOrder;
-	//! Used to keep track of which column was last used to sort from.
-	static int s_lastColumn;
-
-	
 	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
 	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
@@ -245,7 +239,6 @@ private:
 
 	// Misc event-handlers
 	void	OnItemActivated( wxListEvent& event );
-	void	OnColumnLClick( wxListEvent& event );
 	void 	OnMouseRightClick( wxListEvent& event );
 	void 	OnMouseMiddleClick( wxListEvent& event );
 	void	OnKeyPressed( wxKeyEvent& event );

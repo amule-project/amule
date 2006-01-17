@@ -64,9 +64,6 @@
 class CPartFile;
 
 
-int CDownloadListCtrl::s_lastOrder;
-int CDownloadListCtrl::s_lastColumn;
-
 struct CtrlItem_Struct
 {
 	DownloadItemType	type;
@@ -95,7 +92,6 @@ struct CtrlItem_Struct
 
 
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
-	EVT_LIST_COL_CLICK( -1, 		CDownloadListCtrl::OnColumnLClick)
 	EVT_LIST_ITEM_ACTIVATED(ID_DLOADLIST,	CDownloadListCtrl::OnItemActivated)
 	EVT_LIST_ITEM_RIGHT_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(ID_DLOADLIST, CDownloadListCtrl::OnMouseMiddleClick)
@@ -186,9 +182,6 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	m_completedFiles = 0;
 	m_filecount = 0;
 	LoadSettings();
-	
-	s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	s_lastColumn = GetSortColumn();
 }
 
 
@@ -865,22 +858,6 @@ void CDownloadListCtrl::OnViewClientInfo( wxCommandEvent& WXUNUSED(event) )
 		CClientDetailDialog dialog( this, source );
 		dialog.ShowModal();
 	}
-}
-
-
-void CDownloadListCtrl::OnColumnLClick(wxListEvent& evt)
-{
-	// Only change the last column if the sorted column has changed
-	if (GetSortColumn() != (unsigned)evt.GetColumn()) {
-		s_lastColumn = GetSortColumn();
-		s_lastOrder  = (GetSortOrder() & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	} else {
-		// Reverse the last-column order to preserve the sorting
-		s_lastOrder *= -1;
-	}
-
-	// Let CMuleListCtrl handle the sorting
-	evt.Skip();
 }
 
 
@@ -1939,23 +1916,6 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 				file2->GetLastChangeDatetime() );
 		}
 		break;
-	}
-
-
-	// We cannot have that two files are equal, since that will screw up
-	// the placement of sources. So if they are equal, we first try to use the
-	// last sort-type and then fall back on something that is bound to be unique
-	// and will give a consistant result: Their hashes.
-	if ( !result ) {
-		// Try to sort by the last column
-		if ( s_lastColumn != lParamSort ) {
-			result = s_lastOrder * Compare( file1, file2, s_lastColumn );
-		} else {
-			// If that failed as well, then we sort by hash
-			result = CmpAny(
-				file1->GetFileHash(),
-				file2->GetFileHash() );
-		}
 	}
 
 	return result;

@@ -30,9 +30,7 @@
 #include "listctrl.h"
 
 #include <vector>
-
-
-
+#include <list>
 
 
 /**
@@ -294,10 +292,6 @@ private:
 	
 	//! The name of the table. Used to load/save settings.
 	wxString			m_name;
-	//! The sort order. Ascending is the default.
-	unsigned			m_sort_order;
-	//! The column to sort by.
-	unsigned			m_sort_column;
 	//! The sorter function needed by wxListCtrl.
 	wxListCtrlCompare	m_sort_func;
 
@@ -308,6 +302,30 @@ private:
 	//! The index of the last item selected via TTS.
 	int					m_tts_item;
 
+
+	/**
+	 * Wrapper around the user-provided sorter function.
+	 * 
+	 * This function ensures that items are sorted in the order
+	 * specified by clicking on column-headers, and also enforces
+	 * that different entries are never considered equal. This is
+	 * required for lists that make use of child-items, since
+	 * otherwise, parents may not end up properly located in
+	 * relation to child-items.
+	 */	
+	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+
+	/** Compares two items in the list, using the current sort sequence. */
+	int CompareItems(long item1, long item2);
+	
+	
+	//! This pair contains a column number and its sorting order.
+	typedef std::pair<unsigned, unsigned> CColPair;
+	typedef std::list<CColPair> CSortingList;
+	
+	//! This list contains in order the columns sequence to sort by.
+	CSortingList m_sort_orders;
+	
 	
 	DECLARE_EVENT_TABLE()
 };
