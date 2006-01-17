@@ -61,7 +61,6 @@ UploadBandwidthThrottler::UploadBandwidthThrottler()
 {
 	m_SentBytesSinceLastCall = 0;
 	m_SentBytesSinceLastCallOverhead = 0;
-	m_highestNumberOfFullyActivatedSlots = 0;
 
 	m_doRun = true;
 
@@ -110,32 +109,6 @@ uint64 UploadBandwidthThrottler::GetNumberOfSentBytesOverheadSinceLastCallAndRes
 
 	return numberOfSentBytesSinceLastCall;
 }
-
-
-/**
- * Find out the highest number of slots that has been fed data in the normal standard loop
- * of the thread since the last call of this method. This means all slots that haven't
- * been in the trickle state during the entire time since the last call.
- *
- * @return the highest number of fully activated slots during any loop since last call
- */
-uint32 UploadBandwidthThrottler::GetHighestNumberOfFullyActivatedSlotsSinceLastCallAndReset()
-{
-	wxMutexLocker lock( m_sendLocker );
-	
-	uint32 highestNumberOfFullyActivatedSlots = m_highestNumberOfFullyActivatedSlots;
-	m_highestNumberOfFullyActivatedSlots = 0;
-
-	return highestNumberOfFullyActivatedSlots;
-}
-
-
-uint32 UploadBandwidthThrottler::GetStandardListSize()
-{
-	wxMutexLocker lock( m_sendLocker );
-	
-	return m_StandardOrder_list.size();
-};
 
 
 /**
@@ -197,14 +170,7 @@ bool UploadBandwidthThrottler::RemoveFromStandardList(ThrottledFileSocket* socke
  */
 bool UploadBandwidthThrottler::RemoveFromStandardListNoLock(ThrottledFileSocket* socket)
 {
-	// Find the slot
-	bool foundSocket = EraseFirstValue( m_StandardOrder_list, socket );
-
-	if ( foundSocket && m_highestNumberOfFullyActivatedSlots > m_StandardOrder_list.size()) {
-		m_highestNumberOfFullyActivatedSlots = m_StandardOrder_list.size();
-	}
-
-	return foundSocket;
+	return EraseFirstValue( m_StandardOrder_list, socket );
 }
 
 
@@ -314,7 +280,6 @@ void* UploadBandwidthThrottler::Entry()
 	sint64 realBytesToSpend = 0;
 	uint32 allowedDataRate = 0;
 	uint32 rememberedSlotCounter = 0;
-	uint32 lastTickReachedBandwidth = ::GetTickCountFullRes();
 	uint32 extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;
 	
 	while (m_doRun) {
@@ -443,10 +408,6 @@ void* UploadBandwidthThrottler::Entry()
 							uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 							spentBytes += lastSpentBytes;
 							spentOverhead += socketSentBytes.sentBytesControlPackets;
-
-							if(lastSpentBytes > 0 && slotCounter < m_highestNumberOfFullyActivatedSlots) {
-								m_highestNumberOfFullyActivatedSlots = slotCounter;
-							}
 						}
 					}
 				} else {
@@ -458,10 +419,6 @@ void* UploadBandwidthThrottler::Entry()
 			uint32 maxSlot = m_StandardOrder_list.size();
 			if(maxSlot > 0 && allowedDataRate/maxSlot < UPLOAD_CLIENT_DATARATE) {
 				maxSlot = allowedDataRate/UPLOAD_CLIENT_DATARATE;
-			}
-
-			if(maxSlot > m_highestNumberOfFullyActivatedSlots) {
-				m_highestNumberOfFullyActivatedSlots = maxSlot;
 			}
 
 			for(uint32 maxCounter = 0; maxCounter < std::min(maxSlot, (uint32)m_StandardOrder_list.size()) && bytesToSpend > 0 && spentBytes < (uint64)bytesToSpend; maxCounter++) {
@@ -495,10 +452,6 @@ void* UploadBandwidthThrottler::Entry()
 					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentBytes += lastSpentBytes;
 					spentOverhead += socketSentBytes.sentBytesControlPackets;
-
-					if(slotCounter+1 > m_highestNumberOfFullyActivatedSlots && (lastSpentBytes < bytesToSpendTemp || lastSpentBytes >= doubleSendSize)) { 
-						m_highestNumberOfFullyActivatedSlots = slotCounter+1;
-					}
 				} else {
 					AddDebugLogLineM( false, logGeneral, wxString::Format( wxT("There was a NULL socket in the UploadBandwidthThrottler Standard list (fully activated)! Prevented usage. Index: %i Size: %i"), slotCounter, m_StandardOrder_list.size()));
 				}
@@ -509,19 +462,11 @@ void* UploadBandwidthThrottler::Entry()
 				sint64 newRealBytesToSpend = -(((sint64)m_StandardOrder_list.size()+1)*minFragSize)*1000;
 	
 				realBytesToSpend = newRealBytesToSpend;
-				lastTickReachedBandwidth = thisLoopTick;
 			} else {
 				uint64 bandwidthSavedTolerance = m_StandardOrder_list.size()*512*1000;
 				if(realBytesToSpend > 0 && (uint64)realBytesToSpend > 999+bandwidthSavedTolerance) {
 					sint64 newRealBytesToSpend = 999+bandwidthSavedTolerance;
 					realBytesToSpend = newRealBytesToSpend;
-
-					if(thisLoopTick-lastTickReachedBandwidth > std::max((uint32)1000, (uint32)timeSinceLastLoop*2)) {
-						m_highestNumberOfFullyActivatedSlots = m_StandardOrder_list.size()+1;
-						lastTickReachedBandwidth = thisLoopTick;
-					}
-				} else {
-					lastTickReachedBandwidth = thisLoopTick;
 				}
 			}
 			
