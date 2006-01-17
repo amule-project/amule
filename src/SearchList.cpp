@@ -419,7 +419,10 @@ uint32 CSearchList::GetSearchProgress() const
 void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 {
 	// Ensure that the server-queue contains the current servers.
-	if (not m_serverQueue.IsActive()) {
+	if (m_searchPacket == NULL) {
+		// This was a pending event, handled after 'Stop' was pressed.
+		return;
+	} else if (not m_serverQueue.IsActive()) {
 		theApp.serverlist->AddObserver(&m_serverQueue);		
 	}
 
