@@ -866,7 +866,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
 	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
 		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
-		f->GetFileSize() << wxT("|") <<
+		wxString::Format(wxT("%llu"), f->GetFileSize()) << wxT("|") <<
 		f->GetFileHash().Encode() << wxT("|/");
 	return strURL;
 }
