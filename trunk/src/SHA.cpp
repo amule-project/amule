@@ -81,16 +81,9 @@ CSHA::CSHA()
 #define SHA_LITTLE_ENDIAN   1234 /* byte 0 is least significant (i386) */
 #define SHA_BIG_ENDIAN      4321 /* byte 0 is most significant (mc68k) */
 
-// Kry - Use wxWidgets byte order definitions
-#if wxBYTE_ORDER == wxLITTLE_ENDIAN
-	#define PLATFORM_BYTE_ORDER	SHA_LITTLE_ENDIAN
-#else
-	#define PLATFORM_BYTE_ORDER	SHA_BIG_ENDIAN
-#endif 
-
 #define rotl32(x,n) (((x) << n) | ((x) >> (32 - n)))
 
-#if (PLATFORM_BYTE_ORDER == SHA_BIG_ENDIAN)
+#if (wxBYTE_ORDER == wxBIG_ENDIAN)
 #define swap_b32(x) (x)
 #elif defined(bswap_32)
 #define swap_b32(x) bswap_32(x)
@@ -203,7 +196,7 @@ void CSHA::Add(const void* pData, uint32 nLength)
 
 /* SHA1 final padding and digest calculation  */
 
-#if (PLATFORM_BYTE_ORDER == SHA_LITTLE_ENDIAN)
+#if (wxBYTE_ORDER == wxLITTLE_ENDIAN)
 static uint32  mask[4] = 
 	{   0x00000000, 0x000000ff, 0x0000ffff, 0x00ffffff };
 static uint32  bits[4] = 

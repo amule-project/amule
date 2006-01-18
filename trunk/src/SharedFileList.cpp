@@ -816,6 +816,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 	TagPtrList tags;
 
 	tags.push_back(new CTag(FT_FILENAME, cur_file->GetFileName()));
+	#warning Kry - UPGRADE
 	tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
 	if (cur_file->GetFileRating()) {
 		tags.push_back(new CTag(FT_FILERATING, cur_file->GetFileRating()));

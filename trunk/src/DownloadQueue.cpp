@@ -735,6 +735,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
  				hashlist.WriteHash( file->GetFileHash() );
 					
+				#warning Kry - UPGRADE
 				if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
 					hashlist.WriteUInt32( file->GetFileSize() );
 				}
@@ -892,6 +893,7 @@ void CDownloadQueue::ProcessLocalRequests()
 				data.WriteHash(cur_file->GetFileHash());
 				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
 				// There is no need to check anything, old server ignore the extra 4 bytes.
+				#warning Kry - UPGRADE
 				data.WriteUInt32(cur_file->GetFileSize());
 				CPacket packet(&data);
 				packet.SetOpCode(OP_GETSOURCES);
@@ -1054,7 +1056,7 @@ void CDownloadQueue::CheckDiskspace( const wxString& path )
 	
 	m_lastDiskCheck = ::GetTickCount();
 
-	uint32 min = 0;
+	uint64 min = 0;
 	// Check if the user has set an explicit limit
 	if ( thePrefs::IsCheckDiskspaceEnabled() ) {
 		min = thePrefs::GetMinFreeDiskSpace();

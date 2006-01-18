@@ -595,8 +595,10 @@ public:
 	
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	
+	#ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
+	#endif
 	
 private:
 	

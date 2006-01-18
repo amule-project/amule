@@ -132,7 +132,6 @@ void CPartFile::Init()
 	m_iGainDueToCompression = 0;
 	m_iLostDueToCorruption = 0;
 	m_iTotalPacketsSavedDueToICH = 0;
-	m_nSavedReduceDownload = 0; // new
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_is_A4AF_auto = false;
@@ -478,10 +477,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_FILESIZE: {
+						#warning Kry - UPDATE
 						SetFileSize(newtag.GetInt());
 						break;
 					}
 					case FT_TRANSFERED: {
+						#warning Kry - UPDATE
 						transfered = newtag.GetInt();
 						break;
 					}
@@ -600,11 +601,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 							if ( gap_map.find( gapkey ) == gap_map.end() ) {
 								gap = new Gap_Struct;
 								gap_map[gapkey] = gap;
-								gap->start = (uint32)-1;
-								gap->end = (uint32)-1;
+								gap->start = (uint64)-1;
+								gap->end = (uint64)-1;
 							} else {
 								gap = gap_map[ gapkey ];
 							}
+							#warning Kry - UPDATE
 							if ((newtag.GetName())[0] == FT_GAPSTART) {
 								gap->start = newtag.GetInt();
 							}
@@ -862,9 +864,10 @@ bool CPartFile::SavePartFile(bool Initial)
 		// We write it with BOM to kep eMule compatibility
 		CTag( FT_FILENAME, GetFileName() ).WriteTagToFile( &file, utf8strOptBOM );
 		#endif
-		
 		CTag( FT_FILENAME,		GetFileName()	).WriteTagToFile( &file );	// 1
+		#warning Kry - UPDATE
 		CTag( FT_FILESIZE,		GetFileSize()		).WriteTagToFile( &file );	// 2
+		#warning Kry - UPDATE
 		CTag( FT_TRANSFERED,	transfered		).WriteTagToFile( &file );	// 3
 		CTag( FT_STATUS,		(m_paused?1:0)	).WriteTagToFile( &file );	// 4
 
@@ -1268,7 +1271,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	theApp.sharedfiles->SafeAddKFile(this);		
 }
 
-void CPartFile::AddGap(uint32 start, uint32 end)
+void CPartFile::AddGap(uint64 start, uint64 end)
 {
 	POSITION pos1, pos2;
 	for (pos1 = gaplist.GetHeadPosition();(pos2 = pos1) != NULL;) {
@@ -1303,12 +1306,10 @@ void CPartFile::AddGap(uint32 start, uint32 end)
 	newdate = true;
 }
 
-bool CPartFile::IsAlreadyRequested(uint32 start, uint32 end)
+bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end)
 {
 	for (POSITION pos =  requestedblocks_list.GetHeadPosition();pos != 0; ) {
 		Requested_Block_Struct* cur_block =  requestedblocks_list.GetNext(pos);
-		// if (cur_block->StartOffset == start && cur_block->EndOffset == end)
-		/* eMule 0.30c manage the problem like that, i give it a try ... (Creteil) */
 		if ((start <= cur_block->EndOffset) && (end >= cur_block->StartOffset)) {
 			return true;
 		}
@@ -1320,15 +1321,15 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 {
 	Gap_Struct *firstGap;
 	Gap_Struct *currentGap;
-	uint32 end;
-	uint32 blockLimit;
+	uint64 end;
+	uint64 blockLimit;
 
 	// Find start of this part
-	uint32 partStart = (PARTSIZE * partNumber);
-	uint32 start = partStart;
+	uint64 partStart = (PARTSIZE * partNumber);
+	uint64 start = partStart;
 
 	// What is the end limit of this block, i.e. can't go outside part (or filesize)
-	uint32 partEnd = (PARTSIZE * (partNumber + 1)) - 1;
+	uint64 partEnd = (PARTSIZE * (partNumber + 1)) - 1;
 	if (partEnd >= GetFileSize()) {
 		partEnd = GetFileSize() - 1;
 	}
@@ -1392,7 +1393,7 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 	return false;
 }
 
-void CPartFile::FillGap(uint32 start, uint32 end)
+void CPartFile::FillGap(uint64 start, uint64 end)
 {
 	POSITION pos1, pos2;
 	for (pos1 = gaplist.GetHeadPosition();(pos2 = pos1) != NULL;) {
@@ -1425,7 +1426,7 @@ void CPartFile::FillGap(uint32 start, uint32 end)
 
 void CPartFile::UpdateCompletedInfos()
 {
-   	uint32 allgaps = 0; 
+   	uint64 allgaps = 0; 
 	for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;) {
 		POSITION prev = pos;
 		Gap_Struct* cur_gap = gaplist.GetNext(pos);
@@ -2055,8 +2056,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 					Chunk& cur_chunk = chunksList.GetNext(pos);
 					
 					// Offsets of chunk
-					const uint32 uStart = cur_chunk.part * PARTSIZE;
-					const uint32 uEnd  =
+					const uint64 uStart = cur_chunk.part * PARTSIZE;
+					const uint64 uEnd  =
 						((GetFileSize() - 1) < (uStart + PARTSIZE - 1)) ?
 							(GetFileSize() - 1) : (uStart + PARTSIZE - 1);
 					// Criterion 2. Parts used for preview
@@ -2190,7 +2191,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 // Maella end
 // Kry EOI
 
-void  CPartFile::RemoveBlockFromList(uint32 start,uint32 end)
+void  CPartFile::RemoveBlockFromList(uint64 start,uint64 end)
 {
 	POSITION pos1,pos2;
 	for (pos1 = requestedblocks_list.GetHeadPosition();(pos2 = pos1) != NULL;) {
@@ -3029,13 +3030,18 @@ int CPartFile::GetCommonFilePenalty()
 	fill a gap.
 */
 
-uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint32 start, uint32 end, Requested_Block_Struct *block)
+// Kry - transize is 32bits, no packet can be more than that (this is
+// compressed size). Even 32bits is too much imho.As for the return size,
+// look at the lenData below.
+uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint64 end, Requested_Block_Struct *block)
 {
 	// Increment transfered bytes counter for this file
 	transfered += transize;
 
 	// This is needed a few times
-	uint32 lenData = end - start + 1;
+	// Kry - should not need a uint64 here - no block is larger than
+	// 2GB even after uncompressed.
+	uint32 lenData = (uint32) (end - start + 1);
 
 	if(lenData > transize) {
 		m_iGainDueToCompression += lenData-transize;
@@ -3099,7 +3105,7 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint32 start, uint3
 	return lenData;
 }
 
-
+#warning Kry - serious review. I did some, and seems to be ok, but...
 void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 {
 	m_nLastBufferFlushTime = GetTickCount();
@@ -3123,8 +3129,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	POSITION pos = m_BufferedData_list.GetHeadPosition();
 	for ( ; pos ; ) {
 		PartFileBufferedData* item = m_BufferedData_list.GetNext( pos );
-
-		newData += item->end - item->start + 1;
+		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
+		newData += (uint32) (item->end - item->start + 1);
 	}
 	
 	if ( !CheckFreeDiskSpace( newData ) ) {
@@ -3141,10 +3147,11 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 		PartFileBufferedData* item = m_BufferedData_list.RemoveHead();
 
 		// This is needed a few times
-		uint32 lenData = item->end - item->start + 1;
+		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
+		uint32 lenData = (uint32)(item->end - item->start + 1);
 
 		// SLUGFILLER: SafeHash - could be more than one part
-		for (uint32 curpart = item->start/PARTSIZE; curpart <= item->end/PARTSIZE; ++curpart) {
+		for (uint32 curpart = (item->start/PARTSIZE); curpart <= (item->end/PARTSIZE); ++curpart) {
 			wxASSERT(curpart < partCount);
 			changedPart[curpart] = true;
 		}
@@ -3229,7 +3236,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 			if (HashSinglePart(partNumber)) {
 				++m_iTotalPacketsSavedDueToICH;
 				
-				uint32 uMissingInPart = GetTotalGapSizeInPart(partNumber);					
+				uint64 uMissingInPart = GetTotalGapSizeInPart(partNumber);					
 				FillGap(PARTSIZE*partNumber,(PARTSIZE*partNumber+partRange));
 				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
 
@@ -3403,7 +3410,7 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 }
 
 
-uint32 CPartFile::GetNeededSpace()
+uint64 CPartFile::GetNeededSpace()
 {
 	if (m_hpartfile.GetLength() > GetFileSize()) {
 		return 0;	// Shouldn't happen, but just in case
@@ -3428,9 +3435,9 @@ void CPartFile::SetStatus(uint8 in)
 }
 
 
-uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const
+uint64 CPartFile::GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) const
 {
-	uint32 uTotalGapSize = 0;
+	uint64 uTotalGapSize = 0;
 
 	if (uRangeEnd >= GetFileSize()) {
 		uRangeEnd = GetFileSize() - 1;
@@ -3446,7 +3453,7 @@ uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) c
 		}
 
 		if (pGap->start >= uRangeStart && pGap->start <= uRangeEnd) {
-			uint32 uEnd = (pGap->end > uRangeEnd) ? uRangeEnd : pGap->end;
+			uint64 uEnd = (pGap->end > uRangeEnd) ? uRangeEnd : pGap->end;
 			uTotalGapSize += uEnd - pGap->start + 1;
 		} else if (pGap->end >= uRangeStart && pGap->end <= uRangeEnd) {
 			uTotalGapSize += pGap->end - uRangeStart + 1;
@@ -3458,10 +3465,10 @@ uint32 CPartFile::GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) c
 	return uTotalGapSize;
 }
 
-uint32 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
+uint64 CPartFile::GetTotalGapSizeInPart(uint32 uPart) const
 {
-	uint32 uRangeStart = uPart * PARTSIZE;
-	uint32 uRangeEnd = uRangeStart + PARTSIZE - 1;
+	uint64 uRangeStart = uPart * PARTSIZE;
+	uint64 uRangeEnd = uRangeStart + PARTSIZE - 1;
 	if (uRangeEnd >= GetFileSize()) {
 		uRangeEnd = GetFileSize();
 	}
@@ -3946,7 +3953,7 @@ bool CPartFile::CheckShowItemInGivenCat(int inCategory)
 	return IsNotFiltered && IsInCat;
 }
 
-bool CPartFile::IsComplete(uint32 start, uint32 end)
+bool CPartFile::IsComplete(uint64 start, uint64 end)
 {
 	if (end >= GetFileSize()) {
 		end = GetFileSize()-1;
@@ -3960,20 +3967,6 @@ bool CPartFile::IsComplete(uint32 start, uint32 end)
 		}
 	}
 	return true;
-}
-
-bool CPartFile::IsPureGap(uint32 start, uint32 end)
-{
-	if (end >= GetFileSize()) {
-		end = GetFileSize()-1;
-	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
-		if (start >= cur_gap->start  && end <= cur_gap->end) {
-			return true;
-		}
-	}
-	return false;
 }
 
 #ifndef CLIENT_GUI

@@ -863,6 +863,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			
 			// Name, Size
 			taglist.push_back(new CTagStr(TAG_FILENAME, file->GetFileName()));
+			#warning Kry - UPGRADE
 			taglist.push_back(new CTagUInt(TAG_FILESIZE, file->GetFileSize()));
 			taglist.push_back(new CTagUInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
 			

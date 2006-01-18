@@ -1170,9 +1170,9 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->kBpsDown = tmpval / 1024.0;
 		
 		tag->SetSizeXfer(file->transfered);
-		tag->SetSizeDone(file->completedsize);
+		tag->SetSizeDone(file->GetCompletedSize());
 		tag->SetSourceXferCount(file->transferingsrc);
-		tag->SetSourceNotCurrCount(file->m_notCurrentSources);
+		tag->SetSourceNotCurrCount(file->GetNotCurrentSourcesCount());
 		tag->SetSourceCount(file->m_source_count);
 		tag->SetSourceCountA4AF(file->m_a4af_source_count);
 	    tag->SetFileStatus(file->status);
@@ -1188,11 +1188,11 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	
 		if ( file->kBpsDown > 0 ) {
 			file->transfered = tag->SizeXfer();
-			file->completedsize = tag->SizeDone();
+			file->SetCompletedSize(tag->SizeDone());
 		}
 	
 		file->transferingsrc = tag->SourceXferCount();
-		file->m_notCurrentSources = tag->SourceNotCurrCount();
+		file->SetNotCurrentSourcesCount(tag->SourceNotCurrCount());
 		file->m_source_count = tag->SourceCount();
 		file->m_a4af_source_count = tag->SourceCountA4AF();
 	    file->status = tag->FileStatus();
@@ -1203,7 +1203,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		
 		file->m_iDownPriority = tag->Prio();
 	}
-	file->percentcompleted = (100.0*file->completedsize) / file->GetFileSize();
+	file->percentcompleted = (100.0*file->GetCompletedSize()) / file->GetFileSize();
 	if ( file->m_iDownPriority >= 10 ) {
 		file->m_iDownPriority -= 10;
 		file->m_bAutoUpPriority = true;
@@ -1544,7 +1544,7 @@ void CKnownFile::UpdatePartsInfo()
 	wxASSERT(0);
 }
 
-void CKnownFile::SetFileSize(uint32 nFileSize)
+void CKnownFile::SetFileSize(uint64 nFileSize)
 {
 	CAbstractFile::SetFileSize(nFileSize);
 }

@@ -226,15 +226,15 @@ class CEC_PartFile_Tag : public CECTag {
 				}
 			}
 		
-		void SetSizeXfer(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, value); }
-		void SetSizeDone(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, value); }
+		void SetSizeXfer(uint64 value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_XFER, value); }
+		void SetSizeDone(uint64 value) { AssignIfExist(EC_TAG_PARTFILE_SIZE_DONE, value); }
 
-		void SetFileEd2kLink(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_ED2K_LINK, value); }
+		void SetFileEd2kLink(uint32 value) { AssignIfExist(EC_TAG_PARTFILE_ED2K_LINK, value); }
 
 		void SetFileStatus(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
 
 		void SetSourceCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
-		void SetSourceNotCurrCount(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
+		void SetSourceNotCurrCount(uint32 value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
 		void SetSourceXferCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
 		void SetSourceCountA4AF(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
 

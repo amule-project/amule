@@ -251,7 +251,7 @@ void CUpDownClient::CreateNextBlockPackage()
 				fullname = JoinPaths(srcfile->GetFilePath(), srcfile->GetFileName());
 			}
 		
-			uint32 togo;
+			uint64 togo;
 			if (currentblock->StartOffset > currentblock->EndOffset){
 				togo = currentblock->EndOffset + (srcfile->GetFileSize() - currentblock->StartOffset);
 			} else {

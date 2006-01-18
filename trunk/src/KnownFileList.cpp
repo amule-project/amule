@@ -137,7 +137,7 @@ void CKnownFileList::Clear()
 	m_duplicates.clear();
 }
 
-CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint32 in_size){
+CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint64 in_size){
 
 	wxMutexLocker sLock(list_mut);
 	
@@ -185,7 +185,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 		} else {
 			it->second;
 			uint32 in_date =  it->second->GetFileDate();
-			uint32 in_size =  it->second->GetFileSize();
+			uint64 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
 			if (((abs((int)Record->GetFileDate() - (int)in_date) < 20) && Record->GetFileSize() == in_size && (Record->GetFileName() == filename)) || IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.
@@ -213,7 +213,7 @@ bool CKnownFileList::Append(CKnownFile* Record)
 }
 
 
-CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint32 in_size) const
+CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint64 in_size) const
 {
 	KnownFileList::const_iterator it = m_duplicates.begin();
 	for ( ; it != m_duplicates.end(); ++it ) {

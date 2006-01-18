@@ -71,8 +71,8 @@ enum EPartFileFormat {
 struct PartFileBufferedData
 {
 	byte *data;						// Barry - This is the data to be written
-	uint32 start;					// Barry - This is the start offset of the data
-	uint32 end;						// Barry - This is the end offset of the data
+	uint64 start;					// Barry - This is the start offset of the data
+	uint64 end;						// Barry - This is the end offset of the data
 	Requested_Block_Struct *block;	// Barry - This is the requested block that this data relates to
 };
 
@@ -100,14 +100,9 @@ public:
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
 	
 	bool    CheckShowItemInGivenCat(int inCategory);
-	void	AddGap(uint32 start, uint32 end);
-	void	FillGap(uint32 start, uint32 end);
 
-	bool	IsComplete(uint32 start, uint32 end);
-	bool	IsPureGap(uint32 start, uint32 end);
-	bool	IsCorruptedPart(uint16 partnumber);
-	uint32	GetTotalGapSizeInRange(uint32 uRangeStart, uint32 uRangeEnd) const;	
-	uint32	GetTotalGapSizeInPart(uint32 uPart) const;
+	bool	IsComplete(uint64 start, uint64 end);
+	
 	void	UpdateCompletedInfos();
 
 	bool	GetNextRequestedBlock(CUpDownClient* sender,Requested_Block_Struct** newblocks,uint16* count);
@@ -137,10 +132,11 @@ public:
 	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
-	uint32  	GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	uint32		GetValidSourcesCount()			const	{ return m_validSources; };
+	uint32  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	void	SetNotCurrentSourcesCount(uint32 new_count)	{ m_notCurrentSources = new_count; };	
+	uint32	GetValidSourcesCount() const	{ return m_validSources; };
 	
-	uint32	GetNeededSpace();
+	uint64	GetNeededSpace();
 	
 	wxString getPartfileStatus() const; //<<--9/21/02
 	sint32	getTimeRemaining() const; //<<--9/21/02
@@ -148,7 +144,7 @@ public:
 	int	getPartfileStatusRang() const;
 
 	// Barry - Added as replacement for BlockReceived to buffer data before writing to disk
-	uint32	WriteToBuffer(uint32 transize, byte *data, uint32 start, uint32 end, Requested_Block_Struct *block);
+	uint32	WriteToBuffer(uint32 transize, byte *data, uint64 start, uint64 end, Requested_Block_Struct *block);
 	void	FlushBuffer(bool forcewait=false, bool bForceICH = false, bool bNoAICH = false);	
 
 	// Barry - Is archive recovery in progress
@@ -157,7 +153,7 @@ public:
 	// Barry - Added to prevent list containing deleted blocks on shutdown
 	void	RemoveAllRequestedBlocks(void);
 
-	void	RemoveBlockFromList(uint32 start,uint32 end);
+	void	RemoveBlockFromList(uint64 start,uint64 end);
 	void	RemoveAllSources(bool bTryToSwap);
 	void	Delete();
 	void	StopFile(bool bCancel = false);
@@ -269,43 +265,54 @@ public:
 	uint16	GetMaxSourcePerFileSoft() const;
 	uint16	GetMaxSourcePerFileUDP() const;		 
 
-protected:
+private:
 	//! A local list of sources that are invalid for this file.
 #ifndef CLIENT_GUI
 	CDeadSourceList	m_deadSources;
 #endif
 
+	uint32	m_notCurrentSources;
+
 	bool	m_showSources;
 	
 	uint32	m_validSources;
-	uint32	m_notCurrentSources;
-	
+
+	void	AddGap(uint64 start, uint64 end);
+	void	FillGap(uint64 start, uint64 end);
 	bool	GetNextEmptyBlockInPart(uint16 partnumber,Requested_Block_Struct* result);
-	bool	IsAlreadyRequested(uint32 start, uint32 end);
+	bool	IsAlreadyRequested(uint64 start, uint64 end);
 	void	CompleteFile(bool hashingdone);
 	void	CreatePartFile();
 	void	Init();
 
 	bool	CheckFreeDiskSpace( uint32 neededSpace = 0 );
-private:
+	
+	bool	IsCorruptedPart(uint16 partnumber);
+	
+	uint64	GetTotalGapSizeInPart(uint32 uPart) const;
+
+	uint64	GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) const;	
+	
 	uint32	m_iLastPausePurge;
 	uint16	m_count;
 	uint16	m_anStates[STATES_COUNT];
 	uint16	transferingsrc;
-	uint32  completedsize;
+	uint64  completedsize;
+	uint64	transfered;
+	
 	uint64	m_iLostDueToCorruption;
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
 	float 	kBpsDown;
 	wxString m_fullname;
 	wxString m_partmetfilename;
-	uint32	transfered;
 	bool	m_paused;
 	bool	m_stopped;
 	bool	m_insufficient;
 	uint8   m_iDownPriority;
 	bool    m_bAutoDownPriority;
 	uint8	status;
+	#warning Kry - Is currently unused and must be fixed
 	bool	newdate;	// indicates if there was a writeaccess to the .part file
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
@@ -315,7 +322,6 @@ private:
 	CList<uint16, uint16> corrupted_list;
 	uint8	m_availablePartsCount;
 	uint32	m_ClientSrcAnswered;
-	uint32	m_nSavedReduceDownload;
 	bool	m_bPercentUpdated;
 
 	void	PerformFileComplete();
@@ -337,8 +343,10 @@ public:
 	SourceSet m_SrcList;
 	SourceSet A4AFsrclist;
 	
+	#warning Accessors, please
 	bool	hashsetneeded;
-	uint32  GetCompletedSize() const	{ return completedsize; }
+	uint64  GetCompletedSize() const	{ return completedsize; }
+	void	SetCompletedSize(uint64 new_completed)	{ completedsize = new_completed; }	
 
 	uint32	lastsearchtime;
 	bool	m_bLocalSrcReqQueued;

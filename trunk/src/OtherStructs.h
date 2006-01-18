@@ -43,9 +43,10 @@ struct UDP_Header_Struct{
 	int8	command;
 } __attribute__((__packed__));
 
+#warning Kry - Review
 struct Requested_Block_Struct{
-	uint32	StartOffset;
-	uint32	EndOffset;
+	uint64	StartOffset;
+	uint64	EndOffset;
 	uint32	packedsize;
 	unsigned char	FileID[16];
 	uint32  transferred; // Barry - This counts bytes completed
@@ -65,9 +66,10 @@ struct Pending_Block_Struct{
 				fRecovered    : 1;	
 };
 
+#warning Kry - Review
 struct Gap_Struct{
-	uint32 start;
-	uint32 end;
+	uint64 start;
+	uint64 end;
 };
 
 struct ServerMet_Struct {

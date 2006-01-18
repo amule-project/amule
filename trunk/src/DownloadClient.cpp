@@ -659,6 +659,7 @@ The requests will still not exceed 180k, but may be smaller to
 fill a gap.
 */
 
+#warning Kry - UPGRADE & Review
 void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool packed)
 {
 	// Ignore if no data required
@@ -680,8 +681,8 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	}
 
 	// Find the start & end positions, and size of this chunk of data
-	uint32 nStartPos = data.ReadUInt32();
-	uint32 nEndPos = 0;
+	uint64 nStartPos = data.ReadUInt32();
+	uint64 nEndPos = 0;
 	uint32 nBlockSize = 0;
 	if (packed) {
 		nBlockSize = data.ReadUInt32();

@@ -63,7 +63,7 @@ void CBarShader::Reset()
 }
 
 
-void CBarShader::SetFileSize(uint32 fileSize)
+void CBarShader::SetFileSize(uint64 fileSize)
 {
 	m_FileSize = fileSize;
 	Reset();
@@ -122,7 +122,7 @@ void CBarShader::BuildModifiers()
 }
 
 
-void CBarShader::FillRange(uint32 start, uint32 end, const uint32 color)
+void CBarShader::FillRange(uint64 start, uint64 end, const uint32 color)
 {
 	// Sanity check
 	wxASSERT( start <= end );
@@ -172,7 +172,7 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	// This modifier is multipled with sizes to allow for better handling of small ranges
 	const uint64 MOD = 1000;
 	// This is the number of bits each pixel should contain.
-	const uint64 bitsPerPixel = ((uint64)m_FileSize * MOD) / (uint64)m_Width;
+	const uint64 bitsPerPixel = (m_FileSize * MOD) / (uint64)m_Width;
 	
 	// The initial values for partial pixel drawing
 	uint64 curPixel = 0;
@@ -283,4 +283,3 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, uint32 color, bool b
 
 	dc->SetBrush(wxNullBrush);
 }
-
