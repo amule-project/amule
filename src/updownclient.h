@@ -595,6 +595,8 @@ public:
 	
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	
+	bool		SupportsLargeFiles() const { return m_fSupportsLargeFiles; }
+	
 	#ifdef __DEBUG__
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
@@ -766,6 +768,7 @@ private:
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
 		m_fAICHRequested     : 1,
+		m_fSupportsLargeFiles : 1,
 		m_fSentOutOfPartReqs : 1;
 
 	unsigned int

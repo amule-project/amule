@@ -64,6 +64,9 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint
 		switch (tag->GetNameID()) {
 			case FT_FILENAME:			SetFileName(tag->GetStr());	break;
 			case FT_FILESIZE:			SetFileSize(tag->GetInt());	break;
+			case FT_FILESIZE_HI:
+				SetFileSize( (((uint64)tag->GetInt()) << 32) + GetFileSize());
+				break;				
 			case FT_FILERATING:			m_iUserRating = (tag->GetInt() & 0xF) / 3;	break;
 			case FT_SOURCES:			m_sourceCount = tag->GetInt(); break;
 			case FT_COMPLETE_SOURCES:	m_completeSourceCount = tag->GetInt(); break;
@@ -179,4 +182,3 @@ void CSearchFile::UpdateParent()
 
 	SetFileName(m_children.at(index)->GetFileName());
 }
-

@@ -816,8 +816,32 @@ void CSharedFileList::CreateOfferedFilePacket(
 	TagPtrList tags;
 
 	tags.push_back(new CTag(FT_FILENAME, cur_file->GetFileName()));
-	#warning Kry - UPGRADE
-	tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
+	
+	if (!cur_file->IsLargeFile()){
+		tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
+	} else {
+		// Large file
+		// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
+		if (pServer) {
+			if (!pServer->SupportsLargeFilesTCP()){
+				wxASSERT( false );
+				tags.push_back(new CTag(FT_FILESIZE, 0, false));
+			}else {
+				tags.push_back(new CTag(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
+				tags.push_back(new CTag(FT_FILESIZE_HI, (uint32)(cur_file->GetFileSize() >> 32)));
+			}
+		} else {
+			if (!pClient->SupportsLargeFiles()){
+				wxASSERT( false );
+				tags.push_back(new CTag(FT_FILESIZE, 0, false));
+			} else {
+				#warning Kry - UPGRADE - Needs 64bits tags
+				wxASSERT(false);
+				//tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize(), true));
+			}
+		}		
+	}
+	
 	if (cur_file->GetFileRating()) {
 		tags.push_back(new CTag(FT_FILERATING, cur_file->GetFileRating()));
 	}
@@ -850,7 +874,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 #if wxUSE_UNICODE
 	bool unicode_support = 
 		// eservers that support UNICODE.
-		(pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_UNICODE))
+		(pServer && (pServer->GetUnicodeSupport()))
 		||
 		// clients that support unicode
 		(pClient && pClient->GetUnicodeSupport());
