@@ -251,6 +251,12 @@ void CUpDownClient::Init()
 
 CUpDownClient::~CUpDownClient()
 {
+	#ifdef __DEBUG__
+	if (!connection_reason.IsEmpty()) {
+		printf("Client to check for %s was deleted without connection.\n",(const char*)unicode2char(connection_reason));
+	}
+	#endif	
+	
 	if (m_lastClientSoft == SO_UNKNOWN) {
 		theStats::RemoveUnknownClient();
 	} else if (m_lastClientSoft != (uint32)(-1)) {
@@ -1420,6 +1426,20 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 void CUpDownClient::ConnectionEstablished()
 {
+	
+	/* Kry - First thing, check if this client was just used to retrieve 
+	   info. That's some debug thing for myself... check connection_reason
+	   definition */
+	
+	#ifdef __DEBUG__
+	if (!connection_reason.IsEmpty()) {
+		printf("Got client info checking for %s: %s\nDisconnecting and deleting.\n",(const char*)unicode2char(connection_reason),(const char*)unicode2char(GetClientFullInfo()));
+		connection_reason.Clear(); // So we don't re-printf on destructor.
+		Safe_Delete();
+		return;
+	}
+	#endif
+	
 	// Check if we should use this client to retrieve our public IP
 	// Ignore local ip on GetPublicIP (could be wrong)
 	if (theApp.GetPublicIP(true) == 0 && theApp.IsConnectedED2K()) {
@@ -1541,7 +1561,7 @@ void CUpDownClient::ReGetClientSoft()
 		m_clientSoft = m_byCompatibleClient;
 		m_clientSoftString = GetSoftName(m_clientSoft);
 		// Special issues:
-		if((GetClientModString().IsEmpty() == false) && (m_clientSoft != SO_EMULE)) {
+		if(!GetClientModString().IsEmpty() && (m_clientSoft != SO_EMULE)) {
 			m_clientSoftString = GetClientModString();
 		}
 		// Isn't xMule annoying?
@@ -2051,12 +2071,13 @@ wxString CUpDownClient::GetClientFullInfo() {
 		ReGetClientSoft();
 	}
 
-	return CFormat( _("Client %s on IP:Port %s:%d using %s %s") )
+	return CFormat( _("Client %s on IP:Port %s:%d using %s %s %s") )
 		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
 		% GetFullIP()
 		% GetUserPort()
 		% m_clientSoftString 
-		% m_clientVerString;
+		% m_clientVerString
+		% m_strModVersion;
 }
 
 

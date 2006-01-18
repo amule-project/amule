@@ -68,6 +68,8 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
+
 #ifndef AMULE_DAEMON
 #include "amuleDlg.h"
 #include "KadDlg.h"
@@ -716,7 +718,7 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 		try {
 			bio.readTagList(tags, true/*bOptACP*/);
 		} catch(...){
-			DebugClientOutput(wxT("CKademliaUDPListener::processSearchResponse"),ip,port);
+			DebugClientOutput(wxT("CKademliaUDPListener::processSearchResponse"),ip,port,packetData,lenPacket);
 			deleteTagListEntries(tags);
 			delete tags;
 			tags = NULL;
@@ -758,6 +760,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 
 	wxString strInfo;
 	uint16 count = bio.readUInt16();
+	uint16 totalcount = count;
 	bool flag = false;
 	uint8 load = 0;
 	while( count > 0 ) {
@@ -767,14 +770,17 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 		bio.readUInt128(&target);
 
 		Kademlia::CEntry* entry = new Kademlia::CEntry();
+		uint32 tags, totaltags;
 		try {
 			entry->ip = ip;
 			entry->udpport = port;
 			entry->keyID.setValue(file);
 			entry->sourceID.setValue(target);
-			uint32 tags = bio.readByte();
+			tags = bio.readByte();
+			totaltags = tags;
 			while(tags > 0) {
 				CTag* tag = bio.readTag();
+				totaltags = tags;
 				if(tag) {
 					if (!tag->m_name.Cmp(wxT(TAG_SOURCETYPE)) && tag->m_type == 9) {
 						if( entry->source == false ) {
@@ -827,7 +833,8 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 				AddDebugLogLineM(false, logClientKadUDP, strInfo);
 			}
 		} catch(...) {
-			DebugClientOutput(wxT("CKademliaUDPListener::processPublishRequest"),ip,port);
+			printf("Error on count %i tag %i\n",totalcount-count, totaltags-tags);
+			DebugClientOutput(wxT("CKademliaUDPListener::processPublishRequest"),ip,port,packetData,lenPacket);
 			delete entry;
 			throw;
 		}
@@ -942,7 +949,7 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 		try{
 			bio.readTagList(tags, true/*bOptACP*/);
 		} catch(...){
-			DebugClientOutput(wxT("CKademliaUDPListener::processSearchNotesResponse"),ip,port);
+			DebugClientOutput(wxT("CKademliaUDPListener::processSearchNotesResponse"),ip,port,packetData,lenPacket);
 			deleteTagListEntries(tags);
 			delete tags;
 			tags = NULL;
@@ -989,7 +996,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 		bio.readTagList(&entry->taglist);
 		entry->source = false;
 	} catch(...) {
-		DebugClientOutput(wxT("CKademliaUDPListener::processPublishNotesRequest"),ip,port);
+		DebugClientOutput(wxT("CKademliaUDPListener::processPublishNotesRequest"),ip,port,packetData,lenPacket);
 		delete entry;
 		throw;
 	}
@@ -1212,14 +1219,31 @@ void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destin
 	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
 }
 
-void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 ip, uint32 port) {
+void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len) {
+#if THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX
+	#error TOLD YA NOT TO TOUCH THAT LINE!
+	uint32 ip = wxUINT32_SWAP_ALWAYS(kad_ip);
 	printf("Error on %s received from: %s\n",(const char*)unicode2char(place),(const char*)unicode2char(Uint32_16toStringIP_Port(ip,port)));
+	if (data) {
+		printf("Packet dump:\n");
+		DumpMem(data, len);
+	}
 	CClientList::SourceList clientslist = theApp.clientlist->GetClientsByIP(ip);
 	if (!clientslist.empty()) {
 		for (CClientList::SourceList::iterator it = clientslist.begin(); it != clientslist.end(); ++it) {
 			printf("Ip Matches: %s\n",(const char*)unicode2char((*it)->GetClientFullInfo()));
 		}
 	} else {
-		printf("No ip match\n");
+		printf("No ip match, trying to create a client conenction:\n");
+		if (port == 4672) {
+			printf("Trying default port 4662\n");
+			/* Default port, let's guess TCP is 4662 then... */
+			CUpDownClient* client = new CUpDownClient(4662,kad_ip,0,0,NULL,false,false);
+			client->SetConnectionReason(wxT("Error on ") + place);
+			client->TryToConnect(true);
+		} else {
+			printf("Client uses an non-standard port. Can't guess TCP.\n");
+		}
 	}
+#endif
 }

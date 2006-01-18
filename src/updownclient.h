@@ -595,6 +595,9 @@ public:
 	
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	
+	/* Kry - Debug. See connection_reason definition comment below */
+	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
+	
 private:
 	
 	CClientCredits	*credits;
@@ -815,6 +818,14 @@ private:
 	
 	/* For buddies timeout */
 	uint32 m_nCreationTime;
+	
+	/* Kry - Debug thing. Clients created just to check their data
+	   have this string set to the reason we want to check them. 
+	   Obviously, once checked, we disconect them. Take that, sucker.
+	   This debug code is just for me I'm afraid. */
+	  #ifdef __DEBUG__
+	  wxString connection_reason;
+	  #endif
 };
 
 
