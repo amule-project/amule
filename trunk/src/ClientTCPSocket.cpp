@@ -628,6 +628,12 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 
 
 			for (int i = 0; i < ARRSIZE(auStartOffsets); i++) {
+				if ( CLogger::IsEnabled( logClient ) ) {
+					wxString msg = wxString::Format(_("Client requests %u"), i);
+					msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
+					msg += wxT(" ") + m_client->GetFullIP();
+					AddLogLineM(false, msg);
+				}
 				if (auEndOffsets[i] > auStartOffsets[i]) {
 					Requested_Block_Struct* reqblock = new Requested_Block_Struct;
 					reqblock->StartOffset = auStartOffsets[i];
@@ -638,11 +644,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 				} else {
 					if ( CLogger::IsEnabled( logClient ) ) {
 							if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-								wxString msg = wxString::Format(_("Client requests invalid %u "), i);
-								msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
-								msg += wxT(" ") + m_client->GetFullIP();
-							//	AddLogLineM( false, CFormat(_("Client requests invalid %u. file block %u-%u (%d bytes): %s")) % i % auStartOffsets[i] % auEndOffsets[i] % auEndOffsets[i] - auStartOffsets[i] % m_client->GetFullIP());
-								AddLogLineM(false, msg);
+								AddLogLineM(false, _("Client request is invalid!"));
 							}
 						}
 					}
@@ -948,7 +950,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 					for (int i = 0; i < iQueuedFiles; i++) {
 						CPartFile* pFile = theApp.downloadqueue->GetFileByIndex(i);
 						if (pFile == NULL || pFile->GetStatus(true) != PS_READY) {
-							break;
+							continue;
 						}
 						list.AddTail(pFile);
 					}
