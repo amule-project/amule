@@ -393,6 +393,7 @@ bool CamuleApp::OnInit()
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
+	cmdline.AddSwitch(wxT("runthisatmyownriskkthx"), wxT("run-this-at-my-own-risk-kthx"), wxT("Runs aMule scary SVN development version at your own risk."));
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
@@ -401,7 +402,12 @@ bool CamuleApp::OnInit()
 		cmdline.Usage();
 		return false;
 	}	
-	
+
+	if ( !cmdline.Found(wxT("run-this-at-my-own-risk-kthx")) ) {
+		printf("This binary requires you to run amule --run-this-at-my-own-risk-kthx and only if you're very sure of it.\n");
+		return false;
+	}		
+		
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
 	// catch fatal exceptions

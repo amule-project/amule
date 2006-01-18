@@ -616,12 +616,14 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 
 			CMD4Hash reqfilehash = data.ReadHash();
 
-			uint32 auStartOffsets[3];
+			#warning Kry - UPDATE
+			
+			uint64 auStartOffsets[3];
 			auStartOffsets[0] = data.ReadUInt32();
 			auStartOffsets[1] = data.ReadUInt32();
 			auStartOffsets[2] = data.ReadUInt32();
 
-			uint32 auEndOffsets[3];
+			uint64 auEndOffsets[3];
 			auEndOffsets[0] = data.ReadUInt32();
 			auEndOffsets[1] = data.ReadUInt32();
 			auEndOffsets[2] = data.ReadUInt32();
