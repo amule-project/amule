@@ -122,8 +122,11 @@ public:
 
 	virtual const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
-	uint32	GetFileSize() const			{return m_nFileSize;}
-	virtual void SetFileSize(uint32 nFileSize) { m_nFileSize = nFileSize; }
+	#warning Kry - Review
+	uint64	GetFileSize() const	{ return m_nFileSize;}
+	bool	IsLargeFile() const	{ return m_nFileSize > (uint64)OLD_MAX_FILE_SIZE; }
+	#warning Kry - Review
+	virtual void SetFileSize(uint64 nFileSize) { m_nFileSize = nFileSize; }
 	
 	virtual void	SetFileName(const wxString& strmakeFilename);
 
@@ -167,8 +170,8 @@ protected:
 private:
 	// Note: These variables have virtual accessor functions,
 	//       and thus should only be accesed via those.
-	
-	uint32		m_nFileSize;
+	#warning Kry -Review
+	uint64		m_nFileSize;
 	wxString	m_strFileName;
 };
 
@@ -198,8 +201,7 @@ public:
 	bool	WriteToFile(CFileDataIO* file);	
 	uint32	GetFileDate() const	{return date;}
 
-		
-	virtual void SetFileSize(uint32 nFileSize);
+	virtual void SetFileSize(uint64 nFileSize);
 
 	// local available part hashs
 	uint16	GetHashCount() const	{return hashlist.GetCount();}

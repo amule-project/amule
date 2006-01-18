@@ -155,7 +155,7 @@ public:
 
 protected:
 	CAICHHashTree*	FindHash(uint32 nStartPos, uint32 nSize, uint8* nLevel);
-	bool			CreatePartRecoveryData(uint32 nStartPos, uint32 nSize, CFileDataIO* fileDataOut, uint16 wHashIdent);
+	bool			CreatePartRecoveryData(uint64 nStartPos, uint32 nSize, CFileDataIO* fileDataOut, uint16 wHashIdent);
 	void			WriteHash(CFileDataIO* fileDataOut, uint16 wHashIdent) const;
 	bool			WriteLowestLevelHashs(CFileDataIO* fileDataOut, uint16 wHashIdent, bool bNoIdent = false) const;
 	bool			LoadLowestLevelHashs(CFileDataIO* fileInput);
@@ -205,17 +205,17 @@ class CAICHHashSet
 public:
 	CAICHHashSet(CKnownFile*	pOwner);
 	~CAICHHashSet(void);
-	bool			CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad = false);
+	bool			CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad = false);
 	bool			ReadRecoveryData(uint32 nPartStartPos, CMemFile* fileDataIn);
 	bool			ReCalculateHash(bool bDontReplace = false);
 	bool			VerifyHashTree(bool bDeleteBadTrees);
 	void			UntrustedHashReceived(const CAICHHash& Hash, uint32 dwFromIP);
-	bool			IsPartDataAvailable(uint32 nPartStartPos);
+	bool			IsPartDataAvailable(uint64 nPartStartPos);
 	void			SetStatus(EAICHStatus bNewValue)			{m_eStatus = bNewValue;}
 	EAICHStatus		GetStatus()	const							{return m_eStatus;}
 	
 	void			FreeHashSet();
-	void			SetFileSize(uint32 nSize);
+	void			SetFileSize(uint64 nSize);
 	
 	CAICHHash&		GetMasterHash()						{return m_pHashTree.m_Hash;} 
 	void			SetMasterHash(const CAICHHash& Hash, EAICHStatus eNewStatus);

@@ -176,11 +176,19 @@ enum EClientSoftware {
 #define	KEEPTRACK_TIME				7200000 // 2h	//how long to keep track of clients which were once in the uploadqueue
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 
-// you shouldn't change anything here if you are not really sure, or amule will probaly not work
+// You shouldn't change anything here if you are not really sure, or aMule will probaly not work
+
+// (4294967295/PARTSIZE)*PARTSIZE = ~4GB
+#define OLD_MAX_FILE_SIZE 4290048000ull
 
 enum FileConstants { 
-	MAX_FILE_SIZE	= 4290048000u,	// (4294967295/PARTSIZE)*PARTSIZE
-	PARTSIZE		= 9728000u,
+#ifdef SUPPORT_LARGE_FILES
+	// = 2^38 = 256GB
+	MAX_FILE_SIZE	= 0x4000000000ull,
+#else
+	MAX_FILE_SIZE	= OLD_MAX_FILE_SIZE,
+#endif
+	PARTSIZE		= 9728000ull,
 	BLOCKSIZE		= 184320u,
 	EMBLOCKSIZE		= 184320u
 };

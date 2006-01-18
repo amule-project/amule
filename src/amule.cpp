@@ -1366,7 +1366,7 @@ void CamuleApp::OnFinishedHashing(CMuleInternalEvent& evt)
 		}
 	} else {
 		static int filecount;
-		static int bytecount;
+		static uint64 bytecount;
 
 		if (knownfiles->SafeAddKFile(result)) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Safe adding file to sharedlist: ") + result->GetFileName());			

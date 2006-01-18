@@ -317,8 +317,9 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
+	#warning Kry - EC update
 	SetFileSize(tag->SizeFull());
-	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
+	m_iPartCount = (GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
 	m_AvailPartFrequency.SetCount(m_iPartCount);
 	m_iUpPriority = tag->Prio();
 	if ( m_iUpPriority >= 10 ) {
@@ -382,7 +383,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	}
 
 	// create aichhashset
-	uint32 togo = GetFileSize();
+	uint64 togo = GetFileSize();
 	uint16 hashcount;
 	for (hashcount = 0; togo >= PARTSIZE; ) {
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
@@ -409,7 +410,9 @@ bool CKnownFile::CreateAICHHashSetOnly()
 		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, togo);
 		wxASSERT( pBlockAICHHashTree != NULL );
 		try {
-			CreateHashFromFile(&file, togo, NULL, pBlockAICHHashTree);
+			// Kry - "togo" is at most PARTSIZE by now, so it's safe to 
+			// cast it to a uint32
+			CreateHashFromFile(&file, (uint32)togo, NULL, pBlockAICHHashTree);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
 			return false;
@@ -432,7 +435,7 @@ bool CKnownFile::CreateAICHHashSetOnly()
 	return true;	
 }
 
-void CKnownFile::SetFileSize(uint32 nFileSize)
+void CKnownFile::SetFileSize(uint64 nFileSize)
 {
 	CAbstractFile::SetFileSize(nFileSize);
 	m_pAICHHashSet->SetFileSize(nFileSize);
@@ -503,15 +506,16 @@ void CKnownFile::SetFileSize(uint32 nFileSize)
 	}
 
 	// nr. of data parts
-	m_iPartCount = ((uint64)nFileSize + (PARTSIZE - 1)) / PARTSIZE;
+	m_iPartCount = (nFileSize + (PARTSIZE - 1)) / PARTSIZE;
 
 	// nr. of parts to be used with OP_FILESTATUS
 	m_iED2KPartCount = nFileSize / PARTSIZE + 1;
 	wxASSERT(m_iED2KPartCount <= 441);
 	// nr. of parts to be used with OP_HASHSETANSWER
 	m_iED2KPartHashCount = nFileSize / PARTSIZE;
-	if (m_iED2KPartHashCount != 0)
+	if (m_iED2KPartHashCount != 0) {
 		m_iED2KPartHashCount += 1;
+	}
 }
 
 
@@ -547,6 +551,7 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	
 	// trust noone ;-)
 	// lol, useless comment but made me lmao
+	// wtf you guys are weird.
 
 	if (!hashlist.IsEmpty()){
 		byte buffer[hashlist.GetCount() * 16];
@@ -578,6 +583,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 			
 			case FT_FILESIZE:
+				#warning Kry - UPGRADE
 				SetFileSize(newtag.GetInt());
 				m_AvailPartFrequency.Clear();
 				m_AvailPartFrequency.Add(0, GetPartCount());
@@ -746,6 +752,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	CTag nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);
 	
+	#warning Kry - UPGRADE
 	CTag sizetag(FT_FILESIZE, GetFileSize());
 	sizetag.WriteTagToFile(file);
 	
@@ -1340,6 +1347,8 @@ void CKnownFile::LoadComment()
 	
 	#else
 	m_strComment = wxT("Comments are not allowed on remote gui yet");
+	m_bCommentLoaded = true;
+	m_iRating =0;
 	#endif
 	
 }

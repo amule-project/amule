@@ -514,7 +514,7 @@ void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, u
 
 bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 {
-	const uint32 fileSize = toadd->GetFileSize();
+	const uint64 fileSize = toadd->GetFileSize();
 	// If filesize is 0, or file is too large for the network, drop it 
 	if ((fileSize == 0) or (fileSize > MAX_FILE_SIZE)) {
 		AddDebugLogLineM(false, logSearch,
@@ -1031,4 +1031,3 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	
 	AddToList(new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true));
 }
-

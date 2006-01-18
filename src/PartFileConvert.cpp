@@ -486,7 +486,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	}
 
 	if (s_pfconverting->partmettype == PMT_NEWOLD || s_pfconverting->partmettype == PMT_SPLITTED ) {
-		file->completedsize = file->transfered;
+		file->SetCompletedSize(file->transfered);
 		file->m_iGainDueToCompression = 0;
 		file->m_iLostDueToCorruption = 0;
 	}

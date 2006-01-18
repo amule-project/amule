@@ -267,7 +267,7 @@ void CAICHHashTree::SetBlockHash(uint32 nSize, uint32 nStartPos, CAICHHashAlgo* 
 	pToInsert->m_bHashValid = true;
 }
 
-bool CAICHHashTree::CreatePartRecoveryData(uint32 nStartPos, uint32 nSize, CFileDataIO* fileDataOut, uint16 wHashIdent){
+bool CAICHHashTree::CreatePartRecoveryData(uint64 nStartPos, uint32 nSize, CFileDataIO* fileDataOut, uint16 wHashIdent){
 	if (nStartPos + nSize > m_nDataSize){ // sanity
 		wxASSERT ( false );
 		return false;
@@ -291,9 +291,9 @@ bool CAICHHashTree::CreatePartRecoveryData(uint32 nStartPos, uint32 nSize, CFile
 		wHashIdent <<= 1;
 		wHashIdent |= (m_bIsLeftBranch) ? 1: 0;
 		
-		uint32 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
-		uint32 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
-		uint32 nRight = m_nDataSize - nLeft;
+		uint64 nBlocks = m_nDataSize / m_nBaseSize + ((m_nDataSize % m_nBaseSize != 0 )? 1:0); 
+		uint64 nLeft = ( ((m_bIsLeftBranch) ? nBlocks+1:nBlocks) / 2)* m_nBaseSize;
+		uint64 nRight = m_nDataSize - nLeft;
 		if (m_pLeftTree == NULL || m_pRightTree == NULL){
 			wxASSERT( false );
 			return false;
@@ -463,7 +463,7 @@ CAICHHashSet::~CAICHHashSet(void)
 	FreeHashSet();
 }
 
-bool CAICHHashSet::CreatePartRecoveryData(uint32 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad){
+bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fileDataOut, bool bDbgDontLoad){
 	wxASSERT( m_pOwner );
 	if (m_pOwner->IsPartFile() || m_eStatus != AICH_HASHSETCOMPLETE){
 		wxASSERT( false );
@@ -735,7 +735,7 @@ bool CAICHHashSet::VerifyHashTree(bool bDeleteBadTrees){
 	return bResult;
 }
 
-void CAICHHashSet::SetFileSize(uint32 nSize){
+void CAICHHashSet::SetFileSize(uint64 nSize){
 	m_pHashTree.m_nDataSize = nSize;
 	m_pHashTree.m_nBaseSize = (nSize <= PARTSIZE) ? EMBLOCKSIZE : PARTSIZE;	
 }
@@ -868,14 +868,14 @@ CAICHRequestedData CAICHHashSet::GetAICHReqDetails(const  CUpDownClient* pClient
 	return empty;
 }
 
-bool CAICHHashSet::IsPartDataAvailable(uint32 nPartStartPos){
+bool CAICHHashSet::IsPartDataAvailable(uint64 nPartStartPos){
 	if (!(m_eStatus == AICH_VERIFIED || m_eStatus == AICH_TRUSTED || m_eStatus == AICH_HASHSETCOMPLETE) ){
 		wxASSERT( false );
 		return false;
 	}
-	uint32 nPartSize = min<uint32>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
-	for (uint32 nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE){
-		CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint32>(EMBLOCKSIZE, nPartSize-nPartPos));
+	uint64 nPartSize = min<uint64>(PARTSIZE, m_pOwner->GetFileSize()-nPartStartPos);
+	for (uint64 nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE){
+		CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint64>(EMBLOCKSIZE, nPartSize-nPartPos));
 		if (phtToCheck == NULL || !phtToCheck->m_bHashValid){
 			return false;
 		}

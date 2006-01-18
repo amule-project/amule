@@ -1416,7 +1416,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	// Remaining
 	case 9: {
 		if ((file->GetStatus() != PS_COMPLETING) && file->IsPartFile()) {
-			uint32 remainSize = file->GetFileSize() - file->GetCompletedSize();
+			uint64 remainSize = file->GetFileSize() - file->GetCompletedSize();
 			sint32 remainTime = file->getTimeRemaining();
 			
 			if (remainTime >= 0) {
@@ -2188,7 +2188,7 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 
 	for ( uint32 i = 0; i < partStatus.size(); i++ ) {
 		if ( partStatus[i]) {
-			uint32 uEnd;
+			uint64 uEnd;
 			if (PARTSIZE*(i+1) > reqfile->GetFileSize()) {
 				uEnd = reqfile->GetFileSize();
 			} else {

@@ -137,7 +137,7 @@ public:
 	 * present and therefore, they might end up pointing past current
 	 * filesize if the size if smaller than before.
 	 */
-	void SetFileSize(uint32 fileSize);
+	void SetFileSize(uint64 fileSize);
 
 	/**
 	 * Fills in a range with a certain color.
@@ -151,7 +151,7 @@ public:
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
-	void FillRange(uint32 start, uint32 end, const uint32 color);
+	void FillRange(uint64 start, uint64 end, const uint32 color);
 
 	/**
 	 * Fill the entire bar with a span of the specified color.
@@ -194,7 +194,7 @@ private:
 	//! The height of the drawn bar
 	int    m_Height;
 	//! The virtual filesize assosiated with the bar
-	uint32 m_FileSize;
+	uint64 m_FileSize;
 	//! Pointer to array of modifers used to create 3D effect. Size is (m_Height+1)/2 when set.
 	double* m_Modifiers;
 	//! The current 3d level 
