@@ -47,6 +47,7 @@ class CFileDataIO;
 #define SRV_TCPFLG_UNICODE                      0x00000010
 #define SRV_TCPFLG_RELATEDSEARCH        0x00000040
 #define SRV_TCPFLG_TYPETAGINTEGER       0x00000080
+#define SRV_TCPFLG_LARGEFILES           0x00000100
 
 // Server UDP flags
 #define SRV_UDPFLG_EXT_GETSOURCES       0x00000001
@@ -54,6 +55,7 @@ class CFileDataIO;
 #define SRV_UDPFLG_NEWTAGS                      0x00000008
 #define SRV_UDPFLG_UNICODE                      0x00000010
 #define SRV_UDPFLG_EXT_GETSOURCES2      0x00000020
+#define SRV_UDPFLG_LARGEFILES           0x00000100
 
 // Server priority
 #define SRV_PR_LOW                      2
@@ -140,6 +142,9 @@ public:
 	uint8	GetLastDescPingedCount() const	{return lastdescpingedcout;}
 	void	SetLastDescPingedCount(bool reset);
 	bool	GetUnicodeSupport() const				{return GetTCPFlags() & SRV_TCPFLG_UNICODE;}
+	bool	GetRelatedSearchSupport() const			{return GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH;}
+	bool	SupportsLargeFilesTCP() const			{return GetTCPFlags() & SRV_TCPFLG_LARGEFILES;}
+	bool	SupportsLargeFilesUDP() const			{return GetUDPFlags() & SRV_UDPFLG_LARGEFILES;}	
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
 	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
 	
