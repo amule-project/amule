@@ -179,8 +179,8 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 	{
 		Requested_Block_Struct* last_done_block = NULL;
 		Requested_Block_Struct* next_requested_block = NULL;
-		uint32 last_done_part = 0xffffffff;
-		uint32 next_requested_part = 0xffffffff;
+		uint64 last_done_part = 0xffffffff;
+		uint64 next_requested_part = 0xffffffff;
 			
 			
 		// Get last block and next pending
@@ -342,6 +342,8 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 	} else {
 		nPacketSize = togo;
 	}
+	
+	#warning Kry - UPDATE
 
 	while (togo){
 		if (togo < nPacketSize*2) {
@@ -378,6 +380,8 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		CreateStandartPackets(buffer, togo, currentblock);
 		return;
 	}
+	
+	#warning Kry - UPDATE
 	
 	CMemFile memfile(output,newsize);
 	

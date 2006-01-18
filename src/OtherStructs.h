@@ -43,7 +43,6 @@ struct UDP_Header_Struct{
 	int8	command;
 } __attribute__((__packed__));
 
-#warning Kry - Review
 struct Requested_Block_Struct{
 	uint64	StartOffset;
 	uint64	EndOffset;
@@ -66,7 +65,6 @@ struct Pending_Block_Struct{
 				fRecovered    : 1;	
 };
 
-#warning Kry - Review
 struct Gap_Struct{
 	uint64 start;
 	uint64 end;

@@ -608,6 +608,7 @@ void CUpDownClient::SendBlockRequests()
 		return;
 	}
 	
+	#warning Kry - UPDATE both
 	
 	CMemFile data(16 /*Hash*/ + (3*4 /* uint32 start*/) + (3*4/* uint32 start*/));
 	data.WriteHash(m_reqfile->GetFileHash());
@@ -629,8 +630,7 @@ void CUpDownClient::SendBlockRequests()
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
 			Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
-			uint32 endpos = block->EndOffset+1;
-			data.WriteUInt32(endpos);			
+			data.WriteUInt32(block->EndOffset+1);			
 		} else {
 			data.WriteUInt32(0);
 		}

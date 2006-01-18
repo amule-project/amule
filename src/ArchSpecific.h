@@ -42,10 +42,15 @@
 #define ENDIAN_NTOHS(x) ( wxUINT16_SWAP_ON_LE(x) )
 // ntohl
 #define ENDIAN_NTOHL(x) ( wxUINT32_SWAP_ON_LE(x) )
+// new
+#define ENDIAN_NTOHLL(x) ( wxUINT64_SWAP_ON_LE(x) )	
 // htons
 #define ENDIAN_HTONS(x) ( wxUINT16_SWAP_ON_LE(x) )
 // htonl
 #define ENDIAN_HTONL(x) ( wxUINT32_SWAP_ON_LE(x) )	
+// new
+#define ENDIAN_HTONLL(x) ( wxUINT64_SWAP_ON_LE(x) )	
+
 
 /**
  * Returns the value in the given bytestream.

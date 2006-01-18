@@ -837,7 +837,7 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 	return *this;
 }
 
-
+#warning Kry - lfroen, please fix this to work with 64bits
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
 	size_t gap_list_size = m_file->gaplist.GetCount();
@@ -851,8 +851,8 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	GapBuffer::iterator it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
-		*it++ = ENDIAN_HTONL(curr->start);
-		*it++ = ENDIAN_HTONL(curr->end);
+		*it++ = ENDIAN_HTONLL(curr->start);
+		*it++ = ENDIAN_HTONLL(curr->end);
 	}
 
 	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint32));
@@ -886,8 +886,8 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	it = m_gap_buffer.begin();
 	while ( curr_pos ) {
 		Requested_Block_Struct* block = m_file->requestedblocks_list.GetNext(curr_pos);
-		*it++ = ENDIAN_HTONL(block->StartOffset);
-		*it++ = ENDIAN_HTONL(block->EndOffset);
+		*it++ = ENDIAN_HTONLL(block->StartOffset);
+		*it++ = ENDIAN_HTONLL(block->EndOffset);
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
 		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
