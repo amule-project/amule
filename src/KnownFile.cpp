@@ -52,6 +52,7 @@
 #include "ClientList.h" // Needed for clientlist (buddy support)
 #include "ArchSpecific.h"
 #include "Logger.h"
+#include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
 
 #include "kademlia/kademlia/Entry.h"
 
@@ -808,109 +809,95 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
 {
-	wxASSERT( Output != NULL || pShaHashOut != NULL);
-
-	wxASSERT( Length <= PARTSIZE); // We never hash more than one PARTSIZE
+	wxASSERT_MSG(Output or pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
+	wxCHECK_RET(file or in_string, wxT("No input to hash from in CreateHashFromInput"));
+	wxASSERT(Length <= PARTSIZE); // We never hash more than one PARTSIZE
 	
-	CAICHHashAlgo* pHashAlg = NULL;
-	bool delete_in_string = false;
+	// When reading from files, this scoped array will take ownership of the temporary array.
+	CScopedArray<unsigned char> tmpArray(NULL);
 	
-	try {
-		if (file) {
-			wxASSERT(!in_string);
-			in_string = new unsigned char[Length]; 	 
-			delete_in_string = true;
-			file->Read(in_string,Length); 	 
+	if (file) {
+		wxASSERT(!in_string);
+		tmpArray.reset(new unsigned char[Length]);
+		file->Read(tmpArray.get(), Length);
+		in_string = tmpArray.get();
+	}
+	
+	CMemFile data(in_string, Length);
+		
+	uint32 Required = Length;
+	byte   X[64*128];
+	
+	uint32	posCurrentEMBlock = 0;
+	uint32	nIACHPos = 0;
+	CScopedPtr<CAICHHashAlgo> pHashAlg(m_pAICHHashSet->GetNewHashAlgo());
+
+	// This is all AICH.
+	while (Required >= 64) {
+		uint32 len = Required / 64; 
+		if (len > sizeof(X)/(64 * sizeof(X[0]))) {
+			len = sizeof(X)/(64 * sizeof(X[0])); 
 		}
 		
-		CMemFile data(in_string, Length);
-			
-		uint32 Required = Length;
-		byte   X[64*128];
-		
-		uint32	posCurrentEMBlock = 0;
-		uint32	nIACHPos = 0;
-		pHashAlg = m_pAICHHashSet->GetNewHashAlgo();
+		data.Read(&X, len * 64);
 
-		// This is all AICH.
-		
-		while (Required >= 64){
-			uint32 len = Required / 64; 
-			if (len > sizeof(X)/(64 * sizeof(X[0]))) {
-				len = sizeof(X)/(64 * sizeof(X[0])); 
+		// SHA hash needs 180KB blocks
+		if (pShaHashOut) {
+			if (nIACHPos + len*64 >= EMBLOCKSIZE) {
+				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
+				pHashAlg->Add(X, nToComplete);
+				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg.get());
+				posCurrentEMBlock += EMBLOCKSIZE;
+				pHashAlg->Reset();
+				pHashAlg->Add(X+nToComplete,(len*64) - nToComplete);
+				nIACHPos = (len*64) - nToComplete;
 			}
-			data.Read(&X,len*64);
-
-			// SHA hash needs 180KB blocks
-			if (pShaHashOut != NULL){
-				if (nIACHPos + len*64 >= EMBLOCKSIZE){
-					uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
-					pHashAlg->Add(X, nToComplete);
-					wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
-					pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
-					posCurrentEMBlock += EMBLOCKSIZE;
-					pHashAlg->Reset();
-					pHashAlg->Add(X+nToComplete,(len*64) - nToComplete);
-					nIACHPos = (len*64) - nToComplete;
-				}
-				else{
-					pHashAlg->Add(X, len*64);
-					nIACHPos += len*64;
-				}
-			}
-
-			Required -= len*64;
-		}
-		// bytes to read
-		Required = Length % 64;
-		if (Required != 0){
-			data.Read(&X,Required);
-
-			if (pShaHashOut != NULL){
-				if (nIACHPos + Required >= EMBLOCKSIZE){
-					uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
-					pHashAlg->Add(X, nToComplete);
-					wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
-					pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg);
-					posCurrentEMBlock += EMBLOCKSIZE;
-					pHashAlg->Reset();
-					pHashAlg->Add(X+nToComplete, Required - nToComplete);
-					nIACHPos = Required - nToComplete;
-				}
-				else{
-					pHashAlg->Add(X, Required);
-					nIACHPos += Required;
-				}
+			else{
+				pHashAlg->Add(X, len*64);
+				nIACHPos += len*64;
 			}
 		}
+
+		Required -= len*64;
+	}
+	// bytes to read
+	Required = Length % 64;
+	if (Required != 0){
+		data.Read(&X,Required);
+
 		if (pShaHashOut != NULL){
-			if(nIACHPos > 0){
-				pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg);
-				posCurrentEMBlock += nIACHPos;
+			if (nIACHPos + Required >= EMBLOCKSIZE){
+				uint32 nToComplete = EMBLOCKSIZE - nIACHPos;
+				pHashAlg->Add(X, nToComplete);
+				wxASSERT( nIACHPos + nToComplete == EMBLOCKSIZE );
+				pShaHashOut->SetBlockHash(EMBLOCKSIZE, posCurrentEMBlock, pHashAlg.get());
+				posCurrentEMBlock += EMBLOCKSIZE;
+				pHashAlg->Reset();
+				pHashAlg->Add(X+nToComplete, Required - nToComplete);
+				nIACHPos = Required - nToComplete;
 			}
-			wxASSERT( posCurrentEMBlock == Length );
-			wxCHECK2( pShaHashOut->ReCalculateHash(pHashAlg, false), );
+			else{
+				pHashAlg->Add(X, Required);
+				nIACHPos += Required;
+			}
 		}
+	}
+	if (pShaHashOut != NULL){
+		if(nIACHPos > 0){
+			pShaHashOut->SetBlockHash(nIACHPos, posCurrentEMBlock, pHashAlg.get());
+			posCurrentEMBlock += nIACHPos;
+		}
+		wxASSERT( posCurrentEMBlock == Length );
+		wxCHECK2( pShaHashOut->ReCalculateHash(pHashAlg.get(), false), );
+	}
 
-		if (Output != NULL){
-			 CryptoPP::MD4 md4_hasher; 	 
-			 md4_hasher.CalculateDigest(Output, in_string, Length);		
-			
-		}
-			
-		delete pHashAlg;
-		if (delete_in_string) {
-			delete[] in_string;		
-		}
-	} catch (...) {
-		delete pHashAlg;
-		if (delete_in_string) {
-			delete[] in_string;		
-		}
-		
-		throw;
+	if (Output != NULL){
+		 CryptoPP::MD4 md4_hasher;
+		 md4_hasher.CalculateDigest(Output, in_string, Length);
 	}
 }
+
 
 const CMD4Hash& CKnownFile::GetPartHash(uint16 part) const {
 	wxASSERT( part < hashlist.GetCount() );
