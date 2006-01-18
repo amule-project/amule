@@ -1392,6 +1392,7 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	} else {
 		muleToolbar( m_wndToolbar );		
 	}
+
 	Thaw();
 }
 
