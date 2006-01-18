@@ -13,7 +13,7 @@ typedef CRangeMap<int> TestRangeMap;
  */
 wxString StringFrom(const TestRangeMap::const_iterator& it)
 {
-	return wxString::Format(wxT("(%u, %u, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format(wxT("(%llu, %llu, %i)"), it.keyStart(), it.keyEnd(), *it);
 }
 
 /**
@@ -21,7 +21,7 @@ wxString StringFrom(const TestRangeMap::const_iterator& it)
  */
 wxString StringFrom(TestRangeMap::iterator it)
 {
-	return wxString::Format(wxT("(%u, %u, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format(wxT("(%llu, %llu, %i)"), it.keyStart(), it.keyEnd(), *it);
 }
 
 
@@ -30,7 +30,7 @@ wxString StringFrom(TestRangeMap::iterator it)
  */
 wxString StringFrom(const CRangeMap<void>::const_iterator& it)
 {
-	return wxString::Format(wxT("(%u, %u)"), it.keyStart(), it.keyEnd());
+	return wxString::Format(wxT("(%llu, %llu)"), it.keyStart(), it.keyEnd());
 }
 
 /**
@@ -38,7 +38,7 @@ wxString StringFrom(const CRangeMap<void>::const_iterator& it)
  */
 wxString StringFrom(CRangeMap<void>::iterator it)
 {
-	return wxString::Format(wxT("(%u, %u)"), it.keyStart(), it.keyEnd());
+	return wxString::Format(wxT("(%llu, %llu)"), it.keyStart(), it.keyEnd());
 }
 
 

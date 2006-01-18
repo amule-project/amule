@@ -176,7 +176,7 @@ private:
 
 	
 	//! The is the type of map used to store the IPs.
-	typedef CRangeMap< rangeObject > IPMap;
+	typedef CRangeMap<rangeObject, uint32> IPMap;
 	
 	//! The map of IP-ranges
 	IPMap m_iplist;
