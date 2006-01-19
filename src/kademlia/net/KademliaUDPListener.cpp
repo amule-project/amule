@@ -37,14 +37,13 @@ there client on the eMule forum..
 #include "../kademlia/SearchManager.h"
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
-#include "../io/ByteIO.h"
 #include "../io/IOException.h"
+#include "../io/ByteIO.h"
 #include "../../NetworkFunctions.h"
 #include "../../KnownFile.h"
 #include "../../KnownFileList.h"
 #include "../../OtherFunctions.h"
 #include "../kademlia/Indexed.h"
-#include "../kademlia/Tag.h"
 #include "../../OPCodes.h"
 #include "../kademlia/Defines.h"
 #include "../../amule.h"
@@ -112,18 +111,18 @@ void CKademliaUDPListener::sendNullPacket(byte opcode,uint32 ip, uint16 port)
 	sendPacket(&bio, opcode, ip, port);
 }
 
-void CKademliaUDPListener::publishPacket(uint32 ip, uint16 port, const CUInt128 &targetID, const CUInt128 &contactID, const TagList& tags)
+void CKademliaUDPListener::publishPacket(uint32 ip, uint16 port, const CUInt128 &targetID, const CUInt128 &contactID, const TagPtrList& tags)
 {
 	//We need to get the tag lists working with CMemFiles..
 	byte packet[1024];
 	CByteIO bio(packet, sizeof(packet));
-	bio.writeByte(OP_KADEMLIAHEADER);
-	bio.writeByte(KADEMLIA_PUBLISH_REQ);
-	bio.writeUInt128(targetID);
+	bio.WriteUInt8(OP_KADEMLIAHEADER);
+	bio.WriteUInt8(KADEMLIA_PUBLISH_REQ);
+	bio.WriteUInt128(targetID);
 	//We only use this for publishing sources now.. So we always send one here..
-	bio.writeUInt16(1);
-	bio.writeUInt128(contactID);
-	bio.writeTagList(tags);
+	bio.WriteUInt16(1);
+	bio.WriteUInt128(contactID);
+	bio.WriteTagPtrList(tags);
 	uint32 len = sizeof(packet) - bio.getAvailable();
 	sendPacket(packet, len,  ip, port);
 }
@@ -571,11 +570,11 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 			return NULL;
 		}
 	} else if (op == 0x01) { // String
-		CTagValueString str(bio.ReadString(true));
-
-		KadTagStrMakeLower(str); // make lowercase, the search code expects lower case strings!
-		//TRACE(" \"%ls\"", str);
-
+		wxString str(bio.ReadString(true));
+		
+		// Make lowercase, the search code expects lower case strings!
+		str.MakeLower(); 
+		
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = SSearchTerm::String;
 		pSearchTerm->astr = new wxArrayString;
@@ -583,7 +582,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		// pre-tokenize the string term
 		wxStringTokenizer token(str,InvKadKeywordChars,wxTOKEN_DEFAULT );
 		while (token.HasMoreTokens()) {
-			CTagValueString strTok(token.GetNextToken());
+			wxString strTok(token.GetNextToken());
 			if (!strTok.IsEmpty()) {
 				pSearchTerm->astr->Add(strTok);
 			}
@@ -592,16 +591,16 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		return pSearchTerm;
 	} else if (op == 0x02) { // Meta tag 
 		// read tag value
-		CTagValueString strValue(bio.ReadString(true));
-
-		KadTagStrMakeLower(strValue); // make lowercase, the search code expects lower case strings!
+		wxString strValue(bio.ReadString(true));
+		// Make lowercase, the search code expects lower case strings!
+		strValue.MakeLower();
 
 		// read tag name
 		wxString strTagName =  bio.ReadString(true);
 
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = SSearchTerm::MetaTag;
-		pSearchTerm->tag = new Kademlia::CTagStr(strTagName, strValue);
+		pSearchTerm->tag = new CTag(strTagName, strValue);
 		return pSearchTerm;
 	}
 	else if (op == 0x03) { // Min/Max
@@ -633,7 +632,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = _aOps[mmop].eSearchTermOp;
-		pSearchTerm->tag = new Kademlia::CTagUInt32(strTagName, uValue);
+		pSearchTerm->tag = new CTag(strTagName, uValue);
 
 		return pSearchTerm;
 	} else{
@@ -698,15 +697,13 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 
 	// What search does this relate to
 	CByteIO bio(packetData, lenPacket);
-	CUInt128 target;
-	bio.readUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 
 	// How many results.. Not supported yet..
-	uint16 count = bio.readUInt16();
+	uint16 count = bio.ReadUInt16();
 	while( count > 0 ) {
 		// What is the answer
-		CUInt128 answer;
-		bio.readUInt128(&answer);
+		CUInt128 answer = bio.ReadUInt128();
 
 		// Get info about answer
 		// NOTE: this is the one and only place in Kad where we allow string conversion to local code page in
@@ -714,12 +711,12 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
 		// If that tag list is once used for something else than for viewing, special care has to be taken for any
 		// string conversion!
-		TagList* tags = new TagList;
+		TagPtrList* tags = new TagPtrList;
 		try {
-			bio.readTagList(tags, true/*bOptACP*/);
+			bio.ReadTagPtrList(tags, true/*bOptACP*/);
 		} catch(...){
 			DebugClientOutput(wxT("CKademliaUDPListener::processSearchResponse"),ip,port,packetData,lenPacket);
-			deleteTagListEntries(tags);
+			deleteTagPtrListEntries(tags);
 			delete tags;
 			tags = NULL;
 			throw;
@@ -748,8 +745,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	}
 
 	CByteIO bio(packetData, lenPacket);
-	CUInt128 file;
-	bio.readUInt128(&file);
+	CUInt128 file = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
 	distance.XOR(file);
@@ -759,15 +755,14 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 	}
 
 	wxString strInfo;
-	uint16 count = bio.readUInt16();
+	uint16 count = bio.ReadUInt16();
 	uint16 totalcount = count;
 	bool flag = false;
 	uint8 load = 0;
 	while( count > 0 ) {
 		strInfo.Clear();
 
-		CUInt128 target;
-		bio.readUInt128(&target);
+		CUInt128 target = bio.ReadUInt128();
 
 		Kademlia::CEntry* entry = new Kademlia::CEntry();
 		uint32 tags, totaltags;
@@ -776,15 +771,15 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 			entry->udpport = port;
 			entry->keyID.setValue(file);
 			entry->sourceID.setValue(target);
-			tags = bio.readByte();
+			tags = bio.ReadUInt8();
 			totaltags = tags;
 			while(tags > 0) {
-				CTag* tag = bio.readTag();
+				CTag* tag = bio.ReadTag();
 				totaltags = tags;
 				if(tag) {
-					if (!tag->m_name.Cmp(wxT(TAG_SOURCETYPE)) && tag->m_type == 9) {
+					if (!tag->GetName().Cmp(TAG_SOURCETYPE) && tag->GetType() == 9) {
 						if( entry->source == false ) {
-							entry->taglist.push_back(new CTagUInt32(TAG_SOURCEIP, entry->ip));
+							entry->taglist.push_back(new CTag(TAG_SOURCEIP, entry->ip));
 							entry->taglist.push_back(new CTagUInt16(TAG_SOURCEUPORT, entry->udpport));
 						} else {
 							//More than one sourcetype tag found.
@@ -793,10 +788,11 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 						entry->source = true;
 					}
 					
-					if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
+					if (!tag->GetName().Cmp(TAG_FILENAME)) {
 						if ( entry->fileName.IsEmpty() ) {
 							entry->fileName = tag->GetStr();
-							KadTagStrMakeLower(entry->fileName); // make lowercase, the search code expects lower case strings!							
+							// Make lowercase, the search code expects lower case strings!
+							entry->fileName.MakeLower();
 							strInfo += CFormat(wxT("  Name=\"%s\"")) % entry->fileName;
 							// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
 							entry->taglist.push_back(tag);
@@ -804,7 +800,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 							//More then one Name tag found.
 							delete tag;
 						}
-					} else if (!tag->m_name.Cmp(wxT(TAG_FILESIZE))) {
+					} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
 						if( entry->size == 0 ) {
 							entry->size = tag->GetInt();
 							strInfo += wxString::Format(wxT("  Size=%u"), entry->size);
@@ -814,7 +810,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 							//More then one size tag found
 							delete tag;
 						}
-					} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
+					} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 						if( entry->tcpport == 0 ) {
 							entry->tcpport = tag->GetInt();
 							entry->taglist.push_back(tag);
@@ -930,14 +926,12 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 
 	// What search does this relate to
 	CByteIO bio(packetData, lenPacket);
-	CUInt128 target;
-	bio.readUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 
-	uint16 count = bio.readUInt16();
+	uint16 count = bio.ReadUInt16();
 	while( count > 0 ) {
 		// What is the answer
-		CUInt128 answer;
-		bio.readUInt128(&answer);
+		CUInt128 answer = bio.ReadUInt128();
 
 		// Get info about answer
 		// NOTE: this is the one and only place in Kad where we allow string conversion to local code page in
@@ -945,12 +939,12 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 		// supposed to be 'viewed' by user only and not feed into the Kad engine again!
 		// If that tag list is once used for something else than for viewing, special care has to be taken for any
 		// string conversion!
-		TagList* tags = new TagList;
+		TagPtrList* tags = new TagPtrList;
 		try{
-			bio.readTagList(tags, true/*bOptACP*/);
+			bio.ReadTagPtrList(tags, true/*bOptACP*/);
 		} catch(...){
 			DebugClientOutput(wxT("CKademliaUDPListener::processSearchNotesResponse"),ip,port,packetData,lenPacket);
-			deleteTagListEntries(tags);
+			deleteTagPtrListEntries(tags);
 			delete tags;
 			tags = NULL;
 			throw;
@@ -974,8 +968,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 	}
 
 	CByteIO bio(packetData, lenPacket);
-	CUInt128 target;
-	bio.readUInt128(&target);
+	CUInt128 target = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
 	distance.XOR(target);
@@ -984,8 +977,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 		return;
 	}
 
-	CUInt128 source;
-	bio.readUInt128(&source);
+	CUInt128 source = bio.ReadUInt128();
 
 	Kademlia::CEntry* entry = new Kademlia::CEntry();
 	try {
@@ -993,7 +985,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 		entry->udpport = port;
 		entry->keyID.setValue(target);
 		entry->sourceID.setValue(source);
-		bio.readTagList(&entry->taglist);
+		bio.ReadTagPtrList(&entry->taglist);
 		entry->source = false;
 	} catch(...) {
 		DebugClientOutput(wxT("CKademliaUDPListener::processPublishNotesRequest"),ip,port,packetData,lenPacket);

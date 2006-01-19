@@ -162,30 +162,30 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 		const CTag& pTag = *searchresult->taglist[i];
 		
 		bool bTagAdded = false;
-		if (pTag.GetNameID() == 0 && pTag.GetName() != NULL && (pTag.IsStr() || pTag.IsInt())) {
+		if (pTag.GetNameID() == 0 && !pTag.GetName().IsEmpty() && (pTag.IsStr() || pTag.IsInt())) {
 			static const struct {
-				char*	pszName;
+				wxString	pszName;
 				uint8	nType;
 			} _aMetaTags[] = 
 				{
-					{ FT_ED2K_MEDIA_ARTIST,  2 },
-					{ FT_ED2K_MEDIA_ALBUM,   2 },
-					{ FT_ED2K_MEDIA_TITLE,   2 },
-					{ FT_ED2K_MEDIA_LENGTH,  2 },
-					{ FT_ED2K_MEDIA_BITRATE, 3 },
-					{ FT_ED2K_MEDIA_CODEC,   2 }
+					{ wxT(FT_ED2K_MEDIA_ARTIST),  2 },
+					{ wxT(FT_ED2K_MEDIA_ALBUM),   2 },
+					{ wxT(FT_ED2K_MEDIA_TITLE),   2 },
+					{ wxT(FT_ED2K_MEDIA_LENGTH),  2 },
+					{ wxT(FT_ED2K_MEDIA_BITRATE), 3 },
+					{ wxT(FT_ED2K_MEDIA_CODEC),   2 }
 				};
 			
 			for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
 				if (	pTag.GetType() == _aMetaTags[t].nType &&
-					!strcasecmp(pTag.GetName(), _aMetaTags[t].pszName)) {
+					(pTag.GetName() == _aMetaTags[t].pszName)) {
 					// skip string tags with empty string values
 					if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
 						break;
 					}
 
 					// skip "length" tags with "0: 0" values
-					if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_LENGTH)) {
+					if (pTag.GetName() == wxT(FT_ED2K_MEDIA_LENGTH)) {
 						if (pTag.GetStr().IsSameAs(wxT("0: 0")) ||
 							pTag.GetStr().IsSameAs(wxT("0:0"))) {
 							break;
@@ -193,7 +193,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					}
 
 					// skip "bitrate" tags with '0' values
-					if (!strcasecmp(pTag.GetName(), FT_ED2K_MEDIA_BITRATE) && !pTag.GetInt()) {
+					if ((pTag.GetName() == wxT(FT_ED2K_MEDIA_BITRATE)) && !pTag.GetInt()) {
 						break;
 					}
 
@@ -205,7 +205,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					break;
 				}
 			}
-		} else if (pTag.GetNameID() != 0 && pTag.GetName() == NULL && (pTag.IsStr() || pTag.IsInt())) {
+		} else if (pTag.GetNameID() != 0 && pTag.GetName().IsEmpty() && (pTag.IsStr() || pTag.IsInt())) {
 			static const struct {
 				uint8	nID;
 				uint8	nType;
@@ -591,11 +591,14 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					}
 					default: {
 						// Start Changes by Slugfiller for better exception handling
-						if ( newtag.IsInt() && newtag.GetName() &&
-							((newtag.GetName())[0] == FT_GAPSTART ||
-							 (newtag.GetName())[0] == FT_GAPEND)) {
+						
+						char gap_mark = newtag.GetName().IsEmpty() ?
+										0 : unicode2char(newtag.GetName())[0];
+						if ( newtag.IsInt() && (newtag.GetName().Length() > 1) &&
+							((gap_mark == FT_GAPSTART) ||
+							 (gap_mark == FT_GAPEND))) {
 							Gap_Struct *gap = NULL;
-							uint16 gapkey = atoi(&(newtag.GetName())[1]);
+							uint16 gapkey = atoi(unicode2char(newtag.GetName())+1);
 							if ( gap_map.find( gapkey ) == gap_map.end() ) {
 								gap = new Gap_Struct;
 								gap_map[gapkey] = gap;
@@ -605,10 +608,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 								gap = gap_map[ gapkey ];
 							}
 							#warning Kry - UPDATE
-							if ((newtag.GetName())[0] == FT_GAPSTART) {
+							if (gap_mark == FT_GAPSTART) {
 								gap->start = newtag.GetInt();
 							}
-							if ((newtag.GetName())[0] == FT_GAPEND) {
+							if (gap_mark == FT_GAPEND) {
 								gap->end = newtag.GetInt()-1;
 							}
 							// End Changes by Slugfiller for better exception handling
@@ -938,13 +941,13 @@ bool CPartFile::SavePartFile(bool Initial)
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
 			snprintf(number,9,"%hu",(unsigned short int)i_pos);
 			namebuffer[0] = FT_GAPSTART;
-			
-			CTag( namebuffer, 	gaplist.GetAt(pos)->start	).WriteTagToFile( &file );
+			#warning UPGRADE!
+			CTag( char2unicode(namebuffer), 	(uint32)gaplist.GetAt(pos)->start	).WriteTagToFile( &file );
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			namebuffer[0] = FT_GAPEND;
 			
-			CTag( namebuffer,	gaplist.GetAt(pos)->end + 1	).WriteTagToFile( &file );
+			CTag( char2unicode(namebuffer),	(uint32)(gaplist.GetAt(pos)->end + 1)	).WriteTagToFile( &file );
 			
 			++i_pos;
 		}

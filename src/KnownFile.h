@@ -132,12 +132,12 @@ public:
 
 	/* Tags and Notes handling */
 	uint32 GetIntTagValue(uint8 tagname) const;
-	uint32 GetIntTagValue(const char* tagname) const;
+	uint32 GetIntTagValue(const wxString& tagname) const;
 	bool GetIntTagValue(uint8 tagname, uint32& ruValue) const;
 	const wxString& GetStrTagValue(uint8 tagname) const;
-	const wxString& GetStrTagValue(const char* tagname) const;
-	CTag* GetTag(const char* tagname) const;	
-	CTag* GetTag(const char* tagname, uint8 tagtype) const;
+	const wxString& GetStrTagValue(const wxString& tagname) const;
+	CTag* GetTag(const wxString& tagname) const;	
+	CTag* GetTag(const wxString& tagname, uint8 tagtype) const;
 	CTag* GetTag(uint8 tagname) const;
 	CTag* GetTag(uint8 tagname, uint8 tagtype) const;	
 	void AddTagUnique(CTag* pTag);

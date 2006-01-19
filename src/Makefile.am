@@ -85,8 +85,6 @@ libmuleappcore_a_SOURCES = \
 	Scanner.cpp \
 	Parser.cpp \
 	kademlia/io/ByteIO.cpp \
-	kademlia/io/DataIO.cpp \
-	kademlia/io/FileIO.cpp \
 	kademlia/io/IOException.cpp \
 	kademlia/utils/LittleEndian.cpp \
 	kademlia/kademlia/SearchManager.cpp \

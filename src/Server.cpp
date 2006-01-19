@@ -87,7 +87,7 @@ CServer::CServer(CServer* pOld)
 {
 	wxASSERT(pOld != NULL);
 	
-	TagList::iterator it = pOld->m_taglist.begin();
+	TagPtrList::iterator it = pOld->m_taglist.begin();
 	for ( ; it != pOld->m_taglist.end(); ++it ) {
 		m_taglist.push_back((*it)->CloneTag());
 	}
@@ -121,7 +121,7 @@ CServer::CServer(CServer* pOld)
 
 CServer::~CServer()
 {
-	TagList::iterator it = m_taglist.begin();
+	TagPtrList::iterator it = m_taglist.begin();
 	for ( ; it != m_taglist.end(); ++it ) {
 		delete *it;
 	}
@@ -247,10 +247,10 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		break;
 
 	default:
-		if (tag.GetName()) {
-			if (!CmpED2KTagName(tag.GetName(), "files")) {
+		if (!tag.GetName().IsEmpty()) {
+			if (tag.GetName() == wxT("files")) {
 				files = tag.GetInt();
-			} else if (!CmpED2KTagName(tag.GetName(), "users")) {
+			} else if (tag.GetName() == wxT("users")) {
 				users = tag.GetInt();
 			}
 		} else {

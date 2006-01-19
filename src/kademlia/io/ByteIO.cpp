@@ -45,39 +45,61 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////
 
-void CByteIO::readArray(void* lpResult, uint32 byteCount)
+sint64 CByteIO::doRead(void* buffer, size_t count) const
 {
-	if (m_available < byteCount)
+	if (m_available < count)
 		throw CIOException(ERR_BUFFER_TOO_SMALL);
 
-	memcpy(lpResult, m_buffer, byteCount);
-	m_buffer += byteCount;
-	m_used += byteCount;
-	m_available -= byteCount;
+	memcpy(buffer, m_buffer, count);
+	m_buffer += count;
+	m_used += count;
+	m_available -= count;
+	return count;
 }
 
-void CByteIO::writeArray(const void* lpVal, uint32 byteCount)
+sint64 CByteIO::doWrite(const void* buffer, size_t count)
 {
 	if (m_bReadOnly)
 		throw CIOException(ERR_READ_ONLY);
 
-	if (m_available < byteCount)
+	if (m_available < count)
 		throw CIOException(ERR_BUFFER_TOO_SMALL);
 
-	memcpy(m_buffer, lpVal, byteCount);
-	m_buffer += byteCount;
-	m_used += byteCount;
-	m_available -= byteCount;
+	memcpy(m_buffer, buffer, count);
+	m_buffer += count;
+	m_used += count;
+	m_available -= count;
+	return count;
+}
+
+uint64 CByteIO::GetPosition() const
+{
+	return m_used;
+}
+
+uint64 CByteIO::GetLength() const
+{
+	return m_available + m_used;
+}
+
+sint64 CByteIO::doSeek(sint64 offset) const
+{
+	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
+	
+	// Don't change order!
+	m_buffer -= m_used;
+	m_buffer += offset;
+	m_available = GetLength() - offset;
+	m_used = offset;
+
+	return m_used;
 }
 
 void CByteIO::reset(void)
 {
-	m_available += m_used;
-	m_buffer -= m_used;
-	m_used = 0;
+	doSeek(0);
 }

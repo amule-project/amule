@@ -403,7 +403,7 @@ bool CamuleApp::OnInit()
 	}	
 
 	if ( !cmdline.Found(wxT("run-this-at-my-own-risk-kthx")) ) {
-		printf("This binary requires you to run amule --run-this-at-my-own-risk-kthx and only if you're very sure of it.\n");
+		printf("This binary requires you to use the flag --run-this-at-my-own-risk-kthx and only if you're very sure of it.\n");
 		return false;
 	}		
 		

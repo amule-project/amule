@@ -52,8 +52,7 @@ class CTag;
 namespace Kademlia {
 ////////////////////////////////////////
 
-typedef std::list<CTag*> TagList;
-void deleteTagListEntries(TagList* taglist);
+void deleteTagPtrListEntries(TagPtrList* taglist);
 
 class CSearch
 {
@@ -117,10 +116,10 @@ public:
 private:
 	void go(void);
 	void processResponse(uint32 fromIP, uint16 fromPort, ContactList *results);
-	void processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
-	void processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
-	void processResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
-	void processResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
+	void processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void processResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void processResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
 	void jumpStart(void);
 	void sendFindValue(const CUInt128 &check, uint32 ip, uint16 port);
 	void prepareToStop(void);

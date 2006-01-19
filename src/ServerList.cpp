@@ -650,8 +650,8 @@ bool CServerList::SaveServerMet()
 			
 			CTag( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
 			CTag( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
-			CTag( "users",			server->GetUsers()			).WriteTagToFile( &servermet );
-			CTag( "files",			server->GetFiles()			).WriteTagToFile( &servermet );
+			CTag( wxT("users"),			server->GetUsers()			).WriteTagToFile( &servermet );
+			CTag( wxT("files"),			server->GetFiles()			).WriteTagToFile( &servermet );
 			CTag( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
 			CTag( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
 			CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );

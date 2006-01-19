@@ -100,7 +100,7 @@ struct SSearchTerm
 		OpNotEqual
 	} type;
 	
-	Kademlia::CTag* tag;
+	CTag* tag;
 	wxArrayString* astr;
 
 	SSearchTerm* left;

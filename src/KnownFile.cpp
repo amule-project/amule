@@ -169,11 +169,11 @@ bool CAbstractFile::GetIntTagValue(uint8 tagname, uint32& ruValue) const
 	return false;
 }
 
-uint32 CAbstractFile::GetIntTagValue(const char* tagname) const
+uint32 CAbstractFile::GetIntTagValue(const wxString& tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pTag = taglist[i];
-		if (pTag->IsInt() && pTag->GetName() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+		if (pTag->IsInt() && (pTag->GetName() == tagname)) {
 			return pTag->GetInt();
 		}
 	}
@@ -184,18 +184,18 @@ const wxString& CAbstractFile::GetStrTagValue(uint8 tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pTag = taglist[i];
-		if (pTag->GetNameID()==tagname && pTag->IsStr()) {
+		if (pTag->GetNameID() == tagname && pTag->IsStr()) {
 			return pTag->GetStr();
 		}
 	}
 	return EmptyString;
 }
 
-const wxString& CAbstractFile::GetStrTagValue(const char* tagname) const
+const wxString& CAbstractFile::GetStrTagValue(const wxString& tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pTag = taglist[i];
-		if (pTag->IsStr() && pTag->GetName() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+		if (pTag->IsStr() && (pTag->GetName() == tagname)) {
 			return pTag->GetStr();
 		}
 	}
@@ -213,11 +213,11 @@ CTag* CAbstractFile::GetTag(uint8 tagname, uint8 tagtype) const
 	return NULL;
 }
 
-CTag* CAbstractFile::GetTag(const char* tagname, uint8 tagtype) const
+CTag* CAbstractFile::GetTag(const wxString& tagname, uint8 tagtype) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		CTag* pTag = taglist[i];
-		if (pTag->GetType()==tagtype && pTag->GetName() && (CmpED2KTagName(pTag->GetName(), tagname)==0)) {
+		if (pTag->GetType()==tagtype && (pTag->GetName() == tagname)) {
 			return pTag;
 		}
 	}
@@ -235,11 +235,11 @@ CTag* CAbstractFile::GetTag(uint8 tagname) const
 	return NULL;
 }
 
-CTag* CAbstractFile::GetTag(const char* tagname) const
+CTag* CAbstractFile::GetTag(const wxString& tagname) const
 {
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		CTag* pTag = taglist[i];
-		if (pTag->GetName() && CmpED2KTagName(pTag->GetName(), tagname)==0) {
+		if (pTag->GetName() == tagname) {
 			return pTag;
 		}
 	}
@@ -251,7 +251,7 @@ void CAbstractFile::AddTagUnique(CTag* pTag)
 	for (unsigned int i = 0; i < taglist.Count(); i++){
 		const CTag* pCurTag = taglist[i];
 		if ( (   (pCurTag->GetNameID()!=0 && pCurTag->GetNameID()==pTag->GetNameID())
-			  || (pCurTag->GetName()!=NULL && pTag->GetName()!=NULL && CmpED2KTagName(pCurTag->GetName(), pTag->GetName())==0)
+			  || (!pCurTag->GetName().IsEmpty() && !pTag->GetName().IsEmpty() && (pCurTag->GetName() == pTag->GetName()))
 			 )
 			 && pCurTag->GetType() == pTag->GetType()){
 			taglist.RemoveAt(i);
