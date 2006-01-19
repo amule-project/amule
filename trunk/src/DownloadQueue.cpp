@@ -623,7 +623,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 		}
 
 		// Remove from A4AF-list
-		cur_file->A4AFsrclist.erase( toremove );
+		cur_file->RemoveA4AFSource( toremove );
 	}
 
 
@@ -830,7 +830,7 @@ void CDownloadQueue::ResetLocalServerRequests()
 	m_localServerReqQueue.clear();
 
 	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		m_filelist[i]->m_bLocalSrcReqQueued = false;
+		m_filelist[i]->SetLocalSrcRequestQueued(false);
 	}
 }
 
@@ -841,7 +841,7 @@ void CDownloadQueue::RemoveLocalServerRequest( CPartFile* file )
 	
 	EraseValue( m_localServerReqQueue, file );
 
-	file->m_bLocalSrcReqQueued = false;
+	file->SetLocalSrcRequestQueued(false);
 }
 
 
@@ -868,23 +868,23 @@ void CDownloadQueue::ProcessLocalRequests()
 						nPriority = PR_HIGH;
 					}
 
-					if (cur_file->lastsearchtime + (PR_HIGH-nPriority) < dwBestWaitTime ){
-						dwBestWaitTime = cur_file->lastsearchtime + (PR_HIGH - nPriority);
+					if (cur_file->GetLastSearchTime() + (PR_HIGH-nPriority) < dwBestWaitTime ){
+						dwBestWaitTime = cur_file->GetLastSearchTime() + (PR_HIGH - nPriority);
 						posNextRequest = it;
 					}
 
 					it++;
 				} else {
 					it = m_localServerReqQueue.erase(it);
-					cur_file->m_bLocalSrcReqQueued = false;
+					cur_file->SetLocalSrcRequestQueued(false);
 					AddDebugLogLineM( false, logDownloadQueue, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
 				}
 			}
 
 			if (posNextRequest != m_localServerReqQueue.end()) {
 				CPartFile* cur_file = (*posNextRequest);
-				cur_file->m_bLocalSrcReqQueued = false;
-				cur_file->lastsearchtime = ::GetTickCount();
+				cur_file->SetLocalSrcRequestQueued(false);
+				cur_file->SetLastSearchTime(::GetTickCount());
 				m_localServerReqQueue.erase(posNextRequest);
 				iFiles++;
 

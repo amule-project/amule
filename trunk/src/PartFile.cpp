@@ -90,7 +90,7 @@ void CPartFile::Init()
 	m_nLastBufferFlushTime = 0;
 
 	newdate = true;
-	lastsearchtime = 0;
+	m_lastsearchtime = 0;
 	lastpurgetime = ::GetTickCount();
 	m_paused = false;
 	m_stopped = false;
@@ -115,7 +115,7 @@ void CPartFile::Init()
 	
 	kBpsDown = 0.0;
 	
-	hashsetneeded = true;
+	m_hashsetneeded = true;
 	m_count = 0;
 	percentcompleted = 0;
 	completedsize=0;
@@ -135,7 +135,7 @@ void CPartFile::Init()
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
 	m_is_A4AF_auto = false;
-	m_bLocalSrcReqQueued = false;
+	m_localSrcReqQueued = false;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
 	m_nCompleteSourcesCountLo = 0;
@@ -295,7 +295,7 @@ CPartFile::~CPartFile()
 	}
 
 	wxASSERT(m_SrcList.empty());
-	wxASSERT(A4AFsrclist.empty());
+	wxASSERT(m_A4AFsrclist.empty());
 }
 
 void CPartFile::CreatePartFile()
@@ -337,7 +337,7 @@ void CPartFile::CreatePartFile()
 	}
 	
 	
-	hashsetneeded = GetED2KPartHashCount();
+	m_hashsetneeded = GetED2KPartHashCount();
 	
 	SavePartFile(true);
 }
@@ -748,10 +748,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	
 	// check hashcount, file status etc
 	if (GetHashCount() != GetED2KPartHashCount()){	
-		hashsetneeded = true;
+		m_hashsetneeded = true;
 		return true;
 	} else {
-		hashsetneeded = false;
+		m_hashsetneeded = false;
 		for (size_t i = 0; i < hashlist.GetCount(); ++i) {
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 				SetPartFileStatus(PS_READY);
@@ -1602,7 +1602,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 		if (IsA4AFAuto() && ((!m_LastNoNeededCheck) || (dwCurTick - m_LastNoNeededCheck > 900000))) {
 			m_LastNoNeededCheck = dwCurTick;
-			for ( SourceSet::iterator it = A4AFsrclist.begin(); it != A4AFsrclist.end(); ) {
+			for ( SourceSet::iterator it = m_A4AFsrclist.begin(); it != m_A4AFsrclist.end(); ) {
 				CUpDownClient *cur_source = *it++;
 				uint8 download_state=cur_source->GetDownloadState();
 				if( download_state != DS_DOWNLOADING
@@ -1665,13 +1665,13 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		}
 		
 		// check if we want new sources from server
-		if (	!m_bLocalSrcReqQueued &&
-			(	(!lastsearchtime) ||
-				(dwCurTick - lastsearchtime) > SERVERREASKTIME) &&
+		if (	!m_localSrcReqQueued &&
+			(	(!m_lastsearchtime) ||
+				(dwCurTick - m_lastsearchtime) > SERVERREASKTIME) &&
 			theApp.IsConnectedED2K() &&
 			thePrefs::GetMaxSourcePerFileSoft() > GetSourceCount() &&
 			!m_stopped ) {
-			m_bLocalSrcReqQueued = true;
+			m_localSrcReqQueued = true;
 			theApp.downloadqueue->SendLocalSrcRequest(this);
 		}
 	
@@ -2466,14 +2466,14 @@ void  CPartFile::RemoveAllSources(bool bTryToSwap)
 	
 	/* eMule 0.30c implementation, i give it a try (Creteil) BEGIN ... */
 	// remove all links A4AF in sources to this file
-	if(!A4AFsrclist.empty()) {
-		for( SourceSet::iterator it = A4AFsrclist.begin(); it != A4AFsrclist.end(); ) {
+	if(!m_A4AFsrclist.empty()) {
+		for( SourceSet::iterator it = m_A4AFsrclist.begin(); it != m_A4AFsrclist.end(); ) {
 			CUpDownClient* cur_src = *it++;
 			if ( cur_src->DeleteFileRequest( this ) ) {
 				Notify_DownloadCtrlRemoveSource(cur_src, this);
 			}
 		}
-		A4AFsrclist.clear();
+		m_A4AFsrclist.clear();
 	}
 	/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
 	UpdateFileRatingCommentAvail();
@@ -2548,11 +2548,11 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		AddLogLineM(true,
 			CFormat( _("Warning: Unable to hash downloaded part - hashset incomplete for '%s'") )
 				% GetFileName() );
-		hashsetneeded = true;
+		m_hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
 		AddLogLineM(true, CFormat( _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
-		hashsetneeded = true;
+		m_hashsetneeded = true;
 		return true;		
 	} else {
 		CMD4Hash hashresult;
@@ -2705,7 +2705,7 @@ void CPartFile::ResumeFile()
 	m_stopped = false;
 	m_insufficient = false;
 		
-	lastsearchtime = 0;
+	m_lastsearchtime = 0;
 	SetStatus(status);
 
 	if (gaplist.IsEmpty() and (GetStatus() == PS_ERROR)) {
@@ -3212,7 +3212,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				// Reduce transfered amount by corrupt amount
 				m_iLostDueToCorruption += (partRange + 1);
 			} else {
-				if (!hashsetneeded) {
+				if (!m_hashsetneeded) {
 					AddDebugLogLineM(false, logPartFile, wxString::Format(
 						wxT("Finished part %u of "), partNumber) + GetFileName());
 				}
@@ -3223,7 +3223,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					corrupted_list.RemoveAt(posCorrupted);
 				if (status == PS_EMPTY) {
 					if (theApp.IsRunning()) { // may be called during shutdown!
-						if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
+						if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
 							// Successfully completed part, make it available for sharing
 							SetStatus(PS_READY);
 							theApp.sharedfiles->SafeAddKFile(this);
@@ -3250,7 +3250,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					% GetFileName()
 					% CastItoXBytes(uMissingInPart));
 				
-				if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded) {
+				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
 					if (status == PS_EMPTY) {
 						// Successfully recovered part, make it available for sharing							
 						SetStatus(PS_READY);
@@ -3642,7 +3642,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 			if (posCorrupted)
 				corrupted_list.RemoveAt(posCorrupted);
 			if (status == PS_EMPTY && theApp.IsRunning()){
-				if (GetHashCount() == GetED2KPartHashCount() && !hashsetneeded){
+				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
 					SetStatus(PS_READY);
 					theApp.sharedfiles->SafeAddKFile(this);

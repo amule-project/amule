@@ -351,8 +351,8 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 		case PARTFILE_SWAP_A4AF_THIS: {
 				CPartFile *file = (CPartFile *)event.ptr_value;
 				if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
-					CPartFile::SourceSet::iterator it = file->A4AFsrclist.begin();
-					for ( ; it != file->A4AFsrclist.end(); ) {
+					CPartFile::SourceSet::iterator it = file->GetA4AFList().begin();
+					for ( ; it != file->GetA4AFList().end(); ) {
 						CUpDownClient *cur_source = *it++;
 
 						cur_source->SwapToAnotherFile(true, false, false, file);
@@ -363,8 +363,8 @@ void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
 		case PARTFILE_SWAP_A4AF_OTHERS: {
 				CPartFile *file = (CPartFile *)event.ptr_value;
 				if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
-					CPartFile::SourceSet::iterator it = file->m_SrcList.begin();
-					for( ; it != file->m_SrcList.end(); ) {
+					CPartFile::SourceSet::iterator it = file->GetSourceList().begin();
+					for( ; it != file->GetSourceList().end(); ) {
 						CUpDownClient* cur_source = *it++;
 
 						cur_source->SwapToAnotherFile(false, false, false, NULL);

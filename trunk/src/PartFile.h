@@ -125,7 +125,7 @@ public:
 
 #ifndef CLIENT_GUI
 	uint16	GetSourceCount() const		{ return m_SrcList.size(); }
-	uint16	GetSrcA4AFCount() const		{ return A4AFsrclist.size(); }
+	uint16	GetSrcA4AFCount() const		{ return m_A4AFsrclist.size(); }
 #else
 	uint16 m_source_count, m_a4af_source_count;
 	uint16	GetSourceCount() const		{ return m_source_count; }
@@ -236,7 +236,7 @@ public:
 	typedef std::set<CUpDownClient*> SourceSet;
 	
 	const SourceSet& GetSourceList()	const { return m_SrcList; }
-	const SourceSet& GetA4AFList()		const { return A4AFsrclist; }
+	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
 
 	const CList<Gap_Struct*>&	GetGapList() const	{ return gaplist; }
 	const CList<Requested_Block_Struct*>& GetRequestedBlockList() const { return requestedblocks_list; }
@@ -339,30 +339,37 @@ private:
 
 	uint32	m_LastSourceDropTime;
 
-public:
-	SourceSet m_SrcList;
-	SourceSet A4AFsrclist;
+	SourceSet	m_SrcList;
+	SourceSet	m_A4AFsrclist;
+	bool		m_hashsetneeded;
+	uint32		m_lastsearchtime;
+	bool		m_localSrcReqQueued;
 	
-	#warning Accessors, please
-	bool	hashsetneeded;
-	uint64  GetCompletedSize() const	{ return completedsize; }
-	void	SetCompletedSize(uint64 new_completed)	{ completedsize = new_completed; }	
+public:
+	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
+	void SetHashSetNeeded(bool value)			{ m_hashsetneeded = value; }
+	
+	uint64  GetCompletedSize() const			{ return completedsize; }
+	void	SetCompletedSize(uint64 size)		{ completedsize = size; }	
 
-	uint32	lastsearchtime;
-	bool	m_bLocalSrcReqQueued;
+	bool IsLocalSrcRequestQueued() const		{ return m_localSrcReqQueued; }
+	void SetLocalSrcRequestQueued(bool value) 	{ m_localSrcReqQueued = value; }
 
-	/* CleanUpSources function */
+	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(src); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return m_A4AFsrclist.erase(src); }
+
+	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
+	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
+	
+
 	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 
-	/* AddDownloadingSource function */
 	void AddDownloadingSource(CUpDownClient* client);
           
-	/* RemoveDownloadingSource function */
 	void RemoveDownloadingSource(CUpDownClient* client);
 	void SetStatus(uint8 in);
 	void StopPausedFile();
 
-	// void SetA4AFAuto(bool A4AFauto)
 	// [sivka / Tarod] Imported from eMule 0.30c (Creteil) ... 
 	void SetA4AFAuto(bool in)		{ m_is_A4AF_auto = in; }
 	bool IsA4AFAuto() const			{ return m_is_A4AF_auto; }

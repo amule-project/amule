@@ -322,7 +322,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 
 		UpdateDisplayedInfo();
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
-		if (m_reqfile->hashsetneeded)
+		if (m_reqfile->IsHashSetNeeded())
 		{
 			if (m_socket)
 			{
@@ -332,7 +332,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 				SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
-				m_reqfile->hashsetneeded = false;
+				m_reqfile->SetHashSetNeeded(false);
 			}
 			else {
 				wxASSERT(0);
@@ -427,7 +427,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 	if (!bUdpPacket) {
 		if (!bPartsNeeded) {
 			SetDownloadState(DS_NONEEDEDPARTS);
-		} else if (m_reqfile->hashsetneeded) {
+		} else if (m_reqfile->IsHashSetNeeded()) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
 			if (m_socket) {
 				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
@@ -436,7 +436,7 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 				SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
-				m_reqfile->hashsetneeded = false;
+				m_reqfile->SetHashSetNeeded(false);
 			} else {
 				wxASSERT(0);
 			}
@@ -461,7 +461,7 @@ bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 		// When we access a non-existing entry entry, it will be zeroed by default, 
 		// so we have to set NeededParts. All in one go.
 		m_A4AF_list[file].NeededParts = true;
-		file->A4AFsrclist.insert( this );
+		file->AddA4AFSource( this );
 		return true;
 	} else {
 		return false;
@@ -561,7 +561,7 @@ void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 	if (m_reqfile->LoadHashsetFromFile(&data,true)) {
 		m_fHashsetRequesting = 0;
 	} else {
-		m_reqfile->hashsetneeded = true;
+		m_reqfile->SetHashSetNeeded(true);
 		throw wxString(wxT("Corrupted or invalid hashset received"));
 	}
 	SendStartupLoadReq();
@@ -1224,7 +1224,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 			CPartFile* SwapTo = target->first;
 			
 			// remove this client from the A4AF list of our new m_reqfile
-			if ( SwapTo->A4AFsrclist.erase( this ) ) {
+			if ( SwapTo->RemoveA4AFSource( this ) ) {
 				Notify_DownloadCtrlRemoveSource(this, SwapTo);
 			}
 
@@ -1232,7 +1232,7 @@ bool CUpDownClient::SwapToAnotherFile(bool bIgnoreNoNeeded, bool ignoreSuspensio
 
 			// Do we want to remove it completly? Say if the old file is getting deleted
 			if ( !bRemoveCompletely ) {
-				m_reqfile->A4AFsrclist.insert( this );
+				m_reqfile->AddA4AFSource( this );
 				
 				// Set the status of the old file
 				m_A4AF_list[m_reqfile].NeededParts = (GetDownloadState() != DS_NONEEDEDPARTS);
