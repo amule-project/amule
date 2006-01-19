@@ -50,7 +50,6 @@
 #include "ListenSocket.h"	// Needed for CClientTCPSocket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "AddFileThread.h"	// Needed for CAddFileThread
 #include "MemFile.h"		// Needed for CMemFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -66,6 +65,7 @@
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
+#include "ThreadTasks.h"			// Needed for CHashingTask/CCompletionTask
 
 #include <map>
 #include <algorithm>
@@ -75,8 +75,6 @@
 
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"	// Needed for CMuleInternalEvent
-
-wxMutex CPartFile::m_FileCompleteMutex; 
 
 CPartFile::CPartFile()
 {
@@ -775,7 +773,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			
 			wxString strPartFileName = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
-			CAddFileThread::AddFile(m_strFilePath, strPartFileName, this);
+			CThreadScheduler::AddTask(new CHashingTask(m_strFilePath, strPartFileName, this));
 		}
 	}
 
@@ -2225,7 +2223,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		kBpsDown = 0.0;
 
 		wxString strPartFile = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
-		CAddFileThread::AddFile( GetFilePath(), strPartFile, this );
+		CThreadScheduler::AddTask(new CHashingTask(GetFilePath(), strPartFile, this));
 		return;
 	} else {
 		StopFile();
@@ -2247,15 +2245,14 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 }
 
 
-enum CompleteErrors {
-	UNEXP_FILE_ERROR		= 1,
-};
-
-
-void CPartFile::CompleteFileEnded(int result, wxString* newname)
+void CPartFile::CompleteFileEnded(bool errorOccured, const wxString& newname)
 {	
-	if (!(result & UNEXP_FILE_ERROR)) {
-		m_fullname = (*newname);	
+	if (errorOccured) {
+		m_paused = true;
+		SetPartFileStatus(PS_ERROR);
+		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% GetFileName() );
+	} else {
+		m_fullname = newname;
 
 		SetFilePath(wxFileName(m_fullname).GetPath());
 		SetFileName(wxFileName(m_fullname).GetFullName());
@@ -2280,148 +2277,14 @@ void CPartFile::CompleteFileEnded(int result, wxString* newname)
 		completedsize = GetFileSize();
 
 		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
-	} else {
-		m_paused = true;
-		SetPartFileStatus(PS_ERROR);
-		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% GetFileName() ); 
 	}
 	
 	theApp.downloadqueue->StartNextFile(this);	
-	
-	delete newname;
 }
-
-
-class CCompletingThread : public wxThread
-{
-public:
-	/**
-	 * Creates a thread which will complete the given download.
-	 * 
-	 * @param filename The target filename of the download (only filename).
-	 * @param metPath The full path to the download's '.met' file.
-	 * @param catgory The category of the download.
-	 * @param owner The partfile owning the download.
-	 */
-	CCompletingThread(wxString filename, wxString metPath, uint8 category, void* owner)
-		: m_filename(filename),
-		  m_metPath(metPath),
-		  m_category(category),
-		  m_owner(owner),
-		  m_result(0),
-		  m_newName(NULL)
-	{
-		wxASSERT(!m_filename.IsEmpty());
-		wxASSERT(!m_metPath.IsEmpty());
-		wxASSERT(m_owner);
-	}
-	
-private:
-	wxThread::ExitCode Entry() {
-		wxString targetPath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
-		if (!wxFileName::DirExists(targetPath)) {
-			targetPath = thePrefs::GetIncomingDir();
-		}	
-		
-		// Check if the target directory is on a Fat32 FS, since that needs extra cleanups.
-		bool isFat32 = (CheckFileSystem(targetPath) == FS_IsFAT32);
-		
-		wxString oldName = m_filename;
-		m_filename = CleanupFilename(m_filename, true, isFat32).Strip(wxString::both);
-
-		// Avoid empty filenames ...
-		if (m_filename.IsEmpty()) {
-			m_filename = wxT("Unknown");
-		}
-
-		if (m_filename != oldName) {
-			AddLogLineM(true, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
-				% oldName % m_filename);
-		}
-		
-		
-		// Avoid saving to an already existing filename
-		wxString newName = JoinPaths(targetPath, m_filename);
-		if (CheckFileExists(newName)) {
-			wxString prefix  = wxFileName(m_filename).GetName();
-			wxString postfix = m_filename.Mid(prefix.Length());
-			size_t count = 0;
-				
-			do {
-				count++;
-				
-				newName = JoinPaths(targetPath, prefix) 
-						+ wxString::Format(wxT("(%u)"), count) + postfix;
-			} while (CheckFileExists(newName));
-			
-			AddLogLineM(true, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
-				% m_filename
-				% wxFileName(newName).GetFullName());
-		}
-
-		// Move will handle dirs on the same partition, otherwise copy is needed.
-		wxString partfilename = m_metPath.BeforeLast(wxT('.'));
-		if (!UTF8_MoveFile(partfilename, newName)) {
-			if (!UTF8_CopyFile(partfilename, newName)) {
-				m_result |= UNEXP_FILE_ERROR;
-				
-				return NULL;
-			}
-			
-			if (!wxRemoveFile(partfilename)) {
-				AddLogLineM(true, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
-					% partfilename);
-			}
-		}
-	
-		// Removes the various other data-files	
-		const wxChar* otherMetExt[] = { wxT(""), PARTMET_BAK_EXT, wxT(".seeds"), NULL };
-		for (size_t i = 0; otherMetExt[i]; ++i) {
-			wxString toRemove = m_metPath + otherMetExt[i];
-
-			if (wxFileName::FileExists(toRemove)) {
-				if (!wxRemoveFile(toRemove)) {
-					AddLogLineM(true, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
-				}
-			}
-		}
-
-		// Export the file name in a way that can easily be shared via an event.
-		// TODO: Make a custom event-type for this task.
-		m_newName = new wxString(newName);
-		
-		return NULL;
-	}
-
-	
-	void OnExit() {
-		// Notify the app that the completion has finished for this file.	
-		CMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
-		evt.SetClientData(m_owner);
-		evt.SetInt(m_result);
-		evt.SetExtraLong((long)m_newName);
-		wxPostEvent(&theApp, evt);
-	}
-
-	//! The target filename.
-	wxString	m_filename;
-	//! The full path to the .met-file
-	wxString	m_metPath;
-	//! The category of the download.
-	uint8		m_category;
-	//! Owner of the file, used when sending completion-event.
-	void*		m_owner;
-	//! Contains the binary mask of errors that occured while completing
-	unsigned	m_result;
-	//! Pointer to the resulting filename (may be renamed).
-	wxString*	m_newName;
-};
 
 
 void CPartFile::PerformFileComplete()
 {
-	wxMutexLocker sLock(m_FileCompleteMutex);
-
 	// add this file to the suspended uploads list
 	theApp.uploadqueue->SuspendUpload(GetFileHash());
 	FlushBuffer();
@@ -2430,21 +2293,9 @@ void CPartFile::PerformFileComplete()
 	if (m_hpartfile.IsOpened()) {
 		m_hpartfile.Close();
 	}
-	
-	// Call thread for completion
-	CCompletingThread* thread = new CCompletingThread(GetFileName(), m_fullname, GetCategory(), this);
 
-	if (thread->Create() != wxTHREAD_NO_ERROR) {
-		AddLogLineM(true, _("Failed to create file-completion thread!"));
-
-		thread->Delete();
-		SetStatus(PS_ERROR);
-	} else if (thread->Run() != wxTHREAD_NO_ERROR) {
-		AddLogLineM(true, _("Failed to start file-completion thread!"));
-	
-		thread->Delete();
-		SetStatus(PS_ERROR);
-	}
+	// Schedule task for completion of the file
+	CThreadScheduler::AddTask(new CCompletionTask(this));
 }
 
 

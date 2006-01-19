@@ -27,7 +27,6 @@
 #define PARTFILE_H
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/thread.h>		// Needed for wxMutex
 #include <wx/datetime.h>	// Needed for wxDateTime
 
 #include "Types.h"		// Needed for uint8
@@ -191,7 +190,7 @@ public:
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
 	bool	GetInsufficient() const		{ return m_insufficient; }
 	
-	void	CompleteFileEnded(int completing_result, wxString* newname);	
+	void	CompleteFileEnded(bool errorOccured, const wxString& newname);	
 
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
 
@@ -381,7 +380,6 @@ public:
 private:
 	/* downloading sources list */
 	std::list<CUpDownClient *> m_downloadingSourcesList;
-	static	wxMutex m_FileCompleteMutex;
 
 	/* Kad Stuff */
 	uint32	m_LastSearchTimeKad;

@@ -132,9 +132,6 @@ enum GUI_Event_ID {
 // 'cause - there's no wxCommand etc in wxBase
 enum Core_Event_ID {
 	NOTIFY_EVENT = 1,
-	FILE_HASHING_FINISHED,
-	FILE_HASHING_SHUTDOWN,
-	FILE_COMPLETION_FINISHED,
 	HTTP_DOWNLOAD_FINISHED,
 	
 	SOURCE_DNS_DONE,

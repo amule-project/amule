@@ -76,13 +76,11 @@
 #include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket & CMuleUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
-#include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
 #include <common/StringFunctions.h>	// Needed for validateURI
 #include "Packet.h"
 #include "Statistics.h"			// Needed for CStatistics
-#include "AICHSyncThread.h"
 #include "Logger.h"
 #include <common/Format.h>			// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
@@ -91,6 +89,7 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "Timer.h"
+#include "ThreadTasks.h"
 
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
@@ -618,9 +617,6 @@ bool CamuleApp::OnInit()
 
 	statistics = new CStatistics();
 	
-	// Ready file-hasher
-	CAddFileThread::Start();
-
 	clientlist	= new CClientList();
 	friendlist	= new CFriendList();
 	searchlist	= new CSearchList();
@@ -729,6 +725,9 @@ bool CamuleApp::OnInit()
 	}
 #endif /* ! __WXMSW__ */
 
+	// Start performing background tasks
+	CThreadScheduler::Start();
+	
 	return true;
 }
 
@@ -1350,23 +1349,15 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnHashingShutdown(CMuleInternalEvent& WXUNUSED(evt))
+void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 {
-	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
-		// Save the known.met file
-		knownfiles->Save();
-		
-		// Known.met changed, AICH sync thread start
-		RunAICHThread();
-	} 
-}
-
-
-void CamuleApp::OnFinishedHashing(CMuleInternalEvent& evt)
-{
-	CKnownFile* result = (CKnownFile*)evt.GetClientData();
-	if (evt.GetExtraLong()) {
-		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
+	wxCHECK_RET(evt.GetResult(), wxT("No result of hashing"));
+	
+	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
+	CKnownFile* result = evt.GetResult();
+	
+	if (owner) {
+		CPartFile* requester = dynamic_cast<CPartFile*>(owner);
 		if (downloadqueue->IsPartFile(requester)) {
 			requester->PartFileHashFinished(result);
 		}
@@ -1397,14 +1388,39 @@ void CamuleApp::OnFinishedHashing(CMuleInternalEvent& evt)
 }
 
 
-void CamuleApp::OnFinishedCompletion(CMuleInternalEvent& evt)
+void CamuleApp::OnFinishedAICHHashing(CHashingEvent& evt)
 {
-	CPartFile* completed = (CPartFile*)evt.GetClientData();
+	wxCHECK_RET(evt.GetResult(), wxT("No result of AICH-hashing"));
+	
+	CKnownFile* owner = const_cast<CKnownFile*>(evt.GetOwner());
+	std::auto_ptr<CKnownFile> result(evt.GetResult());
+	
+	// Check that the owner is still valid
+	if (knownfiles->IsKnownFile(owner)) {
+		if (result->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE) {
+			CAICHHashSet* oldSet = owner->GetAICHHashset();
+			CAICHHashSet* newSet = result->GetAICHHashset();
+
+			owner->SetAICHHashset(newSet);
+			newSet->SetOwner(owner);
+
+			result->SetAICHHashset(oldSet);
+			oldSet->SetOwner(result.get());
+		}
+	}
+}
+
+
+void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
+{
+	CPartFile* completed = const_cast<CPartFile*>(evt.GetOwner());
 	wxCHECK_RET(completed, wxT("Completion event sent for unspecified file"));
-	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
+	wxASSERT_MSG(downloadqueue->IsPartFile(completed), wxT("CCompletionEvent for unknown partfile."));
+	
+	completed->CompleteFileEnded(evt.ErrorOccured(), evt.GetFullPath());
 
 	// Check if we should execute an script/app/whatever.
-	if (thePrefs::CommandOnCompletion() and not evt.GetInt()) {
+	if (thePrefs::CommandOnCompletion() and not evt.ErrorOccured()) {
 		wxString command = thePrefs::GetCommandOnCompletion();
 
 		command.Replace(wxT("%FILE"), completed->GetFullName());
@@ -1456,15 +1472,12 @@ void CamuleApp::ShutDown()
 	if (clientlist) {
 		clientlist->DeleteAll();
 	}
-	if (CAddFileThread::IsRunning()) {
-		CAddFileThread::Stop();
-	}
-	if (CAICHSyncThread::IsRunning()) {
-		CAICHSyncThread::Stop();
-	}
-
+	
+	CThreadScheduler::Terminate();
+	
     theApp.uploadBandwidthThrottler->EndThread();
 }
+
 
 bool CamuleApp::AddServer(CServer *srv, bool fromUser)
 {
@@ -1583,11 +1596,6 @@ void CamuleApp::AddServerMessageLine(wxString &msg)
 }
 
 
-void CamuleApp::RunAICHThread()
-{
-	if ( !CAICHSyncThread::IsRunning() )
-		CAICHSyncThread::Start();
-}
 
 void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {
@@ -1962,9 +1970,6 @@ uint32 CamuleApp::GetED2KID() const {
 }
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_FINISHED)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FILE_HASHING_SHUTDOWN)
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_FILE_COMPLETION)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
