@@ -593,7 +593,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						// Start Changes by Slugfiller for better exception handling
 						
 						char gap_mark = newtag.GetName().IsEmpty() ?
-										0 : unicode2char(newtag.GetName())[0];
+										0 : unicode2char(newtag.GetName())[0u];
 						if ( newtag.IsInt() && (newtag.GetName().Length() > 1) &&
 							((gap_mark == FT_GAPSTART) ||
 							 (gap_mark == FT_GAPEND))) {
