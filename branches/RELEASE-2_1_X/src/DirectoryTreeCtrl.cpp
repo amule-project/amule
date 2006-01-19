@@ -143,10 +143,13 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 	int flags=0;
 	HitTest(evt.GetPoint(),flags);
 	// this event is launched _after_ checkbox value is set.. if it is set at all
-	if ((hItem.IsOk()) && (flags &  wxTREE_HITTEST_ONITEMICON)) {
-		MarkChildren(hItem,!IsBold(hItem));
-		Refresh();
+	if (flags & (wxTREE_HITTEST_ONITEMICON | wxTREE_HITTEST_ONITEMLABEL)) {
+		if (hItem.IsOk()) {
+			MarkChildren(hItem, !IsBold(hItem));
+			Refresh();
+		}
 	}
+	
 	HasChanged = true;
 }
 
