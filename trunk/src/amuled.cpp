@@ -66,14 +66,13 @@
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
-#include "AddFileThread.h"		// Needed for CAddFileThread
 #include "FriendList.h"			// Needed for CFriendList
 #include "Packet.h"
-#include "AICHSyncThread.h"
 #include "Statistics.h"
 #include "Logger.h"
 #include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
+#include "ThreadTasks.h"
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -117,13 +116,11 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	EVT_MULE_INTERNAL(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleDaemonApp::OnServerDnsDone)
 
 	// Hash ended notifier
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleDaemonApp::OnFinishedHashing)
-
-	// Hashing thread finished and dead
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleDaemonApp::OnHashingShutdown)
-
+	EVT_MULE_HASHING(CamuleDaemonApp::OnFinishedHashing)
+	EVT_MULE_AICH_HASHING(CamuleDaemonApp::OnFinishedAICHHashing)
+	
 	// File completion ended notifier
-	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleDaemonApp::OnFinishedCompletion)
+	EVT_MULE_FILE_COMPLETED(CamuleDaemonApp::OnFinishedCompletion)
 
 	// HTTPDownload finished
 	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleDaemonApp::OnFinishedHTTPDownload)

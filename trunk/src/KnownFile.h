@@ -178,7 +178,7 @@ private:
 
 class CKnownFile : public CAbstractFile
 {
-friend class CAddFileThread;
+friend class CHashingTask;
 public:
 	CKnownFile();
 #ifdef CLIENT_GUI
@@ -275,7 +275,6 @@ public:
 	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
-	bool	CreateAICHHashSetOnly();
 	// aich
 	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
 	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		

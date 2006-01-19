@@ -62,8 +62,8 @@ public:
 	uint32  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	void	CopyFileList(std::vector<CKnownFile*>& out_list);
 	void	UpdateItem(CKnownFile* toupdate);
-	void	AddFilesFromDirectory(wxString directory);
-	void    GetSharedFilesByDirectory(const wxString directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
+	unsigned	AddFilesFromDirectory(wxString directory);
+	void    GetSharedFilesByDirectory(const wxString& directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
 	void	ClearED2KPublishInfo();
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();

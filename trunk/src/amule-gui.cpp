@@ -56,6 +56,7 @@
 #include "ClientListCtrl.h"
 #include "ChatWnd.h"
 #include "PartFileConvert.h"
+#include "ThreadTasks.h"
 
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h>
@@ -92,14 +93,11 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	EVT_MULE_INTERNAL(wxEVT_CORE_SERVER_DNS_DONE, -1, CamuleGuiApp::OnServerDnsDone)
 
 	// Hash ended notifier
-
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_FINISHED, -1, CamuleGuiApp::OnFinishedHashing)
-
-	// Hashing thread finished and dead
-	EVT_MULE_INTERNAL(wxEVT_CORE_FILE_HASHING_SHUTDOWN, -1, CamuleGuiApp::OnHashingShutdown)
+	EVT_MULE_HASHING(CamuleGuiApp::OnFinishedHashing)
+	EVT_MULE_AICH_HASHING(CamuleGuiApp::OnFinishedAICHHashing)
 
 	// File completion ended notifier
-	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_FILE_COMPLETION, -1, CamuleGuiApp::OnFinishedCompletion)
+	EVT_MULE_FILE_COMPLETED(CamuleGuiApp::OnFinishedCompletion)
 
 	// HTTPDownload finished
 	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)

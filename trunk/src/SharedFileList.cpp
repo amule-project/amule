@@ -40,7 +40,7 @@
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "AddFileThread.h"	// Needed for CAddFileThread
+#include "ThreadTasks.h"	// Needed for CThreadScheduler and CHasherTask
 #include "Preferences.h"	// Needed for thePrefs
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
@@ -380,22 +380,23 @@ void CSharedFileList::FindSharedFiles()
 	sharedPaths.sort();
 	sharedPaths.unique();
 
+	unsigned addedFiles = 0;
 	std::list<wxString>::iterator it = sharedPaths.begin();
 	for (; it != sharedPaths.end(); ++it) {
-		AddFilesFromDirectory(*it);
+		addedFiles += AddFilesFromDirectory(*it);
 	}
 	
-	uint32 newFiles = CAddFileThread::GetFileCount();
-	if (!newFiles) {
-		AddLogLineM(false,
-			wxString::Format(_("Found %i known shared files"), GetCount()));
-		// No new files, run AICH thread
-		theApp.RunAICHThread();
+	if (addedFiles == 0) {
+		AddLogLineM(false, wxString::Format(_("Found %i known shared files"), 
+			GetCount()));
+		
+		// Make sure the AICH-hashes are up to date.
+		CThreadScheduler::AddTask(new CAICHSyncTask());
 	} else {	
 		// New files, AICH thread will be run at the end of the hashing thread.
 		AddLogLineM(false,
 			wxString::Format(_("Found %i known shared files, %i unknown"),
-				GetCount(), newFiles));
+				GetCount(), addedFiles));
 	}
 }
 
@@ -413,10 +414,10 @@ bool CheckDirectory(const wxString& a, const wxString& b)
 }
 		
 
-void CSharedFileList::AddFilesFromDirectory(wxString directory)
+unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 {
 	if ( !wxDirExists( directory ) ) {
-		return;
+		return 0;
 	}
 
 	directory = ReadyPath(directory);
@@ -427,15 +428,15 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 	// The following dirs just result in a warning.
 	//  - The users home-dir
 	if (CheckDirectory(wxGetHomeDir(), directory)) {
-		return;
+		return 0;
 	}
 		
 	if (CheckDirectory(theApp.ConfigDir, directory)) {
-		return;
+		return 0;
 	}
 		
 	if (CheckDirectory(thePrefs::GetTempDir(), directory)) {
-		return;
+		return 0;
 	}
 
 	CDirIterator SharedDir(directory); 
@@ -444,10 +445,11 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 	if (fname.IsEmpty()) {
 		printf("Empty dir %s shared\n", (const char *)unicode2char(directory));
-    		return;
+    		return 0;
 	}
-	while(!fname.IsEmpty()) {
-		
+
+	unsigned addedFiles = 0;
+	while(!fname.IsEmpty()) {		
 		AddDebugLogLineM(false, logKnownFiles, wxT("Found file ")+fname + wxT(" on shared folder"));
 
 		uint32 fdate=GetLastModificationTime(fname);
@@ -501,10 +503,15 @@ void CSharedFileList::AddFilesFromDirectory(wxString directory)
 		} else {
 			//not in knownfilelist - start adding thread to hash file
 			AddDebugLogLineM(false, logKnownFiles, wxT("Hashing new unknown shared file ") + fname);
-			CAddFileThread::AddFile(directory, fname);
+			
+			if (CThreadScheduler::AddTask(new CHashingTask(directory, fname))) {
+				addedFiles++;
+			}
 		}
 		fname = SharedDir.GetNextFile();
 	}
+
+	return addedFiles;
 }
 
 
@@ -629,7 +636,7 @@ void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 	Notify_SharedFilesUpdateItem(toupdate);
 }
 
-void CSharedFileList::GetSharedFilesByDirectory(const wxString directory,
+void CSharedFileList::GetSharedFilesByDirectory(const wxString& directory,
                             CTypedPtrList<CPtrList, CKnownFile*>& list)
 {
 	wxMutexLocker lock(list_mut);

@@ -91,7 +91,8 @@ libmuleappcore_a_SOURCES = \
 	kademlia/utils/LittleEndian.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
-	StateMachine.cpp 
+	StateMachine.cpp \
+	ThreadScheduler.cpp
 
 libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
@@ -119,8 +120,7 @@ libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 core_sources = \
-	AICHSyncThread.cpp \
-	AddFileThread.cpp \
+	ThreadTasks.cpp \
 	amule.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
@@ -285,9 +285,9 @@ amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_US
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec -lmulecommon -lec_noevt $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
-noinst_HEADERS = AddFileThread.h \
+noinst_HEADERS = ThreadScheduler.h \
+		ThreadTasks.h \
 		AddFriend.h \
-		AICHSyncThread.h \
 		amuleDlg.h \
 		amule.h \
 		amuleIPV4Address.h \

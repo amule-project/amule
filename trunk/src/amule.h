@@ -60,17 +60,16 @@ class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
 class CStatistics;
-class wxServer;
 class wxSocketEvent;
 class wxCommandEvent;
 class wxFFileOutputStream;
-class wxFile;
 class CUpDownClient;
 class CTimer;
-class wxTimerEvent;
-class wxSingleInstanceChecker;
-class CMuleInternalEvent;
 class CTimerEvent;
+class wxSingleInstanceChecker;
+class CHashingEvent;
+class CMuleInternalEvent;
+class CCompletionEvent;
 class wxExecuteData;
 
 
@@ -142,8 +141,6 @@ public:
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
 	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
-
-	void RunAICHThread();
 
 	// Misc functions
 	void		OnlineSig(bool zero = false);
@@ -241,8 +238,9 @@ protected:
 	void OnTCPTimer(CTimerEvent& evt);
 	void OnCoreTimer(CTimerEvent& evt);
 
-	void OnFinishedHashing(CMuleInternalEvent& evt);
-	void OnFinishedCompletion(CMuleInternalEvent& evt);
+	void OnFinishedHashing(CHashingEvent& evt);
+	void OnFinishedAICHHashing(CHashingEvent& evt);
+	void OnFinishedCompletion(CCompletionEvent& evt);
 	void OnFinishedHTTPDownload(CMuleInternalEvent& evt);
 	void OnHashingShutdown(CMuleInternalEvent&);
 

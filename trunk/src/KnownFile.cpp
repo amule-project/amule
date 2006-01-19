@@ -372,69 +372,6 @@ void CKnownFile::SetFilePath(const wxString& strFilePath)
 	m_strFilePath = strFilePath;
 }
 
-bool CKnownFile::CreateAICHHashSetOnly()
-{
-	wxASSERT( !IsPartFile() );
-	m_pAICHHashSet->FreeHashSet();
-	
-	CFile file(JoinPaths(GetFilePath(), GetFileName()), CFile::read);
-	if ( !file.IsOpened() ){
-		AddDebugLogLineM( false, logAICHThread, wxT("CreateAICHHashSetOnly(): Failed to open file: ") + file.GetFilePath() );
-		return false;
-	}
-
-	// create aichhashset
-	uint64 togo = GetFileSize();
-	uint16 hashcount;
-	for (hashcount = 0; togo >= PARTSIZE; ) {
-		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, PARTSIZE);
-		wxASSERT( pBlockAICHHashTree != NULL );
-		
-		try {
-			CreateHashFromFile(&file, PARTSIZE, NULL, pBlockAICHHashTree);
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
-			return false;
-		}
-		
-		// SLUGFILLER: SafeHash - quick fallback
-		if ( !theApp.IsRunning()){ // in case of shutdown while still hashing
-			file.Close();
-			return false;
-		}
-
-		togo -= PARTSIZE;
-		hashcount++;
-	}
-
-	if (togo != 0){
-		CAICHHashTree* pBlockAICHHashTree = m_pAICHHashSet->m_pHashTree.FindHash(hashcount*PARTSIZE, togo);
-		wxASSERT( pBlockAICHHashTree != NULL );
-		try {
-			// Kry - "togo" is at most PARTSIZE by now, so it's safe to 
-			// cast it to a uint32
-			CreateHashFromFile(&file, (uint32)togo, NULL, pBlockAICHHashTree);
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logAICHThread, wxT("CreateAICHHashSetOnly(): IO failure while hashing file: ") + e.what());
-			return false;
-		}	
-	}
-	
-	m_pAICHHashSet->ReCalculateHash(false);
-	if ( m_pAICHHashSet->VerifyHashTree(true) ){
-		m_pAICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
-		if (!m_pAICHHashSet->SaveHashSet()){
-			AddDebugLogLineM( true, logAICHThread, wxT("Failed to save AICH Hashset!") );
-		}
-	}
-	else{
-		// now something went pretty wrong
-		AddDebugLogLineM(true, logAICHThread, wxT("Failed to calculate AICH Hashset from file ") + GetFileName() );
-	}
-	
-	file.Close();	
-	return true;	
-}
 
 void CKnownFile::SetFileSize(uint64 nFileSize)
 {
