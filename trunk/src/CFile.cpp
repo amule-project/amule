@@ -398,6 +398,11 @@ uint64 CFile::GetLength() const
 }
 
 
+uint64 CFile::GetAvailable() const
+{
+	return (GetLength() - GetPosition());
+}
+
 bool CFile::SetLength(size_t new_len)
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot set length when no file is open."));
@@ -412,4 +417,3 @@ bool CFile::SetLength(size_t new_len)
 
 	return (result != -1);
 }
-

@@ -43,6 +43,7 @@ there client on the eMule forum..
 #include <list>
 #include "../utils/UInt128.h"
 #include "../routing/Maps.h"
+#include "../../Tag.h"
 
 class CMemFile;
 
@@ -52,9 +53,6 @@ namespace Kademlia {
 
 class CSearch;
 class CRoutingZone;
-class CTag;
-typedef std::list<CTag*> TagList;
-void deleteTagListEntries(TagList* taglist);
 
 // If type is unknown it will be an empty string
 // If there are any properties about the file to report, there will follow LPCSTR key/value pairs.
@@ -91,7 +89,7 @@ public:
 	static void deleteSearch(CSearch* pSearch);
 
 	static void processResponse(const CUInt128 &target, uint32 fromIP, uint16 fromPort, ContactList *results);
-	static void processResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info);
+	static void processResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
 	static void processPublishResult(const CUInt128 &target, const uint8 load, const bool loadResponse);
 
 	static void getWords(const wxString& str, WordList *words);

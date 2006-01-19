@@ -44,10 +44,8 @@ there client on the eMule forum..
 #include "Indexed.h"
 #include "../../OPCodes.h"
 #include "Defines.h"
-#include "Tag.h"
 #include "../routing/Contact.h"
 #include "../utils/UInt128.h"
-#include "../io/ByteIO.h"
 #include "../io/IOException.h"
 #include "../kademlia/Prefs.h"
 #include "MemFile.h"
@@ -272,7 +270,7 @@ void CSearchManager::getWords(const wxString& str, WordList *words)
 		current_word = tkz.GetNextToken();
 		
 		if ((len = current_word.Length()) > 2) {
-			KadTagStrMakeLower(current_word);
+			current_word.MakeLower();
 			words->remove(current_word);
 			words->push_back(current_word);
 		}
@@ -515,7 +513,7 @@ void CSearchManager::processResponse(const CUInt128 &target, uint32 fromIP, uint
 	}
 }
 
-void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
+void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info)
 {
 	CSearch *s = NULL;
 	SearchMap::const_iterator it = m_searches.find(target);
@@ -526,7 +524,7 @@ void CSearchManager::processResult(const CUInt128 &target, uint32 fromIP, uint16
 	if (s == NULL) {
 		AddDebugLogLineM (false, logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::processResult)"));
-		for (TagList::const_iterator tagIt = info->begin(); tagIt != info->end(); tagIt++) {
+		for (TagPtrList::const_iterator tagIt = info->begin(); tagIt != info->end(); tagIt++) {
 			delete *tagIt;
 		}
 		delete info;

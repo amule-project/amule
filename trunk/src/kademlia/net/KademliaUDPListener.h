@@ -40,13 +40,12 @@ there client on the eMule forum..
 #define __KAD_UDP_LISTENER_H__
 
 #include "../utils/UInt128.h"
-#include "../io/ByteIO.h"
 #include "../../Types.h"
+#include "../../Tag.h"
 
 class CKnownFile;
 class CMemFile;
 struct SSearchTerm;
-
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -63,7 +62,7 @@ public:
 	void bootstrap(uint32 ip, uint16 port);
 	void firewalledCheck(uint32 ip, uint16 port);
 	void sendMyDetails(byte opcode, uint32 ip, uint16 port);
-	void publishPacket(uint32 ip, uint16 port, const CUInt128& targetID, const CUInt128& contactID, const TagList& tags);
+	void publishPacket(uint32 ip, uint16 port, const CUInt128& targetID, const CUInt128& contactID, const TagPtrList& tags);
 	void sendNullPacket(byte opcode, uint32 ip, uint16 port);
 	virtual void processPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
 	void sendPacket(const byte* data, uint32 lenData, uint32 destinationHost, uint16 destinationPort);

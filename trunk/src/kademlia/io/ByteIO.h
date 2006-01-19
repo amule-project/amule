@@ -39,15 +39,17 @@ there client on the eMule forum..
 #ifndef __KAD_BYTEIO_H__
 #define __KAD_BYTEIO_H__
 
-#include "DataIO.h"
+#include "../../SafeFile.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
+#warning Marked for deletion
+	
 class CIOException;
 
-class CByteIO : public CDataIO
+class CByteIO : public CFileDataIO
 {
 public:
 	CByteIO(byte* buffer, uint32 available)
@@ -65,9 +67,19 @@ public:
 		m_used = 0;
 	}
 
-	void readArray(void* lpResult, uint32 byteCount);
-	void writeArray(const void* lpVal, uint32 byteCount);
+	/** @see CFileDataIO::doRead */
+	virtual sint64 doRead(void* buffer, size_t count) const;
 
+	/** @see CFileDataIO::doWrite */
+	virtual sint64 doWrite(const void* buffer, size_t count);	
+
+	/** @see CFileDataIO::doSeek */
+	virtual sint64 doSeek(sint64 offset) const;	
+	
+	uint64 GetPosition() const;
+	
+	uint64 GetLength() const;
+	
 	uint32 getAvailable() const { return m_available; }
 	void reset(void);
 
@@ -75,9 +87,9 @@ public:
 
 private:
 	bool	m_bReadOnly;
-	byte*	m_buffer;
-	uint32	m_available;
-	uint32	m_used;
+	mutable byte*	m_buffer;
+	mutable uint32	m_available;
+	mutable uint32	m_used;
 };
 
 } // End namespace

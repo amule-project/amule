@@ -42,7 +42,7 @@ there client on the eMule forum..
 #include <ctime>
 
 #include "../utils/UInt128.h"
-#include "../kademlia/Tag.h"
+#include "../../Tag.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -62,7 +62,7 @@ public:
 	}
 	~CEntry()
 	{
-		TagList::const_iterator it;
+		TagPtrList::const_iterator it;
 		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			delete *it;
 		}
@@ -70,11 +70,11 @@ public:
 	
 	uint32 GetIntTagValue(const wxString& tagname) const
 	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
+		TagPtrList::const_iterator it;
+		CTag* tag;
 		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
-			if (!tag->m_name.Cmp(tagname) && tag->IsInt()) {
+			if ((tag->GetName() == tagname) && tag->IsInt()) {
 				return tag->GetInt();
 			}
 		}
@@ -83,11 +83,11 @@ public:
 
 	wxString GetStrTagValue(const wxString& tagname) const
 	{
-		TagList::const_iterator it;
-		Kademlia::CTag* tag;
+		TagPtrList::const_iterator it;
+		CTag* tag;
 		for (it = taglist.begin(); it != taglist.end(); ++it) {
 			tag = *it;
-			if (!tag->m_name.Cmp(tagname)&& tag->IsStr()) {
+			if ((tag->GetName() == tagname) && tag->IsStr()) {
 				return tag->GetStr();
 			}
 		}
@@ -99,9 +99,9 @@ public:
 	uint16 udpport;
 	CUInt128 keyID;
 	CUInt128 sourceID;
-	CTagValueString fileName; // NOTE: this always holds the string in LOWERCASE!!!
+	wxString fileName; // NOTE: this always holds the string in LOWERCASE!!!
 	uint32	size;
-	TagList taglist;
+	TagPtrList taglist;
 	time_t lifetime;
 	bool source;
 };

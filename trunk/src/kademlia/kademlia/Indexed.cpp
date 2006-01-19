@@ -36,8 +36,6 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
-//#include "../utils/MiscUtils.h"
 #include "Indexed.h"
 #include "Kademlia.h"
 #include "../../OPCodes.h"
@@ -48,9 +46,9 @@ there client on the eMule forum..
 #include "../net/KademliaUDPListener.h"
 #include "../utils/UInt128.h"
 #include "../../OtherFunctions.h"
-#include "../kademlia/Tag.h"
-#include "../io/FileIO.h"
 #include "../io/IOException.h"
+#include "../../CFile.h"
+#include "../io/ByteIO.h"
 #include "amule.h"
 #include "Preferences.h"
 #include "Logger.h"
@@ -96,17 +94,16 @@ void CIndexed::readFile(void)
 		uint32 numLoad = 0;
 		uint32 tagList = 0;
 
-		CBufferedFileIO load_file;
+		CFile load_file;
 		if(load_file.Open(m_loadfilename, CFile::read)) {
-			uint32 version = load_file.readUInt32();
+			uint32 version = load_file.ReadUInt32();
 			if(version<2) {
-				/*time_t savetime =*/ load_file.readUInt32(); //  Savetime is unused now
+				/*time_t savetime =*/ load_file.ReadUInt32(); //  Savetime is unused now
 				
-				numLoad = load_file.readUInt32();
+				numLoad = load_file.ReadUInt32();
 				while(numLoad) {
-					CUInt128 keyID;
-					load_file.readUInt128(&keyID);
-					if(AddLoad(keyID, load_file.readUInt32())) {
+					CUInt128 keyID = load_file.ReadUInt128();
+					if(AddLoad(keyID, load_file.ReadUInt32())) {
 						totalLoad++;
 					}
 					numLoad--;
@@ -115,51 +112,48 @@ void CIndexed::readFile(void)
 			load_file.Close();
 		}
 	
-		CBufferedFileIO k_file;
+		CFile k_file;
 		if (k_file.Open(m_kfilename, CFile::read)) {
 
-			uint32 version = k_file.readUInt32();
+			uint32 version = k_file.ReadUInt32();
 			if( version < 2 ) {
-				time_t savetime = k_file.readUInt32();
+				time_t savetime = k_file.ReadUInt32();
 				if( savetime > time(NULL) ) {
-					CUInt128 id;
-
-					k_file.readUInt128(&id);
+					CUInt128 id = k_file.ReadUInt128();
 					if( !Kademlia::CKademlia::getPrefs()->getKadID().compareTo(id) ) {
-						numKeys = k_file.readUInt32();
+						numKeys = k_file.ReadUInt32();
 						while( numKeys ) {
-							CUInt128 keyID;
-							k_file.readUInt128(&keyID);
-							numSource = k_file.readUInt32();
+							CUInt128 keyID = k_file.ReadUInt128();
+							numSource = k_file.ReadUInt32();
 							while( numSource ) {
-								CUInt128 sourceID;
-								k_file.readUInt128(&sourceID);
-								numName = k_file.readUInt32();
+								CUInt128 sourceID = k_file.ReadUInt128();
+								numName = k_file.ReadUInt32();
 								while( numName ) {
 									Kademlia::CEntry* toaddN = new Kademlia::CEntry();
 									toaddN->source = false;
-									uint32 expire = k_file.readUInt32();
+									uint32 expire = k_file.ReadUInt32();
 									toaddN->lifetime = expire;
-									tagList = k_file.readByte();
+									tagList = k_file.ReadUInt8();
 									while( tagList ) {
-										CTag* tag = k_file.readTag();
+										CTag* tag = k_file.ReadTag();
 										if(tag) {
-											if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
+											if (!tag->GetName().Cmp(TAG_FILENAME)) {
 												toaddN->fileName = tag->GetStr();
-												KadTagStrMakeLower(toaddN->fileName); // Make lowercase, the search code expects lower case strings!
+												// Make lowercase, the search code expects lower case strings!
+												toaddN->fileName.MakeLower(); 
 												// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
 												toaddN->taglist.push_back(tag);
-											} else if (!tag->m_name.Cmp(wxT(TAG_FILESIZE))) {
+											} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
 												toaddN->size = tag->GetInt();
 												// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
 												toaddN->taglist.push_back(tag);
-											} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP))) {
+											} else if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
 												toaddN->ip = tag->GetInt();
 												toaddN->taglist.push_back(tag);
-											} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
+											} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 												toaddN->tcpport = tag->GetInt();
 												toaddN->taglist.push_back(tag);
-											} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEUPORT))) {
+											} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 												toaddN->udpport = tag->GetInt();
 												toaddN->taglist.push_back(tag);
 											} else {
@@ -188,40 +182,38 @@ void CIndexed::readFile(void)
 			k_file.Close();
 		}
 
-		CBufferedFileIO s_file;
+		CFile s_file;
 		if (s_file.Open(m_sfilename, CFile::read)) {
 
-			uint32 version = s_file.readUInt32();
+			uint32 version = s_file.ReadUInt32();
 			if( version < 2 ) {
-				time_t savetime = s_file.readUInt32();
+				time_t savetime = s_file.ReadUInt32();
 				if( savetime > time(NULL) ) {
-					numKeys = s_file.readUInt32();
+					numKeys = s_file.ReadUInt32();
 					CUInt128 id;
 					while( numKeys ) {
-						CUInt128 keyID;
-						s_file.readUInt128(&keyID);
-						numSource = s_file.readUInt32();
+						CUInt128 keyID = s_file.ReadUInt128();
+						numSource = s_file.ReadUInt32();
 						while( numSource ) {
-							CUInt128 sourceID;
-							s_file.readUInt128(&sourceID);
-							numName = s_file.readUInt32();
+							CUInt128 sourceID = s_file.ReadUInt128();
+							numName = s_file.ReadUInt32();
 							while( numName ) {
 								Kademlia::CEntry* toaddN = new Kademlia::CEntry();
 								toaddN->source = true;
-								uint32 test = s_file.readUInt32();
+								uint32 test = s_file.ReadUInt32();
 								toaddN->lifetime = test;
-								tagList = s_file.readByte();
+								tagList = s_file.ReadUInt8();
 								while( tagList ) {
-									CTag* tag = s_file.readTag();
+									CTag* tag = s_file.ReadTag();
 									if(tag) {
-										if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP)))
+										if (!tag->GetName().Cmp(TAG_SOURCEIP))
 										{
 											toaddN->ip = tag->GetInt();
 											toaddN->taglist.push_back(tag);
-										} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
+										} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 											toaddN->tcpport = tag->GetInt();
 											toaddN->taglist.push_back(tag);
-										} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEUPORT))) {
+										} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 											toaddN->udpport = tag->GetInt();
 											toaddN->taglist.push_back(tag);
 										} else {
@@ -267,19 +259,19 @@ CIndexed::~CIndexed()
 		uint32 k_total = 0;
 		uint32 l_total = 0;
 
-		CBufferedFileIO load_file;
+		CFile load_file;
 		if(load_file.Open(m_loadfilename, CFile::write)) {
 			uint32 version = 1;
-			load_file.writeUInt32(version);
-			load_file.writeUInt32(time(NULL));
-			load_file.writeUInt32(m_Load_map.size());
+			load_file.WriteUInt32(version);
+			load_file.WriteUInt32(time(NULL));
+			load_file.WriteUInt32(m_Load_map.size());
 			LoadMap::iterator it = m_Load_map.begin();
 			for ( ; it != m_Load_map.end(); ++it ) {
 				Load* load = it->second;
 				wxASSERT(load);
 				if (load) {
-					load_file.writeUInt128(load->keyID);
-					load_file.writeUInt32(load->time);
+					load_file.WriteUInt128(load->keyID);
+					load_file.WriteUInt32(load->time);
 					l_total++;
 					delete load;
 				}
@@ -287,36 +279,36 @@ CIndexed::~CIndexed()
 			load_file.Close();
 		}
 
-		CBufferedFileIO s_file;
+		CFile s_file;
 		if (s_file.Open(m_sfilename, CFile::write)) {
 
 			uint32 version = 1;
-			s_file.writeUInt32(version);
+			s_file.WriteUInt32(version);
 
-			s_file.writeUInt32(time(NULL)+KADEMLIAREPUBLISHTIMES);
+			s_file.WriteUInt32(time(NULL)+KADEMLIAREPUBLISHTIMES);
 
-			s_file.writeUInt32(m_Sources_map.size());
+			s_file.WriteUInt32(m_Sources_map.size());
 			SrcHashMap::iterator itSrcHash = m_Sources_map.begin();
 			for ( ; itSrcHash != m_Sources_map.end(); ++itSrcHash ) {
 				SrcHash* currSrcHash = itSrcHash->second;
-				s_file.writeUInt128(currSrcHash->keyID);
+				s_file.WriteUInt128(currSrcHash->keyID);
 
 				CKadSourcePtrList& KeyHashSrcMap = currSrcHash->m_Source_map;
-				s_file.writeUInt32(KeyHashSrcMap.size());
+				s_file.WriteUInt32(KeyHashSrcMap.size());
 				
 				CKadSourcePtrList::iterator itSource = KeyHashSrcMap.begin();
 				for (; itSource != KeyHashSrcMap.end(); ++itSource) {
 					Source* currSource = *itSource;
-					s_file.writeUInt128(currSource->sourceID);
+					s_file.WriteUInt128(currSource->sourceID);
 
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
-					s_file.writeUInt32(SrcEntryList.size());
+					s_file.WriteUInt32(SrcEntryList.size());
 					
 					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
 					for (; itEntry != SrcEntryList.end(); ++itEntry) {
 						Kademlia::CEntry* currName = *itEntry;
-						s_file.writeUInt32(currName->lifetime);
-						s_file.writeTagList(currName->taglist);
+						s_file.WriteUInt32(currName->lifetime);
+						s_file.WriteTagPtrList(currName->taglist);
 						delete currName;
 						s_total++;
 					}
@@ -327,38 +319,38 @@ CIndexed::~CIndexed()
 			s_file.Close();
 		}
 
-		CBufferedFileIO k_file;
+		CFile k_file;
 		if (k_file.Open(m_kfilename, CFile::write)) {
 
 			uint32 version = 1;
-			k_file.writeUInt32(version);
+			k_file.WriteUInt32(version);
 
-			k_file.writeUInt32(time(NULL)+KADEMLIAREPUBLISHTIMEK);
+			k_file.WriteUInt32(time(NULL)+KADEMLIAREPUBLISHTIMEK);
 
-			k_file.writeUInt128(Kademlia::CKademlia::getPrefs()->getKadID());
+			k_file.WriteUInt128(Kademlia::CKademlia::getPrefs()->getKadID());
 
-			k_file.writeUInt32(m_Keyword_map.size());
+			k_file.WriteUInt32(m_Keyword_map.size());
 			KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
 			for ( ; itKeyHash != m_Keyword_map.end(); ++itKeyHash ) {
 				KeyHash* currKeyHash = itKeyHash->second;
-				k_file.writeUInt128(currKeyHash->keyID);
+				k_file.WriteUInt128(currKeyHash->keyID);
 
 				CSourceKeyMap& KeyHashSrcMap = currKeyHash->m_Source_map;
-				k_file.writeUInt32(KeyHashSrcMap.size());
+				k_file.WriteUInt32(KeyHashSrcMap.size());
 				
 				CSourceKeyMap::iterator itSource = KeyHashSrcMap.begin();
 				for ( ; itSource != KeyHashSrcMap.end(); ++itSource ) {
 					Source* currSource = itSource->second;
-					k_file.writeUInt128(currSource->sourceID);
+					k_file.WriteUInt128(currSource->sourceID);
 				
 					CKadEntryPtrList& SrcEntryList = currSource->entryList;
-					k_file.writeUInt32(SrcEntryList.size());
+					k_file.WriteUInt32(SrcEntryList.size());
 					
 					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
 					for (; itEntry != SrcEntryList.end(); ++itEntry) {
 						Kademlia::CEntry* currName = *itEntry;
-						k_file.writeUInt32(currName->lifetime);
-						k_file.writeTagList(currName->taglist);
+						k_file.WriteUInt32(currName->lifetime);
+						k_file.WriteTagPtrList(currName->taglist);
 						delete currName;
 						k_total++;
 					}
@@ -794,8 +786,8 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 
 		// search string value in all string meta tags (this includes also the filename)
 		// although this would work, I am no longer sure if it's the correct way to process the search requests..
-		/*const Kademlia::CTag *tag;
-		TagList::const_iterator it;
+		/*const CTag *tag;
+		TagPtrList::const_iterator it;
 		for (it = item->taglist.begin(); it != item->taglist.end(); it++)
 		{
 			tag = *it;
@@ -803,11 +795,11 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			{
 				//TODO: Use a pre-tokenized list for better performance.
 				int iPos = 0;
-				CString strTok(static_cast<const CTagStr *>(tag)->m_value.Tokenize(_aszInvKadKeywordChars, iPos));
+				CString strTok(static_cast<const CTag *>(tag)->m_value.Tokenize(_aszInvKadKeywordChars, iPos));
 				while (!strTok.IsEmpty()){
 					if (stricmp(strTok, *(pSearchTerm->str)) == 0)
 						return true;
-					strTok = static_cast<const CTagStr *>(tag)->m_value.Tokenize(_aszInvKadKeywordChars, iPos);
+					strTok = static_cast<const CTag *>(tag)->m_value.Tokenize(_aszInvKadKeywordChars, iPos);
 				}
 			}
 		}
@@ -815,119 +807,119 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	}
 
 	if (pSearchTerm->type == SSearchTerm::MetaTag) {
-		if (pSearchTerm->tag->m_type == 2) { // meta tags with string values
-			TagList::const_iterator it;
+		if (pSearchTerm->tag->GetType() == 2) { // meta tags with string values
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsStr() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsStr() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetStr().CmpNoCase(pSearchTerm->tag->GetStr()) == 0;
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpGreaterEqual) { 
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() >= pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() >= pSearchTerm->tag->GetFloat();
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpLessEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() <= pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() <= pSearchTerm->tag->GetFloat();
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpGreater) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() > pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() > pSearchTerm->tag->GetFloat();
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpLess) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() < pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() < pSearchTerm->tag->GetFloat();
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() == pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() == pSearchTerm->tag->GetFloat();
 				}
 			}
 		}
 	} else if (pSearchTerm->type == SSearchTerm::OpNotEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() != pSearchTerm->tag->GetInt();
 				}
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			TagList::const_iterator it;
+			TagPtrList::const_iterator it;
 			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
-				const Kademlia::CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->m_name.Cmp(tag->m_name) == 0) {
+				const CTag* tag = *it;
+				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() != pSearchTerm->tag->GetFloat();
 				}
 			}
@@ -952,10 +944,10 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		currKeyHash = itKeyHash->second;
 		byte packet[1024*50];
 		CByteIO bio(packet,sizeof(packet));
-		bio.writeByte(OP_KADEMLIAHEADER);
-		bio.writeByte(KADEMLIA_SEARCH_RES);
-		bio.writeUInt128(keyID);
-		bio.writeUInt16(50);
+		bio.WriteUInt8(OP_KADEMLIAHEADER);
+		bio.WriteUInt8(KADEMLIA_SEARCH_RES);
+		bio.WriteUInt128(keyID);
+		bio.WriteUInt16(50);
 		uint16 maxResults = 300;
 		uint16 count = 0;
 		CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin();
@@ -967,18 +959,18 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 				Kademlia::CEntry* currName = *itEntry;
 				if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
 					if( count < maxResults ) {
-						bio.writeUInt128(currName->sourceID);
-						bio.writeTagList(currName->taglist);
+						bio.WriteUInt128(currName->sourceID);
+						bio.WriteTagPtrList(currName->taglist);
 						count++;
 						if( count % 50 == 0 ) {
 							uint32 len = sizeof(packet)-bio.getAvailable();
 							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 							CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 							bio.reset();
-							bio.writeByte(OP_KADEMLIAHEADER);
-							bio.writeByte(KADEMLIA_SEARCH_RES);
-							bio.writeUInt128(keyID);
-							bio.writeUInt16(50);
+							bio.WriteUInt8(OP_KADEMLIAHEADER);
+							bio.WriteUInt8(KADEMLIA_SEARCH_RES);
+							bio.WriteUInt128(keyID);
+							bio.WriteUInt16(50);
 						}
 					}
 				}
@@ -1004,10 +996,10 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 		currSrcHash = itSrcHash->second;
 		byte packet[1024*50];
 		CByteIO bio(packet,sizeof(packet));
-		bio.writeByte(OP_KADEMLIAHEADER);
-		bio.writeByte(KADEMLIA_SEARCH_RES);
-		bio.writeUInt128(keyID);
-		bio.writeUInt16(50);
+		bio.WriteUInt8(OP_KADEMLIAHEADER);
+		bio.WriteUInt8(KADEMLIA_SEARCH_RES);
+		bio.WriteUInt128(keyID);
+		bio.WriteUInt16(50);
 		uint16 maxResults = 300;
 		uint16 count = 0;
 
@@ -1017,18 +1009,18 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			if( currSource->entryList.size() ) {
 				Kademlia::CEntry* currName = currSource->entryList.front();
 				if( count < maxResults ) {
-					bio.writeUInt128(currName->sourceID);
-					bio.writeTagList(currName->taglist);
+					bio.WriteUInt128(currName->sourceID);
+					bio.WriteTagPtrList(currName->taglist);
 					count++;
 					if( count % 50 == 0 ) {
 						uint32 len = sizeof(packet)-bio.getAvailable();
 						AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip) , port));
 						CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 						bio.reset();
-						bio.writeByte(OP_KADEMLIAHEADER);
-						bio.writeByte(KADEMLIA_SEARCH_RES);
-						bio.writeUInt128(keyID);
-						bio.writeUInt16(50);
+						bio.WriteUInt8(OP_KADEMLIAHEADER);
+						bio.WriteUInt8(KADEMLIA_SEARCH_RES);
+						bio.WriteUInt128(keyID);
+						bio.WriteUInt16(50);
 					}
 				}
 			}
@@ -1053,10 +1045,10 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 		currNoteHash = itNote->second;		
 		byte packet[1024*50];
 		CByteIO bio(packet,sizeof(packet));
-		bio.writeByte(OP_KADEMLIAHEADER);
-		bio.writeByte(KADEMLIA_SRC_NOTES_RES);
-		bio.writeUInt128(keyID);
-		bio.writeUInt16(50);
+		bio.WriteUInt8(OP_KADEMLIAHEADER);
+		bio.WriteUInt8(KADEMLIA_SRC_NOTES_RES);
+		bio.WriteUInt128(keyID);
+		bio.WriteUInt16(50);
 		uint16 maxResults = 50;
 		uint16 count = 0;
 
@@ -1066,18 +1058,18 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 			if( currNote->entryList.size() ) {
 				Kademlia::CEntry* currName = currNote->entryList.front();
 				if( count < maxResults ) {
-					bio.writeUInt128(currName->sourceID);
-					bio.writeTagList(currName->taglist);
+					bio.WriteUInt128(currName->sourceID);
+					bio.WriteTagPtrList(currName->taglist);
 				}
 				if( count % 50 == 0 ) {
 					uint32 len = sizeof(packet)-bio.getAvailable();
 					AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 					CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
 					bio.reset();
-					bio.writeByte(OP_KADEMLIAHEADER);
-					bio.writeByte(KADEMLIA_SRC_NOTES_RES);
-					bio.writeUInt128(keyID);
-					bio.writeUInt16(50);
+					bio.WriteUInt8(OP_KADEMLIAHEADER);
+					bio.WriteUInt8(KADEMLIA_SRC_NOTES_RES);
+					bio.WriteUInt128(keyID);
+					bio.WriteUInt16(50);
 				}
 			}
 		}

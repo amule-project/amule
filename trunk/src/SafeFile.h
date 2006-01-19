@@ -32,6 +32,7 @@
 #include <common/StringFunctions.h>	// Needed for the utf8 types.
 
 #include "Types.h"				// Needed for uint* types
+#include "Tag.h"
 
 namespace Kademlia {
 	class CUInt128;
@@ -130,12 +131,14 @@ public:
 	 * @see CSafeFileIO::Read
 	 */
 	//@{
-	virtual uint8		ReadUInt8() const;
-	virtual uint16		ReadUInt16() const;
-	virtual uint32		ReadUInt32() const;
-	virtual uint64		ReadUInt64() const;
-	virtual CUInt128	ReadUInt128() const;
-	virtual CMD4Hash	ReadHash() const;
+	virtual uint8			ReadUInt8() const;
+	virtual uint16			ReadUInt16() const;
+	virtual uint32			ReadUInt32() const;
+	virtual uint64			ReadUInt64() const;
+	virtual CUInt128		ReadUInt128() const;
+	virtual CMD4Hash		ReadHash() const;
+	virtual float			ReadFloat() const;
+	virtual unsigned char*	ReadBsob(uint8* size);	
 	//@}
 
 	/**
@@ -179,6 +182,8 @@ public:
 	virtual void WriteUInt64(uint64 value);
 	virtual void WriteUInt128(const CUInt128& value);
 	virtual void WriteHash(const CMD4Hash& value);
+	virtual void WriteFloat(float value);
+	virtual void WriteBsob( const unsigned char* val, uint8 size);	
 	//@}
 	
 	/**
@@ -194,6 +199,14 @@ public:
 	 * @see CSafeFileIO::Write
 	 */
 	virtual void WriteString(const wxString& str, EUtf8Str encoding = utf8strNone, uint8 lenBytes = 2);
+
+/* Special Kad functions, needs documentation */
+#warning DOCS
+	CTag*		ReadTag(bool bOptACP = false);
+	void		ReadTagPtrList(TagPtrList* taglist, bool bOptACP = false);
+
+	void		WriteTag(const CTag& tag);
+	void		WriteTagPtrList(const TagPtrList& tagList);
 
 protected:
 	/**

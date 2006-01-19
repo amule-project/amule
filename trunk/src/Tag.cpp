@@ -27,8 +27,6 @@
 
 #include "Tag.h"				// Interface declarations
 
-#include <wx/string.h>
-
 #include <common/MuleDebug.h>		// Needed for CInvalidPacket
 
 #include "SafeFile.h"		// Needed for CFileDataIO
@@ -37,12 +35,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
 
-CTag::CTag(char* pszName, uint32 uVal)
+CTag::CTag(const wxString& Name, uint32 uVal)
 {
 	m_uType = TAGTYPE_UINT32;
 	m_uName = 0;
-	m_pszName = nstrdup(pszName);
+	m_Name = Name;
 	m_uVal = uVal;
+	m_nBlobSize = 0;
+}
+
+CTag::CTag(const wxString& Name, float uVal)
+{
+	m_uType = TAGTYPE_FLOAT32;
+	m_uName = 0;
+	m_Name = Name;
+	m_fVal = uVal;
 	m_nBlobSize = 0;
 }
 
@@ -50,16 +57,15 @@ CTag::CTag(uint8 uName, uint32 uVal)
 {
 	m_uType = TAGTYPE_UINT32;
 	m_uName = uName;
-	m_pszName = NULL;
 	m_uVal = uVal;
 	m_nBlobSize = 0;
 }
 
-CTag::CTag(char* pszName, const wxString& rstrVal)
+CTag::CTag(const wxString& Name, const wxString& rstrVal)
 {
 	m_uType = TAGTYPE_STRING;
 	m_uName = 0;
-	m_pszName = nstrdup(pszName);
+	m_Name = Name;
 	m_pstrVal = new wxString(rstrVal);
 	m_nBlobSize = 0;
 }
@@ -68,8 +74,17 @@ CTag::CTag(uint8 uName, const wxString& rstrVal)
 {
 	m_uType = TAGTYPE_STRING;
 	m_uName = uName;
-	m_pszName = NULL;
 	m_pstrVal = new wxString(rstrVal);
+	m_nBlobSize = 0;
+}
+
+
+CTag::CTag(const wxString& Name, const CMD4Hash& hash)
+{
+	m_uType = TAGTYPE_HASH;
+	m_uName = 0;
+	m_Name = Name;
+	m_hashVal = new CMD4Hash(hash);
 	m_nBlobSize = 0;
 }
 
@@ -77,7 +92,6 @@ CTag::CTag(uint8 uName, const CMD4Hash& hash)
 {
 	m_uType = TAGTYPE_HASH;
 	m_uName = uName;
-	m_pszName = NULL;
 	m_hashVal = new CMD4Hash(hash);
 	m_nBlobSize = 0;
 }
@@ -85,7 +99,6 @@ CTag::CTag(uint8 uName, const CMD4Hash& hash)
 CTag::CTag(uint8 uName, uint32 nSize, const unsigned char* pucData){
 	m_uType = TAGTYPE_BLOB;
 	m_uName = uName;
-	m_pszName = NULL;
 	m_pData = new unsigned char[nSize];
 	memcpy(m_pData, pucData, nSize);
 	m_nBlobSize = nSize;
@@ -95,7 +108,7 @@ CTag::CTag(const CTag& rTag)
 {
 	m_uType = rTag.m_uType;
 	m_uName = rTag.m_uName;
-	m_pszName = rTag.m_pszName!=NULL ? nstrdup(rTag.m_pszName) : NULL;
+	m_Name = rTag.m_Name;
 	m_nBlobSize = 0;
 	if (rTag.IsStr()) {
 		m_pstrVal = new wxString(rTag.GetStr());
@@ -120,7 +133,6 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
 	// Zero variables to allow for safe deletion
 	m_uType = m_uName = m_nBlobSize = 0;
-	m_pszName = NULL;
 	m_pData = NULL;	
 	
 	try {
@@ -128,17 +140,13 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 		if (m_uType & 0x80) {
 			m_uType &= 0x7F;
 			m_uName = data.ReadUInt8();
-			m_pszName = NULL;
 		} else {
 			uint16 length = data.ReadUInt16();
 			if (length == 1) {
 				m_uName = data.ReadUInt8();
-				m_pszName = NULL;
 			} else {
 				m_uName = 0;
-				m_pszName = new char[length + 1];
-				data.Read(m_pszName, length);
-				m_pszName[length] = '\0';
+				m_Name = data.ReadOnlyString(utf8strNone,length);
 			}
 		}
 	
@@ -153,6 +161,10 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 			
 			case TAGTYPE_UINT32:
 				m_uVal = data.ReadUInt32();
+				break;
+
+			case TAGTYPE_UINT64:
+				m_uVal = data.ReadUInt64();
 				break;
 			
 			case TAGTYPE_UINT16:
@@ -215,7 +227,6 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				}
 		}
 	} catch (...) {
-		delete[] m_pszName;
 		if (m_uType == TAGTYPE_BLOB) {
 			delete[] m_pData;
 		}
@@ -227,7 +238,6 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 
 CTag::~CTag()
 {
-	delete[] m_pszName;
 	if (IsStr()) {
 		delete m_pstrVal;
 	} else if (IsHash()) {
@@ -325,11 +335,9 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 	}
 
 	// Write tag name
-	if (m_pszName) {
+	if (!m_Name.IsEmpty()) {
 		data->WriteUInt8(uType);
-		uint16 uTagNameLen = strlen(m_pszName);
-		data->WriteUInt16(uTagNameLen);
-		data->Write(m_pszName, uTagNameLen);
+		data->WriteString(m_Name,utf8strNone);
 	} else {
 		wxASSERT( m_uName != 0 );
 		data->WriteUInt8(uType | 0x80);
@@ -386,11 +394,8 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 		
 		file->WriteUInt8(m_uType);
 		
-		if (m_pszName) {
-			// Don't change this for a WriteString, will only make things slower.
-			uint16 tagname_len = strlen(m_pszName);
-			file->WriteUInt16(tagname_len);
-			file->Write(m_pszName, tagname_len);
+		if (!m_Name.IsEmpty()) {
+			file->WriteString(m_Name,utf8strNone);
 		} else {
 			file->WriteUInt16(1);
 			file->WriteUInt8(m_uName);
@@ -427,9 +432,9 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 wxString CTag::GetFullInfo() const
 {
 	wxString strTag;
-	if (m_pszName) {
+	if (!m_Name.IsEmpty()) {
 		strTag = wxT('\"');
-		strTag += char2unicode(m_pszName);
+		strTag += m_Name;
 		strTag += wxT('\"');
 	} else {
 		strTag = wxString::Format(wxT("0x%02X"), m_uName);
@@ -456,4 +461,13 @@ wxString CTag::GetFullInfo() const
 		strTag += wxString::Format(wxT("Type=%u"), m_uType);
 	}
 	return strTag;
+}
+
+void deleteTagPtrListEntries(TagPtrList* taglist)
+{
+	TagPtrList::const_iterator it;
+	for (it = taglist->begin(); it != taglist->end(); it++) {
+		delete *it;
+	}
+	taglist->clear();
 }

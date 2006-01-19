@@ -32,12 +32,12 @@
 #include <list>
 
 #include "Types.h"		// Needed for uint8, uint16 and uint32
+#include "Tag.h"
 
 #ifdef CLIENT_GUI
 #include <ec/ECSpecialTags.h>
 #endif
 
-class CTag;
 class ServerMet_Struct;
 class CFileDataIO;
 
@@ -65,8 +65,6 @@ class CFileDataIO;
 #define SRV_PR_MAX			2
 #define SRV_PR_MID			1
 #define SRV_PR_MIN			0
-
-typedef std::list<CTag*> TagList;
 
 class CServer
 {
@@ -175,8 +173,7 @@ private:
 	uint32		failedcount; 
 	uint32		m_uDescReqChallenge;
 	uint8		lastdescpingedcout;
-	TagList		m_taglist;
-	//CTypedPtrList<CPtrList, CTag*>*	taglist;
+	TagPtrList		m_taglist;
 	uint8		staticservermember;
 	wxString	m_strVersion;
 	uint32		m_uTCPFlags;

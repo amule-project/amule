@@ -38,7 +38,6 @@ there client on the eMule forum..
 
 
 #include "../../Tag.h"
-typedef CTag ed2kCTag;
 
 #include "Search.h"
 #include "Kademlia.h"
@@ -50,7 +49,6 @@ typedef CTag ed2kCTag;
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
-#include "../kademlia/Tag.h"
 #include "../../amule.h"
 #include "../../SharedFileList.h"
 #include "../../OtherFunctions.h"
@@ -400,7 +398,7 @@ void CSearch::StorePacket()
 				m_fileName = file->GetFileName();
 
 				CUInt128 id(CKademlia::getPrefs()->getClientHash());
-				TagList taglist;
+				TagPtrList taglist;
 
 				//We can use type for different types of sources. 
 				//1 is reserved for highID sources..
@@ -412,11 +410,11 @@ void CSearch::StorePacket()
 						CUInt128 buddyID(true);
 						buddyID.XOR(CKademlia::getPrefs()->getKadID());
 						taglist.push_back(new CTagUInt8(TAG_SOURCETYPE, 3));
-						taglist.push_back(new CTagUInt32(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
+						taglist.push_back(new CTag(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
 						taglist.push_back(new CTagUInt16(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
 						byte hashBytes[16];
 						buddyID.toByteArray(hashBytes);
-						taglist.push_back(new CTagStr(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
+						taglist.push_back(new CTag(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
 						taglist.push_back(new CTagUInt16(TAG_SOURCEPORT, thePrefs::GetPort()));
 					} else {
 						prepareToStop();
@@ -429,7 +427,7 @@ void CSearch::StorePacket()
 
 				CKademlia::getUDPListener()->publishPacket(from->getIPAddress(), from->getUDPPort(),m_target,id, taglist);
 				m_totalRequestAnswers++;
-				TagList::const_iterator it;
+				TagPtrList::const_iterator it;
 				for (it = taglist.begin(); it != taglist.end(); ++it) {
 					delete *it;
 				}
@@ -465,8 +463,8 @@ void CSearch::StorePacket()
 			if (file) {
 				byte packet[1024*2];
 				CByteIO bio(packet,sizeof(packet));
-				bio.writeUInt128(m_target);
-				bio.writeUInt128(CKademlia::getPrefs()->getKadID());
+				bio.WriteUInt128(m_target);
+				bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 				uint8 tagcount = 1;
 				if(file->GetFileRating() != 0) {
 					++tagcount;
@@ -475,16 +473,16 @@ void CSearch::StorePacket()
 					++tagcount;
 				}
 				//Number of tags.
-				bio.writeUInt8(tagcount);
-				CTagStr fileName(TAG_FILENAME, file->GetFileName());
-				bio.writeTag(&fileName);
+				bio.WriteUInt8(tagcount);
+				CTag fileName(TAG_FILENAME, file->GetFileName());
+				bio.WriteTag(fileName);
 				if(file->GetFileRating() != 0) {
 					CTagUInt16 rating(TAG_FILERATING, file->GetFileRating());
-					bio.writeTag(&rating);
+					bio.WriteTag(rating);
 				}
 				if(!file->GetFileComment().IsEmpty()) {
-					CTagStr description(TAG_DESCRIPTION, file->GetFileComment());
-					bio.writeTag(&description);
+					CTag description(TAG_DESCRIPTION, file->GetFileComment());
+					bio.WriteTag(description);
 				}
 
 				CKademlia::getUDPListener()->sendPacket( packet, sizeof(packet)-bio.getAvailable(), KADEMLIA_PUB_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
@@ -537,7 +535,7 @@ void CSearch::StorePacket()
 	}
 }
 
-void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagList *info)
+void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info)
 {
 	wxString type = wxT("Unknown");
 	switch(m_type) {
@@ -557,7 +555,7 @@ void CSearch::processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answ
 	AddDebugLogLineM(false, logKadSearch, wxT("Got result ") + type + wxT(" from ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(fromIP),fromPort));
 }
 
-void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
+void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagPtrList *info)
 {
 	uint8  type = 0;
 	uint32 ip = 0;
@@ -569,24 +567,24 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	CUInt128 buddy;
 
 	CTag *tag;
-	TagList::const_iterator it;
+	TagPtrList::const_iterator it;
 	for (it = info->begin(); it != info->end(); ++it) {
 		tag = *it;
-		if (!tag->m_name.Cmp(wxT(TAG_SOURCETYPE))) {
+		if (!tag->GetName().Cmp(TAG_SOURCETYPE)) {
 			type = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP))) {
+		} else if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
 			ip = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
+		} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 			tcp = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEUPORT))) {
+		} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
 			udp = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SERVERIP))) {
+		} else if (!tag->GetName().Cmp((TAG_SERVERIP))) {
 			serverip = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SERVERPORT))) {
+		} else if (!tag->GetName().Cmp(TAG_SERVERPORT)) {
 			serverport = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_CLIENTLOWID))) {
+		} else if (!tag->GetName().Cmp(TAG_CLIENTLOWID)) {
 			clientid	= tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_BUDDYHASH))) {
+		} else if (!tag->GetName().Cmp(TAG_BUDDYHASH)) {
 			CMD4Hash hash(tag->GetStr());
 			buddy.setValueBE(hash.GetHash());
 		}
@@ -609,7 +607,7 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	}
 }
 
-void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
+void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagPtrList *info)
 {
 	CEntry* entry = new CEntry();
 	entry->keyID.setValue(m_target);
@@ -618,23 +616,23 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	bool bFilterComment = false;
 	
 	CTag *tag;
-	TagList::const_iterator it;
+	TagPtrList::const_iterator it;
 	for (it = info->begin(); it != info->end(); it++) {
 		tag = *it;
-		if (!tag->m_name.Cmp(wxT(TAG_SOURCEIP))) {
+		if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
 			entry->ip = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCEPORT))) {
+		} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
 			entry->tcpport = tag->GetInt();
 			delete tag;
-		} else if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
+		} else if (!tag->GetName().Cmp(TAG_FILENAME)) {
 			entry->fileName	= tag->GetStr();
 			delete tag;
-		} else if (!tag->m_name.Cmp(wxT(TAG_DESCRIPTION))) {
+		} else if (!tag->GetName().Cmp(TAG_DESCRIPTION)) {
 			wxString strComment(tag->GetStr());
 			bFilterComment = thePrefs::IsMessageFiltered(strComment);
 			entry->taglist.push_front(tag);
-		} else if (!tag->m_name.Cmp(wxT(TAG_FILERATING))) {
+		} else if (!tag->GetName().Cmp(TAG_FILERATING)) {
 			entry->taglist.push_front(tag);
 		} else {
 			delete tag;
@@ -668,7 +666,7 @@ void CSearch::processResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	}
 }
 
-void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagList *info)
+void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagPtrList *info)
 {
 	bool interested = false;
 	wxString name;
@@ -683,31 +681,30 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	uint32 bitrate = 0;
 	uint32 availability = 0;
 
-	for (TagList::const_iterator it = info->begin(); it != info->end(); ++it) {
+	for (TagPtrList::const_iterator it = info->begin(); it != info->end(); ++it) {
 		CTag* tag = *it;
-
-		if (!tag->m_name.Cmp(wxT(TAG_FILENAME))) {
+		if (tag->GetName() == TAG_FILENAME) {
 			name	= tag->GetStr();
 			interested = !name.IsEmpty();
-		} else if (!tag->m_name.Cmp(wxT(TAG_FILESIZE))) {
+		} else if (tag->GetName() == TAG_FILESIZE) {
 			size = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_FILETYPE))) {
+		} else if (tag->GetName() == TAG_FILETYPE) {
 			type = tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_FILEFORMAT))) {
+		} else if (tag->GetName() == TAG_FILEFORMAT) {
 			format = tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_ARTIST))) {
+		} else if (tag->GetName() == TAG_MEDIA_ARTIST) {
 			artist = tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_ALBUM))) {
+		} else if (tag->GetName() == TAG_MEDIA_ALBUM) {
 			album = tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_TITLE))) {
+		} else if (tag->GetName() == TAG_MEDIA_TITLE) {
 			title = tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_LENGTH))) {
+		} else if (tag->GetName() == TAG_MEDIA_LENGTH) {
 			length = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_BITRATE))) {
+		} else if (tag->GetName() == TAG_MEDIA_BITRATE) {
 			bitrate = tag->GetInt();
-		} else if (!tag->m_name.Cmp(wxT(TAG_MEDIA_CODEC))) {
+		} else if (tag->GetName() == TAG_MEDIA_CODEC) {
 			codec	= tag->GetStr();
-		} else if (!tag->m_name.Cmp(wxT(TAG_SOURCES))) {
+		} else if (tag->GetName() == TAG_SOURCES) {
 			availability = tag->GetInt();
 			if( availability > 65500 ) {
 				availability = 0;
@@ -716,54 +713,29 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 		delete tag;
 	}
 	delete info;
-
-	// Check that it matches original criteria
-	// generally this is ok, but with the transition of Kad from ACP to Unicode we may receive 'wrong' results in the next months which are
-	// actually not 'wrong' (don't ask for a detailed explanation)
-	//WordList testWords;
-	//CSearchManager::getWords(name.GetBuffer(0), &testWords);
-	//
-	//WordList::const_iterator mine;
-	//WordList::const_iterator test;
-	//CStringW keyword;
-	//for (mine = m_words.begin(); mine != m_words.end(); mine++)
-	//{
-	//	keyword = *mine;
-	//	interested = false;
-	//	for (test = testWords.begin(); test != testWords.end(); test++)
-	//	{
-	//		if (!keyword.CompareNoCase(*test))
-	//		{
-	//			interested = true;
-	//			break;
-	//		}
-	//	}
-	//	if (!interested)
-	//		return;
-	//}
-
+	
 	TagPtrList taglist;
 	
 	if (!format.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_FILEFORMAT, format));
+		taglist.push_back(new CTag(TAG_FILEFORMAT, format));
 	}
 	if (!artist.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_ARTIST, artist));
+		taglist.push_back(new CTag(TAG_MEDIA_ARTIST, artist));
 	}
 	if (!album.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_ALBUM, album));
+		taglist.push_back(new CTag(TAG_MEDIA_ALBUM, album));
 	}
 	if (!title.IsEmpty()) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_TITLE, title));
+		taglist.push_back(new CTag(TAG_MEDIA_TITLE, title));
 	}
 	if (length) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_LENGTH, length));
+		taglist.push_back(new CTag(TAG_MEDIA_LENGTH, length));
 	}
 	if (bitrate) {
-		taglist.push_back(new ed2kCTag(TAG_MEDIA_BITRATE, bitrate));
+		taglist.push_back(new CTag(TAG_MEDIA_BITRATE, bitrate));
 	}
 	if (availability) {
-		taglist.push_back(new ed2kCTag(TAG_SOURCES, availability));
+		taglist.push_back(new CTag(TAG_SOURCES, availability));
 	}
 
 	if (interested) {
@@ -859,10 +831,10 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 {
 	try {
 		if( file && bio ) {
-			TagList taglist;
+			TagPtrList taglist;
 			
 			// Name, Size
-			taglist.push_back(new CTagStr(TAG_FILENAME, file->GetFileName()));
+			taglist.push_back(new CTag(TAG_FILENAME, file->GetFileName()));
 			#warning Kry - UPGRADE
 			taglist.push_back(new CTagUInt(TAG_FILESIZE, file->GetFileSize()));
 			taglist.push_back(new CTagUInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
@@ -871,7 +843,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
 			wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(file->GetFileName())));
 			if (!strED2KFileType.IsEmpty()) {
-				taglist.push_back(new CTagStr(TAG_FILETYPE, strED2KFileType));
+				taglist.push_back(new CTag(TAG_FILETYPE, strED2KFileType));
 			}
 			
 			// file format (filename extension)
@@ -881,7 +853,7 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 				if (!strExt.IsEmpty()) {
 					strExt = strExt.Mid(1);
 					if (!strExt.IsEmpty()) {
-						taglist.push_back(new CTagStr(TAG_FILEFORMAT, strExt));
+						taglist.push_back(new CTag(TAG_FILEFORMAT, strExt));
 					}
 				}
 			}
@@ -914,15 +886,15 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 						}
 						wxString szKadTagName = wxString::Format(wxT("%c"),pTag->GetNameID());					
 						if (pTag->IsStr()) {
-							taglist.push_back(new CTagStr(szKadTagName, pTag->GetStr()));
+							taglist.push_back(new CTag(szKadTagName, pTag->GetStr()));
 						} else {
 							taglist.push_back(new CTagUInt(szKadTagName, pTag->GetInt()));
 						}
 					}
 				}
 			}
-			bio->writeTagList(taglist);
-			TagList::const_iterator it;
+			bio->WriteTagPtrList(taglist);
+			TagPtrList::const_iterator it;
 			for (it = taglist.begin(); it != taglist.end(); ++it) {
 				delete *it;
 			}
@@ -947,19 +919,19 @@ void CSearch::PreparePacket(void)
 		}
 		if( count > 100 ) {
 			bio3 = new CByteIO(packet3,sizeof(packet3));
-			bio3->writeByte(OP_KADEMLIAHEADER);
-			bio3->writeByte(KADEMLIA_PUBLISH_REQ);
-			bio3->writeUInt128(m_target);
-			bio3->writeUInt16(count-100);
+			bio3->WriteUInt8(OP_KADEMLIAHEADER);
+			bio3->WriteUInt8(KADEMLIA_PUBLISH_REQ);
+			bio3->WriteUInt128(m_target);
+			bio3->WriteUInt16(count-100);
 			while ( count > 100 ) {
 				count--;
-				bio3->writeUInt128(m_fileIDs.front());
+				bio3->WriteUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
-					bio3->writeByte(0);
+					bio3->WriteUInt8(0);
 				} else {
 					PreparePacketForTags( bio3, file );
 				}
@@ -967,19 +939,19 @@ void CSearch::PreparePacket(void)
 		}
 		if( count > 50 ) {
 			bio2 = new CByteIO(packet2,sizeof(packet2));
-			bio2->writeByte(OP_KADEMLIAHEADER);
-			bio2->writeByte(KADEMLIA_PUBLISH_REQ);
-			bio2->writeUInt128(m_target);
-			bio2->writeUInt16(count-50);
+			bio2->WriteUInt8(OP_KADEMLIAHEADER);
+			bio2->WriteUInt8(KADEMLIA_PUBLISH_REQ);
+			bio2->WriteUInt128(m_target);
+			bio2->WriteUInt16(count-50);
 			while ( count > 50 ) {
 				count--;
-				bio2->writeUInt128(m_fileIDs.front());
+				bio2->WriteUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
-					bio2->writeByte(0);
+					bio2->WriteUInt8(0);
 				} else {
 					PreparePacketForTags( bio2, file );
 				}
@@ -987,19 +959,19 @@ void CSearch::PreparePacket(void)
 		}
 		if( count > 0 ) {
 			bio1 = new CByteIO(packet1,sizeof(packet1));
-			bio1->writeByte(OP_KADEMLIAHEADER);
-			bio1->writeByte(KADEMLIA_PUBLISH_REQ);
-			bio1->writeUInt128(m_target);
-			bio1->writeUInt16(count);
+			bio1->WriteUInt8(OP_KADEMLIAHEADER);
+			bio1->WriteUInt8(KADEMLIA_PUBLISH_REQ);
+			bio1->WriteUInt128(m_target);
+			bio1->WriteUInt16(count);
 			while ( count > 0 ) {
 				count--;
-				bio1->writeUInt128(m_fileIDs.front());
+				bio1->WriteUInt128(m_fileIDs.front());
 				m_fileIDs.front().toByteArray(fileid);
 				m_fileIDs.pop_front();
 				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 				if (!file) {
 					printf("File not found on shared when publishing packet!\n");
-					bio1->writeByte(0);
+					bio1->WriteUInt8(0);
 				} else {
 					PreparePacketForTags( bio1, file );
 				}

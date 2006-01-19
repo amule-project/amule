@@ -142,6 +142,12 @@ public:
 	virtual uint64 GetPosition() const;
 	
 	/**
+	 * Returns the current available bytes to read on the file before EOF
+	 * 
+	 */
+	virtual uint64 GetAvailable() const;	
+	
+	/**
 	 * Returns the path of the currently opened file.
 	 * 
 	 * Calling this function on an closed file is
