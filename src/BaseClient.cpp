@@ -1166,7 +1166,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	// after we've sent OP_HASHSETREQUEST. It may occure that a (buggy) remote client
 	// is sending use another OP_FILESTATUS which would let us change to DL-state to DS_ONQUEUE.
 	if (((GetDownloadState() == DS_REQHASHSET) || m_fHashsetRequesting) && (m_reqfile)) {
-		m_reqfile->hashsetneeded = true;
+		m_reqfile->SetHashSetNeeded(true);
 	}
 
 	//check if this client is needed in any way, if not delete it
@@ -1297,7 +1297,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				SetDownloadState(DS_LOWTOLOWIP);
 			} else if (GetDownloadState() == DS_REQHASHSET) {
 				SetDownloadState(DS_ONQUEUE);
-				m_reqfile->hashsetneeded = true;
+				m_reqfile->SetHashSetNeeded(true);
 			}
 			if (GetUploadState() == US_CONNECTING) {
 				if(Disconnected(wxT("LowID->LowID and US_CONNECTING"))) {

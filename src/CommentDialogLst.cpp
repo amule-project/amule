@@ -94,8 +94,9 @@ void CCommentDialogLst::UpdateList()
 	int count = 0;
 	ClearList();
  
-	CPartFile::SourceSet::iterator it = m_file->m_SrcList.begin();
-	for ( ; it != m_file->m_SrcList.end(); ++it ) {
+	const CPartFile::SourceSet& sources = m_file->GetSourceList();
+	CPartFile::SourceSet::iterator it = sources.begin();
+	for ( ; it != sources.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
 
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {

@@ -157,7 +157,9 @@ void CFileDetailDialog::FillSourcenameList()
 	}
 
 	// update
-	for ( CPartFile::SourceSet::iterator it = m_file->m_SrcList.begin(); it != m_file->m_SrcList.end(); ++it ) { 
+	const CPartFile::SourceSet& sources = m_file->GetSourceList();
+	CPartFile::SourceSet::iterator it = sources.begin();
+	for ( ; it != sources.end(); ++it ) {
 		cur_src = *it; 
 		if (cur_src->GetRequestFile()!=m_file || cur_src->GetClientFilename().Length()==0)
 			continue;
