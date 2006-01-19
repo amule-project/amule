@@ -133,6 +133,7 @@ public:
 	virtual uint8		ReadUInt8() const;
 	virtual uint16		ReadUInt16() const;
 	virtual uint32		ReadUInt32() const;
+	virtual uint64		ReadUInt64() const;
 	virtual CUInt128	ReadUInt128() const;
 	virtual CMD4Hash	ReadHash() const;
 	//@}
@@ -175,6 +176,7 @@ public:
 	virtual void WriteUInt8(uint8 value);
 	virtual void WriteUInt16(uint16 value);
 	virtual void WriteUInt32(uint32 value);
+	virtual void WriteUInt64(uint64 value);
 	virtual void WriteUInt128(const CUInt128& value);
 	virtual void WriteHash(const CMD4Hash& value);
 	//@}

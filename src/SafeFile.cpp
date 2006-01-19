@@ -128,7 +128,7 @@ uint64 CFileDataIO::Seek(sint64 offset, wxSeekMode from) const
 uint8 CFileDataIO::ReadUInt8() const
 {
 	uint8 value = 0;
-	Read(&value, 1);
+	Read(&value, sizeof(uint8));
 
 	return value;
 }
@@ -137,7 +137,7 @@ uint8 CFileDataIO::ReadUInt8() const
 uint16 CFileDataIO::ReadUInt16() const
 {
 	uint16 value = 0;
-	Read(&value, 2);
+	Read(&value, sizeof(uint16));
 	
 	return ENDIAN_SWAP_16(value);
 }
@@ -146,17 +146,25 @@ uint16 CFileDataIO::ReadUInt16() const
 uint32 CFileDataIO::ReadUInt32() const
 {
 	uint32 value = 0;
-	Read(&value, 4);
+	Read(&value, sizeof(uint32));
 	
 	return ENDIAN_SWAP_32(value);
 }
 
+uint64 CFileDataIO::ReadUInt64() const
+{
+	uint64 value = 0;
+	Read(&value, sizeof(uint64));
+	
+	return ENDIAN_SWAP_64(value);
+}
 
 CUInt128 CFileDataIO::ReadUInt128() const
 {
 	CUInt128 value;
 	uint32* data = (uint32*)value.getDataPtr();
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < (128/32); i++) {
+		// Four 32bits chunks
 		data[i] = ReadUInt32();
 	}
 
@@ -167,7 +175,7 @@ CUInt128 CFileDataIO::ReadUInt128() const
 CMD4Hash CFileDataIO::ReadHash() const
 {
 	CMD4Hash value;
-	Read(value.GetHash(), 16);
+	Read(value.GetHash(), MD4HASH_LENGTH);
 
 	return value;
 }
@@ -177,8 +185,8 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 {
 	uint32 readLen;
 	switch (SizeLen) {
-		case 2:	readLen = ReadUInt16();	break;
-		case 4:	readLen = ReadUInt32();	break;
+		case sizeof(uint16):	readLen = ReadUInt16();	break;
+		case sizeof(uint32):	readLen = ReadUInt32();	break;
 			
 		default:
 			MULE_VALIDATE_PARAMS(false, wxT("Invalid SizeLen value in ReadString"));
@@ -224,7 +232,7 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 
 void CFileDataIO::WriteUInt8(uint8 value)
 {
-	Write(&value, 1);
+	Write(&value, sizeof(uint8));
 }
 
 
@@ -232,7 +240,7 @@ void CFileDataIO::WriteUInt16(uint16 value)
 {
 	ENDIAN_SWAP_I_16(value);
 	
-	Write(&value, 2);
+	Write(&value, sizeof(uint16));
 }
 
 
@@ -240,13 +248,20 @@ void CFileDataIO::WriteUInt32(uint32 value)
 {
 	ENDIAN_SWAP_I_32(value);
 	
-	Write(&value, 4);
+	Write(&value, sizeof(uint32));
 }
 
+void CFileDataIO::WriteUInt64(uint64 value)
+{
+	ENDIAN_SWAP_I_64(value);
+	
+	Write(&value, sizeof(uint64));
+}
 
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 {
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < (128/32); i++) {
+		// Four 32bits chunks
 		WriteUInt32(value.get32BitChunk(i));
 	}
 }
@@ -254,7 +269,7 @@ void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 
 void CFileDataIO::WriteHash(const CMD4Hash& value)
 {
-	Write(value.GetHash(), 16);
+	Write(value.GetHash(), MD4HASH_LENGTH);
 }
 
 
@@ -292,13 +307,13 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			// Don't write size.
 			break;
 			
-		case 2:
+		case sizeof(uint16):
 			// Can't be higher than a uint16
 			wxASSERT(real_length < (uint16)0xFFFF);
 			WriteUInt16(real_length);
 			break;
 			
-		case 4:
+		case sizeof(uint32):
 			WriteUInt32(real_length);
 			break;
 			
@@ -317,4 +332,3 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 		Write(s, sLength);
 	}
 }
-
