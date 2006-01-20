@@ -514,10 +514,9 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
 			case FT_FILENAME:
-				#if wxUSE_UNICODE
-				if (GetFileName().IsEmpty())
-				#endif
+				if (GetFileName().IsEmpty()) {
 					SetFileName(newtag.GetStr());
+				}
 				break;
 			
 			case FT_FILESIZE:
@@ -643,7 +642,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 		file->WriteHash(hashlist[i]);
 	
 	//tags
-	const int iFixedTags = 7;
+	const int iFixedTags = 8;
 	uint32 tagcount = iFixedTags;
 	if (	m_pAICHHashSet->HasValidMasterHash() &&
 		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
@@ -661,13 +660,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	// people are using the newer eMule versions which do not write broken float tags).	
 	for (size_t j = 0; j < taglist.GetCount(); j++){
 		if (taglist[j]->IsInt() || taglist[j]->IsStr()) {
-			tagcount++;
+			++tagcount;
 		}
 	}
-	
-	#if wxUSE_UNICODE
-	++tagcount;
-	#endif
 
 	if (m_lastPublishTimeKadSrc) {
 		++tagcount;
@@ -681,11 +676,9 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 	file->WriteUInt32(tagcount);
 	
-	#if wxUSE_UNICODE
 	CTag nametag_unicode(FT_FILENAME, GetFileName());
 	// We write it with BOM to kep eMule compatibility
 	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);	
-	#endif
 	
 	CTag nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);

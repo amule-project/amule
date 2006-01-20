@@ -988,7 +988,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
 										const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
 {
-	EUtf8Str eStrEncode = (wxUSE_UNICODE ? utf8strRaw : utf8strNone);
+	EUtf8Str eStrEncode = utf8strRaw;
 
 	CMemFile temp(250);
 	byte fileid[16];

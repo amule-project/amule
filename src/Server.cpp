@@ -171,17 +171,15 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 
 	switch(tag.GetNameID()){		
 	case ST_SERVERNAME:
-		#if wxUSE_UNICODE
-		if (listname.IsEmpty())
-		#endif
+		if (listname.IsEmpty()) {
 			listname = tag.GetStr();
+		}
 		break;
 		
 	case ST_DESCRIPTION:
-		#if wxUSE_UNICODE
-		if (description.IsEmpty())
-		#endif
-			description = tag.GetStr();		
+		if (description.IsEmpty()) {
+			description = tag.GetStr();
+		}
 		break;
 		
 	case ST_PREFERENCE:
@@ -193,10 +191,9 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		break;
 		
 	case ST_DYNIP:
-		#if wxUSE_UNICODE
-		if (dynip.IsEmpty())
-		#endif	
+		if (dynip.IsEmpty()) {
 			dynip = tag.GetStr();
+		}
 		break;
 		
 	case ST_FAIL:
@@ -221,10 +218,9 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		
 	case ST_VERSION:
 		if (tag.IsStr()) {
-			#ifdef wxUSE_UNICODE
-			if (m_strVersion.IsEmpty())
-			#endif
+			if (m_strVersion.IsEmpty()) {
 				m_strVersion = tag.GetStr();
+			}
 		} else if (tag.IsInt()) {
 			m_strVersion = wxString::Format(wxT("%u.%u"), tag.GetInt() >> 16, tag.GetInt() & 0xFFFF);
 		} else {

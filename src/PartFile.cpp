@@ -837,7 +837,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			file.WriteHash(hashlist[x]);
 		}
 		// tags		
-		#define FIXED_TAGS 14
+		#define FIXED_TAGS 15
 		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(gaplist.GetCount()*2);
 		if (corrupted_list.GetHeadPosition()) {			
 			++tagcount;
@@ -855,17 +855,12 @@ bool CPartFile::SavePartFile(bool Initial)
 			++tagcount;
 		}
 
-		#if wxUSE_UNICODE
-		++tagcount; // for '0'
-		#endif
-		
 		file.WriteUInt32(tagcount);
 
-		#if wxUSE_UNICODE					
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
 		CTag( FT_FILENAME, GetFileName() ).WriteTagToFile( &file, utf8strOptBOM );
-		#endif
+
 		CTag( FT_FILENAME,		GetFileName()	).WriteTagToFile( &file );	// 1
 		#warning Kry - UPDATE
 		CTag( FT_FILESIZE,		GetFileSize()		).WriteTagToFile( &file );	// 2

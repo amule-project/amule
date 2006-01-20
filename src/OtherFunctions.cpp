@@ -93,11 +93,7 @@ wxString GetMuleVersion()
 
 	ver += wxString::Format(wxT(" v%d.%d.%d"), wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_NUMBER );
 
-#if wxUSE_UNICODE && defined(__WXDEBUG__)
-	ver += wxT(" (Unicoded, Debugging)");
-#elif wxUSE_UNICODE
-	ver += wxT(" (Unicoded)");
-#elif defined(__WXDEBUG__)
+#if defined(__WXDEBUG__)
 	ver += wxT(" (Debugging)");
 #endif
 	
@@ -1196,16 +1192,14 @@ bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName
 	file.Read(tmp_buffer, len);
 	file.Close();
 	tmp_buffer[len] = '\0';
-#if wxUSE_UNICODE
 	Char2UnicodeBuf tmp_buffer_unicode(char2unicode(tmp_buffer));
 	wxString str;
-	if (tmp_buffer_unicode)
+	if (tmp_buffer_unicode) {
 		str = tmp_buffer_unicode;
-	else
+	} else {
 		str = UTF82unicode(tmp_buffer);
-#else
-	wxString str(tmp_buffer);
-#endif
+	}
+
 	delete [] tmp_buffer;
 
 #if !defined(__unix__) && !defined(__linux__) 
