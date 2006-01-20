@@ -1014,12 +1014,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uMultiPacket			= 1;
 	const uint32 uSupportPreview		= 0; // No network preview at all.
 	const uint32 uPeerCache			= 0; // No peercache for aMule, baby
-	const uint32 uUnicodeSupport		= 
-#if wxUSE_UNICODE	
-												1; 
-#else
-												0; 
-#endif
+	const uint32 uUnicodeSupport		= 1; 
 	const uint32 nAICHVer				= 1; // AICH is ENABLED right now.
 
 	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1,
@@ -2200,11 +2195,7 @@ void CUpDownClient::SetUserHash(const CMD4Hash& userhash)
 
 EUtf8Str CUpDownClient::GetUnicodeSupport() const
 {
-#if wxUSE_UNICODE
 	return m_bUnicodeSupport ? utf8strRaw : utf8strNone;
-#else 
-	return utf8strNone;
-#endif
 }
 
 

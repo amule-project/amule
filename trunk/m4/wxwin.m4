@@ -248,7 +248,7 @@ AC_DEFUN([AM_PATH_WXCONFIG],
     ifelse([$3], , :, [$3])
 
   fi
-
+  
   AC_SUBST(WX_CPPFLAGS)
   AC_SUBST(WX_CFLAGS)
   AC_SUBST(WX_CXXFLAGS)
@@ -348,7 +348,7 @@ dnl ---------------------------------------------------------------------------
 dnl AM_WXCONFIG_LARGEFILE()
 dnl
 dnl Test that wxWidgets is built with support for large-files. If not
-dnl configure is terminated. The WX_CFLAGS variables
+dnl configure is terminated.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 [
@@ -377,6 +377,53 @@ AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 		Support for large files in wxWidgets is required by aMule.
 		To continue you must recompile wxWidgets with support for 
 		large files enabled.
+		])
+	else
+		AC_MSG_RESULT(yes)
+	fi
+
+	dnl Restore backup'd flags
+	CPPFLAGS=${__CPPFLAGS}	
+
+	AC_LANG_POP(C++)
+])
+
+dnl ---------------------------------------------------------------------------
+dnl AM_WXCONFIG_UNICODE()
+dnl
+dnl Test that wxWidgets is built with support for unicode. If not
+dnl configure is terminated. 
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([AM_WXCONFIG_UNICODE],
+[
+	AC_LANG_PUSH(C++)
+	
+	dnl Backup current flags and setup flags for testing
+	__CPPFLAGS=${CPPFLAGS}
+	CPPFLAGS=${WX_CPPFLAGS}
+	
+	AC_MSG_CHECKING(that wxWidgets was compiled with unicode support)
+	AC_PREPROC_IFELSE([
+		#include <wx/wx.h>
+
+		int main() {
+		#if !wxUSE_UNICODE
+			#error No unicode support!;
+		#endif
+			exit(0);
+		}
+	], , NO_LF="true")
+
+	if test "x${NO_LF}" != "x";
+	then
+		AC_MSG_RESULT(no)
+		AC_MSG_ERROR([
+		Support for unicode in wxWidgets is required by aMule.
+		To continue you must recompile wxWidgets with support for 
+		unicode enabled (with the --enable-unicode flag). If this 
+		still doesn't work, chances are you are using GTK1, which
+		has no unicode support. You must use the --enable-gtk2 flag
+		on wxWidgets configure script then.
 		])
 	else
 		AC_MSG_RESULT(yes)

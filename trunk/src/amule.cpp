@@ -1548,7 +1548,7 @@ wxString CamuleApp::GetLog(bool reset)
 	char *tmp_buffer = new char[len + sizeof(wxChar)];
 	logfile.Read(tmp_buffer, len);
 	memset(tmp_buffer + len, 0, sizeof(wxChar));
-#if wxUSE_UNICODE
+
 	// try to guess file format
 	wxString str;
 	if (tmp_buffer[0] && tmp_buffer[1]) {
@@ -1556,9 +1556,7 @@ wxString CamuleApp::GetLog(bool reset)
 	} else {
 		str = wxString((wxWCharBuffer&)tmp_buffer);
 	}
-#else
-	wxString str(tmp_buffer);
-#endif
+
 	delete [] tmp_buffer;
 	if ( reset ) {
 		delete applog;

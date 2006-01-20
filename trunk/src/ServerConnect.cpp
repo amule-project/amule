@@ -166,11 +166,12 @@ void CServerConnect::StopConnectionTry()
 }
 
 
-#define CAPABLE_ZLIB 0x01
-#define CAPABLE_IP_IN_LOGIN_FRAME 0x02
-#define CAPABLE_AUXPORT 0x04
-#define CAPABLE_NEWTAGS 0x08
-#define CAPABLE_UNICODE 0x10
+#define CAPABLE_ZLIB				0x01
+#define CAPABLE_IP_IN_LOGIN_FRAME	0x02
+#define CAPABLE_AUXPORT				0x04
+#define CAPABLE_NEWTAGS				0x08
+#define CAPABLE_UNICODE				0x10
+#define	CAPABLE_LARGEFILES			0x100
 
 void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 {
@@ -211,9 +212,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		CTag tagflags(CT_SERVER_FLAGS, CAPABLE_ZLIB 
 								| CAPABLE_AUXPORT 
 								| CAPABLE_NEWTAGS 
-#if wxUSE_UNICODE													
 								| CAPABLE_UNICODE
-#endif													
 											); 
 		
 		tagflags.WriteTagToFile(&data);

@@ -878,7 +878,6 @@ void CSharedFileList::CreateOfferedFilePacket(
 	
 	EUtf8Str eStrEncode;
 
-#if wxUSE_UNICODE
 	bool unicode_support = 
 		// eservers that support UNICODE.
 		(pServer && (pServer->GetUnicodeSupport()))
@@ -886,9 +885,6 @@ void CSharedFileList::CreateOfferedFilePacket(
 		// clients that support unicode
 		(pClient && pClient->GetUnicodeSupport());
 	eStrEncode = unicode_support ? utf8strRaw : utf8strNone;
-#else
-	eStrEncode = utf8strNone;
-#endif
 	
 	files->WriteUInt32(tags.size());
 

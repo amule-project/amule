@@ -117,10 +117,9 @@ void CFriend::LoadFromFile(CFileDataIO* file)
 		CTag newtag(*file, true);
 		switch ( newtag.GetNameID() ) {
 			case FF_NAME:
-				#if wxUSE_UNICODE
-				if (m_strName.IsEmpty()) 
-				#endif
+				if (m_strName.IsEmpty()) {
 					m_strName = newtag.GetStr();
+				}
 				break;
 		}
 	}
@@ -136,18 +135,11 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	file->WriteUInt32(m_dwLastSeen);
 	file->WriteUInt32(m_dwLastChatted);
 	
-	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 
-	#if wxUSE_UNICODE
-		2 );
-	#else
-		1 );
-	#endif
+	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 );
 	file->WriteUInt32(tagcount);			
 	if ( !m_strName.IsEmpty() ) {
 		CTag nametag(FF_NAME, m_strName);
-		#if wxUSE_UNICODE
-			nametag.WriteTagToFile(file, utf8strOptBOM);
-		#endif		
+		nametag.WriteTagToFile(file, utf8strOptBOM);
 		nametag.WriteTagToFile(file);
 	}
 }
