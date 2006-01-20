@@ -392,20 +392,32 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 			//
 			case TAGTYPE_HASH:
 			{
-				retVal = new CTag(name, ReadHash());
+				retVal = new CTagHash(name, ReadHash());
 				break;
 			}
 
 			case TAGTYPE_STRING:
-				retVal = new CTag(name, ReadString(bOptACP));
+				retVal = new CTagString(name, ReadString(bOptACP));
+				break;
+
+			case TAGTYPE_UINT64:
+				retVal = new CTagInt64(name, ReadUInt64());
 				break;
 
 			case TAGTYPE_UINT32:
-				retVal = new CTag(name, ReadUInt32());
+				retVal = new CTagInt32(name, ReadUInt32());
+				break;
+
+			case TAGTYPE_UINT16:
+				retVal = new CTagInt16(name, ReadUInt16());
+				break;
+
+			case TAGTYPE_UINT8:
+				retVal = new CTagInt8(name, ReadUInt8());
 				break;
 
 			case TAGTYPE_FLOAT32:
-				retVal = new CTag(name, ReadFloat());
+				retVal = new CTagFloat(name, ReadFloat());
 				break;
 
 			// NOTE: This tag data type is accepted and stored only to give us the possibility to upgrade 
@@ -425,14 +437,6 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 				delete[] value;
 				break;
 			}
-
-			case TAGTYPE_UINT16:
-				retVal = new CTagUInt16(name, ReadUInt16());
-				break;
-
-			case TAGTYPE_UINT8:
-				retVal = new CTagUInt8(name, ReadUInt8());
-				break;
 
 			default:
 				throw wxString(wxT("Invalid Kad tag type on packet"));

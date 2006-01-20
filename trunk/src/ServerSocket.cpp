@@ -689,4 +689,3 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
-
