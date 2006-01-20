@@ -44,14 +44,6 @@ class CFileDataIO;
 class CTag
 {
 public:
-	CTag(const wxString& Name, float uVal);
-	CTag(const wxString& Name, uint32 uVal);
-	CTag(uint8 uName, uint32 uVal);
-	CTag(const wxString& Name, const wxString& rstrVal);
-	CTag(uint8 uName, const wxString& rstrVal);
-	CTag(const wxString& Name, const CMD4Hash& hash);
-	CTag(uint8 uName, const CMD4Hash& hash);
-	CTag(uint8 uName, uint32 nSize, const unsigned char* pucData);
 	CTag(const CTag& rTag);
 	CTag(const CFileDataIO& data, bool bOptUTF8);
 	virtual ~CTag();
@@ -62,6 +54,7 @@ public:
 	
 	bool IsStr() const				{ return m_uType == TAGTYPE_STRING; }
 	bool IsInt() const				{ return 
+											(m_uType == TAGTYPE_UINT64) ||
 											(m_uType == TAGTYPE_UINT32) ||
 											(m_uType == TAGTYPE_UINT16) ||
 											(m_uType == TAGTYPE_UINT8) ||
@@ -72,14 +65,19 @@ public:
 	bool IsBlob() const				{ return m_uType == TAGTYPE_BLOB; }
 	bool IsBsob() const				{ return m_uType == TAGTYPE_BSOB; }
 	
-	uint32 GetInt() const;
+	uint64 GetInt() const;
+	
 	const wxString& GetStr() const;
+	
 	float GetFloat() const;
+	
 	const CMD4Hash& GetHash() const;
-	uint32 GetBlobSize() const;
+	
 	const byte* GetBlob() const;
-
-	void SetInt(uint32 uVal);
+	uint32 GetBlobSize() const;
+	
+	const byte* GetBsob() const;
+	uint32 GetBsobSize() const;
 	
 	CTag* CloneTag()				{ return new CTag(*this); }
 	
@@ -88,82 +86,179 @@ public:
 	
 	wxString GetFullInfo() const;
 
-	virtual const byte* GetBsob() const { wxASSERT(0); return NULL; }
-	virtual uint8 GetBsobSize() const { wxASSERT(0); return 0; }
-	
 protected:
+
+	CTag(const wxString& Name);
+	CTag(uint8 uName);
+
 	uint8	m_uType;
 	union {
 	  CMD4Hash*	m_hashVal;
 	  wxString*	m_pstrVal;
-	  uint32	m_uVal;
+	  uint64	m_uVal;
 	  float		m_fVal;
 	  unsigned char*		m_pData;
 	};
 
+	uint32	m_nSize;
+	
 private:
 	//! CTag is not assignable.
 	CTag& operator=(const CTag&);
 	
 	uint8	m_uName;
 	wxString	m_Name;
-	uint32	m_nBlobSize;
 	
 };
 
 typedef std::list<CTag*> TagPtrList;
 
-class CTagUInt : public CTag
+class CTagKadInt : public CTag
 {
 public:
-	CTagUInt(const wxString& name, uint32 value)
-		: CTag(name, value)
-	{ m_uType = TAGTYPE_KADSPECIALINT; }
+	CTagKadInt(const wxString& name, uint64 value)
+		: CTag(name) {
+			m_uVal = value;
+			m_uType = TAGTYPE_KADSPECIALINT;
+		}
 };
 
-
-class CTagUInt16 : public CTag
+class CTagInt64 : public CTag
 {
 public:
+	CTagInt64(const wxString& name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFFFFFFFFFFFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT64;
+		}
 
-	CTagUInt16(const wxString& name, uint16 value)
-		: CTag(name, (uint32)value)
-	{ m_uType = TAGTYPE_UINT16; }
+	CTagInt64(uint8 name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFFFFFFFFFFFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT64;
+		}
 };
 
-
-class CTagUInt8 : public CTag
+class CTagInt32 : public CTag
 {
 public:
-	CTagUInt8(const wxString& name, uint8 value)
-		: CTag(name, (uint32)value)
-	{ m_uType = TAGTYPE_UINT8; }
+	CTagInt32(const wxString& name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFFFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT32;
+		}
+
+	CTagInt32(uint8 name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFFFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT32;
+		}
 };
 
+class CTagInt16 : public CTag
+{
+public:
+	CTagInt16(const wxString& name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT16;
+		}
+
+	CTagInt16(uint8 name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFFFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT16;
+		}
+};
+
+class CTagInt8 : public CTag
+{
+public:
+	CTagInt8(const wxString& name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT8;
+		}
+
+	CTagInt8(uint8 name, uint64 value)
+		: CTag(name) {
+			wxASSERT(value < 0xFF); 
+			m_uVal = value;
+			m_uType = TAGTYPE_UINT8;
+		}
+};
+
+class CTagFloat : public CTag
+{
+public:
+	CTagFloat(const wxString& name, float value)
+		: CTag(name) {
+			m_fVal = value;
+			m_uType = TAGTYPE_FLOAT32;
+		}
+
+	CTagFloat(uint8 name, float value)
+		: CTag(name) {
+			m_fVal = value;
+			m_uType = TAGTYPE_FLOAT32;
+		}
+};
+
+class CTagString : public CTag
+{
+public:
+	CTagString(const wxString& name, const wxString& value)
+		: CTag(name) {
+			m_pstrVal = new wxString(value);
+			m_uType = TAGTYPE_STRING;
+		}
+
+	CTagString(uint8 name, const wxString& value)
+		: CTag(name) {
+			m_pstrVal = new wxString(value);
+			m_uType = TAGTYPE_STRING;
+		}
+};
+
+class CTagHash : public CTag
+{
+public:
+	// Implementation on .cpp to allow forward declaration of CMD4Hash
+	CTagHash(const wxString& name, const CMD4Hash& value);
+	CTagHash(uint8 name, const CMD4Hash& value);
+};
 
 class CTagBsob : public CTag
 {
 public:
 	CTagBsob(const wxString& name, const byte* value, uint8 nSize)
-		: CTag(name, (uint32)0)
+		: CTag(name)
 	{
 		m_uType = TAGTYPE_BSOB;
-		m_value = new byte[nSize];
-		memcpy(m_value, value, nSize);
-		m_size = nSize;
+		m_pData = new byte[nSize];
+		memcpy(m_pData, value, nSize);
+		m_nSize = nSize;
 	}
+};
 
-	~CTagBsob()
+class CTagBlob : public CTag
+{
+public:
+	CTagBlob(const wxString& name, const byte* value, uint8 nSize)
+		: CTag(name)
 	{
-		delete[] m_value;
+		m_uType = TAGTYPE_BLOB;
+		m_pData = new byte[nSize];
+		memcpy(m_pData, value, nSize);
+		m_nSize = nSize;
 	}
-
-	virtual const byte* GetBsob() const { return m_value; }
-	virtual uint8 GetBsobSize() const { return m_size; }
-
-protected:
-	byte* m_value;
-	uint8 m_size;
 };
 
 void deleteTagPtrListEntries(TagPtrList* taglist);

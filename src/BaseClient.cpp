@@ -684,7 +684,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		data.WriteUInt32(1); // One Tag (OS_INFO)
 
-		CTag tag1(ET_OS_INFO,theApp.GetOSType());
+		CTagString tag1(ET_OS_INFO,theApp.GetOSType());
 		tag1.WriteTagToFile(&data);
 		
 		m_OSInfo_sent = true; // So we don't send it again
@@ -698,17 +698,17 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		// Tag number
 		data.WriteUInt32(9);
 
-		CTag tag1(ET_COMPRESSION,1);
+		CTagInt32 tag1(ET_COMPRESSION,1);
 		tag1.WriteTagToFile(&data);
-		CTag tag2(ET_UDPVER,4);
+		CTagInt32 tag2(ET_UDPVER,4);
 		tag2.WriteTagToFile(&data);
-		CTag tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
+		CTagInt32 tag3(ET_UDPPORT, thePrefs::GetEffectiveUDPPort());
 		tag3.WriteTagToFile(&data);
-		CTag tag4(ET_SOURCEEXCHANGE,3);
+		CTagInt32 tag4(ET_SOURCEEXCHANGE,3);
 		tag4.WriteTagToFile(&data);
-		CTag tag5(ET_COMMENTS,1);
+		CTagInt32 tag5(ET_COMMENTS,1);
 		tag5.WriteTagToFile(&data);
-		CTag tag6(ET_EXTENDEDREQUEST,2);
+		CTagInt32 tag6(ET_EXTENDEDREQUEST,2);
 		tag6.WriteTagToFile(&data);
 
 		uint32 dwTagValue = (theApp.CryptoAvailable() ? 3 : 0);
@@ -719,15 +719,15 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 			dwTagValue |= 128;
 		}
 		*/
-		CTag tag7(ET_FEATURES, dwTagValue);
+		CTagInt32 tag7(ET_FEATURES, dwTagValue);
 		tag7.WriteTagToFile(&data);
 
-		CTag tag8(ET_COMPATIBLECLIENT,SO_AMULE);
+		CTagInt32 tag8(ET_COMPATIBLECLIENT,SO_AMULE);
 		tag8.WriteTagToFile(&data);
 	
 		// Support for tag ET_MOD_VERSION
 		wxString mod_name(MOD_VERSION_LONG);
-		CTag tag9(ET_MOD_VERSION, mod_name);
+		CTagString tag9(ET_MOD_VERSION, mod_name);
 		tag9.WriteTagToFile(&data);
 		// Maella end
 	
@@ -965,29 +965,29 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	#endif
 
 
-	CTag tagname(CT_NAME,thePrefs::GetUserNick());
+	CTagString tagname(CT_NAME,thePrefs::GetUserNick());
 	tagname.WriteTagToFile(data, utf8strRaw);
 
-	CTag tagversion(CT_VERSION,EDONKEYVERSION);
+	CTagInt32 tagversion(CT_VERSION,EDONKEYVERSION);
 	tagversion.WriteTagToFile(data);
 	// eMule UDP Ports
 
 	uint32 kadUDPPort = 0;
 
 	if(Kademlia::CKademlia::isConnected()) {
-		kadUDPPort = (uint32)thePrefs::GetEffectiveUDPPort();
+		kadUDPPort = thePrefs::GetEffectiveUDPPort();
 	}
 
-	CTag tagUdpPorts(CT_EMULE_UDPPORTS,
+	CTagInt32 tagUdpPorts(CT_EMULE_UDPPORTS,
 				(kadUDPPort									<< 16) |
 				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
 	tagUdpPorts.WriteTagToFile(data);
 
 	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
-		CTag tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
+		CTagInt32 tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
 		tagBuddyIP.WriteTagToFile(data);
 	
-		CTag tagBuddyPort(CT_EMULE_BUDDYUDP, 
+		CTagInt32 tagBuddyPort(CT_EMULE_BUDDYUDP, 
 //					( RESERVED												)
 					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  ) 
 					);
@@ -995,7 +995,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	}	
 	
 	// aMule Version
-	CTag tagMuleVersion(CT_EMULE_VERSION,
+	CTagInt32 tagMuleVersion(CT_EMULE_VERSION,
 				(SO_AMULE	<< 24) |
 				make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
 				// | (RESERVED			     )
@@ -1017,7 +1017,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uUnicodeSupport		= 1; 
 	const uint32 nAICHVer				= 1; // AICH is ENABLED right now.
 
-	CTag tagMisOptions(CT_EMULE_MISCOPTIONS1,
+	CTagInt32 tagMisOptions(CT_EMULE_MISCOPTIONS1,
 				(nAICHVer				<< ((4*7)+1)) |
 				(uUnicodeSupport		<< 4*7) |
 				(uUdpVer				<< 4*6) |
@@ -1036,7 +1036,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uKadVersion			= 1;
 	const uint32 uSupportLargeFiles	= (OLD_MAX_FILE_SIZE < MAX_FILE_SIZE) ? 1 : 0;
 	
-	CTag tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
+	CTagInt32 tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     ) 
 				(uSupportLargeFiles		<<  4) |
 				(uKadVersion			<<  0) 
@@ -1046,14 +1046,14 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
 	
-	CTag tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
+	CTagInt32 tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
 				(nOSInfoSupport		<< 1*0) );
 	
 	tagMisCompatOptions.WriteTagToFile(data);
 
 #ifdef __CVS__
 	wxString mod_name(MOD_VERSION_LONG);
-	CTag tagModName(ET_MOD_VERSION, mod_name);
+	CTagString tagModName(ET_MOD_VERSION, mod_name);
 	tagModName.WriteTagToFile(data);
 #endif
 

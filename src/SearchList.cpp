@@ -1004,16 +1004,17 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	temp.WriteUInt32(tagcount); // dummy tag count, will be filled later
 
 	// standard tags
-	CTag tagName(FT_FILENAME, name);
+	CTagString tagName(FT_FILENAME, name);
 	tagName.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;
 
-	CTag tagSize(FT_FILESIZE, size);
+	#warning Kry - UPDATE
+	CTagInt32 tagSize(FT_FILESIZE, size);
 	tagSize.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;
 
 	if (!type.IsEmpty()) {
-		CTag tagType(FT_FILETYPE, type);
+		CTagString tagType(FT_FILETYPE, type);
 		tagType.WriteTagToFile(&temp, eStrEncode);
 		tagcount++;
 	}

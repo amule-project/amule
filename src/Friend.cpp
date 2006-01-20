@@ -138,7 +138,7 @@ void CFriend::WriteToFile(CFileDataIO* file)
 	uint32 tagcount = ( m_strName.IsEmpty() ? 0 : 2 );
 	file->WriteUInt32(tagcount);			
 	if ( !m_strName.IsEmpty() ) {
-		CTag nametag(FF_NAME, m_strName);
+		CTagString nametag(FF_NAME, m_strName);
 		nametag.WriteTagToFile(file, utf8strOptBOM);
 		nametag.WriteTagToFile(file);
 	}

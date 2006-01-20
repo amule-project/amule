@@ -35,73 +35,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 // CTag
 
-CTag::CTag(const wxString& Name, uint32 uVal)
+CTag::CTag(const wxString& Name)
 {
-	m_uType = TAGTYPE_UINT32;
+	m_uType = 0;
 	m_uName = 0;
 	m_Name = Name;
-	m_uVal = uVal;
-	m_nBlobSize = 0;
+	m_uVal = 0;
+	m_nSize = 0;
 }
 
-CTag::CTag(const wxString& Name, float uVal)
+CTag::CTag(uint8 uName)
 {
-	m_uType = TAGTYPE_FLOAT32;
-	m_uName = 0;
-	m_Name = Name;
-	m_fVal = uVal;
-	m_nBlobSize = 0;
-}
-
-CTag::CTag(uint8 uName, uint32 uVal)
-{
-	m_uType = TAGTYPE_UINT32;
+	m_uType = 0;
 	m_uName = uName;
-	m_uVal = uVal;
-	m_nBlobSize = 0;
-}
-
-CTag::CTag(const wxString& Name, const wxString& rstrVal)
-{
-	m_uType = TAGTYPE_STRING;
-	m_uName = 0;
-	m_Name = Name;
-	m_pstrVal = new wxString(rstrVal);
-	m_nBlobSize = 0;
-}
-
-CTag::CTag(uint8 uName, const wxString& rstrVal)
-{
-	m_uType = TAGTYPE_STRING;
-	m_uName = uName;
-	m_pstrVal = new wxString(rstrVal);
-	m_nBlobSize = 0;
-}
-
-
-CTag::CTag(const wxString& Name, const CMD4Hash& hash)
-{
-	m_uType = TAGTYPE_HASH;
-	m_uName = 0;
-	m_Name = Name;
-	m_hashVal = new CMD4Hash(hash);
-	m_nBlobSize = 0;
-}
-
-CTag::CTag(uint8 uName, const CMD4Hash& hash)
-{
-	m_uType = TAGTYPE_HASH;
-	m_uName = uName;
-	m_hashVal = new CMD4Hash(hash);
-	m_nBlobSize = 0;
-}
-
-CTag::CTag(uint8 uName, uint32 nSize, const unsigned char* pucData){
-	m_uType = TAGTYPE_BLOB;
-	m_uName = uName;
-	m_pData = new unsigned char[nSize];
-	memcpy(m_pData, pucData, nSize);
-	m_nBlobSize = nSize;
+	m_uVal = 0;
+	m_nSize = 0;
 }
 
 CTag::CTag(const CTag& rTag)
@@ -109,7 +57,7 @@ CTag::CTag(const CTag& rTag)
 	m_uType = rTag.m_uType;
 	m_uName = rTag.m_uName;
 	m_Name = rTag.m_Name;
-	m_nBlobSize = 0;
+	m_nSize = 0;
 	if (rTag.IsStr()) {
 		m_pstrVal = new wxString(rTag.GetStr());
 	} else if (rTag.IsInt()) {
@@ -119,7 +67,7 @@ CTag::CTag(const CTag& rTag)
 	} else if (rTag.IsHash()) {
 		m_hashVal = new CMD4Hash(rTag.GetHash());
 	} else if (rTag.IsBlob()) {
-		m_nBlobSize = rTag.GetBlobSize();
+		m_nSize = rTag.GetBlobSize();
 		m_pData = new unsigned char[rTag.GetBlobSize()];
 		memcpy(m_pData, rTag.GetBlob(), rTag.GetBlobSize());
 	} else {
@@ -132,7 +80,7 @@ CTag::CTag(const CTag& rTag)
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
 	// Zero variables to allow for safe deletion
-	m_uType = m_uName = m_nBlobSize = 0;
+	m_uType = m_uName = m_nSize = 0;
 	m_pData = NULL;	
 	
 	try {
@@ -203,16 +151,16 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 	
 			case TAGTYPE_BLOB:
 				// 07-Apr-2004: eMule versions prior to 0.42e.29 handled the "len" as int16!
-				m_nBlobSize = data.ReadUInt32();
+				m_nSize = data.ReadUInt32();
 				
 				// Since the length is 32b, this check is needed to avoid
 				// huge allocations in case of bad tags.
-				if (m_nBlobSize > data.GetLength() - data.GetPosition()) {
+				if (m_nSize > data.GetLength() - data.GetPosition()) {
 					throw CInvalidPacket(wxT("Malformed tag"));
 				}
 					
-				m_pData = new unsigned char[m_nBlobSize];
-				data.Read(m_pData, m_nBlobSize);
+				m_pData = new unsigned char[m_nSize];
+				data.Read(m_pData, m_nSize);
 				break;
 		
 			default:
@@ -242,9 +190,9 @@ CTag::~CTag()
 		delete m_pstrVal;
 	} else if (IsHash()) {
 		delete m_hashVal;
-	} else if (IsBlob()) {
+	} else if (IsBlob() || IsBsob()) {
 		delete[] m_pData;
-	}
+	} 
 }
 
 
@@ -253,7 +201,7 @@ CTag::~CTag()
 		throw CInvalidPacket(wxT(#expected) wxT(" tag expected, but found ") + GetFullInfo()); \
 	}
 
-uint32 CTag::GetInt() const
+uint64 CTag::GetInt() const
 {
 	CHECK_TAG_TYPE(IsInt(), Integer);
 	
@@ -289,7 +237,7 @@ uint32 CTag::GetBlobSize() const
 {
 	CHECK_TAG_TYPE(IsBlob(), Blob);
 	
-	return m_nBlobSize;
+	return m_nSize;
 }
 	
 
@@ -301,13 +249,20 @@ const byte* CTag::GetBlob() const
 }
 
 
-void CTag::SetInt(uint32 uVal)
+uint32 CTag::GetBsobSize() const
 {
-	CHECK_TAG_TYPE(IsInt(), Integer);
-		
-	m_uVal = uVal;
+	CHECK_TAG_TYPE(IsBsob(), Bsob);
+	
+	return m_nSize;
 }
+	
 
+const byte* CTag::GetBsob() const
+{
+	CHECK_TAG_TYPE(IsBsob(), Bsob);
+	
+	return m_pData;
+}
 
 bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 {
@@ -366,8 +321,8 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			data->WriteHash(*m_hashVal);
 			break;
 		case TAGTYPE_BLOB:
-			data->WriteUInt32(m_nBlobSize);
-			data->Write(m_pData, m_nBlobSize);
+			data->WriteUInt32(m_nSize);
+			data->Write(m_pData, m_nSize);
 			break;
 		default:
 			// See comment on the default: of CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
@@ -411,8 +366,8 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 		} else if (IsBlob()) {
 			// NOTE: This will break backward compatibility with met files for eMule versions prior to 0.44a
 			// and any aMule prior to CVS 26/02/2005
-			file->WriteUInt32(m_nBlobSize);
-			file->Write(m_pData, m_nBlobSize);
+			file->WriteUInt32(m_nSize);
+			file->Write(m_pData, m_nSize);
 		} else { //TODO: Support more tag types
 			// With the if above, this should NEVER happen.
 			printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, m_uType);
@@ -456,12 +411,24 @@ wxString CTag::GetFullInfo() const
 	} else if (m_uType == TAGTYPE_FLOAT32) {
 		strTag += wxString::Format(wxT("(Float32)%f"), m_fVal);
 	} else if (m_uType == TAGTYPE_BLOB) {
-		strTag += wxString::Format(wxT("(Blob)%u"), m_nBlobSize);
+		strTag += wxString::Format(wxT("(Blob)%u"), m_nSize);
 	} else {
 		strTag += wxString::Format(wxT("Type=%u"), m_uType);
 	}
 	return strTag;
 }
+
+CTagHash::CTagHash(const wxString& name, const CMD4Hash& value)
+	: CTag(name) {
+		m_hashVal = new CMD4Hash(value);
+		m_uType = TAGTYPE_HASH;
+	}
+
+CTagHash::CTagHash(uint8 name, const CMD4Hash& value)
+	: CTag(name) {
+		m_hashVal = new CMD4Hash(value);
+		m_uType = TAGTYPE_HASH;
+	}
 
 void deleteTagPtrListEntries(TagPtrList* taglist)
 {

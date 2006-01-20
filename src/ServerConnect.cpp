@@ -202,24 +202,27 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		data.WriteUInt16(thePrefs::GetPort());
 		data.WriteUInt32(4); // tagcount
 
-		CTag tagname(CT_NAME,thePrefs::GetUserNick());
+		CTagString tagname(CT_NAME,thePrefs::GetUserNick());
 		tagname.WriteTagToFile(&data);
 
-		CTag tagversion(CT_VERSION,EDONKEYVERSION);
+		CTagInt32 tagversion(CT_VERSION,EDONKEYVERSION);
 		tagversion.WriteTagToFile(&data);
 				
 		// FLAGS for server connection
-		CTag tagflags(CT_SERVER_FLAGS, CAPABLE_ZLIB 
+		CTagInt32 tagflags(CT_SERVER_FLAGS, CAPABLE_ZLIB 
 								| CAPABLE_AUXPORT 
 								| CAPABLE_NEWTAGS 
 								| CAPABLE_UNICODE
+								#if SUPPORT_LARGE_FILES
+								| CAPABLE_LARGEFILES
+								#endif
 											); 
 		
 		tagflags.WriteTagToFile(&data);
 
 		// eMule Version (14-Mar-2004: requested by lugdunummaster (need for LowID clients which have no chance 
 		// to send an Hello packet to the server during the callback test))
-		CTag tagMuleVersion(CT_EMULE_VERSION, 
+		CTagInt32 tagMuleVersion(CT_EMULE_VERSION, 
 			(SO_AMULE	<< 24) |
 			make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
 			 );

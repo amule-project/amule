@@ -676,54 +676,54 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 	file->WriteUInt32(tagcount);
 	
-	CTag nametag_unicode(FT_FILENAME, GetFileName());
+	CTagString nametag_unicode(FT_FILENAME, GetFileName());
 	// We write it with BOM to kep eMule compatibility
 	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);	
 	
-	CTag nametag(FT_FILENAME, GetFileName());
+	CTagString nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);
 	
 	#warning Kry - UPGRADE
-	CTag sizetag(FT_FILESIZE, GetFileSize());
+	CTagInt32 sizetag(FT_FILESIZE, GetFileSize());
 	sizetag.WriteTagToFile(file);
 	
 	// statistic
 	uint32 tran;
 	tran=statistic.alltimetransferred & 0xFFFFFFFF;
-	CTag attag1(FT_ATTRANSFERED, tran);
+	CTagInt32 attag1(FT_ATTRANSFERED, tran);
 	attag1.WriteTagToFile(file);
 	
 	tran=statistic.alltimetransferred>>32;
-	CTag attag4(FT_ATTRANSFEREDHI, tran);
+	CTagInt32 attag4(FT_ATTRANSFEREDHI, tran);
 	attag4.WriteTagToFile(file);
 
-	CTag attag2(FT_ATREQUESTED, statistic.GetAllTimeRequests());
+	CTagInt32 attag2(FT_ATREQUESTED, statistic.GetAllTimeRequests());
 	attag2.WriteTagToFile(file);
 	
-	CTag attag3(FT_ATACCEPTED, statistic.GetAllTimeAccepts());
+	CTagInt32 attag3(FT_ATACCEPTED, statistic.GetAllTimeAccepts());
 	attag3.WriteTagToFile(file);
 
 	// priority N permission
-	CTag priotag(FT_ULPRIORITY, IsAutoUpPriority() ? PR_AUTO : m_iUpPriority);
+	CTagInt32 priotag(FT_ULPRIORITY, IsAutoUpPriority() ? PR_AUTO : m_iUpPriority);
 	priotag.WriteTagToFile(file);
 
 	//AICH Filehash
 	if (	m_pAICHHashSet->HasValidMasterHash() && 
 		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
 			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {
-		CTag aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
+		CTagString aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
 		aichtag.WriteTagToFile(file);
 	}
 
 	// Kad sources
 	if (m_lastPublishTimeKadSrc){
-		CTag kadLastPubSrc(FT_KADLASTPUBLISHSRC, m_lastPublishTimeKadSrc);
+		CTagInt32 kadLastPubSrc(FT_KADLASTPUBLISHSRC, m_lastPublishTimeKadSrc);
 		kadLastPubSrc.WriteTagToFile(file);
 	}
 
 	// Kad notes
 	if (m_lastPublishTimeKadNotes){
-		CTag kadLastPubNotes(FT_KADLASTPUBLISHNOTES, m_lastPublishTimeKadNotes);
+		CTagInt32 kadLastPubNotes(FT_KADLASTPUBLISHNOTES, m_lastPublishTimeKadNotes);
 		kadLastPubNotes.WriteTagToFile(file);
 	}
 	

@@ -58,13 +58,15 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint
 	
 	
 	uint32 tagcount = data.ReadUInt32();
+	printf("Tags:\n");
 	for (unsigned int i = 0; i < tagcount; ++i) {
 		std::auto_ptr<CTag> tag(new CTag(data, optUTF8));
-
+		printf(" %x",tag->GetNameID());
 		switch (tag->GetNameID()) {
 			case FT_FILENAME:			SetFileName(tag->GetStr());	break;
 			case FT_FILESIZE:			SetFileSize(tag->GetInt());	break;
 			case FT_FILESIZE_HI:
+				printf("\nGot server result for bigfile: upper byte -> %i\n",tag->GetInt());
 				SetFileSize( (((uint64)tag->GetInt()) << 32) + GetFileSize());
 				break;				
 			case FT_FILERATING:			m_iUserRating = (tag->GetInt() & 0xF) / 3;	break;
@@ -76,6 +78,8 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint
 		}
 	}
 
+	printf("\n");
+	
 	if (GetFileName().IsEmpty()) {
 		throw CInvalidPacket(wxT("No filename in search result"));
 	}

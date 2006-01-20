@@ -620,41 +620,41 @@ bool CServerList::SaveServerMet()
 						
 			if ( !server->GetListName().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
-				CTag( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
+				CTagString( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
+				CTagString( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
 			}
 			
 			if ( !server->GetDynIP().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTag( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
+				CTagString( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
 			}
 			
 			if ( !server->GetDescription().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTag( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
+				CTagString( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
 			}
 			
 			if ( server->GetConnPort() != server->GetPort() ) {
-				CTag( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
+				CTagString( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
 			}
 			
-			CTag( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
-			CTag( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
-			CTag( wxT("users"),			server->GetUsers()			).WriteTagToFile( &servermet );
-			CTag( wxT("files"),			server->GetFiles()			).WriteTagToFile( &servermet );
-			CTag( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
-			CTag( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
-			CTag( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
-			CTag( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
-			CTag( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
+			CTagInt32( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
+			CTagInt32( wxT("users"),			server->GetUsers()			).WriteTagToFile( &servermet );
+			CTagInt32( wxT("files"),			server->GetFiles()			).WriteTagToFile( &servermet );
+			CTagInt32( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
+			CTagInt32( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
 			if (!server->GetVersion().IsEmpty()){
-				CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTag( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+				CTagString( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
 			}
-			CTag( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
-			CTag( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
 		}
 	} catch (const CIOFailureException& e) {
 		AddLogLineM(true, wxT("IO failure while writing 'server.met': ") + e.what());

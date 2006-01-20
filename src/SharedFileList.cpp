@@ -822,35 +822,33 @@ void CSharedFileList::CreateOfferedFilePacket(
 	
 	TagPtrList tags;
 
-	tags.push_back(new CTag(FT_FILENAME, cur_file->GetFileName()));
+	tags.push_back(new CTagString(FT_FILENAME, cur_file->GetFileName()));
 	
 	if (!cur_file->IsLargeFile()){
-		tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize()));
+		tags.push_back(new CTagInt32(FT_FILESIZE, cur_file->GetFileSize()));
 	} else {
 		// Large file
 		// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
 		if (pServer) {
 			if (!pServer->SupportsLargeFilesTCP()){
 				wxASSERT( false );
-				tags.push_back(new CTag(FT_FILESIZE, 0, false));
+				tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 			}else {
-				tags.push_back(new CTag(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
-				tags.push_back(new CTag(FT_FILESIZE_HI, (uint32)(cur_file->GetFileSize() >> 32)));
+				tags.push_back(new CTagInt32(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
+				tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(cur_file->GetFileSize() >> 32)));
 			}
 		} else {
-			if (!pClient->SupportsLargeFiles()){
+			if (!pClient->SupportsLargeFiles()) {
 				wxASSERT( false );
-				tags.push_back(new CTag(FT_FILESIZE, 0, false));
+				tags.push_back(new CTagInt32(FT_FILESIZE, 0));
 			} else {
-				#warning Kry - UPGRADE - Needs 64bits tags
-				wxASSERT(false);
-				//tags.push_back(new CTag(FT_FILESIZE, cur_file->GetFileSize(), true));
+				tags.push_back(new CTagInt64(FT_FILESIZE, cur_file->GetFileSize()));
 			}
 		}		
 	}
 	
 	if (cur_file->GetFileRating()) {
-		tags.push_back(new CTag(FT_FILERATING, cur_file->GetFileRating()));
+		tags.push_back(new CTagInt32(FT_FILERATING, cur_file->GetFileRating()));
 	}
 
 	// NOTE: Archives and CD-Images are published+searched with file type "Pro"
@@ -859,7 +857,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 		// Send integer file type tags to newer servers
 		EED2KFileType eFileType = GetED2KFileTypeSearchID(GetED2KFileTypeID(cur_file->GetFileName()));
 		if (eFileType >= ED2KFT_AUDIO && eFileType <= ED2KFT_CDIMAGE) {
-			tags.push_back(new CTag(FT_FILETYPE, (uint32)eFileType));
+			tags.push_back(new CTagInt32(FT_FILETYPE, eFileType));
 			bAddedFileType = true;
 		}
 	}
@@ -870,7 +868,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 		//	- all clients
 		wxString strED2KFileType(GetED2KFileTypeSearchTerm(GetED2KFileTypeID(cur_file->GetFileName())));
 		if (!strED2KFileType.IsEmpty()) {
-			tags.push_back(new CTag(FT_FILETYPE, strED2KFileType));
+			tags.push_back(new CTagString(FT_FILETYPE, strED2KFileType));
 		}
 	}
 
