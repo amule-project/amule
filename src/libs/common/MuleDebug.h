@@ -26,8 +26,8 @@
 #ifndef MULEDEBUG_H
 #define MULEDEBUG_H
 
+#include <wx/defs.h>
 #include <wx/debug.h>
-
 #include <wx/string.h>
 
 /**
