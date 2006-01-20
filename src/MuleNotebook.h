@@ -110,12 +110,6 @@ public:
 	void SetPopupHandler( wxWindow* widget );
 
 protected:
-	#if defined(__WXGTK12__)
-	// Madcat - closing engine
-	void CalculatePositions();   // Fills the widths/begins/ends arrays
-	wxArrayInt widths, begins, ends;       // Positions of tabs
-	#endif
-
 	void MouseClick(wxMouseEvent &event);  // Mouse clicks event handler
 	void MouseMotion(wxMouseEvent &event); // Mouse moving around
 	
