@@ -460,14 +460,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					 newtag.GetNameID() == FT_FILENAME))) {
 				switch(newtag.GetNameID()) {
 					case FT_FILENAME: {
-						#ifdef wxUSE_UNICODE
 						if (GetFileName().IsEmpty()) {
 							// If it's not empty, we already loaded the unicoded one
 							SetFileName(newtag.GetStr());
 						}
-						#else
-							SetFileName(newtag.GetStr());
-						#endif
 						break;
 					}
 					case FT_LASTSEENCOMPLETE: {
@@ -593,7 +589,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						// Start Changes by Slugfiller for better exception handling
 						
 						wxCharBuffer tag_ansi_name = newtag.GetName().ToAscii();
-						char gap_mark = tag_ansi_name ? tag_ansi_name[0] : 0;
+						char gap_mark = tag_ansi_name ? tag_ansi_name[0u] : 0;
 						if ( newtag.IsInt() && (newtag.GetName().Length() > 1) &&
 							((gap_mark == FT_GAPSTART) ||
 							 (gap_mark == FT_GAPEND))) {
