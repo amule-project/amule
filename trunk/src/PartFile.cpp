@@ -592,27 +592,32 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					default: {
 						// Start Changes by Slugfiller for better exception handling
 						
-						char gap_mark = newtag.GetName().IsEmpty() ?
-										0 : unicode2char(newtag.GetName())[0u];
+						wxCharBuffer tag_ansi_name = newtag.GetName().ToAscii();
+						char gap_mark = tag_ansi_name ? tag_ansi_name[0] : 0;
 						if ( newtag.IsInt() && (newtag.GetName().Length() > 1) &&
 							((gap_mark == FT_GAPSTART) ||
 							 (gap_mark == FT_GAPEND))) {
 							Gap_Struct *gap = NULL;
-							uint16 gapkey = atoi(unicode2char(newtag.GetName())+1);
-							if ( gap_map.find( gapkey ) == gap_map.end() ) {
-								gap = new Gap_Struct;
-								gap_map[gapkey] = gap;
-								gap->start = (uint64)-1;
-								gap->end = (uint64)-1;
+							unsigned long int gapkey;
+							if (newtag.GetName().Mid(1).ToULong(&gapkey)) {
+								if ( gap_map.find( gapkey ) == gap_map.end() ) {
+									gap = new Gap_Struct;
+									gap_map[gapkey] = gap;
+									gap->start = (uint64)-1;
+									gap->end = (uint64)-1;
+								} else {
+									gap = gap_map[ gapkey ];
+								}
+								#warning Kry - UPDATE
+								if (gap_mark == FT_GAPSTART) {
+									gap->start = newtag.GetInt();
+								}
+								if (gap_mark == FT_GAPEND) {
+									gap->end = newtag.GetInt()-1;
+								}
 							} else {
-								gap = gap_map[ gapkey ];
-							}
-							#warning Kry - UPDATE
-							if (gap_mark == FT_GAPSTART) {
-								gap->start = newtag.GetInt();
-							}
-							if (gap_mark == FT_GAPEND) {
-								gap->end = newtag.GetInt()-1;
+								printf("Wrong gap map key while reading met file!\n");
+								wxASSERT(0);
 							}
 							// End Changes by Slugfiller for better exception handling
 						} else {
