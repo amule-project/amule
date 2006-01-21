@@ -37,8 +37,6 @@ there client on the eMule forum..
 #include "../kademlia/SearchManager.h"
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
-#include "../io/IOException.h"
-#include "../io/ByteIO.h"
 #include "../../NetworkFunctions.h"
 #include "../../KnownFile.h"
 #include "../../KnownFileList.h"
@@ -115,7 +113,7 @@ void CKademliaUDPListener::publishPacket(uint32 ip, uint16 port, const CUInt128 
 {
 	//We need to get the tag lists working with CMemFiles..
 	byte packet[1024];
-	CByteIO bio(packet, sizeof(packet));
+	CMemFile bio(packet, sizeof(packet));
 	bio.WriteUInt8(OP_KADEMLIAHEADER);
 	bio.WriteUInt8(KADEMLIA_PUBLISH_REQ);
 	bio.WriteUInt128(targetID);
@@ -123,7 +121,7 @@ void CKademliaUDPListener::publishPacket(uint32 ip, uint16 port, const CUInt128 
 	bio.WriteUInt16(1);
 	bio.WriteUInt128(contactID);
 	bio.WriteTagPtrList(tags);
-	uint32 len = sizeof(packet) - bio.getAvailable();
+	uint32 len = sizeof(packet) - bio.GetAvailable();
 	sendPacket(packet, len,  ip, port);
 }
 
@@ -696,7 +694,7 @@ void CKademliaUDPListener::processSearchResponse (const byte *packetData, uint32
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
 	// What search does this relate to
-	CByteIO bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 target = bio.ReadUInt128();
 
 	// How many results.. Not supported yet..
@@ -744,7 +742,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 		return;
 	}
 
-	CByteIO bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 file = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
@@ -925,7 +923,7 @@ void CKademliaUDPListener::processSearchNotesResponse (const byte *packetData, u
 	CKademlia::getRoutingZone()->setAlive(ip, port);
 
 	// What search does this relate to
-	CByteIO bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 target = bio.ReadUInt128();
 
 	uint16 count = bio.ReadUInt16();
@@ -967,7 +965,7 @@ void CKademliaUDPListener::processPublishNotesRequest (const byte *packetData, u
 		return;
 	}
 
-	CByteIO bio(packetData, lenPacket);
+	CMemFile bio(packetData, lenPacket);
 	CUInt128 target = bio.ReadUInt128();
 
 	CUInt128 distance(CKademlia::getPrefs()->getKadID());
