@@ -26,6 +26,9 @@
 #include "Logger.h"				// Needed for Add(Debug)LogLineM
 #include "GetTickCount.h"		// Needed for GetTickCount
 #include <common/Format.h>		// Needed for CFormat
+#include "ScopedPtr.h"			// Needed for CScopedPtr
+
+#include <algorithm>
 
 
 //! Global lock the scheduler and its thread.
@@ -222,7 +225,7 @@ void* CThreadScheduler::Entry()
 	AddDebugLogLineM(false, logThreads, wxT("Entering scheduling loop"));
 	
 	while (!m_thread->TestDestroy()) {
-		std::auto_ptr<CThreadTask> task(NULL);
+		CScopedPtr<CThreadTask> task(NULL);
 
 		{
 			wxMutexLocker lock(s_lock);	
