@@ -128,14 +128,14 @@ class CTagInt64 : public CTag
 public:
 	CTagInt64(const wxString& name, uint64 value)
 		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFFFFFFFFFF); 
+			wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
 			m_uVal = value;
 			m_uType = TAGTYPE_UINT64;
 		}
 
 	CTagInt64(uint8 name, uint64 value)
 		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFFFFFFFFFF); 
+			wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
 			m_uVal = value;
 			m_uType = TAGTYPE_UINT64;
 		}
