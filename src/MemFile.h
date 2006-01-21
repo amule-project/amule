@@ -86,8 +86,11 @@ public:
 	 * the length.
 	 *
 	 * The buffer is _not_ freed by CMemFile upon destruction.
+	 *
+	 * If the buffer is a const byte*, the memfile is read-only.
 	 */
 	CMemFile(byte* buffer, size_t bufferSize);
+	CMemFile(const byte* buffer, size_t bufferSize);
 
 	/** Destructor. */
 	virtual ~CMemFile();
@@ -113,7 +116,17 @@ public:
 	 * operation.
 	 */
 	virtual void SetLength(size_t newLen);
+
+	/** 
+	 * Resets the memfile to the start.
+	 */
+	virtual void Reset() const { doSeek(0); }
 	
+	/**
+	 * Returns the bytes available to read before EOF
+	 */
+	virtual sint64 GetAvailable() const { return GetLength() - GetPosition(); }
+
 protected:
 	/** @see CFileDataIO::doRead */
 	virtual sint64 doRead(void* buffer, size_t count) const;
@@ -146,6 +159,8 @@ private:
 	bool	m_delete;
 	//! The actual buffer.
 	byte*	m_buffer;
+	//! read-only mark.
+	bool	m_readonly;
 };
 
 #endif // MEMFILE_H

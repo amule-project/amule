@@ -46,7 +46,6 @@ there client on the eMule forum..
 #include "Defines.h"
 #include "../routing/Contact.h"
 #include "../utils/UInt128.h"
-#include "../io/IOException.h"
 #include "../kademlia/Prefs.h"
 #include "MemFile.h"
 #include "OtherFunctions.h"
@@ -170,9 +169,13 @@ CSearch* CSearchManager::prepareFindKeywords(const wxString& keyword, CMemFile* 
 		
 		m_searches[s->m_target] = s;
 		s->go();
-	} catch (const CIOException& ioe) {
-		wxString strError = wxString(wxT("IO-Exception in ")) + wxString::FromAscii(__FUNCTION__) + wxString::Format(wxT(": Error %u"), ioe.m_cause);
+	} catch (const CEOFException& err) {
 		delete s;
+		wxString strError = wxT("CEOFException in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what();
+		throw strError;
+	} catch (const CInvalidPacket& err) {
+		delete s;
+		wxString strError = wxT("CInvalidPacket exception in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what();
 		throw strError;
 	} catch (...) {
 		delete s;
@@ -212,11 +215,13 @@ CSearch* CSearchManager::prepareLookup(uint32 type, bool start, const CUInt128 &
 			m_searches[s->m_target] = s;
 			s->go();
 		}
-	} catch (const CIOException& ioe) {
-		AddDebugLogLineM( false, logKadSearch,
-			wxString::Format(wxT("Exception in CSearchManager::prepareLookup (IO error(%i))"),
-				ioe.m_cause));
+	}catch (const CEOFException& err) {
 		delete s;
+		AddDebugLogLineM( false, logKadSearch, wxT("CEOFException in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what());
+		return NULL;
+	} catch (const CInvalidPacket& err) {
+		delete s;
+		AddDebugLogLineM( false, logKadSearch, wxT("CInvalidPacket exception in ") + wxString::FromAscii(__FUNCTION__) + wxT(": ") + err.what());
 		return NULL;
 	} catch (...) {
 		AddDebugLogLineM(false, logKadSearch,

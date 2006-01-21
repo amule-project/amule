@@ -44,7 +44,6 @@
 #include "Logger.h"
 #include "UploadBandwidthThrottler.h"
 #include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/io/IOException.h"
 #include "zlib.h"
 
 //
@@ -115,8 +114,6 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 		AddDebugLogLineM(false, logClientUDP, wxT("Invalid UDP packet encountered: ") + e.what());
 	} catch (const CEOFException& e) {
 		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
-	} catch (const Kademlia::CIOException&) {
-		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet"));
 	}
 }
 

@@ -522,7 +522,6 @@ AC_CONFIG_FILES([Makefile
 		 src/Makefile
 		 src/kademlia/Makefile
 		 src/kademlia/utils/Makefile
-		 src/kademlia/io/Makefile
 		 src/kademlia/kademlia/Makefile
 		 src/kademlia/routing/Makefile
 		 src/kademlia/net/Makefile

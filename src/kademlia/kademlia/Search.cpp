@@ -45,7 +45,6 @@ there client on the eMule forum..
 #include "Defines.h"
 #include "Prefs.h"
 #include "Indexed.h"
-#include "../io/IOException.h"
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
@@ -442,15 +441,15 @@ void CSearch::StorePacket()
 			}
 			if( bio1 ) {
 				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));								
-				CKademlia::getUDPListener()->sendPacket( packet1, ((1024*50)-bio1->getAvailable()), from->getIPAddress(), from->getUDPPort() );
+				CKademlia::getUDPListener()->sendPacket( packet1, ((1024*50)-bio1->GetAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			if( bio2 ) {
 				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));											
-				CKademlia::getUDPListener()->sendPacket( packet2, ((1024*50)-bio2->getAvailable()), from->getIPAddress(), from->getUDPPort() );
+				CKademlia::getUDPListener()->sendPacket( packet2, ((1024*50)-bio2->GetAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			if( bio3 ) {
 				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ")  + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->getIPAddress()), from->getUDPPort()));								
-				CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->getAvailable()), from->getIPAddress(), from->getUDPPort() );
+				CKademlia::getUDPListener()->sendPacket( packet3, ((1024*50)-bio3->GetAvailable()), from->getIPAddress(), from->getUDPPort() );
 			}
 			m_totalRequestAnswers++;
 			break;
@@ -462,7 +461,7 @@ void CSearch::StorePacket()
 			CKnownFile* file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
 				byte packet[1024*2];
-				CByteIO bio(packet,sizeof(packet));
+				CMemFile bio(packet,sizeof(packet));
 				bio.WriteUInt128(m_target);
 				bio.WriteUInt128(CKademlia::getPrefs()->getKadID());
 				uint8 tagcount = 1;
@@ -485,7 +484,7 @@ void CSearch::StorePacket()
 					bio.WriteTag(description);
 				}
 
-				CKademlia::getUDPListener()->sendPacket( packet, sizeof(packet)-bio.getAvailable(), KADEMLIA_PUB_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
+				CKademlia::getUDPListener()->sendPacket( packet, sizeof(packet)-bio.GetAvailable(), KADEMLIA_PUB_NOTES_REQ, from->getIPAddress(), from->getUDPPort());
 				m_totalRequestAnswers++;
 			}
 			break;
@@ -817,8 +816,12 @@ void CSearch::sendFindValue(const CUInt128 &check, uint32 ip, uint16 port)
 		#endif
 
 		CKademlia::getUDPListener()->sendPacket(&bio, KADEMLIA_REQ, ip, port);
-	} catch (const CIOException& ioe) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::sendFindValue (IO error(%i))"), ioe.m_cause));
+	} catch (const CEOFException& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::sendFindValue: ") + err.what());
+	} catch (const CInvalidPacket& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::sendFindValue: ") + err.what());		
+	} catch (const wxString& e) {
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::sendFindValue: ") + e);
 	}
 }
 
@@ -827,7 +830,7 @@ void CSearch::addFileID(const CUInt128& id)
 	m_fileIDs.push_back(id);
 }
 
-void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
+void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 {
 	try {
 		if( file && bio ) {
@@ -908,9 +911,13 @@ void CSearch::PreparePacketForTags( CByteIO *bio, CKnownFile *file)
 			//If we get here.. Bad things happen.. Will fix this later if it is a real issue.
 			wxASSERT(0);
 		}
-	} catch (const CIOException& ioe) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacketForTags (IO error(%i))"), ioe.m_cause));
-	}
+	} catch (const CEOFException& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::PreparePacketForTags: ") + err.what());
+	} catch (const CInvalidPacket& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::PreparePacketForTags: ") + err.what());		
+	} catch (const wxString& e) {
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::PreparePacketForTags: ") + e);
+	} 
 }
 
 //Can't clean these up until Taglist works with CMemFiles.
@@ -924,7 +931,7 @@ void CSearch::PreparePacket(void)
 			count = 150;
 		}
 		if( count > 100 ) {
-			bio3 = new CByteIO(packet3,sizeof(packet3));
+			bio3 = new CMemFile(packet3,sizeof(packet3));
 			bio3->WriteUInt8(OP_KADEMLIAHEADER);
 			bio3->WriteUInt8(KADEMLIA_PUBLISH_REQ);
 			bio3->WriteUInt128(m_target);
@@ -944,7 +951,7 @@ void CSearch::PreparePacket(void)
 			}
 		}
 		if( count > 50 ) {
-			bio2 = new CByteIO(packet2,sizeof(packet2));
+			bio2 = new CMemFile(packet2,sizeof(packet2));
 			bio2->WriteUInt8(OP_KADEMLIAHEADER);
 			bio2->WriteUInt8(KADEMLIA_PUBLISH_REQ);
 			bio2->WriteUInt128(m_target);
@@ -964,7 +971,7 @@ void CSearch::PreparePacket(void)
 			}
 		}
 		if( count > 0 ) {
-			bio1 = new CByteIO(packet1,sizeof(packet1));
+			bio1 = new CMemFile(packet1,sizeof(packet1));
 			bio1->WriteUInt8(OP_KADEMLIAHEADER);
 			bio1->WriteUInt8(KADEMLIA_PUBLISH_REQ);
 			bio1->WriteUInt128(m_target);
@@ -983,9 +990,13 @@ void CSearch::PreparePacket(void)
 				}
 			}
 		}
-	} catch (const CIOException& ioe ) {
-		AddDebugLogLineM( false, logKadSearch, wxString::Format(wxT("Exception in CSearch::PreparePacket (IO error(%i))"), ioe.m_cause));
-	}
+	} catch (const CEOFException& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::PreparePacket: ") + err.what());
+	} catch (const CInvalidPacket& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::PreparePacket: ") + err.what());
+	} catch (const wxString& e) {
+		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::PreparePacket: ") + e);
+	} 
 }
 
 uint32 CSearch::getNodeLoad() const

@@ -42,7 +42,6 @@ there client on the eMule forum..
 #include "SearchManager.h"
 #include "../routing/Maps.h"
 #include "../utils/UInt128.h"
-#include "../io/ByteIO.h"
 
 class CKnownFile;
 class CMemFile;
@@ -81,15 +80,15 @@ public:
 	byte packet1[1024*50];
 	byte packet2[1024*50];
 	byte packet3[1024*50];
-	CByteIO *bio1;
-	CByteIO *bio2;
-	CByteIO *bio3;
+	CMemFile *bio1;
+	CMemFile *bio2;
+	CMemFile *bio3;
 	const wxString& getFileName(void) const { return m_fileName; }
 	void setFileName(const wxString& fileName) { m_fileName = fileName; }
 	CUInt128 getTarget(void) const {return m_target;}
 	void addFileID(const CUInt128& id);
 	void PreparePacket(void);
-	void PreparePacketForTags( CByteIO* packet, CKnownFile* file );
+	void PreparePacketForTags( CMemFile* packet, CKnownFile* file );
 	bool Stoping(void) const {return m_stoping;}
 	uint32 getNodeLoad() const;
 	uint32 getNodeLoadResonse() const {return m_totalLoadResponses;}

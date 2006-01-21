@@ -34,6 +34,7 @@ CMemFile::CMemFile(unsigned int growthRate)
 	m_growthRate	= growthRate;
 	m_position		= 0;
 	m_delete		= true;
+	m_readonly		= false;
 }
 
 
@@ -47,8 +48,21 @@ CMemFile::CMemFile(byte* buffer, size_t bufferSize)
 	m_growthRate	= 0;
 	m_position		= 0;
 	m_delete		= false;
+	m_readonly		= false;
 }
 
+CMemFile::CMemFile(const byte* buffer, size_t bufferSize)
+{
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to resize to attach to invalid buffer."));
+	
+	m_buffer		= const_cast<byte*>(buffer);
+	m_BufferSize	= bufferSize;
+	m_fileSize		= bufferSize;
+	m_growthRate	= 0;
+	m_position		= 0;
+	m_delete		= false;
+	m_readonly		= true;
+}
 
 CMemFile::~CMemFile()
 {
@@ -66,6 +80,8 @@ uint64 CMemFile::GetPosition() const
 
 void CMemFile::SetLength(size_t newLen)
 {
+	MULE_VALIDATE_STATE(m_readonly, wxT("CMemFile: Attempted to change lenght on a read-only buffer."));
+	
 	if (newLen > m_BufferSize) {
 		enlargeBuffer(newLen);
 	}
@@ -88,8 +104,10 @@ void CMemFile::enlargeBuffer(size_t size)
 {
 	MULE_VALIDATE_PARAMS(size >= m_BufferSize, wxT("CMemFile: Attempted to shrink buffer."));
 	MULE_VALIDATE_STATE(m_delete, wxT("CMemFile: Attempted to grow an attached buffer."));
-
+	MULE_VALIDATE_STATE(m_readonly, wxT("CMemFile: Attempted to grow a read-only buffer."));
+	
 	size_t newsize = m_BufferSize;
+	
 	if (m_growthRate) {
 		newsize = ((size + m_growthRate - 1) / m_growthRate) * m_growthRate;
 	} else {
@@ -127,7 +145,8 @@ sint64 CMemFile::doRead(void* buffer, size_t count) const
 sint64 CMemFile::doWrite(const void* buffer, size_t count)
 {
 	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to write from invalid buffer"));
-
+	MULE_VALIDATE_STATE(m_readonly, wxT("CMemFile: Attempted to write to a read-only buffer."));
+	
 	// Needs more space?
 	if (m_position + count > m_BufferSize) {
 		enlargeBuffer(m_position + count);
@@ -152,4 +171,3 @@ sint64 CMemFile::doSeek(sint64 offset) const
 	
 	return m_position = offset;
 }
-
