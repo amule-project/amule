@@ -736,7 +736,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	return true;
 }
 
-
+#warning Kry - const
 void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
 {
 	wxASSERT_MSG(Output or pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));

@@ -454,7 +454,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 }
 
 
-void CSearchList::ProcessSharedFileList(const char *in_packet, uint32 size, 
+void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size, 
 	CUpDownClient* sender, bool *moreResultsAvailable, const wxString& directory)
 {
 	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
@@ -467,7 +467,7 @@ void CSearchList::ProcessSharedFileList(const char *in_packet, uint32 size,
 	}
 #endif
 
-	const CMemFile packet((byte*)in_packet, size);
+	const CMemFile packet(in_packet, size);
 	uint32 results = packet.ReadUInt32();
 	bool unicoded = sender->GetUnicodeSupport();
 	for (unsigned int i = 0; i != results; ++i){			
@@ -495,9 +495,9 @@ void CSearchList::ProcessSharedFileList(const char *in_packet, uint32 size,
 }
 
 
-void CSearchList::ProcessSearchAnswer(const char* in_packet, uint32 size, bool optUTF8, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort))
+void CSearchList::ProcessSearchAnswer(const byte* in_packet, uint32 size, bool optUTF8, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort))
 {
-	CMemFile packet((byte*)in_packet,size);
+	CMemFile packet(in_packet,size);
 
 	uint32 results = packet.ReadUInt32();
 	for (unsigned int i = 0; i != results; ++i) {

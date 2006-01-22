@@ -336,7 +336,7 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 {
 	uint32 nPacketSize;
 
-	CMemFile memfile((byte*)buffer, togo);
+	CMemFile memfile(buffer, togo);
 	if (togo > 10240) {
 		nPacketSize = togo/(uint32)(togo/10240);
 	} else {

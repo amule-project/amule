@@ -343,9 +343,9 @@ void CUpDownClient::ClearHelloProperties()
 	m_byKadVersion = 0;
 }
 
-bool CUpDownClient::ProcessHelloPacket(const char *pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloPacket(const byte* pachPacket, uint32 nSize)
 {
-	const CMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data(pachPacket,nSize);
 	uint8 hashsize = data.ReadUInt8();
 	if ( 16 != hashsize ) {
 		/*
@@ -388,9 +388,9 @@ void CUpDownClient::Safe_Delete()
 }
 
 
-bool CUpDownClient::ProcessHelloAnswer(const char *pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessHelloAnswer(const byte* pachPacket, uint32 nSize)
 {
-	const CMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data(pachPacket,nSize);
 	bool bIsMule = ProcessHelloTypePacket(data);
 	m_bHelloAnswerPending = false;
 	return bIsMule;
@@ -757,11 +757,11 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	}
 }
 
-bool CUpDownClient::ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize)
+bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 {
 	uint8 protocol_version;
 
-	const CMemFile data((byte*)pachPacket,nSize);
+	const CMemFile data(pachPacket,nSize);
 
 	// The version number part of this packet will soon be useless since
 	// it is only able to go to v.99. Why the version is a uint8 and why
@@ -1068,7 +1068,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 }
 
 
-void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize)
+void CUpDownClient::ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSize)
 {
 	if (!m_reqfile) {
 		throw CInvalidPacket(wxT("Comment packet for unknown file"));
@@ -1078,7 +1078,7 @@ void CUpDownClient::ProcessMuleCommentPacket(const char *pachPacket, uint32 nSiz
 		throw CInvalidPacket(wxT("Comment packet for completed file"));
 	}
 
-	const CMemFile data((byte*)pachPacket, nSize);
+	const CMemFile data(pachPacket, nSize);
 
 	uint8 rating = data.ReadUInt8();
 	if (rating > 5) {
@@ -1754,7 +1754,7 @@ void CUpDownClient::RequestSharedFileList()
 }
 
 
-void CUpDownClient::ProcessSharedFileList(const char* pachPacket, uint32 nSize, wxString& pszDirectory)
+void CUpDownClient::ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory)
 {
 	if (m_iFileListRequested > 0) {
 		m_iFileListRequested--;
@@ -2022,7 +2022,7 @@ void CUpDownClient::ProcessSecIdentStatePacket(const byte* pachPacket, uint32 nS
 		return;
 	}
 
-	CMemFile data((byte*)pachPacket,nSize);
+	CMemFile data(pachPacket,nSize);
 
 	switch ( data.ReadUInt8() ) {
 		case 0:
