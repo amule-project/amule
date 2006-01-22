@@ -931,19 +931,18 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 		
 		// gaps
-		char namebuffer[10];
-		char* number = &namebuffer[1];
-		uint16 i_pos = 0;
+		unsigned i_pos = 0;
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
-			snprintf(number,9,"%hu",(unsigned short int)i_pos);
-			namebuffer[0] = FT_GAPSTART;
+			wxString tagName = wxString::Format(wxT(" %u"), i_pos);
+			
 			#warning UPGRADE!
-			CTagInt32( char2unicode(namebuffer), 	(uint32)gaplist.GetAt(pos)->start	).WriteTagToFile( &file );
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
-			namebuffer[0] = FT_GAPEND;
+			tagName[0] = FT_GAPSTART;
+			CTagInt32(tagName, (uint32)gaplist.GetAt(pos)->start		).WriteTagToFile( &file );
 			
-			CTagInt32( char2unicode(namebuffer),	(uint32)(gaplist.GetAt(pos)->end + 1)	).WriteTagToFile( &file );
+			tagName[0] = FT_GAPEND;
+			CTagInt32(tagName, (uint32)(gaplist.GetAt(pos)->end + 1)	).WriteTagToFile( &file );
 			
 			++i_pos;
 		}
