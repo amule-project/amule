@@ -214,7 +214,7 @@ void CServerSocket::OnReceive(wxSocketError nErrorCode)
 	m_dwLastTransmission = GetTickCount();
 }
 
-bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
+bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 {
 	try {
 		AddDebugLogLineM( false, logServer, wxT("Processing Server Packet: ") );
@@ -309,7 +309,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 					throw wxString(wxT("Corrupt or invalid loginanswer from server received"));
 				}
 
-				CMemFile data((byte*)packet, size);			
+				CMemFile data(packet, size);			
 				
 				uint32 new_id = data.ReadUInt32();
 
@@ -416,7 +416,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_FOUNDSOURCES: {
 				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
 				theStats::AddDownOverheadServer(size);
-				CMemFile sources((byte*)packet,size);
+				CMemFile sources(packet,size);
 				CMD4Hash fileid = sources.ReadHash();
 				if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
 					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_LOCAL_SERVER);
@@ -434,7 +434,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(), cur_server->GetPort());
 				if (update) {
-					CMemFile data((byte*)packet, size);
+					CMemFile data(packet, size);
 					update->SetUserCount(data.ReadUInt32());
 					update->SetFileCount(data.ReadUInt32());
 					Notify_ServerRefresh( update );
@@ -454,7 +454,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				}
 				CServer* update = theApp.serverlist->GetServerByAddress(cur_server->GetAddress(),cur_server->GetPort());
 				if (update) {
-					CMemFile data((byte*)packet,size);
+					CMemFile data(packet,size);
 					CMD4Hash hash = data.ReadHash();				
 					if (RawPeekUInt32(hash.GetHash()) == 0x2A2A2A2A){ // No endian problem here
 						const wxString& rstrVersion = update->GetVersion();
@@ -487,7 +487,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 			case OP_SERVERLIST: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_SERVERLIST"));
 				
-				CMemFile* servers = new CMemFile((byte*)packet,size);
+				CMemFile* servers = new CMemFile(packet,size);
 				uint8 count = servers->ReadUInt8();
 				if (((int32)(count*6 + 1) > size)) {
 					count = 0;
@@ -520,7 +520,7 @@ bool CServerSocket::ProcessPacket(const char* packet, uint32 size, int8 opcode)
 				
 				theStats::AddDownOverheadServer(size);
 				if (size == 6) {
-					CMemFile data((byte*)packet,size);
+					CMemFile data(packet,size);
 					uint32 dwIP = data.ReadUInt32();
 					uint16 nPort = data.ReadUInt16();
 					CUpDownClient* client = theApp.clientlist->FindClientByIP(dwIP,nPort);

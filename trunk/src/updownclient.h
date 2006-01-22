@@ -231,7 +231,7 @@ public:
 
 	void		ClearDownloadBlockRequests();
 	void		RequestSharedFileList();
-	void		ProcessSharedFileList(const char* pachPacket, uint32 nSize, wxString& pszDirectory);
+	void		ProcessSharedFileList(const byte* pachPacket, uint32 nSize, wxString& pszDirectory);
 
 	wxString	GetUploadFileInfo();
 
@@ -239,13 +239,13 @@ public:
 
 	uint8		GetClientSoft() const		{ return m_clientSoft; }
 	void		ReGetClientSoft();
-	bool		ProcessHelloAnswer(const char *pachPacket, uint32 nSize);
-	bool		ProcessHelloPacket(const char *pachPacket, uint32 nSize);
+	bool		ProcessHelloAnswer(const byte* pachPacket, uint32 nSize);
+	bool		ProcessHelloPacket(const byte* pachPacket, uint32 nSize);
 	void		SendHelloAnswer();
 	bool		SendHelloPacket();
 	void		SendMuleInfoPacket(bool bAnswer, bool OSInfo = false);
-	bool		ProcessMuleInfoPacket(const char* pachPacket, uint32 nSize);
-	void		ProcessMuleCommentPacket(const char *pachPacket, uint32 nSize);
+	bool		ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize);
+	void		ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSize);
 	bool		Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash = false) const;
 	void		SetLastSrcReqTime()		{ m_dwLastSourceRequest = ::GetTickCount(); }
 	void		SetLastSrcAnswerTime()		{ m_dwLastSourceAnswer = ::GetTickCount(); }
@@ -380,12 +380,12 @@ public:
 	bool		AskForDownload();
 	void		SendStartupLoadReq();
 	void		SendFileRequest();
-	void		ProcessHashSet(const char *packet, uint32 size);
+	void		ProcessHashSet(const byte* packet, uint32 size);
 	bool		AddRequestForAnotherFile(CPartFile* file);
 	bool		DeleteFileRequest(CPartFile* file);
 	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
-	void		ProcessBlockPacket(const char* packet, uint32 size, bool packed = false);
+	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed = false);
 
 #ifndef CLIENT_GUI
 	uint16		GetAvailablePartCount() const;
@@ -422,8 +422,8 @@ public:
 	bool		IsSupportingAICH() const	{return m_fSupportsAICH & 0x01;}
 	void		SendAICHRequest(CPartFile* pForFile, uint16 nPart);
 	bool		IsAICHReqPending() const	{return m_fAICHRequested; }
-	void		ProcessAICHAnswer(const char* packet, uint32 size);
-	void		ProcessAICHRequest(const char* packet, uint32 size);
+	void		ProcessAICHAnswer(const byte* packet, uint32 size);
+	void		ProcessAICHRequest(const byte* packet, uint32 size);
 	void		ProcessAICHFileHash(CMemFile* data, const CPartFile* file);	
 
 	EUtf8Str	GetUnicodeSupport() const;

@@ -47,12 +47,12 @@ CPacket::CPacket(CPacket &p)
 	memcpy(head, p.head, sizeof head);
 	tempbuffer	= NULL;
 	if (p.completebuffer) {
-		completebuffer 	= new char[size + 10];;
+		completebuffer 	= new byte[size + 10];;
 		pBuffer 	= completebuffer + sizeof(Header_Struct);
 	} else {
 		completebuffer 	= NULL;
 		if (p.pBuffer) {
-			pBuffer = new char[size];
+			pBuffer = new byte[size];
 		} else {
 			pBuffer = NULL;
 		}
@@ -77,7 +77,7 @@ CPacket::CPacket(uint8 protocol)
 }
 
 // only used for receiving packets
-CPacket::CPacket(char* rawHeader)
+CPacket::CPacket(byte* rawHeader)
 {
 	memset(head, 0, sizeof head);
 	Header_Struct* header = (Header_Struct*)rawHeader;
@@ -104,7 +104,7 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	m_bFromPF 	= false;
 	memset(head, 0, sizeof head);
 	tempbuffer = NULL;
-	completebuffer = new char[size + sizeof(Header_Struct)/*Why this 4?*/];
+	completebuffer = new byte[size + sizeof(Header_Struct)/*Why this 4?*/];
 	pBuffer = completebuffer + sizeof(Header_Struct);
 	
 	// Write contents of MemFile to buffer (while keeping original position in file)
@@ -126,7 +126,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 	memset(head, 0, sizeof head);
 	tempbuffer	= NULL;
 	if (in_size) {
-		completebuffer = new char[in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/];
+		completebuffer = new byte[in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/];
 		pBuffer = completebuffer + sizeof(Header_Struct);
 		memset(completebuffer, 0, in_size + sizeof(Header_Struct) + 4 /*Why this 4?*/);
 	} else {
@@ -136,7 +136,7 @@ CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)
 }
 
 // only used for splitted packets!
-CPacket::CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
+CPacket::CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF)
 {
 	size		= nSize - sizeof(Header_Struct);
 	opcode		= 0;
@@ -169,16 +169,16 @@ CPacket::~CPacket()
 void CPacket::AllocDataBuffer(void)
 {
 	wxASSERT(completebuffer == NULL);
-	pBuffer = new char[size + 1];
+	pBuffer = new byte[size + 1];
 }
 
-void CPacket::CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n)
+void CPacket::CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n)
 {
 	wxASSERT(offset + n <= size + 1);
 	memcpy(pBuffer + offset, data, n);
 }
 
-char* CPacket::GetPacket() {
+byte* CPacket::GetPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
@@ -189,19 +189,19 @@ char* CPacket::GetPacket() {
 			delete [] tempbuffer;
 			tempbuffer = NULL;
 		}
-		tempbuffer = new char[size+sizeof(Header_Struct) + 4 /* why this 4?*/];
+		tempbuffer = new byte[size + sizeof(Header_Struct) + 4 /* why this 4?*/];
 		memcpy(tempbuffer    , GetHeader(), sizeof(Header_Struct));
 		memcpy(tempbuffer + sizeof(Header_Struct), pBuffer    , size);
 		return tempbuffer;
 	}
 }
 
-char* CPacket::DetachPacket() {
+byte* CPacket::DetachPacket() {
 	if (completebuffer) {
 		if (!m_bSplitted) {
 			memcpy(completebuffer, GetHeader(), sizeof(Header_Struct));
 		}
-		char* result = completebuffer;
+		byte* result = completebuffer;
 		completebuffer = pBuffer = NULL;
 		return result;
 	} else{
@@ -209,16 +209,16 @@ char* CPacket::DetachPacket() {
 			delete[] tempbuffer;
 			tempbuffer = NULL;
 		}
-		tempbuffer = new char[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
+		tempbuffer = new byte[size+sizeof(Header_Struct)+4 /* Why this 4?*/];
 		memcpy(tempbuffer,GetHeader(),sizeof(Header_Struct));
 		memcpy(tempbuffer+sizeof(Header_Struct),pBuffer,size);
-		char* result = tempbuffer;
+		byte* result = tempbuffer;
 		tempbuffer = 0;
 		return result;
 	}
 }
 
-char* CPacket::GetHeader() {
+byte* CPacket::GetHeader() {
 	wxASSERT( !m_bSplitted );
 
 	Header_Struct* header = (Header_Struct*) head;
@@ -229,7 +229,7 @@ char* CPacket::GetHeader() {
 	return head;
 }
 
-char* CPacket::GetUDPHeader() {
+byte* CPacket::GetUDPHeader() {
 	wxASSERT( !m_bSplitted );
 
 	memset(head, 0, 6);
@@ -248,7 +248,7 @@ void CPacket::PackPacket()
 	uLongf newsize = size + 300;
 	byte* output = new byte[newsize];
 
-	uint16 result = compress2(output, &newsize, (byte*) pBuffer, size, Z_BEST_COMPRESSION);
+	uint16 result = compress2(output, &newsize, pBuffer, size, Z_BEST_COMPRESSION);
 
 	if (result != Z_OK || size <= newsize) {
 		delete[] output;
@@ -280,7 +280,7 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 
 	byte* unpack = new byte[nNewSize];
 	uLongf unpackedsize = nNewSize;
-	uint16 result = uncompress(unpack, &unpackedsize, (byte*) pBuffer, size);
+	uint16 result = uncompress(unpack, &unpackedsize, pBuffer, size);
 
 	if (result == Z_OK) {
 		wxASSERT( completebuffer == NULL );
@@ -288,7 +288,7 @@ bool CPacket::UnPackPacket(uint32 uMaxDecompressedSize) {
 
 		size = unpackedsize;
 		delete[] pBuffer;
-		pBuffer = (char *) unpack;
+		pBuffer = unpack;
 		prot = OP_EMULEPROT;
 		return true;
 	}

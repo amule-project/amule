@@ -41,18 +41,18 @@ class CPacket {
 public:
 	CPacket(CPacket &p);
 	CPacket(uint8 protocol = OP_EDONKEYPROT);
-	CPacket(char* header); // only used for receiving packets
+	CPacket(byte* header); // only used for receiving packets
 	CPacket(CMemFile* datafile, uint8 protocol = OP_EDONKEYPROT, uint8 ucOpcode = 0x00);
 	CPacket(int8 in_opcode, uint32 in_size, uint8 protocol = OP_EDONKEYPROT, bool bFromPF = true);
-	CPacket(char* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
+	CPacket(byte* pPacketPart, uint32 nSize, bool bLast, bool bFromPF = true); // only used for splitted packets!
 
 	~CPacket();
 	
 	void 			AllocDataBuffer();	
-	char*			GetHeader();
-	char*			GetUDPHeader();
-	char*			GetPacket();
-	char*			DetachPacket();
+	byte*			GetHeader();
+	byte*			GetUDPHeader();
+	byte*			GetPacket();
+	byte*			DetachPacket();
 	uint32 			GetRealPacketSize() const	{ return size + 6; }
 	bool			IsSplitted()		{ return m_bSplitted; }
 	bool			IsLastSplitted()	{ return m_bLastSplitted; }
@@ -66,9 +66,9 @@ public:
 	uint32			GetPacketSize() const	{ return size; }
 	uint8			GetProtocol() const	{ return prot; }
 	void			SetProtocol(uint8 p)	{ prot = p; }
-	const char* 	GetDataBuffer(void) const { return pBuffer; }
+	const byte* 	GetDataBuffer(void) const { return pBuffer; }
 	void 			Copy16ToDataBuffer(const void* data);
-	void 			CopyToDataBuffer(unsigned int offset, const char *data, unsigned int n);
+	void 			CopyToDataBuffer(unsigned int offset, const byte* data, unsigned int n);
 	void			CopyUInt32ToDataBuffer(uint32 data, unsigned int offset = 0);
 	
 private:
@@ -82,10 +82,10 @@ private:
 	bool		m_bLastSplitted;
 	bool		m_bPacked;
 	bool		m_bFromPF;
-	char		head[6];
-	char 		*tempbuffer;
-	char 		*completebuffer;
-	char		*pBuffer;
+	byte		head[6];
+	byte*		tempbuffer;
+	byte*		completebuffer;
+	byte*		pBuffer;
 };
 
 #endif // PACKET_H

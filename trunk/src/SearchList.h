@@ -131,7 +131,7 @@ public:
 	 * @param moreResultsAvailable Set to a value specifying if more results are available.
 	 * @param directory The directory containing the shared files.
 	 */
-	void	ProcessSharedFileList(const char* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
+	void	ProcessSharedFileList(const byte* packet, uint32 size, CUpDownClient* sender, bool* moreResultsAvailable, const wxString& directory);
 
 	/**
 	 * Processes a search-result sent via TCP from the local server. All results are added.
@@ -142,7 +142,7 @@ public:
 	 * @param serverIP The IP of the server sending the results.
 	 * @param serverPort The Port of the server sending the results.
 	 */
-	void	ProcessSearchAnswer(const char* packet, uint32 size, bool optUTF8, uint32 serverIP, uint16 serverPort);
+	void	ProcessSearchAnswer(const byte* packet, uint32 size, bool optUTF8, uint32 serverIP, uint16 serverPort);
 	
 	/**
 	 * Processes a search-result sent via UDP. Only one result is read from the packet.

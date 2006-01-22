@@ -175,7 +175,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
 void CEMSocket::OnReceive(int nErrorCode)
 {
 	// the 2 meg size was taken from another place
-	static char GlobalReadBuffer[MAX_SIZE];
+	static byte GlobalReadBuffer[MAX_SIZE];
 
 	if(nErrorCode) {
 		uint32 error = LastError(); 
@@ -238,8 +238,8 @@ void CEMSocket::OnReceive(int nErrorCode)
 		pendingHeaderSize = 0;
 	}
 
-	char *rptr = GlobalReadBuffer; // floating index initialized with begin of buffer
-	const char *rend = GlobalReadBuffer + ret; // end of buffer
+	byte* rptr = GlobalReadBuffer; // floating index initialized with begin of buffer
+	const byte* rend = GlobalReadBuffer + ret; // end of buffer
 
 	// Loop, processing packets until we run out of them
 	while((rend - rptr >= PACKET_HEADER_SIZE) ||
@@ -772,4 +772,3 @@ void CEMSocket::SetTimeOut(uint32 uTimeOut)
 {
 	m_uTimeOut = uTimeOut;
 }
-

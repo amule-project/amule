@@ -89,7 +89,7 @@ public:
 	virtual void	OnReceive(int nErrorCode);
 	
 protected:
-	bool RecievePending() { return pendingOnReceive; }
+
 	virtual bool	PacketReceived(CPacket* WXUNUSED(packet)) { return false; };
 	virtual void	OnClose(int nErrorCode);
 	
@@ -110,7 +110,7 @@ private:
 
 	// Download partial header
 	// actually, this holds only 'PACKET_HEADER_SIZE-1' bytes.
-	char	pendingHeader[PACKET_HEADER_SIZE];
+	byte	pendingHeader[PACKET_HEADER_SIZE];
 	uint32	pendingHeaderSize;
 
 	// Download partial packet
@@ -118,7 +118,7 @@ private:
 	uint32  pendingPacketSize;
 
 	// Upload control
-	char*	sendbuffer;
+	byte*	sendbuffer;
 	uint32	sendblen;
 	uint32	sent;
 

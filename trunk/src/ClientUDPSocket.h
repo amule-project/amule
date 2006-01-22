@@ -38,7 +38,7 @@ protected:
 	
 private:
 	void	OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length);
-	void	ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port);
+	void	ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 };
 
 #endif // CLIENTUDPSOCKET_H

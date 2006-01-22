@@ -86,8 +86,8 @@ private:
 	CUpDownClient*	m_client;
 
 //	void	Delete_Timed();
-	bool	ProcessPacket(const char *packet, uint32 size, uint8 opcode);
-	bool	ProcessExtPacket(const char *packet, uint32 size, uint8 opcode);
+	bool	ProcessPacket(const byte* packet, uint32 size, uint8 opcode);
+	bool	ProcessExtPacket(const byte* packet, uint32 size, uint8 opcode);
 	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
 
 };

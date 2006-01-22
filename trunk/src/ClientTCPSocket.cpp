@@ -264,7 +264,7 @@ void CClientTCPSocket::Safe_Delete()
 }
 
 
-bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	printf("Rec: OPCODE %x \n",opcode);
@@ -387,7 +387,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 				if (!m_client->GetWaitStartTime()) {
 					m_client->SetWaitStartTime();
 				}
-				CMemFile data_in((byte*)buffer, size);
+				CMemFile data_in(buffer, size);
 				CMD4Hash reqfilehash = data_in.ReadHash();
 				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 				if ( reqfile == NULL ) {
@@ -519,7 +519,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQFILENAMEANSWER") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileInfo(&data, file);
@@ -530,7 +530,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILESTATUS") );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileStatus(false, &data, file);
@@ -573,7 +573,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_QUEUERANK") );
 			 
 			theStats::AddDownOverheadFileRequest(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			uint32 rank = data.ReadUInt32();
 			
 			m_client->SetRemoteQueueRank(rank);
@@ -612,7 +612,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 
 			CMD4Hash reqfilehash = data.ReadHash();
 
@@ -686,7 +686,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			if (size != 16) {
 				throw wxString(wxT("Invalid OP_HASHSETREQUEST packet size"));
 			}
-			m_client->SendHashsetPacket(CMD4Hash((byte*)buffer));
+			m_client->SendHashsetPacket(CMD4Hash(buffer));
 			break;
 		}
 		
@@ -750,7 +750,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CHANGE_CLIENT_ID") );
 			
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			uint32 nNewUserID = data.ReadUInt32();
 			uint32 nNewServerIP = data.ReadUInt32();
 			
@@ -786,7 +786,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			
-			CMemFile message_file((byte*)buffer, size);
+			CMemFile message_file(buffer, size);
 
 			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 			if (IsMessageFiltered(message, m_client)) {
@@ -938,7 +938,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			if (m_client->IsBanned()) {
 				break;
 			}
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 										
 			wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
@@ -987,7 +987,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			if (m_client->GetFileListRequested() == 1){
-				CMemFile data((byte*)buffer, size);
+				CMemFile data(buffer, size);
 				uint32 uDirs = data.ReadUInt32();
 				for (uint32 i = 0; i < uDirs; i++){
 					wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
@@ -1017,7 +1017,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILESDIRANS") );
 			
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 			if (m_client->GetFileListRequested() > 0){
@@ -1062,7 +1062,7 @@ bool CClientTCPSocket::ProcessPacket(const char* buffer, uint32 size, uint8 opco
 }
 
 
-bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 opcode)
+bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
 	printf("Rec: OPCODE %x \n",opcode);
@@ -1096,7 +1096,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_MULTIPACKET before finishing handshake"));
 			}
 
-			CMemFile data_in((byte*)buffer, size);
+			CMemFile data_in(buffer, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 			if ( reqfile == NULL ){
@@ -1212,7 +1212,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_MULTIPACKETANSWER before finishing handshake"));
 			}
 			
-			CMemFile data_in((byte*)buffer, size);
+			CMemFile data_in(buffer, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			const CPartFile *reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
 			//Make sure we are downloading this file.
@@ -1461,7 +1461,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_ANSWERSOURCES before finishing handshake"));
 			}
 			
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			const CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
 			if(file){
@@ -1504,7 +1504,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 
 		case OP_PUBLICIP_ANSWER: {
 			theStats::AddDownOverheadOther(size);
-			m_client->ProcessPublicIPAnswer((byte*)buffer, size);
+			m_client->ProcessPublicIPAnswer(buffer, size);
 			break;
 		}
 		case OP_PUBLICIP_REQ: {
@@ -1528,13 +1528,13 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 		case OP_AICHFILEHASHANS: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
 			theStats::AddDownOverheadOther(size);
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			m_client->ProcessAICHFileHash(&data, NULL);
 			break;
 		}
 		case OP_AICHFILEHASHREQ: {
 			// those should not be received normally, since we should only get those in MULTIPACKET
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
 			CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(hash);
 			if (pPartFile == NULL){
@@ -1558,7 +1558,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 			if(!Kademlia::CKademlia::isRunning()) {
 				break;
 			}
-			CMemFile data((byte*)buffer, size);
+			CMemFile data(buffer, size);
 			CUInt128 check = data.ReadUInt128();
 			check.XOR(Kademlia::CUInt128(true));
 			if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
@@ -1626,7 +1626,7 @@ bool CClientTCPSocket::ProcessExtPacket(const char* buffer, uint32 size, uint8 o
 				break;
 			}
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP") );				
-			CMemFile data_in((byte*)buffer, size);
+			CMemFile data_in(buffer, size);
 			uint32 destip = data_in.ReadUInt32();
 			uint16 destport = data_in.ReadUInt16();
 			CMD4Hash hash = data_in.ReadHash();

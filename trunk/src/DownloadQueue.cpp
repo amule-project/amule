@@ -905,7 +905,7 @@ void CDownloadQueue::ProcessLocalRequests()
 		if (iSize > 0) {
 			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
 			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
-			CPacket* packet = new CPacket(new char[iSize], dataTcpFrame.GetLength(), true, false);
+			CPacket* packet = new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();

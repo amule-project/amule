@@ -82,7 +82,7 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 	try {
 		switch (protocol) {
 			case OP_EMULEPROT:
-				ProcessPacket((char*)buffer + 2,length - 2, opcode, ip, port);
+				ProcessPacket(buffer + 2,length - 2, opcode, ip, port);
 				break;
 				
 			case OP_KADEMLIAHEADER:
@@ -118,7 +118,7 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 }
 
 
-void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint32 host, uint16 port)
+void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port)
 {
 	switch (opcode) {
 		case OP_REASKCALLBACKUDP: {
@@ -136,7 +136,7 @@ void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 						we discard the first 10 bytes below and then overwrite 
 						the other 6 with ip/port.
 					*/
-					CMemFile mem_packet((byte*)packet+10,size-10);
+					CMemFile mem_packet(packet+10,size-10);
 					// Change the ip and port while leaving the rest untouched
 					mem_packet.Seek(0,wxFromStart);
 					mem_packet.WriteUInt32(host);
@@ -153,7 +153,7 @@ void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKFILEPING") );
 			theStats::AddDownOverheadFileRequest(size);
 			
-			CMemFile data_in((byte*)packet, size);
+			CMemFile data_in(packet, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
 			if (!reqfile) {
@@ -223,7 +223,7 @@ void CClientUDPSocket::ProcessPacket(char* packet, int16 size, int8 opcode, uint
 			theStats::AddDownOverheadFileRequest(size);
 			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender) {
-				CMemFile data_in((byte*)packet,size);
+				CMemFile data_in(packet,size);
 				if ( sender->GetUDPVersion() > 3 ) {
 					sender->ProcessFileStatus(true, &data_in, sender->GetRequestFile());
 				}

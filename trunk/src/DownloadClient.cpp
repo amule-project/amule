@@ -549,7 +549,7 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 }
 /* eMule 0.30c implementation, i give it a try (Creteil) END ... */
 
-void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
+void CUpDownClient::ProcessHashSet(const byte* packet, uint32 size)
 {
 	if ((!m_reqfile) || md4cmp(packet,m_reqfile->GetFileHash().GetHash())) {
 		throw wxString(wxT("Wrong fileid sent (ProcessHashSet)"));
@@ -557,7 +557,7 @@ void CUpDownClient::ProcessHashSet(const char *packet, uint32 size)
 	if (!m_fHashsetRequesting) {
 		throw wxString(wxT("Received unsolicited hashset, ignoring it."));
 	}
-	CMemFile data((byte*)packet,size);
+	CMemFile data(packet,size);
 	if (m_reqfile->LoadHashsetFromFile(&data,true)) {
 		m_fHashsetRequesting = 0;
 	} else {
@@ -660,7 +660,7 @@ fill a gap.
 */
 
 #warning Kry - UPGRADE & Review
-void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool packed)
+void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool packed)
 {
 	// Ignore if no data required
 	if (!(GetDownloadState() == DS_DOWNLOADING || GetDownloadState() == DS_NONEEDEDPARTS)) {
@@ -673,7 +673,7 @@ void CUpDownClient::ProcessBlockPacket(const char *packet, uint32 size, bool pac
 	m_dwLastBlockReceived = ::GetTickCount();
 
 	// Read data from packet
-	const CMemFile data((byte*)packet, size);
+	const CMemFile data(packet, size);
 
 	// Check that this data is for the correct file
 	if ((!m_reqfile) || data.ReadHash() != m_reqfile->GetFileHash()) {
@@ -1350,14 +1350,14 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	SafeSendPacket(packet);
 }
 
-void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
+void CUpDownClient::ProcessAICHAnswer(const byte* packet, uint32 size)
 {
 	if (m_fAICHRequested == FALSE){
 		throw wxString(wxT("Received unrequested AICH Packet"));
 	}
 	m_fAICHRequested = FALSE;
 
-	CMemFile data((byte*)packet, size);
+	CMemFile data(packet, size);
 	if (size <= 16){	
 		CAICHHashSet::ClientAICHRequestFailed(this);
 		return;
@@ -1392,13 +1392,13 @@ void CUpDownClient::ProcessAICHAnswer(const char* packet, uint32 size)
 }
 
 
-void CUpDownClient::ProcessAICHRequest(const char* packet, uint32 size)
+void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 {
 	if (size != 16 + 2 + CAICHHash::GetHashSize()) {
 		throw wxString(wxT("Received AICH Request Packet with wrong size"));
 	}
 	
-	CMemFile data((byte*)packet, size);
+	CMemFile data(packet, size);
 
 	CMD4Hash hash = data.ReadHash();
 	uint16 nPart = data.ReadUInt16();
