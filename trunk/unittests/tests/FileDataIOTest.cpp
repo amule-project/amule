@@ -645,10 +645,26 @@ TEST(CMemFile, AttachedBuffer)
 	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
 
 	// Init with invalid buffer should fail
-	ASSERT_RAISES(CRunTimeException, new CMemFile(NULL, 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<const byte*>(NULL), 1024));
+	ASSERT_RAISES(CRunTimeException, new CMemFile(static_cast<byte*>(NULL), 1024));
 }
 
 
+TEST(CMemFile, ConstBuffer)
+{
+	byte arr[10];
+	CMemFile file(const_cast<const byte*>(arr), sizeof(arr));
+	
+	ASSERT_RAISES(CRunTimeException, file.WriteUInt8(0));
+	ASSERT_RAISES(CRunTimeException, file.WriteUInt16(0));
+	ASSERT_RAISES(CRunTimeException, file.WriteUInt32(0));
+	ASSERT_RAISES(CRunTimeException, file.WriteUInt64(0));
+
+	char buffer[sizeof(arr)];
+	ASSERT_RAISES(CRunTimeException, file.Write(buffer, sizeof(arr)));
+}
+
+	
 TEST(CMemFile, SetLength)
 {
 	CMemFile file;
