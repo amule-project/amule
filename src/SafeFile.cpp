@@ -28,6 +28,7 @@
 #include "ArchSpecific.h"			// Needed for ENDIAN_SWAP_*
 #include <common/StringFunctions.h>		// Needed for unicode2char, etc.
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
+#include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
 
 #include <algorithm>		// Needed for std::min
 
@@ -151,6 +152,7 @@ uint32 CFileDataIO::ReadUInt32() const
 	return ENDIAN_SWAP_32(value);
 }
 
+
 uint64 CFileDataIO::ReadUInt64() const
 {
 	uint64 value = 0;
@@ -158,6 +160,7 @@ uint64 CFileDataIO::ReadUInt64() const
 	
 	return ENDIAN_SWAP_64(value);
 }
+
 
 CUInt128 CFileDataIO::ReadUInt128() const
 {
@@ -171,6 +174,7 @@ CUInt128 CFileDataIO::ReadUInt128() const
 	return value;
 }
 
+
 CMD4Hash CFileDataIO::ReadHash() const
 {
 	CMD4Hash value;
@@ -179,6 +183,7 @@ CMD4Hash CFileDataIO::ReadHash() const
 	return value;
 }
 
+
 float CFileDataIO::ReadFloat() const
 {
 	float retVal;
@@ -186,18 +191,19 @@ float CFileDataIO::ReadFloat() const
 	return retVal;
 }
 
+
 unsigned char* CFileDataIO::ReadBsob(uint8* puSize)
 {
+	MULE_VALIDATE_PARAMS(puSize, wxT("NULL pointer argument in ReadBsob"));
+
 	*puSize = ReadUInt8();
-	unsigned char* pucBsob = new unsigned char[*puSize];
-	try {
-		Read(pucBsob, *puSize);
-	} catch(...) {
-		delete[] pucBsob;
-		throw;
-	}
-	return pucBsob;
+	
+	CScopedArray<unsigned char> bsob(new unsigned char[*puSize]);
+	Read(bsob.get(), *puSize);
+	
+	return bsob.release();
 }
+
 
 wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) const
 {
@@ -269,12 +275,14 @@ void CFileDataIO::WriteUInt32(uint32 value)
 	Write(&value, sizeof(uint32));
 }
 
+
 void CFileDataIO::WriteUInt64(uint64 value)
 {
 	ENDIAN_SWAP_I_64(value);
 	
 	Write(&value, sizeof(uint64));
 }
+
 
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 {
@@ -284,21 +292,25 @@ void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 	}
 }
 
+
 void CFileDataIO::WriteHash(const CMD4Hash& value)
 {
 	Write(value.GetHash(), MD4HASH_LENGTH);
 }
+
 
 void CFileDataIO::WriteFloat(float value)
 {
 	Write(&value, sizeof(float));
 }
 
+
 void CFileDataIO::WriteBsob(const unsigned char* value, uint8 size)
 {
 	WriteUInt8(size);
 	Write(value, size);
 }
+
 
 void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeLen)
 {
@@ -359,6 +371,7 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 		Write(s, sLength);
 	}
 }
+
 
 CTag *CFileDataIO::ReadTag(bool bOptACP)
 {
@@ -426,16 +439,10 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 			// And still.. it doesnt't work this way without breaking backward compatibility
 			case TAGTYPE_BSOB:
 			{
-				uint8 size;
-				unsigned char* value = ReadBsob(&size);
-				try {
-					retVal = new CTagBsob(name, value, size);
-				} catch(...) {
-					delete[] value;
-					throw;
-				}
-				delete[] value;
-				break;
+				uint8 size = 0;
+				CScopedArray<unsigned char> value(ReadBsob(&size));
+				
+				retVal = new CTagBsob(name, value.get(), size);
 			}
 
 			default:
@@ -451,15 +458,19 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 	return retVal;
 }
 
+
 void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP)
 {
+	MULE_VALIDATE_PARAMS(taglist, wxT("NULL pointer argument in ReadTagPtrList"));
+
 	uint32 count = ReadUInt8();
-	for (uint32 i=0; i<count; i++)
+	for (uint32 i = 0; i < count; i++)
 	{
 		CTag* tag = ReadTag(bOptACP);
 		taglist->push_back(tag);
 	}
 }
+
 
 void CFileDataIO::WriteTag(const CTag& tag)
 {
@@ -519,13 +530,16 @@ void CFileDataIO::WriteTag(const CTag& tag)
 	}
 }
 
+
 void CFileDataIO::WriteTagPtrList(const TagPtrList& tagList)
 {
-	uint32 count = (uint32)tagList.size();
+	uint32 count = tagList.size();
 	wxASSERT( count <= 0xFF );
+	
 	WriteUInt8(count);
 	TagPtrList::const_iterator it;
 	for (it = tagList.begin(); it != tagList.end(); it++) {
 		WriteTag(**it);
 	}
 }
+
