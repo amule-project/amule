@@ -857,7 +857,10 @@ void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
 	
-	wxASSERT(theApp.serverconnect && theApp.serverconnect->GetCurrentServer());
+	if (!theApp.serverconnect || !theApp.serverconnect->GetCurrentServer()) {
+		// We're not connected to any server, nothing to request
+		return;	
+	}
 	
 	bool bServerSupportsLargeFiles = theApp.serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
 	
