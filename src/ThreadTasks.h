@@ -126,7 +126,10 @@ public:
 
 protected:
 	/** See CThreadTask::Entry */	
-	virtual void Entry();	
+	virtual void Entry();
+
+	/** Converts old known2.met files to known2_64.met files. */
+	bool ConvertToKnown2ToKnown264();
 };
 
 
