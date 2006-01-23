@@ -733,14 +733,22 @@ bool CDownloadQueue::SendNextUDPPacket()
  			uint8 status = file->GetStatus();
  			
 			if ( ( status == PS_READY || status == PS_EMPTY ) && file->GetSourceCount() < thePrefs::GetMaxSourcePerFileUDP() ) {
- 				hashlist.WriteHash( file->GetFileHash() );
-					
-				#warning Kry - UPGRADE
-				if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
-					hashlist.WriteUInt32( file->GetFileSize() );
+				if (file->IsLargeFile() && !m_udpserver->SupportsLargeFilesUDP()) {
+					AddDebugLogLineM(false, logDownloadQueue, wxT("UDP Request for sources on a large file ignored: server doesn't support it")); 	
+				} else {
+					hashlist.WriteHash( file->GetFileHash() );
+					// See the notes on TCP packet
+					if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
+						if (file->IsLargeFile()) {
+							wxASSERT(m_udpserver->SupportsLargeFilesUDP());
+							hashlist.WriteUInt32( 0 );
+							hashlist.WriteUInt64( file->GetFileSize() );
+						} else {
+							hashlist.WriteUInt32( file->GetFileSize() );
+						}
+					}
+					--filesAllowed;
 				}
-
-				--filesAllowed;
   			}
 		
 			// Avoid skipping a file if we can't send any more currently
@@ -849,6 +857,10 @@ void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
 	
+	wxASSERT(theApp.serverconnect && theApp.serverconnect->GetCurrentServer());
+	
+	bool bServerSupportsLargeFiles = theApp.serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
+	
 	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
 		CMemFile dataTcpFrame(22);
 		const int iMaxFilesPerTcpFrame = 15;
@@ -888,16 +900,26 @@ void CDownloadQueue::ProcessLocalRequests()
 				m_localServerReqQueue.erase(posNextRequest);
 				iFiles++;
 
-				// create request packet
-				CMemFile data(20);
-				data.WriteHash(cur_file->GetFileHash());
-				// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
-				// There is no need to check anything, old server ignore the extra 4 bytes.
-				#warning Kry - UPGRADE
-				data.WriteUInt32(cur_file->GetFileSize());
-				CPacket packet(&data);
-				packet.SetOpCode(OP_GETSOURCES);
-				dataTcpFrame.Write(packet.GetPacket(), packet.GetRealPacketSize());
+				if (!bServerSupportsLargeFiles && cur_file->IsLargeFile()) {
+					AddDebugLogLineM(false, logDownloadQueue, wxT("TCP Request for sources on a large file ignored: server doesn't support it"));
+				} else {
+					// create request packet
+					CMemFile data(20);
+					data.WriteHash(cur_file->GetFileHash());
+					// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
+					// There is no need to check anything, old server ignore the extra 4 bytes.
+					// As of 17.9, servers accept a 0 32-bits size and then a 64bits size
+					if (cur_file->IsLargeFile()) {
+						wxASSERT(bServerSupportsLargeFiles);
+						data.WriteUInt32(0);
+						data.WriteUInt64(cur_file->GetFileSize());
+					} else {
+						data.WriteUInt32(cur_file->GetFileSize());
+					}
+					CPacket packet(&data);
+					packet.SetOpCode(OP_GETSOURCES);
+					dataTcpFrame.Write(packet.GetPacket(), packet.GetRealPacketSize());
+				}
 			}
 		}
 

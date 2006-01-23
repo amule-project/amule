@@ -201,13 +201,13 @@ class CEC_PartFile_Tag : public CECTag {
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
  		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
- 		uint32		SizeXfer()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt32Data(); }
-  		uint32		SizeDone()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt32Data(); }
+ 		uint64		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt64Data(); }
+ 		uint64		SizeXfer()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_XFER)->GetInt64Data(); }
+  		uint64		SizeDone()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_DONE)->GetInt64Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
  		uint8		FileStatus()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_STATUS)->GetInt8Data(); }
   		uint16		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt16Data(); }
-  		uint16		SourceNotCurrCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt32Data(); }
+  		uint16		SourceNotCurrCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT)->GetInt16Data(); }
   		uint16		SourceXferCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt16Data(); }
   		uint16		SourceCountA4AF()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF)->GetInt16Data(); }
   		uint32		Speed()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_SPEED)->GetInt32Data(); }
@@ -234,7 +234,7 @@ class CEC_PartFile_Tag : public CECTag {
 		void SetFileStatus(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
 
 		void SetSourceCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
-		void SetSourceNotCurrCount(uint32 value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
+		void SetSourceNotCurrCount(uint16 value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
 		void SetSourceXferCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
 		void SetSourceCountA4AF(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
 
@@ -258,7 +258,7 @@ class CEC_SharedFile_Tag : public CECTag {
 		wxString	FileHashString(){ return GetMD4Data().Encode(); }
 
  		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+ 		uint64		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt64Data(); }
  		wxString	FileEd2kLink()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_ED2K_LINK)->GetStringData(); }
 
   		uint8		Prio()		{ return GetTagByNameSafe(EC_TAG_PARTFILE_PRIO)->GetInt8Data(); }
@@ -328,7 +328,7 @@ class CEC_SearchFile_Tag : public CECTag {
 		wxString	FileHashString() { return GetMD4Data().Encode(); }
 
  		wxString	FileName()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData(); }
- 		uint32		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt32Data(); }
+ 		uint64		SizeFull()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SIZE_FULL)->GetInt64Data(); }
   		uint32		SourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT)->GetInt32Data(); }
   		uint32		CompleteSourceCount()	{ return GetTagByNameSafe(EC_TAG_PARTFILE_SOURCE_COUNT_XFER)->GetInt32Data(); }
   		bool		AlreadyHave()	{ return GetTagByName(EC_TAG_KNOWNFILE) != 0; }

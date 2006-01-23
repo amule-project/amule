@@ -103,7 +103,12 @@ void CKnownFileList::Save()
 	wxMutexLocker sLock(list_mut);
 
 	try {
-		file.WriteUInt8(MET_HEADER);
+		// Kry - This is the version, but we don't know it till
+		// we know if any largefile is saved. This allows the list
+		// to be compatible with previous versions.
+		bool bContainsAnyLargeFiles = false;
+		file.WriteUInt8(0);
+		
 		file.WriteUInt32(m_map.size() + m_duplicates.size());
 
 		// Duplicates handling. Duplicates needs to be saved first,
@@ -111,12 +116,22 @@ void CKnownFileList::Save()
 		KnownFileList::iterator itDup = m_duplicates.begin();
 		for ( ; itDup != m_duplicates.end(); ++itDup ) {
 			(*itDup)->WriteToFile(&file);
+			if ((*itDup)->IsLargeFile()) {
+				bContainsAnyLargeFiles = true;
+			}
 		}
 		
 		CKnownFileMap::iterator it = m_map.begin();
 		for (; it != m_map.end(); ++it) {
 			it->second->WriteToFile(&file);
+			if (it->second->IsLargeFile()) {
+				bContainsAnyLargeFiles = true;
+			}
 		}
+		
+		file.Seek(0);
+		file.WriteUInt8(bContainsAnyLargeFiles ? MET_HEADER_WITH_LARGEFILES : MET_HEADER);
+		
 	} catch (const CIOFailureException& e) {
 		AddLogLineM(true, CFormat(_("Error while saving known.met file: %s")) % e.what());
 	}

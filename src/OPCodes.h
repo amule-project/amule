@@ -82,11 +82,28 @@ enum {
 #define	VERSION_MIN		1
 #define	VERSION_UPDATE		0
 
-#define	EDONKEYVERSION				0x3c
-#define	PREFFILE_VERSION			0x14 //<<-- last change: reduced .dat, by using .ini
-#define	PARTFILE_VERSION			0xe0
-#define	PARTFILE_SPLITTEDVERSION		0xe1 // For edonkey part files importing.
-#define	CREDITFILE_VERSION			0x12
+#define	EDONKEYVERSION				0x3c // Used for server login
+
+// File versions
+
+enum PreferencesDatFileVersions {
+	PREFFILE_VERSION		= 0x14 //<<-- last change: reduced .dat, by using .ini
+};
+
+enum PartMetFileVersions {
+	PARTFILE_VERSION			= 0xe0,
+	PARTFILE_SPLITTEDVERSION	= 0xe1, // For edonkey part files importing.
+	PARTFILE_VERSION_LARGEFILE	= 0xe2
+};
+
+enum CreditFileVersions {
+	CREDITFILE_VERSION		= 0x12
+};
+
+enum KnownFileListVersions {
+	MET_HEADER					= 0x0E,
+	MET_HEADER_WITH_LARGEFILES	= 0x0F
+};
 
 #define COMPILE_DATE				__DATE__
 #define COMPILE_TIME				__TIME__
@@ -175,6 +192,7 @@ enum EClientSoftware {
 #define	TRACKED_CLEANUP_TIME			3600000 // 1 hour
 #define	KEEPTRACK_TIME				7200000 // 2h	//how long to keep track of clients which were once in the uploadqueue
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
+#define	DISKSPACERECHECKTIME			60000	// checkDiskspace
 
 // You shouldn't change anything here if you are not really sure, or aMule will probaly not work
 
@@ -194,8 +212,7 @@ enum FileConstants {
 };
 
 #define	MAXFRAGSIZE				1300
-#define	MET_HEADER				0x0E
-	
+
 const unsigned UNLIMITED = 0;
 
 // Known protocols
@@ -211,19 +228,21 @@ enum Protocols {
 
 
 // OP-codes used with TCP server connctions.
-enum OP_ClientToServer {
+enum OP_ClientToServerTCP {
 	OP_LOGINREQUEST				= 0x01,	// <HASH 16><ID 4><PORT 2><1 Tag_set>
 	OP_REJECT					= 0x05,	// (null)
 	OP_GETSERVERLIST			= 0x14,	// (null)client->server
 	OP_OFFERFILES				= 0x15,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 	OP_SEARCHREQUEST			= 0x16,	// <Query_Tree>
 	OP_DISCONNECT				= 0x18,	// (not verified)
-	OP_GETSOURCES				= 0x19,	// <HASH 16> /v2 <HASH 16><SIZE_4> (17.3)
+	OP_GETSOURCES				= 0x19,	// <HASH 16>
+										// v2 <HASH 16><SIZE_4> (17.3) (mandatory on 17.8)
+										// v2large <HASH 16><FILESIZE 4(0)><FILESIZE 8> (17.9) (large files only)
 	OP_SEARCH_USER				= 0x1A,	// <Query_Tree>
 	OP_CALLBACKREQUEST			= 0x1C,	// <ID 4>
-//	OP_QUERY_CHATS				= 0x1D,	// (deprecated not supported by server any longer)
-//	OP_CHAT_MESSAGE				= 0x1E,	// (deprecated not supported by server any longer)
-//	OP_JOIN_ROOM				= 0x1F,	// (deprecated not supported by server any longer)
+//	OP_QUERY_CHATS				= 0x1D,	// (deprecated, not supported by server any longer)
+//	OP_CHAT_MESSAGE				= 0x1E,	// (deprecated, not supported by server any longer)
+//	OP_JOIN_ROOM				= 0x1F,	// (deprecated, not supported by server any longer)
 	OP_QUERY_MORE_RESULT		= 0x21,	// (null)
 	OP_SERVERLIST				= 0x32,	// <count 1>(<IP 4><PORT 2>)[count] server->client
 	OP_SEARCHRESULT				= 0x33,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
@@ -231,11 +250,11 @@ enum OP_ClientToServer {
 	OP_CALLBACKREQUESTED		= 0x35,	// <IP 4><PORT 2>
 	OP_CALLBACK_FAIL			= 0x36,	// (null notverified)
 	OP_SERVERMESSAGE			= 0x38,	// <len 2><Message len>
-//	OP_CHAT_ROOM_REQUEST		= 0x39,	// (deprecated not supported by server any longer)
-//	OP_CHAT_BROADCAST			= 0x3A,	// (deprecated not supported by server any longer)
-//	OP_CHAT_USER_JOIN			= 0x3B,	// (deprecated not supported by server any longer)
-//	OP_CHAT_USER_LEAVE			= 0x3C,	// (deprecated not supported by server any longer)
-//	OP_CHAT_USER				= 0x3D,	// (deprecated not supported by server any longer)
+//	OP_CHAT_ROOM_REQUEST		= 0x39,	// (deprecated, not supported by server any longer)
+//	OP_CHAT_BROADCAST			= 0x3A,	// (deprecated, not supported by server any longer)
+//	OP_CHAT_USER_JOIN			= 0x3B,	// (deprecated, not supported by server any longer)
+//	OP_CHAT_USER_LEAVE			= 0x3C,	// (deprecated, not supported by server any longer)
+//	OP_CHAT_USER				= 0x3D,	// (deprecated, not supported by server any longer)
 	OP_IDCHANGE					= 0x40,	// <NEW_ID 4>
 	OP_SERVERIDENT				= 0x41,	// <HASH 16><IP 4><PORT 2>{1 TAG_SET}
 	OP_FOUNDSOURCES				= 0x42,	// <HASH 16><count 1>(<ID 4><PORT 2>)[count]
@@ -243,97 +262,106 @@ enum OP_ClientToServer {
 };
 
 //client <-> UDP server
-#define	OP_GLOBGETSOURCES2		0x94	// <HASH 16><SIZE_4>*
-#define	OP_GLOBSERVSTATREQ			0x96	// (null)
-#define	OP_GLOBSERVSTATRES			0x97	// <USER 4><FILES 4>
-#define	OP_GLOBSEARCHREQ			0x98	// <search_tree>
-#define	OP_GLOBSEARCHRES			0x99	// 
-#define	OP_GLOBGETSOURCES			0x9A	// <HASH 16>
-#define	OP_GLOBFOUNDSOURCES			0x9B	//
-#define	OP_GLOBCALLBACKREQ			0x9C	// <IP 4><PORT 2><client_ID 4>
-#define	OP_INVALID_LOWID			0x9E	// <ID 4>
-#define	OP_SERVER_LIST_REQ			0xA0	// <IP 4><PORT 2>
-#define	OP_SERVER_LIST_RES			0xA1	// <count 1> (<ip 4><port 2>)[count]
-#define	OP_SERVER_DESC_REQ			0xA2	// (null)
-#define	OP_SERVER_DESC_RES			0xA3	// <name_len 2><name name_len><desc_len 2 desc_en>
-#define	OP_SERVER_LIST_REQ2			0xA4	// (null)
+enum OP_ClientToServerUDP {
+	OP_GLOBGETSOURCES2			= 0x94,	// <HASH 16><FILESIZE 4>
+										// largefiles only: <HASH 16><FILESIZE 4(0)><FILESIZE 8> (17.8)		
+	OP_GLOBSERVSTATREQ			= 0x96,	// (null)
+	OP_GLOBSERVSTATRES			= 0x97,	// <USER 4><FILES 4>
+	OP_GLOBSEARCHREQ			= 0x98,	// <search_tree>
+	OP_GLOBSEARCHRES			= 0x99,	// 
+	OP_GLOBGETSOURCES			= 0x9A,	// <HASH 16>
+	OP_GLOBFOUNDSOURCES			= 0x9B,	//
+	OP_GLOBCALLBACKREQ			= 0x9C,	// <IP 4><PORT 2><client_ID 4>
+	OP_INVALID_LOWID			= 0x9E,	// <ID 4>
+	OP_SERVER_LIST_REQ			= 0xA0,	// <IP 4><PORT 2>
+	OP_SERVER_LIST_RES			= 0xA1,	// <count 1> (<ip 4><port 2>)[count]
+	OP_SERVER_DESC_REQ			= 0xA2,	// (null)
+	OP_SERVER_DESC_RES			= 0xA3,	// <name_len 2><name name_len><desc_len 2 desc_en>
+	OP_SERVER_LIST_REQ2			= 0xA4	// (null)
+};
 
-#define INV_SERV_DESC_LEN			0xF0FF	// used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
+#define INV_SERV_DESC_LEN			0xF0FF	// Used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
 
 // client <-> client
-#define	OP_HELLO				0x01	// 0x10<HASH 16><ID 4><PORT 2><1 Tag_set>
-#define	OP_SENDINGPART				0x46	// <HASH 16><von 4><bis 4><Daten len:(von-bis)>
-#define	OP_REQUESTPARTS				0x47	// <HASH 16><von[3] 4*3><bis[3] 4*3>
-#define	OP_FILEREQANSNOFIL			0x48	// <HASH 16>
-#define	OP_END_OF_DOWNLOAD     			0x49    // <HASH 16>
-#define	OP_ASKSHAREDFILES			0x4A	// (null)
-#define	OP_ASKSHAREDFILESANSWER 		0x4B	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
-#define	OP_HELLOANSWER				0x4C	// <HASH 16><ID 4><PORT 2><1 Tag_set><SERVER_IP 4><SERVER_PORT 2>
-#define	OP_CHANGE_CLIENT_ID 			0x4D	// <ID_old 4><ID_new 4>
-#define	OP_MESSAGE				0x4E	// <len 2><Message len>
-#define	OP_SETREQFILEID				0x4F	// <HASH 16>
-#define	OP_FILESTATUS				0x50	// <HASH 16><count 2><status(bit array) len:((count+7)/8)>
-#define	OP_HASHSETREQUEST			0x51	// <HASH 16>
-#define	OP_HASHSETANSWER			0x52	// <count 2><HASH[count] 16*count>
-#define	OP_STARTUPLOADREQ			0x54	// <HASH 16>
-#define	OP_ACCEPTUPLOADREQ			0x55	// (null)
-#define	OP_CANCELTRANSFER			0x56	// (null)	
-#define	OP_OUTOFPARTREQS			0x57	// (null)
-#define	OP_REQUESTFILENAME			0x58	// <HASH 16>	(more correctly file_name_request)
-#define	OP_REQFILENAMEANSWER			0x59	// <HASH 16><len 4><NAME len>
-#define	OP_CHANGE_SLOT				0x5B	// <HASH 16>
-#define	OP_QUEUERANK				0x5C	// <wert  4> (slot index of the request)
-#define	OP_ASKSHAREDDIRS			0x5D	// (null)
-#define	OP_ASKSHAREDFILESDIR			0x5E	// <len 2><Directory len>
-#define	OP_ASKSHAREDDIRSANS			0x5F	// <count 4>(<len 2><Directory len>)[count]
-#define	OP_ASKSHAREDFILESDIRANS			0x60	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
-#define	OP_ASKSHAREDDENIEDANS			0x61	// (null)
+enum ED2KStandardClientTCP {	
+	OP_HELLO					= 0x01,	// 0x10<HASH 16><ID 4><PORT 2><1 Tag_set>
+	OP_SENDINGPART				= 0x46,	// <HASH 16><von 4><bis 4><Daten len:(von-bis)>
+	OP_REQUESTPARTS				= 0x47,	// <HASH 16><von[3] 4*3><bis[3] 4*3>
+	OP_FILEREQANSNOFIL			= 0x48,	// <HASH 16>
+	OP_END_OF_DOWNLOAD     		= 0x49,	// <HASH 16>
+	OP_ASKSHAREDFILES			= 0x4A,	// (null)
+	OP_ASKSHAREDFILESANSWER 	= 0x4B,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+	OP_HELLOANSWER				= 0x4C,	// <HASH 16><ID 4><PORT 2><1 Tag_set><SERVER_IP 4><SERVER_PORT 2>
+	OP_CHANGE_CLIENT_ID 		= 0x4D,	// <ID_old 4><ID_new 4>
+	OP_MESSAGE					= 0x4E,	// <len 2><Message len>
+	OP_SETREQFILEID				= 0x4F,	// <HASH 16>
+	OP_FILESTATUS				= 0x50,	// <HASH 16><count 2><status(bit array) len:((count+7)/8)>
+	OP_HASHSETREQUEST			= 0x51,	// <HASH 16>
+	OP_HASHSETANSWER			= 0x52,	// <count 2><HASH[count] 16*count>
+	OP_STARTUPLOADREQ			= 0x54,	// <HASH 16>
+	OP_ACCEPTUPLOADREQ			= 0x55,	// (null)
+	OP_CANCELTRANSFER			= 0x56,	// (null)	
+	OP_OUTOFPARTREQS			= 0x57,	// (null)
+	OP_REQUESTFILENAME			= 0x58,	// <HASH 16>	(more correctly file_name_request)
+	OP_REQFILENAMEANSWER		= 0x59,	// <HASH 16><len 4><NAME len>
+	OP_CHANGE_SLOT				= 0x5B,	// <HASH 16>
+	OP_QUEUERANK				= 0x5C,	// <wert  4> (slot index of the request)
+	OP_ASKSHAREDDIRS			= 0x5D,	// (null)
+	OP_ASKSHAREDFILESDIR		= 0x5E,	// <len 2><Directory len>
+	OP_ASKSHAREDDIRSANS			= 0x5F,	// <count 4>(<len 2><Directory len>)[count]
+	OP_ASKSHAREDFILESDIRANS		= 0x60,	// <len 2><Directory len><count 4>(<HASH 16><ID 4><PORT 2><1 T
+	OP_ASKSHAREDDENIEDANS		= 0x61	// (null)
+};
 
-// this 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
+// This 'identifier' is used for referencing shared part (incomplete) files with the OP_ASKSHAREDDIRS and related opcodes
 // it was introduced with eDonkeyHybrid and is considered as part of the protocol.
 #define OP_INCOMPLETE_SHARED_FILES wxT("!Incomplete Files")
 
 // extened prot client <-> extened prot client
-#define	OP_EMULEINFO				0x01	//
-#define	OP_EMULEINFOANSWER			0x02	//
-#define	OP_COMPRESSEDPART			0x40	//
-#define	OP_QUEUERANKING				0x60	// <RANG 2>
-#define	OP_FILEDESC				0x61	// <len 2><NAME len>
-#define	OP_VERIFYUPSREQ				0x71	// (never used)
-#define	OP_VERIFYUPSANSWER			0x72	// (never used)
-#define	OP_UDPVERIFYUPREQ			0x73	// (never used)
-#define	OP_UDPVERIFYUPA				0x74	// (never used)
-#define	OP_REQUESTSOURCES			0x81	// <HASH 16>
-#define	OP_ANSWERSOURCES			0x82	//
-#define OP_PUBLICKEY				0x85	// <len 1><pubkey len>
-#define OP_SIGNATURE				0x86	// v1: <len 1><signature len>
-							// v2:<len 1><signature len><sigIPused 1>
-#define OP_SECIDENTSTATE			0x87	// <state 1><rndchallenge 4>
-#define OP_REQUESTPREVIEW			0x90	// <HASH 16>
-#define OP_PREVIEWANSWER			0x91	// <HASH 16><frames 1>{frames * <len 4><frame len>}
-#define OP_MULTIPACKET				0x92
-#define OP_MULTIPACKETANSWER			0x93
-#define	OP_PEERCACHE_QUERY			0x94
-#define	OP_PEERCACHE_ANSWER			0x95
-#define	OP_PEERCACHE_ACK			0x96
-#define	OP_PUBLICIP_REQ				0x97
-#define	OP_PUBLICIP_ANSWER			0x98
-#define OP_CALLBACK				0x99	// <HASH 16><HASH 16><uint 16>
-#define OP_REASKCALLBACKTCP			0x9A
-#define OP_AICHREQUEST				0x9B	// <HASH 16><uint16><HASH aichhashlen>
-#define OP_AICHANSWER				0x9C	// <HASH 16><uint16><HASH aichhashlen> <data>
-#define OP_AICHFILEHASHANS			0x9D	  
-#define OP_AICHFILEHASHREQ			0x9E
-#define OP_BUDDYPING			0x9F
-#define OP_BUDDYPONG			0xA0
+enum ED2KExtendedClientTCP {
+	OP_EMULEINFO				= 0x01,	//
+	OP_EMULEINFOANSWER			= 0x02,	//
+	OP_COMPRESSEDPART			= 0x40,	//
+	OP_QUEUERANKING				= 0x60,	// <RANG 2>
+	OP_FILEDESC					= 0x61,	// <len 2><NAME len>
+	OP_VERIFYUPSREQ				= 0x71,	// (never used)
+	OP_VERIFYUPSANSWER			= 0x72,	// (never used)
+	OP_UDPVERIFYUPREQ			= 0x73,	// (never used)
+	OP_UDPVERIFYUPA				= 0x74,	// (never used)
+	OP_REQUESTSOURCES			= 0x81,	// <HASH 16>
+	OP_ANSWERSOURCES			= 0x82,	//
+	OP_PUBLICKEY				= 0x85,	// <len 1><pubkey len>
+	OP_SIGNATURE				= 0x86,	// v1: <len 1><signature len>
+										// v2:<len 1><signature len><sigIPused 1>
+	OP_SECIDENTSTATE			= 0x87,	// <state 1><rndchallenge 4>
+	OP_REQUESTPREVIEW			= 0x90,	// <HASH 16>
+	OP_PREVIEWANSWER			= 0x91,	// <HASH 16><frames 1>{frames * <len 4><frame len>}
+	OP_MULTIPACKET				= 0x92,
+	OP_MULTIPACKETANSWER		= 0x93,
+	OP_PEERCACHE_QUERY			= 0x94,
+	OP_PEERCACHE_ANSWER			= 0x95,
+	OP_PEERCACHE_ACK			= 0x96,
+	OP_PUBLICIP_REQ				= 0x97,
+	OP_PUBLICIP_ANSWER			= 0x98,
+	OP_CALLBACK					= 0x99,	// <HASH 16><HASH 16><uint 16>
+	OP_REASKCALLBACKTCP			= 0x9A,
+	OP_AICHREQUEST				= 0x9B,	// <HASH 16><uint16><HASH aichhashlen>
+	OP_AICHANSWER				= 0x9C,	// <HASH 16><uint16><HASH aichhashlen> <data>
+	OP_AICHFILEHASHANS			= 0x9D,	  
+	OP_AICHFILEHASHREQ			= 0x9E,
+	OP_BUDDYPING				= 0x9F,
+	OP_BUDDYPONG				= 0xA0
+};
 
 // extened prot client <-> extened prot client UDP
-#define	OP_REASKFILEPING			0x90	// <HASH 16>
-#define	OP_REASKACK				0x91	// <RANG 2>
-#define	OP_FILENOTFOUND				0x92	// (null)
-#define	OP_QUEUEFULL				0x93	// (null)
-#define	OP_REASKCALLBACKUDP		0x94
-#define	OP_PORTTEST				0xFE	// Connection Test
+enum ED2KExtendedClientUDP {
+	OP_REASKFILEPING			= 0x90,	// <HASH 16>
+	OP_REASKACK					= 0x91,	// <RANG 2>
+	OP_FILENOTFOUND				= 0x92,	// (null)
+	OP_QUEUEFULL				= 0x93,	// (null)
+	OP_REASKCALLBACKUDP			= 0x94,
+	OP_PORTTEST					= 0xFE	// Connection Test
+};
 
 // server.met
 #define	ST_SERVERNAME				0x01	// <string>
@@ -506,6 +534,7 @@ enum OP_ClientToServer {
 #define TAG_ONPORT			"port"
 
 // ed2k search expression comparison operators
+// kad operators used to be different, but are the same since eMule 0.47a
 #define ED2K_SEARCH_OP_EQUAL         0 // eserver 16.45+
 #define ED2K_SEARCH_OP_GREATER       1 // dserver
 #define ED2K_SEARCH_OP_LESS          2 // dserver
@@ -514,12 +543,8 @@ enum OP_ClientToServer {
 #define ED2K_SEARCH_OP_NOTEQUAL      5 // eserver 16.45+
 
 // Kad search expression comparison operators
-#define KAD_SEARCH_OP_EQUAL         0 // eMule 0.43+
 #define KAD_SEARCH_OP_GREATER_EQUAL 1 // eMule 0.40+; NOTE: this different than ED2K!
 #define KAD_SEARCH_OP_LESS_EQUAL    2 // eMule 0.40+; NOTE: this different than ED2K!
-#define KAD_SEARCH_OP_GREATER       3 // eMule 0.43+; NOTE: this different than ED2K!
-#define KAD_SEARCH_OP_LESS          4 // eMule 0.43+; NOTE: this different than ED2K!
-#define KAD_SEARCH_OP_NOTEQUAL      5 // eMule 0.43+
 
 #define	CT_NAME				0x01
 #define	CT_PORT				0x0f
@@ -656,41 +681,41 @@ enum MuleTags {
 
 
 // KADEMLIA (opcodes) (udp)
-#define KADEMLIA_BOOTSTRAP_REQ	0x00	// <PEER (sender) [25]>
-#define KADEMLIA_BOOTSTRAP_RES	0x08	// <CNT [2]> <PEER [25]>*(CNT)
+enum KademliaOPcodesV1 {
+	KADEMLIA_BOOTSTRAP_REQ 	= 0x00,	// <PEER (sender) [25]>
+	KADEMLIA_BOOTSTRAP_RES	= 0x08,	// <CNT [2]> <PEER [25]>*(CNT)
 
-#define KADEMLIA_HELLO_REQ	 	0x10	// <PEER (sender) [25]>
-#define KADEMLIA_HELLO_RES     	0x18	// <PEER (receiver) [25]>
+	KADEMLIA_HELLO_REQ	 	= 0x10,	// <PEER (sender) [25]>
+	KADEMLIA_HELLO_RES     	= 0x18,	// <PEER (receiver) [25]>
 
-#define KADEMLIA_REQ		   	0x20	// <TYPE [1]> <HASH (target) [16]> <HASH (receiver) 16>
-#define KADEMLIA_RES			0x28	// <HASH (target) [16]> <CNT> <PEER [25]>*(CNT)
+	KADEMLIA_REQ		   	= 0x20,	// <TYPE [1]> <HASH (target) [16]> <HASH (receiver) 16>
+	KADEMLIA_RES			= 0x28,	// <HASH (target) [16]> <CNT> <PEER [25]>*(CNT)
 
-#define KADEMLIA_SEARCH_REQ		0x30	// <HASH (key) [16]> <ext 0/1 [1]> <SEARCH_TREE>[ext]
-//#define UNUSED				0x31	// Old Opcode, don't use.
-#define KADEMLIA_SRC_NOTES_REQ	0x32	// <HASH (key) [16]>
-#define KADEMLIA_SEARCH_RES		0x38	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
-//#define UNUSED				0x39	// Old Opcode, don't use.
-#define KADEMLIA_SRC_NOTES_RES	0x3A	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	KADEMLIA_SEARCH_REQ		= 0x30,	// <HASH (key) [16]> <ext 0/1 [1]> <SEARCH_TREE>[ext]
+	// UNUSED				= 0x31,	// Old Opcode, don't use.
+	KADEMLIA_SRC_NOTES_REQ	= 0x32,	// <HASH (key) [16]>
+	KADEMLIA_SEARCH_RES		= 0x38,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	// UNUSED				= 0x39,	// Old Opcode, don't use.
+	KADEMLIA_SRC_NOTES_RES	= 0x3A,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
 
-#define KADEMLIA_PUBLISH_REQ	0x40	// <HASH (key) [16]> <CNT1 [2]> (<HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
-//#define UNUSED				0x41	// Old Opcode, don't use.
-#define KADEMLIA_PUB_NOTES_REQ	0x42	// <HASH (key) [16]> <HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
-#define KADEMLIA_PUBLISH_RES	0x48	// <HASH (key) [16]>
-//#define UNUSED				0x49	// Old Opcode, don't use.
-#define KADEMLIA_PUB_NOTES_RES	0x4A	// <HASH (key) [16]>
+	KADEMLIA_PUBLISH_REQ	= 0x40,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	// UNUSED				= 0x41,	// Old Opcode, don't use.
+	KADEMLIA_PUB_NOTES_REQ	= 0x42,	// <HASH (key) [16]> <HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	KADEMLIA_PUBLISH_RES	= 0x48,	// <HASH (key) [16]>
+	// UNUSED				= 0x49,	// Old Opcode, don't use.
+	KADEMLIA_PUB_NOTES_RES	= 0x4A,	// <HASH (key) [16]>
 
-#define KADEMLIA_FIREWALLED_REQ	0x50	// <TCPPORT (sender) [2]>
-#define KADEMLIA_FINDBUDDY_REQ	0x51	// <TCPPORT (sender) [2]>
-#define KADEMLIA_CALLBACK_REQ	0x52	// <TCPPORT (sender) [2]>
-#define KADEMLIA_FIREWALLED_RES	0x58	// <IP (sender) [4]>
-#define KADEMLIA_FIREWALLED_ACK	0x59	// (null)
-#define KADEMLIA_FINDBUDDY_RES	0x5A	// <TCPPORT (sender) [2]>
+	KADEMLIA_FIREWALLED_REQ	= 0x50,	// <TCPPORT (sender) [2]>
+	KADEMLIA_FINDBUDDY_REQ	= 0x51,	// <TCPPORT (sender) [2]>
+	KADEMLIA_CALLBACK_REQ	= 0x52,	// <TCPPORT (sender) [2]>
+	KADEMLIA_FIREWALLED_RES	= 0x58,	// <IP (sender) [4]>
+	KADEMLIA_FIREWALLED_ACK	= 0x59,	// (null)
+	KADEMLIA_FINDBUDDY_RES	= 0x5A	// <TCPPORT (sender) [2]>
+};
 
 // KADEMLIA (parameter)
 #define KADEMLIA_FIND_VALUE		0x02
 #define KADEMLIA_STORE			0x04
 #define KADEMLIA_FIND_NODE		0x0B
-
-#define	DISKSPACERECHECKTIME			60000	// checkDiskspace
 
 #endif // OPCODES_H

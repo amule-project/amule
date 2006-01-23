@@ -123,76 +123,86 @@ public:
 		}
 };
 
-class CTagInt64 : public CTag
+class CTagIntSized : public CTag
+{
+public:
+	CTagIntSized(const wxString& name, uint64 value, uint8 bitsize)
+		: CTag(name) {
+			Init(value, bitsize);
+		}
+
+	CTagIntSized(uint8 name, uint64 value, uint8 bitsize)
+		: CTag(name) {
+			Init(value, bitsize);			
+		}
+		
+private:
+	void Init(uint64 value, uint8 bitsize) {
+			switch (bitsize) {
+				case 64:
+					wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
+					m_uVal = value;
+					m_uType = TAGTYPE_UINT64;
+					break;
+				case 32:
+					wxASSERT(value < 0xFFFFFFFF); 
+					m_uVal = value;
+					m_uType = TAGTYPE_UINT32;
+					break;
+				case 16:
+					wxASSERT(value < 0xFFFF); 
+					m_uVal = value;
+					m_uType = TAGTYPE_UINT16;
+					break;
+				case 8:
+					wxASSERT(value < 0xFF); 
+					m_uVal = value;
+					m_uType = TAGTYPE_UINT8;
+					break;
+				default:
+					throw wxString(wxT("Invalid bitsize on int tag"));
+			}
+	}
+};
+
+class CTagInt64 : public CTagIntSized
 {
 public:
 	CTagInt64(const wxString& name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT64;
-		}
+		: CTagIntSized(name, value, 64) {	}
 
 	CTagInt64(uint8 name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT64;
-		}
+		: CTagIntSized(name, value, 64) { }
 };
 
-class CTagInt32 : public CTag
+class CTagInt32 : public CTagIntSized
 {
 public:
 	CTagInt32(const wxString& name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT32;
-		}
+		: CTagIntSized(name, value, 32) {	}
 
 	CTagInt32(uint8 name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFFFFFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT32;
-		}
+		: CTagIntSized(name, value, 32) { }
 };
 
-class CTagInt16 : public CTag
+class CTagInt16 : public CTagIntSized
 {
 public:
 	CTagInt16(const wxString& name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT16;
-		}
+		: CTagIntSized(name, value, 16) {	}
 
 	CTagInt16(uint8 name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFFFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT16;
-		}
+		: CTagIntSized(name, value, 16) { }
 };
 
-class CTagInt8 : public CTag
+class CTagInt8 : public CTagIntSized
 {
 public:
 	CTagInt8(const wxString& name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT8;
-		}
+		: CTagIntSized(name, value, 8) {	}
 
 	CTagInt8(uint8 name, uint64 value)
-		: CTag(name) {
-			wxASSERT(value < 0xFF); 
-			m_uVal = value;
-			m_uType = TAGTYPE_UINT8;
-		}
+		: CTagIntSized(name, value, 8) { }
 };
 
 class CTagFloat : public CTag

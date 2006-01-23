@@ -129,8 +129,8 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint16)file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint16)file->GetNotCurrentSourcesCount(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
 		
@@ -165,8 +165,8 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint16)file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint16)file->GetNotCurrentSourcesCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount()));
 		
@@ -195,7 +195,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint16)l));
 	}
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, (uint32)file->GetFileSize()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
 				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
@@ -335,8 +335,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 //
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetCompleteSourceCount()));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -351,9 +351,9 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
 {
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetCompleteSourceCount(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 
