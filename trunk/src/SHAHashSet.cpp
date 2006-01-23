@@ -625,20 +625,32 @@ bool CAICHHashSet::SaveHashSet()
 	CFile file;
 	if (wxFileExists(fullpath)) {	
 		if (!file.Open(fullpath, CFile::read_write)) {
-			// Add logline about unable to open file
+			AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: opening met file failed!"));
 			return false;
 		}
 	} else {
-		if (!file.Create(fullpath)) {		
-			// Add logline about unable to create file			
+		if (!file.Create(fullpath)) {
+			AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: creating met file failed!"));			
 			return false;			
-		}		
+		} else {
+			AddDebugLogLineM( false, logSHAHashSet, wxT("Creating met file."));
+			file.WriteUInt8(KNOWN2_MET_VERSION);
+			// Rewind so it can be read below
+			file.Close();						
+			if (!file.Open(fullpath, CFile::read_write)) {
+				AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: opening met file failed!"));
+				return false;
+			}			
+			AddDebugLogLineM( true, logSHAHashSet, wxT("Created met file with no hashes."));
+		}
 	}
-	
+
 	try {
 		uint8 header = file.ReadUInt8();
 		if (header != KNOWN2_MET_VERSION) {
 			throw wxString(wxT("Not a met2-file"));
+		} else {
+			AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Met file is version 0x%2.2x."),header));
 		}
 		
 		// first we check if the hashset we want to write is already stored
@@ -1037,4 +1049,3 @@ void CAICHHashSet::DbgTest()
 	maxLevel = max(curLevel, maxLevel);
 #endif
 }
-
