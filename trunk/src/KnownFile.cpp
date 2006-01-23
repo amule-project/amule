@@ -520,7 +520,6 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 				break;
 			
 			case FT_FILESIZE:
-				#warning Kry - UPGRADE
 				SetFileSize(newtag.GetInt());
 				m_AvailPartFrequency.Clear();
 				m_AvailPartFrequency.Add(0, GetPartCount());
@@ -683,8 +682,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	CTagString nametag(FT_FILENAME, GetFileName());
 	nametag.WriteTagToFile(file);
 	
-	#warning Kry - UPGRADE
-	CTagInt32 sizetag(FT_FILESIZE, GetFileSize());
+	CTagIntSized sizetag(FT_FILESIZE, GetFileSize(), IsLargeFile() ? 64 : 32);
 	sizetag.WriteTagToFile(file);
 	
 	// statistic

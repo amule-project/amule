@@ -412,7 +412,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	
 	try {
 		version = metFile.ReadUInt8();
-		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION){
+		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
 			AddLogLineM(false, CFormat( _("Error: Invalid part.met fileversion: %s ==> %s") )
@@ -423,6 +423,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 
 		isnewstyle = (version == PARTFILE_SPLITTEDVERSION);
 		partmettype = isnewstyle ? PMT_SPLITTED : PMT_DEFAULTOLD;
+		
 		if (!isnewstyle) {
 			uint8 test[4];
 			metFile.Seek(24, wxFromStart);
@@ -434,6 +435,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 				partmettype=PMT_NEWOLD;
 			}
 		}
+		
 		if (isnewstyle) {
 			uint32 temp = metFile.ReadUInt32();
 	
@@ -471,12 +473,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_FILESIZE: {
-						#warning Kry - UPDATE
 						SetFileSize(newtag.GetInt());
 						break;
 					}
 					case FT_TRANSFERED: {
-						#warning Kry - UPDATE
 						transfered = newtag.GetInt();
 						break;
 					}
@@ -604,7 +604,6 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 								} else {
 									gap = gap_map[ gapkey ];
 								}
-								#warning Kry - UPDATE
 								if (gap_mark == FT_GAPSTART) {
 									gap->start = newtag.GetInt();
 								}
@@ -826,7 +825,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 
 		// version
-		file.WriteUInt8(PARTFILE_VERSION);
+		file.WriteUInt8(IsLargeFile() ? PARTFILE_VERSION_LARGEFILE : PARTFILE_VERSION);
 		
 		file.WriteUInt32(GetLastModificationTime(m_fullname));
 		// hash
@@ -857,15 +856,18 @@ bool CPartFile::SavePartFile(bool Initial)
 
 		file.WriteUInt32(tagcount);
 
+		#warning Kry - Where are lost by coruption and gained by compression?
+		
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
 		CTagString( FT_FILENAME, GetFileName() ).WriteTagToFile( &file, utf8strOptBOM );
 
 		CTagString( FT_FILENAME,		GetFileName()	).WriteTagToFile( &file );	// 1
-		#warning Kry - UPDATE
-		CTagInt32( FT_FILESIZE,		GetFileSize()		).WriteTagToFile( &file );	// 2
-		#warning Kry - UPDATE
-		CTagInt32( FT_TRANSFERED,	transfered		).WriteTagToFile( &file );	// 3
+
+		CTagIntSized( FT_FILESIZE,		GetFileSize()		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );	// 2
+
+		CTagIntSized( FT_TRANSFERED,	transfered		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );	// 3
+		
 		CTagInt32( FT_STATUS,		(m_paused?1:0)	).WriteTagToFile( &file );	// 4
 
 		if ( IsAutoDownPriority() ) {
@@ -935,14 +937,13 @@ bool CPartFile::SavePartFile(bool Initial)
 		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
 			wxString tagName = wxString::Format(wxT(" %u"), i_pos);
 			
-			#warning UPGRADE!
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			tagName[0] = FT_GAPSTART;
-			CTagInt32(tagName, (uint32)gaplist.GetAt(pos)->start		).WriteTagToFile( &file );
+			CTagIntSized(tagName, gaplist.GetAt(pos)->start		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
 			
 			tagName[0] = FT_GAPEND;
-			CTagInt32(tagName, (uint32)(gaplist.GetAt(pos)->end + 1)	).WriteTagToFile( &file );
+			CTagIntSized(tagName, (gaplist.GetAt(pos)->end + 1), IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
 			
 			++i_pos;
 		}
@@ -1007,7 +1008,6 @@ void CPartFile::SaveSourceSeeds()
 	#define MAX_SAVED_SOURCES 10
 	
 	// Kry - Sources seeds
-	// Copyright (c) 2004-2006 Angel Vidal (Kry)
 	// Based on a Feature request, this saves the last MAX_SAVED_SOURCES 
 	// sources of the file, giving a 'seed' for the next run.
 	// We save the last sources because:
