@@ -32,142 +32,143 @@
 #include <wx/intl.h>
 #include <wx/wfstream.h>
 #include <wx/protocol/http.h>
-#include <cmath>
-#include <memory>
+#include <wx/app.h>
 
-#include "amule.h"
-#include "HTTPDownload.h"	// Interface declarations
-#include <common/StringFunctions.h>	// Needed for unicode2char
-#include "OtherFunctions.h" 	// Needed for CastChild
-#include "Logger.h"		// Needed for AddLogLine*
-#include <common/Format.h>		// Needed for CFormat
-#include "InternalEvents.h"	// Needed for CMuleInternalEvent
-#include "Proxy.h"
+#include <cmath>
+
+#include "HTTPDownload.h"				// Interface declarations
+#include <common/StringFunctions.h>		// Needed for unicode2char
+#include "OtherFunctions.h"				// Needed for CastChild
+#include "Logger.h"						// Needed for AddLogLine*
+#include <common/Format.h>				// Needed for CFormat
+#include "InternalEvents.h"				// Needed for CMuleInternalEvent
+#include "Proxy.h"						// Needed for CProxyData
 #include "Preferences.h"
 
-#ifndef AMULE_DAEMON 
-	#include "inetdownload.h"	// Needed for inetDownload
-	#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
-	#include "MuleGifCtrl.h"
-	#include <wx/sizer.h> 
-	#include <wx/gauge.h>
-	#include <wx/stattext.h>
+
+#ifndef AMULE_DAEMON
+#include "inetdownload.h"	// Needed for inetDownload
+#include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
+#include "MuleGifCtrl.h"
+#include <wx/gauge.h>
+
+#ifdef __WXMSW__
+typedef wxGauge95 wxGaugeControl;
+#else
+typedef wxGauge wxGaugeControl;
 #endif
 
 
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_HTTP_PROGRESS, wxANY_ID)
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN, wxANY_ID)
 
-#ifndef AMULE_DAEMON 
-BEGIN_EVENT_TABLE(CHTTPDownloadThreadDlg,wxDialog)
-  EVT_BUTTON(ID_HTTPCANCEL, CHTTPDownloadThreadDlg::OnBtnCancel)
+
+class CHTTPDownloadDialog : public wxDialog
+{
+public:
+	CHTTPDownloadDialog(CHTTPDownloadThread* thread)
+	  : wxDialog(wxTheApp->GetTopWindow(), -1, _("Downloading..."),
+			wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxSYSTEM_MENU)
+   	{
+		downloadDlg(this, true)->Show(this, true);
+	
+		m_progressbar = CastChild(ID_HTTPDOWNLOADPROGRESS, wxGaugeControl);
+		m_progressbar->SetRange(100);
+
+		m_ani = CastChild(ID_ANIMATE, MuleGifCtrl);
+		m_ani->LoadData((const char*)inetDownload, sizeof(inetDownload));
+		m_ani->Start();
+	
+		m_thread = thread;
+	}
+
+	~CHTTPDownloadDialog() {
+	 	m_thread->Delete();
+		delete m_thread;
+	}	
+
+	void UpdateGauge(int total, int current) {
+		CFormat label(_("( %s / %s )"));
+		
+		label % CastItoXBytes(current);
+		if (total > 0) {
+			label % CastItoXBytes(total);
+		} else {
+			label % _("Unknown");
+		}
+	
+		CastChild(IDC_DOWNLOADSIZE, wxStaticText)->SetLabel(label.GetString());
+	
+		if (total and (total != m_progressbar->GetRange())) {
+			m_progressbar->SetRange(total);
+		}
+	
+		if (current && (current <= total)) {
+			m_progressbar->SetValue(current);
+		}
+	
+		Layout();
+	}
+
+private:
+	DECLARE_EVENT_TABLE();
+
+	void OnBtnCancel(wxCommandEvent& WXUNUSED(evt)) {
+		printf("HTTP download cancelled\n");
+		Show(false);
+	 	m_thread->Delete();
+	}
+	
+	void OnProgress(CMuleInternalEvent& evt) {
+		UpdateGauge(evt.GetExtraLong(), evt.GetInt());
+	}
+
+	void OnShutdown(CMuleInternalEvent& WXUNUSED(evt)) {
+		Show(false);
+		Destroy();
+	}
+  
+	wxThread*		m_thread;
+	MuleGifCtrl* 	m_ani;
+	wxGaugeControl* m_progressbar;
+};
+
+
+BEGIN_EVENT_TABLE(CHTTPDownloadDialog, wxDialog)
+	EVT_BUTTON(ID_HTTPCANCEL, CHTTPDownloadDialog::OnBtnCancel)
+	EVT_MULE_INTERNAL(wxEVT_HTTP_PROGRESS, -1, CHTTPDownloadDialog::OnProgress)
+	EVT_MULE_INTERNAL(wxEVT_HTTP_SHUTDOWN, -1, CHTTPDownloadDialog::OnShutdown)
 END_EVENT_TABLE()
 
-CHTTPDownloadThreadDlg::CHTTPDownloadThreadDlg(wxWindow* parent, CHTTPDownloadThread* thread)
-  : wxDialog(parent, -1,_("Downloading..."),wxDefaultPosition,wxDefaultSize,wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
-{
-	downloadDlg(this,TRUE)->Show(this,TRUE);
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_PROGRESS)
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
 	
-	m_progressbar = CastChild(ID_HTTPDOWNLOADPROGRESS,wxGauge);
-	wxASSERT(m_progressbar);
-	m_progressbar->SetRange(100);	// Just Temp
-	
-	m_ani = CastChild(ID_ANIMATE, MuleGifCtrl);
-	m_ani->LoadData((char*)inetDownload,sizeof(inetDownload));
-	m_ani->Start();
-	
-	m_parent_thread = thread;
-
-}
-
-void CHTTPDownloadThreadDlg::OnBtnCancel(wxCommandEvent& WXUNUSED(evt))
-{
-	printf("HTTP download cancelled\n");
- 	m_parent_thread->Delete();
-}
-
-void CHTTPDownloadThreadDlg::StopAnimation() 
-{ 
-	if (m_ani) {
-		m_ani->Stop();
-	}
-}
-
-CHTTPDownloadThreadDlg::~CHTTPDownloadThreadDlg() 
-{
-	Show(false);
-	if (m_ani) {
-		m_ani->Stop();
-	}
-}
-
-void CHTTPDownloadThreadDlg::UpdateGauge(int dltotal,int dlnow) 
-{	
-	wxString label = wxT("( ") + CastItoXBytes(dlnow) + wxT(" / ");
-	if (dltotal > 0) {
-		label += CastItoXBytes(dltotal);
-	} else {
-		label += _("Unknown");
-	}
-	
-	label += wxT(" )");
-	
-	CastChild(IDC_DOWNLOADSIZE, wxStaticText)->SetLabel(label);
-	
-	if ((dltotal != m_progressbar->GetRange()) && (dltotal > 0)) {
-		m_progressbar->SetRange(dltotal);
-	}
-	if ((dlnow > 0) && (dlnow <= dltotal))  {
-		m_progressbar->SetValue(dlnow);
-	}
-	
-	Layout();
-}
-
-CHTTPDownloadThreadGUI::CHTTPDownloadThreadGUI(wxString urlname, wxString filename,HTTP_Download_File file_id)
-: CHTTPDownloadThreadBase(urlname,filename,file_id)
-{
-#ifndef __WXMAC__
-	m_myDlg= new CHTTPDownloadThreadDlg(theApp.GetTopWindow(), this);
-	m_myDlg->Show(true);
-#endif
-}
-
-CHTTPDownloadThreadGUI::~CHTTPDownloadThreadGUI()
-{	
-#ifndef __WXMAC__
-	wxMutexGuiEnter();
-	if (m_myDlg != NULL) {
-		m_myDlg->StopAnimation();
-		m_myDlg->Destroy();
-	}
-	wxMutexGuiLeave();
-#endif
-}
-
-void CHTTPDownloadThreadGUI::ProgressCallback(int dltotal, int dlnow) 
-{
-#ifndef __WXMAC__
-	wxMutexGuiEnter();
-	m_myDlg->UpdateGauge(dltotal,dlnow);
-	wxMutexGuiLeave();
-#endif
-}
-
 #endif
 
-CHTTPDownloadThreadBase::CHTTPDownloadThreadBase(wxString urlname, wxString filename,HTTP_Download_File file_id):wxThread(wxTHREAD_DETACHED) 
+
+CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& filename, HTTP_Download_File file_id, bool showDialog)
+#ifdef AMULE_DAEMON
+	: wxThread(wxTHREAD_DETACHED),
+#else
+	: wxThread(showDialog ? wxTHREAD_JOINABLE : wxTHREAD_DETACHED),
+#endif
+	  m_url(url),
+	  m_tempfile(filename),
+	  m_result(1),
+	  m_file_id(file_id),
+	  m_companion(NULL)
 {
-  	m_url = urlname;
-  	m_tempfile = filename;
-  	m_result = 1;
-	m_file_type = file_id;
+	if (showDialog) {
+#ifndef AMULE_DAEMON
+		CHTTPDownloadDialog* dialog = new CHTTPDownloadDialog(this);
+		dialog->Show(true);
+		m_companion = dialog;
+#endif
+	}
 }
 
-CHTTPDownloadThreadBase::~CHTTPDownloadThreadBase()
-{	
-	//maybe a thread deletion needed
-}
 
-wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
+wxThread::ExitCode CHTTPDownloadThread::Entry()
 {
 	if (TestDestroy()) { 
 		// Thread going down...
@@ -184,26 +185,24 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 	bool use_proxy = proxy_data != NULL && proxy_data->m_proxyEnable;
 	
 	try {	
-		
 		wxFFileOutputStream outfile(m_tempfile);
 		
 		if (!outfile.Ok()) {
-			throw(wxString(CFormat(wxT("Unable to create destination file %s for download!\n")) % m_tempfile));
+			throw wxString(CFormat(wxT("Unable to create destination file %s for download!\n")) % m_tempfile);
 		}
 			
 		if ( m_url.IsEmpty() ) {
 			// Nowhere to download from!
-			throw(wxString(wxT("The URL to download can't be empty\n")));
+			throw wxString(wxT("The URL to download can't be empty\n"));
 		}
 
 		url_handler = new wxHTTP;
-		
 		url_handler->SetProxyMode(use_proxy);
 	
-		url_read_stream = GetInputStream(&url_handler, m_url,use_proxy);
+		url_read_stream = GetInputStream(&url_handler, m_url, use_proxy);
 		
 		if (!url_read_stream) {
-			throw(wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError()));
+			throw wxString(CFormat(wxT("The URL %s returned: %i - Error (%i)!")) % m_url % url_handler->GetResponse() % url_handler->GetError());
 		}
 		
 		int download_size = url_read_stream->GetSize();
@@ -211,7 +210,7 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
-		#define MAX_HTTP_READ 4092
+		const unsigned MAX_HTTP_READ = 4092;
 		
 		char buffer[MAX_HTTP_READ];
 		int current_read = 0;
@@ -224,52 +223,64 @@ wxThread::ExitCode CHTTPDownloadThreadBase::Entry()
 				outfile.Write(buffer,current_read);
 				int current_write = outfile.LastWrite();
 				if (current_read != current_write) {
-					throw(wxString(wxT("Critical error while writing downloaded file")));
-				} else {
-					ProgressCallback(download_size, total_read);
+					throw wxString(wxT("Critical error while writing downloaded file"));
+				} else if (m_companion) {
+#ifndef AMULE_DAEMON
+					CMuleInternalEvent evt(wxEVT_HTTP_PROGRESS);
+					evt.SetInt(total_read);
+					evt.SetExtraLong(download_size);
+					wxPostEvent(m_companion, evt);
+#endif
 				}
 			}
 		} while (current_read && !TestDestroy());
-	} catch (const wxString& download_error) {
+	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
+
 		m_result = -1;		
-		AddLogLineM(false,download_error);
+		AddLogLineM(false, error);
 	}
 
-	if (url_read_stream) {
-		delete url_read_stream;
-	}
-
+	delete url_read_stream;
 	if (url_handler) {
 		url_handler->Destroy();
 	}
 	
-	printf("HTTP download thread end\n");
+	printf("HTTP download thread ended\n");
 	
 	return 0;
 }
 
-void CHTTPDownloadThreadBase::OnExit() 
+
+void CHTTPDownloadThread::OnExit() 
 {
-	// Kry - Notice the app that the file finished download
+#ifndef AMULE_DAEMON
+	if (m_companion) {
+		CMuleInternalEvent termEvent(wxEVT_HTTP_SHUTDOWN);
+		wxPostEvent(m_companion, termEvent);	
+	}
+#endif
+	
+	// Notice the app that the file finished download
 	CMuleInternalEvent evt(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD);
-	evt.SetInt((int)m_file_type);
+	evt.SetInt((int)m_file_id);
 	evt.SetExtraLong((long)m_result);
-	wxPostEvent(&theApp,evt);
+	wxPostEvent(wxTheApp, evt);
 }
 
-wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy) {
-	// This function's purpose is to handle redirections in a proper way.
-	
+
+//! This function's purpose is to handle redirections in a proper way.
+wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy)
+{
 	if (TestDestroy()) {
 		return NULL;
 	}
 	
-	if ( !location.StartsWith(wxT("http://"))) {
+	if (!location.StartsWith(wxT("http://"))) {
 		// This is not a http url
-		throw(wxString(wxT("Invalid URL for server.met download or http redirection (did you forget 'http://' ?)")));
+		throw wxString(wxT("Invalid URL for server.met download or http redirection (did you forget 'http://' ?)"));
 	}
 	
 	// Get the host
@@ -354,3 +365,4 @@ wxInputStream* CHTTPDownloadThreadBase::GetInputStream(wxHTTP** url_handler, con
 		
 	return url_read_stream;
 }
+
