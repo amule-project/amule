@@ -857,12 +857,9 @@ void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
 	
-	if (!theApp.serverconnect || !theApp.serverconnect->GetCurrentServer()) {
-		// We're not connected to any server, nothing to request
-		return;	
-	}
-	
-	bool bServerSupportsLargeFiles = theApp.serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
+	bool bServerSupportsLargeFiles = theApp.serverconnect 
+									&& theApp.serverconnect->GetCurrentServer()
+									&& theApp.serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
 	
 	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
 		CMemFile dataTcpFrame(22);
@@ -928,8 +925,8 @@ void CDownloadQueue::ProcessLocalRequests()
 
 		int iSize = dataTcpFrame.GetLength();
 		if (iSize > 0) {
-			// create one 'packet' which contains all buffered OP_GETSOURCES eD2K packets to be sent with one TCP frame
-			// server credits: 16*iMaxFilesPerTcpFrame+1 = 241
+			// create one 'packet' which contains all buffered OP_GETSOURCES ED2K packets to be sent with one TCP frame
+			// server credits: (16+4)*regularfiles + (16+4+8)*largefiles +1
 			CPacket* packet = new CPacket(new byte[iSize], dataTcpFrame.GetLength(), true, false);
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
