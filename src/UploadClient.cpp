@@ -371,7 +371,7 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf, nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, (bLargeBlocks ? OP_SENDINGPART_I64 : OP_SENDINGPART));
+		CPacket* packet = new CPacket(&data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? OP_SENDINGPART_I64 : OP_SENDINGPART));
 	
 		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
