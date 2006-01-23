@@ -248,41 +248,51 @@ CAICHSyncTask::CAICHSyncTask()
 
 void CAICHSyncTask::Entry()
 {
+	ConvertToKnown2ToKnown264();
+	
 	AddDebugLogLineM( false, logAICHThread, _("Syncronization thread started.") );
 	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
+	const wxString fullpath = JoinPaths(theApp.ConfigDir, KNOWN2_MET_FILENAME);
 	
-	wxString fullpath = JoinPaths(theApp.ConfigDir, KNOWN2_MET_FILENAME);
+	CFile file;
 	
-	if (wxFileExists(fullpath)) {
-		CFile file;
-		
-		if (!file.Open(fullpath, CFile::read)) {
-			AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open hashlist file!") );
-			return;
-		}
+	if (!file.Open(fullpath, (CheckFileExists(fullpath) ? CFile::read_write : CFile::write))) {
+		AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
+		return;
+	}
 
-		try {
-			while ( !file.Eof() ) {
+	uint32 nLastVerifiedPos = 0;
+	try {
+		if (file.Eof()) {
+			file.WriteUInt8(KNOWN2_MET_VERSION);
+		} else {
+			if (file.ReadUInt8() != KNOWN2_MET_VERSION) {
+				throw CEOFException(wxT("Invalid met-file header found, removing file."));
+			}
+			
+			uint64 nExistingSize = file.GetLength();
+			while (file.GetPosition() < nExistingSize) {
 				// Read the next hash
 				hashlist.push_back(CAICHHash(&file));
 
+				uint32 nHashCount = file.ReadUInt32();
+				if (file.GetPosition() + nHashCount * CAICHHash::GetHashSize() > nExistingSize){
+					throw CEOFException(wxT("Hashlist ends past end of file."));
+				}
+
 				// skip the rest of this hashset
-				uint16 nHashCount = file.ReadUInt16();
-				file.Seek( nHashCount * HASHSIZE, wxFromCurrent );
+				nLastVerifiedPos = file.Seek(nHashCount * HASHSIZE, wxFromCurrent);
 			}
-		} catch (const CEOFException&) {
-			AddDebugLogLineM(true, logAICHThread, wxT("Hashlist corrupted, removing file."));
-			file.Close();
-			wxRemoveFile(fullpath);
-			
-			return;
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
-			
-			return;		
-		}		
+		}
+	} catch (const CEOFException&) {
+		AddDebugLogLineM(true, logAICHThread, wxT("Hashlist corrupted, truncating file."));
+		file.SetLength(nLastVerifiedPos);
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logAICHThread, wxT("IO failure while reading hashlist (Aborting): ") + e.what());
+		
+		return;		
 	}
 	
 	AddDebugLogLineM( false, logAICHThread, _("Masterhashes of known files have been loaded.") );
@@ -314,6 +324,68 @@ void CAICHSyncTask::Entry()
 	}
 }
 
+
+bool CAICHSyncTask::ConvertToKnown2ToKnown264()
+{
+	// converting known2.met to known2_64.met to support large files
+	// changing hashcount from uint16 to uint32
+
+	const wxString oldfullpath = JoinPaths(theApp.ConfigDir, OLD_KNOWN2_MET_FILENAME);
+	const wxString newfullpath = JoinPaths(theApp.ConfigDir, KNOWN2_MET_FILENAME);
+	
+	if (CheckFileExists(newfullpath) || !CheckFileExists(oldfullpath)){
+		// In this case, there is nothing that we need to do.
+		return false;
+	}
+
+	CFile oldfile;
+	CFile newfile;
+
+	if (!oldfile.Open(oldfullpath, CFile::read)) {
+		AddDebugLogLineM(true, logAICHThread, wxT("Failed to open 'known2.met' file."));
+		
+		// else -> known2.met also doesn't exists, so nothing to convert
+		return false;
+	}
+
+
+	if (!newfile.Open(newfullpath, CFile::write_excl)) {
+		AddDebugLogLineM(true, logAICHThread, wxT("Failed to create 'known2_64.met' file."));
+		
+		return false;
+	}
+
+	AddLogLineM(false, CFormat(_("Converting old AICH hashsets in '%s' to 64b in '%s'."))
+			% OLD_KNOWN2_MET_FILENAME % KNOWN2_MET_FILENAME);
+
+	try {
+		newfile.WriteUInt8(KNOWN2_MET_VERSION);
+		
+		while (newfile.GetPosition() < oldfile.GetLength()) {
+			CAICHHash aichHash(&oldfile);
+			uint32 nHashCount = oldfile.ReadUInt16();
+			
+			CScopedArray<byte> buffer(new byte[nHashCount * CAICHHash::GetHashSize()]);
+			
+			oldfile.Read(buffer.get(), nHashCount * CAICHHash::GetHashSize());
+			newfile.Write(aichHash.GetRawHash(), CAICHHash::GetHashSize());
+			newfile.WriteUInt32(nHashCount);
+			newfile.Write(buffer.get(), nHashCount * CAICHHash::GetHashSize());
+		}
+		newfile.Flush();
+	} catch (const CEOFException& e) {
+		AddDebugLogLineM(true, logAICHThread, wxT("Error reading old 'known2.met' file.") + e.what());
+		return false;
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logAICHThread, wxT("IO error while converting 'known2.met' file: ") + e.what());
+		return false;
+	}
+	
+	// FIXME LARGE FILES (uncomment)
+	//DeleteFile(oldfullpath);
+
+	return true;
+}
 
 
 
