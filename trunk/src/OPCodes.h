@@ -200,12 +200,8 @@ enum EClientSoftware {
 #define OLD_MAX_FILE_SIZE 4290048000ull
 
 enum FileConstants { 
-#ifdef SUPPORT_LARGE_FILES
 	// = 2^38 = 256GB
 	MAX_FILE_SIZE	= 0x4000000000ull,
-#else
-	MAX_FILE_SIZE	= OLD_MAX_FILE_SIZE,
-#endif
 	PARTSIZE		= 9728000ull,
 	BLOCKSIZE		= 184320u,
 	EMBLOCKSIZE		= 184320u
@@ -350,7 +346,11 @@ enum ED2KExtendedClientTCP {
 	OP_AICHFILEHASHANS			= 0x9D,	  
 	OP_AICHFILEHASHREQ			= 0x9E,
 	OP_BUDDYPING				= 0x9F,
-	OP_BUDDYPONG				= 0xA0
+	OP_BUDDYPONG				= 0xA0,
+	OP_COMPRESSEDPART_I64		= 0xA1,	// <HASH 16><von 8><size 4><Data len:size>
+	OP_SENDINGPART_I64			= 0xA2,	// <HASH 16><start 8><end 8><Data len:(end-start)>
+	OP_REQUESTPARTS_I64			= 0xA3,	// <HASH 16><start[3] 8*3><end[3] 8*3>
+	OP_MULTIPACKET_EXT			= 0xA4	
 };
 
 // extened prot client <-> extened prot client UDP

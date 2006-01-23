@@ -344,7 +344,7 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 	}
 	
 	#warning Kry - UPDATE
-
+	
 	while (togo){
 		if (togo < nPacketSize*2) {
 			nPacketSize = togo;
@@ -353,17 +353,27 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 		wxASSERT(nPacketSize);
 		togo -= nPacketSize;
 		
-		CMemFile data(nPacketSize+24);
+		uint64 endpos = (currentblock->EndOffset - togo);
+		uint64 startpos = endpos - nPacketSize;
+		
+		bool bLargeBlocks = (startpos > 0xFFFFFFFF) || (endpos > 0xFFFFFFFF);
+		
+		CMemFile data(nPacketSize + 16 + 2 * (bLargeBlocks ? 8 :4));
 		data.WriteHash(GetUploadFileID());
-		data.WriteUInt32((currentblock->EndOffset - togo) - nPacketSize);
-		data.WriteUInt32((currentblock->EndOffset - togo));
+		if (bLargeBlocks) {
+			data.WriteUInt64(startpos);
+			data.WriteUInt64(endpos);
+		} else {
+			data.WriteUInt32(startpos);
+			data.WriteUInt32(endpos);
+		}
 		char *tempbuf = new char[nPacketSize];
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf, nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data,OP_EDONKEYPROT,OP_SENDINGPART);
+		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, (bLargeBlocks ? OP_SENDINGPART_I64 : OP_SENDINGPART));
 	
-		theStats::AddUpOverheadFileRequest(24);
+		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
 		m_socket->SendPacket(packet,true,false, nPacketSize);
 	}
@@ -380,8 +390,6 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		CreateStandartPackets(buffer, togo, currentblock);
 		return;
 	}
-	
-	#warning Kry - UPDATE
 	
 	CMemFile memfile(output,newsize);
 	
@@ -401,15 +409,21 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		}
 		togo -= nPacketSize;
 
-		CMemFile data(nPacketSize+24);
+		bool isLargeBlock = (currentblock->StartOffset > 0xFFFFFFFF) || (currentblock->EndOffset > 0xFFFFFFFF);
+		
+		CMemFile data(nPacketSize + 16 + (isLargeBlock ? 12 : 8));
 		data.WriteHash(GetUploadFileID());
-		data.WriteUInt32(currentblock->StartOffset);
+		if (isLargeBlock) {
+			data.WriteUInt64(currentblock->StartOffset);
+		} else {
+			data.WriteUInt32(currentblock->StartOffset);
+		}
 		data.WriteUInt32(newsize);			
 		char *tempbuf = new char[nPacketSize];
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf,nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_COMPRESSEDPART);
+		CPacket* packet = new CPacket(&data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
 	
 		// approximate payload size
 		uint32 payloadSize = nPacketSize*oldSize/newsize;
@@ -870,4 +884,55 @@ void CUpDownClient::SetUploadFileID(const CMD4Hash& new_id)
 		uploadingfile = theApp.downloadqueue->GetFileByID(new_id);
 	}
 	SetUploadFileID(uploadingfile); // This will update queue count on old and new file.
+}
+
+void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks) {
+	
+	CMemFile data(pachPacket, nSize);
+	
+	CMD4Hash reqfilehash = data.ReadHash();
+	
+	uint64 auStartOffsets[3];
+	uint64 auEndOffsets[3];
+	
+	if (largeblocks) {
+		auStartOffsets[0] = data.ReadUInt64();
+		auStartOffsets[1] = data.ReadUInt64();
+		auStartOffsets[2] = data.ReadUInt64();
+		
+		auEndOffsets[0] = data.ReadUInt64();
+		auEndOffsets[1] = data.ReadUInt64();
+		auEndOffsets[2] = data.ReadUInt64();
+	} else {
+		auStartOffsets[0] = data.ReadUInt32();
+		auStartOffsets[1] = data.ReadUInt32();
+		auStartOffsets[2] = data.ReadUInt32();
+		
+		auEndOffsets[0] = data.ReadUInt32();
+		auEndOffsets[1] = data.ReadUInt32();
+		auEndOffsets[2] = data.ReadUInt32();		
+	}
+	
+	for (int i = 0; i < ARRSIZE(auStartOffsets); i++) {
+		if ( CLogger::IsEnabled( logClient ) ) {
+			wxString msg = wxString::Format(_("Client requests %u"), i);
+			msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
+			msg += wxT(" ") + GetFullIP();
+			AddLogLineM(false, msg);
+		}
+		if (auEndOffsets[i] > auStartOffsets[i]) {
+			Requested_Block_Struct* reqblock = new Requested_Block_Struct;
+			reqblock->StartOffset = auStartOffsets[i];
+			reqblock->EndOffset = auEndOffsets[i];
+			md4cpy(reqblock->FileID, reqfilehash.GetHash());
+			reqblock->transferred = 0;
+			AddReqBlock(reqblock);
+		} else {
+			if ( CLogger::IsEnabled( logClient ) ) {
+				if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
+					AddLogLineM(false, _("Client request is invalid!"));
+				}
+			}
+		}
+	}	
 }

@@ -213,9 +213,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 								| CAPABLE_AUXPORT 
 								| CAPABLE_NEWTAGS 
 								| CAPABLE_UNICODE
-								#if SUPPORT_LARGE_FILES
 								| CAPABLE_LARGEFILES
-								#endif
 											); 
 		
 		tagflags.WriteTagToFile(&data);

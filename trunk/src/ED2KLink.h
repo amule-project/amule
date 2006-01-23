@@ -68,7 +68,7 @@ public:
 	virtual wxString GetLink() const;
 
 	wxString GetName() const;
-	uint32 GetSize() const;
+	uint64 GetSize() const;
 	const CMD4Hash& GetHashKey() const;
 
 	// AICH data
@@ -97,7 +97,7 @@ private:
 	CED2KFileLink& operator=(const CED2KFileLink&); // Not defined
 
 	wxString	m_name;
-	uint32		m_size;
+	uint64		m_size;
 	CMD4Hash	m_hash;
 	bool		m_bAICHHashValid;
 	CAICHHash	m_AICHHash;

@@ -259,6 +259,8 @@ public:
 	uint8		GetSourceExchangeVersion() const	{ return m_bySourceExchangeVer; }
 	bool		SafeSendPacket(CPacket* packet);
 
+	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
+	
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
 	void		ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize);
@@ -320,6 +322,7 @@ public:
 	void		ClearWaitStartTime();
 	void		SendHashsetPacket(const CMD4Hash& forfileid);
 	bool		SupportMultiPacket() const	{ return m_bMultiPacket; }
+	bool		SupportExtMultiPacket() const	{ return m_fExtMultiPacket; }
 
 	void		SetUploadFileID(CKnownFile *newreqfile);
 
@@ -385,7 +388,7 @@ public:
 	bool		DeleteFileRequest(CPartFile* file);
 	void		DeleteAllFileRequests();
 	void		SendBlockRequests();
-	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed = false);
+	void		ProcessBlockPacket(const byte* packet, uint32 size, bool packed, bool largeblocks);
 
 #ifndef CLIENT_GUI
 	uint16		GetAvailablePartCount() const;
@@ -506,7 +509,6 @@ public:
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
-	void		SendCancelTransfer(CPacket* packet = NULL);
 	bool		HasBlocks() const		{ return !m_BlockRequests_queue.IsEmpty(); }
 
 	/* Source comes from? */
@@ -769,7 +771,8 @@ private:
 		m_fSupportsAICH      : 3,
 		m_fAICHRequested     : 1,
 		m_fSupportsLargeFiles : 1,
-		m_fSentOutOfPartReqs : 1;
+		m_fSentOutOfPartReqs : 1,
+		m_fExtMultiPacket : 1;
 
 	unsigned int
 		m_fOsInfoSupport : 1;

@@ -2106,7 +2106,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			end = file->GetPartCount();
 
 		// Place each gap, one PART at a time
-		for ( uint32 i = start; i < end; ++i ) {
+		for ( uint64 i = start; i < end; ++i ) {
 			COLORREF color;
 			if ( i < file->m_SrcpartFrequency.GetCount() && file->m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( file->m_SrcpartFrequency[i] - 1 ) );
@@ -2119,8 +2119,8 @@ void CDownloadListCtrl::DrawFileStatusBar(
 				color = DarkenColour( color, 2 );
 			}
 			
-			uint32 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
-			uint32 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
+			uint64 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
+			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
 		
 			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}

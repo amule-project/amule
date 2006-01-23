@@ -169,7 +169,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	// too large to be contained in a unsigned long, which means
 	// that this check is valid, as odd as it seems
 	wxString size = tokens.GetNextToken().Strip(wxString::both);
-	m_size = StrToULong(size);
+	m_size = StrToULongLong(size);
 	if ((m_size == 0) or (m_size > MAX_FILE_SIZE)) {
 		throw wxString(wxT("Invalid file size"));
 	}
@@ -259,7 +259,7 @@ wxString CED2KFileLink::GetName() const
 }
 
 
-uint32 CED2KFileLink::GetSize() const
+uint64 CED2KFileLink::GetSize() const
 {
 	return m_size;
 }
@@ -281,4 +281,3 @@ const CAICHHash& CED2KFileLink::GetAICHHash() const
 {
 	return m_AICHHash;
 }
-

@@ -209,7 +209,8 @@ void CUpDownClient::Init()
 	m_pReqFileAICHHash = NULL;
 	m_fSupportsAICH = 0;
 	m_fAICHRequested = 0;
-	m_fSupportsLargeFiles = 0;	
+	m_fSupportsLargeFiles = 0;
+	m_fExtMultiPacket = 0;
 
 	m_dwUserIP = 0;
 	m_nConnectIP = 0;
@@ -511,6 +512,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				//	27 Reserved
 				//	 1 Large Files (includes support for 64bit tags)
 				//   4 Kad Version
+				m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
 				m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
 				m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
 				dwEmuleTags |= 8;
@@ -1034,10 +1036,11 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 	// eMule Misc. Options #2
 	const uint32 uKadVersion			= 1;
-	const uint32 uSupportLargeFiles	= (OLD_MAX_FILE_SIZE < MAX_FILE_SIZE) ? 1 : 0;
-	
+	const uint32 uSupportLargeFiles	= 1;
+	const uint32 uExtMultiPacket		= 1;
 	CTagInt32 tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
-//				(RESERVED				     ) 
+//				(RESERVED				     )
+				(uExtMultiPacket		<<  5) |
 				(uSupportLargeFiles		<<  4) |
 				(uKadVersion			<<  0) 
 				
