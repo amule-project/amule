@@ -679,7 +679,7 @@ void CUpDownClient::SendBlockRequests()
 		}
 	}
 	
-	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
+	CPacket* packet = new CPacket(&data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }
