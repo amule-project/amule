@@ -102,7 +102,7 @@ void MuleGifCtrl::Stop()
 
 wxSize MuleGifCtrl::GetBestSize()
 {
-	return wxSize( m_decoder->GetWidth(), m_decoder->GetHeight() );
+	return wxSize( m_decoder->GetLogicalScreenWidth(), m_decoder->GetLogicalScreenHeight() );
 }
 
 
@@ -129,11 +129,11 @@ void MuleGifCtrl::OnPaint( wxPaintEvent& WXUNUSED(event) )
 	wxBufferedPaintDC dc(this);
 
     wxSize size = GetClientSize();
-	int x = (size.GetWidth()-m_frame.GetWidth())/2;
-	int y = (size.GetHeight()-m_frame.GetHeight())/2;
+	int x = (size.GetWidth()-m_decoder->GetLogicalScreenWidth())/2;
+	int y = (size.GetHeight()-m_decoder->GetLogicalScreenHeight())/2;
 
 	dc.SetBackground( wxBrush( GetBackgroundColour(), wxSOLID ));
 	dc.Clear();
-	dc.DrawBitmap( m_frame, x, y, true);
+	dc.DrawBitmap( m_frame, x + m_decoder->GetLeft(), y + m_decoder->GetTop(), true);
 }
 
