@@ -122,10 +122,10 @@ public:
 
 	virtual const wxString&	GetFileName() const		{return m_strFileName;}
 	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
-	#warning Kry - Review
+
 	uint64	GetFileSize() const	{ return m_nFileSize;}
 	bool	IsLargeFile() const	{ return m_nFileSize > (uint64)OLD_MAX_FILE_SIZE; }
-	#warning Kry - Review
+
 	virtual void SetFileSize(uint64 nFileSize) { m_nFileSize = nFileSize; }
 	
 	virtual void	SetFileName(const wxString& strmakeFilename);
@@ -134,6 +134,7 @@ public:
 	uint32 GetIntTagValue(uint8 tagname) const;
 	uint32 GetIntTagValue(const wxString& tagname) const;
 	bool GetIntTagValue(uint8 tagname, uint32& ruValue) const;
+	void SetIntTagValue(uint8 tagname, uint32 ruValue) const;
 	const wxString& GetStrTagValue(uint8 tagname) const;
 	const wxString& GetStrTagValue(const wxString& tagname) const;
 	CTag* GetTag(const wxString& tagname) const;	

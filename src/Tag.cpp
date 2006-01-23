@@ -359,7 +359,11 @@ bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
 		if (IsStr()) {
 			file->WriteString(GetStr(), eStrEncode);
 		} else if (IsInt()) {
-			file->WriteUInt32(m_uVal);
+			if (GetType() == TAGTYPE_UINT64) {
+				file->WriteUInt64(m_uVal);
+			} else {
+				file->WriteUInt32(m_uVal);
+			}
 		} else if (IsFloat()) {
 			#warning Endianess problem?
 			file->Write(&m_fVal, 4);

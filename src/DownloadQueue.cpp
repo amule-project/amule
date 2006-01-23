@@ -903,8 +903,9 @@ void CDownloadQueue::ProcessLocalRequests()
 				if (!bServerSupportsLargeFiles && cur_file->IsLargeFile()) {
 					AddDebugLogLineM(false, logDownloadQueue, wxT("TCP Request for sources on a large file ignored: server doesn't support it"));
 				} else {
+					AddDebugLogLineM(false, logDownloadQueue, wxT("Creating local sources request packet for ") + cur_file->GetFileName());
 					// create request packet
-					CMemFile data(20);
+					CMemFile data(16 + (cur_file->IsLargeFile() ? 8 : 4));
 					data.WriteHash(cur_file->GetFileHash());
 					// Kry - lugdunum extended protocol on 17.3 to handle filesize properly.
 					// There is no need to check anything, old server ignore the extra 4 bytes.
@@ -932,6 +933,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
 			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
+			AddDebugLogLineM(false, logDownloadQueue, wxT("Sent local sources request packet."));
 			theStats::AddUpOverheadServer(size);
 		}
 

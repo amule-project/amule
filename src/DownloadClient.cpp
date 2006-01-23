@@ -211,6 +211,13 @@ void CUpDownClient::SendFileRequest()
 	CMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash(m_reqfile->GetFileHash());
 	if (SupportMultiPacket()) {
+		
+		if (SupportExtMultiPacket()) {
+			dataFileReq.WriteUInt64(m_reqfile->GetFileSize());
+		}
+		
+		AddDebugLogLineM(false, logClient, wxT("Sending file request to client\n"));
+		
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
 		// Extended information
 		if (GetExtendedRequestsVersion() > 0) {
@@ -234,8 +241,7 @@ void CUpDownClient::SendFileRequest()
 		if (IsSupportingAICH()) {
 			dataFileReq.WriteUInt8(OP_AICHFILEHASHREQ);
 		}		
-		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT);
-		packet->SetOpCode(OP_MULTIPACKET);
+		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		SendPacket(packet, true);
 	} else {
@@ -309,8 +315,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
 	// know that the file is shared, we know also that the file is complete and don't need to request the file status.
-	if (m_reqfile->GetPartCount() == 1)
-	{
+	if (m_reqfile->GetPartCount() == 1) {
 		m_nPartCount = m_reqfile->GetPartCount();
 		
 		m_reqfile->UpdatePartsFrequency( this, false );	// Decrement
@@ -322,10 +327,8 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 
 		UpdateDisplayedInfo();
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
-		if (m_reqfile->IsHashSetNeeded())
-		{
-			if (m_socket)
-			{
+		if (m_reqfile->IsHashSetNeeded()) {
+			if (m_socket) {
 				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -333,12 +336,10 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
 				m_reqfile->SetHashSetNeeded(false);
-			}
-			else {
+			} else {
 				wxASSERT(0);
 			}
-		}
-		else {
+		} else {
 			SendStartupLoadReq();
 		}
 		m_reqfile->UpdatePartsInfo();
@@ -605,15 +606,41 @@ void CUpDownClient::SendBlockRequests()
 			SetSentCancelTransfer(1);
 		}
 		SetDownloadState(DS_NONEEDEDPARTS);
+		#warning Kry - Would be nice to swap A4AF here.
 		return;
 	}
 	
-	#warning Kry - UPDATE both
+	#warning Kry - I dont specially like this approach, we iterate one time too many
 	
-	CMemFile data(16 /*Hash*/ + (3*4 /* uint32 start*/) + (3*4/* uint32 start*/));
-	data.WriteHash(m_reqfile->GetFileHash());
+	bool bHasLongBlocks =  false;
 	
 	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
+	for (uint32 i = 0; i != 3; i++){
+		if (pos){
+			Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
+			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
+			if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF){
+				bHasLongBlocks = true;
+				if (!SupportsLargeFiles()){
+					// Requesting a large block from a client that doesn't support large files?
+					wxASSERT( false );
+					if (!GetSentCancelTransfer()){
+						CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
+						theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+						SendPacket(packet,true,true);
+						SetSentCancelTransfer(1);
+					}					
+					SetDownloadState(DS_ERROR);
+				}
+				break;
+			}
+		}
+	}
+	
+	CMemFile data(16 /*Hash*/ + (3*(bHasLongBlocks ? 8 : 4) /* uint32/64 start*/) + (3*(bHasLongBlocks ? 8 : 4)/* uint32/64 end*/));
+	data.WriteHash(m_reqfile->GetFileHash());
+	
+	pos = m_PendingBlocks_list.GetHeadPosition();
 
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
@@ -621,22 +648,38 @@ void CUpDownClient::SendBlockRequests()
 			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
 			pending->fZStreamError = 0;
 			pending->fRecovered = 0;
-			data.WriteUInt32(pending->block->StartOffset);
+			if (bHasLongBlocks) {
+				data.WriteUInt64(pending->block->StartOffset);
+			} else {
+				data.WriteUInt32(pending->block->StartOffset);
+			}
 		} else {
-			data.WriteUInt32(0);
+			if (bHasLongBlocks) {
+				data.WriteUInt64(0);
+			} else {
+				data.WriteUInt32(0);
+			}
 		}
 	}
 	pos = m_PendingBlocks_list.GetHeadPosition();
 	for (uint32 i = 0; i != 3; i++) {
 		if (pos) {
 			Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
-			data.WriteUInt32(block->EndOffset+1);			
+			if (bHasLongBlocks) {
+				data.WriteUInt64(block->EndOffset+1);
+			} else {
+				data.WriteUInt32(block->EndOffset+1);		
+			}
 		} else {
-			data.WriteUInt32(0);
+			if (bHasLongBlocks) {			
+				data.WriteUInt64(0);
+			} else {
+				data.WriteUInt32(0);
+			}
 		}
 	}
 	
-	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, OP_REQUESTPARTS);
+	CPacket* packet = new CPacket(&data,OP_EDONKEYPROT, (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }
@@ -659,15 +702,14 @@ The requests will still not exceed 180k, but may be smaller to
 fill a gap.
 */
 
-#warning Kry - UPGRADE & Review
-void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool packed)
+void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool packed, bool largeblocks)
 {
 	// Ignore if no data required
 	if (!(GetDownloadState() == DS_DOWNLOADING || GetDownloadState() == DS_NONEEDEDPARTS)) {
 		return;
 	}
 
-	const int HEADER_SIZE = 24;
+	int header_size = 16;
 
 	// Update stats
 	m_dwLastBlockReceived = ::GetTickCount();
@@ -681,37 +723,54 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 	}
 
 	// Find the start & end positions, and size of this chunk of data
-	uint64 nStartPos = data.ReadUInt32();
+	uint64 nStartPos;
 	uint64 nEndPos = 0;
 	uint32 nBlockSize = 0;
+
+	if (largeblocks) {
+		nStartPos = data.ReadUInt64();
+		header_size += 8;
+	} else {
+		nStartPos = data.ReadUInt32();
+		header_size += 4;
+	}
+	
 	if (packed) {
 		nBlockSize = data.ReadUInt32();
-		nEndPos = nStartPos + (size - HEADER_SIZE);
+		header_size += 4;
+		nEndPos = nStartPos + (size - header_size);
 	} else {
-		nEndPos = data.ReadUInt32();
+		if (largeblocks) {
+			nEndPos = data.ReadUInt64();
+			header_size += 8;
+		} else {
+			nEndPos = data.ReadUInt32();
+			header_size += 4;
+		}
 	}
 
-	// Check that packet size matches the declared data size + header size (24)
-	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + HEADER_SIZE)) {
+	// Check that packet size matches the declared data size + header size
+	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + header_size)) {
 		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
 	}
-	theStats::AddDownloadFromSoft(GetClientSoft(),size - HEADER_SIZE);
-	bytesReceivedCycle += size - HEADER_SIZE;
+	theStats::AddDownloadFromSoft(GetClientSoft(),size - header_size);
+	bytesReceivedCycle += size - header_size;
 
-	credits->AddDownloaded(size - HEADER_SIZE, GetIP(), theApp.CryptoAvailable());
+	credits->AddDownloaded(size - header_size, GetIP(), theApp.CryptoAvailable());
 	
 	// Move end back one, should be inclusive
 	nEndPos--;
 
 	// Loop through to find the reserved block that this is within
 	for ( POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos) ) {
+
 		Pending_Block_Struct* cur_block = m_PendingBlocks_list.GetAt(pos);
 		
 		if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
 			// Found reserved block
-				
+
 			if (cur_block->fZStreamError){
-				AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - HEADER_SIZE, nStartPos, nEndPos) + m_reqfile->GetFileName());
+				AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - header_size, nStartPos, nEndPos) + m_reqfile->GetFileName());
 				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 				return;
 			}
@@ -726,14 +785,14 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 			// Handle differently depending on whether packed or not
 			if (!packed) {
 				// Write to disk (will be buffered in part file class)
-				lenWritten = m_reqfile->WriteToBuffer( size - HEADER_SIZE, 
-													   (byte*)(packet + HEADER_SIZE),
+				lenWritten = m_reqfile->WriteToBuffer( size - header_size, 
+													   (byte*)(packet + header_size),
 													   nStartPos,
 													   nEndPos,
 													   cur_block->block );
 			} else {
 				// Packed
-				wxASSERT( (int)size > 0 );
+				wxASSERT( (long int)size > 0 );
 				// Create space to store unzipped data, the size is
 				// only an initial guess, will be resized in unzip()
 				// if not big enough
@@ -745,7 +804,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 				byte *unzipped = new byte[lenUnzipped];
 
 				// Try to unzip the packet
-				int result = unzip(cur_block, (byte*)(packet + HEADER_SIZE), (size - HEADER_SIZE), &unzipped, &lenUnzipped);
+				int result = unzip(cur_block, (byte*)(packet + header_size), (size - header_size), &unzipped, &lenUnzipped);
 				
 				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously erroneous.
 				if (result == Z_OK && ((int)lenUnzipped >= 0)) {
@@ -763,7 +822,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 							m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 						} else {
 							// Write uncompressed data to file
-							lenWritten = m_reqfile->WriteToBuffer( size - HEADER_SIZE,
+							lenWritten = m_reqfile->WriteToBuffer( size - header_size,
 																   unzipped,
 																   nStartPos,
 																   nEndPos,

@@ -131,6 +131,9 @@ inline unsigned long StrToULong( const wxString& str ) {
 	return value;
 }
 
+inline unsigned long long StrToULongLong( const wxString& str ) {
+	return atoll(unicode2char(str));
+}
 
 inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 {
