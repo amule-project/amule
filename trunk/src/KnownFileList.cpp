@@ -58,30 +58,37 @@ bool CKnownFileList::Init()
 	
 	wxString fullpath = theApp.ConfigDir + wxT("known.met");
 	if (!wxFileExists(fullpath)) {
+		AddLogLineM(true, _("Warninng: known.met does not exist."));
 		return false;
 	}
 
 	if (!file.Open(fullpath)) {
+		AddLogLineM(true, _("Warninng: known.met cannot be opened."));
 		return false;
 	}
 	
 	try {
-		if (file.ReadUInt8() != MET_HEADER) {
+		uint8 version = file.ReadUInt8();
+		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
 			AddLogLineM(true, _("Warning: Knownfile list corrupted, contains invalid header."));
 			return false;
 		}
 		
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
+		AddDebugLogLineM(false, logKnownFiles, wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),RecordsNumber, version));
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			std::auto_ptr<CKnownFile> record(new CKnownFile());
 			
 			if (record->LoadFromFile(&file)) {
+				AddDebugLogLineM(false, logKnownFiles, wxT("Known file read: ") + record->GetFileName());
 				Append(record.release());
 			} else {
 				AddLogLineM(true, wxT("Failed to load entry in knownfilelist, file may be corrupt"));
 			}
 		}
+		
+		AddDebugLogLineM(false, logKnownFiles, wxT("Finished reading known files"));
 	
 		return true;
 	} catch (const CInvalidPacket& e) {

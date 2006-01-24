@@ -477,7 +477,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;
 		}
 
-		uint32 fileLength = 0;
+		uint64 fileLength = 0;
 		try {
 			fileLength = new_file.GetLength();
 		} catch (const CIOFailureException& e) {
