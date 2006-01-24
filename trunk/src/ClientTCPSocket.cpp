@@ -1047,8 +1047,9 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 	*/
 	switch(opcode) {
 		case OP_MULTIPACKET_EXT:
+			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET_EXT") );
 		case OP_MULTIPACKET: {	
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET") );
+			if (opcode == OP_MULTIPACKET) AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET") );
 
 			theStats::AddDownOverheadFileRequest(size);
 
@@ -1081,7 +1082,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				file_not_found = true;
 			}				
 			
-			if (nSize && (reqfile->GetFileSize() != nSize)) {
+			if (!file_not_found && nSize && (reqfile->GetFileSize() != nSize)) {
 				AddDebugLogLineM(false, logRemoteClient, wxT("Remote client asked for a file but specified wrong size"));
 				file_not_found = true;
 			}
@@ -1338,9 +1339,11 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			break;
 		}
 		case OP_SENDINGPART_I64:
+			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_SENDINGPART_I64") );
 		case OP_COMPRESSEDPART_I64:
+			if (opcode == OP_COMPRESSEDPART_I64) AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART_I64") );
 		case OP_COMPRESSEDPART: {	// 0.47a
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART") );
+			if (opcode == OP_COMPRESSEDPART) AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_COMPRESSEDPART") );
 			
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
 				// Here comes a extended packet without finishing the hanshake.
