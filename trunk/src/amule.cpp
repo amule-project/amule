@@ -326,10 +326,31 @@ int CamuleApp::OnExit()
 	return AMULE_APP_BASE::OnExit();
 }
 
-int CamuleApp::InitGui(bool ,wxString &)
+
+int CamuleApp::InitGui(bool, wxString &)
 {
 	return 0;
 }
+
+
+
+bool CheckDirectoryPerms(const wxString& desc, const wxString& directory) 
+{
+	if (wxAccess(directory, R_OK | W_OK | X_OK)) {
+		wxString msg;
+		msg << wxT("Permissions on the aMule ") << desc << wxT(" directory too strict!\n")
+		    << wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
+			<< wxT("permissions for the folder '") << directory << wxT("'");
+		
+		theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+		
+		return false;
+	}
+
+	return true;
+}
+
+
 
 //
 // Static variables initialization and application initialization
@@ -452,12 +473,11 @@ bool CamuleApp::OnInit()
 	/* Check for old aMule configs, or for old lmule/xmule config if no aMule configs found. */
 	CheckConfig();
 
-	if (wxAccess(ConfigDir, R_OK | W_OK | X_OK)) {
-		ShowAlert(wxT("Bad permissions on aMule config directory!"), 
-			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+	// Ensure that "~/.aMule/" is accessible.
+	if (not CheckDirectoryPerms(wxT("configuration"), ConfigDir)) {
 		return false;
 	}
-
+	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
 	printf("WARNING: The check for other instances is currently disabled in amuled.\n"
@@ -522,15 +542,11 @@ bool CamuleApp::OnInit()
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 
-	if (wxAccess(thePrefs::GetTempDir(), R_OK | W_OK | X_OK)) {
-		ShowAlert(wxT("Bad permissions on Temp directory!"), 
-			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
-		return false;
-	}
 
-	if (wxAccess(thePrefs::GetIncomingDir(), R_OK | W_OK | X_OK)) {
-		ShowAlert(wxT("Bad permissions on Incoming directory!"),
-			wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+	// Ensure that "~/.aMule/Temp" and "~/.aMule/Incoming" are accessible.
+	if (not CheckDirectoryPerms(wxT("temp"), thePrefs::GetTempDir())) {
+		return false;
+	} else 	if (not CheckDirectoryPerms(wxT("incoming"), thePrefs::GetIncomingDir())) {
 		return false;
 	}
 	
