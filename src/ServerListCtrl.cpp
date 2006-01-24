@@ -93,7 +93,12 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	InsertColumn( COLUMN_SERVER_FAILS, _("Failed"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( COLUMN_SERVER_STATIC, _("Static"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( COLUMN_SERVER_VERSION, _("Version"),		wxLIST_FORMAT_LEFT, 80);
-
+	#ifdef __DEBUG__
+	InsertColumn( COLUMN_SERVER_TCPFLAGS, _("TCP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_UDPFLAGS, _("UDP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	#endif
+	
+	
 	LoadSettings();
 }
 
@@ -215,6 +220,53 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_STATIC, ( server->IsStaticMember() ? _("Yes") : _("No") ) );
 	SetItem( itemnr, COLUMN_SERVER_VERSION, server->GetVersion() );
 
+	#ifdef __DEBUG__
+	wxString flags;
+	/* TCP */
+	if (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
+		flags += wxT("c");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_NEWTAGS) {
+		flags += wxT("n");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_UNICODE) {
+		flags += wxT("u");
+	}          	
+	if (server->GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) {
+		flags += wxT("r");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_TYPETAGINTEGER) {
+		flags += wxT("t");
+	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_LARGEFILES) {
+		flags += wxT("l");
+	}
+	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
+	
+	/* UDP */
+	flags = wxEmptyString;
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES) {
+		flags += wxT("g");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES) {
+		flags += wxT("f");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_NEWTAGS) {
+		flags += wxT("n");
+	}          	
+	if (server->GetUDPFlags() & SRV_UDPFLG_UNICODE) {
+		flags += wxT("u");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
+		flags += wxT("G");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_LARGEFILES) {
+		flags += wxT("l");
+	}
+	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
+	
+	#endif
+	
 	// Deletions of items causes rather large ammount of flicker, so to
 	// avoid this, we resort the list to ensure correct ordering.
 	if (!IsItemSorted(itemnr)) {

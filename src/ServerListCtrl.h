@@ -39,6 +39,8 @@
 #define	COLUMN_SERVER_FAILS	8
 #define	COLUMN_SERVER_STATIC	9
 #define	COLUMN_SERVER_VERSION 	10
+#define	COLUMN_SERVER_TCPFLAGS 	11
+#define	COLUMN_SERVER_UDPFLAGS 	12
 
 class CServer;
 class CServerList;
