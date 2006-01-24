@@ -140,22 +140,22 @@ private:
 	void Init(uint64 value, uint8 bitsize) {
 			switch (bitsize) {
 				case 64:
-					wxASSERT(value < 0xFFFFFFFFFFFFFFFFllu); 
+					wxASSERT(value <= 0xFFFFFFFFFFFFFFFFllu); 
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT64;
 					break;
 				case 32:
-					wxASSERT(value < 0xFFFFFFFF); 
+					wxASSERT(value <= 0xFFFFFFFF); 
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT32;
 					break;
 				case 16:
-					wxASSERT(value < 0xFFFF); 
+					wxASSERT(value <= 0xFFFF); 
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT16;
 					break;
 				case 8:
-					wxASSERT(value < 0xFF); 
+					wxASSERT(value <= 0xFF); 
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT8;
 					break;
