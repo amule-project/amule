@@ -1406,7 +1406,7 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 			// a part of this gap is in the part - set limit
 			cur_gap->end = start-1;
 		} else if (start >= cur_gap->start && end <= cur_gap->end) {
-			uint32 buffer = cur_gap->end;
+			uint64 buffer = cur_gap->end;
 			cur_gap->end = start-1;
 			cur_gap = new Gap_Struct;
 			cur_gap->start = end+1;
@@ -2082,7 +2082,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 						IsAlreadyRequested(uStart, uEnd);
 
 					// Criterion 4. Completion
-					uint32 partSize = PARTSIZE;
+					uint64 partSize = PARTSIZE;
 					for(POSITION gap_pos = gaplist.GetHeadPosition(); gap_pos != NULL;) {
 						const Gap_Struct* cur_gap = gaplist.GetNext(gap_pos);
 						// Check if Gap is into the limit
@@ -2406,8 +2406,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 	} else {
 		CMD4Hash hashresult;
 		m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
-		uint32 length = PARTSIZE;
-		if (PARTSIZE * (partnumber + 1) > m_hpartfile.GetLength()){
+		uint64 length = PARTSIZE;
+		if ((unsigned)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}
@@ -3414,8 +3414,8 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 	FlushBuffer(true,true,true);
-	uint32 length = PARTSIZE;
-	if (PARTSIZE * (nPart + 1) > m_hpartfile.GetLength()){
+	uint64 length = PARTSIZE;
+	if ((unsigned)(PARTSIZE * (nPart + 1)) > m_hpartfile.GetLength()){
 		length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
 		wxASSERT( length <= PARTSIZE );
 	}	
