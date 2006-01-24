@@ -267,43 +267,79 @@ void CClientList::RemoveHashFromList( CUpDownClient* client )
 
 CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 {
-	// LowID clients need a different set of checks
-	if ( client->HasLowID() ) {
-		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
+	typedef std::pair<IDMap::const_iterator, IDMap::const_iterator> IDMapIteratorPair;
+	wxCHECK(client, NULL);
+	
+	const uint32 userIP = client->GetIP();
+	const uint32 userID = client->GetUserIDHybrid();
+	const uint16 userPort = client->GetUserPort();
+	const uint16 userKadPort = client->GetKadPort();
 
-		IDMap::iterator it = range.first;
-		for ( ; it != range.second; it++ ) {
-			// Check if the port ( and server for lowids ) matches
-			if ( it->second->GetUserPort() == client->GetUserPort() ) {
-				// For lowid, we also have to check the server
-				if ( client->GetServerIP() == it->second->GetServerIP() ) {
-					return it->second;
+	
+	// LowID clients need a different set of checks
+	if (client->HasLowID()) {
+		// User is firewalled ... Must do two checks.
+		if (userIP and (userPort or userKadPort)) {
+			IDMapIteratorPair range = m_ipList.equal_range(userIP);
+
+			for ( ; range.first != range.second; ++range.first ) {
+				CUpDownClient* other = range.first->second;
+				wxASSERT(userIP == other->GetIP());
+						
+				if (userPort and (userPort == other->GetUserPort())) {
+					return other;
+				  } else if (userKadPort and (userKadPort == other->GetKadPort())) {
+					return other;
 				}
 			}
 		}
-	} else {
-		// Find all matching entries. First searching for ID.
-		std::pair<IDMap::iterator, IDMap::iterator> range = m_clientList.equal_range( client->GetUserIDHybrid() );
 
-		IDMap::iterator it = range.first;
-		for ( ; it != range.second; it++ ) {
-			// Check if the port ( and server for lowids ) matches
-			if ( it->second->GetUserPort() == client->GetUserPort() ) {
-				return it->second;
+		const uint32 serverIP = client->GetServerIP();
+		const uint32 serverPort = client->GetServerPort();		
+		if (userID and serverIP and serverPort) {		
+			IDMapIteratorPair range = m_clientList.equal_range(userID);
+
+			for (; range.first != range.second; ++range.first) {
+				CUpDownClient* other = range.first->second;
+				wxASSERT(userID == other->GetUserIDHybrid());
+
+				// For lowid, we also have to check the server
+				if (serverIP == other->GetServerIP()) {
+					if (serverPort == other->GetServerPort()) {
+						return other;
+					}
+				}
 			}
 		}
-	
-		// Still nothing? Search for the IP
-		if ( client->GetIP() ) {
-			// Find all matching entries
-			std::pair<IDMap::iterator, IDMap::iterator> iprange = m_ipList.equal_range( client->GetIP() );
-
-			IDMap::iterator ipIt = iprange.first;
-			for ( ; ipIt != iprange.second; ipIt++ ) {
-				// Check if the port ( and server for lowids ) matches
-				if ( ipIt->second->GetUserPort() == client->GetUserPort() ) {
-					return ipIt->second;
+	} else if (userPort or userKadPort) {
+		// Check by IP first, then by ID
+		struct { const IDMap& map; uint32 value; } toCheck[] = {
+			{ m_ipList, userIP }, { m_clientList, userID }
+		};
+		
+		for (size_t i = 0; i < itemsof(toCheck); ++i) {
+			if (toCheck[i].value == 0) {
+				// We may not have both (or any) of these values.
+				continue;
+			}
+			
+			IDMapIteratorPair range = toCheck[i].map.equal_range(toCheck[i].value);
+			
+			if (userPort) {
+				IDMap::const_iterator it = range.first;
+				for (; it != range.second; ++it) {
+					if (userPort == it->second->GetUserPort()) {
+						return it->second;
+					}
+				}
+			}
+			
+			if (userKadPort) {
+				IDMap::const_iterator it = range.first;
+				for (; it != range.second; ++it) {
+					if (userKadPort == it->second->GetKadPort()) {
+						return it->second;
+					}
 				}
 			}
 		}
