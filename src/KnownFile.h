@@ -171,7 +171,6 @@ protected:
 private:
 	// Note: These variables have virtual accessor functions,
 	//       and thus should only be accesed via those.
-	#warning Kry -Review
 	uint64		m_nFileSize;
 	wxString	m_strFileName;
 };
