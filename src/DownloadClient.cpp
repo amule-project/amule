@@ -48,7 +48,9 @@
 #include "Logger.h"
 
 
-
+#ifdef __MULE_UNUSED_CODE__
+// This function is left as a reminder.
+// Changes here _must_ be reflected in CClientList::FindMatchingClient.
 bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) const
 {
 	if (!tocomp) {
@@ -127,6 +129,8 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
 	//No Matches..
 	return false;
 }
+#endif
+
 
 bool CUpDownClient::AskForDownload()
 {
