@@ -751,7 +751,9 @@ void CSharedFileList::SendListToServer(){
 	std::vector<CKnownFile*>::iterator sorted_it = SortedList.begin();
 	for ( ; (sorted_it != SortedList.end()) && (count < limit); ++sorted_it ) {
 		CKnownFile* file = *sorted_it;
-		CreateOfferedFilePacket(file, &files, server, NULL);
+		if (!file->IsLargeFile() || (server && server->SupportsLargeFilesTCP())) {
+			CreateOfferedFilePacket(file, &files, server, NULL);
+		}
 		file->SetPublishedED2K(true);	
 		++count;
 	}

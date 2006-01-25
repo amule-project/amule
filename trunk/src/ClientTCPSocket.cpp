@@ -785,7 +785,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CMemFile tempfile(80);
 				tempfile.WriteUInt32(list.size());
 				for (unsigned i = 0; i < list.size(); ++i) {
-					theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
+					if (!list[i]->IsLargeFile() || m_client->SupportsLargeFiles()) {
+						theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
+					}
 				}
 				
 				// create a packet and send it
@@ -929,7 +931,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				tempfile.WriteString(strReqDir);
 				tempfile.WriteUInt32(list.GetCount());
 				while (list.GetCount()) {
-					theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, NULL, m_client);
+					if (!list.GetHead()->IsLargeFile() || m_client->SupportsLargeFiles()) {
+						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, NULL, m_client);
+					}
 					list.RemoveHead();
 				}
 				
