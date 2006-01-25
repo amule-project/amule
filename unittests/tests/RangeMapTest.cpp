@@ -5,7 +5,7 @@
 
 using namespace muleunit;
 
-typedef CRangeMap<int> TestRangeMap;
+typedef CRangeMap<int*> TestRangeMap;
 
 
 /**
@@ -13,7 +13,7 @@ typedef CRangeMap<int> TestRangeMap;
  */
 wxString StringFrom(const TestRangeMap::const_iterator& it)
 {
-	return wxString::Format(wxT("(%llu, %llu, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format(wxT("(%llu, %llu, %li)"), it.keyStart(), it.keyEnd(), *it);
 }
 
 /**
@@ -21,7 +21,7 @@ wxString StringFrom(const TestRangeMap::const_iterator& it)
  */
 wxString StringFrom(TestRangeMap::iterator it)
 {
-	return wxString::Format(wxT("(%llu, %llu, %i)"), it.keyStart(), it.keyEnd(), *it);
+	return wxString::Format(wxT("(%llu, %llu, %li)"), it.keyStart(), it.keyEnd(), *it);
 }
 
 
@@ -41,6 +41,12 @@ wxString StringFrom(CRangeMap<void>::iterator it)
 	return wxString::Format(wxT("(%llu, %llu)"), it.keyStart(), it.keyEnd());
 }
 
+namespace muleunit {
+	wxString StringFrom(int* value)
+	{
+		return wxString::Format(wxT("%li"), value);
+	}
+};
 
 
 /**
@@ -81,21 +87,21 @@ DECLARE(RangeMap);
 
 	// Sets up a few maps with predefined ranges.
 	void setUp() {
-		m_map.insert(100, 150, 0);
+		m_map.insert(100, 150, reinterpret_cast<int*>(0));
 		ASSERT_EQUALS(wxT("[(100, 150, 0)]"), StringFrom(m_map));
 		
 		m_mmaps = new TestRangeMap[3];
 		
-		m_mmaps[CONT].insert(100, 150, 0);
-		m_mmaps[CONT].insert(151, 200, 1);
+		m_mmaps[CONT].insert(100, 150, reinterpret_cast<int*>(0));
+		m_mmaps[CONT].insert(151, 200, reinterpret_cast<int*>(1));
 		ASSERT_EQUALS(wxT("[(100, 150, 0), (151, 200, 1)]"), StringFrom(m_mmaps[CONT]));
 		
-		m_mmaps[SDIFF].insert(100, 150, 0);
-		m_mmaps[SDIFF].insert(160, 200, 1);
+		m_mmaps[SDIFF].insert(100, 150, reinterpret_cast<int*>(0));
+		m_mmaps[SDIFF].insert(160, 200, reinterpret_cast<int*>(1));
 		ASSERT_EQUALS(wxT("[(100, 150, 0), (160, 200, 1)]"), StringFrom(m_mmaps[SDIFF]));
 		
-		m_mmaps[SSAME].insert(100, 150, 1);
-		m_mmaps[SSAME].insert(160, 200, 1);
+		m_mmaps[SSAME].insert(100, 150, reinterpret_cast<int*>(1));
+		m_mmaps[SSAME].insert(160, 200, reinterpret_cast<int*>(1));
 		ASSERT_EQUALS(wxT("[(100, 150, 1), (160, 200, 1)]"), StringFrom(m_mmaps[SSAME]));
 	}
 
@@ -111,12 +117,12 @@ DECLARE(RangeMap);
 	 */
 	void singleInsert(uint32 start, uint32 end, int value, const wxString& result)
 	{
-		TestRangeMap::iterator it = m_map.insert(start, end, value);
+		TestRangeMap::iterator it = m_map.insert(start, end, reinterpret_cast<int*>(value));
 		
 		// Test that the correct iterator was returned
 		ASSERT_TRUE(it.keyStart() <= start);
 		ASSERT_TRUE(it.keyEnd() >= end);
-		ASSERT_EQUALS(*it, value);
+		ASSERT_EQUALS(*it, reinterpret_cast<int*>(value));
 		
 		// Check the resulting map
 		ASSERT_EQUALS(result, StringFrom(m_map));
@@ -146,12 +152,12 @@ DECLARE(RangeMap);
 	 */
 	void multiInsert(int type, uint32 start, uint32 end, int value, const wxString& result)
 	{
-		TestRangeMap::iterator it = m_mmaps[type].insert(start, end, value);
+		TestRangeMap::iterator it = m_mmaps[type].insert(start, end, reinterpret_cast<int*>(value));
 
 		// Test that the correct iterator was returned
 		ASSERT_TRUE(it.keyStart() <= start);
 		ASSERT_TRUE(it.keyEnd() >= end);
-		ASSERT_EQUALS(*it, value);
+		ASSERT_EQUALS(*it, reinterpret_cast<int*>(value));
 		
 		// Check the resulting map
 		ASSERT_EQUALS(result, StringFrom(m_mmaps[type]));
@@ -188,10 +194,10 @@ TEST(RangeMap, CopyConstructor)
 	
 	
 	// The copies must not affect the originals
-	mapA.insert(125, 175, 2);
-	mapB.insert(125, 175, 2);
-	mapC.insert(125, 175, 2);
-	mapD.insert(125, 175, 2);
+	mapA.insert(125, 175, reinterpret_cast<int*>(2));
+	mapB.insert(125, 175, reinterpret_cast<int*>(2));
+	mapC.insert(125, 175, reinterpret_cast<int*>(2));
+	mapD.insert(125, 175, reinterpret_cast<int*>(2));
 
 	ASSERT_FALSE(m_map == mapA);
 	ASSERT_FALSE(m_mmaps[CONT] == mapB);
@@ -211,8 +217,8 @@ TEST(RangeMap, AssignmentOperator)
 	
 
 	// The copies must not affect the originals
-	mapA.insert(125, 175, 2);
-	mapB.insert(125, 175, 2);
+	mapA.insert(125, 175, reinterpret_cast<int*>(2));
+	mapB.insert(125, 175, reinterpret_cast<int*>(2));
 
 	ASSERT_TRUE(mapA == mapB);
 	ASSERT_FALSE(m_map == mapA);
@@ -230,7 +236,7 @@ TEST(RangeMap, Equality)
 
 	ASSERT_EQUALS(mapA, mapB);
 
-	mapA.insert(10, 20, 3);
+	mapA.insert(10, 20, reinterpret_cast<int*>(3));
 
 	ASSERT_FALSE(mapA == mapB);
 }
@@ -239,7 +245,7 @@ TEST(RangeMap, Equality)
 TEST(RangeMap, Iterators)
 {
 	// Adding a third range
-	m_mmaps[CONT].insert(125, 175, 2);
+	m_mmaps[CONT].insert(125, 175, reinterpret_cast<int*>(2));
 	TestRangeMap map(m_mmaps[CONT]);
 	
 	TestRangeMap::iterator it = map.begin();
@@ -265,7 +271,7 @@ TEST(RangeMap, Iterators)
 TEST(RangeMap, Erase)
 {
 	// Adding a third range
-	m_mmaps[CONT].insert(125, 175, 2);
+	m_mmaps[CONT].insert(125, 175, reinterpret_cast<int*>(2));
 	
 	// The expected results from forwards deletion
 	TestRangeMap map(m_mmaps[CONT]);
@@ -320,7 +326,7 @@ TEST(RangeMap, Clear)
 TEST(RangeMap, FindRange)
 {
 	// Adding a third range
-	m_mmaps[CONT].insert(125, 175, 2);
+	m_mmaps[CONT].insert(125, 175, reinterpret_cast<int*>(2));
 	TestRangeMap map(m_mmaps[CONT]);
 	
 	ASSERT_EQUALS(map.end(), map.find_range(0));
@@ -353,7 +359,7 @@ TEST(RangeMap, InvalidErase)
 
 TEST(RangeMap, InvalidInsert)
 {
-	ASSERT_RAISES(CInvalidParamsEx, m_map.insert(10, 9, 8));	
+	ASSERT_RAISES(CInvalidParamsEx, m_map.insert(10, 9, reinterpret_cast<int*>(8)));	
 }
 
 
@@ -403,7 +409,7 @@ TEST(RangeMap, SingleInsert_BeforeStart_TouchingStart_AtEnd_TouchingEnd_AfterEnd
 		for (int end_offset = 0; end_offset < 3; ++end_offset) {
 			// (before start, touching start)
 			for (int start_offset = 0; start_offset < 2; ++start_offset) {
-				wxString expected = wxString::Format(wxT("[(%u, %u, %i)]"), 98 + start_offset, 150 + end_offset, type);
+				wxString expected = wxString::Format(wxT("[(%u, %u, %li)]"), 98 + start_offset, 150 + end_offset, type);
 				singleInsert(98 + start_offset, 150 + end_offset, type, expected);
 			}
 		}
