@@ -114,7 +114,7 @@ void TestCase::run()
 
 		const TestFailureList failures = test->getTestFailures();
 
-		TestFailureList::const_iterator it = failures.begin();
+		TestFailureList::const_iterator it2 = failures.begin();
 		for (; it2 != failures.end(); ++it2) {
 			Print(wxT("\t\tFailure: \"%s\" line %ld in %s"),
 					 it2->message.c_str(),
