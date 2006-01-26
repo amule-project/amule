@@ -1231,19 +1231,19 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		
 		// adjust size of gaplist to reqcount
-		int gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint32));
+		int gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
 		while ( file->gaplist.GetCount() > gap_size ) {
 			file->gaplist.RemoveHead();
 		}
 		while ( file->gaplist.GetCount() != gap_size ) {
 			file->gaplist.AddHead(new Gap_Struct);
 		}
-		const uint32 *gap_info = (const uint32 *)encoder.m_gap_status.Buffer();
+		const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
 		curr_pos = file->gaplist.GetHeadPosition();
 		for (int j = 0; j < gap_size;j++) {
 			Gap_Struct* gap = file->gaplist.GetNext(curr_pos);
-			gap->start = ENDIAN_NTOHL(gap_info[2*j]);
-			gap->end = ENDIAN_NTOHL(gap_info[2*j+1]);
+			gap->start = ENDIAN_NTOHLL(gap_info[2*j]);
+			gap->end = ENDIAN_NTOHLL(gap_info[2*j+1]);
 		}
 		
 		// adjust size of requested block list
@@ -1256,8 +1256,8 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		curr_pos = file->requestedblocks_list.GetHeadPosition();
 		for (int i = 0; i < reqcount;i++) {
 			Requested_Block_Struct* block = file->requestedblocks_list.GetNext(curr_pos);
-			block->StartOffset = ENDIAN_NTOHL(reqparts[i].start);
-			block->EndOffset = ENDIAN_NTOHL(reqparts[i].end);
+			block->StartOffset = ENDIAN_NTOHLL(reqparts[i].start);
+			block->EndOffset = ENDIAN_NTOHLL(reqparts[i].end);
 		}
 		// copy parts frequency
 		const unsigned char *part_info = encoder.m_part_status.Buffer();
