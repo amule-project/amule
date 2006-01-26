@@ -301,7 +301,6 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			break;
 		}
 		case OP_HELLO: {	// 0.43b
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HELLO from ") + m_client->GetFullIP() );
 							
 			theStats::AddDownOverheadOther(size);
 			bool bNewClient = !m_client;				
@@ -309,6 +308,10 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				// create new client to save standart informations
 				m_client = new CUpDownClient(this);
 			}
+			
+			// Do not move up!
+			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_HELLO from ") + m_client->GetFullIP() );
+			
 			bool bIsMuleHello = false;
 			
 			try{
