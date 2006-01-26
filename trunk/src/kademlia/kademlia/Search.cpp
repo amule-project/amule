@@ -688,7 +688,7 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 		} else if (tag->GetName() == TAG_FILESIZE) {
 			if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
 				// Kad1.0 uint64 type using a BSOB.
-				size = ENDIAN_SWAP_64(*((uint64*)tag->GetBsob()));
+				size = PeekUInt64(tag->GetBsob());
 			} else {
 				wxASSERT(tag->IsInt());
 				size = tag->GetInt();	
@@ -846,8 +846,7 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName()));
 			if (file->IsLargeFile()) {
 				byte size64[sizeof(uint64)];
-				#warning Kry - Endian ok?
-				*((uint64*)size64) = ENDIAN_SWAP_64(file->GetFileSize());
+				PokeUInt64(size64,file->GetFileSize());
 				taglist.push_back(new CTagBsob(TAG_FILESIZE, size64, sizeof(uint64)));	
 			} else {
 				taglist.push_back(new CTagKadInt(TAG_FILESIZE, file->GetFileSize()));

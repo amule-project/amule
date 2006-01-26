@@ -802,7 +802,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 						if( entry->size == 0 ) {
 							if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
 								// Kad1.0 uint64 type using a BSOB.
-								entry->size = ENDIAN_SWAP_64(*((uint64*)tag->GetBsob()));
+								entry->size = PeekUInt64(tag->GetBsob());
 							} else {
 								wxASSERT(tag->IsInt());
 								entry->size = tag->GetInt();	
