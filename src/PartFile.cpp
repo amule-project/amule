@@ -2407,7 +2407,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		CMD4Hash hashresult;
 		m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
 		uint64 length = PARTSIZE;
-		if ((unsigned)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
+		if ((PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}
@@ -2417,6 +2417,11 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("IO failure while hashing downloaded part of partfile '%s': %s"))
 				% GetFileName() % e.what());
+			return false;
+		} catch (const CEOFException& e) {
+			AddLogLineM(true, CFormat( wxT("Critical IO failure (EOF) while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+				% partnumber % length % ((partnumber*PARTSIZE)+length) % GetFileName() % GetFileSize() % e.what());
+			return false;
 		}
 
 		if (GetPartCount() > 1) {
