@@ -687,8 +687,8 @@ void DownloadFile::ProcessUpdate(CEC_PartFile_Tag *tag)
 		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		m_ReqParts.resize(reqcount);
 		for (int i = 0; i < reqcount;i++) {
-			m_ReqParts[i].start = ENDIAN_NTOHL(reqparts[i].start);
-			m_ReqParts[i].end   = ENDIAN_NTOHL(reqparts[i].end);
+			m_ReqParts[i].start = ENDIAN_NTOHLL(reqparts[i].start);
+			m_ReqParts[i].end   = ENDIAN_NTOHLL(reqparts[i].end);
 		}
 	}
 }
@@ -938,7 +938,7 @@ CProgressImage::CProgressImage(int width, int height, wxString &tmpl, DownloadFi
 {
 	m_file = file;
 
-	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
+	m_gap_buf_size = m_gap_alloc_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
 	m_gap_buf = new Gap_Struct[m_gap_alloc_size];
 	
 	m_ColorLine = new uint32[m_width];
@@ -952,7 +952,7 @@ CProgressImage::~CProgressImage()
 
 void CProgressImage::ReallocGapBuffer()
 {
-	int size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
+	int size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
 	if ( size == m_gap_alloc_size ) {
 		return;
 	}
@@ -969,17 +969,17 @@ void CProgressImage::InitSortedGaps()
 {
 	ReallocGapBuffer();
 
-	const uint32 *gap_info = (const uint32 *)m_file->m_Encoder.m_gap_status.Buffer();
-	m_gap_buf_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint32));
+	const uint64 *gap_info = (const uint64 *)m_file->m_Encoder.m_gap_status.Buffer();
+	m_gap_buf_size = m_file->m_Encoder.m_gap_status.Size() / (2 * sizeof(uint64));
 	
 	//memcpy(m_gap_buf, gap_info, m_gap_buf_size*2*sizeof(uint32));
 	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint32 gap_start = ENDIAN_NTOHL(gap_info[2*j]);
-		uint32 gap_end = ENDIAN_NTOHL(gap_info[2*j+1]);
+		uint64 gap_start = ENDIAN_NTOHLL(gap_info[2*j]);
+		uint64 gap_end = ENDIAN_NTOHLL(gap_info[2*j+1]);
 		m_gap_buf[j].start = gap_start;
 		m_gap_buf[j].end = gap_end;
 	}
-	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint32), compare_gaps);
+	qsort(m_gap_buf, m_gap_buf_size, 2*sizeof(uint64), compare_gaps);
 }
 
 void CProgressImage::CreateSpan()
@@ -1000,8 +1000,8 @@ void CProgressImage::CreateSpan()
 	colored_gaps[0].end = 0;
 	colored_gaps[0].color = 0xffffffff;
 	for (int j = 0; j < m_gap_buf_size;j++) {
-		uint32 gap_start = m_gap_buf[j].start;
-		uint32 gap_end = m_gap_buf[j].end;
+		uint64 gap_start = m_gap_buf[j].start;
+		uint64 gap_end = m_gap_buf[j].end;
 
 		uint32 start = gap_start / PARTSIZE;
 		uint32 end = (gap_end / PARTSIZE) + 1;
@@ -1738,7 +1738,7 @@ char *CScriptWebServer::ProcessHtmlRequest(const char *filename, long &size)
 	char *buf = new char [size+1];
 	rewind(f);
 	fread(buf, 1, size, f);
-	
+	buf[size] = 0;
 	fclose(f);
 	
 	return buf;
@@ -1869,7 +1869,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 
 	if (isUseGzip)	{
 		bool bOk = false;
-		uLongf destLen = strlen(httpOut) + 1024;
+		uLongf destLen = httpOutLen + 1024;
 		char *gzipOut = new char[destLen];
 		if( GzipCompress((Bytef*)gzipOut, &destLen, 
 		   (const Bytef*)httpOut, httpOutLen, Z_DEFAULT_COMPRESSION) == Z_OK) {

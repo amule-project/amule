@@ -104,7 +104,7 @@ class CPartFile_Encoder {
 		// This buffer only needed on core-side, where list is turned into array
 		// before passing to RLE. Decoder will just use RLE internal buffer
 		// Buffer can be static, since it is accessed with mutex locked
-		typedef std::vector<uint32> GapBuffer;
+		typedef std::vector<uint64> GapBuffer;
 		static GapBuffer m_gap_buffer;
 		
 		CPartFile *m_file;

@@ -188,7 +188,7 @@ public:
 	
 	PartFileEncoderData() { }
 	PartFileEncoderData(int part_count, int gap_count) :
-		m_part_status(part_count, true), m_gap_status(gap_count*sizeof(uint32), true)
+		m_part_status(part_count, true), m_gap_status(gap_count*sizeof(uint64), true)
 	{
 	}
 		
