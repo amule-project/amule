@@ -713,175 +713,187 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		return;
 	}
 
+	// This vars are defined here to be able to use them on the catch
 	int header_size = 16;
-
+	uint64 nStartPos = 0;
+	uint64 nEndPos = 0;
+	uint32 nBlockSize = 0;
+	uint32 lenUnzipped = 0;
+	
 	// Update stats
 	m_dwLastBlockReceived = ::GetTickCount();
 
-	// Read data from packet
-	const CMemFile data(packet, size);
-
-	// Check that this data is for the correct file
-	if ((!m_reqfile) || data.ReadHash() != m_reqfile->GetFileHash()) {
-		throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
-	}
-
-	// Find the start & end positions, and size of this chunk of data
-	uint64 nStartPos;
-	uint64 nEndPos = 0;
-	uint32 nBlockSize = 0;
-
-	if (largeblocks) {
-		nStartPos = data.ReadUInt64();
-		header_size += 8;
-	} else {
-		nStartPos = data.ReadUInt32();
-		header_size += 4;
-	}
+	try {
+		
+		// Read data from packet
+		const CMemFile data(packet, size);
 	
-	if (packed) {
-		nBlockSize = data.ReadUInt32();
-		header_size += 4;
-		nEndPos = nStartPos + (size - header_size);
-	} else {
+		// Check that this data is for the correct file
+		if ((!m_reqfile) || data.ReadHash() != m_reqfile->GetFileHash()) {
+			throw wxString(wxT("Wrong fileid sent (ProcessBlockPacket)"));
+		}
+	
+		// Find the start & end positions, and size of this chunk of data
+	
 		if (largeblocks) {
-			nEndPos = data.ReadUInt64();
+			nStartPos = data.ReadUInt64();
 			header_size += 8;
 		} else {
-			nEndPos = data.ReadUInt32();
+			nStartPos = data.ReadUInt32();
 			header_size += 4;
 		}
-	}
-
-	// Check that packet size matches the declared data size + header size
-	if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + header_size)) {
-		throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
-	}
-	theStats::AddDownloadFromSoft(GetClientSoft(),size - header_size);
-	bytesReceivedCycle += size - header_size;
-
-	credits->AddDownloaded(size - header_size, GetIP(), theApp.CryptoAvailable());
-	
-	// Move end back one, should be inclusive
-	nEndPos--;
-
-	// Loop through to find the reserved block that this is within
-	for ( POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos) ) {
-
-		Pending_Block_Struct* cur_block = m_PendingBlocks_list.GetAt(pos);
 		
-		if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
-			// Found reserved block
-
-			if (cur_block->fZStreamError){
-				AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - header_size, nStartPos, nEndPos) + m_reqfile->GetFileName());
-				m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+		if (packed) {
+			nBlockSize = data.ReadUInt32();
+			header_size += 4;
+			nEndPos = nStartPos + (size - header_size);
+		} else {
+			if (largeblocks) {
+				nEndPos = data.ReadUInt64();
+				header_size += 8;
+			} else {
+				nEndPos = data.ReadUInt32();
+				header_size += 4;
+			}
+		}
+	
+		// Check that packet size matches the declared data size + header size
+		if ( nEndPos == nStartPos || size != ((nEndPos - nStartPos) + header_size)) {
+			throw wxString(wxT("Corrupted or invalid DataBlock received (ProcessBlockPacket)"));
+		}
+		theStats::AddDownloadFromSoft(GetClientSoft(),size - header_size);
+		bytesReceivedCycle += size - header_size;
+	
+		credits->AddDownloaded(size - header_size, GetIP(), theApp.CryptoAvailable());
+		
+		// Move end back one, should be inclusive
+		nEndPos--;
+	
+		// Loop through to find the reserved block that this is within
+		for ( POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos) ) {
+	
+			Pending_Block_Struct* cur_block = m_PendingBlocks_list.GetAt(pos);
+			
+			if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
+				// Found reserved block
+	
+				if (cur_block->fZStreamError){
+					AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - header_size, nStartPos, nEndPos) + m_reqfile->GetFileName());
+					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+					return;
+				}
+		   
+				// Remember this start pos, used to draw part downloading in list
+				m_nLastBlockOffset = nStartPos;
+	
+				// Occasionally packets are duplicated, no point writing it twice
+				// This will be 0 in these cases, or the length written otherwise
+				uint32 lenWritten = 0;
+	
+				// Handle differently depending on whether packed or not
+				if (!packed) {
+					// Write to disk (will be buffered in part file class)
+					lenWritten = m_reqfile->WriteToBuffer( size - header_size, 
+														   (byte*)(packet + header_size),
+														   nStartPos,
+														   nEndPos,
+														   cur_block->block );
+				} else {
+					// Packed
+					wxASSERT( (long int)size > 0 );
+					// Create space to store unzipped data, the size is
+					// only an initial guess, will be resized in unzip()
+					// if not big enough
+					lenUnzipped = (size * 2);
+					// Don't get too big
+					if (lenUnzipped > (BLOCKSIZE + 300)) {
+						lenUnzipped = (BLOCKSIZE + 300);
+					}
+					byte *unzipped = new byte[lenUnzipped];
+	
+					// Try to unzip the packet
+					int result = unzip(cur_block, (byte*)(packet + header_size), (size - header_size), &unzipped, &lenUnzipped);
+					
+					// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously erroneous.
+					if (result == Z_OK && ((int)lenUnzipped >= 0)) {
+						
+						// Write any unzipped data to disk
+						if (lenUnzipped > 0) {
+							wxASSERT( (int)lenUnzipped > 0 );
+							
+							// Use the current start and end positions for the uncompressed data
+							nStartPos = cur_block->block->StartOffset + cur_block->totalUnzipped - lenUnzipped;
+							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
+	
+							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
+								AddDebugLogLineM( false, logZLib, wxT("Corrupted compressed packet for ") + m_reqfile->GetFileName() + wxT(" received (error 666)"));
+								m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+							} else {
+								// Write uncompressed data to file
+								lenWritten = m_reqfile->WriteToBuffer( size - header_size,
+																	   unzipped,
+																	   nStartPos,
+																	   nEndPos,
+																	   cur_block->block );
+							}
+						}
+					} else {
+						wxString strZipError;
+						if (cur_block->zStream && cur_block->zStream->msg) {
+							strZipError = wxT(" - ") + wxString::FromAscii(cur_block->zStream->msg);
+						} 
+						
+						AddDebugLogLineM( false, logZLib, wxString(wxT("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(wxT("received (error %i) ") , result) + strZipError );
+						
+						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+	
+						// If we had an zstream error, there is no chance that we could recover from it nor that we
+						// could use the current zstream (which is in error state) any longer.
+						if (cur_block->zStream){
+							inflateEnd(cur_block->zStream);
+							delete cur_block->zStream;
+							cur_block->zStream = NULL;
+						}
+	
+						// Although we can't further use the current zstream, there is no need to disconnect the sending 
+						// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
+						// valid again. Just ignore all further blocks for the current zstream.
+						cur_block->fZStreamError = 1;
+						cur_block->totalUnzipped = 0; // bluecow's fix
+					}
+					delete [] unzipped;
+				}
+				// These checks only need to be done if any data was written
+				if (lenWritten > 0) {
+					m_nTransferedDown += lenWritten;
+	
+					// If finished reserved block
+					if (nEndPos == cur_block->block->EndOffset) {
+						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
+						delete cur_block->block;
+						// Not always allocated
+						if (cur_block->zStream) {
+							inflateEnd(cur_block->zStream);
+							delete cur_block->zStream;
+						}
+						delete cur_block;
+						m_PendingBlocks_list.RemoveAt(pos);
+	
+						// Request next block
+						SendBlockRequests();
+					}
+				}
+				// Stop looping and exit method
 				return;
 			}
-	   
-			// Remember this start pos, used to draw part downloading in list
-			m_nLastBlockOffset = nStartPos;
-
-			// Occasionally packets are duplicated, no point writing it twice
-			// This will be 0 in these cases, or the length written otherwise
-			uint32 lenWritten = 0;
-
-			// Handle differently depending on whether packed or not
-			if (!packed) {
-				// Write to disk (will be buffered in part file class)
-				lenWritten = m_reqfile->WriteToBuffer( size - header_size, 
-													   (byte*)(packet + header_size),
-													   nStartPos,
-													   nEndPos,
-													   cur_block->block );
-			} else {
-				// Packed
-				wxASSERT( (long int)size > 0 );
-				// Create space to store unzipped data, the size is
-				// only an initial guess, will be resized in unzip()
-				// if not big enough
-				uint32 lenUnzipped = (size * 2);
-				// Don't get too big
-				if (lenUnzipped > (BLOCKSIZE + 300)) {
-					lenUnzipped = (BLOCKSIZE + 300);
-				}
-				byte *unzipped = new byte[lenUnzipped];
-
-				// Try to unzip the packet
-				int result = unzip(cur_block, (byte*)(packet + header_size), (size - header_size), &unzipped, &lenUnzipped);
-				
-				// no block can be uncompressed to >2GB, 'lenUnzipped' is obviously erroneous.
-				if (result == Z_OK && ((int)lenUnzipped >= 0)) {
-					
-					// Write any unzipped data to disk
-					if (lenUnzipped > 0) {
-						wxASSERT( (int)lenUnzipped > 0 );
-						
-						// Use the current start and end positions for the uncompressed data
-						nStartPos = cur_block->block->StartOffset + cur_block->totalUnzipped - lenUnzipped;
-						nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
-
-						if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-							AddDebugLogLineM( false, logZLib, wxT("Corrupted compressed packet for ") + m_reqfile->GetFileName() + wxT(" received (error 666)"));
-							m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-						} else {
-							// Write uncompressed data to file
-							lenWritten = m_reqfile->WriteToBuffer( size - header_size,
-																   unzipped,
-																   nStartPos,
-																   nEndPos,
-																   cur_block->block );
-						}
-					}
-				} else {
-					wxString strZipError;
-					if (cur_block->zStream && cur_block->zStream->msg) {
-						strZipError = wxT(" - ") + wxString::FromAscii(cur_block->zStream->msg);
-					} 
-					
-					AddDebugLogLineM( false, logZLib, wxString(wxT("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(wxT("received (error %i) ") , result) + strZipError );
-					
-					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-
-					// If we had an zstream error, there is no chance that we could recover from it nor that we
-					// could use the current zstream (which is in error state) any longer.
-					if (cur_block->zStream){
-						inflateEnd(cur_block->zStream);
-						delete cur_block->zStream;
-						cur_block->zStream = NULL;
-					}
-
-					// Although we can't further use the current zstream, there is no need to disconnect the sending 
-					// client because the next zstream (a series of 10K-blocks which build a 180K-block) could be
-					// valid again. Just ignore all further blocks for the current zstream.
-					cur_block->fZStreamError = 1;
-					cur_block->totalUnzipped = 0; // bluecow's fix
-				}
-				delete [] unzipped;
-			}
-			// These checks only need to be done if any data was written
-			if (lenWritten > 0) {
-				m_nTransferedDown += lenWritten;
-
-				// If finished reserved block
-				if (nEndPos == cur_block->block->EndOffset) {
-					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
-					delete cur_block->block;
-					// Not always allocated
-					if (cur_block->zStream) {
-				  		inflateEnd(cur_block->zStream);
-				 		delete cur_block->zStream;
-					}
-					delete cur_block;
-					m_PendingBlocks_list.RemoveAt(pos);
-
-					// Request next block
-					SendBlockRequests();
-				}
-			}
-			// Stop looping and exit method
-			return;
 		}
+	} catch (const CEOFException& e) {
+		wxString error = wxString(wxT("Error reading "));
+		if (packed) error += wxString::Format(wxT("packed (LU: %i) "),lenUnzipped);
+		if (packed) error += wxT("largeblocks ");
+		error += wxString::Format(wxT("data packet: RS: %i HS: %i SP: %i EP: %i BS: %i -> "),size,header_size,nStartPos,nEndPos,nBlockSize);
+		AddDebugLogLineM(true, logRemoteClient, error + e.what());
+		return;
 	}
 }
 
