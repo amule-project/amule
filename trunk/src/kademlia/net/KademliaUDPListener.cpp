@@ -800,8 +800,14 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 						}
 					} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
 						if( entry->size == 0 ) {
-							entry->size = tag->GetInt();
-							strInfo += wxString::Format(wxT("  Size=%u"), entry->size);
+							if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
+								// Kad1.0 uint64 type using a BSOB.
+								entry->size = ENDIAN_SWAP_64(*((uint64*)tag->GetBsob()));
+							} else {
+								wxASSERT(tag->IsInt());
+								entry->size = tag->GetInt();	
+							}
+							strInfo += wxString::Format(wxT("  Size=%llu"), entry->size);
 							// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
 							entry->taglist.push_back(tag);
 						} else {

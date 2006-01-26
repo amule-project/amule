@@ -512,9 +512,8 @@ void CFileDataIO::WriteTag(const CTag& tag)
 				WriteFloat(tag.GetFloat());
 				break;
 			case TAGTYPE_BSOB:
-				// Do NOT use this to transfer any tags for at least half a year!!
+				// Used for uint128 on Kad now
 				WriteBsob(tag.GetBsob(), tag.GetBsobSize());
-				wxASSERT(0);
 				break;
 			case TAGTYPE_UINT16:
 				WriteUInt16(tag.GetInt());
@@ -542,4 +541,3 @@ void CFileDataIO::WriteTagPtrList(const TagPtrList& tagList)
 		WriteTag(**it);
 	}
 }
-
