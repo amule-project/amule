@@ -855,7 +855,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		*it++ = ENDIAN_HTONLL(curr->end);
 	}
 
-	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint32));
+	m_enc_data.m_gap_status.Realloc(gap_list_size*2*sizeof(uint64));
 	int gap_enc_size = 0;
 	const unsigned char *gap_enc_data = m_enc_data.m_gap_status.Encode((unsigned char *)&m_gap_buffer[0], gap_enc_size);
 
@@ -890,7 +890,7 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 		*it++ = ENDIAN_HTONLL(block->EndOffset);
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
-		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint32), (void *)&m_gap_buffer[0]));
+		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint64), (void *)&m_gap_buffer[0]));
 }
 
 // encoder side
