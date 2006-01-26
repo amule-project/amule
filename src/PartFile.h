@@ -117,7 +117,7 @@ public:
 #endif
 	virtual void	UpdatePartsInfo();
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
-	uint32	GetTransfered() const		{ return transfered; }
+	uint64	GetTransfered() const		{ return transfered; }
 	const wxString& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
