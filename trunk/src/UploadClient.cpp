@@ -371,10 +371,10 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf, nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? OP_SENDINGPART_I64 : OP_SENDINGPART));
-	
+		CPacket* packet = new CPacket(&data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? (uint8)OP_SENDINGPART_I64 : (uint8)OP_SENDINGPART));	
 		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
+		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bLargeBlocks ? wxT("OP_SENDINGPART_I64") : wxT("OP_SENDINGPART"))) + GetFullIP() );
 		m_socket->SendPacket(packet,true,false, nPacketSize);
 	}
 }
@@ -437,6 +437,7 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		// put packet directly on socket
 		theStats::AddUpOverheadFileRequest(24);
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
+		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "), (isLargeBlock ? wxT("OP_COMPRESSEDPART_I64") : wxT("OP_COMPRESSEDPART"))) + GetFullIP() );
 		m_socket->SendPacket(packet,true,false, payloadSize);			
 	}
 	delete[] output;
@@ -686,11 +687,10 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	//the downloader didn't send any request blocks. Then the connection times out..
 	//I did some tests with eDonkey also and it seems to work well with them also..
 	
-	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: Sending OP_OUTOFPARTREQS"));
-	
 	// Send this inmediately, don't queue.
-	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0);
+	CPacket* pPacket = new CPacket(OP_OUTOFPARTREQS, 0, OP_EDONKEYPROT);
 	theStats::AddUpOverheadFileRequest(pPacket->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_OUTOFPARTREQS to ") + GetFullIP() );
 	SendPacket(pPacket, true, true);
 	
 	theApp.uploadqueue->AddClientToQueue(this);
@@ -742,9 +742,9 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	for (int i = 0; i != parts; i++) {
 		data.WriteHash(file->GetPartHash(i));
 	}
-	CPacket* packet = new CPacket(&data);	
-	packet->SetOpCode(OP_HASHSETANSWER);
+	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HASHSETANSWER);	
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HASHSETANSWER to ") + GetFullIP());
 	SendPacket(packet,true,true);
 }
 
@@ -779,11 +779,9 @@ void CUpDownClient::SendRankingInfo(){
 	// Kry: what are these zero bytes for. are they really correct?
 	// Kry - Well, eMule does like that. I guess they're ok.
 	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
-	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_QUEUERANKING "));
-	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
-	packet->SetOpCode(OP_QUEUERANKING);
-	
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_QUEUERANKING);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
+	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_QUEUERANKING to ") + GetFullIP());
 	SendPacket(packet,true,true);
 }
 
@@ -807,10 +805,9 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	data.WriteUInt8(rating);
 	data.WriteString(desc, GetUnicodeSupport(), 4 /* size it's uint32 */);
 	
-	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_FILEDESC"));	
-	CPacket* packet = new CPacket(&data,OP_EMULEPROT);
-	packet->SetOpCode(OP_FILEDESC);
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_FILEDESC);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
+	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_FILEDESC to ") + GetFullIP());	
 	SendPacket(packet,true);
 }
 

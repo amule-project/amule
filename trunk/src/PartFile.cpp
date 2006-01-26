@@ -2513,12 +2513,13 @@ void CPartFile::PauseFile(bool bInsufficient)
 	
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
 
-	CPacket packet( OP_CANCELTRANSFER, 0 );
+	CPacket packet( OP_CANCELTRANSFER, 0, OP_EDONKEYPROT );
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 		CUpDownClient* cur_src = *it++;
 		if (cur_src->GetDownloadState() == DS_DOWNLOADING) {
 			if (!cur_src->GetSentCancelTransfer()) {				
 				theStats::AddUpOverheadOther( packet.GetPacketSize() );
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + cur_src->GetFullIP() );
 				cur_src->SendPacket( &packet, false, true );
 				cur_src->SetSentCancelTransfer( true );
 			}
@@ -2720,8 +2721,8 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	CPacket* result = new CPacket(&data, OP_EMULEPROT);
-	result->SetOpCode(OP_ANSWERSOURCES);
+	CPacket* result = new CPacket(&data, OP_EMULEPROT, OP_ANSWERSOURCES);
+
 	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
 	if (result->GetPacketSize() > 354) {
 		result->PackPacket();

@@ -193,9 +193,9 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					}
 					
 					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-					CPacket* response = new CPacket(&data_out, OP_EMULEPROT);
-					response->SetOpCode(OP_REASKACK);
+					CPacket* response = new CPacket(&data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
+					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());
 					SendPacket(response, host, port);
 				} else {
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );

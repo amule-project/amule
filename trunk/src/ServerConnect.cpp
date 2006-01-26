@@ -226,8 +226,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			 );
 		tagMuleVersion.WriteTagToFile(&data);
 
-		CPacket* packet = new CPacket(&data);
-		packet->SetOpCode(OP_LOGINREQUEST);
+		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST"));
 		AddLogLineM(true,wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode());
@@ -258,7 +257,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		
 		// tecxx 1609 2002 - serverlist update
 		if (thePrefs::AddServersFromServer()) {
-			CPacket* packet = new CPacket(OP_GETSERVERLIST,0);
+			CPacket* packet = new CPacket(OP_GETSERVERLIST, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			SendPacket(packet, true);
 			#ifdef DEBUG_CLIENT_PROTOCOL
@@ -554,8 +553,7 @@ void CServerConnect::KeepConnectionAlive()
 		CMemFile files(4);
 		files.WriteUInt32(0); //nFiles
 	
-		CPacket* packet = new CPacket(&files);
-		packet->SetOpCode(OP_OFFERFILES);
+		CPacket* packet = new CPacket(&files, OP_EDONKEYPROT, OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_OFFERFILES"));
 		#endif
