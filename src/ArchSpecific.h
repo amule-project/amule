@@ -86,6 +86,7 @@ inline void RawPokeUInt64(void* p, uint64 nVal);
 inline uint8 PeekUInt8(const void* p);
 inline uint16 PeekUInt16(const void* p);
 inline uint32 PeekUInt32(const void* p);
+inline uint64 PeekUInt64(const void* p);
 // \}
 
 
@@ -98,6 +99,7 @@ inline uint32 PeekUInt32(const void* p);
 inline void PokeUInt8(void* p, uint8 nVal);
 inline void PokeUInt16(void* p, uint16 nVal);
 inline void PokeUInt32(void* p, uint32 nVal);
+inline void PokeUInt64(void* p, uint64 nVal);
 // \}
 
 
@@ -162,6 +164,10 @@ inline uint32 PeekUInt32(const void* p)
 	return ENDIAN_SWAP_32( RawPeekUInt32( p ) );
 }
 
+inline uint64 PeekUInt64(const void* p)
+{
+	return ENDIAN_SWAP_64( RawPeekUInt64( p ) );
+}
 
 
 
@@ -216,5 +222,9 @@ inline void PokeUInt32(void* p, uint32 nVal)
 	RawPokeUInt32( p, ENDIAN_SWAP_32( nVal ) );
 }
 
+inline void PokeUInt64(void* p, uint64 nVal)
+{
+	RawPokeUInt64( p, ENDIAN_SWAP_64( nVal ) );
+}
 
 #endif
