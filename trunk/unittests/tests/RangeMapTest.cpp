@@ -76,7 +76,7 @@ wxString StringFrom(const CRangeMap<VALUE>& map)
 
 DECLARE(RangeMap);
 	TestRangeMap m_map;
-	TestRangeMap* m_mmaps;
+	TestRangeMap m_mmaps[3];
 
 	// Identifers for the multirange maps
 	enum Maps {
@@ -89,8 +89,6 @@ DECLARE(RangeMap);
 	void setUp() {
 		m_map.insert(100, 150, reinterpret_cast<int*>(0));
 		ASSERT_EQUALS(wxT("[(100, 150, 0)]"), StringFrom(m_map));
-		
-		m_mmaps = new TestRangeMap[3];
 		
 		m_mmaps[CONT].insert(100, 150, reinterpret_cast<int*>(0));
 		m_mmaps[CONT].insert(151, 200, reinterpret_cast<int*>(1));
@@ -107,7 +105,9 @@ DECLARE(RangeMap);
 
 	void tearDown() {
 		m_map.clear();
-		delete[] m_mmaps;
+		m_mmaps[0].clear();
+		m_mmaps[1].clear();
+		m_mmaps[2].clear();
 	}
 
 
