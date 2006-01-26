@@ -164,9 +164,9 @@ void CUpDownClient::SendStartupLoadReq()
 	SetDownloadState(DS_ONQUEUE);
 	CMemFile dataStartupLoadReq(16);
 	dataStartupLoadReq.WriteHash(m_reqfile->GetFileHash());
-	CPacket* packet = new CPacket(&dataStartupLoadReq);
-	packet->SetOpCode(OP_STARTUPLOADREQ);
+	CPacket* packet = new CPacket(&dataStartupLoadReq, OP_EDONKEYPROT, OP_STARTUPLOADREQ);
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_STARTUPLOADREQ to ") + GetFullIP());	
 	SendPacket(packet, true, true);
 }
 
@@ -214,6 +214,7 @@ void CUpDownClient::SendFileRequest()
 	
 	CMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash(m_reqfile->GetFileHash());
+	wxString sent_opcodes;
 	if (SupportMultiPacket()) {
 		
 		if (SupportExtMultiPacket()) {
@@ -223,6 +224,7 @@ void CUpDownClient::SendFileRequest()
 		AddDebugLogLineM(false, logClient, wxT("Sending file request to client\n"));
 		
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
+		sent_opcodes += wxT("|RFNM|");
 		// Extended information
 		if (GetExtendedRequestsVersion() > 0) {
 			m_reqfile->WritePartStatus(&dataFileReq);
@@ -231,6 +233,7 @@ void CUpDownClient::SendFileRequest()
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
 		if (m_reqfile->GetPartCount() > 1) {
+			sent_opcodes += wxT("|RFID|");
 			dataFileReq.WriteUInt8(OP_SETREQFILEID);
 		}
 		if (IsEmuleClient()) {
@@ -238,15 +241,18 @@ void CUpDownClient::SendFileRequest()
 			SetRemoteQueueRank(0);
 		}
 		if (IsSourceRequestAllowed()) {
+			sent_opcodes += wxT("|RSRC|");
 			dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
 		}
 		if (IsSupportingAICH()) {
+			sent_opcodes += wxT("|AFHR|");
 			dataFileReq.WriteUInt8(OP_AICHFILEHASHREQ);
 		}		
 		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s "), (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT (") : wxT("OP_MULTIPACKET (") ) + sent_opcodes + wxT(") to ") + GetFullIP()));
 		SendPacket(packet, true);
 	} else {
 		//This is extended information
@@ -256,9 +262,9 @@ void CUpDownClient::SendFileRequest()
 		if (GetExtendedRequestsVersion() > 1 ) {
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
-		CPacket* packet = new CPacket(&dataFileReq);
-		packet->SetOpCode(OP_REQUESTFILENAME);
+		CPacket* packet = new CPacket(&dataFileReq, OP_EDONKEYPROT, OP_REQUESTFILENAME);
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQUESTFILENAME to ") + GetFullIP() );
 		SendPacket(packet, true);
 	
 		// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
@@ -269,9 +275,9 @@ void CUpDownClient::SendFileRequest()
 		if (m_reqfile && (m_reqfile->GetPartCount() > 1)) {
 			CMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteHash(m_reqfile->GetFileHash());
-			packet = new CPacket(&dataSetReqFileID);
-			packet->SetOpCode(OP_SETREQFILEID);
+			packet = new CPacket(&dataSetReqFileID, OP_EDONKEYPROT, OP_SETREQFILEID);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SETREQFILEID to ") + GetFullIP());
 			SendPacket(packet, true);
 		}
 	
@@ -286,6 +292,7 @@ void CUpDownClient::SendFileRequest()
 			packet = new CPacket(OP_REQUESTSOURCES,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theStats::AddUpOverheadSourceExchange(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQUESTSOURCES to ") + GetFullIP() );
 			SendPacket(packet,true,true);
 			SetLastAskedForSources();
 		}
@@ -295,6 +302,7 @@ void CUpDownClient::SendFileRequest()
 			packet = new CPacket(OP_AICHFILEHASHREQ,16,OP_EMULEPROT);
 			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 			theStats::AddUpOverheadOther(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHFILEHASHREQ to ") + GetFullIP());
 			SendPacket(packet,true,true);
 		}
 	}
@@ -333,9 +341,10 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 		// even if the file is <= PARTSIZE, we _may_ need the hashset for that file (if the file size == PARTSIZE)
 		if (m_reqfile->IsHashSetNeeded()) {
 			if (m_socket) {
-				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
+				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16, OP_EDONKEYPROT);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HASHSETREQUEST to ") + GetFullIP());
 				SendPacket(packet,true,true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -435,9 +444,10 @@ void CUpDownClient::ProcessFileStatus(bool bUdpPacket, const CMemFile* data, con
 		} else if (m_reqfile->IsHashSetNeeded()) {
 			//If we are using the eMule filerequest packets, this is taken care of in the Multipacket!
 			if (m_socket) {
-				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16);
+				CPacket* packet = new CPacket(OP_HASHSETREQUEST,16, OP_EDONKEYPROT);
 				packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HASHSETREQUEST to ") + GetFullIP());
 				SendPacket(packet, true, true);
 				SetDownloadState(DS_REQHASHSET);
 				m_fHashsetRequesting = 1;
@@ -604,8 +614,9 @@ void CUpDownClient::SendBlockRequests()
 	
 	if (m_PendingBlocks_list.IsEmpty()) {
 		if (!GetSentCancelTransfer()){
-			CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
+			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
 			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -629,8 +640,9 @@ void CUpDownClient::SendBlockRequests()
 					// Requesting a large block from a client that doesn't support large files?
 					wxASSERT( false );
 					if (!GetSentCancelTransfer()){
-						CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
+						CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 						theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
 						SendPacket(packet,true,true);
 						SetSentCancelTransfer(1);
 					}					
@@ -684,6 +696,7 @@ void CUpDownClient::SendBlockRequests()
 	}
 	
 	CPacket* packet = new CPacket(&data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
+	AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS"))) + GetFullIP() );
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	SendPacket(packet, true, true);
 }
@@ -1051,8 +1064,9 @@ float CUpDownClient::CalculateKBpsDown()
 	}
 	if ((::GetTickCount() - m_dwLastBlockReceived) > DOWNLOADTIMEOUT){
 		if (!GetSentCancelTransfer()){
-			CPacket* packet = new CPacket(OP_CANCELTRANSFER,0);
+			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
 			SendPacket(packet,true,true);
 			SetSentCancelTransfer(1);
 		}
@@ -1422,6 +1436,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
 	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_AICHREQUEST);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());	
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHREQUEST to") + GetFullIP());
 	SafeSendPacket(packet);
 }
 
@@ -1493,6 +1508,7 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 				
 				CPacket* packAnswer = new CPacket(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
 				theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHANSWER to") + GetFullIP());
 				SafeSendPacket(packAnswer);
 				return;
 			} else {
@@ -1508,6 +1524,7 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 	CPacket* packAnswer = new CPacket(OP_AICHANSWER, 16, OP_EMULEPROT);
 	packAnswer->Copy16ToDataBuffer(hash.GetHash());
 	theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHANSWER to") + GetFullIP());
 	SafeSendPacket(packAnswer);
 }
 

@@ -967,8 +967,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	CPacket* result = new CPacket(&data, OP_EMULEPROT);
-	result->SetOpCode( OP_ANSWERSOURCES );
+	CPacket* result = new CPacket(&data, OP_EMULEPROT, OP_ANSWERSOURCES);
 	
 	if ( result->GetPacketSize() > 354 ) {
 		result->PackPacket();

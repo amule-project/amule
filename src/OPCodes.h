@@ -284,11 +284,11 @@ enum ED2KStandardClientTCP {
 	OP_SENDINGPART				= 0x46,	// <HASH 16><von 4><bis 4><Daten len:(von-bis)>
 	OP_REQUESTPARTS				= 0x47,	// <HASH 16><von[3] 4*3><bis[3] 4*3>
 	OP_FILEREQANSNOFIL			= 0x48,	// <HASH 16>
-	OP_END_OF_DOWNLOAD     		= 0x49,	// <HASH 16>
+	OP_END_OF_DOWNLOAD     		= 0x49,	// <HASH 16> // Unused for sending
 	OP_ASKSHAREDFILES			= 0x4A,	// (null)
 	OP_ASKSHAREDFILESANSWER 	= 0x4B,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 	OP_HELLOANSWER				= 0x4C,	// <HASH 16><ID 4><PORT 2><1 Tag_set><SERVER_IP 4><SERVER_PORT 2>
-	OP_CHANGE_CLIENT_ID 		= 0x4D,	// <ID_old 4><ID_new 4>
+	OP_CHANGE_CLIENT_ID 		= 0x4D,	// <ID_old 4><ID_new 4> // Unused for sending
 	OP_MESSAGE					= 0x4E,	// <len 2><Message len>
 	OP_SETREQFILEID				= 0x4F,	// <HASH 16>
 	OP_FILESTATUS				= 0x50,	// <HASH 16><count 2><status(bit array) len:((count+7)/8)>
@@ -300,8 +300,8 @@ enum ED2KStandardClientTCP {
 	OP_OUTOFPARTREQS			= 0x57,	// (null)
 	OP_REQUESTFILENAME			= 0x58,	// <HASH 16>	(more correctly file_name_request)
 	OP_REQFILENAMEANSWER		= 0x59,	// <HASH 16><len 4><NAME len>
-	OP_CHANGE_SLOT				= 0x5B,	// <HASH 16>
-	OP_QUEUERANK				= 0x5C,	// <wert  4> (slot index of the request)
+	OP_CHANGE_SLOT				= 0x5B,	// <HASH 16> // Not used for sending
+	OP_QUEUERANK				= 0x5C,	// <wert  4> (slot index of the request) // Not used for sending
 	OP_ASKSHAREDDIRS			= 0x5D,	// (null)
 	OP_ASKSHAREDFILESDIR		= 0x5E,	// <len 2><Directory len>
 	OP_ASKSHAREDDIRSANS			= 0x5F,	// <count 4>(<len 2><Directory len>)[count]
@@ -330,13 +330,13 @@ enum ED2KExtendedClientTCP {
 	OP_SIGNATURE				= 0x86,	// v1: <len 1><signature len>
 										// v2:<len 1><signature len><sigIPused 1>
 	OP_SECIDENTSTATE			= 0x87,	// <state 1><rndchallenge 4>
-	OP_REQUESTPREVIEW			= 0x90,	// <HASH 16>
-	OP_PREVIEWANSWER			= 0x91,	// <HASH 16><frames 1>{frames * <len 4><frame len>}
+	OP_REQUESTPREVIEW			= 0x90,	// <HASH 16> // Never used for sending on aMule
+	OP_PREVIEWANSWER			= 0x91,	// <HASH 16><frames 1>{frames * <len 4><frame len>} // Never used for sending on aMule
 	OP_MULTIPACKET				= 0x92,
 	OP_MULTIPACKETANSWER		= 0x93,
-	OP_PEERCACHE_QUERY			= 0x94,
-	OP_PEERCACHE_ANSWER			= 0x95,
-	OP_PEERCACHE_ACK			= 0x96,
+//	OP_PEERCACHE_QUERY			= 0x94, // Unused on aMule - no PeerCache
+//	OP_PEERCACHE_ANSWER			= 0x95, // Unused on aMule - no PeerCache
+//	OP_PEERCACHE_ACK			= 0x96, // Unused on aMule - no PeerCache
 	OP_PUBLICIP_REQ				= 0x97,
 	OP_PUBLICIP_ANSWER			= 0x98,
 	OP_CALLBACK					= 0x99,	// <HASH 16><HASH 16><uint 16>

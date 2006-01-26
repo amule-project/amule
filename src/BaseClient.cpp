@@ -652,8 +652,7 @@ bool CUpDownClient::SendHelloPacket() {
 	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
 	
-	CPacket* packet = new CPacket(&data);
-	packet->SetOpCode(OP_HELLO);
+	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HELLO);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
@@ -735,13 +734,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	
 	}
 
-	packet = new CPacket(&data,OP_EMULEPROT);
-	
-	if (!bAnswer) {
-		packet->SetOpCode(OP_EMULEINFO);
-	} else {
-		packet->SetOpCode(OP_EMULEINFOANSWER);
-	}
+	packet = new CPacket(&data, OP_EMULEPROT, (bAnswer ? OP_EMULEINFOANSWER : OP_EMULEINFO));
 	
 	if (m_socket) {
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
@@ -935,13 +928,10 @@ void CUpDownClient::SendHelloAnswer()
 
 	CMemFile data(128);
 	SendHelloTypePacket(&data);
-	CPacket* packet = new CPacket(&data);
-	packet->SetOpCode(OP_HELLOANSWER);
-
+	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HELLOANSWER);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
-	SendPacket(packet,true);
-
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP() );
+	SendPacket(packet,true);
 }
 
 
@@ -1351,15 +1341,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			// AFAICS, this id must be reversed to be sent to clients
 			// But if I reverse it, we do a serve violation ;)
 			data.WriteUInt32(m_nUserIDHybrid);
-			CPacket* packet = new CPacket(&data);
-			packet->SetOpCode(OP_CALLBACKREQUEST);
+			CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_CALLBACKREQUEST);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST to ") + GetFullIP());
 			theApp.serverconnect->SendPacket(packet);
-			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST") );
-			//printf("Sending a callback request, ID: %x/%x IP: %s (%i)\n",m_nUserIDHybrid,
-			//	ENDIAN_NTOHL(m_nUserIDHybrid), 
-			//	(const char*)unicode2char(Uint32toStringIP(m_nUserIDHybrid)),
-			//	GetSourceFrom());
 			SetDownloadState(DS_WAITCALLBACK);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
@@ -1391,7 +1376,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						bio.WriteUInt16(thePrefs::GetPort());
 						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
-						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i)"),packet->GetPacketSize()));						
+						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i) to"),packet->GetPacketSize()) + GetFullIP());
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
 					} else {
@@ -1497,20 +1482,20 @@ void CUpDownClient::ConnectionEstablished()
 		case US_WAITCALLBACK:
 			if (theApp.uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
-				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ,0);
+				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ, 0, OP_EDONKEYPROT);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				SendPacket(packet,true);
-				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ") );
+				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ACCEPTUPLOADREQ to ") + GetFullIP() );
 			}
 	}
 	if (m_iFileListRequested == 1) {
-		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES,0);
+		CPacket* packet = new CPacket(m_fSharedDirectories ? OP_ASKSHAREDDIRS : OP_ASKSHAREDFILES, 0, OP_EDONKEYPROT);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		SendPacket(packet,true,true);
 		if (m_fSharedDirectories) {
-			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRS") );
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRS to ") + GetFullIP() );
 		} else {
-			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILES") );
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILES to ") + GetFullIP() );
 		}
 	}
 	while (!m_WaitingPackets_list.IsEmpty()) {
@@ -1830,14 +1815,12 @@ void CUpDownClient::SendPublicKeyPacket(){
 	CMemFile data;
 	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
 	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
-	packet->SetOpCode(OP_PUBLICKEY);
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_PUBLICKEY);
 
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICKEY to ") + GetFullIP() );
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_SIGNATURENEEDED;
-	
-	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICKEY") );
 }
 
 
@@ -1893,14 +1876,13 @@ void CUpDownClient::SendSignaturePacket(){
 	if (bUseV2) {
 		data.WriteUInt8(byChaIPKind);
 	}
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT);
-	packet->SetOpCode(OP_SIGNATURE);
+	
+	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_SIGNATURE);
 
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
+	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SIGNATURE to ") + GetFullIP() );
 	SendPacket(packet,true,true);
 	m_SecureIdentState = IS_ALLREQUESTSSEND;
-	
-	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SIGNATURE") );
 }
 
 
@@ -2001,13 +1983,11 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		CMemFile data;
 		data.WriteUInt8(nValue);
 		data.WriteUInt32(dwRandom);
-		CPacket* packet = new CPacket(&data, OP_EMULEPROT);
-		packet->SetOpCode(OP_SECIDENTSTATE);
+		CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_SECIDENTSTATE);
 
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
 		SendPacket(packet,true,true);
-		
-		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE") );
 	} else {
 		wxASSERT ( false );
 	}
@@ -2091,9 +2071,9 @@ void CUpDownClient::SendPublicIPRequest(){
 	if (IsConnected()){
 		CPacket* packet = new CPacket(OP_PUBLICIP_REQ,0,OP_EMULEPROT);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICIP_REQ to") + GetFullIP());
 		SendPacket(packet,true);
 		m_fNeedOurPublicIP = true;
-		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICIP_REQ") );
 	}
 }
 
@@ -2238,9 +2218,9 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 	if (IsConnected()) {
 		CMemFile data;
 		data.WriteString(message);
-		CPacket* packet = new CPacket(&data);
-		packet->SetOpCode(OP_MESSAGE);
+		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_MESSAGE);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
+		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_MESSAGE to ") + GetFullIP());
 		SendPacket(packet, true, true);
 		return true;
 	} else {
@@ -2268,10 +2248,10 @@ void CUpDownClient::SetBuddyID(const byte* pucBuddyID)
 // Kad added by me
 
 bool CUpDownClient::SendBuddyPing() {
-	AddDebugLogLineM(false, logLocalClient,wxT("Local Client: OP_BuddyPing"));
 	SetLastBuddyPingPongTime();	
 	CPacket* buddyPing = new CPacket(OP_BUDDYPING, 0, OP_EMULEPROT);
 	theStats::AddUpOverheadKad(buddyPing->GetPacketSize());
+	AddDebugLogLineM(false, logLocalClient,wxT("Local Client: OP_BUDDYPING to ") + GetFullIP());
 	return SafeSendPacket(buddyPing);
 }
 

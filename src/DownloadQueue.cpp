@@ -917,8 +917,7 @@ void CDownloadQueue::ProcessLocalRequests()
 					} else {
 						data.WriteUInt32(cur_file->GetFileSize());
 					}
-					CPacket packet(&data);
-					packet.SetOpCode(OP_GETSOURCES);
+					CPacket packet(&data, OP_EDONKEYPROT, OP_GETSOURCES);
 					dataTcpFrame.Write(packet.GetPacket(), packet.GetRealPacketSize());
 				}
 			}
@@ -1156,14 +1155,8 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 	
 	int iFileIDs = data.GetLength() / item_size;
 	
-	CPacket packet(&data);
+	CPacket packet(&data, OP_EDONKEYPROT, ((item_size == 16) ? OP_GLOBGETSOURCES : OP_GLOBGETSOURCES2));
 
-	if (item_size == 16) {
-		packet.SetOpCode(OP_GLOBGETSOURCES);
-	} else {
-		packet.SetOpCode(OP_GLOBGETSOURCES2);
-	}
-	
 	theStats::AddUpOverheadServer(packet.GetPacketSize());
 	theApp.serverconnect->SendUDPPacket(&packet,m_udpserver,false);
 
