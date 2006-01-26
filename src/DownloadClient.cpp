@@ -214,14 +214,15 @@ void CUpDownClient::SendFileRequest()
 	
 	CMemFile dataFileReq(16+16);
 	dataFileReq.WriteHash(m_reqfile->GetFileHash());
-	wxString sent_opcodes;
+
 	if (SupportMultiPacket()) {
+		wxString sent_opcodes;
 		
 		if (SupportExtMultiPacket()) {
 			dataFileReq.WriteUInt64(m_reqfile->GetFileSize());
 		}
 		
-		AddDebugLogLineM(false, logClient, wxT("Sending file request to client\n"));
+		AddDebugLogLineM(false, logClient, wxT("Sending file request to client"));
 		
 		dataFileReq.WriteUInt8(OP_REQUESTFILENAME);
 		sent_opcodes += wxT("|RFNM|");
@@ -252,7 +253,7 @@ void CUpDownClient::SendFileRequest()
 		}		
 		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s "), (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT (") : wxT("OP_MULTIPACKET (") ) + sent_opcodes + wxT(") to ") + GetFullIP()));
+		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s "), (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT (") : wxT("OP_MULTIPACKET (") )) + sent_opcodes + wxT(") to ") + GetFullIP());
 		SendPacket(packet, true);
 	} else {
 		//This is extended information
