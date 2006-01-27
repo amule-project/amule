@@ -319,7 +319,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	if (params.typeText != ED2KFTSTR_PROGRAM) {
 		// No check is to be made on returned results if the 
 		// type is 'Programs', since this returns multiple types.
-		m_resultType = params.typeText;
+		m_resultType = (params.typeText.CmpNoCase(wxT("Any")) ? params.typeText : wxString(wxEmptyString));
 	}
 
 	// This MemFile is automatically free'd, except for kad searches.	
