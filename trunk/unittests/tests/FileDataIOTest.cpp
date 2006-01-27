@@ -73,6 +73,8 @@ public:
 	CFile* m_predefFile;
 	
 	void setUp() {
+		m_emptyFile = m_predefFile = NULL;
+
 		m_emptyFile = new CFile();
 		m_emptyFile->Create(wxT("FileDataIOTest.empty"), true);
 		ASSERT_TRUE(m_emptyFile->IsOpened());
@@ -114,6 +116,8 @@ public:
 	CMemFile* m_predefFile;
 	
 	void setUp() {
+		m_emptyFile = m_predefFile = NULL;
+
 		m_emptyFile = new CMemFile();
 		m_predefFile = new CMemFile();
 		
