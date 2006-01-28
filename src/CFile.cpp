@@ -400,8 +400,18 @@ uint64 CFile::GetLength() const
 
 uint64 CFile::GetAvailable() const
 {
-	return (GetLength() - GetPosition());
+	const uint64 length = GetLength();
+	const uint64 position = GetPosition();
+
+	// Safely handle seeking past EOF
+	if (position < length) {
+		return length - position;
+	}
+
+	// File is at or after EOF
+	return 0;
 }
+
 
 bool CFile::SetLength(size_t new_len)
 {
