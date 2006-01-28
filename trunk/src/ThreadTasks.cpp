@@ -226,7 +226,7 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 
 void CHashingTask::OnLastTask()
 {
-	if (GetType() == wxT("Hasher")) {
+	if (GetType() == wxT("Hashing")) {
 		// To prevent rehashing in case of crashes, we 
 		// explicity save the list of hashed files here.
 		theApp.knownfiles->Save();
