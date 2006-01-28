@@ -32,7 +32,9 @@
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 
-	
+#include <algorithm>
+
+
 /**
  * Helper function.
  *
@@ -118,6 +120,38 @@ unsigned int EraseValue( LIST& list, const ITEM& item )
 
 	return count;
 }
+
+
+//! Used by DeleteContents
+struct SDoDelete
+{
+	// Used for lists, vectors, deques, etc.
+	template <typename TYPE>
+	void operator()(TYPE* ptr) {
+		delete ptr;
+	}
+
+	// Used for maps, hashmaps, rangemaps, etc.
+	template <typename FIRST, typename SECOND>
+	void operator()(const std::pair<FIRST, SECOND>& pair) {
+		delete pair.second;
+	}		
+};
+
+
+/** Frees the contents of a list or map like stl container, clearing it afterwards. */
+template <typename STL_CONTAINER>
+void DeleteContents(STL_CONTAINER& container)
+{
+	// Ensure that the actual container wont contain dangling pointers during
+	// this operation, to ensure that the destructors cant access them.
+	STL_CONTAINER copy;
+	
+	std::swap(copy, container);
+	std::for_each(copy.begin(), copy.end(), SDoDelete());
+}
+
+
 
 
 /**
