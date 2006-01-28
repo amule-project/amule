@@ -807,7 +807,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 								wxASSERT(tag->IsInt());
 								entry->size = tag->GetInt();	
 							}
-							strInfo += wxString::Format(wxT("  Size=%llu"), entry->size);
+							strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->size);
 							// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
 							entry->taglist.push_back(tag);
 						} else {
