@@ -115,7 +115,7 @@ void FormatValue(CFormat& format, const CECTag* tag)
 			format = format % tag->GetInt64Data();
 			break;
 		case EC_VALUE_ISTRING:
-			format = format % (wxString::Format(wxT("%llu"), tag->GetInt64Data()) + extra);
+			format = format % (wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), tag->GetInt64Data()) + extra);
 			break;
 		case EC_VALUE_BYTES:
 			format = format % (CastItoXBytes(tag->GetInt64Data()) + extra);
