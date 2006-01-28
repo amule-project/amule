@@ -166,12 +166,12 @@ wxString StringFrom(const TYPE& value)
 
 inline wxString StringFrom(unsigned long long value)
 {
-	return wxString::Format(wxT("%llu"), value);
+	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), value);
 }
 
 inline wxString StringFrom(signed long long value)
 {
-	return wxString::Format(wxT("%lli"), value);
+	return wxString::Format(wxT("%") wxLongLongFmtSpec wxT("i"), value);
 }
 
 

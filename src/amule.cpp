@@ -881,7 +881,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
 	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
 		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
-		wxString::Format(wxT("%llu"), f->GetFileSize()) << wxT("|") <<
+		wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()) << wxT("|") <<
 		f->GetFileHash().Encode() << wxT("|/");
 	return strURL;
 }
@@ -1102,7 +1102,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			theStats::GetSessionSentBytes() );
 
 		// Uptime
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"), theStats::GetUptimeSeconds()));
+		amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetUptimeSeconds());
 	}
 
 	// Flush the files
@@ -1335,10 +1335,10 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 		
 		// Save total upload/download to preferences
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded());
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
+		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded());
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 
 		// Write changes to file
