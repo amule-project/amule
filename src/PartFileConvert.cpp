@@ -474,10 +474,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	file->hashlist.Clear();
 
-	while (file->gaplist.GetCount() > 0 ) {
-		delete file->gaplist.GetAt(file->gaplist.GetHeadPosition());
-		file->gaplist.RemoveAt(file->gaplist.GetHeadPosition());
-	}
+	DeleteContents(file->m_gaplist);
 
 	if (!file->LoadPartFile(thePrefs::GetTempDir(), file->GetPartMetFileName(), false)) {
 		//delete file;

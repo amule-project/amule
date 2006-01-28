@@ -1196,8 +1196,6 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
 	CECTag *reqtag = tag->GetTagByName(EC_TAG_PARTFILE_REQ_STATUS);
 	if (gaptag && parttag && reqtag) {
-		POSITION curr_pos;
-
 		wxASSERT(m_enc_map.count(file->GetFileHash()));
 		
 		PartFileEncoderData &encoder = m_enc_map[file->GetFileHash()];
@@ -1206,34 +1204,37 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			(unsigned char *)parttag->GetTagData(), parttag->GetTagDataLen());
 			
 		const Gap_Struct *reqparts = (const Gap_Struct *)reqtag->GetTagData();
-		int reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
+		unsigned reqcount = reqtag->GetTagDataLen() / sizeof(Gap_Struct);
 		
 		// adjust size of gaplist to reqcount
-		int gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
-		while ( file->gaplist.GetCount() > gap_size ) {
-			file->gaplist.RemoveHead();
+		unsigned gap_size = encoder.m_gap_status.Size() / (2 * sizeof(uint64));
+		while ( file->m_gaplist.size() > gap_size ) {
+			file->m_gaplist.pop_front();
 		}
-		while ( file->gaplist.GetCount() != gap_size ) {
-			file->gaplist.AddHead(new Gap_Struct);
+		while ( file->m_gaplist.size() != gap_size ) {
+			file->m_gaplist.push_front(new Gap_Struct);
 		}
 		const uint64 *gap_info = (const uint64 *)encoder.m_gap_status.Buffer();
-		curr_pos = file->gaplist.GetHeadPosition();
-		for (int j = 0; j < gap_size;j++) {
-			Gap_Struct* gap = file->gaplist.GetNext(curr_pos);
+		
+		
+		std::list<Gap_Struct*>::iterator it = file->m_gaplist.begin();
+		for (unsigned j = 0; j < gap_size;j++) {
+			Gap_Struct* gap = *it++;
 			gap->start = ENDIAN_NTOHLL(gap_info[2*j]);
 			gap->end = ENDIAN_NTOHLL(gap_info[2*j+1]);
 		}
 		
 		// adjust size of requested block list
-		while ( file->requestedblocks_list.GetCount() > reqcount ) {
-			file->requestedblocks_list.RemoveHead();
+		while ( file->m_requestedblocks_list.size() > reqcount ) {
+			file->m_requestedblocks_list.pop_front();
 		}
-		while ( file->requestedblocks_list.GetCount() != reqcount ) {
-			file->requestedblocks_list.AddHead(new Requested_Block_Struct);
+		while ( file->m_requestedblocks_list.size() != reqcount ) {
+			file->m_requestedblocks_list.push_front(new Requested_Block_Struct);
 		}
-		curr_pos = file->requestedblocks_list.GetHeadPosition();
-		for (int i = 0; i < reqcount;i++) {
-			Requested_Block_Struct* block = file->requestedblocks_list.GetNext(curr_pos);
+
+		std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
+		for (unsigned i = 0; i < reqcount;i++) {
+			Requested_Block_Struct* block = *it2++;
 			block->StartOffset = ENDIAN_NTOHLL(reqparts[i].start);
 			block->EndOffset = ENDIAN_NTOHLL(reqparts[i].end);
 		}

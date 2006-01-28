@@ -34,7 +34,6 @@
 #include "CFile.h"		// Needed for CFile
 
 #include "OtherStructs.h"	// Needed for Gap_Struct
-#include "CTypedPtrList.h"
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 
 
@@ -77,6 +76,10 @@ struct PartFileBufferedData
 
 class CPartFile : public CKnownFile {
 public:
+	typedef std::list<Gap_Struct*> CGapPtrList;
+	typedef std::list<Requested_Block_Struct*> CReqBlockPtrList;
+
+	
 	CPartFile();
 #ifdef CLIENT_GUI
 	CPartFile(CEC_PartFile_Tag *tag);
@@ -237,8 +240,8 @@ public:
 	const SourceSet& GetSourceList()	const { return m_SrcList; }
 	const SourceSet& GetA4AFList()		const { return m_A4AFsrclist; }
 
-	const CList<Gap_Struct*>&	GetGapList() const	{ return gaplist; }
-	const CList<Requested_Block_Struct*>& GetRequestedBlockList() const { return requestedblocks_list; }
+	const CGapPtrList		GetGapList() const	{ return m_gaplist; }
+	const CReqBlockPtrList	GetRequestedBlockList() const { return m_requestedblocks_list; }
 
 
 	/**
@@ -315,10 +318,10 @@ private:
 	bool	newdate;	// indicates if there was a writeaccess to the .part file
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
-	CList<Gap_Struct*> gaplist;
-	CList<Requested_Block_Struct*> requestedblocks_list;
+	CGapPtrList m_gaplist;
+	CReqBlockPtrList m_requestedblocks_list;
 	double	percentcompleted;
-	CList<uint16, uint16> corrupted_list;
+	std::list<uint16> m_corrupted_list;
 	uint8	m_availablePartsCount;
 	uint32	m_ClientSrcAnswered;
 	bool	m_bPercentUpdated;
@@ -329,7 +332,8 @@ private:
 	wxDateTime	m_lastDateChanged;
 
 	// Barry - Buffered data to be written
-	CTypedPtrList<CPtrList, PartFileBufferedData*> m_BufferedData_list;
+	std::list<PartFileBufferedData*> m_BufferedData_list;
+	
 	uint32 m_nTotalBufferData;
 	uint32 m_nLastBufferFlushTime;
 
@@ -385,7 +389,6 @@ private:
 	uint32	m_LastSearchTimeKad;
 	uint8	m_TotalSearchesKad;
 
-friend class CPartFile_Encoder;
 friend class CDownQueueRem;
 friend class CPartFileConvert;
 };
