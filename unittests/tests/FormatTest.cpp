@@ -2,6 +2,8 @@
 #include <common/Format.h>
 #include <limits.h>
 
+#include <Types.h>
+
 using namespace muleunit;
 
 // Note: These tests have been written in accordance with the 
@@ -99,7 +101,8 @@ TEST(Format, SetStringAndGetString)
 	{ \
 		wxString reference	= wxString::Format(wxString(wxT("%")) + wxformat, value); \
 		wxString actual		= CFormat(wxString(wxT("%")) + cformat) % value; \
- 		ASSERT_EQUALS_M(reference, actual, wxString(wxT("%")) << wxformat << wxT(": '") + reference + wxT("' != '") + actual + wxT("'")); \
+ 		ASSERT_EQUALS_M(reference, actual, wxString(wxT("%")) << wxformat \
+				<< wxT(" vs. %") << cformat << wxT(": '") + reference + wxT("' != '") + actual + wxT("'")); \
 	}
 	
 
@@ -159,7 +162,7 @@ TEST(Format, InjectInteger)
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("h") << *sint_entry,	signed short);
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("") << *sint_entry,	signed int);
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("l") << *sint_entry,	signed long);
-			STANDARD_TYPE_TESTS(entry, wxString() << wxT("ll") << *sint_entry,	signed long long);
+			STANDARD_TYPE_TESTS(entry, wxString() << wxLongLongFmtSpec << *sint_entry,	signed long long);
 			
 			++len_entry;
 		}
@@ -178,7 +181,7 @@ TEST(Format, InjectInteger)
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("h") << *uint_entry,	unsigned short);
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("") << *uint_entry,	unsigned int);
 			STANDARD_TYPE_TESTS(entry, wxString() << wxT("l") << *uint_entry,	unsigned long);
-			STANDARD_TYPE_TESTS(entry, wxString() << wxT("ll") << *uint_entry,	unsigned long long);
+			STANDARD_TYPE_TESTS(entry, wxString() << wxLongLongFmtSpec << *uint_entry,	unsigned long long);
 			
 			++len_entry;
 		}
@@ -386,3 +389,20 @@ TEST(Format, Overfeeding)
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 }
+
+
+TEST(Format, 64bValues)
+{	
+	{
+		CFormat fmt(wxT("%lli - %lli"));
+	   	fmt % MIN(sint64) % MAX(sint64);
+		ASSERT_EQUALS(wxT("-9223372036854775808 - 9223372036854775807"), fmt.GetString());
+	}
+
+	{
+		CFormat fmt(wxT("%llu - %llu"));
+	   	fmt % MIN(uint64) % MAX(uint64);
+		ASSERT_EQUALS(wxT("0 - 18446744073709551615"), fmt.GetString());
+	}	
+}
+
