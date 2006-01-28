@@ -379,7 +379,7 @@ public:
 
 private:
 	/* downloading sources list */
-	std::list<CUpDownClient *> m_downloadingSourcesList;
+	CClientPtrList m_downloadingSourcesList;
 
 	/* Kad Stuff */
 	uint32	m_LastSearchTimeKad;

@@ -27,13 +27,11 @@
 #define UPLOADQUEUE_H
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "MD4Hash.h"		// Needed for CMD4Hash
 
 #include <list>
 
 class CUpDownClient;
-
 
 class CUploadQueue
 {
@@ -44,34 +42,28 @@ public:
 	void	AddClientToQueue(CUpDownClient* client);
 	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
 	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
-	bool	IsOnUploadQueue(CUpDownClient* client)	{return GetWaitingClient(client);}
-	bool	IsDownloading(CUpDownClient* client)	{return GetDownloadingClient(client);}
+	bool	IsOnUploadQueue(CUpDownClient* client) const;
+	bool	IsDownloading(CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
-	POSITION GetFirstFromUploadList()		{return uploadinglist.GetHeadPosition();}
-	CUpDownClient* GetNextFromUploadList(POSITION &curpos)	{return uploadinglist.GetNext(curpos);}
-	CUpDownClient* GetQueueClientAt(POSITION &curpos)	{return uploadinglist.GetAt(curpos);}
-
-	POSITION GetFirstFromWaitingList()		{return waitinglist.GetHeadPosition();}
-	CUpDownClient* GetNextFromWaitingList(POSITION &curpos) {return waitinglist.GetNext(curpos);}
-	CUpDownClient* GetWaitClientAt(POSITION &curpos)	{return waitinglist.GetAt(curpos);}
+	
+	const CClientPtrList& GetWaitingList() const { return m_waitinglist; }
+	const CClientPtrList& GetUploadingList() const { return m_uploadinglist; }
+	
 	CUpDownClient* GetWaitingClientByIP(uint32 dwIP);
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
-	CUpDownClient* GetNextClient(CUpDownClient* update);
 
 	uint16	GetWaitingPosition(CUpDownClient* client);
 	void	SuspendUpload( const CMD4Hash& );
 	void	ResumeUpload( const CMD4Hash& );
 
-protected:
-	void	RemoveFromWaitingQueue(POSITION pos);
-	POSITION GetWaitingClient(CUpDownClient* client);
-	POSITION GetDownloadingClient(CUpDownClient* client);
+private:
+	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);
 	bool	AcceptNewClient();
 	void	AddUpNextClient(CUpDownClient* directadd = 0);
 
-private:
-	CTypedPtrList<CPtrList, CUpDownClient*> waitinglist;
-	CTypedPtrList<CPtrList, CUpDownClient*> uploadinglist;
+	CClientPtrList m_waitinglist;
+	CClientPtrList m_uploadinglist;
+	
 	typedef std::list<CMD4Hash> suspendlist;
 	suspendlist suspended_uploads_list;  //list for suspended uploads
 	uint32	m_nLastStartUpload;

@@ -1026,7 +1026,7 @@ void CPartFile::SaveSourceSeeds()
 	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
 	int n_sources = 0;
 	
-	std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+	CClientPtrList::iterator it = m_downloadingSourcesList.begin();
 	for( ; it != m_downloadingSourcesList.end() && n_sources < MAX_SAVED_SOURCES; ++it) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->HasLowID()) {
@@ -1489,7 +1489,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 
 	if (m_icounter < 10) {
 		// Update only downloading sources.
-		std::list<CUpDownClient *>::iterator it = m_downloadingSourcesList.begin();
+		CClientPtrList::iterator it = m_downloadingSourcesList.begin();
 		for( ; it != m_downloadingSourcesList.end(); ) {
 			CUpDownClient *cur_src = *it++;
 			if(cur_src->GetDownloadState() == DS_DOWNLOADING) {
@@ -3235,7 +3235,7 @@ void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
-	std::list<CUpDownClient *>::iterator it = 
+	CClientPtrList::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it == m_downloadingSourcesList.end()) {
 		m_downloadingSourcesList.push_back(client);
@@ -3245,7 +3245,7 @@ void CPartFile::AddDownloadingSource(CUpDownClient* client)
 
 void CPartFile::RemoveDownloadingSource(CUpDownClient* client)
 {
-	std::list<CUpDownClient *>::iterator it = 
+	CClientPtrList::iterator it = 
 		std::find(m_downloadingSourcesList.begin(), m_downloadingSourcesList.end(), client);
 	if (it != m_downloadingSourcesList.end()) {
 		m_downloadingSourcesList.erase(it);

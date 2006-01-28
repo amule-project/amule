@@ -30,6 +30,9 @@
 #include <wx/dynarray.h>	// Needed for WX_DEFINE_ARRAY_SHORT
 #include <wx/string.h>		// Needed for wxString and wxEmptyString
 
+#include <list>				// Needed for std::list
+
+
 // These are MSVC defines used in eMule. They should 
 // not be used in aMule, instead, use this table to 
 // find the type to use in order to get the desired 
@@ -84,6 +87,21 @@ typedef int16_t		sint16;
 typedef int32_t		sint32;
 typedef int64_t		sint64;
 typedef uint8_t		byte;
+
+
+
+class CKnownFile;
+class CUpDownClient;
+
+//! Various common list-types.
+//@{ 
+typedef std::list<wxString> CStringList;
+typedef std::list<CKnownFile*> CKnownFilePtrList;
+typedef std::list<CUpDownClient*> CClientPtrList;
+//@}
+
+
+
 
 WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
 
