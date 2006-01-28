@@ -1097,7 +1097,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			theStats::GetSessionSentBytes() );
 
 		// Uptime
-		amulesig_out.AddLine(wxString::Format(wxT("%llu"), theStats::GetUptimeSeconds()));
+		amulesig_out.AddLine(CFormat(wxT("%llu")) % theStats::GetUptimeSeconds());
 	}
 
 	// Flush the files
@@ -1334,10 +1334,10 @@ void CamuleApp::OnCoreTimer(wxEvent& WXUNUSED(evt))
 		
 		// Save total upload/download to preferences
 		wxConfigBase* cfg = wxConfigBase::Get();
-		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded() );
+		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionReceivedBytes() + thePrefs::GetTotalDownloaded());
 		cfg->Write(wxT("/Statistics/TotalDownloadedBytes"), buffer);
 
-		buffer = wxString::Format( wxT("%llu"), theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded() );
+		buffer = CFormat(wxT("%llu")) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded());
 		cfg->Write(wxT("/Statistics/TotalUploadedBytes"), buffer);
 
 		// Write changes to file
