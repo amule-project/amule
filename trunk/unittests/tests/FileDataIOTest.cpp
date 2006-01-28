@@ -880,3 +880,28 @@ TEST(CFile, SetLength)
 	ASSERT_EQUALS(512u, file.Seek(0, wxFromEnd));
 }
 
+
+TEST(CFile, GetAvailable)
+{
+	{
+		CFile file(testFile, CFile::write);
+
+		writePredefData(&file);
+	}
+
+	CFile file(testFile, CFile::read);
+
+	const uint64 length = file.GetLength();
+	while (not file.Eof()) {
+		ASSERT_EQUALS(length - file.GetPosition(), file.GetAvailable());
+		file.ReadUInt32();
+		ASSERT_EQUALS(length - file.GetPosition(), file.GetAvailable());
+	}
+	
+	ASSERT_EQUALS(0u, file.GetAvailable());
+
+	file.Seek(1024, wxFromCurrent);
+
+	ASSERT_EQUALS(0u, file.GetAvailable());
+}
+
