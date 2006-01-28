@@ -518,9 +518,10 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 			
 			
 	// Insert any existing items on the list
-	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
-	while ( pos ) {
-		list->InsertClient( theApp.uploadqueue->GetNextFromUploadList( pos ), list->GetListView() );
+	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		list->InsertClient( *it, list->GetListView() );		
 	}
 }
 
@@ -803,10 +804,11 @@ void CQueuedView::Initialize( CClientListCtrl* list )
 
 
 	// Insert any existing items on the list
-	POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
-
-	while ( pos ) {
-		list->InsertClient( theApp.uploadqueue->GetNextFromWaitingList( pos ), list->GetListView() );
+	// Insert any existing items on the list
+	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		list->InsertClient( *it, list->GetListView() );		
 	}
 }
 

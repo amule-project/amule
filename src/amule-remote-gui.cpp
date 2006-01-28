@@ -951,28 +951,6 @@ CUpDownClientListRem::CUpDownClientListRem(CRemoteConnect *conn, int viewtype) :
 	m_viewtype = viewtype;
 }
 
-POSITION CUpDownClientListRem::GetFirstFromList()
-{
-	it = m_items.begin();
-	if ( it == m_items.end() ) {
-		return 0;
-	}
-	POSITION pos;
-	pos.m_ptr = (void *)&it;
-	return pos;
-}
-
-CUpDownClient *CUpDownClientListRem::GetNextFromList(POSITION &pos)
-{
-	std::list<CUpDownClient *>::iterator *i = (std::list<CUpDownClient *>::iterator *)pos.m_ptr;
-	CUpDownClient *client = *(*i);
-	(*i)++;
-	if ( *i == m_items.end() ) {
-		pos = 0;
-	}
-	return client;
-}
-
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 {
 	m_nUserIDHybrid = tag->ID();

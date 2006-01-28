@@ -32,7 +32,6 @@
 #include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
 
 
-#include "CTypedPtrList.h"
 #include "Statistics.h"
 #include "Preferences.h"
 #include "Statistics.h"
@@ -459,13 +458,11 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 };
 
 class CUpDownClientListRem : public CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag> {
-		std::list<CUpDownClient *>::iterator it;
 		int m_viewtype;
 	public:
 		CUpDownClientListRem(CRemoteConnect *, int viewtype);
 
-		POSITION GetFirstFromList();
-		CUpDownClient *GetNextFromList(POSITION &curpos);
+		const CClientPtrList& GetList() const { return m_items; };
 
 		//
 		// template
@@ -483,16 +480,12 @@ class CUpQueueRem {
 		
 		void ReQueryUp() { m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
 		void ReQueryWait() { m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
-		
-		POSITION GetFirstFromUploadList() { return m_up_list.GetFirstFromList(); }
-		CUpDownClient *GetNextFromUploadList(POSITION &curpos) { return m_up_list.GetNextFromList(curpos); }
-		
-		POSITION GetFirstFromWaitingList() { return m_wait_list.GetFirstFromList(); }
-		CUpDownClient *GetNextFromWaitingList(POSITION &curpos) { return m_wait_list.GetNextFromList(curpos); }
+	
+		const CClientPtrList& GetWaitingList() const { return m_wait_list.GetList(); }
+		const CClientPtrList& GetUploadingList() const { return m_up_list.GetList(); }
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {
-		std::list<CUpDownClient *>::iterator it;
 		std::map<CMD4Hash, PartFileEncoderData> m_enc_map;
 	public:
 		CDownQueueRem(CRemoteConnect *);

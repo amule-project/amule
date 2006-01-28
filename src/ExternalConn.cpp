@@ -342,10 +342,10 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
 
-	POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
-	while (	pos ) {
-
-		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
+	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		CUpDownClient* cur_client = *it;
 
 		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
 			continue;
@@ -362,10 +362,10 @@ CECPacket *Get_EC_Response_GetWaitQueue(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
 	
-	POSITION pos = theApp.uploadqueue->GetFirstFromWaitingList();
-	while (	pos ) {
-
-		CUpDownClient* cur_client = theApp.uploadqueue->GetNextFromWaitingList(pos);
+	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		CUpDownClient* cur_client = *it;
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
 		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
@@ -388,39 +388,42 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
 	
-	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
-	while (	pos ) {
 
-		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
-		theApp.uploadqueue->GetNextFromUploadList(pos);
+	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		CUpDownClient* cur_client = *it;
 
 		if ( !cur_client || (!queryitems.empty() && !queryitems.count(cur_client->GetUserIDHybrid())) ) {
 			continue;
 		}
-		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
 		
+		CEC_UpDownClient_Tag cli_tag(cur_client, detail_level);
 		response->AddTag(cli_tag);
 	}
 	
 	return response;
 }	
 
+
 CECPacket *Get_EC_Response_GetUpQueue(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
-	POSITION pos = theApp.uploadqueue->GetFirstFromUploadList();
-	while (	pos ) {
 
-		CUpDownClient* cur_client = theApp.uploadqueue->GetQueueClientAt(pos);
-		theApp.uploadqueue->GetNextFromUploadList(pos);
+	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	CClientPtrList::const_iterator it = uploading.begin();
+	for (; it != uploading.end(); ++it) {
+		CUpDownClient* cur_client = *it;
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_client);
 		CEC_UpDownClient_Tag cli_tag(cur_client, valuemap);
 		
 		response->AddTag(cli_tag);
 	}
+
 	return response;
 }
+
 
 CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, CObjTagMap &tagmap)
 {	
