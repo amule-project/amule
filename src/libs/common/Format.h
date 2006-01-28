@@ -237,13 +237,13 @@ inline CFormat& CFormat::operator%(unsigned long value)
 
 inline CFormat& CFormat::operator%(signed long long value)
 {
-	return SetCurrentField(wxString::Format(GetIntegerField(wxT("lli")), value));
+	return SetCurrentField(wxString::Format(GetIntegerField(wxLongLongFmtSpec  wxT("i")), value));
 }
 
 
 inline CFormat& CFormat::operator%(unsigned long long value)
 {
-	return SetCurrentField(wxString::Format(GetIntegerField(wxT("llu")), value));
+	return SetCurrentField(wxString::Format(GetIntegerField(wxLongLongFmtSpec wxT("u")), value));
 }
 
 #endif
