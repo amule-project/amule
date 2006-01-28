@@ -73,6 +73,10 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
 
+
+typedef std::list<Chunk> ChunkList;
+
+
 #ifndef CLIENT_GUI
 #include "InternalEvents.h"	// Needed for CMuleInternalEvent
 
@@ -281,13 +285,12 @@ CPartFile::~CPartFile()
 		SavePartFile();			
 	}
 
-	POSITION pos;
-	for (pos = gaplist.GetHeadPosition();pos != 0;) {
-		delete gaplist.GetNext(pos);
-	}
-	pos = m_BufferedData_list.GetHeadPosition();
-	while (pos){
-		PartFileBufferedData *item = m_BufferedData_list.GetNext(pos);
+	DeleteContents(m_gaplist);
+
+	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+	for (; it != m_BufferedData_list.end(); ++it) {
+		PartFileBufferedData* item = *it;
+
 		delete[] item->data;
 		delete item;
 	}
@@ -313,7 +316,7 @@ void CPartFile::CreatePartFile()
 	gap->start = 0;
 	gap->end = GetFileSize() - 1;
 	
-	gaplist.AddTail(gap);
+	m_gaplist.push_back(gap);
 	
 	wxString strPartPath = m_fullname.Left( m_fullname.Length() - 4);
 	if (m_hpartfile.Create(strPartPath, true)) {
@@ -545,7 +548,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					case FT_KADLASTPUBLISHKEY:
 						break;
 					case FT_CORRUPTEDPARTS: {
-						wxASSERT( corrupted_list.GetHeadPosition() == NULL );
+						wxASSERT(m_corrupted_list.empty());
 						wxString strCorruptedParts(newtag.GetStr());
 						wxStringTokenizer tokenizer(strCorruptedParts, wxT(","));
 						while ( tokenizer.HasMoreTokens() ) {
@@ -553,7 +556,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 							unsigned long uPart;
 							if (token.ToULong(&uPart)) {
 								if (uPart < GetPartCount() && !IsCorruptedPart(uPart)) {
-									corrupted_list.AddTail(uPart);
+									m_corrupted_list.push_back(uPart);
 								}
 							}
 						}
@@ -760,7 +763,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		}
 	}
 	
-	if (gaplist.IsEmpty()) { // is this file complete already?
+	if (m_gaplist.empty()) { // is this file complete already?
 		CompleteFile(false);
 		return true;
 	}
@@ -837,8 +840,8 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 		// tags		
 		#define FIXED_TAGS 15
-		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(gaplist.GetCount()*2);
-		if (corrupted_list.GetHeadPosition()) {			
+		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(m_gaplist.size()*2);
+		if (not m_corrupted_list.empty()) {			
 			++tagcount;
 		}
 		
@@ -899,11 +902,11 @@ bool CPartFile::SavePartFile(bool Initial)
 		CTagInt32( FT_ATACCEPTED,	statistic.GetAllTimeAccepts()		).WriteTagToFile( &file );	// 14
 
 		// currupt part infos
-		POSITION posCorruptedPart = corrupted_list.GetHeadPosition();
-		if (posCorruptedPart) {
+		if (not m_corrupted_list.empty()) {
 			wxString strCorruptedParts;
-			while (posCorruptedPart) {
-				uint16 uCorruptedPart = corrupted_list.GetNext(posCorruptedPart);
+			std::list<uint16>::iterator it = m_corrupted_list.begin();
+			for (; it != m_corrupted_list.end(); ++it) {
+				uint16 uCorruptedPart = *it;
 				if (!strCorruptedParts.IsEmpty()) {
 					strCorruptedParts += wxT(",");
 				}
@@ -934,16 +937,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		
 		// gaps
 		unsigned i_pos = 0;
-		for (POSITION pos = gaplist.GetHeadPosition();pos != 0;gaplist.GetNext(pos)) {
+		std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+		for (; it != m_gaplist.end(); ++it) {
 			wxString tagName = wxString::Format(wxT(" %u"), i_pos);
 			
 			// gap start = first missing byte but gap ends = first non-missing byte
 			// in edonkey but I think its easier to user the real limits
 			tagName[0] = FT_GAPSTART;
-			CTagIntSized(tagName, gaplist.GetAt(pos)->start		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
+			CTagIntSized(tagName, (*it)->start		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
 			
 			tagName[0] = FT_GAPEND;
-			CTagIntSized(tagName, (gaplist.GetAt(pos)->end + 1), IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
+			CTagIntSized(tagName, ((*it)->end + 1), IsLargeFile() ? 64 : 32).WriteTagToFile( &file );
 			
 			++i_pos;
 		}
@@ -1023,7 +1027,7 @@ void CPartFile::SaveSourceSeeds()
 		return;	
 	}	
 	
-	CTypedPtrList<CPtrList, CUpDownClient*>	source_seeds;
+	CClientPtrList source_seeds;
 	int n_sources = 0;
 	
 	CClientPtrList::iterator it = m_downloadingSourcesList.begin();
@@ -1032,7 +1036,7 @@ void CPartFile::SaveSourceSeeds()
 		if (cur_src->HasLowID()) {
 			continue;
 		} else {
-			source_seeds.AddTail(cur_src);
+			source_seeds.push_back(cur_src);
 		}
 		++n_sources;
 	}
@@ -1046,7 +1050,7 @@ void CPartFile::SaveSourceSeeds()
 				if (cur_src->HasLowID()) {
 					continue;
 				} else {
-					source_seeds.AddTail(cur_src);
+					source_seeds.push_back(cur_src);
 				}
 				++n_sources;
 			}
@@ -1069,10 +1073,11 @@ void CPartFile::SaveSourceSeeds()
 	}	
 
 	try {
-		file.WriteUInt8(source_seeds.GetCount());
+		file.WriteUInt8(source_seeds.size());
 		
-		for (POSITION pos = source_seeds.GetHeadPosition(); pos  != NULL;) {
-			CUpDownClient* cur_src = source_seeds.GetNext(pos);		
+		CClientPtrList::iterator it2 = source_seeds.begin();
+		for (; it2 != source_seeds.end(); ++it2) {
+			CUpDownClient* cur_src = *it2;		
 			file.WriteUInt32(cur_src->GetUserIDHybrid());
 			file.WriteUInt16(cur_src->GetUserPort());
 		}
@@ -1269,24 +1274,26 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 
 void CPartFile::AddGap(uint64 start, uint64 end)
 {
-	POSITION pos1, pos2;
-	for (pos1 = gaplist.GetHeadPosition();(pos2 = pos1) != NULL;) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos1);
+	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+	while (it != m_gaplist.end()) {
+		std::list<Gap_Struct*>::iterator it2 = it++;
+		Gap_Struct* cur_gap = *it2;
+	
 		if (cur_gap->start >= start && cur_gap->end <= end) {
 			// this gap is inside the new gap - delete
-			gaplist.RemoveAt(pos2);
+			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
 		} else if (cur_gap->start >= start && cur_gap->start <= end) {
 			// a part of this gap is in the new gap - extend limit and delete
 			end = cur_gap->end;
-			gaplist.RemoveAt(pos2);
+			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
 		} else if (cur_gap->end <= end && cur_gap->end >= start) {
 			// a part of this gap is in the new gap - extend limit and delete
 			start = cur_gap->start;
-			gaplist.RemoveAt(pos2);
+			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
 		} else if (start >= cur_gap->start && end <= cur_gap->end){
@@ -1294,18 +1301,21 @@ void CPartFile::AddGap(uint64 start, uint64 end)
 			return;
 		}
 	}
+	
 	Gap_Struct* new_gap = new Gap_Struct;
 	new_gap->start = start;
 	new_gap->end = end;
-	gaplist.AddTail(new_gap);
+	m_gaplist.push_back(new_gap);
 	UpdateDisplayedInfo();
 	newdate = true;
 }
 
 bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end)
 {
-	for (POSITION pos =  requestedblocks_list.GetHeadPosition();pos != 0; ) {
-		Requested_Block_Struct* cur_block =  requestedblocks_list.GetNext(pos);
+	std::list<Requested_Block_Struct*>::iterator it = m_requestedblocks_list.begin();
+	for (; it != m_requestedblocks_list.end(); ++it) {
+		Requested_Block_Struct* cur_block =  *it;
+
 		if ((start <= cur_block->EndOffset) && (end >= cur_block->StartOffset)) {
 			return true;
 		}
@@ -1334,8 +1344,10 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 		firstGap = NULL;
 
 		// Find the first gap from the start position
-		for (POSITION pos = gaplist.GetHeadPosition(); pos != 0; ) {
-			currentGap = gaplist.GetNext(pos);
+		std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+		for (; it != m_gaplist.end(); ++it) {
+			currentGap = *it;
+			
 			// Want gaps that overlap start<->partEnd
 			if ((currentGap->start <= partEnd) && (currentGap->end >= start)) {
 				// Is this the first gap?
@@ -1389,14 +1401,17 @@ bool CPartFile::GetNextEmptyBlockInPart(uint16 partNumber, Requested_Block_Struc
 	return false;
 }
 
+
 void CPartFile::FillGap(uint64 start, uint64 end)
 {
-	POSITION pos1, pos2;
-	for (pos1 = gaplist.GetHeadPosition();(pos2 = pos1) != NULL;) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos1);
+	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+	while (it != m_gaplist.end()) {
+		std::list<Gap_Struct*>::iterator it2 = it++;
+		Gap_Struct* cur_gap = *it2;
+	
 		if (cur_gap->start >= start && cur_gap->end <= end) {
 			// our part fills this gap completly
-			gaplist.RemoveAt(pos2);
+			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
 		} else if (cur_gap->start >= start && cur_gap->start <= end) {
@@ -1411,7 +1426,7 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 			cur_gap = new Gap_Struct;
 			cur_gap->start = end+1;
 			cur_gap->end = buffer;
-			gaplist.InsertAfter(pos1,cur_gap);
+			m_gaplist.insert(++it2, cur_gap);
 			break;
 		}
 	}
@@ -1420,19 +1435,24 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 	newdate = true;
 }
 
+
 void CPartFile::UpdateCompletedInfos()
 {
-   	uint64 allgaps = 0; 
-	for (POSITION pos = gaplist.GetHeadPosition(); pos != 0;) {
-		POSITION prev = pos;
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
+   	uint64 allgaps = 0;
+
+	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+	for (; it != m_gaplist.end(); ) {
+		std::list<Gap_Struct*>::iterator it2 = it++;
+		Gap_Struct* cur_gap = *it2;
+
 		if ((cur_gap->end > GetFileSize()) || (cur_gap->start >= GetFileSize())) {
-			gaplist.RemoveAt(prev);
+			m_gaplist.erase(it2);
 		} else {
 			allgaps += cur_gap->end - cur_gap->start + 1;
 		}
 	}
-	if (gaplist.GetCount() || requestedblocks_list.GetCount()) {
+
+	if ((not m_gaplist.empty()) || (not m_requestedblocks_list.empty())) {
 		percentcompleted = (1.0f-(double)allgaps/GetFileSize()) * 100;
 		completedsize = GetFileSize() - allgaps;
 	} else {
@@ -1982,7 +2002,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 	}
 	// Define and create the list of the chunks to download
 	const uint16 partCount = GetPartCount();
-	CList<Chunk> chunksList;
+	ChunkList chunksList;
 	
 	// Main loop
 	uint16 newBlockCount = 0;
@@ -1992,7 +2012,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 			Requested_Block_Struct* pBlock = new Requested_Block_Struct;
 			if(GetNextEmptyBlockInPart(sender->GetLastPartAsked(), pBlock) == true) {
 				// Keep a track of all pending requested blocks
-				requestedblocks_list.AddTail(pBlock);
+				m_requestedblocks_list.push_back(pBlock);
 				// Update list of blocks to return
 				newblocks[newBlockCount++] = pBlock;
 				// Skip end of loop (=> CPU load)
@@ -2009,7 +2029,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 		if(sender->GetLastPartAsked() == 0xffff) {
 			// Quantify all chunks (create list of chunks to download) 
 			// This is done only one time and only if it is necessary (=> CPU load)
-			if(chunksList.IsEmpty() == TRUE) {
+			if(chunksList.empty()) {
 				// Indentify the locally missing part(s) that this source has
 				for(uint16 i=0; i < partCount; ++i) {
 					if(sender->IsPartAvailable(i) == true && GetNextEmptyBlockInPart(i, NULL) == true) {
@@ -2017,12 +2037,12 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 						Chunk newEntry;
 						newEntry.part = i;
 						newEntry.frequency = m_SrcpartFrequency[i];
-						chunksList.AddTail(newEntry);
+						chunksList.push_back(newEntry);
 					}
 				}
 
 				// Check if any bloks(s) could be downloaded
-				if(chunksList.IsEmpty() == TRUE) {
+				if(chunksList.empty()) {
 					break; // Exit main loop while()
 				}
 
@@ -2048,8 +2068,8 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 					(type == ftArchive || type == ftVideo);
 					
 				// Collect and calculate criteria for all chunks
-				for (POSITION pos = chunksList.GetHeadPosition(); pos != NULL; ) {
-					Chunk& cur_chunk = chunksList.GetNext(pos);
+				for (ChunkList::iterator it = chunksList.begin(); it != chunksList.end(); ++it) {
+					Chunk& cur_chunk = *it;
 					
 					// Offsets of chunk
 					const uint64 uStart = cur_chunk.part * PARTSIZE;
@@ -2083,8 +2103,10 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 
 					// Criterion 4. Completion
 					uint64 partSize = PARTSIZE;
-					for(POSITION gap_pos = gaplist.GetHeadPosition(); gap_pos != NULL;) {
-						const Gap_Struct* cur_gap = gaplist.GetNext(gap_pos);
+
+					std::list<Gap_Struct*>::iterator it2 = m_gaplist.begin();
+					for (; it2 != m_gaplist.end(); ++it2) {
+						const Gap_Struct* cur_gap = *it2;
 						// Check if Gap is into the limit
 						if(cur_gap->start < uStart) {
 							if(cur_gap->end > uStart && cur_gap->end < uEnd) {
@@ -2140,14 +2162,14 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 			}
 
 			// Select the next chunk to download
-			if(chunksList.IsEmpty() == FALSE) {
+			if(not chunksList.empty()) {
 				// Find and count the chunck(s) with the highest priority
 				uint16 chunkCount = 0; // Number of found chunks with same priority
 				uint16 rank = 0xffff; // Highest priority found
 
 				// Collect and calculate criteria for all chunks
-				for (POSITION pos = chunksList.GetHeadPosition(); pos != NULL; ) {
-					const Chunk& cur_chunk = chunksList.GetNext(pos);
+				for (ChunkList::iterator it = chunksList.begin(); it != chunksList.end(); ++it) {
+					const Chunk& cur_chunk = *it;
 					if(cur_chunk.rank < rank) {
 						chunkCount = 1;
 						rank = cur_chunk.rank;
@@ -2159,16 +2181,16 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 				// Use a random access to avoid that everybody tries to download the 
 				// same chunks at the same time (=> spread the selected chunk among clients)
 				uint16 randomness = 1 + (int) (((float)(chunkCount-1))*rand()/(RAND_MAX+1.0));
-				for (POSITION pos = chunksList.GetHeadPosition(); ; ) {
-					POSITION cur_pos = pos;	
-					const Chunk& cur_chunk = chunksList.GetNext(pos);
+
+				for (ChunkList::iterator it = chunksList.begin(); it != chunksList.end(); ++it) {
+					const Chunk& cur_chunk = *it;
 					if(cur_chunk.rank == rank) {
 						randomness--;
 						if(randomness == 0) {
 							// Selection process is over
 							sender->SetLastPartAsked(cur_chunk.part);
 							// Remark: this list might be reused up to *count times
-							chunksList.RemoveAt(cur_pos);
+							chunksList.erase(it);
 							break; // exit loop for()
 						}  
 					}
@@ -2187,24 +2209,25 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 // Maella end
 // Kry EOI
 
+
 void  CPartFile::RemoveBlockFromList(uint64 start,uint64 end)
 {
-	POSITION pos1,pos2;
-	for (pos1 = requestedblocks_list.GetHeadPosition();(pos2 = pos1) != NULL;) {
-		requestedblocks_list.GetNext(pos1);
-		if (requestedblocks_list.GetAt(pos2)->StartOffset <= start && requestedblocks_list.GetAt(pos2)->EndOffset >= end) {
-			requestedblocks_list.RemoveAt(pos2);
+	std::list<Requested_Block_Struct*>::iterator it = m_requestedblocks_list.begin();
+	while (it != m_requestedblocks_list.end()) {
+		std::list<Requested_Block_Struct*>::iterator it2 = it++;
+
+		if ((*it2)->StartOffset <= start && (*it2)->EndOffset >= end) {
+			m_requestedblocks_list.erase(it2);
 		}
 	}
 }
 
+
 void CPartFile::RemoveAllRequestedBlocks(void)
 {
-	requestedblocks_list.RemoveAll();
+	m_requestedblocks_list.clear();
 }
 
-//#include <pthread.h>
-//pthread_attr_t pattr;
 
 void CPartFile::CompleteFile(bool bIsHashingDone)
 {
@@ -2445,7 +2468,8 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 
 bool CPartFile::IsCorruptedPart(uint16 partnumber)
 {
-	return corrupted_list.Find(partnumber);
+	return std::find(m_corrupted_list.begin(), m_corrupted_list.end(), partnumber) 
+		!= m_corrupted_list.end();
 }
 
 
@@ -2563,7 +2587,7 @@ void CPartFile::ResumeFile()
 	m_lastsearchtime = 0;
 	SetStatus(status);
 
-	if (gaplist.IsEmpty() and (GetStatus() == PS_ERROR)) {
+	if (m_gaplist.empty() and (GetStatus() == PS_ERROR)) {
 		// The file has already been hashed at this point
 		CompleteFile(true);
 	}
@@ -2922,19 +2946,25 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	item->block = block;
 
 	// Add to the queue in the correct position (most likely the end)
-	PartFileBufferedData *queueItem;
 	bool added = false;
-	POSITION pos = m_BufferedData_list.GetTailPosition();
-	while (pos != NULL) {
-		queueItem = m_BufferedData_list.GetPrev(pos);
-		if (item->end > queueItem->end) {
-			added = true;
-			m_BufferedData_list.InsertAfter(pos, item);
+	
+	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+	for (; it != m_BufferedData_list.end(); ++it) {
+		PartFileBufferedData* queueItem = *it;
+
+		if (item->end <= queueItem->end) {
+			if (it != m_BufferedData_list.begin()) {
+				added = true;
+
+				m_BufferedData_list.insert(--it, item);
+			}
+			
 			break;
 		}
 	}
+	
 	if (!added) {
-		m_BufferedData_list.AddHead(item);
+		m_BufferedData_list.push_front(item);
 	}
 
 	// Increment buffer size marker
@@ -2945,14 +2975,15 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 
 	// Update the flushed mark on the requested block 
 	// The loop here is unfortunate but necessary to detect deleted blocks.
-	pos = requestedblocks_list.GetHeadPosition();
-	while (pos != NULL) {	
-		if (requestedblocks_list.GetNext(pos) == item->block) {
+	
+	std::list<Requested_Block_Struct*>::iterator it2 = m_requestedblocks_list.begin();
+	for (; it2 != m_requestedblocks_list.end(); ++it2) {
+		if (*it2 == item->block) {
 			item->block->transferred += lenData;
 		}
 	}
 
-	if (gaplist.IsEmpty()) {
+	if (m_gaplist.empty()) {
 		FlushBuffer(true);
 	}
 
@@ -2965,7 +2996,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 {
 	m_nLastBufferFlushTime = GetTickCount();
 	
-	if (m_BufferedData_list.IsEmpty()) {
+	if (m_BufferedData_list.empty()) {
 		return;
 	}
 
@@ -2981,9 +3012,10 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	
 	// Ensure file is big enough to write data to (the last item will be the furthest from the start)
 	uint32 newData = 0;
-	POSITION pos = m_BufferedData_list.GetHeadPosition();
-	for ( ; pos ; ) {
-		PartFileBufferedData* item = m_BufferedData_list.GetNext( pos );
+
+	std::list<PartFileBufferedData*>::iterator it = m_BufferedData_list.begin();
+	for (; it != m_BufferedData_list.end(); ++it) {
+		PartFileBufferedData* item = *it;
 		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
 		newData += (uint32) (item->end - item->start + 1);
 	}
@@ -2997,9 +3029,10 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	}
 	
 	// Loop through queue
-	while ( !m_BufferedData_list.IsEmpty() ) {
+	while ( !m_BufferedData_list.empty() ) {
 		// Get top item and remove it from the queue
-		PartFileBufferedData* item = m_BufferedData_list.RemoveHead();
+		PartFileBufferedData* item = m_BufferedData_list.front();
+		m_BufferedData_list.pop_front();
 
 		// This is needed a few times
 		wxASSERT((item->end - item->start) < 0xFFFFFFFF);
@@ -3058,7 +3091,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				AddGap(PARTSIZE*partNumber, (PARTSIZE*partNumber + partRange));
 				// add part to corrupted list, if not already there
 				if (!IsCorruptedPart(partNumber)) {
-					corrupted_list.AddTail(partNumber);
+					m_corrupted_list.push_back(partNumber);
 				}
 				// request AICH recovery data
 				if (!bNoAICH) {
@@ -3073,9 +3106,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				}
 				
 				// if this part was successfully completed (although ICH is active), remove from corrupted list
-				POSITION posCorrupted = corrupted_list.Find(partNumber);
-				if (posCorrupted)
-					corrupted_list.RemoveAt(posCorrupted);
+				EraseFirstValue(m_corrupted_list, partNumber);
+				
 				if (status == PS_EMPTY) {
 					if (theApp.IsRunning()) { // may be called during shutdown!
 						if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
@@ -3096,9 +3128,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				RemoveBlockFromList(PARTSIZE*partNumber,(PARTSIZE*partNumber + partRange));
 
 				// remove from corrupted list
-				POSITION posCorrupted = corrupted_list.Find(partNumber);
-				if (posCorrupted)
-					corrupted_list.RemoveAt(posCorrupted);
+				EraseFirstValue(m_corrupted_list, partNumber);
 				
 				AddLogLineM(true, CFormat( _("ICH: Recovered corrupted part %i for %s -> Saved bytes: %s") )
 					% partNumber
@@ -3124,7 +3154,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 
 	if (theApp.IsRunning()) { // may be called during shutdown!
 		// Is this file finished ?
-		if (gaplist.IsEmpty()) {
+		if (m_gaplist.empty()) {
 			CompleteFile(false);
 		}
 	}
@@ -3298,9 +3328,9 @@ uint64 CPartFile::GetTotalGapSizeInRange(uint64 uRangeStart, uint64 uRangeEnd) c
 		uRangeEnd = GetFileSize() - 1;
 	}
 
-	POSITION pos = gaplist.GetHeadPosition();
-	while (pos) {
-		const Gap_Struct* pGap = gaplist.GetNext(pos);
+	std::list<Gap_Struct*>::const_iterator it = m_gaplist.begin();
+	for (; it != m_gaplist.end(); ++it) {
+		const Gap_Struct* pGap = *it;
 
 		if (pGap->start < uRangeStart && pGap->end > uRangeEnd) {
 			uTotalGapSize += uRangeEnd - uRangeStart + 1;
@@ -3493,9 +3523,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 				wxT("Processing AICH Recovery data: The part (%u) "
 				"got completed while recovering and MD4 agrees"), nPart) );
 			// alrighty not so bad
-			POSITION posCorrupted = corrupted_list.Find(nPart);
-			if (posCorrupted)
-				corrupted_list.RemoveAt(posCorrupted);
+			EraseFirstValue(m_corrupted_list, nPart);
 			if (status == PS_EMPTY && theApp.IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
@@ -3506,8 +3534,9 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 
 			if (theApp.IsRunning()){
 				// Is this file finished?
-				if (gaplist.IsEmpty())
+				if (m_gaplist.empty()) {
 					CompleteFile(false);
+				}
 			}
 		}
 	} // end sanity check
@@ -3813,8 +3842,10 @@ bool CPartFile::IsComplete(uint64 start, uint64 end)
 	if (end >= GetFileSize()) {
 		end = GetFileSize()-1;
 	}
-	for (POSITION pos = gaplist.GetHeadPosition();pos != 0; ) {
-		Gap_Struct* cur_gap = gaplist.GetNext(pos);
+
+	std::list<Gap_Struct*>::iterator it = m_gaplist.begin();
+	for (; it != m_gaplist.end(); ++it) {
+		Gap_Struct* cur_gap = *it;
 		if ((cur_gap->start >= start && cur_gap->end <= end)||(cur_gap->start >= start 
 		&& cur_gap->start <= end)||(cur_gap->end <= end && cur_gap->end >= start)
 		||(start >= cur_gap->start && end <= cur_gap->end)) {

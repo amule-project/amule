@@ -2092,9 +2092,10 @@ void CDownloadListCtrl::DrawFileStatusBar(
 
 	
 	// Part availability ( of missing parts )
-	const CList<Gap_Struct*>& gaplist = file->GetGapList();
-	for ( POSITION pos = gaplist.GetHeadPosition(); pos; ) {
-		Gap_Struct* gap = gaplist.GetNext( pos );
+	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
+	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
+	for (; it != gaplist.end(); ++it) {
+		Gap_Struct* gap = *it;
 
 		// Start position
 		uint32 start = ( gap->start / PARTSIZE );
@@ -2128,12 +2129,12 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	
 	
 	// Pending parts
-	const CList<Requested_Block_Struct*>& requestedblocks_list = file->GetRequestedBlockList();
-	for ( POSITION pos = requestedblocks_list.GetHeadPosition(); pos; ) {
+	const CPartFile::CReqBlockPtrList& requestedblocks_list = file->GetRequestedBlockList();
+	CPartFile::CReqBlockPtrList::const_iterator it2 = requestedblocks_list.begin();
+	for (; it2 != requestedblocks_list.end(); ++it2) {
 		COLORREF color = ( file->IsStopped() ? DarkenColour( crPending, 2 ) : crPending );
 		
-		Requested_Block_Struct* block = requestedblocks_list.GetNext( pos );
-		s_ChunkBar.FillRange( block->StartOffset, block->EndOffset, color );
+		s_ChunkBar.FillRange( (*it2)->StartOffset, (*it2)->EndOffset, color );
 	}
 
 

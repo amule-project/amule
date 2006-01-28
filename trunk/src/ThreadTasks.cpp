@@ -64,7 +64,7 @@ CHashingTask::CHashingTask(const wxString& path, const wxString& filename, const
 	// so that the AICH hashset only gets assigned if the MD4 hashset 
 	// matches what we expected. Due to the rareity of post-completion
 	// corruptions, this gives us a nice speedup in most cases.
-	if (part and !part->GetGapList().IsEmpty()) {
+	if (part and not part->GetGapList().empty()) {
 		m_toHash = EH_MD4;
 	}
 }
@@ -304,12 +304,12 @@ void CAICHSyncTask::Entry()
 	// Now we check that all files which are in the sharedfilelist have a
 	// corresponding hash in our list. Those how don't are queued for hashing.
 	for (unsigned i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
-		const CKnownFile* file = theApp.sharedfiles->GetFileByIndex(i);
+		const CKnownFile* kfile = theApp.sharedfiles->GetFileByIndex(i);
 	
 		if (TestDestroy()) {
 			break;
-		} else if (file and !file->IsPartFile()) {
-			CAICHHashSet* hashset = file->GetAICHHashset();
+		} else if (kfile and not kfile->IsPartFile()) {
+			CAICHHashSet* hashset = kfile->GetAICHHashset();
 
 			if (hashset->GetStatus() == AICH_HASHSETCOMPLETE) {
 				if (std::find(hashlist.begin(), hashlist.end(), hashset->GetMasterHash()) != hashlist.end()) {
@@ -319,7 +319,7 @@ void CAICHSyncTask::Entry()
 
 			hashset->SetStatus(AICH_ERROR);
 
-			CThreadScheduler::AddTask(new CHashingTask(const_cast<CKnownFile*>(file)));
+			CThreadScheduler::AddTask(new CHashingTask(const_cast<CKnownFile*>(kfile)));
 		}
 	}
 }

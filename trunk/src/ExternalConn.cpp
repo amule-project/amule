@@ -807,7 +807,7 @@ CPartFile_Encoder::GapBuffer CPartFile_Encoder::m_gap_buffer(128);
 
 // encoder side
 CPartFile_Encoder::CPartFile_Encoder(CPartFile *file) :
-	m_enc_data(file->GetPartCount(), file->gaplist.GetCount()*2)
+	m_enc_data(file->GetPartCount(), file->GetGapList().size() * 2)
 {
 	m_file = file;
 }
@@ -843,17 +843,19 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 #warning Kry - lfroen, please fix this to work with 64bits
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
-	size_t gap_list_size = m_file->gaplist.GetCount();
+	const CPartFile::CGapPtrList& gaplist = m_file->GetGapList();
+	const size_t gap_list_size = gaplist.size();
 	
 	if ( m_gap_buffer.size() < gap_list_size * 2 ) {
 		m_gap_buffer.clear();
 		m_gap_buffer.resize(gap_list_size * 2);
 	} 
-	
-	POSITION curr_pos = m_file->gaplist.GetHeadPosition();
+
 	GapBuffer::iterator it = m_gap_buffer.begin();
-	while ( curr_pos ) {
-		Gap_Struct *curr = m_file->gaplist.GetNext(curr_pos);
+	
+	CPartFile::CGapPtrList::const_iterator curr_pos = gaplist.begin();
+	for (; curr_pos != gaplist.end(); ++curr_pos) {
+		Gap_Struct *curr = *curr_pos;
 		*it++ = ENDIAN_HTONLL(curr->start);
 		*it++ = ENDIAN_HTONLL(curr->end);
 	}
@@ -881,19 +883,21 @@ void CPartFile_Encoder::Encode(CECTag *parent)
 	tagdata += sizeof(uint32);
 	memcpy(tagdata, gap_enc_data, gap_enc_size);
 
-
 	parent->AddTag(etag);
-
-	curr_pos = m_file->requestedblocks_list.GetHeadPosition();
-	wxASSERT(m_gap_buffer.size() >= (size_t)m_file->requestedblocks_list.GetCount() * 2);
+	
 	it = m_gap_buffer.begin();
-	while ( curr_pos ) {
-		Requested_Block_Struct* block = m_file->requestedblocks_list.GetNext(curr_pos);
+
+	const CPartFile::CReqBlockPtrList& requestedblocks = m_file->GetRequestedBlockList();
+	CPartFile::CReqBlockPtrList::const_iterator curr_pos2 = requestedblocks.begin();
+
+	wxASSERT(m_gap_buffer.size() >= requestedblocks.size() * 2);
+	for ( ; curr_pos2 != requestedblocks.end(); ++curr_pos2 ) {
+		Requested_Block_Struct* block = *curr_pos2;
 		*it++ = ENDIAN_HTONLL(block->StartOffset);
 		*it++ = ENDIAN_HTONLL(block->EndOffset);
 	}
 	parent->AddTag(CECTag(EC_TAG_PARTFILE_REQ_STATUS,
-		m_file->requestedblocks_list.GetCount() * 2 * sizeof(uint64), (void *)&m_gap_buffer[0]));
+		requestedblocks.size() * 2 * sizeof(uint64), (void *)&m_gap_buffer[0]));
 }
 
 // encoder side
