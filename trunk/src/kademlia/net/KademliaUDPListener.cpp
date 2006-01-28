@@ -55,6 +55,7 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include <common/Format.h>
 #include "../../Preferences.h"
+#include "ScopedPtr.h"
 
 #include <wx/tokenzr.h>
 #include <wx/arrstr.h>
@@ -471,24 +472,21 @@ void CKademliaUDPListener::processKademliaResponse (const byte *packetData, uint
 	routingZone->setAlive(ip, port);
 
 	
-	ContactList *results = new ContactList;
-	try {
-		for (uint16 i=0; i<numContacts; i++) {
-			CUInt128 id = bio.ReadUInt128();
-			uint32 contactIP = bio.ReadUInt32();
-			uint16 contactPort = bio.ReadUInt16();
-			uint16 tport = bio.ReadUInt16();
-			byte type = bio.ReadUInt8();
-			if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(contactIP),contactPort)) {
-				routingZone->add(id, contactIP, contactPort, tport, type);
-				results->push_back(new CContact(id, contactIP, contactPort, tport, target));
-			}
+	CScopedPtr<ContactList> results(new ContactList);
+	
+	for (uint16 i=0; i<numContacts; i++) {
+		CUInt128 id = bio.ReadUInt128();
+		uint32 contactIP = bio.ReadUInt32();
+		uint16 contactPort = bio.ReadUInt16();
+		uint16 tport = bio.ReadUInt16();
+		byte type = bio.ReadUInt8();
+		if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(contactIP),contactPort)) {
+			routingZone->add(id, contactIP, contactPort, tport, type);
+			results->push_back(new CContact(id, contactIP, contactPort, tport, target));
 		}
-	} catch(...) {
-		delete results;
-		throw;
 	}
-	CSearchManager::processResponse(target, ip, port, results);
+
+	CSearchManager::processResponse(target, ip, port, results.release());
 }
 
 void CKademliaUDPListener::Free(SSearchTerm* pSearchTerms)
@@ -667,13 +665,7 @@ void CKademliaUDPListener::processSearchRequest (const byte *packetData, uint32 
 	} else if(lenPacket > 17) {
 		SSearchTerm* pSearchTerms = NULL;
 		if (restrictive) {
-			try {
-				pSearchTerms = CreateSearchExpressionTree(bio, 0);
-				//TRACE("\n");
-			} catch(...) {
-				Free(pSearchTerms);
-				throw;
-			}
+			pSearchTerms = CreateSearchExpressionTree(bio, 0);
 		}
 		//Keyword request with added options.
 		CKademlia::getIndexed()->SendValidKeywordResult(target, pSearchTerms, ip, port); 
@@ -763,7 +755,7 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 		CUInt128 target = bio.ReadUInt128();
 
 		Kademlia::CEntry* entry = new Kademlia::CEntry();
-		uint32 tags, totaltags;
+		uint32 tags = 0, totaltags = 0;
 		try {
 			entry->ip = ip;
 			entry->udpport = port;
@@ -1215,7 +1207,9 @@ void CKademliaUDPListener::sendPacket(CMemFile *data, byte opcode, uint32 destin
 	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
 }
 
-void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len) {
+
+void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)
+{
 #if THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX
 	#error TOLD YA NOT TO TOUCH THAT LINE!
 	uint32 ip = wxUINT32_SWAP_ALWAYS(kad_ip);
@@ -1241,5 +1235,12 @@ void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_i
 			printf("Client uses an non-standard port. Can't guess TCP.\n");
 		}
 	}
+#else
+	// No need for warnings for the rest of us.
+	(void)place;
+	(void)kad_ip;
+	(void)port;
+	(void)data;
+	(void)len;
 #endif
 }
