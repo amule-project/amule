@@ -455,7 +455,7 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 		}
 	} else {
 		CClientPtrList::iterator it = m_waitinglist.begin();
-		for (; it != m_waitinglist.end(); ) {
+		for (; it != m_waitinglist.end(); ++it ) {
 			if (client->GetScore(true,true) < (*it)->GetScore(true,false)) {
 				return true;
 			}
@@ -475,7 +475,7 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 	uint16 rank = 1;
 	const uint32 myscore = client->GetScore(false);
 	CClientPtrList::iterator it = m_waitinglist.begin();
-	for (; it != m_waitinglist.end(); ) {
+	for (; it != m_waitinglist.end(); ++it) {
 		if ((*it)->GetScore(false) > myscore) {
 			rank++;
 		}
