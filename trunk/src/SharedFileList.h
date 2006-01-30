@@ -32,7 +32,6 @@
 #include <wx/thread.h>		// Needed for wxMutex
 
 #include "Types.h"		// Needed for uint16 and uint64
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 
 struct UnknownFile_Struct;
 
@@ -63,7 +62,7 @@ public:
 	void	CopyFileList(std::vector<CKnownFile*>& out_list);
 	void	UpdateItem(CKnownFile* toupdate);
 	unsigned	AddFilesFromDirectory(wxString directory);
-	void    GetSharedFilesByDirectory(const wxString& directory,CTypedPtrList<CPtrList, CKnownFile*>& list);
+	void    GetSharedFilesByDirectory(const wxString& directory, CKnownFilePtrList& list);
 	void	ClearED2KPublishInfo();
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();

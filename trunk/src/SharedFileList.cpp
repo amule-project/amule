@@ -150,7 +150,7 @@ public:
 	void RemoveAllKeywordReferences();
 	void PurgeUnreferencedKeywords();
 
-	int GetCount() const { return m_lstKeywords.GetCount(); }
+	int GetCount() const { return m_lstKeywords.size(); }
 
 	CPublishKeyword* GetNextKeyword();
 	void ResetNextKeyword();
@@ -161,11 +161,12 @@ public:
 protected:
 	// can't use a CMap - too many disadvantages in processing the 'list'
 	//CTypedPtrMap<CMapStringToPtr, CString, CPublishKeyword*> m_lstKeywords;
-	CTypedPtrList<CPtrList, CPublishKeyword*> m_lstKeywords;
-	POSITION m_posNextKeyword;
+	typedef std::list<CPublishKeyword*> CKeyWordList;
+	CKeyWordList m_lstKeywords;
+	CKeyWordList::iterator m_posNextKeyword;
 	uint32 m_tNextPublishKeywordTime;
 
-	CPublishKeyword* FindKeyword(const wxString& rstrKeyword, POSITION* ppos = NULL) const;
+	CPublishKeyword* FindKeyword(const wxString& rstrKeyword, CKeyWordList::iterator* ppos = NULL);
 };
 
 CPublishKeywordList::CPublishKeywordList()
@@ -181,33 +182,34 @@ CPublishKeywordList::~CPublishKeywordList()
 
 CPublishKeyword* CPublishKeywordList::GetNextKeyword()
 {
-	if (m_posNextKeyword == NULL) {
-		m_posNextKeyword = m_lstKeywords.GetHeadPosition();
-		if (m_posNextKeyword == NULL) {
+	if (m_posNextKeyword == m_lstKeywords.end()) {
+		m_posNextKeyword = m_lstKeywords.begin();
+		if (m_posNextKeyword == m_lstKeywords.end()) {
 			return NULL;
 		}
 	}
-	return m_lstKeywords.GetNext(m_posNextKeyword);
+	return *m_posNextKeyword++;
 }
 
 void CPublishKeywordList::ResetNextKeyword()
 {
-	m_posNextKeyword = m_lstKeywords.GetHeadPosition();
+	m_posNextKeyword = m_lstKeywords.begin();
 }
 
-CPublishKeyword* CPublishKeywordList::FindKeyword(const wxString& rstrKeyword, POSITION* ppos) const
+CPublishKeyword* CPublishKeywordList::FindKeyword(const wxString& rstrKeyword, CKeyWordList::iterator* ppos)
 {
-	POSITION pos = m_lstKeywords.GetHeadPosition();
-	while (pos) {
-		POSITION posLast = pos;
-		CPublishKeyword* pPubKw = m_lstKeywords.GetNext(pos);
+	CKeyWordList::iterator it = m_lstKeywords.begin();
+	for (; it != m_lstKeywords.end(); ++it) {
+		CPublishKeyword* pPubKw = *it;
 		if (pPubKw->GetKeyword() == rstrKeyword) {
 			if (ppos) {
-				*ppos = posLast;
+				(*ppos) = it;
 			}
+
 			return pPubKw;
 		}
 	}
+	
 	return NULL;
 }
 
@@ -221,7 +223,7 @@ void CPublishKeywordList::AddKeywords(CKnownFile* pFile)
 		CPublishKeyword* pPubKw = FindKeyword(strKeyword);
 		if (pPubKw == NULL) {
 			pPubKw = new CPublishKeyword(strKeyword);
-			m_lstKeywords.AddTail(pPubKw);
+			m_lstKeywords.push_back(pPubKw);
 			SetNextPublishTime(0);
 		}
 		pPubKw->AddRef(pFile);
@@ -234,14 +236,14 @@ void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
 	Kademlia::WordList::const_iterator it;
 	for (it = wordlist.begin(); it != wordlist.end(); ++it) {
 		const wxString& strKeyword = *it;
-		POSITION pos;
+		CKeyWordList::iterator pos;
 		CPublishKeyword* pPubKw = FindKeyword(strKeyword, &pos);
 		if (pPubKw != NULL) {
 			if (pPubKw->RemoveRef(pFile) == 0) {
 				if (pos == m_posNextKeyword) {
-					(void)m_lstKeywords.GetNext(m_posNextKeyword);
+					++m_posNextKeyword;
 				}
-				m_lstKeywords.RemoveAt(pos);
+				m_lstKeywords.erase(pos);
 				delete pPubKw;
 				SetNextPublishTime(0);
 			}
@@ -249,38 +251,38 @@ void CPublishKeywordList::RemoveKeywords(CKnownFile* pFile)
 	}
 }
 
+
 void CPublishKeywordList::RemoveAllKeywords()
 {
-	POSITION pos = m_lstKeywords.GetHeadPosition();
-	while (pos) {
-		delete m_lstKeywords.GetNext(pos);
-	}
-	m_lstKeywords.RemoveAll();
+	DeleteContents(m_lstKeywords);
 	ResetNextKeyword();
 	SetNextPublishTime(0);
 }
 
+
 void CPublishKeywordList::RemoveAllKeywordReferences()
 {
-	POSITION pos = m_lstKeywords.GetHeadPosition();
-	while (pos) {
-		m_lstKeywords.GetNext(pos)->RemoveAllReferences();
+	CKeyWordList::iterator it = m_lstKeywords.begin();
+	for (; it != m_lstKeywords.end(); ++it) {
+		(*it)->RemoveAllReferences();
 	}
 }
 
+
 void CPublishKeywordList::PurgeUnreferencedKeywords()
 {
-	POSITION pos = m_lstKeywords.GetHeadPosition();
-	while (pos) {
-		POSITION posLast = pos;
-		CPublishKeyword* pPubKw = m_lstKeywords.GetNext(pos);
+	CKeyWordList::iterator it = m_lstKeywords.begin();
+	while (it != m_lstKeywords.end()) {
+		CPublishKeyword* pPubKw = *it;
 		if (pPubKw->GetRefCount() == 0) {
-			if (posLast == m_posNextKeyword) {
-				(void)m_lstKeywords.GetNext(m_posNextKeyword);
+			if (it == m_posNextKeyword) {
+				++m_posNextKeyword;
 			}
-			m_lstKeywords.RemoveAt(posLast);
+			m_lstKeywords.erase(it++);
 			delete pPubKw;
 			SetNextPublishTime(0);
+		} else {
+			++it;
 		}
 	}
 }
@@ -637,7 +639,7 @@ void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 }
 
 void CSharedFileList::GetSharedFilesByDirectory(const wxString& directory,
-                            CTypedPtrList<CPtrList, CKnownFile*>& list)
+				CKnownFilePtrList& list)
 {
 	wxMutexLocker lock(list_mut);
 
@@ -649,7 +651,7 @@ void CSharedFileList::GetSharedFilesByDirectory(const wxString& directory,
 			continue;
 		}
 
-		list.AddTail(cur_file);
+		list.push_back(cur_file);
 	}
 }
 
