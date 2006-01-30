@@ -50,6 +50,8 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>
+#include <ScopedPtr.h>		// Needed for CScopedArray
+
 
 //	members of CUpDownClient
 //	which are mainly used for uploading functions 
@@ -61,7 +63,7 @@ void CUpDownClient::SetUploadState(uint8 eNewState)
 			// Reset upload data rate computation
 			m_nUpDatarate = 0;
 			m_nSumForAvgUpDataRate = 0;
-			m_AvarageUDR_list.RemoveAll();
+			m_AvarageUDR_list.clear();
 		}
 		if (eNewState == US_UPLOADING) {
 			m_fSentOutOfPartReqs = 0;
@@ -175,7 +177,7 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 	bool different_part = false;
 	
 	// Check if we have good lists and proceed to check for different chunks
-	if (!m_BlockRequests_queue.IsEmpty() && !m_DoneBlocks_list.IsEmpty())
+	if ((not m_BlockRequests_queue.empty()) && !m_DoneBlocks_list.empty())
 	{
 		Requested_Block_Struct* last_done_block = NULL;
 		Requested_Block_Struct* next_requested_block = NULL;
@@ -184,8 +186,8 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 			
 			
 		// Get last block and next pending
-		last_done_block = (Requested_Block_Struct*)m_DoneBlocks_list.GetHead();
-		next_requested_block = (Requested_Block_Struct*)m_BlockRequests_queue.GetHead(); 
+		last_done_block = m_DoneBlocks_list.front();
+		next_requested_block = m_BlockRequests_queue.front();
 			
 		// Calculate corresponding parts to blocks
 		last_done_part = last_done_block->StartOffset / PARTSIZE;
@@ -210,20 +212,19 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 void CUpDownClient::CreateNextBlockPackage()
 {
     // See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
-    if(m_BlockRequests_queue.IsEmpty() || // There are no new blocks requested
+    if(m_BlockRequests_queue.empty() || // There are no new blocks requested
        m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024) { // the buffered data is large enough allready
         return;
     }
 
     CFile file;
-	byte* filedata = 0;
 	wxString fullname;
 	try {
         // Buffer new data if current buffer is less than 100 KBytes
-        while (!m_BlockRequests_queue.IsEmpty() &&
+        while ((not m_BlockRequests_queue.empty()) &&
                (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
 
-			Requested_Block_Struct* currentblock = m_BlockRequests_queue.GetHead();
+			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
 			CKnownFile* srcfile = theApp.sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
 			
 			if (!srcfile) {
@@ -265,7 +266,8 @@ void CUpDownClient::CreateNextBlockPackage()
 			if (togo > EMBLOCKSIZE * 3) {
 				throw wxString(wxT("Client requested too large of a block."));
 			}
-			
+		
+			CScopedArray<byte> filedata(NULL);	
 			if (!srcfile->IsPartFile()){
 				if ( !file.Open(fullname,CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
@@ -278,15 +280,15 @@ void CUpDownClient::CreateNextBlockPackage()
 			
 				file.Seek(currentblock->StartOffset, wxFromStart);
 				
-				filedata = new byte[togo+500];
-				file.Read(filedata, togo);
+				filedata.reset(new byte[togo + 500]);
+				file.Read(filedata.get(), togo);
 				file.Close();
 			} else {
 				CPartFile* partfile = (CPartFile*)srcfile;
 				partfile->m_hpartfile.Seek(currentblock->StartOffset);
 				
-				filedata = new byte[togo+500];
-				partfile->m_hpartfile.Read(filedata, togo); 
+				filedata.reset(new byte[togo + 500]);
+				partfile->m_hpartfile.Read(filedata.get(), togo); 
 				// Partfile should NOT be closed!!!
 			}
 
@@ -302,9 +304,9 @@ void CUpDownClient::CreateNextBlockPackage()
 
 			// check extention to decide whether to compress or not
 			if (m_byDataCompVer == 1 && GetFiletype(srcfile->GetFileName()) != ftArchive) {
-				CreatePackedPackets(filedata,togo,currentblock);
+				CreatePackedPackets(filedata.get(), togo,currentblock);
 			} else {
-				CreateStandartPackets(filedata,togo,currentblock);
+				CreateStandartPackets(filedata.get(), togo,currentblock);
 			}
 			
 			// file statistic
@@ -312,9 +314,10 @@ void CUpDownClient::CreateNextBlockPackage()
 
             m_addedPayloadQueueSession += togo;
 
-			m_DoneBlocks_list.AddHead(m_BlockRequests_queue.RemoveHead());
-			delete[] filedata;
-			filedata = NULL;
+			Requested_Block_Struct* block = m_BlockRequests_queue.front();
+			
+			m_BlockRequests_queue.pop_front();			
+			m_DoneBlocks_list.push_front(block);
 		}
 
 		return;
@@ -328,7 +331,6 @@ void CUpDownClient::CreateNextBlockPackage()
 	
 	// Error occured.	
 	theApp.uploadqueue->RemoveFromUploadQueue(this);
-	delete[] filedata;
 }
 
 
@@ -559,21 +561,29 @@ void CUpDownClient::AddReqBlock(Requested_Block_Struct* reqblock)
 		return;
 	}
 	
-	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition();pos != 0;m_DoneBlocks_list.GetNext(pos)){
-		if (reqblock->StartOffset == m_DoneBlocks_list.GetAt(pos)->StartOffset && reqblock->EndOffset == m_DoneBlocks_list.GetAt(pos)->EndOffset){
-			delete reqblock;
-			return;
+	{
+		std::list<Requested_Block_Struct*>::iterator it = m_DoneBlocks_list.begin();
+		for (; it != m_DoneBlocks_list.end(); ++it) {
+			if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
+				delete reqblock;
+				return;
+			}
 		}
 	}
-	for (POSITION pos = m_BlockRequests_queue.GetHeadPosition();pos != 0;m_BlockRequests_queue.GetNext(pos)){
-		if (reqblock->StartOffset == m_BlockRequests_queue.GetAt(pos)->StartOffset && reqblock->EndOffset == m_BlockRequests_queue.GetAt(pos)->EndOffset){
-			delete reqblock;
-			return;
-		}
-	}
-	m_BlockRequests_queue.AddTail(reqblock);
 
+	{
+		std::list<Requested_Block_Struct*>::iterator it = m_BlockRequests_queue.begin();
+		for (; it != m_BlockRequests_queue.end(); ++it) {
+			if (reqblock->StartOffset == (*it)->StartOffset && reqblock->EndOffset == (*it)->EndOffset) {
+				delete reqblock;
+				return;
+			}
+		}
+	}
+	
+	m_BlockRequests_queue.push_back(reqblock);
 }
+
 
 uint32 CUpDownClient::GetWaitStartTime() const
 {
@@ -642,24 +652,25 @@ uint32 CUpDownClient::SendBlockData()
     }
 
     if(sentBytesCompleteFile + sentBytesPartFile > 0 ||
-        m_AvarageUDR_list.GetCount() == 0 || (curTick - m_AvarageUDR_list.GetTail().timestamp) > 1*1000) {
+        m_AvarageUDR_list.empty() || (curTick - m_AvarageUDR_list.back().timestamp) > 1*1000) {
         // Store how much data we've transferred this round,
         // to be able to calculate average speed later
         // keep sum of all values in list up to date
         TransferredData newitem = {sentBytesCompleteFile + sentBytesPartFile, curTick};
-        m_AvarageUDR_list.AddTail(newitem);
+        m_AvarageUDR_list.push_back(newitem);
         m_nSumForAvgUpDataRate += sentBytesCompleteFile + sentBytesPartFile;
     }
 
     // remove to old values in list
-    while (m_AvarageUDR_list.GetCount() > 0 && (curTick - m_AvarageUDR_list.GetHead().timestamp) > 10*1000) {
+    while ((not m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 10*1000) {
         // keep sum of all values in list up to date
-        m_nSumForAvgUpDataRate -= m_AvarageUDR_list.RemoveHead().datalen;
+        m_nSumForAvgUpDataRate -= m_AvarageUDR_list.front().datalen;
+		m_AvarageUDR_list.pop_front();
     }
 
     // Calculate average speed for this slot
-    if(m_AvarageUDR_list.GetCount() > 0 && (curTick - m_AvarageUDR_list.GetHead().timestamp) > 0 && GetUpStartTimeDelay() > 2*1000) {
-        m_nUpDatarate = ((uint64)m_nSumForAvgUpDataRate*1000) / (curTick-m_AvarageUDR_list.GetHead().timestamp);
+    if ((not m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 0 && GetUpStartTimeDelay() > 2*1000) {
+        m_nUpDatarate = ((uint64)m_nSumForAvgUpDataRate*1000) / (curTick-m_AvarageUDR_list.front().timestamp);
     } else {
         // not enough values to calculate trustworthy speed. Use -1 to tell this
         m_nUpDatarate = 0; //-1;
@@ -752,15 +763,8 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 void CUpDownClient::ClearUploadBlockRequests()
 {
 	FlushSendBlocks();
-	for (POSITION pos = m_BlockRequests_queue.GetHeadPosition();pos != 0; ) {
-		delete m_BlockRequests_queue.GetNext(pos);
-	}
-	m_BlockRequests_queue.RemoveAll();
-	
-	for (POSITION pos = m_DoneBlocks_list.GetHeadPosition();pos != 0; ) {
-		delete m_DoneBlocks_list.GetNext(pos);
-	}
-	m_DoneBlocks_list.RemoveAll();
+	DeleteContents(m_BlockRequests_queue);
+	DeleteContents(m_DoneBlocks_list);
 }
 
 

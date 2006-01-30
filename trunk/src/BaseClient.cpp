@@ -297,12 +297,8 @@ CUpDownClient::~CUpDownClient()
 	ClearUploadBlockRequests();
 	ClearDownloadBlockRequests();
 
-
-	for (POSITION pos =m_WaitingPackets_list.GetHeadPosition();pos != 0; ) {
-		delete m_WaitingPackets_list.GetNext(pos);
-	}
-
-
+	DeleteContents(m_WaitingPackets_list);
+	
 	if (m_iRating>0 || !m_strComment.IsEmpty()) {
 		m_iRating = 0;
 		m_strComment.Clear();
@@ -1095,31 +1091,44 @@ void CUpDownClient::ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSiz
 
 void CUpDownClient::ClearDownloadBlockRequests()
 {
-	for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0;){
-		Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
-		if (m_reqfile){
-			m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
+	{
+		std::list<Requested_Block_Struct*>::iterator it = m_DownloadBlocks_list.begin();
+		for (; it != m_DownloadBlocks_list.end(); ++it) {
+			Requested_Block_Struct* cur_block = *it;
+			
+			if (m_reqfile){
+				m_reqfile->RemoveBlockFromList(cur_block->StartOffset, cur_block->EndOffset);
+			}
+			
+			delete cur_block;
 		}
-		delete cur_block;
+		
+		m_DownloadBlocks_list.clear();
 	}
-	m_DownloadBlocks_list.RemoveAll();
 
-	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0;){
-		Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
-		if (m_reqfile){
-			m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
-		}
+	{
+		std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+		for (; it != m_PendingBlocks_list.end(); ++it) {
+			Pending_Block_Struct* pending = *it;
+			
+			if (m_reqfile) {
+				m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
+			}
 
-		delete pending->block;
-		// Not always allocated
-		if (pending->zStream){
-			inflateEnd(pending->zStream);
-			delete pending->zStream;
+			delete pending->block;
+			// Not always allocated
+			if (pending->zStream){
+				inflateEnd(pending->zStream);
+				delete pending->zStream;
+			}
+			
+			delete pending;
 		}
-		delete pending;
+		
+		m_PendingBlocks_list.clear();
 	}
-	m_PendingBlocks_list.RemoveAll();
 }
+
 
 bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 
@@ -1498,8 +1507,12 @@ void CUpDownClient::ConnectionEstablished()
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILES to ") + GetFullIP() );
 		}
 	}
-	while (!m_WaitingPackets_list.IsEmpty()) {
-		SendPacket(m_WaitingPackets_list.RemoveHead());
+	
+	while (not m_WaitingPackets_list.empty()) {
+		CPacket* packet = m_WaitingPackets_list.front();
+		m_WaitingPackets_list.pop_front();
+		
+		SendPacket(packet);
 	}
 }
 
@@ -1798,7 +1811,7 @@ bool CUpDownClient::SafeSendPacket(CPacket* packet)
 		SendPacket(packet);
 		return true;
 	} else {
-		m_WaitingPackets_list.AddTail(packet);
+		m_WaitingPackets_list.push_back(packet);
 		return TryToConnect(true);
 	}
 }

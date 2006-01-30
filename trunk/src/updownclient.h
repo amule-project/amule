@@ -30,13 +30,13 @@
 #include <wx/string.h>		// Needed for wxString
 #include <wx/intl.h>
 #include "Types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
-#include "CTypedPtrList.h"	// Needed for CTypedPtrList
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
 
 #include <map>
+#include <list>
 #include <vector>
 
 
@@ -509,7 +509,7 @@ public:
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
-	bool		HasBlocks() const		{ return !m_BlockRequests_queue.IsEmpty(); }
+	bool		HasBlocks() const		{ return not m_BlockRequests_queue.empty(); }
 
 	/* Source comes from? */
 	ESourceFrom		GetSourceFrom() const	{ return (ESourceFrom)m_nSourceFrom; }
@@ -623,7 +623,7 @@ private:
 	//
 	uint32		m_nUpDatarate;
 	uint32		m_nSumForAvgUpDataRate;
-	CList<TransferredData> m_AvarageUDR_list;
+	std::list<TransferredData> m_AvarageUDR_list;
 
 
 	/**
@@ -706,7 +706,7 @@ private:
 	uint8		m_bySupportSecIdent;
 
 	uint32		m_byCompatibleClient;
-	CList<CPacket*>	m_WaitingPackets_list;
+	std::list<CPacket*>	m_WaitingPackets_list;
 	uint32		m_lastRefreshedDLDisplay;
 
 	//upload
@@ -729,8 +729,8 @@ private:
 	uint16		m_lastPartAsked;
 	wxString	m_strModVersion;
 
-	CList<Requested_Block_Struct*>	m_BlockRequests_queue;
-	CList<Requested_Block_Struct*>	m_DoneBlocks_list;
+	std::list<Requested_Block_Struct*>	m_BlockRequests_queue;
+	std::list<Requested_Block_Struct*>	m_DoneBlocks_list;
 
 	//download
 	bool		m_bRemoteQueueFull;
@@ -749,8 +749,8 @@ private:
 	bool		m_bUDPPending;
 	bool		m_bHashsetRequested;
 
-	CList<Pending_Block_Struct*>	m_PendingBlocks_list;
-	CList<Requested_Block_Struct*>	m_DownloadBlocks_list;
+	std::list<Pending_Block_Struct*>	m_PendingBlocks_list;
+	std::list<Requested_Block_Struct*>	m_DownloadBlocks_list;
 
 	float		kBpsDown;
 	float		fDownAvgFilter;
