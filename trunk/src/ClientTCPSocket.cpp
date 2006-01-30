@@ -863,7 +863,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 				
 				if (not bFoundFolder) {
-					folders_to_send.Add(wxString(OP_INCOMPLETE_SHARED_FILES));
+					foldersToSend.push_back(wxString(OP_INCOMPLETE_SHARED_FILES));
 				}
 				
 				// Send packet.
