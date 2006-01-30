@@ -36,21 +36,26 @@ namespace muleunit
 
 class TestCase;
 	
-struct TestFailure
+
+/** This exception is raised if an ASSERT fails. */
+struct CTestFailureException
 {
-	//! The message (or condition) of the assertion.
-	wxString	message;
-	//! The file name where the assertion is located.
-	wxString	fileName;
-	//! The line number where the assertion is located.
-	long		lineNumber;	
+	CTestFailureException(const wxString& msg, const wxString& file, long lineNumber)
+		: m_msg(msg),
+		  m_file(file),
+		  m_line(lineNumber)
+	{}
+
+	wxString m_msg;
+	wxString m_file;
+	long m_line;
 };
 
+
+#define THROW_TEST_FAILURE(message) \
+	throw CTestFailureException(message, wxT(__FILE__), __LINE__)
+
 	
-//! List used to store partial test-results
-typedef std::list<TestFailure> TestFailureList;
-
-
 /**
  * Test class containing all macros to do unit testing. 
  * A test object represents a test that will be executed. Once it has been
@@ -94,24 +99,6 @@ public:
 	virtual void run();
 
 	/**
-	 * Add a testpartresult to the testpartresult list of this test. 
-	 * This method is used by the assertion macros to report success
-	 * or failure.
-	 *
-	 * @param testPartResult The testpartresult to be added to the list
-	 */
-	virtual void addTestFailure(const wxString& msg, const wxString& file, long lineNumber);
-
-	/**
-	 * Get the testpartresult list of this test. If assertion macros
-	 * and TEST and TESTF macros are used, there may be more than
-	 * one successful testpartresult and no more than one failure.
-	 *
-	 * @return testPartResult The list of testpartresults of this test
-	 */
-	const TestFailureList& getTestFailures() const;
-
-	/**
 	 * Get the name of the TestCase this test belongs to. The name of the
 	 * TestCase is the first parameter of the test declaration. For example,
 	 * if a test is declared as TEST(TESTCASE1, TEST1), this method will return
@@ -133,26 +120,20 @@ public:
 
 protected:
 	template <typename A, typename B>
-	bool DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
+	void DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
 	{
-		if (a == b) {
-			return true;
-		} else {
+		if (!(a == b)) {
 			wxString message = wxT("Expected '") + StringFrom(a) + 
 								wxT("' but got '") + StringFrom(b) + wxT("'");
 
-			addTestFailure(message, file, line);
-		
-			return false;
+			throw CTestFailureException(message, file, line);
 		}
 	}
 	
 	wxString m_testCaseName;
 	wxString m_testName;
 	TestCase* m_testCase;
-	TestFailureList m_testFailures;
 };
-
 
 
 /**
@@ -183,9 +164,8 @@ inline wxString StringFrom(signed long long value)
  */
 #define ASSERT_TRUE_M(condition, message) \
 { \
-	if (!(condition)) {\
-		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
-		return; \
+	if (!(condition)) { \
+		THROW_TEST_FAILURE(message); \
 	} \
 }
 
@@ -214,8 +194,7 @@ inline wxString StringFrom(signed long long value)
 #define ASSERT_EQUALS_M(expected,actual,message)\
 { \
 	if (!(expected == actual)) { \
-		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
-		return; \
+		THROW_TEST_FAILURE(message); \
 	} \
 }
 
@@ -224,9 +203,7 @@ inline wxString StringFrom(signed long long value)
  * Same as ASSERT_EQUALS_M, but without an explicit message.
  */
 #define ASSERT_EQUALS(expected, actual) \
-{ \
-	if (!this->DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)) return; \
-}
+	this->DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)
 
 
 /**
@@ -234,11 +211,7 @@ inline wxString StringFrom(signed long long value)
  * @param text Failure message
  */
 #define FAIL_M(text) \
-{ \
-   this->addTestFailure(text, wxT("__FILE__"), __LINE__); \
-   return; \
-}
-
+	THROW_TEST_FAILURE(text)
 
 /**
  * Same as FAIL_M, but without an explicit message.
@@ -252,15 +225,15 @@ inline wxString StringFrom(signed long long value)
 #define ASSERT_RAISES_M(type, call, message) \
 	try { \
 		{ call; }\
-		this->addTestFailure(message, wxT(__FILE__), __LINE__); \
-		return; \
+		THROW_TEST_FAILURE(message); \
 	} catch (const type&) {}
 
 
 /**
  * Same as ASSERT_RAISES, but without an explicit message.
  */
-#define ASSERT_RAISES(type, call) ASSERT_RAISES_M(type, (call), wxT("Exception of type " #type " not raised."))
+#define ASSERT_RAISES(type, call) \
+	ASSERT_RAISES_M(type, (call), wxT("Exception of type " #type " not raised."))
 
 
 

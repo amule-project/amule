@@ -52,20 +52,6 @@ void Test::run()
 }
 
 
-void Test::addTestFailure(const wxString& msg, const wxString& file, long lineNumber)
-{
-	TestFailure entry = {msg, file, lineNumber};
-	
-	m_testFailures.push_back(entry);
-}
-
-
-const TestFailureList& Test::getTestFailures() const
-{
-	return m_testFailures;
-}
-
-
 const wxString& Test::getTestName() const
 {
 	return m_testName;

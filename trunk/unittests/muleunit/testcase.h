@@ -32,7 +32,6 @@ namespace muleunit
 {
 
 class Test;
-class TestResult;
 
 typedef std::list<Test*> TestList;
 
@@ -49,10 +48,8 @@ public:
 	 * Main TestCase constructor.
 	 *
 	 * @param name TestCase name
-	 * @param testResult Pointer to the TestResult used to report results
-	 * of executed Test
 	 */
-	TestCase(const wxString& name, TestResult *testResult);
+	TestCase(const wxString& name);
 
 	virtual ~TestCase();
 
@@ -71,9 +68,9 @@ public:
 	const TestList& getTests() const;
 
 	/**
-	 * Execute all Tests in the Test list of this TestCase.
+	 * Execute all Tests in the Test list of this TestCase, returning false if there were failures.
 	 */
-	void run();
+	bool run();
 
 	/**
 	 * Get the Test list size (number of Tests in this TestCase).
@@ -99,14 +96,6 @@ public:
 	int getSuccessesCount() const;
 
 	/**
-	 * Indicates whether or not this TestCase was executed.
-	 *
-	 * @return true if the method run() of this TestCase was called. false
-	 * otherwise
-	 */
-	bool ran() const;
-
-	/**
 	 * Get the TestCase name. This name is specified by the first parameter
 	 * of the Test declaration. For example, if a test was declared as
 	 * TEST(TESTCASE1, TEST1), the TestCase name would be "TESTCASE1".
@@ -120,12 +109,9 @@ protected:
 	int m_successesCount;
 	TestList m_tests;
 	wxString m_name;
-	TestResult* m_testResult;
 
 private:
-	void updateCount(Test *test);
 	void runTests(Test *test);
-	bool m_ran;
 };
 
 } // MuleUnit ns

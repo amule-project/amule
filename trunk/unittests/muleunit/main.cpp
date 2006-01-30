@@ -33,7 +33,7 @@ class UnitTestApp : public wxAppConsole
 {
 public:
 	int OnRun() {
-		return TestRegistry::runAndPrint()->getFailures();
+		return (TestRegistry::runAndPrint() ? 0 : 1);
 	}
 
 	void OnUnhandledException() {

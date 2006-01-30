@@ -47,7 +47,7 @@ void TestRegistry::addTest(Test *test)
 }
 
 
-const TestResult* TestRegistry::runAndPrint()
+bool TestRegistry::runAndPrint()
 {
 	return instance().runTests();
 }
@@ -67,22 +67,22 @@ void TestRegistry::add(Test *test)
 
 	
 	if (m_testCases.empty() || m_testCases.back()->getName() != tcName) {
-		m_testCases.push_back(new TestCase(tcName,&m_testResult));
+		m_testCases.push_back(new TestCase(tcName));
 	}
 
 	m_testCases.back()->addTest(test);
 }
 
 
-const TestResult* TestRegistry::runTests()
+bool TestRegistry::runTests()
 {
+	bool success = true;
+	
 	TestCaseList::iterator it = m_testCases.begin();
 	for (; it != m_testCases.end(); ++it) {
-		(*it)->run();
+		success &= (*it)->run();
 	}
 	
-	m_testResult.setTestCases(m_testCases);
-
-	return &m_testResult;
+	return success;
 }
 

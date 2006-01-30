@@ -20,7 +20,6 @@
 
 #include "testcase.h"
 #include "test.h"
-#include "testresult.h"
 
 #include "MuleDebug.h"
 
@@ -28,12 +27,8 @@
 
 using namespace muleunit;
 
-TestCase::TestCase(const wxString& name, TestResult *testResult)
-		: m_failuresCount(0),
-		  m_successesCount(0),
-		  m_name(name),
-		  m_testResult(testResult),
-		  m_ran(false)
+TestCase::TestCase(const wxString& name)
+		: m_name(name)
 {}
 
 TestCase::~TestCase()
@@ -55,33 +50,10 @@ int TestCase::getTestsCount() const
 	return m_tests.size();
 }
 
-int TestCase::getFailuresCount() const
-{
-	return m_failuresCount;
-}
-
-int TestCase::getSuccessesCount() const
-{
-	return m_successesCount;
-}
-
-bool TestCase::ran() const
-{
-	return m_ran;
-}
 
 const wxString& TestCase::getName() const
 {
 	return m_name;
-}
-
-void TestCase::updateCount(Test *test)
-{
-	if (test->getTestFailures().empty()) {
-		m_successesCount++;
-	} else {
-		m_failuresCount++;
-	}
 }
 
 
@@ -96,35 +68,50 @@ void Print(const wxChar *pszFormat, ...)
 }
 
 
-void TestCase::run()
+bool TestCase::run()
 {
 	Print(wxT("\nRunning test-collection \"%s\" with %u test-cases:"),
 		m_name.c_str(), m_tests.size());
 
+	bool failures = false;
+	
 	TestList::iterator it = m_tests.begin();
 	for (; it != m_tests.end(); ++it) {
 		Test* test = *it;
 		
 		Print(wxT("\tTest \"%s\" "), test->getTestName().c_str());
 
-		test->setUp();
-		test->run();
-		test->tearDown();
-		updateCount(test);
+		bool wasSetup = false;
+		try {
+			test->setUp();
+			wasSetup = true;
+		} catch (const CTestFailureException& e) {
+			failures = true;
+			Print(wxT("\t\tFailure in setUp: \"%s\" line %ld in %s"),
+					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
+		}
 
-		const TestFailureList failures = test->getTestFailures();
-
-		TestFailureList::const_iterator it2 = failures.begin();
-		for (; it2 != failures.end(); ++it2) {
-			Print(wxT("\t\tFailure: \"%s\" line %ld in %s"),
-					 it2->message.c_str(),
-					 it2->lineNumber,
-					 it2->fileName.c_str());
+		// Only run the test if it was actually setup. Otherwise we
+		// are sure to get spurious failures.
+		if (wasSetup) {
+			try {
+				test->run();
+			} catch (const CTestFailureException& e) {
+				failures = true;
+				Print(wxT("\t\tFailure running: \"%s\" line %ld in %s"),
+					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
+			}
+		}
+		
+		try {
+			test->tearDown();
+		} catch (const CTestFailureException& e) {
+			failures = true;
+			Print(wxT("\t\tFailure in tearDown: \"%s\" line %ld in %s"),
+					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
 		}
 	}
 
-	m_ran = true;
-
-	m_testResult->addResult(this);
+	return not failures;
 }
 
