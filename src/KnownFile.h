@@ -33,7 +33,6 @@
 
 #include <set>
 
-#include "CTypedPtrList.h"
 #include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "OPCodes.h"		// Needed for PARTSIZE
 

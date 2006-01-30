@@ -514,31 +514,11 @@ void CUpDownClient::SetDownloadState(uint8 byNewState)
 		} else if (m_nDownloadState == DS_DOWNLOADING) {
 			theStats::RemoveDownloadingSource();
 		}
+		
 		if (m_nDownloadState == DS_DOWNLOADING) {
 			m_nDownloadState = byNewState;
-			for (POSITION pos = m_DownloadBlocks_list.GetHeadPosition();pos != 0; ) {
-				Requested_Block_Struct* cur_block = m_DownloadBlocks_list.GetNext(pos);
-				if (m_reqfile) {
-					m_reqfile->RemoveBlockFromList(cur_block->StartOffset,cur_block->EndOffset);
-				}
-				delete cur_block;
-			}
-			m_DownloadBlocks_list.RemoveAll();
-
-			for (POSITION pos = m_PendingBlocks_list.GetHeadPosition();pos != 0; ) {
-				Pending_Block_Struct *pending = m_PendingBlocks_list.GetNext(pos);
-				if (m_reqfile) {
-					m_reqfile->RemoveBlockFromList(pending->block->StartOffset, pending->block->EndOffset);
-				}
-				delete pending->block;
-				// Not always allocated
-				if (pending->zStream) {
-					inflateEnd(pending->zStream);
-					delete pending->zStream;
-				}
-				delete pending;
-			}
-			m_PendingBlocks_list.RemoveAll();
+			ClearDownloadBlockRequests();
+			
 			kBpsDown = 0.0;
 			bytesReceivedCycle = 0;
 			msReceivedPrev = 0;
@@ -589,31 +569,32 @@ void CUpDownClient::SendBlockRequests()
 	if (!m_reqfile) {
 		return;
 	}
-	if (m_DownloadBlocks_list.IsEmpty()) {
+	if (m_DownloadBlocks_list.empty()) {
 		// Barry - instead of getting 3, just get how many is needed
-		uint16 count = 3 - m_PendingBlocks_list.GetCount();
+		uint16 count = 3 - m_PendingBlocks_list.size();
 		Requested_Block_Struct* toadd[count];
 		if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
 			for (int i = 0; i != count; i++) {
-				m_DownloadBlocks_list.AddTail(toadd[i]);
+				m_DownloadBlocks_list.push_back(toadd[i]);
 			}
 		}
 	}
 
 	// Barry - Why are unfinished blocks requested again, not just new ones?
 
-	while (m_PendingBlocks_list.GetCount() < 3 && !m_DownloadBlocks_list.IsEmpty()) {
+	while (m_PendingBlocks_list.size() < 3 && !m_DownloadBlocks_list.empty()) {
 		Pending_Block_Struct* pblock = new Pending_Block_Struct;
-		pblock->block = m_DownloadBlocks_list.RemoveHead();
+		pblock->block = m_DownloadBlocks_list.front();
 		pblock->zStream = NULL;
 		pblock->totalUnzipped = 0;
 		pblock->fZStreamError = 0;
 		pblock->fRecovered = 0;
-		m_PendingBlocks_list.AddTail(pblock);
+		m_PendingBlocks_list.push_back(pblock);
+		m_DownloadBlocks_list.pop_front();
 	}
 	
 	
-	if (m_PendingBlocks_list.IsEmpty()) {
+	if (m_PendingBlocks_list.empty()) {
 		if (!GetSentCancelTransfer()){
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -629,11 +610,11 @@ void CUpDownClient::SendBlockRequests()
 	#warning Kry - I dont specially like this approach, we iterate one time too many
 	
 	bool bHasLongBlocks =  false;
-	
-	POSITION pos = m_PendingBlocks_list.GetHeadPosition();
+
+	std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
 	for (uint32 i = 0; i != 3; i++){
-		if (pos){
-			Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
+		if (it != m_PendingBlocks_list.end()) {
+			Pending_Block_Struct* pending = *it++;
 			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
 			if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF){
 				bHasLongBlocks = true;
@@ -657,11 +638,10 @@ void CUpDownClient::SendBlockRequests()
 	CMemFile data(16 /*Hash*/ + (3*(bHasLongBlocks ? 8 : 4) /* uint32/64 start*/) + (3*(bHasLongBlocks ? 8 : 4)/* uint32/64 end*/));
 	data.WriteHash(m_reqfile->GetFileHash());
 	
-	pos = m_PendingBlocks_list.GetHeadPosition();
-
+	it = m_PendingBlocks_list.begin();
 	for (uint32 i = 0; i != 3; i++) {
-		if (pos) {
-			Pending_Block_Struct* pending = m_PendingBlocks_list.GetNext(pos);
+		if (it != m_PendingBlocks_list.end()) {
+			Pending_Block_Struct* pending = *it++;
 			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
 			pending->fZStreamError = 0;
 			pending->fRecovered = 0;
@@ -678,10 +658,11 @@ void CUpDownClient::SendBlockRequests()
 			}
 		}
 	}
-	pos = m_PendingBlocks_list.GetHeadPosition();
+	
+	it = m_PendingBlocks_list.begin();
 	for (uint32 i = 0; i != 3; i++) {
-		if (pos) {
-			Requested_Block_Struct* block = m_PendingBlocks_list.GetNext(pos)->block;
+		if (it != m_PendingBlocks_list.end()) {
+			Requested_Block_Struct* block = (*it++)->block;
 			if (bHasLongBlocks) {
 				data.WriteUInt64(block->EndOffset+1);
 			} else {
@@ -783,10 +764,11 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		// Move end back one, should be inclusive
 		nEndPos--;
 	
+		
 		// Loop through to find the reserved block that this is within
-		for ( POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != NULL; m_PendingBlocks_list.GetNext(pos) ) {
-	
-			Pending_Block_Struct* cur_block = m_PendingBlocks_list.GetAt(pos);
+		std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+		for (; it != m_PendingBlocks_list.end(); ++it) {
+			Pending_Block_Struct* cur_block = *it;
 			
 			if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
 				// Found reserved block
@@ -891,7 +873,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 							delete cur_block->zStream;
 						}
 						delete cur_block;
-						m_PendingBlocks_list.RemoveAt(pos);
+						m_PendingBlocks_list.erase(it);
 	
 						// Request next block
 						SendBlockRequests();
@@ -1201,19 +1183,21 @@ void CUpDownClient::UDPReaskForDownload()
 	}
 }
 
-// Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 
+//! Barry - Sets string to show parts downloading, eg NNNYNNNNYYNYN
 wxString CUpDownClient::ShowDownloadingParts() const
 {
 	// Initialise to all N's
 	wxString Parts(wxT('N'), m_nPartCount);
-	
-	for (POSITION pos = m_PendingBlocks_list.GetHeadPosition(); pos != 0; ) {
-		Parts.SetChar((m_PendingBlocks_list.GetNext(pos)->block->StartOffset / PARTSIZE), 'Y');
+
+	std::list<Pending_Block_Struct*>::const_iterator it = m_PendingBlocks_list.begin();
+	for (; it != m_PendingBlocks_list.end(); ++it) {
+		Parts.SetChar(((*it)->block->StartOffset / PARTSIZE), 'Y');
 	}
 	
 	return Parts;
 }
+
 
 void CUpDownClient::UpdateDisplayedInfo(bool force)
 {

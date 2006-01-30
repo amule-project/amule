@@ -41,8 +41,6 @@ class CProxyData;
 // CClientTCPSocket
 //------------------------------------------------------------------------------
 
-WX_DECLARE_OBJARRAY(wxString, ArrayOfwxStrings);
-
 class CUpDownClient;
 class CPacket;
 class CTimerWnd;
