@@ -122,8 +122,6 @@ static CClientTCPSocketHandler g_clientReqSocketHandler;
 // CClientTCPSocket
 //------------------------------------------------------------------------------
 
-WX_DEFINE_OBJARRAY(ArrayOfwxStrings)
-
 CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *ProxyData)
 	: CEMSocket(ProxyData)
 {
@@ -837,53 +835,42 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					% m_client->GetUserName()
 					% m_client->GetUserIDHybrid() );
 
-				// Kry - This new code from eMule will avoid duplicated folders
-				ArrayOfwxStrings folders_to_send;
+				// This list will contain all (unique) folders.
+				CStringList foldersToSend;
+			   
+				// The shared folders
+				unsigned folderCount = theApp.glob_prefs->shareddir_list.GetCount();
+				for (unsigned i = 0; i < folderCount; ++i) {
+					foldersToSend.push_back(theApp.glob_prefs->shareddir_list[i]);
+				}
 				
-				uint32 uDirs = theApp.glob_prefs->shareddir_list.GetCount();
-			
-				// the shared folders
-				for (uint32 iDir=0; iDir < uDirs; iDir++) {
-					folders_to_send.Add(wxString(theApp.glob_prefs->shareddir_list[iDir]));
-				}			
-				
-				bool bFoundFolder = false;
-				
-				wxString char_ptrDir;
 				// ... the categories folders ... (category 0 -> incoming)
-				for (uint32 ix=0;ix< theApp.glob_prefs->GetCatCount();ix++) {
-					char_ptrDir = theApp.glob_prefs->GetCategory(ix)->incomingpath;
-					bFoundFolder = false;
-					for (uint32 iDir=0; iDir < (uint32)folders_to_send.GetCount(); iDir++) {	
-						if (folders_to_send[iDir].CmpNoCase(char_ptrDir) == 0) {
-							bFoundFolder = true;
-							break;
-						}
-					}			
-					if (!bFoundFolder) {
-						folders_to_send.Add(wxString(char_ptrDir));
-					}							
+				for (unsigned i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
+					foldersToSend.push_back(theApp.glob_prefs->GetCategory(i)->incomingpath);
 				}
 	
+				// Strip duplicates
+				foldersToSend.sort();
+				foldersToSend.unique();
+				
 				// ... and the Magic thing from the eDonkey Hybrids...
-				bFoundFolder = false;
-				for (uint32 iDir = 0; iDir < (uint32) folders_to_send.GetCount(); iDir++) {
-					if (folders_to_send[iDir].CmpNoCase(OP_INCOMPLETE_SHARED_FILES) == 0) {
+				bool bFoundFolder = false;
+				for (CStringList::iterator it = foldersToSend.begin(); it != foldersToSend.end(); ++it) {
+					if (it->CmpNoCase(OP_INCOMPLETE_SHARED_FILES) == 0) {
 						bFoundFolder = true;
 						break;
 					}
 				}
-				if (!bFoundFolder) {
+				
+				if (not bFoundFolder) {
 					folders_to_send.Add(wxString(OP_INCOMPLETE_SHARED_FILES));
 				}
 				
 				// Send packet.
 				CMemFile tempfile(80);
-
-				uDirs = folders_to_send.GetCount();
-				tempfile.WriteUInt32(uDirs);
-				for (uint32 iDir=0; iDir < uDirs; iDir++) {
-					tempfile.WriteString(folders_to_send[iDir]);
+				tempfile.WriteUInt32(foldersToSend.size());
+				for (CStringList::iterator it = foldersToSend.begin(); it != foldersToSend.end(); ++it) {
+					tempfile.WriteString(*it);
 				}
 
 				CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
@@ -918,7 +905,8 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 				AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 				wxASSERT( data.GetPosition() == data.GetLength() );
-				CTypedPtrList<CPtrList, CKnownFile*> list;
+				
+				CKnownFilePtrList list;
 				
 				if (strReqDir == OP_INCOMPLETE_SHARED_FILES) {
 					// get all shared files from download queue
@@ -928,20 +916,23 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 						if (pFile == NULL || pFile->GetStatus(true) != PS_READY) {
 							continue;
 						}
-						list.AddTail(pFile);
+						
+						list.push_back(pFile);
 					}
 				} else {
-					theApp.sharedfiles->GetSharedFilesByDirectory(strReqDir,list);
+					theApp.sharedfiles->GetSharedFilesByDirectory(strReqDir, list);
 				}
 
 				CMemFile tempfile(80);
 				tempfile.WriteString(strReqDir);
-				tempfile.WriteUInt32(list.GetCount());
-				while (list.GetCount()) {
-					if (!list.GetHead()->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						theApp.sharedfiles->CreateOfferedFilePacket(list.GetHead(), &tempfile, NULL, m_client);
+				tempfile.WriteUInt32(list.size());
+				
+				while (not list.empty()) {
+					if (!list.front()->IsLargeFile() || m_client->SupportsLargeFiles()) {
+						theApp.sharedfiles->CreateOfferedFilePacket(list.front(), &tempfile, NULL, m_client);
 					}
-					list.RemoveHead();
+					
+					list.pop_front();
 				}
 				
 				CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIRANS);
