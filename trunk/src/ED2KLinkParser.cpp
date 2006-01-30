@@ -41,6 +41,8 @@ const int versionRevision	= 1;
 	#include <shlwapi.h>
 #endif
 
+#include "FileLock.h"
+
 using std::string;
 
 
@@ -247,16 +249,15 @@ void badLink( const string& type, const string& err, const string& uri )
  */
 void writeLink( const string& uri )
 {
-	// ofstream is static in order to avoid opening/closing the file for each
-	// link found i the parameters.
+	// Attempt to lock the ED2KLinks file
+	static CFileLock lock(GetLinksFilePath());
 	static std::ofstream file;
 	
-	if ( !file.is_open() ) {
+	if (not file.is_open()) {
 		string path = GetLinksFilePath();
-		
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
 
-		if ( !file.is_open() ) {
+		if (not file.is_open()) {
 			std::cout << "ERROR! Failed to open " << path << " for writing!" << std::endl;
 			exit(1);
 		}
@@ -312,8 +313,6 @@ bool checkFileLink( const string& uri )
 			return false;
 		}
 
-		writeLink( uri );
-
 		return true;
 	}
 
@@ -357,8 +356,6 @@ bool checkServerLink( const string& uri )
 			return false;
 		}
 
-		writeLink( uri );
-
 		return true;
 	}
 
@@ -394,8 +391,6 @@ bool checkServerListLink( const string& uri )
 			return false;
 		}
 
-		writeLink( uri );
-
 		return true;
 	}
 
@@ -418,14 +413,15 @@ int main(int argc, char *argv[])
 			
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
-			if ( type == "file" ) {
-				errors |= !checkFileLink( arg );
-			} else if ( type == "server" ) {
-				errors |= !checkServerLink( arg );
-			} else if ( type == "serverlist" ) {
-				errors |= !checkServerListLink( arg );
+			if ( (type == "file") and checkFileLink( arg ) ) {
+				writeLink( arg );
+			} else if ( (type == "server") and checkServerLink( arg ) ) {
+				writeLink( arg );
+			} else if ( (type == "serverlist") and checkServerListLink( arg ) ) {
+				writeLink( arg );
 			} else {
-				std::cout << "Unknown link-type:\n\t" << arg << std::endl;
+				std::cout << "Unknown or invalid link-type:\n\t" << arg << std::endl;
+				errors = true;
 			}
 		} else if ( arg == "--help" ) {
 			std::cout << getVersion()
@@ -444,7 +440,6 @@ int main(int argc, char *argv[])
 			std::cout << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
 			errors = true;
 		}
-
 	}
 
 	return ( errors ? 1 : 0 );

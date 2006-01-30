@@ -52,6 +52,7 @@
 #include "IPFilter.h"
 #include "FileFunctions.h"	// Needed for CDirIterator
 #include "OtherFunctions.h"	// Needed for CMutexUnlocker
+#include "FileLock.h"		// Needed for CFileLock
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -413,10 +414,7 @@ void CDownloadQueue::Process()
 	
 	// Check for new links once per second.
 	if ((::GetTickCount() - m_nLastED2KLinkCheck) >= 1000) {
-		wxString filename = theApp.ConfigDir + wxT("ED2KLinks");
-		if (wxFile::Exists(filename)) {
-			AddLinksFromFile();
-		}
+		AddLinksFromFile();
 		m_nLastED2KLinkCheck = ::GetTickCount();
 	}
 }
@@ -953,8 +951,15 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 
 void CDownloadQueue::AddLinksFromFile()
 {
-	wxTextFile file(theApp.ConfigDir + wxT("ED2KLinks"));
+	const wxString fullPath = theApp.ConfigDir + wxT("ED2KLinks");
+	if (not wxFile::Exists(fullPath)) {
+		return;
+	}
+	
+	// Attempt to lock the ED2KLinks file.
+	CFileLock lock((const char*)unicode2char(fullPath));
 
+	wxTextFile file(fullPath);
 	if ( file.Open() ) {
 		for ( unsigned int i = 0; i < file.GetLineCount(); i++ ) {
 			wxString line = file.GetLine( i ).Strip( wxString::both );
