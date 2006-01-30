@@ -318,6 +318,7 @@ noinst_HEADERS = ThreadScheduler.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileFunctions.h \
+		FileLock.h \
 		Friend.h \
 		FriendList.h \
 		FriendListCtrl.h \
