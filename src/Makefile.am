@@ -305,7 +305,6 @@ noinst_HEADERS = ThreadScheduler.h \
 		CommentDialogLst.h \
 		CryptoPP.h \
 		CryptoPP_Inc.h \
-		CTypedPtrList.h \
 		DirectoryTreeCtrl.h \
 		DownloadListCtrl.h \
 		DownloadQueue.h \
