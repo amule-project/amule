@@ -297,9 +297,13 @@ void CAICHSyncTask::Entry()
 	
 	AddDebugLogLineM( false, logAICHThread, _("Masterhashes of known files have been loaded.") );
 
+#ifndef AMULE_DAEMON
 	// Since we will be modifying objects in the main thread, 
 	// we need to keep it from messing with the same objects.
 	wxMutexGuiLocker guiLock;
+#else
+	#warning Thread-safety needed
+#endif
 	
 	// Now we check that all files which are in the sharedfilelist have a
 	// corresponding hash in our list. Those how don't are queued for hashing.
@@ -412,8 +416,12 @@ void CCompletionTask::Entry()
 	wxString targetPath;
    
 	{
+#ifndef AMULE_DAEMON
 		// Prevent the preference values from changing underneeth us.
 		wxMutexGuiLocker guiLock;
+#else
+		#warning Thread-safety needed
+#endif
 		
 		targetPath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
 		if (!wxFileName::DirExists(targetPath)) {
