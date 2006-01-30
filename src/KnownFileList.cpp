@@ -58,12 +58,12 @@ bool CKnownFileList::Init()
 	
 	wxString fullpath = theApp.ConfigDir + wxT("known.met");
 	if (!wxFileExists(fullpath)) {
-		AddLogLineM(true, _("Warninng: known.met does not exist."));
+		AddLogLineM(true, _("Warning: known.met does not exist."));
 		return false;
 	}
 
 	if (!file.Open(fullpath)) {
-		AddLogLineM(true, _("Warninng: known.met cannot be opened."));
+		AddLogLineM(true, _("Warning: known.met cannot be opened."));
 		return false;
 	}
 	
