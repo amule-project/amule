@@ -56,6 +56,10 @@ public:
 	 * file is not removed afterwards.
 	 */
 	CFileLock(const std::string& file)
+#ifdef __WXMSW__
+	{
+	}
+#else
 		: m_fd(-1),
 		  m_ok(false)
    	{
@@ -112,6 +116,7 @@ private:
 
 	//! Specifies if the file-lock was aquired.
 	bool m_ok;
+#endif
 };
 
 #endif
