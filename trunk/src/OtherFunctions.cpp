@@ -198,7 +198,8 @@ FileType GetFiletype(const wxString& filename)
 	if ( ext==wxT("avi")  || ext==wxT("mpg")  || ext==wxT("mpeg") || ext==wxT("ogm")  ||
 		 ext==wxT("ram")  || ext==wxT("rm")   || ext==wxT("asf")  || ext==wxT("vob")  ||
 		 ext==wxT("divx") || ext==wxT("vivo") || ext==wxT("mov")  || ext==wxT("wmv")  ||
-		 ext==wxT("m2v")  || ext==wxT("swf")  || ext==wxT("qt")   || ext==wxT("mkv") )
+		 ext==wxT("m2v")  || ext==wxT("swf")  || ext==wxT("qt")   || ext==wxT("mkv")  || 
+		 ext==wxT("mp4")  )
 		 return ftVideo;
 		 
 	if ( ext==wxT("cue")  || ext==wxT("bin")  || ext==wxT("iso")  || ext==wxT("ccd")  ||
@@ -207,11 +208,10 @@ FileType GetFiletype(const wxString& filename)
 		 ext==wxT("mdf") )
 	  return ftCDImage;
 		
-	if ( ext==wxT("mpc")  || ext==wxT("mp4")  || ext==wxT("aac")  || ext==wxT("ape")  ||
-	     ext==wxT("mp3")  || ext==wxT("mp2")  || ext==wxT("wav")  || ext==wxT("au")   ||
-		 ext==wxT("ogg")  || ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid")  ||
-		 ext==wxT("m4a")  || ext==wxT("m4b")  || ext==wxT("m4p")  || ext==wxT("flac")  || 
-		 ext==wxT("mka"))
+	if ( ext==wxT("mpc")  || ext==wxT("aac")  || ext==wxT("ape")  || ext==wxT("mp3")  || 
+		 ext==wxT("mp2")  || ext==wxT("wav")  || ext==wxT("au")   || ext==wxT("ogg")  || 
+		 ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid")  || ext==wxT("m4a")  || 
+		 ext==wxT("m4b")  || ext==wxT("m4p")  || ext==wxT("flac") || ext==wxT("mka"))
 		 return ftAudio;
 
 	if ( ext==wxT("jpg")  || ext==wxT("jpeg") || ext==wxT("bmp")  || ext==wxT("gif")  ||
