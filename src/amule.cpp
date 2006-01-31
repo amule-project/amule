@@ -1439,8 +1439,14 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 	if (thePrefs::CommandOnCompletion() and not evt.ErrorOccured()) {
 		wxString command = thePrefs::GetCommandOnCompletion();
 
+		// Full path
 		command.Replace(wxT("%FILE"), completed->GetFullName());
+		// Just filename
+		command.Replace(wxT("%NAME"), completed->GetFileName());
+		// Hash
 		command.Replace(wxT("%HASH"), completed->GetFileHash().Encode());
+		// Size
+		command.Replace(wxT("%SIZE"), (wxString)(CFormat(wxT("%llu")) % completed->GetFileSize()));
 
 		if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
 			AddLogLineM(true, CFormat(_("Failed to execute on-completion command. Template is: %s")) % command);
