@@ -40,11 +40,9 @@ struct CreditStruct
 	CreditStruct();
 	
 	CMD4Hash	key;
-	uint32		nUploadedLo;	// uploaded TO him
-	uint32		nDownloadedLo;	// downloaded from him
+	uint64		uploaded;		// uploaded TO him
+	uint64		downloaded;	// downloaded from him
 	uint32		nLastSeen;
-	uint32		nUploadedHi;	// upload high 32
-	uint32		nDownloadedHi;	// download high 32
 	uint16		nReserved3;
 	uint8		nKeySize;
 	byte		abySecureIdent[MAXPUBKEYSIZE];

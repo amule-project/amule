@@ -32,11 +32,9 @@
 #include "amule.h"			// Needed for theApp
 
 CreditStruct::CreditStruct()
-	: nUploadedLo(0),
-	  nDownloadedLo(0),
+	: uploaded(0),
+	  downloaded(0),
 	  nLastSeen(0),
-	  nUploadedHi(0),
-	  nDownloadedHi(0),
 	  nReserved3(0),
 	  nKeySize(0)
 {
@@ -53,6 +51,7 @@ CClientCredits::CClientCredits(CreditStruct* in_credits)
 	m_dwWaitTimeIP = 0;
 }
 
+
 CClientCredits::CClientCredits(const CMD4Hash& key)
 {
 	m_pCredits = new CreditStruct();
@@ -64,72 +63,90 @@ CClientCredits::CClientCredits(const CMD4Hash& key)
 	m_dwWaitTimeIP = 0;
 }
 
+
 CClientCredits::~CClientCredits()
 {
 	delete m_pCredits;
 }
 
-void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavail) {
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
-		return;
+
+void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavail)
+{
+	switch (GetCurrentIdentState(dwForIP)) {
+		case IS_IDFAILED:
+		case IS_IDBADGUY:
+		case IS_IDNEEDED:
+			if (cryptoavail) {
+				return;
+			}
 	}
-	//encode
-	uint64 current=m_pCredits->nDownloadedHi;
-	current=(current<<32)+ m_pCredits->nDownloadedLo + bytes ;
-
-	//recode
-	m_pCredits->nDownloadedLo=(uint32)current;
-	m_pCredits->nDownloadedHi=(uint32)(current>>32);
+	
+	m_pCredits->downloaded += bytes;
 }
 
-void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail) {
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
-		return;
+
+void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail)
+{
+	switch (GetCurrentIdentState(dwForIP)) {
+		case IS_IDFAILED:
+		case IS_IDBADGUY:
+		case IS_IDNEEDED:
+			if (cryptoavail) {
+				return;
+			}
 	}
-	//encode
-	uint64 current=m_pCredits->nUploadedHi;
-	current=(current<<32)+ m_pCredits->nUploadedLo + bytes ;
-
-	//recode
-	m_pCredits->nUploadedLo=(uint32)current;
-	m_pCredits->nUploadedHi=(uint32)(current>>32);
+	
+	m_pCredits->uploaded += bytes;
 }
 
-uint64	CClientCredits::GetUploadedTotal() const {
-	return ( (uint64)m_pCredits->nUploadedHi<<32)+m_pCredits->nUploadedLo;
+
+uint64 CClientCredits::GetUploadedTotal() const
+{
+	return m_pCredits->uploaded;
 }
 
-uint64	CClientCredits::GetDownloadedTotal() const {
-	return ( (uint64)m_pCredits->nDownloadedHi<<32)+m_pCredits->nDownloadedLo;
+
+uint64	CClientCredits::GetDownloadedTotal() const
+{
+	return m_pCredits->downloaded;
 }
+
 
 float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 {
 	// check the client ident status
-	if ( ( GetCurrentIdentState(dwForIP) == IS_IDFAILED || GetCurrentIdentState(dwForIP) == IS_IDBADGUY || GetCurrentIdentState(dwForIP) == IS_IDNEEDED) && cryptoavail ){
-		// bad guy - no credits for you
-		return 1;
+	switch (GetCurrentIdentState(dwForIP)) {
+		case IS_IDFAILED:
+		case IS_IDBADGUY:
+		case IS_IDNEEDED:
+			if (cryptoavail) {
+				// bad guy - no credits for you
+				return 1.0f;
+			}
+	}
+	
+	if (GetDownloadedTotal() < 1000000) {
+		return 1.0f;
+	}
+	
+	float result = 0.0f;
+	if (!GetUploadedTotal()) {
+		result = 10.0f;
+	} else {
+		result = (GetDownloadedTotal() * 2.0f) / GetUploadedTotal();
+	}
+	
+	float result2 = sqrt((GetDownloadedTotal() / 1048576.0) + 2.0f);
+	if (result > result2) {
+		result = result2;
 	}
 
-	if (GetDownloadedTotal() < 1000000)
-		return 1;
-	float result = 0;
-	if (!GetUploadedTotal())
-		result = 10;
-	else
-		result = (float)(((double)GetDownloadedTotal()*2.0)/(double)GetUploadedTotal());
-	float result2 = 0;
-	result2 = (float)GetDownloadedTotal()/1048576.0;
-	result2 += 2;
-	result2 = (double)sqrt((double)result2);
-
-	if (result > result2)
-		result = result2;
-
-	if (result < 1)
-		return 1;
-	else if (result > 10)
-		return 10;
+	if (result < 1.0f) {
+		return 1.0f;
+	} else if (result > 10.0f) {
+		return 10.0f;
+	}
+	
 	return result;
 }
 
@@ -139,7 +156,9 @@ void CClientCredits::SetLastSeen()
 	m_pCredits->nLastSeen = time(NULL);
 }
 
-void CClientCredits::InitalizeIdent(){
+
+void CClientCredits::InitalizeIdent()
+{
 	if (m_pCredits->nKeySize == 0 ){
 		memset(m_abyPublicKey,0,80); // for debugging
 		m_nPublicKeyLen = 0;
@@ -155,7 +174,9 @@ void CClientCredits::InitalizeIdent(){
 	m_dwIdentIP = 0;
 }
 
-void CClientCredits::Verified(uint32 dwForIP){
+
+void CClientCredits::Verified(uint32 dwForIP)
+{
 	m_dwIdentIP = dwForIP;
 	// client was verified, copy the keyto store him if not done already
 	if (m_pCredits->nKeySize == 0){
@@ -163,17 +184,18 @@ void CClientCredits::Verified(uint32 dwForIP){
 		memcpy(m_pCredits->abySecureIdent, m_abyPublicKey, m_nPublicKeyLen);
 		if (GetDownloadedTotal() > 0){
 			// for security reason, we have to delete all prior credits here
-			m_pCredits->nDownloadedHi = 0;
-			m_pCredits->nDownloadedLo = 1;
-			m_pCredits->nUploadedHi = 0;
-			m_pCredits->nUploadedLo = 1; // in order to safe this client, set 1 byte
+			// in order to save this client, set 1 byte
+			m_pCredits->downloaded = 1;
+			m_pCredits->uploaded = 1; 
 			AddDebugLogLineM( false, logCredits, wxT("Credits deleted due to new SecureIdent") );
 		}
 	}
 	m_identState = IS_IDENTIFIED;
 }
 
-bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // verified Public key cannot change, use only if there is not public key yet
+
+bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen)
+{ // verified Public key cannot change, use only if there is not public key yet
 	if (MAXPUBKEYSIZE < nIdentLen || m_pCredits->nKeySize != 0 ) {
 		return false;
 	}
@@ -183,7 +205,9 @@ bool CClientCredits::SetSecureIdent(const byte* pachIdent, uint8 nIdentLen){ // 
 	return true;
 }
 
-EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
+
+EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const
+{
 	if (m_identState != IS_IDENTIFIED)
 		return m_identState;
 	else{
@@ -196,7 +220,9 @@ EIdentState	CClientCredits::GetCurrentIdentState(uint32 dwForIP) const {
 	}
 }
 
-uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
+
+uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP)
+{
 	if (m_dwUnSecureWaitTime == 0 || m_dwSecureWaitTime == 0)
 		SetSecWaitStartTime(dwForIP);
 
@@ -222,13 +248,18 @@ uint32 CClientCredits::GetSecureWaitStartTime(uint32 dwForIP){
 	}
 }
 
-void CClientCredits::SetSecWaitStartTime(uint32 dwForIP){
+
+void CClientCredits::SetSecWaitStartTime(uint32 dwForIP)
+{
 	m_dwUnSecureWaitTime = ::GetTickCount()-1;
 	m_dwSecureWaitTime = ::GetTickCount()-1;
 	m_dwWaitTimeIP = dwForIP;
 }
 
-void CClientCredits::ClearWaitStartTime(){
+
+void CClientCredits::ClearWaitStartTime()
+{
 	m_dwUnSecureWaitTime = 0;
 	m_dwSecureWaitTime = 0;
 }
+

@@ -124,11 +124,11 @@ void CClientCreditsList::LoadList()
 			CreditStruct* newcstruct = new CreditStruct();
 
 			newcstruct->key					= file.ReadHash();
-			newcstruct->nUploadedLo         = file.ReadUInt32();
-			newcstruct->nDownloadedLo       = file.ReadUInt32();
+			newcstruct->uploaded            = file.ReadUInt32();
+			newcstruct->downloaded          = file.ReadUInt32();
 			newcstruct->nLastSeen           = file.ReadUInt32();
-			newcstruct->nUploadedHi         = file.ReadUInt32();
-			newcstruct->nDownloadedHi       = file.ReadUInt32();
+			newcstruct->uploaded            += static_cast<uint64>(file.ReadUInt32()) << 32;
+			newcstruct->downloaded          += static_cast<uint64>(file.ReadUInt32()) << 32;
 			newcstruct->nReserved3          = file.ReadUInt16();
 			newcstruct->nKeySize            = file.ReadUInt8();
 			file.Read(newcstruct->abySecureIdent, MAXPUBKEYSIZE);
@@ -199,11 +199,11 @@ void CClientCreditsList::SaveList()
 				if ( cur_credit->GetUploadedTotal() || cur_credit->GetDownloadedTotal() ) {
 					const CreditStruct* const cstruct = cur_credit->GetDataStruct();
 					file.WriteHash(cstruct->key);
-					file.WriteUInt32(cstruct->nUploadedLo);
-					file.WriteUInt32(cstruct->nDownloadedLo);
+					file.WriteUInt32(static_cast<uint32>(cstruct->uploaded));
+					file.WriteUInt32(static_cast<uint32>(cstruct->downloaded));
 					file.WriteUInt32(cstruct->nLastSeen);
-					file.WriteUInt32(cstruct->nUploadedHi);
-					file.WriteUInt32(cstruct->nDownloadedHi);
+					file.WriteUInt32(static_cast<uint32>(cstruct->uploaded >> 32));
+					file.WriteUInt32(static_cast<uint32>(cstruct->downloaded >> 32));
 					file.WriteUInt16(cstruct->nReserved3);
 					file.WriteUInt8(cstruct->nKeySize);
 					// Doesn't matter if this saves garbage, will be fixed on load.

@@ -1065,15 +1065,12 @@ void CUpDownClientListRem::ProcessItemUpdate(CEC_UpDownClient_Tag *tag, CUpDownC
 	client->m_WaitStartTime = tag->QueueTime();
 	
 	CreditStruct *credit_struct = (CreditStruct *)client->credits->GetDataStruct();
-	uint64 value = tag->XferUp();
-	credit_struct->nUploadedHi = value >> 32;
-	credit_struct->nUploadedLo = value & 0xffffffff;
+	credit_struct->uploaded = tag->XferUp();
 	client->m_nTransferredUp = tag->XferUpSession();
 
-	value = tag->XferDown();
-	credit_struct->nDownloadedHi = value >> 32;
-	credit_struct->nDownloadedLo = value & 0xffffffff;
+	credit_struct->downloaded = tag->XferDown();
 }
+
 
 CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m_wait_list(conn, vtQueued)
 {
