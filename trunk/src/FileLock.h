@@ -64,7 +64,7 @@ public:
 		  m_ok(false)
    	{
 		// File must be open with O_WRONLY to be able to set write-locks.
-		m_fd = ::open((file + "_lock").c_str(), O_CREAT | O_WRONLY);
+		m_fd = ::open((file + "_lock").c_str(), O_CREAT | O_WRONLY, 0600);
 		if (m_fd != -1) {
 			m_ok = SetLock(true);
 		}
