@@ -618,7 +618,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 
 		// read integer operator
 		uint8 mmop = bio.ReadUInt8();
-		if (mmop >= ARRSIZE(_aOps)){
+		if (mmop >= itemsof(_aOps)){
 			AddDebugLogLineM(false, logClientKadUDP, wxString::Format(wxT("*** Unknown integer search op=0x%02x (CreateSearchExpressionTree)"), mmop));
 			return NULL;
 		}

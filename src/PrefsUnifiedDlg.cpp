@@ -192,7 +192,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	int height = 0;
 
 	// Add each page to the page-list
-	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
+	for ( unsigned int i = 0; i < itemsof(pages); i++ ) {
 		// Add the icon and label assosiated with the page
 		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
 		PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
@@ -204,7 +204,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	PrefsIcons->SetMaxSize(wxSize(PrefsIcons->GetColumnWidth( 0 ) + 10, -1));
 
 	// Now add the pages and calculate the minimum size	
-	for ( unsigned int i = 0; i < ELEMENT_COUNT(pages); i++ ) {
+	for ( unsigned int i = 0; i < itemsof(pages); i++ ) {
 		// Create a container widget and the contents of the page
 		pages[i].m_widget = new wxPanel( this, -1 );
 		pages[i].m_function( pages[i].m_widget, true, true );

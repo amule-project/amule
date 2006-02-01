@@ -266,9 +266,8 @@ wxString GetCatTitle(int catid);
 int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
 
 
-#define ARRSIZE(x) (int) (sizeof(x)/sizeof(x[0]))
+//! Returns the number of items in an array.
 #define itemsof(x) (sizeof(x)/sizeof(x[0]))
-#define ELEMENT_COUNT(X) (sizeof(X) / sizeof(X[0]))
 
 
 ///////////////////////////////////////////////////////////////////////////////

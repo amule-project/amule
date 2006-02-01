@@ -180,7 +180,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					{ wxT(FT_ED2K_MEDIA_CODEC),   2 }
 				};
 			
-			for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+			for (int t = 0; t < itemsof(_aMetaTags); ++t) {
 				if (	pTag.GetType() == _aMetaTags[t].nType &&
 					(pTag.GetName() == _aMetaTags[t].pszName)) {
 					// skip string tags with empty string values
@@ -218,7 +218,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					{ FT_FILETYPE,		2 },
 					{ FT_FILEFORMAT,	2 }
 				};
-			for (int t = 0; t < ARRSIZE(_aMetaTags); ++t) {
+			for (int t = 0; t < itemsof(_aMetaTags); ++t) {
 				if (pTag.GetType() == _aMetaTags[t].nType && pTag.GetNameID() == _aMetaTags[t].nID) {
 					// skip string tags with empty string values
 					if (pTag.IsStr() && pTag.GetStr().IsEmpty()) {
