@@ -56,7 +56,7 @@ public:
 	 * file is not removed afterwards.
 	 */
 	CFileLock(const std::string& file)
-#ifdef __WXMSW__
+#ifdef __WIN32__
 	{
 	}
 #else
