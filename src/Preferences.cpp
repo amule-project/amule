@@ -1077,13 +1077,7 @@ void CPreferences::SaveAllItems(wxConfigBase* cfg)
 	for ( int i = 0; i < count; i++ ) {
 		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
 
-		wxString entry = wxT("/Debug/Cat_") + cat.GetName();
-		if ( cat.IsEnabled() ) {
-			cfg->Write( entry, true );
-		} else if ( cfg->Exists( entry ) ) {
-			// Avoid a buildup of stale entries
-			cfg->DeleteEntry( entry );
-		}
+		cfg->Write( wxT("/Debug/Cat_") + cat.GetName(), cat.IsEnabled() );
 	}	
 #endif
 }
