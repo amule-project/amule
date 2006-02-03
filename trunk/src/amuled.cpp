@@ -545,7 +545,7 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 		puts((const char*)unicode2char(title + wxT(" ") + msg));
 	}
 	
-	AddLogLine(title + wxT(" ") + msg);
+	AddLogLineM(true, title + wxT(" ") + msg);
 }
 
 
