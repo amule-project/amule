@@ -70,6 +70,8 @@ class CTimer;
 class wxTimerEvent;
 class wxSingleInstanceChecker;
 class wxExecuteData;
+class CMuleInternalEvent;
+
 
 #define theApp wxGetApp()
 
@@ -229,18 +231,18 @@ protected:
 		bool		show;
 	};
 
-	void OnUDPDnsDone(wxEvent& evt);
-	void OnSourceDnsDone(wxEvent& evt);
-	void OnServerDnsDone(wxEvent& evt);
+	void OnUDPDnsDone(CMuleInternalEvent& evt);
+	void OnSourceDnsDone(CMuleInternalEvent& evt);
+	void OnServerDnsDone(CMuleInternalEvent& evt);
 
-	void OnTCPTimer(wxEvent& evt);
+	void OnTCPTimer(CMuleInternalEvent& evt);
 
-	void OnCoreTimer(wxEvent& evt);
+	void OnCoreTimer(CMuleInternalEvent& evt);
 
-	void OnFinishedHashing(wxEvent& evt);
-	void OnFinishedCompletion(wxEvent& evt);
-	void OnFinishedHTTPDownload(wxEvent& evt);
-	void OnHashingShutdown(wxEvent&);
+	void OnFinishedHashing(CMuleInternalEvent& evt);
+	void OnFinishedCompletion(CMuleInternalEvent& evt);
+	void OnFinishedHTTPDownload(CMuleInternalEvent& evt);
+	void OnHashingShutdown(CMuleInternalEvent&);
 
 	void OnNotifyEvent(wxEvent& evt);
 

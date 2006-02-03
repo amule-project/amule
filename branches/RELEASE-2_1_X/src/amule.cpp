@@ -56,7 +56,7 @@
 
 #include "amule.h"			// Interface declarations.
 #include "GetTickCount.h"		// Needed for GetTickCount
-#include "HTTPDownload.h"		// Needed for CHTTPDownloadThreadBase
+#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "Server.h"			// Needed for GetListName
 #include "OtherFunctions.h"		// Needed for GetTickCount
 #include "IPFilter.h"			// Needed for CIPFilter
@@ -86,7 +86,7 @@
 #include "Logger.h"
 #include <common/Format.h>			// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
-#include "InternalEvents.h"		// Needed for wxMuleInternalEvent
+#include "InternalEvents.h"		// Needed for CMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
@@ -563,9 +563,9 @@ bool CamuleApp::OnInit()
 	// Test if there's any new version
 	if (thePrefs::CheckNewVersion()) {
 		// We use the thread base because I don't want a dialog to pop up.
-		CHTTPDownloadThreadBase* version_check = 
-			new CHTTPDownloadThreadBase(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck);
+		CHTTPDownloadThread* version_check = 
+			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
+				theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -1209,25 +1209,22 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 #endif
 
 
-void CamuleApp::OnUDPDnsDone(wxEvent& e)
+void CamuleApp::OnUDPDnsDone(CMuleInternalEvent& evt)
 {
-	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
 	CServerUDPSocket* socket =(CServerUDPSocket*)evt.GetClientData();	
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
 
 
-void CamuleApp::OnSourceDnsDone(wxEvent& e)
+void CamuleApp::OnSourceDnsDone(CMuleInternalEvent& evt)
 {
-	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);	
 	downloadqueue->OnHostnameResolved(evt.GetExtraLong());
 }
 
 
-void CamuleApp::OnServerDnsDone(wxEvent& e)
+void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 {
 	printf("Server hostname notified\n");
-	wxMuleInternalEvent&	evt = *((wxMuleInternalEvent*)&e);	
 	CServerSocket* socket=(CServerSocket*)evt.GetClientData();	
 	socket->OnHostnameResolved(evt.GetExtraLong());
 }
@@ -1235,12 +1232,11 @@ void CamuleApp::OnServerDnsDone(wxEvent& e)
 
 void CamuleApp::OnNotifyEvent(wxEvent& e)
 {
-	GUIEvent& evt = *((GUIEvent*)&e);
-	NotifyEvent(evt);
+	NotifyEvent(dynamic_cast<GUIEvent&>(e));
 }
 
 
-void CamuleApp::OnTCPTimer(wxEvent& WXUNUSED(evt))
+void CamuleApp::OnTCPTimer(CMuleInternalEvent& WXUNUSED(evt))
 {
 	if(!IsRunning()) {
 		return;
@@ -1253,7 +1249,7 @@ void CamuleApp::OnTCPTimer(wxEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnCoreTimer(wxEvent& WXUNUSED(evt))
+void CamuleApp::OnCoreTimer(CMuleInternalEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
 	static uint64	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
@@ -1364,7 +1360,7 @@ void CamuleApp::OnCoreTimer(wxEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
+void CamuleApp::OnHashingShutdown(CMuleInternalEvent& WXUNUSED(evt))
 {
 	if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
 		// Save the known.met file
@@ -1376,12 +1372,8 @@ void CamuleApp::OnHashingShutdown(wxEvent& WXUNUSED(evt))
 }
 
 
-void CamuleApp::OnFinishedHashing(wxEvent& e)
+void CamuleApp::OnFinishedHashing(CMuleInternalEvent& evt)
 {
-	wxMuleInternalEvent& evt = *((wxMuleInternalEvent*)&e);
-	static int filecount;
-	static int bytecount;
-
 	CKnownFile* result = (CKnownFile*)evt.GetClientData();
 	if (evt.GetExtraLong()) {
 		CPartFile* requester = (CPartFile*)evt.GetExtraLong();
@@ -1389,6 +1381,9 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 			requester->PartFileHashFinished(result);
 		}
 	} else {
+		static int filecount;
+		static int bytecount;
+
 		if (knownfiles->SafeAddKFile(result)) {
 			AddDebugLogLineM(false, logKnownFiles, wxT("Safe adding file to sharedlist: ") + result->GetFileName());			
 			sharedfiles->SafeAddKFile(result);
@@ -1412,9 +1407,8 @@ void CamuleApp::OnFinishedHashing(wxEvent& e)
 }
 
 
-void CamuleApp::OnFinishedCompletion(wxEvent& e)
+void CamuleApp::OnFinishedCompletion(CMuleInternalEvent& evt)
 {
-	wxMuleInternalEvent& evt = dynamic_cast<wxMuleInternalEvent&>(e);
 	CPartFile* completed = (CPartFile*)evt.GetClientData();
 	wxCHECK_RET(completed, wxT("Completion event sent for unspecified file"));
 	completed->CompleteFileEnded(evt.GetInt(), (wxString*)evt.GetExtraLong());
@@ -1605,9 +1599,8 @@ void CamuleApp::RunAICHThread()
 		CAICHSyncThread::Start();
 }
 
-void CamuleApp::OnFinishedHTTPDownload(wxEvent& evt)
+void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 {
-	wxMuleInternalEvent& event = *((wxMuleInternalEvent*)&evt);
 	switch (event.GetInt()) {
 		case HTTP_IPFilter:
 			ipfilter->DownloadFinished(event.GetExtraLong());
