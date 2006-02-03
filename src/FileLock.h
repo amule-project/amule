@@ -56,11 +56,15 @@ public:
 	 * file is not removed afterwards.
 	 */
 	CFileLock(const std::string& file)
+#ifdef __WIN32__
+	{
+	}
+#else
 		: m_fd(-1),
 		  m_ok(false)
    	{
 		// File must be open with O_WRONLY to be able to set write-locks.
-		m_fd = ::open((file + "_lock").c_str(), O_CREAT | O_WRONLY);
+		m_fd = ::open((file + "_lock").c_str(), O_CREAT | O_WRONLY, 0600);
 		if (m_fd != -1) {
 			m_ok = SetLock(true);
 		}
@@ -112,6 +116,7 @@ private:
 
 	//! Specifies if the file-lock was aquired.
 	bool m_ok;
+#endif
 };
 
 #endif
