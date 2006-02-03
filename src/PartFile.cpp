@@ -74,7 +74,7 @@
 #include "kademlia/kademlia/Search.h"
 
 #ifndef CLIENT_GUI
-#include "InternalEvents.h"	// Needed for wxMuleInternalEvent
+#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 
 wxMutex CPartFile::m_FileCompleteMutex; 
 
@@ -2400,7 +2400,7 @@ private:
 	
 	void OnExit() {
 		// Notify the app that the completion has finished for this file.	
-		wxMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
+		CMuleInternalEvent evt(wxEVT_CORE_FINISHED_FILE_COMPLETION);
 		evt.SetClientData(m_owner);
 		evt.SetInt(m_result);
 		evt.SetExtraLong((long)m_newName);

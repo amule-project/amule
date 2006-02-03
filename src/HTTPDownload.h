@@ -26,90 +26,30 @@
 #ifndef HTTPDOWNLOAD_H
 #define HTTPDOWNLOAD_H
 
-#ifndef AMULE_DAEMON
-	#include <wx/dialog.h>		// Needed for wxDialog
-#endif
+#include <wx/thread.h>	// Needed for wxThread
+#include "GuiEvents.h"	// Needed for HTTP_Download_File
 
-#include "GuiEvents.h"
 
-class CHTTPDownloadThreadGUI;
-#ifdef __WXMSW__
-class wxGauge95;
-#else
-class wxGauge;
-#endif
-
-#ifndef AMULE_DAEMON
-	#define CHTTPDownloadThread CHTTPDownloadThreadGUI
-#else
-	#define CHTTPDownloadThread CHTTPDownloadThreadBase
-#endif
-
-class MuleGifCtrl;
-
-class wxInputStream;
-
+class wxEvtHandler;
 class wxHTTP;
 
-class CHTTPDownloadThreadBase : public wxThread
+
+class CHTTPDownloadThread : public wxThread
 {
- public:
+public:
+	CHTTPDownloadThread(const wxString& url, const wxString& filename, HTTP_Download_File file_id, bool showDialog = true);
 
-	CHTTPDownloadThreadBase(wxString urlname, wxString filename, HTTP_Download_File file_id);
-	
-	~CHTTPDownloadThreadBase();
-
- private:
-
+private:
 	wxThread::ExitCode	Entry();
-	virtual void 			OnExit();
+	virtual void 		OnExit();
 
-	wxString					m_url;
-	wxString					m_tempfile;
-	int						m_result;
-	HTTP_Download_File	m_file_type;
+	wxString			m_url;
+	wxString			m_tempfile;
+	int					m_result;
+	HTTP_Download_File	m_file_id;
+	wxEvtHandler*		m_companion;
 
 	wxInputStream* GetInputStream(wxHTTP** url_handler, const wxString& location, bool proxy);
-
-	virtual void ProgressCallback(int WXUNUSED(dltotal), int WXUNUSED(dlnow)) { }
-
 };
-
-#ifndef AMULE_DAEMON
-class CHTTPDownloadThreadDlg : public wxDialog
-{
-public:
-	CHTTPDownloadThreadDlg(wxWindow*parent, CHTTPDownloadThread* thread);
-	~CHTTPDownloadThreadDlg();
-
-	void StopAnimation(); 
-	void UpdateGauge(int dltotal,int dlnow);
-
-private:
-	DECLARE_EVENT_TABLE()
-
-	void OnBtnCancel(wxCommandEvent& evt);
-  
-	CHTTPDownloadThreadGUI*	m_parent_thread;
-	MuleGifCtrl* 					m_ani;
-#ifdef __WXMSW__	
-	wxGauge95* 						m_progressbar;
-#else
-	wxGauge* 						m_progressbar;
-#endif
-};
-
-class CHTTPDownloadThreadGUI : public CHTTPDownloadThreadBase {
-public:
-	CHTTPDownloadThreadGUI(wxString urlname, wxString filename, HTTP_Download_File file_id);
-	~CHTTPDownloadThreadGUI();
-	
-private:
-
-	void ProgressCallback(int dltotal, int dlnow);
-
-	CHTTPDownloadThreadDlg* m_myDlg;
-};
-#endif
 
 #endif // HTTPDOWNLOAD_H
