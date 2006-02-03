@@ -536,12 +536,19 @@ int CamuleDaemonApp::OnExit()
 	return CamuleApp::OnExit();
 }
 
+
 void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 {
 	if ( flags | wxICON_ERROR ) {
 		title = CFormat(_("ERROR: %s")) % title;
 	}
-	AddLogLine(title + wxT(" ") + msg);
+	
+	// Ensure that alerts are always visible on the console (when possible).
+	if ((not enable_stdout_log) and (not enable_daemon_fork)) {
+		puts((const char*)unicode2char(title + wxT(" ") + msg));
+	}
+	
+	AddLogLineM(true, title + wxT(" ") + msg);
 }
 
 
