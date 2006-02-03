@@ -31,6 +31,8 @@
 
 #ifndef __WINDOWS__
 uint32 GetTickCount();
+#else
+#include <winbase.h>
 #endif
 
 // Ideally, same than GetTickCount.
