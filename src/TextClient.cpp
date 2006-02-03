@@ -626,10 +626,10 @@ void CamulecmdApp::OnInitCommandSet()
 					  "   server list.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
-				    wxT(""), CMD_PARAM_NEVER);
+				    wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set IPFilter preferences."),
-			       wxTRANSLATE(""), CMD_PARAM_NEVER);
+			       wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_ON, wxTRANSLATE("Turn IP filtering on."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_OFF, wxTRANSLATE("Turn IP filtering off."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Level"), CMD_ID_SET_IPFILTER_LEVEL, wxTRANSLATE("Select IP filtering level."),
@@ -644,10 +644,10 @@ void CamulecmdApp::OnInitCommandSet()
 			 wxT("The given value must be in kilobytes/sec.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Get"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Get and display a preference value."),
-				    wxT(""), CMD_PARAM_NEVER);
+				    wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_GET_IPFILTER, wxTRANSLATE("Get IPFilter preferences."),
-			       wxTRANSLATE(""), CMD_PARAM_NEVER);
+			       wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("State"), CMD_ID_GET_IPFILTER_STATE, wxTRANSLATE("Get IPFilter state."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Level"), CMD_ID_GET_IPFILTER_LEVEL, wxTRANSLATE("Get IPFilter level."), wxEmptyString, CMD_PARAM_NEVER);
 
@@ -659,13 +659,13 @@ void CamulecmdApp::OnInitCommandSet()
 	//
 
   	m_commands.AddCommand(wxT("Pause"), CMD_ID_PAUSE, wxTRANSLATE("Pause download."),
- 			      wxT(""), CMD_PARAM_ALWAYS);
+ 			      wxEmptyString, CMD_PARAM_ALWAYS);
 
   	m_commands.AddCommand(wxT("Resume"), CMD_ID_RESUME, wxTRANSLATE("Resume download."),
- 			      wxT(""), CMD_PARAM_ALWAYS);
+ 			      wxEmptyString, CMD_PARAM_ALWAYS);
 
    	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
-  			      wxT(""), CMD_PARAM_ALWAYS);
+  			      wxEmptyString, CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
