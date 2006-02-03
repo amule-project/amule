@@ -233,6 +233,9 @@ void CaMuleExternalConnector::Show(const wxString &s)
 {
 	if( !m_KeepQuiet ) {
 		printf("%s", (const char *)unicode2char(s));
+#ifdef __WXMSW__
+		fflush(stdout);
+#endif
 	}
 }
 
@@ -381,6 +384,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			char temp_str[512];
 			fflush(stdin);
 			printf("Enter password for mule connection: \n");
+			fflush(stdout);
 			fgets(temp_str, 512, stdin);
 			temp_str[strlen(temp_str)-1] = '\0';
 			pass_plain = char2unicode(temp_str);
