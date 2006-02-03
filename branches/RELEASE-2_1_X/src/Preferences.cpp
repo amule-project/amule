@@ -1213,7 +1213,7 @@ void CPreferences::CreateUserHash()
 {
 	for (int i = 0;i != 8; i++) {
 		uint16	random = rand();
-		memcpy(&s_userhash[i*2],&random,2);
+		memcpy(s_userhash.GetHash()+(i*2),&random,2);
 	}
 	// mark as emule client. that will be need in later version
 	s_userhash[5] = 14;
