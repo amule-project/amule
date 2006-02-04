@@ -27,7 +27,6 @@ src/Parser.cpp
 src/IPFilter.cpp
 src/amule-remote-gui.cpp
 src/TextClient.cpp
-src/AICHSyncThread.cpp
 src/amuleDlg.cpp
 src/ClientTCPSocket.cpp
 src/ChatSelector.cpp
@@ -36,7 +35,6 @@ src/KnownFile.cpp
 src/libs/ec/ECSocket.cpp
 src/libs/ec/RemoteConnect.cpp
 src/libs/ec/ECSpecialTags.cpp
-src/AddFileThread.cpp
 src/ServerWnd.cpp
 src/ClientDetailDialog.cpp
 src/FileDetailDialog.cpp
