@@ -74,18 +74,6 @@ public:
 	}
 
 	/**
-	 * Cast constructor from wxString.
-	 * 
-	 * @param hash The hexadecimal representation to convert. Length MUST be 32!
-	 *
-	 * Casts the hexadecimal representation of a MD4 hash to a CMD4Hash.
-	 */
-	explicit CMD4Hash(const wxString& hash) {
-		Decode( hash );
-	}
-	
-	
-	/**
 	 * Equality operator.
 	 *
 	 * Returns true if all fields of both hashes are the same.
@@ -159,14 +147,17 @@ public:
 	 * Decodes a 32 char long hexadecimal representation of a MD4 hash.
 	 *
 	 * @param hash The hash representation to be converted. Length must be 32.
+	 * @return Return value specifies if the hash was succesfully decoded.
 	 *
 	 * This function converts a hexadecimal representation of a MD4
 	 * hash and stores it in the m_hash data-member.
 	 */ 
-	void Decode(const wxString& hash) {
-		wxASSERT(hash.Length() == MD4HASH_LENGTH * 2);
-
-		for ( size_t i = 0; i < MD4HASH_LENGTH * 2; i++ ) {			
+	bool Decode(const wxString& hash) {
+		if (hash.Length() != MD4HASH_LENGTH * 2) {
+			return false;
+		}
+		
+		for ( size_t i = 0; i < MD4HASH_LENGTH * 2; i++ ) {
 			unsigned char word = toupper(hash[i]);
 
 			if ((word >= '0') && (word <= '9')) {
@@ -175,7 +166,7 @@ public:
 				word -= 'A' - 10;
 			} else {
 				// Invalid chars
-				word = 0;
+				return false;
 			}
 			
 			if (i % 2 == 0) {
@@ -184,6 +175,8 @@ public:
 				m_hash[i/2] += word;
 			}
 		} 
+
+		return true;
 	}
 	
 	/** 

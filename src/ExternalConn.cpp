@@ -205,7 +205,11 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
 		// For CVS versions, both client and server must use CVSDATE, and they must be the same
-		if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != CMD4Hash(wxT(EC_VERSION_ID))) {
+		CMD4Hash vhash;
+		if (not vhash.Decode(wxT(EC_VERSION_ID))) {
+			response = new CECPacket(EC_OP_AUTH_FAIL);
+			response->AddTag(CECTag(EC_TAG_STRING, wxT("Fatal error, version hash is not a valid MD4-hash.")));
+		} else if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != vhash) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else
@@ -217,10 +221,16 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt16Data();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
-				if (passwd && passwd->GetMD4Data() == CMD4Hash(thePrefs::ECPassword())) {
+				CMD4Hash passh;
+
+				if (not passh.Decode(thePrefs::ECPassword())) {
+					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
+					response = new CECPacket(EC_OP_AUTH_FAIL);
+					response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
+				} else if (passwd && passwd->GetMD4Data() == passh) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
-					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + CMD4Hash(thePrefs::ECPassword()).Encode() + wxT(")."));
+					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 				}
