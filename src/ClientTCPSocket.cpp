@@ -1734,6 +1734,52 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 	return true;
 }
 
+bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint8 opcode)
+{
+	#ifdef __PACKET_RECV_DUMP__
+	printf("Rec: OPCODE %x ED2Kv2\n",opcode);
+	DumpMem(buffer,size);
+	#endif
+		
+	if (!m_client) {
+		throw wxString(wxT("Unknown clients sends extended protocol packet"));
+	}
+
+	CMemFile data(buffer, size);
+	try {
+		switch(opcode) {
+			case OP_QUEUERANK: {	
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: ED2Kv2 OP_QUEUERANK from ") + m_client->GetFullIP() );
+				
+				uint8 numtags = data.ReadUInt8();
+				wxASSERT(numtags == 1);
+				
+				m_client->SetRemoteQueueRank(data.GetIntTagValue());
+				
+				theStats::AddDownOverheadFileRequest(size);
+				break;
+			}
+			
+			case OP_REQUESTPARTS: {
+				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: ED2Kv2 OP_REQUESTPARTS from ") + m_client->GetFullIP() );
+					
+				m_client->ProcessRequestPartsPacketv2(data);
+				
+				theStats::AddDownOverheadFileRequest(size);
+				break;
+			}
+			
+			default:
+				theStats::AddDownOverheadOther(size);
+				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("ED2Kv2 packet : unknown opcode: %i %x from "), opcode, opcode) + m_client->GetFullIP());
+		}
+	} catch (...) {
+		AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("ED2Kv2 packet is corrupt at pos %i! opcode: %i %x from "),data.GetPosition(), opcode, opcode) + m_client->GetFullIP());
+		throw;
+	}
+	
+	return true;
+}
 
 void CClientTCPSocket::OnConnect(int nErrorCode)
 {
@@ -1830,34 +1876,51 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 	);
 
 	wxString exception;
+	
 	try {
-		switch (packet->GetProtocol()) {
-			case OP_EDONKEYPROT:		
-				bResult = ProcessPacket(packet->GetDataBuffer(),uRawSize,packet->GetOpCode());
-				break;		
-			case OP_PACKEDPROT:
-				if (!packet->UnPackPacket()) {
-					AddDebugLogLineM( false, logZLib, wxT("Failed to decompress client TCP packet."));
-					bResult = false;
-					break;
-				} else {
-					AddDebugLogLineM(false, logRemoteClient, 
-						wxString::Format(wxT("Packet unpacked, new protocol %x, opcode %x, size %u"), 
-							packet->GetProtocol(),
-							packet->GetOpCode(),
-							packet->GetPacketSize())
-					);
-				}
-			case OP_EMULEPROT:
-				bResult = ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
-				break;
-			default: {
-				theStats::AddDownOverheadOther(uRawSize);
-				if (m_client) {
-					m_client->SetDownloadState(DS_ERROR);
-				}
-				Disconnect(wxT("Unknown protocol"));
+		bool process = true;
+		
+		if ((packet->GetProtocol() == OP_PACKEDPROT) || 
+			(packet->GetProtocol() == OP_ED2KV2PACKEDPROT)) {
+				
+			if (!packet->UnPackPacket()) {
+				AddDebugLogLineM( false, logZLib, wxT("Failed to decompress client TCP packet."));
 				bResult = false;
+				process = false;
+			} else {
+				AddDebugLogLineM(false, logRemoteClient, 
+					wxString::Format(wxT("Packet unpacked, new protocol %x, opcode %x, size %u"), 
+						packet->GetProtocol(),
+						packet->GetOpCode(),
+						packet->GetPacketSize())
+				);
+			}
+		}
+		
+		if (process) {
+			switch (packet->GetProtocol()) {
+				case OP_EDONKEYPROT:		
+					bResult = ProcessPacket(packet->GetDataBuffer(),uRawSize,packet->GetOpCode());
+					break;		
+				case OP_EMULEPROT:
+					bResult = ProcessExtPacket(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
+					break;
+				case OP_ED2KV2HEADER:
+					bResult = ProcessED2Kv2Packet(packet->GetDataBuffer(), packet->GetPacketSize(), packet->GetOpCode());
+					break;
+				case OP_ED2KV2PACKEDPROT:				
+				case OP_PACKEDPROT:
+					// Packed inside packed?
+					wxASSERT(0);
+					break;
+				default: {
+					theStats::AddDownOverheadOther(uRawSize);
+					if (m_client) {
+						m_client->SetDownloadState(DS_ERROR);
+					}
+					Disconnect(wxT("Unknown protocol"));
+					bResult = false;
+				}
 			}
 		}
 	} catch (const CEOFException& err) {

@@ -80,7 +80,7 @@ CTag::CTag(const CTag& rTag)
 CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 {
 	// Zero variables to allow for safe deletion
-	m_uType = m_uName = m_nSize = 0;
+	m_uType = m_uName = m_nSize = m_uVal = 0;
 	m_pData = NULL;	
 	
 	try {
@@ -171,7 +171,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				} else {
 					// Since we cannot determine the length of this tag, we
 					// simply have to abort reading the file.
-					throw CInvalidPacket(wxT("Unknown tag type encounted, cannot proceed"));
+					throw CInvalidPacket(wxString::Format(wxT("Unknown tag type encounted %x, cannot proceed!"),m_uType));
 				}
 		}
 	} catch (...) {
@@ -341,48 +341,19 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 	return true;
 }
 
-bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode) const
+bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode, bool restrictive) const
 {
+	
 	// Don't write tags of unknown types, we wouldn't be able to read them in again 
 	// and the met file would be corrupted
-	if (IsStr() || IsInt() || IsFloat() || IsBlob()) {
-		
-		file->WriteUInt8(m_uType);
-		
-		if (!m_Name.IsEmpty()) {
-			file->WriteString(m_Name,utf8strNone);
-		} else {
-			file->WriteUInt16(1);
-			file->WriteUInt8(m_uName);
-		}
-
-		if (IsStr()) {
-			file->WriteString(GetStr(), eStrEncode);
-		} else if (IsInt()) {
-			if (GetType() == TAGTYPE_UINT64) {
-				file->WriteUInt64(m_uVal);
-			} else {
-				file->WriteUInt32(m_uVal);
-			}
-		} else if (IsFloat()) {
-			#warning Endianess problem?
-			file->Write(&m_fVal, 4);
-		} else if (IsBlob()) {
-			// NOTE: This will break backward compatibility with met files for eMule versions prior to 0.44a
-			// and any aMule prior to CVS 26/02/2005
-			file->WriteUInt32(m_nSize);
-			file->Write(m_pData, m_nSize);
-		} else { //TODO: Support more tag types
-			// With the if above, this should NEVER happen.
-			printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, m_uType);
-			wxASSERT(0);
-			return false;
-		}
-		//TODO: Support more tag types
+	if (!restrictive || (IsStr() || IsInt() || IsFloat() || IsBlob())) {
+	
+		// If this fails, it'll throw.
+		file->WriteTag(*this);
 		return true;
+
 	} else {
 		printf("%s; Ignored tag with unknown type=0x%02X\n", __FUNCTION__, m_uType);
-		wxASSERT(0);
 		return false;
 	}
 }

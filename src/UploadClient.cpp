@@ -937,3 +937,42 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 		}
 	}	
 }
+
+void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
+	
+	CMD4Hash reqfilehash = data.ReadHash();
+	
+	uint8 numblocks = data.ReadUInt8();
+	
+	for (int i = 0; i < numblocks; i++) {		
+		Requested_Block_Struct* reqblock = new Requested_Block_Struct;
+		try {
+			reqblock->StartOffset = data.GetIntTagValue();
+			// We have to do +1, because the block matching uses that.
+			reqblock->EndOffset = data.GetIntTagValue() + 1;
+			if ((reqblock->StartOffset || reqblock->EndOffset) 
+				&& (reqblock->StartOffset > reqblock->EndOffset)) {
+						
+				if ( CLogger::IsEnabled( logClient ) ) {
+					AddLogLineM(false, wxString::Format(_("Client request is invalid! %i / %i"),reqblock->StartOffset, reqblock->EndOffset));
+				}
+				
+				throw wxString(wxT("Client request is invalid!"));
+			}
+			
+			if ( CLogger::IsEnabled( logClient ) ) {
+				wxString msg = wxString::Format(_("Client requests %u"), i);
+				msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"),reqblock->StartOffset, reqblock->EndOffset, reqblock->EndOffset - reqblock->StartOffset);
+				msg += wxT(" ") + GetFullIP();
+				AddLogLineM(false, msg);
+			}
+			
+			md4cpy(reqblock->FileID, reqfilehash.GetHash());
+			reqblock->transferred = 0;
+			AddReqBlock(reqblock);
+		} catch (...) {
+			delete reqblock;
+			throw;
+		}
+	}
+}

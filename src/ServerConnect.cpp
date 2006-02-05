@@ -202,6 +202,9 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		data.WriteUInt16(thePrefs::GetPort());
 		data.WriteUInt32(4); // tagcount
 
+		// Kry - Server doesn't support VBT tags afaik.
+		// Not to mention we don't know its flags yet
+		
 		CTagString tagname(CT_NAME,thePrefs::GetUserNick());
 		tagname.WriteTagToFile(&data);
 

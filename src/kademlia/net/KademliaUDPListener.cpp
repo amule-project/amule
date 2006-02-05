@@ -628,7 +628,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 
 		SSearchTerm* pSearchTerm = new SSearchTerm;
 		pSearchTerm->type = _aOps[mmop].eSearchTermOp;
-		pSearchTerm->tag = new CTagKadInt(strTagName, uValue);
+		pSearchTerm->tag = new CTagVarInt(strTagName, uValue);
 
 		return pSearchTerm;
 	} else{
@@ -769,8 +769,8 @@ void CKademliaUDPListener::processPublishRequest (const byte *packetData, uint32
 				if(tag) {
 					if (!tag->GetName().Cmp(TAG_SOURCETYPE) && tag->GetType() == 9) {
 						if( entry->source == false ) {
-							entry->taglist.push_back(new CTagKadInt(TAG_SOURCEIP, entry->ip));
-							entry->taglist.push_back(new CTagKadInt(TAG_SOURCEUPORT, entry->udpport));
+							entry->taglist.push_back(new CTagVarInt(TAG_SOURCEIP, entry->ip));
+							entry->taglist.push_back(new CTagVarInt(TAG_SOURCEUPORT, entry->udpport));
 						} else {
 							//More than one sourcetype tag found.
 							delete tag;

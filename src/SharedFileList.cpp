@@ -827,31 +827,35 @@ void CSharedFileList::CreateOfferedFilePacket(
 
 	tags.push_back(new CTagString(FT_FILENAME, cur_file->GetFileName()));
 	
-	if (!cur_file->IsLargeFile()){
-		tags.push_back(new CTagInt32(FT_FILESIZE, cur_file->GetFileSize()));
+	if (pClient && pClient->GetVBTTags()) {
+		tags.push_back(new CTagVarInt(FT_FILESIZE, cur_file->GetFileSize()));
 	} else {
-		// Large file
-		// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
-		if (pServer) {
-			if (!pServer->SupportsLargeFilesTCP()){
-				wxASSERT( false );
-				tags.push_back(new CTagInt32(FT_FILESIZE, 0));
-			}else {
-				tags.push_back(new CTagInt32(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
-				tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(cur_file->GetFileSize() >> 32)));
-			}
+		if (!cur_file->IsLargeFile()){
+			tags.push_back(new CTagInt32(FT_FILESIZE, cur_file->GetFileSize()));
 		} else {
-			if (!pClient->SupportsLargeFiles()) {
-				wxASSERT( false );
-				tags.push_back(new CTagInt32(FT_FILESIZE, 0));
+			// Large file
+			// we send 2*32 bit tags to servers, but a real 64 bit tag to other clients.
+			if (pServer) {
+				if (!pServer->SupportsLargeFilesTCP()){
+					wxASSERT( false );
+					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
+				}else {
+					tags.push_back(new CTagInt32(FT_FILESIZE, (uint32)cur_file->GetFileSize()));
+					tags.push_back(new CTagInt32(FT_FILESIZE_HI, (uint32)(cur_file->GetFileSize() >> 32)));
+				}
 			} else {
-				tags.push_back(new CTagInt64(FT_FILESIZE, cur_file->GetFileSize()));
-			}
-		}		
+				if (!pClient->SupportsLargeFiles()) {
+					wxASSERT( false );
+					tags.push_back(new CTagInt32(FT_FILESIZE, 0));
+				} else {
+					tags.push_back(new CTagInt64(FT_FILESIZE, cur_file->GetFileSize()));
+				}
+			}		
+		}
 	}
 	
 	if (cur_file->GetFileRating()) {
-		tags.push_back(new CTagInt32(FT_FILERATING, cur_file->GetFileRating()));
+		tags.push_back(new CTagVarInt(FT_FILERATING, cur_file->GetFileRating(), (pClient && pClient->GetVBTTags()) ? 0 : 32));
 	}
 
 	// NOTE: Archives and CD-Images are published+searched with file type "Pro"

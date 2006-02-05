@@ -248,6 +248,8 @@ void CUpDownClient::Init()
 	
 	/* Creation time (for buddies timeout) */
 	m_nCreationTime = ::GetTickCount();
+	
+	m_MaxBlockRequests = STANDARD_BLOCKS_REQUEST; // Safe starting amount
 }
 
 
@@ -336,6 +338,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_fSharedDirectories = 0;
 	m_bMultiPacket = 0;
 	m_fOsInfoSupport = 0;
+	m_fValueBasedTypeTags = 0;
 	SecIdentSupRec = 0;
 	m_byKadVersion = 0;
 }
@@ -522,6 +525,8 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 			// Special tag fo Compat. Clients Misc options.
 			case CT_EMULECOMPAT_OPTIONS:
 				//  1 Operative System Info
+				//	1 Value-based-type int tags (experimental!)
+				m_fValueBasedTypeTags	= (temptag.GetInt() >> 1*1) & 0x01;
 				m_fOsInfoSupport		= (temptag.GetInt() >> 1*0) & 0x01;
 				break;
 				
@@ -690,6 +695,9 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		// Normal MuleInfo packet
 
+		// Kry - There's no point on upgrading to VBT tags here
+		// as no client supporting it uses mule info packet.
+		
 		data.WriteUInt8(EMULE_PROTOCOL);
 
 		// Tag number
@@ -956,7 +964,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	CTagString tagname(CT_NAME,thePrefs::GetUserNick());
 	tagname.WriteTagToFile(data, utf8strRaw);
 
-	CTagInt32 tagversion(CT_VERSION,EDONKEYVERSION);
+	CTagVarInt tagversion(CT_VERSION, EDONKEYVERSION, GetVBTTags() ? 0 : 32);
 	tagversion.WriteTagToFile(data);
 	// eMule UDP Ports
 
@@ -966,28 +974,29 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 		kadUDPPort = thePrefs::GetEffectiveUDPPort();
 	}
 
-	CTagInt32 tagUdpPorts(CT_EMULE_UDPPORTS,
+	CTagVarInt tagUdpPorts(CT_EMULE_UDPPORTS,
 				(kadUDPPort									<< 16) |
-				((uint32)thePrefs::GetEffectiveUDPPort()	     ) );
+				((uint32)thePrefs::GetEffectiveUDPPort()	     ),
+				GetVBTTags() ? 0 : 32);
 	tagUdpPorts.WriteTagToFile(data);
 
 	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
-		CTagInt32 tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP() ); 
+		CTagVarInt tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP(), GetVBTTags() ? 0 : 32);
 		tagBuddyIP.WriteTagToFile(data);
 	
-		CTagInt32 tagBuddyPort(CT_EMULE_BUDDYUDP, 
+		CTagVarInt tagBuddyPort(CT_EMULE_BUDDYUDP, 
 //					( RESERVED												)
-					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  ) 
-					);
+					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  )
+					, GetVBTTags() ? 0 : 32);
 		tagBuddyPort.WriteTagToFile(data);
 	}	
 	
 	// aMule Version
-	CTagInt32 tagMuleVersion(CT_EMULE_VERSION,
+	CTagVarInt tagMuleVersion(CT_EMULE_VERSION,
 				(SO_AMULE	<< 24) |
 				make_full_ed2k_version(VERSION_MJR, VERSION_MIN, VERSION_UPDATE)
 				// | (RESERVED			     )
-				);
+				, GetVBTTags() ? 0 : 32);
 	tagMuleVersion.WriteTagToFile(data);
 
 
@@ -1005,7 +1014,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uUnicodeSupport		= 1; 
 	const uint32 nAICHVer				= 1; // AICH is ENABLED right now.
 
-	CTagInt32 tagMisOptions(CT_EMULE_MISCOPTIONS1,
+	CTagVarInt tagMisOptions(CT_EMULE_MISCOPTIONS1,
 				(nAICHVer				<< ((4*7)+1)) |
 				(uUnicodeSupport		<< 4*7) |
 				(uUdpVer				<< 4*6) |
@@ -1017,26 +1026,29 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				(uPeerCache				<< 1*3) |
 				(uNoViewSharedFiles		<< 1*2) |
 				(uMultiPacket			<< 1*1) |
-				(uSupportPreview		<< 1*0) );
+				(uSupportPreview		<< 1*0) 
+				, GetVBTTags() ? 0 : 32);
 	tagMisOptions.WriteTagToFile(data);
 
 	// eMule Misc. Options #2
 	const uint32 uKadVersion			= 1;
 	const uint32 uSupportLargeFiles	= 1;
 	const uint32 uExtMultiPacket		= 1;
-	CTagInt32 tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
+	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
 				(uExtMultiPacket		<<  5) |
 				(uSupportLargeFiles		<<  4) |
 				(uKadVersion			<<  0) 
-				
-				);
+				, GetVBTTags() ? 0 : 32	);
 	tagMisOptions2.WriteTagToFile(data);
 
 	const uint32 nOSInfoSupport			= 1; // We support OS_INFO
+	const uint32 nValueBasedTypeTags	= 0; // Experimental, disabled
 	
-	CTagInt32 tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
-				(nOSInfoSupport		<< 1*0) );
+	CTagVarInt tagMisCompatOptions(CT_EMULECOMPAT_OPTIONS,
+				(nValueBasedTypeTags	<< 1*1) |
+				(nOSInfoSupport			<< 1*0) 
+				, GetVBTTags() ? 0 : 32);
 	
 	tagMisCompatOptions.WriteTagToFile(data);
 

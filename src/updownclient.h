@@ -145,6 +145,8 @@ enum ClientState
 	CS_DYING
 };
 
+// This is fixed on ed2k v1, but can be any number on ED2Kv2
+#define STANDARD_BLOCKS_REQUEST 3
 
 class CUpDownClient
 {
@@ -260,6 +262,7 @@ public:
 	bool		SafeSendPacket(CPacket* packet);
 
 	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
+	void		ProcessRequestPartsPacketv2(const CMemFile& data);	
 	
 	void		SendPublicKeyPacket();
 	void		SendSignaturePacket();
@@ -571,6 +574,8 @@ public:
 	
 	bool		GetOSInfoSupport() const { return m_fOsInfoSupport; }
 	
+	bool		GetVBTTags() const { return m_fValueBasedTypeTags; }
+	
 	uint16		GetLastPartAsked() const { return m_lastPartAsked; }
 	
 	void		SetLastPartAsked(uint16 nPart) { m_lastPartAsked = nPart; }
@@ -775,7 +780,8 @@ private:
 		m_fExtMultiPacket : 1;
 
 	unsigned int
-		m_fOsInfoSupport : 1;
+		m_fOsInfoSupport : 1,
+		m_fValueBasedTypeTags : 1;		
 
 	/* Razor 1a - Modif by MikaelB */
 
@@ -818,6 +824,8 @@ private:
 	int		SecIdentSupRec;
 
 	CKnownFile*	m_uploadingfile;
+
+	uint8		m_MaxBlockRequests;
 
 	// needed for stats
 	uint32		m_lastClientSoft;

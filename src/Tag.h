@@ -57,8 +57,7 @@ public:
 											(m_uType == TAGTYPE_UINT64) ||
 											(m_uType == TAGTYPE_UINT32) ||
 											(m_uType == TAGTYPE_UINT16) ||
-											(m_uType == TAGTYPE_UINT8) ||
-											(m_uType == TAGTYPE_KADSPECIALINT)
+											(m_uType == TAGTYPE_UINT8)
 											; }
 	bool IsFloat() const			{ return m_uType == TAGTYPE_FLOAT32; }
 	bool IsHash() const				{ return m_uType == TAGTYPE_HASH; }
@@ -81,7 +80,7 @@ public:
 	
 	CTag* CloneTag()				{ return new CTag(*this); }
 	
-	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// old eD2K tags
+	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone, bool restrictive = true) const;	// old eD2K tags
 	bool WriteNewEd2kTag(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
 	
 	wxString GetFullInfo() const;
@@ -113,16 +112,6 @@ private:
 
 typedef std::list<CTag*> TagPtrList;
 
-class CTagKadInt : public CTag
-{
-public:
-	CTagKadInt(const wxString& name, uint64 value)
-		: CTag(name) {
-			m_uVal = value;
-			m_uType = TAGTYPE_KADSPECIALINT;
-		}
-};
-
 class CTagIntSized : public CTag
 {
 public:
@@ -136,7 +125,10 @@ public:
 			Init(value, bitsize);			
 		}
 		
-private:
+protected:
+	CTagIntSized(const wxString& name) : CTag(name) {}
+	CTagIntSized(uint8 name) : CTag(name) {}
+
 	void Init(uint64 value, uint8 bitsize) {
 			switch (bitsize) {
 				case 64:
@@ -162,6 +154,37 @@ private:
 				default:
 					throw wxString(wxT("Invalid bitsize on int tag"));
 			}
+	}
+};
+
+class CTagVarInt : public CTagIntSized
+{
+public:
+	CTagVarInt(const wxString& name, uint64 value, uint8 forced_bits = 0)
+		: CTagIntSized(name) {
+			SizedInit(value, forced_bits);
+		}
+	CTagVarInt(uint8 name, uint64 value, uint8 forced_bits = 0)
+		: CTagIntSized(name) {
+			SizedInit(value, forced_bits);
+		}
+private:
+	void SizedInit(uint64 value, uint8 forced_bits) {
+		if (forced_bits) {
+			// The bitsize was forced.
+			Init(value,forced_bits);
+		} else { 
+			m_uVal = value;
+			if (value <= 0xFF) {
+				m_uType = TAGTYPE_UINT8;
+			} else if (value <= 0xFFFF) {
+				m_uType = TAGTYPE_UINT16;
+			} else if (value <= 0xFFFFFFFF) {
+				m_uType = TAGTYPE_UINT32;
+			} else {
+				m_uType = TAGTYPE_UINT64;
+			}
+		}		
 	}
 };
 
