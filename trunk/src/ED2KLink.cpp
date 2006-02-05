@@ -174,7 +174,9 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 		throw wxString(wxT("Invalid file size"));
 	}
 	
-	m_hash.Decode(tokens.GetNextToken().Strip(wxString::both));
+	if (not m_hash.Decode(tokens.GetNextToken().Strip(wxString::both))) {
+		throw wxString(wxT("Invalid hash"));
+	}
 
 	// Check extra fields (sources, parthashes, masterhashes)
 	while (tokens.HasMoreTokens()) {
@@ -207,13 +209,12 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 			m_hashset->WriteUInt16(0);
 
 			while (hashTokens.HasMoreTokens()) {
-				wxString hash = hashTokens.GetNextToken().Strip(wxString::both);
-				
-				if (hash.Length() != 32u) {
+				CMD4Hash hash;
+				if (not hash.Decode(hashTokens.GetNextToken().Strip(wxString::both))) {
 					throw wxString(wxT("Invalid hash in part-hashes list"));
 				}
 
-				m_hashset->WriteHash(CMD4Hash(hash));
+				m_hashset->WriteHash(hash);
 			}
 			
 			unsigned count = m_hashset->GetLength() / 16u - 1u;
