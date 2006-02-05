@@ -565,13 +565,39 @@ void CUpDownClient::ProcessHashSet(const byte* packet, uint32 size)
 
 void CUpDownClient::SendBlockRequests()
 {
-	m_dwLastBlockReceived = ::GetTickCount();
+	uint32 current_time = ::GetTickCount();
+	if (GetVBTTags()) {
+		
+		// Ask new blocks only when all completed
+		if (m_PendingBlocks_list.size()) {
+			return;
+		}
+		
+		if ((m_dwLastBlockReceived + SEC2MS(5)) > current_time) {
+			// We received last block in less than 5 secs? Let's request faster.
+			m_MaxBlockRequests = m_MaxBlockRequests << 1;
+			if ( m_MaxBlockRequests > 0x20) {
+				m_MaxBlockRequests = 0x20;
+			}
+		} else {
+			m_MaxBlockRequests = m_MaxBlockRequests >> 1;
+			if ( m_MaxBlockRequests < STANDARD_BLOCKS_REQUEST) {
+				m_MaxBlockRequests = STANDARD_BLOCKS_REQUEST;
+			}		
+		}
+	}
+	
+	m_dwLastBlockReceived = current_time;
+	
 	if (!m_reqfile) {
 		return;
 	}
+	
+	uint8 version = GetVBTTags() ? 2 : 1;
+		
 	if (m_DownloadBlocks_list.empty()) {
 		// Barry - instead of getting 3, just get how many is needed
-		uint16 count = 3 - m_PendingBlocks_list.size();
+		uint16 count = m_MaxBlockRequests - m_PendingBlocks_list.size();
 		Requested_Block_Struct* toadd[count];
 		if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
 			for (int i = 0; i != count; i++) {
@@ -582,7 +608,7 @@ void CUpDownClient::SendBlockRequests()
 
 	// Barry - Why are unfinished blocks requested again, not just new ones?
 
-	while (m_PendingBlocks_list.size() < 3 && !m_DownloadBlocks_list.empty()) {
+	while (m_PendingBlocks_list.size() < m_MaxBlockRequests && !m_DownloadBlocks_list.empty()) {
 		Pending_Block_Struct* pblock = new Pending_Block_Struct;
 		pblock->block = m_DownloadBlocks_list.front();
 		pblock->zStream = NULL;
@@ -607,80 +633,128 @@ void CUpDownClient::SendBlockRequests()
 		return;
 	}
 	
-	#warning Kry - I dont specially like this approach, we iterate one time too many
+	CPacket* packet = NULL;
 	
-	bool bHasLongBlocks =  false;
+	switch (version) {
+		case 2: {
+			// ED2Kv2 packet...
+			// Most common scenario: hash + blocks to request + every one 
+			// having 2 uint32 tags
+			
+			uint8 nBlocks = m_PendingBlocks_list.size();
+			if (nBlocks > m_MaxBlockRequests) {
+				nBlocks = m_MaxBlockRequests;
+			}
 
-	std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
-	for (uint32 i = 0; i != 3; i++){
-		if (it != m_PendingBlocks_list.end()) {
-			Pending_Block_Struct* pending = *it++;
-			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
-			if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF){
-				bHasLongBlocks = true;
-				if (!SupportsLargeFiles()){
-					// Requesting a large block from a client that doesn't support large files?
-					wxASSERT( false );
-					if (!GetSentCancelTransfer()){
-						CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
-						theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
-						SendPacket(packet,true,true);
-						SetSentCancelTransfer(1);
-					}					
-					SetDownloadState(DS_ERROR);
+			CMemFile data(16 + 1 + nBlocks*((2+4)*2)); 
+			
+			data.WriteHash(m_reqfile->GetFileHash());
+			
+			data.WriteUInt8(nBlocks);
+			
+			std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+			while (nBlocks) {
+				wxASSERT(it != m_PendingBlocks_list.end());
+				wxASSERT( (*it)->block->StartOffset <= (*it)->block->EndOffset );
+				(*it)->fZStreamError = 0;
+				(*it)->fRecovered = 0;
+				CTagVarInt(/*Noname*/0,(*it)->block->StartOffset).WriteTagToFile(&data);
+				CTagVarInt(/*Noname*/0,(*it)->block->EndOffset).WriteTagToFile(&data);
+				++it;
+				nBlocks--;
+			}
+			
+			packet = new CPacket(&data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
+			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to "),(m_PendingBlocks_list.size()<m_MaxBlockRequests) ? m_PendingBlocks_list.size() : m_MaxBlockRequests) + GetFullIP() );
+
+			break;
+		}
+		case 1: {
+			wxASSERT(m_MaxBlockRequests == STANDARD_BLOCKS_REQUEST);
+			
+			#warning Kry - I dont specially like this approach, we iterate one time too many
+			
+			bool bHasLongBlocks =  false;
+		
+			std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();
+			for (uint32 i = 0; i != m_MaxBlockRequests; i++){
+				if (it != m_PendingBlocks_list.end()) {
+					Pending_Block_Struct* pending = *it++;
+					wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
+					if (pending->block->StartOffset > 0xFFFFFFFF || pending->block->EndOffset > 0xFFFFFFFF){
+						bHasLongBlocks = true;
+						if (!SupportsLargeFiles()){
+							// Requesting a large block from a client that doesn't support large files?
+							wxASSERT( false );
+							if (!GetSentCancelTransfer()){
+								CPacket* cancel_packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
+								theStats::AddUpOverheadFileRequest(cancel_packet->GetPacketSize());
+								AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
+								SendPacket(cancel_packet,true,true);
+								SetSentCancelTransfer(1);
+							}					
+							SetDownloadState(DS_ERROR);
+						}
+						break;
+					}
 				}
-				break;
 			}
+			
+			CMemFile data(16 /*Hash*/ + (m_MaxBlockRequests*(bHasLongBlocks ? 8 : 4) /* uint32/64 start*/) + (3*(bHasLongBlocks ? 8 : 4)/* uint32/64 end*/));
+			data.WriteHash(m_reqfile->GetFileHash());
+			
+			it = m_PendingBlocks_list.begin();
+			for (uint32 i = 0; i != m_MaxBlockRequests; i++) {
+				if (it != m_PendingBlocks_list.end()) {
+					Pending_Block_Struct* pending = *it++;
+					wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
+					pending->fZStreamError = 0;
+					pending->fRecovered = 0;
+					if (bHasLongBlocks) {
+						data.WriteUInt64(pending->block->StartOffset);
+					} else {
+						data.WriteUInt32(pending->block->StartOffset);
+					}
+				} else {
+					if (bHasLongBlocks) {
+						data.WriteUInt64(0);
+					} else {
+						data.WriteUInt32(0);
+					}
+				}
+			}
+			
+			it = m_PendingBlocks_list.begin();
+			for (uint32 i = 0; i != m_MaxBlockRequests; i++) {
+				if (it != m_PendingBlocks_list.end()) {
+					Requested_Block_Struct* block = (*it++)->block;
+					if (bHasLongBlocks) {
+						data.WriteUInt64(block->EndOffset+1);
+					} else {
+						data.WriteUInt32(block->EndOffset+1);		
+					}
+				} else {
+					if (bHasLongBlocks) {			
+						data.WriteUInt64(0);
+					} else {
+						data.WriteUInt32(0);
+					}
+				}
+			}	
+			packet = new CPacket(&data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
+			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS"))) + GetFullIP() );
+			break;
 		}
+		default:
+			wxASSERT(0);
 	}
 	
-	CMemFile data(16 /*Hash*/ + (3*(bHasLongBlocks ? 8 : 4) /* uint32/64 start*/) + (3*(bHasLongBlocks ? 8 : 4)/* uint32/64 end*/));
-	data.WriteHash(m_reqfile->GetFileHash());
-	
-	it = m_PendingBlocks_list.begin();
-	for (uint32 i = 0; i != 3; i++) {
-		if (it != m_PendingBlocks_list.end()) {
-			Pending_Block_Struct* pending = *it++;
-			wxASSERT( pending->block->StartOffset <= pending->block->EndOffset );
-			pending->fZStreamError = 0;
-			pending->fRecovered = 0;
-			if (bHasLongBlocks) {
-				data.WriteUInt64(pending->block->StartOffset);
-			} else {
-				data.WriteUInt32(pending->block->StartOffset);
-			}
-		} else {
-			if (bHasLongBlocks) {
-				data.WriteUInt64(0);
-			} else {
-				data.WriteUInt32(0);
-			}
-		}
+	if (packet) {
+		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
+		SendPacket(packet, true, true);
+	} else {
+		wxASSERT(0);
 	}
-	
-	it = m_PendingBlocks_list.begin();
-	for (uint32 i = 0; i != 3; i++) {
-		if (it != m_PendingBlocks_list.end()) {
-			Requested_Block_Struct* block = (*it++)->block;
-			if (bHasLongBlocks) {
-				data.WriteUInt64(block->EndOffset+1);
-			} else {
-				data.WriteUInt32(block->EndOffset+1);		
-			}
-		} else {
-			if (bHasLongBlocks) {			
-				data.WriteUInt64(0);
-			} else {
-				data.WriteUInt32(0);
-			}
-		}
-	}
-	
-	CPacket* packet = new CPacket(&data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
-	AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS"))) + GetFullIP() );
-	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-	SendPacket(packet, true, true);
 }
 
 /*
@@ -763,7 +837,6 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		
 		// Move end back one, should be inclusive
 		nEndPos--;
-	
 		
 		// Loop through to find the reserved block that this is within
 		std::list<Pending_Block_Struct*>::iterator it = m_PendingBlocks_list.begin();

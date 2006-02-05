@@ -476,35 +476,24 @@ void CFileDataIO::WriteTag(const CTag& tag)
 {
 	try
 	{
-		uint8 type;
-		if (tag.GetType() == TAGTYPE_KADSPECIALINT) {
-			if (tag.GetInt() <= 0xFF) {
-				type = TAGTYPE_UINT8;
-			} else if (tag.GetInt() <= 0xFFFF) {
-				type = TAGTYPE_UINT16;
-			} else {
-				type = TAGTYPE_UINT32;
-			}
+		WriteUInt8(tag.GetType());
+		
+		if (!tag.GetName().IsEmpty()) {
+			WriteString(tag.GetName(),utf8strNone);
 		} else {
-			type = tag.GetType();
+			WriteUInt16(1);
+			WriteUInt8(tag.GetNameID());
 		}
-
-		WriteUInt8(type);
 		
-		WriteString(tag.GetName(),utf8strNone); // No utf8
-		
-		switch (type)
+		switch (tag.GetType())
 		{
 			case TAGTYPE_HASH:
 				// Do NOT use this to transfer any tags for at least half a year!!
 				WriteHash(CMD4Hash(tag.GetHash()));
-				wxASSERT(0);
 				break;
 			case TAGTYPE_STRING:
-			{
 				WriteString(tag.GetStr(), utf8strRaw); // Always UTF8
 				break;
-			}
 			case TAGTYPE_UINT32:
 				WriteUInt32(tag.GetInt());
 				break;
@@ -521,7 +510,19 @@ void CFileDataIO::WriteTag(const CTag& tag)
 			case TAGTYPE_UINT8:
 				WriteUInt8(tag.GetInt());
 				break;
-		}
+			case TAGTYPE_BLOB:
+				// NOTE: This will break backward compatibility with met files for eMule versions prior to 0.44a
+				// and any aMule prior to CVS 26/02/2005
+				WriteUInt32(tag.GetBlobSize());
+				Write(tag.GetBlob(), tag.GetBlobSize());
+				break;
+			default:
+				//TODO: Support more tag types
+				// With the if above, this should NEVER happen.
+				printf("%s; Unknown tag: type=0x%02X\n", __FUNCTION__, tag.GetType());
+				wxASSERT(0);
+				break;
+		}				
 	} catch (...) {
 		//AddDebugLogLine(false, wxT("Exception in CDataIO:WriteTag"));
 		printf("Exception in CDataIO:WriteTag");
@@ -539,5 +540,34 @@ void CFileDataIO::WriteTagPtrList(const TagPtrList& tagList)
 	TagPtrList::const_iterator it;
 	for (it = tagList.begin(); it != tagList.end(); it++) {
 		WriteTag(**it);
+	}
+}
+
+uint64 CFileDataIO::GetIntTagValue() const {
+
+	uint8 type = ReadUInt8();
+	
+	ReadString(false);	
+	
+	switch (type) {
+		
+		case TAGTYPE_UINT64:
+			return ReadUInt64();
+			break;
+
+		case TAGTYPE_UINT32:
+			return ReadUInt32();
+			break;
+
+		case TAGTYPE_UINT16:
+			return ReadUInt16();
+			break;
+
+		case TAGTYPE_UINT8:
+			return ReadUInt8();
+			break;
+		
+		default:
+			throw wxString(wxT("Wrong tag type reading int tag"));
 	}
 }

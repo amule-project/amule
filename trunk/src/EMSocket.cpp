@@ -275,6 +275,8 @@ void CEMSocket::OnReceive(int nErrorCode)
 				case OP_EDONKEYPROT:
 				case OP_PACKEDPROT:
 				case OP_EMULEPROT:
+				case OP_ED2KV2HEADER:
+				case OP_ED2KV2PACKEDPROT:
 					break;
 				default:
 					delete pendingPacket;

@@ -37,7 +37,7 @@ uint32 GetTickCount();
 
 // Ideally, same than GetTickCount.
 // However, on GUI, GetTickCount does only work in
-// 20 secs increment, and some classes need better.
+// 20 msecs increment, and some classes need better.
 
 uint32 GetTickCountFullRes(); 
 

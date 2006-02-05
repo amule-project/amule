@@ -208,6 +208,9 @@ public:
 	void		WriteTag(const CTag& tag);
 	void		WriteTagPtrList(const TagPtrList& tagList);
 
+/* Special ED2Kv2 function */
+	uint64		GetIntTagValue() const;
+
 protected:
 	/**
 	 * The actual read / write function, as implemented by subclasses.

@@ -409,19 +409,19 @@ void CSearch::StorePacket()
 						CUInt128 buddyID(true);
 						buddyID.XOR(CKademlia::getPrefs()->getKadID());
 						taglist.push_back(new CTagInt8(TAG_SOURCETYPE, file->IsLargeFile() ? 5 : 3));
-						taglist.push_back(new CTagKadInt(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
-						taglist.push_back(new CTagKadInt(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
+						taglist.push_back(new CTagVarInt(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
+						taglist.push_back(new CTagVarInt(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
 						byte hashBytes[16];
 						buddyID.toByteArray(hashBytes);
 						taglist.push_back(new CTagString(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
-						taglist.push_back(new CTagKadInt(TAG_SOURCEPORT, thePrefs::GetPort()));
+						taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
 					} else {
 						prepareToStop();
 						break;
 					}
 				} else {
 					taglist.push_back(new CTagInt8(TAG_SOURCETYPE, file->IsLargeFile() ? 4 : 1));
-					taglist.push_back(new CTagKadInt(TAG_SOURCEPORT, thePrefs::GetPort()));
+					taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
 				}
 
 				CKademlia::getUDPListener()->publishPacket(from->getIPAddress(), from->getUDPPort(),m_target,id, taglist);
@@ -476,7 +476,7 @@ void CSearch::StorePacket()
 				CTagString fileName(TAG_FILENAME, file->GetFileName());
 				bio.WriteTag(fileName);
 				if(file->GetFileRating() != 0) {
-					CTagKadInt rating(TAG_FILERATING, file->GetFileRating());
+					CTagVarInt rating(TAG_FILERATING, file->GetFileRating());
 					bio.WriteTag(rating);
 				}
 				if(!file->GetFileComment().IsEmpty()) {
@@ -734,13 +734,13 @@ void CSearch::processResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 		taglist.push_back(new CTagString(TAG_MEDIA_TITLE, title));
 	}
 	if (length) {
-		taglist.push_back(new CTagKadInt(TAG_MEDIA_LENGTH, length));
+		taglist.push_back(new CTagVarInt(TAG_MEDIA_LENGTH, length));
 	}
 	if (bitrate) {
-		taglist.push_back(new CTagKadInt(TAG_MEDIA_BITRATE, bitrate));
+		taglist.push_back(new CTagVarInt(TAG_MEDIA_BITRATE, bitrate));
 	}
 	if (availability) {
-		taglist.push_back(new CTagKadInt(TAG_SOURCES, availability));
+		taglist.push_back(new CTagVarInt(TAG_SOURCES, availability));
 	}
 
 	if (interested) {
@@ -849,9 +849,9 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 				PokeUInt64(size64,file->GetFileSize());
 				taglist.push_back(new CTagBsob(TAG_FILESIZE, size64, sizeof(uint64)));	
 			} else {
-				taglist.push_back(new CTagKadInt(TAG_FILESIZE, file->GetFileSize()));
+				taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
 			}
-			taglist.push_back(new CTagKadInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
+			taglist.push_back(new CTagVarInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
 			
 			// eD2K file type (Audio, Video, ...)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
@@ -902,7 +902,7 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 						if (pTag->IsStr()) {
 							taglist.push_back(new CTagString(szKadTagName, pTag->GetStr()));
 						} else {
-							taglist.push_back(new CTagKadInt(szKadTagName, pTag->GetInt()));
+							taglist.push_back(new CTagVarInt(szKadTagName, pTag->GetInt()));
 						}
 					}
 				}

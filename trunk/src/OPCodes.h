@@ -219,6 +219,8 @@ enum Protocols {
 	OP_EMULEPROT			= 0xC5,
 	OP_KADEMLIAHEADER		= 0xE4,
 	OP_KADEMLIAPACKEDPROT	= 0xE5,
+	OP_ED2KV2HEADER			= 0xF4,
+	OP_ED2KV2PACKEDPROT		= 0xF5,
 	OP_MLDONKEYPROT			= 0x00
 };
 
@@ -512,7 +514,6 @@ enum ED2KExtendedClientUDP {
 #define TAGTYPE_STR22			0x26	// accepted by eMule 0.42f (02-Mai-2004) in receiving code
 						// only because of a flaw, those tags are handled correctly,
 						// but should not be handled at all
-#define TAGTYPE_KADSPECIALINT	0xFE
 
 #define	ED2KFTSTR_AUDIO			wxT("Audio")	// value for eD2K tag FT_FILETYPE
 #define	ED2KFTSTR_VIDEO			wxT("Video")	// value for eD2K tag FT_FILETYPE
