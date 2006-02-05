@@ -136,6 +136,8 @@ void CClientList::AddClient( CUpDownClient* toadd )
 
 void CClientList::AddToDeleteQueue(CUpDownClient* client)
 {
+	RemoveFromKadList( client );
+	
 	// We have to remove the client from the list immediatly, to avoit it getting
 	// found by functions such as AttachToAlreadyKnown and GetClientsFromIP, 
 	// however, if the client isn't on the clientlist, then it is safe to delete 
@@ -211,7 +213,6 @@ bool CClientList::RemoveIDFromList( CUpDownClient* client )
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_clientList.erase( range.first );
-			RemoveFromKadList(client);
 			result = true;
 
 			break;
@@ -237,7 +238,6 @@ void CClientList::RemoveIPFromList( CUpDownClient* client )
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_ipList.erase( range.first );
-			RemoveFromKadList(client);
 			break;
 		}
 	}
@@ -258,7 +258,6 @@ void CClientList::RemoveHashFromList( CUpDownClient* client )
 			/* erase() will invalidate the iterator, but we're not using it anymore 
 			    anyway (notice the break;) */
 			m_hashList.erase( range.first );
-			RemoveFromKadList(client);
 			break;
 		}
 	}
@@ -913,9 +912,10 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	AddClient(pNewClient);
 }
 
-void CClientList::RemoveFromKadList(CUpDownClient* torem) {
-	
-	wxASSERT(torem);
+
+void CClientList::RemoveFromKadList(CUpDownClient* torem)
+{
+	wxCHECK_RET(torem, wxT("NULL pointer in RemoveFromKadList"));
 	
 	if (m_KadSources.erase(torem)) {
 		if(torem == m_pBuddy) {
@@ -926,17 +926,17 @@ void CClientList::RemoveFromKadList(CUpDownClient* torem) {
 		
 }
 
-void CClientList::AddToKadList(CUpDownClient* toadd) {
-	
-	if(!toadd) {
-		return;
-	}
+
+void CClientList::AddToKadList(CUpDownClient* toadd)
+{
+	wxCHECK_RET(toadd, wxT("NULL pointer in AddToKadList"));
 	
 	m_KadSources.insert(toadd); // This will take care of duplicates.
-	
 }
 
-void CClientList::CleanUpClientList(){
+
+void CClientList::CleanUpClientList()
+{
 	// We remove clients which are not needed any more by time
 	// this check is also done on CUpDownClient::Disconnected, however it will not catch all
 	// cases (if a client changes the state without beeing connected
@@ -1004,3 +1004,4 @@ void CClientList::CleanUpClientList(){
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
 	}
 }
+
