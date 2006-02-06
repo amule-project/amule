@@ -149,13 +149,15 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 			rc_prefs.AddTag(CECEmptyTag(EC_TAG_WEBSERVER_AUTORUN));
 		}
 		if (!thePrefs::GetWSPass().IsEmpty()) {
-			CMD4Hash passhash; passhash.Decode(thePrefs::GetWSPass()); // TODO: Error-checking, is hash valid?
+			CMD4Hash passhash;
+			wxCHECK2(passhash.Decode(thePrefs::GetWSPass()), /* Do nothing. */);
 			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 		}
 		if (thePrefs::GetWSIsLowUserEnabled()) {
 			CECEmptyTag lowUser(EC_TAG_WEBSERVER_GUEST);
 			if (!thePrefs::GetWSLowPass().IsEmpty()) {
-			CMD4Hash passhash; passhash.Decode(thePrefs::GetWSLowPass()); // TODO: Error-checking, is hash valid?
+				CMD4Hash passhash;
+				wxCHECK2(passhash.Decode(thePrefs::GetWSLowPass()), /* Do nothing. */);
 				lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 			}
 			rc_prefs.AddTag(lowUser);

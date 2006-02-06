@@ -42,11 +42,13 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 	AddTag(CECTag(EC_TAG_CLIENT_VERSION, version));
 	AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
 
-	CMD4Hash passhash; passhash.Decode(pass); // TODO: Error-checking, is hash valid?
+	CMD4Hash passhash;
+	wxCHECK2(passhash.Decode(pass), /* Do nothing. */);
 	AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 
 	#ifdef EC_VERSION_ID
-	CMD4Hash versionhash; versionhash.Decode(wxT(EC_VERSION_ID)); // TODO: Error-checking, is hash valid?
+	CMD4Hash versionhash;
+	wxCHECK2(versionhash.Decode(wxT(EC_VERSION_ID)), /* Do nothing. */);
 	AddTag(CECTag(EC_TAG_VERSION_ID, versionhash));
 	#endif
 
