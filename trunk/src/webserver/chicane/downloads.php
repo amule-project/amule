@@ -492,7 +492,7 @@ function GotoCat(cat) {
 				}
 				echo '<acronym title="Cancel"><a href="?cmd=cancel&file=', $file->hash,
 					"\" onclick=\"return confirm('Are you sure that you want to cancel and delete this file?')\" ",
-					'"><img src="l_cancel.gif" alt="Cancel"></a></acronym>';
+					'><img src="l_cancel.gif" alt="Cancel"></a></acronym>';
 				echo '<acronym title="Increase priority"><a href="?cmd=prioup&file=', $file->hash, '"><img src="l_up.gif" alt="Increase priority"></a></acronym>';
 				echo '<acronym title="Decrease priority"><a href="?cmd=priodown&file=', $file->hash, '"><img src="l_down.gif" alt="Decrease priority"></a></acronym>';
 			}
