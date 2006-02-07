@@ -896,7 +896,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 				}
 				if ( cur_src->GetUpPartCount() == forClient->GetUpPartCount() ) {
 					for (int x = 0; x < GetPartCount(); x++ ) {
-						if ( srcstatus[x] && !rcvstatus[x] ) {
+						if ( srcstatus.at(x) && !rcvstatus.at(x) ) {
 							// We know the receiving client needs
 							// a chunk from this client.
 							bNeeded = true;
@@ -924,7 +924,7 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 					continue;
 				}
 				for (int x = 0; x < GetPartCount(); x++ ) {
-					if ( srcstatus[x] ) {
+					if ( srcstatus.at(x) ) {
 						// this client has at least one chunk
 						bNeeded = true;
 						break;
