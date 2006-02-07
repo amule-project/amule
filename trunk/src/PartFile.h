@@ -134,9 +134,9 @@ public:
 	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
-	uint32  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
-	void	SetNotCurrentSourcesCount(uint32 new_count)	{ m_notCurrentSources = new_count; };	
-	uint32	GetValidSourcesCount() const	{ return m_validSources; };
+	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
+	void	SetNotCurrentSourcesCount(uint16 new_count)	{ m_notCurrentSources = new_count; };	
+	uint16	GetValidSourcesCount() const	{ return m_validSources; };
 	
 	uint64	GetNeededSpace();
 	
@@ -273,7 +273,7 @@ private:
 	CDeadSourceList	m_deadSources;
 #endif
 
-	uint32	m_notCurrentSources;
+	uint16	m_notCurrentSources;
 
 	bool	m_showSources;
 	
