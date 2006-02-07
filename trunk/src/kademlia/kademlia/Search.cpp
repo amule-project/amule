@@ -587,7 +587,9 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 			CMD4Hash hash;
 			// TODO: Error handling
 			if (not hash.Decode(tag->GetStr())) {
+#ifdef __DEBUG__
 				printf("Invalid buddy-hash: '%s'\n", (const char*)tag->GetStr().fn_str());
+#endif
 			}
 			
 			buddy.setValueBE(hash.GetHash());
