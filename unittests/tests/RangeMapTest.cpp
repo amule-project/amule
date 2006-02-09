@@ -780,6 +780,36 @@ TEST(RangeMap, Erase_AfterEnd_AfterEnd)
 }
 
 
+TEST(RangeMap, Swap)
+{
+	{
+		TestRangeMap mapA = m_mmaps[CONT];
+		TestRangeMap mapB = m_mmaps[SSAME];
+		
+		ASSERT_EQUALS(mapA, m_mmaps[CONT]);
+		ASSERT_EQUALS(mapB, m_mmaps[SSAME]);
+		
+		std::swap(mapA, mapB);
+
+		ASSERT_EQUALS(mapB, m_mmaps[CONT]);
+		ASSERT_EQUALS(mapA, m_mmaps[SSAME]);		
+	}
+	
+	{
+		TestRangeMap mapA = m_mmaps[CONT];
+		TestRangeMap mapB = m_mmaps[SSAME];
+		
+		ASSERT_EQUALS(mapA, m_mmaps[CONT]);
+		ASSERT_EQUALS(mapB, m_mmaps[SSAME]);
+		
+		mapA.swap(mapB);
+
+		ASSERT_EQUALS(mapB, m_mmaps[CONT]);
+		ASSERT_EQUALS(mapA, m_mmaps[SSAME]);		
+	}
+}
+
+
 /////////////////////////////////////////////////
 // The following test exercize the CRangeSet specialization.
 // 
