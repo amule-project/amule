@@ -249,6 +249,14 @@ public:
 	}
 
 	/**
+	 * Swaps the contents of the two rangemaps.
+	 */
+	void swap(CRangeMap<VALUE, KEYTYPE>& other) {
+		std::swap(m_ranges, other.m_ranges);
+	}
+	
+
+	/**
 	 * Equality operator for two ranges.
 	 *
 	 * @returns True if both ranges contain the same ranges and values.
@@ -566,6 +574,18 @@ protected:
 
 //! CRangeSet is simply a partial specialization of CRangeMap
 typedef CRangeMap<void> CRangeSet;
+
+
+namespace std
+{
+	/** @see CRangeMap::swap */
+	template <typename VALUE_TYPE, typename KEY_TYPE>
+	void swap(CRangeMap<VALUE_TYPE, KEY_TYPE>& a, CRangeMap<VALUE_TYPE, KEY_TYPE>& b)
+	{
+		a.swap(b);
+	}
+};
+
 
 
 #endif
