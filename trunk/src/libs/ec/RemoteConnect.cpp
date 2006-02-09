@@ -40,7 +40,7 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 {
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client));
 	AddTag(CECTag(EC_TAG_CLIENT_VERSION, version));
-	AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
+	AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint64)EC_CURRENT_PROTOCOL_VERSION));
 
 	CMD4Hash passhash;
 	wxCHECK2(passhash.Decode(pass), /* Do nothing. */);

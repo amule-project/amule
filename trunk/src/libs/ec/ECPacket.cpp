@@ -53,8 +53,10 @@ CECTag::CECTag(const NullTagConstructorSelector*) :
 	m_tagData(s_theNullTagData),
 	m_tagName(0),
 	m_dataLen(0),
+	m_dataType(EC_TAGTYPE_UNKNOWN),
 	m_dynamic(false),
-	m_tagList()
+	m_tagList(),
+	m_haschildren(false)
 {
 }
 
@@ -69,7 +71,7 @@ CECTag::CECTag(const NullTagConstructorSelector*) :
  * \note When you set \e copy to \b false, the provided data buffer must exist
  * in the whole lifetime of the packet.
  */
-CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy) : m_tagName(name), m_dynamic(copy)
+CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool copy) : m_tagName(name), m_dynamic(copy), m_haschildren( false )
 {
 	m_error = 0;
 	m_dataLen = length;
@@ -84,6 +86,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
 	} else {
 		m_tagData = data;
 	}
+	m_dataType = EC_TAGTYPE_CUSTOM;
 }
 
 /**
@@ -95,7 +98,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, const void *data, bool co
  *
  * 
  */
-CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
 	m_error = 0;
 	m_dataLen = length;
@@ -105,6 +108,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagN
 		m_error = 1;
 	}
 	*dataptr = (void *)m_tagData;
+	m_dataType = EC_TAGTYPE_CUSTOM;
 }
 
 /**
@@ -117,7 +121,7 @@ CECTag::CECTag(ec_tagname_t name, unsigned int length, void **dataptr)  : m_tagN
  *
  * @see GetIPv4Data()
  */
-CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
 
 	m_dataLen = sizeof(EC_IPv4_t);
@@ -126,6 +130,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
 		RawPokeUInt32( ((EC_IPv4_t *)m_tagData)->m_ip, RawPeekUInt32( data.m_ip ) );
 		((EC_IPv4_t *)m_tagData)->m_port = ENDIAN_HTONS(data.m_port);
 		m_error = 0;
+		m_dataType = EC_TAGTYPE_IPV4;
 	} else {
 		m_error = 1;
 	}
@@ -141,7 +146,7 @@ CECTag::CECTag(ec_tagname_t name, const EC_IPv4_t& data) : m_tagName(name), m_dy
  *
  * @see GetMD4Data()
  */
-CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
 
 	m_dataLen = 16;
@@ -150,6 +155,7 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 		RawPokeUInt64( (char*)m_tagData,		RawPeekUInt64( data.GetHash() ) );
 		RawPokeUInt64( (char*)m_tagData + 8,	RawPeekUInt64( data.GetHash() + 8 ) );
 		m_error = 0;
+		m_dataType = EC_TAGTYPE_HASH;
 	} else {
 		m_error = 1;
 	}
@@ -163,7 +169,7 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
  *
  * @see GetStringData()
  */
-CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true)
+CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
 	const wxCharBuffer buf = wxConvUTF8.cWC2MB(data.wc_str(aMuleConv));
 	const char *utf8 = (const char *)buf;
@@ -173,6 +179,7 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 	if (m_tagData != NULL) {
 		memcpy((void *)m_tagData, utf8, m_dataLen);
 		m_error = 0;
+		m_dataType = EC_TAGTYPE_STRING;		
 	} else {
 		m_error = 1;
 	}
@@ -181,10 +188,11 @@ CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dyn
 /**
  * Copy constructor
  */
-CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic )
+CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tagName ), m_dynamic( tag.m_dynamic ), m_haschildren( tag.m_haschildren )
 {
 	m_error = 0;
 	m_dataLen = tag.m_dataLen;
+	m_dataType = tag.m_dataType;
 	if (m_dataLen != 0) {
 		if (m_dynamic) {
 			m_tagData = malloc(m_dataLen);
@@ -215,90 +223,71 @@ CECTag::CECTag(const CECTag& tag) : m_state( tag.m_state ), m_tagName( tag.m_tag
 }
 
 /**
- * Creates a new CECTag instance, which contains an uint8 value.
+ * Creates a new CECTag instance, which contains an int value.
  *
  * This takes care of endianness problems with numbers.
  *
  * @param name TAG name.
- * @param data uint8 number.
+ * @param data number.
  *
- * @see GetInt8Data()
+ * @see GetInt()
  */
 CECTag::CECTag(ec_tagname_t name, uint8 data) : m_tagName(name), m_dynamic(true)
 {
-	m_dataLen = 1;
-	m_tagData = malloc(m_dataLen);
-	if (m_tagData != NULL) {
-		PokeUInt8( (void*)m_tagData, data );
-		m_error = 0;
-	} else {
-		m_error = 1;
-	}
+	InitInt(data);
 }
-
-/**
- * Creates a new CECTag instance, which contains an uint16 value.
- *
- * This takes care of endianness problems with numbers.
- *
- * @param name TAG name.
- * @param data uint16 number.
- *
- * @see GetInt16Data()
- */
 CECTag::CECTag(ec_tagname_t name, uint16 data) : m_tagName(name), m_dynamic(true)
 {
-	m_dataLen = 2;
-	m_tagData = malloc(m_dataLen);
-	if (m_tagData != NULL) {
-		RawPokeUInt16( (void*)m_tagData, ENDIAN_HTONS( data ) );
-		m_error = 0;
-	} else {
-		m_error = 1;
-	}
+	InitInt(data);
 }
-
-/**
- * Creates a new CECTag instance, which contains an uint32 value.
- *
- * This takes care of endianness problems with numbers.
- *
- * @param name TAG name.
- * @param data uint32 number.
- *
- * @see GetInt32Data()
- */
 CECTag::CECTag(ec_tagname_t name, uint32 data) : m_tagName(name), m_dynamic(true)
 {
-	m_dataLen = 4;
-	m_tagData = malloc(m_dataLen);
-	if (m_tagData != NULL) {
-		RawPokeUInt32( (void*)m_tagData, ENDIAN_HTONL( data ) );
-		m_error = 0;
-	} else {
-		m_error = 1;
-	}
+	InitInt(data);
 }
-
-/**
- * Creates a new CECTag instance, which contains an uint64 value.
- *
- * This takes care of endianness problems with numbers.
- *
- * @param name TAG name.
- * @param data uint64 number.
- *
- * @see GetInt64Data()
- */
 CECTag::CECTag(ec_tagname_t name, uint64 data) : m_tagName(name), m_dynamic(true)
 {
-	m_dataLen = 8;
+	InitInt(data);
+}
+
+void CECTag::InitInt(uint64 data)
+{
+	if (data <= 0xFF) {
+		m_dataType = EC_TAGTYPE_UINT8;
+		m_dataLen = 1;
+	} else if (data <= 0xFFFF) {
+		m_dataType = EC_TAGTYPE_UINT16;
+		m_dataLen = 2;
+	} else if (data <= 0xFFFFFFFF) {
+		m_dataType = EC_TAGTYPE_UINT32;
+		m_dataLen = 4;
+	} else {
+		m_dataType = EC_TAGTYPE_UINT64;
+		m_dataLen = 8;
+	}	
+	
 	m_tagData = malloc(m_dataLen);
-	uint32 low = data & 0xffffffff;
-	uint32 high = data >> 32;
+	
 	if (m_tagData != NULL) {
-		RawPokeUInt32( (void *)m_tagData, ENDIAN_HTONL( high ) );
-		RawPokeUInt32( ((unsigned char*)m_tagData) + sizeof(uint32), ENDIAN_HTONL( low ) );
+		switch (m_dataType) {
+			case EC_TAGTYPE_UINT8:
+				PokeUInt8( (void*)m_tagData, data );
+				break;
+			case EC_TAGTYPE_UINT16:
+				PokeUInt16( (void*)m_tagData, ENDIAN_HTONS( data ) );
+				break;
+			case EC_TAGTYPE_UINT32:
+				PokeUInt32( (void*)m_tagData, ENDIAN_HTONL( data ) );
+				break;
+			case EC_TAGTYPE_UINT64:
+				PokeUInt64( (void*)m_tagData, ENDIAN_HTONLL( data ) );
+				break;
+			default:
+				/* WTF?*/
+				wxASSERT(0);
+				free((void*)m_tagData);
+				m_error = 1;
+				return;
+		}
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -328,6 +317,7 @@ CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name), m_dynamic(true
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
 		memcpy((void *)m_tagData, utf8, m_dataLen);
+		m_dataType = EC_TAGTYPE_DOUBLE;
 		m_error = 0;
 	} else {
 		m_error = 1;
@@ -441,13 +431,26 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 			return false;
 		} else {
 			m_tagName = tmp_tagName >> 1;
-			if (tmp_tagName & 0x01) {
+			m_haschildren = (tmp_tagName & 0x01) ? true : false;
+			m_state = bsType;
+		}
+	}
+	
+	if (m_state == bsType) {
+		ec_tagtype_t type;
+		if (!socket.ReadNumber(&type, sizeof(ec_tagtype_t))) {
+			m_dataType = EC_TAGTYPE_UNKNOWN;
+			return false;
+		} else {
+			m_dataType = type;
+			if (m_haschildren) {
 				m_state = bsLengthChld;
 			} else {
 				m_state = bsLength;
 			}
 		}
 	}
+	
 	if (m_state == bsLength || m_state == bsLengthChld) {
 		ec_taglen_t tagLen;
 		if (!socket.ReadNumber(&tagLen, sizeof(ec_taglen_t))) {
@@ -461,11 +464,13 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 			}
 		}
 	}
+	
 	if (m_state == bsChildCnt || m_state == bsChildren) {
 		if (!ReadChildren(socket)) {
 			return false;
 		}
 	}
+	
 	if (m_state == bsData1) {
 		unsigned int tmp_len = m_dataLen;
 		m_dataLen = 0;
@@ -478,6 +483,7 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 			m_state = bsFinished;
 		}
 	}
+	
 	if (m_state == bsData2) {
 		if (m_tagData != NULL) {
 			if (!socket.ReadBuffer((void *)m_tagData, m_dataLen)) {
@@ -490,6 +496,7 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 			return false;
 		}
 	}
+	
 	return true;
 }
 
@@ -498,17 +505,23 @@ bool CECTag::WriteTag(CECSocket& socket) const
 {
 	ec_taglen_t tagLen = GetTagLen();
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
+	ec_tagtype_t type = m_dataType;
+	wxASSERT(type != EC_TAGTYPE_UNKNOWN);
 	
 	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;
+	if (!socket.WriteNumber(&type, sizeof(ec_tagtype_t))) return false;
 	if (!socket.WriteNumber(&tagLen, sizeof(ec_taglen_t))) return false;
+	
 	if (!m_tagList.empty()) {
 		if (!WriteChildren(socket)) return false;
 	}
+	
 	if (m_dataLen > 0) {
 		if (m_tagData != NULL) {	// This is here only to make sure everything, it should not be NULL at this point
 			if (!socket.WriteBuffer(m_tagData, m_dataLen)) return false;
 		}
 	}
+	
 	return true;
 }
 
@@ -516,7 +529,7 @@ bool CECTag::ReadChildren(CECSocket& socket)
 {
 	if (m_state == bsChildCnt) {
 		uint16 tmp_tagCount;
-		if (!socket.ReadNumber(&tmp_tagCount, 2)) {
+		if (!socket.ReadNumber(&tmp_tagCount, sizeof(uint16))) {
 			return false;
 		} else {
 			m_tagList.clear();
@@ -525,12 +538,14 @@ bool CECTag::ReadChildren(CECSocket& socket)
 				for (int i=0; i<tmp_tagCount; i++) {
 					m_tagList.push_back(CECTag(socket));
 				}
+				m_haschildren = true;
 				m_state = bsChildren;
 			} else {
 				m_state = bsData1;
 			}
 		}
 	}
+	
 	if (m_state == bsChildren) {
 		for (unsigned int i=0; i<m_tagList.size(); i++) {
 			CECTag& tag = m_tagList[i];
@@ -545,6 +560,7 @@ bool CECTag::ReadChildren(CECSocket& socket)
 		}
 		m_state = bsData1;
 	}
+	
 	return true;
 }
 
@@ -613,7 +629,7 @@ uint32 CECTag::GetTagLen(void) const
 	uint32 length = m_dataLen;
 	for (TagList::size_type i=0; i<m_tagList.size(); i++) {
 		length += m_tagList[i].GetTagLen();
-		length += sizeof(ec_tagname_t) + sizeof(ec_taglen_t) + ((m_tagList[i].GetTagCount() > 0) ? 2 : 0);
+		length += sizeof(ec_tagname_t) + sizeof(ec_tagtype_t) + sizeof(ec_taglen_t) + ((m_tagList[i].GetTagCount() > 0) ? 2 : 0);
 	}
 	return length;
 }
@@ -630,6 +646,8 @@ uint32 CECTag::GetTagLen(void) const
 EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
 	EC_IPv4_t p;
+	
+	wxASSERT(m_dataType = EC_TAGTYPE_IPV4);
 
 	RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
 	p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
@@ -649,6 +667,8 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 double CECTag::GetDoubleData(void) const
 {
+	wxASSERT(m_dataType = EC_TAGTYPE_DOUBLE);
+	
 	wxString str = GetStringData();
 	struct lconv *lc = localeconv();
 	str.Replace(wxT("."), char2unicode(lc->decimal_point));
@@ -743,7 +763,7 @@ double CECTag::GetDoubleData(void) const
  */
 
 /*!
- * \fn uint8 CECTag::GetInt8Data(void) const
+ * \fn uint8 CECTag::GetInt(void) const
  *
  * \brief Returns the uint8 data of the tag.
  *
@@ -755,7 +775,7 @@ double CECTag::GetDoubleData(void) const
  */
 
 /*!
- * \fn uint16 CECTag::GetInt16Data(void) const
+ * \fn uint16 CECTag::GetInt(void) const
  *
  * \brief Returns the uint16 data of the tag.
  *
@@ -767,7 +787,7 @@ double CECTag::GetDoubleData(void) const
  */
 
 /*!
- * \fn uint32 CECTag::GetInt32Data(void) const
+ * \fn uint32 CECTag::GetInt(void) const
  *
  * \brief Returns the uint32 data of the tag.
  *
@@ -779,7 +799,7 @@ double CECTag::GetDoubleData(void) const
  */
 
 /*!
- * \fn uint64 CECTag::GetInt64Data(void) const
+ * \fn uint64 CECTag::GetInt(void) const
  *
  * \brief Returns the uint64 data of the tag.
  *

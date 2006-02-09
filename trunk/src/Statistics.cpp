@@ -936,12 +936,12 @@ CStatistics::~CStatistics()
 
 void CStatistics::UpdateStats(const CECPacket* stats)
 {
-	s_statData[sdUpload] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt32Data();
-	s_statData[sdUpOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_UP_OVERHEAD)->GetInt32Data();
-	s_statData[sdDownload] = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt32Data();
-	s_statData[sdDownOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_DOWN_OVERHEAD)->GetInt32Data();
-	s_statData[sdWaitingClients] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt32Data();
-	s_statData[sdBannedClients] = stats->GetTagByNameSafe(EC_TAG_STATS_BANNED_COUNT)->GetInt32Data();
+	s_statData[sdUpload] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_SPEED)->GetInt();
+	s_statData[sdUpOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_UP_OVERHEAD)->GetInt();
+	s_statData[sdDownload] = stats->GetTagByNameSafe(EC_TAG_STATS_DL_SPEED)->GetInt();
+	s_statData[sdDownOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_DOWN_OVERHEAD)->GetInt();
+	s_statData[sdWaitingClients] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt();
+	s_statData[sdBannedClients] = stats->GetTagByNameSafe(EC_TAG_STATS_BANNED_COUNT)->GetInt();
 };
 
 

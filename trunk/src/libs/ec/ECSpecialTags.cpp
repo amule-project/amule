@@ -92,7 +92,7 @@ void FormatValue(CFormat& format, const CECTag* tag)
 	if (tmp_tag) {
 		wxString tmp_fmt;
 		const CECTag* tmp_vt = tmp_tag->GetTagByName(EC_TAG_STAT_VALUE_TYPE);
-		EC_STATTREE_NODE_VALUE_TYPE tmp_valueType = tmp_vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)tmp_vt->GetInt8Data() : EC_VALUE_INTEGER;
+		EC_STATTREE_NODE_VALUE_TYPE tmp_valueType = tmp_vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)tmp_vt->GetInt() : EC_VALUE_INTEGER;
 		switch (tmp_valueType) {
 			case EC_VALUE_INTEGER:
 				tmp_fmt = wxT("%llu");
@@ -109,25 +109,25 @@ void FormatValue(CFormat& format, const CECTag* tag)
 	}
 
 	const CECTag* vt = tag->GetTagByName(EC_TAG_STAT_VALUE_TYPE);
-	EC_STATTREE_NODE_VALUE_TYPE valueType = vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)vt->GetInt8Data() : EC_VALUE_INTEGER;
+	EC_STATTREE_NODE_VALUE_TYPE valueType = vt != NULL ? (EC_STATTREE_NODE_VALUE_TYPE)vt->GetInt() : EC_VALUE_INTEGER;
 	switch (valueType) {
 		case EC_VALUE_INTEGER:
-			format = format % tag->GetInt64Data();
+			format = format % tag->GetInt();
 			break;
 		case EC_VALUE_ISTRING:
-			format = format % (wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), tag->GetInt64Data()) + extra);
+			format = format % (wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), tag->GetInt()) + extra);
 			break;
 		case EC_VALUE_BYTES:
-			format = format % (CastItoXBytes(tag->GetInt64Data()) + extra);
+			format = format % (CastItoXBytes(tag->GetInt()) + extra);
 			break;
 		case EC_VALUE_ISHORT:
-			format = format % (CastItoIShort(tag->GetInt64Data()) + extra);
+			format = format % (CastItoIShort(tag->GetInt()) + extra);
 			break;
 		case EC_VALUE_TIME:
-			format = format % (CastSecondsToHM(tag->GetInt32Data()) + extra);
+			format = format % (CastSecondsToHM(tag->GetInt()) + extra);
 			break;
 		case EC_VALUE_SPEED:
-			format = format % (CastItoSpeed(tag->GetInt32Data()) + extra);
+			format = format % (CastItoSpeed(tag->GetInt()) + extra);
 			break;
 		case EC_VALUE_STRING:
 			format = format % (wxGetTranslation(tag->GetStringData()) + extra);

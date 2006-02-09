@@ -219,7 +219,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary CVS version! *sigh* possible crash prevented")));
 #endif
 		} else if (protocol != NULL) {
-			uint16 proto_version = protocol->GetInt16Data();
+			uint16 proto_version = protocol->GetInt();
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
 				CMD4Hash passh;
 
@@ -554,7 +554,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				pfile->StopFile();
 				break;
 			case EC_OP_PARTFILE_PRIO_SET: {
-					uint8 prio = hashtag->GetTagByIndexSafe(0)->GetInt8Data();
+					uint8 prio = hashtag->GetTagByIndexSafe(0)->GetInt();
 					if ( prio == PR_AUTO ) {
 						pfile->SetAutoDownPriority(1);
 					} else {
@@ -571,7 +571,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				break;
 
 			case EC_OP_PARTFILE_SET_CAT:
-				pfile->SetCategory(hashtag->GetTagByIndexSafe(0)->GetInt8Data());
+				pfile->SetCategory(hashtag->GetTagByIndexSafe(0)->GetInt());
 				break;
 
 			default:
@@ -706,7 +706,7 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
-		uint8 category = tag->GetTagByIndexSafe(0)->GetInt8Data();
+		uint8 category = tag->GetTagByIndexSafe(0)->GetInt();
 		theApp.searchlist->AddFileToDownloadByHash(hash, category);
 	}
 	return response;
@@ -772,7 +772,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 	for (int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
-		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt8Data();
+		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt();
 		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
 		if ( !cur_file ) {
 			continue;
@@ -957,8 +957,8 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			if (request->GetTagByName(EC_TAG_STATSGRAPH_LAST) != NULL) {
 				dTimestamp = request->GetTagByName(EC_TAG_STATSGRAPH_LAST)->GetDoubleData();
 			}
-			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt16Data();
-			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt16Data();
+			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt();
+			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt();
 			uint32 *graphData;
 			unsigned int numPoints = theApp.statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
@@ -1024,7 +1024,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			for(int i = 0; i < request->GetTagCount();i++) {
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
-				int category = tag->GetTagByIndexSafe(0)->GetInt8Data();
+				int category = tag->GetTagByIndexSafe(0)->GetInt();
 				AddLogLineM(true, CFormat(_("ExternalConn: adding ed2k link '%s'.")) % link);
 				if ( theApp.downloadqueue->AddED2KLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
@@ -1195,7 +1195,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Preferences
 		//
 		case EC_OP_GET_PREFERENCES:
-			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt32Data(), request->GetDetailLevel());
+			response = new CEC_Prefs_Packet(request->GetTagByNameSafe(EC_TAG_SELECT_PREFS)->GetInt(), request->GetDetailLevel());
 			break;
 		case EC_OP_SET_PREFERENCES:
 			((CEC_Prefs_Packet *)request)->Apply();
@@ -1223,13 +1223,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			if ( request->GetTagCount() == 1 ) {
 				CEC_Category_Tag *tag = (CEC_Category_Tag *)request->GetTagByIndex(0);
 				tag->Apply();
-				Notify_CategoryUpdate(tag->GetInt32Data());
+				Notify_CategoryUpdate(tag->GetInt());
 			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_DELETE_CATEGORY:
 			if ( request->GetTagCount() == 1 ) {
-				uint32 cat = request->GetTagByIndex(0)->GetInt32Data();
+				uint32 cat = request->GetTagByIndex(0)->GetInt();
 				Notify_CategoryDelete(cat);
 			}
 			response = new CECPacket(EC_OP_NOOP);
@@ -1289,7 +1289,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_GET_STATSTREE: {
 			theApp.statistics->UpdateStatsTree();
 			response = new CECPacket(EC_OP_STATSTREE);
-			CECTag* tree = theStats::GetECStatTree(request->GetTagByNameSafe(EC_TAG_STATTREE_CAPPING)->GetInt8Data());
+			CECTag* tree = theStats::GetECStatTree(request->GetTagByNameSafe(EC_TAG_STATTREE_CAPPING)->GetInt());
 			if (tree) {
 				response->AddTag(*tree);
 				delete tree;

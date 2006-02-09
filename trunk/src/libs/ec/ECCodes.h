@@ -40,13 +40,14 @@
 
 typedef uint8_t ec_opcode_t;
 typedef uint16_t ec_tagname_t;
+typedef uint8_t ec_tagtype_t;
 typedef uint32_t ec_taglen_t;
 
 
 /**
  * Current EC protocol version
  */
-#define	EC_CURRENT_PROTOCOL_VERSION	0x01f3
+#define	EC_CURRENT_PROTOCOL_VERSION	0x0200
 
 
 /*

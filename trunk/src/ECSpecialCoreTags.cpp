@@ -129,28 +129,28 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_STATUS, file->GetStatus(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint16)file->GetSourceCount(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint16)file->GetNotCurrentSourcesCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
 		
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO, 
-		(uint8)(file->IsAutoDownPriority() ? 
+		(uint64)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority()), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_CAT, file->GetCategory(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint32)file->lastseencomplete, this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 
 	long l;
 	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
-		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint16)l, this);
+		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, this);
 	}
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
@@ -165,8 +165,8 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint16)file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, (uint16)file->GetNotCurrentSourcesCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, file->GetNotCurrentSourcesCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount()));
 		
@@ -174,15 +174,15 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize()));
-		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint32)(file->GetKBpsDown()*1024)));
+		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024)));
 	}
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint8)(file->IsAutoDownPriority() ? 
+		(uint64)(file->IsAutoDownPriority() ? 
 						file->GetDownPriority() + 10 : file->GetDownPriority())));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
-	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint32)file->lastseencomplete));
+	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;
@@ -192,7 +192,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 
 	long l;
 	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
-		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint16)l));
+		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l));
 	}
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
@@ -212,7 +212,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered(), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
-		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
+		(uint64)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
@@ -252,25 +252,25 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown()));
 	
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal()));
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal()));
 	
-	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp()));
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp()));
 	
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
-		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
+		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
 
 	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()));
 	if ( client->GetDownloadState() == DS_DOWNLOADING ) {
-		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0)));
+		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0)));
 	}
 
 	AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()));
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
-	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint32)(::GetTickCount() - client->GetWaitStartTime())));
-	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint32)(::GetTickCount() - client->GetLastUpRequest())));
+	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
+	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -279,7 +279,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
-	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint8)client->GetSourceFrom()));
+	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom()));
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
@@ -292,27 +292,27 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap) :
 	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
 {
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, (uint32)client->GetTransferedDown(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown(), this);
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal(), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal(), this);
 	
-	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_SESSION, (uint32)client->GetSessionUp(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp(), this);
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_STATE,
-		uint16((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) ), this);
+		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) ), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
-	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint32)(client->GetKBpsDown()*1024.0), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime(), this);
 
 	valuemap.CreateTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay(), this);
 
-	valuemap.CreateTag(EC_TAG_CLIENT_QUEUE_TIME, (uint32)(::GetTickCount() - client->GetWaitStartTime()), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime()), this);
 
-	valuemap.CreateTag(EC_TAG_CLIENT_LAST_TIME, (uint32)(::GetTickCount() - client->GetLastUpRequest()), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest()), this);
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_HASH, client->GetUserHash(), this);
 
@@ -320,7 +320,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 
 	valuemap.CreateTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft(), this);
 	
-	valuemap.CreateTag(EC_TAG_CLIENT_FROM, (uint8)client->GetSourceFrom(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom(), this);
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
@@ -335,8 +335,8 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 //
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetCompleteSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount()));
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -351,9 +351,9 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 
 CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) : CECTag(EC_TAG_SEARCHFILE, file->GetFileHash())
 {
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, (uint32)file->GetSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT, file->GetSourceCount(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, (uint32)file->GetCompleteSourceCount(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 

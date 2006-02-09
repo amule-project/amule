@@ -552,8 +552,8 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
 			cat->incomingpath = cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData();
 			cat->comment = cat_tag->GetTagByName(EC_TAG_CATEGORY_COMMENT)->GetStringData();
-			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt32Data();
-			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt8Data();
+			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt();
+			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt();
 			theApp.glob_prefs->AddCat(cat);
 		}
 	} else {
@@ -1351,7 +1351,7 @@ void CSearchListRem::StopGlobalSearch()
 void CSearchListRem::HandlePacket(const CECPacket *packet)
 {
 	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
-		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt32Data())
+		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt())
 	} else {
 		CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>::HandlePacket(packet);
 	}

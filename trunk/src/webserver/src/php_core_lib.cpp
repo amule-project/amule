@@ -420,7 +420,7 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 			PHP_VAR_NODE *srv_users = array_get_by_str_key(result, "serv_users");
 			value_value_free(&srv_users->value);
 			srv_users->value.type = PHP_VAL_INT;
-			srv_users->value.int_val = susers->GetInt32Data();
+			srv_users->value.int_val = susers->GetInt();
 		}
 			
 	}
@@ -441,22 +441,22 @@ void php_get_amule_stats(PHP_VALUE_NODE *result)
 	speed = array_get_by_str_key(result, "speed_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt32Data();
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED)->GetInt();
 	
 	speed = array_get_by_str_key(result, "speed_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt32Data();
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED)->GetInt();
 
 	speed = array_get_by_str_key(result, "speed_limit_up");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt32Data();
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_UL_SPEED_LIMIT)->GetInt();
 	
 	speed = array_get_by_str_key(result, "speed_limit_down");
 	value_value_free(&speed->value);
 	speed->value.type = PHP_VAL_INT;
-	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt32Data();
+	speed->value.int_val = stats->GetTagByName(EC_TAG_STATS_DL_SPEED_LIMIT)->GetInt();
 
 	delete stats;
 #else
@@ -570,9 +570,9 @@ void ec_tag_2_php(const CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *ca
 		int val;
 		switch(def->opsize) {
 			case 0: val = cattag->GetTagByName(def->tagname) ? 1 : 0; break;
-			case 1: val = cattag->GetTagByNameSafe(def->tagname)->GetInt8Data(); break;
-			case 2: val = cattag->GetTagByNameSafe(def->tagname)->GetInt16Data(); break;
-			case 4: val = cattag->GetTagByNameSafe(def->tagname)->GetInt32Data(); break;
+			case 1: val = cattag->GetTagByNameSafe(def->tagname)->GetInt(); break;
+			case 2: val = cattag->GetTagByNameSafe(def->tagname)->GetInt(); break;
+			case 4: val = cattag->GetTagByNameSafe(def->tagname)->GetInt(); break;
 			default: val = -1;
 		}
 		wxASSERT(val != -1);
