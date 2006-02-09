@@ -166,7 +166,7 @@ template <class T, ec_opcode_t OP>
 class CTagSet : public std::set<T> {
 		void InSet(const CECTag *tag, uint32)
 		{
-			this->insert(tag->GetInt32Data());
+			this->insert(tag->GetInt());
 		}
 		void InSet(const CECTag *tag, CMD4Hash)
 		{

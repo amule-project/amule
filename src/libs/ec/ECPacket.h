@@ -33,6 +33,7 @@
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 #include "ECCodes.h"		// Needed for EC types
+#include "OtherFunctions.h"
 #include <vector>
 
 // Define this to keep partial packets
@@ -69,6 +70,19 @@ class EC_IPv4_t {
 		uint16 m_port;
 };
 
+
+enum ECTagTypes {
+	EC_TAGTYPE_UNKNOWN,
+	EC_TAGTYPE_CUSTOM,
+	EC_TAGTYPE_UINT8,
+	EC_TAGTYPE_UINT16,
+	EC_TAGTYPE_UINT32,
+	EC_TAGTYPE_UINT64,
+	EC_TAGTYPE_STRING,
+	EC_TAGTYPE_DOUBLE,
+	EC_TAGTYPE_IPV4,
+	EC_TAGTYPE_HASH
+};
 
 class CECTag;
 class CECSocket;
@@ -110,45 +124,79 @@ class CECTag {
 		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
 		
 		uint16		GetTagCount(void) const { return m_tagList.size(); }
-		const void *	GetTagData(void) const { return m_tagData; }
+		const void *	GetTagData(void) const { 
+			wxASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
+			return m_tagData; 
+		}
 		uint16		GetTagDataLen(void) const { return m_dataLen; }
 		uint32		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
 		// Retrieving special data types
-		uint8		GetInt8Data(void) const { return PeekUInt8(m_tagData); }
-		uint16		GetInt16Data(void) const { return ENDIAN_NTOHS( RawPeekUInt16( m_tagData ) ); }
-		uint32		GetInt32Data(void) const { return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) ); }
-		uint64		GetInt64Data(void) const
-			{
-				uint32 high = ENDIAN_NTOHL(RawPeekUInt32(m_tagData));
-				uint32 low = ENDIAN_NTOHL(RawPeekUInt32(((unsigned char *)m_tagData)+sizeof(uint32))); 
-				return low | (((uint64)high) << 32);
+		uint64		GetInt(void) const { 
+			switch (m_dataType) {
+				case EC_TAGTYPE_UINT8:
+					return PeekUInt8(m_tagData);
+				case EC_TAGTYPE_UINT16:
+					return ENDIAN_NTOHS( RawPeekUInt16( m_tagData ) );
+				case EC_TAGTYPE_UINT32:
+					return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
+				case EC_TAGTYPE_UINT64:
+					return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
+				case EC_TAGTYPE_UNKNOWN:
+					// Empty tag - This is NOT an error.
+					return 0;
+				default:
+					DumpMem(m_tagData, m_dataLen, wxT("Unk Int Tag"));
+					wxASSERT(0);
+					return 0;
 			}
+		}
 		double		GetDoubleData(void) const;
-		wxString	GetStringData(void) const
-			{ return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); }
+		wxString	GetStringData(void) const { 
+			wxASSERT(m_dataType == EC_TAGTYPE_STRING);
+			return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); 
+		}
 		EC_IPv4_t 	GetIPv4Data(void) const;
-		CMD4Hash	GetMD4Data(void) const { return CMD4Hash((const unsigned char *)m_tagData); }
+		CMD4Hash	GetMD4Data(void) const { 
+			wxASSERT(m_dataType == EC_TAGTYPE_HASH); 
+			return CMD4Hash((const unsigned char *)m_tagData); 
+		}
 		
 		void AssignIfExist(ec_tagname_t tagname, uint8 &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
-			if ( tag ) target = tag->GetInt8Data();
+			if ( tag ) {
+				wxASSERT(tag->GetType() == EC_TAGTYPE_UINT8);
+				target = tag->GetInt();
+			}
 		}
 		void AssignIfExist(ec_tagname_t tagname, uint16 &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
-			if ( tag ) target = tag->GetInt16Data();
+			if ( tag ) {
+				wxASSERT(
+					(tag->GetType() == EC_TAGTYPE_UINT16)
+					|| (tag->GetType() == EC_TAGTYPE_UINT8)
+				);
+				target = tag->GetInt();
+			}
 		}
 		void AssignIfExist(ec_tagname_t tagname, uint32 &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
-			if ( tag ) target = tag->GetInt32Data();
+			if ( tag ) {
+				wxASSERT(
+					(tag->GetType() == EC_TAGTYPE_UINT32)
+					|| (tag->GetType() == EC_TAGTYPE_UINT16)
+					|| (tag->GetType() == EC_TAGTYPE_UINT8)
+				);
+				target = tag->GetInt();	
+			}
 		}
 		void AssignIfExist(ec_tagname_t tagname, uint64 &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
-			if ( tag ) target = tag->GetInt64Data();
+			if ( tag ) target = tag->GetInt();
 		}
 		void AssignIfExist(ec_tagname_t tagname, double &target)
 		{
@@ -165,10 +213,14 @@ class CECTag {
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetStringData();
 		}
-
+		
 	protected:
+
+		uint8 GetType() const { return m_dataType; }
+
 		enum BuildState {
 			bsName,
+			bsType,
 			bsLength,
 			bsLengthChld,
 			bsChildCnt,
@@ -179,7 +231,7 @@ class CECTag {
 		};
 
 		CECTag(const CECSocket&)
-			: m_error(0), m_tagData(NULL), m_state(bsName), m_dataLen(0), m_dynamic(true)
+			: m_error(0), m_tagData(NULL), m_state(bsName), m_dataLen(0), m_dataType(EC_TAGTYPE_UNKNOWN), m_dynamic(true), m_haschildren(false)
 			{}
 
 		bool		ReadFromSocket(CECSocket& socket);
@@ -196,16 +248,22 @@ class CECTag {
 	private:
 		// Special type used to invoke the Null tag constructor
 		struct NullTagConstructorSelector { };
+		
+		// To init. the automatic int data
+		void InitInt(uint64 data);
 
 		// Special constructor to construct the Null tag.
 		explicit CECTag(const NullTagConstructorSelector*);
 
 		ec_tagname_t	m_tagName;
-		unsigned int	m_dataLen;
+		ec_taglen_t		m_dataLen;
+		mutable ec_tagtype_t	m_dataType;
 		bool		m_dynamic;
 
 		typedef std::vector<CECTag> TagList;
 		TagList m_tagList;
+		
+		bool m_haschildren;
 
 		static const CECTag s_theNullTag;
 		static const uint32 s_theNullTagData[4];
@@ -237,7 +295,7 @@ class CECPacket : protected CECEmptyTag {
 		{
 			// since EC_DETAIL_FULL is default - no point transmit it
 			if ( detail_level != EC_DETAIL_FULL ) {
-				AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint8)detail_level));
+				AddTag(CECTag(EC_TAG_DETAIL_LEVEL, (uint64)detail_level));
 			}
 		}
 		
@@ -253,7 +311,7 @@ class CECPacket : protected CECEmptyTag {
 		EC_DETAIL_LEVEL GetDetailLevel() const
 		{
 			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);
-			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt8Data() : EC_DETAIL_FULL;
+			return (tag) ? (EC_DETAIL_LEVEL)tag->GetInt() : EC_DETAIL_FULL;
 		}
 		
 	private:

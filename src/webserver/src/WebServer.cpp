@@ -265,7 +265,7 @@ long CWebServerBase::GetWSPrefs(void)
 	// we have selected only the webserver preferences
 	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
 	const CECTag *tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT);
-	long wsport = tag ? tag->GetInt16Data() : -1;
+	long wsport = tag ? tag->GetInt() : -1;
 
 	if (webInterface->m_LoadSettingsFromAmule) {
 		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
@@ -283,7 +283,7 @@ long CWebServerBase::GetWSPrefs(void)
 	
 		const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
 		if (webserverRefresh) {
-			webInterface->m_PageRefresh = webserverRefresh->GetInt32Data();
+			webInterface->m_PageRefresh = webserverRefresh->GetInt();
 		} else {
 			webInterface->m_PageRefresh = 120;
 		}
@@ -574,11 +574,11 @@ bool ServersInfo::ServersInfo::ReQuery()
 		Entry.nServerIP = tag->GetIPv4Data().IP();
 		Entry.nServerPort = tag->GetIPv4Data().m_port;
 		Entry.nServerUsers =
-			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt32Data();
+			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS)->GetInt();
 		Entry.nServerMaxUsers =
-			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt32Data();
+			tag->GetTagByNameSafe(EC_TAG_SERVER_USERS_MAX)->GetInt();
 		Entry.nServerFiles =
-			tag->GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt32Data();
+			tag->GetTagByNameSafe(EC_TAG_SERVER_FILES)->GetInt();
 		AddItem(Entry);
 	}
 	delete srv_reply;

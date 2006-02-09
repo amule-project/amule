@@ -447,7 +447,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 					if (m_last_cmd_id == CMD_ID_GET_IPFILTER ||
 					    m_last_cmd_id == CMD_ID_GET_IPFILTER_LEVEL) {
 						s << wxString::Format(_("Current IPFilter Level is %d.\n"),
-								      ipfilterLevel->GetInt8Data());
+								      ipfilterLevel->GetInt());
 					}
 				}
 				tab = response->GetTagByNameSafe(EC_TAG_PREFS_CONNECTIONS);
@@ -455,8 +455,8 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *connMaxDL = tab->GetTagByName(EC_TAG_CONN_MAX_DL);
 				if (connMaxUL && connMaxDL) {
 					s << wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"),
-						connMaxUL->GetInt16Data(),
-						connMaxDL->GetInt16Data());
+						connMaxUL->GetInt(),
+						connMaxDL->GetInt());
 				}
 			}
 			break;
@@ -507,16 +507,16 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 			}
 			const CECTag *tmpTag;
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_DL_SPEED)) != 0) {
-				s <<	CFormat(_("\nDownload:\t%s")) % CastItoSpeed(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nDownload:\t%s")) % CastItoSpeed(tmpTag->GetInt());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_SPEED)) != 0) {
-				s <<	CFormat(_("\nUpload:\t%s")) % CastItoSpeed(tmpTag->GetInt32Data());
+				s <<	CFormat(_("\nUpload:\t%s")) % CastItoSpeed(tmpTag->GetInt());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_UL_QUEUE_LEN)) != 0) {
-				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt32Data());
+				s << 	wxString::Format(_("\nClients in queue:\t%d\n"), tmpTag->GetInt());
 			}
 			if ((tmpTag = response->GetTagByName(EC_TAG_STATS_TOTAL_SRC_COUNT)) != 0) {
-				s << 	wxString::Format(_("\nTotal sources:\t%d\n"), tmpTag->GetInt32Data());
+				s << 	wxString::Format(_("\nTotal sources:\t%d\n"), tmpTag->GetInt());
 			}
 			break;
 		}
@@ -551,11 +551,11 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *partfileSpeed = tag ? tag->GetTagByName(EC_TAG_CLIENT_UP_SPEED) : NULL;
 				if (tag && clientName && partfileName && partfileSizeXfer && partfileSpeed) {
 					s <<	wxT("\n") <<
-						wxString::Format(wxT("%10u "), tag->GetInt32Data()) <<
+						wxString::Format(wxT("%10u "), tag->GetInt()) <<
 						clientName->GetStringData() << wxT(" ") <<
 						partfileName->GetStringData() << wxT(" ") <<
-						CastItoXBytes(partfileSizeXfer->GetInt32Data()) << wxT(" ") <<
-						CastItoSpeed(partfileSpeed->GetInt32Data());
+						CastItoXBytes(partfileSizeXfer->GetInt()) << wxT(" ") <<
+						CastItoSpeed(partfileSpeed->GetInt());
 				}
 			}
 			break;
