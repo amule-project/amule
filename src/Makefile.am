@@ -331,7 +331,7 @@ noinst_HEADERS = ThreadScheduler.h \
 		KnownFile.h \
 		KnownFileList.h \
 		listctrl.h \
-		extern/listctrl.262.h \
+		extern/listctrl.cvs.h \
 		ListenSocket.h \
 		Logger.h \
 		MD4Hash.h \

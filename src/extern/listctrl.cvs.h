@@ -11,14 +11,20 @@
 #ifndef LISTCTRL_260_H
 #define LISTCTRL_260_H
 
-#include <wx/defs.h>
-#include <wx/object.h>
-#include <wx/control.h>
-#include <wx/timer.h>
-#include <wx/dcclient.h>
-#include <wx/scrolwin.h>
-#include <wx/settings.h>
-#include <wx/listbase.h>
+#include "wx/defs.h"
+#include "wx/object.h"
+#ifdef __WXMAC__
+#include "wx/imaglist.h"
+#else
+#include "wx/generic/imaglist.h"
+#endif
+
+#include "wx/control.h"
+#include "wx/timer.h"
+#include "wx/dcclient.h"
+#include "wx/scrolwin.h"
+#include "wx/settings.h"
+#include "wx/listbase.h"
 
 #if wxUSE_DRAG_AND_DROP
 class wxDropTarget;
@@ -33,8 +39,12 @@ class wxDropTarget;
 class wxListItem;
 class wxListEvent;
 
-class wxImageList;
-typedef wxImageList wxImageListType;
+#if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
+class wxListCtrl;
+#define wxImageListType wxImageList
+#else
+#define wxImageListType wxGenericImageList
+#endif
 
 namespace MuleExtern
 {
@@ -86,7 +96,7 @@ public:
     bool SetColumnWidth( int col, int width);
     int GetCountPerPage() const; // not the same in wxGLC as in Windows, I think
 
-	void GetVisibleLines(long* first, long* last);
+    void GetVisibleLines(long* first, long* last);
     wxRect GetViewRect() const;
 
     bool GetItem( wxListItem& info ) const;
@@ -152,6 +162,8 @@ public:
     bool ScrollList( int dx, int dy );
     bool SortItems( wxListCtrlCompare fn, long data );
     bool Update( long item );
+    // Must provide overload to avoid hiding it (and warnings about it)
+    virtual void Update() { wxControl::Update(); }
 
     // are we in report mode?
     bool InReportView() const { return HasFlag(wxLC_REPORT); }
@@ -191,7 +203,7 @@ public:
 
     virtual void Freeze();
     virtual void Thaw();
-	virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
+    virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
 
     virtual bool SetBackgroundColour( const wxColour &colour );
     virtual bool SetForegroundColour( const wxColour &colour );
@@ -205,13 +217,9 @@ public:
     virtual wxDropTarget *GetDropTarget() const;
 #endif
 
-    virtual bool DoPopupMenu( wxMenu *menu, int x, int y );
-
     virtual bool ShouldInheritColours() const { return false; }
     virtual void SetFocus();
-	virtual bool GetFocus();
-
-    virtual wxSize DoGetBestSize() const;
+    virtual bool GetFocus();
 
     // implementation
     // --------------
@@ -227,11 +235,20 @@ public:
     wxCoord              m_headerHeight;
 
 protected:
+    virtual bool DoPopupMenu( wxMenu *menu, int x, int y );
+
+    virtual wxSize DoGetBestSize() const;
+
     // return the text for the given column of the given item
     virtual wxString OnGetItemText(long item, long column) const;
 
-    // return the icon for the given item
+    // return the icon for the given item. In report view, OnGetItemImage will
+    // only be called for the first column. See OnGetItemColumnImage for 
+    // details.
     virtual int OnGetItemImage(long item) const;
+
+    // return the icon for the given item and column.
+    virtual int OnGetItemColumnImage(long item, long column) const;
 
     // return the attribute for the item (may return NULL if none)
     virtual wxListItemAttr *OnGetItemAttr(long item) const;
@@ -240,9 +257,6 @@ protected:
     friend class wxListMainWindow;
 
 private:
-    // Virtual function hiding supression
-    virtual void Update() { wxWindow::Update(); }
-
     // create the header window
     void CreateHeaderWindow();
 
