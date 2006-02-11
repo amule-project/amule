@@ -280,8 +280,8 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 					delete reply_all;
 				}
 			} else {
-				if (args.Length() == MD4HASH_LENGTH*2) {
-					CMD4Hash hash(args);
+				CMD4Hash hash;
+				if (not hash.Decode(args)) {
 					if (!hash.IsEmpty()) {
 						switch(CmdId) {
 							case CMD_ID_PAUSE:

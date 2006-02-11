@@ -56,35 +56,28 @@ wxDEFAULT_DIALOG_STYLE|wxSYSTEM_MENU)
 
 void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString name, fullip, hash;
-	uint32 ip = 0;
-	uint16 port = 0;
-	
-	name = CastChild(ID_USERNAME, wxTextCtrl)->GetValue();
-	hash = CastChild(ID_USERHASH, wxTextCtrl)->GetValue();
-	fullip = CastChild(ID_IPADDRESS, wxTextCtrl)->GetValue();
-	port = StrToULong( CastChild(ID_IPORT, wxTextCtrl)->GetValue() );
-	
-	ip = StringIPtoUint32(fullip);
+	wxString name = CastChild(ID_USERNAME, wxTextCtrl)->GetValue().Strip(wxString::both);
+	wxString hash = CastChild(ID_USERHASH, wxTextCtrl)->GetValue().Strip(wxString::both);
+	wxString fullip = CastChild(ID_IPADDRESS, wxTextCtrl)->GetValue().Strip(wxString::both);
+	uint16 port = StrToULong( CastChild(ID_IPORT, wxTextCtrl)->GetValue() );
+	uint32 ip = StringIPtoUint32(fullip);
 	
 	if (!ip || !port) {
 		wxMessageBox(_("You have to enter a valid IP and port!"), _("Information"), wxOK | wxICON_INFORMATION, this);
 		return;		
 	}
 	
-	if ( hash.Length() != 0 && hash.Length() != 32 ) {
+	CMD4Hash userhash;
+	if ((not hash.IsEmpty()) and (not userhash.Decode(hash))) {
 		wxMessageBox(_("The specified userhash is not valid!"), _("Information"), wxOK | wxICON_INFORMATION, this);
 		return;
 	};
 
 	// Better than nothing at all...
-	if ( name.IsEmpty() )
+	if ( name.IsEmpty() ) {
 		name = fullip;
+	}
 
-	CMD4Hash userhash;
-	if ( !hash.IsEmpty() )
-		userhash.Decode( hash );
-		
 	theApp.amuledlg->chatwnd->AddFriend( userhash,name, ip, port);
 	
 	EndModal(true); // Friend added
@@ -93,6 +86,6 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 
 void CAddFriend::OnCloseBtn(wxCommandEvent& WXUNUSED(evt))
 {
-
 	EndModal(false); // Friend not added
 }
+

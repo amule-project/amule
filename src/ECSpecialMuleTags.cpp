@@ -149,12 +149,16 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 			rc_prefs.AddTag(CECEmptyTag(EC_TAG_WEBSERVER_AUTORUN));
 		}
 		if (!thePrefs::GetWSPass().IsEmpty()) {
-			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(thePrefs::GetWSPass())));
+			CMD4Hash passhash;
+			wxCHECK2(passhash.Decode(thePrefs::GetWSPass()), /* Do nothing. */);
+			rc_prefs.AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 		}
 		if (thePrefs::GetWSIsLowUserEnabled()) {
 			CECEmptyTag lowUser(EC_TAG_WEBSERVER_GUEST);
 			if (!thePrefs::GetWSLowPass().IsEmpty()) {
-				lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(thePrefs::GetWSLowPass())));
+				CMD4Hash passhash;
+				wxCHECK2(passhash.Decode(thePrefs::GetWSLowPass()), /* Do nothing. */);
+				lowUser.AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 			}
 			rc_prefs.AddTag(lowUser);
 		}

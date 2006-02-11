@@ -41,10 +41,15 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client));
 	AddTag(CECTag(EC_TAG_CLIENT_VERSION, version));
 	AddTag(CECTag(EC_TAG_PROTOCOL_VERSION, (uint16)EC_CURRENT_PROTOCOL_VERSION));
-	AddTag(CECTag(EC_TAG_PASSWD_HASH, CMD4Hash(pass)));
+
+	CMD4Hash passhash;
+	wxCHECK2(passhash.Decode(pass), /* Do nothing. */);
+	AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
 
 	#ifdef EC_VERSION_ID
-	AddTag(CECTag(EC_TAG_VERSION_ID, CMD4Hash(wxT(EC_VERSION_ID))));
+	CMD4Hash versionhash;
+	wxCHECK2(versionhash.Decode(wxT(EC_VERSION_ID)), /* Do nothing. */);
+	AddTag(CECTag(EC_TAG_VERSION_ID, versionhash));
 	#endif
 
 }
@@ -79,10 +84,19 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	m_client = client;
 	m_version = version;
 	
-	// don't even try to connect without password
-	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e") || CMD4Hash(ConnectionPassword).IsEmpty()) {
+	// don't even try to connect without a valid password
+	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e")) {
 		server_reply = _("You must specify a non-empty password.");
 		return false;
+	} else {
+		CMD4Hash hash;
+		if (not hash.Decode(ConnectionPassword)) {
+			server_reply = _("Invalid password, not a MD5 hash!");
+			return false;
+		} else if (hash.IsEmpty()) {
+			server_reply = _("You must specify a non-empty password.");
+			return false;
+		}
 	}
 
 	wxIPV4address addr;
