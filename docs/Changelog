@@ -8,6 +8,75 @@ Version 2.1.1 - The "???" version
 		  it causes crashes.
 		* Suppressed an error dialog on failure to lookup the host's domain
 		  name.  Demoted it to just a message in the log.
+	
+	Radek:
+		* Fixed amulemd output not being printed immediatly when running in a
+		  mingw terminal.
+		* Added missing include to GetTickCount.h, which caused the function
+		  declaration to be missing in some cases.
+	
+	Xaignar:
+		* Fixed a problem with shared files, where danling pointers to client
+		  objects could be left in some cases.
+		* Changed the way MD4 hashes are converted from Base16, in order to
+		  improve error-checking. This adds aditional safety to places such as
+		  parsing of ED2K links and adding of friends.
+		* Fixed bug where clients would be removed from the list of Kademlia
+		  clients if the hash, ID or IP changed. This should only happen when
+		  the client is deleted.
+		* Fixed various problems with logging during startup, including a 
+		  crash in amuled if an alert was to be displayed.
+		* Fixed the HTTPDownload dialog by using events rather than relying
+		  on being able to pause the main loop when sending notifications.
+		  Also properly aMulified the dialog.
+		* Entries for debug-logging are now always saved to the amule.conf
+		  file, to allow amuled users to enable these manually. Before, the
+		  entries were only written for enabled debuglog-types.
+		* Fixed problem in loading of known.met, which would result in
+		  duplicate shared files alternating between which file was actually
+		  shared. This resulted in statistics for the file being 'lost'.
+		* Added locking to the ed2k utility, to prevent races when many links
+		  added at once.
+		* Changed the way CFile retrieves the file-length, which was causing
+		  problems with files shared from a remote drive. 
+		* Fixed problems with representing 64b values on windows, caused by
+		  imcompatible extensions to printf. Thanks to Radek.
+		* Improved error messages on startup, when a folder is found to have
+		  inadequate permissions.
+		* Fixed problems with identifying reconnecting clients, which would
+		  cause a number of problems, including exessive bans.
+		* Fixing right-clicking (for recursive sharing) only being possible on
+		  the directory icon, but not the label.
+		* Fixed sorting by client-version on the downloadlistctrl (bug #763).
+		* Changed the sort-order of A4AF sources, so that these are always
+		  shown last. This fixes bug #761.
+		* Fixed assertion in the downloadlistctrl, caused by a bug in
+		  wxMemoryDC. This would trigger when a complete file was shown.
+		* When a missing shared file is encountered, unshare just that file,
+		  instead of rechecking everything, since that would cause noticible
+		  lag for people sharing many files.
+		* Fixed exec-on-completion being run even if the file failed
+		  to perform its completion.
+		* Fixed the sanity check for the min/max ext. search parameters, which
+		  would cause the min value to be ignored unless a greater value had
+		  been set for the max field.
+		* Fixed unicode searches, caused by mismatching string conversions.
+		* Adding missing exception-handler to the the function searching for
+		  shared files. Without this, a failure to retrieve a filesize would
+		  result in aMule terminating.
+		* Fixed userspecified CPPFLAGS being overwritten by the CXXFLAGS
+		  by configure. Thanks to Gerd78.
+		* Removed references to amulecmdgui and amulewebgui, which had been
+		  left behind from when the utilities were removed.
+		* Overrode wxConsoleAppTraits's WaitForChild function for aMuled,
+		  allowing wxExecute to be used asyncroniously. This fixes problems
+		  with using the exec-on-completion functionality.
+		* Improved sanity checks for the TTS implementation.
+		* Changed paused state to stopped state in some cases, which had been
+		  incorrectly changed to paused by myself.
+		* Added Maximize/Minimize buttons to the file details dialog.
+		* Fixed dangling pointers left behind, leading to crashes when a
+		  server.met file containing dead severs was loaded.
 
 	Special Thanks To:
 		* All the translaters who did such a great and fast job.	
