@@ -515,41 +515,33 @@ void CUpDownClient::ProcessExtendedInfo(const CMemFile *data, CKnownFile *tempre
 
 void CUpDownClient::SetUploadFileID(CKnownFile* newreqfile)
 {
-	//We use the knownfilelist because we may have unshared the file..
-	//But we always check the download list first because that person may have decided to redownload that file.
-	//Which will replace the object in the knownfilelist if completed.
-	CKnownFile* oldreqfile;
-	if ((oldreqfile = theApp.downloadqueue->GetFileByID(m_requpfileid)) == NULL ) {
-		oldreqfile = theApp.knownfiles->FindKnownFileByID(m_requpfileid);
+	if (m_uploadingfile == newreqfile) {
+		return;
+	} else if (m_uploadingfile) {
+		m_uploadingfile->RemoveUploadingClient(this);
+		m_uploadingfile->UpdateUpPartsFrequency(this, false); // Decrement
 	}
 	
-	if (oldreqfile == newreqfile) {
-		// It's ok.
-		return;
-	}
-
 	if (newreqfile) {
+		// This is a new file! update info
 		newreqfile->AddUploadingClient(this);
-		if (m_requpfileid != newreqfile->GetFileHash() ){
-			// This is a new file! update info
+		
+		if (m_requpfileid != newreqfile->GetFileHash()) {
 			m_requpfileid = newreqfile->GetFileHash();
 			m_upPartStatus.clear();
 			m_upPartStatus.resize( newreqfile->GetPartCount(), 0 );
 		} else {
 			// this is the same file we already had assigned. Only update data.
-			newreqfile->UpdateUpPartsFrequency( this, true ); // Increment
+			newreqfile->UpdateUpPartsFrequency(this, true); // Increment
  		}
+		
 		m_uploadingfile = newreqfile;
 	} else {
 		m_upPartStatus.clear();
-		m_nUpCompleteSourcesCount= 0;
-		ClearUploadFileID(); // This clears m_uploadingfile and m_requpfileid
+		m_nUpCompleteSourcesCount = 0;
+		// This clears m_uploadingfile and m_requpfileid
+		ClearUploadFileID();
 	}
-
-	if (oldreqfile) {
-		oldreqfile->RemoveUploadingClient(this);
-		oldreqfile->UpdateUpPartsFrequency( this, false ); // Decrement
- 	}
 }
 
 
