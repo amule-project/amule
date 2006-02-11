@@ -5343,10 +5343,21 @@ void wxGenericListCtrl::ResizeReportView(bool showHeader)
     int cw, ch;
     GetClientSize( &cw, &ch );
 
+    // If new main window size is negative, make it at least equal in 
+    // height to header window.
+    int newMainWinSize = ch - m_headerHeight - 1;
+    if ( newMainWinSize <= 0 ) {
+	newMainWinSize = m_headerHeight;
+
+	// Now fix the size of the client window
+	ch = 2 * m_headerHeight + 1;
+        SetClientSize( cw, ch );
+    }
+    
     if ( showHeader )
     {
         m_headerWin->SetSize( 0, 0, cw, m_headerHeight );
-        m_mainWin->SetSize( 0, m_headerHeight + 1, cw, ch - m_headerHeight - 1 );
+        m_mainWin->SetSize( 0, m_headerHeight + 1, cw, newMainWinSize );
     }
     else // no header window
     {
