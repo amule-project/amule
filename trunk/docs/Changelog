@@ -11,6 +11,7 @@ Version 2.1.1 - The "???" version
 
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets code.
+		* Fixed some gtk2 warnings in extern/listctrl.cpp.
 
 	Radek:
 		* Fixed amulemd output not being printed immediatly when running in a
