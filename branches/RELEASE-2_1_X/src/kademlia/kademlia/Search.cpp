@@ -587,7 +587,14 @@ void CSearch::processResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 		} else if (!tag->m_name.Cmp(wxT(TAG_CLIENTLOWID))) {
 			clientid	= tag->GetInt();
 		} else if (!tag->m_name.Cmp(wxT(TAG_BUDDYHASH))) {
-			CMD4Hash hash(tag->GetStr());
+			CMD4Hash hash;
+			// TODO: Error handling
+			if (not hash.Decode(tag->GetStr())) {
+#ifdef __DEBUG__
+				printf("Invalid buddy-hash: '%s'\n", (const char*)tag->GetStr().fn_str());
+#endif
+			}
+			
 			buddy.setValueBE(hash.GetHash());
 		}
 

@@ -389,9 +389,9 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			temp_str[strlen(temp_str)-1] = '\0';
 			pass_plain = char2unicode(temp_str);
 		#endif
-		m_password.Decode(MD5Sum(pass_plain).GetHash());
+		wxCHECK2(m_password.Decode(MD5Sum(pass_plain).GetHash()), /* Do nothing. */ );
 		// MD5 hash for an empty string, according to rfc1321.
-		if (m_password == CMD4Hash(wxT("D41D8CD98F00B204E9800998ECF8427E"))) {
+		if (m_password.Encode() == wxT("D41D8CD98F00B204E9800998ECF8427E")) {
 			m_password.Clear();
 		}
 

@@ -342,7 +342,9 @@ void CWebServerBase::Send_Discard_V2_Request(CECPacket *request)
 void CWebServerBase::Send_SharedFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
 {
 	CECPacket *ec_cmd = 0;
-	const CMD4Hash fileHash(file_hash);
+	CMD4Hash fileHash;
+	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
+	
 	CECTag hashtag(EC_TAG_KNOWNFILE, fileHash);
 	if (cmd == wxT("prio")) {
 		ec_cmd = new CECPacket(EC_OP_SHARED_SET_PRIO);
@@ -379,7 +381,9 @@ void CWebServerBase::Send_ReloadSharedFile_Cmd()
 void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uint32 opt_arg)
 {
 	CECPacket *ec_cmd = 0;
-	const CMD4Hash fileHash(file_hash);
+	CMD4Hash fileHash;
+	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
+	
 	CECTag hashtag(EC_TAG_PARTFILE, fileHash);
 	if (cmd == wxT("pause")) {
 		ec_cmd = new CECPacket(EC_OP_PARTFILE_PAUSE);
@@ -415,8 +419,11 @@ void CWebServerBase::Send_DownloadFile_Cmd(wxString file_hash, wxString cmd, uin
 
 void CWebServerBase::Send_DownloadSearchFile_Cmd(wxString file_hash, uint8 cat)
 {
+	CMD4Hash fileHash;
+	wxCHECK2(fileHash.Decode(file_hash), /* Do nothing. */ );
+	
 	CECPacket ec_cmd(EC_OP_DOWNLOAD_SEARCH_RESULT);
-	CECTag link_tag(EC_TAG_KNOWNFILE, CMD4Hash(file_hash));
+	CECTag link_tag(EC_TAG_KNOWNFILE, fileHash);
 
 	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	ec_cmd.AddTag(link_tag);
@@ -1820,10 +1827,12 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
-			CMD4Hash PwHash(MD5Sum(PwStr).GetHash());
-			
 			session->m_loggedin = false;
-			if ( PwHash == webInterface->m_AdminPass ) {
+			
+			CMD4Hash PwHash;
+			if (not PwHash.Decode(MD5Sum(PwStr).GetHash())) {
+				Print(_("Password hash invalid\n"));
+			} if ( PwHash == webInterface->m_AdminPass ) {
 				session->m_loggedin = true;
 				// m_vars is map<string, string> - so _() will not work here !
 				session->m_vars["guest_login"] = "0";
