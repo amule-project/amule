@@ -81,7 +81,9 @@ enum ECTagTypes {
 	EC_TAGTYPE_STRING,
 	EC_TAGTYPE_DOUBLE,
 	EC_TAGTYPE_IPV4,
-	EC_TAGTYPE_HASH
+	EC_TAGTYPE_HASH,
+	// special type of null tag, which can be casted anyhow
+	EC_TAGTYPE_ANYTYPE,
 };
 
 class CECTag;
@@ -142,6 +144,8 @@ class CECTag {
 					return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
 				case EC_TAGTYPE_UINT64:
 					return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
+				case EC_TAGTYPE_ANYTYPE:
+					return 0;
 				case EC_TAGTYPE_UNKNOWN:
 					// Empty tag - This is NOT an error.
 					return 0;
@@ -153,12 +157,12 @@ class CECTag {
 		}
 		double		GetDoubleData(void) const;
 		wxString	GetStringData(void) const { 
-			wxASSERT(m_dataType == EC_TAGTYPE_STRING);
+			wxASSERT((m_dataType == EC_TAGTYPE_STRING) || (m_dataType == EC_TAGTYPE_ANYTYPE));
 			return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); 
 		}
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { 
-			wxASSERT(m_dataType == EC_TAGTYPE_HASH); 
+			wxASSERT((m_dataType == EC_TAGTYPE_HASH) || (m_dataType == EC_TAGTYPE_ANYTYPE)); 
 			return CMD4Hash((const unsigned char *)m_tagData); 
 		}
 		
@@ -166,7 +170,7 @@ class CECTag {
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				wxASSERT(tag->GetType() == EC_TAGTYPE_UINT8);
+				wxASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_ANYTYPE));
 				target = tag->GetInt();
 			}
 		}
@@ -177,6 +181,7 @@ class CECTag {
 				wxASSERT(
 					(tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
+					|| (m_dataType == EC_TAGTYPE_ANYTYPE)
 				);
 				target = tag->GetInt();
 			}
@@ -189,6 +194,7 @@ class CECTag {
 					(tag->GetType() == EC_TAGTYPE_UINT32)
 					|| (tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
+					|| (m_dataType == EC_TAGTYPE_ANYTYPE)
 				);
 				target = tag->GetInt();	
 			}
