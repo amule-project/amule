@@ -11,6 +11,9 @@ Version 2.1.1 - The "???" version
 		* Fixed a bug in ed2kHelperScript.app (the Mac ed2k link handler)
 		  which prevented it from working properly if there was a space in the
 		  path to the aMule application.  Thanks to Gomaaz for finding this bug.
+		* Eliminated false reports of failure to execute the on-completion
+		  command.  This happened with amuled and an on-completion command which
+		  completes quickly.  Thanks to s0undt3ch for reporting this bug.
 
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets code.
