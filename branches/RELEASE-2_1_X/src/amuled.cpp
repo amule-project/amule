@@ -394,7 +394,7 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData& execData)
 		int status = 0, result = 0; 
 		if ( (result = waitpid(execData.pid, &status, WNOHANG)) == -1) {
 			printf("ERROR: waitpid call failed\n");
-		} else if (status && WIFEXITED(status)) {
+		} else if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status))) {
 			return 0;
 		}
 		
