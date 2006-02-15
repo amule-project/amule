@@ -66,6 +66,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
 #include "ThreadTasks.h"			// Needed for CHashingTask/CCompletionTask
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include <map>
 #include <algorithm>

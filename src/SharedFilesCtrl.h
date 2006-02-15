@@ -54,15 +54,8 @@ public:
 
 
 #ifndef CLIENT_GUI
-	/**
-	 * Replaces the current contents of the list with that on the given list.
-	 *
-	 * @param The list with which to update the displayed contents.
-	 *
-	 * This function removes the current list of files and replaces it with the 
-	 * files contained on the list given as an argument.
-	 */
-	void	ShowFileList(CSharedFileList* list);
+	/** Reloads the list of shared files. */
+	void	ShowFileList();
 #endif
 
 	/**

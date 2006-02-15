@@ -44,6 +44,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 #include "updownclient.h"	// Needed for SF_REMOTE_SERVER
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include <sys/types.h>
 

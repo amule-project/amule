@@ -29,7 +29,7 @@
 #include <map>				// Needed for std::multimap
 
 #include "Types.h"			// Needed for uint8
-#include "OtherStructs.h"	// Needed for DownloadItemType
+#include "Constants.h"		// Needed for DownloadItemType
 #include "MuleListCtrl.h"	// Needed for CMuleListCtrl
 
 

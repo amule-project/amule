@@ -92,6 +92,5 @@ struct Chunk {
 	};
 } __attribute__((__packed__));
 
-enum DownloadItemType { FILE_TYPE, A4AF_SOURCE, UNAVAILABLE_SOURCE, AVAILABLE_SOURCE };
 
 #endif // OTHERSTRUCTS_H

@@ -509,8 +509,8 @@ void CCompletionTask::OnExit()
 ////////////////////////////////////////////////////////////
 // CHashingEvent
 
-DEFINE_EVENT_TYPE(MULE_EVT_HASHING)
-DEFINE_EVENT_TYPE(MULE_EVT_AICH_HASHING)
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING)
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING)
 
 CHashingEvent::CHashingEvent(wxEventType type, CKnownFile* result, const CKnownFile* owner)
 	: wxEvent(-1, type),
@@ -543,7 +543,7 @@ CKnownFile* CHashingEvent::GetResult() const
 ////////////////////////////////////////////////////////////
 // CCompletionEvent
 
-DEFINE_EVENT_TYPE(MULE_EVT_FILE_COMPLETED)
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED)
 
 
 CCompletionEvent::CCompletionEvent(bool errorOccured, const CPartFile* owner, const wxString& fullPath)

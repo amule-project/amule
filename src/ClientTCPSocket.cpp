@@ -53,6 +53,8 @@
 #include "ServerList.h"		// Needed for CServerList
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ListenSocket.h"	// Needed for CListenSocket
+#include "GuiEvents.h"		// Needed for Notify_*
+
 
 //#define __PACKET_RECV_DUMP__
 

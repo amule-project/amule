@@ -27,14 +27,13 @@
 #define AMULE_H
 
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/app.h>		// Needed for wxApp
+#include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
 #include <wx/string.h>		// Needed for wxString
 
-#include "Types.h"		// Needed for int32, uint16 and uint64
-#include "GuiEvents.h"		// Needed for GUIEvent
+#include "Types.h"			// Needed for int32, uint16 and uint64
 
-#include <list>			// Needed for std::list
+#include <list>				// Needed for std::list
 
 
 class CAbstractFile;
@@ -71,6 +70,13 @@ class CHashingEvent;
 class CMuleInternalEvent;
 class CCompletionEvent;
 class wxExecuteData;
+class CLoggingEvent;
+
+namespace MuleNotify {
+	class CMuleGUIEvent;
+}
+
+using MuleNotify::CMuleGUIEvent;
 
 
 #define theApp wxGetApp()
@@ -93,6 +99,7 @@ enum APPState {
 #define CONNECTED_KAD_OK (1<<2)
 #define CONNECTED_KAD_FIREWALLED (1<<3)
 
+
 class CamuleApp : public AMULE_APP_BASE
 {
 public:
@@ -112,7 +119,6 @@ public:
 	void ServerSocketHandler(wxSocketEvent& event);
 	void UDPSocketHandler(wxSocketEvent& event);
 
-	virtual void NotifyEvent(const GUIEvent& event) = 0;
 	virtual void ShowAlert(wxString msg, wxString title, int flags) = 0;
 
 	// Barry - To find out if app is running or shutting/shut down
@@ -243,8 +249,7 @@ protected:
 	void OnFinishedCompletion(CCompletionEvent& evt);
 	void OnFinishedHTTPDownload(CMuleInternalEvent& evt);
 	void OnHashingShutdown(CMuleInternalEvent&);
-
-	void OnNotifyEvent(wxEvent& evt);
+	void OnNotifyEvent(CMuleGUIEvent& evt);
 
 	void SetTimeOnTransfer();
 
@@ -293,7 +298,6 @@ public:
 
 	bool CopyTextToClipboard( wxString strText );
 
-	virtual void NotifyEvent(const GUIEvent& event);
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 };
@@ -312,7 +316,7 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
 	void ShutDown(wxCloseEvent &evt);
-	virtual void NotifyEvent(const GUIEvent& event);
+	void OnLoggingEvent(CLoggingEvent& evt);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);
@@ -396,16 +400,15 @@ public:
 
 	void ExitMainLoop() { m_Exit = true; }
 
-	virtual void NotifyEvent(const GUIEvent& event);
-
 	bool CopyTextToClipboard(wxString strText);
 
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 
+	void OnLoggingEvent(CLoggingEvent& evt);
+	
 	DECLARE_EVENT_TABLE()
 
 	wxAppTraits *CreateTraits();
-
 };
 
 DECLARE_APP(CamuleDaemonApp)

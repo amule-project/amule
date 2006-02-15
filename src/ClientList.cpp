@@ -37,6 +37,8 @@
 #include "Preferences.h"	// Needed for thePrefs
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
+#include "GuiEvents.h"		// Needed for Notify_*
+
 #include <common/Format.h>
 
 #include <algorithm>

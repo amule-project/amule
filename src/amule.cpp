@@ -1235,12 +1235,6 @@ void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 }
 
 
-void CamuleApp::OnNotifyEvent(wxEvent& e)
-{
-	NotifyEvent(dynamic_cast<GUIEvent&>(e));
-}
-
-
 void CamuleApp::OnTCPTimer(CTimerEvent& WXUNUSED(evt))
 {
 	if(!IsRunning()) {
@@ -1452,6 +1446,18 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 			AddLogLineM(true, CFormat(_("Failed to execute on-completion command. Template is: %s")) % command);
 		}
 	}	
+}
+
+
+void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
+{
+#if defined(AMULE_DAEMON)
+	evt.Notify();
+#else
+	if (theApp.amuledlg) {
+		evt.Notify();
+	}
+#endif
 }
 
 
@@ -1989,7 +1995,6 @@ uint32 CamuleApp::GetED2KID() const {
 	return serverconnect ? serverconnect->GetClientID() : 0;
 }
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)

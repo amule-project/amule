@@ -58,6 +58,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 #include "UploadBandwidthThrottler.h"
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include <numeric>
 

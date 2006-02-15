@@ -31,6 +31,9 @@
 #include <deque>
 
 
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE);
+
+
 CDebugCategory::CDebugCategory( DebugType type, const wxString& name )
 	: m_name( name ),
 	  m_type( type )
@@ -139,7 +142,6 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 
 struct LogEntry
 {
-	GUI_Event_ID	event;
 	bool			critical;
 	wxString		entry;
 };
@@ -148,12 +150,11 @@ static std::deque<LogEntry*> s_backLog;
 static wxMutex s_mutex;
 
 
-void PushEntry(GUI_Event_ID event, bool critical, const wxString& str)
+void PushEntry(bool critical, const wxString& str)
 {
 	wxMutexLocker lock(s_mutex);
 
 	LogEntry* item = new LogEntry;
-	item->event		= event;
 	item->critical	= critical;
 	item->entry		= str;
 	
@@ -184,14 +185,14 @@ void CLogger::FlushPendingEntries()
 	
 	LogEntry* entry = NULL;
 	while ((entry = PopEntry())) {
-		GUIEvent event(entry->event, entry->critical, entry->entry);
+		CLoggingEvent event(entry->critical, entry->entry);
 	
 #ifdef CLIENT_GUI
-		theApp.NotifyEvent(event);
+		theApp.ProcessEvent(event);
 #else
 		// Try to handle events immediatly when possible (to save to file).
 		if (theApp.applog) {
-			theApp.NotifyEvent(event);			
+			theApp.ProcessEvent(event);			
 		} else {
 			theApp.AddPendingEvent(event);
 		}
@@ -204,7 +205,7 @@ void CLogger::FlushPendingEntries()
 
 void CLogger::AddLogLine(bool critical, const wxString& str)
 {
-	PushEntry(ADDLOGLINE, critical, str);
+	PushEntry(critical, str);
 
 	if (wxThread::IsMain()) {
 		FlushPendingEntries();

@@ -57,6 +57,8 @@
 #include "ChatWnd.h"
 #include "PartFileConvert.h"
 #include "ThreadTasks.h"
+#include "Logger.h"				// Needed for EVT_MULE_LOGGING
+#include "GuiEvents.h"			// Needed for EVT_MULE_NOTIFY
 
 #ifdef __WXMAC__
 	#include <CoreFoundation/CFBundle.h>
@@ -83,8 +85,9 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 	// Core timer
 	EVT_MULE_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
 
-	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleGuiApp::OnNotifyEvent)
-
+	EVT_MULE_NOTIFY(CamuleGuiApp::OnNotifyEvent)
+	EVT_MULE_LOGGING(CamuleGuiApp::OnLoggingEvent)
+	
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleGuiApp::OnUDPDnsDone)
 
@@ -110,7 +113,7 @@ IMPLEMENT_APP(CamuleGuiApp)
 
 CamuleGuiBase::CamuleGuiBase()
 {
-
+	amuledlg = NULL;
 }
 
 
@@ -235,12 +238,6 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 }
 
 
-void CamuleGuiBase::NotifyEvent(const GUIEvent& WXUNUSED(event))
-{
-
-}
-
-
 #ifndef CLIENT_GUI
 
 int CamuleGuiApp::InitGui(bool geometry_enable, wxString &geometry_string)
@@ -316,419 +313,6 @@ bool CamuleGuiApp::OnInit()
 	return true;
 }
 
-void CamuleGuiApp::NotifyEvent(const GUIEvent& event)
-{
-	if (!amuledlg && (event.ID!=ADDLOGLINE)) {
-		return;
-	}
-	
-	switch (event.ID) {
-		// GUI->CORE events
-		// no need to check pointers: if event is here, gui must be running
-
-		
-		// search
-		case SEARCH_ADD_TO_DLOAD:
-			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
-			break;
-
-			
-		// PartFile
-		case PARTFILE_REMOVE_NO_NEEDED:
-			((CPartFile *)event.ptr_value)->CleanUpSources( true,  false, false );
-			break;
-		case PARTFILE_REMOVE_FULL_QUEUE:
-			((CPartFile *)event.ptr_value)->CleanUpSources( false, true,  false );
-			break;
-		case PARTFILE_REMOVE_HIGH_QUEUE:
-			((CPartFile *)event.ptr_value)->CleanUpSources( false, false, true  );
-			break;
-		case PARTFILE_CLEANUP_SOURCES:
-			((CPartFile *)event.ptr_value)->CleanUpSources( true,  true,  true  );
-			break;
-		case PARTFILE_SWAP_A4AF_THIS: {
-				CPartFile *file = (CPartFile *)event.ptr_value;
-				if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
-					CPartFile::SourceSet::iterator it = file->GetA4AFList().begin();
-					for ( ; it != file->GetA4AFList().end(); ) {
-						CUpDownClient *cur_source = *it++;
-
-						cur_source->SwapToAnotherFile(true, false, false, file);
-					}
-				}
-			}
-			break;
-		case PARTFILE_SWAP_A4AF_OTHERS: {
-				CPartFile *file = (CPartFile *)event.ptr_value;
-				if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
-					CPartFile::SourceSet::iterator it = file->GetSourceList().begin();
-					for( ; it != file->GetSourceList().end(); ) {
-						CUpDownClient* cur_source = *it++;
-
-						cur_source->SwapToAnotherFile(false, false, false, NULL);
-					}
-				}
-			}
-			break;
-		case PARTFILE_SWAP_A4AF_THIS_AUTO:
-			((CPartFile *)event.ptr_value)->SetA4AFAuto(!((CPartFile *)event.ptr_value)->IsA4AFAuto());
-			break;
-		case PARTFILE_PAUSE:
-			((CPartFile *)event.ptr_value)->PauseFile();
-			break;
-		case PARTFILE_RESUME:
-			((CPartFile *)event.ptr_value)->ResumeFile();
-			((CPartFile *)event.ptr_value)->SavePartFile();
-			break;
-		case PARTFILE_STOP:
-			((CPartFile *)event.ptr_value)->StopFile();
-			break;
-		case PARTFILE_PRIO_AUTO:
-			((CPartFile *)event.ptr_value)->SetAutoDownPriority(event.long_value);
-			break;
-		case PARTFILE_PRIO_SET:
-			((CPartFile *)event.ptr_value)->SetDownPriority(event.long_value,
-					event.longlong_value);
-			break;
-		case PARTFILE_SET_CAT:
-			((CPartFile *)event.ptr_value)->SetCategory(event.byte_value);
-			break;
-		case PARTFILE_DELETE:
-			((CPartFile *)event.ptr_value)->Delete();
-			break;
-		case KNOWNFILE_SET_UP_PRIO:
-			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(false);
-			((CKnownFile *)event.ptr_value)->SetUpPriority(event.byte_value);
-			break;
-		case KNOWNFILE_SET_UP_PRIO_AUTO:
-			((CKnownFile *)event.ptr_value)->SetAutoUpPriority(true);
-			((CKnownFile *)event.ptr_value)->UpdateAutoUpPriority();
-			break;
-		case KNOWNFILE_SET_COMMENT:
-			((CKnownFile *)event.ptr_value)->SetFileComment(event.string_value);
-			break;
-		
-			
-		// download queue
-		case DLOAD_SET_CAT_PRIO:
-			downloadqueue->SetCatPrio(event.long_value, event.short_value);
-			break;
-		case DLOAD_SET_CAT_STATUS:
-			downloadqueue->SetCatStatus(event.long_value, event.short_value);
-			break;
-
-			// CORE->GUI
-			// queue list
-		case QLIST_CTRL_ADD_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtQueued);
-			}
-			break;
-		case QLIST_CTRL_RM_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtQueued);
-			}
-			break;
-		case QLIST_CTRL_REFRESH_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtQueued);
-			}
-			break;
-
-		
-		// shared files
-		case SHAREDFILES_UPDATE_ITEM:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem((CKnownFile*)event.ptr_value);
-			}
-			break;
-		case SHAREDFILES_SHOW_ITEM:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile((CKnownFile*)event.ptr_value);
-			}
-			break;
-
-		case SHAREDFILES_REMOVE_ITEM:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile((CKnownFile*)event.ptr_value);
-			}
-			break;
-		case SHAREDFILES_REMOVE_ALL_ITEMS:
-			if ( amuledlg->sharedfileswnd ) {
-				amuledlg->sharedfileswnd->RemoveAllSharedFiles();
-			}
-			break;
-		case SHAREDFILES_SORT:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->SortList();
-			}
-			break;
-		case SHAREDFILES_SHOW_ITEM_LIST:
-			if ( amuledlg->sharedfileswnd && amuledlg->sharedfileswnd->sharedfilesctrl ) {
-				amuledlg->sharedfileswnd->sharedfilesctrl->ShowFileList((CSharedFileList*)event.ptr_value);
-			}
-			break;
-
-		// download ctrl
-		case DOWNLOAD_CTRL_UPDATEITEM:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->UpdateItem((CPartFile*)event.ptr_value);
-			}
-			break;
-		case DOWNLOAD_CTRL_ADD_FILE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->AddFile((CPartFile*)event.ptr_value);
-			}
-			break;
-		case DOWNLOAD_CTRL_ADD_SOURCE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				CPartFile* file = (CPartFile*)event.ptr_value;
-
-				if ( file->ShowSources() ) {
-					amuledlg->transferwnd->downloadlistctrl->AddSource( file,
-							(CUpDownClient*)event.ptr_aux_value,
-							(DownloadItemType)event.byte_value);
-				}
-			}
-			break;
-		case DOWNLOAD_CTRL_RM_FILE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->RemoveFile((CPartFile*)event.ptr_value);
-			}
-			break;
-		case DOWNLOAD_CTRL_RM_SOURCE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				CPartFile* file = (CPartFile*)event.ptr_aux_value;
-
-				if ( !file || file->ShowSources() ) {
-					amuledlg->transferwnd->downloadlistctrl->RemoveSource((CUpDownClient*)event.ptr_value,
-							file );
-				}
-			}
-			break;
-
-		case DOWNLOAD_CTRL_HIDE_SOURCE:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->ShowSources((CPartFile*)event.ptr_value, false);
-			}
-			break;
-		case DOWNLOAD_CTRL_SORT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->downloadlistctrl ) {
-				amuledlg->transferwnd->downloadlistctrl->SortList();
-			}
-			break;
-
-		
-		// upload ctrl
-		case UPLOAD_CTRL_ADD_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtUploading);
-			}
-			break;
-		case UPLOAD_CTRL_REFRESH_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtUploading);
-			}
-			break;
-		case UPLOAD_CTRL_RM_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtUploading);
-			}
-			break;
-			// client ctrl
-		case CLIENT_CTRL_ADD_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->InsertClient((CUpDownClient*)event.ptr_value, vtClients);
-			}
-			break;
-		case CLIENT_CTRL_REFRESH_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->UpdateClient((CUpDownClient*)event.ptr_value, vtClients);
-			}
-			break;
-		case CLIENT_CTRL_RM_CLIENT:
-			if ( amuledlg->transferwnd && amuledlg->transferwnd->clientlistctrl ) {
-				amuledlg->transferwnd->clientlistctrl->RemoveClient((CUpDownClient*)event.ptr_value, vtClients);
-			}
-			break;
-		
-			
-		// server
-		case SERVER_ADD:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->AddServer((CServer*)event.ptr_value);
-			}
-			break;
-		case SERVER_RM:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->RemoveServer((CServer*)event.ptr_value);
-			}
-			break;
-		case SERVER_RM_DEAD:
-			if ( serverlist ) {
-				serverlist->RemoveDeadServers();
-			}
-			break;
-		case SERVER_RM_ALL:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->DeleteAllItems();
-			}
-			break;
-		case SERVER_HIGHLIGHT:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->HighlightServer((CServer*)event.ptr_value,
-						event.byte_value);
-			}
-			break;
-		case SERVER_REFRESH:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->RefreshServer((CServer*)event.ptr_value);
-			}
-			break;
-		case SERVER_FREEZE:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->Freeze();
-			}
-			break;
-		case SERVER_THAW:
-			if ( amuledlg->serverwnd && amuledlg->serverwnd->serverlistctrl ) {
-				amuledlg->serverwnd->serverlistctrl->Thaw();
-			}
-			break;
-		case SERVER_UPDATEED2KINFO:
-			if ( amuledlg->serverwnd ) {
-				amuledlg->serverwnd->UpdateED2KInfo();
-			}
-			break;
-		case SERVER_UPDATEKADINFO:
-			if ( amuledlg->serverwnd ) {
-				amuledlg->serverwnd->UpdateKadInfo();
-			}
-			break;
-		
-		// notification
-		case SHOW_CONN_STATE:
-			#ifdef CLIENT_GUI
-				theApp.m_ConnState = event.long_value;
-			#endif
-			amuledlg->ShowConnectionState();
-			break;
-		case SHOW_QUEUE_COUNT:
-			if ( amuledlg->transferwnd ) {
-				amuledlg->transferwnd->ShowQueueCount(event.long_value);
-			}
-			break;
-		case SHOW_UPDATE_CAT_TABS:
-			if ( amuledlg->transferwnd ) {
-				amuledlg->transferwnd->UpdateCatTabTitles();
-			}
-			break;
-		case SHOW_USER_COUNT:
-			amuledlg->ShowUserCount(event.string_value);
-			break;
-		case SHOW_GUI:
-			amuledlg->Show_aMule(true);
-			break;
-
-		
-		// search window
-		case SEARCH_CANCEL:
-			if ( amuledlg->searchwnd ) {
-				amuledlg->searchwnd->ResetControls();
-			}
-			break;
-		case SEARCH_LOCAL_END:
-			if ( amuledlg->searchwnd ) {
-				amuledlg->searchwnd->LocalSearchEnd();
-			}
-			break;
-		case SEARCH_UPDATE_PROGRESS:
-			if ( amuledlg->searchwnd ) {
-				switch (event.long_value) {
-					case 0xffff:
-						// Global search ended
-						amuledlg->searchwnd->ResetControls();
-						break;
-					default:
-						amuledlg->searchwnd->UpdateProgress(event.long_value);
-				}
-			}
-			break;
-		case SEARCH_UPDATE_SOURCES:
-			amuledlg->searchwnd->UpdateResult( (CSearchFile *)event.ptr_value );
-			break;
-		case SEARCH_ADD_RESULT:
-			amuledlg->searchwnd->AddResult( (CSearchFile *)event.ptr_value );
-			break;
-
-			
-		// chat window
-		case CHAT_REFRESH_FRIEND:
-			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->RefreshFriend(CMD4Hash(), event.string_value, event.long_value, event.short_value);
-			}
-			break;
-		case CHAT_CONN_RESULT:
-			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->ConnectionResult(event.byte_value, event.string_value, event.longlong_value);
-			}
-			break;
-		case CHAT_PROCESS_MSG:
-			if ( amuledlg->chatwnd ) {
-				amuledlg->chatwnd->ProcessMessage(event.longlong_value, event.string_value);
-			}
-			break;
-		case CATEGORY_ADD:
-			if ( amuledlg->transferwnd ) {
-				uint32 cat = event.long_value;
-				
-		        amuledlg->transferwnd->AddCategory(glob_prefs->GetCategory(cat));
-			}
-			break;
-		case CATEGORY_UPDATE:
-			if ( amuledlg->transferwnd ) {
-				uint32 cat = event.long_value;
-				
-				amuledlg->transferwnd->UpdateCategory(cat);
-				amuledlg->transferwnd->downloadlistctrl->Refresh();
-				amuledlg->searchwnd->UpdateCatChoice();
-			}
-			break;
-		case CATEGORY_DELETE:
-			if ( amuledlg->transferwnd ) {
-				uint32 cat = event.long_value;
-				
-				amuledlg->transferwnd->RemoveCategory(cat);
-				
-				amuledlg->searchwnd->UpdateCatChoice();
-			}
-			break;
-
-		// logging
-		case ADDDEBUGLOGLINE:
-		case ADDLOGLINE:
-			if (amuledlg) {
-				while ( !m_logLines.empty() ) {
-					QueuedLogLine entry = m_logLines.front();
-					amuledlg->AddLogLine( entry.show, entry.line );
-					m_logLines.pop_front();
-				}
-				
-				amuledlg->AddLogLine(event.byte_value,event.string_value);
-			} else {
-				QueuedLogLine entry = { event.string_value, event.byte_value };
-				m_logLines.push_back( entry );
-			}
-					
-			CamuleApp::AddLogLine( event.string_value );
-			
-			break;
-		default:
-			printf("Unknown event notified to wxApp\n");
-			wxASSERT(0);
-	}
-}
-
 
 wxString CamuleGuiApp::GetLog(bool reset)
 {
@@ -752,6 +336,25 @@ void CamuleGuiApp::AddServerMessageLine(wxString &msg)
 {
 	amuledlg->AddServerMessageLine(msg);
 	CamuleApp::AddServerMessageLine(msg);
+}
+
+
+void CamuleGuiApp::OnLoggingEvent(CLoggingEvent& evt)
+{
+	if (amuledlg) {
+		while ( !m_logLines.empty() ) {
+			QueuedLogLine entry = m_logLines.front();
+			amuledlg->AddLogLine( entry.show, entry.line );
+			m_logLines.pop_front();
+		}
+		
+		amuledlg->AddLogLine(evt.IsCritical(), evt.Message());
+	} else {
+		QueuedLogLine entry = { evt.Message(), evt.IsCritical() };
+		m_logLines.push_back( entry );
+	}
+			
+	CamuleApp::AddLogLine( evt.Message() );
 }
 
 #endif /* CLIENT_GUI */

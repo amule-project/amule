@@ -50,7 +50,8 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>
-#include <ScopedPtr.h>		// Needed for CScopedArray
+#include "ScopedPtr.h"		// Needed for CScopedArray
+#include "GuiEvents.h"		// Needed for Notify_*
 
 
 //	members of CUpDownClient

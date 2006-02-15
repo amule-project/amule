@@ -81,6 +81,7 @@ using std::auto_ptr;
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
 #include "OtherFunctions.h"		// Needed for CastItoIShort
+#include "GuiEvents.h"
 
 
 CEConnectDlg::CEConnectDlg() :
@@ -133,6 +134,9 @@ BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
+	
+	EVT_MULE_NOTIFY(CamuleRemoteGuiApp::OnNotifyEvent)
+	EVT_MULE_LOGGING(CamuleRemoteGuiApp::OnLoggingEvent)
 
 END_EVENT_TABLE()
 
@@ -291,6 +295,19 @@ void CamuleRemoteGuiApp::OnECInitDone(wxEvent& )
 	Startup();
 }
 
+
+void CamuleRemoteGuiApp::OnLoggingEvent(CLoggingEvent& evt)
+{
+	printf("LOG: %s\n", unicode2char(evt.Message()).data());
+}
+
+
+void CamuleRemoteGuiApp::OnNotifyEvent(CMuleGUIEvent& evt)
+{
+	evt.Notify();
+}
+
+
 void CamuleRemoteGuiApp::Startup() {
 	
 	if ( dialog->SaveUserPass() ) {
@@ -409,92 +426,6 @@ bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
 	#warning TODO: Add remote command
 	return true;
-}
-
-void CamuleRemoteGuiApp::NotifyEvent(const GUIEvent& event)
-{
-	switch (event.ID) {
-	        case SEARCH_ADD_TO_DLOAD:
-		        downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
-				break;
-			case SEARCH_UPDATE_PROGRESS:
-				if ( event.long_value == 0xffff ) {
-					amuledlg->searchwnd->ResetControls();
-				} else {
-					amuledlg->searchwnd->UpdateProgress(event.long_value);
-				}
-				break;
-				
-	        case PARTFILE_REMOVE_NO_NEEDED:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
-				break;
-	        case PARTFILE_REMOVE_FULL_QUEUE:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_FULL_QUEUE);
-				break;
-	        case PARTFILE_REMOVE_HIGH_QUEUE:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_REMOVE_HIGH_QUEUE);
-				break;
-	        case PARTFILE_CLEANUP_SOURCES:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_CLEANUP_SOURCES);
-				break;
-	        case PARTFILE_SWAP_A4AF_THIS:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_THIS);
-				break;
-        	case PARTFILE_SWAP_A4AF_OTHERS:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_OTHERS);
-				break;
-	        case PARTFILE_SWAP_A4AF_THIS_AUTO:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO);
-				break;
-	        case PARTFILE_PAUSE:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_PAUSE);
-				break;
-	        case PARTFILE_RESUME:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_RESUME);
-				break;
-	        case PARTFILE_STOP:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_STOP);
-				break;
-	        case PARTFILE_PRIO_AUTO:
-	        	downloadqueue->AutoPrio((CPartFile *)event.ptr_value, event.long_value);
-				break;
-	        case PARTFILE_PRIO_SET:
-	        	downloadqueue->Prio((CPartFile *)event.ptr_value, event.long_value);
-				break;
-	        case PARTFILE_SET_CAT:
-	        	downloadqueue->Category((CPartFile *)event.ptr_value, event.byte_value);
-				break;
-	        case PARTFILE_DELETE:
-	        	downloadqueue->SendFileCommand((CPartFile *)event.ptr_value, EC_OP_PARTFILE_DELETE);
-				break;
-			
-	        case KNOWNFILE_SET_UP_PRIO:
-	        	sharedfiles->SetFilePrio((CKnownFile *)event.ptr_value, event.byte_value);
-				break;
-	        case KNOWNFILE_SET_UP_PRIO_AUTO:
-	        	sharedfiles->SetFilePrio((CKnownFile *)event.ptr_value, PR_AUTO);
-				break;
-	        case KNOWNFILE_SET_COMMENT:
-			break;
-
-			case SHOW_USER_COUNT:
-				amuledlg->ShowUserCount(event.string_value);
-				break;
-
-			// download queue
-	        case DLOAD_SET_CAT_PRIO:
-			break;
-	        case DLOAD_SET_CAT_STATUS:
-			break;
-
-			case ADDLOGLINE:
-			case ADDDEBUGLOGLINE:
-				printf("LOG: %s\n", (const char*)unicode2char(event.string_value));
-				break;
-			default:
-				printf("ERROR: bad event %d\n", event.ID);
-				wxASSERT(0);
-	}
 }
 
 bool CamuleRemoteGuiApp::IsConnectedED2K() const {
@@ -1351,7 +1282,7 @@ void CSearchListRem::StopGlobalSearch()
 void CSearchListRem::HandlePacket(const CECPacket *packet)
 {
 	if ( packet->GetOpCode() == EC_OP_SEARCH_PROGRESS ) {
-		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt())
+		CoreNotify_Search_Update_Progress(packet->GetTagByIndex(0)->GetInt());
 	} else {
 		CRemoteContainer<CSearchFile, CMD4Hash, CEC_SearchFile_Tag>::HandlePacket(packet);
 	}
@@ -1551,8 +1482,6 @@ bool CPartFile::SavePartFile(bool)
 //
 // since gui is not linked with amule.cpp - define events here
 //
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
-
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)

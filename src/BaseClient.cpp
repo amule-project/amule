@@ -60,6 +60,7 @@
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()
 #include "OtherFunctions.h"
+#include "GuiEvents.h"			// Needed for Notify_
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/net/KademliaUDPListener.h"

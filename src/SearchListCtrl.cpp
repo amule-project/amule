@@ -37,6 +37,7 @@
 #include "Color.h"			// Needed for BLEND and SYSCOLOR
 #include "muuli_wdr.h"		// Needed for clientImages
 #include "Preferences.h"	// Needed for thePrefs
+#include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 
 #include <wx/menu.h>
 #include <wx/settings.h>

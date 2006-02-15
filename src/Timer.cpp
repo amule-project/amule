@@ -145,7 +145,7 @@ void CTimer::Stop()
 }
 
 
-DEFINE_EVENT_TYPE(MULE_EVT_TIMER);
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_TIMER);
 
 CTimerEvent::CTimerEvent(int id)
 	: wxEvent(id, MULE_EVT_TIMER)
