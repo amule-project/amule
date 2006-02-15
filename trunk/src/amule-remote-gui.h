@@ -670,6 +670,8 @@ class CamuleRemoteGuiApp : public wxApp, public CamuleGuiBase {
 	
 	void OnECConnection(wxEvent& event);
 	void OnECInitDone(wxEvent& event);
+	void OnLoggingEvent(CLoggingEvent& evt);
+	void OnNotifyEvent(CMuleGUIEvent& evt);
 	
 	CStatsUpdaterRem m_stats_updater;
 public:
@@ -714,8 +716,6 @@ public:
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
 	wxString CreateED2kAICHLink(const CKnownFile* f);
 	wxString CreateED2kHostnameSourceLink(const CAbstractFile* f);
-
-	virtual void NotifyEvent(const GUIEvent& event);
 
 	wxString GetLog(bool reset = false);
 	wxString GetServerLog(bool reset = false);

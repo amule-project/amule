@@ -53,6 +53,7 @@
 #include "ArchSpecific.h"
 #include "Logger.h"
 #include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include "kademlia/kademlia/Entry.h"
 

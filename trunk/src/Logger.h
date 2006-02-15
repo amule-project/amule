@@ -28,6 +28,8 @@
 #include <wx/string.h>
 #include <wx/intl.h>
 #include <wx/log.h>
+#include <wx/event.h>
+
 
 enum DebugType 
 {
@@ -225,6 +227,47 @@ public:
 	 */
 	void DoLogString(const wxChar *msg, time_t);
 };
+
+
+DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
+
+
+/** This event is sent when a log-line is queued. */
+class CLoggingEvent : public wxEvent
+{
+public:
+	CLoggingEvent(bool critical, const wxString& msg)
+		: wxEvent(-1, MULE_EVT_LOGLINE)
+		, m_critical(critical)
+		, m_msg(msg)
+	{
+	}
+	
+	const wxString& Message() const {
+		return m_msg;
+	}
+
+	bool IsCritical() const {
+		return m_critical;
+	}
+
+	wxEvent* Clone() const {
+		return new CLoggingEvent(m_critical, m_msg);
+	}
+	
+private:
+	bool		m_critical;
+	wxString	m_msg;
+};
+
+
+typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
+
+//! Event-handler for completed hashings of new shared files and partfiles.
+#define EVT_MULE_LOGGING(func) \
+	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_LOGLINE, -1, -1, \
+	(wxObjectEventFunction) (wxEventFunction) \
+	wxStaticCastEvent(MuleLogEventFunction, &func), (wxObject*) NULL),
 
 
 /**

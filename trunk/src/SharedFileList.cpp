@@ -53,6 +53,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 #include "FileFunctions.h"
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #ifndef AMULE_DAEMON
 	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
@@ -579,7 +580,7 @@ void CSharedFileList::Reload(bool firstload){
 		m_keywords->PurgeUnreferencedKeywords();
 		
 		if (firstload == false) {
-			Notify_SharedFilesShowFileList(this);
+			Notify_SharedFilesShowFileList();
 		}
 		Notify_SharedFilesSort();
 		reloading = false;

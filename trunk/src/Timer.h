@@ -80,9 +80,7 @@ public:
 };
 
 
-BEGIN_DECLARE_EVENT_TYPES()
-	DECLARE_EVENT_TYPE(MULE_EVT_TIMER, -1)
-END_DECLARE_EVENT_TYPES()
+DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_TIMER, -1)
 
 	
 typedef void (wxEvtHandler::*MuleTimerEventFunction)(CTimerEvent&);

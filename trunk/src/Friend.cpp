@@ -32,6 +32,7 @@
 #include "OtherFunctions.h"
 #include "Tag.h"			// Needed for CTag
 #include "Logger.h"			// Needed for AddDebugLogLineM
+#include "GuiEvents.h"		// Needed for Notify_*
 
 
 CFriend::CFriend()

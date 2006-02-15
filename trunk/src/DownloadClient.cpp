@@ -46,6 +46,8 @@
 #include "SharedFileList.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
+#include "Constants.h"		// Needed for DownloadItemType
+#include "GuiEvents.h"		// Needed for Notify_*
 
 
 #ifdef __MULE_UNUSED_CODE__

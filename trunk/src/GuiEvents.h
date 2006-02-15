@@ -27,384 +27,451 @@
 #ifndef GUIEVENTS_H
 #define GUIEVENTS_H
 
+#include <wx/event.h>
+#include <wx/app.h>
+
 #include "Types.h"
+#include "Constants.h"
 
-class wxSocketBase;
-class wxSocketServer;
-class wxSocketClient;
 
-enum GUI_Event_ID {
-	INVALID_EVENT = 0,
-	// queue list
-	QLIST_CTRL_ADD_CLIENT,
-	QLIST_CTRL_RM_CLIENT,
-	QLIST_CTRL_REFRESH_CLIENT,
-	// shared files
-	SHAREDFILES_UPDATE_ITEM,
-	SHAREDFILES_REMOVE_ITEM,
-	SHAREDFILES_REMOVE_ALL_ITEMS,
-	SHAREDFILES_SHOW_ITEM,
-	SHAREDFILES_SHOW_ITEM_LIST,
-	SHAREDFILES_SORT,
-	
-	// download control
-	DOWNLOAD_CTRL_UPDATEITEM,
-	DOWNLOAD_CTRL_ADD_FILE,
-	DOWNLOAD_CTRL_ADD_SOURCE,
-	DOWNLOAD_CTRL_RM_FILE,
-	DOWNLOAD_CTRL_RM_SOURCE,
-	DOWNLOAD_CTRL_HIDE_SOURCE,
-	DOWNLOAD_CTRL_SORT,
-	// upload control
-	UPLOAD_CTRL_ADD_CLIENT,
-	UPLOAD_CTRL_REFRESH_CLIENT,
-	UPLOAD_CTRL_RM_CLIENT,
-	// client list
-	CLIENT_CTRL_ADD_CLIENT,
-	CLIENT_CTRL_REFRESH_CLIENT,
-	CLIENT_CTRL_RM_CLIENT,
+class CKnownFile;
+class CSearchFile;
+class CPartFile;
+class CServer;
 
-	// server
-	SERVER_ADD,
-	SERVER_RM,
-	SERVER_RM_DEAD,
-	SERVER_RM_ALL,
-	SERVER_HIGHLIGHT,
-	SERVER_REFRESH,
-	SERVER_FREEZE,
-	SERVER_THAW,
-	SERVER_UPDATEED2KINFO,
-	SERVER_UPDATEKADINFO,
-	// search window
-	SEARCH_CANCEL,
-	SEARCH_LOCAL_END,
-	// chat window
-	CHAT_REFRESH_FRIEND,
-	CHAT_FIND_FRIEND,
-	CHAT_CONN_RESULT,
-	CHAT_PROCESS_MSG,
-	// notification
-	SHOW_CONN_STATE,
-	SHOW_USER_COUNT,
-	SHOW_QUEUE_COUNT,
-	SHOW_UPDATE_CAT_TABS,
-	SHOW_GUI,
-	// catigories
-	CATEGORY_ADD,
-	CATEGORY_UPDATE,
-	CATEGORY_DELETE,
-	// logging
-	ADDLOGLINE,
-	ADDDEBUGLOGLINE,
+
+DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1);
+
+
+/**
+ * This namespaces contains a number of functions and classes
+ * related to defered function calls, allowing a notification
+ * call to be delayed till it can be initiated from the main
+ * thread.
+ */
+namespace MuleNotify
+{
+	////////////////////////////////////////////////////////////
+	// Notification handlers
 	//
-	// Those events are going to reverse direction: from gui->core
+	// These functions should not be called directly, but
+	// through the Notify_*, etc. macros.
 	//
+
+	void SharedFilesShowFile(CKnownFile* file);
+	void SharedFilesRemoveFile(CKnownFile* file);
+	void SharedFilesRemoveAllFiles();
+	void SharedFilesShowFileList();
+	void SharedFilesSort();
+	void SharedFilesUpdateItem(CKnownFile* file);
+
+	void DownloadCtrlUpdateItem(const void* item);
+	void DownloadCtrlAddFile(CPartFile* file);
+	void DownloadCtrlAddSource(CPartFile* owner, CUpDownClient* source, DownloadItemType type);
+	void DownloadCtrlRemoveFile(CPartFile* file);
+	void DownloadCtrlRemoveSource(const CUpDownClient* source, const CPartFile* owner);
+	void DownloadCtrlHideSource(CPartFile* file);
+	void DownloadCtrlSort();
+
+	void ClientCtrlAddClient(CUpDownClient* client, ViewType type);
+	void ClientCtrlRefreshClient(CUpDownClient* client, ViewType type);
+	void ClientCtrlRemoveClient(CUpDownClient* client, ViewType type);
+
+	void ServerAdd(CServer* server);
+	void ServerRemove(CServer* server);
+	void ServerRemoveDead();
+	void ServerRemoveAll();
+	void ServerHighlight(CServer* server, bool highlight);
+	void ServerRefresh(CServer* server);
+	void ServerFreeze();
+	void ServerThaw();
+	void ServerUpdateED2KInfo();
+	void ServerUpdateKadKInfo();
+
+	void SearchCancel();
+	void SearchLocalEnd();
+	void Search_Update_Sources(CSearchFile* result);
+	void Search_Add_Result(CSearchFile* result);
+
+	void ChatRefreshFriend(uint32 lastUsedIP, uint32 lastUsedPort, wxString name);
+	void ChatConnResult(bool success, uint64 id, wxString message);
+	void ChatProcessMsg(uint64 sender, wxString message);
 	
-	// PartFile
-	PARTFILE_REMOVE_NO_NEEDED,
-	PARTFILE_REMOVE_FULL_QUEUE,
-	PARTFILE_REMOVE_HIGH_QUEUE,
-	PARTFILE_CLEANUP_SOURCES,
-	PARTFILE_SWAP_A4AF_THIS,
-	PARTFILE_SWAP_A4AF_THIS_AUTO,
-	PARTFILE_SWAP_A4AF_OTHERS,
-	PARTFILE_PAUSE,
-	PARTFILE_RESUME,
-	PARTFILE_STOP,
-	PARTFILE_PRIO_AUTO,
-	PARTFILE_PRIO_SET,
-	PARTFILE_DELETE,
-	PARTFILE_SET_CAT,
-	KNOWNFILE_SET_UP_PRIO,
-	KNOWNFILE_SET_UP_PRIO_AUTO,
-	KNOWNFILE_SET_COMMENT,
-	// search
-	SEARCH_ADD_TO_DLOAD,
-	SEARCH_ADD_RESULT,
-	SEARCH_UPDATE_SOURCES,
-	SEARCH_UPDATE_PROGRESS,
-	// download queue
-	DLOAD_SET_CAT_PRIO,
-	DLOAD_SET_CAT_STATUS
-};
+	void ShowConnState(long state);
+	void ShowUserCount(wxString str);
+	void ShowQueueCount(uint32 count);
+	void ShowUpdateCatTabTitles();
+	void ShowGUI();
 
-// lfroen : custom events for core internal messages
-// 'cause - there's no wxCommand etc in wxBase
-enum Core_Event_ID {
-	NOTIFY_EVENT = 1,
-	HTTP_DOWNLOAD_FINISHED,
+	void CategoryAdded();
+	void CategoryUpdate(uint32 cat);
+	void CategoryDelete(uint32 cat);
+
 	
-	SOURCE_DNS_DONE,
-	UDP_DNS_DONE,
-	SERVER_DNS_DONE
-};
+	//
+	// GUI -> core notification
+	//
 
-enum HTTP_Download_File {
-	HTTP_IPFilter = 1,
-	HTTP_ServerMet,
-	// Auto-updating server.met has a different callback.
-	HTTP_ServerMetAuto,
-	HTTP_VersionCheck,
-	HTTP_NodesDat
-};
+	void PartFile_RemoveNoNeeded(CPartFile* file);
+	void PartFile_RemoveFullQueue(CPartFile* file);
+	void PartFile_RemoveHighQueue(CPartFile* file);
+	void PartFile_SourceCleanup(CPartFile* file);
+	void PartFile_Swap_A4AF(CPartFile* file);
+	void PartFile_Swap_A4AF_Auto(CPartFile* file);
+	void PartFile_Swap_A4AF_Others(CPartFile* file);
+	void PartFile_Pause(CPartFile* file);
+	void PartFile_Resume(CPartFile* file);
+	void PartFile_Stop(CPartFile* file);
+	void PartFile_PrioAuto(CPartFile* file, bool val);
+	void PartFile_PrioSet(CPartFile* file, uint8 newDownPriority, bool bSave);
+	void PartFile_Delete(CPartFile* file);
+	void PartFile_SetCat(CPartFile* file, uint32 val);
 
-DECLARE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT, wxEVT_USER_FIRST+NOTIFY_EVENT)
+	void KnownFile_Up_Prio_Set(CKnownFile* file, uint8 val);
+	void KnownFile_Up_Prio_Auto(CKnownFile* file);
+	void KnownFile_Comment_Set(CKnownFile* file, wxString comment);
 
-class GUIEvent : public wxEvent {
-	public:
-	GUIEvent(GUI_Event_ID new_id, byte value8, wxString value_s, uint32 value_long = 0) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-		ID 		= new_id;
-		byte_value 	= value8;
-		short_value	= 0;
-		long_value 	= value_long;
-		longlong_value 	= 0;
-		string_value 	= value_s;
-		ptr_value	= NULL;
-		ptr_aux_value	= NULL;
-	}
+	void Search_Add_Download(CSearchFile* result, uint8 category);
+	void Search_Update_Progress(uint32 value);
 
-	GUIEvent(GUI_Event_ID new_id, byte value8, uint64 value_longlong, wxString value_s) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-		ID 		= new_id;
-		byte_value 	= value8;
-		short_value	= 0;
-		long_value 	= 0;
-		longlong_value 	= value_longlong;
-		string_value 	= value_s;
-		ptr_value	= NULL;
-		ptr_aux_value	= NULL;
-	}
+	void Download_Set_Cat_Prio(uint8 cat, uint8 newprio);
+	void Download_Set_Cat_Status(uint8 cat, int newstatus);
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr = NULL, void* new_aux_ptr = NULL, byte value8 = 0) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-		ID              = new_id;
-		byte_value      = value8;
-		short_value	= 0;
-		long_value      = 0;
-		longlong_value  = 0;
-		ptr_value       = new_ptr;
-		ptr_aux_value   = new_aux_ptr;
-	}
 
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  wxString &str) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-		ID              = new_id;
-		byte_value      = 0;
-		short_value	= 0;
-		long_value      = 0;
-		longlong_value  = 0;
-                string_value    = str;
-		ptr_value       = new_ptr;
-		ptr_aux_value   = NULL;
-	}
+	////////////////////////////////////////////////////////////
+	// Notification utilities
 	
-	GUIEvent(GUI_Event_ID new_id, void *new_ptr,  byte value8) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-		ID              = new_id;
-		byte_value      = value8;
-		short_value	= 0;
-		long_value      = 0;
-		longlong_value  = 0;
-		ptr_value       = new_ptr;
-		ptr_aux_value   = NULL;
-	}
-
-        GUIEvent(GUI_Event_ID new_id, void *new_ptr,  uint32 value32, uint64 value64) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-                ID              = new_id;
-			byte_value      = 0;
-			short_value	= 0;
-                long_value      = value32;
-                longlong_value  = value64;
-                ptr_value       = new_ptr;
-                ptr_aux_value   = NULL;
-        }
-
-        GUIEvent(GUI_Event_ID new_id, uint32 new_val)  : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-                ID              = new_id;
-                byte_value      = 0;
-		short_value	= 0;
-                long_value      = new_val;
-                longlong_value  = 0;
-                ptr_value       = NULL;
-                ptr_aux_value   = NULL;
-        }
-
-        GUIEvent(GUI_Event_ID new_id, uint32 value32, uint16 value16, const wxString& string = wxEmptyString) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-                ID              = new_id;
-                byte_value      = 0;
-			 short_value	= value16;
-                long_value      = value32;
-                longlong_value  = 0;
-		   	string_value = string;
-                ptr_value       = NULL;
-                ptr_aux_value   = NULL;
-        }
-
-        GUIEvent(GUI_Event_ID new_id, void *new_ptr, void *new_aux_ptr,
-		 byte value8, uint32 value32, uint64 value64, wxChar *str) : wxEvent(-1, wxEVT_MULE_NOTIFY_EVENT) {
-                ID              = new_id;       
-                byte_value      = value8;
-                long_value      = value32;
-                longlong_value  = value64;
-                string_value    = str;
-                ptr_value       = new_ptr;
-                ptr_aux_value   = new_aux_ptr;
-        }
-	wxEvent *Clone(void) const
+	/** 
+	 * The base class of the functions.
+	 *
+	 * This class allows the the notification call to be executed
+	 * without knowing the exact specifics of a given functor.
+	 */
+	class CMuleNotiferBase
 	{
-		return new GUIEvent(*this);
+	public:
+		/** The constructor does nothing. */
+		CMuleNotiferBase() {};
+		/** The destructor is virtual since we will be deleting pointers to this type. */
+		virtual ~CMuleNotiferBase() {};
+
+		/** Executes the actual notification call. */
+		virtual void Notify() const = 0;
+		/** Returns a copy of the functor (function + arguments). */
+		virtual CMuleNotiferBase* Clone() const = 0;
+	};
+
+
+	/** Notification functor for functions taking no arguments. */
+	class CMuleNotifier0 : public CMuleNotiferBase
+	{
+	public:
+		typedef void (*FuncType)();
+		
+		/** Creates a functor from the given function. */
+		CMuleNotifier0(FuncType func)
+			: m_func(func) {}
+
+		/** @see CMuleNotifierBase::Notify */
+		virtual void Notify() const {
+			m_func();
+		}
+
+		/** @see CMuleNotifierBase::Clone */
+		virtual CMuleNotiferBase* Clone() const {
+			return new CMuleNotifier0(m_func);
+		}		
+
+	private:
+		FuncType	m_func;
+	};
+
+
+	/** Notification functor for functions taking 1 arguments. */
+	template <typename ARG>
+	class CMuleNotifier1 : public CMuleNotiferBase
+	{
+	public:
+		typedef void (*FuncType)(ARG);
+		
+		/** Creates a functor from the given function and arguments. */
+		CMuleNotifier1(FuncType func, ARG arg)
+			: m_func(func), m_arg(arg) {}
+
+		/** @see CMuleNotifierBase::Notify */
+		virtual void Notify() const {
+			m_func(m_arg);
+		}
+
+		/** @see CMuleNotifierBase::Clone */
+		virtual CMuleNotiferBase* Clone() const {
+			return new CMuleNotifier1<ARG>(m_func, m_arg);
+		}
+
+	private:
+		FuncType	m_func;
+		ARG			m_arg;
+	};
+
+
+	/** Notification functor for functions taking 2 arguments. */
+	template <typename ARG_1, typename ARG_2>
+	class CMuleNotifier2 : public CMuleNotiferBase
+	{
+	public:
+		typedef void (*FuncType)(ARG_1, ARG_2);
+		
+		/** Creates a functor from the given function and arguments. */
+		CMuleNotifier2(FuncType func, ARG_1 arg1, ARG_2 arg2)
+			: m_func(func), m_arg1(arg1), m_arg2(arg2) {}
+
+		/** @see CMuleNotifierBase:: Notify */
+		virtual void Notify() const {
+			m_func(m_arg1, m_arg2);
+		}
+
+		/** @see CMuleNotifierBase::Clone */
+		virtual CMuleNotiferBase* Clone() const {
+			return new CMuleNotifier2<ARG_1, ARG_2>(m_func, m_arg1, m_arg2);
+		}
+
+	private:
+		FuncType	m_func;
+		ARG_1		m_arg1;
+		ARG_2		m_arg2;
+	};
+
+
+	/** Notification functor for functions taking 3 arguments. */
+	template <typename ARG_1, typename ARG_2, typename ARG_3>
+	class CMuleNotifier3 : public CMuleNotiferBase
+	{
+	public:
+		typedef void (*FuncType)(ARG_1, ARG_2, ARG_3);
+		
+		/** Creates a functor from the given function and arguments. */
+		CMuleNotifier3(FuncType func, ARG_1 arg1, ARG_2 arg2, ARG_3 arg3)
+			: m_func(func), m_arg1(arg1), m_arg2(arg2), m_arg3(arg3) {}
+
+		/** @see CMuleNotifierBase:: Notify */
+		virtual void Notify() const {
+			m_func(m_arg1, m_arg2, m_arg3);
+		}
+
+		/** @see CMuleNotifierBase::Clone */
+		virtual CMuleNotiferBase* Clone() const {
+			return new CMuleNotifier3<ARG_1, ARG_2, ARG_3>(m_func, m_arg1, m_arg2, m_arg3);
+		}
+
+	private:
+		FuncType	m_func;
+		ARG_1		m_arg1;
+		ARG_2		m_arg2;
+		ARG_3		m_arg3;
+	};
+
+
+	/** 
+	 * This event is sent when a worker-thread makes use of a notify-macro.
+	 *
+	 * This insures that all notifications are executed on the main thread,
+	 * thereby improving overall threadsafety. The events are currently
+	 * sent to wxTheApp.
+	 */
+	class CMuleGUIEvent : public wxEvent
+	{
+	public:
+		/** Takes ownership a notifier functor. */
+		CMuleGUIEvent(CMuleNotiferBase* ntf)
+			: wxEvent(-1, MULE_EVT_NOTIFY)
+			, m_functor(ntf)
+		{
+			wxASSERT(m_functor);
+		}
+		
+		/** Destructor, frees the functor object. */
+		virtual ~CMuleGUIEvent() {
+			delete m_functor;
+		}
+		
+		/** Executes the notification. */
+		void Notify() const {
+			m_functor->Notify();
+		}
+
+		/** @see wxEvent::Clone */
+		virtual wxEvent* Clone() const {
+			return new CMuleGUIEvent(m_functor->Clone());
+		}
+		
+	private:
+		/** Not copyable. */
+		CMuleGUIEvent(const CMuleGUIEvent&);
+		/** Not assignable. */
+		CMuleGUIEvent& operator=(const CMuleGUIEvent&);
+		
+		//! The actual functor object, 
+		CMuleNotiferBase* m_functor;
+	};
+
+	
+	/**
+	 * This function will execute or queue a given notification functor.
+	 *
+	 * If the caller is the main thread, the functor is executed immediatly,
+	 * thus acting like a regular function call. OTOH, if the caller is a 
+	 * worker thread, the functor is cloned and sent via an event to
+	 * wxTheApp.
+	 */
+	void HandleNotification(const CMuleNotiferBase& ntf);
+	
+	/** 
+	 * These functions take a function pointer and a set of arguments,
+	 * matching those of the function-pointer. A functor is created
+	 * from these and either executed immediatly, or sent as an event
+	 * in the case of non-main threads calling the functions.
+	 *
+	 * Note that the return-value of the function must be void.
+	 *
+	 * IMPORTANT: Note that the functions passed to DoNotify must not
+	 * take arguments via references, since this causes the functors
+	 * to store references to the arguments, rather than a copy and
+	 * thus ends up with dangling references.
+	 */
+	//@{
+	inline void DoNotify(void (*func)()) {
+		HandleNotification(CMuleNotifier0(func));
 	}
-
-	GUI_Event_ID ID;
-	byte			byte_value;
-	uint16			short_value;
-	uint32			long_value;
-	uint64			longlong_value;
-	wxString		string_value;
-
-	// this should NEVER be needed
-	void*			ptr_value; 
-	void*			ptr_aux_value; 
+	template <typename A1A, typename A1B>
+	inline void DoNotify(void (*func)(A1A), A1B arg1) {
+		HandleNotification(CMuleNotifier1<A1A>(func, arg1));
+	}
+	template <typename A1A, typename A1B, typename A2A, typename A2B>
+	inline void DoNotify(void (*func)(A1A, A2A), A1B arg1, A2B arg2) {
+		HandleNotification(CMuleNotifier2<A1A, A2A>(func, arg1, arg2));
+	}
+	template <typename A1A, typename A1B, typename A2A, typename A2B, typename A3A, typename A3B>
+	inline void DoNotify(void (*func)(A1A, A2A, A3A), A1B arg1, A2B arg2, A3B arg3) {
+		HandleNotification(CMuleNotifier3<A1A, A2A, A3A>(func, arg1, arg2, arg3));
+	}
+	//@}
 };
 
-//
-// macros for creation of notification events
-#define Notify_0_ValEvent(id) \
-	do { \
-		GUIEvent e(id);\
-		if ( wxThread::IsMain() ) { \
-			theApp.NotifyEvent(e); \
-		} else { \
-			wxPostEvent(&theApp,e); \
-		} \
-	} while (0)
-	
-#define Notify_1_ValEvent(id, val) \
-	do { \
-		GUIEvent e(id, val);\
-		if ( wxThread::IsMain() ) { \
-			theApp.NotifyEvent(e); \
-		} else { \
-			wxPostEvent(&theApp,e); \
-		} \
-	} while (0)
-	
-#define Notify_2_ValEvent(id, val0, val1) \
-	do { \
-		GUIEvent e(id, val0, val1);\
-		if ( wxThread::IsMain() ) { \
-			theApp.NotifyEvent(e); \
-		} else { \
-			wxPostEvent(&theApp,e); \
-		} \
-	} while (0)
-	
-#define Notify_3_ValEvent(id, val0, val1, val2) \
-	do { \
-		GUIEvent e(id, val0, val1, val2);\
-		if ( wxThread::IsMain() ) { \
-			theApp.NotifyEvent(e); \
-		} else { \
-			wxPostEvent(&theApp,e); \
-		} \
-	} while (0)
 
-#define Notify_SharedFilesShowFile(file)            Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM, file)
-#define Notify_SharedFilesRemoveFile(file)          Notify_1_ValEvent(SHAREDFILES_REMOVE_ITEM, file)
-#define Notify_SharedFilesRemoveAllItems()          Notify_0_ValEvent(SHAREDFILES_REMOVE_ALL_ITEMS)
-#define Notify_SharedFilesShowFileList(list)        Notify_1_ValEvent(SHAREDFILES_SHOW_ITEM_LIST, list)
-#define Notify_SharedFilesSort()                    Notify_0_ValEvent(SHAREDFILES_SORT)
-#define Notify_SharedFilesUpdateItem(ptr)           Notify_1_ValEvent(SHAREDFILES_UPDATE_ITEM, ptr)
+//! Placing CMuleGUIEvent in the global namespace.
+using MuleNotify::CMuleGUIEvent;
+
+//! The event-handler type that takes a CMuleGUIEvent.
+typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
+
+//! Event-handler for completed hashings of new shared files and partfiles.
+#define EVT_MULE_NOTIFY(func) \
+	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_NOTIFY, -1, -1, \
+	(wxObjectEventFunction) (wxEventFunction) \
+	wxStaticCastEvent(MuleNotifyEventFunction, &func), (wxObject*) NULL),
+
+
+
+
+// SharedFilesCtrl
+#define Notify_SharedFilesShowFile(file)			MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFile, file)
+#define Notify_SharedFilesRemoveFile(file)          MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveFile, file)
+#define Notify_SharedFilesRemoveAllItems()          MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveAllFiles)
+#define Notify_SharedFilesShowFileList()        	MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFileList)
+#define Notify_SharedFilesSort()					MuleNotify::DoNotify(&MuleNotify::SharedFilesSort)
+#define Notify_SharedFilesUpdateItem(file)			MuleNotify::DoNotify(&MuleNotify::SharedFilesUpdateItem, file)
 
 // download ctrl
-#define Notify_DownloadCtrlUpdateItem(ptr)          Notify_1_ValEvent(DOWNLOAD_CTRL_UPDATEITEM, ptr)
-#define Notify_DownloadCtrlAddFile(ptr)             Notify_1_ValEvent(DOWNLOAD_CTRL_ADD_FILE, ptr)
-#define Notify_DownloadCtrlAddSource(p0, p1, val)   Notify_3_ValEvent(DOWNLOAD_CTRL_ADD_SOURCE, p0, p1, val)
-#define Notify_DownloadCtrlRemoveFile(ptr0)         Notify_1_ValEvent(DOWNLOAD_CTRL_RM_FILE, ptr0)
-#define Notify_DownloadCtrlRemoveSource(ptr0, ptr1) Notify_2_ValEvent(DOWNLOAD_CTRL_RM_SOURCE, (void *)ptr0, (void *)ptr1)
-#define Notify_DownloadCtrlHideSource(ptr)          Notify_1_ValEvent(DOWNLOAD_CTRL_HIDE_SOURCE, ptr)
-#define Notify_DownloadCtrlSort()                   Notify_0_ValEvent(DOWNLOAD_CTRL_SORT)
+#define Notify_DownloadCtrlUpdateItem(ptr)          MuleNotify::DoNotify(&MuleNotify::DownloadCtrlUpdateItem, ptr)
+#define Notify_DownloadCtrlAddFile(file)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddFile, file)
+#define Notify_DownloadCtrlAddSource(p0, p1, val)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddSource, p0, p1, val)
+#define Notify_DownloadCtrlRemoveFile(file)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveFile, file)
+#define Notify_DownloadCtrlRemoveSource(ptr0, ptr1)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveSource, ptr0, ptr1)
+#define Notify_DownloadCtrlHideSource(ptr)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlHideSource, ptr)
+#define Notify_DownloadCtrlSort()					MuleNotify::DoNotify(&MuleNotify::DownloadCtrlSort)
 
 // upload ctrl
-#define Notify_UploadCtrlAddClient(ptr)             Notify_1_ValEvent(UPLOAD_CTRL_ADD_CLIENT, ptr)
-#define Notify_UploadCtrlRefreshClient(ptr)         Notify_1_ValEvent(UPLOAD_CTRL_REFRESH_CLIENT, ptr)
-#define Notify_UploadCtrlRemoveClient(ptr)          Notify_1_ValEvent(UPLOAD_CTRL_RM_CLIENT, ptr)
+#define Notify_UploadCtrlAddClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtUploading)
+#define Notify_UploadCtrlRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtUploading)
+#define Notify_UploadCtrlRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtUploading)
 
 // client ctrl
-#define Notify_ClientCtrlAddClient(ptr)             Notify_1_ValEvent(CLIENT_CTRL_ADD_CLIENT, ptr)
-#define Notify_ClientCtrlRefreshClient(ptr)         Notify_1_ValEvent(CLIENT_CTRL_REFRESH_CLIENT, ptr)
-#define Notify_ClientCtrlRemoveClient(ptr)          Notify_1_ValEvent(CLIENT_CTRL_RM_CLIENT, ptr)
-
-// server
-#define Notify_ServerAdd(ptr)                       Notify_1_ValEvent(SERVER_ADD, ptr)
-#define Notify_ServerRemove(ptr)                    Notify_1_ValEvent(SERVER_RM, ptr)
-#define Notify_ServerRemoveDead()                   Notify_0_ValEvent(SERVER_RM_DEAD)
-#define Notify_ServerRemoveAll()                    Notify_0_ValEvent(SERVER_RM_ALL)
-#define Notify_ServerHighlight(ptr, val)            Notify_2_ValEvent(SERVER_HIGHLIGHT, (void *)ptr, (byte)val)
-#define Notify_ServerRefresh(ptr)                   Notify_1_ValEvent(SERVER_REFRESH, ptr)
-#define Notify_ServerFreeze()                       Notify_0_ValEvent(SERVER_FREEZE)
-#define Notify_ServerThaw()                         Notify_0_ValEvent(SERVER_THAW)
-#define Notify_ServerUpdateED2KInfo()		    Notify_0_ValEvent(SERVER_UPDATEED2KINFO)
-#define Notify_ServerUpdateKadKInfo()		    Notify_0_ValEvent(SERVER_UPDATEKADINFO)
+#define Notify_ClientCtrlAddClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtClients)
+#define Notify_ClientCtrlRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtClients)
+#define Notify_ClientCtrlRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtClients)
 
 // queue list
-#define Notify_QlistAddClient(ptr)                  Notify_1_ValEvent(QLIST_CTRL_ADD_CLIENT, ptr)
-#define Notify_QlistRemoveClient(ptr)               Notify_1_ValEvent(QLIST_CTRL_RM_CLIENT, ptr)
-#define Notify_QlistRefreshClient(ptr)              Notify_1_ValEvent(QLIST_CTRL_REFRESH_CLIENT, ptr)
-#define Notify_QlistThaw()                          Notify_0_ValEvent()
+#define Notify_QlistAddClient(ptr)					MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtQueued)
+#define Notify_QlistRemoveClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
+#define Notify_QlistRefreshClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
+
+// server
+#define Notify_ServerAdd(ptr)						MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)
+#define Notify_ServerRemove(ptr)					MuleNotify::DoNotify(&MuleNotify::ServerRemove, ptr)
+#define Notify_ServerRemoveDead()					MuleNotify::DoNotify(&MuleNotify::ServerRemoveDead)
+#define Notify_ServerRemoveAll()					MuleNotify::DoNotify(&MuleNotify::ServerRemoveAll)
+#define Notify_ServerHighlight(ptr, val)			MuleNotify::DoNotify(&MuleNotify::ServerHighlight, ptr, val)
+#define Notify_ServerRefresh(ptr)					MuleNotify::DoNotify(&MuleNotify::ServerRefresh, ptr)
+#define Notify_ServerFreeze()						MuleNotify::DoNotify(&MuleNotify::ServerFreeze)
+#define Notify_ServerThaw()							MuleNotify::DoNotify(&MuleNotify::ServerThaw)
+#define Notify_ServerUpdateED2KInfo()				MuleNotify::DoNotify(&MuleNotify::ServerUpdateED2KInfo)
+#define Notify_ServerUpdateKadKInfo()				MuleNotify::DoNotify(&MuleNotify::ServerUpdateKadKInfo)
 
 // search
-#define Notify_SearchCancel()                       Notify_0_ValEvent(SEARCH_CANCEL)
-#define Notify_SearchLocalEnd()                     Notify_0_ValEvent(SEARCH_LOCAL_END)
-#define Notify_Search_Update_Sources(ptr)          Notify_1_ValEvent(SEARCH_UPDATE_SOURCES,(CSearchFile *)ptr);
-#define Notify_Search_Add_Result(s)                 Notify_1_ValEvent(SEARCH_ADD_RESULT,(CSearchFile *)s);
+#define Notify_SearchCancel()						MuleNotify::DoNotify(&MuleNotify::SearchCancel)
+#define Notify_SearchLocalEnd()						MuleNotify::DoNotify(&MuleNotify::SearchLocalEnd)
+#define Notify_Search_Update_Sources(ptr)			MuleNotify::DoNotify(&MuleNotify::Search_Update_Sources, ptr)
+#define Notify_Search_Add_Result(s)					MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
 
 // chat
-#define Notify_ChatRefreshFriend(val0, val1, s)     Notify_3_ValEvent(CHAT_REFRESH_FRIEND, val0, val1, s)
-#define Notify_ChatConnResult(val0, val1, s)             Notify_3_ValEvent(CHAT_CONN_RESULT, (byte)val0, (uint64)val1, s)
-#define Notify_ChatProcessMsg(val0, s)             Notify_3_ValEvent(CHAT_PROCESS_MSG, (byte)0, (uint64)val0, s)
+#define Notify_ChatRefreshFriend(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, val0, val1, s)
+#define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
+#define Notify_ChatProcessMsg(val0, s)				MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
 
 // misc
-#define Notify_ShowConnState(val)             		Notify_1_ValEvent(SHOW_CONN_STATE, (uint32)val)
-#define Notify_ShowUserCount(str)                   Notify_2_ValEvent(SHOW_USER_COUNT, (byte)0, str)
-#define Notify_ShowQueueCount(val)                  Notify_1_ValEvent(SHOW_QUEUE_COUNT, (uint32)val)
-#define Notify_ShowUpdateCatTabTitles()             Notify_0_ValEvent(SHOW_UPDATE_CAT_TABS)
-#define Notify_ShowGUI()             					Notify_0_ValEvent(SHOW_GUI)
+#define Notify_ShowConnState(val)					MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
+#define Notify_ShowUserCount(str)					MuleNotify::DoNotify(&MuleNotify::ShowUserCount, str)
+#define Notify_ShowQueueCount(val)					MuleNotify::DoNotify(&MuleNotify::ShowQueueCount, val)
+#define Notify_ShowUpdateCatTabTitles()				MuleNotify::DoNotify(&MuleNotify::ShowUpdateCatTabTitles)
+#define Notify_ShowGUI()							MuleNotify::DoNotify(&MuleNotify::ShowGUI)
 
 // categories
-#define Notify_CategoryAdded(cat)						Notify_0_ValEvent(CATEGORY_ADD)
-#define Notify_CategoryUpdate(cat)						Notify_1_ValEvent(CATEGORY_UPDATE, cat)
-#define Notify_CategoryDelete(cat)						Notify_1_ValEvent(CATEGORY_DELETE, cat)
+#define Notify_CategoryAdded()						MuleNotify::DoNotify(&MuleNotify::CategoryAdded)
+#define Notify_CategoryUpdate(cat)					MuleNotify::DoNotify(&MuleNotify::CategoryUpdate, cat)
+#define Notify_CategoryDelete(cat)					MuleNotify::DoNotify(&MuleNotify::CategoryDelete, cat)
 
 //
 // GUI -> core notification
 //
 
 // PartFile
-#define CoreNotify_PartFile_RemoveNoNeeded(ptr)     Notify_1_ValEvent(PARTFILE_REMOVE_NO_NEEDED,(CPartFile *)ptr);
-#define CoreNotify_PartFile_RemoveFullQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_FULL_QUEUE,(CPartFile *)ptr);
-#define CoreNotify_PartFile_RemoveHighQueue(ptr)    Notify_1_ValEvent(PARTFILE_REMOVE_HIGH_QUEUE,(CPartFile *)ptr);
-#define CoreNotify_PartFile_SourceCleanup(ptr)      Notify_1_ValEvent(PARTFILE_CLEANUP_SOURCES,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Swap_A4AF(ptr)          Notify_1_ValEvent(PARTFILE_SWAP_A4AF_THIS,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Swap_A4AF_Auto(ptr)     Notify_1_ValEvent(PARTFILE_SWAP_A4AF_THIS_AUTO,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Swap_A4AF_Others(ptr)   Notify_1_ValEvent(PARTFILE_SWAP_A4AF_OTHERS,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Pause(ptr)              Notify_1_ValEvent(PARTFILE_PAUSE,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Resume(ptr)             Notify_1_ValEvent(PARTFILE_RESUME,(CPartFile *)ptr);
-#define CoreNotify_PartFile_Stop(ptr)               Notify_1_ValEvent(PARTFILE_STOP,(CPartFile *)ptr);
-#define CoreNotify_PartFile_PrioAuto(ptr, val)      Notify_3_ValEvent(PARTFILE_PRIO_AUTO,(CPartFile *)ptr, (uint32)val, (uint64)0);
-#define CoreNotify_PartFile_PrioSet(p, v0, v1)      Notify_3_ValEvent(PARTFILE_PRIO_SET,(CPartFile *)p, (uint32)v0, (uint64)v1);
-#define CoreNotify_PartFile_Delete(ptr)             Notify_1_ValEvent(PARTFILE_DELETE,(CPartFile *)ptr);
-#define CoreNotify_PartFile_SetCat(ptr, val)        Notify_2_ValEvent(PARTFILE_SET_CAT,(CPartFile *)ptr, val);
+#define CoreNotify_PartFile_RemoveNoNeeded(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveNoNeeded, ptr)
+#define CoreNotify_PartFile_RemoveFullQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveFullQueue, ptr)
+#define CoreNotify_PartFile_RemoveHighQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveHighQueue, ptr)
+#define CoreNotify_PartFile_SourceCleanup(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_SourceCleanup, ptr)
+#define CoreNotify_PartFile_Swap_A4AF(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF, ptr)
+#define CoreNotify_PartFile_Swap_A4AF_Auto(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Auto, ptr)
+#define CoreNotify_PartFile_Swap_A4AF_Others(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Others, ptr)
+#define CoreNotify_PartFile_Pause(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Pause, ptr)
+#define CoreNotify_PartFile_Resume(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Resume, ptr)
+#define CoreNotify_PartFile_Stop(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Stop, ptr)
+#define CoreNotify_PartFile_PrioAuto(ptr, val)		MuleNotify::DoNotify(&MuleNotify::PartFile_PrioAuto, ptr, val)
+#define CoreNotify_PartFile_PrioSet(p, v0, v1)		MuleNotify::DoNotify(&MuleNotify::PartFile_PrioSet, p, v0, v1)
+#define CoreNotify_PartFile_Delete(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Delete, ptr)
+#define CoreNotify_PartFile_SetCat(ptr, val)		MuleNotify::DoNotify(&MuleNotify::PartFile_SetCat, ptr, val)
+
 // KnownFile
-#define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_UP_PRIO,(CKnownFile *)ptr, (uint8)val);
-#define CoreNotify_KnownFile_Up_Prio_Auto(ptr)      Notify_1_ValEvent(KNOWNFILE_SET_UP_PRIO_AUTO,(CKnownFile *)ptr);
-#define CoreNotify_KnownFile_Comment_Set(ptr, val)  Notify_2_ValEvent(KNOWNFILE_SET_COMMENT,(CKnownFile *)ptr, val);
+#define CoreNotify_KnownFile_Up_Prio_Set(ptr, val)	MuleNotify::DoNotify(&MuleNotify::KnownFile_Up_Prio_Set, ptr, val)
+#define CoreNotify_KnownFile_Up_Prio_Auto(ptr)		MuleNotify::DoNotify(&MuleNotify::KnownFile_Up_Prio_Auto, ptr)
+#define CoreNotify_KnownFile_Comment_Set(ptr, val)	MuleNotify::DoNotify(&MuleNotify::KnownFile_Comment_Set, ptr, val)
 
 // Search
+#define CoreNotify_Search_Add_Download(ptr, val)	MuleNotify::DoNotify(&MuleNotify::Search_Add_Download, ptr, val)
+#define CoreNotify_Search_Update_Progress(val)		MuleNotify::DoNotify(&MuleNotify::Search_Update_Progress, val)
 
-#define CoreNotify_Search_Add_Download(ptr, val)    Notify_2_ValEvent(SEARCH_ADD_TO_DLOAD,(CSearchFile *)ptr, (uint8)val);
-
-#define CoreNotify_Search_Update_Progress(val)      Notify_1_ValEvent(SEARCH_UPDATE_PROGRESS, (uint32)val);
 // download queue
-#define CoreNotify_Download_Set_Cat_Prio(cat, pri)  Notify_2_ValEvent(DLOAD_SET_CAT_PRIO, cat, pri);
-#define CoreNotify_Download_Set_Cat_Status(cat, st) Notify_2_ValEvent(DLOAD_SET_CAT_STATUS, cat, st);
-
+#define CoreNotify_Download_Set_Cat_Prio(cat, pri)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Prio, cat, pri)
+#define CoreNotify_Download_Set_Cat_Status(cat, st)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Status, cat, st)
 
 
 #endif // __GUIEVENTS_H__

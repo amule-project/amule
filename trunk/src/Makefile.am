@@ -185,6 +185,7 @@ common_sources = \
 	ECSpecialMuleTags.cpp \
 	KnownFile.cpp \
 	GetTickCount.cpp \
+	GuiEvents.cpp \
 	Logger.cpp \
 	PartFile.cpp \
 	Preferences.cpp \
@@ -303,6 +304,7 @@ noinst_HEADERS = ThreadScheduler.h \
 		Color.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
+		Constants.h \
 		CryptoPP.h \
 		CryptoPP_Inc.h \
 		DirectoryTreeCtrl.h \

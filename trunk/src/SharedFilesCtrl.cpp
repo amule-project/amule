@@ -34,10 +34,11 @@
 #include "OPCodes.h"			// Needed for MP_PRIOVERYLOW
 #include "amule.h"				// Needed for theApp
 #include "Color.h"				// Needed for SYSCOLOR
-#include "ServerConnect.h"			// Needed for CServerConnect
-#include "Preferences.h"
+#include "ServerConnect.h"		// Needed for CServerConnect
+#include "Preferences.h"		// Needed for thePrefs
 #include "BarShader.h"			// Needed for CBarShader
 #include "DataToText.h"			// Needed for PriorityToStr
+#include "GuiEvents.h"			// Needed for CoreNotify_*
 
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
@@ -163,12 +164,12 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 
 
 #ifndef CLIENT_GUI
-void CSharedFilesCtrl::ShowFileList(CSharedFileList* list)
+void CSharedFilesCtrl::ShowFileList()
 {
 	DeleteAllItems();
 
 	std::vector<CKnownFile*> files;
-	list->CopyFileList(files);
+	theApp.sharedfiles->CopyFileList(files);
 	for (unsigned i = 0; i < files.size(); ++i) {
 		ShowFile( files[i] );
 	}

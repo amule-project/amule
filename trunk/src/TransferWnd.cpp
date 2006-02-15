@@ -48,8 +48,10 @@
 #include "MuleNotebook.h"
 #include "Preferences.h"
 #include "ClientList.h"
-#include "Statistics.h"		// Needed for theStats
+#include "Statistics.h"			// Needed for theStats
 #include "SharedFileList.h"		// Needed for CSharedFileList
+#include "GuiEvents.h"			// Needed for CoreNotify_*
+
 
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)

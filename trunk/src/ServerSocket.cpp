@@ -49,6 +49,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 #include "IPFilter.h"
+#include "GuiEvents.h"		// Needed for Notify_*
 
 
 

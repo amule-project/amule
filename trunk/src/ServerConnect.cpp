@@ -42,6 +42,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "NetworkFunctions.h"	// for StringHosttoUint32
 #include "Logger.h"
+#include "GuiEvents.h"		// Needed for Notify_*
 #include <common/Format.h>
 
 #include <wx/utils.h>

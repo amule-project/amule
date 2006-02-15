@@ -39,6 +39,7 @@
 #include "Packet.h"			// Needed for CPacket
 #include "kademlia/utils/UInt128.h" // Needed for CUInt128
 #include "SearchFile.h"		// Needed for CSearchFile
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include <algorithm>
 

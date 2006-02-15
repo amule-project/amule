@@ -73,6 +73,8 @@
 #include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
 #include "ThreadTasks.h"
+#include "GuiEvents.h"			// Neded for EVT_MULE_NOTIFY
+
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
@@ -106,7 +108,8 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	// Core timer
 	EVT_MULE_TIMER(ID_CORETIMER, CamuleDaemonApp::OnCoreTimer)
 
-	EVT_CUSTOM(wxEVT_MULE_NOTIFY_EVENT, -1, CamuleDaemonApp::OnNotifyEvent)
+	EVT_MULE_NOTIFY(CamuleDaemonApp::OnNotifyEvent)
+	EVT_MULE_LOGGING(CamuleDaemonApp::OnLoggingEvent)
 
 	// Async dns handling
 	EVT_MULE_INTERNAL(wxEVT_CORE_UDP_DNS_DONE, -1, CamuleDaemonApp::OnUDPDnsDone)
@@ -549,34 +552,8 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 }
 
 
-void CamuleDaemonApp::NotifyEvent(const GUIEvent& event)
+void CamuleDaemonApp::OnLoggingEvent(CLoggingEvent& evt)
 {
-	switch (event.ID) {
-		// GUI->CORE events
-		// it's daemon, so gui isn't here, but macros can be used as function calls
-		case SEARCH_ADD_TO_DLOAD:
-			downloadqueue->AddSearchToDownload((CSearchFile *)event.ptr_value, event.byte_value);
-			break;
-
-		case SHAREDFILES_SHOW_ITEM:
-			//printf("SHAREDFILES_SHOW_ITEM: %p\n", event.ptr_value);
-			break;
-			
-		case DOWNLOAD_CTRL_ADD_SOURCE:
-		/*
-		printf("ADD_SOURCE: adding source %p to partfile %s\n",
-		       event.ptr_aux_value, ((CPartFile*)event.ptr_value)->GetFullName().c_str());
-		*/
-			break;
-
-		case ADDLOGLINE:
-			AddLogLine(event.string_value);
-			break;
-		case ADDDEBUGLOGLINE:
-			//printf("DEBUGLOG: %s\n", event.string_value.c_str());
-			break;
-		default:
-			//printf("WARNING: event %d in daemon should not happen\n", event.ID);
-			break;
-	}
+	CamuleApp::AddLogLine(evt.Message());
 }
+

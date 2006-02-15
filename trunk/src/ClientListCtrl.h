@@ -27,27 +27,10 @@
 #define CLIENTLISTCTRL_H
 
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
+#include "Constants.h"			// Needed for ViewType
 
 
 class CUpDownClient;
-
-
-//! This enum lists the views currently supported by the CClientListCtrl class.
-enum ViewType
-{ 
-	//! The "neutral" state, where nothing is displayed.
-	vtNone = 0,
-	
-	//! Clients which are recieved files are displayed.
-	vtUploading = 1,
-	
-	//! Clients which are queued for files are displayed.
-	vtQueued = 2,
-	
-	//! All clients are displayed.
-	vtClients = 3
-};
-
 
 
 /**

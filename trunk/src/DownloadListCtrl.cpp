@@ -56,6 +56,7 @@
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
 #include "SharedFileList.h"		// Needed for CSharedFileList
+#include "GuiEvents.h"			// Needed for CoreNotify_*
 
 #include <list>
 

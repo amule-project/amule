@@ -53,6 +53,8 @@
 #include "FileFunctions.h"	// Needed for CDirIterator
 #include "OtherFunctions.h"	// Needed for CMutexUnlocker
 #include "FileLock.h"		// Needed for CFileLock
+#include "Constants.h"		// Needed for DownloadItemType
+#include "GuiEvents.h"		// Needed for Notify_*
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -639,7 +641,7 @@ bool CDownloadQueue::RemoveSource(CUpDownClient* toremove, bool	WXUNUSED(updatew
 	toremove->SetDownloadState(DS_NONE);
 
 	// Remove from downloadlist widget
-	Notify_DownloadCtrlRemoveSource(toremove,0);
+	Notify_DownloadCtrlRemoveSource(toremove, (CPartFile*)NULL);
 	toremove->ResetFileStatusInfo();
 
 	return removed;
