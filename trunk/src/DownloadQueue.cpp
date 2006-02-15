@@ -517,6 +517,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	// source is NULL, then we have to treat it almost like a new source and if
 	// it isn't NULL and not "sender", then we shouldn't move it, but rather add
 	// a request for the new file.
+	ESourceFrom nSourceFrom = source->GetSourceFrom();
 	if ( theApp.clientlist->AttachToAlreadyKnown(&source, 0) ) {
 		// Already queued for another file?
 		if ( source->GetRequestFile() ) {
@@ -529,7 +530,12 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 			// Source was known, but reqfile NULL. I'm not sure if this can 
 			// happen, but it's best to be certain, so I handle this case as well
 			source->SetRequestFile( sender );
-			
+			if (source->GetSourceFrom() != nSourceFrom) {
+				if (source->GetSourceFrom() != SF_NONE) {
+					theStats::RemoveSourceOrigin(source->GetSourceFrom());
+				}
+				source->SetSourceFrom(nSourceFrom);
+			}
 			sender->AddSource( source );
 			if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
 				sender->UpdateFileRatingCommentAvail();
