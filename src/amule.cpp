@@ -413,7 +413,7 @@ bool CamuleApp::OnInit()
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
-	cmdline.AddSwitch(wxT("Iamscaredofnodangerouscode"), wxT("I-am-scared-of-no-dangerous-code"), wxT("Runs aMule scary SVN development version at your own risk."));
+	cmdline.AddSwitch(wxT("onlychucknorriswouldstopme"), wxT("only-chuck-norris-would-stop-me"), wxT("Runs aMule scary SVN development version at your own risk."));
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
@@ -423,8 +423,8 @@ bool CamuleApp::OnInit()
 		return false;
 	}	
 
-	if ( !cmdline.Found(wxT("I-am-scared-of-no-dangerous-code")) ) {
-		printf("This binary requires you to use the flag --I-am-scared-of-no-dangerous-code and only if you're very sure of it.\n");
+	if ( !cmdline.Found(wxT("only-chuck-norris-would-stop-me")) ) {
+		printf("This binary requires you to use the flag --only-chuck-norris-would-stop-me and only if you're very sure of it.\n");
 		return false;
 	}		
 		
