@@ -53,7 +53,7 @@ CECTag::CECTag(const NullTagConstructorSelector*) :
 	m_tagData(s_theNullTagData),
 	m_tagName(0),
 	m_dataLen(0),
-	m_dataType(EC_TAGTYPE_ANYTYPE),
+	m_dataType(EC_TAGTYPE_UNKNOWN),
 	m_dynamic(false),
 	m_tagList(),
 	m_haschildren(false)
@@ -667,7 +667,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 double CECTag::GetDoubleData(void) const
 {
-	wxASSERT((m_dataType = EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_ANYTYPE));
+	wxASSERT((m_dataType = EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_UNKNOWN));
 	
 	wxString str = GetStringData();
 	struct lconv *lc = localeconv();
