@@ -203,7 +203,7 @@ void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 
 void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 {
-	if ((not batch) and (FindItem((long)file, -1) > -1)) {
+	if ((not batch) and (FindItem(-1, (long)file) > -1)) {
 		return;
 	}
 	
@@ -577,7 +577,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 
 wxString CSharedFilesCtrl::GetTTSText(unsigned item) const
 {
-	return GetItemText(item);
+	return ((CKnownFile*)GetItemData(item))->GetFileName();
 }
 
 
