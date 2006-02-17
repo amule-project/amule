@@ -333,27 +333,20 @@ void CSharedFileList::FindSharedFiles()
 	// Reload shareddir.dat
 	theApp.glob_prefs->ReloadSharedFolders();
 
-	/* All part files are automatically shared. */
-	bool wasEmpty;
-
 	{
 		wxMutexLocker lock(list_mut);
-		wasEmpty = m_Files_map.empty();
-	  	if (!wasEmpty) {
-			m_Files_map.clear();
-		}
+		m_Files_map.clear();
 	}
 
-  	if (!wasEmpty) {
-		for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
-			CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
+	// All part files are automatically shared.
+	for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
+		CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
+		
+		if ( file->GetStatus(true) == PS_READY ) {
+			printf("Adding file %s to shares\n",
+				(const char *)unicode2char( file->GetFullName() ) );
 			
-			if ( file->GetStatus(true) == PS_READY ) {
-				printf("Adding file %s to shares\n",
-					(const char *)unicode2char( file->GetFullName() ) );
-				
-				SafeAddKFile( file, true );
-			}
+			AddFile(file);
 		}
 	}
 
@@ -489,13 +482,11 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			continue;
 		}
 		
-		CKnownFile* toadd=filelist->FindKnownFile(fname, fdate, fileLength);
-		//theApp.Yield();
+		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fileLength);
 		if (toadd) {
 			if ( AddFile(toadd) ) {
 				AddDebugLogLineM(false, logKnownFiles, wxT("Added known file ") + fname + wxT(" to shares"));
 				toadd->SetFilePath(directory);
-				Notify_SharedFilesShowFile(toadd);
 			} else {
 				if (fname != toadd->GetFileName()) {
 					AddDebugLogLineM(false, logKnownFiles, wxT("Warning: File '") + directory + fname + wxT("' already shared as '") + toadd->GetFileName() + wxT("'"));
@@ -562,7 +553,9 @@ void CSharedFileList::RemoveFile(CKnownFile* toremove){
 	m_keywords->RemoveKeywords(toremove);
 }
 
-void CSharedFileList::Reload(bool firstload){
+
+void CSharedFileList::Reload()
+{
 	// Madcat - Disable reloading if reloading already in progress.
 	// Kry - Fixed to let non-english language users use the 'Reload' button :P
 	// deltaHF - removed the old ugly button and changed the code to use the new small one
@@ -579,15 +572,15 @@ void CSharedFileList::Reload(bool firstload){
 		/* And now the unreferenced keywords must be removed also */
 		m_keywords->PurgeUnreferencedKeywords();
 		
-		if (firstload == false) {
-			Notify_SharedFilesShowFileList();
-		}
-		Notify_SharedFilesSort();
+		Notify_SharedFilesShowFileList();
+	
 		reloading = false;
 	}
 }
 
-const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
+
+const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const
+{
 	wxMutexLocker lock(list_mut);
 	if ( index >= m_Files_map.size() ) {
 		return NULL;
@@ -596,6 +589,7 @@ const CKnownFile *CSharedFileList::GetFileByIndex(unsigned int index) const {
 	std::advance(pos, index);
 	return pos->second;
 }
+
 
 CKnownFile*	CSharedFileList::GetFileByID(const CMD4Hash& filehash)
 {
@@ -916,9 +910,8 @@ void CSharedFileList::CreateOfferedFilePacket(
 		}
 		delete pTag;		
 	}
-	
-	
 }
+
 
 void CSharedFileList::Process()
 {

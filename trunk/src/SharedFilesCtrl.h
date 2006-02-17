@@ -59,9 +59,11 @@ public:
 #endif
 
 	/**
-	 * Adds the specified file to the list.
+	 * Adds the specified file to the list, updating filecount and more.
 	 *
 	 * @param file The new file to be shown.
+	 * 
+	 * Note that the item is inserted in sorted order.
 	 */
 	void	ShowFile(CKnownFile* file);
 
@@ -86,15 +88,13 @@ public:
 	
 private:
 	/**
-	 * Updates the item at the specified position using the specified file.
+	 * Adds the specified file to the list. 
 	 *
-	 * @param file The file to use as reference.
-	 * @param pos The item which to update.
-	 *
-	 * This function updates the fields of the specified item, using the data
-	 * taken from the pointed to file.
+	 * If 'batch' is true, the item will be inserted last,
+	 * and the files-count will not be updated, nor is 
+	 * the list checked for dupes.
 	 */
-	void	UpdateFile(CKnownFile* file, long pos);
+	void	DoShowFile(CKnownFile* file, bool batch);
 	
 	/**
 	 * Draws the graph of file-part availability.
