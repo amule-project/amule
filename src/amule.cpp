@@ -673,7 +673,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// reload shared files
-	sharedfiles->Reload(true);
+	sharedfiles->Reload();
 
 	
 	if (thePrefs::IPFilterAutoLoad()) {

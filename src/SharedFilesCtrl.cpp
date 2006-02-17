@@ -166,13 +166,19 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 #ifndef CLIENT_GUI
 void CSharedFilesCtrl::ShowFileList()
 {
+	Freeze();
 	DeleteAllItems();
 
 	std::vector<CKnownFile*> files;
 	theApp.sharedfiles->CopyFileList(files);
 	for (unsigned i = 0; i < files.size(); ++i) {
-		ShowFile( files[i] );
+		DoShowFile(files[i], true);
 	}
+
+	SortList();
+	ShowFilesCount();
+	
+	Thaw();
 }
 #endif
 
@@ -189,65 +195,26 @@ void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)
 }
 
 
-void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
+void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 {
-	wxString buffer;
-	
-	SetItemData( itemnr, (long)file );
-
-	SetItem(itemnr, ID_SHARED_COL_NAME, file->GetFileName() );
-	SetItem(itemnr, ID_SHARED_COL_TYPE, GetFiletypeByName(file->GetFileName()) );
-	SetItem(itemnr, ID_SHARED_COL_SIZE, CastItoXBytes(file->GetFileSize()) );
-	SetItem(itemnr, ID_SHARED_COL_PRIO, PriorityToStr( file->GetUpPriority(), file->IsAutoUpPriority() ) );
-
-	SetItem( itemnr, ID_SHARED_COL_ID, file->GetFileHash().Encode() );
-
-	buffer = wxString::Format( wxT("%u (%u)"), file->statistic.GetRequests(), file->statistic.GetAllTimeRequests() );
-	SetItem( itemnr, ID_SHARED_COL_REQ, buffer );
-	
-	buffer = wxString::Format( wxT("%u (%u)"), file->statistic.GetAccepts(), file->statistic.GetAllTimeAccepts() );
-	SetItem( itemnr, ID_SHARED_COL_AREQ, buffer );
-	
-	buffer = CastItoXBytes(file->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
-	SetItem( itemnr, ID_SHARED_COL_TRA, buffer );
-
-	if ( file->m_nCompleteSourcesCountLo == 0 ) {
-		if ( file->m_nCompleteSourcesCountHi ) {
-			buffer = wxString::Format(wxT("< %u"), file->m_nCompleteSourcesCountHi );
-		} else {
-			buffer = wxT("0");
-		}
-	} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
-		buffer = wxString::Format(wxT("%u"), file->m_nCompleteSourcesCountLo);
-	} else {
-		buffer = wxString::Format(wxT("%u - %u"), file->m_nCompleteSourcesCountLo, file->m_nCompleteSourcesCountHi);
-	}
-
-	SetItem( itemnr, ID_SHARED_COL_CMPL, buffer );
-
-	if ( file->IsPartFile() ) {
-		SetItem( itemnr, ID_SHARED_COL_PATH, _("[PartFile]") );
-	} else {
-		SetItem( itemnr, ID_SHARED_COL_PATH, file->GetFilePath() );
-	}
+	DoShowFile(file, false);
 }
 
 
-void CSharedFilesCtrl::ShowFile(CKnownFile* file)
+void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 {
-	long newitem = InsertItem( GetInsertPos((long)file), file->GetFileName() );
+	if ((not batch) and (FindItem((long)file, -1) > -1)) {
+		return;
+	}
+	
+	const long insertPos = (batch ? GetItemCount() : GetInsertPos((long)file));
+
+	long newitem = InsertItem(insertPos, wxEmptyString);
 	SetItemData( newitem, (long)file );
-	
-	// set background...
-	wxListItem myitem;
-	myitem.m_itemId = newitem;
-	myitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
-	
-	SetItem( myitem );
-	
-	UpdateFile( file, newitem );
-	
-	ShowFilesCount();
+
+	if (not batch) {	
+		ShowFilesCount();
+	}
 }
 
 void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
@@ -269,7 +236,7 @@ void CSharedFilesCtrl::OnSetPriority( wxCommandEvent& event )
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 		CoreNotify_KnownFile_Up_Prio_Set( file, priority );
 
-		UpdateFile( file, index );
+		RefreshItem( index );
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
@@ -284,7 +251,7 @@ void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& WXUNUSED(event) )
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 		CoreNotify_KnownFile_Up_Prio_Auto(file);
 
-		UpdateFile( file, index );
+		RefreshItem( index );
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
@@ -423,7 +390,7 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 	long result = FindItem( -1, (long)toupdate );
 	
 	if ( result > -1 ) {
-		UpdateFile(toupdate, result);
+		RefreshItem(result);
 
 		if ( GetItemState( result, wxLIST_STATE_SELECTED ) ) {
 			theApp.amuledlg->sharedfileswnd->SelectionUpdated();
@@ -500,19 +467,12 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 				columnWidth - 2 * SPARE_PIXELS_HORZ, rect.height);
 			
 			wxDCClipper clipper(*dc, columnRect);
-					
+			
+			wxString textBuffer;
 			switch ( i ) {
-				case ID_SHARED_COL_PART: {
-					if ( file->GetPartCount() ) {
-						wxRect barRect(columnRect.x, columnRect. y + 1, 
-							columnRect.width, columnRect.height - 2);
-						
-						DrawAvailabilityBar(file, dc, barRect);
-					}
-					break;
-				}
-				
 				case ID_SHARED_COL_NAME:
+					textBuffer = file->GetFileName();
+
 					if (file->GetFileRating() || file->GetFileComment().Length()) {
 						int image = Client_CommentOnly_Smiley;
 						if (file->GetFileRating()) {
@@ -534,14 +494,78 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 						columnRect.x += (imgWidth + 4);
 					}
 
-				default: {
-					wxListItem columnItem;
-					columnItem.m_col = i;
-					columnItem.m_itemId = item;
-					GetItem(columnItem);
-					dc->DrawText(columnItem.m_text, columnRect.x, columnRect.y + textVOffset );
 					break;
-				}
+				
+				case ID_SHARED_COL_SIZE:
+					textBuffer = CastItoXBytes(file->GetFileSize());
+					break;
+
+				case ID_SHARED_COL_TYPE:
+					textBuffer = GetFiletypeByName(file->GetFileName());
+					break;
+
+				case ID_SHARED_COL_PRIO:
+					textBuffer = PriorityToStr(file->GetUpPriority(), file->IsAutoUpPriority());
+					break;
+
+				case ID_SHARED_COL_ID:
+					textBuffer = file->GetFileHash().Encode();
+					break;
+				
+				case ID_SHARED_COL_REQ:
+					textBuffer = wxString::Format(wxT("%u (%u)"),
+							file->statistic.GetRequests(),
+							file->statistic.GetAllTimeRequests());
+					break;
+
+				case ID_SHARED_COL_AREQ:
+					textBuffer = wxString::Format(wxT("%u (%u)"),
+							file->statistic.GetAccepts(),
+							file->statistic.GetAllTimeAccepts());
+					break;
+
+				case ID_SHARED_COL_TRA:
+					textBuffer = CastItoXBytes(file->statistic.GetTransfered())
+						+ wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
+					break;
+					
+				
+				case ID_SHARED_COL_PART:
+					if ( file->GetPartCount() ) {
+						wxRect barRect(columnRect.x, columnRect. y + 1, 
+							columnRect.width, columnRect.height - 2);
+						
+						DrawAvailabilityBar(file, dc, barRect);
+					}
+					break;
+				
+				case ID_SHARED_COL_CMPL:
+					if ( file->m_nCompleteSourcesCountLo == 0 ) {
+						if ( file->m_nCompleteSourcesCountHi ) {
+							textBuffer = wxString::Format(wxT("< %u"), file->m_nCompleteSourcesCountHi );
+						} else {
+							textBuffer = wxT("0");
+						}
+					} else if (file->m_nCompleteSourcesCountLo == file->m_nCompleteSourcesCountHi) {
+						textBuffer = wxString::Format(wxT("%u"), file->m_nCompleteSourcesCountLo);
+					} else {
+						textBuffer = wxString::Format(wxT("%u - %u"),
+								file->m_nCompleteSourcesCountLo,
+								file->m_nCompleteSourcesCountHi);
+					}
+					
+					break;				
+				
+				case ID_SHARED_COL_PATH:
+					if ( file->IsPartFile() ) {
+						textBuffer = _("[PartFile]");
+					} else {
+						textBuffer = file->GetFilePath();
+					}
+			}
+
+			if (not textBuffer.IsEmpty()) {
+				dc->DrawText(textBuffer, columnRect.x, columnRect.y + textVOffset);
 			}
 		}
 

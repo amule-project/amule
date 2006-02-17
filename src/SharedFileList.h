@@ -49,8 +49,7 @@ class CSharedFileList {
 public:
 	CSharedFileList(CKnownFileList* in_filelist);
 	~CSharedFileList();
-	bool	AddFile(CKnownFile* pFile);
-	void 	Reload(bool firstload = false);
+	void 	Reload();
 	void	SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd = false);
 	void	RemoveFile(CKnownFile* toremove);
 	CKnownFile*	GetFileByID(const CMD4Hash& filehash);
@@ -77,6 +76,7 @@ public:
 	void	ClearKadSourcePublishInfo();
 	
 private:
+	bool	AddFile(CKnownFile* pFile);
 	void	FindSharedFiles();
 	bool	reloading;
 	

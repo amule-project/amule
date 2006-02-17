@@ -141,11 +141,6 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			}
 		
 			NotifyObservers( EventType( EventType::INSERTED, toadd ) );
-		
-			if ( toadd->GetStatus(true) == PS_READY ) {
-				theApp.sharedfiles->SafeAddKFile( toadd, true ); 
-			}
-		
 			Notify_DownloadCtrlAddFile(toadd);
 		} else {
 			delete toadd;

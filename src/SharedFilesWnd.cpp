@@ -136,7 +136,7 @@ void CSharedFilesWnd::SelectionUpdated()
 
 void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 {
-	theApp.sharedfiles->Reload(false);
+	theApp.sharedfiles->Reload();
 #ifndef CLIENT_GUI
 	// remote gui will update display when data is back
 	SelectionUpdated();

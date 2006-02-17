@@ -62,7 +62,6 @@ namespace MuleNotify
 	void SharedFilesRemoveFile(CKnownFile* file);
 	void SharedFilesRemoveAllFiles();
 	void SharedFilesShowFileList();
-	void SharedFilesSort();
 	void SharedFilesUpdateItem(CKnownFile* file);
 
 	void DownloadCtrlUpdateItem(const void* item);

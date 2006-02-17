@@ -520,7 +520,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (	CfgChanged(IDC_INCFILES) ||
 		CfgChanged(IDC_TEMPFILES) ||
 		m_ShareSelector->HasChanged ) {
-		theApp.sharedfiles->Reload(false);
+		theApp.sharedfiles->Reload();
 	}
 
 	if ( CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG) ) {

@@ -208,15 +208,6 @@ namespace MuleNotify
 #endif
 	}
 
-	void SharedFilesSort()
-	{
-#ifndef AMULE_DAEMON
-		if (theApp.amuledlg->sharedfileswnd and theApp.amuledlg->sharedfileswnd->sharedfilesctrl) {
-			theApp.amuledlg->sharedfileswnd->sharedfilesctrl->SortList();
-		}
-#endif
-	}
-
 
 	void SharedFilesUpdateItem(CKnownFile* NOT_ON_DAEMON(file))
 	{
