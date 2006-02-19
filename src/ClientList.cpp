@@ -419,7 +419,6 @@ bool CClientList::AttachToAlreadyKnown(CUpDownClient** client, CClientTCPSocket*
 															+ wxT(") and ") + found_client->GetUserName() + wxT("(") +  found_client->GetFullIP() + wxT(")"));
 					return false;
 				}
-				found_client->GetSocket()->SetClient( NULL );
 				found_client->GetSocket()->Safe_Delete();
 			}
 			found_client->SetSocket( sender );
@@ -1006,4 +1005,3 @@ void CClientList::CleanUpClientList()
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
 	}
 }
-

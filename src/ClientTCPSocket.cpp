@@ -89,7 +89,7 @@ void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
 		return;
 	}
 	
-	if (socket->OnDestroy() || socket->deletethis) {
+	if (socket->OnDestroy() || socket->ForDeletion()) {
 		return;
 	}
 	
@@ -129,7 +129,7 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 {
 	SetClient(in_client);
 	ResetTimeOutTimer();
-	deletethis = false;
+	m_ForDeletion = false;
 
 	SetEventHandler(g_clientReqSocketHandler, CLIENTTCPSOCKET_HANDLER);
 	SetNotify(
@@ -246,17 +246,18 @@ void CClientTCPSocket::Disconnect(const wxString& strReason)
 
 void CClientTCPSocket::Safe_Delete()
 {
-	if ( !deletethis && !OnDestroy() ) {
+	if ( !ForDeletion() && !OnDestroy() ) {
 		// Paranoia is back.
 		SetNotify(0);
 		Notify(false);
 		// lfroen: first of all - stop handler
-		deletethis = true;
+		m_ForDeletion = true;
 
 		if (m_client) {
 			m_client->SetSocket( NULL );
 			m_client = NULL;
 		}
+		
 		byConnected = ES_DISCONNECTED;
 		Close(); // Destroy is suposed to call Close(), but.. it doesn't hurt.
 		Destroy();
@@ -1744,7 +1745,7 @@ bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint
 	#endif
 		
 	if (!m_client) {
-		throw wxString(wxT("Unknown clients sends extended protocol packet"));
+		throw wxString(wxT("Unknown clients sends extended ED2Kv2 protocol packet"));
 	}
 
 	CMemFile data(buffer, size);
@@ -1770,7 +1771,7 @@ bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint
 				theStats::AddDownOverheadFileRequest(size);
 				break;
 			}
-			
+
 			default:
 				theStats::AddDownOverheadOther(size);
 				AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("ED2Kv2 packet : unknown opcode: %i %x from "), opcode, opcode) + m_client->GetFullIP());
