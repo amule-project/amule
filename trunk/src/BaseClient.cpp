@@ -288,7 +288,6 @@ CUpDownClient::~CUpDownClient()
 	// The socket should have been removed in Safe_Delete, but it
 	// doesn't hurt to have an extra check.
 	if (m_socket) {
-		m_socket->SetClient( NULL );
 		m_socket->Safe_Delete();
 		// We're going down anyway....
 		m_socket->Destroy();
@@ -374,7 +373,6 @@ void CUpDownClient::Safe_Delete()
 
 	// Close the socket to avoid any more connections and related events
 	if ( m_socket ) {
-		m_socket->SetClient( NULL );
 		m_socket->Safe_Delete();
 		// Paranoia
 		SetSocket(NULL);

@@ -165,7 +165,7 @@ void CListenSocket::Process()
 	while ( it != socket_list.end() ) {
 		CClientTCPSocket* cur_socket = *it++;
 		if (!cur_socket->OnDestroy()) {
-			if (cur_socket->deletethis) {
+			if (cur_socket->ForDeletion()) {
 				cur_socket->Destroy();
 			} else {
 				cur_socket->CheckTimeOut();

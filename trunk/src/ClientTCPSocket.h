@@ -49,17 +49,16 @@ class CClientTCPSocket : public CEMSocket
 {
 	DECLARE_DYNAMIC_CLASS(CClientTCPSocket)
 public:
-	CClientTCPSocket(CUpDownClient* in_client = 0, const CProxyData *ProxyData = NULL);	
+	CClientTCPSocket(CUpDownClient* in_client = NULL, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientTCPSocket();
 	
 	void		Disconnect(const wxString& strReason);
 
-	void		ResetTimeOutTimer();
 	bool		CheckTimeOut();
 
 	void		Safe_Delete();
 
-	bool		deletethis; // 0.30c (Creteil), set as bool
+	bool		ForDeletion() const { return m_ForDeletion; }
 
 	void		OnConnect(int nErrorCode);
 	void		OnSend(int nErrorCode);
@@ -67,10 +66,7 @@ public:
 	
 	void		OnClose(int nErrorCode);
 	void		OnError(int nErrorCode);
-	
-	uint32		timeout_timer;
-
-	void		SetClient(CUpDownClient* client);
+		
 	CUpDownClient* GetClient() { return m_client; }
 	
 	virtual void SendPacket(CPacket* packet, bool delpacket = true, bool controlpacket = true, uint32 actualPayloadSize = 0);
@@ -83,12 +79,15 @@ protected:
 private:
 	CUpDownClient*	m_client;
 
-//	void	Delete_Timed();
 	bool	ProcessPacket(const byte* packet, uint32 size, uint8 opcode);
 	bool	ProcessExtPacket(const byte* packet, uint32 size, uint8 opcode);
 	bool	ProcessED2Kv2Packet(const byte* packet, uint32 size, uint8 opcode);
 	bool	IsMessageFiltered(const wxString& Message, CUpDownClient* client);
+	void	ResetTimeOutTimer();
+	void	SetClient(CUpDownClient* client);
 
+	bool	m_ForDeletion; // 0.30c (Creteil), set as bool
+	uint32		timeout_timer;
 };
 
 #endif // CLIENTTCPSOCKET_H
