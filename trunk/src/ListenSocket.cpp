@@ -33,6 +33,7 @@
 #include "OPCodes.h"		// Needed for LISTENSOCKET_HANDLER
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "updownclient.h"	// Needed for CUpDownClient
+#include "IPFilter.h"		// Needed for CIPFilter
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -141,12 +142,17 @@ void CListenSocket::OnAccept(int nErrorCode)
 				newclient->Safe_Delete();
 			} else {
 				wxASSERT(theApp.IsRunning());
-
-				#ifdef __DEBUG__
+			
+				// Check if the client is filtered the moment it connects, as this 
+				// is the earliest point at which it is possible.
 				amuleIPV4Address addr;
 				newclient->GetPeer(addr);
-				AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
-				#endif
+				if (theApp.ipfilter->IsFiltered(StringIPtoUint32(addr.IPAddress()))) {
+					AddDebugLogLineM(false, logClient, wxT("Rejected connection from ") + addr.IPAddress());
+					newclient->Safe_Delete();
+				} else {
+					AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
+				}
 			}
 		}
 	}
