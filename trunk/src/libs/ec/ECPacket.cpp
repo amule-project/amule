@@ -668,8 +668,13 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 double CECTag::GetDoubleData(void) const
 {
 	wxASSERT((m_dataType = EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+	if ( m_dataType == EC_TAGTYPE_UNKNOWN ) {
+		return 0;
+	}
 	
-	wxString str = GetStringData();
+	// GetStringData() will assert due to wrong m_dataType
+	wxString str(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv);
+
 	struct lconv *lc = localeconv();
 	str.Replace(wxT("."), char2unicode(lc->decimal_point));
 
