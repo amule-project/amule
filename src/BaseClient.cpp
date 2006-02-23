@@ -289,10 +289,6 @@ CUpDownClient::~CUpDownClient()
 	// doesn't hurt to have an extra check.
 	if (m_socket) {
 		m_socket->Safe_Delete();
-		// We're going down anyway....
-		if ( m_socket ) {
-			m_socket->Destroy();
-		}
 		// Paranoia
 		SetSocket(NULL);
 	}

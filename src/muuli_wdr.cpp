@@ -355,39 +355,47 @@ wxSizer *searchDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticLine *item46 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
     item44->Add( item46, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item47 = new wxButton( parent, IDC_CANCELS, _("Stop"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item47 = new wxButton( parent, IDC_SEARCHMORE, _("More"), wxDefaultPosition, wxDefaultSize, 0 );
+    item47->SetToolTip( _("Searches for more results on ED2K. Not supported for Kad yet.") );
     item47->Enable( false );
     item44->Add( item47, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticLine *item48 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item44->Add( item48, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    item44->Add( item48, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxButton *item49 = new wxButton( parent, IDC_SDOWNLOAD, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item49 = new wxButton( parent, IDC_CANCELS, _("Stop"), wxDefaultPosition, wxDefaultSize, 0 );
     item49->Enable( false );
     item44->Add( item49, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxStaticLine *item50 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
-    item44->Add( item50, 0, wxALIGN_CENTER|wxALL, 5 );
+    item44->Add( item50, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxButton *item51 = new wxButton( parent, IDC_CLEAR_RESULTS, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxButton *item51 = new wxButton( parent, IDC_SDOWNLOAD, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
     item51->Enable( false );
     item44->Add( item51, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticLine *item52 = new wxStaticLine( parent, ID_LINE, wxDefaultPosition, wxSize(-1,20), wxLI_VERTICAL );
+    item44->Add( item52, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxButton *item53 = new wxButton( parent, IDC_CLEAR_RESULTS, _("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+    item53->Enable( false );
+    item44->Add( item53, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item1->Add( item44, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item53 = new wxStaticBox( parent, -1, _("Results") );
-    wxStaticBoxSizer *item52 = new wxStaticBoxSizer( item53, wxVERTICAL );
+    wxStaticBox *item55 = new wxStaticBox( parent, -1, _("Results") );
+    wxStaticBoxSizer *item54 = new wxStaticBoxSizer( item55, wxVERTICAL );
 
-    wxWindow *item54 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
-    wxASSERT( item54 );
-    item52->Add( item54, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxWindow *item56 = new CMuleNotebook(parent, ID_NOTEBOOK, wxDefaultPosition,wxDefaultSize,0);
+    wxASSERT( item56 );
+    item54->Add( item56, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxGauge *item55 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
-    item52->Add( item55, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxGauge *item57 = new wxGauge( parent, ID_SEARCHPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), 0 );
+    item54->Add( item57, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item52, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item54, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3469,62 +3477,55 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     item20->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxBoxSizer *item25 = new wxBoxSizer( wxVERTICAL );
+    wxFlexGridSizer *item25 = new wxFlexGridSizer( 3, 0, 0 );
+    item25->AddGrowableCol( 1 );
 
-    wxCheckBox *item26 = new wxCheckBox( parent, IDC_AUTOIPFILTER, _("Auto-update ipfilter at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item26 = new wxStaticText( parent, ID_TEXT, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item26, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxFlexGridSizer *item27 = new wxFlexGridSizer( 3, 0, 0 );
-    item27->AddGrowableCol( 1 );
+    wxTextCtrl *item27 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item28 = new wxStaticText( parent, ID_TEXT, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item28, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxButton *item28 = new wxButton( parent, IDC_IPFILTERUPDATE, _("Update now"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item28, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxTextCtrl *item29 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item27->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item20->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxButton *item30 = new wxButton( parent, IDC_IPFILTERUPDATE, _("Update now"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->Add( item30, 0, wxALIGN_CENTER|wxLEFT, 5 );
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_AUTOIPFILTER, _("Auto-update ipfilter at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->Add( item29, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item30 = new wxBoxSizer( wxHORIZONTAL );
 
-    item20->Add( item25, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 15 );
+    wxStaticText *item31 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item30->Add( item31, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxBoxSizer *item31 = new wxBoxSizer( wxVERTICAL );
+    item30->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    wxBoxSizer *item32 = new wxBoxSizer( wxHORIZONTAL );
+    wxSpinCtrl *item32 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
+    item30->Add( item32, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item32->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item20->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
 
-    item32->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+    wxCheckBox *item33 = new wxCheckBox( parent, IDC_FILTERLAN, _("Always filter LAN IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item33->SetValue( TRUE );
+    item20->Add( item33, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxSpinCtrl *item34 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
-    item32->Add( item34, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item31->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
-
-    item20->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxBoxSizer *item35 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxCheckBox *item36 = new wxCheckBox( parent, IDC_FILTER, _("Always filter LAN IPs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item36->SetValue( TRUE );
-    item35->Add( item36, 0, wxALIGN_CENTER_VERTICAL, 0 );
-
-    item20->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxCheckBox *item34 = new wxCheckBox( parent, IDC_PARANOID, _("Paranoid handling of non-matching IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item34->SetValue( TRUE );
+    item34->SetToolTip( _("Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution.") );
+    item20->Add( item34, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     item0->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item38 = new wxStaticBox( parent, -1, _("Client Identification:") );
-    wxStaticBoxSizer *item37 = new wxStaticBoxSizer( item38, wxVERTICAL );
+    wxStaticBox *item36 = new wxStaticBox( parent, -1, _("Client Identification:") );
+    wxStaticBoxSizer *item35 = new wxStaticBoxSizer( item36, wxVERTICAL );
 
-    wxCheckBox *item39 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
-    item39->SetValue( TRUE );
-    item39->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
-    item37->Add( item39, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item37 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
+    item37->SetValue( TRUE );
+    item37->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
+    item35->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {

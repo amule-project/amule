@@ -54,6 +54,8 @@ public:
 	
 	void		Disconnect(const wxString& strReason);
 
+	bool		InitNetworkData();
+
 	bool		CheckTimeOut();
 
 	void		Safe_Delete();
@@ -66,6 +68,8 @@ public:
 	
 	void		OnClose(int nErrorCode);
 	void		OnError(int nErrorCode);
+	
+	uint32		GetRemoteIP() const { return m_remoteip; }
 		
 	CUpDownClient* GetClient() { return m_client; }
 	
@@ -87,7 +91,8 @@ private:
 	void	SetClient(CUpDownClient* client);
 
 	bool	m_ForDeletion; // 0.30c (Creteil), set as bool
-	uint32		timeout_timer;
+	uint32	timeout_timer;
+	uint32	m_remoteip;
 };
 
 #endif // CLIENTTCPSOCKET_H

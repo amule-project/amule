@@ -237,6 +237,8 @@ public:
 	static bool		IsConfirmExitEnabled()		{ return s_confirmExit; }
 	static bool		FilterLanIPs()			{ return s_filterLanIP; }
 	static void		SetFilterLanIPs(bool val)	{ s_filterLanIP = val; }
+	static bool		ParanoidFilter()			{ return s_paranoidfilter; }
+	static void		SetParanoidFilter(bool val)	{ s_paranoidfilter = val; }
 	static bool		IsOnlineSignatureEnabled()	{ return s_onlineSig; }
 	static void		SetOnlineSignatureEnabled(bool val) { s_onlineSig = val; }
 	static uint32		GetMaxGraphUploadRate()		{ return s_maxGraphUploadRate; }
@@ -574,6 +576,7 @@ protected:
 
 
 	static bool	s_filterLanIP;
+	static bool	s_paranoidfilter;
 	static bool	s_onlineSig;
 
 	static uint64  	s_totalDownloadedBytes;

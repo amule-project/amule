@@ -109,6 +109,7 @@ uint32		CPreferences::s_maxGraphDownloadRate;
 uint32		CPreferences::s_maxGraphUploadRate;
 bool		CPreferences::s_confirmExit;
 bool		CPreferences::s_filterLanIP;
+bool		CPreferences::s_paranoidfilter;
 bool		CPreferences::s_onlineSig;
 uint16		CPreferences::s_OSUpdate;
 uint64		CPreferences::s_totalDownloadedBytes;
@@ -942,7 +943,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 )));
 	NewCfgItem(IDC_SECIDENT,	(new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true )));
 	NewCfgItem(IDC_IPFONOFF,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterOn"), s_IPFilterOn, true )));
-	NewCfgItem(IDC_FILTER,		(new Cfg_Bool( wxT("/eMule/FilterLanIPs"), s_filterLanIP, true )));
+	NewCfgItem(IDC_FILTERLAN,		(new Cfg_Bool( wxT("/eMule/FilterLanIPs"), s_filterLanIP, true )));
+	NewCfgItem(IDC_PARANOID,		(new Cfg_Bool( wxT("/eMule/ParanoidFiltering"), s_paranoidfilter, true )));
 	NewCfgItem(IDC_AUTOIPFILTER,	(new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true )));
 	NewCfgItem(IDC_IPFILTERURL,	(new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString )));
 	NewCfgItem(ID_IPFILTERLEVEL,	(MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 )));

@@ -142,16 +142,10 @@ void CListenSocket::OnAccept(int nErrorCode)
 				newclient->Safe_Delete();
 			} else {
 				wxASSERT(theApp.IsRunning());
-			
-				// Check if the client is filtered the moment it connects, as this 
-				// is the earliest point at which it is possible.
-				amuleIPV4Address addr;
-				newclient->GetPeer(addr);
-				if (theApp.ipfilter->IsFiltered(StringIPtoUint32(addr.IPAddress()))) {
-					AddDebugLogLineM(false, logClient, wxT("Rejected connection from ") + addr.IPAddress());
+				if (!newclient->InitNetworkData()) {
+					// IP or port were not returned correctly
+					// from the accepted address, or filtered.
 					newclient->Safe_Delete();
-				} else {
-					AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
 				}
 			}
 		}

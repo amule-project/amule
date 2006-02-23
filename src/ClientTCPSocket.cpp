@@ -128,6 +128,12 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 	: CEMSocket(ProxyData)
 {
 	SetClient(in_client);
+	if (in_client) {
+		m_remoteip = wxUINT32_SWAP_ALWAYS(in_client->GetUserIDHybrid());
+	} else {
+		m_remoteip = 0;
+	}
+	
 	ResetTimeOutTimer();
 	m_ForDeletion = false;
 
@@ -142,7 +148,6 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 	theApp.listensocket->AddSocket(this);
 	theApp.listensocket->AddConnection();
 }
-
 
 CClientTCPSocket::~CClientTCPSocket()
 {
@@ -160,6 +165,23 @@ CClientTCPSocket::~CClientTCPSocket()
 	}
 }
 
+bool CClientTCPSocket::InitNetworkData() {
+	wxASSERT(!m_remoteip);
+	wxASSERT(!m_client);
+	amuleIPV4Address addr;
+	GetPeer(addr);
+	m_remoteip = StringIPtoUint32(addr.IPAddress());
+	
+	MULE_CHECK(m_remoteip, false);
+	
+	if (theApp.ipfilter->IsFiltered(m_remoteip)) {
+		AddDebugLogLineM(false, logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Filtered IP)"));
+		return false;	
+	} else {
+		AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
+		return true;
+	}
+}
 
 void CClientTCPSocket::ResetTimeOutTimer()
 {
@@ -273,8 +295,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 	#endif
 	if (!m_client && opcode != OP_HELLO) {
 		throw wxString(wxT("Asks for something without saying hello"));
-	} else if (m_client && opcode != OP_HELLO && opcode != OP_HELLOANSWER)
+	} else if (m_client && opcode != OP_HELLO && opcode != OP_HELLOANSWER) {
 		m_client->CheckHandshakeFinished(OP_EDONKEYPROT, opcode);
+	}
 	
 	switch(opcode) {
 		case OP_HELLOANSWER: {	// 0.43b
@@ -325,7 +348,19 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 				throw;
 			}
-
+			
+			if (thePrefs::ParanoidFilter() && !IsLowID(wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid())) && (GetRemoteIP() != wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid()))) {
+				wxString reason = wxT("Client claims a different IP from the one we received the hello packet from: ");
+				reason += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid())) + wxT(" / ") + Uint32toStringIP(GetRemoteIP());
+				AddDebugLogLineM(false, logClient, reason);
+				if (bNewClient) {
+					m_client->Safe_Delete();
+					m_client = NULL;
+				}
+				Disconnect(wxT("Paranoid disconecting: ") + reason);
+				return false;
+			}
+			
 			// if IP is filtered, dont reply but disconnect...
 			if (theApp.ipfilter->IsFiltered(m_client->GetIP())) {
 				if (bNewClient) {
@@ -1810,7 +1845,18 @@ void CClientTCPSocket::OnSend(int nErrorCode)
 void CClientTCPSocket::OnReceive(int nErrorCode)
 {
 	ResetTimeOutTimer();
-	CEMSocket::OnReceive(nErrorCode);
+	// We might have updated ipfilter
+	wxASSERT(m_remoteip);
+	
+	if (theApp.ipfilter->IsFiltered(m_remoteip)) {
+		if (m_client) {
+			m_client->Safe_Delete();
+		}
+		Safe_Delete();
+		AddDebugLogLineM( false, logIPFilter, wxT("A connected client was dropped by IPFilter on new packet received"));
+	} else {
+		CEMSocket::OnReceive(nErrorCode);
+	}
 }
 
 
