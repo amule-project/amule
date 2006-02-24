@@ -123,6 +123,22 @@ bool CThreadScheduler::AddTask(CThreadTask* task)
 }
 
 
+/** Returns string representation of error code. */
+wxString GetErrMsg(wxThreadError err)
+{
+	switch (err) {
+		case wxTHREAD_NO_ERROR:		return wxT("wxTHREAD_NO_ERROR");
+		case wxTHREAD_NO_RESOURCE:	return wxT("wxTHREAD_NO_RESOURCE");
+		case wxTHREAD_RUNNING:		return wxT("wxTHREAD_RUNNING");
+		case wxTHREAD_NOT_RUNNING:	return wxT("wxTHREAD_NOT_RUNNING");
+		case wxTHREAD_KILLED:		return wxT("wxTHREAD_KILLED");
+		case wxTHREAD_MISC_ERROR:	return wxT("wxTHREAD_MISC_ERROR");
+		default:
+			return wxT("Unknown error");
+	}	
+}
+
+
 void CThreadScheduler::CreateSchedulerThread()
 {
 	if ((m_thread and m_thread->IsAlive()) || m_tasks.empty()) {
@@ -138,18 +154,23 @@ void CThreadScheduler::CreateSchedulerThread()
 	
 	m_thread = new CTaskThread(this);
 
-	if (m_thread->Create() == wxTHREAD_NO_ERROR) {
+	wxThreadError err = m_thread->Create();
+	if (err == wxTHREAD_NO_ERROR) {
 		// Try to avoid reducing the latency of the main thread
 		m_thread->SetPriority(WXTHREAD_MIN_PRIORITY);
 		
-		if (m_thread->Run() == wxTHREAD_NO_ERROR) {
+		err = m_thread->Run();
+		if (err == wxTHREAD_NO_ERROR) {
 			AddDebugLogLineM(false, logThreads, wxT("Scheduler thread started"));
 			return;
+		} else {
+			AddDebugLogLineM(true, logThreads, wxT("Error while starting scheduler thread: ") + GetErrMsg(err));
 		}
+	} else {
+		AddDebugLogLineM(true, logThreads, wxT("Error while creating scheduler thread: ") + GetErrMsg(err));
 	}
-
+	
 	// Creation or running failed.
-	AddDebugLogLineM(true, logThreads, wxT("Error while starting scheduler thread"));
 	m_thread->Delete();
 	delete m_thread;
 	m_thread = NULL;
