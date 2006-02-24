@@ -524,12 +524,12 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 				source->AddRequestForAnotherFile( sender );
 			}
 		} else {
-			// Source was known, but reqfile NULL. I'm not sure if this can 
-			// happen, but it's best to be certain, so I handle this case as well
+			// Source was known, but reqfile NULL.
 			source->SetRequestFile( sender );
 			if (source->GetSourceFrom() != nSourceFrom) {
 				if (source->GetSourceFrom() != SF_NONE) {
 					theStats::RemoveSourceOrigin(source->GetSourceFrom());
+					theStats::RemoveFoundSource();
 				}
 				source->SetSourceFrom(nSourceFrom);
 			}
