@@ -2,6 +2,9 @@ Version 2.1.1 - The "???" version
 ----------
 2006-01-??
 
+	GonoszTopi:
+		* Fixed sources coming from an 'Unknown' origin.
+
 	ken:
 		* Fixed Mac aMule showing erroneous version number in Get Info.
 		* Disabled the HTTP download progress dialog on Mac (again) because
