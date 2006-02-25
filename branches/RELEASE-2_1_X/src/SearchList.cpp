@@ -528,8 +528,15 @@ wxString CSearchList::StartNewSearch(uint32* nSearchID, SearchType search_type, 
 	}
 	
 	if (typeText != ED2KFTSTR_PROGRAM) {
-		// No check is to be made on returned results
-		m_resultType = typeText;
+		if (typeText.CmpNoCase(wxT("Any"))) {
+			m_resultType = typeText;
+		} else {
+			m_resultType.Clear();
+		}
+	} else {
+		// No check is to be made on returned results if the 
+		// type is 'Programs', since this returns multiple types.
+		m_resultType.Clear();
 	}
 	
 	m_CurrentSearch = *(nSearchID); // This will be set for ed2k results
