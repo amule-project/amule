@@ -1247,12 +1247,8 @@ bool CheckConfig()
 	wxString configDir = GetConfigDir().BeforeLast(wxFileName::GetPathSeparator());
 	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
 
-	if (!CheckDirExists(configDir)) {
-		wxMkdir(configDir);
-	} else {
-		if (CheckFileExists(JoinPaths(configDir, wxT("amule.conf")))) {
-			return false;
-		}
+	if (CheckFileExists(JoinPaths(configDir, wxT("amule.conf")))) {
+		return false;
 	}
 
 	return RelocateConfiguration(homeDir + wxT(".aMule"), configDir, JoinPaths(JoinPaths(homeDir, wxT(".aMule")), wxT("amule.conf")), false)

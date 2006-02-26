@@ -205,7 +205,9 @@ public:
 	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
 	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }
 	static const wxString&	GetIncomingDir()		{ return s_incomingdir; }
+	static void		SetIncomingDir(const wxString& dir)	{ s_incomingdir = dir; }
 	static const wxString&	GetTempDir()			{ return s_tempdir; }
+	static void		SetTempDir(const wxString& dir)	{ s_tempdir = dir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
