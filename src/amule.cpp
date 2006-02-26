@@ -334,10 +334,40 @@ int CamuleApp::InitGui(bool, wxString &)
 }
 
 
-
-bool CheckDirectoryPerms(const wxString& desc, const wxString& directory) 
+/**
+ * Checks permissions on a aMule directory, creating if needed.
+ *
+ * @param desc A description of the directory in question, used for error messages.
+ * @param directory The directory in question.
+ * @param fallback If the dir specified with 'directory' could not be created, try this instead.
+ * @return The bool is false on error. The wxString contains the used path.
+ */
+std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxString& directory, const wxString& fallback)
 {
-	if (wxAccess(directory, R_OK | W_OK | X_OK)) {
+	if (not CheckDirExists(directory)) {
+		if (not wxMkdir(directory)) {
+			wxString msg = wxString()
+				<< wxT("Could not create the aMule ") << desc << wxT(" directory\n")
+				<< wxT("at location '") << directory << wxT("'.\n");
+
+			// For the temp and incoming folder, we may be able to fall back 
+			// to the default values, in case of bad overrides.
+			if (fallback.Length() and (directory != fallback)) {
+				if (CheckDirExists(fallback) or wxMkdir(fallback)) {
+					msg << wxT("Using default directory at location \n'")
+						<< fallback << wxT("'.");
+					theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+					
+					return std::pair<bool, wxString>(true, fallback);
+				}
+			}
+			
+			msg << wxT("Please check permissions and restart aMule.");
+			theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+
+			return std::pair<bool, wxString>(false, wxEmptyString);
+		}
+	} else if (wxAccess(directory, R_OK | W_OK | X_OK)) {
 		wxString msg;
 		msg << wxT("Permissions on the aMule ") << desc << wxT(" directory too strict!\n")
 		    << wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
@@ -345,12 +375,11 @@ bool CheckDirectoryPerms(const wxString& desc, const wxString& directory)
 		
 		theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
 		
-		return false;
+		return std::pair<bool, wxString>(false, wxEmptyString);
 	}
 
-	return true;
+	return std::pair<bool, wxString>(true, directory);
 }
-
 
 
 //
@@ -465,13 +494,14 @@ bool CamuleApp::OnInit()
 
 	printf("Initialising aMule\n");
 
-	/* Check for old aMule configs, or for old lmule/xmule config if no aMule configs found. */
-	CheckConfig();
-
 	// Ensure that "~/.aMule/" is accessible.
-	if (not CheckDirectoryPerms(wxT("configuration"), ConfigDir)) {
+	if (not CheckMuleDirectory(wxT("configuration"), ConfigDir, wxEmptyString).first) {
 		return false;
 	}
+	
+	// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
+	CheckConfig();
+
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
@@ -537,14 +567,22 @@ bool CamuleApp::OnInit()
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
 	glob_prefs = new CPreferences();
 
-
-	// Ensure that "~/.aMule/Temp" and "~/.aMule/Incoming" are accessible.
-	if (not CheckDirectoryPerms(wxT("temp"), thePrefs::GetTempDir())) {
-		return false;
-	} else 	if (not CheckDirectoryPerms(wxT("incoming"), thePrefs::GetIncomingDir())) {
+	std::pair<bool, wxString> checkResult;
+	
+	checkResult = CheckMuleDirectory(wxT("temp"), thePrefs::GetTempDir(), ConfigDir + wxT("Temp"));
+	if (checkResult.first) {
+		thePrefs::SetTempDir(checkResult.second);
+	} else {
 		return false;
 	}
 	
+	checkResult = CheckMuleDirectory(wxT("incoming"), thePrefs::GetIncomingDir(), ConfigDir + wxT("Incoming"));
+	if (checkResult.first) {
+		thePrefs::SetIncomingDir(checkResult.second);
+	} else {
+		return false;
+	}
+
 	// Some sanity check
 	if (!thePrefs::UseTrayIcon()) {
 		thePrefs::SetMinToTray(false);
