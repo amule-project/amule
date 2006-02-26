@@ -729,14 +729,6 @@ CPreferences::CPreferences()
 	s_userhash[5] = 14;
 	s_userhash[14] = 111;
 
-	if (!::wxDirExists(GetIncomingDir())) {
-		::wxMkdir( GetIncomingDir(), GetDirPermissions() );
-	}
-
-	if (!::wxDirExists(GetTempDir())) {
-		::wxMkdir( GetTempDir(), GetDirPermissions() );
-	}
-
 	if (s_userhash.IsEmpty()) {
 		CreateUserHash();
 	}
