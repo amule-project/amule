@@ -1473,6 +1473,7 @@ wxString CPreferences::GetBrowser()
 
 
 #include "ClientList.h"
+#include "ServerList.h"
 void CPreferences::SetIPFilterLevel(uint8 level)
 {
 	if (level != s_filterlevel) {
@@ -1484,6 +1485,7 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 		
 		if ( filter ) {
 			theApp.clientlist->FilterQueues();
+			theApp.serverlist->FilterServers();
 		}
 	}
 }

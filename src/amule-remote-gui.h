@@ -447,6 +447,7 @@ class CServerListRem : public CRemoteContainer<CServer, uint32, CEC_Server_Tag> 
 		void RemoveServer(CServer* server);
 		void UpdateServerMetFromURL(wxString url);
 		void SaveServerMet();
+		void FilterServers();
 		
 		//
 		// template

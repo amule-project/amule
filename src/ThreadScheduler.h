@@ -43,7 +43,9 @@ enum ETaskPriority
 {
 	ETP_Low = 0,
 	ETP_Normal,
-	ETP_High
+	ETP_High,
+	//! For tasks such as finding shared files and ipfilter.dat loading only.
+	ETP_Critical
 };
 
 
@@ -81,14 +83,16 @@ public:
 	 * existing tasks based on type and description. If an
 	 * matching task already exists, this task-object is
 	 * discarded. The task is also discarded if the scheduler
-	 * has been terminated.
+	 * has been terminated. If 'overwrite' is true, any
+	 * existing duplicate task is dropped, and if already
+	 * running, terminated.
 	 *
 	 * Note: This function takes ownership of the task.
 	 *
 	 * @see Start
 	 * @see Terminate
 	 */
-	static bool AddTask(CThreadTask* task);
+	static bool AddTask(CThreadTask* task, bool overwrite = false);
 
 private:
 	CThreadScheduler();
@@ -98,7 +102,7 @@ private:
 	size_t GetTaskCount() const;
 	
 	/** Tries to add the given task to the queue, returning true on success. */
-	bool DoAddTask(CThreadTask* task);
+	bool DoAddTask(CThreadTask* task, bool overwrite);
 	
 	/** Creates the actual scheduler thread if none exist. */
 	void CreateSchedulerThread();
@@ -106,7 +110,7 @@ private:
 	/** Entry function called via internal thread-object. */
 	void* Entry();
 		
-	//! Contains a task and the timestamp of when it was added.
+	//! Contains a task and its age.
 	typedef std::pair<CThreadTask*, uint32> CEntryPair;
 	
 	//! List of currently scheduled tasks. 
@@ -115,14 +119,16 @@ private:
 	//! Specifies if tasks should be resorted by priority.
 	bool	m_tasksDirty;
 	
-	typedef std::map<wxString, void*> CDescMap;
+	typedef std::map<wxString, CThreadTask*> CDescMap;
 	typedef std::map<wxString, CDescMap> CTypeMap;
 	//! Map of current task by type -> desc. Used to avoid duplicate tasks.
 	CTypeMap m_taskDescs;
 
 	//! The actual worker thread.
 	wxThread* m_thread;
-
+	//! The currently running task, if any.
+	CThreadTask* m_currentTask;
+	
 	friend class CTaskThread;
 	friend struct CTaskSorter;
 };
@@ -180,9 +186,11 @@ private:
 	wxString m_type;
 	wxString m_desc;
 	ETaskPriority m_priority;
-	
+
 	//! The owner (scheduler), used when calling TestDestroy.
 	wxThread* m_owner;
+	//! Specifies if the specifc task should be aborted.
+	bool m_abort;
 	
 	friend class CThreadScheduler;
 };

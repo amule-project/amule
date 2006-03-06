@@ -831,3 +831,28 @@ std::vector<const CServer*> CServerList::CopySnapshot() const
 	result.assign(m_servers.begin(), m_servers.end());
 	return result;
 }
+
+
+void CServerList::FilterServers()
+{
+	CInternalList::iterator it = m_servers.begin();
+	while (it != m_servers.end()) {
+		CServer* server = *it++;
+
+		if (server->HasDynIP()) {
+			continue;
+		}
+		
+		if (theApp.ipfilter->IsFiltered(server->GetIP(), true)) {
+			if (server == theApp.serverconnect->GetCurrentServer()) {
+				AddLogLineM(true, _("Local server is filtered by the IPFilters, reconnecting to a different server!"));
+				theApp.serverconnect->Disconnect();
+				RemoveServer(server);
+				theApp.serverconnect->ConnectToAnyServer();
+			} else {
+				RemoveServer(server);
+			}			
+		}
+	}
+}
+

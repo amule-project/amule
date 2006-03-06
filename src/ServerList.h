@@ -70,11 +70,14 @@ public:
 
 	std::vector<const CServer*> CopySnapshot() const;
 	
+	/** Refilters all servers though the IPFilter. */
+	void FilterServers();
+	
 private:
 	virtual void 	ObserverAdded( ObserverType* );
 	void		AutoUpdate();
 	CServer*	GetNextStatServer();
-
+	
 	void		LoadStaticServers( const wxString& filename );
 	uint8		current_url_index;
 

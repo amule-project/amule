@@ -673,6 +673,14 @@ void CServerListRem::SaveServerMet()
 	// lfroen: stub, nothing to do
 }
 
+
+void CServerListRem::FilterServers()
+{
+	// FIXME: add code
+	//wxASSERT(0);
+}
+
+
 void CServerListRem::RemoveServer(CServer* server)
 {
 	m_conn->RemoveServer(server->GetIP(),server->GetPort());
