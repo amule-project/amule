@@ -899,8 +899,8 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
         _("Not rated"), 
         _("Invalid / Corrupt / Fake"), 
         _("Poor"), 
-        _("Good"), 
         _("Fair"), 
+        _("Good"), 
         _("Excellent")
     };
     wxChoice *item10 = new wxChoice( parent, IDC_RATELIST, wxDefaultPosition, wxDefaultSize, 6, strs10, 0 );
