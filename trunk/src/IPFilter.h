@@ -26,10 +26,14 @@
 #ifndef IPFILTER_H
 #define IPFILTER_H
 
-#include <wx/thread.h>	// Needed for wxMutex;
+#include <wx/thread.h>	// Needed for wxMutex
+#include <wx/event.h>	// Needed for wxEvent
 
 #include "Types.h"	// Needed for uint8, uint16 and uint32
 #include "RangeMap.h"	// Needed for CRangeMap
+
+
+class CIPFilterEvent;
 
 
 /**
@@ -43,20 +47,13 @@
  *
  * This class is thread-safe.
  */
-class CIPFilter
+class CIPFilter : public wxEvtHandler
 {
 public:
 	/**
 	 * Constructor.
 	 */
 	CIPFilter();
-
-	
-	/**
-	 * Clears the current list of IP-Ranges.
-	 */
-	void	RemoveAllIPs();
-
 
 	/**
 	 * Checks if a IP is filtered with the current list and AccessLevel.
@@ -80,7 +77,6 @@ public:
 	 */
 	void 	Reload();
 
-
 	/**
 	 * Starts a download of the ipfilter-list at the specified URL.
 	 *
@@ -97,63 +93,9 @@ public:
 	void	DownloadFinished(uint32 result);
 	
 private:
+	/** Handles the result of loading the dat-files. */
+	void	OnIPFilterEvent(CIPFilterEvent&);
 	
-	/**
-	 * Loads a IP-list from the specified file, can be text or zip.
-	 */
-	void LoadFromFile(const wxString& file);
-	
-	/**
-	 * Helper-function for processing the AntiP2P format.
-	 *
-	 * @return True if the line was valid, false otherwise.
-	 * 
-	 * This function will correctly parse files that follow the folllowing
-	 * format for specifying IP-ranges (whitespace is optional):
-	 *  <Description> : <IPStart> - <IPEnd>
-	 */
-	bool	ProcessAntiP2PLine( const wxString& sLine );
-	
-	/**
-	 * Helper-function for processing the PeerGuardian format.
-	 *
-	 * @return True if the line was valid, false otherwise.
-	 * 
-	 * This function will correctly parse files that follow the folllowing
-	 * format for specifying IP-ranges (whitespace is optional):
-	 *  <IPStart> - <IPEnd> , <AccessLevel> , <Description>
-	 */
-	bool	ProcessPeerGuardianLine( const wxString& sLine );
-	
-	/**
-	 * Helper function.
-	 *
-	 * @param IPstart The start of the IP-range.
-	 * @param IPend The end of the IP-range, must be less than or equal to IPstart.
-	 * @param AccessLevel The AccessLevel of this range.
-	 * @param Description The assosiated description of this range.
-	 * @return true if the range was added, false if it was discarded.
-	 * 
-	 * This function inserts the specified range into the IPMap. Invalid
-	 * ranges where the AccessLevel is not within the range 0..255, or
-	 * where IPEnd < IPstart not inserted.
-	 */
-	bool	AddIPRange(uint32 IPstart, uint32 IPend, uint16 AccessLevel, const wxString& Description);
-
-
-	/**
-	 * Helper function.
-	 * 
-	 * @param str A string representation of an IP-range in the format "<ip>-<ip>".
-	 * @param ipA The target of the first IP in the range.
-	 * @param ipB The target of the second IP in the range.
-	 * @return True if the parsing succeded, false otherwise (results will be invalid).
-	 *
-	 * The IPs returned by this function are in host order, not network order.
-	 */
-	bool	m_inet_atoh(const wxString &str, uint32& ipA, uint32& ipB);
-
-
 	/**
 	 * This structure is used to contain the range-data in the rangemap.
 	 */
@@ -183,6 +125,11 @@ private:
 
 	//! Mutex used to ensure thread-safety of this class
 	mutable wxMutex	m_mutex;
+
+	friend class CIPFilterEvent;
+	friend class CIPFilterTask;
+
+	DECLARE_EVENT_TABLE();
 };
 
 #endif

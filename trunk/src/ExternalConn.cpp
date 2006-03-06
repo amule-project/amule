@@ -1202,6 +1202,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			theApp.glob_prefs->Save();
 			if (thePrefs::GetIPFilterOn()) {
 				theApp.clientlist->FilterQueues();
+				theApp.serverlist->FilterServers();
 			}
 			if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
 				theApp.DisconnectED2K();

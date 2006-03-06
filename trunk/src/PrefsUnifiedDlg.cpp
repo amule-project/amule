@@ -65,6 +65,7 @@
 #include "TransferWnd.h"		// Needed for CTransferWnd::UpdateCatTabTitles()
 #include "KadDlg.h"				// Needed for CKadDlg
 #include "OScopeCtrl.h"			// Needed for OScopeCtrl
+#include "ServerList.h"
 
 BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// Proxy
@@ -530,8 +531,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.SetOSFiles( widget->GetValue() );
 	}
 
-	if (thePrefs::GetIPFilterOn()) {
-		theApp.clientlist->FilterQueues();
+	if (CfgChanged(IDC_IPFONOFF) or CfgChanged(ID_IPFILTERLEVEL)) {
+		if (thePrefs::GetIPFilterOn()) {
+			theApp.clientlist->FilterQueues();
+			theApp.serverlist->FilterServers();
+		}
 	}
 
 	if (thePrefs::GetShowRatesOnTitle()) {
@@ -883,7 +887,6 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
 	theApp.ipfilter->Reload();
-	theApp.clientlist->FilterQueues();
 }
 
 

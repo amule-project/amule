@@ -690,13 +690,6 @@ bool CamuleApp::OnInit()
 	
 	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 
-	// Load and update IPFilter.dat files. Loading the
-	// existing ipfilter.dat file should be done before
-	// loading the server.met, to ensure that servers are
-	// filtered.
-	AddLogLineM(false, _("Loading ipfilter.dat files."));
-	ipfilter->Reload();
-	
 	serverlist->Init();
 
 	// init downloadqueue
