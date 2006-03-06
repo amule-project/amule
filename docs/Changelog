@@ -29,6 +29,7 @@ Version 2.1.1 - The "???" version
 		  declaration to be missing in some cases.
 
 	Xaignar:
+		* Fixed 'Fair' and 'Good' rating labels beeing switched.
 		* Improved error-checking when creating the .aMule data folders.
 		* Fixed problem with searching for files of type 'Program', if a
 		  search of a different filetype had been done just before.
