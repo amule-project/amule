@@ -574,7 +574,7 @@ if test x$USE_EMBEDDED_CRYPTO = xno; then
 	  if test x$crypto_prefix != x ; then
 		  if test -f $crypto_prefix/cryptopp/cryptlib.h; then
 		  CRYPTO_PP_STYLE="sources"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptopp/cryptlib.h | cut -d' ' -f5`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptopp/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
 		  fi
 	  else
           crypto_prefix="/usr"
@@ -582,12 +582,12 @@ if test x$USE_EMBEDDED_CRYPTO = xno; then
           
 	  if test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
 		  CRYPTO_PP_STYLE="mdk_suse_fc"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/cryptopp/cryptlib.h | cut -d' ' -f5`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/cryptopp/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
 	  fi
 	  
 	  if test -f $crypto_prefix/include/crypto++/cryptlib.h; then
 		  CRYPTO_PP_STYLE="gentoo_debian"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/crypto++/cryptlib.h | cut -d' ' -f5`
+		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/crypto++/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
 	  fi
 
 	  vers=`echo $crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
