@@ -26,7 +26,6 @@ Version 2.1.1 - The "???" version
 	
 	Xaignar:
 		* Fixed somee possibly crashes, caused by failed unicode convertions.
-		* Fixed 'Fair' and 'Good' rating labels beeing switched.
 		* Improved error-checking when creating the .aMule data folders.
 		* Fixed problem with searching for files of type 'Program', if a
 		  search of a different filetype had been done just before.

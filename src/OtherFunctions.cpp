@@ -371,8 +371,8 @@ wxString GetRateString(uint16 rate)
 		case 0: return _("Not rated");
 		case 1: return _("Invalid / Corrupt / Fake");
 		case 2: return _("Poor");
-		case 3: return _("Fair");
-		case 4: return _("Good");
+		case 3: return _("Good");
+		case 4: return _("Fair");
 		case 5: return _("Excellent");
 		default: return _("Not rated");
 	}
