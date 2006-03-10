@@ -746,6 +746,7 @@ public:
 	bool CryptoAvailable() const;
 	
 	uint32 GetED2KID() const;
+	uint32 GetID() const;
 	
 	uint8 m_ConnState;
 	

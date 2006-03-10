@@ -76,7 +76,7 @@ public:
 	static CIndexed				*getIndexed(void);
 	static bool					isRunning(void) {return m_running;}
 	static bool					isConnected(void);
-	static bool					isFirewalled(void);
+	static bool					IsFirewalled(void);
 	static void					RecheckFirewalled(void);
 	static uint32				getKademliaUsers(void);
 	static uint32				getKademliaFiles(void);

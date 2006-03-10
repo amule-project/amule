@@ -681,7 +681,7 @@ void CClientList::Process()
 	}
 
 	if ( Kademlia::CKademlia::isConnected() ) {
-		if( Kademlia::CKademlia::isFirewalled() ) {
+		if( Kademlia::CKademlia::IsFirewalled() ) {
 			if( m_nBuddyStatus == Disconnected && Kademlia::CKademlia::getPrefs()->getFindBuddy() ) {
 				//We are a firewalled client with no buddy. We have also waited a set time 
 				//to try to avoid a false firewalled status.. So lets look for a buddy..
