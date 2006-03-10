@@ -792,7 +792,7 @@ void CSharedFileList::CreateOfferedFilePacket(
 	uint16 nClientPort = 0;
 
 	if (pServer) {
-		if ((pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
+		if (pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
 			#define FILE_COMPLETE_ID		0xfbfbfbfb
 			#define FILE_COMPLETE_PORT	0xfbfb
 			#define FILE_INCOMPLETE_ID	0xfcfcfcfc
