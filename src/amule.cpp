@@ -524,7 +524,9 @@ bool CamuleApp::OnInit()
 
 	m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
 	if (m_singleInstance->IsAnotherRunning()) {
-		printf("There is an instance of aMule already running\n");
+		printf("There seems to be an instance of aMule already running\n");
+		printf("If this is not the case, you may have to remove\n");
+		printf("the file ~/.aMule/muleLock, to allow aMule to run.\n");
 		
 		// This is very tricky. The most secure way to communicate is via ED2K links file
 		wxTextFile ed2kFile(ConfigDir + wxT("ED2KLinks"));
@@ -536,7 +538,7 @@ bool CamuleApp::OnInit()
 			ed2kFile.AddLine(wxT("RAISE_DIALOG"));
 			ed2kFile.Write();
 			
-			printf("Raising current running instance.\n");
+			printf("Attempting to raise current running instance.\n");
 		} else {
 			printf("Failed to open 'ED2KFile', cannot signal running instance.\n");
 		}
