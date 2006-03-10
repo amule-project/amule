@@ -1392,7 +1392,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		return;
 	}
 	
-	if( (ip == Kademlia::CKademlia::getIPAddress() || ED2KID == theApp.GetED2KID()) && tcp == thePrefs::GetPort()) {
+	if( (ip == Kademlia::CKademlia::GetIPAddress() || ED2KID == theApp.GetED2KID()) && tcp == thePrefs::GetPort()) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Trying to add myself as source, ignore"));
 		return;
 	}
@@ -1416,7 +1416,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetServerPort(serverport);
 			ctemp->SetKadPort(udp);
 			byte cID[16];
-			pcontactID->toByteArray(cID);
+			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
 			break;
 		}
@@ -1433,9 +1433,9 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetSourceFrom(SF_KADEMLIA);
 			ctemp->SetKadPort(udp);
 			byte cID[16];
-			pcontactID->toByteArray(cID);
+			pcontactID->ToByteArray(cID);
 			ctemp->SetUserHash(CMD4Hash(cID));
-			pbuddyID->toByteArray(cID);
+			pbuddyID->ToByteArray(cID);
 			ctemp->SetBuddyID(cID);
 			ctemp->SetBuddyIP(serverip);
 			ctemp->SetBuddyPort(serverport);

@@ -293,7 +293,7 @@ CSearchList::~CSearchList()
 void CSearchList::RemoveResults(long searchID)
 {
 	// A non-existant search id will just be ignored
-	Kademlia::CSearchManager::stopSearch(searchID, true);
+	Kademlia::CSearchManager::StopSearch(searchID, true);
 	
 	ResultMap::iterator it = m_results.find(searchID);
 	if ( it != m_results.end() ) {
@@ -311,7 +311,7 @@ void CSearchList::RemoveResults(long searchID)
 wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params)
 {
 	// Check that we can actually perform the specified desired search.
-	if ((type == KadSearch) and not Kademlia::CKademlia::isRunning()) {
+	if ((type == KadSearch) and not Kademlia::CKademlia::IsRunning()) {
 		return _("Kad search can't be done if Kad is not running");
 	} else if ((type != KadSearch) and not theApp.IsConnectedED2K()) {
 		return _("ED2K search can't be done if ED2K is not connected");
@@ -347,15 +347,15 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	if (type == KadSearch) {
 		try {
 			if (*searchID == 0xffffffff) {
-				Kademlia::CSearchManager::stopSearch(0xffffffff, false);
+				Kademlia::CSearchManager::StopSearch(0xffffffff, false);
 			}
 		
 			// Kad search takes ownership of data and searchstring will get tokenized there
 			// The tab must be created with the Kad search ID, so seardhID is updated.
-			Kademlia::CSearch* search = Kademlia::CSearchManager::prepareFindKeywords(
+			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(
 										 params.searchString, data.release(), *searchID);
 
-			*searchID = search->getSearchID();
+			*searchID = search->GetSearchID();
 		} catch (const wxString& what) {
 			AddLogLineM(true, what);
 			return _("Unexpected error while attempting Kad search: ") + what;				
@@ -998,7 +998,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 
 	CMemFile temp(250);
 	byte fileid[16];
-	fileID->toByteArray(fileid);
+	fileID->ToByteArray(fileid);
 	temp.WriteHash(CMD4Hash(fileid));
 	
 	temp.WriteUInt32(0);	// client IP

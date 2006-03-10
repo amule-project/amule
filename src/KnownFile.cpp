@@ -271,7 +271,7 @@ void CAbstractFile::AddNote(Kademlia::CEntry *pEntry)
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
-		if(entry->ip == pEntry->ip || !entry->sourceID.compareTo(pEntry->sourceID)) {
+		if(entry->ip == pEntry->ip || !entry->sourceID.CompareTo(pEntry->sourceID)) {
 			delete pEntry;
 			return;
 		}
@@ -1243,7 +1243,7 @@ void CKnownFile::SetFileName(const wxString& strmakeFilename)
 	CAbstractFile::SetFileName(strmakeFilename);
 	#ifndef CLIENT_GUI
 		wordlist.clear();
-		Kademlia::CSearchManager::getWords(GetFileName(), &wordlist);
+		Kademlia::CSearchManager::GetWords(GetFileName(), &wordlist);
 	#endif
 }
 

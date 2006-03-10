@@ -94,18 +94,18 @@ CUInt128 CRoutingZone::me((uint32)0);
 CRoutingZone::CRoutingZone()
 {
 	// Can only create routing zone after prefs
-	me = CKademlia::getPrefs()->getKadID();
+	me = CKademlia::GetPrefs()->GetKadID();
 	m_filename = theApp.ConfigDir + wxT("nodes.dat");
 	CUInt128 zero((uint32)0);
-	init(NULL, 0, zero);
+	Init(NULL, 0, zero);
 }
 
 CRoutingZone::CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index)
 {
-	init(super_zone, level, zone_index);
+	Init(super_zone, level, zone_index);
 }
 
-void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index)
+void CRoutingZone::Init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index)
 {
 	m_superZone = super_zone;
 	m_level = level;
@@ -114,23 +114,23 @@ void CRoutingZone::init(CRoutingZone *super_zone, int level, const CUInt128 &zon
 	m_subZones[1] = NULL;
 	m_bin = new CRoutingBin();
 
-	m_nextSmallTimer = time(NULL) + m_zoneIndex.get32BitChunk(3);
+	m_nextSmallTimer = time(NULL) + m_zoneIndex.Get32BitChunk(3);
 
 	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
-		readFile();
+		ReadFile();
 	}
 
 	dirty = false;
 	
-	startTimer();
+	StartTimer();
 }
 
 CRoutingZone::~CRoutingZone()
 {
 	if ((m_superZone == NULL) && (m_filename.Length() > 0)) {
-		writeFile();
+		WriteFile();
 	}
-	if (isLeaf()) {
+	if (IsLeaf()) {
 		delete m_bin;
 	} else {
 		delete m_subZones[0];
@@ -138,7 +138,7 @@ CRoutingZone::~CRoutingZone()
 	}
 }
 
-void CRoutingZone::readFile(void)
+void CRoutingZone::ReadFile(void)
 {
 	try {
 		uint32 numContacts = 0;
@@ -154,7 +154,7 @@ void CRoutingZone::readFile(void)
 				byte type = file.ReadUInt8();
 				if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
 					if( type < 4) {
-						add(id, ip, udpPort, tcpPort, type);
+						Add(id, ip, udpPort, tcpPort, type);
 					}
 				}
 			}
@@ -168,7 +168,7 @@ void CRoutingZone::readFile(void)
 	}
 }
 
-void CRoutingZone::writeFile(void)
+void CRoutingZone::WriteFile(void)
 {
 	try {
 		unsigned int count = 0;
@@ -176,17 +176,17 @@ void CRoutingZone::writeFile(void)
 		CFile file;
 		if (file.Open(m_filename, CFile::write)) {
 			ContactList contacts;
-			getBootstrapContacts(&contacts, 200);
+			GetBootstrapContacts(&contacts, 200);
 			file.WriteUInt32((uint32)std::min((int)contacts.size(), CONTACT_FILE_LIMIT));
 			ContactList::const_iterator it;
 			for (it = contacts.begin(); it != contacts.end(); ++it) {
 				count++;
 				c = *it;
-				file.WriteUInt128(c->getClientID());
-				file.WriteUInt32(c->getIPAddress());
-				file.WriteUInt16(c->getUDPPort());
-				file.WriteUInt16(c->getTCPPort());
-				file.WriteUInt8(c->getType());
+				file.WriteUInt128(c->GetClientID());
+				file.WriteUInt32(c->GetIPAddress());
+				file.WriteUInt16(c->GetUDPPort());
+				file.WriteUInt16(c->GetTCPPort());
+				file.WriteUInt8(c->GetType());
 				if (count == CONTACT_FILE_LIMIT) {
 					break;
 				}
@@ -198,20 +198,20 @@ void CRoutingZone::writeFile(void)
 	}
 }
 
-bool CRoutingZone::canSplit(void) const
+bool CRoutingZone::CanSplit(void) const
 {
 	if (m_level >= 127) {
 		return false;
 	}
 		
 	/* Check if we are close to the center */
-	if ( (m_zoneIndex < KK || m_level < KBASE) && m_bin->getSize() == K) {
+	if ( (m_zoneIndex < KK || m_level < KBASE) && m_bin->GetSize() == K) {
 		return true;
 	}
 	return false;
 }
 
-bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
+bool CRoutingZone::Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
 {
 	
 	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact (routing) with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
@@ -223,33 +223,33 @@ bool CRoutingZone::add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 	CUInt128 distance(me);
 	distance.XOR(id);
 
-	return addByDistance(distance,id,ip,port,tport,type);
+	return AddByDistance(distance,id,ip,port,tport,type);
 }
 
-bool CRoutingZone::addByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type) {
+bool CRoutingZone::AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type) {
 
 	bool retVal = false;
 	CContact *c = NULL;
 
-	if (!isLeaf()) {
-		retVal = m_subZones[distance.getBitNumber(m_level)]->addByDistance(distance, id, ip, port, tport, type);
+	if (!IsLeaf()) {
+		retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, type);
 	} else {
-		c = m_bin->getContact(id);
+		c = m_bin->GetContact(id);
 		if (c != NULL) {
-			c->setIPAddress(ip);
-			c->setUDPPort(port);
-			c->setTCPPort(tport);
+			c->SetIPAddress(ip);
+			c->SetUDPPort(port);
+			c->SetTCPPort(tport);
 			retVal = true;
-		} else if (m_bin->getRemaining() > 0) {
+		} else if (m_bin->GetRemaining() > 0) {
 			c = new CContact(id, ip, port, tport);
-			retVal = m_bin->add(c,false);
-		} else if (canSplit()) {
-			split();
-			retVal = m_subZones[distance.getBitNumber(m_level)]->addByDistance(distance, id, ip, port, tport, type);
+			retVal = m_bin->Add(c,false);
+		} else if (CanSplit()) {
+			Split();
+			retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, type);
 		}/* else {
-			merge();
+			Merge();
 			c = new CContact(id, ip, port, tport);
-			retVal = m_bin->add(c,false);
+			retVal = m_bin->Add(c,false);
 		}*/
 
 		if (!retVal) {
@@ -262,143 +262,143 @@ bool CRoutingZone::addByDistance(const CUInt128 &distance, const CUInt128 &id, u
 	return retVal;
 }
 
-void CRoutingZone::remove(const CUInt128 &id) {
+void CRoutingZone::Remove(const CUInt128 &id) {
 	CUInt128 distance(me);
 	distance.XOR(id);
-	if (!isLeaf()) {
-		m_subZones[distance.getBitNumber(m_level)]->remove(id);
+	if (!IsLeaf()) {
+		m_subZones[distance.GetBitNumber(m_level)]->Remove(id);
 	} else {
-		CContact *c = m_bin->getContact(id);
+		CContact *c = m_bin->GetContact(id);
 		if (c) {
-			m_bin->remove(c);
+			m_bin->Remove(c);
 		}
 	}
 }
 
-void CRoutingZone::setAlive(uint32 ip, uint16 port)
+void CRoutingZone::SetAlive(uint32 ip, uint16 port)
 {
-	if (isLeaf()) {
-		m_bin->setAlive(ip, port);
+	if (IsLeaf()) {
+		m_bin->SetAlive(ip, port);
 	} else {
-		m_subZones[0]->setAlive(ip, port);
-		m_subZones[1]->setAlive(ip, port);
+		m_subZones[0]->SetAlive(ip, port);
+		m_subZones[1]->SetAlive(ip, port);
 	}
 }
 
-CContact *CRoutingZone::getContact(const CUInt128 &id) const
+CContact *CRoutingZone::GetContact(const CUInt128 &id) const
 {
-	if (isLeaf()) {
-		return m_bin->getContact(id);
+	if (IsLeaf()) {
+		return m_bin->GetContact(id);
 	} else {
-		return m_subZones[id.getBitNumber(m_level)]->getContact(id);
+		return m_subZones[id.GetBitNumber(m_level)]->GetContact(id);
 	}
 }
 
-void CRoutingZone::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse) const
+void CRoutingZone::GetClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse) const
 {
 	// If leaf zone, do it here
-	if (isLeaf()) {
-		m_bin->getClosestTo(maxType, target, maxRequired, result, emptyFirst, inUse);
+	if (IsLeaf()) {
+		m_bin->GetClosestTo(maxType, target, maxRequired, result, emptyFirst, inUse);
 		return;
 	}
 	
 	// otherwise, recurse in the closer-to-the-target subzone first
-	int closer = distance.getBitNumber(m_level);
-	m_subZones[closer]->getClosestTo(maxType, target, distance, maxRequired, result, emptyFirst, inUse);
+	int closer = distance.GetBitNumber(m_level);
+	m_subZones[closer]->GetClosestTo(maxType, target, distance, maxRequired, result, emptyFirst, inUse);
 	
 	// if still not enough tokens found, recurse in the other subzone too
 	if (result->size() < maxRequired) {
-		m_subZones[1-closer]->getClosestTo(maxType, target, distance, maxRequired, result, false, inUse);
+		m_subZones[1-closer]->GetClosestTo(maxType, target, distance, maxRequired, result, false, inUse);
 	}
 }
 
-void CRoutingZone::getAllEntries(ContactList *result, bool emptyFirst)
+void CRoutingZone::GetAllEntries(ContactList *result, bool emptyFirst)
 {
-	if (isLeaf()) {
-		m_bin->getEntries(result, emptyFirst);
+	if (IsLeaf()) {
+		m_bin->GetEntries(result, emptyFirst);
 	} else {
-		m_subZones[0]->getAllEntries(result, emptyFirst);
-		m_subZones[1]->getAllEntries(result, false);			
+		m_subZones[0]->GetAllEntries(result, emptyFirst);
+		m_subZones[1]->GetAllEntries(result, false);			
 	}
 }
 
-void CRoutingZone::topDepth(int depth, ContactList *result, bool emptyFirst)
+void CRoutingZone::TopDepth(int depth, ContactList *result, bool emptyFirst)
 {
-	if (isLeaf()) {
-		m_bin->getEntries(result, emptyFirst);
+	if (IsLeaf()) {
+		m_bin->GetEntries(result, emptyFirst);
 	} else if (depth <= 0) {
-		randomBin(result, emptyFirst);
+		RandomBin(result, emptyFirst);
 	} else {
-		m_subZones[0]->topDepth(depth-1, result, emptyFirst);
-		m_subZones[1]->topDepth(depth-1, result, false);
+		m_subZones[0]->TopDepth(depth-1, result, emptyFirst);
+		m_subZones[1]->TopDepth(depth-1, result, false);
 	}
 }
 
-void CRoutingZone::randomBin(ContactList *result, bool emptyFirst)
+void CRoutingZone::RandomBin(ContactList *result, bool emptyFirst)
 {
-	if (isLeaf()) {
-		m_bin->getEntries(result, emptyFirst);
+	if (IsLeaf()) {
+		m_bin->GetEntries(result, emptyFirst);
 	} else {
-		m_subZones[rand()&1]->randomBin(result, emptyFirst);
+		m_subZones[rand()&1]->RandomBin(result, emptyFirst);
 	}
 }
 
-uint32 CRoutingZone::getMaxDepth(void) const
+uint32 CRoutingZone::GetMaxDepth(void) const
 {
-	if (isLeaf()) {
+	if (IsLeaf()) {
 		return 0;
 	}
-	return 1 + std::max(m_subZones[0]->getMaxDepth(), m_subZones[1]->getMaxDepth());
+	return 1 + std::max(m_subZones[0]->GetMaxDepth(), m_subZones[1]->GetMaxDepth());
 }
 
-void CRoutingZone::split(void)
+void CRoutingZone::Split(void)
 {
-	stopTimer();
+	StopTimer();
 		
-	m_subZones[0] = genSubZone(0);
-	m_subZones[1] = genSubZone(1);
+	m_subZones[0] = GenSubZone(0);
+	m_subZones[1] = GenSubZone(1);
 
 	ContactList entries;
-	m_bin->getEntries(&entries);
+	m_bin->GetEntries(&entries);
 	ContactList::const_iterator it;
 	for (it = entries.begin(); it != entries.end(); ++it) {
-		int sz = (*it)->getDistance().getBitNumber(m_level);
-		m_subZones[sz]->m_bin->add(*it);
+		int sz = (*it)->GetDistance().GetBitNumber(m_level);
+		m_subZones[sz]->m_bin->Add(*it);
 	}
 	m_bin->m_dontDeleteContacts = true;
 	delete m_bin;
 	m_bin = NULL;
 }
 
-void CRoutingZone::merge(void)
+void CRoutingZone::Merge(void)
 {
 	dirty = false; /* This subzone/superzone won't be re-checked */
 	
 	AddDebugLogLineM( false, logKadRouting, _("Merge attempt"));
 	
-	if (isLeaf() && m_superZone != NULL) {
+	if (IsLeaf() && m_superZone != NULL) {
 		AddDebugLogLineM( false, logKadRouting, _("Recursive merge"));
-		m_superZone->merge();
-	} else if ((!isLeaf())
-		&& (m_subZones[0]->isLeaf() && m_subZones[1]->isLeaf()) 
-		&&	(getNumContacts()) < (K/2) ) 
+		m_superZone->Merge();
+	} else if ((!IsLeaf())
+		&& (m_subZones[0]->IsLeaf() && m_subZones[1]->IsLeaf()) 
+		&&	(GetNumContacts()) < (K/2) ) 
 		{
 		m_bin = new CRoutingBin();
 		
-		m_subZones[0]->stopTimer();
-		m_subZones[1]->stopTimer();
+		m_subZones[0]->StopTimer();
+		m_subZones[1]->StopTimer();
 
-		if (getNumContacts() > 0) {
+		if (GetNumContacts() > 0) {
 			ContactList list0;
 			ContactList list1;
-			m_subZones[0]->m_bin->getEntries(&list0);
-			m_subZones[1]->m_bin->getEntries(&list1);
+			m_subZones[0]->m_bin->GetEntries(&list0);
+			m_subZones[1]->m_bin->GetEntries(&list1);
 			ContactList::const_iterator it;
 			for (it = list0.begin(); it != list0.end(); ++it) {
-				m_bin->add(*it);
+				m_bin->Add(*it);
 			}
 			for (it = list1.begin(); it != list1.end(); ++it) {
-				m_bin->add(*it);
+				m_bin->Add(*it);
 			}
 		}
 
@@ -414,55 +414,55 @@ void CRoutingZone::merge(void)
 		m_subZones[0] = NULL;
 		m_subZones[1] = NULL;
 
-		startTimer();
+		StartTimer();
 			
 		AddDebugLogLineM( false, logKadRouting, _("Sucessful merge!"));
 		
 		if (m_superZone != NULL) {
-			m_superZone->merge();
+			m_superZone->Merge();
 		}
 	} else {
 		AddDebugLogLineM( false, logKadRouting, _("No merge possible"));
 	}
 }
 
-bool CRoutingZone::isLeaf(void) const
+bool CRoutingZone::IsLeaf(void) const
 {
 	return (m_bin != NULL);
 }
 
-CRoutingZone *CRoutingZone::genSubZone(int side) 
+CRoutingZone *CRoutingZone::GenSubZone(int side) 
 {
 	CUInt128 newIndex(m_zoneIndex);
-	newIndex.shiftLeft(1);
+	newIndex.ShiftLeft(1);
 	if (side != 0) {
-		newIndex.add(1);
+		newIndex.Add(1);
 	}
 	CRoutingZone *retVal = new CRoutingZone(this, m_level+1, newIndex);
 	return retVal;
 }
 
-void CRoutingZone::startTimer(void)
+void CRoutingZone::StartTimer(void)
 {
 	time_t now = time(NULL);
 	// Start filling the tree, closest bins first.
-	m_nextBigTimer = now + (MIN2S(1)*m_zoneIndex.get32BitChunk(3)) + SEC(10);
-	CKademlia::addEvent(this);
+	m_nextBigTimer = now + (MIN2S(1)*m_zoneIndex.Get32BitChunk(3)) + SEC(10);
+	CKademlia::AddEvent(this);
 }
 
-void CRoutingZone::stopTimer(void)
+void CRoutingZone::StopTimer(void)
 {
-	CKademlia::removeEvent(this);
+	CKademlia::RemoveEvent(this);
 }
 
-bool CRoutingZone::onBigTimer(void)
+bool CRoutingZone::OnBigTimer(void)
 {
-	if (!isLeaf()) {
+	if (!IsLeaf()) {
 		return false;
 	}
 
-	if ( (m_zoneIndex < KK || m_level < KBASE || m_bin->getRemaining() >= (K*.4))) {
-		randomLookup();
+	if ( (m_zoneIndex < KK || m_level < KBASE || m_bin->GetRemaining() >= (K*.4))) {
+		RandomLookup();
 		return true;
 	}
 
@@ -472,9 +472,9 @@ bool CRoutingZone::onBigTimer(void)
 //This is used when we find a leaf and want to know what this sample looks like.
 //We fall back two levels and take a sample to try to minimize any areas of the 
 //tree that will give very bad results.
-uint32 CRoutingZone::estimateCount()
+uint32 CRoutingZone::EstimateCount()
 {
-	if( !isLeaf() ) {
+	if( !IsLeaf() ) {
 		return 0;
 	}
 	if( m_level < KBASE ) {
@@ -482,19 +482,19 @@ uint32 CRoutingZone::estimateCount()
 	}
 	CRoutingZone* curZone = m_superZone->m_superZone->m_superZone;
 
-	float modify = ((float)curZone->getNumContacts())/20.0F;
+	float modify = ((float)curZone->GetNumContacts())/20.0F;
 	return (uint32)(pow( 2, m_level-2)*10*(modify));
 }
 
-void CRoutingZone::onSmallTimer(void)
+void CRoutingZone::OnSmallTimer(void)
 {
-	if (!isLeaf()) {
+	if (!IsLeaf()) {
 		return;
 	}
 	
 	dirty = false;
 	
-	wxString test(m_zoneIndex.toBinaryString());
+	wxString test(m_zoneIndex.ToBinaryString());
 
 	CContact *c = NULL;
 	time_t now = time(NULL);
@@ -502,66 +502,66 @@ void CRoutingZone::onSmallTimer(void)
 	ContactList::iterator it;
 
 	// Remove dead entries
-	m_bin->getEntries(&entries);
+	m_bin->GetEntries(&entries);
 	for (it = entries.begin(); it != entries.end(); ++it) {
 		c = *it;
-		if ( c->getType() == 4) {
-			if (((c->getExpireTime() > 0) && (c->getExpireTime() <= now))) {
-				if(!c->inUse()) {
-					m_bin->remove(c);
+		if ( c->GetType() == 4) {
+			if (((c->GetExpireTime() > 0) && (c->GetExpireTime() <= now))) {
+				if(!c->InUse()) {
+					m_bin->Remove(c);
 					delete c;
 					dirty = true;
 				}
 				continue;
 			}
 		}
-		if(c->getExpireTime() == 0) {
-			c->setExpireTime(now);
+		if(c->GetExpireTime() == 0) {
+			c->SetExpireTime(now);
 		}
 	}
 	c = NULL;
 	//Ping only contacts that are in the branches that meet the set level and are not close to our ID.
 	//The other contacts are checked with the big timer.
-	if( m_bin->getRemaining() < (K*(.4)) ) {
-		c = m_bin->getOldest();
+	if( m_bin->GetRemaining() < (K*(.4)) ) {
+		c = m_bin->GetOldest();
 	} 
 	
 	if( c != NULL ) {
-		if ( c->getExpireTime() >= now || c->getType() == 4) {
+		if ( c->GetExpireTime() >= now || c->GetType() == 4) {
 			dirty = true;
-			m_bin->remove(c);
+			m_bin->Remove(c);
 			m_bin->m_entries.push_back(c);
 			c = NULL;
 		}
 	}
 	
 	if(c != NULL) {
-		c->checkingType();
-		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(c->getIPAddress()), c->getUDPPort()));
-		CKademlia::getUDPListener()->sendMyDetails(KADEMLIA_HELLO_REQ, c->getIPAddress(), c->getUDPPort());
+		c->CheckingType();
+		AddDebugLogLineM(false, logClientKadUDP, wxT("KadHelloReq to ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(c->GetIPAddress()), c->GetUDPPort()));
+		CKademlia::GetUDPListener()->SendMyDetails(KADEMLIA_HELLO_REQ, c->GetIPAddress(), c->GetUDPPort());
 	}
 }
 
-void CRoutingZone::randomLookup(void) 
+void CRoutingZone::RandomLookup(void) 
 {
 	// Look-up a random client in this zone
 	CUInt128 prefix(m_zoneIndex);
-	prefix.shiftLeft(128 - m_level);
+	prefix.ShiftLeft(128 - m_level);
 	CUInt128 random(prefix, m_level);
 	random.XOR(me);
-	CSearchManager::findNode(random);
+	CSearchManager::FindNode(random);
 }
 
-uint32 CRoutingZone::getNumContacts(void) const
+uint32 CRoutingZone::GetNumContacts(void) const
 {
-	if (isLeaf()) {
-		return m_bin->getSize();
+	if (IsLeaf()) {
+		return m_bin->GetSize();
 	} else {
-		return m_subZones[0]->getNumContacts() + m_subZones[1]->getNumContacts();
+		return m_subZones[0]->GetNumContacts() + m_subZones[1]->GetNumContacts();
 	}
 }
 
-uint32 CRoutingZone::getBootstrapContacts(ContactList *results, uint32 maxRequired)
+uint32 CRoutingZone::GetBootstrapContacts(ContactList *results, uint32 maxRequired)
 {
 	wxASSERT(m_superZone == NULL);
 
@@ -569,7 +569,7 @@ uint32 CRoutingZone::getBootstrapContacts(ContactList *results, uint32 maxRequir
 
 	uint32 retVal = 0;
 	ContactList top;
-	topDepth(LOG_BASE_EXPONENT, &top);
+	TopDepth(LOG_BASE_EXPONENT, &top);
 	if (top.size() > 0) {
 		ContactList::const_iterator it;
 		for (it = top.begin(); it != top.end(); ++it) {

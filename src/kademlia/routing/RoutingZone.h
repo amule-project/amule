@@ -69,25 +69,25 @@ public:
 
 	time_t m_nextBigTimer;
 	time_t m_nextSmallTimer;
-	bool onBigTimer(void);
-	void onSmallTimer(void);
+	bool OnBigTimer(void);
+	void OnSmallTimer(void);
 
-	bool add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
-	void remove(const CUInt128 &id);
-	void setAlive(uint32 ip, uint16 port);
+	bool Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+	void Remove(const CUInt128 &id);
+	void SetAlive(uint32 ip, uint16 port);
 
-	CContact *getContact(const CUInt128 &id) const;
-	uint32 getNumContacts(void) const;
+	CContact *GetContact(const CUInt128 &id) const;
+	uint32 GetNumContacts(void) const;
 
 	// Returns a list of all contacts in all leafs of this zone.
-	void getAllEntries(ContactList *result, bool emptyFirst = true);
+	void GetAllEntries(ContactList *result, bool emptyFirst = true);
 
 	// Returns the *maxRequired* tokens that are closest to the target within this zone's subtree.
-	void getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
+	void GetClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
 	
 	// Ideally: Returns all contacts that are in buckets of common range between us and the asker.
 	// In practice: returns the contacts from the top (2^{logBase+1}) buckets.
-	uint32 getBootstrapContacts(ContactList *results, uint32 maxRequired);
+	uint32 GetBootstrapContacts(ContactList *results, uint32 maxRequired);
 
 	/** Debugging. */
 //	void dumpContents(LPCTSTR prefix = NULL) const;
@@ -97,16 +97,16 @@ public:
 
 	bool IsDirty() const { return dirty; }
 
-	uint32 estimateCount();
+	uint32 EstimateCount();
 	
-	void merge(void);
+	void Merge(void);
 	
 private:
 
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
-	void init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
+	void Init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
 
-	bool addByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+	bool AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
 
 	/**
 	 * Zone pair is an array of two. Either both entries are null, which
@@ -120,19 +120,19 @@ private:
 	static wxString m_filename;
 	static CUInt128 me;
 
-	void readFile(void);
-	void writeFile(void);
+	void ReadFile(void);
+	void WriteFile(void);
 
-	bool isLeaf(void) const;
-	bool canSplit(void) const;
+	bool IsLeaf(void) const;
+	bool CanSplit(void) const;
 
 	// Returns all contacts from this zone tree that are no deeper than *depth* from the current zone.
-	void topDepth(int depth, ContactList *result, bool emptyFirst = true);
+	void TopDepth(int depth, ContactList *result, bool emptyFirst = true);
 
 	// Returns the maximum depth of the tree as the number of edges of the longest path to a leaf.
-	uint32 getMaxDepth(void) const;
+	uint32 GetMaxDepth(void) const;
 
-	void randomBin(ContactList *result, bool emptyFirst = true);
+	void RandomBin(ContactList *result, bool emptyFirst = true);
 
 	/**
 	 * The level indicates what size chunk of the address space
@@ -154,14 +154,14 @@ private:
 	 * Generates a new TokenBin for this zone. Used when the current zone is becoming a leaf zone.
 	 * Must be deleted by caller
 	 */
-	CRoutingZone *genSubZone(int side);
+	CRoutingZone *GenSubZone(int side);
 
-	void split(void);
+	void Split(void);
 
-	void startTimer(void);
-	void stopTimer(void);
+	void StartTimer(void);
+	void StopTimer(void);
 
-	void randomLookup(void);
+	void RandomLookup(void);
 	
 	bool dirty;
 };

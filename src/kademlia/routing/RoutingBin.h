@@ -61,18 +61,19 @@ public:
 private:
 
 	CRoutingBin();
-	bool add(CContact *contact, bool check = true);
-	void setAlive(uint32 ip, uint16 port);
-	void setTCPPort(uint32 ip, uint16 port, uint16 tcpPort);
-	void remove(CContact *contact);
-	CContact *getContact(const CUInt128 &id);
-	CContact *getOldest(void);
+	bool Add(CContact *contact, bool check = true);
+	void SetAlive(uint32 ip, uint16 port);
+	void SetTCPPort(uint32 ip, uint16 port, uint16 tcpPort);
+	void Remove(CContact *contact);
+	CContact *GetContact(const CUInt128 &id);
+	CContact *GetOldest(void);
 
-	uint32 getSize() const;
-	uint32 getRemaining(void) const;
-	void getEntries(ContactList *result, bool emptyFirst = true);
+	uint32 GetSize() const;
+	uint32 GetRemaining(void) const;
+	void GetEntries(ContactList *result, bool emptyFirst = true);
 
-	void getClosestTo(uint32 maxType, const CUInt128 &target, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false);
+	void GetClosestTo(uint32 maxType, const CUInt128 &target, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool 
+setInUse = false);
 
 	// Debug purposes.
 //	void dumpContents(void);

@@ -62,57 +62,57 @@ public:
 
 	~CUInt128() {};
 	
-	const byte* getData() const { return (byte*)m_data; }
-	byte* getDataPtr() const { return (byte*)m_data; }
+	const byte* GetData() const { return (byte*)m_data; }
+	byte* GetDataPtr() const { return (byte*)m_data; }
 
 	/** Bit at level 0 being most significant. */
-	uint32 getBitNumber(uint32 bit) const;
-	int compareTo(const CUInt128 &other) const;
-	int compareTo(uint32 value) const;
+	uint32 GetBitNumber(uint32 bit) const;
+	int CompareTo(const CUInt128 &other) const;
+	int CompareTo(uint32 value) const;
 
-	wxString toHexString(void) const;
-	wxString toBinaryString(bool trim = false) const;
-	void toByteArray(byte *b) const;
+	wxString ToHexString(void) const;
+	wxString ToBinaryString(bool trim = false) const;
+	void ToByteArray(byte *b) const;
 
-	uint32 get32BitChunk(int val) const {return m_data[val];}
+	uint32 Get32BitChunk(int val) const {return m_data[val];}
 
-	CUInt128& setValue(const CUInt128 &value);
-	CUInt128& setValue(uint32 value);
-	CUInt128& setValueBE(const byte *valueBE);
+	CUInt128& SetValue(const CUInt128 &value);
+	CUInt128& SetValue(uint32 value);
+	CUInt128& SetValueBE(const byte *valueBE);
 
-	CUInt128& setValueRandom(void);
-//	CUInt128& setValueGUID(void);
+	CUInt128& SetValueRandom(void);
+//	CUInt128& SetValueGUID(void);
 
-	CUInt128& setBitNumber(uint32 bit, uint32 value);
-	CUInt128& shiftLeft(uint32 bits);
+	CUInt128& SetBitNumber(uint32 bit, uint32 value);
+	CUInt128& ShiftLeft(uint32 bits);
 
-	CUInt128& add(const CUInt128 &value);
-	CUInt128& add(uint32 value);
-	CUInt128& subtract(const CUInt128 &value);
-	CUInt128& subtract(uint32 value);
+	CUInt128& Add(const CUInt128 &value);
+	CUInt128& Add(uint32 value);
+	CUInt128& Subtract(const CUInt128 &value);
+	CUInt128& Subtract(uint32 value);
 
 	CUInt128& XOR(const CUInt128 &value);
 	CUInt128& XORBE(const byte *valueBE);
 
-	void operator+  (const CUInt128 &value) {add(value);}
-	void operator-  (const CUInt128 &value) {subtract(value);}
-	void operator=  (const CUInt128 &value) {setValue(value);}
-	bool operator<  (const CUInt128 &value) const {return (compareTo(value) <  0);}
-	bool operator>  (const CUInt128 &value) const {return (compareTo(value) >  0);}
-	bool operator<= (const CUInt128 &value) const {return (compareTo(value) <= 0);}
-	bool operator>= (const CUInt128 &value) const {return (compareTo(value) >= 0);}
-	bool operator== (const CUInt128 &value) const {return (compareTo(value) == 0);}
-	bool operator!= (const CUInt128 &value) const {return (compareTo(value) != 0);}
+	void operator+  (const CUInt128 &value) {Add(value);}
+	void operator-  (const CUInt128 &value) {Subtract(value);}
+	void operator=  (const CUInt128 &value) {SetValue(value);}
+	bool operator<  (const CUInt128 &value) const {return (CompareTo(value) <  0);}
+	bool operator>  (const CUInt128 &value) const {return (CompareTo(value) >  0);}
+	bool operator<= (const CUInt128 &value) const {return (CompareTo(value) <= 0);}
+	bool operator>= (const CUInt128 &value) const {return (CompareTo(value) >= 0);}
+	bool operator== (const CUInt128 &value) const {return (CompareTo(value) == 0);}
+	bool operator!= (const CUInt128 &value) const {return (CompareTo(value) != 0);}
 
-	void operator+  (uint32 value) {add(value);}
-	void operator-  (uint32 value) {subtract(value);}
-	void operator=  (uint32 value) {setValue(value);}
-	bool operator<  (uint32 value) const {return (compareTo(value) <  0);}
-	bool operator>  (uint32 value) const {return (compareTo(value) >  0);}
-	bool operator<= (uint32 value) const {return (compareTo(value) <= 0);}
-	bool operator>= (uint32 value) const {return (compareTo(value) >= 0);}
-	bool operator== (uint32 value) const {return (compareTo(value) == 0);}
-	bool operator!= (uint32 value) const {return (compareTo(value) != 0);}
+	void operator+  (uint32 value) {Add(value);}
+	void operator-  (uint32 value) {Subtract(value);}
+	void operator=  (uint32 value) {SetValue(value);}
+	bool operator<  (uint32 value) const {return (CompareTo(value) <  0);}
+	bool operator>  (uint32 value) const {return (CompareTo(value) >  0);}
+	bool operator<= (uint32 value) const {return (CompareTo(value) <= 0);}
+	bool operator>= (uint32 value) const {return (CompareTo(value) >= 0);}
+	bool operator== (uint32 value) const {return (CompareTo(value) == 0);}
+	bool operator!= (uint32 value) const {return (CompareTo(value) != 0);}
 
 private:
 

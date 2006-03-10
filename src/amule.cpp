@@ -1342,9 +1342,9 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 		// Publish files to server if needed.
 		sharedfiles->Process();
 		
-		if( Kademlia::CKademlia::isRunning() ) {
-			Kademlia::CKademlia::process();
-			if(Kademlia::CKademlia::getPrefs()->hasLostConnection()) {
+		if( Kademlia::CKademlia::IsRunning() ) {
+			Kademlia::CKademlia::Process();
+			if(Kademlia::CKademlia::GetPrefs()->HasLostConnection()) {
 				StopKad();
 			}
 		}
@@ -1584,8 +1584,8 @@ void CamuleApp::AddLogLine(const wxString &msg)
 uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 {
 	if (m_dwPublicIP == 0) {
-		if (Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::getIPAddress() ) {
-			return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::getIPAddress());
+		if (Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::GetIPAddress() ) {
+			return wxUINT32_SWAP_ALWAYS(Kademlia::CKademlia::GetIPAddress());
 		} else {
 			return ignorelocal ? 0 : m_localip;
 		}
@@ -1688,13 +1688,13 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 					wxRemoveFile(file);
 				}
 
-				if ( Kademlia::CKademlia::isRunning() ) {
-					Kademlia::CKademlia::stop();
+				if ( Kademlia::CKademlia::IsRunning() ) {
+					Kademlia::CKademlia::Stop();
 				}
 
 				wxRenameFile(file + wxT(".download"),file);
 				
-				Kademlia::CKademlia::start();
+				Kademlia::CKademlia::Start();
 				theApp.ShowConnectionState();
 				
 			} else {
@@ -1776,7 +1776,7 @@ bool CamuleApp::IsConnectedED2K()
 
 bool CamuleApp::IsConnectedKad()
 {
-	return Kademlia::CKademlia::isConnected(); 
+	return Kademlia::CKademlia::IsConnected(); 
 }
 
 
@@ -1791,7 +1791,7 @@ bool CamuleApp::IsFirewalled()
 
 bool CamuleApp::IsFirewalledKad()
 {
-	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::IsFirewalled()) {
+	if (Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled()) {
 		return false; // we have an Kad HighID -> not firewalled
 	}
 
@@ -1800,12 +1800,12 @@ bool CamuleApp::IsFirewalledKad()
 
 bool CamuleApp::IsKadRunning()
 {
-	return Kademlia::CKademlia::isRunning();
+	return Kademlia::CKademlia::IsRunning();
 }
 
 bool CamuleApp::DoCallback( CUpDownClient *client )
 {
-	if(Kademlia::CKademlia::isConnected()) {
+	if(Kademlia::CKademlia::IsConnected()) {
 		if(IsConnectedED2K()) {
 			if(serverconnect->IsLowID()) {
 				if(Kademlia::CKademlia::IsFirewalled()) {
@@ -1859,7 +1859,7 @@ void CamuleApp::ShowUserCount() {
 	
 	wxString buffer = 
 		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
-		CastItoIShort(Kademlia::CKademlia::getKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::getKademliaFiles());
+		CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
 	
 	Notify_ShowUserCount(buffer);
 }
@@ -1896,8 +1896,8 @@ void CamuleApp::ShowConnectionState()
 		state |= CONNECTED_ED2K;
 	}
 	
-	if (Kademlia::CKademlia::isRunning()) {
-		if (Kademlia::CKademlia::isConnected()) {
+	if (Kademlia::CKademlia::IsRunning()) {
+		if (Kademlia::CKademlia::IsConnected()) {
 			if (!Kademlia::CKademlia::IsFirewalled()) {
 				state |= CONNECTED_KAD_OK;
 			} else {
@@ -2002,10 +2002,10 @@ void CamuleApp::OnUnhandledException()
 
 void CamuleApp::StartKad()
 {
-	if (!Kademlia::CKademlia::isRunning() && thePrefs::GetNetworkKademlia()) {
+	if (!Kademlia::CKademlia::IsRunning() && thePrefs::GetNetworkKademlia()) {
 		// Kad makes no sense without the Client-UDP socket.
 		if (!thePrefs::IsUDPDisabled()) {
-			Kademlia::CKademlia::start();
+			Kademlia::CKademlia::Start();
 		} else {
 			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
 		}
@@ -2017,8 +2017,8 @@ void CamuleApp::StartKad()
 void CamuleApp::StopKad()
 {
 	// Stop Kad if it's running
-	if (Kademlia::CKademlia::isRunning()) {
-		Kademlia::CKademlia::stop();
+	if (Kademlia::CKademlia::IsRunning()) {
+		Kademlia::CKademlia::Stop();
 	}
 }
 
@@ -2042,12 +2042,12 @@ uint32 CamuleApp::GetED2KID() const {
 uint32 CamuleApp::GetID() const {
 	uint32 ID;
 	
-	if( Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::IsFirewalled() ) {
+	if( Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled() ) {
 		// We trust Kad above ED2K
-		ID = ENDIAN_NTOHL(Kademlia::CKademlia::getIPAddress());
+		ID = ENDIAN_NTOHL(Kademlia::CKademlia::GetIPAddress());
 	} else if( theApp.serverconnect->IsConnected() ) {
 		ID = theApp.serverconnect->GetClientID();
-	} else if ( Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::IsFirewalled() ) {
+	} else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() ) {
 		// A firewalled Kad client get's a "1"
 		ID = 1;
 	} else {

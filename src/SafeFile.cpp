@@ -165,7 +165,7 @@ uint64 CFileDataIO::ReadUInt64() const
 CUInt128 CFileDataIO::ReadUInt128() const
 {
 	CUInt128 value;
-	uint32* data = (uint32*)value.getDataPtr();
+	uint32* data = (uint32*)value.GetDataPtr();
 	for (int i = 0; i < (128/32); i++) {
 		// Four 32bits chunks
 		data[i] = ReadUInt32();
@@ -288,7 +288,7 @@ void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 {
 	for (int i = 0; i < (128/32); i++) {
 		// Four 32bits chunks
-		WriteUInt32(value.get32BitChunk(i));
+		WriteUInt32(value.Get32BitChunk(i));
 	}
 }
 

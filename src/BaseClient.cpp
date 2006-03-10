@@ -621,7 +621,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	}
 
 	if( GetKadPort() ) {
-		Kademlia::CKademlia::bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort());
+		Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(GetIP()), GetKadPort());
 	}
 
 	return bIsMule;
@@ -967,7 +967,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 	uint32 kadUDPPort = 0;
 
-	if(Kademlia::CKademlia::isConnected()) {
+	if(Kademlia::CKademlia::IsConnected()) {
 		kadUDPPort = thePrefs::GetEffectiveUDPPort();
 	}
 
@@ -1320,9 +1320,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		//recheck it before the this check..
 		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp.serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
 			//This is a Kad firewalled source that we want to do a special callback because it has no buddyIP or buddyPort.
-			if( Kademlia::CKademlia::isConnected() ) {
+			if( Kademlia::CKademlia::IsConnected() ) {
 				//We are connect to Kad
-				if( Kademlia::CKademlia::getPrefs()->getTotalSource() > 0 || Kademlia::CSearchManager::alreadySearchingFor(Kademlia::CUInt128(GetBuddyID()))) {
+				if( Kademlia::CKademlia::GetPrefs()->GetTotalSource() > 0 || Kademlia::CSearchManager::AlreadySearchingFor(Kademlia::CUInt128(GetBuddyID()))) {
 					//There are too many source lookups already or we are already searching this key.
 					SetDownloadState(DS_TOOMANYCONNSKAD);
 					return true;
@@ -1376,7 +1376,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 					return true;
 				}
 				
-				if( !Kademlia::CKademlia::isConnected() ) {
+				if( !Kademlia::CKademlia::IsConnected() ) {
 					//We are not connected to Kad and this is a Kad Firewalled source..
 					theApp.downloadqueue->RemoveSource(this);
 					if(Disconnected(wxT("Kad Firewalled source but not connected to Kad."))) {
@@ -1401,10 +1401,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						printf("Searching buddy for lowid connection\n");
 						//Create search to find buddy.
 						Kademlia::CSearch *findSource = new Kademlia::CSearch;
-						findSource->setSearchTypes(Kademlia::CSearch::FINDSOURCE);
-						findSource->setTargetID(Kademlia::CUInt128(GetBuddyID()));
-						findSource->addFileID(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
-						if(Kademlia::CSearchManager::startSearch(findSource)) {
+						findSource->SetSearchTypes(Kademlia::CSearch::FINDSOURCE);
+						findSource->SetTargetID(Kademlia::CUInt128(GetBuddyID()));
+						findSource->AddFileID(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
+						if(Kademlia::CSearchManager::StartSearch(findSource)) {
 							//Started lookup..
 							SetDownloadState(DS_WAITCALLBACKKAD);
 						} else {

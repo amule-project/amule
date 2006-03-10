@@ -46,9 +46,9 @@ namespace Kademlia {
 ////////////////////////////////////////
 
 //NOTE: avoid those function whenever possible -> terribly slow
-uint16 le(uint16 val);
-uint32 le(uint32 val);
-uint64 le(uint64 val);
+uint16 Le(uint16 val);
+uint32 Le(uint32 val);
+uint64 Le(uint64 val);
 
 } // End namespace
 

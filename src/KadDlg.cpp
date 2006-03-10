@@ -170,11 +170,11 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 		} else {
 			unsigned long port;
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
-				if ( !Kademlia::CKademlia::isRunning() ) {
-					Kademlia::CKademlia::start();
+				if ( !Kademlia::CKademlia::IsRunning() ) {
+					Kademlia::CKademlia::Start();
 					theApp.ShowConnectionState();
 				}
-				Kademlia::CKademlia::bootstrap(ip, port);				
+				Kademlia::CKademlia::Bootstrap(ip, port);				
 			} else {
 				wxMessageBox(_("Invalid port to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 			}

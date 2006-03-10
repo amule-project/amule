@@ -53,57 +53,57 @@ public:
 	CPrefs();
 	~CPrefs();
 
-	void	setKadID(const CUInt128 &id)		{m_clientID = id;}
-	const CUInt128& getKadID() const					{return m_clientID;}
+	void	SetKadID(const CUInt128 &id)		{m_clientID = id;}
+	const CUInt128& GetKadID() const					{return m_clientID;}
 
-	void	setClientHash(const CUInt128 &id)	{m_clientHash = id;}
-	const CUInt128& getClientHash() const				{return m_clientHash;}
+	void	SetClientHash(const CUInt128 &id)	{m_clientHash = id;}
+	const CUInt128& GetClientHash() const				{return m_clientHash;}
 
-	uint32	getIPAddress() const				{return m_ip;}
-	void	setIPAddress(uint32 val);
+	uint32	GetIPAddress() const				{return m_ip;}
+	void	SetIPAddress(uint32 val);
 
-	bool	getRecheckIP() const				{return (m_recheckip<4);}
-	void	setRecheckIP()						{m_recheckip = 0; setFirewalled();}
-	void	incRecheckIP()						{m_recheckip++;}
+	bool	GetRecheckIP() const				{return (m_recheckip<4);}
+	void	SetRecheckIP()						{m_recheckip = 0; SetFirewalled();}
+	void	IncRecheckIP()						{m_recheckip++;}
 
-	bool	hasHadContact() const;
-	void	setLastContact()					{m_lastContact = time(NULL);}
-	bool	hasLostConnection() const;
-	uint32	getLastContact() const				{return m_lastContact;}
+	bool	HasHadContact() const;
+	void	SetLastContact()					{m_lastContact = time(NULL);}
+	bool	HasLostConnection() const;
+	uint32	GetLastContact() const				{return m_lastContact;}
 
-	bool	getFirewalled() const;
-	void	setFirewalled();
-	void	incFirewalled();
+	bool	GetFirewalled() const;
+	void	SetFirewalled();
+	void	IncFirewalled();
 
-	uint8	getTotalFile() const				{return m_totalFile;}
-	void	setTotalFile(uint8 val)				{m_totalFile = val;}
+	uint8	GetTotalFile() const				{return m_totalFile;}
+	void	SetTotalFile(uint8 val)				{m_totalFile = val;}
 
-	uint8	getTotalStoreSrc() const			{return m_totalStoreSrc;}
-	void	setTotalStoreSrc(uint8 val)			{m_totalStoreSrc = val;}
+	uint8	GetTotalStoreSrc() const			{return m_totalStoreSrc;}
+	void	SetTotalStoreSrc(uint8 val)			{m_totalStoreSrc = val;}
 
-	uint8	getTotalStoreKey() const			{return m_totalStoreKey;}
-	void	setTotalStoreKey(uint8 val)			{m_totalStoreKey = val;}
+	uint8	GetTotalStoreKey() const			{return m_totalStoreKey;}
+	void	SetTotalStoreKey(uint8 val)			{m_totalStoreKey = val;}
 
-	uint8	getTotalSource() const				{return m_totalSource;}
-	void	setTotalSource(uint8 val)			{m_totalSource = val;}
+	uint8	GetTotalSource() const				{return m_totalSource;}
+	void	SetTotalSource(uint8 val)			{m_totalSource = val;}
 
-	uint8	getTotalNotes() const				{return m_totalNotes;}
-	void	setTotalNotes(uint8 val)			{m_totalNotes = val;}
+	uint8	GetTotalNotes() const				{return m_totalNotes;}
+	void	SetTotalNotes(uint8 val)			{m_totalNotes = val;}
 
-	uint8	getTotalStoreNotes() const			{return m_totalStoreNotes;}
-	void	setTotalStoreNotes(uint8 val)		{m_totalStoreNotes = val;}
+	uint8	GetTotalStoreNotes() const			{return m_totalStoreNotes;}
+	void	SetTotalStoreNotes(uint8 val)		{m_totalStoreNotes = val;}
 
-	uint32	getKademliaUsers() const			{return m_kademliaUsers;}
-	void	setKademliaUsers(uint32 val)		{m_kademliaUsers = val;}
+	uint32	GetKademliaUsers() const			{return m_kademliaUsers;}
+	void	SetKademliaUsers(uint32 val)		{m_kademliaUsers = val;}
 
-	uint32	getKademliaFiles() const			{return m_kademliaFiles;}
-	void	setKademliaFiles();
+	uint32	GetKademliaFiles() const			{return m_kademliaFiles;}
+	void	SetKademliaFiles();
 
-	bool	getPublish() const					{return m_Publish;}
-	void	setPublish(bool val)				{m_Publish = val;}
+	bool	GetPublish() const					{return m_Publish;}
+	void	SetPublish(bool val)				{m_Publish = val;}
 
-	bool	getFindBuddy();
-	void	setFindBuddy(bool val = true)		{m_findBuddy = val;}
+	bool	GetFindBuddy();
+	void	SetFindBuddy(bool val = true)		{m_findBuddy = val;}
 
 private:
 	wxString	m_filename;
@@ -127,11 +127,11 @@ private:
 	bool		m_findBuddy;
 	bool		m_lastFirewallState;
 
-	void init(const wxString& filename);
-	void reset();
-	void setDefaults();
-	void readFile();
-	void writeFile();
+	void Init(const wxString& filename);
+	void Reset();
+	void SetDefaults();
+	void ReadFile();
+	void WriteFile();
 };
 
 } // End namespace

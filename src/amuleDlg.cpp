@@ -479,7 +479,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 
 	bool disconnect = (theApp.IsConnectedED2K() || theApp.serverconnect->IsConnecting()) 
 						#ifndef CLIENT_GUI
-						|| (Kademlia::CKademlia::isRunning())
+						|| (Kademlia::CKademlia::IsRunning())
 						#endif
 						;	
 	if (thePrefs::GetNetworkED2K()) {
@@ -508,7 +508,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 		}
 	} else {
 		#ifndef CLIENT_GUI
-			wxASSERT(!Kademlia::CKademlia::isRunning());
+			wxASSERT(!Kademlia::CKademlia::IsRunning());
 		#endif
 	}
 

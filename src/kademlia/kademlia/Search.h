@@ -58,12 +58,12 @@ class CSearch
 	friend class CSearchManager;
 
 public:
-	uint32 getSearchID() const {return m_searchID;}
-	uint32 getSearchTypes() const {return m_type;}
-	void setSearchTypes( uint32 val ) {m_type = val;}
-	void setTargetID( CUInt128 val ) {m_target = val;}
+	uint32 GetSearchID() const {return m_searchID;}
+	uint32 GetSearchTypes() const {return m_type;}
+	void SetSearchTypes( uint32 val ) {m_type = val;}
+	void SetTargetID( CUInt128 val ) {m_target = val;}
 
-	uint32 getAnswers() const {
+	uint32 GetAnswers() const {
 		if(bio2 == NULL) {
 			return m_answers;
 		} else if(bio3 == NULL) {
@@ -72,8 +72,8 @@ public:
 			return m_answers/3;
 			}
 		}
-	uint32 getKadPacketSent() const {return m_kadPacketSent;}
-	uint32 getRequestAnswer() const {return m_totalRequestAnswers;}
+	uint32 GetKadPacketSent() const {return m_kadPacketSent;}
+	uint32 GetRequestAnswer() const {return m_totalRequestAnswers;}
 	void StorePacket();
 
 	CUInt128 m_keywordPublish; //Need to make this private...
@@ -83,17 +83,17 @@ public:
 	CMemFile *bio1;
 	CMemFile *bio2;
 	CMemFile *bio3;
-	const wxString& getFileName(void) const { return m_fileName; }
-	void setFileName(const wxString& fileName) { m_fileName = fileName; }
-	CUInt128 getTarget(void) const {return m_target;}
-	void addFileID(const CUInt128& id);
+	const wxString& GetFileName(void) const { return m_fileName; }
+	void SetFileName(const wxString& fileName) { m_fileName = fileName; }
+	CUInt128 GetTarget(void) const {return m_target;}
+	void AddFileID(const CUInt128& id);
 	void PreparePacket(void);
 	void PreparePacketForTags( CMemFile* packet, CKnownFile* file );
 	bool Stoping(void) const {return m_stoping;}
-	uint32 getNodeLoad() const;
-	uint32 getNodeLoadResonse() const {return m_totalLoadResponses;}
-	uint32 getNodeLoadTotal() const {return m_totalLoad;}
-	void updateNodeLoad( uint8 load ){ m_totalLoad += load; m_totalLoadResponses++; }
+	uint32 GetNodeLoad() const;
+	uint32 GetNodeLoadResonse() const {return m_totalLoadResponses;}
+	uint32 GetNodeLoadTotal() const {return m_totalLoad;}
+	void UpdateNodeLoad( uint8 load ){ m_totalLoad += load; m_totalLoadResponses++; }
 
 	enum
 	{
@@ -113,15 +113,15 @@ public:
 	~CSearch();
 
 private:
-	void go(void);
-	void processResponse(uint32 fromIP, uint16 fromPort, ContactList *results);
-	void processResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void processResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void processResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void processResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void jumpStart(void);
-	void sendFindValue(const CUInt128 &check, uint32 ip, uint16 port);
-	void prepareToStop(void);
+	void Go(void);
+	void ProcessResponse(uint32 fromIP, uint16 fromPort, ContactList *results);
+	void ProcessResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
+	void JumpStart(void);
+	void SendFindValue(const CUInt128 &check, uint32 ip, uint16 port);
+	void PrepareToStop(void);
 
 	bool		m_stoping;
 	time_t		m_created;
