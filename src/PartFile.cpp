@@ -1749,7 +1749,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	}
 	
 	if (Kademlia::CKademlia::isConnected()) {
-		if(!Kademlia::CKademlia::isFirewalled()) {
+		if(!Kademlia::CKademlia::IsFirewalled()) {
 			if(Kademlia::CKademlia::getIPAddress() == hybridID && thePrefs::GetPort() == port) {
 				return false;
 			}

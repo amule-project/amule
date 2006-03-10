@@ -923,7 +923,7 @@ wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 	if ( !IsConnectedED2K() || serverconnect->IsLowID() ) {
 		return wxEmptyString;
 	}
-	uint32 clientID = GetED2KID();
+	uint32 clientID = GetID();
 	// Create the first part of the URL
 	// And append the source information: "|sources,<ip>:<port>|/"
 	wxString strURL = CreateED2kLink(f) <<
@@ -1063,7 +1063,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 			amulesig_out.AddLine(wxT("0\n0\n0\n0\n0"));
 		}
 		if (IsConnectedKad()) {
-			if(Kademlia::CKademlia::isFirewalled()) {
+			if(Kademlia::CKademlia::IsFirewalled()) {
 				// Connected. Firewalled. State 1.
 				amulesig_out.AddLine(wxT("1"));
 			} else {
@@ -1780,7 +1780,7 @@ bool CamuleApp::IsFirewalled()
 
 bool CamuleApp::IsFirewalledKad()
 {
-	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled()) {
+	if (Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::IsFirewalled()) {
 		return false; // we have an Kad HighID -> not firewalled
 	}
 
@@ -1797,7 +1797,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 	if(Kademlia::CKademlia::isConnected()) {
 		if(IsConnectedED2K()) {
 			if(serverconnect->IsLowID()) {
-				if(Kademlia::CKademlia::isFirewalled()) {
+				if(Kademlia::CKademlia::IsFirewalled()) {
 					//Both Connected - Both Firewalled
 					return false;
 				} else {
@@ -1817,7 +1817,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 				return true;
 			}
 		} else {
-			if(Kademlia::CKademlia::isFirewalled()) {
+			if(Kademlia::CKademlia::IsFirewalled()) {
 				//Only Kad Connected - Kad Firewalled
 				return false;
 			} else {
@@ -1887,7 +1887,7 @@ void CamuleApp::ShowConnectionState()
 	
 	if (Kademlia::CKademlia::isRunning()) {
 		if (Kademlia::CKademlia::isConnected()) {
-			if (!Kademlia::CKademlia::isFirewalled()) {
+			if (!Kademlia::CKademlia::IsFirewalled()) {
 				state |= CONNECTED_KAD_OK;
 			} else {
 				state |= CONNECTED_KAD_FIREWALLED;
@@ -2026,6 +2026,24 @@ bool CamuleApp::CryptoAvailable() const
 
 uint32 CamuleApp::GetED2KID() const {
 	return serverconnect ? serverconnect->GetClientID() : 0;
+}
+
+uint32 CamuleApp::GetID() const {
+	uint32 ID;
+	
+	if( Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::IsFirewalled() ) {
+		// We trust Kad above ED2K
+		ID = ENDIAN_NTOHL(Kademlia::CKademlia::getIPAddress());
+	} else if( theApp.serverconnect->IsConnected() ) {
+		ID = theApp.serverconnect->GetClientID();
+	} else if ( Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::IsFirewalled() ) {
+		// A firewalled Kad client get's a "1"
+		ID = 1;
+	} else {
+		ID = 0;
+	}
+	
+	return ID;	
 }
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)

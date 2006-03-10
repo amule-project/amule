@@ -257,7 +257,7 @@ bool CKademlia::isConnected(void)
 	return false;
 }
 
-bool CKademlia::isFirewalled(void)
+bool CKademlia::IsFirewalled(void)
 {
 	if( instance && instance->m_prefs ) {
 		return instance->m_prefs->getFirewalled();

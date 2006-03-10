@@ -266,7 +266,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 
 //#warning Creteil?  I know you are here Creteil... follow the white rabbit.
 /* Madcat - knock knock ...
-	        ,-.,-.
+           ,-.,-.
             \ \\ \
              \ \\_\
              /     \

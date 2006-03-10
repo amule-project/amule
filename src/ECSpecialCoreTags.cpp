@@ -111,7 +111,7 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 			|
 			(theApp.IsConnectedKad() ? 0x04 : 0x00)
 			|
-			(Kademlia::CKademlia::isFirewalled() ? 0x08 : 0x00)
+			(Kademlia::CKademlia::IsFirewalled() ? 0x08 : 0x00)
 			| 
 			(Kademlia::CKademlia::isRunning() ? 0x10 : 0x00)
 		))
