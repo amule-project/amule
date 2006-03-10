@@ -441,8 +441,10 @@ bool CamuleApp::OnInit()
 			"\t\t\t<str> uses the same format as standard X11 apps:\n"
 			"\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
+
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
+	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
@@ -458,6 +460,8 @@ bool CamuleApp::OnInit()
 		wxHandleFatalExceptions(true);
 #endif
 	}
+
+	bool reset_config = cmdline.Found(wxT("reset-config"));
 
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
@@ -500,7 +504,15 @@ bool CamuleApp::OnInit()
 	}
 	
 	// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
-	CheckConfig();
+	if (!reset_config) {
+		// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
+		CheckConfig();
+	} else {
+		// Make a backup first.
+		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
+		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
+		printf("Your settings have ben resetted to default values.\nOld config file has been saved as amule.conf.backup\n");
+	}
 
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
