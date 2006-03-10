@@ -937,7 +937,7 @@ void CUpDownClient::SendHelloAnswer()
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
 	data->WriteHash(thePrefs::GetUserHash());
-	data->WriteUInt32(theApp.GetED2KID());
+	data->WriteUInt32(theApp.GetID());
 	data->WriteUInt16(thePrefs::GetPort());
 
 	uint32 tagcount = 6;

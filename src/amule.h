@@ -158,6 +158,7 @@ public:
 	void		SetPublicIP(const uint32 dwIP);
 	
 	uint32	GetED2KID() const;
+	uint32	GetID() const;
 
 	// Other parts of the interface and such
 	CPreferences*		glob_prefs;

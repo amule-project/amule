@@ -783,29 +783,35 @@ void CSharedFileList::CreateOfferedFilePacket(
 	cur_file->SetPublishedED2K(true);
 	files->WriteHash(cur_file->GetFileHash());
 
-	uint32 nClientID;
-	uint16 nClientPort;
+	uint32 nClientID = 0;
+	uint16 nClientPort = 0;
 
-	if (pServer && (pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
-		#define FILE_COMPLETE_ID		0xfbfbfbfb
-		#define FILE_COMPLETE_PORT	0xfbfb
-		#define FILE_INCOMPLETE_ID	0xfcfcfcfc
-		#define FILE_INCOMPLETE_PORT	0xfcfc
-		// complete   file: ip 251.251.251 (0xfbfbfbfb) port 0xfbfb
-		// incomplete file: op 252.252.252 (0xfcfcfcfc) port 0xfcfc
-		if (cur_file->GetStatus() == PS_COMPLETE) {
-			nClientID = FILE_COMPLETE_ID;
-			nClientPort = FILE_COMPLETE_PORT;
+	if (pServer) {
+		if (pServer->GetTCPFlags() & SRV_TCPFLG_COMPRESSION) {
+			#define FILE_COMPLETE_ID		0xfbfbfbfb
+			#define FILE_COMPLETE_PORT	0xfbfb
+			#define FILE_INCOMPLETE_ID	0xfcfcfcfc
+			#define FILE_INCOMPLETE_PORT	0xfcfc
+			// complete   file: ip 251.251.251 (0xfbfbfbfb) port 0xfbfb
+			// incomplete file: op 252.252.252 (0xfcfcfcfc) port 0xfcfc
+			if (cur_file->GetStatus() == PS_COMPLETE) {
+				nClientID = FILE_COMPLETE_ID;
+				nClientPort = FILE_COMPLETE_PORT;
+			} else {
+				nClientID = FILE_INCOMPLETE_ID;
+				nClientPort = FILE_INCOMPLETE_PORT;
+			}
 		} else {
-			nClientID = FILE_INCOMPLETE_ID;
-			nClientPort = FILE_INCOMPLETE_PORT;
+			if (theApp.IsConnectedED2K() && !::IsLowID(theApp.GetED2KID())){
+				nClientID = theApp.GetID();
+				nClientPort = thePrefs::GetPort();
+			}
 		}
 	} else {
-		if (!theApp.IsConnectedED2K() || ::IsLowID(theApp.GetED2KID())){
-			nClientID = 0;
-			nClientPort = 0;
-		} else {
-			nClientID = theApp.GetED2KID();
+		// Do not merge this with the above case - this one
+		// also checks Kad status.
+		if (theApp.IsConnected() && !theApp.IsFirewalled()) {
+			nClientID = theApp.GetID();
 			nClientPort = thePrefs::GetPort();
 		}
 	}
