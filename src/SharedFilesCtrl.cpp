@@ -143,8 +143,10 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->AppendSeparator();
 		m_menu->Append(MP_RENAME, _("Rename"));
 		m_menu->AppendSeparator();
+/* Commented out while it's gone
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
+*/
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
