@@ -442,6 +442,7 @@ bool CamuleApp::OnInit()
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
+	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
 	cmdline.AddSwitch(wxT("onlychucknorriswouldstopme"), wxT("only-chuck-norris-would-stop-me"), wxT("Runs aMule scary SVN development version at your own risk."));
 
 	// Show help on --help or invalid commands
@@ -464,12 +465,15 @@ bool CamuleApp::OnInit()
 #endif
 	}
 
+	bool reset_config = cmdline.Found(wxT("reset-config"));
+	
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
 	enable_daemon_fork = cmdline.Found(wxT("full-daemon"));
 #else
 	enable_daemon_fork = false;
-#endif	
+#endif
+	
 	if ( enable_stdout_log ) {
 		if ( enable_daemon_fork ) {
 			printf("Daemon will fork to background - log to stdout disabled\n");
@@ -504,9 +508,15 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 	
-	// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
-	CheckConfig();
-
+	if (!reset_config) {
+		// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
+		CheckConfig();
+	} else {
+		// Make a backup first.
+		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
+		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
+		printf("Your settings have ben resetted to default values.\nOld config file has been saved as amule.conf.backup\n");
+	}
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
 	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
@@ -570,6 +580,7 @@ bool CamuleApp::OnInit()
 	// Load Preferences
 	CPreferences::BuildItemList(ConfigDir);
 	CPreferences::LoadAllItems( wxConfigBase::Get() );
+
 	glob_prefs = new CPreferences();
 
 	std::pair<bool, wxString> checkResult;
