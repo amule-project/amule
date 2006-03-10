@@ -83,7 +83,7 @@ public:
 	void getAllEntries(ContactList *result, bool emptyFirst = true);
 
 	// Returns the *maxRequired* tokens that are closest to the target within this zone's subtree.
-	uint32 getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
+	void getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
 	
 	// Ideally: Returns all contacts that are in buckets of common range between us and the asker.
 	// In practice: returns the contacts from the top (2^{logBase+1}) buckets.

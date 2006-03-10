@@ -182,36 +182,41 @@ CContact *CRoutingBin::getOldest(void)
 	return NULL;
 }
 
-uint32 CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128& WXUNUSED(distance), uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
+void CRoutingBin::getClosestTo(uint32 maxType, const CUInt128 &target, uint32 maxRequired, ContactMap *result, bool emptyFirst, bool inUse)
 {
-	if (m_entries.size() == 0) {
-		return 0;
-	}
-
+	// If we have to clear the bin, do it now.
 	if (emptyFirst) {
 		result->clear();
 	}
 
-	//Put results in sort order for target.
+	// No entries, no closest.
+	if (m_entries.size() == 0) {
+		return;
+	}
+
+	// First put results in sort order for target so we can insert them correctly.
+	// We don't care about max results at this time.
+	
 	ContactList::const_iterator it;
 	for (it = m_entries.begin(); it != m_entries.end(); ++it) {
 		if((*it)->getType() <= maxType) {
 			CUInt128 targetDistance((*it)->getClientID());
 			targetDistance.XOR(target);
 			(*result)[targetDistance] = *it;
+			// This list will be used for an unknown time, Inc in use so it's not deleted.
 			if( inUse ) {
 				(*it)->incUse();
 			}
 		}
 	}
 
-	//Remove any extra results
-	while(result->size() > maxRequired) {
-		if( inUse ) {
-			(--result->end())->second->decUse();
+	// Remove any extra results by least wanted first.
+	while (result->size() > maxRequired) {
+ 	// Dec in use count.
+ 		if( inUse ) {
+  			(--result->end())->second->decUse();
 		}
-		result->erase(--result->end());
+ 		// Remove from results
+ 		result->erase(--result->end());
 	}
-
-	return result->size();
 }
