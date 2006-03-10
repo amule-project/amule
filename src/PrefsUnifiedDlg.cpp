@@ -272,6 +272,10 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 	// It must not be resized to something smaller than what it currently is
 	wxSize size = GetClientSize();
 	SetSizeHints( size.GetWidth(), size.GetHeight() );
+
+	#ifdef __WXMSW__
+		FindWindow(IDC_VERTTOOLBAR)->Enable(false);
+	#endif
 }
 
 
