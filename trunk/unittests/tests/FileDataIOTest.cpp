@@ -22,7 +22,7 @@ namespace muleunit {
 	//! Needed for ASSERT_EQUALS with CUInt128 values
 	template <>
 	wxString StringFrom<CUInt128>(const CUInt128& value) {
-		return value.toHexString();
+		return value.ToHexString();
 	}
 }
 

@@ -1238,7 +1238,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 
 			if( m_client->GetKadPort() ) {
-				Kademlia::CKademlia::bootstrap(wxUINT32_SWAP_ALWAYS(m_client->GetIP()), m_client->GetKadPort());
+				Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(m_client->GetIP()), m_client->GetKadPort());
 			}
 
  			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
@@ -1628,18 +1628,18 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 		case OP_CALLBACK: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CALLBACK from ") + m_client->GetFullIP() );				
 			theStats::AddDownOverheadFileRequest(size);
-			if(!Kademlia::CKademlia::isRunning()) {
+			if(!Kademlia::CKademlia::IsRunning()) {
 				break;
 			}
 			CMemFile data(buffer, size);
 			CUInt128 check = data.ReadUInt128();
 			check.XOR(Kademlia::CUInt128(true));
-			if( check.compareTo(Kademlia::CKademlia::getPrefs()->getKadID())) {
+			if( check.CompareTo(Kademlia::CKademlia::GetPrefs()->GetKadID())) {
 				break;
 			}
 			CUInt128 fileid = data.ReadUInt128();
 			byte fileid2[16];
-			fileid.toByteArray(fileid2);
+			fileid.ToByteArray(fileid2);
 			const CMD4Hash fileHash(fileid2);
 			if (theApp.sharedfiles->GetFileByID(fileHash) == NULL) {
 				if (theApp.downloadqueue->GetFileByID(fileHash) == NULL) {

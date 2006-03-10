@@ -63,19 +63,19 @@ using namespace Kademlia;
 
 CPrefs::CPrefs()
 {
-	init(theApp.ConfigDir + wxT("preferencesKad.dat"));
+	Init(theApp.ConfigDir + wxT("preferencesKad.dat"));
 }
 
 CPrefs::~CPrefs()
 {
 	if (!m_filename.IsEmpty()) {
-		writeFile();
+		WriteFile();
 	}
 }
 
-void CPrefs::init(const wxString& filename)
+void CPrefs::Init(const wxString& filename)
 {
-	m_clientID.setValueRandom();
+	m_clientID.SetValueRandom();
 	m_lastContact = 0;
 	m_recheckip = 0;
 	m_firewalled = 0;
@@ -86,7 +86,7 @@ void CPrefs::init(const wxString& filename)
 	m_totalNotes = 0;
 	m_totalStoreNotes = 0;
 	m_Publish = false;
-	m_clientHash.setValueBE(thePrefs::GetUserHash().GetHash());
+	m_clientHash.SetValueBE(thePrefs::GetUserHash().GetHash());
 	m_ip			= 0;
 	m_ipLast		= 0;
 	m_firewalled	= 0;
@@ -95,10 +95,10 @@ void CPrefs::init(const wxString& filename)
 	m_kademliaFiles	= 0;
 	m_filename = filename;
 	m_lastFirewallState = true;
-	readFile();
+	ReadFile();
 }
 
-void CPrefs::readFile()
+void CPrefs::ReadFile()
 {
 	try {
 		CFile file;
@@ -112,7 +112,7 @@ void CPrefs::readFile()
 	}
 }
 
-void CPrefs::writeFile()
+void CPrefs::WriteFile()
 {
 	try {
 		CFile file;
@@ -128,7 +128,7 @@ void CPrefs::writeFile()
 	}
 }
 
-void CPrefs::setIPAddress(uint32 val)
+void CPrefs::SetIPAddress(uint32 val)
 {
 	//This is our first check on connect, init our IP..
 	if( !val || !m_ipLast ) {
@@ -146,7 +146,7 @@ void CPrefs::setIPAddress(uint32 val)
 }
 
 
-bool CPrefs::hasLostConnection() const
+bool CPrefs::HasLostConnection() const
 {
 	if( m_lastContact ) {
 		return !((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY);
@@ -154,7 +154,7 @@ bool CPrefs::hasLostConnection() const
 	return false;
 }
 
-bool CPrefs::hasHadContact() const
+bool CPrefs::HasHadContact() const
 {
 	if( m_lastContact ) {
 		return ((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY);
@@ -162,13 +162,13 @@ bool CPrefs::hasHadContact() const
 	return false;
 }
 
-bool CPrefs::getFirewalled() const
+bool CPrefs::GetFirewalled() const
 {
 	if( m_firewalled<2 ) {
 		//Not enough people have told us we are open but we may be doing a recheck
 		//at the moment which will give a false lowID.. Therefore we check to see
 		//if we are still rechecking and will report our last known state..
-		if(getRecheckIP()) {
+		if(GetRecheckIP()) {
 			return m_lastFirewallState;
 		}
 		return true;
@@ -177,7 +177,7 @@ bool CPrefs::getFirewalled() const
 	return false;
 }
 
-void CPrefs::setFirewalled()
+void CPrefs::SetFirewalled()
 {
 	//Are are checking our firewall state.. Let keep a snapshot of our
 	//current state to prevent false reports during the recheck..
@@ -186,13 +186,13 @@ void CPrefs::setFirewalled()
 	theApp.ShowConnectionState();
 }
 
-void CPrefs::incFirewalled()
+void CPrefs::IncFirewalled()
 {
 	m_firewalled++;
 	theApp.ShowConnectionState();
 }
 
-bool CPrefs::getFindBuddy() /*const*/
+bool CPrefs::GetFindBuddy() /*const*/
 {
 	if( m_findBuddy ) {
 		m_findBuddy = false;
@@ -201,13 +201,13 @@ bool CPrefs::getFindBuddy() /*const*/
 	return false;
 }
 
-void CPrefs::setKademliaFiles()
+void CPrefs::SetKademliaFiles()
 {
 	//There is no real way to know how many files are in the Kad network..
 	//So we first try to see how many files per user are in the ED2K network..
 	//If that fails, we use a set value based on previous tests..
 	uint32 nServerAverage = theApp.serverlist->GetAvgFile();
-	uint32 nKadAverage = Kademlia::CKademlia::getIndexed()->GetFileKeyCount();
+	uint32 nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
 #ifdef __DEBUG__
 	wxString method;

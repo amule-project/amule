@@ -580,7 +580,7 @@ void CClientList::Process()
 	while (current_it != m_KadSources.end()) {
 		CUpDownClient* cur_client = *current_it;
 		++current_it; // Won't be used anymore till while loop 
-		if( !Kademlia::CKademlia::isRunning() ) {
+		if( !Kademlia::CKademlia::IsRunning() ) {
 			//Clear out this list if we stop running Kad.
 			//Setting the Kad state to KS_NONE causes it to be removed in the switch below.
 			cur_client->SetKadState(KS_NONE);
@@ -598,7 +598,7 @@ void CClientList::Process()
 			case KS_CONNECTED_FWCHECK:
 				//We successfully connected to the client.
 				//We now send a ack to let them know.
-				Kademlia::CKademlia::getUDPListener()->sendNullPacket(KADEMLIA_FIREWALLED_ACK, wxUINT32_SWAP_ALWAYS(cur_client->GetIP()), cur_client->GetKadPort());
+				Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK, wxUINT32_SWAP_ALWAYS(cur_client->GetIP()), cur_client->GetKadPort());
 				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
 				cur_client->SetKadState(KS_NONE);
 				break;
@@ -669,10 +669,10 @@ void CClientList::Process()
 	//We either never had a buddy, or lost our buddy..
 	if( buddy == Disconnected ) {
 		if( m_nBuddyStatus != Disconnected || m_pBuddy ) {
-			if( Kademlia::CKademlia::isRunning() && theApp.IsFirewalled() ) {
+			if( Kademlia::CKademlia::IsRunning() && theApp.IsFirewalled() ) {
 				//We are a lowID client and we just lost our buddy.
 				//Go ahead and instantly try to find a new buddy.
-				Kademlia::CKademlia::getPrefs()->setFindBuddy();
+				Kademlia::CKademlia::GetPrefs()->SetFindBuddy();
 			}
 			m_pBuddy = NULL;
 			m_nBuddyStatus = Disconnected;
@@ -680,22 +680,22 @@ void CClientList::Process()
 		}
 	}
 
-	if ( Kademlia::CKademlia::isConnected() ) {
+	if ( Kademlia::CKademlia::IsConnected() ) {
 		if( Kademlia::CKademlia::IsFirewalled() ) {
-			if( m_nBuddyStatus == Disconnected && Kademlia::CKademlia::getPrefs()->getFindBuddy() ) {
+			if( m_nBuddyStatus == Disconnected && Kademlia::CKademlia::GetPrefs()->GetFindBuddy() ) {
 				//We are a firewalled client with no buddy. We have also waited a set time 
 				//to try to avoid a false firewalled status.. So lets look for a buddy..
 				Kademlia::CSearch *findBuddy = new Kademlia::CSearch;
-				findBuddy->setSearchTypes(Kademlia::CSearch::FINDBUDDY);
+				findBuddy->SetSearchTypes(Kademlia::CSearch::FINDBUDDY);
 				Kademlia::CUInt128 ID(true);
-				ID.XOR(Kademlia::CKademlia::getPrefs()->getKadID());
-				findBuddy->setTargetID(ID);
-				if( !Kademlia::CSearchManager::startSearch(findBuddy) ) {
+				ID.XOR(Kademlia::CKademlia::GetPrefs()->GetKadID());
+				findBuddy->SetTargetID(ID);
+				if( !Kademlia::CSearchManager::StartSearch(findBuddy) ) {
 					//This search ID was already going. Most likely reason is that
 					//we found and lost our buddy very quickly and the last search hadn't
 					//had time to be removed yet. Go ahead and set this to happen again
 					//next time around.
-					Kademlia::CKademlia::getPrefs()->setFindBuddy();
+					Kademlia::CKademlia::GetPrefs()->SetFindBuddy();
 				}
 			}
 		} else {
@@ -838,21 +838,21 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 
 void CClientList::RequestTCP(Kademlia::CContact* contact)
 {
-	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	// don't connect ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 
-	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
+	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
 
 	if (!pNewClient) {
 		#warning Do we actually have to check friendstate here?
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true);
+		pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true);
 	}
 
 	//Add client to the lists to be processed.
-	pNewClient->SetKadPort(contact->getUDPPort());
+	pNewClient->SetKadPort(contact->GetUDPPort());
 	pNewClient->SetKadState(KS_QUEUED_FWCHECK);
 	AddToKadList(pNewClient); // This was a direct adding, but I like to check duplicates
 	//This method checks if this is a dup already.
@@ -862,22 +862,22 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 void CClientList::RequestBuddy(Kademlia::CContact* contact)
 {
 
-	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	// Don't connect to ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 	
-	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->getTCPPort());
+	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
 	if (!pNewClient) {
-		pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
+		pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true );
 	}
 
 	//Add client to the lists to be processed.
-	pNewClient->SetKadPort(contact->getUDPPort());
+	pNewClient->SetKadPort(contact->GetUDPPort());
 	pNewClient->SetKadState(KS_QUEUED_BUDDY);
 	byte ID[16];
-	contact->getClientID().toByteArray(ID);
+	contact->GetClientID().ToByteArray(ID);
 	pNewClient->SetUserHash(CMD4Hash(ID));
 	AddToKadList(pNewClient);
 	//This method checks if this is a dup already.
@@ -888,26 +888,26 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
 {
 
-	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->getIPAddress());
+	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	//If aMule already knows this client, abort this.. It could cause conflicts.
 	//Although the odds of this happening is very small, it could still happen.
-	if (FindClientByIP(nContactIP, contact->getTCPPort())) {
+	if (FindClientByIP(nContactIP, contact->GetTCPPort())) {
 		return;
 	}
 
 	// Don't connect ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->getTCPPort()) {
+	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 
 	//Add client to the lists to be processed.
-	CUpDownClient* pNewClient = new CUpDownClient(contact->getTCPPort(), contact->getIPAddress(), 0, 0, NULL, false, true );
-	pNewClient->SetKadPort(contact->getUDPPort());
+	CUpDownClient* pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true );
+	pNewClient->SetKadPort(contact->GetUDPPort());
 	pNewClient->SetKadState(KS_INCOMING_BUDDY);
 	byte ID[16];
-	contact->getClientID().toByteArray(ID);
+	contact->GetClientID().ToByteArray(ID);
 	pNewClient->SetUserHash(CMD4Hash(ID));
-	buddyID->toByteArray(ID);
+	buddyID->ToByteArray(ID);
 	pNewClient->SetBuddyID(ID);
 	AddToKadList(pNewClient);
 	AddClient(pNewClient);

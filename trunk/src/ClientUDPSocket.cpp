@@ -87,7 +87,7 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 				
 			case OP_KADEMLIAHEADER:
 				theStats::AddDownOverheadKad(length);
-				Kademlia::CKademlia::processPacket(buffer, length, wxUINT32_SWAP_ALWAYS(ip), port);
+				Kademlia::CKademlia::ProcessPacket(buffer, length, wxUINT32_SWAP_ALWAYS(ip), port);
 				break;
 				
 			case OP_KADEMLIAPACKEDPROT: {
@@ -99,7 +99,7 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 				if (result == Z_OK) {
 					unpack[0] = OP_KADEMLIAHEADER;
 					unpack[1] = opcode;
-					Kademlia::CKademlia::processPacket(unpack, unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
+					Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
 				} else {
 					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}

@@ -62,21 +62,21 @@ CContact::CContact()
 	m_ip = 0;
 	m_udpPort = 0;
 	m_tcpPort = 0;
-	initContact();
+	InitContact();
 }
 
 CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target)
 {
 	m_clientID = clientID;
-	m_distance.setValue(target);
+	m_distance.SetValue(target);
 	m_distance.XOR(clientID);
 	m_ip = ip;
 	m_udpPort = udpPort;
 	m_tcpPort = tcpPort;
-	initContact();
+	InitContact();
 }
 
-void CContact::initContact() 
+void CContact::InitContact() 
 {
 	m_type = 3;
 	m_expires = 0;
@@ -87,61 +87,61 @@ void CContact::initContact()
 	theStats::AddKadNode();
 }
 
-const wxString CContact::getClientIDString(void) const
+const wxString CContact::GetClientIDString(void) const
 {
-	return m_clientID.toHexString();
+	return m_clientID.ToHexString();
 }
 
 #ifndef CLIENT_GUI
-void CContact::setClientID(const CUInt128 &clientID)
+void CContact::SetClientID(const CUInt128 &clientID)
 {
 	m_clientID = clientID;
-	m_distance = CKademlia::getPrefs()->getKadID();
+	m_distance = CKademlia::GetPrefs()->GetKadID();
 	m_distance.XOR(clientID);
 }
 #endif
 
-const wxString CContact::getDistanceString(void) const
+const wxString CContact::GetDistanceString(void) const
 {
-	return m_distance.toBinaryString();
+	return m_distance.ToBinaryString();
 }
 
-uint32 CContact::getIPAddress(void) const
+uint32 CContact::GetIPAddress(void) const
 {
 	return m_ip;
 }
 
-void CContact::setIPAddress(uint32 ip)
+void CContact::SetIPAddress(uint32 ip)
 {
 	m_ip = ip;
 }
 
-uint16 CContact::getTCPPort(void) const
+uint16 CContact::GetTCPPort(void) const
 {
 	return m_tcpPort;
 }
 
-void CContact::setTCPPort(uint16 port)
+void CContact::SetTCPPort(uint16 port)
 {
 	m_tcpPort = port;
 }
 
-uint16 CContact::getUDPPort(void) const
+uint16 CContact::GetUDPPort(void) const
 {
 	return m_udpPort;
 }
 
-void CContact::setUDPPort(uint16 port)
+void CContact::SetUDPPort(uint16 port)
 {
 	m_udpPort = port;
 }
 
-byte CContact::getType(void) const
+byte CContact::GetType(void) const
 {
 	return m_type;
 }
 
-void CContact::checkingType()
+void CContact::CheckingType()
 {
 	if(time(NULL) - m_lastTypeSet < 10 || m_type == 4) {
 		return;
@@ -154,7 +154,7 @@ void CContact::checkingType()
 
 }
 
-void CContact::updateType()
+void CContact::UpdateType()
 {
 	uint32 hours = (time(NULL)-m_created)/HR2S(1);
 	switch(hours) {

@@ -935,10 +935,10 @@ void CSharedFileList::Publish()
 	unsigned int tNow = time(NULL);
 	bool IsFirewalled = theApp.IsFirewalled();
 
-	if( Kademlia::CKademlia::isConnected() && ( !IsFirewalled || ( IsFirewalled && theApp.clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::getPublish()) { 
+	if( Kademlia::CKademlia::IsConnected() && ( !IsFirewalled || ( IsFirewalled && theApp.clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::GetPublish()) { 
 		//We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
 
-		if( Kademlia::CKademlia::getTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
+		if( Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
 
 			//We are not at the max simultaneous keyword publishes 
 			if (tNow >= m_keywords->GetNextPublishTime()) {
@@ -956,13 +956,13 @@ void CSharedFileList::Publish()
 
 					if (tNow >= pPubKw->GetNextPublishTime()) {
 						//This keyword can be published.
-						Kademlia::CSearch* pSearch = Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::STOREKEYWORD, false, pPubKw->GetKadID());
+						Kademlia::CSearch* pSearch = Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STOREKEYWORD, false, pPubKw->GetKadID());
 						if (pSearch) {
 							//pSearch was created. Which means no search was already being done with this HashID.
 							//This also means that it was checked to see if network load wasn't a factor.
 
 							//This sets the filename into the search object so we can show it in the gui.
-							pSearch->setFileName(pPubKw->GetKeyword());
+							pSearch->SetFileName(pPubKw->GetKeyword());
 
 							//Add all file IDs which relate to the current keyword to be published
 							const KnownFileArray& aFiles = pPubKw->GetReferences();
@@ -973,7 +973,7 @@ void CSharedFileList::Publish()
 								//As a side effect, this may help reduce people finding incomplete files in the network.
 								if( !aFiles[f]->IsPartFile() ) {
 									count++;
-									pSearch->addFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash().GetHash()));
+									pSearch->AddFileID(Kademlia::CUInt128(aFiles[f]->GetFileHash().GetHash()));
 									if( count > 150 ) {
 										//We only publish up to 150 files per keyword publish then rotate the list.
 										pPubKw->RotateReferences(f);
@@ -987,7 +987,7 @@ void CSharedFileList::Publish()
 								pSearch->PreparePacket();
 								pPubKw->SetNextPublishTime(tNow+(KADEMLIAREPUBLISHTIMEK));
 								pPubKw->IncPublishedCount();
-								Kademlia::CSearchManager::startSearch(pSearch);
+								Kademlia::CSearchManager::StartSearch(pSearch);
 							} else {
 								//There were no valid files to publish with this keyword.
 								delete pSearch;
@@ -999,7 +999,7 @@ void CSharedFileList::Publish()
 			}
 		}
 		
-		if( Kademlia::CKademlia::getTotalStoreSrc() < KADEMLIATOTALSTORESRC) {
+		if( Kademlia::CKademlia::GetTotalStoreSrc() < KADEMLIATOTALSTORESRC) {
 			if(tNow >= m_lastPublishKadSrc) {
 				if(m_currFileSrc > GetCount()) {
 					m_currFileSrc = 0;
@@ -1008,8 +1008,8 @@ void CSharedFileList::Publish()
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishSrc()) {
 						Kademlia::CUInt128 kadFileID;
-						kadFileID.setValueBE(pCurKnownFile->GetFileHash().GetHash());
-						if(Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::STOREFILE, true, kadFileID )==NULL) {
+						kadFileID.SetValueBE(pCurKnownFile->GetFileHash().GetHash());
+						if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STOREFILE, true, kadFileID )==NULL) {
 							pCurKnownFile->SetLastPublishTimeKadSrc(0,0);
 						}
 					}	
@@ -1022,7 +1022,7 @@ void CSharedFileList::Publish()
 			}
 		}
 
-		if( Kademlia::CKademlia::getTotalStoreNotes() < KADEMLIATOTALSTORENOTES) {
+		if( Kademlia::CKademlia::GetTotalStoreNotes() < KADEMLIATOTALSTORENOTES) {
 			if(tNow >= m_lastPublishKadNotes) {
 				if(m_currFileNotes > GetCount()) {
 					m_currFileNotes = 0;
@@ -1031,8 +1031,8 @@ void CSharedFileList::Publish()
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishNotes()) {
 						Kademlia::CUInt128 kadFileID;
-						kadFileID.setValueBE(pCurKnownFile->GetFileHash().GetHash());
-						if(Kademlia::CSearchManager::prepareLookup(Kademlia::CSearch::STORENOTES, true, kadFileID )==NULL)
+						kadFileID.SetValueBE(pCurKnownFile->GetFileHash().GetHash());
+						if(Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::STORENOTES, true, kadFileID )==NULL)
 							pCurKnownFile->SetLastPublishTimeKadNotes(0);
 					}	
 				}

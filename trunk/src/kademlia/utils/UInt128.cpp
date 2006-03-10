@@ -56,7 +56,7 @@ using namespace CryptoPP;
 
 CUInt128::CUInt128()
 {
-	setValue((uint32)0);
+	SetValue((uint32)0);
 }
 
 CUInt128::CUInt128(bool fill)
@@ -70,17 +70,17 @@ CUInt128::CUInt128(bool fill)
 		m_data[3] = (uint32)-1;
 	}
 	else
-		setValue((uint32)0);
+		SetValue((uint32)0);
 }
 
 CUInt128::CUInt128(uint32 value)
 {
-	setValue(value);
+	SetValue(value);
 }
 
 CUInt128::CUInt128(const byte *valueBE)
 {
-	setValueBE(valueBE);
+	SetValueBE(valueBE);
 }
 
 CUInt128::CUInt128(const CUInt128 &value, uint32 numBits)
@@ -92,14 +92,14 @@ CUInt128::CUInt128(const CUInt128 &value, uint32 numBits)
 
 	// Copy the remaining bits
 	for (uint32 i=(32*numULONGs); i<numBits; ++i)
-		setBitNumber(i, value.getBitNumber(i));
+		SetBitNumber(i, value.GetBitNumber(i));
 
 	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
 	for (uint32 i=numBits; i<128; ++i)
-		setBitNumber(i, (rand()%2));
+		SetBitNumber(i, (rand()%2));
 }
 
-CUInt128& CUInt128::setValue(const CUInt128 &value)
+CUInt128& CUInt128::SetValue(const CUInt128 &value)
 {
 	m_data[0] = value.m_data[0];
 	m_data[1] = value.m_data[1];
@@ -108,7 +108,7 @@ CUInt128& CUInt128::setValue(const CUInt128 &value)
 	return *this;
 }
 
-CUInt128& CUInt128::setValue(uint32 value)
+CUInt128& CUInt128::SetValue(uint32 value)
 {
 	m_data[0] = 0;
 	m_data[1] = 0;
@@ -120,7 +120,7 @@ CUInt128& CUInt128::setValue(uint32 value)
 
 #define SWAP_ULONG_LE(x) wxUINT32_SWAP_ON_LE(x) 
 
-CUInt128& CUInt128::setValueBE(const byte *valueBE)
+CUInt128& CUInt128::SetValueBE(const byte *valueBE)
 {
 	m_data[0] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+0));
 	m_data[1] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+4));
@@ -129,16 +129,16 @@ CUInt128& CUInt128::setValueBE(const byte *valueBE)
 	return *this;
 }
 
-CUInt128& CUInt128::setValueRandom(void)
+CUInt128& CUInt128::SetValueRandom(void)
 {
 	AutoSeededRandomPool rng;
 	byte randomBytes[16];
 	rng.GenerateBlock(randomBytes, 16);
-	setValueBE( randomBytes );
+	SetValueBE( randomBytes );
 	return *this;
 }
 
-uint32 CUInt128::getBitNumber(uint32 bit) const
+uint32 CUInt128::GetBitNumber(uint32 bit) const
 {
 	if (bit > 127)
 		return 0;
@@ -148,7 +148,7 @@ uint32 CUInt128::getBitNumber(uint32 bit) const
 	return ((m_data[ulongNum] >> shift) & 1);
 }
 
-CUInt128& CUInt128::setBitNumber(uint32 bit, uint32 value) 
+CUInt128& CUInt128::SetBitNumber(uint32 bit, uint32 value) 
 {
 	int ulongNum = bit / 32;
 	int shift = 31 - (bit % 32);
@@ -171,7 +171,7 @@ CUInt128& CUInt128::XORBE(const byte *valueBE)
 	return XOR(temp);
 }
 
-wxString CUInt128::toHexString(void) const
+wxString CUInt128::ToHexString(void) const
 {
 	wxString str;
 	for (int i=0; i<4; ++i)
@@ -181,13 +181,13 @@ wxString CUInt128::toHexString(void) const
 	return str;
 }
 
-wxString CUInt128::toBinaryString(bool trim) const
+wxString CUInt128::ToBinaryString(bool trim) const
 {
 	wxString str;
 	int b;
 	for (int i=0; i<128; ++i)
 	{
-		b = getBitNumber(i);
+		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
 			str.Append(wxString::Format(wxT("%d"), b));
 			trim = false;
@@ -199,7 +199,7 @@ wxString CUInt128::toBinaryString(bool trim) const
 	return str;
 }
 
-void CUInt128::toByteArray(byte *b) const
+void CUInt128::ToByteArray(byte *b) const
 {
 	RawPokeUInt32(b+0, SWAP_ULONG_LE(m_data[0]));
 	RawPokeUInt32(b+4, SWAP_ULONG_LE(m_data[1]));
@@ -207,7 +207,7 @@ void CUInt128::toByteArray(byte *b) const
 	RawPokeUInt32(b+12,SWAP_ULONG_LE(m_data[3]));
 }
 
-int CUInt128::compareTo(const CUInt128 &other) const
+int CUInt128::CompareTo(const CUInt128 &other) const
 {
 	for (int i=0; i<4; ++i) 
 	{
@@ -219,7 +219,7 @@ int CUInt128::compareTo(const CUInt128 &other) const
 	return 0;
 }
 
-int CUInt128::compareTo(uint32 value) const
+int CUInt128::CompareTo(uint32 value) const
 {
 	if ((m_data[0] > 0) || (m_data[1] > 0) || (m_data[2] > 0) || (m_data[3] > value))
 		return 1;
@@ -228,7 +228,7 @@ int CUInt128::compareTo(uint32 value) const
 	return 0;
 }
 
-CUInt128& CUInt128::add(const CUInt128 &value)
+CUInt128& CUInt128::Add(const CUInt128 &value)
 {
 	if (value == 0)
 		return *this;
@@ -243,16 +243,16 @@ CUInt128& CUInt128::add(const CUInt128 &value)
 	return *this;
 }
 
-CUInt128& CUInt128::add(uint32 value)
+CUInt128& CUInt128::Add(uint32 value)
 {
 	if (value == 0)
 		return *this;
 	CUInt128 temp(value);
-	add(temp);
+	Add(temp);
 	return *this;
 }
 
-CUInt128& CUInt128::subtract(const CUInt128 &value)
+CUInt128& CUInt128::Subtract(const CUInt128 &value)
 {
 	if (value == 0)
 		return *this;
@@ -267,22 +267,22 @@ CUInt128& CUInt128::subtract(const CUInt128 &value)
 	return *this;
 }
 
-CUInt128& CUInt128::subtract(uint32 value)
+CUInt128& CUInt128::Subtract(uint32 value)
 {
 	if (value == 0)
 		return *this;
 	CUInt128 temp(value);
-	subtract(temp);
+	Subtract(temp);
 	return *this;
 }
 
-CUInt128& CUInt128::shiftLeft(uint32 bits)
+CUInt128& CUInt128::ShiftLeft(uint32 bits)
 {
-    if ((bits == 0) || (compareTo(0) == 0))
+    if ((bits == 0) || (CompareTo(0) == 0))
         return *this;
 	if (bits > 127)
 	{
-		setValue((uint32)0);
+		SetValue((uint32)0);
 		return *this;
 	}
 

@@ -77,11 +77,11 @@ CIndexed::CIndexed()
 	m_lastClean = time(NULL) + (60*30);
 	m_totalIndexSource = 0;
 	m_totalIndexKeyword = 0;
-	readFile();
+	ReadFile();
 }
 
 
-void CIndexed::readFile(void)
+void CIndexed::ReadFile(void)
 {
 	try {
 		uint32 totalLoad = 0;
@@ -119,7 +119,7 @@ void CIndexed::readFile(void)
 				time_t savetime = k_file.ReadUInt32();
 				if( savetime > time(NULL) ) {
 					CUInt128 id = k_file.ReadUInt128();
-					if( !Kademlia::CKademlia::getPrefs()->getKadID().compareTo(id) ) {
+					if( !Kademlia::CKademlia::GetPrefs()->GetKadID().CompareTo(id) ) {
 						numKeys = k_file.ReadUInt32();
 						while( numKeys ) {
 							CUInt128 keyID = k_file.ReadUInt128();
@@ -161,8 +161,8 @@ void CIndexed::readFile(void)
 										}
 										tagList--;
 									}
-									toaddN->keyID.setValue(keyID);
-									toaddN->sourceID.setValue(sourceID);
+									toaddN->keyID.SetValue(keyID);
+									toaddN->sourceID.SetValue(sourceID);
 									uint8 load = 0;
 									if(AddKeyword(keyID, sourceID, toaddN, load)) {
 										totalKeyword++;
@@ -221,8 +221,8 @@ void CIndexed::readFile(void)
 									}
 									tagList--;
 								}
-								toaddN->keyID.setValue(keyID);
-								toaddN->sourceID.setValue(sourceID);
+								toaddN->keyID.SetValue(keyID);
+								toaddN->sourceID.SetValue(sourceID);
 								uint8 load = 0;
 								if(AddSources(keyID, sourceID, toaddN, load)) {
 									totalSource++;
@@ -328,7 +328,7 @@ CIndexed::~CIndexed()
 
 			k_file.WriteUInt32(time(NULL)+KADEMLIAREPUBLISHTIMEK);
 
-			k_file.WriteUInt128(Kademlia::CKademlia::getPrefs()->getKadID());
+			k_file.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 
 			k_file.WriteUInt32(m_Keyword_map.size());
 			KeyHashMap::iterator itKeyHash = m_Keyword_map.begin();
@@ -392,7 +392,7 @@ CIndexed::~CIndexed()
 }
 
 
-void CIndexed::clean(void)
+void CIndexed::Clean(void)
 {
 	if( m_lastClean > time(NULL) ) {
 		return;
@@ -502,10 +502,10 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	KeyHash* currKeyHash = NULL;
 	if(itKeyHash == m_Keyword_map.end()) {
 		Source* currSource = new Source;
-		currSource->sourceID.setValue(sourceID);
+		currSource->sourceID.SetValue(sourceID);
 		currSource->entryList.push_front(entry);
 		currKeyHash = new KeyHash;
-		currKeyHash->keyID.setValue(keyID);
+		currKeyHash->keyID.SetValue(keyID);
 		currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 		m_Keyword_map[currKeyHash->keyID] = currKeyHash;
 		load = 1;
@@ -540,7 +540,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			return true;
 		} else {
 			currSource = new Source;
-			currSource->sourceID.setValue(sourceID);
+			currSource->sourceID.SetValue(sourceID);
 			currSource->entryList.push_front(entry);
 			currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 			m_totalIndexKeyword++;
@@ -566,10 +566,10 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
 	if(itSrcHash == m_Sources_map.end()) {
 		Source* currSource = new Source;
-		currSource->sourceID.setValue(sourceID);
+		currSource->sourceID.SetValue(sourceID);
 		currSource->entryList.push_front(entry);
 		currSrcHash = new SrcHash;
-		currSrcHash->keyID.setValue(keyID);
+		currSrcHash->keyID.SetValue(keyID);
 		currSrcHash->m_Source_map.push_front(currSource);
 		m_Sources_map[currSrcHash->keyID] =  currSrcHash;
 		m_totalIndexSource++;
@@ -609,14 +609,14 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			currSource->entryList.pop_back();
 			wxASSERT(currName!=NULL);
 			delete currName;
-			currSource->sourceID.setValue(sourceID);
+			currSource->sourceID.SetValue(sourceID);
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			load = 100;
 			return true;
 		} else {
 			Source* currSource = new Source;
-			currSource->sourceID.setValue(sourceID);
+			currSource->sourceID.SetValue(sourceID);
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			m_totalIndexSource++;
@@ -641,10 +641,10 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	SrcHashMap::iterator itNoteHash = m_Notes_map.find(keyID);
 	if(itNoteHash == m_Notes_map.end()) {
 		Source* currNote = new Source;
-		currNote->sourceID.setValue(sourceID);
+		currNote->sourceID.SetValue(sourceID);
 		currNote->entryList.push_front(entry);
 		currNoteHash = new SrcHash;
-		currNoteHash->keyID.setValue(keyID);
+		currNoteHash->keyID.SetValue(keyID);
 		currNoteHash->m_Source_map.push_front(currNote);
 		m_Notes_map[currNoteHash->keyID] = currNoteHash;
 		load = 1;
@@ -659,7 +659,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			if( currNote->entryList.size() ) {
 				CEntry* currEntry = currNote->entryList.front();
 				wxASSERT(currEntry!=NULL);
-				if(currEntry->ip == entry->ip || !currEntry->sourceID.compareTo(entry->sourceID)) {
+				if(currEntry->ip == entry->ip || !currEntry->sourceID.CompareTo(entry->sourceID)) {
 					CEntry* currName = currNote->entryList.front();
 					currNote->entryList.pop_front();
 					delete currName;
@@ -683,14 +683,14 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			currNote->entryList.pop_back();
 			wxASSERT(currName!=NULL);
 			delete currName;
-			currNote->sourceID.setValue(sourceID);
+			currNote->sourceID.SetValue(sourceID);
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
 			load = 100;
 			return true;
 		} else {
 			Source* currNote = new Source;
-			currNote->sourceID.setValue(sourceID);
+			currNote->sourceID.SetValue(sourceID);
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
 			load = (size*100)/KADEMLIAMAXNOTESPERFILE;
@@ -717,7 +717,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32 timet)
 	}
 
 	load = new Load();
-	load->keyID.setValue(keyID);
+	load->keyID.SetValue(keyID);
 	load->time = timet;
 	m_Load_map[load->keyID] =  load;
 	return true;
@@ -970,7 +970,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 						if( count % 50 == 0 ) {
 							uint32 len = sizeof(packet)-bio.GetAvailable();
 							AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-							CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+							CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 							bio.Reset();
 							bio.WriteUInt8(OP_KADEMLIAHEADER);
 							bio.WriteUInt8(KADEMLIA_SEARCH_RES);
@@ -987,9 +987,9 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 			ENDIAN_SWAP_I_16(ccount);
 			memcpy(packet+18, &ccount, 2);
 			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+			CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 		}
-		clean();
+		Clean();
 	}
 }
 
@@ -1020,7 +1020,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 					if( count % 50 == 0 ) {
 						uint32 len = sizeof(packet)-bio.GetAvailable();
 						AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip) , port));
-						CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+						CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 						bio.Reset();
 						bio.WriteUInt8(OP_KADEMLIAHEADER);
 						bio.WriteUInt8(KADEMLIA_SEARCH_RES);
@@ -1036,9 +1036,9 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			uint32 len = sizeof(packet)-bio.GetAvailable();
 			memcpy(packet+18, &ccount, 2);
 			AddDebugLogLineM(false, logClientKadUDP, wxT("KadSearchRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+			CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 		}
-		clean();
+		Clean();
 	}
 }
 
@@ -1069,7 +1069,7 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 				if( count % 50 == 0 ) {
 					uint32 len = sizeof(packet)-bio.GetAvailable();
 					AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-					CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+					CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 					bio.Reset();
 					bio.WriteUInt8(OP_KADEMLIAHEADER);
 					bio.WriteUInt8(KADEMLIA_SRC_NOTES_RES);
@@ -1084,9 +1084,9 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 			uint32 len = sizeof(packet)-bio.GetAvailable();
 			memcpy(packet+18, &ccount, 2);
 			AddDebugLogLineM(false, logClientKadUDP, wxT("KadNotesRes ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-			CKademlia::getUDPListener()->sendPacket(packet, len, ip, port);
+			CKademlia::GetUDPListener()->SendPacket(packet, len, ip, port);
 		}
-		//clean(); //Not needed at the moment.
+		//Clean(); //Not needed at the moment.
 	}
 }
 

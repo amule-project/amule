@@ -144,8 +144,8 @@ private:
 	static wxString m_sfilename;
 	static wxString m_kfilename;
 	static wxString m_loadfilename;
-	void readFile(void);
-	void clean(void);
+	void ReadFile(void);
+	void Clean(void);
 };
 
 } // End namespace

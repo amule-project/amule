@@ -59,42 +59,42 @@ class CKademliaUDPListener
 
 public:
 	virtual ~CKademliaUDPListener() {};
-	void bootstrap(uint32 ip, uint16 port);
-	void firewalledCheck(uint32 ip, uint16 port);
-	void sendMyDetails(byte opcode, uint32 ip, uint16 port);
-	void publishPacket(uint32 ip, uint16 port, const CUInt128& targetID, const CUInt128& contactID, const TagPtrList& tags);
-	void sendNullPacket(byte opcode, uint32 ip, uint16 port);
-	virtual void processPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
-	void sendPacket(const byte* data, uint32 lenData, uint32 destinationHost, uint16 destinationPort);
-	void sendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort);
-	void sendPacket(CMemFile* data, byte opcode, uint32 destinationHost, uint16 destinationPort);
+	void Bootstrap(uint32 ip, uint16 port);
+	void FirewalledCheck(uint32 ip, uint16 port);
+	void SendMyDetails(byte opcode, uint32 ip, uint16 port);
+	void PublishPacket(uint32 ip, uint16 port, const CUInt128& targetID, const CUInt128& contactID, const TagPtrList& tags);
+	void SendNullPacket(byte opcode, uint32 ip, uint16 port);
+	virtual void ProcessPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
+	void SendPacket(const byte* data, uint32 lenData, uint32 destinationHost, uint16 destinationPort);
+	void SendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort);
+	void SendPacket(CMemFile* data, byte opcode, uint32 destinationHost, uint16 destinationPort);
 
 private:
-	void addContact (const byte* data, uint32 lenData, uint32 ip, uint16 port, uint16 tport = 0);
-	void addContacts(const byte* data, uint32 lenData, uint16 numContacts);
+	void AddContact (const byte* data, uint32 lenData, uint32 ip, uint16 port, uint16 tport = 0);
+	void AddContacts(const byte* data, uint32 lenData, uint16 numContacts);
 	static SSearchTerm* CreateSearchExpressionTree(CMemFile& bio, int iLevel);
 	static void Free(SSearchTerm* pSearchTerms);
 
-	void processBootstrapRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processBootstrapResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processHelloRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processHelloResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processKademliaRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processKademliaResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processSearchRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processSearchResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processPublishRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processPublishResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processSearchNotesRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processSearchNotesResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processPublishNotesRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processPublishNotesResponse	(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFirewalledRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFirewalledResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFirewalledResponse2		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFindBuddyRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processFindBuddyResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
-	void processCallbackRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessBootstrapRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessBootstrapResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessHelloRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessHelloResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessKademliaRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessKademliaResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessSearchRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessSearchResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessPublishRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessPublishResponse			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessSearchNotesRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessSearchNotesResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessPublishNotesRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessPublishNotesResponse	(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessFirewalledRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessFirewalledResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessFirewalledResponse2		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessFindBuddyRequest		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessFindBuddyResponse		(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
+	void ProcessCallbackRequest			(const byte* packetData, uint32 lenPacket, uint32 ip, uint16 port);
 	
 	void DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data = NULL, int len = 0);
 };

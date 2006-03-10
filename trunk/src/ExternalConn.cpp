@@ -794,15 +794,15 @@ CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 	CECPacket *response;
 	if (thePrefs::GetNetworkKademlia()) {
 		response = new CECPacket(EC_OP_NOOP);
-		if ( !Kademlia::CKademlia::isRunning() ) {
-			Kademlia::CKademlia::start();
+		if ( !Kademlia::CKademlia::IsRunning() ) {
+			Kademlia::CKademlia::Start();
 			theApp.ShowConnectionState();
 		}
 		const CECTag *addrtag = request->GetTagByIndex(0);
 		if ( addrtag ) {
 			uint32 ip = addrtag->GetIPv4Data().IP();
 			uint16 port = addrtag->GetIPv4Data().m_port;
-			Kademlia::CKademlia::bootstrap(ip, port);
+			Kademlia::CKademlia::Bootstrap(ip, port);
 		}
 	} else {
 		response = new CECPacket(EC_OP_FAILED);
