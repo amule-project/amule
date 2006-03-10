@@ -969,11 +969,13 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		//-----------------------------------------------------
 		m_menu->AppendSeparator();
 		//-----------------------------------------------------
+/* Commented out till RB2 is back 
 		m_menu->Append( MP_RAZORSTATS,
 			_("Get Razorback 2's stats for this file"));
 		//-----------------------------------------------------
 		m_menu->AppendSeparator();
 		//-----------------------------------------------------
+*/
 		m_menu->Append(MP_VIEW, _("Preview"));
 		m_menu->Append(MP_METINFO, _("Show file &details"));
 		m_menu->Append(MP_VIEWFILECOMMENTS,
