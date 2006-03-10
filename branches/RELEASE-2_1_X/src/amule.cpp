@@ -925,7 +925,7 @@ wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
 	if ( !IsConnectedED2K() || serverconnect->IsLowID() ) {
 		return wxEmptyString;
 	}
-	uint32 clientID = GetED2KID();
+	uint32 clientID = GetID();
 	// Create the first part of the URL
 	// And append the source information: "|sources,<ip>:<port>|/"
 	wxString strURL = CreateED2kLink(f) <<
@@ -2009,6 +2009,24 @@ bool CamuleApp::CryptoAvailable() const
 
 uint32 CamuleApp::GetED2KID() const {
 	return serverconnect ? serverconnect->GetClientID() : 0;
+}
+
+uint32 CamuleApp::GetID() const {
+	uint32 ID;
+	
+	if( Kademlia::CKademlia::isConnected() && !Kademlia::CKademlia::isFirewalled() ) {
+		// We trust Kad above ED2K
+		ID = ENDIAN_NTOHL(Kademlia::CKademlia::getIPAddress());
+	} else if( theApp.serverconnect->IsConnected() ) {
+		ID = theApp.serverconnect->GetClientID();
+	} else if ( Kademlia::CKademlia::isConnected() && Kademlia::CKademlia::isFirewalled() ) {
+		// A firewalled Kad client get's a "1"
+		ID = 1;
+	} else {
+		ID = 0;
+	}
+	
+	return ID;
 }
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_MULE_NOTIFY_EVENT)
