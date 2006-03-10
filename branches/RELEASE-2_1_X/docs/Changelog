@@ -1,6 +1,6 @@
 Version 2.1.1 - The "???" version
 ----------
-2006-01-??
+2006-03-09
 
 	GonoszTopi:
 		* Fixed sources coming from an 'Unknown' origin.
@@ -17,6 +17,26 @@ Version 2.1.1 - The "???" version
 		* Eliminated false reports of failure to execute the on-completion
 		  command.  This happened with amuled and an on-completion command which
 		  completes quickly.  Thanks to s0undt3ch for reporting this bug.
+
+	Kry:
+		* Fixed a bug on sending sources where sources won't be send to a client 
+		  uploading from us if he uses multipacket.
+		* Fixes some crashes, on systray dying, tho not all till wx is patched.
+		* Fixed some possible problem with userhash generation, that could lead 
+		  a void userhash.
+		* Fixed defs.h include on MuleDebug.h causing compilation problems on 
+		  some systems (must be first wx include).
+		* Fixed search type "Any"
+		* Fixed translation of empty strings, which is reserved to gettext and
+		  must never be used.
+		* Fixed the aMule.app container lacking a Frameworks/ folder and thus 
+		  making the generate_package script fail.
+		* Fixed compilation of wxCas with wxWidgets CVS (2.7.x)
+		* Fixed ED2K id wrongly used on kad-only setups.
+		* Added the --reset-config flag
+		* Fixed Kad's sources/nodes search results, based on a patch by tatikiran
+		  and further modified by John (eMule) and me.
+		* Removed Razorback 2's stats while it's gone.
 
 	Radek:
 		* Fixed amulemd output not being printed immediatly when running in a
