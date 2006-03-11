@@ -757,10 +757,10 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 		Kademlia::CEntry* entry = new Kademlia::CEntry();
 		uint32 tags = 0, totaltags = 0;
 		try {
-			entry->ip = ip;
-			entry->udpport = port;
-			entry->keyID.SetValue(file);
-			entry->sourceID.SetValue(target);
+			entry->m_iIP = ip;
+			entry->m_iUDPport = port;
+			entry->m_iKeyID.SetValue(file);
+			entry->m_iSourceID.SetValue(target);
 			tags = bio.ReadUInt8();
 			totaltags = tags;
 			while(tags > 0) {
@@ -768,55 +768,55 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 				totaltags = tags;
 				if(tag) {
 					if (!tag->GetName().Cmp(TAG_SOURCETYPE) && tag->GetType() == 9) {
-						if( entry->source == false ) {
-							entry->taglist.push_back(new CTagVarInt(TAG_SOURCEIP, entry->ip));
-							entry->taglist.push_back(new CTagVarInt(TAG_SOURCEUPORT, entry->udpport));
+						if( entry->m_bSource == false ) {
+							entry->m_lTagList.push_back(new CTagVarInt(TAG_SOURCEIP, entry->m_iIP));
+							entry->m_lTagList.push_back(new CTagVarInt(TAG_SOURCEUPORT, entry->m_iUDPport));
 						} else {
 							//More than one sourcetype tag found.
 							delete tag;
 						}
-						entry->source = true;
+						entry->m_bSource = true;
 					}
 					
 					if (!tag->GetName().Cmp(TAG_FILENAME)) {
-						if ( entry->fileName.IsEmpty() ) {
-							entry->fileName = tag->GetStr();
+						if ( entry->m_sFileName.IsEmpty() ) {
+							entry->m_sFileName = tag->GetStr();
 							// Make lowercase, the search code expects lower case strings!
-							entry->fileName.MakeLower();
-							strInfo += CFormat(wxT("  Name=\"%s\"")) % entry->fileName;
+							entry->m_sFileName.MakeLower();
+							strInfo += CFormat(wxT("  Name=\"%s\"")) % entry->m_sFileName;
 							// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
-							entry->taglist.push_back(tag);
+							entry->m_lTagList.push_back(tag);
 						} else {
 							//More then one Name tag found.
 							delete tag;
 						}
 					} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
-						if( entry->size == 0 ) {
+						if( entry->m_iSize == 0 ) {
 							if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
 								// Kad1.0 uint64 type using a BSOB.
-								entry->size = PeekUInt64(tag->GetBsob());
+								entry->m_iSize = PeekUInt64(tag->GetBsob());
 							} else {
 								wxASSERT(tag->IsInt());
-								entry->size = tag->GetInt();	
+								entry->m_iSize = tag->GetInt();	
 							}
-							strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->size);
+							strInfo += wxString::Format(wxT("  Size=%") wxLongLongFmtSpec wxT("u"), entry->m_iSize);
 							// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
-							entry->taglist.push_back(tag);
+							entry->m_lTagList.push_back(tag);
 						} else {
 							//More then one size tag found
 							delete tag;
 						}
 					} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-						if( entry->tcpport == 0 ) {
-							entry->tcpport = tag->GetInt();
-							entry->taglist.push_back(tag);
+						if( entry->m_iTCPport == 0 ) {
+							entry->m_iTCPport = tag->GetInt();
+							entry->m_lTagList.push_back(tag);
 						} else {
 							//More then one port tag found
 							delete tag;
 						}
 					} else {
 						//TODO: Filter tags
-						entry->taglist.push_back(tag);
+						entry->m_lTagList.push_back(tag);
 					}
 				}
 				tags--;
@@ -831,8 +831,8 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 			throw;
 		}
 
-		if( entry->source == true ) {
-			entry->lifetime = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES;
+		if( entry->m_bSource == true ) {
+			entry->m_tLifeTime = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES;
 			if( indexed->AddSources(file, target, entry, load ) ) {
 				flag = true;
 			} else {
@@ -840,7 +840,7 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 				entry = NULL;
 			}
 		} else {
-			entry->lifetime = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMEK;
+			entry->m_tLifeTime = (uint32)time(NULL)+KADEMLIAREPUBLISHTIMEK;
 			if( indexed->AddKeyword(file, target, entry, load) ) {
 				// This makes sure we send a publish response.. 
 				// This also makes sure we index all the files for this keyword.
@@ -977,12 +977,12 @@ void CKademliaUDPListener::ProcessPublishNotesRequest (const byte *packetData, u
 
 	Kademlia::CEntry* entry = new Kademlia::CEntry();
 	try {
-		entry->ip = ip;
-		entry->udpport = port;
-		entry->keyID.SetValue(target);
-		entry->sourceID.SetValue(source);
-		bio.ReadTagPtrList(&entry->taglist);
-		entry->source = false;
+		entry->m_iIP = ip;
+		entry->m_iUDPport = port;
+		entry->m_iKeyID.SetValue(target);
+		entry->m_iSourceID.SetValue(source);
+		bio.ReadTagPtrList(&entry->m_lTagList);
+		entry->m_bSource = false;
 	} catch(...) {
 		DebugClientOutput(wxT("CKademliaUDPListener::processPublishNotesRequest"),ip,port,packetData,lenPacket);
 		delete entry;
@@ -991,9 +991,9 @@ void CKademliaUDPListener::ProcessPublishNotesRequest (const byte *packetData, u
 
 	if( entry == NULL ) {
 		throw wxString(wxT("CKademliaUDPListener::processPublishNotesRequest: entry == NULL"));
-	} else if( entry->taglist.size() == 0 || entry->taglist.size() > 5) {
+	} else if( entry->m_lTagList.size() == 0 || entry->m_lTagList.size() > 5) {
 		delete entry;
-		throw wxString(wxT("CKademliaUDPListener::processPublishNotesRequest: entry->taglist.size() == 0 || entry->taglist.size() > 5"));
+		throw wxString(wxT("CKademliaUDPListener::processPublishNotesRequest: entry->m_lTagList.size() == 0 || entry->m_lTagList.size() > 5"));
 	}
 
 	uint8 load = 0;

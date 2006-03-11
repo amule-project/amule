@@ -129,40 +129,40 @@ void CIndexed::ReadFile(void)
 								numName = k_file.ReadUInt32();
 								while( numName ) {
 									Kademlia::CEntry* toaddN = new Kademlia::CEntry();
-									toaddN->source = false;
+									toaddN->m_bSource = false;
 									uint32 expire = k_file.ReadUInt32();
-									toaddN->lifetime = expire;
+									toaddN->m_tLifeTime = expire;
 									tagList = k_file.ReadUInt8();
 									while( tagList ) {
 										CTag* tag = k_file.ReadTag();
 										if(tag) {
 											if (!tag->GetName().Cmp(TAG_FILENAME)) {
-												toaddN->fileName = tag->GetStr();
+												toaddN->m_sFileName = tag->GetStr();
 												// Make lowercase, the search code expects lower case strings!
-												toaddN->fileName.MakeLower(); 
+												toaddN->m_sFileName.MakeLower(); 
 												// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
-												toaddN->taglist.push_back(tag);
+												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
-												toaddN->size = tag->GetInt();
+												toaddN->m_iSize = tag->GetInt();
 												// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
-												toaddN->taglist.push_back(tag);
+												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
-												toaddN->ip = tag->GetInt();
-												toaddN->taglist.push_back(tag);
+												toaddN->m_iIP = tag->GetInt();
+												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-												toaddN->tcpport = tag->GetInt();
-												toaddN->taglist.push_back(tag);
+												toaddN->m_iTCPport = tag->GetInt();
+												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
-												toaddN->udpport = tag->GetInt();
-												toaddN->taglist.push_back(tag);
+												toaddN->m_iUDPport = tag->GetInt();
+												toaddN->m_lTagList.push_back(tag);
 											} else {
-												toaddN->taglist.push_back(tag);
+												toaddN->m_lTagList.push_back(tag);
 											}
 										}
 										tagList--;
 									}
-									toaddN->keyID.SetValue(keyID);
-									toaddN->sourceID.SetValue(sourceID);
+									toaddN->m_iKeyID.SetValue(keyID);
+									toaddN->m_iSourceID.SetValue(sourceID);
 									uint8 load = 0;
 									if(AddKeyword(keyID, sourceID, toaddN, load)) {
 										totalKeyword++;
@@ -198,31 +198,31 @@ void CIndexed::ReadFile(void)
 							numName = s_file.ReadUInt32();
 							while( numName ) {
 								Kademlia::CEntry* toaddN = new Kademlia::CEntry();
-								toaddN->source = true;
+								toaddN->m_bSource = true;
 								uint32 test = s_file.ReadUInt32();
-								toaddN->lifetime = test;
+								toaddN->m_tLifeTime = test;
 								tagList = s_file.ReadUInt8();
 								while( tagList ) {
 									CTag* tag = s_file.ReadTag();
 									if(tag) {
 										if (!tag->GetName().Cmp(TAG_SOURCEIP))
 										{
-											toaddN->ip = tag->GetInt();
-											toaddN->taglist.push_back(tag);
+											toaddN->m_iIP = tag->GetInt();
+											toaddN->m_lTagList.push_back(tag);
 										} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-											toaddN->tcpport = tag->GetInt();
-											toaddN->taglist.push_back(tag);
+											toaddN->m_iTCPport = tag->GetInt();
+											toaddN->m_lTagList.push_back(tag);
 										} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
-											toaddN->udpport = tag->GetInt();
-											toaddN->taglist.push_back(tag);
+											toaddN->m_iUDPport = tag->GetInt();
+											toaddN->m_lTagList.push_back(tag);
 										} else {
-											toaddN->taglist.push_back(tag);
+											toaddN->m_lTagList.push_back(tag);
 										}
 									}
 									tagList--;
 								}
-								toaddN->keyID.SetValue(keyID);
-								toaddN->sourceID.SetValue(sourceID);
+								toaddN->m_iKeyID.SetValue(keyID);
+								toaddN->m_iSourceID.SetValue(sourceID);
 								uint8 load = 0;
 								if(AddSources(keyID, sourceID, toaddN, load)) {
 									totalSource++;
@@ -308,8 +308,8 @@ CIndexed::~CIndexed()
 					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
 					for (; itEntry != SrcEntryList.end(); ++itEntry) {
 						Kademlia::CEntry* currName = *itEntry;
-						s_file.WriteUInt32(currName->lifetime);
-						s_file.WriteTagPtrList(currName->taglist);
+						s_file.WriteUInt32(currName->m_tLifeTime);
+						s_file.WriteTagPtrList(currName->m_lTagList);
 						delete currName;
 						s_total++;
 					}
@@ -350,8 +350,8 @@ CIndexed::~CIndexed()
 					CKadEntryPtrList::iterator itEntry = SrcEntryList.begin();
 					for (; itEntry != SrcEntryList.end(); ++itEntry) {
 						Kademlia::CEntry* currName = *itEntry;
-						k_file.WriteUInt32(currName->lifetime);
-						k_file.WriteTagPtrList(currName->taglist);
+						k_file.WriteUInt32(currName->m_tLifeTime);
+						k_file.WriteTagPtrList(currName->m_lTagList);
 						delete currName;
 						k_total++;
 					}
@@ -419,7 +419,7 @@ void CIndexed::Clean(void)
 				k_Total++;
 				
 				Kademlia::CEntry* currName = *itEntry;
-				if( !currName->source && currName->lifetime < tNow) {
+				if( !currName->m_bSource && currName->m_tLifeTime < tNow) {
 					k_Removed++;
 					itEntry = currSource->entryList.erase(itEntry);
 					delete currName;
@@ -454,7 +454,7 @@ void CIndexed::Clean(void)
 				s_Total++;
 				
 				Kademlia::CEntry* currName = *itEntry;
-				if (currName->lifetime < tNow) {
+				if (currName->m_tLifeTime < tNow) {
 					s_Removed++;
 					itEntry = currSource->entryList.erase(itEntry);
 					delete currName;
@@ -494,7 +494,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		return false;
 	}
 
-	if( entry->size == 0 || entry->fileName.IsEmpty() || entry->taglist.size() == 0 || entry->lifetime < time(NULL)) {
+	if( entry->m_iSize == 0 || entry->m_sFileName.IsEmpty() || entry->m_lTagList.size() == 0 || entry->m_tLifeTime < time(NULL)) {
 		return false;
 	}
 
@@ -558,7 +558,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	if( !entry ) {
 		return false;
 	}
-	if( entry->ip == 0 || entry->tcpport == 0 || entry->udpport == 0 || entry->taglist.size() == 0 || entry->lifetime < time(NULL)) {
+	if( entry->m_iIP == 0 || entry->m_iTCPport == 0 || entry->m_iUDPport == 0 || entry->m_lTagList.size() == 0 || entry->m_tLifeTime < time(NULL)) {
 		return false;
 	}
 		
@@ -585,7 +585,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			if( currSource->entryList.size() ) {
 				CEntry* currEntry = currSource->entryList.front();
 				wxASSERT(currEntry!=NULL);
-				if( currEntry->ip == entry->ip && ( currEntry->tcpport == entry->tcpport || currEntry->udpport == entry->udpport )) {
+				if( currEntry->m_iIP == entry->m_iIP && ( currEntry->m_iTCPport == entry->m_iTCPport || currEntry->m_iUDPport == entry->m_iUDPport )) {
 					CEntry* currName = currSource->entryList.front();
 					currSource->entryList.pop_front();
 					delete currName;
@@ -633,7 +633,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 	if( !entry ) {
 		return false;
 	}
-	if( entry->ip == 0 || entry->taglist.size() == 0 ) {
+	if( entry->m_iIP == 0 || entry->m_lTagList.size() == 0 ) {
 		return false;
 	}
 		
@@ -659,7 +659,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			if( currNote->entryList.size() ) {
 				CEntry* currEntry = currNote->entryList.front();
 				wxASSERT(currEntry!=NULL);
-				if(currEntry->ip == entry->ip || !currEntry->sourceID.CompareTo(entry->sourceID)) {
+				if(currEntry->m_iIP == entry->m_iIP || !currEntry->m_iSourceID.CompareTo(entry->m_iSourceID)) {
 					CEntry* currName = currNote->entryList.front();
 					currNote->entryList.pop_front();
 					delete currName;
@@ -747,11 +747,11 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 		if (astrFileNameTokens.GetCount() == 0)
 		{
 			int iPosTok = 0;
-			CString strTok(item->fileName.Tokenize(_aszInvKadKeywordChars, iPosTok));
+			CString strTok(item->m_sFileName.Tokenize(_aszInvKadKeywordChars, iPosTok));
 			while (!strTok.IsEmpty())
 			{
 				astrFileNameTokens.Add(strTok);
-				strTok = item->fileName.Tokenize(_aszInvKadKeywordChars, iPosTok);
+				strTok = item->m_sFileName.Tokenize(_aszInvKadKeywordChars, iPosTok);
 			}
 		}
 		if (astrFileNameTokens.GetCount() == 0)
@@ -782,7 +782,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 		// the file name. all strings of string search term have to be found (AND)
 		for (int iSearchTerm = 0; iSearchTerm < iStrSearchTerms; iSearchTerm++) {
 			// this will not give the same results as when tokenizing the filename string, but it is 20 times faster.
-			if (item->fileName.Find((*(pSearchTerm->astr))[iSearchTerm]) == -1) {
+			if (item->m_sFileName.Find((*(pSearchTerm->astr))[iSearchTerm]) == -1) {
 				return false;
 			}
 		}
@@ -793,7 +793,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 		// although this would work, I am no longer sure if it's the correct way to process the search requests..
 		/*const CTag *tag;
 		TagPtrList::const_iterator it;
-		for (it = item->taglist.begin(); it != item->taglist.end(); it++)
+		for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++)
 		{
 			tag = *it;
 			if (tag->m_type == 2)
@@ -814,7 +814,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	if (pSearchTerm->type == SSearchTerm::MetaTag) {
 		if (pSearchTerm->tag->GetType() == 2) { // meta tags with string values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsStr() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetStr().CmpNoCase(pSearchTerm->tag->GetStr()) == 0;
@@ -824,7 +824,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpGreaterEqual) { 
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() >= pSearchTerm->tag->GetInt();
@@ -832,7 +832,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() >= pSearchTerm->tag->GetFloat();
@@ -842,7 +842,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpLessEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() <= pSearchTerm->tag->GetInt();
@@ -850,7 +850,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() <= pSearchTerm->tag->GetFloat();
@@ -860,7 +860,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpGreater) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() > pSearchTerm->tag->GetInt();
@@ -868,7 +868,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() > pSearchTerm->tag->GetFloat();
@@ -878,7 +878,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpLess) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() < pSearchTerm->tag->GetInt();
@@ -886,7 +886,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); ++it) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() < pSearchTerm->tag->GetFloat();
@@ -896,7 +896,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() == pSearchTerm->tag->GetInt();
@@ -904,7 +904,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() == pSearchTerm->tag->GetFloat();
@@ -914,7 +914,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 	} else if (pSearchTerm->type == SSearchTerm::OpNotEqual) {
 		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
 				const CTag* tag = *it;
 				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetInt() != pSearchTerm->tag->GetInt();
@@ -922,7 +922,7 @@ bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* it
 			}
 		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
 			TagPtrList::const_iterator it;
-			for (it = item->taglist.begin(); it != item->taglist.end(); it++) {
+			for (it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
 				const CTag* tag = *it;
 				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
 					return tag->GetFloat() != pSearchTerm->tag->GetFloat();
@@ -964,8 +964,8 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 				Kademlia::CEntry* currName = *itEntry;
 				if ( !pSearchTerms || SearchTermsMatch(pSearchTerms, currName) ) {
 					if( count < maxResults ) {
-						bio.WriteUInt128(currName->sourceID);
-						bio.WriteTagPtrList(currName->taglist);
+						bio.WriteUInt128(currName->m_iSourceID);
+						bio.WriteTagPtrList(currName->m_lTagList);
 						count++;
 						if( count % 50 == 0 ) {
 							uint32 len = sizeof(packet)-bio.GetAvailable();
@@ -1014,8 +1014,8 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 po
 			if( currSource->entryList.size() ) {
 				Kademlia::CEntry* currName = currSource->entryList.front();
 				if( count < maxResults ) {
-					bio.WriteUInt128(currName->sourceID);
-					bio.WriteTagPtrList(currName->taglist);
+					bio.WriteUInt128(currName->m_iSourceID);
+					bio.WriteTagPtrList(currName->m_lTagList);
 					count++;
 					if( count % 50 == 0 ) {
 						uint32 len = sizeof(packet)-bio.GetAvailable();
@@ -1063,8 +1063,8 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, const CUInt128& WXUNUS
 			if( currNote->entryList.size() ) {
 				Kademlia::CEntry* currName = currNote->entryList.front();
 				if( count < maxResults ) {
-					bio.WriteUInt128(currName->sourceID);
-					bio.WriteTagPtrList(currName->taglist);
+					bio.WriteUInt128(currName->m_iSourceID);
+					bio.WriteTagPtrList(currName->m_lTagList);
 				}
 				if( count % 50 == 0 ) {
 					uint32 len = sizeof(packet)-bio.GetAvailable();

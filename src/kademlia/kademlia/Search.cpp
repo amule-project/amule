@@ -616,8 +616,8 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 void CSearch::ProcessResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPort), const CUInt128 &answer, TagPtrList *info)
 {
 	CEntry* entry = new CEntry();
-	entry->keyID.SetValue(m_target);
-	entry->sourceID.SetValue(answer);
+	entry->m_iKeyID.SetValue(m_target);
+	entry->m_iSourceID.SetValue(answer);
 	
 	bool bFilterComment = false;
 	
@@ -626,20 +626,20 @@ void CSearch::ProcessResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	for (it = info->begin(); it != info->end(); it++) {
 		tag = *it;
 		if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
-			entry->ip = tag->GetInt();
+			entry->m_iIP = tag->GetInt();
 			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-			entry->tcpport = tag->GetInt();
+			entry->m_iTCPport = tag->GetInt();
 			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_FILENAME)) {
-			entry->fileName	= tag->GetStr();
+			entry->m_sFileName = tag->GetStr();
 			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_DESCRIPTION)) {
 			wxString strComment(tag->GetStr());
 			bFilterComment = thePrefs::IsMessageFiltered(strComment);
-			entry->taglist.push_front(tag);
+			entry->m_lTagList.push_front(tag);
 		} else if (!tag->GetName().Cmp(TAG_FILERATING)) {
-			entry->taglist.push_front(tag);
+			entry->m_lTagList.push_front(tag);
 		} else {
 			delete tag;
 		}
