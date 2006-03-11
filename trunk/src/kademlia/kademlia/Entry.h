@@ -53,17 +53,17 @@ class CEntry
 public:
 	CEntry()
 	{
-		ip = 0;
-		tcpport = 0;
-		udpport = 0;
-		size = 0;
-		lifetime = time(NULL);
-		source = false;
+		m_iIP = 0;
+		m_iTCPport = 0;
+		m_iUDPport = 0;
+		m_iSize = 0;
+		m_tLifeTime = time(NULL);
+		m_bSource = false;
 	}
 	~CEntry()
 	{
 		TagPtrList::const_iterator it;
-		for (it = taglist.begin(); it != taglist.end(); ++it) {
+		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			delete *it;
 		}
 	}
@@ -72,7 +72,7 @@ public:
 	{
 		TagPtrList::const_iterator it;
 		CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); ++it) {
+		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			tag = *it;
 			if ((tag->GetName() == tagname) && tag->IsInt()) {
 				return tag->GetInt();
@@ -85,7 +85,7 @@ public:
 	{
 		TagPtrList::const_iterator it;
 		CTag* tag;
-		for (it = taglist.begin(); it != taglist.end(); ++it) {
+		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			tag = *it;
 			if ((tag->GetName() == tagname) && tag->IsStr()) {
 				return tag->GetStr();
@@ -94,16 +94,16 @@ public:
 		return wxEmptyString;
 	}	
 	
-	uint32 ip;
-	uint16 tcpport;
-	uint16 udpport;
-	CUInt128 keyID;
-	CUInt128 sourceID;
-	wxString fileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32	size;
-	TagPtrList taglist;
-	time_t lifetime;
-	bool source;
+	uint32 m_iIP;
+	uint16 m_iTCPport;
+	uint16 m_iUDPport;
+	CUInt128 m_iKeyID;
+	CUInt128 m_iSourceID;
+	wxString m_sFileName; // NOTE: this always holds the string in LOWERCASE!!!
+	uint32	m_iSize;
+	TagPtrList m_lTagList;
+	time_t m_tLifeTime;
+	bool m_bSource;
 };
 
 }
