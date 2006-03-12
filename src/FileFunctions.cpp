@@ -343,7 +343,11 @@ time_t GetLastModificationTime(const wxString& file)
 bool CheckDirExists(const wxString& dir)
 {
 	struct stat st;
-	return (UTF8_Stat(dir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
+	wxString fixeddir(dir);
+	while (fixeddir.Last() == wxFileName::GetPathSeparator()) {
+		fixeddir = fixeddir.BeforeLast(wxFileName::GetPathSeparator());
+	}
+	return (UTF8_Stat(fixeddir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
 }
 
 
