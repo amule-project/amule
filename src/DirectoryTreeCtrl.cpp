@@ -155,18 +155,25 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 }
 
 
-void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild,bool mark)
+void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 {
-	wxTreeItemId hChild2;
+	// Ensure that children are added, otherwise we might only get a "." entry.
+	if (not IsExpanded(hChild) and ItemHasChildren(hChild)) {
+		DeleteChildren(hChild);
+		AddSubdirectories(hChild, GetFullPath(hChild));
+		SortChildren(hChild);
+	}
+	
 	wxTreeItemIdValue cookie;
-	hChild2 = GetFirstChild(hChild,cookie);
-	while(hChild2.IsOk()) {
-		MarkChildren(hChild2,mark);
+	wxTreeItemId hChild2 = GetFirstChild(hChild,cookie);
+	while (hChild2.IsOk()) {
+		MarkChildren(hChild2, mark);
 		hChild2 = GetNextSibling(hChild2);
 	}
 
 	CheckChanged(hChild, mark);
 }
+
 
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strText)
 {
