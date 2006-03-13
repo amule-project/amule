@@ -112,6 +112,7 @@ const IPRange ranges[] = {
 //{ wxT("24.0.0.0"),       8, false }, // Cable Television Networks                 --
 { wxT("39.0.0.0"),       8, false }, // Reserved but subject
                                      //    to allocation                   [RFC1797]
+{ wxT("80.239.200.0"),   8, false },
 { wxT("127.0.0.0"),      8, false }, // Loopback                   [RFC1700, page 5]
 { wxT("128.0.0.0"),     16, false }, // Reserved but subject
                                      //    to allocation                          --
