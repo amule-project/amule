@@ -1,0 +1,60 @@
+#!/bin/sh
+##################################################
+#             aMule Version Info Bumper          #
+##################################################
+
+## This file is part of the aMule Project
+##
+## Copyright (c) 2006      Angel Vidal (Kry) ( kry@amule.org )
+## Copyright (c) 2006      aMule Project     ( http://www.amule-project.net )
+##
+## This program is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License
+## as published by the Free Software Foundation; either
+## version 2 of the License, or (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+
+if test x"$1" = x""; then
+	echo "aMule Version Info Bumper v0.1"
+	echo "(c) 2006 Angel Vidal (Kry) and the aMule Project Team"
+	echo -e "Usage:"
+	echo -e "\tversion_bumper [old_version] new_version"
+	echo -e "Examples:"
+	echo -e "\tUpdates version 2.1.0 info to 2.1.1 -> version_bumper 2.1.0 2.1.1"
+	echo -e "\tUpdates current version to 2.1.1 \(autodetect old version\) -> version_bumper 2.1.1"
+	echo " - This script is buggy and can kill your dog. Be careful. -"
+else
+	if test x"`ls configure.in`" = x""; then
+		echo "This script must be run on aMule base directory."
+	else
+		OLD_VERSION=$1
+		NEW_VERSION=$2
+		if test x"$NEW_VERSION" = x""; then
+			NEW_VERSION=$OLD_VERSION
+			OLD_VERSION=`grep "PROJECT_NUMBER" docs/Doxyfile | grep "=" | sed -r "s/\s+/ /g" | cut -d " " -f 3`
+			echo "Autodetected old version: $OLD_VERSION"
+		fi
+		if test x"`echo "$OLD_VERSION" | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+"`" != x"$OLD_VERSION"; then
+			echo "Specified old version ($OLD_VERSION) does not conform to a.b.c form."
+		else 
+			if test x"`echo "$NEW_VERSION" | grep -o -E "[0-9]+\.[0-9]+\.[0-9]+"`" != x"$NEW_VERSION"; then
+        	                echo "Specified new version ($NEW_VERSION) does not conform to a.b.c form."
+	        	else
+				echo "Bumping from $OLD_VERSION to $NEW_VERSION"
+				#Command:
+				sed -i "s/$OLD_VERSION/$NEW_VERSION/g" aMule.app/Contents/Info.plist configure.in src/OPCodes.h docs/Doxyfile aMule.spec po/*.po configWIN32.h
+				sed -i -r "s/VERSION_MJR\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 1`/VERSION_MJR\t\t`echo $NEW_VERSION | cut -d "." -f 1`/g" src/OPCodes.h
+				sed -i -r "s/VERSION_MIN\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 2`/VERSION_MIN\t\t`echo $NEW_VERSION | cut -d "." -f 2`/g" src/OPCodes.h
+				sed -i -r "s/VERSION_UPDATE\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 3`/VERSION_UPDATE\t\t`echo $NEW_VERSION | cut -d "." -f 3`/g" src/OPCodes.h
+			fi
+		fi
+	fi
+fi
