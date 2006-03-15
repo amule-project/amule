@@ -23,7 +23,7 @@
 ## Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 
 if test x"$1" = x""; then
-	echo "aMule Version Info Bumper v0.1"
+	echo "aMule Version Info Bumper v0.2"
 	echo "(c) 2006 Angel Vidal (Kry) and the aMule Project Team"
 	echo -e "Usage:"
 	echo -e "\tversion_bumper [old_version] new_version"
@@ -54,6 +54,9 @@ else
 				sed -i -r "s/VERSION_MJR\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 1`/VERSION_MJR\t\t`echo $NEW_VERSION | cut -d "." -f 1`/g" src/OPCodes.h
 				sed -i -r "s/VERSION_MIN\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 2`/VERSION_MIN\t\t`echo $NEW_VERSION | cut -d "." -f 2`/g" src/OPCodes.h
 				sed -i -r "s/VERSION_UPDATE\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 3`/VERSION_UPDATE\t\t`echo $NEW_VERSION | cut -d "." -f 3`/g" src/OPCodes.h
+				if test x"`grep -E "^#define __CVS__$" src/OPCodes.h`" != x""; then
+					echo "WARNING! OPCodes.h still defines version as CVS. Please comment the line \"#define __CVS__\" before releasing."
+				fi
 			fi
 		fi
 	fi
