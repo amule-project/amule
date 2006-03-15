@@ -37,6 +37,11 @@ Version 2.1.1 - The "???" version
 		* Fixed Kad's sources/nodes search results, based on a patch by tatikiran
 		  and further modified by John (eMule) and me.
 		* Removed Razorback 2's stats while it's gone.
+		* Disabled vertical toolbar on Windows while wxWidgets doesn't fix it.
+		* Fixed aMule failing to find configuration folder and any folder that
+		  finishes with a "\" on windows. This leaded to shared folders not being 
+		  shared, too.
+		* Fixed drives on windows not being correctly tested.
 
 	Radek:
 		* Fixed amulemd output not being printed immediatly when running in a
