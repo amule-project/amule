@@ -806,7 +806,7 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 	wxTextCtrl* widget = CastChild( id, wxTextCtrl );
 	wxString dir = widget->GetValue();
 
-	wxString str = wxDirSelector( type, dir );
+	wxString str = wxDirSelector( type, dir, 0, wxDefaultPosition, this );
 
 	if ( !str.IsEmpty() ) {
 		widget->SetValue( str );
@@ -818,7 +818,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString str = wxFileSelector( 
 		_("Browse wav"), wxEmptyString, wxEmptyString,
-		wxT("*.wav"), _("File wav (*.wav)|*.wav||") );
+		wxT("*.wav"), _("File wav (*.wav)|*.wav||"), 0, this );
 	
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_EDIT_TBN_WAVFILE, wxTextCtrl );
@@ -831,7 +831,7 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString str = wxFileSelector(
-		_("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*") );
+		_("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*"),  wxT("*.*"), 0, this );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_SKINFILE, wxTextCtrl );
@@ -866,7 +866,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 #endif
 	
 	wxString str = wxFileSelector( title, wxEmptyString, wxEmptyString,
-		wxEmptyString, wildcard );
+		wxEmptyString, wildcard, 0, this );
 
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( id, wxTextCtrl );
