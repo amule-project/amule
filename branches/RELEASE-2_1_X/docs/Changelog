@@ -48,6 +48,9 @@ Version 2.1.1 - The "???" version
 		  mingw terminal.
 		* Added missing include to GetTickCount.h, which caused the function
 		  declaration to be missing in some cases.
+
+	Raziel:
+		* Fixed "0000690 bug for browse windows in amulegui"
 	
 	Xaignar:
 		* Fixed problem with recursivly sharing folders that hadn't been
