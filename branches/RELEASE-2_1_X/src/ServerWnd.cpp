@@ -70,7 +70,7 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
-	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://www.gruk.org/server.met.gz"));
+	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
 
 	// Insert two columns, currently without a header
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
@@ -231,10 +231,10 @@ void CServerWnd::UpdateKadInfo()
 				#endif
 			}
 			KadInfoList->InsertItem(next_row, _("Average Users:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()));
 			++next_row;
 			KadInfoList->InsertItem(next_row, _("Average Files:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaFiles()));
 			
 			#else 
 			#warning TODO: Buddy state on remote GUI
