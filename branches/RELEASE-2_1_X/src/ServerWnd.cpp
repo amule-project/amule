@@ -231,10 +231,10 @@ void CServerWnd::UpdateKadInfo()
 				#endif
 			}
 			KadInfoList->InsertItem(next_row, _("Average Users:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaUsers()));
 			++next_row;
 			KadInfoList->InsertItem(next_row, _("Average Files:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaFiles()));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::getKademliaFiles()));
 			
 			#else 
 			#warning TODO: Buddy state on remote GUI
