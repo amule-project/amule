@@ -1,6 +1,6 @@
 Summary:        aMule - another eMule p2p client
 Name:           aMule
-Version:        2.1.0
+Version:        2.1.1
 Release:        0
 License:        GPL
 Group:          Applications/Internet
