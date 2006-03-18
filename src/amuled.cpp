@@ -545,7 +545,7 @@ void CamuleDaemonApp::ShowAlert(wxString msg, wxString title, int flags)
 	
 	// Ensure that alerts are always visible on the console (when possible).
 	if ((not enable_stdout_log) and (not enable_daemon_fork)) {
-		printf("%s\n", unicode2UTF8(title + wxT(" ") + msg).data());
+		printf("%s\n", (const char*)unicode2UTF8(title + wxT(" ") + msg));
 	}
 	
 	AddLogLineM(true, title + wxT(" ") + msg);
