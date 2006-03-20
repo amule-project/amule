@@ -86,76 +86,6 @@ CPartFile::CPartFile()
 	Init();
 }
 
-void CPartFile::Init()
-{
-	m_showSources = false;
-
-	m_nLastBufferFlushTime = 0;
-
-	newdate = true;
-	m_lastsearchtime = 0;
-	lastpurgetime = ::GetTickCount();
-	m_paused = false;
-	m_stopped = false;
-	m_insufficient = false;
-
-	status = PS_EMPTY;
-	
-	transfered = 0;
-	m_iLastPausePurge = time(NULL);
-	
-	if(thePrefs::GetNewAutoDown()) {
-		m_iDownPriority = PR_HIGH;
-		m_bAutoDownPriority = true;
-	} else {
-		m_iDownPriority = PR_NORMAL;
-		m_bAutoDownPriority = false;
-	}
-	
-	memset(m_anStates,0,sizeof(m_anStates));
-	
-	transferingsrc = 0; // new
-	
-	kBpsDown = 0.0;
-	
-	m_hashsetneeded = true;
-	m_count = 0;
-	percentcompleted = 0;
-	completedsize=0;
-	m_bPreviewing = false;
-	lastseencomplete = 0;
-	m_availablePartsCount=0;
-	m_ClientSrcAnswered = 0;
-	m_LastNoNeededCheck = 0;
-	m_iRating = 0;
-	m_nTotalBufferData = 0;
-	m_nLastBufferFlushTime = 0;
-	m_bPercentUpdated = false;
-	m_bRecoveringArchive = false;
-	m_iGainDueToCompression = 0;
-	m_iLostDueToCorruption = 0;
-	m_iTotalPacketsSavedDueToICH = 0;
-	m_category = 0;
-	m_lastRefreshedDLDisplay = 0;
-	m_is_A4AF_auto = false;
-	m_localSrcReqQueued = false;
-	m_nCompleteSourcesTime = time(NULL);
-	m_nCompleteSourcesCount = 0;
-	m_nCompleteSourcesCountLo = 0;
-	m_nCompleteSourcesCountHi = 0;
-	
-	// Sources dropping
-	m_LastSourceDropTime = 0;
-
-	m_validSources = 0;
-	m_notCurrentSources = 0;
-
-	// Kad
-	m_LastSearchTimeKad = 0;
-	m_TotalSearchesKad = 0;	
-	
-}
-
 CPartFile::CPartFile(CSearchFile* searchresult)
 {
 	Init();
@@ -3655,6 +3585,8 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 
 CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 {
+	Init();
+	
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
@@ -3683,7 +3615,6 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	
 	m_source_count = 0;
 	m_a4af_source_count = 0;
-	m_notCurrentSources = 0;
 }
 
 /*
@@ -3694,6 +3625,76 @@ CPartFile::~CPartFile()
 }
 
 #endif // !CLIENT_GUI
+
+void CPartFile::Init()
+{
+	m_showSources = false;
+
+	m_nLastBufferFlushTime = 0;
+
+	newdate = true;
+	m_lastsearchtime = 0;
+	lastpurgetime = ::GetTickCount();
+	m_paused = false;
+	m_stopped = false;
+	m_insufficient = false;
+
+	status = PS_EMPTY;
+	
+	transfered = 0;
+	m_iLastPausePurge = time(NULL);
+	
+	if(thePrefs::GetNewAutoDown()) {
+		m_iDownPriority = PR_HIGH;
+		m_bAutoDownPriority = true;
+	} else {
+		m_iDownPriority = PR_NORMAL;
+		m_bAutoDownPriority = false;
+	}
+	
+	memset(m_anStates,0,sizeof(m_anStates));
+	
+	transferingsrc = 0; // new
+	
+	kBpsDown = 0.0;
+	
+	m_hashsetneeded = true;
+	m_count = 0;
+	percentcompleted = 0;
+	completedsize=0;
+	m_bPreviewing = false;
+	lastseencomplete = 0;
+	m_availablePartsCount=0;
+	m_ClientSrcAnswered = 0;
+	m_LastNoNeededCheck = 0;
+	m_iRating = 0;
+	m_nTotalBufferData = 0;
+	m_nLastBufferFlushTime = 0;
+	m_bPercentUpdated = false;
+	m_bRecoveringArchive = false;
+	m_iGainDueToCompression = 0;
+	m_iLostDueToCorruption = 0;
+	m_iTotalPacketsSavedDueToICH = 0;
+	m_category = 0;
+	m_lastRefreshedDLDisplay = 0;
+	m_is_A4AF_auto = false;
+	m_localSrcReqQueued = false;
+	m_nCompleteSourcesTime = time(NULL);
+	m_nCompleteSourcesCount = 0;
+	m_nCompleteSourcesCountLo = 0;
+	m_nCompleteSourcesCountHi = 0;
+	
+	// Sources dropping
+	m_LastSourceDropTime = 0;
+
+	m_validSources = 0;
+	m_notCurrentSources = 0;
+
+	// Kad
+	m_LastSearchTimeKad = 0;
+	m_TotalSearchesKad = 0;	
+	
+}
 
 wxString CPartFile::getPartfileStatus() const
 {
