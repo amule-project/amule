@@ -64,9 +64,11 @@ CServer::CServer(uint16 in_port, const wxString i_addr)
 CServer::CServer(CEC_Server_Tag *tag)
 {
 	ip = tag->GetIPv4Data().IP();
-	ipfull = Uint32toStringIP(ip);
+	
 	port = tag->GetIPv4Data().m_port;
-
+	
+	Init();
+	
 	listname = tag->ServerName();
 	description = tag->ServerDesc();
 	maxusers = tag->GetMaxUsers();
