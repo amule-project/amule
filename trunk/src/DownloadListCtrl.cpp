@@ -2138,8 +2138,9 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		uint32 end   = ( gap->end / PARTSIZE ) + 1;
 
 		// Avoid going past the filesize. Dunno if this can happen, but the old code did check.
-		if ( end > file->GetPartCount() )
+		if ( end > file->GetPartCount() ) {
 			end = file->GetPartCount();
+		}
 
 		// Place each gap, one PART at a time
 		for ( uint64 i = start; i < end; ++i ) {
