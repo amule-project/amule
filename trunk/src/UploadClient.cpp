@@ -346,8 +346,6 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 		nPacketSize = togo;
 	}
 	
-	#warning Kry - UPDATE
-	
 	while (togo){
 		if (togo < nPacketSize*2) {
 			nPacketSize = togo;
