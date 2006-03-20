@@ -153,6 +153,7 @@ void CPartFile::Init()
 	// Kad
 	m_LastSearchTimeKad = 0;
 	m_TotalSearchesKad = 0;	
+	
 }
 
 CPartFile::CPartFile(CSearchFile* searchresult)
@@ -3679,6 +3680,10 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	}
 	// FIXME: !
 	m_category = 0;
+	
+	m_source_count = 0;
+	m_a4af_source_count = 0;
+	m_notCurrentSources = 0;
 }
 
 /*

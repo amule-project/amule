@@ -1109,7 +1109,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->SetNotCurrentSourcesCount(tag->SourceNotCurrCount());
 		file->m_source_count = tag->SourceCount();
 		file->m_a4af_source_count = tag->SourceCountA4AF();
-	    file->status = tag->FileStatus();
+		file->status = tag->FileStatus();
 	
 		file->lastseencomplete = tag->LastSeenComplete();
 		
