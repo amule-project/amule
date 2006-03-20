@@ -3590,16 +3590,12 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
-	m_showSources = false;
 	m_partmetfilename = tag->PartMetName();
 	transfered = tag->SizeXfer();
 	percentcompleted = (100.0*completedsize) / GetFileSize();
 	completedsize = tag->SizeDone();
 
 	m_category = tag->FileCat();
-
-    // is it ok ?
-    m_stopped = 0;
 
 	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
 	m_SrcpartFrequency.SetCount(m_iPartCount);
