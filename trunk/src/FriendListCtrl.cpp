@@ -137,6 +137,10 @@ void CFriendListCtrl::AddFriend(CUpDownClient* toadd)
 
 void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 {
+	if (!toremove) {
+		return;
+	}
+	
 	sint32 itemnr = FindItem(-1, (long)toremove);
 	
 	if ( itemnr == -1 )

@@ -856,9 +856,12 @@ void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	ItemList sources = ::GetSelectedItems( this, itSOURCES );
 
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
-		CUpDownClient* source = (*it)->GetSource();
-
-		theApp.amuledlg->chatwnd->AddFriend( source );
+		CUpDownClient* client = (*it)->GetSource();
+		if (client->IsFriend()) {
+			theApp.amuledlg->chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+		} else {
+			theApp.amuledlg->chatwnd->AddFriend( client );
+		}
 	}
 }
 
@@ -1062,7 +1065,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		
 		m_menu = new wxMenu(wxT("Clients"));
 		m_menu->Append(MP_DETAIL, _("Show &Details"));
-		m_menu->Append(MP_ADDFRIEND, _("Add to Friends"));
+		m_menu->Append(MP_ADDFRIEND, client->IsFriend() ? _("Remove from friends") : _("Add to Friends"));
 		m_menu->Append(MP_SHOWLIST, _("View Files"));
 		m_menu->Append(MP_SENDMESSAGE, _("Send message"));
 		m_menu->Append(MP_CHANGE2FILE, _("Swap to this file"));

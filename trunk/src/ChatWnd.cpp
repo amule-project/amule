@@ -113,6 +113,10 @@ void CChatWnd::AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 
 	friendlistctrl->AddFriend( userhash, name, lastUsedIP, lastUsedPort);
 }
 
+void CChatWnd::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort)
+{
+	friendlistctrl->RemoveFriend(friendlistctrl->FindFriend(userhash, lastUsedIP, lastUsedPort));
+}
 
 void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort)
 {
