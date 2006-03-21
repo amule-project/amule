@@ -52,16 +52,17 @@ there client on the eMule forum..
 #include "../../SharedFileList.h"
 #include "../../OtherFunctions.h"
 #include "../../KnownFile.h"
-#include "DownloadQueue.h"
-#include "PartFile.h"
-#include "SearchList.h"
-#include "MemFile.h"
-#include "ServerConnect.h"
-#include "Server.h"
-#include "ClientList.h"
-#include "updownclient.h"
-#include "Logger.h"
+#include "../../DownloadQueue.h"
+#include "../../PartFile.h"
+#include "../../SearchList.h"
+#include "../../MemFile.h"
+#include "../../ServerConnect.h"
+#include "../../Server.h"
+#include "../../ClientList.h"
+#include "../../updownclient.h"
+#include "../../Logger.h"
 #include "../../Preferences.h"
+#include "../../GuiEvents.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -128,6 +129,15 @@ CSearch::~CSearch()
 				;
 				// WTF? 
 		}
+	}
+	
+	switch (m_type) {
+		case KEYWORD:
+			Notify_KadSearchEnd(m_searchID);
+			break;
+		default:
+			;
+			// WTF?
 	}
 }
 

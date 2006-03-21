@@ -384,6 +384,19 @@ void CSearchDlg::LocalSearchEnd()
 	ResetControls();
 }
 
+void CSearchDlg::KadSearchEnd(uint32 id)
+{
+	int nPages = m_notebook->GetPageCount();
+	for ( int i = 0; i < nPages; i++ ) {
+		CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
+		if (page->GetSearchId() == id) {
+			wxString rest;
+			if (m_notebook->GetPageText(i).StartsWith(wxT("!"),&rest)) {
+				m_notebook->SetPageText(i,rest);
+			}			
+		}
+	}
+}
 
 void CSearchDlg::OnBnClickedDownload(wxCommandEvent& WXUNUSED(evt))
 {
@@ -503,7 +516,7 @@ void CSearchDlg::StartNewSearch()
 			break;
 	}
 	
-	CreateNewTab(params.searchString + wxT(" (0)"), real_id);
+	CreateNewTab(((search_type == KadSearch) ? wxT("!") : wxEmptyString) + params.searchString + wxT(" (0)"), real_id);
 }
 
 

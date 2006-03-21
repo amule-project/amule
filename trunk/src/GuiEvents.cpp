@@ -421,6 +421,15 @@ namespace MuleNotify
 		}
 #endif
 	}
+
+	void KadSearchEnd(uint32 id)
+	{
+#ifndef AMULE_DAEMON
+		if (theApp.amuledlg->searchwnd) {
+			theApp.amuledlg->searchwnd->KadSearchEnd(id);
+		}
+#endif
+	}
 	
 	void Search_Update_Sources(CSearchFile* NOT_ON_DAEMON(result))
 	{
@@ -653,4 +662,3 @@ namespace MuleNotify
 
 #endif	// #ifdef CLIENT_GUI
 };
-

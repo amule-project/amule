@@ -106,6 +106,12 @@ public:
 
 
 	/**
+	 * Call this function to signify that the kad search is over.
+	 */
+	void		KadSearchEnd(uint32 id);
+
+
+	/**
 	 * This function updates the category list according to existing categories.
 	 */
 	void		UpdateCatChoice();
