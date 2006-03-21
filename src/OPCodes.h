@@ -587,6 +587,7 @@ enum {
 	MP_WS,
 	MP_RAZORSTATS,
 	MP_GETCOMMENTS,
+	MP_SEARCHRELATED,
 //For comments 
 	MP_CMT,
 

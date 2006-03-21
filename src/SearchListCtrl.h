@@ -280,6 +280,11 @@ protected:
 	void OnRazorStatsCheck( wxCommandEvent& event );
 
 	/**
+	 * Event handler for related search.
+	 */
+	void OnRelatedSearch( wxCommandEvent& event );
+
+	/**
 	 * Event handler for download-file(s) menu item.
 	 */
 	void OnPopupDownload( wxCommandEvent& event );
