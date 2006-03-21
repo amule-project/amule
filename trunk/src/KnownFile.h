@@ -319,6 +319,9 @@ protected:
 	uint32	m_lastPublishTimeKadNotes;
 	uint32	m_lastBuddyIP;
 
+private:
+	/** Common initializations for constructors. */
+	void Init();
 };
 
 #endif // KNOWNFILE_H
