@@ -270,16 +270,16 @@ void CECTag::InitInt(uint64 data)
 	if (m_tagData != NULL) {
 		switch (m_dataType) {
 			case EC_TAGTYPE_UINT8:
-				PokeUInt8( (void*)m_tagData, data );
+				PokeUInt8( (void*)m_tagData, (uint8) data );
 				break;
 			case EC_TAGTYPE_UINT16:
-				PokeUInt16( (void*)m_tagData, ENDIAN_HTONS( data ) );
+				PokeUInt16( (void*)m_tagData, (uint16) data );
 				break;
 			case EC_TAGTYPE_UINT32:
-				PokeUInt32( (void*)m_tagData, ENDIAN_HTONL( data ) );
+				PokeUInt32( (void*)m_tagData, (uint32) data );
 				break;
 			case EC_TAGTYPE_UINT64:
-				PokeUInt64( (void*)m_tagData, ENDIAN_HTONLL( data ) );
+				PokeUInt64( (void*)m_tagData, data );
 				break;
 			default:
 				/* WTF?*/
