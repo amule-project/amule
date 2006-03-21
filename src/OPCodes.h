@@ -75,11 +75,11 @@ enum {
 #ifdef __CVS__
 	#define	MOD_VERSION_LONG		wxT("aMule CVS")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.1.0")
+	#define	MOD_VERSION_LONG		wxT("aMule 2.2.0")
 #endif
 
-#define	VERSION_MJR		0x02
-#define	VERSION_MIN		1
+#define	VERSION_MJR		2
+#define	VERSION_MIN		2
 #define	VERSION_UPDATE		0
 
 #define	EDONKEYVERSION				0x3c // Used for server login
