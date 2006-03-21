@@ -182,7 +182,7 @@ static void FatalLexError(yyconst char msg[])
 
 void LexInit(const wxString& pszInput)
 {
-
+	yy_init_globals();
 	_pszLexStr = strdup(unicode2UTF8(pszInput));
 	_pszLexBuff = _pszLexStr;
 }
