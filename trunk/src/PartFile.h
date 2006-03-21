@@ -46,7 +46,6 @@ class CMemFile;
 class CFileDataIO;
 class CED2KFileLink;
 
-
 //#define BUFFER_SIZE_LIMIT	500000 // Max bytes before forcing a flush
 #define BUFFER_TIME_LIMIT	60000   // Max milliseconds before forcing a flush
 
@@ -73,6 +72,17 @@ struct PartFileBufferedData
 	uint64 end;						// Barry - This is the end offset of the data
 	Requested_Block_Struct *block;	// Barry - This is the requested block that this data relates to
 };
+
+
+struct SFileRating
+{
+	wxString UserName;
+	wxString FileName;
+	sint16   Rating;
+	wxString Comment;
+};
+
+typedef std::list<SFileRating*> FileRatingList;
 
 class CPartFile : public CKnownFile {
 public:
@@ -266,6 +276,8 @@ public:
 	uint16	GetMaxSources() const;
 	uint16	GetMaxSourcePerFileSoft() const;
 	uint16	GetMaxSourcePerFileUDP() const;		 
+
+	void GetRatingAndComments(FileRatingList& list);
 
 private:
 	//! A local list of sources that are invalid for this file.

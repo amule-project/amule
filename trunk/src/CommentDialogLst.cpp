@@ -41,16 +41,6 @@ BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
 END_EVENT_TABLE()
 
-
-struct SFileRating
-{
-	wxString UserName;
-	wxString FileName;
-	sint16   Rating;
-	wxString Comment;
-};
-
-
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent, CPartFile* file)
 	: wxDialog(parent, -1, wxString(_("File Comments")), 
 		wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
@@ -94,25 +84,15 @@ void CCommentDialogLst::UpdateList()
 	int count = 0;
 	ClearList();
  
-	const CPartFile::SourceSet& sources = m_file->GetSourceList();
-	CPartFile::SourceSet::iterator it = sources.begin();
-	for ( ; it != sources.end(); ++it ) {
-		CUpDownClient *cur_src = *it;
-
-		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
-			SFileRating* entry = new SFileRating();
-			entry->UserName = cur_src->GetUserName();
-			entry->FileName = cur_src->GetClientFilename();
-			entry->Rating   = cur_src->GetFileRating();
-			entry->Comment  = cur_src->GetFileComment();
-			
-			m_list->InsertItem(count, cur_src->GetUserName());
-			m_list->SetItem(count, 1, cur_src->GetClientFilename());
-			m_list->SetItem(count, 2, GetRateString(cur_src->GetFileRating()));
-			m_list->SetItem(count, 3, cur_src->GetFileComment());
-			m_list->SetItemData(count, (long)entry);
-			count++;
-		}
+	FileRatingList list;
+	m_file->GetRatingAndComments(list);
+	for (FileRatingList::iterator it = list.begin(); it != list.end(); ++it) {
+		m_list->InsertItem(count, (*it)->UserName);
+		m_list->SetItem(count, 1, (*it)->FileName);
+		m_list->SetItem(count, 2, ((*it)->Rating != -1) ? GetRateString((*it)->Rating) : wxString(wxT("on")));
+		m_list->SetItem(count, 3, (*it)->Comment);
+		m_list->SetItemData(count, (long)(*it));
+		count++;
 	}
 
 	wxString info;
@@ -156,4 +136,3 @@ int CCommentDialogLst::SortProc(long item1, long item2, long sortData)
 			return 0;
 	}
 }
-
