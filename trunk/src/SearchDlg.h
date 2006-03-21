@@ -130,6 +130,8 @@ public:
 	
 	void	UpdateProgress(uint32 new_value);
 
+	void	StartNewSearch();
+	
 private:
 	// Event handlers
 	void		OnFieldChanged(wxEvent& evt);
@@ -141,7 +143,6 @@ private:
 	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
 	
-	void		StartNewSearch();
 	void		OnSearchClosed(wxNotebookEvent& evt);
 
 	void		OnBnClickedStart(wxCommandEvent& evt);

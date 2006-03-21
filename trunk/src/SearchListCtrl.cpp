@@ -51,6 +51,7 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_GETED2KLINK,     CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
+	EVT_MENU( MP_SEARCHRELATED,      CSearchListCtrl::OnRelatedSearch)	
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
 
@@ -537,6 +538,9 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		menu.AppendSeparator();
 */
+		menu.Append(MP_SEARCHRELATED, _("Search related files (ED2k, local server)"));
+		menu.AppendSeparator();
+
 		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
 
 		// These should only be enabled for single-selections
@@ -595,6 +599,20 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
 	theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+}
+
+void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item == -1 ) {
+		return;
+	}
+
+	CSearchFile* file = (CSearchFile*)GetItemData( item );
+	theApp.searchlist->StopGlobalSearch();
+	theApp.amuledlg->searchwnd->ResetControls();
+	CastByID( IDC_SEARCHNAME, theApp.amuledlg->searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
+	theApp.amuledlg->searchwnd->StartNewSearch();
 }
 
 
