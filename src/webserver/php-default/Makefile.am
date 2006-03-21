@@ -10,7 +10,7 @@ dist_webserver_DATA = \
 	stats_tree.php \
 	top.html \
 	footer.php \
-	login.html \
+	login.php \
 	tree-open.gif \
 	tree-closed.gif \
 	tree-leaf.gif \

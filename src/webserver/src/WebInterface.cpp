@@ -80,7 +80,7 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 		if (wxFileName::DirExists(dir)) {
 			DebugShow(wxT(" yes\n"));
 
-			wxString tmplPath = JoinPaths(dir, wxT("login.html"));
+			wxString tmplPath = JoinPaths(dir, wxT("login.php"));
 
 			DebugShow(wxT("checking for file '") + tmplPath + wxT("'..."));
 			if (wxFileName::FileExists(tmplPath)) {
