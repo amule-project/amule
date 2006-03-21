@@ -47,6 +47,7 @@ public:
 	CDlgFriend* FindFriend(const CMD4Hash& userhash, uint32 dwIP, uint16 nPort);	
 	void	AddFriend(CUpDownClient* toadd);
 	void	AddFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
+	void	RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint32 lastUsedPort);
 	void	RefreshFriend(const CMD4Hash& userhash, const wxString& name, uint32 lastUsedIP, uint32 lastUsedPort);
 
 	void	ProcessMessage(uint64 sender, const wxString& message);

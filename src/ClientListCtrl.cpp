@@ -231,9 +231,23 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 	long index = CheckSelection(event);
 	
 	if ( m_menu == NULL ) {
+		
+		bool banned = false;
+		bool validIP = false;
+		bool isfriend = false;
+
+		// Check if the client is banned
+		if ( index > -1 ) {
+			CUpDownClient* client = (CUpDownClient*)GetItemData( index );
+
+			banned = client->IsBanned();
+			validIP = client->GetIP();
+			isfriend = client->IsFriend();
+		}
+				
 		m_menu = new wxMenu(_("Clients"));
 		m_menu->Append( MP_DETAIL,		_("Show &Details") );
-		m_menu->Append( MP_ADDFRIEND,	_("Add to Friends") );
+		m_menu->Append( MP_ADDFRIEND,	isfriend ? _("Remove from friends") : _("Add to Friends") );
 		m_menu->Append( MP_SHOWLIST,	_("View Files") );
 		m_menu->Append( MP_SENDMESSAGE,	_("Send message") );
 		m_menu->Append( MP_UNBAN,		_("Unban") );
@@ -251,19 +265,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		
 		m_menu->Enable( MP_DETAIL,		index > -1 );
 		m_menu->Enable( MP_SHOWLIST,	index > -1 );
-		
-		
-		bool banned = false;
-		bool validIP = false;
-
-		// Check if the client is banned
-		if ( index > -1 ) {
-			CUpDownClient* client = (CUpDownClient*)GetItemData( index );
-
-			banned = client->IsBanned();
-			validIP = client->GetIP();
-		}
-		
+				
 		m_menu->Enable( MP_UNBAN, 		banned );		
 		m_menu->Enable( MP_ADDFRIEND,	validIP );
 		m_menu->Enable( MP_SENDMESSAGE,	validIP );
@@ -305,8 +307,11 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	
 	while ( index != -1 ) {
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
-		
-		theApp.amuledlg->chatwnd->AddFriend( client );
+		if (client->IsFriend()) {
+			theApp.amuledlg->chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+		} else {
+			theApp.amuledlg->chatwnd->AddFriend( client );
+		}
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 }
