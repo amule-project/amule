@@ -1987,13 +1987,14 @@ static void FatalLexError(yyconst char msg[])
 
 void LexInit(const wxString& pszInput)
 {
-	yy_init_globals();
 	_pszLexStr = strdup(unicode2UTF8(pszInput));
 	_pszLexBuff = _pszLexStr;
 }
 
 void LexFree()
 {
+	yylex_destroy();
+	
 	yyleng = 0;
 	yytext = NULL;
 	yyin = NULL;
@@ -2001,7 +2002,6 @@ void LexFree()
 	yy_hold_char = '\0';
 	yy_n_chars = 0;
 	yy_c_buf_p = NULL;
-	yy_init = 1;
 	yy_start = 0;
 	yy_did_buffer_switch_on_eof = 0;
 	yy_last_accepting_state = 0;
