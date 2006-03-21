@@ -236,7 +236,7 @@ struct RWInterface<CUInt128>
 {
 	static CUInt128 genValue(size_t j) {
 		CUInt128 value;
-		uint32* data = (uint32*)value.getDataPtr();
+		uint32* data = (uint32*)value.GetDataPtr();
 		for (size_t y = 0; y < 4; y++) {
 			data[y] = (j + 3 + y * 4) & 0xff;
 			data[y] = (data[y] << 8) | (j + 2 + y * 4) & 0xff;
