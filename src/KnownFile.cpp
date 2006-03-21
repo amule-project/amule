@@ -287,35 +287,42 @@ void CAbstractFile::AddNote(Kademlia::CEntry *)
 
 /* Known File */
 
-CKnownFile::CKnownFile() :
-	date(0),
-	m_nCompleteSourcesTime(time(NULL)),
-	m_nCompleteSourcesCount(0),
-	m_nCompleteSourcesCountLo(0),
-	m_nCompleteSourcesCountHi(0),
-	m_bCommentLoaded(false),
-	m_iPartCount(0),
-	m_iED2KPartCount(0),
-	m_iED2KPartHashCount(0),
-	m_PublishedED2K(false),
-	kadFileSearchID(0),
-	m_lastPublishTimeKadSrc(0),
-	m_lastPublishTimeKadNotes(0),
-	m_lastBuddyIP(0)
+CKnownFile::CKnownFile()
 {
-	statistic.fileParent = this;
-	SetLastPublishTimeKadSrc(0,0),
+	Init();
+	
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
-	m_pAICHHashSet = new CAICHHashSet(this);
-
 }
+
+
+void CKnownFile::Init() 
+{
+	date = 0;
+	m_nCompleteSourcesTime = time(NULL);
+	m_nCompleteSourcesCount = 0;
+	m_nCompleteSourcesCountLo = 0;
+	m_nCompleteSourcesCountHi = 0;
+	m_bCommentLoaded = false;
+	m_iPartCount = 0;
+	m_iED2KPartCount = 0;
+	m_iED2KPartHashCount = 0;
+	m_PublishedED2K = false;
+	kadFileSearchID = 0;
+	m_lastPublishTimeKadSrc = 0;
+	m_lastPublishTimeKadNotes = 0;
+	m_lastBuddyIP = 0;
+
+	statistic.fileParent = this;
+	m_pAICHHashSet = new CAICHHashSet(this);
+}
+
 
 #ifdef CLIENT_GUI
 
 CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 {
-	m_pAICHHashSet = new CAICHHashSet(this);
+	Init();
 	
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
