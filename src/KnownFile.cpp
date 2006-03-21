@@ -319,7 +319,6 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	
 	SetFileName(tag->FileName());
 	m_abyFileHash = tag->ID();
-	#warning Kry - EC update
 	SetFileSize(tag->SizeFull());
 	m_iPartCount = (GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
 	m_AvailPartFrequency.SetCount(m_iPartCount);
