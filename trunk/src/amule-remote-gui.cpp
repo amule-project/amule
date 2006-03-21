@@ -741,10 +741,10 @@ void CIPFilterRem::Reload()
 	m_conn->SendPacket(&req);
 }
 
-void CIPFilterRem::Update(wxString /*url*/)
+void CIPFilterRem::Update(wxString WXUNUSED(url))
 {
 	// FIXME: add command
-	wxASSERT(0);
+	//wxASSERT(0);
 }
 
 /*
