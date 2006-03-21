@@ -89,6 +89,7 @@ namespace MuleNotify
 
 	void SearchCancel();
 	void SearchLocalEnd();
+	void KadSearchEnd(uint32 id);
 	void Search_Update_Sources(CSearchFile* result);
 	void Search_Add_Result(CSearchFile* result);
 
@@ -419,6 +420,7 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // search
 #define Notify_SearchCancel()						MuleNotify::DoNotify(&MuleNotify::SearchCancel)
 #define Notify_SearchLocalEnd()						MuleNotify::DoNotify(&MuleNotify::SearchLocalEnd)
+#define Notify_KadSearchEnd(val)					MuleNotify::DoNotify(&MuleNotify::KadSearchEnd, val)
 #define Notify_Search_Update_Sources(ptr)			MuleNotify::DoNotify(&MuleNotify::Search_Update_Sources, ptr)
 #define Notify_Search_Add_Result(s)					MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
 
