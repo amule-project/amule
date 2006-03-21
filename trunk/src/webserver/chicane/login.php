@@ -73,6 +73,14 @@
                           <input type="password" name="pass" maxlength=12 size=37 style="border-width: 1px; border-color: black; border-style:none;" value="">
                           <br /><br /><input type=submit value="Login Now"><br />
                         </font>
+                      </form>
+<?php
+	if ($_SESSION["login_error"] != "") {
+		echo "<br /><font color=blue size=+1>";
+		echo $_SESSION["login_error"];
+		echo "</font>";
+	}
+?>
                     </td>
                     <td width="5" background="login_righttop.gif">
                       <img src="blank1x1.gif" alt="" border="0" />
@@ -87,12 +95,9 @@
               <td style="height: 12px" background="login_bottom.gif" height="12">
               </td>
             </tr>
-
           </table>
-
         </td>
       </tr>
     </table>
-    </form>
   </body>
 </html>
