@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-03-09 19:27+0100\n"
-"PO-Revision-Date: 2006-03-12 17:36+0100\n"
+"PO-Revision-Date: 2006-03-17 19:00+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1138,7 +1138,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:81 src/ServerConnect.cpp:128
 msgid "ED2K network disabled on preferences, not connecting."
-msgstr "eD2k-Netzwerk ist in den Voreinstellungen deaktiviert, verbinde nicht."
+msgstr "Das eD2k-Netzwerk ist in den Voreinstellungen deaktiviert, verbinde nicht."
 
 #: src/ServerConnect.cpp:106 src/ServerConnect.cpp:116
 msgid "No valid servers to connect in serverlist found"
@@ -1489,7 +1489,7 @@ msgstr "Unvollständig"
 #: src/TransferWnd.cpp:343 src/OtherFunctions.cpp:775
 #: src/DownloadListCtrl.cpp:175 src/PartFileConvert.cpp:638
 msgid "Completed"
-msgstr "Fertiggestellt"
+msgstr "Fertig"
 
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:787
 msgid "Active"
@@ -1576,7 +1576,7 @@ msgstr "Kad-Suche kann nicht ausgeführt werden, wenn Kad nicht läuft"
 
 #: src/SearchList.cpp:582
 msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "eD2k-Suche kann nicht ausgeführt werden, wenn eD2k nicht verbunden ist"
+msgstr "Die eD2k-Suche kann nicht ausgeführt werden, wenn eD2k nicht verbunden ist"
 
 #: src/ListenSocket.cpp:67
 msgid "Error: Could not listen to TCP port."
@@ -2554,7 +2554,7 @@ msgstr "Statustextfenster zeigen"
 
 #: src/muuli_wdr.cpp:89
 msgid "Loading ..."
-msgstr "Lade ..."
+msgstr "Lade..."
 
 #: src/muuli_wdr.cpp:90
 msgid ""
@@ -2621,7 +2621,7 @@ msgstr "Name:"
 
 #: src/muuli_wdr.cpp:195 src/SearchListCtrl.cpp:97 src/SharedFilesCtrl.cpp:98
 msgid "Type"
-msgstr "Suchtyp"
+msgstr "Typ"
 
 #: src/muuli_wdr.cpp:200
 msgid "Local Search"
@@ -2641,7 +2641,7 @@ msgstr "Erweiterte Parameter"
 
 #: src/muuli_wdr.cpp:217
 msgid "Filtering"
-msgstr "Filtere"
+msgstr "Filtern"
 
 #: src/muuli_wdr.cpp:226
 msgid "File Type"
@@ -2952,11 +2952,11 @@ msgstr "Downloadgeschwindigkeit"
 
 #: src/muuli_wdr.cpp:1207 src/muuli_wdr.cpp:1256 src/muuli_wdr.cpp:3239
 msgid "Current"
-msgstr "Aktuell"
+msgstr "Momentan"
 
 #: src/muuli_wdr.cpp:1218 src/muuli_wdr.cpp:1267 src/muuli_wdr.cpp:3250
 msgid "Running average"
-msgstr "Läuft im Schnitt"
+msgstr "Laufender Durchschnitt"
 
 #: src/muuli_wdr.cpp:1229 src/muuli_wdr.cpp:1278 src/muuli_wdr.cpp:3261
 msgid "Session average"
@@ -3457,7 +3457,7 @@ msgstr "Eingehende Dateien:"
 
 #: src/muuli_wdr.cpp:2160
 msgid "Temporary Directory :"
-msgstr "Temporäre Dateien:"
+msgstr "Temporäres Verzeichnis:"
 
 #: src/muuli_wdr.cpp:2171
 msgid "Shared Directories"
@@ -3481,7 +3481,7 @@ msgstr "Erstelle eine Kopie für die Vorschau"
 
 #: src/muuli_wdr.cpp:2233
 msgid "Graphs"
-msgstr "Graphen"
+msgstr "Diagramme"
 
 #: src/muuli_wdr.cpp:2236 src/muuli_wdr.cpp:2290
 msgid "Update delay : 5 secs"
@@ -3489,15 +3489,15 @@ msgstr "Updateverzögerung: 5 Sekunden"
 
 #: src/muuli_wdr.cpp:2242
 msgid "Time for average graph: 100 mins"
-msgstr "Durchschnittsgraphen in Minunten berechnen: 100 mins"
+msgstr "Zeitachse des Durchschnittsdiagramms: 100 Min."
 
 #: src/muuli_wdr.cpp:2248
 msgid "Connections Graph Scale: 100 "
-msgstr "Verbindungsgraphenskala: 100"
+msgstr "Verbindungen in der Diagrammanzeige: 100"
 
 #: src/muuli_wdr.cpp:2254
 msgid "Select Statistics Colors"
-msgstr "Farben des Graphen"
+msgstr "Diagrammfarben"
 
 #: src/muuli_wdr.cpp:2261
 msgid "Background"
@@ -3509,7 +3509,7 @@ msgstr "Gitter"
 
 #: src/muuli_wdr.cpp:2263
 msgid "Download current"
-msgstr "Aktueller Download"
+msgstr "Momentaner Download"
 
 #: src/muuli_wdr.cpp:2264
 msgid "Download running average"
@@ -3521,7 +3521,7 @@ msgstr "Download: Sitzungsdurchschnitt"
 
 #: src/muuli_wdr.cpp:2266
 msgid "Upload current"
-msgstr "Aktueller Upload"
+msgstr "Momentaner Upload"
 
 #: src/muuli_wdr.cpp:2267
 msgid "Upload running average"
@@ -3773,7 +3773,7 @@ msgstr "Höchste Platzierung in Warteliste"
 
 #: src/muuli_wdr.cpp:2655
 msgid "(Min 300 / Max 3000)"
-msgstr "(Min 300 / Max 3000)"
+msgstr "(Min. 300 / Max. 3000)"
 
 #: src/muuli_wdr.cpp:2662
 msgid "Auto Drop Sources Timer"
@@ -3785,7 +3785,7 @@ msgstr "Intervall in Sekunden"
 
 #: src/muuli_wdr.cpp:2671
 msgid "(Min 60 / 3600 Max)"
-msgstr "(Min 60 / 3600 Max)"
+msgstr "(Min. 60 / 3600 Max.)"
 
 #: src/muuli_wdr.cpp:2696
 msgid "Remote Control"
@@ -3858,15 +3858,15 @@ msgstr "OK"
 
 #: src/muuli_wdr.cpp:2830
 msgid "Click here to apply any changes made to the preferences."
-msgstr "Hier klicken, um alle Einstellungsänderungen zu übernehmen."
+msgstr "Alle Änderungen in den Einstellungen übernehmen."
 
 #: src/muuli_wdr.cpp:2834
 msgid "Reset any changes made to the preferences."
-msgstr "Alle Änderungen zu den Einstellungen zurücksetzen."
+msgstr "Alle Änderungen in den Einstellungen verwerfen."
 
 #: src/muuli_wdr.cpp:2858
 msgid "Title :"
-msgstr "Titel:"
+msgstr "Überschrift:"
 
 #: src/muuli_wdr.cpp:2868
 msgid "Comment :"
@@ -3913,7 +3913,7 @@ msgstr "Automatisch"
 
 #: src/muuli_wdr.cpp:2910
 msgid "Select color for this Category (currently selected) :"
-msgstr "Farbe für diese Kategorie wählen (momentan ausgewählt):"
+msgstr "Farbauswahl für diese Kategorie (momentan ausgewählt):"
 
 #: src/muuli_wdr.cpp:2982
 msgid "Display server motd when connected ..."
@@ -3953,7 +3953,7 @@ msgstr "Server manuell hinzufügen: Name"
 
 #: src/muuli_wdr.cpp:3073
 msgid "Enter the name of the new server here"
-msgstr "Gib den Namen das neuen Servers hier ein"
+msgstr "Hier den Namen des neuen Servers eintragen"
 
 #: src/muuli_wdr.cpp:3076 src/ServerWnd.cpp:168
 msgid "IP:Port"
@@ -4111,7 +4111,7 @@ msgstr "Aktiviere IP-Filter laut Einträgen in der Datei ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3466
 msgid "Reload List"
-msgstr "Aktualisieren der Liste"
+msgstr "Liste aktualisieren"
 
 #: src/muuli_wdr.cpp:3467
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
@@ -4333,7 +4333,7 @@ msgstr "Nachrichtenkategorien:"
 
 #: src/muuli_wdr.cpp:3881 src/PartFileConvert.cpp:748
 msgid "Waiting..."
-msgstr "Wartend..."
+msgstr "Warte..."
 
 #: src/muuli_wdr.cpp:3908
 msgid "Add imports"
@@ -4341,7 +4341,7 @@ msgstr "Füge Importe hinzu"
 
 #: src/muuli_wdr.cpp:3912
 msgid "Retry selected"
-msgstr "Versuche Ausgewähltes noch einmal"
+msgstr "Auswahl wiederholen"
 
 #: src/muuli_wdr.cpp:3915
 msgid "Remove selected"
@@ -5008,7 +5008,7 @@ msgstr "Datei"
 
 #: src/SearchListCtrl.cpp:483 src/SearchDlg.cpp:557
 msgid "Main"
-msgstr "Main"
+msgstr "Hauptkategorie"
 
 #: src/SearchListCtrl.cpp:489
 msgid "Download in category"
@@ -5371,7 +5371,7 @@ msgstr "Der zu entfernende Server muss angegeben sein"
 
 #: src/ExternalConn.cpp:654
 msgid "ED2K is disabled in preferences."
-msgstr "eD2k.ist in den Voreinstellungen deaktiviert."
+msgstr "eD2k ist in den Voreinstellungen deaktiviert."
 
 #: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
@@ -5387,7 +5387,7 @@ msgstr "Kad ist in den Einstellungen gesperrt."
 
 #: src/ExternalConn.cpp:961
 msgid "No points for graph."
-msgstr "Keine Punkte für Graphen."
+msgstr "Keine Diagrammpunkte."
 
 #: src/ExternalConn.cpp:970
 msgid "Your client is not configured for this detail level."
@@ -5552,7 +5552,7 @@ msgstr "oder deinen Hund tötet. Aber es *sollte* sicher sein, sie zu benutzen.\
 #: src/amule.cpp:1194
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
-"Mehr Informationen und neue Releases können auf unserer Homepage gefunden "
+"Weitere Informationen und neue Releases können auf unserer Homepage gefunden "
 "werden\n"
 
 #: src/amule.cpp:1195
@@ -5844,12 +5844,12 @@ msgstr "Updateverzögerung: %d Sekunden"
 #: src/PrefsUnifiedDlg.cpp:939
 #, c-format
 msgid "Time for average graph: %d mins"
-msgstr "Zeit für durchschnittliche Graphen: %d Minuten"
+msgstr "Zeit für Durchschnittsgraphen: %d Minuten"
 
 #: src/PrefsUnifiedDlg.cpp:945
 #, c-format
 msgid "Connections Graph Scale: %d"
-msgstr "Verbindungsgraphenskala: %d"
+msgstr "Verbindungen in der Diagrammanzeige: %d"
 
 #: src/PrefsUnifiedDlg.cpp:951
 #, c-format
@@ -6293,7 +6293,7 @@ msgstr "Server (%i)"
 
 #: src/ServerListCtrl.cpp:363
 msgid "Connect to server"
-msgstr "Verbinde zum Server"
+msgstr "Zum Server verbinden"
 
 #: src/ServerListCtrl.cpp:368
 msgid "Mark server(s) as static"
