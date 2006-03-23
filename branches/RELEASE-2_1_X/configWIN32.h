@@ -273,13 +273,13 @@
 #define PACKAGE_NAME "aMule"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "aMule 2.1.1"
+#define PACKAGE_STRING "aMule 2.1.2"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "amule"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "2.1.1"
+#define PACKAGE_VERSION "2.1.2"
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */
@@ -305,7 +305,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "2.1.1"
+#define VERSION "2.1.2"
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
