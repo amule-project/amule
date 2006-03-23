@@ -813,6 +813,7 @@ void CIPFilterRem::Update(wxString /*url*/)
  */
 CSharedFilesRem::CSharedFilesRem(CRemoteConnect *conn) : CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>(conn, true)
 {
+	m_rename_file = NULL;
 }
 
 void CSharedFilesRem::Reload(bool, bool)
@@ -850,7 +851,7 @@ void CSharedFilesRem::HandlePacket(const CECPacket *packet)
 {
 	if ( m_rename_file && (packet->GetOpCode() == EC_OP_NOOP) ) {
 		m_rename_file->SetFileName(m_new_name);
-		m_rename_file = 0;
+		m_rename_file = NULL;
 	} else if ( packet->GetOpCode() != EC_OP_FAILED ) {
 		CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>::HandlePacket(packet);
 	}
@@ -1195,7 +1196,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->m_notCurrentSources = tag->SourceNotCurrCount();
 		file->m_source_count = tag->SourceCount();
 		file->m_a4af_source_count = tag->SourceCountA4AF();
-	    file->status = tag->FileStatus();
+		file->status = tag->FileStatus();
 	
 		file->lastseencomplete = tag->LastSeenComplete();
 		
