@@ -221,9 +221,6 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 	activewnd=NULL;
 	SetActiveDialog(NetworksWnd, serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
-	#ifdef CLIENT_GUI
-	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
-	#endif
 
 	is_safe_state = true;
 
@@ -1392,6 +1389,10 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	} else {
 		muleToolbar( m_wndToolbar );		
 	}
+	#ifdef CLIENT_GUI
+	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
+	#endif
+
 	Thaw();
 }
 
