@@ -112,8 +112,8 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	// we will wait untill OnConnect gets called
 	if ( !notifier ) {
 		CECLoginPacket login_req(ConnectionPassword, m_client, m_version);
-		const CECPacket *reply = SendRecvPacket(&login_req);
-		return ConnectionEstablished(reply);
+		std::auto_ptr<const CECPacket> reply(SendRecvPacket(&login_req));
+		return ConnectionEstablished(reply.get());
 	} else {
 		m_ec_state = EC_CONNECT_SENT;
 	}
