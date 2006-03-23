@@ -3693,6 +3693,25 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 	}
 }
 
+void CPartFile::GetRatingAndComments(FileRatingList& list)
+{
+	// This can be pre-processed, but is it worth the CPU?
+	CPartFile::SourceSet::iterator it = m_SrcList.begin();
+	for ( ; it != m_SrcList.end(); ++it ) {
+		CUpDownClient *cur_src = *it;
+
+		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
+			SFileRating* entry =  new SFileRating;
+			entry->UserName = cur_src->GetUserName();
+			entry->FileName = cur_src->GetClientFilename();
+			entry->Rating   = cur_src->GetFileRating();
+			entry->Comment  = cur_src->GetFileComment();
+			
+			list.push_back(entry);			
+		}
+	}
+}
+
 #else   // CLIENT_GUI
 
 CPartFile::CPartFile(CEC_PartFile_Tag *tag)
@@ -3737,6 +3756,17 @@ CPartFile::~CPartFile()
 {
 }
 
+void CPartFile::GetRatingAndComments(FileRatingList& list)
+{
+	SFileRating* entry =  new SFileRating;
+	entry->UserName = _("Comments");
+	entry->FileName = _("doesn't work");
+	entry->Rating   = -1;
+	entry->Comment  = _("remote gui");
+	
+	list.push_back(entry);			
+	
+}
 #endif // !CLIENT_GUI
 
 void CPartFile::Init()
