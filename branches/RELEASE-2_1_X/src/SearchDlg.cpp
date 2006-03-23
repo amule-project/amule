@@ -107,8 +107,17 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	m_ImageList->Add(amuleSpecial(4));
 	m_notebook->AssignImageList(m_ImageList);
 #endif
+	
+	// Sanity sanity
+	wxASSERT(CastChild( ID_SEARCHTYPE, wxChoice )->GetString(0) == _("Local Search"));
+	wxASSERT(CastChild( ID_SEARCHTYPE, wxChoice )->GetString(2) == _("Kad"));
 
-	CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(0);
+	if (thePrefs::GetNetworkED2K()){
+		CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(0);
+	} else {
+		CastChild( ID_SEARCHTYPE, wxChoice )->SetSelection(2);
+	}
+	
 	CastChild( IDC_TypeSearch, wxChoice )->SetSelection(0);
 	CastChild( IDC_SEARCHMINSIZE, wxChoice )->SetSelection(2);
 	CastChild( IDC_SEARCHMAXSIZE, wxChoice )->SetSelection(2);
