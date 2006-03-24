@@ -25,9 +25,11 @@
 
 #include "ECSocket.h"
 
-#include <wx/intl.h>			// Needed for i18n
-#include <zlib.h>		// Needed for packet (de)compression
+#include <wx/intl.h>		// Needed for i18n
+
 #include <cstring>		// Needed for memcpy()/memmove()
+#include <memory>		// Needed for auto_ptr<>
+#include <zlib.h>		// Needed for packet (de)compression
 
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
