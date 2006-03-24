@@ -51,6 +51,13 @@ font-size: 11px;
 <br><br><input value="Login Now" type="submit"></font>
 </form>
 <br>
+<?php
+	if ($_SESSION["login_error"] != "") {
+		echo "<font color=blue size=+2>";
+		echo $_SESSION["login_error"];
+		echo "</font>";
+	}
+?>
 </td>
 </tr>
 </tbody></table>

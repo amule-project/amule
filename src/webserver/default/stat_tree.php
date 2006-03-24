@@ -258,7 +258,7 @@ function swapFolder(img){
  <td align=left class=tabs>
   <form>
   <input type="button" value="ed2k://Download" onClick='self.location.href="index.php?links=1"'>
-  <input type="button" value="Logout" onClick='self.location.href="login.html"'>
+  <input type="button" value="Logout" onClick='self.location.href="login.php"'>
   </form>
  </td>
 </tr>
