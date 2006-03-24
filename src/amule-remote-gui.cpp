@@ -317,7 +317,7 @@ void CamuleRemoteGuiApp::Startup() {
 	// bugfix - do this before creating the uploadqueue
 	downloadqueue = new CDownQueueRem(connect);
 	uploadqueue = new CUpQueueRem(connect);
-	ipfilter = new CIPFilterRem();
+	ipfilter = new CIPFilterRem(connect);
 
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
@@ -795,6 +795,13 @@ void CServerListRem::ReloadControl()
 		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(srv);
 	}
 }
+
+
+CIPFilterRem::CIPFilterRem(CRemoteConnect* conn)
+{
+	m_conn = conn;
+}
+
 
 void CIPFilterRem::Reload()
 {
