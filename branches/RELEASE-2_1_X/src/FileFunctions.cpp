@@ -92,7 +92,20 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to)
 }
 
 
-#define FILE_COPY_BUFFER 5*1024
+bool UTF8_RemoveFile(const wxString& fileName)
+{
+	// Test if it is possible to use an ANSI name
+	Unicode2CharBuf tmpFileName = unicode2char(fileName);
+	if (tmpFileName and (unlink(tmpFileName) != -1)) {
+		return true;
+	} 
+	
+	// Try an UTF-8 name
+	return (unlink(unicode2UTF8(fileName)) != -1);
+}
+
+
+const unsigned int FILE_COPY_BUFFER = 5*1024;
 
 //
 // When copying file, first try an ANSI name, only then try UTF-8.
@@ -127,6 +140,11 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 			output_file.Write(buffer, toReadWrite);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logFileIO, wxT("IO failure while copying file '") + from + wxT("' to '") + to + wxT("': ") + e.what());
+
+			output_file.Close();
+			if (not UTF8_RemoveFile(to)) {
+				AddDebugLogLineM(true, logFileIO, wxT("Failed to remove incomplete copy of file '") + from + wxT("' at '") + to + wxT("'"));
+			}
 			
 			return false;
 		}
