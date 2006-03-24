@@ -608,6 +608,8 @@ class CClientListRem {
 class CIPFilterRem {
 		CRemoteConnect *m_conn;
 	public:
+		CIPFilterRem(CRemoteConnect *conn);
+		
 		//
 		// Actions
 		//
