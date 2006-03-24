@@ -741,7 +741,7 @@ HAVE_FLEX_EXTENDED=$result
 AC_MSG_RESULT($result)
 
 if test x$result = xno; then
-	AC_MSG_NOTICE([Your flex version doesn't support --header-file flag. This is not critical, but an upgrade is recomended ])
+	AC_MSG_NOTICE([Your flex version doesn't support --header-file flag. This is not critical, but an upgrade is recommended ])
 fi
 
 AC_SUBST(HAVE_FLEX_EXTENDED)
