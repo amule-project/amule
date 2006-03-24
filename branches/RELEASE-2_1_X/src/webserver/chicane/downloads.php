@@ -288,7 +288,7 @@
          
        </td>
        <td background="main_topbardarker.gif" align="center" valign="middle" class="tabs_five">
-         <a href="login.html">
+         <a href="login.php">
            <img src="arrow_down_logout.gif" align="absmiddle">
            &nbsp; Logout
          </a>

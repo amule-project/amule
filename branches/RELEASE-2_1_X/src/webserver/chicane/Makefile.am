@@ -61,7 +61,7 @@ dist_webserver_DATA = \
 	shared.php \
 	stat_graphs.php \
 	stat_tree.php \
-	login.html \
+	login.php \
 	index.php
 
 webserverdir = $(pkgdatadir)/webserver/chicane

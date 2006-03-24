@@ -1805,6 +1805,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 	return session;
 }
 
+
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
 	wxMutexLocker lock(*m_mutexChildren);
@@ -1822,24 +1823,32 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 
 	CSession *session = CheckLoggedin(Data);
 
+	session->m_vars["login_error"] = "";
 	if ( !session->m_loggedin ) {
-		filename = wxT("login.html");
+		filename = wxT("login.php");
+		
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
-		if ( PwStr.Length() ) {
+		if (webInterface->m_AdminPass.IsEmpty() and webInterface->m_GuestPass.IsEmpty()) {
+			session->m_vars["login_error"] = "No passwords specified, login impossible!";
+		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;
 			
 			CMD4Hash PwHash;
 			if (not PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
-			} if ( PwHash == webInterface->m_AdminPass ) {
+				session->m_vars["login_error"] = "Invalid password hash, please report!";
+			} else if ( PwHash == webInterface->m_AdminPass ) {
 				session->m_loggedin = true;
 				// m_vars is map<string, string> - so _() will not work here !
 				session->m_vars["guest_login"] = "0";
 			} else if ( PwHash == webInterface->m_GuestPass ) {
 				session->m_loggedin = true;
 				session->m_vars["guest_login"] = "1";
+			} else {
+				session->m_vars["login_error"] = "Password incorrect, please try again.";
 			}
+			
 			if ( session->m_loggedin ) {
 				filename = m_index;
 				Print(_("Password ok\n"));
@@ -1854,7 +1863,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		// if logged in, but requesting login page again,
 		// means logout command
 		//
-		if ( filename == wxT("login.html") ) {
+		if ( filename == wxT("login.php") ) {
 			Print(_("Logout requested\n"));
 			session->m_loggedin = false;
 		}
