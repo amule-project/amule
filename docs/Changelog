@@ -1,3 +1,10 @@
+Version 2.1.2 - The "???" version
+----------
+2006-03-??
+
+	lionel77:
+		* Display "Share Ratio" in shared files list.
+
 Version 2.1.1 - The "???" version
 ----------
 2006-01-??
@@ -566,7 +573,7 @@ Note: This version is dedicated to our great tester Citroklar, for reasons he kn
 
 	shakraw:
 		* Merged with 2.0.3 latest fixes (r4630, r4631, r4633, r4639)
-	
+
 	stefanero:
 		* Fixed cas,wxCas and xas infos for Kad when only connected to
 		Kad
