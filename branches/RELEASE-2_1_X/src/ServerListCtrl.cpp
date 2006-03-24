@@ -549,7 +549,8 @@ int CServerListCtrl::SortProc(long item1, long item2, long sortData)
 		// Sort by description
 		case COLUMN_SERVER_DESC: return mode * server1->GetDescription().CmpNoCase( server2->GetDescription() );
 		// Sort by Ping
-		case COLUMN_SERVER_PING: return mode * CmpAny( server1->GetPing(), server2->GetPing() );
+		// The -1 ensures that a value of zero (no ping known) is sorted last.
+		case COLUMN_SERVER_PING: return mode * CmpAny( server1->GetPing() - 1, server2->GetPing() -1 );
 		// Sort by user-count
 		case COLUMN_SERVER_USERS: return mode * CmpAny( server1->GetUsers(), server2->GetUsers() );
 		// Sort by file-count
