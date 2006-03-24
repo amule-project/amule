@@ -154,43 +154,59 @@ int CamuleRemoteGuiApp::OnExit()
 
 void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
+	static int request_step = 0;
+	
 	if ( connect->RequestFifoFull() ) {
 		return;
 	}
-	// always query connection state and stats
-	serverconnect->ReQuery();
-
-	{
-		CECPacket stats_req(EC_OP_STAT_REQ);
-		connect->SendRequest(&m_stats_updater, &stats_req);
+	
+	switch (request_step) {
+		case 0:
+			serverconnect->ReQuery();
+			serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
+			break;
+		case 1: {
+			CECPacket stats_req(EC_OP_STAT_REQ);
+			connect->SendRequest(&m_stats_updater, &stats_req);
+			amuledlg->ShowTransferRate();			
+			break;
+		}
+		case 2:
+			if ( amuledlg->sharedfileswnd->IsShown() ) {
+				sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
+			} else if ( amuledlg->serverwnd->IsShown() ) {
+				//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
+			} else if ( amuledlg->transferwnd->IsShown() ) {
+				downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
+				switch(amuledlg->transferwnd->clientlistctrl->GetListView()) {
+					case vtUploading:
+						uploadqueue->ReQueryUp();
+						break;
+					case vtQueued:
+						uploadqueue->ReQueryWait();
+						break;
+					case vtClients:
+						break;
+					case vtNone:
+						break;
+				}
+				amuledlg->transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
+			} else if ( amuledlg->searchwnd->IsShown() ) {
+				if ( searchlist->m_curr_search != -1 ) {
+					searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
+				}
+			}
+			break;
+		case 3:
+			// Back to the roots
+			request_step = 0;
+			break;
+		default:
+			printf("WTF?\n");
+			request_step = 0;
 	}
 	
-	if ( amuledlg->sharedfileswnd->IsShown() ) {
-		sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
-	} else if ( amuledlg->serverwnd->IsShown() ) {
-		//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-	} else if ( amuledlg->transferwnd->IsShown() ) {
-		downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-		switch(amuledlg->transferwnd->clientlistctrl->GetListView()) {
-			case vtUploading:
-				uploadqueue->ReQueryUp();
-				break;
-			case vtQueued:
-				uploadqueue->ReQueryWait();
-				break;
-			case vtClients:
-				break;
-			case vtNone:
-				break;
-		}
-		amuledlg->transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
-	} else if ( amuledlg->searchwnd->IsShown() ) {
-		if ( searchlist->m_curr_search != -1 ) {
-			searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
-		}
-	}
-	amuledlg->ShowTransferRate();
-	serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
+	request_step++;
 }
 
 
