@@ -8,6 +8,19 @@ Version 2.1.2 - The "???" version
 	Phoenix:
 		* Compilation fix for auto_ptr<> on Mac.
 
+	Xaignar:
+		* Ensured that partial files left from failed file-completion attempts
+		  would be removed.
+		* Fixed crash on remote gui when attempting to reload the ipfilters.
+		* Fixed sorting of servers by ping-time, such that servers without a
+		  known pingtime are sorted last.
+		* Added a "Password incorrect" message to the login pages, for when
+		  login failed. Also added a warning in case no passwords were set.
+		* Ensured that known-file objects are properly initialized on the
+		  remote gui. This among other things fixes not all of the items on
+		  the sharedfiles list showing a 'has-comment' flag.
+		* Compilation fix for GCC 3.2.
+
 	Special Thanks To:
 
 --------------------------------------------------------------------------------
