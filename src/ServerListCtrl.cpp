@@ -187,7 +187,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
-		SetItem( itemnr, COLUMN_SERVER_PING, CastSecondsToHM(server->GetPing()/1000 ) );
+		SetItem( itemnr, COLUMN_SERVER_PING, CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
 	}
@@ -254,7 +254,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 	}
 }
 
-
+#warning Kry TODO: Dude, this gotta be moved to core
 bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 {
 	wxString filename = theApp.ConfigDir + wxT("staticservers.dat");

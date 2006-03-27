@@ -287,7 +287,7 @@ void CServerList::ServerStats()
 		uint32 challenge = 0x55AA0000 + (uint16)rand();
 		ping_server->SetChallenge(challenge);
 		packet->CopyUInt32ToDataBuffer(challenge);
-		ping_server->SetLastPinged(::GetTickCount() - (rand()%HR2MS(1)));
+		ping_server->SetLastPinged(::GetTickCount());
 		ping_server->AddFailedCount();
 		Notify_ServerRefresh(ping_server);
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
