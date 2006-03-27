@@ -23,6 +23,9 @@ Version 2.1.2 - The "We're on fire!" version
 		* Fixed amule.conf not being saves on remote preferences change.
 		* Fixed ping time on servers, down to msecs resolution now.
 
+	lfroen:
+		* Prevent bad_alloc thrown on invalid connection attempts on EC.
+
 	lionel77:
 		* Display "Share Ratio" in shared files list.
 
