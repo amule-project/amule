@@ -1,6 +1,25 @@
-Version 2.1.2 - The "???" version
+Version 2.1.2 - The "We're on fire!" version
 ----------
-2006-03-??
+2006-03-28
+
+	Kry:
+		* Fixed initialization of Partfile, Server and Knownfile objects 
+		  on remote GUI. 
+		  This fixes a good bunch of bugs, including but not limited to: 
+			* 0000741: the total speed possible is incorrect.
+			* 0000774: Amulegui show comments ->segmentation fault.
+			* 0000605: Incorrect ICH statistics data
+			* 0000812: amulegui: wrong ed2k ports in server list
+			* 0000776: amulegui segfaults
+		* Fixed potentionally huge memory leak on EC. This is the main focus 
+		  of this release, but that didn't stop us from adding more stuff ;)
+		* Fixed "0000809: Amulegui: Changing toolbar orientation shows the 
+		  Import button."
+		* Reworked core/GUI comment handling to allow for future display of 
+		  comments on remote GUI, and meanwhile, added an nice message to 
+		  notify it's disabled.
+		* Fixed "0000738: Set search type to KAD if only KAD is selected as 
+		  usable networks in settings"
 
 	lionel77:
 		* Display "Share Ratio" in shared files list.
@@ -22,12 +41,14 @@ Version 2.1.2 - The "???" version
 		* Compilation fix for GCC 3.2.
 
 	Special Thanks To:
+		* The usual people
+		* From Kry: to the one that makes it all worth it.
 
 --------------------------------------------------------------------------------
 
-Version 2.1.1 - The "???" version
+Version 2.1.1 - The "There can be only two! Point one! Point one!" version
 ----------
-2006-01-??
+2006-03-18
 
 	GonoszTopi:
 		* Fixed sources coming from an 'Unknown' origin.
@@ -45,9 +66,31 @@ Version 2.1.1 - The "???" version
 		  command.  This happened with amuled and an on-completion command which
 		  completes quickly.  Thanks to s0undt3ch for reporting this bug.
 
-	Phoenix:
-		* Upgraded extern/listctrl.{cpp,h} from wxWidgets code.
-		* Fixed some gtk2 warnings in extern/listctrl.cpp.
+	Kry:
+		* Fixed a bug on sending sources where sources won't be send to a client 
+		  uploading from us if he uses multipacket.
+		* Fixes some crashes, on systray dying, tho not all till wx is patched.
+		* Fixed some possible problem with userhash generation, that could lead 
+		  a void userhash.
+		* Fixed defs.h include on MuleDebug.h causing compilation problems on 
+		  some systems (must be first wx include).
+		* Fixed search type "Any"
+		* Fixed translation of empty strings, which is reserved to gettext and
+		  must never be used.
+		* Fixed the aMule.app container lacking a Frameworks/ folder and thus 
+		  making the generate_package script fail.
+		* Fixed compilation of wxCas with wxWidgets CVS (2.7.x)
+		* Fixed ED2K id wrongly used on kad-only setups.
+		* Added the --reset-config flag
+		* Fixed Kad's sources/nodes search results, based on a patch by tatikiran
+		  and further modified by John (eMule) and me.
+		* Removed Razorback 2's stats while it's gone.
+		* Disabled vertical toolbar on Windows while wxWidgets doesn't fix it.
+		* Fixed aMule failing to find configuration folder and any folder that
+		  finishes with a "\" on windows. This leaded to shared folders not being 
+		  shared, too.
+		* Fixed drives on windows not being correctly tested.
+		* Changed default server.met
 
 	Radek:
 		* Fixed amulemd output not being printed immediatly when running in a
@@ -55,12 +98,14 @@ Version 2.1.1 - The "???" version
 		* Added missing include to GetTickCount.h, which caused the function
 		  declaration to be missing in some cases.
 
+	Raziel:
+		* Fixed "0000690 bug for browse windows in amulegui"
+	
 	Xaignar:
 		* Fixed problem with recursivly sharing folders that hadn't been
 		  expanded in the tree ctrl.
 		* Improved detection of external Crypto++ versions.
 		* Fixed somee possibly crashes, caused by failed unicode convertions.
-		* Fixed 'Fair' and 'Good' rating labels beeing switched.
 		* Improved error-checking when creating the .aMule data folders.
 		* Fixed problem with searching for files of type 'Program', if a
 		  search of a different filetype had been done just before.
