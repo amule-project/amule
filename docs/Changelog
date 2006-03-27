@@ -20,6 +20,7 @@ Version 2.1.2 - The "We're on fire!" version
 		  notify it's disabled.
 		* Fixed "0000738: Set search type to KAD if only KAD is selected as 
 		  usable networks in settings"
+		* Fixed amule.conf not being saves on remote preferences change.
 
 	lionel77:
 		* Display "Share Ratio" in shared files list.
