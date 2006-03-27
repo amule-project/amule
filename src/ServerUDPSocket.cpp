@@ -182,6 +182,8 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				}
 
 				update->SetPing( ::GetTickCount() - update->GetLastPinged() );
+				// Randomize to avoid ping storms
+				update->SetLastPinged(update->GetLastPinged() - (rand()%HR2MS(1)));
 				update->SetUserCount( cur_user );
 				update->SetFileCount( cur_files );
 				update->SetMaxUsers( cur_maxusers );
