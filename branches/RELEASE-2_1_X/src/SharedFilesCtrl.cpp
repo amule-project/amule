@@ -76,6 +76,7 @@ enum SharedFilesListColumns {
 	ID_SHARED_COL_REQ,
 	ID_SHARED_COL_AREQ,
 	ID_SHARED_COL_TRA,
+	ID_SHARED_COL_RTIO,
 	ID_SHARED_COL_PART,
 	ID_SHARED_COL_CMPL,
 	ID_SHARED_COL_PATH
@@ -101,6 +102,7 @@ CSharedFilesCtrl::CSharedFilesCtrl(wxWindow* parent, int id, const wxPoint& pos,
 	InsertColumn(ID_SHARED_COL_REQ,  _("Requests"),				wxLIST_FORMAT_LEFT, 100);
 	InsertColumn(ID_SHARED_COL_AREQ,  _("Accepted Requests"),	wxLIST_FORMAT_LEFT, 100);
 	InsertColumn(ID_SHARED_COL_TRA,  _("Transferred Data"),		wxLIST_FORMAT_LEFT, 120);
+	InsertColumn(ID_SHARED_COL_RTIO,  _("Share Ratio"),                     wxLIST_FORMAT_LEFT, 100);
 	InsertColumn(ID_SHARED_COL_PART,  _("Obtained Parts"),		wxLIST_FORMAT_LEFT, 120);
 	InsertColumn(ID_SHARED_COL_CMPL, _("Complete Sources"),		wxLIST_FORMAT_LEFT, 120);
 	InsertColumn(ID_SHARED_COL_PATH, _("Directory Path"),		wxLIST_FORMAT_LEFT, 220);
@@ -208,6 +210,9 @@ void CSharedFilesCtrl::UpdateFile( CKnownFile* file, long itemnr )
 	
 	buffer = wxString::Format( wxT("%u (%u)"), file->statistic.GetAccepts(), file->statistic.GetAllTimeAccepts() );
 	SetItem( itemnr, ID_SHARED_COL_AREQ, buffer );
+	
+	buffer = wxString::Format(wxT("%.2f"), (double)file->statistic.GetAllTimeTransfered() / file->GetFileSize());
+	SetItem( itemnr, ID_SHARED_COL_RTIO, buffer );
 	
 	buffer = CastItoXBytes(file->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
 	SetItem( itemnr, ID_SHARED_COL_TRA, buffer );
@@ -397,6 +402,10 @@ int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
 				return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
 			}
 
+		// Sort by Share Ratio. Ascending.
+		case  ID_SHARED_COL_RTIO:
+			return mod * CmpAny( (double)file1->statistic.GetAllTimeTransfered() / file1->GetFileSize(), (double)file2->statistic.GetAllTimeTransfered() / file2->GetFileSize() );
+
 		// Complete sources asc
 		case ID_SHARED_COL_CMPL:
 			return mod * CmpAny( file1->m_nCompleteSourcesCount, file2->m_nCompleteSourcesCount );
@@ -503,6 +512,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 			wxDCClipper clipper(*dc, columnRect);
 					
 			switch ( i ) {
+
 				case ID_SHARED_COL_PART: {
 					if ( file->GetPartCount() ) {
 						wxRect barRect(columnRect.x, columnRect. y + 1, 
