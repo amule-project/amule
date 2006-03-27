@@ -114,17 +114,20 @@ Section 1.2: Application layer
 
     A tag consist of:
 	[ec_tagname_t] TAGNAME
+	[ec_tagtype_t] TAGTYPE
 	[ec_taglen_t] TAGLEN
 	<[uint16] TAGCOUNT>?
 	    <sub-tags>
 	    <tag data>
 
     The ec_tagname_t is defined as an uint16, ec_taglen_t as an uint32 value
-    at the moment. TagName tells what it contains (see ECcodes.h for details).
+    at the moment. ec_tagtype_t is an uint8. 
+	TagName tells what it contains (see ECcodes.h for details).
+	TagType sends the type of this tag (see ECPacket.h for types)
     TagLen contains the whole length of the tag, including the lengths of the
-    possible sub-tags, but without the size of the tagName and tagLen fields.
-    Actually the lowest bit of the tagname doesn't belong to the tagName
-    itself, so it has to be cleared before checking the name.
+    possible sub-tags, but without the size of the tagName, tagType and 
+	tagLen fields. Actually the lowest bit of the tagname doesn't belong to the 
+	tagName itself, so it has to be cleared before checking the name.
 
     Tags may contain sub-tags to store the information, and a tagCount field
     is present only for these tags. The presence of the tagCount field can
@@ -222,19 +225,24 @@ Section 3: Clarifying things
     02                                  EC_OP_AUTH_REQ
       00 05                             Number of children (tags) this packet has
         00 06                           EC_TAG_CLIENT_NAME
+		  0?								EC_TAGTYPE_STRING
           00 00 00 09                   Length of this tag (9)
           61 4d 75 6c 65 63 6d 64 00    Contents of the tag: "aMulecmd", with trailing zero included (see String types in Section 2)
         00 08                           EC_TAG_CLIENT_VERSION
+		  0?								EC_TAGTYPE_STRING
           00 00 00 04                   Length of this tag (4)
           43 56 53 00                   Content: "CVS"
         00 0c                           EC_TAG_PROTOCOL_VERSION
-          00 00 00 02                   Length: 2 (uint16 value follows)
-          01 f2                         Content: 0x01f2 (current protocol version number for cvs)
+		  0?								EC_TAGTYPE_UINT??
+          00 00 00 02/4/8         Length: 2/4/8 (16/32/64 value follows)
+          00? 00? 01 f2            Content: 0x0200 (current protocol version number for cvs)
         00 04                           EC_TAG_PASSWD_HASH
+		  0?								EC_TAGTYPE_HASH
           00 00 00 10                   Length (16)
           5d 41 40 2a bc 4b 2a 76       Content: 16 bytes md5sum of EC password
           b9 71 9d 91 10 17 c5 92
         00 0e                           EC_TAG_VERSION_ID
+		  0?								EC_TAGTYPE_CUSTOM
           00 00 00 21                   Length: 33
           62 66 39 64 64 32 36 35       Content 33 bytes of the unique EC CVS version ID
           32 36 34 35 31 36 63 39       Remember: this is only for CVS versions, and its
@@ -251,6 +259,7 @@ Section 3: Clarifying things
     04					EC_OP_AUTH_OK
       00 01                             Number of children (tags) in this packet
         00 76                           EC_TAG_SERVER_VERSION
+		  0?								EC_TAGTYPE_STRING
           00 00 00 04                   Length of this tag (4)
           43 56 53 00                   And the contents: "CVS"
 
@@ -307,12 +316,15 @@ Section 3: Clarifying things
                                         and 0x0013 - 1 = 0x0012, so it is really this one. The tagname being an odd number
                                         means that this tag has child(ren) tags (see tree above), and also that it has a
                                         tagcount field too.
-          00 00 00 26                   TagLen: 38 (own content length (4) + length of children (with headers))
+		  0?							EC_TAGTYPE_UINT32
+          00 00 00 26                   TagLen: 38 (own content length + length of children (with headers))
           00 01                         TagCount: 1 (one child tag exists, that is a direct child of this tag)
             00 61                       EC_TAG_SERVER (has children)
+			  0?							EC_TAGTYPE_IPV4
               00 00 00 1a               TagLen: 26 (own content (6) + length of child (content: 14 + header: 6))
               00 01                     TagCount: 1
                 00 62                   EC_TAG_SERVER_NAME
+				  0?							EC_TAGTYPE_STRING
                   00 00 00 0e           TagLen: 14
                   52 61 7a 6f 72 62 61 63  Content of the EC_TAG_SERVER_NAME tag: "Razorback 2.0"
                   6b 20 32 2e 30 00
