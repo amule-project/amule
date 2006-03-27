@@ -526,4 +526,6 @@ void CEC_Prefs_Packet::Apply()
 			thePrefs::SetServerKeepAliveTimeout(oneTag->GetInt32Data());
 		}
 	}
+
+	theApp.glob_prefs->Save();
 }
