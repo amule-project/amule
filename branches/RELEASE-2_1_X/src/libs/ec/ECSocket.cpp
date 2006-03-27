@@ -28,6 +28,7 @@
 #include <wx/intl.h>			// Needed for i18n
 #include <zlib.h>		// Needed for packet (de)compression
 #include <cstring>		// Needed for memcpy()/memmove()
+#include <memory>		// Needed for auto_ptr<>
 
 #include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
