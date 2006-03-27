@@ -201,7 +201,7 @@ wxString CastItoIShort(uint64 number);
 // Converts a number of bytes to a human readable speed value.
 wxString CastItoSpeed(uint32 bytes);
 // Converts an amount of seconds to human readable time.
-wxString CastSecondsToHM(uint64 seconds);
+wxString CastSecondsToHM(uint64 seconds, uint16 msecs = 0);
 // Returns the amount of Bytes the provided size-type represents
 uint32 GetTypeSize(uint8 type);
 // Returns the string associated with a file-rating value.
