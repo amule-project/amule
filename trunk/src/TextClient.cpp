@@ -530,10 +530,12 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 					donesize = tag->SizeDone();
 					s <<	tag->FileHashString() << wxT(" ") <<
 						tag->FileName() <<
-						wxString::Format(wxT("\t [%.1f%%] %i/%i - "),
+						wxString::Format(wxT("\n\t [%.1f%%] %4i/%4i "),
 							((float)donesize) / ((float)filesize)*100.0,
-							(int)tag->SourceXferCount(),
+							(int)tag->SourceCount() - (int)tag->SourceNotCurrCount(),
 							(int)tag->SourceCount()) <<
+							((int)tag->SourceCountA4AF() ? wxString::Format(wxT("+%2.2i "),(int)tag->SourceCountA4AF()) : wxString(wxT("    "))) <<
+							((int)tag->SourceXferCount() ? wxString::Format(wxT("(%2.2i) - "),(int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
 						tag->GetFileStatusString();
 						if ( tag->SourceXferCount() > 0) {
 							s << wxT(" ") + CastItoSpeed(tag->Speed());
