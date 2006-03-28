@@ -494,6 +494,9 @@ void CFileDataIO::WriteTag(const CTag& tag)
 			case TAGTYPE_STRING:
 				WriteString(tag.GetStr(), utf8strRaw); // Always UTF8
 				break;
+			case TAGTYPE_UINT64:
+				WriteUInt64(tag.GetInt());
+				break;
 			case TAGTYPE_UINT32:
 				WriteUInt32(tag.GetInt());
 				break;
