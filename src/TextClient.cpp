@@ -78,8 +78,10 @@ enum {
  	CMD_ID_GET_IPFILTER_LEVEL,
 	CMD_ID_SHOW_UL,
 	CMD_ID_SHOW_DL,
+	CMD_ID_SHOW_LOG,
 	CMD_ID_SHOW_SERVERS,
 	CMD_ID_SHOW_SHARED,
+	CMD_ID_RESET_LOG,
 	CMD_ID_SHUTDOWN,
  	CMD_ID_ADDLINK,
  	CMD_ID_SET_BWLIMIT_UP,
@@ -313,8 +315,16 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			request_list.push_back(new CECPacket(EC_OP_GET_DLOAD_QUEUE));
 			break;
 
+		case CMD_ID_SHOW_LOG:
+			request_list.push_back(new CECPacket(EC_OP_GET_LOG));
+			break;
+
 		case CMD_ID_SHOW_SERVERS:
 			request_list.push_back(new CECPacket(EC_OP_GET_SERVER_LIST, EC_DETAIL_CMD));
+			break;
+
+		case CMD_ID_RESET_LOG:
+			request_list.push_back(new CECPacket(EC_OP_RESET_LOG));
 			break;
 
 		case CMD_ID_ADDLINK:
@@ -561,6 +571,15 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				}
 			}
 			break;
+		case EC_OP_LOG:
+			for (int i = 0; i < response->GetTagCount(); ++i) {
+				const CECTag *tag = response->GetTagByIndex(i);
+				if (tag) {
+					s << tag->GetStringData() << wxT("\n");
+				} else {
+				}
+			}
+			break;
 		case EC_OP_SERVER_LIST:
 			for(int i = 0; i < response->GetTagCount(); i ++) {
 				const CECTag *tag = response->GetTagByIndex(i);
@@ -673,8 +692,11 @@ void CamulecmdApp::OnInitCommandSet()
 				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("UL"), CMD_ID_SHOW_UL, wxTRANSLATE("Show upload queue."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("DL"), CMD_ID_SHOW_DL, wxTRANSLATE("Show download queue."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp->AddCommand(wxT("Log"), CMD_ID_SHOW_LOG, wxTRANSLATE("Show log."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Servers"), CMD_ID_SHOW_SERVERS, wxTRANSLATE("Show servers list."), wxEmptyString, CMD_PARAM_NEVER);
 // 	tmp->AddCommand(wxT("Shared"), CMD_ID_SHOW_SHARED, wxTRANSLATE("Show shared files list."), wxEmptyString, CMD_PARAM_NEVER);
+
+	m_commands.AddCommand(wxT("Reset"), CMD_ID_RESET_LOG, wxTRANSLATE("Reset log."), wxEmptyString, CMD_PARAM_NEVER);
 
 	//
 	// Deprecated commands, kept for backwards compatibility only.
