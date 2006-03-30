@@ -265,6 +265,14 @@ CECSocket::~CECSocket()
 		delete [] m_out_ptr;
 	}
 
+	if (m_curr_rx_data) {
+		delete m_curr_rx_data;
+	}
+	
+	if (m_curr_tx_data) {
+		delete m_curr_tx_data;
+	}	
+	
 	while (!m_output_queue.empty()) {
 		CQueuedData *data = m_output_queue.front();
 		m_output_queue.pop_front();
@@ -379,13 +387,17 @@ void CECSocket::OnInput()
 {
 	size_t bytes_rx = 0;
 	do {
-		m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
+		if (m_curr_rx_data) {
+			m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
+		} else {
+			return;
+		}
 		if ( Error() ) {
 			if (LastError() != wxSOCKET_WOULDBLOCK && LastError() != wxSOCKET_NOERROR) {
 				OnError();
 				// socket already disconnected in this point
 				delete m_curr_rx_data;
-				m_curr_rx_data = 0;
+				m_curr_rx_data = NULL;
 				return;
 			}
 		}
