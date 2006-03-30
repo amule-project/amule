@@ -129,8 +129,14 @@ const unsigned UDP_BUFFER_SIZE = 8192;
 
 void CMuleUDPSocket::OnReceive(int errorCode)
 {
-	if (errorCode or !Ok()) {
-		return;		
+	AddDebugLogLineM(false, logMuleUDP, wxString::Format(wxT("Got UDP callback for read: Error %i Socket state %i"),errorCode, Ok() ? 1 : 0));
+	
+	if (errorCode or !Ok() or !m_socket) {
+		if (m_socket) {
+			DestroySocket();
+		}
+		CreateSocket();
+		return;
 	}
 	
 	char buffer[UDP_BUFFER_SIZE];
