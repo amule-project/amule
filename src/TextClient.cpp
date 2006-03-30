@@ -283,7 +283,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				}
 			} else {
 				CMD4Hash hash;
-				if (not hash.Decode(args)) {
+				if (hash.Decode(args.Trim(false).Trim(true))) {
 					if (!hash.IsEmpty()) {
 						switch(CmdId) {
 							case CMD_ID_PAUSE:
