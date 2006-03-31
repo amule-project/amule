@@ -90,9 +90,9 @@ class DownloadFile {
 	public:
 		wxString	sFileName;
 		uint8		nFileStatus;
-		unsigned long	lFileSize;
-		unsigned long	lFileCompleted;
-		unsigned long	lFileTransferred;
+		uint64		lFileSize;
+		uint64		lFileCompleted;
+		uint64		lFileTransferred;
 		unsigned long	lFileSpeed;
 		long		lSourceCount;
 		long		lNotCurrentSourceCount;
@@ -121,8 +121,8 @@ class DownloadFile {
 class SharedFile {
 	public:
 		wxString	sFileName;
-		unsigned long	lFileSize;
-		uint32		nFileTransferred;
+		uint64		lFileSize;
+		uint64		nFileTransferred;
 		uint64		nFileAllTimeTransferred;
 		uint16		nFileRequests;
 		uint32		nFileAllTimeRequests;
