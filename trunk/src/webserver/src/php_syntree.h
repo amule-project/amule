@@ -30,6 +30,8 @@
 #ifndef _PHP_SYNTREE_H_
 #define _PHP_SYNTREE_H_
 
+#include <inttypes.h>
+
 typedef enum PHP_VALUE_TYPE {
 	/* simple values */
 	PHP_VAL_NONE, PHP_VAL_INT, PHP_VAL_FLOAT, PHP_VAL_STRING, PHP_VAL_BOOL,
@@ -44,7 +46,7 @@ typedef enum PHP_VALUE_TYPE {
 typedef struct PHP_VALUE_NODE {
     PHP_VALUE_TYPE type;
     union {
-        unsigned int int_val;
+        uint64_t int_val;
         double float_val;
         char *str_val;
         /* used for arrays and internal objects:
