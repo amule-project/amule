@@ -31,7 +31,7 @@ BUILT_SOURCES = ECVersion.h
 CLEANFILES = ECVersion.h EC-timestamp mkFileSum$(EXEEXT)
 
 mkFileSum$(EXEEXT): $(top_srcdir)/src/utils/mkFileSum.c
-	$(CC) -o $@ $<
+	$(HOSTCC) -o $@ $<
 
 ECVersion.h: EC-timestamp
 	@if test ! -f $@; then \
