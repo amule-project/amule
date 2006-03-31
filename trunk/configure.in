@@ -511,6 +511,12 @@ yes)
 	CXX="$CXX"
 esac
 
+# Just in case
+if test x"$HOSTCC" = x""; then
+HOSTCC="$CC"
+AC_SUBST(HOSTCC)
+fi
+
 dnl
 dnl Generate the Makefiles
 dnl
