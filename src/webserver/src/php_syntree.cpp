@@ -27,6 +27,7 @@
 #include <cstring>
 #include <cassert>
 #include <cstdarg>
+#include <inttypes.h>
 
 #include <list>
 #include <map>
@@ -928,7 +929,7 @@ void cast_value_str(PHP_VALUE_NODE *val)
 	switch(val->type) {
 		case PHP_VAL_NONE: buff[0] = 0; break;
 		case PHP_VAL_BOOL:
-		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%d", val->int_val); break;
+		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%lld", val->int_val); break;
 		case PHP_VAL_FLOAT: snprintf(buff, sizeof(buff), "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {

@@ -25,6 +25,7 @@ Version 2.1.2 - The "We're on fire!" version
 
 	lfroen:
 		* Prevent bad_alloc thrown on invalid connection attempts on EC.
+		* Adding support for 64-bit filesize to webserver and php
 
 	lionel77:
 		* Display "Share Ratio" in shared files list.
