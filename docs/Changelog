@@ -7,6 +7,7 @@ Trunk
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.
+		* Fixed crash on amulegui when exiting.
 
 --------------------------------------------------------------------------------
 
