@@ -624,9 +624,9 @@ bool CServerConnectRem::ReQuery()
 void CServerConnectRem::HandlePacket(const CECPacket *packet)
 {
 	CEC_ConnState_Tag *tag = (CEC_ConnState_Tag *)packet->GetTagByName(EC_TAG_CONNSTATE);
-    if (!tag) {
-		return ;
-    }
+	if (!tag) {
+		return;
+	}
 
 	theApp.m_ConnState = 0;
 	CServer *server;
