@@ -440,7 +440,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted )
 {
 	// Don't do any drawing if we not being watched.
-	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
+	if ( !theApp.amuledlg || !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
 		return;
 	}
 
