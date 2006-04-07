@@ -82,7 +82,7 @@ BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 END_EVENT_TABLE()
 
 
-#define imagelist theApp.amuledlg->imagelist
+#define m_imagelist theApp.amuledlg->m_imagelist
 
 
 /**
@@ -308,9 +308,9 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	while ( index != -1 ) {
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 		if (client->IsFriend()) {
-			theApp.amuledlg->chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+			theApp.amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
 		} else {
-			theApp.amuledlg->chatwnd->AddFriend( client );
+			theApp.amuledlg->m_chatwnd->AddFriend( client );
 		}
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
@@ -358,7 +358,7 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:") );
 		
 		if (!message.IsEmpty()) {
-			theApp.amuledlg->chatwnd->SendMessage(message, userName, userID);
+			theApp.amuledlg->m_chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
@@ -423,7 +423,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 		return;
 	}
 	
-	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
+	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		// Visible lines, default to all because not all platforms support the GetVisibleLines function
 		long first = 0, last = GetItemCount();
 		
@@ -445,7 +445,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted )
 {
 	// Don't do any drawing if we not being watched.
-	if ( !theApp.amuledlg || !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
+	if ( !theApp.amuledlg || !theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		return;
 	}
 
@@ -578,26 +578,26 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 				}
 			}
 
-			imagelist.Draw(clientImage, *dc, rect.x, rect.y + 1,
+			m_imagelist.Draw(clientImage, *dc, rect.x, rect.y + 1,
 				wxIMAGELIST_DRAW_TRANSPARENT);
 
 			if (client->GetScoreRatio() > 1) {
 				// Has credits, draw the gold star
-				imagelist.Draw(Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1,
+				m_imagelist.Draw(Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT );
 			} else if (client->ExtProtocolAvailable()) {
 				// Ext protocol -> Draw the '+'
-				imagelist.Draw(Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1,
+				m_imagelist.Draw(Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT );
 			}
 
 			if (client->IsIdentified()) {
 				// the 'v'
-				imagelist.Draw(Client_SecIdent_Smiley, *dc, rect.x, rect.y + 1,
+				m_imagelist.Draw(Client_SecIdent_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT);					
 			} else if (client->IsBadGuy()) {
 				// the 'X'
-				imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
+				m_imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT);					
 			}
 

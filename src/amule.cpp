@@ -460,7 +460,7 @@ bool CamuleApp::OnInit()
 		
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
-	// catch fatal exceptions
+		// catch fatal exceptions
 		wxHandleFatalExceptions(true);
 #endif
 	}
@@ -566,7 +566,6 @@ bool CamuleApp::OnInit()
 	// Set the config object as the global cfg file
 	wxConfig::Set( cfg );
 
-
 	applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
 	if ( !applog->Ok() ) {
 		// use std err as last resolt to indicate problem
@@ -643,7 +642,6 @@ bool CamuleApp::OnInit()
 		fprintf(stderr, "\n--------------------------------------------------\n\n");
 	}
 #endif
-
 	
 	if ( vfile.Open() ) {
 		// Check if this version has been run before

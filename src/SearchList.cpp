@@ -468,8 +468,8 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	long searchID = (long)sender;
 
 #ifndef AMULE_DAEMON
-	if (!theApp.amuledlg->searchwnd->CheckTabNameExists(sender->GetUserName())) {
-		theApp.amuledlg->searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
+	if (!theApp.amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
+		theApp.amuledlg->m_searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
 	}
 #endif
 

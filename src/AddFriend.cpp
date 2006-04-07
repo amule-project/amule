@@ -78,7 +78,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 		name = fullip;
 	}
 
-	theApp.amuledlg->chatwnd->AddFriend( userhash,name, ip, port);
+	theApp.amuledlg->m_chatwnd->AddFriend( userhash,name, ip, port);
 	
 	EndModal(true); // Friend added
 }

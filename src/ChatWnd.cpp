@@ -64,7 +64,7 @@ void CChatWnd::StartSession(CDlgFriend* friend_client, bool setfocus)
 
 	if ( !friend_client->m_name.IsEmpty() ) {
 		if (setfocus) {
-			theApp.amuledlg->SetActiveDialog(CamuleDlg::ChatWnd, this);
+			theApp.amuledlg->SetActiveDialog(CamuleDlg::DT_CHAT_WND, this);
 		}
 		chatselector->StartSession(GUI_ID(friend_client->m_ip, friend_client->m_port), friend_client->m_name, true);
 	}
@@ -135,7 +135,7 @@ void CChatWnd::RefreshFriend(const CMD4Hash& userhash, const wxString& name, uin
 
 void CChatWnd::ProcessMessage(uint64 sender, const wxString& message)
 {
-	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::ChatWnd ) ) {
+	if ( !theApp.amuledlg->IsDialogVisible(CamuleDlg::DT_CHAT_WND) ) {
 		theApp.amuledlg->SetMessageBlink(true);
 	}
 	if (chatselector->ProcessMessage(sender, message)) {
