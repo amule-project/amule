@@ -152,6 +152,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	wxInitAllImageHandlers();
 	imagelist.Create(16,16);
+        tblist.Create(32,32);
 	
 	static int ClientItemNumber = CLIENT_SKIN_UNUSED;
 
@@ -187,7 +188,7 @@ CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wx
 
 	SetSizer( s_main, true );
 
-	Create_Toolbar(wxEmptyString, thePrefs::VerticalToolbar());
+	Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
 
 	serverwnd = new CServerWnd(p_cnt, srv_split_pos);
 
@@ -663,7 +664,7 @@ void CamuleDlg::ShowConnectionState()
 		if ((NewED2KState != sDisconnected) || (NewKadState != sOff)) {
 			if (NewED2KState == sConnecting) {
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-					connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+                                        thePrefs::UseSkin() ? tblist.GetBitmap(2) : connButImg(2), wxNullBitmap, wxITEM_NORMAL,
 					_("Stops the current connection attempts"));
 			} else {
 				/* ED2K connected or Kad connected */
@@ -681,13 +682,13 @@ void CamuleDlg::ShowConnectionState()
 				}					
 				
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
-					connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+                                        thePrefs::UseSkin() ? tblist.GetBitmap(1) : connButImg(1), wxNullBitmap, wxITEM_NORMAL,
 					popup);
 				
 			}
 		} else {
 			m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
-				connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+                                thePrefs::UseSkin() ? tblist.GetBitmap(0) : connButImg(0), wxNullBitmap, wxITEM_NORMAL,
 				_("Connect to any server and/or Kad"));
 		}
 		
@@ -1358,8 +1359,9 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 			} else {
 				imagelist.Add(wxBitmap(clientImages(i)));
 			}
-		}			
-		
+		}		
+
+
 		skinfile.Close();
 	} catch (const wxString& error) {
 		wxMessageBox(error, _("Error"), wxOK | wxICON_ERROR, this);
@@ -1370,7 +1372,190 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 		}
 	}
 }
+void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
+{
+    wxTextFile file;
+		
+    if (!::wxFileExists(skinfile)) {
+        throw (CFormat(_("Skin file %s does not exist - loading defaults")) % skinfile ).GetString();
+    }
+	
+		
+    if (!file.Open(skinfile)) {
+        throw (CFormat(_("Unable to open skin file: %s")) % skinfile).GetString();
+    }
 
+    int client_header_found = -1;    
+
+    for (uint32 i=0; i < file.GetLineCount(); i++) {
+        if (file[i] == wxT("[Toolbar Bitmaps]")) {
+            client_header_found = i;	
+            break;
+        }
+    }
+		
+		
+    if (client_header_found != -1) {
+        
+			
+        for (uint32 i=client_header_found+1; i < file.GetLineCount(); i++) {
+            if (file[i].StartsWith(wxT("["))) {
+                break;
+            }				
+				// Connect Icon
+            if (file[i].StartsWith(wxT("Connect_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(connButImg(0)));
+                }
+            }
+				// Disconnect Icon
+            if (file[i].StartsWith(wxT("Disconnect_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(connButImg(1)));
+                }
+            }
+				// Connecting Icon
+            if (file[i].StartsWith(wxT("Connecting_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    connButImg(2) = wxBitmap(new_image);
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(connButImg(2)));
+                }
+            }
+				// Network Icon
+            if (file[i].StartsWith(wxT("Network_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(20)));
+                }
+            }
+				// Transfer Icon
+            if (file[i].StartsWith(wxT("Transfer_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(21)));
+                }
+            }
+				// Search Icon
+            if (file[i].StartsWith(wxT("Search_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(22)));
+                }
+            }
+				// Share Icon
+            if (file[i].StartsWith(wxT("Share_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(23)));
+                }
+            }
+				// Messages Icon
+            if (file[i].StartsWith(wxT("Messages_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(24)));
+                }
+            }
+				// Stat Icon
+            if (file[i].StartsWith(wxT("Stat_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(25)));
+                }
+            }
+				// Pref Icon
+            if (file[i].StartsWith(wxT("Pref_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(26)));
+                }
+            }
+				// Import Icon
+            if (file[i].StartsWith(wxT("Import_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(29)));
+                }
+            }
+				// Help Icon
+            if (file[i].StartsWith(wxT("Help_icon="))) {
+                wxImage new_image;
+                wxFileName file_name(file[i].AfterLast(wxT('=')));
+                file_name.Normalize();
+                if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
+                    tblist.Add(wxBitmap(new_image));
+                } else {
+                    tblist.Add(wxBitmap(amuleDlgImages(32)));
+                }
+            }
+        }
+    }
+    
+    wndToolbar->SetMargins( 0, 0 );
+    wndToolbar->AddTool( ID_BUTTONCONNECT, _("Connect"), tblist.GetBitmap(0), wxNullBitmap, wxITEM_NORMAL, _("Connect to any server and/or Kad") );
+    wndToolbar->AddSeparator();
+    wndToolbar->AddTool( ID_BUTTONNETWORKS, _("Networks"), tblist.GetBitmap(3), wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
+    wndToolbar->ToggleTool( ID_BUTTONNETWORKS, TRUE );
+    wndToolbar->AddTool( ID_BUTTONSEARCH, _("Searches"), tblist.GetBitmap(5), wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
+    wndToolbar->AddTool( ID_BUTTONTRANSFER, _("Transfers"), tblist.GetBitmap(4), wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
+    wndToolbar->AddTool( ID_BUTTONSHARED, _("Shared Files"), tblist.GetBitmap(6), wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
+    wndToolbar->AddTool( ID_BUTTONMESSAGES, _("Messages"), tblist.GetBitmap(7), wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
+    wndToolbar->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), tblist.GetBitmap(8), wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
+    wndToolbar->AddSeparator();
+    wndToolbar->AddTool( ID_BUTTONNEWPREFERENCES, _("Preferences"), tblist.GetBitmap(9), wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
+    wndToolbar->AddTool( ID_BUTTONIMPORT, _("Import"), tblist.GetBitmap(10), wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool") );
+    wndToolbar->AddTool( ID_ABOUT, _("About"), tblist.GetBitmap(11), wxNullBitmap, wxITEM_NORMAL, _("About/Help") );
+    
+    wndToolbar->Realize();	
+    
+}
 void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	Freeze();
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
@@ -1387,7 +1572,7 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation) {
 	if (skinfile.IsEmpty()) {
 		muleToolbar( m_wndToolbar );
 	} else {
-		muleToolbar( m_wndToolbar );		
+                Apply_Toolbar_Skin( skinfile, m_wndToolbar );		
 	}
 
 	#ifdef CLIENT_GUI
