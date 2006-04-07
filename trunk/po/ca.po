@@ -8,10 +8,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule 2.2.0\n"
+"Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-11-23 21:36+0100\n"
-"PO-Revision-Date: 2006-02-12 13:51+0100\n"
+"PO-Revision-Date: 2006-03-29 00:05+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -1298,14 +1298,14 @@ msgstr "Erroni"
 
 #: src/PartFile.cpp:3814
 msgid "Insufficient Diskspace"
-msgstr "Espai al disc insuficient"
+msgstr "No hi ha espai al disc"
 
 #: src/PartFile.cpp:3818
 #: src/TransferWnd.cpp:345
 #: src/OtherFunctions.cpp:770
 #: src/libs/ec/ECSpecialTags.cpp:55
 msgid "Downloading"
-msgstr "Descarregant"
+msgstr "Baixant"
 
 #: src/PartFile.cpp:3820
 #: src/TransferWnd.cpp:344
@@ -1418,7 +1418,7 @@ msgstr "Envia un &Missatge"
 #: src/DownloadListCtrl.cpp:1066
 #: src/ClientListCtrl.cpp:211
 msgid "View Files"
-msgstr "Veure els fitxers"
+msgstr "Veure els compartits"
 
 #: src/FriendListCtrl.cpp:245
 msgid "Establish Friend Slot"
@@ -1741,7 +1741,7 @@ msgstr "Detalls del fitxer"
 #: src/FileDetailDialog.cpp:107
 #, c-format
 msgid "%.2f%% done"
-msgstr "%.2f%% finalitzat"
+msgstr "%.2f%% fet"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -3366,7 +3366,7 @@ msgstr "Alta"
 #: src/muuli_wdr.cpp:2948
 #: src/SharedFilesCtrl.cpp:130
 msgid "Auto"
-msgstr "Automàtica"
+msgstr "Auto"
 
 #: src/DownloadListCtrl.cpp:946
 msgid "C&lear completed"
@@ -3441,7 +3441,7 @@ msgstr "Copia la retroalimentació al portapapers"
 
 #: src/DownloadListCtrl.cpp:1000
 msgid "unassign"
-msgstr "treu"
+msgstr "Cap categoria"
 
 #: src/DownloadListCtrl.cpp:1007
 msgid "Assign to category"
@@ -3856,7 +3856,7 @@ msgstr "Transferit :"
 
 #: src/muuli_wdr.cpp:758
 msgid "Completed Size :"
-msgstr "Mida Completat :"
+msgstr "Completats :"
 
 #: src/muuli_wdr.cpp:785
 #: src/muuli_wdr.cpp:2072
@@ -4081,7 +4081,7 @@ msgstr "Nom del servidor:"
 
 #: src/muuli_wdr.cpp:1481
 msgid "Transfers to client"
-msgstr "Transferències al client"
+msgstr "Transferències amb el client"
 
 #: src/muuli_wdr.cpp:1488
 msgid "Current request:"
@@ -4129,7 +4129,7 @@ msgstr "Puntuació (total):"
 
 #: src/muuli_wdr.cpp:1591
 msgid "Queue score:"
-msgstr "Puntuació de la cua:"
+msgstr "Puntuació (a la cua):"
 
 #: src/muuli_wdr.cpp:1626
 msgid "General Settings"
@@ -4296,7 +4296,7 @@ msgstr "Pujada"
 
 #: src/muuli_wdr.cpp:1799
 msgid "Slot Allocation"
-msgstr "Posicions (slots)"
+msgstr "Per posició (slot)"
 
 #: src/muuli_wdr.cpp:1814
 msgid "Line Capacities"
@@ -4365,7 +4365,7 @@ msgstr "Autoconnecta a l'inici"
 
 #: src/muuli_wdr.cpp:1961
 msgid "Reconnect on loss"
-msgstr "Reconnecta en perdre"
+msgstr "Reconnecta en perdre la connexió"
 
 #: src/muuli_wdr.cpp:1965
 msgid "Show overhead bandwith"
@@ -4633,7 +4633,7 @@ msgstr "Selecciona"
 
 #: src/muuli_wdr.cpp:2344
 msgid "Number of Client Versions shown (0=unlimited)"
-msgstr "Nombre de Versions de Client a mostrar (0=il·limitats)"
+msgstr "Nombre de Versions de Client a mostrar (0=il·limitat)"
 
 #: src/muuli_wdr.cpp:2373
 msgid "Notifications"
@@ -5076,7 +5076,7 @@ msgid ""
 "Bootstrap from \n"
 "known clients"
 msgstr ""
-"Arrancada des dels\n"
+"Inicia des dels\n"
 "clients coneguts"
 
 #: src/muuli_wdr.cpp:3381
@@ -5239,7 +5239,7 @@ msgstr "Filtra els missatges dels clients desconeguts"
 
 #: src/muuli_wdr.cpp:3675
 msgid "Filter messages containing (use ',' as separator):"
-msgstr "Filtra els missatges que continguin (useu ',' per separar):"
+msgstr "Filtra els missatges que continguin (useu ',' per a separar):"
 
 #: src/muuli_wdr.cpp:3679
 msgid "add here the words amule should filter and block messages including it"
@@ -5437,7 +5437,7 @@ msgstr "Fallit"
 
 #: src/ClientDetailDialog.cpp:138
 msgid "Not complete"
-msgstr "No completat"
+msgstr "Sense completar"
 
 #: src/ClientDetailDialog.cpp:140
 msgid "Bad Guy"
@@ -5964,7 +5964,7 @@ msgid ""
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
 "La llista d'actualització automàtica de servidors és buida.\n"
-"Per favor, opliu-la amb almenys una adreça que apunti a un fitxer server.met vàlid.\n"
+"Per favor, ompliu-la amb almenys una adreça que apunti a un fitxer server.met vàlid.\n"
 "Feu clic sobre el botó \"Llista\" d'aquest quadre de verificació per afegir una adreça."
 
 #: src/PrefsUnifiedDlg.cpp:799
@@ -6508,11 +6508,11 @@ msgstr "Estat remot"
 #: src/ClientListCtrl.cpp:629
 #, c-format
 msgid "QR: %u"
-msgstr "Cua: %u"
+msgstr "C: %u"
 
 #: src/ClientListCtrl.cpp:754
 msgid "File Priority"
-msgstr "Prioritat del fitxer"
+msgstr "Prioritat"
 
 #: src/ClientListCtrl.cpp:756
 msgid "Score"
@@ -6532,7 +6532,7 @@ msgstr "En Cua"
 
 #: src/ClientListCtrl.cpp:928
 msgid "Upload Status"
-msgstr "Estat de la Pujada"
+msgstr "Estat local"
 
 #: src/ClientListCtrl.cpp:929
 msgid "Transferred Up"
@@ -6540,7 +6540,7 @@ msgstr "Pujat"
 
 #: src/ClientListCtrl.cpp:930
 msgid "Download Status"
-msgstr "Estat de la Baixada"
+msgstr "Estat remot"
 
 #: src/ClientListCtrl.cpp:931
 msgid "Transferred Down"
@@ -6766,7 +6766,7 @@ msgstr "Fonts Completes"
 
 #: src/SharedFilesCtrl.cpp:105
 msgid "Directory Path"
-msgstr "Directori"
+msgstr "Ubicació"
 
 #: src/SharedFilesCtrl.cpp:137
 msgid "Add Comment/Rating"
