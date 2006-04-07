@@ -126,7 +126,7 @@ private:
 
 
 
-#define m_ImageList theApp.amuledlg->imagelist
+#define m_ImageList theApp.amuledlg->m_imagelist
 
 
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
@@ -858,9 +858,9 @@ void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CUpDownClient* client = (*it)->GetSource();
 		if (client->IsFriend()) {
-			theApp.amuledlg->chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+			theApp.amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
 		} else {
-			theApp.amuledlg->chatwnd->AddFriend( client );
+			theApp.amuledlg->m_chatwnd->AddFriend( client );
 		}
 	}
 }
@@ -881,7 +881,7 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		wxString message = ::wxGetTextFromUser(_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->chatwnd->SendMessage(message, userName, userID);
+			theApp.amuledlg->m_chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
@@ -1142,7 +1142,7 @@ void CDownloadListCtrl::OnDrawItem(
 	int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
 	// Don't do any drawing if there's nobody to see it.
-	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::TransferWnd ) ) {
+	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		return;
 	}
 

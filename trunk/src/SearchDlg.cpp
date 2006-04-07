@@ -275,7 +275,7 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 
 		// Web Search (FileHash.com)
 		case 3:
-			theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::wsFileHash));
+			theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::WS_FILEHASH));
 			break;
 
 		// Error

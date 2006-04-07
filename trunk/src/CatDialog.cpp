@@ -200,7 +200,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
         	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
         	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
         	
-        theApp.amuledlg->transferwnd->AddCategory(m_category);
+        theApp.amuledlg->m_transferwnd->AddCategory(m_category);
 	} else {
 		wxString oldpath = m_category->incomingpath;
 
@@ -208,11 +208,11 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
         	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
         	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
 
-		theApp.amuledlg->transferwnd->UpdateCategory( index );
+		theApp.amuledlg->m_transferwnd->UpdateCategory( index );
 		
-		theApp.amuledlg->transferwnd->downloadlistctrl->Refresh();
+		theApp.amuledlg->m_transferwnd->downloadlistctrl->Refresh();
 		
-		theApp.amuledlg->searchwnd->UpdateCatChoice();
+		theApp.amuledlg->m_searchwnd->UpdateCatChoice();
 	}
 	
 	EndModal(wxID_OK);

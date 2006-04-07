@@ -179,7 +179,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(event))
 		return;
 	}
 
-	theApp.amuledlg->chatwnd->StartSession(cur_friend);
+	theApp.amuledlg->m_chatwnd->StartSession(cur_friend);
 	
 }
 
@@ -261,7 +261,7 @@ void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 	
 	while( index != -1 ) {
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
-		theApp.amuledlg->chatwnd->StartSession(cur_friend);			
+		theApp.amuledlg->m_chatwnd->StartSession(cur_friend);			
 		#warning CORE/GUI!			
 		#ifndef CLIENT_GUI
 		theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);

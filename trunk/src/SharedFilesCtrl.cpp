@@ -402,7 +402,7 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 		RefreshItem(result);
 
 		if ( GetItemState( result, wxLIST_STATE_SELECTED ) ) {
-			theApp.amuledlg->sharedfileswnd->SelectionUpdated();
+			theApp.amuledlg->m_sharedfileswnd->SelectionUpdated();
 		}
 	}
 }
@@ -496,7 +496,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 							imgWidth = 16;
 						} 
 						
-						theApp.amuledlg->imagelist.Draw(image, *dc, columnRect.x,
+						theApp.amuledlg->m_imagelist.Draw(image, *dc, columnRect.x,
 								columnRect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT);
 
 						// Move the text to the right

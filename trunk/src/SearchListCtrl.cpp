@@ -610,9 +610,9 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
 	theApp.searchlist->StopGlobalSearch();
-	theApp.amuledlg->searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp.amuledlg->searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
-	theApp.amuledlg->searchwnd->StartNewSearch();
+	theApp.amuledlg->m_searchwnd->ResetControls();
+	CastByID( IDC_SEARCHNAME, theApp.amuledlg->m_searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
+	theApp.amuledlg->m_searchwnd->StartNewSearch();
 }
 
 
@@ -770,7 +770,7 @@ void CSearchListCtrl::OnDrawItem(
 						imgWidth = 16;
 					}
 					
-					theApp.amuledlg->imagelist.Draw(image, *dc, target_rec.GetX(),
+					theApp.amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
 							target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
 
 					// Move the text past the icon.

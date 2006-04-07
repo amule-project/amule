@@ -153,7 +153,7 @@ void CTransferWnd::AddCategory( Category_Struct* category )
 	// Update the title
 	UpdateCategory( m_dlTab->GetPageCount() - 1 );
 
-	theApp.amuledlg->searchwnd->UpdateCatChoice();
+	theApp.amuledlg->m_searchwnd->UpdateCatChoice();
 }
 
 void CTransferWnd::RemoveCategory(int index)
@@ -191,7 +191,7 @@ void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 
 
 	if ( titleChanged ) {
-		theApp.amuledlg->searchwnd->UpdateCatChoice();
+		theApp.amuledlg->m_searchwnd->UpdateCatChoice();
 	}
 	
 }
@@ -259,7 +259,7 @@ void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
 		
 		theApp.glob_prefs->SaveCats();
 
-		theApp.amuledlg->searchwnd->UpdateCatChoice();
+		theApp.amuledlg->m_searchwnd->UpdateCatChoice();
 		
 	}
 }

@@ -413,10 +413,10 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		if ( thePrefs::s_colors[i] != thePrefs::s_colors_ref[i] ) {
 			CStatisticsDlg::acrStat[i] = thePrefs::s_colors[i];
-			theApp.amuledlg->statisticswnd->ApplyStatsColor(i);
+			theApp.amuledlg->m_statisticswnd->ApplyStatsColor(i);
 		}
 
-		theApp.amuledlg->kademliawnd->SetGraphColors();
+		theApp.amuledlg->m_kademliawnd->SetGraphColors();
 	}
 
 	// Set the file-permissions value
@@ -475,12 +475,12 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// do sanity checking, special processing, and user notifications here
 	thePrefs::CheckUlDlRatio();
 
-	if ( CfgChanged(IDC_PORT) ) {
+	if (CfgChanged(IDC_PORT)) {
 		restart_needed = true;
 		restart_needed_msg += _("- TCP port changed.\n");
 	}
 
-	if ( CfgChanged(IDC_UDPPORT) ) {
+	if (CfgChanged(IDC_UDPPORT)) {
 		restart_needed = true;
 		restart_needed_msg += _("- UDP port changed.\n");
 	}
@@ -497,7 +497,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 			_("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 
-	if ( thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty() ) {
+	if (thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty()) {
 		thePrefs::EnableExternalConnections( false );
 
 		wxMessageBox( _(
@@ -508,27 +508,25 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// save the preferences on ok
 	theApp.glob_prefs->Save();
 
-	if ( CfgChanged(IDC_FED2KLH) && theApp.amuledlg->GetActiveDialog() != CamuleDlg::SearchWnd ) {
+	if (CfgChanged(IDC_FED2KLH) && theApp.amuledlg->GetActiveDialog() != CamuleDlg::DT_SEARCH_WND) {
 		theApp.amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 	}
 
-	if ( CfgChanged(IDC_LANGUAGE) ) {
+	if (CfgChanged(IDC_LANGUAGE)) {
 		restart_needed = true;
 		restart_needed_msg += _("- Language changed.\n");
 	}
 
-	if ( CfgChanged(IDC_TEMPFILES) ) {
+	if (CfgChanged(IDC_TEMPFILES)) {
 		restart_needed = true;
 		restart_needed_msg += _("- Temp folder changed.\n");
 	}
 
-	if (	CfgChanged(IDC_INCFILES) ||
-		CfgChanged(IDC_TEMPFILES) ||
-		m_ShareSelector->HasChanged ) {
+	if (CfgChanged(IDC_INCFILES) || CfgChanged(IDC_TEMPFILES) || m_ShareSelector->HasChanged ) {
 		theApp.sharedfiles->Reload();
 	}
 
-	if ( CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG) ) {
+	if (CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG)) {
 		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 
 		// Build the filenames for the two OS files
@@ -551,30 +549,30 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if (CfgChanged(IDC_EXTCATINFO)) {
-		theApp.amuledlg->transferwnd->UpdateCatTabTitles();
+		theApp.amuledlg->m_transferwnd->UpdateCatTabTitles();
 	}
 
 	// Changes related to the statistics-dlg
-	if ( CfgChanged(IDC_SLIDER) ) {
-		theApp.amuledlg->statisticswnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
-		theApp.amuledlg->kademliawnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+	if (CfgChanged(IDC_SLIDER)) {
+		theApp.amuledlg->m_statisticswnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+		theApp.amuledlg->m_kademliawnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
 	}
 
 	if ( CfgChanged(IDC_SLIDER3) ) {
-		theApp.amuledlg->statisticswnd->ResetAveragingTime();
+		theApp.amuledlg->m_statisticswnd->ResetAveragingTime();
 	}
 
-	if ( CfgChanged(IDC_DOWNLOAD_CAP) ) {
-		theApp.amuledlg->statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
+	if (CfgChanged(IDC_DOWNLOAD_CAP)) {
+		theApp.amuledlg->m_statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
 	}
 
-	if ( CfgChanged(IDC_UPLOAD_CAP) ) {
-		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
+	if (CfgChanged(IDC_UPLOAD_CAP)) {
+		theApp.amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
-        
-        if ( CfgChanged(IDC_SKINFILE) || CfgChanged(IDC_USESKIN) ) {
-            theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
-        }
+
+	if (CfgChanged(IDC_SKINFILE) || CfgChanged(IDC_USESKIN)) {
+		theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
+	}
 
 	if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
 		theApp.DisconnectED2K();
@@ -616,7 +614,7 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 	
 		// Un-Connect the Cfgs
 		thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
-		for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
+		for (; it != thePrefs::s_CfgList.end(); ++it) {
 			// Checking for failures
 			it->second->ConnectToWidget( 0 );
 		}
@@ -941,8 +939,8 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	case IDC_SLIDER:
 		id = IDC_SLIDERINFO;
 		label = wxString::Format( _("Update delay: %d secs"), event.GetPosition() );
-		theApp.amuledlg->statisticswnd->SetUpdatePeriod(event.GetPosition());
-		theApp.amuledlg->kademliawnd->SetUpdatePeriod(event.GetPosition());
+		theApp.amuledlg->m_statisticswnd->SetUpdatePeriod(event.GetPosition());
+		theApp.amuledlg->m_kademliawnd->SetUpdatePeriod(event.GetPosition());
 		break;
 
 	case IDC_SLIDER3:
@@ -954,7 +952,7 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	case IDC_SLIDER4:
 		id = IDC_SLIDERINFO4;
 		label = wxString::Format( _("Connections Graph Scale: %d"), event.GetPosition() );
-		theApp.amuledlg->statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
+		theApp.amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
 		break;
 
 	case IDC_SLIDER2:

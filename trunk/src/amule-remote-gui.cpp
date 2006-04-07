@@ -172,13 +172,13 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			break;
 		}
 		case 2:
-			if ( amuledlg->sharedfileswnd->IsShown() ) {
+			if ( amuledlg->m_sharedfileswnd->IsShown() ) {
 				sharedfiles->DoRequery(EC_OP_GET_SHARED_FILES, EC_TAG_KNOWNFILE);
-			} else if ( amuledlg->serverwnd->IsShown() ) {
+			} else if ( amuledlg->m_serverwnd->IsShown() ) {
 				//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
-			} else if ( amuledlg->transferwnd->IsShown() ) {
+			} else if ( amuledlg->m_transferwnd->IsShown() ) {
 				downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
-				switch(amuledlg->transferwnd->clientlistctrl->GetListView()) {
+				switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 					case vtUploading:
 						uploadqueue->ReQueryUp();
 						break;
@@ -190,8 +190,8 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 					case vtNone:
 						break;
 				}
-				amuledlg->transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
-			} else if ( amuledlg->searchwnd->IsShown() ) {
+				amuledlg->m_transferwnd->ShowQueueCount(theStats::GetWaitingUserCount());
+			} else if ( amuledlg->m_searchwnd->IsShown() ) {
 				if ( searchlist->m_curr_search != -1 ) {
 					searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 				}
@@ -639,14 +639,14 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 		}
 		server = theApp.serverlist->GetByID(srvtag->GetIPv4Data().IP());
 		if ( m_CurrServer && (server != m_CurrServer) ) {
-			theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+			theApp.amuledlg->m_serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
 		}
-		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(server, true);
+		theApp.amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, true);
 		m_CurrServer = server;
 		theApp.m_ConnState |= CONNECTED_ED2K;
 	} else {
 	    	if ( m_CurrServer ) {
-	    		theApp.amuledlg->serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
+	    		theApp.amuledlg->m_serverwnd->serverlistctrl->HighlightServer(m_CurrServer, false);
 	    		m_CurrServer = 0;
 	    	}
 	}
@@ -729,7 +729,7 @@ CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 void CServerListRem::DeleteItem(CServer *in_srv)
 {
 	auto_ptr<CServer> srv(in_srv);
-	theApp.amuledlg->serverwnd->serverlistctrl->RemoveServer(srv.get());
+	theApp.amuledlg->m_serverwnd->serverlistctrl->RemoveServer(srv.get());
 }
 
 uint32 CServerListRem::GetItemID(CServer *server)
@@ -747,7 +747,7 @@ void CServerListRem::ReloadControl()
 {
 	for(uint32 i = 0;i < GetCount(); i++) {
 		CServer *srv = GetByIndex(i);
-		theApp.amuledlg->serverwnd->serverlistctrl->RefreshServer(srv);
+		theApp.amuledlg->m_serverwnd->serverlistctrl->RefreshServer(srv);
 	}
 }
 
@@ -827,7 +827,7 @@ CKnownFile *CSharedFilesRem::CreateItem(CEC_SharedFile_Tag *tag)
 
 	ProcessItemUpdate(tag, file);
 	
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->ShowFile(file);
+	theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
 	
 	return file;
 }
@@ -838,7 +838,7 @@ void CSharedFilesRem::DeleteItem(CKnownFile *in_file)
 
 	m_enc_map.erase(file->GetFileHash());
 	
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
+	theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file.get());
 }
 
 CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
@@ -882,7 +882,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	theApp.knownfiles->transfered += file->statistic.transfered;
 	theApp.knownfiles->accepted += file->statistic.transfered;
 
-	theApp.amuledlg->sharedfileswnd->sharedfilesctrl->UpdateItem(file);
+	theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 }
 
 bool CSharedFilesRem::Phase1Done(const CECPacket *)
@@ -992,14 +992,14 @@ CUpDownClient *CUpDownClientListRem::CreateItem(CEC_UpDownClient_Tag *tag)
 	CUpDownClient *client = new CUpDownClient(tag);
 	ProcessItemUpdate(tag, client);
 	
-	theApp.amuledlg->transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
+	theApp.amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, (ViewType)m_viewtype);
 	
 	return client;
 }
 
 void CUpDownClientListRem::DeleteItem(CUpDownClient *client)
 {
-	theApp.amuledlg->transferwnd->clientlistctrl->RemoveClient(client, (ViewType)m_viewtype);
+	theApp.amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, (ViewType)m_viewtype);
 	delete client;
 }
 
@@ -1079,7 +1079,7 @@ CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 	m_enc_map[file->GetFileHash()] = PartFileEncoderData(file->GetPartCount(), 10);
 	ProcessItemUpdate(tag, file);
 	
-	theApp.amuledlg->transferwnd->downloadlistctrl->AddFile(file);
+	theApp.amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
 	return file;
 }
 
@@ -1087,7 +1087,7 @@ void CDownQueueRem::DeleteItem(CPartFile *in_file)
 {
 	auto_ptr<CPartFile> file(in_file);
 
-	theApp.amuledlg->transferwnd->downloadlistctrl->RemoveFile(file.get());
+	theApp.amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file.get());
 	
 	m_enc_map.erase(file->GetFileHash());
 }
@@ -1206,7 +1206,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 	} else {
 		printf("ERROR: %p %p %p\n", (void*)gaptag, (void*)parttag, (void*)reqtag);
 	}
-	theApp.amuledlg->transferwnd->downloadlistctrl->UpdateItem(file);
+	theApp.amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
 bool CDownQueueRem::Phase1Done(const CECPacket *)
@@ -1347,7 +1347,7 @@ CSearchFile *CSearchListRem::CreateItem(CEC_SearchFile_Tag *tag)
 	CSearchFile *file = new CSearchFile(tag);
 	ProcessItemUpdate(tag, file);
 	
-	theApp.amuledlg->searchwnd->AddResult(file);
+	theApp.amuledlg->m_searchwnd->AddResult(file);
 	
 	return file;
 }
