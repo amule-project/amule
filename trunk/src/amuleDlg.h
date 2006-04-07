@@ -162,6 +162,8 @@ public:
 	int			srv_split_pos;
 	
 	wxImageList imagelist;
+        
+        wxImageList tblist;
 	
 	void StartGuiTimer() { gui_timer->Start(100); }
 	void StopGuiTimer() { gui_timer->Stop(); }
@@ -220,6 +222,8 @@ private:
 	uint32 last_iconizing;
 
 	void Apply_Clients_Skin(wxString file);
+        
+        void Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar);
 		
 	void ToogleED2KLinksHandler();
 

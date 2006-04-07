@@ -571,6 +571,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if ( CfgChanged(IDC_UPLOAD_CAP) ) {
 		theApp.amuledlg->statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
+        
+        if ( CfgChanged(IDC_SKINFILE) || CfgChanged(IDC_USESKIN) ) {
+            theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
+        }
 
 	if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
 		theApp.DisconnectED2K();
@@ -730,7 +734,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 		case IDC_VERTTOOLBAR:
-			theApp.amuledlg->Create_Toolbar(wxEmptyString, value);
+			theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), value);
 			// Update the first tool (conn button)
 			theApp.amuledlg->ShowConnectionState();
 			break;
