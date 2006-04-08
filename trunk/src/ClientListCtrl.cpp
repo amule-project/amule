@@ -66,7 +66,7 @@ int CompareVersions(const CUpDownClient* client1, const CUpDownClient* client2)
 
 
 ////////////////////////////////////////////////////////////
-// CClientLitCtrl
+// CClientListCtrl
 
 
 BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
