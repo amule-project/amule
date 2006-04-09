@@ -451,13 +451,13 @@ void CECSocket::OnOutput()
 					return;
 				} else {
 					if ( !WaitForWrite(10, 0) ) {
-                        if (LastError() == wxSOCKET_WOULDBLOCK) {
-                                continue;
-                        } else {
-                                OnError();
-                                break;
-                        }
-	                }
+						if (LastError() == wxSOCKET_WOULDBLOCK) {
+							continue;
+						} else {
+							OnError();
+							break;
+						}
+	                		}
 				}
 			} else {
 				OnError();
