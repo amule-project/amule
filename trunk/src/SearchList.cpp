@@ -434,27 +434,24 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 
 	// UDP requests must not be sent to this server.
 	const CServer* localServer = theApp.serverconnect->GetCurrentServer();
-	uint32 localIP = localServer->GetIP();
-	uint16 localPort = localServer->GetPort();
+	if (localServer) {
+		uint32 localIP = localServer->GetIP();
+		uint16 localPort = localServer->GetPort();
+		while (m_serverQueue.GetRemaining()) {
+			CServer* server = m_serverQueue.GetNext();
 
-
-	while (m_serverQueue.GetRemaining()) {
-		CServer* server = m_serverQueue.GetNext();
-
-		// Compare against the currently connected server.
-		if ((server->GetPort() == localPort) and (server->GetIP() == localIP)) {
-			// We've already requested from the local server.
-			continue;
-		} else {
-			theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
-			theApp.serverconnect->SendUDPPacket(m_searchPacket, server, false);
-			
-			CoreNotify_Search_Update_Progress(GetSearchProgress());					
-			
-			return;
+			// Compare against the currently connected server.
+			if ((server->GetPort() == localPort) and (server->GetIP() == localIP)) {
+				// We've already requested from the local server.
+				continue;
+			} else {
+				theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
+				theApp.serverconnect->SendUDPPacket(m_searchPacket, server, false);
+				CoreNotify_Search_Update_Progress(GetSearchProgress());					
+				return;
+			}
 		}
-	}
-	
+	}	
 	// No more servers left to ask.
 	StopGlobalSearch();
 }
