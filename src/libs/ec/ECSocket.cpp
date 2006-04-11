@@ -258,20 +258,10 @@ CECSocket::CECSocket(bool use_events) : wxSocketClient()
 
 CECSocket::~CECSocket()
 {
-	if (m_in_ptr) {
-		delete [] m_in_ptr;
-	}
-	if (m_out_ptr) {
-		delete [] m_out_ptr;
-	}
-
-	if (m_curr_rx_data) {
-		delete m_curr_rx_data;
-	}
-	
-	if (m_curr_tx_data) {
-		delete m_curr_tx_data;
-	}	
+	delete[] m_in_ptr;
+	delete[] m_out_ptr;
+	delete m_curr_rx_data;
+	delete m_curr_tx_data;
 	
 	while (!m_output_queue.empty()) {
 		CQueuedData *data = m_output_queue.front();
