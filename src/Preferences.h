@@ -445,11 +445,6 @@ public:
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
 
-	static int		GetFilePermissions();
-	static void		SetFilePermissions( int perms );
-	static int		GetDirPermissions();
-	static void		SetDirPermissions( int perms );
-
 	static void		UnsetAutoServerStart();
 	static void		CheckUlDlRatio();
 	

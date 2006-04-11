@@ -1231,8 +1231,6 @@ enum {
 		* \par Child TAGs:
 		*	::EC_TAG_PREFS_SECURITY\n
 		*	::EC_TAG_SECURITY_CAN_SEE_SHARES\n
-		*	::EC_TAG_SECURITY_FILE_PERMISSIONS\n
-		*	::EC_TAG_SECURITY_DIR_PERMISSIONS\n
 		*	::EC_TAG_IPFILTER_ENABLED\n
 		*	::EC_TAG_IPFILTER_AUTO_UPDATE\n
 		*	::EC_TAG_IPFILTER_UPDATE_URL\n
@@ -1249,8 +1247,6 @@ enum {
 							<li>2 - Nobody</li>
 							</ul>
 						*/
-	EC_TAG_SECURITY_FILE_PERMISSIONS,	///< (\c uint32) Permissions on newly created files.
-	EC_TAG_SECURITY_DIR_PERMISSIONS,	///< (\c uint32) Permissions on newly created directories.
 	EC_TAG_IPFILTER_ENABLED,		///< (boolean) IPFilter enabled.
 	EC_TAG_IPFILTER_AUTO_UPDATE,		///< (boolean) Auto-update IPFilter from URL at startup.
 	EC_TAG_IPFILTER_UPDATE_URL,		///< (\c string) IPFilter auto-update URL.

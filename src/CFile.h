@@ -82,7 +82,7 @@ public:
 	 * If an accessMode is not explicitly specified, the accessmode
 	 * specified via CPreferences::GetFilePermissions will be used.
 	 */
-	bool Open(const wxString& path, OpenMode mode = read, int accessMode = -1);
+	bool Open(const wxString& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 	
 	/**
 	 * Calling Create is requivilant of calling open with OpenMode 'write'.
@@ -92,7 +92,7 @@ public:
 	 *
 	 * @see CFile::Open
 	 */
-	bool Create(const wxString& path, bool overwrite = false, int accessMode = -1);
+	bool Create(const wxString& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
 	
 	/**
 	 * Closes the file.
