@@ -366,18 +366,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 
 	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());	
 	
-	// Set the permissions scrollers for files
-	int perms = thePrefs::GetFilePermissions();
-	CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->SetValue( perms / 0100 );
-	CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
-	CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
-	
-	// Set the permissions scrollers for directories
-	perms = thePrefs::GetDirPermissions();
-	CastChild( IDC_SPIN_PERM_DU, wxSpinCtrl )->SetValue( perms / 0100 );
-	CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->SetValue( perms % 0100 / 010 );
-	CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->SetValue( perms % 0100 % 010 / 01 );
-
 	// Set debugging toggles
 #ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
@@ -418,19 +406,6 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 		theApp.amuledlg->m_kademliawnd->SetGraphColors();
 	}
-
-	// Set the file-permissions value
-	int file_perms = 0;
-	file_perms |= 0100 * CastChild( IDC_SPIN_PERM_FU, wxSpinCtrl )->GetValue();
-	file_perms |= 0010 * CastChild( IDC_SPIN_PERM_FG, wxSpinCtrl )->GetValue();
-	file_perms |= 0001 * CastChild( IDC_SPIN_PERM_FO, wxSpinCtrl )->GetValue();
-	thePrefs::SetFilePermissions( file_perms );
-
-	int dir_perms = 0;
-	dir_perms |= 0100 * CastChild( IDC_SPIN_PERM_DU, wxSpinCtrl )->GetValue();
-	dir_perms |= 0010 * CastChild( IDC_SPIN_PERM_DG, wxSpinCtrl )->GetValue();
-	dir_perms |= 0001 * CastChild( IDC_SPIN_PERM_DO, wxSpinCtrl )->GetValue();
-	thePrefs::SetDirPermissions( dir_perms );
 
 	// Get debugging toggles
 #ifdef __DEBUG__

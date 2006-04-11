@@ -165,7 +165,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	}
 
 	if ( !::wxDirExists( newpath ) ) {
-		if ( !wxMkdir( newpath, thePrefs::GetDirPermissions() ) ) {
+		if ( !wxMkdir( newpath ) ) {
 			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"), _("Info"), wxOK, this);
 			
 			return;

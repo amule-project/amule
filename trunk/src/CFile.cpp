@@ -216,14 +216,6 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 {
 	MULE_VALIDATE_PARAMS(!fileName.IsEmpty(), wxT("CFile: Cannot open, empty path."));
 
-	if ( accessMode == -1 ) {
-#ifndef MULEUNIT // TODO: Remove the need for this
-		accessMode = thePrefs::GetFilePermissions();
-#else
-		accessMode = wxS_DEFAULT;
-#endif
-	}
-
 #ifdef __linux__
 	int flags = O_BINARY | O_LARGEFILE;
 #else

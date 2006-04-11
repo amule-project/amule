@@ -989,8 +989,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DisableQueueList"),		s_bDisableQueueList, false ) );
 	s_MiscList.push_back(    MkCfg_Int( wxT("/eMule/MaxMessageSessions"),		s_maxmsgsessions, 50 ) );
 
-	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsFiles"),	s_perms_files, 0640 ) );
-	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Address"),			s_Addr,	wxEmptyString ) );
 
 #ifndef AMULE_DAEMON
@@ -1095,34 +1093,6 @@ void CPreferences::SetMaxDownload(uint16 in)
 		// Ensure that the ratio is upheld
 		CheckUlDlRatio();
 	}
-}
-
-
-int CPreferences::GetFilePermissions()
-{
-	// We need at least r/w access for user
-	return s_perms_files | wxS_IRUSR | wxS_IWUSR;
-}
-
-
-void CPreferences::SetFilePermissions( int perms )
-{
-	// We need at least r/w access for user
-	s_perms_files = perms | wxS_IRUSR | wxS_IWUSR;
-}
-
-
-int CPreferences::GetDirPermissions()
-{
-	// We need at least r/w/x access for user
-	return s_perms_dirs | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
-}
-
-
-void CPreferences::SetDirPermissions( int perms )
-{
-	// We need at least r/w/x access for user
-	s_perms_dirs = perms | wxS_IRUSR | wxS_IWUSR | wxS_IXUSR;
 }
 
 
@@ -1329,7 +1299,7 @@ void CPreferences::LoadCats()
 		AddCat(newcat);
 		
 		if (!wxFileName::DirExists(newcat->incomingpath)) {
-			wxFileName::Mkdir( newcat->incomingpath, GetDirPermissions() );
+			wxFileName::Mkdir( newcat->incomingpath );
 		}
 	}
 }
