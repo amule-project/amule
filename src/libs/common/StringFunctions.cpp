@@ -75,7 +75,7 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 		} else if ( file.Length() >= length ) {
 			path.Clear();
 		} else {
-			// Minus 6 for "[...]" + seperator
+			// Minus 6 for "[...]" + separator
 			int pathlen = length - file.Length() - 6;
 			
 			if ( pathlen > 0 ) {
@@ -143,7 +143,7 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 }
 
 
-wxString StripSeperators(wxString path, wxString::stripType type)
+wxString StripSeparators(wxString path, wxString::stripType type)
 {
 	wxASSERT((type == wxString::leading) or (type == wxString::trailing));
 	const wxString seps = wxFileName::GetPathSeparators();
@@ -170,9 +170,9 @@ wxString JoinPaths(const wxString& path, const wxString& file)
 		return path;
 	} 
 
-	return StripSeperators(path, wxString::trailing)
+	return StripSeparators(path, wxString::trailing)
 	   + wxFileName::GetPathSeparator()
-	   + StripSeperators(file, wxString::leading);
+	   + StripSeparators(file, wxString::leading);
 }
 
 

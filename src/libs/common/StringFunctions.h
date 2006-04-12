@@ -188,11 +188,11 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces = true, bool 
 
 
 /**
- * Strips all path seperators from the specified end of a path.
+ * Strips all path separators from the specified end of a path.
  *
  * Note: type must be either leading or trailing.
  */
-wxString StripSeperators(wxString path, wxString::stripType type);
+wxString StripSeparators(wxString path, wxString::stripType type);
 
 
 /**
@@ -244,7 +244,7 @@ public:
 	CSimpleTokenizer(const wxString& str, wxChar delim);
 
 	/**
-	 * Returns the next part of the string seperated by the
+	 * Returns the next part of the string separated by the
 	 * given delimiter. When the entire string has been
 	 * tokenized, an empty string is returned. Note that
 	 * empty tokens are also returned.
