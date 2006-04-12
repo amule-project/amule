@@ -718,7 +718,7 @@ class CWebServerBase {
 		CImageLib m_ImageLib;
 
 		virtual void ProcessURL(ThreadData) = 0;
-		void ProcessImgFileReq(ThreadData);
+		virtual void ProcessImgFileReq(ThreadData) = 0;
 
 		int GzipCompress(Bytef *dest, uLongf *destLen,
 			const Bytef *source, uLong sourceLen, int level);
@@ -794,6 +794,7 @@ class CScriptWebServer : public CWebServerBase {
 		CSession *CheckLoggedin(ThreadData &);
 	protected:
 		virtual void ProcessURL(ThreadData);
+		virtual void ProcessImgFileReq(ThreadData);
 	public:
 		CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir);
 		~CScriptWebServer();
