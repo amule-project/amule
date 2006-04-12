@@ -11,7 +11,6 @@ Trunk
 		* Fix for unhandled exception in new skinned toolbar code.
 		* Coding style fixes.
 		* Fix for server disconnection during global search.
-		* Fix for CheckDirExists() for empty directory string.
 
 --------------------------------------------------------------------------------
 
@@ -55,6 +54,8 @@ Version 2.1.2 - The "We're on fire!" version
 
 	Phoenix:
 		* Compilation fix for auto_ptr<> on Mac.
+		* Fixed crash on amulegui when exiting.
+		* Fix for CheckDirExists() for empty directory string.
 
 	Xaignar:
 		* Ensured that partial files left from failed file-completion attempts
@@ -68,6 +69,8 @@ Version 2.1.2 - The "We're on fire!" version
 		  remote gui. This among other things fixes not all of the items on
 		  the sharedfiles list showing a 'has-comment' flag.
 		* Compilation fix for GCC 3.2.
+		* Fixed CheckDirExists not working for root-paths (on both windows and
+		  linux) and not handling all types of path-seperators on windows.
 
 	Special Thanks To:
 		* The usual people
