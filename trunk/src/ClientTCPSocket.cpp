@@ -1187,7 +1187,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						}
 						break;
 					}
-					//We still send the source packet seperately.. 
+					//We still send the source packet separately.. 
 					//We could send it within this packet.. If agreeded, I will fix it..
 					case OP_REQUESTSOURCES: {
 						AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_REQUESTSOURCES") );

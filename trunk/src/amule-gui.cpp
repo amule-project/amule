@@ -140,7 +140,7 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	unsigned int geometry_height = 600;
 
 	if ( geometry_enabled ) {
-		// I plan on moving this to a seperate function, as it just clutters up OnInit()
+		// I plan on moving this to a separate function, as it just clutters up OnInit()
 		/*
 		This implementation might work with mac, provided that the
 		SetSize() function works as expected.
