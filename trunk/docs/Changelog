@@ -71,7 +71,19 @@ Version 2.1.2 - The "We're on fire!" version
 		* Compilation fix for GCC 3.2.
 		* Fixed CheckDirExists not working for root-paths (on both windows and
 		  linux) and not handling all types of path-seperators on windows.
-
+		* Fixed security problems with aMuleWeb:
+			* All images could be accessed, even when not logged in, and this
+			  included dynamically generated images, such as progress bars and
+			  graphs, resulting in various information leakage.
+			* It was possible to craft an URL such that any image on the
+			  harddisk would be returned, provided that the full path was
+			  known. File types were decided by the filename extension and
+			  included 'gif', 'jpg', 'ico', 'png', 'bmp' and 'jpeg'.
+			* When logged in, it was possible to craft an URL such that any
+			  html or php file on the harddisk would be returned, provided
+			  that the full path was known. File types were decided by the
+			  filename extension and included 'html' and 'php'.
+			
 	Special Thanks To:
 		* The usual people
 		* From Kry: to the one that makes it all worth it.
