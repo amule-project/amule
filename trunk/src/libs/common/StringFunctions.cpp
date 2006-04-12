@@ -143,11 +143,6 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 }
 
 
-/**
- * Strips all path seperators from the specified end of a path.
- *
- * Note: type must be either leading or trailing.
- */
 wxString StripSeperators(wxString path, wxString::stripType type)
 {
 	wxASSERT((type == wxString::leading) or (type == wxString::trailing));
