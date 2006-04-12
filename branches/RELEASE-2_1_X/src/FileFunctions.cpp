@@ -360,12 +360,27 @@ time_t GetLastModificationTime(const wxString& file)
 
 bool CheckDirExists(const wxString& dir)
 {
-	struct stat st;
-	wxString fixeddir(dir);
-	while (fixeddir.Last() == wxFileName::GetPathSeparator()) {
-		fixeddir = fixeddir.BeforeLast(wxFileName::GetPathSeparator());
+#ifdef __WXMSW__
+	// UTF8_Stat fails on windows if there are trailing path-seperators.
+	wxString cleanPath = StripSeperators(dir, wxString::trailing);
+	
+	// Root paths must end with a seperator (X:\ rather than X:).
+	// See comments in wxDirExists.
+	if ((cleanPath.Length() == 2) and (cleanPath.Last() == wxT(':'))) {
+		cleanPath += wxFileName::GetPathSeparator();
 	}
-	return (UTF8_Stat(fixeddir, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFDIR));
+#else
+	const wxString& cleanPath = dir;
+#endif
+	
+	if (not cleanPath.IsEmpty()) {
+		struct stat st;
+		if (UTF8_Stat(cleanPath, &st) == 0) {
+			return ((st.st_mode & S_IFMT) == S_IFDIR);
+		}
+	}
+	
+	return false;
 }
 
 
