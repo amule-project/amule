@@ -294,19 +294,29 @@ long CWebServerBase::GetWSPrefs(void)
 	return wsport;
 }
 
-void CWebServerBase::ProcessImgFileReq(ThreadData Data)
+void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 {
 	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
 
-	CAnyImage *img = m_ImageLib.GetImage(Data.sURL);
-	if ( img ) {
-		int img_size;
+	const CSession* session = CheckLoggedin(Data);
+
+	// To prevent access to non-template images, we disallow use of paths in filenames.
+	wxString imgName = wxFileName::GetPathSeparator() + wxFileName(Data.sURL).GetFullName();
+	CAnyImage *img = m_ImageLib.GetImage(imgName);
+	
+	// Only static images are available to visitors, in order to prevent
+	// information leakage, but still allowing images on the login page.
+	if (session->m_loggedin or dynamic_cast<CFileImage*>(img)) {
+		int img_size = 0;
 		unsigned char* img_data = img->RequestData(img_size);
 		// This unicode2char is ok.
 		Data.pSocket->SendContent(unicode2char(img->GetHTTP()), img_data, img_size);
+	} else if (not session->m_loggedin) {
+		webInterface->DebugShow(wxT("**** imgrequest: failed, not logged in\n"));
+		ProcessURL(Data);
 	} else {
 		webInterface->DebugShow(wxT("**** imgrequest: failed\n"));
-	}	
+	}
 }
 
 // send EC request and discard output
@@ -1813,7 +1823,8 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	long httpOutLen;
 	char *httpOut = 0;
 	
-	wxString filename = Data.parsedURL.File();
+	// Strip out any path-component to prevent information leakage.
+	wxString filename = wxFileName(Data.parsedURL.File()).GetFullName();
 
 	Print(_("Processing request [original]: ") + filename + wxT("\n"));
 
