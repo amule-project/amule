@@ -10,7 +10,8 @@ Trunk
 		* Fixed crash on amulegui when exiting.
 		* Fix for unhandled exception in new skinned toolbar code.
 		* Coding style fixes.
-		* Fix for server disconnection during global search. 
+		* Fix for server disconnection during global search.
+		* Fix for CheckDirExists() for empty directory string.
 
 --------------------------------------------------------------------------------
 
