@@ -186,6 +186,15 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
  */ 
 wxString CleanupFilename(const wxString& filename, bool keepSpaces = true, bool fat32 = false);
 
+
+/**
+ * Strips all path seperators from the specified end of a path.
+ *
+ * Note: type must be either leading or trailing.
+ */
+wxString StripSeperators(wxString path, wxString::stripType type);
+
+
 /**
  * Joins two path with the operating system specific path-separator.
  *
