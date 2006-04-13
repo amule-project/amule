@@ -904,7 +904,7 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 					{ FT_MEDIA_BITRATE, 3 },
 					{ FT_MEDIA_CODEC,   2 }
 				};
-				for (int i = 0; i < itemsof(_aMetaTags); i++) {
+				for (unsigned int i = 0; i < itemsof(_aMetaTags); i++) {
 					const ::CTag* pTag = file->GetTag(_aMetaTags[i].nName, _aMetaTags[i].nType);
 					if (pTag) {
 						// skip string tags with empty string values

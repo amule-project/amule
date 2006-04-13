@@ -341,7 +341,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 	return true;
 }
 
-bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode, bool restrictive) const
+bool CTag::WriteTagToFile(CFileDataIO* file, EUtf8Str WXUNUSED(eStrEncode), bool restrictive) const
 {
 	
 	// Don't write tags of unknown types, we wouldn't be able to read them in again 

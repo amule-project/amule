@@ -905,7 +905,7 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 		auEndOffsets[2] = data.ReadUInt32();		
 	}
 	
-	for (int i = 0; i < itemsof(auStartOffsets); i++) {
+	for (unsigned int i = 0; i < itemsof(auStartOffsets); i++) {
 		if ( CLogger::IsEnabled( logClient ) ) {
 			wxString msg = wxString::Format(_("Client requests %u"), i);
 			msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
