@@ -1544,6 +1544,8 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 			wndToolbar->AddTool( ID_ABOUT, _("About"), m_tblist.GetBitmap(11),
 				wxNullBitmap, wxITEM_NORMAL, _("About/Help") );
 			wndToolbar->Realize();
+		} else {
+			muleToolbar(m_wndToolbar);
 		}
 	} catch (const wxString &error) {
 		AddLogLineM( true, error + _(" - loading toolbar defaults"));
