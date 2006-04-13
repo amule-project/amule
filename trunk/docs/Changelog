@@ -83,6 +83,8 @@ Version 2.1.2 - The "We're on fire!" version
 			  html or php file on the harddisk would be returned, provided
 			  that the full path was known. File types were decided by the
 			  filename extension and included 'html' and 'php'.
+		* Decreased the minimum value for Max-Connections in the preferences
+		  dialog to 5.
 			
 	Special Thanks To:
 		* The usual people
