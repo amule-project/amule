@@ -79,6 +79,10 @@ void CClientCredits::AddDownloaded(uint32 bytes, uint32 dwForIP, bool cryptoavai
 			if (cryptoavail) {
 				return;
 			}
+			break;
+	 	case IS_NOTAVAILABLE:
+	 	case IS_IDENTIFIED:
+			break;
 	}
 	
 	m_pCredits->downloaded += bytes;
@@ -94,6 +98,10 @@ void CClientCredits::AddUploaded(uint32 bytes, uint32 dwForIP, bool cryptoavail)
 			if (cryptoavail) {
 				return;
 			}
+			break;
+	 	case IS_NOTAVAILABLE:
+	 	case IS_IDENTIFIED:
+			break;
 	}
 	
 	m_pCredits->uploaded += bytes;
@@ -123,6 +131,10 @@ float CClientCredits::GetScoreRatio(uint32 dwForIP, bool cryptoavail)
 				// bad guy - no credits for you
 				return 1.0f;
 			}
+			break;
+	 	case IS_NOTAVAILABLE:
+	 	case IS_IDENTIFIED:
+			break;
 	}
 	
 	if (GetDownloadedTotal() < 1000000) {
