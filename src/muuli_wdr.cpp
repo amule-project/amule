@@ -1868,7 +1868,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     wxStaticText *item52 = new wxStaticText( parent, IDC_MAXCONLABEL, _("Max Connections"), wxDefaultPosition, wxDefaultSize, 0 );
     item51->Add( item52, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item53 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 25, 7500, 500 );
+    wxSpinCtrl *item53 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 5, 7500, 500 );
     item51->Add( item53, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     item50->Add( item51, 0, wxALIGN_CENTER|wxTOP|wxBOTTOM, 5 );
