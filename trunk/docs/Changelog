@@ -11,6 +11,8 @@ Trunk
 		* Fix for unhandled exception in new skinned toolbar code.
 		* Coding style fixes.
 		* Fix for server disconnection during global search.
+		* Slightly more informational error message in amuleweb when
+		  the template is not found.
 
 --------------------------------------------------------------------------------
 
