@@ -1518,32 +1518,33 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 			}
+
+			wndToolbar->SetMargins(0, 0);
+			wndToolbar->AddTool( ID_BUTTONCONNECT, _("Connect"), m_tblist.GetBitmap(0),
+				wxNullBitmap, wxITEM_NORMAL, _("Connect to any server and/or Kad") );
+			wndToolbar->AddSeparator();
+			wndToolbar->AddTool( ID_BUTTONNETWORKS, _("Networks"), m_tblist.GetBitmap(3),
+				wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
+			wndToolbar->ToggleTool( ID_BUTTONNETWORKS, TRUE );
+			wndToolbar->AddTool( ID_BUTTONSEARCH, _("Searches"), m_tblist.GetBitmap(5),
+				wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
+			wndToolbar->AddTool( ID_BUTTONTRANSFER, _("Transfers"), m_tblist.GetBitmap(4),
+				wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
+			wndToolbar->AddTool( ID_BUTTONSHARED, _("Shared Files"), m_tblist.GetBitmap(6),
+				wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
+			wndToolbar->AddTool( ID_BUTTONMESSAGES, _("Messages"), m_tblist.GetBitmap(7),
+				wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
+			wndToolbar->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), m_tblist.GetBitmap(8),
+				wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
+			wndToolbar->AddSeparator();
+			wndToolbar->AddTool( ID_BUTTONNEWPREFERENCES, _("Preferences"), m_tblist.GetBitmap(9),
+				wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
+			wndToolbar->AddTool( ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10),
+				wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool") );
+			wndToolbar->AddTool( ID_ABOUT, _("About"), m_tblist.GetBitmap(11),
+				wxNullBitmap, wxITEM_NORMAL, _("About/Help") );
+			wndToolbar->Realize();
 		}
-		wndToolbar->SetMargins(0, 0);
-		wndToolbar->AddTool( ID_BUTTONCONNECT, _("Connect"), m_tblist.GetBitmap(0),
-			wxNullBitmap, wxITEM_NORMAL, _("Connect to any server and/or Kad") );
-		wndToolbar->AddSeparator();
-		wndToolbar->AddTool( ID_BUTTONNETWORKS, _("Networks"), m_tblist.GetBitmap(3),
-			wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
-		wndToolbar->ToggleTool( ID_BUTTONNETWORKS, TRUE );
-		wndToolbar->AddTool( ID_BUTTONSEARCH, _("Searches"), m_tblist.GetBitmap(5),
-			wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
-		wndToolbar->AddTool( ID_BUTTONTRANSFER, _("Transfers"), m_tblist.GetBitmap(4),
-			wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
-		wndToolbar->AddTool( ID_BUTTONSHARED, _("Shared Files"), m_tblist.GetBitmap(6),
-			wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
-		wndToolbar->AddTool( ID_BUTTONMESSAGES, _("Messages"), m_tblist.GetBitmap(7),
-			wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
-		wndToolbar->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), m_tblist.GetBitmap(8),
-			wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
-		wndToolbar->AddSeparator();
-		wndToolbar->AddTool( ID_BUTTONNEWPREFERENCES, _("Preferences"), m_tblist.GetBitmap(9),
-			wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
-		wndToolbar->AddTool( ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10),
-			wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool") );
-		wndToolbar->AddTool( ID_ABOUT, _("About"), m_tblist.GetBitmap(11),
-			wxNullBitmap, wxITEM_NORMAL, _("About/Help") );
-		wndToolbar->Realize();
 	} catch (const wxString &error) {
 		AddLogLineM( true, error + _(" - loading toolbar defaults"));
 
