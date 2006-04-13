@@ -374,72 +374,72 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 
 // SharedFilesCtrl
-#define Notify_SharedFilesShowFile(file)			MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFile, file)
-#define Notify_SharedFilesRemoveFile(file)          MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveFile, file)
-#define Notify_SharedFilesRemoveAllItems()          MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveAllFiles)
+#define Notify_SharedFilesShowFile(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFile, file)
+#define Notify_SharedFilesRemoveFile(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveFile, file)
+#define Notify_SharedFilesRemoveAllItems()		MuleNotify::DoNotify(&MuleNotify::SharedFilesRemoveAllFiles)
 #define Notify_SharedFilesShowFileList()        	MuleNotify::DoNotify(&MuleNotify::SharedFilesShowFileList)
-#define Notify_SharedFilesSort()					MuleNotify::DoNotify(&MuleNotify::SharedFilesSort)
-#define Notify_SharedFilesUpdateItem(file)			MuleNotify::DoNotify(&MuleNotify::SharedFilesUpdateItem, file)
+#define Notify_SharedFilesSort()			MuleNotify::DoNotify(&MuleNotify::SharedFilesSort)
+#define Notify_SharedFilesUpdateItem(file)		MuleNotify::DoNotify(&MuleNotify::SharedFilesUpdateItem, file)
 
 // download ctrl
-#define Notify_DownloadCtrlUpdateItem(ptr)          MuleNotify::DoNotify(&MuleNotify::DownloadCtrlUpdateItem, ptr)
-#define Notify_DownloadCtrlAddFile(file)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddFile, file)
+#define Notify_DownloadCtrlUpdateItem(ptr)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlUpdateItem, ptr)
+#define Notify_DownloadCtrlAddFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddFile, file)
 #define Notify_DownloadCtrlAddSource(p0, p1, val)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlAddSource, p0, p1, val)
-#define Notify_DownloadCtrlRemoveFile(file)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveFile, file)
+#define Notify_DownloadCtrlRemoveFile(file)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveFile, file)
 #define Notify_DownloadCtrlRemoveSource(ptr0, ptr1)	MuleNotify::DoNotify(&MuleNotify::DownloadCtrlRemoveSource, ptr0, ptr1)
-#define Notify_DownloadCtrlHideSource(ptr)			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlHideSource, ptr)
-#define Notify_DownloadCtrlSort()					MuleNotify::DoNotify(&MuleNotify::DownloadCtrlSort)
+#define Notify_DownloadCtrlHideSource(ptr)		MuleNotify::DoNotify(&MuleNotify::DownloadCtrlHideSource, ptr)
+#define Notify_DownloadCtrlSort()			MuleNotify::DoNotify(&MuleNotify::DownloadCtrlSort)
 
 // upload ctrl
-#define Notify_UploadCtrlAddClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtUploading)
-#define Notify_UploadCtrlRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtUploading)
-#define Notify_UploadCtrlRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtUploading)
+#define Notify_UploadCtrlAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtUploading)
+#define Notify_UploadCtrlRefreshClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtUploading)
+#define Notify_UploadCtrlRemoveClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtUploading)
 
 // client ctrl
-#define Notify_ClientCtrlAddClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtClients)
-#define Notify_ClientCtrlRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtClients)
-#define Notify_ClientCtrlRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtClients)
+#define Notify_ClientCtrlAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtClients)
+#define Notify_ClientCtrlRefreshClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtClients)
+#define Notify_ClientCtrlRemoveClient(ptr)		MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtClients)
 
 // queue list
-#define Notify_QlistAddClient(ptr)					MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtQueued)
-#define Notify_QlistRemoveClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
-#define Notify_QlistRefreshClient(ptr)				MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
+#define Notify_QlistAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtQueued)
+#define Notify_QlistRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
+#define Notify_QlistRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
 
 // server
-#define Notify_ServerAdd(ptr)						MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)
-#define Notify_ServerRemove(ptr)					MuleNotify::DoNotify(&MuleNotify::ServerRemove, ptr)
-#define Notify_ServerRemoveDead()					MuleNotify::DoNotify(&MuleNotify::ServerRemoveDead)
-#define Notify_ServerRemoveAll()					MuleNotify::DoNotify(&MuleNotify::ServerRemoveAll)
-#define Notify_ServerHighlight(ptr, val)			MuleNotify::DoNotify(&MuleNotify::ServerHighlight, ptr, val)
-#define Notify_ServerRefresh(ptr)					MuleNotify::DoNotify(&MuleNotify::ServerRefresh, ptr)
-#define Notify_ServerFreeze()						MuleNotify::DoNotify(&MuleNotify::ServerFreeze)
-#define Notify_ServerThaw()							MuleNotify::DoNotify(&MuleNotify::ServerThaw)
-#define Notify_ServerUpdateED2KInfo()				MuleNotify::DoNotify(&MuleNotify::ServerUpdateED2KInfo)
-#define Notify_ServerUpdateKadKInfo()				MuleNotify::DoNotify(&MuleNotify::ServerUpdateKadKInfo)
+#define Notify_ServerAdd(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)
+#define Notify_ServerRemove(ptr)			MuleNotify::DoNotify(&MuleNotify::ServerRemove, ptr)
+#define Notify_ServerRemoveDead()			MuleNotify::DoNotify(&MuleNotify::ServerRemoveDead)
+#define Notify_ServerRemoveAll()			MuleNotify::DoNotify(&MuleNotify::ServerRemoveAll)
+#define Notify_ServerHighlight(ptr, val)		MuleNotify::DoNotify(&MuleNotify::ServerHighlight, ptr, val)
+#define Notify_ServerRefresh(ptr)			MuleNotify::DoNotify(&MuleNotify::ServerRefresh, ptr)
+#define Notify_ServerFreeze()				MuleNotify::DoNotify(&MuleNotify::ServerFreeze)
+#define Notify_ServerThaw()				MuleNotify::DoNotify(&MuleNotify::ServerThaw)
+#define Notify_ServerUpdateED2KInfo()			MuleNotify::DoNotify(&MuleNotify::ServerUpdateED2KInfo)
+#define Notify_ServerUpdateKadKInfo()			MuleNotify::DoNotify(&MuleNotify::ServerUpdateKadKInfo)
 
 // search
-#define Notify_SearchCancel()						MuleNotify::DoNotify(&MuleNotify::SearchCancel)
-#define Notify_SearchLocalEnd()						MuleNotify::DoNotify(&MuleNotify::SearchLocalEnd)
-#define Notify_KadSearchEnd(val)					MuleNotify::DoNotify(&MuleNotify::KadSearchEnd, val)
-#define Notify_Search_Update_Sources(ptr)			MuleNotify::DoNotify(&MuleNotify::Search_Update_Sources, ptr)
-#define Notify_Search_Add_Result(s)					MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
+#define Notify_SearchCancel()				MuleNotify::DoNotify(&MuleNotify::SearchCancel)
+#define Notify_SearchLocalEnd()				MuleNotify::DoNotify(&MuleNotify::SearchLocalEnd)
+#define Notify_KadSearchEnd(val)			MuleNotify::DoNotify(&MuleNotify::KadSearchEnd, val)
+#define Notify_Search_Update_Sources(ptr)		MuleNotify::DoNotify(&MuleNotify::Search_Update_Sources, ptr)
+#define Notify_Search_Add_Result(s)			MuleNotify::DoNotify(&MuleNotify::Search_Add_Result, s)
 
 // chat
 #define Notify_ChatRefreshFriend(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatRefreshFriend, val0, val1, s)
 #define Notify_ChatConnResult(val0, val1, s)		MuleNotify::DoNotify(&MuleNotify::ChatConnResult, val0, val1, s)
-#define Notify_ChatProcessMsg(val0, s)				MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
+#define Notify_ChatProcessMsg(val0, s)			MuleNotify::DoNotify(&MuleNotify::ChatProcessMsg, val0, s)
 
 // misc
-#define Notify_ShowConnState(val)					MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
-#define Notify_ShowUserCount(str)					MuleNotify::DoNotify(&MuleNotify::ShowUserCount, str)
-#define Notify_ShowQueueCount(val)					MuleNotify::DoNotify(&MuleNotify::ShowQueueCount, val)
-#define Notify_ShowUpdateCatTabTitles()				MuleNotify::DoNotify(&MuleNotify::ShowUpdateCatTabTitles)
-#define Notify_ShowGUI()							MuleNotify::DoNotify(&MuleNotify::ShowGUI)
+#define Notify_ShowConnState(val)			MuleNotify::DoNotify(&MuleNotify::ShowConnState, val)
+#define Notify_ShowUserCount(str)			MuleNotify::DoNotify(&MuleNotify::ShowUserCount, str)
+#define Notify_ShowQueueCount(val)			MuleNotify::DoNotify(&MuleNotify::ShowQueueCount, val)
+#define Notify_ShowUpdateCatTabTitles()			MuleNotify::DoNotify(&MuleNotify::ShowUpdateCatTabTitles)
+#define Notify_ShowGUI()				MuleNotify::DoNotify(&MuleNotify::ShowGUI)
 
 // categories
-#define Notify_CategoryAdded()						MuleNotify::DoNotify(&MuleNotify::CategoryAdded)
-#define Notify_CategoryUpdate(cat)					MuleNotify::DoNotify(&MuleNotify::CategoryUpdate, cat)
-#define Notify_CategoryDelete(cat)					MuleNotify::DoNotify(&MuleNotify::CategoryDelete, cat)
+#define Notify_CategoryAdded()				MuleNotify::DoNotify(&MuleNotify::CategoryAdded)
+#define Notify_CategoryUpdate(cat)			MuleNotify::DoNotify(&MuleNotify::CategoryUpdate, cat)
+#define Notify_CategoryDelete(cat)			MuleNotify::DoNotify(&MuleNotify::CategoryDelete, cat)
 
 //
 // GUI -> core notification
@@ -450,15 +450,15 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define CoreNotify_PartFile_RemoveFullQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveFullQueue, ptr)
 #define CoreNotify_PartFile_RemoveHighQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveHighQueue, ptr)
 #define CoreNotify_PartFile_SourceCleanup(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_SourceCleanup, ptr)
-#define CoreNotify_PartFile_Swap_A4AF(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF, ptr)
+#define CoreNotify_PartFile_Swap_A4AF(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF, ptr)
 #define CoreNotify_PartFile_Swap_A4AF_Auto(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Auto, ptr)
 #define CoreNotify_PartFile_Swap_A4AF_Others(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Others, ptr)
-#define CoreNotify_PartFile_Pause(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Pause, ptr)
-#define CoreNotify_PartFile_Resume(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Resume, ptr)
-#define CoreNotify_PartFile_Stop(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Stop, ptr)
+#define CoreNotify_PartFile_Pause(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Pause, ptr)
+#define CoreNotify_PartFile_Resume(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Resume, ptr)
+#define CoreNotify_PartFile_Stop(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Stop, ptr)
 #define CoreNotify_PartFile_PrioAuto(ptr, val)		MuleNotify::DoNotify(&MuleNotify::PartFile_PrioAuto, ptr, val)
 #define CoreNotify_PartFile_PrioSet(p, v0, v1)		MuleNotify::DoNotify(&MuleNotify::PartFile_PrioSet, p, v0, v1)
-#define CoreNotify_PartFile_Delete(ptr)				MuleNotify::DoNotify(&MuleNotify::PartFile_Delete, ptr)
+#define CoreNotify_PartFile_Delete(ptr)			MuleNotify::DoNotify(&MuleNotify::PartFile_Delete, ptr)
 #define CoreNotify_PartFile_SetCat(ptr, val)		MuleNotify::DoNotify(&MuleNotify::PartFile_SetCat, ptr, val)
 
 // KnownFile
@@ -476,3 +476,4 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 
 #endif // __GUIEVENTS_H__
+
