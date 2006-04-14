@@ -1688,7 +1688,8 @@ CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templat
 	} else if ( ::wxFileExists(wxFileName(m_wwwroot, wxT("index.php")).GetFullPath()) ) {
 		m_index = wxT("index.php");
 	} else {
-		webInterface->Show(_("Index file not found: bad template\n"));
+		webInterface->Show(_("Index file not found: ") + 
+			wxFileName(m_wwwroot, wxT("index.{html,php}")).GetFullPath() + wxT("\n"));
 	}
 }
 
