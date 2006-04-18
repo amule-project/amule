@@ -472,7 +472,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 		wxCopyFile(JoinPaths(folder, partfile), newfilename, false);
 	}
 
-	file->hashlist.Clear();
+	file->m_hashlist.clear();
 
 	DeleteContents(file->m_gaplist);
 

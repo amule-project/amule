@@ -27,10 +27,10 @@
 #define TYPES_H
 
 #include <inttypes.h>		// Needed for int type declarations
-#include <wx/dynarray.h>	// Needed for WX_DEFINE_ARRAY_SHORT
 #include <wx/string.h>		// Needed for wxString and wxEmptyString
 
-#include <list>				// Needed for std::list
+#include <list>			// Needed for std::list
+#include <vector>		// Needed for std::vector
 
 
 // These are MSVC defines used in eMule. They should 
@@ -100,10 +100,7 @@ typedef std::list<CKnownFile*> CKnownFilePtrList;
 typedef std::list<CUpDownClient*> CClientPtrList;
 //@}
 
-
-
-
-WX_DEFINE_ARRAY_SHORT(uint16, ArrayOfUInts16);
+typedef std::vector<uint16> ArrayOfUInts16;
 
 /* This is the Evil Void String For Returning On Const References From Hell */
 static const wxString EmptyString = wxEmptyString;

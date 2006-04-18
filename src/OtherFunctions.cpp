@@ -792,10 +792,6 @@ wxString GetCatTitle(int catid)
 	}
 }
 
-int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second) {
-	   return (((int)*first) - ((int)*second)) ;
-}	  
-
 typedef std::map<wxString, EED2KFileTypeClass> SED2KFileTypeMap;
 typedef SED2KFileTypeMap::value_type SED2KFileTypeMapElement;
 static SED2KFileTypeMap ED2KFileTypesMap;

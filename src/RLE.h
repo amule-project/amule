@@ -52,7 +52,7 @@ public:
 	
 	const unsigned char *Encode(ArrayOfUInts16 &data, int &outlen)
 	{
-		return EncodeT<ArrayOfUInts16>(data, data.GetCount(), outlen);
+		return EncodeT<ArrayOfUInts16>(data, data.size(), outlen);
 	}
 	
 	const unsigned char *Decode(const unsigned char *data, int len);	
@@ -207,3 +207,4 @@ public:
 };
 
 #endif
+

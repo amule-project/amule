@@ -2148,7 +2148,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		// Place each gap, one PART at a time
 		for ( uint64 i = start; i < end; ++i ) {
 			COLORREF color;
-			if ( i < file->m_SrcpartFrequency.GetCount() && file->m_SrcpartFrequency[i]) {
+			if ( i < file->m_SrcpartFrequency.size() && file->m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( file->m_SrcpartFrequency[i] - 1 ) );
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
 			} else {

@@ -27,8 +27,6 @@
 
 #include <vector>
 
-#include <wx/dynarray.h>	// Needed for wxArray
-#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h> 	// Needed for wxStringTokenizer
 
 #include "Proxy.h"		// Needed for CProxyData
@@ -38,12 +36,12 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"		// Neeed for logRemoteClient
 #include "updownclient.h"	// Needed for CUpDownClient
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "ClientList.h"		// Needed for CClientList
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "ClientUDPSocket.h" // Needed for CClientUDPSocket
+#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "PartFile.h"		// Needed for CPartFile
 #include "MemFile.h"		// Needed for CMemFile
 #include "kademlia/kademlia/Kademlia.h" // Needed for CKademlia::Kademlia

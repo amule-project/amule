@@ -94,8 +94,8 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 	SetFileName(searchresult->GetFileName());
 	SetFileSize(searchresult->GetFileSize());
 	
-	for (unsigned int i = 0; i < searchresult->taglist.size();++i){
-		const CTag& pTag = *searchresult->taglist[i];
+	for (unsigned int i = 0; i < searchresult->m_taglist.size(); ++i){
+		const CTag& pTag = searchresult->m_taglist[i];
 		
 		bool bTagAdded = false;
 		if (pTag.GetNameID() == 0 && !pTag.GetName().IsEmpty() && (pTag.IsStr() || pTag.IsInt())) {
@@ -136,7 +136,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					AddDebugLogLineM( false, logPartFile,
 						wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
 						pTag.GetFullInfo() );
-					taglist.Add(new CTag(pTag));
+					m_taglist.push_back(pTag);
 					bTagAdded = true;
 					break;
 				}
@@ -160,7 +160,7 @@ CPartFile::CPartFile(CSearchFile* searchresult)
 					AddDebugLogLineM( false, logPartFile,
 						wxT("CPartFile::CPartFile(CSearchFile*): added tag ") +
 						pTag.GetFullInfo() );
-					taglist.Add(new CTag(pTag));
+					m_taglist.push_back(pTag);
 					bTagAdded = true;
 					break;
 				}
@@ -242,7 +242,7 @@ void CPartFile::CreatePartFile()
 	} while (wxFileName::FileExists(m_fullname));
 	
 	wxString strPartName = m_partmetfilename.Left( m_partmetfilename.Length() - 4);
-	taglist.Add( new CTagString(FT_PARTFILENAME, strPartName ) );
+	m_taglist.push_back(CTagString(FT_PARTFILENAME, strPartName ));
 	
 	Gap_Struct* gap = new Gap_Struct;
 	gap->start = 0;
@@ -551,7 +551,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 							}
 							// End Changes by Slugfiller for better exception handling
 						} else {
-							taglist.Add(new CTag(newtag));
+							m_taglist.push_back(newtag);
 						}
 					}
 				}
@@ -568,21 +568,21 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			
 			for (uint16 i = 0; i < parts && (metFile.GetPosition()+16<metFile.GetLength()); ++i){
 				CMD4Hash cur_hash = metFile.ReadHash();
-				hashlist.Add(cur_hash);
+				m_hashlist.push_back(cur_hash);
 			}
 
 			CMD4Hash checkhash;
-			if (!hashlist.IsEmpty()){
-				byte buffer[hashlist.GetCount() * 16];
-				for (size_t i = 0; i < hashlist.GetCount(); ++i)
-					md4cpy(buffer+(i*16), hashlist[i].GetHash());
-				CreateHashFromString(buffer, hashlist.GetCount()*16, checkhash.GetHash());
+			if (!m_hashlist.empty()){
+				byte buffer[m_hashlist.size() * 16];
+				for (size_t i = 0; i < m_hashlist.size(); ++i)
+					md4cpy(buffer+(i*16), m_hashlist[i].GetHash());
+				CreateHashFromString(buffer, m_hashlist.size()*16, checkhash.GetHash());
 			}
 			bool flag=false;
 			if (m_abyFileHash == checkhash) {
 				flag=true;
 			} else {
-				hashlist.Clear();
+				m_hashlist.clear();
 				flag=false;
 			}
 		}			
@@ -688,7 +688,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		return true;
 	} else {
 		m_hashsetneeded = false;
-		for (size_t i = 0; i < hashlist.GetCount(); ++i) {
+		for (size_t i = 0; i < m_hashlist.size(); ++i) {
 			if (IsComplete(i*PARTSIZE,((i+1)*PARTSIZE)-1)) {
 				SetPartFileStatus(PS_READY);
 			}
@@ -765,14 +765,14 @@ bool CPartFile::SavePartFile(bool Initial)
 		file.WriteUInt32(GetLastModificationTime(m_fullname));
 		// hash
 		file.WriteHash(m_abyFileHash);
-		uint16 parts = hashlist.GetCount();
+		uint16 parts = m_hashlist.size();
 		file.WriteUInt16(parts);
 		for (int x = 0; x < parts; ++x) {
-			file.WriteHash(hashlist[x]);
+			file.WriteHash(m_hashlist[x]);
 		}
 		// tags		
 		#define FIXED_TAGS 15
-		uint32 tagcount = taglist.GetCount()+FIXED_TAGS+(m_gaplist.size()*2);
+		uint32 tagcount = m_taglist.size() + FIXED_TAGS + (m_gaplist.size()*2);
 		if (not m_corrupted_list.empty()) {			
 			++tagcount;
 		}
@@ -863,8 +863,8 @@ bool CPartFile::SavePartFile(bool Initial)
 			CTagInt32( FT_KADLASTPUBLISHNOTES,	GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
 		}		
 		
-		for (uint32 j = 0; j < (uint32)taglist.GetCount();++j) {
-			taglist[j]->WriteTagToFile(&file);
+		for (uint32 j = 0; j < (uint32)m_taglist.size();++j) {
+			m_taglist[j].WriteTagToFile(&file);
 		}
 		
 		// gaps
@@ -1129,7 +1129,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 		}
 	}
 	else{
-		for (size_t i = 0; i < hashlist.GetCount(); ++i){
+		for (size_t i = 0; i < m_hashlist.size(); ++i){
 			// Kry - trel_ar's completed parts check on rehashing.
 			// Very nice feature, if a file is completed but .part.met don't belive it,
 			// update it.
@@ -1759,10 +1759,9 @@ void CPartFile::UpdatePartsInfo()
 	bool flag = (time(NULL) - m_nCompleteSourcesTime > 0); 
 
 	// Ensure the frequency-list is ready
-	if ( m_SrcpartFrequency.GetCount() != GetPartCount() ) {
-		m_SrcpartFrequency.Clear();
-
-		m_SrcpartFrequency.Add( 0, GetPartCount() );
+	if ( m_SrcpartFrequency.size() != GetPartCount() ) {
+		m_SrcpartFrequency.clear();
+		m_SrcpartFrequency.insert(m_SrcpartFrequency.begin(), GetPartCount(), 0);
 	}
 
 	// Find number of available parts
@@ -1781,11 +1780,11 @@ void CPartFile::UpdatePartsInfo()
 	if ( flag ) {
 		ArrayOfUInts16 count;	
 	
-		count.Alloc(GetSourceCount());	
+		count.reserve(GetSourceCount());	
 	
 		for ( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ++it ) {
 			if ( !(*it)->GetUpPartStatus().empty() && (*it)->GetUpPartCount() == partcount ) {
-				count.Add( (*it)->GetUpCompleteSourcesCount() );
+				count.push_back((*it)->GetUpCompleteSourcesCount());
 			}
 		}
 	
@@ -1799,16 +1798,11 @@ void CPartFile::UpdatePartsInfo()
 				m_nCompleteSourcesCount = m_SrcpartFrequency[i];
 			}
 		}
+		count.push_back(m_nCompleteSourcesCount);
 	
-		count.Add(m_nCompleteSourcesCount);
-	
-		count.Shrink();
-	
-		int32 n = count.GetCount();
+		int32 n = count.size();
 		if (n > 0) {
-
-			// Kry - Native wx functions instead
-			count.Sort(Uint16CompareValues);
+			std::sort(count.begin(), count.end(), std::less<uint16>());
 			
 			// calculate range
 			int32 i= n >> 1;		// (n / 2)
@@ -3548,23 +3542,19 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 {
 	const BitVector& freq = client->GetPartStatus();
 	
-	if ( m_SrcpartFrequency.GetCount() != GetPartCount() ) {
-		m_SrcpartFrequency.Clear();
-
-		m_SrcpartFrequency.Add( 0, GetPartCount() );
+	if ( m_SrcpartFrequency.size() != GetPartCount() ) {
+		m_SrcpartFrequency.clear();
+		m_SrcpartFrequency.insert(m_SrcpartFrequency.begin(), GetPartCount(), 0);
 
 		if ( !increment ) {
 			return;
 		}
 	}
 	
-	
 	unsigned int size = freq.size();
-
-	if ( size != m_SrcpartFrequency.GetCount() ) {
+	if ( size != m_SrcpartFrequency.size() ) {
 		return;
 	}
-	
 	
 	if ( increment ) {
 		for ( unsigned int i = 0; i < size; i++ ) {
@@ -3617,7 +3607,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_category = tag->FileCat();
 
 	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
-	m_SrcpartFrequency.SetCount(m_iPartCount);
+	m_SrcpartFrequency.reserve(m_iPartCount);
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
 		m_iDownPriority-= 10;
