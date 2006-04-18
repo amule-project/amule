@@ -13,6 +13,9 @@ Trunk
 		* Fix for server disconnection during global search.
 		* Slightly more informational error message in amuleweb when
 		  the template is not found.
+		* No more wxARRAY's in amuleweb.
+		* Fixed bug in mutex code in amuleweb (s_mutex_wcThreads).
+		* No more wxARRAY's in aMule code.
 
 --------------------------------------------------------------------------------
 

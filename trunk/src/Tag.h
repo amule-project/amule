@@ -47,22 +47,22 @@ public:
 	CTag(const CTag& rTag);
 	CTag(const CFileDataIO& data, bool bOptUTF8);
 	virtual ~CTag();
+	CTag& operator=(const CTag&);
 
-	uint8 GetType() const			{ return m_uType; }
-	uint8 GetNameID() const			{ return m_uName; }
+	uint8 GetType() const		{ return m_uType; }
+	uint8 GetNameID() const		{ return m_uName; }
 	const wxString& GetName() const	{ return m_Name; }
 	
-	bool IsStr() const				{ return m_uType == TAGTYPE_STRING; }
-	bool IsInt() const				{ return 
-											(m_uType == TAGTYPE_UINT64) ||
-											(m_uType == TAGTYPE_UINT32) ||
-											(m_uType == TAGTYPE_UINT16) ||
-											(m_uType == TAGTYPE_UINT8)
-											; }
-	bool IsFloat() const			{ return m_uType == TAGTYPE_FLOAT32; }
-	bool IsHash() const				{ return m_uType == TAGTYPE_HASH; }
-	bool IsBlob() const				{ return m_uType == TAGTYPE_BLOB; }
-	bool IsBsob() const				{ return m_uType == TAGTYPE_BSOB; }
+	bool IsStr() const		{ return m_uType == TAGTYPE_STRING; }
+	bool IsInt() const		{ return 
+		(m_uType == TAGTYPE_UINT64) ||
+		(m_uType == TAGTYPE_UINT32) ||
+		(m_uType == TAGTYPE_UINT16) ||
+		(m_uType == TAGTYPE_UINT8); }
+	bool IsFloat() const		{ return m_uType == TAGTYPE_FLOAT32; }
+	bool IsHash() const		{ return m_uType == TAGTYPE_HASH; }
+	bool IsBlob() const		{ return m_uType == TAGTYPE_BLOB; }
+	bool IsBsob() const		{ return m_uType == TAGTYPE_BSOB; }
 	
 	uint64 GetInt() const;
 	
@@ -78,34 +78,33 @@ public:
 	const byte* GetBsob() const;
 	uint32 GetBsobSize() const;
 	
-	CTag* CloneTag()				{ return new CTag(*this); }
+	CTag* CloneTag()		{ return new CTag(*this); }
 	
-	bool WriteTagToFile(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone, bool restrictive = true) const;	// old eD2K tags
-	bool WriteNewEd2kTag(CFileDataIO* file, EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
+	bool WriteTagToFile(CFileDataIO* file,
+		EUtf8Str eStrEncode = utf8strNone,
+		bool restrictive = true) const;			// old eD2K tags
+	bool WriteNewEd2kTag(CFileDataIO* file,
+		EUtf8Str eStrEncode = utf8strNone) const;	// new eD2K tags
 	
 	wxString GetFullInfo() const;
 
 protected:
-
 	CTag(const wxString& Name);
 	CTag(uint8 uName);
 
 	uint8	m_uType;
 	union {
-	  CMD4Hash*	m_hashVal;
-	  wxString*	m_pstrVal;
-	  uint64	m_uVal;
-	  float		m_fVal;
-	  unsigned char*		m_pData;
+		CMD4Hash*	m_hashVal;
+		wxString*	m_pstrVal;
+		uint64		m_uVal;
+		float		m_fVal;
+		unsigned char*	m_pData;
 	};
 
-	uint32	m_nSize;
+	uint32		m_nSize;
 	
 private:
-	//! CTag is not assignable.
-	CTag& operator=(const CTag&);
-	
-	uint8	m_uName;
+	uint8		m_uName;
 	wxString	m_Name;
 	
 };

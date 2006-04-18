@@ -364,7 +364,7 @@ void CSharedFileList::FindSharedFiles()
 	// Also remove bogus entries
 	for (size_t i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
 		const wxString& path = theApp.glob_prefs->shareddir_list.Item(i);
-		
+
 		if (CheckDirExists(path)) {
 			sharedPaths.push_back(ReadyPath(path));
 			++i;

@@ -32,6 +32,7 @@
 #include <wx/dynarray.h>
 
 #include <set>
+#include <vector>
 
 #include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
 #include "OPCodes.h"		// Needed for PARTSIZE
@@ -71,9 +72,9 @@ namespace Kademlia{
 	class CEntry;
 };
 
-WX_DECLARE_OBJARRAY(CMD4Hash, ArrayOfCMD4Hash);
+typedef vector<CMD4Hash> ArrayOfCMD4Hash;
 
-WX_DECLARE_OBJARRAY(CTag*, ArrayOfCTag);
+typedef vector<CTag> ArrayOfCTag;
 
 class CFileStatistic {
 	friend class CKnownFile;
@@ -117,17 +118,17 @@ class CAbstractFile
 public:
 	CAbstractFile();
 	explicit CAbstractFile(const CAbstractFile& other);
-	virtual ~CAbstractFile();
+	virtual ~CAbstractFile() {}
 
-	virtual const wxString&	GetFileName() const		{return m_strFileName;}
-	const CMD4Hash&	GetFileHash() const	{return m_abyFileHash;}
+	virtual const wxString&	GetFileName() const	{ return m_strFileName; }
+	const CMD4Hash&	GetFileHash() const		{ return m_abyFileHash; }
 
 	uint64	GetFileSize() const	{ return m_nFileSize;}
 	bool	IsLargeFile() const	{ return m_nFileSize > (uint64)OLD_MAX_FILE_SIZE; }
 
-	virtual void SetFileSize(uint64 nFileSize) { m_nFileSize = nFileSize; }
+	virtual void SetFileSize(uint64 nFileSize)	{ m_nFileSize = nFileSize; }
 	
-	virtual void	SetFileName(const wxString& strmakeFilename);
+	virtual void SetFileName(const wxString& strmakeFilename);
 
 	/* Tags and Notes handling */
 	uint32 GetIntTagValue(uint8 tagname) const;
@@ -136,12 +137,12 @@ public:
 	void SetIntTagValue(uint8 tagname, uint32 ruValue) const;
 	const wxString& GetStrTagValue(uint8 tagname) const;
 	const wxString& GetStrTagValue(const wxString& tagname) const;
-	CTag* GetTag(const wxString& tagname) const;	
-	CTag* GetTag(const wxString& tagname, uint8 tagtype) const;
-	CTag* GetTag(uint8 tagname) const;
-	CTag* GetTag(uint8 tagname, uint8 tagtype) const;	
-	void AddTagUnique(CTag* pTag);
-	const ArrayOfCTag& GetTags() const { return taglist; }
+	const CTag *GetTag(const wxString& tagname) const;	
+	const CTag *GetTag(const wxString& tagname, uint8 tagtype) const;
+	const CTag *GetTag(uint8 tagname) const;
+	const CTag *GetTag(uint8 tagname, uint8 tagtype) const;	
+	void AddTagUnique(const CTag &pTag);
+	const ArrayOfCTag& GetTags() const { return m_taglist; }
 	void AddNote(Kademlia::CEntry* pEntry);
 	const CKadEntryPtrList& getNotes() const { return m_kadNotes; }
 
@@ -164,7 +165,7 @@ protected:
 	int8		m_iRating;
 	bool		m_hasComment;
 	int8		m_iUserRating;
-	ArrayOfCTag taglist;
+	ArrayOfCTag	m_taglist;
 	CKadEntryPtrList m_kadNotes;
 
 private:
@@ -203,7 +204,7 @@ public:
 	virtual void SetFileSize(uint64 nFileSize);
 
 	// local available part hashs
-	uint16	GetHashCount() const	{return hashlist.GetCount();}
+	uint16	GetHashCount() const	{return m_hashlist.size();}
 	const CMD4Hash&	GetPartHash(uint16 part) const;
 
 	// nr. of part hashs according the file size wrt ED2K protocol
@@ -275,8 +276,8 @@ public:
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
 	// aich
-	CAICHHashSet*	GetAICHHashset() const							{return m_pAICHHashSet;}
-	void			SetAICHHashset(CAICHHashSet* val)				{m_pAICHHashSet = val;}		
+	CAICHHashSet* GetAICHHashset() const	{ return m_pAICHHashSet; }
+	void SetAICHHashset(CAICHHashSet* val)	{ m_pAICHHashSet = val; }
 
 	/**
 	 * Updates the requency of uploading parts from with the data the client provides.
@@ -299,9 +300,9 @@ protected:
 	bool	LoadDateFromFile(const CFileDataIO* file);
 	void	CreateHashFromFile(CFileDataIO* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
-	ArrayOfCMD4Hash hashlist;
+	ArrayOfCMD4Hash m_hashlist;
 	wxString m_strFilePath;	
-	CAICHHashSet*			m_pAICHHashSet;
+	CAICHHashSet* m_pAICHHashSet;
 
 	void	CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;

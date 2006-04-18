@@ -59,19 +59,28 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint
 	
 	uint32 tagcount = data.ReadUInt32();
 	for (unsigned int i = 0; i < tagcount; ++i) {
-		std::auto_ptr<CTag> tag(new CTag(data, optUTF8));
-		switch (tag->GetNameID()) {
-			case FT_FILENAME:			SetFileName(tag->GetStr());	break;
-			case FT_FILESIZE:			SetFileSize(tag->GetInt());	break;
+		CTag tag(data, optUTF8);
+		switch (tag.GetNameID()) {
+			case FT_FILENAME:
+				SetFileName(tag.GetStr());
+				break;
+			case FT_FILESIZE:
+				SetFileSize(tag.GetInt());
+				break;
 			case FT_FILESIZE_HI:
-				SetFileSize( (((uint64)tag->GetInt()) << 32) + GetFileSize());
+				SetFileSize( (((uint64)tag.GetInt()) << 32) + GetFileSize());
 				break;				
-			case FT_FILERATING:			m_iUserRating = (tag->GetInt() & 0xF) / 3;	break;
-			case FT_SOURCES:			m_sourceCount = tag->GetInt(); break;
-			case FT_COMPLETE_SOURCES:	m_completeSourceCount = tag->GetInt(); break;
-			
+			case FT_FILERATING:
+				m_iUserRating = (tag.GetInt() & 0xF) / 3;
+				break;
+			case FT_SOURCES:
+				m_sourceCount = tag.GetInt();
+				break;
+			case FT_COMPLETE_SOURCES:
+				m_completeSourceCount = tag.GetInt();
+				break;
 			default:
-				AddTagUnique(tag.release());
+				AddTagUnique(tag);
 		}
 	}
 

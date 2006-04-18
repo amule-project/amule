@@ -196,6 +196,40 @@ CTag::~CTag()
 }
 
 
+CTag &CTag::operator=(const CTag &rhs)
+{
+	if (&rhs != this) {
+		m_uType = rhs.m_uType;
+		m_uName = rhs.m_uName;
+		m_Name = rhs.m_Name;
+		m_nSize = 0;
+		if (rhs.IsStr()) {
+			wxString *p = new wxString(rhs.GetStr());
+			delete m_pstrVal;
+			m_pstrVal = p;
+		} else if (rhs.IsInt()) {
+			m_uVal = rhs.GetInt();
+		} else if (rhs.IsFloat()) {
+			m_fVal = rhs.GetFloat();
+		} else if (rhs.IsHash()) {
+			CMD4Hash *p = new CMD4Hash(rhs.GetHash());
+			delete m_hashVal;
+			m_hashVal = p;
+		} else if (rhs.IsBlob()) {
+			m_nSize = rhs.GetBlobSize();
+			unsigned char *p = new unsigned char[rhs.GetBlobSize()];
+			delete [] m_pData;
+			m_pData = p;
+			memcpy(m_pData, rhs.GetBlob(), rhs.GetBlobSize());
+		} else {
+			wxASSERT(0);
+			m_uVal = 0;
+		}
+	}
+	return *this;
+}
+
+
 #define CHECK_TAG_TYPE(check, expected) \
 	if (!(check)) { \
 		throw CInvalidPacket(wxT(#expected) wxT(" tag expected, but found ") + GetFullInfo()); \

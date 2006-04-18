@@ -25,16 +25,16 @@
 //
 
 
-#include <wx/app.h>				// Needed for wxTheApp
+#include <wx/app.h>			// Needed for wxTheApp
 #include <wx/filename.h>		// Needed for wxFileName
 
 #include "ThreadTasks.h"		// Interface declarations
 #include "PartFile.h"			// Needed for CPartFile
-#include "Logger.h"				// Needed for Add(Debug)LogLineM
-#include "CFile.h"				// Needed for CFile
-#include <libs/common/Format.h>	// Needed for CFormat
+#include "Logger.h"			// Needed for Add(Debug)LogLineM
+#include "CFile.h"			// Needed for CFile
+#include <libs/common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"		// Needed for CheckFileExists
-#include "amule.h"				// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "SharedFileList.h"		// Needed for theApp.sharedfiles
 #include "KnownFileList.h"		// Needed for theApp.knownfiles
 #include "Preferences.h"		// Needed for thePrefs
@@ -44,9 +44,9 @@
 
 
 //! This hash represents the value for an empty MD4 hashing
-const byte g_emptyMD4Hash[16] = { 0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
-									 0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
-
+const byte g_emptyMD4Hash[16] = {
+	0x31, 0xD6, 0xCF, 0xE0, 0xD1, 0x6A, 0xE9, 0x31, 
+	0xB7, 0x3C, 0x59, 0xD7, 0xE0, 0xC0, 0x89, 0xC0 };
 
 
 ////////////////////////////////////////////////////////////
@@ -96,7 +96,6 @@ void CHashingTask::Entry()
 		AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
 		return;			
 	}
-
 	
 	// For thread-safety, results are passed via a temporary file object.
 	CScopedPtr<CKnownFile> knownfile(new CKnownFile());
@@ -104,26 +103,34 @@ void CHashingTask::Entry()
 	knownfile->SetFileName(m_filename);
 	knownfile->SetFileSize(file.GetLength());
 	knownfile->date = GetLastModificationTime(fullPath);
-	knownfile->m_AvailPartFrequency.Insert(0, 0, knownfile->GetPartCount());
-
+	knownfile->m_AvailPartFrequency.insert(
+		knownfile->m_AvailPartFrequency.begin(),
+		knownfile->GetPartCount(), 0);
 	
 	if ((m_toHash & EH_MD4) and (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddLogLineM( false, logHasher, CFormat( _("Starting to create MD4 and AICH hash for file: %s")) % m_filename );
+		AddLogLineM( false, logHasher, CFormat( 
+			_("Starting to create MD4 and AICH hash for file: %s")) %
+			m_filename );
 	} else if ((m_toHash & EH_MD4)) {
-		AddLogLineM( false, logHasher, CFormat( _("Starting to create MD4 hash for file: %s")) % m_filename );
+		AddLogLineM( false, logHasher, CFormat(
+			_("Starting to create MD4 hash for file: %s")) % m_filename );
 	} else if ((m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
-		AddLogLineM( false, logHasher, CFormat( _("Starting to create AICH hash for file: %s")) % m_filename );
+		AddLogLineM( false, logHasher, CFormat(
+			_("Starting to create AICH hash for file: %s")) % m_filename );
 	} else {
-		wxCHECK_RET(0, wxT("No hashes requested for file, skipping: ") + m_filename);
+		wxCHECK_RET(0, wxT("No hashes requested for file, skipping: ") +
+			m_filename);
 	}
 	
 	
 	// This loops creates the part-hashes, loop-de-loop.
 	while (!file.Eof() and not TestDestroy()) {
 		if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
-			AddDebugLogLineM(true, logHasher, wxT("Error while hashing file, skipping: ") + m_filename);
+			AddDebugLogLineM(true, logHasher,
+				wxT("Error while hashing file, skipping: ") +
+				m_filename);
 		
 			return;
 		}
@@ -132,24 +139,22 @@ void CHashingTask::Entry()
 	if ((m_toHash & EH_MD4) and not TestDestroy()) {
 		// If the file is < PARTSIZE, then the filehash is that one hash,
 		// otherwise, the filehash is the hash of the parthashes
-		if ( knownfile->hashlist.GetCount() == 1 ) {
-			knownfile->m_abyFileHash = knownfile->hashlist[0];
-			knownfile->hashlist.Clear();
+		if ( knownfile->m_hashlist.size() == 1 ) {
+			knownfile->m_abyFileHash = knownfile->m_hashlist[0];
+			knownfile->m_hashlist.clear();
 		} else {
-			const unsigned int len = knownfile->hashlist.GetCount() * 16;
+			const unsigned int len = knownfile->m_hashlist.size() * 16;
 			byte data[len];
 			
-			for (size_t i = 0; i < knownfile->hashlist.GetCount(); ++i) {
-				memcpy( data + 16*i, knownfile->hashlist[i].GetHash(), 16 );
+			for (size_t i = 0; i < knownfile->m_hashlist.size(); ++i) {
+				memcpy(data + 16*i, knownfile->m_hashlist[i].GetHash(), 16);
 			}
 
 			byte hash[16];
-
 			knownfile->CreateHashFromString( data, len, hash, NULL );
 			knownfile->m_abyFileHash.SetHash( (byte*)hash );
 		}
 	}
-	
 	
 	// Did we create a AICH hashset?
 	if ((m_toHash & EH_AICH) and not TestDestroy()) {
@@ -158,13 +163,12 @@ void CHashingTask::Entry()
 		AICHHashSet->ReCalculateHash(false);
 		if (AICHHashSet->VerifyHashTree(true) ) {
 			AICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
-
 			if (!AICHHashSet->SaveHashSet()) {
-				AddDebugLogLineM( true, logHasher, wxT("Warning, failed to save AICH hashset for file: ") + m_filename );
+				AddDebugLogLineM( true, logHasher,
+					wxT("Warning, failed to save AICH hashset for file: ") + m_filename );
 			}
 		}
 	}
-	
 	
 	if ((m_toHash == EH_AICH) and not TestDestroy()) {
 		CHashingEvent evt(MULE_EVT_AICH_HASHING, knownfile.release(), m_owner);
@@ -209,14 +213,14 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash
-		owner->hashlist.Add(hash);
+		owner->m_hashlist.push_back(hash);
 	
 		// This is because of the ed2k implementation for parts. A 2 * PARTSIZE 
 		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments). 
 		// So we have to create the hash for the 0-size data, which will be the default
 		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
 		if ((partLength == PARTSIZE) and file->Eof()) {
-			owner->hashlist.Add(CMD4Hash(g_emptyMD4Hash));
+			owner->m_hashlist.push_back(CMD4Hash(g_emptyMD4Hash));
 		}
 	}
 

@@ -262,9 +262,6 @@ wxString GetCatTitle(int catid);
 
 /* Other */
 
-// Compares first and second. For uint16 arrays sorting.
-int wxCMPFUNC_CONV Uint16CompareValues(uint16* first, uint16* second);
-
 
 //! Returns the number of items in an array.
 #define itemsof(x) (sizeof(x)/sizeof(x[0]))
