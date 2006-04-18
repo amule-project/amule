@@ -40,7 +40,6 @@
 
 //-------------------------------------------------------------------
 
-#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 #include <wx/tokenzr.h>		// for wxTokenizer
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
