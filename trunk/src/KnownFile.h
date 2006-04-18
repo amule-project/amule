@@ -29,7 +29,6 @@
 #include "MD4Hash.h"
 #include "SHAHashSet.h"
 #include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/dynarray.h>
 
 #include <set>
 #include <vector>
