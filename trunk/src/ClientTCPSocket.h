@@ -33,8 +33,6 @@
 #include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 
-#include <wx/dynarray.h>
-
 class CProxyData;
 
 //------------------------------------------------------------------------------
