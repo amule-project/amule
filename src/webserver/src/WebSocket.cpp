@@ -24,18 +24,21 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
+#include <vector>
+
+
 #include <wx/thread.h>
+
 
 #include "WebSocket.h"
 
-#include <wx/arrimpl.cpp>	// this is a magic incantation which must be done!
 
+typedef std::vector<CWCThread *> ArrayOfCWCThread;
 
-
-WX_DEFINE_ARRAY(CWCThread*, ArrayOfCWCThread);
 
 ArrayOfCWCThread s_wcThreads;
-static wxMutex *s_mutex_wcThreads;
+static wxMutex s_mutex_wcThreads;
 
 /*** CWSThread ***/
 CWSThread::CWSThread(CWebServerBase *webserver) {
@@ -68,8 +71,6 @@ void *CWSThread::Entry() {
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
 
-		s_mutex_wcThreads = new wxMutex();
-
 		while (!TestDestroy()) {
 			bool connection_pending	= m_WSSocket->WaitForAccept(1, 0);	// 1 sec
 			wxSocketBase* sock;
@@ -83,32 +84,29 @@ void *CWSThread::Entry() {
 				// If there was a connection, create new CWCThread
 				CWCThread *wct = new CWCThread(ws, sock);
 
-				wxMutexLocker lock(*s_mutex_wcThreads);
-				s_wcThreads.Add(wct);
+				wxMutexLocker lock(s_mutex_wcThreads);
+				s_wcThreads.push_back(wct);
 				
-				if ( s_wcThreads.Last()->Create() != wxTHREAD_NO_ERROR ) {
+				ArrayOfCWCThread::reverse_iterator rit = s_wcThreads.rbegin();
+				if ( (*rit)->Create() != wxTHREAD_NO_ERROR ) {
 					ws->Print(wxT("WSThread: Can't create web client socket thread\n"));
 					// destroy the socket
 					sock->Destroy();
 				} else {
 					// ...and run it
-					s_wcThreads.Last()->Run();
+					(*rit)->Run();
 				}
 			}
 		}
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
 		bool should_wait = true;
 		while (should_wait) {
-			wxMutexLocker lock(*s_mutex_wcThreads);
-			should_wait = (s_wcThreads.GetCount() != 0);
+			wxMutexLocker lock(s_mutex_wcThreads);
+			should_wait = (!s_wcThreads.empty());
 		}
 
-		// by this time, all threads are dead
-		delete s_mutex_wcThreads;
-
 		// frees the memory allocated to the array
-		s_wcThreads.Clear();
-
+		s_wcThreads.clear();
 		ws->Print(wxT("done.\n"));
 	}
 
@@ -285,8 +283,8 @@ void *CWCThread::Entry() {
 	stWebSocket.m_pParent->Print(wxT("WCThread: exited [WebSocket closed]\n"));
 #endif
 	// remove ourself from threads array
-	wxMutexLocker lock(*s_mutex_wcThreads);
-	s_wcThreads.Remove(this);
+	wxMutexLocker lock(s_mutex_wcThreads);
+	s_wcThreads.erase(find(s_wcThreads.begin(), s_wcThreads.end(), this));
 
 	// Kry - WTF to return here?
 	// shakraw - it must return NULL. it is correct now.
