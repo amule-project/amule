@@ -28,7 +28,6 @@
 #define WEBSOCKET_H
 
 #include <wx/thread.h>
-#include <wx/dynarray.h>
 
 #include "WebServer.h"
 
