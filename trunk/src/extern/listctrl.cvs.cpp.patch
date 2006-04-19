@@ -1,16 +1,16 @@
---- wxWidgets-cvsu/src/generic/listctrl.cpp	2006-02-10 23:15:46.000000000 -0200
-+++ verb-svnu/src/extern/listctrl.cvs.cpp	2006-02-11 01:18:21.000000000 -0200
+--- wxWidgets-cvsu/src/generic/listctrl.cpp	2006-04-19 15:41:46.000000000 -0300
++++ trunk/src/extern/listctrl.cvs.cpp	2006-04-19 18:12:16.000000000 -0300
 @@ -3,7 +3,7 @@
  // Purpose:     generic implementation of wxListCtrl
  // Author:      Robert Roebling
  //              Vadim Zeitlin (virtual list control support)
--// Id:          $Id: listctrl.cpp,v 1.389 2006/02/08 21:44:38 VZ Exp $
-+// Id:          $Id: listctrl.262.cpp 5881 2005-11-25 15:24:19Z xaignar $
+-// Id:          $Id: listctrl.cpp,v 1.408 2006/04/19 14:17:53 ABX Exp $
++// Id:          $Id: listctrl.cvs.cpp 6500 2006-02-11 05:24:41Z phoenix $
  // Copyright:   (c) 1998 Robert Roebling
  // Licence:     wxWindows licence
  /////////////////////////////////////////////////////////////////////////////
 @@ -28,6 +28,7 @@
-     #include "wx/dynarray.h"
+     #include "wx/app.h"
      #include "wx/dcscreen.h"
      #include "wx/textctrl.h"
 +    #include <wx/dcmemory.h>
@@ -83,44 +83,7 @@
  // ----------------------------------------------------------------------------
  // constants
  // ----------------------------------------------------------------------------
-@@ -157,7 +120,7 @@
- //  wxListItemData (internal)
- //-----------------------------------------------------------------------------
- 
--class WXDLLEXPORT wxListItemData
-+class wxListItemData
- {
- public:
-     wxListItemData(wxListMainWindow *owner);
-@@ -227,7 +190,7 @@
- //  wxListHeaderData (internal)
- //-----------------------------------------------------------------------------
- 
--class WXDLLEXPORT wxListHeaderData : public wxObject
-+class wxListHeaderData : public wxObject
- {
- public:
-     wxListHeaderData();
-@@ -395,15 +358,15 @@
-     void DrawTextFormatted(wxDC *dc, const wxString &text, int col, int x, int y, int width);
- };
- 
--WX_DECLARE_EXPORTED_OBJARRAY(wxListLineData, wxListLineDataArray);
-+WX_DECLARE_OBJARRAY(wxListLineData, wxListLineDataArray);
- #include "wx/arrimpl.cpp"
--WX_DEFINE_OBJARRAY(wxListLineDataArray)
-+WX_DEFINE_OBJARRAY(wxListLineDataArray);
- 
- //-----------------------------------------------------------------------------
- //  wxListHeaderWindow (internal)
- //-----------------------------------------------------------------------------
- 
--class WXDLLEXPORT wxListHeaderWindow : public wxWindow
-+class wxListHeaderWindow : public wxWindow
- {
- protected:
-     wxListMainWindow  *m_owner;
-@@ -452,7 +415,6 @@
+@@ -457,7 +420,6 @@
      // it wasn't vetoed, i.e. if we should proceed
      bool SendListEvent(wxEventType type, const wxPoint& pos);
  
@@ -128,25 +91,7 @@
      DECLARE_EVENT_TABLE()
  };
  
-@@ -460,7 +422,7 @@
- // wxListRenameTimer (internal)
- //-----------------------------------------------------------------------------
- 
--class WXDLLEXPORT wxListRenameTimer: public wxTimer
-+class wxListRenameTimer: public wxTimer
- {
- private:
-     wxListMainWindow *m_owner;
-@@ -474,7 +436,7 @@
- //  wxListTextCtrl (internal)
- //-----------------------------------------------------------------------------
- 
--class WXDLLEXPORT wxListTextCtrl: public wxTextCtrl
-+class wxListTextCtrl: public wxTextCtrl
- {
- public:
-     wxListTextCtrl(wxListMainWindow *owner, size_t itemEdit);
-@@ -620,6 +582,11 @@
+@@ -643,6 +605,11 @@
      void OnScroll( wxScrollWinEvent& event );
  
      void OnPaint( wxPaintEvent &event );
@@ -158,7 +103,7 @@
  
      void DrawImage( int index, wxDC *dc, int x, int y );
      void GetImageSize( int index, int &width, int &height ) const;
-@@ -719,7 +686,7 @@
+@@ -742,7 +709,7 @@
      // get the backpointer to the list ctrl
      wxGenericListCtrl *GetListCtrl() const
      {
@@ -167,51 +112,35 @@
      }
  
      // get the height of all lines (assuming they all do have the same height)
-@@ -849,7 +816,6 @@
-     // if this is > 0, the control is frozen and doesn't redraw itself
-     size_t m_freezeCount;
+@@ -875,7 +842,6 @@
+     wxListTextCtrlWrapper *m_textctrlWrapper;
+ 
  
 -    DECLARE_DYNAMIC_CLASS(wxListMainWindow)
      DECLARE_EVENT_TABLE()
  
      friend class wxGenericListCtrl;
-@@ -1601,8 +1567,6 @@
+@@ -1629,7 +1595,6 @@
  //  wxListHeaderWindow
  //-----------------------------------------------------------------------------
  
 -IMPLEMENT_DYNAMIC_CLASS(wxListHeaderWindow,wxWindow)
--
+ 
  BEGIN_EVENT_TABLE(wxListHeaderWindow,wxWindow)
      EVT_PAINT         (wxListHeaderWindow::OnPaint)
-     EVT_MOUSE_EVENTS  (wxListHeaderWindow::OnMouse)
-@@ -2104,14 +2068,14 @@
-     event.Skip();
- }
- 
-+
- //-----------------------------------------------------------------------------
+@@ -2139,10 +2104,10 @@
  //  wxListMainWindow
  //-----------------------------------------------------------------------------
  
 -IMPLEMENT_DYNAMIC_CLASS(wxListMainWindow,wxScrolledWindow)
--
+ 
  BEGIN_EVENT_TABLE(wxListMainWindow,wxScrolledWindow)
    EVT_PAINT          (wxListMainWindow::OnPaint)
 +  EVT_ERASE_BACKGROUND (wxListMainWindow::OnErase)
    EVT_MOUSE_EVENTS   (wxListMainWindow::OnMouse)
    EVT_CHAR           (wxListMainWindow::OnChar)
    EVT_KEY_DOWN       (wxListMainWindow::OnKeyDown)
-@@ -2589,8 +2553,7 @@
- 
-     dc.SetFont( GetFont() );
- 
--    if ( InReportView() )
--    {
-+    if ( InReportView() ) {
-         int lineHeight = GetLineHeight();
- 
-         size_t visibleFrom, visibleTo;
-@@ -2610,24 +2573,103 @@
+@@ -2641,24 +2606,103 @@
              evCache.m_itemIndex = visibleTo;
              GetParent()->GetEventHandler()->ProcessEvent( evCache );
          }
@@ -333,16 +262,15 @@
          if ( HasFlag(wxLC_HRULES) )
          {
              wxPen pen(GetRuleColour(), 1, wxSOLID);
-@@ -4623,8 +4665,6 @@
+@@ -4686,7 +4730,6 @@
  // wxGenericListCtrl
  // -------------------------------------------------------------------------------------
  
 -IMPLEMENT_DYNAMIC_CLASS(wxGenericListCtrl, wxControl)
--
+ 
  BEGIN_EVENT_TABLE(wxGenericListCtrl,wxControl)
    EVT_SIZE(wxGenericListCtrl::OnSize)
- END_EVENT_TABLE()
-@@ -4693,6 +4733,11 @@
+@@ -4756,6 +4799,11 @@
      CalculateAndSetHeaderHeight();
  }
  
@@ -354,9 +282,9 @@
  bool wxGenericListCtrl::Create(wxWindow *parent,
                          wxWindowID id,
                          const wxPoint &pos,
-@@ -4985,6 +5030,11 @@
-     return m_mainWin->GetItemSpacing( isSmall );
+@@ -5057,6 +5105,11 @@
  }
+ #endif // WXWIN_COMPATIBILITY_2_6
  
 +void wxGenericListCtrl::OnDrawItem( int /*item*/, wxDC* /*dc*/, const wxRect& /*rect*/, const wxRect& /*rectHL*/, bool /*highlighted*/ )
 +{
@@ -366,7 +294,7 @@
  void wxGenericListCtrl::SetItemTextColour( long item, const wxColour &col )
  {
      wxListItem info;
-@@ -5055,6 +5105,11 @@
+@@ -5127,6 +5180,11 @@
      return (long)top;
  }
  
@@ -378,11 +306,10 @@
  long wxGenericListCtrl::GetNextItem( long item, int geom, int state ) const
  {
      return m_mainWin->GetNextItem( item, geom, state );
-@@ -5558,5 +5613,7 @@
+@@ -5651,4 +5709,6 @@
      m_mainWin->Thaw();
  }
  
 +}
 +
  #endif // wxUSE_LISTCTRL
- 
