@@ -178,7 +178,7 @@ public:
 	CClientCreditsList*	clientcredits;
 	CFriendList*		friendlist;
 	CClientUDPSocket*	clientudp;
-	CStatistics*		statistics;
+	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
 

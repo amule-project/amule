@@ -44,7 +44,6 @@
 #include "Logger.h"
 #include <common/Format.h>
 
-#define EC_SOCKET_BUFFER_SIZE	2048
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
 
@@ -227,27 +226,26 @@ static CECSocketHandler	g_ECSocketHandler;
 // CECSocket API - User interface functions
 //
 
-CECSocket::CECSocket(bool use_events) : wxSocketClient()
+CECSocket::CECSocket(bool use_events)
+:
+wxSocketClient(),
+m_use_events(use_events),
+m_output_queue(),
+m_in_ptr(EC_SOCKET_BUFFER_SIZE),
+m_out_ptr(EC_SOCKET_BUFFER_SIZE),
+m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
+m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
+m_rx_flags(0),
+m_tx_flags(0),
+m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS),
+// setup initial state: 4 flags + 4 length
+m_bytes_needed(8),
+m_in_header(true)
 {
-	m_rx_flags = m_rx_flags = 0;
-	m_my_flags = 0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS;
-
-	// setup initial state: 4 flags + 4 length
-	m_bytes_needed = 8;
-	m_in_header = true;
-
-	m_in_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	m_out_ptr = new unsigned char[EC_SOCKET_BUFFER_SIZE];
-	
-	m_curr_rx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
-	m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
-
-	m_use_events = use_events;
-	
 	if ( use_events ) {
 		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
-		SetNotify(wxSOCKET_CONNECTION_FLAG |
-			  wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
+		SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_INPUT_FLAG |
+			  wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 		Notify(true);
 		SetFlags(wxSOCKET_NOWAIT);
 	} else {
@@ -258,11 +256,6 @@ CECSocket::CECSocket(bool use_events) : wxSocketClient()
 
 CECSocket::~CECSocket()
 {
-	delete[] m_in_ptr;
-	delete[] m_out_ptr;
-	delete m_curr_rx_data;
-	delete m_curr_tx_data;
-	
 	while (!m_output_queue.empty()) {
 		CQueuedData *data = m_output_queue.front();
 		m_output_queue.pop_front();
@@ -308,8 +301,7 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
 	
 	if ( m_curr_rx_data->GetLength() < (m_curr_packet_len+2*sizeof(uint32)) ) {
-		delete m_curr_rx_data;
-		m_curr_rx_data = new CQueuedData(m_curr_packet_len);
+		m_curr_rx_data.reset(new CQueuedData(m_curr_packet_len));
 	}
 	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
 	if (Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
@@ -377,7 +369,7 @@ void CECSocket::OnInput()
 {
 	size_t bytes_rx = 0;
 	do {
-		if (m_curr_rx_data) {
+		if (m_curr_rx_data.get()) {
 			m_curr_rx_data->ReadFromSocket(this, m_bytes_needed);
 		} else {
 			return;
@@ -386,8 +378,7 @@ void CECSocket::OnInput()
 			if (LastError() != wxSOCKET_WOULDBLOCK && LastError() != wxSOCKET_NOERROR) {
 				OnError();
 				// socket already disconnected in this point
-				delete m_curr_rx_data;
-				m_curr_rx_data = NULL;
+				m_curr_rx_data.reset(0);
 				return;
 			}
 		}
@@ -408,16 +399,15 @@ void CECSocket::OnInput()
 				wxSocketBase::Close();
 				return;
 			}
-			if ( !m_curr_rx_data || (m_curr_rx_data->GetLength() < (m_bytes_needed+8)) ) {
-				delete m_curr_rx_data;
-				m_curr_rx_data = new CQueuedData(m_bytes_needed);
+			if ( !m_curr_rx_data.get() || (m_curr_rx_data->GetLength() < (m_bytes_needed+8)) ) {
+				m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
 			}
 		} else {
 			//m_curr_rx_data->DumpMem();
 			std::auto_ptr<const CECPacket> packet(ReadPacket());
 			m_curr_rx_data->Rewind();
 			std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get()));
-			if ( reply.get() ) {
+			if (reply.get()) {
 				SendPacket(reply.get());
 			}
 			m_bytes_needed = 8;
@@ -465,7 +455,7 @@ size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 {
 	wxASSERT(required_len);
 
-	if ( m_curr_rx_data->GetUnreadDataLength() < required_len ) {
+	if (m_curr_rx_data->GetUnreadDataLength() < required_len) {
 		// need more data that we have. Looks like nothing will help here
 		return 0;
 	}
@@ -483,8 +473,8 @@ void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 			m_curr_tx_data->Write(wr_ptr, curr_free);
 			len -= curr_free;
 			wr_ptr += curr_free;
-			m_output_queue.push_back(m_curr_tx_data);
-			m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
+			m_output_queue.push_back(m_curr_tx_data.release());
+			m_curr_tx_data.reset(new CQueuedData(EC_SOCKET_BUFFER_SIZE));
 		} else {
 			m_curr_tx_data->Write(wr_ptr, len);
 			break;
@@ -615,18 +605,19 @@ bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 				rd_ptr += remain_in;
 				// buffer is full, calling zlib
 				do {
-				    m_z.next_out = m_out_ptr;
+				    m_z.next_out = &m_out_ptr[0];
 				    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
 					int zerror = deflate(&m_z, Z_NO_FLUSH);
 					if ( zerror != Z_OK ) {
 						ShowZError(zerror, &m_z);
 						return false;
 					}
-					WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
+					WriteBufferToSocket(&m_out_ptr[0],
+						EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
 				} while ( m_z.avail_out == 0 );
 				// all input should be used by now
 				wxASSERT(m_z.avail_in == 0);
-				m_z.next_in = m_in_ptr;
+				m_z.next_in = &m_in_ptr[0];
 			}
 		} while ( len );
 		return true;
@@ -641,19 +632,20 @@ bool CECSocket::FlushBuffers()
 {
 	if (m_tx_flags & EC_FLAG_ZLIB) {
 		do {
-		    m_z.next_out = m_out_ptr;
+		    m_z.next_out = &m_out_ptr[0];
 		    m_z.avail_out = EC_SOCKET_BUFFER_SIZE;
 			int zerror = deflate(&m_z, Z_FINISH);
 			if ( zerror == Z_STREAM_ERROR ) {
 				ShowZError(zerror, &m_z);
 				return false;
 			}
-			WriteBufferToSocket(m_out_ptr, EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
+			WriteBufferToSocket(&m_out_ptr[0],
+				EC_SOCKET_BUFFER_SIZE - m_z.avail_out);
 		} while ( m_z.avail_out == 0 );
 	}
 	if ( m_curr_tx_data->GetDataLength() ) {
-		m_output_queue.push_back(m_curr_tx_data);
-		m_curr_tx_data = new CQueuedData(EC_SOCKET_BUFFER_SIZE);
+		m_output_queue.push_back(m_curr_tx_data.release());
+		m_curr_tx_data.reset(new CQueuedData(EC_SOCKET_BUFFER_SIZE));
 	}
 	return true;
 }
@@ -680,13 +672,11 @@ void CECSocket::WritePacket(const CECPacket *packet)
 	m_tx_flags = flags;
 	
 	if (flags & EC_FLAG_ZLIB) {
-	    m_z.zalloc = Z_NULL;
-	    m_z.zfree = Z_NULL;
-	    m_z.opaque = Z_NULL;
-	    m_z.avail_in = 0;
-	    
-	    m_z.next_in = m_in_ptr;
-	    
+		m_z.zalloc = Z_NULL;
+		m_z.zfree = Z_NULL;
+		m_z.opaque = Z_NULL;
+		m_z.avail_in = 0;
+		m_z.next_in = &m_in_ptr[0];
 		int zerror = deflateInit(&m_z, EC_COMPRESSION_LEVEL);
 		if (zerror != Z_OK) {
 			// don't use zlib if init failed
@@ -717,7 +707,7 @@ void CECSocket::WritePacket(const CECPacket *packet)
 	packet_len = ENDIAN_HTONL(packet_len);
 	
 	CQueuedData *first_buff = m_output_queue.front();
-	if ( !first_buff ) first_buff = m_curr_tx_data;
+	if ( !first_buff ) first_buff = m_curr_tx_data.get();
 	first_buff->WriteAt(&packet_len, sizeof(uint32), sizeof(uint32));
 	
 	if (flags & EC_FLAG_ZLIB) {
@@ -760,7 +750,7 @@ const CECPacket *CECSocket::ReadPacket()
 		}
 	}
 
-    m_curr_rx_data->ToZlib(m_z);
+	m_curr_rx_data->ToZlib(m_z);
 	packet = new CECPacket(*this);
 	packet->ReadFromSocket(*this);
 	

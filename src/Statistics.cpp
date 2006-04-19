@@ -913,8 +913,9 @@ void CStatistics::RemoveKnownClient(uint32 clientSoft, uint32 clientVersion, con
 
 #else /* EC_REMOTE (CLIENT_GUI) */
 
-CStatistics::CStatistics(CRemoteConnect* conn)
-	: m_conn(conn)
+CStatistics::CStatistics(CRemoteConnect &conn)
+:
+m_conn(conn)
 {
 	s_start_time = GetTickCount64();
 
@@ -951,7 +952,7 @@ void CStatistics::UpdateStatsTree()
 	if (thePrefs::GetMaxClientVersions() != 0) {
 		request.AddTag(CECTag(EC_TAG_STATTREE_CAPPING, (uint8)thePrefs::GetMaxClientVersions()));
 	}
-	const CECPacket* reply = m_conn->SendRecvPacket(&request);
+	const CECPacket* reply = m_conn.SendRecvPacket(&request);
 	if (reply) {
 		const CECTag* treeRoot = reply->GetTagByName(EC_TAG_STATTREE_NODE);
 		if (treeRoot) {
@@ -963,3 +964,4 @@ void CStatistics::UpdateStatsTree()
 }
 
 #endif /* !EC_REMOTE */
+

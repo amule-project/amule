@@ -487,8 +487,16 @@ enum StatDataIndex {
 
 class CStatistics {
 	friend class CStatisticsDlg;	// to access CStatistics::GetTreeRoot()
+
+private:
+	CRemoteConnect &m_conn;
+	static CStatTreeItemBase* s_statTree;
+	static uint64 s_start_time;
+	static uint64 s_statData[sdTotalItems];
+	uint8 average_minutes;
+	
  public:
-	CStatistics(CRemoteConnect* conn);
+	CStatistics(CRemoteConnect &conn);
 	~CStatistics();
 
 	static	uint64	GetUptimeMillis()			{ return GetTickCount64() - s_start_time; }
@@ -509,21 +517,11 @@ class CStatistics {
 
 	static	void	UpdateStats(const CECPacket* stats);
 
-	void	UpdateStatsTree();
-
-	void SetAverageMinutes(uint8 minutes) { average_minutes = minutes; }
+		void	UpdateStatsTree();
+		void	SetAverageMinutes(uint8 minutes)	{ average_minutes = minutes; }
 	
  private:
 	static	CStatTreeItemBase*	GetTreeRoot()		{ return s_statTree; }
-
-	static	CStatTreeItemBase*	s_statTree;
-
-	static	uint64	s_start_time;
-	static	uint64	s_statData[sdTotalItems];
-
-	uint8 average_minutes;
-	
-	CRemoteConnect*	m_conn;
 };
 
 #endif /* !EC_REMOTE / EC_REMOTE */

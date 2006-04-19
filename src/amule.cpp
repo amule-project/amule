@@ -180,7 +180,7 @@ CamuleApp::CamuleApp()
 	ECServerHandler = NULL;
 	m_singleInstance = NULL;
 	glob_prefs	= NULL;
-	statistics = NULL;
+	m_statistics = NULL;
 	uploadBandwidthThrottler = NULL;
 	core_timer = NULL;
 	applog = NULL;
@@ -282,8 +282,8 @@ int CamuleApp::OnExit()
 	delete ECServerHandler;
 	ECServerHandler = NULL;
 
-	delete statistics;
-	statistics = NULL;
+	delete m_statistics;
+	m_statistics = NULL;
 
 	delete glob_prefs;
 	glob_prefs = NULL;
@@ -678,7 +678,7 @@ bool CamuleApp::OnInit()
 		ShowAlert(info, _("Info"), wxCENTRE | wxOK | wxICON_ERROR);
 	}
 
-	statistics = new CStatistics();
+	m_statistics = new CStatistics();
 	
 	clientlist	= new CClientList();
 	friendlist	= new CFriendList();
@@ -1327,7 +1327,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 		// correctly as time progresses.
 		msPrevHist += 1000;
 		
-		statistics->RecordHistory();
+		m_statistics->RecordHistory();
 		
 	}
 	
