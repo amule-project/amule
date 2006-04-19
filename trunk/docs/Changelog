@@ -17,6 +17,8 @@ Trunk
 		* Fixed bug in mutex code in amuleweb (s_mutex_wcThreads).
 		* No more wxARRAY's in aMule code.
 		* Fixed bug in ECPacket.cpp: assignment inside assertion.
+		* Fixed bug in amule-remote-gui.cpp: wrong creation of variable
+		  connect in CamuleRemoteGuiApp::OnInit().
 
 --------------------------------------------------------------------------------
 

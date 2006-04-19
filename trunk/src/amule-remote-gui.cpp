@@ -244,7 +244,7 @@ bool CamuleRemoteGuiApp::OnInit()
 		OnExit();
 	}
 
-	connect = new CRemoteConnect(this);
+	connect = new CRemoteConnect(0);
 
 	SetAppName(wxT("aMule"));
 	
