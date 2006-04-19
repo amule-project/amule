@@ -647,7 +647,7 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
 {
 	EC_IPv4_t p;
 	
-	wxASSERT(m_dataType = EC_TAGTYPE_IPV4);
+	wxASSERT(m_dataType == EC_TAGTYPE_IPV4);
 
 	RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
 	p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
