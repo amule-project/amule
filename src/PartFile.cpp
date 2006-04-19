@@ -3607,7 +3607,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_category = tag->FileCat();
 
 	m_iPartCount = ((uint64)GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
-	m_SrcpartFrequency.reserve(m_iPartCount);
+	m_SrcpartFrequency.insert(m_SrcpartFrequency.end(), m_iPartCount, 0);
 	m_iDownPriority = tag->Prio();
 	if ( m_iDownPriority >= 10 ) {
 		m_iDownPriority-= 10;

@@ -849,9 +849,11 @@ CMD4Hash CSharedFilesRem::GetItemID(CKnownFile *file)
 void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *file)
 {
 	CECTag *parttag = tag->GetTagByName(EC_TAG_PARTFILE_PART_STATUS);
-	const unsigned char *data = m_enc_map[file->GetFileHash()].Decode((unsigned char *)parttag->GetTagData(),
-		parttag->GetTagDataLen());
-	for(int i = 0;i < file->GetPartCount();i++) {
+	const unsigned char *data =
+		m_enc_map[file->GetFileHash()].Decode(
+			(unsigned char *)parttag->GetTagData(),
+			parttag->GetTagDataLen());
+	for(int i = 0; i < file->GetPartCount(); ++i) {
 		file->m_AvailPartFrequency[i] = data[i];
 	}
 	if ( m_inc_tags ) {
