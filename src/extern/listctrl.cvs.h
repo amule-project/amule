@@ -25,22 +25,24 @@
 #include "wx/scrolwin.h"
 #include "wx/settings.h"
 #include "wx/listbase.h"
+#include "wx/textctrl.h"
 
 #if wxUSE_DRAG_AND_DROP
-class wxDropTarget;
+class WXDLLEXPORT wxDropTarget;
 #endif
 
 #define wxLC_OWNERDRAW 0x10000
+extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
 
 //-----------------------------------------------------------------------------
 // classes
 //-----------------------------------------------------------------------------
 
-class wxListItem;
-class wxListEvent;
+class WXDLLEXPORT wxListItem;
+class WXDLLEXPORT wxListEvent;
 
 #if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
-class wxListCtrl;
+class WXDLLEXPORT wxListCtrl;
 #define wxImageListType wxImageList
 #else
 #define wxImageListType wxGenericImageList
@@ -52,21 +54,21 @@ namespace MuleExtern
 // internal classes
 //-----------------------------------------------------------------------------
 
-class wxListHeaderData;
-class wxListItemData;
-class wxListLineData;
+class WXDLLEXPORT wxListHeaderData;
+class WXDLLEXPORT wxListItemData;
+class WXDLLEXPORT wxListLineData;
 
-class wxListHeaderWindow;
-class wxListMainWindow;
+class WXDLLEXPORT wxListHeaderWindow;
+class WXDLLEXPORT wxListMainWindow;
 
-class wxListRenameTimer;
-class wxListTextCtrl;
+class WXDLLEXPORT wxListRenameTimer;
+class WXDLLEXPORT wxListTextCtrl;
 
 //-----------------------------------------------------------------------------
 // wxListCtrl
 //-----------------------------------------------------------------------------
 
-class wxGenericListCtrl: public wxControl
+class WXDLLEXPORT wxGenericListCtrl: public wxControl
 {
 public:
     wxGenericListCtrl();
@@ -76,7 +78,7 @@ public:
                 const wxSize &size = wxDefaultSize,
                 long style = wxLC_ICON,
                 const wxValidator& validator = wxDefaultValidator,
-                const wxString &name = wxT("listCtrl"))
+                const wxString &name = wxListCtrlNameStr)
     {
         Create(parent, winid, pos, size, style, validator, name);
     }
@@ -88,7 +90,7 @@ public:
                  const wxSize &size = wxDefaultSize,
                  long style = wxLC_ICON,
                  const wxValidator& validator = wxDefaultValidator,
-                 const wxString &name = wxT("listCtrl"));
+                 const wxString &name = wxListCtrlNameStr);
 
     bool GetColumn( int col, wxListItem& item ) const;
     bool SetColumn( int col, wxListItem& item );
@@ -105,6 +107,7 @@ public:
     int  GetItemState( long item, long stateMask ) const;
     bool SetItemState( long item, long state, long stateMask);
     bool SetItemImage( long item, int image, int selImage = -1 );
+    bool SetItemColumnImage( long item, long column, int image );
     wxString GetItemText( long item ) const;
     void SetItemText( long item, const wxString& str );
     wxUIntPtr GetItemData( long item ) const;
@@ -144,8 +147,10 @@ public:
 
     void SetItemCount(long count);
 
-    void EditLabel( long item ) { Edit(item); }
-    void Edit( long item );
+    wxTextCtrl *EditLabel(long item,
+                          wxClassInfo* textControlClass = CLASSINFO(wxTextCtrl));
+    wxTextCtrl* GetEditControl() const;
+    void Edit( long item ) { EditLabel(item); }
 
     bool EnsureVisible( long item );
     long FindItem( long start, const wxString& str, bool partial = false );
@@ -179,9 +184,10 @@ public:
     void RefreshItem(long item);
     void RefreshItems(long itemFrom, long itemTo);
 
+#if WXWIN_COMPATIBILITY_2_6
     // obsolete, don't use
     wxDEPRECATED( int GetItemSpacing( bool isSmall ) const );
-
+#endif // WXWIN_COMPATIBILITY_2_6
 
     virtual wxVisualAttributes GetDefaultAttributes() const
     {
@@ -237,13 +243,18 @@ public:
 protected:
     virtual bool DoPopupMenu( wxMenu *menu, int x, int y );
 
+    // take into account the coordinates difference between the container
+    // window and the list control window itself here
+    virtual void DoClientToScreen( int *x, int *y ) const;
+    virtual void DoScreenToClient( int *x, int *y ) const;
+
     virtual wxSize DoGetBestSize() const;
 
     // return the text for the given column of the given item
     virtual wxString OnGetItemText(long item, long column) const;
 
     // return the icon for the given item. In report view, OnGetItemImage will
-    // only be called for the first column. See OnGetItemColumnImage for 
+    // only be called for the first column. See OnGetItemColumnImage for
     // details.
     virtual int OnGetItemImage(long item) const;
 
@@ -254,7 +265,7 @@ protected:
     virtual wxListItemAttr *OnGetItemAttr(long item) const;
 
     // it calls our OnGetXXX() functions
-    friend class wxListMainWindow;
+    friend class WXDLLEXPORT wxListMainWindow;
 
 private:
     // create the header window
@@ -276,8 +287,9 @@ private:
  * the run-time information.
  */
 
-class wxListCtrl: public wxGenericListCtrl
+class WXDLLEXPORT wxListCtrl: public wxGenericListCtrl
 {
+
 public:
     wxListCtrl() {}
 
@@ -286,12 +298,11 @@ public:
                const wxSize& size = wxDefaultSize,
                long style = wxLC_ICON,
                const wxValidator &validator = wxDefaultValidator,
-               const wxString &name = wxT("listCtrl"))
+               const wxString &name = wxListCtrlNameStr)
     : wxGenericListCtrl(parent, winid, pos, size, style, validator, name)
     {
     }
 };
-
 #endif // !__WXMSW__ || __WXUNIVERSAL__
 
 }
