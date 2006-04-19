@@ -156,7 +156,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 {
 	static int request_step = 0;
 	
-	if ( connect->RequestFifoFull() ) {
+	if ( m_connect->RequestFifoFull() ) {
 		return;
 	}
 	
@@ -167,7 +167,7 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			break;
 		case 1: {
 			CECPacket stats_req(EC_OP_STAT_REQ);
-			connect->SendRequest(&m_stats_updater, &stats_req);
+			m_connect->SendRequest(&m_stats_updater, &stats_req);
 			amuledlg->ShowTransferRate();			
 			break;
 		}
@@ -244,7 +244,7 @@ bool CamuleRemoteGuiApp::OnInit()
 		OnExit();
 	}
 
-	connect = new CRemoteConnect(this);
+	m_connect = new CRemoteConnect(this);
 
 	SetAppName(wxT("aMule"));
 	
@@ -255,9 +255,10 @@ bool CamuleRemoteGuiApp::OnInit()
 		wxMkdir( ConfigDir );
 	}
 
-	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString, ConfigDir + wxT("remote.conf")));
+	wxConfig::Set(new wxFileConfig(wxEmptyString, wxEmptyString,
+		ConfigDir + wxT("remote.conf")));
 
-	glob_prefs = new CPreferencesRem(connect);	
+	glob_prefs = new CPreferencesRem(m_connect);	
 	
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
@@ -283,7 +284,7 @@ bool CamuleRemoteGuiApp::ShowConnectionDialog() {
 		return false;
 	}
 		printf("Connecting...\n");
-		if ( !connect->ConnectToCore(dialog->Host(), dialog->Port(),
+		if ( !m_connect->ConnectToCore(dialog->Host(), dialog->Port(),
 							dialog->Login(), dialog->PassHash(),
 							wxT("amule-remote"), wxT("0x0001")) ) {
 			wxMessageBox(_("Connection failed "),_("Error"),wxOK);
@@ -335,22 +336,23 @@ void CamuleRemoteGuiApp::Startup() {
 	
 	m_ConnState = 0;
 
-	serverconnect = new CServerConnectRem(connect);
-	statistics = new CStatistics(connect);
+	serverconnect = new CServerConnectRem(m_connect);
+#warning This is broken, remote-gui will segfault in UpdateStatsTree(). We need real EC code here.
+	m_statistics = new CStatistics(*m_connect);
 	
-	clientlist = new CClientListRem(connect);
-	searchlist = new CSearchListRem(connect);
-	serverlist = new CServerListRem(connect);
+	clientlist = new CClientListRem(m_connect);
+	searchlist = new CSearchListRem(m_connect);
+	serverlist = new CServerListRem(m_connect);
 	
-	sharedfiles	= new CSharedFilesRem(connect);
+	sharedfiles	= new CSharedFilesRem(m_connect);
 	knownfiles = new CKnownFilesRem(sharedfiles);
 
 	clientcredits = new CClientCreditsRem();
 	
 	// bugfix - do this before creating the uploadqueue
-	downloadqueue = new CDownQueueRem(connect);
-	uploadqueue = new CUpQueueRem(connect);
-	ipfilter = new CIPFilterRem(connect);
+	downloadqueue = new CDownQueueRem(m_connect);
+	uploadqueue = new CUpQueueRem(m_connect);
+	ipfilter = new CIPFilterRem(m_connect);
 
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(wxApp::argc, wxApp::argv);
@@ -449,16 +451,16 @@ bool CamuleRemoteGuiApp::IsConnectedED2K() const {
 }
 
 void CamuleRemoteGuiApp::StartKad() {
-	connect->StartKad();
+	m_connect->StartKad();
 }
 
 void CamuleRemoteGuiApp::StopKad() {
-	connect->StopKad();
+	m_connect->StopKad();
 }
 
 void CamuleRemoteGuiApp::DisconnectED2K() {
 	if (IsConnectedED2K()) {
-		connect->DisconnectED2K();
+		m_connect->DisconnectED2K();
 	}
 }
 
@@ -669,7 +671,9 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 /*
  * Server list: host list of ed2k servers.
  */
-CServerListRem::CServerListRem(CRemoteConnect *conn) : CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
+CServerListRem::CServerListRem(CRemoteConnect *conn)
+:
+CRemoteContainer<CServer, uint32, CEC_Server_Tag>(conn)
 {
 }
 
@@ -1046,7 +1050,9 @@ CUpQueueRem::CUpQueueRem(CRemoteConnect *conn) : m_up_list(conn, vtUploading), m
  * 
  */
  
-CDownQueueRem::CDownQueueRem(CRemoteConnect *conn) : CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
+CDownQueueRem::CDownQueueRem(CRemoteConnect *conn)
+:
+CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
 {
 }
 

@@ -17,7 +17,8 @@ Trunk
 		* Fixed bug in mutex code in amuleweb (s_mutex_wcThreads).
 		* No more wxARRAY's in aMule code.
 		* Fixed bug in ECPacket.cpp: assignment inside assertion.
-		* Updated listctrl.cpp from wxWidgets.
+		* Updated listctrl.cpp from wxWidgets cvs.
+		* Changed CECSocket constructor to be exception safe.
 
 --------------------------------------------------------------------------------
 

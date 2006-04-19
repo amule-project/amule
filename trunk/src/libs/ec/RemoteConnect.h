@@ -45,6 +45,7 @@ class CECLoginPacket : public CECPacket {
 };
 
 class CRemoteConnect : public CECSocket {
+private:
 	// State enums for connection SM ( client side ) in case of async processing
 	enum { 
 		EC_INIT,         // initial state
@@ -54,23 +55,29 @@ class CRemoteConnect : public CECSocket {
 		EC_FAIL          // core replyed "bad"
 	} m_ec_state;
 	
-	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
-	
-	bool ConnectionEstablished(const CECPacket *reply);
-
 	// fifo of handlers for on-the-air requests. all EC concept is working in fcfs
 	// order, so it is ok to assume that order of replies is same as order of requests
 	std::list<CECPacketHandlerBase *> m_req_fifo;
-	int m_req_count, m_req_fifo_thr;
+	int m_req_count;
+	int m_req_fifo_thr;
+
+	wxEvtHandler* m_notifier;
+
+	wxString m_connectionPassword;
+	wxString m_server_reply;
+	wxString m_client;
+	wxString m_version;
+	
 public:
 	// The event handler is used for notifying connect/close 
 	CRemoteConnect(wxEvtHandler* evt_handler);
 
-	bool ConnectToCore(const wxString &host, int port,
-						const wxString& login, const wxString &pass,
-						const wxString& client, const wxString& version);
+	bool ConnectToCore(
+		const wxString &host, int port,
+		const wxString& login, const wxString &pass,
+		const wxString& client, const wxString& version);
 
-	const wxString& GetServerReply() const { return server_reply; }
+	const wxString& GetServerReply() const { return m_server_reply; }
 
 	bool RequestFifoFull()
 	{
@@ -369,46 +376,29 @@ public:
 	// Retrieves the statistics tree
 	void GetStatsTree();
 
-
 private:
-
-	wxEvtHandler* notifier;
-	wxString ConnectionPassword;
-	wxString server_reply;
-	wxString m_client;
-	wxString m_version;
+	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
+	bool ConnectionEstablished(const CECPacket *reply);
 };
 
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION, wxEVT_USER_FIRST + 1000)
 
 class wxECSocketEvent : public wxEvent {
 public:
-	wxECSocketEvent(int id, int event_id) : wxEvent(event_id, id)
-	{
-	}
-	wxECSocketEvent(int id) : wxEvent(-1, id)
-	{
-	}
+	wxECSocketEvent(int id, int event_id)	: wxEvent(event_id, id) {}
+	wxECSocketEvent(int id)			: wxEvent(-1, id) {}
 	wxECSocketEvent(int id, bool result, const wxString& reply) : wxEvent(-1, id)
 	{
 		m_value = result;
-		server_reply = reply;
+		m_server_reply = reply;
 	}
-	wxEvent *Clone(void) const
-	{
-		return new wxECSocketEvent(*this);
-	}
-	long GetResult() const
-	{
-		return m_value;
-	}
-	const wxString& GetServerReply() const
-	{
-		return server_reply;
-	}
+	wxEvent *Clone(void) const		{ return new wxECSocketEvent(*this); }
+	long GetResult() const			{ return m_value; }
+	const wxString& GetServerReply() const	{ return m_server_reply; }
 private:
 	bool m_value;
-	wxString server_reply;
+	wxString m_server_reply;
 };
 
 #endif // REMOTECONNECT_H
+

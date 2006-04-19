@@ -960,7 +960,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt();
 			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt();
 			uint32 *graphData;
-			unsigned int numPoints = theApp.statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
+			unsigned int numPoints = theApp.m_statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 4 * numPoints * sizeof(uint32), graphData));
@@ -1288,7 +1288,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = GetStatsGraphs(request);
 			break;
 		case EC_OP_GET_STATSTREE: {
-			theApp.statistics->UpdateStatsTree();
+			theApp.m_statistics->UpdateStatsTree();
 			response = new CECPacket(EC_OP_STATSTREE);
 			CECTag* tree = theStats::GetECStatTree(request->GetTagByNameSafe(EC_TAG_STATTREE_CAPPING)->GetInt());
 			if (tree) {

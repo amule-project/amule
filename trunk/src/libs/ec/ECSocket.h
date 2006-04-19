@@ -26,18 +26,25 @@
 #ifndef ECSOCKET_H
 #define ECSOCKET_H
 
+
+#include <deque>			// Needed for std::deque
+#include <memory>			// Needed for std::auto_ptr
+#include <set>				// Needed for std::set
+#include <utility>			// Needed for std::pair
+#include <vector>			// Needed for std::vector
+
+
 #include <wx/socket.h>		// Needed for wxSocketClient
 #include <wx/string.h>		// Needed for wxString
 #include <wx/thread.h>		// Needed for MT-Safe API.
-#include "Types.h"
 
+
+#include "Types.h"
 #include "zlib.h"			// Needed for packet (de)compression
+
 
 class CECPacket;
 
-#include <deque>			// Needed for std::deque
-#include <set>				// Needed for std::set
-#include <utility>			// Needed for std::pair
 
 //void DumpMemToStr(const void *buff, int n);
 
@@ -129,7 +136,31 @@ class CECSocket : public wxSocketClient {
 	friend class CECTag;
 	friend class CECSocketHandler;
 
- public:
+private:
+	static const unsigned int EC_SOCKET_BUFFER_SIZE = 2048;
+	const bool m_use_events;
+	
+	// Output related data
+	std::deque<CQueuedData *> m_output_queue;
+
+	// zlib (deflation) buffers
+	std::vector<unsigned char> m_in_ptr;
+	std::vector<unsigned char> m_out_ptr;
+	std::auto_ptr<CQueuedData> m_curr_rx_data;
+	std::auto_ptr<CQueuedData> m_curr_tx_data;
+	
+	// This transfer only
+	uint32 m_rx_flags;
+	uint32 m_tx_flags;
+	uint32 m_my_flags;
+	size_t m_bytes_needed;
+	bool m_in_header;
+	
+	
+	uint32 m_curr_packet_len;
+	z_stream m_z;
+	
+public:
 	CECSocket(bool use_events);
 	virtual ~CECSocket();
 
@@ -244,7 +275,6 @@ class CECSocket : public wxSocketClient {
 	void OnOutput();
 
  private:
-
 	const CECPacket *ReadPacket();
 	void WritePacket(const CECPacket *packet);
 
@@ -260,27 +290,7 @@ class CECSocket : public wxSocketClient {
 
 	size_t	ReadBufferFromSocket(void *buffer, size_t len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
-
-	bool m_use_events;
-	
-	// Output related data
-	std::deque<CQueuedData*> m_output_queue;
-
-	size_t m_bytes_needed;
-	bool m_in_header;
-	
-	// zlib (deflation) buffers
-	unsigned char *m_in_ptr, *m_out_ptr;
-	
-	CQueuedData *m_curr_rx_data, *m_curr_tx_data;
-	
-	// This transfer only
-	uint32 m_rx_flags, m_tx_flags;
-	uint32 m_my_flags;
-	
-	uint32 m_curr_packet_len;
-	
-	z_stream m_z;
 };
 
 #endif // ECSOCKET_H
+

@@ -203,7 +203,7 @@ wxFrame(
 	m_searchwnd = new CSearchDlg(p_cnt);
 	m_transferwnd = new CTransferWnd(p_cnt);
 	m_sharedfileswnd = new CSharedFilesWnd(p_cnt);
-	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp.statistics);
+	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp.m_statistics);
 	m_chatwnd = new CChatWnd(p_cnt);
 	m_kademliawnd = CastChild(wxT("kadWnd"), CKadDlg);
 	m_serverwnd->Show(FALSE);
@@ -1025,7 +1025,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
 		
-		GraphUpdateInfo update = theApp.statistics->GetPointsForUpdate();
+		GraphUpdateInfo update = theApp.m_statistics->GetPointsForUpdate();
 		
 		m_statisticswnd->UpdateStatGraphs(bStatsVisible, theStats::GetPeakConnections(), update);
 		m_kademliawnd->UpdateGraph(!IsIconized() && (m_activewnd == m_serverwnd), update);

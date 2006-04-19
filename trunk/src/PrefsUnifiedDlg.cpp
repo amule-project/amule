@@ -921,7 +921,7 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	case IDC_SLIDER3:
 		id = IDC_SLIDERINFO3;
 		label = wxString::Format( _("Time for average graph: %d mins"), event.GetPosition() );
-		theApp.statistics->SetAverageMinutes(event.GetPosition());
+		theApp.m_statistics->SetAverageMinutes(event.GetPosition());
 		break;
 
 	case IDC_SLIDER4:

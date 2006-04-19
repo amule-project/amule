@@ -59,42 +59,42 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
  * 
  */
 
-CRemoteConnect::CRemoteConnect(wxEvtHandler* evt_handler) : CECSocket(evt_handler != 0)
+CRemoteConnect::CRemoteConnect(wxEvtHandler* evt_handler)
+:
+CECSocket(evt_handler != 0),
+m_ec_state(EC_INIT),
+m_req_fifo(),
+// Give application some indication about how fast requests are served
+// When request fifo contain more that certain number of entries, it may
+// indicate that either core or network is slowing us down
+m_req_count(0),
+// This is not mean to be absolute limit, because we can't drop requests
+// out of calling context; it is just signal to application to slow down
+m_req_fifo_thr(20),
+m_notifier(evt_handler)
 {
-	notifier = evt_handler;
-	m_ec_state = EC_INIT;
-	
-	//
-	// Give application some indication about how fast requests are served
-	// When request fifo contain more that certain number of entries, it may
-	// indicate that either core or network is slowing us down
-	m_req_count = 0;
-	// This is not mean to be absolute limit, because we can't drop requests
-	// out of calling context; it is just signal to application to slow down
-	m_req_fifo_thr = 20;
 }
 
 bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	const wxString &WXUNUSED(login), const wxString &pass, 
 	const wxString& client, const wxString& version)
 {
-	
-	ConnectionPassword = pass;
+	m_connectionPassword = pass;
 	
 	m_client = client;
 	m_version = version;
 	
 	// don't even try to connect without a valid password
-	if (ConnectionPassword.IsEmpty() || ConnectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e")) {
-		server_reply = _("You must specify a non-empty password.");
+	if (m_connectionPassword.IsEmpty() || m_connectionPassword == wxT("d41d8cd98f00b204e9800998ecf8427e")) {
+		m_server_reply = _("You must specify a non-empty password.");
 		return false;
 	} else {
 		CMD4Hash hash;
-		if (not hash.Decode(ConnectionPassword)) {
-			server_reply = _("Invalid password, not a MD5 hash!");
+		if (not hash.Decode(m_connectionPassword)) {
+			m_server_reply = _("Invalid password, not a MD5 hash!");
 			return false;
 		} else if (hash.IsEmpty()) {
-			server_reply = _("You must specify a non-empty password.");
+			m_server_reply = _("You must specify a non-empty password.");
 			return false;
 		}
 	}
@@ -110,8 +110,8 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	
 	// if we're using blocking calls - enter login sequence now. Else, 
 	// we will wait untill OnConnect gets called
-	if ( !notifier ) {
-		CECLoginPacket login_req(ConnectionPassword, m_client, m_version);
+	if ( !m_notifier ) {
+		CECLoginPacket login_req(m_connectionPassword, m_client, m_version);
 		std::auto_ptr<const CECPacket> reply(SendRecvPacket(&login_req));
 		return ConnectionEstablished(reply.get());
 	} else {
@@ -122,9 +122,9 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 }
 
 void CRemoteConnect::OnConnect() {
-	if (notifier) {
+	if (m_notifier) {
 		wxASSERT(m_ec_state == EC_CONNECT_SENT);
-		CECLoginPacket login_req(ConnectionPassword, m_client, m_version);
+		CECLoginPacket login_req(m_connectionPassword, m_client, m_version);
 		CECSocket::SendPacket(&login_req);
 		
 		m_ec_state = EC_REQ_SENT;
@@ -134,10 +134,10 @@ void CRemoteConnect::OnConnect() {
 }
 
 void CRemoteConnect::OnClose() {
-	if (notifier) {
+	if (m_notifier) {
 		// Notify app of failure
 		wxECSocketEvent event(wxEVT_EC_CONNECTION,false,_("Connection failure"));
-		notifier->AddPendingEvent(event);
+		m_notifier->AddPendingEvent(event);
 	}
 	// FIXME: wtf is that ?
 	//CECSocket::OnClose();
@@ -194,34 +194,34 @@ bool CRemoteConnect::ConnectionEstablished(const CECPacket *reply) {
 	bool result = false;
 	
 	if (!reply) {
-		server_reply = _("EC Connection Failed. Empty reply.");
+		m_server_reply = _("EC Connection Failed. Empty reply.");
 		Close();
 	} else {
 		if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 			const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 			if (reason != NULL) {
-				server_reply = wxString(_("ExternalConn: Access denied because: ")) +
+				m_server_reply = wxString(_("ExternalConn: Access denied because: ")) +
 					wxGetTranslation(reason->GetStringData());
 			} else {
-				server_reply = _("ExternalConn: Access denied");
+				m_server_reply = _("ExternalConn: Access denied");
 			}
 			Close();
 		} else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-			server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
+			m_server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
 			Close();
 		} else {
 			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
-				server_reply = _("Succeeded! Connection established to aMule ") +
+				m_server_reply = _("Succeeded! Connection established to aMule ") +
 					reply->GetTagByName(EC_TAG_SERVER_VERSION)->GetStringData();
 			} else {
-				server_reply = _("Succeeded! Connection established.");
+				m_server_reply = _("Succeeded! Connection established.");
 			}
 			result = true;
 		}
 	}
-	if ( notifier ) {
-		wxECSocketEvent event(wxEVT_EC_CONNECTION, result, server_reply);
-		notifier->AddPendingEvent(event);
+	if ( m_notifier ) {
+		wxECSocketEvent event(wxEVT_EC_CONNECTION, result, m_server_reply);
+		m_notifier->AddPendingEvent(event);
 	}
 	return result;
 }
