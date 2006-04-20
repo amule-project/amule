@@ -32,7 +32,12 @@ class WXDLLEXPORT wxDropTarget;
 #endif
 
 #define wxLC_OWNERDRAW 0x10000
-extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
+#if wxCHECK_VERSION(2,7,0)
+	extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
+#else
+	#define WXWIN_COMPATIBILITY_2_6 1
+	extern WXDLLEXPORT_DATA(const wxChar *) wxListCtrlNameStr;
+#endif
 
 //-----------------------------------------------------------------------------
 // classes

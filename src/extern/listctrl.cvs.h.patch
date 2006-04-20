@@ -1,11 +1,11 @@
 --- wxWidgets-cvsu/include/wx/generic/listctrl.h	2006-04-07 22:55:50.000000000 -0300
-+++ trunk/src/extern/listctrl.cvs.h	2006-04-19 18:13:20.000000000 -0300
++++ trunk/src/extern/listctrl.cvs.h	2006-04-20 15:33:15.000000000 -0300
 @@ -3,13 +3,13 @@
  // Purpose:     Generic list control
  // Author:      Robert Roebling
  // Created:     01/02/97
 -// RCS-ID:      $Id: listctrl.h,v 1.109 2006/03/30 14:04:01 ABX Exp $
-+// RCS-ID:      $Id: listctrl.cvs.h 6499 2006-02-11 04:13:53Z phoenix $
++// RCS-ID:      $Id: listctrl.cvs.h 6712 2006-04-19 21:39:06Z phoenix $
  // Copyright:   (c) 1998 Robert Roebling and Julian Smart
  // Licence:     wxWindows licence
  /////////////////////////////////////////////////////////////////////////////
@@ -17,17 +17,21 @@
  
  #include "wx/defs.h"
  #include "wx/object.h"
-@@ -31,6 +31,9 @@
+@@ -31,6 +31,13 @@
  class WXDLLEXPORT wxDropTarget;
  #endif
  
 +#define wxLC_OWNERDRAW 0x10000
-+extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
++#if wxCHECK_VERSION(2,7,0)
++	extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
++#else
++	extern WXDLLEXPORT_DATA(const wxChar *) wxListCtrlNameStr;
++#endif
 +
  //-----------------------------------------------------------------------------
  // classes
  //-----------------------------------------------------------------------------
-@@ -45,6 +48,8 @@
+@@ -45,6 +52,8 @@
  #define wxImageListType wxGenericImageList
  #endif
  
@@ -36,7 +40,7 @@
  //-----------------------------------------------------------------------------
  // internal classes
  //-----------------------------------------------------------------------------
-@@ -92,6 +97,8 @@
+@@ -92,6 +101,8 @@
      int GetColumnWidth( int col ) const;
      bool SetColumnWidth( int col, int width);
      int GetCountPerPage() const; // not the same in wxGLC as in Windows, I think
@@ -45,7 +49,7 @@
      wxRect GetViewRect() const;
  
      bool GetItem( wxListItem& info ) const;
-@@ -202,6 +209,7 @@
+@@ -202,6 +213,7 @@
  
      virtual void Freeze();
      virtual void Thaw();
@@ -53,7 +57,7 @@
  
      virtual bool SetBackgroundColour( const wxColour &colour );
      virtual bool SetForegroundColour( const wxColour &colour );
-@@ -217,6 +225,7 @@
+@@ -217,6 +229,7 @@
  
      virtual bool ShouldInheritColours() const { return false; }
      virtual void SetFocus();
@@ -61,7 +65,7 @@
  
      // implementation
      // --------------
-@@ -270,7 +279,6 @@
+@@ -270,7 +283,6 @@
      void ResizeReportView(bool showHeader);
  
      DECLARE_EVENT_TABLE()
@@ -69,7 +73,7 @@
  };
  
  #if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
-@@ -281,7 +289,6 @@
+@@ -281,7 +293,6 @@
  
  class WXDLLEXPORT wxListCtrl: public wxGenericListCtrl
  {
@@ -77,7 +81,7 @@
  
  public:
      wxListCtrl() {}
-@@ -298,4 +305,6 @@
+@@ -298,4 +309,6 @@
  };
  #endif // !__WXMSW__ || __WXUNIVERSAL__
  
