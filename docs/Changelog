@@ -19,6 +19,7 @@ Trunk
 		* Fixed bug in ECPacket.cpp: assignment inside assertion.
 		* Updated listctrl.cpp from wxWidgets cvs.
 		* Changed CECSocket constructor to be exception safe.
+		* Create a backup of the log file upon init.
 
 --------------------------------------------------------------------------------
 

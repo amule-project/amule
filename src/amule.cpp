@@ -566,8 +566,16 @@ bool CamuleApp::OnInit()
 	// Set the config object as the global cfg file
 	wxConfig::Set( cfg );
 
-	applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
-	if ( !applog->Ok() ) {
+	// Make a backup of the log file
+	wxString logfileName(ConfigDir + wxT("logfile"));
+	if (wxFileName::FileExists(logfileName)) {
+		wxString logBackupName(ConfigDir + wxT("logfile.bak"));
+		UTF8_MoveFile(logfileName, logBackupName);
+	}
+
+	// Open the log file
+	applog = new wxFFileOutputStream(logfileName);
+	if (!applog->Ok()) {
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
 		delete applog;
