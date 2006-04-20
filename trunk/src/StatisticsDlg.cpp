@@ -147,9 +147,21 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update)
 {
 	
-	const float *apfDown[] = { &update.downloads[0], &update.downloads[1], &update.downloads[2] };
-	const float *apfUp[] = { &update.uploads[0], &update.uploads[1], &update.uploads[2] };
-	const float *apfConn[] = { &update.connections[0], &update.connections[1], &update.connections[2] };
+	std::vector<float *> v1(3);
+	v1[0] = const_cast<float *>(&update.downloads[0]);
+	v1[1] = const_cast<float *>(&update.downloads[1]);
+	v1[2] = const_cast<float *>(&update.downloads[2]);
+	const std::vector<float *> &apfDown(v1);
+	std::vector<float *> v2(3);
+	v2[0] = const_cast<float *>(&update.uploads[0]);
+	v2[1] = const_cast<float *>(&update.uploads[1]);
+	v2[2] = const_cast<float *>(&update.uploads[2]);
+	const std::vector<float *> &apfUp(v2);
+	std::vector<float *> v3(3);
+	v3[0] = const_cast<float *>(&update.connections[0]);
+	v3[1] = const_cast<float *>(&update.connections[1]);
+	v3[2] = const_cast<float *>(&update.connections[2]);
+	const std::vector<float *> &apfConn(v3);
 	
 	if (!bStatsVisible) {
 		pscopeDL->DelayPoints();

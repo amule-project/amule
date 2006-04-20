@@ -111,7 +111,11 @@ void CKadDlg::SetGraphColors()
 
 void CKadDlg::UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update)
 {	
-	const float* apfKad[] = { &update.kadnodes[0], &update.kadnodes[1], &update.kadnodes[2] };
+	std::vector<float *> v(3);
+	v[0] = const_cast<float *>(&update.kadnodes[0]);
+	v[1] = const_cast<float *>(&update.kadnodes[1]);
+	v[2] = const_cast<float *>(&update.kadnodes[2]);
+	const std::vector<float *> &apfKad(v);
 	unsigned nodeCount = static_cast<unsigned>(update.kadnodes[2]);
 	
 	if (!bStatsVisible) {

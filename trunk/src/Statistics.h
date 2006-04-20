@@ -36,6 +36,7 @@
 
 #include <deque>		// Needed for std::deque
 #include <list>			// Needed for std::list
+#include <vector>		// Needed for std::vector
 
 enum StatsGraphType {
 	GRAPH_INVALID = 0,
@@ -236,7 +237,7 @@ class CStatistics {
 
 	void	 RecordHistory();
 	unsigned GetHistoryForWeb(unsigned cntPoints, double sStep, double *sStart, uint32 **graphData);
-	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, float **ppf, StatsGraphType which_graph);
+	unsigned GetHistory(unsigned cntPoints, double sStep, double sFinal, const std::vector<float *> &ppf, StatsGraphType which_graph);
 	GraphUpdateInfo GetPointsForUpdate();
 
 	/* Statistics tree functions */
@@ -364,7 +365,8 @@ class CStatistics {
 
 	/* Graph-related functions */
 
-	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled, double sStep, float **ppf, StatsGraphType which_graph);
+	void ComputeAverages(HR **pphr, listRPOS pos, unsigned cntFilled,
+		double sStep, const std::vector<float *> &ppf, StatsGraphType which_graph);
  
 	int GetPointsPerRange()
 	{

@@ -375,27 +375,32 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 	unsigned cntPoints,		// number of sample points to assemble
 	double sStep,			// time difference between sample points
 	double sFinal,			// latest allowed timestamp
-	float** ppf,			// an array of pointers to arrays of floats for the result
+	const std::vector<float *> &ppf,// an array of pointers to arrays of floats for the result
 	StatsGraphType which_graph)	// the graph which will receive the points
 {	
-	if (sStep==0.0 || cntPoints==0)
+	if (sStep==0.0 || cntPoints==0) {
 		return(0);
-	float		*pf1 = *ppf;
-	float		*pf2 = *(ppf+1);
-	float		*pf3 = *(ppf+2);
-	unsigned	cntFilled = 0;
-	listRPOS	pos = listHR.rbegin();
+	}
+	
+	float *pf1 = ppf[0];
+	float *pf2 = ppf[1];
+	float *pf3 = ppf[2];
+	unsigned cntFilled = 0;
+	listRPOS pos = listHR.rbegin();
 
 	// start of list should be an integer multiple of the sampling period for samples 
 	// to be consistent when the graphs are resized horizontally
 	double	sTarget;
-	if (sFinal >= 0.0)
+	if (sFinal >= 0.0) {
 		sTarget = sFinal;
-	else
-		sTarget = (sStep==1.0 ? pos->sTimestamp : std::floor(pos->sTimestamp/sStep) * sStep); 
+	} else {
+		sTarget = sStep==1.0 ?
+			pos->sTimestamp :
+			std::floor(pos->sTimestamp/sStep) * sStep;
+	}
 
-	HR	**ahr = NULL, **pphr = NULL;
-	bool	bRateGraph = (which_graph != GRAPH_CONN);	// rate graph or connections graph?
+	HR **ahr = NULL, **pphr = NULL;
+	bool bRateGraph = (which_graph != GRAPH_CONN);	// rate graph or connections graph?
 	if (bRateGraph) {
 		ahr = new HR* [cntPoints];
 		pphr = ahr;
@@ -413,23 +418,27 @@ unsigned CStatistics::GetHistory(	// Assemble arrays of sample points for a grap
 			*pf2++ = (float)pos->cntConnections;
 			*pf3++ = (float)pos->cntDownloads;
 		}
-		if (++cntFilled  == cntPoints)		// enough points 
+		if (++cntFilled  == cntPoints) {	// enough points 
 			break;
-		if (pos->sTimestamp == 0.0)		// reached beginning of uptime
+		}
+		if (pos->sTimestamp == 0.0) {		// reached beginning of uptime
 			break;
+		}
 		if ((sTarget -= sStep) <= 0.0) {	// don't overshoot the beginning
-			if (bRateGraph)
+			if (bRateGraph) {
 				*pphr++ = &hrInit;
-			else
+			} else {
 				*pf1++ = *pf2++ = *pf3++ = 0.0;
+			}
 			++cntFilled;
 			break;
 		}
 	}
 
 	if (bRateGraph) {
-		if  (cntFilled > 0)
+		if  (cntFilled > 0) {
 			ComputeAverages(pphr, pos, cntFilled, sStep, ppf, which_graph);
+		}
 		delete[] ahr;
 	}
 
@@ -500,12 +509,12 @@ unsigned CStatistics::GetHistoryForWeb(  // Assemble arrays of sample points for
 
 
 void CStatistics::ComputeAverages(
-	HR		**pphr,			// pointer to (end of) array of assembled history records
-	listRPOS	pos,			// position in history list from which to backtrack
-	unsigned	cntFilled,		// number of points in the sample data
-	double		sStep,			// time difference between two samples
-	float		**ppf,			// an array of pointers to arrays of floats with sample data
-	StatsGraphType	which_graph)		// the graph which will receive the points
+	HR		**pphr,		// pointer to (end of) array of assembled history records
+	listRPOS	pos,		// position in history list from which to backtrack
+	unsigned	cntFilled,	// number of points in the sample data
+	double		sStep,		// time difference between two samples
+	const std::vector<float *> &ppf,// an array of pointers to arrays of floats with sample data
+	StatsGraphType	which_graph)	// the graph which will receive the points
 {	
 	double		sTarget, kValueRun;
 	uint64 		avgTime = average_minutes * 60;
@@ -539,11 +548,17 @@ void CStatistics::ComputeAverages(
 			
 			uint32 value = 0;
 			switch (which_graph) {
-				case GRAPH_DOWN:	value = (uint32)(pos->kBpsDownCur * 1024.0);	break;
-				case GRAPH_UP:		value = (uint32)(pos->kBpsUpCur * 1024.0);		break;
-				case GRAPH_KAD:		value = (uint32)(pos->kadNodesCur * 1024.0);	break;
-				default:
-					wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));		
+			case GRAPH_DOWN:
+				value = (uint32)(pos->kBpsDownCur * 1024.0);
+				break;
+			case GRAPH_UP:
+				value = (uint32)(pos->kBpsUpCur * 1024.0);
+				break;
+			case GRAPH_KAD:
+				value = (uint32)(pos->kadNodesCur * 1024.0);
+				break;
+			default:
+				wxCHECK_RET(false, wxT("ComputeAverages called with unsupported graph type."));		
 			}		
 			
 			runningAvg->m_byte_history.push_front(value);
@@ -557,9 +572,9 @@ void CStatistics::ComputeAverages(
 	};
 
 	// now compute averages in returned arrays, starting with the earliest values
-	float	*pf1 = *ppf++ + cntFilled - 1;	// holds session avg
-	float	*pf2 = *ppf++ + cntFilled - 1;	// holds running avg
-	float	*pf3 = *ppf + cntFilled - 1;	// holds current rate
+	float *pf1 = ppf[0] + cntFilled - 1;	// holds session avg
+	float *pf2 = ppf[1] + cntFilled - 1;	// holds running avg
+	float *pf3 = ppf[2] + cntFilled - 1;	// holds current rate
 
 	for (int cnt=cntFilled; cnt>0; cnt--, pf1--, pf2--, pf3--) {
 		HR *phr = *(--pphr);
