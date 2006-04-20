@@ -29,13 +29,15 @@
 #include <wx/intl.h>		// Needed for _
 #include <wx/dcmemory.h>
 
-#include "OScopeCtrl.h"		// Interface declarations.
-#include "StatisticsDlg.h"	// Needed for GetHistory()
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "OtherFunctions.h"	// Needed for CastSecondsToHM
-#include <common/StringFunctions.h>
-#include "amule.h"		// Needed for theApp
 #include <common/Format.h>
+#include <common/StringFunctions.h>
+
+#include "amule.h"		// Needed for theApp
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#include "Logger.h"		// Needed for AddLogLineM
+#include "OScopeCtrl.h"		// Interface declarations
+#include "OtherFunctions.h"	// Needed for CastSecondsToHM
+#include "StatisticsDlg.h"	// Needed for GetHistory()
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
   EVT_PAINT(COScopeCtrl::OnPaint)
@@ -319,7 +321,7 @@ void COScopeCtrl::RecreateGrid()
 } // RecreateGrid
 
 
-void COScopeCtrl::AppendPoints(double sTimestamp, const float *apf[])
+void COScopeCtrl::AppendPoints(double sTimestamp, const std::vector<float *> &apf)
 {
 	sLastTimestamp = sTimestamp;
 	ShiftGraph(1);
@@ -411,8 +413,8 @@ void COScopeCtrl::OnSize(wxSizeEvent& evt)
 	// InvalidateCtrl to be based on the y axis scaling
 	rectPlot.left   = 20 ; 
 	rectPlot.top    = 10 ;
-	rectPlot.right  = rectClient.right-10 ;
-	rectPlot.bottom = rectClient.bottom-25 ;
+	rectPlot.right  = std::max(rectPlot.left+1, rectClient.right-10);
+	rectPlot.bottom = std::max(rectPlot.top+1, rectClient.bottom-25);
 	nPlotHeight = rectPlot.bottom-rectPlot.top;
 	nPlotWidth  = rectPlot.right-rectPlot.left;
 	PlotData_t* ppds = pdsTrends;
@@ -477,7 +479,7 @@ unsigned COScopeCtrl::GetPlotY(float fPlot, PlotData_t* ppds)
 
 
 
-void COScopeCtrl::DrawPoints(const float *apf[], unsigned cntPoints)
+void COScopeCtrl::DrawPoints(const std::vector<float *> &apf, unsigned cntPoints)
 {	// this appends a new set of data points to a graph; all of the plotting is 
 	// directed to the memory based bitmap associated with dcPlot
 	// the will subsequently be BitBlt'd to the client in OnPaint
@@ -511,29 +513,40 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 	wxASSERT(graph_type != GRAPH_INVALID);
 	
 	if (graph_type != GRAPH_INVALID) {
-		unsigned i, cntFilled;
-		float** apf = new float*[nTrends];
-		for (i=0; i<nTrends; ++i)
-			apf[i] = new float[cntPoints];
-		double sFinal = (bStopped ? sLastTimestamp : -1.0);
-		cntFilled = theApp.m_statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
-		if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
-			if (bShiftGraph) {  // delayed points - we have an fPrev
-				ShiftGraph(cntFilled);
-			} else {  // fresh graph, we need to preset fPrev, yPrev
-				PlotData_t* ppds = pdsTrends;	
-				for(i=0; i<nTrends; ++i, ++ppds)
-					ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
-				cntFilled--;
+		unsigned i;
+		unsigned cntFilled;
+		std::vector<float *> apf(nTrends);
+		try {
+			for (i = 0; i < nTrends; ++i) {
+				apf[i] = new float[cntPoints];
 			}
-			DrawPoints((const float**)apf, cntFilled);
-			if (bRefresh)
-				Refresh(FALSE);
+			double sFinal = (bStopped ? sLastTimestamp : -1.0);
+			cntFilled = theApp.m_statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
+			if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
+				if (bShiftGraph) {  // delayed points - we have an fPrev
+					ShiftGraph(cntFilled);
+				} else {  // fresh graph, we need to preset fPrev, yPrev
+					PlotData_t* ppds = pdsTrends;	
+					for(i=0; i<nTrends; ++i, ++ppds)
+						ppds->yPrev = GetPlotY(ppds->fPrev = *(apf[i] + cntFilled - 1), ppds);
+					cntFilled--;
+				}
+				DrawPoints(apf, cntFilled);
+				if (bRefresh)
+					Refresh(FALSE);
+			}
+			for (i = 0; i < nTrends; ++i) {
+				delete [] apf[i];
+			}
+		} catch(std::bad_alloc) {
+			// Failed memory allocation
+			AddLogLineM(true, wxString(
+				wxT("Error: COScopeCtrl::PlotHistory: Insuficient memory, cntPoints == ")) <<
+				cntPoints << wxT("."));
+			for (i = 0; i < nTrends; ++i) {
+				delete [] apf[i];
+			}
 		}
-		for (i=0; i<nTrends; ++i)
-			delete[] apf[i];
-	
-		delete[] apf;
 	} else {
 		// No history (yet) for Kad.
 	}

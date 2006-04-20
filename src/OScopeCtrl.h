@@ -57,23 +57,25 @@ public:
 
 	void SetRange(float dLower, float dUpper, unsigned iTrend = 0);
 	void SetRanges(float dLower, float dUpper);
-	void SetXUnits(const wxString& string, const wxString& XMin = wxT(""), const wxString& XMax = wxT(""));
-	void SetYUnits(const wxString& string, const wxString& YMin = wxT(""), const wxString& YMax = wxT(""));
+	void SetXUnits(const wxString& string,
+		const wxString& XMin = wxEmptyString, const wxString& XMax = wxEmptyString);
+	void SetYUnits(const wxString& string,
+		const wxString& YMin = wxEmptyString, const wxString& YMax = wxEmptyString);
 	void SetBackgroundColor(COLORREF color);
 	void SetGridColor(COLORREF color);
 	void SetPlotColor(COLORREF color, unsigned iTrend = 0);
 	COLORREF GetPlotColor(unsigned iTrend = 0)  {return pdsTrends[iTrend].crPlot;}
-	float GetUpperLimit()	{ return pdsTrends[0].fUpperLimit; }
+	float GetUpperLimit()		{ return pdsTrends[0].fUpperLimit; }
 	void Reset(double sNewPeriod);
 	void Stop();
 	void RecreateGraph(bool bRefresh=true);
 	void RecreateGrid();
-	void AppendPoints(double sTimestamp, const float *apf[]);
-	void DelayPoints()	{ nDelayedPoints++; }
-	unsigned GetPlotHeightPixels()		{return nPlotHeight;}
-	unsigned GetPlotWidthPoints()		{return nPlotWidth/nShiftPixels;}
-	wxBitmap* GetBitmapPlot()			{return bmapPlot;};
-	wxBitmap* GetBitmapGrid()			{return bmapGrid;};
+	void AppendPoints(double sTimestamp, const std::vector<float *> &apf);
+	void DelayPoints()		{ nDelayedPoints++; }
+	unsigned GetPlotHeightPixels()	{ return nPlotHeight; }
+	unsigned GetPlotWidthPoints()	{ return nPlotWidth/nShiftPixels; }
+	wxBitmap* GetBitmapPlot()	{ return bmapPlot; }
+	wxBitmap* GetBitmapGrid()	{ return bmapGrid; }
 
 	StatsGraphType graph_type;
 	
@@ -136,7 +138,7 @@ private:
 	void OnSize(wxSizeEvent& evt);
 	void ShiftGraph(unsigned cntPoints);
 	void PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefresh);
-	void DrawPoints(const float *apf[], unsigned cntPoints);
+	void DrawPoints(const std::vector<float *> &apf, unsigned cntPoints);
 	unsigned GetPlotY(float fPlot, PlotData_t* ppds);
 	void InvalidateCtrl(bool bInvalidateGraph = true, bool bInvalidateGrid = true);
 	void DoBlit();
