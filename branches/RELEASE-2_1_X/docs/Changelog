@@ -37,6 +37,7 @@ Version 2.1.2 - The "We're on fire!" version
 		* Slightly more informational error message in amuleweb when
 		  the template is not found.
 		* Fix for bug in ReadyPath() function.
+		* Create a backup of the log file upon init.
 
 	Xaignar:
 		* Ensured that partial files left from failed file-completion attempts
