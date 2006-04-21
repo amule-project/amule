@@ -310,7 +310,7 @@ CSharedFileList::~CSharedFileList()
 wxString ReadyPath(const wxString& path)
 {
 	if (path.Last() != wxFileName::GetPathSeparator()) {
-		path + wxFileName::GetPathSeparator();
+		return path + wxFileName::GetPathSeparator();
 	}
 
 	return path;
@@ -353,11 +353,9 @@ void CSharedFileList::FindSharedFiles()
 			}
 		}
 	}
-
 	
 	// Create a list of all shared paths and weed out duplicates.
 	std::list<wxString> sharedPaths;
-
 	
 	// Global incoming dir and all category incoming directories are automatically shared.
 	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir()));
@@ -368,7 +366,6 @@ void CSharedFileList::FindSharedFiles()
 	// Also remove bogus entries
 	for (size_t i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
 		const wxString& path = theApp.glob_prefs->shareddir_list.Item(i);
-		
 		if (CheckDirExists(path)) {
 			sharedPaths.push_back(ReadyPath(path));
 			++i;
