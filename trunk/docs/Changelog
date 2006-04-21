@@ -21,6 +21,7 @@ Trunk
 		* Changed CECSocket constructor to be exception safe.
 		* Create a backup of the log file upon init.
 		* Fix for invalid rectangle size on COScopeCtrl::PlotHistory().
+		* Fix for bug in ReadyPath() function.
 
 --------------------------------------------------------------------------------
 
