@@ -67,6 +67,10 @@ Version 2.1.2 - The "We're on fire!" version
 		* Compilation fix for auto_ptr<> on Mac.
 		* Fixed crash on amulegui when exiting.
 		* Fix for CheckDirExists() for empty directory string.
+	
+	Vollstrecker:
+		* Added check if locale could be set, before adding the language to
+		  the options dialog.
 
 	Xaignar:
 		* Ensured that partial files left from failed file-completion attempts
