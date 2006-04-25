@@ -34,6 +34,7 @@
 #include <wx/textfile.h>
 #include <wx/config.h>
 #include <wx/utils.h>
+#include <wx/intl.h>
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -206,6 +207,7 @@ bool		CPreferences::s_ConnectToED2K;
 unsigned	CPreferences::s_maxClientVersions;
 bool		CPreferences::s_ExecOnCompletion;
 wxString	CPreferences::s_ExecOnCompletionCommand;
+
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -669,13 +671,15 @@ public:
 			if ( aMuleLanguages[i].id == wxId ) {
 				m_selection = i;
 			}
-			
-			langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
+			if (IsLocaleAvailable(aMuleLanguages[i].name)) {
+				langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
+			}
 		}
 
 		return Cfg_Tmpl<int>::TransferToWindow();
 	}
 
+	
 protected:
 	int	m_selection;
 };
