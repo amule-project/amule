@@ -43,7 +43,7 @@
 						</tr>
 					</xsl:for-each>
 				</table>
-				<a><xsl:attribute name='href'><xsl:value-of select='@pofile'/></xsl:attribute><xsl:value-of select='@pofile'/></a> generated on <xsl:value-of select='@generated'/>
+				<a><xsl:attribute name='href'>files/<xsl:value-of select='@pofile'/></xsl:attribute><xsl:value-of select='@pofile'/></a> generated on <xsl:value-of select='@generated'/>
 				<!-- </div> -->
 			</body>
 		</html>
