@@ -23,7 +23,7 @@
 				<!-- <div id="content"> -->
 				<h1>aMule translation statistics (generated daily)</h1>
 				<table>
-					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='3'>Fuzzy</th><th colspan='3'>Untranslated</th><th colspan='1'>Warnings</th><th colspan='3'>Progress</th></tr>
+					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='3'>Fuzzy</th><th colspan='3'>Untranslated</th><th colspan='2'>Warnings</th><th colspan='3'>Progress</th></tr>
 					<xsl:for-each select="lang">
 						<xsl:sort select='@translated' data-type="number" order="descending"/>
 						<tr>
