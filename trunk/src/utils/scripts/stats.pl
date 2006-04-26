@@ -82,7 +82,7 @@ foreach $index (0 .. $#pos) {
 	$name = code2language($po) unless $name ne "";
 	$name = "???" unless $name ne "";
 
-	print "<lang code='$po' name='$name' translated='$trans' fuzzy='$fuzz' />\n";
+	print "<lang code='$po' name='$name' translated='$trans' fuzzy='$fuzz' />\n" unless $po eq "en_GB";
 	print STDERR "done ($untrans untranslated strings).\n" if($ARGV[0] eq '-v');
 }
 
