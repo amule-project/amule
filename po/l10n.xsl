@@ -4,7 +4,7 @@
 		<html>
 			<head>
 				<title><xsl:value-of select='@name'/> translation statistics</title>
-				<!-- <link rel="Stylesheet" href="/gaim.css" type="text/css" media="screen" /> -->
+				<!-- <link rel="Stylesheet" href="../style.css" type="text/css" media="screen" /> -->
 				<style>
 					.bargraph {
 						width: 200px;
@@ -21,7 +21,8 @@
 			</head>
 			<body>
 				<!-- <div id="content"> -->
-				<h1>aMule translation statistics (generated daily)</h1>
+				<h1>aMule translation statistics</h1>
+				Statistics generated <xsl:value-of select='@stats_generated' /><br/><br/>
 				<table>
 					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='3'>Fuzzy</th><th colspan='3'>Untranslated</th><th colspan='2'>Warnings</th><th colspan='3'>Progress</th></tr>
 					<xsl:for-each select="lang">
@@ -54,6 +55,7 @@
 						</tr>
 					</xsl:for-each>
 				</table>
+				<br/>
 				<a><xsl:attribute name='href'>files/<xsl:value-of select='@pofile'/></xsl:attribute><xsl:value-of select='@pofile'/></a> generated on <xsl:value-of select='@generated'/>
 				<!-- </div> -->
 			</body>

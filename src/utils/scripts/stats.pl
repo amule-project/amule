@@ -60,10 +60,12 @@ die "unable to get total: $!" unless (/(\d+) untranslated messages/);
 
 $total = $1;
 $generated = strftime "%Y-%m-%d %H:%M:%S", gmtime;
+$stats_generated = `date`;
+chomp($stats_generated);
 
 print "<?xml version='1.0'?>\n";
 print "<?xml-stylesheet type='text/xsl' href='l10n.xsl'?>\n";
-print "<project version='1.0' xmlns:l10n='http://faceprint.com/code/l10n' name='$PACKAGE' pofile='$PACKAGE.pot' strings='$total' generated='$generated'>\n";
+print "<project version='1.0' xmlns:l10n='http://faceprint.com/code/l10n' name='$PACKAGE' pofile='$PACKAGE.pot' strings='$total' generated='$generated' stats_generated='$stats_generated'>\n";
 
 foreach $index (0 .. $#pos) {
 	$trans = $fuzz = $untrans = 0;
