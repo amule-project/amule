@@ -21,7 +21,7 @@
 			</head>
 			<body>
 				<!-- <div id="content"> -->
-				<h1><xsl:value-of select='@name' /> translation statistics</h1>
+				<h1>aMule translation statistics (generated daily)</h1>
 				<table>
 					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='2'>Fuzzy</th><th colspan='2'>Untranslated</th></tr>
 					<xsl:for-each select="lang">
