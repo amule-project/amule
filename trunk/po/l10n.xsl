@@ -28,9 +28,9 @@
 						<xsl:sort select='@translated' data-type="number" order="descending"/>
 						<tr>
 							<td><a><xsl:attribute name='href'>files/<xsl:value-of select='@code'/>.po</xsl:attribute><xsl:value-of select='@name'/> (<xsl:value-of select='@code'/>)</a></td>
-							<td><xsl:value-of select='@translated'/></td><td><xsl:value-of select="format-number(@translated div ../@strings * 100,'#.##  ')"/> %</td>
-							<td><xsl:value-of select='@fuzzy'/></td><td><xsl:value-of select="format-number(@fuzzy div ../@strings * 100,'#.##  ')"/> %</td>
-							<td><xsl:value-of select='../@strings - (@translated + @fuzzy)'/></td><td><xsl:value-of select="format-number((../@strings - (@translated + @fuzzy)) div ../@strings * 100,'#.##  ')"/> %</td>
+							<td>| <xsl:value-of select='@translated'/></td><td> ~ <xsl:value-of select="format-number(@translated div ../@strings * 100,'#.##')"/>%</td>
+							<td>| | <xsl:value-of select='@fuzzy'/></td> ~ <td><xsl:value-of select="format-number(@fuzzy div ../@strings * 100,'#.##')"/>%</td>
+							<td>| | <xsl:value-of select='../@strings - (@translated + @fuzzy)'/></td> ~ <td><xsl:value-of select="format-number((../@strings - (@translated + @fuzzy)) div ../@strings * 100,'#.##')"/>%</td>
 						<td>
 							<table class='bargraph'><tr>
 									<td bgcolor='green'><xsl:attribute name='width'><xsl:value-of select='round(@translated div ../@strings * 200)'/>px;</xsl:attribute></td>
