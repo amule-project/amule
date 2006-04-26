@@ -46,10 +46,16 @@
 							<td>| </td>
 						<td>
 							<table class='bargraph'><tr>
+								<xsl:if test="@translated > 0">
 									<td bgcolor='green'><xsl:attribute name='width'><xsl:value-of select='round(@translated div ../@strings * 200)'/>px;</xsl:attribute></td>
+								</xsl:if>
+								<xsl:if test="@fuzzy > 0">
 									<td bgcolor='blue'><xsl:attribute name='width'><xsl:value-of select='round(@fuzzy div ../@strings * 200)'/>px;</xsl:attribute></td>
+								</xsl:if>
+								<xsl:if test="../@strings - @translated - @fuzzy > 0">
 									<!-- <td bgcolor='red'><xsl:attribute name='width'><xsl:value-of select='200 - round((@translated + @fuzzy) div ../@strings * 200)'/>px;</xsl:attribute></td> -->
 									<td bgcolor='red'></td>
+								</xsl:if>
 							</tr></table>
 						</td>
 						</tr>
