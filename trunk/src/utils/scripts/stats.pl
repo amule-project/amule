@@ -69,7 +69,7 @@ foreach $index (0 .. $#pos) {
 	$trans = $fuzz = $untrans = 0;
 	$po = $pos[$index];
 	print STDERR "$po..." if($ARGV[0] eq '-v');
-	system("msgmerge $po.po $PACKAGE.pot -o $po.new 2>/dev/null");
+	system("msgmerge $po.po $PACKAGE.pot -o $po.new 2>msgmerge_warnings");
 	$_ = `msgfmt --statistics $po.new -o /dev/null 2>&1`;
 	chomp;
 	if(/(\d+) translated message/) { $trans = $1; }
@@ -77,12 +77,15 @@ foreach $index (0 .. $#pos) {
 	if(/(\d+) untranslated message/) { $untrans = $1; }
 	unlink("$po.new");
 
+	$warnings = `cat msgmerge_warnings | grep -v done | wc -l | cut -d" " -f 1`;
+	chop($warnings);
+
 	$name = "";
 	$name = $lang{$po};
 	$name = code2language($po) unless $name ne "";
 	$name = "???" unless $name ne "";
 
-	print "<lang code='$po' name='$name' translated='$trans' fuzzy='$fuzz' />\n" unless $po eq "en_GB";
+	print "<lang code='$po' name='$name' translated='$trans' fuzzy='$fuzz' warnings='$warnings' />\n" unless $po eq "en_GB";
 	print STDERR "done ($untrans untranslated strings).\n" if($ARGV[0] eq '-v');
 }
 
