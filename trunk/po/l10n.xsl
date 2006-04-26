@@ -23,7 +23,7 @@
 				<!-- <div id="content"> -->
 				<h1>aMule translation statistics (generated daily)</h1>
 				<table>
-					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='3'>Fuzzy</th><th colspan='3'>Untranslated</th></tr>
+					<tr><th>Language  </th><th colspan='2'>Translated</th><th colspan='3'>Fuzzy</th><th colspan='3'>Untranslated</th><th colspan='3'>Progress</th></tr>
 					<xsl:for-each select="lang">
 						<xsl:sort select='@translated' data-type="number" order="descending"/>
 						<tr>
@@ -31,6 +31,7 @@
 							<td>| <xsl:value-of select='@translated'/></td><td> ~ <xsl:value-of select="format-number(@translated div ../@strings * 100,'#.##')"/>%</td>
 							<td>| | <xsl:value-of select='@fuzzy'/></td> ~ <td><xsl:value-of select="format-number(@fuzzy div ../@strings * 100,'#.##')"/>%</td>
 							<td>| | <xsl:value-of select='../@strings - (@translated + @fuzzy)'/></td> ~ <td><xsl:value-of select="format-number((../@strings - (@translated + @fuzzy)) div ../@strings * 100,'#.##')"/>%</td>
+							<td>| </td>
 						<td>
 							<table class='bargraph'><tr>
 									<td bgcolor='green'><xsl:attribute name='width'><xsl:value-of select='round(@translated div ../@strings * 200)'/>px;</xsl:attribute></td>
