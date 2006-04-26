@@ -33,6 +33,7 @@
 #include <wx/file.h>		// Needed for wxFile
 #include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
 #include <wx/filefn.h>		// Needed for wxRemoveFile, wxMkdir, wxRmdir
+#include <wx/log.h>			// Needed for wxLogNull
 
 #ifdef __WXMSW__
 	#include <wx/msw/winundef.h>
@@ -1355,3 +1356,17 @@ wxString wxLang2Str(const int lang)
 		return wxEmptyString;
 	}
 }
+
+
+bool IsLocaleAvailable (const wxString& locale)
+{
+	// This supresses error-messages about invalid locales.
+	wxLogNull logTarget;
+	
+	wxLocale locale_to_check;
+	InitLocale(locale_to_check, StrLang2wx(locale));
+	
+	#warning TODO: Check if catalog is aviable, too
+	return locale_to_check.IsOk();
+}
+
