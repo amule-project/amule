@@ -3391,12 +3391,12 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 
 
 	CAICHHashTree* pVerifiedHash = m_pAICHHashSet->m_pHashTree.FindHash(nPart*PARTSIZE, length);
-	if (pVerifiedHash == NULL || !pVerifiedHash->m_bHashValid){
+	if (pVerifiedHash == NULL || !pVerifiedHash->GetHashValid()){
 		AddDebugLogLineM( true, logAICHRecovery, wxT("Processing AICH Recovery data: Unable to get verified hash from hashset (should never happen)") );
 		wxASSERT( false );
 		return;
 	}
-	CAICHHashTree htOurHash(pVerifiedHash->m_nDataSize, pVerifiedHash->m_bIsLeftBranch, pVerifiedHash->m_nBaseSize);
+	CAICHHashTree htOurHash(pVerifiedHash->GetNDataSize(), pVerifiedHash->GetIsLeftBranch(), pVerifiedHash->GetNBaseSize());
 	try {
 		m_hpartfile.Seek(PARTSIZE * nPart,wxFromStart);
 		CreateHashFromFile(&m_hpartfile,length, NULL, &htOurHash);
@@ -3407,7 +3407,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		return;
 	}
 	
-	if (!htOurHash.m_bHashValid){
+	if (!htOurHash.GetHashValid()){
 		AddDebugLogLineM( false, logAICHRecovery, wxT("Processing AICH Recovery data: Failed to retrieve AICH Hashset of corrupt part") );
 		wxASSERT( false );
 		return;
@@ -3419,11 +3419,11 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		const uint32 nBlockSize = min<uint32>(EMBLOCKSIZE, length - pos);
 		CAICHHashTree* pVerifiedBlock = pVerifiedHash->FindHash(pos, nBlockSize);
 		CAICHHashTree* pOurBlock = htOurHash.FindHash(pos, nBlockSize);
-		if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->m_bHashValid || !pOurBlock->m_bHashValid){
+		if ( pVerifiedBlock == NULL || pOurBlock == NULL || !pVerifiedBlock->GetHashValid() || !pOurBlock->GetHashValid()){
 			wxASSERT( false );
 			continue;
 		}
-		if (pOurBlock->m_Hash == pVerifiedBlock->m_Hash){
+		if (pOurBlock->GetHash() == pVerifiedBlock->GetHash()){
 			FillGap(PARTSIZE*nPart+pos, PARTSIZE*nPart + pos + (nBlockSize-1));
 			RemoveBlockFromList(PARTSIZE*nPart, PARTSIZE*nPart + (nBlockSize-1));
 			nRecovered += nBlockSize;
