@@ -5,23 +5,17 @@ Trunk
 2006-??-??
 
 	Phoenix:
-		* Upgraded extern/listctrl.{cpp,h} from wxWidgets code.
+		* Upgraded extern/listctrl.{cpp,h} from wxWidgets cvs code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.
-		* Fixed crash on amulegui when exiting.
 		* Fix for unhandled exception in new skinned toolbar code.
 		* Coding style fixes.
 		* Fix for server disconnection during global search.
-		* Slightly more informational error message in amuleweb when
-		  the template is not found.
 		* No more wxARRAY's in amuleweb.
 		* Fixed bug in mutex code in amuleweb (s_mutex_wcThreads).
 		* No more wxARRAY's in aMule code.
 		* Fixed bug in ECPacket.cpp: assignment inside assertion.
-		* Updated listctrl.cpp from wxWidgets cvs.
 		* Changed CECSocket constructor to be exception safe.
-		* Create a backup of the log file upon init.
 		* Fix for invalid rectangle size on COScopeCtrl::PlotHistory().
-		* Fix for bug in ReadyPath() function.
 
 --------------------------------------------------------------------------------
 
@@ -67,7 +61,11 @@ Version 2.1.2 - The "We're on fire!" version
 		* Compilation fix for auto_ptr<> on Mac.
 		* Fixed crash on amulegui when exiting.
 		* Fix for CheckDirExists() for empty directory string.
-	
+		* Slightly more informational error message in amuleweb when
+		  the template is not found.
+		* Fix for bug in ReadyPath() function.
+		* Create a backup of the log file upon init.
+
 	Vollstrecker:
 		* Added check if locale could be set, before adding the language to
 		  the options dialog.
