@@ -1043,10 +1043,8 @@ void CKademliaUDPListener::ProcessFirewalledRequest (const byte *packetData, uin
 	CMemFile bio(packetData, lenPacket);
 	uint16 tcpport = bio.ReadUInt16();
 
-	CContact contact;
-	contact.SetIPAddress(ip);
-	contact.SetTCPPort(tcpport);
-	contact.SetUDPPort(port);
+	CUInt128 zero((uint32)0);
+	CContact contact(zero, ip, port, tcpport, zero);
 	theApp.clientlist->RequestTCP(&contact);
 
 	// Send response
@@ -1110,11 +1108,8 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 	CUInt128 userID = bio.ReadUInt128();
 	uint16 tcpport = bio.ReadUInt16();
 
-	CContact contact;
-	contact.SetIPAddress(ip);
-	contact.SetTCPPort(tcpport);
-	contact.SetUDPPort(port);
-	contact.SetClientID(userID);
+	CUInt128 zero((uint32)0);
+	CContact contact(userID, ip, port, tcpport, zero);
 	theApp.clientlist->IncomingBuddy(&contact, &BuddyID);
 
 	CMemFile bio2(34);
@@ -1144,11 +1139,8 @@ void CKademliaUDPListener::ProcessFindBuddyResponse (const byte *packetData, uin
 	CUInt128 userID = bio.ReadUInt128();
 	uint16 tcpport = bio.ReadUInt16();
 
-	CContact contact;
-	contact.SetIPAddress(ip);
-	contact.SetTCPPort(tcpport);
-	contact.SetUDPPort(port);
-	contact.SetClientID(userID);
+	CUInt128 zero((uint32)0);
+	CContact contact(userID, ip, port, tcpport, zero);
 	theApp.clientlist->RequestBuddy(&contact);
 }
 

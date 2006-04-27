@@ -56,34 +56,21 @@ CContact::~CContact()
 	theStats::RemoveKadNode();
 }
 
-CContact::CContact()
-{
-	m_clientID = 0;
-	m_ip = 0;
-	m_udpPort = 0;
-	m_tcpPort = 0;
-	InitContact();
-}
-
 CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target)
+:
+m_clientID(clientID),
+m_distance(target),
+m_ip(ip),
+m_tcpPort(tcpPort),
+m_udpPort(udpPort),
+m_type(3),
+m_lastTypeSet(time(NULL)),
+m_expires(0),
+m_created(time(NULL)),
+m_inUse(0)
 {
-	m_clientID = clientID;
-	m_distance.SetValue(target);
 	m_distance.XOR(clientID);
-	m_ip = ip;
-	m_udpPort = udpPort;
-	m_tcpPort = tcpPort;
-	InitContact();
-}
-
-void CContact::InitContact() 
-{
-	m_type = 3;
-	m_expires = 0;
-	m_lastTypeSet = time(NULL);
-	m_created = time(NULL);
-	m_inUse = 0;	
-
+	wxASSERT(udpPort);
 	theStats::AddKadNode();
 }
 
@@ -133,6 +120,7 @@ uint16 CContact::GetUDPPort(void) const
 
 void CContact::SetUDPPort(uint16 port)
 {
+	wxASSERT(port);
 	m_udpPort = port;
 }
 
