@@ -49,12 +49,23 @@ namespace Kademlia {
 
 class CContact
 {
+private:
+	CUInt128	m_clientID;
+	CUInt128	m_distance;
+	uint32		m_ip;
+	uint16		m_tcpPort;
+	uint16		m_udpPort;
+	byte		m_type;
+	time_t		m_lastTypeSet;
+	time_t		m_expires;
+	time_t		m_created;
+	uint32		m_inUse;
 	
 public:
-
 	~CContact();
-	CContact();
-	CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
+	CContact(const CUInt128 &clientID,
+		uint32 ip, uint16 udpPort, uint16 tcpPort,
+		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
 	const CUInt128& GetClientID(void) const { return m_clientID; };
 	void SetClientID(const CUInt128 &clientID);
@@ -84,7 +95,7 @@ public:
 	{
 		if (m_inUse) {
 			m_inUse--;
-		}else {
+		} else {
 			wxASSERT(0);
 		}
 	}
@@ -95,24 +106,9 @@ public:
 	const time_t GetExpireTime() const {return m_expires;}
 
 	const time_t GetLastTypeSet() const {return m_lastTypeSet;}	
-	
-	
-private:
-
-	void InitContact(); // Common initialization goes here
-
-	CUInt128	m_clientID;
-	CUInt128	m_distance;
-	uint32		m_ip;
-	uint16		m_tcpPort;
-	uint16		m_udpPort;
-	byte		m_type;
-	time_t		m_lastTypeSet;
-	time_t		m_expires;
-	time_t		m_created;
-	uint32		m_inUse;
 };
 
 } // End namespace
 
 #endif // __CONTACT_H__
+

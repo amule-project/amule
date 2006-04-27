@@ -16,6 +16,7 @@ Trunk
 		* Fixed bug in ECPacket.cpp: assignment inside assertion.
 		* Changed CECSocket constructor to be exception safe.
 		* Fix for invalid rectangle size on COScopeCtrl::PlotHistory().
+		* Removed the default constructor for Kademlia contacts.
 
 --------------------------------------------------------------------------------
 
