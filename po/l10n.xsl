@@ -28,7 +28,7 @@
 					<xsl:for-each select="lang">
 						<xsl:sort select='@translated' data-type="number" order="descending"/>
 						<tr>
-							<td><a><xsl:attribute name='href'>files/<xsl:value-of select='@code'/>.po</xsl:attribute><xsl:value-of select='@name'/> (<xsl:value-of select='@code'/>)</a></td>
+							<td><a><xsl:attribute name='href'><xsl:value-of select='@code'/>.po</xsl:attribute><xsl:value-of select='@name'/> (<xsl:value-of select='@code'/>)</a></td>
 							<td>| <xsl:value-of select='@translated'/></td><td> ~ <xsl:value-of select="format-number(@translated div ../@strings * 100,'#.##')"/>%</td>
 							<td>| | <xsl:value-of select='@fuzzy'/></td> ~ <td><xsl:value-of select="format-number(@fuzzy div ../@strings * 100,'#.##')"/>%</td>
 							<td>| | <xsl:value-of select='../@strings - (@translated + @fuzzy)'/></td> ~ <td><xsl:value-of select="format-number((../@strings - (@translated + @fuzzy)) div ../@strings * 100,'#.##')"/>%</td>
@@ -39,7 +39,7 @@
 								</xsl:when>
 								<xsl:otherwise>
 									<td bgcolor="#ff0000">
-									<a><xsl:attribute name='href'>files/<xsl:value-of select='@code'/>.po.warnings</xsl:attribute><xsl:value-of select='@warnings'/></a>
+									<a><xsl:attribute name='href'><xsl:value-of select='@code'/>.po.warnings</xsl:attribute><xsl:value-of select='@warnings'/></a>
 									</td>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -62,7 +62,7 @@
 					</xsl:for-each>
 				</table>
 				<br/>
-				<a><xsl:attribute name='href'>files/<xsl:value-of select='@pofile'/></xsl:attribute><xsl:value-of select='@pofile'/></a> generated on <xsl:value-of select='@generated'/>
+				<a><xsl:attribute name='href'><xsl:value-of select='@pofile'/></xsl:attribute><xsl:value-of select='@pofile'/></a> generated on <xsl:value-of select='@generated'/>
 				<!-- </div> -->
 			</body>
 		</html>
