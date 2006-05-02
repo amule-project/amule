@@ -66,6 +66,7 @@ Version 2.1.2 - The "We're on fire!" version
 		  the template is not found.
 		* Fix for bug in ReadyPath() function.
 		* Create a backup of the log file upon init.
+		* Added SOCKS4a support.
 
 	Vollstrecker:
 		* Added check if locale could be set, before adding the language to

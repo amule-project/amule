@@ -30,8 +30,8 @@
 #include <typeinfo>		/* For bad_cast			*/
 #include <cctype>		/* For isspace() and isgraph()	*/
 
-#include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 
+#include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 #include "Logger.h"		/* for AddDebugLogLineM		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "NetworkFunctions.h"	/* for StringIPtoUint32()	*/
@@ -55,20 +55,23 @@ CProxyData::CProxyData(
 	bool		enablePassword,
 	const wxString	&userName,
 	const wxString	&password)
+:
+m_proxyEnable(proxyEnable),
+m_proxyType(proxyType),
+m_proxyHostName(proxyHostName),
+m_proxyPort(proxyPort),
+/* 
+ * The flag m_enablePassword is currently not used. The first 
+ * authentication method tryed is No-Authentication, the second
+ * is username/password. If there is no username/password in
+ * CProxyData, a NULL username/password is sent. That will probably
+ * lead to a failure, but at least we tryed. Maybe this behaviour
+ * could be altered later.
+ */
+m_enablePassword(enablePassword),
+m_userName(userName),
+m_password(password)
 {
-	m_proxyEnable	= proxyEnable;
-	m_proxyType	= proxyType;
-	m_proxyHostName	= proxyHostName;
-	m_proxyPort	= proxyPort;
-	/* This flag is currently not used. The first authentication method 
-	 * tryed is No-Authentication, the second is username/password. If 
-	 * there is no username/password in CProxyData, a NULL 
-	 * username/password is sent. That will probably lead to a failure,
-	 * but at least we tryed. Maybe this behaviour could be altered later.
-	 */
-	m_enablePassword= enablePassword;
-	m_userName	= userName;
-	m_password	= password;
 }
 
 void CProxyData::Clear()
@@ -124,22 +127,22 @@ CProxyStateMachine::CProxyStateMachine(
 :
 CStateMachine(NewName(name, proxyCommand), max_states, PROXY_STATE_START),
 m_proxyData(proxyData),
-m_proxyCommand(proxyCommand)
+m_proxyCommand(proxyCommand),
+m_isLost(false),
+m_isConnected(false),
+m_canReceive(false),
+m_canSend(false),
+m_ok(true),
+m_lastRead(0),
+m_lastWritten(0),
+// Will be initialized at Start()
+m_peerAddress(NULL),
+m_proxyClientSocket(NULL),
+m_proxyBoundAddress(NULL),
+// Temporary variables
+m_lastReply(0),
+m_packetLenght(0)
 {
-	m_isLost = false;
-	m_isConnected = false;
-	m_canReceive = false;
-	m_canSend = false;
-	m_ok = true;
-	m_lastRead = 0;
-	m_lastWritten = 0;
-	// Will be initialized at Start()
-	m_peerAddress = NULL;
-	m_proxyClientSocket = NULL;
-	m_proxyBoundAddress = NULL;
-	// Temporary variables
-	m_lastReply = 0;
-	m_packetLenght = 0;
 }
 
 CProxyStateMachine::~CProxyStateMachine()
@@ -150,17 +153,17 @@ CProxyStateMachine::~CProxyStateMachine()
 wxString &CProxyStateMachine::NewName(wxString &s, CProxyCommand proxyCommand)
 {
 	switch (proxyCommand) {
-		case PROXY_CMD_CONNECT:
-			s += wxT("-CONNECT");
-			break;
-			
-		case PROXY_CMD_BIND:
-			s += wxT("-BIND");
-			break;
-			
-		case PROXY_CMD_UDP_ASSOCIATE:
-			s += wxT("-UDP");
-			break;
+	case PROXY_CMD_CONNECT:
+		s += wxT("-CONNECT");
+		break;
+		
+	case PROXY_CMD_BIND:
+		s += wxT("-BIND");
+		break;
+		
+	case PROXY_CMD_UDP_ASSOCIATE:
+		s += wxT("-UDP");
+		break;
 	}
 	
 	return s;
@@ -885,15 +888,40 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			return;
 			break;
 		}
-		RawPokeUInt16( m_buffer+2, ENDIAN_HTONS( m_peerAddress->Service() ) );
-		PokeUInt32( m_buffer+4, StringIPtoUint32(m_peerAddress->IPAddress()) );
+		RawPokeUInt16(m_buffer+2, ENDIAN_HTONS(m_peerAddress->Service()));
+		// Special processing for SOCKS4a
+		switch (m_proxyData.m_proxyType) {
+		case PROXY_SOCKS4a:
+			PokeUInt32(m_buffer+4, StringIPtoUint32(wxT("0.0.0.1")));
+			break;
+		case PROXY_SOCKS4:
+		default:
+			PokeUInt32(m_buffer+4, StringIPtoUint32(m_peerAddress->IPAddress()));
+			break;
+		}
+		// Common processing for SOCKS4/SOCKS4a
 		unsigned int offsetUser = 8;
 		unsigned char lenUser = m_proxyData.m_userName.Len();
 		memcpy(m_buffer + offsetUser, 
 			unicode2char(m_proxyData.m_userName), lenUser);
 		m_buffer[offsetUser + lenUser] = 0;
+		// Special processing for SOCKS4a
+		switch (m_proxyData.m_proxyType) {
+		case PROXY_SOCKS4a: {
+			unsigned int offsetDomain = offsetUser + lenUser + 1;
+			unsigned char lenDomain = m_peerAddress->Hostname().Len();
+			memcpy(m_buffer + offsetDomain, 
+				unicode2char(m_peerAddress->Hostname()), lenDomain);
+			m_buffer[offsetDomain + lenDomain] = 0;
+			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + lenDomain + 1;
+			break;
+		}
+		case PROXY_SOCKS4:
+		default:
+			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1;
+			break;
+		}
 		// Send the command packet
-		m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1 ;
 		ProxyWrite(*m_proxyClientSocket, m_buffer, m_packetLenght);
 	}
 }
@@ -1145,6 +1173,7 @@ m_savedSocketEventHandlerId(0)
 			break;
 		
 		case PROXY_SOCKS4:
+		case PROXY_SOCKS4a:
 			m_proxyStateMachine =
 				new CSocks4StateMachine(*proxyData, proxyCommand);
 			break;
@@ -1214,6 +1243,7 @@ bool CProxySocket::ProxyIsCapableOf(CProxyCommand proxyCommand) const
 		break;
 		
 	case PROXY_SOCKS4:
+	case PROXY_SOCKS4a:
 		ret =	proxyCommand == PROXY_CMD_CONNECT ||
 			proxyCommand == PROXY_CMD_BIND;
 		break;
