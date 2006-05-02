@@ -913,7 +913,7 @@ void CSocks4StateMachine::process_send_command_request(bool entry)
 			memcpy(m_buffer + offsetDomain, 
 				unicode2char(m_peerAddress->Hostname()), lenDomain);
 			m_buffer[offsetDomain + lenDomain] = 0;
-			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + lenDomain + 1;
+			m_packetLenght = 1 + 1 + 2 + 4 + lenUser + 1 + lenDomain + 1;
 			break;
 		}
 		case PROXY_SOCKS4:
