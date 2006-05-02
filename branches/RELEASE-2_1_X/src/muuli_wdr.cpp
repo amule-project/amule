@@ -3676,11 +3676,12 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     wxString strs9[] = 
     {
-        _("Socks5"), 
-        _("Socks4"), 
-        _("HTTP")
+        _("SOCKS5"), 
+        _("SOCKS4"), 
+        _("HTTP"), 
+        _("SOCKS4a")
     };
-    wxChoice *item9 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 3, strs9, 0 );
+    wxChoice *item9 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 4, strs9, 0 );
     item9->SetToolTip( _("The type of proxy you are connecting to") );
     item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
