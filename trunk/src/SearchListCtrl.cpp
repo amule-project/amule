@@ -164,7 +164,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 		if (newid > 0) {
 			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);			
-		
+			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) or (before == parent));
 			} else {
@@ -174,7 +174,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 		
 		if (newid < GetItemCount() - 1) {
 			CSearchFile* after = (CSearchFile*)GetItemData(newid + 1);
-	
+			wxASSERT(after);
 			if (parent) {
 				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
 			} else {
@@ -845,7 +845,7 @@ void CSearchListCtrl::OnDrawItem(
 
 		if (item > 0) {
 			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);			
-		
+			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) or (before == parent));
 			} else {
@@ -855,7 +855,7 @@ void CSearchListCtrl::OnDrawItem(
 		
 		if (item < GetItemCount() - 1) {
 			CSearchFile* after = (CSearchFile*)GetItemData(item + 1);
-	
+			wxASSERT(after);
 			if (parent) {
 				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
 			} else {
