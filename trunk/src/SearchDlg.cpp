@@ -109,7 +109,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 #endif
 	
 	// Sanity sanity
-	wxASSERT(CastChild( ID_SEARCHTYPE, wxChoice )->GetString(0) == _("Local Search"));
+	wxASSERT(CastChild( ID_SEARCHTYPE, wxChoice )->GetString(0) == _("Local"));
 	wxASSERT(CastChild( ID_SEARCHTYPE, wxChoice )->GetString(2) == _("Kad"));
 
 	if (thePrefs::GetNetworkED2K()){
