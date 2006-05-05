@@ -436,7 +436,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 			case CT_EMULE_UDPPORTS:
 				// 16 KAD Port
 				// 16 UDP Port
-				m_nKadPort = (temptag.GetInt() >> 16) & 0xFFFF;
+				SetKadPort((temptag.GetInt() >> 16) & 0xFFFF);
 				m_nUDPPort = temptag.GetInt() & 0xFFFF;
 				dwEmuleTags |= 1;
 				#ifdef __PACKET_DEBUG__
