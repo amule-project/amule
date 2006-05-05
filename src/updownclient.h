@@ -420,7 +420,7 @@ public:
 	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
 	
 	uint16		GetKadPort() const		{ return m_nKadPort; }
-	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }
+	void		SetKadPort(uint16 nPort)	{ wxASSERT(nPort); m_nKadPort = nPort; }
 
 	// Kry - AICH import
 	void		SetReqFileAICHHash(CAICHHash* val);
