@@ -1116,9 +1116,9 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->kBpsDown = tmpval / 1024.0;
 		
 		tag->SetSizeXfer(file->transfered);
-		tag->SetSizeDone(file->GetCompletedSize());
+		tag->SetSizeDone(file->completedsize);
 		tag->SetSourceXferCount(file->transferingsrc);
-		tag->SetSourceNotCurrCount(file->GetNotCurrentSourcesCount());
+		tag->SetSourceNotCurrCount(file->m_notCurrentSources);
 		tag->SetSourceCount(file->m_source_count);
 		tag->SetSourceCountA4AF(file->m_a4af_source_count);
 	    tag->SetFileStatus(file->status);
@@ -1137,7 +1137,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		}
 	
 		file->transferingsrc = tag->SourceXferCount();
-		file->SetNotCurrentSourcesCount(tag->SourceNotCurrCount());
+		file->m_notCurrentSources = tag->SourceNotCurrCount();
 		file->m_source_count = tag->SourceCount();
 		file->m_a4af_source_count = tag->SourceCountA4AF();
 		file->status = tag->FileStatus();

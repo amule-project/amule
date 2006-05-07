@@ -234,7 +234,7 @@ class CEC_PartFile_Tag : public CECTag {
 		void SetFileStatus(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_STATUS, value); }
 
 		void SetSourceCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT, value); }
-		void SetSourceNotCurrCount(uint16 value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
+		void SetSourceNotCurrCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT, value); }
 		void SetSourceXferCount(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, value); }
 		void SetSourceCountA4AF(uint16 &value) { AssignIfExist(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, value); }
 
