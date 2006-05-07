@@ -241,7 +241,13 @@ class CEC_PartFile_Tag : public CECTag {
 		void SetSpeed(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_SPEED, value); }
 		void SetPrio(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_PRIO, value); }
 		void SetFileCat(uint8 &value) { AssignIfExist(EC_TAG_PARTFILE_CAT, value); }
-		void SetLastSeenComplete(uint32 &value) { AssignIfExist(EC_TAG_PARTFILE_LAST_SEEN_COMP, value); }
+		void SetLastSeenComplete(time_t &value)
+			{
+				CECTag *tag = GetTagByName(EC_TAG_PARTFILE_LAST_SEEN_COMP);
+				if ( tag ) {
+					value = tag->GetInt();
+				}
+			}
 		
 		wxString	GetFileStatusString();
 };
