@@ -114,11 +114,11 @@ public:
 		if (!filename.IsEmpty()) {
 			btLine += filename + wxT(" (") +
 #if TOO_VERBOSE_BACKTRACE
-			          frame.GetModule()
+			        frame.GetModule()
 #else
-					  frame.GetModule().AfterLast(wxT('/'))
+				frame.GetModule().AfterLast(wxT('/'))
 #endif
-			          + wxT(")");
+			        + wxT(")");
 		} else {
 			btLine += wxString::Format(wxT("0x%lx"), frame.GetAddress());
 		}
@@ -126,11 +126,11 @@ public:
 		if (frame.HasSourceLocation()) {
 			btLine += wxT(" at ") +
 #if TOO_VERBOSE_BACKTRACE
-			          frame.GetFileName()
+			        frame.GetFileName()
 #else
-					  frame.GetFileName().AfterLast(wxT('/'))
+				frame.GetFileName().AfterLast(wxT('/'))
 #endif
-			          + wxString::Format(wxT(":%u"),frame.GetLine());
+			        + wxString::Format(wxT(":%u"),frame.GetLine());
 		} else {
 			btLine += wxT(" (Unknown file/line)");
 		}
@@ -175,12 +175,14 @@ static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
 	int vectorsize = bfd_get_symtab_upper_bound(abfd);
 
 	if (vectorsize < 0) {
-		fprintf (stderr, "Error while getting vector size for backtrace symbols : %s" , bfd_errmsg(bfd_get_error()));
+		fprintf (stderr, "Error while getting vector size for backtrace symbols : %s",
+			bfd_errmsg(bfd_get_error()));
 		return -1;
 	}
 
 	if (vectorsize == 0) {
-		fprintf (stderr, "Error while getting backtrace symbols : No symbols (%s)" , bfd_errmsg(bfd_get_error()));
+		fprintf (stderr, "Error while getting backtrace symbols : No symbols (%s)",
+			bfd_errmsg(bfd_get_error()));
 		return -1;
 	}
 
@@ -194,7 +196,8 @@ static int get_backtrace_symbols(bfd *abfd, asymbol ***symbol_list_ptr)
 	vectorsize = bfd_canonicalize_symtab(abfd, *symbol_list_ptr);
 
 	if (vectorsize < 0) {
-		fprintf(stderr, "Error while getting symbol table : %s", bfd_errmsg(bfd_get_error()));
+		fprintf(stderr, "Error while getting symbol table : %s",
+			bfd_errmsg(bfd_get_error()));
 		return -1;
 	}
 
@@ -214,12 +217,14 @@ void init_backtrace_info()
 	s_abfd = bfd_openr("/proc/self/exe", NULL);
 
 	if (s_abfd == NULL) {
-		fprintf(stderr, "Error while opening file for backtrace symbols : %s", bfd_errmsg(bfd_get_error()));
+		fprintf(stderr, "Error while opening file for backtrace symbols : %s",
+			bfd_errmsg(bfd_get_error()));
 		return;
 	}
 
 	if (!(bfd_check_format_matches(s_abfd, bfd_object, NULL))) {
-		fprintf (stderr, "Error while init. backtrace symbols : %s" , bfd_errmsg (bfd_get_error ()));
+		fprintf (stderr, "Error while init. backtrace symbols : %s",
+			bfd_errmsg (bfd_get_error ()));
 		bfd_close(s_abfd);
 		return;
 	}
@@ -253,8 +258,7 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 	}
 
 	s_found =  bfd_find_nearest_line(abfd, section, s_symbol_list,
-									address - vma,
-									&s_file_name, &s_function_name, &s_line_number);
+		address - vma, &s_file_name, &s_function_name, &s_line_number);
 }
 
 #endif // HAVE_BFD
@@ -380,7 +384,6 @@ wxString get_backtrace(unsigned n)
 			out.Insert(wxT("??"),i*2);
 			out.Insert(wxT("??"),i*2+1);
 		}
-
 	}
 
 	hasLineNumberInfo = true;
@@ -395,7 +398,6 @@ wxString get_backtrace(unsigned n)
 		// are the line numbers.
 
 		hasLineNumberInfo = wxExecute(command, out) != -1;
-		
 	}
 
 #endif	/* HAVE_BFD / !HAVE_BFD */
@@ -420,10 +422,8 @@ wxString get_backtrace(unsigned n)
 #if TOO_VERBOSE_BACKTRACE
 			btLine += out[2*i+1];
 #else
-
-btLine += out[2*i+1].AfterLast(wxT('/'));
+			btLine += out[2*i+1].AfterLast(wxT('/'));
 #endif
-
 		} else {
 			btLine += libname[i];
 		}
@@ -451,3 +451,4 @@ void print_backtrace(unsigned n)
 	// This is because the string is ansi anyway, and the conv classes are very slow
 	fprintf(stderr, "%s\n", (const char*)unicode2char(trace.c_str()));
 }
+
