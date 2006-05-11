@@ -77,7 +77,7 @@ private:
 struct CRunTimeException : public CMuleException
 {
 	CRunTimeException(const wxString& type, const wxString& desc)
-		: CMuleException(wxT("CRunTimeException") + type, desc) {}
+		: CMuleException(wxT("CRunTimeException::") + type, desc) {}
 };
 
 
