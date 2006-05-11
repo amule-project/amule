@@ -57,12 +57,9 @@ class CMuleException
 {
 public:
 	CMuleException(const wxString& type, const wxString& desc)
-		: m_what(type + wxT(": ") + desc)
-	{}
-
-	const wxString& what() const {
-		return m_what;
-	}
+		: m_what(type + wxT(": ") + desc) {}
+	virtual ~CMuleException() throw() {}
+	virtual const wxString& what() const throw() { return m_what; }
 
 private:
 	wxString m_what;
