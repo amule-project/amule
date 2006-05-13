@@ -325,13 +325,12 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 	int sessid = 0;
 	char *current_cookie = strstr(pHeader, "Cookie: ");
 	if ( current_cookie ) {
-		current_cookie += strlen("Cookie: ");
-		char *value = strchr(current_cookie, '=');
-		if ( value ) {
-			*value++ = 0;
-		}
-		if ( !strcmp(current_cookie, "SESSID") ) {
-			sessid = atoi(value);
+		current_cookie = strstr(current_cookie, "amuleweb_session_id");
+		if ( current_cookie ) {
+			char *value = strchr(current_cookie, '=');
+			if ( value ) {
+				sessid = atoi(++value);
+			}			
 		}
 	}
 	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
@@ -362,7 +361,7 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 
 	char cookie[256];
 	if ( session_id ) {
-		snprintf(cookie, sizeof(cookie), "Set-Cookie: SESSID=%d\r\n", session_id);
+		snprintf(cookie, sizeof(cookie), "Set-Cookie: amuleweb_session_id=%d\r\n", session_id);
 	} else {
 		cookie[0] = 0;
 	}
