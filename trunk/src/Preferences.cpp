@@ -671,7 +671,7 @@ public:
 			if ( aMuleLanguages[i].id == wxId ) {
 				m_selection = i;
 			}
-			if (IsLocaleAvailable(aMuleLanguages[i].name)) {
+			if (IsLocaleAvailable(aMuleLanguages[i].name, aMuleLanguages[i].id)) {
 				langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
 			}
 		}
