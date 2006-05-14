@@ -350,7 +350,10 @@ void CServerUDPSocket::SendQueue()
 							continue;
 						} else {
 							AddDebugLogLineM(false, logServerUDP, wxT("Trying to send an UDP packet to a server host that is checking DNS: ")+item.addr);
-							// Let the packet queued, and wait for resultion
+							// Let the packet queued, and wait for resolution
+							// Meanwhile, send other packets.
+							m_queue.pop_front();
+							m_queue.push_back(item);
 							return;
 						}
 					}
