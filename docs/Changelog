@@ -68,6 +68,9 @@ Version 2.1.2 - The "We're on fire!" version
 		* Create a backup of the log file upon init.
 		* Added SOCKS4a support.
 
+	TimDzang:
+		* Fix for wrong filename string in IPFilter.dat.
+
 	Vollstrecker:
 		* Added check if locale could be set, before adding the language to
 		  the options dialog.
@@ -100,7 +103,7 @@ Version 2.1.2 - The "We're on fire!" version
 			  filename extension and included 'html' and 'php'.
 		* Decreased the minimum value for Max-Connections in the preferences
 		  dialog to 5.
-			
+
 	Special Thanks To:
 		* The usual people
 		* From Kry: to the one that makes it all worth it.
