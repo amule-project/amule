@@ -1351,7 +1351,7 @@ wxString wxLang2Str(const int lang)
 }
 
 
-bool IsLocaleAvailable (const wxString& locale)
+bool IsLocaleAvailable (const wxString& locale, const int& id)
 {
 	// This supresses error-messages about invalid locales.
 	wxLogNull logTarget;
