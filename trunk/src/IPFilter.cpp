@@ -262,7 +262,7 @@ private:
 		}
 
 		const wxChar* ipfilter_files[] = {
-			wxT("server.met"),
+			wxT("ipfilter.dat"),
 			wxT("guarding.p2p"),
 			NULL
 		};
