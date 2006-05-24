@@ -326,8 +326,6 @@ private:
 	uint8   m_iDownPriority;
 	bool    m_bAutoDownPriority;
 	uint8	status;
-	#warning Kry - Is currently unused and must be fixed
-	bool	newdate;	// indicates if there was a writeaccess to the .part file
 	uint32	lastpurgetime;
 	uint32	m_LastNoNeededCheck;
 	CGapPtrList m_gaplist;

@@ -1112,7 +1112,6 @@ void CPartFile::LoadSourceSeeds()
 void CPartFile::PartFileHashFinished(CKnownFile* result)
 {
 	date = result->date;
-	newdate = true;
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
@@ -1239,7 +1238,6 @@ void CPartFile::AddGap(uint64 start, uint64 end)
 	new_gap->end = end;
 	m_gaplist.push_back(new_gap);
 	UpdateDisplayedInfo();
-	newdate = true;
 }
 
 bool CPartFile::IsAlreadyRequested(uint64 start, uint64 end)
@@ -1364,7 +1362,6 @@ void CPartFile::FillGap(uint64 start, uint64 end)
 	}
 	UpdateCompletedInfos();
 	UpdateDisplayedInfo();
-	newdate = true;
 }
 
 
@@ -2917,7 +2914,6 @@ uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint6
 	return lenData;
 }
 
-#warning Kry - serious review. I did some, and seems to be ok, but...
 void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 {
 	m_nLastBufferFlushTime = GetTickCount();
@@ -3648,7 +3644,6 @@ void CPartFile::Init()
 
 	m_nLastBufferFlushTime = 0;
 
-	newdate = true;
 	m_lastsearchtime = 0;
 	lastpurgetime = ::GetTickCount();
 	m_paused = false;
