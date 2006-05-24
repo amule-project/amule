@@ -164,11 +164,13 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		case 0:
 			serverconnect->ReQuery();
 			serverlist->UpdateUserFileStatus(serverconnect->GetCurrentServer());
+			request_step++;
 			break;
 		case 1: {
 			CECPacket stats_req(EC_OP_STAT_REQ);
 			m_connect->SendRequest(&m_stats_updater, &stats_req);
 			amuledlg->ShowTransferRate();			
+			request_step++;
 			break;
 		}
 		case 2:
@@ -196,8 +198,6 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 					searchlist->DoRequery(EC_OP_SEARCH_RESULTS, EC_TAG_SEARCHFILE);
 				}
 			}
-			break;
-		case 3:
 			// Back to the roots
 			request_step = 0;
 			break;
@@ -205,8 +205,6 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 			printf("WTF?\n");
 			request_step = 0;
 	}
-	
-	request_step++;
 }
 
 
