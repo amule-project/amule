@@ -465,8 +465,8 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *connMaxDL = tab->GetTagByName(EC_TAG_CONN_MAX_DL);
 				if (connMaxUL && connMaxDL) {
 					s << wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"),
-						connMaxUL->GetInt16Data(),
-						connMaxDL->GetInt16Data());
+						(uint16)connMaxUL->GetInt(),
+						(uint16)connMaxDL->GetInt());
 				}
 			}
 			break;
