@@ -39,8 +39,6 @@ Version 2.1.2 - The "We're on fire!" version
 		* Fix for bug in ReadyPath() function.
 		* Create a backup of the log file upon init.
 		* Added SOCKS4a support.
-		* Fix for "get bwlimits" command in amulecmd always returning
-		  zero for maximum download value.
 
 	TimDzang:
 		* Fix for wrong filename string in IPFilter.dat.
