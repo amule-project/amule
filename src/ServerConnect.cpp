@@ -134,6 +134,12 @@ void CServerConnect::ConnectToServer(CServer* server, bool multiconnect)
 		StopConnectionTry();
 		Disconnect();
 	}
+	
+    // eyal 21-03-2006: fix smart-lowid
+    if (thePrefs::GetSmartIdCheck()) {
+        thePrefs::SetSmartIdState(1);
+    }
+	
 	connecting = true;
 	singleconnecting = !multiconnect;
 
