@@ -1352,6 +1352,9 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 			Kademlia::CKademlia::Process();
 			if(Kademlia::CKademlia::GetPrefs()->HasLostConnection()) {
 				StopKad();
+				if (thePrefs::Reconnect()) {
+					StartKad();
+				}
 			}
 		}
 			
