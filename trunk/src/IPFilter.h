@@ -107,7 +107,7 @@ private:
 
 // Since descriptions are only used for debugging messages, there 
 // is no need to keep them in memory when running a non-debug build.
-#if __DEBUG__
+#ifdef __DEBUG__
 		//! Contains the user-description of the range.
 		wxString	Description;
 #endif
