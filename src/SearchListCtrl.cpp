@@ -158,7 +158,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	uint32 newid = InsertItem(GetInsertPos( (long)toshow ), toshow->GetFileName());
 
 	// Sanity checks to ensure that results/children are properly positioned.
-#if __WXDEBUG__
+#ifdef __WXDEBUG__
 	{
 		CSearchFile* parent = toshow->GetParent();
 
@@ -839,7 +839,7 @@ void CSearchListCtrl::OnDrawItem(
 	}
 
 	// Sanity checks to ensure that results/children are properly positioned.
-#if __WXDEBUG__
+#ifdef __WXDEBUG__
 	{
 		CSearchFile* parent = file->GetParent();
 
