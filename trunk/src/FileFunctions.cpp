@@ -369,10 +369,10 @@ time_t GetLastModificationTime(const wxString& file)
 bool CheckDirExists(const wxString& dir)
 {
 #ifdef __WXMSW__
-	// UTF8_Stat fails on windows if there are trailing path-seperators.
-	wxString cleanPath = StripSeperators(dir, wxString::trailing);
+	// UTF8_Stat fails on windows if there are trailing path-separators.
+	wxString cleanPath = StripSeparators(dir, wxString::trailing);
 	
-	// Root paths must end with a seperator (X:\ rather than X:).
+	// Root paths must end with a separator (X:\ rather than X:).
 	// See comments in wxDirExists.
 	if ((cleanPath.Length() == 2) and (cleanPath.Last() == wxT(':'))) {
 		cleanPath += wxFileName::GetPathSeparator();
