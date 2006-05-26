@@ -46,12 +46,8 @@ class WXDLLEXPORT wxDropTarget;
 class WXDLLEXPORT wxListItem;
 class WXDLLEXPORT wxListEvent;
 
-#if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
 class WXDLLEXPORT wxListCtrl;
 #define wxImageListType wxImageList
-#else
-#define wxImageListType wxGenericImageList
-#endif
 
 namespace MuleExtern
 {
