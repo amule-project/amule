@@ -4,6 +4,10 @@ Trunk
 ----------
 2006-??-??
 
+	GonoszTopi:
+		* Fixed linkage with wxMSW.
+		* Got rid of a few more warnings.
+
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets cvs code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.
@@ -31,6 +35,11 @@ Version 2.1.3 - The "???" version
 Version 2.1.2 - The "We're on fire!" version
 ----------
 2006-03-28
+
+	GonoszTopi:
+		* Fixed some warning messages.
+		* Fixed windows compilation.
+		* Fixed compilation in release mode.
 
 	Kry:
 		* Fixed initialization of Partfile, Server and Knownfile objects 

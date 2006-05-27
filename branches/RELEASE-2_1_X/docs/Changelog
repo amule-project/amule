@@ -2,6 +2,11 @@ Version 2.1.2 - The "We're on fire!" version
 ----------
 2006-04-10
 
+	GonoszTopi:
+		* Fixed some warning messages.
+		* Fixed windows compilation.
+		* Fixed compilation in release mode.
+
 	Kry:
 		* Fixed initialization of Partfile, Server and Knownfile objects 
 		  on remote GUI. 
