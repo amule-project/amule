@@ -73,8 +73,9 @@ int create_html(char *stats[20], char *lines[6], char template[120])
 	}
 	close(fdTmpl);
 
-	/* 2 times the size of the template should be enougth */
-	int size = sb.st_size*2;
+	/* 2 times the size of the template should be enough */
+	/* st_size is defined as off_t, but size_t seems more reasonable */
+	size_t size = sb.st_size*2;
 	char *mem = calloc(size, 1);
 	if (NULL == mem)
 	{
