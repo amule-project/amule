@@ -1954,7 +1954,7 @@ void wxListHeaderWindow::OnMouse( wxMouseEvent &event )
             else
             {
                 setCursor = m_currentCursor != wxSTANDARD_CURSOR;
-                m_currentCursor = wxSTANDARD_CURSOR;
+                m_currentCursor = (wxCursor*) wxSTANDARD_CURSOR;
             }
 
             if ( setCursor )
