@@ -55,6 +55,7 @@ if test x$SYS = xwin32; then
 	AC_PROG_AWK
 fi
 AC_PROG_MAKE_SET
+AC_PROG_LEX
 AC_PROG_INSTALL
 AC_PROG_RANLIB
 AC_PROG_YACC
@@ -292,7 +293,11 @@ CHECK_BFD
 
 CHECK_AUTOPOINT
 
-CHECK_FLEX_EXTENDED
+if test "$LEX" = "flex"; then
+	CHECK_FLEX_EXTENDED
+else
+	HAVE_FLEX_EXTENDED=no
+fi
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
