@@ -69,6 +69,9 @@
 	#include <wx/utils.h>
 #endif	
 
+#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
+#include "amule.h"		// Needed for theApp
+#endif
 
 wxString GetMuleVersion()
 {
@@ -1350,6 +1353,7 @@ wxString wxLang2Str(const int lang)
 	}
 }
 
+#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
 
 bool IsLocaleAvailable (const wxString& locale, const int& id)
 {
@@ -1357,95 +1361,16 @@ bool IsLocaleAvailable (const wxString& locale, const int& id)
 	wxLogNull logTarget;
 	wxLocale 	locale_to_check;
 	wxString	catalog_to_check;
+
+	if (id == wxLANGUAGE_DEFAULT || id == theApp.m_locale.GetLanguage())
+		return true;
+
 	InitLocale(locale_to_check, StrLang2wx(locale));
 	if (locale_to_check.IsOk()) {
-		catalog_to_check = GetLocaleDir() + wxFileName::GetPathSeparator();
-		switch ( id ) {
-			case wxLANGUAGE_DEFAULT:
-				return true;
-				break;
-			case wxLANGUAGE_ARABIC:
-				catalog_to_check += wxT("ar");
-				break;
-			case wxLANGUAGE_BULGARIAN:
-				catalog_to_check += wxT("bg");
-				break;
-			case wxLANGUAGE_CATALAN:
-				catalog_to_check += wxT("ca");
-				break;
-			case wxLANGUAGE_CHINESE_SIMPLIFIED:
-				catalog_to_check += wxT("zh_CN");
-				break;
-			case wxLANGUAGE_CHINESE_TRADITIONAL:
-				catalog_to_check += wxT("zh_TW");
-				break;
-			case wxLANGUAGE_CROATIAN:
-				catalog_to_check += wxT("hr");
-				break;
-			case wxLANGUAGE_DANISH:
-				catalog_to_check += wxT("da");
-				break;
-			case wxLANGUAGE_DUTCH:
-				catalog_to_check += wxT("nl");
-				break;
-			case wxLANGUAGE_ENGLISH_UK:
-				catalog_to_check += wxT("en_GB");
-				break;
-			case wxLANGUAGE_ENGLISH_US:
-				catalog_to_check += wxT("en_US");
-				break;
-			case wxLANGUAGE_ESTONIAN:
-				catalog_to_check += wxT("et_EE");
-				break;
-			case wxLANGUAGE_FINNISH:
-				catalog_to_check += wxT("fi");
-				break;
-			case wxLANGUAGE_FRENCH:
-				catalog_to_check += wxT("fr");
-				break;
-			case wxLANGUAGE_GALICIAN:
-				catalog_to_check += wxT("gl");
-				break;
-			case wxLANGUAGE_GERMAN:
-				catalog_to_check += wxT("de");
-				break;
-			case wxLANGUAGE_HUNGARIAN:
-				catalog_to_check += wxT("hu");
-				break;
-			case wxLANGUAGE_ITALIAN:
-				catalog_to_check += wxT("it");
-				break;
-			case wxLANGUAGE_ITALIAN_SWISS:
-				catalog_to_check += wxT("it_CH");
-				break;
-			case wxLANGUAGE_KOREAN:
-				catalog_to_check += wxT("ko_KR");
-				break;
-			case wxLANGUAGE_POLISH:
-				catalog_to_check += wxT("pl");
-				break;
-			case wxLANGUAGE_PORTUGUESE:
-				catalog_to_check += wxT("pt_PT");
-				break;
-			case wxLANGUAGE_PORTUGUESE_BRAZILIAN:
-				catalog_to_check += wxT("pt_BR");
-				break;
-			case wxLANGUAGE_RUSSIAN:
-				catalog_to_check += wxT("ru");
-				break;
-			case wxLANGUAGE_SLOVENIAN:
-				catalog_to_check += wxT("sl");
-				break;
-			case wxLANGUAGE_SPANISH:
-				catalog_to_check += wxT("es");
-				break;
-			case wxLANGUAGE_SPANISH_MEXICAN:
-				catalog_to_check += wxT("es_MX");
-				break;
-		}
-		catalog_to_check += wxFileName::GetPathSeparator() + wxT("LC_MESSAGES/amule.mo");
-		return wxFileExists(catalog_to_check);
+		return locale_to_check.IsLoaded(wxT(PACKAGE));
 	} else {
 		return false;
 	}
 }
+
+#endif /* !AMULE_DEAMON && (!EC_REMOTE || CLIENT_GUI) */
