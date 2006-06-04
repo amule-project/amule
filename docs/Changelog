@@ -8,6 +8,10 @@ Trunk
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
 
+	ken:
+		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
+		  Mac.
+
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets cvs code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.

@@ -130,7 +130,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 // For some reason, gtk1 does a rather poor job when using the HitTest
 	wxPoint eventPoint = event.GetPosition();
 
-#ifdef __WXMAC__ && !wxCHECK_VERSION(2, 7, 0)
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2, 7, 0)
 	// For some reason, on the Mac clicks on the tabs give positions differing
 	// by the client area origin from where HitTest believes the tabs to be.
 	eventPoint += GetClientAreaOrigin();
@@ -138,7 +138,7 @@ void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 
 	int tab = HitTest(eventPoint);
 	if (tab != wxNOT_FOUND) {
-#ifdef __WXMAC__ && !wxCHECK_VERSION(2, 6, 3)
+#if defined(__WXMAC__) && !wxCHECK_VERSION(2, 6, 3)
 		// Due to a wxMac bug, HitTest returns 1-based values.  Should be 0-based.
 		tab--;
 #endif
