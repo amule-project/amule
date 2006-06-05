@@ -38,6 +38,11 @@ Version 2.1.3 - The "???" version
 		* Fixed windows compilation, that was still broken.
 		* Fixed locale bug. See http://forum.amule.org/thread.php?threadid=10178&sid=
 
+	rene06:
+		* Allow amulecmd to execute a global, local or kad search. Then
+		  you can get the results, which are shown in a list. From that
+		  list you can choose one file to download.
+
 --------------------------------------------------------------------------------
 
 Version 2.1.2 - The "We're on fire!" version
