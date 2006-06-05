@@ -598,7 +598,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_HUNGARIAN,				true,	wxTRANSLATE("Hungarian") },
 	{ wxLANGUAGE_ITALIAN,				true,	wxTRANSLATE("Italian") },
 // Hmm, it_NA.po not present ...
-//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		true,		wxTRANSLATE("Italian (Napolitan)") },
+//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		true,	wxTRANSLATE("Italian (Napolitan)") },
 	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
 	{ wxLANGUAGE_KOREAN,				true,	wxTRANSLATE("Korean") },
 // There is no such file as lt.po
@@ -648,7 +648,7 @@ public:
 				}
 			}
 			int id = aMuleLanguages[i].id;
-		
+
 			// save language selection
 			thePrefs::SetLanguageID(wxLang2Str(id));
 
@@ -665,14 +665,14 @@ public:
 		std::sort( aMuleLanguages + 1, // Dont include DEFAULT
 			   aMuleLanguages + itemsof(aMuleLanguages),
 			   TranslatedSort );
-			
+
 		wxChoice *langSelector = dynamic_cast<wxChoice*>(m_widget);
 		// clear existing list
 		langSelector->Clear();
 
 		m_selection = 0;
 		int wxId = StrLang2wx(thePrefs::GetLanguageID());
-	
+
 		// Add all other languages in alphabetical order
 		// and find the index of the selected language.
 		for ( unsigned int i = 0, j = 0; i < itemsof(aMuleLanguages); i++) {
@@ -691,7 +691,7 @@ public:
 		return Cfg_Tmpl<int>::TransferToWindow();
 	}
 
-	
+
 protected:
 	int	m_selection;
 };
