@@ -55,6 +55,7 @@
 
 #define theApp (*((CamulecmdApp*)wxTheApp))
 
+#include <map>
 //-------------------------------------------------------------------
 
 enum {
@@ -88,10 +89,28 @@ enum {
  	CMD_ID_SET_BWLIMIT_DOWN,
  	CMD_ID_GET_BWLIMITS,
 	CMD_ID_STATTREE,
+	CMD_ID_SEARCH,
+	CMD_ID_SEARCH_GLOBAL,
+	CMD_ID_SEARCH_LOCAL,
+	CMD_ID_SEARCH_KAD,
+	CMD_ID_SEARCH_RESULTS,
+	CMD_ID_SEARCH_PROGRESS,
+	CMD_ID_DOWNLOAD,
 	// IDs for deprecated commands
 	CMD_ID_SET_IPFILTER
+
 };
 
+// method to create a SearchFile
+SearchFile::SearchFile(CEC_SearchFile_Tag *tag)
+{
+	nHash = tag->FileHash();
+	sHash = nHash.Encode();
+	sFileName = tag->FileName();
+	lFileSize = tag->SizeFull();
+	lSourceCount = tag->SourceCount();
+	bPresent = tag->AlreadyHave();
+}
 
 //-------------------------------------------------------------------
 IMPLEMENT_APP (CamulecmdApp)
@@ -125,6 +144,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	CECPacket *request = 0;
 	std::list<CECPacket *> request_list;
 	int tmp_int = 0;
+	EC_SEARCH_TYPE search_type;
 
 	// Implementation of the deprecated command 'SetIPFilter'.
 	if (CmdId == CMD_ID_SET_IPFILTER) {
@@ -140,7 +160,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			CmdId = CMD_ID_GET_IPFILTER_STATE;
 		}
 	}
-
+	
 	switch (CmdId) {
 		case CMD_ID_STATUS:
 			request_list.push_back(new CECPacket(EC_OP_STAT_REQ, EC_DETAIL_CMD));
@@ -377,7 +397,64 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			}
 			request_list.push_back(request);
 			break;
+		case CMD_ID_SEARCH_GLOBAL:
+			search_type = EC_SEARCH_GLOBAL;
+		case CMD_ID_SEARCH_LOCAL:
+			if (search_type != EC_SEARCH_GLOBAL){
+				search_type = EC_SEARCH_LOCAL;
+			}
+		case CMD_ID_SEARCH_KAD:
+			if (search_type != EC_SEARCH_GLOBAL && search_type != EC_SEARCH_LOCAL){
+				search_type = EC_SEARCH_KAD;
+			}
+			if (!args.IsEmpty()) 
+			{	
+				wxString search = args; 
+				wxString type =  wxT("");
+				wxString extention = wxT(""); 
+				uint32 avail = 0; 
+				uint32 min_size = 0; 
+				uint32 max_size = 0;
 
+				request = new CECPacket(EC_OP_SEARCH_START);
+				request->AddTag(CEC_Search_Tag (search, search_type, type, extention, avail, min_size, max_size));
+				request_list.push_back(request);
+			}
+			break;
+		case CMD_ID_SEARCH:
+			printf("No search type defined.\nType 'help search' to get more help.\n");
+			break;
+			
+
+		case CMD_ID_SEARCH_RESULTS:
+			request_list.push_back(new CECPacket(EC_OP_SEARCH_RESULTS, EC_DETAIL_FULL));
+			break;
+
+		case CMD_ID_SEARCH_PROGRESS:
+			request_list.push_back(new CECPacket(EC_OP_SEARCH_PROGRESS));
+			break;
+
+		case CMD_ID_DOWNLOAD:
+			if (!args.IsEmpty()) 
+			{	
+				unsigned long int id = 0;
+				if (args.ToULong(&id) == true && id < m_Results_map.size()) {
+
+					SearchFile* file = m_Results_map[id];
+					printf("Download File: %u %s\n", id, (const char*)unicode2char(file->sFileName));
+					request = new CECPacket(EC_OP_DOWNLOAD_SEARCH_RESULT);
+					// get with id the hash and category=0
+					uint32 category = 0;
+					CECTag hashtag(EC_TAG_PARTFILE, file->nHash);
+					hashtag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, category));
+					request->AddTag(hashtag);
+					request_list.push_back(request);
+				} else {
+					return CMD_ERR_INVALID_ARG;
+				}
+			}
+			break;
+		
 		default:
 			return CMD_ERR_PROCESS_CMD;
 	}
@@ -403,6 +480,34 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	else
 		return CMD_OK;
 }
+
+ /*
+ * Method to show the results in the console
+ */
+void CamulecmdApp::ShowResults(CResultMap results_map)
+{
+	unsigned int name_max = 80;
+	unsigned int mb_max = 5;
+	unsigned int nr_max = 5;
+	unsigned long int id = 0;
+	wxString output, name, sources, mb , kb;
+	
+	printf("Nr.    Filename:                                                                        Size(MB):  Sources: \n");
+	printf("-----------------------------------------------------------------------------------------------------------\n");
+
+	for( std::map<unsigned long int,SearchFile*>::iterator iter = results_map.begin(); iter != results_map.end(); iter++ ) {
+    		id = (*iter).first;
+		SearchFile* file = (*iter).second;
+		
+		output.Printf(wxT("%i.      "), id);		
+		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);		
+		mb.Printf(_("     %d"), file->lFileSize/1024/1024);
+		kb.Printf(_(".%d"), file->lFileSize/1024%1024);
+		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);	
+		printf("%s     %d\n",(const char*)unicode2char(output), file->lSourceCount );
+ 	}
+}
+
 
 // Formats a statistics (sub)tree to text
 wxString StatTree2Text(CEC_StatTree_Node_Tag *tree, int depth)
@@ -592,6 +697,27 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 		case EC_OP_STATSTREE:
 			s << StatTree2Text((CEC_StatTree_Node_Tag*)response->GetTagByName(EC_TAG_STATTREE_NODE), 0);
 			break;
+
+		case EC_OP_SEARCH_RESULTS:
+			m_Results_map.clear();
+			s << wxString::Format(_("Number of search results: %i\n"),response->GetTagCount());
+			for (int i = 0;i < response->GetTagCount();i++) {
+				CEC_SearchFile_Tag *tag = (CEC_SearchFile_Tag *)response->GetTagByIndex(i);
+				//printf("Tag FileName: %s \n",(const char*)unicode2char(tag->FileName()));
+				//if (tag != NULL)
+					m_Results_map[i] = new SearchFile(tag);
+				//const CECTag *tag = response->GetTagByIndex(i);
+				
+			}
+			ShowResults(m_Results_map);
+			break;
+
+		case EC_OP_SEARCH_PROGRESS:
+			s << _("TODO - show progress of a search");
+			// gives compilation error!!
+			// const CECTag *tab = response->GetTagByNameSafe(EC_TAG_SEARCH_STATUS);
+			//s << wxString::Format(_("Search progress: %u %% \n"),(const char*)unicode2char(tab->GetStringData()));
+			break;
 		default:
 			s << wxString::Format(_("Received an unknown reply from the server, OpCode = %#x."), response->GetOpCode());
 	}
@@ -671,6 +797,26 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp2->AddCommand(wxT("Level"), CMD_ID_GET_IPFILTER_LEVEL, wxTRANSLATE("Get IPFilter level."), wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp->AddCommand(wxT("BwLimits"), CMD_ID_GET_BWLIMITS, wxTRANSLATE("Get bandwidth limits."), wxEmptyString, CMD_PARAM_NEVER);
+
+	tmp = m_commands.AddCommand(wxT("Search"), CMD_ID_SEARCH, wxTRANSLATE("Makes a search."),
+			      wxTRANSLATE("A search type has to be specified by giving the type:\n"
+					  "    GLOBAL\n"
+					  "    LOCAL\n"
+					  "    KAD\n"
+					  "Example: 'search kad file' will execute a kad search for \"file\".\n"), CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("global"), CMD_ID_SEARCH_GLOBAL, wxTRANSLATE("Executes a global search."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("local"), CMD_ID_SEARCH_LOCAL, wxTRANSLATE("Executes a local search"), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("kad"), CMD_ID_SEARCH_KAD, wxTRANSLATE("Executes a kad search"), wxEmptyString, CMD_PARAM_ALWAYS);
+
+	m_commands.AddCommand(wxT("Results"), CMD_ID_SEARCH_RESULTS, wxTRANSLATE("Shows the results of the last search."),
+			      wxTRANSLATE("Returns the results of the previous search.\n"), CMD_PARAM_NEVER);
+
+	m_commands.AddCommand(wxT("Progress"), CMD_ID_SEARCH_PROGRESS, wxTRANSLATE("Shows the process of a search."),
+			      wxTRANSLATE("Shows the process of a search..\n"), CMD_PARAM_NEVER);
+
+	m_commands.AddCommand(wxT("Download"), CMD_ID_DOWNLOAD, wxTRANSLATE("Start downloading a file"),
+			      wxTRANSLATE("The number of a file from the last search has to be given.\n"
+					  "Example: 'download 12' will start to download the file with the number 12 of the prvious search.\n"), CMD_PARAM_ALWAYS);
 
 
 	//

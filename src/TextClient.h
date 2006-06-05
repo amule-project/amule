@@ -29,6 +29,30 @@
 #include "ExternalConnector.h"
 #include <wx/intl.h>
 
+#include <map>
+
+
+
+class CEC_SearchFile_Tag;
+
+class SearchFile {
+	public:
+		wxString sFileName;
+		unsigned long lFileSize;
+		CMD4Hash  nHash;
+		wxString  sHash;
+		long lSourceCount;
+		bool bPresent;
+		
+		SearchFile(CEC_SearchFile_Tag *);
+		
+		void ProcessUpdate(CEC_SearchFile_Tag *);
+		static class SearchInfo *GetContainerInstance();
+		CMD4Hash ID() { return nHash; }
+};
+
+typedef std::map<unsigned long int,SearchFile*> CResultMap;
+
 wxString ECv2_Response2String(CECPacket *response);
 
 class CamulecmdApp : public CaMuleExternalConnector
@@ -44,11 +68,13 @@ private:
 	void OnInitCmdLine(wxCmdLineParser& amuleweb_parser);
 	bool OnCmdLineParsed(wxCmdLineParser& parser);
 	void TextShell(const wxString& prompt);
+	void ShowResults(CResultMap results_map);
 	bool m_HasCmdOnCmdLine;
 	wxString m_CmdString;
 	virtual int OnRun();
 
 	int	m_last_cmd_id;
+	CResultMap	m_Results_map;
 };
 
 #endif // TEXTCLIENT_H
