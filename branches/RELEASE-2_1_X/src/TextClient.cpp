@@ -441,7 +441,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 				if (args.ToULong(&id) == true && id < m_Results_map.size()) {
 
 					SearchFile* file = m_Results_map[id];
-					printf("Download File: %u %s\n", id, (const char*)unicode2char(file->sFileName));
+					printf("Download File: %lu %s\n", id, (const char*)unicode2char(file->sFileName));
 					request = new CECPacket(EC_OP_DOWNLOAD_SEARCH_RESULT);
 					// get with id the hash and category=0
 					uint32 category = 0;
@@ -504,7 +504,7 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 		mb.Printf(_("     %d"), file->lFileSize/1024/1024);
 		kb.Printf(_(".%d"), file->lFileSize/1024%1024);
 		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);	
-		printf("%s     %d\n",(const char*)unicode2char(output), file->lSourceCount );
+		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
  	}
 }
 
