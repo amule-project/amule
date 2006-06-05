@@ -566,6 +566,7 @@ protected:
 
 typedef struct {
 	int	id;
+	bool available;
 	wxString name;
 } LangInfo;
 
@@ -576,44 +577,44 @@ typedef struct {
  * Add new languages here, as this list overrides the one defined in muuli.wdr
  */
 static LangInfo aMuleLanguages[] = {
-	{ wxLANGUAGE_DEFAULT,			wxTRANSLATE("System default") },
-	{ wxLANGUAGE_ARABIC,			wxTRANSLATE("Arabic") },
-	{ wxLANGUAGE_BASQUE,			wxTRANSLATE("Basque") },
-	{ wxLANGUAGE_BULGARIAN,			wxTRANSLATE("Bulgarian") },
-	{ wxLANGUAGE_CATALAN,			wxTRANSLATE("Catalan") },
-	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	wxTRANSLATE("Chinese (Simplified)") },
-	{ wxLANGUAGE_CHINESE_TRADITIONAL,	wxTRANSLATE("Chinese (Traditional)") },
-	{ wxLANGUAGE_CROATIAN,			wxTRANSLATE("Croatian") },
-	{ wxLANGUAGE_DANISH,			wxTRANSLATE("Danish") },
-	{ wxLANGUAGE_DUTCH,			wxTRANSLATE("Dutch") },
-	{ wxLANGUAGE_ENGLISH_UK,		wxTRANSLATE("English (U.K.)") },
-	{ wxLANGUAGE_ENGLISH_US,		wxTRANSLATE("English (U.S.)") },
-	{ wxLANGUAGE_ESTONIAN,			wxTRANSLATE("Estonian") },
-	{ wxLANGUAGE_FINNISH,			wxTRANSLATE("Finnish") },
-	{ wxLANGUAGE_FRENCH,			wxTRANSLATE("French") },
-	{ wxLANGUAGE_GALICIAN,			wxTRANSLATE("Galician") },
-	{ wxLANGUAGE_GERMAN,			wxTRANSLATE("German") },
-	{ wxLANGUAGE_HUNGARIAN,			wxTRANSLATE("Hungarian") },
-	{ wxLANGUAGE_ITALIAN,			wxTRANSLATE("Italian") },
+	{ wxLANGUAGE_DEFAULT,				true,	wxTRANSLATE("System default") },
+	{ wxLANGUAGE_ARABIC,				true,	wxTRANSLATE("Arabic") },
+	{ wxLANGUAGE_BASQUE,				true,	wxTRANSLATE("Basque") },
+	{ wxLANGUAGE_BULGARIAN,				true,	wxTRANSLATE("Bulgarian") },
+	{ wxLANGUAGE_CATALAN,				true,	wxTRANSLATE("Catalan") },
+	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	true,	wxTRANSLATE("Chinese (Simplified)") },
+	{ wxLANGUAGE_CHINESE_TRADITIONAL,	true,	wxTRANSLATE("Chinese (Traditional)") },
+	{ wxLANGUAGE_CROATIAN,				true,	wxTRANSLATE("Croatian") },
+	{ wxLANGUAGE_DANISH,				true,	wxTRANSLATE("Danish") },
+	{ wxLANGUAGE_DUTCH,					true,	wxTRANSLATE("Dutch") },
+	{ wxLANGUAGE_ENGLISH_UK,			true,	wxTRANSLATE("English (U.K.)") },
+	{ wxLANGUAGE_ENGLISH_US,			true,	wxTRANSLATE("English (U.S.)") },
+	{ wxLANGUAGE_ESTONIAN,				true,	wxTRANSLATE("Estonian") },
+	{ wxLANGUAGE_FINNISH,				true,	wxTRANSLATE("Finnish") },
+	{ wxLANGUAGE_FRENCH,				true,	wxTRANSLATE("French") },
+	{ wxLANGUAGE_GALICIAN,				true,	wxTRANSLATE("Galician") },
+	{ wxLANGUAGE_GERMAN,				true,	wxTRANSLATE("German") },
+	{ wxLANGUAGE_HUNGARIAN,				true,	wxTRANSLATE("Hungarian") },
+	{ wxLANGUAGE_ITALIAN,				true,	wxTRANSLATE("Italian") },
 // Hmm, it_NA.po not present ...
-//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		wxTRANSLATE("Italian (Napolitan)") },
-	{ wxLANGUAGE_ITALIAN_SWISS,		wxTRANSLATE("Italian (Swiss)") },
-	{ wxLANGUAGE_KOREAN,			wxTRANSLATE("Korean") },
+//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		true,	wxTRANSLATE("Italian (Napolitan)") },
+	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
+	{ wxLANGUAGE_KOREAN,				true,	wxTRANSLATE("Korean") },
 // There is no such file as lt.po
-//	{ wxLANGUAGE_LITHUANIAN,		wxTRANSLATE("Lithuanian") },
-	{ wxLANGUAGE_POLISH,			wxTRANSLATE("Polish") },
-	{ wxLANGUAGE_PORTUGUESE,		wxTRANSLATE("Portuguese") },
-	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	wxTRANSLATE("Portuguese (Brazilian)") },
-	{ wxLANGUAGE_RUSSIAN,			wxTRANSLATE("Russian") },
-	{ wxLANGUAGE_SLOVENIAN,			wxTRANSLATE("Slovenian") },
-	{ wxLANGUAGE_SPANISH,			wxTRANSLATE("Spanish") },
+//	{ wxLANGUAGE_LITHUANIAN,			true,	wxTRANSLATE("Lithuanian") },
+	{ wxLANGUAGE_POLISH,				true,	wxTRANSLATE("Polish") },
+	{ wxLANGUAGE_PORTUGUESE,			true,	wxTRANSLATE("Portuguese") },
+	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	true,	wxTRANSLATE("Portuguese (Brazilian)") },
+	{ wxLANGUAGE_RUSSIAN,				true,	wxTRANSLATE("Russian") },
+	{ wxLANGUAGE_SLOVENIAN,				true,	wxTRANSLATE("Slovenian") },
+	{ wxLANGUAGE_SPANISH,				true,	wxTRANSLATE("Spanish") },
 // Apparently there's no es_CL.po
-//	{ wxLANGUAGE_SPANISH_CHILE,		wxTRANSLATE("Spanish (Chile)") },
-	{ wxLANGUAGE_SPANISH_MEXICAN,		wxTRANSLATE("Spanish (Mexican)") },
+//	{ wxLANGUAGE_SPANISH_CHILE,			true,	wxTRANSLATE("Spanish (Chile)") },
+	{ wxLANGUAGE_SPANISH_MEXICAN,		true,	wxTRANSLATE("Spanish (Mexican)") },
 // Turkish had caused problems with the config file, disabled until tested
-//	{ wxLANGUAGE_TURKISH,			wxTRANSLATE("Turkish") },
+//	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
 // Yet no real support for "custom"
-//	{ wxLANGUAGE_CUSTOM,			wxTRANSLATE("Custom") },
+//	{ wxLANGUAGE_CUSTOM,				true,	wxTRANSLATE("Custom") },
 };
 
 
@@ -638,7 +639,14 @@ public:
 	{
 		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
 			// find wx ID of selected language
-			int id = aMuleLanguages[m_selection].id;
+			int i = 0;
+			while (m_selection > 0) {
+				i++;
+				if (aMuleLanguages[i].available) {
+					m_selection--;
+				}
+			}
+			int id = aMuleLanguages[i].id;
 		
 			// save language selection
 			thePrefs::SetLanguageID(wxLang2Str(id));
@@ -656,24 +664,28 @@ public:
 		std::sort( aMuleLanguages + 1, // Dont include DEFAULT
 			   aMuleLanguages + itemsof(aMuleLanguages),
 			   TranslatedSort );
-			
+
 		wxChoice *langSelector = dynamic_cast<wxChoice*>(m_widget);
 		// clear existing list
 		langSelector->Clear();
 
 		m_selection = 0;
 		int wxId = StrLang2wx(thePrefs::GetLanguageID());
-	
+
 		// Add all other languages in alphabetical order
 		// and find the index of the selected language.
-		for ( unsigned int i = 0; i < itemsof(aMuleLanguages); i++) {
-			if ( aMuleLanguages[i].id == wxId ) {
-				m_selection = i;
-			}
-			if (IsLocaleAvailable(aMuleLanguages[i].name)) {
+		for ( unsigned int i = 0, j = 0; i < itemsof(aMuleLanguages); i++) {
+			if ((aMuleLanguages[i].available = IsLocaleAvailable(aMuleLanguages[i].name, aMuleLanguages[i].id)) == true) {
 				langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
+				if ( aMuleLanguages[i].id == wxId ) {
+					m_selection = j;
+				}
+				j++;
 			}
 		}
+
+		// restore original locale
+		theApp.m_locale.Init(theApp.m_locale.GetLanguage(), wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING);
 
 		return Cfg_Tmpl<int>::TransferToWindow();
 	}

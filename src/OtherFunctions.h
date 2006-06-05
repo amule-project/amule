@@ -347,7 +347,7 @@ void InitLocale(wxLocale& locale, int language);
  * Currently it doesn't check if the catalog for the locale
  * is installed, but I hope that's next.
  */
-bool IsLocaleAvailable(const wxString& locale);
+bool IsLocaleAvailable(const wxString& locale, int id);
 
 /**
  * Converts a string locale definition to a wxLANGUAGE id.

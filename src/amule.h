@@ -177,6 +177,7 @@ public:
 	CStatistics*		statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	wxLocale m_locale;
 
 	void ShutDown();
 
@@ -252,8 +253,6 @@ protected:
 	void SetTimeOnTransfer();
 
 	std::list<QueuedLogLine> m_logLines;
-
-	wxLocale m_locale;
 
 	APPState m_app_state;
 

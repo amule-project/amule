@@ -69,6 +69,9 @@
 	#include <wx/utils.h>
 #endif	
 
+#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
+#include "amule.h"		// Needed for theApp
+#endif
 
 wxString GetMuleVersion()
 {
@@ -1357,16 +1360,23 @@ wxString wxLang2Str(const int lang)
 	}
 }
 
+#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
 
-bool IsLocaleAvailable (const wxString& locale)
+bool IsLocaleAvailable (const wxString& locale, int id)
 {
 	// This supresses error-messages about invalid locales.
 	wxLogNull logTarget;
-	
 	wxLocale locale_to_check;
+
+	if (id == wxLANGUAGE_DEFAULT || id == theApp.m_locale.GetLanguage())
+		return true;
+
 	InitLocale(locale_to_check, StrLang2wx(locale));
-	
-	#warning TODO: Check if catalog is aviable, too
-	return locale_to_check.IsOk();
+	if (locale_to_check.IsOk()) {
+		return locale_to_check.IsLoaded(wxT(PACKAGE));
+	} else {
+		return false;
+	}
 }
 
+#endif /* !AMULE_DEAMON && (!EC_REMOTE || CLIENT_GUI) */
