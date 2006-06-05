@@ -1355,16 +1355,16 @@ wxString wxLang2Str(const int lang)
 
 #if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
 
-bool IsLocaleAvailable (const wxString& locale, int id)
+bool IsLocaleAvailable(int id)
 {
 	// This supresses error-messages about invalid locales.
-	wxLogNull logTarget;
+	wxLogNull	logTarget;
 	wxLocale 	locale_to_check;
 
 	if (id == wxLANGUAGE_DEFAULT || id == theApp.m_locale.GetLanguage())
 		return true;
 
-	InitLocale(locale_to_check, StrLang2wx(locale));
+	InitLocale(locale_to_check, id);
 	if (locale_to_check.IsOk()) {
 		return locale_to_check.IsLoaded(wxT(PACKAGE));
 	} else {
