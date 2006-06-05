@@ -676,7 +676,7 @@ public:
 		// Add all other languages in alphabetical order
 		// and find the index of the selected language.
 		for ( unsigned int i = 0, j = 0; i < itemsof(aMuleLanguages); i++) {
-			if ((aMuleLanguages[i].available = IsLocaleAvailable(aMuleLanguages[i].name, aMuleLanguages[i].id)) == true) {
+			if ((aMuleLanguages[i].available = IsLocaleAvailable(aMuleLanguages[i].id)) == true) {
 				langSelector->Append( wxGetTranslation(aMuleLanguages[i].name) );
 				if ( aMuleLanguages[i].id == wxId ) {
 					m_selection = j;
