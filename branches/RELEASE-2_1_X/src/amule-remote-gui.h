@@ -754,11 +754,10 @@ public:
 	uint32 GetID() const;
 	
 	uint8 m_ConnState;
-	
-	DECLARE_EVENT_TABLE()
-	
-protected:
+
 	wxLocale	m_locale;
+
+	DECLARE_EVENT_TABLE()
 };
 
 DECLARE_APP(CamuleRemoteGuiApp)
