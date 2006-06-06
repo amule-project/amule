@@ -39,9 +39,9 @@ rm -rf intl
 #if [ ! -d intl ]; then
     echo "Setting up internationalization files."
     autopoint --force
-    if [ -f Makefile -a -x config.status ]; then
-        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
-    fi
+#    if [ -f Makefile -a -x config.status ]; then
+#        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
+#    fi
 #   gettextize --intl -f --no-changelog
 #   echo "restoring Makefile.am and configure.in"
 #   cp -f Makefile.am~ Makefile.am
