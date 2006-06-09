@@ -308,7 +308,6 @@ public:
 	static uint32		GetQueueSize() 			{ return s_iQueueSize*100; }
 	static void		SetQueueSize(uint32 val)	{ s_iQueueSize = val/100; }
 
-	// Barry
 	static uint8		Get3DDepth() 			{ return s_depth3D;}
 	static bool		AddNewFilesPaused()		{ return s_addnewfilespaused; }
 	static void		SetAddNewFilesPaused(bool val)	{ s_addnewfilespaused = val; }
@@ -336,13 +335,17 @@ public:
 	wxArrayString shareddir_list;
 	wxArrayString adresses_list;
 
-	static bool 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
+	static bool	 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
-	static bool		IsManualHighPrio()		{ return s_bmanualhighprio; }
+	static bool		UPnPEnabled() 			{ return s_UPnPEnabled; }
+	static void		SetUPnPEnabled(bool val)	{ s_UPnPEnabled = val; }
+	static uint16		GetUPnPTCPPort()		{ return s_UPnPTCPPort; }
+	static void		SetUPnPTCPPort(uint16 val)	{ s_UPnPTCPPort = val; }
+	static bool		IsManualHighPrio() 		{ return s_bmanualhighprio; }
 	static void		SetManualHighPrio(bool val)	{ s_bmanualhighprio = val; }
 	void			LoadCats();
 	static const wxString&	GetDateTimeFormat() 		{ return s_datetimeformat; }
-	// Download Categories (Ornis)
+	// Download Categories
 	uint32			AddCat(Category_Struct* cat);
 	void			RemoveCat(size_t index);
 	uint32			GetCatCount();
@@ -380,7 +383,7 @@ public:
 	static bool		ShowCatTabInfos() 		{ return s_showCatTabInfos; }
 	static void		ShowCatTabInfos(bool in) 	{ s_showCatTabInfos=in; }
 	
-	// Madcat - Sources Dropping Tweaks
+	// Sources Dropping Tweaks
 	static bool		DropNoNeededSources() 		{ return s_NoNeededSources > 0; }
 	static bool		SwapNoNeededSources() 		{ return s_NoNeededSources == 2; }
 	static uint8		GetNoNeededSources()		{ return s_NoNeededSources; }
@@ -394,17 +397,17 @@ public:
 	static uint32		GetAutoDropTimer() 		{ return s_AutoDropTimer; }
 	static void		SetAutoDropTimer(uint32 val)	{ s_AutoDropTimer = val; }
 	
-	// Kry - External Connections
+	// External Connections
 	static bool 		AcceptExternalConnections()	{ return s_AcceptExternalConnections; }
 	static void			EnableExternalConnections( bool val ) { s_AcceptExternalConnections = val; }
 	static const wxString&	GetECAddress()			{ return s_ECAddr; }
 	static uint32 		ECPort()			{ return s_ECPort; }
 	static void			SetECPort(uint32 val) { s_ECPort = val; }
 	static const wxString&	ECPassword()			{ return s_ECPassword; }
-	// Madcat - Fast ED2K Links Handler Toggling
+	// Fast ED2K Links Handler Toggling
 	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
-	// Kry - Ip filter 
+	// Ip filter 
 	static bool		GetIPFilterOn()			{ return s_IPFilterOn; }
 	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
@@ -414,7 +417,7 @@ public:
 	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
 	static void		SetIPFilterURL(const wxString& url)	{ s_IPFilterURL = url; }
 
-	// Kry - Source seeds On/Off
+	// Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
 	
@@ -472,7 +475,7 @@ public:
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static bool		IsMessageFiltered(const wxString& message);
 
-	// I cant have it return a reference, I'll need a pointer later.
+	// Can't have it return a reference, will need a pointer later.
 	static const CProxyData *GetProxyData()			{ return &s_ProxyData; }
 	
 	// Hidden files
@@ -539,6 +542,8 @@ protected:
 	static bool	s_reconnect;
 	static bool	s_autoconnect;
 	static bool	s_autoconnectstaticonly;
+	static bool	s_UPnPEnabled;
+	static uint16	s_UPnPTCPPort;
 
 ////////////// PROXY
 	static CProxyData s_ProxyData;

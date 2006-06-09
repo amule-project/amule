@@ -62,7 +62,7 @@
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
-#include "ClientCreditsList.h"	// Needed for CClientCreditsList
+#include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "ServerConnect.h"		// Needed for CServerConnect
@@ -73,8 +73,8 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
-#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket & CMuleUDPSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
+#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
@@ -82,7 +82,7 @@
 #include "Packet.h"
 #include "Statistics.h"			// Needed for CStatistics
 #include "Logger.h"
-#include <common/Format.h>			// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator
@@ -90,6 +90,7 @@
 #include "kademlia/kademlia/Prefs.h"
 #include "Timer.h"
 #include "ThreadTasks.h"
+#include "UPnP.h"			// Needed for UPnP
 
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
@@ -178,14 +179,15 @@ CamuleApp::CamuleApp()
 	uploadqueue	= NULL;
 	ipfilter	= NULL;
 	ECServerHandler = NULL;
-	m_singleInstance = NULL;
+	m_singleInstance= NULL;
 	glob_prefs	= NULL;
-	m_statistics = NULL;
+	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
-	core_timer = NULL;
-	applog = NULL;
+	m_upnp		= NULL;
+	core_timer	= NULL;
+	applog		= NULL;
 	
-	m_localip		= 0;
+	m_localip	= 0;
 	m_dwPublicIP	= 0;
 	webserver_pid	= 0;
 
@@ -278,6 +280,9 @@ int CamuleApp::OnExit()
 	
 	delete ipfilter;
 	ipfilter = NULL;
+
+	delete m_upnp;
+	m_upnp = NULL;
 	
 	delete ECServerHandler;
 	ECServerHandler = NULL;
@@ -812,14 +817,13 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		while ( port < 1024 || port  == thePrefs::GetPort() ) {
 			port = (uint16)rand();
 		}
-		
 		thePrefs::SetECPort( port );
 		
-		wxString err = wxT("Network configuration failed! You cannot use the same port\n"
-					"for the main TCP port and the External Connections port.\n"
-					"The EC port has been changed to avoid conflict, see the\n"
-					"preferences for the new value.\n");
-
+		wxString err = wxT(
+			"Network configuration failed! You cannot use the same port\n"
+			"for the main TCP port and the External Connections port.\n"
+			"The EC port has been changed to avoid conflict, see the\n"
+			"preferences for the new value.\n");
 		*msg << err;
 
 		AddLogLineM( false, wxEmptyString );
@@ -835,15 +839,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		while ( port < 1024 || port == thePrefs::GetPort() + 3 ) {
 			port = (uint16)rand();
 		}
-
 		thePrefs::SetUDPPort( port );
 
-		wxString err = wxT("Network configuration failed! You can't use the port which\n"
-					"has the value of the main TCP port plus 3 for the UDP port.\n"
-					"This port has been reserved for the Server-UDP port. The\n"
-					"port value has been changed to avoid conflict, see the\n"
-					"preferences for the new value\n");
-
+		wxString err = wxT(
+			"Network configuration failed! You can't use the port which\n"
+			"has the value of the main TCP port plus 3 for the UDP port.\n"
+			"This port has been reserved for the Server-UDP port. The\n"
+			"port value has been changed to avoid conflict, see the\n"
+			"preferences for the new value\n");
 		*msg << err;
 
 		AddLogLineM( false, wxEmptyString );
@@ -855,24 +858,25 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	
 	// Create the address where we are going to listen
 	// TODO: read this from configuration file
-	amuleIPV4Address myaddr;
-	//myaddr.AnyAddress();
-	if (thePrefs::GetECAddress().IsEmpty() || !myaddr.Hostname(thePrefs::GetECAddress())) {
-		myaddr.AnyAddress();
-	}
-	myaddr.Service(thePrefs::ECPort());
-	
-	// Get ready to handle connections from apps like amulecmd
-	ECServerHandler = new ExternalConn(myaddr, msg);
+	amuleIPV4Address myaddr[4];
 
-	if (thePrefs::GetAddress().IsEmpty() || !myaddr.Hostname(thePrefs::GetAddress())) {
-		myaddr.AnyAddress();
+	// Create the External Connections Socket.
+	// Default is 4712.
+	// Get ready to handle connections from apps like amulecmd
+	if (thePrefs::GetECAddress().IsEmpty() || !myaddr[0].Hostname(thePrefs::GetECAddress())) {
+		myaddr[0].AnyAddress();
 	}
-	wxString ip = myaddr.IPAddress();
-	// Creates the UDP socket TCP+3.
+	myaddr[0].Service(thePrefs::ECPort());
+	ECServerHandler = new ExternalConn(myaddr[0], msg);
+
+	// Create the UDP socket TCP+3.
 	// Used for source asking on servers.
-	myaddr.Service(thePrefs::GetPort()+3);
-	serverconnect = new CServerConnect(serverlist, myaddr);
+	if (thePrefs::GetAddress().IsEmpty() || !myaddr[1].Hostname(thePrefs::GetAddress())) {
+		myaddr[1].AnyAddress();
+	}
+	wxString ip = myaddr[1].IPAddress();
+	myaddr[1].Service(thePrefs::GetPort()+3);
+	serverconnect = new CServerConnect(serverlist, myaddr[1]);
 
 	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
 		% ip % ((unsigned int)thePrefs::GetPort() + 3u);
@@ -881,13 +885,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Used for Client Port / Connections from other clients,
 	// Client to Client Source Exchange.
 	// Default is 4662.
+	myaddr[2] = myaddr[1];
+	myaddr[2].Service(thePrefs::GetPort());
+	listensocket = new CListenSocket(myaddr[2]);
+	
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
 		% ip % (unsigned int)(thePrefs::GetPort());
 	
-	myaddr.Service(thePrefs::GetPort());
-	listensocket = new CListenSocket(myaddr);
-	
-	// This command just sets a flag to control maximun number of connections.
+	// This command just sets a flag to control maximum number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already comming in.
 	if (listensocket->Ok()) {
@@ -895,22 +900,25 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	} else {
 		// If we wern't able to start listening, we need to warn the user
 		wxString err;
-		err = CFormat(_("Port %u is not available. You will be LOWID\n")) % (unsigned int)(thePrefs::GetPort());
+		err = CFormat(_("Port %u is not available. You will be LOWID\n")) %
+			(unsigned int)(thePrefs::GetPort());
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
-		err = CFormat(_("Port %u is not available!\n\n"
-				"This means that you will be LOWID.\n\n"
-				"Check your network to make sure the port is open for output and input.")) % 
-				(unsigned int)(thePrefs::GetPort());
+		err = CFormat(_(
+			"Port %u is not available!\n\n"
+			"This means that you will be LOWID.\n\n"
+			"Check your network to make sure the port is open for output and input.")) % 
+			(unsigned int)(thePrefs::GetPort());
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
 
 	// Create the UDP socket.
 	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
 	// Default is port 4672.
-	myaddr.Service(thePrefs::GetUDPPort());
-	clientudp = new CClientUDPSocket(myaddr, thePrefs::GetProxyData());
+	myaddr[3] = myaddr[1];
+	myaddr[3].Service(thePrefs::GetUDPPort());
+	clientudp = new CClientUDPSocket(myaddr[3], thePrefs::GetProxyData());
 	
 	if (!thePrefs::IsUDPDisabled()) {
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
@@ -918,6 +926,17 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	} else {
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 	}	
+
+	if (thePrefs::UPnPEnabled()) {
+		try {
+			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
+			m_upnp->AcquirePortList(myaddr, 4);
+		} catch(CUPnPException &e) {
+			AddLogLineM(true, e.what());
+			AddDebugLogLineM(true, logUPnP, e.what());
+			fprintf(stderr, "%s\n", (const char *)unicode2char(e.what()));
+		}
+	}
 	
 	return ok;
 }

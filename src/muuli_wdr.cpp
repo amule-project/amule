@@ -1919,21 +1919,37 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     item0->Add( item54, 0, wxADJUST_MINSIZE|wxGROW|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item61 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item60 = new wxStaticBoxSizer( item61, wxVERTICAL );
+    wxStaticBox *item61 = new wxStaticBox( parent, -1, _("Universal Plug and Play") );
+    wxStaticBoxSizer *item60 = new wxStaticBoxSizer( item61, wxHORIZONTAL );
 
-    wxCheckBox *item62 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item60->Add( item62, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    wxCheckBox *item62 = new wxCheckBox( parent, IDC_UPNPENABLED, _("Enable UPnP"), wxDefaultPosition, wxDefaultSize, 0 );
+    item60->Add( item62, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxCheckBox *item63 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
-    item63->SetValue( TRUE );
-    item60->Add( item63, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    item60->Add( 20, 20, 2, wxADJUST_MINSIZE|wxALIGN_CENTER|wxALL, 5 );
 
-    wxCheckBox *item64 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
-    item64->SetValue( TRUE );
-    item60->Add( item64, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item63 = new wxStaticText( parent, ID_TEXT, _("UPnP TCP Port:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item60->Add( item63, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item0->Add( item60, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
+    wxSpinCtrl *item64 = new wxSpinCtrl( parent, IDC_UPNPTCPPORT, wxT("50000"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 50000 );
+    item60->Add( item64, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item60, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item66 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item65 = new wxStaticBoxSizer( item66, wxVERTICAL );
+
+    wxCheckBox *item67 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item65->Add( item67, 0, wxALIGN_CENTER_VERTICAL, 10 );
+
+    wxCheckBox *item68 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
+    item68->SetValue( TRUE );
+    item65->Add( item68, 0, wxALIGN_CENTER_VERTICAL, 10 );
+
+    wxCheckBox *item69 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    item69->SetValue( TRUE );
+    item65->Add( item69, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item65, 0, wxADJUST_MINSIZE|wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {

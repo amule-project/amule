@@ -27,6 +27,7 @@ Trunk
 		* Removed the default constructor for Kademlia contacts.
 		* Fix for "get bwlimits" command in amulecmd always returning
 		  zero for maximum download value.
+		* Added UPnP support.
 
 --------------------------------------------------------------------------------
 

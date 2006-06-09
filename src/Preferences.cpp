@@ -91,6 +91,8 @@ uint16		CPreferences::s_maxconnections;
 bool		CPreferences::s_reconnect;
 bool		CPreferences::s_autoconnect;
 bool		CPreferences::s_autoconnectstaticonly;
+bool		CPreferences::s_UPnPEnabled;
+uint16		CPreferences::s_UPnPTCPPort;
 bool		CPreferences::s_autoserverlist;
 bool		CPreferences::s_deadserver;
 wxString	CPreferences::s_incomingdir;
@@ -838,6 +840,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_UPDATESERVERCLIENT,	(new Cfg_Bool( wxT("/eMule/AddServersFromClient"), s_addserversfromclient, true )));
 	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false )));
 	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false )));
+	NewCfgItem(IDC_UPNPENABLED,	(new Cfg_Bool( wxT("/eMule/UPnPEnabled"), s_UPnPEnabled, false )));
+	NewCfgItem(IDC_UPNPTCPPORT,	(MkCfg_Int( wxT("/eMule/UPnPTCPPort"), s_UPnPTCPPort, 50000 )));
 	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true )));
 	// Enabled networks
 	NewCfgItem( IDC_NETWORKKAD, (new Cfg_Bool( wxT("/eMule/ConnectToKad"),	s_ConnectToKad, true )) );
