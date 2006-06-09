@@ -58,6 +58,7 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+class CUPnPControlPoint;
 class CStatistics;
 class wxSocketEvent;
 class wxCommandEvent;
@@ -181,6 +182,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+	CUPnPControlPoint*	m_upnp;
 	wxLocale m_locale;
 
 	void ShutDown();

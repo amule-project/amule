@@ -99,6 +99,8 @@ enum DebugType
 	logMuleUDP,
 	//! Warnings/Errors related to the thread-scheduler.
 	logThreads,
+	//! Warnings/Errors related to the Universal Plug and Play subsistem.
+	logUPnP,
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };

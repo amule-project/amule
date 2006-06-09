@@ -145,6 +145,7 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
+	UPnP.cpp \
 	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Search.cpp \
 	kademlia/kademlia/Indexed.cpp \
