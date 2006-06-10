@@ -109,6 +109,7 @@ const char *CUPnPLib::s_LibIXMLSymbols[] =
 /* 4*/	"ixmlNode_getAttributes",
 /* 5*/	"ixmlDocument_free",
 /* 6*/	"ixmlNamedNodeMap_getNamedItem",
+/* 7*/	"ixmlNamedNodeMap_free",
 };
 
 
@@ -160,6 +161,9 @@ m_LibUPnPHandle("libupnp.so")
 	m_ixmlNamedNodeMap_getNamedItem =
 		reinterpret_cast<IXML_Node *(*)(IXML_NamedNodeMap *, const DOMString)>
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[6]));
+	m_ixmlNamedNodeMap_free =
+		reinterpret_cast<void (*)(IXML_NamedNodeMap *)>
+		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[7]));
 	
 	// UPnP
 	m_UpnpGetErrorMessage =
@@ -220,12 +224,15 @@ Char2UnicodeBuf CUPnPLib::GetUPnPErrorMessage(int code)
 /**
  *  This function returns the TEXT node value of the current node.
  */
-const DOMString CUPnPLib::Element_GetTextValue(
+const wxString CUPnPLib::Element_GetTextValue(
 	IXML_Element *element) const
 {
+	if (!element) {
+		return wxEmptyString;
+	}
 	IXML_Node *text = m_ixmlNode_getFirstChild(
 		reinterpret_cast<IXML_Node *>(element));
-	const DOMString ret = m_ixmlNode_getNodeValue(text);
+	const wxString ret = char2unicode(m_ixmlNode_getNodeValue(text));
 
 	return ret;
 }
@@ -234,19 +241,19 @@ const DOMString CUPnPLib::Element_GetTextValue(
 /**
  *  This function returns the TEXT node value of the first child matching tag.
  */
-const DOMString CUPnPLib::Element_GetChildValueByTag(
+const wxString CUPnPLib::Element_GetChildValueByTag(
 	IXML_Element *element,
 	const DOMString tag) const
 {
 	IXML_Element *child = Element_GetFirstChildByTag(element, tag);
-	const DOMString ret = Element_GetTextValue(child);
 
-	return ret;
+	return Element_GetTextValue(child);
 }
 
 
 /**
- * Returns the first child element that matches the requested tag.
+ * Returns the first child element that matches the requested tag or
+ * NULL if not found.
  */
 IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
 	IXML_Element *element,
@@ -272,7 +279,8 @@ IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
  * Returns the next sibling element that matches the requested tag. Should be
  * used with the return value of Element_GetFirstChildByTag().
  */
-IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(IXML_Element *element, const DOMString tag) const
+IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
+	IXML_Element *element, const DOMString tag) const
 {
 	if (!element || !tag) {
 		return NULL;
@@ -289,13 +297,15 @@ IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(IXML_Element *element, const
 }
 
 
-const DOMString CUPnPLib::Element_GetAttributeByTag(
+const wxString CUPnPLib::Element_GetAttributeByTag(
 	IXML_Element *element, const DOMString tag) const
 {
-	IXML_NamedNodeMap *nnm = m_ixmlNode_getAttributes(
+	IXML_NamedNodeMap *NamedNodeMap = m_ixmlNode_getAttributes(
 		reinterpret_cast<IXML_Node *>(element));
-	IXML_Node *attribute = m_ixmlNamedNodeMap_getNamedItem(nnm, tag);
-	const DOMString ret = m_ixmlNode_getNodeValue(attribute);
+	IXML_Node *attribute = m_ixmlNamedNodeMap_getNamedItem(NamedNodeMap, tag);
+	const DOMString s = m_ixmlNode_getNodeValue(attribute);
+	const wxString ret = char2unicode(s);
+	m_ixmlNamedNodeMap_free(NamedNodeMap);
 
 	return ret;
 }
@@ -306,11 +316,10 @@ CUPnPArgument::CUPnPArgument(
 	IXML_Element *argument,
 	const wxString &WXUNUSED(SCPDURL))
 :
-m_name                (char2unicode(upnpLib.Element_GetChildValueByTag(argument, "name"))),
-m_direction           (char2unicode(upnpLib.Element_GetChildValueByTag(argument, "direction"))),
-#warning  we have to do this retval stuff later
-m_retval              (             upnpLib.Element_GetChildValueByTag(argument, "retval")),
-m_relatedStateVariable(char2unicode(upnpLib.Element_GetChildValueByTag(argument, "relatedStateVariable")))
+m_name                (upnpLib.Element_GetChildValueByTag(argument, "name")),
+m_direction           (upnpLib.Element_GetChildValueByTag(argument, "direction")),
+m_retval              (upnpLib.Element_GetFirstChildByTag(argument, "retval")),
+m_relatedStateVariable(upnpLib.Element_GetChildValueByTag(argument, "relatedStateVariable"))
 {
 	wxString msg;
 	msg <<	wxT("\n    Argument:")                  <<
@@ -332,7 +341,7 @@ CUPnPAction::CUPnPAction(
 	const wxString &SCPDURL)
 :
 m_ArgumentList(upnpLib, action, SCPDURL),
-m_name(char2unicode(upnpLib.Element_GetChildValueByTag(action, "name")))
+m_name(upnpLib.Element_GetChildValueByTag(action, "name"))
 {
 	wxString msg;
 	msg <<	wxT("\n    Action:")                    <<
@@ -346,7 +355,7 @@ CUPnPAllowedValue::CUPnPAllowedValue(
 	IXML_Element *allowedValue,
 	const wxString &WXUNUSED(SCPDURL))
 :
-m_allowedValue(char2unicode(upnpLib.Element_GetTextValue(allowedValue)))
+m_allowedValue(upnpLib.Element_GetTextValue(allowedValue))
 {
 	wxString msg;
 	msg <<	wxT("\n    AllowedValue:")      <<
@@ -365,10 +374,10 @@ CUPnPStateVariable::CUPnPStateVariable(
 	const wxString &SCPDURL)
 :
 m_AllowedValueList(upnpLib, stateVariable, SCPDURL),
-m_name        (char2unicode(upnpLib.Element_GetChildValueByTag(stateVariable, "name"))),
-m_dataType    (char2unicode(upnpLib.Element_GetChildValueByTag(stateVariable, "dataType"))),
-m_defaultValue(char2unicode(upnpLib.Element_GetChildValueByTag(stateVariable, "defaultValue"))),
-m_sendEvents  (char2unicode(upnpLib.Element_GetAttributeByTag (stateVariable, "sendEvents")))
+m_name        (upnpLib.Element_GetChildValueByTag(stateVariable, "name")),
+m_dataType    (upnpLib.Element_GetChildValueByTag(stateVariable, "dataType")),
+m_defaultValue(upnpLib.Element_GetChildValueByTag(stateVariable, "defaultValue")),
+m_sendEvents  (upnpLib.Element_GetAttributeByTag (stateVariable, "sendEvents"))
 {
 	wxString msg;
 	msg <<	wxT("\n    StateVariable:")     <<
@@ -412,11 +421,11 @@ CUPnPService::CUPnPService(
 	IXML_Element *service,
 	const wxString &URLBase)
 :
-m_serviceType(char2unicode(upnpLib.Element_GetChildValueByTag(service, "serviceType"))),
-m_serviceId  (char2unicode(upnpLib.Element_GetChildValueByTag(service, "serviceId"))),
-m_SCPDURL    (char2unicode(upnpLib.Element_GetChildValueByTag(service, "SCPDURL"))),
-m_controlURL (char2unicode(upnpLib.Element_GetChildValueByTag(service, "controlURL"))),
-m_eventSubURL(char2unicode(upnpLib.Element_GetChildValueByTag(service, "eventSubURL"))),
+m_serviceType(upnpLib.Element_GetChildValueByTag(service, "serviceType")),
+m_serviceId  (upnpLib.Element_GetChildValueByTag(service, "serviceId")),
+m_SCPDURL    (upnpLib.Element_GetChildValueByTag(service, "SCPDURL")),
+m_controlURL (upnpLib.Element_GetChildValueByTag(service, "controlURL")),
+m_eventSubURL(upnpLib.Element_GetChildValueByTag(service, "eventSubURL")),
 m_timeout(1801),
 m_SCPD(NULL)
 {
@@ -525,18 +534,18 @@ CUPnPDevice::CUPnPDevice(
 :
 m_DeviceList(upnpLib, device, URLBase),
 m_ServiceList(upnpLib, device, URLBase),
-m_deviceType       (char2unicode(upnpLib.Element_GetChildValueByTag(device, "deviceType"))),
-m_friendlyName     (char2unicode(upnpLib.Element_GetChildValueByTag(device, "friendlyName"))),
-m_manufacturer     (char2unicode(upnpLib.Element_GetChildValueByTag(device, "manufacturer"))),
-m_manufacturerURL  (char2unicode(upnpLib.Element_GetChildValueByTag(device, "manufacturerURL"))),
-m_modelDescription (char2unicode(upnpLib.Element_GetChildValueByTag(device, "modelDescription"))),
-m_modelName        (char2unicode(upnpLib.Element_GetChildValueByTag(device, "modelName"))),
-m_modelNumber      (char2unicode(upnpLib.Element_GetChildValueByTag(device, "modelNumber"))),
-m_modelURL         (char2unicode(upnpLib.Element_GetChildValueByTag(device, "modelURL"))),
-m_serialNumber     (char2unicode(upnpLib.Element_GetChildValueByTag(device, "serialNumber"))),
-m_UDN              (char2unicode(upnpLib.Element_GetChildValueByTag(device, "UDN"))),
-m_UPC              (char2unicode(upnpLib.Element_GetChildValueByTag(device, "UPC"))),
-m_presentationURL  (char2unicode(upnpLib.Element_GetChildValueByTag(device, "presentationURL")))
+m_deviceType       (upnpLib.Element_GetChildValueByTag(device, "deviceType")),
+m_friendlyName     (upnpLib.Element_GetChildValueByTag(device, "friendlyName")),
+m_manufacturer     (upnpLib.Element_GetChildValueByTag(device, "manufacturer")),
+m_manufacturerURL  (upnpLib.Element_GetChildValueByTag(device, "manufacturerURL")),
+m_modelDescription (upnpLib.Element_GetChildValueByTag(device, "modelDescription")),
+m_modelName        (upnpLib.Element_GetChildValueByTag(device, "modelName")),
+m_modelNumber      (upnpLib.Element_GetChildValueByTag(device, "modelNumber")),
+m_modelURL         (upnpLib.Element_GetChildValueByTag(device, "modelURL")),
+m_serialNumber     (upnpLib.Element_GetChildValueByTag(device, "serialNumber")),
+m_UDN              (upnpLib.Element_GetChildValueByTag(device, "UDN")),
+m_UPC              (upnpLib.Element_GetChildValueByTag(device, "UPC")),
+m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"))
 {
 	wxString msg;
 #warning Chech this limit.
@@ -749,14 +758,14 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
 				upnpCP->m_upnpLib.m_ixmlNode_getFirstChild(
 					reinterpret_cast<IXML_Node *>(doc)));
 			// Extract the URLBase
-			const DOMString urlBase =
-				upnpCP->m_upnpLib.Element_GetChildValueByTag(root, "URLBase");
+			const wxString urlBase = upnpCP->m_upnpLib.
+				Element_GetChildValueByTag(root, "URLBase");
 			// Get the root device
-			IXML_Element *rootDevice =
-				upnpCP->m_upnpLib.Element_GetFirstChildByTag(root, "device");
+			IXML_Element *rootDevice = upnpCP->m_upnpLib.
+				Element_GetFirstChildByTag(root, "device");
 			// Extract the deviceType
-			wxString devType(char2unicode(
-				upnpCP->m_upnpLib.Element_GetChildValueByTag(rootDevice, "deviceType")));
+			wxString devType(upnpCP->m_upnpLib.
+				Element_GetChildValueByTag(rootDevice, "deviceType"));
 			// Only add device if it is an InternetGatewayDevice
 //			if (	!devType.CmpNoCase(upnpCP->m_upnpLib.UPNP_DEVICE_IGW) &&
 //				!upnpCP->m_IGWDeviceDetected) {
@@ -841,21 +850,21 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
 
 
 void CUPnPControlPoint::AddRootDevice(
-	IXML_Element *rootDevice, const DOMString urlBase,
+	IXML_Element *rootDevice, const wxString &urlBase,
 	const char *location, int expires)
 {
 	// Lock the Root Device List
 	wxMutexLocker lock(m_RootDeviceListMutex);
 	
 	// Root node's URLBase
-	wxString OriginalURLBase(char2unicode(urlBase));
+	wxString OriginalURLBase(urlBase);
 	wxString FixedURLBase(OriginalURLBase.IsEmpty() ?
 		char2unicode(location) :
 		OriginalURLBase);
 
 	// Get the UDN (Unique Device Name)
-	wxString UDN(char2unicode(
-		m_upnpLib.Element_GetChildValueByTag(rootDevice, "UDN")));
+	wxString UDN(
+		m_upnpLib.Element_GetChildValueByTag(rootDevice, "UDN"));
 	RootDeviceList::iterator it = m_RootDeviceList.find(UDN);
 	bool alreadyAdded = it != m_RootDeviceList.end();
 	if (alreadyAdded) {
@@ -882,37 +891,6 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 	RootDeviceList::iterator it = m_RootDeviceList.find(UDN);
 	delete (*it).second;
 	m_RootDeviceList.erase(UDN);
-#if 0
-	struct TvDeviceNode *curdevnode, *prevdevnode;
-
-	ithread_mutex_lock( &DeviceListMutex );
-
-	curdevnode = GlobalDeviceList;
-	if (!curdevnode) {
-		SampleUtil_Print( "WARNING: TvCtrlPointRemoveDevice: Device list empty" );
-	} else {
-		if (!strcmp( curdevnode->device.UDN, UDN)) {
-			GlobalDeviceList = curdevnode->next;
-			TvCtrlPointDeleteNode(curdevnode);
-		} else {
-			prevdevnode = curdevnode;
-			curdevnode = curdevnode->next;
-			while( curdevnode ) {
-				if( !strcmp(curdevnode->device.UDN, UDN)) {
-					prevdevnode->next = curdevnode->next;
-					TvCtrlPointDeleteNode(curdevnode);
-					break;
-				}
-				prevdevnode = curdevnode;
-				curdevnode = curdevnode->next;
-			}
-		}
-	}
-
-	ithread_mutex_unlock( &DeviceListMutex );
-
-	return TV_SUCCESS;
-#endif
 }
 
 
@@ -1057,38 +1035,6 @@ SampleUtil_FindAndParseService( IN IXML_Document * DescDoc,
         free( baseURL );
 
     return ( found );
-}
-
-// printf wrapper for portable code
-int
-uprint1( char *fmt,
-         ... )
-{
-    va_list ap;
-    char *buf = NULL;
-    int size;
-
-    va_start( ap, fmt );
-    size = vsnprintf( buf, 0, fmt, ap );
-    va_end( ap );
-
-    if( size > 0 ) {
-        buf = ( char * )malloc( size + 1 );
-        if( vsnprintf( buf, size + 1, fmt, ap ) != size ) {
-            free( buf );
-            buf = NULL;
-        }
-    }
-
-    if( buf ) {
-        ithread_mutex_lock( &display_mutex );
-        if( gPrintFun )
-            gPrintFun( buf );
-        ithread_mutex_unlock( &display_mutex );
-        free( buf );
-    }
-
-    return size;
 }
 
 #endif
