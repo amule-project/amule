@@ -31,7 +31,7 @@
 
 
 #include <dlfcn.h>				// For dlopen(), dlsym(), dlclose()
-#include <upnp/upnptools.h>			// For m_UpnpGetErrorMessage()
+#include "extern/upnp/upnptools.h"		// For m_UpnpGetErrorMessage()
 
 
 #include "wx/utils.h"				// For wxSleep()
