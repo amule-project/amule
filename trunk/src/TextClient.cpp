@@ -652,8 +652,9 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 							((int)tag->SourceCountA4AF() ? wxString::Format(wxT("+%2.2i "),(int)tag->SourceCountA4AF()) : wxString(wxT("    "))) <<
 							((int)tag->SourceXferCount() ? wxString::Format(wxT("(%2.2i) - "),(int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
 						tag->GetFileStatusString();
+						s << wxT(" - ") << tag->PartMetName();
 						if ( tag->SourceXferCount() > 0) {
-							s << wxT(" ") + CastItoSpeed(tag->Speed());
+							s << wxT(" - ") + CastItoSpeed(tag->Speed());
 						}
 					s << wxT("\n");
 				}
