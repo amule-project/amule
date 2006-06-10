@@ -95,7 +95,7 @@ public:
 	
 private:
 	// dlopen stuff
-	static const int NUM_LIB_IXML_SYMBOLS = 7;
+	static const int NUM_LIB_IXML_SYMBOLS = 8;
 	static const char *s_LibIXMLSymbols[NUM_LIB_IXML_SYMBOLS];
 	static const int NUM_LIB_UPNP_SYMBOLS = 15;
 	static const char *s_LibUPnPSymbols[NUM_LIB_UPNP_SYMBOLS];
@@ -111,15 +111,15 @@ public:
 	Char2UnicodeBuf GetUPnPErrorMessage(int code);
 
 	// IXML_Element
-	const DOMString Element_GetTextValue(
+	const wxString Element_GetTextValue(
 		IXML_Element *element) const;
-	const DOMString Element_GetChildValueByTag(
+	const wxString Element_GetChildValueByTag(
 		IXML_Element *element, const DOMString tag) const;
 	IXML_Element *Element_GetFirstChildByTag(
 		IXML_Element *element, const DOMString tag) const;
 	IXML_Element *Element_GetNextSiblingByTag(
 		IXML_Element *element, const DOMString tag) const;
-	const DOMString Element_GetAttributeByTag(
+	const wxString Element_GetAttributeByTag(
 		IXML_Element *element, const DOMString tag) const;
 	
 	// ixml api
@@ -131,6 +131,7 @@ public:
 	void (*m_ixmlDocument_free)(IXML_Document *doc);
 	IXML_Node *(*m_ixmlNamedNodeMap_getNamedItem)(
 		IXML_NamedNodeMap *nnMap, const DOMString name);
+	void (*m_ixmlNamedNodeMap_free)(IXML_NamedNodeMap *nnMap);
 	
 	// upnp api
 	const char *(*m_UpnpGetErrorMessage)(int ErrorCode);
@@ -462,7 +463,7 @@ private:
 	// Callback function
 	static int Callback(Upnp_EventType EventType, void* Event, void* Cookie);
 
-	void AddRootDevice(IXML_Element *rootDevice, const DOMString urlBase, const char *location, int expires);
+	void AddRootDevice(IXML_Element *rootDevice, const wxString &urlBase, const char *location, int expires);
 	void RemoveRootDevice(const char *udn);
 };
 
