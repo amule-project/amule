@@ -26,8 +26,7 @@
 #ifndef MULELISTCTRL_H
 #define MULELISTCTRL_H
 
-
-#include "listctrl.h"
+#include "extern/wxWidgets/listctrl.h"
 
 #include <vector>
 #include <list>

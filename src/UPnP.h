@@ -37,7 +37,7 @@
 #include <vector>
 
 
-#include <upnp/upnp.h>
+#include "extern/upnp/upnp.h"
 
 
 #include <wx/string.h>
