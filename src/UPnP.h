@@ -31,6 +31,8 @@
 #define AMULE_UPNP_H
 
 
+#include <limits>
+#include <string>
 #include <map>
 #include <vector>
 
@@ -38,15 +40,15 @@
 #include <upnp/upnp.h>
 
 
-#include "wx/string.h"
-#include "wx/thread.h"
+#include <wx/string.h>
+#include <wx/thread.h>
 
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
 
 
-#include "libs/common/MuleDebug.h"
-#include "libs/common/StringFunctions.h"
+#include <libs/common/MuleDebug.h>
+#include <libs/common/StringFunctions.h>
 
 
 class CUPnPException : public CMuleException
