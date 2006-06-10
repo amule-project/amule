@@ -13,7 +13,7 @@
 
 #include "wx/defs.h"
 #include "wx/object.h"
-#ifdef __WXMAC__
+#if defined(__WXMAC__) || defined(__WIN32__)
 #include "wx/imaglist.h"
 #else
 #include "wx/generic/imaglist.h"
