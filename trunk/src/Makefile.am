@@ -103,7 +103,7 @@ libmuleappgui_a_SOURCES = \
 	CommentDialogLst.cpp \
 	DirectoryTreeCtrl.cpp \
 	EditServerListDlg.cpp \
-	listctrl.cpp \
+	extern/wxWidgets/listctrl.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
@@ -218,7 +218,7 @@ common_flags = -I$(srcdir)/libs -Ilibs
 # Extras 
 
 if USE_EMBEDDED_CRYPTO
-libmuleappcommon_a_SOURCES += CryptoPP.cpp
+libmuleappcommon_a_SOURCES += extern/cryptopp/CryptoPP.cpp
 endif
 
 if NEED_RC
@@ -306,7 +306,6 @@ noinst_HEADERS = ThreadScheduler.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
-		CryptoPP.h \
 		CryptoPP_Inc.h \
 		DirectoryTreeCtrl.h \
 		DownloadListCtrl.h \
@@ -333,8 +332,6 @@ noinst_HEADERS = ThreadScheduler.h \
 		KadDlg.h \
 		KnownFile.h \
 		KnownFileList.h \
-		listctrl.h \
-		extern/listctrl.cvs.h \
 		ListenSocket.h \
 		Logger.h \
 		MD4Hash.h \

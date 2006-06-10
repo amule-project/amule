@@ -27,7 +27,7 @@
 #define CRYPTOPP_INC_H
 
 #ifdef USE_EMBEDDED_CRYPTO
-	#include "CryptoPP.h"
+	#include "extern/cryptopp/CryptoPP.h"
 #else
 	#ifdef __CRYPTO_DEBIAN_GENTOO__
 		#include <crypto++/config.h>
