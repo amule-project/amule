@@ -1285,7 +1285,7 @@ msgstr "Connecté à %s (%s:%i)"
 #: src/ServerConnect.cpp:235 src/amuleDlg.cpp:809
 #, c-format
 msgid "Connection established on: %s"
-msgstr "Connexion établit sur: %s"
+msgstr "Connexion établie sur: %s"
 
 #: src/ServerConnect.cpp:306
 msgid "Fatal Error while trying to connect. Internet connection might be down"
