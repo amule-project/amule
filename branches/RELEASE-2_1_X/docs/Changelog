@@ -1,3 +1,15 @@
+Version 2.1.4 - The "So what? If it's new, it has to be good" version
+----------
+2006-06-11
+
+	Kry:
+		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
+
+	Special Thanks to:
+		* Mr Tyler Durden, for his words of wisdom.
+
+--------------------------------------------------------------------------------
+
 Version 2.1.3 - The "We missed the 6/6/6 devil release and we're very sad" version
 ----------
 2006-06-11
