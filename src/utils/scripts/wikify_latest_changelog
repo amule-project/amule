@@ -31,7 +31,7 @@ else
   sed -i -r "s/\t+(\*? .+)$/\1/g" $CHANGELOG
   while test x"`grep -E '^\s+.+$' $CHANGELOG`" != x""; do 
     sed -i -r "N 
-		s/^(\*?.*)\n\s+([^\*]+)$/\1\2/g " $CHANGELOG;
+		s/^(\*?.*)\n\s+([^\*]+)$/\1 \2/g " $CHANGELOG;
   done
   echo "$CHANGELOG created."
 fi
