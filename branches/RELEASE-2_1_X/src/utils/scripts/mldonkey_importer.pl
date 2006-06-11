@@ -108,7 +108,7 @@ sub read_file_info {
 			$part_file = $1;
 			print "Part file to import: $part_file\n";
 		}
-		if ($line =~ /^\s*file_md4\s*=\s*\"(([A-Z]|[0-9])+)\"\s*$/) {
+		if ($line =~ /^\s*file_md4\s*=\s*\"?(([A-Z]|[0-9])+)\"?\s*$/) {
 			$md4_hash = $1;
 			print "File hash: $md4_hash\n";
 		}
@@ -173,7 +173,8 @@ sub read_file_info {
 			$line = <INFO>;
 		}
 	}
-	if ($done) {
+
+	if ($done eq "true") {
 		print "File import result: false\n";
 	} else {
 		if ($file_name && $file_size && $md4_hash && $part_file) {
