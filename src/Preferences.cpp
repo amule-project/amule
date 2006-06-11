@@ -1004,6 +1004,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back(	 MkCfg_Int( wxT("/eMule/PermissionsDirs"),	s_perms_dirs, 0750 ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Address"),			s_Addr,	wxEmptyString ) );
 
+	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
+
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  
