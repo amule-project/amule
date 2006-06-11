@@ -687,9 +687,6 @@ public:
 			}
 		}
 
-		// restore original locale
-		theApp.m_locale.Init(theApp.m_locale.GetLanguage(), wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING);
-
 		return Cfg_Tmpl<int>::TransferToWindow();
 	}
 
