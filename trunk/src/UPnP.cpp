@@ -503,31 +503,58 @@ const wxString CUPnPService::Execute(
 	const std::vector<CUPnPArgumentValue> &ArgValue) const
 {
 	wxString msg;
-	// Check for correct Argument/Value pairs
+	// Check for correct action name
 	ActionList::const_iterator itAction =
-		(m_SCPD->GetActionList()).find(ActionName);
+		m_SCPD->GetActionList().find(ActionName);
 	if (itAction == m_SCPD->GetActionList().end()) {
-		msg = wxT("Invalid action name (");
-		msg << ActionName << wxT(") for service ") <<
-			GetServiceId() << wxT(".");
+		msg << wxT("Invalid action name '") << ActionName <<
+			wxT("' for service '") << GetServiceId() << wxT("'.");
 		AddDebugLogLineM(false, logUPnP, msg);
 		return wxEmptyString;
 	}
-	const CUPnPAction &action = *((*itAction).second);
+	// Check for correct Argument/Value pairs
+	const CUPnPAction &action = *(itAction->second);
 	for (unsigned int i = 0; i < ArgValue.size(); ++i) {
 		ArgumentList::const_iterator itArg =
 			action.GetArgumentList().find(ArgValue[i].GetArgument());
 		if (itArg == action.GetArgumentList().end()) {
-			msg = wxT("Invalid argument name (");
-			msg << ArgValue[i].GetArgument() <<
-				wxT(") for action ") <<
-				action.GetName() <<
-				wxT(" for service ") <<
-				GetServiceId() << wxT(".");
+			msg << wxT("Invalid argument name '") << ArgValue[i].GetArgument() <<
+				wxT("' for action '") << action.GetName() <<
+				wxT("' for service '") << GetServiceId() << wxT("'.");
 			AddDebugLogLineM(false, logUPnP, msg);
 			return wxEmptyString;
 		}
+		const CUPnPArgument &argument = *(itArg->second);
+		const wxString relatedStateVariableName =
+			argument.GetRelatedStateVariable();
+		if (!relatedStateVariableName.IsEmpty()) {
+			ServiceStateTable::const_iterator itSVT =
+				m_SCPD->GetServiceStateTable().
+				find(relatedStateVariableName);
+			if (itSVT == m_SCPD->GetServiceStateTable().end()) {
+				msg << wxT("Inconsistent Service State Table, did not find '") <<
+					relatedStateVariableName <<
+					wxT("' for argument '") << argument.GetName() <<
+					wxT("' for action '") << action.GetName() <<
+					wxT("' for service '") << GetServiceId() << wxT("'.");
+				AddDebugLogLineM(false, logUPnP, msg);
+				return wxEmptyString;
+			}
+			const CUPnPStateVariable &stateVariable = *(itSVT->second);
+			if (	!stateVariable.GetAllowedValueList().empty() &&
+				stateVariable.GetAllowedValueList().find(ArgValue[i].GetValue()) ==
+					stateVariable.GetAllowedValueList().end()) {
+				msg << wxT("Value not allowed '") << ArgValue[i].GetValue() <<
+					wxT("' for state variable '") << relatedStateVariableName <<
+					wxT("' for argument '") << argument.GetName() <<
+					wxT("' for action '") << action.GetName() <<
+					wxT("' for service '") << GetServiceId() << wxT("'.");
+				AddDebugLogLineM(false, logUPnP, msg);
+				return wxEmptyString;
+			}
+		}
 	}
+	// Everything is ok, make the action
 	return wxEmptyString;
 }
 
