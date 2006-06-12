@@ -205,6 +205,48 @@ CXML_List<T, XML_ELEMENT_NAME, XML_LIST_NAME>::~CXML_List()
 	}
 }
 
+#ifdef UPNP_C
+	char s_argument[] = "argument";
+	char s_argumentList[] = "argumentList";
+	char s_action[] = "action";
+	char s_actionList[] = "actionList";
+	char s_allowedValue[] = "allowedValue";
+	char s_allowedValueList[] = "allowedValueList";
+	char s_stateVariable[] = "stateVariable";
+	char s_serviceStateTable[] = "serviceStateTable";
+	char s_service[] = "service";
+	char s_serviceList[] = "serviceList";
+	char s_device[] = "device";
+	char s_deviceList[] = "deviceList";
+#else // UPNP_C
+	extern char s_argument[];
+	extern char s_argumentList[];
+	extern char s_action[];
+	extern char s_actionList[];
+	extern char s_allowedValue[];
+	extern char s_allowedValueList[];
+	extern char s_stateVariable[];
+	extern char s_serviceStateTable[];
+	extern char s_service[];
+	extern char s_serviceList[];
+	extern char s_device[];
+	extern char s_deviceList[];
+#endif // UPNP_C
+
+
+class CUPnPArgument;
+typedef CXML_List<CUPnPArgument, s_argument, s_argumentList> ArgumentList;
+class CUPnPAction;
+typedef CXML_List<CUPnPAction, s_action, s_actionList> ActionList;
+class CUPnPStateVariable;
+typedef CXML_List<CUPnPStateVariable, s_stateVariable, s_serviceStateTable> ServiceStateTable;
+class CUPnPAllowedValue;
+typedef CXML_List<CUPnPAllowedValue, s_allowedValue, s_allowedValueList> AllowedValueList;
+class CUPnPService;
+typedef CXML_List<CUPnPService, s_service, s_serviceList> ServiceList;
+class CUPnPDevice;
+typedef CXML_List<CUPnPDevice, s_device, s_deviceList> DeviceList;
+
 
 class CUPnPArgument
 {
@@ -232,9 +274,7 @@ public:
 class CUPnPAction
 {
 private:
-	static char s_argument[];
-	static char s_argumentList[];
-	CXML_List<CUPnPArgument, s_argument, s_argumentList> m_ArgumentList;
+	ArgumentList m_ArgumentList;
 	const wxString m_name;
 	
 public:
@@ -245,6 +285,7 @@ public:
 	~CUPnPAction() {}
 	const wxString &GetName() const		{ return m_name; }
 	const wxString &GetKey() const		{ return m_name; }
+	const ArgumentList &GetArgumentList() const { return m_ArgumentList; }
 };
 
 
@@ -267,9 +308,7 @@ public:
 class CUPnPStateVariable
 {
 private:
-	static char s_allowedValue[];
-	static char s_allowedValueList[];
-	CXML_List<CUPnPAllowedValue, s_allowedValue, s_allowedValueList> m_AllowedValueList;
+	AllowedValueList m_AllowedValueList;
 	const wxString m_name;
 	const wxString m_dataType;
 	const wxString m_defaultValue;
@@ -285,20 +324,15 @@ public:
 	const wxString &GetDataType() const	{ return m_dataType; }
 	const wxString &GetDefaultValue() const	{ return m_defaultValue; }
 	const wxString &GetKey() const		{ return m_name; }
+	const AllowedValueList &GetAllowedValueList() const { return m_AllowedValueList; }
 };
 
 
 class CUPnPSCPD
 {
 private:
-	static char s_action[];
-	static char s_actionList[];
-	CXML_List<CUPnPAction, s_action, s_actionList> m_ActionList;
-	
-	static char s_stateVariable[];
-	static char s_serviceStateTable[];
-	CXML_List<CUPnPStateVariable, s_stateVariable, s_serviceStateTable> m_ServiceStateTable;
-	
+	ActionList m_ActionList;
+	ServiceStateTable m_ServiceStateTable;
 	const wxString m_SCPDURL;
 	
 public:
@@ -307,6 +341,8 @@ public:
 		IXML_Element *scpd,
 		const wxString &SCPDURL);
 	~CUPnPSCPD() {}
+	const ActionList &GetActionList() const	{ return m_ActionList; }
+	const ServiceStateTable &GetServiceStateTable() const	{ return m_ServiceStateTable; }
 };
 
 
@@ -362,7 +398,7 @@ public:
 	bool IsSubscribed() const		{ return m_SCPD != NULL; }
 	void SetSCPD(CUPnPSCPD *SCPD)		{ m_SCPD = SCPD; }
 	const wxString Execute(
-		const wxString &ServiceName,
+		const wxString &ActionName,
 		const std::vector<CUPnPArgumentValue> &ArgValue) const;
 };
 
@@ -371,13 +407,8 @@ class CUPnPDevice
 {
 private:
 	// Please, lock these lists before use
-	static char s_device[];
-	static char s_deviceList[];
-	CXML_List<CUPnPDevice, s_device, s_deviceList> m_DeviceList;
-	
-	static char s_service[];
-	static char s_serviceList[];
-	CXML_List<CUPnPService, s_service, s_serviceList> m_ServiceList;
+	DeviceList m_DeviceList;
+	ServiceList m_ServiceList;
 	
 	const wxString m_deviceType;
 	const wxString m_friendlyName;
@@ -465,7 +496,11 @@ private:
 	// Callback function
 	static int Callback(Upnp_EventType EventType, void* Event, void* Cookie);
 
-	void AddRootDevice(IXML_Element *rootDevice, const wxString &urlBase, const char *location, int expires);
+	void AddRootDevice(
+		IXML_Element *rootDevice,
+		const wxString &urlBase,
+		const char *location,
+		int expires);
 	void RemoveRootDevice(const char *udn);
 };
 
