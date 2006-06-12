@@ -330,10 +330,6 @@ m_relatedStateVariable(upnpLib.Element_GetChildValueByTag(argument, "relatedStat
 }
 
 
-char CUPnPAction::s_argument[] = "argument";
-char CUPnPAction::s_argumentList[] = "argumentList";
-
-
 CUPnPAction::CUPnPAction(
 	CUPnPLib &upnpLib,
 	IXML_Element *action,
@@ -363,10 +359,6 @@ m_allowedValue(upnpLib.Element_GetTextValue(allowedValue))
 }
 
 
-char CUPnPStateVariable::s_allowedValue[] = "allowedValue";
-char CUPnPStateVariable::s_allowedValueList[] = "allowedValueList";
-
-
 CUPnPStateVariable::CUPnPStateVariable(
 	CUPnPLib &upnpLib,
 	IXML_Element *stateVariable,
@@ -386,12 +378,6 @@ m_sendEvents  (upnpLib.Element_GetAttributeByTag (stateVariable, "sendEvents"))
 		wxT("\n        sendEvents: ")   << m_sendEvents;
 	AddDebugLogLineM(false, logUPnP, msg);
 }
-
-
-char CUPnPSCPD::s_action[] = "action";
-char CUPnPSCPD::s_actionList[] = "actionList";
-char CUPnPSCPD::s_stateVariable[] = "stateVariable";
-char CUPnPSCPD::s_serviceStateTable[] = "serviceStateTable";
 
 
 CUPnPSCPD::CUPnPSCPD(
@@ -513,17 +499,37 @@ CUPnPService::~CUPnPService()
 
 
 const wxString CUPnPService::Execute(
-	const wxString &ServiceName,
+	const wxString &ActionName,
 	const std::vector<CUPnPArgumentValue> &ArgValue) const
 {
+	wxString msg;
+	// Check for correct Argument/Value pairs
+	ActionList::const_iterator itAction =
+		(m_SCPD->GetActionList()).find(ActionName);
+	if (itAction == m_SCPD->GetActionList().end()) {
+		msg = wxT("Invalid action name (");
+		msg << ActionName << wxT(") for service ") <<
+			GetServiceId() << wxT(".");
+		AddDebugLogLineM(false, logUPnP, msg);
+		return wxEmptyString;
+	}
+	const CUPnPAction &action = *((*itAction).second);
+	for (unsigned int i = 0; i < ArgValue.size(); ++i) {
+		ArgumentList::const_iterator itArg =
+			action.GetArgumentList().find(ArgValue[i].GetArgument());
+		if (itArg == action.GetArgumentList().end()) {
+			msg = wxT("Invalid argument name (");
+			msg << ArgValue[i].GetArgument() <<
+				wxT(") for action ") <<
+				action.GetName() <<
+				wxT(" for service ") <<
+				GetServiceId() << wxT(".");
+			AddDebugLogLineM(false, logUPnP, msg);
+			return wxEmptyString;
+		}
+	}
 	return wxEmptyString;
 }
-
-
-char CUPnPDevice::s_device[] = "device";
-char CUPnPDevice::s_deviceList[] = "deviceList";
-char CUPnPDevice::s_service[] = "service";
-char CUPnPDevice::s_serviceList[] = "serviceList";
 
 
 CUPnPDevice::CUPnPDevice(
