@@ -42,6 +42,17 @@
 #include "amuleIPV4Address.h"			// For amuleIPV4Address
 
 
+#ifdef __GNUC__
+	#if __GNUC__ >= 4
+		#define REINTERPRET_CAST(x)	reinterpret_cast<x>
+	#endif
+#endif
+#ifndef REINTERPRET_CAST
+	// Let's hope that function pointers are equal in size to data pointers
+	#define REINTERPRET_CAST(x)	(x)
+#endif
+
+
 CDynamicLibHandle::CDynamicLibHandle(const char *libname)
 :
 m_libname(char2unicode(libname)),
@@ -140,76 +151,76 @@ m_LibUPnPHandle("libupnp.so")
 {
 	// IXML
 	m_ixmlNode_getFirstChild =
-		reinterpret_cast<IXML_Node *(*)(IXML_Node *)>
+		REINTERPRET_CAST(IXML_Node *(*)(IXML_Node *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[0]));
 	m_ixmlNode_getNextSibling =
-		reinterpret_cast<IXML_Node *(*)(IXML_Node *)>
+		REINTERPRET_CAST(IXML_Node *(*)(IXML_Node *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[1]));
 	m_ixmlNode_getNodeName =
-		reinterpret_cast<const DOMString (*)(IXML_Node *)>
+		REINTERPRET_CAST(const DOMString (*)(IXML_Node *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[2]));
 	m_ixmlNode_getNodeValue =
-		reinterpret_cast<const DOMString (*)(IXML_Node *)>
+		REINTERPRET_CAST(const DOMString (*)(IXML_Node *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[3]));
 	m_ixmlNode_getAttributes =
-		reinterpret_cast<IXML_NamedNodeMap *(*)(IXML_Node *)>
+		REINTERPRET_CAST(IXML_NamedNodeMap *(*)(IXML_Node *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[4]));
 	m_ixmlDocument_free =
-		reinterpret_cast<void (*)(IXML_Document *)>
+		REINTERPRET_CAST(void (*)(IXML_Document *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[5]));
 	m_ixmlNamedNodeMap_getNamedItem =
-		reinterpret_cast<IXML_Node *(*)(IXML_NamedNodeMap *, const DOMString)>
+		REINTERPRET_CAST(IXML_Node *(*)(IXML_NamedNodeMap *, const DOMString))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[6]));
 	m_ixmlNamedNodeMap_free =
-		reinterpret_cast<void (*)(IXML_NamedNodeMap *)>
+		REINTERPRET_CAST(void (*)(IXML_NamedNodeMap *))
 		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[7]));
 	
 	// UPnP
 	m_UpnpGetErrorMessage =
-		reinterpret_cast<const char *(*)(int)>
+		REINTERPRET_CAST(const char *(*)(int))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[0]));
 	m_UpnpInit =
-		reinterpret_cast<int (*)(const char *, int)>
+		REINTERPRET_CAST(int (*)(const char *, int))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[1]));
 	m_UpnpFinish =
-		reinterpret_cast<void (*)()>
+		REINTERPRET_CAST(void (*)())
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[2]));
 	m_UpnpGetServerPort =
-		reinterpret_cast<unsigned short (*)()>
+		REINTERPRET_CAST(unsigned short (*)())
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[3]));
 	m_UpnpGetServerIpAddress =
-		reinterpret_cast<char * (*)()>
+		REINTERPRET_CAST(char * (*)())
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[4]));
 	m_UpnpRegisterClient =
-		reinterpret_cast<int (*)(Upnp_FunPtr, const void *, UpnpClient_Handle *)>
+		REINTERPRET_CAST(int (*)(Upnp_FunPtr, const void *, UpnpClient_Handle *))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[5]));
 	m_UpnpUnRegisterClient =
-		reinterpret_cast<int (*)(UpnpClient_Handle)>
+		REINTERPRET_CAST(int (*)(UpnpClient_Handle))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[6]));
 	m_UpnpSearchAsync =
-		reinterpret_cast<int (*)(UpnpClient_Handle, int, const char *, const void *)>
+		REINTERPRET_CAST(int (*)(UpnpClient_Handle, int, const char *, const void *))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[7]));
 	m_UpnpSubscribe =
-		reinterpret_cast<int (*)(UpnpClient_Handle, const char *, int *, Upnp_SID)>
+		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, int *, Upnp_SID))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[8]));
 	m_UpnpUnSubscribe =
-		reinterpret_cast<int (*)(UpnpClient_Handle, Upnp_SID)>
+		REINTERPRET_CAST(int (*)(UpnpClient_Handle, Upnp_SID))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[9]));
 	m_UpnpMakeAction =
-		reinterpret_cast<IXML_Document *(*)(char *, char *, int, char *, ...)>
+		REINTERPRET_CAST(IXML_Document *(*)(char *, char *, int, char *, ...))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[10]));
 	m_UpnpAddToAction =
-		reinterpret_cast<int (*)(IXML_Document **, char *, char *, char *, char *)>
+		REINTERPRET_CAST(int (*)(IXML_Document **, char *, char *, char *, char *))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[11]));
 	m_UpnpSendAction =
-		reinterpret_cast<int (*)(UpnpClient_Handle, const char *,
-			const char *, const char *, IXML_Document *, IXML_Document **)>
+		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *,
+			const char *, const char *, IXML_Document *, IXML_Document **))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[12]));
 	m_UpnpDownloadXmlDoc =
-		reinterpret_cast<int (*)(const char *, IXML_Document **)>
+		REINTERPRET_CAST(int (*)(const char *, IXML_Document **))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[13]));
 	m_UpnpResolveURL =
-		reinterpret_cast<int (*)(const char *, const char *, char *)>
+		REINTERPRET_CAST(int (*)(const char *, const char *, char *))
 		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[14]));
 }
 
