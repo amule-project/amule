@@ -1,0 +1,395 @@
+# This file is part of the aMule project.
+#
+# Copyright (c) 2003-2006 aMule Project ( admin@amule.org / http://www.amule.org )
+# Copyright (c) 2006 Dévai Tamás aka GonoszTopi
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+#
+
+# The sed script is tested with GNU sed versions 3.02, 4.1.2
+# The generated Makefiles are tested with GNU make versions 3.79.1, 3.80
+
+
+# Denoising levels:
+#
+#	0 - do nothing, handled outside the scope of this script.
+#
+#	1 - only strip Makefiles from comments and empty lines, this should
+#	theoretically speed up 'make', although not as much that you could
+#	notice it.
+#
+#	2 - leave directory change messages from make, but silence normal
+#	command printing. No echo denoising at this level.
+#
+#	3 - silence all messages from make, and partial echo denoising.
+#
+#	4 - full denoising:
+#		* silence all messages from make
+#		* full echo denoising
+#		* compiler warning suppression
+
+
+# Syntax of this file:
+#
+#	This file gets preprocessed, all comments and empty lines removed. The
+#	preprocessor understands '#if ', '#else' and '#endif' commands, as long
+#	as they start on the first character on the line. No whitespace is
+#	allowed before the commands. Note that the space character after #if is
+#	part of the command, if it is replaced by a tab then it won't make a
+#	command anymore!
+#
+# #if truth testing:
+#
+#	#if currently understands only one keyword: 'level', followed by a number
+#	- the current denoising level. There may be any arbitrary characters
+#	between the keyword and the value - i.e. 'levels 2,3' will also match
+#	when 'level 3' matches.
+#
+# #if preprocessor commands may be nested for at least 4000 levels deep :-)
+#
+# The preprocessor script can be found at the end of this file.
+
+
+# ----- now the code -----
+
+# suppress messages from make
+
+#if levels 3,4
+1 i\
+MAKEFLAGS=-s --no-print-directory
+#endif
+
+#if level 2
+1 i\
+MAKEFLAGS=-w -s
+#endif
+
+
+#if levels 2,3,4
+:0
+#endif
+
+
+# delete comments
+/^#/ {
+	d
+}
+
+# delete empty lines
+/^[ 	]*$/ {
+	d
+}
+
+
+# rewrite compiler flags
+#if level 4
+/=/ {
+	/^[^=]*CFLAGS/ b 8
+	/^[^=]*CPPFLAGS/ b 8
+	/^[^=]*CXXFLAGS/ b 8
+	b 9
+	:8
+	# save -Wl, and -Wa, flags, they're for linker and assember respectively
+	s/ -Wl,/ -+,/g
+	s/ -Wa,/ -!,/g
+
+	# delete all -W flags
+	/ -W/ s/ -W[^ ]*//g
+
+	# insert -w flag, if it isn't already in the flags
+	/ -w/! s/=/= -w/
+
+	# restore -Wl, and -Wa, flags
+	s/ -+,/ -Wl,/g
+	s/ -!,/ -Wa,/g
+	:9
+}
+#endif
+	
+
+# rewrite rules
+#if levels 2,3,4
+# all rules contain ':' and start at the very beginning of the line
+/^[^ 	].*:/ {
+	# no rules contain '=', so just skip these lines
+	/=/ b
+
+	# save rule target in secondary buffer
+	h
+	s/\([^:][^:]*\):.*/\1/
+	x
+
+	# skip continuation lines
+	:1
+	/\\$/ {
+		n
+		b 1
+	}
+
+	# process rule commands
+	:2
+	n
+	:3
+
+	# delete comments inside rules
+	/^#/ {
+		s/.*//
+		N
+		s/\n//g
+		b 3
+	}
+
+	# if the current line is empty or not anymore a command, parse as usual
+	/^$/ b 0
+	/^[^	]/ b 0
+
+	x
+	/^\n/ b 5
+
+	# skipping install-strip target, since it will trigger the echo-denoiser,
+	# and would silence the whole installation, which is abolutely not wanted
+	/^install-strip$/ {
+		s/.*//
+		x
+		b 0
+	}
+
+	# do some output based on rule target
+	/\.o$/ {
+		i\
+	echo "Compiling $(<F)"
+		b 4
+	}
+	/\.obj$/ {
+		i\
+	echo "Compiling $(<F)"
+		b 4
+	}
+	/\.a$/ {
+		i\
+	echo "Building $(@F)"
+		b 4
+	}
+	/$(EXEEXT)$/ {
+		i\
+	echo "Linking $(@F)"
+		b 4
+	}
+	/^\.po\.g*mo$/ {
+		i\
+	echo "Generating translations for $(<F:.po=)"
+		b 4
+	}
+	/\.cpp$/ {
+		i\
+	echo "Generating $(@F)"
+		b 4
+	}
+	/\.$(OBJEXT)$/ {
+		i\
+	echo "Compiling $(<F)"
+		b 4
+	}
+	:4
+	# indicate that we already did the echo thingie
+	#
+	# s/^/\n/ works with newer sed versions like 4.1.2,
+	# but unfortunately msys uses sed 3.02, which does not
+	# translate \n to a newline in the replacement string.
+	#s/^/\n/
+	#
+	# Compatible method: include a newline literally
+	s/^/\
+/
+	:5
+
+	# If --enable-maintainer-mode, Makefiles may be automatically regenerated.
+	# Denoise new Makefile aswell.
+	/Makefile$/ {
+		x
+		/echo/! {
+			/config\.status[ 	 ][ 	]*[^ 	][^ 	]*/ s/\(config\.status[ 	 ][ 	]*[^ 	][^ 	]*[^;\&\|]*\)\(.*\)/\1 denoiser\2/
+		}
+		x
+	}
+
+	x
+
+#if levels 3,4
+	# Denoise echo commands (assuming that no echo command contains the ';' character)
+	#
+	# Denoising works by redirecting output to /dev/null, which is slower, though safer
+	# than removing the command.
+	/^[ 	]*@*echo/ {
+		x
+		/maintainer-clean-generic/ b 6a
+#if level 3
+		/maintainer/ b 6a
+		/$(RECURSIVE_TARGETS)/ b 6a
+		/recursive/ b 6a
+#endif
+		b 6b
+		:6a
+		x
+		b 6
+		:6b
+		x
+		G
+		h
+		s/\(echo[^;][^;]*\).*/\1/
+		# do not redirect if it's already redirected
+		/>/ {
+			g
+			s/[^\n]*//
+			x
+			s/\n.*//
+			b 6
+		}
+		g
+		s/[^\n]*//
+		x
+		s/\n.*//
+		s/\(.*echo[^;][^;]*\)\(.*\)/\1>\/dev\/null\2/
+		:6
+	}
+#endif (levels 3,4)
+	
+	# mkinstalldirs will also echo its job, sink its output too
+	/$(mkinstalldirs)/ {
+		G
+		h
+		s/\($(mkinstalldirs)[^;][^;]*\).*/\1/
+		# do not redirect if it's already redirected
+		/>/ {
+			g
+			s/[^\n]*//
+			x
+			s/\n.*//
+			b 7
+		}
+		g
+		s/[^\n]*//
+		x
+		s/\n.*//
+		s/\(.*$(mkinstalldirs)[^;][^;]*\)\(.*\)/\1>\/dev\/null\2/
+		:7
+	}
+
+#if level 4
+	# the above applies to msgfmt, but here it's enough to remove the '--statistics' flag
+	/$(GMSGFMT)/ s/--statistics//
+#endif
+
+	# the following two ruleset must be the last two in this block and in this order!
+
+#if levels 3,4
+	# uninstallation
+	/^[ 	]*rm -f[^;]*$(DESTDIR)/ {
+		x
+		/uninstall/ {
+			H
+			g
+			s/.*rm -f[^;]*$(DESTDIR)\([^;" ][^;" ]*\).*/	echo "Uninstalling \1"; \\/
+			P
+			s/[^\n]*//
+			x
+			s/\n.*//
+			# skip checking for install: 1) trivially false 2) uninstall would match /install/
+			b 2
+		}
+		x
+	}
+
+	# installation
+	/^[ 	]*$([^)]*INSTALL/ {
+		x
+		/install/ {
+			H
+			g
+			s/.*$(DESTDIR)\([^;" ][^;" ]*\).*/	echo "Installing \1"; \\/
+			P
+			s/[^\n]*//
+			x
+			s/\n.*//
+			b 2
+		}
+		x
+	}
+#endif (levels 3,4)
+
+	b 2
+}
+#endif (levels 2,3,4)
+
+
+# ---- the preprocessor ----
+
+## default processing mode is 'true'
+#1 {
+#	x
+#	s/.*/1/
+#	x
+#}
+#
+## delete empty lines
+#/^[ 	]*$/ d;
+#
+## look for "#if "
+#/^#if / {
+#	/level.*$level/ {
+#		x
+#		s/^/1/
+#		x
+#		b0
+#	}
+#	x
+#	s/^/0/
+#	x
+#	:0
+#	d
+#}
+#
+## process "#else"
+#/^#else/ {
+#	x
+#	/^1/ {
+#		s/1/0/
+#		b1
+#	}
+#	s/0/1/
+#	:1
+#	x
+#	d
+#}
+#
+## check for "#endif"
+#/^#endif/ {
+#	x
+#	s/.//
+#	x
+#	d
+#}
+#
+## delete comments
+#/^[ 	]*#/ d
+#
+## process code lines according to #if/#else/#endif
+#x
+#/^1/ {
+#	x
+#	b
+#}
+#x
+#d
