@@ -2,6 +2,10 @@ Version 2.1.4 - The "So what? If it's new, it has to be good" version
 ----------
 2006-06-11
 
+	GonoszTopi:
+		* Sed denoiser - removes excessive messages from compilation - 
+		Thanks to Vollstrecker for the idea and discussions.
+
 	Kry:
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 
