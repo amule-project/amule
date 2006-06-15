@@ -115,6 +115,11 @@ AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for 
 AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
 		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
 
+AC_ARG_WITH(denoise-level, [  --with-denoise-level=<level>     Specifies denoising level (0-4)
+                                   4=Suppress all normal output
+                                   0=Do nothing    (for more information 
+                                   see src/utils/scripts/denoiser.rules)], denoiselevel="$withval", denoiselevel=no)
+
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
 # to avoid losing to much time
@@ -455,6 +460,33 @@ yes)
 *)
 	HAVE_GETTEXT="no"
 esac
+
+dnl
+dnl Denoiser
+dnl
+AC_MSG_CHECKING([denoising level])
+if test "$denoiselevel" = "no"; then
+	denoiselevel=5
+fi
+if test $denoiselevel -gt 4; then
+	if test "${cvsdate:+set}" = "set"; then
+		denoiselevel=0
+	else
+		denoiselevel=4
+	fi
+fi
+AC_MSG_RESULT($denoiselevel)
+
+AC_CONFIG_COMMANDS(denoiser, [	if test $level -gt 0; then
+		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
+		sed -e "1{x;s/.*/1/;x;};/^[[ 	]]*\$/d;/^#if /{/level.*$level/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[ 	]*#/d;x;/^1/{x;b;};x;d" \
+			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
+		for i in `find . -name 'Makefile' -print`; do
+			if test -n "`head -n 1 $i | grep '^#'`"; then
+				sed -f src/utils/scripts/denoiser.sed $i > $i.tmp && mv $i.tmp $i
+			fi
+		done
+	fi], [level=$denoiselevel])
 
 
 AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
