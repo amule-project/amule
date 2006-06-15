@@ -28,7 +28,6 @@
 
 #include <wx/string.h>		// Needed for wxString
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
-#include <wx/thread.h>
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 
@@ -390,6 +389,10 @@ int StrLang2wx(const wxString& language);
 wxString wxLang2Str(const int lang);
 
 
+#if wxUSE_THREADS
+
+#include <wx/thread.h>
+
 /**
  * Automatically unlocks a mutex on construction and locks it on destruction.
  *
@@ -433,6 +436,7 @@ private:
     bool     m_isOk;
     wxMutex& m_mutex;
 };
+#endif /* wxUSE_THREADS */
 
 
 #endif // OTHERFUNCTIONS_H

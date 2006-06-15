@@ -36,7 +36,6 @@
 
 #include <wx/socket.h>		// Needed for wxSocketClient
 #include <wx/string.h>		// Needed for wxString
-#include <wx/thread.h>		// Needed for MT-Safe API.
 
 
 #include "Types.h"
