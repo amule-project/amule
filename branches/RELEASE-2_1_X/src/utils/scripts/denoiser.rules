@@ -101,9 +101,10 @@ MAKEFLAGS=-w -s
 	/^[^=]*CXXFLAGS/ b 8
 	b 9
 	:8
-	# save -Wl, and -Wa, flags, they're for linker and assember respectively
-	s/ -Wl,/ -+,/g
-	s/ -Wa,/ -!,/g
+	# save -Wl, -Wa, and -Wp, flags, they're for linker, assember and preprocessor respectively
+	s/ -Wl,/ -%l,/g
+	s/ -Wa,/ -%a,/g
+	s/ -Wp,/ -%p,/g
 
 	# delete all -W flags
 	/ -W/ s/ -W[^ ]*//g
@@ -111,13 +112,14 @@ MAKEFLAGS=-w -s
 	# insert -w flag, if it isn't already in the flags
 	/ -w/! s/=/= -w/
 
-	# restore -Wl, and -Wa, flags
-	s/ -+,/ -Wl,/g
-	s/ -!,/ -Wa,/g
+	# restore -Wl, -Wa, and -Wp, flags
+	s/ -%l,/ -Wl,/g
+	s/ -%a,/ -Wa,/g
+	s/ -%p,/ -Wp,/g
 	:9
 }
 #endif
-	
+
 
 # rewrite rules
 #if levels 2,3,4
