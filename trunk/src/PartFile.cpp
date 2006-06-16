@@ -3948,4 +3948,25 @@ uint16 CPartFile::GetMaxSourcePerFileUDP() const
 	return temp;
 }
 
+#define DROP_FACTOR 2
+
+CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) {
+	printf("Start slower source calculation\n");
+	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
+		CUpDownClient* cur_src = *it++;
+		if ((cur_src->GetDownloadState() == DS_DOWNLOADING) && (cur_src != caller)) {
+			uint32 factored_bytes_per_second = (cur_src->GetKBpsDown() * 1024) * DROP_FACTOR;
+			if ( factored_bytes_per_second< speed) {
+				printf("Selecting source %p to drop: %d < %d\n", cur_src, factored_bytes_per_second, speed);
+				printf("End slower source calculation\n");
+				return cur_src;
+			} else {
+				printf("Not selecting source %p to drop: %d > %d\n", cur_src, factored_bytes_per_second, speed);
+			}
+		}
+	}	
+	printf("End slower source calculation\n");
+	return NULL;
+}
+
 #endif
