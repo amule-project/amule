@@ -390,6 +390,10 @@ public:
 	// Kry -Sources seeds
 	void SaveSourceSeeds();
 	void LoadSourceSeeds();
+	
+	// Dropping slow sources
+	
+	CUpDownClient* GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) ;
 
 private:
 	/* downloading sources list */

@@ -623,16 +623,59 @@ void CUpDownClient::SendBlockRequests()
 	
 	
 	if (m_PendingBlocks_list.empty()) {
-		if (!GetSentCancelTransfer()){
+
+		CUpDownClient* slower_client = NULL;
+		
+		if (thePrefs::GetDropSlowSources()) {		
+			printf("Checking slower client from client %p\n",this);
+			slower_client = m_reqfile->GetSlowerDownloadingClient(m_lastaverage, this);
+		}
+		
+		if (slower_client == NULL) {
+			slower_client = this;
+		}
+
+		if (!slower_client->GetSentCancelTransfer()) {
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
-			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER to ") + GetFullIP() );
-			SendPacket(packet,true,true);
-			SetSentCancelTransfer(1);
+			if (slower_client != this) {
+				printf("Dropped client %p to allow client %p to download\n",slower_client, this);
+			}
+			slower_client->ClearDownloadBlockRequests();
+			slower_client->SendPacket(packet,true,true);
+			slower_client->SetSentCancelTransfer(1);			
 		}
-		SetDownloadState(DS_NONEEDEDPARTS);
-		#warning Kry - Would be nice to swap A4AF here.
-		return;
+		
+		slower_client->SetDownloadState(DS_NONEEDEDPARTS);		
+		
+		if (slower_client != this) {
+			// Re-request freed blocks.
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER (faster source eager to transfer) to ") + slower_client->GetFullIP() );
+			wxASSERT(m_DownloadBlocks_list.empty());
+			wxASSERT(m_PendingBlocks_list.empty());
+			uint16 count = m_MaxBlockRequests;
+			Requested_Block_Struct* toadd[count];
+			if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
+				for (int i = 0; i != count; i++) {
+					Pending_Block_Struct* pblock = new Pending_Block_Struct;
+					pblock->block = toadd[i];
+					pblock->zStream = NULL;
+					pblock->totalUnzipped = 0;
+					pblock->fZStreamError = 0;
+					pblock->fRecovered = 0;
+					m_PendingBlocks_list.push_back(pblock);
+				}
+			}	else {
+				// WTF, we just freed blocks.
+				wxASSERT(0);
+				return;
+			}
+		} else {
+			// Drop this one.
+			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER (no free blocks) to ") + GetFullIP() );			
+			#warning Kry - Would be nice to swap A4AF here.		
+			return;
+		}
 	}
 	
 	CPacket* packet = NULL;
@@ -848,6 +891,11 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 			if ((cur_block->block->StartOffset <= nStartPos) && (cur_block->block->EndOffset >= nStartPos)) {
 				// Found reserved block
 	
+				if (cur_block->block->StartOffset == nStartPos) {
+					// This block just started transfering. Set the start time.
+					m_last_block_start = ::GetTickCountFullRes();
+				}
+				
 				if (cur_block->fZStreamError){
 					AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - header_size, nStartPos, nEndPos) + m_reqfile->GetFileName());
 					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
@@ -940,6 +988,18 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 	
 					// If finished reserved block
 					if (nEndPos == cur_block->block->EndOffset) {
+						
+						// Save last average speed based on data and time.
+						// This should do bytes/sec.
+						uint32 average_time = (::GetTickCountFullRes() - m_last_block_start);
+						
+						// Avoid divide by 0.
+						if (average_time == 0) {
+							average_time++;
+						}
+						
+						m_lastaverage = ((cur_block->block->EndOffset - cur_block->block->StartOffset) * 1000) / average_time;
+						
 						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 						delete cur_block->block;
 						// Not always allocated

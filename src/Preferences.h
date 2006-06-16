@@ -501,6 +501,9 @@ public:
 	static bool	CommandOnCompletion()				{ return s_ExecOnCompletion; }
 	static const wxString& GetCommandOnCompletion()	{ return s_ExecOnCompletionCommand; }
 	
+	// Dropping slow sources
+	static bool GetDropSlowSources()					{ return s_DropSlowSources; }
+	
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
@@ -712,6 +715,9 @@ protected:
 	// Exec command on completion
 	static bool s_ExecOnCompletion;
 	static wxString s_ExecOnCompletionCommand;
+	
+	// Drop slow sources if needed
+	static bool s_DropSlowSources;
 };
 
 

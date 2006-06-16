@@ -251,6 +251,10 @@ void CUpDownClient::Init()
 	m_nCreationTime = ::GetTickCount();
 	
 	m_MaxBlockRequests = STANDARD_BLOCKS_REQUEST; // Safe starting amount
+
+	m_last_block_start = 0;
+	m_lastaverage = 0;
+	
 }
 
 

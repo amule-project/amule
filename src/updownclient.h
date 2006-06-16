@@ -835,6 +835,10 @@ private:
 	/* For buddies timeout */
 	uint32 m_nCreationTime;
 	
+	/* Calculation of last average speed */
+	uint32 m_lastaverage;
+	uint32 m_last_block_start;
+	
 	/* Kry - Debug thing. Clients created just to check their data
 	   have this string set to the reason we want to check them. 
 	   Obviously, once checked, we disconect them. Take that, sucker.
