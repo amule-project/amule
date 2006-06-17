@@ -34,7 +34,6 @@
 #include <list>
 #include <vector>
 
-#include <ec/ECTag.h>
 #include <ec/ECSpecialTags.h>
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
