@@ -38,6 +38,8 @@
 	#include "config.h"
 	#include "WebServer.h"
 	#include <ec/ECSpecialTags.h>
+#else
+	#define PACKAGE_VERSION "standalone"
 #endif
 
 #include "php_syntree.h"
@@ -760,6 +762,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 	}
 	cast_value_dnum(&si->var->value);
 
+#ifndef PHP_STANDALONE_EN
 	EC_SEARCH_TYPE search_type;
 	switch(si->var->value.int_val) {
 		case 0: search_type = EC_SEARCH_LOCAL; break;
@@ -769,6 +772,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 			php_report_error(PHP_ERROR, "Invalid search type %d", si->var->value.int_val);
 			return;
 	}
+#endif
 	if ( !(si = get_scope_item(g_current_scope, "__param_4")) ) {
 		php_report_error(PHP_ERROR, "Invalid or missing argument 5 (availability)");
 		return;
@@ -1676,7 +1680,6 @@ CPhpFilter::CPhpFilter(CWebServerBase *server, CSession *sess,
 		curr_code_end += 2; // include "?>" in buffer
 
 		int len = curr_code_end - scan_ptr;
-		yydebug = 0;
 
 		CPhPLibContext *context = new CPhPLibContext(server, scan_ptr, len);
 

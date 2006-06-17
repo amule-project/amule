@@ -2001,10 +2001,10 @@ int main(int argc, char *argv[])
 	const char *filename = ( argc == 2 ) ? argv[1] : "test.php";
 
 	CWriteStrBuffer buffer;
-
-	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
 	
 	yydebug = 1;
+
+	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
 	
 	int size = buffer.Length();
 	char *buf = new char [size+1];
