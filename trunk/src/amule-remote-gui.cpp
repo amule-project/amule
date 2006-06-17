@@ -55,7 +55,7 @@ using std::auto_ptr;
 #include <common/Format.h>
 #include <common/MD5Sum.h>
 
-#include <ec/ECPacket.h>
+#include <ec/ECTag.h>
 #include <ec/ECCodes.h>
 #include <ec/ECVersion.h>
 

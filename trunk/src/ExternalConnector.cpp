@@ -62,7 +62,7 @@
 
 
 #include <ec/ECFileConfig.h>	// Needed for CECFileConfig
-#include <ec/ECPacket.h>		// Needed for CECPacket, CECTag
+#include <ec/ECTag.h>		// Needed for CECPacket, CECTag
 #include <ec/ECCodes.h>		// Needed for OPcodes and TAGnames
 
 #include <common/MD5Sum.h>

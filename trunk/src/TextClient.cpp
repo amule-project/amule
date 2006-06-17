@@ -42,7 +42,7 @@
 //-------------------------------------------------------------------
 
 #include <ec/ECCodes.h>
-#include <ec/ECPacket.h>
+#include <ec/ECTag.h>
 #include <ec/ECSpecialTags.h>
 
 #include <common/Format.h>		// Needed for CFormat

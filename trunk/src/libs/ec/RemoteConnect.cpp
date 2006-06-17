@@ -31,7 +31,6 @@ using std::auto_ptr;
 #include <wx/intl.h>			// Needed for i18n
 
 #include "ECVersion.h"		// Needed for EC_VERSION_ID
-#include "ECPacket.h"		// Needed for CECPacket
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
 

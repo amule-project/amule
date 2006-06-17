@@ -27,7 +27,7 @@
 
 #include <wx/intl.h>		// Needed for _()
 
-#include <ec/ECPacket.h>		// Needed for CECTag
+#include <ec/ECTag.h>		// Needed for CECTag
 #include <ec/ECCodes.h>		// Needed for TAGnames
 #include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
 
