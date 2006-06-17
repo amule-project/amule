@@ -355,7 +355,7 @@ void CWebSocket::SendContent(const char* szStdResponse, const void* pContent, ui
 	SendData(pContent, dwContentSize);
 }
 
-void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_id)
+void CWebSocket::SendHttpHeaders(const char* szType, bool use_gzip, uint32 content_len, int session_id)
 {
 	char szBuf[0x1000];
 
@@ -369,9 +369,9 @@ void CWebSocket::SendHttpHeaders(bool use_gzip, uint32 content_len, int session_
 	snprintf(szBuf, sizeof(szBuf), "HTTP/1.1 200 OK\r\nServer: aMule\r\nPragma: no-cache\r\nExpires: 0\r\n"
 		"Cache-Control: no-cache, no-store, must-revalidate\r\n"
 		"%s"
-		"Connection: close\r\nContent-Type: text/html\r\n"
+		"Connection: close\r\nContent-Type: %s\r\n"
 		"Content-Length: %d\r\n%s\r\n",
-		 cookie, content_len, (use_gzip ? "Content-Encoding: gzip\r\n" : ""));
+		 cookie, szType, content_len, (use_gzip ? "Content-Encoding: gzip\r\n" : ""));
 
 	SendData(szBuf, strlen(szBuf));
 }

@@ -1884,6 +1884,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
 		wxString::Format(_("%d"), webInterface->m_PageRefresh));
+	session->m_vars["content_type"] = "text/html";
 	
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());
 	if ( req_file.Find(wxT(".html")) != -1 ) {
@@ -1915,7 +1916,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	}
 		
 	if ( httpOut ) {
-		Data.pSocket->SendHttpHeaders(isUseGzip, httpOutLen, Data.SessionID);
+		Data.pSocket->SendHttpHeaders(session->m_vars["content_type"].c_str(), isUseGzip, httpOutLen, Data.SessionID);
 		Data.pSocket->SendData(httpOut, httpOutLen);
 		delete [] httpOut;
 	}
@@ -1956,6 +1957,6 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 
 	long httpOutLen = strlen(httpOut);
 
-	Data.pSocket->SendHttpHeaders(false, httpOutLen, 0);
+	Data.pSocket->SendHttpHeaders("text/html", false, httpOutLen, 0);
 	Data.pSocket->SendData(httpOut, httpOutLen);
 }
