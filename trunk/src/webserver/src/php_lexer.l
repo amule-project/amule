@@ -37,15 +37,27 @@ void php_set_input_buffer(char *buf, int len)
 
 int yywrap();
 
+
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE php_include_stack[MAX_INCLUDE_DEPTH];
+int php_include_stack_ptr = 0;
+
 int yywrap()
 {
-	return 1;
+	if ( --php_include_stack_ptr < 0 ) {
+		return 1;
+	} else {
+		yy_delete_buffer( YY_CURRENT_BUFFER );
+		yy_switch_to_buffer(php_include_stack[php_include_stack_ptr] );
+	}
+	return 0;
 }
 
 %}
 
 %x BLOCK_COMMENT
 %x LINE_COMMENT
+%x INCLUDE
 
 %option stack
 %option yylineno
@@ -135,6 +147,24 @@ EOL ("\r"|"\n"|"\r\n")
 
 "global"		return GLOBAL;
 "static"		return STATIC;
+
+"include" BEGIN(INCLUDE);
+<INCLUDE>[ \t]*
+<INCLUDE>\'[a-zA-Z_][a-zA-Z0-9_\.]*\' {
+	yytext[strlen(yytext)-1] = 0;
+	if ( php_include_stack_ptr >= MAX_INCLUDE_DEPTH ) {
+		fprintf( stderr, "WARNING: maximum include depth (which is %d) exceed", MAX_INCLUDE_DEPTH);
+	} else {
+		php_include_stack[php_include_stack_ptr++] = YY_CURRENT_BUFFER;
+		yyin = fopen(yytext+1, "r");
+		if ( !yyin ) {
+			printf("WARNING: include file [%s] can not be opened\n", yytext+1);
+		} else {
+			yy_switch_to_buffer(yy_create_buffer(yyin, YY_BUF_SIZE ));
+		}
+	}
+        BEGIN(INITIAL);
+}
 
 "("[ \t]*("int"|"integer")[ \t]*")" {
         return INT_CAST;
