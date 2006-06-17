@@ -39,7 +39,6 @@
 #include <wx/string.h>		// For wxString
 
 #include <ec/RemoteConnect.h>
-#include <ec/ECPacket.h>
 #include <ec/ECCodes.h>
 
 #include "MD4Hash.h"

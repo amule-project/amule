@@ -27,7 +27,7 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <ec/ECPacket.h>		// Needed for CECPacket, CECTag
+#include <ec/ECTag.h>		// Needed for CECPacket, CECTag
 #include <ec/ECSocket.h>		// Needed for CECSocket
 #include <ec/ECCodes.h>		// Needed for OPcodes, TAGnames
 #include <ec/ECVersion.h>		// Needed for EC_VERSION_ID

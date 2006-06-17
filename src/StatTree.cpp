@@ -40,7 +40,7 @@
 #endif /* !EC_REMOTE */
 
 #include <ec/ECCodes.h>		// Needed for EC tag names
-#include <ec/ECPacket.h>		// Needed for CECTag
+#include <ec/ECTag.h>		// Needed for CECTag
 
 #ifdef EC_REMOTE
 	#include <ec/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag

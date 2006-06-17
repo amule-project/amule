@@ -25,9 +25,9 @@
 
 #include <vector>
 
-#include <ec/ECPacket.h>		// Needed for CECTag
-#include <ec/ECCodes.h>		// Needed for TAGnames
-#include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
+#include "ECTag.h"		// Needed for CECTag
+#include "ECCodes.h"		// Needed for TAGnames
+#include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 
 #include <common/Format.h>		// Needed for CFormat
 

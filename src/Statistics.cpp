@@ -26,7 +26,7 @@
 
 #include "Statistics.h"		// Interface declarations
 #include <ec/ECCodes.h>		// Needed for EC tagnames
-#include <ec/ECPacket.h>		// Needed for CECTag
+#include <ec/ECTag.h>		// Needed for CECTag
 #include "OPCodes.h"
 
 #include <wx/intl.h>	// Needed for i18n
