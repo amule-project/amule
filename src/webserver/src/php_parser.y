@@ -144,6 +144,7 @@ program_tree: START_SCRIPT top_statement_list END_SCRIPT { g_syn_tree_top = $2; 
 
 top_statement_list:
 		top_statement_list  top_statement { $$ = add_statement_2_list($1, $2); }
+	|	START_SCRIPT top_statement_list END_SCRIPT { $$ = 0; }
 	|	/* empty */ { $$ = 0; }
 ;
 
