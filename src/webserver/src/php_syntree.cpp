@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (C) 2005-2006Froenchenko Leonid ( lfroen@amule.org )
+// Copyright (C) 2005-2006 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -2002,7 +2002,7 @@ int main(int argc, char *argv[])
 
 	CWriteStrBuffer buffer;
 	
-	yydebug = 1;
+	yydebug = 0;
 
 	CPhpFilter php_filter((CWebServerBase*)0, (CSession *)0,filename, &buffer);
 	
