@@ -376,21 +376,11 @@ NAMESPACE_END
 #ifndef CRYPTOPP_STDCPP_H
 #define CRYPTOPP_STDCPP_H
 
-#include <stddef.h>
-#include <assert.h>
-#include <limits.h>
-#include <memory>
 #include <string>
-#include <exception>
-#include <typeinfo>
 
 
 #ifdef _MSC_VER
-#include <string.h>	// CodeWarrior doesn't have memory.h
-#include <algorithm>
-#include <map>
 #include <vector>
-#include <locale>
 
 // re-disable this
 #pragma warning(disable: 4231)
@@ -485,8 +475,6 @@ and getting me started with this manual.
 #ifndef CRYPTOPP_CRYPTLIB_H
 #define CRYPTOPP_CRYPTLIB_H
 
-//- #include "config.h"
-//- #include "stdcpp.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -1677,8 +1665,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_SMARTPTR_H
 #define CRYPTOPP_SMARTPTR_H
 
-//- #include "config.h"
-#include <algorithm>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -1735,11 +1721,9 @@ NAMESPACE_END
 #ifndef CRYPTOPP_MISC_H
 #define CRYPTOPP_MISC_H
 
-//- #include "cryptlib.h"
-//- #include "smartptr.h"
 
 #ifdef INTEL_INTRINSICS
-#include <stdlib.h>
+#include <stdlib.h> // Do_not_auto_remove
 #endif
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -2533,10 +2517,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_SECBLOCK_H
 #define CRYPTOPP_SECBLOCK_H
 
-//- #include "config.h"
-//- #include "misc.h"
-#include <string.h>		// CodeWarrior doesn't have memory.h
-#include <assert.h>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -2924,11 +2904,7 @@ NAMESPACE_END
 
 /** \file */
 
-//- #include "cryptlib.h"
-//- #include "secblock.h"
 
-#include <iosfwd>
-#include <algorithm>
 
 #ifdef CRYPTOPP_X86ASM_AVAILABLE
 
@@ -2938,7 +2914,7 @@ NAMESPACE_END
 		#define CRYPTOPP_MM_MALLOC_AVAILABLE
 	#elif defined(_MSC_VER)
 		// _mm_free seems to be the only way to tell if the Processor Pack is installed or not
-		#include <malloc.h>
+		#include <malloc.h> // Do_not_auto_remove
 		#if defined(_mm_free)
 			#define SSE2_INTRINSICS_AVAILABLE
 			#define CRYPTOPP_MM_MALLOC_AVAILABLE
@@ -3390,7 +3366,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_ALGEBRA_H
 #define CRYPTOPP_ALGEBRA_H
 
-//- #include "config.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -3595,10 +3570,6 @@ NAMESPACE_END
 
 // implementations are in integer.cpp
 
-//- #include "cryptlib.h"
-//- #include "misc.h"
-//- #include "integer.h"
-//- #include "algebra.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -3758,8 +3729,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_SIMPLE_H
 #define CRYPTOPP_SIMPLE_H
 
-//- #include "cryptlib.h"
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -3952,8 +3921,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_QUEUE_H
 #define CRYPTOPP_QUEUE_H
 
-//- #include "simple.h"
-//#include <algorithm>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -4073,9 +4040,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_ALGPARAM_H
 #define CRYPTOPP_ALGPARAM_H
 
-//- #include "cryptlib.h"
-//- #include "smartptr.h"
-//- #include "secblock.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -4434,12 +4398,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_FILTERS_H
 #define CRYPTOPP_FILTERS_H
 
-//- #include "simple.h"
-//- #include "secblock.h"
-//- #include "misc.h"
-//- #include "smartptr.h"
-//- #include "queue.h"
-//- #include "algparam.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -4842,7 +4800,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_ARGNAMES_H
 #define CRYPTOPP_ARGNAMES_H
 
-//- #include "cryptlib.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -4951,12 +4908,6 @@ NAMESPACE_END
 	The "DL_" prefix means an implementation using group operations (in groups where discrete log is hard).
 */
 
-//- #include "modarith.h"
-//- #include "filters.h"
-//- #include "eprecomp.h"
-//- #include "fips140.h"
-//- #include "argnames.h"
-#include <memory>
 
 // VC60 workaround: this macro is defined in shlobj.h and conflicts with a template parameter used in this file
 #undef INTERFACE
@@ -5489,10 +5440,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_ITERHASH_H
 #define CRYPTOPP_ITERHASH_H
 
-//- #include "cryptlib.h"
-//- #include "secblock.h"
-//- #include "misc.h"
-//- #include "simple.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -5625,7 +5572,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_SHA_H
 #define CRYPTOPP_SHA_H
 
-//- #include "iterhash.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -5651,11 +5597,8 @@ NAMESPACE_END
 #ifndef CRYPTOPP_PKCSPAD_H
 #define CRYPTOPP_PKCSPAD_H
 
-//- #include "cryptlib.h"
-//- #include "pubkey.h"
 
 #ifdef CRYPTOPP_IS_DLL
-//- #include "sha.h"
 #endif
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -5729,8 +5672,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_ASN_H
 #define CRYPTOPP_ASN_H
 
-//- #include "filters.h"
-//- #include "queue.h"
 #include <vector>
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -6017,10 +5958,6 @@ NAMESPACE_END
 	ciphers and signature schemes as defined in PKCS #1 v2.0.
 */
 
-//- #include "pkcspad.h"
-//- #include "oaep.h"
-//- #include "integer.h"
-//- #include "asn.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6138,9 +6075,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_BASECODE_H
 #define CRYPTOPP_BASECODE_H
 
-//- #include "filters.h"
-//- #include "algparam.h"
-//- #include "argnames.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6229,7 +6163,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_BASE64_H
 #define CRYPTOPP_BASE64_H
 
-//- #include "basecode.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6270,11 +6203,7 @@ NAMESPACE_END
 #ifndef CRYPTOPP_FILES_H
 #define CRYPTOPP_FILES_H
 
-//- #include "cryptlib.h"
-//- #include "filters.h"
-//- #include "argnames.h"
 
-#include <iostream>
 #include <fstream>
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -6372,8 +6301,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_RANDPOOL_H
 #define CRYPTOPP_RANDPOOL_H
 
-//- #include "cryptlib.h"
-//- #include "filters.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6427,9 +6354,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_SECKEY_H
 #define CRYPTOPP_SECKEY_H
 
-//- #include "cryptlib.h"
-//- #include "misc.h"
-//- #include "simple.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6538,14 +6462,9 @@ NAMESPACE_END
 #ifndef CRYPTOPP_OSRNG_H
 #define CRYPTOPP_OSRNG_H
 
-//- #include "config.h"
 
 #ifdef OS_RNG_AVAILABLE
 
-//- #include "randpool.h"
-//- #include "rng.h"
-//- #include "des.h"
-//- #include "fips140.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6641,7 +6560,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_MD4_H
 #define CRYPTOPP_MD4_H
 
-//- #include "iterhash.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6662,3 +6580,4 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 
 #endif
+// File_checked_for_headers

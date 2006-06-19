@@ -23,8 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
 
 #include "AddFriend.h"		// Interface declarations.
 #include "muuli_wdr.h"		// Needed for addFriendDlg
@@ -35,9 +33,6 @@
 #include "OtherFunctions.h"
 #include "MD4Hash.h"
 #include <common/StringFunctions.h> // Needed for unicode2char 
-#include <wx/textctrl.h>
-#include <wx/msgdlg.h>
-#include <wx/sizer.h>
 
 
 BEGIN_EVENT_TABLE(CAddFriend, wxDialog)
@@ -89,3 +84,4 @@ void CAddFriend::OnCloseBtn(wxCommandEvent& WXUNUSED(evt))
 	EndModal(false); // Friend not added
 }
 
+// File_checked_for_headers

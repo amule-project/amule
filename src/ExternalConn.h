@@ -26,20 +26,13 @@
 #ifndef EXTERNALCONN_H
 #define EXTERNALCONN_H
 
-#include <wx/thread.h>		// For ExitCode
-#include <wx/event.h>		// For ExitCode
 
-#include <map>
-#include <set>
-#include <list>
-#include <vector>
 
 #include <ec/ECSpecialTags.h>
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
 #include "RLE.h"	// for RLE
 #include "DownloadQueue.h"
-#include "SharedFileList.h"
 
 class wxSocketServer;
 class wxSocketEvent;
@@ -226,3 +219,4 @@ class ExternalConn : public wxEvtHandler {
 };
 
 #endif // EXTERNALCONN_H
+// File_checked_for_headers

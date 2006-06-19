@@ -28,8 +28,6 @@
 
 #include "Observable.h"
 
-#include <vector>
-#include <set>
 
 
 template <typename ValueType>
@@ -434,3 +432,4 @@ void CQueueObserver<ValueType>::Reset()
 
 
 #endif
+// File_checked_for_headers

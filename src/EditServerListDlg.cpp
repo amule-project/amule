@@ -23,10 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/sizer.h>		// Needed for wxBoxSizer
 #include <wx/file.h>		// Needed for wxFile
-#include <wx/intl.h>		// Needed for _
 #include <wx/log.h>		// Needed for wxLogSysError
 #include <wx/textctrl.h>
 
@@ -85,3 +83,4 @@ void EditServerListDlg::OnOK(wxCommandEvent& WXUNUSED(event) )
 	else
 		wxLogSysError(wxT("Can't write to file '") +  m_file + wxT("'"));
 }
+// File_checked_for_headers

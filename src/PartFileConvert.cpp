@@ -44,33 +44,18 @@ CConvertListCtrl::CConvertListCtrl(
 // Normal compilation
 
 #include "amule.h"
-#include "CFile.h"
 #include "DownloadQueue.h"
 #include <common/Format.h>
 #include "Logger.h"
-#include "OtherFunctions.h"
 #include "PartFile.h"
 #include "Preferences.h"
-#include "SafeFile.h"
 #include "SharedFileList.h"
 #include "FileFunctions.h"
 
 #include <common/PlatformSpecific.h>
 #include "muuli_wdr.h"
-#include <wx/dirdlg.h>
-#include <wx/icon.h>
-#include <wx/listctrl.h>
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-#include <wx/button.h>
 
-#include <wx/file.h>
-#include <wx/filefn.h>
-#include <wx/filename.h>
-#include <wx/string.h>
-#include <wx/utils.h>
 
-#include <algorithm>
 
 enum convstatus{
 	CONV_OK			= 0,
@@ -819,3 +804,4 @@ void CPartFileConvertDlg::RetrySel(wxCommandEvent& WXUNUSED(event))
 }
 
 #endif
+// File_checked_for_headers

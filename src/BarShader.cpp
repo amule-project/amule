@@ -23,9 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cmath>
-#include <algorithm>		// Needed for std::min
-#include <wx/gdicmn.h>
 #include <wx/dc.h>
 #include "Color.h"		// Needed for RGB
 
@@ -283,3 +280,4 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, uint32 color, bool b
 
 	dc->SetBrush(wxNullBrush);
 }
+// File_checked_for_headers

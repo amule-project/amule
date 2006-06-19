@@ -23,15 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
-#include <wx/settings.h>
 
 #include "CommentDialog.h"	// Interface declarations
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "muuli_wdr.h"		// Needed for commentDlg
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
 // CommentDialog dialog 
 
 //IMPLEMENT_DYNAMIC(CCommentDialog, CDialog)
@@ -85,3 +80,4 @@ bool CCommentDialog::OnInitDialog()
 	ratebox->SetSelection(m_file->GetFileRating());
 	return TRUE;
 }
+// File_checked_for_headers

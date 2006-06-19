@@ -23,45 +23,29 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cstdio>
-#include <cstdlib>
 
-#include <wx/defs.h>
 #include <wx/stopwatch.h>
-#include <wx/timer.h> // Needed for wxGetLocalTimeMillis
 #include <wx/tokenzr.h>
-#include <wx/filename.h>
-#include <wx/textfile.h>
 #include <wx/config.h>
-#include <wx/utils.h>
-#include <wx/intl.h>
 
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #endif
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for PACKAGE_STRING
 #endif
-#include "OtherFunctions.h"
-#include <common/StringFunctions.h>
-#include "OPCodes.h"		// Needed for PREFFILE_VERSION
 #include "Preferences.h"
 #include "CFile.h"
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
-#include <common/PlatformSpecific.h>	// Needed for GetDocumentsDir()
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>
-#include <wx/control.h>
-#include <wx/slider.h>
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
-#include <wx/choice.h>
-#include <algorithm>		// Needed for std::sort
 #endif
 
 
@@ -1533,3 +1517,4 @@ bool CPreferences::IsMessageFiltered(const wxString& message) {
 		}
 	}
 }
+// File_checked_for_headers

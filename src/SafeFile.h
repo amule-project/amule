@@ -26,12 +26,9 @@
 #ifndef SAFEFILE_H
 #define SAFEFILE_H
 
-#include <wx/filefn.h>			// Needed for wxSeekMode
 
 #include <common/MuleDebug.h>			// Needef for CMuleException
-#include <common/StringFunctions.h>	// Needed for the utf8 types.
 
-#include "Types.h"				// Needed for uint* types
 #include "Tag.h"
 
 namespace Kademlia {
@@ -296,3 +293,4 @@ struct CIOFailureException : public CSafeIOException {
 
 
 #endif // SAFEFILE_H
+// File_checked_for_headers

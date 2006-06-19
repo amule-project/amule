@@ -26,8 +26,6 @@
 #ifndef SERVERWND_H
 #define SERVERWND_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/panel.h>		// Needed for wxPanel
 #include <wx/splitter.h>	// Needed for wxSplitter
 
 
@@ -57,3 +55,4 @@ private:
 };
 
 #endif // SERVERWND_H
+// File_checked_for_headers

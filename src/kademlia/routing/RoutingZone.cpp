@@ -45,34 +45,19 @@ there client on the eMule forum..
  * All key unique id's are relative to the center (self), which
  * is considered to be 000..000
  */
-//#include "stdafx.h"
 #include "RoutingZone.h"
 #include "Contact.h"
 #include "RoutingBin.h"
-#include "../utils/UInt128.h"
-//#include "../utils/MiscUtils.h"
-#include "../kademlia/Kademlia.h"
-#include "../kademlia/Prefs.h"
 #include "../kademlia/SearchManager.h"
 #include "../kademlia/Defines.h"
-#include "../kademlia/Error.h"
 #include "../net/KademliaUDPListener.h"
-#include "../../OtherFunctions.h"
-#include "../../OPCodes.h"
 #include "../../amule.h"
 #include "../../CFile.h"
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
-#include "../../ArchSpecific.h"
 
-#warning EC
-#ifndef AMULE_DAEMON
-	#include "../../amuleDlg.h"
-	#include "../../KadDlg.h"
-#endif
 
 #include <cmath>
-#include <algorithm>		// Needed for std::min
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -583,3 +568,4 @@ uint32 CRoutingZone::GetBootstrapContacts(ContactList *results, uint32 maxRequir
 	
 	return retVal;
 }
+// File_checked_for_headers

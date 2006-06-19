@@ -25,12 +25,9 @@
 
 #include "ServerConnect.h"	// Interface declarations.
 #include "SearchList.h"		// Needed for CSearchList
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "Packet.h"		// Needed for CTag
-#include "OPCodes.h"		// Needed for CT_NAME
 #include "MemFile.h"		// Needed for CMemFile
 #include "ServerSocket.h"	// Needed for CServerSocket
 #include "ListenSocket.h"	// Needed for CListenSocket
@@ -38,14 +35,11 @@
 #include "amule.h"		// Needed for theApp
 #include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
-#include "updownclient.h"	// for SO_AMULE
 #include "Statistics.h"		// Needed for theStats
-#include "NetworkFunctions.h"	// for StringHosttoUint32
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_*
 #include <common/Format.h>
 
-#include <wx/utils.h>
 
 //#define DEBUG_CLIENT_PROTOCOL
 
@@ -573,3 +567,4 @@ void CServerConnect::KeepConnectionAlive()
 		AddDebugLogLineM(false, logServer, wxT("Refreshing server connection"));
  	}
 }
+// File_checked_for_headers

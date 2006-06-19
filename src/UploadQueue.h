@@ -26,10 +26,8 @@
 #ifndef UPLOADQUEUE_H
 #define UPLOADQUEUE_H
 
-#include "Types.h"		// Needed for uint16, uint32 and uint64
 #include "MD4Hash.h"		// Needed for CMD4Hash
 
-#include <list>
 
 class CUpDownClient;
 
@@ -71,3 +69,4 @@ private:
 };
 
 #endif // UPLOADQUEUE_H
+// File_checked_for_headers

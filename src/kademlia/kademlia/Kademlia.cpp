@@ -36,24 +36,13 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
-//#include "../utils/MiscUtils.h"
-//#include "StringConversion.h"
-//#include "MD4.h"
 
-#include "Kademlia.h"
 #include "Defines.h"
-#include "Prefs.h"
-#include "Error.h"
-#include "SearchManager.h"
 #include "Indexed.h"
 #include "../net/KademliaUDPListener.h"
 #include "../routing/RoutingZone.h"
-#include "../../SharedFileList.h"
 #include "../routing/Contact.h"
 #include "amule.h"
-#include "OPCodes.h"
-#include "Preferences.h"
 #include "Logger.h"
 
 
@@ -400,7 +389,6 @@ CIndexed *CKademlia::GetIndexed(void)
 // Global function.
 
 #include "../../CryptoPP_Inc.h"
-#include <common/StringFunctions.h>
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
@@ -417,3 +405,4 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 	
 	pKadID->SetValueBE(Output);
 }
+// File_checked_for_headers

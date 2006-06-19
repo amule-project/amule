@@ -28,7 +28,6 @@ const int versionMinor		= 1;
 const int versionRevision	= 1;
 
 
-#include <string>
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -445,3 +444,4 @@ int main(int argc, char *argv[])
 	return ( errors ? 1 : 0 );
 }
 
+// File_checked_for_headers

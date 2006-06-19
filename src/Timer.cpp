@@ -158,3 +158,4 @@ wxEvent* CTimerEvent::Clone() const
 	return new CTimerEvent(GetId());
 }
 
+// File_checked_for_headers

@@ -217,3 +217,4 @@ TYPE* CScopedArray<TYPE>::release()
 
 
 #endif // SCOPEDPTR_H
+// File_checked_for_headers

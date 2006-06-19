@@ -23,42 +23,32 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "Types.h"
 
-#include <wx/defs.h>			// Needed before any other wx/*.h
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #endif
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/filename.h>		// Needed for wxFileName
 #include <wx/url.h>			// Needed for wxURL
 #include <wx/tokenzr.h>
 
 #include "ServerList.h"			// Interface declarations.
-#include "ListenSocket.h"		// Needed for CListenSocket
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer and SRV_PR_*
 #include "OtherStructs.h"		// Needed for ServerMet_Struct
-#include "OPCodes.h"			// Needed for MET_HEADER
 #include "CFile.h"			// Needed for CFile
 #include "HTTPDownload.h"		// Needed for HTTPThread
 #include "Preferences.h"		// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
-#include "GetTickCount.h"		// Needed for GetTickCount
-#include "NetworkFunctions.h"		// Needed for StringIPtoUint32
 #include "Statistics.h"			// Needed for theStats
-#include <common/StringFunctions.h>		// Needed for unicode2char 
-#include "Tag.h"			// Needed for CTag
 #include "Packet.h"			// Neeed for CPacket
 #include "Logger.h"
 #include <common/Format.h>
 #include "IPFilter.h"
 #include "FileFunctions.h"		// Needed for UnpackArchive
 
-#include <algorithm>			// Needed for std::find
 
 
 CServerList::CServerList()
@@ -855,3 +845,4 @@ void CServerList::FilterServers()
 		}
 	}
 }
+// File_checked_for_headers

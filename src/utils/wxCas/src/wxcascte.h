@@ -30,8 +30,6 @@
 #ifndef _WXCASCTE_H
 #define _WXCASCTE_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -143,3 +141,4 @@ struct WxCasCte
 wxString GetDefaultAmulesigPath();
 
 #endif /* _WXCASCTE_H */
+// File_checked_for_headers

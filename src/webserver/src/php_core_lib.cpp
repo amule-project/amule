@@ -23,16 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cstdio>
-#include <cstring>
-#include <cassert>
-#include <cstdarg>
 
-#include <list>
-#include <vector>
-#include <map>
-#include <string>
-#include <algorithm>
 
 #ifndef PHP_STANDALONE_EN
 	#include "config.h"
@@ -1807,3 +1798,4 @@ void save_session_vars(std::map<std::string, std::string> &varmap)
 		varmap[s] = var->value.str_val;
 	}
 }
+// File_checked_for_headers

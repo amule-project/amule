@@ -26,7 +26,6 @@
 #ifndef SEARCHEXPR_H
 #define SEARCHEXPR_H
 
-#include <wx/string.h>
 #include <wx/arrstr.h>
 
 enum ESearchOperators
@@ -86,3 +85,4 @@ public:
 };
 
 #endif
+// File_checked_for_headers

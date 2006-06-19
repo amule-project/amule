@@ -28,13 +28,9 @@
 #include <cmath>		// Needed for std:exp
 
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "OtherFunctions.h"	// Needed for md4cmp
 #include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
-#include "ServerConnect.h"	// Needed for CServerConnect
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Preferences.h"	// Needed for thePrefs
-#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile
 #include "ClientTCPSocket.h"// Needed for CClientTCPSocket
@@ -42,11 +38,9 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "SHAHashSet.h"
 #include "SharedFileList.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include "Constants.h"		// Needed for DownloadItemType
 #include "GuiEvents.h"		// Needed for Notify_*
 
 
@@ -1664,3 +1658,4 @@ void CUpDownClient::ProcessAICHFileHash(CMemFile* data, const CPartFile* file){
 		AddDebugLogLineM( false, logAICHTransfer, wxT("ProcessAICHFileHash(): PartFile not found or Partfile differs from requested file, ") + GetClientFullInfo() );
 	}
 }
+// File_checked_for_headers

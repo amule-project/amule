@@ -23,13 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <vector>
 
 #include <ec/ECTag.h>		// Needed for CECTag
-#include <ec/ECCodes.h>		// Needed for TAGnames
 #include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
 
-#include <common/Format.h>		// Needed for CFormat
 
 // Since there are only constructors defined here,
 // removing everything from non-local builds.
@@ -44,8 +41,6 @@
 
 #include "kademlia/kademlia/Kademlia.h"
 
-#include <wx/intl.h>		// Needed for _()
-#include "KnownFile.h"		// Needed for PS_*
 
 CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_SERVER, EC_IPv4_t(server->GetIP(), server->GetPort()))
@@ -363,3 +358,4 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) :
 		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
 	}
 }
+// File_checked_for_headers

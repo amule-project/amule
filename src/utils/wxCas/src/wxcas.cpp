@@ -28,7 +28,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -47,7 +46,6 @@
 #error You must set wxUSE_PRINTING_ARCHITECTURE to 1 in setup.h to compile wxCas.
 #endif
 
-#include <wx/image.h>
 #include <wx/config.h>
 
 #include "wxcas.h"
@@ -105,3 +103,4 @@ WxCas::GetMainFrame () const
 	return m_frame;
 }
 
+// File_checked_for_headers

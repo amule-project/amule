@@ -26,10 +26,7 @@
 #ifndef PARTFILE_H
 #define PARTFILE_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/datetime.h>	// Needed for wxDateTime
 
-#include "Types.h"		// Needed for uint8
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "CFile.h"		// Needed for CFile
 
@@ -37,8 +34,6 @@
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 
 
-#include <set>
-#include <list>
 
 class CSearchFile;
 class CUpDownClient;
@@ -408,3 +403,4 @@ friend class CPartFileConvert;
 };
 
 #endif // PARTFILE_H
+// File_checked_for_headers

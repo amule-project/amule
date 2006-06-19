@@ -23,31 +23,20 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
-#include <wx/datetime.h>	// Needed for wxDateTime
 #include <wx/tokenzr.h>
 
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
-#include "UploadQueue.h"	// Needed for CUploadQueue
-#include "Packet.h"		// Needed for CPacket
-#include "OPCodes.h"		// Needed for OP_MESSAGE
 #include "Preferences.h"	// Needed for CPreferences
-#include "ChatWnd.h"		// Needed for CChatWnd
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Needed to be able to include wx headers
+	#include <wx/msw/winundef.h> // Needed to be able to include wx headers // Do_not_auto_remove
 #endif
 #include "amule.h"		// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "Color.h"		// Needed for RGB
-#include "FriendListCtrl.h"	// Needed for CDlgFriend
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 #warning Needed while not ported
-#include "Friend.h"
-#include "FriendList.h"
 #include "ClientList.h"
 #include <common/Format.h>		// Needed for CFormat
 
@@ -334,3 +323,4 @@ void CChatSelector::RefreshFriend(uint64 toupdate_id, const wxString& new_name)
 		// Nothing to be done here.
 	}
 }
+// File_checked_for_headers

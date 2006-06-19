@@ -25,12 +25,9 @@
 
 #include "RemoteConnect.h"
 
-#include <memory>			// Needed for auto_ptr
 using std::auto_ptr;
 
-#include <wx/intl.h>			// Needed for i18n
 
-#include "ECVersion.h"		// Needed for EC_VERSION_ID
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
 
@@ -257,3 +254,4 @@ void CRemoteConnect::RemoveServer(uint32 ip, uint16 port) {
 	}
 	SendPacket(&req);
 }
+// File_checked_for_headers

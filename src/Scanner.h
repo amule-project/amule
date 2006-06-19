@@ -21,10 +21,6 @@
 /* First, we deal with  platform-specific or compiler-specific issues. */
 
 /* begin standard C headers. */
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdlib.h>
 
 /* end standard C headers. */
 
@@ -44,7 +40,6 @@
 #define __STDC_LIMIT_MACROS 1
 #endif
 
-#include <inttypes.h>
 typedef int8_t flex_int8_t;
 typedef uint8_t flex_uint8_t;
 typedef int16_t flex_int16_t;
@@ -217,7 +212,6 @@ extern char *yytext;
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
-#include <unistd.h>
 #endif
 
 #ifndef YY_EXTRA_TYPE
@@ -289,3 +283,4 @@ extern int yylex (void);
 #line 290 "./Scanner.h"
 #undef yyIN_HEADER
 #endif /* yyHEADER_H */
+// File_checked_for_headers

@@ -23,11 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include <wx/filefn.h>
 #include <wx/textfile.h>	// Needed for wxTextFile
-#include <wx/filename.h>
 #include <wx/utils.h>
 
 #include "DownloadQueue.h"	// Interface declarations
@@ -44,23 +41,17 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "Preferences.h"	// Needed for thePrefs
 #include "amule.h"			// Needed for theApp
-#include "GetTickCount.h"	// Needed for GetTickCount
 #include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
 #include "IPFilter.h"
 #include "FileFunctions.h"	// Needed for CDirIterator
-#include "OtherFunctions.h"	// Needed for CMutexUnlocker
 #include "FileLock.h"		// Needed for CFileLock
-#include "Constants.h"		// Needed for DownloadItemType
 #include "GuiEvents.h"		// Needed for Notify_*
 
 #include "kademlia/kademlia/Kademlia.h"
 
-#include <algorithm>
-#include <numeric>
-#include <vector>
 
 
 // Max. file IDs per UDP packet
@@ -1468,3 +1459,4 @@ bool CDownloadQueue::DoKademliaFileRequest()
 {
 	return ((::GetTickCount() - lastkademliafilerequest) > KADEMLIAASKTIME);
 }
+// File_checked_for_headers

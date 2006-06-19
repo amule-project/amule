@@ -25,17 +25,13 @@
 //
 
 #include "Statistics.h"		// Interface declarations
-#include <ec/ECCodes.h>		// Needed for EC tagnames
 #include <ec/ECTag.h>		// Needed for CECTag
 #include "OPCodes.h"
 
-#include <wx/intl.h>	// Needed for i18n
 
 #ifndef EC_REMOTE
-	#include "GetTickCount.h"	// Needed for GetTickCount64()
 	#ifndef AMULE_DAEMON
 		#include <common/Format.h>		// Needed for CFormat
-		#include "OtherFunctions.h"	// Needed for CastItoSpeed()
 	#endif
 	#include "DataToText.h"		// Needed for GetSoftName()
 	#include "Preferences.h"	// Needed for thePrefs
@@ -980,3 +976,4 @@ void CStatistics::UpdateStatsTree()
 
 #endif /* !EC_REMOTE */
 
+// File_checked_for_headers

@@ -75,3 +75,4 @@ const unsigned int K	=						10;
 } // End namespace
 
 #endif // __KAD_DEFINES_H__
+// File_checked_for_headers

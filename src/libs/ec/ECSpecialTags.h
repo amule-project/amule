@@ -25,19 +25,12 @@
 #ifndef ECSPECIALTAGS_H
 #define ECSPECIALTAGS_H
 
-#include "Types.h"	// Needed for uint* types
-#include <wx/string.h>	// Needed for wxString
-#include "ECCodes.h"	// Needed for EC types
-#include "ECTag.h"	// Needed for CECTag
 #warning Kry - Preferences packet derived from packet, and that's ok, but shouldn't be here because this is a tag file and forces a stupid include
 #include "ECPacket.h"	// Needed for CECPacket
-#include "MD4Hash.h"	// Needed for CMD4Hash
 #include "NetworkFunctions.h" // Needed for IsLowID
 
-#include "kademlia/utils/UInt128.h" // Need for UInt128
 
 #include <map>
-#include <vector>
 
 /*
  * Specific tags for specific requests
@@ -364,3 +357,4 @@ class CEC_StatTree_Node_Tag : public CECTag {
 };
 
 #endif /* ECSPEACIALTAGS_H */
+// File_checked_for_headers

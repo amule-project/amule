@@ -26,12 +26,9 @@
 #ifndef CLIENTLIST_H
 #define CLIENTLIST_H
 
-#include "Types.h"		// Needed for uint16 and uint32
-#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "DeadSourceList.h"	// Needed for CDeadSourceList
 
 #include <deque>
-#include <map>
 #include <set>
 
 class CUpDownClient;
@@ -413,3 +410,4 @@ private:
 };
 
 #endif
+// File_checked_for_headers

@@ -26,7 +26,6 @@
 #ifndef OBSERVABLE_H
 #define OBSERVABLE_H
 
-#include <wx/thread.h>
 
 #include <set>
 
@@ -305,3 +304,4 @@ void CObservable<EventType>::RemoveAllObservers()
 
 
 #endif
+// File_checked_for_headers

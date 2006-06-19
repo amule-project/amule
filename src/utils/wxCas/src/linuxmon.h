@@ -30,8 +30,6 @@
 #ifndef _LINUXMON_H
 #define _LINUXMON_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -81,3 +79,4 @@ public:
 };
 
 #endif /* _LINUXMON_H */
+// File_checked_for_headers

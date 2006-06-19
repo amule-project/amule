@@ -25,15 +25,10 @@
 
 #include "CommentDialogLst.h"	// Interface declarations
 #include "muuli_wdr.h"			// Needed for commentLstDlg
-#include "OtherFunctions.h"		// Needed for GetRateString
 #include "PartFile.h"			// Needed for CPartFile
-#include "updownclient.h"		// Needed for CUpDownClient
 #include <common/Format.h>				// Needed for CFormat
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
-#include "amule.h"				// Needed for theApp
-#include "DownloadQueue.h"		// Needed for CDownloadQueue
 
-#include <wx/sizer.h>			// Needed for wxSizer
 
 
 BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
@@ -136,3 +131,4 @@ int CCommentDialogLst::SortProc(long item1, long item2, long sortData)
 			return 0;
 	}
 }
+// File_checked_for_headers

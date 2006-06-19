@@ -24,10 +24,7 @@
 #if wxUSE_LISTCTRL
 
 #ifndef WX_PRECOMP
-    #include "wx/dynarray.h"
-    #include "wx/app.h"
     #include "wx/dcscreen.h"
-    #include "wx/textctrl.h"
     #include <wx/dcmemory.h>
 #endif
 
@@ -43,13 +40,11 @@
 
 #include "wx/selstore.h"
 #include "wx/renderer.h"
-#include "wx/math.h"
 
 #ifdef __WXMAC__
-    #include "wx/mac/private.h"
+    #include "wx/mac/private.h" // Do_not_auto_remove
 #endif
 
-#include "wx/imaglist.h"
 
 // NOTE: If using the wxListBox visual attributes works everywhere then this can
 // be removed, as well as the #else case below.
@@ -1651,8 +1646,8 @@ wxListHeaderWindow::~wxListHeaderWindow()
 }
 
 #ifdef __WXUNIVERSAL__
-#include "wx/univ/renderer.h"
-#include "wx/univ/theme.h"
+#include "wx/univ/renderer.h" // Do_not_auto_remove
+#include "wx/univ/theme.h" // Do_not_auto_remove
 #endif
 
 // shift the DC origin to match the position of the main window horz
@@ -5506,7 +5501,7 @@ bool wxGenericListCtrl::SetFont( const wxFont &font )
 }
 
 #if _USE_VISATTR
-#include "wx/listbox.h"
+#include "wx/listbox.h" // Do_not_auto_remove
 #endif
 
 // static
@@ -5712,3 +5707,4 @@ void wxGenericListCtrl::Thaw()
 }
 
 #endif // wxUSE_LISTCTRL
+// File_checked_for_headers

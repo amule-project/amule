@@ -23,24 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/sizer.h>
-#include <wx/gauge.h>
-#include <wx/textctrl.h>
-#include <wx/msgdlg.h>
-#include <wx/menu.h>
-#include <wx/checkbox.h>
-#include <wx/statbox.h>
-#include <wx/choice.h>
 
 #include "SearchDlg.h"		// Interface declarations.
-#include <common/StringFunctions.h>		// Needed for unicode2char
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "MuleNotebook.h"
 #include "GetTickCount.h"
 #include "Preferences.h"
-#include "OtherFunctions.h"	// Needed for URLEncode, GetTypeSize
 #include "amule.h"			// Needed for theApp
 #include "SearchList.h"		// Needed for CSearchList
 #include <common/Format.h>
@@ -587,3 +577,4 @@ void CSearchDlg::UpdateCatChoice()
 void	CSearchDlg::UpdateProgress(uint32 new_value) {
 	m_progressbar->SetValue(new_value);
 }
+// File_checked_for_headers

@@ -36,13 +36,9 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
 #include "RoutingBin.h"
 #include "Contact.h"
-#include "../kademlia/Kademlia.h"
 #include "../kademlia/Defines.h"
-#include "../routing/RoutingZone.h"
-#include "Logger.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -220,3 +216,4 @@ void CRoutingBin::GetClosestTo(uint32 maxType, const CUInt128 &target, uint32 ma
  		result->erase(--result->end());
 	}
 }
+// File_checked_for_headers

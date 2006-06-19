@@ -26,40 +26,24 @@
 //
 
 
-#include <algorithm>		// for std::sort()
 
 
-#include <wx/filefn.h>
 
-#include <wx/file.h>
-#include <wx/ffile.h>
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <wx/string.h>
-#include <wx/filename.h>
-#include <wx/confbase.h>
 #include <wx/config.h>
 
-#include "KnownFile.h"		// Interface declarations.
-#include "OtherFunctions.h"	// Needed for nstrdup
-#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "MemFile.h"		// Needed for CMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "Tag.h"		// Needed for CTag
 #include "Packet.h"		// Needed for CPacket
 #include "Preferences.h"	// Needed for CPreferences
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for SavePartFile
 #include "ClientList.h" 	// Needed for clientlist (buddy support)
-#include "ArchSpecific.h"
 #include "Logger.h"
 #include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#include "kademlia/kademlia/Entry.h"
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -1249,3 +1233,4 @@ void CKnownFile::LoadComment()
 	#endif
 	
 }
+// File_checked_for_headers

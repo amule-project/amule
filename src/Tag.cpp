@@ -23,11 +23,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <zlib.h>		// Needed for uLongf
 
 #include "Tag.h"				// Interface declarations
 
-#include <common/MuleDebug.h>		// Needed for CInvalidPacket
 
 #include "SafeFile.h"		// Needed for CFileDataIO
 #include "MD4Hash.h"			// Needed for CMD4Hash
@@ -447,3 +445,4 @@ void deleteTagPtrListEntries(TagPtrList* taglist)
 	}
 	taglist->clear();
 }
+// File_checked_for_headers

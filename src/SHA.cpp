@@ -243,3 +243,4 @@ void CSHA::Finish(CAICHHash& Hash)
     Compile();
 	GetHash(Hash);
 }
+// File_checked_for_headers

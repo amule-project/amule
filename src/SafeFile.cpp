@@ -25,12 +25,9 @@
 
 #include "SafeFile.h"				// Interface declarations.
 #include "MD4Hash.h"				// Needed for CMD4Hash
-#include "ArchSpecific.h"			// Needed for ENDIAN_SWAP_*
-#include <common/StringFunctions.h>		// Needed for unicode2char, etc.
 #include "kademlia/utils/UInt128.h"	// Needed for CUInt128
 #include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
 
-#include <algorithm>		// Needed for std::min
 
 
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
@@ -574,3 +571,4 @@ uint64 CFileDataIO::GetIntTagValue() const {
 			throw wxString(wxT("Wrong tag type reading int tag"));
 	}
 }
+// File_checked_for_headers

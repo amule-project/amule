@@ -23,15 +23,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <vector>
 
-#include <wx/intl.h>		// Needed for _()
 
 #include <ec/ECTag.h>		// Needed for CECTag
-#include <ec/ECCodes.h>		// Needed for TAGnames
 #include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
 
-#include "KnownFile.h"		// Needed for PS_*
 #include "Preferences.h"
 #include "amule.h"
 
@@ -521,3 +517,4 @@ void CEC_Prefs_Packet::Apply()
 	
 	theApp.glob_prefs->Save();
 }
+// File_checked_for_headers

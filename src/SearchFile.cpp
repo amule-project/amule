@@ -24,15 +24,10 @@
 //
 
 #include "SearchFile.h"			// Interface declarations.
-#include "NetworkFunctions.h" 	// Needed for IsGoodIP
 #include "MemFile.h"			// Needed for CMemFile
 #include "Preferences.h"		// Needed for thePrefs
-#include "Tag.h"				// Needed for CTag
 #include "GuiEvents.h"
-#include "amule.h"				// Needed for theApp
 
-#include <algorithm>			// Needed for std::max
-#include <memory>				// Needed for std::auto_ptr
 
 
 
@@ -190,3 +185,4 @@ void CSearchFile::UpdateParent()
 
 	SetFileName(m_children.at(index)->GetFileName());
 }
+// File_checked_for_headers

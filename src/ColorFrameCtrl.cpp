@@ -24,10 +24,8 @@
 //
 
 #include <wx/dcclient.h>
-#include <wx/dc.h>
 
 #include "ColorFrameCtrl.h"	// Interface declarations
-#include "Color.h"		// Needed for RGB, GetRValue, GetGValue and GetBValue
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl
@@ -134,3 +132,4 @@ void CColorFrameCtrl::OnSize(wxSizeEvent& WXUNUSED(evt))
 	m_rectClient.bottom=rc.y + rc.height;
 
 } // OnSize
+// File_checked_for_headers

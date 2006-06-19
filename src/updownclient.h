@@ -26,18 +26,12 @@
 #ifndef UPDOWNCLIENT_H
 #define UPDOWNCLIENT_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/string.h>		// Needed for wxString
-#include <wx/intl.h>
-#include "Types.h"		// Needed for int8, int16, uint8, uint16, uint32 and uint64
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
 
 #include <map>
-#include <list>
-#include <vector>
 
 
 typedef std::vector<bool> BitVector;
@@ -854,3 +848,4 @@ private:
 
 
 #endif // UPDOWNCLIENT_H
+// File_checked_for_headers

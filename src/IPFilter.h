@@ -26,7 +26,6 @@
 #ifndef IPFILTER_H
 #define IPFILTER_H
 
-#include <wx/thread.h>	// Needed for wxMutex
 #include <wx/event.h>	// Needed for wxEvent
 
 #include "Types.h"	// Needed for uint8, uint16 and uint32
@@ -133,3 +132,4 @@ private:
 };
 
 #endif
+// File_checked_for_headers

@@ -40,7 +40,6 @@ there client on the eMule forum..
 #define __KAD_KADEMLIA_H__
 
 #include <map>
-#include "../../Types.h"
 #include "../utils/UInt128.h"
 
 class CSharedFileList;
@@ -119,3 +118,4 @@ void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID);
 wxString KadGetKeywordBytes(const wxString& rstrKeywordW);
 
 #endif // __KAD_KADEMLIA_H__
+// File_checked_for_headers

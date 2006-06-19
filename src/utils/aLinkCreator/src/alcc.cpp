@@ -23,8 +23,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -39,8 +37,6 @@
 #include "config.h"             // Needed for PACKAGE
 #endif
 
-#include <wx/filename.h>
-#include <wx/log.h>
 
 #include "alcc.h"
 #include "ed2khash.h"
@@ -125,3 +121,4 @@ bool alcc::OnCmdLineParsed(wxCmdLineParser& cmdline)
 
   return true;
 }
+// File_checked_for_headers

@@ -92,3 +92,4 @@ typedef void (wxEvtHandler::*MuleInternalEventFunction)(CMuleInternalEvent&);
 
 
 #endif /* INTERNALEVENTS_H */
+// File_checked_for_headers

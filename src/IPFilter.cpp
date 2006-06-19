@@ -23,16 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/intl.h>		// Needed for _()
-#include <wx/filefn.h>		// Needed for wxFileExists
 #include <wx/textfile.h>	// Needed for wxTextFile
-#include <wx/string.h>		// Needed for wxString
 #include <wx/wfstream.h>	// wxFileInputStream
-#include <wx/file.h>		// Needed for wxTempFile
-#include <wx/filename.h>
 
 #include "IPFilter.h"			// Interface declarations.
-#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 #include "Preferences.h"		// Needed for thePrefs
 #include "amule.h"				// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
@@ -476,3 +470,4 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 	}
 }
 
+// File_checked_for_headers

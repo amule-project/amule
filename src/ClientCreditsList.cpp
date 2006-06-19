@@ -25,16 +25,10 @@
 
 #include "ClientCreditsList.h"	// Interface declarations
 
-#include <cmath>
-#include <ctime>
-#include <wx/utils.h>
-#include <wx/intl.h>		// Needed for _
-#include <wx/textfile.h>
 
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for thePrefs
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "OPCodes.h"		// Needed for CREDITFILE_VERSION
 #include "amule.h"			// Needed for theApp
 #include "CFile.h"			// Needed for CFile
 #include "Logger.h"			// Needed for Add(Debug)LogLine
@@ -481,3 +475,4 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	return VerifyIdent(&newcredits2,pachSignature,sigsize,0,0);
 }
 #endif
+// File_checked_for_headers

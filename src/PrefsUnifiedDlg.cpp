@@ -27,35 +27,17 @@
 #include "PrefsUnifiedDlg.h"
 
 
-#include <wx/button.h>
-#include <wx/checkbox.h>
 #include <wx/colordlg.h>
-#include <wx/config.h>
-#include <wx/filedlg.h>
-#include <wx/sizer.h>			// Needed in Mac compilation
-#include <wx/slider.h>
-#include <wx/spinctrl.h>
-#include <wx/tokenzr.h>
-#include <wx/valgen.h>
-#include <wx/textctrl.h>
-#include <wx/choice.h>
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-#include <wx/dirdlg.h>
-#include <wx/checklst.h>
 #include <wx/tooltip.h>
 
 #include "amule.h"				// Needed for theApp
 #include "amuleDlg.h"
 #include "Color.h"
-#include "OtherFunctions.h"		// Needed for IsEmptyFile
-#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "SearchList.h"
-#include "DownloadQueue.h"
 #include "ClientList.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
 #include "Preferences.h"
@@ -1000,3 +982,4 @@ void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 	txt << wxT("UDP port for extended server requests (TCP+3):") << port + 3;
 	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(txt);
 }
+// File_checked_for_headers

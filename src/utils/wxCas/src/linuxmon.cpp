@@ -27,8 +27,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -113,3 +111,4 @@ LinuxMon::GetSysLoad_15 () const
 {
 	return m_sysLoad_15;
 }
+// File_checked_for_headers

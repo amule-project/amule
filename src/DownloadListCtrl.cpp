@@ -27,19 +27,9 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <cmath>		// Needed for floor
 
-#include <wx/dcmemory.h>
-#include <wx/datetime.h>
-#include <wx/stattext.h>
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
-#include <wx/textdlg.h>
-#include <wx/filename.h>
-#include <wx/intl.h>		// Needed for wxGetTranslation()
 
 #include "DownloadListCtrl.h"	// Interface declarations
-#include "OtherFunctions.h"	// Needed for CheckShowItemInGivenCat
 #include "DataToText.h"		// Needed for PriorityToStr
 #include "amule.h"		// Needed for theApp
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
@@ -50,7 +40,6 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
-#include "Color.h"		// Needed for BLEND and SYSCOLOR
 #include "BarShader.h"		// Needed for CBarShader
 #include "Preferences.h"
 #include "Logger.h"
@@ -58,7 +47,6 @@
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "GuiEvents.h"			// Needed for CoreNotify_*
 
-#include <list>
 
 
 
@@ -2293,3 +2281,4 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		AddLogLineM( false, CFormat( _("Command: %s") ) % command );
 	}
 }
+// File_checked_for_headers

@@ -26,10 +26,8 @@
 #ifndef SEARCHFILE_H
 #define SEARCHFILE_H
 
-#include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "KnownFile.h"	// Needed for CAbstractFile
 
-#include <vector>
 
 class CMemFile;
 class CMD4Hash;
@@ -260,3 +258,4 @@ void CSearchFile::SetClientPort(uint16 port)
 }
 
 #endif // SEARCHLIST_H
+// File_checked_for_headers

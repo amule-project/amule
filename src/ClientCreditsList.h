@@ -26,7 +26,6 @@
 #ifndef CLIENTCREDITSLIST_H
 #define CLIENTCREDITSLIST_H
 
-#include "Types.h"		// Needed for uint16 and uint32
 #include "MD4Hash.h"	// Needed for CMD4Hash
 
 #include <map>
@@ -67,3 +66,4 @@ private:
 };
 
 #endif // CLIENTCREDITSLIST_H
+// File_checked_for_headers

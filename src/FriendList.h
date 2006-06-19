@@ -26,7 +26,6 @@
 #ifndef FRIENDLIST_H
 #define FRIENDLIST_H
 
-#include <list>
 
 #include "Types.h"	// Needed for uint32
 
@@ -65,3 +64,4 @@ public:
 };
 
 #endif
+// File_checked_for_headers

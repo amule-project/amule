@@ -26,7 +26,6 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <inttypes.h>		// Needed for int type declarations
 #include <wx/string.h>		// Needed for wxString and wxEmptyString
 
 #include <list>			// Needed for std::list
@@ -111,10 +110,10 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
-	#include <windef.h>		// Needed for RECT
-	#include <wingdi.h>
-	#include <winuser.h>
-	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */
+	#include <windef.h> // Needed for RECT  // Do_not_auto_remove
+	#include <wingdi.h> // Do_not_auto_remove
+	#include <winuser.h> // Do_not_auto_remove
+	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */  // Do_not_auto_remove
 
 #else 
 
@@ -147,3 +146,4 @@ static const wxString EmptyString = wxEmptyString;
 #endif
 
 #endif /* TYPES_H */
+// File_checked_for_headers

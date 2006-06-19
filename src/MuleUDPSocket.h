@@ -29,7 +29,6 @@
 #include "Types.h"				// Needed for uint16 and uint32
 #include "ThrottledSocket.h"	// Needed for ThrottledControlSocket
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
-#include <list>
 
 
 class CDatagramSocketProxy;
@@ -191,3 +190,4 @@ private:
 };
 
 #endif // CLIENTUDPSOCKET_H
+// File_checked_for_headers

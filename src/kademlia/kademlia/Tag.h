@@ -39,11 +39,8 @@ there client on the eMule forum..
 #ifndef __KAD_TAG_H__
 #define __KAD_TAG_H__
 
-#include <list>
-#include "../../OPCodes.h"
-#include "../../OtherFunctions.h"
-#include <wx/string.h>
 
 #error deleted file
 
 #endif //__KAD_TAG_H__
+// File_checked_for_headers

@@ -27,9 +27,6 @@
 #ifndef FILEFUNCTIONS_H
 #define FILEFUNCTIONS_H
 
-#include <wx/string.h>
-#include <dirent.h>
-#include <utility>
 #include "Types.h"
 
 // Move file with safe UTF8 name.
@@ -138,3 +135,4 @@ FSCheckResult CheckFileSystem(const wxString& path);
 
 
 #endif
+// File_checked_for_headers

@@ -23,7 +23,6 @@
 //
 
 #include "Format.h"
-#include <cctype>	// Needed for isalpha()
 
 
 /**
@@ -265,3 +264,4 @@ CFormat& CFormat::operator%( const wxChar* val )
 	return *this;
 }
 
+// File_checked_for_headers

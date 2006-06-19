@@ -27,7 +27,6 @@
 #ifndef GUIEVENTS_H
 #define GUIEVENTS_H
 
-#include <wx/event.h>
 #include <wx/app.h>
 
 #include "Types.h"
@@ -477,3 +476,4 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 #endif // __GUIEVENTS_H__
 
+// File_checked_for_headers

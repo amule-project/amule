@@ -26,7 +26,6 @@
 #ifndef COMMENTDIALOGLST_H
 #define COMMENTDIALOGLST_H
 
-#include <wx/dialog.h>		// Needed for wxDialog
 #include <wx/sizer.h>
 
 class CMuleListCtrl;
@@ -72,3 +71,4 @@ private:
 };
 
 #endif // COMMENTDIALOGLST_H
+// File_checked_for_headers

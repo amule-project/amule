@@ -26,15 +26,12 @@
 #ifndef PREFERENCES_H
 #define PREFERENCES_H
 
-#include "Types.h"			// Needed for ints
 #include "MD4Hash.h"			// Needed for CMD4Hash
 #include "Color.h"			// Needed for COLORREF
 
-#include <wx/string.h>			// Needed for wxString
 #include <wx/arrstr.h>		// Needed for wxArrayString
 
 #include <map>
-#include <vector>
 
 #include "Proxy.h"
 
@@ -722,3 +719,4 @@ protected:
 
 
 #endif // PREFERENCES_H
+// File_checked_for_headers

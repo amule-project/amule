@@ -30,8 +30,6 @@
 #ifndef _ONLINESIG_H
 #define _ONLINESIG_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -192,3 +190,4 @@ public:
 };
 
 #endif /* _ONLINESIG_H */
+// File_checked_for_headers

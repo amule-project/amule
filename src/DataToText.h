@@ -48,3 +48,4 @@ const wxString GetSoftName( unsigned int software_ident );
 wxString OriginToText(unsigned int source_from);
 
 #endif /* DATATOTEXT_H */
+// File_checked_for_headers

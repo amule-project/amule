@@ -23,17 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/gauge.h>
 
 #include "SharedFilesWnd.h"	// Interface declarations
 #include "SharedFilesCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST
-#include "OtherFunctions.h"	// Needed for CastItoXBytes
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "KnownFile.h"		// Needed for CKnownFile
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"			// Needed for theApp
 
 
@@ -157,3 +152,4 @@ void CSharedFilesWnd::RemoveAllSharedFiles() {
 	sharedfilesctrl->ShowFilesCount();
 	SelectionUpdated();
 }
+// File_checked_for_headers

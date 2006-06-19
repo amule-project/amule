@@ -28,7 +28,6 @@
 class wxEvtHandler;
 class CTimerThread;
 
-#include <wx/thread.h>
 #include <wx/event.h>
 
 
@@ -91,3 +90,4 @@ typedef void (wxEvtHandler::*MuleTimerEventFunction)(CTimerEvent&);
 	wxStaticCastEvent(MuleTimerEventFunction, &func), (wxObject*) NULL),
 
 #endif /* TIMER_H */
+// File_checked_for_headers

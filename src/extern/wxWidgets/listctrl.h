@@ -11,17 +11,13 @@
 #ifndef LISTCTRL_260_H
 #define LISTCTRL_260_H
 
-#include "wx/defs.h"
-#include "wx/object.h"
 #if defined(__WXMAC__) || defined(__WIN32__)
-#include "wx/imaglist.h"
+#include "wx/imaglist.h" // Do_not_auto_remove
 #else
 #include "wx/generic/imaglist.h"
 #endif
 
-#include "wx/control.h"
 #include "wx/timer.h"
-#include "wx/dcclient.h"
 #include "wx/scrolwin.h"
 #include "wx/settings.h"
 #include "wx/listbase.h"
@@ -309,3 +305,4 @@ public:
 }
 
 #endif // __LISTCTRLH_G__
+// File_checked_for_headers

@@ -26,9 +26,7 @@
 #ifndef KADDLG_H
 #define KADDLG_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include "Types.h"
 
 class COScopeCtrl;	
 class wxListEvent;
@@ -62,3 +60,4 @@ private:
 };
 
 #endif // KADDLG_H
+// File_checked_for_headers

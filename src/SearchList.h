@@ -26,15 +26,10 @@
 #ifndef SEARCHLIST_H
 #define SEARCHLIST_H
 
-#include "Types.h"				// Needed for uint8, uint16 and uint32
-#include "KnownFile.h"			// Needed for CAbstractFile
-#include "Tag.h"				// Needed for TagPtrList
 #include "Timer.h"				// Needed for CTimer
 #include "ObservableQueue.h"	// Needed for CQueueObserver
 #include "SearchFile.h"			// Needed for CSearchFile
 
-#include <map>
-#include <memory>
 
 
 class CMemFile;
@@ -226,3 +221,4 @@ private:
 
 
 #endif // SEARCHLIST_H
+// File_checked_for_headers

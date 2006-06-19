@@ -25,7 +25,6 @@
 
 #include <cmath>
 #include "UploadBandwidthThrottler.h"
-#include "EMSocket.h"
 #include "OPCodes.h"
 #include "OtherFunctions.h"
 #include "ThrottledSocket.h"
@@ -34,8 +33,6 @@
 #include "amule.h"
 #include "Statistics.h"
 
-#include <algorithm>
-#include <limits>
 
 #ifdef _UI64_MAX
 #undef _UI64_MAX
@@ -493,3 +490,4 @@ void* UploadBandwidthThrottler::Entry()
 
 	return 0;
 }
+// File_checked_for_headers

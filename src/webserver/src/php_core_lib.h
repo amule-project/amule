@@ -30,7 +30,6 @@
  */
 #ifdef __cplusplus
 
-#include <list>
 
 class CWriteStrBuffer {
 		std::list<char *> m_buf_list;
@@ -95,3 +94,4 @@ void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 void save_session_vars(std::map<std::string, std::string> &varmap);
 
 #endif //_PHP_CORE_LIB_H_
+// File_checked_for_headers

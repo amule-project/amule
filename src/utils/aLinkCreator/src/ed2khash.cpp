@@ -26,7 +26,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -41,7 +40,6 @@
 #include <wx/regex.h>
 
 #include "ed2khash.h"
-#include "md4.h"
 
 
 // efe, sorry for that, i have not enough time to do the right thing now, but 
@@ -49,7 +47,6 @@
 // alcc.c and here. And remove this stupid comment :)
 //-----------------------------------------------------------------------------
 // efe, this can be put in a separete include file, if you want to reuse
-#include <wx/strconv.h>
 static wxCSConv aMuleConv(wxT("iso8859-1"));
 #ifdef wxUSE_UNICODE
         #define unicode2char(x) (const char*) aMuleConv.cWX2MB(x)
@@ -278,3 +275,4 @@ wxArrayString Ed2kHash::GetED2KHash()
 {
   return (m_ed2kArrayOfHashes);
 }
+// File_checked_for_headers

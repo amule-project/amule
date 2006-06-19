@@ -29,25 +29,20 @@
 #endif
 
 #ifndef __WXMSW__
-	#include <unistd.h>
+	#include <unistd.h> // Do_not_auto_remove
 #endif
 
 #include "TextClient.h"
 
 //-------------------------------------------------------------------
 
-#include <wx/intl.h>			// For _()
-#include <list>
 
 //-------------------------------------------------------------------
 
-#include <ec/ECCodes.h>
-#include <ec/ECTag.h>
 #include <ec/ECSpecialTags.h>
 
 #include <common/Format.h>		// Needed for CFormat
 
-#include "OtherFunctions.h"
 
 
 #define APP_INIT_SIZE_X 640
@@ -55,7 +50,6 @@
 
 #define theApp (*((CamulecmdApp*)wxTheApp))
 
-#include <map>
 //-------------------------------------------------------------------
 
 enum {
@@ -891,3 +885,4 @@ int CamulecmdApp::OnRun()
 	ConnectAndRun(wxT("aMulecmd"), wxT(VERSION));
 	return 0;
 }
+// File_checked_for_headers

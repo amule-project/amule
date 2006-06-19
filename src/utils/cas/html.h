@@ -32,3 +32,4 @@ int create_html(char *stats[20], char *lines[6], char template[120]);
 
 #endif
 
+// File_checked_for_headers

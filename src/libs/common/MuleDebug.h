@@ -27,7 +27,6 @@
 #define MULEDEBUG_H
 
 #include <wx/defs.h>
-#include <wx/debug.h>
 #include <wx/string.h>
 
 /**
@@ -149,3 +148,4 @@ struct CInvalidPacket : public CMuleException
 #define MULE_CHECK_RET(cond, msg)       wxCHECK_RET((cond), (msg))
 
 #endif
+// File_checked_for_headers

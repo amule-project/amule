@@ -29,14 +29,9 @@
 
 #include "GetTickCount.h"	// Needed for GetTickCount64()
 #include "StatTree.h"		// Needed for CStatTreeItem* classes
-#include "Types.h"		// Needed for uint* types
 
-#include <wx/string.h>		// Needed for wxString
-#include <wx/thread.h>		// Needed for wxMutex and wxMutexLocker
 
 #include <deque>		// Needed for std::deque
-#include <list>			// Needed for std::list
-#include <vector>		// Needed for std::vector
 
 enum StatsGraphType {
 	GRAPH_INVALID = 0,
@@ -535,3 +530,4 @@ private:
 typedef	CStatistics	theStats;
 
 #endif // STATISTICS_H
+// File_checked_for_headers

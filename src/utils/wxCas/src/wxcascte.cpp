@@ -28,22 +28,19 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // For compilers that support precompilation
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
-#include <wx/defs.h>
-#include <wx/string.h>
 
 #ifdef __WXMAC__
-	#include <CoreServices/CoreServices.h>
-	#include <wx/mac/corefoundation/cfstring.h>
-	#include <wx/intl.h>
+	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
+	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
+	#include <wx/intl.h> // Do_not_auto_remove
 #elif defined(__WINDOWS__)
-	#include <winerror.h>
-	#include <shlobj.h>
+	#include <winerror.h> // Do_not_auto_remove
+	#include <shlobj.h> // Do_not_auto_remove
 #endif
 
 #include <wx/filename.h>
@@ -173,3 +170,4 @@ wxString GetDefaultAmulesigPath()
 
 	return strDir;
 }
+// File_checked_for_headers

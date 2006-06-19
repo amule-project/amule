@@ -23,7 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "Types.h"
 
 #include "ClientUDPSocket.h"	// Interface declarations
 #include "Preferences.h"		// Needed for CPreferences
@@ -32,17 +31,13 @@
 #include "UploadQueue.h"		// Needed for CUploadQueue
 #include "Packet.h"				// Needed for CPacket
 #include "SharedFileList.h"		// Needed for CSharedFileList
-#include "KnownFile.h"			// Needed for CKnownFile
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
-#include "OPCodes.h"			// Needed for OP_EMULEPROT
 #include "Statistics.h"			// Needed for theStats
 #include "amule.h"				// Needed for theApp
 #include "ClientList.h"			// Needed for clientlist (buddy support)
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
-#include "OtherFunctions.h"
 #include "MemFile.h"			// Needed for CMemFile
 #include "Logger.h"
-#include "UploadBandwidthThrottler.h"
 #include "kademlia/kademlia/Kademlia.h"
 #include "zlib.h"
 
@@ -248,3 +243,4 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			theStats::AddDownOverheadOther(size);				
 	}
 }
+// File_checked_for_headers

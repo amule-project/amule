@@ -36,12 +36,7 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
-//#include "../utils/MiscUtils.h"
 #include "Prefs.h"
-#include "../kademlia/SearchManager.h"
-#include "../../OPCodes.h"
-#include "../routing/RoutingZone.h"
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Indexed.h"
 #include "../../Preferences.h"
@@ -234,3 +229,4 @@ void CPrefs::SetKademliaFiles()
 #endif
 	m_kademliaFiles = nKadAverage*m_kademliaUsers;
 }
+// File_checked_for_headers

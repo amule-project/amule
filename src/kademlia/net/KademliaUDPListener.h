@@ -40,7 +40,6 @@ there client on the eMule forum..
 #define __KAD_UDP_LISTENER_H__
 
 #include "../utils/UInt128.h"
-#include "../../Types.h"
 #include "../../Tag.h"
 
 class CKnownFile;
@@ -102,3 +101,4 @@ private:
 } // End namespace
 
 #endif //__KAD_UDP_LISTENER_H__
+// File_checked_for_headers

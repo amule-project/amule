@@ -26,10 +26,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include <wx/defs.h>		// Needed for wxUSE_GUI and possibly for COLORREF
 
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
-#include <inttypes.h>		// Needed for uint32_t
 typedef uint32_t		COLORREF;
 #endif
 
@@ -109,3 +107,4 @@ inline COLORREF CrFromWxColour(wxColour col)
 
 
 #endif
+// File_checked_for_headers

@@ -26,11 +26,8 @@
 #ifndef AMULEIPV4ADDRESS_H
 #define AMULEIPV4ADDRESS_H
 
-#include <wx/defs.h>			// Needed before any other wx/*.h
 #include <wx/object.h>			// Needed by wx/sckaddr.h
-#include <wx/sckaddr.h>			// Needed for wxIPV4address
 
-#include "ArchSpecific.h"		// Needed for ENDIAN_SWAP_32
 #include "NetworkFunctions.h"	// Needed for unicode2char
 
 
@@ -66,3 +63,4 @@ public:
 };
 
 #endif // AMULEIPV4ADDRESS_H
+// File_checked_for_headers

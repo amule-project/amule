@@ -23,48 +23,30 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <ctime>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <wx/utils.h>
-#include <wx/file.h>
-#include <wx/filename.h>
 
-#include "SharedFileList.h"	// Interface declarations
-#include "UploadQueue.h"	// Needed for CUploadQueue
+#include "SharedFileList.h"	// Interface declarations  // Do_not_auto_remove
 #include "Packet.h"		// Needed for CPacket
-#include "Tag.h"		// Needed for CTag
 #include "MemFile.h"		// Needed for CMemFile
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "KnownFile.h"		// Needed for CKnownFile
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "ThreadTasks.h"	// Needed for CThreadScheduler and CHasherTask
 #include "Preferences.h"	// Needed for thePrefs
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
-#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "PartFile.h"		// Needed for PartFile
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"
-#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>
 #include "FileFunctions.h"
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#ifndef AMULE_DAEMON
-	#include "muuli_wdr.h"		// Needed for IDC_RELOADSHAREDFILES
-	#include <wx/msgdlg.h>
-#endif
 
-#include <algorithm>		// Needed for std::find, std::sort
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
-#include "kademlia/kademlia/Prefs.h"
 #include "ClientList.h"
 
 typedef std::deque<CKnownFile*> KnownFileArray;
@@ -1094,3 +1076,4 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 	
 	return false;
 }
+// File_checked_for_headers

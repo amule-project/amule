@@ -23,8 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
 
 #include "ServerUDPSocket.h"	// Interface declarations.
 #include "Packet.h"		// Needed for CPacket
@@ -33,20 +31,15 @@
 #include "MemFile.h"		// Needed for CMemFile
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList
-#include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 #include "Server.h"		// Needed for CServer
 #include "amule.h"			// Needed for theApp
 #include "AsyncDNS.h" // Needed for CAsyncDNS
-#include "GetTickCount.h"
-#include "ServerSocket.h"
 #include "Statistics.h"		// Needed for theStats
-#include <common/StringFunctions.h> // Needed for unicode2char 
 #include "Logger.h"
 #include <common/Format.h>
 #include "updownclient.h"	// Needed for SF_REMOTE_SERVER
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#include <sys/types.h>
 
 
 
@@ -403,3 +396,4 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 	
 	SendQueue();
 }
+// File_checked_for_headers

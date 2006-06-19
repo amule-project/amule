@@ -27,8 +27,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -1139,3 +1137,4 @@ void WxCasFrame::SaveAbsoluteHits()
 	prefs->Write( WxCasCte::ABSOLUTE_MAX_DL_DATE_KEY, ( long ) ( m_aMuleSig->GetAbsoluteMaxDlDate().GetTicks() ) );
 	prefs->Flush();
 }
+// File_checked_for_headers

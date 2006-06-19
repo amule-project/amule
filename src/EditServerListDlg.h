@@ -26,8 +26,6 @@
 #ifndef EDITSERVERLISTDLG_H
 #define EDITSERVERLISTDLG_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/dialog.h>		// Needed for wxDialog
 
 class wxTextCtrl;
 
@@ -53,3 +51,4 @@ private:
 };
 
 #endif // EDITSERVERLISTDLG_H
+// File_checked_for_headers

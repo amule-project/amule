@@ -22,13 +22,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "DataToText.h"
 
 #include "KnownFile.h"		// Needed by PriorityToStr
 #include "updownclient.h"	// Needed by DownloadStateToStr and GetSoftName
 
-#include <wx/string.h>
-#include <wx/intl.h>
 
 
 wxString PriorityToStr( int priority, bool isAuto )
@@ -137,3 +134,4 @@ wxString OriginToText(unsigned int source_from)
 		default:		return wxTRANSLATE("Unknown");
 	}
 }
+// File_checked_for_headers

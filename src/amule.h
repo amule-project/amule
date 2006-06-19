@@ -26,14 +26,11 @@
 #ifndef AMULE_H
 #define AMULE_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/app.h>			// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
-#include <wx/string.h>		// Needed for wxString
 
 #include "Types.h"			// Needed for int32, uint16 and uint64
 
-#include <list>				// Needed for std::list
 
 
 class CAbstractFile;
@@ -418,3 +415,4 @@ DECLARE_APP(CamuleDaemonApp)
 #endif /* ! AMULE_DAEMON */
 
 #endif // AMULE_H
+// File_checked_for_headers

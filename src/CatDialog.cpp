@@ -23,21 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/sizer.h>
-#include <wx/msgdlg.h>
-#include <wx/textctrl.h>
-#include <wx/statbmp.h>
-#include <wx/intl.h>		// Needed for _
-#include <wx/dialog.h>
-#include <wx/bitmap.h>
-#include <wx/dcmemory.h>
 #include <wx/colordlg.h>
-#include <wx/dirdlg.h>
-#include <wx/choice.h>
-#include <wx/button.h>
 
 #ifdef __WXMSW__
-	#include <io.h>
+	#include <io.h> // Do_not_auto_remove
 #endif
 
 #include "CatDialog.h"			// Interface declarations.
@@ -50,7 +39,6 @@
 #include "Preferences.h"		// Needed for CPreferences
 #include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"			// Needed for CategoriesEditWindow
-#include "Color.h"			// Needed for RGB, GetColour, GetRValue, GetGValue and GetBValue
 
 
 
@@ -228,3 +216,4 @@ void CCatDialog::OnBnClickColor(wxCommandEvent& WXUNUSED(evt))
 		CastChild(ID_BOX_CATCOLOR, wxStaticBitmap)->SetBitmap( MakeBitmap( WxColourFromCr( m_color ) ) );
 	}
 }
+// File_checked_for_headers

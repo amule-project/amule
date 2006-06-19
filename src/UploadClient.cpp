@@ -24,27 +24,17 @@
 //
 
 #include <zlib.h>
-#include <cmath>		// Needed for std::exp
 
-#include "OtherFunctions.h"	// Needed for nstrdup
 
-#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "Preferences.h"	// Needed for CPreferences
-#include "OtherStructs.h"	// Needed for Requested_Block_Struct
-#include "ServerConnect.h"		// Needed for CServerConnect
 #include "PartFile.h"		// Needed for PR_POWERSHARE
-#include "KnownFile.h"		// Needed for CKnownFile
-#include "KnownFileList.h"		// Needed for CKnownFileLists
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"		// Needed for theApp
-#include "OPCodes.h"		// Needed for PARTSIZE
-#include "BarShader.h"		// Needed for CBarShader
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for theStats
@@ -967,3 +957,4 @@ void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
 		}
 	}
 }
+// File_checked_for_headers

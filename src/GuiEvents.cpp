@@ -1,4 +1,3 @@
-#include <wx/app.h>
 
 #include "GuiEvents.h"
 #include "amule.h"
@@ -662,3 +661,4 @@ namespace MuleNotify
 
 #endif	// #ifdef CLIENT_GUI
 };
+// File_checked_for_headers

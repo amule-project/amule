@@ -39,10 +39,8 @@ there client on the eMule forum..
 #ifndef __KAD_ENTRY_H__
 #define __KAD_ENTRY_H__
 
-#include <ctime>
 
 #include "../utils/UInt128.h"
-#include "../../Tag.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -109,3 +107,4 @@ public:
 }
 
 #endif // __KAD_ENTRY_H__
+// File_checked_for_headers

@@ -26,12 +26,9 @@
 #ifndef TAG_H
 #define TAG_H
 
-#include <list>
 
-#include <wx/string.h>
 #include <common/StringFunctions.h>	// Needed for EUtf8Str
 
-#include "Types.h"		// Needed for int8, int32, uint8 and uint32
 #include "OPCodes.h"		// Needed for TAGTYPE_*
 #include "OtherFunctions.h"
 
@@ -296,3 +293,4 @@ public:
 void deleteTagPtrListEntries(TagPtrList* taglist);
 
 #endif // TAG_H
+// File_checked_for_headers

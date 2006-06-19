@@ -35,15 +35,10 @@
 
 #include <wx/app.h>			// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
-#include <wx/intl.h>		// For wxLocale
-#include <wx/string.h>		// For wxString
 
 #include <ec/RemoteConnect.h>
-#include <ec/ECCodes.h>
 
-#include "MD4Hash.h"
 
-#include <list>
 
 #define CMD_DEPRECATED		0x1000
 #define CMD_OK			 0
@@ -177,3 +172,4 @@ private:
 };
 
 #endif // __EXTERNALCONNECTOR_H__
+// File_checked_for_headers

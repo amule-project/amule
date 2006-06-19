@@ -39,8 +39,6 @@ there client on the eMule forum..
 #ifndef __SEARCHMANAGER_H__
 #define __SEARCHMANAGER_H__
 
-#include <map>
-#include <list>
 #include "../utils/UInt128.h"
 #include "../routing/Maps.h"
 #include "../../Tag.h"
@@ -113,3 +111,4 @@ private:
 } // End namespace
 
 #endif // __SEARCHMANAGER_H__
+// File_checked_for_headers

@@ -28,15 +28,9 @@
 
 #include "MD4Hash.h"
 #include "SHAHashSet.h"
-#include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include <set>
-#include <vector>
 
-#include "Types.h"		// Needed for int8, uint8, uint16, uint32 and uint64
-#include "OPCodes.h"		// Needed for PARTSIZE
 
-#include "kademlia/kademlia/SearchManager.h"
 #include "kademlia/kademlia/Indexed.h"
 
 #ifdef CLIENT_GUI
@@ -325,3 +319,4 @@ private:
 };
 
 #endif // KNOWNFILE_H
+// File_checked_for_headers

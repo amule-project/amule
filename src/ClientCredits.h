@@ -26,7 +26,6 @@
 #ifndef CLIENTCREDITS_H
 #define CLIENTCREDITS_H
 
-#include "Types.h"		// Needed for uint16 and uint32
 #include "MD4Hash.h"	// Needed for CMD4Hash
 
 #define	 MAXPUBKEYSIZE		80
@@ -99,3 +98,4 @@ private:
 };
 
 #endif // CLIENTCREDITS_H
+// File_checked_for_headers

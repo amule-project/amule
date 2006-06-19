@@ -37,22 +37,14 @@ there client on the eMule forum..
 */
 
 #include "Indexed.h"
-#include "Kademlia.h"
-#include "../../OPCodes.h"
-#include "Defines.h"
-#include "Prefs.h"
-#include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
-#include "../utils/UInt128.h"
-#include "../../OtherFunctions.h"
 #include "../../CFile.h"
 #include "../MemFile.h"
 #include "amule.h"
 #include "Preferences.h"
 #include "Logger.h"
 
-#include <wx/arrstr.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1121,3 +1113,4 @@ SSearchTerm::~SSearchTerm()
 	}
 	delete tag;
 }
+// File_checked_for_headers

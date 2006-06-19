@@ -27,9 +27,6 @@
 #define STRING_FUNCTIONS_H
 
 #include "../../Types.h"		// Needed for uint16 and uint32
-#include <wx/defs.h>
-#include <wx/string.h>
-#include <wx/strconv.h>
 #include <wx/filename.h>
 
 // UTF8 types: No UTF8, BOM prefix, or Raw UTF8
@@ -284,3 +281,4 @@ private:
 
 
 #endif // STRING_FUNCTIONS_H
+// File_checked_for_headers

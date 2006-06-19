@@ -26,12 +26,8 @@
 #ifndef FILELOCK_H
 #define FILELOCK_H
 
-#include <string>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <cerrno>
-#include <unistd.h>
 
 
 /**
@@ -121,3 +117,4 @@ private:
 };
 
 #endif
+// File_checked_for_headers

@@ -23,22 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
-#include <wx/sizer.h>
-#include <wx/menu.h>
-#include <wx/accel.h>
 #include "ChatWnd.h"		// Interface declarations.
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "ChatSelector.h"	// Needed for CChatSelector
 #include "muuli_wdr.h"		// Needed for messagePage
-#include "Color.h"		// Needed for GetColour
-#include "MuleNotebook.h"	// Needed for MULENOTEBOOK events
-#include "OPCodes.h"
 #include "OtherFunctions.h"
 
 BEGIN_EVENT_TABLE(CChatWnd, wxPanel)
@@ -182,3 +173,4 @@ void CChatWnd::CheckNewButtonsState() {
 				break;
 	}
 }
+// File_checked_for_headers

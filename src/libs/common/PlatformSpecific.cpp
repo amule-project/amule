@@ -22,17 +22,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "PlatformSpecific.h"	// Interface declarations
+#include "PlatformSpecific.h"	// Interface declarations // Do_not_auto_remove
 
 #ifdef __WXMAC__
-	#include <CoreServices/CoreServices.h>
-	#include <wx/mac/corefoundation/cfstring.h>
-	#include <wx/intl.h>
+	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
+	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
+	#include <wx/intl.h> // Do_not_auto_remove
 #elif defined(__WINDOWS__)
-	#include <winerror.h>
-	#include <shlobj.h>
+	#include <winerror.h> // Do_not_auto_remove
+	#include <shlobj.h> // Do_not_auto_remove
 #else
-	#include <wx/filename.h>
+	#include <wx/filename.h> // Do_not_auto_remove
 #endif
 
 
@@ -117,3 +117,4 @@ wxString GetDocumentsDir()
 
 
 #endif
+// File_checked_for_headers

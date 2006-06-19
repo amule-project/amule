@@ -26,12 +26,10 @@
 #ifndef OTHERFUNCTIONS_H
 #define OTHERFUNCTIONS_H
 
-#include <wx/string.h>		// Needed for wxString
 #include <wx/intl.h>		// Needed for wxLANGUAGE_ constants
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 
-#include <algorithm>
 
 
 /**
@@ -440,3 +438,4 @@ private:
 
 
 #endif // OTHERFUNCTIONS_H
+// File_checked_for_headers

@@ -26,8 +26,6 @@
 #ifndef __PROXY_H__
 #define __PROXY_H__
 
-#include <wx/socket.h>		// For wxSocket*
-#include <wx/string.h>		// For wxString
 
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine
@@ -584,3 +582,4 @@ private:
 
 #endif /* __PROXY_H__ */
 
+// File_checked_for_headers

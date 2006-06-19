@@ -28,41 +28,23 @@
 #define WEBSERVER_H
 
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #endif
 
-#include <wx/wx.h>
 
-#ifdef __WXMSW__
-	#include <winsock.h>
-#else
-	#include <sys/types.h>
-	#include <sys/socket.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
-#endif
-#include <zlib.h>		// Needed for Bytef etc.
 
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
 
-#include <list>
-#include <map>
-#include <vector>
 
-#include <wx/filename.h>
 
-#include <ec/ECPacket.h>
 
-#include "Types.h"
-#include "OtherFunctions.h"
 #include "WebInterface.h"
 #include "KnownFile.h"
 #include "RLE.h"
 #include "OtherStructs.h"
 
-#include "kademlia/utils/UInt128.h" // Need for UInt128
 
 //class TransferredData;
 class CWSThread;
@@ -812,3 +794,4 @@ class CNoTemplateWebServer : public CScriptWebServer {
 };
 
 #endif // WEBSERVER_H
+// File_checked_for_headers

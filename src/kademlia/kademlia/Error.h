@@ -38,7 +38,6 @@ there client on the eMule forum..
 #ifndef __KAD_ERROR_H__
 #define __KAD_ERROR_H__
 
-#include <wx/string.h>
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -78,3 +77,4 @@ public:
 } // End namespace
 
 #endif // __KAD_ERROR_H__
+// File_checked_for_headers

@@ -26,9 +26,7 @@
 #ifndef FRIEND_H
 #define FRIEND_H
 
-#include <wx/string.h>		// Needed for wxString
 
-#include "Types.h"		// Needed for uint32
 #include "MD4Hash.h"
 
 class CUpDownClient;
@@ -78,3 +76,4 @@ private:
 };
 
 #endif
+// File_checked_for_headers

@@ -24,24 +24,17 @@
 //
 
 #include "SearchListCtrl.h"	// Interface declarations
-#include "MuleNotebook.h"	// Needed for CMuleNotebook
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KnownFileList.h"	// Needed for CKnownFileList
-#include "OtherFunctions.h"	// Needed for CastItoXBytes
 #include "PartFile.h"		// Needed for CPartFile and CKnownFile
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "OPCodes.h"		// Needed for MP_ASSIGNCAT
 #include "amule.h"			// Needed for theApp
-#include "Color.h"			// Needed for BLEND and SYSCOLOR
 #include "muuli_wdr.h"		// Needed for clientImages
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
 
-#include <wx/menu.h>
-#include <wx/settings.h>
-#include <algorithm>
 
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
@@ -890,3 +883,4 @@ wxString CSearchListCtrl::GetTTSText(unsigned item) const
 {
 	return GetItemText(item);
 }
+// File_checked_for_headers

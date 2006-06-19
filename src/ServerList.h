@@ -26,13 +26,8 @@
 #ifndef SERVERLIST_H
 #define SERVERLIST_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/timer.h>		// Needed for wxTimer
 
-#include <list>
-#include <vector>
 
-#include "Types.h"		// Needed for int8, uint16 and uint32
 
 #include "ObservableQueue.h"
 
@@ -92,3 +87,4 @@ private:
 };
 
 #endif // SERVERLIST_H
+// File_checked_for_headers

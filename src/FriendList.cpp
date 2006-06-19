@@ -23,18 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
 
 #include "FriendList.h" // Interface
 
 #include "amule.h"			// Needed for theApp: let it first or fail under win32
 #include "ClientList.h"		// Needed for CClientList
-#include "OPCodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
-#include "ArchSpecific.h"
-#include "OtherFunctions.h"
 #include "CFile.h"
 #include "Logger.h"
 
@@ -232,3 +227,4 @@ void CFriendList::UpdateFriendName(const CMD4Hash& userhash, const wxString& nam
 	friend_client->SetName(name);
 	SaveList();
 }
+// File_checked_for_headers

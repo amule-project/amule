@@ -135,19 +135,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // cryptlib.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "cryptlib.h"
-//- #include "misc.h"
-//- #include "filters.h"
-//- #include "algparam.h"
-//- #include "fips140.h"
-//- #include "argnames.h"
-//- #include "fltrimpl.h"
 
-#include <memory>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -756,7 +747,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_WORDS_H
 #define CRYPTOPP_WORDS_H
 
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -851,13 +841,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // misc.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "misc.h"
-//- #include "words.h"
-#include <new>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -957,8 +943,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_NBTHEORY_H
 #define CRYPTOPP_NBTHEORY_H
 
-//- #include "integer.h"
-//- #include "algparam.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -1052,16 +1036,10 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // nbtheory.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "nbtheory.h"
-//- #include "modarith.h"
-//- #include "algparam.h"
 
-#include <math.h>
-#include <vector>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -1563,7 +1541,6 @@ NAMESPACE_END
 
 // crypto-related ASN.1 object identifiers
 
-//- #include "asn.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -1678,34 +1655,23 @@ NAMESPACE_END
 // integer.cpp - written and placed in the public domain by Wei Dai
 // contains public domain code contributed by Alister Lee and Leonard Janke
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "integer.h"
-//- #include "modarith.h"
-//- #include "nbtheory.h"
-//- #include "asn.h"
-//- #include "oids.h"
-//- #include "words.h"
-//- #include "algparam.h"
-//- #include "pubkey.h"		// for P1363_KDF2
-//- #include "sha.h"
 
-#include <iostream>
 
 #ifdef SSE2_INTRINSICS_AVAILABLE
 	#ifdef __GNUC__
-		#include <xmmintrin.h>
-		#include <signal.h>
-		#include <setjmp.h>
+		#include <xmmintrin.h> // Do_not_auto_remove
+		#include <signal.h> // Do_not_auto_remove
+		#include <setjmp.h> // Do_not_auto_remove
 		#ifdef CRYPTOPP_MEMALIGN_AVAILABLE
-			#include <malloc.h>
+			#include <malloc.h> // Do_not_auto_remove
 		#else
-			#include <stdlib.h>
+			#include <stdlib.h> // Do_not_auto_remove
 		#endif
 	#else
-		#include <emmintrin.h>
+		#include <emmintrin.h> // Do_not_auto_remove
 	#endif
 #elif defined(_MSC_VER) && defined(_M_IX86)
 	#pragma message("You do not seem to have the Visual C++ Processor Pack installed, so use of SSE2 intrinsics will be disabled.")
@@ -5385,11 +5351,7 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // algebra.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
-//- #include "algebra.h"
-//- #include "integer.h"
 
-#include <vector>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -5664,12 +5626,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // queue.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "queue.h"
-//- #include "filters.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6234,11 +6193,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // algparam.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "algparam.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6282,8 +6239,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_MQUEUE_H
 #define CRYPTOPP_MQUEUE_H
 
-//- #include "queue.h"
-//- #include "filters.h"
 #include <deque>
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -6359,11 +6314,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // mqueue.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "mqueue.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6438,16 +6391,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // filters.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "filters.h"
-//- #include "mqueue.h"
-//- #include "fltrimpl.h"
-//- #include "argnames.h"
-#include <memory>
-#include <functional>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -6962,11 +6908,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // pubkey.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "pubkey.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -7065,9 +7009,6 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // iterhash.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
-//- #include "iterhash.h"
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -7180,9 +7121,6 @@ NAMESPACE_END
 // Steve Reid implemented SHA-1. Wei Dai implemented SHA-2.
 // Both are in the public domain.
 
-//- #include "pch.h"
-//- #include "sha.h"
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -7269,10 +7207,7 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // pkcspad.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
-//- #include "pkcspad.h"
-#include <assert.h>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -7384,14 +7319,10 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // asn.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "asn.h"
 
-#include <iomanip>
-#include <time.h>
 
 NAMESPACE_BEGIN(CryptoPP)
 USING_NAMESPACE(std)
@@ -7810,15 +7741,6 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // rsa.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
-//- #include "rsa.h"
-//- #include "asn.h"
-//- #include "oids.h"
-//- #include "modarith.h"
-//- #include "nbtheory.h"
-//- #include "sha.h"
-//- #include "algparam.h"
-//- #include "fips140.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
@@ -8071,13 +7993,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // basecode.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "basecode.h"
-//- #include "fltrimpl.h"
-#include <ctype.h>
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8314,8 +8232,6 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // base64.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
-//- #include "base64.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8361,11 +8277,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // files.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "files.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8564,8 +8478,6 @@ NAMESPACE_END
 /** \file
 */
 
-//- #include "seckey.h"
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8664,9 +8576,6 @@ NAMESPACE_END
 #ifndef CRYPTOPP_STRCIPHR_H
 #define CRYPTOPP_STRCIPHR_H
 
-//- #include "seckey.h"
-//- #include "secblock.h"
-//- #include "argnames.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8763,11 +8672,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // strciphr.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "strciphr.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -8867,12 +8774,6 @@ NAMESPACE_END
 /*! \file
 */
 
-//- #include "cryptlib.h"
-//- #include "secblock.h"
-//- #include "misc.h"
-//- #include "strciphr.h"
-//- #include "argnames.h"
-//- #include "algparam.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -9025,11 +8926,9 @@ NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
 // modes.cpp - written and placed in the public domain by Wei Dai
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "modes.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -9058,14 +8957,9 @@ NAMESPACE_END
 // randpool.cpp - written and placed in the public domain by Wei Dai
 // The algorithm in this module comes from PGP's randpool.c
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "randpool.h"
-//- #include "mdc.h"
-//- #include "sha.h"
-//- #include "modes.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -9169,28 +9063,24 @@ NAMESPACE_END
 
 // Thanks to Leonard Janke for the suggestion for AutoSeededRandomPool.
 
-//- #include "pch.h"
 
 #ifndef CRYPTOPP_IMPORTS
 
-//- #include "osrng.h"
 
 #ifdef OS_RNG_AVAILABLE
 
-//- #include "rng.h"
 
 #ifdef CRYPTOPP_WIN32_AVAILABLE
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0400
 #endif
-#include <windows.h>
-#include <wincrypt.h>
+#include <windows.h> // Do_not_auto_remove
+#include <wincrypt.h> // Do_not_auto_remove
 #endif
 
 #ifdef CRYPTOPP_UNIX_AVAILABLE
 #include <errno.h>
 #include <fcntl.h>
-#include <unistd.h>
 #endif
 
 NAMESPACE_BEGIN(CryptoPP)
@@ -9369,9 +9259,6 @@ NAMESPACE_END
  *
  */
 
-//- #include "pch.h"
-//- #include "md4.h"
-//- #include "misc.h"
 
 NAMESPACE_BEGIN(CryptoPP)
 
@@ -9461,3 +9348,4 @@ void MD4::Transform (word32 *digest, const word32 *in)
 
 NAMESPACE_END
 ////////////////////////////////////////////////////////////////////////////////
+// File_checked_for_headers

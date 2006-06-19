@@ -25,8 +25,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <wx/string.h>
-#include <wx/intl.h>
 #include <wx/log.h>
 #include <wx/event.h>
 
@@ -305,3 +303,4 @@ typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
 #endif
 
 #endif
+// File_checked_for_headers

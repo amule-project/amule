@@ -26,12 +26,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/list.h>		// Needed for WX_DECLARE_LIST
 
-#include <list>
 
-#include "Types.h"		// Needed for uint8, uint16 and uint32
 #include "Tag.h"
 
 #ifdef CLIENT_GUI
@@ -189,3 +185,4 @@ private:
 };
 
 #endif // SERVER_H
+// File_checked_for_headers

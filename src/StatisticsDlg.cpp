@@ -23,10 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/settings.h>
-#include <wx/stattext.h>
-#include <wx/sizer.h>
-#include <wx/thread.h>		// Needed for wxMutexLocker
 
 #include <cmath>		// Needed for std::ceil
 
@@ -35,7 +31,6 @@
 #include "OScopeCtrl.h"		// Needed for COScopeCtrl
 #include "Preferences.h"	// Needed for thePrefs
 #include "muuli_wdr.h"		// Needed for statsDlg()
-#include "Statistics.h"		// Needed for theStats
 #include "StatisticsDlg.h"	// Interface declarations
 
 // CStatisticsDlg panel
@@ -322,3 +317,4 @@ void CStatisticsDlg::FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& Sta
 		temp_GUI_it = backup_node;
 	}
 }
+// File_checked_for_headers

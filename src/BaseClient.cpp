@@ -23,16 +23,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "Types.h"
 
 #include <zlib.h>		// Needed for inflateEnd
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/tokenzr.h>
-#include <wx/utils.h>
 
 #include <common/Format.h>		// Needed for CFormat
 
-#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue
@@ -44,26 +39,21 @@
 #include "Preferences.h"	// Needed for CPreferences
 #include "MemFile.h"		// Needed for CMemFile
 #include "Packet.h"		// Needed for CPacket
-#include "Tag.h"		// Needed for CTag
-#include "OtherStructs.h"	// Needed for Requested_Block_Struct
 #include "Friend.h"		// Needed for CFriend
 #include "ClientList.h"		// Needed for CClientList
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "ListenSocket.h"			// Needed for CListenSocket
-#include "OPCodes.h"		// Needed for OP_*
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"		// Needed for theStats
 #include "ClientUDPSocket.h"
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()
-#include "OtherFunctions.h"
 #include "GuiEvents.h"			// Needed for Notify_
 
 #include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/net/KademliaUDPListener.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
 
@@ -2343,3 +2333,4 @@ uint64 CUpDownClient::GetUploadedTotal() const
 float CUpDownClient::GetScoreRatio() const {
 	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
 }
+// File_checked_for_headers

@@ -30,13 +30,10 @@
 #ifndef SERVERCONNECT_H
 #define SERVERCONNECT_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include "Types.h"		// Needed for int8, uint8, uint16 and uint32
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Timer.h"		// Needed for CTimer
 
-#include <list>			// Needed for std::list
 #include <map>			// Needed for std::map
 
 class CServerList;
@@ -110,3 +107,4 @@ private:
 };
 
 #endif // SERVERCONNECT_H
+// File_checked_for_headers

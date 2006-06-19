@@ -26,7 +26,6 @@
 #include "DeadSourceList.h"
 #include "OPCodes.h"
 #include "updownclient.h"
-#include "NetworkFunctions.h"
 
 
 #define	CLEANUPTIME			MIN2MS(60)
@@ -164,3 +163,4 @@ void CDeadSourceList::CleanUp()
 		}
 	}
 }
+// File_checked_for_headers

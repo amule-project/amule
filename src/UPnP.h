@@ -31,17 +31,12 @@
 #define AMULE_UPNP_H
 
 
-#include <limits>
-#include <string>
 #include <map>
-#include <vector>
 
 
 #include "extern/upnp/upnp.h"
 
 
-#include <wx/string.h>
-#include <wx/thread.h>
 
 
 #include "Logger.h"				// for Add(Debug)LogLineM()
@@ -507,3 +502,4 @@ private:
 
 #endif /* AMULE_UPNP_H */
 
+// File_checked_for_headers
