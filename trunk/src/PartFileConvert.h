@@ -26,13 +26,10 @@
 #ifndef PARTFILECONVERT_H
 #define PARTFILECONVERT_H
 
-#include <wx/string.h>
-#include <wx/thread.h>
 #include <wx/dialog.h>
 #include <wx/listctrl.h>
 #include <wx/gauge.h>
 
-#include <list>
 
 #include "Types.h"
 
@@ -111,3 +108,4 @@ protected:
 };
 
 #endif /* PARTFILECONVERT_H */
+// File_checked_for_headers

@@ -25,13 +25,9 @@
 
 #include "ClientTCPSocket.h"	// Interface declarations
 
-#include <vector>
 
-#include <wx/tokenzr.h> 	// Needed for wxStringTokenizer
 
-#include "Proxy.h"		// Needed for CProxyData
 #include "Preferences.h"	// Needed for thePrefs
-#include "OPCodes.h"		// Needed for CONNECTION_TIMEOUT
 #include "Packet.h"		// Needed for CPacket
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"		// Neeed for logRemoteClient
@@ -2053,3 +2049,4 @@ void CClientTCPSocket::SendPacket(CPacket* packet, bool delpacket, bool controlp
 	ResetTimeOutTimer();
 	CEMSocket::SendPacket(packet,delpacket,controlpacket, actualPayloadSize);
 }
+// File_checked_for_headers

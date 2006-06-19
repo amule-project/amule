@@ -31,7 +31,6 @@
 #ifndef	ECCODES_H
 #define	ECCODES_H
 
-#include <inttypes.h>		// Needed for uint* types
 
 
 /*
@@ -1401,3 +1400,4 @@ enum EC_STATTREE_NODE_VALUE_TYPE {
 // Is there any need to change Debug prefs via EC?
 
 #endif	/* ECCODES_H */
+// File_checked_for_headers

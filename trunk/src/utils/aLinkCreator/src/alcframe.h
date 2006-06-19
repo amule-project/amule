@@ -31,7 +31,6 @@
 #define _ALCFRAME_H
 
 // For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -182,3 +181,4 @@ class AlcFrame:public wxFrame
   };
 
 #endif /* _ALCFRAME_H */
+// File_checked_for_headers

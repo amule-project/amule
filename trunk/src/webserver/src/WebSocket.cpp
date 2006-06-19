@@ -25,10 +25,8 @@
 //
 
 
-#include <vector>
 
 
-#include <wx/thread.h>
 
 
 #include "WebSocket.h"
@@ -409,3 +407,4 @@ void CWebSocket::SendData(const void* pData, uint32 dwDataSize) {
 		}
 	}
 }
+// File_checked_for_headers

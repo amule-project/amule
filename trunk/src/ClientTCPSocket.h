@@ -30,7 +30,6 @@
 #ifndef CLIENTTCPSOCKET_H
 #define CLIENTTCPSOCKET_H
 
-#include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "EMSocket.h"		// Needed for CEMSocket
 
 class CProxyData;
@@ -94,3 +93,4 @@ private:
 };
 
 #endif // CLIENTTCPSOCKET_H
+// File_checked_for_headers

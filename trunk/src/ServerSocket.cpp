@@ -23,9 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <ctime>
-#include <cerrno>
-#include "Types.h"
 #include <wx/tokenzr.h>
 
 #include "ServerSocket.h"	// Interface declarations
@@ -37,13 +34,9 @@
 #include "SearchList.h"		// Needed for CSearchList
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "OPCodes.h"		// Needed for OP_SERVERMESSAGE
-#include "OtherFunctions.h"	// Needed for GetTickCount
-#include "ServerConnect.h"		// Needed for CS_WAITFORLOGIN
 #include "ServerList.h"		// Needed for CServerList
 #include "Server.h"		// Needed for CServer
 #include "amule.h"		// Needed for theApp
-#include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 #include "Statistics.h"		// Needed for theStats
 #include "AsyncDNS.h" // Needed for CAsyncDNS
 #include "Logger.h"
@@ -690,3 +683,4 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 	}
 	
 }
+// File_checked_for_headers

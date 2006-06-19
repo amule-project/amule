@@ -36,19 +36,11 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-//#include "stdafx.h"
-//#include "resource.h"
-#include "SearchManager.h"
 #include "Search.h"
-#include "Kademlia.h"
 #include "Indexed.h"
-#include "../../OPCodes.h"
 #include "Defines.h"
 #include "../routing/Contact.h"
-#include "../utils/UInt128.h"
-#include "../kademlia/Prefs.h"
 #include "MemFile.h"
-#include "OtherFunctions.h"
 #include "Logger.h"
 
 #include <wx/tokenzr.h>
@@ -537,3 +529,4 @@ void CSearchManager::ProcessResult(const CUInt128 &target, uint32 fromIP, uint16
 		s->ProcessResult(fromIP, fromPort, answer, info);
 	}
 }
+// File_checked_for_headers

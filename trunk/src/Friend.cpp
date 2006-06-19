@@ -23,15 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <ctime>			// Needed for time(2)
 
 #include "Friend.h"			// Interface declarations.
 #include "PartFile.h"		// Needed for CPartFile
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "amule.h" 			// Needed for theApp / Notify_ChatRefreshFriend
-#include "OtherFunctions.h"
-#include "Tag.h"			// Needed for CTag
-#include "Logger.h"			// Needed for AddDebugLogLineM
 #include "GuiEvents.h"		// Needed for Notify_*
 
 
@@ -153,3 +148,4 @@ bool CFriend::HasFriendSlot() {
 		return false;
 	}
 }
+// File_checked_for_headers

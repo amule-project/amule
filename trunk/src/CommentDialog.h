@@ -27,7 +27,6 @@
 #define COMMENTDIALOG_H
 
 #include <wx/dialog.h>		// Needed for wxDialog
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/choice.h>		// Needed for wxChoice
 
 class CKnownFile;
@@ -52,3 +51,4 @@ private:
 };
 
 #endif // COMMENTDIALOG_H
+// File_checked_for_headers

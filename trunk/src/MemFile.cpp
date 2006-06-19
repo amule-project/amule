@@ -171,3 +171,4 @@ sint64 CMemFile::doSeek(sint64 offset) const
 	
 	return m_position = offset;
 }
+// File_checked_for_headers

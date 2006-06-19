@@ -31,19 +31,12 @@
 #include "pixmaps/mule_Tr_grey_big.ico.xpm"
 
 #include <wx/menu.h>
-#include <wx/string.h>
-#include <wx/intl.h>
 
-#include "OPCodes.h" 			// Needed for MOD_VERSION_LONG
 #include "amule.h" 			// Needed for theApp
 #include "amuleDlg.h" 			// Needed for IsShown
 #include "Preferences.h"		// Needed for thePrefs
 #include "ServerConnect.h"		// Needed for CServerConnect
-#include "OtherFunctions.h"		// Needed for CastSecondsToHM
 #include "Server.h"			// Needed for CServer
-#include "NetworkFunctions.h"		// Needed for Uint32toStringIP
-#include "Logger.h"
-#include "Color.h"			// Needed for WxColourFromCr
 #include "StatisticsDlg.h"		// Needed for CStatisticsDlg::getColors()
 #include "Statistics.h"			// Needed for theStats
 #include <common/Format.h>			// Needed for CFormat
@@ -550,3 +543,4 @@ void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&) {
 		theApp.amuledlg->Show_aMule();
 	}
 }
+// File_checked_for_headers

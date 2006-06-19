@@ -28,8 +28,6 @@
 #ifndef _ALCPIX_H
 #define _ALCPIX_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -59,3 +57,4 @@ class AlcPix
   };
 
 #endif /* _ALCPIX_H */
+// File_checked_for_headers

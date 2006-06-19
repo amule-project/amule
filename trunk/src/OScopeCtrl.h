@@ -30,13 +30,10 @@
 #define NULL 0
 #endif
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/control.h>		// Needed for wxControl
 #include <wx/timer.h>		// Needed for wxTimer
 #include <wx/pen.h>
-#include <wx/brush.h>
 
-#include "Types.h"		// Needed for RECT
 #include "Color.h"		// Needed for COLORREF and RGB
 #include "Statistics.h"		// Needed for StatsGraphType
 
@@ -145,3 +142,4 @@ private:
 };
 
 #endif // OSCOPECTRL_H
+// File_checked_for_headers

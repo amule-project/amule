@@ -27,8 +27,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -1690,3 +1688,4 @@ WxCasPix::m_wxcas_xpm[] =
         "+X+X+X+X3.+./ +.+X+X1.].+X+X+X+X+X_.+X+X+X+X+X+X+X+X+X+X+X+X+X+X"
     };
 #endif /* !__WXMSW__ */
+// File_checked_for_headers

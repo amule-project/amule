@@ -26,7 +26,6 @@
 #ifndef SEARCHLISTCTRL_H
 #define SEARCHLISTCTRL_H
 
-#include <list>				// Needed for std::list
 
 #include "wx/colour.h"		// Needed for wxColour
 #include <wx/regex.h>		// Needed for wxRegExp
@@ -293,3 +292,4 @@ protected:
 };
 
 #endif // SEARCHLISTCTRL_H
+// File_checked_for_headers

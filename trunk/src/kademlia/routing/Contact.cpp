@@ -37,7 +37,6 @@ there client on the eMule forum..
 */
 
 #include "Contact.h"
-#include "../../amule.h"
 #include "../../OPCodes.h" // Neededf for MIN2MS and such stuff.
 #include "../../Statistics.h"
 
@@ -159,3 +158,4 @@ void CContact::UpdateType()
 			m_expires = time(NULL) + HR2S(2);
 	}
 }
+// File_checked_for_headers

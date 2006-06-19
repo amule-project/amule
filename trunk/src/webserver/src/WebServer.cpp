@@ -24,43 +24,24 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for VERSION
-#endif
 
-#include <cstdlib>
-#include <cstdio>
-#include <cstring>
-#include <cctype>
-#include <cstdlib>
 #include <cmath> // Needed for cos, M_PI
-#include <string>
 
-#include "WebServer.h"
 
 //-------------------------------------------------------------------
 
 #include <wx/tokenzr.h>		// for wxTokenizer
-#include <wx/txtstrm.h>
 #include <wx/wfstream.h>
-#include <wx/filename.h>
 
 #include <ec/ECFileConfig.h>	// Needed for CECFileConfig
 #include <ec/ECSpecialTags.h>
-#include <ec/ECCodes.h>
 #include <common/MD5Sum.h>
 #include <common/Format.h>		// Needed for CFormat
 
 //-------------------------------------------------------------------
 
-#include "GetTickCount.h"	// Needed for GetTickCount
-#include "OtherStructs.h"	// Needed for TransferredData
-#include "OtherFunctions.h"	// Needed for atoll, ED2KFT_*
-#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
-#include "Types.h"
 #include "WebSocket.h"		// Needed for StopSockets()
 #include "Color.h"		// Needed for COLORREF and RGB()
-#include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL()
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
@@ -1960,3 +1941,4 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 	Data.pSocket->SendHttpHeaders("text/html", false, httpOutLen, 0);
 	Data.pSocket->SendData(httpOut, httpOutLen);
 }
+// File_checked_for_headers

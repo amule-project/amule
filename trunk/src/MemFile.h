@@ -26,7 +26,6 @@
 #ifndef MEMFILE_H
 #define MEMFILE_H
 
-#include "Types.h"		// Needed for uint8, uint16, uint32
 #include "SafeFile.h"	// Needed for CFileDataIO
 
 
@@ -164,3 +163,4 @@ private:
 };
 
 #endif // MEMFILE_H
+// File_checked_for_headers

@@ -30,9 +30,6 @@
 #include "ED2KLink.h"			// Interface declarations.
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
-#include <common/StringFunctions.h>	// Needed for unicode2char
-#include "OtherFunctions.h"		// Needed for DecodeBase32
-#include "OPCodes.h"			// Needed for MAX_FILE_SIZE
 
 
 
@@ -282,3 +279,4 @@ const CAICHHash& CED2KFileLink::GetAICHHash() const
 {
 	return m_AICHHash;
 }
+// File_checked_for_headers

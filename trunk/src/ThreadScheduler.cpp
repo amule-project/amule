@@ -26,9 +26,7 @@
 #include "Logger.h"				// Needed for Add(Debug)LogLineM
 #include <common/Format.h>		// Needed for CFormat
 #include "ScopedPtr.h"			// Needed for CScopedPtr
-#include "OtherFunctions.h"		// Needed for EraseFirstValue
 
-#include <algorithm>
 
 //! Global lock the scheduler and its thread.
 static wxMutex s_lock;
@@ -387,3 +385,4 @@ ETaskPriority CThreadTask::GetPriority() const
 }
 
 
+// File_checked_for_headers

@@ -62,14 +62,12 @@
 #endif /* !EC_REMOTE / EC_REMOTE */
 
 
-#include <inttypes.h>		// Needed for uint64_t, uint32_t
 #include <list>			// Needed for std::list
 #include <wx/string.h>		// Needed for wxString
 #include <wx/thread.h>		// Needed for wxMutex
 
 #ifndef EC_REMOTE
 
-#include <vector>		// Needed for std::vector
 #include <wx/datetime.h>	// Needed for wxDateTime
 #include "GetTickCount.h"	// Needed for GetTickCount64()
 
@@ -1177,3 +1175,4 @@ class CStatTreeItemTotalClients : public CStatTreeItemBase {
 #endif /* !EC_REMOTE */
 
 #endif /* STATTREE_H */
+// File_checked_for_headers

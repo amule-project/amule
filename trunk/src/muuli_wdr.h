@@ -16,17 +16,10 @@
     #include <wx/wx.h>
 #endif
 
-#include <wx/image.h>
 #include <wx/statline.h>
-#include <wx/spinbutt.h>
 #include <wx/spinctrl.h>
 #include <wx/splitter.h>
-#include <wx/listctrl.h>
 #include <wx/treectrl.h>
-#include <wx/notebook.h>
-#include <wx/grid.h>
-#include <wx/toolbar.h>
-#include <wx/tglbtn.h>
 
 // Declare window functions
 
@@ -550,3 +543,4 @@ wxBitmap amuleDlgImages( size_t index );
 #endif
 
 // End of generated file
+// File_checked_for_headers

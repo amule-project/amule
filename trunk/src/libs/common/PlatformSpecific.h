@@ -25,7 +25,7 @@
 #ifndef PLATFORMSPECIFIC_H
 #define PLATFORMSPECIFIC_H
 
-#include <wx/string.h>	// Needed for wxString
+#include <wx/string.h>
 
 /**
  * Returs the location of the "Documents" folder of the current user.
@@ -48,3 +48,4 @@ inline wxString GetUserDataDir() { return wxStandardPaths::Get().GetUserDataDir(
 
 
 #endif /* PLATFORMSPECIFIC_H */
+// File_checked_for_headers

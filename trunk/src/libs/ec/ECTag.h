@@ -26,7 +26,6 @@
 #define ECTAG_H
 
 /* aMule/libcommon generic includes */
-#include "Types.h"		// Needed for uint* types
 #include "MD4Hash.h"		// Needed for CMD4Hash
 
 /* EC specific includes */
@@ -278,3 +277,4 @@ class CECEmptyTag : public CECTag {
 };
 
 #endif /* ECTAG_H */
+// File_checked_for_headers

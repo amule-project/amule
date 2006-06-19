@@ -31,7 +31,6 @@
 
 #include "updownclient.h"
 #include "amule.h"
-#include "OPCodes.h"
 #include "KnownFile.h"
 #include "UploadQueue.h"
 #include "amule.h"
@@ -40,7 +39,6 @@
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
-#include <wx/brush.h>
 #include <wx/dc.h>
 
 
@@ -1088,3 +1086,4 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 	}
 
 }
+// File_checked_for_headers

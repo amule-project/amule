@@ -38,8 +38,6 @@
 #ifndef _MD4_H
 #define _MD4_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -117,3 +115,4 @@ class MD4
 
 #endif /* _MD4_H */
 
+// File_checked_for_headers

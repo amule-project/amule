@@ -28,7 +28,6 @@
 
 #ifndef AMULE_DAEMON
 
-#include <wx/defs.h>	// Needed before any other wx/*.h
 
 enum TaskbarNotifier
 {
@@ -114,3 +113,4 @@ class CMuleTrayIcon : public wxTaskBarIcon {
 #endif // DAEMON
 
 #endif //MULETRAYICON_H
+// File_checked_for_headers

@@ -24,20 +24,15 @@
 //
 
 #include <cmath>
-#include <algorithm>		// Needed for std::max
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
 #include <wx/dcmemory.h>
 
 #include <common/Format.h>
-#include <common/StringFunctions.h>
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "Logger.h"		// Needed for AddLogLineM
 #include "OScopeCtrl.h"		// Interface declarations
 #include "OtherFunctions.h"	// Needed for CastSecondsToHM
-#include "StatisticsDlg.h"	// Needed for GetHistory()
 
 BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
   EVT_PAINT(COScopeCtrl::OnPaint)
@@ -622,3 +617,4 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	}
 
 } // OnTimer
+// File_checked_for_headers

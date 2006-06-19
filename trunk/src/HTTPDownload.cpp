@@ -24,17 +24,14 @@
 //
 
 #ifdef __WXMSW__
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
+	#include <wx/defs.h> // Do_not_auto_remove
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #endif
 
 
-#include <wx/intl.h>
 #include <wx/wfstream.h>
 #include <wx/protocol/http.h>
-#include <wx/app.h>
 
-#include <cmath>
 
 #include "HTTPDownload.h"				// Interface declarations
 #include <common/StringFunctions.h>		// Needed for unicode2char
@@ -42,7 +39,6 @@
 #include "Logger.h"						// Needed for AddLogLine*
 #include <common/Format.h>				// Needed for CFormat
 #include "InternalEvents.h"				// Needed for CMuleInternalEvent
-#include "Proxy.h"						// Needed for CProxyData
 #include "Preferences.h"
 
 
@@ -50,7 +46,6 @@
 #include "inetdownload.h"	// Needed for inetDownload
 #include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
 #include "MuleGifCtrl.h"
-#include <wx/gauge.h>
 
 #ifdef __WXMSW__
 typedef wxGauge95 wxGaugeControl;
@@ -366,3 +361,4 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 	return url_read_stream;
 }
 
+// File_checked_for_headers

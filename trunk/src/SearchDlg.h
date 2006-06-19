@@ -26,9 +26,7 @@
 #ifndef SEARCHDLG_H
 #define SEARCHDLG_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/panel.h>		// Needed for wxPanel
-#include <wx/timer.h>		// Needed for wxTimer and wxTimerEvent
 
 #include "Types.h"		// Needed for uint16 and uint32
 
@@ -170,3 +168,4 @@ private:
 };
 
 #endif
+// File_checked_for_headers

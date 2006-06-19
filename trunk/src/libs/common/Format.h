@@ -25,8 +25,6 @@
 #ifndef FORMAT_H
 #define FORMAT_H
 
-#include <wx/string.h>
-#include <limits>
 
 #include "MuleDebug.h"
 
@@ -247,3 +245,4 @@ inline CFormat& CFormat::operator%(unsigned long long value)
 }
 
 #endif
+// File_checked_for_headers

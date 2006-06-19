@@ -26,15 +26,12 @@
 #ifndef DOWNLOADQUEUE_H
 #define DOWNLOADQUEUE_H
 
-#include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "ObservableQueue.h"	// Needed for CObservableQueue
 #include "GetTickCount.h" 	// Needed fot GetTickCount
 
-#include <wx/thread.h>		// Needed for wxMutex
 
 #include <deque>
-#include <list>
 
 
 class CSharedFileList;
@@ -387,3 +384,4 @@ private:
 };
 
 #endif // DOWNLOADQUEUE_H
+// File_checked_for_headers

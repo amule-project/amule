@@ -23,7 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/intl.h>		
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD
 #include "FileDetailListCtrl.h"	// Interface declarations
 
@@ -84,3 +83,4 @@ void CFileDetailListCtrl::OnSelect(wxListEvent& event)
 
 	event.Skip();
 }
+// File_checked_for_headers

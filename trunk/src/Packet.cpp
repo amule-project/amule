@@ -27,12 +27,10 @@
 
 #include "Packet.h"				// Interface declarations
 
-#include <wx/string.h>
 
 #include "MemFile.h"			// Needed for CMemFile
 #include "OtherStructs.h"		// Needed for Header_Struct
 #include "ArchSpecific.h"		// Needed for ENDIAN_*
-#include "OtherFunctions.h"		// Needed for md4cpy
 
 // Copy constructor
 CPacket::CPacket(CPacket &p)
@@ -309,3 +307,4 @@ void CPacket::CopyUInt32ToDataBuffer(uint32 data, unsigned int offset)
 	wxCHECK_RET(offset <= size - sizeof(uint32), wxT("Bad offset in CopyUInt32ToDataBuffer."));
 	PokeUInt32( pBuffer + offset, data );
 }
+// File_checked_for_headers

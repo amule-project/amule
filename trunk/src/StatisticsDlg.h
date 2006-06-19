@@ -28,8 +28,6 @@
 
 #include <wx/panel.h>		// Needed for wxPanel
 
-#include "Types.h"		// Needed for uint32 and uint64
-#include "Color.h"		// Needed for COLORREF
 
 class COScopeCtrl;
 class CStatistics;
@@ -72,3 +70,4 @@ protected:
 };
 
 #endif // STATISTICSDLG_H
+// File_checked_for_headers

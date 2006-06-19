@@ -58,3 +58,4 @@ typedef std::set<CUInt128> UIntSet;
 } // End namespace
 
 #endif // __KAD_MAPS_H__
+// File_checked_for_headers

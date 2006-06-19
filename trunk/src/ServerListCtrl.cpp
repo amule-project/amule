@@ -23,23 +23,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/filefn.h>
 #include <wx/textfile.h>
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
-#include <wx/settings.h>
 
 #include "ServerListCtrl.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "OtherFunctions.h"		// Needed for CastByName
 #include "ServerList.h"		// Needed for CServerList
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer and SRV_PR_*
-#include "OPCodes.h"		// Needed for MP_PRIO*
 #include "Logger.h"
 #include <common/Format.h>
 
@@ -648,3 +642,4 @@ int CServerListCtrl::SortProc(long item1, long item2, long sortData)
 			return 0;
 	}
 }
+// File_checked_for_headers

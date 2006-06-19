@@ -23,11 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <exception>			// Needed for std::exception
 #include <cxxabi.h>				// Needed for __cxxabiv1::
 #include <csignal>				// Needed for raise()
-#include <cstdio>
-#include <cwchar>				// Needed for fwprintf
 
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"	// Needed for unicode2char
@@ -35,20 +32,15 @@
 #ifdef __LINUX__
 	#include <execinfo.h>
 	#include <cxxabi.h>
-	#include <wx/thread.h>
-	#include <unistd.h> // Seems to be needed at least on Creteil's box
 #endif
 
 
 #if wxUSE_STACKWALKER && defined(__WXMSW__)
-	#include <wx/stackwalk.h>
+	#include <wx/stackwalk.h> // Do_not_auto_remove
 #elif HAVE_BFD
-	#include <ansidecl.h>
-	#include <bfd.h>
+	#include <ansidecl.h> // Do_not_auto_remove
+	#include <bfd.h> // Do_not_auto_remove
 #endif
-
-#include <wx/arrstr.h>
-#include <wx/utils.h>
 
 /**
  * This functions displays a verbose description of 
@@ -452,3 +444,4 @@ void print_backtrace(unsigned n)
 	fprintf(stderr, "%s\n", (const char*)unicode2char(trace.c_str()));
 }
 
+// File_checked_for_headers

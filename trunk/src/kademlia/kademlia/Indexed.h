@@ -39,13 +39,8 @@ there client on the eMule forum..
 #ifndef __INDEXED_H__
 #define __INDEXED_H__
 
-#include <list>
-#include <map>
 
-#include "../../Types.h"
 #include "SearchManager.h"
-#include "../routing/Maps.h"
-#include "../utils/UInt128.h"
 #include "Entry.h"
 
 class wxArrayString;
@@ -151,3 +146,4 @@ private:
 } // End namespace
 
 #endif //__INDEXED_H__
+// File_checked_for_headers

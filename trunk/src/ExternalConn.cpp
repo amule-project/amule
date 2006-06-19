@@ -27,32 +27,24 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <ec/ECTag.h>		// Needed for CECPacket, CECTag
 #include <ec/ECSocket.h>		// Needed for CECSocket
-#include <ec/ECCodes.h>		// Needed for OPcodes, TAGnames
-#include <ec/ECVersion.h>		// Needed for EC_VERSION_ID
 
 #include <common/Format.h>		// Needed for CFormat
 
 #include "ExternalConn.h"	// Interface declarations
-#include "OtherFunctions.h"	// Needed for EncodeBase16
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "UploadQueue.h"	// Needed for CUploadQueue
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
 #include "SearchList.h"		// Needed for GetSearchResults
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "ClientList.h"
 #include "Preferences.h"	// Needed for CPreferences
-#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
 #include "GuiEvents.h"		// Needed for Notify_* macros
-#include "NetworkFunctions.h"	// Needed for Uint32toStringIP()
 #include "Statistics.h"		// Needed for theStats
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "kademlia/kademlia/Kademlia.h"
@@ -1367,3 +1359,4 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 	}
 	return response;
 }
+// File_checked_for_headers

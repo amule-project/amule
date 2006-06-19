@@ -27,6 +27,7 @@
 #define DIRECTORYTREECTRL_H
 
 #include <wx/treectrl.h>
+#include <wx/imaglist.h>
 
 #define USRMSG_ITEMSTATECHANGED		(47101) + 16
 #define MP_SHAREDFOLDERS_FIRST	46901
@@ -90,3 +91,4 @@ protected:
 #undef wxTreeItemId
 
 #endif // DIRECTORYTREECTRL_H
+// File_checked_for_headers

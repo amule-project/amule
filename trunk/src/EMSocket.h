@@ -28,10 +28,8 @@
 
 #include "Proxy.h"				// Needed for CSocketClientProxy
 
-#include "Types.h"				// Needed for uint8 and uint32
 #include "ThrottledSocket.h"	// Needed for ThrottledFileSocket
 
-#include <list>
 
 
 class CPacket;
@@ -159,3 +157,4 @@ private:
 
 
 #endif // EMSOCKET_H
+// File_checked_for_headers

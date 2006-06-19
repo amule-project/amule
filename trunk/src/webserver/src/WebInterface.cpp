@@ -28,26 +28,19 @@
 	#include "config.h"	// For VERSION
 #endif
 
-#ifndef __WXMSW__
-	#include <unistd.h>
-#endif
 
-#include <wx/filename.h>	// Needed for wxFileName
 #include <wx/stdpaths.h>
 
-#include <cstdio>
 
 #ifdef __WXMAC__
-	#include <CoreFoundation/CFBundle.h>
-	#include <ApplicationServices/ApplicationServices.h>
-	#include <wx/mac/corefoundation/cfstring.h>
+	#include <CoreFoundation/CFBundle.h> // Do_not_auto_remove
+	#include <ApplicationServices/ApplicationServices.h> // Do_not_auto_remove
+	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
 #endif
 
 #include <ec/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
 
-#include "OtherFunctions.h"
-#include "WebInterface.h"
 #include "WebServer.h"
 
 
@@ -375,3 +368,4 @@ void CamulewebApp::SaveConfigFile()
 		m_configFile->WriteHash(wxT("/Webserver/GuestPassword"), m_GuestPass);
 	}
 }
+// File_checked_for_headers

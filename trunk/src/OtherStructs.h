@@ -26,7 +26,6 @@
 #ifndef OTHERSTRUCTS_H
 #define OTHERSTRUCTS_H
 
-#include "Types.h"		// Needed for int8, int32, uint8, uint16 and uint32
 
 // Defined in <zlib.h>
 struct z_stream_s;
@@ -94,3 +93,4 @@ struct Chunk {
 
 
 #endif // OTHERSTRUCTS_H
+// File_checked_for_headers

@@ -23,25 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/sizer.h> // Must be first or compilation fail on win32 !!!
-#include <cerrno>
-#include <cmath>
-#include <wx/textctrl.h>
-#include <wx/toolbar.h>
-#include <wx/utils.h>
-#include <wx/file.h>
-#include <wx/datetime.h>
-#include <wx/config.h>
-#include <wx/textfile.h>
-#include <wx/radiobox.h>
-#include <wx/msgdlg.h>
-#include <wx/log.h>
-#include <wx/statbmp.h>
 #include <wx/stattext.h>
-#include <wx/mimetype.h>
 #include <wx/tokenzr.h>
-#include <wx/filename.h>
-#include <wx/accel.h>
 #include <wx/html/htmlwin.h>
 
 #ifdef HAVE_CONFIG_H
@@ -51,16 +34,9 @@
 #include "amuleDlg.h"		// Interface declarations.
 
 #include "MuleTrayIcon.h"
-#include "OtherFunctions.h"	// Needed for CastItoIShort
-#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "ClientList.h"		// Needed for CClientList
-#include "ClientCredits.h"	// Needed for CClientCreditsList
-#include "SearchList.h"		// Needed for CSearchList
-#include "ClientUDPSocket.h"	// Needed for CClientUDPSocket
-#include "ServerList.h"		// Needed for CServerList
 #include "Preferences.h"	// Needed for CPreferences
 #include "ChatWnd.h"		// Needed for CChatWnd
 #include "StatisticsDlg.h"	// Needed for CStatisticsDlg
@@ -69,18 +45,10 @@
 #include "TransferWnd.h"	// Needed for CTransferWnd
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "ServerWnd.h"		// Needed for CServerWnd
-#include "KnownFileList.h"	// Needed for CKnownFileList
-#include "SharedFileList.h"	// Needed for CSharedFileList
-#include "PartFile.h"		// Needed for CPartFile
-#include "KnownFile.h"		// Needed for CKnownFile
-#include "ListenSocket.h"	// Needed for CListenSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "amule.h"		// Needed for theApp
-#include "OPCodes.h"		// Needed for TM_FINISHEDHASHING
 #include "muuli_wdr.h"		// Needed for ID_BUTTON*
 #include "PrefsUnifiedDlg.h"
-#include "GetTickCount.h"	// Needed for GetTickCount()
-#include <common/StringFunctions.h>	// Needed for unicode2char
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
@@ -1617,3 +1585,4 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
 	Close();
 }
+// File_checked_for_headers

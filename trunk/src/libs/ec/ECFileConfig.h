@@ -25,11 +25,9 @@
 #ifndef	ECFILECONFIG_H
 #define	ECFILECONFIG_H
 
-#include <wx/config.h>
 #include <wx/fileconf.h>
 #include <wx/filename.h>
 #include <wx/utils.h>
-#include <wx/string.h>
 
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "OtherFunctions.h"	// Needed for GetConfigDir()
@@ -99,3 +97,4 @@ class CECFileConfig : public wxFileConfig {
 };
 
 #endif /* ECFILECONFIG_H */
+// File_checked_for_headers

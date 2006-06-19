@@ -22,53 +22,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <unistd.h>           // Needed for close(2) and sleep(3)
-#include <wx/defs.h>
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
 #endif
 
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
-#include <wx/log.h>
-#include <wx/timer.h>
-#include <wx/config.h>
-#include <wx/socket.h>			// Needed for wxSocket
 #include <wx/utils.h>
-#include <wx/ipc.h>
-#include <wx/intl.h>			// Needed for i18n
-#include <wx/mimetype.h>		// For launching default browser
-#include <wx/textfile.h>		// Needed for wxTextFile
-#include <wx/cmdline.h>			// Needed for wxCmdLineParser
-#include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-#include <wx/url.h>
-#include <wx/stdpaths.h>
 
 #include "amule.h"			// Interface declarations.
-#include "GetTickCount.h"		// Needed for GetTickCount
-#include "Server.h"			// Needed for GetListName
-#include "OtherFunctions.h"		// Needed for GetTickCount
-#include "UploadQueue.h"		// Needed for CUploadQueue
-#include "DownloadQueue.h"		// Needed for CDownloadQueue
-#include "ClientCredits.h"		// Needed for CClientCreditsList
-#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket
-#include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"		// Needed for CServerConnect
-#include "ServerList.h"			// Needed for CServerList
-#include "KnownFileList.h"		// Needed for CKnownFileList
-#include "SearchList.h"			// Needed for CSearchList
-#include "ClientList.h"			// Needed for CClientList
 #include "Preferences.h"		// Needed for CPreferences
-#include "ListenSocket.h"		// Needed for CListenSocket
-#include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "ServerSocket.h"		// Needed for CServerSocket
-#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "PartFile.h"			// Needed for CPartFile
-#include "FriendList.h"			// Needed for CFriendList
-#include "Packet.h"
-#include "Statistics.h"
 #include "Logger.h"
 #include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
@@ -77,7 +41,7 @@
 
 
 #ifdef HAVE_SYS_RESOURCE_H
-#include <sys/resource.h>
+#include <sys/resource.h> // Do_not_auto_remove
 #endif
 
 #ifndef __WXMSW__
@@ -557,3 +521,4 @@ void CamuleDaemonApp::OnLoggingEvent(CLoggingEvent& evt)
 	CamuleApp::AddLogLine(evt.Message());
 }
 
+// File_checked_for_headers

@@ -28,7 +28,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -39,7 +38,6 @@
  #include "wx/wx.h"
 #endif
 
-#include <wx/dirdlg.h>
 #include <wx/config.h>
 
 #include "wxcasprefs.h"
@@ -481,3 +479,4 @@ WxCasPrefs::EnableFtpUpdateCtrls( bool state )
 	m_ftpPasswdTextCtrl->Enable ( state );
 	m_ftpPasswdStaticText->Enable ( state );
 }
+// File_checked_for_headers

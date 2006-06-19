@@ -26,23 +26,18 @@
 // The backtrace functions contain modified code from libYaMa, (c) Venkatesha Murthy G.
 // You can check libYaMa at http://personal.pavanashree.org/libyama/
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for wxGetTranslation
 #include <wx/utils.h>
-#include <wx/tokenzr.h>
 #include <wx/file.h>		// Needed for wxFile
-#include <wx/filename.h>	// Needed for wxFileName::GetPathSeparator()
-#include <wx/filefn.h>		// Needed for wxRemoveFile, wxMkdir, wxRmdir
 #include <wx/log.h>			// Needed for wxLogNull
 
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
-	#include <wx/msw/registry.h>
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
+	#include <wx/msw/registry.h> // Do_not_auto_remove
 	#if wxCHECK_VERSION_FULL(2,6,0,1)
-		#include <wx/stdpaths.h>
+		#include <wx/stdpaths.h>  // Do_not_auto_remove
 	#endif
 #else
-	#include <wx/stdpaths.h>
+	#include <wx/stdpaths.h> // Do_not_auto_remove
 #endif
 
 #include <common/StringFunctions.h>
@@ -59,11 +54,9 @@
 #include "OtherFunctions.h"	// Interface declarations
 #include "OPCodes.h"
 
-#include <cctype>
 #include <map>
 
 #ifdef __WXBASE__
-	#include <ctime>
 	#include <cerrno>
 #else
 	#include <wx/utils.h>
@@ -1373,3 +1366,4 @@ bool IsLocaleAvailable(int id)
 }
 
 #endif /* !AMULE_DEAMON && (!EC_REMOTE || CLIENT_GUI) */
+// File_checked_for_headers

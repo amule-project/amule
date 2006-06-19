@@ -30,8 +30,6 @@
 #ifndef _WXCAS_H
 #define _WXCAS_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -68,3 +66,4 @@ public:
 DECLARE_APP ( WxCas )
 
 #endif /* _WXCAS_H */
+// File_checked_for_headers

@@ -26,7 +26,6 @@
 #ifndef HTTPDOWNLOAD_H
 #define HTTPDOWNLOAD_H
 
-#include <wx/thread.h>	// Needed for wxThread
 #include "GuiEvents.h"	// Needed for HTTP_Download_File
 
 
@@ -53,3 +52,4 @@ private:
 };
 
 #endif // HTTPDOWNLOAD_H
+// File_checked_for_headers

@@ -25,10 +25,7 @@
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
-#include <common/StringFunctions.h>
 
-#include <wx/thread.h>
-#include <deque>
 
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE);
@@ -260,3 +257,4 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	CLogger::AddLogLine(critical, str);
 }
 
+// File_checked_for_headers

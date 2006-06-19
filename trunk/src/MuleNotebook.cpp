@@ -23,9 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/event.h>
-#include <wx/app.h>
-#include <wx/imaglist.h>
 #include <wx/menu.h>
 #include <wx/intl.h>
 
@@ -247,3 +244,4 @@ void CMuleNotebook::MouseMotion(wxMouseEvent &event)
 
 }
 
+// File_checked_for_headers

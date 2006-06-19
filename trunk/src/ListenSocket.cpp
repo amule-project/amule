@@ -33,7 +33,6 @@
 #include "OPCodes.h"		// Needed for LISTENSOCKET_HANDLER
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "IPFilter.h"		// Needed for CIPFilter
 
 //-----------------------------------------------------------------------------
 // CListenSocket
@@ -273,3 +272,4 @@ float CListenSocket::GetMaxConperFiveModifier()
 	
 	return 1.0f - (SpikeSize/SpikeTolerance);
 }
+// File_checked_for_headers

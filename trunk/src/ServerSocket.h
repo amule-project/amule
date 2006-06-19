@@ -30,7 +30,6 @@
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 
-#include "Types.h"		// Needed for int8 and int32
 #include "EMSocket.h"		// Needed for CEMSocket
 #include "ServerConnect.h"
 
@@ -83,3 +82,4 @@ private:
 };
 
 #endif // SERVERSOCKET_H
+// File_checked_for_headers

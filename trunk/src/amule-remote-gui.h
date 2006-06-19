@@ -25,25 +25,16 @@
 #ifndef AMULE_REMOTE_GUI_H
 #define AMULE_REMOTE_GUI_H
 
-#include <wx/string.h>
 
-#include <ec/ECSpecialTags.h>
-#include <ec/ECSocket.h>
 #include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
 
 
 #include "Statistics.h"
 #include "Preferences.h"
 #include "Statistics.h"
-#include "OtherFunctions.h"
 #include "RLE.h"
 #include "SearchList.h"			// Needed for CSearchFile
 
-#include <set>
-#include <map>
-#include <list>
-#include <vector>
-#include <memory>
 
 class CED2KFileLink;
 class CServer;
@@ -761,3 +752,4 @@ DECLARE_APP(CamuleRemoteGuiApp)
 
 #endif /* AMULE_REMOTE_GUI_H */
 
+// File_checked_for_headers

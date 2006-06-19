@@ -28,18 +28,14 @@
 
 #include <common/Format.h>		// Needed for CFormat
 
-#include <cstdio>		// Needed for fprintf(stderr, ...)
-#include <wx/filefn.h>
-#include <wx/intl.h>		// For _()
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
-#include <unistd.h>	// For getpass() and pause()
 // For readline
 #ifdef HAVE_LIBREADLINE
 	#if defined(HAVE_READLINE_READLINE_H)
-		#include <readline/readline.h>
+		#include <readline/readline.h>  // Do_not_auto_remove
 	#elif defined(HAVE_READLINE_H)
-		#include <readline.h>
+		#include <readline.h> // Do_not_auto_remove
 	#else /* !defined(HAVE_READLINE_H) */
 		extern "C" char *readline (const char*);
 	#endif /* !defined(HAVE_READLINE_H) */
@@ -50,9 +46,9 @@
 // For history
 #ifdef HAVE_READLINE_HISTORY
 	#if defined(HAVE_READLINE_HISTORY_H)
-		#include <readline/history.h>
+		#include <readline/history.h> // Do_not_auto_remove
 	#elif defined(HAVE_HISTORY_H)
-		#include <history.h>
+		#include <history.h> // Do_not_auto_remove
 	#else /* !defined(HAVE_HISTORY_H) */
 		extern "C" void add_history (const char*);
 	#endif /* defined(HAVE_READLINE_HISTORY_H) */
@@ -62,14 +58,10 @@
 
 
 #include <ec/ECFileConfig.h>	// Needed for CECFileConfig
-#include <ec/ECTag.h>		// Needed for CECPacket, CECTag
-#include <ec/ECCodes.h>		// Needed for OPcodes and TAGnames
 
 #include <common/MD5Sum.h>
-#include <common/StringFunctions.h>
 
 #include "ExternalConnector.h"
-#include "OtherFunctions.h"
 
 
 //-------------------------------------------------------------------
@@ -605,8 +597,8 @@ bool CaMuleExternalConnector::OnInit()
 
 #if !wxUSE_GUI && defined(__WXMAC__)
 
-#include <wx/apptrait.h>
-#include <wx/stdpaths.h>
+#include <wx/apptrait.h> // Do_not_auto_remove
+#include <wx/stdpaths.h> // Do_not_auto_remove
 
 class CaMuleExternalConnectorTraits : public wxConsoleAppTraits
 {
@@ -628,3 +620,4 @@ wxAppTraits* CaMuleExternalConnector::CreateTraits()
 }
 
 #endif
+// File_checked_for_headers

@@ -23,26 +23,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/intl.h>		// Needed for _
-#include <wx/menu.h>		// Needed for wxMenu
-#include <wx/msgdlg.h>		// Needed for wxMessageBox
 
 #include "amule.h"			// Needed for theApp: let it first or fail under win32
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Interface declarations
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "AddFriend.h"		// Needed for CAddFriend
-#include "ClientList.h"		// Needed for CClientList
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "OPCodes.h"		// Needed for MP_DETAIL
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Friend.h"		// Needed for CFriend
-#include "ArchSpecific.h"
-#include "OtherFunctions.h"
 #include "muuli_wdr.h"
 #include "SafeFile.h"
-#include "Logger.h"
 
 #warning REMOVE WHEN EC IS CODED!
 #include "FriendList.h"		// Needed for the friends list
@@ -384,3 +375,4 @@ void CFriendListCtrl::OnKeyPressed(wxKeyEvent& event)
 		event.Skip();
 	}
 }
+// File_checked_for_headers

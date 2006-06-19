@@ -35,9 +35,7 @@
 #ifndef UPNP_H
 #define UPNP_H
 
-#include <stdio.h>
 #include "ixml.h"
-#include "config.h"
 
 #define LINE_SIZE  180
 #define NAME_SIZE 100
@@ -292,3 +290,4 @@ struct Upnp_Action_Complete
 
 #endif
 
+// File_checked_for_headers

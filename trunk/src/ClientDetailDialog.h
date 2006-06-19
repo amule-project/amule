@@ -26,9 +26,8 @@
 #ifndef CLIENTDETAILDIALOG_H
 #define CLIENTDETAILDIALOG_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h>
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #endif
 #include <wx/dialog.h>		// Needed for wxDialog
 
@@ -86,3 +85,4 @@ private:
 	CUpDownClient* m_client;
 };
 #endif // CLIENTDETAILDIALOG_H
+// File_checked_for_headers

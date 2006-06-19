@@ -27,14 +27,11 @@
 #include "Proxy.h"		/* for Interface		*/
 
 
-#include <typeinfo>		/* For bad_cast			*/
-#include <cctype>		/* For isspace() and isgraph()	*/
 
 
 #include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 #include "Logger.h"		/* for AddDebugLogLineM		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
-#include "NetworkFunctions.h"	/* for StringIPtoUint32()	*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
 #include <common/StringFunctions.h>	/* for unicode2char */
 
@@ -245,8 +242,6 @@ void CProxyStateMachine::AddDummyEvent()
  * the event handler from the socket. They should be removed. For now,
  * please leave it here.
  */
-#include "ListenSocket.h"	// For CClientTCPSocketHandler
-#include "ServerSocket.h"	// For CServerSocketHandler
 
 void CProxyStateMachine::ReactivateSocket()
 {
@@ -1479,3 +1474,4 @@ wxUint32 CDatagramSocketProxy::LastCount(void) const
 #endif // CLIENT_GUI
 
 /******************************************************************************/
+// File_checked_for_headers

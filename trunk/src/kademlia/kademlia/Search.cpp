@@ -37,27 +37,18 @@ there client on the eMule forum..
 */
 
 
-#include "../../Tag.h"
 
 #include "Search.h"
-#include "Kademlia.h"
-#include "../../OPCodes.h"
 #include "Defines.h"
-#include "Prefs.h"
-#include "Indexed.h"
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
 #include "../../amule.h"
 #include "../../SharedFileList.h"
-#include "../../OtherFunctions.h"
-#include "../../KnownFile.h"
 #include "../../DownloadQueue.h"
 #include "../../PartFile.h"
 #include "../../SearchList.h"
 #include "../../MemFile.h"
-#include "../../ServerConnect.h"
-#include "../../Server.h"
 #include "../../ClientList.h"
 #include "../../updownclient.h"
 #include "../../Logger.h"
@@ -1028,3 +1019,4 @@ uint32 CSearch::GetNodeLoad() const
 	}
 	return m_totalLoad/m_totalLoadResponses;
 }
+// File_checked_for_headers

@@ -23,28 +23,20 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/settings.h>
-#include <wx/textctrl.h>
-#include <wx/sizer.h>
 
 #include "muuli_wdr.h"		// Needed for ID_ADDTOLIST
 #include "ServerWnd.h"		// Interface declarations.
-#include "GetTickCount.h"	// Needed for GetTickCount
 #include "Server.h"		// Needed for CServer
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerListCtrl.h"	// Needed for CServerListCtrl
-#include "OtherFunctions.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for CPreferences
 #include "ServerConnect.h"
-#include "NetworkFunctions.h" // Needed for Uint32_16toStringIP_Port
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "amule.h"			// Needed for theApp
-#include <common/StringFunctions.h> // Needed for StrToULong
 #include "Logger.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "ClientList.h"
-#include "OtherFunctions.h"
 #include "updownclient.h"
 
 BEGIN_EVENT_TABLE(CServerWnd,wxPanel)
@@ -269,3 +261,4 @@ void CServerWnd::OnBnClickedED2KDisconnect(wxCommandEvent& WXUNUSED(evt))
 		theApp.serverconnect->Disconnect();
 	}	
 }
+// File_checked_for_headers

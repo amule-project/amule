@@ -28,14 +28,9 @@
 
 
 #include <deque>			// Needed for std::deque
-#include <memory>			// Needed for std::auto_ptr
-#include <set>				// Needed for std::set
-#include <utility>			// Needed for std::pair
-#include <vector>			// Needed for std::vector
 
 
 #include <wx/socket.h>		// Needed for wxSocketClient
-#include <wx/string.h>		// Needed for wxString
 
 
 #include "Types.h"
@@ -293,3 +288,4 @@ public:
 
 #endif // ECSOCKET_H
 
+// File_checked_for_headers

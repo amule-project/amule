@@ -40,8 +40,6 @@ there client on the eMule forum..
 #define __PREFS_H__
 
 #include "../utils/UInt128.h"
-#include "Types.h"
-#include <ctime>
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -137,3 +135,4 @@ private:
 } // End namespace
 
 #endif //__PREFS_H__
+// File_checked_for_headers

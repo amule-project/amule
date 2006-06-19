@@ -26,13 +26,8 @@
 #ifndef KNOWNFILELIST_H
 #define KNOWNFILELIST_H
 
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/hashmap.h>		// Needed for WX_DECLARE_HASH_MAP, wxStringHash and wxStringEqual
-#include <wx/thread.h>		// Needed for wxMutex
 
-#include <list>
 
-#include "Types.h"		// Needed for uint16 and uint32
 #include "SharedFileList.h" // CKnownFileMap
 
 
@@ -68,3 +63,4 @@ private:
 };
 
 #endif // KNOWNFILELIST_H
+// File_checked_for_headers

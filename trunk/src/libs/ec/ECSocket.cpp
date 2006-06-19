@@ -25,23 +25,12 @@
 
 #include "ECSocket.h"
 
-#include <wx/intl.h>		// Needed for i18n
 
-#include <cstring>		// Needed for memcpy()/memmove()
-#include <memory>		// Needed for auto_ptr<>
-#include <zlib.h>		// Needed for packet (de)compression
 
-#include "ArchSpecific.h"	// Needed for ENDIAN_NTOHL
 
-#include "ECVersion.h"		// Needed for EC_VERSION_ID
-#include "ECCodes.h"		// Needed for the EC_FLAG_* values
 #include "ECPacket.h"		// Needed for CECPacket
 
-#include <wx/app.h>		// Needed for wxTheApp
 
-#include "OtherFunctions.h"
-#include "common/StringFunctions.h"	// Needed for unicode2char()
-#include "Logger.h"
 #include <common/Format.h>
 
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
@@ -777,3 +766,4 @@ const CECPacket *CECSocket::OnPacketReceived(const CECPacket *)
 {
 	return 0;
 }
+// File_checked_for_headers

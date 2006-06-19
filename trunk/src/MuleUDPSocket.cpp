@@ -27,7 +27,6 @@
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h"	// Needed for GetTickCount()
-#include "OPCodes.h"		// Needed for SEC2MS
 #include "Packet.h"			// Needed for CPacket
 #include <common/StringFunctions.h>// Needed for unicode2char
 #include "Proxy.h"			// Needed for CDatagramSocketProxy
@@ -316,3 +315,4 @@ bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 
 	return sent;
 }
+// File_checked_for_headers

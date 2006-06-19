@@ -27,8 +27,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -40,7 +38,6 @@
 #endif
 
 #include "onlinesig.h"
-#include "wxcascte.h"
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
@@ -363,3 +360,4 @@ unsigned int OnLineSig::PullCount ( unsigned int *runtime, const unsigned int co
 	*runtime -= answer * count;
 	return answer;
 }
+// File_checked_for_headers

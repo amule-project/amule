@@ -27,7 +27,6 @@
 
 #include <wx/control.h>
 #include <wx/timer.h>
-#include <wx/bitmap.h>
 
 const int GIFTIMERID = 271283;
 
@@ -133,3 +132,4 @@ private:
 
 #endif
 
+// File_checked_for_headers

@@ -27,8 +27,6 @@
 #define SHAREDFILELIST_H
 
 #include <map>
-#include <vector>
-#include <wx/defs.h>		// Needed before any other wx/*.h
 #include <wx/thread.h>		// Needed for wxMutex
 
 #include "Types.h"		// Needed for uint16 and uint64
@@ -100,3 +98,4 @@ private:
 };
 
 #endif // SHAREDFILELIST_H
+// File_checked_for_headers

@@ -28,9 +28,6 @@
 #define NETWORK_FUNCTIONS_H
 
 #include "Types.h"		// Needed for uint16 and uint32
-#include <wx/defs.h>
-#include <wx/string.h>
-#include <wx/thread.h>
 #include <wx/socket.h>
 
 // Network ip/host handling functions
@@ -116,3 +113,4 @@ inline bool IsLowID(uint32 id) {
 }
 
 #endif // NETWORK_FUNCTIONS_H
+// File_checked_for_headers

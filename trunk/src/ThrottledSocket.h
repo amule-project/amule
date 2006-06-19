@@ -26,7 +26,6 @@
 #ifndef THROTTLEDSOCKET_H
 #define THROTTLEDSOCKET_H
 
-#include "Types.h"
 
 struct SocketSentBytes
 {
@@ -53,3 +52,4 @@ public:
 };
 
 #endif
+// File_checked_for_headers

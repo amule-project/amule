@@ -24,7 +24,6 @@
 
 #include <wx/mstream.h>
 #include <wx/gifdecod.h>
-#include <wx/window.h>
 #include <wx/dcbuffer.h>
 
 #include "MuleGifCtrl.h"
@@ -137,3 +136,4 @@ void MuleGifCtrl::OnPaint( wxPaintEvent& WXUNUSED(event) )
 	dc.DrawBitmap( m_frame, x + m_decoder->GetLeft(), y + m_decoder->GetTop(), true);
 }
 
+// File_checked_for_headers

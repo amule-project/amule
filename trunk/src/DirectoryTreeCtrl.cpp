@@ -24,13 +24,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/log.h>
 
-#include <wx/imaglist.h>
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 #include "muuli_wdr.h"		// Needed for amuleSpecial
-#include <common/StringFunctions.h> // Needed for unicode2char
-#include <wx/event.h>
 
 #include "FileFunctions.h"
 
@@ -423,3 +419,4 @@ void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 		}
 	};
 }
+// File_checked_for_headers

@@ -35,8 +35,6 @@
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -407,3 +405,4 @@ size_t MD4::calcBufSize(size_t filesize)
 
   return (filesize);
 }
+// File_checked_for_headers

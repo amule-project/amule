@@ -30,8 +30,6 @@
 #ifndef _WXCASPRINT_H
 #define _WXCASPRINT_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
  #pragma hdrstop
@@ -65,3 +63,4 @@ public:
 };
 
 #endif /* _WXCASPRINT_H */
+// File_checked_for_headers

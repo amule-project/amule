@@ -23,9 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <csignal>
-#include <fcntl.h>
-#include <sys/stat.h>
 
 #include "EMSocket.h"		// Interface declarations.
 #include "Packet.h"		// Needed for CPacket
@@ -774,3 +771,4 @@ void CEMSocket::SetTimeOut(uint32 uTimeOut)
 {
 	m_uTimeOut = uTimeOut;
 }
+// File_checked_for_headers

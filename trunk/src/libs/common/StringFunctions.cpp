@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cctype>
 
-#include <wx/filename.h>
 #include <wx/url.h>
 
 #include "StringFunctions.h"
@@ -273,3 +271,4 @@ size_t CSimpleTokenizer::tokenCount() const
 }
 
 
+// File_checked_for_headers

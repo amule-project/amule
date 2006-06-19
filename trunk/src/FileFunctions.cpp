@@ -23,27 +23,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/filename.h>
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
 #include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/fs_zip.h>		// Needed for wxZipFSHandler
-#include <wx/file.h>		// Needed for wxFile
-#include <wx/thread.h>		// Needed for wxMutex
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <errno.h>
-#include <algorithm>
-#include <cctype>
 #include <map>
 #ifdef __WXMAC__
-#include <zlib.h>
+#include <zlib.h> // Do_not_auto_remove
 #endif
 
 #include "FileFunctions.h"
-#include <common/StringFunctions.h>
 #include "CFile.h"
 #include "Logger.h"
 
@@ -654,3 +645,4 @@ FSCheckResult CheckFileSystem(const wxString& path)
 }
 
 #endif
+// File_checked_for_headers

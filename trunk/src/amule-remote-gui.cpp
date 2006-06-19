@@ -22,53 +22,23 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <unistd.h>			// Needed for close(2) and sleep(3)
 #include <memory>			// Needed for auto_ptr
 using std::auto_ptr;
 
-#include <wx/defs.h>
-#include <wx/gauge.h>
-#include <wx/textctrl.h>
 
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
-#include <wx/log.h>
-#include <wx/timer.h>
-#include <wx/config.h>
-#include <wx/clipbrd.h>			// Needed for wxClipBoard
-#include <wx/socket.h>			// Needed for wxSocket
-#include <wx/splash.h>			// Needed for wxSplashScreen
-#include <wx/utils.h>
 #include <wx/ipc.h>
-#include <wx/intl.h>			// Needed for i18n
-#include <wx/mimetype.h>		// For launching default browser
-#include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
-#include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-#include <wx/msgdlg.h>			// Needed for wxMessageBox
-#include <wx/checkbox.h>
 #include <wx/fileconf.h>		// Needed for wxFileConfig
-#include <wx/timer.h>			// Needed for wxTimer
 
-#include <common/StringFunctions.h>
 #include <common/Format.h>
 #include <common/MD5Sum.h>
 
-#include <ec/ECTag.h>
-#include <ec/ECCodes.h>
-#include <ec/ECVersion.h>
 
-#include "MD4Hash.h"
 #include "amule.h"			// Interface declarations.
-#include "GetTickCount.h"		// Needed for GetTickCount
 #include "Server.h"			// Needed for GetListName
-#include "OtherFunctions.h"		// Needed for GetTickCount
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "ServerWnd.h"			// Needed for CServerWnd
-#include "StatisticsDlg.h"		// Needed for CStatisticsDlg
-#include "Preferences.h"		// Needed for CPreferences
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"
 #include "Logger.h"
@@ -80,7 +50,6 @@ using std::auto_ptr;
 #include "ClientListCtrl.h"
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
-#include "OtherFunctions.h"		// Needed for CastItoIShort
 #include "GuiEvents.h"
 
 
@@ -1523,3 +1492,4 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)
+// File_checked_for_headers

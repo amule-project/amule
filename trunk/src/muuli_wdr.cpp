@@ -8,7 +8,6 @@
 #endif
 
 // For compilers that support precompilation
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -17,7 +16,6 @@
 // Include private header
 #include "muuli_wdr.h"
 
-#include <wx/intl.h>
 
 // Euro sign hack of the year
 #if wxUSE_UNICODE
@@ -33,7 +31,6 @@
 #endif
 
 // Custom source
-#include "amule.h"
 #include "ServerListCtrl.h"
 #include "DownloadListCtrl.h"
 #include "SharedFilesCtrl.h"
@@ -42,10 +39,8 @@
 #include "FriendListCtrl.h"
 #include "FileDetailListCtrl.h"
 #include "MuleGifCtrl.h"
-#include "MuleNotebook.h"
 #include "ChatSelector.h"
 #include "DirectoryTreeCtrl.h"	// Needed for CDirectoryTreeCtrl
-#include "MuleTextCtrl.h" // Needed for CMuleTextCtrl
 #include "ClientListCtrl.h"
 #include "PartFileConvert.h"
 #include "KadDlg.h"
@@ -9459,3 +9454,4 @@ wxBitmap amuleDlgImages( size_t index )
 
 
 // End of generated file
+// File_checked_for_headers

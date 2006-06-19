@@ -30,7 +30,6 @@
 #ifndef LISTENSOCKET_H
 #define LISTENSOCKET_H
 
-#include "Types.h"		// Needed for uint8, uint16, uint32 and uint64
 #include "Proxy.h"		// Needed fot CProxyData, CSocketServerProxy
 
 #include <set> 
@@ -81,3 +80,4 @@ private:
 
 
 #endif // LISTENSOCKET_H
+// File_checked_for_headers

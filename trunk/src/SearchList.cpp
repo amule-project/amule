@@ -24,7 +24,6 @@
 //
 
 #include "SearchList.h"		// Interface declarations.
-#include "OtherFunctions.h"	// Needed for GetFiletypeByName
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp
@@ -35,13 +34,9 @@
 #include "ObservableQueue.h"// Needed for CQueueObserver
 #include <common/Format.h>	
 #include "Logger.h"			// Needed for AddLogLineM/...
-#include "Preferences.h"	// Needed for thePrefs
 #include "Packet.h"			// Needed for CPacket
-#include "kademlia/utils/UInt128.h" // Needed for CUInt128
-#include "SearchFile.h"		// Needed for CSearchFile
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#include <algorithm>
 
 #ifndef AMULE_DAEMON
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -49,12 +44,10 @@
 #endif
 
 #include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/SearchManager.h"
 #include "kademlia/kademlia/Search.h"
 
 #include "SearchExpr.h"
 #include "Scanner.h.in"
-#include "Scanner.h"
 
 
 extern int yyparse();
@@ -1035,3 +1028,4 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	
 	AddToList(new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true));
 }
+// File_checked_for_headers

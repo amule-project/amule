@@ -23,17 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cstdio>
-#include <cstring>
-#include <cassert>
-#include <cstdarg>
-#include <inttypes.h>
 
-#include <list>
-#include <map>
-#include <vector>
-#include <string>
-#include <algorithm>
 
 #ifndef PHP_STANDALONE_EN
 	#include "WebServer.h"
@@ -2016,3 +2006,4 @@ int main(int argc, char *argv[])
 }
 
 #endif
+// File_checked_for_headers

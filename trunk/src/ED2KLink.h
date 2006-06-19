@@ -27,11 +27,9 @@
 #define ED2KLINK_H
 
 
-#include "Types.h"			// Needed for uint16 and uint32
 #include "MD4Hash.h"		// Needed for CMD4Hash
 #include "SHAHashSet.h"		// Needed for CAICHHash
 
-#include <deque>
 
 
 class CMemFile;
@@ -145,3 +143,4 @@ private:
 
 
 #endif
+// File_checked_for_headers

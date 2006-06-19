@@ -27,7 +27,6 @@
 #define TEXTCLIENT_H
 
 #include "ExternalConnector.h"
-#include <wx/intl.h>
 
 #include <map>
 
@@ -78,3 +77,4 @@ private:
 };
 
 #endif // TEXTCLIENT_H
+// File_checked_for_headers

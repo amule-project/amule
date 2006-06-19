@@ -32,17 +32,9 @@ there client on the eMule forum..
 */
 
 #include "KademliaUDPListener.h"
-#include "../kademlia/Prefs.h"
-#include "../kademlia/Kademlia.h"
-#include "../kademlia/SearchManager.h"
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
-#include "../../NetworkFunctions.h"
-#include "../../KnownFile.h"
-#include "../../KnownFileList.h"
-#include "../../OtherFunctions.h"
 #include "../kademlia/Indexed.h"
-#include "../../OPCodes.h"
 #include "../kademlia/Defines.h"
 #include "../../amule.h"
 #include "../../ClientUDPSocket.h"
@@ -58,7 +50,6 @@ there client on the eMule forum..
 #include "ScopedPtr.h"
 
 #include <wx/tokenzr.h>
-#include <wx/arrstr.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,10 +59,6 @@ static char THIS_FILE[] = __FILE__;
 
 #define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 
-#ifndef AMULE_DAEMON
-#include "amuleDlg.h"
-#include "KadDlg.h"
-#endif
 
 extern wxChar* InvKadKeywordChars;
 
@@ -1236,3 +1223,4 @@ void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_i
 	(void)len;
 #endif
 }
+// File_checked_for_headers

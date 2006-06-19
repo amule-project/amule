@@ -23,15 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <vector>
 
 #include "ECTag.h"		// Needed for CECTag
-#include "ECCodes.h"		// Needed for TAGnames
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 
 #include <common/Format.h>		// Needed for CFormat
 
-#include <wx/intl.h>		// Needed for _()
 #include "KnownFile.h"		// Needed for PS_*
 
 wxString CEC_PartFile_Tag::GetFileStatusString()
@@ -159,3 +156,4 @@ wxString CEC_StatTree_Node_Tag::GetDisplayString() const
 	}
 	return label.GetString();
 }
+// File_checked_for_headers

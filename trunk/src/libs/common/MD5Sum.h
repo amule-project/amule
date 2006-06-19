@@ -26,7 +26,6 @@
 #ifndef MD5SUM_H
 #define MD5SUM_H
 
-#include <wx/string.h>		// Needed for wxString
 
 class MD5Sum {
 public:
@@ -40,3 +39,4 @@ private:
 };
 
 #endif // MD5SUM_H
+// File_checked_for_headers

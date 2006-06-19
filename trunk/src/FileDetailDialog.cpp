@@ -27,21 +27,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/settings.h>	// Needed for wxSYS_COLOUR_WINDOW
-#include <wx/stattext.h>	// Needed for wxStaticText
-#include <wx/sizer.h>
-#include <wx/intl.h>
-#include <wx/textctrl.h>
 
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD,...,IDC_RENAME
 #include "FileDetailDialog.h"	// Interface declarations
 #include "FileDetailListCtrl.h"	// Needed for CFileDetailListCtrl
-#include "OtherFunctions.h"	// Needed for MakeStringEscaped
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
 #include "Color.h"		// Needed for SYSCOLOR
-#include <common/Format.h>		// Needed for CFormat
 #include "amule.h"				// Needed for theApp
 #include "SharedFileList.h"		// Needed for CSharedFileList
 
@@ -403,3 +396,4 @@ void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 		}
 	}
 }
+// File_checked_for_headers

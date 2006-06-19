@@ -21,7 +21,6 @@
 #ifndef G10_BITHELP_H
 #define G10_BITHELP_H
 
-#include <inttypes.h>
 
 /****************
  * Rotate the 32 bit unsigned integer X by N bits left/right
@@ -54,3 +53,4 @@ ror(uint32_t x, int n)
 
 
 #endif /*G10_BITHELP_H*/
+// File_checked_for_headers

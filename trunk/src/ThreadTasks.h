@@ -28,7 +28,6 @@
 #define TASKS_H
 
 #include "ThreadScheduler.h"
-#include "MD4Hash.h"
 
 class CKnownFile;
 class CPartFile;
@@ -261,3 +260,4 @@ typedef void (wxEvtHandler::*MuleCompletionEventFunction)(CCompletionEvent&);
 
 	
 #endif // TASKS_H
+// File_checked_for_headers

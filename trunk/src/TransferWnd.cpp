@@ -23,14 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/settings.h>
-#include <wx/splitter.h>
-#include <wx/defs.h>		// Needed before any other wx/*.h
-#include <wx/sizer.h>		// Needed for wxSizer
-#include <wx/menu.h>
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-#include <wx/bmpbuttn.h>
 #include <wx/config.h>
 
 #include "TransferWnd.h"	// Interface declarations
@@ -38,16 +30,13 @@
 #include "PartFile.h"		// Needed for PR_LOW
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "CatDialog.h"		// Needed for CCatDialog
-#include "OPCodes.h"		// Needed for MP_CAT_SET0
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
-#include "OtherFunctions.h"	// Needed for GetCatTitle
 #include "amule.h"		// Needed for theApp
 #include "muuli_wdr.h"		// Needed for ID_CATEGORIES
 #include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
 #include "Preferences.h"
-#include "ClientList.h"
 #include "Statistics.h"			// Needed for theStats
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "GuiEvents.h"			// Needed for CoreNotify_*
@@ -527,3 +516,4 @@ void CTransferWnd::OnSashPositionChanging(wxSplitterEvent& evt)
 		}
 	}
 }
+// File_checked_for_headers

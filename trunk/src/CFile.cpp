@@ -23,22 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_*
-#include <common/StringFunctions.h>	// Needed for unicode2char
-#include <common/Format.h>
 
 #include "CFile.h"				// Interface declarations.
 #include "FileFunctions.h"		// Needed for CheckFileExists
-#include "Preferences.h"		// Needed for thePrefs
 #include "Logger.h"				// Needed for AddDebugLogLineM
 
-#include <unistd.h>				// Needed for close(2)
-#include <cstdio>       		// SEEK_xxx constants
-#include <fcntl.h>       		// O_RDONLY &c
-#include <errno.h>				// errno
 
-#include <wx/filefn.h>
-#include <wx/log.h>				// Needed for wxSysErrorMsg
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
@@ -97,8 +87,6 @@ char* mktemp( char * path ) { return path ;}
 #	error  "Please specify the header with file functions declarations."
 #endif  //Win/UNIX
 
-#include <sys/types.h>
-#include <sys/stat.h>
 
 // Windows compilers don't have these constants
 #ifndef W_OK
@@ -419,3 +407,4 @@ bool CFile::SetLength(size_t new_len)
 
 	return (result != -1);
 }
+// File_checked_for_headers

@@ -23,18 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/utils.h>
 
 #include "KnownFileList.h"	// Interface declarations
-#include "CFile.h"		// Needed for CFile
 #include "PartFile.h"		// Needed for CPartFile
-#include <common/StringFunctions.h> // Needed for unicode2char
 #include "amule.h"
-#include "MD4Hash.h"		// Needed for CMD4Hash
 #include "Logger.h"
 #include <common/Format.h>
 
-#include <memory>
 
 
 CKnownFileList::CKnownFileList()
@@ -276,3 +271,4 @@ bool CKnownFileList::IsKnownFile(const CKnownFile* file)
 	
 	return false;
 }
+// File_checked_for_headers

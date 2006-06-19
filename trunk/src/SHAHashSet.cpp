@@ -25,10 +25,8 @@
 //
 
 #include "SHAHashSet.h"
-#include "OPCodes.h"
 #include "amule.h"
 #include "MemFile.h"
-#include "KnownFile.h"
 #include "Preferences.h"
 #include "SHA.h"
 #include "updownclient.h"
@@ -37,7 +35,6 @@
 #include "Logger.h"
 #include <common/Format.h>
 
-#include <algorithm>
 
 
 // for this version the limits are set very high, they might be lowered later
@@ -1049,3 +1046,4 @@ void CAICHHashSet::DbgTest()
 	maxLevel = max(curLevel, maxLevel);
 #endif
 }
+// File_checked_for_headers

@@ -30,10 +30,6 @@
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "IPFilter.h"		// Needed for CIPFIlter
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "OPCodes.h"
-#include "GetTickCount.h"	// Needed for GetTickCount()
-#include "OtherFunctions.h"	// Needed for IP_FROM_GUI_ID and PORT_FROM_GUI_ID
-#include "ServerConnect.h"	// Needed for theApp.serverconnect
 #include "Preferences.h"	// Needed for thePrefs
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
@@ -41,12 +37,9 @@
 
 #include <common/Format.h>
 
-#include <algorithm>
 
 #include "kademlia/routing/Contact.h"
 
-#include "kademlia/kademlia/Kademlia.h"
-#include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
 #include "kademlia/net/KademliaUDPListener.h"
 
@@ -1005,3 +998,4 @@ void CClientList::CleanUpClientList()
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
 	}
 }
+// File_checked_for_headers

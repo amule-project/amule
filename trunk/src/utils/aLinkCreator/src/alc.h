@@ -28,8 +28,6 @@
 #ifndef _ALC_H
 #define _ALC_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -60,3 +58,4 @@ DECLARE_APP (alc)
 
 
 #endif /* _ALC_H */
+// File_checked_for_headers

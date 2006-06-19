@@ -25,25 +25,20 @@
 
 #include "KadDlg.h"
 #include "muuli_wdr.h"
-#include "MD4Hash.h"
 #include "OScopeCtrl.h"
 #include "OtherFunctions.h"
 #include "HTTPDownload.h"
 #include "Logger.h"
 #include "amule.h"
 #include "Preferences.h"
-#include "Statistics.h"
 #include "StatisticsDlg.h"
 #include "ColorFrameCtrl.h"
 
-#include <wx/msgdlg.h>
 
 #ifndef CLIENT_GUI
-#include "NetworkFunctions.h"
 #include "kademlia/kademlia/Kademlia.h"
 #endif
 
-#include <utility>
 
 BEGIN_EVENT_TABLE(CKadDlg, wxPanel)
 	EVT_TEXT(ID_NODE_IP1, CKadDlg::OnFieldsChange)
@@ -225,3 +220,4 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 	wxMessageBox(_("You can't update server.met from remote GUI yet."), _("Message"), wxOK | wxICON_INFORMATION, this);
 	#endif		
 }
+// File_checked_for_headers

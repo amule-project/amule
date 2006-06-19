@@ -27,11 +27,9 @@
 
 #ifndef EC_REMOTE
 
-#include <wx/intl.h>		// Needed for wxGetTranslation(), _() / wxTRANSLATE()
 
 #ifndef AMULE_DAEMON
 #include <common/Format.h>		// Needed for CFormat
-#include "OtherFunctions.h"	// Needed for CastIto* functions
 
 #define a_brackets_b(a,b)	(a + wxT(" (") + b + wxT(")"))
 
@@ -39,7 +37,6 @@
 
 #endif /* !EC_REMOTE */
 
-#include <ec/ECCodes.h>		// Needed for EC tag names
 #include <ec/ECTag.h>		// Needed for CECTag
 
 #ifdef EC_REMOTE
@@ -631,3 +628,4 @@ void CStatTreeItemTotalClients::AddECValues(CECTag* tag) const
 }
 
 #endif /* !EC_REMOTE */
+// File_checked_for_headers

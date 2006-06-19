@@ -28,8 +28,6 @@
 #ifndef _ED2KHASH_H
 #define _ED2KHASH_H
 
-// For compilers that support precompilation, includes "wx/wx.h"
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -79,3 +77,4 @@ class Ed2kHash:public MD4
 
 #endif /* _ED2KHASH_H */
 
+// File_checked_for_headers

@@ -33,13 +33,10 @@
 #include <dlfcn.h>				// For dlopen(), dlsym(), dlclose()
 
 
-#include "wx/utils.h"				// For wxSleep()
 
 
-#include "libs/common/StringFunctions.h"	// For char2unicode()
 
 
-#include "amuleIPV4Address.h"			// For amuleIPV4Address
 
 
 #ifdef __GNUC__
@@ -1082,3 +1079,4 @@ SampleUtil_FindAndParseService( IN IXML_Document * DescDoc,
 
 #endif
 
+// File_checked_for_headers

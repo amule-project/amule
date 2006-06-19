@@ -23,12 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cerrno>
-#include <cmath>
 #include <csignal>
-#include <unistd.h>			// Needed for close(2) and sleep(3), getuid(2)
-#include <sys/types.h>
-#include <wx/defs.h>
 #include <wx/process.h>
 #include <wx/sstream.h>	
 
@@ -37,35 +32,20 @@
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
 
-#include <wx/filefn.h>
-#include <wx/ffile.h>
-#include <wx/file.h>
-#include <wx/log.h>
-#include <wx/timer.h>
-#include <wx/config.h>
 #include <wx/fileconf.h>
-#include <wx/socket.h>			// Needed for wxSocket
-#include <wx/intl.h>			// Needed for i18n
-#include <wx/mimetype.h>		// For launching default browser
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/wfstream.h>
 #include <wx/tokenzr.h>
-#include <wx/filename.h>
 #include <wx/snglinst.h>
 
 
 #include "amule.h"			// Interface declarations.
-#include "GetTickCount.h"		// Needed for GetTickCount
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "Server.h"			// Needed for GetListName
-#include "OtherFunctions.h"		// Needed for GetTickCount
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "UploadQueue.h"		// Needed for CUploadQueue
-#include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ClientCreditsList.h"		// Needed for CClientCreditsList
 #include "ServerSocket.h"		// Needed for CServerSocket
-#include "SharedFileList.h"		// Needed for CSharedFileList
-#include "ServerConnect.h"		// Needed for CServerConnect
 #include "ServerList.h"			// Needed for CServerList
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "SearchList.h"			// Needed for CSearchList
@@ -78,24 +58,20 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "FriendList.h"			// Needed for CFriendList
 #include "updownclient.h"		// Needed for CUpDownClient
-#include <common/StringFunctions.h>	// Needed for validateURI
-#include "Packet.h"
 #include "Statistics.h"			// Needed for CStatistics
-#include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
 #include "UploadBandwidthThrottler.h"
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
-#include "Timer.h"
 #include "ThreadTasks.h"
 #include "UPnP.h"			// Needed for UPnP
 
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
-		#include <CoreFoundation/CFBundle.h>
-		#include <wx/mac/corefoundation/cfstring.h>
+		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
+		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
 	#endif
 #endif
 
@@ -105,7 +81,7 @@
 #endif
 
 #ifdef HAVE_SYS_STATVFS_H
-	#include <sys/statvfs.h>
+	#include <sys/statvfs.h>  // Do_not_auto_remove
 #endif
 
 
@@ -2089,3 +2065,4 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SOURCE_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_UDP_DNS_DONE)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_CORE_SERVER_DNS_DONE)
+// File_checked_for_headers

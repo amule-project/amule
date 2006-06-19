@@ -27,42 +27,25 @@
 	#include "config.h"			// Needed for VERSION
 #endif
 
-#include <wx/defs.h>
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
-#include <wx/intl.h>			// Needed for i18n
-#include <wx/mimetype.h>		// For launching default browser
-#include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-#include <wx/msgdlg.h>			// Needed for wxMessageBox
-#include <wx/dataobj.h> 		// Needed on wxMotif
 
 #include "amule.h"				// Interface declarations.
-#include "TransferWnd.h"		// Needed for CTransferWnd
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
-#include "ServerWnd.h"			// Needed for CServerWnd
 #include "Timer.h"				// Needed for CTimer
-#include "ServerList.h"			// Needed for CServerList
-#include "Preferences.h"		// Needed for CPreferences
-#include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"		// Needed for CUpDownClient
 
 #include "muuli_wdr.h"			// Needed for IDs
 #include "amuleDlg.h"			// Needed for CamuleDlg
-#include "SearchDlg.h"			// Needed for CSearchDlg
-#include "ServerListCtrl.h"		// Needed for CServerListCtrl
-#include "SharedFilesCtrl.h"	// Needed for CSharedFilesCtrl
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "ClientListCtrl.h"
-#include "ChatWnd.h"
 #include "PartFileConvert.h"
 #include "ThreadTasks.h"
 #include "Logger.h"				// Needed for EVT_MULE_LOGGING
 #include "GuiEvents.h"			// Needed for EVT_MULE_NOTIFY
 
 #ifdef __WXMAC__
-	#include <CoreFoundation/CFBundle.h>
-	#include <ApplicationServices/ApplicationServices.h>	// For LSRegisterURL
+	#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
+	#include <ApplicationServices/ApplicationServices.h>	// For LSRegisterURL // Do_not_auto_remove
 #endif
 
 #ifndef CLIENT_GUI
@@ -358,3 +341,4 @@ void CamuleGuiApp::OnLoggingEvent(CLoggingEvent& evt)
 }
 
 #endif /* CLIENT_GUI */
+// File_checked_for_headers

@@ -23,12 +23,10 @@
 //
 
 
-#include <wx/string.h>
 #include "StringFunctions.h"
 
 #include "MD5Sum.h"		// Interface declarations.
 
-#include <inttypes.h>
 
 typedef unsigned char *POINTER;
 typedef uint16_t UINT2;
@@ -343,3 +341,4 @@ static void MD5_memset (POINTER output, int value, unsigned int len)
   for (i = 0; i < len; i++)
  ((char *)output)[i] = (char)value;
 }
+// File_checked_for_headers

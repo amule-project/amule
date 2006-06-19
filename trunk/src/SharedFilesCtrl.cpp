@@ -25,24 +25,18 @@
 
 #include "muuli_wdr.h"			// Needed for ID_SHFILELIST
 #include "SharedFilesCtrl.h"	// Interface declarations
-#include "OtherFunctions.h"		// Needed for CastItoXBytes
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "CommentDialog.h"		// Needed for CCommentDialog
 #include "PartFile.h"			// Needed for CPartFile
 #include "SharedFileList.h"		// Needed for CKnownFileMap
-#include "OPCodes.h"			// Needed for MP_PRIOVERYLOW
 #include "amule.h"				// Needed for theApp
-#include "Color.h"				// Needed for SYSCOLOR
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Preferences.h"		// Needed for thePrefs
 #include "BarShader.h"			// Needed for CBarShader
 #include "DataToText.h"			// Needed for PriorityToStr
 #include "GuiEvents.h"			// Needed for CoreNotify_*
 
-#include <wx/msgdlg.h>
-#include <wx/stattext.h>
-#include <wx/menu.h>
 
 
 BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
@@ -673,3 +667,4 @@ void CSharedFilesCtrl::OnKeyPressed( wxKeyEvent& event )
 
 	event.Skip();
 }
+// File_checked_for_headers

@@ -32,7 +32,7 @@
 #ifndef __WINDOWS__
 uint32 GetTickCount();
 #else
-#include <winbase.h>
+#include <winbase.h> // Do_not_auto_remove
 #endif
 
 // Ideally, same than GetTickCount.
@@ -50,3 +50,4 @@ void StartTickTimer();
 void StopTickTimer();
 
 #endif // GETTICKCOUNT_H
+// File_checked_for_headers

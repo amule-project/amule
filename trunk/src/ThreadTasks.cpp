@@ -26,21 +26,17 @@
 
 
 #include <wx/app.h>			// Needed for wxTheApp
-#include <wx/filename.h>		// Needed for wxFileName
 
 #include "ThreadTasks.h"		// Interface declarations
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"			// Needed for Add(Debug)LogLineM
-#include "CFile.h"			// Needed for CFile
 #include <libs/common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"		// Needed for CheckFileExists
 #include "amule.h"			// Needed for theApp
-#include "SharedFileList.h"		// Needed for theApp.sharedfiles
 #include "KnownFileList.h"		// Needed for theApp.knownfiles
 #include "Preferences.h"		// Needed for thePrefs
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 
-#include <algorithm>			// Needed for std::min
 
 
 //! This hash represents the value for an empty MD4 hashing
@@ -582,3 +578,4 @@ const wxString& CCompletionEvent::GetFullPath() const
 	return m_fullPath;
 }
 
+// File_checked_for_headers

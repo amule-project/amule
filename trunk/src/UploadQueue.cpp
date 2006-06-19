@@ -23,34 +23,26 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <algorithm>
-#include <cstring>
 #include <cmath>
 
-#include "Types.h"
 
 #ifdef __WXMSW__
-	#include <winsock.h>
-	#include <wx/defs.h>
-	#include <wx/msw/winundef.h>
+	#include <winsock.h> // Do_not_auto_remove
+	#include <wx/defs.h> // Do_not_auto_remove
+	#include <wx/msw/winundef.h> // Do_not_auto_remove
 #else
-	#include <sys/types.h>
-	#include <netinet/in.h>
-	#include <arpa/inet.h>
+	#include <sys/types.h> // Do_not_auto_remove
+	#include <netinet/in.h> // Do_not_auto_remove
+	#include <arpa/inet.h> // Do_not_auto_remove
 #endif
 
 #include "UploadQueue.h"	// Interface declarations
-#include "ServerList.h"		// Needed for CServerList
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "Server.h"		// Needed for CServer
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "Packet.h"		// Needed for CPacket
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
-#include "OPCodes.h"		// Needed for MAX_PURGEQUEUETIME
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "GetTickCount.h"	// Needed for GetTickCount
 #include "amule.h"		// Needed for theApp
 #include "Preferences.h"
 #include "ClientList.h"
@@ -60,7 +52,6 @@
 #include "UploadBandwidthThrottler.h"
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#include <numeric>
 
 //TODO rewrite the whole networkcode, use overlapped sockets
 
@@ -561,3 +552,4 @@ void CUploadQueue::RemoveFromWaitingQueue(CClientPtrList::iterator pos)
 	todelete->SetUploadState(US_NONE);
 }
 
+// File_checked_for_headers

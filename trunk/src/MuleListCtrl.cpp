@@ -23,12 +23,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/defs.h>			// Needed before any other wx/*.h
 #include <wx/menu.h>			// Needed for wxMenu
-#include <wx/config.h>		// Needed for wxConfig in wx-2.4.2
 #include <wx/fileconf.h>		// Needed for wxConfig
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
-#include <wx/imaglist.h>
 
 #include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
 #include <common/StringFunctions.h>		// Needed for StrToLong
@@ -38,7 +35,6 @@
 #include "GetTickCount.h"		// Needed for GetTickCount()
 #include "OtherFunctions.h"
 
-#include <cctype>				// Needed for isprint() and tolower
 
 // For arrow-pixmaps
 #include "pixmaps/sort_dn.xpm"
@@ -622,3 +618,4 @@ void CMuleListCtrl::ResetTTS()
 	m_tts_item = -1;
 	m_tts_time =  0;
 }
+// File_checked_for_headers

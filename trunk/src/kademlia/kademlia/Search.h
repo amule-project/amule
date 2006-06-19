@@ -40,8 +40,6 @@ there client on the eMule forum..
 #define __SEARCH_H__
 
 #include "SearchManager.h"
-#include "../routing/Maps.h"
-#include "../utils/UInt128.h"
 
 class CKnownFile;
 class CMemFile;
@@ -151,3 +149,4 @@ private:
 } // End namespace
 
 #endif //__SEARCH_H__
+// File_checked_for_headers

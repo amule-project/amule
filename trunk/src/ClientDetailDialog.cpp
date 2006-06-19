@@ -24,21 +24,13 @@
 //
 
 #include "ClientDetailDialog.h"	// Interface declarations
-#include "OtherFunctions.h"	// Needed for CastItoIShort
-#include "NetworkFunctions.h" // Needed for Uint32toStringIP
 #include "PartFile.h"		// Needed for CPartFile
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "UploadQueue.h"	// Needed for CUploadQueue
 #include "ServerList.h"		// Needed for CServerList
 #include "amule.h"			// Needed for theApp
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
-#include <common/Format.h>		// Needed for CFormat
-#include <wx/stattext.h>
-#include <wx/sizer.h>
-#include <wx/msgdlg.h>
-#include <sys/types.h>
 
 // CClientDetailDialog dialog
 
@@ -161,3 +153,4 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	return true;
 }
+// File_checked_for_headers

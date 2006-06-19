@@ -27,7 +27,7 @@
 #include "GetTickCount.h" // Interface
 
 #ifdef __WINDOWS__
-#include <winbase.h>
+#include <winbase.h> // Do_not_auto_remove
 
 void StartTickTimer(){};
 
@@ -61,7 +61,6 @@ uint64 GetTickCount64()
 
 #else
 
-#include <cstddef>		// Needed for NULL
 #include <sys/time.h>		// Needed for gettimeofday
 
 uint32 GetTickCountFullRes(void) {
@@ -147,3 +146,4 @@ uint32 GetTickCountFullRes(void) {
 #endif
 
 #endif
+// File_checked_for_headers

@@ -26,8 +26,6 @@
 #ifndef REMOTECONNECT_H
 #define REMOTECONNECT_H
 
-#include <wx/string.h>
-#include <list>
 
 #include "ECSocket.h"
 #include "ECPacket.h"		// Needed for CECPacket
@@ -402,3 +400,4 @@ private:
 
 #endif // REMOTECONNECT_H
 
+// File_checked_for_headers

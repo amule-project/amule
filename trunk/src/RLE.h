@@ -25,7 +25,6 @@
 #ifndef RLE_H
 #define RLE_H
 
-#include <vector>
 
 #include "Types.h"
 
@@ -208,3 +207,4 @@ public:
 
 #endif
 
+// File_checked_for_headers

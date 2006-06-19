@@ -27,7 +27,6 @@
 #ifndef WEBSOCKET_H
 #define WEBSOCKET_H
 
-#include <wx/thread.h>
 
 #include "WebServer.h"
 
@@ -99,3 +98,4 @@ class CWSThread : public wxThread {
 
 
 #endif //WEBSERVER_H
+// File_checked_for_headers

@@ -65,7 +65,6 @@
 #ifndef __SHA_H__
 #define __SHA_H__
 
-#include "Types.h"
 #include "SHAHashSet.h"
 
 class CSHA : public CAICHHashAlgo
@@ -92,3 +91,4 @@ private:
 #define SHA1_DIGEST_SIZE	20
 
 #endif // __SHA_H__
+// File_checked_for_headers

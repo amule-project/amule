@@ -39,7 +39,6 @@ there client on the eMule forum..
 #ifndef __CONTACT_H__
 #define __CONTACT_H__
 
-#include "../utils/UInt128.h"
 #include "../kademlia/Prefs.h"
 #include "../kademlia/Kademlia.h"
 
@@ -112,3 +111,4 @@ public:
 
 #endif // __CONTACT_H__
 
+// File_checked_for_headers

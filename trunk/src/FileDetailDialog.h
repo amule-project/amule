@@ -26,8 +26,6 @@
 #ifndef FILEDETAILDIALOG_H
 #define FILEDETAILDIALOG_H
 
-#include <wx/dialog.h>		// Needed for wxDialog
-#include <wx/timer.h>		// Needed for wxTimer
 
 class CPartFile;
 
@@ -64,3 +62,4 @@ private:
 };
 
 #endif // FILEDETAILDIALOG_H
+// File_checked_for_headers

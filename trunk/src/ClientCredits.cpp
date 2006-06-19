@@ -29,7 +29,6 @@
 
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "Logger.h"			// Needed for Add(Debug)LogLine
-#include "amule.h"			// Needed for theApp
 
 CreditStruct::CreditStruct()
 	: uploaded(0),
@@ -275,3 +274,4 @@ void CClientCredits::ClearWaitStartTime()
 	m_dwSecureWaitTime = 0;
 }
 
+// File_checked_for_headers

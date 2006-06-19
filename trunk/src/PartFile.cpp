@@ -23,33 +23,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cmath>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <wx/defs.h>		// Needed before any other wx/*.h
 
-#include <wx/intl.h>		// Needed for _
-#include <wx/filename.h>	// Needed for wxFileName
 #include <wx/utils.h>
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
 
-#ifndef AMULE_DAEMON
-	#include <wx/gdicmn.h>
-	#include "Color.h"              // Needed for RGB, DarkenColour
-#endif
 
-#include "MuleTrayIcon.h"	// Needed for TBN_DLOAD
 #include "PartFile.h"		// Interface declarations.
-#include "OtherFunctions.h"	// Needed for nstrdup
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter
 #include "Server.h"		// Needed for CServer
 #include "ServerConnect.h"	// Needed for CServerConnect
-#include "ListenSocket.h"	// Needed for CClientTCPSocket
 #include "updownclient.h"	// Needed for CUpDownClient
-#include "SharedFileList.h"	// Needed for CSharedFileList
 #include "MemFile.h"		// Needed for CMemFile
 #include "Preferences.h"	// Needed for CPreferences
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -57,10 +42,7 @@
 #include "ED2KLink.h"		// Needed for CED2KLink
 #include "Packet.h"		// Needed for CTag
 #include "SearchList.h"		// Needed for CSearchFile
-#include "GetTickCount.h"	// Needed for GetTickCount
 #include "ClientList.h"		// Needed for clientlist
-#include "NetworkFunctions.h"	// Needed for Uint32toStringIP
-#include <common/StringFunctions.h>	// Needed for CleanupFilename
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
@@ -68,8 +50,6 @@
 #include "ThreadTasks.h"			// Needed for CHashingTask/CCompletionTask
 #include "GuiEvents.h"		// Needed for Notify_*
 
-#include <map>
-#include <algorithm>
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -79,7 +59,6 @@ typedef std::list<Chunk> ChunkList;
 
 
 #ifndef CLIENT_GUI
-#include "InternalEvents.h"	// Needed for CMuleInternalEvent
 
 CPartFile::CPartFile()
 {
@@ -3970,3 +3949,4 @@ CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient
 }
 
 #endif
+// File_checked_for_headers
