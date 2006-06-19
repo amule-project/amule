@@ -256,7 +256,6 @@ AC_DEFUN([AM_PATH_WXCONFIG],
   AC_SUBST(WX_CXXFLAGS_ONLY)
   AC_SUBST(WX_LIBS)
   AC_SUBST(WX_LIBS_STATIC)
-  AC_SUBST(WX_VERSION)
 ])
 
 dnl ---------------------------------------------------------------------------
