@@ -486,16 +486,16 @@ if test $denoiselevel -gt 4; then
 fi
 AC_MSG_RESULT($denoiselevel)
 
-AC_CONFIG_COMMANDS(denoiser, [	if test $level -gt 0; then
+AC_CONFIG_COMMANDS(denoiser, [[	if test $level -gt 0; then
 		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
-		sed -e "1{x;s/.*/1/;x;};/^[[ 	]]*\$/d;/^#if /{/level.*$level/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[ 	]*#/d;x;/^1/{x;b;};x;d" \
+		sed -e "1{x;s/.*/1/;x;};/^[ 	]*\$/d;/^#if /{/level.*$level/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[ 	]*#/d;x;/^1/{x;b;};x;d" \
 			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
 		for i in `find . -name 'Makefile' -print`; do
 			if test -n "`head -n 1 $i | grep '^#'`"; then
 				sed -f src/utils/scripts/denoiser.sed $i > $i.tmp && mv $i.tmp $i
 			fi
 		done
-	fi], [level=$denoiselevel])
+	fi]], [level=$denoiselevel])
 
 
 AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
