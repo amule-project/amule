@@ -34,4 +34,4 @@ char *timeconv(char *input);
 void replace(char *tmpl, const char *search, const char *replace);
 
 #endif
-// File_checked_for_headers
+/* // File_checked_for_headers */

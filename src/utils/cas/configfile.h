@@ -45,4 +45,4 @@ int writeconfig(void);
 int readconfig(CONF *config);
 
 #endif
-// File_checked_for_headers
+/* // File_checked_for_headers */
