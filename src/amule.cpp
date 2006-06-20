@@ -424,7 +424,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-	cmdline.AddSwitch(wxT("desuDesudEsudeSudesUDESU""), wxT("desu-Desu-dEsu-deSu-desU-DESU"), wxT("Runs aMule scary SVN development version at your own risk DESU."));
+	cmdline.AddSwitch(wxT("desuDesudEsudeSudesUDESU"), wxT("desu-Desu-dEsu-deSu-desU-DESU"), wxT("Runs aMule scary SVN development version at your own risk DESU."));
 
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
