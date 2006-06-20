@@ -26,9 +26,6 @@
 
 #include "Proxy.h"		/* for Interface		*/
 
-
-
-
 #include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 #include "Logger.h"		/* for AddDebugLogLineM		*/
 #include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
@@ -83,6 +80,8 @@ void CProxyData::Clear()
 }
 
 #ifndef CLIENT_GUI
+
+#include <typeinfo> // Do_not_auto_remove (NetBSD, older gccs)
 
 //------------------------------------------------------------------------------
 // ProxyEventHandler
