@@ -24,6 +24,7 @@
 //
 
 #include <cmath>
+#include <limits> // Do_not_auto_remove (NetBSD)
 #include "UploadBandwidthThrottler.h"
 #include "OPCodes.h"
 #include "OtherFunctions.h"

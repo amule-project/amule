@@ -86,6 +86,7 @@
 #define CRYPTOPP_H
 
 #include <inttypes.h>
+#include <typeinfo> // Do_not_auto_remove (BSD + older gccs)
 
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef CRYPTOPP_CONFIG_H5392

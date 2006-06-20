@@ -30,6 +30,7 @@
 
 #include <list>			// Needed for std::list
 #include <vector>		// Needed for std::vector
+#include <inttypes.h>		// Do_not_auto_remove (Old gccs)
 
 
 // These are MSVC defines used in eMule. They should 
