@@ -24,10 +24,6 @@
 //
 
 
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
-#endif
-
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/url.h>			// Needed for wxURL

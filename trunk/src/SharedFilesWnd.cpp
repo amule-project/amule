@@ -24,6 +24,8 @@
 //
 
 
+#include <wx/gauge.h>		// Do_not_auto_remove (win32)
+
 #include "SharedFilesWnd.h"	// Interface declarations
 #include "SharedFilesCtrl.h"
 #include "muuli_wdr.h"		// Needed for ID_SHFILELIST

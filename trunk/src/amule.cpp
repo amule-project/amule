@@ -32,6 +32,7 @@
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
 
+#include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/wfstream.h>

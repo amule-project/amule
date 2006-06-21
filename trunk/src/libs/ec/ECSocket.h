@@ -28,7 +28,7 @@
 
 
 #include <deque>			// Needed for std::deque
-
+#include <memory>			// Needed for std::auto_ptr	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
 #include <wx/socket.h>		// Needed for wxSocketClient
 

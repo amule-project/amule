@@ -27,9 +27,6 @@
 #define AMULEDLG_H
 
 
-#ifdef __WXMSW__
-       #include <wx/msw/winundef.h>    // Needed to be able to include wx headers // Do_not_auto_remove
-#endif
 #include <wx/frame.h>			// Needed for wxFrame
 #include <wx/timer.h>
 #include <wx/imaglist.h>

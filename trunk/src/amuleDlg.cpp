@@ -26,6 +26,8 @@
 #include <wx/stattext.h>
 #include <wx/tokenzr.h>
 #include <wx/html/htmlwin.h>
+#include <wx/mimetype.h>	// Do_not_auto_remove (win32)
+#include <wx/textfile.h>	// Do_not_auto_remove (win32)
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION

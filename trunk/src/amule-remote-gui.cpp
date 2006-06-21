@@ -28,6 +28,7 @@ using std::auto_ptr;
 
 #include <wx/ipc.h>
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
+#include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 
 #include <common/Format.h>

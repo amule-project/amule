@@ -28,9 +28,6 @@
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
 #include "Preferences.h"	// Needed for CPreferences
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Needed to be able to include wx headers // Do_not_auto_remove
-#endif
 #include "amule.h"		// Needed for theApp
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "OtherFunctions.h"

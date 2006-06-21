@@ -27,7 +27,6 @@
 #include "GetTickCount.h" // Interface
 
 #ifdef __WINDOWS__
-#include <winbase.h> // Do_not_auto_remove
 
 void StartTickTimer(){};
 

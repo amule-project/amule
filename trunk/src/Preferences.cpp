@@ -26,11 +26,8 @@
 
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
+#include <wx/textfile.h>			// Do_not_auto_remove (win32)
 #include <wx/config.h>
-
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
-#endif
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
@@ -41,6 +38,7 @@
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
+#include <common/PlatformSpecific.h>	// Needed for GetDocumentsDir()	// Do_not_auto_remove (win32, mac)
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>

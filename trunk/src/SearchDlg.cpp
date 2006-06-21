@@ -24,6 +24,8 @@
 //
 
 
+#include <wx/gauge.h>		// Do_not_auto_remove (win32)
+
 #include "SearchDlg.h"		// Interface declarations.
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
 #include "muuli_wdr.h"		// Needed for IDC_STARTS
