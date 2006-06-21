@@ -27,6 +27,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "ScopedPtr.h"			// Needed for CScopedPtr
 
+#include <algorithm>			// Needed for std::sort		// Do_not_auto_remove (mingw-gcc-3.4.5)
 
 //! Global lock the scheduler and its thread.
 static wxMutex s_lock;

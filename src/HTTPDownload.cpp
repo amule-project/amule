@@ -23,11 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef __WXMSW__
-	#include <wx/defs.h> // Do_not_auto_remove
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
-#endif
-
 
 #include <wx/wfstream.h>
 #include <wx/protocol/http.h>

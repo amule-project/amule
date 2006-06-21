@@ -111,10 +111,9 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
-	#include <windef.h> // Needed for RECT  // Do_not_auto_remove
-	#include <wingdi.h> // Do_not_auto_remove
-	#include <winuser.h> // Do_not_auto_remove
-	#include <wx/msw/winundef.h>	/* Needed to be able to include mingw headers */  // Do_not_auto_remove
+	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
+	#include <wingdi.h>	// Do_not_auto_remove
+	#include <winuser.h>	// Do_not_auto_remove
 
 #else 
 

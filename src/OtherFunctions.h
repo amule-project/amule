@@ -30,7 +30,7 @@
 
 #include "Types.h"		// Needed for uint16, uint32 and uint64
 
-
+#include <algorithm>		// Needed for std::for_each	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
 /**
  * Helper function.

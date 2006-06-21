@@ -26,9 +26,6 @@
 #ifndef CLIENTDETAILDIALOG_H
 #define CLIENTDETAILDIALOG_H
 
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
-#endif
 #include <wx/dialog.h>		// Needed for wxDialog
 
 class CUpDownClient;

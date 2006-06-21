@@ -28,6 +28,7 @@
 #define FILEFUNCTIONS_H
 
 #include "Types.h"
+#include <dirent.h>		// Needed for DIR	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
 // Move file with safe UTF8 name.
 bool UTF8_MoveFile(const wxString& from, const wxString& to); 

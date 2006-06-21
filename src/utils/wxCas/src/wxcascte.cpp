@@ -33,6 +33,7 @@
 #pragma hdrstop
 #endif
 
+#include <wx/filename.h>
 
 #ifdef __WXMAC__
 	#include <CoreServices/CoreServices.h> // Do_not_auto_remove
@@ -42,9 +43,6 @@
 	#include <winerror.h> // Do_not_auto_remove
 	#include <shlobj.h> // Do_not_auto_remove
 #endif
-
-#include <wx/filename.h>
-
 
 #include "wxcascte.h"
 

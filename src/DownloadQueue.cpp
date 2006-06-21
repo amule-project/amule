@@ -52,6 +52,7 @@
 
 #include "kademlia/kademlia/Kademlia.h"
 
+#include <string>			// Do_not_auto_remove (mingw-gcc-3.4.5)
 
 
 // Max. file IDs per UDP packet

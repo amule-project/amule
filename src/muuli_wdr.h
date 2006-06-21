@@ -16,9 +16,11 @@
     #include <wx/wx.h>
 #endif
 
+#include <wx/image.h>
 #include <wx/statline.h>
 #include <wx/spinctrl.h>
 #include <wx/splitter.h>
+#include <wx/listctrl.h>
 #include <wx/treectrl.h>
 
 // Declare window functions

@@ -31,7 +31,6 @@
 #include <wx/log.h>			// Needed for wxLogNull
 
 #ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
 	#include <wx/msw/registry.h> // Do_not_auto_remove
 	#if wxCHECK_VERSION_FULL(2,6,0,1)
 		#include <wx/stdpaths.h>  // Do_not_auto_remove

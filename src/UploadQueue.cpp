@@ -25,15 +25,14 @@
 
 #include <cmath>
 
+#include "Types.h"		// Do_not_auto_remove (win32)
 
 #ifdef __WXMSW__
-	#include <winsock.h> // Do_not_auto_remove
-	#include <wx/defs.h> // Do_not_auto_remove
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
+	#include <winsock.h>	// Do_not_auto_remove
 #else
-	#include <sys/types.h> // Do_not_auto_remove
-	#include <netinet/in.h> // Do_not_auto_remove
-	#include <arpa/inet.h> // Do_not_auto_remove
+	#include <sys/types.h>	// Do_not_auto_remove
+	#include <netinet/in.h>	// Do_not_auto_remove
+	#include <arpa/inet.h>	// Do_not_auto_remove
 #endif
 
 #include "UploadQueue.h"	// Interface declarations

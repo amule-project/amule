@@ -27,18 +27,9 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
-#ifdef __WXMSW__
-	#include <wx/msw/winundef.h> // Do_not_auto_remove
-#endif
-
-
-
 #ifdef WITH_LIBPNG
 	#include <png.h>
 #endif
-
-
-
 
 #include "WebInterface.h"
 #include "KnownFile.h"
