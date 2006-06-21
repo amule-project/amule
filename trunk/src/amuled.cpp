@@ -39,6 +39,8 @@
 #include "ThreadTasks.h"
 #include "GuiEvents.h"			// Neded for EVT_MULE_NOTIFY
 
+#include "ClientUDPSocket.h"		// Do_not_auto_remove (forward declaration not enough)
+#include "ListenSocket.h"		// Do_not_auto_remove (forward declaration not enough)
 
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h> // Do_not_auto_remove
@@ -46,7 +48,7 @@
 
 #ifndef __WXMSW__
 	#ifdef  HAVE_SYS_WAIT_H
-		#include <sys/wait.h>
+		#include <sys/wait.h> // Do_not_auto_remove 
 	#endif
 
 	#include <wx/unix/execute.h>
