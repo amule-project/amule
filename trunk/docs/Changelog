@@ -28,6 +28,7 @@ Trunk
 		* Fix for "get bwlimits" command in amulecmd always returning
 		  zero for maximum download value.
 		* Added UPnP support.
+		* Fix for crash in ECSocket.cpp.
 
 --------------------------------------------------------------------------------
 

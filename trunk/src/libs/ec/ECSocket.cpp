@@ -395,12 +395,14 @@ void CECSocket::OnInput()
 			//m_curr_rx_data->DumpMem();
 			std::auto_ptr<const CECPacket> packet(ReadPacket());
 			m_curr_rx_data->Rewind();
-			std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get()));
-			if (reply.get()) {
-				SendPacket(reply.get());
+			if (packet.get()) {
+				std::auto_ptr<const CECPacket> reply(OnPacketReceived(packet.get()));
+				if (reply.get()) {
+					SendPacket(reply.get());
+				}
+				m_bytes_needed = 8;
+				m_in_header = true;
 			}
-			m_bytes_needed = 8;
-			m_in_header = true;
 		}
 	}
 }
