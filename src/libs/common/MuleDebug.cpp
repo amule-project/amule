@@ -35,6 +35,7 @@
 #endif
 
 #include <wx/thread.h> // Do_not_auto_remove (Old wx < 2.7)
+#include <wx/utils.h> // Do_not_auto_remove (Old wx < 2.7)
 
 #if wxUSE_STACKWALKER && defined(__WXMSW__)
 	#include <wx/stackwalk.h> // Do_not_auto_remove
