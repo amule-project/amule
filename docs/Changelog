@@ -4,6 +4,16 @@ Trunk
 ----------
 2006-??-??
 
+	Vollstrecker:
+		* Added possibility to give the path for output right with
+		  -p or -o in cas.
+		* Changed cas to use getopt_long.
+		* Added --config-dir and -c option to cas.
+		* Added alias -H --html to cas.
+		* Added alias -P --picture to cas.
+		* Added --config-dir and -c option to ed2k.
+		* Added --config-dir option to amuled.
+
 	GonoszTopi:
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.

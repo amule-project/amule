@@ -28,7 +28,7 @@
 #ifndef CAS_HTML_H
 #define CAS_HTML_H
 
-int create_html(char *stats[20], char *lines[6], char template[120]);
+int create_html(char *stats[20], char *lines[6], char template[120], char *path_for_html);
 
 #endif
 

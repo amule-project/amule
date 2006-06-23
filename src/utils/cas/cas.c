@@ -32,12 +32,21 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>
+#include <getopt.h>
 
 #include "version.h"
 #include "configfile.h"
 #include "functions.h"
 #include "graphics.h"
 #include "html.h"
+
+#ifdef __APPLE__
+	#define CAS_DIR_SEPARATOR	"/"
+#elif defined(__WIN32__)
+	#define CAS_DIR_SEPARATOR	"\\"
+#else
+	#define CAS_DIR_SEPARATOR	"/"
+#endif
 
 /*
  * History:
@@ -51,7 +60,13 @@
  * 2005,12,16 - stefanero: fixed Kad related stuff and some other things
  */
 
-#include "lines.h"
+static struct option long_options[] = {
+	{ "help", no_argument, NULL, 'h' },
+	{ "page", optional_argument, NULL, 'p' },
+	{ "out-pic", optional_argument, NULL, 'o' },
+	{ "config-dir", required_argument, NULL, 'c' },
+        { NULL, 0, NULL, 0 }
+};
 
 void usage(char *myname)
 {
@@ -64,9 +79,10 @@ void usage(char *myname)
 			"If run without any option prints stats to stdout\n\n"
 			"OPTIONS:\n"
 #ifdef __GD__
-			"-o\tWrites the online signature picture\n"
+			"-o, --picture, -P\tWrites the online signature picture\n"
 #endif
-			"-p\tHTML Page with stats and picture\n"
+			"-p, --html, -H\tHTML Page with stats and picture\n"
+			"-c, --config-dir\tSpecifies a config-dir different from home\n"
 			"-h\tThis help youre reading\n", CAS_VERSION, myname);
 }
 
@@ -74,21 +90,55 @@ int main(int argc, char *argv[])
 {
 	/* Declaration of variables */
 	FILE *amulesig;
+	int use_out_pic;
+	int use_page;
+	char *config_path=NULL;
 	char *path;
 	char *stats[20];
 	char *lines[6];
 	long lSize;
 	char * buffer;
 	int i;
+	int c;
+	char *path_for_picture=NULL;
+	char *path_for_html=NULL;
 	CONF config;
 
-	if ((argc == 2) && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
-		usage(argv[0]);
-		exit(0);
+	while ((c = getopt_long (argc, argv, "c:P:H:hpo", long_options, NULL)) != -1)
+
+		switch (c)
+		{
+		case 'c':
+			config_path=optarg;
+			break;
+		case 'h':
+			usage(argv[0]);
+			exit(0);
+		case 'p':
+			use_page=1;
+			if (optarg != NULL) {
+				path_for_html = optarg;
+			}
+			break;
+		case 'o':
+			use_out_pic=1;
+			if (optarg != NULL) {
+				path_for_picture = optarg;
+			}
+			break;
 	}
 
 	/* get amulesig path */
-	path = get_path("amulesig.dat");
+
+	if (config_path == NULL) {
+		path = get_path("amulesig.dat");
+	} else {
+		if (config_path[strlen(config_path)-1] != CAS_DIR_SEPARATOR[0]) {
+			strcat(config_path, CAS_DIR_SEPARATOR);
+		}
+		strcat(config_path, "amulesig.dat");
+		path = config_path;
+	}
 
 	if (path == NULL) {
 		perror("Unable to get aMule settings path\n");
@@ -218,13 +268,13 @@ int main(int argc, char *argv[])
 	CreateLine(lines, 5, "Sharing: %s file(s), Clients on queue: %s\n", stats[9] , stats[8]);
 
 #ifdef __GD__
-	if (argc == 2 && strcmp(argv[1], "-o") == 0) {
+	if (use_out_pic == 1) {
 		if (!readconfig(&config)) {
 			perror("Could not read config file\n");
 			exit(4);
 		}
 
-		if (!createimage(&config, lines)) {
+		if (!createimage(&config, lines, path_for_picture)) {
 			perror("Could not create image!\n");
 			exit(5);
 		}
@@ -232,19 +282,19 @@ int main(int argc, char *argv[])
 	}
 #endif
 
-	if (argc == 2 && strcmp(argv[1], "-p") == 0) {
+	if (use_page == 1) {
 		
 		if (!readconfig(&config)) {
 			perror("Could not read config file\n");
 			exit(4);
 		}
 
-		if (!create_html(stats,lines,config.template)) {
+		if (!create_html(stats,lines,config.template, path_for_html)) {
 			perror("Could not create the HTML Page.\n");
 		}
 
 #ifdef __GD__
-		if (!createimage(&config, lines)) {
+		if (!createimage(&config, lines, path_for_picture)) {
 			perror("Could not create image!\n");
 			exit(5);
 		}

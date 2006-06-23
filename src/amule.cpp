@@ -397,8 +397,6 @@ bool CamuleApp::OnInit()
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	SetAppName(wxT("aMule"));
-
-	ConfigDir = GetConfigDir();
 	
 	strcpy(strFullMuleVersion, (const char *)unicode2char(FullMuleVersion));
 	strcpy(strOSDescription, (const char *)unicode2char(OSDescription));
@@ -416,6 +414,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
+	cmdline.AddOption(wxEmptyString, wxT("config-dir"), wxT("read config from <dir> instead of home"));
 #else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString,
 		wxT(	"Sets the geometry of the app.\n"
@@ -439,7 +438,14 @@ bool CamuleApp::OnInit()
 		printf("This binary requires you to use the flag --desu-Desu-dEsu-deSu-desU-DESU and only if you're very sure of it DESU.\n");
 		return false;
 	}		
-		
+
+	wxString config_dir_string;
+	if ( cmdline.Found(wxT("config-dir"), &config_dir_string) ) {
+		ConfigDir = config_dir_string;
+	} else {
+		ConfigDir = GetConfigDir();
+	}
+	
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
 		// catch fatal exceptions
