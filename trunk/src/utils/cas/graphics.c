@@ -35,11 +35,19 @@
 #include "configfile.h"
 #include "graphics.h"
 
+#ifdef __APPLE__
+	#define CAS_DIR_SEPARATOR	"/"
+#elif defined(__WIN32__)
+	#define CAS_DIR_SEPARATOR	"\\"
+#else
+	#define CAS_DIR_SEPARATOR	"/"
+#endif
+
 /*
  * this is the funcion that writes the text to the image.
  * almost everything is taken from libgd examples
  */
-int createimage(CONF *config, char *lines[IMG_TEXTLINES])
+int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture)
 {
 	FILE *in, *out;
 	char *path;
@@ -66,8 +74,18 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES])
 			gdImageStringFT(im, &brect[0], white, config->font, config->size,
 					0., config->x[i], config->y[i], lines[i]);
 	}
+	
+//	printf (path_for_picture);
+		if (path_for_picture == NULL) {
+		path = get_path("aMule-online-sign.png");
+	} else {
+		if (path_for_picture[strlen(path_for_picture)-1] != CAS_DIR_SEPARATOR[0]) {
+			strcat(path_for_picture, CAS_DIR_SEPARATOR);
+		}
+		strcat(path_for_picture, "aMule-online-sign.png");
+		path = path_for_picture;
+	}
 
-	path = get_path("aMule-online-sign.png");
 	if (path == NULL) {
 		perror("could not get PNG path\n");
 		return 0;

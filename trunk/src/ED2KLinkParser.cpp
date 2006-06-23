@@ -246,14 +246,23 @@ void badLink( const string& type, const string& err, const string& uri )
  *
  * If errors are detected, it will terminate the program.
  */
-void writeLink( const string& uri )
+void writeLink( const string& uri, const string& config_dir )
 {
+	string path;
 	// Attempt to lock the ED2KLinks file
-	static CFileLock lock(GetLinksFilePath());
+	if ( config_dir == "" ) {
+		static CFileLock lock(GetLinksFilePath());
+	} else {
+		static CFileLock lock(config_dir + "ED2KLinks");
+	}
 	static std::ofstream file;
 	
 	if (not file.is_open()) {
-		string path = GetLinksFilePath();
+		if (config_dir == "") {
+			path = GetLinksFilePath();
+		} else {
+			path = config_dir + "ED2KLinks";
+		}
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
 
 		if (not file.is_open()) {
@@ -400,10 +409,19 @@ bool checkServerListLink( const string& uri )
 int main(int argc, char *argv[])
 {
 	bool errors = false;
-	
+	string path;
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 		
+		if ( arg.substr(0, 2) == "-c" ) {
+			path = arg.substr( 3, arg.length() );
+		}
+		if ( arg.substr(0, 12) == "--config-dir" ) {
+			path = arg.substr( 13, arg.length() );
+		}
+		if ( path.substr (path.size() - 1, 1) != "/") {
+			path += "/";
+		}
 		if ( arg.substr( 0, 8 ) == "ed2k://|" ) {
 			// Ensure the URI is valid
 			if ( arg.at( arg.length() - 1 ) != '/' ) {
@@ -413,11 +431,11 @@ int main(int argc, char *argv[])
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
 			if ( (type == "file") and checkFileLink( arg ) ) {
-				writeLink( arg );
+				writeLink( arg, path );
 			} else if ( (type == "server") and checkServerLink( arg ) ) {
-				writeLink( arg );
+				writeLink( arg, path );
 			} else if ( (type == "serverlist") and checkServerListLink( arg ) ) {
-				writeLink( arg );
+				writeLink( arg, path );
 			} else {
 				std::cout << "Unknown or invalid link-type:\n\t" << arg << std::endl;
 				errors = true;
@@ -427,6 +445,8 @@ int main(int argc, char *argv[])
 				<< "\n\n"
 				<< "Usage:\n"
 				<< "    --help              Prints this help.\n"
+				<< "    --config-dir, -c    Specifies a config-dir different from your home\n"
+				<< "                        this option has to be before the links\n"
 				<< "    --version           Displays version info.\n\n"
 				<< "    ed2k://|file|       Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|     Causes the server to be listed or updated.\n"
@@ -436,8 +456,10 @@ int main(int argc, char *argv[])
 		} else if ( arg == "--version" ) {
 			std::cout << getVersion() << std::endl;
 		} else {
-			std::cout << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
-			errors = true;
+			if ( path == "" ) {
+				std::cout << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
+				errors = true;
+			}
 		}
 	}
 
