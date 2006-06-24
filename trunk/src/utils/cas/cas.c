@@ -39,14 +39,7 @@
 #include "functions.h"
 #include "graphics.h"
 #include "html.h"
-
-#ifdef __APPLE__
-	#define CAS_DIR_SEPARATOR	"/"
-#elif defined(__WIN32__)
-	#define CAS_DIR_SEPARATOR	"\\"
-#else
-	#define CAS_DIR_SEPARATOR	"/"
-#endif
+#include "lines.h"
 
 /*
  * History:
@@ -62,10 +55,10 @@
 
 static struct option long_options[] = {
 	{ "help", no_argument, NULL, 'h' },
-	{ "page", optional_argument, NULL, 'p' },
-	{ "out-pic", optional_argument, NULL, 'o' },
+	{ "html", optional_argument, NULL, 'p' },
+	{ "picture", optional_argument, NULL, 'o' },
 	{ "config-dir", required_argument, NULL, 'c' },
-        { NULL, 0, NULL, 0 }
+	{ NULL, 0, NULL, 0 }
 };
 
 void usage(char *myname)
@@ -81,17 +74,17 @@ void usage(char *myname)
 #ifdef __GD__
 			"-o, --picture, -P\tWrites the online signature picture\n"
 #endif
-			"-p, --html, -H\tHTML Page with stats and picture\n"
+			"-p, --html, -H\t\tHTML Page with stats and picture\n"
 			"-c, --config-dir\tSpecifies a config-dir different from home\n"
-			"-h\tThis help youre reading\n", CAS_VERSION, myname);
+			"-h, --help\t\tThis help you're reading\n", CAS_VERSION, myname);
 }
 
 int main(int argc, char *argv[])
 {
 	/* Declaration of variables */
 	FILE *amulesig;
-	int use_out_pic;
-	int use_page;
+	int use_out_pic = 0;
+	int use_page = 0;
 	char *config_path=NULL;
 	char *path;
 	char *stats[20];
@@ -114,12 +107,14 @@ int main(int argc, char *argv[])
 		case 'h':
 			usage(argv[0]);
 			exit(0);
+		case 'H':
 		case 'p':
 			use_page=1;
 			if (optarg != NULL) {
 				path_for_html = optarg;
 			}
 			break;
+		case 'P':
 		case 'o':
 			use_out_pic=1;
 			if (optarg != NULL) {
@@ -130,15 +125,7 @@ int main(int argc, char *argv[])
 
 	/* get amulesig path */
 
-	if (config_path == NULL) {
-		path = get_path("amulesig.dat");
-	} else {
-		if (config_path[strlen(config_path)-1] != CAS_DIR_SEPARATOR[0]) {
-			strcat(config_path, CAS_DIR_SEPARATOR);
-		}
-		strcat(config_path, "amulesig.dat");
-		path = config_path;
-	}
+	path = get_amule_path("amulesig.dat", 1, config_path);
 
 	if (path == NULL) {
 		perror("Unable to get aMule settings path\n");

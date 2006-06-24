@@ -64,7 +64,8 @@
 /* try (hard) to get correct path for aMule signature
  * !! it's caller's responsibility to free return value
  */
-char *get_path(char *file)
+
+char *get_path(const char *file)
 {
 	char *ret;	/* caller should free return value */
 	static char *saved_home = NULL;
@@ -176,6 +177,33 @@ char *get_path(char *file)
 	 */
 
 	return ret;
+}
+
+char *get_amule_path(const char *file, int force_directory, const char *cmdline_path)
+{
+	char *path;
+
+	if (!cmdline_path) {
+		return get_path(file);
+	}
+
+	if ((path = malloc(strlen(cmdline_path) + strlen(file) + 2)) == NULL) {
+		return NULL;
+	}
+
+	strcpy(path, cmdline_path);
+	if (force_directory) {
+		if (path[strlen(path) - 1] != CAS_DIR_SEPARATOR[0]) {
+			strcat(path, CAS_DIR_SEPARATOR);
+		}
+		strcat(path, file);
+	} else {
+		if (path[strlen(path) - 1] == CAS_DIR_SEPARATOR[0]) {
+			strcat(path, file);
+		}
+	}	
+
+	return path;
 }
 
 /*
