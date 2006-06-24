@@ -24,8 +24,8 @@
 //
 
 const int versionMajor		= 1;
-const int versionMinor		= 1;
-const int versionRevision	= 1;
+const int versionMinor		= 2;
+const int versionRevision	= 0;
 
 
 #include <sstream>
@@ -45,8 +45,27 @@ const int versionRevision	= 1;
 using std::string;
 
 
-string GetLinksFilePath()
+string GetLinksFilePath(const string& configDir)
 {
+	if (!configDir.empty()) {
+#ifdef __WIN32__
+		char buffer[MAX_PATH + 1];
+		configDir.copy(buffer, MAX_PATH);
+		if (PathAppend(buffer, "ED2KLinks")) {
+			string strDir;
+			strDir.assign(buffer);
+			return strDir;
+		}
+#else
+		string strDir = configDir;
+		if (strDir.at(strDir.length() - 1) != '/') {
+			strDir += '/';
+		}
+		return strDir + "ED2KLinks";
+#endif
+	}
+
+
 #ifdef __APPLE__
 
 	std::string strDir;
@@ -248,21 +267,12 @@ void badLink( const string& type, const string& err, const string& uri )
  */
 void writeLink( const string& uri, const string& config_dir )
 {
-	string path;
 	// Attempt to lock the ED2KLinks file
-	if ( config_dir == "" ) {
-		static CFileLock lock(GetLinksFilePath());
-	} else {
-		static CFileLock lock(config_dir + "ED2KLinks");
-	}
+	static CFileLock lock(GetLinksFilePath(config_dir));
 	static std::ofstream file;
 	
 	if (not file.is_open()) {
-		if (config_dir == "") {
-			path = GetLinksFilePath();
-		} else {
-			path = config_dir + "ED2KLinks";
-		}
+		string path = GetLinksFilePath(config_dir);
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
 
 		if (not file.is_open()) {
@@ -409,19 +419,10 @@ bool checkServerListLink( const string& uri )
 int main(int argc, char *argv[])
 {
 	bool errors = false;
-	string path;
+	string config_path;
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
-		
-		if ( arg.substr(0, 2) == "-c" ) {
-			path = arg.substr( 3, arg.length() );
-		}
-		if ( arg.substr(0, 12) == "--config-dir" ) {
-			path = arg.substr( 13, arg.length() );
-		}
-		if ( path.substr (path.size() - 1, 1) != "/") {
-			path += "/";
-		}
+
 		if ( arg.substr( 0, 8 ) == "ed2k://|" ) {
 			// Ensure the URI is valid
 			if ( arg.at( arg.length() - 1 ) != '/' ) {
@@ -431,35 +432,44 @@ int main(int argc, char *argv[])
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
 			if ( (type == "file") and checkFileLink( arg ) ) {
-				writeLink( arg, path );
+				writeLink( arg, config_path );
 			} else if ( (type == "server") and checkServerLink( arg ) ) {
-				writeLink( arg, path );
+				writeLink( arg, config_path );
 			} else if ( (type == "serverlist") and checkServerListLink( arg ) ) {
-				writeLink( arg, path );
+				writeLink( arg, config_path );
 			} else {
 				std::cout << "Unknown or invalid link-type:\n\t" << arg << std::endl;
 				errors = true;
 			}
+		} else if (arg == "-c" || arg == "--config-dir") {
+			if (i < argc - 1) {
+				config_path = argv[++i];
+			} else {
+				std::cerr << "Missing mandatory argument for " << arg << std::endl;
+				errors = true;
+			}
+		} else if (arg.substr(0, 2) == "-c") {
+			config_path = arg.substr(2);
+		} else if (arg.substr(0, 13) == "--config-dir=") {
+			config_path = arg.substr(13);
 		} else if ( arg == "--help" ) {
 			std::cout << getVersion()
 				<< "\n\n"
 				<< "Usage:\n"
 				<< "    --help              Prints this help.\n"
-				<< "    --config-dir, -c    Specifies a config-dir different from your home\n"
-				<< "                        this option has to be before the links\n"
+				<< "    --config-dir, -c    Specifies the aMule configuration directory.\n"
 				<< "    --version           Displays version info.\n\n"
 				<< "    ed2k://|file|       Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|     Causes the server to be listed or updated.\n"
-				<< "    ed2k://|serverlist| Causes aMule to update the current serverlist."
+				<< "    ed2k://|serverlist| Causes aMule to update the current serverlist.\n\n"
+				<< "*** NOTE: Option order is important! ***\n"
 				<< std::endl;
 			
 		} else if ( arg == "--version" ) {
 			std::cout << getVersion() << std::endl;
 		} else {
-			if ( path == "" ) {
-				std::cout << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
-				errors = true;
-			}
+			std::cerr << "Bad parameter value:\n\t" << arg << "\n" << std::endl;
+			errors = true;
 		}
 	}
 
