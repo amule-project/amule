@@ -26,6 +26,6 @@
 */
 
 #ifndef CAS_VERSION
-#define CAS_VERSION	"0.7"
+#define CAS_VERSION	"0.8"
 #endif
 /* // File_checked_for_headers */
