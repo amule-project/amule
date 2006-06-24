@@ -414,7 +414,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("i"), wxT("enable-stdin"), wxT("Does not disable stdin."));
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
-	cmdline.AddOption(wxEmptyString, wxT("config-dir"), wxT("read config from <dir> instead of home"));
+	cmdline.AddOption(wxT("c"), wxT("config-dir"), wxT("read config from <dir> instead of home"));
 #else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString,
 		wxT(	"Sets the geometry of the app.\n"
@@ -439,9 +439,10 @@ bool CamuleApp::OnInit()
 		return false;
 	}		
 
-	wxString config_dir_string;
-	if ( cmdline.Found(wxT("config-dir"), &config_dir_string) ) {
-		ConfigDir = config_dir_string;
+	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
+		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
+			ConfigDir += wxFileName::GetPathSeparator();
+		}
 	} else {
 		ConfigDir = GetConfigDir();
 	}
