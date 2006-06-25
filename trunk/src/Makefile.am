@@ -145,7 +145,6 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	UPnP.cpp \
 	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Search.cpp \
 	kademlia/kademlia/Indexed.cpp \
@@ -153,6 +152,10 @@ core_sources = \
 	kademlia/kademlia/Prefs.cpp \
 	kademlia/routing/RoutingZone.cpp \
 	kademlia/routing/Contact.cpp 
+
+if !SYS_WIN32
+core_sources += UPnP.cpp
+endif
 
 gui_sources = \
 	amule-gui.cpp \

@@ -179,7 +179,9 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
+#ifndef __WXMSW__
 	CUPnPControlPoint*	m_upnp;
+#endif
 	wxLocale m_locale;
 
 	void ShutDown();

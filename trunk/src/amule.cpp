@@ -67,7 +67,10 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "ThreadTasks.h"
+
+#ifndef __WXMSW__
 #include "UPnP.h"			// Needed for UPnP
+#endif
 
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
@@ -160,7 +163,9 @@ CamuleApp::CamuleApp()
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
+#ifndef __WXMSW__
 	m_upnp		= NULL;
+#endif
 	core_timer	= NULL;
 	applog		= NULL;
 	
@@ -200,10 +205,10 @@ int CamuleApp::OnExit()
 	// there is no current object, it will create one using Create() function.
 	// To disable this behaviour DontCreateOnDemand() is provided.
 	delete wxConfigBase::Set((wxConfigBase *)NULL);
-	
+
 	// Save credits
 	clientcredits->SaveList();
-	
+
 	// Kill amuleweb if running
 	if (webserver_pid) {
 		printf("Killing amuleweb instance...\n");
@@ -212,55 +217,56 @@ int CamuleApp::OnExit()
 		printf("Killed!\n");
 	}
 
-
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule OnExit: Terminating core.\n");
 	}
 
 	delete serverlist;
 	serverlist = NULL;
-	
+
 	delete searchlist;
 	searchlist = NULL;
-	
+
 	delete clientcredits;
 	clientcredits = NULL;
 
 	delete friendlist;
 	friendlist = NULL;
-	
+
 	// Destroying CDownloadQueue calls destructor for CPartFile
 	// calling CSharedFileList::SafeAddKFile occasionally.
 	delete sharedfiles;
 	sharedfiles = NULL;
-	
+
 	delete serverconnect;
 	serverconnect = NULL;
-	
+
 	delete listensocket;
 	listensocket = NULL;
 
 	delete clientudp;
 	clientudp = NULL;
-	
+
 	delete knownfiles;
 	knownfiles = NULL;
-	
+
 	delete clientlist;
 	clientlist = NULL;
-	
+
 	delete uploadqueue;
 	uploadqueue = NULL;
-	
+
 	delete downloadqueue;
 	downloadqueue = NULL;
-	
+
 	delete ipfilter;
 	ipfilter = NULL;
 
+#ifndef __WXMSW__
 	delete m_upnp;
 	m_upnp = NULL;
-	
+#endif
+
 	delete ECServerHandler;
 	ECServerHandler = NULL;
 
@@ -277,14 +283,14 @@ int CamuleApp::OnExit()
 	delete m_singleInstance;
 #endif
 	m_singleInstance = NULL;
-	
+
 	delete uploadBandwidthThrottler;
 	uploadBandwidthThrottler = NULL;
-	
+
 	if (m_app_state!=APP_STATE_STARTING) {
 		printf("aMule shutdown completed.\n");
 	}
-	
+
 #if wxUSE_MEMORY_TRACING
 	printf("Memory debug results for aMule exit:\n");
 	// Log mem debug mesages to wxLogStderr
@@ -303,7 +309,7 @@ int CamuleApp::OnExit()
 #endif
 
 	StopTickTimer();
-	
+
 	// Return 0 for succesful program termination
 	return AMULE_APP_BASE::OnExit();
 }
@@ -911,6 +917,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 	}	
 
+#ifndef __WXMSW__
 	if (thePrefs::UPnPEnabled()) {
 		try {
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
@@ -921,7 +928,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 			fprintf(stderr, "%s\n", (const char *)unicode2char(e.what()));
 		}
 	}
-	
+#endif
+
 	return ok;
 }
 
