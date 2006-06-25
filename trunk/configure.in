@@ -589,6 +589,7 @@ AC_CONFIG_FILES([Makefile
 		 src/utils/wxCas/docs/Makefile
 		 src/utils/wxCas/src/Makefile
 		 src/utils/xas/Makefile
+		 src/utils/xas/autostart-xas
 		 src/utils/xas/docs/Makefile
 		 src/webserver/Makefile
 		 src/webserver/src/Makefile
