@@ -1,15 +1,16 @@
 #!/usr/bin/perl 
 # we register the script
 # if someone knows how to unload it clean....do tell
-IRC::register("xas", "1.8", "", "Xchat Amule Statistics");
+IRC::register("xas", "1.9", "","XChat aMule stats");
 # welcome message
-IRC::print "\n\0033  Follow the \0034 white\0033 rabbit\0038...\003\n";
+IRC::print "\n\0033 Follow the \0034 white\0033 rabbit\0038...\003\n";
 IRC::print "\n\0035 Use command \0038/xas\0035 to print out aMule statistics\003";
 # we have no life. we are robots...and we hang around in here:
 IRC::print "\0035 (#amule @ irc.freenode.net)\003";
 # command that we use
 IRC::add_command_handler("xas","xas");
 
+#25.06.2005 - PleuR     : int_to_byte, ratio-fixer, fixed line 1 (is connected to online ?)
 #16.12.2005 - stefanero : some kad cleanups
 #12.12.2005 - fulgas	; made kad work with xas
 #06.05.2005 - niet      : file handle change
@@ -90,22 +91,29 @@ sub xas
 		}
 	}
 
-	# total download traffic in Gb
-	my $tdl = (sprintf("%.02f", $amulesigdata[11] / 1073741824));
+	# total download traffic in bytes (int_to_byte *after* calculations)
+	my $tdl = $amulesigdata[11];
 
-	# total upload traffic in Gb
-	my $tul = (sprintf("%.02f", $amulesigdata[12] / 1073741824));
+	# total upload traffic in bytes
+	my $tul = $amulesigdata[12];
 
-	# session download traffic in Gb
-	my $sdl = (sprintf("%.02f", $amulesigdata[14] / 1048576));
+	# session download traffic in bytes
+	my $sdl = $amulesigdata[14];
 
-	# session upload traffic in Gb
-	my $sul = (sprintf("%.02f", $amulesigdata[15] / 1048576));
+	# session upload traffic in bytes
+	my $sul = $amulesigdata[15];
 
 	# ratio
-	my $totalratio = (sprintf("%0.1f",$tdl/$tul));
-	my $sessionratio = (sprintf("%0.1f",$sdl/$sul));
+	my $totalratio = calc_ratio($tdl,$tul);
+
+	my $sessionratio = calc_ratio($sdl,$sul);
 	
+	# do int_to_bytes to make human-readable output
+	$tdl = int_to_bytes($tdl);
+	$tul = int_to_bytes($tul);
+	$sdl = int_to_bytes($sdl);
+	$sul = int_to_bytes($sul);
+
 	# convert runtime from sec to string
 	my $seconds = $amulesigdata[16];
 	my $days    = pull_count($seconds, 86400);
@@ -139,15 +147,15 @@ sub xas
 			IRC::command "/say aMule $amulesigdata[13] crashed after $runtime!" }
 		else {
 			IRC::command "/say aMule $amulesigdata[13] was closed" };
-		IRC::command "/say Total download traffic: $tdl Gb";
-		IRC::command "/say Total upload traffic:   $tul Gb" }
+		IRC::command "/say Total download traffic: $tdl";
+		IRC::command "/say Total upload traffic: $tul" }
 	# if aMule is running
 	else {
 		if ($amulesigdata[0]==0 && $amulesigdata[5]==0){
 		IRC::command "/say $amulesigdata[10] is not connected";
 		}
 		else {
-		IRC::command "/say $amulesigdata[10] is connected to $amulestatus $amulextatus";}
+		IRC::command "/say $amulesigdata[10] is $amulestatus $amulextatus";}
 	
 		IRC::command "/say aMule $amulesigdata[13] is using $amulecpu% CPU, $amulemem MB of memory and it has been running for $runtime";
 
@@ -158,8 +166,8 @@ sub xas
 			IRC::command "/say on $cpu @ $mhz MHz up $uptime" };
 
 		IRC::command "/say Sharing $amulesigdata[9] files with $amulesigdata[8] clients in queue";
-		IRC::command "/say Total download traffic: $tdl Gb, total upload traffic: $tul Gb, Total Ratio: 1:$totalratio";
-		IRC::command "/say Session download traffic: $sdl Mb, session upload traffic: $sul Mb, Session Ratio: 1:$sessionratio";
+		IRC::command "/say Total download traffic: $tdl, total upload traffic: $tul, Total Ratio: $totalratio";
+		IRC::command "/say Session download traffic: $sdl, session upload traffic: $sul, Session Ratio: $sessionratio";
 		IRC::command "/say Current DL speed: $amulesigdata[6] KB/s, current UL speed:  $amulesigdata[7] KB/s" };
 	return 1;
 	# that's it
@@ -172,4 +180,66 @@ sub pull_count {
     my($answer) = int($_[0] / $_[1]);
     $_[0] -= $answer * $_[1];
     return $answer;
+}
+
+sub calc_ratio
+{
+	my $ratiomethod = 1;
+
+	# total download traffic in bytes
+	my $dl = $_[0];
+
+	# total upload traffic in bytes
+	my $ul = $_[1];
+
+	my $ratiodown = 0;
+	my $ratioup = 0;
+
+	# calculate ratio
+	if ($ul > 0) { # we don't want 'division by zero'-error
+		$ratiodown = ($dl/$ul);
+		$ratioup = 1;
+	}
+
+	if ($ratiodown == 0) { # we don't want 1:0 ratio's if down eq 0
+		$ratioup = 0;
+	}
+	elsif ($ratiodown < 0.5) {
+		if ($ratiomethod == 1) { # Set down to 1, calculate up
+			$ratioup = ($ul/$dl);
+			$ratiodown = 1;
+		}
+		if ($ratiomethod == 2) { # Increase by 10 until greater than 0.5
+			while ($ratiodown < 0.5) {
+				$ratiodown = $ratiodown * 10;
+				$ratioup = $ratioup * 10;
+			}
+		}
+	}
+	$ratiodown = (sprintf("%0.1f",$ratiodown));
+	$ratioup = (sprintf("%0.1f",$ratioup));
+
+	return "$ratioup:$ratiodown";
+}
+
+sub int_to_bytes
+{
+	my($value) = int($_[0]);
+	
+	if ($value >= 1073741824) {
+		$value = (sprintf("%0.2f",$value/1073741824));
+		return "$value GiB";
+	}
+	elsif ($value >= 1048576) {
+		$value = (sprintf("%0.2f",$value/1048576));
+		return "$value MiB";
+	}
+	elsif ($value >= 1024) {
+		$value = (sprintf("%0.2f",$value/1024));
+		return "$value KiB";
+	}
+	else {
+		$value = (sprintf("%0.2f",$value));
+		return "$value B";
+	}
 }
