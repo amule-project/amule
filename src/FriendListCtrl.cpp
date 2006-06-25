@@ -24,9 +24,12 @@
 //
 
 
-#include "amule.h"			// Needed for theApp: let it first or fail under win32
-#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Interface declarations
+
+#include <include/common/MenuIDs.h>
+
+#include "amule.h"		// Needed for theApp
+#include "amuleDlg.h"		// Needed for CamuleDlg
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "AddFriend.h"		// Needed for CAddFriend
 #include "ChatWnd.h"		// Needed for CChatWnd

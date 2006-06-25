@@ -24,6 +24,10 @@
 //
 
 #include "ClientListCtrl.h"
+
+#include <include/protocol/ed2k/ClientSoftware.h>
+#include <include/common/MenuIDs.h>
+
 #include "ClientDetailDialog.h"
 #include "ChatWnd.h"
 #include "amuleDlg.h"
@@ -40,8 +44,6 @@
 #include <wx/menu.h>
 #include <wx/textdlg.h>
 #include <wx/dc.h>
-
-
 
 
 ////////////////////////////////////////////////////////////

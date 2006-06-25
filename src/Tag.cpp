@@ -128,7 +128,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				data.Read(&m_fVal, 4);
 				break;
 			
-			case TAGTYPE_HASH:
+			case TAGTYPE_HASH16:
 				m_hashVal = new CMD4Hash(data.ReadHash());
 				break;
 			
@@ -349,7 +349,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			#warning Endianess problem?
 			data->Write(&m_fVal, 4);
 			break;
-		case TAGTYPE_HASH:
+		case TAGTYPE_HASH16:
 			data->WriteHash(*m_hashVal);
 			break;
 		case TAGTYPE_BLOB:
@@ -428,13 +428,13 @@ wxString CTag::GetFullInfo() const
 CTagHash::CTagHash(const wxString& name, const CMD4Hash& value)
 	: CTag(name) {
 		m_hashVal = new CMD4Hash(value);
-		m_uType = TAGTYPE_HASH;
+		m_uType = TAGTYPE_HASH16;
 	}
 
 CTagHash::CTagHash(uint8 name, const CMD4Hash& value)
 	: CTag(name) {
 		m_hashVal = new CMD4Hash(value);
-		m_uType = TAGTYPE_HASH;
+		m_uType = TAGTYPE_HASH16;
 	}
 
 void deleteTagPtrListEntries(TagPtrList* taglist)

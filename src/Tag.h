@@ -29,7 +29,8 @@
 
 #include <common/StringFunctions.h>	// Needed for EUtf8Str
 
-#include "OPCodes.h"		// Needed for TAGTYPE_*
+#include <include/tags/TagTypes.h>
+
 #include "OtherFunctions.h"
 
 class CMD4Hash;
@@ -57,7 +58,7 @@ public:
 		(m_uType == TAGTYPE_UINT16) ||
 		(m_uType == TAGTYPE_UINT8); }
 	bool IsFloat() const		{ return m_uType == TAGTYPE_FLOAT32; }
-	bool IsHash() const		{ return m_uType == TAGTYPE_HASH; }
+	bool IsHash() const		{ return m_uType == TAGTYPE_HASH16; }
 	bool IsBlob() const		{ return m_uType == TAGTYPE_BLOB; }
 	bool IsBsob() const		{ return m_uType == TAGTYPE_BSOB; }
 	

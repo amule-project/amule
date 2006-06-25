@@ -23,6 +23,16 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "updownclient.h"	// Needed for CUpDownClient
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/protocol/ed2k/ClientSoftware.h>
+#include <include/protocol/kad/Client2Client/UDP.h>
+
+#include <include/common/ClientVersion.h>
+
+#include <include/tags/ClientTags.h>
 
 #include <zlib.h>		// Needed for inflateEnd
 
@@ -45,7 +55,6 @@
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "ListenSocket.h"			// Needed for CListenSocket
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"		// Needed for theStats
 #include "ClientUDPSocket.h"
@@ -1083,8 +1092,9 @@ void CUpDownClient::ProcessMuleCommentPacket(const byte* pachPacket, uint32 nSiz
 
 	// The comment is unicoded, with a uin32 len and safe read 
 	// (won't break if string size is < than advertised len)
-	m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true);
-
+	// Truncated to MAXFILECOMMENTLEN size
+	m_strComment = data.ReadString(GetUnicodeSupport(), 4 /* bytes (it's a uint32)*/, true).Left(MAXFILECOMMENTLEN);
+	
 	AddDebugLogLineM( false, logClient, wxString(wxT("Description for file '")) << m_clientFilename << wxT("' received: ") << m_strComment);
 
 	// Update file rating

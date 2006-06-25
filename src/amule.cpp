@@ -23,6 +23,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "amule.h"			// Interface declarations.
+
+#include <include/common/ClientVersion.h>
+
 #include <csignal>
 #include <wx/process.h>
 #include <wx/sstream.h>	
@@ -40,7 +44,6 @@
 #include <wx/snglinst.h>
 
 
-#include "amule.h"			// Interface declarations.
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "Server.h"			// Needed for GetListName
 #include "IPFilter.h"			// Needed for CIPFilter

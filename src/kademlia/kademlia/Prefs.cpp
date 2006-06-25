@@ -37,6 +37,10 @@ there client on the eMule forum..
 */
 
 #include "Prefs.h"
+
+#include <include/protocol/kad/Constants.h>
+#include <include/common/Macros.h>
+
 #include "../kademlia/Kademlia.h"
 #include "../kademlia/Indexed.h"
 #include "../../Preferences.h"

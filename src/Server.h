@@ -26,9 +26,10 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-
-
 #include "Tag.h"
+
+#include <include/protocol/ed2k/Client2Server/TCP.h> 
+#include <include/protocol/ed2k/Client2Server/UDP.h> 
 
 #ifdef CLIENT_GUI
 #include <ec/ECSpecialTags.h>
@@ -36,22 +37,6 @@
 
 class ServerMet_Struct;
 class CFileDataIO;
-
-// Server TCP flags
-#define SRV_TCPFLG_COMPRESSION          0x00000001
-#define SRV_TCPFLG_NEWTAGS                      0x00000008
-#define SRV_TCPFLG_UNICODE                      0x00000010
-#define SRV_TCPFLG_RELATEDSEARCH        0x00000040
-#define SRV_TCPFLG_TYPETAGINTEGER       0x00000080
-#define SRV_TCPFLG_LARGEFILES           0x00000100
-
-// Server UDP flags
-#define SRV_UDPFLG_EXT_GETSOURCES       0x00000001
-#define SRV_UDPFLG_EXT_GETFILES         0x00000002
-#define SRV_UDPFLG_NEWTAGS                      0x00000008
-#define SRV_UDPFLG_UNICODE                      0x00000010
-#define SRV_UDPFLG_EXT_GETSOURCES2      0x00000020
-#define SRV_UDPFLG_LARGEFILES           0x00000100
 
 // Server priority
 #define SRV_PR_LOW                      2

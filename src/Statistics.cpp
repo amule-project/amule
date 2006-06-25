@@ -25,9 +25,10 @@
 //
 
 #include "Statistics.h"		// Interface declarations
-#include <ec/ECTag.h>		// Needed for CECTag
-#include "OPCodes.h"
 
+#include <include/protocol/ed2k/ClientSoftware.h>
+
+#include <ec/ECTag.h>		// Needed for CECTag
 
 #ifndef EC_REMOTE
 	#ifndef AMULE_DAEMON

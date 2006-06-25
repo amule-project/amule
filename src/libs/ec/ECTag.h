@@ -77,7 +77,7 @@ enum ECTagTypes {
 	EC_TAGTYPE_STRING,
 	EC_TAGTYPE_DOUBLE,
 	EC_TAGTYPE_IPV4,
-	EC_TAGTYPE_HASH
+	EC_TAGTYPE_HASH16
 };
 
 /**
@@ -149,7 +149,7 @@ class CECTag {
 		}
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { 
-			wxASSERT((m_dataType == EC_TAGTYPE_HASH) || (m_dataType == EC_TAGTYPE_UNKNOWN)); 
+			wxASSERT((m_dataType == EC_TAGTYPE_HASH16) || (m_dataType == EC_TAGTYPE_UNKNOWN)); 
 			return CMD4Hash((const unsigned char *)m_tagData); 
 		}
 		

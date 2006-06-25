@@ -25,6 +25,12 @@
 
 
 #include "ClientUDPSocket.h"	// Interface declarations
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h> // Sometimes we reply with TCP packets.
+#include <include/protocol/ed2k/Client2Client/UDP.h>
+#include <include/common/EventIDs.h>
+
 #include "Preferences.h"		// Needed for CPreferences
 #include "PartFile.h"			// Needed for CPartFile
 #include "updownclient.h"		// Needed for CUpDownClient
@@ -46,7 +52,7 @@
 //
 
 CClientUDPSocket::CClientUDPSocket(const amuleIPV4Address& address, const CProxyData* ProxyData)
-	: CMuleUDPSocket(wxT("Client UDP-Socket"), CLIENTUDPSOCKET_HANDLER, address, ProxyData)
+	: CMuleUDPSocket(wxT("Client UDP-Socket"), ID_CLIENTUDPSOCKET_EVENT, address, ProxyData)
 {
 	if (!thePrefs::IsUDPDisabled()) {
 		Open();

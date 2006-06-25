@@ -34,6 +34,7 @@ using std::auto_ptr;
 #include <common/Format.h>
 #include <common/MD5Sum.h>
 
+#include <include/common/EventIDs.h>
 
 #include "amule.h"			// Interface declarations.
 #include "Server.h"			// Needed for GetListName
@@ -100,7 +101,7 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE);
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
 
 	// Core timer
-	EVT_TIMER(ID_CORETIMER, CamuleRemoteGuiApp::OnPollTimer)
+	EVT_TIMER(ID_CORE_TIMER_EVENT, CamuleRemoteGuiApp::OnPollTimer)
 
 	EVT_CUSTOM(wxEVT_EC_CONNECTION, -1, CamuleRemoteGuiApp::OnECConnection)
 	EVT_CUSTOM(wxEVT_EC_INIT_DONE, -1, CamuleRemoteGuiApp::OnECInitDone)
@@ -206,7 +207,7 @@ bool CamuleRemoteGuiApp::OnInit()
 	InstallMuleExceptionHandler();
 
 	// Create the polling timer
-	poll_timer = new wxTimer(this,ID_CORETIMER);
+	poll_timer = new wxTimer(this,ID_CORE_TIMER_EVENT);
 	if (!poll_timer) {
 		printf("Fatal Error: Failed to create Poll Timer");
 		OnExit();

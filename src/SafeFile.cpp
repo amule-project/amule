@@ -400,7 +400,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 			// If those new tags would just be stored and sent to remote clients, any malicious or just bugged
 			// client could let send a lot of nodes "corrupted" packets...
 			//
-			case TAGTYPE_HASH:
+			case TAGTYPE_HASH16:
 			{
 				retVal = new CTagHash(name, ReadHash());
 				break;
@@ -484,7 +484,7 @@ void CFileDataIO::WriteTag(const CTag& tag)
 		
 		switch (tag.GetType())
 		{
-			case TAGTYPE_HASH:
+			case TAGTYPE_HASH16:
 				// Do NOT use this to transfer any tags for at least half a year!!
 				WriteHash(CMD4Hash(tag.GetHash()));
 				break;

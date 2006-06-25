@@ -23,13 +23,16 @@
 //
 
 
+#include "amule.h"			// Interface declarations.
+
+#include <include/common/EventIDs.h>
+
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
 #endif
 
 #include <wx/utils.h>
 
-#include "amule.h"			// Interface declarations.
 #include "Preferences.h"		// Needed for CPreferences
 #include "ServerSocket.h"		// Needed for CServerSocket
 #include "PartFile.h"			// Needed for CPartFile
@@ -61,18 +64,18 @@ BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	//
 	
 	// Listen Socket
-	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleDaemonApp::ListenSocketHandler)
+	EVT_SOCKET(ID_LISTENSOCKET_EVENT, CamuleDaemonApp::ListenSocketHandler)
 
 	// UDP Socket (servers)
-	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleDaemonApp::UDPSocketHandler)
+	EVT_SOCKET(ID_SERVERUDPSOCKET_EVENT, CamuleDaemonApp::UDPSocketHandler)
 	// UDP Socket (clients)
-	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleDaemonApp::UDPSocketHandler)
+	EVT_SOCKET(ID_CLIENTUDPSOCKET_EVENT, CamuleDaemonApp::UDPSocketHandler)
 
-	// Socket timers (TCP + UDO)
-	EVT_MULE_TIMER(TM_TCPSOCKET, CamuleDaemonApp::OnTCPTimer)
+	// Socket timer (TCP)
+	EVT_MULE_TIMER(ID_SERVER_RETRY_TIMER_EVENT, CamuleDaemonApp::OnTCPTimer)
 
 	// Core timer
-	EVT_MULE_TIMER(ID_CORETIMER, CamuleDaemonApp::OnCoreTimer)
+	EVT_MULE_TIMER(ID_CORE_TIMER_EVENT, CamuleDaemonApp::OnCoreTimer)
 
 	EVT_MULE_NOTIFY(CamuleDaemonApp::OnNotifyEvent)
 	EVT_MULE_LOGGING(CamuleDaemonApp::OnLoggingEvent)
@@ -436,7 +439,7 @@ bool CamuleDaemonApp::OnInit()
 	if ( !CamuleApp::OnInit() ) {
 		return false;
 	}
-	core_timer = new CTimer(this,ID_CORETIMER);
+	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	
 	core_timer->Start(300);
 	

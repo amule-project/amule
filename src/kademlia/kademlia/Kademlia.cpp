@@ -36,6 +36,10 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
+#include "Kademlia.h" // Interface declarations
+
+#include <include/protocol/kad/Constants.h>
+#include <include/common/Macros.h>
 
 #include "Defines.h"
 #include "Indexed.h"

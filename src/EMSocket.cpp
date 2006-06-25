@@ -25,6 +25,10 @@
 
 
 #include "EMSocket.h"		// Interface declarations.
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Constants.h>
+
 #include "Packet.h"		// Needed for CPacket
 #include "amule.h"
 #include "GetTickCount.h"

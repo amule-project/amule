@@ -23,12 +23,15 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "ServerListCtrl.h"	// Interface declarations
+
+#include <include/common/MenuIDs.h>
+
 #include <wx/textfile.h>
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
 
-#include "ServerListCtrl.h"	// Interface declarations
 #include "amule.h"			// Needed for theApp
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "ServerList.h"		// Needed for CServerList

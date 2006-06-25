@@ -25,10 +25,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "KnownFile.h"		// Do_not_auto_remove
 
-
-
-
+#include <include/protocol/kad/Constants.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/protocol/Protocols.h>
+#include <include/tags/FileTags.h>
 
 #include <wx/config.h>
 

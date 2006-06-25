@@ -25,6 +25,9 @@
 
 #include "ClientCreditsList.h"	// Interface declarations
 
+#include <include/protocol/ed2k/Constants.h>
+#include <include/common/Macros.h>
+#include <include/common/DataFileVersion.h>
 
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for thePrefs

@@ -23,10 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "UploadBandwidthThrottler.h"
+
+#include <include/protocol/ed2k/Constants.h>
+#include <include/common/Macros.h>
+#include <include/common/Constants.h>
+
 #include <cmath>
 #include <limits> // Do_not_auto_remove (NetBSD)
-#include "UploadBandwidthThrottler.h"
-#include "OPCodes.h"
 #include "OtherFunctions.h"
 #include "ThrottledSocket.h"
 #include "Logger.h"

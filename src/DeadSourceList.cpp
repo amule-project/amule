@@ -24,9 +24,10 @@
 //
 
 #include "DeadSourceList.h"
-#include "OPCodes.h"
-#include "updownclient.h"
 
+#include <include/common/Macros.h>
+
+#include "updownclient.h"
 
 #define	CLEANUPTIME			MIN2MS(60)
 

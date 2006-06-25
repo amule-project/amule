@@ -347,7 +347,6 @@ noinst_HEADERS = ThreadScheduler.h \
 		MuleUDPSocket.h \
 		muuli_wdr.h \
 		NetworkFunctions.h \
-		OPCodes.h \
 		OScopeCtrl.h \
 		OtherFunctions.h \
 		OtherStructs.h \

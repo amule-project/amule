@@ -76,7 +76,7 @@ void CCommentDialog::OnBnClickedCancel(wxCommandEvent& WXUNUSED(evt))
 bool CCommentDialog::OnInitDialog()
 {
 	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetValue(m_file->GetFileComment());
-	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetMaxLength(50);
+	CastChild(IDC_CMT_TEXT, wxTextCtrl)->SetMaxLength(MAXFILECOMMENTLEN);
 	ratebox->SetSelection(m_file->GetFileRating());
 	return TRUE;
 }

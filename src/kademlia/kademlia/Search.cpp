@@ -39,6 +39,12 @@ there client on the eMule forum..
 
 
 #include "Search.h"
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/kad/Client2Client/UDP.h>
+#include <include/protocol/kad/Constants.h>
+#include <include/tags/FileTags.h>
+
 #include "Defines.h"
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"

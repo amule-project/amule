@@ -24,6 +24,12 @@
 //
 
 
+#include "Preferences.h"
+
+#include <include/protocol/ed2k/Constants.h>
+#include <include/common/Constants.h>
+#include <include/common/DataFileVersion.h>
+
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
 #include <wx/textfile.h>			// Do_not_auto_remove (win32)
@@ -33,7 +39,7 @@
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for PACKAGE_STRING
 #endif
-#include "Preferences.h"
+
 #include "CFile.h"
 #include <common/MD5Sum.h>
 #include "Logger.h"
