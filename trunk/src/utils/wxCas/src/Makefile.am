@@ -29,8 +29,8 @@ wxcasrc.$(OBJEXT): $(srcdir)/../wxcas.rc
 	@thisdir=`pwd` ; \
 	cd $(srcdir)/.. ; \
 	rcfile=`basename "$<"` ; \
-	echo "windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o \"$@\"" ; \
-	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
+	echo "$(RC) $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i \"$${rcfile}\" -o \"$@\"" ; \
+	$(RC) $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
 endif
