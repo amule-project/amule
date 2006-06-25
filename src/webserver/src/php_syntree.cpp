@@ -25,6 +25,8 @@
 
 
 
+#include <string>
+
 #ifndef PHP_STANDALONE_EN
 	#include "WebServer.h"
 #endif
