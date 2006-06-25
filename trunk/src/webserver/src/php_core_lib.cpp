@@ -25,7 +25,7 @@
 
 
 
-#include <string>
+#include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #ifndef PHP_STANDALONE_EN
 	#include "config.h"

@@ -371,7 +371,7 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData& execData)
 
 
 #ifdef __WXMAC__
-#include <wx/stdpaths.h>
+#include <wx/stdpaths.h> // Do_not_auto_remove (guess)
 static wxStandardPathsCF gs_stdPaths;
 wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
 {

@@ -28,7 +28,7 @@
 
 #include <fcntl.h>
 #include <cerrno>
-#include <string>
+#include <string> // Do_not_auto_remove (g++-4.0.1 except win32)
 
 
 /**

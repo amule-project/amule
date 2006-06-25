@@ -26,7 +26,7 @@
 
 
 #include <cmath> // Needed for cos, M_PI
-#include <string>
+#include <string> // Do_not_auto_remove (g++-4.0.1)
 
 
 //-------------------------------------------------------------------
