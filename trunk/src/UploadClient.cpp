@@ -23,8 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <zlib.h>
+#include "updownclient.h"	// Interface
 
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+
+#include <zlib.h>
 
 #include "ClientCredits.h"	// Needed for CClientCredits
 #include "Packet.h"		// Needed for CPacket
@@ -35,7 +39,6 @@
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "amule.h"		// Needed for theApp
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
@@ -778,8 +781,8 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	}
 	m_bCommentDirty = false;
 
-	// We used to limit the comment to 50 before, now we do not anymore.
-	const wxString& desc = file->GetFileComment();
+	// Truncate to max len.
+	wxString desc = file->GetFileComment().Left(MAXFILECOMMENTLEN);
 	uint8 rating = file->GetFileRating();
 	
 	if ( file->GetFileRating() == 0 && desc.IsEmpty() ) {

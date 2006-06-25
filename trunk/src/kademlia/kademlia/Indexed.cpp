@@ -37,6 +37,14 @@ there client on the eMule forum..
 */
 
 #include "Indexed.h"
+
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/kad/Constants.h>
+#include <include/protocol/kad/Client2Client/UDP.h>
+#include <include/common/Macros.h>
+#include <include/tags/FileTags.h>
+
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
 #include "../../CFile.h"

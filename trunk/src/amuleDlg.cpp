@@ -29,6 +29,8 @@
 #include <wx/mimetype.h>	// Do_not_auto_remove (win32)
 #include <wx/textfile.h>	// Do_not_auto_remove (win32)
 
+#include <include/common/EventIDs.h>
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
 #endif // HAVE_CONFIG_H
@@ -89,7 +91,7 @@ BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 	EVT_BUTTON(ID_BUTTON_FAST, CamuleDlg::OnBnClickedFast)
 	EVT_BUTTON(IDC_SHOWSTATUSTEXT, CamuleDlg::OnBnStatusText)
 
-	EVT_TIMER(ID_GUITIMER, CamuleDlg::OnGUITimer)
+	EVT_TIMER(ID_GUI_TIMER_EVENT, CamuleDlg::OnGUITimer)
 
 	EVT_SIZE(CamuleDlg::OnMainGUISizeChange)
 
@@ -184,7 +186,7 @@ wxFrame(
 	m_chatwnd->Show(FALSE);
 
 	// Create the GUI timer
-	gui_timer=new wxTimer(this,ID_GUITIMER);
+	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
 		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
 		exit(1);

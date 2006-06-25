@@ -24,10 +24,11 @@
 //
 
 #include "Server.h"		// Interface declarations.
+
+#include <include/tags/ServerTags.h>
+
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "OtherStructs.h"	// Needed for ServerMet_Struct
-
-
 
 CServer::CServer(ServerMet_Struct* in_data)
 {

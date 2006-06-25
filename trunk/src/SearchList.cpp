@@ -24,6 +24,11 @@
 //
 
 #include "SearchList.h"		// Interface declarations.
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/kad/Constants.h>
+#include <include/tags/FileTags.h>
+
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp

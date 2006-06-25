@@ -37,7 +37,9 @@ there client on the eMule forum..
 */
 
 #include "Contact.h"
-#include "../../OPCodes.h" // Neededf for MIN2MS and such stuff.
+
+#include <include/common/Macros.h>
+
 #include "../../Statistics.h"
 
 #ifdef _DEBUG

@@ -25,12 +25,13 @@
 
 #include "ListenSocket.h"	// Interface declarations
 
+#include <include/common/EventIDs.h>
+
 #include "ClientTCPSocket.h"	// Needed for CClientRequestSocket
 #include "Logger.h"			// Needed for AddLogLineM
 #include "Statistics.h"		// Needed for theStats
 #include "Preferences.h"	// Needed for CPreferences
 #include "amule.h"		// Needed for theApp
-#include "OPCodes.h"		// Needed for LISTENSOCKET_HANDLER
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "updownclient.h"	// Needed for CUpDownClient
 
@@ -58,7 +59,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
- 		SetEventHandler(theApp, LISTENSOCKET_HANDLER);
+ 		SetEventHandler(theApp, ID_LISTENSOCKET_EVENT);
  		SetNotify(wxSOCKET_CONNECTION_FLAG);
  		Notify(true);
 

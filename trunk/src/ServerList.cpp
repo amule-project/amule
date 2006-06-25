@@ -24,12 +24,19 @@
 //
 
 
+#include "ServerList.h"			// Interface declarations.
+
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Constants.h>
+#include <include/common/DataFileVersion.h>
+#include <include/tags/ServerTags.h>
+
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
 #include <wx/url.h>			// Needed for wxURL
 #include <wx/tokenzr.h>
 
-#include "ServerList.h"			// Interface declarations.
 #include "DownloadQueue.h"		// Needed for CDownloadQueue
 #include "ServerConnect.h"		// Needed for CServerConnect
 #include "Server.h"			// Needed for CServer and SRV_PR_*

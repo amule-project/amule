@@ -23,11 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "ED2KLink.h"			// Interface declarations.
+
 #include <wx/string.h>
 #include <wx/regex.h>			// Needed for wxRegEx
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 
-#include "ED2KLink.h"			// Interface declarations.
+#include <include/protocol/ed2k/Constants.h>
+
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
 

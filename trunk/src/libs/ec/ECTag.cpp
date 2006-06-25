@@ -151,7 +151,7 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
 		RawPokeUInt64( (char*)m_tagData,		RawPeekUInt64( data.GetHash() ) );
 		RawPokeUInt64( (char*)m_tagData + 8,	RawPeekUInt64( data.GetHash() + 8 ) );
 		m_error = 0;
-		m_dataType = EC_TAGTYPE_HASH;
+		m_dataType = EC_TAGTYPE_HASH16;
 	} else {
 		m_error = 1;
 	}

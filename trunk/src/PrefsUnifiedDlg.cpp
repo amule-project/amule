@@ -26,6 +26,7 @@
 
 #include "PrefsUnifiedDlg.h"
 
+#include <include/common/Constants.h>
 
 #include <wx/colordlg.h>
 #include <wx/tooltip.h>

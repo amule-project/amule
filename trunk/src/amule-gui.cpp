@@ -22,6 +22,9 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "amule.h"				// Interface declarations.
+
+#include <include/common/EventIDs.h>
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"			// Needed for VERSION
@@ -30,7 +33,6 @@
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 
-#include "amule.h"				// Interface declarations.
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "Timer.h"				// Needed for CTimer
 #include "PartFile.h"			// Needed for CPartFile
@@ -55,18 +57,18 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// Socket handlers
 	// Listen Socket
-	EVT_SOCKET(LISTENSOCKET_HANDLER, CamuleGuiApp::ListenSocketHandler)
+	EVT_SOCKET(ID_LISTENSOCKET_EVENT, CamuleGuiApp::ListenSocketHandler)
 
 	// UDP Socket (servers)
-	EVT_SOCKET(SERVERUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
+	EVT_SOCKET(ID_SERVERUDPSOCKET_EVENT, CamuleGuiApp::UDPSocketHandler)
 	// UDP Socket (clients)
-	EVT_SOCKET(CLIENTUDPSOCKET_HANDLER, CamuleGuiApp::UDPSocketHandler)
+	EVT_SOCKET(ID_CLIENTUDPSOCKET_EVENT, CamuleGuiApp::UDPSocketHandler)
 
 	// Socket timers (TCP + UDP)
-	EVT_MULE_TIMER(TM_TCPSOCKET, CamuleGuiApp::OnTCPTimer)
+	EVT_MULE_TIMER(ID_SERVER_RETRY_TIMER_EVENT, CamuleGuiApp::OnTCPTimer)
 
 	// Core timer
-	EVT_MULE_TIMER(ID_CORETIMER, CamuleGuiApp::OnCoreTimer)
+	EVT_MULE_TIMER(ID_CORE_TIMER_EVENT, CamuleGuiApp::OnCoreTimer)
 
 	EVT_MULE_NOTIFY(CamuleGuiApp::OnNotifyEvent)
 	EVT_MULE_LOGGING(CamuleGuiApp::OnLoggingEvent)
@@ -262,7 +264,7 @@ bool CamuleGuiApp::OnInit()
 	}
 
 	// Create the Core timer
-	core_timer = new CTimer(this,ID_CORETIMER);
+	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	if (!core_timer) {
 		printf("Fatal Error: Failed to create Core Timer");
 		OnExit();

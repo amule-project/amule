@@ -23,11 +23,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "DownloadQueue.h"	// Interface declarations
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/kad/Constants.h>
+#include <include/common/Macros.h>
+#include <include/common/MenuIDs.h>
+#include <include/common/Constants.h>
 
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/utils.h>
 
-#include "DownloadQueue.h"	// Interface declarations
 #include "Server.h"		// Needed for CServer
 #include "Packet.h"		// Needed for CPacket
 #include "MemFile.h"		// Needed for CMemFile

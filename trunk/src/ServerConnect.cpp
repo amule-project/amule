@@ -24,6 +24,13 @@
 //
 
 #include "ServerConnect.h"	// Interface declarations.
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/ClientSoftware.h> // Sometimes we reply with TCP packets.
+#include <include/tags/ClientTags.h>
+#include <include/common/ClientVersion.h>
+#include <include/common/EventIDs.h>
+
 #include "SearchList.h"		// Needed for CSearchList
 #include "ServerUDPSocket.h"	// Needed for CServerUDPSocket
 #include "SharedFileList.h"	// Needed for CSharedFileList
@@ -472,7 +479,7 @@ bool CServerConnect::Disconnect()
 
 
 CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address)
-: m_idRetryTimer(&theApp,TM_TCPSOCKET)
+: m_idRetryTimer(&theApp,ID_SERVER_RETRY_TIMER_EVENT)
 {
 	connectedsocket = NULL;
 	used_list = in_serverlist;

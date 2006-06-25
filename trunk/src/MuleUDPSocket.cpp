@@ -24,6 +24,9 @@
 
 
 #include "MuleUDPSocket.h"	// Interface declarations
+
+#include <include/protocol/ed2k/Constants.h>
+
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "amule.h"			// Needed for theApp
 #include "GetTickCount.h"	// Needed for GetTickCount()

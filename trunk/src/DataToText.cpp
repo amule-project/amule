@@ -26,7 +26,7 @@
 #include "KnownFile.h"		// Needed by PriorityToStr
 #include "updownclient.h"	// Needed by DownloadStateToStr and GetSoftName
 
-
+#include <include/protocol/ed2k/ClientSoftware.h>
 
 wxString PriorityToStr( int priority, bool isAuto )
 {

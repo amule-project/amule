@@ -23,9 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "TransferWnd.h"	// Interface declarations
+
+#include <include/common/MenuIDs.h>
+
 #include <wx/config.h>
 
-#include "TransferWnd.h"	// Interface declarations
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "PartFile.h"		// Needed for PR_LOW
 #include "DownloadQueue.h"	// Needed for CDownloadQueue

@@ -27,7 +27,6 @@
 #define PACKET_H
 
 #include "Types.h"		// Needed for int8, int32, uint8 and uint32
-#include "OPCodes.h"		// Needed for OP_EDONKEYPROT
 
 class CMemFile;
 class wxString;

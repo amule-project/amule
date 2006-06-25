@@ -23,8 +23,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "muuli_wdr.h"			// Needed for ID_SHFILELIST
 #include "SharedFilesCtrl.h"	// Interface declarations
+
+#include <include/common/MenuIDs.h>
+
+#include "muuli_wdr.h"			// Needed for ID_SHFILELIST
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "amuleDlg.h"			// Needed for CamuleDlg
 #include "CommentDialog.h"		// Needed for CCommentDialog

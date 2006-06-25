@@ -30,8 +30,9 @@
 #include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
 #include <common/StringFunctions.h>		// Needed for StrToLong
 
+#include <include/common/MenuIDs.h>
+
 #include "MuleListCtrl.h"		// Interface declarations
-#include "OPCodes.h"			// Needed for MP_LISTCOL_1
 #include "GetTickCount.h"		// Needed for GetTickCount()
 #include "OtherFunctions.h"
 

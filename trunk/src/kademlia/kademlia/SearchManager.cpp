@@ -37,6 +37,9 @@ there client on the eMule forum..
 */
 
 #include "Search.h"
+
+#include <include/common/Macros.h>
+
 #include "Indexed.h"
 #include "Defines.h"
 #include "../routing/Contact.h"

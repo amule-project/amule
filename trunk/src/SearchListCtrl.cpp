@@ -24,6 +24,9 @@
 //
 
 #include "SearchListCtrl.h"	// Interface declarations
+
+#include <include/common/MenuIDs.h>
+
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "PartFile.h"		// Needed for CPartFile and CKnownFile
@@ -34,7 +37,6 @@
 #include "muuli_wdr.h"		// Needed for clientImages
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
-
 
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)

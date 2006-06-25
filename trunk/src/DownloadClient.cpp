@@ -23,6 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "updownclient.h"	// Interface declarations
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/protocol/ed2k/Client2Client/UDP.h> 
+#include <include/common/EventIDs.h>
+#include <include/common/Macros.h>
+#include <include/common/Constants.h>
 
 #include <zlib.h>
 #include <cmath>		// Needed for std:exp
@@ -37,7 +45,6 @@
 #include "ListenSocket.h"	// Needed for CListenSocket
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
-#include "updownclient.h"	// Needed for CUpDownClient
 #include "SharedFileList.h"
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"

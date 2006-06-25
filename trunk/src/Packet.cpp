@@ -27,6 +27,7 @@
 
 #include "Packet.h"				// Interface declarations
 
+#include <include/protocol/Protocols.h>
 
 #include "MemFile.h"			// Needed for CMemFile
 #include "OtherStructs.h"		// Needed for Header_Struct

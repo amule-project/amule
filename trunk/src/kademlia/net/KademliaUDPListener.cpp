@@ -32,6 +32,14 @@ there client on the eMule forum..
 */
 
 #include "KademliaUDPListener.h"
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/kad/Constants.h>
+#include <include/protocol/kad/Client2Client/UDP.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h> // OP_CALLBACK is sent in some cases.
+#include <include/common/Macros.h>
+#include <include/tags/FileTags.h>
+
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
 #include "../kademlia/Indexed.h"

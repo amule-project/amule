@@ -27,7 +27,8 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-
+#include <include/protocol/ed2k/ClientSoftware.h>
+#include <include/common/MenuIDs.h>
 
 #include "DownloadListCtrl.h"	// Interface declarations
 #include "DataToText.h"		// Needed for PriorityToStr

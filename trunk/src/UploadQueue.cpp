@@ -23,6 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "UploadQueue.h"	// Interface declarations
+
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/common/Macros.h>
+#include <include/common/Constants.h>
+
 #include <cmath>
 
 #include "Types.h"		// Do_not_auto_remove (win32)
@@ -35,7 +42,6 @@
 	#include <arpa/inet.h>	// Do_not_auto_remove
 #endif
 
-#include "UploadQueue.h"	// Interface declarations
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "KnownFile.h"		// Needed for CKnownFile
 #include "Packet.h"		// Needed for CPacket

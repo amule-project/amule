@@ -26,9 +26,10 @@
 
 #include "Proxy.h"		/* for Interface		*/
 
+#include <include/common/EventIDs.h>
+
 #include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 #include "Logger.h"		/* for AddDebugLogLineM		*/
-#include "OPCodes.h"		/* for PROXY_SOCKET_HANDLER	*/
 #include "OtherFunctions.h"	/* for EncodeBase64()		*/
 #include <common/StringFunctions.h>	/* for unicode2char */
 
@@ -92,7 +93,7 @@ CProxyEventHandler::CProxyEventHandler()
 }
 
 BEGIN_EVENT_TABLE(CProxyEventHandler, wxEvtHandler)
-	EVT_SOCKET(PROXY_SOCKET_HANDLER, CProxyEventHandler::ProxySocketHandler)
+	EVT_SOCKET(ID_PROXY_SOCKET_EVENT, CProxyEventHandler::ProxySocketHandler)
 END_EVENT_TABLE()
 
 //
@@ -227,7 +228,7 @@ t_sm_state CProxyStateMachine::HandleEvent(t_sm_event event)
 
 void CProxyStateMachine::AddDummyEvent()
 {
-	wxSocketEvent e(PROXY_SOCKET_HANDLER);
+	wxSocketEvent e(ID_PROXY_SOCKET_EVENT);
 	// Make sure this is an unknown event :)
 	e.m_event = (wxSocketNotify)(
 		wxSOCKET_INPUT + wxSOCKET_OUTPUT +
@@ -1207,7 +1208,7 @@ bool CProxySocket::Start(const wxIPaddress &peerAddress)
 	// the event handler. The method SaveEventHandler() has been created
 	// for that.
 	SaveEventHandler();
-	SetEventHandler(g_proxyEventHandler, PROXY_SOCKET_HANDLER);
+	SetEventHandler(g_proxyEventHandler, ID_PROXY_SOCKET_EVENT);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |

@@ -23,8 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "amule.h"		// Needed for theApp
 #include "ClientList.h"		// Interface declarations.
+
+#include <include/protocol/ed2k/Constants.h>
+#include <include/protocol/kad/Client2Client/UDP.h>
+#include <include/protocol/kad/Constants.h>
+
+#include "amule.h"		// Needed for theApp
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "UploadQueue.h"	// Needed for CUploadQueue

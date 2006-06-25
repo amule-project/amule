@@ -25,12 +25,13 @@
 
 
 #include "KnownFileList.h"	// Interface declarations
+
+#include <include/common/DataFileVersion.h>
+
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
 #include <common/Format.h>
-
-
 
 CKnownFileList::CKnownFileList()
 {

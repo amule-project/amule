@@ -23,12 +23,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "PartFile.h"		// Interface declarations.
+
+#include <include/protocol/kad/Constants.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/protocol/Protocols.h>
+#include <include/common/DataFileVersion.h>
+#include <include/common/Constants.h>
+#include <include/tags/FileTags.h>
 
 #include <wx/utils.h>
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
 
-
-#include "PartFile.h"		// Interface declarations.
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "UploadQueue.h"	// Needed for CFileHash
 #include "IPFilter.h"		// Needed for CIPFilter

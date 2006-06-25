@@ -26,6 +26,9 @@
 
 #include "MuleTrayIcon.h"
 
+#include <include/common/ClientVersion.h>
+#include <include/common/Constants.h>
+
 #include "pixmaps/mule_TrayIcon_big.ico.xpm"
 #include "pixmaps/mule_Tr_yellow_big.ico.xpm"
 #include "pixmaps/mule_Tr_grey_big.ico.xpm"

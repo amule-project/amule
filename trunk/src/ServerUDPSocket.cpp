@@ -25,6 +25,11 @@
 
 
 #include "ServerUDPSocket.h"	// Interface declarations.
+
+#include <include/protocol/Protocols.h>
+#include <include/common/EventIDs.h>
+#include <include/tags/ServerTags.h>
+
 #include "Packet.h"		// Needed for CPacket
 #include "PartFile.h"		// Needed for CPartFile
 #include "SearchList.h"		// Needed for CSearchList
@@ -48,7 +53,7 @@
 //
 
 CServerUDPSocket::CServerUDPSocket(amuleIPV4Address &address, const CProxyData *ProxyData)
-	: CMuleUDPSocket(wxT("Server UDP-Socket"), SERVERUDPSOCKET_HANDLER, address, ProxyData)
+	: CMuleUDPSocket(wxT("Server UDP-Socket"), ID_SERVERUDPSOCKET_EVENT, address, ProxyData)
 {
 	Open();
 }

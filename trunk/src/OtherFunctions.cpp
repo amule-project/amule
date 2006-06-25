@@ -26,6 +26,8 @@
 // The backtrace functions contain modified code from libYaMa, (c) Venkatesha Murthy G.
 // You can check libYaMa at http://personal.pavanashree.org/libyama/
 
+#include <include/tags/FileTags.h>
+
 #include <wx/utils.h>
 #include <wx/file.h>		// Needed for wxFile
 #include <wx/log.h>			// Needed for wxLogNull
@@ -51,7 +53,6 @@
 #endif
 
 #include "OtherFunctions.h"	// Interface declarations
-#include "OPCodes.h"
 
 #include <map>
 

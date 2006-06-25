@@ -46,6 +46,10 @@ there client on the eMule forum..
  * is considered to be 000..000
  */
 #include "RoutingZone.h"
+
+#include <include/protocol/kad/Client2Client/UDP.h>
+#include <include/common/Macros.h>
+
 #include "Contact.h"
 #include "RoutingBin.h"
 #include "../kademlia/SearchManager.h"

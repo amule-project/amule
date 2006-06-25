@@ -25,7 +25,11 @@
 
 #include "ClientTCPSocket.h"	// Interface declarations
 
-
+#include <include/protocol/Protocols.h>
+#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <include/protocol/ed2k/Client2Client/UDP.h> // Sometimes we reply with UDP packets.
+#include <include/protocol/ed2k/ClientSoftware.h>
+#include <include/common/EventIDs.h>
 
 #include "Preferences.h"	// Needed for thePrefs
 #include "Packet.h"		// Needed for CPacket
@@ -72,7 +76,7 @@ private:
 };
 
 BEGIN_EVENT_TABLE(CClientTCPSocketHandler, wxEvtHandler)
-	EVT_SOCKET(CLIENTTCPSOCKET_HANDLER, CClientTCPSocketHandler::ClientTCPSocketHandler)
+	EVT_SOCKET(ID_CLIENTTCPSOCKET_EVENT, CClientTCPSocketHandler::ClientTCPSocketHandler)
 END_EVENT_TABLE()
 
 void CClientTCPSocketHandler::ClientTCPSocketHandler(wxSocketEvent& event)
@@ -131,7 +135,7 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 	ResetTimeOutTimer();
 	m_ForDeletion = false;
 
-	SetEventHandler(g_clientReqSocketHandler, CLIENTTCPSOCKET_HANDLER);
+	SetEventHandler(g_clientReqSocketHandler, ID_CLIENTTCPSOCKET_EVENT);
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
 		wxSOCKET_INPUT_FLAG |

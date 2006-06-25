@@ -27,8 +27,8 @@
 #include <wx/intl.h>
 
 #include "MuleNotebook.h"	// Interface declarations
-#include "OPCodes.h"		// Needed for MP_CLOSE_ IDs
 
+#include <include/common/MenuIDs.h>
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)

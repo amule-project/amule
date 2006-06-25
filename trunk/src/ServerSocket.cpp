@@ -23,9 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "ServerSocket.h"	// Interface declarations
+
+#include <include/protocol/Protocols.h>
+#include <include/common/EventIDs.h>
+#include <include/tags/ServerTags.h>
+
 #include <wx/tokenzr.h>
 
-#include "ServerSocket.h"	// Interface declarations
 #include "Packet.h"		// Needed for CPacket
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ClientList.h"		// Needed for CClientList
@@ -68,7 +73,7 @@ private:
 
 
 BEGIN_EVENT_TABLE(CServerSocketHandler, wxEvtHandler)
-	EVT_SOCKET(SERVERSOCKET_HANDLER, CServerSocketHandler::ServerSocketHandler)
+	EVT_SOCKET(ID_SERVERSOCKET_EVENT, CServerSocketHandler::ServerSocketHandler)
 END_EVENT_TABLE()
 
 void CServerSocketHandler::ServerSocketHandler(wxSocketEvent& event)
@@ -126,7 +131,7 @@ CEMSocket(ProxyData)
 	info.Clear();
 	m_bIsDeleting = false;
 
-	SetEventHandler(g_serverSocketHandler, SERVERSOCKET_HANDLER);
+	SetEventHandler(g_serverSocketHandler, ID_SERVERSOCKET_EVENT);
 	
 	SetNotify(
 		wxSOCKET_CONNECTION_FLAG |
