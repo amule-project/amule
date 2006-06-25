@@ -7,9 +7,9 @@ amulecmd \- Text-based program to control aMule
 .RB [ \-p " " \fI<port> ]
 .RB [ \-P " " \fI<passwd> ]
 .RB [ \-f " " \fI<path> ]
-.RB [ \-l " " \fI<lang> ]
 .RB [ \-q ]
 .RB [ \-v ]
+.RB [ \-l " " \fI<lang> ]
 .RB [ \-w ]
 .RB [ \-c " " \fI<command> ]
 .PP
@@ -36,15 +36,15 @@ External Connections password
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
 use the given configuration file. Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
-\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
-Sets program locale (language).
-See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
-.TP
 \fB\-q\fR, \fB\-\-quiet\fR
 do not print any output to stdout. This seems to be a very much useless option with \fBamulecmd\fR.
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 be verbose \- show also debug messages
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
+Sets program locale (language).
+See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
 write command line options to config file and exit

@@ -7,9 +7,9 @@ amuleweb \- aMule web server
 .RB [ \-p " " \fI<port> ]
 .RB [ \-P " " \fI<pass> ]
 .RB [ \-f " " \fI<path> ]
-.RB [ \-l " " \fI<lang> ]
 .RB [ \-q ]
 .RB [ \-v ]
+.RB [ \-l " " \fI<lang> ]
 .RB [ \-w ]
 .RB [ \-t " " \fI<name> ]
 .RB [ \-s " " \fI<port> ]
@@ -20,6 +20,7 @@ amuleweb \- aMule web server
 .RB [ \-a ]
 .RB [ \-d ]
 .RB [ \-L ]
+.RB [ \-N ]
 .PP
 .B amuleweb
 .RB [ \-f " " \fI<path> ]
@@ -30,6 +31,8 @@ amuleweb \- aMule web server
 .RB [ \-\-version ]
 .PP
 .B amuleweb \-\-amule\-config\-file=\fI<path>
+.PP
+.B amuleweb \-\-no\-php
 .SH DESCRIPTION
 \fBamuleweb\fR manages your access to amule through a webbrowser.
 You can start amuleweb together with \fBamule\fR(1), or separately, any time later.
@@ -50,16 +53,16 @@ External Connections password
 Use the given configuration file.
 Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
-\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
-Sets program locale (language).
-See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
-.TP
 \fB\-q\fR, \fB\-\-quiet\fR
 Do not print any output to stdout.
 You may want to use \fB\-q\fR to daemonize the webserver, i.e. running as '\fBamuleweb \-q &\fR'
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR
 Be verbose \- show also debug messages
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
+Sets program locale (language).
+See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
 Write command line options to config file and exit
@@ -97,6 +100,9 @@ Load/save webserver settings from/to remote aMule.
 This causes amuleweb to ignore command-line and config-file settings, and load them from aMule.
 When saving preferences none will be written to the config file, but to aMule.
 (Of course, this works only for those settings, that can be set in aMule's Preferences->Remote Controls)
+.TP
+\fB\-N\fR, \fB\-\-no\-script\-cache\fR
+Recompile PHP pages on each request
 .TP
 \fB\-\-amule\-config\-file\fR=\fI<path>\fR
 aMule config file path.
