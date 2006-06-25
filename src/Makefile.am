@@ -264,7 +264,7 @@ amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
 ed2k_SOURCES = ED2KLinkParser.cpp
 # on Win32
-if NEED_RC
+if SYS_WIN32
 ed2k_LDADD = -lshlwapi
 endif
 # on Mac
@@ -406,8 +406,8 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc
 	@thisdir=`pwd` ; \
 	cd $(srcdir)/.. ; \
 	rcfile=`basename "$<"` ; \
-	echo "windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o \"$@\"" ; \
-	windres $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
+	echo "$(RC) $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i \"$${rcfile}\" -o \"$@\"" ; \
+	$(RC) $(RCFLAGS) --define __WIN95__ --define __WIN32__ --define __GNUWIN32__ -O COFF -i "$${rcfile}" -o "$@" ; \
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
 

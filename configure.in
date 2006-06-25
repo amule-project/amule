@@ -129,7 +129,8 @@ AC_ARG_WITH(denoise-level, [  --with-denoise-level=<level>     Specifies denoisi
 AM_GNU_GETTEXT_VERSION(0.11.5)
 
 # Check for zlib
-CHECK_ZLIB
+AC_OPTIONS_ZLIB
+AC_CHECK_ZLIB([1.1.4], , [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
 
 if test x$CAS = xyes -o x$WEB = xyes; then
 # Check for gd
@@ -247,6 +248,8 @@ GET_WX_VERSION
 
 dnl Get flags for windres
 if test x$SYS = xwin32; then
+	AC_CHECK_TOOL([RC], [windres], [:])
+	AC_ARG_VAR([RC], [Win32 Resource Compiler])
 	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
 else
 	RCFLAGS=""
@@ -509,7 +512,8 @@ AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
-AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32)
+AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
+AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)

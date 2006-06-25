@@ -15,4 +15,5 @@ EXTRA_DIST = codeset.m4 \
 	     stdint_h.m4 \
 	     uintmax_t.m4 \
 	     ulonglong.m4 \
-	     wxwin.m4
+	     wxwin.m4 \
+	     zlib.m4
