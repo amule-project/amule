@@ -44,6 +44,7 @@
 #include <wx/snglinst.h>
 
 
+#include "Logger.h"			// Needed for CLogger // Do_not_auto_remove
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "Server.h"			// Needed for GetListName
 #include "IPFilter.h"			// Needed for CIPFilter
