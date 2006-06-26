@@ -448,6 +448,7 @@ bool CamuleApp::OnInit()
 		return false;
 	}		
 
+#ifdef AMULE_DAEMON
 	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
 		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
 			ConfigDir += wxFileName::GetPathSeparator();
@@ -455,7 +456,10 @@ bool CamuleApp::OnInit()
 	} else {
 		ConfigDir = GetConfigDir();
 	}
-	
+#else
+	ConfigDir = GetConfigDir();
+#endif
+
 	if ( !cmdline.Found(wxT("disable-fatal")) ) {
 #ifndef __WXMSW__
 		// catch fatal exceptions
