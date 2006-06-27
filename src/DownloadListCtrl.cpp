@@ -612,14 +612,16 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 				CPartFile* file = (*it)->GetFile();
-				switch (file->GetStatus()) {
-				case PS_WAITINGFORHASH:
-				case PS_HASHING:
-				case PS_COMPLETING:
-				case PS_COMPLETE:
-					break;
-				default:
-					CoreNotify_PartFile_Delete(file);
+				if (file) {
+					switch (file->GetStatus()) {
+					case PS_WAITINGFORHASH:
+					case PS_HASHING:
+					case PS_COMPLETING:
+					case PS_COMPLETE:
+						break;
+					default:
+						CoreNotify_PartFile_Delete(file);
+					}
 				}
 			}
 		}
