@@ -593,15 +593,17 @@ void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 			_("Are you sure that you wish to delete the selected file(s)?");	
 		if (wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 			for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
-				CPartFile* file = (CPartFile*)(*it)->value;		
-				switch (file->GetStatus()) {
-				case PS_WAITINGFORHASH:
-				case PS_HASHING:
-				case PS_COMPLETING:
-				case PS_COMPLETE:
-					break;
-				default:
-					CoreNotify_PartFile_Delete(file);
+				CPartFile* file = (CPartFile*)(*it)->value;
+				if (file) {
+					switch (file->GetStatus()) {
+					case PS_WAITINGFORHASH:
+					case PS_HASHING:
+					case PS_COMPLETING:
+					case PS_COMPLETE:
+						break;
+					default:
+						CoreNotify_PartFile_Delete(file);
+					}
 				}
 			}
 		}
