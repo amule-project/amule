@@ -53,6 +53,9 @@ Version 2.1.4 - The "So what? If it's new, it has to be good" version
 	Kry:
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 
+	Phoenix:
+		* Fix for crash in amulegui/DownloadListCtrl.cpp.
+
 	Special Thanks to:
 		* Mr Tyler Durden, for his words of wisdom.
 
