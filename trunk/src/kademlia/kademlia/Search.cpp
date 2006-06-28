@@ -852,10 +852,10 @@ void CSearch::AddFileID(const CUInt128& id)
 
 void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 {
+	TagPtrList taglist;
+	
 	try {
-		if( file && bio ) {
-			TagPtrList taglist;
-			
+		if( file && bio ) {		
 			// Name, Size
 			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName()));
 			if (file->IsLargeFile()) {
@@ -922,10 +922,6 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 				}
 			}
 			bio->WriteTagPtrList(taglist);
-			TagPtrList::const_iterator it;
-			for (it = taglist.begin(); it != taglist.end(); ++it) {
-				delete *it;
-			}
 		} else {
 			//If we get here.. Bad things happen.. Will fix this later if it is a real issue.
 			wxASSERT(0);
@@ -937,6 +933,10 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 	} catch (const wxString& e) {
 		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::PreparePacketForTags: ") + e);
 	} 
+	
+	for (TagPtrList::const_iterator it = taglist.begin(); it != taglist.end(); ++it) {
+		delete *it;
+	}
 }
 
 //Can't clean these up until Taglist works with CMemFiles.
