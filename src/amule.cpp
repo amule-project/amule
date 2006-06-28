@@ -1600,8 +1600,10 @@ void CamuleApp::AddLogLine(const wxString &msg)
 	
 	wxStringInputStream stream(full_line);
 	
-	(*applog) << stream;
-	applog->Sync();
+	if (applog) { // This check is needed, because if we assert before the logger is created, it will crash.
+		(*applog) << stream;
+		applog->Sync();
+	}
 	
 	if (enable_stdout_log) { 
 		printf("%s", (const char*)unicode2char(full_line));
