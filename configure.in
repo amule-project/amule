@@ -354,7 +354,8 @@ AC_TYPE_SIGNAL
 AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_STRTOD
-AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa memmove mempcpy memset munmap nl_langinfo select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset munmap nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
 #-------------------------------------------------------------------------------
 # End of autoscan stuff
 #-------------------------------------------------------------------------------
