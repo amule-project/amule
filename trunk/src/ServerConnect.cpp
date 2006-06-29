@@ -231,7 +231,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			 );
 		tagMuleVersion.WriteTagToFile(&data);
 
-		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_LOGINREQUEST);
+		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_LOGINREQUEST);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_LOGINREQUEST"));
 		AddLogLineM(true,wxString(wxT("        Hash     : ")) << thePrefs::GetUserHash().Encode());
@@ -558,7 +558,7 @@ void CServerConnect::KeepConnectionAlive()
 		CMemFile files(4);
 		files.WriteUInt32(0); //nFiles
 	
-		CPacket* packet = new CPacket(&files, OP_EDONKEYPROT, OP_OFFERFILES);
+		CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 		#ifdef DEBUG_CLIENT_PROTOCOL
 		AddLogLineM(true,wxT("Client: OP_OFFERFILES"));
 		#endif

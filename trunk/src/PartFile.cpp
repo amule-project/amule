@@ -2658,7 +2658,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	data.Seek(16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	CPacket* result = new CPacket(&data, OP_EMULEPROT, OP_ANSWERSOURCES);
+	CPacket* result = new CPacket(data, OP_EMULEPROT, OP_ANSWERSOURCES);
 
 	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
 	if (result->GetPacketSize() > 354) {

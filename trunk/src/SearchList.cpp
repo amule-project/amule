@@ -363,7 +363,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 		m_currentSearch = *(searchID);
 		m_searchInProgress = true;
 	
-		CPacket* searchPacket = new CPacket(data.get(), OP_EDONKEYPROT, OP_SEARCHREQUEST);
+		CPacket* searchPacket = new CPacket(*data.get(), OP_EDONKEYPROT, OP_SEARCHREQUEST);
 		
 		theStats::AddUpOverheadServer(searchPacket->GetPacketSize());
 		theApp.serverconnect->SendPacket(searchPacket, (type == LocalSearch));

@@ -454,7 +454,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CMemFile data_out(128);
 				data_out.WriteHash(reqfile->GetFileHash());
 				data_out.WriteString(reqfile->GetFileName());
-				CPacket* packet = new CPacket(&data_out, OP_EDONKEYPROT, OP_REQFILENAMEANSWER);
+				CPacket* packet = new CPacket(data_out, OP_EDONKEYPROT, OP_REQFILENAMEANSWER);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQFILENAMEANSWER to ") + m_client->GetFullIP() );
 				SendPacket(packet,true);
@@ -511,7 +511,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				} else {
 					data.WriteUInt16(0);
 				}
-				CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_FILESTATUS);
+				CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_FILESTATUS);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILESTATUS to ") + m_client->GetFullIP() );
 				SendPacket(packet, true);
@@ -830,7 +830,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 				
 				// create a packet and send it
-				CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESANSWER);
+				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESANSWER);
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESANSWER to ") + m_client->GetFullIP() );
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
@@ -909,7 +909,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					tempfile.WriteString(*it);
 				}
 
-				CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
+				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRSANS to ") + m_client->GetFullIP() );
 				SendPacket(replypacket, true, true);
@@ -971,7 +971,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					list.pop_front();
 				}
 				
-				CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIRANS);
+				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIRANS);
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESDIRANS to ") + m_client->GetFullIP() );
 				SendPacket(replypacket, true, true);
@@ -1002,7 +1002,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 					CMemFile tempfile(80);
 					tempfile.WriteString(strDir);
-					CPacket* replypacket = new CPacket(&tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIR);
+					CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIR);
 					theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESD to ") + m_client->GetFullIP() );
 					SendPacket(replypacket, true, true);
@@ -1218,7 +1218,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 
 			}
 			if( data_out.GetLength() > 16 ) {
-				CPacket* reply = new CPacket(&data_out, OP_EMULEPROT, OP_MULTIPACKETANSWER);
+				CPacket* reply = new CPacket(data_out, OP_EMULEPROT, OP_MULTIPACKETANSWER);
 				theStats::AddUpOverheadFileRequest(reply->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_MULTIPACKETANSWER to ") + m_client->GetFullIP() );
 				SendPacket(reply, true);
@@ -1616,7 +1616,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				CMemFile data_out;
 				data_out.WriteHash(hash);
 				pPartFile->GetAICHHashset()->GetMasterHash().Write(&data_out);
-				CPacket* packet = new CPacket(&data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
+				CPacket* packet = new CPacket(data_out, OP_EMULEPROT, OP_AICHFILEHASHANS);
 				theStats::AddUpOverheadOther(packet->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHFILEHASHANS to") + m_client->GetFullIP());
 				SendPacket(packet);
@@ -1744,7 +1744,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					}
 					
 					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-					CPacket* response = new CPacket(&data_out, OP_EMULEPROT, OP_REASKACK);
+					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client UDP: OP_REASKACK to ") + m_client->GetFullIP()  );
 					theApp.clientudp->SendPacket(response, destip, destport);

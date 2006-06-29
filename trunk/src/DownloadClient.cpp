@@ -167,7 +167,7 @@ void CUpDownClient::SendStartupLoadReq()
 	SetDownloadState(DS_ONQUEUE);
 	CMemFile dataStartupLoadReq(16);
 	dataStartupLoadReq.WriteHash(m_reqfile->GetFileHash());
-	CPacket* packet = new CPacket(&dataStartupLoadReq, OP_EDONKEYPROT, OP_STARTUPLOADREQ);
+	CPacket* packet = new CPacket(dataStartupLoadReq, OP_EDONKEYPROT, OP_STARTUPLOADREQ);
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_STARTUPLOADREQ to ") + GetFullIP());	
 	SendPacket(packet, true, true);
@@ -254,7 +254,7 @@ void CUpDownClient::SendFileRequest()
 			sent_opcodes += wxT("|AFHR|");
 			dataFileReq.WriteUInt8(OP_AICHFILEHASHREQ);
 		}		
-		CPacket* packet = new CPacket(&dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
+		CPacket* packet = new CPacket(dataFileReq, OP_EMULEPROT, (SupportExtMultiPacket() ? OP_MULTIPACKET_EXT : OP_MULTIPACKET));
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s "), (SupportExtMultiPacket() ? wxT("OP_MULTIPACKET_EXT (") : wxT("OP_MULTIPACKET (") )) + sent_opcodes + wxT(") to ") + GetFullIP());
 		SendPacket(packet, true);
@@ -266,7 +266,7 @@ void CUpDownClient::SendFileRequest()
 		if (GetExtendedRequestsVersion() > 1 ) {
 			m_reqfile->WriteCompleteSourcesCount(&dataFileReq);
 		}
-		CPacket* packet = new CPacket(&dataFileReq, OP_EDONKEYPROT, OP_REQUESTFILENAME);
+		CPacket* packet = new CPacket(dataFileReq, OP_EDONKEYPROT, OP_REQUESTFILENAME);
 		theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQUESTFILENAME to ") + GetFullIP() );
 		SendPacket(packet, true);
@@ -279,7 +279,7 @@ void CUpDownClient::SendFileRequest()
 		if (m_reqfile && (m_reqfile->GetPartCount() > 1)) {
 			CMemFile dataSetReqFileID(16);
 			dataSetReqFileID.WriteHash(m_reqfile->GetFileHash());
-			packet = new CPacket(&dataSetReqFileID, OP_EDONKEYPROT, OP_SETREQFILEID);
+			packet = new CPacket(dataSetReqFileID, OP_EDONKEYPROT, OP_SETREQFILEID);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SETREQFILEID to ") + GetFullIP());
 			SendPacket(packet, true);
@@ -710,7 +710,7 @@ void CUpDownClient::SendBlockRequests()
 				nBlocks--;
 			}
 			
-			packet = new CPacket(&data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
+			packet = new CPacket(data, OP_ED2KV2HEADER, OP_REQUESTPARTS);
 			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client ED2Kv2: OP_REQUESTPARTS(%i) to "),(m_PendingBlocks_list.size()<m_MaxBlockRequests) ? m_PendingBlocks_list.size() : m_MaxBlockRequests) + GetFullIP() );
 
 			break;
@@ -787,7 +787,7 @@ void CUpDownClient::SendBlockRequests()
 					}
 				}
 			}	
-			packet = new CPacket(&data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
+			packet = new CPacket(data, (bHasLongBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bHasLongBlocks ? (uint8)OP_REQUESTPARTS_I64 : (uint8)OP_REQUESTPARTS));
 			AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bHasLongBlocks ? wxT("OP_REQUESTPARTS_I64") : wxT("OP_REQUESTPARTS"))) + GetFullIP() );
 			break;
 		}
@@ -1285,7 +1285,7 @@ void CUpDownClient::UDPReaskForDownload()
 			data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
 		}
 		
-		CPacket* response = new CPacket(&data, OP_EMULEPROT, OP_REASKFILEPING);
+		CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKFILEPING);
 		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKFILEPING") );
 		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
@@ -1311,7 +1311,7 @@ void CUpDownClient::UDPReaskForDownload()
 				data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
 			}
 			
-			CPacket* response = new CPacket(&data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
+			CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKUDP") );
 			theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 			theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
@@ -1555,7 +1555,7 @@ void CUpDownClient::SendAICHRequest(CPartFile* pForFile, uint16 nPart){
 	data.WriteHash(pForFile->GetFileHash());
 	data.WriteUInt16(nPart);
 	pForFile->GetAICHHashset()->GetMasterHash().Write(&data);
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_AICHREQUEST);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_AICHREQUEST);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());	
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHREQUEST to") + GetFullIP());
 	SafeSendPacket(packet);
@@ -1627,7 +1627,7 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
 				AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Sucessfully created and send recoverydata for ") + pKnownFile->GetFileName() + wxT(" to ") + GetClientFullInfo() );
 				
-				CPacket* packAnswer = new CPacket(&fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
+				CPacket* packAnswer = new CPacket(fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
 				theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_AICHANSWER to") + GetFullIP());
 				SafeSendPacket(packAnswer);
