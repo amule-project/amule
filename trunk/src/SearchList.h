@@ -29,7 +29,7 @@
 #include "Timer.h"				// Needed for CTimer
 #include "ObservableQueue.h"	// Needed for CQueueObserver
 #include "SearchFile.h"			// Needed for CSearchFile
-
+#include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
 
 
 class CMemFile;
