@@ -64,9 +64,7 @@ public:
 	void PublishPacket(uint32 ip, uint16 port, const CUInt128& targetID, const CUInt128& contactID, const TagPtrList& tags);
 	void SendNullPacket(byte opcode, uint32 ip, uint16 port);
 	virtual void ProcessPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
-	void SendPacket(const byte* data, uint32 lenData, uint32 destinationHost, uint16 destinationPort);
-	void SendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort);
-	void SendPacket(CMemFile* data, byte opcode, uint32 destinationHost, uint16 destinationPort);
+	void SendPacket(const CMemFile& data, byte opcode, uint32 destinationHost, uint16 destinationPort);
 
 private:
 	void AddContact (const byte* data, uint32 lenData, uint32 ip, uint16 port, uint16 tport = 0);
