@@ -447,6 +447,7 @@ void CSearch::StorePacket()
 
 			UIntList::const_iterator itListFileID = m_fileIDs.begin();
 
+			#warning Kry TODO: Rewrite to avoid wrong packets sent (ALSO EMULE!)
 			while (iCount) {
 				uint16 iPacketCount = (iCount > 50) ? 50 : iCount;
 				CMemFile packetdata(1024*iPacketCount); // Allocate a good amount of space.
