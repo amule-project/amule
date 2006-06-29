@@ -82,43 +82,38 @@ void CKademliaUDPListener::Bootstrap(uint32 ip, uint16 port)
 
 void CKademliaUDPListener::SendMyDetails(byte opcode, uint32 ip, uint16 port)
 {
-	CMemFile bio(25);
-	bio.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
-	bio.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
-	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
-	bio.WriteUInt16(thePrefs::GetPort());
-	bio.WriteUInt8(0);
-	SendPacket(&bio, opcode, ip, port);
+	CMemFile packetdata(25);
+	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
+	packetdata.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
+	packetdata.WriteUInt16(thePrefs::GetEffectiveUDPPort());
+	packetdata.WriteUInt16(thePrefs::GetPort());
+	packetdata.WriteUInt8(0);
+	SendPacket(packetdata, opcode, ip, port);
 }
 
 void CKademliaUDPListener::FirewalledCheck(uint32 ip, uint16 port)
 {
-	CMemFile bio(2);
-	bio.WriteUInt16(thePrefs::GetPort());
-	SendPacket(&bio, KADEMLIA_FIREWALLED_REQ, ip, port);
+	CMemFile packetdata(2);
+	packetdata.WriteUInt16(thePrefs::GetPort());
+	SendPacket(packetdata, KADEMLIA_FIREWALLED_REQ, ip, port);
 }
 
 void CKademliaUDPListener::SendNullPacket(byte opcode,uint32 ip, uint16 port)
 {
-	CMemFile bio(0);
+	CMemFile packetdata(0);
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadNullPacket %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-	SendPacket(&bio, opcode, ip, port);
+	SendPacket(packetdata, opcode, ip, port);
 }
 
 void CKademliaUDPListener::PublishPacket(uint32 ip, uint16 port, const CUInt128 &targetID, const CUInt128 &contactID, const TagPtrList& tags)
 {
-	//We need to get the tag lists working with CMemFiles..
-	byte packet[1024];
-	CMemFile bio(packet, sizeof(packet));
-	bio.WriteUInt8(OP_KADEMLIAHEADER);
-	bio.WriteUInt8(KADEMLIA_PUBLISH_REQ);
-	bio.WriteUInt128(targetID);
+	CMemFile packetdata;
+	packetdata.WriteUInt128(targetID);
 	//We only use this for publishing sources now.. So we always send one here..
-	bio.WriteUInt16(1);
-	bio.WriteUInt128(contactID);
-	bio.WriteTagPtrList(tags);
-	uint32 len = sizeof(packet) - bio.GetAvailable();
-	SendPacket(packet, len,  ip, port);
+	packetdata.WriteUInt16(1);
+	packetdata.WriteUInt128(contactID);
+	packetdata.WriteTagPtrList(tags);
+	SendPacket(packetdata, KADEMLIA_PUBLISH_REQ, ip, port);
 }
 
 void CKademliaUDPListener::ProcessPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port)
@@ -284,31 +279,31 @@ void CKademliaUDPListener::ProcessBootstrapRequest (const byte *packetData, uint
 	// Create response packet
 	//We only collect a max of 20 contacts here.. Max size is 527.
 	//2 + 25(20) + 15(1)
-	CMemFile bio(527);
+	CMemFile packetdata(527);
 
 	// Write packet info
-	bio.WriteUInt16(numContacts);
+	packetdata.WriteUInt16(numContacts);
 	CContact *contact;
 	ContactList::const_iterator it;
 	for (it = contacts.begin(); it != contacts.end(); it++) {
 		contact = *it;
-		bio.WriteUInt128(contact->GetClientID());
-		bio.WriteUInt32(contact->GetIPAddress());
-		bio.WriteUInt16(contact->GetUDPPort());
-		bio.WriteUInt16(contact->GetTCPPort());
-		bio.WriteUInt8(contact->GetType());
+		packetdata.WriteUInt128(contact->GetClientID());
+		packetdata.WriteUInt32(contact->GetIPAddress());
+		packetdata.WriteUInt16(contact->GetUDPPort());
+		packetdata.WriteUInt16(contact->GetTCPPort());
+		packetdata.WriteUInt8(contact->GetType());
 	}
 
-	bio.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
-	bio.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
-	bio.WriteUInt16(thePrefs::GetEffectiveUDPPort());
-	bio.WriteUInt16(thePrefs::GetPort());
-	bio.WriteUInt8(0);
+	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
+	packetdata.WriteUInt32(CKademlia::GetPrefs()->GetIPAddress());
+	packetdata.WriteUInt16(thePrefs::GetEffectiveUDPPort());
+	packetdata.WriteUInt16(thePrefs::GetPort());
+	packetdata.WriteUInt8(0);
 
 	// Send response
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadBootstrapRes %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 
-	SendPacket(&bio, KADEMLIA_BOOTSTRAP_RES, ip, port);
+	SendPacket(packetdata, KADEMLIA_BOOTSTRAP_RES, ip, port);
 }
 
 //KADEMLIA_BOOTSTRAP_RES
@@ -417,23 +412,23 @@ void CKademliaUDPListener::ProcessKademliaRequest (const byte *packetData, uint3
 	// Write response
 	// Max count is 32. size 817.. 
 	// 16 + 1 + 25(32)
-	CMemFile bio2( 817 );
-	bio2.WriteUInt128(target);
-	bio2.WriteUInt8((byte)count);
+	CMemFile packetdata( 817 );
+	packetdata.WriteUInt128(target);
+	packetdata.WriteUInt8((byte)count);
 	CContact *c;
 	ContactMap::const_iterator it;
 	for (it = results.begin(); it != results.end(); it++) {
 		c = it->second;
-		bio2.WriteUInt128(c->GetClientID());
-		bio2.WriteUInt32(c->GetIPAddress());
-		bio2.WriteUInt16(c->GetUDPPort());
-		bio2.WriteUInt16(c->GetTCPPort());
-		bio2.WriteUInt8(c->GetType());
+		packetdata.WriteUInt128(c->GetClientID());
+		packetdata.WriteUInt32(c->GetIPAddress());
+		packetdata.WriteUInt16(c->GetUDPPort());
+		packetdata.WriteUInt16(c->GetTCPPort());
+		packetdata.WriteUInt8(c->GetType());
 	}
 
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadRes %s Count=%u")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port) % count);
 
-	SendPacket(&bio2, KADEMLIA_RES, ip, port);
+	SendPacket(packetdata, KADEMLIA_RES, ip, port);
 }
 
 //KADEMLIA_RES
@@ -856,12 +851,12 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 		count--;
 	}	
 	if( flag ) {
-		CMemFile bio2(17);
-		bio2.WriteUInt128(file);
-		bio2.WriteUInt8(load);
+		CMemFile packetdata(17);
+		packetdata.WriteUInt128(file);
+		packetdata.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishRes %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 
-		SendPacket( &bio2, KADEMLIA_PUBLISH_RES, ip, port);
+		SendPacket( packetdata, KADEMLIA_PUBLISH_RES, ip, port);
 	}
 }
 
@@ -993,11 +988,11 @@ void CKademliaUDPListener::ProcessPublishNotesRequest (const byte *packetData, u
 
 	uint8 load = 0;
 	if( CKademlia::GetIndexed()->AddNotes(target, source, entry, load ) ) {
-		CMemFile bio2(17);
-		bio2.WriteUInt128(target);
-		bio2.WriteUInt8(load);
+		CMemFile packetdata(17);
+		packetdata.WriteUInt128(target);
+		packetdata.WriteUInt8(load);
 		AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadPublishNotesRes %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
-		SendPacket( &bio2, KADEMLIA_PUB_NOTES_RES, ip, port);
+		SendPacket( packetdata, KADEMLIA_PUB_NOTES_RES, ip, port);
 	} else {
 		delete entry;
 	}
@@ -1043,11 +1038,11 @@ void CKademliaUDPListener::ProcessFirewalledRequest (const byte *packetData, uin
 	theApp.clientlist->RequestTCP(&contact);
 
 	// Send response
-	CMemFile bio2(4);
-	bio2.WriteUInt32(ip);
+	CMemFile packetdata(4);
+	packetdata.WriteUInt32(ip);
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFirewalledRes %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 
-	SendPacket(&bio2, KADEMLIA_FIREWALLED_RES, ip, port);
+	SendPacket(packetdata, KADEMLIA_FIREWALLED_RES, ip, port);
 }
 
 //KADEMLIA_FIREWALLED_RES
@@ -1107,13 +1102,13 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 	CContact contact(userID, ip, port, tcpport, zero);
 	theApp.clientlist->IncomingBuddy(&contact, &BuddyID);
 
-	CMemFile bio2(34);
-	bio2.WriteUInt128(BuddyID);
-	bio2.WriteUInt128(CKademlia::GetPrefs()->GetClientHash());
-	bio2.WriteUInt16(thePrefs::GetPort());
+	CMemFile packetdata(34);
+	packetdata.WriteUInt128(BuddyID);
+	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetClientHash());
+	packetdata.WriteUInt16(thePrefs::GetPort());
 	AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadFindBuddyRes %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 
-	SendPacket(&bio2, KADEMLIA_FINDBUDDY_RES, ip, port);
+	SendPacket(packetdata, KADEMLIA_FINDBUDDY_RES, ip, port);
 }
 
 //KADEMLIA_FINDBUDDY_RES
@@ -1155,12 +1150,12 @@ void CKademliaUDPListener::ProcessCallbackRequest (const byte *packetData, uint3
 		//CUInt128 bud(buddy->GetBuddyID());
 		CUInt128 file = bio.ReadUInt128();
 		uint16 tcp = bio.ReadUInt16();
-		CMemFile bio2(lenPacket+6);
-		bio2.WriteUInt128(check);
-		bio2.WriteUInt128(file);
-		bio2.WriteUInt32(ip);
-		bio2.WriteUInt16(tcp);
-		CPacket* packet = new CPacket(&bio2, OP_EMULEPROT, OP_CALLBACK);
+		CMemFile packetdata(16+16+4+2);
+		packetdata.WriteUInt128(check);
+		packetdata.WriteUInt128(file);
+		packetdata.WriteUInt32(ip);
+		packetdata.WriteUInt16(tcp);
+		CPacket* packet = new CPacket(&packetdata, OP_EMULEPROT, OP_CALLBACK);
 		if( buddy->GetSocket() ) {
 			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallback %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -1171,29 +1166,15 @@ void CKademliaUDPListener::ProcessCallbackRequest (const byte *packetData, uint3
 	}
 }
 
-void CKademliaUDPListener::SendPacket(const byte *data, uint32 lenData, uint32 destinationHost, uint16 destinationPort)
+void CKademliaUDPListener::SendPacket(const CMemFile &data, byte opcode, uint32 destinationHost, uint16 destinationPort)
 {
-	//This is temp.. The entire Kad code will be rewritten using CMemFile and send a Packet object directly.
-	CMemFile mem_data(data+2,lenData-2);	
-	SendPacket(&mem_data,data[1],destinationHost, destinationPort);
-}
-
-void CKademliaUDPListener::SendPacket(const byte *data, uint32 lenData, byte opcode, uint32 destinationHost, uint16 destinationPort)
-{
-	CMemFile mem_data(data,lenData);
-	SendPacket(&mem_data,opcode,destinationHost, destinationPort);
-}
-
-void CKademliaUDPListener::SendPacket(CMemFile *data, byte opcode, uint32 destinationHost, uint16 destinationPort)
-{
-	CPacket* packet = new CPacket(data, OP_KADEMLIAHEADER, opcode);
+	CPacket* packet = new CPacket((CMemFile*)&data, OP_KADEMLIAHEADER, opcode);
 	if( packet->GetPacketSize() > 200 ) {
 		packet->PackPacket();
 	}
 	theStats::AddUpOverheadKad(packet->GetPacketSize());
 	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
 }
-
 
 void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)
 {
