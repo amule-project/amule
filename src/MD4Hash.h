@@ -57,6 +57,18 @@ public:
 	CMD4Hash() {
 		Clear();
 	}
+
+	/**
+	 * Create a CMD4Hash from a CUInt128
+	 * 
+	 * @param hash The 128 bits integer to be used.
+	 *
+	 */
+	CMD4Hash(const Kademlia::CUInt128& hash) {
+		byte transitional_array[MD4HASH_LENGTH];
+		hash.ToByteArray(transitional_array);
+		SetHash(transitional_array);
+	}
 	
 	~CMD4Hash() {
 	}	
@@ -71,16 +83,6 @@ public:
 	 */
 	explicit CMD4Hash(const unsigned char hash[]) {
 		SetHash(hash);
-	}
-
-	/**
-	 * Cast a CUInt128 to a CMD4Hash.
-	 * 
-	 * @param hash The 128 bits integer to cast.
-	 *
-	 */
-	explicit CMD4Hash(const Kademlia::CUInt128& hash) {
-		SetHash(hash.GetDataPtr());
 	}
 
 	/**
