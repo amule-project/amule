@@ -28,6 +28,7 @@
 
 #include <include/common/DataFileVersion.h>
 
+#include <memory>              // Do_not_auto_remove (lionel's Mac, 10.3)
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
