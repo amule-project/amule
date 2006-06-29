@@ -170,7 +170,7 @@ protected:
 	virtual sint64 doSeek(sint64 offset) const;
 
 private:
-	//! A CMemFile is neither copyable nor assignable.
+	//! A CFile is neither copyable nor assignable.
 	//@{
 	CFile(const CFile&);
 	CFile& operator=(const CFile&);

@@ -969,7 +969,6 @@ void CSharedFileList::Publish()
 
 							if( count ) {
 								//Start our keyword publish
-								pSearch->PreparePacket();
 								pPubKw->SetNextPublishTime(tNow+(KADEMLIAREPUBLISHTIMEK));
 								pPubKw->IncPublishedCount();
 								Kademlia::CSearchManager::StartSearch(pSearch);

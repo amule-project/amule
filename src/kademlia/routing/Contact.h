@@ -48,18 +48,6 @@ namespace Kademlia {
 
 class CContact
 {
-private:
-	CUInt128	m_clientID;
-	CUInt128	m_distance;
-	uint32		m_ip;
-	uint16		m_tcpPort;
-	uint16		m_udpPort;
-	byte		m_type;
-	time_t		m_lastTypeSet;
-	time_t		m_expires;
-	time_t		m_created;
-	uint32		m_inUse;
-	
 public:
 	~CContact();
 	CContact(const CUInt128 &clientID,
@@ -105,6 +93,23 @@ public:
 	const time_t GetExpireTime() const {return m_expires;}
 
 	const time_t GetLastTypeSet() const {return m_lastTypeSet;}	
+
+	uint8 GetVersion() const { return m_uVersion; }
+	
+private:
+	CUInt128	m_clientID;
+	CUInt128	m_distance;
+	uint32		m_ip;
+	uint16		m_tcpPort;
+	uint16		m_udpPort;
+	byte		m_type;
+	time_t		m_lastTypeSet;
+	time_t		m_expires;
+	time_t		m_created;
+	uint32		m_inUse;
+	
+	// Kad version
+	uint8 m_uVersion;
 };
 
 } // End namespace
