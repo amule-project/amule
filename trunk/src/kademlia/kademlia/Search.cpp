@@ -43,6 +43,7 @@ there client on the eMule forum..
 #include <include/protocol/Protocols.h>
 #include <include/protocol/kad/Client2Client/UDP.h>
 #include <include/protocol/kad/Constants.h>
+#include <include/protocol/kad2/Client2Client/UDP.h>
 #include <include/tags/FileTags.h>
 
 #include "Defines.h"
@@ -77,7 +78,7 @@ CSearch::CSearch()
 	m_created = time(NULL);
 	m_searchTerms = NULL;
 	m_type = (uint32)-1;
-	m_answers = 0;
+	m_uAnswers = 0;
 	m_totalRequestAnswers = 0;
 	m_kadPacketSent = 0;
 	m_searchID = (uint32)-1;
@@ -86,9 +87,6 @@ CSearch::CSearch()
 	m_stoping = false;
 	m_totalLoad = 0;
 	m_totalLoadResponses = 0;
-	bio1 = NULL;
-	bio2 = NULL;
-	bio3 = NULL;
 	m_lastResponse = time(NULL);
 }
 
@@ -113,10 +111,6 @@ CSearch::~CSearch()
 		delete *it2;
 	}
 	
-	delete bio1;
-	delete bio2;
-	delete bio3;
-
 	if(CKademlia::IsRunning() && GetNodeLoad() > 20) {
 		switch(GetSearchTypes()) {
 			case CSearch::STOREKEYWORD:
@@ -269,7 +263,7 @@ void CSearch::ProcessResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 	// Not interested in responses for FIND_NODE, will be added to contacts by udp listener
 	if (m_type == NODE) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Node type search result, discarding."));
-		m_answers++;
+		m_uAnswers++;
 		m_possible.clear();
 		delete results;
 		return;
@@ -340,7 +334,7 @@ void CSearch::ProcessResponse(uint32 fromIP, uint16 fromPort, ContactList *resul
 			// We don't want anything from these people, so just increment the counter.
 			if( m_type == NODECOMPLETE ) {
 				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
-				m_answers++;
+				m_uAnswers++;
 			}
 			break;
 		}
@@ -393,7 +387,7 @@ void CSearch::StorePacket()
 		}
 		case STOREFILE: {
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreFile"));
-			if( m_answers > SEARCHSTOREFILE_TOTAL ) {
+			if( m_uAnswers > SEARCHSTOREFILE_TOTAL ) {
 				PrepareToStop();
 				break;
 			}
@@ -410,7 +404,9 @@ void CSearch::StorePacket()
 				//1 is reserved for highID sources..
 				//2 cannot be used as older clients will not work.
 				//3 Firewalled Kad Source.
-	
+				//4 >4GB file HighID Source.
+				//5 >4GB file Firewalled Kad source.
+				
 				if( theApp.IsFirewalled() ) {
 					if( theApp.clientlist->GetBuddy() ) {
 						CUInt128 buddyID(true);
@@ -442,22 +438,41 @@ void CSearch::StorePacket()
 		}
 		case STOREKEYWORD: {
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreKeyword"));
-			if( m_answers > SEARCHSTOREKEYWORD_TOTAL ) {
+
+			uint16 iCount = (m_fileIDs.size() > 150) ? 150 : m_fileIDs.size();
+
+			if( (m_uAnswers > SEARCHSTOREKEYWORD_TOTAL) || (iCount == 0) ) {
 				PrepareToStop();
 				break;
 			}
-			if( bio1 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));								
-				CKademlia::GetUDPListener()->SendPacket( packet1, ((1024*50)-bio1->GetAvailable()), from->GetIPAddress(), from->GetUDPPort() );
+
+			UIntList::const_iterator itListFileID = m_fileIDs.begin();
+
+			while (iCount) {
+				uint16 iPacketCount = (iCount > 50) ? 50 : iCount;
+				CMemFile packetdata(1024*iPacketCount); // Allocate a good amount of space.
+				packetdata.WriteUInt128(m_target);
+				packetdata.WriteUInt16(iPacketCount);
+				while (iPacketCount) {
+					iCount--;
+					iPacketCount--;
+					CKnownFile* pFile = theApp.sharedfiles->GetFileByID(CMD4Hash(*itListFileID));
+					if (pFile) {
+						packetdata.WriteUInt128(*itListFileID);
+						PreparePacketForTags( &packetdata, pFile );
+					}
+					++itListFileID;
+				}
+				// Send packet
+				if (from->GetVersion() > 1) {
+					AddDebugLogLineM(false, logClientKadUDP, wxT("Kad2StoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
+					CKademlia::GetUDPListener()->SendPacket( &packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort());
+				} else {
+					AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
+					CKademlia::GetUDPListener()->SendPacket( &packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort());
+				}
 			}
-			if( bio2 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));											
-				CKademlia::GetUDPListener()->SendPacket( packet2, ((1024*50)-bio2->GetAvailable()), from->GetIPAddress(), from->GetUDPPort() );
-			}
-			if( bio3 ) {
-				AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ")  + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));								
-				CKademlia::GetUDPListener()->SendPacket( packet3, ((1024*50)-bio3->GetAvailable()), from->GetIPAddress(), from->GetUDPPort() );
-			}
+			
 			m_totalRequestAnswers++;
 			break;
 		}
@@ -499,7 +514,7 @@ void CSearch::StorePacket()
 		case FINDBUDDY:
 		{
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindBuddy"));
-			if( m_answers > SEARCHFINDBUDDY_TOTAL ) {
+			if( m_uAnswers > SEARCHFINDBUDDY_TOTAL ) {
 				PrepareToStop();
 				break;
 			}
@@ -508,13 +523,13 @@ void CSearch::StorePacket()
 			bio.WriteUInt128(CKademlia::GetPrefs()->GetClientHash());
 			bio.WriteUInt16(thePrefs::GetPort());
 			CKademlia::GetUDPListener()->SendPacket( &bio, KADEMLIA_FINDBUDDY_REQ, from->GetIPAddress(), from->GetUDPPort());
-			m_answers++;
+			m_uAnswers++;
 			break;
 		}
 		case FINDSOURCE:
 		{
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindSource"));
-			if( m_answers > SEARCHFINDSOURCE_TOTAL ) {
+			if( m_uAnswers > SEARCHFINDSOURCE_TOTAL ) {
 				PrepareToStop();
 				break;
 			}
@@ -526,7 +541,7 @@ void CSearch::StorePacket()
 			bio.WriteUInt128(m_fileIDs.front());
 			bio.WriteUInt16(thePrefs::GetPort());
 			CKademlia::GetUDPListener()->SendPacket( &bio, KADEMLIA_CALLBACK_REQ, from->GetIPAddress(), from->GetUDPPort());
-			m_answers++;
+			m_uAnswers++;
 			break;
 		}
 		case NODECOMPLETE:
@@ -609,7 +624,7 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	switch( type ) {
 		case 1:
 		case 3: {
-			m_answers++;
+			m_uAnswers++;
 			theApp.downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, clientid);
 			break;
 		}
@@ -672,7 +687,7 @@ void CSearch::ProcessResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	
 	if (file) {
 		// Ok, found the file. Add the note to it.
-		m_answers++;
+		m_uAnswers++;
 		file->AddNote(entry);
 	} else {
 		AddDebugLogLineM(false, logKadSearch, wxT("Comment received for unknown file"));
@@ -758,7 +773,7 @@ void CSearch::ProcessResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 	}
 
 	if (interested) {
-		m_answers++;
+		m_uAnswers++;
 		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
 	} else {
 		printf("Not adding search results: not interested\n");
@@ -939,85 +954,6 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 	}
 }
 
-//Can't clean these up until Taglist works with CMemFiles.
-void CSearch::PreparePacket(void)
-{
-	try {
-		int count = m_fileIDs.size();
-		byte fileid[16];
-		CKnownFile* file = NULL;
-		if( count > 150 ) {
-			count = 150;
-		}
-		if( count > 100 ) {
-			bio3 = new CMemFile(packet3,sizeof(packet3));
-			bio3->WriteUInt8(OP_KADEMLIAHEADER);
-			bio3->WriteUInt8(KADEMLIA_PUBLISH_REQ);
-			bio3->WriteUInt128(m_target);
-			bio3->WriteUInt16(count-100);
-			while ( count > 100 ) {
-				count--;
-				bio3->WriteUInt128(m_fileIDs.front());
-				m_fileIDs.front().ToByteArray(fileid);
-				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
-				if (!file) {
-					printf("File not found on shared when publishing packet!\n");
-					bio3->WriteUInt8(0);
-				} else {
-					PreparePacketForTags( bio3, file );
-				}
-			}
-		}
-		if( count > 50 ) {
-			bio2 = new CMemFile(packet2,sizeof(packet2));
-			bio2->WriteUInt8(OP_KADEMLIAHEADER);
-			bio2->WriteUInt8(KADEMLIA_PUBLISH_REQ);
-			bio2->WriteUInt128(m_target);
-			bio2->WriteUInt16(count-50);
-			while ( count > 50 ) {
-				count--;
-				bio2->WriteUInt128(m_fileIDs.front());
-				m_fileIDs.front().ToByteArray(fileid);
-				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
-				if (!file) {
-					printf("File not found on shared when publishing packet!\n");
-					bio2->WriteUInt8(0);
-				} else {
-					PreparePacketForTags( bio2, file );
-				}
-			}
-		}
-		if( count > 0 ) {
-			bio1 = new CMemFile(packet1,sizeof(packet1));
-			bio1->WriteUInt8(OP_KADEMLIAHEADER);
-			bio1->WriteUInt8(KADEMLIA_PUBLISH_REQ);
-			bio1->WriteUInt128(m_target);
-			bio1->WriteUInt16(count);
-			while ( count > 0 ) {
-				count--;
-				bio1->WriteUInt128(m_fileIDs.front());
-				m_fileIDs.front().ToByteArray(fileid);
-				m_fileIDs.pop_front();
-				file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
-				if (!file) {
-					printf("File not found on shared when publishing packet!\n");
-					bio1->WriteUInt8(0);
-				} else {
-					PreparePacketForTags( bio1, file );
-				}
-			}
-		}
-	} catch (const CEOFException& err) {
-		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::PreparePacket: ") + err.what());
-	} catch (const CInvalidPacket& err) {
-		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::PreparePacket: ") + err.what());
-	} catch (const wxString& e) {
-		AddDebugLogLineM(true, logKadIndex, wxT("Exception in CIndexed::PreparePacket: ") + e);
-	} 
-}
-
 uint32 CSearch::GetNodeLoad() const
 {
 	if( m_totalLoadResponses == 0 ) {
@@ -1025,4 +961,10 @@ uint32 CSearch::GetNodeLoad() const
 	}
 	return m_totalLoad/m_totalLoadResponses;
 }
+
+uint32 CSearch::GetAnswers() const {
+	// Each 50 files make for a response packet, so we have to convert this from packet responses to full store responses.
+	return (m_fileIDs.size() ? m_uAnswers/((m_fileIDs.size()+49)/50) : m_uAnswers);
+}
+
 // File_checked_for_headers

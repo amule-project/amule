@@ -484,7 +484,7 @@ void CSearchManager::ProcessPublishResult(const CUInt128 &target, const uint8 lo
 		return;
 	}
 	
-	s->m_answers++;
+	s->m_uAnswers++;
 	if( loadResponse ) {
 		s->UpdateNodeLoad( load );
 	}

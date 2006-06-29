@@ -27,8 +27,10 @@
 
 
 #include "ArchSpecific.h"	// Needed for Raw{Peek,Poke}UInt64()
-#include <libs/common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
 
+#include "kademlia/utils/UInt128.h" // Needed for CUInt128
+
+#include <libs/common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
 
 
 const size_t MD4HASH_LENGTH = 16;
@@ -69,6 +71,16 @@ public:
 	 */
 	explicit CMD4Hash(const unsigned char hash[]) {
 		SetHash(hash);
+	}
+
+	/**
+	 * Cast a CUInt128 to a CMD4Hash.
+	 * 
+	 * @param hash The 128 bits integer to cast.
+	 *
+	 */
+	explicit CMD4Hash(const Kademlia::CUInt128& hash) {
+		SetHash(hash.GetDataPtr());
 	}
 
 	/**

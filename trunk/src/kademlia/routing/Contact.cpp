@@ -73,6 +73,8 @@ m_inUse(0)
 	m_distance.XOR(clientID);
 	wxASSERT(udpPort);
 	theStats::AddKadNode();
+	#warning Kry KAD2 - Update the version on code.
+	m_uVersion = 1;
 }
 
 const wxString CContact::GetClientIDString(void) const

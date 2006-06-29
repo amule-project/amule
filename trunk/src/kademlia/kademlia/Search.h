@@ -61,38 +61,23 @@ public:
 	void SetSearchTypes( uint32 val ) {m_type = val;}
 	void SetTargetID( CUInt128 val ) {m_target = val;}
 
-	uint32 GetAnswers() const {
-		if(bio2 == NULL) {
-			return m_answers;
-		} else if(bio3 == NULL) {
-			return m_answers/2;
-		} else {
-			return m_answers/3;
-			}
-		}
 	uint32 GetKadPacketSent() const {return m_kadPacketSent;}
 	uint32 GetRequestAnswer() const {return m_totalRequestAnswers;}
 	void StorePacket();
 
 	CUInt128 m_keywordPublish; //Need to make this private...
-	byte packet1[1024*50];
-	byte packet2[1024*50];
-	byte packet3[1024*50];
-	CMemFile *bio1;
-	CMemFile *bio2;
-	CMemFile *bio3;
 	const wxString& GetFileName(void) const { return m_fileName; }
 	void SetFileName(const wxString& fileName) { m_fileName = fileName; }
 	CUInt128 GetTarget(void) const {return m_target;}
 	void AddFileID(const CUInt128& id);
-	void PreparePacket(void);
 	void PreparePacketForTags( CMemFile* packet, CKnownFile* file );
 	bool Stoping(void) const {return m_stoping;}
 	uint32 GetNodeLoad() const;
 	uint32 GetNodeLoadResonse() const {return m_totalLoadResponses;}
 	uint32 GetNodeLoadTotal() const {return m_totalLoad;}
 	void UpdateNodeLoad( uint8 load ){ m_totalLoad += load; m_totalLoadResponses++; }
-
+	uint32 GetAnswers() const;
+	
 	enum
 	{
 		NODE,
@@ -124,7 +109,7 @@ private:
 	bool		m_stoping;
 	time_t		m_created;
 	uint32		m_type;
-	uint32		m_answers;
+	uint32		m_uAnswers;
 	uint32		m_totalRequestAnswers;
 	uint32		m_kadPacketSent; //Used for gui reasons.. May not be needed later..
 	uint32		m_totalLoad;
