@@ -142,7 +142,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					mem_packet.Seek(0,wxFromStart);
 					mem_packet.WriteUInt32(host);
 					mem_packet.WriteUInt16(port);
-					CPacket* response = new CPacket(&mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
+					CPacket* response = new CPacket(mem_packet, OP_EMULEPROT, OP_REASKCALLBACKTCP);
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKTCP") );
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					buddy->GetSocket()->SendPacket(response);
@@ -194,7 +194,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					}
 					
 					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
-					CPacket* response = new CPacket(&data_out, OP_EMULEPROT, OP_REASKACK);
+					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());
 					SendPacket(response, host, port);

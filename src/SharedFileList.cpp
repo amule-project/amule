@@ -742,7 +742,7 @@ void CSharedFileList::SendListToServer(){
 	
 	wxASSERT(count == limit);
 	
-	CPacket* packet = new CPacket(&files, OP_EDONKEYPROT, OP_OFFERFILES);
+	CPacket* packet = new CPacket(files, OP_EDONKEYPROT, OP_OFFERFILES);
 	// compress packet
 	//   - this kind of data is highly compressable (N * (1 MD4 and at least 3 string meta data tags and 1 integer meta data tag))
 	//   - the min. amount of data needed for one published file is ~100 bytes

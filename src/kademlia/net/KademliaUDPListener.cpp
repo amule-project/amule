@@ -1155,7 +1155,7 @@ void CKademliaUDPListener::ProcessCallbackRequest (const byte *packetData, uint3
 		packetdata.WriteUInt128(file);
 		packetdata.WriteUInt32(ip);
 		packetdata.WriteUInt16(tcp);
-		CPacket* packet = new CPacket(&packetdata, OP_EMULEPROT, OP_CALLBACK);
+		CPacket* packet = new CPacket(packetdata, OP_EMULEPROT, OP_CALLBACK);
 		if( buddy->GetSocket() ) {
 			AddDebugLogLineM(false, logClientKadUDP, CFormat(wxT("KadCallback %s")) % Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip), port));
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -1168,7 +1168,7 @@ void CKademliaUDPListener::ProcessCallbackRequest (const byte *packetData, uint3
 
 void CKademliaUDPListener::SendPacket(const CMemFile &data, byte opcode, uint32 destinationHost, uint16 destinationPort)
 {
-	CPacket* packet = new CPacket((CMemFile*)&data, OP_KADEMLIAHEADER, opcode);
+	CPacket* packet = new CPacket(data, OP_KADEMLIAHEADER, opcode);
 	if( packet->GetPacketSize() > 200 ) {
 		packet->PackPacket();
 	}

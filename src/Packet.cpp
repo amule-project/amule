@@ -92,9 +92,9 @@ CPacket::CPacket(byte* rawHeader)
 	pBuffer 	= NULL;
 }
 
-CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
+CPacket::CPacket(const CMemFile& datafile, uint8 protocol, uint8 ucOpcode)
 {
-	size		= datafile->GetLength();
+	size		= datafile.GetLength();
 	opcode		= ucOpcode;
 	prot		= protocol;
 	m_bSplitted 	= false;
@@ -107,10 +107,10 @@ CPacket::CPacket(CMemFile* datafile, uint8 protocol, uint8 ucOpcode)
 	pBuffer = completebuffer + sizeof(Header_Struct);
 	
 	// Write contents of MemFile to buffer (while keeping original position in file)
-	off_t position = datafile->GetPosition();
-	datafile->Seek(0, wxFromStart);
-	datafile->Read(pBuffer, size);
-	datafile->Seek(position, wxFromStart);
+	off_t position = datafile.GetPosition();
+	datafile.Seek(0, wxFromStart);
+	datafile.Read(pBuffer, size);
+	datafile.Seek(position, wxFromStart);
 }
 
 CPacket::CPacket(int8 in_opcode, uint32 in_size, uint8 protocol, bool bFromPF)

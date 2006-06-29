@@ -365,7 +365,7 @@ void CUpDownClient::CreateStandartPackets(const byte* buffer, uint32 togo, Reque
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf, nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? (uint8)OP_SENDINGPART_I64 : (uint8)OP_SENDINGPART));	
+		CPacket* packet = new CPacket(data, (bLargeBlocks ? OP_EMULEPROT : OP_EDONKEYPROT), (bLargeBlocks ? (uint8)OP_SENDINGPART_I64 : (uint8)OP_SENDINGPART));	
 		theStats::AddUpOverheadFileRequest(16 + 2 * (bLargeBlocks ? 8 :4));
 		theStats::AddUploadToSoft(GetClientSoft(), nPacketSize);
 		AddDebugLogLineM( false, logLocalClient, wxString::Format(wxT("Local Client: %s to "),(bLargeBlocks ? wxT("OP_SENDINGPART_I64") : wxT("OP_SENDINGPART"))) + GetFullIP() );
@@ -417,7 +417,7 @@ void CUpDownClient::CreatePackedPackets(const byte* buffer, uint32 togo, Request
 		memfile.Read(tempbuf, nPacketSize);
 		data.Write(tempbuf,nPacketSize);
 		delete [] tempbuf;
-		CPacket* packet = new CPacket(&data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
+		CPacket* packet = new CPacket(data, OP_EMULEPROT, (isLargeBlock ? OP_COMPRESSEDPART_I64 : OP_COMPRESSEDPART));
 	
 		// approximate payload size
 		uint32 payloadSize = nPacketSize*oldSize/newsize;
@@ -737,7 +737,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	for (int i = 0; i != parts; i++) {
 		data.WriteHash(file->GetPartHash(i));
 	}
-	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HASHSETANSWER);	
+	CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_HASHSETANSWER);	
 	theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HASHSETANSWER to ") + GetFullIP());
 	SendPacket(packet,true,true);
@@ -767,7 +767,7 @@ void CUpDownClient::SendRankingInfo(){
 	// Kry: what are these zero bytes for. are they really correct?
 	// Kry - Well, eMule does like that. I guess they're ok.
 	data.WriteUInt32(0); data.WriteUInt32(0); data.WriteUInt16(0);
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_QUEUERANKING);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_QUEUERANKING);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_QUEUERANKING to ") + GetFullIP());
 	SendPacket(packet,true,true);
@@ -793,7 +793,7 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 	data.WriteUInt8(rating);
 	data.WriteString(desc, GetUnicodeSupport(), 4 /* size it's uint32 */);
 	
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_FILEDESC);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_FILEDESC);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	AddDebugLogLineM(false, logLocalClient, wxT("Local Client: OP_FILEDESC to ") + GetFullIP());	
 	SendPacket(packet,true);

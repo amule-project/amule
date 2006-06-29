@@ -653,7 +653,7 @@ bool CUpDownClient::SendHelloPacket() {
 	data.WriteUInt8(16); // size of userhash
 	SendHelloTypePacket(&data);
 	
-	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HELLO);
+	CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_HELLO);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	SendPacket(packet,true);
 	m_bHelloAnswerPending = true;
@@ -738,7 +738,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 	
 	}
 
-	packet = new CPacket(&data, OP_EMULEPROT, (bAnswer ? OP_EMULEINFOANSWER : OP_EMULEINFO));
+	packet = new CPacket(data, OP_EMULEPROT, (bAnswer ? OP_EMULEINFOANSWER : OP_EMULEINFO));
 	
 	if (m_socket) {
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
@@ -932,7 +932,7 @@ void CUpDownClient::SendHelloAnswer()
 
 	CMemFile data(128);
 	SendHelloTypePacket(&data);
-	CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_HELLOANSWER);
+	CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_HELLOANSWER);
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_HELLOANSWER to ") + GetFullIP() );
 	SendPacket(packet,true);
@@ -1363,7 +1363,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			// AFAICS, this id must be reversed to be sent to clients
 			// But if I reverse it, we do a serve violation ;)
 			data.WriteUInt32(m_nUserIDHybrid);
-			CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_CALLBACKREQUEST);
+			CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_CALLBACKREQUEST);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST to ") + GetFullIP());
 			theApp.serverconnect->SendPacket(packet);
@@ -1396,7 +1396,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						bio.WriteUInt128(Kademlia::CUInt128(GetBuddyID()));
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
-						CPacket* packet = new CPacket(&bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
+						CPacket* packet = new CPacket(bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
 						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
 						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i) to"),packet->GetPacketSize()) + GetFullIP());
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
@@ -1841,7 +1841,7 @@ void CUpDownClient::SendPublicKeyPacket(){
 	CMemFile data;
 	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
 	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_PUBLICKEY);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_PUBLICKEY);
 
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_PUBLICKEY to ") + GetFullIP() );
@@ -1903,7 +1903,7 @@ void CUpDownClient::SendSignaturePacket(){
 		data.WriteUInt8(byChaIPKind);
 	}
 	
-	CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_SIGNATURE);
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_SIGNATURE);
 
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SIGNATURE to ") + GetFullIP() );
@@ -2009,7 +2009,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 		CMemFile data;
 		data.WriteUInt8(nValue);
 		data.WriteUInt32(dwRandom);
-		CPacket* packet = new CPacket(&data, OP_EMULEPROT, OP_SECIDENTSTATE);
+		CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_SECIDENTSTATE);
 
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_SECIDENTSTATE to ") + GetFullIP() );
@@ -2244,7 +2244,7 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 	if (IsConnected()) {
 		CMemFile data;
 		data.WriteString(message);
-		CPacket* packet = new CPacket(&data, OP_EDONKEYPROT, OP_MESSAGE);
+		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_MESSAGE);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_MESSAGE to ") + GetFullIP());
 		SendPacket(packet, true, true);
