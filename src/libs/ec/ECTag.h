@@ -31,8 +31,8 @@
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types
 
-#warning Kry - Can you say "Design flaw"?
 class CECSocket;
+
 #include "OtherFunctions.h"
 #include <common/StringFunctions.h>	// Needed for aMuleConv define
 /* Design flaw end */
