@@ -318,7 +318,7 @@ AC_PATH_X
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
 AC_HEADER_STDC
-AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mount.h sys/param.h sys/socket.h sys/statvfs.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([argz.h arpa/inet.h fcntl.h inttypes.h langinfo.h libintl.h limits.h locale.h malloc.h mntent.h netdb.h netinet/in.h stddef.h  nl_types.h stdint.h stdio_ext.h stdlib.h string.h strings.h sys/ioctl.h sys/mount.h sys/param.h sys/resource.h sys/select.h sys/socket.h sys/statvfs.h sys/time.h sys/timeb.h sys/types.h unistd.h])
 AC_HEADER_SYS_WAIT
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -363,7 +363,6 @@ AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftrunca
 dnl
 dnl autoscan has missed these ones. Maybe because it's win32 stuff?
 dnl
-AC_CHECK_HEADERS([sys/resource.h sys/timeb.h])
 AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
 
 # Flush standard test results for speeding cache
