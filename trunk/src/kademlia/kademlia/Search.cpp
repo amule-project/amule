@@ -438,38 +438,43 @@ void CSearch::StorePacket()
 		case STOREKEYWORD: {
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreKeyword"));
 
-			uint16 iCount = (m_fileIDs.size() > 150) ? 150 : m_fileIDs.size();
-
-			if( (m_uAnswers > SEARCHSTOREKEYWORD_TOTAL) || (iCount == 0) ) {
+			if( (m_uAnswers > SEARCHSTOREKEYWORD_TOTAL) || (m_fileIDs.size() == 0) ) {
 				PrepareToStop();
 				break;
 			}
 
 			UIntList::const_iterator itListFileID = m_fileIDs.begin();
 
-			#warning Kry TODO: Rewrite to avoid wrong packets sent (ALSO EMULE!)
-			while (iCount) {
-				uint16 iPacketCount = (iCount > 50) ? 50 : iCount;
-				CMemFile packetdata(1024*iPacketCount); // Allocate a good amount of space.
-				packetdata.WriteUInt128(m_target);
-				packetdata.WriteUInt16(iPacketCount);
-				while (iPacketCount) {
-					iCount--;
-					iPacketCount--;
-					CKnownFile* pFile = theApp.sharedfiles->GetFileByID(CMD4Hash(*itListFileID));
-					if (pFile) {
-						packetdata.WriteUInt128(*itListFileID);
-						PreparePacketForTags( &packetdata, pFile );
-					}
-					++itListFileID;
+			CMemFile packetdata(1024*50); // Allocate a good amount of space.			
+			uint16 iCount = 0;
+			uint16 iPacketCount = 0;
+			packetdata.WriteUInt128(m_target);
+			packetdata.WriteUInt16(0); // Will be updated before sending.
+			while ((iCount < 150) && (itListFileID != m_fileIDs.end())) {
+				CKnownFile* pFile = theApp.sharedfiles->GetFileByID(CMD4Hash(*itListFileID));
+				if (pFile) {
+					iCount++;
+					iPacketCount++;
+					packetdata.WriteUInt128(*itListFileID);
+					PreparePacketForTags( &packetdata, pFile );
 				}
+				++itListFileID;
 				// Send packet
-				if (from->GetVersion() > 1) {
-					AddDebugLogLineM(false, logClientKadUDP, wxT("Kad2StoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
-					CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort());
-				} else {
-					AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
-					CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort());
+				if ((iPacketCount == 50) || (itListFileID == m_fileIDs.end())) {
+					// Update the file count.
+					packetdata.Seek(16,wxFromStart);
+					packetdata.WriteUInt16(iPacketCount);
+					if (from->GetVersion() > 1) {
+						AddDebugLogLineM(false, logClientKadUDP, wxT("Kad2StoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
+						CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort());
+					} else {
+						AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
+						CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort());
+					}
+					iPacketCount = 0;
+					packetdata.Reset();
+					packetdata.WriteUInt128(m_target);
+					packetdata.WriteUInt16(0); // Will be updated before sending.
 				}
 			}
 			
