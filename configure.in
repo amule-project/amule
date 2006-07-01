@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_INIT([aMule],[CVS],[admin@amule.org])
-AC_CANONICAL_TARGET
+AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR([src/amule.cpp])
@@ -13,8 +13,8 @@ AM_MAINTAINER_MODE
 CFLAGS="`echo $CFLAGS | sed "s/-fomit-frame-pointer//g"`"
 CXXFLAGS="`echo $CXXFLAGS | sed "s/-fomit-frame-pointer//g"`"
 
-# System detection, need AC_CANONICAL_TARGET
-case "${target_os}" in
+# System detection, need AC_CANONICAL_HOST
+case "${host_os}" in
 "")
 	SYS=unknown
 	;;
@@ -51,9 +51,8 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
-if test x$SYS = xwin32; then
-	AC_PROG_AWK
-fi
+AS_IF([test x$SYS = xwin32], [AC_PROG_AWK])
+AS_IF([test "$cross_compiling" = yes], [AC_PROG_BUILD_CC], [BUILD_CC="$CC" ; BUILD_EXEEXT=$EXEEXT])
 AC_PROG_MAKE_SET
 AC_PROG_LEX
 AC_PROG_INSTALL
@@ -538,28 +537,13 @@ case "$ccache" in
 yes)
 	CHECK_CCACHE
 	if [[ $CCACHE = 0 ]]; then
-	GCC="$ccache_prefix/ccache $GCC"
-	CC="$ccache_prefix/ccache $CC"
-	GXX="$ccache_prefix/ccache $GXX"
-	CXX="$ccache_prefix/ccache $CXX"
-	else
-	GCC="$GCC"
-	CC="$CC"
-	GXX="$GXX"
-	CXX="$CXX"
+		GCC="$ccache_prefix/ccache $GCC"
+		CC="$ccache_prefix/ccache $CC"
+		GXX="$ccache_prefix/ccache $GXX"
+		CXX="$ccache_prefix/ccache $CXX"
+		BUILD_CC="$ccache_prefix/ccache $BUILD_CC"
 	fi
-	;;
-*)      GCC="$GCC"
-	CC="$CC"
-	GXX="$GXX"
-	CXX="$CXX"
 esac
-
-# Just in case
-if test x"$HOSTCC" = x""; then
-HOSTCC="$CC"
-AC_SUBST(HOSTCC)
-fi
 
 dnl
 dnl Generate the Makefiles
