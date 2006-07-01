@@ -30,10 +30,10 @@ MAINTAINERCLEANFILES = Makefile.in
 
 BUILT_SOURCES = ECVersion.h
 
-CLEANFILES = ECVersion.h EC-timestamp mkFileSum$(EXEEXT)
+CLEANFILES = ECVersion.h EC-timestamp mkFileSum$(BUILD_EXEEXT)
 
-mkFileSum$(EXEEXT): $(top_srcdir)/src/utils/mkFileSum.c
-	$(HOSTCC) -o $@ $<
+mkFileSum$(BUILD_EXEEXT): $(top_srcdir)/src/utils/mkFileSum.c
+	$(BUILD_CC) -o $@ $<
 
 ECVersion.h: EC-timestamp
 	@if test ! -f $@; then \
@@ -41,6 +41,6 @@ ECVersion.h: EC-timestamp
 	  $(MAKE) EC-timestamp; \
 	else :; fi
 
-EC-timestamp: mkFileSum$(EXEEXT) $(top_srcdir)/src/libs/ec/gen_ECVersion $(top_srcdir)/src/libs/ec/ECCodes.h
+EC-timestamp: mkFileSum$(BUILD_EXEEXT) $(top_srcdir)/src/libs/ec/gen_ECVersion $(top_srcdir)/src/libs/ec/ECCodes.h
 	@echo "ECVersion.h timestamp file" > EC-timestamp
 	@$(top_srcdir)/src/libs/ec/gen_ECVersion $(top_srcdir)
