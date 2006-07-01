@@ -1,5 +1,5 @@
 EXTRA_DIST = build-tools.m4 \
-         codeset.m4 \
+	     codeset.m4 \
 	     gettext.m4 \
 	     glibc21.m4 \
 	     iconv.m4 \
