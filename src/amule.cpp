@@ -179,6 +179,9 @@ CamuleApp::CamuleApp()
 
 	enable_stdout_log = false;
 	enable_daemon_fork = false;
+
+	strFullMuleVersion = NULL;
+	strOSDescription = NULL;
 	
 	
 	// Apprently needed for *BSD
@@ -374,13 +377,8 @@ std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxStrin
 
 
 //
-// Static variables initialization and application initialization
+// Application initialization
 //
-const wxString CamuleApp::FullMuleVersion = GetFullMuleVersion();
-const wxString CamuleApp::OSDescription = wxGetOsDescription();
-char *CamuleApp::strFullMuleVersion = new char[GetFullMuleVersion().Length()+1];
-char *CamuleApp::strOSDescription = new char[wxGetOsDescription().Length()+1];
-
 bool CamuleApp::OnInit()
 {
 #if wxUSE_MEMORY_TRACING
@@ -401,19 +399,21 @@ bool CamuleApp::OnInit()
 	signal(SIGTERM, OnShutdownSignal);
 #endif
 
-	// Handle uncaught exceptions
-	InstallMuleExceptionHandler();
-
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	SetAppName(wxT("aMule"));
 	
-	strcpy(strFullMuleVersion, (const char *)unicode2char(FullMuleVersion));
-	strcpy(strOSDescription, (const char *)unicode2char(OSDescription));
+    wxString FullMuleVersion = GetFullMuleVersion();
+    wxString OSDescription = wxGetOsDescription();
+    strFullMuleVersion = strdup((const char *)unicode2char(FullMuleVersion));
+    strOSDescription = strdup((const char *)unicode2char(OSDescription));
 	OSType = OSDescription.BeforeFirst( wxT(' ') );
 	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");
 	}	
+
+	// Handle uncaught exceptions
+	InstallMuleExceptionHandler();
 	
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv);
