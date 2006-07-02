@@ -259,10 +259,8 @@ protected:
 	wxString m_emulesig_path;
 	wxString m_amulesig_path;
 
-	static const wxString FullMuleVersion;
-	static const wxString OSDescription;
-	static char *strFullMuleVersion;
-	static char *strOSDescription;
+	char *strFullMuleVersion;
+	char *strOSDescription;
 	wxString OSType;
 
 	uint32 m_dwPublicIP;
