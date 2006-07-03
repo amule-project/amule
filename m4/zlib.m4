@@ -51,7 +51,7 @@ esac
 		]], [[
 			char *zver = zlibVersion();
 			FILE *f=fopen("conftestval", "w");
-			if (!f) exit(1);
+			if (!f) return 1;
 			fprintf(f, "%s",
 				zver[0] > '$ac_zver_max' ||
 				(zver[0] == '$ac_zver_max' &&
@@ -60,10 +60,10 @@ esac
 				zver[4] >= '$ac_zver_min'))) ? "yes" : "no");
 			fclose(f);
 			f=fopen("conftestver", "w");
-			if (!f) exit(0);
-			fprintf(f, "%s", ZLIB_VERSION);
-			fclose(f);
-			exit(0);
+			if (f) {
+				fprintf(f, "%s", ZLIB_VERSION);
+				fclose(f);
+			}
 		]])
 	], [
 		if test -f conftestval; then
