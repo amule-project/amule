@@ -528,10 +528,9 @@ AC_RUN_IFELSE([
 			#include <stdio.h>
 		]], [[
 			FILE *f=fopen("conftestval", "w");
-			if (!f) exit(1);
+			if (!f) return 1;
 			fprintf(f, "%s", "yes");
 			fclose(f);
-			exit(0);
 		]])
 	], [
 		if test -f conftestval; then
