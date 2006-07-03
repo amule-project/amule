@@ -71,6 +71,7 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "ThreadTasks.h"
+#include "UserEvents.h"
 
 #ifndef __WXMSW__
 #include "UPnP.h"			// Needed for UPnP
@@ -1500,22 +1501,7 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 	completed->CompleteFileEnded(evt.ErrorOccured(), evt.GetFullPath());
 
 	// Check if we should execute an script/app/whatever.
-	if (thePrefs::CommandOnCompletion() and not evt.ErrorOccured()) {
-		wxString command = thePrefs::GetCommandOnCompletion();
-
-		// Full path
-		command.Replace(wxT("%FILE"), completed->GetFullName());
-		// Just filename
-		command.Replace(wxT("%NAME"), completed->GetFileName());
-		// Hash
-		command.Replace(wxT("%HASH"), completed->GetFileHash().Encode());
-		// Size
-		command.Replace(wxT("%SIZE"), (wxString)(CFormat(wxT("%llu")) % completed->GetFileSize()));
-
-		if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
-			AddLogLineM(true, CFormat(_("Failed to execute on-completion command. Template is: %s")) % command);
-		}
-	}	
+	CUserEvents::ProcessEvent(CUserEvents::DownloadCompleted, completed);
 }
 
 

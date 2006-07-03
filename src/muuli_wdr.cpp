@@ -8,6 +8,7 @@
 #endif
 
 // For compilers that support precompilation
+#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
     #pragma hdrstop
@@ -16,6 +17,7 @@
 // Include private header
 #include "muuli_wdr.h"
 
+#include <wx/intl.h>
 
 // Euro sign hack of the year
 #if wxUSE_UNICODE
@@ -2117,35 +2119,6 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 
     item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item26 = new wxStaticBox( parent, -1, _("Execute command on file completion") );
-    wxStaticBoxSizer *item25 = new wxStaticBoxSizer( item26, wxVERTICAL );
-
-    wxCheckBox *item27 = new wxCheckBox( parent, ID_ONCMPLT, _("Enable command execution"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxFlexGridSizer *item28 = new wxFlexGridSizer( 3, 0, 0 );
-    item28->AddGrowableCol( 2 );
-
-    item28->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
-
-    wxStaticText *item29 = new wxStaticText( parent, ID_TEXT, _("Command:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxTextCtrl *item30 = new wxTextCtrl( parent, ID_ONCMPLT_TEXT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item28->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    wxStaticText *item31 = new wxStaticText( parent, ID_TEXT, 
-        _("The following variables will be replaced by the\n"
-          "values from the completed file:\n"
-          " %FILE - The full path to the file.\n"
-          " %HASH - The ED2k hash of the file."),
-        wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
     if (set_sizer)
     {
         parent->SetSizer( item0 );
@@ -3950,6 +3923,40 @@ item4->SetName(wxT("kadWnd"));
     item2->AddPage( item4, _("Kad") );
 
     item0->Add( item1, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    if (set_sizer)
+    {
+        parent->SetSizer( item0 );
+        if (call_fit)
+            item0->SetSizeHints( parent );
+    }
+    
+    return item0;
+}
+
+wxSizer *IDC_PREFS_EVENTS_PAGE;
+wxSizer *PreferencesEventsTab( wxWindow *parent, bool call_fit, bool set_sizer )
+{
+    wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
+    IDC_PREFS_EVENTS_PAGE = item0;
+
+    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 5 ), wxDefaultPosition, wxSize(16,16) );
+    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticText *item3 = new wxStaticText( parent, -1, _("Events"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Event types") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+
+    wxListCtrl *item6 = new wxListCtrl( parent, IDC_EVENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    item4->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -9454,4 +9461,3 @@ wxBitmap amuleDlgImages( size_t index )
 
 
 // End of generated file
-// File_checked_for_headers

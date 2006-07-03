@@ -117,6 +117,8 @@ protected:
 	void OnScrollBarChange( wxScrollEvent& event );
 	void OnRateLimitChanged( wxSpinEvent& event );
 	void OnTCPClientPortChange(wxSpinEvent& event);
+	void OnUserEventSelected(wxListEvent& event);
+	void CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent);
 
 	void OnInitDialog( wxInitDialogEvent& evt );
 

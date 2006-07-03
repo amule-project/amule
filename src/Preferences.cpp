@@ -45,6 +45,7 @@
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
 #include <common/PlatformSpecific.h>	// Needed for GetDocumentsDir()	// Do_not_auto_remove (win32, mac)
+#include "UserEvents.h"
 
 #ifndef AMULE_DAEMON
 #include <wx/valgen.h>
@@ -195,8 +196,6 @@ bool		CPreferences::s_NewVersionCheck;
 bool		CPreferences::s_ConnectToKad;
 bool		CPreferences::s_ConnectToED2K;
 unsigned	CPreferences::s_maxClientVersions;
-bool		CPreferences::s_ExecOnCompletion;
-wxString	CPreferences::s_ExecOnCompletionCommand;
 bool		CPreferences::s_DropSlowSources;
 
 /**
@@ -303,6 +302,17 @@ public:
 	}
 
 #endif
+
+	/**
+	 * Sets the default value.
+	 *
+	 * This can be used, when the default value is not known yet
+	 * when calling the constructor.
+	 */
+	void	SetDefault(const TYPE& defaultVal)
+	{
+		m_default = defaultVal;
+	}
 
 protected:
 	//! Reference to the associated variable
@@ -972,12 +982,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, false )));
 	 
 	/**
-	 * Execute command on file completion.
-	 **/
-	NewCfgItem(ID_ONCMPLT,			(new Cfg_Bool( wxT("/eMule/ExecOnCompletion"), s_ExecOnCompletion, false)));
-	NewCfgItem(ID_ONCMPLT_TEXT,		(new Cfg_Str(  wxT("/eMule/ExecOnCompletionCommand"), s_ExecOnCompletionCommand, wxT("sh -c '~/example.sh \"%FILE\" %HASH'"))));
-	 
-	/**
 	 * The following doesn't have an associated widget.
 	 **/
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Language"),			s_languageID ) );
@@ -1008,6 +1012,14 @@ void CPreferences::BuildItemList( const wxString& appdir )
 		s_MiscList.push_back( MkCfg_Int( str, CStatisticsDlg::acrStat[i], CStatisticsDlg::acrStat[i] ) );
 	}
 #endif
+
+	// User events
+	for (unsigned int i = 0; i < CUserEvents::GetCount(); ++i) {
+		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 1, (new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreEnabled"), CUserEvents::GetCoreEnableVar(i), false)));
+		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 2, (new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreCommand"), CUserEvents::GetCoreCommandVar(i), wxEmptyString)));
+		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 3, (new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUIEnabled"), CUserEvents::GetGUIEnableVar(i), false)));
+		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 4, (new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUICommand"), CUserEvents::GetGUICommandVar(i), wxEmptyString)));
+	}
 }
 
 
@@ -1028,7 +1040,17 @@ void CPreferences::EraseItemList()
 
 void CPreferences::LoadAllItems(wxConfigBase* cfg)
 {
-	// Connect the Cfgs with their widgets
+#ifndef CLIENT_GUI
+	// Preserve values from old config. The global config object may not be set yet
+	// when BuildItemList() is called, so we need to provide defaults later - here.
+	bool ExecOnCompletion;
+	wxString ExecOnCompletionCommand;
+	cfg->Read(wxT("/eMule/ExecOnCompletion"), &ExecOnCompletion, false);
+	cfg->Read(wxT("/eMule/ExecOnCompletionCommand"), &ExecOnCompletionCommand, wxEmptyString);
+	// Assign to core command, that's the most likely it was.
+	static_cast<Cfg_Bool*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 1])->SetDefault(ExecOnCompletion);
+	static_cast<Cfg_Str*>(s_CfgList[USEREVENTS_FIRST_ID + CUserEvents::DownloadCompleted * USEREVENTS_IDS_PER_EVENT + 2])->SetDefault(ExecOnCompletionCommand);
+#endif
 	CFGMap::iterator it_a = s_CfgList.begin();
 	for ( ; it_a != s_CfgList.end(); ++it_a ) {
 		it_a->second->LoadFromFile( cfg );
