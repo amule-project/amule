@@ -198,6 +198,7 @@ common_sources = \
 	Statistics.cpp \
 	StatTree.cpp \
 	SHAHashSet.cpp \
+	UserEvents.cpp \
 	$(remote_common_sources)
 
 # Libs
@@ -385,7 +386,8 @@ noinst_HEADERS = ThreadScheduler.h \
 		Types.h \
 		updownclient.h \
 		UploadBandwidthThrottler.h \
-		UploadQueue.h
+		UploadQueue.h \
+		UserEvents.h
 
 MAINTAINERCLEANFILES = Makefile.in
 

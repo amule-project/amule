@@ -32,6 +32,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "OtherFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
+#include "UserEvents.h"
 
 #warning Needed while not ported
 #include "ClientList.h"
@@ -108,7 +109,6 @@ CChatSelector::CChatSelector(wxWindow* parent, wxWindowID id, const wxPoint& pos
 
 CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& client_name, bool show) 
 {
-
 	// Check to see if we've already opened a session for this user
 	if ( GetPageByClientID( client_id ) ) {
 		if ( show ) {
@@ -119,7 +119,7 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	}
 
 	CChatSession* chatsession = new CChatSession(this);
-	
+
 	chatsession->m_client_id = client_id;
 
 	wxString text;
@@ -132,7 +132,9 @@ CChatSession* CChatSelector::StartSession(uint64 client_id, const wxString& clie
 	
 	chatsession->AddText( text, COLOR_RED );
 	AddPage(chatsession, client_name, show, 0);
-	
+
+	CUserEvents::ProcessEvent(CUserEvents::NewChatSession, &client_name);
+
 	return chatsession;
 }
 
