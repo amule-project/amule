@@ -62,7 +62,7 @@ class EC_IPv4_t {
 			return m_ip[0] | (m_ip[1] << 8) | (m_ip[2] << 16) | (m_ip[3] << 24);
 		}
 
-		std::string StringIP(bool brackets = true)
+		std::string StringIPSTL(bool brackets = true)
 		{
 			std::ostringstream string_ip;
 			if (brackets) string_ip << "[";
@@ -70,6 +70,12 @@ class EC_IPv4_t {
 			if (brackets) string_ip << "]";
 			return string_ip.str();
 		}
+		
+		#ifdef USE_WX_EXTENSIONS
+		wxString StringIP(bool brackets = true) {
+			return char2unicode(StringIPSTL(brackets).c_str());
+		}
+		#endif
 		
 		uint8 m_ip[4];
 		uint16 m_port;
@@ -286,6 +292,9 @@ class CECTag {
 
 		static const CECTag s_theNullTag;
 		static const uint32_t s_theNullTagData[4];
+		
+		// To be used by the string constructors.
+		void ConstructStringTag(ec_tagname_t name, const std::string& data);
 };
 
 

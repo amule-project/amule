@@ -163,19 +163,24 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
  * @param name TAG name
  * @param data wxString object, it's contents are converted to UTF-8.
  *
- * @see GetStringData()
+ * @see GetStringDataSTL()
  */
 CECTag::CECTag(ec_tagname_t name, const std::string& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
-	m_dataLen = strlen(data.c_str()) + 1;
-	m_tagData = malloc(m_dataLen);
-	if (m_tagData != NULL) {
-		memcpy((void *)m_tagData, data.c_str(), m_dataLen);
-		m_error = 0;
-		m_dataType = EC_TAGTYPE_STRING;
-	} else {
-		m_error = 1;
-	}
+	ConstructStringTag(name,data);
+}
+
+/**
+ * Creates a new CECTag instance, which contains a string
+ *
+ * @param name TAG name
+ * @param data wxString object, it's contents are converted to UTF-8.
+ *
+ * @see GetStringData()
+ */
+CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
+{
+	ConstructStringTag(name, (const char*)unicode2char(data));
 }
 
 /**
@@ -666,6 +671,18 @@ double CECTag::GetDoubleData(void) const
 	double data;
 	double_str >> data;
 	return data;
+}
+
+void CECTag::ConstructStringTag(ec_tagname_t name, const std::string& data) {
+	m_dataLen = strlen(data.c_str()) + 1;
+	m_tagData = malloc(m_dataLen);
+	if (m_tagData != NULL) {
+		memcpy((void *)m_tagData, data.c_str(), m_dataLen);
+		m_error = 0;
+		m_dataType = EC_TAGTYPE_STRING;
+	} else {
+		m_error = 1;
+	}	
 }
 
 /*!

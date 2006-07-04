@@ -35,10 +35,9 @@
 
 #include <wx/app.h>			// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
-
 #include <ec/RemoteConnect.h>
 
-
+#include <wx/intl.h>
 
 #define CMD_DEPRECATED		0x1000
 #define CMD_OK			 0

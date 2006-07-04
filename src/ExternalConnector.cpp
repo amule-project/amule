@@ -22,6 +22,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include "ExternalConnector.h"
+
 #ifdef HAVE_CONFIG_H
 	#include "config.h"	// Needed for VERSION and readline detection
 #endif
@@ -60,9 +62,6 @@
 #include <ec/ECFileConfig.h>	// Needed for CECFileConfig
 
 #include <common/MD5Sum.h>
-
-#include "ExternalConnector.h"
-
 
 //-------------------------------------------------------------------
 
