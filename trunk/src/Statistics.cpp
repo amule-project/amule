@@ -46,6 +46,7 @@
 	#include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
 
+#include <wx/intl.h>
 
 #ifdef __BSD__
 	// glibc -> bsd libc
