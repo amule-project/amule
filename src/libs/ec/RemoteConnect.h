@@ -27,8 +27,8 @@
 #define REMOTECONNECT_H
 
 
-#include "base/ECSocket.h"
-#include "base/ECPacket.h"		// Needed for CECPacket
+#include "ECSocket.h"
+#include "ECPacket.h"		// Needed for CECPacket
 
 class CECPacketHandlerBase {
 	public:

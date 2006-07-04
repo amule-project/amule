@@ -6,9 +6,9 @@ noinst_LIBRARIES = \
 	libec.a
 
 libec_a_SOURCES = \
-	base/ECTag.cpp \
-	base/ECPacket.cpp \
-	base/ECSocket.cpp \
+	ECTag.cpp \
+	ECPacket.cpp \
+	ECSocket.cpp \
 	RemoteConnect.cpp \
 	ECSpecialTags.cpp
 
@@ -18,10 +18,9 @@ libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs
 libec_noevt_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -DECSOCKET_USE_EVENTS=0
 
 noinst_HEADERS =  \
-		base/ECTag.h \
-		base/ECSocket.h \
-		base/ECPacket.h \
-		wx/ECTagWX.h \
+		ECTag.h \
+		ECSocket.h \
+		ECPacket.h \
 		ECFileConfig.h \
 		ECSpecialTags.h \
 		ECCodes.h \
