@@ -24,7 +24,7 @@
 //
 
 
-#include "base/ECTag.h"		// Needed for CECTag
+#include "ECTag.h"		// Needed for CECTag
 #include "ECSpecialTags.h"	// Needed for special EC tag creator classes
 
 #include <common/Format.h>		// Needed for CFormat
