@@ -36,6 +36,9 @@
 #include <libs/common/StringFunctions.h>
 #endif
 
+#include <string>
+
+
 const size_t MD4HASH_LENGTH = 16;
 
 
