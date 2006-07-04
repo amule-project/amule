@@ -42,8 +42,7 @@
 #include <ec/ECSpecialTags.h>
 
 #include <common/Format.h>		// Needed for CFormat
-
-
+#include "OtherFunctions.h"
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
