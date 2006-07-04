@@ -25,8 +25,9 @@
 
 #include "StatTree.h"
 
-#ifndef EC_REMOTE
+#include <wx/intl.h>
 
+#ifndef EC_REMOTE
 
 #ifndef AMULE_DAEMON
 #include <common/Format.h>		// Needed for CFormat
@@ -38,8 +39,6 @@
 #endif /* !EC_REMOTE */
 
 #include <ec/ECTag.h>		// Needed for CECTag
-
-#include <wx/intl.h>
 
 #ifdef EC_REMOTE
 	#include <ec/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
