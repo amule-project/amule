@@ -25,13 +25,12 @@
 
 #include "ECSocket.h"
 
+#include <sstream>
+#include <iostream>
 
-
+using namespace std;
 
 #include "ECPacket.h"		// Needed for CECPacket
-
-
-#include <common/Format.h>
 
 #define EC_COMPRESSION_LEVEL	Z_BEST_COMPRESSION
 #define EC_MAX_UNCOMPRESSED	1024
@@ -58,8 +57,8 @@ struct utf8_table {
 	int     cmask;
 	int     cval;
 	int     shift;
-	uint32  lmask;
-	uint32  lval;
+	uint32_t  lmask;
+	uint32_t  lval;
 };
 
 static struct utf8_table utf8_table[] =
@@ -73,9 +72,9 @@ static struct utf8_table utf8_table[] =
     {0,     0,      0,      0,              0,         /* end of table    */}
 };
 
-int utf8_mbtowc(uint32 *p, const unsigned char *s, int n)
+int utf8_mbtowc(uint32_t *p, const unsigned char *s, int n)
 {
-	uint32 l;
+	uint32_t l;
 	int c0, c, nc;
 	struct utf8_table *t;
 
@@ -102,9 +101,9 @@ int utf8_mbtowc(uint32 *p, const unsigned char *s, int n)
 	return -1;
 }
 
-int utf8_wctomb(unsigned char *s, uint32 wc, int maxlen)
+int utf8_wctomb(unsigned char *s, uint32_t wc, int maxlen)
 {
-	uint32 l;
+	uint32_t l;
 	int c, nc;
 	struct utf8_table *t;
 
@@ -136,7 +135,7 @@ int utf8_mb_remain(char c)
 	return i;
 }
 
-size_t CQueuedData::ReadFromSocketAll(wxSocketBase *sock, size_t len)
+size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 {
 	size_t read_rem = len;
 	//
@@ -151,10 +150,8 @@ size_t CQueuedData::ReadFromSocketAll(wxSocketBase *sock, size_t len)
 		sock->Read(m_wr_ptr, read_rem);
 		m_wr_ptr += sock->LastCount();
 		read_rem -= sock->LastCount();
-		if (sock->Error()) {
-			if (sock->LastError() != wxSOCKET_WOULDBLOCK) {
+		if (sock->GotError() && !sock->WouldBlock()) {
 				break;
-			}
 		}
 	} while ( read_rem );
 	return len - read_rem;
@@ -274,12 +271,12 @@ void CECSocket::SendPacket(const CECPacket *packet)
 
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
-	wxASSERT(!m_use_events);
+	assert(!m_use_events);
 	
 	SendPacket(packet);
 	
-	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32));
-	if (Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
+	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32_t));
+	if (Error() && !WouldBlock()) {
 		OnError();
 		return 0;
 	}
@@ -289,11 +286,11 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 	m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
 	m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
 	
-	if ( m_curr_rx_data->GetLength() < (m_curr_packet_len+2*sizeof(uint32)) ) {
+	if ( m_curr_rx_data->GetLength() < (m_curr_packet_len+2*sizeof(uint32_t)) ) {
 		m_curr_rx_data.reset(new CQueuedData(m_curr_packet_len));
 	}
 	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
-	if (Error() && (LastError() != wxSOCKET_WOULDBLOCK)) {
+	if (Error() && !WouldBlock()) {
 		OnError();
 		return 0;
 	}
@@ -302,39 +299,42 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 	return reply;
 }
 
-wxString CECSocket::GetErrorMsg(wxSocketError code)
+std::string CECSocket::GetLastErrorMsg()
 {
+	int code = LastError();
 	switch(code) {
 		case wxSOCKET_NOERROR:
-			return wxT("No error happened");
+			return "No error happened";
 		case wxSOCKET_INVOP:
-			return wxT("Invalid operation");
+			return "Invalid operation";
 		case wxSOCKET_IOERR:
-			return wxT("Input/Output error");
+			return "Input/Output error";
 		case wxSOCKET_INVADDR:
-			return wxT("Invalid address passed to wxSocket");
+			return "Invalid address passed to wxSocket";
 		case wxSOCKET_INVSOCK:
-			return wxT("Invalid socket (uninitialized)");
+			return "Invalid socket (uninitialized)";
 		case wxSOCKET_NOHOST:
-			return wxT("No corresponding host");
+			return "No corresponding host";
 		case wxSOCKET_INVPORT:
-			return wxT("Invalid port");
+			return "Invalid port";
 		case wxSOCKET_WOULDBLOCK:
-			return wxT("The socket is non-blocking and the operation would block");
+			return "The socket is non-blocking and the operation would block";
 		case wxSOCKET_TIMEDOUT:
-			return wxT("The timeout for this operation expired");
+			return "The timeout for this operation expired";
 		case wxSOCKET_MEMERR:
-			return wxT("Memory exhausted");
+			return "Memory exhausted";
 		case wxSOCKET_DUMMY:
-			return wxT("Dummy code - should not happen");
+			return "Dummy code - should not happen";
 	}
-	return wxString::Format(wxT("Error code 0x%08x unknown"), code);
+	ostringstream error_string;
+	error_string << "Error code " << code <<  " unknown.";
+	return error_string.str();
 }
 
 void CECSocket::OnError()
 {
 #ifdef __DEBUG__
-	printf("CECSocket error: %s\n", (const char *)unicode2char(GetErrorMsg(LastError())));
+	cout << GetLastErrorMsg() << endl;
 #endif
 }
 
@@ -364,7 +364,7 @@ void CECSocket::OnInput()
 			return;
 		}
 		if ( Error() ) {
-			if (LastError() != wxSOCKET_WOULDBLOCK && LastError() != wxSOCKET_NOERROR) {
+			if (GotError() && !WouldBlock()) {
 				OnError();
 				// socket already disconnected in this point
 				m_curr_rx_data.reset(0);
@@ -417,12 +417,12 @@ void CECSocket::OnOutput()
 			delete data;
 		}
 		if (Error()) {
-			if (LastError() == wxSOCKET_WOULDBLOCK || LastError() == wxSOCKET_NOERROR) {
+			if (WouldBlock() || !GotError()) {
 				if ( m_use_events ) {
 					return;
 				} else {
 					if ( !WaitForWrite(10, 0) ) {
-						if (LastError() == wxSOCKET_WOULDBLOCK) {
+						if (WouldBlock()) {
 							continue;
 						} else {
 							OnError();
@@ -444,7 +444,7 @@ void CECSocket::OnOutput()
 
 size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 {
-	wxASSERT(required_len);
+	assert(required_len);
 
 	if (m_curr_rx_data->GetUnreadDataLength() < required_len) {
 		// need more data that we have. Looks like nothing will help here
@@ -503,7 +503,7 @@ bool CECSocket::ReadNumber(void *buffer, size_t len)
 {
 	if (m_rx_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
-		uint32 wc;
+		uint32_t wc;
 		if (!ReadBuffer(mb, 1)) return false;
 		int remains = utf8_mb_remain(mb[0]);
 		if (remains) if (!ReadBuffer(&(mb[1]), remains)) return false;
@@ -533,7 +533,7 @@ bool CECSocket::WriteNumber(const void *buffer, size_t len)
 {
 	if (m_tx_flags & EC_FLAG_UTF8_NUMBERS) {
 		unsigned char mb[6];
-		uint32 wc = 0;
+		uint32_t wc = 0;
 		int mb_len;
 		switch (len) {
 			case 1: wc = PeekUInt8( buffer ); break;
@@ -651,7 +651,7 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		return;
 	}
 
-	uint32 flags = 0x20;
+	uint32_t flags = 0x20;
 
 	if ( packet->GetPacketLength() > EC_MAX_UNCOMPRESSED ) {
 		flags |= EC_FLAG_ZLIB;
@@ -676,11 +676,11 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		}
 	}
 
-	uint32 tmp_flags = ENDIAN_HTONL(flags);
+	uint32_t tmp_flags = ENDIAN_HTONL(flags);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
 	
 	// preallocate 4 bytes in buffer for packet length
-	uint32 packet_len = 0;
+	uint32_t packet_len = 0;
 	WriteBufferToSocket(&packet_len, sizeof(uint32));
 	
 	packet->WritePacket(*this);
@@ -699,7 +699,7 @@ void CECSocket::WritePacket(const CECPacket *packet)
 	
 	CQueuedData *first_buff = m_output_queue.front();
 	if ( !first_buff ) first_buff = m_curr_tx_data.get();
-	first_buff->WriteAt(&packet_len, sizeof(uint32), sizeof(uint32));
+	first_buff->WriteAt(&packet_len, sizeof(uint32_t), sizeof(uint32_t));
 	
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
@@ -715,11 +715,11 @@ const CECPacket *CECSocket::ReadPacket()
 {
 	CECPacket *packet = 0;
 
-	uint32 flags = m_rx_flags;
+	uint32_t flags = m_rx_flags;
 	
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
-		fputs((const char *)unicode2char((wxString)(CFormat(_("ReadPacket: packet have invalid flags %08x")) % flags)), stdout);
+		cout << "ReadPacket: packet have invalid flags " << flags << endl;
 		Close();
 		return 0;
 	}
@@ -735,7 +735,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateInit(&m_z);
 		if (zerror != Z_OK) {
 			ShowZError(zerror, &m_z);
-			fputs((const char *)unicode2char(_("ReadPacket: failed zlib init")), stdout);
+			cout << "ReadPacket: failed zlib init" << endl;
 			Close();
 			return 0;
 		}
@@ -746,7 +746,7 @@ const CECPacket *CECSocket::ReadPacket()
 	packet->ReadFromSocket(*this);
 	
 	if (packet->m_error != 0) {
-		fputs((const char *)unicode2char((wxString::Format(_("ReadPacket: error %d in packet read"), packet->m_error))), stdout);
+		cout << "ReadPacket: error " << packet->m_error << "in packet read" << endl;
 		delete packet;
 		packet = NULL;
 		Close();
@@ -756,7 +756,7 @@ const CECPacket *CECSocket::ReadPacket()
 		int zerror = inflateEnd(&m_z);
 		if ( zerror != Z_OK ) {
 			ShowZError(zerror, &m_z);
-			fputs((const char *)unicode2char(_("ReadPacket: failed zlib free")), stdout);
+			cout << "ReadPacket: failed zlib free" << endl;
 			Close();
 		}
 	}

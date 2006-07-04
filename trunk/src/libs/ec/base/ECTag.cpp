@@ -165,17 +165,14 @@ CECTag::CECTag(ec_tagname_t name, const CMD4Hash& data) : m_tagName(name), m_dyn
  *
  * @see GetStringData()
  */
-CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
+CECTag::CECTag(ec_tagname_t name, const std::string& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
-	const wxCharBuffer buf = wxConvUTF8.cWC2MB(data.wc_str(aMuleConv));
-	const char *utf8 = (const char *)buf;
-
-	m_dataLen = strlen(utf8) + 1;
+	m_dataLen = strlen(data.c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		memcpy((void *)m_tagData, utf8, m_dataLen);
+		memcpy((void *)m_tagData, data.c_str(), m_dataLen);
 		m_error = 0;
-		m_dataType = EC_TAGTYPE_STRING;		
+		m_dataType = EC_TAGTYPE_STRING;
 	} else {
 		m_error = 1;
 	}
@@ -279,7 +276,7 @@ void CECTag::InitInt(uint64 data)
 				break;
 			default:
 				/* WTF?*/
-				wxASSERT(0);
+				assert(0);
 				free((void*)m_tagData);
 				m_error = 1;
 				return;
@@ -303,16 +300,12 @@ void CECTag::InitInt(uint64 data)
  */
 CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name), m_dynamic(true)
 {
-	wxString str = wxString::Format(wxT("%g"), data);
-	struct lconv *lc = localeconv();
-	str.Replace(char2unicode(lc->decimal_point), wxT("."));
-	const wxCharBuffer buf = wxConvUTF8.cWC2MB(str.wc_str(aMuleConv));
-	const char *utf8 = (const char *)buf;
-
-	m_dataLen = strlen(utf8) + 1;
+	std::ostringstream double_str;
+	double_str << data;
+	m_dataLen = strlen(double_str.str().c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
-		memcpy((void *)m_tagData, utf8, m_dataLen);
+		memcpy((void *)m_tagData, double_str.str().c_str(), m_dataLen);
 		m_dataType = EC_TAGTYPE_DOUBLE;
 		m_error = 0;
 	} else {
@@ -663,23 +656,16 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 double CECTag::GetDoubleData(void) const
 {
-	wxASSERT((m_dataType == EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+	assert((m_dataType == EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_UNKNOWN));
 	if ( m_dataType == EC_TAGTYPE_UNKNOWN ) {
 		return 0;
 	}
 	
-	// GetStringData() will assert due to wrong m_dataType
-	wxString str(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv);
-
-	struct lconv *lc = localeconv();
-	str.Replace(wxT("."), char2unicode(lc->decimal_point));
-
-	double tmp;
-	if (!str.ToDouble(&tmp)) {
-		double x = 0.0;		// let's fool g++, it'd error out on 0.0 / 0.0
-		tmp = 0.0 / x;		// intentionally generate nan
-	}
-	return tmp;
+	std::istringstream double_str((const char*)m_tagData);
+	
+	double data;
+	double_str >> data;
+	return data;
 }
 
 /*!

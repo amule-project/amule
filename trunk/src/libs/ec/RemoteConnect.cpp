@@ -25,9 +25,9 @@
 
 #include "RemoteConnect.h"
 
+#include <wx/intl.h>
+
 using std::auto_ptr;
-
-
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
 

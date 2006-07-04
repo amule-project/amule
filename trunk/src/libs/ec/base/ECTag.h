@@ -25,18 +25,22 @@
 #ifndef ECTAG_H
 #define ECTAG_H
 
+#include <sstream>
+
+// Must be first! 
+#ifdef USE_WX_EXTENSIONS
+#include <wx/defs.h> // Do_not_auto_remove
+#include <wx/string.h> // Do_not_auto_remove
+#include <common/StringFunctions.h>
+#endif
+
 /* aMule/libcommon generic includes */
 #include "MD4Hash.h"		// Needed for CMD4Hash
 
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types
 
-#warning Kry - Can you say "Design flaw"?
 class CECSocket;
-
-#include "OtherFunctions.h"
-#include <common/StringFunctions.h>	// Needed for aMuleConv define
-/* Design flaw end */
 
 /**
  * Class to hold IPv4 address.
@@ -58,9 +62,13 @@ class EC_IPv4_t {
 			return m_ip[0] | (m_ip[1] << 8) | (m_ip[2] << 16) | (m_ip[3] << 24);
 		}
 
-		wxString StringIP(bool brackets = true)
+		std::string StringIP(bool brackets = true)
 		{
-			return wxString::Format(brackets ? wxT("[%d.%d.%d.%d:%d]") : wxT("%d.%d.%d.%d : %d"), m_ip[0], m_ip[1], m_ip[2], m_ip[3], m_port);
+			std::ostringstream string_ip;
+			if (brackets) string_ip << "[";
+			string_ip << m_ip[0] << "." << m_ip[1] << "." << m_ip[2] << "." << m_ip[3] << ":" << m_port;
+			if (brackets) string_ip << "]";
+			return string_ip.str();
 		}
 		
 		uint8 m_ip[4];
@@ -91,14 +99,17 @@ class CECTag {
 		// tag for custom data: just init object, alloc buffer and return pointer
 		CECTag(ec_tagname_t name, unsigned int length, void **dataptr);
 		// Routines for special data types.
-		CECTag(ec_tagname_t name, uint8 data);
-		CECTag(ec_tagname_t name, uint16 data);
-		CECTag(ec_tagname_t name, uint32 data);
-		CECTag(ec_tagname_t name, uint64 data);
+		CECTag(ec_tagname_t name, uint8_t data);
+		CECTag(ec_tagname_t name, uint16_t data);
+		CECTag(ec_tagname_t name, uint32_t data);
+		CECTag(ec_tagname_t name, uint64_t data);
 		CECTag(ec_tagname_t name, double data);
-		CECTag(ec_tagname_t name, const wxString& data);
+		CECTag(ec_tagname_t name, const std::string& data);
 		CECTag(ec_tagname_t name, const EC_IPv4_t& data);
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
+		#ifdef USE_WX_EXTENSIONS
+		CECTag(ec_tagname_t name, const wxString& data);
+		#endif
 		CECTag(const CECTag& tag);
 		~CECTag(void);
 
@@ -115,16 +126,16 @@ class CECTag {
 		CECTag*			GetTagByName(ec_tagname_t name);
 		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
 		
-		uint16		GetTagCount(void) const { return m_tagList.size(); }
+		uint16_t		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { 
-			wxASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
+			assert(m_dataType == EC_TAGTYPE_CUSTOM);
 			return m_tagData; 
 		}
-		uint16		GetTagDataLen(void) const { return m_dataLen; }
-		uint32		GetTagLen(void) const;
+		uint16_t		GetTagDataLen(void) const { return m_dataLen; }
+		uint32_t		GetTagLen(void) const;
 		ec_tagname_t	GetTagName(void) const { return m_tagName; }
 		// Retrieving special data types
-		uint64		GetInt(void) const { 
+		uint64_t		GetInt(void) const { 
 			switch (m_dataType) {
 				case EC_TAGTYPE_UINT8:
 					return PeekUInt8(m_tagData);
@@ -138,35 +149,41 @@ class CECTag {
 					// Empty tag - This is NOT an error.
 					return 0;
 				default:
-					DumpMem(m_tagData, m_dataLen, wxT("Unk Int Tag"));
-					wxASSERT(0);
+					assert(0);
 					return 0;
 			}
 		}
 		double		GetDoubleData(void) const;
-		wxString	GetStringData(void) const { 
-			wxASSERT((m_dataType == EC_TAGTYPE_STRING) || (m_dataType == EC_TAGTYPE_UNKNOWN));
-			return wxString(wxConvUTF8.cMB2WC((const char *)m_tagData), aMuleConv); 
+		std::string	GetStringDataSTL(void) const { 
+			assert((m_dataType == EC_TAGTYPE_STRING) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+			return ((char*)m_tagData); 
 		}
+		
+		#ifdef USE_WX_EXTENSIONS
+		wxString GetStringData(void) const { 
+			return char2unicode(GetStringDataSTL().c_str());
+		}
+		#endif 
+		
 		EC_IPv4_t 	GetIPv4Data(void) const;
 		CMD4Hash	GetMD4Data(void) const { 
-			wxASSERT((m_dataType == EC_TAGTYPE_HASH16) || (m_dataType == EC_TAGTYPE_UNKNOWN)); 
+			assert((m_dataType == EC_TAGTYPE_HASH16) || (m_dataType == EC_TAGTYPE_UNKNOWN)); 
 			return CMD4Hash((const unsigned char *)m_tagData); 
 		}
 		
-		void AssignIfExist(ec_tagname_t tagname, uint8 &target)
+		void AssignIfExist(ec_tagname_t tagname, uint8_t &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				wxASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+				assert((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
 				target = tag->GetInt();
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint16 &target)
+		void AssignIfExist(ec_tagname_t tagname, uint16_t &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				wxASSERT(
+				assert(
 					(tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
 					|| (m_dataType == EC_TAGTYPE_UNKNOWN)
@@ -174,11 +191,11 @@ class CECTag {
 				target = tag->GetInt();
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint32 &target)
+		void AssignIfExist(ec_tagname_t tagname, uint32_t &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				wxASSERT(
+				assert(
 					(tag->GetType() == EC_TAGTYPE_UINT32)
 					|| (tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
@@ -187,7 +204,7 @@ class CECTag {
 				target = tag->GetInt();	
 			}
 		}
-		void AssignIfExist(ec_tagname_t tagname, uint64 &target)
+		void AssignIfExist(ec_tagname_t tagname, uint64_t &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetInt();
@@ -202,15 +219,23 @@ class CECTag {
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetMD4Data();
 		}
+		void AssignIfExist(ec_tagname_t tagname, std::string &target)
+		{
+			CECTag *tag = GetTagByName(tagname);
+			if ( tag ) target = tag->GetStringDataSTL();
+		}
+		
+		#ifdef USE_WX_EXTENSIONS
 		void AssignIfExist(ec_tagname_t tagname, wxString &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) target = tag->GetStringData();
-		}
+		}		
+		#endif
 		
 	protected:
 
-		uint8 GetType() const { return m_dataType; }
+		uint8_t GetType() const { return m_dataType; }
 
 		enum BuildState {
 			bsName,
@@ -244,7 +269,7 @@ class CECTag {
 		struct NullTagConstructorSelector { };
 		
 		// To init. the automatic int data
-		void InitInt(uint64 data);
+		void InitInt(uint64_t data);
 
 		// Special constructor to construct the Null tag.
 		explicit CECTag(const NullTagConstructorSelector*);
@@ -260,7 +285,7 @@ class CECTag {
 		bool m_haschildren;
 
 		static const CECTag s_theNullTag;
-		static const uint32 s_theNullTagData[4];
+		static const uint32_t s_theNullTagData[4];
 };
 
 
