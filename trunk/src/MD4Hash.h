@@ -32,6 +32,9 @@
 
 #include <libs/common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
 
+#ifdef USE_WX_EXTENSIONS
+#include <libs/common/StringFunctions.h>
+#endif
 
 const size_t MD4HASH_LENGTH = 16;
 
@@ -164,8 +167,9 @@ public:
 	 * This function converts a hexadecimal representation of a MD4
 	 * hash and stores it in the m_hash data-member.
 	 */ 
-	bool Decode(const wxString& hash) {
-		if (hash.Length() != MD4HASH_LENGTH * 2) {
+	
+	bool Decode(const std::string& hash) {
+		if (hash.length() != MD4HASH_LENGTH * 2) {
 			return false;
 		}
 		
@@ -190,6 +194,12 @@ public:
 
 		return true;
 	}
+
+	#ifdef USE_WX_EXTENSIONS
+	bool Decode(const wxString& hash) {
+		return Decode(std::string(unicode2char(hash)));
+	}
+	#endif
 	
 	/** 
 	 * Creates a 32 char long hexadecimal representation of a MD4 hash.
@@ -199,19 +209,27 @@ public:
 	 * This function creates a hexadecimal representation of the MD4 
 	 * hash stored in the m_hash data-member and returns it.
 	 */
-	wxString Encode() const {
-		wxString Base16Buff;
+	std::string EncodeSTL() const {
+		std::string Base16Buff;
 
 		for ( size_t i = 0; i < MD4HASH_LENGTH*2; i++ ) {
 			size_t x = ( i % 2 == 0 ) ? ( m_hash[i/2] >> 4 ) : ( m_hash[i/2] & 0xf );
 
-			if ( x <  10 ) Base16Buff += (char)( x + '0' ); else 
-			if ( x >= 10 ) Base16Buff += (char)(  x + ( 'A' - 10 ));
+			if ( x <  10 ) {
+				Base16Buff += (char)( x + '0' ); 
+			} else {
+				Base16Buff += (char)(  x + ( 'A' - 10 ));
+			}
 		}
 
 		return Base16Buff;
+	}		
+	
+	#ifdef USE_WX_EXTENSIONS
+	wxString Encode() const {
+		return char2unicode(EncodeSTL().c_str());
 	}
-
+	#endif
 	
 	/**
 	 * Explicitly set the hash-array to the contents of a unsigned char array.
