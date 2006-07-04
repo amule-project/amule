@@ -29,7 +29,6 @@
 
 // Must be first! 
 #ifdef USE_WX_EXTENSIONS
-#include <wx/defs.h> // Do_not_auto_remove
 #include <wx/string.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
 #endif
