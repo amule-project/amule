@@ -26,6 +26,7 @@
 #include "StatTree.h"
 
 #include <wx/intl.h>
+#include "OtherFunctions.h"
 
 #ifndef EC_REMOTE
 
