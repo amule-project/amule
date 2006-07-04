@@ -33,6 +33,7 @@
 #include <vector>
 
 #include <zlib.h>			// Needed for packet (de)compression
+#include <inttypes.h>		// Needed for uint32_t
 
 #include <wx/socket.h>		// Needed for wxSocketClient
 
