@@ -32,7 +32,6 @@
 #undef KEEP_PARTIAL_PACKETS
 
 class CECSocket;
-class wxSocketBase;
 
 /**
  * High level EC packet handler class
@@ -57,7 +56,7 @@ class CECPacket : protected CECEmptyTag {
 		CECTag::GetTagCount;
 
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
-		uint32		GetPacketLength(void) const { return CECTag::GetTagLen(); }
+		uint32_t		GetPacketLength(void) const { return CECTag::GetTagLen(); }
 		EC_DETAIL_LEVEL GetDetailLevel() const
 		{
 			const CECTag *tag = GetTagByName(EC_TAG_DETAIL_LEVEL);

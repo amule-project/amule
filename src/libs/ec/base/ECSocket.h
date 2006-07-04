@@ -29,94 +29,15 @@
 
 #include <deque>			// Needed for std::deque
 #include <memory>			// Needed for std::auto_ptr	// Do_not_auto_remove (mingw-gcc-3.4.5)
+#include <string>
+#include <vector>
+
+#include <zlib.h>			// Needed for packet (de)compression
 
 #include <wx/socket.h>		// Needed for wxSocketClient
 
-
-#include "Types.h"
-#include "zlib.h"			// Needed for packet (de)compression
-
-
 class CECPacket;
-
-
-//void DumpMemToStr(const void *buff, int n);
-
-class CQueuedData {
-		unsigned char *m_data, *m_rd_ptr, *m_wr_ptr;
-		size_t m_len;
-	public:
-		CQueuedData(size_t len)
-		{
-			m_data = new unsigned char [len];
-			m_rd_ptr = m_wr_ptr = m_data;
-			m_len = len;
-		}
-		
-		~CQueuedData()
-		{
-			delete [] m_data;
-		}
-		
-		void Rewind()
-		{
-			m_rd_ptr = m_wr_ptr = m_data;
-		}
-		
-		void Write(const void *data, size_t len)
-		{
-			memcpy(m_wr_ptr, data, len);
-			m_wr_ptr += len;
-		}
-
-		void WriteAt(const void *data, size_t len, size_t off)
-		{
-			memcpy(m_data + off, data, len);
-		}
-
-		void Read(void *data, size_t len)
-		{
-			memcpy(data, m_rd_ptr, len);
-			m_rd_ptr += len;
-		}
-
-		/*
-		 * Pass pointers to zlib. From now on, no Read() calls are allowed
-		 */
-		void ToZlib(z_stream &m_z)
-		{
-			m_z.avail_in = GetUnreadDataLength();
-			m_z.next_in = m_rd_ptr;
-		}
-		
-		void WriteToSocket(wxSocketBase *sock)
-		{
-			sock->Write(m_rd_ptr, m_wr_ptr - m_rd_ptr);
-			m_rd_ptr += sock->LastCount();
-		}
-
-		void ReadFromSocket(wxSocketBase *sock, int len)
-		{
-			sock->Read(m_wr_ptr, len);
-			m_wr_ptr += sock->LastCount();
-		}
-		
-		size_t ReadFromSocketAll(wxSocketBase *sock, size_t len);
-		
-		size_t GetLength()	{ return m_len; }
-		size_t GetDataLength()	{ return m_wr_ptr - m_data; }
-		size_t GetRemLength()	{ return m_len - GetDataLength(); }
-		size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
-		
-		//
-		// Dump mem in dword format
-//		void DumpMem()
-//		{
-//			DumpMemToStr(m_data, GetDataLength());
-//			printf("RD ptr @ offset %04x\n", m_rd_ptr - m_data);
-//		}
-};
-
+class CQueuedData;
 
 /*! \class CECSocket
  *
@@ -144,14 +65,14 @@ private:
 	std::auto_ptr<CQueuedData> m_curr_tx_data;
 	
 	// This transfer only
-	uint32 m_rx_flags;
-	uint32 m_tx_flags;
-	uint32 m_my_flags;
+	uint32_t m_rx_flags;
+	uint32_t m_tx_flags;
+	uint32_t m_my_flags;
 	size_t m_bytes_needed;
 	bool m_in_header;
 	
 	
-	uint32 m_curr_packet_len;
+	uint32_t m_curr_packet_len;
 	z_stream m_z;
 	
 public:
@@ -232,7 +153,7 @@ public:
 	 * @param error The code of the error for which a message should be returned.
 	 * @return The text descibing the error.
 	 */
-	wxString	GetErrorMsg(wxSocketError error);
+	virtual std::string	GetLastErrorMsg();
 
 	/**
 	 * Error handler.
@@ -268,6 +189,10 @@ public:
 	void OnInput();
 	void OnOutput();
 
+	// Virtual
+ 	virtual bool	WouldBlock() { return (LastError() == wxSOCKET_WOULDBLOCK); }
+	virtual bool GotError() { return (LastError() != wxSOCKET_NOERROR); }
+
  private:
 	const CECPacket *ReadPacket();
 	void WritePacket(const CECPacket *packet);
@@ -284,6 +209,75 @@ public:
 
 	size_t	ReadBufferFromSocket(void *buffer, size_t len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
+ 
+};
+
+class CQueuedData {
+		unsigned char *m_data, *m_rd_ptr, *m_wr_ptr;
+		size_t m_len;
+	public:
+		CQueuedData(size_t len)
+		{
+			m_data = new unsigned char [len];
+			m_rd_ptr = m_wr_ptr = m_data;
+			m_len = len;
+		}
+		
+		~CQueuedData()
+		{
+			delete [] m_data;
+		}
+		
+		void Rewind()
+		{
+			m_rd_ptr = m_wr_ptr = m_data;
+		}
+		
+		void Write(const void *data, size_t len)
+		{
+			memcpy(m_wr_ptr, data, len);
+			m_wr_ptr += len;
+		}
+
+		void WriteAt(const void *data, size_t len, size_t off)
+		{
+			memcpy(m_data + off, data, len);
+		}
+
+		void Read(void *data, size_t len)
+		{
+			memcpy(data, m_rd_ptr, len);
+			m_rd_ptr += len;
+		}
+
+		/*
+		 * Pass pointers to zlib. From now on, no Read() calls are allowed
+		 */
+		void ToZlib(z_stream &m_z)
+		{
+			m_z.avail_in = GetUnreadDataLength();
+			m_z.next_in = m_rd_ptr;
+		}
+		
+		void WriteToSocket(CECSocket *sock)
+		{
+			sock->Write(m_rd_ptr, m_wr_ptr - m_rd_ptr);
+			m_rd_ptr += sock->LastCount();
+		}
+
+		void ReadFromSocket(CECSocket *sock, int len)
+		{
+			sock->Read(m_wr_ptr, len);
+			m_wr_ptr += sock->LastCount();
+		}
+		
+		size_t ReadFromSocketAll(CECSocket *sock, size_t len);
+		
+		size_t GetLength()	{ return m_len; }
+		size_t GetDataLength()	{ return m_wr_ptr - m_data; }
+		size_t GetRemLength()	{ return m_len - GetDataLength(); }
+		size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
+		
 };
 
 #endif // ECSOCKET_H
