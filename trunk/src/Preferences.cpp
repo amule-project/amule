@@ -1015,10 +1015,14 @@ void CPreferences::BuildItemList( const wxString& appdir )
 
 	// User events
 	for (unsigned int i = 0; i < CUserEvents::GetCount(); ++i) {
-		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 1, (new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreEnabled"), CUserEvents::GetCoreEnableVar(i), false)));
-		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 2, (new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreCommand"), CUserEvents::GetCoreCommandVar(i), wxEmptyString)));
-		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 3, (new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUIEnabled"), CUserEvents::GetGUIEnableVar(i), false)));
-		NewCfgItem(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 4, (new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUICommand"), CUserEvents::GetGUICommandVar(i), wxEmptyString)));
+		// We can't use NewCfgItem here, because we need to find these items
+		// later, which would be impossible in amuled with NewCfgItem.
+		// The IDs we assign here are high enough to not cause any collision
+		// even on the daemon.
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 1] = new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreEnabled"), CUserEvents::GetCoreEnableVar(i), false);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 2] = new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/CoreCommand"), CUserEvents::GetCoreCommandVar(i), wxEmptyString);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 3] = new Cfg_Bool(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUIEnabled"), CUserEvents::GetGUIEnableVar(i), false);
+		s_CfgList[USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT + 4] = new Cfg_Str(wxT("/UserEvents/") + CUserEvents::GetKey(i) + wxT("/GUICommand"), CUserEvents::GetGUICommandVar(i), wxEmptyString);
 	}
 }
 
