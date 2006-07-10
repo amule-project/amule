@@ -685,6 +685,12 @@ public:
 			}
 		}
 
+		// Restore original locale
+		{
+			wxLocale tmpLocale;
+			InitLocale(tmpLocale, theApp.m_locale.GetLanguage());
+		}
+
 		return Cfg_Tmpl<int>::TransferToWindow();
 	}
 
