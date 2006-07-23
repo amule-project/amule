@@ -180,7 +180,7 @@ CECTag::CECTag(ec_tagname_t name, const std::string& data) : m_tagName(name), m_
  */
 CECTag::CECTag(ec_tagname_t name, const wxString& data) : m_tagName(name), m_dynamic(true), m_haschildren( false )
 {
-	ConstructStringTag(name, (const char*)unicode2char(data));
+	ConstructStringTag(name, (const char*)unicode2UTF8(data));
 }
 
 /**
