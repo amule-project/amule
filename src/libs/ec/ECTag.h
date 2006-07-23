@@ -166,7 +166,7 @@ class CECTag {
 		
 		#ifdef USE_WX_EXTENSIONS
 		wxString GetStringData(void) const { 
-			return char2unicode(GetStringDataSTL().c_str());
+			return UTF82unicode(GetStringDataSTL().c_str());
 		}
 		#endif 
 		
