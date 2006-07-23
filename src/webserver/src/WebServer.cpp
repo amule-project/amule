@@ -212,7 +212,6 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib(templateDir)
 {
 	webInterface = webApp;
-	m_mutexChildren = new wxMutex();
 	
 	//
 	// Init stat graphs
@@ -278,6 +277,7 @@ long CWebServerBase::GetWSPrefs(void)
 void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 {
 	webInterface->DebugShow(wxT("**** imgrequest: ") + Data.sURL + wxT("\n"));
+	wxMutexLocker lock(m_mutexChildren);
 
 	const CSession* session = CheckLoggedin(Data);
 
@@ -1800,7 +1800,7 @@ CSession *CScriptWebServer::CheckLoggedin(ThreadData &Data)
 
 void CScriptWebServer::ProcessURL(ThreadData Data)
 {
-	wxMutexLocker lock(*m_mutexChildren);
+	wxMutexLocker lock(m_mutexChildren);
 
 	long httpOutLen;
 	char *httpOut = 0;
