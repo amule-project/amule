@@ -678,7 +678,7 @@ struct ThreadData {
 class CWebServerBase {
 	protected:
 		CWSThread *wsThread;
-		wxMutex *m_mutexChildren;
+		wxMutex m_mutexChildren;
 
 		ServersInfo m_ServersInfo;
 		SharedFileInfo m_SharedFileInfo;
