@@ -720,6 +720,7 @@ void CamuleDlg::ShowConnectionState()
 			/* Kad Connecting arrow */
 			status_arrows.Draw(NewKadState, bitmap_dc, 0, 0, wxIMAGELIST_DRAW_TRANSPARENT);
 			
+			LastKadState = NewKadState;
 		}
 		
 		connLabel->GetParent()->Layout();
