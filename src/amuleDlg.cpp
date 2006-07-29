@@ -1541,7 +1541,7 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation)
 	m_wndToolbar = CreateToolBar(
 		(orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
 		wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
-		wxTB_FLAT | wxCLIP_CHILDREN );
+		wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
 	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	
 	if (skinfile.IsEmpty()) {
