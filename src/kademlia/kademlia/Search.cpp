@@ -443,7 +443,7 @@ void CSearch::StorePacket()
 				break;
 			}
 
-			UIntList::const_iterator itListFileID = m_fileIDs.begin();
+			UIntList::iterator itListFileID = m_fileIDs.begin();
 
 			CMemFile packetdata(1024*50); // Allocate a good amount of space.			
 			uint16 iCount = 0;
@@ -457,11 +457,15 @@ void CSearch::StorePacket()
 					iPacketCount++;
 					packetdata.WriteUInt128(*itListFileID);
 					PreparePacketForTags( &packetdata, pFile );
+					++itListFileID;
+				} else {
+					// File is not shared anymore, remove from list.
+					itListFileID = m_fileIDs.erase(itListFileID);
 				}
-				++itListFileID;
+				
 				// Send packet
-				if ((iPacketCount == 50) || (itListFileID == m_fileIDs.end())) {
-					// Update the file count.
+				if ((iPacketCount == 50) || ((itListFileID == m_fileIDs.end()) && iPacketCount)) {
+					// Correct the file count.
 					packetdata.Seek(16,wxFromStart);
 					packetdata.WriteUInt16(iPacketCount);
 					if (from->GetVersion() > 1) {
@@ -471,6 +475,7 @@ void CSearch::StorePacket()
 						AddDebugLogLineM(false, logClientKadUDP, wxT("KadStoreKeywReq ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetUDPPort()));
 						CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort());
 					}
+					// Now reset the packet data for the next one.
 					iPacketCount = 0;
 					packetdata.Reset();
 					packetdata.WriteUInt128(m_target);
