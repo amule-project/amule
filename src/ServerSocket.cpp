@@ -639,7 +639,7 @@ void CServerSocket::OnClose(wxSocketError WXUNUSED(nErrorCode))
 	
 	switch (connectionstate) {
 		case CS_WAITFORLOGIN:	SetConnectionState(CS_SERVERFULL);		break;
-		case CS_DISCONNECTED:	SetConnectionState(CS_DISCONNECTED);	break;
+		case CS_CONNECTED:	SetConnectionState(CS_DISCONNECTED);	break;
 		default:				SetConnectionState(CS_NOTCONNECTED);	
 	}
 	
