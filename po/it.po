@@ -6748,7 +6748,7 @@ msgstr ""
 
 #: src/amule.cpp:1210
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "www.aMule.org, o nel nostro canale IRC #aMule su irc.freenode.ner.\n"
+msgstr "www.aMule.org, o nel nostro canale IRC #aMule su irc.freenode.net.\n"
 
 #: src/amule.cpp:1212
 msgid "Feel free to report any bugs to http://forum.amule.org"
