@@ -2300,7 +2300,7 @@ msgstr "Thread AICH : les hashs des fichiers connus ont été chargés."
 #: src/AICHSyncThread.cpp:222
 #, c-format
 msgid "AICH Thread: Starting to hash files. %li files found."
-msgstr "Thread AICH : commencement du hachage des fichiers. %i fichiers trouvés."
+msgstr "Thread AICH : commencement du hachage des fichiers. %li fichiers trouvés."
 
 #: src/AICHSyncThread.cpp:227
 #, c-format
@@ -6017,7 +6017,7 @@ msgstr "Faux paquet reçu depuis le serveur : %s"
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
 msgstr ""
-"Erreur non-prise en compte lors du traitement du paquet reçu du serveur :"
+"Erreur non-prise en compte lors du traitement du paquet reçu du serveur : %s"
 
 #: src/ServerSocket.cpp:574
 #, c-format
