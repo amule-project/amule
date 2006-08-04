@@ -113,8 +113,10 @@ static void ExecuteCommand(enum CUserEvents::EventType event, const void* object
 	switch (event) {
 		USEREVENTS_EVENTLIST()
 	}
-	if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
-		AddLogLineM(true, CFormat(_("Failed to execute command `%s' on `%s' event.")) % command % s_EventList[event].name);
+	if (!command.empty()) {
+		if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
+			AddLogLineM(true, CFormat(_("Failed to execute command `%s' on `%s' event.")) % command % s_EventList[event].name);
+		}
 	}
 }
 
