@@ -248,6 +248,7 @@ class CStatistics {
 	// uptime
 	static	uint64	GetUptimeMillis() 			{ return s_uptime->GetTimerValue(); }
 	static	uint64	GetUptimeSeconds()			{ return s_uptime->GetTimerSeconds(); }
+	static	uint64	GetStartTime()				{ return s_uptime->GetTimerStart(); }
 
 	// Upload
 	static	uint64	GetSessionSentBytes()			{ return (*s_sessionUpload); }
