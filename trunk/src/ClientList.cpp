@@ -953,6 +953,9 @@ void CClientList::CleanUpClientList()
 		while (current_it != m_clientList.end()) {
 			CUpDownClient* pCurClient = current_it->second;
 			++current_it; // Won't be used till while loop again
+			// Don't delete sources coming from source seeds for 10 mins,
+			// to give them a chance to connect and become a useful source.
+			if (pCurClient->GetSourceFrom() == SF_SOURCE_SEEDS && cur_tick - (uint32)theStats::GetStartTime() < MIN2MS(10)) continue;
 			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
