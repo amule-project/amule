@@ -23,6 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/config.h> // Do_not_auto_remove (MacOS 10.3, wx 2.7)
+#include <wx/confbase.h> // Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/stattext.h>
 #include <wx/tokenzr.h>
 #include <wx/html/htmlwin.h>
