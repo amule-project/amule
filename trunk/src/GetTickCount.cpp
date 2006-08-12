@@ -51,7 +51,7 @@ uint64 GetTickCount64()
 	// Check for overflow
 	if ( curTick < lastTick ) {
 		// Change the base value to contain the overflown value.
-		tick += (uint32)-1;
+		tick += (uint64)1 << 32;
 	}
 		
 	lastTick = curTick;
