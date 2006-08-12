@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-06 06:40+0300\n"
+"POT-Creation-Date: 2006-08-12 02:49+0200\n"
 "PO-Revision-Date: 2006-07-06 06:51+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -252,7 +252,7 @@ msgstr "Oled kindel et tahad valitud sõbra(d) kustutada?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:144 src/ServerListCtrl.cpp:534
-#: src/ServerListCtrl.cpp:548 src/amuleDlg.cpp:640
+#: src/ServerListCtrl.cpp:548 src/amuleDlg.cpp:642
 #: src/DownloadListCtrl.cpp:612 src/DownloadListCtrl.cpp:932
 #: src/TransferWnd.cpp:366 src/muuli_wdr.cpp:920 src/muuli_wdr.cpp:994
 #: src/muuli_wdr.cpp:1060 src/muuli_wdr.cpp:2830 src/muuli_wdr.cpp:2932
@@ -326,7 +326,7 @@ msgstr "Täielikke allikaid"
 msgid "Directory Path"
 msgstr "Kataloogi asukoht"
 
-#: src/SharedFilesCtrl.cpp:123 src/amuleDlg.cpp:1505 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:123 src/amuleDlg.cpp:1508 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1085 src/muuli_wdr.cpp:3985
 msgid "Shared Files"
 msgstr "Jagatud failid"
@@ -606,7 +606,7 @@ msgstr "Tõmban..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1512
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1515
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:3989
 msgid "Preferences"
 msgstr "Seaded"
@@ -990,7 +990,7 @@ msgstr "HighID"
 msgid "LowID"
 msgstr "LowID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:692
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:694
 #: src/ServerWnd.cpp:180 src/MuleTrayIcon.cpp:362 src/MuleTrayIcon.cpp:376
 #: src/MuleTrayIcon.cpp:377
 msgid "Not Connected"
@@ -1229,7 +1229,7 @@ msgstr "Auto [Norm.]"
 msgid "Auto [Hi]"
 msgstr "Auto [Kõrge]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:467 src/amuleDlg.cpp:688
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:469 src/amuleDlg.cpp:690
 #: src/ClientListCtrl.cpp:643 src/amule.cpp:749
 msgid "Connecting"
 msgstr "Ühendun"
@@ -1445,16 +1445,16 @@ msgstr "Hispaania"
 msgid "Spanish (Mexican)"
 msgstr "Hispaania (Mehhiko)"
 
-#: src/Preferences.cpp:1448 src/Preferences.cpp:1462 src/Preferences.cpp:1469
+#: src/Preferences.cpp:1458 src/Preferences.cpp:1472 src/Preferences.cpp:1479
 msgid "Unable to determine selected browser!"
 msgstr "Ei suuda tuvastada valitud lehitsejat (browser)!"
 
-#: src/Preferences.cpp:1498
+#: src/Preferences.cpp:1508
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP port ei saa olla suuerm kui 65532, sest serveri UDP soket on TCP+3"
 
-#: src/Preferences.cpp:1499
+#: src/Preferences.cpp:1509
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Kasutan vaikimisi porti (%d)"
@@ -1597,33 +1597,33 @@ msgstr "Oled kindel et tahad valitud serveri(d) kustutada?"
 msgid "Disabled [%s]"
 msgstr "Eemaldatud [%s]"
 
-#: src/amuleDlg.cpp:170
+#: src/amuleDlg.cpp:172
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "See on eMulel põhinev aMule %s."
 
-#: src/amuleDlg.cpp:171
+#: src/amuleDlg.cpp:173
 #, c-format
 msgid "Running on %s"
 msgstr "Jookseb %s peal"
 
-#: src/amuleDlg.cpp:172
+#: src/amuleDlg.cpp:174
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "Külasta http://www.amule.org ja vaata ehk on uuem versioon saadaval."
 
-#: src/amuleDlg.cpp:191
+#: src/amuleDlg.cpp:193
 msgid "Fatal Error: Failed to create Timer"
 msgstr "Fataalne VIGA: Ei suutnud luua stopperit."
 
-#: src/amuleDlg.cpp:388
+#: src/amuleDlg.cpp:390
 msgid "aMule remote control "
 msgstr "aMule kaugjuhtimine "
 
-#: src/amuleDlg.cpp:394
+#: src/amuleDlg.cpp:396
 msgid "Snapshot:"
 msgstr "Piiluvaade:"
 
-#: src/amuleDlg.cpp:397
+#: src/amuleDlg.cpp:399
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1653,189 +1653,189 @@ msgstr ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:409 src/PrefsUnifiedDlg.cpp:483
+#: src/amuleDlg.cpp:411 src/PrefsUnifiedDlg.cpp:483
 #: src/PrefsUnifiedDlg.cpp:578 src/PrefsUnifiedDlg.cpp:665 src/KadDlg.cpp:182
 #: src/KadDlg.cpp:185 src/KadDlg.cpp:220 src/PartFile.cpp:904
 #: src/PartFile.cpp:917
 msgid "Message"
 msgstr "Teade"
 
-#: src/amuleDlg.cpp:495
+#: src/amuleDlg.cpp:497
 msgid "Status text"
 msgstr "Oleku tekst"
 
-#: src/amuleDlg.cpp:642
+#: src/amuleDlg.cpp:644
 msgid "Stops the current connection attempts"
 msgstr "Lõpeta ühenduskatsed"
 
-#: src/amuleDlg.cpp:645
+#: src/amuleDlg.cpp:647
 msgid "Disconnect from "
 msgstr "Lõpeta ühendus "
 
-#: src/amuleDlg.cpp:648
+#: src/amuleDlg.cpp:650
 msgid "current server"
 msgstr "olemasoleva serveriga"
 
-#: src/amuleDlg.cpp:650
+#: src/amuleDlg.cpp:652
 msgid " and "
 msgstr " ja "
 
-#: src/amuleDlg.cpp:658 src/muuli_wdr.cpp:3094 src/MuleTrayIcon.cpp:516
+#: src/amuleDlg.cpp:660 src/muuli_wdr.cpp:3094 src/MuleTrayIcon.cpp:516
 msgid "Disconnect"
 msgstr "Ühendu lahti"
 
-#: src/amuleDlg.cpp:664 src/amuleDlg.cpp:1495 src/muuli_wdr.cpp:3314
+#: src/amuleDlg.cpp:666 src/amuleDlg.cpp:1498 src/muuli_wdr.cpp:3314
 #: src/muuli_wdr.cpp:3753 src/muuli_wdr.cpp:3979 src/MuleTrayIcon.cpp:519
 msgid "Connect"
 msgstr "Ühenda"
 
-#: src/amuleDlg.cpp:666 src/amuleDlg.cpp:1496 src/muuli_wdr.cpp:3979
+#: src/amuleDlg.cpp:668 src/amuleDlg.cpp:1499 src/muuli_wdr.cpp:3979
 msgid "Connect to any server and/or Kad"
 msgstr "Ühendu suvalise serveri ja/või Kad võrguga"
 
-#: src/amuleDlg.cpp:676
+#: src/amuleDlg.cpp:678
 msgid "WARNING: You have recieved Low-ID!"
 msgstr "HOIATUS: Said omale LowID!"
 
-#: src/amuleDlg.cpp:677
+#: src/amuleDlg.cpp:679
 msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr "\tTõenäolisem põhjus on sinu asumine tulemüüri või ruuteri 'taga'."
 
-#: src/amuleDlg.cpp:678
+#: src/amuleDlg.cpp:680
 msgid "\tFor more information, please refer to http://wiki.amule.org"
 msgstr "\tTäpsemat informatsiooni leiad http://wiki.amule.org"
 
-#: src/amuleDlg.cpp:682 src/ServerConnect.cpp:249
+#: src/amuleDlg.cpp:684 src/ServerConnect.cpp:249
 #, c-format
 msgid "Connection established on: %s"
 msgstr "Ühendus loodud: %s"
 
-#: src/amuleDlg.cpp:757
+#: src/amuleDlg.cpp:760
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Üles: %.1f(%.1f) | Alla: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:759
+#: src/amuleDlg.cpp:762
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Üles: %.1f | Alla: %.1f"
 
-#: src/amuleDlg.cpp:780
+#: src/amuleDlg.cpp:783
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Ühendatud)"
 
-#: src/amuleDlg.cpp:782
+#: src/amuleDlg.cpp:785
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Ühenduseta)"
 
-#: src/amuleDlg.cpp:813
+#: src/amuleDlg.cpp:816
 msgid "Do you really want to exit aMule?"
 msgstr "Kas sa tõesti tahad aMule'st väljuda?"
 
-#: src/amuleDlg.cpp:814
+#: src/amuleDlg.cpp:817
 msgid "Exit confirmation"
 msgstr "Kinnitan väljumise"
 
-#: src/amuleDlg.cpp:1050 src/amuleDlg.cpp:1507 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1053 src/amuleDlg.cpp:1510 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3546 src/muuli_wdr.cpp:3986
 msgid "Messages"
 msgstr "Teated"
 
-#: src/amuleDlg.cpp:1054 src/amuleDlg.cpp:1508 src/muuli_wdr.cpp:3986
+#: src/amuleDlg.cpp:1057 src/amuleDlg.cpp:1511 src/muuli_wdr.cpp:3986
 msgid "Messages Window"
 msgstr "Teadete Aken"
 
-#: src/amuleDlg.cpp:1102
+#: src/amuleDlg.cpp:1105
 msgid "Could not determine the command for running the browser."
 msgstr "Ei suuda tuvastada lehitseja käivitamiseks vajalikku käsku."
 
-#: src/amuleDlg.cpp:1154
+#: src/amuleDlg.cpp:1157
 msgid "Skin file name is empty - loading defaults"
 msgstr "Nahafaili nimi on tühi - laen vaikeväärtused"
 
-#: src/amuleDlg.cpp:1157
+#: src/amuleDlg.cpp:1160
 #, c-format
 msgid "Skin file %s does not exist - loading defaults"
 msgstr "Nahafaili %s ei eksisteeri - laen vaikeväärtused"
 
-#: src/amuleDlg.cpp:1160 src/amuleDlg.cpp:1343
+#: src/amuleDlg.cpp:1163 src/amuleDlg.cpp:1346
 #, c-format
 msgid "Unable to open skin file: %s"
 msgstr "Ei suuda avada nahakirjelduse faili: %s"
 
-#: src/amuleDlg.cpp:1325 src/amule-remote-gui.cpp:259
+#: src/amuleDlg.cpp:1328 src/amule-remote-gui.cpp:259
 #: src/OtherFunctions.cpp:134 src/OtherFunctions.cpp:152
 #: src/OtherFunctions.cpp:187 src/amule.cpp:791 src/amule.cpp:912
 #: src/amule.cpp:1245
 msgid "Error"
 msgstr "Viga"
 
-#: src/amuleDlg.cpp:1340
+#: src/amuleDlg.cpp:1343
 #, c-format
 msgid "Skin file %s does not exist"
 msgstr "Nahafaili %s ei eksiteeri"
 
-#: src/amuleDlg.cpp:1498 src/muuli_wdr.cpp:1892 src/muuli_wdr.cpp:3981
+#: src/amuleDlg.cpp:1501 src/muuli_wdr.cpp:1892 src/muuli_wdr.cpp:3981
 msgid "Networks"
 msgstr "Võrgud"
 
-#: src/amuleDlg.cpp:1499 src/muuli_wdr.cpp:3981
+#: src/amuleDlg.cpp:1502 src/muuli_wdr.cpp:3981
 msgid "Networks Window"
 msgstr "Võrgud"
 
-#: src/amuleDlg.cpp:1501 src/muuli_wdr.cpp:3983
+#: src/amuleDlg.cpp:1504 src/muuli_wdr.cpp:3983
 msgid "Searches"
 msgstr "Otsingud"
 
-#: src/amuleDlg.cpp:1502 src/muuli_wdr.cpp:3983
+#: src/amuleDlg.cpp:1505 src/muuli_wdr.cpp:3983
 msgid "Searches Window"
 msgstr "Otsingu aken"
 
-#: src/amuleDlg.cpp:1503 src/muuli_wdr.cpp:3984
+#: src/amuleDlg.cpp:1506 src/muuli_wdr.cpp:3984
 msgid "Transfers"
 msgstr "Liiklus"
 
-#: src/amuleDlg.cpp:1504 src/muuli_wdr.cpp:3984
+#: src/amuleDlg.cpp:1507 src/muuli_wdr.cpp:3984
 msgid "Files Transfers Window"
 msgstr "Failide siirdamise aken"
 
-#: src/amuleDlg.cpp:1506 src/muuli_wdr.cpp:3985
+#: src/amuleDlg.cpp:1509 src/muuli_wdr.cpp:3985
 msgid "Shared Files Window"
 msgstr "Jagatud failide Aken"
 
-#: src/amuleDlg.cpp:1509 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1512 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1099 src/muuli_wdr.cpp:2225
 #: src/muuli_wdr.cpp:3987
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1510 src/muuli_wdr.cpp:3987
+#: src/amuleDlg.cpp:1513 src/muuli_wdr.cpp:3987
 msgid "Statistics Graph Window"
 msgstr "Statistiliste graafikute aken"
 
-#: src/amuleDlg.cpp:1513 src/muuli_wdr.cpp:3989
+#: src/amuleDlg.cpp:1516 src/muuli_wdr.cpp:3989
 msgid "Preferences Settings Window"
 msgstr "Seadete aken"
 
-#: src/amuleDlg.cpp:1514 src/muuli_wdr.cpp:3990
+#: src/amuleDlg.cpp:1517 src/muuli_wdr.cpp:3990
 msgid "Import"
 msgstr "Impordi"
 
-#: src/amuleDlg.cpp:1515 src/muuli_wdr.cpp:3990
+#: src/amuleDlg.cpp:1518 src/muuli_wdr.cpp:3990
 msgid "The partfile importer tool"
 msgstr "Osafailide importimise tööriist"
 
-#: src/amuleDlg.cpp:1516 src/muuli_wdr.cpp:3991
+#: src/amuleDlg.cpp:1519 src/muuli_wdr.cpp:3991
 msgid "About"
 msgstr "Info"
 
-#: src/amuleDlg.cpp:1517 src/muuli_wdr.cpp:3991
+#: src/amuleDlg.cpp:1520 src/muuli_wdr.cpp:3991
 msgid "About/Help"
 msgstr "Info/Appi"
 
-#: src/amuleDlg.cpp:1523
+#: src/amuleDlg.cpp:1526
 msgid " - loading toolbar defaults"
 msgstr " - laen tööriistariba vaikeväärtused"
 
@@ -6692,6 +6692,11 @@ msgid ""
 "server!"
 msgstr ""
 "Kohalik server on IPFiltri poolt väljafiltreeritud, ühendud teise serveriga!"
+
+#: src/UserEvents.cpp:118
+#, c-format
+msgid "Failed to execute command `%s' on `%s' event."
+msgstr ""
 
 #: src/amule.cpp:688
 msgid ""
