@@ -3079,7 +3079,7 @@ msgid ""
 "on every preview"
 msgstr ""
 "Por favor, selecciona tu reproductor de video preferido en las opciones.\n"
-"Mientrastanto, aMule intentará usar mplayer y seguiras viendo esta alerta en "
+"Mientras tanto, aMule intentará usar mplayer y seguiras viendo esta alerta en "
 "todas las previsualizaciones"
 
 #: src/DownloadListCtrl.cpp:2264
