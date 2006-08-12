@@ -3,8 +3,12 @@ Version 2.1.4 - The "So what? If it's new, it has to be good" version
 2006-06-11
 
 	GonoszTopi:
+		* Added ability to compile amulecmd without threading support.
 		* Sed denoiser - removes excessive messages from compilation - 
 		Thanks to Vollstrecker for the idea and discussions.
+		* Proper restoration of startup locale after checking available
+		locales.
+		* Fixed source seeds handling on startup.
 
 	Kry:
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
