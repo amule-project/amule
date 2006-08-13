@@ -25,6 +25,7 @@
 #ifndef ECTAG_H
 #define ECTAG_H
 
+#include <iostream>
 #include <sstream>
 
 // Must be first! 
@@ -65,7 +66,7 @@ class EC_IPv4_t {
 		{
 			std::ostringstream string_ip;
 			if (brackets) string_ip << "[";
-			string_ip << m_ip[0] << "." << m_ip[1] << "." << m_ip[2] << "." << m_ip[3] << ":" << m_port;
+			string_ip << (int)m_ip[0] << "." << (int)m_ip[1] << "." << (int)m_ip[2] << "." << (int)m_ip[3] << ":" << m_port;
 			if (brackets) string_ip << "]";
 			return string_ip.str();
 		}
