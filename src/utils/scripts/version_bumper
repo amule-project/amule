@@ -50,12 +50,12 @@ else
 	        	else
 				echo "Bumping from $OLD_VERSION to $NEW_VERSION"
 				#Command:
-				sed -i "s/$OLD_VERSION/$NEW_VERSION/g" aMule.app/Contents/Info.plist configure.in src/OPCodes.h docs/Doxyfile aMule.spec po/*.po configWIN32.h
-				sed -i -r "s/VERSION_MJR\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 1`/VERSION_MJR\t\t`echo $NEW_VERSION | cut -d "." -f 1`/g" src/OPCodes.h
-				sed -i -r "s/VERSION_MIN\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 2`/VERSION_MIN\t\t`echo $NEW_VERSION | cut -d "." -f 2`/g" src/OPCodes.h
-				sed -i -r "s/VERSION_UPDATE\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 3`/VERSION_UPDATE\t\t`echo $NEW_VERSION | cut -d "." -f 3`/g" src/OPCodes.h
-				if test x"`grep -E "^#define __CVS__$" src/OPCodes.h`" != x""; then
-					echo "WARNING! OPCodes.h still defines version as CVS. Please comment the line \"#define __CVS__\" before releasing."
+				sed -i "s/$OLD_VERSION/$NEW_VERSION/g" aMule.app/Contents/Info.plist configure.in src/include/common/ClientVersion.h docs/Doxyfile aMule.spec po/*.po configWIN32.h
+				sed -i -r "s/VERSION_MJR\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 1`/VERSION_MJR\t\t`echo $NEW_VERSION | cut -d "." -f 1`/g" src/include/common/ClientVersion.h
+				sed -i -r "s/VERSION_MIN\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 2`/VERSION_MIN\t\t`echo $NEW_VERSION | cut -d "." -f 2`/g" src/include/common/ClientVersion.h
+				sed -i -r "s/VERSION_UPDATE\s+(0x0)?`echo $OLD_VERSION | cut -d "." -f 3`/VERSION_UPDATE\t\t`echo $NEW_VERSION | cut -d "." -f 3`/g" src/include/common/ClientVersion.h
+				if test x"`grep -E "^#define __CVS__$" src/include/common/ClientVersion.h`" != x""; then
+					echo "WARNING! ClientVersion.h still defines version as CVS. Please comment the line \"#define __CVS__\" before releasing."
 				fi
 			fi
 		fi
