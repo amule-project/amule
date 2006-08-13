@@ -55,7 +55,7 @@
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
 #include "ThreadTasks.h"			// Needed for CHashingTask/CCompletionTask
 #include "GuiEvents.h"		// Needed for Notify_*
-
+#include "DataToText.h"		// Needed for OriginToText()
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -950,29 +950,25 @@ void CPartFile::SaveSourceSeeds()
 	CClientPtrList::iterator it = m_downloadingSourcesList.begin();
 	for( ; it != m_downloadingSourcesList.end() && n_sources < MAX_SAVED_SOURCES; ++it) {
 		CUpDownClient *cur_src = *it;
-		if (cur_src->HasLowID()) {
-			continue;
-		} else {
+		if (!cur_src->HasLowID()) {
 			source_seeds.push_back(cur_src);
+			++n_sources;
 		}
-		++n_sources;
 	}
 
 	if (n_sources < MAX_SAVED_SOURCES) {
-		// Not enought downloading sources to fill the list, going to sources list	
+		// Not enough downloading sources to fill the list, going to sources list	
 		if (GetSourceCount() > 0) {
 			SourceSet::reverse_iterator rit = m_SrcList.rbegin();
 			for ( ; ((rit != m_SrcList.rend()) && (n_sources<MAX_SAVED_SOURCES)); ++rit) {
 				CUpDownClient* cur_src = *rit;
-				if (cur_src->HasLowID()) {
-					continue;
-				} else {
+				if (!cur_src->HasLowID()) {
 					source_seeds.push_back(cur_src);
+					++n_sources;
 				}
-				++n_sources;
 			}
 		}
-	}	
+	}
 	
 	// Write the file
 	if (!n_sources) {
@@ -1059,7 +1055,7 @@ void CPartFile::LoadSourceSeeds()
 			sources_data.WriteUInt16(nPort);
 			sources_data.WriteUInt32(0);
 			sources_data.WriteUInt16(0);	
-		}	
+		}
 		
 		if (!file.Eof()) {
 	
@@ -2719,11 +2715,11 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 			if (!IsLowID(dwID)) {
 				if (!IsGoodIP(dwIDED2K, thePrefs::FilterLanIPs())) {
 					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwIDED2K));
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
 					continue;
 				}
 				if (theApp.ipfilter->IsFiltered(dwIDED2K)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPFilter")) % Uint32toStringIP(dwIDED2K));
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPFilter")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
 					continue;
 				}
 				if (theApp.clientlist->IsBannedClient(dwIDED2K)){
@@ -2741,11 +2737,11 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 			if (!IsLowID(dwID)) {
 				if (!IsGoodIP(dwID, thePrefs::FilterLanIPs())) { 
 					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - bad IP")) % Uint32toStringIP(dwID));
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
 					continue;
 				}
 				if (theApp.ipfilter->IsFiltered(dwID)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange - IPfilter")) % Uint32toStringIP(dwID));
+					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPfilter")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
 					continue;
 				}
 				if (theApp.clientlist->IsBannedClient(dwID)){
@@ -2755,7 +2751,7 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 
 			// additionally check for LowID and own IP
 			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort)) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwID));
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
 				continue;
 			}
 		}
