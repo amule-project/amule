@@ -1559,7 +1559,7 @@ void CamuleApp::ShutDown()
 	
 	CThreadScheduler::Terminate();
 	
-    theApp.uploadBandwidthThrottler->EndThread();
+	theApp.uploadBandwidthThrottler->EndThread();
 }
 
 
@@ -1984,8 +1984,10 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 {
 	CMuleUDPSocket* socket = (CMuleUDPSocket*)(event.GetClientData());
 	wxCHECK_RET(socket, wxT("No socket owner specified."));
-	
-	if (!IsRunning() && !IsOnShutDown()) {
+
+	if (IsOnShutDown()) return;
+
+	if (!IsRunning()) {
 		if (event.GetSocketEvent() == wxSOCKET_INPUT) {
 			// Back to the queue!
 			theApp.AddPendingEvent(event);
@@ -1997,11 +1999,11 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 		case wxSOCKET_INPUT:
 			socket->OnReceive(0);
 			break;
-			
+
 		case wxSOCKET_OUTPUT:
 			socket->OnSend(0);
 			break;
-			
+
 		default:
 			wxASSERT(0);
 			break;
