@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-12 02:49+0200\n"
+"POT-Creation-Date: 2006-08-14 03:30+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -55,34 +55,34 @@ msgstr "Succès ! Connexion établie à aMule "
 msgid "Succeeded! Connection established."
 msgstr "Succès ! Connexion établie."
 
-#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3701
+#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3697
 msgid "Hashing"
 msgstr "Hachage"
 
-#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3705
+#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3701
 msgid "Completing"
 msgstr "Finalisation"
 
-#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3708
+#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3704
 msgid "Complete"
 msgstr "Terminé"
 
-#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3711
+#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3707
 #: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:779
 msgid "Paused"
 msgstr "En pause"
 
-#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3714
+#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3710
 #: src/TransferWnd.cpp:340 src/OtherFunctions.cpp:778
 msgid "Erroneous"
 msgstr "Erroné"
 
-#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3721
+#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3717
 #: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:777
 msgid "Downloading"
 msgstr "En téléchargement"
 
-#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3723
+#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3719
 #: src/TransferWnd.cpp:338 src/OtherFunctions.cpp:776
 msgid "Waiting"
 msgstr "En attente"
@@ -145,7 +145,7 @@ msgstr "Échec de la réception des fichiers partagés de l'utilisateur '%s'"
 #: src/DataToText.cpp:114 src/DataToText.cpp:134 src/ExternalConn.cpp:194
 #: src/Statistics.cpp:697 src/Statistics.cpp:883 src/Server.cpp:150
 #: src/DownloadListCtrl.cpp:1457 src/DownloadListCtrl.cpp:1470
-#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2553 src/PartFile.cpp:2559
+#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2549 src/PartFile.cpp:2555
 #: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:118
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
@@ -3162,33 +3162,33 @@ msgstr "Impossible d'ouvrir le fichier %s - Utilisation du fichier %s."
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' est apparemment de taille nulle - Utilisation du fichier %s."
 
-#: src/PartFile.cpp:987
+#: src/PartFile.cpp:983
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Échec de la sauvegarde du fichier part.met.seeds pour %s"
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1001
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "%i sources seeds sauvegardées pour le fichier .part: %s (%s)"
 
-#: src/PartFile.cpp:1035
+#: src/PartFile.cpp:1031
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Le fichier .part %s (%s) n'a pas de fichier seeds"
 
-#: src/PartFile.cpp:1042
+#: src/PartFile.cpp:1038
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Le fichier .part %s (%s) a un fichier seeds vide"
 
-#: src/PartFile.cpp:1082
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 "Erreur lors de la lecture de fichier seeds du fichier .part (%s - %s): %s"
 
-#: src/PartFile.cpp:1104 src/PartFile.cpp:1127
+#: src/PartFile.cpp:1100 src/PartFile.cpp:1123
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3197,75 +3197,75 @@ msgstr ""
 "Des parties corrompues (%d) dans %d le fichier .part %s - FileResultHash |%"
 "s| FileHash |%s|"
 
-#: src/PartFile.cpp:1141
+#: src/PartFile.cpp:1137
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Partie complète (%i) trouvée dans %s"
 
-#: src/PartFile.cpp:1178
+#: src/PartFile.cpp:1174
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Re-hash de %s terminé"
 
-#: src/PartFile.cpp:2182
+#: src/PartFile.cpp:2178
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Erreur de fichier imprévue lors de la complétion de %s. Fichier mis en pause"
 
-#: src/PartFile.cpp:2208
+#: src/PartFile.cpp:2204
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Téléchargement terminé : %s"
 
-#: src/PartFile.cpp:2265
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Fichier supprimé : %s"
 
-#: src/PartFile.cpp:2329
+#: src/PartFile.cpp:2325
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "Attention : Impossible de hacher la partie téléchargée - hashset incomplet pour '%s'"
 
-#: src/PartFile.cpp:2334
+#: src/PartFile.cpp:2330
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "Erreur: Impossible de hacher la partie téléchargée - hashset incomplet (%s). Ceci ne devrait jamais arriver"
 
-#: src/PartFile.cpp:2932
+#: src/PartFile.cpp:2928
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "ATTENTION : Pas assez d'espace disque disponible ! Mise en pause du fichier : %s"
 
-#: src/PartFile.cpp:2997
+#: src/PartFile.cpp:2993
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "La partie téléchargée %i est corrompue dans le fichier: %s"
 
-#: src/PartFile.cpp:3040
+#: src/PartFile.cpp:3036
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH : Partie corrompue %i récupérée pour %s -> Octets sauvés: %s"
 
-#: src/PartFile.cpp:3616
+#: src/PartFile.cpp:3612
 msgid "Comments"
 msgstr "Commentaires"
 
-#: src/PartFile.cpp:3617
+#: src/PartFile.cpp:3613
 msgid "doesn't work"
 msgstr "ne fonctionne pas"
 
-#: src/PartFile.cpp:3619
+#: src/PartFile.cpp:3615
 msgid "remote gui"
 msgstr "interface graphique distante"
 
-#: src/PartFile.cpp:3717
+#: src/PartFile.cpp:3713
 msgid "Insufficient Diskspace"
 msgstr "Espace disque insuffisant"
 
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
+#: src/PartFile.cpp:3724 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
 msgid "Stopped"
 msgstr "Arrêté"
 
@@ -6804,13 +6804,13 @@ msgstr "Connecté à Kad (pare-feu)"
 msgid "Disconnected from Kad"
 msgstr "Déconnecté de Kad"
 
-#: src/amule.cpp:2026
+#: src/amule.cpp:2028
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "Le réseau Kad ne peut être utilisé si le port UDP est désactivé dans les préférences, pas de démarrage."
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2031
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Le réseau Kad est désactivé dans les préférences, pas de connexion."
 

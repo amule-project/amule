@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-12 02:49+0200\n"
+"POT-Creation-Date: 2006-08-14 03:30+0200\n"
 "PO-Revision-Date: 2006-07-06 06:51+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -56,34 +56,34 @@ msgstr "Õnnestus! Ühendus loodud aMulaga "
 msgid "Succeeded! Connection established."
 msgstr "Õnnestus! Ühendus loodud."
 
-#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3701
+#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3697
 msgid "Hashing"
 msgstr "Räsin"
 
-#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3705
+#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3701
 msgid "Completing"
 msgstr "Lõpetatud"
 
-#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3708
+#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3704
 msgid "Complete"
 msgstr "Valmis"
 
-#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3711
+#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3707
 #: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:779
 msgid "Paused"
 msgstr "Pausitud"
 
-#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3714
+#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3710
 #: src/TransferWnd.cpp:340 src/OtherFunctions.cpp:778
 msgid "Erroneous"
 msgstr "Vigane"
 
-#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3721
+#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3717
 #: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:777
 msgid "Downloading"
 msgstr "Tõmban"
 
-#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3723
+#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3719
 #: src/TransferWnd.cpp:338 src/OtherFunctions.cpp:776
 msgid "Waiting"
 msgstr "Ootan"
@@ -147,7 +147,7 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/DataToText.cpp:114 src/DataToText.cpp:134 src/ExternalConn.cpp:194
 #: src/Statistics.cpp:697 src/Statistics.cpp:883 src/Server.cpp:150
 #: src/DownloadListCtrl.cpp:1457 src/DownloadListCtrl.cpp:1470
-#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2553 src/PartFile.cpp:2559
+#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2549 src/PartFile.cpp:2555
 #: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:118
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
@@ -3184,32 +3184,32 @@ msgstr "Ei suuda avada %s faili - kasutan %s faili."
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' on 0 suurusega millegipärast - kasutan %s faili."
 
-#: src/PartFile.cpp:987
+#: src/PartFile.cpp:983
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Ei saanud salvestada faili part.met.seeds %s jaoks!"
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1001
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Salvestatud %i allikat osafailile: %s (%s)"
 
-#: src/PartFile.cpp:1035
+#: src/PartFile.cpp:1031
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Osafail %s (%s) ei oma toitefaili"
 
-#: src/PartFile.cpp:1042
+#: src/PartFile.cpp:1038
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Osafailil %s (%s) on kehtetu toitefail"
 
-#: src/PartFile.cpp:1082
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "VIGA osafaili toitefaili lugemisel (%s - %s): %s"
 
-#: src/PartFile.cpp:1104 src/PartFile.cpp:1127
+#: src/PartFile.cpp:1100 src/PartFile.cpp:1123
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3218,37 +3218,37 @@ msgstr ""
 "Leidsin riknenud osa (%d) %d osast fail %s - FailiTulemusRäsi |%s| FailiRäsi "
 "|%s|"
 
-#: src/PartFile.cpp:1141
+#: src/PartFile.cpp:1137
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Leitud lõpetatud osa (%i)  %s"
 
-#: src/PartFile.cpp:1178
+#: src/PartFile.cpp:1174
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%s uuestihashimine lõpetatud"
 
-#: src/PartFile.cpp:2182
+#: src/PartFile.cpp:2178
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Ootamatu failiviga %s lõpetamise ajal. Fail pausitud"
 
-#: src/PartFile.cpp:2208
+#: src/PartFile.cpp:2204
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Faili %s tõmbamine lõpetatud"
 
-#: src/PartFile.cpp:2265
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Kustutan faili: %s"
 
-#: src/PartFile.cpp:2329
+#: src/PartFile.cpp:2325
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "HOIATUS: Ei suuda luua hash'i - hashset mittetäielik '%s'"
 
-#: src/PartFile.cpp:2334
+#: src/PartFile.cpp:2330
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3257,38 +3257,38 @@ msgstr ""
 "VIGA: ei suuda luua räsi tõmmatud osale - räsiset on mittetäielik(%s). Seda "
 "ei tohiks kunagi juhtuda."
 
-#: src/PartFile.cpp:2932
+#: src/PartFile.cpp:2928
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "HOIATUS: Pole piisavalt vaba kettaruumi! Pausin faili: %s"
 
-#: src/PartFile.cpp:2997
+#: src/PartFile.cpp:2993
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Tõmmatud osa %i on failis %s vigane"
 
-#: src/PartFile.cpp:3040
+#: src/PartFile.cpp:3036
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Taastatud riknenud osa %i %s jaoks -> Salvestasin: %s baiti"
 
-#: src/PartFile.cpp:3616
+#: src/PartFile.cpp:3612
 msgid "Comments"
 msgstr "Kommentaarid"
 
-#: src/PartFile.cpp:3617
+#: src/PartFile.cpp:3613
 msgid "doesn't work"
 msgstr "ei toimi"
 
-#: src/PartFile.cpp:3619
+#: src/PartFile.cpp:3615
 msgid "remote gui"
 msgstr "kasutajaliides eemalt"
 
-#: src/PartFile.cpp:3717
+#: src/PartFile.cpp:3713
 msgid "Insufficient Diskspace"
 msgstr "Kettaruumi ei jätku"
 
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
+#: src/PartFile.cpp:3724 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
 msgid "Stopped"
 msgstr "Peatatud"
 
@@ -6898,14 +6898,14 @@ msgstr "Ühendus Kad võrku (tulemüüriga)"
 msgid "Disconnected from Kad"
 msgstr "Ühendus Kad võrguga katkestatud"
 
-#: src/amule.cpp:2026
+#: src/amule.cpp:2028
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 "Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2031
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad on seadetes väljalülitatud, ei ühenda."
 

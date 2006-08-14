@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-12 02:49+0200\n"
+"POT-Creation-Date: 2006-08-14 03:30+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -50,34 +50,34 @@ msgstr "성공! 어뮬은 연결이 되었습니다 "
 msgid "Succeeded! Connection established."
 msgstr "성공! 연결이 되었습니다."
 
-#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3701
+#: src/libs/ec/ECSpecialTags.cpp:39 src/PartFile.cpp:3697
 msgid "Hashing"
 msgstr "해시중"
 
-#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3705
+#: src/libs/ec/ECSpecialTags.cpp:43 src/PartFile.cpp:3701
 msgid "Completing"
 msgstr "완료중"
 
-#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3708
+#: src/libs/ec/ECSpecialTags.cpp:45 src/PartFile.cpp:3704
 msgid "Complete"
 msgstr "완료"
 
-#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3711
+#: src/libs/ec/ECSpecialTags.cpp:47 src/PartFile.cpp:3707
 #: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:779
 msgid "Paused"
 msgstr "중지됨"
 
-#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3714
+#: src/libs/ec/ECSpecialTags.cpp:49 src/PartFile.cpp:3710
 #: src/TransferWnd.cpp:340 src/OtherFunctions.cpp:778
 msgid "Erroneous"
 msgstr "오류투성이"
 
-#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3721
+#: src/libs/ec/ECSpecialTags.cpp:52 src/PartFile.cpp:3717
 #: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:777
 msgid "Downloading"
 msgstr "받는중"
 
-#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3723
+#: src/libs/ec/ECSpecialTags.cpp:54 src/PartFile.cpp:3719
 #: src/TransferWnd.cpp:338 src/OtherFunctions.cpp:776
 msgid "Waiting"
 msgstr "대기중"
@@ -140,7 +140,7 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 #: src/DataToText.cpp:114 src/DataToText.cpp:134 src/ExternalConn.cpp:194
 #: src/Statistics.cpp:697 src/Statistics.cpp:883 src/Server.cpp:150
 #: src/DownloadListCtrl.cpp:1457 src/DownloadListCtrl.cpp:1470
-#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2553 src/PartFile.cpp:2559
+#: src/DownloadListCtrl.cpp:1480 src/PartFile.cpp:2549 src/PartFile.cpp:2555
 #: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:118
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
@@ -3171,32 +3171,32 @@ msgstr "%s파일을 열수 없습니다. - %s 파일을 사용합니다."
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s'은 어찌된일인지 크기가 0입니다. - %s 파일을 사용합니다."
 
-#: src/PartFile.cpp:987
+#: src/PartFile.cpp:983
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s에 대한 part.met.seeds 파일을 저장하지 못했습니다."
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1001
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "부분파일을 위해 %i 자료핵심을 저장되었습니다: %s(%s)"
 
-#: src/PartFile.cpp:1035
+#: src/PartFile.cpp:1031
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "부분파일 %s(%s)은 핵심파일을 가지고 있지 않습니다."
 
-#: src/PartFile.cpp:1042
+#: src/PartFile.cpp:1038
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "부분파일 %s(%s)은 빈 핵심파일을 가지고 있습니다."
 
-#: src/PartFile.cpp:1082
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "부분파일의 핵심파일(%s - %s)을 읽는중 오류: %s"
 
-#: src/PartFile.cpp:1104 src/PartFile.cpp:1127
+#: src/PartFile.cpp:1100 src/PartFile.cpp:1123
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3205,38 +3205,38 @@ msgstr ""
 "손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |%"
 "s| 파일해시 |%s|"
 
-#: src/PartFile.cpp:1141
+#: src/PartFile.cpp:1137
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "완료된 부분(%i)이 발견되었습니다.  (%s에 있는)"
 
-#: src/PartFile.cpp:1178
+#: src/PartFile.cpp:1174
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%s의 재해시가 완료되었습니다."
 
-#: src/PartFile.cpp:2182
+#: src/PartFile.cpp:2178
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
 
-#: src/PartFile.cpp:2208
+#: src/PartFile.cpp:2204
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "내려받기 완료: %s"
 
-#: src/PartFile.cpp:2265
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Deleting file: %s"
 msgstr "파일 삭제: %s"
 
-#: src/PartFile.cpp:2329
+#: src/PartFile.cpp:2325
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "경고: 내려받은 부분의 해시가 불가능합니다. - %s를 위해 내려받기 해시설정"
 
-#: src/PartFile.cpp:2334
+#: src/PartFile.cpp:2330
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3245,38 +3245,38 @@ msgstr ""
 "오류: 내려받은 부분의 해시가 불가능합니다. - %s의 내려받기 해시설정 이것은 결"
 "코 일어나지 않습니다."
 
-#: src/PartFile.cpp:2932
+#: src/PartFile.cpp:2928
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "경고: 충분한 디스크공간이 없습니다! 파일 정지: %s"
 
-#: src/PartFile.cpp:2997
+#: src/PartFile.cpp:2993
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 
-#: src/PartFile.cpp:3040
+#: src/PartFile.cpp:3036
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: 손상된 부분 %i를 회복합니다. (%s를 위해) -> 저장된 바이트: %s"
 
-#: src/PartFile.cpp:3616
+#: src/PartFile.cpp:3612
 msgid "Comments"
 msgstr ""
 
-#: src/PartFile.cpp:3617
+#: src/PartFile.cpp:3613
 msgid "doesn't work"
 msgstr ""
 
-#: src/PartFile.cpp:3619
+#: src/PartFile.cpp:3615
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3717
+#: src/PartFile.cpp:3713
 msgid "Insufficient Diskspace"
 msgstr "불충분한 디스크공간"
 
-#: src/PartFile.cpp:3728 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
+#: src/PartFile.cpp:3724 src/TransferWnd.cpp:342 src/OtherFunctions.cpp:780
 msgid "Stopped"
 msgstr "멈춤"
 
@@ -6848,7 +6848,7 @@ msgstr "카드에 연결됨 (방화벽)"
 msgid "Disconnected from Kad"
 msgstr "카드로부터 연결이 끊김"
 
-#: src/amule.cpp:2026
+#: src/amule.cpp:2028
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -6856,7 +6856,7 @@ msgstr ""
 "카드 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
 "니다."
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2031
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "카드 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
