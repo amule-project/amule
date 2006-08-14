@@ -1200,6 +1200,7 @@ void CPreferences::Save()
 
 	SavePreferences();
 
+	#ifndef CLIENT_GUI
 	wxString shareddir(theApp.ConfigDir + wxT("shareddir.dat"));
 
 	wxRemoveFile(shareddir);
@@ -1211,6 +1212,7 @@ void CPreferences::Save()
 		
 		sdirfile.Write();
 	}
+	#endif
 }
 
 
@@ -1514,7 +1516,7 @@ void CPreferences::SetPort(uint16 val) {
 }
 
 void CPreferences::ReloadSharedFolders() {
-
+#ifndef CLIENT_GUI
 	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
 	
 	shareddir_list.Clear();
@@ -1528,6 +1530,7 @@ void CPreferences::ReloadSharedFolders() {
 		}
 		sdirfile.Close();
 	}
+#endif
 }
 
 bool CPreferences::IsMessageFiltered(const wxString& message) { 
