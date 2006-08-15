@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-14 03:30+0200\n"
+"POT-Creation-Date: 2006-08-15 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1438,16 +1438,16 @@ msgstr "스페인말"
 msgid "Spanish (Mexican)"
 msgstr "스페인말 (멕시코)"
 
-#: src/Preferences.cpp:1458 src/Preferences.cpp:1472 src/Preferences.cpp:1479
+#: src/Preferences.cpp:1460 src/Preferences.cpp:1474 src/Preferences.cpp:1481
 msgid "Unable to determine selected browser!"
 msgstr "선택된 브라우저를 판단할수 없습니다!"
 
-#: src/Preferences.cpp:1508
+#: src/Preferences.cpp:1510
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP포트가 서버UDP 소켓이 TCP+3이 되기위해서 65532보다 커서는 안됩니다."
 
-#: src/Preferences.cpp:1509
+#: src/Preferences.cpp:1511
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "기본 포트가 사용될 것입니다.(%d)"
