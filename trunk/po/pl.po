@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-14 03:30+0200\n"
+"POT-Creation-Date: 2006-08-15 03:31+0200\n"
 "PO-Revision-Date: 2005-09-06 12:06+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
@@ -1445,17 +1445,17 @@ msgstr "Hiszpański"
 msgid "Spanish (Mexican)"
 msgstr "Hiszpański (Meksykański)"
 
-#: src/Preferences.cpp:1458 src/Preferences.cpp:1472 src/Preferences.cpp:1479
+#: src/Preferences.cpp:1460 src/Preferences.cpp:1474 src/Preferences.cpp:1481
 msgid "Unable to determine selected browser!"
 msgstr "Nie można ustalić wybranej przeglądarki!"
 
-#: src/Preferences.cpp:1508
+#: src/Preferences.cpp:1510
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Port TCP nie może być większy niż 65532 gdyż gniazdo UDP serwera będzie TCP+3"
 
-#: src/Preferences.cpp:1509
+#: src/Preferences.cpp:1511
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Zostanie użyty domyślny port (%d)"

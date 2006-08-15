@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-14 03:30+0200\n"
+"POT-Creation-Date: 2006-08-15 03:31+0200\n"
 "PO-Revision-Date: 2005-11-26 01:05+0000\n"
 "Last-Translator: Helder Correia <helder.pereira.correia@gmail.com>\n"
 "Language-Team: Portuguese <helder.pereira.correia@gmail.com>\n"
@@ -1444,18 +1444,18 @@ msgstr "Espanhol"
 msgid "Spanish (Mexican)"
 msgstr "Espanhol (México)"
 
-#: src/Preferences.cpp:1458 src/Preferences.cpp:1472 src/Preferences.cpp:1479
+#: src/Preferences.cpp:1460 src/Preferences.cpp:1474 src/Preferences.cpp:1481
 msgid "Unable to determine selected browser!"
 msgstr "Não é possível determinar o navegador seleccionado!"
 
-#: src/Preferences.cpp:1508
+#: src/Preferences.cpp:1510
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "O porto TCP não pode ser superior a 65532 devido ao socket UDP do servidor "
 "ser TCP+3"
 
-#: src/Preferences.cpp:1509
+#: src/Preferences.cpp:1511
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "O porto predefinido será usado (%d)"

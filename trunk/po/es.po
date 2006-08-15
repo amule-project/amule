@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-14 03:30+0200\n"
+"POT-Creation-Date: 2006-08-15 03:31+0200\n"
 "PO-Revision-Date: 2006-07-01 18:13+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -1440,18 +1440,18 @@ msgstr "Español"
 msgid "Spanish (Mexican)"
 msgstr "Español (Mexicano)"
 
-#: src/Preferences.cpp:1458 src/Preferences.cpp:1472 src/Preferences.cpp:1479
+#: src/Preferences.cpp:1460 src/Preferences.cpp:1474 src/Preferences.cpp:1481
 msgid "Unable to determine selected browser!"
 msgstr "¡Imposible determinar el navegador seleccionado!"
 
-#: src/Preferences.cpp:1508
+#: src/Preferences.cpp:1510
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Puerto TCP no puede ser mas alto de 65532 debido a que el socket del "
 "servidor UDP es TCP+3"
 
-#: src/Preferences.cpp:1509
+#: src/Preferences.cpp:1511
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Puerto por defecto que será usado (%d)"
