@@ -633,7 +633,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				CEC_PartFile_Tag *tag =
 					(CEC_PartFile_Tag *)response->GetTagByIndex(i);
 				if (tag) {
-					unsigned long filesize, donesize;
+					uint64 filesize, donesize;
 					filesize = tag->SizeFull();
 					donesize = tag->SizeDone();
 					s <<	tag->FileHashString() << wxT(" ") <<
