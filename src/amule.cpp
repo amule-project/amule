@@ -82,6 +82,7 @@
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
 		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
 	#endif
+	#include <wx/msgdlg.h>
 #endif
 
 
@@ -743,6 +744,20 @@ bool CamuleApp::OnInit()
 	if (thePrefs::GetSrcSeedsOn()) {
 		downloadqueue->LoadSourceSeeds();
 	}
+	
+	if (!serverlist->GetServerCount() && thePrefs::GetNetworkED2K()) {
+		// There are no servers and ED2K active -> ask for download.
+		// As we cannot ask in amuled, we just update there
+		// Kry TODO: Store server.met URL on preferences and use it here and in GUI.
+		#ifndef AMULE_DAEMON
+		if (wxYES == wxMessageBox(wxString(_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
+				wxString(_("Server list download")), wxYES_NO, (wxWindow*)theApp.amuledlg))
+		#endif
+		{
+			serverlist->UpdateServerMetFromURL(wxT("http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
+		}
+	}
+	
 	
 	// Autoconnect if that option is enabled
 	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
