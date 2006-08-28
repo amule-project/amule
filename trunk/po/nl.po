@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 03:31+0200\n"
+"POT-Creation-Date: 2006-08-28 03:31+0200\n"
 "PO-Revision-Date: 2005-12-04 17:00+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -394,7 +394,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "U heeft een Hoog ID nodig om een geldige bronlink te maken"
 
 #: src/SharedFilesCtrl.cpp:268 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:650
+#: src/amule.cpp:651
 msgid "Warning"
 msgstr ""
 
@@ -1230,7 +1230,7 @@ msgid "Auto [Hi]"
 msgstr "Auto [Ho]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:469 src/amuleDlg.cpp:690
-#: src/ClientListCtrl.cpp:643 src/amule.cpp:749
+#: src/ClientListCtrl.cpp:643 src/amule.cpp:764
 msgid "Connecting"
 msgstr "Aan het verbinden"
 
@@ -1520,7 +1520,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3156 src/CatDialog.cpp:141
 #: src/CatDialog.cpp:150 src/CatDialog.cpp:157 src/ServerList.cpp:311
-#: src/amule.cpp:690 src/amule.cpp:1234
+#: src/amule.cpp:691 src/amule.cpp:1249
 msgid "Info"
 msgstr "Info"
 
@@ -1757,8 +1757,8 @@ msgstr "Kon skin bestand niet openen: %s"
 
 #: src/amuleDlg.cpp:1328 src/amule-remote-gui.cpp:259
 #: src/OtherFunctions.cpp:134 src/OtherFunctions.cpp:152
-#: src/OtherFunctions.cpp:187 src/amule.cpp:791 src/amule.cpp:912
-#: src/amule.cpp:1245
+#: src/OtherFunctions.cpp:187 src/amule.cpp:806 src/amule.cpp:927
+#: src/amule.cpp:1260
 msgid "Error"
 msgstr "Fout"
 
@@ -3508,11 +3508,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Verbonden met %s %s %s"
 
-#: src/TextClient.cpp:591 src/amule.cpp:1944
+#: src/TextClient.cpp:591 src/amule.cpp:1959
 msgid "with LowID"
 msgstr "met Laag ID"
 
-#: src/TextClient.cpp:591 src/amule.cpp:1944
+#: src/TextClient.cpp:591 src/amule.cpp:1959
 msgid "with HighID"
 msgstr "met Hoog ID"
 
@@ -6706,7 +6706,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
 
-#: src/amule.cpp:688
+#: src/amule.cpp:689
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6714,12 +6714,22 @@ msgstr ""
 "De taalinstelling is veranderd in Systeem Standaard vanwege een configuratie "
 "wijziging. Sorry."
 
-#: src/amule.cpp:784
+#: src/amule.cpp:753
+msgid ""
+"You don't have any server in the server list.\n"
+"Do you want aMule to download a new list now?"
+msgstr ""
+
+#: src/amule.cpp:754
+msgid "Server list download"
+msgstr ""
+
+#: src/amule.cpp:799
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "webserver draait met pid %d"
 
-#: src/amule.cpp:787
+#: src/amule.cpp:802
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6729,12 +6739,12 @@ msgstr ""
 "amuleweb kan niet gestart worden. Installeer a.u.b. het pakket met de aMule "
 "webserver, of compileer aMule met --enable-webserver en draai make install."
 
-#: src/amule.cpp:902
+#: src/amule.cpp:917
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Poort %u is niet beschikbaar. U krijgt een LAAG ID\n"
 
-#: src/amule.cpp:908
+#: src/amule.cpp:923
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6750,15 +6760,15 @@ msgstr ""
 "Controleer uw netwerk en zorg ervoor dat de poort open is voor in- en "
 "uitgaand verkeer."
 
-#: src/amule.cpp:1034
+#: src/amule.cpp:1049
 msgid "Failed to create OnlineSig File"
 msgstr "Kon OnlineHandtekening Bestand niet maken"
 
-#: src/amule.cpp:1042
+#: src/amule.cpp:1057
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Kon aMule OnlineHandtekening Bestand niet maken"
 
-#: src/amule.cpp:1210
+#: src/amule.cpp:1225
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6766,39 +6776,39 @@ msgstr ""
 "De gekozen locale lijkt niet geïnstalleerd te zijn op uw pc. (Let op: Ik "
 "probeer het toch in te stellen)"
 
-#: src/amule.cpp:1220
+#: src/amule.cpp:1235
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Dit is de eerste keer dat u aMule %s draait"
 
-#: src/amule.cpp:1222
+#: src/amule.cpp:1237
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Dit is een test versie, dagelijks geupdate, en\n"
 
-#: src/amule.cpp:1223
+#: src/amule.cpp:1238
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "we geven geen garantie dat it niks sloopt, uw huis verbrandt,\n"
 
-#: src/amule.cpp:1224
+#: src/amule.cpp:1239
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "of uw hond doodt. Maar het *zou* veilig moeten zijn om het te gebruiken.\n"
 
-#: src/amule.cpp:1229
+#: src/amule.cpp:1244
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Meer informatie, ondersteuning en niuwe versies kunnen gevonden worden op "
 "onze homepage,\n"
 
-#: src/amule.cpp:1230
+#: src/amule.cpp:1245
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "op www.aMule.org, of op ons IRC kanaal #amule op irc.freenode.net.\n"
 
-#: src/amule.cpp:1232
+#: src/amule.cpp:1247
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Bugs kunt u altijd melden op http://forum.amule.org"
 
-#: src/amule.cpp:1245
+#: src/amule.cpp:1260
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6807,107 +6817,107 @@ msgstr ""
 "ONGELDIG!\n"
 " OnlineSignature is UITGESCHAKELD totdat u dit verbetert in voorkeuren."
 
-#: src/amule.cpp:1628
+#: src/amule.cpp:1643
 msgid "ERROR: can't open logfile"
 msgstr "FOUT: kan logbestand niet openen"
 
-#: src/amule.cpp:1632
+#: src/amule.cpp:1647
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WAARSCHUWING: logbestand is leeg. Er is iets mis."
 
-#: src/amule.cpp:1651
+#: src/amule.cpp:1666
 msgid "Log has been reset"
 msgstr "Log is gereset"
 
-#: src/amule.cpp:1679
+#: src/amule.cpp:1694
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ServerBericht: %s"
 
-#: src/amule.cpp:1717
+#: src/amule.cpp:1732
 msgid "Failed to download the nodes list."
 msgstr "Kon nodes lijst niet downloaden."
 
-#: src/amule.cpp:1730
+#: src/amule.cpp:1745
 msgid "Failed to open the downloaded version check file"
 msgstr "Kon gedownload versie controle bestand niet openen"
 
-#: src/amule.cpp:1733 src/amule.cpp:1743 src/amule.cpp:1749
+#: src/amule.cpp:1748 src/amule.cpp:1758 src/amule.cpp:1764
 msgid "Corrupted version check file"
 msgstr "Beschadigd versie controle bestand"
 
-#: src/amule.cpp:1759
+#: src/amule.cpp:1774
 msgid "You are using an outdated version of aMule!"
 msgstr "U gebruikt een verouderde versie van aMule!"
 
-#: src/amule.cpp:1760
+#: src/amule.cpp:1775
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1761
+#: src/amule.cpp:1776
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "De nieuwste versie kan altijd gevonden worden op http://www.amule.org"
 
-#: src/amule.cpp:1764
+#: src/amule.cpp:1779
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1768
+#: src/amule.cpp:1783
 msgid "Your copy of aMule is up to date."
 msgstr "U heeft de nieuwste aMule versie."
 
-#: src/amule.cpp:1775
+#: src/amule.cpp:1790
 msgid "Failed to download the version check file"
 msgstr "Kon versie controle bestand niet downloaden"
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1892
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Gebruikers: E: %s K: %s | Bestanden E: %s K: %s"
 
-#: src/amule.cpp:1946
+#: src/amule.cpp:1961
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbonden met %s %s"
 
-#: src/amule.cpp:1949
+#: src/amule.cpp:1964
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinden met %s"
 
-#: src/amule.cpp:1951
+#: src/amule.cpp:1966
 msgid "Disconnected from ED2K"
 msgstr "Verbinding met ED2K verbroken"
 
-#: src/amule.cpp:1958
+#: src/amule.cpp:1973
 msgid "Kad started."
 msgstr ""
 
-#: src/amule.cpp:1960
+#: src/amule.cpp:1975
 msgid "Kad stopped."
 msgstr ""
 
-#: src/amule.cpp:1967
+#: src/amule.cpp:1982
 msgid "Connected to Kad (ok)"
 msgstr "Verbonden met Kad (ok)"
 
-#: src/amule.cpp:1969
+#: src/amule.cpp:1984
 msgid "Connected to Kad (firewalled)"
 msgstr "Verbonden met Kad (firewalled)"
 
-#: src/amule.cpp:1972
+#: src/amule.cpp:1987
 msgid "Disconnected from Kad"
 msgstr "Verbinding met Kad verbroken"
 
-#: src/amule.cpp:2028
+#: src/amule.cpp:2043
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2046
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 
