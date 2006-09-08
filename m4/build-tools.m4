@@ -32,6 +32,11 @@ pushdef([CC], [BUILD_CC])dnl
 pushdef([EXEEXT], [BUILD_EXEEXT])dnl
 pushdef([ac_cv_exeext], [ac_cv_build_exeext])dnl
 pushdef([ac_exeext], [ac_build_exeext])dnl
+dnl Don't use the values for the cross-compiler
+pushdef([CPPFLAGS], [BUILD_CPPFLAGS])dnl
+pushdef([CFLAGS], [BUILD_CFLAGS])dnl
+pushdef([LDFLAGS], [BUILD_LDFLAGS])dnl
+pushdef([LIBS], [BUILD_LIBS])dnl
 
 # Even if we're cross-compiling, we want a compiler here
 # that is not a cross-compiler.
@@ -74,6 +79,10 @@ dnl style, whether it's gnu or not, etc.
 cross_compiling=$saved_cross
 
 dnl Restore variable names.
+popdef([LIBS])dnl
+popdef([LDFLAGS])dnl
+popdef([CFLAGS])dnl
+popdef([CPPFLAGS])dnl
 popdef([ac_exeext])dnl
 popdef([ac_cv_exeext])dnl
 popdef([EXEEXT])dnl
@@ -81,8 +90,11 @@ popdef([CC])dnl
 popdef([ac_tool_prefix])dnl
 dnl
 dnl AC_LANG_POP(C) must be called after the variable names are restored, thus
-dnl it will restore the restore the correct (host) environment, not the build
-dnl environment.
+dnl it will restore the correct (host) environment, not the build environment.
 AC_LANG_POP(C)dnl
+dnl Substitute variables for the build compiler
 AC_SUBST(BUILD_EXEEXT)dnl
+AC_SUBST(BUILD_CPPFLAGS)dnl
+AC_SUBST(BUILD_CFLAGS)dnl
+AC_SUBST(BUILD_LDFLAGS)dnl
 ]) # AC_PROG_BUILD_CC

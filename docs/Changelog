@@ -17,6 +17,7 @@ Trunk
 	GonoszTopi:
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
+		* Fixed #929: 'configure: BUILD_CC uses CCs CFLAGS'
 
 	ken:
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
