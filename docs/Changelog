@@ -17,7 +17,8 @@ Trunk
 	GonoszTopi:
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
-		* Fixed #929: 'configure: BUILD_CC uses CCs CFLAGS'
+		* Fixed #929: configure: BUILD_CC uses CCs CFLAGS
+		* Implemented #962: don't display (0) when not downloading from source
 
 	ken:
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
