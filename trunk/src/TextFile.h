@@ -52,7 +52,7 @@ class CTextFile
 	bool		IsOpened() const 	{ return m_file.IsOpened(); }
 	bool		Eof() const		{ return m_file.IsOpened() ? m_eof && m_pos == m_size : true; }
 	bool		Close()			{ return m_file.Close(); }
-	wxString	GetNextLine();
+	wxString&	GetNextLine();
 
  private:
 	wxFile		m_file;
@@ -61,6 +61,7 @@ class CTextFile
 	unsigned int	m_pos;
 	bool		m_eof;
 	bool		m_mayBeCrLf;
+	wxString	m_currentLine;
 
 	void		Init();
 };
