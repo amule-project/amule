@@ -14,6 +14,9 @@ Trunk
 		* Added --config-dir and -c option to ed2k.
 		* Added --config-dir option to amuled.
 
+	Gerd78:
+		* Added autostart-xas to rpm .spec files.
+
 	GonoszTopi:
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
