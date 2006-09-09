@@ -164,7 +164,8 @@ bool 		CPreferences::s_AcceptExternalConnections;
 wxString	CPreferences::s_ECAddr;
 uint32		CPreferences::s_ECPort;
 wxString	CPreferences::s_ECPassword;
-bool		CPreferences::s_IPFilterOn;
+bool		CPreferences::s_IPFilterClients;
+bool		CPreferences::s_IPFilterServers;
 bool		CPreferences::s_UseSrcSeeds;
 bool		CPreferences::s_ProgBar;
 bool		CPreferences::s_Percent;	
@@ -955,7 +956,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 )));
 	NewCfgItem(IDC_SECIDENT,	(new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true )));
-	NewCfgItem(IDC_IPFONOFF,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterOn"), s_IPFilterOn, true )));
+	NewCfgItem(IDC_IPFCLIENTS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterClients"), s_IPFilterClients, true )));
+	NewCfgItem(IDC_IPFSERVERS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterServers"), s_IPFilterServers, true )));
 	NewCfgItem(IDC_FILTERLAN,		(new Cfg_Bool( wxT("/eMule/FilterLanIPs"), s_filterLanIP, true )));
 	NewCfgItem(IDC_PARANOID,		(new Cfg_Bool( wxT("/eMule/ParanoidFiltering"), s_paranoidfilter, true )));
 	NewCfgItem(IDC_AUTOIPFILTER,	(new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true )));

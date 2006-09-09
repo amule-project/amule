@@ -1192,8 +1192,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SET_PREFERENCES:
 			((CEC_Prefs_Packet *)request)->Apply();
 			theApp.glob_prefs->Save();
-			if (thePrefs::GetIPFilterOn()) {
+			if (thePrefs::IsFilteringClients()) {
 				theApp.clientlist->FilterQueues();
+			}
+			if (thePrefs::IsFilteringServers()) {
 				theApp.serverlist->FilterServers();
 			}
 			if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {

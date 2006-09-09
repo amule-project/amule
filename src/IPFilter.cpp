@@ -391,7 +391,7 @@ uint32 CIPFilter::BanCount() const
 
 bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 {
-	if (thePrefs::GetIPFilterOn()) {
+	if ((thePrefs::IsFilteringClients() && !isServer) || (thePrefs::IsFilteringServers() && isServer)) {
 		wxMutexLocker lock(m_mutex);
 
 		// The IP needs to be in host order
@@ -464,8 +464,10 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 		std::swap(m_iplist, evt.m_result);
 	}
 	
-	if (thePrefs::GetIPFilterOn()) {
+	if (thePrefs::IsFilteringClients()) {
 		theApp.clientlist->FilterQueues();
+	}
+	if (thePrefs::IsFilteringServers()) {
 		theApp.serverlist->FilterServers();
 	}
 }
