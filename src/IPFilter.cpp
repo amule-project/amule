@@ -23,7 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/textfile.h>	// Needed for wxTextFile
+#include <wx/textfile.h>		// Needed for wxTextFile
+#include "TextFile.h"			// Needed for CTextFile
 
 #include "IPFilter.h"			// Interface declarations.
 #include "Preferences.h"		// Needed for thePrefs
@@ -269,15 +270,15 @@ private:
 		int filtercount = 0;
 		int discardedCount = 0;
 		
-		wxTextFile readFile(file);
-		if (readFile.Open()) {
+		CTextFile readFile(file);
+		if (readFile.IsOpened()) {
 			// Function pointer-type of the parse-functions we can use
 			typedef bool (CIPFilterTask::*ParseFunc)(const wxString&);
 
 			ParseFunc func = NULL;
 
-			for (size_t i = 0; i < readFile.GetLineCount(); i++) {
-				wxString line = readFile.GetLine(i);
+			while (!readFile.Eof()) {
+				wxString line = readFile.GetNextLine();
 
 				if (TestDestroy()) {
 					return;
