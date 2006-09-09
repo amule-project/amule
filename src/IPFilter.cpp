@@ -24,7 +24,6 @@
 //
 
 #include <wx/textfile.h>	// Needed for wxTextFile
-#include <wx/wfstream.h>	// wxFileInputStream
 
 #include "IPFilter.h"			// Interface declarations.
 #include "Preferences.h"		// Needed for thePrefs

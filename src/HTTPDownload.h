@@ -31,6 +31,7 @@
 
 class wxEvtHandler;
 class wxHTTP;
+class wxInputStream;
 
 
 class CHTTPDownloadThread : public wxThread
