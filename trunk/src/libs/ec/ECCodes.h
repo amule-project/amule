@@ -1246,7 +1246,8 @@ enum {
 							<li>2 - Nobody</li>
 							</ul>
 						*/
-	EC_TAG_IPFILTER_ENABLED,		///< (boolean) IPFilter enabled.
+	EC_TAG_IPFILTER_CLIENTS,		///< (boolean) IP Filtering clients enabled.
+	EC_TAG_IPFILTER_SERVERS,		///< (boolean) IP Filtering servers enabled.
 	EC_TAG_IPFILTER_AUTO_UPDATE,		///< (boolean) Auto-update IPFilter from URL at startup.
 	EC_TAG_IPFILTER_UPDATE_URL,		///< (\c string) IPFilter auto-update URL.
 	EC_TAG_IPFILTER_LEVEL,			///< (\c uint8) IPFilter filtering level.

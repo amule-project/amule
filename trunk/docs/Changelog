@@ -22,6 +22,8 @@ Trunk
 		* Got rid of a few more warnings.
 		* Fixed #929: configure: BUILD_CC uses CCs CFLAGS
 		* Implemented #962: don't display (0) when not downloading from source
+		* Fixed #954 - added ability turn IPFilter on/off for servers/clients
+		  independently.
 
 	ken:
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the

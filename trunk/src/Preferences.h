@@ -405,8 +405,10 @@ public:
 	static bool 		GetFED2KLH()			{ return s_FastED2KLinksHandler; }
 
 	// Ip filter 
-	static bool		GetIPFilterOn()			{ return s_IPFilterOn; }
-	static void		SetIPFilterOn(bool val)		{ s_IPFilterOn = val; }
+	static bool		IsFilteringClients()		{ return s_IPFilterClients; }
+	static void		SetFilteringClients(bool val)	{ s_IPFilterClients = val; }
+	static bool		IsFilteringServers()		{ return s_IPFilterServers; }
+	static void		SetFilteringServers(bool val)	{ s_IPFilterServers = val; }
 	static uint8		GetIPFilterLevel()		{ return s_filterlevel;}
 	static void		SetIPFilterLevel(uint8 level);
 	static bool		IPFilterAutoLoad()		{ return s_IPFilterAutoLoad; }
@@ -654,7 +656,8 @@ protected:
 	static wxString	s_ECPassword;
 	
 	// Kry - IPFilter 
-	static bool	s_IPFilterOn;
+	static bool	s_IPFilterClients;
+	static bool	s_IPFilterServers;
 	static uint8	s_filterlevel;
 	static bool	s_IPFilterAutoLoad;
 	static wxString s_IPFilterURL;

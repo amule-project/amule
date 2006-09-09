@@ -281,8 +281,11 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 	if (selection & EC_PREFS_SECURITY) {
 		CECEmptyTag secPrefs(EC_TAG_PREFS_SECURITY);
 		secPrefs.AddTag(CECTag(EC_TAG_SECURITY_CAN_SEE_SHARES, thePrefs::CanSeeShares()));
-		if (thePrefs::GetIPFilterOn()) {
-			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_ENABLED));
+		if (thePrefs::IsFilteringClients()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_CLIENTS));
+		}
+		if (thePrefs::IsFilteringServers()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_SERVERS));
 		}
 		if (thePrefs::IPFilterAutoLoad()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_AUTO_UPDATE));
@@ -487,7 +490,8 @@ void CEC_Prefs_Packet::Apply()
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_SECURITY_CAN_SEE_SHARES)) != NULL) {
 			thePrefs::SetCanSeeShares(oneTag->GetInt());
 		}
-		ApplyBoolean(use_tag, thisTab, thePrefs::SetIPFilterOn, EC_TAG_IPFILTER_ENABLED);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilteringClients, EC_TAG_IPFILTER_CLIENTS);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilteringServers, EC_TAG_IPFILTER_SERVERS);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetIPFilterAutoLoad, EC_TAG_IPFILTER_AUTO_UPDATE);
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_IPFILTER_UPDATE_URL)) != NULL) {
 			thePrefs::SetIPFilterURL(oneTag->GetStringData());

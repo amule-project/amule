@@ -519,9 +519,11 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp.SetOSFiles( widget->GetValue() );
 	}
 
-	if (CfgChanged(IDC_IPFONOFF) or CfgChanged(ID_IPFILTERLEVEL)) {
-		if (thePrefs::GetIPFilterOn()) {
+	if (CfgChanged(IDC_IPFCLIENTS) or CfgChanged(IDC_IPFSERVERS) or CfgChanged(ID_IPFILTERLEVEL)) {
+		if (thePrefs::IsFilteringClients()) {
 			theApp.clientlist->FilterQueues();
+		}
+		if (thePrefs::IsFilteringServers()) {
 			theApp.serverlist->FilterServers();
 		}
 	}

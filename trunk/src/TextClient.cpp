@@ -64,11 +64,17 @@ enum {
 	CMD_ID_DISCONNECT_KAD,
 	CMD_ID_RELOAD_SHARED,
 	CMD_ID_RELOAD_IPFILTER,
- 	CMD_ID_SET_IPFILTER_ON,
+	CMD_ID_SET_IPFILTER_ON,
 	CMD_ID_SET_IPFILTER_OFF,
+ 	CMD_ID_SET_IPFILTER_CLIENTS_ON,
+	CMD_ID_SET_IPFILTER_CLIENTS_OFF,
+ 	CMD_ID_SET_IPFILTER_SERVERS_ON,
+	CMD_ID_SET_IPFILTER_SERVERS_OFF,
 	CMD_ID_SET_IPFILTER_LEVEL,
  	CMD_ID_GET_IPFILTER,
  	CMD_ID_GET_IPFILTER_STATE,
+	CMD_ID_GET_IPFILTER_STATE_CLIENTS,
+	CMD_ID_GET_IPFILTER_STATE_SERVERS,
  	CMD_ID_GET_IPFILTER_LEVEL,
 	CMD_ID_SHOW_UL,
 	CMD_ID_SHOW_DL,
@@ -227,18 +233,36 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_SET_IPFILTER_ON:
+		case CMD_ID_SET_IPFILTER_CLIENTS_ON:
+		case CMD_ID_SET_IPFILTER_SERVERS_ON:
 			tmp_int = 1;
 		case CMD_ID_SET_IPFILTER_OFF:
+		case CMD_ID_SET_IPFILTER_CLIENTS_OFF:
+		case CMD_ID_SET_IPFILTER_SERVERS_OFF:
 			{
+				if (CmdId == CMD_ID_SET_IPFILTER_CLIENTS_ON | CmdId == CMD_ID_SET_IPFILTER_CLIENTS_OFF) {
+					CmdId = CMD_ID_GET_IPFILTER_STATE_CLIENTS;
+				} else if (CmdId == CMD_ID_SET_IPFILTER_SERVERS_ON || CmdId == CMD_ID_SET_IPFILTER_SERVERS_OFF) {
+					CmdId = CMD_ID_GET_IPFILTER_STATE_SERVERS;
+				} else {
+					CmdId = CMD_ID_GET_IPFILTER_STATE;
+				}
+
 				request = new CECPacket(EC_OP_SET_PREFERENCES);
 				CECEmptyTag prefs(EC_TAG_PREFS_SECURITY);
-				prefs.AddTag(CECTag(EC_TAG_IPFILTER_ENABLED, (uint8)tmp_int));
+				if (CmdId != CMD_ID_GET_IPFILTER_STATE_SERVERS) {
+					prefs.AddTag(CECTag(EC_TAG_IPFILTER_CLIENTS, (uint8)tmp_int));
+				}
+				if (CmdId != CMD_ID_GET_IPFILTER_STATE_CLIENTS) {
+					prefs.AddTag(CECTag(EC_TAG_IPFILTER_SERVERS, (uint8)tmp_int));
+				}
 				request->AddTag(prefs);
 				request_list.push_back(request);
 			}
-			CmdId = CMD_ID_GET_IPFILTER_STATE;
 		case CMD_ID_GET_IPFILTER:
 		case CMD_ID_GET_IPFILTER_STATE:
+		case CMD_ID_GET_IPFILTER_STATE_CLIENTS:
+		case CMD_ID_GET_IPFILTER_STATE_SERVERS:
 			request = new CECPacket(EC_OP_GET_PREFERENCES);
 			request->AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_SECURITY));
 			request_list.push_back(request);
@@ -548,9 +572,16 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *ipfilterLevel = tab->GetTagByName(EC_TAG_IPFILTER_LEVEL);
 				if (ipfilterLevel) {
 					if (m_last_cmd_id == CMD_ID_GET_IPFILTER ||
-					    m_last_cmd_id == CMD_ID_GET_IPFILTER_STATE) {
-						s << wxString::Format(_("IPFilter is %s.\n"),
-								      (tab->GetTagByName(EC_TAG_IPFILTER_ENABLED) == NULL) ? _("OFF") : _("ON"));
+					    m_last_cmd_id == CMD_ID_GET_IPFILTER_STATE ||
+					    m_last_cmd_id == CMD_ID_GET_IPFILTER_STATE_CLIENTS) {
+						s << wxString::Format(_("IP filtering for clients is %s.\n"),
+								      (tab->GetTagByName(EC_TAG_IPFILTER_CLIENTS) == NULL) ? _("OFF") : _("ON"));
+					}
+					if (m_last_cmd_id == CMD_ID_GET_IPFILTER ||
+					    m_last_cmd_id == CMD_ID_GET_IPFILTER_STATE ||
+					    m_last_cmd_id == CMD_ID_GET_IPFILTER_STATE_SERVERS) {
+						s << wxString::Format(_("IP filtering for servers is %s.\n"),
+								      (tab->GetTagByName(EC_TAG_IPFILTER_SERVERS) == NULL) ? _("OFF") : _("ON"));
 					}
 					if (m_last_cmd_id == CMD_ID_GET_IPFILTER ||
 					    m_last_cmd_id == CMD_ID_GET_IPFILTER_LEVEL) {
@@ -724,6 +755,7 @@ void CamulecmdApp::OnInitCommandSet()
 {
 	CCommandTree *tmp;
 	CCommandTree *tmp2;
+	CCommandTree *tmp3;
 
 	CaMuleExternalConnector::OnInitCommandSet();
 
@@ -769,10 +801,15 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);
 
-	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set IPFilter preferences."),
-			       wxEmptyString, CMD_PARAM_NEVER);
-	tmp2->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_ON, wxTRANSLATE("Turn IP filtering on."), wxEmptyString, CMD_PARAM_NEVER);
-	tmp2->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_OFF, wxTRANSLATE("Turn IP filtering off."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set IPFilter preferences."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp2->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_ON, wxTRANSLATE("Turn IP filtering on for both clients and servers."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp2->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_OFF, wxTRANSLATE("Turn IP filtering off for both clients and servers."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3 = tmp2->AddCommand(wxT("Clients"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Enable/Disable IP filtering for clients."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_CLIENTS_ON, wxTRANSLATE("Turn IP filtering on for clients."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_CLIENTS_OFF, wxTRANSLATE("Turn IP filtering off for clients."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3 = tmp2->AddCommand(wxT("Servers"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Enable/Disable IP filtering for servers."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_SERVERS_ON, wxTRANSLATE("Turn IP filtering on for servers."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_SERVERS_OFF, wxTRANSLATE("Turn IP filtering off for servers."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Level"), CMD_ID_SET_IPFILTER_LEVEL, wxTRANSLATE("Select IP filtering level."),
 			 wxTRANSLATE("Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 				     "value is 127.\n"), CMD_PARAM_ALWAYS);
@@ -787,9 +824,10 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp = m_commands.AddCommand(wxT("Get"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Get and display a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);
 
-	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_GET_IPFILTER, wxTRANSLATE("Get IPFilter preferences."),
-			       wxEmptyString, CMD_PARAM_NEVER);
-	tmp2->AddCommand(wxT("State"), CMD_ID_GET_IPFILTER_STATE, wxTRANSLATE("Get IPFilter state."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp2 = tmp->AddCommand(wxT("IPFilter"), CMD_ID_GET_IPFILTER, wxTRANSLATE("Get IPFilter preferences."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3 = tmp2->AddCommand(wxT("State"), CMD_ID_GET_IPFILTER_STATE, wxTRANSLATE("Get IPFilter state for both clients and servers."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("Clients"), CMD_ID_GET_IPFILTER_STATE_CLIENTS, wxTRANSLATE("Get IPFilter state for clients only."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp3->AddCommand(wxT("Servers"), CMD_ID_GET_IPFILTER_STATE_SERVERS, wxTRANSLATE("Get IPFilter state for servers only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Level"), CMD_ID_GET_IPFILTER_LEVEL, wxTRANSLATE("Get IPFilter level."), wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp->AddCommand(wxT("BwLimits"), CMD_ID_GET_BWLIMITS, wxTRANSLATE("Get bandwidth limits."), wxEmptyString, CMD_PARAM_NEVER);
