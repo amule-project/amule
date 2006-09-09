@@ -46,9 +46,9 @@ CTextFile::~CTextFile()
 	delete [] m_buffer;
 }
 
-wxString CTextFile::GetNextLine()
+wxString& CTextFile::GetNextLine()
 {
-	wxString retval;
+	m_currentLine.Clear();
 
 	if (IsOpened()) {
 		bool eol = false;
@@ -94,11 +94,11 @@ wxString CTextFile::GetNextLine()
 						eol = true;
 					}
 				}
-				retval += wxString((const char *)(m_buffer + start), wxConvLibc, len);
+				m_currentLine += wxString((const char *)(m_buffer + start), wxConvLibc, len);
 			}
 		} while (!eol);
 	}
-	return retval;
+	return m_currentLine;
 }
 
 void CTextFile::Init()
