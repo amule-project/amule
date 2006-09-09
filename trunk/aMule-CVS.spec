@@ -63,6 +63,7 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 %{_bindir}/cas
 %{_bindir}/wxcas
 %{_bindir}/amuleweb
+%{_bindir}/autostart-xas
 %{_libdir}/xchat/plugins/xas.pl
 %{_datadir}/applications/*
 %{_datadir}/pixmaps/*
