@@ -1425,13 +1425,15 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		} else {
 			text = wxString::Format( wxT("%i"), sc );
 		}
-		
+
 		if ( file->GetSrcA4AFCount() ) {
 			text += wxString::Format( wxT("+%i"), file->GetSrcA4AFCount() );
 		}
 
-		text += wxString::Format( wxT(" (%i)"), file->GetTransferingSrcCount() );
-		
+		if ( file->GetTransferingSrcCount() ) {
+			text += wxString::Format( wxT(" (%i)"), file->GetTransferingSrcCount() );
+		}
+
 		break;
 	}
 
