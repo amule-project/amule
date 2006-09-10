@@ -103,7 +103,7 @@ wxString& CTextFile::GetNextLine()
 
 void CTextFile::Init()
 {
-	m_buffer = new char[32769];
+	m_buffer = new char[32768];
 	m_size = 0;
 	m_pos = 0;
 	m_mayBeCrLf = false;
