@@ -64,7 +64,6 @@ wxString& CTextFile::GetNextLine()
 				if (m_size < 32768) {
 					m_eof = true;
 				}
-				m_buffer[m_size] = '\0';
 			} else {
 				if (m_mayBeCrLf) {
 					if (m_pos < m_size && m_buffer[m_pos] == '\n') {
