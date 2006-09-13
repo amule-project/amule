@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/dialog.h>		// Needed for wxDialog	// Do_not_auto_remove
 #include <wx/sizer.h>		// Needed for wxBoxSizer
 #include <wx/file.h>		// Needed for wxFile
 #include <wx/log.h>		// Needed for wxLogSysError
