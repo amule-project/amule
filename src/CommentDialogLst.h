@@ -26,6 +26,7 @@
 #ifndef COMMENTDIALOGLST_H
 #define COMMENTDIALOGLST_H
 
+#include <wx/dialog.h>		// Needed for wxDialog	// Do_not_auto_remove
 #include <wx/sizer.h>
 
 class CMuleListCtrl;
