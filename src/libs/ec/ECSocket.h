@@ -50,7 +50,6 @@ class CQueuedData;
 class CECSocket : public wxSocketClient {
 	friend class CECPacket;
 	friend class CECTag;
-	friend class CECSocketHandler;
 
 private:
 	static const unsigned int EC_SOCKET_BUFFER_SIZE = 2048;
