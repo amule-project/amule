@@ -100,7 +100,6 @@ private:
 	    ID_AUTOSTATIMG_BROWSE_BUTTON,
 	    ID_FTP_UPDATE_CHECK,
 	    ID_VALIDATE_BUTTON,
-	    ID_CANCEL_BUTTON
 	};
 
 protected:
