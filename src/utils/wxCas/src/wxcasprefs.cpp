@@ -295,7 +295,7 @@ WxCasPrefs::WxCasPrefs ( wxWindow * parent ) : wxDialog ( parent, -1,
 	m_validateButton =
 	    new wxButton ( this, ID_VALIDATE_BUTTON, wxString ( _( "Validate" ) ) );
 	m_cancelButton =
-	    new wxButton ( this, ID_CANCEL_BUTTON, wxString ( _( "Cancel" ) ) );
+	    new wxButton ( this, wxID_CANCEL, wxString ( _( "Cancel" ) ) );
 
 	m_buttonHBox->Add ( m_validateButton, 0, wxALIGN_CENTER | wxALL, 5 );
 	m_buttonHBox->Add ( m_cancelButton, 0, wxALIGN_CENTER | wxALL, 5 );
@@ -319,7 +319,6 @@ BEGIN_EVENT_TABLE ( WxCasPrefs, wxDialog )
 EVT_BUTTON ( ID_OSPATH_BROWSE_BUTTON, WxCasPrefs::OnOSPathBrowseButton )
 EVT_BUTTON ( ID_AUTOSTATIMG_BROWSE_BUTTON, WxCasPrefs::OnAutoStatImgBrowseButton )
 EVT_BUTTON ( ID_VALIDATE_BUTTON, WxCasPrefs::OnValidateButton )
-EVT_BUTTON ( ID_CANCEL_BUTTON, WxCasPrefs::OnCancel )       	// Defined in wxDialog
 EVT_CHECKBOX ( ID_AUTOSTATIMG_CHECK, WxCasPrefs::OnAutoStatImgCheck )
 EVT_CHECKBOX ( ID_FTP_UPDATE_CHECK, WxCasPrefs::OnFtpUpdateCheck )
 END_EVENT_TABLE ()
