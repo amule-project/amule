@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-2005-11-13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 03:30+0200\n"
+"POT-Creation-Date: 2006-10-05 03:31+0200\n"
 "PO-Revision-Date: 2005-11-15 19:02+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: librezale.org <librezale@librezale.org>\n"
@@ -687,11 +687,11 @@ msgstr "FTP igoera aldia minututan"
 msgid "Validate"
 msgstr "Egiaztatu"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:331
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
 msgstr "Zure sinadura fitxategia duen karpeta"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:344
+#: src/utils/wxCas/src/wxcasprefs.cpp:343
 msgid "Folder where generating the statistic image"
 msgstr "Estatistika irudiak sortuko diren karpeta"
 

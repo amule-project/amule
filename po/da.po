@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 03:30+0200\n"
+"POT-Creation-Date: 2006-10-05 03:31+0200\n"
 "PO-Revision-Date: 2004-03-11 12:58+0100\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -672,11 +672,11 @@ msgstr ""
 msgid "Validate"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:331
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:344
+#: src/utils/wxCas/src/wxcasprefs.cpp:343
 msgid "Folder where generating the statistic image"
 msgstr ""
 

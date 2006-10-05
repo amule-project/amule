@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 03:30+0200\n"
+"POT-Creation-Date: 2006-10-05 03:31+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -682,11 +682,11 @@ msgstr "Intervalle d'upload le l'image des statistiques en ligne en minutes"
 msgid "Validate"
 msgstr "Valider"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:331
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
 msgstr "Répertoire contenant le fichier de signature"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:344
+#: src/utils/wxCas/src/wxcasprefs.cpp:343
 msgid "Folder where generating the statistic image"
 msgstr "Répertoire où générer l'image des statistiques en ligne"
 

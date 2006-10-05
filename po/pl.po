@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 03:30+0200\n"
+"POT-Creation-Date: 2006-10-05 03:31+0200\n"
 "PO-Revision-Date: 2005-09-06 12:06+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
@@ -682,11 +682,11 @@ msgstr "Czas pomiędzy odświeżeniami FTP w minutach"
 msgid "Validate"
 msgstr "Sprawdź"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:331
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
 msgstr "Katalog zawierający twój plik sygnatury"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:344
+#: src/utils/wxCas/src/wxcasprefs.cpp:343
 msgid "Folder where generating the statistic image"
 msgstr "Katalog gdzie będzie wygenerowany statyczny obrazek"
 
