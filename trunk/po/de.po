@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-10 03:30+0200\n"
+"POT-Creation-Date: 2006-10-05 03:31+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -687,11 +687,11 @@ msgstr "FTP-Aktualisierungsintervall in Minuten"
 msgid "Validate"
 msgstr "Bestätigen"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:331
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
 msgstr "Verzeichnis mit deiner Signaturdatei"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:344
+#: src/utils/wxCas/src/wxcasprefs.cpp:343
 msgid "Folder where generating the statistic image"
 msgstr "Verzeichnis zum Erzeugen des Statistikbildes"
 
