@@ -11,7 +11,9 @@
 #ifndef LISTCTRL_260_H
 #define LISTCTRL_260_H
 
-#if defined(__WXMAC__) || defined(__WIN32__)
+#include <wx/version.h>		// Needed for wxCHECK_VERSION
+
+#if defined(__WXMAC__) || defined(__WIN32__) || wxCHECK_VERSION(2,7,0)
 #include "wx/imaglist.h" // Do_not_auto_remove
 #else
 #include "wx/generic/imaglist.h"

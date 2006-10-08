@@ -25,6 +25,7 @@
 #include "MuleTextCtrl.h"
 #include <wx/menu.h>
 #include <wx/intl.h>
+#include <wx/dataobj.h>
 #include <wx/clipbrd.h>
 
 /**
