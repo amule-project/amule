@@ -24,6 +24,7 @@
 //
 
 #include <wx/tokenzr.h>
+#include <wx/imaglist.h>
 
 #include "pixmaps/chat.ico.xpm"
 #include "ChatSelector.h"	// Interface declarations
