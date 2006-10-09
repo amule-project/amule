@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-05 03:31+0200\n"
+"POT-Creation-Date: 2006-10-09 03:31+0200\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Angel Vidal Veiga <elkry@users.sourceforge.net>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1047,7 +1047,7 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:81
+#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:881
 msgid "Clear"
 msgstr ""
@@ -2577,19 +2577,19 @@ msgstr ""
 msgid "Not Received"
 msgstr ""
 
-#: src/MuleTextCtrl.cpp:78
+#: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr ""
 
-#: src/MuleTextCtrl.cpp:79 src/PartFileConvert.cpp:430
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:430
 msgid "Copy"
 msgstr ""
 
-#: src/MuleTextCtrl.cpp:80
+#: src/MuleTextCtrl.cpp:81
 msgid "Paste"
 msgstr ""
 
-#: src/MuleTextCtrl.cpp:85
+#: src/MuleTextCtrl.cpp:86
 msgid "Select All"
 msgstr ""
 
@@ -6383,20 +6383,20 @@ msgstr ""
 msgid "Show aMule"
 msgstr ""
 
-#: src/ChatSelector.cpp:126
+#: src/ChatSelector.cpp:127
 #, c-format
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr ""
 
-#: src/ChatSelector.cpp:205 src/ChatSelector.cpp:285
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
 msgid "*** Connected to Client ***"
 msgstr ""
 
-#: src/ChatSelector.cpp:248
+#: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
 msgstr ""
 
-#: src/ChatSelector.cpp:279
+#: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr ""
 

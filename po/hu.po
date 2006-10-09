@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-05 03:31+0200\n"
+"POT-Creation-Date: 2006-10-09 03:31+0200\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -1084,7 +1084,7 @@ msgstr "Hozzáad"
 msgid "Remove"
 msgstr "Eltávolít"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:81
+#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:881
 msgid "Clear"
 msgstr "Törlés"
@@ -2689,19 +2689,19 @@ msgstr "Operációs rendszer"
 msgid "Not Received"
 msgstr "Nem fogadott"
 
-#: src/MuleTextCtrl.cpp:78
+#: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Kivágás"
 
-#: src/MuleTextCtrl.cpp:79 src/PartFileConvert.cpp:430
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:430
 msgid "Copy"
 msgstr "Másolás"
 
-#: src/MuleTextCtrl.cpp:80
+#: src/MuleTextCtrl.cpp:81
 msgid "Paste"
 msgstr "Beillesztés"
 
-#: src/MuleTextCtrl.cpp:85
+#: src/MuleTextCtrl.cpp:86
 msgid "Select All"
 msgstr "Mindent kijelöl"
 
@@ -6684,20 +6684,20 @@ msgstr "aMule elrejtése"
 msgid "Show aMule"
 msgstr "aMule megjelenítése"
 
-#: src/ChatSelector.cpp:126
+#: src/ChatSelector.cpp:127
 #, fuzzy, c-format
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "Csevegési folyamat elindítva: %s - %s %s"
 
-#: src/ChatSelector.cpp:205 src/ChatSelector.cpp:285
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
 msgid "*** Connected to Client ***"
 msgstr "*** Kapcsolódva a klienshez ***"
 
-#: src/ChatSelector.cpp:248
+#: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
 msgstr "*** Kapcsolódás a klienshez ***"
 
-#: src/ChatSelector.cpp:279
+#: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kapcsolódás sikertelen / Kapcsolat elveszítve ***"
 

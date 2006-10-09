@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-05 03:31+0200\n"
+"POT-Creation-Date: 2006-10-09 03:31+0200\n"
 "PO-Revision-Date: 2005-11-26 01:05+0000\n"
 "Last-Translator: Helder Correia <helder.pereira.correia@gmail.com>\n"
 "Language-Team: Portuguese <helder.pereira.correia@gmail.com>\n"
@@ -1068,7 +1068,7 @@ msgstr "Adicionar"
 msgid "Remove"
 msgstr "Remover"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:81
+#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:881
 msgid "Clear"
 msgstr "Limpar"
@@ -2645,19 +2645,19 @@ msgstr "Sistema Operativo"
 msgid "Not Received"
 msgstr "Não recebido"
 
-#: src/MuleTextCtrl.cpp:78
+#: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "Cortar"
 
-#: src/MuleTextCtrl.cpp:79 src/PartFileConvert.cpp:430
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:430
 msgid "Copy"
 msgstr "Copiar"
 
-#: src/MuleTextCtrl.cpp:80
+#: src/MuleTextCtrl.cpp:81
 msgid "Paste"
 msgstr "Colar"
 
-#: src/MuleTextCtrl.cpp:85
+#: src/MuleTextCtrl.cpp:86
 msgid "Select All"
 msgstr "Seleccionar tudo"
 
@@ -6645,20 +6645,20 @@ msgstr "Esconder"
 msgid "Show aMule"
 msgstr "Mostrar"
 
-#: src/ChatSelector.cpp:126
+#: src/ChatSelector.cpp:127
 #, c-format
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "Sessão de Conversa Iniciada: %s (%s:%u) - %s %s"
 
-#: src/ChatSelector.cpp:205 src/ChatSelector.cpp:285
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
 msgid "*** Connected to Client ***"
 msgstr "*** Conectado ao cliente ***"
 
-#: src/ChatSelector.cpp:248
+#: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
 msgstr "*** A conectar ao cliente ***"
 
-#: src/ChatSelector.cpp:279
+#: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Erro na conexão ao cliente / Conexão perdida ***"
 

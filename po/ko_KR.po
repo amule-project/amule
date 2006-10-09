@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-05 03:31+0200\n"
+"POT-Creation-Date: 2006-10-09 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1062,7 +1062,7 @@ msgstr "더하기"
 msgid "Remove"
 msgstr "삭제"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:81
+#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:881
 msgid "Clear"
 msgstr "깨끗이"
@@ -2639,19 +2639,19 @@ msgstr "운영체제"
 msgid "Not Received"
 msgstr "받은게 없음"
 
-#: src/MuleTextCtrl.cpp:78
+#: src/MuleTextCtrl.cpp:79
 msgid "Cut"
 msgstr "자르기"
 
-#: src/MuleTextCtrl.cpp:79 src/PartFileConvert.cpp:430
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:430
 msgid "Copy"
 msgstr "복사"
 
-#: src/MuleTextCtrl.cpp:80
+#: src/MuleTextCtrl.cpp:81
 msgid "Paste"
 msgstr "붙이기"
 
-#: src/MuleTextCtrl.cpp:85
+#: src/MuleTextCtrl.cpp:86
 msgid "Select All"
 msgstr "모두 선택하기"
 
@@ -6577,20 +6577,20 @@ msgstr "어뮬 숨기기"
 msgid "Show aMule"
 msgstr "어뮬 보이기"
 
-#: src/ChatSelector.cpp:126
+#: src/ChatSelector.cpp:127
 #, c-format
 msgid "Chat-Session Started: %s (%s:%u) - %s %s"
 msgstr "채팅세션이 시작됨: %s (%s:%u) - %s %s"
 
-#: src/ChatSelector.cpp:205 src/ChatSelector.cpp:285
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
 msgid "*** Connected to Client ***"
 msgstr "***클라이언트에 연결되었습니다***"
 
-#: src/ChatSelector.cpp:248
+#: src/ChatSelector.cpp:249
 msgid "*** Connecting to Client ***"
 msgstr "***클라이언트에 연결중입니다***"
 
-#: src/ChatSelector.cpp:279
+#: src/ChatSelector.cpp:280
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "***클라이언트에 연결하지 못했습니다 / 연결이 끊어졌습니다***"
 
