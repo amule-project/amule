@@ -51,6 +51,8 @@ Trunk
 		  zero for maximum download value.
 		* Added UPnP support.
 		* Fix for crash in ECSocket.cpp.
+		* FileDetailDialog:: now has more intuitive Apply, Ok, Cancel
+		  interface.
 
 --------------------------------------------------------------------------------
 
