@@ -31,10 +31,10 @@ class CPartFile;
 
 // CFileDetailDialog dialog
 
-class CFileDetailDialog : public wxDialog //CDialog
+class CFileDetailDialog : public wxDialog
 {
 public:
-	CFileDetailDialog(wxWindow* parent, CPartFile* file);   // standard constructor
+	CFileDetailDialog(wxWindow *parent, CPartFile *file);
 	virtual ~CFileDetailDialog();
 
 protected:
@@ -48,16 +48,22 @@ private:
 		wxString	name;
 		long		count;
 	};
-	
 	wxTimer m_timer;
+	bool m_filenameChanged;
+	
 	void OnClosewnd(wxCommandEvent& evt);
 	void FillSourcenameList();
+	void setEnableForApplyButton();
+	void setValueForFilenameTextEdit(const wxString &s);
+	void resetValueForFilenameTextEdit();
 
 	void OnBnClickedButtonStrip(wxCommandEvent& evt);
 	void OnBnClickedShowComment(wxCommandEvent& evt);
 	void OnBnClickedTakeOver(wxCommandEvent& evt);
 	void OnListClickedTakeOver(wxListEvent& evt);
-	void OnBnClickedRename(wxCommandEvent& evt);
+	void OnTextFileNameChange(wxCommandEvent& evt);
+	void OnBnClickedOk(wxCommandEvent& evt);
+	void OnBnClickedApply(wxCommandEvent& evt);
 
 };
 

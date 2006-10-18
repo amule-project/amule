@@ -28,15 +28,15 @@
 //
 
 
-#include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD,...,IDC_RENAME
+#include "muuli_wdr.h"		// Needed for ID_CLOSEWNDFD,...,IDC_APPLY
 #include "FileDetailDialog.h"	// Interface declarations
 #include "FileDetailListCtrl.h"	// Needed for CFileDetailListCtrl
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
 #include "Color.h"		// Needed for SYSCOLOR
-#include "amule.h"				// Needed for theApp
-#include "SharedFileList.h"		// Needed for CSharedFileList
+#include "amule.h"		// Needed for theApp
+#include "SharedFileList.h"	// Needed for CSharedFileList
 
 #define ID_MY_TIMER 1652
 
@@ -46,26 +46,27 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_BUTTON(IDC_BUTTONSTRIP, CFileDetailDialog::OnBnClickedButtonStrip)
 	EVT_BUTTON(IDC_TAKEOVER, CFileDetailDialog::OnBnClickedTakeOver)
 	EVT_LIST_ITEM_ACTIVATED(IDC_LISTCTRLFILENAMES, CFileDetailDialog::OnListClickedTakeOver)
-	EVT_BUTTON(IDC_CMTBT, CFileDetailDialog::OnBnClickedShowComment) //for comment
-	EVT_BUTTON(IDC_RENAME, CFileDetailDialog::OnBnClickedRename) // Added by Tarod [Juanjo]
+	EVT_BUTTON(IDC_CMTBT, CFileDetailDialog::OnBnClickedShowComment)
+	EVT_TEXT(IDC_FILENAME, CFileDetailDialog::OnTextFileNameChange)
+	EVT_BUTTON(IDC_APPLY_AND_CLOSE, CFileDetailDialog::OnBnClickedOk)
+	EVT_BUTTON(IDC_APPLY, CFileDetailDialog::OnBnClickedApply)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 END_EVENT_TABLE()
 
 
-CFileDetailDialog::CFileDetailDialog(wxWindow* parent,CPartFile* file)
-: wxDialog(parent,-1,_("File Details"),wxDefaultPosition,wxDefaultSize,
-	wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)
+CFileDetailDialog::CFileDetailDialog(wxWindow *parent, CPartFile *file)
+:
+wxDialog(parent, -1, _("File Details"), wxDefaultPosition, wxDefaultSize,
+	wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX),
+m_file(file),
+m_filenameChanged(false)
 {
-	m_file = file;
-	m_timer.SetOwner(this,ID_MY_TIMER);
+	m_timer.SetOwner(this, ID_MY_TIMER);
 	m_timer.Start(5000);
-	wxSizer* content=fileDetails(this,TRUE);
+	wxSizer *content = fileDetails(this, true);
 	UpdateData();
 	content->SetSizeHints(this);
-	content->Show(this,TRUE);
-
-	// Currently renaming of completed files causes problem with kad
-	FindWindow(IDC_RENAME)->Enable(file->IsPartFile());
+	content->Show(this, true);
 }
 
 CFileDetailDialog::~CFileDetailDialog()
@@ -85,16 +86,19 @@ void CFileDetailDialog::OnClosewnd(wxCommandEvent& WXUNUSED(evt))
 void CFileDetailDialog::UpdateData()
 {
 	wxString bufferS;
-	CastChild(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFileName(),60)));
-	CastChild(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(TruncateFilename(m_file->GetFullName(),60,true)));
-	wxString tmp=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
+	CastChild(IDC_FNAME,wxStaticText)->SetLabel(MakeStringEscaped(
+		TruncateFilename(m_file->GetFileName(),60)));
+	CastChild(IDC_METFILE,wxStaticText)->SetLabel(MakeStringEscaped(
+		TruncateFilename(m_file->GetFullName(),60,true)));
 
-	if (tmp.Length()<3) {
-		CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(m_file->GetFileName());
+	wxString tmp = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
+	if (tmp.Length() < 3) {
+		resetValueForFilenameTextEdit();
 	}
 
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(m_file->GetFileHash().Encode());
-	CastChild(IDC_FSIZE,wxControl)->SetLabel(CastItoXBytes(m_file->GetFileSize()));
+	bufferS = wxString::Format(wxT("%u"), m_file->GetFileSize());
+	CastChild(IDC_FSIZE,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
 	bufferS = wxString::Format(wxT("%i (%i)"),m_file->GetPartCount(),m_file->GetHashCount());
 	CastChild(IDC_PARTCOUNT,wxControl)->SetLabel(bufferS);
@@ -111,7 +115,9 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_SOURCECOUNT,wxControl)->SetLabel(bufferS);
 	bufferS = wxString::Format(wxT("%i"),m_file->GetTransferingSrcCount());
 	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
-	bufferS = wxString::Format(wxT("%i (%.1f%%)"),m_file->GetAvailablePartCount(),(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
+	bufferS = wxString::Format(wxT("%i (%.1f%%)"),
+		m_file->GetAvailablePartCount(),
+		(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 
 	if (m_file->lastseencomplete==0) {
@@ -122,7 +128,7 @@ void CFileDetailDialog::UpdateData()
 	}
 
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
-	CastChild(IDC_RENAME,wxControl)->Enable((m_file->GetStatus() != PS_COMPLETE && m_file->GetStatus() != PS_COMPLETING)); //add by CML 
+	setEnableForApplyButton();
 	FillSourcenameList();
 	Layout();
 }
@@ -204,7 +210,47 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 }
 
 
-void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
+void CFileDetailDialog::resetValueForFilenameTextEdit()
+{
+	CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(m_file->GetFileName());
+	m_filenameChanged = false;
+	setEnableForApplyButton();
+}
+
+
+void CFileDetailDialog::setValueForFilenameTextEdit(const wxString &s)
+{
+	CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(s);
+	m_filenameChanged = true;
+	setEnableForApplyButton();
+}
+
+
+void CFileDetailDialog::setEnableForApplyButton()
+{
+	CastChild(IDC_APPLY, wxControl)->Enable(
+		m_file->IsPartFile() && // Currently renaming of completed files causes problem with kad
+		m_file->GetStatus() != PS_COMPLETE &&
+		m_file->GetStatus() != PS_COMPLETING &&
+		m_filenameChanged);
+}
+
+
+void CFileDetailDialog::OnTextFileNameChange(wxCommandEvent& WXUNUSED(evt))
+{
+	m_filenameChanged = true;
+	setEnableForApplyButton();
+}
+
+
+void CFileDetailDialog::OnBnClickedOk(wxCommandEvent& evt)
+{
+	OnBnClickedApply(evt);
+	OnClosewnd(evt);
+}
+
+
+void CFileDetailDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fileName = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
 
@@ -212,8 +258,8 @@ void CFileDetailDialog::OnBnClickedRename(wxCommandEvent& WXUNUSED(evt))
 		if (theApp.sharedfiles->RenameFile(m_file, fileName)) {
 			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
 			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
-	
-			CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(m_file->GetFileName());
+			
+			resetValueForFilenameTextEdit();
 	
 			Layout();
 		}
@@ -273,9 +319,10 @@ void ReplaceWord(wxString& str, const wxString& replaceFrom, const wxString& rep
 	}
 }
 
-void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
+void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt))
+{
 	wxString filename;
-	filename=CastChild(IDC_FILENAME,wxTextCtrl)->GetValue();
+	filename = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
 	
 	int extpos = filename.Find('.', true);
 	wxString ext;
@@ -362,7 +409,7 @@ void CFileDetailDialog::OnBnClickedButtonStrip(wxCommandEvent& WXUNUSED(evt)) {
 	// re-add extension
 	filename += ext;
 
-	CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(filename);
+	setValueForFilenameTextEdit(filename);
 }
 
 void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
@@ -376,7 +423,7 @@ void CFileDetailDialog::OnBnClickedTakeOver(wxCommandEvent& WXUNUSED(evt))
 			if(pos==-1) {
 				break;
 			}
-			CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
+			setValueForFilenameTextEdit(pmyListCtrl->GetItemText(pos));
 		}
 	}
 }
@@ -392,7 +439,7 @@ void CFileDetailDialog::OnListClickedTakeOver(wxListEvent& WXUNUSED(evt))
 			if(pos==-1) {
 				break;
 			}
-			CastChild(IDC_FILENAME,wxTextCtrl)->SetValue(pmyListCtrl->GetItemText(pos));
+			setValueForFilenameTextEdit(pmyListCtrl->GetItemText(pos));
 		}
 	}
 }
