@@ -29,6 +29,11 @@ Trunk
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
 		  Mac.
 
+	nvinay:
+
+		* Trivial issue with memset found using google codesearch which may
+		affect only the debugging.
+
 	Phoenix:
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets cvs code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.
