@@ -2,7 +2,7 @@
 // This file is part of the aMule Project.
 
 // Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
-// Copyright (C) 2005-2006Froenchenko Leonid ( lfroen@amule.org )
+// Copyright (C) 2005-2006 Froenchenko Leonid ( lfroen@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -27,12 +27,19 @@
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
+#include <sys/types.h>
+#include <regex.h>
+
 #ifndef PHP_STANDALONE_EN
 	#include "config.h"
 	#include "WebServer.h"
 	#include <ec/ECSpecialTags.h>
 #else
 	#define PACKAGE_VERSION "standalone"
+
+	#include <map>
+	#include <list>
+	#include <stdarg.h>
 #endif
 
 #include "php_syntree.h"
@@ -1433,6 +1440,90 @@ void amule_version(PHP_VALUE_NODE *val)
 	val->str_val = strdup(PACKAGE_VERSION);
 }
 
+void php_native_split(PHP_VALUE_NODE *result)
+{
+	if ( result ) {
+		cast_value_array(result);
+	} else {
+		return; 
+	}
+	PHP_VALUE_NODE *pattern, *string_to_split, *split_limit;
+	PHP_SCOPE_ITEM *si = get_scope_item(g_current_scope, "__param_0");
+	if ( si ) {
+		pattern = &si->var->value;
+		cast_value_str(pattern);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument: pattern");
+		return;
+	}
+	si = get_scope_item(g_current_scope, "__param_1");
+	if ( si ) {
+		string_to_split = &si->var->value;
+		cast_value_str(string_to_split);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
+		return;
+	}
+	si = get_scope_item(g_current_scope, "__param_2");
+	if ( si ) {
+		split_limit = &si->var->value;
+		cast_value_dnum(split_limit);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument: string");
+		return;		
+	}
+	regex_t preg;
+	char error_buff[256];
+	int reg_result = regcomp(&preg, pattern->str_val, 0);
+	if ( reg_result ) {
+		regerror(reg_result, &preg, error_buff, sizeof(error_buff));
+		php_report_error(PHP_ERROR, "Failed in regcomp: %s", error_buff);
+		return;
+	}
+	size_t nmatch = strlen(string_to_split->str_val);
+	regmatch_t *pmatch = new regmatch_t[nmatch];
+	
+	char *str_2_match = string_to_split->str_val;
+	char *tmp_buff = new char[strlen(string_to_split->str_val)+1];
+	
+	while ( 1 ) {
+//		printf("matching: %s\n", str_2_match);
+		reg_result = regexec(&preg, str_2_match, nmatch, pmatch, 0);
+		if ( reg_result ) {
+			// no match
+			break;
+		}
+//		for(int i = 0; pmatch[i].rm_so >= 0; i++) {
+//			printf("match [%d] %d - %d\n", i, pmatch[i].rm_so, pmatch[i].rm_eo);
+//		}
+	
+		/*
+		 * I will use only first match, since I don't see any sense to have more
+		 * then 1 match in split() call
+		 */
+		for(int i = 0; i < pmatch[0].rm_so; i++) {
+			tmp_buff[i] = str_2_match[i];
+		}
+		tmp_buff[pmatch[0].rm_so] = 0;
+//		printf("Match added [%s]\n", tmp_buff);
+		
+		PHP_VAR_NODE *match_val = array_push_back(result);
+		match_val->value.type = PHP_VAL_STRING;
+		match_val->value.str_val = strdup(tmp_buff);
+
+		str_2_match += pmatch[0].rm_eo;
+	}
+
+	PHP_VAR_NODE *match_val = array_push_back(result);
+	match_val->value.type = PHP_VAL_STRING;
+	match_val->value.str_val = strdup(str_2_match);
+	
+	delete [] pmatch;
+	delete [] tmp_buff;
+	
+	regfree(&preg);
+}
+
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
@@ -1455,6 +1546,11 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		"usort",
 		2,
 		php_native_usort,
+	},
+	{
+		"split",
+		3,
+		php_native_split,
 	},
 	{
 		"amule_load_vars",
