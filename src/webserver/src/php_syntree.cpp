@@ -27,9 +27,14 @@
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
-#ifndef PHP_STANDALONE_EN
+#ifdef PHP_STANDALONE_EN
+	#include <map>
+	#include <list>
+	#include <stdarg.h>
+#else
 	#include "WebServer.h"
 #endif
+
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
