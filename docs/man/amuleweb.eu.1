@@ -1,0 +1,186 @@
+.TH AMULEWEB 1 "2005 Martxoa" "aMule web zerbitzarua v2.0.0" "aMule lanabesak"
+.SH IZENA
+amuleweb \- aMule web zerbitzaria
+.SH LABURPENA
+.B amuleweb
+.RB [ \-h " " \fI<ostalaria> ]
+.RB [ \-p " " \fI<ataka> ]
+.RB [ \-P " " \fI<pasahitza> ]
+.RB [ \-f " " \fI<bidea> ]
+.RB [ \-q ]
+.RB [ \-v ]
+.RB [ \-l " " \fI<hizkuntza> ]
+.RB [ \-w ]
+.RB [ \-t " " \fI<izena> ]
+.RB [ \-s " " \fI<ataka> ]
+.RB [ \-z ]
+.RB [ \-Z ]
+.RB [ \-A " " \fI<pasahitza> ]
+.RB [ \-G " " \fI<pasahitza> ]
+.RB [ \-a ]
+.RB [ \-d ]
+.RB [ \-L ]
+.RB [ \-N ]
+.PP
+.B amuleweb
+.RB [ \-f " " \fI<bidea> ]
+.B \-\-create-config-from=\fI<bidea>
+.PP
+.B amuleweb
+.RB [ \-\-help ]
+.RB [ \-\-version ]
+.PP
+.B amuleweb \-\-amule\-config\-file=\fI<bidea>
+.PP
+.B amuleweb \-\-no\-php
+.SH AZALPENA
+\fBamuleweb\fR-ek web nabigatzaile baten bidezko zure sarrera kudetzaen du.
+amuleweb \fBamule\fR(1)-ekin batera edo beranduago edozein momentutan abiarazi dezakezu.
+Aukerak komando lerro edo konfigurazio fitxategiaren bidez ezarri daitezke.
+Komando lerro aukerak konfigurazio fitxategiarenen aurretik erabiltzen dira.
+.TP
+\fB\-h\fR, \fB\-\-host\fR=\fI<ostalaria>\fR
+Amule abiarazirik dagoen ostalaria (lehenetsia: \fIlocalhost\fR).
+\fI<ostalaria>\fR IP helbide edo DNS izen bat izan behar da.
+.TP
+\fB\-p\fR, \fB\-\-port\fR=\fI<ataka>\fR
+aMule-ren kanpo konexioetarako ataka, Hobespenak->Urruneko Kontrolak atalean ezarririk dagoen bezala (lehenetsia: \fI4712\fR)
+.TP
+\fB\-P\fR, \fB\-\-password\fR=\fI<pasahitza>\fR
+Kanpo Konexioetarako pasahitza
+.TP
+\fB\-f\fR, \fB\-\-config\-file\fR=\fI<bidea>\fR
+emandako konfigurazio fitxategia erabili. 
+Lehenetsiriko konfigurazio fitxategia \fI~/.aMule/remote.conf\fR da.
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR
+ez irteerarik inprimatu irteera estandarrean.
+\fB\-q\fR erabili dezakezu web zerbitzaria deabru bezala erabiltzeko, adib '\fBamuleweb \-q &\fR'
+.TP
+\fB\-v\fR, \fB\-\-verbose\fR
+luzea izan \- arazpen mezuak ere ikusi
+.TP
+\fB\-l\fR, \fB\-\-locale\fR=\fI<hizkuntza>\fR
+Programaren lokalak ezartzen ditu (hizkuntza).
+\fROHARRAK\fr atala irakurri \fI<hizkuntza>\fR parametroaz gehiago jakiteko.
+.TP
+\fB\-w\fR, \fB\-\-write\-config\fR
+komando lerroko aukerak konfigurazio fitxategian gorde eta irten
+.TP
+\fB\-\-create\-config\-from\fR=\fI<bidea>\fR
+konfigurazio fitxategia \fI<bidea>\fR oinarriturik egin, zein aMule konfigurazio fitxategiaren bidea izan behar da eta irten
+.TP
+\fB\-t\fR, \fB\-\-template\fR=\fI<izena>\fR
+\fI<izena>\fR izeneko txantiloia kargarzen du. Ikusi:
+.B GAI ONARPENA
+.TP
+\fB\-s\fR, \fB\-\-server\-port\fR=\fI<ataka>\fR
+Web zerbitzariaren HTTP ataka. Nabigatzailean irekitzeko erabiliko den ataka (lehenetsia: \fI4711\fR)
+.TP
+\fB\-z\fR, \fB\-\-enable\-gzip\fR
+HTTP trafikoan sare zabalera aurrezteko gzip konpresioa gaitu
+.TP
+\fB\-Z\fR, \fB\-\-disable\-gzip\fR
+gzip konpresioa erabiltzea ezgaitu (lehenespena)
+.TP
+\fB\-A\fR, \fB\-\-admin\-pass\fR=\fI<pasahitza>\fR
+web zerbitzariaren sarrera osorako pasahitza
+.TP
+\fB\-G\fR, \fB\-\-guest\-pass\fR=\fI<pasahitza>\fR
+web zerbitzariaren gonbidatu pasahitza
+.TP
+\fB\-a\fR, \fB\-\-allow\-guest\fR
+Gonbidatu sarrera onartu
+.TP
+\fB\-d\fR, \fB\-\-deny\-guest\fR
+Gonbidatu sarrera ezgaitu (lehenespena)
+.TP
+\fB\-L\fR, \fB\-\-load\-settings\fR
+Webzerbitzari ezarpenak urruneko aMuletik/aMulen kargatu/gorde.
+Honek amuleweb-ek komando lerroko eta konfigurazio fitxategiko ezarpenak alde batetara uztea eta aMule-tik kargatzea 
+eragiten du. Hobespenak gordetzerakoan konfigurazio fitxategian beharrean aMule-n gordeko dira.
+(Noski. honek ezarpen hauetarako bakarrik funtzionatzen du, aMule-ren Hobespenak->Urruneko Kontrolean ezarri daitezke)
+.TP
+\fB\-N\fR, \fB\-\-no\-script\-cache\fR
+PHP orriak eskaera bakoitzean birkonpilatu
+.TP
+\fB\-\-amule\-config\-file\fR=\fI<bidea>\fR
+aMule konfigurazio fitxategiaren bidea.
+.B EZ ZUZENEAN ERABILI
+aMule-k aukera hau amuleweb aMulerekin batera abiaraztean erabiltzen du.
+Aukera honek komando lerroko eta konfigruazio fitxategiko ezarpenak alde batetara uztea eragiten du, hobespenak
+emandako konfigurazio fitxategitik irakurriko dira, eta \fB\-q \-L\fR aukerak ere adierazten ditu.
+.TP
+\fB\-\-help\fR
+Erabilera laguntza argibideak bisatarazi eta irten
+.TP
+\fB\-\-version\fR
+Programa bertsio argibideak bistarazi eta irten
+.SH OHARRAK
+.SS Bideak
+Fitxategi bat bide absolutua eman gabe ezarri ezkero ((Adib. fitxategi izen arrunta, \fB\-\-path\fR=\fIremote.conf\fR 
+bezalakoa), orduan fitxategi hori aMule konfigurazio direktorioan (\fI~/.aMule\fR) bilatuko da.
+.SS Hizkuntzak
+\fB\-l\fR aukeraren \fI<hizkuntza>\fR parametroa hurrengo formatukoa da: 
+\fIhizkuntza\fR[\fB_\fIHIZKUNTZA\fR][\fB.\fIkodeketa\fR][\fB@\fIaldagaia\fR] non \fIhizkuntza\fR hizkuntza nagusia, \fIHIZKUNTZA\fR azpihizkuntz/kokapena, \fIkodeketak\fR karkatere jokoa diren eta \fIaldagaia\fR-k erabiltzaileari kategoria hizkuntza aldagaiak erabiltzeko aukera ematen du"
+.PP
+Adibdiez, hurrengo kateak egokiak dira:
+.br
+eu
+.br
+eu_FR
+.br
+eu_ES.iso88591
+.br
+de_DE@euro
+.br
+de_DE.iso88591@euro
+.PP
+Kontutan izan goiko kate guztiak hizkuntz definizio zuzenak direla nahi ez \fIkodeketak\fR eta \fIaldagaia\fR
+erabili.
+.PP
+Goiko formatuaz gain, hizkuntzaren Ingelesezko izen osoaz ere ezarri dezakezu - beraz \fB\-l german\fR egokia da eta
+\fB-l de_DE\fR erabiltzearen berdina da.
+.PP
+Ez denean konfigurazio fitxategian edo komando lerroan lokalik ezartzen sistemaren lehenetsia erabiliko da.
+.SH GAI ONARPENA
+\fBamuleweb\fR informazio gai ezberdinetan erakusteko gai da.
+Gai hauek txantiloi deitzen dira, amuleweb-ek txantiloi bat kargatzeko \fB\-t\fR komando lerroaren bidez.
+Txantiloiak bi kokapenetan bilatzen dira: lehenik \fI~/.aMule/webserver/\fR-ean eta gero 
+\fI$(pkgdatadir)/webserver/\fR-en 
+(\fI$(pkgdatadir)\fR arkitekturatik independiente diren datuen instalazio kokapena da, normalena /usr/share/amule 
+antzeko zerbait). 
+Txantiloi bakoitza bere izen berdineko azpikarpeta batetan egon behar da, eta azpikarpeta honek gaiak behar dituen 
+fitxategi guztiak eduki behar ditu.
+Erabiltzen ari den txantiloi izena aMule.tmpl izan behar da.
+.PP
+Adibidez, lehenetsiriko txantiloia ('default' izekoa) webserver/default/-en dago eta direktorio honek aMule.tmpl etairudi fitxategi anitz ditu.
+.SH FITXATEGIAK
+~/.aMule/remote.conf
+.br
+~/.aMule/webserver/
+.br
+\fI$(pkgdatadir)\fR/webserver/
+.SH ADIBIDEA
+Normalean amuleweb lehenengoz horrela abiarazi behar da:
+.PP
+\fBamuleweb\fR \fB\-h\fR \fIostalaria\fR \fB\-p\fR \fIECataka\fR \fB\-P\fR \fIECpasahitza\fR \fB\-s\fR \fIHTTPataka\fR \fB\-A\fR \fIAdminPasahitza\fR \fB\-w\fR
+.PP
+edo
+.PP
+\fBamuleweb\fR \fB\-\-create-config-from\fR=\fI/home/username/.aMule/amule.conf\fR
+.PP
+Honek ezarpenak \fI$HOME/.aMule/remote.conf\fR-en gordeko ditu eta gero hau egin beharko duzu:
+.PP
+.B amuleweb
+.PP
+Noski lehenengo adibidean bainon aukera gehiago edo gutxiago erabili ditzazkezu edo 
+aukerarik gabe abiarazi.
+.SH ZORRIEN BERRI EMATEN
+Mesedez zorrien berri emateko gure foroa (\fIhttp://forum.amule.org/\fR), edo gure zorri 
+kudeatzai$Mesedez ez eman zorrien berri epostaz, ez gure eposta zerrendan ez taldeko 
+partaideei.
+.SH COPYRIGHT
+aMule eta inguruneko lanabes guztiak GNU Lizentzia Publiko Orokorraz banatzen dira.
+.SH IKUSI ERE
+\fBamule\fR(1), \fBamulecmd\fR(1)
