@@ -8,11 +8,12 @@ if ALCC
 dist_man_MANS += alcc.1
 endif
 
-man_langs = de es fr hu
+man_langs = de es eu fr hu
 
 EXTRA_DIST = \
 	alc.de.1 alcc.de.1 \
 	alc.es.1 alcc.es.1 \
+	alc.eu.1 alcc.eu.1 \
 	alcc.fr.1 \
 	alc.hu.1 alcc.hu.1
 

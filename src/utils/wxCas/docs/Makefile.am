@@ -1,8 +1,8 @@
 dist_man_MANS = wxcas.1
 
-man_langs = de es hu
+man_langs = de es eu hu
 
-EXTRA_DIST = wxcas.de.1 wxcas.es.1 wxcas.hu.1
+EXTRA_DIST = wxcas.de.1 wxcas.es.1 wxcas.eu.1 wxcas.hu.1
 
 install-data-hook:
 	@for lang in $(man_langs); do \
