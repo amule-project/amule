@@ -53,6 +53,8 @@ Trunk
 		* Fix for crash in ECSocket.cpp.
 		* FileDetailDialog:: now has more intuitive Apply, Ok, Cancel
 		  interface.
+		* GUI to enter a specific bind IP in
+		  "Preferences->Connection->BindAddress".
 
 --------------------------------------------------------------------------------
 
