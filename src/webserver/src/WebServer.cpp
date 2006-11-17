@@ -282,7 +282,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 	const CSession* session = CheckLoggedin(Data);
 
 	// To prevent access to non-template images, we disallow use of paths in filenames.
-	wxString imgName = wxFileName::GetPathSeparator() + wxFileName(Data.sURL).GetFullName();
+	wxString imgName = wxFileName::GetPathSeparator() + wxFileName(Data.parsedURL.File()).GetFullName();
 	CAnyImage *img = m_ImageLib.GetImage(imgName);
 	
 	// Only static images are available to visitors, in order to prevent
@@ -1873,6 +1873,12 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else if ( req_file.Find(wxT(".php")) != -1 ) {
 		httpOut = ProcessPhpRequest(unicode2char(req_file), session, httpOutLen);
+	} else if ( req_file.Find(wxT(".css")) != -1 ) {
+		session->m_vars["content_type"] = "text/css";
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
+	} else if ( req_file.Find(wxT(".js")) != -1 ) {
+		session->m_vars["content_type"] = "text/javascript";
+		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else {
 		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
 	}
