@@ -332,8 +332,10 @@ void CWebSocket::OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen)
 		}
 	}
 	ThreadData Data = { CParsedUrl(sURL), sURL, sessid, this };
-	if (sURL.Length() > 4 ) {
-		wxString url_ext = sURL.Right( sURL.Length() - sURL.Find('.', true) ).MakeLower();
+
+	wxString sFile = Data.parsedURL.File();
+	if (sFile.Length() > 4 ) {
+		wxString url_ext = sFile.Right( sFile.Length() - sFile.Find('.', true) ).MakeLower();
 		if ( (url_ext==wxT(".gif")) || (url_ext==wxT(".jpg")) || (url_ext==wxT(".ico")) ||
 			(url_ext==wxT(".png")) || (url_ext==wxT(".bmp")) || (url_ext==wxT(".jpeg")) ) {
 			m_pParent->ProcessImgFileReq(Data);
