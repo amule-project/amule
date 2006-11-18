@@ -34,6 +34,47 @@ BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_ERASE_BACKGROUND(MuleGifCtrl::OnErase)
 END_EVENT_TABLE()
 
+#if wxCHECK_VERSION(2, 7, 1)
+// Wrapper that emulates old wxGIFDecoder API
+
+class MuleGIFDecoder : public wxGIFDecoder {
+public:
+	MuleGIFDecoder(wxInputStream* stream, bool dummy) {
+		m_stream = stream;
+		dummy = dummy; // Unused.
+		m_nframe = 0;
+	}
+	
+	~MuleGIFDecoder() { /* don't delete the stream! */ }
+	
+	wxGIFErrorCode ReadGIF() {
+		return LoadGIF(*m_stream);
+	}
+	
+	void GoFirstFrame() { m_nframe = 0; }
+	void GoNextFrame(bool dummy) { m_nframe < GetFrameCount() ? m_nframe++ : m_nframe = 0; }
+	void GoLastFrame() { m_nframe = GetFrameCount(); }
+	
+	void ConvertToImage(wxImage* image) { wxGIFDecoder::ConvertToImage(m_nframe, image); }
+	
+	size_t GetLogicalScreenWidth() { return GetAnimationSize().GetWidth(); }
+	size_t GetLogicalScreenHeight() { return GetAnimationSize().GetHeight(); }
+	
+	size_t	GetLeft() { return 0; }
+	size_t	GetTop() { return 0; }
+	
+	long GetDelay() { return wxGIFDecoder::GetDelay(m_nframe); }
+	
+private:
+	uint32_t m_nframe;
+	wxInputStream* m_stream;
+};
+
+#else
+#define MuleGIFDecoder wxGIFDecoder
+#endif
+
+
 
 MuleGifCtrl::MuleGifCtrl( wxWindow *parent, wxWindowID id, const wxPoint& pos,
                           const wxSize& size, long style, const wxValidator& validator,
@@ -65,7 +106,7 @@ bool MuleGifCtrl::LoadData(const char* data, int size)
 	}
 
   	wxMemoryInputStream stream(data, size);
-  	m_decoder = new wxGIFDecoder(&stream, TRUE);
+  	m_decoder = new MuleGIFDecoder(&stream, TRUE);
   	if ( m_decoder->ReadGIF() != wxGIF_OK ) {
    		delete m_decoder;
    		m_decoder = NULL;
