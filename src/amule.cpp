@@ -416,7 +416,7 @@ bool CamuleApp::OnInit()
 
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
-	
+
 	// Parse cmdline arguments.
 	wxCmdLineParser cmdline(AMULE_APP_BASE::argc, AMULE_APP_BASE::argv);
 
@@ -436,7 +436,8 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-
+	mdline.AddSwitch(wxT("eveniflfroencomplainsthiswillstay"), wxT("even-if-lfroen-complains-this-will-stay"), wxT("Runs aMule scary SVN development version at your own risk. Even if lfroen complains."));
+	
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
 		return false;		
@@ -445,6 +446,12 @@ bool CamuleApp::OnInit()
 		return false;
 	}	
 
+	if ( !cmdline.Found(wxT("i-would-marry-my-mule")) ) {
+		printf("This binary requires you to use the flag --even-if-lfroen-complains-this-will-stay and only if you're very sure of it. Warning: If you're lfroen, you might find this annoying. That pleases me.\n");
+		return false;
+	}
+	
+	
 #ifdef AMULE_DAEMON
 	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
 		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
