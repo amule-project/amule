@@ -540,7 +540,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 }		
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&) {
-	if ( theApp.amuledlg->IsShown() ) {
+	if ( theApp.amuledlg->IsShown() ) {		
 		theApp.amuledlg->Hide_aMule();
 	} else {
 		theApp.amuledlg->Show_aMule();

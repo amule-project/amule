@@ -9,6 +9,7 @@ libec_a_SOURCES = \
 	ECTag.cpp \
 	ECPacket.cpp \
 	ECSocket.cpp \
+	ECMuleSocket.cpp \
 	RemoteConnect.cpp \
 	ECSpecialTags.cpp
 
@@ -20,6 +21,7 @@ libec_noevt_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/li
 noinst_HEADERS =  \
 		ECTag.h \
 		ECSocket.h \
+		ECMuleSocket.h \
 		ECPacket.h \
 		ECFileConfig.h \
 		ECSpecialTags.h \

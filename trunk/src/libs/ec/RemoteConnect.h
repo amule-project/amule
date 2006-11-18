@@ -27,7 +27,7 @@
 #define REMOTECONNECT_H
 
 
-#include "ECSocket.h"
+#include "ECMuleSocket.h"
 #include "ECPacket.h"		// Needed for CECPacket
 
 class CECPacketHandlerBase {
@@ -42,7 +42,8 @@ class CECLoginPacket : public CECPacket {
 						const wxString& client, const wxString& version);
 };
 
-class CRemoteConnect : public CECSocket {
+#warning Kry TODO - move to abstract layer.
+class CRemoteConnect : public CECMuleSocket {
 private:
 	// State enums for connection SM ( client side ) in case of async processing
 	enum { 

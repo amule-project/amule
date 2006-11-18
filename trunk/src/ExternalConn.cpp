@@ -27,7 +27,7 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <ec/ECSocket.h>		// Needed for CECSocket
+#include <ec/ECMuleSocket.h>		// Needed for CECSocket
 
 #include <common/Format.h>		// Needed for CFormat
 
@@ -52,7 +52,7 @@
 
 //-------------------- CECServerSocket --------------------
 
-class CECServerSocket : public CECSocket {
+class CECServerSocket : public CECMuleSocket {
       public:
 	CECServerSocket();
 
@@ -65,7 +65,7 @@ class CECServerSocket : public CECSocket {
 	CObjTagMap		m_obj_tagmap;
 };
 
-CECServerSocket::CECServerSocket() : CECSocket(true)
+CECServerSocket::CECServerSocket() : CECMuleSocket(true)
 {
 	m_authenticated = false;
 }
@@ -79,7 +79,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
 			// Access denied!
 			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
-			Destroy();
+			DestroySocket();
 		} else {
 			m_authenticated = true;
 		}
@@ -92,7 +92,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 void CECServerSocket::OnLost()
 {
 		AddLogLineM(false,_("External connection closed."));
-		Destroy();
+		DestroySocket();
 }
 
 
@@ -164,6 +164,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 		delete sock;
 		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
+	
 }
 
 //

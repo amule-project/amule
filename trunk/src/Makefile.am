@@ -183,7 +183,8 @@ gui_sources = \
 	TransferWnd.cpp 
 
 remote_common_sources = \
-	OtherFunctions.cpp 
+	OtherFunctions.cpp \
+	NetworkFunctions.cpp 
 
 common_sources = \
 	ClientCredits.cpp \

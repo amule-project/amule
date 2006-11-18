@@ -144,69 +144,18 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 	do {
 		//
 		// Give socket a 10 sec chance to recv more data.
-		if ( !sock->WaitForRead(10, 0) ) {
+		if ( !sock->WaitSocketRead(10, 0) ) {
 			break;
 		}
-		sock->Read(m_wr_ptr, read_rem);
-		m_wr_ptr += sock->LastCount();
-		read_rem -= sock->LastCount();
-		if (sock->GotError() && !sock->WouldBlock()) {
+		sock->SocketRead(m_wr_ptr, read_rem);
+		m_wr_ptr += sock->GetLastCount();
+		read_rem -= sock->GetLastCount();
+		if (sock->SocketError() && !sock->WouldBlock()) {
 				break;
 		}
 	} while ( read_rem );
 	return len - read_rem;
 }
-
-//-------------------- CECSocketHandler --------------------
-
-#define ECSOCKET_SENDPACKET	(GSOCK_MAX_EVENT + 1)
-#define ECSOCKET_RECEIVEDPACKET	(GSOCK_MAX_EVENT + 2)
-#define ECSOCKET_RECEIVEDDATA	(GSOCK_MAX_EVENT + 3)
-
-#define	EC_SOCKET_HANDLER	(wxID_HIGHEST + 644)
-
-class CECSocketHandler: public wxEvtHandler {
- public:
-        CECSocketHandler() {};
-
- private:
-        void SocketHandler(wxSocketEvent& event);
-
-        DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(CECSocketHandler, wxEvtHandler)
-        EVT_SOCKET(EC_SOCKET_HANDLER, CECSocketHandler::SocketHandler)
-END_EVENT_TABLE()
-
-void CECSocketHandler::SocketHandler(wxSocketEvent& event)
-{
-        CECSocket *socket = dynamic_cast<CECSocket *>(event.GetSocket());
-        wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
-
-        switch(event.GetSocketEvent()) {
-        case wxSOCKET_LOST:
-            socket->OnLost();
-            break;
-        case wxSOCKET_INPUT:
-            socket->OnInput();
-            break;
-        case wxSOCKET_OUTPUT:
-            socket->OnOutput();
-            break;
-        case wxSOCKET_CONNECTION:
-            socket->OnConnect();
-            break;
-            
-        default:
-            // Nothing should arrive here...
-            wxFAIL;
-            break;
-        }
-}
-
-static CECSocketHandler	g_ECSocketHandler;
-
 
 //
 // CECSocket API - User interface functions
@@ -214,7 +163,6 @@ static CECSocketHandler	g_ECSocketHandler;
 
 CECSocket::CECSocket(bool use_events)
 :
-wxSocketClient(),
 m_use_events(use_events),
 m_output_queue(),
 m_in_ptr(EC_SOCKET_BUFFER_SIZE),
@@ -228,16 +176,7 @@ m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS),
 m_bytes_needed(8),
 m_in_header(true)
 {
-	if ( use_events ) {
-		SetEventHandler(g_ECSocketHandler, EC_SOCKET_HANDLER);
-		SetNotify(wxSOCKET_CONNECTION_FLAG | wxSOCKET_INPUT_FLAG |
-			  wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
-		Notify(true);
-		SetFlags(wxSOCKET_NOWAIT);
-	} else {
-		SetFlags(wxSOCKET_WAITALL | wxSOCKET_BLOCK);
-		Notify(false);
-	}
+	
 }
 
 CECSocket::~CECSocket()
@@ -249,18 +188,18 @@ CECSocket::~CECSocket()
 	}
 }
 
-bool CECSocket::Connect(wxSockAddress& address)
+bool CECSocket::ConnectSocket(uint32_t ip, uint16_t port)
 {
-	bool res = wxSocketClient::Connect(address, false);
+	bool res = InternalConnect(ip, port, false);
 	if ( !m_use_events ) {
-		res = WaitOnConnect(10, 0);
+		res = WaitSocketConnect(10, 0);
 		if ( res ) {
 			OnConnect();
 		} else {
 			OnLost();
 		}
 	}
-	return !Error();
+	return !SocketError();
 }
 
 void CECSocket::SendPacket(const CECPacket *packet)
@@ -276,7 +215,7 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 	SendPacket(packet);
 	
 	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32_t));
-	if (Error() && !WouldBlock()) {
+	if (SocketError() && !WouldBlock()) {
 		OnError();
 		return 0;
 	}
@@ -290,7 +229,7 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 		m_curr_rx_data.reset(new CQueuedData(m_curr_packet_len));
 	}
 	m_curr_rx_data->ReadFromSocketAll(this, m_curr_packet_len);
-	if (Error() && !WouldBlock()) {
+	if (SocketError() && !WouldBlock()) {
 		OnError();
 		return 0;
 	}
@@ -301,29 +240,29 @@ const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 
 std::string CECSocket::GetLastErrorMsg()
 {
-	int code = LastError();
+	int code = InternalGetLastError();
 	switch(code) {
-		case wxSOCKET_NOERROR:
+		case EC_ERROR_NOERROR:
 			return "No error happened";
-		case wxSOCKET_INVOP:
+		case EC_ERROR_INVOP:
 			return "Invalid operation";
-		case wxSOCKET_IOERR:
+		case EC_ERROR_IOERR:
 			return "Input/Output error";
-		case wxSOCKET_INVADDR:
+		case EC_ERROR_INVADDR:
 			return "Invalid address passed to wxSocket";
-		case wxSOCKET_INVSOCK:
+		case EC_ERROR_INVSOCK:
 			return "Invalid socket (uninitialized)";
-		case wxSOCKET_NOHOST:
+		case EC_ERROR_NOHOST:
 			return "No corresponding host";
-		case wxSOCKET_INVPORT:
+		case EC_ERROR_INVPORT:
 			return "Invalid port";
-		case wxSOCKET_WOULDBLOCK:
+		case EC_ERROR_WOULDBLOCK:
 			return "The socket is non-blocking and the operation would block";
-		case wxSOCKET_TIMEDOUT:
+		case EC_ERROR_TIMEDOUT:
 			return "The timeout for this operation expired";
-		case wxSOCKET_MEMERR:
+		case EC_ERROR_MEMERR:
 			return "Memory exhausted";
-		case wxSOCKET_DUMMY:
+		case EC_ERROR_DUMMY:
 			return "Dummy code - should not happen";
 	}
 	ostringstream error_string;
@@ -342,11 +281,6 @@ void CECSocket::OnLost()
 {
 }
 
-void CECSocket::Destroy()
-{
-	wxSocketBase::Destroy();
-}
-
 //
 // Event handlers
 //
@@ -363,16 +297,15 @@ void CECSocket::OnInput()
 		} else {
 			return;
 		}
-		if ( Error() ) {
-			if (GotError() && !WouldBlock()) {
-				OnError();
-				// socket already disconnected in this point
-				m_curr_rx_data.reset(0);
-				return;
-			}
+		if (SocketError() && !WouldBlock()) {
+			OnError();
+			// socket already disconnected in this point
+			m_curr_rx_data.reset(0);
+			return;
 		}
 	} while ( m_bytes_needed && bytes_rx );
-	bytes_rx = LastCount();
+	
+	bytes_rx = GetLastCount();
 	m_bytes_needed -= bytes_rx;
 
 	if ( !m_bytes_needed ) {
@@ -385,7 +318,7 @@ void CECSocket::OnInput()
 			m_bytes_needed = m_curr_packet_len;
 			// packet bigger that 16Mb looks more like broken request
 			if ( m_bytes_needed > 16*1024*1024 ) {
-				wxSocketBase::Close();
+				CloseSocket();
 				return;
 			}
 			if ( !m_curr_rx_data.get() || (m_curr_rx_data->GetLength() < (m_bytes_needed+8)) ) {
@@ -416,12 +349,12 @@ void CECSocket::OnOutput()
 			m_output_queue.pop_front();
 			delete data;
 		}
-		if (Error()) {
-			if (WouldBlock() || !GotError()) {
+		if (SocketError()) {
+			if (WouldBlock()) {
 				if ( m_use_events ) {
 					return;
 				} else {
-					if ( !WaitForWrite(10, 0) ) {
+					if ( !WaitSocketWrite(10, 0) ) {
 						if (WouldBlock()) {
 							continue;
 						} else {
@@ -510,7 +443,7 @@ bool CECSocket::ReadNumber(void *buffer, size_t len)
 		if (utf8_mbtowc(&wc, mb, 6) == -1) return false;	// Invalid UTF-8 code sequence
 		switch (len) {
 			case 1: PokeUInt8( buffer,  wc ); break;
-			case 2:	RawPokeUInt16( buffer, wc ); break;
+			case 2: RawPokeUInt16( buffer, wc ); break;
 			case 4: RawPokeUInt32( buffer, wc ); break;
 		}
 	} else {
@@ -574,7 +507,6 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 	} else {
 		// using uncompressed buffered i/o
 		return ReadBufferFromSocket(buffer, len) == len;
-		return true;
 	}
 }
 
@@ -647,7 +579,7 @@ bool CECSocket::FlushBuffers()
 
 void CECSocket::WritePacket(const CECPacket *packet)
 {
-	if (Error() && (LastError() != wxSOCKET_NOERROR)) {
+	if (SocketError()) {
 		return;
 	}
 
@@ -720,7 +652,7 @@ const CECPacket *CECSocket::ReadPacket()
 	if ( ((flags & 0x60) != 0x20) || (flags & EC_FLAG_UNKNOWN_MASK) ) {
 		// Protocol error - other end might use an older protocol
 		cout << "ReadPacket: packet have invalid flags " << flags << endl;
-		Close();
+		CloseSocket();
 		return 0;
 	}
 
@@ -736,7 +668,7 @@ const CECPacket *CECSocket::ReadPacket()
 		if (zerror != Z_OK) {
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib init" << endl;
-			Close();
+			CloseSocket();
 			return 0;
 		}
 	}
@@ -749,7 +681,7 @@ const CECPacket *CECSocket::ReadPacket()
 		cout << "ReadPacket: error " << packet->m_error << "in packet read" << endl;
 		delete packet;
 		packet = NULL;
-		Close();
+		CloseSocket();
 	}
 
 	if (flags & EC_FLAG_ZLIB) {
@@ -757,7 +689,7 @@ const CECPacket *CECSocket::ReadPacket()
 		if ( zerror != Z_OK ) {
 			ShowZError(zerror, &m_z);
 			cout << "ReadPacket: failed zlib free" << endl;
-			Close();
+			CloseSocket();
 		}
 	}
 
