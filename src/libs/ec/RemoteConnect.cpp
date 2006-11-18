@@ -57,7 +57,7 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 
 CRemoteConnect::CRemoteConnect(wxEvtHandler* evt_handler)
 :
-CECSocket(evt_handler != 0),
+CECMuleSocket(evt_handler != 0),
 m_ec_state(EC_INIT),
 m_req_fifo(),
 // Give application some indication about how fast requests are served
@@ -100,7 +100,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 	addr.Hostname(host);
 	addr.Service(port);
 
-	if ( !Connect(addr) ) {
+	if ( !ConnectSocket(addr) ) {
 		return false;
 	}
 	
@@ -191,7 +191,7 @@ bool CRemoteConnect::ConnectionEstablished(const CECPacket *reply) {
 	
 	if (!reply) {
 		m_server_reply = _("EC Connection Failed. Empty reply.");
-		Close();
+		CloseSocket();
 	} else {
 		if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 			const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
@@ -201,10 +201,10 @@ bool CRemoteConnect::ConnectionEstablished(const CECPacket *reply) {
 			} else {
 				m_server_reply = _("ExternalConn: Access denied");
 			}
-			Close();
+			CloseSocket();
 		} else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
 			m_server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
-			Close();
+			CloseSocket();
 		} else {
 			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {
 				m_server_reply = _("Succeeded! Connection established to aMule ") +

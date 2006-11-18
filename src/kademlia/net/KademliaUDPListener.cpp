@@ -65,7 +65,7 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
+#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 1
 
 
 extern wxChar* InvKadKeywordChars;
@@ -1179,7 +1179,6 @@ void CKademliaUDPListener::SendPacket(const CMemFile &data, byte opcode, uint32 
 void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)
 {
 #if THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX
-	#error TOLD YA NOT TO TOUCH THAT LINE!
 	uint32 ip = wxUINT32_SWAP_ALWAYS(kad_ip);
 	printf("Error on %s received from: %s\n",(const char*)unicode2char(place),(const char*)unicode2char(Uint32_16toStringIP_Port(ip,port)));
 	if (data) {
@@ -1192,16 +1191,11 @@ void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_i
 			printf("Ip Matches: %s\n",(const char*)unicode2char((*it)->GetClientFullInfo()));
 		}
 	} else {
-		printf("No ip match, trying to create a client conenction:\n");
-		if (port == 4672) {
-			printf("Trying default port 4662\n");
-			/* Default port, let's guess TCP is 4662 then... */
-			CUpDownClient* client = new CUpDownClient(4662,kad_ip,0,0,NULL,false,false);
-			client->SetConnectionReason(wxT("Error on ") + place);
-			client->TryToConnect(true);
-		} else {
-			printf("Client uses an non-standard port. Can't guess TCP.\n");
-		}
+		printf("No ip match, trying to create a client connection:\n");
+		printf("Trying port %d\n", port - 10);
+		CUpDownClient* client = new CUpDownClient(port-10,kad_ip,0,0,NULL,false,false);
+		client->SetConnectionReason(wxT("Error on ") + place);
+		client->TryToConnect(true);
 	}
 #else
 	// No need for warnings for the rest of us.

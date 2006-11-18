@@ -340,7 +340,7 @@ void CaMuleExternalConnector::TextShell(const wxString &prompt)
 		GetCommand(prompt, buffer, 256);
 		buf = char2unicode(buffer);
 		The_End = Parse_Command(buf);
-	} while ((!The_End) && (m_ECClient->IsConnected()));
+	} while ((!The_End) && (m_ECClient->IsSocketConnected()));
 }
 
 void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion)
@@ -399,9 +399,9 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		m_ECClient->ConnectToCore(m_host, m_port, wxT("foobar"), m_password.Encode(),
 								 ProgName, ProgVersion);
 		
-		m_ECClient->WaitOnConnect(10);
+		m_ECClient->WaitSocketConnect(10);
 
-		if (!m_ECClient->IsConnected()) {
+		if (!m_ECClient->IsSocketConnected()) {
 			// no connection => close gracefully
 			Show(_("Connection Failed. Unable to connect to the specified host\n"));
 		} else {
@@ -409,7 +409,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			// ConnectToCore() already authenticated for us.
 			//m_ECClient->ConnectionEstablished();
 			Show(m_ECClient->GetServerReply()+wxT("\n"));
-			if (m_ECClient->IsConnected()) {
+			if (m_ECClient->IsSocketConnected()) {
 				ShowGreet();
 				Pre_Shell();
 				if (m_KeepQuiet) {
@@ -427,7 +427,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 				Post_Shell();
 			}
 		}
-		m_ECClient->Destroy();
+		m_ECClient->DestroySocket();
 	} else {
 		Show(_("Cannot connect with an empty password.\nYou must specify a password either in config file\nor on command-line, or enter one when asked.\n\nExiting...\n"));
 	}

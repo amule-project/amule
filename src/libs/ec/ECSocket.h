@@ -35,7 +35,20 @@
 #include <zlib.h>			// Needed for packet (de)compression
 #include <inttypes.h>		// Needed for uint32_t
 
-#include <wx/socket.h>		// Needed for wxSocketClient
+enum ECSocketErrors {
+	EC_ERROR_NOERROR,
+	EC_ERROR_INVOP,
+	EC_ERROR_IOERR,
+	EC_ERROR_INVADDR,
+	EC_ERROR_INVSOCK,
+	EC_ERROR_NOHOST,
+	EC_ERROR_INVPORT,
+	EC_ERROR_WOULDBLOCK,
+	EC_ERROR_TIMEDOUT,
+	EC_ERROR_MEMERR,
+	EC_ERROR_DUMMY,
+	EC_ERROR_UNKNOWN
+};
 
 class CECPacket;
 class CQueuedData;
@@ -47,7 +60,7 @@ class CQueuedData;
  * CECSocket takes care of the transmission of EC packets
  */
 
-class CECSocket : public wxSocketClient {
+class CECSocket{
 	friend class CECPacket;
 	friend class CECTag;
 
@@ -79,21 +92,9 @@ public:
 	CECSocket(bool use_events);
 	virtual ~CECSocket();
 
-	bool Connect(wxSockAddress& address);
+	bool ConnectSocket(uint32_t ip, uint16_t port);
 
-	/**
-	 * Destroy socket.
-	 *
-	 * This function does the same as wxSocketBase::Destroy(),
-	 * except that it won't immediately delete the object if it
-	 * can't be scheduled for deletion, instead just marks it as
-	 * being deleted. Use IsDestroying() to check whether the socket
-	 * is marked to be deleted.
-	 *
-	 * @param raiseLostEvent When \c true, OnLost() will be called for
-	 * the first Destroy() call on the socket.
-	 */
-	void Destroy();
+	void CloseSocket() { InternalClose(); }
 
 	/**
 	 * Sends an EC packet and returns immediately.
@@ -189,10 +190,22 @@ public:
 	void OnInput();
 	void OnOutput();
 
-	// Virtual
- 	virtual bool	WouldBlock() { return (LastError() == wxSOCKET_WOULDBLOCK); }
-	virtual bool GotError() { return (LastError() != wxSOCKET_NOERROR); }
+	bool WouldBlock() { return InternalGetLastError() == EC_ERROR_WOULDBLOCK; } 
+	bool GotError() { return InternalGetLastError() != EC_ERROR_NOERROR; } 
 
+	void SocketRead(void* ptr, uint32_t len) { InternalRead(ptr,len); }
+	void SocketWrite(const void* ptr, uint32_t len) { InternalWrite(ptr,len); }
+	bool SocketError() { return InternalError() && GotError(); }
+
+	uint32_t GetLastCount() { return InternalLastCount(); }
+	bool WaitSocketConnect(long secs = -1, long msecs = 0) { return InternalWaitOnConnect(secs,msecs); }
+	bool WaitSocketWrite(long secs = -1, long msecs = 0) { return InternalWaitForWrite(secs,msecs); }
+	bool WaitSocketRead(long secs = -1, long msecs = 0) { return InternalWaitForRead(secs,msecs); }	
+	
+	bool IsSocketConnected() { return InternalIsConnected(); }
+	
+	void DestroySocket() { return InternalDestroy(); }
+	
  private:
 	const CECPacket *ReadPacket();
 	void WritePacket(const CECPacket *packet);
@@ -209,7 +222,24 @@ public:
 
 	size_t	ReadBufferFromSocket(void *buffer, size_t len);
 	void	WriteBufferToSocket(const void *buffer, size_t len);
- 
+
+ 	/* virtuals */
+		virtual bool InternalConnect(uint32_t ip, uint16_t port, bool wait) = 0;
+	
+		virtual uint32_t InternalLastCount() = 0;
+		virtual bool InternalWaitOnConnect(long secs = -1, long msecs = 0) = 0;
+		virtual bool InternalWaitForWrite(long secs = -1, long msecs = 0) = 0;
+		virtual bool InternalWaitForRead(long secs = -1, long msecs = 0) = 0;
+	
+		virtual int InternalGetLastError() = 0;
+	
+		virtual void InternalClose() = 0;
+		virtual bool InternalError() = 0;
+		virtual void InternalRead(void* ptr, uint32_t len) = 0;
+		virtual void InternalWrite(const void* ptr, uint32_t len) = 0;
+		
+		virtual bool InternalIsConnected() = 0;
+		virtual void InternalDestroy() = 0;
 };
 
 class CQueuedData {
@@ -261,14 +291,14 @@ class CQueuedData {
 		
 		void WriteToSocket(CECSocket *sock)
 		{
-			sock->Write(m_rd_ptr, m_wr_ptr - m_rd_ptr);
-			m_rd_ptr += sock->LastCount();
+			sock->SocketWrite(m_rd_ptr, m_wr_ptr - m_rd_ptr);
+			m_rd_ptr += sock->GetLastCount();
 		}
 
 		void ReadFromSocket(CECSocket *sock, int len)
 		{
-			sock->Read(m_wr_ptr, len);
-			m_wr_ptr += sock->LastCount();
+			sock->SocketRead(m_wr_ptr, len);
+			m_wr_ptr += sock->GetLastCount();
 		}
 		
 		size_t ReadFromSocketAll(CECSocket *sock, size_t len);
@@ -281,5 +311,3 @@ class CQueuedData {
 };
 
 #endif // ECSOCKET_H
-
-// File_checked_for_headers

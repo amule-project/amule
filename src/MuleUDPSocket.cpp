@@ -183,9 +183,12 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
 {
 	wxCHECK_RET(packet, wxT("Invalid packet."));
-	wxCHECK_RET(port, wxT("Invalid port."));
+	/*wxCHECK_RET(port, wxT("Invalid port."));
 	wxCHECK_RET(IP, wxT("Invalid IP."));
+	*/
 
+	if (!port || !IP) return;
+	
 	if (!Ok()) {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet discarded (socket not Ok): ")) 
 			<< Uint32toStringIP(IP) << wxT(":") << port << wxT(" ") << packet->GetPacketSize()
