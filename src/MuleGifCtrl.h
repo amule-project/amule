@@ -30,7 +30,7 @@
 
 const int GIFTIMERID = 271283;
 
-class wxGIFDecoder;
+class MuleGIFDecoder;
 class wxBitmap;
 
 /**
@@ -120,7 +120,7 @@ private:
 	void OnErase( wxEraseEvent& WXUNUSED(event) ) {}
 
 	//! A pointer to the current gif-animation.
-	wxGIFDecoder*	m_decoder;
+	MuleGIFDecoder*	m_decoder;
 	//! Timer used for the delay between each frame.
 	wxTimer			m_timer;
 	//! Current frame.
