@@ -446,7 +446,7 @@ bool CamuleApp::OnInit()
 		return false;
 	}	
 
-	if ( !cmdline.Found(wxT("i-would-marry-my-mule")) ) {
+	if ( !cmdline.Found(wxT("even-if-lfroen-complains-this-will-stay")) ) {
 		printf("This binary requires you to use the flag --even-if-lfroen-complains-this-will-stay and only if you're very sure of it. Warning: If you're lfroen, you might find this annoying. That pleases me.\n");
 		return false;
 	}
