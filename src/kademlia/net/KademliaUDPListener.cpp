@@ -65,8 +65,7 @@ there client on the eMule forum..
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 1
-
+#define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 
 extern wxChar* InvKadKeywordChars;
 
