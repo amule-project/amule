@@ -71,7 +71,9 @@ private:
 };
 
 #else
-#define MuleGIFDecoder wxGIFDecoder
+class MuleGIFDecoder : public wxGIFDecoder {
+	MuleGIFDecoder(wxInputStream* stream, bool flag) : wxGIFDecoder(stream,flag) {};
+};
 #endif
 
 
