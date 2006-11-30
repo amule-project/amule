@@ -3,6 +3,8 @@
 Trunk
 ----------
 2006-??-??
+	centaur:
+		* OpenBSD patch.
 
 	Vollstrecker:
 		* Added possibility to give the path for output right with

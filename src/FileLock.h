@@ -28,6 +28,7 @@
 
 #include <fcntl.h>
 #include <cerrno>
+#include <unistd.h> // Do_not_auto_remove (Needed for OpenBSD)
 #include <string> // Do_not_auto_remove (g++-4.0.1 except win32)
 
 
