@@ -9081,6 +9081,7 @@ NAMESPACE_END
 #ifdef CRYPTOPP_UNIX_AVAILABLE
 #include <errno.h>
 #include <fcntl.h>
+#include <unistd.h> // Do_not_auto_remove (Needed for OpenBSD)
 #endif
 
 NAMESPACE_BEGIN(CryptoPP)

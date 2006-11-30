@@ -751,11 +751,20 @@ bool CamuleApp::OnInit()
 		// As we cannot ask in amuled, we just update there
 		// Kry TODO: Store server.met URL on preferences and use it here and in GUI.
 		#ifndef AMULE_DAEMON
-		if (wxYES == wxMessageBox(wxString(_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
-				wxString(_("Server list download")), wxYES_NO, (wxWindow*)theApp.amuledlg))
+		if (wxYES == wxMessageBox(
+			wxString(_(
+				"You don't have any server in the server list.\n"
+				"Do you want aMule to download a new list now?")),
+			wxString(_("Server list download")),
+			wxYES_NO,
+			(wxWindow*)theApp.amuledlg))
 		#endif
 		{
-			serverlist->UpdateServerMetFromURL(wxT("http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
+		//workaround amuled crash
+		#ifndef AMULE_DAEMON
+			serverlist->UpdateServerMetFromURL(wxT(
+				"http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
+		#endif
 		}
 	}
 	
