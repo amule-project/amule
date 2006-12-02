@@ -167,22 +167,41 @@ wxString CastItoSpeed(uint32 bytes)
 // Make a time value in seconds suitable for displaying
 wxString CastSecondsToHM(uint64 count, uint16 msecs)
 {
-	
 	if (count < 60) {
 		if (!msecs) {
-			return wxString::Format( wxT("%02") wxLongLongFmtSpec wxT("u "), count) + _("secs");
+			return wxString::Format(
+				wxT("%02") wxLongLongFmtSpec wxT("u "),
+				count) + _("secs");
 		} else {
-			return wxString::Format( wxT("%.3f"), (count + ((float)msecs/1000))) + _("secs");
+			return wxString::Format(
+				wxT("%.3f"),
+				(count + ((float)msecs/1000))) + _("secs");
 		}
-	} else if (count < 3600)
-		return wxString::Format( wxT("%") wxLongLongFmtSpec wxT("u:%02") wxLongLongFmtSpec wxT("u "), 
-			count/60, (count % 60)) + _("mins") ;
-	else if (count < 86400)
-		return wxString::Format( wxT("%") wxLongLongFmtSpec wxT("u:%02") wxLongLongFmtSpec wxT("u "),
-			count/3600, (count % 3600)/60) + _("hours") ;
-	else
-		return wxString::Format( wxT("%") wxLongLongFmtSpec wxT("u %s %02") wxLongLongFmtSpec wxT("u "), 
-			count/86400, _("Days") , (count % 86400) / 3600) + _("hours");
+	} else if (count < 3600) {
+		return wxString::Format(
+			wxT("%")
+			wxLongLongFmtSpec wxT("u:%02")
+			wxLongLongFmtSpec wxT("u "), 
+			count/60,
+			(count % 60)) + _("mins");
+	} else if (count < 86400) {
+		return wxString::Format(
+			wxT("%")
+			wxLongLongFmtSpec wxT("u:%02")
+			wxLongLongFmtSpec wxT("u "),
+			count/3600,
+			(count % 3600)/60) + _("hours");
+	} else {
+		return wxString::Format(
+			wxT("%")
+			wxLongLongFmtSpec wxT("u %s %02")
+			wxLongLongFmtSpec wxT("u:%02")
+			wxLongLongFmtSpec wxT("u "), 
+			count/86400,
+			_("Days"),
+			(count % 86400)/3600,
+			(count % 3600)/60) + _("hours");
+	}
 		
 	return _("Error");
 }

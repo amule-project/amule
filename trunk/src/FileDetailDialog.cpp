@@ -119,7 +119,9 @@ void CFileDetailDialog::UpdateData()
 		m_file->GetAvailablePartCount(),
 		(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
-
+	bufferS = CastSecondsToHM(m_file->GetDlActiveTime());
+	CastChild(IDC_DLACTIVETIME, wxControl)->SetLabel(bufferS);
+	
 	if (m_file->lastseencomplete==0) {
 		bufferS = wxString(_("Unknown")).MakeLower();
 	} else {

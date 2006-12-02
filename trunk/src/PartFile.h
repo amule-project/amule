@@ -196,6 +196,8 @@ public:
 	void	SetAutoDownPriority(bool flag)	{ m_bAutoDownPriority = flag; }
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
+	void	SetActive(bool bActive);
+	uint32	GetDlActiveTime() const;
 	bool	GetInsufficient() const		{ return m_insufficient; }
 	
 	void	CompleteFileEnded(bool errorOccured, const wxString& newname);	
@@ -343,6 +345,8 @@ private:
 	uint32 m_nLastBufferFlushTime;
 
 	uint8	m_category;
+	uint32	m_nDlActiveTime;
+	time_t  m_tActivated;
 	bool	m_is_A4AF_auto;
 
 	uint32	m_LastSourceDropTime;
