@@ -108,7 +108,11 @@ public:
 	 * Returns true if the specified file is on the download-queue.
 	 */
 	bool	IsPartFile(const CKnownFile* file) const;
-
+	
+	/**
+	 * Updates the file's download active time
+	 */
+	void OnConnectionState(bool bConnected);
 	
 	/**
 	 * Starts a new download based on the specified search-result.

@@ -444,15 +444,28 @@ CPartFile* CDownloadQueue::GetFileByIndex(unsigned int index)  const
 
 bool CDownloadQueue::IsPartFile(const CKnownFile* file) const
 {
-	wxMutexLocker lock( m_mutex );
+	wxMutexLocker lock(m_mutex);
 
-	for ( uint16 i = 0; i < m_filelist.size(); i++ ) {
-		if ( file == m_filelist[i] ) {
+	for (uint16 i = 0; i < m_filelist.size(); ++i) {
+		if (file == m_filelist[i]) {
 			return true;
 		}
 	}
 	
 	return false;
+}
+
+
+void CDownloadQueue::OnConnectionState(bool bConnected)
+{
+	wxMutexLocker lock(m_mutex);
+
+	for (uint16 i = 0; i < m_filelist.size(); ++i) {
+		if (	m_filelist[i]->GetStatus() == PS_READY ||
+			m_filelist[i]->GetStatus() == PS_EMPTY) {
+			m_filelist[i]->SetActive(bConnected);
+		}
+	}
 }
 
 

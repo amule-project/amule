@@ -583,6 +583,8 @@ void CamuleDlg::ShowConnectionState()
 	static wxImageList status_arrows(16,16,true,0);
 	static wxMemoryDC bitmap_dc;
 	
+	theApp.downloadqueue->OnConnectionState(theApp.IsConnected());
+	
 	if (!status_arrows.GetImageCount()) {
 		// Generate the image list (This is only done once)
 		for (int t = 0; t < 7; ++t) {

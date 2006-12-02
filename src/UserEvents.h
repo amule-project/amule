@@ -51,13 +51,32 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
  */
 #define USEREVENTS_EVENTLIST() \
 	USEREVENTS_EVENT(DownloadCompleted,	wxTRANSLATE("Download completed"), \
-		USEREVENTS_REPLACE_VAR(wxT("FILE"),	wxTRANSLATE("The full path to the file."),	((CPartFile*)object)->GetFullName() ) \
-		USEREVENTS_REPLACE_VAR(wxT("NAME"),	wxTRANSLATE("The name of the file without path component."),	((CPartFile*)object)->GetFileName() ) \
-		USEREVENTS_REPLACE_VAR(wxT("HASH"),	wxTRANSLATE("The ed2k hash of the file."),	((CPartFile*)object)->GetFileHash().Encode() ) \
-		USEREVENTS_REPLACE_VAR(wxT("SIZE"),	wxTRANSLATE("The size of the file in bytes."),	(wxString)(CFormat(wxT("%llu")) % ((CPartFile*)object)->GetFileSize()) ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("FILE"), \
+			wxTRANSLATE("The full path to the file."), \
+			((CPartFile*)object)->GetFullName() ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("NAME"), \
+			wxTRANSLATE("The name of the file without path component."), \
+			((CPartFile*)object)->GetFileName() ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("HASH"), \
+			wxTRANSLATE("The ed2k hash of the file."), \
+			((CPartFile*)object)->GetFileHash().Encode() ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("SIZE"), \
+			wxTRANSLATE("The size of the file in bytes."), \
+			(wxString)(CFormat(wxT("%llu")) % ((CPartFile*)object)->GetFileSize()) ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("DLACTIVETIME"), \
+			wxTRANSLATE("The size of the file in bytes."), \
+			CastSecondsToHM(((CPartFile*)object)->GetDlActiveTime()) ) \
 	) \
 	USEREVENTS_EVENT(NewChatSession,	wxTRANSLATE("New chat session started"), \
-		USEREVENTS_REPLACE_VAR(wxT("SENDER"),	wxTRANSLATE("Message sender."),	*((wxString*)object) ) \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("SENDER"), \
+			wxTRANSLATE("Message sender."), \
+			*((wxString*)object) ) \
 	)
 
 

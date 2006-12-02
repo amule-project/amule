@@ -57,6 +57,11 @@ Trunk
 		  interface.
 		* GUI to enter a specific bind IP in
 		  "Preferences->Connection->BindAddress".
+		* Resurrected support for the tag FT_DL_ACTIVE_TIME in the met
+		  file. It's value, the download active time, can now be seen
+		  in the file details dialog.
+		* Added the DLACTIVETIME variable to the list of replaced
+		  variables in the DowloadCompleted user event.
 
 --------------------------------------------------------------------------------
 

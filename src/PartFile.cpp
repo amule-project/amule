@@ -258,6 +258,7 @@ void CPartFile::CreatePartFile()
 	m_hashsetneeded = GetED2KPartHashCount();
 	
 	SavePartFile(true);
+	SetActive(theApp.IsConnected());
 }
 
 
@@ -463,6 +464,11 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					// old tags: as long as they are not needed, take the chance to purge them
 					case FT_PERMISSIONS:
 					case FT_KADLASTPUBLISHKEY:
+						break;
+					case FT_DL_ACTIVE_TIME:
+						if (newtag.IsInt()) {
+							m_nDlActiveTime = newtag.GetInt();
+						}
 						break;
 					case FT_CORRUPTEDPARTS: {
 						wxASSERT(m_corrupted_list.empty());
@@ -769,26 +775,26 @@ bool CPartFile::SavePartFile(bool Initial)
 		if (GetLastPublishTimeKadSrc()){
 			++tagcount;
 		}
-
+		
 		if (GetLastPublishTimeKadNotes()){
 			++tagcount;
 		}
-
+		
+		if (GetDlActiveTime()){
+			++tagcount;
+		}
+		
 		file.WriteUInt32(tagcount);
 
 		#warning Kry - Where are lost by coruption and gained by compression?
 		
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
-		CTagString( FT_FILENAME, GetFileName() ).WriteTagToFile( &file, utf8strOptBOM );
-
-		CTagString( FT_FILENAME,		GetFileName()	).WriteTagToFile( &file );	// 1
-
-		CTagIntSized( FT_FILESIZE,		GetFileSize()		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );	// 2
-
-		CTagIntSized( FT_TRANSFERED,	transfered		, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );	// 3
-		
-		CTagInt32( FT_STATUS,		(m_paused?1:0)	).WriteTagToFile( &file );	// 4
+		CTagString(	FT_FILENAME,	GetFileName()).WriteTagToFile( &file, utf8strOptBOM );
+		CTagString(	FT_FILENAME,	GetFileName()).WriteTagToFile( &file );                         // 1
+		CTagIntSized(	FT_FILESIZE,	GetFileSize(), IsLargeFile() ? 64 : 32).WriteTagToFile( &file );// 2
+		CTagIntSized(	FT_TRANSFERED,	transfered, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );   // 3
+		CTagInt32(	FT_STATUS,	(m_paused?1:0)).WriteTagToFile( &file );                        // 4
 
 		if ( IsAutoDownPriority() ) {
 			CTagInt32( FT_DLPRIORITY,	(uint8)PR_AUTO	).WriteTagToFile( &file );	// 5
@@ -808,15 +814,11 @@ bool CPartFile::SavePartFile(bool Initial)
 			CTagInt32( FT_OLDULPRIORITY,	GetUpPriority() ).WriteTagToFile( &file );	// 9
 		}
 	
-		CTagInt32( FT_CATEGORY, 		m_category		).WriteTagToFile( &file ); 	// 10
-		
-		CTagInt32( FT_ATTRANSFERED,	statistic.GetAllTimeTransfered() & 0xFFFFFFFF	).WriteTagToFile( &file );	// 11
-		
-		CTagInt32( FT_ATTRANSFEREDHI,	statistic.GetAllTimeTransfered() >>32		).WriteTagToFile( &file );	// 12
-		
-		CTagInt32( FT_ATREQUESTED,	statistic.GetAllTimeRequests()		).WriteTagToFile( &file );	// 13
-		
-		CTagInt32( FT_ATACCEPTED,	statistic.GetAllTimeAccepts()		).WriteTagToFile( &file );	// 14
+		CTagInt32(FT_CATEGORY,       m_category).WriteTagToFile( &file );                       // 10
+		CTagInt32(FT_ATTRANSFERED,   statistic.GetAllTimeTransfered() & 0xFFFFFFFF).WriteTagToFile( &file );// 11
+		CTagInt32(FT_ATTRANSFEREDHI, statistic.GetAllTimeTransfered() >>32).WriteTagToFile( &file );// 12
+		CTagInt32(FT_ATREQUESTED,    statistic.GetAllTimeRequests()).WriteTagToFile( &file );	// 13
+		CTagInt32(FT_ATACCEPTED,     statistic.GetAllTimeAccepts()).WriteTagToFile( &file );	// 14
 
 		// currupt part infos
 		if (not m_corrupted_list.empty()) {
@@ -841,13 +843,17 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 		
 		if (GetLastPublishTimeKadSrc()){
-			CTagInt32( FT_KADLASTPUBLISHSRC,	GetLastPublishTimeKadSrc()).WriteTagToFile(&file); // 15? 
+			CTagInt32(FT_KADLASTPUBLISHSRC, GetLastPublishTimeKadSrc()).WriteTagToFile(&file); // 15? 
 		}
 		
 		if (GetLastPublishTimeKadNotes()){
-			CTagInt32( FT_KADLASTPUBLISHNOTES,	GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
+			CTagInt32(FT_KADLASTPUBLISHNOTES, GetLastPublishTimeKadNotes()).WriteTagToFile(&file); // 16? 
 		}		
 		
+		if (GetDlActiveTime()){
+			CTagInt32(FT_DL_ACTIVE_TIME, GetDlActiveTime()).WriteTagToFile(&file); // 17
+		}
+
 		for (uint32 j = 0; j < (uint32)m_taglist.size();++j) {
 			m_taglist[j].WriteTagToFile(&file);
 		}
@@ -2432,6 +2438,8 @@ void CPartFile::StopPausedFile()
 
 void CPartFile::PauseFile(bool bInsufficient)
 {
+	SetActive(false);
+	
 	if ( status == PS_COMPLETE || status == PS_COMPLETING ) {
 		return;
 	}
@@ -2441,7 +2449,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 		// If we were in the middle of searching, reset timer so they can resume searching.
 		m_LastSearchTimeKad = 0; 
 	}
-	
+
 	m_iLastPausePurge = time(NULL);
 	
 	theApp.downloadqueue->RemoveLocalServerRequest(this);
@@ -2490,6 +2498,7 @@ void CPartFile::ResumeFile()
 		
 	m_lastsearchtime = 0;
 	SetStatus(status);
+	SetActive(theApp.IsConnected());
 
 	if (m_gaplist.empty() and (GetStatus() == PS_ERROR)) {
 		// The file has already been hashed at this point
@@ -3622,9 +3631,6 @@ void CPartFile::GetRatingAndComments(FileRatingList& list)
 void CPartFile::Init()
 {
 	m_showSources = false;
-
-	m_nLastBufferFlushTime = 0;
-
 	m_lastsearchtime = 0;
 	lastpurgetime = ::GetTickCount();
 	m_paused = false;
@@ -3669,6 +3675,8 @@ void CPartFile::Init()
 	m_iTotalPacketsSavedDueToICH = 0;
 	m_category = 0;
 	m_lastRefreshedDLDisplay = 0;
+	m_nDlActiveTime = 0;
+	m_tActivated = 0;
 	m_is_A4AF_auto = false;
 	m_localSrcReqQueued = false;
 	m_nCompleteSourcesTime = time(NULL);
@@ -3905,11 +3913,40 @@ void CPartFile::SetFileName(const wxString& pszFileName)
 }
 
 
+void CPartFile::SetActive(bool bActive)
+{
+	time_t tNow = time(NULL);
+	if (bActive) {
+		if (theApp.IsConnected()) {
+			if (m_tActivated == 0) {
+				m_tActivated = tNow;
+			}
+		}
+	} else {
+		if (m_tActivated != 0) {
+			m_nDlActiveTime += tNow - m_tActivated;
+			m_tActivated = 0;
+		}
+	}
+}
+
+
+uint32 CPartFile::GetDlActiveTime() const
+{
+	uint32 nDlActiveTime = m_nDlActiveTime;
+	if (m_tActivated != 0) {
+		nDlActiveTime += time(NULL) - m_tActivated;
+	}
+	return nDlActiveTime;
+}
+
+
 uint16 CPartFile::GetMaxSources() const
 {
 	// This is just like this, while we don't import the private max sources per file
 	return thePrefs::GetMaxSourcePerFile();
 }
+
 
 uint16 CPartFile::GetMaxSourcePerFileSoft() const
 {
