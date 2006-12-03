@@ -487,6 +487,7 @@ public:
 	CPartFile* GetFileByIndex(unsigned int idx) { return GetByIndex(idx); }
 	
 	bool IsPartFile(const CKnownFile* totest) const;
+	void OnConnectionState(bool bConnected);
 	
 	//
 	// User actions

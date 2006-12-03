@@ -1050,6 +1050,12 @@ bool CDownQueueRem::IsPartFile(const CKnownFile *) const
 	return true;
 }
 
+
+void CDownQueueRem::OnConnectionState(bool)
+{
+}
+
+
 CPartFile *CDownQueueRem::CreateItem(CEC_PartFile_Tag *tag)
 {
 	CPartFile *file = new CPartFile(tag);
