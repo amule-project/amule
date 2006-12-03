@@ -116,6 +116,7 @@ public:
 	virtual const wxString&	GetFileName() const	{ return m_strFileName; }
 	const CMD4Hash&	GetFileHash() const		{ return m_abyFileHash; }
 
+	virtual uint32	GetDlActiveTime() const { return 0; }
 	uint64	GetFileSize() const	{ return m_nFileSize;}
 	bool	IsLargeFile() const	{ return m_nFileSize > (uint64)OLD_MAX_FILE_SIZE; }
 
