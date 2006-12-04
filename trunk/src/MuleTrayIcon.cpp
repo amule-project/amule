@@ -251,7 +251,28 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		CurrentIcon.CopyFromBitmap(TempBMP);
 #endif
 		
+#if defined(__WXMAC_CARBON__)
+		IconWithSpeed.DrawIcon(CurrentIcon, 0, 0);
+#elif defined(__WXMSW__)
+		#warning This code must be checked by someone using MSW
+		IconWithSpeed.DrawIcon(CurrentIcon, 0, 0);
+#elif defined(__WXCOCOA__)
+		#warning This code must be checked by someone using COCOA
+		IconWithSpeed.DrawIcon(CurrentIcon, 0, 0);
+#elif defined(__WXPM__)
+		#warning This code must be checked by someone using OS/2
+		IconWithSpeed.DrawIcon(CurrentIcon, 0, 0);
+#else
+		// For the following wx implementations, wxIcon is
+		// derived from wxBitmap:
+		// __WXPALMOS__
+		// __WXMOTIF__
+		// __WXGTK__
+		// __WXX11__
+		// __WXMGL__
+		// __WXMAC_CLASSIC__
 		IconWithSpeed.SelectObject(CurrentIcon);
+#endif
 		
 		// Speed bar is: centered, taking 80% of the icon heigh, and 
 		// right-justified taking a 10% of the icon width.
