@@ -197,7 +197,7 @@ public:
 	void	UpdateAutoDownPriority();
 	uint8	GetDownPriority() const		{ return m_iDownPriority; }
 	void	SetActive(bool bActive);
-	virtual uint32	GetDlActiveTime() const;
+	uint32	GetDlActiveTime() const;
 	bool	GetInsufficient() const		{ return m_insufficient; }
 	
 	void	CompleteFileEnded(bool errorOccured, const wxString& newname);	

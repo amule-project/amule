@@ -62,6 +62,9 @@ Trunk
 		  in the file details dialog.
 		* Added the DLACTIVETIME variable to the list of replaced
 		  variables in the DowloadCompleted user event.
+		* MuleTrayIcon.cpp was not compiling for __WXMAC_CARBON__.
+		  Seems to be fixed, but must be the code now has a lot of
+		  ifdefs and must be tested on other platforms.
 
 --------------------------------------------------------------------------------
 

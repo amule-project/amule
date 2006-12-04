@@ -3862,6 +3862,35 @@ bool CPartFile::IsComplete(uint64 start, uint64 end)
 	return true;
 }
 
+
+void CPartFile::SetActive(bool bActive)
+{
+	time_t tNow = time(NULL);
+	if (bActive) {
+		if (theApp.IsConnected()) {
+			if (m_tActivated == 0) {
+				m_tActivated = tNow;
+			}
+		}
+	} else {
+		if (m_tActivated != 0) {
+			m_nDlActiveTime += tNow - m_tActivated;
+			m_tActivated = 0;
+		}
+	}
+}
+
+
+uint32 CPartFile::GetDlActiveTime() const
+{
+	uint32 nDlActiveTime = m_nDlActiveTime;
+	if (m_tActivated != 0) {
+		nDlActiveTime += time(NULL) - m_tActivated;
+	}
+	return nDlActiveTime;
+}
+
+
 #ifndef CLIENT_GUI
 
 uint8 CPartFile::GetStatus(bool ignorepause) const
@@ -3910,34 +3939,6 @@ void CPartFile::SetFileName(const wxString& pszFileName)
 	}
 
 	UpdateDisplayedInfo(true);
-}
-
-
-void CPartFile::SetActive(bool bActive)
-{
-	time_t tNow = time(NULL);
-	if (bActive) {
-		if (theApp.IsConnected()) {
-			if (m_tActivated == 0) {
-				m_tActivated = tNow;
-			}
-		}
-	} else {
-		if (m_tActivated != 0) {
-			m_nDlActiveTime += tNow - m_tActivated;
-			m_tActivated = 0;
-		}
-	}
-}
-
-
-uint32 CPartFile::GetDlActiveTime() const
-{
-	uint32 nDlActiveTime = m_nDlActiveTime;
-	if (m_tActivated != 0) {
-		nDlActiveTime += time(NULL) - m_tActivated;
-	}
-	return nDlActiveTime;
 }
 
 
