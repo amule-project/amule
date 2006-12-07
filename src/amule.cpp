@@ -939,6 +939,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 
 	// Create the UDP socket.
 	// Used for extended eMule protocol, Queue Rating, File Reask Ping.
+	// Also used for Kademlia.
 	// Default is port 4672.
 	myaddr[3] = myaddr[1];
 	myaddr[3].Service(thePrefs::GetUDPPort());
