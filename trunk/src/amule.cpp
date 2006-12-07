@@ -883,6 +883,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	// Create the address where we are going to listen
 	// TODO: read this from configuration file
 	amuleIPV4Address myaddr[4];
+	std::vector<CUPnPPortMapping> upnpMappings(4);
 
 	// Create the External Connections Socket.
 	// Default is 4712.
@@ -892,6 +893,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	}
 	myaddr[0].Service(thePrefs::ECPort());
 	ECServerHandler = new ExternalConn(myaddr[0], msg);
+	upnpMappings[0] = CUPnPPortMapping(
+		myaddr[0].Service(),
+		wxT("TCP"),
+		wxT("aMule TCP External Connections Socket"));
 
 	// Create the UDP socket TCP+3.
 	// Used for source asking on servers.
@@ -901,6 +906,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	wxString ip = myaddr[1].IPAddress();
 	myaddr[1].Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr[1]);
+	upnpMappings[1] = CUPnPPortMapping(
+		myaddr[1].Service(),
+		wxT("UDP"),
+		wxT("aMule UDP socket (TCP+3)"));
 
 	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
 		% ip % ((unsigned int)thePrefs::GetPort() + 3u);
@@ -912,6 +921,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[2] = myaddr[1];
 	myaddr[2].Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr[2]);
+	upnpMappings[2] = CUPnPPortMapping(
+		myaddr[2].Service(),
+		wxT("TCP"),
+		wxT("aMule TCP Listen Socket"));
 	
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
 		% ip % (unsigned int)(thePrefs::GetPort());
@@ -944,6 +957,10 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[3] = myaddr[1];
 	myaddr[3].Service(thePrefs::GetUDPPort());
 	clientudp = new CClientUDPSocket(myaddr[3], thePrefs::GetProxyData());
+	upnpMappings[3] = CUPnPPortMapping(
+		myaddr[3].Service(),
+		wxT("UDP"),
+		wxT("aMule UDP Extended eMule Socket"));
 	
 	if (!thePrefs::IsUDPDisabled()) {
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
@@ -956,7 +973,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	if (thePrefs::UPnPEnabled()) {
 		try {
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
-			m_upnp->AcquirePortList(myaddr, 4);
+			m_upnp->AcquirePortList(upnpMappings);
 		} catch(CUPnPException &e) {
 			AddLogLineM(true, e.what());
 			AddDebugLogLineM(true, logUPnP, e.what());

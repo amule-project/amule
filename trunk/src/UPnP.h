@@ -53,7 +53,27 @@ public:
 };
 
 
-class amuleIPV4Address;
+class CUPnPPortMapping
+{
+private:
+	wxString m_port;
+	wxString m_protocol;
+	wxString m_description;
+	
+public:
+	CUPnPPortMapping(
+		int port = 0,
+		const wxString &protocol = wxEmptyString,
+		const wxString &description = wxEmptyString);
+	~CUPnPPortMapping() {}
+
+	const wxString getPort() const
+		{ return m_port; }
+	const wxString &getProtocol() const
+		{ return m_protocol; }
+	const wxString &getDescription() const
+		{ return m_description; }
+};
 
 
 class CDynamicLibHandle
@@ -565,7 +585,8 @@ private:
 public:
 	CUPnPControlPoint(unsigned short udpPort);
 	~CUPnPControlPoint();
-	bool AcquirePortList(const amuleIPV4Address portArray[], int n);
+	bool AcquirePortList(
+		std::vector<CUPnPPortMapping> &upnpPortMapping);
 	void Subscribe(CUPnPService &service);
 	void Unsubscribe(CUPnPService &service);
 	
