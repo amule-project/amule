@@ -666,7 +666,7 @@ bool CUPnPService::Execute(
 		m_SCPD->GetActionList().find(ActionName);
 	if (itAction == m_SCPD->GetActionList().end()) {
 		msg << wxT("Invalid action name '") << ActionName <<
-			wxT("' for service '") << GetServiceId() << wxT("'.");
+			wxT("' for service '") << GetServiceType() << wxT("'.");
 		AddDebugLogLineM(false, logUPnP, msg);
 		return false;
 	}
@@ -680,7 +680,7 @@ bool CUPnPService::Execute(
 		if (itArg == action.GetArgumentList().end()) {
 			msg << wxT("Invalid argument name '") << ArgValue[i].GetArgument() <<
 				wxT("' for action '") << action.GetName() <<
-				wxT("' for service '") << GetServiceId() << wxT("'.");
+				wxT("' for service '") << GetServiceType() << wxT("'.");
 			AddDebugLogLineM(false, logUPnP, msg);
 			return false;
 		}
@@ -689,7 +689,7 @@ bool CUPnPService::Execute(
 			msg << wxT("Invalid direction for argument '") <<
 				ArgValue[i].GetArgument() <<
 				wxT("' for action '") << action.GetName() <<
-				wxT("' for service '") << GetServiceId() << wxT("'.");
+				wxT("' for service '") << GetServiceType() << wxT("'.");
 			AddDebugLogLineM(false, logUPnP, msg);
 			return false;
 		}
@@ -704,7 +704,7 @@ bool CUPnPService::Execute(
 					relatedStateVariableName <<
 					wxT("' for argument '") << argument.GetName() <<
 					wxT("' for action '") << action.GetName() <<
-					wxT("' for service '") << GetServiceId() << wxT("'.");
+					wxT("' for service '") << GetServiceType() << wxT("'.");
 				AddDebugLogLineM(false, logUPnP, msg);
 				return false;
 			}
@@ -716,7 +716,7 @@ bool CUPnPService::Execute(
 					wxT("' for state variable '") << relatedStateVariableName <<
 					wxT("' for argument '") << argument.GetName() <<
 					wxT("' for action '") << action.GetName() <<
-					wxT("' for service '") << GetServiceId() << wxT("'.");
+					wxT("' for service '") << GetServiceType() << wxT("'.");
 				AddDebugLogLineM(false, logUPnP, msg);
 				return false;
 			}
@@ -741,7 +741,7 @@ bool CUPnPService::Execute(
 			int ret = m_upnpLib.m_UpnpAddToAction(
 				&ActionDoc,
 				unicode2char(action.GetName()),
-				unicode2char(GetServiceId()),
+				unicode2char(GetServiceType()),
 				unicode2char(ArgValue[i].GetArgument()),
 				unicode2char(ArgValue[i].GetValue()));
 			if (ret != UPNP_E_SUCCESS) {
@@ -753,7 +753,7 @@ bool CUPnPService::Execute(
 	} else {
 		ActionDoc = m_upnpLib.m_UpnpMakeAction(
 			unicode2char(action.GetName()),
-			unicode2char(GetServiceId()),
+			unicode2char(GetServiceType()),
 			0, NULL);
 		if (!ActionDoc) {
 			msg << wxT("Error: m_UpnpMakeAction returned NULL.");
@@ -766,7 +766,7 @@ bool CUPnPService::Execute(
 	m_upnpLib.m_UpnpSendActionAsync(
 		m_UPnPControlPoint.GetUPnPClientHandle(),
 		unicode2char(GetAbsControlURL()),
-		unicode2char(GetServiceId()),
+		unicode2char(GetServiceType()),
 		NULL, ActionDoc,
 		static_cast<Upnp_FunPtr>(&CUPnPControlPoint::Callback),
 		NULL);
@@ -777,7 +777,7 @@ bool CUPnPService::Execute(
 	int ret = m_upnpLib.m_UpnpSendAction(
 		m_UPnPControlPoint.GetUPnPClientHandle(),
 		unicode2char(GetAbsControlURL()),
-		unicode2char(GetServiceId()),
+		unicode2char(GetServiceType()),
 		NULL, ActionDoc, &RespDoc);
 	if (ret != UPNP_E_SUCCESS) {
 		m_upnpLib.processUPnPErrorMessage(
