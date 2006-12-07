@@ -33,8 +33,6 @@
 #include <dlfcn.h>				// For dlopen(), dlsym(), dlclose()
 
 
-#include "amuleIPV4Address.h"                  // For amuleIPV4Address // Do_not_auto_remove
-
 #ifdef __GNUC__
 	#if __GNUC__ >= 4
 		#define REINTERPRET_CAST(x)	reinterpret_cast<x>
@@ -44,6 +42,18 @@
 	// Let's hope that function pointers are equal in size to data pointers
 	#define REINTERPRET_CAST(x)	(x)
 #endif
+
+
+CUPnPPortMapping::CUPnPPortMapping(
+	int port,
+	const wxString &protocol,
+	const wxString &description)
+:
+m_port(wxString::Format(wxT("%i"), port)),
+m_protocol(protocol),
+m_description(description)
+{
+}
 
 
 CDynamicLibHandle::CDynamicLibHandle(const char *libname)
@@ -1002,15 +1012,8 @@ CUPnPControlPoint::~CUPnPControlPoint()
 }
 
 
-/**
- * portArray[0]: TCP (EC)
- * portArray[1]: UDP (TCP+3)
- * portArray[2]: TCP (TCP)
- * portArray[3]: UDP (Extended eMule)
- */
 bool CUPnPControlPoint::AcquirePortList(
-	const amuleIPV4Address portArray[],
-	int n)
+	std::vector<CUPnPPortMapping> &upnpPortMapping)
 {
 	wxString msg;
 	if (!GetWanServiceDetected()) {
@@ -1022,44 +1025,52 @@ bool CUPnPControlPoint::AcquirePortList(
 		return false;
 	}
 	
+	int n = upnpPortMapping.size();
 	bool ok = false;
-	char *protocol[4] = {
-		"TCP",
-		"UDP",
-		"TCP",
-		"UDP",
-	};
+
+	// Check the number of port mappings before
+	wxString PortMappingNumberOfEntries =
+		m_WanService->GetStateVariable(
+			wxT("PortMappingNumberOfEntries"));
+	unsigned long OldNumberOfEntries;
+	PortMappingNumberOfEntries.ToULong(&OldNumberOfEntries);
 	
+	// Get an IP address. The UPnP server one must do.
+	wxString ipAddress(char2unicode(
+		m_upnpLib.m_UpnpGetServerIpAddress()));
+	wxString port;
+	
+	// Start building the action
 	wxString actionName(wxT("AddPortMapping"));
 	std::vector<CUPnPArgumentValue> argval(8);
+	
+	// Action parameters
 	argval[0].SetArgument(wxT("NewRemoteHost"));
 	argval[0].SetValue(wxT(""));
 	argval[1].SetArgument(wxT("NewExternalPort"));
-	//argval[1].SetValue(wxT(""));
+	//argval[1].SetValue();
 	argval[2].SetArgument(wxT("NewProtocol"));
 	//argval[2].SetValue();
 	argval[3].SetArgument(wxT("NewInternalPort"));
 	//argval[3].SetValue();
 	argval[4].SetArgument(wxT("NewInternalClient"));
-	//argval[4].SetValue();
+	argval[4].SetValue(ipAddress);
 	argval[5].SetArgument(wxT("NewEnabled"));
 	argval[5].SetValue(wxT("1"));
 	argval[6].SetArgument(wxT("NewPortMappingDescription"));
-	argval[6].SetValue(wxT("aMule port mapping"));
+	//argval[6].SetValue(wxT("aMule port mapping"));
 	argval[7].SetArgument(wxT("NewLeaseDuration"));
 	argval[7].SetValue(wxT("0"));
-	wxString ipAddress(char2unicode(m_upnpLib.m_UpnpGetServerIpAddress()));
-	wxString port;
 	for (int i = 0; i < n; ++i) {
-		port.Printf(wxT("%u"), portArray[i].Service());
 		// NewExternalPort
-		argval[1].SetValue(port);
+		argval[1].SetValue(upnpPortMapping[i].getPort());
 		// NewProtocol
-		argval[2].SetValue(char2unicode(protocol[i]));
+		argval[2].SetValue(upnpPortMapping[i].getProtocol());
 		// NewInternalPort
-		argval[3].SetValue(port);
-		// NewInternalClient
-		argval[4].SetValue(ipAddress);
+		argval[3].SetValue(upnpPortMapping[i].getPort());
+		// NewPortMappingDescription
+		argval[6].SetValue(upnpPortMapping[i].getDescription());
+		// Execute
 		m_WanService->Execute(actionName, argval);
 	}
 	m_WanService->GetStateVariable(wxT("ConnectionType"));
@@ -1072,12 +1083,14 @@ bool CUPnPControlPoint::AcquirePortList(
 	m_WanService->GetStateVariable(wxT("ExternalIPAddress"));
 	m_WanService->GetStateVariable(wxT("PortMappingNumberOfEntries"));
 	m_WanService->GetStateVariable(wxT("PortMappingLeaseDuration"));
+
+	// Just for testing
 	argval.resize(0);
-//	argval[0].SetArgument(wxT("NewConnectionStatus"));
-//	argval[0].SetValue(wxT(""));
 	m_WanService->Execute(wxT("GetStatusInfo"), argval);
 	
 #if 0
+	// These do not work. Their value must be requested for a
+	// specific port mapping.
 	m_WanService->GetStateVariable(wxT("PortMappingEnabled"));
 	m_WanService->GetStateVariable(wxT("RemoteHost"));
 	m_WanService->GetStateVariable(wxT("ExternalPort"));
@@ -1086,13 +1099,14 @@ bool CUPnPControlPoint::AcquirePortList(
 	m_WanService->GetStateVariable(wxT("InternalClient"));
 	m_WanService->GetStateVariable(wxT("PortMappingDescription"));
 #endif
+	
 	// Not very good, must find a better test
-	wxString PortMappingNumberOfEntries =
+	PortMappingNumberOfEntries =
 		m_WanService->GetStateVariable(
 			wxT("PortMappingNumberOfEntries"));
-	unsigned long numberOfEntries;
-	PortMappingNumberOfEntries.ToULong(&numberOfEntries);
-	ok = numberOfEntries >= 4;
+	unsigned long newNumberOfEntries;
+	PortMappingNumberOfEntries.ToULong(&newNumberOfEntries);
+	ok = newNumberOfEntries - OldNumberOfEntries >= 4;
 	
 	return ok;
 }
