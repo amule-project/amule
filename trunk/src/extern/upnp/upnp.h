@@ -38,7 +38,7 @@
 #include "ixml.h"
 
 #define LINE_SIZE  180
-#define NAME_SIZE 100
+#define NAME_SIZE  256
 
 /// @name Constants, Structures, and Types
 //@{
@@ -191,7 +191,7 @@ typedef enum Upnp_EventType_e Upnp_EventType;
     between a client and a device.  The SID is a string representation of
     a globally unique id (GUID) and should not be modified.
   */
-
+    
 typedef char Upnp_SID[44];
 
 /** All callback functions share the same prototype, documented below.
@@ -283,6 +283,21 @@ struct Upnp_Action_Complete
 
   /** The DOM document describing the result of the action. */
   IXML_Document *ActionResult;
+
+};
+
+/** Returned along with a {\bf UPNP_EVENT_RECEIVED} callback.  */
+
+struct Upnp_Event
+{
+  /** The subscription ID for this subscription. */
+  Upnp_SID Sid;
+
+  /** The event sequence number. */
+  int EventKey;
+
+  /** The DOM tree representing the changes generating the event. */
+  IXML_Document *ChangedVariables;
 
 };
 
