@@ -1174,7 +1174,6 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 			}
 			// Free the XML doc tree
 			upnpCP->m_upnpLib.m_ixmlDocument_free(doc);
-			delete devType;
 		}
 		break;
 	}
