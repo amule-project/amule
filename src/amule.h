@@ -26,11 +26,12 @@
 #ifndef AMULE_H
 #define AMULE_H
 
-#include <wx/app.h>			// Needed for wxApp
+
+#include <wx/app.h>		// Needed for wxApp
 #include <wx/intl.h>		// Needed for wxLocale
 
-#include "Types.h"			// Needed for int32, uint16 and uint64
 
+#include "Types.h"		// Needed for int32, uint16 and uint64
 
 
 class CAbstractFile;
@@ -69,6 +70,7 @@ class CMuleInternalEvent;
 class CCompletionEvent;
 class wxExecuteData;
 class CLoggingEvent;
+class CUPnPPortMapping;
 
 namespace MuleNotify {
 	class CMuleGUIEvent;
@@ -181,6 +183,7 @@ public:
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
 #ifndef __WXMSW__
 	CUPnPControlPoint*	m_upnp;
+	std::vector<CUPnPPortMapping> m_upnpMappings;
 #endif
 	wxLocale m_locale;
 

@@ -290,6 +290,7 @@ bool IsWordSeparator(const wxChar ch)
 {
 	switch (ch) {
 		case '.':
+		case ',':
 		case '(':
 		case ')':
 		case '[':

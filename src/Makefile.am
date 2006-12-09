@@ -156,6 +156,7 @@ core_sources = \
 
 if !SYS_WIN32
 core_sources += UPnP.cpp
+core_sources += UPnPCompatibility.cpp
 endif
 
 gui_sources = \
