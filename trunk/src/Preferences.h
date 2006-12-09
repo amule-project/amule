@@ -334,8 +334,12 @@ public:
 
 	static bool	 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
 	static void		SetAutoConnectStaticOnly(bool val) { s_autoconnectstaticonly = val; }
-	static bool		UPnPEnabled() 			{ return s_UPnPEnabled; }
+	static bool		GetUPnPEnabled()		{ return s_UPnPEnabled; }
 	static void		SetUPnPEnabled(bool val)	{ s_UPnPEnabled = val; }
+	static bool		GetUPnPECEnabled()		{ return s_UPnPECEnabled; }
+	static void		SetUPnPECEnabled(bool val)	{ s_UPnPECEnabled = val; }
+	static bool		GetUPnPWebServerEnabled() 	{ return s_UPnPWebServerEnabled; }
+	static void		SetUPnPWebServerEnabled(bool val){ s_UPnPWebServerEnabled = val; }
 	static uint16		GetUPnPTCPPort()		{ return s_UPnPTCPPort; }
 	static void		SetUPnPTCPPort(uint16 val)	{ s_UPnPTCPPort = val; }
 	static bool		IsManualHighPrio() 		{ return s_bmanualhighprio; }
@@ -541,6 +545,8 @@ protected:
 	static bool	s_autoconnect;
 	static bool	s_autoconnectstaticonly;
 	static bool	s_UPnPEnabled;
+	static bool	s_UPnPECEnabled;
+	static bool	s_UPnPWebServerEnabled;
 	static uint16	s_UPnPTCPPort;
 
 ////////////// PROXY

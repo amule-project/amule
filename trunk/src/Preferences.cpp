@@ -32,7 +32,7 @@
 
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
-#include <wx/textfile.h>			// Do_not_auto_remove (win32)
+#include <wx/textfile.h>		// Do_not_auto_remove (win32)
 #include <wx/config.h>
 
 #include "amule.h"
@@ -81,6 +81,8 @@ bool		CPreferences::s_reconnect;
 bool		CPreferences::s_autoconnect;
 bool		CPreferences::s_autoconnectstaticonly;
 bool		CPreferences::s_UPnPEnabled;
+bool		CPreferences::s_UPnPECEnabled;
+bool		CPreferences::s_UPnPWebServerEnabled;
 uint16		CPreferences::s_UPnPTCPPort;
 bool		CPreferences::s_autoserverlist;
 bool		CPreferences::s_deadserver;
@@ -843,7 +845,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_UPDATESERVERCLIENT,	(new Cfg_Bool( wxT("/eMule/AddServersFromClient"), s_addserversfromclient, true )));
 	NewCfgItem(IDC_SAFESERVERCONNECT,	(new Cfg_Bool( wxT("/eMule/SafeServerConnect"), s_safeServerConnect, false )));
 	NewCfgItem(IDC_AUTOCONNECTSTATICONLY,	(new Cfg_Bool( wxT("/eMule/AutoConnectStaticOnly"), s_autoconnectstaticonly, false )));
-	NewCfgItem(IDC_UPNPENABLED,	(new Cfg_Bool( wxT("/eMule/UPnPEnabled"), s_UPnPEnabled, false )));
+	NewCfgItem(IDC_UPNP_ENABLED,	(new Cfg_Bool( wxT("/eMule/UPnPEnabled"), s_UPnPEnabled, false )));
 	NewCfgItem(IDC_UPNPTCPPORT,	(MkCfg_Int( wxT("/eMule/UPnPTCPPort"), s_UPnPTCPPort, 50000 )));
 	NewCfgItem(IDC_SMARTIDCHECK,	(new Cfg_Bool( wxT("/eMule/SmartIdCheck"), s_smartidcheck, true )));
 	// Enabled networks
@@ -884,7 +886,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_UAP,		(new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true )));
 
 	/**
-	 * External Connections
+	 * Web Server
 	 */
 	NewCfgItem(IDC_OSDIR,		(new Cfg_Str(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir )));
 	NewCfgItem(IDC_ONLINESIG,	(new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false )));
@@ -893,14 +895,21 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_WEB_PASSWD,	(new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword )));
 	NewCfgItem(IDC_WEB_PASSWD_LOW,	(new Cfg_Str_Encrypted( wxT("/WebServer/PasswordLow"), s_sWebLowPassword )));
 	NewCfgItem(IDC_WEB_PORT,	(MkCfg_Int( wxT("/WebServer/Port"), s_nWebPort, 4711 )));
+	NewCfgItem(IDC_UPNP_WEBSERVER_ENABLED,
+					(new Cfg_Bool( wxT("/WebServer/UPnPWebServerEnabled"), s_UPnPWebServerEnabled, false )));
 	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true )));
 	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false )));
 	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 )));
 	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Str( wxT("/WebServer/Template"), s_WebTemplate, wxEmptyString )));
+
+	/**
+	 * External Connections
+	 */
 	NewCfgItem(IDC_EXT_CONN_ACCEPT,	(new Cfg_Bool( wxT("/ExternalConnect/AcceptExternalConnections"), s_AcceptExternalConnections, false )));
 	NewCfgItem(IDC_EXT_CONN_IP,	(new Cfg_Str( wxT("/ExternalConnect/ECAddress"), s_ECAddr, wxEmptyString )));
 	NewCfgItem(IDC_EXT_CONN_TCP_PORT,	(MkCfg_Int( wxT("/ExternalConnect/ECPort"), s_ECPort, 4712 )));
 	NewCfgItem(IDC_EXT_CONN_PASSWD,	(new Cfg_Str_Encrypted( wxT("/ExternalConnect/ECPassword"), s_ECPassword, wxEmptyString )));
+	NewCfgItem(IDC_UPNP_EC_ENABLED,	(new Cfg_Bool( wxT("/ExternalConnect/UPnPECEnabled"), s_UPnPECEnabled, false )));
 
 	/**
 	 * GUI behavior
