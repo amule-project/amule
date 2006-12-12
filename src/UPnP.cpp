@@ -1212,18 +1212,18 @@ bool CUPnPControlPoint::DeletePortMappings(
 // This function is static
 int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void *Cookie)
 {
-fprintf(stderr, "Callback: %d, Cookie: %p\n", EventType, Cookie);
 	std::ostringstream msg;
 	// Somehow, this is unreliable. UPNP_DISCOVERY_ADVERTISEMENT_ALIVE events
 	// happen with a wrong cookie and... boom!
 	// CUPnPControlPoint *upnpCP = static_cast<CUPnPControlPoint *>(Cookie);
 	CUPnPControlPoint *upnpCP = CUPnPControlPoint::s_CtrlPoint;
 	
+	//fprintf(stderr, "Callback: %d, Cookie: %p\n", EventType, Cookie);
 	switch (EventType) {
 	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
-fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
+		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
 	case UPNP_DISCOVERY_SEARCH_RESULT: {
-fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
+		//fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 		// UPnP Discovery
 		msg << "error(UPNP_DISCOVERY_{ADVERTISEMENT_ALIVE,SEARCH_RESULT}): ";
 		struct Upnp_Discovery *d_event = (struct Upnp_Discovery *)Event;
@@ -1263,9 +1263,12 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 				// and the first that enters may not be the one
 				// we are interested in!
 				upnpCP->SetIGWDeviceDetected(true);
-				// Log it
-				msg.str("Internet Gateway Device Detected.");
-				AddLogLineM(true, logUPnP, msg);
+				// Log it if not UPNP_DISCOVERY_ADVERTISEMENT_ALIVE,
+				// we don't want to spam our logs.
+				if (EventType != UPNP_DISCOVERY_ADVERTISEMENT_ALIVE) {
+					msg.str("Internet Gateway Device Detected.");
+					AddLogLineM(true, logUPnP, msg);
+				}
 				// Add the root device to our list
 				upnpCP->AddRootDevice(rootDevice, urlBase,
 					d_event->Location, d_event->Expires);
@@ -1276,7 +1279,7 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 		break;
 	}
 	case UPNP_DISCOVERY_SEARCH_TIMEOUT: {
-fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_TIMEOUT\n");
+		//fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_TIMEOUT\n");
 		// Search timeout
 		msg << "UPNP_DISCOVERY_SEARCH_TIMEOUT.";
 		AddDebugLogLineM(false, logUPnP, msg);
@@ -1287,7 +1290,7 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_TIMEOUT\n");
 		break;
 	}
 	case UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE: {
-fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE\n");
+		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE\n");
 		// UPnP Device Removed
 		struct Upnp_Discovery *dab_event = (struct Upnp_Discovery *)Event;
 		if( dab_event->ErrCode != UPNP_E_SUCCESS ) {
@@ -1305,7 +1308,7 @@ fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE\n");
 		break;
 	}
 	case UPNP_EVENT_RECEIVED: {
-fprintf(stderr, "Callback: UPNP_EVENT_RECEIVED\n");
+		//fprintf(stderr, "Callback: UPNP_EVENT_RECEIVED\n");
 		// Event reveived
 		struct Upnp_Event *e_event = (struct Upnp_Event *)Event;
 		const std::string Sid = e_event->Sid;
@@ -1314,7 +1317,7 @@ fprintf(stderr, "Callback: UPNP_EVENT_RECEIVED\n");
 		break;
 	}
 	case UPNP_CONTROL_ACTION_COMPLETE: {
-fprintf(stderr, "Callback: UPNP_CONTROL_ACTION_COMPLETE\n");
+		//fprintf(stderr, "Callback: UPNP_CONTROL_ACTION_COMPLETE\n");
 		// This is here in case we choose to do this assynchronously
 		struct Upnp_Action_Complete *a_event =
 			(struct Upnp_Action_Complete *)Event;
@@ -1335,13 +1338,13 @@ fprintf(stderr, "Callback: UPNP_CONTROL_ACTION_COMPLETE\n");
 		break;
 	}
 	default:
-fprintf(stderr, "Callback: default... Not good.\n");
 		// Humm, this is not good, we forgot to handle something...
+		fprintf(stderr, "Callback: default... Unknown event, not good.\n");
 		msg << "error(UPnP::Callback): Event not handled.";
 		AddDebugLogLineM(true, logUPnP, msg);
 		fprintf(stderr, "%s\n", msg.str().c_str());
 		// Better not throw in the callback. Who would catch it?
-//		throw CUPnPException(msg);
+		//throw CUPnPException(msg);
 		break;
 	}
 	
