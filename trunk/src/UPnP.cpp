@@ -1106,8 +1106,10 @@ bool CUPnPControlPoint::AddPortMappings(
 		argval[5].SetValue(upnpPortMapping[i].getEnabled());
 		// NewPortMappingDescription
 		argval[6].SetValue(upnpPortMapping[i].getDescription());
-		// Execute
-		m_WanService->Execute(actionName, argval);
+		if (upnpPortMapping[i].getEnabled() == "1") {
+			// Execute
+			m_WanService->Execute(actionName, argval);
+		}
 	}
 	m_WanService->GetStateVariable("ConnectionType");
 	m_WanService->GetStateVariable("PossibleConnectionTypes");
@@ -1190,8 +1192,10 @@ bool CUPnPControlPoint::DeletePortMappings(
 		argval[1].SetValue(upnpPortMapping[i].getPort());
 		// NewProtocol
 		argval[2].SetValue(upnpPortMapping[i].getProtocol());
-		// Execute
-		m_WanService->Execute(actionName, argval);
+		if (upnpPortMapping[i].getEnabled() == "1") {
+			// Execute
+			m_WanService->Execute(actionName, argval);
+		}
 	}
 	
 	// Not very good, must find a better test
