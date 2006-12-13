@@ -1210,7 +1210,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 }
 
 // This function is static
-int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void *Cookie)
+int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*Cookie*/)
 {
 	std::ostringstream msg;
 	// Somehow, this is unreliable. UPNP_DISCOVERY_ADVERTISEMENT_ALIVE events
