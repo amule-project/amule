@@ -421,15 +421,6 @@ yes)	LDFLAGS="$LDFLAGS -static"
 esac
 AC_MSG_RESULT($USE_DEBUG_STATIC)
 
-if test "x$prefix" != "xNONE"; then
-	aMuleInstallPrefix=$prefix
-else
-	aMuleInstallPrefix=$ac_default_prefix
-fi
-
-AC_DEFINE_UNQUOTED(AMULE_INSTALL_PREFIX, "${aMuleInstallPrefix}", [aMule installation prefix])
-AC_DEFINE_UNQUOTED(AMULE_LOCALEDIR, "$datadir/locale", [Define where the locales are.])
-	
 # Try to set the CVS checkout-date
 AC_MSG_CHECKING([for CVSDATE])
 if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs
