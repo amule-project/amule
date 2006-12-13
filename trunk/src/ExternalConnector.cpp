@@ -301,15 +301,14 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 {
 	if( !m_KeepQuiet ) {
 #ifdef HAVE_LIBREADLINE
-		if (m_InputLine) {
-			free(m_InputLine);
-			m_InputLine = (char *)NULL;
+		char *text = readline(unicode2char(prompt + wxT("$ ")));
+		if (text && *text && 
+		    (m_InputLine == 0 || strcmp(text,m_InputLine) != 0)) {
+		  add_history (text);
 		}
-		m_InputLine = readline(unicode2char(prompt + wxT("$ ")));
-		if (m_InputLine && *m_InputLine) {
-			add_history (m_InputLine);
-		}
-		const char *text = m_InputLine;
+		if (m_InputLine)
+		  free(m_InputLine);
+		m_InputLine = text;
 #else
 		Show(prompt + wxT("$ "));
 		fflush(stdin);
