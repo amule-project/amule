@@ -220,7 +220,9 @@ common_deps = libmuleappcommon.a $(remote_common_deps)
 
 core_flags = 
 gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
-common_flags = -I$(srcdir)/libs -Ilibs
+common_flags = -I$(srcdir)/libs -Ilibs \
+	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
+	-DAMULE_LOCALEDIR="\"$(datadir)/locale\""
 
 # Extras 
 

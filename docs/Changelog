@@ -18,6 +18,7 @@ Trunk
 
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
+		* Patch for autoconf >= 2.60.
 
 	GonoszTopi:
 		* Fixed linkage with wxMSW.
