@@ -27,6 +27,10 @@ Trunk
 		* Implemented #962: don't display (0) when not downloading from source
 		* Fixed #954 - added ability turn IPFilter on/off for servers/clients
 		  independently.
+	Hermit:
+		* Patch for amulecmd history which ensures that when the same command
+		  is repeated several times in a row it only gets recorded in the
+		  history once.
 
 	ken:
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
