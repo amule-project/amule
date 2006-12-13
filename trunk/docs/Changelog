@@ -21,6 +21,12 @@ Trunk
 		* Patch for autoconf >= 2.60.
 
 	GonoszTopi:
+		* Added ability to compile amulecmd without threading support.
+		* Sed denoiser - removes excessive messages from compilation - 
+		  Thanks to Vollstrecker for the idea and discussions.
+		* Proper restoration of startup locale after checking available
+		  locales.
+		* Fixed source seeds handling on startup.
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
 		* Fixed #929: configure: BUILD_CC uses CCs CFLAGS
@@ -37,12 +43,15 @@ Trunk
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
 		  Mac.
 
-	nvinay:
+	Kry:
+		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 
+	nvinay:
 		* Trivial issue with memset found using google codesearch which may
 		affect only the debugging.
 
 	Phoenix:
+		* Fix for crash in amulegui/DownloadListCtrl.cpp.
 		* Upgraded extern/listctrl.{cpp,h} from wxWidgets cvs code.
 		* Fixed some gtk2 warnings in extern/listctrl.cpp.
 		* Fix for unhandled exception in new skinned toolbar code.
@@ -74,23 +83,9 @@ Trunk
 
 --------------------------------------------------------------------------------
 
-Version 2.1.4 - The "So what? If it's new, it has to be good" version
+Version 2.2.0 - The "So what? If it's new, it has to be good" version
 ----------
-2006-06-11
-
-	GonoszTopi:
-		* Added ability to compile amulecmd without threading support.
-		* Sed denoiser - removes excessive messages from compilation - 
-		Thanks to Vollstrecker for the idea and discussions.
-		* Proper restoration of startup locale after checking available
-		locales.
-		* Fixed source seeds handling on startup.
-
-	Kry:
-		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
-
-	Phoenix:
-		* Fix for crash in amulegui/DownloadListCtrl.cpp.
+2007-xx-xx
 
 	Special Thanks to:
 		* Mr Tyler Durden, for his words of wisdom.
