@@ -81,6 +81,10 @@ Trunk
 		  Seems to be fixed, but must be the code now has a lot of
 		  ifdefs and must be tested on other platforms.
 
+	spiralvoice:
+		* Patch to enable MLDonkey os_info support.
+
+
 --------------------------------------------------------------------------------
 
 Version 2.2.0 - The "So what? If it's new, it has to be good" version
