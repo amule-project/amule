@@ -1293,7 +1293,7 @@ int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE\n");
 		// UPnP Device Removed
 		struct Upnp_Discovery *dab_event = (struct Upnp_Discovery *)Event;
-		if( dab_event->ErrCode != UPNP_E_SUCCESS ) {
+		if (dab_event->ErrCode != UPNP_E_SUCCESS) {
 			msg << "error(UPNP_DISCOVERY_ADVERTISEMENT_BYEBYE): " <<
 				upnpCP->m_upnpLib.GetUPnPErrorMessage(dab_event->ErrCode) <<
 				".";
@@ -1428,8 +1428,10 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 	// Remove
 	std::string UDN(udn);
 	RootDeviceList::iterator it = m_RootDeviceList.find(UDN);
-	delete (*it).second;
-	m_RootDeviceList.erase(UDN);
+	if (it != m_RootDeviceList.end()) {
+		delete (*it).second;
+		m_RootDeviceList.erase(UDN);
+	}
 }
 
 
