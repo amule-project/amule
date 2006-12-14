@@ -3,7 +3,7 @@
 //
 // Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
-// Copyright (C) 2005-2006Dévai Tamás ( gonosztopi@amule.org )
+// Copyright (C) 2005-2006 Dévai Tamás ( gonosztopi@amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -829,7 +829,7 @@ void CStatistics::AddUploadToSoft(uint8 SoftType, uint32 bytes)
 
 inline bool SupportsOSInfo(unsigned clientSoft)
 {
-	return (clientSoft == SO_AMULE) || (clientSoft == SO_HYDRANODE);
+	return (clientSoft == SO_AMULE) || (clientSoft == SO_HYDRANODE) || (clientSoft == SO_NEW2_MLDONKEY);
 }
 
 // Do some random black magic to strings to get a relatively unique number for them.
