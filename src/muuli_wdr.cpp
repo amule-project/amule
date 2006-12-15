@@ -2742,87 +2742,97 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 
     wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item12, 1, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, ID_TEXT, _("Webserver UPnP TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item12, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
+    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_WEBUPNPTCPPORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
     item11->Add( item13, 0, wxALIGN_CENTER, 5 );
 
     item4->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetValue( TRUE );
-    item4->Add( item14, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetValue( TRUE );
-    item4->Add( item15, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, ID_TEXT, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item15, 1, wxADJUST_MINSIZE|wxALIGN_CENTER, 5 );
 
-    wxGridSizer *item16 = new wxGridSizer( 2, 0, 0 );
+    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
+    item14->Add( item16, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item17 = new wxStaticText( parent, ID_TEXT, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item4->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    CMuleTextCtrl *item18 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item16->Add( item18, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetValue( TRUE );
+    item4->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, ID_TEXT, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item19, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item18 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->SetValue( TRUE );
+    item4->Add( item18, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item16->Add( item20, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    wxGridSizer *item19 = new wxGridSizer( 2, 0, 0 );
 
-    wxStaticText *item21 = new wxStaticText( parent, ID_TEXT, _("Web template"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item21, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item20 = new wxStaticText( parent, ID_TEXT, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item20, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item22 = new CMuleTextCtrl( parent, IDC_WEBTEMPLATE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item16->Add( item22, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item19->Add( item21, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
-    item4->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item22 = new wxStaticText( parent, ID_TEXT, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item22, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+
+    CMuleTextCtrl *item23 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item19->Add( item23, 1, wxGROW|wxALIGN_RIGHT, 5 );
+
+    wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("Web template"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item24, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+
+    CMuleTextCtrl *item25 = new CMuleTextCtrl( parent, IDC_WEBTEMPLATE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item19->Add( item25, 1, wxGROW|wxALIGN_RIGHT, 5 );
+
+    item4->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item4, 0, wxGROW|wxALL, 5 );
 
-    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
-    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
+    wxStaticBox *item27 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
+    wxStaticBoxSizer *item26 = new wxStaticBoxSizer( item27, wxVERTICAL );
 
-    wxCheckBox *item25 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item25, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticText *item27 = new wxStaticText( parent, ID_TEXT, _("IP of the listening interface (empty for any)"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    CMuleTextCtrl *item28 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
-    item26->Add( item28, 1, wxALIGN_CENTER|wxLEFT, 5 );
-
-    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxCheckBox *item28 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item29 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item30 = new wxStaticText( parent, ID_TEXT, _("TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->Add( item30, 1, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticText *item30 = new wxStaticText( parent, ID_TEXT, _("IP of the listening interface (empty for any)"), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxSpinCtrl *item31 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item29->Add( item31, 0, wxALIGN_CENTER, 5 );
+    CMuleTextCtrl *item31 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item31->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
+    item29->Add( item31, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item23->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item26->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
 
-    wxCheckBox *item32 = new wxCheckBox( parent, IDC_UPNP_EC_ENABLED, _("Enable UPnP port forwarding on the EC port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item32, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item32 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxBoxSizer *item33 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item33 = new wxStaticText( parent, ID_TEXT, _("TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item32->Add( item33, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxStaticText *item34 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item33->Add( item34, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    wxSpinCtrl *item34 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item32->Add( item34, 0, wxALIGN_CENTER, 5 );
 
-    CMuleTextCtrl *item35 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-    item33->Add( item35, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    item26->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item23->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+    wxCheckBox *item35 = new wxCheckBox( parent, IDC_UPNP_EC_ENABLED, _("Enable UPnP port forwarding on the EC port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item35, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item23, 0, wxGROW|wxALL, 5 );
+    wxBoxSizer *item36 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item37 = new wxStaticText( parent, ID_TEXT, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item36->Add( item37, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    CMuleTextCtrl *item38 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+    item36->Add( item38, 1, wxALIGN_CENTER|wxLEFT, 5 );
+
+    item26->Add( item36, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP|wxBOTTOM, 5 );
+
+    item0->Add( item26, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {

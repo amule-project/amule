@@ -892,12 +892,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	}
 	myaddr[0].Service(thePrefs::ECPort());
 	ECServerHandler = new ExternalConn(myaddr[0], msg);
-	m_upnpMappings[0] = CUPnPPortMapping(
-		myaddr[0].Service(),
-		"TCP",
-		thePrefs::GetUPnPECEnabled(),
-		"aMule TCP External Connections Socket");
-
+	
 	// Create the UDP socket TCP+3.
 	// Used for source asking on servers.
 	if (thePrefs::GetAddress().IsEmpty() || !myaddr[1].Hostname(thePrefs::GetAddress())) {
@@ -906,12 +901,6 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	wxString ip = myaddr[1].IPAddress();
 	myaddr[1].Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr[1]);
-	m_upnpMappings[1] = CUPnPPortMapping(
-		myaddr[1].Service(),
-		"UDP",
-		thePrefs::GetUPnPEnabled(),
-		"aMule UDP socket (TCP+3)");
-
 	*msg << CFormat( wxT("*** Server UDP socket (TCP+3) at %s:%u\n") )
 		% ip % ((unsigned int)thePrefs::GetPort() + 3u);
 	
@@ -922,15 +911,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[2] = myaddr[1];
 	myaddr[2].Service(thePrefs::GetPort());
 	listensocket = new CListenSocket(myaddr[2]);
-	m_upnpMappings[2] = CUPnPPortMapping(
-		myaddr[2].Service(),
-		"TCP",
-		thePrefs::GetUPnPEnabled(),
-		"aMule TCP Listen Socket");
-	
 	*msg << CFormat( wxT("*** TCP socket (TCP) listening on %s:%u\n") )
 		% ip % (unsigned int)(thePrefs::GetPort());
-	
 	// This command just sets a flag to control maximum number of connections.
 	// Notify(true) has already been called to the ListenSocket, so events may
 	// be already comming in.
@@ -959,12 +941,6 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	myaddr[3] = myaddr[1];
 	myaddr[3].Service(thePrefs::GetUDPPort());
 	clientudp = new CClientUDPSocket(myaddr[3], thePrefs::GetProxyData());
-	m_upnpMappings[3] = CUPnPPortMapping(
-		myaddr[3].Service(),
-		"UDP",
-		thePrefs::GetUPnPEnabled(),
-		"aMule UDP Extended eMule Socket");
-	
 	if (!thePrefs::IsUDPDisabled()) {
 		*msg << CFormat( wxT("*** Client UDP socket (extended eMule) at %s:%u") )
 			% ip % thePrefs::GetUDPPort();
@@ -975,6 +951,26 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 #ifndef __WXMSW__
 	if (thePrefs::GetUPnPEnabled()) {
 		try {
+			m_upnpMappings[0] = CUPnPPortMapping(
+				myaddr[0].Service(),
+				"TCP",
+				thePrefs::GetUPnPECEnabled(),
+				"aMule TCP External Connections Socket");
+			m_upnpMappings[1] = CUPnPPortMapping(
+				myaddr[1].Service(),
+				"UDP",
+				thePrefs::GetUPnPEnabled(),
+				"aMule UDP socket (TCP+3)");
+			m_upnpMappings[2] = CUPnPPortMapping(
+				myaddr[2].Service(),
+				"TCP",
+				thePrefs::GetUPnPEnabled(),
+				"aMule TCP Listen Socket");
+			m_upnpMappings[3] = CUPnPPortMapping(
+				myaddr[3].Service(),
+				"UDP",
+				thePrefs::GetUPnPEnabled(),
+				"aMule UDP Extended eMule Socket");
 			m_upnp = new CUPnPControlPoint(thePrefs::GetUPnPTCPPort());
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {

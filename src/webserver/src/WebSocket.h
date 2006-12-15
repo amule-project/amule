@@ -30,6 +30,9 @@
 
 #include "WebServer.h"
 
+
+class CUPnPControlPoint;
+class CUPnPPortMapping;
 class CWebServer;
 
 
@@ -85,7 +88,8 @@ class CWCThread : public wxThread { //WC stands for web client socket. not for W
 
 class CWSThread : public wxThread {
 	public:
-		CWSThread(CWebServerBase *webserver); //web socket thread ctor
+		CWSThread(CWebServerBase *webserver);
+		~CWSThread();
 
 		//thread execution starts here
 		virtual void *Entry();
@@ -93,7 +97,13 @@ class CWSThread : public wxThread {
 	private:
 		wxSocketServer *m_WSSocket;
 		CWebServerBase *ws;
-		long wsport;
+		long m_wsport;
+		bool m_upnpEnabled;
+		int m_upnpTCPPort;
+#ifndef __WXMSW__
+		CUPnPControlPoint *m_upnp;
+		std::vector<CUPnPPortMapping> m_upnpMappings;
+#endif
 };
 
 

@@ -8,6 +8,8 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/OtherFunctions.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
+	$(top_srcdir)/src/UPnP.cpp \
+	UPnPCompatibility.cpp \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \

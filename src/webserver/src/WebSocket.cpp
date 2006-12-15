@@ -25,11 +25,10 @@
 //
 
 
-
-
-
-
 #include "WebSocket.h"
+
+
+#include "UPnP.h"
 
 
 typedef std::vector<CWCThread *> ArrayOfCWCThread;
@@ -39,38 +38,63 @@ ArrayOfCWCThread s_wcThreads;
 static wxMutex s_mutex_wcThreads;
 
 /*** CWSThread ***/
-CWSThread::CWSThread(CWebServerBase *webserver) {
+CWSThread::CWSThread(CWebServerBase *webserver)
+:
+wxThread(wxTHREAD_JOINABLE)
+{
 	ws = webserver;
 	
 	//retrieve web server listening port
-	wsport = ws->webInterface->m_WebserverPort;
-	if (wsport == -1) {
-		wsport = ws->GetWSPrefs();
+	m_wsport = ws->webInterface->m_WebserverPort;
+	m_upnpEnabled = ws->webInterface->m_UPnPWebServerEnabled;
+	m_upnpTCPPort = ws->webInterface->m_UPnPTCPPort;
+	if (m_wsport == -1) {
+		m_wsport = ws->GetWSPrefs();
 	}
-	if (wsport == -1) {
-		wsport = 4711;
-		ws->Print(wxT("WSThread: Could not get web server port -- using default value.\n"));
+	if (m_wsport == -1) {
+		m_wsport = 4711;
+		ws->Print(wxT("WSThread: Could not get web server port"
+			" -- using default value.\n"));
 	}
 }
 
+
+CWSThread::~CWSThread()
+{
+}
+
+	
 // thread execution starts here
 void *CWSThread::Entry() {
 	ws->Print(wxT("\nWSThread: Thread started\n"));
 	// Create the address - listen on localhost:ECPort
 	wxIPV4address addr;
 	addr.AnyAddress();
-	addr.Service(wsport);
+	addr.Service(m_wsport);
 	// Create the socket
 	m_WSSocket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
-	wxString msg = addr.Hostname() + wxString::Format(wxT(":%d\n"), addr.Service());
+	wxString msg = addr.Hostname() +
+		wxString::Format(wxT(":%d\n"), addr.Service());
 	// We use Ok() here to see if the server is really listening
 	if (! m_WSSocket->Ok()) {
 		ws->Print(wxT("WSThread: could not create socket on ") + msg);	
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
-
+#ifndef __WXMSW__
+		if (m_upnpEnabled) {
+			m_upnpMappings.resize(1);
+			m_upnpMappings[0] = CUPnPPortMapping(
+				m_wsport,
+				"TCP",
+				true,
+				"aMule TCP Webserver Socket");
+			m_upnp = new CUPnPControlPoint(m_upnpTCPPort);
+			m_upnp->AddPortMappings(m_upnpMappings);
+		}
+#endif
 		while (!TestDestroy()) {
-			bool connection_pending	= m_WSSocket->WaitForAccept(1, 0);	// 1 sec
+			// 1 second timeout
+			bool connection_pending	= m_WSSocket->WaitForAccept(1, 0);
 			wxSocketBase* sock;
 			if (connection_pending) {
 				// Accept incoming connection
@@ -96,6 +120,11 @@ void *CWSThread::Entry() {
 				}
 			}
 		}
+#ifndef __WXMSW__
+		if (m_upnpEnabled) {
+			m_upnp->DeletePortMappings(m_upnpMappings);
+		}
+#endif
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
 		bool should_wait = true;
 		while (should_wait) {
@@ -118,21 +147,23 @@ void *CWSThread::Entry() {
 
 /*** CWCThread ***/
 CWCThread::CWCThread(CWebServerBase *ws, wxSocketBase *sock) {
-    stWebSocket.m_pParent = ws;
-    stWebSocket.m_hSocket = sock;
-    stWebSocket.m_hSocket->SetTimeout(10);
-    stWebSocket.m_pHead = NULL;
-    stWebSocket.m_pTail = NULL;
-    stWebSocket.m_pBuf = new char [4096];
-    stWebSocket.m_dwBufSize = 4096;
-    stWebSocket.m_dwRecv = 0;
-    stWebSocket.m_bValid = true;
-    stWebSocket.m_bCanRecv = true;
-    stWebSocket.m_bCanSend = true;
-    stWebSocket.m_dwHttpHeaderLen = 0;
-    stWebSocket.m_dwHttpContentLen = 0;
+	stWebSocket.m_pParent = ws;
+	stWebSocket.m_hSocket = sock;
+	stWebSocket.m_hSocket->SetTimeout(10);
+	stWebSocket.m_pHead = NULL;
+	stWebSocket.m_pTail = NULL;
+	stWebSocket.m_pBuf = new char [4096];
+	stWebSocket.m_dwBufSize = 4096;
+	stWebSocket.m_dwRecv = 0;
+	stWebSocket.m_bValid = true;
+	stWebSocket.m_bCanRecv = true;
+	stWebSocket.m_bCanSend = true;
+	stWebSocket.m_dwHttpHeaderLen = 0;
+	stWebSocket.m_dwHttpContentLen = 0;
 	stWebSocket.m_Cookie = 0;
 }
+
+
 CWCThread::~CWCThread()
 {
 	delete [] stWebSocket.m_pBuf;

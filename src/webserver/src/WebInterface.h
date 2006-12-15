@@ -30,7 +30,10 @@
 #include "ExternalConnector.h"
 
 
-class CamulewebApp : public CaMuleExternalConnector {
+class CamulewebApp
+:
+public CaMuleExternalConnector
+{
 	class CWebServerBase *m_webserver;
 public:
 	const wxString GetGreetingTitle();
@@ -54,13 +57,16 @@ public:
 	bool	m_AllowGuest;
 
 	long		m_WebserverPort;
+	bool		m_UPnPWebServerEnabled;
+	int		m_UPnPTCPPort;
 	unsigned int	m_PageRefresh;
 	bool		m_LoadSettingsFromAmule;
 
 	bool		m_TemplateOk;
 
 public:
-	void Post_Shell();
+	virtual void Post_Shell();
+	
 private:
 	virtual bool	OnInit();
 	virtual int 	OnRun();

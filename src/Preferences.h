@@ -363,6 +363,8 @@ public:
 	// WebServer
 	static uint16 		GetWSPort() 			{ return s_nWebPort; }
 	static void		SetWSPort(uint16 uPort) 	{ s_nWebPort=uPort; }
+	static uint16		GetWebUPnPTCPPort()		{ return s_nWebUPnPTCPPort; }
+	static void		SetWebUPnPTCPPort(uint16 val)	{ s_nWebUPnPTCPPort = val; }
 	static const wxString&	GetWSPass() 			{ return s_sWebPassword; }
 	static void		SetWSPass(const wxString& pass)	{ s_sWebPassword = pass; }
 	static bool		GetWSIsEnabled() 		{ return s_bWebEnabled; }
@@ -639,6 +641,7 @@ protected:
 	static wxString	s_sWebPassword;
 	static wxString	s_sWebLowPassword;
 	static uint16	s_nWebPort;
+	static uint16	s_nWebUPnPTCPPort;
 	static bool	s_bWebEnabled;
 	static bool	s_bWebUseGzip;
 	static uint32	s_nWebPageRefresh;

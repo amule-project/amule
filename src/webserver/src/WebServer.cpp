@@ -1700,6 +1700,8 @@ void CScriptWebServer::StartServer()
 
 void CScriptWebServer::StopServer()
 {
+	wsThread->Delete();
+	wsThread->Wait();
 }
 
 char *CScriptWebServer::GetErrorPage(const char *message, long &size)

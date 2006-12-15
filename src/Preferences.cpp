@@ -150,6 +150,7 @@ wxString 	CPreferences::s_datetimeformat;
 wxString	CPreferences::s_sWebPassword;
 wxString	CPreferences::s_sWebLowPassword;
 uint16		CPreferences::s_nWebPort;
+uint16		CPreferences::s_nWebUPnPTCPPort;
 bool		CPreferences::s_bWebEnabled;
 bool		CPreferences::s_bWebUseGzip;
 uint32		CPreferences::s_nWebPageRefresh;
@@ -895,6 +896,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_WEB_PASSWD,	(new Cfg_Str_Encrypted( wxT("/WebServer/Password"), s_sWebPassword )));
 	NewCfgItem(IDC_WEB_PASSWD_LOW,	(new Cfg_Str_Encrypted( wxT("/WebServer/PasswordLow"), s_sWebLowPassword )));
 	NewCfgItem(IDC_WEB_PORT,	(MkCfg_Int( wxT("/WebServer/Port"), s_nWebPort, 4711 )));
+	NewCfgItem(IDC_WEBUPNPTCPPORT,	(MkCfg_Int( wxT("/WebServer/WebUPnPTCPPort"), s_nWebUPnPTCPPort, 50001 )));
 	NewCfgItem(IDC_UPNP_WEBSERVER_ENABLED,
 					(new Cfg_Bool( wxT("/WebServer/UPnPWebServerEnabled"), s_UPnPWebServerEnabled, false )));
 	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true )));
