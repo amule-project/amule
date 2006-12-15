@@ -121,12 +121,17 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 				);
 			CFRelease(amuleBundle);
 			if (webserverDirUrl) {
-				CFURLRef absoluteURL = CFURLCopyAbsoluteURL(webserverDirUrl);
+				CFURLRef absoluteURL =
+					CFURLCopyAbsoluteURL(webserverDirUrl);
 				CFRelease(webserverDirUrl);
 				if (absoluteURL) {
-					CFStringRef pathString = CFURLCopyFileSystemPath(absoluteURL, kCFURLPOSIXPathStyle);
+					CFStringRef pathString =
+						CFURLCopyFileSystemPath(
+							absoluteURL,
+							kCFURLPOSIXPathStyle);
 					CFRelease(absoluteURL);
-					dir = wxMacCFStringHolder(pathString).AsString(wxLocale::GetSystemEncoding());
+					dir = wxMacCFStringHolder(pathString).
+						AsString(wxLocale::GetSystemEncoding());
 					if (CheckDirForTemplate(dir, templateName)) {
 						templateDir = dir;
 						return true;
@@ -181,6 +186,14 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		_("Webserver HTTP port"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
+	amuleweb_parser.AddSwitch(wxT("u"), wxT("enable-upnp"), 
+		_("Use UPnP port forwarding on webserver port"),
+		wxCMD_LINE_PARAM_OPTIONAL);
+	
+	amuleweb_parser.AddSwitch(wxT("U"), wxT("upnp-port"), 
+		_("UPnP port"),
+		wxCMD_LINE_PARAM_OPTIONAL);
+	
 	amuleweb_parser.AddSwitch(wxT("z"), wxT("enable-gzip"), 
 		_("Use gzip compression"),
 		wxCMD_LINE_PARAM_OPTIONAL);
@@ -237,7 +250,8 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 	if (parser.Found(wxT("amule-config-file"), &aMuleConfigFile)) {
 		aMuleConfigFile = FinalizeFilename(aMuleConfigFile);
 		if (!::wxFileExists(aMuleConfigFile)) {
-			fprintf(stderr, "FATAL ERROR: %s does not exist.\n", (const char*)unicode2char(aMuleConfigFile));
+			fprintf(stderr, "FATAL ERROR: file '%s' does not exist.\n",
+				(const char*)unicode2char(aMuleConfigFile));
 			return false;
 		}
 		CECFileConfig cfg(aMuleConfigFile);
@@ -277,6 +291,12 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 		long port;
 		if (parser.Found(wxT("server-port"), &port)) {
 			m_WebserverPort = port;
+		}
+		if (parser.Found(wxT("enable-upnp"))) {
+			m_UPnPWebServerEnabled = true;
+		}
+		if (parser.Found(wxT("upnp-port"), &port)) {
+			m_UPnPTCPPort = port;
 		}
 		if (parser.Found(wxT("enable-gzip"))) {
 			m_UseGzip = true;
@@ -338,6 +358,9 @@ void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
 	cfg.ReadHash(wxT("/WebServer/Password"), &m_AdminPass);
 	cfg.ReadHash(wxT("/WebServer/PasswordLow"), &m_GuestPass);
 	m_WebserverPort = cfg.Read(wxT("/WebServer/Port"), -1l);
+	m_UPnPWebServerEnabled =
+		(cfg.Read(wxT("/Webserver/UPnPWebServerEnabled"), 0l) == 1l);
+	m_UPnPTCPPort = cfg.Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
 	m_PageRefresh = cfg.Read(wxT("/WebServer/PageRefreshTime"), 120l);
 	m_TemplateName = cfg.Read(wxT("/WebServer/Template"), wxT("default"));
 }
@@ -348,6 +371,9 @@ void CamulewebApp::LoadConfigFile()
 	if (m_configFile) {
 		wxString tmp;
 		m_WebserverPort = m_configFile->Read(wxT("/Webserver/Port"), -1l);
+		m_configFile->Read(wxT("/Webserver/UPnPWebServerEnabled"),
+			&m_UPnPWebServerEnabled, false);
+		m_UPnPTCPPort = m_configFile->Read(wxT("/WebServer/UPnPTCPPort"), 50001l);
 		m_TemplateName = m_configFile->Read(wxT("/Webserver/Template"), wxEmptyString);
 		m_configFile->Read(wxT("/Webserver/UseGzip"), &m_UseGzip, false);
 		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
@@ -361,6 +387,9 @@ void CamulewebApp::SaveConfigFile()
 	CaMuleExternalConnector::SaveConfigFile();
 	if (m_configFile) {
 		m_configFile->Write(wxT("/Webserver/Port"), m_WebserverPort);
+		m_configFile->Write(wxT("/Webserver/UPnPWebServerEnabled"),
+			m_UPnPWebServerEnabled);
+		m_configFile->Write(wxT("/WebServer/UPnPTCPPort"), m_UPnPTCPPort);
 		m_configFile->Write(wxT("/Webserver/Template"), m_TemplateName);
 		m_configFile->Write(wxT("/Webserver/UseGzip"), m_UseGzip);
 		m_configFile->Write(wxT("/Webserver/AllowGuest"), m_AllowGuest);

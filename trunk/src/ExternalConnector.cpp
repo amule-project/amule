@@ -422,13 +422,17 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 				} else {
 					TextShell(ProgName);
 				}
-				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
 				Post_Shell();
+				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
 			}
 		}
 		m_ECClient->DestroySocket();
 	} else {
-		Show(_("Cannot connect with an empty password.\nYou must specify a password either in config file\nor on command-line, or enter one when asked.\n\nExiting...\n"));
+		Show(_("Cannot connect with an empty password.\n"
+			"You must specify a password either in config file\n"
+			"or on command-line, or enter one when asked.\n"
+			"\n"
+			"Exiting...\n"));
 	}
 }
 
