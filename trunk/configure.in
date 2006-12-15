@@ -421,6 +421,14 @@ yes)	LDFLAGS="$LDFLAGS -static"
 esac
 AC_MSG_RESULT($USE_DEBUG_STATIC)
 
+# autoconf >= 2.60 already defines ${docdir}, but we always need it.
+AC_MSG_CHECKING([for docdir])
+if test x"$docdir" = x; then
+	docdir="$datadir"/doc/"$PACKAGE_NAME"-"$PACKAGE_VERSION"
+	AC_SUBST(docdir)
+fi
+AC_MSG_RESULT($docdir)
+
 # Try to set the CVS checkout-date
 AC_MSG_CHECKING([for CVSDATE])
 if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs

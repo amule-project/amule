@@ -51,8 +51,8 @@ the first multi-platform edonkey network client.
 %{_datadir}/pixmaps/*
 %{_mandir}/man1/*
 %{_mandir}/*/man1/*
-%docdir %{_datadir}/doc/%{name}-%{version}
-%{_datadir}/doc/%{name}-%{version}
+%docdir %{_datadir}/doc/*
+%{_datadir}/doc/*
 %{_datadir}/cas
 %{_datadir}/amule
 

@@ -19,6 +19,7 @@ Trunk
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
 		* Patch for autoconf >= 2.60.
+		* Patch for redefinition of $(docdir) in docs/Makefile.am.
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without threading support.
