@@ -123,6 +123,7 @@ void *CWSThread::Entry() {
 #ifndef __WXMSW__
 		if (m_upnpEnabled) {
 			m_upnp->DeletePortMappings(m_upnpMappings);
+			delete m_upnp;
 		}
 #endif
 		ws->Print(wxT("WSThread: Waiting for WCThreads to be terminated..."));
