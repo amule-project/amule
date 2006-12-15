@@ -894,9 +894,9 @@ m_UPC              (upnpLib.Element_GetChildValueByTag(device, "UPC")),
 m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"))
 {
 	std::ostringstream msg;
-#warning Check this limit.
-	char presURL[200];
-	
+	int presURLlen = strlen(URLBase.c_str()) +
+		strlen(m_presentationURL.c_str()) + 2;
+	char presURL[presURLlen];
 	int errcode = upnpLib.m_UpnpResolveURL(
 		URLBase.c_str(),
 		m_presentationURL.c_str(),
