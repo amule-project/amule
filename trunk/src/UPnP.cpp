@@ -663,10 +663,9 @@ m_SCPD(NULL)
 
 	if (	m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
 		m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
-		if (!upnpLib.m_ctrlPoint.GetWanServiceDetected()) {
+		if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse
 			// of the XML tree.
-			upnpLib.m_ctrlPoint.SetWanServiceDetected(true);
 			upnpLib.m_ctrlPoint.SetWanService(this);
 			// Log it
 			msg.str("");
@@ -964,7 +963,6 @@ m_UPnPClientHandle(),
 m_RootDeviceList(),
 m_RootDeviceListMutex(),
 m_IGWDeviceDetected(false),
-m_WanServiceDetected(false),
 m_WanService(NULL)
 {
 	// Pointer to self
@@ -1052,7 +1050,7 @@ bool CUPnPControlPoint::AddPortMappings(
 	std::vector<CUPnPPortMapping> &upnpPortMapping)
 {
 	std::ostringstream msg;
-	if (!GetWanServiceDetected()) {
+	if (!WanServiceDetected()) {
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::AddPortMapping: "
 			"Wan Service not detected.";
@@ -1154,7 +1152,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 	std::vector<CUPnPPortMapping> &upnpPortMapping)
 {
 	std::ostringstream msg;
-	if (!GetWanServiceDetected()) {
+	if (!WanServiceDetected()) {
 		msg <<  "UPnP Error: "
 			"CUPnPControlPoint::DeletePortMapping: "
 			"Wan Service not detected.";
@@ -1164,7 +1162,7 @@ bool CUPnPControlPoint::DeletePortMappings(
 	
 	int n = upnpPortMapping.size();
 	bool ok = false;
-
+	
 	// Check the number of port mappings before
 	std::istringstream PortMappingNumberOfEntries(
 		m_WanService->GetStateVariable(

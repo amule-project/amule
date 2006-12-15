@@ -1585,7 +1585,9 @@ void CamuleApp::ShutDown()
 
 #ifndef __WXMSW__
 	if (thePrefs::GetUPnPEnabled()) {
-		m_upnp->DeletePortMappings(m_upnpMappings);
+		if (m_upnp) {
+			m_upnp->DeletePortMappings(m_upnpMappings);
+		}
 	}
 #endif
 	

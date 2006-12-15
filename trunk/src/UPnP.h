@@ -581,7 +581,6 @@ private:
 	RootDeviceList m_RootDeviceList;
 	wxMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
-	bool m_WanServiceDetected;
 	CUPnPService *m_WanService;
 	wxMutex m_WaitForSearchTimeout;
 
@@ -602,10 +601,8 @@ public:
 		{ return m_IGWDeviceDetected; }
 	void SetIGWDeviceDetected(bool b)
 		{ m_IGWDeviceDetected = b; }
-	bool GetWanServiceDetected() const
-		{ return m_WanServiceDetected; }
-	void SetWanServiceDetected(bool b)
-		{ m_WanServiceDetected = b; }
+	bool WanServiceDetected() const
+		{ return m_WanService != NULL; }
 	void SetWanService(CUPnPService *service)
 		{ m_WanService = service; }
 
