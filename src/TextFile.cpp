@@ -57,7 +57,7 @@ wxString& CTextFile::GetNextLine()
 		do {
 			if (!m_eof && (m_pos == m_size)) {
 				m_size = m_file.Read(m_buffer, 32768);
-				if (m_size == wxInvalidOffset) {
+				if (m_size == (size_t)wxInvalidOffset) {
 					m_size = 0;
 				}
 				m_pos = 0;
