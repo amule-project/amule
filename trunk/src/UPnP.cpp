@@ -1220,10 +1220,13 @@ int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*
 	switch (EventType) {
 	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
+		msg << "error(UPNP_DISCOVERY_ADVERTISEMENT_ALIVE): ";
+		goto upnpDiscovery;
 	case UPNP_DISCOVERY_SEARCH_RESULT: {
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
+		msg << "error(UPNP_DISCOVERY_SEARCH_RESULT): ";
 		// UPnP Discovery
-		msg << "error(UPNP_DISCOVERY_{ADVERTISEMENT_ALIVE,SEARCH_RESULT}): ";
+upnpDiscovery:
 		struct Upnp_Discovery *d_event = (struct Upnp_Discovery *)Event;
 		IXML_Document *doc = NULL;
 		int ret;
@@ -1236,7 +1239,7 @@ int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*
 		if (ret != UPNP_E_SUCCESS) {
 			msg << "Error retrieving device description from " <<
 				d_event->Location << ": " <<
-				upnpCP->m_upnpLib.GetUPnPErrorMessage(d_event->ErrCode) << ".";
+				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) << ".";
 			AddDebugLogLineM(true, logUPnP, msg);
 		}
 		if (doc) {
