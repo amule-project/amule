@@ -1134,7 +1134,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 						% GetPartHash(i).Encode() );
 				
 					AddGap(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
 							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 					errorfound = true;
 				}
@@ -1145,10 +1145,10 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 						% GetFileName() );
 
 					FillGap(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
 							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 					RemoveBlockFromList(i*PARTSIZE,
-						((((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
+						((uint64)(((i+1)*PARTSIZE)-1) >= GetFileSize()) ?
 							GetFileSize()-1 : ((i+1)*PARTSIZE)-1);
 				}
 			}						
@@ -2340,7 +2340,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		CMD4Hash hashresult;
 		m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
 		uint64 length = PARTSIZE;
-		if ((PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
+		if ((uint64)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
 			length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
 			wxASSERT( length <= PARTSIZE );
 		}

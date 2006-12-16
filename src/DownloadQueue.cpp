@@ -40,21 +40,22 @@
 #include "ClientList.h"		// Needed for CClientList
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "ServerList.h"		// Needed for CServerList
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "ED2KLink.h"		// Needed for CED2KFileLink
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "PartFile.h"		// Needed for CPartFile
 #include "Preferences.h"	// Needed for thePrefs
-#include "amule.h"			// Needed for theApp
-#include "AsyncDNS.h" // Needed for CAsyncDNS
+#include "amule.h"		// Needed for theApp
+#include "AsyncDNS.h"		// Needed for CAsyncDNS
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>	// Needed for CFormat
 #include "IPFilter.h"
 #include "FileFunctions.h"	// Needed for CDirIterator
 #include "FileLock.h"		// Needed for CFileLock
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "UserEvents.h"
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -1115,10 +1116,15 @@ void CDownloadQueue::CheckDiskspace( const wxString& path )
 		return;
 	}
 
+	if (free < min) {
+		CUserEvents::ProcessEvent(
+			CUserEvents::OutOfDiskSpace,
+			wxT("Temporary partition"));
+	}
 	
-	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
+	for (unsigned int i = 0; i < m_filelist.size(); ++i) {
 		CPartFile* file = m_filelist[i];
-			
+		
 		switch ( file->GetStatus() ) {
 			case PS_ERROR:
 			case PS_COMPLETING:

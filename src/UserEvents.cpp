@@ -107,7 +107,10 @@ wxString& CUserEvents::GetGUICommandVar(const unsigned int event)
 
 #define USEREVENTS_EVENT(ID, NAME, VARS)	case CUserEvents::ID: { VARS break; }
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	command.Replace(wxT("%") VAR, CODE);
-static void ExecuteCommand(enum CUserEvents::EventType event, const void* object, const wxString& cmd)
+static void ExecuteCommand(
+	enum CUserEvents::EventType event,
+	const void* object,
+	const wxString& cmd)
 {
 	wxString command = cmd;
 	switch (event) {

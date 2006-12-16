@@ -224,9 +224,12 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
 			list->InsertColumn(0, wxEmptyString);
 			for (unsigned int idx = 0; idx < CUserEvents::GetCount(); ++idx) {
-				long lidx = list->InsertItem(idx, wxGetTranslation(CUserEvents::GetDisplayName(static_cast<enum CUserEvents::EventType>(idx))));
+				long lidx = list->InsertItem(idx,
+					wxGetTranslation(CUserEvents::GetDisplayName(
+						static_cast<enum CUserEvents::EventType>(idx))));
 				if (lidx != -1) {
-					list->SetItemData(lidx, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT);
+					list->SetItemData(lidx,
+						USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT);
 					switch (idx) {
 						USEREVENTS_EVENTLIST()
 					}
@@ -624,8 +627,11 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 	int	id = event.GetId();	
 
 	// Check if this checkbox is one of the User Events checkboxes
-	if (id >= USEREVENTS_FIRST_ID && id < USEREVENTS_FIRST_ID + CUserEvents::GetCount() * USEREVENTS_IDS_PER_EVENT) {
-		// The corresponding text control always has an ID one greater than the checkbox
+	if (id >= USEREVENTS_FIRST_ID &&
+	    id < USEREVENTS_FIRST_ID +
+	    	(int)CUserEvents::GetCount() * USEREVENTS_IDS_PER_EVENT) {
+		// The corresponding text control always has
+		// an ID one greater than the checkbox
 		FindWindow(id + 1)->Enable(value);
 		return;
 	}
