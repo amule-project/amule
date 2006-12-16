@@ -390,9 +390,10 @@ void CSearchDlg::LocalSearchEnd()
 void CSearchDlg::KadSearchEnd(uint32 id)
 {
 	int nPages = m_notebook->GetPageCount();
-	for ( int i = 0; i < nPages; i++ ) {
-		CSearchListCtrl* page = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
-		if (page->GetSearchId() == id) {
+	for (int i = 0; i < nPages; ++i) {
+		CSearchListCtrl* page =
+			dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
+		if (page->GetSearchId() == (int)id) {
 			wxString rest;
 			if (m_notebook->GetPageText(i).StartsWith(wxT("!"),&rest)) {
 				m_notebook->SetPageText(i,rest);

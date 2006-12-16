@@ -50,7 +50,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
  * - two in UserEvents.cpp (static struct EventList[]; CUserEvent::ProcessEvent())
  */
 #define USEREVENTS_EVENTLIST() \
-	USEREVENTS_EVENT(DownloadCompleted,	wxTRANSLATE("Download completed"), \
+	USEREVENTS_EVENT(DownloadCompleted, wxTRANSLATE("Download completed"), \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("FILE"), \
 			wxTRANSLATE("The full path to the file."), \
@@ -72,11 +72,29 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 			wxTRANSLATE("The size of the file in bytes."), \
 			CastSecondsToHM(((CPartFile*)object)->GetDlActiveTime()) ) \
 	) \
-	USEREVENTS_EVENT(NewChatSession,	wxTRANSLATE("New chat session started"), \
+	USEREVENTS_EVENT( \
+		NewChatSession, \
+		wxTRANSLATE("New chat session started"), \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("SENDER"), \
 			wxTRANSLATE("Message sender."), \
 			*((wxString*)object) ) \
+	) \
+	USEREVENTS_EVENT( \
+		OutOfDiskSpace, \
+		wxTRANSLATE("Out of space"), \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("PARTITION"), \
+			wxTRANSLATE("Disk partition."), \
+			*((wxString*)object) ) \
+	) \
+	USEREVENTS_EVENT( \
+		ErrorOnCompletion, \
+		wxTRANSLATE("Error on completion"), \
+		USEREVENTS_REPLACE_VAR( \
+			wxT("FILE"), \
+			wxTRANSLATE("The full path to the file."), \
+			((CPartFile*)object)->GetFullName() ) \
 	)
 
 

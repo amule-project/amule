@@ -81,6 +81,8 @@ Trunk
 		* MuleTrayIcon.cpp was not compiling for __WXMAC_CARBON__.
 		  Seems to be fixed, but must be the code now has a lot of
 		  ifdefs and must be tested on other platforms.
+		* Added two more events: "out of space in temporary partition"
+		  and "error upon completion".
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
