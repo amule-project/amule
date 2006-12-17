@@ -27,6 +27,7 @@
 #include <wx/dcbuffer.h>
 
 #include "MuleGifCtrl.h"
+#include "Types.h"
 
 BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_TIMER(GIFTIMERID, MuleGifCtrl::OnTimer)
