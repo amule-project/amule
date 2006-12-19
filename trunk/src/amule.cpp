@@ -77,6 +77,10 @@
 #include "UPnP.h"			// Needed for UPnP
 #endif
 
+#ifdef __WXMAC__
+#include <wx/sysopt.h>			// Do_not_auto_remove
+#endif
+
 #ifndef AMULE_DAEMON
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
@@ -401,14 +405,19 @@ bool CamuleApp::OnInit()
 	signal(SIGTERM, OnShutdownSignal);
 #endif
 
+#ifdef __WXMAC__
+	// For listctrl's to behave on Mac
+	wxSystemOptions::SetOption(mac.listctrl.always_use_generic, 1);
+#endif
+
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
 	SetVendorName(wxT("TikuWarez"));
 	SetAppName(wxT("aMule"));
 	
-    wxString FullMuleVersion = GetFullMuleVersion();
-    wxString OSDescription = wxGetOsDescription();
-    strFullMuleVersion = strdup((const char *)unicode2char(FullMuleVersion));
-    strOSDescription = strdup((const char *)unicode2char(OSDescription));
+	wxString FullMuleVersion = GetFullMuleVersion();
+	wxString OSDescription = wxGetOsDescription();
+	strFullMuleVersion = strdup((const char *)unicode2char(FullMuleVersion));
+	strOSDescription = strdup((const char *)unicode2char(OSDescription));
 	OSType = OSDescription.BeforeFirst( wxT(' ') );
 	if ( OSType.IsEmpty() ) {
 		OSType = wxT("Unknown");

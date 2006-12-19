@@ -167,7 +167,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 			}
 		}
 		
-		if (newid < GetItemCount() - 1) {
+		if ((int)newid < GetItemCount() - 1) {
 			CSearchFile* after = (CSearchFile*)GetItemData(newid + 1);
 			wxASSERT(after);
 			if (parent) {
