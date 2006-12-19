@@ -160,52 +160,54 @@ PrefsPage pages[] =
 	//{ wxTRANSLATE("Notifications"),	PreferencesNotifyTab,		18, NULL },
 	{ wxTRANSLATE("Gui Tweaks"),		PreferencesGuiTweaksTab,	19, NULL },
 	{ wxTRANSLATE("Core Tweaks"),		PreferencesaMuleTweaksTab,	12, NULL },
-	{ wxTRANSLATE("Events"),			PreferencesEventsTab,		5,	NULL }
+	{ wxTRANSLATE("Events"),		PreferencesEventsTab,		5,  NULL }
 #ifdef __DEBUG__
-	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,			25, NULL }
+	,{ wxTRANSLATE("Debugging"),		PreferencesDebug,		25, NULL }
 #endif
 };
 
 
 PrefsUnifiedDlg::PrefsUnifiedDlg(wxWindow *parent)
 :
-wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
+wxDialog(parent, -1, _("Preferences"),
+	wxDefaultPosition, wxDefaultSize,
 	wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
-	preferencesDlgTop( this, FALSE );
+	preferencesDlgTop(this, false);
 	
-	wxListCtrl* PrefsIcons = CastChild( ID_PREFSLISTCTRL, wxListCtrl );
-
-	wxImageList* icon_list = new wxImageList(16, 16);
-	PrefsIcons->AssignImageList( icon_list, wxIMAGE_LIST_SMALL);
+	wxListCtrl *PrefsIcons = CastChild(ID_PREFSLISTCTRL, wxListCtrl);
+	wxImageList *icon_list = new wxImageList(16, 16);
+	PrefsIcons->AssignImageList(icon_list, wxIMAGE_LIST_SMALL);
 
 	// Add the single column used
-	PrefsIcons->InsertColumn(0, wxEmptyString, wxLIST_FORMAT_LEFT, PrefsIcons->GetSize().GetWidth()-5);
+	PrefsIcons->InsertColumn(
+		0, wxEmptyString, wxLIST_FORMAT_LEFT,
+		PrefsIcons->GetSize().GetWidth()-5);
 
 	// Temp variables for finding the smallest height and width needed
 	int width = 0;
 	int height = 0;
 
 	// Add each page to the page-list
-	for ( unsigned int i = 0; i < itemsof(pages); i++ ) {
+	for (unsigned int i = 0; i < itemsof(pages); ++i) {
 		// Add the icon and label assosiated with the page
-		icon_list->Add( amuleSpecial(pages[i].m_imageidx) );
+		icon_list->Add(amuleSpecial(pages[i].m_imageidx));
 		PrefsIcons->InsertItem(i, wxGetTranslation(pages[i].m_title), i);
 	}
 	
 	// Set list-width so that there arn't any scrollers
-	PrefsIcons->SetColumnWidth( 0, wxLIST_AUTOSIZE );
-	PrefsIcons->SetMinSize(wxSize(PrefsIcons->GetColumnWidth( 0 ) + 10, -1));
-	PrefsIcons->SetMaxSize(wxSize(PrefsIcons->GetColumnWidth( 0 ) + 10, -1));
+	PrefsIcons->SetColumnWidth(0, wxLIST_AUTOSIZE);
+	PrefsIcons->SetMinSize(wxSize(PrefsIcons->GetColumnWidth(0) + 10, -1));
+	PrefsIcons->SetMaxSize(wxSize(PrefsIcons->GetColumnWidth(0) + 10, -1));
 
 	// Now add the pages and calculate the minimum size	
-	for ( unsigned int i = 0; i < itemsof(pages); i++ ) {
+	for (unsigned int i = 0; i < itemsof(pages); ++i) {
 		// Create a container widget and the contents of the page
-		pages[i].m_widget = new wxPanel( this, -1 );
-		pages[i].m_function( pages[i].m_widget, true, true );
+		pages[i].m_widget = new wxPanel(this, -1);
+		pages[i].m_function(pages[i].m_widget, true, true);
 
 		// Add it to the sizer
-		prefs_sizer->Add( pages[i].m_widget, 0, wxGROW|wxEXPAND );
+		prefs_sizer->Add(pages[i].m_widget, 0, wxGROW|wxEXPAND);
 
 		if (pages[i].m_function == PreferencesGeneralTab) {
 			// This must be done now or pages won't Fit();
@@ -219,7 +221,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
 #define USEREVENTS_REPLACE_VAR(VAR, DESC, CODE)	+ wxString(wxT("\n  %") VAR wxT(" - ")) + wxGetTranslation(DESC)
-#define USEREVENTS_EVENT(ID, NAME, VARS)	case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, pages[i].m_widget); break;
+#define USEREVENTS_EVENT(ID, NAME, VARS) case CUserEvents::ID: CreateEventPanels(idx, wxEmptyString VARS, pages[i].m_widget); break;
 
 			wxListCtrl *list = CastChild(IDC_EVENTLIST, wxListCtrl);
 			list->InsertColumn(0, wxEmptyString);
@@ -244,40 +246,40 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 
 		// Find the greatest sizes
 		wxSize size = prefs_sizer->GetSize();
-		if ( size.GetWidth() > width ) {
+		if (size.GetWidth() > width) {
 			width = size.GetWidth();
 		}
 
-		if ( size.GetHeight() > height ) {
+		if (size.GetHeight() > height) {
 			height = size.GetHeight();
 		}
 
 		// Hide it for now
-		prefs_sizer->Remove( pages[i].m_widget );
-		pages[i].m_widget->Show( false );
+		prefs_sizer->Remove(pages[i].m_widget);
+		pages[i].m_widget->Show(false);
 	}
 	
 	// Default to the General tab
 	m_CurrentPanel = pages[0].m_widget;
-	prefs_sizer->Add( pages[0].m_widget, 0, wxGROW|wxEXPAND );
+	prefs_sizer->Add(pages[0].m_widget, 0, wxGROW|wxEXPAND);
 	m_CurrentPanel->Show( true );
 
 	// Select the first item
-	PrefsIcons->SetItemState( 0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED );
+	PrefsIcons->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 
 	// We now have the needed minimum height and width
-	prefs_sizer->SetMinSize( width, height );
+	prefs_sizer->SetMinSize(width, height);
 
 	// Store some often used pointers
-	m_ShareSelector = CastChild( IDC_SHARESELECTOR, CDirectoryTreeCtrl );
-	m_buttonColor   = CastChild( IDC_COLOR_BUTTON, wxButton );
-	m_choiceColor   = CastChild( IDC_COLORSELECTOR, wxChoice );
+	m_ShareSelector = CastChild(IDC_SHARESELECTOR, CDirectoryTreeCtrl);
+	m_buttonColor   = CastChild(IDC_COLOR_BUTTON, wxButton);
+	m_choiceColor   = CastChild(IDC_COLORSELECTOR, wxChoice);
 
 	// Connect the Cfgs with their widgets
 	thePrefs::CFGMap::iterator it = thePrefs::s_CfgList.begin();
 	for ( ; it != thePrefs::s_CfgList.end(); ++it ) {
 		// Checking for failures
-		if ( !it->second->ConnectToWidget( it->first, this ) ) {
+		if ( !it->second->ConnectToWidget(it->first, this) ) {
 			printf("Failed to connect Cfg to widget with the ID %d and key %s\n",
 				it->first, (const char *)unicode2char(it->second->GetKey()));
 		}
@@ -286,7 +288,7 @@ wxDialog(parent, -1, _("Preferences"), wxDefaultPosition, wxDefaultSize,
 
 	// It must not be resized to something smaller than what it currently is
 	wxSize size = GetClientSize();
-	SetSizeHints( size.GetWidth(), size.GetHeight() );
+	SetSizeHints(size.GetWidth(), size.GetHeight());
 	
 	#ifdef __WXMSW__
 		FindWindow(IDC_VERTTOOLBAR)->Enable(false);
@@ -343,7 +345,9 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
 	
 	// Enable/Disable some controls
-	bool customBrowser = CastChild( IDC_BROWSER, wxChoice )->GetSelection() == CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
+	bool customBrowser =
+		CastChild(IDC_BROWSER, wxChoice)->GetSelection() ==
+		(int)CastChild(IDC_BROWSER, wxChoice)->GetCount() - 1;
 	FindWindow( IDC_BROWSERSELF )->Enable( customBrowser );
 	FindWindow( IDC_SELBROWSER )->Enable( customBrowser );
 	#ifndef __WXMSW__
@@ -765,7 +769,9 @@ void PrefsUnifiedDlg::OnBrowserChange( wxCommandEvent& evt )
 {
 	wxTextCtrl* textctrl = CastChild( IDC_BROWSERSELF, wxTextCtrl );
 	wxButton* btn = CastChild( IDC_SELBROWSER, wxButton );
-	bool enable = evt.GetSelection() == CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
+	bool enable =
+		evt.GetSelection() ==
+		(int)CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
 
 	if (textctrl) {
 		textctrl->Enable( enable );
