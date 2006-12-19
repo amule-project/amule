@@ -1,9 +1,8 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=aMule
-Comment=aMule
 Exec=amule
-Icon=amule.xpm
+Icon=amule
 Terminal=false
 Type=Application
-Categories=Application;Network;
+Categories=Network;P2P;

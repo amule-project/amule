@@ -1,11 +1,12 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=wxCas
-Name[xx]=xxwxCasxx
 Exec=wxcas
-Icon=wxcas.xpm
+Icon=wxcas
+Terminal=false
 Type=Application
-Categories=Application;Network;
+Categories=Network;P2P;
 Comment=aMule online statistics
+Comment[de]=aMule-Onlinestatistik
 Comment[fr]=Statistiques d'aMule en ligne
 Comment[hu]=aMule online statisztikák
