@@ -20,6 +20,7 @@ Trunk
 		* Added autostart-xas to rpm .spec files.
 		* Patch for autoconf >= 2.60.
 		* Patch for redefinition of $(docdir) in docs/Makefile.am.
+		* Patch for aMule .desktop files.
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without threading support.
