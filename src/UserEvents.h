@@ -69,7 +69,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 			(wxString)(CFormat(wxT("%llu")) % ((CPartFile*)object)->GetFileSize()) ) \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("DLACTIVETIME"), \
-			wxTRANSLATE("The size of the file in bytes."), \
+			wxTRANSLATE("Cumulative download activity time."), \
 			CastSecondsToHM(((CPartFile*)object)->GetDlActiveTime()) ) \
 	) \
 	USEREVENTS_EVENT( \
