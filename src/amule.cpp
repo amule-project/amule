@@ -407,7 +407,7 @@ bool CamuleApp::OnInit()
 
 #ifdef __WXMAC__
 	// For listctrl's to behave on Mac
-	wxSystemOptions::SetOption(mac.listctrl.always_use_generic, 1);
+	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), 1);
 #endif
 
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
