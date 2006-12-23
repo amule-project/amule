@@ -265,9 +265,13 @@ std::string CUPnPLib::GetUPnPErrorMessage(int code) const
 std::string CUPnPLib::processUPnPErrorMessage(
 	const std::string &messsage,
 	int errorCode,
+	const DOMString errorString,
 	IXML_Document *doc) const
 {
 	std::ostringstream msg;
+	if (errorString == NULL || *errorString == 0) {
+		errorString = "Not available";
+	}
 	if (errorCode > 0) {
 		msg << "Error: " <<
 			messsage <<
@@ -280,8 +284,9 @@ std::string CUPnPLib::processUPnPErrorMessage(
 				"'.";
 		} else {
 			msg << errorCode << 
-				"', no description available, "
-				"this is probably a http error code.";
+				"', Error description :'" <<
+				errorString <<
+				"'.";
 		}
 		AddLogLineM(false, logUPnP, msg);
 	} else {
@@ -794,7 +799,7 @@ bool CUPnPService::Execute(
 				ArgValue[i].GetValue().c_str());
 			if (ret != UPNP_E_SUCCESS) {
 				m_upnpLib.processUPnPErrorMessage(
-					"m_UpnpAddToAction", ret, NULL);
+					"m_UpnpAddToAction", ret, NULL, NULL);
 				return false;
 			}
 		}
@@ -830,7 +835,7 @@ bool CUPnPService::Execute(
 		NULL, ActionDoc, &RespDoc);
 	if (ret != UPNP_E_SUCCESS) {
 		m_upnpLib.processUPnPErrorMessage(
-			"m_UpnpSendAction", ret, RespDoc);
+			"m_UpnpSendAction", ret, NULL, RespDoc);
 		m_upnpLib.m_ixmlDocument_free(ActionDoc);
 		m_upnpLib.m_ixmlDocument_free(RespDoc);
 		return false;
@@ -863,7 +868,8 @@ const std::string CUPnPService::GetStateVariable(
 			stateVariableName <<
 			"\"): in a call to m_UpnpGetServiceVarStatus";
 		AddDebugLogLineM(false, logUPnP, msg);
-		m_upnpLib.processUPnPErrorMessage(msg.str(), ret, NULL);
+		m_upnpLib.processUPnPErrorMessage(
+			msg.str(), ret, StVarVal, NULL);
 		return stdEmptyString;
 	}
 	msg << "GetStateVariable: " <<
@@ -1125,6 +1131,7 @@ bool CUPnPControlPoint::AddPortMappings(
 	m_WanService->GetStateVariable("ExternalIPAddress");
 	m_WanService->GetStateVariable("PortMappingNumberOfEntries");
 	m_WanService->GetStateVariable("PortMappingLeaseDuration");
+	m_WanService->GetStateVariable("asdfasdfasdf");
 	
 	// Just for testing
 	argval.resize(0);
@@ -1331,7 +1338,7 @@ upnpDiscovery:
 		if (a_event->ErrCode != UPNP_E_SUCCESS) {
 			upnpCP->m_upnpLib.processUPnPErrorMessage(
 				"m_UpnpSendActionAsync",
-				a_event->ErrCode,
+				a_event->ErrCode, NULL,
 				a_event->ActionResult);
 		} else {
 			// Check the response document
