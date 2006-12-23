@@ -269,14 +269,20 @@ std::string CUPnPLib::processUPnPErrorMessage(
 {
 	std::ostringstream msg;
 	if (errorCode > 0) {
-		CUPnPError e(*this, doc);
 		msg << "Error: " <<
 			messsage <<
-			": Error code :'" <<
-			e.getErrorCode() << 
-			"', Error description :'" <<
-			e.getErrorDescription() <<
-			"'.";
+			": Error code :'";
+		if (doc) {
+			CUPnPError e(*this, doc);
+			msg << e.getErrorCode() << 
+				"', Error description :'" <<
+				e.getErrorDescription() <<
+				"'.";
+		} else {
+			msg << errorCode << 
+				"', no description available, "
+				"this is probably a http error code.";
+		}
 		AddLogLineM(false, logUPnP, msg);
 	} else {
 		msg << "Error: " <<
@@ -1119,7 +1125,7 @@ bool CUPnPControlPoint::AddPortMappings(
 	m_WanService->GetStateVariable("ExternalIPAddress");
 	m_WanService->GetStateVariable("PortMappingNumberOfEntries");
 	m_WanService->GetStateVariable("PortMappingLeaseDuration");
-
+	
 	// Just for testing
 	argval.resize(0);
 	m_WanService->Execute("GetStatusInfo", argval);
