@@ -1131,7 +1131,6 @@ bool CUPnPControlPoint::AddPortMappings(
 	m_WanService->GetStateVariable("ExternalIPAddress");
 	m_WanService->GetStateVariable("PortMappingNumberOfEntries");
 	m_WanService->GetStateVariable("PortMappingLeaseDuration");
-	m_WanService->GetStateVariable("asdfasdfasdf");
 	
 	// Just for testing
 	argval.resize(0);
