@@ -867,7 +867,6 @@ const std::string CUPnPService::GetStateVariable(
 		msg << "GetStateVariable(\"" <<
 			stateVariableName <<
 			"\"): in a call to m_UpnpGetServiceVarStatus";
-		AddDebugLogLineM(false, logUPnP, msg);
 		m_upnpLib.processUPnPErrorMessage(
 			msg.str(), ret, StVarVal, NULL);
 		return stdEmptyString;
