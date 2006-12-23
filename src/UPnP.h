@@ -133,6 +133,7 @@ public:
 	std::string processUPnPErrorMessage(
 		const std::string &messsage,
 		int code,
+		const DOMString errorString,
 		IXML_Document *doc) const;
 
 	// Processing response to actions
