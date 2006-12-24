@@ -1415,7 +1415,12 @@ uint32 CPreferences::CPreferences::GetCatColor(size_t index)
 	return m_CatList[index]->color;
 }
 
-Category_Struct *CPreferences::CreateCategory(wxString name, wxString path, wxString comment, uint32 color, uint8 prio)
+Category_Struct *CPreferences::CreateCategory(
+	wxString name,
+	wxString path,
+	wxString comment,
+	uint32 color,
+	uint8 prio)
 {
 	Category_Struct *category = new Category_Struct();
 	category->incomingpath	= path;
