@@ -1351,8 +1351,11 @@ upnpDiscovery:
 	}
 	default:
 		// Humm, this is not good, we forgot to handle something...
-		fprintf(stderr, "Callback: default... Unknown event, not good.\n");
-		msg << "error(UPnP::Callback): Event not handled.";
+		fprintf(stderr,
+			"Callback: default... Unknown event:'%d', not good.\n",
+			EventType);
+		msg << "error(UPnP::Callback): Event not handled:'" <<
+			EventType << "'.";
 		AddDebugLogLineM(true, logUPnP, msg);
 		fprintf(stderr, "%s\n", msg.str().c_str());
 		// Better not throw in the callback. Who would catch it?
