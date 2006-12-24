@@ -15,6 +15,7 @@ Trunk
 		* Added alias -P --picture to cas.
 		* Added --config-dir and -c option to ed2k.
 		* Added --config-dir option to amuled.
+		* Fixed typos in the man pages.
 
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
