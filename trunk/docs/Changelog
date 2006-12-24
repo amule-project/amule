@@ -85,6 +85,7 @@ Trunk
 		  ifdefs and must be tested on other platforms.
 		* Added two more events: "out of space in temporary partition"
 		  and "error upon completion".
+		* Fixed a crash in amulegui when adding a new category.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

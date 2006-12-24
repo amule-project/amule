@@ -98,7 +98,6 @@ libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 libmuleappgui_a_SOURCES = \
 	BarShader.cpp \
-	CatDialog.cpp \
 	ChatWnd.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
@@ -163,6 +162,7 @@ gui_sources = \
 	amule-gui.cpp \
 	amuleDlg.cpp \
 	AddFriend.cpp \
+	CatDialog.cpp \
 	ChatSelector.cpp \
 	ClientDetailDialog.cpp \
 	FileDetailDialog.cpp \
