@@ -1424,10 +1424,10 @@ Category_Struct *CPreferences::CreateCategory(
 {
 	Category_Struct *category = new Category_Struct();
 	category->incomingpath	= path;
-	category->title			= name;
-	category->comment		= comment;
-	category->color			= color;
-	category->prio			= prio;
+	category->title		= name;
+	category->comment	= comment;
+	category->color		= color;
+	category->prio		= prio;
 			
 	AddCat(category);
 	

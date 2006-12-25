@@ -518,7 +518,9 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->AddCategory(theApp.glob_prefs->GetCategory(0));
+			theApp.amuledlg->m_transferwnd->
+				AddCategory(theApp.glob_prefs->GetCategory(
+					theApp.glob_prefs->GetCatCount()-1));
 		}
 #endif
 	}
@@ -538,8 +540,7 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->RemoveCategory(cat);			
-			theApp.amuledlg->m_searchwnd->UpdateCatChoice();
+			theApp.amuledlg->m_transferwnd->RemoveCategory(cat);
 		}
 #endif
 	}
