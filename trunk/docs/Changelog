@@ -16,6 +16,7 @@ Trunk
 		* Added --config-dir and -c option to ed2k.
 		* Added --config-dir option to amuled.
 		* Fixed typos in the man pages.
+		* Added manpage for amulegui.
 
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
