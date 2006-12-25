@@ -90,6 +90,8 @@ Trunk
 		* Fixed a bug in amulegui, removing a category remotely did
 		  not update the category count in amule.conf, so the next
 		  time amule was run, the category was there again.
+		* Fixed a bug in toolbar skins, the skin file was opened even
+		  when the checkbox "Use skins" was not checked.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

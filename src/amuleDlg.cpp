@@ -107,12 +107,18 @@ END_EVENT_TABLE()
 	#define wxCLOSE_BOX 0
 #endif
 
-CamuleDlg::CamuleDlg(wxWindow* pParent, const wxString &title, wxPoint where, wxSize dlg_size)
+CamuleDlg::CamuleDlg(
+	wxWindow* pParent,
+	const wxString &title,
+	wxPoint where,
+	wxSize dlg_size)
 :
 wxFrame(
 	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
-	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,wxT("aMule") ), m_transferwnd(NULL)
+	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,
+	wxT("aMule")),
+m_transferwnd(NULL)
 {
 	m_is_safe_state = false;
 	
@@ -1144,7 +1150,7 @@ struct SkinItem {
 };
 
 
-void CamuleDlg::Apply_Clients_Skin(wxString file)
+void CamuleDlg::Apply_Clients_Skin(wxString skinFileName)
 {	
 	static int ClientItemNumber = CLIENT_SKIN_UNUSED;
 
@@ -1155,14 +1161,14 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 
 	wxTextFile skinfile;
 	try {
-		if (file.IsEmpty()) {			
-			throw wxString(_("Skin file name is empty - loading defaults"));
+		if (skinFileName.IsEmpty()) {			
+			throw wxString(_("Skin file name is empty"));
 		}
-		if (!::wxFileExists(file)) {
-			throw (CFormat(_("Skin file %s does not exist - loading defaults")) % file ).GetString();
+		if (!::wxFileExists(skinFileName)) {
+			throw (CFormat(_("Skin file %s does not exist")) % skinFileName ).GetString();
 		}
-		if (!skinfile.Open(file)) {
-			throw (CFormat(_("Unable to open skin file: %s")) % file).GetString();
+		if (!skinfile.Open(skinFileName)) {
+			throw (CFormat(_("Unable to open skin file: %s")) % skinFileName).GetString();
 		}
 		
 		int client_header_found = -1;
@@ -1327,7 +1333,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 
 		skinfile.Close();
 	} catch (const wxString &error) {
-		wxMessageBox(error, _("Error"), wxOK | wxICON_ERROR, this);
+		AddLogLineM( true, error + _(" - loading defaults"));
 		
 		// Load defaults
 		for (int i = 0; i < ClientItemNumber; ++i) {
@@ -1337,34 +1343,37 @@ void CamuleDlg::Apply_Clients_Skin(wxString file)
 }
 
 
-void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
+void CamuleDlg::Apply_Toolbar_Skin(wxString skinFileName, wxToolBar* wndToolbar)
 {
 	try {
-		wxTextFile file;
-		if (!::wxFileExists(skinfile)) {
-			throw (CFormat(_("Skin file %s does not exist")) % skinfile ).GetString();
+		wxTextFile skinFile;
+		if (skinFileName.IsEmpty()) {			
+			throw wxString(_("Skin file name is empty"));
 		}
-		if (!file.Open(skinfile)) {
-			throw (CFormat(_("Unable to open skin file: %s")) % skinfile).GetString();
+		if (!::wxFileExists(skinFileName)) {
+			throw (CFormat(_("Skin file %s does not exist")) % skinFileName ).GetString();
+		}
+		if (!skinFile.Open(skinFileName)) {
+			throw (CFormat(_("Unable to open skin file: %s")) % skinFileName).GetString();
 		}
 
 		int client_header_found = -1;    
-		for (uint32 i=0; i < file.GetLineCount(); i++) {
-			if (file[i] == wxT("[Toolbar Bitmaps]")) {
+		for (uint32 i=0; i < skinFile.GetLineCount(); i++) {
+			if (skinFile[i] == wxT("[Toolbar Bitmaps]")) {
 				client_header_found = i;	
 				break;
 			}
 		}
 			
 		if (client_header_found != -1) {
-			for (uint32 i=client_header_found+1; i < file.GetLineCount(); i++) {
-				if (file[i].StartsWith(wxT("["))) {
+			for (uint32 i=client_header_found+1; i < skinFile.GetLineCount(); i++) {
+				if (skinFile[i].StartsWith(wxT("["))) {
 					break;
 				}				
 				// Connect Icon
-				if (file[i].StartsWith(wxT("Connect_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Connect_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1373,9 +1382,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Disconnect Icon
-				if (file[i].StartsWith(wxT("Disconnect_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Disconnect_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1384,9 +1393,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Connecting Icon
-				if (file[i].StartsWith(wxT("Connecting_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Connecting_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						connButImg(2) = wxBitmap(new_image);
@@ -1396,9 +1405,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Network Icon
-				if (file[i].StartsWith(wxT("Network_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Network_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1407,9 +1416,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Transfer Icon
-				if (file[i].StartsWith(wxT("Transfer_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Transfer_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1418,9 +1427,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Search Icon
-				if (file[i].StartsWith(wxT("Search_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Search_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1429,9 +1438,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Share Icon
-				if (file[i].StartsWith(wxT("Share_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Share_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1440,9 +1449,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Messages Icon
-				if (file[i].StartsWith(wxT("Messages_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Messages_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1451,9 +1460,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Stat Icon
-				if (file[i].StartsWith(wxT("Stat_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Stat_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1462,9 +1471,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Pref Icon
-				if (file[i].StartsWith(wxT("Pref_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Pref_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1473,9 +1482,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Import Icon
-				if (file[i].StartsWith(wxT("Import_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Import_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1484,9 +1493,9 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 					}
 				}
 				// Help Icon
-				if (file[i].StartsWith(wxT("Help_icon="))) {
+				if (skinFile[i].StartsWith(wxT("Help_icon="))) {
 					wxImage new_image;
-					wxFileName file_name(file[i].AfterLast(wxT('=')));
+					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
 					file_name.Normalize();
 					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
 						m_tblist.Add(wxBitmap(new_image));
@@ -1533,7 +1542,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar)
 }
 
 
-void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation)
+void CamuleDlg::Create_Toolbar(wxString skinFileName, bool orientation)
 {
 	Freeze();
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
@@ -1548,10 +1557,10 @@ void CamuleDlg::Create_Toolbar(wxString skinfile, bool orientation)
 		wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
 	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
 	
-	if (skinfile.IsEmpty()) {
+	if (!thePrefs::UseSkin()) {
 		muleToolbar( m_wndToolbar );
 	} else {
-		Apply_Toolbar_Skin( skinfile, m_wndToolbar );		
+		Apply_Toolbar_Skin( skinFileName, m_wndToolbar );		
 	}
 
 	#ifdef CLIENT_GUI
