@@ -87,6 +87,9 @@ Trunk
 		* Added two more events: "out of space in temporary partition"
 		  and "error upon completion".
 		* Fixed a crash in amulegui when adding a new category.
+		* Fixed a bug in amulegui, removing a category remotely did
+		  not update the category count in amule.conf, so the next
+		  time amule was run, the category was there again.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

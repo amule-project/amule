@@ -148,14 +148,6 @@ void CTransferWnd::AddCategory( Category_Struct* category )
 	theApp.amuledlg->m_searchwnd->UpdateCatChoice();
 }
 
-void CTransferWnd::RemoveCategory(int index)
-{
-	m_dlTab->RemovePage(index);
-				
-	m_dlTab->SetSelection(0);
-	downloadlistctrl->ChangeCategory(0);
-}
-
 void CTransferWnd::UpdateCategory( int index, bool titleChanged )
 {
 	wxString label = theApp.glob_prefs->GetCategory( index )->title;
@@ -218,7 +210,7 @@ void CTransferWnd::OnSetCatPriority( wxCommandEvent& event )
 }
 
 
-void CTransferWnd::OnAddCategory( wxCommandEvent& WXUNUSED(event) )
+void CTransferWnd::OnAddCategory(wxCommandEvent& WXUNUSED(event))
 {
 	CCatDialog dialog( this,
 	// Allow browse?
@@ -230,30 +222,41 @@ void CTransferWnd::OnAddCategory( wxCommandEvent& WXUNUSED(event) )
 	);
 	if (dialog.ShowModal() == wxOK) {
 		// Add the files on this folder.
-		Category_Struct* newcat = theApp.glob_prefs->GetCategory(theApp.glob_prefs->GetCatCount()-1);
+		Category_Struct* newcat =
+			theApp.glob_prefs->GetCategory(
+				theApp.glob_prefs->GetCatCount()-1);
 		theApp.sharedfiles->AddFilesFromDirectory(newcat->incomingpath);
 		theApp.sharedfiles->Reload();		
 	}
 }
 
 
-void CTransferWnd::OnDelCategory( wxCommandEvent& WXUNUSED(event) )
+void CTransferWnd::OnDelCategory(wxCommandEvent& WXUNUSED(event))
 {
-	if ( m_dlTab->GetSelection() > 0 ) {
-		theApp.downloadqueue->ResetCatParts( m_dlTab->GetSelection() );
-		theApp.glob_prefs->RemoveCat( m_dlTab->GetSelection() );
-		
-		RemoveCategory(m_dlTab->GetSelection());
-		
+	RemoveCategory(m_dlTab->GetSelection());
+}
+
+
+void CTransferWnd::RemoveCategory(int index)
+{
+	if ( index > 0 ) {
+		theApp.downloadqueue->ResetCatParts(index);
+		theApp.glob_prefs->RemoveCat(index);
+		RemoveCategoryPage(index);
 		if ( theApp.glob_prefs->GetCatCount() == 1 ) {
 			thePrefs::SetAllcatType(0);
 		}
-		
 		theApp.glob_prefs->SaveCats();
-
 		theApp.amuledlg->m_searchwnd->UpdateCatChoice();
-		
 	}
+}
+
+
+void CTransferWnd::RemoveCategoryPage(int index)
+{
+	m_dlTab->RemovePage(index);
+	m_dlTab->SetSelection(0);
+	downloadlistctrl->ChangeCategory(0);
 }
 
 

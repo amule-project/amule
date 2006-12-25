@@ -91,9 +91,10 @@ public:
 	void UpdateCategory( int index, bool titleChanged = false );
 
 	/**
-	 * Remove category page when it's being deleted remotely
+	 * Remove category
 	 */
 	void RemoveCategory(int index);
+	void RemoveCategoryPage(int index);
 
 	/**
 	 * This functions updates the displayed client-numbers*
