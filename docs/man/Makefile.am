@@ -6,7 +6,11 @@ if WEB
 amuleweb_MANS = amuleweb.1
 endif
 
-dist_man_MANS = $(amulecmd_MANS) $(amuleweb_MANS)
+if AMULE_GUI
+amulegui_MANS = amulegui.1
+endif
+
+dist_man_MANS = $(amulecmd_MANS) $(amuleweb_MANS) $(amuleweb_MANS)
 
 if MONOLITHIC
 dist_man_MANS += amule.1
@@ -21,7 +25,7 @@ dist_man_MANS += ed2k.1
 endif
 
 EXTRA_DIST = \
-	amule.de.1 amuled.de.1 amulecmd.de.1 amuleweb.de.1 ed2k.de.1 \
+	amule.de.1 amuled.de.1 amulecmd.de.1 amulegui.de.1 amuleweb.de.1 ed2k.de.1 \
 	amule.es.1 amuled.es.1 amulecmd.es.1 amuleweb.es.1 ed2k.es.1 \
 	amule.eu.1 amuled.eu.1 amulecmd.eu.1 amuleweb.eu.1 ed2k.eu.1 \
 	amule.fr.1 amuled.fr.1 amulecmd.fr.1 amuleweb.fr.1 ed2k.fr.1 \
