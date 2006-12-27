@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=aMule Remote GUI
+Exec=amulegui
+Icon=amulegui
+Terminal=false
+Type=Application
+Categories=Network;P2P;
