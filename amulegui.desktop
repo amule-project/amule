@@ -1,8 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=aMule Remote GUI
+Name=aMuleGUI
 Exec=amulegui
 Icon=amulegui
 Terminal=false
 Type=Application
 Categories=Network;P2P;
+Comment=aMule remote control
+Comment[de]=aMule-Fernsteuerung
+Comment[fr]=Contrôle à distance d'aMule
