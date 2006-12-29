@@ -1124,7 +1124,7 @@ void MilliSleep(uint32 msecs)
 	#ifdef __WXBASE__
 		#ifdef __WXMSW__
 			if (msecs) {
-				Sleep(msecs);
+				wxSleep(msecs);
 			}
 		#else
 			struct timespec waittime;
