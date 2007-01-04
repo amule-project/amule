@@ -31,7 +31,7 @@ the first multi-platform edonkey network client.
 
 %install
 [ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
-%makeinstall
+%{__make} DESTDIR="$RPM_BUILD_ROOT" install
 %find_lang amule
 
 %clean
