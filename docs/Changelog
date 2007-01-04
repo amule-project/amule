@@ -25,6 +25,7 @@ Trunk
 		* Patch for redefinition of $(docdir) in docs/Makefile.am.
 		* Patch for aMule .desktop files.
 		* Added amulegui desktop icon (with Vollstrecker).
+		* Patch for fixing aMule spec file in Fedora and Mandriva.
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without threading support.

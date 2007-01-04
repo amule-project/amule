@@ -49,7 +49,7 @@ echo " 0, ok, here we go then... Muhahaha :), installing."
 
 %install
 [ ! "$RPM_BUILD_ROOT" = "/" ] && %{__rm} -rf "$RPM_BUILD_ROOT"
-%makeinstall
+%{__make} DESTDIR="$RPM_BUILD_ROOT" install
 %find_lang amule
 
 %clean
