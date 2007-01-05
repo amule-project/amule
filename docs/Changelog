@@ -6,6 +6,9 @@ Trunk
 	centaur:
 		* OpenBSD patch.
 
+	DLH:
+		* amulegui.xpm icon.
+
 	Vollstrecker:
 		* Added possibility to give the path for output right with
 		  -p or -o in cas.
