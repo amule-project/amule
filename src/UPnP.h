@@ -327,8 +327,10 @@ public:
 		const CUPnPLib &upnpLib,
 		IXML_Document *errorDoc);
 	~CUPnPError() {}
-	const std::string &getErrorCode() const		{ return m_ErrorCode; }
-	const std::string &getErrorDescription() const	{ return m_ErrorDescription; }
+	const std::string &getErrorCode() const
+		{ return m_ErrorCode; }
+	const std::string &getErrorDescription() const
+		{ return m_ErrorDescription; }
 };
 
 
@@ -348,11 +350,16 @@ public:
 		IXML_Element *argument,
 		const std::string &SCPDURL);
 	~CUPnPArgument() {}
-	const std::string &GetName() const		{ return m_name; }
-	const std::string &GetDirection() const	{ return m_direction; }
-	bool GetRetVal() const			{ return m_retval; }
-	const std::string &GetRelatedStateVariable() const	{ return m_relatedStateVariable; }
-	const std::string &GetKey() const		{ return m_name; }
+	const std::string &GetName() const
+		{ return m_name; }
+	const std::string &GetDirection() const
+		{ return m_direction; }
+	bool GetRetVal() const
+		{ return m_retval; }
+	const std::string &GetRelatedStateVariable() const
+		{ return m_relatedStateVariable; }
+	const std::string &GetKey() const
+		{ return m_name; }
 };
 
 
@@ -371,9 +378,12 @@ public:
 		IXML_Element *action,
 		const std::string &SCPDURL);
 	~CUPnPAction() {}
-	const std::string &GetName() const		{ return m_name; }
-	const std::string &GetKey() const		{ return m_name; }
-	const ArgumentList &GetArgumentList() const { return m_ArgumentList; }
+	const std::string &GetName() const
+		{ return m_name; }
+	const std::string &GetKey() const
+		{ return m_name; }
+	const ArgumentList &GetArgumentList() const
+		{ return m_ArgumentList; }
 };
 
 
@@ -390,8 +400,10 @@ public:
 		IXML_Element *allowedValue,
 		const std::string &SCPDURL);
 	~CUPnPAllowedValue() {}
-	const std::string &GetAllowedValue() const	{ return m_allowedValue; }
-	const std::string &GetKey() const		{ return m_allowedValue; }
+	const std::string &GetAllowedValue() const
+		{ return m_allowedValue; }
+	const std::string &GetKey() const
+		{ return m_allowedValue; }
 };
 
 
@@ -412,11 +424,16 @@ public:
 		IXML_Element *stateVariable,
 		const std::string &URLBase);
 	~CUPnPStateVariable() {}
-	const std::string &GetNname() const	{ return m_name; }
-	const std::string &GetDataType() const	{ return m_dataType; }
-	const std::string &GetDefaultValue() const	{ return m_defaultValue; }
-	const std::string &GetKey() const		{ return m_name; }
-	const AllowedValueList &GetAllowedValueList() const { return m_AllowedValueList; }
+	const std::string &GetNname() const
+		{ return m_name; }
+	const std::string &GetDataType() const
+		{ return m_dataType; }
+	const std::string &GetDefaultValue() const
+		{ return m_defaultValue; }
+	const std::string &GetKey() const
+		{ return m_name; }
+	const AllowedValueList &GetAllowedValueList() const
+		{ return m_AllowedValueList; }
 };
 
 
@@ -435,8 +452,10 @@ public:
 		IXML_Element *scpd,
 		const std::string &SCPDURL);
 	~CUPnPSCPD() {}
-	const ActionList &GetActionList() const	{ return m_ActionList; }
-	const ServiceStateTable &GetServiceStateTable() const	{ return m_ServiceStateTable; }
+	const ActionList &GetActionList() const
+		{ return m_ActionList; }
+	const ServiceStateTable &GetServiceStateTable() const
+		{ return m_ServiceStateTable; }
 };
 
 
@@ -473,7 +492,7 @@ private:
 	std::string m_absEventSubURL;
 	int m_timeout;
 	Upnp_SID m_SID;
-	CUPnPSCPD *m_SCPD;
+	std::auto_ptr<CUPnPSCPD> m_SCPD;
 	
 public:
 	CUPnPService(
@@ -483,24 +502,44 @@ public:
 		const std::string &URLBase);
 	~CUPnPService();
 	
-	const std::string &GetServiceType() const	{ return m_serviceType; }
-	const std::string &GetServiceId() const	{ return m_serviceId; }
-	const std::string &GetSCPDURL() const	{ return m_SCPDURL; }
-	const std::string &GetAbsSCPDURL() const	{ return m_absSCPDURL; }
-	const std::string &GetControlURL() const	{ return m_controlURL; }
-	const std::string &GetEventSubURL() const	{ return m_eventSubURL; }
-	const std::string &GetAbsControlURL() const{ return m_absControlURL; }
-	const std::string &GetAbsEventSubURL()const{ return m_absEventSubURL; }
-	int GetTimeout() const			{ return m_timeout; }
-	int *GetTimeoutAddr()			{ return &m_timeout; }
-	char *GetSID()				{ return m_SID; }
-	const std::string &GetKey() const		{ return m_serviceId; }
-	bool IsSubscribed() const		{ return m_SCPD != NULL; }
-	void SetSCPD(CUPnPSCPD *SCPD)		{ m_SCPD = SCPD; }
+	const std::string &GetServiceType() const
+		{ return m_serviceType; }
+	const std::string &GetServiceId() const
+		{ return m_serviceId; }
+	const std::string &GetSCPDURL() const
+		{ return m_SCPDURL; }
+	const std::string &GetAbsSCPDURL() const
+		{ return m_absSCPDURL; }
+	const std::string &GetControlURL() const
+		{ return m_controlURL; }
+	const std::string &GetEventSubURL() const
+		{ return m_eventSubURL; }
+	const std::string &GetAbsControlURL() const
+		{ return m_absControlURL; }
+	const std::string &GetAbsEventSubURL() const
+		{ return m_absEventSubURL; }
+	int GetTimeout() const
+		{ return m_timeout; }
+	void SetTimeout(int t)
+		{ m_timeout = t; }
+	int *GetTimeoutAddr()
+		{ return &m_timeout; }
+	char *GetSID()
+		{ return m_SID; }
+	void SetSID(const char *s)
+		{ memcpy(m_SID, s, sizeof(Upnp_SID)); }
+	const std::string &GetKey() const
+		{ return m_serviceId; }
+	bool IsSubscribed() const
+		{ return m_SCPD.get() != NULL; }
+	void SetSCPD(CUPnPSCPD *SCPD)
+		{ m_SCPD.reset(SCPD); }
+	
 	bool Execute(
 		const std::string &ActionName,
 		const std::vector<CUPnPArgumentValue> &ArgValue) const;
-	const std::string GetStateVariable(const std::string &stateVariableName) const;
+	const std::string GetStateVariable(
+		const std::string &stateVariableName) const;
 };
 
 
@@ -534,11 +573,16 @@ public:
 		const std::string &URLBase);
 	~CUPnPDevice() {}
 	
-	const std::string &GetUDN() const			{ return m_UDN; }
-	const std::string &GetDeviceType() const		{ return m_deviceType; }
-	const std::string &GetFriendlyName() const		{ return m_friendlyName; }
-	const std::string &GetPresentationURL() const	{ return m_presentationURL; }
-	const std::string &GetKey() const			{ return m_UDN; }
+	const std::string &GetUDN() const
+		{ return m_UDN; }
+	const std::string &GetDeviceType() const
+		{ return m_deviceType; }
+	const std::string &GetFriendlyName() const
+		{ return m_friendlyName; }
+	const std::string &GetPresentationURL() const
+		{ return m_presentationURL; }
+	const std::string &GetKey() const
+		{ return m_UDN; }
 };
 
 
@@ -561,15 +605,19 @@ public:
 		int expires);
 	~CUPnPRootDevice() {}
 	
-	const std::string &GetURLBase() const		{ return m_URLBase; }
-	const std::string &GetLocation() const		{ return m_location; }
-	int GetExpires() const				{ return m_expires; }
-
-	void SetExpires(int expires)			{ m_expires = expires; }
+	const std::string &GetURLBase() const
+		{ return m_URLBase; }
+	const std::string &GetLocation() const
+		{ return m_location; }
+	int GetExpires() const
+		{ return m_expires; }
+	void SetExpires(int expires)
+		{ m_expires = expires; }
 };
 
 
-typedef std::map<const std::string, CUPnPRootDevice *> RootDeviceList;
+typedef std::map<const std::string, CUPnPRootDevice *> RootDeviceMap;
+typedef std::map<const std::string, CUPnPService *> ServiceMap;
 
 
 class CUPnPControlPoint
@@ -579,7 +627,8 @@ private:
 	// upnp stuff
 	CUPnPLib m_upnpLib;
 	UpnpClient_Handle m_UPnPClientHandle;
-	RootDeviceList m_RootDeviceList;
+	RootDeviceMap m_RootDeviceMap;
+	ServiceMap m_ServiceMap;
 	wxMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
 	CUPnPService *m_WanService;
@@ -608,7 +657,10 @@ public:
 		{ m_WanService = service; }
 
 	// Callback function
-	static int Callback(Upnp_EventType EventType, void* Event, void* Cookie);
+	static int Callback(
+		Upnp_EventType EventType,
+		void* Event,
+		void* Cookie);
 	
 private:
 	void OnEventReceived(
@@ -620,7 +672,8 @@ private:
 		const std::string &urlBase,
 		const char *location,
 		int expires);
-	void RemoveRootDevice(const char *udn);
+	void RemoveRootDevice(
+		const char *udn);
 };
 
 
