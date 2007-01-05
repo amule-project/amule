@@ -98,6 +98,8 @@ Trunk
 		  time amule was run, the category was there again.
 		* Fixed a bug in toolbar skins, the skin file was opened even
 		  when the checkbox "Use skins" was not checked.
+		* Fixed a crash related to MuleGIFDecoder wx-2.8.0 when
+		  downloading the file IPFIlter.dat.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
