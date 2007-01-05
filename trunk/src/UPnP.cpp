@@ -703,7 +703,6 @@ m_SCPD(NULL)
 
 CUPnPService::~CUPnPService()
 {
-	delete m_SCPD;
 }
 
 
@@ -971,7 +970,7 @@ CUPnPControlPoint::CUPnPControlPoint(unsigned short udpPort)
 :
 m_upnpLib(*this),
 m_UPnPClientHandle(),
-m_RootDeviceList(),
+m_RootDeviceMap(),
 m_RootDeviceListMutex(),
 m_IGWDeviceDetected(false),
 m_WanService(NULL)
@@ -1045,8 +1044,8 @@ error:
 
 CUPnPControlPoint::~CUPnPControlPoint()
 {
-	for(	RootDeviceList::iterator it = m_RootDeviceList.begin();
-		it != m_RootDeviceList.end();
+	for(	RootDeviceMap::iterator it = m_RootDeviceMap.begin();
+		it != m_RootDeviceMap.end();
 		++it) {
 		delete (*it).second;
 	}
@@ -1328,9 +1327,76 @@ upnpDiscovery:
 		upnpCP->OnEventReceived(Sid, e_event->EventKey, e_event->ChangedVariables);
 		break;
 	}
+	case UPNP_EVENT_SUBSCRIBE_COMPLETE:
+		//fprintf(stderr, "Callback: UPNP_EVENT_SUBSCRIBE_COMPLETE\n");
+		msg << "error(UPNP_EVENT_SUBSCRIBE_COMPLETE): ";
+		goto upnpEventRenewalComplete;
+	case UPNP_EVENT_UNSUBSCRIBE_COMPLETE:
+		//fprintf(stderr, "Callback: UPNP_EVENT_UNSUBSCRIBE_COMPLETE\n");
+		msg << "error(UPNP_EVENT_UNSUBSCRIBE_COMPLETE): ";
+		goto upnpEventRenewalComplete;
+	case UPNP_EVENT_RENEWAL_COMPLETE: {
+		//fprintf(stderr, "Callback: UPNP_EVENT_RENEWAL_COMPLETE\n");
+		msg << "error(UPNP_EVENT_RENEWAL_COMPLETE): ";
+upnpEventRenewalComplete:
+		struct Upnp_Event_Subscribe *es_event =
+			(struct Upnp_Event_Subscribe *)Event;
+		if (es_event->ErrCode != UPNP_E_SUCCESS) {
+			msg << "Error in Event Subscribe Callback";
+			upnpCP->m_upnpLib.processUPnPErrorMessage(
+				msg.str(), es_event->ErrCode, NULL, NULL);
+		} else {
+#if 0
+			TvCtrlPointHandleSubscribeUpdate(
+				es_event->PublisherUrl,
+				es_event->Sid,
+				es_event->TimeOut );
+#endif
+		}
+		
+		break;
+	}
+	
+	case UPNP_EVENT_AUTORENEWAL_FAILED:
+		//fprintf(stderr, "Callback: UPNP_EVENT_AUTORENEWAL_FAILED\n");
+		msg << "error(UPNP_EVENT_AUTORENEWAL_FAILED): ";
+		goto upnpEventSubscriptionExpired;
+	case UPNP_EVENT_SUBSCRIPTION_EXPIRED: {
+		//fprintf(stderr, "Callback: UPNP_EVENT_SUBSCRIPTION_EXPIRED\n");
+		msg << "error(UPNP_EVENT_SUBSCRIPTION_EXPIRED): ";
+upnpEventSubscriptionExpired:
+		struct Upnp_Event_Subscribe *es_event =
+			(struct Upnp_Event_Subscribe *)Event;
+		Upnp_SID newSID;
+		int TimeOut = 1801;
+		int ret = upnpCP->m_upnpLib.m_UpnpSubscribe(
+			upnpCP->m_UPnPClientHandle,
+			es_event->PublisherUrl,
+			&TimeOut,
+			newSID);
+		if (ret != UPNP_E_SUCCESS) {
+			msg << "Error Subscribing to EventURL";
+			upnpCP->m_upnpLib.processUPnPErrorMessage(
+				msg.str(), es_event->ErrCode, NULL, NULL);
+		} else {
+			ServiceMap::iterator it = upnpCP->m_ServiceMap.find(newSID);
+			if (it != upnpCP->m_ServiceMap.end()) {
+				it->second->SetTimeout(TimeOut);
+				it->second->SetSID(newSID);
+				msg << "Subscribed to EventURL with SID == '" <<
+					newSID << "'.";
+				AddDebugLogLineM(true, logUPnP, msg);
+			} else {
+				msg << "Error: did not find service " <<
+					newSID << " in the service map.";
+				AddDebugLogLineM(true, logUPnP, msg);
+			}
+		}
+		break;
+	}
 	case UPNP_CONTROL_ACTION_COMPLETE: {
 		//fprintf(stderr, "Callback: UPNP_CONTROL_ACTION_COMPLETE\n");
-		// This is here in case we choose to do this assynchronously
+		// This is here if we choose to do this asynchronously
 		struct Upnp_Action_Complete *a_event =
 			(struct Upnp_Action_Complete *)Event;
 		if (a_event->ErrCode != UPNP_E_SUCCESS) {
@@ -1349,6 +1415,44 @@ upnpDiscovery:
 		 */
 		break;
 	}
+	case UPNP_CONTROL_GET_VAR_COMPLETE: {
+		//fprintf(stderr, "Callback: UPNP_CONTROL_GET_VAR_COMPLETE\n");
+		msg << "error(UPNP_CONTROL_GET_VAR_COMPLETE): ";
+		struct Upnp_State_Var_Complete *sv_event =
+			(struct Upnp_State_Var_Complete *)Event;
+		if (sv_event->ErrCode != UPNP_E_SUCCESS) {
+			msg << "m_UpnpGetServiceVarStatusAsync";
+			upnpCP->m_upnpLib.processUPnPErrorMessage(
+				msg.str(), sv_event->ErrCode, NULL, NULL);
+		} else {
+#if 0
+			// Warning: The use of UpnpGetServiceVarStatus and 
+			// UpnpGetServiceVarStatusAsync is deprecated by the
+			// UPnP forum.
+			TvCtrlPointHandleGetVar(
+				sv_event->CtrlUrl,
+				sv_event->StateVarName,
+				sv_event->CurrentVal );
+#endif
+		}
+		break;
+	}
+	// ignore these cases, since this is not a device 
+	case UPNP_CONTROL_GET_VAR_REQUEST:
+		//fprintf(stderr, "Callback: UPNP_CONTROL_GET_VAR_REQUEST\n");
+		msg << "error(UPNP_CONTROL_GET_VAR_REQUEST): ";
+		goto eventSubscriptionRequest;
+	case UPNP_CONTROL_ACTION_REQUEST:
+		//fprintf(stderr, "Callback: UPNP_CONTROL_ACTION_REQUEST\n");
+		msg << "error(UPNP_CONTROL_ACTION_REQUEST): ";
+		goto eventSubscriptionRequest;
+	case UPNP_EVENT_SUBSCRIPTION_REQUEST:
+		//fprintf(stderr, "Callback: UPNP_EVENT_SUBSCRIPTION_REQUEST\n");
+		msg << "error(UPNP_EVENT_SUBSCRIPTION_REQUEST): ";
+eventSubscriptionRequest:
+		msg << "This is not a device, event ignored.";
+		AddDebugLogLineM(true, logUPnP, msg);
+		break;
 	default:
 		// Humm, this is not good, we forgot to handle something...
 		fprintf(stderr,
@@ -1419,8 +1523,8 @@ void CUPnPControlPoint::AddRootDevice(
 	// Get the UDN (Unique Device Name)
 	std::string UDN(
 		m_upnpLib.Element_GetChildValueByTag(rootDevice, "UDN"));
-	RootDeviceList::iterator it = m_RootDeviceList.find(UDN);
-	bool alreadyAdded = it != m_RootDeviceList.end();
+	RootDeviceMap::iterator it = m_RootDeviceMap.find(UDN);
+	bool alreadyAdded = it != m_RootDeviceMap.end();
 	if (alreadyAdded) {
 		// Just set the expires field
 		(*it).second->SetExpires(expires);
@@ -1430,7 +1534,7 @@ void CUPnPControlPoint::AddRootDevice(
 			*this, m_upnpLib, rootDevice,
 			OriginalURLBase, FixedURLBase,
 			location, expires);
-		m_RootDeviceList[upnpRootDevice->GetUDN()] = upnpRootDevice;
+		m_RootDeviceMap[upnpRootDevice->GetUDN()] = upnpRootDevice;
 	}
 }
 
@@ -1442,10 +1546,10 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 
 	// Remove
 	std::string UDN(udn);
-	RootDeviceList::iterator it = m_RootDeviceList.find(UDN);
-	if (it != m_RootDeviceList.end()) {
+	RootDeviceMap::iterator it = m_RootDeviceMap.find(UDN);
+	if (it != m_RootDeviceMap.end()) {
 		delete (*it).second;
-		m_RootDeviceList.erase(UDN);
+		m_RootDeviceMap.erase(UDN);
 	}
 }
 
@@ -1458,6 +1562,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		service.GetTimeoutAddr(),
 		service.GetSID());
 	if (errcode == UPNP_E_SUCCESS) {
+		m_ServiceMap[service.GetSID()] = &service;
 		msg << "Successfully subscribed to service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
@@ -1497,6 +1602,8 @@ error:
 
 void CUPnPControlPoint::Unsubscribe(CUPnPService &service)
 {
+	ServiceMap::iterator it = m_ServiceMap.find(service.GetSID());
+	m_ServiceMap.erase(it);
 	m_upnpLib.m_UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
 }
 

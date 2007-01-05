@@ -286,6 +286,24 @@ struct Upnp_Action_Complete
 
 };
 
+/** Represents the reply for the current value of a state variable in an
+    asynchronous call. */
+
+struct Upnp_State_Var_Complete
+{
+  /** The result of the operation. */
+  int ErrCode;
+
+  /** The control URL for the service. */
+  char CtrlUrl[NAME_SIZE];
+
+  /** The name of the variable. */
+  char StateVarName[NAME_SIZE];
+
+  /** The current value of the variable or error string in case of error. */
+  DOMString CurrentVal;
+};
+
 /** Returned along with a {\bf UPNP_EVENT_RECEIVED} callback.  */
 
 struct Upnp_Event
@@ -299,6 +317,30 @@ struct Upnp_Event
   /** The DOM tree representing the changes generating the event. */
   IXML_Document *ChangedVariables;
 
+};
+
+/** Returned along with a {\bf UPNP_EVENT_SUBSCRIBE_COMPLETE} or {\bf
+ * UPNP_EVENT_UNSUBSCRIBE_COMPLETE} callback.  */
+
+struct Upnp_Event_Subscribe {
+
+  /** The SID for this subscription.  For subscriptions, this only
+   *  contains a valid SID if the {\bf Upnp_EventSubscribe.result} field
+   *  contains a {\tt UPNP_E_SUCCESS} result code.  For unsubscriptions,
+   *  this contains the SID from which the subscription is being
+   *  unsubscribed.  */
+
+  Upnp_SID Sid;            
+
+  /** The result of the operation. */
+  int ErrCode;              
+
+  /** The event URL being subscribed to or removed from. */
+  char PublisherUrl[NAME_SIZE]; 
+
+  /** The actual subscription time (for subscriptions only). */
+  int TimeOut;              
+                              
 };
 
 //@} // Constants, Structures, and Types
