@@ -59,6 +59,7 @@ private:
 	std::string m_protocol;
 	std::string m_enabled;
 	std::string m_description;
+	std::string m_key;
 	
 public:
 	CUPnPPortMapping(
@@ -76,6 +77,8 @@ public:
 		{ return m_enabled; }
 	const std::string &getDescription() const
 		{ return m_description; }
+	const std::string &getKey() const
+		{ return m_key; }
 };
 
 
@@ -618,6 +621,7 @@ public:
 
 typedef std::map<const std::string, CUPnPRootDevice *> RootDeviceMap;
 typedef std::map<const std::string, CUPnPService *> ServiceMap;
+typedef std::map<const std::string, CUPnPPortMapping> PortMappingMap;
 
 
 class CUPnPControlPoint
@@ -629,6 +633,7 @@ private:
 	UpnpClient_Handle m_UPnPClientHandle;
 	RootDeviceMap m_RootDeviceMap;
 	ServiceMap m_ServiceMap;
+	PortMappingMap m_ActivePortMappingsMap;
 	wxMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
 	CUPnPService *m_WanService;
@@ -674,6 +679,11 @@ private:
 		int expires);
 	void RemoveRootDevice(
 		const char *udn);
+	void RefreshPortMappings();
+	bool PrivateAddPortMapping(
+		CUPnPPortMapping &upnpPortMapping);
+	bool PrivateDeletePortMapping(
+		CUPnPPortMapping &upnpPortMapping);
 };
 
 
