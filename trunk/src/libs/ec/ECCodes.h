@@ -139,7 +139,7 @@ enum {
 		 * \brief Miscannelous data.
 		 *
 		 * \par Tags:
-		 *	(any tag)
+		 *	(any tag) (1+)
 		 */
 	EC_OP_MISC_DATA,
 
@@ -170,7 +170,7 @@ enum {
 		 * Request from client, server must reply with statistics (::EC_OP_STATS).
 		 *
 		 * \par Tags:
-		 *	(none)
+		 *	EC_TAG_DETAIL_LEVEL (optional)
 		 */
 	EC_OP_STAT_REQ,
 	
