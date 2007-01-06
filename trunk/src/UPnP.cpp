@@ -67,11 +67,13 @@ CUPnPPortMapping::CUPnPPortMapping(
 m_port(),
 m_protocol(protocol),
 m_enabled(enabled ? "1" : "0"),
-m_description(description)
+m_description(description),
+m_key()
 {
 	std::ostringstream oss;
 	oss << port;
 	m_port = oss.str();
+	m_key = m_protocol + m_port;
 }
 
 
@@ -971,6 +973,8 @@ CUPnPControlPoint::CUPnPControlPoint(unsigned short udpPort)
 m_upnpLib(*this),
 m_UPnPClientHandle(),
 m_RootDeviceMap(),
+m_ServiceMap(),
+m_ActivePortMappingsMap(),
 m_RootDeviceListMutex(),
 m_IGWDeviceDetected(false),
 m_WanService(NULL)
@@ -1078,47 +1082,21 @@ bool CUPnPControlPoint::AddPortMappings(
 	unsigned long oldNumberOfEntries;
 	PortMappingNumberOfEntries >> oldNumberOfEntries;
 	
-	// Get an IP address. The UPnP server one must do.
-	std::string ipAddress(m_upnpLib.m_UpnpGetServerIpAddress());
-	std::string port;
-	
-	// Start building the action
-	std::string actionName("AddPortMapping");
-	std::vector<CUPnPArgumentValue> argval(8);
-	
-	// Action parameters
-	argval[0].SetArgument("NewRemoteHost");
-	argval[0].SetValue("");
-	argval[1].SetArgument("NewExternalPort");
-	//argval[1].SetValue();
-	argval[2].SetArgument("NewProtocol");
-	//argval[2].SetValue();
-	argval[3].SetArgument("NewInternalPort");
-	//argval[3].SetValue();
-	argval[4].SetArgument("NewInternalClient");
-	argval[4].SetValue(ipAddress);
-	argval[5].SetArgument("NewEnabled");
-	//argval[5].SetValue("1");
-	argval[6].SetArgument("NewPortMappingDescription");
-	//argval[6].SetValue("aMule port mapping"));
-	argval[7].SetArgument("NewLeaseDuration");
-	argval[7].SetValue("0");
+	// Add the enabled port mappings
 	for (int i = 0; i < n; ++i) {
-		// NewExternalPort
-		argval[1].SetValue(upnpPortMapping[i].getPort());
-		// NewProtocol
-		argval[2].SetValue(upnpPortMapping[i].getProtocol());
-		// NewInternalPort
-		argval[3].SetValue(upnpPortMapping[i].getPort());
-		// NewEnabled
-		argval[5].SetValue(upnpPortMapping[i].getEnabled());
-		// NewPortMappingDescription
-		argval[6].SetValue(upnpPortMapping[i].getDescription());
 		if (upnpPortMapping[i].getEnabled() == "1") {
-			// Execute
-			m_WanService->Execute(actionName, argval);
+			// Add the mapping to the control point 
+			// active mappings list
+			m_ActivePortMappingsMap[upnpPortMapping[i].getKey()] =
+				upnpPortMapping[i];
+			
+			// Add the port mapping
+			PrivateAddPortMapping(upnpPortMapping[i]);
 		}
 	}
+
+	// Test some variables, this is deprecated, might not work
+	// with some routers
 	m_WanService->GetStateVariable("ConnectionType");
 	m_WanService->GetStateVariable("PossibleConnectionTypes");
 	m_WanService->GetStateVariable("ConnectionStatus");
@@ -1131,6 +1109,7 @@ bool CUPnPControlPoint::AddPortMappings(
 	m_WanService->GetStateVariable("PortMappingLeaseDuration");
 	
 	// Just for testing
+	std::vector<CUPnPArgumentValue> argval;
 	argval.resize(0);
 	m_WanService->Execute("GetStatusInfo", argval);
 	
@@ -1146,6 +1125,13 @@ bool CUPnPControlPoint::AddPortMappings(
 	m_WanService->GetStateVariable("PortMappingDescription");
 #endif
 	
+	// Debug only
+	msg.str("");
+	msg << "CUPnPControlPoint::DeletePortMappings: "
+		"m_ActivePortMappingsMap.size() == " <<
+		m_ActivePortMappingsMap.size();
+	AddDebugLogLineM(false, logUPnP, msg);
+	
 	// Not very good, must find a better test
 	PortMappingNumberOfEntries.str(
 		m_WanService->GetStateVariable(
@@ -1155,6 +1141,54 @@ bool CUPnPControlPoint::AddPortMappings(
 	ok = newNumberOfEntries - oldNumberOfEntries == 4;
 	
 	return ok;
+}
+
+
+void CUPnPControlPoint::RefreshPortMappings()
+{
+	for (	PortMappingMap::iterator it = m_ActivePortMappingsMap.begin();
+		it != m_ActivePortMappingsMap.end();
+		++it) {
+		PrivateAddPortMapping(it->second);
+	}
+
+	// For testing
+	m_WanService->GetStateVariable("PortMappingNumberOfEntries");
+}
+
+
+bool CUPnPControlPoint::PrivateAddPortMapping(
+	CUPnPPortMapping &upnpPortMapping)
+{
+	// Get an IP address. The UPnP server one must do.
+	std::string ipAddress(m_upnpLib.m_UpnpGetServerIpAddress());
+	
+	// Start building the action
+	std::string actionName("AddPortMapping");
+	std::vector<CUPnPArgumentValue> argval(8);
+	
+	// Action parameters
+	argval[0].SetArgument("NewRemoteHost");
+	argval[0].SetValue("");
+	argval[1].SetArgument("NewExternalPort");
+	argval[1].SetValue(upnpPortMapping.getPort());
+	argval[2].SetArgument("NewProtocol");
+	argval[2].SetValue(upnpPortMapping.getProtocol());
+	argval[3].SetArgument("NewInternalPort");
+	argval[3].SetValue(upnpPortMapping.getPort());
+	argval[4].SetArgument("NewInternalClient");
+	argval[4].SetValue(ipAddress);
+	argval[5].SetArgument("NewEnabled");
+	argval[5].SetValue("1");
+	argval[6].SetArgument("NewPortMappingDescription");
+	argval[6].SetValue(upnpPortMapping.getDescription());
+	argval[7].SetArgument("NewLeaseDuration");
+	argval[7].SetValue("0");
+	
+	// Execute
+	bool ret = m_WanService->Execute(actionName, argval);
+
+	return ret;
 }
 
 
@@ -1180,31 +1214,35 @@ bool CUPnPControlPoint::DeletePortMappings(
 	unsigned long oldNumberOfEntries;
 	PortMappingNumberOfEntries >> oldNumberOfEntries;
 	
-	// Get an IP address. The UPnP server one must do.
-	std::string ipAddress(m_upnpLib.m_UpnpGetServerIpAddress());
-	std::string port;
-	
-	// Start building the action
-	std::string actionName("DeletePortMapping");
-	std::vector<CUPnPArgumentValue> argval(3);
-	
-	// Action parameters
-	argval[0].SetArgument("NewRemoteHost");
-	argval[0].SetValue("");
-	argval[1].SetArgument("NewExternalPort");
-	//argval[1].SetValue();
-	argval[2].SetArgument("NewProtocol");
-	//argval[2].SetValue();
+	// Delete the enabled port mappings
 	for (int i = 0; i < n; ++i) {
-		// NewExternalPort
-		argval[1].SetValue(upnpPortMapping[i].getPort());
-		// NewProtocol
-		argval[2].SetValue(upnpPortMapping[i].getProtocol());
 		if (upnpPortMapping[i].getEnabled() == "1") {
-			// Execute
-			m_WanService->Execute(actionName, argval);
+			// Delete the mapping from the control point 
+			// active mappings list
+			PortMappingMap::iterator it =
+				m_ActivePortMappingsMap.find(
+					upnpPortMapping[i].getKey());
+			if (it != m_ActivePortMappingsMap.end()) {
+				m_ActivePortMappingsMap.erase(it);
+			} else {
+				msg <<  "UPnP Error: "
+					"CUPnPControlPoint::DeletePortMapping: "
+					"Mapping was not found in the active "
+					"mapping map.";
+				AddLogLineM(true, logUPnP, msg);
+			}
+			
+			// Delete the port mapping
+			PrivateDeletePortMapping(upnpPortMapping[i]);
 		}
 	}
+	
+	// Debug only
+	msg.str("");
+	msg << "CUPnPControlPoint::DeletePortMappings: "
+		"m_ActivePortMappingsMap.size() == " <<
+		m_ActivePortMappingsMap.size();
+	AddDebugLogLineM(false, logUPnP, msg);
 	
 	// Not very good, must find a better test
 	PortMappingNumberOfEntries.str(
@@ -1216,6 +1254,27 @@ bool CUPnPControlPoint::DeletePortMappings(
 	
 	return ok;
 }
+
+
+bool CUPnPControlPoint::PrivateDeletePortMapping(
+	CUPnPPortMapping &upnpPortMapping)
+{
+	// Start building the action
+	std::string actionName("DeletePortMapping");
+	std::vector<CUPnPArgumentValue> argval(3);
+	
+	// Action parameters
+	argval[0].SetArgument("NewRemoteHost");
+	argval[0].SetValue("");
+	argval[1].SetArgument("NewExternalPort");
+	argval[1].SetValue(upnpPortMapping.getPort());
+	argval[2].SetArgument("NewProtocol");
+	argval[2].SetValue(upnpPortMapping.getProtocol());
+	
+	// Execute
+	return m_WanService->Execute(actionName, argval);
+}
+
 
 // This function is static
 int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*Cookie*/)
@@ -1379,13 +1438,20 @@ upnpEventSubscriptionExpired:
 			upnpCP->m_upnpLib.processUPnPErrorMessage(
 				msg.str(), es_event->ErrCode, NULL, NULL);
 		} else {
-			ServiceMap::iterator it = upnpCP->m_ServiceMap.find(newSID);
+			ServiceMap::iterator it =
+				upnpCP->m_ServiceMap.find(es_event->PublisherUrl);
 			if (it != upnpCP->m_ServiceMap.end()) {
 				it->second->SetTimeout(TimeOut);
 				it->second->SetSID(newSID);
-				msg << "Subscribed to EventURL with SID == '" <<
+				msg << "Re-subscribed to EventURL '" <<
+					es_event->PublisherUrl <<
+					"' with SID == '" <<
 					newSID << "'.";
 				AddDebugLogLineM(true, logUPnP, msg);
+				// In principle, we should test to see if the
+				// service is the same. But here we only have one
+				// service, so...
+				upnpCP->RefreshPortMappings();
 			} else {
 				msg << "Error: did not find service " <<
 					newSID << " in the service map.";
@@ -1562,7 +1628,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		service.GetTimeoutAddr(),
 		service.GetSID());
 	if (errcode == UPNP_E_SUCCESS) {
-		m_ServiceMap[service.GetSID()] = &service;
+		m_ServiceMap[service.GetAbsEventSubURL()] = &service;
 		msg << "Successfully subscribed to service " <<
 			service.GetServiceType() << ", absEventSubURL: " <<
 			service.GetAbsEventSubURL() << ".";
@@ -1602,7 +1668,7 @@ error:
 
 void CUPnPControlPoint::Unsubscribe(CUPnPService &service)
 {
-	ServiceMap::iterator it = m_ServiceMap.find(service.GetSID());
+	ServiceMap::iterator it = m_ServiceMap.find(service.GetAbsEventSubURL());
 	m_ServiceMap.erase(it);
 	m_upnpLib.m_UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
 }
