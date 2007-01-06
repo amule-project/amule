@@ -1051,7 +1051,7 @@ CUPnPControlPoint::~CUPnPControlPoint()
 	for(	RootDeviceMap::iterator it = m_RootDeviceMap.begin();
 		it != m_RootDeviceMap.end();
 		++it) {
-		delete (*it).second;
+		delete it->second;
 	}
 	// Remove all first
 	// RemoveAll();
@@ -1441,8 +1441,9 @@ upnpEventSubscriptionExpired:
 			ServiceMap::iterator it =
 				upnpCP->m_ServiceMap.find(es_event->PublisherUrl);
 			if (it != upnpCP->m_ServiceMap.end()) {
-				it->second->SetTimeout(TimeOut);
-				it->second->SetSID(newSID);
+				CUPnPService &service = *(it->second);
+				service.SetTimeout(TimeOut);
+				service.SetSID(newSID);
 				msg << "Re-subscribed to EventURL '" <<
 					es_event->PublisherUrl <<
 					"' with SID == '" <<
@@ -1593,7 +1594,7 @@ void CUPnPControlPoint::AddRootDevice(
 	bool alreadyAdded = it != m_RootDeviceMap.end();
 	if (alreadyAdded) {
 		// Just set the expires field
-		(*it).second->SetExpires(expires);
+		it->second->SetExpires(expires);
 	} else {
 		// Add a new root device to the root device list
 		CUPnPRootDevice *upnpRootDevice = new CUPnPRootDevice(
@@ -1614,7 +1615,7 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 	std::string UDN(udn);
 	RootDeviceMap::iterator it = m_RootDeviceMap.find(UDN);
 	if (it != m_RootDeviceMap.end()) {
-		delete (*it).second;
+		delete it->second;
 		m_RootDeviceMap.erase(UDN);
 	}
 }
