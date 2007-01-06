@@ -14,7 +14,7 @@ if [ ! -e src/SharedFileList.h ]; then
 fi
 
 # Determine the version of automake.
-automake_version=`automake --version | head -n 1 | sed -e 's/[^12]*\([12]\.[0-9][^ ]*\).*/\1/'`
+automake_version=`automake --version | head -n 1 | sed -e 's/[^12]*\([12]\.[0-9]+[^ ]*\).*/\1/'`
 
 # Require automake 1.7.
 if expr "1.7" \> "$automake_version" >/dev/null; then
