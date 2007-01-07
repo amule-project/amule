@@ -38,7 +38,7 @@
 	#include <wx/mac/corefoundation/cfstring.h> // Do_not_auto_remove
 #endif
 
-#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
+#include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 #include <common/MD5Sum.h>
 
 #include "WebServer.h"

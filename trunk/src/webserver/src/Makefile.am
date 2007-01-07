@@ -21,7 +21,7 @@ php_parser.c: php_parser.y
 php_lexer.c: php_lexer.l
 	lex -o$@ $<
 
-amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/libec.a
+amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a
 amuleweb_CFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
 	$(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) \
 	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
@@ -34,7 +34,7 @@ amuleweb_CXXFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
 	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
 	-DAMULE_LOCALEDIR="\"$(datadir)/locale\"" \
 	-DECSOCKET_USE_EVENTS=0
-amuleweb_LDFLAGS = $(LIBPNG_LDFLAGS) -L../../libs/common -L../../libs/ec
+amuleweb_LDFLAGS = $(LIBPNG_LDFLAGS) -L../../libs/common -L../../libs/ec/cpp
 amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(ZLIB_LIBS) \
 	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 

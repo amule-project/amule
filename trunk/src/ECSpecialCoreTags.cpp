@@ -24,8 +24,8 @@
 //
 
 
-#include <ec/ECTag.h>		// Needed for CECTag
-#include <ec/ECSpecialTags.h>	// Needed for special EC tag creator classes
+#include <ec/cpp/ECTag.h>		// Needed for CECTag
+#include <ec/cpp/ECSpecialTags.h>	// Needed for special EC tag creator classes
 
 
 // Since there are only constructors defined here,

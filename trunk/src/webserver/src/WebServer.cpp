@@ -34,8 +34,8 @@
 #include <wx/tokenzr.h>		// for wxTokenizer
 #include <wx/wfstream.h>
 
-#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
-#include <ec/ECSpecialTags.h>
+#include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
+#include <ec/cpp/ECSpecialTags.h>
 #include <common/MD5Sum.h>
 #include <common/Format.h>		// Needed for CFormat
 

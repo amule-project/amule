@@ -30,7 +30,7 @@ top_srcdir=$1
 
 echo -n "Generating ECVersion.h... "
 
-final_hash="`cat $top_srcdir/src/libs/ec/ECCodes.h | ./mkFileSum`"
+final_hash="`cat $top_srcdir/src/libs/ec/cpp/ECCodes.h | ./mkFileSum`"
 
 cat > ECVersion.h.new <<EOT
 /* Automatically generated file. Do not edit! */

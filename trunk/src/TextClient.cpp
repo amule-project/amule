@@ -39,7 +39,7 @@
 
 //-------------------------------------------------------------------
 
-#include <ec/ECSpecialTags.h>
+#include <ec/cpp/ECSpecialTags.h>
 
 #include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"

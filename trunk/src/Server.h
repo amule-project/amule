@@ -32,7 +32,7 @@
 #include <include/protocol/ed2k/Client2Server/UDP.h> 
 
 #ifdef CLIENT_GUI
-#include <ec/ECSpecialTags.h>
+#include <ec/cpp/ECSpecialTags.h>
 #endif
 
 class ServerMet_Struct;

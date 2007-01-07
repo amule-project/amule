@@ -26,7 +26,7 @@
 #define AMULE_REMOTE_GUI_H
 
 
-#include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
+#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 
 
 #include "Statistics.h"

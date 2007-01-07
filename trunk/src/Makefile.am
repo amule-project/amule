@@ -211,12 +211,12 @@ common_sources = \
 
 core_libs = -L. -lmuleappcore
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
-remote_common_libs = -Llibs/common -Llibs/ec -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)
 
 core_deps = libmuleappcore.a
 gui_deps = libmuleappgui.a
-remote_common_deps = libs/common/libmulecommon.a libs/ec/libec.a
+remote_common_deps = libs/common/libmulecommon.a libs/ec/cpp/libec.a
 common_deps = libmuleappcommon.a $(remote_common_deps)
 
 # Flags
@@ -293,7 +293,7 @@ amulecmd_DEPENDENCIES = $(remote_common_deps)
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
-amulecmd_LDADD = -Llibs/common -Llibs/ec -lmulecommon -lec $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
 noinst_HEADERS = \
 		AddFriend.h \
