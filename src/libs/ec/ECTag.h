@@ -39,6 +39,7 @@
 
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types
+#include "ECTagTypes.h"	// Needed for TagTypes
 
 class CECSocket;
 
@@ -81,19 +82,6 @@ class EC_IPv4_t {
 		uint16 m_port;
 };
 
-
-enum ECTagTypes {
-	EC_TAGTYPE_UNKNOWN,
-	EC_TAGTYPE_CUSTOM,
-	EC_TAGTYPE_UINT8,
-	EC_TAGTYPE_UINT16,
-	EC_TAGTYPE_UINT32,
-	EC_TAGTYPE_UINT64,
-	EC_TAGTYPE_STRING,
-	EC_TAGTYPE_DOUBLE,
-	EC_TAGTYPE_IPV4,
-	EC_TAGTYPE_HASH16
-};
 
 /**
  * High level EC packet TAGs handler class
