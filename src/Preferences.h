@@ -505,6 +505,9 @@ public:
 	// Dropping slow sources
 	static bool GetDropSlowSources()					{ return s_DropSlowSources; }
 	
+	// Cyrpt
+	static bool IsClientCryptLayerSupported() { return s_IsClientCryptLayerSupported; }
+	
 protected:
 	void	CreateUserHash();
 	void	SetStandartValues();
@@ -719,6 +722,9 @@ protected:
 
 	// Drop slow sources if needed
 	static bool s_DropSlowSources;
+	
+	// Crypt
+	static bool s_IsClientCryptLayerSupported;
 };
 
 
