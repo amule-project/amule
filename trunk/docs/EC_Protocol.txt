@@ -212,9 +212,9 @@ Section 3: Clarifying things
     connection.
 
     EC_OP_AUTH_REQ (0x02)
+        +----EC_TAG_CLIENT_NAME (0x06) (optional)	
         +----EC_TAG_PASSWD_HASH (0x04)
         +----EC_TAG_PROTOCOL_VERSION (0x0c)
-        +----EC_TAG_CLIENT_NAME (0x06) (optional)
         +----EC_TAG_CLIENT_VERSION (0x08) (optional)
         +----EC_TAG_VERSION_ID (0x0e) (required for cvs versions, must not be present for release versions)
 
@@ -275,6 +275,7 @@ Section 3: Clarifying things
     0a                                  EC_OP_STAT_REQ
       00 01                             TagCount: 1
         00 10                           EC_TAG_DETAIL_LEVEL
+		0?									EC_TAGTYPE_UINT8
           00 00 00 01                   Length: 1
           00                            0 = EC_DETAIL_CMD
 
@@ -321,7 +322,7 @@ Section 3: Clarifying things
           00 01                         TagCount: 1 (one child tag exists, that is a direct child of this tag)
             00 61                       EC_TAG_SERVER (has children)
 			  0?							EC_TAGTYPE_IPV4
-              00 00 00 1a               TagLen: 26 (own content (6) + length of child (content: 14 + header: 6))
+              00 00 00 1a               TagLen: 27 (own content (6) + length of child (content: 14 + header: 7))
               00 01                     TagCount: 1
                 00 62                   EC_TAG_SERVER_NAME
 				  0?							EC_TAGTYPE_STRING
