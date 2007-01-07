@@ -201,6 +201,7 @@ bool		CPreferences::s_ConnectToKad;
 bool		CPreferences::s_ConnectToED2K;
 unsigned	CPreferences::s_maxClientVersions;
 bool		CPreferences::s_DropSlowSources;
+bool		CPreferences::s_IsClientCryptLayerSupported;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -1021,6 +1022,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
 	
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), s_DropSlowSources, false ) );
+	
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, false ) );	
 
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg

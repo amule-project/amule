@@ -116,7 +116,7 @@ libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 
 core_sources = \
-	ThreadTasks.cpp \
+	RC4Encrypt.cpp \
 	amule.cpp \
 	BaseClient.cpp \
 	ClientList.cpp \
@@ -125,8 +125,10 @@ core_sources = \
 	ClientUDPSocket.cpp \
 	DownloadClient.cpp \
 	DownloadQueue.cpp \
-	EMSocket.cpp \
 	ECSpecialCoreTags.cpp \
+	EMSocket.cpp \
+	EncryptedStreamSocket.cpp \
+	EncryptedDatagramSocket.cpp \
 	ExternalConn.cpp \
 	Friend.cpp \
 	FriendList.cpp \
@@ -142,6 +144,7 @@ core_sources = \
 	ServerSocket.cpp \
 	ServerUDPSocket.cpp \
 	SharedFileList.cpp \
+	ThreadTasks.cpp \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
@@ -292,12 +295,12 @@ amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_US
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec -lmulecommon -lec $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 
-noinst_HEADERS = ThreadScheduler.h \
-		ThreadTasks.h \
+noinst_HEADERS = \
 		AddFriend.h \
 		amuleDlg.h \
 		amule.h \
 		amuleIPV4Address.h \
+		ArchSpecific.h \
 		BarShader.h \
 		CatDialog.h \
 		CFile.h \
@@ -322,7 +325,8 @@ noinst_HEADERS = ThreadScheduler.h \
 		ED2KLink.h \
 		EditServerListDlg.h \
 		EMSocket.h \
-		ArchSpecific.h \
+		EncryptedStreamSocket.cpp \
+		EncryptedDatagramSocket.cpp \
 		ExternalConnector.h \
 		ExternalConn.h \
 		FileDetailDialog.h \
@@ -362,6 +366,7 @@ noinst_HEADERS = ThreadScheduler.h \
 		Preferences.h \
 		PrefsUnifiedDlg.h \
 		Proxy.h \
+		RC4Encrypt.h \
 		SafeFile.h \
 		ScopedPtr.h \
 		SearchDlg.h \
@@ -387,6 +392,8 @@ noinst_HEADERS = ThreadScheduler.h \
 		Tag.h \
 		TextClient.h \
 		TextFile.h \
+		ThreadScheduler.h \
+		ThreadTasks.h \
 		Timer.h \
 		TransferWnd.h \
 		Types.h \
