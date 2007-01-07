@@ -35,7 +35,7 @@
 
 #include <wx/app.h>			// For wxApp
 #include <wx/cmdline.h>		// For wxCmdLineEntryDesc
-#include <ec/RemoteConnect.h>
+#include <ec/cpp/RemoteConnect.h>
 
 #include <wx/intl.h>
 

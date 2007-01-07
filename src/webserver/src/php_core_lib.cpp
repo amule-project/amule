@@ -33,7 +33,7 @@
 #ifndef PHP_STANDALONE_EN
 	#include "config.h"
 	#include "WebServer.h"
-	#include <ec/ECSpecialTags.h>
+	#include <ec/cpp/ECSpecialTags.h>
 #else
 	#define PACKAGE_VERSION "standalone"
 

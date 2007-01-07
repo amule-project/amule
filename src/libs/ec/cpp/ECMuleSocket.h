@@ -27,7 +27,7 @@
 #define ECMULESOCKET_H
 
 #include <wx/socket.h>		// Needed for wxSocketClient
-#include <ec/ECSocket.h>
+#include <ec/cpp/ECSocket.h>
 
 /*! \class CECMuleSocket
  *

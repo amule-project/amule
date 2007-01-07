@@ -28,7 +28,7 @@
 
 
 
-#include <ec/ECSpecialTags.h>
+#include <ec/cpp/ECSpecialTags.h>
 
 #include "amuleIPV4Address.h"	// for amuleIPV4Address
 #include "RLE.h"	// for RLE

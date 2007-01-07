@@ -39,10 +39,10 @@
 
 #endif /* !EC_REMOTE */
 
-#include <ec/ECTag.h>		// Needed for CECTag
+#include <ec/cpp/ECTag.h>		// Needed for CECTag
 
 #ifdef EC_REMOTE
-	#include <ec/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
+	#include <ec/cpp/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
 #endif
 
 /* CStatTreeItemBase */

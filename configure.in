@@ -562,6 +562,8 @@ AC_CONFIG_FILES([Makefile
 		 src/pixmaps/Makefile
 		 src/libs/Makefile
 		 src/libs/ec/Makefile
+		 src/libs/ec/abstracts/Makefile
+		 src/libs/ec/cpp/Makefile
 		 src/libs/common/Makefile
 		 src/utils/Makefile
 		 src/utils/aLinkCreator/Makefile

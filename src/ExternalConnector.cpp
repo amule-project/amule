@@ -59,7 +59,7 @@
 #endif /* HAVE_READLINE_HISTORY */
 
 
-#include <ec/ECFileConfig.h>	// Needed for CECFileConfig
+#include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
 
 #include <common/MD5Sum.h>
 

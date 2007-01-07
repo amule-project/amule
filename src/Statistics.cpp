@@ -28,7 +28,7 @@
 
 #include <include/protocol/ed2k/ClientSoftware.h>
 
-#include <ec/ECTag.h>		// Needed for CECTag
+#include <ec/cpp/ECTag.h>		// Needed for CECTag
 
 #ifndef EC_REMOTE
 	#ifndef AMULE_DAEMON
@@ -43,7 +43,7 @@
 	#include "updownclient.h"	// Needed for CUpDownClient
 #else
 	#include "Preferences.h"
-	#include <ec/RemoteConnect.h>		// Needed for CRemoteConnect
+	#include <ec/cpp/RemoteConnect.h>		// Needed for CRemoteConnect
 #endif
 
 #include <wx/intl.h>

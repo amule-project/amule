@@ -27,7 +27,7 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <ec/ECMuleSocket.h>		// Needed for CECSocket
+#include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
 
 #include <common/Format.h>		// Needed for CFormat
 
