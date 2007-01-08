@@ -343,7 +343,7 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 
 	//
 	// request can contain list of queried items
-	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
+	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
 	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
 	CClientPtrList::const_iterator it = uploading.begin();
@@ -389,7 +389,7 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 
 	//
 	// request can contain list of queried items
-	CTagSet<uint32, EC_TAG_UPDOWN_CLIENT> queryitems(request);
+	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 	
 
 	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();

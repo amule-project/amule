@@ -245,7 +245,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
-	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
+	CECTag(EC_TAG_CLIENT, client->GetUserIDHybrid())
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown()));
 	
@@ -285,7 +285,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap) :
-	CECTag(EC_TAG_UPDOWN_CLIENT, client->GetUserIDHybrid())
+	CECTag(EC_TAG_CLIENT, client->GetUserIDHybrid())
 {
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown(), this);
 	

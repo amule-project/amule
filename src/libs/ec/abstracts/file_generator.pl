@@ -176,6 +176,9 @@ sub read_content_section {
 		case "Enum" { 
 			read_enum_content(*INFO, *CPPOUTPUT);
 		}
+		case "TypeDef" {
+			read_typedef_content(*INFO, *CPPOUTPUT);
+		}
 		else { die "Unknown type on content section\n" }
 	}
 
@@ -188,16 +191,31 @@ sub read_define_content {
 
 	my $line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
-		if ($line =~ /^(.+)\s+(.+)$/) {
-			my $firstoperand = $1;
-			my $secondoperand = $2;
-
-			write_cpp_define_line(*CPPOUTPUT, $1, $2);
-
-		} else {
-			die "Malformed content section line\n";
+		if ($line !~ /^\s*$/) {
+			if ($line =~ /^(.+)\s+(.+)$/) {
+				write_cpp_define_line(*CPPOUTPUT, $1, $2);
+			} else {
+				die "Malformed content section define line\n";
+			}
 		}
+		$line = <INFO>;
+	}
+}
 
+sub read_typedef_content {
+
+	local (*INFO) = $_[0];
+	local (*CPPOUTPUT) = $_[1];
+
+	my $line = <INFO>;
+	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
+		if ($line !~ /^\s*$/) {
+			if ($line =~ /^(.+)\s+(.+)$/) {
+				write_cpp_typedef_line(*CPPOUTPUT, $1, $2);
+			} else {
+				die "Malformed content section typedef line\n";
+			}
+		}
 		$line = <INFO>;
 	}
 }
@@ -219,23 +237,24 @@ sub read_enum_content {
 	my $first = "yes";
 	$line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
-		if ($line =~ /^(.+)\s+(.+)$/) {
-			my $firstoperand = $1;
-			my $secondoperand = $2;
+		if ($line !~ /^\s*$/) {
+			if ($line =~ /^(.+)\s+(.+)$/) {
+				my $firstoperand = $1;
+				my $secondoperand = $2;
+	
+				if ($first) {
+					write_cpp_enum_start(*CPPOUTPUT, $dataname);
+				}
 
-			if ($first) {
-				write_cpp_enum_start(*CPPOUTPUT, $dataname);
+				write_cpp_enum_line(*CPPOUTPUT, $firstoperand, $secondoperand, $first);
+	
+				if ($first) {
+					$first = "";
+				}
+			} else {
+				die "Malformed content section enum line\n";
 			}
-
-			write_cpp_enum_line(*CPPOUTPUT, $firstoperand, $secondoperand, $first);
-
-			if ($first) {
-				$first = "";
-			}
-		} else {
-			die "Malformed content section line\n";
 		}
-
 		$line = <INFO>;
 	}
 
@@ -262,7 +281,6 @@ sub write_license_header {
 
 	close(LICENSE);
 }
-
 
 ################ CPP Specific Subroutines #####################
 
@@ -317,5 +335,27 @@ sub write_cpp_define_line {
 	local (*OUTPUT) = $_[0];
 
 	print OUTPUT "#define " . $_[1] . " " . $_[2] . "\n";
+
+}
+
+sub write_cpp_typedef_line {
+
+	local (*OUTPUT) = $_[0];
+
+	my $translated_type;
+
+	switch ($_[2]) {
+		case /^u?int(8|16|32|64)$/ { 
+			$translated_type = $_[2] . "_t";
+		}
+		case "string" {
+			$translated_type = "std::string"
+		}
+		else { 
+			$translated_type = $_[2]
+		}
+	}
+
+	print OUTPUT "typedef " . $translated_type . " " . $_[1] . ";\n";
 
 }
