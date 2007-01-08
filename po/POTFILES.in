@@ -1,7 +1,7 @@
 src/Parser.cpp
-src/libs/ec/RemoteConnect.cpp
-src/libs/ec/ECSpecialTags.cpp
-src/libs/ec/ECSocket.cpp
+src/libs/ec/cpp/RemoteConnect.cpp
+src/libs/ec/cpp/ECSpecialTags.cpp
+src/libs/ec/cpp/ECSocket.cpp
 src/ThreadTasks.cpp
 src/BaseClient.cpp
 src/FriendListCtrl.cpp
