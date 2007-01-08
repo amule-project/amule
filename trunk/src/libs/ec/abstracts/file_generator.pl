@@ -23,6 +23,7 @@
 # Gimme a break, it's my second perl app... (Kry)
 
 use File::Copy;
+use Switch;
 use warnings; 
 use strict;
 
@@ -146,6 +147,7 @@ sub read_content {
 		if ($line =~ /^\[Section Content\]$/) {
 			print "Reading content section...\n";
 			read_content_section(*INFO, *CPPFILE);
+			print CPPFILE "\n";
 		} else {
 			print "No more content sections\n";
 			$stop = "yes";
@@ -158,6 +160,53 @@ sub read_content_section {
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
 	
+	my $line = <INFO>;
+	my $datatype = "";
+	if ($line =~ /^Type\s+(.+)$/) {
+		$datatype = $1;
+		print "\tDatatype: " . $datatype . "\n";
+	} else {
+		die "Content section has a non-typed data stream\n";
+	}
+
+	switch ($datatype) {
+		case "Define" {
+			read_define_content(*INFO, *CPPOUTPUT);
+		}
+		case "Enum" { 
+			read_enum_content(*INFO, *CPPOUTPUT);
+		}
+		else { die "Unknown type on content section\n" }
+	}
+
+}
+
+sub read_define_content {
+
+	local (*INFO) = $_[0];
+	local (*CPPOUTPUT) = $_[1];
+
+	my $line = <INFO>;
+	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
+		if ($line =~ /^(.+)\s+(.+)$/) {
+			my $firstoperand = $1;
+			my $secondoperand = $2;
+
+			write_cpp_define_line(*CPPOUTPUT, $1, $2);
+
+		} else {
+			die "Malformed content section line\n";
+		}
+
+		$line = <INFO>;
+	}
+}
+
+sub read_enum_content {
+
+	local (*INFO) = $_[0];
+	local (*CPPOUTPUT) = $_[1];
+
 	my $line = <INFO>;
 	my $dataname = "";
 	if ($line =~ /^Name\s+(.+)$/) {
@@ -233,7 +282,7 @@ sub write_cpp_bottom_guard {
 
 	my $guardname = uc($_[1]);
 
-	print OUTPUT "\n#endif // __" . $guardname . "_H__\n";
+	print OUTPUT "#endif // __" . $guardname . "_H__\n";
 
 }
 
@@ -261,4 +310,12 @@ sub write_cpp_enum_line {
 	}
 
 	print OUTPUT "\t" . $_[1] . " = " . $_[2];
+}
+
+sub write_cpp_define_line {
+
+	local (*OUTPUT) = $_[0];
+
+	print OUTPUT "#define " . $_[1] . " " . $_[2] . "\n";
+
 }
