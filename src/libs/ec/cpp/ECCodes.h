@@ -1,28 +1,28 @@
+*main::CPPFILE
+// *main::CPPFILE This file is part of the aMule Project.
+// *main::CPPFILE
+// *main::CPPFILE Copyright (c) 2004-2006 aMule Team ( admin@amule.org / http://www.amule.org )
+// *main::CPPFILE
+// *main::CPPFILE Any parts of this program derived from the xMule, lMule or eMule project,
+// *main::CPPFILE or contributed by third-party developers are copyrighted by their
+// *main::CPPFILE respective authors.
+// *main::CPPFILE
+// *main::CPPFILE This program is free software; you can redistribute it and/or modify
+// *main::CPPFILE it under the terms of the GNU General Public License as published by
+// *main::CPPFILE the Free Software Foundation; either version 2 of the License, or
+// *main::CPPFILE (at your option) any later version.
+// *main::CPPFILE
+// *main::CPPFILE This program is distributed in the hope that it will be useful,
+// *main::CPPFILE but WITHOUT ANY WARRANTY; without even the implied warranty of
+// *main::CPPFILE MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// *main::CPPFILE GNU General Public License for more details.
+// *main::CPPFILE 
+// *main::CPPFILE You should have received a copy of the GNU General Public License
+// *main::CPPFILE along with this program; if not, write to the Free Software
+// *main::CPPFILE Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 // 
-//  This file is part of the aMule Project.
-// 
-//  Copyright (c) 2004-2006 aMule Team ( admin@amule.org / http://www.amule.org )
-// 
-//  Any parts of this program derived from the xMule, lMule or eMule project,
-//  or contributed by third-party developers are copyrighted by their
-//  respective authors.
-// 
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
-//  (at your option) any later version.
-// 
-//  This program is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//  GNU General Public License for more details.
-//  
-//  You should have received a copy of the GNU General Public License
-//  along with this program; if not, write to the Free Software
-//  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-
-// Purpose:
-// EC codes and type definition.
+*main::CPPFILEPurpose:// 
+*main::CPPFILE// 
 
 #ifndef __ECCODES_H__
 #define __ECCODES_H__
@@ -32,13 +32,17 @@ typedef uint16_t ec_tagname_t;
 typedef uint8_t ec_tagtype_t;
 typedef uint32_t ec_taglen_t;
 
-#define EC_CURRENT_PROTOCOL_VERSION 0x0200
+enum ProtocolVersion {
+	EC_CURRENT_PROTOCOL_VERSION = 0x0200
+};
 
-#define EC_FLAG_ZLIB	 0x00000001
-#define EC_FLAG_UTF8_NUMBERS 0x00000002
-#define EC_FLAG_HAS_ID	 0x00000004
-#define EC_FLAG_ACCEPTS	 0x00000010
-#define EC_FLAG_UNKNOWN_MASK 0xff7f7f08
+enum ECFlags {
+	EC_FLAG_ZLIB	 = 0x00000001,
+	EC_FLAG_UTF8_NUMBERS = 0x00000002,
+	EC_FLAG_HAS_ID	 = 0x00000004,
+	EC_FLAG_ACCEPTS	 = 0x00000010,
+	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
+};
 
 enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
@@ -333,18 +337,20 @@ enum EC_STATTREE_NODE_VALUE_TYPE {
 	EC_VALUE_DOUBLE         = 0x07
 };
 
-#define EC_PREFS_CATEGORIES     0x00000001
-#define EC_PREFS_GENERAL        0x00000002
-#define EC_PREFS_CONNECTIONS    0x00000004
-#define EC_PREFS_MESSAGEFILTER  0x00000008
-#define EC_PREFS_REMOTECONTROLS 0x00000010
-#define EC_PREFS_ONLINESIG      0x00000020
-#define EC_PREFS_SERVERS        0x00000040
-#define EC_PREFS_FILES          0x00000080
-#define EC_PREFS_SRCDROP        0x00000100
-#define EC_PREFS_DIRECTORIES    0x00000200
-#define EC_PREFS_STATISTICS     0x00000400
-#define EC_PREFS_SECURITY       0x00000800
-#define EC_PREFS_CORETWEAKS     0x00001000
+enum EcPrefs {
+	EC_PREFS_CATEGORIES     = 0x00000001,
+	EC_PREFS_GENERAL        = 0x00000002,
+	EC_PREFS_CONNECTIONS    = 0x00000004,
+	EC_PREFS_MESSAGEFILTER  = 0x00000008,
+	EC_PREFS_REMOTECONTROLS = 0x00000010,
+	EC_PREFS_ONLINESIG      = 0x00000020,
+	EC_PREFS_SERVERS        = 0x00000040,
+	EC_PREFS_FILES          = 0x00000080,
+	EC_PREFS_SRCDROP        = 0x00000100,
+	EC_PREFS_DIRECTORIES    = 0x00000200,
+	EC_PREFS_STATISTICS     = 0x00000400,
+	EC_PREFS_SECURITY       = 0x00000800,
+	EC_PREFS_CORETWEAKS     = 0x00001000
+};
 
 #endif // __ECCODES_H__
