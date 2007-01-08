@@ -191,7 +191,7 @@ sub read_define_content {
 
 	my $line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
-		if ($line !~ /^\s*$/) {
+		if ($line !~ /^(#.*|\s*)$/) {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				write_cpp_define_line(*CPPOUTPUT, $1, $2);
 			} else {
@@ -209,7 +209,7 @@ sub read_typedef_content {
 
 	my $line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
-		if ($line !~ /^\s*$/) {
+		if ($line !~ /^(#.*|\s*)$/) {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				write_cpp_typedef_line(*CPPOUTPUT, $1, $2);
 			} else {
@@ -237,7 +237,7 @@ sub read_enum_content {
 	my $first = "yes";
 	$line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
-		if ($line !~ /^\s*$/) {
+		if ($line !~ /^(#.*|\s*)$/) {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				my $firstoperand = $1;
 				my $secondoperand = $2;
