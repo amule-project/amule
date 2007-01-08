@@ -7,7 +7,8 @@ MAINTAINERCLEANFILES = Makefile.in
 BUILT_SOURCES = ECGeneratedFiles
 
 ECGeneratedFilesSources = \
-	ECTagTypes.abstract
+	ECTagTypes.abstract \
+	ECCodes.abstract
 
 ECGeneratedFiles: $(ECGeneratedFilesSources)
 	./file_generator.pl $(ECGeneratedFilesSources);
