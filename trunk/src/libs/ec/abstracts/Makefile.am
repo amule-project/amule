@@ -11,5 +11,5 @@ ECGeneratedFilesSources = \
 	ECCodes.abstract
 
 ECGeneratedFiles: $(ECGeneratedFilesSources)
-	./file_generator.pl $(ECGeneratedFilesSources);
+	$srcdir/file_generator.pl $srcdir $(ECGeneratedFilesSources);
 

@@ -29,8 +29,8 @@ use strict;
 
 my $exit_with_help;
 
-if (!($ARGV[0])) {
-	print "You must specify at least one abstract file.\n";
+if ($#ARGV < 1) {
+	print "You must specify at least the folder and one abstract file.\n";
 	$exit_with_help = "true";
 }
 
@@ -39,19 +39,22 @@ if ($exit_with_help) {
 }
 
 
-my $numArgs = $#ARGV + 1;
+my $folder = $ARGV[0] . "/";
+
+my $numArgs = $#ARGV;
 print "Parsing $numArgs files\n";
 
-foreach my $argnum (0 .. $#ARGV) {
-	generate_files($ARGV[$argnum]);
+foreach my $argnum (1 .. $#ARGV) {
+	generate_files($folder, $ARGV[$argnum]);
 }
 
 
 sub generate_files {
 
-	my $input_file = $_[0];
+	my $folder = $_[0];
+	my $input_file = $_[1];
 
-	open(INFO, $input_file) or die "Cannot open input file " . $input_file . " for reading: $!";		# Open the file
+	open(INFO, $folder . $input_file) or die "Cannot open input file " . $input_file . " for reading: $!";		# Open the file
 
 	my $line="no";
 	while ($line !~ /^\[Section Definition\]$/) {
@@ -95,16 +98,16 @@ sub generate_files {
 	print "FileContent: " . $filecontent . "\n";
 
 	#Open language output files
-	open(CPPFILE," > ../cpp/$filename" . ".h");
+	open(CPPFILE," > " . $folder . "../cpp/$filename" . ".h");
 	#Open language output files
-	open(JAVAFILE," > ../java/$filename" . ".java");
+	open(JAVAFILE," > " . $folder . "../java/$filename" . ".java");
 
 
 	# Print license on top.
-	write_license_header(*CPPFILE, "// ", "", $filecontent);
-	write_license_header(*JAVAFILE, "// ", "", $filecontent);
+	write_license_header($folder, *CPPFILE, "// ", "", $filecontent);
+	write_license_header($folder, *JAVAFILE, "// ", "", $filecontent);
 	#Example for a language that needs start/end:
-	#write_license_header(*CFILE, "/* ", " */", $filecontent);
+	#write_license_header($folder, *CFILE, "/* ", " */", $filecontent);
 
 	#Add top guards for each language
 	write_cpp_top_guard(*CPPFILE, $filename);
@@ -282,9 +285,10 @@ sub read_enum_content {
 # Takes a file handle, and the comment start/end character for that language
 sub write_license_header {
 
-	local (*OUTPUT) = $_[0];
+	my $folder = $_[0];
+	local (*OUTPUT) = $_[1];
 
-	open(LICENSE, "License.abstract") or die "Cannot open license file";
+	open(LICENSE, $folder . "License.abstract") or die "Cannot open license file";
 
 	my $line = <LICENSE>;
 	while (!(eof)) {
