@@ -14,21 +14,21 @@ ec_taglen_t	uint32
 
 # Current protocol version.
 [Section Content]
-Type Define
+Type Enum
+Name ProtocolVersion
 EC_CURRENT_PROTOCOL_VERSION	0x0200
 [/Section]
 
-
 # This flags are used on the transmission layer.
 [Section Content]
-Type Define
+Type Enum
+Name ECFlags
 EC_FLAG_ZLIB		0x00000001
 EC_FLAG_UTF8_NUMBERS	0x00000002
 EC_FLAG_HAS_ID		0x00000004
 EC_FLAG_ACCEPTS		0x00000010
 EC_FLAG_UNKNOWN_MASK	0xff7f7f08
 [/Section]
-
 
 # OpCodes
 # Note: Needs some reorganization on Request/Reply
@@ -377,7 +377,8 @@ EC_VALUE_DOUBLE         0x07
 [/Section]
 
 [Section Content]
-Type Define
+Type Enum
+Name EcPrefs
 EC_PREFS_CATEGORIES     0x00000001
 EC_PREFS_GENERAL        0x00000002
 EC_PREFS_CONNECTIONS    0x00000004
