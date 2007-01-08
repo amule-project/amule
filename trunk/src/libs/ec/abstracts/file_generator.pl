@@ -96,29 +96,36 @@ sub generate_files {
 
 	#Open language output files
 	open(CPPFILE," > ../cpp/$filename" . ".h");
+	#Open language output files
+	open(JAVAFILE," > ../java/$filename" . ".java");
 
 
 	# Print license on top.
 	write_license_header(*CPPFILE, "// ", "", $filecontent);
+	write_license_header(*JAVAFILE, "// ", "", $filecontent);
 	#Example for a language that needs start/end:
 	#write_license_header(*CFILE, "/* ", " */", $filecontent);
 
 	#Add top guards for each language
 	write_cpp_top_guard(*CPPFILE, $filename);
+	# JAVA doesn't need guards, but needs file type declaration
+	print JAVAFILE "public interface " . $filename . " {\n\n";
 	##Add other language guards
 
 
-	read_content(*INFO, *CPPFILE);
+	read_content(*INFO, *CPPFILE, *JAVAFILE);
 
 
 	#Add bottom guards for each language
 	write_cpp_bottom_guard(*CPPFILE, $filename);
+	# JAVA doesn't need guards, but we have to close the interface
+	print JAVAFILE "}\n";
 	##Add other language guards
 
 
 	# Close language files
 	close(CPPFILE);
-
+	close(JAVAFILE);
 
 	print "All info parsed\n";
 
@@ -132,6 +139,7 @@ sub read_content {
 
 	local (*INFO) = $_[0];
 	local (*CPPFILE) = $_[1];
+	local (*JAVAFILE) = $_[2];
 
 	my $stop = "";
 
@@ -146,8 +154,9 @@ sub read_content {
 
 		if ($line =~ /^\[Section Content\]$/) {
 			print "Reading content section...\n";
-			read_content_section(*INFO, *CPPFILE);
+			read_content_section(*INFO, *CPPFILE, *JAVAFILE);
 			print CPPFILE "\n";
+			print JAVAFILE "\n";
 		} else {
 			print "No more content sections\n";
 			$stop = "yes";
@@ -159,6 +168,7 @@ sub read_content_section {
 
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
+	local (*JAVAOUTPUT) = $_[2];
 	
 	my $line = <INFO>;
 	my $datatype = "";
@@ -171,13 +181,13 @@ sub read_content_section {
 
 	switch ($datatype) {
 		case "Define" {
-			read_define_content(*INFO, *CPPOUTPUT);
+			read_define_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT);
 		}
 		case "Enum" { 
-			read_enum_content(*INFO, *CPPOUTPUT);
+			read_enum_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT);
 		}
 		case "TypeDef" {
-			read_typedef_content(*INFO, *CPPOUTPUT);
+			read_typedef_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT);
 		}
 		else { die "Unknown type on content section\n" }
 	}
@@ -188,12 +198,14 @@ sub read_define_content {
 
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
+	local (*JAVAOUTPUT) = $_[2];
 
 	my $line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
 		if ($line !~ /^(#.*|\s*)$/) {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				write_cpp_define_line(*CPPOUTPUT, $1, $2);
+				write_java_define_line(*JAVAOUTPUT, $1, $2);
 			} else {
 				die "Malformed content section define line\n";
 			}
@@ -206,12 +218,15 @@ sub read_typedef_content {
 
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
+	local (*JAVAOUTPUT) = $_[2];
 
 	my $line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
 		if ($line !~ /^(#.*|\s*)$/) {
 			if ($line =~ /^(.+)\s+(.+)$/) {
 				write_cpp_typedef_line(*CPPOUTPUT, $1, $2);
+				# Java doesn't support typedefs, ignore it.
+				#write_java_typedef_line(*JAVAOUTPUT, $1, $2);
 			} else {
 				die "Malformed content section typedef line\n";
 			}
@@ -224,6 +239,7 @@ sub read_enum_content {
 
 	local (*INFO) = $_[0];
 	local (*CPPOUTPUT) = $_[1];
+	local (*JAVAOUTPUT) = $_[2];
 
 	my $line = <INFO>;
 	my $dataname = "";
@@ -247,6 +263,7 @@ sub read_enum_content {
 				}
 
 				write_cpp_enum_line(*CPPOUTPUT, $firstoperand, $secondoperand, $first);
+				write_java_define_line(*JAVAOUTPUT, $firstoperand, $secondoperand);
 	
 				if ($first) {
 					$first = "";
@@ -344,6 +361,8 @@ sub write_cpp_typedef_line {
 
 	my $translated_type;
 
+	my $preamble = "";
+
 	switch ($_[2]) {
 		case /^u?int(8|16|32|64)$/ { 
 			$translated_type = $_[2] . "_t";
@@ -352,10 +371,33 @@ sub write_cpp_typedef_line {
 			$translated_type = "std::string"
 		}
 		else { 
+			$preamble = "// ";
 			$translated_type = $_[2]
 		}
 	}
 
-	print OUTPUT "typedef " . $translated_type . " " . $_[1] . ";\n";
+	print OUTPUT $preamble . "typedef " . $translated_type . " " . $_[1] . ";\n";
+
+}
+
+################ JAVA Specific Subroutines #####################
+
+
+sub write_java_define_line {
+
+	local (*OUTPUT) = $_[0];
+
+	my $datatype = "int";
+
+	if ($_[2] =~ /^\".*\"$/) {
+		$datatype = "String";
+	}
+
+	print OUTPUT "public final static " . $datatype . " " . $_[1] . " = " . $_[2] . ";\n";
+}
+
+sub write_java_typedef_line {
+
+	die "Typedef not supported on java";
 
 }
