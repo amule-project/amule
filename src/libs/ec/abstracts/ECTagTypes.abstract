@@ -1,0 +1,18 @@
+[Section Definition]
+FileName ECTagTypes
+FileContent  EC tag types for use on the ec library.
+[/Section]
+
+[Section Content]
+Name ECTagTypes
+EC_TAGTYPE_UNKNOWN 0
+EC_TAGTYPE_CUSTOM 1
+EC_TAGTYPE_UINT8 2
+EC_TAGTYPE_UINT16 3
+EC_TAGTYPE_UINT32 4
+EC_TAGTYPE_UINT64 5
+EC_TAGTYPE_STRING 6
+EC_TAGTYPE_DOUBLE 7
+EC_TAGTYPE_IPV4 8
+EC_TAGTYPE_HASH16 9
+[/Section]
