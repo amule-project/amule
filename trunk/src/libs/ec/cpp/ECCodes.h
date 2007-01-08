@@ -258,7 +258,7 @@ enum {
 		 * \brief Get upload/waiting queue.
 		 *
 		 * \par Tags:
-		 *	::EC_TAG_UPDOWN_CLIENT (1+) info about client in queue
+		 *	::EC_TAG_CLIENT (1+) info about client in queue
 		 */
 	EC_OP_ULOAD_QUEUE,
 	EC_OP_WAIT_QUEUE,
@@ -865,7 +865,7 @@ enum {
 	 * 
 	 * \par Child TAGs: all below
 	 */
-	EC_TAG_UPDOWN_CLIENT,
+	EC_TAG_CLIENT,
 	EC_TAG_CLIENT_SOFTWARE,
 	EC_TAG_CLIENT_SCORE,
 	EC_TAG_CLIENT_HASH,

@@ -470,8 +470,8 @@ class CUpQueueRem {
 public:
 	CUpQueueRem(CRemoteConnect *);
 	
-	void ReQueryUp() { m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_UPDOWN_CLIENT); }
-	void ReQueryWait() { m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_UPDOWN_CLIENT); }
+	void ReQueryUp() { m_up_list.DoRequery(EC_OP_GET_ULOAD_QUEUE, EC_TAG_CLIENT); }
+	void ReQueryWait() { m_wait_list.DoRequery(EC_OP_GET_WAIT_QUEUE, EC_TAG_CLIENT); }
 
 	const CClientPtrList& GetWaitingList() const { return m_wait_list.GetList(); }
 	const CClientPtrList& GetUploadingList() const { return m_up_list.GetList(); }
