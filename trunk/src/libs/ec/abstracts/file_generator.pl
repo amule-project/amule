@@ -392,12 +392,14 @@ sub write_java_define_line {
 	local (*OUTPUT) = $_[0];
 
 	my $datatype = "int";
+	my $first = $_[1];
+	my $second = $_[2];
 
-	if ($_[2] =~ /^\".*\"$/) {
+	if ($second =~ /^\".*\"$/) {
 		$datatype = "String";
 	}
 
-	print OUTPUT "public final static " . $datatype . " " . $_[1] . " = " . $_[2] . ";\n";
+	print OUTPUT "public final static " . $datatype . " " . $first . " = " . $second . ";\n";
 }
 
 sub write_java_typedef_line {
