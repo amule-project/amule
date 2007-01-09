@@ -292,13 +292,13 @@ sub write_license_header {
 
 	my $line = <LICENSE>;
 	while (!(eof)) {
-		printf OUTPUT $_[1] . $line . $_[2];
+		printf OUTPUT $_[2] . $line . $_[3];
 		$line = <LICENSE>;
 	}
 
 	print OUTPUT "\n";
 
-	print OUTPUT $_[1] . "Purpose:" . $_[2] . "\n" . $_[1] . $_[3] . $_[2] . "\n\n";
+	print OUTPUT $_[2] . "Purpose:" . $_[3] . "\n" . $_[2] . $_[4] . $_[3] . "\n\n";
 
 	close(LICENSE);
 }
