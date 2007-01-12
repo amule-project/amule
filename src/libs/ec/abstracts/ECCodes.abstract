@@ -16,6 +16,7 @@ ec_taglen_t	uint32
 [Section Content]
 Type Enum
 Name ProtocolVersion
+DataType uint16
 EC_CURRENT_PROTOCOL_VERSION	0x0200
 [/Section]
 
@@ -23,6 +24,7 @@ EC_CURRENT_PROTOCOL_VERSION	0x0200
 [Section Content]
 Type Enum
 Name ECFlags
+DataType uint32
 EC_FLAG_ZLIB		0x00000001
 EC_FLAG_UTF8_NUMBERS	0x00000002
 EC_FLAG_HAS_ID		0x00000004
@@ -35,6 +37,8 @@ EC_FLAG_UNKNOWN_MASK	0xff7f7f08
 [Section Content]
 Type Enum
 Name ECOpCodes
+DataType uint8
+
 EC_OP_NOOP                          0x01
 
 EC_OP_AUTH_REQ                      0x02
@@ -133,6 +137,7 @@ EC_OP_DISCONNECT                    0x4B
 [Section Content]
 Type Enum
 Name ECTagNames
+DataType uint16
 
 EC_TAG_STRING                             0x0000
 EC_TAG_PASSWD_HASH                        0x0001
@@ -347,6 +352,7 @@ EC_TAG_SELECT_PREFS                       0x1000
 [Section Content]
 Type Enum
 Name EC_DETAIL_LEVEL
+DataType uint8
 EC_DETAIL_CMD           0x00
 EC_DETAIL_WEB           0x01
 EC_DETAIL_FULL          0x02
@@ -357,6 +363,7 @@ EC_DETAIL_INC_UPDATE    0x04
 [Section Content]
 Type Enum
 Name EC_SEARCH_TYPE
+DataType uint8
 EC_SEARCH_LOCAL         0x00
 EC_SEARCH_GLOBAL        0x01
 EC_SEARCH_KAD           0x02
@@ -366,6 +373,7 @@ EC_SEARCH_WEB           0x03
 [Section Content]
 Type Enum
 Name EC_STATTREE_NODE_VALUE_TYPE
+DataType uint8
 EC_VALUE_INTEGER        0x00
 EC_VALUE_ISTRING        0x01
 EC_VALUE_BYTES          0x02
@@ -379,6 +387,7 @@ EC_VALUE_DOUBLE         0x07
 [Section Content]
 Type Enum
 Name EcPrefs
+DataType uint32
 EC_PREFS_CATEGORIES     0x00000001
 EC_PREFS_GENERAL        0x00000002
 EC_PREFS_CONNECTIONS    0x00000004

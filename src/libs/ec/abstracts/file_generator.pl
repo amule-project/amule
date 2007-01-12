@@ -253,6 +253,15 @@ sub read_enum_content {
 		die "Content section has a non-named data stream\n";
 	}
 
+	$line = <INFO>;
+	my $datatype = "";
+	if ($line =~ /^DataType\s+(.+)$/) {
+		$datatype = $1;
+		print "\tDataType: " . $datatype . "\n";
+	} else {
+		die "Content section has a enum stream with no data type\n";
+	}
+
 	my $first = "yes";
 	$line = <INFO>;
 	while (!(eof) && ($line !~ /^\[\/Section\]$/)) {
@@ -266,7 +275,7 @@ sub read_enum_content {
 				}
 
 				write_cpp_enum_line(*CPPOUTPUT, $firstoperand, $secondoperand, $first);
-				write_java_define_line(*JAVAOUTPUT, $firstoperand, $secondoperand);
+				write_java_define_line(*JAVAOUTPUT, $firstoperand, $secondoperand, $datatype);
 	
 				if ($first) {
 					$first = "";
@@ -395,8 +404,18 @@ sub write_java_define_line {
 	my $first = $_[1];
 	my $second = $_[2];
 
-	if ($second =~ /^\".*\"$/) {
-		$datatype = "String";
+	if ($_[3]) {
+		switch ($_[3]) {
+			case /int8/ { $datatype = "byte"; }
+			case /(uint8|int16)/ { $datatype = "short"; }
+			case /(uint16|int32)/ { $datatype = "int"; }
+			case /(uint32|int64)/ { $datatype = "long"; }
+			else { die "Unknown data type on abstract: " . $_[3]; }
+		}
+	} else {
+		if ($second =~ /^\".*\"$/) {
+			$datatype = "String";
+		}
 	}
 
 	print OUTPUT "public final static " . $datatype . " " . $first . " = " . $second . ";\n";
