@@ -98,9 +98,9 @@ sub generate_files {
 	print "FileContent: " . $filecontent . "\n";
 
 	#Open language output files
-	open(CPPFILE," > " . $folder . "../cpp/$filename" . ".h");
+	open(CPPFILE," > " . $folder . "cpp/$filename" . ".h");
 	#Open language output files
-	open(JAVAFILE," > " . $folder . "../java/$filename" . ".java");
+	open(JAVAFILE," > " . $folder . "java/$filename" . ".java");
 
 
 	# Print license on top.
@@ -297,7 +297,7 @@ sub write_license_header {
 	my $folder = $_[0];
 	local (*OUTPUT) = $_[1];
 
-	open(LICENSE, $folder . "License.abstract") or die "Cannot open license file";
+	open(LICENSE, $folder . "abstracts/License.abstract") or die "Cannot open license file";
 
 	my $line = <LICENSE>;
 	while (!(eof)) {
