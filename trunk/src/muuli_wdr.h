@@ -380,10 +380,10 @@ const int IDC_WEB_PASSWD = 10281;
 const int IDC_WEB_PASSWD_LOW = 10282;
 const int IDC_WEBTEMPLATE = 10283;
 const int IDC_EXT_CONN_ACCEPT = 10284;
-const int IDC_EXT_CONN_IP = 10285;
-const int IDC_EXT_CONN_TCP_PORT = 10286;
-const int IDC_UPNP_EC_ENABLED = 10287;
-const int IDC_EXT_CONN_PASSWD = 10288;
+const int IDC_EXT_CONN_PASSWD = 10285;
+const int IDC_EXT_CONN_IP = 10286;
+const int IDC_EXT_CONN_TCP_PORT = 10287;
+const int IDC_UPNP_EC_ENABLED = 10288;
 wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 extern wxSizer *prefs_main_sizer;
