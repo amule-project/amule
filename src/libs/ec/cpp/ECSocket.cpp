@@ -171,7 +171,7 @@ m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_rx_flags(0),
 m_tx_flags(0),
-m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS),
+m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS | EC_FLAG_ACCEPTS),
 // setup initial state: 4 flags + 4 length
 m_bytes_needed(8),
 m_in_header(true)
@@ -317,17 +317,21 @@ void CECSocket::OnInput()
 				// Client sends its capabilities, update the internal mask.
 				m_curr_rx_data->Read(&m_my_flags, sizeof(m_my_flags));
 				m_my_flags = ENDIAN_NTOHL(m_my_flags);
+				printf("Reading accepts mask: %x\n", m_my_flags);
 				wxASSERT(m_my_flags & 0x20);
+				// There has to be 4 more bytes. THERE HAS TO BE, DAMN IT.
+				m_curr_rx_data->ReadFromSocketAll(this, sizeof(m_curr_packet_len));
 			}
 			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
 			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
+			printf("Reading packet len: %x\n", m_curr_packet_len);			
 			m_bytes_needed = m_curr_packet_len;
 			// packet bigger that 16Mb looks more like broken request
 			if ( m_bytes_needed > 16*1024*1024 ) {
 				CloseSocket();
 				return;
 			}
-			if ( !m_curr_rx_data.get() || (m_curr_rx_data->GetLength() < (m_bytes_needed+8)) ) {
+			if ( !m_curr_rx_data.get() || (m_curr_rx_data->GetLength() < (m_bytes_needed+(m_rx_flags & EC_FLAG_ACCEPTS) ? 12 : 8)) ) {
 				m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
 			}
 			#warning Kry TODO: Read packet?
@@ -615,9 +619,12 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		}
 	}
 
-	uint32_t tmp_flags = ENDIAN_HTONL(flags);
+	uint32_t tmp_flags = ENDIAN_HTONL(flags/* | EC_FLAG_ACCEPTS*/);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
 	
+/*	uint32_t tmp_accepts_flags = ENDIAN_HTONL(m_my_flags);
+	WriteBufferToSocket(&tmp_accepts_flags, sizeof(uint32));*/
+
 	// preallocate 4 bytes in buffer for packet length
 	uint32_t packet_len = 0;
 	WriteBufferToSocket(&packet_len, sizeof(uint32));

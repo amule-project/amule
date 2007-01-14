@@ -126,6 +126,11 @@ public:
 	 */
 	virtual sint64 GetAvailable() const { return GetLength() - GetPosition(); }
 
+	/** 
+	 * Resets the memfile to the starting values.
+	 */
+	virtual void ResetData();
+	
 protected:
 	/** @see CFileDataIO::doRead */
 	virtual sint64 doRead(void* buffer, size_t count) const;

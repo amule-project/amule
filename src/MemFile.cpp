@@ -171,4 +171,19 @@ sint64 CMemFile::doSeek(sint64 offset) const
 	
 	return m_position = offset;
 }
+
+void CMemFile::ResetData() {
+	wxASSERT(m_delete);
+	wxASSERT(!m_readonly);
+	if (m_buffer) {
+		delete m_buffer;
+		m_buffer		= NULL;
+	}
+	m_BufferSize	= 0;
+	m_fileSize		= 0;
+	m_growthRate	= m_growthRate;
+	m_position		= 0;
+	m_delete		= true;
+	m_readonly		= false;		
+}
 // File_checked_for_headers
