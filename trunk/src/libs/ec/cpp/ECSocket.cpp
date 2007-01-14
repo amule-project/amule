@@ -313,6 +313,12 @@ void CECSocket::OnInput()
 			m_in_header = false;
 			m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
 			m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
+			if (m_rx_flags & EC_FLAG_ACCEPTS) {
+				// Client sends its capabilities, update the internal mask.
+				m_curr_rx_data->Read(&m_my_flags, sizeof(m_my_flags));
+				m_my_flags = ENDIAN_NTOHL(m_my_flags);
+				wxASSERT(m_my_flags & 0x20);
+			}
 			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
 			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
 			m_bytes_needed = m_curr_packet_len;
