@@ -160,7 +160,7 @@ void CEncryptedStreamSocket::CryptPrepareSendData(uint8* pBuffer, uint32 nLen){
 
 // unfortunatly sending cannot be made transparent for the derived class, because of WSA_WOULDBLOCK
 // together with the fact that each byte must pass the keystream only once
-int CEncryptedStreamSocket::Send(const void* lpBuf, int nBufLen, int nFlags){
+int CEncryptedStreamSocket::Send(const void* lpBuf, wxUint32 nBufLen){
 	if (!IsEncryptionLayerReady()){
 		wxASSERT( false ); // must be a bug
 		return 0;
@@ -171,7 +171,7 @@ int CEncryptedStreamSocket::Send(const void* lpBuf, int nBufLen, int nFlags){
 		int nRes = SendNegotiatingData(lpBuf, nBufLen, nBufLen);
 		wxASSERT( nRes != SOCKET_ERROR );
 		(void)nRes;
-		return nBufLen;	// report a full send, even if we didn't for some reason - the data is know in our buffer and will be handled later
+		return nBufLen;	// report a full send, even if we didn't for some reason - the data is now in our buffer and will be handled later
 	}	else if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING) {
 		wxASSERT( false );
 	}
@@ -183,7 +183,7 @@ int CEncryptedStreamSocket::Send(const void* lpBuf, int nBufLen, int nFlags){
 		//DebugLogError(_T("CEncryptedStreamSocket: Overwriting State ECS_UNKNOWN with ECS_NONE because of premature Send() (%s)"), DbgGetIPString());
 	}
 	
-	CSocketClientProxy::Write(lpBuf, nBufLen/*, nFlags*/);
+	CSocketClientProxy::Write(lpBuf, nBufLen);
 	return CSocketClientProxy::LastCount();
 }
 
@@ -193,8 +193,8 @@ bool CEncryptedStreamSocket::IsEncryptionLayerReady(){
 }
 
 
-int CEncryptedStreamSocket::Receive(void* lpBuf, int nBufLen, int nFlags){
-	CSocketClientProxy::Write(lpBuf, nBufLen/*, nFlags*/);
+int CEncryptedStreamSocket::Receive(void* lpBuf, wxUint32 nBufLen){
+	CSocketClientProxy::Read(lpBuf, nBufLen);
 	m_nObfusicationBytesReceived = CSocketClientProxy::LastCount();
 	m_bFullReceive = m_nObfusicationBytesReceived == (uint32)nBufLen;
 

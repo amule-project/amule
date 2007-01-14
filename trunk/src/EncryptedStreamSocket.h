@@ -101,8 +101,8 @@ public:
 	uint8	m_dbgbyEncryptionMethodSet;
 
 protected:
-	int Send(const void* lpBuf, int nBufLen, int nFlags = 0);
-	int Receive(void* lpBuf, int nBufLen, int nFlags = 0);
+	int Send(const void* lpBuf, wxUint32 nBufLen);
+	int Receive(void* lpBuf, wxUint32 nBufLen);
 	virtual void OnError(int nErrorCode) {};
 	virtual void	OnSend(int nErrorCode);
 	wxString			DbgGetIPString();
