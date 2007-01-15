@@ -324,7 +324,6 @@ void CECSocket::OnInput()
 			}
 			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
 			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
-			printf("Reading packet len: %x\n", m_curr_packet_len);			
 			m_bytes_needed = m_curr_packet_len;
 			// packet bigger that 16Mb looks more like broken request
 			if ( m_bytes_needed > 16*1024*1024 ) {
