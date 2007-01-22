@@ -21,6 +21,7 @@ Trunk
 		* Fixed typos in the man pages.
 		* Added manpage for amulegui.
 		* Added amulegui desktop icon (with Gerd78).
+		* Manpages update.
 
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.

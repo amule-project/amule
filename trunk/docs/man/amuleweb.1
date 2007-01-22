@@ -1,4 +1,4 @@
-.TH AMULEWEB 1 "March 2005" "aMule webserver v2.0.0" "aMule utilities"
+.TH AMULEWEB 1 "January 2007" "aMule webserver v2.2.0" "aMule utilities"
 .SH NAME
 amuleweb \- aMule web server
 .SH SYNOPSIS
@@ -62,7 +62,7 @@ Be verbose \- show also debug messages
 .TP
 \fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
 Sets program locale (language).
-See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
+See section \fBLANGUAGES\fR for the description of the \fI<lang>\fR parameter.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
 Write command line options to config file and exit
@@ -111,23 +111,25 @@ aMule uses this option when starting amuleweb at aMule startup.
 This option causes all other command-line and config-file settings to be ignored, preferences to be read from the given config file, and also implies the \fB\-q \-L\fR options.
 .TP
 \fB\-\-help\fR
-Display usage help information and exit
+Prints a short usage description.
 .TP
 \fB\-\-version\fR
-Output program version information and exit
+Displays the current version number.
 .SH NOTES
 .SS Paths
 If you specify a file without giving an absolute path (i.e. just a plain filename, such as \fB\-\-path\fR=\fIremote.conf\fR), then this file is searched within the aMule configuration directory, \fI~/.aMule\fR.
-.SS Languages
+.SS LANGUAGES
 The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
-where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory, \fIencoding\fR is the character set to use and \fImodifier\fR
-"allows the user to select a specific instance of localization data within a single category".
+where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
+\fIencoding\fR is the character set to use and \fImodifier\fR
+"allows the user to select a specific instance of localization data within a
+single category".
 .PP
 For example, the following strings are valid:
 .br
-fr
+de
 .br
-fr_FR
+de_DE
 .br
 de_DE.iso88591
 .br
@@ -135,11 +137,14 @@ de_DE@euro
 .br
 de_DE.iso88591@euro
 .PP
-Though all the above strings are accepted as valid language definitions, \fIencoding\fR and \fImodifier\fR are yet unused.
+Though all the above strings are accepted as valid language definitions,
+\fIencoding\fR and \fImodifier\fR are yet unused.
 .PP
-In addition to the format above, you can also specify full language names in English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
+In addition to the format above, you can also specify full language names in
+English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
 .PP
-When no locale is defined, either on command-line or in config file, system default language will be used.
+When no locale is defined, either on command-line or in config file, system
+default language will be used.
 .SH SKIN SUPPORT
 \fBamuleweb\fR is capable of displaying information in different skins.
 These skins are called templates, and you can make amuleweb load a specific template via the \fB\-t\fR command line option.
