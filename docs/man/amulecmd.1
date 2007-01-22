@@ -1,6 +1,6 @@
-.TH AMULECMD 1 "March 2005" "aMuleCmd v2.0.0" "aMule utilities"
+.TH AMULECMD 1 "January 2007" "aMuleCmd v2.2.0" "aMule utilities"
 .SH NAME
-amulecmd \- Text-based program to control aMule
+amulecmd \- Console-based program to control aMule
 .SH SYNOPSIS
 .B amulecmd
 .RB [ \-h " " \fI<host> ]
@@ -14,18 +14,19 @@ amulecmd \- Text-based program to control aMule
 .RB [ \-c " " \fI<command> ]
 .PP
 .B amulecmd
-.RB [ \-f " " \fI<path> ]
 .B \-\-create-config-from=\fI<path>
 .PP
 .B amulecmd
 .RB [ \-\-help ]
+.PP
+.B amulecmd
 .RB [ \-\-version ]
 .SH DESCRIPTION
-\fBamulecmd\fR is a text-based client to control aMule.
-Useful help can be obtained when you launch the program.
+\fBamulecmd\fR is a console-based client to control aMule.
 .TP
 \fB\-h\fR, \fB\-\-host\fR=\fI<host>\fR
-host where aMule is running (default: \fIlocalhost\fR). \fI<host>\fR might be an IP address or a DNS name
+host where aMule is running (default: \fIlocalhost\fR).
+\fI<host>\fR might be an IP address or a DNS name
 .TP
 \fB\-p\fR, \fB\-\-port\fR=\fI<port>\fR
 aMule's port for External Connections, as set in Preferences->Remote Controls (default: \fI4712\fR)
@@ -34,7 +35,8 @@ aMule's port for External Connections, as set in Preferences->Remote Controls (d
 External Connections password
 .TP
 \fB\-f\fR, \fB\-\-config\-file\fR=\fI<path>\fR
-use the given configuration file. Default configuration file is \fI~/.aMule/remote.conf\fR
+use the given configuration file.
+Default configuration file is \fI~/.aMule/remote.conf\fR
 .TP
 \fB\-q\fR, \fB\-\-quiet\fR
 do not print any output to stdout. This seems to be a very much useless option with \fBamulecmd\fR.
@@ -44,7 +46,7 @@ be verbose \- show also debug messages
 .TP
 \fB\-l\fR, \fB\-\-locale\fR=\fI<lang>\fR
 Sets program locale (language).
-See section \fBNOTES\fR for the description of the \fI<lang>\fR parameter.
+See section \fBLANGUAGES\fR for the description of the \fI<lang>\fR parameter.
 .TP
 \fB\-w\fR, \fB\-\-write\-config\fR
 write command line options to config file and exit
@@ -56,23 +58,168 @@ execute \fI<command>\fR as if it was entered at amulecmd's prompt and exit.
 create config file based upon \fI<path>\fR, which must point to a valid aMule config file, and then exit
 .TP
 \fB\-\-help\fR
-display usage help information and exit
+Prints a short usage description.
 .TP
 \fB\-\-version\fR
-output program version information and exit
+Displays the current version number.
+.SH COMMANDS
+All commands are case insensitive
+.SS \fBAdd\fR <ed2k-link>
+Adds an ed2k-linkto the core.
+
+The ed2k link to be added can be:
+.br
+*) a file link (ed2k://|file|...), it will be added to the download queue,
+.br
+*) a server link (ed2k://|server|...), it will be added to the server list,
+.br
+*) or a serverlist link, in which case all servers in the list will be added to the server list.
+
+This command must have an argument.
+.SS \fBCancel\fR <hash>
+Cancels the download specified by hash. To get the hash use \fIshow\fR.
+.SS \fBConnect\fR (kad|ed2k<ip|name>)
+Connect to the network.
+
+This will connect to all networks that are enabled in Preferences.
+
+When giving ed2k as parameter, it connects only to ed2k-network to servers in your
+serverlist. You may also optionally specify a server address in IP:Port form, to
+connect to that server only. The IP must be a dotted decimal IPv4 address, or a
+resolvable DNS name.
+
+When giving kad, it connects to Kad only.
+.SS \fBDisconnect\fR (ed2k|kad)
+
+Disconnect from all networks you are cionnected to, or just disconnect from the
+specified network.
+.SS \fBDownload\fR num
+Start downloading a file
+
+The number of a file from the last search has to be given.
+Example: 'download 12' will start to download the file with the number 12 of the
+previous search.
+
+This command must have an argument.
+.SS \fBExit\fR
+Disconnect from amule/amuled and quit amulecmd.
+.SS \fBGet\fR value
+Get and display a preference value.
+
+This command is incomplete, aviable values are listed below.
+
+Available values to get:
+.br
+BwLimits	Get bandwidth limits.
+.br
+IPFilter	Get IPFilter preferences.
+.SS \fBHelp\fR <command>
+Get a short help.
+If called without parameter, it shows a list of aviable commands.
+If called with <command>, it shows a short description of the given command.
+.SS \fBPause\fR <hash>
+Pauses the download specified by hash. To get the hash use \fIshow\fR.
+.SS \fBProgress\fR
+Shows the progress of an ongiong search.
+
+This Command can't have an argument.
+.SS \fBQuit\fR
+Exists the App.
+
+This command can't have an argument.
+.SS \fBReload\fR
+Reloads a given object.
+
+This command is incomplete, aviable values are listed below.
+
+Available values to get:
+.br
+BwLimits	Reload bandwidth limits.
+.br
+IPFilter	Reload IPFilter preferences.
+.SS \fBReset\fR
+Reset the log.
+
+This command can't have an argument.
+.SS Results\fR
+Shows you the results of the last search.
+
+This command can't have an argument.
+.SS \fBResume\fR <hash>
+Resumes the download specified by hash. To get the hash use \fIshow\fR.
+.SS \fBSearch\fR global|kad|local file
+Makes a search for the given file. A searchtype and a file to search is mandatory
+to do this.
+\fIExample\fR 'search kad amule' performs a kad search for amule.
+
+Aviable searchtypes:
+.br
+global	performs a global search
+.br
+kad	performs a search on kad network
+.br
+local	performs a local search
+.SS \fBSet\fR <value>
+Sets a given preferences value.
+
+This command is incomplete, aviable values are listed below.
+
+Available values to get:
+.br
+BwLimits	Set bandwidth limits.
+.br
+IPFilter	Set IPFilter preferences.
+.SS \fBShow\fR DL|Log|Servers|UL
+Shows upload/download queue, server list or shared files list.
+
+This command must have an argument.
+
+This command is incomplete, you must use one of the extensions below.
+
+Available extensions:
+.br
+DL		Show download queue.
+.br
+Log		Show log.
+.br
+Servers	Show servers list.
+.br
+UL		Show upload queue.
+.SS \fBShutdown\fR
+Shutdown the remote running core (amule/amuled).
+This will also shut down the text client, since it is unusable without a running
+core.
+
+This command can't have an argument.
+.SS \fBStatistics\fR <num>
+Show statistics tree.
+
+The optional number in the range of 0-255 can be passed as argument to this
+command, which tells how many entries of the client version subtree should be
+shown. Passing 0, or omitting it means 'unlimited'.
+
+\fIExample:\fR 'statistics 5' will show only the top 5 versions for each client
+type.
+.SS \fBStatus\fR
+Show connection status, current up/download speeds, etc.
+.PP
 .SH NOTES
 .SS Paths
-For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no directory part (i.e. just a plain filename), then it is considered to be under the aMule configuration directory, \fI~/.aMule\fR.
-.SS Languages
+For all options which take a \fI<path>\fR value, if the \fIpath\fR contains no
+directory part (i.e. just a plain filename), then it is considered to be under
+the aMule configuration directory, \fI~/.aMule\fR.
+.SS LANGUAGES
 The \fI<lang>\fR parameter for the \fB\-l\fR option has the following form: \fIlang\fR[\fB_\fILANG\fR][\fB.\fIencoding\fR][\fB@\fImodifier\fR]
-where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory, \fIencoding\fR is the character set to use and \fImodifier\fR
-"allows the user to select a specific instance of localization data within a single category".
+where \fIlang\fR is the primary language, \fILANG\fR is a sublanguage/territory,
+\fIencoding\fR is the character set to use and \fImodifier\fR
+"allows the user to select a specific instance of localization data within a
+single category".
 .PP
 For example, the following strings are valid:
 .br
-fr
+de
 .br
-fr_FR
+de_DE
 .br
 de_DE.iso88591
 .br
@@ -80,11 +227,14 @@ de_DE@euro
 .br
 de_DE.iso88591@euro
 .PP
-Though all the above strings are accepted as valid language definitions, \fIencoding\fR and \fImodifier\fR are yet unused.
+Though all the above strings are accepted as valid language definitions,
+\fIencoding\fR and \fImodifier\fR are yet unused.
 .PP
-In addition to the format above, you can also specify full language names in English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
+In addition to the format above, you can also specify full language names in
+English - so \fB\-l german\fR is also valid and is equal to \fB-l de_DE\fR.
 .PP
-When no locale is defined, either on command-line or in config file, system default language will be used.
+When no locale is defined, either on command-line or in config file, system
+default language will be used.
 .SH FILES
 ~/.aMule/remote.conf
 .SH EXAMPLE
