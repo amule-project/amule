@@ -1295,6 +1295,18 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	switch (nColumn) {
 	// Filename
 	case 0: {
+		// show no. of partfile in filename column
+		wxString filename;
+		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+			if (thePrefs::ShowPartFileNumber()) {
+				filename << wxT(" [") << file->GetPartMetFileName().BeforeLast(wxT('.')).BeforeLast(wxT('.')) << wxT("] ") << file->GetFileName();
+			} else {
+				filename = file->GetFileName();
+			}
+		} else if (file->GetStatus() == PS_COMPLETE) {
+			filename = file->GetFileName();
+		}
+
 		if (file->HasRating() || file->HasComment()) {
 			int image = Client_CommentOnly_Smiley;
 			if (file->HasRating()) {
@@ -1312,9 +1324,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			// it's already centered by OnDrawItem() ...
 			m_ImageList.Draw(image, *dc, rect.GetX(), rect.GetY() - 1,
 				wxIMAGELIST_DRAW_TRANSPARENT);
-			dc->DrawText( file->GetFileName(), rect.GetX() + imgWidth + 4, rect.GetY());
+			dc->DrawText(filename, rect.GetX() + imgWidth + 4, rect.GetY());
 		} else {
-			dc->DrawText( file->GetFileName(), rect.GetX(), rect.GetY());
+			dc->DrawText(filename, rect.GetX(), rect.GetY());
 		}
 	}
 	break;
@@ -2271,13 +2283,13 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		command = thePrefs::GetVideoPlayer();
 	}
 	// Need to use quotes in case filename contains spaces.
-	command.Append(wxT(" \""));
+	command += wxT(" '");
 	command += file->GetFullName();
 	if (file->GetStatus() != PS_COMPLETE) {
 		// Remove the .met
 		command = command.BeforeLast( wxT('.') );
 	}
-	command += wxT("\"");
+	command += wxT("'");
 
 	// We can't use wxShell here, it blocks the app
 	// <jacobo221> mplayer users (like me) should use xterm -T "aMule Preview" -iconic -e mplayer -idx
