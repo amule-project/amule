@@ -57,6 +57,9 @@ Trunk
 	Kry:
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 
+	LittleAbacus:
+		* Patch to show part file numbers.
+
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may
 		affect only the debugging.
@@ -101,6 +104,8 @@ Trunk
 		  when the checkbox "Use skins" was not checked.
 		* Fixed a crash related to MuleGIFDecoder wx-2.8.0 when
 		  downloading the file IPFIlter.dat.
+		* Added a preference option to enable LittleAbacus patch to
+		  show part file numbers.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

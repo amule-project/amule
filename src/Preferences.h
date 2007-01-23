@@ -446,10 +446,12 @@ public:
 	
 	static bool		UseSkin()			{ return s_UseSkinFile; }
 
-	static bool		VerticalToolbar() { return s_ToolbarOrientation; }
+	static bool		VerticalToolbar()		{ return s_ToolbarOrientation; }
+
+	static bool		ShowPartFileNumber()		{ return s_ShowPartFileNumber; }
 		
 	static const wxString&	GetOSDir()			{ return s_OSDirectory; }
-	static uint16	GetOSUpdate()			{ return s_OSUpdate; }
+	static uint16		GetOSUpdate()			{ return s_OSUpdate; }
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
 
@@ -639,6 +641,7 @@ protected:
 	static wxString	s_datetimeformat;
 	
 	static bool	s_ToolbarOrientation;
+	static bool	s_ShowPartFileNumber;
 
 	// Web Server [kuchin]
 	static wxString	s_sWebPassword;

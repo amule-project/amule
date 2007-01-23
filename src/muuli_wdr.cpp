@@ -2618,6 +2618,9 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     wxCheckBox *item30 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
     item25->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
+    wxCheckBox *item31 = new wxCheckBox( parent, IDC_SHOWPARTFILENUMBER, _("Show part file number before file name"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
     item0->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
