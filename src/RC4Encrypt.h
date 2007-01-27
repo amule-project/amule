@@ -31,6 +31,12 @@
 
 // Helper class
 
+struct RC4_Key_Struct{
+	uint8 abyState[256];
+	uint8 byX;
+	uint8 byY;
+};
+
 class CRC4EncryptableBuffer : public std::vector<uint8>
 {
 public:
@@ -48,7 +54,7 @@ public:
 
 	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
 	// to add data, as Append(), must assert if the inner data is encrypted.
-	void Encrypt();
+	void Encrypt(RC4_Key_Struct* key);
 
 	// Obvious
 	size_t GetSize();
