@@ -26,19 +26,38 @@
 #ifndef __RC4ENCRYPT_H__
 #define __RC4ENCRYPT_H__
 
-#include "Types.h"
+
 #include <vector>
+
+
+#include "Types.h"
+#include <libs/common/StringFunctions.h>
+#include <common/MD5Sum.h>
+
 
 // Helper class
 
-struct RC4_Key_Struct{
+class RC4_Key_Struct
+{
+public:
 	uint8 abyState[256];
 	uint8 byX;
 	uint8 byY;
+	
+public:
+	RC4_Key_Struct() {}
+	~RC4_Key_Struct() {}
 };
+
 
 class CRC4EncryptableBuffer : public std::vector<uint8>
 {
+private:
+	bool m_encrypted;
+	bool m_hasKey;
+	RC4_Key_Struct m_key;
+	std::vector<uint8> m_tmpBuf;
+	
 public:
 	// Create, empty
 	CRC4EncryptableBuffer();
@@ -50,10 +69,9 @@ public:
 	bool IsEmpty();
 
 	// Appends to the end
-	void Append(uint8* buffer);
+	void Append(uint8* buffer, int n);
 
-	// Sets the encryption key:
-	// RC4CreateKey(keyhash.GetRawHash(), 16, NULL)
+	// Sets the encryption key
 	void SetKey(MD5Sum keyhash);
 
 	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
@@ -67,9 +85,6 @@ public:
 	// Returns a uint8* buffer with the internal data, and clears the internal one.
 	// Don't forget to clear the encryption flag.
 	uint8* Detach();
-	
-private:
-	RC4_Key_Struct* m_key;
 };
 
 #endif // __RC4ENCRYPT_H__

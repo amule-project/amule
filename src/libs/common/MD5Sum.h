@@ -33,6 +33,7 @@ public:
 	MD5Sum(const wxString& sSource);
 	wxString Calculate(const wxString& sSource);
 	wxString GetHash();
+	Unicode2CharBuf GetRawHash() const { return unicode2char(m_sHash); }
 
 private:
 	wxString	m_sHash;

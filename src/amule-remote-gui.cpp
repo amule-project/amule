@@ -32,6 +32,7 @@ using std::auto_ptr;
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 
 #include <common/Format.h>
+#include <libs/common/StringFunctions.h>
 #include <common/MD5Sum.h>
 
 #include <include/common/EventIDs.h>
