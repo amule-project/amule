@@ -36,6 +36,7 @@ class CRC4EncryptableBuffer : public std::vector<uint8>
 public:
 	// Create, empty
 	CRC4EncryptableBuffer();
+
 	// Clear memory
 	~CRC4EncryptableBuffer();
 
@@ -57,6 +58,6 @@ public:
 	uint8* Detach();
 
 
-}
+};
 
 #endif // __RC4ENCRYPT_H__
