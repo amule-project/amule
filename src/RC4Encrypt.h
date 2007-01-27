@@ -27,17 +27,36 @@
 #define __RC4ENCRYPT_H__
 
 #include "Types.h"
+#include <vector>
 
-///////////////////////////////////////////////////////////////////////////////
-// RC4 Encryption
-//
-struct RC4_Key_Struct{
-	uint8 abyState[256];
-	uint8 byX;
-	uint8 byY;
-};
+// Helper class
 
-RC4_Key_Struct* RC4CreateKey(const uint8* pachKeyData, uint32 nLen, RC4_Key_Struct* key = NULL, bool bSkipDiscard = false);
-void RC4Crypt(const uint8* pachIn, uint8* pachOut, uint32 nLen, RC4_Key_Struct* key);
+class CRC4EncryptableBuffer : public std::vector<uint8>
+{
+public:
+	// Create, empty
+	CRC4EncryptableBuffer();
+	// Clear memory
+	~CRC4EncryptableBuffer();
+
+	// Obvious
+	bool IsEmpty();
+
+	// Appends to the end
+	void Append(uint8* buffer);
+
+	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
+	// to add data, as Append(), must assert if the inner data is encrypted.
+	void Encrypt();
+
+	// Obvious
+	size_t GetSize();
+	
+	// Returns a uint8* buffer with the internal data, and clears the internal one.
+	// Don't forget to clear the encryption flag.
+	uint8* Detach();
+
+
+}
 
 #endif // __RC4ENCRYPT_H__

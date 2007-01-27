@@ -25,6 +25,15 @@
 
 #include "RC4Encrypt.h"
 
+///////////////////////////////////////////////////////////////////////////////
+// RC4 Encryption
+//
+struct RC4_Key_Struct{
+	uint8 abyState[256];
+	uint8 byX;
+	uint8 byY;
+};
+
 static void swap_byte (uint8* a, uint8* b){
 	uint8 bySwap;
 	bySwap = *a;
