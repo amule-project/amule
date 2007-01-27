@@ -52,9 +52,14 @@ public:
 	// Appends to the end
 	void Append(uint8* buffer);
 
+	// Sets the encryption key:
+	// RC4CreateKey(keyhash.GetRawHash(), 16, NULL)
+	void SetKey(MD5Sum keyhash);
+
 	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
 	// to add data, as Append(), must assert if the inner data is encrypted.
-	void Encrypt(RC4_Key_Struct* key);
+	// Make sure to check SetKey has been called!
+	void Encrypt();
 
 	// Obvious
 	size_t GetSize();
@@ -62,8 +67,9 @@ public:
 	// Returns a uint8* buffer with the internal data, and clears the internal one.
 	// Don't forget to clear the encryption flag.
 	uint8* Detach();
-
-
+	
+private:
+	RC4_Key_Struct* m_key;
 };
 
 #endif // __RC4ENCRYPT_H__
