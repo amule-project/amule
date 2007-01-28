@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-24 03:31+0100\n"
+"POT-Creation-Date: 2007-01-28 03:31+0100\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -2886,25 +2886,25 @@ msgstr ""
 msgid "Copy ED2k link to clipboard"
 msgstr "Copia l'enllaç ED2K al porta-retalls"
 
-#: src/amule-remote-gui.cpp:60
+#: src/amule-remote-gui.cpp:61
 msgid "Connect to remote amule"
 msgstr "Connecta a l'amule remot"
 
-#: src/amule-remote-gui.cpp:262
+#: src/amule-remote-gui.cpp:263
 msgid "Connection failed "
 msgstr "La connexió ha fallat "
 
-#: src/amule-remote-gui.cpp:262 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:263 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:825
 #: src/amule.cpp:943 src/amule.cpp:1296
 msgid "Error"
 msgstr "Error"
 
-#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Tots"
 
-#: src/amule-remote-gui.cpp:744
+#: src/amule-remote-gui.cpp:745
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"

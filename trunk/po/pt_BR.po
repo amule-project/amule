@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-24 03:31+0100\n"
+"POT-Creation-Date: 2007-01-28 03:31+0100\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -2840,25 +2840,25 @@ msgstr ""
 msgid "Copy ED2k link to clipboard"
 msgstr "Copiar link ED2k na área de transferência"
 
-#: src/amule-remote-gui.cpp:60
+#: src/amule-remote-gui.cpp:61
 msgid "Connect to remote amule"
 msgstr "Conectar a aMule remoto"
 
-#: src/amule-remote-gui.cpp:262
+#: src/amule-remote-gui.cpp:263
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:262 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:263 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:825
 #: src/amule.cpp:943 src/amule.cpp:1296
 msgid "Error"
 msgstr "Erro"
 
-#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Tudo"
 
-#: src/amule-remote-gui.cpp:744
+#: src/amule-remote-gui.cpp:745
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Total Users: %s | Total arquivos: %s"
