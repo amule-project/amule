@@ -252,8 +252,9 @@ class CQueuedData
 	unsigned char *m_rd_ptr, *m_wr_ptr;
 public:
 	CQueuedData(size_t len)
+	:
+	m_data(len)
 	{
-		m_data.resize(len);
 		m_rd_ptr = m_wr_ptr = &m_data[0];
 	}
 	
@@ -296,14 +297,14 @@ public:
 	void WriteToSocket(CECSocket *sock)
 	{
 		wxASSERT(m_rd_ptr < &m_data[0] + m_data.size());
-		wxASSERT(m_wr_ptr < &m_data[0] + m_data.size());
+		wxASSERT(m_wr_ptr <= &m_data[0] + m_data.size());
 		sock->SocketWrite(m_rd_ptr, m_wr_ptr - m_rd_ptr);
 		m_rd_ptr += sock->GetLastCount();
 	}
 
 	void ReadFromSocket(CECSocket *sock, int len)
 	{
-		wxASSERT(m_wr_ptr + len < &m_data[0] + m_data.size());
+		wxASSERT(m_wr_ptr + len <= &m_data[0] + m_data.size());
 		sock->SocketRead(m_wr_ptr, len);
 		m_wr_ptr += sock->GetLastCount();
 	}
