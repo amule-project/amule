@@ -211,10 +211,7 @@ void CECSocket::SendPacket(const CECPacket *packet)
 
 const CECPacket *CECSocket::SendRecvPacket(const CECPacket *packet)
 {
-	assert(!m_use_events);
-	
 	SendPacket(packet);
-	
 	m_curr_rx_data->ReadFromSocketAll(this, 2 * sizeof(uint32_t));
 	if (SocketError() && !WouldBlock()) {
 		OnError();
@@ -389,7 +386,7 @@ void CECSocket::OnOutput()
 
 size_t CECSocket::ReadBufferFromSocket(void *buffer, size_t required_len)
 {
-	assert(required_len);
+	wxASSERT(required_len);
 
 	if (m_curr_rx_data->GetUnreadDataLength() < required_len) {
 		// need more data that we have. Looks like nothing will help here
