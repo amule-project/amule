@@ -147,6 +147,7 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 		if ( !sock->WaitSocketRead(10, 0) ) {
 			break;
 		}
+		wxASSERT(m_wr_ptr + read_rem < &m_data[0] + m_data.size());
 		sock->SocketRead(m_wr_ptr, read_rem);
 		m_wr_ptr += sock->GetLastCount();
 		read_rem -= sock->GetLastCount();
@@ -303,13 +304,12 @@ void CECSocket::OnInput()
 			m_curr_rx_data.reset(0);
 			return;
 		}
-	} while ( m_bytes_needed && bytes_rx );
+		bytes_rx = GetLastCount();
+		m_bytes_needed -= bytes_rx;
+	} while (m_bytes_needed && bytes_rx);
 	
-	bytes_rx = GetLastCount();
-	m_bytes_needed -= bytes_rx;
-
-	if ( !m_bytes_needed ) {
-		if ( m_in_header ) {
+	if (!m_bytes_needed) {
+		if (m_in_header) {
 			m_in_header = false;
 			m_curr_rx_data->Read(&m_rx_flags, sizeof(m_rx_flags));
 			m_rx_flags = ENDIAN_NTOHL(m_rx_flags);
@@ -326,12 +326,14 @@ void CECSocket::OnInput()
 			m_curr_packet_len = ENDIAN_NTOHL(m_curr_packet_len);
 			m_bytes_needed = m_curr_packet_len;
 			// packet bigger that 16Mb looks more like broken request
-			if ( m_bytes_needed > 16*1024*1024 ) {
+			if (m_bytes_needed > 16*1024*1024) {
 				CloseSocket();
 				return;
 			}
-			if ( !m_curr_rx_data.get() || (m_curr_rx_data->GetLength() < (m_bytes_needed+(m_rx_flags & EC_FLAG_ACCEPTS) ? 12 : 8)) ) {
-				m_curr_rx_data.reset(new CQueuedData(m_bytes_needed));
+			size_t needed_size = m_bytes_needed + ((m_rx_flags & EC_FLAG_ACCEPTS) ? 12 : 8);
+			if (!m_curr_rx_data.get() ||
+			    m_curr_rx_data->GetLength() < needed_size) {
+				m_curr_rx_data.reset(new CQueuedData(needed_size));
 			}
 			#warning Kry TODO: Read packet?
 		} else {
@@ -343,9 +345,9 @@ void CECSocket::OnInput()
 				if (reply.get()) {
 					SendPacket(reply.get());
 				}
-				m_bytes_needed = 8;
-				m_in_header = true;
 			}
+			m_bytes_needed = 8;
+			m_in_header = true;
 		}
 	}
 }

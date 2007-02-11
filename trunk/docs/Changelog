@@ -104,8 +104,7 @@ Trunk
 		  when the checkbox "Use skins" was not checked.
 		* Fixed a crash related to MuleGIFDecoder wx-2.8.0 when
 		  downloading the file IPFIlter.dat.
-		* Added a preference option to enable LittleAbacus patch to
-		  show part file numbers.
+		* Fix for ECSocket.cpp, amulegui was crashing upon entry.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
