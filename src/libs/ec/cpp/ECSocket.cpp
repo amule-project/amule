@@ -147,14 +147,14 @@ size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 		if ( !sock->WaitSocketRead(10, 0) ) {
 			break;
 		}
-		wxASSERT(m_wr_ptr + read_rem < &m_data[0] + m_data.size());
+		wxASSERT(m_wr_ptr + read_rem <= &m_data[0] + m_data.size());
 		sock->SocketRead(m_wr_ptr, read_rem);
 		m_wr_ptr += sock->GetLastCount();
 		read_rem -= sock->GetLastCount();
 		if (sock->SocketError() && !sock->WouldBlock()) {
 				break;
 		}
-	} while ( read_rem );
+	} while (read_rem);
 	return len - read_rem;
 }
 
