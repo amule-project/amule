@@ -27,13 +27,16 @@
 #define ECSOCKET_H
 
 
-#include <deque>			// Needed for std::deque
-#include <memory>			// Needed for std::auto_ptr	// Do_not_auto_remove (mingw-gcc-3.4.5)
+#include <deque>	// Needed for std::deque
+#include <memory>	// Needed for std::auto_ptr	// Do_not_auto_remove (mingw-gcc-3.4.5)
 #include <string>
 #include <vector>
 
-#include <zlib.h>			// Needed for packet (de)compression
-#include <inttypes.h>		// Needed for uint32_t
+#include <zlib.h>	// Needed for packet (de)compression
+#include <inttypes.h>	// Needed for uint32_t
+
+#include <wx/defs.h>	// Needed for wx/debug.h
+#include <wx/debug.h>	// Needed for wxASSERT
 
 enum ECSocketErrors {
 	EC_ERROR_NOERROR,
@@ -242,72 +245,76 @@ public:
 		virtual void InternalDestroy() = 0;
 };
 
-class CQueuedData {
-		unsigned char *m_data, *m_rd_ptr, *m_wr_ptr;
-		size_t m_len;
-	public:
-		CQueuedData(size_t len)
-		{
-			m_data = new unsigned char [len];
-			m_rd_ptr = m_wr_ptr = m_data;
-			m_len = len;
-		}
-		
-		~CQueuedData()
-		{
-			delete [] m_data;
-		}
-		
-		void Rewind()
-		{
-			m_rd_ptr = m_wr_ptr = m_data;
-		}
-		
-		void Write(const void *data, size_t len)
-		{
-			memcpy(m_wr_ptr, data, len);
-			m_wr_ptr += len;
-		}
 
-		void WriteAt(const void *data, size_t len, size_t off)
-		{
-			memcpy(m_data + off, data, len);
-		}
+class CQueuedData
+{
+	std::vector<unsigned char> m_data;
+	unsigned char *m_rd_ptr, *m_wr_ptr;
+public:
+	CQueuedData(size_t len)
+	{
+		m_data.resize(len);
+		m_rd_ptr = m_wr_ptr = &m_data[0];
+	}
+	
+	~CQueuedData() {}
+	
+	void Rewind()
+	{
+		m_rd_ptr = m_wr_ptr = &m_data[0];
+	}
+	
+	void Write(const void *data, size_t len)
+	{
+		wxASSERT(len <= m_data.size());
+		memcpy(m_wr_ptr, data, len);
+		m_wr_ptr += len;
+	}
 
-		void Read(void *data, size_t len)
-		{
-			memcpy(data, m_rd_ptr, len);
-			m_rd_ptr += len;
-		}
+	void WriteAt(const void *data, size_t len, size_t off)
+	{
+		wxASSERT(off + len <= m_data.size());
+		memcpy(&m_data[0] + off, data, len);
+	}
 
-		/*
-		 * Pass pointers to zlib. From now on, no Read() calls are allowed
-		 */
-		void ToZlib(z_stream &m_z)
-		{
-			m_z.avail_in = GetUnreadDataLength();
-			m_z.next_in = m_rd_ptr;
-		}
-		
-		void WriteToSocket(CECSocket *sock)
-		{
-			sock->SocketWrite(m_rd_ptr, m_wr_ptr - m_rd_ptr);
-			m_rd_ptr += sock->GetLastCount();
-		}
+	void Read(void *data, size_t len)
+	{
+		wxASSERT(len <= GetUnreadDataLength());
+		memcpy(data, m_rd_ptr, len);
+		m_rd_ptr += len;
+	}
 
-		void ReadFromSocket(CECSocket *sock, int len)
-		{
-			sock->SocketRead(m_wr_ptr, len);
-			m_wr_ptr += sock->GetLastCount();
-		}
-		
-		size_t ReadFromSocketAll(CECSocket *sock, size_t len);
-		
-		size_t GetLength()	{ return m_len; }
-		size_t GetDataLength()	{ return m_wr_ptr - m_data; }
-		size_t GetRemLength()	{ return m_len - GetDataLength(); }
-		size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
-		
+	/*
+	 * Pass pointers to zlib. From now on, no Read() calls are allowed
+	 */
+	void ToZlib(z_stream &m_z)
+	{
+		m_z.avail_in = GetUnreadDataLength();
+		m_z.next_in = m_rd_ptr;
+	}
+	
+	void WriteToSocket(CECSocket *sock)
+	{
+		wxASSERT(m_rd_ptr < &m_data[0] + m_data.size());
+		wxASSERT(m_wr_ptr < &m_data[0] + m_data.size());
+		sock->SocketWrite(m_rd_ptr, m_wr_ptr - m_rd_ptr);
+		m_rd_ptr += sock->GetLastCount();
+	}
+
+	void ReadFromSocket(CECSocket *sock, int len)
+	{
+		wxASSERT(m_wr_ptr + len < &m_data[0] + m_data.size());
+		sock->SocketRead(m_wr_ptr, len);
+		m_wr_ptr += sock->GetLastCount();
+	}
+	
+	size_t ReadFromSocketAll(CECSocket *sock, size_t len);
+	
+	size_t GetLength()	{ return m_data.size(); }
+	size_t GetDataLength()	{ return m_wr_ptr - &m_data[0]; }
+	size_t GetRemLength()	{ return m_data.size() - GetDataLength(); }
+	size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
+	
 };
 
 #endif // ECSOCKET_H
