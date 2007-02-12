@@ -967,6 +967,7 @@ CRemoteContainer<CUpDownClient, uint32, CEC_UpDownClient_Tag>(conn)
 
 CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 {
+	m_bRemoteQueueFull = false;
 	m_nUserIDHybrid = tag->ID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
