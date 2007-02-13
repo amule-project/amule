@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2006-07-06 06:51+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -2869,11 +2869,11 @@ msgstr "Ühenduse ebaõnnestus "
 msgid "Error"
 msgstr "Viga"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Kõik"
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Kokku Kasutajaid: %s | Kokku Faile: %s"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2006-03-01 01:46+0300\n"
 "Last-Translator: toshi <K.Koshelyaev@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -2861,11 +2861,11 @@ msgstr "Попытка подключиться не удалась "
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Все"
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Всего пользователей: %s | Всего файлов: %s"

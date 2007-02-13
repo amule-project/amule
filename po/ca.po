@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -2900,11 +2900,11 @@ msgstr "La connexió ha fallat "
 msgid "Error"
 msgstr "Error"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Tots"
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"

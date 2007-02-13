@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -2852,11 +2852,11 @@ msgstr "La connexion a échouée "
 msgid "Error"
 msgstr "Erreur"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Tous"
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Utilisateurs au total : %s | Fichiers au total : %s"

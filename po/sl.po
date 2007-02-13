@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2005-11-24 15:03+0000\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
@@ -2850,11 +2850,11 @@ msgstr ""
 msgid "Error"
 msgstr "Napaka"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Vse"
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Skupno Uporabnikov: %s | Skupno datotek: %s"
