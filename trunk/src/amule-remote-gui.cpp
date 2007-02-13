@@ -313,7 +313,6 @@ void CamuleRemoteGuiApp::Startup() {
 	m_ConnState = 0;
 
 	serverconnect = new CServerConnectRem(m_connect);
-#warning This is broken, remote-gui will segfault in UpdateStatsTree(). We need real EC code here.
 	m_statistics = new CStatistics(*m_connect);
 	
 	clientlist = new CClientListRem(m_connect);
