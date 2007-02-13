@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule-1.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-01-28 03:31+0100\n"
+"POT-Creation-Date: 2007-02-13 03:31+0100\n"
 "PO-Revision-Date: 2004-02-15 01:25-0000\n"
 "Last-Translator: Lauri Kosonen/eQualizer <herra_perkele@hotmail.com>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -2795,11 +2795,11 @@ msgstr ""
 msgid "Error"
 msgstr "Virhe"
 
-#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:745
+#: src/amule-remote-gui.cpp:744
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
