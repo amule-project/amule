@@ -298,7 +298,6 @@ bool IsWordSeparator(const wxChar ch)
 		case '{':
 		case '}':
 		case '-':
-		case '\'':
 		case '"':
 		case ' ': return true;
 	}
