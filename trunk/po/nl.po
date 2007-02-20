@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-13 03:31+0100\n"
+"POT-Creation-Date: 2007-02-20 03:31+0100\n"
 "PO-Revision-Date: 2005-12-04 17:00+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -146,9 +146,9 @@ msgstr "Kon gedeelde bestanden niet ontvangen van gebruiker '%s'"
 #: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:71 src/ClientDetailDialog.cpp:72
-#: src/ClientDetailDialog.cpp:73 src/ClientDetailDialog.cpp:97
-#: src/ClientDetailDialog.cpp:100 src/ClientDetailDialog.cpp:101
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
+#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:124 src/ClientDetailDialog.cpp:125
 #: src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Onbekend"
@@ -985,13 +985,13 @@ msgid "%02us"
 msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:84
+#: src/ClientDetailDialog.cpp:104
 msgid "HighID"
 msgstr "Hoog ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:84
+#: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "Laag ID"
 
@@ -1498,7 +1498,7 @@ msgstr "Gebruikers"
 msgid "Files"
 msgstr "Bestanden"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:128
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:162
 msgid "Failed"
 msgstr "Mislukt"
 
@@ -6481,32 +6481,32 @@ msgstr "Ge-download"
 msgid "Userhash"
 msgstr "Userhash"
 
-#: src/ClientDetailDialog.cpp:43
+#: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
 msgstr "Client Details"
 
-#: src/ClientDetailDialog.cpp:116 src/ClientDetailDialog.cpp:117
+#: src/ClientDetailDialog.cpp:142 src/ClientDetailDialog.cpp:145
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f KB/s"
 
-#: src/ClientDetailDialog.cpp:126
+#: src/ClientDetailDialog.cpp:159
 msgid "Not Supported"
 msgstr "Niet Ondersteund"
 
-#: src/ClientDetailDialog.cpp:130
+#: src/ClientDetailDialog.cpp:165
 msgid "Not complete"
 msgstr "Niet compleet"
 
-#: src/ClientDetailDialog.cpp:132
+#: src/ClientDetailDialog.cpp:168
 msgid "Bad Guy"
 msgstr "Slechterik"
 
-#: src/ClientDetailDialog.cpp:134
+#: src/ClientDetailDialog.cpp:171
 msgid "Verified - OK"
 msgstr "Gecontroleerd - OK"
 
-#: src/ClientDetailDialog.cpp:138
+#: src/ClientDetailDialog.cpp:175
 msgid "Not Available"
 msgstr "Niet Beschikbaar"
 

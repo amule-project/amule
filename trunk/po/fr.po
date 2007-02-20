@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-13 03:31+0100\n"
+"POT-Creation-Date: 2007-02-20 03:31+0100\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -149,9 +149,9 @@ msgstr "Échec de la réception des fichiers partagés de l'utilisateur '%s'"
 #: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:71 src/ClientDetailDialog.cpp:72
-#: src/ClientDetailDialog.cpp:73 src/ClientDetailDialog.cpp:97
-#: src/ClientDetailDialog.cpp:100 src/ClientDetailDialog.cpp:101
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
+#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:124 src/ClientDetailDialog.cpp:125
 #: src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Inconnu"
@@ -986,13 +986,13 @@ msgid "%02us"
 msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:84
+#: src/ClientDetailDialog.cpp:104
 msgid "HighID"
 msgstr "HighID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:84
+#: src/ClientDetailDialog.cpp:104
 msgid "LowID"
 msgstr "LowID"
 
@@ -1491,7 +1491,7 @@ msgstr "Utilisateurs"
 msgid "Files"
 msgstr "Fichiers"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:128
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:162
 msgid "Failed"
 msgstr "Échec"
 
@@ -6407,32 +6407,32 @@ msgstr "Reçus"
 msgid "Userhash"
 msgstr "Hash de l'utilisateur"
 
-#: src/ClientDetailDialog.cpp:43
+#: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
 msgstr "Détails du client"
 
-#: src/ClientDetailDialog.cpp:116 src/ClientDetailDialog.cpp:117
+#: src/ClientDetailDialog.cpp:142 src/ClientDetailDialog.cpp:145
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f Ko/s"
 
-#: src/ClientDetailDialog.cpp:126
+#: src/ClientDetailDialog.cpp:159
 msgid "Not Supported"
 msgstr "Non supporté"
 
-#: src/ClientDetailDialog.cpp:130
+#: src/ClientDetailDialog.cpp:165
 msgid "Not complete"
 msgstr "Incomplet"
 
-#: src/ClientDetailDialog.cpp:132
+#: src/ClientDetailDialog.cpp:168
 msgid "Bad Guy"
 msgstr "Mauvais garçon"
 
-#: src/ClientDetailDialog.cpp:134
+#: src/ClientDetailDialog.cpp:171
 msgid "Verified - OK"
 msgstr "Vérification - OK"
 
-#: src/ClientDetailDialog.cpp:138
+#: src/ClientDetailDialog.cpp:175
 msgid "Not Available"
 msgstr "Non disponible"
 
