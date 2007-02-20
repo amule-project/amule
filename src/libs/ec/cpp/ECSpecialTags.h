@@ -315,6 +315,12 @@ class CEC_UpDownClient_Tag : public CECTag {
  		uint32 LastReqTime() { return GetTagByNameSafe(EC_TAG_CLIENT_LAST_TIME)->GetInt(); }
  		uint32 QueueTime() { return GetTagByNameSafe(EC_TAG_CLIENT_QUEUE_TIME)->GetInt(); }
 		uint8 GetSourceFrom() { return GetTagByNameSafe(EC_TAG_CLIENT_FROM)->GetInt(); }
+		uint32 UserIP() { return GetTagByNameSafe(EC_TAG_CLIENT_USER_IP)->GetInt(); }
+		uint16 UserPort() { return GetTagByNameSafe(EC_TAG_CLIENT_USER_PORT)->GetInt(); }
+		uint32 ServerIP() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_IP)->GetInt(); }
+		uint16 ServerPort() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_PORT)->GetInt(); }
+		wxString ServerName() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
+		wxString SoftVerStr() { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {

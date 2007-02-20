@@ -105,6 +105,8 @@ Trunk
 		* Fixed a crash related to MuleGIFDecoder wx-2.8.0 when
 		  downloading the file IPFIlter.dat.
 		* Fix for ECSocket.cpp, amulegui was crashing upon entry.
+		* Fix for ClientDetailDialog in amulegui. Was showing
+		incorrect IP / Server / Software version information.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

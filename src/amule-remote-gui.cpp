@@ -54,6 +54,7 @@ using std::auto_ptr;
 #include "ServerListCtrl.h"
 #include "ClientCredits.h"
 #include "GuiEvents.h"
+#include "DataToText.h"			// Needed for GetSoftName()
 
 
 CEConnectDlg::CEConnectDlg()
@@ -970,7 +971,31 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_nUserIDHybrid = tag->ID();
 	m_Username = tag->ClientName();
 	m_clientSoft = tag->ClientSoftware();
+	m_clientVersionString = GetSoftName(m_clientSoft);
+	m_clientSoftString = m_clientVersionString;
+
+	// The functions to retrieve m_clientVerString information are
+	// currently in BaseClient.cpp, which is not linked in remote-gui app.
+	// So, in the meantime, we use a tag sent from core.
+	m_clientVerString = tag->SoftVerStr();
+	m_strModVersion = wxEmptyString;
+	wxString clientModString;
+	m_clientVerString += wxT(" - ") + clientModString;
+	m_fullClientVerString = m_clientSoftString + wxT(" ") + m_clientVerString;
+
+	// User hash
 	m_UserHash = tag->UserID();
+
+	// User IP:Port
+	m_nConnectIP = m_dwUserIP = tag->UserIP();
+	m_nUserPort = tag->UserPort();
+	m_FullUserIP = Uint32toStringIP(m_nConnectIP);
+
+	// Server IP:Port
+	m_dwServerIP = tag->ServerIP();
+	m_nServerPort = tag->ServerPort();
+	m_ServerName = tag->ServerName();
+
 	m_Friend = 0;
 	if (tag->HaveFile()) {
 		CMD4Hash filehash = tag->FileID();
