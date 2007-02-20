@@ -412,6 +412,12 @@ public:
 
 	const wxString&	GetSoftStr() const 		{ return m_clientSoftString; }
 	const wxString&	GetSoftVerStr() const		{ return m_clientVerString; }
+#ifndef CLIENT_GUI
+	const wxString GetServerName() const;
+#else
+	wxString m_ServerName;
+	const wxString&	GetServerName() const { return m_ServerName; }
+#endif
 	
 	uint16		GetKadPort() const		{ return m_nKadPort; }
 	void		SetKadPort(uint16 nPort)	{ m_nKadPort = nPort; }

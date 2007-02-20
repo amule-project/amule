@@ -275,6 +275,12 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
 	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
 	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom()));
+	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()));
+	AddTag(CECTag(EC_TAG_CLIENT_USER_PORT, client->GetUserPort()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_PORT, client->GetServerPort()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_NAME, client->GetServerName()));
+	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()));
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {

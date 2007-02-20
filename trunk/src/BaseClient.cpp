@@ -36,7 +36,7 @@
 
 #include <zlib.h>		// Needed for inflateEnd
 
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>	// Needed for CFormat
 
 #include "SearchList.h"		// Needed for CSearchList
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
@@ -54,13 +54,14 @@
 #include "amule.h"		// Needed for theApp
 #include "PartFile.h"		// Needed for CPartFile
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
-#include "ListenSocket.h"			// Needed for CListenSocket
+#include "ListenSocket.h"	// Needed for CListenSocket
 #include "FriendList.h"		// Needed for CFriendList
 #include "Statistics.h"		// Needed for theStats
 #include "ClientUDPSocket.h"
 #include "Logger.h"
 #include "DataToText.h"		// Needed for GetSoftName()
-#include "GuiEvents.h"			// Needed for Notify_
+#include "GuiEvents.h"		// Needed for Notify_
+#include "ServerList.h"		// For CServerList
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
@@ -2343,4 +2344,20 @@ uint64 CUpDownClient::GetUploadedTotal() const
 float CUpDownClient::GetScoreRatio() const {
 	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
 }
+
+const wxString CUpDownClient::GetServerName() const
+{
+	wxString ret;
+	wxString srvaddr = Uint32toStringIP(GetServerIP());
+	CServer* cserver = theApp.serverlist->GetServerByAddress(
+		srvaddr, GetServerPort()); 
+	if (cserver) {
+		ret = cserver->GetListName();
+	} else {
+		ret = _("Unknown");
+	}
+	
+	return ret;
+}
+
 // File_checked_for_headers

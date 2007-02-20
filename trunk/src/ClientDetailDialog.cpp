@@ -110,16 +110,8 @@ bool CClientDetailDialog::OnInitDialog() {
 	if (m_client->GetServerIP()) {
 		wxString srvaddr = Uint32toStringIP(m_client->GetServerIP());
 		CastChild(ID_DSIP,wxStaticText)->SetLabel(srvaddr);
-		
-		CServer* cserver = theApp.serverlist->GetServerByAddress(
-			srvaddr, m_client->GetServerPort()); 
-		if (cserver) {
-			CastChild(ID_DSNAME,wxStaticText)->SetLabel(
-				cserver->GetListName());
-		} else {
-			CastChild(ID_DSNAME,wxStaticText)->SetLabel(
-				_("Unknown"));
-		}
+		CastChild(ID_DSNAME,wxStaticText)->SetLabel(
+			m_client->GetServerName());
 	} else {
 		CastChild(ID_DSIP,wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DSNAME,wxStaticText)->SetLabel(_("Unknown"));
