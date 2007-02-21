@@ -204,6 +204,15 @@ fi
 AC_SUBST(AMULEWEB_DEFS)
 
 
+# Check for perl File::Copy
+AC_MSG_CHECKING([for File::Copy])
+   if perl -e "require File::Copy" 2>/dev/null; then
+       AC_MSG_RESULT([ok])
+   else
+       AC_MSG_ERROR([File::Copy perl module is required])
+   fi
+
+
 # Check if we need the GUI
 AC_MSG_CHECKING([whether we need the GUI])
 if test x"$MONOLITHIC" = x"yes" ; then

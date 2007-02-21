@@ -30,6 +30,7 @@ Trunk
 		* Patch for aMule .desktop files.
 		* Added amulegui desktop icon (with Vollstrecker).
 		* Patch for fixing aMule spec file in Fedora and Mandriva.
+		* Test for perl File::Copy in configure.
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without threading support.
