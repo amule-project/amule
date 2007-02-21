@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-20 03:31+0100\n"
+"POT-Creation-Date: 2007-02-21 03:31+0100\n"
 "PO-Revision-Date: 2004-07-24 13:39+0800\n"
 "Last-Translator: Paul <ishappyday@msn.com>\n"
 "Language-Team: Chinese (traditional) <ishappyday@msn.com>\n"
@@ -131,71 +131,71 @@ msgstr ""
 msgid "WARNING: Failed to delete %s"
 msgstr ""
 
-#: src/BaseClient.cpp:1227
+#: src/BaseClient.cpp:1228
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr ""
 
-#: src/BaseClient.cpp:1568 src/BaseClient.cpp:2086 src/HTTPDownload.cpp:87
-#: src/DataToText.cpp:52 src/DataToText.cpp:68 src/DataToText.cpp:78
-#: src/DataToText.cpp:114 src/DataToText.cpp:134 src/ExternalConn.cpp:195
-#: src/Statistics.cpp:697 src/Statistics.cpp:883 src/Server.cpp:150
-#: src/DownloadListCtrl.cpp:1471 src/DownloadListCtrl.cpp:1484
-#: src/DownloadListCtrl.cpp:1494 src/PartFile.cpp:2558 src/PartFile.cpp:2564
-#: src/KnownFile.cpp:823 src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
+#: src/BaseClient.cpp:1569 src/BaseClient.cpp:2087 src/BaseClient.cpp:2357
+#: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
+#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
+#: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
+#: src/Server.cpp:150 src/DownloadListCtrl.cpp:1471
+#: src/DownloadListCtrl.cpp:1484 src/DownloadListCtrl.cpp:1494
+#: src/PartFile.cpp:2558 src/PartFile.cpp:2564 src/KnownFile.cpp:823
+#: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:121
-#: src/ClientDetailDialog.cpp:124 src/ClientDetailDialog.cpp:125
-#: src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
+#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "不名"
 
-#: src/BaseClient.cpp:1585
+#: src/BaseClient.cpp:1586
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr ""
 
-#: src/BaseClient.cpp:1596
+#: src/BaseClient.cpp:1597
 msgid " (Fake eMule)"
 msgstr ""
 
-#: src/BaseClient.cpp:1598
+#: src/BaseClient.cpp:1599
 msgid "xMule (Fake eMule)"
 msgstr ""
 
-#: src/BaseClient.cpp:1637
+#: src/BaseClient.cpp:1638
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr ""
 
-#: src/BaseClient.cpp:1807
+#: src/BaseClient.cpp:1808
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr ""
 
-#: src/BaseClient.cpp:1809
+#: src/BaseClient.cpp:1810
 msgid "Requested:"
 msgstr "請求:"
 
-#: src/BaseClient.cpp:1810
+#: src/BaseClient.cpp:1811
 #, c-format
 msgid ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr "本次執行檔案統計: 接受了 %d/%d 個請求，已傳送 %s\n"
 
-#: src/BaseClient.cpp:1811
+#: src/BaseClient.cpp:1812
 #, c-format
 msgid ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
 
-#: src/BaseClient.cpp:1813
+#: src/BaseClient.cpp:1814
 msgid "Requested unknown file"
 msgstr "請求不名檔案"
 
-#: src/BaseClient.cpp:2085
+#: src/BaseClient.cpp:2086
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr ""
@@ -1465,7 +1465,7 @@ msgstr "使用者數"
 msgid "Files"
 msgstr "檔案"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:162
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
 msgid "Failed"
 msgstr "失敗次數"
 
@@ -2785,25 +2785,25 @@ msgstr ""
 msgid "Copy ED2k link to clipboard"
 msgstr "拷貝 ED2K 連結到剪貼簿"
 
-#: src/amule-remote-gui.cpp:61
+#: src/amule-remote-gui.cpp:62
 msgid "Connect to remote amule"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:263
+#: src/amule-remote-gui.cpp:264
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:263 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:825
 #: src/amule.cpp:943 src/amule.cpp:1296
 msgid "Error"
 msgstr "錯誤"
 
-#: src/amule-remote-gui.cpp:513 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:514 src/TransferWnd.cpp:334
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:744
+#: src/amule-remote-gui.cpp:745
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
@@ -6271,30 +6271,30 @@ msgstr ""
 msgid "Client Details"
 msgstr "使用者訊息"
 
-#: src/ClientDetailDialog.cpp:142 src/ClientDetailDialog.cpp:145
+#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
 #, c-format
 msgid "%.1f kB/s"
 msgstr ""
 
 # fuzzy
-#: src/ClientDetailDialog.cpp:159
+#: src/ClientDetailDialog.cpp:151
 msgid "Not Supported"
 msgstr "不被支援"
 
-#: src/ClientDetailDialog.cpp:165
+#: src/ClientDetailDialog.cpp:157
 msgid "Not complete"
 msgstr "未完成"
 
-#: src/ClientDetailDialog.cpp:168
+#: src/ClientDetailDialog.cpp:160
 msgid "Bad Guy"
 msgstr "壞蛋"
 
-#: src/ClientDetailDialog.cpp:171
+#: src/ClientDetailDialog.cpp:163
 msgid "Verified - OK"
 msgstr "驗證已通過"
 
 # fuzzy
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:167
 msgid "Not Available"
 msgstr "不在"
 
