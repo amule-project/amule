@@ -107,6 +107,8 @@ Trunk
 		* Fix for ECSocket.cpp, amulegui was crashing upon entry.
 		* Fix for ClientDetailDialog in amulegui. Was showing
 		incorrect IP / Server / Software version information.
+		* Switch binding of UPnP libraries to use one digit version
+		  names instead of unversioned names.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

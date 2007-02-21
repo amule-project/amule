@@ -172,8 +172,8 @@ const char *CUPnPLib::s_LibUPnPSymbols[] =
 CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
 m_ctrlPoint(ctrlPoint),
-m_LibIXMLHandle("libixml.so"),
-m_LibUPnPHandle("libupnp.so")
+m_LibIXMLHandle("libixml.so.2"),
+m_LibUPnPHandle("libupnp.so.2")
 {
 	// IXML
 	m_ixmlNode_getFirstChild =
