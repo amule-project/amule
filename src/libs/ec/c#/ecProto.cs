@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,25 +19,16 @@ namespace amule.net
         EC_TAGTYPE_HASH16 = 9
     };
 
-    //
-    // Flags sent on every packet
-    //
-    enum EcFlags {
-        EC_FLAG_ZLIB = 0x00000001,
-        EC_FLAG_UTF8_NUMBERS = 0x00000002,
-        EC_FLAG_HAS_ID = 0x00000004,
-        EC_FLAG_ACCEPTS = 0x00000010,
-//        EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
-    };
-
     class ecProto {
         public class ecTag {
             protected int m_size;
             protected EcTagTypes m_type;
-            LinkedList<ecTag> m_subtags;
+            protected ECTagNames m_name;
+            protected LinkedList<ecTag> m_subtags;
 
-            public ecTag(EcTagTypes t)
+            public ecTag(ECTagNames n, EcTagTypes t)
             {
+                m_name = n;
                 m_type = t;
                 m_subtags = new LinkedList<ecTag>();
             }
@@ -47,6 +39,23 @@ namespace amule.net
 
             public virtual void Write(BinaryWriter wr)
             {
+                UInt16 name16 = (UInt16)m_name;
+                byte type8 = (byte)m_type;
+                UInt32 size32 = (UInt32)Size();
+                wr.Write(name16);
+                wr.Write(type8);
+                wr.Write(size32);
+
+                UInt16 count16 = (UInt16)m_subtags.Count;
+                if ( count16 != 0) {
+                    wr.Write(count16);
+                    foreach (ecTag t in m_subtags) {
+                        t.Write(wr);
+                    }
+                }
+                //
+                // here derived class will put actual data
+                //
             }
 
             public int Size()
@@ -54,6 +63,8 @@ namespace amule.net
                 int total_size = m_size;
                 foreach (ecTag t in m_subtags) {
                     total_size += t.Size();
+                    // name + type + size for each tag
+                    total_size += (2 + 1 + 4);
                 }
                 return total_size;
             }
@@ -65,32 +76,74 @@ namespace amule.net
         }
 
         public class ecTagInt : ecTag {
-            private UInt32 m_val;
-            public ecTagInt(UInt32 v)
-                : base(EcTagTypes.EC_TAGTYPE_UINT32)
+            private UInt64 m_val;
+            public ecTagInt(ECTagNames n, UInt32 v)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT32)
             {
                 m_val = v;
                 m_size = 4;
             }
 
+            public ecTagInt(ECTagNames n, UInt64 v)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT64)
+            {
+                m_val = v;
+                m_size = 8;
+            }
+
             public override void Write(BinaryWriter wr)
             {
-                byte b0 = (byte)(m_val & 0xff), b1 = (byte)((m_val >> 8 ) & 0xff),
-                    b2 = (byte)((m_val >> 16) & 0xff), b3 = (byte)((m_val >> 24) & 0xff);
+                base.Write(wr);
                 
-                switch ( m_size ){
+                switch ( m_size ) {
+                    case 8:
+                        goto case 4;
                     case 4:
-                        wr.Write(b2);
-                        wr.Write(b3);
-                        goto case 2;
+                        UInt32 val32 = (UInt16)(m_val & 0xffffffff);
+                        wr.Write(System.Net.IPAddress.HostToNetworkOrder(val32));
+                        break;
                     case 2:
-                        wr.Write(b1);
-                        goto case 1;
+                        UInt16 val16 = (UInt16)(m_val & 0xffff);
+                        wr.Write(System.Net.IPAddress.HostToNetworkOrder(val16));
+                        break;
                     case 1:
-                        wr.Write(b0);
+                        wr.Write((byte)(m_val & 0xff));
                         break;
                 }
 
+            }
+        }
+
+        public class ecTagMD5 : ecTag {
+            byte[] m_val;
+            public ecTagMD5(ECTagNames n, string s)
+                : base(n, EcTagTypes.EC_TAGTYPE_HASH16)
+            {
+                MD5CryptoServiceProvider p = new MD5CryptoServiceProvider();
+                byte[] bs = System.Text.Encoding.UTF8.GetBytes(s);
+                m_val = p.ComputeHash(bs);
+
+                m_size = 16;
+            }
+            public override void Write(BinaryWriter wr)
+            {
+                base.Write(wr);
+                wr.Write(m_val);
+            }
+        }
+
+        public class ecTagString : ecTag {
+            byte[] m_val;
+            public ecTagString(ECTagNames n, string s)
+                : base(n, EcTagTypes.EC_TAGTYPE_STRING)
+            {
+                m_val = System.Text.Encoding.UTF8.GetBytes(s);
+                m_size = m_val.GetLength(0);
+            }
+            public override void Write(BinaryWriter wr)
+            {
+                base.Write(wr);
+                wr.Write(m_val);
             }
         }
 
@@ -101,7 +154,7 @@ namespace amule.net
             //
             // Parsing ctor
             //
-            private byte m_opcode;
+            private ECOpCodes m_opcode;
 
             public ecPacket(byte [] rxBuffer, int len)
             {
@@ -111,7 +164,7 @@ namespace amule.net
 
             //
             // Default ctor - for tx packets
-            public ecPacket(byte cmd)
+            public ecPacket(ECOpCodes cmd)
             {
                 m_opcode = cmd;
             }
@@ -121,19 +174,33 @@ namespace amule.net
                 UInt32 flags = 0x20;
                 int packet_size = Size();
                 if ( packet_size > MaxUncompressedPacket ) {
-                    flags |= (UInt32)EcFlags.EC_FLAG_ZLIB;
+                    flags |= (UInt32)ECFlags.EC_FLAG_ZLIB;
                 }
 
-                if ( (flags & (UInt32)EcFlags.EC_FLAG_ZLIB) != 0 ) {
+                if ((flags & (UInt32)ECFlags.EC_FLAG_ZLIB) != 0) {
                     throw new NotImplementedException("no zlib compression yet");
                 }
 
                 wr.Write(flags);
                 wr.Write(packet_size);
-                wr.Write(m_opcode);
+                wr.Write((byte)m_opcode);
+                base.Write(wr);
             }
 
 
         }
+        public class ecLoginPacket : ecPacket {
+            public ecLoginPacket(string client_name, string version, string pass)
+                : base(ECOpCodes.EC_OP_AUTH_REQ)
+            {
+                AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT, client_name));
+                AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT_VERSION, version));
+                AddSubtag(new ecTagInt(ECTagNames.EC_TAG_PROTOCOL_VERSION,
+                    (UInt64)ProtocolVersion.EC_CURRENT_PROTOCOL_VERSION));
+
+                AddSubtag(new ecTagMD5(ECTagNames.EC_TAG_PASSWD_HASH, pass));
+            }
+        }
+
     }
 }
