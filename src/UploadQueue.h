@@ -40,7 +40,7 @@ public:
 	void	AddClientToQueue(CUpDownClient* client);
 	bool	RemoveFromUploadQueue(CUpDownClient* client,bool updatewindow = true);
 	bool	RemoveFromWaitingQueue(CUpDownClient* client,bool updatewindow = true);
-	bool	IsOnUploadQueue(CUpDownClient* client) const;
+	bool	IsOnUploadQueue(const CUpDownClient* client) const;
 	bool	IsDownloading(CUpDownClient* client) const;
 	bool	CheckForTimeOver(CUpDownClient* client);
 	
@@ -50,9 +50,9 @@ public:
 	CUpDownClient* GetWaitingClientByIP(uint32 dwIP);
 	CUpDownClient* GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort);
 
-	uint16	GetWaitingPosition(CUpDownClient* client);
-	void	SuspendUpload( const CMD4Hash& );
-	void	ResumeUpload( const CMD4Hash& );
+	uint16	GetWaitingPosition(const CUpDownClient *client) const;
+	void	SuspendUpload(const CMD4Hash &);
+	void	ResumeUpload(const CMD4Hash &);
 
 private:
 	void	RemoveFromWaitingQueue(CClientPtrList::iterator pos);

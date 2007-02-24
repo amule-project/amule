@@ -34,8 +34,9 @@
 #include "amule.h"
 #include "Server.h"		// Needed for CServer
 #include "PartFile.h"		// Needed for CPartFile
-#include "ServerConnect.h"		// Needed for CServerConnect
+#include "ServerConnect.h"	// Needed for CServerConnect
 #include "updownclient.h"
+#include "UploadQueue.h"	// Needed for CUploadQueue
 #include "SharedFileList.h"
 #include "SearchList.h"
 
@@ -247,45 +248,44 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
 	CECTag(EC_TAG_CLIENT, client->GetUserIDHybrid())
 {
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown()));
+	// General
+	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
+	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
+	AddTag(CECTag(EC_TAG_CLIENT_SCORE, client->GetScore(false)));
+	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
+	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()));
+	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()));
+	AddTag(CECTag(EC_TAG_CLIENT_USER_PORT, client->GetUserPort()));
+	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_PORT, client->GetServerPort()));
+	AddTag(CECTag(EC_TAG_CLIENT_SERVER_NAME, client->GetServerName()));
 	
+	// Transfers to Client
+	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()));
+	if (client->GetDownloadState() == DS_DOWNLOADING) {
+		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0)));
+	}
+	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown()));
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal()));
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal()));
 	
-	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp()));
-	
 	AddTag(CECTag(EC_TAG_CLIENT_STATE,
 		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) )));
-
-	AddTag(CECTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate()));
-	if ( client->GetDownloadState() == DS_DOWNLOADING ) {
-		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0)));
-	}
-
 	AddTag(CECTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime()));
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
 	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())));
+	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp.uploadqueue->GetWaitingPosition(client)));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
 	}
-
-	AddTag(CECTag(EC_TAG_CLIENT_HASH, client->GetUserHash()));
-	AddTag(CECTag(EC_TAG_CLIENT_NAME, client->GetUserName()));
-	AddTag(CECTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft()));
-	AddTag(CECTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom()));
-	AddTag(CECTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP()));
-	AddTag(CECTag(EC_TAG_CLIENT_USER_PORT, client->GetUserPort()));
-	AddTag(CECTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP()));
-	AddTag(CECTag(EC_TAG_CLIENT_SERVER_PORT, client->GetServerPort()));
-	AddTag(CECTag(EC_TAG_CLIENT_SERVER_NAME, client->GetServerName()));
-	AddTag(CECTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr()));
-	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
-		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 	}
 	
 }
@@ -293,40 +293,39 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMap &valuemap) :
 	CECTag(EC_TAG_CLIENT, client->GetUserIDHybrid())
 {
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown(), this);
+	// General
+	valuemap.CreateTag(EC_TAG_CLIENT_NAME, client->GetUserName(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_HASH, client->GetUserHash(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SCORE, client->GetScore(false), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SOFT_VER_STR, client->GetSoftVerStr(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_USER_IP, client->GetConnectIP(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_USER_PORT, client->GetUserPort(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SERVER_IP, client->GetServerIP(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SERVER_PORT, client->GetServerPort(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_SERVER_NAME, client->GetServerName(), this);
 	
-	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal(), this);
-
-	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal(), this);
-	
+	// Transfers to Client
+	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal(), this);
 	
 	valuemap.CreateTag(EC_TAG_CLIENT_STATE,
 		uint64((uint16)client->GetDownloadState() | (((uint16)client->GetUploadState()) << 8) ), this);
-
-	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
-	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0), this);
-
 	valuemap.CreateTag(EC_TAG_CLIENT_WAIT_TIME, client->GetWaitTime(), this);
-
 	valuemap.CreateTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay(), this);
-
 	valuemap.CreateTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime()), this);
-
 	valuemap.CreateTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest()), this);
-	
-	valuemap.CreateTag(EC_TAG_CLIENT_HASH, client->GetUserHash(), this);
-
-	valuemap.CreateTag(EC_TAG_CLIENT_NAME, client->GetUserName(), this);
-
-	valuemap.CreateTag(EC_TAG_CLIENT_SOFTWARE, client->GetClientSoft(), this);
-	
-	valuemap.CreateTag(EC_TAG_CLIENT_FROM, (uint64)client->GetSourceFrom(), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_WAITING_POSITION, theApp.uploadqueue->GetWaitingPosition(client), this);
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
-		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 	}
 	
 }

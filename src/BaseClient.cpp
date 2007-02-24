@@ -2341,7 +2341,7 @@ uint64 CUpDownClient::GetUploadedTotal() const
 	return credits ? credits->GetUploadedTotal() : 0;
 }
 	
-float CUpDownClient::GetScoreRatio() const {
+double CUpDownClient::GetScoreRatio() const {
 	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
 }
 

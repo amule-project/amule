@@ -196,6 +196,7 @@ enum ECTagNames {
 		EC_TAG_CLIENT_SERVER_PORT                 = 0x0613,
 		EC_TAG_CLIENT_SERVER_NAME                 = 0x0614,
 		EC_TAG_CLIENT_SOFT_VER_STR                = 0x0615,
+		EC_TAG_CLIENT_WAITING_POSITION            = 0x0616,
 	EC_TAG_SEARCHFILE                         = 0x0700,
 		EC_TAG_SEARCH_TYPE                        = 0x0701,
 		EC_TAG_SEARCH_NAME                        = 0x0702,
