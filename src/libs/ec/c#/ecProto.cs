@@ -97,13 +97,17 @@ namespace amule.net
                 
                 switch ( m_size ) {
                     case 8:
+                        Int32 val32 = (Int32)(m_val & 0xffffffff);
+                        wr.Write(System.Net.IPAddress.HostToNetworkOrder(val32));
+                        val32 = (Int32)(m_val >> 32);
+                        wr.Write(System.Net.IPAddress.HostToNetworkOrder(val32));
                         goto case 4;
                     case 4:
-                        UInt32 val32 = (UInt16)(m_val & 0xffffffff);
+                        val32 = (Int32)(m_val & 0xffffffff);
                         wr.Write(System.Net.IPAddress.HostToNetworkOrder(val32));
                         break;
                     case 2:
-                        UInt16 val16 = (UInt16)(m_val & 0xffff);
+                        Int16 val16 = (Int16)(m_val & 0xffff);
                         wr.Write(System.Net.IPAddress.HostToNetworkOrder(val16));
                         break;
                     case 1:
@@ -181,8 +185,8 @@ namespace amule.net
                     throw new NotImplementedException("no zlib compression yet");
                 }
 
-                wr.Write(flags);
-                wr.Write(packet_size);
+                wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(flags)));
+                wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(packet_size - 8)));
                 wr.Write((byte)m_opcode);
                 base.Write(wr);
             }

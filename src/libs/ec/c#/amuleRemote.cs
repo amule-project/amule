@@ -85,22 +85,42 @@ namespace amule.net
             }
         }
 
-        //byte [] m_rx_buffer;
-        byte[] m_tx_buffer = null;
-        MemoryStream m_tx_mem_stream;
+        byte[] m_rx_buffer = new byte[32 * 1024];
+        int m_rx_byte_count = 0;
+        int m_rx_remaining_count = 0;
+
+        byte[] m_tx_buffer = new byte[32 * 1024];
+        MemoryStream m_tx_mem_stream = null;
 
         //LinkedList<byte[]> m_tx_queue;
-        BinaryReader m_sock_reader = null;
+        //BinaryReader m_sock_reader = null;
         BinaryWriter m_sock_writer = null;
-        NetworkStream m_socket_stream = null;
 
         static void RxCallback(IAsyncResult ar)
         {
+            amuleRemote o = (amuleRemote)ar.AsyncState;
+            Console.WriteLine("RxCallback signalled, calling EndReceive");
+            int bytesRead = o.m_s.EndReceive(ar);
+            o.m_rx_byte_count += bytesRead;
+            Console.WriteLine("RxCallback: got {0} bytes, total {1}", bytesRead, o.m_rx_byte_count);
+            if ( o.m_rx_byte_count >= 8 ) {
+                // got flags and packet size - may proceed.
+                UInt32 val32 = (UInt32)(o.m_rx_buffer[4] | (o.m_rx_buffer[5] << 8) |
+                    (o.m_rx_buffer[6] << 16) | (o.m_rx_buffer[7] << 24));
+
+                o.m_rx_remaining_count = (int)IPAddress.NetworkToHostOrder(val32);
+
+                Console.WriteLine("RxCallback: expecting packet size={0}", o.m_rx_remaining_count);
+            } else {
+                // not just yet - keep waiting
+                o.m_s.BeginReceive(o.m_rx_buffer, o.m_rx_byte_count, 8 - o.m_rx_byte_count,
+                    SocketFlags.None, new AsyncCallback(RxCallback), o);
+            }
         }
 
         static void TxCallback(IAsyncResult ar)
         {
-            amuleRemote o = (amuleRemote)ar;
+            amuleRemote o = (amuleRemote)ar.AsyncState;
             Console.WriteLine("TxCallback signalled, calling EndWrite");
             o.m_s.EndSend(ar);
             m_op_Done.Set();
@@ -140,22 +160,29 @@ namespace amule.net
                     error = connectContext.errorMsg;
                     return false;
                 }
-                m_socket_stream = new NetworkStream(m_s);
+                //m_socket_stream = new NetworkStream(m_s);
 
-                m_sock_reader = new BinaryReader(m_socket_stream);
-
-                m_tx_buffer = new byte[32*1024];
+                //m_sock_reader = new BinaryReader(m_socket_stream);
 
                 m_tx_mem_stream = new MemoryStream(m_tx_buffer);
                 m_sock_writer = new BinaryWriter(m_tx_mem_stream);
-                ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", "12345");
+
+                ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", "123456");
                 p.Write(m_sock_writer);
 
                 m_op_Done.Reset();
-                m_s.BeginSend(m_tx_buffer, 0, p.Size(), 0, new AsyncCallback(TxCallback), this);
-                m_op_Done.WaitOne(1000, true);
+                m_s.BeginSend(m_tx_buffer, 0, p.Size(), SocketFlags.None, new AsyncCallback(TxCallback), this);
+                if (!m_op_Done.WaitOne(1000, true)) {
+                    // Was unable to send login request for 1sec. Line must be really slow
+                    return false;
+                }
 
-                //m_s.BeginReceive(m_rx_buffer, 0, new AsyncCallback(RxCallback), this);
+                //m_op_Done.Reset();
+                //m_s.BeginReceive(m_rx_buffer, 0, 8, SocketFlags.None, new AsyncCallback(RxCallback), this);
+                m_s.Receive(m_rx_buffer, 0, 8, SocketFlags.None);
+
+                // FIXME: must be able to cancel this read.
+                m_op_Done.WaitOne();
 
             } catch (Exception e) {
                 error = e.Message;
