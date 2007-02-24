@@ -295,22 +295,27 @@ public:
 
 	bool		IsDownloading()	const 		{ return (m_nUploadState == US_UPLOADING); }
 
-#ifdef CLIENT_GUI
-	uint32 m_base_score, m_score;
+#ifndef CLIENT_GUI
+	uint32		GetScore(
+				bool sysvalue,
+				bool isdownloading = false,
+				bool onlybasevalue = false) const;
+#else
+	uint32		m_score;
 	uint32		GetScore(
 				bool WXUNUSED(sysvalue),
 				bool WXUNUSED(isdownloading) = false,
 				bool WXUNUSED(onlybasevalue) = false) const
 	{
-		// lfroen: it's calculated
-		return 0;
+		return m_score;
 	}
-#else
-	uint32		GetScore(
-				bool sysvalue,
-				bool isdownloading = false,
-				bool onlybasevalue = false) const;
+	uint16		m_waitingPosition;
+	uint16		GetWaitingPosition() const { return m_waitingPosition; }
 #endif
+	double		GetRating() const
+	{
+		return (double)GetScore(false, IsDownloading(), true);
+	}
 
 	void		AddReqBlock(Requested_Block_Struct* reqblock);
 	void		CreateNextBlockPackage();
@@ -598,7 +603,7 @@ public:
 	
 	uint64		GetUploadedTotal() const;
 	
-	float		GetScoreRatio() const;
+	double 		GetScoreRatio() const;
 	
 	uint32		GetCreationTime() const { return m_nCreationTime; }
 	

@@ -321,6 +321,8 @@ class CEC_UpDownClient_Tag : public CECTag {
 		uint16 ServerPort() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_PORT)->GetInt(); }
 		wxString ServerName() { return GetTagByNameSafe(EC_TAG_CLIENT_SERVER_NAME)->GetStringData(); }
 		wxString SoftVerStr() { return GetTagByNameSafe(EC_TAG_CLIENT_SOFT_VER_STR)->GetStringData(); }
+		uint32 Score() { return GetTagByNameSafe(EC_TAG_CLIENT_SCORE)->GetInt(); }
+		uint16 WaitingPosition() { return GetTagByNameSafe(EC_TAG_CLIENT_WAITING_POSITION)->GetInt(); }
 };
 
 class CEC_SearchFile_Tag : public CECTag {

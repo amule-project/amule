@@ -193,6 +193,7 @@ public final static short 	EC_TAG_CLIENT_SERVER_IP                   = 0x0612;
 public final static short 	EC_TAG_CLIENT_SERVER_PORT                 = 0x0613;
 public final static short 	EC_TAG_CLIENT_SERVER_NAME                 = 0x0614;
 public final static short 	EC_TAG_CLIENT_SOFT_VER_STR                = 0x0615;
+public final static short 	EC_TAG_CLIENT_WAITING_POSITION            = 0x0616;
 public final static short EC_TAG_SEARCHFILE                         = 0x0700;
 public final static short 	EC_TAG_SEARCH_TYPE                        = 0x0701;
 public final static short 	EC_TAG_SEARCH_NAME                        = 0x0702;

@@ -260,7 +260,7 @@ CUploadQueue::~CUploadQueue()
 }
 
 
-bool CUploadQueue::IsOnUploadQueue(CUpDownClient* client) const
+bool CUploadQueue::IsOnUploadQueue(const CUpDownClient* client) const
 {
 	return std::find(m_waitinglist.begin(), m_waitinglist.end(), client)
 		!= m_waitinglist.end();
@@ -463,7 +463,7 @@ bool CUploadQueue::CheckForTimeOver(CUpDownClient* client)
 }
 
 
-uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
+uint16 CUploadQueue::GetWaitingPosition(const CUpDownClient *client) const
 {
 	if ( !IsOnUploadQueue(client) ) {
 		return 0;
@@ -471,7 +471,7 @@ uint16 CUploadQueue::GetWaitingPosition(CUpDownClient* client)
 
 	uint16 rank = 1;
 	const uint32 myscore = client->GetScore(false);
-	CClientPtrList::iterator it = m_waitinglist.begin();
+	CClientPtrList::const_iterator it = m_waitinglist.begin();
 	for (; it != m_waitinglist.end(); ++it) {
 		if ((*it)->GetScore(false) > myscore) {
 			rank++;

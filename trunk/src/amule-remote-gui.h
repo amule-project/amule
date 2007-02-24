@@ -475,6 +475,7 @@ public:
 
 	const CClientPtrList& GetWaitingList() const { return m_wait_list.GetList(); }
 	const CClientPtrList& GetUploadingList() const { return m_up_list.GetList(); }
+	uint16 GetWaitingPosition(const CUpDownClient *client) const;
 };
 
 class CDownQueueRem : public CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag> {

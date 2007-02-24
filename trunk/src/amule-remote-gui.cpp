@@ -970,6 +970,7 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_bRemoteQueueFull = false;
 	m_nUserIDHybrid = tag->ID();
 	m_Username = tag->ClientName();
+	m_score = tag->Score();
 	m_clientSoft = tag->ClientSoftware();
 	m_clientVersionString = GetSoftName(m_clientSoft);
 	m_clientSoftString = m_clientVersionString;
@@ -980,7 +981,9 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_clientVerString = tag->SoftVerStr();
 	m_strModVersion = wxEmptyString;
 	wxString clientModString;
-	m_clientVerString += wxT(" - ") + clientModString;
+	if (!clientModString.IsEmpty()) {
+		m_clientVerString += wxT(" - ") + clientModString;
+	}
 	m_fullClientVerString = m_clientSoftString + wxT(" ") + m_clientVerString;
 
 	// User hash
@@ -996,6 +999,8 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	m_nServerPort = tag->ServerPort();
 	m_ServerName = tag->ServerName();
 
+	m_waitingPosition = tag->WaitingPosition();
+	
 	m_Friend = 0;
 	if (tag->HaveFile()) {
 		CMD4Hash filehash = tag->FileID();
@@ -1012,6 +1017,10 @@ CUpDownClient::CUpDownClient(CEC_UpDownClient_Tag *tag)
 	credits = new CClientCredits(new CreditStruct());
 }
 
+uint16 CUpQueueRem::GetWaitingPosition(const CUpDownClient *client) const
+{
+	return client->GetWaitingPosition();
+}
 
 /* Warning: do common base */
 
@@ -1058,9 +1067,11 @@ uint64 CUpDownClient::GetUploadedTotal() const
 }
 
 
-float CUpDownClient::GetScoreRatio() const {
+double CUpDownClient::GetScoreRatio() const
+{
 	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
 }
+
 /* End Warning */
 
 
