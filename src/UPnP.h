@@ -636,6 +636,7 @@ private:
 	PortMappingMap m_ActivePortMappingsMap;
 	wxMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
+#warning This variable is for testing purposes only and should disappear on release.
 	CUPnPService *m_WanService;
 	wxMutex m_WaitForSearchTimeout;
 
@@ -657,9 +658,7 @@ public:
 	void SetIGWDeviceDetected(bool b)
 		{ m_IGWDeviceDetected = b; }
 	bool WanServiceDetected() const
-		{ return m_WanService != NULL; }
-	void SetWanService(CUPnPService *service)
-		{ m_WanService = service; }
+		{ return !m_ServiceMap.empty(); }
 
 	// Callback function
 	static int Callback(
