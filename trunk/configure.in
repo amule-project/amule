@@ -67,59 +67,144 @@ AC_CHECK_TOOL(STRIP, strip)
 AC_CHECK_TOOL(AR, ar)
 AC_CHECK_TOOL(LD, ld)
 
-AC_ARG_ENABLE(ccache, [  --enable-ccache            enable ccache support for fast recompilation],
-		ccache="$enableval", ccache="no")
-
+#
 # Add args to configure
-AC_ARG_ENABLE(debug,   [  --disable-debug            disable additional debugging output],
-              USE_DEBUG="$enableval", USE_DEBUG="yes")
+#
+AC_ARG_ENABLE(
+	[ccache],
+	[AS_HELP_STRING(
+		[--enable-ccache],
+		[enable ccache support for fast recompilation])],
+	[ccache=$enableval], [ccache=no])
 
-AC_ARG_ENABLE(optimize, [  --enable-optimize          enable code optimizing],
-		USE_OPTIMIZE="$enableval", USE_OPTIMIZE="no")
+AC_ARG_ENABLE(
+	[debug],
+	[AS_HELP_STRING(
+		[--disable-debug],
+		[disable additional debugging output])],
+	[USE_DEBUG=$enableval], [USE_DEBUG=yes])
 
-AC_ARG_ENABLE(profile, [  --enable-profile           enable code profiling],
-		USE_PROFILE="$enableval", USE_PROFILE="no")
+AC_ARG_ENABLE(
+	[optimize],
+	[AS_HELP_STRING(
+		[--enable-optimize],
+		[enable code optimizing])],
+	[USE_OPTIMIZE=$enableval], [USE_OPTIMIZE=no])
 
-AC_ARG_ENABLE(static,  [  --enable-static            produce a statically linked executable],
-              USE_DEBUG_STATIC="$enableval", USE_DEBUG_STATIC="no")
+AC_ARG_ENABLE(
+	[profile],
+	[AS_HELP_STRING(
+		[--enable-profile],
+		[enable code profiling])],
+	[USE_PROFILE=$enableval], [USE_PROFILE=no])
 
-AC_ARG_ENABLE(monolithic, [  --disable-monolithic       disable building of the monolithic aMule app],
-	MONOLITHIC="$enableval", MONOLITHIC="yes")
+AC_ARG_ENABLE(
+	[static],
+	[AS_HELP_STRING(
+		[--enable-static],
+		[produce a statically linked executable])],
+	[USE_DEBUG_STATIC=$enableval], [USE_DEBUG_STATIC=no])
 
-AC_ARG_ENABLE(amule-daemon,  [  --enable-amule-daemon      compile aMule daemon version],
-             AMULE_DAEMON="$enableval", AMULE_DAEMON="no")
+AC_ARG_ENABLE(
+	[monolithic],
+	[AS_HELP_STRING(
+		[--disable-monolithic],
+		[disable building of the monolithic aMule app])],
+	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
 
-AC_ARG_ENABLE(amulecmd,  [  --enable-amulecmd          compile aMule command line client],
-              BUILDAMULECMD="$enableval", BUILDAMULECMD="no")
+AC_ARG_ENABLE(
+	[amule-daemon],
+	[AS_HELP_STRING(
+		[--enable-amule-daemon],
+		[compile aMule daemon version])],
+	[AMULE_DAEMON=$enableval], [AMULE_DAEMON=no])
 
-AC_ARG_ENABLE(webserver,  [  --enable-webserver         compile aMule WebServer],
-              WEB="$enableval", WEB="no")
+AC_ARG_ENABLE(
+	[amulecmd],
+	[AS_HELP_STRING(
+		[--enable-amulecmd],
+		[compile aMule command line client])],
+	[BUILDAMULECMD=$enableval], [BUILDAMULECMD=no])
 
-AC_ARG_ENABLE(amule-gui,  [  --enable-amule-gui         compile aMule remote GUI (EXPERIMENTAL)],
-             AMULE_GUI="$enableval", AMULE_GUI="no")
+AC_ARG_ENABLE(
+	[webserver],
+	[AS_HELP_STRING(
+		[--enable-webserver],
+		[compile aMule WebServer])],
+	[WEB=$enableval], [WEB=no])
 
-AC_ARG_ENABLE(cas,  [  --enable-cas               compile C aMule Statistics],
-              CAS="$enableval", CAS="no")
+AC_ARG_ENABLE(
+	[amule-gui],
+	[AS_HELP_STRING(
+		[--enable-amule-gui],
+		[compile aMule remote GUI (EXPERIMENTAL)])],
+	[AMULE_GUI=$enableval], [AMULE_GUI=no])
 
-AC_ARG_ENABLE(wxcas,  [  --enable-wxcas             compile aMule GUI Statistics],
-              WXCAS="$enableval", WXCAS="no")
+AC_ARG_ENABLE(
+	[cas],
+	[AS_HELP_STRING(
+		[--enable-cas],
+		[compile C aMule Statistics])],
+	[CAS=$enableval], [CAS=no])
 
-AC_ARG_ENABLE(ed2k,  [  --disable-ed2k             don't compile aMule ed2k links handler],
-              ED2K="$enableval", ED2K="yes")
+AC_ARG_ENABLE(
+	[wxcas],
+	[AS_HELP_STRING(
+		[--enable-wxcas],
+		[compile aMule GUI Statistics])],
+	[WXCAS=$enableval], [WXCAS=no])
 
-AC_ARG_ENABLE(alc,  [  --enable-alc               compile aMuleLinkCreator GUI version],
-              ALC="$enableval", ALC="no")
+AC_ARG_ENABLE(
+	[ed2k],
+	[AS_HELP_STRING(
+		[--disable-ed2k],
+		[don't compile aMule ed2k links handler])],
+	[ED2K=$enableval], [ED2K=yes])
+
+AC_ARG_ENABLE(
+	[alc],
+	[AS_HELP_STRING(
+		[--enable-alc],
+		[compile aMuleLinkCreator GUI version])],
+	[ALC=$enableval], [ALC=no])
 	      
-AC_ARG_ENABLE(alcc,  [  --enable-alcc              compile aMuleLinkCreator for console],
-              ALCC="$enableval", ALCC="no")
+AC_ARG_ENABLE(
+	[alcc],
+	[AS_HELP_STRING(
+		[--enable-alcc],
+		[compile aMuleLinkCreator for console])],
+	[ALCC=$enableval], [ALCC=no])
 
-AC_ARG_ENABLE(embedded_crypto,[  --disable-embedded-crypto  do not use embedded Crypto code],
-		USE_EMBEDDED_CRYPTO="$enableval", USE_EMBEDDED_CRYPTO="yes")
+AC_ARG_ENABLE(
+	[embedded_crypto],
+	[AS_HELP_STRING(
+		[--disable-embedded-crypto],
+		[do not use embedded Crypto code])],
+	[USE_EMBEDDED_CRYPTO="$enableval"], [USE_EMBEDDED_CRYPTO="yes"])
 
-AC_ARG_WITH(denoise-level, [  --with-denoise-level=<level>     Specifies denoising level (0-4)
-                                   4=Suppress all normal output
-                                   0=Do nothing    (for more information 
-                                   see src/utils/scripts/denoiser.rules)], denoiselevel="$withval", denoiselevel=yes)
+AC_ARG_ENABLE(
+	[monolithic],
+	[AS_HELP_STRING(
+		[--disable-monolithic],
+		[disable building of the monolithic aMule app])],
+	[MONOLITHIC=$enableval], [MONOLITHIC=yes])
+
+AC_ARG_ENABLE(
+	[upnp],
+	[AS_HELP_STRING(
+		[--disable-upnp],
+		[do not compile UPnP code])],
+	[ENABLE_UPNP=$enableval], [ENABLE_UPNP=yes])
+
+AC_ARG_WITH(
+	[denoise-level],
+	[AS_HELP_STRING(
+		[--with-denoise-level=<level>],
+		[Specifies denoising level (0-4):
+			4=Suppress all normal output;
+			0=Do nothing.
+			(for more information see src/utils/scripts/denoiser.rules)])],
+	[denoiselevel="$withval"], [denoiselevel=yes])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
@@ -520,6 +605,7 @@ AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
+AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes -a x$SYS != xwin32)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
@@ -615,6 +701,7 @@ echo "  Should aMule be compiled with i18n support?                ${HAVE_GETTEX
 echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
+echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
@@ -659,3 +746,4 @@ echo " WARNING! libpng >= 1.2.0 not found."
 echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
 echo ""
 fi
+

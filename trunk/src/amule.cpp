@@ -73,7 +73,7 @@
 #include "ThreadTasks.h"
 #include "UserEvents.h"
 
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 #include "UPnP.h"			// Needed for UPnP
 #endif
 
@@ -172,7 +172,7 @@ CamuleApp::CamuleApp()
 	glob_prefs	= NULL;
 	m_statistics	= NULL;
 	uploadBandwidthThrottler = NULL;
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 	m_upnp		= NULL;
 	m_upnpMappings.resize(4);
 #endif
@@ -188,7 +188,6 @@ CamuleApp::CamuleApp()
 
 	strFullMuleVersion = NULL;
 	strOSDescription = NULL;
-	
 	
 	// Apprently needed for *BSD
 	SetResourceLimits();
@@ -275,7 +274,7 @@ int CamuleApp::OnExit()
 	delete ipfilter;
 	ipfilter = NULL;
 
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 	delete m_upnp;
 	m_upnp = NULL;
 #endif
@@ -957,7 +956,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		*msg << wxT("*** Client UDP socket (extended eMule) disabled on preferences");
 	}	
 
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 	if (thePrefs::GetUPnPEnabled()) {
 		try {
 			m_upnpMappings[0] = CUPnPPortMapping(
@@ -1595,7 +1594,7 @@ void CamuleApp::ShutDown()
 		serverconnect->Disconnect();
 	}
 
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 	if (thePrefs::GetUPnPEnabled()) {
 		if (m_upnp) {
 			m_upnp->DeletePortMappings(m_upnpMappings);

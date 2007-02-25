@@ -156,9 +156,10 @@ core_sources = \
 	kademlia/routing/RoutingZone.cpp \
 	kademlia/routing/Contact.cpp 
 
-if !SYS_WIN32
-core_sources += UPnP.cpp
-core_sources += UPnPCompatibility.cpp
+if ENABLE_UPNP
+	core_sources += \
+		UPnP.cpp \
+		UPnPCompatibility.cpp
 endif
 
 gui_sources = \
@@ -222,6 +223,9 @@ common_deps = libmuleappcommon.a $(remote_common_deps)
 # Flags
 
 core_flags = 
+if ENABLE_UPNP
+	core_flags += -DENABLE_UPNP
+endif
 gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs \
 	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
