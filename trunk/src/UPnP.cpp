@@ -676,10 +676,8 @@ m_SCPD(NULL)
 
 	if (	m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
 		m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
-		if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
-			// This condition can be used to suspend the parse
-			// of the XML tree.
-			upnpLib.m_ctrlPoint.SetWanService(this);
+#warning Delete this code on release.
+		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// Log it
 			msg.str("");
 			msg << "WAN Service Detected: '" <<
@@ -687,6 +685,8 @@ m_SCPD(NULL)
 			AddDebugLogLineM(true, logUPnP, msg);
 			// Subscribe
 			upnpLib.m_ctrlPoint.Subscribe(*this);
+#warning Delete this code on release.
+#if 0
 		} else {
 			msg.str("");
 			msg << "WAN service detected again: '" <<
@@ -694,6 +694,7 @@ m_SCPD(NULL)
 				"'. Will only use the first instance.";
 			AddDebugLogLineM(true, logUPnP, msg);
 		}
+#endif
 	} else {
 		msg.str("");
 		msg << "Uninteresting service detected: '" <<
@@ -1186,7 +1187,11 @@ bool CUPnPControlPoint::PrivateAddPortMapping(
 	argval[7].SetValue("0");
 	
 	// Execute
-	bool ret = m_WanService->Execute(actionName, argval);
+	bool ret = true;
+	for (ServiceMap::iterator it = m_ServiceMap.begin();
+	     it != m_ServiceMap.end(); ++it) {
+		ret &= it->second->Execute(actionName, argval);
+	}
 
 	return ret;
 }
@@ -1272,7 +1277,13 @@ bool CUPnPControlPoint::PrivateDeletePortMapping(
 	argval[2].SetValue(upnpPortMapping.getProtocol());
 	
 	// Execute
-	return m_WanService->Execute(actionName, argval);
+	bool ret = true;
+	for (ServiceMap::iterator it = m_ServiceMap.begin();
+	     it != m_ServiceMap.end(); ++it) {
+		ret &= it->second->Execute(actionName, argval);
+	}
+
+	return ret;
 }
 
 

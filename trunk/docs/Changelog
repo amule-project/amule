@@ -111,6 +111,8 @@ Trunk
 		* Switch binding of UPnP libraries to use one digit version
 		  names instead of unversioned names.
 		* Fix for crash in amuleweb when the image file did not exist.
+		* UPnP add/delete port mappings are now done in every device
+		  found, instead of only the first one.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
