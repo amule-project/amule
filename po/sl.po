@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 03:31+0100\n"
+"POT-Creation-Date: 2007-02-25 03:31+0100\n"
 "PO-Revision-Date: 2005-11-24 15:03+0000\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
@@ -148,9 +148,9 @@ msgstr "Ni bilo mogoèe dobiti deljenih datotek od uporabnika '%s'"
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -983,13 +983,13 @@ msgid "%02us"
 msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "visok ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "nizek ID"
 
@@ -1493,7 +1493,7 @@ msgstr "Uporabniki"
 msgid "Files"
 msgstr "Datoteke"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
 msgid "Failed"
 msgstr "Neuspeh"
 
@@ -6460,28 +6460,28 @@ msgstr "Userhash"
 msgid "Client Details"
 msgstr "Podrobnosti o uporabniku"
 
-#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
+#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:151
+#: src/ClientDetailDialog.cpp:163
 msgid "Not Supported"
 msgstr "Ni podprt"
 
-#: src/ClientDetailDialog.cpp:157
+#: src/ClientDetailDialog.cpp:169
 msgid "Not complete"
 msgstr "Nedokonèano"
 
-#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:172
 msgid "Bad Guy"
 msgstr "Bad Guy"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:175
 msgid "Verified - OK"
 msgstr "Preverjeno - OK"
 
-#: src/ClientDetailDialog.cpp:167
+#: src/ClientDetailDialog.cpp:179
 msgid "Not Available"
 msgstr "Ni na voljo"
 

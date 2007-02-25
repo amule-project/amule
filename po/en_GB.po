@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 03:31+0100\n"
+"POT-Creation-Date: 2007-02-25 03:31+0100\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Angel Vidal Veiga <elkry@users.sourceforge.net>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -146,9 +146,9 @@ msgstr ""
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr ""
 
@@ -967,13 +967,13 @@ msgid "%02us"
 msgstr ""
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr ""
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr ""
 
@@ -1464,7 +1464,7 @@ msgstr ""
 msgid "Files"
 msgstr ""
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
 msgid "Failed"
 msgstr ""
 
@@ -6249,28 +6249,28 @@ msgstr ""
 msgid "Client Details"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
+#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
 #, c-format
 msgid "%.1f kB/s"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:151
+#: src/ClientDetailDialog.cpp:163
 msgid "Not Supported"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:157
+#: src/ClientDetailDialog.cpp:169
 msgid "Not complete"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:172
 msgid "Bad Guy"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:175
 msgid "Verified - OK"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:167
+#: src/ClientDetailDialog.cpp:179
 msgid "Not Available"
 msgstr ""
 

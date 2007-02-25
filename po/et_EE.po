@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 03:31+0100\n"
+"POT-Creation-Date: 2007-02-25 03:31+0100\n"
 "PO-Revision-Date: 2006-07-06 06:51+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -152,9 +152,9 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Teadmata"
 
@@ -988,13 +988,13 @@ msgid "%02us"
 msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "HighID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "LowID"
 
@@ -1496,7 +1496,7 @@ msgstr "Kasutajad"
 msgid "Files"
 msgstr "Failid"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
 msgid "Failed"
 msgstr "Ei õnnestunud"
 
@@ -6475,28 +6475,28 @@ msgstr "Kasutajaräsi"
 msgid "Client Details"
 msgstr "Kliendi detailid"
 
-#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
+#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:151
+#: src/ClientDetailDialog.cpp:163
 msgid "Not Supported"
 msgstr "Pole toetatud"
 
-#: src/ClientDetailDialog.cpp:157
+#: src/ClientDetailDialog.cpp:169
 msgid "Not complete"
 msgstr "Pole täielik"
 
-#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:172
 msgid "Bad Guy"
 msgstr "Paha Poiss"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:175
 msgid "Verified - OK"
 msgstr "Kontrollitud - OK"
 
-#: src/ClientDetailDialog.cpp:167
+#: src/ClientDetailDialog.cpp:179
 msgid "Not Available"
 msgstr "Info Puudub"
 
