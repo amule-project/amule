@@ -659,6 +659,8 @@ public:
 		{ m_IGWDeviceDetected = b; }
 	bool WanServiceDetected() const
 		{ return !m_ServiceMap.empty(); }
+	void SetWanService(CUPnPService *service)
+		{ m_WanService = service; }
 
 	// Callback function
 	static int Callback(

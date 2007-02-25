@@ -678,6 +678,10 @@ m_SCPD(NULL)
 		m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
 #warning Delete this code on release.
 		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
+			// This condition can be used to suspend the parse
+			// of the XML tree.
+#warning Delete this code when m_WanService is no longer used.
+			upnpLib.m_ctrlPoint.SetWanService(this);
 			// Log it
 			msg.str("");
 			msg << "WAN Service Detected: '" <<
