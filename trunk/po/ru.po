@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 03:31+0100\n"
+"POT-Creation-Date: 2007-02-25 03:31+0100\n"
 "PO-Revision-Date: 2006-03-01 01:46+0300\n"
 "Last-Translator: toshi <K.Koshelyaev@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -152,9 +152,9 @@ msgstr "Не удалось получить список доступных ф�
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -988,13 +988,13 @@ msgid "%02us"
 msgstr "%02uс"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "HighID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "LowID"
 
@@ -1499,7 +1499,7 @@ msgstr "Пользователей"
 msgid "Files"
 msgstr "Файлы"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
 msgid "Failed"
 msgstr "Неудача"
 
@@ -6434,28 +6434,28 @@ msgstr "Хэш пользователя"
 msgid "Client Details"
 msgstr "Сведения о клиенте"
 
-#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
+#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:151
+#: src/ClientDetailDialog.cpp:163
 msgid "Not Supported"
 msgstr "Не поддерживается"
 
-#: src/ClientDetailDialog.cpp:157
+#: src/ClientDetailDialog.cpp:169
 msgid "Not complete"
 msgstr "Не завершён"
 
-#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:172
 msgid "Bad Guy"
 msgstr "Нарушитель"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:175
 msgid "Verified - OK"
 msgstr "Проверено - OK"
 
-#: src/ClientDetailDialog.cpp:167
+#: src/ClientDetailDialog.cpp:179
 msgid "Not Available"
 msgstr "Не доступно"
 

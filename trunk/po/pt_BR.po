@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 03:31+0100\n"
+"POT-Creation-Date: 2007-02-25 03:31+0100\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -149,9 +149,9 @@ msgstr "Falha ao pedir lista de compartilhamentos do usuário '%s'"
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
 #: src/ClientListCtrl.cpp:696 src/ClientListCtrl.cpp:837
-#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:85
-#: src/ClientDetailDialog.cpp:86 src/ClientDetailDialog.cpp:116
-#: src/ClientDetailDialog.cpp:117 src/MuleTrayIcon.cpp:377
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -982,13 +982,13 @@ msgid "%02us"
 msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "HighID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
 #: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:848
-#: src/ClientDetailDialog.cpp:104
+#: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "LowID"
 
@@ -1491,7 +1491,7 @@ msgstr "Usuários"
 msgid "Files"
 msgstr "Arquivos"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:154
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
 msgid "Failed"
 msgstr "Falha"
 
@@ -6459,28 +6459,28 @@ msgstr "Userhash"
 msgid "Client Details"
 msgstr "Detalhes do Cliente"
 
-#: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:137
+#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:151
+#: src/ClientDetailDialog.cpp:163
 msgid "Not Supported"
 msgstr "Não Suportado"
 
-#: src/ClientDetailDialog.cpp:157
+#: src/ClientDetailDialog.cpp:169
 msgid "Not complete"
 msgstr "Incompleto"
 
-#: src/ClientDetailDialog.cpp:160
+#: src/ClientDetailDialog.cpp:172
 msgid "Bad Guy"
 msgstr "Cara Mau"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:175
 msgid "Verified - OK"
 msgstr "Verificado - OK"
 
-#: src/ClientDetailDialog.cpp:167
+#: src/ClientDetailDialog.cpp:179
 msgid "Not Available"
 msgstr "Não Disponível"
 
