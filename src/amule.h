@@ -56,7 +56,10 @@ class CFriendList;
 class CClientUDPSocket;
 class CIPFilter;
 class UploadBandwidthThrottler;
+#ifdef ENABLE_UPNP
 class CUPnPControlPoint;
+class CUPnPPortMapping;
+#endif
 class CStatistics;
 class wxSocketEvent;
 class wxCommandEvent;
@@ -70,7 +73,6 @@ class CMuleInternalEvent;
 class CCompletionEvent;
 class wxExecuteData;
 class CLoggingEvent;
-class CUPnPPortMapping;
 
 namespace MuleNotify {
 	class CMuleGUIEvent;
@@ -181,7 +183,7 @@ public:
 	CStatistics*		m_statistics;
 	CIPFilter*		ipfilter;
 	UploadBandwidthThrottler* uploadBandwidthThrottler;
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 	CUPnPControlPoint*	m_upnp;
 	std::vector<CUPnPPortMapping> m_upnpMappings;
 #endif

@@ -113,6 +113,7 @@ Trunk
 		* Fix for crash in amuleweb when the image file did not exist.
 		* UPnP add/delete port mappings are now done in every device
 		  found, instead of only the first one.
+		* Creation of --enable-upnp/--disable-upnp configure flag.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

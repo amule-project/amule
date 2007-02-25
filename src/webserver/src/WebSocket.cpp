@@ -80,7 +80,7 @@ void *CWSThread::Entry() {
 		ws->Print(wxT("WSThread: could not create socket on ") + msg);	
 	} else {
 		ws->Print(wxT("WSThread: created socket listening on ") + msg);	
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 		if (m_upnpEnabled) {
 			m_upnpMappings.resize(1);
 			m_upnpMappings[0] = CUPnPPortMapping(
@@ -120,7 +120,7 @@ void *CWSThread::Entry() {
 				}
 			}
 		}
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 		if (m_upnpEnabled) {
 			m_upnp->DeletePortMappings(m_upnpMappings);
 			delete m_upnp;

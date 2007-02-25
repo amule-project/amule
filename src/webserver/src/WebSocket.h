@@ -31,8 +31,10 @@
 #include "WebServer.h"
 
 
+#ifdef ENABLE_UPNP
 class CUPnPControlPoint;
 class CUPnPPortMapping;
+#endif
 class CWebServer;
 
 
@@ -100,7 +102,7 @@ class CWSThread : public wxThread {
 		long m_wsport;
 		bool m_upnpEnabled;
 		int m_upnpTCPPort;
-#ifndef __WXMSW__
+#ifdef ENABLE_UPNP
 		CUPnPControlPoint *m_upnp;
 		std::vector<CUPnPPortMapping> m_upnpMappings;
 #endif
