@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-25 03:31+0100\n"
+"POT-Creation-Date: 2007-02-26 03:30+0100\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -403,7 +403,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "Necessiteu ID Alta per crear un enllaç font vàlid"
 
 #: src/SharedFilesCtrl.cpp:268 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:661
+#: src/amule.cpp:660
 msgid "Warning"
 msgstr "Avís"
 
@@ -1244,7 +1244,7 @@ msgid "Auto [Hi]"
 msgstr "Auto [Al]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:475 src/amuleDlg.cpp:698
-#: src/ClientListCtrl.cpp:643 src/amule.cpp:783
+#: src/ClientListCtrl.cpp:643 src/amule.cpp:782
 msgid "Connecting"
 msgstr "Connectant"
 
@@ -1534,7 +1534,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
 #: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
-#: src/amule.cpp:701 src/amule.cpp:1285
+#: src/amule.cpp:700 src/amule.cpp:1284
 msgid "Info"
 msgstr "Informació"
 
@@ -2895,8 +2895,8 @@ msgid "Connection failed "
 msgstr "La connexió ha fallat "
 
 #: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
-#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:825
-#: src/amule.cpp:943 src/amule.cpp:1296
+#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:824
+#: src/amule.cpp:942 src/amule.cpp:1295
 msgid "Error"
 msgstr "Error"
 
@@ -3568,11 +3568,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Connectat a %s %s %s"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2006
+#: src/TextClient.cpp:622 src/amule.cpp:2005
 msgid "with LowID"
 msgstr "amb ID Baixa"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2006
+#: src/TextClient.cpp:622 src/amule.cpp:2005
 msgid "with HighID"
 msgstr "amb ID Alta"
 
@@ -6854,7 +6854,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
 
-#: src/amule.cpp:699
+#: src/amule.cpp:698
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6862,22 +6862,22 @@ msgstr ""
 "S'ha establert la localització Predeterminada del Sistema a causa d'un canvi "
 "en la configuració. Disculpeu."
 
-#: src/amule.cpp:765
+#: src/amule.cpp:764
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
 
-#: src/amule.cpp:767
+#: src/amule.cpp:766
 msgid "Server list download"
 msgstr ""
 
-#: src/amule.cpp:818
+#: src/amule.cpp:817
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "servidor web en marxa al pid %d"
 
-#: src/amule.cpp:821
+#: src/amule.cpp:820
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6887,12 +6887,12 @@ msgstr ""
 "el binari d'aquest. Instal·leu el paquet que conté el ServidorWeb de l'aMule "
 "o compileu l'aMule usant --enable-webserver i executant make install"
 
-#: src/amule.cpp:933
+#: src/amule.cpp:932
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "El port %u no està disponible. Tindreu ID BAIXA\n"
 
-#: src/amule.cpp:939
+#: src/amule.cpp:938
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6908,15 +6908,15 @@ msgstr ""
 "Comproveu la xarxa per estar segurs que el port està obert per l'entrada i "
 "la sortida."
 
-#: src/amule.cpp:1085
+#: src/amule.cpp:1084
 msgid "Failed to create OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la Signatura en línia"
 
-#: src/amule.cpp:1093
+#: src/amule.cpp:1092
 msgid "Failed to create aMule OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la Signatura en línia de l'aMule"
 
-#: src/amule.cpp:1261
+#: src/amule.cpp:1260
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6924,37 +6924,37 @@ msgstr ""
 "La localització seleccionada no està instal·lada al PC. (Nota: s'intentarà "
 "establir-la igualment)"
 
-#: src/amule.cpp:1271
+#: src/amule.cpp:1270
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Aquesta és la primera vegada que executeu l'aMule %s"
 
-#: src/amule.cpp:1273
+#: src/amule.cpp:1272
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Aquesta és una versió de prova, actualitzada diariament, i \n"
 
-#: src/amule.cpp:1274
+#: src/amule.cpp:1273
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "no donem garanties de que no es trequi res, es cremi la vostra casa,\n"
 
-#: src/amule.cpp:1275
+#: src/amule.cpp:1274
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "o es mori el gos. Tanmateix *hauria* de ser segur el seu ús.\n"
 
-#: src/amule.cpp:1280
+#: src/amule.cpp:1279
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Podeu trobar més informació, ajuda i noves versions a la nostra pàgina web,\n"
 
-#: src/amule.cpp:1281
+#: src/amule.cpp:1280
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "a www.aMule.org, o a l'IRC al canal #aMule de irc.freenode.net.\n"
 
-#: src/amule.cpp:1283
+#: src/amule.cpp:1282
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Podeu informar de qualsevol errada a http://forum.amule.org"
 
-#: src/amule.cpp:1296
+#: src/amule.cpp:1295
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6964,102 +6964,102 @@ msgstr ""
 " Es INHABILITARÀ la Signatura en línia fins que ho resolgueu a les "
 "preferències."
 
-#: src/amule.cpp:1690
+#: src/amule.cpp:1689
 msgid "ERROR: can't open logfile"
 msgstr "ERROR: no es pot obrir el fitxer de registre"
 
-#: src/amule.cpp:1694
+#: src/amule.cpp:1693
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "AVÍS: el fitxer de registre està buit. Quelcom no va bé."
 
-#: src/amule.cpp:1713
+#: src/amule.cpp:1712
 msgid "Log has been reset"
 msgstr "S'ha reiniciat el registre"
 
-#: src/amule.cpp:1741
+#: src/amule.cpp:1740
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Missatge del Servidor: %s"
 
-#: src/amule.cpp:1779
+#: src/amule.cpp:1778
 msgid "Failed to download the nodes list."
 msgstr "No s'ha pogut descarregar la llista de nodes."
 
-#: src/amule.cpp:1792
+#: src/amule.cpp:1791
 msgid "Failed to open the downloaded version check file"
 msgstr "No s'ha pogut obrir el fitxer de comprovació de versió descarregada"
 
-#: src/amule.cpp:1795 src/amule.cpp:1805 src/amule.cpp:1811
+#: src/amule.cpp:1794 src/amule.cpp:1804 src/amule.cpp:1810
 msgid "Corrupted version check file"
 msgstr "Fitxer de comprovació de versió corromput"
 
-#: src/amule.cpp:1821
+#: src/amule.cpp:1820
 msgid "You are using an outdated version of aMule!"
 msgstr "Esteu usant una versió antiga de l'aMule!"
 
-#: src/amule.cpp:1822
+#: src/amule.cpp:1821
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "La vostra versió de l'aMule és %i.%i.%i i l'última versió és %li.%li.%li"
 
-#: src/amule.cpp:1823
+#: src/amule.cpp:1822
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Sempre podeu trobar l'última versió a http://www.amule.org"
 
-#: src/amule.cpp:1826
+#: src/amule.cpp:1825
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "AVÍS: La vostra versió d'aMuled és antiga: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1830
+#: src/amule.cpp:1829
 msgid "Your copy of aMule is up to date."
 msgstr "La vostra versió de l'aMule és l'última."
 
-#: src/amule.cpp:1837
+#: src/amule.cpp:1836
 msgid "Failed to download the version check file"
 msgstr "No s'ha pogut descarregar el fitxer de comprovació de versió"
 
-#: src/amule.cpp:1939
+#: src/amule.cpp:1938
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Usuaris: E: %s K: %s | Fitxers E: %s K: %s"
 
-#: src/amule.cpp:2008
+#: src/amule.cpp:2007
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Connectat a %s %s"
 
-#: src/amule.cpp:2011
+#: src/amule.cpp:2010
 #, c-format
 msgid "Connecting to %s"
 msgstr "Connectant a %s"
 
-#: src/amule.cpp:2013
+#: src/amule.cpp:2012
 msgid "Disconnected from ED2K"
 msgstr "Desconnectat de ED2K"
 
-#: src/amule.cpp:2020
+#: src/amule.cpp:2019
 msgid "Kad started."
 msgstr "S'ha engegat la xarxa Kad."
 
-#: src/amule.cpp:2022
+#: src/amule.cpp:2021
 msgid "Kad stopped."
 msgstr "S'ha aturat la xarxa Kad."
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2028
 msgid "Connected to Kad (ok)"
 msgstr "Connectat a Kad (ok)"
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2030
 msgid "Connected to Kad (firewalled)"
 msgstr "Connectat a Kad (rere tallafocs)"
 
-#: src/amule.cpp:2034
+#: src/amule.cpp:2033
 msgid "Disconnected from Kad"
 msgstr "Desconnectat de Kad"
 
-#: src/amule.cpp:2090
+#: src/amule.cpp:2089
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7067,7 +7067,7 @@ msgstr ""
 "No es pot usar la xarxa Kad si el port UDP està inhabilitat a les "
 "preferències, no s'engegarà."
 
-#: src/amule.cpp:2093
+#: src/amule.cpp:2092
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "La xarxa Kad està inhabilitada a les preferències, no es connectarà."
 
