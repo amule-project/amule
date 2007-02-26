@@ -61,12 +61,27 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_LIBPNGCONFIG],
 [
-   AC_ARG_WITH(libpng-prefix, [  --with-libpng-prefix=PREFIX      prefix where libpng is installed],
-               libpng_config_prefix="$withval", libpng_config_prefix="")
-   AC_ARG_WITH(libpng-exec-prefix,[  --with-libpng-exec-prefix=PREFIX exec prefix where libpng  is installed],
-               libpng_config_exec_prefix="$withval", libpng_config_exec_prefix="")
-   AC_ARG_WITH(libpng-config,[  --with-libpng-config=CONFIG      libpng-config script to use],
-               libpng_config_name="$withval", libpng_config_name="")
+	AC_ARG_WITH(
+		[libpng-prefix],
+		[AS_HELP_STRING(
+			[--with-libpng-prefix=PREFIX],
+			[prefix where libpng is installed])],
+		[libpng_config_prefix="$withval"],
+		[libpng_config_prefix=""])
+	AC_ARG_WITH(
+		[libpng-exec-prefix],
+		[AS_HELP_STRING(
+			[--with-libpng-exec-prefix=PREFIX],
+			[exec prefix where libpng  is installed])],
+		[libpng_config_exec_prefix="$withval"],
+		[libpng_config_exec_prefix=""])
+	AC_ARG_WITH(
+		[libpng-config],
+		[AS_HELP_STRING(
+			[--with-libpng-config=CONFIG],
+			[libpng-config script to use])],
+		[libpng_config_name="$withval"],
+		[libpng_config_name=""])
 ])
 
 dnl ---------------------------------------------------------------------------
@@ -267,12 +282,27 @@ dnl ---------------------------------------------------------------------------
 
 AC_DEFUN([AM_OPTIONS_GDLIBCONFIG],
 [
-   AC_ARG_WITH(gdlib-prefix, [  --with-gdlib-prefix=PREFIX       prefix where gdlib is installed],
-               gdlib_config_prefix="$withval", gdlib_config_prefix="")
-   AC_ARG_WITH(gdlib-exec-prefix,[  --with-gdlib-exec-prefix=PREFIX  exec prefix where gdlib  is installed],
-               gdlib_config_exec_prefix="$withval", gdlib_config_exec_prefix="")
-   AC_ARG_WITH(gdlib-config,[  --with-gdlib-config=CONFIG       gdlib-config script to use],
-               gdlib_config_name="$withval", gdlib_config_name="")
+	AC_ARG_WITH(
+		[gdlib-prefix],
+		[AS_HELP_STRING(
+			[--with-gdlib-prefix=PREFIX],
+			[prefix where gdlib is installed])],
+		[gdlib_config_prefix="$withval"],
+		[gdlib_config_prefix=""])
+	AC_ARG_WITH(
+		[gdlib-exec-prefix],
+		[AS_HELP_STRING(
+			[--with-gdlib-exec-prefix=PREFIX],
+			[exec prefix where gdlib  is installed])],
+		[gdlib_config_exec_prefix="$withval"],
+		[gdlib_config_exec_prefix=""])
+	AC_ARG_WITH(
+		[gdlib-config],
+		[AS_HELP_STRING(
+			[--with-gdlib-config=CONFIG],
+			[gdlib-config script to use])],
+		[gdlib_config_name="$withval"],
+		[gdlib_config_name=""])
 ])
 
 dnl ---------------------------------------------------------------------------
@@ -479,8 +509,13 @@ AC_SUBST(CRYPTO_PP_STYLE)
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
-     AC_ARG_WITH( crypto-prefix,[  --with-crypto-prefix=PREFIX      prefix where crypto++ is installed],
-       crypto_prefix="$withval", crypto_prefix="")
+	AC_ARG_WITH(
+		[crypto-prefix],
+		[AS_HELP_STRING(
+			[--with-crypto-prefix=PREFIX],
+			[prefix where crypto++ is installed])],
+		[crypto_prefix="$withval"],
+		[crypto_prefix=""])
 ])
 
 dnl --------------------------------------------------------------------------
@@ -509,8 +544,13 @@ AC_DEFUN([CHECK_CCACHE],
 
 AC_DEFUN([AM_OPTIONS_CCACHE_PFX],
 [
-   AC_ARG_WITH( ccache-prefix,[  --with-ccache-prefix=PREFIX      prefix where ccache is installed],
-            ccache_prefix="$withval", ccache_prefix="")
+	AC_ARG_WITH(
+		[ccache-prefix],
+		[AS_HELP_STRING(
+			[--with-ccache-prefix=PREFIX],
+			[prefix where ccache is installed])],
+		[ccache_prefix="$withval"],
+		[ccache_prefix=""])
 ])
 
 dnl ----------------------------------------------------

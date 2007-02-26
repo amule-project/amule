@@ -9,7 +9,11 @@ dnl    sys - use system zlib
 dnl ----------------------------------------------------
 AC_DEFUN([AC_OPTIONS_ZLIB],
 [
-	AC_ARG_WITH(zlib, [[  --with-zlib=PREFIX               use zlib in PREFIX]],
+	AC_ARG_WITH(
+		[zlib],
+		AS_HELP_STRING(
+			[--with-zlib=PREFIX],
+			[use zlib in PREFIX]),
 		[ac_zlib="$withval"],
 		[ac_zlib=yes])
 ])
