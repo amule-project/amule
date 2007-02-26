@@ -200,10 +200,11 @@ AC_ARG_WITH(
 	[denoise-level],
 	[AS_HELP_STRING(
 		[--with-denoise-level=<level>],
-		[Specifies denoising level (0-4):
-			4=Suppress all normal output;
-			0=Do nothing.
-			(for more information see src/utils/scripts/denoiser.rules)])],
+		[Specifies denoising level (0-4):])
+AS_HELP_STRING([], [0 - Do nothing])
+AS_HELP_STRING([], [4 - Suppress all normal output])
+AS_HELP_STRING([], [(for more information see src/utils/scripts/denoiser.rules)])
+	],
 	[denoiselevel="$withval"], [denoiselevel=yes])
 
 # Checking for libs before all other stuff to break
