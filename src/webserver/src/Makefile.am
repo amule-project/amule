@@ -8,12 +8,16 @@ amuleweb_SOURCES =  \
 	$(top_srcdir)/src/OtherFunctions.cpp \
 	$(top_srcdir)/src/RLE.cpp \
 	$(top_srcdir)/src/NetworkFunctions.cpp \
-	$(top_srcdir)/src/UPnP.cpp \
-	UPnPCompatibility.cpp \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \
 	php_core_lib.cpp
+
+if ENABLE_UPNP
+amuleweb_SOURCES +=  \
+	$(top_srcdir)/src/UPnP.cpp \
+	UPnPCompatibility.cpp
+endif
 
 php_parser.c: php_parser.y
 	bison --debug -t -d -v -o $@ $<
@@ -34,6 +38,12 @@ amuleweb_CXXFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
 	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
 	-DAMULE_LOCALEDIR="\"$(datadir)/locale\"" \
 	-DECSOCKET_USE_EVENTS=0
+
+if ENABLE_UPNP
+amuleweb_CFLAGS += -DENABLE_UPNP
+amuleweb_CXXFLAGS += -DENABLE_UPNP
+endif
+
 amuleweb_LDFLAGS = $(LIBPNG_LDFLAGS) -L../../libs/common -L../../libs/ec/cpp
 amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(ZLIB_LIBS) \
 	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB)

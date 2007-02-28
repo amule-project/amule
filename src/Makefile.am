@@ -157,9 +157,9 @@ core_sources = \
 	kademlia/routing/Contact.cpp 
 
 if ENABLE_UPNP
-	core_sources += \
-		UPnP.cpp \
-		UPnPCompatibility.cpp
+core_sources += \
+	UPnP.cpp \
+	UPnPCompatibility.cpp
 endif
 
 gui_sources = \
@@ -220,19 +220,23 @@ gui_deps = libmuleappgui.a
 remote_common_deps = libs/common/libmulecommon.a libs/ec/cpp/libec.a
 common_deps = libmuleappcommon.a $(remote_common_deps)
 
+#
 # Flags
-
+#
 core_flags = 
 if ENABLE_UPNP
-	core_flags += -DENABLE_UPNP
+core_flags += -DENABLE_UPNP
 endif
+
 gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
+
 common_flags = -I$(srcdir)/libs -Ilibs \
 	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
 	-DAMULE_LOCALEDIR="\"$(datadir)/locale\""
 
+#
 # Extras 
-
+#
 if USE_EMBEDDED_CRYPTO
 libmuleappcommon_a_SOURCES += extern/cryptopp/CryptoPP.cpp
 endif
@@ -297,7 +301,9 @@ amulecmd_DEPENDENCIES = $(remote_common_deps)
 amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
-amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
+amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec \
+	$(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) \
+	$(RESOLV_LIB) $(BFD_LIB)
 
 noinst_HEADERS = \
 		AddFriend.h \
@@ -404,6 +410,7 @@ noinst_HEADERS = \
 		updownclient.h \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
+		UPnP.h \
 		UserEvents.h
 
 MAINTAINERCLEANFILES = Makefile.in
