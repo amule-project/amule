@@ -135,28 +135,35 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Upload
 	CastChild(ID_DDUP, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client->GetTransferedDown()));
+	
 	// Download
 	CastChild(ID_DDOWN, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client->GetTransferredUp()));
+	
 	// Average Upload Rate
 	CastChild(ID_DAVUR, wxStaticText)->SetLabel(
 		wxString::Format(_("%.1f kB/s"),
 			m_client->GetKBpsDown()));
+	
 	// Average Download Rate
 	CastChild(ID_DAVDR, wxStaticText)->SetLabel(
 		wxString::Format(_("%.1f kB/s"),
 			m_client->GetUploadDatarate() / 1024.0f));
+	
 	// Total Upload
 	CastChild(ID_DUPTOTAL, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client->GetDownloadedTotal()));
+	
 	// Total Download
 	CastChild(ID_DDOWNTOTAL, wxStaticText)->SetLabel(
 		CastItoXBytes(m_client->GetUploadedTotal()));
-	// Ratio
+	
+	// DL/UP Modifier
 	CastChild(ID_DRATIO, wxStaticText)->SetLabel(
 		wxString::Format(wxT("%.1f"),
 			(float)m_client->GetScoreRatio()));
-		
+	
+	// Secure Ident
 	if (theApp.CryptoAvailable()) {
 		if (m_client->SUINotSupported()) {
 			CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
@@ -178,7 +185,8 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
 			_("Not Available"));
 	}
-
+	
+	// Queue Score
 	if (m_client->GetUploadState() != US_NONE) {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
 			wxString::Format(wxT("%u (QR: %u)"),
