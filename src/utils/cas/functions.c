@@ -244,14 +244,14 @@ char *convbytes(char *input)
 	return output;
 }
 
-void replace(char *tmpl, const char *search, const char *replace)
+void replace(char *tmpl, const char *search, const char *to_replace)
 {
 	char *dest   = NULL;
 	char *retStr = NULL;
 	int	befLen,srchLen,repLen,totLen;
 
 	/* returning the 'tmpl' if 'search' is NULL */
-  if (NULL == tmpl || NULL == search) /* || NULL == replace) */
+  if (NULL == tmpl || NULL == search) /* || NULL == to_replace) */
   {
 		return;
 	}
@@ -268,7 +268,7 @@ void replace(char *tmpl, const char *search, const char *replace)
 		totLen	= strlen(tmpl);
 		befLen	= (int)(retStr - tmpl);
 		srchLen = strlen(search);
-		repLen	= strlen(replace);
+		repLen	= strlen(to_replace);
 
 		/* dynamic buffer creation... */
 		dest = (char*)malloc(totLen + 1 + repLen - srchLen);
@@ -278,7 +278,7 @@ void replace(char *tmpl, const char *search, const char *replace)
 		/* copy the before buffer */
 		strncpy(dest, tmpl, befLen);
 		/* copy the replace string */
-		memcpy((dest+befLen), replace, repLen); /* strcat(dest, replace); */
+		memcpy((dest+befLen), to_replace, repLen); /* strcat(dest, to_replace); */
 		/* copy the after buffer */
 		memcpy((dest+befLen+repLen), &tmpl[befLen + srchLen], strlen(&tmpl[befLen + srchLen])); /*strcat(dest, &tmpl[befLen + repLen]); */
 
