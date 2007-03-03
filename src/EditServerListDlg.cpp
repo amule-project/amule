@@ -42,7 +42,7 @@ EditServerListDlg::EditServerListDlg(wxWindow *parent,
                                      const wxString& message,
 				     const wxString& filename) : wxDialog(parent, -1, caption, 
 					     			      wxDefaultPosition, wxSize(400,200),
-								      wxDEFAULT_DIALOG_STYLE | wxDIALOG_MODAL |wxRESIZE_BORDER)
+								      wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
   m_file = filename;
 

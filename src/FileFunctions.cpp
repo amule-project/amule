@@ -450,7 +450,6 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
 	wxZipFSHandler archive; 
 	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
-
 	while (!filename.IsEmpty()) {
 		// Extract the filename part of the URI
 		filename = filename.AfterLast(wxT(':')).Lower();
@@ -458,23 +457,27 @@ bool UnpackZipFile(const wxString& file, const wxChar* files[])
 		// We only care about the files specified in the array
 		for (size_t i = 0; files[i]; ++i) {
 			if (files[i] == filename) {
-				wxZipInputStream inputStream(file, filename);
-			
-				char buffer[10240];
-				wxTempFile target(file);
-				
-				while (!inputStream.Eof()) {
-					inputStream.Read(buffer, sizeof(buffer));
-
-					target.Write(buffer, inputStream.LastRead());
+				std::auto_ptr<wxZipEntry> entry;
+				wxFFileInputStream fileInputStream(file);
+				wxZipInputStream zip(fileInputStream);
+				while (entry.reset(zip.GetNextEntry()), entry.get() != NULL) {
+					// access meta-data
+					wxString name = entry->GetName();
+					// read 'zip' to access the entry's data
+					if (name == filename) {
+						char buffer[10240];
+						wxTempFile target(file);
+						while (!zip.Eof()) {
+							zip.Read(buffer, sizeof(buffer));
+							target.Write(buffer, zip.LastRead());
+						}
+						target.Commit();
+						
+						return true;
+					}
 				}
-				
-				target.Commit();
-				
-				return true;
 			}
 		}
-		
 		filename = archive.FindNext();
 	}
 

@@ -255,7 +255,7 @@ wxDialog(parent, -1, _("Preferences"),
 		}
 
 		// Hide it for now
-		prefs_sizer->Remove(pages[i].m_widget);
+		prefs_sizer->Detach(pages[i].m_widget);
 		pages[i].m_widget->Show(false);
 	}
 	
@@ -912,7 +912,7 @@ void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
 
 void PrefsUnifiedDlg::OnPrefsPageChange(wxListEvent& event)
 {
-	prefs_sizer->Remove( m_CurrentPanel );
+	prefs_sizer->Detach( m_CurrentPanel );
 	m_CurrentPanel->Show( false );
 
 	m_CurrentPanel = pages[ event.GetIndex() ].m_widget;

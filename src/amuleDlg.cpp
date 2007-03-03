@@ -116,7 +116,7 @@ CamuleDlg::CamuleDlg(
 wxFrame(
 	pParent, -1, title, where, dlg_size,
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
-	wxTHICK_FRAME|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,
+	wxRESIZE_BORDER|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,
 	wxT("aMule")),
 m_transferwnd(NULL)
 {
@@ -278,7 +278,7 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	
 	if ( m_activewnd ) {
 		m_activewnd->Show(FALSE);
-		contentSizer->Remove(m_activewnd);
+		contentSizer->Detach(m_activewnd);
 	}
 
 	contentSizer->Add(dlg, 1, wxALIGN_LEFT|wxEXPAND);
