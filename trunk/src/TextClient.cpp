@@ -43,6 +43,7 @@
 
 #include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"
+#include "KnownFile.h"			// Needed for Priority Levels
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -55,6 +56,10 @@ enum {
 	CMD_ID_STATUS,
 	CMD_ID_RESUME,
 	CMD_ID_PAUSE,
+	CMD_ID_PRIORITY_LOW,
+	CMD_ID_PRIORITY_NORMAL,
+	CMD_ID_PRIORITY_HIGH,
+	CMD_ID_PRIORITY_AUTO,
 	CMD_ID_CANCEL,
 	CMD_ID_CONNECT,
 	CMD_ID_CONNECT_ED2K,
@@ -332,6 +337,47 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 							default: wxASSERT(0);
 						}
 						request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
+						request_list.push_back(request);
+					} else {
+						Show(_("Not a valid number\n"));
+						return 0;
+					}
+				} else {
+						Show(_("Not a valid hash (length should be exactly 32 chars)\n"));
+						return 0;					
+				}
+			}
+			break;
+
+		case CMD_ID_PRIORITY_LOW:
+		case CMD_ID_PRIORITY_NORMAL:
+		case CMD_ID_PRIORITY_HIGH:
+		case CMD_ID_PRIORITY_AUTO:
+			if ( args.IsEmpty() ) {
+				Show(_("This command requieres an argument. Valid arguments: a file hash.\n"));
+				return 0;
+			} else {
+				CMD4Hash hash;
+				if (hash.Decode(args.Trim(false).Trim(true))) {
+					if (!hash.IsEmpty()) {
+						request = new CECPacket(EC_OP_PARTFILE_PRIO_SET);
+						CECTag hashtag(EC_TAG_PARTFILE, hash);
+						switch(CmdId) {
+							case CMD_ID_PRIORITY_LOW:
+								hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)PR_LOW));
+								break;
+							case CMD_ID_PRIORITY_NORMAL:
+								hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)PR_NORMAL));
+								break;
+							case CMD_ID_PRIORITY_HIGH:
+								hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)PR_HIGH));
+								break;
+							case CMD_ID_PRIORITY_AUTO:
+								hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint8)PR_AUTO));
+								break;
+							default: wxASSERT(0);
+						}
+						request->AddTag(hashtag);
 						request_list.push_back(request);
 					} else {
 						Show(_("Not a valid number\n"));
@@ -866,6 +912,13 @@ void CamulecmdApp::OnInitCommandSet()
    	m_commands.AddCommand(wxT("Cancel"), CMD_ID_CANCEL, wxTRANSLATE("Cancel download."),
   			      wxEmptyString, CMD_PARAM_ALWAYS);
 
+	tmp = m_commands.AddCommand(wxT("Priority"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set download priority."),
+				    wxTRANSLATE("Set priority of a download to Low, Normal, High or Auto.\n"), CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Low"), CMD_ID_PRIORITY_LOW, wxTRANSLATE("Set riority to low."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Normal"), CMD_ID_PRIORITY_NORMAL, wxTRANSLATE("Set riority to normal."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("High"), CMD_ID_PRIORITY_HIGH, wxTRANSLATE("Set riority to high."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set riority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
+				  
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("UL"), CMD_ID_SHOW_UL, wxTRANSLATE("Show upload queue."), wxEmptyString, CMD_PARAM_NEVER);
