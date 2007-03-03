@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_NA-3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 03:30+0100\n"
+"POT-Creation-Date: 2007-03-03 03:31+0100\n"
 "PO-Revision-Date: 2004-04-17 08:18+0000\n"
 "Last-Translator: \n"
 "Language-Team:  <it@li.org>\n"
@@ -1503,7 +1503,7 @@ msgstr "E utent"
 msgid "Files"
 msgstr "File"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:173
 msgid "Failed"
 msgstr "Falliment"
 
@@ -6339,28 +6339,28 @@ msgstr ""
 msgid "Client Details"
 msgstr "Dettagl ro client"
 
-#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
 #, c-format
 msgid "%.1f kB/s"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:170
 msgid "Not Supported"
 msgstr ""
 
-#: src/ClientDetailDialog.cpp:169
+#: src/ClientDetailDialog.cpp:176
 msgid "Not complete"
 msgstr "Nun e' complet"
 
-#: src/ClientDetailDialog.cpp:172
+#: src/ClientDetailDialog.cpp:179
 msgid "Bad Guy"
 msgstr "Cattivon"
 
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:182
 msgid "Verified - OK"
 msgstr "Verificat - OK"
 
-#: src/ClientDetailDialog.cpp:179
+#: src/ClientDetailDialog.cpp:186
 msgid "Not Available"
 msgstr "Nun avviabl"
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 03:30+0100\n"
+"POT-Creation-Date: 2007-03-03 03:31+0100\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -1504,7 +1504,7 @@ msgstr "Usuaris"
 msgid "Files"
 msgstr "Fitxers"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:173
 msgid "Failed"
 msgstr "Fallit"
 
@@ -6543,28 +6543,28 @@ msgstr "Hash de l'usuari"
 msgid "Client Details"
 msgstr "Detalls del Client"
 
-#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:170
 msgid "Not Supported"
 msgstr "No suportat"
 
-#: src/ClientDetailDialog.cpp:169
+#: src/ClientDetailDialog.cpp:176
 msgid "Not complete"
 msgstr "Sense completar"
 
-#: src/ClientDetailDialog.cpp:172
+#: src/ClientDetailDialog.cpp:179
 msgid "Bad Guy"
 msgstr "Mala Persona"
 
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:182
 msgid "Verified - OK"
 msgstr "Verificat - Correcte"
 
-#: src/ClientDetailDialog.cpp:179
+#: src/ClientDetailDialog.cpp:186
 msgid "Not Available"
 msgstr "No disponible"
 

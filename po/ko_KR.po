@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 03:30+0100\n"
+"POT-Creation-Date: 2007-03-03 03:31+0100\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1489,7 +1489,7 @@ msgstr "사용자"
 msgid "Files"
 msgstr "파일"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:173
 msgid "Failed"
 msgstr "실패"
 
@@ -6443,28 +6443,28 @@ msgstr "사용자 해시"
 msgid "Client Details"
 msgstr "클라이언트 세부"
 
-#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:170
 msgid "Not Supported"
 msgstr "지원하지 않습니다."
 
-#: src/ClientDetailDialog.cpp:169
+#: src/ClientDetailDialog.cpp:176
 msgid "Not complete"
 msgstr "완료되지않았습니다"
 
-#: src/ClientDetailDialog.cpp:172
+#: src/ClientDetailDialog.cpp:179
 msgid "Bad Guy"
 msgstr "나쁜 애"
 
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:182
 msgid "Verified - OK"
 msgstr "인증됨"
 
-#: src/ClientDetailDialog.cpp:179
+#: src/ClientDetailDialog.cpp:186
 msgid "Not Available"
 msgstr "이용 불가능"
 

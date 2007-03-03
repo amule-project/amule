@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 03:30+0100\n"
+"POT-Creation-Date: 2007-03-03 03:31+0100\n"
 "PO-Revision-Date: 2005-11-26 01:05+0000\n"
 "Last-Translator: Helder Correia <helder.pereira.correia@gmail.com>\n"
 "Language-Team: Portuguese <helder.pereira.correia@gmail.com>\n"
@@ -1497,7 +1497,7 @@ msgstr "Utilizadores"
 msgid "Files"
 msgstr "Ficheiros"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:173
 msgid "Failed"
 msgstr "Falhas"
 
@@ -6511,28 +6511,28 @@ msgstr "Chave do utilizador"
 msgid "Client Details"
 msgstr "Detalhes do cliente"
 
-#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:170
 msgid "Not Supported"
 msgstr "Não suportado"
 
-#: src/ClientDetailDialog.cpp:169
+#: src/ClientDetailDialog.cpp:176
 msgid "Not complete"
 msgstr "Incompleto"
 
-#: src/ClientDetailDialog.cpp:172
+#: src/ClientDetailDialog.cpp:179
 msgid "Bad Guy"
 msgstr "Pessoa má"
 
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:182
 msgid "Verified - OK"
 msgstr "Verificado - OK"
 
-#: src/ClientDetailDialog.cpp:179
+#: src/ClientDetailDialog.cpp:186
 msgid "Not Available"
 msgstr "Indisponível"
 

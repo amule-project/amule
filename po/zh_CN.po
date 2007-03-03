@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 03:30+0100\n"
+"POT-Creation-Date: 2007-03-03 03:31+0100\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Chen Nan\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1483,7 +1483,7 @@ msgstr "用户数"
 msgid "Files"
 msgstr "文件"
 
-#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:166
+#: src/ServerListCtrl.cpp:90 src/ClientDetailDialog.cpp:173
 msgid "Failed"
 msgstr "失败次数"
 
@@ -6309,28 +6309,28 @@ msgstr "用户编码"
 msgid "Client Details"
 msgstr "用户信息"
 
-#: src/ClientDetailDialog.cpp:143 src/ClientDetailDialog.cpp:147
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
 #, c-format
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-#: src/ClientDetailDialog.cpp:163
+#: src/ClientDetailDialog.cpp:170
 msgid "Not Supported"
 msgstr "不被支持"
 
-#: src/ClientDetailDialog.cpp:169
+#: src/ClientDetailDialog.cpp:176
 msgid "Not complete"
 msgstr "未完成"
 
-#: src/ClientDetailDialog.cpp:172
+#: src/ClientDetailDialog.cpp:179
 msgid "Bad Guy"
 msgstr "坏蛋"
 
-#: src/ClientDetailDialog.cpp:175
+#: src/ClientDetailDialog.cpp:182
 msgid "Verified - OK"
 msgstr "验证已通过"
 
-#: src/ClientDetailDialog.cpp:179
+#: src/ClientDetailDialog.cpp:186
 msgid "Not Available"
 msgstr "不在"
 
