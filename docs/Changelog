@@ -9,20 +9,6 @@ Trunk
 	DLH:
 		* amulegui.xpm icon.
 
-	Vollstrecker:
-		* Added possibility to give the path for output right with
-		  -p or -o in cas.
-		* Changed cas to use getopt_long.
-		* Added --config-dir and -c option to cas.
-		* Added alias -H --html to cas.
-		* Added alias -P --picture to cas.
-		* Added --config-dir and -c option to ed2k.
-		* Added --config-dir option to amuled.
-		* Fixed typos in the man pages.
-		* Added manpage for amulegui.
-		* Added amulegui desktop icon (with Gerd78).
-		* Manpages update.
-
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
 		* Patch for autoconf >= 2.60.
@@ -50,6 +36,9 @@ Trunk
 		* Patch for amulecmd history which ensures that when the same command
 		  is repeated several times in a row it only gets recorded in the
 		  history once.
+
+	jcoy:
+		* Set download priority in amulecmd.
 
 	ken:
 		* Fixed control-clicking (right-clicking) on tabs in notebooks on the
@@ -118,6 +107,20 @@ Trunk
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
+
+	Vollstrecker:
+		* Added possibility to give the path for output right with
+		  -p or -o in cas.
+		* Changed cas to use getopt_long.
+		* Added --config-dir and -c option to cas.
+		* Added alias -H --html to cas.
+		* Added alias -P --picture to cas.
+		* Added --config-dir and -c option to ed2k.
+		* Added --config-dir option to amuled.
+		* Fixed typos in the man pages.
+		* Added manpage for amulegui.
+		* Added amulegui desktop icon (with Gerd78).
+		* Manpages update.
 
 
 --------------------------------------------------------------------------------
