@@ -104,6 +104,7 @@ Trunk
 		  found, instead of only the first one.
 		* Creation of --enable-upnp/--disable-upnp configure flag.
 		* Update of wxWidgets-2.6.3 deprecated code to version 2.8.2.
+		* Fixed IPFilter.dat loading from a zipped file.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

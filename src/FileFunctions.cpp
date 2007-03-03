@@ -449,7 +449,8 @@ EFileType GuessFiletype(const wxString& file)
 bool UnpackZipFile(const wxString& file, const wxChar* files[])
 {
 	wxZipFSHandler archive; 
-	wxString filename = archive.FindFirst(file + wxT("#file:/*"), wxFILE);
+	wxString filename = archive.FindFirst(
+		wxT("file:") + file + wxT("#zip:/*"), wxFILE);
 	while (!filename.IsEmpty()) {
 		// Extract the filename part of the URI
 		filename = filename.AfterLast(wxT(':')).Lower();
