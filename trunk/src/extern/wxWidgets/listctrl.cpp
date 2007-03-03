@@ -45,6 +45,10 @@
     #include "wx/mac/private.h" // Do_not_auto_remove
 #endif
 
+#if !wxCHECK_VERSION(2,8,0)
+	#define Contains Inside
+	#define SetInitialSize SetBestSize
+#endif
 
 // NOTE: If using the wxListBox visual attributes works everywhere then this can
 // be removed, as well as the #else case below.
