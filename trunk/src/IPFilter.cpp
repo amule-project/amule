@@ -28,14 +28,14 @@
 
 #include "IPFilter.h"			// Interface declarations.
 #include "Preferences.h"		// Needed for thePrefs
-#include "amule.h"				// Needed for theApp
+#include "amule.h"			// Needed for theApp
 #include "Statistics.h"			// Needed for theStats
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
-#include "Logger.h"				// Needed for AddDebugLogLineM
-#include <common/Format.h>				// Needed for CFormat
+#include "Logger.h"			// Needed for AddDebugLogLineM
+#include <common/Format.h>		// Needed for CFormat
 #include <common/StringFunctions.h>	// Needed for CSimpleTokenizer
 #include "FileFunctions.h"		// Needed for UnpackArchive
-#include "ThreadScheduler.h"	// Needed for CThreadScheduler and CThreadTask
+#include "ThreadScheduler.h"		// Needed for CThreadScheduler and CThreadTask
 #include "ClientList.h"			// Needed for CClientList
 #include "ServerList.h"			// Needed for CServerList
 
@@ -95,7 +95,6 @@ public:
 	{
 	}
 	
-private:
 	void Entry() {
 		AddLogLineM(false, _("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
 		LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"));		
@@ -104,6 +103,7 @@ private:
 		CIPFilterEvent evt(m_result);
 		wxPostEvent(m_owner, evt);
 	}
+private:
 
 	
 	/**
@@ -251,7 +251,7 @@ private:
 	 **/
 	void LoadFromFile(const wxString& file)
 	{
-		if (!wxFileExists(file) or TestDestroy()) {	
+		if (!wxFileExists(file) /*|| TestDestroy()*/) {	
 			return;
 		}
 
@@ -263,7 +263,8 @@ private:
 		
 		// Try to unpack the file, might be an archive
 		if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
-			AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
+			AddLogLineM(true, 
+				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return;
 		}
 		
@@ -280,9 +281,9 @@ private:
 			while (!readFile.Eof()) {
 				wxString line = readFile.GetNextLine();
 
-				if (TestDestroy()) {
+				/*if (TestDestroy()) {
 					return;
-				} else if (func && (*this.*func)(line)) {
+				} else */if (func && (*this.*func)(line)) {
 					filtercount++;
 				} else if (ProcessPeerGuardianLine(line)) {
 					func = &CIPFilterTask::ProcessPeerGuardianLine;
@@ -377,7 +378,16 @@ CIPFilter::CIPFilter()
 void CIPFilter::Reload()
 {
 	// We keep the current filter till the new one has been loaded.
-	CThreadScheduler::AddTask(new CIPFilterTask(this));
+	//CThreadScheduler::AddTask(new CIPFilterTask(this));
+	
+	// This procedure cannot be run as a task, 
+	// wxArchiveFSHandler::FindFirst() will eventually call wxExecute(),
+	// and this can only be done from the main task.
+	//
+	// This way, We call the Entry() routine manually and comment out the
+	// calls to TestDestroy().
+	CIPFilterTask ipf_task(this);
+	ipf_task.Entry();
 }
 
 
@@ -439,20 +449,23 @@ void CIPFilter::DownloadFinished(uint32 result)
 
 		if (wxFileExists(oldDat)) {
 			if (!wxRemoveFile(oldDat)) {
-				AddDebugLogLineM(true, logIPFilter, wxT("Failed to remove ipfilter.dat file, aborting update."));
+				AddDebugLogLineM(true, logIPFilter,
+					wxT("Failed to remove ipfilter.dat file, aborting update."));
 				return;
 			}
 		}
 
 		if (!wxRenameFile(newDat, oldDat)) {
-			AddDebugLogLineM(true, logIPFilter, wxT("Failed to rename new ipfilter.dat file, aborting update."));
+			AddDebugLogLineM(true, logIPFilter,
+				wxT("Failed to rename new ipfilter.dat file, aborting update."));
 			return;
 		}
 
 		// Reload both ipfilter files
 		Reload();
 	} else {
-		AddDebugLogLineM(true, logIPFilter, wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
+		AddDebugLogLineM(true, logIPFilter,
+			wxT("Failed to download the ipfilter from ") + thePrefs::IPFilterURL());
 	}
 }
 
