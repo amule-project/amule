@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-03 03:31+0100\n"
+"POT-Creation-Date: 2007-03-04 03:30+0100\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -474,7 +474,7 @@ msgstr "Hiba: A TCP portot nem lehet figyelni."
 msgid "Request failed with the following error: %s."
 msgstr "A kérés sikertelen volt a következő hibával: %s."
 
-#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:551
+#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:597
 msgid "Request failed with an unknown error."
 msgstr "Kérés ismeretlen hibával sikertelen."
 
@@ -890,12 +890,12 @@ msgid " Kad: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1016
-#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:636
+#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:682
 msgid "ok"
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1018
-#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:634
+#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:680
 msgid "firewalled"
 msgstr ""
 
@@ -1343,7 +1343,7 @@ msgstr "Helyi keresés"
 msgid "Remote Server"
 msgstr "Kiszolgáló(k) eltávolítása"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:629 src/muuli_wdr.cpp:195
+#: src/DataToText.cpp:128 src/TextClient.cpp:675 src/muuli_wdr.cpp:195
 #: src/muuli_wdr.cpp:3986 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
@@ -2361,7 +2361,7 @@ msgstr "Kiszolgáló nem lett hozzáadva: Érvénytelen kiszolgáló-port."
 msgid "ED2K Status:"
 msgstr "Állapot:"
 
-#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:632
+#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:678
 #: src/ClientListCtrl.cpp:973
 msgid "Connected"
 msgstr "Csatlakozva"
@@ -2435,7 +2435,7 @@ msgstr "Átlagos fájlméret: %s"
 msgid "Average Files:"
 msgstr "Átlagos fájlméret: %s"
 
-#: src/ServerWnd.cpp:241 src/TextClient.cpp:643
+#: src/ServerWnd.cpp:241 src/TextClient.cpp:689
 #, fuzzy
 msgid "Not running"
 msgstr "Kapcsolódás folyamatban"
@@ -3518,102 +3518,106 @@ msgstr "Már megkísérelted a(z) '%s' fájlt letölteni"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Érvénytelen ed2k hivatkozás! Hiba: %s"
 
-#: src/TextClient.cpp:122
+#: src/TextClient.cpp:127
 msgid "Execute <str> and exit."
 msgstr "Végrehajtja az <str>-t és kilép."
 
-#: src/TextClient.cpp:189
+#: src/TextClient.cpp:194
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Érvénytelen IP cím formátum. Így használd: xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:296
+#: src/TextClient.cpp:301
 msgid ""
 "This command requieres an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
 "Ez a parancs argumentumot igényel. Érvényes argumentumok: 'all' vagy egy "
 "szám.\n"
 
-#: src/TextClient.cpp:337
+#: src/TextClient.cpp:342 src/TextClient.cpp:383
 msgid "Not a valid number\n"
 msgstr "Érvénytelen szám\n"
 
-#: src/TextClient.cpp:341
+#: src/TextClient.cpp:346 src/TextClient.cpp:387
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr ""
 
-#: src/TextClient.cpp:521
+#: src/TextClient.cpp:357
+msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgstr ""
+
+#: src/TextClient.cpp:567
 #, c-format
 msgid "     %d"
 msgstr ""
 
-#: src/TextClient.cpp:522
+#: src/TextClient.cpp:568
 #, c-format
 msgid ".%d"
 msgstr ""
 
-#: src/TextClient.cpp:555
+#: src/TextClient.cpp:601
 msgid "Operation was successful."
 msgstr "A művelet sikeres volt."
 
-#: src/TextClient.cpp:561
+#: src/TextClient.cpp:607
 #, fuzzy, c-format
 msgid "Request failed with the following error: %s"
 msgstr "A kérés sikertelen volt a következő hibával: %s."
 
-#: src/TextClient.cpp:577
+#: src/TextClient.cpp:623
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:578 src/TextClient.cpp:584
+#: src/TextClient.cpp:624 src/TextClient.cpp:630
 msgid "OFF"
 msgstr "Ki"
 
-#: src/TextClient.cpp:578 src/TextClient.cpp:584
+#: src/TextClient.cpp:624 src/TextClient.cpp:630
 msgid "ON"
 msgstr "Be"
 
-#: src/TextClient.cpp:583
+#: src/TextClient.cpp:629
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:588
+#: src/TextClient.cpp:634
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "IP szűrő szintje jelenleg %d.\n"
 
-#: src/TextClient.cpp:596
+#: src/TextClient.cpp:642
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Sávszélesség korlátok: Fel: %u kB/s, Le: %u kB/s.\n"
 
-#: src/TextClient.cpp:614 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3981
+#: src/TextClient.cpp:660 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3981
 msgid "ED2K"
 msgstr ""
 
-#: src/TextClient.cpp:619
+#: src/TextClient.cpp:665
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Kapcsolódva %s-hez %s %s"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2005
+#: src/TextClient.cpp:668 src/amule.cpp:2005
 msgid "with LowID"
 msgstr "LowID-val"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2005
+#: src/TextClient.cpp:668 src/amule.cpp:2005
 msgid "with HighID"
 msgstr "HighID-val"
 
-#: src/TextClient.cpp:625
+#: src/TextClient.cpp:671
 msgid "Now connecting"
 msgstr "Kapcsolódás folyamatban"
 
-#: src/TextClient.cpp:627 src/TextClient.cpp:640
+#: src/TextClient.cpp:673 src/TextClient.cpp:686
 msgid "Not connected"
 msgstr "Nincs kapcsolódva"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:695
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -3622,7 +3626,7 @@ msgstr ""
 "\n"
 "Letöltés:\t %d/mp"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:698
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -3631,7 +3635,7 @@ msgstr ""
 "\n"
 "Feltöltés:\t %d/mp"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:701
 #, c-format
 msgid ""
 "\n"
@@ -3640,7 +3644,7 @@ msgstr ""
 "\n"
 "Várólistás kliensek száma:\t%d\n"
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:704
 #, c-format
 msgid ""
 "\n"
@@ -3649,35 +3653,35 @@ msgstr ""
 "\n"
 "Összes forrás:\t%d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:776
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr ""
 
-#: src/TextClient.cpp:743
+#: src/TextClient.cpp:789
 msgid "TODO - show progress of a search"
 msgstr ""
 
-#: src/TextClient.cpp:749
+#: src/TextClient.cpp:795
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Ismeretlen válasz érkezett a kiszolgálótól, OpCode = %#x."
 
-#: src/TextClient.cpp:762
+#: src/TextClient.cpp:808
 #, fuzzy
 msgid "Show short status information."
 msgstr "Állapot és statisztika megjelenítése.\n"
 
-#: src/TextClient.cpp:763
+#: src/TextClient.cpp:809
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 
-#: src/TextClient.cpp:765
+#: src/TextClient.cpp:811
 #, fuzzy
 msgid "Show full statistics tree."
 msgstr "Megjeleníti a teljes statisztika fát.\n"
 
-#: src/TextClient.cpp:766
+#: src/TextClient.cpp:812
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3689,38 +3693,38 @@ msgid ""
 "type.\n"
 msgstr ""
 
-#: src/TextClient.cpp:772
+#: src/TextClient.cpp:818
 #, fuzzy
 msgid "Shutdown aMule."
 msgstr "aMule leállítása\n"
 
-#: src/TextClient.cpp:773
+#: src/TextClient.cpp:819
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
 
-#: src/TextClient.cpp:777
+#: src/TextClient.cpp:823
 msgid "Reloads the given object."
 msgstr ""
 
-#: src/TextClient.cpp:778
+#: src/TextClient.cpp:824
 #, fuzzy
 msgid "Reloads shared files list."
 msgstr "Megosztott fájlok frissítése.\n"
 
-#: src/TextClient.cpp:779
+#: src/TextClient.cpp:825
 #, fuzzy
 msgid "Reloads IP Filter table from file."
 msgstr "IP szűrő tábla újratöltése.\n"
 
-#: src/TextClient.cpp:781
+#: src/TextClient.cpp:827
 #, fuzzy
 msgid "Connect to the network."
 msgstr "Kapcsolódás a kiszolgálóhoz"
 
-#: src/TextClient.cpp:782
+#: src/TextClient.cpp:828
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3729,40 +3733,40 @@ msgid ""
 "or a resolvable DNS name."
 msgstr ""
 
-#: src/TextClient.cpp:786
+#: src/TextClient.cpp:832
 #, fuzzy
 msgid "Connect to ED2K only."
 msgstr "Kapcsolódás ehhez:"
 
-#: src/TextClient.cpp:787
+#: src/TextClient.cpp:833
 #, fuzzy
 msgid "Connect to Kad only."
 msgstr "Kapcsolódás bármelyik kiszolgálóhoz"
 
-#: src/TextClient.cpp:789
+#: src/TextClient.cpp:835
 #, fuzzy
 msgid "Disconnect from the network."
 msgstr "Leválaszt a kiszolgálóról.\n"
 
-#: src/TextClient.cpp:790
+#: src/TextClient.cpp:836
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr ""
 
-#: src/TextClient.cpp:791
+#: src/TextClient.cpp:837
 #, fuzzy
 msgid "Disconnect from ED2K only."
 msgstr "Leválaszt a kiszolgálóról.\n"
 
-#: src/TextClient.cpp:792
+#: src/TextClient.cpp:838
 #, fuzzy
 msgid "Disconnect from Kad only."
 msgstr "Leválaszt a kiszolgálóról.\n"
 
-#: src/TextClient.cpp:794
+#: src/TextClient.cpp:840
 msgid "Adds an ed2k link to core."
 msgstr ""
 
-#: src/TextClient.cpp:795
+#: src/TextClient.cpp:841
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3772,113 +3776,113 @@ msgid ""
 "   server list.\n"
 msgstr ""
 
-#: src/TextClient.cpp:801
+#: src/TextClient.cpp:847
 msgid "Set a preference value."
 msgstr ""
 
-#: src/TextClient.cpp:804
+#: src/TextClient.cpp:850
 #, fuzzy
 msgid "Set IPFilter preferences."
 msgstr "Kiszolgáló beállítások"
 
-#: src/TextClient.cpp:805
+#: src/TextClient.cpp:851
 msgid "Turn IP filtering on for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:806
+#: src/TextClient.cpp:852
 msgid "Turn IP filtering off for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:853
 msgid "Enable/Disable IP filtering for clients."
 msgstr ""
 
-#: src/TextClient.cpp:808
+#: src/TextClient.cpp:854
 msgid "Turn IP filtering on for clients."
 msgstr ""
 
-#: src/TextClient.cpp:809
+#: src/TextClient.cpp:855
 msgid "Turn IP filtering off for clients."
 msgstr ""
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:856
 msgid "Enable/Disable IP filtering for servers."
 msgstr ""
 
-#: src/TextClient.cpp:811
+#: src/TextClient.cpp:857
 msgid "Turn IP filtering on for servers."
 msgstr ""
 
-#: src/TextClient.cpp:812
+#: src/TextClient.cpp:858
 msgid "Turn IP filtering off for servers."
 msgstr ""
 
-#: src/TextClient.cpp:813
+#: src/TextClient.cpp:859
 #, fuzzy
 msgid "Select IP filtering level."
 msgstr "Jelenlegi IP szűrő szint megjelenítése/beállítása.\n"
 
-#: src/TextClient.cpp:814
+#: src/TextClient.cpp:860
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
 
-#: src/TextClient.cpp:817
+#: src/TextClient.cpp:863
 #, fuzzy
 msgid "Set bandwidth limits."
 msgstr "Sávszélességi korlátok"
 
-#: src/TextClient.cpp:818
+#: src/TextClient.cpp:864
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr ""
 
-#: src/TextClient.cpp:819
+#: src/TextClient.cpp:865
 #, fuzzy
 msgid "Set upload bandwidth limit."
 msgstr "Kiírja a sávszélesség korlátokat.\n"
 
-#: src/TextClient.cpp:821
+#: src/TextClient.cpp:867
 #, fuzzy
 msgid "Set download bandwidth limit."
 msgstr "Beállítja a maximális letöltési sávszélességet.\n"
 
-#: src/TextClient.cpp:824
+#: src/TextClient.cpp:870
 msgid "Get and display a preference value."
 msgstr ""
 
-#: src/TextClient.cpp:827
+#: src/TextClient.cpp:873
 #, fuzzy
 msgid "Get IPFilter preferences."
 msgstr "Kiszolgáló beállítások"
 
-#: src/TextClient.cpp:828
+#: src/TextClient.cpp:874
 msgid "Get IPFilter state for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:875
 msgid "Get IPFilter state for clients only."
 msgstr ""
 
-#: src/TextClient.cpp:830
+#: src/TextClient.cpp:876
 msgid "Get IPFilter state for servers only."
 msgstr ""
 
-#: src/TextClient.cpp:831
+#: src/TextClient.cpp:877
 #, fuzzy
 msgid "Get IPFilter level."
 msgstr "IP szűrő szintje jelenleg %d.\n"
 
-#: src/TextClient.cpp:833
+#: src/TextClient.cpp:879
 #, fuzzy
 msgid "Get bandwidth limits."
 msgstr "Sávszélességi korlátok"
 
-#: src/TextClient.cpp:835
+#: src/TextClient.cpp:881
 msgid "Makes a search."
 msgstr ""
 
-#: src/TextClient.cpp:836
+#: src/TextClient.cpp:882
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3887,177 +3891,201 @@ msgid ""
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
 msgstr ""
 
-#: src/TextClient.cpp:841
+#: src/TextClient.cpp:887
 msgid "Executes a global search."
 msgstr ""
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:888
 msgid "Executes a local search"
 msgstr ""
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:889
 msgid "Executes a kad search"
 msgstr ""
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:891
 msgid "Shows the results of the last search."
 msgstr ""
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:892
 msgid "Returns the results of the previous search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:894
 msgid "Shows the process of a search."
 msgstr ""
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:895
 msgid "Shows the process of a search..\n"
 msgstr ""
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:897
 msgid "Start downloading a file"
 msgstr ""
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:898
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the prvious search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:906
 #, fuzzy
 msgid "Pause download."
 msgstr "Aktív letöltések"
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:909
 #, fuzzy
 msgid "Resume download."
 msgstr "Aktív letöltések"
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:912
 #, fuzzy
 msgid "Cancel download."
 msgstr "Aktív letöltések"
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:915
+msgid "Set download priority."
+msgstr ""
+
+#: src/TextClient.cpp:916
+msgid "Set priority of a download to Low, Normal, High or Auto.\n"
+msgstr ""
+
+#: src/TextClient.cpp:917
+msgid "Set riority to low."
+msgstr ""
+
+#: src/TextClient.cpp:918
+msgid "Set riority to normal."
+msgstr ""
+
+#: src/TextClient.cpp:919
+msgid "Set riority to high."
+msgstr ""
+
+#: src/TextClient.cpp:920
+msgid "Set riority to auto."
+msgstr ""
+
+#: src/TextClient.cpp:922
 #, fuzzy
 msgid "Show queues/lists."
 msgstr "Kiszolgáló-lista megjelenítése.\n"
 
-#: src/TextClient.cpp:870
+#: src/TextClient.cpp:923
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:924
 #, fuzzy
 msgid "Show upload queue."
 msgstr "Feltöltési lista / Várólista megjelenítése"
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:925
 #, fuzzy
 msgid "Show download queue."
 msgstr "Feltöltési/Letöltési lista megjelenítése.\n"
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:926
 msgid "Show log."
 msgstr ""
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:927
 #, fuzzy
 msgid "Show servers list."
 msgstr "Kiszolgáló-lista megjelenítése.\n"
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:930
 msgid "Reset log."
 msgstr ""
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:936
 msgid "Deprecated command, now 'Status'."
 msgstr ""
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:937
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Status' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:940
 msgid "Deprecated command, now 'Set IPFilter'."
 msgstr ""
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:941
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:944
 msgid "Deprecated command, now 'Get IPFilter Level'."
 msgstr ""
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:945
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get IPFilter Level' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:948
 msgid "Deprecated command, now 'Set IPFilter Level'."
 msgstr ""
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:949
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter Level' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:952
 msgid "Deprecated command, now 'Get/Set IPFilter Level'."
 msgstr ""
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:953
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get/Set IPFilter Level' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:956
 msgid "Deprecated command, now 'Show Servers'."
 msgstr ""
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:957
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Show Servers' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:960
 msgid "Deprecated command, now 'Get BwLimits'."
 msgstr ""
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:961
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get BwLimits' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:964
 msgid "Deprecated command, now 'Set BwLimit Up'."
 msgstr ""
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:965
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Up' instead.\n"
 msgstr ""
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:968
 msgid "Deprecated command, now 'Set BwLimit Down'."
 msgstr ""
 
-#: src/TextClient.cpp:916
+#: src/TextClient.cpp:969
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Down' instead.\n"
@@ -4430,21 +4458,21 @@ msgstr "mind"
 msgid "all others"
 msgstr "összes egyéb"
 
-#: src/IPFilter.cpp:100
+#: src/IPFilter.cpp:99
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr ""
 
-#: src/IPFilter.cpp:266
+#: src/IPFilter.cpp:267
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 
-#: src/IPFilter.cpp:304
+#: src/IPFilter.cpp:305
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 
-#: src/IPFilter.cpp:309
+#: src/IPFilter.cpp:310
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""
