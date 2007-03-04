@@ -166,12 +166,15 @@ namespace amule.net
 
                 m_tx_mem_stream = new MemoryStream(m_tx_buffer);
                 m_sock_writer = new BinaryWriter(m_tx_mem_stream);
-
+                for (int i = 0; i < m_tx_buffer.Length-1; i++)
+                {
+                    m_tx_buffer.SetValue((byte)(0xff), i);
+                }
                 ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", "123456");
                 p.Write(m_sock_writer);
 
                 m_op_Done.Reset();
-                m_s.BeginSend(m_tx_buffer, 0, p.Size(), SocketFlags.None, new AsyncCallback(TxCallback), this);
+                m_s.BeginSend(m_tx_buffer, 0, p.PacketSize()+8, SocketFlags.None, new AsyncCallback(TxCallback), this);
                 if (!m_op_Done.WaitOne(1000, true)) {
                     // Was unable to send login request for 1sec. Line must be really slow
                     return false;
