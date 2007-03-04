@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-2005-11-13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-03 03:31+0100\n"
+"POT-Creation-Date: 2007-03-04 03:30+0100\n"
 "PO-Revision-Date: 2005-11-15 19:02+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: librezale.org <librezale@librezale.org>\n"
@@ -468,7 +468,7 @@ msgstr "Errorea: Ezin dira TCP atakak entzun."
 msgid "Request failed with the following error: %s."
 msgstr "Eskakizunak errore honez huts egin du: %s."
 
-#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:551
+#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:597
 msgid "Request failed with an unknown error."
 msgstr "Eskakizunak errore ezezagun batez huts egin du."
 
@@ -879,12 +879,12 @@ msgid " Kad: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1016
-#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:636
+#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:682
 msgid "ok"
 msgstr "Ondo"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1018
-#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:634
+#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:680
 msgid "firewalled"
 msgstr "Suebakirik"
 
@@ -1326,7 +1326,7 @@ msgstr "Zerbitzari Lokala"
 msgid "Remote Server"
 msgstr "Urruneko Zerbitzaria"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:629 src/muuli_wdr.cpp:195
+#: src/DataToText.cpp:128 src/TextClient.cpp:675 src/muuli_wdr.cpp:195
 #: src/muuli_wdr.cpp:3986 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
@@ -2330,7 +2330,7 @@ msgstr "Zerbitzaria ez da gehitu: Baliogabeko zerbitzari-ataka ezarririk."
 msgid "ED2K Status:"
 msgstr "ED2k Egoera:"
 
-#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:632
+#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:678
 #: src/ClientListCtrl.cpp:973
 msgid "Connected"
 msgstr "Konektaturik"
@@ -2396,7 +2396,7 @@ msgstr "Batazbesteko Erabi.:"
 msgid "Average Files:"
 msgstr "Batazbesteko Fitxategiak:"
 
-#: src/ServerWnd.cpp:241 src/TextClient.cpp:643
+#: src/ServerWnd.cpp:241 src/TextClient.cpp:689
 msgid "Not running"
 msgstr "Geldirik"
 
@@ -3475,102 +3475,106 @@ msgstr "Dagoeneko %s fitxategia deskargatzen ari zara"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "ed2k lotura baliogabea! Errorea: %s"
 
-#: src/TextClient.cpp:122
+#: src/TextClient.cpp:127
 msgid "Execute <str> and exit."
 msgstr "<str> exekutatu eta irten."
 
-#: src/TextClient.cpp:189
+#: src/TextClient.cpp:194
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "IP Formatu baliogabea erabili xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:296
+#: src/TextClient.cpp:301
 msgid ""
 "This command requieres an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
 "Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' edo "
 "zenbaki bat\n"
 
-#: src/TextClient.cpp:337
+#: src/TextClient.cpp:342 src/TextClient.cpp:383
 msgid "Not a valid number\n"
 msgstr "Ez da baliozko zenbaki bat\n"
 
-#: src/TextClient.cpp:341
+#: src/TextClient.cpp:346 src/TextClient.cpp:387
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr ""
 
-#: src/TextClient.cpp:521
+#: src/TextClient.cpp:357
+msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgstr ""
+
+#: src/TextClient.cpp:567
 #, c-format
 msgid "     %d"
 msgstr ""
 
-#: src/TextClient.cpp:522
+#: src/TextClient.cpp:568
 #, c-format
 msgid ".%d"
 msgstr ""
 
-#: src/TextClient.cpp:555
+#: src/TextClient.cpp:601
 msgid "Operation was successful."
 msgstr "Ekintza arrakastatsuki amaitu da."
 
-#: src/TextClient.cpp:561
+#: src/TextClient.cpp:607
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "Eskakizunak errore honekin huts egin du: %s"
 
-#: src/TextClient.cpp:577
+#: src/TextClient.cpp:623
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:578 src/TextClient.cpp:584
+#: src/TextClient.cpp:624 src/TextClient.cpp:630
 msgid "OFF"
 msgstr "EZGAITURIK"
 
-#: src/TextClient.cpp:578 src/TextClient.cpp:584
+#: src/TextClient.cpp:624 src/TextClient.cpp:630
 msgid "ON"
 msgstr "GAITURIK"
 
-#: src/TextClient.cpp:583
+#: src/TextClient.cpp:629
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr ""
 
-#: src/TextClient.cpp:588
+#: src/TextClient.cpp:634
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Huneko IPIragazki maila %d da.\n"
 
-#: src/TextClient.cpp:596
+#: src/TextClient.cpp:642
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Konexio Mugak: Gora: %u kB/s, Behera: %u kB/s.\n"
 
-#: src/TextClient.cpp:614 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3981
+#: src/TextClient.cpp:660 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3981
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/TextClient.cpp:619
+#: src/TextClient.cpp:665
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s-ra konektaturik"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2005
+#: src/TextClient.cpp:668 src/amule.cpp:2005
 msgid "with LowID"
 msgstr "IDBaxuarekin"
 
-#: src/TextClient.cpp:622 src/amule.cpp:2005
+#: src/TextClient.cpp:668 src/amule.cpp:2005
 msgid "with HighID"
 msgstr "IDAltuarekin"
 
-#: src/TextClient.cpp:625
+#: src/TextClient.cpp:671
 msgid "Now connecting"
 msgstr "Ez konektatzen"
 
-#: src/TextClient.cpp:627 src/TextClient.cpp:640
+#: src/TextClient.cpp:673 src/TextClient.cpp:686
 msgid "Not connected"
 msgstr "konektatu gabe"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:695
 #, c-format
 msgid ""
 "\n"
@@ -3579,7 +3583,7 @@ msgstr ""
 "\n"
 "Deskargatu:\t%s"
 
-#: src/TextClient.cpp:652
+#: src/TextClient.cpp:698
 #, c-format
 msgid ""
 "\n"
@@ -3588,7 +3592,7 @@ msgstr ""
 "\n"
 "Igo:\t%s"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:701
 #, c-format
 msgid ""
 "\n"
@@ -3597,7 +3601,7 @@ msgstr ""
 "\n"
 "Bezero hilaran:\t%d\n"
 
-#: src/TextClient.cpp:658
+#: src/TextClient.cpp:704
 #, c-format
 msgid ""
 "\n"
@@ -3606,33 +3610,33 @@ msgstr ""
 "\n"
 "Jatorriak guztira:\t%d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:776
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr ""
 
-#: src/TextClient.cpp:743
+#: src/TextClient.cpp:789
 msgid "TODO - show progress of a search"
 msgstr ""
 
-#: src/TextClient.cpp:749
+#: src/TextClient.cpp:795
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Zerbitzaritik erantzun ezezagun bat jaso da, OpCode = %#x."
 
-#: src/TextClient.cpp:762
+#: src/TextClient.cpp:808
 msgid "Show short status information."
 msgstr "Egoera informazio laburra bistarazi."
 
-#: src/TextClient.cpp:763
+#: src/TextClient.cpp:809
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "Konexio egoera bistarazi, uneko igo/deskarga abiadura, etab.\n"
 
-#: src/TextClient.cpp:765
+#: src/TextClient.cpp:811
 msgid "Show full statistics tree."
 msgstr "Estatistica zuhaitz osoa bistarazi."
 
-#: src/TextClient.cpp:766
+#: src/TextClient.cpp:812
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3649,11 +3653,11 @@ msgstr ""
 "gero\n"
 "'mugagabea' izango da.\n"
 
-#: src/TextClient.cpp:772
+#: src/TextClient.cpp:818
 msgid "Shutdown aMule."
 msgstr "aMule Itzali."
 
-#: src/TextClient.cpp:773
+#: src/TextClient.cpp:819
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -3663,23 +3667,23 @@ msgstr ""
 "Honek testu bezeroa ere itxiko du, ezin bait da abiaraziriko muin bat\n"
 "gaber erabili.\n"
 
-#: src/TextClient.cpp:777
+#: src/TextClient.cpp:823
 msgid "Reloads the given object."
 msgstr "Emandako objetua birkargatu."
 
-#: src/TextClient.cpp:778
+#: src/TextClient.cpp:824
 msgid "Reloads shared files list."
 msgstr "Partekatutako fitxategi zerrenda freskatu."
 
-#: src/TextClient.cpp:779
+#: src/TextClient.cpp:825
 msgid "Reloads IP Filter table from file."
 msgstr "IP Iragazkia taula fitxategitik birkargatu."
 
-#: src/TextClient.cpp:781
+#: src/TextClient.cpp:827
 msgid "Connect to the network."
 msgstr "Sarera konektatu."
 
-#: src/TextClient.cpp:782
+#: src/TextClient.cpp:828
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3694,35 +3698,35 @@ msgstr ""
 "helbide\n"
 "bat izan behar da edo ebaitzi daitekeen izen bat."
 
-#: src/TextClient.cpp:786
+#: src/TextClient.cpp:832
 msgid "Connect to ED2K only."
 msgstr "ED2K sarera bakarrik konektatu."
 
-#: src/TextClient.cpp:787
+#: src/TextClient.cpp:833
 msgid "Connect to Kad only."
 msgstr "KAD sarera bakarrik konektatu."
 
-#: src/TextClient.cpp:789
+#: src/TextClient.cpp:835
 msgid "Disconnect from the network."
 msgstr "Saretik deskonektatu."
 
-#: src/TextClient.cpp:790
+#: src/TextClient.cpp:836
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Honek konektaturik zauden sare guztietatik deskonektatuko zaitu.\n"
 
-#: src/TextClient.cpp:791
+#: src/TextClient.cpp:837
 msgid "Disconnect from ED2K only."
 msgstr "ED2K saretik bakarrik deskonektatu."
 
-#: src/TextClient.cpp:792
+#: src/TextClient.cpp:838
 msgid "Disconnect from Kad only."
 msgstr "Kad saretik bakarrik deskonektatu."
 
-#: src/TextClient.cpp:794
+#: src/TextClient.cpp:840
 msgid "Adds an ed2k link to core."
 msgstr "ed2k lotura nagusira gehitu."
 
-#: src/TextClient.cpp:795
+#: src/TextClient.cpp:841
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3740,51 +3744,51 @@ msgstr ""
 "guztiak\n"
 "   zerbitzari zerrendara gehituko dira.\n"
 
-#: src/TextClient.cpp:801
+#: src/TextClient.cpp:847
 msgid "Set a preference value."
 msgstr "Hobespen balio bat ezarri."
 
-#: src/TextClient.cpp:804
+#: src/TextClient.cpp:850
 msgid "Set IPFilter preferences."
 msgstr "IP iragazki hobespenak ezarri."
 
-#: src/TextClient.cpp:805
+#: src/TextClient.cpp:851
 msgid "Turn IP filtering on for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:806
+#: src/TextClient.cpp:852
 msgid "Turn IP filtering off for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:853
 msgid "Enable/Disable IP filtering for clients."
 msgstr ""
 
-#: src/TextClient.cpp:808
+#: src/TextClient.cpp:854
 msgid "Turn IP filtering on for clients."
 msgstr ""
 
-#: src/TextClient.cpp:809
+#: src/TextClient.cpp:855
 msgid "Turn IP filtering off for clients."
 msgstr ""
 
-#: src/TextClient.cpp:810
+#: src/TextClient.cpp:856
 msgid "Enable/Disable IP filtering for servers."
 msgstr ""
 
-#: src/TextClient.cpp:811
+#: src/TextClient.cpp:857
 msgid "Turn IP filtering on for servers."
 msgstr ""
 
-#: src/TextClient.cpp:812
+#: src/TextClient.cpp:858
 msgid "Turn IP filtering off for servers."
 msgstr ""
 
-#: src/TextClient.cpp:813
+#: src/TextClient.cpp:859
 msgid "Select IP filtering level."
 msgstr "Ip Iragazte maila hautatu."
 
-#: src/TextClient.cpp:814
+#: src/TextClient.cpp:860
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -3792,55 +3796,55 @@ msgstr ""
 "Baliozko iragazte maila 0-255 tartekoak dira, eta lehenetsiriko balioa\n"
 "(hasierakoa) 127 da.\n"
 
-#: src/TextClient.cpp:817
+#: src/TextClient.cpp:863
 msgid "Set bandwidth limits."
 msgstr "Konexio zabalera mugak ezarri."
 
-#: src/TextClient.cpp:818
+#: src/TextClient.cpp:864
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "Komando hauentzat emandako balioa Kb/s-tan egon behar da.\n"
 
-#: src/TextClient.cpp:819
+#: src/TextClient.cpp:865
 msgid "Set upload bandwidth limit."
 msgstr "Igoera konexio zabalera muga ezarri."
 
-#: src/TextClient.cpp:821
+#: src/TextClient.cpp:867
 msgid "Set download bandwidth limit."
 msgstr "Deskarga konexio zabalera muga ezarri."
 
-#: src/TextClient.cpp:824
+#: src/TextClient.cpp:870
 msgid "Get and display a preference value."
 msgstr "Hobestepn balio bat eskuratu eta bistarazi."
 
-#: src/TextClient.cpp:827
+#: src/TextClient.cpp:873
 msgid "Get IPFilter preferences."
 msgstr "IP iragazki hobespenak eskuratu."
 
-#: src/TextClient.cpp:828
+#: src/TextClient.cpp:874
 msgid "Get IPFilter state for both clients and servers."
 msgstr ""
 
-#: src/TextClient.cpp:829
+#: src/TextClient.cpp:875
 msgid "Get IPFilter state for clients only."
 msgstr ""
 
-#: src/TextClient.cpp:830
+#: src/TextClient.cpp:876
 msgid "Get IPFilter state for servers only."
 msgstr ""
 
-#: src/TextClient.cpp:831
+#: src/TextClient.cpp:877
 msgid "Get IPFilter level."
 msgstr "IPiragazki maila eskuratu."
 
-#: src/TextClient.cpp:833
+#: src/TextClient.cpp:879
 msgid "Get bandwidth limits."
 msgstr "Konexio zabalera mugak eskuratu."
 
-#: src/TextClient.cpp:835
+#: src/TextClient.cpp:881
 msgid "Makes a search."
 msgstr ""
 
-#: src/TextClient.cpp:836
+#: src/TextClient.cpp:882
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3849,92 +3853,116 @@ msgid ""
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
 msgstr ""
 
-#: src/TextClient.cpp:841
+#: src/TextClient.cpp:887
 msgid "Executes a global search."
 msgstr ""
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:888
 msgid "Executes a local search"
 msgstr ""
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:889
 msgid "Executes a kad search"
 msgstr ""
 
-#: src/TextClient.cpp:845
+#: src/TextClient.cpp:891
 msgid "Shows the results of the last search."
 msgstr ""
 
-#: src/TextClient.cpp:846
+#: src/TextClient.cpp:892
 msgid "Returns the results of the previous search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:848
+#: src/TextClient.cpp:894
 msgid "Shows the process of a search."
 msgstr ""
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:895
 msgid "Shows the process of a search..\n"
 msgstr ""
 
-#: src/TextClient.cpp:851
+#: src/TextClient.cpp:897
 msgid "Start downloading a file"
 msgstr ""
 
-#: src/TextClient.cpp:852
+#: src/TextClient.cpp:898
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the prvious search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:860
+#: src/TextClient.cpp:906
 msgid "Pause download."
 msgstr "Deskarga Pausarazi."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:909
 msgid "Resume download."
 msgstr "Deskarga Berrekin."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:912
 msgid "Cancel download."
 msgstr "Deskarga Utzi."
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:915
+msgid "Set download priority."
+msgstr ""
+
+#: src/TextClient.cpp:916
+msgid "Set priority of a download to Low, Normal, High or Auto.\n"
+msgstr ""
+
+#: src/TextClient.cpp:917
+msgid "Set riority to low."
+msgstr ""
+
+#: src/TextClient.cpp:918
+msgid "Set riority to normal."
+msgstr ""
+
+#: src/TextClient.cpp:919
+msgid "Set riority to high."
+msgstr ""
+
+#: src/TextClient.cpp:920
+msgid "Set riority to auto."
+msgstr ""
+
+#: src/TextClient.cpp:922
 msgid "Show queues/lists."
 msgstr "Hilarak/zerrenda bistarazi. "
 
-#: src/TextClient.cpp:870
+#: src/TextClient.cpp:923
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Igoera/deskaga hilara, zerbitzari zerrenda edo partekatutako fitxategi "
 "zerrenda bistarazi.\n"
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:924
 msgid "Show upload queue."
 msgstr "Igoera hilra bistarazi."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:925
 msgid "Show download queue."
 msgstr "Deskarga hilra bistarazi."
 
-#: src/TextClient.cpp:873
+#: src/TextClient.cpp:926
 msgid "Show log."
 msgstr ""
 
-#: src/TextClient.cpp:874
+#: src/TextClient.cpp:927
 msgid "Show servers list."
 msgstr "Zerbitari zerrenda bistarazi."
 
-#: src/TextClient.cpp:877
+#: src/TextClient.cpp:930
 msgid "Reset log."
 msgstr ""
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:936
 msgid "Deprecated command, now 'Status'."
 msgstr "Zaharkitutako komandoa, 'Status' erabili."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:937
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Status' instead.\n"
@@ -3942,11 +3970,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Status' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:940
 msgid "Deprecated command, now 'Set IPFilter'."
 msgstr "Zaharkitutako komandoa, 'Set IPFilter' erabili."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:941
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter' instead.\n"
@@ -3954,11 +3982,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Set IPFilter' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:944
 msgid "Deprecated command, now 'Get IPFilter Level'."
 msgstr "Zaharkitutako komandoa, 'Get IPFilter Level' erabili."
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:945
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get IPFilter Level' instead.\n"
@@ -3966,11 +3994,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Get IPFilter Level' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:895
+#: src/TextClient.cpp:948
 msgid "Deprecated command, now 'Set IPFilter Level'."
 msgstr "Zaharkitutako komandoa, 'Set IPFilter Level' erabili."
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:949
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter Level' instead.\n"
@@ -3978,11 +4006,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Set IPFilter Level' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:899
+#: src/TextClient.cpp:952
 msgid "Deprecated command, now 'Get/Set IPFilter Level'."
 msgstr "Zaharkitutako komandoa, 'Get/Set IPFilter Level'.erabili."
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:953
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get/Set IPFilter Level' instead.\n"
@@ -3990,11 +4018,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Get/Set IPFilter Level' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:956
 msgid "Deprecated command, now 'Show Servers'."
 msgstr "Zaharkitutako komandoa, 'Show Servers' erabili."
 
-#: src/TextClient.cpp:904
+#: src/TextClient.cpp:957
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Show Servers' instead.\n"
@@ -4002,11 +4030,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Show Servers' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:960
 msgid "Deprecated command, now 'Get BwLimits'."
 msgstr "Zaharkitutako komandoa, 'Get BwLimits' erabili."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:961
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get BwLimits' instead.\n"
@@ -4014,11 +4042,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Get BwLimits' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:911
+#: src/TextClient.cpp:964
 msgid "Deprecated command, now 'Set BwLimit Up'."
 msgstr "Zaharkitutako komandoa, 'Set BwLimit Up' erabili."
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:965
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Up' instead.\n"
@@ -4026,11 +4054,11 @@ msgstr ""
 "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
 "'Set BwLimit Up' erabili horren ordez.\n"
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:968
 msgid "Deprecated command, now 'Set BwLimit Down'."
 msgstr "Zaharkitutako komandoa, 'Set BwLimit Down' erabili."
 
-#: src/TextClient.cpp:916
+#: src/TextClient.cpp:969
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Down' instead.\n"
@@ -4394,25 +4422,25 @@ msgstr "denak"
 msgid "all others"
 msgstr "Beste denak"
 
-#: src/IPFilter.cpp:100
+#: src/IPFilter.cpp:99
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr ""
 
-#: src/IPFilter.cpp:266
+#: src/IPFilter.cpp:267
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fiitxategia kargatzerakoan, formatu "
 "ezezagunak aurkitu dira."
 
-#: src/IPFilter.cpp:304
+#: src/IPFilter.cpp:305
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fiitxategia kargatzerakoan, ezin da "
 "fitxategia ireki."
 
-#: src/IPFilter.cpp:309
+#: src/IPFilter.cpp:310
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""
