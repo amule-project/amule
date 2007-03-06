@@ -44,6 +44,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"
 #include "KnownFile.h"			// Needed for Priority Levels
+#include "DataToText.cpp"		// Needed for PriorityToStr
 
 #define APP_INIT_SIZE_X 640
 #define APP_INIT_SIZE_Y 480
@@ -723,6 +724,11 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 							((int)tag->SourceXferCount() ? wxString::Format(wxT("(%2.2i) - "),(int)tag->SourceXferCount()) : wxString(wxT("     - "))) <<
 						tag->GetFileStatusString();
 						s << wxT(" - ") << tag->PartMetName();
+                                                if (tag->Prio() < 10) {
+                                                        s << wxT(" - ") << PriorityToStr((int)tag->Prio(), 0);
+                                                } else {
+                                                        s << wxT(" - ") << PriorityToStr((tag->Prio() - 10), 1);
+                                                }
 						if ( tag->SourceXferCount() > 0) {
 							s << wxT(" - ") + CastItoSpeed(tag->Speed());
 						}
