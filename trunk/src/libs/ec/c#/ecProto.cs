@@ -96,6 +96,20 @@ namespace amule.net
 
         public class ecTagInt : ecTag {
             private UInt64 m_val;
+            public ecTagInt(ECTagNames n, byte v)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT8)
+            {
+                m_val = v;
+                m_size = 1;
+            }
+
+            public ecTagInt(ECTagNames n, UInt16 v)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT16)
+            {
+                m_val = v;
+                m_size = 2;
+            }
+
             public ecTagInt(ECTagNames n, UInt32 v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT32)
             {
@@ -108,6 +122,31 @@ namespace amule.net
             {
                 m_val = v;
                 m_size = 8;
+            }
+
+            public ecTagInt(ECTagNames n, Int32 tag_size, BinaryReader br)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT8)
+            {
+                m_size = tag_size;
+                switch ( m_size ) {
+                    case 8:
+                        m_type = EcTagTypes.EC_TAGTYPE_UINT64;
+                        break;
+                    case 4:
+                        m_type = EcTagTypes.EC_TAGTYPE_UINT32;
+                        m_val = (UInt64)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                        break;
+                    case 2:
+                        m_type = EcTagTypes.EC_TAGTYPE_UINT16;
+                        m_val = (UInt64)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+                        break;
+                    case 1:
+                        m_type = EcTagTypes.EC_TAGTYPE_UINT8;
+                        m_val = (UInt64)br.ReadByte();
+                        break;
+                    default:
+                        throw new Exception("Unexpected size of data in integer tag");
+                }
             }
 
             public override void Write(BinaryWriter wr)
@@ -161,6 +200,12 @@ namespace amule.net
                 }
                 m_size = 16;
             }
+            public ecTagMD5(ECTagNames name, byte [] hash_data)
+                : base(name,EcTagTypes.EC_TAGTYPE_HASH16)
+            {
+                m_val = hash_data;
+            }
+
             public override void Write(BinaryWriter wr)
             {
                 base.Write(wr);
@@ -176,6 +221,14 @@ namespace amule.net
                 m_val = System.Text.Encoding.UTF8.GetBytes(s);
                 m_size = m_val.GetLength(0) + 1;
             }
+
+            public ecTagString(ECTagNames n, Int32 tag_size, BinaryReader br)
+                : base(n, EcTagTypes.EC_TAGTYPE_STRING)
+            {
+                char[] buf = br.ReadChars(tag_size);
+                m_size = tag_size;
+            }
+
             public override void Write(BinaryWriter wr)
             {
                 base.Write(wr);
@@ -189,15 +242,65 @@ namespace amule.net
             // since I have no zlib here, effectively disable compression
             const int MaxUncompressedPacket = 0x6666;
 
+            private ECOpCodes m_opcode;
+
             //
             // Parsing ctor
             //
-            private ECOpCodes m_opcode;
-
-            public ecPacket(byte [] rxBuffer, int len)
+            ecTag ReadTag(BinaryReader br)
             {
-                MemoryStream memStream = new MemoryStream(rxBuffer, 0, len);
-                BinaryReader binReader = new BinaryReader(memStream);
+                ecTag t = null;
+                Int16 tag_name16 = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+                bool have_subtags = ((tag_name16 & 1) != 0);
+                ECTagNames tag_name = (ECTagNames)(tag_name16 >> 1);
+
+                byte tag_type8 = br.ReadByte();
+                Int32 tag_size32 = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+
+                EcTagTypes tag_type = (EcTagTypes)tag_type8;
+                switch (tag_type) {
+                    case EcTagTypes.EC_TAGTYPE_UNKNOWN:
+                        break;
+                    case EcTagTypes.EC_TAGTYPE_CUSTOM:
+                        break;
+
+                    case EcTagTypes.EC_TAGTYPE_UINT8:
+                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                    case EcTagTypes.EC_TAGTYPE_UINT16:
+                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                    case EcTagTypes.EC_TAGTYPE_UINT32:
+                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                    case EcTagTypes.EC_TAGTYPE_UINT64:
+                        t = new ecTagInt(tag_name, tag_size32, br);
+                        break;
+
+                    case EcTagTypes.EC_TAGTYPE_STRING:
+                        break;
+                    case EcTagTypes.EC_TAGTYPE_DOUBLE:
+                        break;
+                    case EcTagTypes.EC_TAGTYPE_IPV4:
+                        break;
+                    case EcTagTypes.EC_TAGTYPE_HASH16:
+                        break;
+                    default:
+                        break;
+                }
+                return t;
+            }
+ 
+            public ecPacket(BinaryReader br)
+            {
+                Int32 flags = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                Int32 packet_size = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                m_opcode = (ECOpCodes)br.ReadByte();
+
+                Int16 tags_count = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+
+                if ( tags_count != 0 ) {
+                    for (int i = 0; i < tags_count; i++) {
+                        m_subtags.AddLast(ReadTag(br));
+                    }
+                }
             }
 
             //
@@ -229,7 +332,11 @@ namespace amule.net
                 wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(flags)));
                 wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(packet_size)));
                 wr.Write((byte)m_opcode);
-                WriteSubtags(wr);
+                if ( m_subtags.Count != 0 ) {
+                    WriteSubtags(wr);
+                } else {
+                    wr.Write((Int16)(0));
+                }
             }
 
 
@@ -247,6 +354,12 @@ namespace amule.net
 
                 // discussion is ongoing
                 //AddSubtag(new ecTagMD5(ECTagNames.EC_TAG_VERSION_ID, EC_VERSION_ID, true));
+            }
+        }
+
+        public class ecDownloadsInfoReq : ecPacket {
+            public ecDownloadsInfoReq() : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE)
+            {
             }
         }
 
