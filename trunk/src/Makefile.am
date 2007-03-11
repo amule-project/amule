@@ -8,6 +8,10 @@ EXTRA_DIST = Makengfile aMule.xpm
 
 bin_PROGRAMS = 
 
+if MONOLITHIC
+bin_PROGRAMS += amule
+endif
+
 if COMPILE_CMD
 bin_PROGRAMS += amulecmd   
 endif
@@ -22,10 +26,6 @@ endif
 
 if AMULE_DAEMON
 bin_PROGRAMS += amuled
-endif
-
-if MONOLITHIC
-bin_PROGRAMS += amule
 endif
 
 DEFS = -DHAVE_CONFIG_H
