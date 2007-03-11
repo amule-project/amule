@@ -39,26 +39,27 @@
 
 #include "amuleDlg.h"		// Interface declarations.
 
-#include "MuleTrayIcon.h"
+#include <common/Format.h>	// Needed for CFormat
+#include "amule.h"		// Needed for theApp
+#include "ChatWnd.h"		// Needed for CChatWnd
 #include "ClientListCtrl.h"	// Needed for CClientListCtrl
 #include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "ServerConnect.h"	// Needed for CServerConnect
-#include "Preferences.h"	// Needed for CPreferences
-#include "ChatWnd.h"		// Needed for CChatWnd
-#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
-#include "KadDlg.h"		// Needed for CKadDlg
-#include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
-#include "TransferWnd.h"	// Needed for CTransferWnd
-#include "SearchDlg.h"		// Needed for CSearchDlg
-#include "ServerWnd.h"		// Needed for CServerWnd
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "amule.h"		// Needed for theApp
-#include "muuli_wdr.h"		// Needed for ID_BUTTON*
-#include "PrefsUnifiedDlg.h"
-#include "Statistics.h"		// Needed for theStats
+#include "KadDlg.h"		// Needed for CKadDlg
 #include "Logger.h"
-#include <common/Format.h>		// Needed for CFormat
+#include "MuleTrayIcon.h"
+#include "muuli_wdr.h"		// Needed for ID_BUTTON*
+#include "Preferences.h"	// Needed for CPreferences
+#include "PrefsUnifiedDlg.h"
+#include "SearchDlg.h"		// Needed for CSearchDlg
 #include "Server.h"		// Needed for CServer
+#include "ServerConnect.h"	// Needed for CServerConnect
+#include "ServerWnd.h"		// Needed for CServerWnd
+#include "SharedFilesWnd.h"	// Needed for CSharedFilesWnd
+#include "Statistics.h"		// Needed for theStats
+#include "StatisticsDlg.h"	// Needed for CStatisticsDlg
+#include "TerminationProcess.h"	// Needed for CTerminationProcess
+#include "TransferWnd.h"	// Needed for CTransferWnd
 #ifndef CLIENT_GUI
 #include "PartFileConvert.h"
 #endif
@@ -1079,33 +1080,34 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	wxString cmd;
 
 	cmd = thePrefs::GetBrowser();
+	CTerminationProcess *p = new CTerminationProcess(cmd);
 	if ( !cmd.IsEmpty() ) {
 		wxString tmp = url;
 		// Pipes cause problems, so escape them
 		tmp.Replace( wxT("|"), wxT("%7C") );
 
-
-		if ( !cmd.Replace( wxT("%s"), tmp ) ) {
+		if (!cmd.Replace(wxT("%s"), tmp)) {
 			// No %s found, just append the url
 			cmd += wxT(" ") + tmp;
 		}
 
-		if ( wxExecute( cmd, false ) ) {
+		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
 			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
 			return;
 		}
 #ifdef __WXMSW__
 	} else {
-		wxFileType* ft = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
+		wxFileType* ft =
+			wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
 		if (!ft) {
 			wxLogError(
 				wxT("Impossible to determine the file type for extension html."
-				"Please edit your MIME types.")
-			);
+				"Please edit your MIME types."));
 			return;
 		}
 
-		bool ok = ft->GetOpenCommand(&cmd, wxFileType::MessageParameters(url, wxT("")));
+		bool ok = ft->GetOpenCommand(
+			&cmd, wxFileType::MessageParameters(url, wxT("")));
 		delete ft;
 
 		if (!ok) {
@@ -1116,14 +1118,16 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		}
 
 		wxPuts(wxT("Launch Command: ") + cmd);
-		if (wxExecute(cmd, false)) {
+		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
 			return;
 		}
 #endif
 	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
-	wxLogError( wxT("Unable to launch browser. Please set correct browser executable path in Preferences.") );
+	wxLogError(wxT(
+		"Unable to launch browser. "
+		"Please set correct browser executable path in Preferences."));
 }
 
 
@@ -1172,7 +1176,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString skinFileName)
 		}
 		
 		int client_header_found = -1;
-		for (uint32 i=0; i < skinfile.GetLineCount(); i++) {
+		for (uint32 i=0; i < skinfile.GetLineCount(); ++i) {
 			if (skinfile[i] == wxT("[Client Bitmaps]")) {
 				client_header_found = i;	
 				break;
@@ -1358,7 +1362,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxString skinFileName, wxToolBar* wndToolbar)
 		}
 
 		int client_header_found = -1;    
-		for (uint32 i=0; i < skinFile.GetLineCount(); i++) {
+		for (uint32 i=0; i < skinFile.GetLineCount(); ++i) {
 			if (skinFile[i] == wxT("[Toolbar Bitmaps]")) {
 				client_header_found = i;	
 				break;

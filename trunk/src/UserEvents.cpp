@@ -22,11 +22,16 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
 #include "UserEvents.h"
-#include "Preferences.h"
-#include "PartFile.h"
+
+
 #include <common/Format.h>
 #include "Logger.h"
+#include "Preferences.h"
+#include "PartFile.h"
+#include "TerminationProcess.h"	// Needed for CTerminationProcess
+
 
 #include <wx/process.h>
 
@@ -112,13 +117,17 @@ static void ExecuteCommand(
 	const void* object,
 	const wxString& cmd)
 {
+	// This variable is needed by the USEREVENTS_EVENTLIST macro.
 	wxString command = cmd;
 	switch (event) {
 		USEREVENTS_EVENTLIST()
 	}
 	if (!command.empty()) {
-		if (::wxExecute(command, wxEXEC_ASYNC) == 0) {
-			AddLogLineM(true, CFormat(_("Failed to execute command `%s' on `%s' event.")) % command % s_EventList[event].name);
+		CTerminationProcess *p = new CTerminationProcess(cmd);
+		if (wxExecute(command, wxEXEC_ASYNC, p) == 0) {
+			AddLogLineM(true,
+				CFormat(_("Failed to execute command `%s' on `%s' event.")) %
+				command % s_EventList[event].name);
 		}
 	}
 }
