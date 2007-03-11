@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-07 03:31+0100\n"
+"POT-Creation-Date: 2007-03-11 03:30+0100\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -146,8 +146,8 @@ msgstr "Konnte Liste der freigegebenen Dateien von Benutzer '%s' nicht abrufen"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:150 src/DownloadListCtrl.cpp:1471
-#: src/DownloadListCtrl.cpp:1484 src/DownloadListCtrl.cpp:1494
+#: src/Server.cpp:150 src/DownloadListCtrl.cpp:1470
+#: src/DownloadListCtrl.cpp:1483 src/DownloadListCtrl.cpp:1493
 #: src/PartFile.cpp:2558 src/PartFile.cpp:2564 src/KnownFile.cpp:823
 #: src/KnownFile.cpp:829 src/FileDetailDialog.cpp:126
 #: src/ClientListCtrl.cpp:664 src/ClientListCtrl.cpp:686
@@ -220,7 +220,7 @@ msgstr "Benutzername"
 msgid "Friends"
 msgstr "Freunde"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1058
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:249
 msgid "Show &Details"
 msgstr "Zeige &Details"
@@ -237,7 +237,7 @@ msgstr "Freund entfernen"
 msgid "Send &Message"
 msgstr "&Message senden"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1060
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:251
 msgid "View Files"
 msgstr "Dateien ansehen"
@@ -252,8 +252,8 @@ msgstr "Markierte(n) Freund(e) wirklich löschen?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:144 src/ServerListCtrl.cpp:534
-#: src/ServerListCtrl.cpp:548 src/amuleDlg.cpp:650
-#: src/DownloadListCtrl.cpp:612 src/DownloadListCtrl.cpp:932
+#: src/ServerListCtrl.cpp:548 src/amuleDlg.cpp:651
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:931
 #: src/TransferWnd.cpp:369 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
 #: src/muuli_wdr.cpp:2986 src/muuli_wdr.cpp:3820
@@ -273,13 +273,13 @@ msgid "Multiple selection"
 msgstr "Mehrfachauswahl"
 
 #: src/SharedFilesCtrl.cpp:95 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:50
+#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Dateiname"
 
 #: src/SharedFilesCtrl.cpp:96 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:639
+#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:639
 msgid "Size"
 msgstr "Größe"
 
@@ -289,7 +289,7 @@ msgstr "Suchtyp"
 
 #: src/SharedFilesCtrl.cpp:98 src/SharedFilesCtrl.cpp:133
 #: src/ServerListCtrl.cpp:89 src/ServerListCtrl.cpp:413
-#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:931
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:930
 msgid "Priority"
 msgstr "Priorität"
 
@@ -326,7 +326,7 @@ msgstr "Vollständige Quellen"
 msgid "Directory Path"
 msgstr "Verzeichnispfad"
 
-#: src/SharedFilesCtrl.cpp:123 src/amuleDlg.cpp:1519 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:123 src/amuleDlg.cpp:1523 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4048
 msgid "Shared Files"
 msgstr "Freigaben"
@@ -337,19 +337,19 @@ msgstr "Sehr niedrig"
 
 #: src/SharedFilesCtrl.cpp:126 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:210 src/ServerListCtrl.cpp:409
-#: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:2948
+#: src/DownloadListCtrl.cpp:925 src/muuli_wdr.cpp:2948
 msgid "Low"
 msgstr "Niedrig"
 
 #: src/SharedFilesCtrl.cpp:127 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:211 src/ServerListCtrl.cpp:410
-#: src/DownloadListCtrl.cpp:927 src/muuli_wdr.cpp:2949
+#: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:2949
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:128 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:212 src/ServerListCtrl.cpp:411
-#: src/DownloadListCtrl.cpp:928 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:927 src/muuli_wdr.cpp:2950
 msgid "High"
 msgstr "Hoch"
 
@@ -361,7 +361,7 @@ msgstr "Sehr hoch"
 msgid "Release"
 msgstr "Release"
 
-#: src/SharedFilesCtrl.cpp:131 src/DownloadListCtrl.cpp:929
+#: src/SharedFilesCtrl.cpp:131 src/DownloadListCtrl.cpp:928
 #: src/muuli_wdr.cpp:2951
 msgid "Auto"
 msgstr "Automatisch"
@@ -378,7 +378,7 @@ msgstr "Kommentar/Bewertung ändern"
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: src/SharedFilesCtrl.cpp:150 src/DownloadListCtrl.cpp:981
+#: src/SharedFilesCtrl.cpp:150 src/DownloadListCtrl.cpp:980
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopiere eD2k-&Link in die Zwischenablage"
 
@@ -401,7 +401,7 @@ msgstr ""
 "erstellen"
 
 #: src/SharedFilesCtrl.cpp:268 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:660
+#: src/amule.cpp:661
 msgid "Warning"
 msgstr "Warnung"
 
@@ -414,11 +414,11 @@ msgstr "Freigegebene Dateien (%i)"
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:651 src/DownloadListCtrl.cpp:1116
+#: src/SharedFilesCtrl.cpp:651 src/DownloadListCtrl.cpp:1115
 msgid "Enter new name for this file:"
 msgstr "Einen neuen Namen für diese Datei eingeben:"
 
-#: src/SharedFilesCtrl.cpp:652 src/DownloadListCtrl.cpp:1117
+#: src/SharedFilesCtrl.cpp:652 src/DownloadListCtrl.cpp:1116
 msgid "File rename"
 msgstr "Datei umbenennen"
 
@@ -616,7 +616,7 @@ msgstr "Lädt herunter..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1526
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1530
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4052
 msgid "Preferences"
 msgstr "Einstellungen"
@@ -934,8 +934,8 @@ msgstr "Download: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Upload: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/DownloadListCtrl.cpp:1353
-#: src/DownloadListCtrl.cpp:1644 src/OtherFunctions.cpp:161
+#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/DownloadListCtrl.cpp:1352
+#: src/DownloadListCtrl.cpp:1643 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:625
@@ -1001,7 +1001,7 @@ msgstr "HighID"
 msgid "LowID"
 msgstr "Niedrige ID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:702
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:703
 #: src/ServerWnd.cpp:180 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
@@ -1242,8 +1242,8 @@ msgstr "Auto [No]"
 msgid "Auto [Hi]"
 msgstr "Auto [Ho]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:475 src/amuleDlg.cpp:698
-#: src/ClientListCtrl.cpp:643 src/amule.cpp:782
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:476 src/amuleDlg.cpp:699
+#: src/ClientListCtrl.cpp:643 src/amule.cpp:783
 msgid "Connecting"
 msgstr "Verbinden"
 
@@ -1255,7 +1255,7 @@ msgstr "Anfragen"
 msgid "Connecting via server"
 msgstr "Verbunden über Server"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1729
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1728
 #: src/ClientListCtrl.cpp:681
 msgid "Queue Full"
 msgstr "Warteschlange voll"
@@ -1533,7 +1533,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
 #: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
-#: src/amule.cpp:700 src/amule.cpp:1284
+#: src/amule.cpp:701 src/amule.cpp:1292
 msgid "Info"
 msgstr "Info"
 
@@ -1612,34 +1612,34 @@ msgstr "Wirklich markierte(n) Server löschen?"
 msgid "Disabled [%s]"
 msgstr "Ausgeschaltet [%s]"
 
-#: src/amuleDlg.cpp:178
+#: src/amuleDlg.cpp:179
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "Dies ist aMule %s, basierend auf eMule."
 
-#: src/amuleDlg.cpp:179
+#: src/amuleDlg.cpp:180
 #, c-format
 msgid "Running on %s"
 msgstr "Läuft auf %s"
 
-#: src/amuleDlg.cpp:180
+#: src/amuleDlg.cpp:181
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr ""
 "Besuche http://www.amule.org um zu sehen, ob eine neue Version verfügbar ist."
 
-#: src/amuleDlg.cpp:199
+#: src/amuleDlg.cpp:200
 msgid "Fatal Error: Failed to create Timer"
 msgstr "Schwerer Fehler: Es konnte kein Zeitgeber erstellt werden."
 
-#: src/amuleDlg.cpp:396
+#: src/amuleDlg.cpp:397
 msgid "aMule remote control "
 msgstr "aMule-Fernbedienung "
 
-#: src/amuleDlg.cpp:402
+#: src/amuleDlg.cpp:403
 msgid "Snapshot:"
 msgstr "Schnappschuß:"
 
-#: src/amuleDlg.cpp:405
+#: src/amuleDlg.cpp:406
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1669,183 +1669,183 @@ msgstr ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:417 src/PrefsUnifiedDlg.cpp:490
+#: src/amuleDlg.cpp:418 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:677 src/KadDlg.cpp:182
 #: src/KadDlg.cpp:185 src/KadDlg.cpp:220 src/PartFile.cpp:910
 #: src/PartFile.cpp:923
 msgid "Message"
 msgstr "Nachricht"
 
-#: src/amuleDlg.cpp:503
+#: src/amuleDlg.cpp:504
 msgid "Status text"
 msgstr "Statustext"
 
-#: src/amuleDlg.cpp:652
+#: src/amuleDlg.cpp:653
 msgid "Stops the current connection attempts"
 msgstr "Beendet die derzeitigen Verbindungsversuche"
 
-#: src/amuleDlg.cpp:655
+#: src/amuleDlg.cpp:656
 msgid "Disconnect from "
 msgstr "Trennt vom "
 
-#: src/amuleDlg.cpp:658
+#: src/amuleDlg.cpp:659
 msgid "current server"
 msgstr "derzeitigen Server"
 
-#: src/amuleDlg.cpp:660
+#: src/amuleDlg.cpp:661
 msgid " and "
 msgstr " und von "
 
-#: src/amuleDlg.cpp:668 src/muuli_wdr.cpp:3148 src/MuleTrayIcon.cpp:508
+#: src/amuleDlg.cpp:669 src/muuli_wdr.cpp:3148 src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "Trennen"
 
-#: src/amuleDlg.cpp:674 src/amuleDlg.cpp:1509 src/muuli_wdr.cpp:3368
+#: src/amuleDlg.cpp:675 src/amuleDlg.cpp:1513 src/muuli_wdr.cpp:3368
 #: src/muuli_wdr.cpp:3816 src/muuli_wdr.cpp:4042 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Verbinden"
 
-#: src/amuleDlg.cpp:676 src/amuleDlg.cpp:1510 src/muuli_wdr.cpp:4042
+#: src/amuleDlg.cpp:677 src/amuleDlg.cpp:1514 src/muuli_wdr.cpp:4042
 msgid "Connect to any server and/or Kad"
 msgstr "Mit irgendeinem Server und/oder Kad verbinden"
 
-#: src/amuleDlg.cpp:686
+#: src/amuleDlg.cpp:687
 msgid "WARNING: You have recieved Low-ID!"
 msgstr "WARNUNG: Dir wurde eine Low-ID gegeben!"
 
-#: src/amuleDlg.cpp:687
+#: src/amuleDlg.cpp:688
 msgid "\tMost likely this is because you're behind a firewall or router."
 msgstr ""
 "\tDies kommt wahrscheinlich davon, dass du dich hinter einem Router oder "
 "einer Firewall befindest."
 
-#: src/amuleDlg.cpp:688
+#: src/amuleDlg.cpp:689
 msgid "\tFor more information, please refer to http://wiki.amule.org"
 msgstr "\tMehr Informationen dazu gibt es hier: http://wiki.amule.org"
 
-#: src/amuleDlg.cpp:692 src/ServerConnect.cpp:249
+#: src/amuleDlg.cpp:693 src/ServerConnect.cpp:249
 #, c-format
 msgid "Connection established on: %s"
 msgstr "Verbindung hergestellt auf: %s"
 
-#: src/amuleDlg.cpp:768
+#: src/amuleDlg.cpp:769
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:770
+#: src/amuleDlg.cpp:771
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Up: %.1f | Down: %.1f"
 
-#: src/amuleDlg.cpp:791
+#: src/amuleDlg.cpp:792
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Verbunden)"
 
-#: src/amuleDlg.cpp:793
+#: src/amuleDlg.cpp:794
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Getrennt)"
 
-#: src/amuleDlg.cpp:824
+#: src/amuleDlg.cpp:825
 msgid "Do you really want to exit aMule?"
 msgstr "Soll aMule wirklich beendet werden?"
 
-#: src/amuleDlg.cpp:825
+#: src/amuleDlg.cpp:826
 msgid "Exit confirmation"
 msgstr "Bestätigung beim Beenden"
 
-#: src/amuleDlg.cpp:1061 src/amuleDlg.cpp:1521 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1062 src/amuleDlg.cpp:1525 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3609 src/muuli_wdr.cpp:4049
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: src/amuleDlg.cpp:1065 src/amuleDlg.cpp:1522 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1066 src/amuleDlg.cpp:1526 src/muuli_wdr.cpp:4049
 msgid "Messages Window"
 msgstr "Nachrichten, Chat, Freundesliste"
 
-#: src/amuleDlg.cpp:1113
+#: src/amuleDlg.cpp:1115
 msgid "Could not determine the command for running the browser."
 msgstr "Der Befehl zur Ausführung des Browsers konnte nicht gefunden werden."
 
-#: src/amuleDlg.cpp:1165 src/amuleDlg.cpp:1351
+#: src/amuleDlg.cpp:1169 src/amuleDlg.cpp:1355
 msgid "Skin file name is empty"
 msgstr ""
 
-#: src/amuleDlg.cpp:1168 src/amuleDlg.cpp:1354
+#: src/amuleDlg.cpp:1172 src/amuleDlg.cpp:1358
 #, c-format
 msgid "Skin file %s does not exist"
 msgstr ""
 
-#: src/amuleDlg.cpp:1171 src/amuleDlg.cpp:1357
+#: src/amuleDlg.cpp:1175 src/amuleDlg.cpp:1361
 #, c-format
 msgid "Unable to open skin file: %s"
 msgstr "Kann Skin-Datei nicht öffnen: %s"
 
-#: src/amuleDlg.cpp:1336
+#: src/amuleDlg.cpp:1340
 msgid " - loading defaults"
 msgstr ""
 
-#: src/amuleDlg.cpp:1512 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:1516 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4044
 msgid "Networks"
 msgstr "Netzwerke"
 
-#: src/amuleDlg.cpp:1513 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:1517 src/muuli_wdr.cpp:4044
 msgid "Networks Window"
 msgstr "Übersicht der verwendeten Netzwerke"
 
-#: src/amuleDlg.cpp:1515 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1519 src/muuli_wdr.cpp:4046
 msgid "Searches"
 msgstr "Suchen"
 
-#: src/amuleDlg.cpp:1516 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1520 src/muuli_wdr.cpp:4046
 msgid "Searches Window"
 msgstr "Dateisuche in den verbundenen Netzwerken"
 
-#: src/amuleDlg.cpp:1517 src/muuli_wdr.cpp:4047
+#: src/amuleDlg.cpp:1521 src/muuli_wdr.cpp:4047
 msgid "Transfers"
 msgstr "Übertragungen"
 
-#: src/amuleDlg.cpp:1518 src/muuli_wdr.cpp:4047
+#: src/amuleDlg.cpp:1522 src/muuli_wdr.cpp:4047
 msgid "Files Transfers Window"
 msgstr "Datentransfer - Zeigt Up- und Downloads, Warteschlangen, usw."
 
-#: src/amuleDlg.cpp:1520 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1524 src/muuli_wdr.cpp:4048
 msgid "Shared Files Window"
 msgstr "Übersicht der freigegebenen Dateien"
 
-#: src/amuleDlg.cpp:1523 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1527 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4050
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: src/amuleDlg.cpp:1524 src/muuli_wdr.cpp:4050
+#: src/amuleDlg.cpp:1528 src/muuli_wdr.cpp:4050
 msgid "Statistics Graph Window"
 msgstr "Diverse Statistiken über Up- und Download, Verbindungen, Clients, usw."
 
-#: src/amuleDlg.cpp:1527 src/muuli_wdr.cpp:4052
+#: src/amuleDlg.cpp:1531 src/muuli_wdr.cpp:4052
 msgid "Preferences Settings Window"
 msgstr "Hier können die verschiedenen Einstellungen vorgenommen werden."
 
-#: src/amuleDlg.cpp:1528 src/muuli_wdr.cpp:4053
+#: src/amuleDlg.cpp:1532 src/muuli_wdr.cpp:4053
 msgid "Import"
 msgstr "Importiere"
 
-#: src/amuleDlg.cpp:1529 src/muuli_wdr.cpp:4053
+#: src/amuleDlg.cpp:1533 src/muuli_wdr.cpp:4053
 msgid "The partfile importer tool"
 msgstr "Das Importierwerkzeug für Partfiles"
 
-#: src/amuleDlg.cpp:1530 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1534 src/muuli_wdr.cpp:4054
 msgid "About"
 msgstr "Über"
 
-#: src/amuleDlg.cpp:1531 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1535 src/muuli_wdr.cpp:4054
 msgid "About/Help"
 msgstr "Über/Hilfe - Hinweise zur Version usw."
 
-#: src/amuleDlg.cpp:1537
+#: src/amuleDlg.cpp:1541
 msgid " - loading toolbar defaults"
 msgstr ""
 
@@ -2332,6 +2332,11 @@ msgstr ""
 msgid "Client request is invalid! %i / %i"
 msgstr ""
 
+#: src/TerminationProcess.cpp:48
+#, c-format
+msgid "Command `%s' with pid `%d' has finished with status code `%d'."
+msgstr ""
+
 #: src/ServerWnd.cpp:100
 msgid "Server not added: No IP or hostname specified."
 msgstr "Server nicht hinzugefügt: Keine IP-Adresse oder Hostname angegeben."
@@ -2482,7 +2487,7 @@ msgstr "Fehlgeschlagene Uploadsessions insgesamt: %s"
 msgid "Average upload time: %s"
 msgstr "Gesamte Uploadzeit: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Downloads"
 
@@ -2849,7 +2854,7 @@ msgstr "Information"
 msgid "The specified userhash is not valid!"
 msgstr "Der angegebene Userhash ist nicht gültig!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Quellen"
@@ -2864,7 +2869,7 @@ msgstr "Datei"
 msgid "Download"
 msgstr "Download"
 
-#: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:988
+#: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:987
 #: src/TransferWnd.cpp:329 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategorie"
@@ -2894,8 +2899,8 @@ msgid "Connection failed "
 msgstr "Verbindung fehlgeschlagen "
 
 #: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
-#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:824
-#: src/amule.cpp:942 src/amule.cpp:1295
+#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:832
+#: src/amule.cpp:950 src/amule.cpp:1303
 msgid "Error"
 msgstr "Fehler"
 
@@ -2908,201 +2913,201 @@ msgstr "Alle"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Benutzer insgesamt: %s | Dateien insgesamt: %s"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:516
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:516
 msgid "Transferred"
 msgstr "Übertragen"
 
-#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:340
+#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:340
 #: src/PartFileConvert.cpp:620 src/OtherFunctions.cpp:794
 msgid "Completed"
 msgstr "Fertiggestellt"
 
-#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:515
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:515
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: src/DownloadListCtrl.cpp:200
+#: src/DownloadListCtrl.cpp:199
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:519
 msgid "Status"
 msgstr "Status"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:203
 msgid "Time Remaining"
 msgstr "Verbleibende Zeit"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:204
 msgid "Last Seen Complete"
 msgstr "Zuletzt vollständig gesehen"
 
-#: src/DownloadListCtrl.cpp:206
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Reception"
 msgstr "Letzter Empfang"
 
-#: src/DownloadListCtrl.cpp:611
+#: src/DownloadListCtrl.cpp:610
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Wirklich die ausgewählte(n) Datei(en) löschen?"
 
-#: src/DownloadListCtrl.cpp:756
+#: src/DownloadListCtrl.cpp:755
 #, c-format
 msgid "Feedback from: %s"
 msgstr "Feedback von: %s"
 
-#: src/DownloadListCtrl.cpp:757
+#: src/DownloadListCtrl.cpp:756
 #, c-format
 msgid "Client: aMule %s"
 msgstr "Client: aMule %s"
 
-#: src/DownloadListCtrl.cpp:758
+#: src/DownloadListCtrl.cpp:757
 #, c-format
 msgid "File Name: %s"
 msgstr "Dateiname: %s"
 
-#: src/DownloadListCtrl.cpp:759
+#: src/DownloadListCtrl.cpp:758
 #, c-format
 msgid "File size: %s"
 msgstr "Dateigröße: %s"
 
-#: src/DownloadListCtrl.cpp:760
+#: src/DownloadListCtrl.cpp:759
 #, c-format
 msgid "Download: %s"
 msgstr "Download: %s"
 
-#: src/DownloadListCtrl.cpp:761
+#: src/DownloadListCtrl.cpp:760
 #, c-format
 msgid "Sources: %u"
 msgstr "Quellen: %u"
 
-#: src/DownloadListCtrl.cpp:762
+#: src/DownloadListCtrl.cpp:761
 #, c-format
 msgid "Complete Sources: %u"
 msgstr "Vollständige Quellen: %u"
 
-#: src/DownloadListCtrl.cpp:872 src/ClientListCtrl.cpp:358
+#: src/DownloadListCtrl.cpp:871 src/ClientListCtrl.cpp:358
 msgid "Send message to user"
 msgstr "Sende Nachricht an User"
 
-#: src/DownloadListCtrl.cpp:873 src/ClientListCtrl.cpp:358
+#: src/DownloadListCtrl.cpp:872 src/ClientListCtrl.cpp:358
 msgid "Message to send:"
 msgstr "Zu sendende Nachricht:"
 
-#: src/DownloadListCtrl.cpp:933 src/TransferWnd.cpp:370
+#: src/DownloadListCtrl.cpp:932 src/TransferWnd.cpp:370
 msgid "&Stop"
 msgstr "&Stopp"
 
-#: src/DownloadListCtrl.cpp:934 src/TransferWnd.cpp:371
+#: src/DownloadListCtrl.cpp:933 src/TransferWnd.cpp:371
 msgid "&Pause"
 msgstr "&Pausieren"
 
-#: src/DownloadListCtrl.cpp:935 src/TransferWnd.cpp:372
+#: src/DownloadListCtrl.cpp:934 src/TransferWnd.cpp:372
 msgid "&Resume"
 msgstr "Fo&rtsetzen"
 
-#: src/DownloadListCtrl.cpp:936
+#: src/DownloadListCtrl.cpp:935
 msgid "C&lear completed"
 msgstr "&Lösche fertige Datei(n)"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:941
 msgid "Swap every A4AF to this file now"
 msgstr "[A4AF] Weise alle Quellen dieser Datei zu"
 
-#: src/DownloadListCtrl.cpp:944
+#: src/DownloadListCtrl.cpp:943
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "[A4AF] Automatisches Zuweisen von Quellen zu dieser Datei"
 
-#: src/DownloadListCtrl.cpp:949
+#: src/DownloadListCtrl.cpp:948
 msgid "Swap every A4AF to any other file now"
 msgstr "[A4AF] Weise alle Quellen einer anderen Datei zu"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:953
 msgid "Drop No Needed Sources now"
 msgstr "Entferne unbenötigte Quellen"
 
-#: src/DownloadListCtrl.cpp:956
+#: src/DownloadListCtrl.cpp:955
 msgid "Drop Full Queue Sources now"
 msgstr "Entferne Quellen mit voller Warteliste"
 
-#: src/DownloadListCtrl.cpp:958
+#: src/DownloadListCtrl.cpp:957
 msgid "Drop High Queue Rating Sources now"
 msgstr "Entferne Quellen mit hoher Warteposition"
 
-#: src/DownloadListCtrl.cpp:960
+#: src/DownloadListCtrl.cpp:959
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
 msgstr "Quellen aufräumen (NBQ, QVW && QHW)"
 
-#: src/DownloadListCtrl.cpp:962
+#: src/DownloadListCtrl.cpp:961
 msgid "Extended Options"
 msgstr "Erweiterte Optionen"
 
-#: src/DownloadListCtrl.cpp:973 src/DownloadListCtrl.cpp:1024
+#: src/DownloadListCtrl.cpp:972 src/DownloadListCtrl.cpp:1023
 msgid "Preview"
 msgstr "Vorschau"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:973
 msgid "Show file &details"
 msgstr "Zeige &Dateieigenschaften"
 
-#: src/DownloadListCtrl.cpp:976 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:975 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Zeige alle Kommentare"
 
-#: src/DownloadListCtrl.cpp:983
+#: src/DownloadListCtrl.cpp:982
 msgid "Copy feedback to clipboard"
 msgstr "Feedback in die Zwischenablage kopieren"
 
-#: src/DownloadListCtrl.cpp:992
+#: src/DownloadListCtrl.cpp:991
 msgid "unassign"
 msgstr "Zuweisung rückgängig machen"
 
-#: src/DownloadListCtrl.cpp:999
+#: src/DownloadListCtrl.cpp:998
 msgid "Assign to category"
 msgstr "Einer Kategorie hinzufügen"
 
-#: src/DownloadListCtrl.cpp:1028
+#: src/DownloadListCtrl.cpp:1027
 msgid "&Open the file"
 msgstr "&Oeffne diese Datei"
 
-#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:250
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:250
 msgid "Remove from friends"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:250
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:250
 msgid "Add to Friends"
 msgstr "Zu Freunden hinzufügen"
 
-#: src/DownloadListCtrl.cpp:1061 src/ClientListCtrl.cpp:252
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:252
 msgid "Send message"
 msgstr "Sende Nachricht"
 
-#: src/DownloadListCtrl.cpp:1062
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "Zu dieser Datei verschieben"
 
-#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1698
+#: src/DownloadListCtrl.cpp:1697
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1748
+#: src/DownloadListCtrl.cpp:1747
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1762
+#: src/DownloadListCtrl.cpp:1761
 msgid "Asked for another file"
 msgstr "Andere Datei angefordert"
 
-#: src/DownloadListCtrl.cpp:2092
+#: src/DownloadListCtrl.cpp:2091
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Downloads (%i)"
 
-#: src/DownloadListCtrl.cpp:2275
+#: src/DownloadListCtrl.cpp:2274
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3112,15 +3117,15 @@ msgstr ""
 "Bis dahin wird aMule versuchen, mplayer zu starten, und du wirst bei jeder "
 "Vorschau diese Warnung angezeigt bekommen"
 
-#: src/DownloadListCtrl.cpp:2278
+#: src/DownloadListCtrl.cpp:2277
 msgid "File preview"
 msgstr "Dateivorschau"
 
-#: src/DownloadListCtrl.cpp:2297
+#: src/DownloadListCtrl.cpp:2296
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "FEHLER: Konnte externen Mediaplayer nicht starten!"
 
-#: src/DownloadListCtrl.cpp:2298
+#: src/DownloadListCtrl.cpp:2297
 #, c-format
 msgid "Command: %s"
 msgstr "Befehl: %s"
@@ -3577,11 +3582,11 @@ msgstr "eD2k"
 msgid "Connected to %s %s %s"
 msgstr "Verbunden zu %s %s %s"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2005
+#: src/TextClient.cpp:669 src/amule.cpp:2013
 msgid "with LowID"
 msgstr "mit niedriger ID"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2005
+#: src/TextClient.cpp:669 src/amule.cpp:2013
 msgid "with HighID"
 msgstr "mit hoher ID"
 
@@ -6866,12 +6871,12 @@ msgid ""
 "server!"
 msgstr ""
 
-#: src/UserEvents.cpp:121
+#: src/UserEvents.cpp:129
 #, c-format
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
 
-#: src/amule.cpp:698
+#: src/amule.cpp:699
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6879,22 +6884,22 @@ msgstr ""
 "Deine Locale wurde wegen einer Konfigurationsänderung auf Systemstandard "
 "geändert. Sorry."
 
-#: src/amule.cpp:764
+#: src/amule.cpp:765
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
 
-#: src/amule.cpp:766
+#: src/amule.cpp:767
 msgid "Server list download"
 msgstr ""
 
-#: src/amule.cpp:817
+#: src/amule.cpp:825
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "Webserver läuft mit PID %d"
 
-#: src/amule.cpp:820
+#: src/amule.cpp:828
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6905,12 +6910,12 @@ msgstr ""
 "Paket, das amuleweb enthält, oder kompiliere aMule mit --enable-webserver "
 "neu."
 
-#: src/amule.cpp:932
+#: src/amule.cpp:940
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u ist nicht erreichbar. Du wirst eine LOWID erhalten\n"
 
-#: src/amule.cpp:938
+#: src/amule.cpp:946
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6926,15 +6931,15 @@ msgstr ""
 "Bitte überprüfe deine Netzwerkeinstellungen, um sicherzugehen, dass der Port "
 "für ein- und ausgehenden Traffic geöffnet ist."
 
-#: src/amule.cpp:1084
+#: src/amule.cpp:1092
 msgid "Failed to create OnlineSig File"
 msgstr "Erstellen der OnlineSig-Datei gescheitert"
 
-#: src/amule.cpp:1092
+#: src/amule.cpp:1100
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Erstellen der aMule OnlineSig-Datei gescheitert"
 
-#: src/amule.cpp:1260
+#: src/amule.cpp:1268
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6942,42 +6947,42 @@ msgstr ""
 "Die ausgewählte Locale scheint nicht auf dem System installiert zu sein."
 "(INFO: Ich werde trotzdem versuchen, sie zu setzen)"
 
-#: src/amule.cpp:1270
+#: src/amule.cpp:1278
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Dies ist das erste Mal, dass du aMule %s startest"
 
-#: src/amule.cpp:1272
+#: src/amule.cpp:1280
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Dies ist eine Testversion, täglich aktualisiert, und\n"
 
-#: src/amule.cpp:1273
+#: src/amule.cpp:1281
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "wir garantieren nicht, dass sie keine Daten zerstört, dein Haus anzündet\n"
 
-#: src/amule.cpp:1274
+#: src/amule.cpp:1282
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "oder deinen Hund tötet. Aber es *sollte* sicher sein, sie zu benutzen.\n"
 
-#: src/amule.cpp:1279
+#: src/amule.cpp:1287
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Mehr Informationen und neue Releases können auf unserer Homepage gefunden "
 "werden\n"
 
-#: src/amule.cpp:1280
+#: src/amule.cpp:1288
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "unter www.aMule.org, oder in unserem IRC-Channel #amule auf irc.freenode."
 "net.\n"
 
-#: src/amule.cpp:1282
+#: src/amule.cpp:1290
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Bitte melde Fehler unter http://forum.amule.org"
 
-#: src/amule.cpp:1295
+#: src/amule.cpp:1303
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6985,102 +6990,102 @@ msgstr ""
 "Das angegebene Verzeichnis für die Online-Signaturdateien ist UNGÜLTIG!\n"
 "Online-Signatur wird bis zur Fehlerbehebung in den Einstellungen DEAKTIVIERT."
 
-#: src/amule.cpp:1689
+#: src/amule.cpp:1697
 msgid "ERROR: can't open logfile"
 msgstr "FEHLER: kann Logdatei nicht öffnen"
 
-#: src/amule.cpp:1693
+#: src/amule.cpp:1701
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "WARNUNG: Logdatei ist leer. Etwas ist falsch."
 
-#: src/amule.cpp:1712
+#: src/amule.cpp:1720
 msgid "Log has been reset"
 msgstr "Das Log wurde zurückgesetzt"
 
-#: src/amule.cpp:1740
+#: src/amule.cpp:1748
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Servernachricht: %s"
 
-#: src/amule.cpp:1778
+#: src/amule.cpp:1786
 msgid "Failed to download the nodes list."
 msgstr "Knotenliste kann nicht geholt werden."
 
-#: src/amule.cpp:1791
+#: src/amule.cpp:1799
 msgid "Failed to open the downloaded version check file"
 msgstr "Konnte heruntergeladene Datei zur Versionsprüfung nicht öffnen"
 
-#: src/amule.cpp:1794 src/amule.cpp:1804 src/amule.cpp:1810
+#: src/amule.cpp:1802 src/amule.cpp:1812 src/amule.cpp:1818
 msgid "Corrupted version check file"
 msgstr "Fehlerhafte Versionsprüfungsdatei"
 
-#: src/amule.cpp:1820
+#: src/amule.cpp:1828
 msgid "You are using an outdated version of aMule!"
 msgstr "Du benutzt eine veraltete aMule-Version!"
 
-#: src/amule.cpp:1821
+#: src/amule.cpp:1829
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "Diese Version von aMule ist %i.%i.%i und die aktuelle Version ist %li.%li.%li"
 
-#: src/amule.cpp:1822
+#: src/amule.cpp:1830
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Die neueste Version kann man immer auf http://www.amule.org finden."
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1833
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "WARNUNG: Diese Version von aMuled ist veraltet: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1829
+#: src/amule.cpp:1837
 msgid "Your copy of aMule is up to date."
 msgstr "Deine Kopie von aMule ist aktuell."
 
-#: src/amule.cpp:1836
+#: src/amule.cpp:1844
 msgid "Failed to download the version check file"
 msgstr "Konnte die Versionsprüfungsdatei nicht herunterladen"
 
-#: src/amule.cpp:1938
+#: src/amule.cpp:1946
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "User: E: %s K: %s | Dateien E: %s K: %s"
 
-#: src/amule.cpp:2007
+#: src/amule.cpp:2015
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Verbunden zu %s %s"
 
-#: src/amule.cpp:2010
+#: src/amule.cpp:2018
 #, c-format
 msgid "Connecting to %s"
 msgstr "Verbinde zu %s"
 
-#: src/amule.cpp:2012
+#: src/amule.cpp:2020
 msgid "Disconnected from ED2K"
 msgstr "eD2k getrennt"
 
-#: src/amule.cpp:2019
+#: src/amule.cpp:2027
 msgid "Kad started."
 msgstr "Kad gestartet."
 
-#: src/amule.cpp:2021
+#: src/amule.cpp:2029
 msgid "Kad stopped."
 msgstr "Kad beendet."
 
-#: src/amule.cpp:2028
+#: src/amule.cpp:2036
 msgid "Connected to Kad (ok)"
 msgstr "Kad verbunden (ok)"
 
-#: src/amule.cpp:2030
+#: src/amule.cpp:2038
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad verbunden (firewalled)"
 
-#: src/amule.cpp:2033
+#: src/amule.cpp:2041
 msgid "Disconnected from Kad"
 msgstr "Kad getrennt"
 
-#: src/amule.cpp:2089
+#: src/amule.cpp:2097
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7088,7 +7093,7 @@ msgstr ""
 "Kad-Netzwerk kann mit deaktiviertem UDP-Port nicht benutzt werden, nicht "
 "gestartet."
 
-#: src/amule.cpp:2092
+#: src/amule.cpp:2100
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 "Kad-Netzwerk ist in den Voreinstellungen deaktiviert, kein "
