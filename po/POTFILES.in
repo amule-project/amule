@@ -33,6 +33,7 @@ src/amuleDlg.cpp
 src/PrefsUnifiedDlg.cpp
 src/ExternalConn.cpp
 src/UploadClient.cpp
+src/TerminationProcess.cpp
 src/ServerWnd.cpp
 src/Statistics.cpp
 src/MuleTextCtrl.cpp
