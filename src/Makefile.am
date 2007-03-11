@@ -205,6 +205,7 @@ common_sources = \
 	Statistics.cpp \
 	StatTree.cpp \
 	SHAHashSet.cpp \
+	TerminationProcess.cpp \
 	UserEvents.cpp \
 	$(remote_common_sources)
 
@@ -400,6 +401,7 @@ noinst_HEADERS = \
 		StatisticsDlg.h \
 		StatTree.h \
 		Tag.h \
+		TerminationProcess.h \
 		TextClient.h \
 		TextFile.h \
 		ThreadScheduler.h \

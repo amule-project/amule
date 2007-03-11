@@ -30,25 +30,24 @@
 #include <include/protocol/ed2k/ClientSoftware.h>
 #include <include/common/MenuIDs.h>
 
-#include "DownloadListCtrl.h"	// Interface declarations
-#include "DataToText.h"		// Needed for PriorityToStr
+#include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
+#include "amuleDlg.h"		// Needed for CamuleDlg
+#include "BarShader.h"		// Needed for CBarShader
 #include "ClientDetailDialog.h"	// Needed for CClientDetailDialog
 #include "ChatWnd.h"		// Needed for CChatWnd
-#include "PartFile.h"		// Needed for CPartFile
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
+#include "DownloadListCtrl.h"	// Interface declarations
+#include "DataToText.h"		// Needed for PriorityToStr
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
-#include "updownclient.h"	// Needed for CUpDownClient
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "muuli_wdr.h"		// Needed for ID_DLOADLIST
-#include "BarShader.h"		// Needed for CBarShader
-#include "Preferences.h"
+#include "GuiEvents.h"		// Needed for CoreNotify_*
 #include "Logger.h"
-#include <common/Format.h>		// Needed for CFormat
-#include "SharedFileList.h"		// Needed for CSharedFileList
-#include "GuiEvents.h"			// Needed for CoreNotify_*
-
-
+#include "muuli_wdr.h"		// Needed for ID_DLOADLIST
+#include "PartFile.h"		// Needed for CPartFile
+#include "Preferences.h"
+#include "SharedFileList.h"	// Needed for CSharedFileList
+#include "TerminationProcess.h"	// Needed for CTerminationProcess
+#include "updownclient.h"	// Needed for CUpDownClient
 
 
 class CPartFile;
@@ -2292,8 +2291,8 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	command += wxT("'");
 
 	// We can't use wxShell here, it blocks the app
-	// <jacobo221> mplayer users (like me) should use xterm -T "aMule Preview" -iconic -e mplayer -idx
-	if (!wxExecute(command,wxEXEC_ASYNC)) {
+	CTerminationProcess *p = new CTerminationProcess(command);
+	if (!wxExecute(command, wxEXEC_ASYNC, p)) {
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
 		AddLogLineM( false, CFormat( _("Command: %s") ) % command );
 	}

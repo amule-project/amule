@@ -44,33 +44,34 @@
 #include <wx/snglinst.h>
 
 
-#include "Logger.h"			// Needed for CLogger // Do_not_auto_remove
-#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
-#include "Server.h"			// Needed for GetListName
-#include "IPFilter.h"			// Needed for CIPFilter
-#include "UploadQueue.h"		// Needed for CUploadQueue
-#include "ClientCreditsList.h"		// Needed for CClientCreditsList
-#include "ServerSocket.h"		// Needed for CServerSocket
-#include "ServerList.h"			// Needed for CServerList
-#include "KnownFileList.h"		// Needed for CKnownFileList
-#include "SearchList.h"			// Needed for CSearchList
-#include "ClientList.h"			// Needed for CClientList
-#include "Preferences.h"		// Needed for CPreferences
-#include "ListenSocket.h"		// Needed for CListenSocket
-#include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
-#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
-#include "PartFile.h"			// Needed for CPartFile
-#include "FriendList.h"			// Needed for CFriendList
-#include "updownclient.h"		// Needed for CUpDownClient
-#include "Statistics.h"			// Needed for CStatistics
 #include <common/Format.h>		// Needed for CFormat
-#include "UploadBandwidthThrottler.h"
-#include "InternalEvents.h"		// Needed for CMuleInternalEvent
-#include "FileFunctions.h"		// Needed for CDirIterator
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
+#include "ClientCreditsList.h"		// Needed for CClientCreditsList
+#include "ClientList.h"			// Needed for CClientList
+#include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
+#include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
+#include "FileFunctions.h"		// Needed for CDirIterator
+#include "FriendList.h"			// Needed for CFriendList
+#include "InternalEvents.h"		// Needed for CMuleInternalEvent
+#include "IPFilter.h"			// Needed for CIPFilter
+#include "KnownFileList.h"		// Needed for CKnownFileList
+#include "ListenSocket.h"		// Needed for CListenSocket
+#include "Logger.h"			// Needed for CLogger // Do_not_auto_remove
+#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
+#include "PartFile.h"			// Needed for CPartFile
+#include "Preferences.h"		// Needed for CPreferences
+#include "SearchList.h"			// Needed for CSearchList
+#include "Server.h"			// Needed for GetListName
+#include "ServerList.h"			// Needed for CServerList
+#include "ServerSocket.h"		// Needed for CServerSocket
+#include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
+#include "Statistics.h"			// Needed for CStatistics
+#include "TerminationProcess.h"		// Needed for CTerminationProcess
 #include "ThreadTasks.h"
+#include "updownclient.h"		// Needed for CUpDownClient
+#include "UploadQueue.h"		// Needed for CUploadQueue
+#include "UploadBandwidthThrottler.h"
 #include "UserEvents.h"
 
 #ifdef ENABLE_UPNP
@@ -812,7 +813,14 @@ bool CamuleApp::OnInit()
 		}
 #endif
 
-		webserver_pid = wxExecute(wxT("'") + amulewebPath + wxT("' '--amule-config-file=") + aMuleConfigFile + wxT("'"));
+		wxString cmd =
+			wxT("'") +
+			amulewebPath +
+			wxT("' '--amule-config-file=") +
+			aMuleConfigFile +
+			wxT("'");
+		CTerminationProcess *p = new CTerminationProcess(cmd);
+		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		if (webserver_pid) {
 			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
 		} else {
