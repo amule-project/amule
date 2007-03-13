@@ -309,7 +309,7 @@ Version 2.1.1 - The "There can be only two! Point one! Point one!" version
 
 	Raziel:
 		* Fixed "0000690 bug for browse windows in amulegui"
-	
+
 	Xaignar:
 		* Fixed problem with recursivly sharing folders that hadn't been
 		  expanded in the tree ctrl.
