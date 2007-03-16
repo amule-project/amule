@@ -86,6 +86,7 @@ namespace amule.net
         }
 
         byte[] m_rx_buffer = new byte[32 * 1024];
+        MemoryStream m_rx_mem_stream = null;
         int m_rx_byte_count = 0;
         int m_rx_remaining_count = 0;
 
@@ -93,7 +94,7 @@ namespace amule.net
         MemoryStream m_tx_mem_stream = null;
 
         //LinkedList<byte[]> m_tx_queue;
-        //BinaryReader m_sock_reader = null;
+        BinaryReader m_sock_reader = null;
         BinaryWriter m_sock_writer = null;
 
         static void RxCallback(IAsyncResult ar)
@@ -101,21 +102,37 @@ namespace amule.net
             amuleRemote o = (amuleRemote)ar.AsyncState;
             Console.WriteLine("RxCallback signalled, calling EndReceive");
             int bytesRead = o.m_s.EndReceive(ar);
-            o.m_rx_byte_count += bytesRead;
-            Console.WriteLine("RxCallback: got {0} bytes, total {1}", bytesRead, o.m_rx_byte_count);
-            if ( o.m_rx_byte_count >= 8 ) {
+            if ( bytesRead == 0 ) {
+                // remote side closed connection. 
+                m_op_Done.Set();
+                return;
+            }
+            o.m_rx_remaining_count -= bytesRead;
+            Console.WriteLine("RxCallback: got {0} bytes, waiting for {1}",
+                bytesRead, o.m_rx_remaining_count);
+            // are we still waiting for flags and size?
+            if (o.m_rx_byte_count < 8) {
+                if ((o.m_rx_byte_count + bytesRead) >= 8) {
+
+                o.m_rx_byte_count += bytesRead;
                 // got flags and packet size - may proceed.
-                UInt32 val32 = (UInt32)(o.m_rx_buffer[4] | (o.m_rx_buffer[5] << 8) |
+                Int32 val32 = (Int32)(o.m_rx_buffer[4] | (o.m_rx_buffer[5] << 8) |
                     (o.m_rx_buffer[6] << 16) | (o.m_rx_buffer[7] << 24));
 
-                o.m_rx_remaining_count = (int)IPAddress.NetworkToHostOrder(val32);
-
+                o.m_rx_remaining_count = (int)IPAddress.NetworkToHostOrder(val32) - (bytesRead - 8);
                 Console.WriteLine("RxCallback: expecting packet size={0}", o.m_rx_remaining_count);
+                }
             } else {
-                // not just yet - keep waiting
-                o.m_s.BeginReceive(o.m_rx_buffer, o.m_rx_byte_count, 8 - o.m_rx_byte_count,
-                    SocketFlags.None, new AsyncCallback(RxCallback), o);
+                if ( o.m_rx_remaining_count == 0 ) {
+                    m_op_Done.Set();
+                    return;                
+                }
             }
+            o.m_rx_byte_count += bytesRead;
+
+            // not just yet - keep waiting
+            o.m_s.BeginReceive(o.m_rx_buffer, o.m_rx_byte_count, o.m_rx_remaining_count,
+                SocketFlags.None, new AsyncCallback(RxCallback), o);
         }
 
         static void TxCallback(IAsyncResult ar)
@@ -166,10 +183,9 @@ namespace amule.net
 
                 m_tx_mem_stream = new MemoryStream(m_tx_buffer);
                 m_sock_writer = new BinaryWriter(m_tx_mem_stream);
-                for (int i = 0; i < m_tx_buffer.Length-1; i++)
-                {
-                    m_tx_buffer.SetValue((byte)(0xff), i);
-                }
+                m_rx_mem_stream = new MemoryStream(m_rx_buffer);
+                m_sock_reader = new BinaryReader(m_rx_mem_stream);
+
                 ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", "123456");
                 p.Write(m_sock_writer);
 
@@ -179,13 +195,16 @@ namespace amule.net
                     // Was unable to send login request for 1sec. Line must be really slow
                     return false;
                 }
+                m_tx_mem_stream.Seek(0, SeekOrigin.Begin);
 
-                //m_op_Done.Reset();
-                //m_s.BeginReceive(m_rx_buffer, 0, 8, SocketFlags.None, new AsyncCallback(RxCallback), this);
-                m_s.Receive(m_rx_buffer, 0, 8, SocketFlags.None);
+                m_op_Done.Reset();
+                // reply packet is supposed to have at least 8 bytes
+                m_rx_remaining_count = 8;
+                m_s.BeginReceive(m_rx_buffer, 0, 8, SocketFlags.None, new AsyncCallback(RxCallback), this);
 
                 // FIXME: must be able to cancel this read.
                 m_op_Done.WaitOne();
+                ecProto.ecPacket reply = new ecProto.ecPacket(m_sock_reader);
 
             } catch (Exception e) {
                 error = e.Message;
