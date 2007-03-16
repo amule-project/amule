@@ -131,6 +131,9 @@ namespace amule.net
                 switch ( m_size ) {
                     case 8:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT64;
+                        m_val = (UInt32)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                        m_val <<= 32;
+                        m_val |= ((UInt32)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32()));
                         break;
                     case 4:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT32;
@@ -200,10 +203,19 @@ namespace amule.net
                 }
                 m_size = 16;
             }
-            public ecTagMD5(ECTagNames name, byte [] hash_data)
-                : base(name,EcTagTypes.EC_TAGTYPE_HASH16)
+
+            public ecTagMD5(ECTagNames name, byte[] hash_data)
+                : base(name, EcTagTypes.EC_TAGTYPE_HASH16)
             {
                 m_val = hash_data;
+                m_size = 16;
+            }
+
+            public ecTagMD5(ECTagNames name, BinaryReader br)
+                : base(name, EcTagTypes.EC_TAGTYPE_HASH16)
+            {
+                m_size = 16;
+                m_val = br.ReadBytes(16);
             }
 
             public override void Write(BinaryWriter wr)
@@ -225,8 +237,9 @@ namespace amule.net
             public ecTagString(ECTagNames n, Int32 tag_size, BinaryReader br)
                 : base(n, EcTagTypes.EC_TAGTYPE_STRING)
             {
-                char[] buf = br.ReadChars(tag_size);
+                byte[] buf = br.ReadBytes(tag_size);
                 m_size = tag_size;
+                m_val = buf;
             }
 
             public override void Write(BinaryWriter wr)
