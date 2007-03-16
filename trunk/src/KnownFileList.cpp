@@ -156,7 +156,10 @@ void CKnownFileList::Clear()
 	m_duplicates.clear();
 }
 
-CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint64 in_size){
+CKnownFile* CKnownFileList::FindKnownFile(
+	const wxString &filename,
+	time_t in_date,
+	uint64 in_size){
 
 	wxMutexLocker sLock(list_mut);
 	
@@ -164,7 +167,9 @@ CKnownFile* CKnownFileList::FindKnownFile(wxString filename,uint32 in_date,uint6
 
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
 		cur_file = pos->second;
-		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && (cur_file->GetFileName() == filename)) {
+		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) &&
+		    cur_file->GetFileSize() == in_size &&
+		    cur_file->GetFileName() == filename) {
 			return cur_file;
 		}
 	}
