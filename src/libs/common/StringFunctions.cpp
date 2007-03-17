@@ -26,6 +26,12 @@
 
 #include <wx/url.h>
 
+
+#define STRINGFUNCTIONS_CPP
+
+
+wxCSConv aMuleConv(wxConvLocal);
+wxConvBrokenFileNames aMuleConvBrokenFileNames(wxT("ISO-8859-1"));
 #include "StringFunctions.h"
 
 

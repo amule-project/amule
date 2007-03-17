@@ -23,16 +23,20 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
+#include <wx/dir.h>		// Needed for wxDir
+#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
+#include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
-#include <wx/wfstream.h>	// wxFileInputStream
-#include <wx/fs_zip.h>		// Needed for wxZipFSHandler
+
 
 #include <errno.h>
 #include <map>
 #ifdef __WXMAC__
 #include <zlib.h> // Do_not_auto_remove
 #endif
+
 
 #include "FileFunctions.h"
 #include "CFile.h"
