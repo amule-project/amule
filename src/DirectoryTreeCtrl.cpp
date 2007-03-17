@@ -26,9 +26,9 @@
 
 
 #include "DirectoryTreeCtrl.h"	// Interface declarations
+#include "FileFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
-#include "FileFunctions.h"
 
 #ifdef __WXMSW__
 	#define ROOT_CHAR	wxT('\\')
@@ -173,28 +173,32 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 
 void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strText)
 {
-	wxASSERT(hBranch.IsOk()); // The place to add it is ok
+	// The place to add it is ok
+	wxASSERT(hBranch.IsOk());
 	
 	wxString strDir = GetFullPath(hBranch);
 
-	wxASSERT(strText.Find(ROOT_CHAR) == -1); // Folder label has no '/' on the name
+	// Folder label has no '/' on the name
+	wxASSERT(strText.Find(ROOT_CHAR) == -1);
 	
 	strDir += strText + ROOT_CHAR;
 	
 	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	wxTreeItemId item=AppendItem(hBranch,strText,IMAGE_FOLDER,-1,ItemData);
+	wxTreeItemId item =
+		AppendItem(hBranch, strText, IMAGE_FOLDER, -1, ItemData);
 	
-	if(IsShared(strDir)) {
-		SetItemBold(item,TRUE);
-		UpdateParentItems(item,true);
+	if (IsShared(strDir)) {
+		SetItemBold(item, true);
+		UpdateParentItems(item, true);
 	}
 	
 	if (HasSharedSubdirectory(strDir)) {
 		SetItemImage(item,IMAGE_FOLDER_SUB_SHARED);
 	}
 	
-	if(HasSubdirectories(strDir)) {
-		AppendItem(item,wxT(".")); // Trick. will show + if it has subdirs
+	if (HasSubdirectories(strDir)) {
+		// Trick. will show + if it has subdirs
+		AppendItem(item,wxT("."));
 	}
 }
 
@@ -228,25 +232,32 @@ wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 	}
 }
 
-void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const wxString& folder)
+void CDirectoryTreeCtrl::AddSubdirectories(
+	wxTreeItemId hBranch,
+	const wxString& folder)
 {
-	// we must collect values first because we'll call GetFirstFile() again in AddChildItem() ...
+	// we must collect values first because we'll call GetFirstFile()
+	// again in AddChildItem() ...
 	wxArrayString ary;
-
-	CDirIterator SharedDir(folder); 
-	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
+	CDirIterator SharedDir(folder);
+	wxString directoryName = SharedDir.GetFirstFile(CDirIterator::Dir); 
+	wxString lastDirectoryName;
 	
-	while(!fname.IsEmpty()) {
-		if(fname.Find(ROOT_CHAR,TRUE) != -1) {  // starts at end
-			// Take just the last folder of the path
-			fname=fname.Mid(fname.Find(ROOT_CHAR,TRUE)+1);  
+	while (!directoryName.IsEmpty()) {
+		// Take just the last directory level of the path
+		if (directoryName.Find(ROOT_CHAR, true) != -1) {
+			lastDirectoryName = directoryName.Mid(
+				directoryName.Find(ROOT_CHAR, true) + 1);
+		} else {
+			lastDirectoryName = directoryName;
 		}
 		
-		wxASSERT(fname.Len() > 0);
-		wxASSERT(fname.Last() != ROOT_CHAR);
-
-		ary.Add(fname);
-		fname= SharedDir.GetNextFile();
+		// Sanity checks
+		wxASSERT(lastDirectoryName.Len() > 0);
+		wxASSERT(lastDirectoryName.Last() != ROOT_CHAR);
+		
+		ary.Add(lastDirectoryName);
+		directoryName = SharedDir.GetNextFile();
 	}
 	
 	// then add them
@@ -263,9 +274,9 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const wxString& folder)
 	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
 	
 	if(!fname.IsEmpty()) {
-		return TRUE; // at least one directory ...
+		return true; // at least one directory ...
 	}
-	return FALSE; // no match
+	return false; // no match
 }
 
 void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
@@ -278,7 +289,6 @@ void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
 void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 {
 	m_lstShared.Clear();
-
 	for (unsigned int i = 0; i < list->GetCount(); ++i) {
 		// The references returned by Item, Last or operator[] are not const
 		wxString& folder = list->Item(i);
@@ -303,7 +313,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 		}
 		// Is root dir shared?
 		if(IsShared(ROOT_STRING)) {
-			SetItemBold(hRoot,TRUE);
+			SetItemBold(hRoot, true);
 		}
 	#else 
 		// On Windows, we have to check every drive
@@ -317,7 +327,7 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 			}
 			// Is this drive shared?
 			if (IsShared(GetFullPath(hChild))) {
-				SetItemBold(hChild,TRUE);
+				SetItemBold(hChild, true);
 			}
 			hChild = GetNextSibling(hChild);
 		}
@@ -354,13 +364,13 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 {
 	if (bChecked) {
 		if (!IsBold(hItem)) {
-			SetItemBold(hItem,TRUE);
+			SetItemBold(hItem, true);
 			AddShare(GetFullPath(hItem)); 
 			UpdateParentItems(hItem,true);
 		}
 	} else {
 		if (IsBold(hItem)) {
-			SetItemBold(hItem,FALSE);
+			SetItemBold(hItem, false);
 			DelShare(GetFullPath(hItem)); 
 			UpdateParentItems(hItem,false);
 		}
@@ -370,9 +380,10 @@ void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 bool CDirectoryTreeCtrl::IsShared(const wxString& strDir)
 {	
 #ifdef __WXMSW__
-	return (m_lstShared.Index(strDir,FALSE) != wxNOT_FOUND); // case insensitive		
+	// case insensitive
+	return m_lstShared.Index(strDir, false) != wxNOT_FOUND;
 #else
-	return (m_lstShared.Index(strDir) != wxNOT_FOUND); 				
+	return m_lstShared.Index(strDir) != wxNOT_FOUND;
 #endif
 }
 
