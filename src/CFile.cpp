@@ -24,18 +24,16 @@
 //
 
 
-#include "CFile.h"				// Interface declarations.
-#include "FileFunctions.h"		// Needed for CheckFileExists
-#include "Logger.h"				// Needed for AddDebugLogLineM
-
+#include "CFile.h"		// Interface declarations.
+#include "FileFunctions.h"	// Needed for CheckFileExists
+#include "Logger.h"		// Needed for AddDebugLogLineM
 
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"             // Needed for HAVE_SYS_PARAM_H
 #endif
 
-// Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-// to detect if this is a *BSD system
+
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
@@ -113,36 +111,42 @@ enum {
 // and ensures that we use 64b IO on windows (only 32b by default).
 #ifdef __WXMSW__
 	#define FLUSH_FD(x)			_commit(x)
-	#define SEEK_FD(x, y, z)	_lseeki64(x, y, z)
+	#define SEEK_FD(x, y, z)		_lseeki64(x, y, z)
 	#define TELL_FD(x)			_telli64(x)
 
 	#if (__MSVCRT_VERSION__ < 0x0601)
 		#warning MSCVRT-Version smaller than 6.01
 		#define STAT_FD(x, y)		_fstati64(x, y)
-		#define STAT_STRUCT			struct _stati64
+		#define STAT_STRUCT		struct _stati64
 	#else
 		#define STAT_FD(x, y)		_fstat64(x, y)
-		#define STAT_STRUCT			struct __stat64
+		#define STAT_STRUCT		struct __stat64
 	#endif
 #else
 	#define FLUSH_FD(x)			fsync(x)
-	#define SEEK_FD(x, y, z)	lseek(x, y, z)
+	#define SEEK_FD(x, y, z)		lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
-	#define STAT_FD(x, y)		fstat(x, y)
+	#define STAT_FD(x, y)			fstat(x, y)
 	#define STAT_STRUCT			struct stat
 #endif
 
 
-// This macro is used to check if a syscall failed, in that case
+// This function is used to check if a syscall failed, in that case
 // log an appropriate message containing the errno string.
-#define SYSCALL_CHECK(check, what) \
-	do { \
-		if (!(check)) { \
-			AddDebugLogLineM(true, logCFile, \
-				wxString() << wxT("Error when ") << what << wxT(" (") \
-					<< m_filePath << wxT("): ") << wxSysErrorMsg()); \
-		} \
-	} while (false);
+inline void syscall_check(
+	bool check,
+	const wxString &filePath,
+	const wxString &what)
+{
+	if (!check) {
+		AddDebugLogLineM(true, logCFile,
+			wxString() <<
+			wxT("Error when ") <<
+			what <<
+			wxT(" (") << filePath << wxT("): ") <<
+			wxSysErrorMsg());
+	}
+}
 
 
 CSeekFailureException::CSeekFailureException(const wxString& desc)
@@ -253,18 +257,19 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 	// Test if it is possible to use an ANSI name
 	Unicode2CharBuf tmpFileName = unicode2char(fileName);
 	if (tmpFileName) {
-		// Use an ANSI name
+		// Use an ANSI name (wxDevs call it "broken file names")
 		m_fd = open(tmpFileName, flags, accessMode);
 	} 
 	
-	if (m_fd == fd_invalid) { // Wrong conversion or can't open.
+	if (m_fd == fd_invalid) {
+		// Wrong conversion or can't open.
 		// Try an UTF-8 name
 		m_fd = open(unicode2UTF8(fileName), flags, accessMode);
 	}
 	
 	m_filePath = fileName;
 
-	SYSCALL_CHECK(m_fd != fd_invalid, wxT("opening file"));	
+	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
       
     return IsOpened();
 }
@@ -275,7 +280,7 @@ bool CFile::Close()
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot close closed file."));
 
 	bool closed = (close(m_fd) != -1);
-	SYSCALL_CHECK(closed, wxT("closing file"));
+	syscall_check(closed, m_filePath, wxT("closing file"));
 	
 	m_fd = fd_invalid;	
 	
@@ -288,7 +293,7 @@ bool CFile::Flush()
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot flush closed file."));
 	
 	bool flushed = (FLUSH_FD(m_fd) != -1);
-	SYSCALL_CHECK(flushed, wxT("flushing file"));
+	syscall_check(flushed, m_filePath, wxT("flushing file"));
 
 	return flushed;	
 }
@@ -403,7 +408,7 @@ bool CFile::SetLength(size_t new_len)
 	int result = ftruncate(m_fd, new_len);
 #endif
 
-	SYSCALL_CHECK((result != -1), wxT("truncating file"));	
+	syscall_check((result != -1), m_filePath, wxT("truncating file"));
 
 	return (result != -1);
 }
