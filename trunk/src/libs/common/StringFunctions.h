@@ -73,16 +73,22 @@ enum EUtf8Str
 typedef const wxWX2MBbuf Unicode2CharBuf;
 typedef const wxMB2WXbuf Char2UnicodeBuf;
 
-static wxCSConv aMuleConv(wxT("iso8859-1"));
+#ifndef STRINGFUNCTIONS_CPP
+extern wxCSConv aMuleConv;
+extern wxConvBrokenFileNames aMuleConvBrokenFileNames;
+#endif
 
-inline Unicode2CharBuf	unicode2char(const wxChar* x)	{ return aMuleConv.cWX2MB(x); }
-inline Char2UnicodeBuf	char2unicode(const char* x)		{ return aMuleConv.cMB2WX(x); }
+inline Unicode2CharBuf unicode2char(const wxChar* x)	{ return aMuleConv.cWX2MB(x); }
+inline Char2UnicodeBuf char2unicode(const char* x)	{ return aMuleConv.cMB2WX(x); }
 
 inline Unicode2CharBuf unicode2UTF8(const wxChar* x)	{ return wxConvUTF8.cWX2MB(x); }
-inline Char2UnicodeBuf UTF82unicode(const char* x)		{ return wxConvUTF8.cMB2WX(x); }
+inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x); }
 
-inline const wxCharBuffer char2UTF8(const char *x) { return unicode2UTF8(char2unicode(x)); }
-inline const wxCharBuffer UTF82char(const char *x) { return unicode2char(UTF82unicode(x)); }
+inline const wxCharBuffer char2UTF8(const char *x)	{ return unicode2UTF8(char2unicode(x)); }
+inline const wxCharBuffer UTF82char(const char *x)	{ return unicode2char(UTF82unicode(x)); }
+
+inline Unicode2CharBuf unicode_2_broken(const wxChar* x){ return aMuleConvBrokenFileNames.cWX2MB(x); }
+inline Char2UnicodeBuf broken_2_unicode(const char* x) { return aMuleConvBrokenFileNames.cMB2WX(x); }
 
 //
 // Replaces "&" with "&&" in 'in' for use with text-labels

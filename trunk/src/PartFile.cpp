@@ -51,9 +51,9 @@
 #include "ClientList.h"		// Needed for clientlist
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>	// Needed for CFormat
 #include "FileFunctions.h"	// Needed for GetLastModificationTime
-#include "ThreadTasks.h"			// Needed for CHashingTask/CCompletionTask
+#include "ThreadTasks.h"	// Needed for CHashingTask/CCompletionTask
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "DataToText.h"		// Needed for OriginToText()
 

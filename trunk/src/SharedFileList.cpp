@@ -333,7 +333,6 @@ void CSharedFileList::FindSharedFiles()
 		if ( file->GetStatus(true) == PS_READY ) {
 			printf("Adding file %s to shares\n",
 				(const char *)unicode2char( file->GetFullName() ) );
-			
 			AddFile(file);
 		}
 	}
@@ -354,6 +353,12 @@ void CSharedFileList::FindSharedFiles()
 			sharedPaths.push_back(ReadyPath(path));
 			++i;
 		} else {
+			wxString msg = CFormat( _(
+				"CSharedFileList::FindSharedFiles: Removing "
+				"%s from shared directory list: "
+				"directory not found.") ) % path;
+			AddLogLineM(true, msg);
+			printf("%s\n", (const char *)unicode2char(msg));
 			theApp.glob_prefs->shareddir_list.RemoveAt(i);
 		}
 	}
@@ -431,20 +436,24 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 
 	unsigned addedFiles = 0;
 	while(!fname.IsEmpty()) {		
-		AddDebugLogLineM(false, logKnownFiles, wxT("Found file ")+fname + wxT(" on shared folder"));
+		AddDebugLogLineM(false, logKnownFiles,
+			wxT("Found file ") + fname + wxT(" on shared folder"));
 
-		uint32 fdate=GetLastModificationTime(fname);
-
+		time_t fdate = GetLastModificationTime(fname);
 		if (::wxDirExists(fname)) {
 			// Woops, is a dir!
-			AddDebugLogLineM(false, logKnownFiles, wxT("Shares: ") + fname + wxT(" is a directory, skipping"));
+			AddDebugLogLineM(false, logKnownFiles,
+				wxT("Shares: ") + fname +
+				wxT(" is a directory, skipping"));
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
 		
 		CFile new_file(fname, CFile::read);
 		if (!new_file.IsOpened()) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("No permisions to open") + fname + wxT(", skipping"));
+			AddDebugLogLineM(false, logKnownFiles,
+				wxT("No permisions to open") + fname +
+				wxT(", skipping"));
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
@@ -453,7 +462,9 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 		fname = wxFileName(fname).GetFullName();
 
 		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("Ignored file ") + fname + wxT(" (Hidden)"));
+			AddDebugLogLineM(false, logKnownFiles,
+				wxT("Ignored file ") + fname +
+				wxT(" (Hidden)"));
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
@@ -462,7 +473,9 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 		try {
 			fileLength = new_file.GetLength();
 		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logKnownFiles, wxT("Failed to get filesize, skipping: ") + fname);
+			AddDebugLogLineM(true, logKnownFiles,
+				wxT("Failed to get filesize, skipping: ") +
+				fname);
 			fname = SharedDir.GetNextFile();
 			continue;
 		}
@@ -470,18 +483,28 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fileLength);
 		if (toadd) {
 			if ( AddFile(toadd) ) {
-				AddDebugLogLineM(false, logKnownFiles, wxT("Added known file ") + fname + wxT(" to shares"));
+				AddDebugLogLineM(false, logKnownFiles,
+					wxT("Added known file ") + fname +
+					wxT(" to shares"));
 				toadd->SetFilePath(directory);
 			} else {
 				if (fname != toadd->GetFileName()) {
-					AddDebugLogLineM(false, logKnownFiles, wxT("Warning: File '") + directory + fname + wxT("' already shared as '") + toadd->GetFileName() + wxT("'"));
+					AddDebugLogLineM(false, logKnownFiles,
+						wxT("Warning: File '") +
+						directory + fname +
+						wxT("' already shared as '") +
+						toadd->GetFileName() + wxT("'"));
 				} else {
-					AddDebugLogLineM(false, logKnownFiles, wxT("File '") + fname + wxT("' is already shared"));
+					AddDebugLogLineM(false, logKnownFiles,
+						wxT("File '") + fname +
+						wxT("' is already shared"));
 				}
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
-			AddDebugLogLineM(false, logKnownFiles, wxT("Hashing new unknown shared file ") + fname);
+			AddDebugLogLineM(false, logKnownFiles,
+				wxT("Hashing new unknown shared file ") +
+				fname);
 			
 			if (CThreadScheduler::AddTask(new CHashingTask(directory, fname))) {
 				addedFiles++;

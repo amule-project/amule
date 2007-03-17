@@ -1223,8 +1223,8 @@ void CPreferences::Save()
 	wxRemoveFile(shareddir);
 	wxTextFile sdirfile(shareddir);
 	if (sdirfile.Create()) {
-		for(unsigned int ii = 0; ii < shareddir_list.GetCount(); ++ii) {
-			sdirfile.AddLine(shareddir_list[ii]);
+		for(unsigned int i = 0; i < shareddir_list.GetCount(); ++i) {
+			sdirfile.AddLine(shareddir_list[i]);
 		}
 		
 		sdirfile.Write();
@@ -1545,10 +1545,12 @@ void CPreferences::ReloadSharedFolders() {
 	
 	if( sdirfile.Exists() && sdirfile.Open() ) {
 		if (sdirfile.GetLineCount()) {
-			shareddir_list.Add(sdirfile.GetFirstLine());				
-			while (!sdirfile.Eof()) {
-				shareddir_list.Add(sdirfile.GetNextLine());
-			}
+			wxString line = sdirfile.GetFirstLine();
+			do {
+				shareddir_list.Add(line);
+				int i = shareddir_list.GetCount() - 1;
+				line = sdirfile.GetNextLine();
+			} while (!sdirfile.Eof());
 		}
 		sdirfile.Close();
 	}
