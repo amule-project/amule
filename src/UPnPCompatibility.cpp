@@ -28,18 +28,22 @@
 
 
 void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
 	bool critical,
 	const std::ostringstream &msg)
 {
-	AddLogLine(critical, char2unicode(msg.str().c_str()));
+	AddLogLine(file, line, critical, char2unicode(msg.str().c_str()));
 }
 
 
 void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
 	bool critical,
 	DebugType type,
 	const std::ostringstream &msg)
 {
-	AddLogLine(critical, type, char2unicode(msg.str().c_str()));
+	AddLogLine(file, line, critical, type, char2unicode(msg.str().c_str()));
 }
 

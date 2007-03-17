@@ -34,14 +34,18 @@ bool CLogger::IsEnabled(DebugType /*type*/)
 
 
 void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
 	bool critical,
 	const std::ostringstream &msg)
 {
-	AddLogLine(critical, static_cast<DebugType>(0), msg);
+	AddLogLine(file, line, critical, static_cast<DebugType>(0), msg);
 }
 
 
 void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
 	bool critical,
 	DebugType /*type*/,
 	const std::ostringstream &msg)
@@ -50,6 +54,8 @@ void CLogger::AddLogLine(
 	if (critical) {
 		s = "Critical message: ";
 	}
-	printf("%s%s\n", s.c_str(), msg.str().c_str());
+	printf("%s(%d): %s%s\n",
+		(const char *)unicode2char(file),
+		line, s.c_str(), msg.str().c_str());
 }
 

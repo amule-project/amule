@@ -43,9 +43,13 @@
 namespace CLogger
 {
 	void AddLogLine(
+		const wxString &file,
+		int line,
 		bool critical,
 		const std::ostringstream &msg);
 	void AddLogLine(
+		const wxString &file,
+		int line,
 		bool critical,
 		DebugType type,
 		const std::ostringstream &msg);
