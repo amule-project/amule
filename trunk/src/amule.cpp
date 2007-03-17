@@ -991,8 +991,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 			m_upnp->AddPortMappings(m_upnpMappings);
 		} catch(CUPnPException &e) {
 			wxString error_msg;
-			error_msg << wxT("amule.cpp(") << __LINE__ <<
-				("): ") << e.what();
+			error_msg << e.what();
 			AddLogLineM(true, error_msg);
 			fprintf(stderr, "%s\n", (const char *)unicode2char(error_msg));
 		}
