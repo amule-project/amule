@@ -1548,7 +1548,6 @@ void CPreferences::ReloadSharedFolders() {
 			wxString line = sdirfile.GetFirstLine();
 			do {
 				shareddir_list.Add(line);
-				int i = shareddir_list.GetCount() - 1;
 				line = sdirfile.GetNextLine();
 			} while (!sdirfile.Eof());
 		}
