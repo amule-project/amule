@@ -159,17 +159,19 @@ namespace CLogger
 	/**
 	 * Returns true if debug-messages should be generated for a specific category.
 	 */
-	bool 	IsEnabled( DebugType );
+	bool IsEnabled( DebugType );
 	
 	/**
 	 * Enables or disables debug-messages for a specific category.
 	 */
-	void		SetEnabled( DebugType type, bool enabled );
+	void SetEnabled( DebugType type, bool enabled );
 
 	
 	/**
 	 * Logs the specified line of text.
 	 *
+	 * @param file
+	 * @param line
 	 * @param critical If true, then the message will be made visible directly to the user.
 	 * @param str The actual line of text.
 	 *
@@ -177,11 +179,17 @@ namespace CLogger
 	 * event will be sent directly to the application, otherwise it will be
 	 * queued in the event-loop.
 	 */
-	void		AddLogLine( bool critical, const wxString& str );
+	void AddLogLine(
+		const wxString &file,
+		int line,
+		bool critical,
+		const wxString &str);
 
 	/**
 	 * Logs the specified line of text, prefixed with the name of the DebugType.
 	 *
+	 * @param file
+	 * @param line
 	 * @param critical If true, then the message will be made visible directly to the user.
 	 * @param type The debug-category, the name of which will be prepended to the line.
 	 * @param str The actual line of text.
@@ -190,7 +198,12 @@ namespace CLogger
 	 * event will be sent directly to the application, otherwise it will be
 	 * queued in the event-loop.
 	 */
-	void		AddLogLine( bool critical, DebugType type, const wxString& str );
+	void AddLogLine(
+		const wxString &file,
+		int line,
+		bool critical,
+		DebugType type,
+		const wxString &str);
 
 
 	/**
@@ -200,7 +213,7 @@ namespace CLogger
 	 *       logfile even when queued to avoid risk of
 	 *       data loss.
 	 */
-	void		FlushPendingEntries();
+	void FlushPendingEntries();
 	
 	/**
 	 * Returns a category specified by index.
@@ -210,7 +223,7 @@ namespace CLogger
 	/**
 	 * Returns the number of debug-categories.
 	 */
-	unsigned int 			GetDebugCategoryCount();
+	unsigned int GetDebugCategoryCount();
 }
 
 
@@ -236,7 +249,7 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
 class CLoggingEvent : public wxEvent
 {
 public:
-	CLoggingEvent(bool critical, const wxString& msg)
+	CLoggingEvent(bool critical, const wxString &msg)
 		: wxEvent(-1, MULE_EVT_LOGLINE)
 		, m_critical(critical)
 		, m_msg(msg)
@@ -287,19 +300,19 @@ typedef void (wxEvtHandler::*MuleLogEventFunction)(CLoggingEvent&);
 		#define AddDebugLogLineM(critical, type, string) \
 		do { \
 			if (critical || CLogger::IsEnabled(type)) { \
-				CLogger::AddLogLine(critical, type, string); \
+				CLogger::AddLogLine(__TFILE__, __LINE__, critical, type, string); \
 			} \
 		} while (false)
 	#else
 		#define AddDebugLogLineM(critical, type, string) \
 		do { \
 			if (critical) { \
-				CLogger::AddLogLine(critical, type, string); \
+				CLogger::AddLogLine(__TFILE__, __LINE__, critical, type, string); \
 			} \
 		} while (false)
 	#endif
 
-	#define AddLogLineM(...) CLogger::AddLogLine(__VA_ARGS__)
+	#define AddLogLineM(...) CLogger::AddLogLine(__TFILE__, __LINE__, __VA_ARGS__)
 #endif
 
 #endif

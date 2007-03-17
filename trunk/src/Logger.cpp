@@ -201,9 +201,15 @@ void CLogger::FlushPendingEntries()
 }
 
 
-void CLogger::AddLogLine(bool critical, const wxString& str)
+void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
+	bool critical,
+	const wxString &str)
 {
-	PushEntry(critical, str);
+	wxString msg;
+	msg << file << wxT("(") << line << wxT("): ") << str;
+	PushEntry(critical, msg);
 
 	if (wxThread::IsMain()) {
 		FlushPendingEntries();
@@ -211,7 +217,12 @@ void CLogger::AddLogLine(bool critical, const wxString& str)
 }
 
 
-void CLogger::AddLogLine(bool critical, DebugType type, const wxString& str)
+void CLogger::AddLogLine(
+	const wxString &file,
+	int line,
+	bool critical,
+	DebugType type,
+	const wxString& str)
 {
 	int index = (int)type;
 	
@@ -219,7 +230,7 @@ void CLogger::AddLogLine(bool critical, DebugType type, const wxString& str)
 		const CDebugCategory& cat = g_debugcats[ index ];
 		wxASSERT(type == cat.GetType());
 
-		AddLogLine(critical, cat.GetName() + wxT(": ") + str);
+		AddLogLine(file, line, critical, cat.GetName() + wxT(": ") + str);
 	} else {
 		wxASSERT( false );
 	}
@@ -254,7 +265,7 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	// This is much simpler than manually handling all wx log-types.
 	bool critical = str.StartsWith(_("Error: ")) or str.StartsWith(_("Warning: "));
 
-	CLogger::AddLogLine(critical, str);
+	CLogger::AddLogLine(__TFILE__, __LINE__, critical, str);
 }
 
 // File_checked_for_headers
