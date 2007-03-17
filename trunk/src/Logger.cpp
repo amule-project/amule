@@ -137,12 +137,12 @@ void CLogger::SetEnabled( DebugType type, bool enabled )
 }
 
 
-
 struct LogEntry
 {
-	bool			critical;
-	wxString		entry;
+	bool critical;
+	wxString entry;
 };
+
 
 static std::deque<LogEntry*> s_backLog;
 static wxMutex s_mutex;
@@ -153,8 +153,8 @@ void PushEntry(bool critical, const wxString& str)
 	wxMutexLocker lock(s_mutex);
 
 	LogEntry* item = new LogEntry;
-	item->critical	= critical;
-	item->entry		= str;
+	item->critical = critical;
+	item->entry = str;
 	
 	s_backLog.push_back(item);
 }
