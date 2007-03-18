@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-17 03:31+0100\n"
+"POT-Creation-Date: 2007-03-18 03:31+0100\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1519,7 +1519,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
 #: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
-#: src/amule.cpp:701 src/amule.cpp:1294
+#: src/amule.cpp:701 src/amule.cpp:1293
 msgid "Info"
 msgstr "정보"
 
@@ -2855,7 +2855,7 @@ msgstr "연결 실패"
 
 #: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:832
-#: src/amule.cpp:950 src/amule.cpp:1305
+#: src/amule.cpp:950 src/amule.cpp:1304
 msgid "Error"
 msgstr "오류"
 
@@ -3314,17 +3314,24 @@ msgstr "known.met 파일을 읽는동안 입출력 오류: %s"
 msgid "Error while saving known.met file: %s"
 msgstr "known.met 파일을 저장하는 동안 오류: %s"
 
-#: src/SharedFileList.cpp:371
+#: src/SharedFileList.cpp:357
+#, c-format
+msgid ""
+"CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
+"directory not found."
+msgstr ""
+
+#: src/SharedFileList.cpp:376
 #, c-format
 msgid "Found %i known shared files"
 msgstr "알려진 공유 파일 %i가 발견되었습니다."
 
-#: src/SharedFileList.cpp:379
+#: src/SharedFileList.cpp:384
 #, c-format
 msgid "Found %i known shared files, %i unknown"
 msgstr "알려진 공유 파일 %i가 발견되었습니다. 알수없는 %i"
 
-#: src/SharedFileList.cpp:389
+#: src/SharedFileList.cpp:394
 #, c-format
 msgid "ERROR! Attempted to share %s"
 msgstr "오류! %s 공유를 시도하였습니다."
@@ -3525,11 +3532,11 @@ msgstr "ED2k"
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s에 연결됨"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with HighID"
 msgstr "높은아이디로"
 
@@ -6824,15 +6831,15 @@ msgstr ""
 "\n"
 "네트워크의 포트가 열려있는지 체크하세요. "
 
-#: src/amule.cpp:1094
+#: src/amule.cpp:1093
 msgid "Failed to create OnlineSig File"
 msgstr "온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1102
+#: src/amule.cpp:1101
 msgid "Failed to create aMule OnlineSig File"
 msgstr "어뮬 온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1270
+#: src/amule.cpp:1269
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6840,39 +6847,39 @@ msgstr ""
 "선택한 로케일이 컴퓨터에 설치되지 않아 보입니다. (주: 어쨌든 지정한 대로 설정"
 "해 보겠습니다)"
 
-#: src/amule.cpp:1280
+#: src/amule.cpp:1279
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "이번에 어뮬 %s를 처음 실행했습니다."
 
-#: src/amule.cpp:1282
+#: src/amule.cpp:1281
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "이버젼은 테스트 버젼으로, 매일 업데이트되며, \n"
 
-#: src/amule.cpp:1283
+#: src/amule.cpp:1282
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "이 프로그램이 어느 것도 부수지 않는다고, 집을 태우지 않는다고, 혹은 \n"
 
-#: src/amule.cpp:1284
+#: src/amule.cpp:1283
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입"
 "니다.\n"
 
-#: src/amule.cpp:1289
+#: src/amule.cpp:1288
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "더 많은 정보, 지원, 새 릴리즈는 홈페이지 www.amule.org, 또는 IRC 채널\n"
 
-#: src/amule.cpp:1290
+#: src/amule.cpp:1289
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "(irc.freenode.net의 #aMule)에서 찾을 수 있습니다.\n"
 
-#: src/amule.cpp:1292
+#: src/amule.cpp:1291
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "버그는 http://forum.amule.org로 보고해 주십시오."
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1304
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6880,101 +6887,101 @@ msgstr ""
 "지정한 온라인 서명 파일을 위한 폴더가 부정확합니다.\n"
 " 온라인 서명은 폴더를 환경설정에서 수정할 때까지 사용하지 않습니다."
 
-#: src/amule.cpp:1699
+#: src/amule.cpp:1698
 msgid "ERROR: can't open logfile"
 msgstr "오류: 로그파일을 열수없습니다."
 
-#: src/amule.cpp:1703
+#: src/amule.cpp:1702
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습니다."
 
-#: src/amule.cpp:1722
+#: src/amule.cpp:1721
 msgid "Log has been reset"
 msgstr "로그가 초기화되었습니다."
 
-#: src/amule.cpp:1750
+#: src/amule.cpp:1749
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "서버메시지: %s"
 
-#: src/amule.cpp:1788
+#: src/amule.cpp:1787
 msgid "Failed to download the nodes list."
 msgstr "노드 목록을 내려받지 못했습니다."
 
-#: src/amule.cpp:1801
+#: src/amule.cpp:1800
 msgid "Failed to open the downloaded version check file"
 msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
 
-#: src/amule.cpp:1804 src/amule.cpp:1814 src/amule.cpp:1820
+#: src/amule.cpp:1803 src/amule.cpp:1813 src/amule.cpp:1819
 msgid "Corrupted version check file"
 msgstr "버젼 검사 파일이 손상되었습니다."
 
-#: src/amule.cpp:1830
+#: src/amule.cpp:1829
 msgid "You are using an outdated version of aMule!"
 msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 
-#: src/amule.cpp:1831
+#: src/amule.cpp:1830
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
-#: src/amule.cpp:1832
+#: src/amule.cpp:1831
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "최신 버젼은 항상 http://www.amule.org 에서 찾을 수 있습니다."
 
-#: src/amule.cpp:1835
+#: src/amule.cpp:1834
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "경고: 어뮬 버젼은 낡았습니다: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1839
+#: src/amule.cpp:1838
 msgid "Your copy of aMule is up to date."
 msgstr "어뮬은 최신입니다."
 
-#: src/amule.cpp:1846
+#: src/amule.cpp:1845
 msgid "Failed to download the version check file"
 msgstr "버젼 검사 파일을 내려받지 못했습니다."
 
-#: src/amule.cpp:1948
+#: src/amule.cpp:1947
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "사용자: E: %s K: %s | 파일 E: %s K: %s"
 
-#: src/amule.cpp:2017
+#: src/amule.cpp:2016
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s에 연결되어 있습니다."
 
-#: src/amule.cpp:2020
+#: src/amule.cpp:2019
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s에 연결중입니다."
 
-#: src/amule.cpp:2022
+#: src/amule.cpp:2021
 msgid "Disconnected from ED2K"
 msgstr "ED2k로부터 연결이 끊김"
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2028
 msgid "Kad started."
 msgstr "카드를 시작했습니다."
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2030
 msgid "Kad stopped."
 msgstr "카드를 멈췄습니다."
 
-#: src/amule.cpp:2038
+#: src/amule.cpp:2037
 msgid "Connected to Kad (ok)"
 msgstr "카드에 연결됨 (양호)"
 
-#: src/amule.cpp:2040
+#: src/amule.cpp:2039
 msgid "Connected to Kad (firewalled)"
 msgstr "카드에 연결됨 (방화벽)"
 
-#: src/amule.cpp:2043
+#: src/amule.cpp:2042
 msgid "Disconnected from Kad"
 msgstr "카드로부터 연결이 끊김"
 
-#: src/amule.cpp:2099
+#: src/amule.cpp:2098
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -6982,7 +6989,7 @@ msgstr ""
 "카드 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
 "니다."
 
-#: src/amule.cpp:2102
+#: src/amule.cpp:2101
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "카드 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
