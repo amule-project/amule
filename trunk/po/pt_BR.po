@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-17 03:31+0100\n"
+"POT-Creation-Date: 2007-03-18 03:31+0100\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -1521,7 +1521,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
 #: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
-#: src/amule.cpp:701 src/amule.cpp:1294
+#: src/amule.cpp:701 src/amule.cpp:1293
 msgid "Info"
 msgstr "Info"
 
@@ -2855,7 +2855,7 @@ msgstr ""
 
 #: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:832
-#: src/amule.cpp:950 src/amule.cpp:1305
+#: src/amule.cpp:950 src/amule.cpp:1304
 msgid "Error"
 msgstr "Erro"
 
@@ -3313,17 +3313,24 @@ msgstr "Erro de I/O ao ler arquivo known.met: %s"
 msgid "Error while saving known.met file: %s"
 msgstr "Erro ao salvar arquivo known.met: %s"
 
-#: src/SharedFileList.cpp:371
+#: src/SharedFileList.cpp:357
+#, c-format
+msgid ""
+"CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
+"directory not found."
+msgstr ""
+
+#: src/SharedFileList.cpp:376
 #, c-format
 msgid "Found %i known shared files"
 msgstr "Encontrados %i arquivos conhecidos compartilhados"
 
-#: src/SharedFileList.cpp:379
+#: src/SharedFileList.cpp:384
 #, c-format
 msgid "Found %i known shared files, %i unknown"
 msgstr "Encontrados %i arquivos conhecidos, %i desconhecidos"
 
-#: src/SharedFileList.cpp:389
+#: src/SharedFileList.cpp:394
 #, c-format
 msgid "ERROR! Attempted to share %s"
 msgstr "ERRO: Tentando compartilhar %s"
@@ -3525,11 +3532,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Conectado a %s %s %s"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with LowID"
 msgstr "com LowID"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with HighID"
 msgstr "com HighID (Id alta)"
 
@@ -6845,16 +6852,16 @@ msgstr ""
 "\n"
 "Verifique sua rede para ver se essa porta está aberta para entrada e saída."
 
-#: src/amule.cpp:1094
+#: src/amule.cpp:1093
 msgid "Failed to create OnlineSig File"
 msgstr "Falha ao criar o arquivo OnlineSig"
 
-#: src/amule.cpp:1102
+#: src/amule.cpp:1101
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Falha ao criar o arquivo OnlineSig do aMule"
 
 # src/amuled.cpp:1246:
-#: src/amule.cpp:1270
+#: src/amule.cpp:1269
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6862,39 +6869,39 @@ msgstr ""
 "Parece que o idioma selecionado não está instalado no seu computador. (Nota: "
 "eu irei defini-lo mesmo assim)."
 
-#: src/amule.cpp:1280
+#: src/amule.cpp:1279
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Essa é a primeira vez que você executa o aMule %s"
 
-#: src/amule.cpp:1282
+#: src/amule.cpp:1281
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Essa é uma versão de testes, atualizada diariamente, e\n"
 
-#: src/amule.cpp:1283
+#: src/amule.cpp:1282
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "não daremos garantia se ela quebrar algo, queimar sua casa,\n"
 
-#: src/amule.cpp:1284
+#: src/amule.cpp:1283
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ou matar seu cachorro. Mas ela *deve* ser segura para uso mesmo assim.\n"
 
-#: src/amule.cpp:1289
+#: src/amule.cpp:1288
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Maiores informações, suporte e novas versões podem ser encontradas em nossa\n"
 
-#: src/amule.cpp:1290
+#: src/amule.cpp:1289
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "homepage www.aMule.org ou em nosso canal de irc #aMule na irc.freenode.net.\n"
 
-#: src/amule.cpp:1292
+#: src/amule.cpp:1291
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Esteja a vontade para notificar qualquer bug em http://forum.amule.org"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1304
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6902,107 +6909,107 @@ msgstr ""
 "A pasta especificada para os arquivos da Online Signature é INVÁLIDA!\n"
 "OnlineSignature ficará DESATIVADA até você atualizar as preferências."
 
-#: src/amule.cpp:1699
+#: src/amule.cpp:1698
 msgid "ERROR: can't open logfile"
 msgstr "ERRO: não foi possível abrir arquivo de log"
 
-#: src/amule.cpp:1703
+#: src/amule.cpp:1702
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "AVISO: o arquivo de log está vazio. Algo está errado."
 
-#: src/amule.cpp:1722
+#: src/amule.cpp:1721
 msgid "Log has been reset"
 msgstr "Arquivo de log resetado"
 
-#: src/amule.cpp:1750
+#: src/amule.cpp:1749
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "MensagemDoServidor: %s"
 
-#: src/amule.cpp:1788
+#: src/amule.cpp:1787
 msgid "Failed to download the nodes list."
 msgstr "Falha ao obter a lista de nodes."
 
-#: src/amule.cpp:1801
+#: src/amule.cpp:1800
 msgid "Failed to open the downloaded version check file"
 msgstr "Falha ao abrir arquivo de versão baixado"
 
-#: src/amule.cpp:1804 src/amule.cpp:1814 src/amule.cpp:1820
+#: src/amule.cpp:1803 src/amule.cpp:1813 src/amule.cpp:1819
 msgid "Corrupted version check file"
 msgstr "Arquivo de versão corrompido"
 
-#: src/amule.cpp:1830
+#: src/amule.cpp:1829
 msgid "You are using an outdated version of aMule!"
 msgstr "Você está utilizando uma versão anterior do aMule!"
 
-#: src/amule.cpp:1831
+#: src/amule.cpp:1830
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1832
+#: src/amule.cpp:1831
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "A mais recente versão pode ser obtida em http://www.amule.org"
 
-#: src/amule.cpp:1835
+#: src/amule.cpp:1834
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1839
+#: src/amule.cpp:1838
 msgid "Your copy of aMule is up to date."
 msgstr "Sua versão do aMule está em dia :)"
 
-#: src/amule.cpp:1846
+#: src/amule.cpp:1845
 msgid "Failed to download the version check file"
 msgstr "Falha ao baixar arquivo de controle de versão"
 
-#: src/amule.cpp:1948
+#: src/amule.cpp:1947
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Users: E: %s K: %s | Arquivos E: %s K: %s"
 
-#: src/amule.cpp:2017
+#: src/amule.cpp:2016
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Conectado a %s %s"
 
-#: src/amule.cpp:2020
+#: src/amule.cpp:2019
 #, c-format
 msgid "Connecting to %s"
 msgstr "Conectando a %s"
 
-#: src/amule.cpp:2022
+#: src/amule.cpp:2021
 msgid "Disconnected from ED2K"
 msgstr "Desconectado da rede ED2k"
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2028
 msgid "Kad started."
 msgstr ""
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2030
 msgid "Kad stopped."
 msgstr ""
 
-#: src/amule.cpp:2038
+#: src/amule.cpp:2037
 msgid "Connected to Kad (ok)"
 msgstr "Conectado a rede Kad (ok)"
 
-#: src/amule.cpp:2040
+#: src/amule.cpp:2039
 msgid "Connected to Kad (firewalled)"
 msgstr "Conectado a rede Kad (com firewall)"
 
-#: src/amule.cpp:2043
+#: src/amule.cpp:2042
 msgid "Disconnected from Kad"
 msgstr "Desconectado da rede Kad"
 
-#: src/amule.cpp:2099
+#: src/amule.cpp:2098
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:2102
+#: src/amule.cpp:2101
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 

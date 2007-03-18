@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-17 03:31+0100\n"
+"POT-Creation-Date: 2007-03-18 03:31+0100\n"
 "PO-Revision-Date: 2006-07-01 18:13+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -1523,7 +1523,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:139 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
 #: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
-#: src/amule.cpp:701 src/amule.cpp:1294
+#: src/amule.cpp:701 src/amule.cpp:1293
 msgid "Info"
 msgstr "Info"
 
@@ -2875,7 +2875,7 @@ msgstr "Conexión fallida"
 
 #: src/amule-remote-gui.cpp:264 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:832
-#: src/amule.cpp:950 src/amule.cpp:1305
+#: src/amule.cpp:950 src/amule.cpp:1304
 msgid "Error"
 msgstr "Error"
 
@@ -3334,17 +3334,24 @@ msgstr "IO error leyendo el archivo known.met: %s"
 msgid "Error while saving known.met file: %s"
 msgstr "Error guardando archivo known.met: %s"
 
-#: src/SharedFileList.cpp:371
+#: src/SharedFileList.cpp:357
+#, c-format
+msgid ""
+"CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
+"directory not found."
+msgstr ""
+
+#: src/SharedFileList.cpp:376
 #, c-format
 msgid "Found %i known shared files"
 msgstr "Encontrados %i archivos compartidos"
 
-#: src/SharedFileList.cpp:379
+#: src/SharedFileList.cpp:384
 #, c-format
 msgid "Found %i known shared files, %i unknown"
 msgstr "Encontrados %i archivos compartidos, %i desconocidos"
 
-#: src/SharedFileList.cpp:389
+#: src/SharedFileList.cpp:394
 #, c-format
 msgid "ERROR! Attempted to share %s"
 msgstr "¡ERROR! No se debe compartir %s"
@@ -3546,11 +3553,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Conectado a %s %s %s"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with LowID"
 msgstr "con IDBaja"
 
-#: src/TextClient.cpp:669 src/amule.cpp:2015
+#: src/TextClient.cpp:669 src/amule.cpp:2014
 msgid "with HighID"
 msgstr "con IDAlta"
 
@@ -6896,15 +6903,15 @@ msgstr ""
 "Comprueba tu red y asegurate de que el puerto esta abierto para entrada y "
 "salida."
 
-#: src/amule.cpp:1094
+#: src/amule.cpp:1093
 msgid "Failed to create OnlineSig File"
 msgstr "Error al crear el archivo de FirmaOnline"
 
-#: src/amule.cpp:1102
+#: src/amule.cpp:1101
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Error al crear el archivo de FirmaOnline aMule"
 
-#: src/amule.cpp:1270
+#: src/amule.cpp:1269
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6912,39 +6919,39 @@ msgstr ""
 "El idioma seleccionado no parece estar instalado. (Nota: Intentaré ponerlo "
 "de todos modos)"
 
-#: src/amule.cpp:1280
+#: src/amule.cpp:1279
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Es la primera vez que inicias aMule %s"
 
-#: src/amule.cpp:1282
+#: src/amule.cpp:1281
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Esto es una versión de prueba, actualízate diariamente, y \n"
 
-#: src/amule.cpp:1283
+#: src/amule.cpp:1282
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "no damos garantía si rompiera algo, queme tu casa,\n"
 
-#: src/amule.cpp:1284
+#: src/amule.cpp:1283
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "o mata a tu perro. Pero *debería* ser seguro de todas formas. \n"
 
-#: src/amule.cpp:1289
+#: src/amule.cpp:1288
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Podrás encontrar en nuestra web, mas información, soporte y nuevas "
 "versiones, \n"
 
-#: src/amule.cpp:1290
+#: src/amule.cpp:1289
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "en www.aMule.org, o en nuestro canal de IRC #aMule en irc.freenode.net. \n"
 
-#: src/amule.cpp:1292
+#: src/amule.cpp:1291
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Envíanos cualquier fallo a http://forum.amule.org"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1304
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6952,101 +6959,101 @@ msgstr ""
 "El directorio que has especificado de Firma Online no es válido\n"
 "La Firma Online ha sido deshabilitado hasta que lo arregles en opciones."
 
-#: src/amule.cpp:1699
+#: src/amule.cpp:1698
 msgid "ERROR: can't open logfile"
 msgstr "ERROR: no puedo abrir el archivo de registro"
 
-#: src/amule.cpp:1703
+#: src/amule.cpp:1702
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ALERTA: el archivo de registro está vacio. Algo esta mal"
 
-#: src/amule.cpp:1722
+#: src/amule.cpp:1721
 msgid "Log has been reset"
 msgstr "Registro ha sido borrado"
 
-#: src/amule.cpp:1750
+#: src/amule.cpp:1749
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Mensaje del servidor: %s"
 
-#: src/amule.cpp:1788
+#: src/amule.cpp:1787
 msgid "Failed to download the nodes list."
 msgstr "Error al descargar la lista de nodos."
 
-#: src/amule.cpp:1801
+#: src/amule.cpp:1800
 msgid "Failed to open the downloaded version check file"
 msgstr "Error al abrir el archivo de comprobación de versión descargado"
 
-#: src/amule.cpp:1804 src/amule.cpp:1814 src/amule.cpp:1820
+#: src/amule.cpp:1803 src/amule.cpp:1813 src/amule.cpp:1819
 msgid "Corrupted version check file"
 msgstr "Archivo de comprobación de versión corrupto"
 
-#: src/amule.cpp:1830
+#: src/amule.cpp:1829
 msgid "You are using an outdated version of aMule!"
 msgstr "¡Estás usando una version anticuada de aMule!"
 
-#: src/amule.cpp:1831
+#: src/amule.cpp:1830
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Tu version de aMule es %i.%i.%i y la última version es %li.%li.%li"
 
-#: src/amule.cpp:1832
+#: src/amule.cpp:1831
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "La última versión puede siempre ser encontrada en http://www.amule.org"
 
-#: src/amule.cpp:1835
+#: src/amule.cpp:1834
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "ALERTA: Tu versión de aMuled está obsoleta: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1839
+#: src/amule.cpp:1838
 msgid "Your copy of aMule is up to date."
 msgstr "Tu copia de aMule está actualizada."
 
-#: src/amule.cpp:1846
+#: src/amule.cpp:1845
 msgid "Failed to download the version check file"
 msgstr "Error al descargar el archivo de comprobación de versión"
 
-#: src/amule.cpp:1948
+#: src/amule.cpp:1947
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Usuarios: E: %s K: %s | Archivos E: %s K: %s"
 
-#: src/amule.cpp:2017
+#: src/amule.cpp:2016
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Conectado a %s %s"
 
-#: src/amule.cpp:2020
+#: src/amule.cpp:2019
 #, c-format
 msgid "Connecting to %s"
 msgstr "Conectando a %s"
 
-#: src/amule.cpp:2022
+#: src/amule.cpp:2021
 msgid "Disconnected from ED2K"
 msgstr "Desconectado de ED2K"
 
-#: src/amule.cpp:2029
+#: src/amule.cpp:2028
 msgid "Kad started."
 msgstr "Kad iniciado."
 
-#: src/amule.cpp:2031
+#: src/amule.cpp:2030
 msgid "Kad stopped."
 msgstr "Kad parado."
 
-#: src/amule.cpp:2038
+#: src/amule.cpp:2037
 msgid "Connected to Kad (ok)"
 msgstr "Conectado a Kad (ok)"
 
-#: src/amule.cpp:2040
+#: src/amule.cpp:2039
 msgid "Connected to Kad (firewalled)"
 msgstr "Conectado a Kad (tras cortafuegos)"
 
-#: src/amule.cpp:2043
+#: src/amule.cpp:2042
 msgid "Disconnected from Kad"
 msgstr "Desconectado de Kad"
 
-#: src/amule.cpp:2099
+#: src/amule.cpp:2098
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7054,7 +7061,7 @@ msgstr ""
 "Red Kad no puede ser usada si el puerto UDP está deshabilitado en opciones, "
 "no iniciando."
 
-#: src/amule.cpp:2102
+#: src/amule.cpp:2101
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Red Kad deshabilitada en opciones, no conectará."
 
