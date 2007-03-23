@@ -510,7 +510,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 
 typedef struct {
 	char *php_name;
-	ec_opcode_t tagname;
+	ECTagNames tagname;
 	int opsize;
 } PHP_2_EC_OPT_DEF;
 
@@ -523,7 +523,7 @@ PHP_2_EC_OPT_DEF g_connection_opt_defs[] = {
 	{ "max_file_src", EC_TAG_CONN_MAX_FILE_SOURCES, 2},
 	{ "max_conn_total", EC_TAG_CONN_MAX_CONN, 2}, 
 	{ "autoconn_en", EC_TAG_CONN_AUTOCONNECT, 0}, { "reconn_en", EC_TAG_CONN_RECONNECT, 0},
-	{0, 0, 0}
+	{0, (ECTagNames)0, 0}
 };
 
 PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
@@ -543,18 +543,18 @@ PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
 	{ "alloc_full", EC_TAG_FILES_ALLOC_FULL_SIZE, 0},
 	{ "check_free_space", EC_TAG_FILES_CHECK_FREE_SPACE, 0},
 	{ "min_free_space", EC_TAG_FILES_MIN_FREE_SPACE, 4},
-	{0, 0, 0}
+	{0, (ECTagNames)0, 0}
 };
 
 PHP_2_EC_OPT_DEF g_webserver_opt_defs[] = {
 	{ "use_gzip", EC_TAG_WEBSERVER_USEGZIP, 0},
 	{ "autorefresh_time", EC_TAG_WEBSERVER_REFRESH, 4},
-	{0, 0, 0}
+	{0, (ECTagNames)0, 0}
 };
 
 PHP_2_EC_OPT_DEF g_coretweak_opt_defs[] = {
 	{ "max_conn_5sec", EC_TAG_CORETW_MAX_CONN_PER_FIVE, 2},
-	{0, 0, 0}
+	{0, (ECTagNames)0, 0}
 };
 
 void set_array_int_val(PHP_VALUE_NODE *array, std::string arrkey, int value)
@@ -578,6 +578,7 @@ void ec_tag_2_php(const CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *ca
 			default: val = -1;
 		}
 		wxASSERT(val != -1);
+		printf("OPT_DEBUG: %s of size %d -> %d\n", def->php_name, def->opsize, val);
 		set_array_int_val(&catvar->value, def->php_name, val);
 	}
 }
