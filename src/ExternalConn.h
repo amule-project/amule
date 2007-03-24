@@ -154,7 +154,7 @@ class CKnownFile_Encoder {
 
 typedef CFileEncoderMap<CKnownFile , CKnownFile_Encoder, CSharedFileList> CKnownFile_Encoder_Map;
 
-template <class T, ec_opcode_t OP>
+template <class T, ec_tagname_t OP>
 class CTagSet : public std::set<T> {
 		void InSet(const CECTag *tag, uint32)
 		{
