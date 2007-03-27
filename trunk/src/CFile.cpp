@@ -207,18 +207,16 @@ bool CFile::Create(const wxString& path, bool overwrite, int accessMode)
 bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 {
 	MULE_VALIDATE_PARAMS(!fileName.IsEmpty(), wxT("CFile: Cannot open, empty path."));
-
 #ifdef __linux__
 	int flags = O_BINARY | O_LARGEFILE;
 #else
 	int flags = O_BINARY;
 #endif
-
 	switch ( mode ) {
 		case read:
 			flags |= O_RDONLY;
 			break;
-	
+		
 		case write_append:
 			if (CheckFileExists(fileName))
 			{
@@ -227,51 +225,35 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 			}
 			//else: fall through as write_append is the same as write if the
 			//      file doesn't exist
-	
+		
 		case write:
 			flags |= O_WRONLY | O_CREAT | O_TRUNC;
 			break;
-	
+		
 		case write_excl:
 			flags |= O_WRONLY | O_CREAT | O_EXCL;
 			break;
-
+		
 		case read_write:
 			flags |= O_RDWR;
         	break;
 	}
-
+	
 	if (IsOpened()) {
 		Close();	
 	}
-
 	
-	// When opening files, we will always first try to create an ANSI file name,
-	// even if that means an extended ANSI file name. Only if it is not possible
-	// to do that, we fall back to  UTF-8 file names. This is unicode safe and is
-	// the only way to guarantee that we can open any file in the file system,
-	// even if it is not an UTF-8 valid sequence.
-	//
-	
-	
-	// Test if it is possible to use an ANSI name
-	Unicode2CharBuf tmpFileName = unicode2char(fileName);
+	// Test if it is possible to use an ANSI name, otherwise use UTF-8
+	Unicode2CharBuf tmpFileName = unicode_2_broken(fileName);
 	if (tmpFileName) {
-		// Use an ANSI name (wxDevs call it "broken file names")
 		m_fd = open(tmpFileName, flags, accessMode);
 	} 
 	
-	if (m_fd == fd_invalid) {
-		// Wrong conversion or can't open.
-		// Try an UTF-8 name
-		m_fd = open(unicode2UTF8(fileName), flags, accessMode);
-	}
-	
 	m_filePath = fileName;
-
+	
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
-      
-    return IsOpened();
+	
+	return IsOpened();
 }
 
 

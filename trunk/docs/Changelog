@@ -107,6 +107,14 @@ Trunk
 		* Fixed IPFilter.dat loading from a zipped file.
 		* Added a termination process to wxExecute() calls, so that we
 		  no longer leave zombies.
+		* CDirIterator now uses wxDir.
+		* CheckDirExists() now uses wxDir::Exists().
+		* CheckFileExists() now uses wxFile::Exists().
+		* GetLastModificationTime() now uses wxFileModificationTime().
+		* GetFileSize() now uses wxFile::Length().
+		* UTF8_CopyFile() now uses wxCopyFile().
+		* UTF8_RemoveFile() now uses wxRemoveFile().
+		* UTF8_MoveFile() now uses wxRenameFile().
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

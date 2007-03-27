@@ -43,328 +43,133 @@
 #include "Logger.h"
 
 
-#ifdef __WSMSW__
-	#define STAT_FUNC _stat64
-	#define STAT_STRUCT struct __stat64
-#else
-	#define STAT_FUNC stat
-	#define STAT_STRUCT struct stat
-#endif
-
-
-int UTF8_Stat(const wxString& file_name, STAT_STRUCT *buf)
-{
-	Unicode2CharBuf tmpFile(unicode2char(file_name));
-	
-	int stat_error = -1;
-	
-	if (tmpFile) {
-		stat_error = STAT_FUNC(tmpFile, buf);
-	}
-	
-	if (stat_error) {
-		stat_error = STAT_FUNC(unicode2UTF8(file_name), buf);
-	}
-
-	return stat_error;
-}
-
-
-//
-// When moving file, first try an ANSI move, only then try UTF-8.
-// 
 bool UTF8_MoveFile(const wxString& from, const wxString& to)
 {
-	bool ret = false;
-	Unicode2CharBuf tmpFrom(unicode2char(from));
-	Unicode2CharBuf tmpTo(unicode2char(to));
-	if (tmpFrom) {
-		if (tmpTo) {
-			ret = rename(tmpFrom, tmpTo) == 0;
-		} else {
-			ret = rename(tmpFrom, unicode2UTF8(to)) == 0;
-		}
-	} else {
-		if (tmpTo) {
-			ret = rename(unicode2UTF8(from), tmpTo) == 0;
-		} else {
-			ret = rename(unicode2UTF8(from), unicode2UTF8(to)) == 0;
-		}
+	bool ok = wxRenameFile(from, to);
+	if (!ok) {
+		AddDebugLogLineM( true, logFileIO,
+			wxT("Error on file move from: ") +
+				from + wxT(" to: ") + to);
 	}
 
-	return ret;
+	return ok;
 }
 
 
 bool UTF8_RemoveFile(const wxString& fileName)
 {
-	// Test if it is possible to use an ANSI name
-	Unicode2CharBuf tmpFileName = unicode2char(fileName);
-	if (tmpFileName and (unlink(tmpFileName) != -1)) {
-		return true;
-	} 
-	
-	// Try an UTF-8 name
-	return (unlink(unicode2UTF8(fileName)) != -1);
+	bool ok = wxRemoveFile(fileName);
+	if (!ok) {
+		AddDebugLogLineM( true, logFileIO,
+			wxT("Error on file remove: ") +
+				fileName);
+	}
+
+	return ok;
 }
 
 
-const unsigned int FILE_COPY_BUFFER = 5*1024;
-
-//
-// When copying file, first try an ANSI name, only then try UTF-8.
-// This is done in the CFile constructor.
-// 
 bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
-	// Get file permissions
-	STAT_STRUCT fileStats;
-	if (UTF8_Stat(from, &fileStats)) {
-		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't stat original file: ") + from );
+	bool ok = wxCopyFile(from, to);
+	if (!ok) {
+		AddDebugLogLineM( true, logFileIO,
+			wxT("Error on file copy from: ") +
+				from + wxT(" to: ") + to);
 	}
-	
-	char buffer[FILE_COPY_BUFFER];
-	CFile input_file(from, CFile::read);
-	if (!input_file.IsOpened()) {
-		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't open original file: ") + from );
-		return false;
-	}
-	
-	CFile output_file;
-	if (!output_file.Open(to, CFile::write, fileStats.st_mode & 0777)) {
-		AddDebugLogLineM( true, logFileIO, wxT("Error on file copy. Can't create destination file: ") + to );
-		return false;
-	}
-	
-	while (!input_file.Eof()) {
-		uint64 toReadWrite = std::min<uint64>(sizeof(buffer), input_file.GetLength() - input_file.GetPosition());
-		
-		try {
-			input_file.Read(buffer, toReadWrite);
-			output_file.Write(buffer, toReadWrite);
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logFileIO, wxT("IO failure while copying file '") + from + wxT("' to '") + to + wxT("': ") + e.what());
-
-			output_file.Close();
-			if (not UTF8_RemoveFile(to)) {
-				AddDebugLogLineM(true, logFileIO, wxT("Failed to remove incomplete copy of file '") + from + wxT("' at '") + to + wxT("'"));
-			}
-			
-			return false;
-		}
-	}
-
-	return true;
+	return ok;
 }
 
 
 sint64 GetFileSize(const wxString& fullPath)
 {
-	STAT_STRUCT buf;
-	
-	if (!UTF8_Stat(fullPath, &buf)) {
-		return buf.st_size;
-	}
-
-	return -1;
+	wxFile f(fullPath);
+	return f.Length();
 }
 
 
-// When iterating dir, first try an ANSI file name, then try an UTF-8 file name.
+//
+// This class assumes that the following line has been executed:
+//
+// 	wxConvFileName = &aMuleConvBrokenFileNames;
+//
+// This line is necessary so that wxWidgets handles unix file names correctly.
+//
 CDirIterator::CDirIterator(const wxString& dir)
+:
+wxDir(dir),
+m_dir(dir)
 {
-	DirStr = dir;
-	if (DirStr.Last() != wxFileName::GetPathSeparator()) {
-		DirStr += wxFileName::GetPathSeparator();
-	}
-	
-	DirPtr = NULL;
-	
-	Unicode2CharBuf tmpDir(unicode2char(dir));
-	if (tmpDir) {
-		DirPtr = opendir(tmpDir);
-	}
-	
-	if (DirPtr == NULL) { // Wrong conversion or error opening
-		// Try UTF8
-		DirPtr = opendir(unicode2UTF8(dir));
-	}
-	
-	if (!DirPtr) {
-		AddDebugLogLineM( false, logFileIO, wxT("Error enumerating files for dir ") + dir + wxT(" (permissions?)") );
+	if (m_dir.Last() != wxFileName::GetPathSeparator()) {
+		m_dir += wxFileName::GetPathSeparator();
 	}
 }
 
 
 CDirIterator::~CDirIterator()
 {	
-	if (DirPtr) {
-		closedir (DirPtr);
-	}
 }
 
 
 wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search_mask)
 {
-	if (!DirPtr) {
+	wxString fileName;
+	wxString retFileName;
+	bool ok = IsOpened();
+	if (!ok) {
 		return wxEmptyString;
 	}
-	rewinddir(DirPtr);
-	FileMask = search_mask;
-	type = search_type;
-	return GetNextFile();
-}
-
-
-// First try an ANSI name, only then try UTF-8.
-wxString  CDirIterator::GetNextFile()
-{
-	if (!DirPtr) {
+	ok = GetFirst(&fileName, search_mask, search_type);
+	if (!ok) {
 		return wxEmptyString;
 	}
-	struct dirent *dp;
-	dp = readdir(DirPtr);
+	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
+	retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
+	if (retFileName.IsEmpty()) {
+		retFileName = fileName;
+	}
 	
-	bool found = false;
-	wxString FoundName;
-	STAT_STRUCT buf;
-	while (dp!=NULL && !found) {
-		if (type == CDirIterator::Any) {
-			// return anything.
-			found = true;
-		} else {
-#if 0
-			switch (dp->d_type) {
-			case DT_DIR:
-				if (type == CDirIterator::Dir)  {
-					found = true;
-				} else {
-					dp = readdir(DirPtr);	
-				}
-				break;
-			case DT_REG:
-				if (type == CDirIterator::File)  {
-					found = true;
-				} else {
-					dp = readdir(DirPtr);					
-				}
-				break;
-			default:
-#endif
-				// Fallback to stat
-				//
-				// The file name came from the OS, it is a sequence of
-				// bytes ending in a zero. First try an UTF-8 conversion,
-				// so that we don't loose information. Only then stick
-				// to an ANSI name. UTF82Unicode might fail because
-				// dp->name may not be a valid UTF-8 sequence.
-				Char2UnicodeBuf tmpFoundName(UTF82unicode(dp->d_name));
-				FoundName = tmpFoundName ?
-					tmpFoundName : char2unicode(dp->d_name);
-				wxString FullName(DirStr + FoundName);
-				// First, we try to use an ANSI name, but it might not be
-				// possible to use ANSI for the full name, so we test.
-				Unicode2CharBuf tmpFullName(unicode2char(FullName));		
-				int stat_error = -1;
-				if (tmpFullName) {
-					stat_error = STAT_FUNC(tmpFullName, &buf);
-#ifndef __WXMSW__
-					// Check if it is a broken symlink
-					if (stat_error) {
-						stat_error = lstat(tmpFullName, &buf);
-						if (!stat_error && S_ISLNK(buf.st_mode)) {
-							// Ok, just a broken symlink. Next, please!
-							dp = readdir(DirPtr);
-							continue;
-						}
-					}
-#endif
-				}
-				// Fallback to UTF-8
-				if (stat_error) {
-					Unicode2CharBuf tmpUTF8FullName(unicode2UTF8(FullName));
-					stat_error = STAT_FUNC(tmpUTF8FullName, &buf);
-#ifndef __WXMSW__
-					// Check if it is a broken symlink
-					if (stat_error) {
-						stat_error = lstat(tmpUTF8FullName, &buf);
-						if (!stat_error && S_ISLNK(buf.st_mode)) {
-							// Ok, just a broken symlink. Next, please!
-							dp = readdir(DirPtr);
-							continue;
-						}
-					}
-#endif
-				}
-				
-				if (!stat_error) {
-					if (S_ISREG(buf.st_mode)) {
-						if (type == CDirIterator::File) { 
-							found = true; 
-						} else { 
-							dp = readdir(DirPtr);
-						} 
-					} else {
-						if (S_ISDIR(buf.st_mode)) {
-							if (type == CDirIterator::Dir) {
-								found = true; 
-							} else { 
-								dp = readdir(DirPtr);
-							}
-						} else {				
-							// unix socket, block device, etc
-							dp = readdir(DirPtr);
-						}
-					}
-				} else {
-					// Stat failed. Assert.
-					printf("CFile: serious error, stat failed\n");
-					//wxASSERT(0);
-					AddDebugLogLineM( true, logFileIO,
-						wxT("Unexpected error calling stat on a file: ") + FullName);
-					dp = readdir(DirPtr);
-				}
-#if 0
-				break;
-			}
-#endif
-		}
-		if (found) {
-			if (	(!FileMask.IsEmpty() && !FoundName.Matches(FileMask)) ||
-				FoundName.IsSameAs(wxT(".")) ||
-				FoundName.IsSameAs(wxT(".."))) {
-				found = false;	
-				dp = readdir(DirPtr);
-			}
-		}
-	}
-	if (dp != NULL) {
-		return DirStr + FoundName;	
-	} else {
-		return wxEmptyString;
-	}
+	return m_dir + retFileName;
 }
 
 
-// First try an ANSI name, only then try UTF-8.
+wxString CDirIterator::GetNextFile()
+{
+	wxString fileName;
+	wxString retFileName;
+	bool ok = GetNext(&fileName);
+	if (!ok) {
+		return wxEmptyString;
+	}
+	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
+	retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
+	if (retFileName.IsEmpty()) {
+		retFileName = fileName;
+	}
+	
+	return m_dir + retFileName;
+}
+
+
 time_t GetLastModificationTime(const wxString& file)
 {
-	STAT_STRUCT buf;
-		
-	int stat_error = UTF8_Stat(file, &buf);
-	
-	if (stat_error) {
-		return 0;
-	} else {
-		return buf.st_mtime;
+	time_t ret = wxFileModificationTime(file);
+	// Notice that wxFileModificationTime() documentation is wrong.
+	// This function returns -1 if there was an error, not zero.
+	if (ret == -1) {
+		AddDebugLogLineM( true, logFileIO,
+			wxT("Error on GetLastModificationTime from `") +
+			file + wxT("'"));
 	}
+	
+	return ret;
 }
 
 
 bool CheckDirExists(const wxString& dir)
 {
 #ifdef __WXMSW__
-	// UTF8_Stat fails on windows if there are trailing path-separators.
+	// stat fails on windows if there are trailing path-separators.
 	wxString cleanPath = StripSeparators(dir, wxString::trailing);
 	
 	// Root paths must end with a separator (X:\ rather than X:).
@@ -375,22 +180,14 @@ bool CheckDirExists(const wxString& dir)
 #else
 	const wxString& cleanPath = dir;
 #endif
-	
-	if (not cleanPath.IsEmpty()) {
-		STAT_STRUCT st;
-		if (UTF8_Stat(cleanPath, &st) == 0) {
-			return ((st.st_mode & S_IFMT) == S_IFDIR);
-		}
-	}
-	
-	return false;
+
+	return wxDir::Exists(cleanPath);
 }
 
 
 bool CheckFileExists(const wxString& file)
 {
-	STAT_STRUCT st;
-	return (UTF8_Stat(file, &st) == 0 && ((st.st_mode & S_IFMT) == S_IFREG));
+	return wxFile::Exists(file);
 }
 
 

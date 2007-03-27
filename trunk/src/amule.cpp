@@ -632,6 +632,11 @@ bool CamuleApp::OnInit()
 	// Load localization settings
 	Localize_mule();
 
+#ifndef __WXMSW__
+	// This line is what makes wxWidgets handle correctly unix file names.
+	wxConvFileName = &aMuleConvBrokenFileNames;
+#endif
+
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxT("lastversion") );
 	wxString newMule(wxT(VERSION));

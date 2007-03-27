@@ -23,11 +23,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
 
+
 #include "../../Types.h"		// Needed for uint16 and uint32
 #include <wx/filename.h>
+
+
+#include "ConvAmule.h"
+
 
 // UTF8 types: No UTF8, BOM prefix, or Raw UTF8
 enum EUtf8Str
@@ -72,11 +78,6 @@ enum EUtf8Str
  */
 typedef const wxWX2MBbuf Unicode2CharBuf;
 typedef const wxMB2WXbuf Char2UnicodeBuf;
-
-#ifndef STRINGFUNCTIONS_CPP
-extern wxCSConv aMuleConv;
-extern wxConvBrokenFileNames aMuleConvBrokenFileNames;
-#endif
 
 inline Unicode2CharBuf unicode2char(const wxChar* x)	{ return aMuleConv.cWX2MB(x); }
 inline Char2UnicodeBuf char2unicode(const char* x)	{ return aMuleConv.cMB2WX(x); }
