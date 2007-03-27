@@ -29,6 +29,10 @@
 
 #include "ConvAmule.h"
 
+#if !wxCHECK_VERSION(2,8,0)
+#define wxCONV_FAILED ((size_t)-1)
+#endif
+
 
 // When converting file names, we will always first try to create an ANSI
 // file name, even if that means an extended ANSI file name. Only if it is
@@ -94,11 +98,13 @@ size_t ConvAmuleBrokenFileNames::WC2MB(
 }
 
 
+#if wxCHECK_VERSION(2,8,0)
 size_t ConvAmuleBrokenFileNames::GetMBNulLen() const
 {
 	// cast needed to call a private function
 	return m_conv.GetMBNulLen();
 }
+#endif
 
 
 wxMBConv *ConvAmuleBrokenFileNames::Clone() const
