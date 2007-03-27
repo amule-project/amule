@@ -29,6 +29,7 @@
 
 #include "Types.h"
 #include <dirent.h>		// Needed for DIR	// Do_not_auto_remove (mingw-gcc-3.4.5)
+#include <wx/dir.h>
 
 // Move file with safe UTF8 name.
 bool UTF8_MoveFile(const wxString& from, const wxString& to); 
@@ -56,25 +57,23 @@ sint64 GetFileSize(const wxString& fullPath);
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
-class CDirIterator {
+class CDirIterator : public wxDir
+{
 public:
-	enum FileType { File, Dir, Any}; 
+	enum FileType {
+		File = wxDIR_FILES | wxDIR_HIDDEN,
+		Dir  = wxDIR_DIRS  | wxDIR_HIDDEN,
+		Any  = wxDIR_FILES | wxDIR_DIRS   | wxDIR_HIDDEN
+	};
 
 	CDirIterator(const wxString& dir);
 	~CDirIterator();
 
-	bool IsValid() const {
-		return (DirPtr != NULL);
-	}
-
 	wxString GetFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
 	wxString GetNextFile();
-
+	
 private:
-	DIR* DirPtr;
-	FileType type;
-	wxString DirStr;
-	wxString FileMask;
+	wxString m_dir;
 };
 	
 
