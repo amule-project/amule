@@ -84,7 +84,7 @@ CRoutingZone::CRoutingZone()
 {
 	// Can only create routing zone after prefs
 	me = CKademlia::GetPrefs()->GetKadID();
-	m_filename = theApp.ConfigDir + wxT("nodes.dat");
+	m_filename = theApp->ConfigDir + wxT("nodes.dat");
 	CUInt128 zero((uint32)0);
 	Init(NULL, 0, zero);
 }

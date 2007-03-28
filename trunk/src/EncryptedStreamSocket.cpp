@@ -255,8 +255,8 @@ int CEncryptedStreamSocket::Receive(void* lpBuf, wxUint32 nBufLen){
 					SOCKADDR_IN sockAddr = {0};
 					int nSockAddrLen = sizeof(sockAddr);
 					GetPeerName((SOCKADDR*)&sockAddr, &nSockAddrLen);		
-					if (thePrefs.IsClientCryptLayerRequiredStrict() || (!theApp.serverconnect->AwaitingTestFromIP(sockAddr.sin_addr.S_un.S_addr)
-						&& !theApp.clientlist->IsKadFirewallCheckIP(sockAddr.sin_addr.S_un.S_addr)) )
+					if (thePrefs.IsClientCryptLayerRequiredStrict() || (!theApp->serverconnect->AwaitingTestFromIP(sockAddr.sin_addr.S_un.S_addr)
+						&& !theApp->clientlist->IsKadFirewallCheckIP(sockAddr.sin_addr.S_un.S_addr)) )
 					{
 #if defined(_DEBUG) || defined(_BETA)
 					// TODO: Remove after testing

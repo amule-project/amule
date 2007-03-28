@@ -97,7 +97,7 @@ void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 	#warning CORE/GUI
 	if (send_to_core) {
 	#ifndef CLIENT_GUI
-		theApp.friendlist->AddFriend(toadd->m_hash, 0, toadd->m_ip, toadd->m_port, 0,toadd->m_name);
+		theApp->friendlist->AddFriend(toadd->m_hash, 0, toadd->m_ip, toadd->m_port, 0,toadd->m_name);
 	#endif		
 	}
 }
@@ -120,7 +120,7 @@ void CFriendListCtrl::AddFriend(CUpDownClient* toadd)
 	#warning CORE/GUI
 	// This links the friend to the client also
 	#ifndef CLIENT_GUI
-	theApp.friendlist->AddFriend(toadd);
+	theApp->friendlist->AddFriend(toadd);
 	#endif
 	
 	CDlgFriend* NewFriend = new CDlgFriend( toadd->GetUserHash(), toadd->GetUserName(), toadd->GetIP(), toadd->GetUserPort(), true, false);
@@ -142,7 +142,7 @@ void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 	
 	#warning CORE/GUI
 	#ifndef CLIENT_GUI
-	theApp.friendlist->RemoveFriend(toremove->m_hash, toremove->m_ip, toremove->m_port);
+	theApp->friendlist->RemoveFriend(toremove->m_hash, toremove->m_ip, toremove->m_port);
 	#endif
 	
 	DeleteItem(itemnr);
@@ -157,7 +157,7 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 	}	
 	#warning CORE/GUI
 	#ifndef CLIENT_GUI
-	theApp.friendlist->UpdateFriendName(toupdate->m_hash, toupdate->m_name, toupdate->m_ip, toupdate->m_port);
+	theApp->friendlist->UpdateFriendName(toupdate->m_hash, toupdate->m_name, toupdate->m_ip, toupdate->m_port);
 	#endif
 }
 
@@ -173,7 +173,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(event))
 		return;
 	}
 
-	theApp.amuledlg->m_chatwnd->StartSession(cur_friend);
+	theApp->amuledlg->m_chatwnd->StartSession(cur_friend);
 	
 }
 
@@ -183,7 +183,7 @@ void CFriendListCtrl::LoadList()
 	#warning EC: ASK THE LIST TO CORE!
 	
 	#ifndef CLIENT_GUI
-	for(FriendList::iterator it = theApp.friendlist->m_FriendList.begin(); it != theApp.friendlist->m_FriendList.end(); ++it) {
+	for(FriendList::iterator it = theApp->friendlist->m_FriendList.begin(); it != theApp->friendlist->m_FriendList.end(); ++it) {
 		CFriend* core_friend = *it;
 		AddFriend(core_friend->GetUserHash(), core_friend->GetName(), core_friend->GetIP(), core_friend->GetPort(), core_friend->GetLinkedClient(), core_friend->HasFriendSlot(), false);
 	}
@@ -255,10 +255,10 @@ void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 	
 	while( index != -1 ) {
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
-		theApp.amuledlg->m_chatwnd->StartSession(cur_friend);			
+		theApp->amuledlg->m_chatwnd->StartSession(cur_friend);			
 		#warning CORE/GUI!			
 		#ifndef CLIENT_GUI
-		theApp.friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+		theApp->friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
 		#endif		
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -300,7 +300,7 @@ void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event))
 			CClientDetailDialog
 				(
 				this,
-				theApp.friendlist->FindFriend
+				theApp->friendlist->FindFriend
 					(
 					cur_friend->m_hash,
 					cur_friend->m_ip,
@@ -323,7 +323,7 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
 		#warning CORE/GUI!
 		#ifndef CLIENT_GUI
 			CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
-			theApp.friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
+			theApp->friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
 		#endif
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}	
@@ -346,7 +346,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
 	#ifndef CLIENT_GUI
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);	
 		cur_friend->hasfriendslot = event.IsChecked();
-		theApp.friendlist->SetFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port, cur_friend->hasfriendslot);
+		theApp->friendlist->SetFriendSlot(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port, cur_friend->hasfriendslot);
 	#endif
 	index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (index != -1) {

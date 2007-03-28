@@ -32,9 +32,9 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp
-#include "ServerSocket.h"	// Needed for theApp.serverconnect
+#include "ServerSocket.h"	// Needed for theApp->serverconnect
 #include "Server.h"			// Needed for CServer
-#include "ServerList.h"		// Needed for theApp.serverlist
+#include "ServerList.h"		// Needed for theApp->serverlist
 #include "Statistics.h"		// Needed for theStats
 #include "ObservableQueue.h"// Needed for CQueueObserver
 #include <common/Format.h>	
@@ -311,7 +311,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	// Check that we can actually perform the specified desired search.
 	if ((type == KadSearch) and not Kademlia::CKademlia::IsRunning()) {
 		return _("Kad search can't be done if Kad is not running");
-	} else if ((type != KadSearch) and not theApp.IsConnectedED2K()) {
+	} else if ((type != KadSearch) and not theApp->IsConnectedED2K()) {
 		return _("ED2K search can't be done if ED2K is not connected");
 	}
 	
@@ -366,7 +366,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 		CPacket* searchPacket = new CPacket(*data.get(), OP_EDONKEYPROT, OP_SEARCHREQUEST);
 		
 		theStats::AddUpOverheadServer(searchPacket->GetPacketSize());
-		theApp.serverconnect->SendPacket(searchPacket, (type == LocalSearch));
+		theApp->serverconnect->SendPacket(searchPacket, (type == LocalSearch));
 
 		if (type == GlobalSearch) {
 			m_searchPacket = searchPacket;
@@ -386,7 +386,7 @@ void CSearchList::LocalSearchEnd()
 		wxCHECK_RET(m_searchPacket, wxT("Global search, but no packet"));
 		
 		// Ensure that every global search starts over.	
-		theApp.serverlist->RemoveObserver(&m_serverQueue);
+		theApp->serverlist->RemoveObserver(&m_serverQueue);
 		m_searchTimer.Start(750);
  	} else {
 		m_searchInProgress = false;
@@ -408,7 +408,7 @@ uint32 CSearchList::GetSearchProgress() const
 
 		case GlobalSearch:
 			return 100 - (m_serverQueue.GetRemaining() * 100) 
-					/ theApp.serverlist->GetServerCount();
+					/ theApp->serverlist->GetServerCount();
 
 		case KadSearch:
 			// We cannot meassure the progress of Kad searches.
@@ -427,11 +427,11 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 		// This was a pending event, handled after 'Stop' was pressed.
 		return;
 	} else if (not m_serverQueue.IsActive()) {
-		theApp.serverlist->AddObserver(&m_serverQueue);		
+		theApp->serverlist->AddObserver(&m_serverQueue);		
 	}
 
 	// UDP requests must not be sent to this server.
-	const CServer* localServer = theApp.serverconnect->GetCurrentServer();
+	const CServer* localServer = theApp->serverconnect->GetCurrentServer();
 	if (localServer) {
 		uint32 localIP = localServer->GetIP();
 		uint16 localPort = localServer->GetPort();
@@ -444,7 +444,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 				continue;
 			} else {
 				theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
-				theApp.serverconnect->SendUDPPacket(m_searchPacket, server, false);
+				theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
 				CoreNotify_Search_Update_Progress(GetSearchProgress());					
 				return;
 			}
@@ -463,8 +463,8 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	long searchID = (long)sender;
 
 #ifndef AMULE_DAEMON
-	if (!theApp.amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
-		theApp.amuledlg->m_searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
+	if (!theApp->amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
+		theApp->amuledlg->m_searchwnd->CreateNewTab(sender->GetUserName() + wxT(" (0)"), searchID);
 	}
 #endif
 

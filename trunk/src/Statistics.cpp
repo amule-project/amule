@@ -735,7 +735,7 @@ void CStatistics::UpdateStatsTree()
 	s_foundSources->ReSortChildren();
 	// TODO: sort OS_Info subtrees.
 
-	s_avgConnections->SetValue(theApp.listensocket->GetAverageConnections());
+	s_avgConnections->SetValue(theApp->listensocket->GetAverageConnections());
 
 #if 0
 	(*cli13) = wxString::Format(_("LowID: %u (%.2f%% Total %.2f%% Known)"),#lowid , (#total>0)?((double)100*#lowid/#total):0, (double)100*#knownLowID/#known);
@@ -750,7 +750,7 @@ void CStatistics::UpdateStatsTree()
 	uint32 servtuser;
 	uint32 servtfile;
 	float servocc;
-	theApp.serverlist->GetStatus(servfail, servuser, servfile, servtuser, servtfile, servocc);
+	theApp->serverlist->GetStatus(servfail, servuser, servfile, servtuser, servtfile, servocc);
 	s_workingServers->SetValue((uint64)((*s_totalServers)-servfail));
 	s_failedServers->SetValue((uint64)servfail);
 	s_usersOnWorking->SetValue((uint64)servuser);

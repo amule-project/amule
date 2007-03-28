@@ -153,23 +153,23 @@ void CMuleTrayIcon::SetDownloadSpeed(wxCommandEvent& event){
 void CMuleTrayIcon::ServerConnection(wxCommandEvent& WXUNUSED(event))
 {	
 	wxCommandEvent evt;
-	theApp.amuledlg->OnBnConnect(evt);
+	theApp->amuledlg->OnBnConnect(evt);
 }
 
 
 void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event))
 {
-	if (theApp.amuledlg->IsShown()) {
-		theApp.amuledlg->Hide_aMule();
+	if (theApp->amuledlg->IsShown()) {
+		theApp->amuledlg->Hide_aMule();
 	} else {
-		theApp.amuledlg->Show_aMule();
+		theApp->amuledlg->Show_aMule();
 	}
 }
 
 
 void CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event))
 {
-	theApp.amuledlg->Close();
+	theApp->amuledlg->Close();
 }
 
 
@@ -347,8 +347,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp = _("ClientID: ");
 		
-		if (theApp.IsConnectedED2K()) {
-			unsigned long id = theApp.GetED2KID();
+		if (theApp->IsConnectedED2K()) {
+			unsigned long id = theApp->GetED2KID();
 			temp += wxString::Format(wxT("%lu"), id);
 		} else {
 			temp += _("Not Connected");
@@ -361,9 +361,9 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 		wxString temp_name = _("ServerName: ");
 		wxString temp_ip   = _("ServerIP: ");
 		
-		if ( theApp.serverconnect->GetCurrentServer() ) {
-			temp_name += theApp.serverconnect->GetCurrentServer()->GetListName();
-			temp_ip   += theApp.serverconnect->GetCurrentServer()->GetFullIP();
+		if ( theApp->serverconnect->GetCurrentServer() ) {
+			temp_name += theApp->serverconnect->GetCurrentServer()->GetListName();
+			temp_ip   += theApp->serverconnect->GetCurrentServer()->GetFullIP();
 		} else {
 			temp_name += _("Not Connected");
 			temp_ip   += _("Not Connected");
@@ -374,7 +374,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// IP Address
 	{
-		wxString temp = CFormat(_("IP: %s")) % ( (theApp.GetPublicIP()) ? Uint32toStringIP(theApp.GetPublicIP()) : wxString(_("Unknown")) );
+		wxString temp = CFormat(_("IP: %s")) % ( (theApp->GetPublicIP()) ? Uint32toStringIP(theApp->GetPublicIP()) : wxString(_("Unknown")) );
 
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
@@ -503,7 +503,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// Separator
 	traymenu->AppendSeparator();
 	
-	if (theApp.IsConnected()) {
+	if (theApp->IsConnected()) {
 		//Disconnection Speed item
 		traymenu->Append(TRAY_MENU_DISCONNECT, _("Disconnect"));
 	} else {
@@ -514,7 +514,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	// Separator
 	traymenu->AppendSeparator();
 	
-	if (theApp.amuledlg->IsShown()) {
+	if (theApp->amuledlg->IsShown()) {
 		//hide item
 		traymenu->Append(TRAY_MENU_HIDE, _("Hide aMule"));
 	} else {
@@ -532,10 +532,10 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 }		
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&) {
-	if ( theApp.amuledlg->IsShown() ) {		
-		theApp.amuledlg->Hide_aMule();
+	if ( theApp->amuledlg->IsShown() ) {		
+		theApp->amuledlg->Hide_aMule();
 	} else {
-		theApp.amuledlg->Show_aMule();
+		theApp->amuledlg->Show_aMule();
 	}
 }
 // File_checked_for_headers

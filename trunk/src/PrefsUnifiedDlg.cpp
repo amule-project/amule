@@ -320,7 +320,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		}
 	}
 
-	m_ShareSelector->SetSharedDirectories(&theApp.glob_prefs->shareddir_list);
+	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		thePrefs::s_colors[i] = CStatisticsDlg::acrStat[i];
@@ -413,16 +413,16 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 		}
 	}
 
-	theApp.glob_prefs->shareddir_list.Clear();
-	m_ShareSelector->GetSharedDirectories(&theApp.glob_prefs->shareddir_list);
+	theApp->glob_prefs->shareddir_list.Clear();
+	m_ShareSelector->GetSharedDirectories(&theApp->glob_prefs->shareddir_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
 		if ( thePrefs::s_colors[i] != thePrefs::s_colors_ref[i] ) {
 			CStatisticsDlg::acrStat[i] = thePrefs::s_colors[i];
-			theApp.amuledlg->m_statisticswnd->ApplyStatsColor(i);
+			theApp->amuledlg->m_statisticswnd->ApplyStatsColor(i);
 		}
 
-		theApp.amuledlg->m_kademliawnd->SetGraphColors();
+		theApp->amuledlg->m_kademliawnd->SetGraphColors();
 	}
 
 	// Get debugging toggles
@@ -439,7 +439,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 
 	#ifdef CLIENT_GUI
 	// Send preferences to core.
-	theApp.glob_prefs->SendToRemote();
+	theApp->glob_prefs->SendToRemote();
 	#endif
 	
 	return true;
@@ -481,7 +481,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	// Force port checking
 	thePrefs::SetPort(thePrefs::GetPort());
 	
-	if (	IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
+	if (	IsEmptyFile(theApp->ConfigDir + wxT("addresses.dat")) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
 		wxMessageBox(wxString::wxString( _(
@@ -499,10 +499,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 	
 	// save the preferences on ok
-	theApp.glob_prefs->Save();
+	theApp->glob_prefs->Save();
 
-	if (CfgChanged(IDC_FED2KLH) && theApp.amuledlg->GetActiveDialog() != CamuleDlg::DT_SEARCH_WND) {
-		theApp.amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
+	if (CfgChanged(IDC_FED2KLH) && theApp->amuledlg->GetActiveDialog() != CamuleDlg::DT_SEARCH_WND) {
+		theApp->amuledlg->ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 	}
 
 	if (CfgChanged(IDC_LANGUAGE)) {
@@ -516,65 +516,65 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if (CfgChanged(IDC_INCFILES) || CfgChanged(IDC_TEMPFILES) || m_ShareSelector->HasChanged ) {
-		theApp.sharedfiles->Reload();
+		theApp->sharedfiles->Reload();
 	}
 
 	if (CfgChanged(IDC_OSDIR) || CfgChanged(IDC_ONLINESIG)) {
 		wxTextCtrl* widget = CastChild( IDC_OSDIR, wxTextCtrl );
 
 		// Build the filenames for the two OS files
-		theApp.SetOSFiles( widget->GetValue() );
+		theApp->SetOSFiles( widget->GetValue() );
 	}
 
 	if (CfgChanged(IDC_IPFCLIENTS) or CfgChanged(IDC_IPFSERVERS) or CfgChanged(ID_IPFILTERLEVEL)) {
 		if (thePrefs::IsFilteringClients()) {
-			theApp.clientlist->FilterQueues();
+			theApp->clientlist->FilterQueues();
 		}
 		if (thePrefs::IsFilteringServers()) {
-			theApp.serverlist->FilterServers();
+			theApp->serverlist->FilterServers();
 		}
 	}
 
 	if (thePrefs::GetShowRatesOnTitle()) {
 		// This avoids a 5 seconds delay to show the title
-		theApp.amuledlg->SetTitle(theApp.m_FrameTitle + wxT(" -- ") + _("Up: 0.0 | Down: 0.0"));
+		theApp->amuledlg->SetTitle(theApp->m_FrameTitle + wxT(" -- ") + _("Up: 0.0 | Down: 0.0"));
 	} else {
 		// This resets the title
-		theApp.amuledlg->SetTitle(theApp.m_FrameTitle);
+		theApp->amuledlg->SetTitle(theApp->m_FrameTitle);
 	}
 
 	if (CfgChanged(IDC_EXTCATINFO)) {
-		theApp.amuledlg->m_transferwnd->UpdateCatTabTitles();
+		theApp->amuledlg->m_transferwnd->UpdateCatTabTitles();
 	}
 
 	// Changes related to the statistics-dlg
 	if (CfgChanged(IDC_SLIDER)) {
-		theApp.amuledlg->m_statisticswnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
-		theApp.amuledlg->m_kademliawnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+		theApp->amuledlg->m_statisticswnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
+		theApp->amuledlg->m_kademliawnd->SetUpdatePeriod(thePrefs::GetTrafficOMeterInterval());
 	}
 
 	if ( CfgChanged(IDC_SLIDER3) ) {
-		theApp.amuledlg->m_statisticswnd->ResetAveragingTime();
+		theApp->amuledlg->m_statisticswnd->ResetAveragingTime();
 	}
 
 	if (CfgChanged(IDC_DOWNLOAD_CAP)) {
-		theApp.amuledlg->m_statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
+		theApp->amuledlg->m_statisticswnd->SetARange( true, thePrefs::GetMaxGraphDownloadRate() );
 	}
 
 	if (CfgChanged(IDC_UPLOAD_CAP)) {
-		theApp.amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
+		theApp->amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
 	if (CfgChanged(IDC_SKINFILE) || CfgChanged(IDC_USESKIN)) {
-		theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
+		theApp->amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
 	}
 
-	if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
-		theApp.DisconnectED2K();
+	if (!thePrefs::GetNetworkED2K() && theApp->IsConnectedED2K()) {
+		theApp->DisconnectED2K();
 	}
 	
-	if (!thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
-		theApp.StopKad();
+	if (!thePrefs::GetNetworkKademlia() && theApp->IsConnectedKad()) {
+		theApp->StopKad();
 	}	
 
 	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
@@ -603,8 +603,8 @@ void PrefsUnifiedDlg::OnClose(wxCloseEvent& event)
 	if (event.CanVeto()) {
 		event.Veto();
 	} else {
-		if (theApp.amuledlg) {
-			theApp.amuledlg->m_prefsDialog = NULL;
+		if (theApp->amuledlg) {
+			theApp->amuledlg->m_prefsDialog = NULL;
 		}
 	
 		// Un-Connect the Cfgs
@@ -668,7 +668,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			break;
 
 		case IDC_AUTOSERVER:
-			if (	IsEmptyFile(theApp.ConfigDir + wxT("addresses.dat")) && 
+			if (	IsEmptyFile(theApp->ConfigDir + wxT("addresses.dat")) && 
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
 				wxMessageBox(wxString::wxString( _(
 					"Your Auto-update servers list is in blank.\n"
@@ -729,18 +729,18 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_ENABLETRAYICON:
 			FindWindow(IDC_MINTRAY)->Enable(value);
 			if (value) {
-				theApp.amuledlg->CreateSystray();
+				theApp->amuledlg->CreateSystray();
 			} else {
-				theApp.amuledlg->RemoveSystray();
+				theApp->amuledlg->RemoveSystray();
 			}
 			break;
 		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 		case IDC_VERTTOOLBAR:
-			theApp.amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), value);
+			theApp->amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), value);
 			// Update the first tool (conn button)
-			theApp.amuledlg->ShowConnectionState();
+			theApp->amuledlg->ShowConnectionState();
 			break;
 	}
 }
@@ -887,7 +887,7 @@ void PrefsUnifiedDlg::OnButtonBrowseApplication(wxCommandEvent& event)
 
 void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString fullpath( theApp.ConfigDir + wxT("addresses.dat") );
+	wxString fullpath( theApp->ConfigDir + wxT("addresses.dat") );
 
 	EditServerListDlg* test = new EditServerListDlg(this, _("Edit Serverlist"),
 		_("Add here URL's to download server.met files.\nOnly one url on each line."),
@@ -900,13 +900,13 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 
 void PrefsUnifiedDlg::OnButtonIPFilterReload(wxCommandEvent& WXUNUSED(event))
 {
-	theApp.ipfilter->Reload();
+	theApp->ipfilter->Reload();
 }
 
 
 void PrefsUnifiedDlg::OnButtonIPFilterUpdate(wxCommandEvent& WXUNUSED(event))
 {
-	theApp.ipfilter->Update( CastChild( IDC_IPFILTERURL, wxTextCtrl )->GetValue() );
+	theApp->ipfilter->Update( CastChild( IDC_IPFILTERURL, wxTextCtrl )->GetValue() );
 }
 
 
@@ -947,20 +947,20 @@ void PrefsUnifiedDlg::OnScrollBarChange( wxScrollEvent& event )
 	case IDC_SLIDER:
 		id = IDC_SLIDERINFO;
 		label = wxString::Format( _("Update delay: %d secs"), event.GetPosition() );
-		theApp.amuledlg->m_statisticswnd->SetUpdatePeriod(event.GetPosition());
-		theApp.amuledlg->m_kademliawnd->SetUpdatePeriod(event.GetPosition());
+		theApp->amuledlg->m_statisticswnd->SetUpdatePeriod(event.GetPosition());
+		theApp->amuledlg->m_kademliawnd->SetUpdatePeriod(event.GetPosition());
 		break;
 
 	case IDC_SLIDER3:
 		id = IDC_SLIDERINFO3;
 		label = wxString::Format( _("Time for average graph: %d mins"), event.GetPosition() );
-		theApp.m_statistics->SetAverageMinutes(event.GetPosition());
+		theApp->m_statistics->SetAverageMinutes(event.GetPosition());
 		break;
 
 	case IDC_SLIDER4:
 		id = IDC_SLIDERINFO4;
 		label = wxString::Format( _("Connections Graph Scale: %d"), event.GetPosition() );
-		theApp.amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
+		theApp->amuledlg->m_statisticswnd->GetConnScope()->SetRanges(0,event.GetPosition());
 		break;
 
 	case IDC_SLIDER2:

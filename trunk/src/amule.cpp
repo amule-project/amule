@@ -23,9 +23,15 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
+#define AMULE_CPP
+
+
 #include "amule.h"			// Interface declarations.
 
+
 #include <include/common/ClientVersion.h>
+
 
 #include <csignal>
 #include <wx/process.h>
@@ -141,7 +147,7 @@ void OnShutdownSignal( int /* sig */ )
 	g_shutdownSignal = true;
 
 #ifdef AMULE_DAEMON
-	theApp.ExitMainLoop();
+	theApp->ExitMainLoop();
 #endif
 }
 
@@ -152,8 +158,10 @@ CamuleApp::CamuleApp()
 	// Kry - I love to init the vars on init, even before timer.
 	StartTickTimer();
 	
-	// Initialization	
+	// Initialization
 	m_app_state = APP_STATE_STARTING;
+
+	theApp = &wxGetApp();
 	
 	clientlist	= NULL;
 	searchlist	= NULL;
@@ -356,14 +364,14 @@ std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxStrin
 				if (CheckDirExists(fallback) or wxMkdir(fallback)) {
 					msg << wxT("Using default directory at location \n'")
 						<< fallback << wxT("'.");
-					theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+					theApp->ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
 					
 					return std::pair<bool, wxString>(true, fallback);
 				}
 			}
 			
 			msg << wxT("Please check permissions and restart aMule.");
-			theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+			theApp->ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
 
 			return std::pair<bool, wxString>(false, wxEmptyString);
 		}
@@ -373,7 +381,7 @@ std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxStrin
 		    << wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
 			<< wxT("permissions for the folder '") << directory << wxT("'");
 		
-		theApp.ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
+		theApp->ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
 		
 		return std::pair<bool, wxString>(false, wxEmptyString);
 	}
@@ -646,7 +654,7 @@ bool CamuleApp::OnInit()
 		// We use the thread base because I don't want a dialog to pop up.
 		CHTTPDownloadThread* version_check = 
 			new CHTTPDownloadThread(wxT("http://amule.sourceforge.net/lastversion"),
-				theApp.ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
+				theApp->ConfigDir + wxT("last_version_check"), HTTP_VersionCheck, false);
 		version_check->Create();
 		version_check->Run();
 	}
@@ -771,7 +779,7 @@ bool CamuleApp::OnInit()
 				"Do you want aMule to download a new list now?")),
 			wxString(_("Server list download")),
 			wxYES_NO,
-			(wxWindow*)theApp.amuledlg))
+			(wxWindow*)theApp->amuledlg))
 		#endif
 		{
 		//workaround amuled crash
@@ -787,7 +795,7 @@ bool CamuleApp::OnInit()
 	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
 		AddLogLineM(true, _("Connecting"));
 		if (thePrefs::GetNetworkED2K()) {
-			theApp.serverconnect->ConnectToAnyServer();
+			theApp->serverconnect->ConnectToAnyServer();
 		}
 
 		StartKad();
@@ -1408,7 +1416,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	
 	uploadqueue->Process();
 	downloadqueue->Process();
-	//theApp.clientcredits->Process();
+	//theApp->clientcredits->Process();
 	theStats::CalculateRates();
 
 	if (msCur-msPrevHist > 1000) {
@@ -1577,7 +1585,7 @@ void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 #if defined(AMULE_DAEMON)
 	evt.Notify();
 #else
-	if (theApp.amuledlg) {
+	if (theApp->amuledlg) {
 		evt.Notify();
 	}
 #endif
@@ -1634,7 +1642,7 @@ void CamuleApp::ShutDown()
 	
 	CThreadScheduler::Terminate();
 	
-	theApp.uploadBandwidthThrottler->EndThread();
+	theApp->uploadBandwidthThrottler->EndThread();
 }
 
 
@@ -1786,7 +1794,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 				wxRenameFile(file + wxT(".download"),file);
 				
 				Kademlia::CKademlia::Start();
-				theApp.ShowConnectionState();
+				theApp->ShowConnectionState();
 				
 			} else {
 				AddLogLineM(true, _("Failed to download the nodes list."));
@@ -1873,7 +1881,7 @@ bool CamuleApp::IsConnectedKad()
 
 bool CamuleApp::IsFirewalled()
 {
-	if (theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) {
+	if (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) {
 		return false; // we have an eD2K HighID -> not firewalled
 	}
 
@@ -1903,8 +1911,8 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 					//Both Connected - Both Firewalled
 					return false;
 				} else {
-					if(client->GetServerIP() == theApp.serverconnect->GetCurrentServer()->GetIP() &&
-					   client->GetServerPort() == theApp.serverconnect->GetCurrentServer()->GetPort()) {
+					if(client->GetServerIP() == theApp->serverconnect->GetCurrentServer()->GetIP() &&
+					   client->GetServerPort() == theApp->serverconnect->GetCurrentServer()->GetPort()) {
 						// Both Connected - Server lowID, Kad Open - Client on same server
 						// We prevent a callback to the server as this breaks the protocol
 						// and will get you banned.
@@ -1946,7 +1954,7 @@ bool CamuleApp::DoCallback( CUpDownClient *client )
 void CamuleApp::ShowUserCount() {
 	uint32 totaluser = 0, totalfile = 0;
 	
-	theApp.serverlist->GetUserFileStatus( totaluser, totalfile );
+	theApp->serverlist->GetUserFileStatus( totaluser, totalfile );
 	
 	wxString buffer = 
 		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
@@ -1983,7 +1991,7 @@ void CamuleApp::ShowConnectionState()
 	
 	uint8 state = 0;
 	
-	if (theApp.serverconnect->IsConnected()) {
+	if (theApp->serverconnect->IsConnected()) {
 		state |= CONNECTED_ED2K;
 	}
 	
@@ -2010,17 +2018,17 @@ void CamuleApp::ShowConnectionState()
 		if (changed_flags & CONNECTED_ED2K) {
 			// ED2K status changed
 			wxString connected_server;
-			CServer* ed2k_server = theApp.serverconnect->GetCurrentServer();
+			CServer* ed2k_server = theApp->serverconnect->GetCurrentServer();
 			if (ed2k_server) {
 				connected_server = ed2k_server->GetListName();
 			}
 			if (state & CONNECTED_ED2K) {
 				// We connected to some server
-				const wxString id = theApp.serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
+				const wxString id = theApp->serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
 
 				AddLogLine(CFormat(_("Connected to %s %s")) % connected_server % id);
 			} else {
-				if ( theApp.serverconnect->IsConnecting() ) {
+				if ( theApp->serverconnect->IsConnecting() ) {
 					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
 				} else {
 					AddLogLine(_("Disconnected from ED2K"));
@@ -2065,7 +2073,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 	if (!IsRunning()) {
 		if (event.GetSocketEvent() == wxSOCKET_INPUT) {
 			// Back to the queue!
-			theApp.AddPendingEvent(event);
+			theApp->AddPendingEvent(event);
 			return;
 		}
 	}
@@ -2138,8 +2146,8 @@ uint32 CamuleApp::GetID() const {
 	if( Kademlia::CKademlia::IsConnected() && !Kademlia::CKademlia::IsFirewalled() ) {
 		// We trust Kad above ED2K
 		ID = ENDIAN_NTOHL(Kademlia::CKademlia::GetIPAddress());
-	} else if( theApp.serverconnect->IsConnected() ) {
-		ID = theApp.serverconnect->GetClientID();
+	} else if( theApp->serverconnect->IsConnected() ) {
+		ID = theApp->serverconnect->GetClientID();
 	} else if ( Kademlia::CKademlia::IsConnected() && Kademlia::CKademlia::IsFirewalled() ) {
 		// A firewalled Kad client get's a "1"
 		ID = 1;

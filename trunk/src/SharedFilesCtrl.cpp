@@ -171,7 +171,7 @@ void CSharedFilesCtrl::ShowFileList()
 	DeleteAllItems();
 
 	std::vector<CKnownFile*> files;
-	theApp.sharedfiles->CopyFileList(files);
+	theApp->sharedfiles->CopyFileList(files);
 	for (unsigned i = 0; i < files.size(); ++i) {
 		DoShowFile(files[i], true);
 	}
@@ -264,7 +264,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 	wxString URIs;	
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK ) {
-		if ( !theApp.IsConnectedED2K() || theApp.serverconnect->IsLowID() ) {
+		if ( !theApp->IsConnectedED2K() || theApp->serverconnect->IsLowID() ) {
 			wxMessageBox(_("You need a HighID to create a valid sourcelink"), _("Warning"), wxOK | wxICON_ERROR, this);
 
 			return;
@@ -277,17 +277,17 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 
 		switch ( event.GetId() ) {
-			case MP_GETED2KLINK:				URIs += theApp.CreateED2kLink( file ) + wxT("\n");					break;
-			case MP_GETSOURCEED2KLINK:			URIs += theApp.CreateED2kSourceLink( file ) + wxT("\n");			break;
-			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp.CreateED2kHostnameSourceLink( file ) + wxT("\n");	break;
-			case MP_GETAICHED2KLINK: URIs += theApp.CreateED2kAICHLink( file ) + wxT("\n");	break;
+			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + wxT("\n");					break;
+			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kSourceLink( file ) + wxT("\n");			break;
+			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kHostnameSourceLink( file ) + wxT("\n");	break;
+			case MP_GETAICHED2KLINK: URIs += theApp->CreateED2kAICHLink( file ) + wxT("\n");	break;
 		}
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 	
 	if ( !URIs.IsEmpty() ) {	
-		theApp.CopyTextToClipboard( URIs.RemoveLast() );
+		theApp->CopyTextToClipboard( URIs.RemoveLast() );
 	}
 }
 
@@ -399,7 +399,7 @@ void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 		RefreshItem(result);
 
 		if ( GetItemState( result, wxLIST_STATE_SELECTED ) ) {
-			theApp.amuledlg->m_sharedfileswnd->SelectionUpdated();
+			theApp->amuledlg->m_sharedfileswnd->SelectionUpdated();
 		}
 	}
 }
@@ -493,7 +493,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 							imgWidth = 16;
 						} 
 						
-						theApp.amuledlg->m_imagelist.Draw(image, *dc, columnRect.x,
+						theApp->amuledlg->m_imagelist.Draw(image, *dc, columnRect.x,
 								columnRect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT);
 
 						// Move the text to the right
@@ -634,7 +634,7 @@ void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 	if ( item != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( item );
 	
-		theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+		theApp->amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
 	}
 }
 
@@ -652,7 +652,7 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 				_("File rename"), file->GetFileName());
 				
 			if (!newName.IsEmpty() and (newName != file->GetFileName())) {
-				theApp.sharedfiles->RenameFile(file, newName);
+				theApp->sharedfiles->RenameFile(file, newName);
 			}
 		}
 	}

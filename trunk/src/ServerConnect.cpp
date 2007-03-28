@@ -118,7 +118,7 @@ void CServerConnect::ConnectToAnyServer(bool prioSort)
 		AddLogLineM(true,_("No valid servers to connect in serverlist found"));
 		return;
 	}
-	theApp.listensocket->Process();
+	theApp->listensocket->Process();
 
 	TryAnotherConnectionrequest();
 }
@@ -191,7 +191,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 			% sender->cur_server->GetPort() );
 
 		//send loginpacket
-		CServer* update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
+		CServer* update = theApp->serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 		if (update){
 			update->ResetFailedCount();
 			Notify_ServerRefresh( update );
@@ -251,12 +251,12 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		
 		StopConnectionTry();
 		
-		CServer* update = theApp.serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
+		CServer* update = theApp->serverlist->GetServerByAddress(connectedsocket->cur_server->GetAddress(),sender->cur_server->GetPort());
 		if ( update ) {
 			Notify_ServerHighlight(update, true);
 		}
 		
-		theApp.sharedfiles->ClearED2KPublishInfo();
+		theApp->sharedfiles->ClearED2KPublishInfo();
 
 		Notify_ServerRemoveDead();
 		
@@ -271,7 +271,7 @@ void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 		}
 	}
 	
-	theApp.ShowConnectionState();
+	theApp->ShowConnectionState();
 }
 
 
@@ -321,13 +321,13 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 			AddLogLineM(true, _("Fatal Error while trying to connect. Internet connection might be down"));
 			break;
 		case CS_DISCONNECTED:
-			theApp.sharedfiles->ClearED2KPublishInfo();
+			theApp->sharedfiles->ClearED2KPublishInfo();
 			AddLogLineM(false,CFormat( _("Lost connection to %s (%s:%i)") )
 				% sender->cur_server->GetListName()
 				% sender->cur_server->GetFullIP()
 				% sender->cur_server->GetPort() );
 
-			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
+			update = theApp->serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if (update){
 				Notify_ServerHighlight(update, false);
 			}
@@ -338,7 +338,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 				% sender->cur_server->GetFullIP()
 				% sender->cur_server->GetPort() );
 
-			update = theApp.serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
+			update = theApp->serverlist->GetServerByAddress( sender->cur_server->GetAddress(), sender->cur_server->GetPort() );
 			if (update) {
 				update->AddFailedCount();
 				Notify_ServerRefresh( update );
@@ -372,14 +372,14 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 			break;
 		}
 		case CS_DISCONNECTED:{
-			theApp.sharedfiles->ClearED2KPublishInfo();		
+			theApp->sharedfiles->ClearED2KPublishInfo();		
 			connected = false;
 			Notify_ServerHighlight(sender->cur_server,false);
 			if (connectedsocket)  {
 				connectedsocket->Close();
 			}
 			connectedsocket = NULL;
-			theApp.searchlist->StopGlobalSearch();			
+			theApp->searchlist->StopGlobalSearch();			
 			Notify_SearchCancel();
 			theStats::GetServerConnectTimer()->StopTimer();
 			if (thePrefs::Reconnect() && !connecting){
@@ -418,7 +418,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 			TryAnotherConnectionrequest();
 		}
 	}
-	theApp.ShowConnectionState();
+	theApp->ShowConnectionState();
 }
 
 void CServerConnect::CheckForTimeout()
@@ -458,18 +458,18 @@ void CServerConnect::CheckForTimeout()
 bool CServerConnect::Disconnect()
 {
 	if (connected && connectedsocket) {
-		theApp.sharedfiles->ClearED2KPublishInfo();
+		theApp->sharedfiles->ClearED2KPublishInfo();
 
 		connected = false;
 
-		CServer* update = theApp.serverlist->GetServerByAddress(
+		CServer* update = theApp->serverlist->GetServerByAddress(
 			connectedsocket->cur_server->GetAddress(),
 			connectedsocket->cur_server->GetPort());
 		Notify_ServerHighlight(update, false);
-		theApp.SetPublicIP(0);
+		theApp->SetPublicIP(0);
 		DestroySocket(connectedsocket);
 		connectedsocket = NULL;
-		theApp.ShowConnectionState();
+		theApp->ShowConnectionState();
 		theStats::GetServerConnectTimer()->StopTimer();
 		return true;
 	} else {
@@ -479,7 +479,7 @@ bool CServerConnect::Disconnect()
 
 
 CServerConnect::CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address)
-: m_idRetryTimer(&theApp,ID_SERVER_RETRY_TIMER_EVENT)
+: m_idRetryTimer(theApp,ID_SERVER_RETRY_TIMER_EVENT)
 {
 	connectedsocket = NULL;
 	used_list = in_serverlist;
@@ -521,7 +521,7 @@ void CServerConnect::SetClientID(uint32 newid)
 	clientid = newid;
 	
 	if (!::IsLowID(newid)) {
-		theApp.SetPublicIP(newid);
+		theApp->SetPublicIP(newid);
 	}
 }
 

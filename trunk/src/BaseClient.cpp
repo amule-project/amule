@@ -121,7 +121,7 @@ CUpDownClient::CUpDownClient(uint16 in_port, uint32 in_userid, uint32 in_serveri
 	ReGetClientSoft();
 
 	if (checkfriend) {
-		if ((m_Friend = theApp.friendlist->FindFriend(CMD4Hash(), m_dwUserIP, m_nUserPort)) != NULL){
+		if ((m_Friend = theApp->friendlist->FindFriend(CMD4Hash(), m_dwUserIP, m_nUserPort)) != NULL){
 			m_Friend->LinkClient(this);
 		} else{
 			// avoid that an unwanted client instance keeps a friend slot
@@ -281,7 +281,7 @@ CUpDownClient::~CUpDownClient()
 		CAICHHashSet::ClientAICHRequestFailed(this);
 	}
 
-	//theApp.clientlist->RemoveClient(this, wxT("Destructing client object"));
+	//theApp->clientlist->RemoveClient(this, wxT("Destructing client object"));
 	
 	if (m_Friend) {
 		m_Friend->UnLinkClient();
@@ -381,8 +381,8 @@ void CUpDownClient::Safe_Delete()
 	}
 
 	// Schedule the client for deletion if we still have the clientlist
-	if ( theApp.clientlist ) {
-		theApp.clientlist->AddToDeleteQueue( this );
+	if ( theApp->clientlist ) {
+		theApp->clientlist->AddToDeleteQueue( this );
 	} else {
 		delete this;
 	}
@@ -577,7 +577,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	if (thePrefs::AddServersFromClient()) {
 		CServer* addsrv = new CServer(m_nServerPort, Uint32toStringIP(m_dwServerIP));
 		addsrv->SetListName(addsrv->GetAddress());
-		if (!theApp.AddServer(addsrv)) {
+		if (!theApp->AddServer(addsrv)) {
 				delete addsrv;
 		}
 	}
@@ -591,10 +591,10 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 	}
 	
 	// get client credits
-	CClientCredits* pFoundCredits = theApp.clientcredits->GetCredit(m_UserHash);
+	CClientCredits* pFoundCredits = theApp->clientcredits->GetCredit(m_UserHash);
 	if (credits == NULL){
 		credits = pFoundCredits;
-		if (!theApp.clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
+		if (!theApp->clientlist->ComparePriorUserhash(m_dwUserIP, m_nUserPort, pFoundCredits)){
 			AddDebugLogLineM( false, logClient, CFormat( wxT("Client: %s (%s) Banreason: Userhash changed (Found in TrackedClientsList)") ) % GetUserName() % GetFullIP() );
 			Ban();
 		}
@@ -605,7 +605,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 		Ban();
 	}
 
-	if ((m_Friend = theApp.friendlist->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
+	if ((m_Friend = theApp->friendlist->FindFriend(m_UserHash, m_dwUserIP, m_nUserPort)) != NULL){
 		m_Friend->LinkClient(this);
 	} else{
 		// avoid that an unwanted client instance keeps a friend slot
@@ -642,7 +642,7 @@ bool CUpDownClient::SendHelloPacket() {
 	// if IP is filtered, dont greet him but disconnect...
 	amuleIPV4Address address;
 	m_socket->GetPeer(address);
-	if ( theApp.ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
+	if ( theApp->ipfilter->IsFiltered(StringIPtoUint32(address.IPAddress()))) {
 		if (Disconnected(wxT("IPFilter"))) {
 			Safe_Delete();
 			return false;
@@ -687,7 +687,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 
 		data.WriteUInt32(1); // One Tag (OS_INFO)
 
-		CTagString tag1(ET_OS_INFO,theApp.GetOSType());
+		CTagString tag1(ET_OS_INFO,theApp->GetOSType());
 		tag1.WriteTagToFile(&data);
 		
 		m_OSInfo_sent = true; // So we don't send it again
@@ -717,7 +717,7 @@ void CUpDownClient::SendMuleInfoPacket(bool bAnswer, bool OSInfo) {
 		CTagInt32 tag6(ET_EXTENDEDREQUEST,2);
 		tag6.WriteTagToFile(&data);
 
-		uint32 dwTagValue = (theApp.CryptoAvailable() ? 3 : 0);
+		uint32 dwTagValue = (theApp->CryptoAvailable() ? 3 : 0);
 		// Kry - Needs the preview code from eMule
 		/*
 		// set 'Preview supported' only if 'View Shared Files' allowed
@@ -943,12 +943,12 @@ void CUpDownClient::SendHelloAnswer()
 void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 {
 	data->WriteHash(thePrefs::GetUserHash());
-	data->WriteUInt32(theApp.GetID());
+	data->WriteUInt32(theApp->GetID());
 	data->WriteUInt16(thePrefs::GetPort());
 
 	uint32 tagcount = 6;
 
-	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
+	if( theApp->clientlist->GetBuddy() && theApp->IsFirewalled() ) {
 		tagcount += 2;
 	}
 	tagcount ++; // eMule misc flags 2 (kad version)
@@ -981,13 +981,13 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 				GetVBTTags() ? 0 : 32);
 	tagUdpPorts.WriteTagToFile(data);
 
-	if( theApp.clientlist->GetBuddy() && theApp.IsFirewalled() ) {
-		CTagVarInt tagBuddyIP(CT_EMULE_BUDDYIP, theApp.clientlist->GetBuddy()->GetIP(), GetVBTTags() ? 0 : 32);
+	if( theApp->clientlist->GetBuddy() && theApp->IsFirewalled() ) {
+		CTagVarInt tagBuddyIP(CT_EMULE_BUDDYIP, theApp->clientlist->GetBuddy()->GetIP(), GetVBTTags() ? 0 : 32);
 		tagBuddyIP.WriteTagToFile(data);
 	
 		CTagVarInt tagBuddyPort(CT_EMULE_BUDDYUDP, 
 //					( RESERVED												)
-					((uint32)theApp.clientlist->GetBuddy()->GetUDPPort()  )
+					((uint32)theApp->clientlist->GetBuddy()->GetUDPPort()  )
 					, GetVBTTags() ? 0 : 32);
 		tagBuddyPort.WriteTagToFile(data);
 	}	
@@ -1004,7 +1004,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	// eMule Misc. Options #1
 	const uint32 uUdpVer				= 4;
 	const uint32 uDataCompVer			= 1;
-	const uint32 uSupportSecIdent		= theApp.CryptoAvailable() ? 3 : 0;
+	const uint32 uSupportSecIdent		= theApp->CryptoAvailable() ? 3 : 0;
 	const uint32 uSourceExchangeVer	= 3; 
 	const uint32 uExtendedRequestsVer	= 2;
 	const uint32 uAcceptCommentVer	= 1;
@@ -1061,9 +1061,9 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 	uint32 dwIP = 0;
 	uint16 nPort = 0;
-	if (theApp.IsConnectedED2K()) {
-		dwIP = theApp.serverconnect->GetCurrentServer()->GetIP();
-		nPort = theApp.serverconnect->GetCurrentServer()->GetPort();
+	if (theApp->IsConnectedED2K()) {
+		dwIP = theApp->serverconnect->GetCurrentServer()->GetIP();
+		nPort = theApp->serverconnect->GetCurrentServer()->GetPort();
 	}
 	data->WriteUInt32(dwIP);
 	data->WriteUInt16(nPort);
@@ -1152,7 +1152,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	SetKadState(KS_NONE);
 	
 	if (GetUploadState() == US_UPLOADING) {
-		theApp.uploadqueue->RemoveFromUploadQueue(this);
+		theApp->uploadqueue->RemoveFromUploadQueue(this);
 	}
 
 	if (GetDownloadState() == DS_DOWNLOADING) {
@@ -1162,8 +1162,8 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		ClearDownloadBlockRequests();
 
 		if ( GetDownloadState() == DS_CONNECTED ){
-			theApp.clientlist->AddDeadSource(this);
-			theApp.downloadqueue->RemoveSource(this);
+			theApp->clientlist->AddDeadSource(this);
+			theApp->downloadqueue->RemoveSource(this);
 	    }
 	}
 
@@ -1199,14 +1199,14 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
 		case US_ERROR:
-			theApp.clientlist->AddDeadSource(this);
+			theApp->clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
 	switch(m_nDownloadState){
 		case DS_CONNECTING:
 		case DS_WAITCALLBACK:
 		case DS_ERROR:
-			theApp.clientlist->AddDeadSource(this);
+			theApp->clientlist->AddDeadSource(this);
 			bDelete = true;
 	};
 
@@ -1218,7 +1218,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	}
 
 	if (!bFromSocket && m_socket){
-		wxASSERT (theApp.listensocket->IsValidSocket(m_socket));
+		wxASSERT (theApp->listensocket->IsValidSocket(m_socket));
 		m_socket->Safe_Delete();
 	}
 
@@ -1258,7 +1258,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 {
 	// Kad reviewed
-	if (theApp.listensocket->TooManySockets() && !bIgnoreMaxCon )  {
+	if (theApp->listensocket->TooManySockets() && !bIgnoreMaxCon )  {
 		if (!(m_socket && m_socket->IsConnected())) {
 			if(Disconnected(wxT("Too many connections"))) {
 				Safe_Delete();
@@ -1277,7 +1277,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	if (uClientIP) {
 		// Although we filter all received IPs (server sources, source exchange) and all incomming connection attempts,
 		// we do have to filter outgoing connection attempts here too, because we may have updated the ip filter list
-		if (theApp.ipfilter->IsFiltered(uClientIP)) {
+		if (theApp->ipfilter->IsFiltered(uClientIP)) {
 			AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Filtered ip %u (%s) on TryToConnect\n")) % uClientIP % Uint32toStringIP(uClientIP));
 			if (Disconnected(wxT("IPFilter"))) {
 				Safe_Delete();
@@ -1287,7 +1287,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 
 		// for safety: check again whether that IP is banned
-		if (theApp.clientlist->IsBannedClient(uClientIP)) {
+		if (theApp->clientlist->IsBannedClient(uClientIP)) {
 			AddDebugLogLineM(false, logClient, wxT("Refused to connect to banned client ") + Uint32toStringIP(uClientIP));
 			if (Disconnected(wxT("Banned IP"))) {
 				Safe_Delete();
@@ -1302,7 +1302,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}
 	
 	if ( HasLowID() ) {
-		if (!theApp.DoCallback(this)) {
+		if (!theApp->DoCallback(this)) {
 			//We cannot do a callback!
 			if (GetDownloadState() == DS_CONNECTING) {
 				SetDownloadState(DS_LOWTOLOWIP);
@@ -1320,10 +1320,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 
 		//We already know we are not firewalled here as the above condition already detected LowID->LowID and returned.
-		//If ANYTHING changes with the "if(!theApp.DoCallback(this))" above that will let you fall through 
+		//If ANYTHING changes with the "if(!theApp->DoCallback(this))" above that will let you fall through 
 		//with the condition that the source is firewalled and we are firewalled, we must
 		//recheck it before the this check..
-		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp.serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
+		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp->serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
 			//This is a Kad firewalled source that we want to do a special callback because it has no buddyIP or buddyPort.
 			if( Kademlia::CKademlia::IsConnected() ) {
 				//We are connect to Kad
@@ -1359,7 +1359,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			return true;
 		}
 
-		if (theApp.serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
+		if (theApp->serverconnect->IsLocalServer(m_dwServerIP,m_nServerPort)) {
 			CMemFile data;
 			// AFAICS, this id must be reversed to be sent to clients
 			// But if I reverse it, we do a serve violation ;)
@@ -1367,13 +1367,13 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_CALLBACKREQUEST);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CALLBACKREQUEST to ") + GetFullIP());
-			theApp.serverconnect->SendPacket(packet);
+			theApp->serverconnect->SendPacket(packet);
 			SetDownloadState(DS_WAITCALLBACK);
 		} else {
 			if (GetUploadState() == US_NONE && (!GetRemoteQueueRank() || m_bReaskPending)) {
 				
 				if( !HasValidBuddyID() ) {
-					theApp.downloadqueue->RemoveSource(this);
+					theApp->downloadqueue->RemoveSource(this);
 					if (Disconnected(wxT("LowID and US_NONE and QR=0"))) {
 						Safe_Delete();
 						return false;
@@ -1383,7 +1383,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				
 				if( !Kademlia::CKademlia::IsConnected() ) {
 					//We are not connected to Kad and this is a Kad Firewalled source..
-					theApp.downloadqueue->RemoveSource(this);
+					theApp->downloadqueue->RemoveSource(this);
 					if(Disconnected(wxT("Kad Firewalled source but not connected to Kad."))) {
 						Safe_Delete();
 						return false;
@@ -1398,7 +1398,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
 						CPacket* packet = new CPacket(bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
-						theApp.clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
+						theApp->clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
 						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i) to"),packet->GetPacketSize()) + GetFullIP());
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
@@ -1455,7 +1455,7 @@ void CUpDownClient::ConnectionEstablished()
 	
 	// Check if we should use this client to retrieve our public IP
 	// Ignore local ip on GetPublicIP (could be wrong)
-	if (theApp.GetPublicIP(true) == 0 && theApp.IsConnectedED2K()) {
+	if (theApp->GetPublicIP(true) == 0 && theApp->IsConnectedED2K()) {
 		SendPublicIPRequest();
 	}
 	
@@ -1503,7 +1503,7 @@ void CUpDownClient::ConnectionEstablished()
 	switch(GetUploadState()){
 		case US_CONNECTING:
 		case US_WAITCALLBACK:
-			if (theApp.uploadqueue->IsDownloading(this)) {
+			if (theApp->uploadqueue->IsDownloading(this)) {
 				SetUploadState(US_UPLOADING);
 				CPacket* packet = new CPacket(OP_ACCEPTUPLOADREQ, 0, OP_EDONKEYPROT);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -1773,7 +1773,7 @@ void CUpDownClient::ProcessSharedFileList(const byte* pachPacket, uint32 nSize, 
 {
 	if (m_iFileListRequested > 0) {
 		m_iFileListRequested--;
-		theApp.searchlist->ProcessSharedFileList(pachPacket, nSize, this, NULL, pszDirectory);
+		theApp->searchlist->ProcessSharedFileList(pachPacket, nSize, this, NULL, pszDirectory);
 	}
 }
 
@@ -1836,12 +1836,12 @@ void CUpDownClient::SendPublicKeyPacket(){
 		wxASSERT ( false );
 		return;
 	}
-	if (!theApp.CryptoAvailable())
+	if (!theApp->CryptoAvailable())
 		return;
 
 	CMemFile data;
-	data.WriteUInt8(theApp.clientcredits->GetPubKeyLen());
-	data.Write(theApp.clientcredits->GetPublicKey(), theApp.clientcredits->GetPubKeyLen());
+	data.WriteUInt8(theApp->clientcredits->GetPubKeyLen());
+	data.Write(theApp->clientcredits->GetPublicKey(), theApp->clientcredits->GetPubKeyLen());
 	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_PUBLICKEY);
 
 	theStats::AddUpOverheadOther(packet->GetPacketSize());
@@ -1858,7 +1858,7 @@ void CUpDownClient::SendSignaturePacket(){
 		return;
 	}
 
-	if (!theApp.CryptoAvailable()) {
+	if (!theApp->CryptoAvailable()) {
 		return;
 	}
 	if (credits->GetSecIDKeyLen() == 0) {
@@ -1880,19 +1880,19 @@ void CUpDownClient::SendSignaturePacket(){
 	uint8 byChaIPKind = 0;
 	uint32 ChallengeIP = 0;
 	if (bUseV2){
-		if (::IsLowID(theApp.GetED2KID())) {
+		if (::IsLowID(theApp->GetED2KID())) {
 			// we cannot do not know for sure our public ip, so use the remote clients one
 			ChallengeIP = GetIP();
 			byChaIPKind = CRYPT_CIP_REMOTECLIENT;
 		} else {
-			ChallengeIP = theApp.GetED2KID();
+			ChallengeIP = theApp->GetED2KID();
 			byChaIPKind  = CRYPT_CIP_LOCALCLIENT;
 		}
 	}
 	//end v2
 	byte achBuffer[250];
 
-	uint8 siglen = theApp.clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
+	uint8 siglen = theApp->clientcredits->CreateSignature(credits, achBuffer,  250, ChallengeIP, byChaIPKind );
 	if (siglen == 0){
 		wxASSERT ( false );
 		return;
@@ -1915,14 +1915,14 @@ void CUpDownClient::SendSignaturePacket(){
 
 void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 {
-	theApp.clientlist->AddTrackClient(this);
+	theApp->clientlist->AddTrackClient(this);
 
 	if (m_socket == NULL || credits == NULL || pachPacket[0] != nSize-1
 		|| nSize == 0 || nSize > 250){
 		wxASSERT ( false );
 		return;
 	}
-	if (!theApp.CryptoAvailable())
+	if (!theApp->CryptoAvailable())
 		return;
 	// the function will handle everything (mulitple key etc)
 	if (credits->SetSecureIdent(pachPacket+1, pachPacket[0])){
@@ -1959,7 +1959,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 		return;
 	}
 
-	if (!theApp.CryptoAvailable())
+	if (!theApp->CryptoAvailable())
 		return;
 
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
@@ -1978,7 +1978,7 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 		return;
 	}
 
-	if (theApp.clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind ) ){
+	if (theApp->clientcredits->VerifyIdent(credits, pachPacket+1, pachPacket[0], GetIP(), byChaIPKind ) ){
 		// result is saved in function above
 		AddDebugLogLineM( false, logClient, CFormat( wxT("'%s' has passed the secure identification, V2 State: %i") ) % GetUserName() % byChaIPKind );
 	} else {
@@ -1992,7 +1992,7 @@ void CUpDownClient::SendSecIdentStatePacket(){
 	// check if we need public key and signature
 	uint8 nValue = 0;
 	if (credits){
-		if (theApp.CryptoAvailable()){
+		if (theApp->CryptoAvailable()){
 			if (credits->GetSecIDKeyLen() == 0) {
 				nValue = IS_KEYANDSIGNEEDED;
 			} else if (m_dwLastSignatureIP != GetIP()) {
@@ -2112,8 +2112,8 @@ void CUpDownClient::ProcessPublicIPAnswer(const byte* pbyData, uint32 uSize){
 	if (m_fNeedOurPublicIP == true){ // did we?
 		m_fNeedOurPublicIP = false;
 		// Ignore local ip on GetPublicIP (could be wrong)
-		if (theApp.GetPublicIP(true) == 0 && !IsLowID(dwIP) ) {
-			theApp.SetPublicIP(dwIP);
+		if (theApp->GetPublicIP(true) == 0 && !IsLowID(dwIP) ) {
+			theApp->SetPublicIP(dwIP);
 		}
 	}
 }
@@ -2178,7 +2178,7 @@ float CUpDownClient::SetDownloadLimit(uint32 reducedownload)
 
 void CUpDownClient::SetUserIDHybrid(uint32 nUserID)
 {
-	theApp.clientlist->UpdateClientID( this, nUserID );
+	theApp->clientlist->UpdateClientID( this, nUserID );
 
 	m_nUserIDHybrid = nUserID;
 }
@@ -2186,7 +2186,7 @@ void CUpDownClient::SetUserIDHybrid(uint32 nUserID)
 
 void CUpDownClient::SetIP( uint32 val )
 {
-	theApp.clientlist->UpdateClientIP( this, val );
+	theApp->clientlist->UpdateClientIP( this, val );
 
 	m_dwUserIP = val;
 
@@ -2196,7 +2196,7 @@ void CUpDownClient::SetIP( uint32 val )
 
 void CUpDownClient::SetUserHash(const CMD4Hash& userhash)
 {
-	theApp.clientlist->UpdateClientHash( this, userhash );
+	theApp->clientlist->UpdateClientHash( this, userhash );
 
 	m_UserHash = userhash;
 
@@ -2342,14 +2342,14 @@ uint64 CUpDownClient::GetUploadedTotal() const
 }
 	
 double CUpDownClient::GetScoreRatio() const {
-	return credits ? credits->GetScoreRatio(GetIP(), theApp.CryptoAvailable()) : 0;
+	return credits ? credits->GetScoreRatio(GetIP(), theApp->CryptoAvailable()) : 0;
 }
 
 const wxString CUpDownClient::GetServerName() const
 {
 	wxString ret;
 	wxString srvaddr = Uint32toStringIP(GetServerIP());
-	CServer* cserver = theApp.serverlist->GetServerByAddress(
+	CServer* cserver = theApp->serverlist->GetServerByAddress(
 		srvaddr, GetServerPort()); 
 	if (cserver) {
 		ret = cserver->GetListName();

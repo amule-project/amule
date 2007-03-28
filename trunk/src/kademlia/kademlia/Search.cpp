@@ -93,7 +93,7 @@ CSearch::CSearch()
 CSearch::~CSearch()
 {
 	
-	CPartFile* temp = theApp.downloadqueue->GetFileByKadFileSearchID(GetSearchID());
+	CPartFile* temp = theApp->downloadqueue->GetFileByKadFileSearchID(GetSearchID());
 	
 	if(temp) {
 		temp->SetKadFileSearchID(0);
@@ -392,7 +392,7 @@ void CSearch::StorePacket()
 			}
 			byte fileid[16];
 			m_target.ToByteArray(fileid);
-			CKnownFile* file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
+			CKnownFile* file = theApp->sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
 				m_fileName = file->GetFileName();
 
@@ -406,13 +406,13 @@ void CSearch::StorePacket()
 				//4 >4GB file HighID Source.
 				//5 >4GB file Firewalled Kad source.
 				
-				if( theApp.IsFirewalled() ) {
-					if( theApp.clientlist->GetBuddy() ) {
+				if( theApp->IsFirewalled() ) {
+					if( theApp->clientlist->GetBuddy() ) {
 						CUInt128 buddyID(true);
 						buddyID.XOR(CKademlia::GetPrefs()->GetKadID());
 						taglist.push_back(new CTagInt8(TAG_SOURCETYPE, file->IsLargeFile() ? 5 : 3));
-						taglist.push_back(new CTagVarInt(TAG_SERVERIP, theApp.clientlist->GetBuddy()->GetIP()));
-						taglist.push_back(new CTagVarInt(TAG_SERVERPORT, theApp.clientlist->GetBuddy()->GetUDPPort()));
+						taglist.push_back(new CTagVarInt(TAG_SERVERIP, theApp->clientlist->GetBuddy()->GetIP()));
+						taglist.push_back(new CTagVarInt(TAG_SERVERPORT, theApp->clientlist->GetBuddy()->GetUDPPort()));
 						byte hashBytes[16];
 						buddyID.ToByteArray(hashBytes);
 						taglist.push_back(new CTagString(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
@@ -451,7 +451,7 @@ void CSearch::StorePacket()
 			packetdata.WriteUInt128(m_target);
 			packetdata.WriteUInt16(0); // Will be updated before sending.
 			while ((iCount < 150) && (itListFileID != m_fileIDs.end())) {
-				CKnownFile* pFile = theApp.sharedfiles->GetFileByID(CMD4Hash(*itListFileID));
+				CKnownFile* pFile = theApp->sharedfiles->GetFileByID(CMD4Hash(*itListFileID));
 				if (pFile) {
 					iCount++;
 					iPacketCount++;
@@ -490,7 +490,7 @@ void CSearch::StorePacket()
 			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreNotes"));
 			byte fileid[16];
 			m_target.ToByteArray(fileid);
-			CKnownFile* file = theApp.sharedfiles->GetFileByID(CMD4Hash(fileid));
+			CKnownFile* file = theApp->sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
 				CMemFile packetdata(1024*2);
 				packetdata.WriteUInt128(m_target);
@@ -634,7 +634,7 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 		case 1:
 		case 3: {
 			m_uAnswers++;
-			theApp.downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, clientid);
+			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, clientid);
 			break;
 		}
 		case 2: {
@@ -687,11 +687,11 @@ void CSearch::ProcessResultNotes(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPo
 	const CMD4Hash fileHash(fileid);
 	
 	//Check if this hash is in our shared files..
-	CKnownFile* file = theApp.sharedfiles->GetFileByID(fileHash);
+	CKnownFile* file = theApp->sharedfiles->GetFileByID(fileHash);
 	
 	if (!file) {
 		// If we didn't find anything check if it's in our download queue.
-		file = (CKnownFile*)theApp.downloadqueue->GetFileByID(fileHash);
+		file = (CKnownFile*)theApp->downloadqueue->GetFileByID(fileHash);
 	}
 	
 	if (file) {
@@ -783,7 +783,7 @@ void CSearch::ProcessResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 
 	if (interested) {
 		m_uAnswers++;
-		theApp.searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
+		theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
 	} else {
 		printf("Not adding search results: not interested\n");
 	}

@@ -101,22 +101,22 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 
 CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CONNSTATE,
 	(uint8)(
-			(theApp.IsConnectedED2K() ? 0x01 : 0x00)
+			(theApp->IsConnectedED2K() ? 0x01 : 0x00)
 			|
-			(theApp.serverconnect->IsConnecting() ? 0x02 : 0x00)
+			(theApp->serverconnect->IsConnecting() ? 0x02 : 0x00)
 			|
-			(theApp.IsConnectedKad() ? 0x04 : 0x00)
+			(theApp->IsConnectedKad() ? 0x04 : 0x00)
 			|
 			(Kademlia::CKademlia::IsFirewalled() ? 0x08 : 0x00)
 			| 
 			(Kademlia::CKademlia::IsRunning() ? 0x10 : 0x00)
 		))
 {
-	if (theApp.IsConnectedED2K()) {
-		if ( theApp.serverconnect->GetCurrentServer() ) {
-			AddTag(CEC_Server_Tag(theApp.serverconnect->GetCurrentServer(), detail_level));
+	if (theApp->IsConnectedED2K()) {
+		if ( theApp->serverconnect->GetCurrentServer() ) {
+			AddTag(CEC_Server_Tag(theApp->serverconnect->GetCurrentServer(), detail_level));
 		}
-		AddTag(CECTag(EC_TAG_ED2K_ID, theApp.GetED2KID()));
+		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));
 	}
 }
 
@@ -152,8 +152,8 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
-					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
+				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
+					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file), this);
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level)
@@ -194,8 +194,8 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
-					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
+				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
+					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file)));
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
@@ -213,8 +213,8 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-		(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
-					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file), this);
+		(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
+					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file), this);
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
@@ -241,8 +241,8 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp.IsConnectedED2K() && !theApp.serverconnect->IsLowID()) ?
-					theApp.CreateED2kSourceLink(file) : theApp.CreateED2kLink(file)));
+				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
+					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file)));
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :
@@ -277,7 +277,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	AddTag(CECTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay()));
 	AddTag(CECTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime())));
 	AddTag(CECTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest())));
-	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp.uploadqueue->GetWaitingPosition(client)));
+	AddTag(CECTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client)));
 	
 	if (detail_level == EC_DETAIL_UPDATE) {
 			return;
@@ -320,7 +320,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	valuemap.CreateTag(EC_TAG_CLIENT_XFER_TIME, client->GetUpStartTimeDelay(), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_QUEUE_TIME, (uint64)(::GetTickCount() - client->GetWaitStartTime()), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_LAST_TIME, (uint64)(::GetTickCount() - client->GetLastUpRequest()), this);
-	valuemap.CreateTag(EC_TAG_CLIENT_WAITING_POSITION, theApp.uploadqueue->GetWaitingPosition(client), this);
+	valuemap.CreateTag(EC_TAG_CLIENT_WAITING_POSITION, theApp->uploadqueue->GetWaitingPosition(client), this);
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
@@ -344,7 +344,7 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 
 	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
-	if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
+	if ( theApp->sharedfiles->GetFileByID(file->GetFileHash()) ) {
 		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
 	}
 }
@@ -359,7 +359,7 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) :
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
-	if ( theApp.sharedfiles->GetFileByID(file->GetFileHash()) ) {
+	if ( theApp->sharedfiles->GetFileByID(file->GetFileHash()) ) {
 		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
 	}
 }

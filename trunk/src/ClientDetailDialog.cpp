@@ -164,7 +164,7 @@ bool CClientDetailDialog::OnInitDialog() {
 			(float)m_client->GetScoreRatio()));
 	
 	// Secure Ident
-	if (theApp.CryptoAvailable()) {
+	if (theApp->CryptoAvailable()) {
 		if (m_client->SUINotSupported()) {
 			CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
 				_("Not Supported"));
@@ -192,7 +192,7 @@ bool CClientDetailDialog::OnInitDialog() {
 			wxString::Format(wxT("%u (QR: %u)"),
 				m_client->GetScore(
 					false, m_client->IsDownloading(), false),
-			theApp.uploadqueue->GetWaitingPosition(m_client)));		
+			theApp->uploadqueue->GetWaitingPosition(m_client)));		
 	} else {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(wxT("-"));
 	}

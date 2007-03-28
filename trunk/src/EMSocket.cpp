@@ -97,8 +97,8 @@ CEMSocket::~CEMSocket()
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
-	if (theApp.uploadBandwidthThrottler) {
-	    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
+	if (theApp->uploadBandwidthThrottler) {
+	    theApp->uploadBandwidthThrottler->RemoveFromAllQueues(this);
 	}
 
     ClearQueues();
@@ -167,7 +167,7 @@ void CEMSocket::OnClose(int WXUNUSED(nErrorCode))
 
     // now that we know no other method will keep adding to the queue
     // we can remove ourself from the queue
-    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
+    theApp->uploadBandwidthThrottler->RemoveFromAllQueues(this);
 	
 	ClearQueues();
 }
@@ -396,7 +396,7 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 	        m_control_queue.push_back(packet);
 
             // queue up for controlpacket
-            theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+            theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	    } else {
             bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
             StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
@@ -469,7 +469,7 @@ void CEMSocket::OnSend(int nErrorCode)
 
 	    if (m_currentPacket_is_controlpacket) {
 	        // queue up for control packet
-    	    theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+    	    theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 		}
     }
 }
@@ -663,7 +663,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
         // we might enter control packet queue several times for the same package,
         // but that costs very little overhead. Less overhead than trying to make sure
         // that we only enter the queue once.
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
+        theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
     }
 
     SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };

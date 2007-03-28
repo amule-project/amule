@@ -1373,7 +1373,7 @@ bool IsLocaleAvailable(int id)
 	wxLogNull	logTarget;
 	wxLocale 	locale_to_check;
 
-	if (id == wxLANGUAGE_DEFAULT || id == theApp.m_locale.GetLanguage())
+	if (id == wxLANGUAGE_DEFAULT || id == theApp->m_locale.GetLanguage())
 		return true;
 
 	InitLocale(locale_to_check, id);

@@ -62,9 +62,9 @@ CSharedFilesWnd::~CSharedFilesWnd()
 
 void CSharedFilesWnd::SelectionUpdated()
 {
-	uint64 lTransfered = theApp.knownfiles->transfered;
-	uint32 lAccepted = theApp.knownfiles->accepted;
-	uint32 lRequested = theApp.knownfiles->requested;
+	uint64 lTransfered = theApp->knownfiles->transfered;
+	uint32 lAccepted = theApp->knownfiles->accepted;
+	uint32 lRequested = theApp->knownfiles->requested;
 	m_bar_requests->SetRange( lRequested );
 	m_bar_accepted->SetRange( lAccepted );
 	m_bar_transfer->SetRange( lTransfered / 1024 );
@@ -133,7 +133,7 @@ void CSharedFilesWnd::SelectionUpdated()
 
 void CSharedFilesWnd::OnBtnReloadShared( wxCommandEvent& WXUNUSED(evt) )
 {
-	theApp.sharedfiles->Reload();
+	theApp->sharedfiles->Reload();
 #ifndef CLIENT_GUI
 	// remote gui will update display when data is back
 	SelectionUpdated();

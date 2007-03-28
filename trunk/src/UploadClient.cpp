@@ -219,7 +219,7 @@ void CUpDownClient::CreateNextBlockPackage()
                (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
-			CKnownFile* srcfile = theApp.sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
+			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
 			
 			if (!srcfile) {
 				throw wxString(wxT("requested file not found"));
@@ -267,7 +267,7 @@ void CUpDownClient::CreateNextBlockPackage()
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 
 					AddLogLineM( false, CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
-					theApp.sharedfiles->RemoveFile(srcfile);
+					theApp->sharedfiles->RemoveFile(srcfile);
 					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
 				}			
@@ -324,7 +324,7 @@ void CUpDownClient::CreateNextBlockPackage()
 	}
 	
 	// Error occured.	
-	theApp.uploadqueue->RemoveFromUploadQueue(this);
+	theApp->uploadqueue->RemoveFromUploadQueue(this);
 }
 
 
@@ -621,13 +621,13 @@ uint32 CUpDownClient::SendBlockData()
 //		thePrefs.Add2SessionTransferData(GetClientSoft(), uUpStatsPort, true, true, sentBytesPartFile, (IsFriend() && GetFriendSlot()));
 
 		m_nTransferredUp += sentBytesCompleteFile + sentBytesPartFile;
-        credits->AddUploaded(sentBytesCompleteFile + sentBytesPartFile, GetIP(), theApp.CryptoAvailable());
+        credits->AddUploaded(sentBytesCompleteFile + sentBytesPartFile, GetIP(), theApp->CryptoAvailable());
 
         sentBytesPayload = s->GetSentPayloadSinceLastCallAndReset();
         m_nCurQueueSessionPayloadUp += sentBytesPayload;
 
-        if (theApp.uploadqueue->CheckForTimeOver(this)) {
-            theApp.uploadqueue->RemoveFromUploadQueue(this, true);
+        if (theApp->uploadqueue->CheckForTimeOver(this)) {
+            theApp->uploadqueue->RemoveFromUploadQueue(this, true);
 			SendOutOfPartReqsAndAddToWaitingQueue();
         } else {
             // read blocks from file and put on socket
@@ -688,7 +688,7 @@ void CUpDownClient::SendOutOfPartReqsAndAddToWaitingQueue()
 	AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_OUTOFPARTREQS to ") + GetFullIP() );
 	SendPacket(pPacket, true, true);
 	
-	theApp.uploadqueue->AddClientToQueue(this);
+	theApp->uploadqueue->AddClientToQueue(this);
 }
 
 
@@ -706,11 +706,11 @@ void CUpDownClient::FlushSendBlocks()
 
 void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 {
-	CKnownFile* file = theApp.sharedfiles->GetFileByID( forfileid );
+	CKnownFile* file = theApp->sharedfiles->GetFileByID( forfileid );
 	bool from_dq = false;
 	if ( !file ) {
 		from_dq = true;
-		if ((file = theApp.downloadqueue->GetFileByID(forfileid)) == NULL) {
+		if ((file = theApp->downloadqueue->GetFileByID(forfileid)) == NULL) {
 			AddLogLineM(false, CFormat( _("Hashset requested for unknown file: %s") ) % forfileid.Encode() );
 		
 			return;
@@ -722,7 +722,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 			AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));	
 			return;
 		} else {
-			file = theApp.downloadqueue->GetFileByID(forfileid);
+			file = theApp->downloadqueue->GetFileByID(forfileid);
 			if (!(file && file->GetHashCount())) {
 				AddDebugLogLineM(false, logRemoteClient, wxT("Requested hashset could not be found"));	
 				return;				
@@ -757,7 +757,7 @@ void CUpDownClient::SendRankingInfo(){
 		return;
 	}
 
-	uint16 nRank = theApp.uploadqueue->GetWaitingPosition(this);
+	uint16 nRank = theApp->uploadqueue->GetWaitingPosition(this);
 	if (!nRank) {
 		return;
 	}
@@ -802,8 +802,8 @@ void CUpDownClient::SendCommentInfo(CKnownFile* file)
 void  CUpDownClient::UnBan(){
 	m_Aggressiveness = 0;
 	
-	theApp.clientlist->AddTrackClient(this);
-	theApp.clientlist->RemoveBannedClient( GetIP() );
+	theApp->clientlist->AddTrackClient(this);
+	theApp->clientlist->RemoveBannedClient( GetIP() );
 	SetUploadState(US_NONE);
 	ClearWaitStartTime();
 	
@@ -811,8 +811,8 @@ void  CUpDownClient::UnBan(){
 }
 
 void CUpDownClient::Ban(){
-	theApp.clientlist->AddTrackClient(this);
-	theApp.clientlist->AddBannedClient( GetIP() );
+	theApp->clientlist->AddTrackClient(this);
+	theApp->clientlist->AddBannedClient( GetIP() );
 	
 	AddDebugLogLineM( false, logClient, wxT("Client '") + GetUserName() + wxT("' seems to be an aggressive client and is banned from the uploadqueue"));
 	
@@ -824,7 +824,7 @@ void CUpDownClient::Ban(){
 
 bool CUpDownClient::IsBanned() const
 {
-	return ( (theApp.clientlist->IsBannedClient(GetIP()) ) && m_nDownloadState != DS_DOWNLOADING);
+	return ( (theApp->clientlist->IsBannedClient(GetIP()) ) && m_nDownloadState != DS_DOWNLOADING);
 }
 
 void CUpDownClient::CheckForAggressive()
@@ -863,10 +863,10 @@ void CUpDownClient::CheckForAggressive()
 void CUpDownClient::SetUploadFileID(const CMD4Hash& new_id)
 {
 	// Update the uploading file found 
-	CKnownFile* uploadingfile = theApp.sharedfiles->GetFileByID(new_id);
+	CKnownFile* uploadingfile = theApp->sharedfiles->GetFileByID(new_id);
 	if ( !uploadingfile ) {
 		// Can this really happen?
-		uploadingfile = theApp.downloadqueue->GetFileByID(new_id);
+		uploadingfile = theApp->downloadqueue->GetFileByID(new_id);
 	}
 	SetUploadFileID(uploadingfile); // This will update queue count on old and new file.
 }

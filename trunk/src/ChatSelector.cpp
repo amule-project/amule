@@ -59,7 +59,7 @@ CChatSession::~CChatSession()
 {
 	#warning EC NEEDED
 	#ifndef CLIENT_GUI
-	theApp.clientlist->SetChatState(m_client_id,MS_NONE);
+	theApp->clientlist->SetChatState(m_client_id,MS_NONE);
 	#endif
 }
 
@@ -242,7 +242,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 	#warning EC needed here.
 	
 	#ifndef CLIENT_GUI
-	if (theApp.clientlist->SendMessage(ci->m_client_id, message)) {
+	if (theApp->clientlist->SendMessage(ci->m_client_id, message)) {
 		ci->AddText( thePrefs::GetUserNick(), COLOR_GREEN, false );
 		ci->AddText( wxT(": ") + message, COLOR_BLACK );
 	} else {

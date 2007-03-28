@@ -565,18 +565,18 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 		nHashsAvailable = fileDataIn->ReadUInt16();
 		if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+4u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
 			// this check is redunant, CSafememfile would catch such an error too
-// TODO:			theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName() );
+// TODO:			theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Received datasize/amounts of hashs was invalid (2)"), m_pOwner->GetFileName() );
 			return false;
 		}
 		
-// TODO: DEBUG_ONLY( theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with  %u 32bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable ) );
+// TODO: DEBUG_ONLY( theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("read RecoveryData for %s - Received packet with  %u 32bit hash identifiers)"), m_pOwner->GetFileName(), nHashsAvailable ) );
 		for (uint32 i = 0; i != nHashsToRead; i++) {
 			uint32 wHashIdent = fileDataIn->ReadUInt32();
 			if (wHashIdent == 1 /*never allow masterhash to be overwritten*/
 				|| wHashIdent > 0x400000
 				|| !m_pHashTree.SetHash(fileDataIn, wHashIdent,(-1), false))
 			{
-// TODO:		theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Error when trying to read hash into tree (2)"), m_pOwner->GetFileName() );
+// TODO:		theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Error when trying to read hash into tree (2)"), m_pOwner->GetFileName() );
 				VerifyHashTree(true); // remove invalid hashs which we have already written
 				return false;
 			}
@@ -584,7 +584,7 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	}
 	
 	if (nHashsAvailable == 0) {
-// TODO:		theApp.QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Packet didn't contained any hashs"), m_pOwner->GetFileName() );
+// TODO:		theApp->QueueDebugLogLine(/*DLP_VERYHIGH,*/ false, _T("Failed to read RecoveryData for %s - Packet didn't contained any hashs"), m_pOwner->GetFileName() );
 		return false;
 	}
 
@@ -618,7 +618,7 @@ bool CAICHHashSet::SaveHashSet()
 		wxASSERT( false );
 		return false;
 	}
-	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
+	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
 	CFile file;
 	if (wxFileExists(fullpath)) {	
 		if (!file.Open(fullpath, CFile::read_write)) {
@@ -709,7 +709,7 @@ bool CAICHHashSet::LoadHashSet()
 		wxASSERT( false );
 		return false;
 	}
-	wxString fullpath = theApp.ConfigDir + KNOWN2_MET_FILENAME;
+	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
 	CFile file(fullpath, CFile::read_write);
 	if (!file.IsOpened()) {
 		if (wxFileExists(fullpath)) {
@@ -916,7 +916,7 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 	if (data.m_pClient != pClient) {
 		return;
 	}
-	if( theApp.downloadqueue->IsPartFile(data.m_pPartFile)) {
+	if( theApp->downloadqueue->IsPartFile(data.m_pPartFile)) {
 		AddDebugLogLineM( false, logSHAHashSet, wxT("IACH Request failed, Trying to ask another client (file ") + data.m_pPartFile->GetFileName() + wxString::Format(wxT(", Part: %u,  Client"),data.m_nPart) + pClient->GetClientFullInfo());
 		data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
 	}

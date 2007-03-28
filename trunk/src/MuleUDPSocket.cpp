@@ -50,7 +50,7 @@ CMuleUDPSocket::CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Addr
 
 CMuleUDPSocket::~CMuleUDPSocket()
 {
-    theApp.uploadBandwidthThrottler->RemoveFromAllQueues(this);
+    theApp->uploadBandwidthThrottler->RemoveFromAllQueues(this);
 
 	if (m_socket) {
 		DestroySocket();
@@ -64,7 +64,7 @@ void CMuleUDPSocket::CreateSocket()
 	
 	m_socket = new CDatagramSocketProxy(m_addr, wxSOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
-	m_socket->SetEventHandler(theApp, m_id);
+	m_socket->SetEventHandler(*theApp, m_id);
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
 	m_socket->Notify(true);
 
@@ -122,7 +122,7 @@ void CMuleUDPSocket::OnSend(int errorCode)
 		}
 	}
 
-	theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
+	theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 }
 
 
@@ -214,7 +214,7 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
 		m_queue.push_back(newpending);
 	}
 	
-	theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
+	theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 }
 
 
@@ -256,7 +256,7 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 	}
 
     if (!m_busy && !m_queue.empty()) {
-        theApp.uploadBandwidthThrottler->QueueForSendingControlPacket(this);
+        theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this);
     }
 
     SocketSentBytes returnVal = { true, 0, sentBytes };

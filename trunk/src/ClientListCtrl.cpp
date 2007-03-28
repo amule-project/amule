@@ -82,7 +82,7 @@ BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 END_EVENT_TABLE()
 
 
-#define m_imagelist theApp.amuledlg->m_imagelist
+#define m_imagelist theApp->amuledlg->m_imagelist
 
 
 /**
@@ -308,9 +308,9 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	while ( index != -1 ) {
 		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
 		if (client->IsFriend()) {
-			theApp.amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+			theApp->amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
 		} else {
-			theApp.amuledlg->m_chatwnd->AddFriend( client );
+			theApp->amuledlg->m_chatwnd->AddFriend( client );
 		}
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
@@ -358,7 +358,7 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		wxString message = ::wxGetTextFromUser( _("Send message to user"), _("Message to send:") );
 		
 		if (!message.IsEmpty()) {
-			theApp.amuledlg->m_chatwnd->SendMessage(message, userName, userID);
+			theApp->amuledlg->m_chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
@@ -423,7 +423,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 		return;
 	}
 	
-	if ( theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
+	if ( theApp->amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		// Visible lines, default to all because not all platforms support the GetVisibleLines function
 		long first = 0, last = GetItemCount();
 		
@@ -445,7 +445,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted )
 {
 	// Don't do any drawing if we not being watched.
-	if ( !theApp.amuledlg || !theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
+	if ( !theApp->amuledlg || !theApp->amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		return;
 	}
 
@@ -523,7 +523,7 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 			
 			
 	// Insert any existing items on the list
-	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		list->InsertClient( *it, list->GetListView() );		
@@ -810,7 +810,7 @@ void CQueuedView::Initialize( CClientListCtrl* list )
 
 	// Insert any existing items on the list
 	// Insert any existing items on the list
-	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		list->InsertClient( *it, list->GetListView() );		
@@ -974,7 +974,7 @@ void CClientsView::Initialize( CClientListCtrl* list )
 	list->InsertColumn( 7, _("Userhash"),			wxLIST_FORMAT_LEFT,	150 );
 
 
-	const CClientList::IDMap& clist = theApp.clientlist->GetClientList();
+	const CClientList::IDMap& clist = theApp->clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
 	
 	for ( ; it != clist.end(); ++it ) {

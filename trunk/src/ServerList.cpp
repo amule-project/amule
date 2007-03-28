@@ -66,11 +66,11 @@ bool CServerList::Init()
 {
 	// Load Metfile
 	wxString strTempFilename;
-	strTempFilename = theApp.ConfigDir + wxT("server.met");
+	strTempFilename = theApp->ConfigDir + wxT("server.met");
 	bool bRes = LoadServerMet(strTempFilename);
 
 	// insert static servers from textfile
-	strTempFilename=  theApp.ConfigDir + wxT("staticservers.dat");
+	strTempFilename=  theApp->ConfigDir + wxT("staticservers.dat");
 	LoadStaticServers( strTempFilename );
 	
 	// Send the auto-update of server.met via HTTPThread requests
@@ -151,7 +151,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 			}
 			
 			
-			if ( !theApp.AddServer(newserver) ) {
+			if ( !theApp->AddServer(newserver) ) {
 				CServer* update = GetServerByAddress(newserver->GetAddress(), newserver->GetPort());
 				if(update) {
 					update->SetListName( newserver->GetListName());
@@ -204,7 +204,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 				!in_server->HasDynIP() &&
 				(
 					!IsGoodIP( in_server->GetIP(), thePrefs::FilterLanIPs() ) ||
-					theApp.ipfilter->IsFiltered( in_server->GetIP(), true )
+					theApp->ipfilter->IsFiltered( in_server->GetIP(), true )
 				)
 	          ) {
 		if ( fromUser ) {
@@ -257,7 +257,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 void CServerList::ServerStats()
 {
 
-	if(theApp.IsConnectedED2K() && m_servers.size() > 0) {
+	if(theApp->IsConnectedED2K() && m_servers.size() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
 		if(!ping_server) {
@@ -284,7 +284,7 @@ void CServerList::ServerStats()
 		ping_server->AddFailedCount();
 		Notify_ServerRefresh(ping_server);
 		theStats::AddUpOverheadServer(packet->GetPacketSize());
-		theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
+		theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
 		
 		ping_server->SetLastDescPingedCount(false);
 		if(ping_server->GetLastDescPingedCount() < 2) {
@@ -297,7 +297,7 @@ void CServerList::ServerStats()
 			packet = new CPacket( OP_SERVER_DESC_REQ, 4, OP_EDONKEYPROT);
 			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
-			theApp.serverconnect->SendUDPPacket(packet, ping_server, true);
+			theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
 			ping_server->SetLastDescPingedCount(true);
 		}
@@ -307,13 +307,13 @@ void CServerList::ServerStats()
 
 void CServerList::RemoveServer(CServer* in_server)
 {
-	if (in_server == theApp.serverconnect->GetCurrentServer()) {
-		theApp.ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
+	if (in_server == theApp->serverconnect->GetCurrentServer()) {
+		theApp->ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
 	} else {
 		CInternalList::iterator it = std::find(m_servers.begin(), m_servers.end(), in_server);
 		if ( it != m_servers.end() ) {
-			if (theApp.downloadqueue->GetUDPServer() == in_server) {
-				theApp.downloadqueue->SetUDPServer( 0 );
+			if (theApp->downloadqueue->GetUDPServer() == in_server) {
+				theApp->downloadqueue->SetUDPServer( 0 );
 			}	
 			
 			NotifyObservers( EventType( EventType::REMOVED, in_server ) );
@@ -460,7 +460,7 @@ void CServerList::LoadStaticServers( const wxString& filename )
 
 		
 		// Try to add the server to the list
-		if ( !theApp.AddServer( server ) ) {
+		if ( !theApp->AddServer( server ) ) {
 			delete server;
 			CServer* existing = GetServerByAddress( host, StrToULong( port ) );
 			if ( existing) {
@@ -571,7 +571,7 @@ CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 
 bool CServerList::SaveServerMet()
 {
-	wxString newservermet = theApp.ConfigDir + wxT("server.met.new");
+	wxString newservermet = theApp->ConfigDir + wxT("server.met.new");
 	
 	CFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
@@ -655,8 +655,8 @@ bool CServerList::SaveServerMet()
 	}
 	
 	servermet.Close();
-	wxString curservermet = theApp.ConfigDir + wxT("server.met");
-	wxString oldservermet = theApp.ConfigDir + wxT("server_met.old");
+	wxString curservermet = theApp->ConfigDir + wxT("server.met");
+	wxString oldservermet = theApp->ConfigDir + wxT("server_met.old");
 	
 	if ( wxFileExists(oldservermet) ) {
 		wxRemoveFile(oldservermet);
@@ -691,7 +691,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 		return;
 	}
 	URLUpdate = strURL;
-	wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
+	wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_ServerMet);
 	downloader->Create();
 	downloader->Run();
@@ -700,7 +700,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 void CServerList::DownloadFinished(uint32 result) 
 {
 	if(result==1) {
-		wxString strTempFilename(theApp.ConfigDir + wxT("server.met.download"));
+		wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(strTempFilename);
 		SaveServerMet();
@@ -715,7 +715,7 @@ void CServerList::DownloadFinished(uint32 result)
 void CServerList::AutoUpdate() 
 {
 	
-	uint8 url_count = theApp.glob_prefs->adresses_list.GetCount();
+	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
 		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
@@ -727,13 +727,13 @@ void CServerList::AutoUpdate()
 
 	// Do current URL. Callback function will take care of the others.
 	while ( current_url_index < url_count ) {
-		wxString URI = theApp.glob_prefs->adresses_list[current_url_index];
+		wxString URI = theApp->glob_prefs->adresses_list[current_url_index];
 
 		// We use wxURL to validate the URI
 		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
 			// Ok, got a valid URI
 			URLAutoUpdate = strURLToDownload;
-			strTempFilename =  theApp.ConfigDir + wxT("server_auto.met");
+			strTempFilename =  theApp->ConfigDir + wxT("server_auto.met");
 		
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
 			downloader->Create();
@@ -755,7 +755,7 @@ void CServerList::AutoDownloadFinished(uint32 result)
 {
 	
 	if(result==1) {
-		wxString strTempFilename(theApp.ConfigDir + wxT("server_auto.met"));
+		wxString strTempFilename(theApp->ConfigDir + wxT("server_auto.met"));
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(strTempFilename);
 		SaveServerMet();
@@ -768,7 +768,7 @@ void CServerList::AutoDownloadFinished(uint32 result)
 	++current_url_index;
 	
 
-	if (current_url_index < theApp.glob_prefs->adresses_list.GetCount()) {		
+	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {		
 		// Next!	
 		AutoUpdate();
 	}
@@ -836,12 +836,12 @@ void CServerList::FilterServers()
 			continue;
 		}
 		
-		if (theApp.ipfilter->IsFiltered(server->GetIP(), true)) {
-			if (server == theApp.serverconnect->GetCurrentServer()) {
+		if (theApp->ipfilter->IsFiltered(server->GetIP(), true)) {
+			if (server == theApp->serverconnect->GetCurrentServer()) {
 				AddLogLineM(true, _("Local server is filtered by the IPFilters, reconnecting to a different server!"));
-				theApp.serverconnect->Disconnect();
+				theApp->serverconnect->Disconnect();
 				RemoveServer(server);
-				theApp.serverconnect->ConnectToAnyServer();
+				theApp->serverconnect->ConnectToAnyServer();
 			} else {
 				RemoveServer(server);
 			}			

@@ -129,8 +129,8 @@ void CServerListCtrl::RemoveServer(CServer* server)
 void CServerListCtrl::RemoveAllServers(int state)
 {
 	int pos = GetNextItem( -1, wxLIST_NEXT_ALL, state);
-	bool connected = theApp.IsConnectedED2K() ||
-	  theApp.serverconnect->IsConnecting();
+	bool connected = theApp->IsConnectedED2K() ||
+	  theApp->serverconnect->IsConnecting();
 
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
@@ -144,13 +144,13 @@ void CServerListCtrl::RemoveAllServers(int state)
 			if (wxMessageBox(CFormat(_("Are you sure you want to delete the static server %s")) % name, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES) {
 				SetStaticServer(server, false);
 				DeleteItem( pos );
-				theApp.serverlist->RemoveServer( server );
+				theApp->serverlist->RemoveServer( server );
 			} else {
 				++pos;
 			}
 		} else {
 			DeleteItem( pos );
-			theApp.serverlist->RemoveServer( server );
+			theApp->serverlist->RemoveServer( server );
 		}
 		
 		pos = GetNextItem(pos - 1, wxLIST_NEXT_ALL, state);
@@ -306,7 +306,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 #warning Kry TODO: Dude, this gotta be moved to core
 bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 {
-	wxString filename = theApp.ConfigDir + wxT("staticservers.dat");
+	wxString filename = theApp->ConfigDir + wxT("staticservers.dat");
 	wxTextFile file( filename );
 	
 	if ( !wxFileExists( filename ) )
@@ -496,11 +496,11 @@ void CServerListCtrl::OnConnectToServer( wxCommandEvent& WXUNUSED(event) )
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( item > -1 ) {
-		if ( theApp.IsConnectedED2K() ) {
-			theApp.serverconnect->Disconnect();
+		if ( theApp->IsConnectedED2K() ) {
+			theApp->serverconnect->Disconnect();
 		}
 
-		theApp.serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
+		theApp->serverconnect->ConnectToServer( (CServer*)GetItemData( item ) );
 	}
 }
 	
@@ -521,7 +521,7 @@ void CServerListCtrl::OnGetED2kURL( wxCommandEvent& WXUNUSED(event) )
 	
 	URL.RemoveLast();
 	
-	theApp.CopyTextToClipboard( URL );
+	theApp->CopyTextToClipboard( URL );
 }
 
 
@@ -532,10 +532,10 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 			wxString question = _("Are you sure that you wish to delete all servers?");
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
-				if ( theApp.serverconnect->IsConnecting() ) {
-					theApp.downloadqueue->StopUDPRequests();
-					theApp.serverconnect->StopConnectionTry();
-					theApp.serverconnect->Disconnect();
+				if ( theApp->serverconnect->IsConnecting() ) {
+					theApp->downloadqueue->StopUDPRequests();
+					theApp->serverconnect->StopConnectionTry();
+					theApp->serverconnect->Disconnect();
 				}
 			
 				RemoveAllServers(wxLIST_STATE_DONTCARE);

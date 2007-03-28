@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
 #ifndef AMULE_H
 #define AMULE_H
 
@@ -74,20 +75,13 @@ class CCompletionEvent;
 class wxExecuteData;
 class CLoggingEvent;
 
+
 namespace MuleNotify {
 	class CMuleGUIEvent;
 }
 
+
 using MuleNotify::CMuleGUIEvent;
-
-
-#define theApp wxGetApp()
-
-enum APPState {
-	APP_STATE_RUNNING = 0,
-	APP_STATE_SHUTINGDOWN,
-	APP_STATE_STARTING
-};
 
 
 #ifdef AMULE_DAEMON
@@ -104,6 +98,13 @@ enum APPState {
 
 class CamuleApp : public AMULE_APP_BASE
 {
+private:
+	enum APPState {
+		APP_STATE_RUNNING = 0,
+		APP_STATE_SHUTINGDOWN,
+		APP_STATE_STARTING
+	};
+
 public:
 	CamuleApp();
 	virtual	 ~CamuleApp();
@@ -290,7 +291,9 @@ private:
 	uint32 m_localip;
 };
 
+
 #ifndef AMULE_DAEMON
+
 
 class CamuleGuiBase {
 public:
@@ -306,9 +309,12 @@ public:
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
 };
 
+
 #ifndef CLIENT_GUI
 
-class CamuleGuiApp : public CamuleApp, public CamuleGuiBase {
+
+class CamuleGuiApp : public CamuleApp, public CamuleGuiBase
+{
 
     virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
@@ -328,68 +334,89 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
+
 DECLARE_APP(CamuleGuiApp)
+#ifdef AMULE_CPP
+	CamuleGuiApp *theApp;
+#else
+	extern CamuleGuiApp *theApp;
+#endif
+
 
 #else /* !CLIENT_GUI */
 
+
 #include "amule-remote-gui.h"
+
 
 #endif // CLIENT_GUI
 
+
 #define CALL_APP_DATA_LOCK
 
+
 #else /* ! AMULE_DAEMON */
+
 
 #include <wx/apptrait.h>
 #include <wx/socket.h>
 
+
 class CSocketSet;
 
-class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable {
-		CSocketSet *m_in_set, *m_out_set;
 
-		wxMutex m_lock;
-	public:
-		CAmuledGSocketFuncTable();
+class CAmuledGSocketFuncTable : public GSocketGUIFunctionsTable
+{
+private:
+	CSocketSet *m_in_set, *m_out_set;
 
-		void AddSocket(GSocket *socket, GSocketEvent event);
-		void RemoveSocket(GSocket *socket, GSocketEvent event);
-		void RunSelect();
+	wxMutex m_lock;
+public:
+	CAmuledGSocketFuncTable();
 
-		virtual bool OnInit();
-		virtual void OnExit();
-		virtual bool CanUseEventLoop();
-		virtual bool Init_Socket(GSocket *socket);
-		virtual void Destroy_Socket(GSocket *socket);
-		virtual void Install_Callback(GSocket *socket, GSocketEvent event);
-		virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
-		virtual void Enable_Events(GSocket *socket);
-		virtual void Disable_Events(GSocket *socket);
+	void AddSocket(GSocket *socket, GSocketEvent event);
+	void RemoveSocket(GSocket *socket, GSocketEvent event);
+	void RunSelect();
+
+	virtual bool OnInit();
+	virtual void OnExit();
+	virtual bool CanUseEventLoop();
+	virtual bool Init_Socket(GSocket *socket);
+	virtual void Destroy_Socket(GSocket *socket);
+	virtual void Install_Callback(GSocket *socket, GSocketEvent event);
+	virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
+	virtual void Enable_Events(GSocket *socket);
+	virtual void Disable_Events(GSocket *socket);
 };
 
-class CDaemonAppTraits : public wxConsoleAppTraits {
-		CAmuledGSocketFuncTable *m_table;
 
-		wxMutex m_lock;
-		std::list<wxObject *> m_sched_delete;
-	public:
-		CDaemonAppTraits(CAmuledGSocketFuncTable *table);
-		virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
-		virtual void ScheduleForDestroy(wxObject *object);
-		virtual void RemoveFromPendingDelete(wxObject *object);
+class CDaemonAppTraits : public wxConsoleAppTraits
+{
+private:
+	CAmuledGSocketFuncTable *m_table;
 
-		void DeletePending();
+	wxMutex m_lock;
+	std::list<wxObject *> m_sched_delete;
+
+public:
+	CDaemonAppTraits(CAmuledGSocketFuncTable *table);
+	virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+	virtual void ScheduleForDestroy(wxObject *object);
+	virtual void RemoveFromPendingDelete(wxObject *object);
+
+	void DeletePending();
 
 #ifndef __WXMSW__
-		virtual int WaitForChild(wxExecuteData& execData);
+	virtual int WaitForChild(wxExecuteData& execData);
 #endif
-
 #ifdef __WXMAC__
-	    virtual wxStandardPathsBase& GetStandardPaths();
+	virtual wxStandardPathsBase& GetStandardPaths();
 #endif
 };
 
-class CamuleDaemonApp : public CamuleApp {
+class CamuleDaemonApp : public CamuleApp
+{
+private:
 	bool m_Exit;
 
 	bool OnInit();
@@ -399,23 +426,29 @@ class CamuleDaemonApp : public CamuleApp {
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
 
 	CAmuledGSocketFuncTable *m_table;
+	
 public:
 	CamuleDaemonApp();
-
+	
 	void ExitMainLoop() { m_Exit = true; }
-
+	
 	bool CopyTextToClipboard(wxString strText);
-
+	
 	virtual void ShowAlert(wxString msg, wxString title, int flags);
-
+	
 	void OnLoggingEvent(CLoggingEvent& evt);
 	
 	DECLARE_EVENT_TABLE()
-
+	
 	wxAppTraits *CreateTraits();
 };
 
 DECLARE_APP(CamuleDaemonApp)
+#ifdef AMULE_CPP
+	CamuleDaemonApp *theApp;
+#else
+	extern CamuleDaemonApp *theApp;
+#endif
 
 #endif /* ! AMULE_DAEMON */
 

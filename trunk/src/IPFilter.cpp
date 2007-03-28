@@ -97,8 +97,8 @@ public:
 	
 	void Entry() {
 		AddLogLineM(false, _("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
-		LoadFromFile(theApp.ConfigDir + wxT("ipfilter.dat"));		
-		LoadFromFile(theApp.ConfigDir + wxT("ipfilter_static.dat"));
+		LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat"));		
+		LoadFromFile(theApp->ConfigDir + wxT("ipfilter_static.dat"));
 
 		CIPFilterEvent evt(m_result);
 		wxPostEvent(m_owner, evt);
@@ -353,7 +353,7 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 CIPFilter::CIPFilter()
 {
 	// Setup dummy files for the curious user.
-	const wxString normalDat = theApp.ConfigDir + wxT("ipfilter.dat");
+	const wxString normalDat = theApp->ConfigDir + wxT("ipfilter.dat");
 	const wxString normalMsg = wxString()
 		<< wxT("# This file is used by aMule to store ipfilter lists downloaded\n")
 		<< wxT("# through the auto-update functionality. Do not save ipfilter-\n")
@@ -361,7 +361,7 @@ CIPFilter::CIPFilter()
 
 	CreateDummyFile(normalDat, normalMsg);
 	
-	const wxString staticDat = theApp.ConfigDir + wxT("ipfilter_static.dat");
+	const wxString staticDat = theApp->ConfigDir + wxT("ipfilter_static.dat");
 	const wxString staticMsg = wxString()
 		<< wxT("# This file is used to store ipfilter-ranges that should\n")
 		<< wxT("# not be overwritten by aMule. If you wish to keep a custom\n")
@@ -431,7 +431,7 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 void CIPFilter::Update(const wxString& strURL)
 {
 	if (!strURL.IsEmpty()) {
-		wxString filename = theApp.ConfigDir + wxT("ipfilter.download");
+		wxString filename = theApp->ConfigDir + wxT("ipfilter.download");
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL, filename, HTTP_IPFilter);
 
 		downloader->Create();
@@ -444,8 +444,8 @@ void CIPFilter::DownloadFinished(uint32 result)
 {
 	if (result == 1) {
 		// download succeeded. proceed with ipfilter loading
-		wxString newDat = theApp.ConfigDir + wxT("ipfilter.download");
-		wxString oldDat = theApp.ConfigDir + wxT("ipfilter.dat");
+		wxString newDat = theApp->ConfigDir + wxT("ipfilter.download");
+		wxString oldDat = theApp->ConfigDir + wxT("ipfilter.dat");
 
 		if (wxFileExists(oldDat)) {
 			if (!wxRemoveFile(oldDat)) {
@@ -478,10 +478,10 @@ void CIPFilter::OnIPFilterEvent(CIPFilterEvent& evt)
 	}
 	
 	if (thePrefs::IsFilteringClients()) {
-		theApp.clientlist->FilterQueues();
+		theApp->clientlist->FilterQueues();
 	}
 	if (thePrefs::IsFilteringServers()) {
-		theApp.serverlist->FilterServers();
+		theApp->serverlist->FilterServers();
 	}
 }
 

@@ -53,7 +53,7 @@ bool CKnownFileList::Init()
 {
 	CFile file;
 	
-	wxString fullpath = theApp.ConfigDir + wxT("known.met");
+	wxString fullpath = theApp->ConfigDir + wxT("known.met");
 	if (!wxFileExists(fullpath)) {
 		AddLogLineM(true, _("Warning: known.met does not exist."));
 		return false;
@@ -99,7 +99,7 @@ bool CKnownFileList::Init()
 
 void CKnownFileList::Save()
 {
-	CFile file(theApp.ConfigDir + wxT("known.met"), CFile::write);
+	CFile file(theApp->ConfigDir + wxT("known.met"), CFile::write);
 	if (!file.IsOpened()) {
 		return;
 	}
@@ -218,9 +218,9 @@ bool CKnownFileList::Append(CKnownFile* Record)
 				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
 				m_duplicates.push_back(m_map[tkey]);
 				// Is this thread-safe? If John is not sure and I'm not sure either...
-				if (theApp.sharedfiles) {
+				if (theApp->sharedfiles) {
 					// Removing the old kad keywords created with the old filename
-					theApp.sharedfiles->RemoveKeywords(it->second);
+					theApp->sharedfiles->RemoveKeywords(it->second);
 				}
 				m_map[tkey] = Record;	
 				return true;

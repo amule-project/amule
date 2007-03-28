@@ -88,7 +88,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 			CUpDownClient* cur_client = *tmp_it;
 
 			// clear dead clients
-			if ( (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp.sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
+			if ( (::GetTickCount() - cur_client->GetLastUpRequest() > MAX_PURGEQUEUETIME) || !theApp->sharedfiles->GetFileByID(cur_client->GetUploadFileID()) ) {
 				purged = true;
 				cur_client->ClearWaitStartTime();
 				RemoveFromWaitingQueue(tmp_it);
@@ -172,7 +172,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 	newclient->SetUpStartTime();
 	newclient->ResetSessionUp();
 
-	theApp.uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
+	theApp->uploadBandwidthThrottler->AddToStandardList(m_uploadinglist.size(), newclient->GetSocket());
 	m_uploadinglist.push_back(newclient);
 	theStats::AddUploadingClient();
 
@@ -210,8 +210,8 @@ void CUploadQueue::Process()
 	}
 
 	// Save used bandwidth for speed calculations
-	uint64 sentBytes = theApp.uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
-	(void)theApp.uploadBandwidthThrottler->GetNumberOfSentBytesOverheadSinceLastCallAndReset();
+	uint64 sentBytes = theApp->uploadBandwidthThrottler->GetNumberOfSentBytesSinceLastCallAndReset();
+	(void)theApp->uploadBandwidthThrottler->GetNumberOfSentBytesOverheadSinceLastCallAndReset();
 
 	// Update statistics
 	if (sentBytes) {
@@ -291,7 +291,7 @@ CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPo
 
 void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 {
-	if (theApp.serverconnect->IsConnected() && theApp.serverconnect->IsLowID() && !theApp.serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && theStats::GetWaitingUserCount() > 50) {
+	if (theApp->serverconnect->IsConnected() && theApp->serverconnect->IsLowID() && !theApp->serverconnect->IsLocalServer(client->GetServerIP(),client->GetServerPort()) && client->GetDownloadState() == DS_NONE && !client->IsFriend() && theStats::GetWaitingUserCount() > 50) {
 		// Well, all that issues finish in the same: don't allow to add to the queue
 		return;
 	}
@@ -304,7 +304,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	client->SetLastUpRequest();
 
 	// Find all clients with the same user-hash
-	CClientList::SourceList found = theApp.clientlist->GetClientsByHash( client->GetUserHash() );
+	CClientList::SourceList found = theApp->clientlist->GetClientsByHash( client->GetUserHash() );
 
 	CClientList::SourceList::iterator it = found.begin();
 	while (it != found.end()) {
@@ -331,7 +331,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 				
 				if ( !cur_client->IsIdentified() ) {
 					// Cur_client isn't identifed, remove it
-					theApp.clientlist->AddTrackClient( cur_client );
+					theApp->clientlist->AddTrackClient( cur_client );
 
 					RemoveFromWaitingQueue( cur_client );
 					if ( !cur_client->GetSocket() ) {
@@ -343,7 +343,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 
 				if ( !client->IsIdentified() ) {
 					// New client isn't identified, remove it
-					theApp.clientlist->AddTrackClient( client );
+					theApp->clientlist->AddTrackClient( client );
 
 					if ( !client->GetSocket() ) {
 						if ( client->Disconnected( wxT("AddClientToQueue - same userhash") ) ) {
@@ -358,7 +358,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	}
 
 	// Count the number of clients with the same IP-address
-	found = theApp.clientlist->GetClientsByIP( client->GetIP() );
+	found = theApp->clientlist->GetClientsByIP( client->GetIP() );
 
 	int ipCount = 0;
 	for ( it = found.begin(); it != found.end(); it++ ) {
@@ -370,7 +370,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 	// We do not accept more than 3 clients from the same IP
 	if ( ipCount > 3 ) {
 		return;
-	} else if ( theApp.clientlist->GetClientsFromIP(client->GetIP()) >= 3 ) {
+	} else if ( theApp->clientlist->GetClientsFromIP(client->GetIP()) >= 3 ) {
 		return;
 	}
 
@@ -413,7 +413,7 @@ void CUploadQueue::AddClientToQueue(CUpDownClient* client)
 bool CUploadQueue::RemoveFromUploadQueue(CUpDownClient* client, bool updatewindow)
 {
 	// Keep track of this client
-	theApp.clientlist->AddTrackClient(client);
+	theApp->clientlist->AddTrackClient(client);
 	
 	CClientPtrList::iterator it = std::find(m_uploadinglist.begin(),
 			m_uploadinglist.end(), client);

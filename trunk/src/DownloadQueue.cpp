@@ -311,7 +311,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const 
 {
-	if (CKnownFile* file = theApp.sharedfiles->GetFileByID(fileid)) {
+	if (CKnownFile* file = theApp->sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
 			AddLogLineM(true, CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
@@ -320,7 +320,7 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 			wxString fullpath = JoinPaths(file->GetFilePath(), file->GetFileName());
 			if (!CheckFileExists(fullpath)) {
 				// The file is no longer available, unshare it
-				theApp.sharedfiles->RemoveFile(file);
+				theApp->sharedfiles->RemoveFile(file);
 				
 				return false;
 			}
@@ -378,19 +378,19 @@ void CDownloadQueue::Process()
 	
 	
 		if (m_udcounter == 5) {
-			if (theApp.serverconnect->IsUDPSocketAvailable()) {
+			if (theApp->serverconnect->IsUDPSocketAvailable()) {
 				if( (::GetTickCount() - m_lastudpstattime) > UDPSERVERSTATTIME) {
 					m_lastudpstattime = ::GetTickCount();
 					
 					CMutexUnlocker unlocker(m_mutex);
-					theApp.serverlist->ServerStats();
+					theApp->serverlist->ServerStats();
 				}
 			}
 		}
 	
 		if (m_udcounter == 10) {
 			m_udcounter = 0;
-			if (theApp.serverconnect->IsUDPSocketAvailable()) {
+			if (theApp->serverconnect->IsUDPSocketAvailable()) {
 				if ( (::GetTickCount() - m_lastudpsearchtime) > UDPSERVERREASKTIME) {
 					SendNextUDPPacket();
 				}
@@ -487,7 +487,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	}
 
 	// Filter sources which are known to be dead/useless
-	if ( theApp.clientlist->IsDeadSource( source ) || sender->IsDeadSource(source) ) {
+	if ( theApp->clientlist->IsDeadSource( source ) || sender->IsDeadSource(source) ) {
 		source->Safe_Delete();
 		return;
 	}
@@ -495,7 +495,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	
 	// Find all clients with the same hash
 	if ( source->HasValidHash() ) {
-		CClientList::SourceList found = theApp.clientlist->GetClientsByHash( source->GetUserHash() );
+		CClientList::SourceList found = theApp->clientlist->GetClientsByHash( source->GetUserHash() );
 
 		CClientList::SourceList::iterator it = found.begin();
 		for ( ; it != found.end(); it++ ) {
@@ -527,7 +527,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 	// it isn't NULL and not "sender", then we shouldn't move it, but rather add
 	// a request for the new file.
 	ESourceFrom nSourceFrom = source->GetSourceFrom();
-	if ( theApp.clientlist->AttachToAlreadyKnown(&source, 0) ) {
+	if ( theApp->clientlist->AttachToAlreadyKnown(&source, 0) ) {
 		// Already queued for another file?
 		if ( source->GetRequestFile() ) {
 			// If we're already queued for the right file, then there's nothing to do
@@ -556,7 +556,7 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		// Unknown client, add it to the clients list
 		source->SetRequestFile( sender );
 
-		theApp.clientlist->AddClient(source);
+		theApp->clientlist->AddClient(source);
 	
 		sender->AddSource( source );
 		if ( source->GetFileRating() || !source->GetFileComment().IsEmpty() ) {
@@ -689,9 +689,9 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
  */
 bool IsConnectedServer(const CServer* server)
 {
-	if (server && theApp.serverconnect->GetCurrentServer()) {
-		wxString srvAddr = theApp.serverconnect->GetCurrentServer()->GetAddress();
-		uint16 srvPort = theApp.serverconnect->GetCurrentServer()->GetPort();
+	if (server && theApp->serverconnect->GetCurrentServer()) {
+		wxString srvAddr = theApp->serverconnect->GetCurrentServer()->GetAddress();
+		uint16 srvPort = theApp->serverconnect->GetCurrentServer()->GetPort();
 
 		return server->GetAddress() == srvAddr && server->GetPort() == srvPort;
 	}
@@ -702,7 +702,7 @@ bool IsConnectedServer(const CServer* server)
 
 bool CDownloadQueue::SendNextUDPPacket()
 {
-	if ( m_filelist.empty() || !theApp.serverconnect->IsUDPSocketAvailable() || !theApp.IsConnectedED2K()) {
+	if ( m_filelist.empty() || !theApp->serverconnect->IsUDPSocketAvailable() || !theApp->IsConnectedED2K()) {
 		return false;
 	}
 
@@ -710,7 +710,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 	if ( !m_queueServers.IsActive() ) {
 		AddObserver( &m_queueFiles );
 		
-		theApp.serverlist->AddObserver( &m_queueServers );
+		theApp->serverlist->AddObserver( &m_queueServers );
 	}
 	
 
@@ -802,7 +802,7 @@ void CDownloadQueue::StopUDPRequests()
 void CDownloadQueue::DoStopUDPRequests()
 {
 	// No need to observe when we wont be using the results
-	theApp.serverlist->RemoveObserver( &m_queueServers );
+	theApp->serverlist->RemoveObserver( &m_queueServers );
 	RemoveObserver( &m_queueFiles );
 	
 	m_udpserver = 0;
@@ -870,9 +870,9 @@ void CDownloadQueue::ProcessLocalRequests()
 {
 	wxMutexLocker lock( m_mutex );
 	
-	bool bServerSupportsLargeFiles = theApp.serverconnect 
-									&& theApp.serverconnect->GetCurrentServer()
-									&& theApp.serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
+	bool bServerSupportsLargeFiles = theApp->serverconnect 
+									&& theApp->serverconnect->GetCurrentServer()
+									&& theApp->serverconnect->GetCurrentServer()->SupportsLargeFilesTCP();
 	
 	if ( (!m_localServerReqQueue.empty()) && (m_dwNextTCPSrcReq < ::GetTickCount()) ) {
 		CMemFile dataTcpFrame(22);
@@ -944,7 +944,7 @@ void CDownloadQueue::ProcessLocalRequests()
 			dataTcpFrame.Seek(0, wxFromStart);
 			dataTcpFrame.Read(packet->GetPacket(), iSize);
 			uint32 size = packet->GetPacketSize();
-			theApp.serverconnect->SendPacket(packet, true);	// Deletes `packet'.
+			theApp->serverconnect->SendPacket(packet, true);	// Deletes `packet'.
 			AddDebugLogLineM(false, logDownloadQueue, wxT("Sent local sources request packet."));
 			theStats::AddUpOverheadServer(size);
 		}
@@ -966,7 +966,7 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 
 void CDownloadQueue::AddLinksFromFile()
 {
-	const wxString fullPath = theApp.ConfigDir + wxT("ED2KLinks");
+	const wxString fullPath = theApp->ConfigDir + wxT("ED2KLinks");
 	if (not wxFile::Exists(fullPath)) {
 		return;
 	}
@@ -996,7 +996,7 @@ void CDownloadQueue::AddLinksFromFile()
 	}
 	
 	// Delete the file.
-	wxRemoveFile(theApp.ConfigDir +  wxT("ED2KLinks"));
+	wxRemoveFile(theApp->ConfigDir +  wxT("ED2KLinks"));
 }
 
 
@@ -1183,7 +1183,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 	CPacket packet(data, OP_EDONKEYPROT, ((item_size == 16) ? OP_GLOBGETSOURCES : OP_GLOBGETSOURCES2));
 
 	theStats::AddUpOverheadServer(packet.GetPacketSize());
-	theApp.serverconnect->SendUDPPacket(&packet,m_udpserver,false);
+	theApp->serverconnect->SendUDPPacket(&packet,m_udpserver,false);
 
 	m_cRequestsSentToServer += iFileIDs;
 	return true;
@@ -1210,7 +1210,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 		if (ip) {
 			OnHostnameResolved(ip);
 		} else {
-			CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE, &theApp);
+			CAsyncDNS* dns = new CAsyncDNS(pszHostname, DNS_SOURCE, theApp);
 
 			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 				dns->Delete();
@@ -1252,7 +1252,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 		if (tmpIP) {
 			OnHostnameResolved(tmpIP);
 		} else {
-			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE, &theApp);
+			CAsyncDNS* dns = new CAsyncDNS(entry.strHostname, DNS_SOURCE, theApp);
 
 			if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 				dns->Delete();
@@ -1352,7 +1352,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KServerLink* link )
 	
 	server->SetListName( Uint32toStringIP( link->GetIP() ) );
 	
-	theApp.serverlist->AddServer(server);
+	theApp->serverlist->AddServer(server);
 	
 	Notify_ServerAdd(server);
 
@@ -1362,7 +1362,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KServerLink* link )
 
 bool CDownloadQueue::AddED2KLink( const CED2KServerListLink* link )
 {
-	theApp.serverlist->UpdateServerMetFromURL( link->GetAddress() );
+	theApp->serverlist->UpdateServerMetFromURL( link->GetAddress() );
 
 	return true;
 }
@@ -1403,13 +1403,13 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 
 	uint32 ED2KID = wxUINT32_SWAP_ALWAYS(ip);
 	
-	if (theApp.ipfilter->IsFiltered(ED2KID)) {
+	if (theApp->ipfilter->IsFiltered(ED2KID)) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));
 		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2KID));
 		return;
 	}
 	
-	if( (ip == Kademlia::CKademlia::GetIPAddress() || ED2KID == theApp.GetED2KID()) && tcp == thePrefs::GetPort()) {
+	if( (ip == Kademlia::CKademlia::GetIPAddress() || ED2KID == theApp->GetED2KID()) && tcp == thePrefs::GetPort()) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Trying to add myself as source, ignore"));
 		return;
 	}

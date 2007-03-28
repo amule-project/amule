@@ -71,9 +71,9 @@ wxString CIndexed::m_loadfilename;
 
 CIndexed::CIndexed()
 {
-	m_sfilename = theApp.ConfigDir + wxT("src_index.dat");
-	m_kfilename = theApp.ConfigDir + wxT("key_index.dat");
-	m_loadfilename = theApp.ConfigDir + wxT("load_index.dat");
+	m_sfilename = theApp->ConfigDir + wxT("src_index.dat");
+	m_kfilename = theApp->ConfigDir + wxT("key_index.dat");
+	m_loadfilename = theApp->ConfigDir + wxT("load_index.dat");
 	m_lastClean = time(NULL) + (60*30);
 	m_totalIndexSource = 0;
 	m_totalIndexKeyword = 0;

@@ -518,9 +518,9 @@ void CClientList::ProcessDeleteQueue()
 		m_delete_queue.pop_front();
 		
 		// Doing what RemoveClient used to do. Just to be sure...
-		theApp.uploadqueue->RemoveFromUploadQueue( toremove );
-		theApp.uploadqueue->RemoveFromWaitingQueue( toremove );
-		theApp.downloadqueue->RemoveSource( toremove );
+		theApp->uploadqueue->RemoveFromUploadQueue( toremove );
+		theApp->uploadqueue->RemoveFromWaitingQueue( toremove );
+		theApp->downloadqueue->RemoveSource( toremove );
 	
 		Notify_ClientCtrlRemoveClient( toremove );
 				
@@ -654,7 +654,7 @@ void CClientList::Process()
 					m_nBuddyStatus = Connected;
 					Notify_ServerUpdateED2KInfo();
 				}
-				if( m_pBuddy == cur_client && theApp.IsFirewalled() && cur_client->SendBuddyPingPong() ) {
+				if( m_pBuddy == cur_client && theApp->IsFirewalled() && cur_client->SendBuddyPingPong() ) {
 					cur_client->SendBuddyPing();
 				}
 				break;
@@ -667,7 +667,7 @@ void CClientList::Process()
 	//We either never had a buddy, or lost our buddy..
 	if( buddy == Disconnected ) {
 		if( m_nBuddyStatus != Disconnected || m_pBuddy ) {
-			if( Kademlia::CKademlia::IsRunning() && theApp.IsFirewalled() ) {
+			if( Kademlia::CKademlia::IsRunning() && theApp->IsFirewalled() ) {
 				//We are a lowID client and we just lost our buddy.
 				//Go ahead and instantly try to find a new buddy.
 				Kademlia::CKademlia::GetPrefs()->SetFindBuddy();
@@ -752,7 +752,7 @@ void CClientList::FilterQueues()
 	for ( IDMap::iterator it = m_ipList.begin(); it != m_ipList.end(); ) {
 		IDMap::iterator tmp = it++; // Don't change this to a ++it! 
 		
-		if ( theApp.ipfilter->IsFiltered(tmp->second->GetConnectIP())) {
+		if ( theApp->ipfilter->IsFiltered(tmp->second->GetConnectIP())) {
 			tmp->second->Disconnected(wxT("Filtered by IPFilter"));
 			tmp->second->Safe_Delete();
 		}
@@ -838,7 +838,7 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 {
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	// don't connect ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
+	if (theApp->GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 
@@ -862,7 +862,7 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact)
 
 	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	// Don't connect to ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
+	if (theApp->GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 	
@@ -894,7 +894,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	}
 
 	// Don't connect ourself
-	if (theApp.GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
+	if (theApp->GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
 		return;
 	}
 

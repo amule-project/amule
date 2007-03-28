@@ -311,7 +311,7 @@ wxString ReadyPath(const wxString& path)
 void CSharedFileList::FindSharedFiles() 
 {
 	/* Abort loading if we are shutting down. */
-	if(theApp.IsOnShutDown()) {
+	if(theApp->IsOnShutDown()) {
 		return;
 	}
 
@@ -319,7 +319,7 @@ void CSharedFileList::FindSharedFiles()
 	theStats::ClearSharedFilesInfo();
 
 	// Reload shareddir.dat
-	theApp.glob_prefs->ReloadSharedFolders();
+	theApp->glob_prefs->ReloadSharedFolders();
 
 	{
 		wxMutexLocker lock(list_mut);
@@ -327,8 +327,8 @@ void CSharedFileList::FindSharedFiles()
 	}
 
 	// All part files are automatically shared.
-	for ( uint32 i = 0; i < theApp.downloadqueue->GetFileCount(); ++i ) {
-		CPartFile* file = theApp.downloadqueue->GetFileByIndex( i );
+	for ( uint32 i = 0; i < theApp->downloadqueue->GetFileCount(); ++i ) {
+		CPartFile* file = theApp->downloadqueue->GetFileByIndex( i );
 		
 		if ( file->GetStatus(true) == PS_READY ) {
 			printf("Adding file %s to shares\n",
@@ -342,13 +342,13 @@ void CSharedFileList::FindSharedFiles()
 	
 	// Global incoming dir and all category incoming directories are automatically shared.
 	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir()));
-	for (unsigned int i = 1;i < theApp.glob_prefs->GetCatCount(); ++i) {
-		sharedPaths.push_back(ReadyPath(theApp.glob_prefs->GetCatPath(i)));
+	for (unsigned int i = 1;i < theApp->glob_prefs->GetCatCount(); ++i) {
+		sharedPaths.push_back(ReadyPath(theApp->glob_prefs->GetCatPath(i)));
 	}
 
 	// Also remove bogus entries
-	for (size_t i = 0; i < theApp.glob_prefs->shareddir_list.GetCount(); ) {
-		const wxString& path = theApp.glob_prefs->shareddir_list.Item(i);
+	for (size_t i = 0; i < theApp->glob_prefs->shareddir_list.GetCount(); ) {
+		const wxString& path = theApp->glob_prefs->shareddir_list.Item(i);
 		if (CheckDirExists(path)) {
 			sharedPaths.push_back(ReadyPath(path));
 			++i;
@@ -359,7 +359,7 @@ void CSharedFileList::FindSharedFiles()
 				"directory not found.") ) % path;
 			AddLogLineM(true, msg);
 			printf("%s\n", (const char *)unicode2char(msg));
-			theApp.glob_prefs->shareddir_list.RemoveAt(i);
+			theApp->glob_prefs->shareddir_list.RemoveAt(i);
 		}
 	}
 
@@ -417,7 +417,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 		return 0;
 	}
 		
-	if (CheckDirectory(theApp.ConfigDir, directory)) {
+	if (CheckDirectory(theApp->ConfigDir, directory)) {
 		return 0;
 	}
 		
@@ -542,7 +542,7 @@ void CSharedFileList::SafeAddKFile(CKnownFile* toadd, bool bOnlyAdd)
 		Notify_SharedFilesShowFile(toadd);
 	}
 	
-	if (!bOnlyAdd && theApp.IsConnectedED2K()) {		
+	if (!bOnlyAdd && theApp->IsConnectedED2K()) {		
 		// Publishing of files is not anymore handled here.
 		// Instead, the timer does it by itself.
 		m_lastPublishED2KFlag = true;
@@ -682,7 +682,7 @@ void CSharedFileList::ClearKadSourcePublishInfo()
 
 void CSharedFileList::RepublishFile(CKnownFile* pFile)
 {
-	CServer* server = theApp.serverconnect->GetCurrentServer();
+	CServer* server = theApp->serverconnect->GetCurrentServer();
 	if (server && (server->GetTCPFlags() & SRV_TCPFLG_COMPRESSION)) {
 		m_lastPublishED2KFlag = true;
 		pFile->SetPublishedED2K(false); // FIXME: this creates a wrong 'No' for the ed2k shared info in the listview until the file is shared again.
@@ -712,7 +712,7 @@ void CSharedFileList::SendListToServer(){
 	{	
 		wxMutexLocker lock(list_mut);
 
-		if (m_Files_map.empty() || !theApp.IsConnectedED2K() ) {
+		if (m_Files_map.empty() || !theApp->IsConnectedED2K() ) {
 			return;
 		}
 
@@ -731,7 +731,7 @@ void CSharedFileList::SendListToServer(){
 	
 	// Limits for the server. 
 	
-	CServer* server = theApp.serverconnect->GetCurrentServer();	
+	CServer* server = theApp->serverconnect->GetCurrentServer();	
 	
 	uint32 limit = server ? server->GetSoftFiles() : 0;
 	if( limit == 0 || limit > 200 ) {
@@ -777,7 +777,7 @@ void CSharedFileList::SendListToServer(){
 	}
 
 	theStats::AddUpOverheadServer(packet->GetPacketSize());
-	theApp.serverconnect->SendPacket(packet,true);
+	theApp->serverconnect->SendPacket(packet,true);
 }
 
 
@@ -815,16 +815,16 @@ void CSharedFileList::CreateOfferedFilePacket(
 				nClientPort = FILE_INCOMPLETE_PORT;
 			}
 		} else {
-			if (theApp.IsConnectedED2K() && !::IsLowID(theApp.GetED2KID())){
-				nClientID = theApp.GetID();
+			if (theApp->IsConnectedED2K() && !::IsLowID(theApp->GetED2KID())){
+				nClientID = theApp->GetID();
 				nClientPort = thePrefs::GetPort();
 			}
 		}
 	} else {
 		// Do not merge this with the above case - this one
 		// also checks Kad status.
-		if (theApp.IsConnected() && !theApp.IsFirewalled()) {
-			nClientID = theApp.GetID();
+		if (theApp->IsConnected() && !theApp->IsFirewalled()) {
+			nClientID = theApp->GetID();
 			nClientPort = thePrefs::GetPort();
 		}		
 	}
@@ -941,9 +941,9 @@ void CSharedFileList::Publish()
 {
 	// Variables to save cpu.
 	unsigned int tNow = time(NULL);
-	bool IsFirewalled = theApp.IsFirewalled();
+	bool IsFirewalled = theApp->IsFirewalled();
 
-	if( Kademlia::CKademlia::IsConnected() && ( !IsFirewalled || ( IsFirewalled && theApp.clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::GetPublish()) { 
+	if( Kademlia::CKademlia::IsConnected() && ( !IsFirewalled || ( IsFirewalled && theApp->clientlist->GetBuddyStatus() == Connected)) && GetCount() && Kademlia::CKademlia::GetPublish()) { 
 		//We are connected to Kad. We are either open or have a buddy. And Kad is ready to start publishing.
 
 		if( Kademlia::CKademlia::GetTotalStoreKey() < KADEMLIATOTALSTOREKEY) {
@@ -1090,7 +1090,7 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 			RemoveKeywords(file);
 			file->SetFileName(newName);
 			AddKeywords(file);
-			theApp.knownfiles->Save();
+			theApp->knownfiles->Save();
 			UpdateItem(file);
 			RepublishFile(file);
 

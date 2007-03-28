@@ -80,7 +80,7 @@ void CServerUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 
 void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxString& host, uint16 port)
 {
-	CServer* update = theApp.serverlist->GetServerByIP(StringIPtoUint32(host), port - 4);
+	CServer* update = theApp->serverlist->GetServerByIP(StringIPtoUint32(host), port - 4);
 	unsigned size = packet.GetLength();
 	
 	theStats::AddDownOverheadOther(size);
@@ -97,7 +97,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				// process all search result packets
 
 				do{
-					theApp.searchlist->ProcessUDPSearchAnswer(packet, true, StringIPtoUint32(host), port - 4);
+					theApp->searchlist->ProcessUDPSearchAnswer(packet, true, StringIPtoUint32(host), port - 4);
 					
 					if (packet.GetPosition() + 2 < size) {
 						// An additional packet?
@@ -122,7 +122,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				// process all source packets
 				do {
 					CMD4Hash fileid = packet.ReadHash();
-					if (CPartFile* file = theApp.downloadqueue->GetFileByID(fileid)) {
+					if (CPartFile* file = theApp->downloadqueue->GetFileByID(fileid)) {
 						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_REMOTE_SERVER);
 					} else {
 						AddDebugLogLineM( true, logServerUDP, wxT("Sources received for unknown file") );
@@ -190,7 +190,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				update->SetUDPFlags( uUDPFlags );
 				update->SetLowIDUsers( uLowIDUsers );
 				Notify_ServerRefresh( update );
-				theApp.ShowUserCount();
+				theApp->ShowUserCount();
 				break;
 			}
  			case OP_SERVER_DESC_RES:{
@@ -316,11 +316,11 @@ void CServerUDPSocket::SendQueue()
 		wxASSERT(item.ip xor !item.addr.IsEmpty());
 		if (!item.addr.IsEmpty()) {
 			// This not an ip but a hostname. Resolve it.
-			CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
+			CServer* update = theApp->serverlist->GetServerByAddress(item.addr, item.port);
 			if (update) {
 				if (update->GetLastDNSSolve() + DNS_SOLVE_TIME < ::GetTickCount64()) {
 					// Its time for a new check.
-					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, &theApp, this);
+					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, theApp, this);
 					if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
 						// Not much we can do here, just drop the packet.
 						m_queue.pop_front();
@@ -365,7 +365,7 @@ void CServerUDPSocket::SendQueue()
 			}
 		}
 		
-		CServer* update = theApp.serverlist->GetServerByIP(item.ip, item.port);
+		CServer* update = theApp->serverlist->GetServerByIP(item.ip, item.port);
 		if (update) {
 			AddDebugLogLineM(false, logServerUDP, wxT("Sending an UDP packet to a server: ")+update->GetAddress());
 			CMuleUDPSocket::SendPacket(packet, item.ip, item.port + 4);
@@ -386,7 +386,7 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 	wxCHECK_RET(!item.ip and !item.addr.IsEmpty(), wxT("DNS resolution not expected."));
 		
 	/* An asynchronous database routine completed. */
-	CServer* update = theApp.serverlist->GetServerByAddress(item.addr, item.port);
+	CServer* update = theApp->serverlist->GetServerByAddress(item.addr, item.port);
 	if (ip == 0) { 
 		update->SetDNSError(true);
 		m_queue.pop_front();	

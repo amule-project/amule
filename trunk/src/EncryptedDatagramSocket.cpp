@@ -226,7 +226,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(BYTE* pbyBufIn, int nBufLen,
 }
 
 int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, const uint8* pachClientHashOrKadID, bool bKad, uint16 nReceiverVerifyKey, uint16 nSenderVerifyKey) const{
-	ASSERT( theApp.GetPublicIP() != 0 || bKad );
+	ASSERT( theApp->GetPublicIP() != 0 || bKad );
 	ASSERT( thePrefs.IsClientCryptLayerSupported() );
 
 	uint8 byPadLen = 0;			// padding disabled for UDP currently
@@ -245,7 +245,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, co
 	else{
 		uint8 achKeyData[23];
 		md4cpy(achKeyData, pachClientHashOrKadID);
-		uint32 dwIP = theApp.GetPublicIP();
+		uint32 dwIP = theApp->GetPublicIP();
 		memcpy(achKeyData+16, &dwIP, 4);
 		memcpy(achKeyData+21, &nRandomKeyPart, 2);
 		achKeyData[20] = MAGICVALUE_UDP;

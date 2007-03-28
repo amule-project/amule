@@ -115,6 +115,8 @@ Trunk
 		* UTF8_CopyFile() now uses wxCopyFile().
 		* UTF8_RemoveFile() now uses wxRemoveFile().
 		* UTF8_MoveFile() now uses wxRenameFile().
+		* theApp is now a global pointer, so that we can access the
+		  global application object from within a core file.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

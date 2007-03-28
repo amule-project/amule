@@ -114,7 +114,7 @@ private:
 
 
 
-#define m_ImageList theApp.amuledlg->m_imagelist
+#define m_ImageList theApp->amuledlg->m_imagelist
 
 
 BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
@@ -734,11 +734,11 @@ void CDownloadListCtrl::OnGetED2KLink(wxCommandEvent& WXUNUSED(event))
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (*it)->GetFile();
 
-		URIs += theApp.CreateED2kLink( file ) + wxT("\n");
+		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
 	}
 
 	if ( !URIs.IsEmpty() ) {
-		theApp.CopyTextToClipboard( URIs.BeforeLast(wxT('\n')) );
+		theApp->CopyTextToClipboard( URIs.BeforeLast(wxT('\n')) );
 	}
 }
 
@@ -762,7 +762,7 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	if ( !feed.IsEmpty() ) {
-		theApp.CopyTextToClipboard( feed );
+		theApp->CopyTextToClipboard( feed );
 	}
 }
 
@@ -774,7 +774,7 @@ void CDownloadListCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
 	if ( files.size() == 1 ) {
 		CPartFile* file = files.front()->GetFile();
 
-		theApp.amuledlg->LaunchUrl(
+		theApp->amuledlg->LaunchUrl(
 			wxT("http://stats.razorback2.com/ed2khistory?ed2k=") +
 			file->GetFileHash().Encode());
 	}
@@ -848,9 +848,9 @@ void CDownloadListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	for ( ItemList::iterator it = sources.begin(); it != sources.end(); ++it ) {
 		CUpDownClient* client = (*it)->GetSource();
 		if (client->IsFriend()) {
-			theApp.amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
+			theApp->amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
 		} else {
-			theApp.amuledlg->m_chatwnd->AddFriend( client );
+			theApp->amuledlg->m_chatwnd->AddFriend( client );
 		}
 	}
 }
@@ -871,7 +871,7 @@ void CDownloadListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 		wxString message = ::wxGetTextFromUser(_("Send message to user"),
 			_("Message to send:"));
 		if ( !message.IsEmpty() ) {
-			theApp.amuledlg->m_chatwnd->SendMessage(message, userName, userID);
+			theApp->amuledlg->m_chatwnd->SendMessage(message, userName, userID);
 		}
 	}
 }
@@ -985,18 +985,18 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		//-----------------------------------------------------	
 		// Add dinamic entries
 		wxMenu *cats = new wxMenu(_("Category"));
-		if (theApp.glob_prefs->GetCatCount() > 1) {
-			for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); i++) {
+		if (theApp->glob_prefs->GetCatCount() > 1) {
+			for (uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); i++) {
 				if ( i == 0 ) {
 					cats->Append( MP_ASSIGNCAT, _("unassign") );
 				} else {
 					cats->Append( MP_ASSIGNCAT + i,
-						theApp.glob_prefs->GetCategory(i)->title );
+						theApp->glob_prefs->GetCategory(i)->title );
 				}
 			}
 		}
 		m_menu->Append(MP_MENU_CATS, _("Assign to category"), cats);
-		m_menu->Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1) );
+		m_menu->Enable(MP_MENU_CATS, (theApp->glob_prefs->GetCatCount() > 1) );
 
 		CPartFile* file = item->GetFile();
 		// then set state
@@ -1116,7 +1116,7 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 						_("File rename"), file->GetFileName());
 				
 					if (!newName.IsEmpty() and (newName != file->GetFileName())) {
-						theApp.sharedfiles->RenameFile(file, newName);
+						theApp->sharedfiles->RenameFile(file, newName);
 					}
 				}
 			}
@@ -1132,7 +1132,7 @@ void CDownloadListCtrl::OnDrawItem(
 	int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted)
 {
 	// Don't do any drawing if there's nobody to see it.
-	if ( !theApp.amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
+	if ( !theApp->amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		return;
 	}
 
@@ -1184,7 +1184,7 @@ void CDownloadListCtrl::OnDrawItem(
 		CPartFile *file = content->GetFile();
 		if ( file->GetCategory() ) {
 			dc->SetTextForeground(
-				WxColourFromCr(theApp.glob_prefs->GetCatColor(file->GetCategory())) );
+				WxColourFromCr(theApp->glob_prefs->GetCatColor(file->GetCategory())) );
 		}
 	}
 
