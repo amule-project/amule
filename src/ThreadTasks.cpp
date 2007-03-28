@@ -33,7 +33,7 @@
 #include <libs/common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"		// Needed for CheckFileExists
 #include "amule.h"			// Needed for theApp
-#include "KnownFileList.h"		// Needed for theApp.knownfiles
+#include "KnownFileList.h"		// Needed for theApp->knownfiles
 #include "Preferences.h"		// Needed for thePrefs
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
 
@@ -229,7 +229,7 @@ void CHashingTask::OnLastTask()
 	if (GetType() == wxT("Hashing")) {
 		// To prevent rehashing in case of crashes, we 
 		// explicity save the list of hashed files here.
-		theApp.knownfiles->Save();
+		theApp->knownfiles->Save();
 
 		// Make sure the AICH-hashes are up to date.
 		CThreadScheduler::AddTask(new CAICHSyncTask());
@@ -254,7 +254,7 @@ void CAICHSyncTask::Entry()
 	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
-	const wxString fullpath = JoinPaths(theApp.ConfigDir, KNOWN2_MET_FILENAME);
+	const wxString fullpath = JoinPaths(theApp->ConfigDir, KNOWN2_MET_FILENAME);
 	
 	CFile file;
 	
@@ -307,8 +307,8 @@ void CAICHSyncTask::Entry()
 	
 	// Now we check that all files which are in the sharedfilelist have a
 	// corresponding hash in our list. Those how don't are queued for hashing.
-	for (unsigned i = 0; i < theApp.sharedfiles->GetCount(); ++i) {
-		const CKnownFile* kfile = theApp.sharedfiles->GetFileByIndex(i);
+	for (unsigned i = 0; i < theApp->sharedfiles->GetCount(); ++i) {
+		const CKnownFile* kfile = theApp->sharedfiles->GetFileByIndex(i);
 	
 		if (TestDestroy()) {
 			break;
@@ -334,8 +334,8 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 	// converting known2.met to known2_64.met to support large files
 	// changing hashcount from uint16 to uint32
 
-	const wxString oldfullpath = JoinPaths(theApp.ConfigDir, OLD_KNOWN2_MET_FILENAME);
-	const wxString newfullpath = JoinPaths(theApp.ConfigDir, KNOWN2_MET_FILENAME);
+	const wxString oldfullpath = JoinPaths(theApp->ConfigDir, OLD_KNOWN2_MET_FILENAME);
+	const wxString newfullpath = JoinPaths(theApp->ConfigDir, KNOWN2_MET_FILENAME);
 	
 	if (CheckFileExists(newfullpath) || !CheckFileExists(oldfullpath)){
 		// In this case, there is nothing that we need to do.
@@ -423,7 +423,7 @@ void CCompletionTask::Entry()
 		#warning Thread-safety needed
 #endif
 		
-		targetPath = theApp.glob_prefs->GetCategory(m_category)->incomingpath;
+		targetPath = theApp->glob_prefs->GetCategory(m_category)->incomingpath;
 		if (!wxFileName::DirExists(targetPath)) {
 			targetPath = thePrefs::GetIncomingDir();
 		}

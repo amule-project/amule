@@ -516,7 +516,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 				apf[i] = new float[cntPoints];
 			}
 			double sFinal = (bStopped ? sLastTimestamp : -1.0);
-			cntFilled = theApp.m_statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
+			cntFilled = theApp->m_statistics->GetHistory(cntPoints, sLastPeriod, sFinal, apf, graph_type);
 			if (cntFilled >1  ||  (bShiftGraph && cntFilled!=0)) {
 				if (bShiftGraph) {  // delayed points - we have an fPrev
 					ShiftGraph(cntFilled);
@@ -606,7 +606,7 @@ void COScopeCtrl::OnTimer(wxTimerEvent& WXUNUSED(evt))
 	until there is a little pause and OnTimer actually gets called and does its work.
 */
 {
-	if( !theApp.amuledlg || !theApp.amuledlg->SafeState()) {
+	if( !theApp->amuledlg || !theApp->amuledlg->SafeState()) {
     		return;
 	}
 	timerRedraw.Stop();

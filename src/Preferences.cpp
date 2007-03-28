@@ -694,7 +694,7 @@ public:
 		// Restore original locale
 		{
 			wxLocale tmpLocale;
-			InitLocale(tmpLocale, theApp.m_locale.GetLanguage());
+			InitLocale(tmpLocale, theApp->m_locale.GetLanguage());
 		}
 
 		return Cfg_Tmpl<int>::TransferToWindow();
@@ -716,7 +716,7 @@ CPreferences::CPreferences()
 	CreateUserHash();
 
 	// load preferences.dat or set standart values
-	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
 
 	CFile preffile;
 	if ( wxFileExists( fullpath ) ) {
@@ -742,7 +742,7 @@ CPreferences::CPreferences()
 	 ReloadSharedFolders();
 
 	// serverlist adresses
-	wxTextFile slistfile(theApp.ConfigDir + wxT("addresses.dat"));
+	wxTextFile slistfile(theApp->ConfigDir + wxT("addresses.dat"));
 	if ( slistfile.Exists() && slistfile.Open()) {
 		for ( size_t i = 0; i < slistfile.GetLineCount(); i++ ) {
     		adresses_list.Add( slistfile.GetLine( i ) );
@@ -1199,7 +1199,7 @@ void CPreferences::SetStandartValues()
 
 void CPreferences::Save()
 {
-	wxString fullpath(theApp.ConfigDir + wxT("preferences.dat"));
+	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
 
 	CFile preffile;
 	if (!wxFileExists(fullpath)) {
@@ -1218,7 +1218,7 @@ void CPreferences::Save()
 	SavePreferences();
 
 	#ifndef CLIENT_GUI
-	wxString shareddir(theApp.ConfigDir + wxT("shareddir.dat"));
+	wxString shareddir(theApp->ConfigDir + wxT("shareddir.dat"));
 
 	wxRemoveFile(shareddir);
 	wxTextFile sdirfile(shareddir);
@@ -1519,8 +1519,8 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 		s_filterlevel = level;
 		
 		if ( filter ) {
-			theApp.clientlist->FilterQueues();
-			theApp.serverlist->FilterServers();
+			theApp->clientlist->FilterQueues();
+			theApp->serverlist->FilterServers();
 		}
 	}
 }
@@ -1539,7 +1539,7 @@ void CPreferences::SetPort(uint16 val) {
 
 void CPreferences::ReloadSharedFolders() {
 #ifndef CLIENT_GUI
-	wxTextFile sdirfile(theApp.ConfigDir + wxT("shareddir.dat"));
+	wxTextFile sdirfile(theApp->ConfigDir + wxT("shareddir.dat"));
 	
 	shareddir_list.Clear();
 	

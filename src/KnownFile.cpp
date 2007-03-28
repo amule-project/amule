@@ -64,22 +64,22 @@ CFileStatistic::CFileStatistic() :
 void CFileStatistic::AddRequest(){
 	requested++;
 	alltimerequested++;
-	theApp.knownfiles->requested++;
-	theApp.sharedfiles->UpdateItem(fileParent);
+	theApp->knownfiles->requested++;
+	theApp->sharedfiles->UpdateItem(fileParent);
 }
 	
 void CFileStatistic::AddAccepted(){
 	accepted++;
 	alltimeaccepted++;
-	theApp.knownfiles->accepted++;
-	theApp.sharedfiles->UpdateItem(fileParent);
+	theApp->knownfiles->accepted++;
+	theApp->sharedfiles->UpdateItem(fileParent);
 }
 	
 void CFileStatistic::AddTransferred(uint64 bytes){
 	transfered += bytes;
 	alltimetransferred += bytes;
-	theApp.knownfiles->transfered += bytes;
-	theApp.sharedfiles->UpdateItem(fileParent);
+	theApp->knownfiles->transfered += bytes;
+	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
 #endif // CLIENT_GUI
@@ -1051,10 +1051,10 @@ bool CKnownFile::PublishSrc()
 {
 	uint32 lastBuddyIP = 0;
 
-	if( theApp.IsFirewalled() ) {
-		CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+	if( theApp->IsFirewalled() ) {
+		CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 		if( buddy ) {
-			lastBuddyIP = theApp.clientlist->GetBuddy()->GetIP();
+			lastBuddyIP = theApp->clientlist->GetBuddy()->GetIP();
 			if( lastBuddyIP != m_lastBuddyIP ) {
 				SetLastPublishTimeKadSrc( (uint32)time(NULL)+KADEMLIAREPUBLISHTIMES, lastBuddyIP );
 				return true;

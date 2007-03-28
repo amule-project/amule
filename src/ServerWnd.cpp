@@ -86,7 +86,7 @@ CServerWnd::~CServerWnd()
 
 void CServerWnd::UpdateServerMetFromURL(const wxString& strURL)
 {
-	theApp.serverlist->UpdateServerMetFromURL(strURL);
+	theApp->serverlist->UpdateServerMetFromURL(strURL);
 }
 
 
@@ -109,12 +109,12 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 	CServer* toadd = new CServer( port, serveraddr );
 	toadd->SetListName( servername.IsEmpty() ? serveraddr : servername );
 	
-	if ( theApp.AddServer( toadd, true ) ) {
+	if ( theApp->AddServer( toadd, true ) ) {
 		CastChild( IDC_SERVERNAME, wxTextCtrl )->Clear();
 		CastChild( IDC_IPADDRESS, wxTextCtrl )->Clear();
 		CastChild( IDC_SPORT, wxTextCtrl )->Clear();
 	} else {
-		CServer* update = theApp.serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
+		CServer* update = theApp->serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
 		if ( update ) {
 			update->SetListName(toadd->GetListName());
 			serverlistctrl->RefreshServer(update);
@@ -122,7 +122,7 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 		delete toadd;
 	}
 	
-	theApp.serverlist->SaveServerMet();
+	theApp->serverlist->SaveServerMet();
 }
 
 
@@ -135,13 +135,13 @@ void CServerWnd::OnBnClickedUpdateservermetfromurl(wxCommandEvent& WXUNUSED(evt)
 
 void CServerWnd::OnBnClickedResetLog(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.GetLog(true); // Reset it.
+	theApp->GetLog(true); // Reset it.
 }
 
 
 void CServerWnd::OnBnClickedResetServerLog(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.GetServerLog(true); // Reset it
+	theApp->GetServerLog(true); // Reset it
 }
 
 
@@ -152,26 +152,26 @@ void CServerWnd::UpdateED2KInfo()
 	ED2KInfoList->DeleteAllItems();
 	ED2KInfoList->InsertItem(0, _("ED2K Status:"));
 
-	if (theApp.IsConnectedED2K()) {
+	if (theApp->IsConnectedED2K()) {
 		ED2KInfoList->SetItem(0, 1, _("Connected"));
 
 		// Connection data		
 		
 		ED2KInfoList->InsertItem(1, _("IP:Port"));
-		ED2KInfoList->SetItem(1, 1, theApp.serverconnect->IsLowID() ? 
-			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp.GetED2KID(), thePrefs::GetPort()));
+		ED2KInfoList->SetItem(1, 1, theApp->serverconnect->IsLowID() ? 
+			 wxString(_("LowID")) : Uint32_16toStringIP_Port( theApp->GetED2KID(), thePrefs::GetPort()));
 
 		ED2KInfoList->InsertItem(2, _("ID"));
 		// No need to test the server connect, it's already true
-		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp.GetED2KID()));
+		ED2KInfoList->SetItem(2, 1, wxString::Format(wxT("%u"), theApp->GetED2KID()));
 		
 		ED2KInfoList->InsertItem(3, wxEmptyString);		
 
-		if (theApp.serverconnect->IsLowID()) {
+		if (theApp->serverconnect->IsLowID()) {
 			ED2KInfoList->SetItem(1, 1, _("Server")); // LowID, unknown ip
 			ED2KInfoList->SetItem(3, 1, _("LowID"));
 		} else {
-			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp.GetED2KID(), thePrefs::GetPort()));
+			ED2KInfoList->SetItem(1, 1, Uint32_16toStringIP_Port(theApp->GetED2KID(), thePrefs::GetPort()));
 			ED2KInfoList->SetItem(3, 1, _("HighID"));
 		}
 		
@@ -195,7 +195,7 @@ void CServerWnd::UpdateKadInfo()
 	
 	KadInfoList->InsertItem(next_row, _("Kademlia Status:"));
 
-	if (theApp.IsKadRunning()) {
+	if (theApp->IsKadRunning()) {
 		KadInfoList->SetItem(next_row, 1, _("Running"));
 			
 		++next_row;
@@ -203,21 +203,21 @@ void CServerWnd::UpdateKadInfo()
 		// Connection data		
 			
 		KadInfoList->InsertItem(next_row, _("Status:"));
-		KadInfoList->SetItem(next_row, 1, theApp.IsConnectedKad() ? _("Connected"): _("Disconnected"));
+		KadInfoList->SetItem(next_row, 1, theApp->IsConnectedKad() ? _("Connected"): _("Disconnected"));
 		++next_row;
-		if (theApp.IsConnectedKad()) {
+		if (theApp->IsConnectedKad()) {
 			KadInfoList->InsertItem(next_row, _("Connection State:"));
-			KadInfoList->SetItem(next_row, 1, theApp.IsFirewalledKad() ? _("Firewalled") : _("OK"));
+			KadInfoList->SetItem(next_row, 1, theApp->IsFirewalledKad() ? _("Firewalled") : _("OK"));
 			++next_row;
 			#ifndef CLIENT_GUI
-			if (theApp.IsFirewalledKad()) {
+			if (theApp->IsFirewalledKad()) {
 				KadInfoList->InsertItem(next_row, _("Firewalled state: "));
-				KadInfoList->SetItem(next_row, 1, theApp.clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
+				KadInfoList->SetItem(next_row, 1, theApp->clientlist->GetBuddy() ? _("Connected to buddy") : _("No buddy"));
 				++next_row;
 				#ifdef __DEBUG__
-				if (theApp.clientlist->GetBuddy()) {
+				if (theApp->clientlist->GetBuddy()) {
 					KadInfoList->InsertItem(next_row, _("Buddy address: "));
-					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp.clientlist->GetBuddy()->GetIP(), theApp.clientlist->GetBuddy()->GetUDPPort()));
+					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort()));
 					++next_row;		
 				}
 				#endif
@@ -248,17 +248,17 @@ void CServerWnd::UpdateKadInfo()
 
 void CServerWnd::OnSashPositionChanged(wxSplitterEvent& WXUNUSED(evt))
 {
-	if (theApp.amuledlg) {
-		theApp.amuledlg->m_srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
+	if (theApp->amuledlg) {
+		theApp->amuledlg->m_srv_split_pos = CastChild( wxT("SrvSplitterWnd"), wxSplitterWindow )->GetSashPosition();
 	}
 }
 
 void CServerWnd::OnBnClickedED2KDisconnect(wxCommandEvent& WXUNUSED(evt))
 {
-	if (theApp.serverconnect->IsConnecting()) {
-		theApp.serverconnect->StopConnectionTry();
+	if (theApp->serverconnect->IsConnecting()) {
+		theApp->serverconnect->StopConnectionTry();
 	} else {
-		theApp.serverconnect->Disconnect();
+		theApp->serverconnect->Disconnect();
 	}	
 }
 // File_checked_for_headers

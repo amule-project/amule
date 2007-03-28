@@ -258,7 +258,7 @@ void CPartFile::CreatePartFile()
 	m_hashsetneeded = GetED2KPartHashCount();
 	
 	SavePartFile(true);
-	SetActive(theApp.IsConnected());
+	SetActive(theApp->IsConnected());
 }
 
 
@@ -408,7 +408,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 					}					
 					case FT_CATEGORY: {
 						m_category = newtag.GetInt();
-						if (m_category > theApp.glob_prefs->GetCatCount() - 1 ) {
+						if (m_category > theApp->glob_prefs->GetCatCount() - 1 ) {
 							m_category = 0;
 						}
 						break;
@@ -904,7 +904,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	// Kry -don't backup if it's 0 size but raise a warning!!!
 	CFile newpartmet;
 	if (newpartmet.Open(m_fullname)!=TRUE) {
-		theApp.ShowAlert( CFormat( _("Unable to open %s file - using %s file.") )
+		theApp->ShowAlert( CFormat( _("Unable to open %s file - using %s file.") )
 			% m_fullname
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
@@ -917,7 +917,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
 			newpartmet.Close();
-			theApp.ShowAlert( CFormat( _("'%s' is 0 size somehow - using %s file.") )
+			theApp->ShowAlert( CFormat( _("'%s' is 0 size somehow - using %s file.") )
 				% m_fullname
 				% PARTMET_BAK_EXT,
 				_("Message"), wxOK);
@@ -1187,7 +1187,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	}
 	SetStatus(PS_READY);
 	SavePartFile();
-	theApp.sharedfiles->SafeAddKFile(this);		
+	theApp->sharedfiles->SafeAddKFile(this);		
 }
 
 void CPartFile::AddGap(uint64 start, uint64 end)
@@ -1450,7 +1450,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					break;
 				}
 				case DS_LOWTOLOWIP: {
-					if ( cur_src->HasLowID() && !theApp.DoCallback( cur_src ) ) {
+					if ( cur_src->HasLowID() && !theApp->DoCallback( cur_src ) ) {
 						// If we are almost maxed on sources,
 						// slowly remove these client to see 
 						// if we can find a better source.
@@ -1504,7 +1504,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 					
 					// Give up to 1 min for UDP to respond..
 					// If we are within on min on TCP, do not try..
-					if (	theApp.IsConnected() &&
+					if (	theApp->IsConnected() &&
 						(	(!cur_src->GetLastAskedTime()) ||
 							(dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME-20000)) {
 						cur_src->UDPReaskForDownload();
@@ -1517,7 +1517,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 				case DS_NONE: 
 				case DS_WAITCALLBACK: 
 				case DS_WAITCALLBACKKAD:	{							
-					if (	theApp.IsConnected() &&
+					if (	theApp->IsConnected() &&
 						(	(!cur_src->GetLastAskedTime()) ||
 							(dwCurTick - cur_src->GetLastAskedTime()) > FILEREASKTIME)) {
 						if (!cur_src->AskForDownload()) {
@@ -1568,9 +1568,9 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		// Kad source search		
 		if( GetMaxSourcePerFileUDP() > GetSourceCount()){
 			//Once we can handle lowID users in Kad, we remove the second IsConnected
-			if (theApp.downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::GetTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::IsConnected() && theApp.IsConnected() && !IsStopped()){ 
+			if (theApp->downloadqueue->DoKademliaFileRequest() && (Kademlia::CKademlia::GetTotalFile() < KADEMLIATOTALFILE) && (dwCurTick > m_LastSearchTimeKad) &&  Kademlia::CKademlia::IsConnected() && theApp->IsConnected() && !IsStopped()){ 
 				//Kademlia
-				theApp.downloadqueue->SetLastKademliaFileRequest();
+				theApp->downloadqueue->SetLastKademliaFileRequest();
 			
 				if (GetKadFileSearchID()) {
 					/*	This will never happen anyway. We're talking a 
@@ -1600,11 +1600,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		if (	!m_localSrcReqQueued &&
 			(	(!m_lastsearchtime) ||
 				(dwCurTick - m_lastsearchtime) > SERVERREASKTIME) &&
-			theApp.IsConnectedED2K() &&
+			theApp->IsConnectedED2K() &&
 			thePrefs::GetMaxSourcePerFileSoft() > GetSourceCount() &&
 			!m_stopped ) {
 			m_localSrcReqQueued = true;
-			theApp.downloadqueue->SendLocalSrcRequest(this);
+			theApp->downloadqueue->SendLocalSrcRequest(this);
 		}
 	
 		// calculate datarate, set limit etc.
@@ -1648,16 +1648,16 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	}
 	
 	// MOD Note: Do not change this part - Merkur
-	if (theApp.IsConnectedED2K()) {
-		if(::IsLowID(theApp.GetED2KID())) {
-			if(theApp.GetED2KID() == userid && theApp.serverconnect->GetCurrentServer()->GetIP() == serverip && theApp.serverconnect->GetCurrentServer()->GetPort() == serverport ) {
+	if (theApp->IsConnectedED2K()) {
+		if(::IsLowID(theApp->GetED2KID())) {
+			if(theApp->GetED2KID() == userid && theApp->serverconnect->GetCurrentServer()->GetIP() == serverip && theApp->serverconnect->GetCurrentServer()->GetPort() == serverport ) {
 				return false;
 			}
-			if(theApp.GetPublicIP() == userid) {
+			if(theApp->GetPublicIP() == userid) {
 				return false;
 			}
 		} else {
-			if(theApp.GetED2KID() == userid && thePrefs::GetPort() == port) {
+			if(theApp->GetED2KID() == userid && thePrefs::GetPort() == port) {
 				return false;
 			}
 		}
@@ -1672,7 +1672,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	}
 
 	//This allows *.*.*.0 clients to not be removed if Ed2kID == false
-	if ( IsLowID(hybridID) && theApp.IsFirewalled()) {
+	if ( IsLowID(hybridID) && theApp->IsFirewalled()) {
 		if (pdebug_lowiddropped) {
 			(*pdebug_lowiddropped)++;
 		}
@@ -1705,7 +1705,7 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			if ( !IsGoodIP(userid, thePrefs::FilterLanIPs()) ) {
 				continue;
 			}
-			if (theApp.ipfilter->IsFiltered(userid)) {
+			if (theApp->ipfilter->IsFiltered(userid)) {
 				continue;
 			}
 		}
@@ -1717,7 +1717,7 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			++debug_possiblesources;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
 			newsource->SetSourceFrom((ESourceFrom)origin);
-			theApp.downloadqueue->CheckAndAddSource(this,newsource);
+			theApp->downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
 			// Since we may receive multiple search source UDP results we have to "consume" all data of that packet
@@ -2145,7 +2145,7 @@ void CPartFile::CompleteFile(bool bIsHashingDone)
 		Kademlia::CSearchManager::StopSearch(GetKadFileSearchID(), false);
 	}
 
-	theApp.downloadqueue->RemoveLocalServerRequest(this);
+	theApp->downloadqueue->RemoveLocalServerRequest(this);
 
 	AddDebugLogLineM( false, logPartFile, wxString( wxT("CPartFile::CompleteFile: Hash ") ) + ( bIsHashingDone ? wxT("done") : wxT("not done") ) );
 			  
@@ -2193,16 +2193,16 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const wxString& newname)
 		ClearPriority();
 		
 		// TODO: What the f*** if it is already known?
-		theApp.knownfiles->SafeAddKFile(this);
+		theApp->knownfiles->SafeAddKFile(this);
 		
 		// remove the file from the suspended uploads list
-		theApp.uploadqueue->ResumeUpload(GetFileHash());		
-		theApp.downloadqueue->RemoveFile(this);
-		theApp.sharedfiles->SafeAddKFile(this);
+		theApp->uploadqueue->ResumeUpload(GetFileHash());		
+		theApp->downloadqueue->RemoveFile(this);
+		theApp->sharedfiles->SafeAddKFile(this);
 		UpdateDisplayedInfo(true);
 
 		// republish that file to the ed2k-server to update the 'FT_COMPLETE_SOURCES' counter on the server.
-		theApp.sharedfiles->RepublishFile(this);		
+		theApp->sharedfiles->RepublishFile(this);		
 		
 		// Ensure that completed shows the correct value
 		completedsize = GetFileSize();
@@ -2210,14 +2210,14 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const wxString& newname)
 		AddLogLineM(true, CFormat( _("Finished downloading: %s") ) % GetFileName() );
 	}
 	
-	theApp.downloadqueue->StartNextFile(this);	
+	theApp->downloadqueue->StartNextFile(this);	
 }
 
 
 void CPartFile::PerformFileComplete()
 {
 	// add this file to the suspended uploads list
-	theApp.uploadqueue->SuspendUpload(GetFileHash());
+	theApp->uploadqueue->SuspendUpload(GetFileHash());
 	FlushBuffer();
 
 	// close permanent handle
@@ -2269,9 +2269,9 @@ void CPartFile::Delete()
 	StopFile(true);
 	AddDebugLogLineM(false, logPartFile, wxT("\tStopped"));
 	
-	theApp.sharedfiles->RemoveFile(this);
+	theApp->sharedfiles->RemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from shared"));
-	theApp.downloadqueue->RemoveFile(this);
+	theApp->downloadqueue->RemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved from download queue"));
 	Notify_DownloadCtrlRemoveFile(this);
 	AddDebugLogLineM(false, logPartFile, wxT("\tRemoved transferwnd"));
@@ -2452,7 +2452,7 @@ void CPartFile::PauseFile(bool bInsufficient)
 
 	m_iLastPausePurge = time(NULL);
 	
-	theApp.downloadqueue->RemoveLocalServerRequest(this);
+	theApp->downloadqueue->RemoveLocalServerRequest(this);
 
 	CPacket packet( OP_CANCELTRANSFER, 0, OP_EDONKEYPROT );
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
@@ -2498,7 +2498,7 @@ void CPartFile::ResumeFile()
 		
 	m_lastsearchtime = 0;
 	SetStatus(status);
-	SetActive(theApp.IsConnected());
+	SetActive(theApp->IsConnected());
 
 	if (m_gaplist.empty() and (GetStatus() == PS_ERROR)) {
 		// The file has already been hashed at this point
@@ -2727,11 +2727,11 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
 					continue;
 				}
-				if (theApp.ipfilter->IsFiltered(dwIDED2K)) {
+				if (theApp->ipfilter->IsFiltered(dwIDED2K)) {
 					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPFilter")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
 					continue;
 				}
-				if (theApp.clientlist->IsBannedClient(dwIDED2K)){
+				if (theApp->clientlist->IsBannedClient(dwIDED2K)){
 					continue;
 				}
 			}
@@ -2749,11 +2749,11 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
 					continue;
 				}
-				if (theApp.ipfilter->IsFiltered(dwID)) {
+				if (theApp->ipfilter->IsFiltered(dwID)) {
 					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPfilter")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
 					continue;
 				}
-				if (theApp.clientlist->IsBannedClient(dwID)){
+				if (theApp->clientlist->IsBannedClient(dwID)){
 					continue;
 				}
 			}
@@ -2771,7 +2771,7 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 				newsource->SetUserHash(userHash);
 			}
 			newsource->SetSourceFrom((ESourceFrom)nSourceFrom);
-			theApp.downloadqueue->CheckAndAddSource(this,newsource);
+			theApp->downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			break;
 		}
@@ -3021,11 +3021,11 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				EraseFirstValue(m_corrupted_list, partNumber);
 				
 				if (status == PS_EMPTY) {
-					if (theApp.IsRunning()) { // may be called during shutdown!
+					if (theApp->IsRunning()) { // may be called during shutdown!
 						if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded) {
 							// Successfully completed part, make it available for sharing
 							SetStatus(PS_READY);
-							theApp.sharedfiles->SafeAddKFile(this);
+							theApp->sharedfiles->SafeAddKFile(this);
 						}
 					}
 				}
@@ -3051,8 +3051,8 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 					if (status == PS_EMPTY) {
 						// Successfully recovered part, make it available for sharing							
 						SetStatus(PS_READY);
-						if (theApp.IsRunning()) // may be called during shutdown!
-							theApp.sharedfiles->SafeAddKFile(this);
+						if (theApp->IsRunning()) // may be called during shutdown!
+							theApp->sharedfiles->SafeAddKFile(this);
 					}
 				}
 			}
@@ -3064,7 +3064,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	// Update met file
 	SavePartFile();
 
-	if (theApp.IsRunning()) { // may be called during shutdown!
+	if (theApp->IsRunning()) { // may be called during shutdown!
 		// Is this file finished ?
 		if (m_gaplist.empty()) {
 			CompleteFile(false);
@@ -3125,7 +3125,7 @@ void CPartFile::UpdateDisplayedInfo(bool force)
 
 void CPartFile::SetCategory(uint8 cat)
 {
-	wxASSERT( cat < theApp.glob_prefs->GetCatCount() );
+	wxASSERT( cat < theApp->glob_prefs->GetCatCount() );
 	
 	m_category = cat; 
 	SavePartFile(); 
@@ -3135,7 +3135,7 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 {
 	wxASSERT( toremove );
 
-	bool result = theApp.downloadqueue->RemoveSource( toremove, updatewindow, bDoStatsUpdate );
+	bool result = theApp->downloadqueue->RemoveSource( toremove, updatewindow, bDoStatsUpdate );
 
 	// Check if the client should be deleted, but not if the client is already dying
 	if ( !toremove->GetSocket() && !toremove->HasBeenDeleted() ) {
@@ -3222,7 +3222,7 @@ void CPartFile::SetStatus(uint8 in)
 	
 	status = in;
 	
-	if (theApp.IsRunning()) {
+	if (theApp->IsRunning()) {
 		UpdateDisplayedInfo( true );
 	
 		if ( thePrefs::ShowCatTabInfos() ) {
@@ -3436,15 +3436,15 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 				"got completed while recovering and MD4 agrees"), nPart) );
 			// alrighty not so bad
 			EraseFirstValue(m_corrupted_list, nPart);
-			if (status == PS_EMPTY && theApp.IsRunning()){
+			if (status == PS_EMPTY && theApp->IsRunning()){
 				if (GetHashCount() == GetED2KPartHashCount() && !m_hashsetneeded){
 					// Successfully recovered part, make it available for sharing
 					SetStatus(PS_READY);
-					theApp.sharedfiles->SafeAddKFile(this);
+					theApp->sharedfiles->SafeAddKFile(this);
 				}
 			}
 
-			if (theApp.IsRunning()){
+			if (theApp->IsRunning()){
 				// Is this file finished?
 				if (m_gaplist.empty()) {
 					CompleteFile(false);
@@ -3867,7 +3867,7 @@ void CPartFile::SetActive(bool bActive)
 {
 	time_t tNow = time(NULL);
 	if (bActive) {
-		if (theApp.IsConnected()) {
+		if (theApp->IsConnected()) {
 			if (m_tActivated == 0) {
 				m_tActivated = tNow;
 			}
@@ -3921,21 +3921,21 @@ bool CPartFile::IsDeadSource(const CUpDownClient* client)
 
 void CPartFile::SetFileName(const wxString& pszFileName)
 {
-	CKnownFile* pFile = theApp.sharedfiles->GetFileByID(GetFileHash());
+	CKnownFile* pFile = theApp->sharedfiles->GetFileByID(GetFileHash());
 	
 	bool is_shared = (pFile && pFile == this);
 	
 	if (is_shared) {
 		// The file is shared, we must clear the search keywords so we don't
 		// publish the old name anymore.
-		theApp.sharedfiles->RemoveKeywords(this);
+		theApp->sharedfiles->RemoveKeywords(this);
 	}
 	
 	CKnownFile::SetFileName(pszFileName);
 	
 	if (is_shared) {
 		// And of course, we must advertise the new name if the file is shared.
-		theApp.sharedfiles->AddKeywords(this);
+		theApp->sharedfiles->AddKeywords(this);
 	}
 
 	UpdateDisplayedInfo(true);

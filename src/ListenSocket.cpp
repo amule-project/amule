@@ -59,7 +59,7 @@ CSocketServerProxy(addr, wxSOCKET_NOWAIT|wxSOCKET_REUSEADDR, ProxyData)
 	averageconnections = 0.0;
 	// Set the listen socket event handler -- The handler is written in amule.cpp
 	if (Ok()) {
- 		SetEventHandler(theApp, ID_LISTENSOCKET_EVENT);
+ 		SetEventHandler(*theApp, ID_LISTENSOCKET_EVENT);
  		SetNotify(wxSOCKET_CONNECTION_FLAG);
  		Notify(true);
 
@@ -122,7 +122,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 			wxASSERT(FALSE);
 			m_nPeningConnections = 1;
 		}
-		if (TooManySockets(true) && !theApp.serverconnect->IsConnecting()) {
+		if (TooManySockets(true) && !theApp->serverconnect->IsConnecting()) {
 			StopListening();
 			return;
 		} else if (bListening == false) {
@@ -141,7 +141,7 @@ void CListenSocket::OnAccept(int nErrorCode)
 			if (!AcceptWith(*newclient, false)) {
 				newclient->Safe_Delete();
 			} else {
-				wxASSERT(theApp.IsRunning());
+				wxASSERT(theApp->IsRunning());
 				if (!newclient->InitNetworkData()) {
 					// IP or port were not returned correctly
 					// from the accepted address, or filtered.
@@ -173,7 +173,7 @@ void CListenSocket::Process()
 		}
 	}
 	
-	if ((GetOpenSockets()+5 < thePrefs::GetMaxConnections() || theApp.serverconnect->IsConnecting()) && !bListening) {
+	if ((GetOpenSockets()+5 < thePrefs::GetMaxConnections() || theApp->serverconnect->IsConnecting()) && !bListening) {
 		ReStartListening();
 	}
 }
@@ -247,7 +247,7 @@ bool CListenSocket::IsValidSocket(CClientTCPSocket* totest)
 void CListenSocket::UpdateConnectionsStatus()
 {
 	// 0.42e xcept for the khaos stats
-	if( theApp.IsConnected() ) {
+	if( theApp->IsConnected() ) {
 		totalconnectionchecks++;
 		float percent;
 		percent = (float)(totalconnectionchecks-1)/(float)totalconnectionchecks;

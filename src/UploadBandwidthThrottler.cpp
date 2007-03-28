@@ -290,7 +290,7 @@ void* UploadBandwidthThrottler::Entry()
 		// Get current speed from UploadSpeedSense
 		if (thePrefs::GetMaxUpload() == UNLIMITED) {
 			// Try to increase the upload rate
-			if (theApp.uploadqueue) {
+			if (theApp->uploadqueue) {
 				allowedDataRate = (uint32)theStats::GetUploadRate() + 5 * 1024;
 			} else {
 				// App not created yet or already destroyed.

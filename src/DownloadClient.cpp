@@ -138,7 +138,7 @@ bool CUpDownClient::Compare(const CUpDownClient* tocomp, bool bIgnoreUserhash) c
 bool CUpDownClient::AskForDownload()
 {
 	// 0.42e
-	if (theApp.listensocket->TooManySockets()) {
+	if (theApp->listensocket->TooManySockets()) {
 		if (!m_socket) {
 			if (GetDownloadState() != DS_TOOMANYCONNS) {
 				SetDownloadState(DS_TOOMANYCONNS);
@@ -879,7 +879,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 		theStats::AddDownloadFromSoft(GetClientSoft(),size - header_size);
 		bytesReceivedCycle += size - header_size;
 	
-		credits->AddDownloaded(size - header_size, GetIP(), theApp.CryptoAvailable());
+		credits->AddDownloaded(size - header_size, GetIP(), theApp->CryptoAvailable());
 		
 		// Move end back one, should be inclusive
 		nEndPos--;
@@ -1230,7 +1230,7 @@ void CUpDownClient::UDPReaskFNF()
 			m_reqfile->AddDeadSource(this);
 		}
 		
-		theApp.downloadqueue->RemoveSource(this);
+		theApp->downloadqueue->RemoveSource(this);
 		if (!m_socket) {
 			if (Disconnected(wxT("UDPReaskFNF m_socket=NULL"))) {
 				Safe_Delete();
@@ -1261,7 +1261,7 @@ void CUpDownClient::UDPReaskForDownload()
 		return;
 	}
 		
-	if (m_nUDPPort != 0 && !theApp.IsFirewalled() && !IsConnected()) {
+	if (m_nUDPPort != 0 && !theApp->IsFirewalled() && !IsConnected()) {
 		//don't use udp to ask for sources
 		if(IsSourceRequestAllowed()) {
 			return;
@@ -1288,7 +1288,7 @@ void CUpDownClient::UDPReaskForDownload()
 		CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKFILEPING);
 		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKFILEPING") );
 		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-		theApp.clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
+		theApp->clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
 	} else  {
 		if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
 			
@@ -1314,7 +1314,7 @@ void CUpDownClient::UDPReaskForDownload()
 			CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKUDP") );
 			theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-			theApp.clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
+			theApp->clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
 		}
 	}
 }
@@ -1575,7 +1575,7 @@ void CUpDownClient::ProcessAICHAnswer(const byte* packet, uint32 size)
 	}
 
 	CMD4Hash hash = data.ReadHash();
-	CPartFile* pPartFile = theApp.downloadqueue->GetFileByID(hash);
+	CPartFile* pPartFile = theApp->downloadqueue->GetFileByID(hash);
 	CAICHRequestedData request = CAICHHashSet::GetAICHReqDetails(this);
 	uint16 nPart = data.ReadUInt16();
 	if (pPartFile != NULL && request.m_pPartFile == pPartFile && request.m_pClient == this && nPart == request.m_nPart){
@@ -1614,7 +1614,7 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 	CMD4Hash hash = data.ReadHash();
 	uint16 nPart = data.ReadUInt16();
 	CAICHHash ahMasterHash(&data);
-	CKnownFile* pKnownFile = theApp.sharedfiles->GetFileByID(hash);
+	CKnownFile* pKnownFile = theApp->sharedfiles->GetFileByID(hash);
 	if (pKnownFile != NULL){
 		if (pKnownFile->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE && pKnownFile->GetAICHHashset()->HasValidMasterHash()
 			&& pKnownFile->GetAICHHashset()->GetMasterHash() == ahMasterHash && pKnownFile->GetPartCount() > nPart
@@ -1652,7 +1652,7 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 void CUpDownClient::ProcessAICHFileHash(CMemFile* data, const CPartFile* file){
 	CPartFile* pPartFile;
 	if (file == NULL){
-		pPartFile = theApp.downloadqueue->GetFileByID(data->ReadHash());
+		pPartFile = theApp->downloadqueue->GetFileByID(data->ReadHash());
 	} else {
 		pPartFile = (CPartFile*)file;
 	}

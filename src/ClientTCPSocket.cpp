@@ -143,8 +143,8 @@ CClientTCPSocket::CClientTCPSocket(CUpDownClient* in_client, const CProxyData *P
 		wxSOCKET_LOST_FLAG);
 	Notify(true);
 
-	theApp.listensocket->AddSocket(this);
-	theApp.listensocket->AddConnection();
+	theApp->listensocket->AddSocket(this);
+	theApp->listensocket->AddConnection();
 }
 
 CClientTCPSocket::~CClientTCPSocket()
@@ -158,8 +158,8 @@ CClientTCPSocket::~CClientTCPSocket()
 	}
 	m_client = NULL;
 
-	if (theApp.listensocket && !theApp.listensocket->OnShutdown()) {
-		theApp.listensocket->RemoveSocket(this);
+	if (theApp->listensocket && !theApp->listensocket->OnShutdown()) {
+		theApp->listensocket->RemoveSocket(this);
 	}
 }
 
@@ -172,7 +172,7 @@ bool CClientTCPSocket::InitNetworkData() {
 	
 	MULE_CHECK(m_remoteip, false);
 	
-	if (theApp.ipfilter->IsFiltered(m_remoteip)) {
+	if (theApp->ipfilter->IsFiltered(m_remoteip)) {
 		AddDebugLogLineM(false, logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Filtered IP)"));
 		return false;	
 	} else {
@@ -234,7 +234,7 @@ void CClientTCPSocket::SetClient(CUpDownClient* pClient)
 void CClientTCPSocket::OnClose(int nErrorCode)
 {
 	// 0.42x
-	wxASSERT(theApp.listensocket->IsValidSocket(this));
+	wxASSERT(theApp->listensocket->IsValidSocket(this));
 	CEMSocket::OnClose(nErrorCode);
 	if (nErrorCode) {
 		Disconnect(wxString::Format(wxT("Closed: %u"), nErrorCode));
@@ -360,7 +360,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			}
 			
 			// if IP is filtered, dont reply but disconnect...
-			if (theApp.ipfilter->IsFiltered(m_client->GetIP())) {
+			if (theApp->ipfilter->IsFiltered(m_client->GetIP())) {
 				if (bNewClient) {
 					m_client->Safe_Delete();
 					m_client = NULL;
@@ -375,11 +375,11 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			// be attached to the known client, the new client will be deleted
 			// and the var. "client" will point to the known client.
 			// if not we keep our new-constructed client ;)
-			if (theApp.clientlist->AttachToAlreadyKnown(&m_client,this)) {
+			if (theApp->clientlist->AttachToAlreadyKnown(&m_client,this)) {
 				// update the old client informations
 				bIsMuleHello = m_client->ProcessHelloPacket(buffer, size);
 			} else {
-				theApp.clientlist->AddClient(m_client);
+				theApp->clientlist->AddClient(m_client);
 				m_client->SetCommentDirty();
 			}
 			Notify_UploadCtrlRefreshClient( m_client );
@@ -426,9 +426,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 				CMemFile data_in(buffer, size);
 				CMD4Hash reqfilehash = data_in.ReadHash();
-				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+				CKnownFile *reqfile = theApp->sharedfiles->GetFileByID(reqfilehash);
 				if ( reqfile == NULL ) {
-					reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+					reqfile = theApp->downloadqueue->GetFileByID(reqfilehash);
 					if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 						break;
 					}
@@ -438,7 +438,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
 					if (thePrefs::GetMaxSourcePerFile() > 
 						((CPartFile*)reqfile)->GetSourceCount()) {
-						theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
+						theApp->downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
 					}
 				}
 
@@ -484,9 +484,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 
 				const CMD4Hash fileID((byte*)buffer);
-				CKnownFile *reqfile = theApp.sharedfiles->GetFileByID(fileID);
+				CKnownFile *reqfile = theApp->sharedfiles->GetFileByID(fileID);
 				if ( reqfile == NULL ) {
-					reqfile = theApp.downloadqueue->GetFileByID(fileID);
+					reqfile = theApp->downloadqueue->GetFileByID(fileID);
 					if ( !( reqfile  != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 						CPacket* replypacket = new CPacket(OP_FILEREQANSNOFIL, 16, OP_EDONKEYPROT);
 						replypacket->Copy16ToDataBuffer(fileID.GetHash());
@@ -528,7 +528,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size == 16) {
 				// if that client does not have my file maybe has another different
-				CPartFile* reqfile = theApp.downloadqueue->GetFileByID(CMD4Hash((byte*)buffer));
+				CPartFile* reqfile = theApp->downloadqueue->GetFileByID(CMD4Hash((byte*)buffer));
 				if ( reqfile) {
 					reqfile->AddDeadSource( m_client );
 				} else {
@@ -541,7 +541,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					case DS_ONQUEUE:
 					case DS_NONEEDEDPARTS:
 					if (!m_client->SwapToAnotherFile(true, true, true, NULL)) {
-						theApp.downloadqueue->RemoveSource(m_client);
+						theApp->downloadqueue->RemoveSource(m_client);
 					}
 					break;
 				}
@@ -557,7 +557,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
-			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
+			const CPartFile* file = theApp->downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileInfo(&data, file);
 			break;
 		}
@@ -568,7 +568,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
-			const CPartFile* file = theApp.downloadqueue->GetFileByID(hash);
+			const CPartFile* file = theApp->downloadqueue->GetFileByID(hash);
 			m_client->ProcessFileStatus(false, &data, file);
 			break;
 		}
@@ -589,7 +589,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			if (size == 16) {
 				const CMD4Hash fileID((byte*)buffer);
-				CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(fileID);
+				CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(fileID);
 				if (reqfile) {
 					if (m_client->GetUploadFileID() != fileID) {
 						m_client->SetCommentDirty();
@@ -599,7 +599,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 
 					// Socket might die because of SendCommentInfo, so check
 					if (m_client)
-						theApp.uploadqueue->AddClientToQueue(m_client);
+						theApp->uploadqueue->AddClientToQueue(m_client);
 				}
 			}
 			break;
@@ -658,7 +658,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_CANCELTRANSFER from ") + m_client->GetFullIP() );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			theApp.uploadqueue->RemoveFromUploadQueue(m_client);
+			theApp->uploadqueue->RemoveFromUploadQueue(m_client);
 			if ( CLogger::IsEnabled( logClient ) ) {
 				AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due canceled transfer."));
 			}
@@ -670,7 +670,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadFileRequest(size);
 			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash((byte*)buffer)) {
-				theApp.uploadqueue->RemoveFromUploadQueue(m_client);
+				theApp->uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
 				}
@@ -759,7 +759,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			uint32 nNewServerIP = data.ReadUInt32();
 			
 			if (IsLowID(nNewUserID)) { // client changed server and gots a LowID
-				CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
+				CServer* pNewServer = theApp->serverlist->GetServerByIP(nNewServerIP);
 				if (pNewServer != NULL){
 					m_client->SetUserIDHybrid(nNewUserID); // update UserID only if we know the server
 					m_client->SetServerIP(nNewServerIP);
@@ -767,7 +767,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 			} else if (nNewUserID == m_client->GetIP()) { // client changed server and gots a HighID(IP)
 				m_client->SetUserIDHybrid(wxUINT32_SWAP_ALWAYS(nNewUserID));
-				CServer* pNewServer = theApp.serverlist->GetServerByIP(nNewServerIP);
+				CServer* pNewServer = theApp->serverlist->GetServerByIP(nNewServerIP);
 				if (pNewServer != NULL){
 					m_client->SetServerIP(nNewServerIP);
 					m_client->SetServerPort(pNewServer->GetPort());
@@ -819,13 +819,13 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					% m_client->GetUserIDHybrid() );
 				
 				std::vector<CKnownFile*> list;
-				theApp.sharedfiles->CopyFileList(list);
+				theApp->sharedfiles->CopyFileList(list);
 
 				CMemFile tempfile(80);
 				tempfile.WriteUInt32(list.size());
 				for (unsigned i = 0; i < list.size(); ++i) {
 					if (!list[i]->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						theApp.sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
+						theApp->sharedfiles->CreateOfferedFilePacket(list[i], &tempfile, NULL, m_client);
 					}
 				}
 				
@@ -875,14 +875,14 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CStringList foldersToSend;
 			   
 				// The shared folders
-				unsigned folderCount = theApp.glob_prefs->shareddir_list.GetCount();
+				unsigned folderCount = theApp->glob_prefs->shareddir_list.GetCount();
 				for (unsigned i = 0; i < folderCount; ++i) {
-					foldersToSend.push_back(theApp.glob_prefs->shareddir_list[i]);
+					foldersToSend.push_back(theApp->glob_prefs->shareddir_list[i]);
 				}
 				
 				// ... the categories folders ... (category 0 -> incoming)
-				for (unsigned i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
-					foldersToSend.push_back(theApp.glob_prefs->GetCategory(i)->incomingpath);
+				for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
+					foldersToSend.push_back(theApp->glob_prefs->GetCategory(i)->incomingpath);
 				}
 	
 				// Strip duplicates
@@ -946,9 +946,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				
 				if (strReqDir == OP_INCOMPLETE_SHARED_FILES) {
 					// get all shared files from download queue
-					int iQueuedFiles = theApp.downloadqueue->GetFileCount();
+					int iQueuedFiles = theApp->downloadqueue->GetFileCount();
 					for (int i = 0; i < iQueuedFiles; i++) {
-						CPartFile* pFile = theApp.downloadqueue->GetFileByIndex(i);
+						CPartFile* pFile = theApp->downloadqueue->GetFileByIndex(i);
 						if (pFile == NULL || pFile->GetStatus(true) != PS_READY) {
 							continue;
 						}
@@ -956,7 +956,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 						list.push_back(pFile);
 					}
 				} else {
-					theApp.sharedfiles->GetSharedFilesByDirectory(strReqDir, list);
+					theApp->sharedfiles->GetSharedFilesByDirectory(strReqDir, list);
 				}
 
 				CMemFile tempfile(80);
@@ -965,7 +965,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				
 				while (not list.empty()) {
 					if (!list.front()->IsLargeFile() || m_client->SupportsLargeFiles()) {
-						theApp.sharedfiles->CreateOfferedFilePacket(list.front(), &tempfile, NULL, m_client);
+						theApp->sharedfiles->CreateOfferedFilePacket(list.front(), &tempfile, NULL, m_client);
 					}
 					
 					list.pop_front();
@@ -1107,9 +1107,9 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			uint64 nSize = (opcode == OP_MULTIPACKET_EXT) ? data_in.ReadUInt64() : 0;
 			
 			bool file_not_found = false;
-			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(reqfilehash);
 			if ( reqfile == NULL ){
-				reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+				reqfile = theApp->downloadqueue->GetFileByID(reqfilehash);
 				if ( !( reqfile != NULL && reqfile->GetFileSize() > PARTSIZE ) ) {
 					AddDebugLogLineM(false, logRemoteClient, wxT("Remote client asked for a non-shared file"));
 					file_not_found = true;
@@ -1142,7 +1142,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			// no passive adding of files with only one part
 			if (reqfile->IsPartFile() && reqfile->GetFileSize() > PARTSIZE) {
 				if (thePrefs::GetMaxSourcePerFile() > ((CPartFile*)reqfile)->GetSourceCount()) {
-					theApp.downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
+					theApp->downloadqueue->CheckAndAddKnownSource((CPartFile*)reqfile, m_client);
 				}
 			}
 			// check to see if this is a new file they are asking for
@@ -1247,7 +1247,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			
 			CMemFile data_in(buffer, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
-			const CPartFile *reqfile = theApp.downloadqueue->GetFileByID(reqfilehash);
+			const CPartFile *reqfile = theApp->downloadqueue->GetFileByID(reqfilehash);
 			//Make sure we are downloading this file.
 			if ( !reqfile ) {
 				throw wxString(wxT(" Wrong File ID: (OP_MULTIPACKETANSWER; reqfile==NULL)"));
@@ -1483,9 +1483,9 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				}
 				//first check shared file list, then download list
 				const CMD4Hash fileID((byte*)buffer);
-				CKnownFile* file = theApp.sharedfiles->GetFileByID(fileID);
+				CKnownFile* file = theApp->sharedfiles->GetFileByID(fileID);
 				if(!file) {
-					file = theApp.downloadqueue->GetFileByID(fileID);
+					file = theApp->downloadqueue->GetFileByID(fileID);
 				}
 				if(file) {
 					uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
@@ -1526,7 +1526,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			
 			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
-			const CKnownFile* file = theApp.downloadqueue->GetFileByID(hash);
+			const CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
 			if(file){
 				if (file->IsPartFile()){
 					//set the client's answer time
@@ -1606,7 +1606,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_AICHFILEHASHREQ from ") + m_client->GetFullIP()  );
 			CMemFile data(buffer, size);
 			CMD4Hash hash = data.ReadHash();
-			CKnownFile* pPartFile = theApp.sharedfiles->GetFileByID(hash);
+			CKnownFile* pPartFile = theApp->sharedfiles->GetFileByID(hash);
 			if (pPartFile == NULL){
 				break;
 			}
@@ -1639,8 +1639,8 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			byte fileid2[16];
 			fileid.ToByteArray(fileid2);
 			const CMD4Hash fileHash(fileid2);
-			if (theApp.sharedfiles->GetFileByID(fileHash) == NULL) {
-				if (theApp.downloadqueue->GetFileByID(fileHash) == NULL) {
+			if (theApp->sharedfiles->GetFileByID(fileHash) == NULL) {
+				if (theApp->downloadqueue->GetFileByID(fileHash) == NULL) {
 					break;
 				}
 			}
@@ -1648,11 +1648,11 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			uint32 ip = data.ReadUInt32();
 			uint16 tcp = data.ReadUInt16();
 			CUpDownClient* callback;
-			callback = theApp.clientlist->FindClientByIP(wxUINT32_SWAP_ALWAYS(ip), tcp);
+			callback = theApp->clientlist->FindClientByIP(wxUINT32_SWAP_ALWAYS(ip), tcp);
 			if( callback == NULL ) {
 				#warning Do we actually have to check friend status here?
 				callback = new CUpDownClient(tcp,ip,0,0,NULL,false, false);
-				theApp.clientlist->AddClient(callback);
+				theApp->clientlist->AddClient(callback);
 			}
 			callback->TryToConnect(true);
 			break;
@@ -1662,7 +1662,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPING from ") + m_client->GetFullIP()  );
 			theStats::AddDownOverheadKad(size);
 
-			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+			CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 			if( buddy != m_client || m_client->GetKadVersion() == 0 || !m_client->AllowIncomeingBuddyPingPong() ) {
 				//This ping was not from our buddy or wrong version or packet sent to fast. Ignore
 				break;
@@ -1679,7 +1679,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_BUDDYPONG from ") + m_client->GetFullIP()  );
 			theStats::AddDownOverheadKad(size);
 
-			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+			CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 			if( buddy != m_client || m_client->GetKadVersion() == 0 ) {
 				//This pong was not from our buddy or wrong version. Ignore
 				break;
@@ -1690,7 +1690,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 		}
 		case OP_REASKCALLBACKTCP: {
 			theStats::AddDownOverheadFileRequest(size);
-			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+			CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 			if (buddy != m_client) {
 				AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REASKCALLBACKTCP from ") + m_client->GetFullIP() + wxT(" which is not our buddy!") );
 				//This callback was not from our buddy.. Ignore.
@@ -1701,16 +1701,16 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			uint32 destip = data_in.ReadUInt32();
 			uint16 destport = data_in.ReadUInt16();
 			CMD4Hash hash = data_in.ReadHash();
-			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(hash);
+			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(hash);
 			if (!reqfile) {
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND to ") + m_client->GetFullIP() );
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-				theApp.clientudp->SendPacket(response, destip, destport);
+				theApp->clientudp->SendPacket(response, destip, destport);
 				break;
 			}
 			
-			CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
+			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
 			if (sender) {
 				//Make sure we are still thinking about the same file
 				if (hash == sender->GetUploadFileID()) {
@@ -1743,11 +1743,11 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						}
 					}
 					
-					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
+					data_out.WriteUInt16(theApp->uploadqueue->GetWaitingPosition(sender));
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client UDP: OP_REASKACK to ") + m_client->GetFullIP()  );
-					theApp.clientudp->SendPacket(response, destip, destport);
+					theApp->clientudp->SendPacket(response, destip, destport);
 				} else {
 					AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
 				}
@@ -1756,7 +1756,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL to ") + m_client->GetFullIP()  );
 					CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-					theApp.clientudp->SendPacket(response, destip, destport);
+					theApp->clientudp->SendPacket(response, destip, destport);
 				}
 			}
 			break;
@@ -1846,7 +1846,7 @@ void CClientTCPSocket::OnReceive(int nErrorCode)
 	// We might have updated ipfilter
 	wxASSERT(m_remoteip);
 	
-	if (theApp.ipfilter->IsFiltered(m_remoteip)) {
+	if (theApp->ipfilter->IsFiltered(m_remoteip)) {
 		if (m_client) {
 			m_client->Safe_Delete();
 		}

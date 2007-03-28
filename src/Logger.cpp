@@ -186,13 +186,13 @@ void CLogger::FlushPendingEntries()
 		CLoggingEvent event(entry->critical, entry->entry);
 	
 #ifdef CLIENT_GUI
-		theApp.ProcessEvent(event);
+		theApp->ProcessEvent(event);
 #else
 		// Try to handle events immediatly when possible (to save to file).
-		if (theApp.applog) {
-			theApp.ProcessEvent(event);			
+		if (theApp->applog) {
+			theApp->ProcessEvent(event);			
 		} else {
-			theApp.AddPendingEvent(event);
+			theApp->AddPendingEvent(event);
 		}
 #endif
 

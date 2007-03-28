@@ -287,10 +287,10 @@ CECPacket *Get_EC_Response_GetSharedFiles(const CECPacket *request, CKnownFile_E
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_KNOWNFILE> queryitems(request);
 
-	encoders.UpdateEncoders(theApp.sharedfiles);
+	encoders.UpdateEncoders(theApp->sharedfiles);
 	
-	for (uint32 i = 0; i < theApp.sharedfiles->GetFileCount(); ++i) {
-		CKnownFile *cur_file = (CKnownFile *)theApp.sharedfiles->GetFileByIndex(i);
+	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
+		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
 
 		if ( !cur_file || (!queryitems.empty() && !queryitems.count(cur_file->GetFileHash())) ) {
 			continue;
@@ -311,9 +311,9 @@ CECPacket *Get_EC_Response_GetSharedFiles(CKnownFile_Encoder_Map &encoders, CObj
 {
 	CECPacket *response = new CECPacket(EC_OP_SHARED_FILES);
 
-	encoders.UpdateEncoders(theApp.sharedfiles);
-	for (uint32 i = 0; i < theApp.sharedfiles->GetFileCount(); ++i) {
-		CKnownFile *cur_file = (CKnownFile *)theApp.sharedfiles->GetFileByIndex(i);
+	encoders.UpdateEncoders(theApp->sharedfiles);
+	for (uint32 i = 0; i < theApp->sharedfiles->GetFileCount(); ++i) {
+		CKnownFile *cur_file = (CKnownFile *)theApp->sharedfiles->GetFileByIndex(i);
 		
 		//
 		// Hashes of tags are maintained on "per-object" basis. So, in this mode only
@@ -345,7 +345,7 @@ CECPacket *Get_EC_Response_GetWaitQueue(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 
-	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		CUpDownClient* cur_client = *it;
@@ -365,7 +365,7 @@ CECPacket *Get_EC_Response_GetWaitQueue(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_WAIT_QUEUE);
 	
-	const CClientPtrList& uploading = theApp.uploadqueue->GetWaitingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetWaitingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		CUpDownClient* cur_client = *it;
@@ -392,7 +392,7 @@ CECPacket *Get_EC_Response_GetUpQueue(const CECPacket *request)
 	CTagSet<uint32, EC_TAG_CLIENT> queryitems(request);
 	
 
-	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		CUpDownClient* cur_client = *it;
@@ -413,7 +413,7 @@ CECPacket *Get_EC_Response_GetUpQueue(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_ULOAD_QUEUE);
 
-	const CClientPtrList& uploading = theApp.uploadqueue->GetUploadingList();
+	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = uploading.begin();
 	for (; it != uploading.end(); ++it) {
 		CUpDownClient* cur_client = *it;
@@ -432,9 +432,9 @@ CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, COb
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
-	encoders.UpdateEncoders(theApp.downloadqueue);
-	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+	encoders.UpdateEncoders(theApp->downloadqueue);
+	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
 
 		CValueMap &valuemap = tagmap.GetValueMap(cur_file);
 		CEC_PartFile_Tag filetag(cur_file, valuemap);
@@ -455,10 +455,10 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_PARTFILE> queryitems(request);
 	
-	encoders.UpdateEncoders(theApp.downloadqueue);
+	encoders.UpdateEncoders(theApp->downloadqueue);
 
-	for (unsigned int i = 0; i < theApp.downloadqueue->GetFileCount(); i++) {
-		CPartFile *cur_file = theApp.downloadqueue->GetFileByIndex(i);
+	for (unsigned int i = 0; i < theApp->downloadqueue->GetFileCount(); i++) {
+		CPartFile *cur_file = theApp->downloadqueue->GetFileByIndex(i);
 	
 		if ( !queryitems.empty() && !queryitems.count(cur_file->GetFileHash()) ) {
 			continue;
@@ -489,7 +489,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		wxASSERT(hashtag->GetTagName() == EC_TAG_PARTFILE);
 
 		CMD4Hash hash = hashtag->GetMD4Data();
-		CPartFile *pfile = theApp.downloadqueue->GetFileByID( hash );
+		CPartFile *pfile = theApp->downloadqueue->GetFileByID( hash );
 		
 		if ( !pfile ) {
 			AddLogLineM(false,CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
@@ -558,7 +558,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 				break;
 			case EC_OP_PARTFILE_DELETE:
 				if ( thePrefs::StartNextFile() && (pfile->GetStatus() != PS_PAUSED) ) {
-					theApp.downloadqueue->StartNextFile(pfile);
+					theApp->downloadqueue->StartNextFile(pfile);
 				}
 				pfile->Delete();
 				break;
@@ -595,7 +595,7 @@ CECPacket *Get_EC_Response_Server_Add(const CECPacket *request)
 	CServer* toadd = new CServer(port, s_ip);
 	toadd->SetListName(name.IsEmpty() ? full_addr : name);
 	
-	if ( theApp.AddServer(toadd, true) ) {
+	if ( theApp->AddServer(toadd, true) ) {
 		response = new CECPacket(EC_OP_NOOP);
 	} else {
 		response = new CECPacket(EC_OP_FAILED);
@@ -612,7 +612,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	const CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		srv = theApp.serverlist->GetServerByIP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
+		srv = theApp->serverlist->GetServerByIP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
 		// server tag passed, but server not found
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
@@ -623,12 +623,12 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	}
 	switch (request->GetOpCode()) {
 		case EC_OP_SERVER_DISCONNECT:
-			theApp.serverconnect->Disconnect();
+			theApp->serverconnect->Disconnect();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_SERVER_REMOVE:
 			if ( srv ) {
-				theApp.serverlist->RemoveServer(srv);
+				theApp->serverlist->RemoveServer(srv);
 				response = new CECPacket(EC_OP_NOOP);
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
@@ -639,10 +639,10 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		case EC_OP_SERVER_CONNECT:
 			if (thePrefs::GetNetworkED2K()) {
 				if ( srv ) {
-					theApp.serverconnect->ConnectToServer(srv);
+					theApp->serverconnect->ConnectToServer(srv);
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
-					theApp.serverconnect->ConnectToAnyServer();
+					theApp->serverconnect->ConnectToAnyServer();
 					response = new CECPacket(EC_OP_NOOP);
 				}
 			} else {
@@ -667,7 +667,7 @@ CECPacket *Get_EC_Response_Search_Results(const CECPacket *request)
 	// request can contain list of queried items
 	CTagSet<CMD4Hash, EC_TAG_SEARCHFILE> queryitems(request);
 
-	const CSearchResultList& list = theApp.searchlist->GetSearchResults(0xffffffff);
+	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -683,7 +683,7 @@ CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 {
 	CECPacket *response = new CECPacket(EC_OP_SEARCH_RESULTS);
 
-	const CSearchResultList& list = theApp.searchlist->GetSearchResults(0xffffffff);
+	const CSearchResultList& list = theApp->searchlist->GetSearchResults(0xffffffff);
 	CSearchResultList::const_iterator it = list.begin();
 	while (it != list.end()) {
 		CSearchFile* sf = *it++;
@@ -700,7 +700,7 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		uint8 category = tag->GetTagByIndexSafe(0)->GetInt();
-		theApp.searchlist->AddFileToDownloadByHash(hash, category);
+		theApp->searchlist->AddFileToDownloadByHash(hash, category);
 	}
 	return response;
 }
@@ -708,7 +708,7 @@ CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 CECPacket *Get_EC_Response_Search_Stop(const CECPacket *WXUNUSED(request))
 {
 	CECPacket *reply = new CECPacket(EC_OP_MISC_DATA);
-	theApp.searchlist->StopGlobalSearch();
+	theApp->searchlist->StopGlobalSearch();
 	return reply;
 }
 
@@ -717,7 +717,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 	wxString response;
 	
 	CEC_Search_Tag *search_request = (CEC_Search_Tag *)request->GetTagByIndex(0);
-	theApp.searchlist->RemoveResults(0xffffffff);
+	theApp->searchlist->RemoveResults(0xffffffff);
 
 	CSearchList::CSearchParams params;
 	params.searchString	= search_request->SearchText();
@@ -739,7 +739,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 			}
 		case EC_SEARCH_LOCAL: {
 			uint32 search_id = 0xffffffff;
-			wxString error = theApp.searchlist->StartNewSearch(&search_id, core_search_type, params);
+			wxString error = theApp->searchlist->StartNewSearch(&search_id, core_search_type, params);
 			if (!error.IsEmpty()) {
 				response = error;
 			} else {
@@ -766,7 +766,7 @@ CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt();
-		CKnownFile* cur_file = theApp.sharedfiles->GetFileByID(hash);
+		CKnownFile* cur_file = theApp->sharedfiles->GetFileByID(hash);
 		if ( !cur_file ) {
 			continue;
 		}
@@ -789,7 +789,7 @@ CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 		response = new CECPacket(EC_OP_NOOP);
 		if ( !Kademlia::CKademlia::IsRunning() ) {
 			Kademlia::CKademlia::Start();
-			theApp.ShowConnectionState();
+			theApp->ShowConnectionState();
 		}
 		const CECTag *addrtag = request->GetTagByIndex(0);
 		if ( addrtag ) {
@@ -953,7 +953,7 @@ CECPacket *GetStatsGraphs(const CECPacket *request)
 			uint16 nScale = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_SCALE)->GetInt();
 			uint16 nMaxPoints = request->GetTagByNameSafe(EC_TAG_STATSGRAPH_WIDTH)->GetInt();
 			uint32 *graphData;
-			unsigned int numPoints = theApp.m_statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
+			unsigned int numPoints = theApp->m_statistics->GetHistoryForWeb(nMaxPoints, (double)nScale, &dTimestamp, &graphData);
 			if (numPoints) {
 				response = new CECPacket(EC_OP_STATSGRAPHS);
 				response->AddTag(CECTag(EC_TAG_STATSGRAPH_DATA, 4 * numPoints * sizeof(uint32), graphData));
@@ -996,17 +996,17 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		// Misc commands
 		//
 		case EC_OP_SHUTDOWN:
-			if (!theApp.IsOnShutDown()) {
+			if (!theApp->IsOnShutDown()) {
 				response = new CECPacket(EC_OP_NOOP);
 				AddLogLineM(true, _("ExternalConn: shutdown requested"));
 #ifndef AMULE_DAEMON
 				{
 					wxCloseEvent evt;
 					evt.SetCanVeto(false);
-					theApp.ShutDown(evt);
+					theApp->ShutDown(evt);
 				}
 #else
-				theApp.ExitMainLoop();
+				theApp->ExitMainLoop();
 #endif
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
@@ -1019,7 +1019,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				wxString link = tag->GetStringData();
 				int category = tag->GetTagByIndexSafe(0)->GetInt();
 				AddLogLineM(true, CFormat(_("ExternalConn: adding ed2k link '%s'.")) % link);
-				if ( theApp.downloadqueue->AddED2KLink(link, category) ) {
+				if ( theApp->downloadqueue->AddED2KLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					// Error messages are printed by the add function.
@@ -1086,7 +1086,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = Get_EC_Response_PartFile_Cmd(request);
 			break;
 		case EC_OP_SHAREDFILES_RELOAD:
-			theApp.sharedfiles->Reload();
+			theApp->sharedfiles->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_SHARED_SET_PRIO:
@@ -1094,10 +1094,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_RENAME_FILE: {
 			CMD4Hash fileHash = request->GetTagByNameSafe(EC_TAG_KNOWNFILE)->GetMD4Data();
-			CKnownFile* file = theApp.knownfiles->FindKnownFileByID(fileHash);
+			CKnownFile* file = theApp->knownfiles->FindKnownFileByID(fileHash);
 			wxString newName = request->GetTagByNameSafe(EC_TAG_PARTFILE_NAME)->GetStringData();
 			if (!file) {
-				file = theApp.downloadqueue->GetFileByID(fileHash);
+				file = theApp->downloadqueue->GetFileByID(fileHash);
 			}
 			if (!file) {
 				response = new CECPacket(EC_OP_FAILED);
@@ -1110,7 +1110,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				break;
 			}
 			
-			if (theApp.sharedfiles->RenameFile(file, newName)) {
+			if (theApp->sharedfiles->RenameFile(file, newName)) {
 				response = new CECPacket(EC_OP_NOOP);
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
@@ -1135,7 +1135,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_GET_SERVER_LIST: {
 				response = new CECPacket(EC_OP_SERVER_LIST);
 				EC_DETAIL_LEVEL detail_level = request->GetDetailLevel();
-				std::vector<const CServer*> servers = theApp.serverlist->CopySnapshot();
+				std::vector<const CServer*> servers = theApp->serverlist->CopySnapshot();
 				for (
 					std::vector<const CServer*>::const_iterator it = servers.begin();
 					it != servers.end();
@@ -1146,14 +1146,14 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_SERVER_UPDATE_FROM_URL:
-			theApp.serverlist->UpdateServerMetFromURL(request->GetTagByIndexSafe(0)->GetStringData());
+			theApp->serverlist->UpdateServerMetFromURL(request->GetTagByIndexSafe(0)->GetStringData());
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
 		// IPFilter
 		//
 		case EC_OP_IPFILTER_RELOAD:
-			theApp.ipfilter->Reload();
+			theApp->ipfilter->Reload();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
@@ -1178,7 +1178,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SEARCH_PROGRESS:
 			response = new CECPacket(EC_OP_SEARCH_PROGRESS);
 			response->AddTag(CECTag(EC_TAG_SEARCH_STATUS,
-				theApp.searchlist->GetSearchProgress()));
+				theApp->searchlist->GetSearchProgress()));
 			break;
 			
 		case EC_OP_DOWNLOAD_SEARCH_RESULT:
@@ -1192,18 +1192,18 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_SET_PREFERENCES:
 			((CEC_Prefs_Packet *)request)->Apply();
-			theApp.glob_prefs->Save();
+			theApp->glob_prefs->Save();
 			if (thePrefs::IsFilteringClients()) {
-				theApp.clientlist->FilterQueues();
+				theApp->clientlist->FilterQueues();
 			}
 			if (thePrefs::IsFilteringServers()) {
-				theApp.serverlist->FilterServers();
+				theApp->serverlist->FilterServers();
 			}
-			if (!thePrefs::GetNetworkED2K() && theApp.IsConnectedED2K()) {
-				theApp.DisconnectED2K();
+			if (!thePrefs::GetNetworkED2K() && theApp->IsConnectedED2K()) {
+				theApp->DisconnectED2K();
 			}
-			if (!thePrefs::GetNetworkKademlia() && theApp.IsConnectedKad()) {
-				theApp.StopKad();
+			if (!thePrefs::GetNetworkKademlia() && theApp->IsConnectedKad()) {
+				theApp->StopKad();
 			}
 			response = new CECPacket(EC_OP_NOOP);
 			break;
@@ -1244,23 +1244,23 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_GET_LOG:
 			response = new CECPacket(EC_OP_LOG);
-			response->AddTag(CECTag(EC_TAG_STRING, theApp.GetLog(false)));
+			response->AddTag(CECTag(EC_TAG_STRING, theApp->GetLog(false)));
 			break;
 		case EC_OP_GET_DEBUGLOG:
 			response = new CECPacket(EC_OP_DEBUGLOG);
-			response->AddTag(CECTag(EC_TAG_STRING, theApp.GetDebugLog(false)));
+			response->AddTag(CECTag(EC_TAG_STRING, theApp->GetDebugLog(false)));
 			break;
 		case EC_OP_RESET_LOG:
-			theApp.GetLog(true);
+			theApp->GetLog(true);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_RESET_DEBUGLOG:
-			theApp.GetDebugLog(true);
+			theApp->GetDebugLog(true);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		case EC_OP_GET_LAST_LOG_ENTRY:
 			{
-				wxString tmp = theApp.GetLog(false);
+				wxString tmp = theApp->GetLog(false);
 				if (tmp.Last() == '\n') {
 					tmp.RemoveLast();
 				}
@@ -1270,10 +1270,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 		case EC_OP_GET_SERVERINFO:
 			response = new CECPacket(EC_OP_SERVERINFO);
-			response->AddTag(CECTag(EC_TAG_STRING, theApp.GetServerLog(false)));
+			response->AddTag(CECTag(EC_TAG_STRING, theApp->GetServerLog(false)));
 			break;
 		case EC_OP_CLEAR_SERVERINFO:
-			theApp.GetServerLog(true);
+			theApp->GetServerLog(true);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
 		//
@@ -1283,7 +1283,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = GetStatsGraphs(request);
 			break;
 		case EC_OP_GET_STATSTREE: {
-			theApp.m_statistics->UpdateStatsTree();
+			theApp->m_statistics->UpdateStatsTree();
 			response = new CECPacket(EC_OP_STATSTREE);
 			CECTag* tree = theStats::GetECStatTree(request->GetTagByNameSafe(EC_TAG_STATTREE_CAPPING)->GetInt());
 			if (tree) {
@@ -1304,7 +1304,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			response = Get_EC_Response_Kad_Connect(request);
 			break;
 		case EC_OP_KAD_STOP:
-			theApp.StopKad();
+			theApp->StopKad();
 			response = new CECPacket(EC_OP_NOOP);
 			break;			
 
@@ -1314,10 +1314,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_CONNECT:
 			if (thePrefs::GetNetworkED2K()) {
 				response = new CECPacket(EC_OP_STRINGS);
-				if (theApp.IsConnectedED2K()) {
+				if (theApp->IsConnectedED2K()) {
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to ED2K.")));
 				} else {
-					theApp.serverconnect->ConnectToAnyServer();
+					theApp->serverconnect->ConnectToAnyServer();
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to ED2K...")));
 				}
 			}
@@ -1325,10 +1325,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				if (!response) {
 					response = new CECPacket(EC_OP_STRINGS);
 				}
-				if (theApp.IsConnectedKad()) {
+				if (theApp->IsConnectedKad()) {
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to Kad.")));
 				} else {
-					theApp.StartKad();
+					theApp->StartKad();
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to Kad...")));
 				}
 			}
@@ -1338,14 +1338,14 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_DISCONNECT:
-			if (theApp.IsConnected()) {
+			if (theApp->IsConnected()) {
 				response = new CECPacket(EC_OP_STRINGS);
-				if (theApp.IsConnectedED2K()) {
-					theApp.serverconnect->Disconnect();
+				if (theApp->IsConnectedED2K()) {
+					theApp->serverconnect->Disconnect();
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from ED2K.")));
 				}
-				if (theApp.IsConnectedKad()) {
-					theApp.StopKad();
+				if (theApp->IsConnectedKad()) {
+					theApp->StopKad();
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from Kad.")));
 				}
 			} else {

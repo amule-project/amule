@@ -212,7 +212,7 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 	wxASSERT(ctrl);
 	// Zero to avoid results added while destructing.
 	ctrl->ShowResults(0);
-	theApp.searchlist->RemoveResults(ctrl->GetSearchId());
+	theApp->searchlist->RemoveResults(ctrl->GetSearchId());
 	
 	// Do cleanups if this was the last tab
 	if ( m_notebook->GetPageCount() == 1 ) {
@@ -269,7 +269,7 @@ void CSearchDlg::OnBnClickedStart(wxCommandEvent& WXUNUSED(evt))
 
 		// Web Search (FileHash.com)
 		case 3:
-			theApp.amuledlg->LaunchUrl(theApp.amuledlg->GenWebSearchUrl(searchString, CamuleDlg::WS_FILEHASH));
+			theApp->amuledlg->LaunchUrl(theApp->amuledlg->GenWebSearchUrl(searchString, CamuleDlg::WS_FILEHASH));
 			break;
 
 		// Error
@@ -368,7 +368,7 @@ void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
 
 void CSearchDlg::OnBnClickedStop(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.searchlist->StopGlobalSearch();
+	theApp->searchlist->StopGlobalSearch();
 	ResetControls();
 }
 
@@ -503,7 +503,7 @@ void CSearchDlg::StartNewSearch()
 				search_type = GlobalSearch;
 			}
 		case 2: { // Kad search 
-			wxString error = theApp.searchlist->StartNewSearch(&real_id, search_type, params);
+			wxString error = theApp->searchlist->StartNewSearch(&real_id, search_type, params);
 			if (!error.IsEmpty()) {
 				// Search failed / Remote in progress
 				wxMessageBox(error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION,this);
@@ -572,8 +572,8 @@ void CSearchDlg::UpdateCatChoice()
 	
 	c_cat->Append(_("Main"));
 
-	for ( unsigned i = 1; i < theApp.glob_prefs->GetCatCount(); i++ ) {
-		c_cat->Append( theApp.glob_prefs->GetCategory( i )->title );
+	for ( unsigned i = 1; i < theApp->glob_prefs->GetCatCount(); i++ ) {
+		c_cat->Append( theApp->glob_prefs->GetCategory( i )->title );
 	}
 	
 	c_cat->SetSelection( 0 );

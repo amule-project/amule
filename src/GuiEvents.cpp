@@ -39,7 +39,7 @@ namespace MuleNotify
 #if defined(AMULE_DAEMON) or defined(REMOTE_GUI)
 			ntf.Notify();
 #else
-			if (theApp.amuledlg) {
+			if (theApp->amuledlg) {
 				ntf.Notify();
 			}
 #endif
@@ -51,14 +51,14 @@ namespace MuleNotify
 	
 	void Search_Add_Download(CSearchFile* file, uint8 category)
 	{
-		theApp.downloadqueue->AddSearchToDownload(file, category);
+		theApp->downloadqueue->AddSearchToDownload(file, category);
 	}
 	
 
 	void ShowUserCount(wxString NOT_ON_DAEMON(str))
 	{
 #ifndef AMULE_DAEMON
-		theApp.amuledlg->ShowUserCount(str);
+		theApp->amuledlg->ShowUserCount(str);
 #endif
 	}
 
@@ -66,12 +66,12 @@ namespace MuleNotify
 	void Search_Update_Progress(uint32 NOT_ON_DAEMON(val))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_searchwnd) {
+		if (theApp->amuledlg->m_searchwnd) {
 			if (val == 0xffff) {
 				// Global search ended
-				theApp.amuledlg->m_searchwnd->ResetControls();
+				theApp->amuledlg->m_searchwnd->ResetControls();
 			} else {
-				theApp.amuledlg->m_searchwnd->UpdateProgress(val);
+				theApp->amuledlg->m_searchwnd->UpdateProgress(val);
 			}
 		}
 #endif
@@ -82,82 +82,82 @@ namespace MuleNotify
 	
 	void PartFile_RemoveNoNeeded(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
 	}
 
 	void PartFile_RemoveFullQueue(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_FULL_QUEUE);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_FULL_QUEUE);
 	}
 	
 	void PartFile_RemoveHighQueue(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_HIGH_QUEUE);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_HIGH_QUEUE);
 	}
 	
 	void PartFile_SourceCleanup(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_CLEANUP_SOURCES);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_CLEANUP_SOURCES);
 	}
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS);
 	}
 
 	void PartFile_Swap_A4AF_Auto(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS_AUTO);
 	}
 	
 	void PartFile_Swap_A4AF_Others(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_OTHERS);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_OTHERS);
 	}
 
 	void PartFile_Pause(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_PAUSE);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_PAUSE);
 	}
 	
 	void PartFile_Resume(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_RESUME);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_RESUME);
 	}
 	
 	void PartFile_Stop(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_STOP);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_STOP);
 	}
 
 	void PartFile_PrioAuto(CPartFile* file, bool val)
 	{
-		theApp.downloadqueue->AutoPrio(file, val);
+		theApp->downloadqueue->AutoPrio(file, val);
 	}
 
 	void PartFile_PrioSet(CPartFile* file, uint8 newDownPriority, bool)
 	{
-		theApp.downloadqueue->Prio(file, newDownPriority);
+		theApp->downloadqueue->Prio(file, newDownPriority);
 	}
 
 	void PartFile_Delete(CPartFile* file)
 	{
-		theApp.downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_DELETE);
+		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_DELETE);
 	}
 	
 	void PartFile_SetCat(CPartFile* file, uint32 val)
 	{
-		theApp.downloadqueue->Category(file, val);
+		theApp->downloadqueue->Category(file, val);
 	}
 	
 	void KnownFile_Up_Prio_Set(CKnownFile* file, uint8 val)
 	{
-		theApp.sharedfiles->SetFilePrio(file, val);
+		theApp->sharedfiles->SetFilePrio(file, val);
 	}
 	
 	void KnownFile_Up_Prio_Auto(CKnownFile* file)
 	{
-		theApp.sharedfiles->SetFilePrio(file, PR_AUTO);
+		theApp->sharedfiles->SetFilePrio(file, PR_AUTO);
 	}
 
 	void Download_Set_Cat_Prio(uint8, uint8)
@@ -173,8 +173,8 @@ namespace MuleNotify
 	void SharedFilesShowFile(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_sharedfileswnd and theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl) {
-			theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
+		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
 		}
 #endif
 	}
@@ -182,8 +182,8 @@ namespace MuleNotify
 	void SharedFilesRemoveFile(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_sharedfileswnd and theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl) {
-			theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
+		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
 		}
 #endif
 	}
@@ -191,8 +191,8 @@ namespace MuleNotify
 	void SharedFilesRemoveAllFiles()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_sharedfileswnd) {
-			theApp.amuledlg->m_sharedfileswnd->RemoveAllSharedFiles();
+		if (theApp->amuledlg->m_sharedfileswnd) {
+			theApp->amuledlg->m_sharedfileswnd->RemoveAllSharedFiles();
 		}
 #endif
 	}
@@ -201,8 +201,8 @@ namespace MuleNotify
 	void SharedFilesShowFileList()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_sharedfileswnd and theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl) {
-			theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFileList();
+		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFileList();
 		}
 #endif
 	}
@@ -211,8 +211,8 @@ namespace MuleNotify
 	void SharedFilesUpdateItem(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_sharedfileswnd and theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl) {
-			theApp.amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
+		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 		}
 #endif
 	}
@@ -221,8 +221,8 @@ namespace MuleNotify
 	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
 		}
 #endif
 	}
@@ -230,8 +230,8 @@ namespace MuleNotify
 	void DownloadCtrlAddFile(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl ) {
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
 		}
 #endif
 	}
@@ -239,9 +239,9 @@ namespace MuleNotify
 	void DownloadCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), DownloadItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			if (owner->ShowSources()) {
-				theApp.amuledlg->m_transferwnd->downloadlistctrl->AddSource(owner, source, type);
+				theApp->amuledlg->m_transferwnd->downloadlistctrl->AddSource(owner, source, type);
 			}
 		}
 #endif
@@ -250,8 +250,8 @@ namespace MuleNotify
 	void DownloadCtrlRemoveFile(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
 		}
 #endif
 	}
@@ -259,9 +259,9 @@ namespace MuleNotify
 	void DownloadCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			if ((owner == NULL) or owner->ShowSources()) {
-				theApp.amuledlg->m_transferwnd->downloadlistctrl->RemoveSource(source, owner);
+				theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveSource(source, owner);
 			}
 		}
 #endif
@@ -270,8 +270,8 @@ namespace MuleNotify
 	void DownloadCtrlHideSource(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->ShowSources(file, false);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->ShowSources(file, false);
 		}
 #endif
 	}
@@ -279,8 +279,8 @@ namespace MuleNotify
 	void DownloadCtrlSort()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->SortList();
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->SortList();
 		}
 #endif
 	}
@@ -289,8 +289,8 @@ namespace MuleNotify
 	void ClientCtrlAddClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->clientlistctrl) {
-			theApp.amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, type);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, type);
 		}
 #endif
 	}
@@ -298,8 +298,8 @@ namespace MuleNotify
 	void ClientCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->clientlistctrl) {
-			theApp.amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client, type);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client, type);
 		}
 #endif
 	}
@@ -307,8 +307,8 @@ namespace MuleNotify
 	void ClientCtrlRemoveClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd and theApp.amuledlg->m_transferwnd->clientlistctrl) {
-			theApp.amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, type);
+		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, type);
 		}
 #endif
 	}
@@ -317,8 +317,8 @@ namespace MuleNotify
 	void ServerAdd(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->AddServer(server);
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->AddServer(server);
 		}
 #endif
 	}
@@ -326,24 +326,24 @@ namespace MuleNotify
 	void ServerRemove(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->RemoveServer(server);
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->RemoveServer(server);
 		}
 #endif
 	}
 
 	void ServerRemoveDead()
 	{
-		if (theApp.serverlist) {
-			theApp.serverlist->RemoveDeadServers();
+		if (theApp->serverlist) {
+			theApp->serverlist->RemoveDeadServers();
 		}		
 	}
 	
 	void ServerRemoveAll()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->DeleteAllItems();
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->DeleteAllItems();
 		}
 #endif
 	}
@@ -351,8 +351,8 @@ namespace MuleNotify
 	void ServerHighlight(CServer* NOT_ON_DAEMON(server), bool NOT_ON_DAEMON(highlight))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, highlight);
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, highlight);
 		}
 #endif
 	}
@@ -360,8 +360,8 @@ namespace MuleNotify
 	void ServerRefresh(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
 		}
 #endif
 	}
@@ -369,8 +369,8 @@ namespace MuleNotify
 	void ServerFreeze()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->Freeze();
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->Freeze();
 		}
 #endif
 	}
@@ -378,8 +378,8 @@ namespace MuleNotify
 	void ServerThaw()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd and theApp.amuledlg->m_serverwnd->serverlistctrl) {
-			theApp.amuledlg->m_serverwnd->serverlistctrl->Thaw();
+		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+			theApp->amuledlg->m_serverwnd->serverlistctrl->Thaw();
 		}
 #endif
 	}
@@ -387,8 +387,8 @@ namespace MuleNotify
 	void ServerUpdateED2KInfo()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd) {
-			theApp.amuledlg->m_serverwnd->UpdateED2KInfo();
+		if (theApp->amuledlg->m_serverwnd) {
+			theApp->amuledlg->m_serverwnd->UpdateED2KInfo();
 		}
 #endif
 	}
@@ -396,8 +396,8 @@ namespace MuleNotify
 	void ServerUpdateKadKInfo()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_serverwnd) {
-			theApp.amuledlg->m_serverwnd->UpdateKadInfo();
+		if (theApp->amuledlg->m_serverwnd) {
+			theApp->amuledlg->m_serverwnd->UpdateKadInfo();
 		}		
 #endif
 	}
@@ -406,8 +406,8 @@ namespace MuleNotify
 	void SearchCancel()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_searchwnd) {
-			theApp.amuledlg->m_searchwnd->ResetControls();
+		if (theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->ResetControls();
 		}
 #endif
 	}
@@ -415,8 +415,8 @@ namespace MuleNotify
 	void SearchLocalEnd()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_searchwnd) {
-			theApp.amuledlg->m_searchwnd->LocalSearchEnd();
+		if (theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->LocalSearchEnd();
 		}
 #endif
 	}
@@ -424,8 +424,8 @@ namespace MuleNotify
 	void KadSearchEnd(uint32 id)
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_searchwnd) {
-			theApp.amuledlg->m_searchwnd->KadSearchEnd(id);
+		if (theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->KadSearchEnd(id);
 		}
 #endif
 	}
@@ -433,8 +433,8 @@ namespace MuleNotify
 	void Search_Update_Sources(CSearchFile* NOT_ON_DAEMON(result))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg and theApp.amuledlg->m_searchwnd) {
-			theApp.amuledlg->m_searchwnd->UpdateResult(result);
+		if (theApp->amuledlg and theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->UpdateResult(result);
 		}
 #endif
 	}
@@ -442,8 +442,8 @@ namespace MuleNotify
 	void Search_Add_Result(CSearchFile* NOT_ON_DAEMON(result))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg and theApp.amuledlg->m_searchwnd) {
-			theApp.amuledlg->m_searchwnd->AddResult(result);
+		if (theApp->amuledlg and theApp->amuledlg->m_searchwnd) {
+			theApp->amuledlg->m_searchwnd->AddResult(result);
 		}
 #endif
 	}
@@ -452,8 +452,8 @@ namespace MuleNotify
 	void ChatRefreshFriend(uint32 NOT_ON_DAEMON(lastUsedIP), uint32 NOT_ON_DAEMON(lastUsedPort), wxString NOT_ON_DAEMON(name))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_chatwnd) {
-			theApp.amuledlg->m_chatwnd->RefreshFriend(CMD4Hash(), name, lastUsedIP, lastUsedPort);
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->RefreshFriend(CMD4Hash(), name, lastUsedIP, lastUsedPort);
 		}
 #endif
 	}
@@ -461,8 +461,8 @@ namespace MuleNotify
 	void ChatConnResult(bool NOT_ON_DAEMON(success), uint64 NOT_ON_DAEMON(id), wxString NOT_ON_DAEMON(message))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_chatwnd) {
-			theApp.amuledlg->m_chatwnd->ConnectionResult(success, message, id);
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->ConnectionResult(success, message, id);
 		}
 #endif
 	}
@@ -470,8 +470,8 @@ namespace MuleNotify
 	void ChatProcessMsg(uint64 NOT_ON_DAEMON(sender), wxString NOT_ON_DAEMON(message))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_chatwnd) {
-			theApp.amuledlg->m_chatwnd->ProcessMessage(sender, message);
+		if (theApp->amuledlg->m_chatwnd) {
+			theApp->amuledlg->m_chatwnd->ProcessMessage(sender, message);
 		}
 #endif
 	}
@@ -481,18 +481,18 @@ namespace MuleNotify
 	{
 #ifndef AMULE_DAEMON
 #ifdef CLIENT_GUI
-		theApp.m_ConnState = state;
+		theApp->m_ConnState = state;
 #endif
 		
-		theApp.amuledlg->ShowConnectionState();
+		theApp->amuledlg->ShowConnectionState();
 #endif
 	}
 	
 	void ShowQueueCount(uint32 NOT_ON_DAEMON(count))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->ShowQueueCount(count);
+		if (theApp->amuledlg->m_transferwnd) {
+			theApp->amuledlg->m_transferwnd->ShowQueueCount(count);
 		}
 #endif
 	}
@@ -500,8 +500,8 @@ namespace MuleNotify
 	void ShowUpdateCatTabTitles()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->UpdateCatTabTitles();
+		if (theApp->amuledlg->m_transferwnd) {
+			theApp->amuledlg->m_transferwnd->UpdateCatTabTitles();
 		}
 #endif
 	}
@@ -509,7 +509,7 @@ namespace MuleNotify
 	void ShowGUI()
 	{
 #ifndef AMULE_DAEMON
-		theApp.amuledlg->Show_aMule(true);
+		theApp->amuledlg->Show_aMule(true);
 #endif
 	}
 	
@@ -517,10 +517,10 @@ namespace MuleNotify
 	void CategoryAdded()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->
-				AddCategory(theApp.glob_prefs->GetCategory(
-					theApp.glob_prefs->GetCatCount()-1));
+		if (theApp->amuledlg->m_transferwnd) {
+			theApp->amuledlg->m_transferwnd->
+				AddCategory(theApp->glob_prefs->GetCategory(
+					theApp->glob_prefs->GetCatCount()-1));
 		}
 #endif
 	}
@@ -528,10 +528,10 @@ namespace MuleNotify
 	void CategoryUpdate(uint32 NOT_ON_DAEMON(cat))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->UpdateCategory(cat);
-			theApp.amuledlg->m_transferwnd->downloadlistctrl->Refresh();
-			theApp.amuledlg->m_searchwnd->UpdateCatChoice();
+		if (theApp->amuledlg->m_transferwnd) {
+			theApp->amuledlg->m_transferwnd->UpdateCategory(cat);
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->Refresh();
+			theApp->amuledlg->m_searchwnd->UpdateCatChoice();
 		}
 #endif
 	}
@@ -539,8 +539,8 @@ namespace MuleNotify
 	void CategoryDelete(uint32 NOT_ON_DAEMON(cat))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp.amuledlg->m_transferwnd) {
-			theApp.amuledlg->m_transferwnd->RemoveCategory(cat);
+		if (theApp->amuledlg->m_transferwnd) {
+			theApp->amuledlg->m_transferwnd->RemoveCategory(cat);
 		}
 #endif
 	}
@@ -652,12 +652,12 @@ namespace MuleNotify
 
 	void Download_Set_Cat_Prio(uint8 cat, uint8 newprio)
 	{
-		theApp.downloadqueue->SetCatPrio(cat, newprio);
+		theApp->downloadqueue->SetCatPrio(cat, newprio);
 	}
 	
 	void Download_Set_Cat_Status(uint8 cat, int newstatus)
 	{
-		theApp.downloadqueue->SetCatStatus(cat, newstatus);
+		theApp->downloadqueue->SetCatStatus(cat, newstatus);
 	}
 
 #endif	// #ifdef CLIENT_GUI

@@ -125,7 +125,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		case OP_REASKCALLBACKUDP: {
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; OP_REASKCALLBACKUDP") );
 			theStats::AddDownOverheadOther(size);
-			CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+			CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 			if( buddy ) {
 				if( size < 17 || buddy->GetSocket() == NULL ) {
 					break;
@@ -156,14 +156,14 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			
 			CMemFile data_in(packet, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
-			CKnownFile* reqfile = theApp.sharedfiles->GetFileByID(reqfilehash);
+			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(reqfilehash);
 			if (!reqfile) {
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 				SendPacket(response,host,port);
 				break;
 			}
-			CUpDownClient* sender = theApp.uploadqueue->GetWaitingClientByIP_UDP(host, port);
+			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(host, port);
 			if (sender){
 				sender->CheckForAggressive();
 				
@@ -193,7 +193,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 						}
 					}
 					
-					data_out.WriteUInt16(theApp.uploadqueue->GetWaitingPosition(sender));
+					data_out.WriteUInt16(theApp->uploadqueue->GetWaitingPosition(sender));
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());
@@ -213,7 +213,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		case OP_QUEUEFULL: {
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_QUEUEFULL") );
 			theStats::AddDownOverheadOther(size);
-			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender) {
 				sender->SetRemoteQueueFull(true);
 				sender->UDPReaskACK(0);
@@ -222,7 +222,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		}
 		case OP_REASKACK: {				
 			theStats::AddDownOverheadFileRequest(size);
-			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender) {
 				CMemFile data_in(packet,size);
 				if ( sender->GetUDPVersion() > 3 ) {
@@ -237,7 +237,7 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 		case OP_FILENOTFOUND: {
 			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_FILENOTFOUND") );
 			theStats::AddDownOverheadFileRequest(size);
-			CUpDownClient* sender = theApp.downloadqueue->GetDownloadClientByIP_UDP(host,port);
+			CUpDownClient* sender = theApp->downloadqueue->GetDownloadClientByIP_UDP(host,port);
 			if (sender){
 				sender->UDPReaskFNF(); // may delete 'sender'!
 				sender = NULL;

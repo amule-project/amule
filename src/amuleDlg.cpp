@@ -184,7 +184,7 @@ m_transferwnd(NULL)
 	m_searchwnd = new CSearchDlg(p_cnt);
 	m_transferwnd = new CTransferWnd(p_cnt);
 	m_sharedfileswnd = new CSharedFilesWnd(p_cnt);
-	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp.m_statistics);
+	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp->m_statistics);
 	m_chatwnd = new CChatWnd(p_cnt);
 	m_kademliawnd = CastChild(wxT("kadWnd"), CKadDlg);
 	m_serverwnd->Show(FALSE);
@@ -297,10 +297,10 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 void CamuleDlg::UpdateTrayIcon(int percent)
 {
 	// set trayicon-icon
-	if(!theApp.IsConnected()) {
+	if(!theApp->IsConnected()) {
 		m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_DISCONNECTED, percent);
 	} else {
-		if(theApp.IsConnectedED2K() && theApp.serverconnect->IsLowID()) {
+		if(theApp->IsConnectedED2K() && theApp->serverconnect->IsLowID()) {
 			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_LOWID, percent);
 		} else {
 			m_wndTaskbarNotifier->SetTrayIcon(TRAY_ICON_HIGHID, percent);					
@@ -449,7 +449,7 @@ CamuleDlg::~CamuleDlg()
 	
 	SaveGUIPrefs();
 
-	theApp.amuledlg = NULL;
+	theApp->amuledlg = NULL;
 	
 	printf("aMule dialog destroyed\n");
 }
@@ -458,7 +458,7 @@ CamuleDlg::~CamuleDlg()
 void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 {
 
-	bool disconnect = (theApp.IsConnectedED2K() || theApp.serverconnect->IsConnecting()) 
+	bool disconnect = (theApp->IsConnectedED2K() || theApp->serverconnect->IsConnecting()) 
 						#ifndef CLIENT_GUI
 						|| (Kademlia::CKademlia::IsRunning())
 						#endif
@@ -466,26 +466,26 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 	if (thePrefs::GetNetworkED2K()) {
 		if (disconnect) {
 			//disconnect if currently connected
-			if (theApp.serverconnect->IsConnecting()) {
-				theApp.serverconnect->StopConnectionTry();
+			if (theApp->serverconnect->IsConnecting()) {
+				theApp->serverconnect->StopConnectionTry();
 			} else {
-				theApp.serverconnect->Disconnect();
+				theApp->serverconnect->Disconnect();
 			}
 		} else {		
 			//connect if not currently connected
 			AddLogLine(true, _("Connecting"));
-			theApp.serverconnect->ConnectToAnyServer();
+			theApp->serverconnect->ConnectToAnyServer();
 		}
 	} else {
-		wxASSERT(!theApp.IsConnectedED2K());
+		wxASSERT(!theApp->IsConnectedED2K());
 	}
 
 	// Connect Kad also
 	if (thePrefs::GetNetworkKademlia()) {
 		if( disconnect ) {
-			theApp.StopKad();
+			theApp->StopKad();
 		} else {
-			theApp.StartKad();
+			theApp->StartKad();
 		}
 	} else {
 		#ifndef CLIENT_GUI
@@ -590,7 +590,7 @@ void CamuleDlg::ShowConnectionState()
 	static wxImageList status_arrows(16,16,true,0);
 	static wxMemoryDC bitmap_dc;
 	
-	theApp.downloadqueue->OnConnectionState(theApp.IsConnected());
+	theApp->downloadqueue->OnConnectionState(theApp->IsConnected());
 	
 	if (!status_arrows.GetImageCount()) {
 		// Generate the image list (This is only done once)
@@ -608,25 +608,25 @@ void CamuleDlg::ShowConnectionState()
 	wxStaticText* connLabel = CastChild( wxT("connLabel"), wxStaticText );
 	
 	wxString connected_server;
-	CServer* ed2k_server = theApp.serverconnect->GetCurrentServer();
+	CServer* ed2k_server = theApp->serverconnect->GetCurrentServer();
 	if (ed2k_server) {
 		connected_server = ed2k_server->GetListName();
 	}	
 	
-	if ( theApp.IsConnectedED2K() ) {
-		if ( theApp.serverconnect->IsLowID() ) {
+	if ( theApp->IsConnectedED2K() ) {
+		if ( theApp->serverconnect->IsLowID() ) {
 			NewED2KState = sLowID;
 		} else {
 			NewED2KState = sHighID;
 		}
-	} else if ( theApp.serverconnect->IsConnecting() ) {
+	} else if ( theApp->serverconnect->IsConnecting() ) {
 		NewED2KState = sConnecting;
 	} else {
 		NewED2KState = sDisconnected;
 	}
 
-	if (theApp.IsConnectedKad()) {
-		if (!theApp.IsFirewalledKad()) {
+	if (theApp->IsConnectedKad()) {
+		if (!theApp->IsFirewalledKad()) {
 			NewKadState = sOK;
 		} else {
 			NewKadState = sFirewalled;
@@ -741,7 +741,7 @@ void CamuleDlg::ShowConnectionState()
 		conn_bitmap->SetBitmap(conn_image);
 		
 	} else {
-		if (theApp.IsConnectedED2K()) {
+		if (theApp->IsConnectedED2K()) {
 			connLabel->SetLabel(connected_server);
 			connLabel->GetParent()->Layout();
 		}
@@ -779,7 +779,7 @@ void CamuleDlg::ShowTransferRate()
 	// Show upload/download speed in title
 	if (thePrefs::GetShowRatesOnTitle()) {
 		wxString UpDownSpeed = wxString::Format(wxT(" -- Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
-		SetTitle(theApp.m_FrameTitle + UpDownSpeed);
+		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
 	if (m_wndTaskbarNotifier) {
@@ -788,7 +788,7 @@ void CamuleDlg::ShowTransferRate()
 		UpdateTrayIcon( ( percentDown > 100 ) ? 100 : percentDown);
 	
 		wxString buffer2;
-		if ( theApp.IsConnected() ) {
+		if ( theApp->IsConnected() ) {
 			buffer2 = CFormat(_("aMule (%s | Connected)")) % buffer;
 		} else {
 			buffer2 = CFormat(_("aMule (%s | Disconnected)")) % buffer;
@@ -829,7 +829,7 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		}
 	}
 	
-	theApp.ShutDown(evt);
+	theApp->ShutDown(evt);
 }
 
 
@@ -842,7 +842,7 @@ void CamuleDlg::OnBnClickedFast(wxCommandEvent& WXUNUSED(evt))
 		strlink.Trim(true);
 		strlink.Trim(false);
 		if ( !strlink.IsEmpty() ) {
-			theApp.downloadqueue->AddED2KLink( strlink, m_transferwnd->downloadlistctrl->GetCategory() );
+			theApp->downloadqueue->AddED2KLink( strlink, m_transferwnd->downloadlistctrl->GetCategory() );
 		}
 	}
 	
@@ -1009,7 +1009,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		// trying to get the graph shifts evenly spaced after a change in the update period
 		msPrevGraph = msCur;
 		
-		GraphUpdateInfo update = theApp.m_statistics->GetPointsForUpdate();
+		GraphUpdateInfo update = theApp->m_statistics->GetPointsForUpdate();
 		
 		m_statisticswnd->UpdateStatGraphs(bStatsVisible, theStats::GetPeakConnections(), update);
 		m_kademliawnd->UpdateGraph(!IsIconized() && (m_activewnd == m_serverwnd), update);
@@ -1029,7 +1029,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	if (msCur-msPrev5 > 5000) {  // every 5 seconds
 		msPrev5 = msCur;
 		ShowTransferRate();
-		if (thePrefs::ShowCatTabInfos() && theApp.amuledlg->m_activewnd == theApp.amuledlg->m_transferwnd) {
+		if (thePrefs::ShowCatTabInfos() && theApp->amuledlg->m_activewnd == theApp->amuledlg->m_transferwnd) {
 			m_transferwnd->UpdateCatTabTitles();
 		}
 		if (thePrefs::AutoSortDownload()) {

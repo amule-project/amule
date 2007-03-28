@@ -138,7 +138,7 @@ void CKademlia::Stop()
 
 	m_events.clear();
 	
-	theApp.ShowConnectionState();
+	theApp->ShowConnectionState();
 }
 
 void CKademlia::Process()
@@ -227,7 +227,7 @@ void CKademlia::Process()
 		if( maxUsers != instance->m_prefs->GetKademliaUsers()) {
 			instance->m_prefs->SetKademliaUsers(maxUsers);
 			instance->m_prefs->SetKademliaFiles();
-			theApp.ShowUserCount();
+			theApp->ShowUserCount();
 		}
 	}
 }

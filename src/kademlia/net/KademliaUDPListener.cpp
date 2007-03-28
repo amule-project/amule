@@ -121,7 +121,7 @@ void CKademliaUDPListener::ProcessPacket(const byte* data, uint32 lenData, uint3
 	bool curCon = CKademlia::GetPrefs()->HasHadContact();
 	CKademlia::GetPrefs()->SetLastContact();
 	if( curCon != CKademlia::GetPrefs()->HasHadContact()) {
-		theApp.ShowConnectionState();
+		theApp->ShowConnectionState();
 	}
 
 	byte opcode = data[1];
@@ -1034,7 +1034,7 @@ void CKademliaUDPListener::ProcessFirewalledRequest (const byte *packetData, uin
 
 	CUInt128 zero((uint32)0);
 	CContact contact(zero, ip, port, tcpport, zero);
-	theApp.clientlist->RequestTCP(&contact);
+	theApp->clientlist->RequestTCP(&contact);
 
 	// Send response
 	CMemFile packetdata(4);
@@ -1061,7 +1061,7 @@ void CKademliaUDPListener::ProcessFirewalledResponse (const byte *packetData, ui
 	//Update con state only if something changes.
 	if( CKademlia::GetPrefs()->GetIPAddress() != firewalledIP ) {
 		CKademlia::GetPrefs()->SetIPAddress(firewalledIP);
-		theApp.ShowConnectionState();
+		theApp->ShowConnectionState();
 	}
 	CKademlia::GetPrefs()->IncRecheckIP();
 }
@@ -1099,7 +1099,7 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 
 	CUInt128 zero((uint32)0);
 	CContact contact(userID, ip, port, tcpport, zero);
-	theApp.clientlist->IncomingBuddy(&contact, &BuddyID);
+	theApp->clientlist->IncomingBuddy(&contact, &BuddyID);
 
 	CMemFile packetdata(34);
 	packetdata.WriteUInt128(BuddyID);
@@ -1130,7 +1130,7 @@ void CKademliaUDPListener::ProcessFindBuddyResponse (const byte *packetData, uin
 
 	CUInt128 zero((uint32)0);
 	CContact contact(userID, ip, port, tcpport, zero);
-	theApp.clientlist->RequestBuddy(&contact);
+	theApp->clientlist->RequestBuddy(&contact);
 }
 
 //KADEMLIA_CALLBACK_REQ
@@ -1141,7 +1141,7 @@ void CKademliaUDPListener::ProcessCallbackRequest (const byte *packetData, uint3
 		throw wxString::Format(wxT("***NOTE: Received wrong size (%u) packet in "), lenPacket) + wxString::FromAscii(__FUNCTION__);
 	}
 
-	CUpDownClient* buddy = theApp.clientlist->GetBuddy();
+	CUpDownClient* buddy = theApp->clientlist->GetBuddy();
 	if( buddy != NULL ) {
 		CMemFile bio(packetData, lenPacket);
 		CUInt128 check = bio.ReadUInt128();
@@ -1172,7 +1172,7 @@ void CKademliaUDPListener::SendPacket(const CMemFile &data, byte opcode, uint32 
 		packet->PackPacket();
 	}
 	theStats::AddUpOverheadKad(packet->GetPacketSize());
-	theApp.clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
+	theApp->clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
 }
 
 void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)
@@ -1184,7 +1184,7 @@ void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_i
 		printf("Packet dump:\n");
 		DumpMem(data, len);
 	}
-	CClientList::SourceList clientslist = theApp.clientlist->GetClientsByIP(ip);
+	CClientList::SourceList clientslist = theApp->clientlist->GetClientsByIP(ip);
 	if (!clientslist.empty()) {
 		for (CClientList::SourceList::iterator it = clientslist.begin(); it != clientslist.end(); ++it) {
 			printf("Ip Matches: %s\n",(const char*)unicode2char((*it)->GetClientFullInfo()));

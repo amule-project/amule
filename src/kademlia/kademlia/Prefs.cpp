@@ -62,7 +62,7 @@ using namespace Kademlia;
 
 CPrefs::CPrefs()
 {
-	Init(theApp.ConfigDir + wxT("preferencesKad.dat"));
+	Init(theApp->ConfigDir + wxT("preferencesKad.dat"));
 }
 
 CPrefs::~CPrefs()
@@ -182,13 +182,13 @@ void CPrefs::SetFirewalled()
 	//current state to prevent false reports during the recheck..
 	m_lastFirewallState = (m_firewalled<2);
 	m_firewalled = 0;
-	theApp.ShowConnectionState();
+	theApp->ShowConnectionState();
 }
 
 void CPrefs::IncFirewalled()
 {
 	m_firewalled++;
-	theApp.ShowConnectionState();
+	theApp->ShowConnectionState();
 }
 
 bool CPrefs::GetFindBuddy() /*const*/
@@ -205,7 +205,7 @@ void CPrefs::SetKademliaFiles()
 	//There is no real way to know how many files are in the Kad network..
 	//So we first try to see how many files per user are in the ED2K network..
 	//If that fails, we use a set value based on previous tests..
-	uint32 nServerAverage = theApp.serverlist->GetAvgFile();
+	uint32 nServerAverage = theApp->serverlist->GetAvgFile();
 	uint32 nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
 #ifdef __DEBUG__

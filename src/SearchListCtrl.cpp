@@ -248,9 +248,9 @@ void CSearchListCtrl::UpdateItemColor( long index )
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
 
-		CKnownFile* sameFile = theApp.downloadqueue->GetFileByID(file->GetFileHash());
+		CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(file->GetFileHash());
 		if ( !sameFile ) {
-			sameFile = theApp.knownfiles->FindKnownFileByID(file->GetFileHash());
+			sameFile = theApp->knownfiles->FindKnownFileByID(file->GetFileHash());
 		}
 
 		int red		= newcol.Red();
@@ -288,7 +288,7 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 	m_nResultsID = ResultsID;
 
 	if (ResultsID) {
-		const CSearchResultList& list = theApp.searchlist->GetSearchResults(ResultsID);
+		const CSearchResultList& list = theApp->searchlist->GetSearchResults(ResultsID);
 
 		for ( unsigned int i = 0; i < list.size(); i++ ) {
 			AddResult( list[i] );
@@ -381,10 +381,10 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 		result = ((result && !m_invert) || (!result && m_invert));
 	
 		if (result && m_filterKnown) {
-			result = !theApp.downloadqueue->GetFileByID(file->GetFileHash());
+			result = !theApp->downloadqueue->GetFileByID(file->GetFileHash());
 
 			if (result) {
-				result = !theApp.knownfiles->FindKnownFileByID(file->GetFileHash());
+				result = !theApp->knownfiles->FindKnownFileByID(file->GetFileHash());
 			}
 		}
 	}
@@ -522,9 +522,9 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		
 		wxMenu* cats = new wxMenu(_("Category"));
 		cats->Append(MP_ASSIGNCAT, _("Main"));
-		for (unsigned i = 1; i < theApp.glob_prefs->GetCatCount(); i++) {
+		for (unsigned i = 1; i < theApp->glob_prefs->GetCatCount(); i++) {
 			cats->Append(MP_ASSIGNCAT + i,
-				theApp.glob_prefs->GetCategory(i)->title);
+				theApp->glob_prefs->GetCategory(i)->title);
 		}
 		
 		menu.Append(MP_MENU_CATS, _("Download in category"), cats);
@@ -541,7 +541,7 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		// These should only be enabled for single-selections
 		bool enable = GetSelectedItemCount();
 		menu.Enable(MP_GETED2KLINK, enable);
-		menu.Enable(MP_MENU_CATS, (theApp.glob_prefs->GetCatCount() > 1));
+		menu.Enable(MP_MENU_CATS, (theApp->glob_prefs->GetCatCount() > 1));
 
 		PopupMenu(&menu, event.GetPoint());
 	} else {
@@ -574,13 +574,13 @@ void CSearchListCtrl::OnPopupGetUrl( wxCommandEvent& WXUNUSED(event) )
 	while( index != -1 ) {
 		CSearchFile* file = (CSearchFile*)GetItemData( index );
 
-		URIs += theApp.CreateED2kLink( file ) + wxT("\n");
+		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
 	if ( !URIs.IsEmpty() ) {
-		theApp.CopyTextToClipboard( URIs.RemoveLast() );
+		theApp->CopyTextToClipboard( URIs.RemoveLast() );
 	}
 }
 
@@ -593,7 +593,7 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
-	theApp.amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
+	theApp->amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
 }
 
 void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
@@ -604,10 +604,10 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	}
 
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
-	theApp.searchlist->StopGlobalSearch();
-	theApp.amuledlg->m_searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp.amuledlg->m_searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
-	theApp.amuledlg->m_searchwnd->StartNewSearch();
+	theApp->searchlist->StopGlobalSearch();
+	theApp->amuledlg->m_searchwnd->ResetControls();
+	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
+	theApp->amuledlg->m_searchwnd->StartNewSearch();
 }
 
 
@@ -765,7 +765,7 @@ void CSearchListCtrl::OnDrawItem(
 						imgWidth = 16;
 					}
 					
-					theApp.amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
+					theApp->amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
 							target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
 
 					// Move the text past the icon.

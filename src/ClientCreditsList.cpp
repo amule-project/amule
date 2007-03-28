@@ -67,7 +67,7 @@ CClientCreditsList::~CClientCreditsList()
 void CClientCreditsList::LoadList()
 {
 	CFile file;
-	wxString strFileName(theApp.ConfigDir + CLIENTS_MET_FILENAME);
+	wxString strFileName(theApp->ConfigDir + CLIENTS_MET_FILENAME);
 	if (!::wxFileExists(strFileName)) {
 		AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile"));
 		return;
@@ -83,7 +83,7 @@ void CClientCreditsList::LoadList()
 		}
 
 		// everything is ok, lets see if the backup exist...
-		wxString strBakFileName(theApp.ConfigDir + CLIENTS_MET_BAK_FILENAME);
+		wxString strBakFileName(theApp->ConfigDir + CLIENTS_MET_BAK_FILENAME);
 	
 		bool bCreateBackup = TRUE;
 		if (wxFileExists(strBakFileName)) {
@@ -173,7 +173,7 @@ void CClientCreditsList::SaveList()
 	AddDebugLogLineM( false, logCredits, wxT("Saved Credit list"));
 	m_nLastSaved = ::GetTickCount();
 
-	wxString name(theApp.ConfigDir + CLIENTS_MET_FILENAME);
+	wxString name(theApp->ConfigDir + CLIENTS_MET_FILENAME);
 	CFile file;
 
 	if ( !file.Create(name, true) ) {
@@ -254,7 +254,7 @@ bool CClientCreditsList::CreateKeyPair()
 		privkey.Initialize(rng,RSAKEYSIZE);
 
 		// Nothing we can do against this unicode2char :/
-		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME)));
+		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME)));
 		
 		privkey.DEREncode(privkeysink);
 		
@@ -284,8 +284,8 @@ void CClientCreditsList::InitalizeCrypting()
  
 	try {
 		// check if keyfile is there
- 		if (wxFileExists(theApp.ConfigDir + CRYPTKEY_FILENAME)) {
-			off_t keySize = GetFileSize(theApp.ConfigDir + CRYPTKEY_FILENAME);
+ 		if (wxFileExists(theApp->ConfigDir + CRYPTKEY_FILENAME)) {
+			off_t keySize = GetFileSize(theApp->ConfigDir + CRYPTKEY_FILENAME);
 			
 			if (keySize < 0) {
 				AddDebugLogLineM(true, logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
@@ -300,7 +300,7 @@ void CClientCreditsList::InitalizeCrypting()
  		}
 			
  		// load private key
- 		CryptoPP::FileSource filesource(unicode2char(theApp.ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
+ 		CryptoPP::FileSource filesource(unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
  		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
  		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));
@@ -393,16 +393,16 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 					break;
 				case CRYPT_CIP_REMOTECLIENT:
 					// Ignore local ip...
-					if (!theApp.GetPublicIP(true)) {
-						if (::IsLowID(theApp.GetED2KID())){
+					if (!theApp->GetPublicIP(true)) {
+						if (::IsLowID(theApp->GetED2KID())){
 							AddDebugLogLineM( false, logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 							// Fallback to local ip...
-							ChallengeIP = theApp.GetPublicIP();
+							ChallengeIP = theApp->GetPublicIP();
 						} else {
-							ChallengeIP = theApp.GetED2KID();
+							ChallengeIP = theApp->GetED2KID();
 						}
 					} else {
-						ChallengeIP = theApp.GetPublicIP();
+						ChallengeIP = theApp->GetPublicIP();
 					}
 					break;
 				case CRYPT_CIP_NONECLIENT: // maybe not supported in future versions

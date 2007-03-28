@@ -171,7 +171,7 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
 				if ( !Kademlia::CKademlia::IsRunning() ) {
 					Kademlia::CKademlia::Start();
-					theApp.ShowConnectionState();
+					theApp->ShowConnectionState();
 				}
 				Kademlia::CKademlia::Bootstrap(ip, port);				
 			} else {
@@ -189,13 +189,13 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 
 void CKadDlg::OnBnClickedBootstrapKnown(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.StartKad();
+	theApp->StartKad();
 }
 
 
 void CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt))
 {
-	theApp.StopKad();
+	theApp->StopKad();
 }
 
 
@@ -211,7 +211,7 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 			AddLogLineM(true, _("Invalid URL"));
 			return;
 		}
-		wxString strTempFilename(theApp.ConfigDir + wxT("nodes.dat.download"));
+		wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_NodesDat);
 		downloader->Create();
 		downloader->Run();

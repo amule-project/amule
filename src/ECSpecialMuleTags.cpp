@@ -33,7 +33,7 @@
 
 CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_CATEGORY, cat_index)
 {
-	Category_Struct *cat = theApp.glob_prefs->GetCategory(cat_index);
+	Category_Struct *cat = theApp->glob_prefs->GetCategory(cat_index);
 	switch (detail_level) {
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_INC_UPDATE:
@@ -60,20 +60,20 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, wxString name, wxString pat
 
 void CEC_Category_Tag::Apply()
 {
-	theApp.glob_prefs->UpdateCategory(GetInt(), Name(), Path(), Comment(), Color(), Prio());
+	theApp->glob_prefs->UpdateCategory(GetInt(), Name(), Path(), Comment(), Color(), Prio());
 }
 
 void CEC_Category_Tag::Create()
 {
-	theApp.glob_prefs->CreateCategory(Name(), Path(), Comment(), Color(), Prio());
+	theApp->glob_prefs->CreateCategory(Name(), Path(), Comment(), Color(), Prio());
 }
 
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_details, EC_DETAIL_LEVEL cat_details) : CECPacket(EC_OP_SET_PREFERENCES, pref_details)
 {
 	if (selection & EC_PREFS_CATEGORIES) {
-		if (theApp.glob_prefs->GetCatCount() > 1) {
+		if (theApp->glob_prefs->GetCatCount() > 1) {
 			CECEmptyTag cats(EC_TAG_PREFS_CATEGORIES);
-			for (unsigned int i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
+			for (unsigned int i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
 				CEC_Category_Tag catTag(i, cat_details);
 				cats.AddTag(catTag);
 			}
@@ -519,6 +519,6 @@ void CEC_Prefs_Packet::Apply()
 		}
 	}
 	
-	theApp.glob_prefs->Save();
+	theApp->glob_prefs->Save();
 }
 // File_checked_for_headers

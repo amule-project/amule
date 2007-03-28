@@ -243,7 +243,7 @@ wxThread::ExitCode CPartFileConvert::Entry()
 	UpdateGUI(NULL);
 
 	if (imported) {
-		theApp.sharedfiles->PublishNextTurn();
+		theApp->sharedfiles->PublishNextTurn();
 	}
 
 	AddDebugLogLineM(false, logPfConvert, wxT("No more jobs on queue, exiting from thread."));
@@ -292,7 +292,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	UpdateGUI(s_pfconverting);
 
-	if (theApp.downloadqueue->GetFileByID(file->GetFileHash())) {
+	if (theApp->downloadqueue->GetFileByID(file->GetFileHash())) {
 		delete file;
 		return CONV_ALREADYEXISTS;
 	}
@@ -475,11 +475,11 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 	UpdateGUI(100, _("Adding download and saving new partfile"));
 
-	theApp.downloadqueue->AddDownload(file, thePrefs::AddNewFilesPaused(), 0);
+	theApp->downloadqueue->AddDownload(file, thePrefs::AddNewFilesPaused(), 0);
 	file->SavePartFile();
 	
 	if (file->GetStatus(true) == PS_READY) {
-		theApp.sharedfiles->SafeAddKFile(file); // part files are always shared files
+		theApp->sharedfiles->SafeAddKFile(file); // part files are always shared files
 	}
 
 	if (s_pfconverting->removeSource) {

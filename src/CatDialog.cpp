@@ -69,7 +69,7 @@ wxDialog(parent, -1, _("Category"),
 	// we dont really care. If it fails (too high index or such), then we
 	// simply get NULL and create a new category
 	if (index > -1) {
-		m_category = theApp.glob_prefs->GetCategory(index);
+		m_category = theApp->glob_prefs->GetCategory(index);
 	}
 	
 	if (m_category) {
@@ -179,8 +179,8 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 	if (m_category) {
 		// Check if the original category still exists
 		bool found = false;
-		for (uint32 i = 0; i < theApp.glob_prefs->GetCatCount(); ++i) {
-			if (m_category == theApp.glob_prefs->GetCategory(i)) {
+		for (uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
+			if (m_category == theApp->glob_prefs->GetCategory(i)) {
 				found = true;
 				index = i;
 				break;
@@ -193,23 +193,23 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	if (!m_category) {
 		// New category, or the old one is gone
-		m_category = theApp.glob_prefs->CreateCategory(
+		m_category = theApp->glob_prefs->CreateCategory(
 			newname, newpath, 
 			CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(),
 			m_color,
  			CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
         	
-		theApp.amuledlg->m_transferwnd->AddCategory(m_category);
+		theApp->amuledlg->m_transferwnd->AddCategory(m_category);
 	} else {
 		wxString oldpath = m_category->incomingpath;
 
-		theApp.glob_prefs->UpdateCategory(index, newname, newpath, 
+		theApp->glob_prefs->UpdateCategory(index, newname, newpath, 
         	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
         	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());
 
-		theApp.amuledlg->m_transferwnd->UpdateCategory(index);
-		theApp.amuledlg->m_transferwnd->downloadlistctrl->Refresh();
-		theApp.amuledlg->m_searchwnd->UpdateCatChoice();
+		theApp->amuledlg->m_transferwnd->UpdateCategory(index);
+		theApp->amuledlg->m_transferwnd->downloadlistctrl->Refresh();
+		theApp->amuledlg->m_searchwnd->UpdateCatChoice();
 	}
 	
 	EndModal(wxID_OK);
