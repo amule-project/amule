@@ -117,6 +117,7 @@ Trunk
 		* UTF8_MoveFile() now uses wxRenameFile().
 		* theApp is now a global pointer, so that we can access the
 		  global application object from within a core file.
+		* Fix for the COLORREF compilation problem on windows.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
