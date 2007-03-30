@@ -122,6 +122,13 @@ Trunk
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
 
+	Skolnick:
+		* Added the time to the aMule stats in the wxCas window and
+		  in the generated image.
+		* Added the time to the aMule stats in the cas output and
+		  in the generated image
+		* Added option to generate image in JPG format (along with PNG)
+
 	Vollstrecker:
 		* Added possibility to give the path for output right with
 		  -p or -o in cas.

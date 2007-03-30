@@ -37,12 +37,13 @@
  #include "wx/wx.h"
 #endif
 
-#include <wx/image.h>
-#include <wx/version.h>
 #include <wx/config.h>
 #include <wx/datetime.h>
-#include <wx/wfstream.h>
+#include <wx/filedlg.h>
+#include <wx/image.h>
 #include <wx/protocol/ftp.h>
+#include <wx/version.h>
+#include <wx/wfstream.h>
 
 #include "wxcasframe.h"
 #include "wxcasprint.h"
@@ -130,6 +131,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_statLine_4 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_4() );
 	m_statLine_5 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_5() );
 	m_statLine_6 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_6() );
+	m_statLine_7 = new wxStaticText ( m_mainPanel, -1, MakeStatLine_7() );
 
 	m_hitLine = new wxStaticText ( m_mainPanel, -1, MakeHitsLine_1() );
 	m_hitButton =
@@ -156,6 +158,7 @@ WxCasFrame::WxCasFrame ( const wxString & title ) :
 	m_sigPanelSBoxSizer->Add ( m_statLine_4, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 	m_sigPanelSBoxSizer->Add ( m_statLine_5, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 	m_sigPanelSBoxSizer->Add ( m_statLine_6, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
+	m_sigPanelSBoxSizer->Add ( m_statLine_7, 0, wxALL | wxALIGN_CENTER | wxGROW, 5 );
 
 	m_hitPanelSBoxSizer->Add ( m_hitLine, 0, wxALL | wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxGROW, 5 );
 	m_hitPanelSBoxSizer->Add ( m_hitButton, 0, wxALL | wxALIGN_RIGHT, 5 );
@@ -292,17 +295,19 @@ WxCasFrame::GetStatImage () const
 	memdc.
 	SetTextForeground ( *wxWHITE );
 	memdc.
-	DrawText ( m_statLine_1->GetLabel (), 25, 8 );
+	DrawText ( m_statLine_1->GetLabel (), 25, 0 );
 	memdc.
-	DrawText ( m_statLine_2->GetLabel (), 25, 26 );
+	DrawText ( m_statLine_2->GetLabel (), 25, 17 );
 	memdc.
-	DrawText ( m_statLine_3->GetLabel (), 25, 43 );
+	DrawText ( m_statLine_3->GetLabel (), 25, 34 );
 	memdc.
-	DrawText ( m_statLine_4->GetLabel (), 25, 60 );
+	DrawText ( m_statLine_4->GetLabel (), 25, 51 );
 	memdc.
-	DrawText ( m_statLine_5->GetLabel (), 25, 77 );
+	DrawText ( m_statLine_5->GetLabel (), 25, 68 );
 	memdc.
-	DrawText ( m_statLine_6->GetLabel (), 25, 94 );
+	DrawText ( m_statLine_6->GetLabel (), 25, 85 );
+	memdc.
+	DrawText ( m_statLine_7->GetLabel (), 25, 102 );
 	memdc.
 	SelectObject ( wxNullBitmap );
 
@@ -351,7 +356,7 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 	                        wxT ( "PNG files (*.png)|*.png|" )
 	                        wxT ( "JPEG files (*.jpg)|*.jpg|" )
 	                        wxT ( "BMP files (*.bmp)|*.bmp|" ),
-	                        wxSAVE );
+	                        wxFD_SAVE );
 
 	if ( !saveFileName.empty () ) {
 		// This one guesses image format from filename extension
@@ -1085,6 +1090,16 @@ WxCasFrame::MakeStatLine_6() const
 	                   + _( " file(s), Clients on queue: " )
 	                   + m_aMuleSig->GetQueue ();
 
+	return ( newline );
+}
+
+wxString
+WxCasFrame::MakeStatLine_7() const
+{
+	wxDateTime now = wxDateTime::Now();
+	wxString newline = _( "Time: " )
+	                   + now.Format( wxDefaultDateTimeFormat , wxDateTime::Local );
+	
 	return ( newline );
 }
 

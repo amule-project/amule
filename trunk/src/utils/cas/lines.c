@@ -27,7 +27,7 @@
 void CreateLine(char *lines[], int line, const char *format, ...)
 {
 	/* Guess we need no more than 80 bytes. */
-	int n, size = 80;
+	int n, size = 100;
 	char *p;
 	va_list ap;
 	if ((p = malloc(size)) == NULL) {

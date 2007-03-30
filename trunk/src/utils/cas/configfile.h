@@ -29,16 +29,17 @@
 #ifndef CAS_CONFIGFILE_H
 #define CAS_CONFIGFILE_H
 
-#define IMG_TEXTLINES 6
+#define IMG_TEXTLINES 7
 
 typedef struct {
-        char font[120];
-        char source[120];
+	char font[120];
+	char source[120];
 	char template[120];
-        int x[6];
-        int y[6];
-        int enabled[6];
-        float size;
+	int x[6];
+	int y[6];
+	int enabled[6];
+	float size;
+	int img_type; // 0 = PNG, else = JPG
 } CONF;
 
 int writeconfig(void);
