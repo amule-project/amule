@@ -24,7 +24,6 @@
  *  Free Software Foundation, Inc.,
  *  51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,7 +87,7 @@ int main(int argc, char *argv[])
 	char *config_path=NULL;
 	char *path;
 	char *stats[20];
-	char *lines[6];
+	char *lines[7];
 	long lSize;
 	char * buffer;
 	int i;
@@ -96,6 +95,9 @@ int main(int argc, char *argv[])
 	char *path_for_picture=NULL;
 	char *path_for_html=NULL;
 	CONF config;
+	time_t lt;
+	struct tm *ltp;
+	char arr[20];
 
 	while ((c = getopt_long (argc, argv, "c:P:H:hpo", long_options, NULL)) != -1)
 
@@ -189,11 +191,14 @@ int main(int argc, char *argv[])
 	stats[15] = strtok (NULL,"\n"); /* Session upload */
 	stats[16] = strtok (NULL,"\n"); /* aMule running Time */
 
-	/* if amule isnt running say that and exit else print out the stuff
-	 * [ToDo] States 0 & 2 mean offline/connecting not "not running"...
-	 */
+	// local time stored as stats[17]
+	lt = time(NULL);
+	ltp = localtime(&lt);
+	strftime(arr, 20, "%b %d %Y, %H:%M", ltp);
+
+	// if amule isn't running say that and exit else print out the stuff
 	
-	//if amule uptime is 0, then its not running...
+	// if amule uptime is 0, then its not running...
 	if (strncmp(stats[16],"0",1) == 0 ) {
 		perror("aMule is not running\n");
 		exit(3);
@@ -213,7 +218,7 @@ int main(int argc, char *argv[])
 	else if (strncmp(stats[0],"0",1) == 0 && strncmp(stats[5],"0",1) != 0)
 		CreateLine(lines, 1, "%s is connected to ", stats[10]);
 	else
-		CreateLine(lines, 1, "%s is connnnected to %s [%s:%s] with ", stats[10],
+		CreateLine(lines, 1, "%s is connected to %s [%s:%s] with ", stats[10],
 			stats[1], stats[2], stats[3]);
 	
 	
@@ -254,6 +259,8 @@ int main(int argc, char *argv[])
 
 	CreateLine(lines, 5, "Sharing: %s file(s), Clients on queue: %s\n", stats[9] , stats[8]);
 
+	CreateLine(lines, 6, "Time: %s\n", arr);
+
 #ifdef __GD__
 	if (use_out_pic == 1) {
 		if (!readconfig(&config)) {
@@ -290,7 +297,7 @@ int main(int argc, char *argv[])
 
 		exit(0);
 	}
-	for (i = 0; i <= 5; i++) {
+	for (i = 0; i <= 6; i++) {
 		printf("%s", lines[i]);
 		free(lines[i]);
 	}

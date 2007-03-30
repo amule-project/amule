@@ -25,6 +25,7 @@
  *  51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
+
 #ifdef __GD__
 
 #include <stdlib.h>
@@ -64,19 +65,31 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 	for (i = 0; i <= (IMG_TEXTLINES - 1); i++) {
 		if (config->enabled[i] == 1)
 			gdImageStringFT(im, &brect[0], white, config->font, config->size,
-					0., config->x[i], config->y[i], lines[i]);
+					0.0, config->x[i], config->y[i], lines[i]);
 	}
 	
-	path = get_amule_path("aMule-online-sign.png", 0, path_for_picture);
-
-	if (path == NULL) {
+	if (config->img_type==0) {
+		path = get_amule_path("aMule-online-sign.png", 0, path_for_picture);
+	} else {
+		path = get_amule_path("aMule-online-sign.jpg", 0, path_for_picture);
+	}
+		
+	if (path == NULL && config->img_type==0) {
 		perror("could not get PNG path\n");
+		return 0;
+	} else if (path == NULL) {
+		perror("could not get JPG path\n");
 		return 0;
 	}
 	out = fopen(path, "w");
 	free(path);
-
-	gdImagePng(im, out);
+	
+	if (config->img_type==0) {
+		gdImagePng(im, out);
+	} else {
+		gdImageJpeg(im, out, -1);
+	}
+	
 	fclose(out);
 	printf("Online Signature picture created.\n");
 	gdImageDestroy(im);
@@ -85,3 +98,4 @@ int createimage(CONF *config, char *lines[IMG_TEXTLINES], char *path_for_picture
 }
 
 #endif
+

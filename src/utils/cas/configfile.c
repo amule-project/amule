@@ -47,13 +47,15 @@ int writeconfig(void)
 		"font /usr/share/fonts/corefonts/times.ttf\n",
 		"font_size 10.5\n",
 		"source_image /usr/share/pixmaps/stat.png\n",
-		"first_line 23,19,1\n",
-		"second_line 23,36,1\n",
-		"third_line 23,54,1\n",
-		"fourth_line 23,72,1\n",
-		"fifth_line 23,89,1\n",
-		"sixth_line 23,106,1\n",
-		"template /usr/share/pixmaps/tmp.html\n"
+		"first_line 23,17,1\n",
+		"second_line 23,34,1\n",
+		"third_line 23,51,1\n",
+		"fourth_line 23,68,1\n",
+		"fifth_line 23,85,1\n",
+		"sixth_line 23,102,1\n",
+		"seventh_line 23,119,1\n",
+		"template /usr/share/pixmaps/tmp.html\n",
+		"img_type 0\n"
 	};
 
 	path = get_path("casrc");
@@ -79,66 +81,66 @@ int readconfig(CONF *config)
 {
 	char buffer[120], option[15], *path;
 	FILE *conf;
-	int i = 0, ler;
-	size_t len;
-	char lines[IMG_TEXTLINES][12] = {
+	int i = 0;
+	char lines[IMG_TEXTLINES][13] = {
 		"first_line",
 		"second_line",
 		"third_line",
 		"fourth_line",
 		"fifth_line",
-		"sixth_line"
+		"sixth_line",
+		"seventh_line"
 	};
 
 	path = get_path("casrc");
-	if (path == NULL)
+	if (path == NULL) {
 		return 0;
+	}
 
 	if ((conf = fopen(path, "r")) == NULL) {
 		printf("Unable to open %s. Creating it.\n", path);
 		free(path);
 		if (!writeconfig()) {
-			perror("readconfig: unable to create initial config file");
+			perror("readconfig: unable to create initial config file\n");
 		}
 		return 0;
 	}
 	free(path);
 
 	buffer[0] = 0;
-	len = 0;
 	while (!feof(conf)) {
-		ler = fgetc(conf);
-		if (ler == 13); /* Jacobo221 - Make it DOS compatible */
-		else if (ler != 10) {
-			if (len+1 < sizeof(buffer)) {
-				buffer[len++] = ler;
-				buffer[len] = '\0';
-			}
-		} else {
-			/* Jacobo221 - [ToDo] Only first char per line is comment... */
+		// Jacobo221 - [ToDo] Only first char per line is comment...
+		if (fgets (buffer,120,conf)) {
 			if (buffer[0] != '#') {
 				/* Only two fileds per line */
 				sscanf(buffer, "%s %*s", option);
-
-				/* Jacobo221 - [ToDo] So lines can't be swapped... */
-				if (strcmp(option, "font") == 0)
+				fflush (stdout);
+		// Jacobo221 - [ToDo] So lines can't be swapped...
+				if (strcmp(option, "font") == 0) {
 					sscanf(buffer, "%*s %s", config->font);
-				if (strcmp(option, "font_size") == 0)
+				}
+				if (strcmp(option, "font_size") == 0) {
 					sscanf(buffer, "%*s %f", &config->size);
-				if (strcmp(option, "source_image") == 0)
+				}
+				if (strcmp(option, "source_image") == 0) {
 					sscanf(buffer, "%*s %s", config->source);
-				if (strcmp(option, "template") == 0)
+				}
+				if (strcmp(option, "template") == 0) {
 					sscanf(buffer, "%*s %s", config->template);
+				}
+				if (strcmp(option, "img_type") == 0) {
+					sscanf(buffer, "%*s %d", &config->img_type);
+				}
 					
-				for (i = 0; i <= IMG_TEXTLINES; i++)
-					if (strcmp(option, lines[i]) == 0)
+				for (i = 0; i <= IMG_TEXTLINES; i++) {
+					if (strcmp(option, lines[i]) == 0) {
 						sscanf(buffer,
-								"%*s %d,%d,%d",
-								&config->x[i], &config->y[i],
-								&config->enabled[i]);
+							"%*s %d,%d,%d",
+							&config->x[i], &config->y[i],
+							&config->enabled[i]);
+					}
+				}
 			}
-			buffer[0] = 0;
-			len = 0;
 		}
 	}
 
@@ -146,3 +148,4 @@ int readconfig(CONF *config)
 
 	return 1;
 }
+
