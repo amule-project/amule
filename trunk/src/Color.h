@@ -29,9 +29,9 @@
 
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
 #include <inttypes.h>	// Do_not_auto_remove (old gcc)
-typedef uint32_t		COLORREF;
+typedef uint32_t COLORREF;
 #else
-#include <wx/defs.h>	// Do_not_auto_remove (COLORREF for windows)
+typedef unsigned long COLORREF;
 #endif
 
 
