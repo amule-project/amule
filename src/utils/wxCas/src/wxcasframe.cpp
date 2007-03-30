@@ -356,8 +356,13 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 	                        wxT ( "PNG files (*.png)|*.png|" )
 	                        wxT ( "JPEG files (*.jpg)|*.jpg|" )
 	                        wxT ( "BMP files (*.bmp)|*.bmp|" ),
-	                        wxFD_SAVE );
-
+#if wxCHECK_VERSION(2,8,0)
+	                        wxFD_SAVE
+#else
+	                        wxSAVE
+#endif
+				);
+	
 	if ( !saveFileName.empty () ) {
 		// This one guesses image format from filename extension
 		// (it may fail if the extension is not recognized):
