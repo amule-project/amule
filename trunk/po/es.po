@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-28 03:31+0200\n"
+"POT-Creation-Date: 2007-03-31 03:31+0200\n"
 "PO-Revision-Date: 2006-07-01 18:13+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -709,84 +709,84 @@ msgstr "%i día(s) %i hora(s) %i min %i s"
 msgid "wxCas, aMule Online Statistics"
 msgstr "wxCas, Estadísticas aMule en linea"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:95
+#: src/utils/wxCas/src/wxcasframe.cpp:96
 #: src/utils/aLinkCreator/src/alcframe.cpp:83
 msgid "Welcome!"
 msgstr "¡Bienvenido!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:115
+#: src/utils/wxCas/src/wxcasframe.cpp:116
 msgid "aMule"
 msgstr "aMule"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:119
+#: src/utils/wxCas/src/wxcasframe.cpp:120
 msgid "Maximum DL rate since wxCas is running"
 msgstr "Máximo índice Desc desde que wxCas esta ejecutándose: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:123
+#: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
 msgstr "Máximo índice DESC absoluto durante ejecuciones anteriores de wxCas"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:136
-#: src/utils/wxCas/src/wxcasframe.cpp:140 src/muuli_wdr.cpp:3046
+#: src/utils/wxCas/src/wxcasframe.cpp:138
+#: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:3046
 #: src/muuli_wdr.cpp:3081
 msgid "Reset"
 msgstr "Restablecer"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:145
+#: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
 msgstr "Sistema"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:208
-#: src/utils/wxCas/src/wxcasframe.cpp:335
+#: src/utils/wxCas/src/wxcasframe.cpp:211
+#: src/utils/wxCas/src/wxcasframe.cpp:340
 msgid "Stop Auto Refresh"
 msgstr "Parar auto recargar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:213
+#: src/utils/wxCas/src/wxcasframe.cpp:216
 msgid "Save Online Statistics image"
 msgstr "Salvar imagen de estadísticas en linea"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:216
+#: src/utils/wxCas/src/wxcasframe.cpp:219
 msgid "Print Online Statistics image"
 msgstr "Imprimir imagen de estadísticas en linea"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:219
+#: src/utils/wxCas/src/wxcasframe.cpp:222
 msgid "Preferences setting"
 msgstr "Opciones"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:224
-#: src/utils/wxCas/src/wxcasframe.cpp:400
+#: src/utils/wxCas/src/wxcasframe.cpp:227
+#: src/utils/wxCas/src/wxcasframe.cpp:410
 msgid "About wxCas"
 msgstr "Acerca de wxCas"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:326
+#: src/utils/wxCas/src/wxcasframe.cpp:331
 msgid "Start Auto Refresh"
 msgstr "Iniciar auto recargar"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:328
+#: src/utils/wxCas/src/wxcasframe.cpp:333
 msgid "Auto Refresh stopped"
 msgstr "Auto recargar, parado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:337
+#: src/utils/wxCas/src/wxcasframe.cpp:342
 msgid "Auto Refresh started"
 msgstr "Auto recargar, iniciado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:347
+#: src/utils/wxCas/src/wxcasframe.cpp:352
 msgid "Save Statistics Image"
 msgstr "Salvar imagen de estadísticas"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:361
+#: src/utils/wxCas/src/wxcasframe.cpp:371
 msgid "No handler for this file type."
 msgstr "Sin asociar este tipo de archivo"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:362
+#: src/utils/wxCas/src/wxcasframe.cpp:372
 msgid "File was not saved"
 msgstr "Archivo no fue guardado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:373
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid "aMule Online Statistics"
 msgstr "Estadísticas aMule en linea"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:377
+#: src/utils/wxCas/src/wxcasframe.cpp:387
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -794,11 +794,11 @@ msgstr ""
 "Hubo un problema imprimiendo.\n"
 "Tal vez tu impresora actual no este configurada"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:378
+#: src/utils/wxCas/src/wxcasframe.cpp:388
 msgid "Printing"
 msgstr "Imprimiendo"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:396
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -809,122 +809,122 @@ msgid ""
 "Distributed under GPL"
 msgstr "wxCas, Estadística de firma en linea de aMule"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:567
+#: src/utils/wxCas/src/wxcasframe.cpp:577
 msgid "Oh Oh, aMule is not running..."
 msgstr "Oh Oh, aMule no está ejecuntandose..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:638
-#: src/utils/wxCas/src/wxcasframe.cpp:703
-#: src/utils/wxCas/src/wxcasframe.cpp:767
+#: src/utils/wxCas/src/wxcasframe.cpp:648
+#: src/utils/wxCas/src/wxcasframe.cpp:713
+#: src/utils/wxCas/src/wxcasframe.cpp:777
 msgid "aMule is running"
 msgstr "aMule esta iniciado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:832
+#: src/utils/wxCas/src/wxcasframe.cpp:842
 msgid "aMule is running, but disconnected"
 msgstr "aMule se está ejecutando, pero está desconectado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:898
+#: src/utils/wxCas/src/wxcasframe.cpp:908
 msgid "aMule is connecting..."
 msgstr "aMule esta conectando..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:902
+#: src/utils/wxCas/src/wxcasframe.cpp:912
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "Oh Oh, estado de aMule desconocido..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:973
-#: src/utils/wxCas/src/wxcasframe.cpp:978
-#: src/utils/wxCas/src/wxcasframe.cpp:982
-#: src/utils/wxCas/src/wxcasframe.cpp:986
-#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:983
+#: src/utils/wxCas/src/wxcasframe.cpp:988
+#: src/utils/wxCas/src/wxcasframe.cpp:992
+#: src/utils/wxCas/src/wxcasframe.cpp:996
+#: src/utils/wxCas/src/wxcasframe.cpp:1000
 msgid "aMule "
 msgstr "aMule "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:975
+#: src/utils/wxCas/src/wxcasframe.cpp:985
 msgid " has been running for "
 msgstr " ha sido ejecutado durante"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:980
+#: src/utils/wxCas/src/wxcasframe.cpp:990
 msgid " is stopped !"
 msgstr " ¡ está parado !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:984
-#: src/utils/wxCas/src/wxcasframe.cpp:1008
+#: src/utils/wxCas/src/wxcasframe.cpp:994
+#: src/utils/wxCas/src/wxcasframe.cpp:1018
 msgid " is not connected !"
 msgstr " ¡ no está conectado !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:988
+#: src/utils/wxCas/src/wxcasframe.cpp:998
 msgid " is connecting..."
 msgstr " está conectando..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:992
+#: src/utils/wxCas/src/wxcasframe.cpp:1002
 msgid " is doing something strange, check it !"
 msgstr " ha pasado algo extraño, ¡ compruébalo !"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1013
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is connected to "
 msgstr " está conectado a"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1014
+#: src/utils/wxCas/src/wxcasframe.cpp:1024
 msgid " Kad: "
 msgstr " Kad: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1016
-#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:683
+#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1046 src/TextClient.cpp:683
 msgid "ok"
 msgstr "ok"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1018
-#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:681
+#: src/utils/wxCas/src/wxcasframe.cpp:1028
+#: src/utils/wxCas/src/wxcasframe.cpp:1048 src/TextClient.cpp:681
 msgid "firewalled"
 msgstr "detras de cortafuegos"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1020
-#: src/utils/wxCas/src/wxcasframe.cpp:1040
+#: src/utils/wxCas/src/wxcasframe.cpp:1030
+#: src/utils/wxCas/src/wxcasframe.cpp:1050
 msgid "off"
 msgstr "apagado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1036
 msgid " is on "
 msgstr " conectado"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1028
+#: src/utils/wxCas/src/wxcasframe.cpp:1038
 msgid " ["
 msgstr " ["
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1030 src/muuli_wdr.cpp:3134
+#: src/utils/wxCas/src/wxcasframe.cpp:1040 src/muuli_wdr.cpp:3134
 msgid ":"
 msgstr ":"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1032
+#: src/utils/wxCas/src/wxcasframe.cpp:1042
 msgid "] with "
 msgstr "] con "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1034
+#: src/utils/wxCas/src/wxcasframe.cpp:1044
 msgid " | Kad: "
 msgstr " | Kad: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid "Total Download: "
 msgstr "Total Descargado:"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1051
-#: src/utils/wxCas/src/wxcasframe.cpp:1062
+#: src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/utils/wxCas/src/wxcasframe.cpp:1072
 msgid ", Upload: "
 msgstr ", Subido: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1060
+#: src/utils/wxCas/src/wxcasframe.cpp:1070
 msgid "Session Download: "
 msgstr "Descarga de sesión"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1071
+#: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "Download: "
 msgstr "Descargado: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1073
+#: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid " kB/s, Upload: "
 msgstr " kB/s, Subida: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/DownloadListCtrl.cpp:1352
+#: src/utils/wxCas/src/wxcasframe.cpp:1085 src/DownloadListCtrl.cpp:1352
 #: src/DownloadListCtrl.cpp:1643 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
@@ -933,30 +933,34 @@ msgstr " kB/s, Subida: "
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1083
+#: src/utils/wxCas/src/wxcasframe.cpp:1093
 msgid "Sharing: "
 msgstr "Compartiendo: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1085
+#: src/utils/wxCas/src/wxcasframe.cpp:1095
 msgid " file(s), Clients on queue: "
 msgstr "archivo(s), Clientes en cola: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1094
-#: src/utils/wxCas/src/wxcasframe.cpp:1104 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1105
+msgid "Time: "
+msgstr ""
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1114
+#: src/utils/wxCas/src/wxcasframe.cpp:1124 src/FileDetailDialog.cpp:112
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
-#: src/utils/wxCas/src/wxcasframe.cpp:1105
+#: src/utils/wxCas/src/wxcasframe.cpp:1115
+#: src/utils/wxCas/src/wxcasframe.cpp:1125
 msgid " on "
 msgstr " en "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1115
+#: src/utils/wxCas/src/wxcasframe.cpp:1135
 msgid "System Load Average (1-5-15 min): "
 msgstr "Media de carga del sistema (1-5-15 min): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1126
+#: src/utils/wxCas/src/wxcasframe.cpp:1146
 msgid "System uptime: "
 msgstr "Tiempo de ejecución del sistema"
 
@@ -2849,7 +2853,7 @@ msgstr "Descarga"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:573
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
 msgid "Main"
 msgstr "Principal"
 
@@ -6579,7 +6583,7 @@ msgstr ""
 msgid "Search warning"
 msgstr "Alerta de búsqueda"
 
-#: src/SearchDlg.cpp:509
+#: src/SearchDlg.cpp:504
 msgid "Search warning."
 msgstr "Alerta de búsqueda."
 
