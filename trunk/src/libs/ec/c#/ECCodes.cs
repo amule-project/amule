@@ -34,7 +34,7 @@ enum ECFlags {
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
-	EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
+	//EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
 };
 enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
