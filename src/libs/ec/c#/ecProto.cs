@@ -69,7 +69,7 @@ namespace amule.net
                 //
             }
 
-            public int Size()
+            protected int Size()
             {
                 int total_size = m_size;
                 foreach (ecTag t in m_subtags) {
@@ -256,6 +256,7 @@ namespace amule.net
             const int MaxUncompressedPacket = 0x6666;
 
             private ECOpCodes m_opcode;
+            protected Int32 m_flags;
 
             //
             // Parsing ctor
@@ -301,9 +302,14 @@ namespace amule.net
                 return t;
             }
  
+            public ecPacket()
+            {
+                m_flags = 0x20;
+            }
+
             public ecPacket(BinaryReader br)
             {
-                Int32 flags = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                m_flags = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
                 Int32 packet_size = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
                 m_opcode = (ECOpCodes)br.ReadByte();
 
@@ -323,26 +329,42 @@ namespace amule.net
                 m_opcode = cmd;
             }
 
+            //
+            // Size of data for TX, not of payload
+            //
             public int PacketSize()
             {
                 int packet_size = Size();
-                // 1 (command) + 2 (tag count)
-                return packet_size + 1 + 2;
+                if ((m_flags & (UInt32)ECFlags.EC_FLAG_ACCEPTS) != 0) {
+                    packet_size += 4;
+                }
+                // 1 (command) + 2 (tag count) + 4 (flags) + 4 (total size)
+                return packet_size + 1 + 2 + 4 + 4;
+            }
+
+            public ECOpCodes Opcode()
+            {
+                return m_opcode;
             }
 
             public override void Write(BinaryWriter wr)
             {
-                UInt32 flags = 0x20;
-                int packet_size = PacketSize();
+                // 1 (command) + 2 (tag count)
+                int packet_size = Size() + 1 + 2;
                 if ( packet_size > MaxUncompressedPacket ) {
-                    flags |= (UInt32)ECFlags.EC_FLAG_ZLIB;
+                    m_flags |= (Int32)ECFlags.EC_FLAG_ZLIB;
                 }
 
-                if ((flags & (UInt32)ECFlags.EC_FLAG_ZLIB) != 0) {
+                if ((m_flags & (UInt32)ECFlags.EC_FLAG_ZLIB) != 0) {
                     throw new NotImplementedException("no zlib compression yet");
                 }
 
-                wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(flags)));
+
+                wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(m_flags)));
+                if ((m_flags & (UInt32)ECFlags.EC_FLAG_ACCEPTS) != 0) {
+                    wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(m_flags)));
+                }
+
                 wr.Write(System.Net.IPAddress.HostToNetworkOrder((Int32)(packet_size)));
                 wr.Write((byte)m_opcode);
                 if ( m_subtags.Count != 0 ) {
@@ -358,6 +380,8 @@ namespace amule.net
             public ecLoginPacket(string client_name, string version, string pass)
                 : base(ECOpCodes.EC_OP_AUTH_REQ)
             {
+                m_flags |= 0x20 | (Int32)ECFlags.EC_FLAG_ACCEPTS;
+
                 AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT_NAME, client_name));
                 AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT_VERSION, version));
                 AddSubtag(new ecTagInt(ECTagNames.EC_TAG_PROTOCOL_VERSION,

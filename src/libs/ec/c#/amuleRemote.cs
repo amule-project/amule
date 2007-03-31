@@ -63,8 +63,6 @@ namespace amule.net
             m_op_Done.Set();
         }
 
-        UInt32 flags;
-
         Socket m_s;
 
         static void ConnectCallback(IAsyncResult ar)
@@ -104,6 +102,8 @@ namespace amule.net
             int bytesRead = o.m_s.EndReceive(ar);
             if ( bytesRead == 0 ) {
                 // remote side closed connection. 
+                // indicate error to caller
+                o.m_rx_byte_count = -1;
                 m_op_Done.Set();
                 return;
             }
@@ -114,10 +114,9 @@ namespace amule.net
             if (o.m_rx_byte_count < 8) {
                 if ((o.m_rx_byte_count + bytesRead) >= 8) {
 
-                o.m_rx_byte_count += bytesRead;
                 // got flags and packet size - may proceed.
-                Int32 val32 = (Int32)(o.m_rx_buffer[4] | (o.m_rx_buffer[5] << 8) |
-                    (o.m_rx_buffer[6] << 16) | (o.m_rx_buffer[7] << 24));
+                Int32 flags = o.m_sock_reader.ReadInt32();
+                Int32 val32 = o.m_sock_reader.ReadInt32();
 
                 o.m_rx_remaining_count = (int)IPAddress.NetworkToHostOrder(val32) - (bytesRead - 8);
                 Console.WriteLine("RxCallback: expecting packet size={0}", o.m_rx_remaining_count);
@@ -145,11 +144,18 @@ namespace amule.net
 
         public bool SendPacket(ecProto.ecPacket packet)
         {
+            m_tx_mem_stream.Seek(0, SeekOrigin.Begin);
+            packet.Write(m_sock_writer);
+
+            m_op_Done.Reset();
+            m_s.BeginSend(m_tx_buffer, 0, packet.PacketSize(),
+                SocketFlags.None, new AsyncCallback(TxCallback), this);
+
             return true;
         }
 
         [DnsPermission(SecurityAction.Demand, Unrestricted = true)]
-        public bool ConnectToCore(string host, int port, string login, ref string error)
+        public bool ConnectToCore(string host, int port, string pass, ref string error)
         {
             try {
                 m_op_Done.Reset();
@@ -177,35 +183,39 @@ namespace amule.net
                     error = connectContext.errorMsg;
                     return false;
                 }
-                //m_socket_stream = new NetworkStream(m_s);
-
-                //m_sock_reader = new BinaryReader(m_socket_stream);
 
                 m_tx_mem_stream = new MemoryStream(m_tx_buffer);
                 m_sock_writer = new BinaryWriter(m_tx_mem_stream);
                 m_rx_mem_stream = new MemoryStream(m_rx_buffer);
                 m_sock_reader = new BinaryReader(m_rx_mem_stream);
 
-                ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", "123456");
-                p.Write(m_sock_writer);
+                ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", pass);
+                SendPacket(p);
 
-                m_op_Done.Reset();
-                m_s.BeginSend(m_tx_buffer, 0, p.PacketSize()+8, SocketFlags.None, new AsyncCallback(TxCallback), this);
                 if (!m_op_Done.WaitOne(1000, true)) {
                     // Was unable to send login request for 1sec. Line must be really slow
                     return false;
                 }
-                m_tx_mem_stream.Seek(0, SeekOrigin.Begin);
 
                 m_op_Done.Reset();
                 // reply packet is supposed to have at least 8 bytes
                 m_rx_remaining_count = 8;
+                m_rx_mem_stream.Seek(0, SeekOrigin.Begin);
                 m_s.BeginReceive(m_rx_buffer, 0, 8, SocketFlags.None, new AsyncCallback(RxCallback), this);
 
                 // FIXME: must be able to cancel this read.
                 m_op_Done.WaitOne();
+                if ( m_rx_byte_count == -1 ) {
+                    // remote side terminated connection
+                    Console.WriteLine("Connection terminated on remote side");
+                }
+                m_rx_mem_stream.Seek(0, SeekOrigin.Begin);
                 ecProto.ecPacket reply = new ecProto.ecPacket(m_sock_reader);
-
+                if ( reply.Opcode() == ECOpCodes.EC_OP_AUTH_OK ) {
+                    Console.WriteLine("Authenticated OK");
+                } else {
+                    Console.WriteLine("Authentiction failed. Core reply was {0}", reply.Opcode());
+                }
             } catch (Exception e) {
                 error = e.Message;
                 return false;
