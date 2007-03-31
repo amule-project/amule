@@ -19,6 +19,17 @@ namespace amule.net
         {
 
         }
-
+        public string Host()
+        {
+            return amuleHost.Text;
+        }
+        public string Pass()
+        {
+            return amulePwd.Text;
+        }
+        public string Port()
+        {
+            return amulePort.Text;
+        }
     }
 }

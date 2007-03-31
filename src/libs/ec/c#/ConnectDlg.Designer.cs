@@ -31,9 +31,11 @@ namespace amule.net
             this.buttonConnect = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.amuleHost = new System.Windows.Forms.TextBox();
+            this.amulePwd = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.amulePort = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonConnect
@@ -65,20 +67,22 @@ namespace amule.net
             this.label1.TabIndex = 2;
             this.label1.Text = "aMule host";
             // 
-            // textBox1
+            // amuleHost
             // 
-            this.textBox1.Location = new System.Drawing.Point(139, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(112, 20);
-            this.textBox1.TabIndex = 3;
+            this.amuleHost.Location = new System.Drawing.Point(139, 43);
+            this.amuleHost.Name = "amuleHost";
+            this.amuleHost.Size = new System.Drawing.Size(112, 20);
+            this.amuleHost.TabIndex = 3;
+            this.amuleHost.Text = "leox";
             // 
-            // textBox2
+            // amulePwd
             // 
-            this.textBox2.Location = new System.Drawing.Point(139, 106);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(112, 20);
-            this.textBox2.TabIndex = 5;
+            this.amulePwd.Location = new System.Drawing.Point(139, 106);
+            this.amulePwd.Name = "amulePwd";
+            this.amulePwd.PasswordChar = '*';
+            this.amulePwd.Size = new System.Drawing.Size(112, 20);
+            this.amulePwd.TabIndex = 5;
+            this.amulePwd.Text = "123456";
             // 
             // label2
             // 
@@ -89,6 +93,24 @@ namespace amule.net
             this.label2.TabIndex = 4;
             this.label2.Text = "Password";
             // 
+            // amulePort
+            // 
+            this.amulePort.Location = new System.Drawing.Point(296, 43);
+            this.amulePort.MaxLength = 5;
+            this.amulePort.Name = "amulePort";
+            this.amulePort.Size = new System.Drawing.Size(66, 20);
+            this.amulePort.TabIndex = 7;
+            this.amulePort.Text = "9999";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(265, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(25, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "port";
+            // 
             // ConnectDlg
             // 
             this.AcceptButton = this.buttonConnect;
@@ -96,9 +118,11 @@ namespace amule.net
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(432, 272);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.amulePort);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.amulePwd);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.amuleHost);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonConnect);
@@ -115,9 +139,11 @@ namespace amule.net
         private System.Windows.Forms.Button buttonConnect;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox amuleHost;
+        private System.Windows.Forms.TextBox amulePwd;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox amulePort;
+        private System.Windows.Forms.Label label3;
 
     }
 }
