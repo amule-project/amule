@@ -10,19 +10,6 @@ using System.Net.Sockets;
 
 namespace amule.net
 {
-    class amuleSocket {
-        Socket sock;
-
-        bool ReadNumber(ref UInt16 i)
-        {
-            return false;
-        }
-
-        public amuleSocket(Socket s)
-        {
-            sock = s;
-        }
-    }
 
     // Define the state object for the callback. 
     // Use hostName to correlate calls with the proper result.
