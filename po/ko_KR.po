@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-28 03:31+0200\n"
+"POT-Creation-Date: 2007-03-31 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -701,84 +701,84 @@ msgstr "%i 일 %i 시간 %i 분 %i 초"
 msgid "wxCas, aMule Online Statistics"
 msgstr "wxCas, 어뮬 온라인 통계"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:95
+#: src/utils/wxCas/src/wxcasframe.cpp:96
 #: src/utils/aLinkCreator/src/alcframe.cpp:83
 msgid "Welcome!"
 msgstr "환영합니다!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:115
+#: src/utils/wxCas/src/wxcasframe.cpp:116
 msgid "aMule"
 msgstr "어뮬"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:119
+#: src/utils/wxCas/src/wxcasframe.cpp:120
 msgid "Maximum DL rate since wxCas is running"
 msgstr "wxCas 현재 실행시 최대 내려받기 속도"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:123
+#: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
 msgstr "wxCas 이전 실행시부터 절대적 최대 내려받기 속도"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:136
-#: src/utils/wxCas/src/wxcasframe.cpp:140 src/muuli_wdr.cpp:3046
+#: src/utils/wxCas/src/wxcasframe.cpp:138
+#: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:3046
 #: src/muuli_wdr.cpp:3081
 msgid "Reset"
 msgstr "초기화"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:145
+#: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
 msgstr "시스템"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:208
-#: src/utils/wxCas/src/wxcasframe.cpp:335
+#: src/utils/wxCas/src/wxcasframe.cpp:211
+#: src/utils/wxCas/src/wxcasframe.cpp:340
 msgid "Stop Auto Refresh"
 msgstr "자동갱신 멈춤"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:213
+#: src/utils/wxCas/src/wxcasframe.cpp:216
 msgid "Save Online Statistics image"
 msgstr "온라인 정적그림을 저장"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:216
+#: src/utils/wxCas/src/wxcasframe.cpp:219
 msgid "Print Online Statistics image"
 msgstr "온라인 정적그림을 프린트"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:219
+#: src/utils/wxCas/src/wxcasframe.cpp:222
 msgid "Preferences setting"
 msgstr "환경 설정"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:224
-#: src/utils/wxCas/src/wxcasframe.cpp:400
+#: src/utils/wxCas/src/wxcasframe.cpp:227
+#: src/utils/wxCas/src/wxcasframe.cpp:410
 msgid "About wxCas"
 msgstr "wxCas에 대하여"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:326
+#: src/utils/wxCas/src/wxcasframe.cpp:331
 msgid "Start Auto Refresh"
 msgstr "자동갱신을 시작"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:328
+#: src/utils/wxCas/src/wxcasframe.cpp:333
 msgid "Auto Refresh stopped"
 msgstr "자동갱신을 멈춤"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:337
+#: src/utils/wxCas/src/wxcasframe.cpp:342
 msgid "Auto Refresh started"
 msgstr "자동갱신이 시작됨"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:347
+#: src/utils/wxCas/src/wxcasframe.cpp:352
 msgid "Save Statistics Image"
 msgstr "통계 이미지를 저장"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:361
+#: src/utils/wxCas/src/wxcasframe.cpp:371
 msgid "No handler for this file type."
 msgstr "이파일 종류의 처리기는 없음"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:362
+#: src/utils/wxCas/src/wxcasframe.cpp:372
 msgid "File was not saved"
 msgstr "파일은 저장되지 않았습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:373
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid "aMule Online Statistics"
 msgstr "어뮬 온라인 통계"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:377
+#: src/utils/wxCas/src/wxcasframe.cpp:387
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -786,11 +786,11 @@ msgstr ""
 "프린트하는데 문제가 있습니다.\n"
 "혹시 현재 프린터가 올바로 설정되지 않았나요?"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:378
+#: src/utils/wxCas/src/wxcasframe.cpp:388
 msgid "Printing"
 msgstr "프린트함"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:396
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -808,122 +808,122 @@ msgstr ""
 "\n"
 "GPL로 배포합니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:567
+#: src/utils/wxCas/src/wxcasframe.cpp:577
 msgid "Oh Oh, aMule is not running..."
 msgstr "어어, 어뮬이 실행중이 아닙니다..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:638
-#: src/utils/wxCas/src/wxcasframe.cpp:703
-#: src/utils/wxCas/src/wxcasframe.cpp:767
+#: src/utils/wxCas/src/wxcasframe.cpp:648
+#: src/utils/wxCas/src/wxcasframe.cpp:713
+#: src/utils/wxCas/src/wxcasframe.cpp:777
 msgid "aMule is running"
 msgstr "어뮬은 실행중입니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:832
+#: src/utils/wxCas/src/wxcasframe.cpp:842
 msgid "aMule is running, but disconnected"
 msgstr "어뮬은 실행중이나 연결이 끊겨 있습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:898
+#: src/utils/wxCas/src/wxcasframe.cpp:908
 msgid "aMule is connecting..."
 msgstr "어뮬은 연결중..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:902
+#: src/utils/wxCas/src/wxcasframe.cpp:912
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "어어, 어뮬의 상태는 알수없음..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:973
-#: src/utils/wxCas/src/wxcasframe.cpp:978
-#: src/utils/wxCas/src/wxcasframe.cpp:982
-#: src/utils/wxCas/src/wxcasframe.cpp:986
-#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:983
+#: src/utils/wxCas/src/wxcasframe.cpp:988
+#: src/utils/wxCas/src/wxcasframe.cpp:992
+#: src/utils/wxCas/src/wxcasframe.cpp:996
+#: src/utils/wxCas/src/wxcasframe.cpp:1000
 msgid "aMule "
 msgstr "어뮬 "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:975
+#: src/utils/wxCas/src/wxcasframe.cpp:985
 msgid " has been running for "
 msgstr " 위해 실행되고있는 "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:980
+#: src/utils/wxCas/src/wxcasframe.cpp:990
 msgid " is stopped !"
 msgstr " 은 멈추어져 있습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:984
-#: src/utils/wxCas/src/wxcasframe.cpp:1008
+#: src/utils/wxCas/src/wxcasframe.cpp:994
+#: src/utils/wxCas/src/wxcasframe.cpp:1018
 msgid " is not connected !"
 msgstr " 은 연결되지 않았습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:988
+#: src/utils/wxCas/src/wxcasframe.cpp:998
 msgid " is connecting..."
 msgstr " 은 연결중..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:992
+#: src/utils/wxCas/src/wxcasframe.cpp:1002
 msgid " is doing something strange, check it !"
 msgstr " 무엇인가 이상하게 동작하고 있음, 확인 요망!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1013
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is connected to "
 msgstr " 는 다음으로 연결중: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1014
+#: src/utils/wxCas/src/wxcasframe.cpp:1024
 msgid " Kad: "
 msgstr " 카드: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1016
-#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/TextClient.cpp:683
+#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1046 src/TextClient.cpp:683
 msgid "ok"
 msgstr "확인"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1018
-#: src/utils/wxCas/src/wxcasframe.cpp:1038 src/TextClient.cpp:681
+#: src/utils/wxCas/src/wxcasframe.cpp:1028
+#: src/utils/wxCas/src/wxcasframe.cpp:1048 src/TextClient.cpp:681
 msgid "firewalled"
 msgstr "방화벽됨"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1020
-#: src/utils/wxCas/src/wxcasframe.cpp:1040
+#: src/utils/wxCas/src/wxcasframe.cpp:1030
+#: src/utils/wxCas/src/wxcasframe.cpp:1050
 msgid "off"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1036
 msgid " is on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1028
+#: src/utils/wxCas/src/wxcasframe.cpp:1038
 msgid " ["
 msgstr " ["
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1030 src/muuli_wdr.cpp:3134
+#: src/utils/wxCas/src/wxcasframe.cpp:1040 src/muuli_wdr.cpp:3134
 msgid ":"
 msgstr ":"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1032
+#: src/utils/wxCas/src/wxcasframe.cpp:1042
 msgid "] with "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1034
+#: src/utils/wxCas/src/wxcasframe.cpp:1044
 msgid " | Kad: "
 msgstr " | 카드: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid "Total Download: "
 msgstr "전체 내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1051
-#: src/utils/wxCas/src/wxcasframe.cpp:1062
+#: src/utils/wxCas/src/wxcasframe.cpp:1061
+#: src/utils/wxCas/src/wxcasframe.cpp:1072
 msgid ", Upload: "
 msgstr ", 올려주기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1060
+#: src/utils/wxCas/src/wxcasframe.cpp:1070
 msgid "Session Download: "
 msgstr "세션 내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1071
+#: src/utils/wxCas/src/wxcasframe.cpp:1081
 msgid "Download: "
 msgstr "내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1073
+#: src/utils/wxCas/src/wxcasframe.cpp:1083
 msgid " kB/s, Upload: "
 msgstr " kB/s, 올려주기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1075 src/DownloadListCtrl.cpp:1352
+#: src/utils/wxCas/src/wxcasframe.cpp:1085 src/DownloadListCtrl.cpp:1352
 #: src/DownloadListCtrl.cpp:1643 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
@@ -932,30 +932,34 @@ msgstr " kB/s, 올려주기: "
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1083
+#: src/utils/wxCas/src/wxcasframe.cpp:1093
 msgid "Sharing: "
 msgstr "공유함: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1085
+#: src/utils/wxCas/src/wxcasframe.cpp:1095
 msgid " file(s), Clients on queue: "
 msgstr " 파일, 대기열에있는 클라이언트: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1094
-#: src/utils/wxCas/src/wxcasframe.cpp:1104 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1105
+msgid "Time: "
+msgstr ""
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1114
+#: src/utils/wxCas/src/wxcasframe.cpp:1124 src/FileDetailDialog.cpp:112
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
-#: src/utils/wxCas/src/wxcasframe.cpp:1105
+#: src/utils/wxCas/src/wxcasframe.cpp:1115
+#: src/utils/wxCas/src/wxcasframe.cpp:1125
 msgid " on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1115
+#: src/utils/wxCas/src/wxcasframe.cpp:1135
 msgid "System Load Average (1-5-15 min): "
 msgstr "시스템 부하 평균 (1-5-15 분): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1126
+#: src/utils/wxCas/src/wxcasframe.cpp:1146
 msgid "System uptime: "
 msgstr "시스템 연속 작동 시간: "
 
@@ -2829,7 +2833,7 @@ msgstr "내려받기"
 msgid "Category"
 msgstr "분류"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:573
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
 msgid "Main"
 msgstr "주"
 
@@ -6516,7 +6520,7 @@ msgstr "최소 크기가 최대 크기보다 작아야 합니다. 최대 크기 
 msgid "Search warning"
 msgstr "검색 경고"
 
-#: src/SearchDlg.cpp:509
+#: src/SearchDlg.cpp:504
 msgid "Search warning."
 msgstr "검색 경고."
 
