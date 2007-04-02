@@ -23,7 +23,6 @@
 # Gimme a break, it's my second perl app... (Kry)
 
 use File::Copy;
-use Switch;
 use warnings; 
 use strict;
 
@@ -187,19 +186,16 @@ sub read_content_section {
 		die "Content section has a non-typed data stream\n";
 	}
 
-	switch ($datatype) {
-		case "Define" {
-			read_define_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
-		}
-		case "Enum" { 
-			read_enum_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
-		}
-		case "TypeDef" {
-			read_typedef_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
-		}
-		else { die "Unknown type on content section\n" }
+	if ($datatype eq "Define") {
+		read_define_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
+	} elsif ($datatype eq "Enum") {
+		read_enum_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
+	} elsif ($datatype eq "TypeDef") {
+		read_typedef_content(*INFO, *CPPOUTPUT, *JAVAOUTPUT, *CDASHFILE);
+	} else {
+		die "Unknown type on content section\n";
 	}
-
+	
 }
 
 sub read_define_content {
@@ -430,17 +426,19 @@ sub write_cpp_typedef_line {
 
 	my $preamble = "";
 
-	switch ($_[2]) {
-		case /^u?int(8|16|32|64)$/ { 
-			$translated_type = $_[2] . "_t";
-		}
-		case "string" {
+	my $datatype = $_[2];
+	
+	if ($datatype) {
+		if ($datatype =~ /^u?int(8|16|32|64)$/) { 
+			$translated_type = $datatype . "_t";
+		} elsif ($datatype eq "string") {
 			$translated_type = "std::string"
-		}
-		else { 
+		} else { 
 			$preamble = "// ";
-			$translated_type = $_[2]
+			$translated_type = $datatype;
 		}
+	} else {
+		die "No data type on abstract"; 
 	}
 
 	print OUTPUT $preamble . "typedef " . $translated_type . " " . $_[1] . ";\n";
@@ -459,13 +457,11 @@ sub write_java_define_line {
 	my $second = $_[2];
 
 	if ($_[3]) {
-		switch ($_[3]) {
-			case /int8/ { $datatype = "byte"; }
-			case /(uint8|int16)/ { $datatype = "short"; }
-			case /(uint16|int32)/ { $datatype = "int"; }
-			case /(uint32|int64)/ { $datatype = "long"; }
-			else { die "Unknown data type on abstract: " . $_[3]; }
-		}
+		if ($_[3] =~ /int8/) { $datatype = "byte"; }
+		elsif ($_[3] =~ /(uint8|int16)/) { $datatype = "short"; }
+		elsif ($_[3] =~  /(uint16|int32)/) { $datatype = "int"; }
+		elsif ($_[3] =~ /(uint32|int64)/) { $datatype = "long"; }
+		else { die "Unknown data type on abstract: " . $_[3]; }
 	} else {
 		if ($second =~ /^\".*\"$/) {
 			$datatype = "String";
