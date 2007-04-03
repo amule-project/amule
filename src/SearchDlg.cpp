@@ -457,7 +457,9 @@ void CSearchDlg::StartNewSearch()
 		params.maxSize = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
 		if ((params.maxSize < params.minSize) and (params.maxSize)) {
-			wxMessageDialog dlg(this, _("Min size must be smaller than max size. Max size ignored."), _("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
+			wxMessageDialog dlg(this,
+				_("Min size must be smaller than max size. Max size ignored."),
+				_("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);
 			dlg.ShowModal();
 			
 			params.maxSize = 0;
@@ -465,57 +467,65 @@ void CSearchDlg::StartNewSearch()
 
 		// Parameter Availability
 		params.availability = CastChild( IDC_SPINSEARCHAVAIBILITY, wxSpinCtrl )->GetValue();
-
+		
 		switch ( CastChild( IDC_TypeSearch, wxChoice )->GetSelection() ) {
-			case 0:	params.typeText = wxEmptyString;	break;
-			case 1:	params.typeText = ED2KFTSTR_ARCHIVE;	break;
-			case 2: params.typeText = ED2KFTSTR_AUDIO;	break;
-			case 3:	params.typeText = ED2KFTSTR_CDIMAGE;	break;
-			case 4: params.typeText = ED2KFTSTR_IMAGE;	break;
-			case 5: params.typeText = ED2KFTSTR_PROGRAM;	break;
-			case 6:	params.typeText = ED2KFTSTR_DOCUMENT;	break;
-			case 7:	params.typeText = ED2KFTSTR_VIDEO;	break;
-			default:
-				AddDebugLogLineM( true, logGeneral,
-					CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
-						% params.typeText
-				);
-				break;
+		case 0:	params.typeText = wxEmptyString;	break;
+		case 1:	params.typeText = ED2KFTSTR_ARCHIVE;	break;
+		case 2: params.typeText = ED2KFTSTR_AUDIO;	break;
+		case 3:	params.typeText = ED2KFTSTR_CDIMAGE;	break;
+		case 4: params.typeText = ED2KFTSTR_IMAGE;	break;
+		case 5: params.typeText = ED2KFTSTR_PROGRAM;	break;
+		case 6:	params.typeText = ED2KFTSTR_DOCUMENT;	break;
+		case 7:	params.typeText = ED2KFTSTR_VIDEO;	break;
+		default:
+			AddDebugLogLineM( true, logGeneral,
+				CFormat( wxT("Warning! Unknown search-category (%s) selected!") )
+					% params.typeText
+			);
+			break;
 		}
-		// This will break if we change the order (good to know!)
-		wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(params.typeText));
+		
+		if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxT("Any")) {
+			if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxGetTranslation(params.typeText)) {
+				printf("wxASSERT-SearchDlg.cpp(486):\n\t'%s'\n\t'%s'\n",
+					(const char *)unicode2char(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection()),
+					(const char *)unicode2char(wxGetTranslation(params.typeText)));
+			}
+			wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(params.typeText));
+		}
 	}
 
 	SearchType search_type = KadSearch;
-	
-	uint32 real_id = m_nSearchID;
-	
 	switch (CastChild( ID_SEARCHTYPE, wxChoice )->GetSelection()) {
-		case 0: // Local Search	
-			search_type = LocalSearch;
-		case 1: // Global Search
-			if (search_type != LocalSearch) {
-				search_type = GlobalSearch;
-			}
-		case 2: { // Kad search 
-			wxString error = theApp->searchlist->StartNewSearch(&real_id, search_type, params);
-			if (!error.IsEmpty()) {
-				// Search failed / Remote in progress
-				wxMessageBox(error, _("Search warning."), wxOK|wxCENTRE|wxICON_INFORMATION,this);
-				FindWindow(IDC_STARTS)->Enable();
-				FindWindow(IDC_SDOWNLOAD)->Disable();
-				FindWindow(IDC_CANCELS)->Disable();
-				return;
-			}
-			break;
-		}
-		default:
-			// Should never happen
-			wxASSERT(0);
-			break;
+	case 0: // Local Search	
+		search_type = LocalSearch;
+		break;
+	case 1: // Global Search
+		search_type = GlobalSearch;
+		break;
+	case 2: // Kad search 
+		search_type = KadSearch;
+		break;
+	default:
+		// Should never happen
+		wxASSERT(0);
+		break;
 	}
-	
-	CreateNewTab(((search_type == KadSearch) ? wxT("!") : wxEmptyString) + params.searchString + wxT(" (0)"), real_id);
+	uint32 real_id = m_nSearchID;
+	wxString error = theApp->searchlist->StartNewSearch(&real_id, search_type, params);
+	if (!error.IsEmpty()) {
+		// Search failed / Remote in progress
+		wxMessageBox(error, _("Search warning."),
+			wxOK | wxCENTRE | wxICON_INFORMATION, this);
+		FindWindow(IDC_STARTS)->Enable();
+		FindWindow(IDC_SDOWNLOAD)->Disable();
+		FindWindow(IDC_CANCELS)->Disable();
+	} else {
+		CreateNewTab(
+			((search_type == KadSearch) ? wxT("!") : wxEmptyString) +
+				params.searchString + wxT(" (0)"),
+			real_id);
+	}
 }
 
 
