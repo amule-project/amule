@@ -24,7 +24,9 @@
 //
 
 
-#include "ChatWnd.h"		// Interface declarations.
+#include "ChatWnd.h"		// Interface declarations
+
+
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl

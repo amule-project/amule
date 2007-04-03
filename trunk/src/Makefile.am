@@ -76,6 +76,11 @@ libmuleappcommon_a_SOURCES = \
 
 libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+if ENABLE_UPNP
+libmuleappcommon_a_CFLAGS += -DENABLE_UPNP
+libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP
+endif
+
 
 # Common to core/monolithic
 
@@ -93,6 +98,11 @@ libmuleappcore_a_SOURCES = \
 
 libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+if ENABLE_UPNP
+libmuleappcore_a_CFLAGS += -DENABLE_UPNP
+libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP
+endif
+
 
 # Common to gui/monolithic
 
@@ -114,6 +124,10 @@ libmuleappgui_a_SOURCES = \
 
 libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+if ENABLE_UPNP
+libmuleappgui_a_CFLAGS += -DENABLE_UPNP
+libmuleappgui_a_CXXFLAGS += -DENABLE_UPNP
+endif
 
 core_sources = \
 	RC4Encrypt.cpp \
