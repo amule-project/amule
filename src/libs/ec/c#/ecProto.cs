@@ -6,7 +6,7 @@ using System.Text;
 
 namespace amule.net
 {
-    enum EcTagTypes {
+    public enum EcTagTypes {
         EC_TAGTYPE_UNKNOWN = 0,
         EC_TAGTYPE_CUSTOM = 1,
         EC_TAGTYPE_UINT8 = 2,
@@ -19,7 +19,7 @@ namespace amule.net
         EC_TAGTYPE_HASH16 = 9
     };
 
-    class ecProto {
+    public class ecProto {
 
         public class ecTag {
             protected int m_size;
@@ -92,6 +92,16 @@ namespace amule.net
             {
                 return (m_subtags.Count != 0);
             }
+
+            public ecTag SubTag(ECTagNames name)
+            {
+                foreach (ecTag t in m_subtags) {
+                    if (t.m_name == name) {
+                        return t;
+                    }
+                }
+                return null;
+            }
         }
 
         public class ecTagInt : ecTag {
@@ -150,8 +160,19 @@ namespace amule.net
                     default:
                         throw new Exception("Unexpected size of data in integer tag");
                 }
+
             }
 
+            public int ValueInt()
+            {
+                return (int)m_val;
+            }
+
+            public UInt64 Value64()
+            {
+                return m_val;
+            }
+            
             public override void Write(BinaryWriter wr)
             {
                 base.Write(wr);
@@ -317,7 +338,7 @@ namespace amule.net
 
                 if ( tags_count != 0 ) {
                     for (int i = 0; i < tags_count; i++) {
-                        m_subtags.AddLast(ReadTag(br));
+                        AddSubtag(ReadTag(br));
                     }
                 }
             }
@@ -326,6 +347,7 @@ namespace amule.net
             // Default ctor - for tx packets
             public ecPacket(ECOpCodes cmd)
             {
+                m_flags = 0x20;
                 m_opcode = cmd;
             }
 
