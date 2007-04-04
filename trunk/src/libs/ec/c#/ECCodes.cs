@@ -26,17 +26,17 @@
 
 namespace amule.net
 {
-enum ProtocolVersion {
+public enum ProtocolVersion {
 	EC_CURRENT_PROTOCOL_VERSION = 0x0200
 };
-enum ECFlags {
+public enum ECFlags {
 	EC_FLAG_ZLIB	 = 0x00000001,
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
 	//EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
 };
-enum ECOpCodes {
+public enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
 	EC_OP_AUTH_REQ                      = 0x02,
 	EC_OP_AUTH_FAIL                     = 0x03,
@@ -113,7 +113,7 @@ enum ECOpCodes {
 	EC_OP_CONNECT                       = 0x4A,
 	EC_OP_DISCONNECT                    = 0x4B
 };
-enum ECTagNames {
+public enum ECTagNames {
 	EC_TAG_STRING                             = 0x0000,
 	EC_TAG_PASSWD_HASH                        = 0x0001,
 	EC_TAG_PROTOCOL_VERSION                   = 0x0002,
@@ -308,7 +308,7 @@ enum ECTagNames {
 			EC_TAG_CORETW_UL_QUEUE                    = 0x1D04,
 			EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT       = 0x1D05
 };
-enum EC_DETAIL_LEVEL {
+public enum EC_DETAIL_LEVEL {
 	EC_DETAIL_CMD           = 0x00,
 	EC_DETAIL_WEB           = 0x01,
 	EC_DETAIL_FULL          = 0x02,

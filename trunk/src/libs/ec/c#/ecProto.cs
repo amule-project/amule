@@ -246,6 +246,18 @@ namespace amule.net
             }
         }
 
+        public class ecTagIPv4 : ecTag {
+            Int32 m_addr;
+            Int16 m_port;
+            public ecTagIPv4(ECTagNames name, BinaryReader br)
+                : base(name, EcTagTypes.EC_TAGTYPE_IPV4)
+            {
+                m_size = 4+2;
+                m_addr = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                m_port = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+            }
+        }
+
         public class ecTagString : ecTag {
             byte[] m_val;
             public ecTagString(ECTagNames n, string s)
@@ -300,22 +312,28 @@ namespace amule.net
                         break;
 
                     case EcTagTypes.EC_TAGTYPE_UINT8:
-                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                        t = new ecTagInt(tag_name, 1, br);
+                        break;
                     case EcTagTypes.EC_TAGTYPE_UINT16:
-                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                        t = new ecTagInt(tag_name, 2, br);
+                        break;
                     case EcTagTypes.EC_TAGTYPE_UINT32:
-                        goto case EcTagTypes.EC_TAGTYPE_UINT64;
+                        t = new ecTagInt(tag_name, 4, br);
+                        break;
                     case EcTagTypes.EC_TAGTYPE_UINT64:
-                        t = new ecTagInt(tag_name, tag_size32, br);
+                        t = new ecTagInt(tag_name, 8, br);
                         break;
 
                     case EcTagTypes.EC_TAGTYPE_STRING:
+                        t = new ecTagString(tag_name, tag_size32, br);
                         break;
                     case EcTagTypes.EC_TAGTYPE_DOUBLE:
                         break;
                     case EcTagTypes.EC_TAGTYPE_IPV4:
+                        t = new ecTagIPv4(tag_name, br);
                         break;
                     case EcTagTypes.EC_TAGTYPE_HASH16:
+                        t = new ecTagMD5(tag_name, br);
                         break;
                     default:
                         break;
@@ -338,7 +356,8 @@ namespace amule.net
 
                 if ( tags_count != 0 ) {
                     for (int i = 0; i < tags_count; i++) {
-                        AddSubtag(ReadTag(br));
+                        ecTag t = ReadTag(br);
+                        AddSubtag(t);
                     }
                 }
             }
