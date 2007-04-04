@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-31 03:31+0200\n"
+"POT-Creation-Date: 2007-04-04 03:31+0200\n"
 "PO-Revision-Date: 2004-03-28 22:15+0300\n"
 "Last-Translator: saleh alhathal <hathalsal@hotmail.com>\n"
 "Language-Team: \n"
@@ -2773,7 +2773,7 @@ msgstr "التحميل"
 msgid "Category"
 msgstr "صنف"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr ""
 
@@ -6320,15 +6320,15 @@ msgstr "تأكيد - صحيح"
 msgid "Not Available"
 msgstr "غير متوفر"
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:461
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:462
 msgid "Search warning"
 msgstr ""
 
-#: src/SearchDlg.cpp:504
+#: src/SearchDlg.cpp:518
 msgid "Search warning."
 msgstr ""
 

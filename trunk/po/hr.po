@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-31 03:31+0200\n"
+"POT-Creation-Date: 2007-04-04 03:31+0200\n"
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
@@ -2774,7 +2774,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Kategorija"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr ""
 
@@ -6333,15 +6333,15 @@ msgstr "Priznat - OK"
 msgid "Not Available"
 msgstr ""
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:461
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:462
 msgid "Search warning"
 msgstr ""
 
-#: src/SearchDlg.cpp:504
+#: src/SearchDlg.cpp:518
 msgid "Search warning."
 msgstr ""
 

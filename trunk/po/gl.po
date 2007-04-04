@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-31 03:31+0200\n"
+"POT-Creation-Date: 2007-04-04 03:31+0200\n"
 "PO-Revision-Date: 2006-12-04 16:19+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
@@ -2874,7 +2874,7 @@ msgstr "Descarga"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr "Principal"
 
@@ -6597,16 +6597,16 @@ msgstr "Verificado - OK"
 msgid "Not Available"
 msgstr "Non dispoñible"
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:461
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "O tamaño mínimo debe ser máis pequeno que o máximo. Tamaño máximo ignorado."
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:462
 msgid "Search warning"
 msgstr "Aviso de busca"
 
-#: src/SearchDlg.cpp:504
+#: src/SearchDlg.cpp:518
 msgid "Search warning."
 msgstr "Aviso de busca."
 

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-31 03:31+0200\n"
+"POT-Creation-Date: 2007-04-04 03:31+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -2878,7 +2878,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Kategorie"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr "Main"
 
@@ -6607,16 +6607,16 @@ msgstr "Verifiziert - OK"
 msgid "Not Available"
 msgstr "Nicht verfügbar"
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:461
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "Mindestgröße muss kleiner sein, als die Höchstgröße: Höchstgröße ignoriert."
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:462
 msgid "Search warning"
 msgstr "Suchwarnung"
 
-#: src/SearchDlg.cpp:504
+#: src/SearchDlg.cpp:518
 msgid "Search warning."
 msgstr "Suchwarnung."
 

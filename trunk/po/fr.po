@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-31 03:31+0200\n"
+"POT-Creation-Date: 2007-04-04 03:31+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -2831,7 +2831,7 @@ msgstr "Réception"
 msgid "Category"
 msgstr "Catégorie"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:568
+#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr "Principal"
 
@@ -6480,15 +6480,15 @@ msgstr "Vérification - OK"
 msgid "Not Available"
 msgstr "Non disponible"
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:461
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "La taille minimum doit être inférieur à la taille maximum. Taille maximum ignorée."
 
-#: src/SearchDlg.cpp:460
+#: src/SearchDlg.cpp:462
 msgid "Search warning"
 msgstr "Avertissement dans la recherche"
 
-#: src/SearchDlg.cpp:504
+#: src/SearchDlg.cpp:518
 msgid "Search warning."
 msgstr "Avertissement dans la recherche"
 
