@@ -335,7 +335,7 @@ sub write_cdash_enum_start {
 
 	local (*OUTPUT) = $_[0];
 
-	print OUTPUT "enum " . $_[1] . " {\n";
+	print OUTPUT "public enum " . $_[1] . " {\n";
 }
 
 sub write_cdash_enum_end {
@@ -353,7 +353,10 @@ sub write_cdash_enum_line {
 		print OUTPUT ",\n"
 	}
 
-	print OUTPUT "\t" . $_[1] . " = " . $_[2];
+	# looks like c# can't handle such values as enums
+	if ( not ($_[2] & 0x8000000) ) { 
+		print OUTPUT "\t" . $_[1] . " = " . $_[2];
+	}
 }
 
 sub write_cdash_define_line {
