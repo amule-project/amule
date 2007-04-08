@@ -118,6 +118,8 @@ Trunk
 		* theApp is now a global pointer, so that we can access the
 		  global application object from within a core file.
 		* Fix for the COLORREF compilation problem on windows.
+		* Fix for libpng version detection on acinclude.m4. It was
+		  failing for strings like 1.2.15beta5 (e.g., debian 4.0 etch).
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

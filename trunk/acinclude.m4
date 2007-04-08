@@ -137,18 +137,18 @@ AC_DEFUN([AM_PATH_LIBPNGCONFIG],
 
     LIBPNG_VERSION=`$LIBPNG_CONFIG_WITH_ARGS --version`
     libpng_config_major_version=`echo $LIBPNG_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\1/'`
     libpng_config_minor_version=`echo $LIBPNG_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\2/'`
     libpng_config_micro_version=`echo $LIBPNG_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\3/'`
 
     libpng_requested_major_version=`echo $min_libpng_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\1/'`
     libpng_requested_minor_version=`echo $min_libpng_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\2/'`
     libpng_requested_micro_version=`echo $min_libpng_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\3/'`
 
     libpng_ver_ok=""
     if test $libpng_config_major_version -gt $libpng_requested_major_version; then
@@ -359,18 +359,18 @@ AC_DEFUN([AM_PATH_GDLIBCONFIG],
 
     GDLIB_VERSION=`$GDLIB_CONFIG_WITH_ARGS --version`
     gdlib_config_major_version=`echo $GDLIB_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\1/'`
     gdlib_config_minor_version=`echo $GDLIB_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\2/'`
     gdlib_config_micro_version=`echo $GDLIB_VERSION | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\3/'`
 
     gdlib_requested_major_version=`echo $min_gdlib_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\1/'`
     gdlib_requested_minor_version=`echo $min_gdlib_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\2/'`
     gdlib_requested_micro_version=`echo $min_gdlib_version | \
-           sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
+        sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)\([[0-9|a-z]]*\)/\3/'`
 
     gdlib_ver_ok=""
     if test $gdlib_config_major_version -gt $gdlib_requested_major_version; then
