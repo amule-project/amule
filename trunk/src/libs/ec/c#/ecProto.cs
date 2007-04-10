@@ -33,6 +33,13 @@ namespace amule.net
                 m_type = t;
                 m_subtags = new LinkedList<ecTag>();
             }
+            public ecTag(ECTagNames n, EcTagTypes t, LinkedList<ecTag> subtags)
+            {
+                m_name = n;
+                m_type = t;
+                m_subtags = subtags; ;
+            }
+
             public ecTag()
             {
                 m_subtags = new LinkedList<ecTag>();
@@ -105,7 +112,7 @@ namespace amule.net
         }
 
         public class ecTagInt : ecTag {
-            private UInt64 m_val;
+            protected UInt64 m_val;
             public ecTagInt(ECTagNames n, byte v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT8)
             {
@@ -134,8 +141,8 @@ namespace amule.net
                 m_size = 8;
             }
 
-            public ecTagInt(ECTagNames n, Int32 tag_size, BinaryReader br)
-                : base(n, EcTagTypes.EC_TAGTYPE_UINT8)
+            public ecTagInt(ECTagNames n, Int32 tag_size, BinaryReader br, LinkedList<ecTag> subtags)
+                : base(n, EcTagTypes.EC_TAGTYPE_UINT8, subtags)
             {
                 m_size = tag_size;
                 switch ( m_size ) {
@@ -232,8 +239,8 @@ namespace amule.net
                 m_size = 16;
             }
 
-            public ecTagMD5(ECTagNames name, BinaryReader br)
-                : base(name, EcTagTypes.EC_TAGTYPE_HASH16)
+            public ecTagMD5(ECTagNames name, BinaryReader br, LinkedList<ecTag> subtags)
+                : base(name, EcTagTypes.EC_TAGTYPE_HASH16, subtags)
             {
                 m_size = 16;
                 m_val = br.ReadBytes(16);
@@ -249,8 +256,8 @@ namespace amule.net
         public class ecTagIPv4 : ecTag {
             Int32 m_addr;
             Int16 m_port;
-            public ecTagIPv4(ECTagNames name, BinaryReader br)
-                : base(name, EcTagTypes.EC_TAGTYPE_IPV4)
+            public ecTagIPv4(ECTagNames name, BinaryReader br, LinkedList<ecTag> subtags)
+                : base(name, EcTagTypes.EC_TAGTYPE_IPV4, subtags)
             {
                 m_size = 4+2;
                 m_addr = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
@@ -267,8 +274,8 @@ namespace amule.net
                 m_size = m_val.GetLength(0) + 1;
             }
 
-            public ecTagString(ECTagNames n, Int32 tag_size, BinaryReader br)
-                : base(n, EcTagTypes.EC_TAGTYPE_STRING)
+            public ecTagString(ECTagNames n, Int32 tag_size, BinaryReader br, LinkedList<ecTag> subtags)
+                : base(n, EcTagTypes.EC_TAGTYPE_STRING, subtags)
             {
                 byte[] buf = br.ReadBytes(tag_size);
                 m_size = tag_size;
@@ -281,6 +288,12 @@ namespace amule.net
                 wr.Write(m_val);
                 byte zero_byte = 0;
                 wr.Write(zero_byte);
+            }
+            string StringValue()
+            {
+                Encoding u8 = Encoding.UTF8;
+                string s = u8.GetString(m_val);
+                return s;
             }
         }
 
@@ -303,7 +316,10 @@ namespace amule.net
 
                 byte tag_type8 = br.ReadByte();
                 Int32 tag_size32 = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
-
+                LinkedList<ecTag> subtags = null;
+                if ( have_subtags ) {
+                    subtags = ReadSubtags(br);
+                }
                 EcTagTypes tag_type = (EcTagTypes)tag_type8;
                 switch (tag_type) {
                     case EcTagTypes.EC_TAGTYPE_UNKNOWN:
@@ -312,35 +328,46 @@ namespace amule.net
                         break;
 
                     case EcTagTypes.EC_TAGTYPE_UINT8:
-                        t = new ecTagInt(tag_name, 1, br);
+                        t = new ecTagInt(tag_name, 1, br, subtags);
                         break;
                     case EcTagTypes.EC_TAGTYPE_UINT16:
-                        t = new ecTagInt(tag_name, 2, br);
+                        t = new ecTagInt(tag_name, 2, br, subtags);
                         break;
                     case EcTagTypes.EC_TAGTYPE_UINT32:
-                        t = new ecTagInt(tag_name, 4, br);
+                        t = new ecTagInt(tag_name, 4, br, subtags);
                         break;
                     case EcTagTypes.EC_TAGTYPE_UINT64:
-                        t = new ecTagInt(tag_name, 8, br);
+                        t = new ecTagInt(tag_name, 8, br, subtags);
                         break;
 
                     case EcTagTypes.EC_TAGTYPE_STRING:
-                        t = new ecTagString(tag_name, tag_size32, br);
+                        t = new ecTagString(tag_name, tag_size32, br, subtags);
                         break;
                     case EcTagTypes.EC_TAGTYPE_DOUBLE:
                         break;
                     case EcTagTypes.EC_TAGTYPE_IPV4:
-                        t = new ecTagIPv4(tag_name, br);
+                        t = new ecTagIPv4(tag_name, br, subtags);
                         break;
                     case EcTagTypes.EC_TAGTYPE_HASH16:
-                        t = new ecTagMD5(tag_name, br);
+                        t = new ecTagMD5(tag_name, br, subtags);
                         break;
                     default:
                         break;
                 }
                 return t;
             }
- 
+
+            LinkedList<ecTag> ReadSubtags(BinaryReader br)
+            {
+                Int16 count16 = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+                LinkedList<ecTag> taglist = new LinkedList<ecTag>();
+                for (int i = 0; i < count16;i++) {
+                    ecTag st = ReadTag(br);
+                    taglist.AddLast(st);
+                }
+                return taglist;
+            }
+
             public ecPacket()
             {
                 m_flags = 0x20;
@@ -441,5 +468,58 @@ namespace amule.net
             }
         }
 
+        //
+        // Class exists only for parsing purpose. It can't be created
+        //
+        public class ecConnStateTag {
+            ecTagInt m_tag;
+            Int32 m_tag_val;
+            public ecConnStateTag(ecTagInt tag)
+            {
+                m_tag = tag;
+                //m_tag_val = (Int32)tag.Value64();
+                m_tag_val = 0xfff;
+            }
+
+            //public static explicit operator ecConnStateTag(ecTagInt t)
+            //{
+            //    return new ecConnStateTag(t.ValueInt64());
+            //}
+
+            public bool IsConnected()
+            {
+                return IsConnectedED2K() || IsConnectedKademlia();
+            }
+
+            public bool IsConnectedED2K()
+            {
+                return (m_tag_val & 0x01) != 0; 
+            }
+
+            public bool IsConnectingED2K()
+            {
+                return (m_tag_val & 0x02) != 0; 
+            }
+
+            public bool IsConnectedKademlia()
+            {
+                return (m_tag_val & 0x04) != 0; 
+            }
+
+            public bool IsKadFirewalled()
+            {
+                return (m_tag_val & 0x08) != 0; 
+            }
+
+            public bool IsKadRunning()
+            {
+                return (m_tag_val & 0x10) != 0; 
+            }
+
+            public ecProto.ecTag Server()
+            {
+                return m_tag.SubTag(ECTagNames.EC_TAG_SERVER);
+            }
+        }
     }
 }
