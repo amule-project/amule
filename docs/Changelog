@@ -120,6 +120,8 @@ Trunk
 		* Fix for the COLORREF compilation problem on windows.
 		* Fix for libpng version detection on acinclude.m4. It was
 		  failing for strings like 1.2.15beta5 (e.g., debian 4.0 etch).
+		* Fix for theApp variable usage in amulegui. It was not beeing
+		  initialized and amulegui was segfaulting.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
