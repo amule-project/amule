@@ -209,6 +209,9 @@ bool CamuleRemoteGuiApp::OnInit()
 	if ( !wxApp::OnInit() ) {
 		return false;
 	}
+	
+	// Get theApp
+	theApp = &wxGetApp();
 
 	// Handle uncaught exceptions
 	InstallMuleExceptionHandler();
