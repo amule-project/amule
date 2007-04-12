@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-04 03:31+0200\n"
+"POT-Creation-Date: 2007-04-12 03:31+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -2898,21 +2898,21 @@ msgstr "Kopiere eD2k-Link in die Zwischenablage"
 msgid "Connect to remote amule"
 msgstr "Verbinde zu Remote-aMule"
 
-#: src/amule-remote-gui.cpp:268
+#: src/amule-remote-gui.cpp:271
 msgid "Connection failed "
 msgstr "Verbindung fehlgeschlagen "
 
-#: src/amule-remote-gui.cpp:268 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:271 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:845
 #: src/amule.cpp:963 src/amule.cpp:1317
 msgid "Error"
 msgstr "Fehler"
 
-#: src/amule-remote-gui.cpp:518 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:521 src/TransferWnd.cpp:334
 msgid "All"
 msgstr "Alle"
 
-#: src/amule-remote-gui.cpp:749
+#: src/amule-remote-gui.cpp:752
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Benutzer insgesamt: %s | Dateien insgesamt: %s"

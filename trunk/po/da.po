@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-04 03:31+0200\n"
+"POT-Creation-Date: 2007-04-12 03:31+0200\n"
 "PO-Revision-Date: 2004-03-11 12:58+0100\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -2793,21 +2793,21 @@ msgstr "Kopier ED2k-Link til udklipsholder"
 msgid "Connect to remote amule"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:268
+#: src/amule-remote-gui.cpp:271
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:268 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:271 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:845
 #: src/amule.cpp:963 src/amule.cpp:1317
 msgid "Error"
 msgstr "Fejl"
 
-#: src/amule-remote-gui.cpp:518 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:521 src/TransferWnd.cpp:334
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:749
+#: src/amule-remote-gui.cpp:752
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
