@@ -31,6 +31,7 @@
 #include <inttypes.h>	// Do_not_auto_remove (old gcc)
 typedef uint32_t COLORREF;
 #else
+#include "Types.h"	// Do_not_auto_remove (Needed for windows compilation)
 typedef unsigned long COLORREF;
 #endif
 
