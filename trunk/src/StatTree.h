@@ -75,7 +75,8 @@
 /**
  * Stat tree flags
  */
-enum EStatTreeFlags {
+enum EStatTreeFlags
+{
 	stNone		= 0,		///< Nothing. Really.
 	stSortChildren	= 1,		///< Childrens are sorted descending by their ID.
 	stShowPercent	= 2,		/*!< Shows percentage compared to parent.
@@ -97,7 +98,8 @@ enum EStatTreeFlags {
 					 */
 };
 
-enum EValueType {
+enum EValueType
+{
 	vtUnknown,
 	vtString,
 	vtInteger,
@@ -107,7 +109,8 @@ enum EValueType {
 /**
  * Display modes for Simple and Counter items
  */
-enum EDisplayMode {
+enum EDisplayMode
+{
 	dmDefault,		///< Default display mode.
 	dmTime,			///< Treat integer value as time in seconds.
 	dmBytes			///< Treat integer value as bytes count.
@@ -126,8 +129,9 @@ class CECTag;
 /**
  * Base tree item class
  */
-class CStatTreeItemBase {
- public:
+class CStatTreeItemBase
+{
+public:
 
 #ifndef EC_REMOTE
 	/**
@@ -136,7 +140,7 @@ class CStatTreeItemBase {
 	 * @param label	Visible text for the item.
 	 * @param flags Flags to use.
 	 */
-	CStatTreeItemBase(const wxString& label, unsigned flags = stNone)
+	CStatTreeItemBase(const wxString &label, unsigned flags = stNone)
 		: m_label(label), m_parent(NULL), m_flags(flags), m_id(0)
 		{}
 #else
@@ -145,7 +149,7 @@ class CStatTreeItemBase {
 	 *
 	 * @param label	Visible text for the item.
 	 */
-	CStatTreeItemBase(const wxString& label)
+	CStatTreeItemBase(const wxString &label)
 		: m_label(label)
 		{}
 
@@ -154,7 +158,7 @@ class CStatTreeItemBase {
 	 *
 	 * @param tag EC tag containing a stat subtree.
 	 */
-	CStatTreeItemBase(const CECTag* tag);
+	CStatTreeItemBase(const CECTag *tag);
 #endif
 
 	/**
@@ -172,7 +176,10 @@ class CStatTreeItemBase {
 	 *
 	 * @return the newly added item.
 	 */
-	CStatTreeItemBase*	AddChild(CStatTreeItemBase* child, uint32_t id = 0, bool skipOneLevel = false);
+	CStatTreeItemBase *AddChild(
+		CStatTreeItemBase* child,
+		uint32_t id = 0,
+		bool skipOneLevel = false);
 #endif
 
 	/**
@@ -180,14 +187,14 @@ class CStatTreeItemBase {
 	 *
 	 * @return true if this node has children, false otherwise.
 	 */
-	bool	HasChildren()			{ wxMutexLocker lock(m_lock); return !m_children.empty(); }
+	bool HasChildren() { wxMutexLocker lock(m_lock); return !m_children.empty(); }
 
 	/**
 	 * Check for visible children.
 	 *
 	 * @return true if this node has children and at least one of them is visible.
 	 */
-	bool	HasVisibleChildren();
+	bool HasVisibleChildren();
 
 #ifndef EC_REMOTE
 
@@ -196,14 +203,14 @@ class CStatTreeItemBase {
 	 *
 	 * @return true if this node has a child with the given ID.
 	 */
-	bool	HasChildWithId(uint32_t id);
+	bool HasChildWithId(uint32_t id);
 
 	/**
 	 * Access a specific child.
 	 *
 	 * @return the child with the given ID, or NULL if not found.
 	 */
-	CStatTreeItemBase*	GetChildById(uint32_t id);
+	CStatTreeItemBase *GetChildById(uint32_t id);
 
 	/**
 	 * Get the first visible child.
@@ -212,12 +219,12 @@ class CStatTreeItemBase {
 	 *
 	 * @return An iterator, that should be passed to GetNextVisibleChild() and IsAtEndOfList().
 	 */
-	StatTreeItemIterator	GetFirstVisibleChild(uint32_t max_children);
+	StatTreeItemIterator GetFirstVisibleChild(uint32_t max_children);
 
 	/**
 	 * Get the next visible child.
 	 */
-	void	GetNextVisibleChild(StatTreeItemIterator& it);
+	void GetNextVisibleChild(StatTreeItemIterator& it);
 
 #else /* EC_REMOTE */
 
@@ -228,27 +235,27 @@ class CStatTreeItemBase {
 	 *
 	 * @note On a remote list every item is visible.
 	 */
-	StatTreeItemIterator	GetFirstVisibleChild()	{ return m_children.begin(); }
+	StatTreeItemIterator GetFirstVisibleChild() { return m_children.begin(); }
 
 	/**
 	 * Get the next visible child.
 	 *
 	 * @note On a remote list every item is visible.
 	 */
-	void	GetNextVisibleChild(StatTreeItemIterator& it) { ++it; }
+	void GetNextVisibleChild(StatTreeItemIterator& it) { ++it; }
 
 #endif /* !EC_REMOTE / EC_REMOTE */
 
 	/**
 	 * Check if we are past the end of child list.
 	 */
-	bool	IsAtEndOfList(StatTreeItemIterator& it)	{ return it == m_children.end(); }
+	bool IsAtEndOfList(StatTreeItemIterator& it) { return it == m_children.end(); }
 
 #ifndef EC_REMOTE
 	/**
 	 * Resorts children for the stSortByValue flag.
 	 */
-	void	ReSortChildren()			{ wxMutexLocker lock(m_lock); m_children.sort(ValueSort); }
+	void ReSortChildren() { wxMutexLocker lock(m_lock); m_children.sort(ValueSort); }
 #endif
 
 #ifndef AMULE_DAEMON
@@ -256,12 +263,12 @@ class CStatTreeItemBase {
 	/**
 	 * Returns a string that will be displayed on the GUI tree.
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #else
 	/**
 	 * Returns the associated text (GUI item label).
 	 */
-	const	wxString&	GetDisplayString() const { return m_label; }
+	const wxString& GetDisplayString() const { return m_label; }
 #endif /* !EC_REMOTE / EC_REMOTE */
 
 	/**
@@ -270,13 +277,13 @@ class CStatTreeItemBase {
 	 * This function is used by CStatisticsDlg to be able to lock the
 	 * core tree while updating the GUI tree.
 	 */
-	wxMutex&	GetLock()			{ return m_lock; }
+	wxMutex& GetLock() { return m_lock; }
 #endif /* !AMULE_DAEMON */
 
 	/**
 	 * Check whether this node is visible.
 	 */
-	VIRTUAL	bool		IsVisible() const	{ return true; }
+	VIRTUAL	bool IsVisible() const { return true; }
 
 #ifndef EC_REMOTE
 	/**
@@ -286,10 +293,10 @@ class CStatTreeItemBase {
 	 *
 	 * @return A EC tag containing this node and all its children.
 	 */
-	virtual	CECTag*		CreateECTag(uint32_t max_children);
+	virtual	CECTag *CreateECTag(uint32_t max_children);
 #endif
 
- protected:
+protected:
 
 #ifndef EC_REMOTE
 	/**
@@ -298,34 +305,39 @@ class CStatTreeItemBase {
 	 * Should have a real implementation in children which have some value.
 	 * The given parameter is the tag to which values should be added.
 	 */
-	virtual	void		AddECValues(CECTag*) const {}
+	virtual	void AddECValues(CECTag*) const {}
 #endif
 
 	//! Unformatted and untranslated label of the node. Note: On remote gui it is already formatted and translated.
-	const wxString		m_label;
+	const wxString m_label;
 #ifndef EC_REMOTE
+
 	//! Parent of this node.
-	CStatTreeItemBase*	m_parent;
+	CStatTreeItemBase *m_parent;
+
 	//! Flags for the node.
-	unsigned		m_flags;
+	unsigned m_flags;
 #endif
 
- private:
+private:
 
 #ifndef EC_REMOTE
 	//! Function used when sorting children by value.
-	static	bool	ValueSort(CStatTreeItemBase* a, CStatTreeItemBase* b);
+	static bool ValueSort(CStatTreeItemBase* a, CStatTreeItemBase* b);
 
 	//! ID of this node.
-	uint32_t		m_id;
-	//! Counter to keep track of displayed visible items (needed for the stCapChildren flag)
-	uint32_t		m_visible_counter;
+	uint32_t m_id;
+
+	//! Counter to keep track of displayed visible items
+	// (needed for the stCapChildren flag)
+	uint32_t m_visible_counter;
 #endif
 
 	//! Children of this node.
 	std::list<CStatTreeItemBase*>	m_children;
+
 	//! Lock to protect list from simultanous access.
-	wxMutex			m_lock;
+	wxMutex m_lock;
 };
 
 
@@ -351,71 +363,81 @@ class CStatTreeItemBase {
  * @note You have to call SetValue() after creation for non-integer values, otherwise
  * you'll get undesired results.
  */
-class CStatTreeItemSimple : public CStatTreeItemBase {
- public:
+class CStatTreeItemSimple : public CStatTreeItemBase
+{
+public:
 
 	/**
 	 * Constructor.
 	 *
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemSimple(const wxString& label, unsigned flags = stNone, enum EDisplayMode displaymode = dmDefault)
-		: CStatTreeItemBase(label, flags), m_valuetype(vtUnknown), m_displaymode(displaymode)
-		{
-			SetValue((uint64_t)0);
-		}
+	CStatTreeItemSimple(
+		const wxString &label,
+		unsigned flags = stNone,
+		enum EDisplayMode displaymode = dmDefault)
+	:
+	CStatTreeItemBase(label, flags),
+	m_valuetype(vtUnknown),
+	m_displaymode(displaymode)
+	{
+		SetValue((uint64_t)0);
+	}
 
 	/**
 	 * Sets the desired display mode of value.
 	 */
-	void	SetDisplayMode(enum EDisplayMode mode) 	{ m_displaymode = mode; }
+	void SetDisplayMode(enum EDisplayMode mode)
+	{
+		m_displaymode = mode;
+	}
 
 	/**
 	 * Sets an integer type value.
 	 *
 	 * @param value the value to be set.
 	 */
-	void	SetValue(uint64_t value)
-		{
-			m_valuetype = vtInteger;
-			m_intvalue = value;
-		}
+	void SetValue(uint64_t value)
+	{
+		m_valuetype = vtInteger;
+		m_intvalue = value;
+	}
 
 	/**
 	 * Sets a floating point type value.
 	 *
 	 * @param value the value to be set.
 	 */
-	void	SetValue(double value)
-		{
-			m_valuetype = vtFloat;
-			m_floatvalue = value;
-		}
+	void SetValue(double value)
+	{
+		m_valuetype = vtFloat;
+		m_floatvalue = value;
+	}
 
 	/**
 	 * Sets a string type value.
 	 *
 	 * @param value the value to be set.
 	 */
-	void	SetValue(const wxString& value)
-		{
-			m_valuetype = vtString;
-			m_stringvalue = value;
-		}
+	void SetValue(const wxString& value)
+	{
+		m_valuetype = vtString;
+		m_stringvalue = value;
+	}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
 	/**
 	 * @see CStatTreeItemBase::IsVisible()
 	 */
-	virtual	bool		IsVisible() const;
+	virtual	bool IsVisible() const;
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -423,18 +445,19 @@ class CStatTreeItemSimple : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Type of the value.
-	enum EValueType		m_valuetype;
+	enum EValueType m_valuetype;
 	//! Display mode of the value.
-	enum EDisplayMode	m_displaymode;
+	enum EDisplayMode m_displaymode;
 	//! Union to save space.
-	union {
-		uint64_t	m_intvalue;	///< Integer value.
-		double		m_floatvalue;	///< Floating point value.
+	union
+	{
+		uint64_t m_intvalue;	///< Integer value.
+		double   m_floatvalue;	///< Floating point value.
 	};
-	wxString		m_stringvalue;	///< String value.
+	wxString m_stringvalue;	///< String value.
 };
 
 
@@ -446,76 +469,83 @@ class CStatTreeItemSimple : public CStatTreeItemBase {
  * stShowPercent and stHideIfZero flags take effect only on
  * this node.
  */
-class CStatTreeItemCounter : public CStatTreeItemBase {
- public:
-
+class CStatTreeItemCounter : public CStatTreeItemBase
+{
+public:
 	/**
 	 * Constructor.
 	 *
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemCounter(const wxString& label, unsigned flags = stNone)
-		: CStatTreeItemBase(label, flags), m_value(0), m_displaymode(dmDefault)
-		{}
+	CStatTreeItemCounter(
+		const wxString &label,
+		unsigned flags = stNone)
+	:
+	CStatTreeItemBase(label, flags),
+	m_value(0),
+	m_displaymode(dmDefault) {}
 
 	/**
 	 * Retrieve counter value.
 	 */
-	uint64_t	GetValue() const	{ return m_value; }
+	uint64_t GetValue() const { return m_value; }
 
 	/**
 	 * Retrieve counter value.
 	 */
-	operator uint64_t() const		{ return m_value; }
+	operator uint64_t() const { return m_value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void	SetValue(uint64_t value)	{ m_value = value; }
+	void SetValue(uint64_t value) { m_value = value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void	operator=(uint64_t value)	{ m_value = value; }
+	void operator=(uint64_t value) { m_value = value; }
 
 	/**
 	 * Increase value by 1.
 	 */
-	void	operator++()			{ ++m_value; }
+	void operator++() { ++m_value; }
 
 	/**
 	 * Decrease value by 1.
 	 */
-	void	operator--()			{ --m_value; }
+	void operator--() { --m_value; }
 
 	/**
 	 * Increase value by given amount.
 	 */
-	void	operator+=(uint64_t value) 	{ m_value += value; }
+	void operator+=(uint64_t value) { m_value += value; }
 
 	/**
 	 * Decrease value by given amount.
 	 */
-	void	operator-=(uint64_t value)	{ m_value -= value; }
+	void operator-=(uint64_t value) { m_value -= value; }
 
 	/**
 	 * Sets the desired display mode of value.
 	 */
-	void	SetDisplayMode(enum EDisplayMode mode) 	{ m_displaymode = mode; }
+	void SetDisplayMode(enum EDisplayMode mode) { m_displaymode = mode; }
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
 	/**
 	 * @see CStatTreeItemBase::IsVisible()
 	 */
-	virtual	bool		IsVisible() const { return (m_flags & stHideIfZero) ? (m_value != 0) : true; }
+	virtual	bool IsVisible() const
+	{
+		return (m_flags & stHideIfZero) ? (m_value != 0) : true;
+	}
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -523,12 +553,13 @@ class CStatTreeItemCounter : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Actual value of the counter.
-	uint64_t		m_value;
+	uint64_t m_value;
+
 	//! Display mode of the value.
-	enum EDisplayMode	m_displaymode;
+	enum EDisplayMode m_displaymode;
 };
 
 // For speed reasons, we define a 32bit counter for 32bit archs.
@@ -541,76 +572,84 @@ class CStatTreeItemCounter : public CStatTreeItemBase {
  *
  * @see CStatTreeItemCounter
  */
-class CStatTreeItemNativeCounter : public CStatTreeItemBase {
- public:
+class CStatTreeItemNativeCounter : public CStatTreeItemBase
+{
+public:
 
 	/**
 	 * Constructor.
 	 *
 	 * @see CStatTreeItemCounter::CStatTreeItemCounter
 	 */
-	CStatTreeItemNativeCounter(const wxString& label, unsigned flags = stNone)
-		: CStatTreeItemBase(label, flags), m_value(0), m_displaymode(dmDefault)
-		{}
+	CStatTreeItemNativeCounter(
+		const wxString &label,
+		unsigned flags = stNone)
+	:
+	CStatTreeItemBase(label, flags),
+	m_value(0),
+	m_displaymode(dmDefault) {}
 
 	/**
 	 * Retrieve counter value.
 	 */
-	uint32_t	GetValue() const	{ return m_value; }
+	uint32_t GetValue() const { return m_value; }
 
 	/**
 	 * Retrieve counter value.
 	 */
-	operator uint32_t() const		{ return m_value; }
+	operator uint32_t() const { return m_value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void	SetValue(uint32_t value)	{ m_value = value; }
+	void SetValue(uint32_t value) { m_value = value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void	operator=(uint32_t value)	{ m_value = value; }
+	void operator=(uint32_t value) { m_value = value; }
 
 	/**
 	 * Increase value by 1.
 	 */
-	void	operator++()			{ ++m_value; }
+	void operator++() { ++m_value; }
 
 	/**
 	 * Decrease value by 1.
 	 */
-	void	operator--()			{ --m_value; }
+	void operator--() { --m_value; }
 
 	/**
 	 * Increase value by given amount.
 	 */
-	void	operator+=(uint32_t value) 	{ m_value += value; }
+	void operator+=(uint32_t value) { m_value += value; }
 
 	/**
 	 * Decrease value by given amount.
 	 */
-	void	operator-=(uint32_t value)	{ m_value -= value; }
+	void operator-=(uint32_t value) { m_value -= value; }
 
 	/**
 	 * Sets the desired display mode of value.
 	 */
-	void	SetDisplayMode(enum EDisplayMode mode) 	{ m_displaymode = mode; }
+	void SetDisplayMode(enum EDisplayMode mode) { m_displaymode = mode; }
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemCounter::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
 	/**
 	 * @see CStatTreeItemCounter::IsVisible()
 	 */
-	virtual	bool		IsVisible() const { return (m_flags & stHideIfZero) ? (m_value != 0) : true; }
+	virtual	bool IsVisible() const
+	{
+		return (m_flags & stHideIfZero) ? (m_value != 0) : true;
+	}
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -618,72 +657,82 @@ class CStatTreeItemNativeCounter : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Actual value of the counter.
-	uint32_t		m_value;
+	uint32_t m_value;
+
 	//! Display mode of the value.
-	enum EDisplayMode	m_displaymode;
+	enum EDisplayMode m_displaymode;
 };
 #else // using 64bit arch
-	typedef CStatTreeItemCounter	CStatTreeItemNativeCounter;
+	typedef CStatTreeItemCounter CStatTreeItemNativeCounter;
 #endif /* USE_64BIT_ARCH */
 
 /**
  * A counter, which does not display its value :P
  */
-class CStatTreeItemHiddenCounter : public CStatTreeItemCounter {
- public:
-
+class CStatTreeItemHiddenCounter : public CStatTreeItemCounter
+{
+public:
 	/**
 	 * Constructor.
 	 *
 	 * @see CStatTreeItemCounter::CStatTreeItemCounter
 	 */
-	CStatTreeItemHiddenCounter(const wxString& label, unsigned flags = stNone)
-		: CStatTreeItemCounter(label, flags)
-		{}
+	CStatTreeItemHiddenCounter(
+		const wxString &label,
+		unsigned flags = stNone)
+	:
+	CStatTreeItemCounter(label, flags) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const	{ return CStatTreeItemBase::GetDisplayString(); }
+	virtual	wxString GetDisplayString() const
+	{
+		return CStatTreeItemBase::GetDisplayString();
+	}
 #endif
 
 	/**
 	 * @see CStatTreeItemBase::IsVisible()
 	 */
-	virtual bool		IsVisible() const		{ return true; }
+	virtual bool IsVisible() const { return true; }
 
- protected:
+protected:
 	//! Do nothing here.
-	virtual	void		AddECValues(CECTag*) const	{}
+	virtual	void AddECValues(CECTag*) const {}
 };
 
 
 /**
  * Item for the session/total upload/download counter
  */
-class CStatTreeItemUlDlCounter : public CStatTreeItemCounter {
- public:
-
+class CStatTreeItemUlDlCounter : public CStatTreeItemCounter
+{
+public:
 	/**
 	 * @param label     format text for item.
 	 * @param totalfunc function that will return the totals.
 	 */
-	CStatTreeItemUlDlCounter(const wxString& label, uint64_t (*totalfunc)(), unsigned flags = stNone)
-		: CStatTreeItemCounter(label, flags), m_totalfunc(totalfunc)
-		{}
+	CStatTreeItemUlDlCounter(
+		const wxString &label,
+		uint64_t (*totalfunc)(),
+		unsigned flags = stNone)
+	:
+	CStatTreeItemCounter(label, flags),
+	m_totalfunc(totalfunc) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -691,10 +740,10 @@ class CStatTreeItemUlDlCounter : public CStatTreeItemCounter {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! A function whose return value is the total (without current) value.
-	uint64_t	(*m_totalfunc)();
+	uint64_t (*m_totalfunc)();
 };
 
 
@@ -703,35 +752,43 @@ class CStatTreeItemUlDlCounter : public CStatTreeItemCounter {
  *
  * Used for active connections counter, to be able to get peak connections.
  */
-class CStatTreeItemCounterMax : public CStatTreeItemBase {
- public:
-
+class CStatTreeItemCounterMax : public CStatTreeItemBase
+{
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemCounterMax(const wxString& label)
-		: CStatTreeItemBase(label), m_value(0), m_max_value(0)
-		{}
+	CStatTreeItemCounterMax(const wxString &label)
+	:
+	CStatTreeItemBase(label),
+	m_value(0),
+	m_max_value(0)
+	{}
 
 	/**
 	 * Increase value
 	 */
-	void		operator++()	{ if (++m_value > m_max_value) m_max_value = m_value; }
+	void operator++()
+	{
+		if (++m_value > m_max_value) {
+			m_max_value = m_value;
+		}
+	}
 
 	/**
 	 * Decrease value
 	 */
-	void		operator--()	{ --m_value; }
+	void operator--() { --m_value; }
 
 	/**
 	 * Retrieve actual value
 	 */
-	uint32_t	GetValue()	{ return m_value; }
+	uint32_t GetValue() { return m_value; }
 
 	/**
 	 * Retrieve max value
 	 */
-	uint32_t	GetMaxValue()	{ return m_max_value; }
+	uint32_t GetMaxValue() { return m_max_value; }
 
 #ifndef AMULE_DAEMON
 	/**
@@ -740,7 +797,7 @@ class CStatTreeItemCounterMax : public CStatTreeItemBase {
 	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -748,42 +805,50 @@ class CStatTreeItemCounterMax : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Actual value of the counter.
-	uint32_t	m_value;
+	uint32_t m_value;
+
 	//! Maximal value the counter has ever reached.
-	uint32_t	m_max_value;
+	uint32_t m_max_value;
 };
 
 
 /**
  * Tree item for counting packets
  */
-class CStatTreeItemPackets : public CStatTreeItemBase {
+class CStatTreeItemPackets : public CStatTreeItemBase
+{
 	friend class CStatTreeItemPacketTotals;
- public:
 
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemPackets(const wxString& label)
-		: CStatTreeItemBase(label, stNone), m_packets(0), m_bytes(0)
-		{}
+	CStatTreeItemPackets(const wxString &label)
+	:
+	CStatTreeItemBase(label, stNone),
+	m_packets(0),
+	m_bytes(0) {}
 
 	/**
 	 * Add a packet of size 'size'.
 	 */
-	void operator+=(long size)		{ ++m_packets; m_bytes += size; }
+	void operator+=(long size)
+	{
+		++m_packets;
+		m_bytes += size;
+	}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -791,12 +856,13 @@ class CStatTreeItemPackets : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Total number of packets.
-	uint32_t	m_packets;
+	uint32_t m_packets;
+
 	//! Total bytes in the packets.
-	uint64_t	m_bytes;
+	uint64_t m_bytes;
 };
 
 
@@ -805,29 +871,32 @@ class CStatTreeItemPackets : public CStatTreeItemBase {
  *
  * This item sums up a number of packet counters, plus adds its own values.
  */
-class CStatTreeItemPacketTotals : public CStatTreeItemPackets {
- public:
-
+class CStatTreeItemPacketTotals : public CStatTreeItemPackets
+{
+public:
 	/**
 	 * @see CStatTreeItemPackets::CStatTreeItemPackets
 	 */
-	CStatTreeItemPacketTotals(const wxString& label)
-		: CStatTreeItemPackets(label)
-		{}
+	CStatTreeItemPacketTotals(const wxString &label)
+	:
+	CStatTreeItemPackets(label) {}
 
 	/**
 	 * Adds a packet counter, whose values should be counted in the totals.
 	 */
-	void	AddPacketCounter(CStatTreeItemPackets* counter)	{ m_counters.push_back(counter); }
+	void AddPacketCounter(CStatTreeItemPackets* counter)
+	{
+		m_counters.push_back(counter);
+	}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemPackets::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -835,84 +904,100 @@ class CStatTreeItemPacketTotals : public CStatTreeItemPackets {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! List of packet counters to sum.
-	std::vector<CStatTreeItemPackets*>	m_counters;
+	std::vector<CStatTreeItemPackets*> m_counters;
 };
 
 
 /**
  * Tree item for timer type nodes.
  */
-class CStatTreeItemTimer : public CStatTreeItemBase {
- public:
+class CStatTreeItemTimer : public CStatTreeItemBase
+{
+public:
 
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemTimer(const wxString& label, unsigned flags = stNone)
-		: CStatTreeItemBase(label, flags), m_value(0)
-		{}
+	CStatTreeItemTimer(
+		const wxString &label,
+		unsigned flags = stNone)
+	:
+	CStatTreeItemBase(label, flags),
+	m_value(0) {}
 
 	/**
 	 * Sets timer start time (and thus starts timer).
 	 */
-	void	SetStartTime(uint64_t value)	{ m_value = value; }
+	void SetStartTime(uint64_t value) { m_value = value; }
 
 	/**
 	 * Starts the timer if it's not running.
 	 */
-	void	StartTimer()			{ if (!m_value) m_value = GetTickCount64(); }
+	void StartTimer() { if (!m_value) m_value = GetTickCount64(); }
 
 	/**
 	 * Stops the timer.
 	 */
-	void	StopTimer()			{ m_value = 0; }
+	void StopTimer() { m_value = 0; }
 
 	/**
 	 * Check whether the timer is running.
 	 */
-	bool	IsRunning() const		{ return m_value != 0; }
+	bool IsRunning() const { return m_value != 0; }
 
 	/**
 	 * Reset timer unconditionally.
 	 */
-	void	ResetTimer()			{ m_value = GetTickCount64(); }
+	void ResetTimer() { m_value = GetTickCount64(); }
 
 	/**
 	 * Get timer value.
 	 */
-	uint64_t GetTimerValue() const		{ return m_value ? GetTickCount64() - m_value : 0; }
+	uint64_t GetTimerValue() const
+	{
+		return m_value ? GetTickCount64() - m_value : 0;
+	}
 
 	/**
 	 * Get timer value (in ticks).
 	 */
-	operator uint64_t() const		{ return m_value ? GetTickCount64() - m_value : 0; }
+	operator uint64_t() const
+	{
+		return m_value ? GetTickCount64() - m_value : 0;
+	}
 
 	/**
 	 * Get elapsed time in seconds.
 	 */
-	uint64_t GetTimerSeconds() const	{ return m_value ? (GetTickCount64() - m_value) / 1000 : 0; }
+	uint64_t GetTimerSeconds() const
+	{
+		return m_value ? (GetTickCount64() - m_value) / 1000 : 0;
+	}
 
 	/**
 	 * Get start time of the timer.
 	 */
-	uint64_t GetTimerStart() const		{ return m_value; }
+	uint64_t GetTimerStart() const { return m_value; }
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
 	/**
 	 * @see CStatTreeItemBase::IsVisible()
 	 */
-	virtual	bool		IsVisible() const	{ return (m_flags & stHideIfZero) ? m_value != 0 : true; }
+	virtual	bool IsVisible() const
+	{
+		return (m_flags & stHideIfZero) ? m_value != 0 : true;
+	}
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -920,10 +1005,10 @@ class CStatTreeItemTimer : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Tick count value when timer was started.
-	uint64_t	m_value;
+	uint64_t m_value;
 };
 
 
@@ -932,32 +1017,39 @@ class CStatTreeItemTimer : public CStatTreeItemBase {
  *
  * Average is counted as dividend / divisor, if divisor is non-zero.
  */
-class CStatTreeItemAverage : public CStatTreeItemBase {
- public:
-
+class CStatTreeItemAverage : public CStatTreeItemBase
+{
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 *
 	 * @param dividend What to divide.
 	 * @param divisor Divide by what.
 	 */
-	CStatTreeItemAverage(const wxString& label, const CStatTreeItemCounter* dividend, const CStatTreeItemCounter* divisor, enum EDisplayMode displaymode)
-		: CStatTreeItemBase(label, stNone), m_dividend(dividend), m_divisor(divisor), m_displaymode(displaymode)
-		{}
+	CStatTreeItemAverage(
+		const wxString &label,
+		const CStatTreeItemCounter *dividend,
+		const CStatTreeItemCounter *divisor,
+		enum EDisplayMode displaymode)
+	:
+	CStatTreeItemBase(label, stNone),
+	m_dividend(dividend),
+	m_divisor(divisor),
+	m_displaymode(displaymode) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
 	/**
 	 * @see CStatTreeItemBase::IsVisible()
 	 */
-	virtual	bool		IsVisible() const	{ return (*m_divisor) != 0; }
+	virtual	bool IsVisible() const	{ return (*m_divisor) != 0; }
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -965,22 +1057,25 @@ class CStatTreeItemAverage : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! What to divide.
-	const	CStatTreeItemCounter*		m_dividend;
+	const CStatTreeItemCounter *m_dividend;
+
 	//! Divide by what.
-	const	CStatTreeItemCounter*		m_divisor;
+	const CStatTreeItemCounter *m_divisor;
+
 	//! Display mode.
-	enum	EDisplayMode			m_displaymode;
+	enum EDisplayMode m_displaymode;
 };
 
 
 /**
  * Tree item for average up/down speed.
  */
-class CStatTreeItemAverageSpeed : public CStatTreeItemBase {
- public:
+class CStatTreeItemAverageSpeed : public CStatTreeItemBase
+{
+public:
 
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
@@ -988,18 +1083,23 @@ class CStatTreeItemAverageSpeed : public CStatTreeItemBase {
 	 * @param counter Session up/down counter.
 	 * @param timer Session uptime timer.
 	 */
-	CStatTreeItemAverageSpeed(const wxString& label, const CStatTreeItemUlDlCounter* counter, const CStatTreeItemTimer* timer)
-		: CStatTreeItemBase(label, stNone), m_counter(counter), m_timer(timer)
-		{}
+	CStatTreeItemAverageSpeed(
+		const wxString &label,
+		const CStatTreeItemUlDlCounter *counter,
+		const CStatTreeItemTimer *timer)
+	:
+	CStatTreeItemBase(label, stNone),
+	m_counter(counter),
+	m_timer(timer) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -1007,12 +1107,13 @@ class CStatTreeItemAverageSpeed : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Session sent/received bytes counter.
-	const	CStatTreeItemUlDlCounter*	m_counter;
+	const CStatTreeItemUlDlCounter *m_counter;
+
 	//! Session uptime.
-	const	CStatTreeItemTimer*		m_timer;
+	const CStatTreeItemTimer *m_timer;
 };
 
 
@@ -1021,27 +1122,32 @@ class CStatTreeItemAverageSpeed : public CStatTreeItemBase {
  *
  * Ratio is counted as counter1:counter2.
  */
-class CStatTreeItemRatio : public CStatTreeItemBase {
- public:
-
+class CStatTreeItemRatio : public CStatTreeItemBase
+{
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 *
 	 * @param cnt1 First counter to use.
 	 * @param cnt2 Second counter to use.
 	 */
-	CStatTreeItemRatio(const wxString& label, const CStatTreeItemCounter* cnt1, const CStatTreeItemCounter* cnt2)
-		: CStatTreeItemBase(label, stNone), m_counter1(cnt1), m_counter2(cnt2)
-		{}
+	CStatTreeItemRatio(
+		const wxString &label,
+		const CStatTreeItemCounter *cnt1,
+		const CStatTreeItemCounter* cnt2)
+	:
+	CStatTreeItemBase(label, stNone),
+	m_counter1(cnt1),
+	m_counter2(cnt2) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif	
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -1049,12 +1155,13 @@ class CStatTreeItemRatio : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! First counter.
-	const	CStatTreeItemCounter*	m_counter1;
+	const CStatTreeItemCounter *m_counter1;
+
 	//! Second counter.
-	const	CStatTreeItemCounter*	m_counter2;
+	const CStatTreeItemCounter *m_counter2;
 };
 
 
@@ -1062,23 +1169,22 @@ class CStatTreeItemRatio : public CStatTreeItemBase {
  * Special counter for reconnects.
  */
 class CStatTreeItemReconnects : public CStatTreeItemNativeCounter {
- public:
-
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemReconnects(const wxString& label)
-		: CStatTreeItemNativeCounter(label, stNone)
-		{}
+	CStatTreeItemReconnects(const wxString &label)
+	:
+	CStatTreeItemNativeCounter(label, stNone) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -1086,26 +1192,31 @@ class CStatTreeItemReconnects : public CStatTreeItemNativeCounter {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 };
 
 /**
  * Special item for Max Connection Limit Reached
  */
-class CStatTreeItemMaxConnLimitReached : public CStatTreeItemBase {
- public:
-
+class CStatTreeItemMaxConnLimitReached : public CStatTreeItemBase
+{
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemMaxConnLimitReached(const wxString& label)
-		: CStatTreeItemBase(label), m_count(0)
-		{}
+	CStatTreeItemMaxConnLimitReached(const wxString &label)
+	:
+	CStatTreeItemBase(label),
+	m_count(0) {}
 
 	/**
 	 * Increase counter and save time.
 	 */
-	void	operator++()			{ ++m_count; m_time.SetToCurrent(); }
+	void operator++()
+	{
+		++m_count;
+		m_time.SetToCurrent();
+	}
 
 #ifndef AMULE_DAEMON
 	/**
@@ -1115,10 +1226,10 @@ class CStatTreeItemMaxConnLimitReached : public CStatTreeItemBase {
 	 * for other values it will display the counter value and the
 	 * date & time of the event.
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -1126,37 +1237,44 @@ class CStatTreeItemMaxConnLimitReached : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Number of times max conn limit reached.
-	uint32_t	m_count;
+	uint32_t m_count;
+
 	//! Last time when max conn limit reached.
-	wxDateTime	m_time;
+	wxDateTime m_time;
 };
 
 /**
  * Special item for total client count
  */
-class CStatTreeItemTotalClients : public CStatTreeItemBase {
- public:
+class CStatTreeItemTotalClients : public CStatTreeItemBase
+{
+public:
 	/**
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 *
 	 * @param known Counter that counts known clients.
 	 * @param unknown Counter that counts unknown clients.
 	 */
-	CStatTreeItemTotalClients(const wxString& label, const CStatTreeItemCounter* known, const CStatTreeItemCounter* unknown)
-		: CStatTreeItemBase(label), m_known(known), m_unknown(unknown)
-		{}
+	CStatTreeItemTotalClients(
+		const wxString &label,
+		const CStatTreeItemCounter *known,
+		const CStatTreeItemCounter *unknown)
+	:
+	CStatTreeItemBase(label),
+	m_known(known),
+	m_unknown(unknown) {}
 
 #ifndef AMULE_DAEMON
 	/**
 	 * @see CStatTreeItemBase::GetDisplayString()
 	 */
-	virtual	wxString	GetDisplayString() const;
+	virtual	wxString GetDisplayString() const;
 #endif
 
- protected:
+protected:
 	/**
 	 * Add values to EC tag being generated.
 	 *
@@ -1164,12 +1282,13 @@ class CStatTreeItemTotalClients : public CStatTreeItemBase {
 	 *
 	 * @see CStatTreeItemBase::AddECValues
 	 */
-	virtual	void	AddECValues(CECTag* tag) const;
+	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Counter counting known clients.
-	const CStatTreeItemCounter*	m_known;
+	const CStatTreeItemCounter *m_known;
+
 	//! Counter counting unknown clients.
-	const CStatTreeItemCounter*	m_unknown;
+	const CStatTreeItemCounter *m_unknown;
 };
 
 #endif /* !EC_REMOTE */
