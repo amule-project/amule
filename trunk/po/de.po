@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -599,11 +599,11 @@ msgstr "Rekompiliere PHP-Seiten bei jeder Anfrage"
 msgid "aMule Web Server"
 msgstr "aMule Webserver"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Nicht verfügbar"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Niemals"
 

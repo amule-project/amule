@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2006-12-04 16:19+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
@@ -604,11 +604,11 @@ msgstr "Recompila páxinas PHP para outra petición"
 msgid "aMule Web Server"
 msgstr "Servidor Web aMule"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Non dispoñible"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Nunca"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -591,11 +591,11 @@ msgstr "Recompilar páginas PHP a cada solicitação"
 msgid "aMule Web Server"
 msgstr "aMule Web Server"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Não disponível"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Nunca"
 

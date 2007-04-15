@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2005-11-26 01:05+0000\n"
 "Last-Translator: Helder Correia <helder.pereira.correia@gmail.com>\n"
 "Language-Team: Portuguese <helder.pereira.correia@gmail.com>\n"
@@ -592,11 +592,11 @@ msgstr "Recompilar as páginas PHP em cada pedido"
 msgid "aMule Web Server"
 msgstr "Servidor HTTP do aMule"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Indisponível"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Nunca"
 

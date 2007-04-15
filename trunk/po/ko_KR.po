@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -589,11 +589,11 @@ msgstr "각 요청의 PHP 페이지를 재컴파일함"
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "유효하지 않음"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "결코"
 

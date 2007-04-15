@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2005-09-06 12:06+0100\n"
 "Last-Translator: Ogon <ogon@interia.pl>\n"
 "Language-Team: Polish\n"
@@ -595,11 +595,11 @@ msgstr "Przekompiluj strony PHP przy każdym żądaniu"
 msgid "aMule Web Server"
 msgstr "Serwer www aMule"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr ""
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr ""
 

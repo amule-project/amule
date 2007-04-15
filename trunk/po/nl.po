@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2005-12-04 17:00+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -592,11 +592,11 @@ msgstr "Compileer PHP pagina's opnieuw bij elke aanvraag"
 msgid "aMule Web Server"
 msgstr "aMule Web Server"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Niet beschikbaar"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Nooit"
 

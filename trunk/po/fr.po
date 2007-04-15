@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -595,11 +595,11 @@ msgstr "Recompiler les pages PHP à chaque requête"
 msgid "aMule Web Server"
 msgstr "Serveur Web d'aMule"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr "Non disponible"
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr "Jamais"
 
