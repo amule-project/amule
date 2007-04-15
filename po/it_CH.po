@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_NA-3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2004-04-17 08:18+0000\n"
 "Last-Translator: \n"
 "Language-Team:  <it@li.org>\n"
@@ -589,11 +589,11 @@ msgstr ""
 msgid "aMule Web Server"
 msgstr ""
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr ""
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr ""
 

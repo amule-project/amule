@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-12 03:31+0200\n"
+"POT-Creation-Date: 2007-04-15 03:31+0200\n"
 "PO-Revision-Date: 2006-03-01 01:46+0300\n"
 "Last-Translator: toshi <K.Koshelyaev@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -594,11 +594,11 @@ msgstr ""
 msgid "aMule Web Server"
 msgstr "Веб-сервер aMule"
 
-#: src/StatTree.cpp:550 src/StatTree.cpp:565
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
 msgstr ""
 
-#: src/StatTree.cpp:596 src/StatTree.cpp:607
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
 msgstr ""
 
