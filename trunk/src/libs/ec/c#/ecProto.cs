@@ -277,7 +277,10 @@ namespace amule.net
             public ecTagString(ECTagNames n, Int32 tag_size, BinaryReader br, LinkedList<ecTag> subtags)
                 : base(n, EcTagTypes.EC_TAGTYPE_STRING, subtags)
             {
-                byte[] buf = br.ReadBytes(tag_size);
+                byte[] buf = br.ReadBytes(tag_size-1);
+                // discard trailing '0'
+                br.ReadBytes(1);
+
                 m_size = tag_size;
                 m_val = buf;
             }
@@ -289,7 +292,7 @@ namespace amule.net
                 byte zero_byte = 0;
                 wr.Write(zero_byte);
             }
-            string StringValue()
+            public string StringValue()
             {
                 Encoding u8 = Encoding.UTF8;
                 string s = u8.GetString(m_val);
