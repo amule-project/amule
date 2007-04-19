@@ -18,15 +18,40 @@ namespace amule.net
             InitializeComponent();
         }
 
+        enum UpdateRequestState { Stats, MainInfo };
+        UpdateRequestState m_req_state;
+
         private static void UpdateTimerProc(Object myObject,
                                             EventArgs myEventArgs)
         {
             MainWindow w = (MainWindow)((Timer)myObject).Tag;
 
-            w.m_updateTimer.Stop();
+            //w.m_updateTimer.Stop();
 
-            ecProto.ecPacket req = new ecProto.ecPacket(ECOpCodes.EC_OP_STAT_REQ);
+            ecProto.ecPacket req = null;
+            switch(w.m_req_state) {
+                case UpdateRequestState.Stats:
+                    req = new ecProto.ecPacket(ECOpCodes.EC_OP_STAT_REQ);
+                    w.m_req_state = UpdateRequestState.MainInfo;
+                    break;
+                case UpdateRequestState.MainInfo:
+                    w.m_req_state = UpdateRequestState.Stats;
+                    break;
+            }
             w.m_amuleRemote.SendPacket(req);
+        }
+
+        string ValueToPrefix(Int64 value)
+        {
+            if ( value < 1024 ) {
+                return string.Format("{0} bytes", value);
+            } else if ( value < 1048576 ) {
+                return string.Format("{0:f} Kb", ((float)value) / 1024);
+            } else if ( value < 1073741824 ) {
+                return string.Format("{0:f} Mb", ((float)value) / 1048576);
+            } else {
+                return string.Format("{0:f} Gb", ((float)value) / 1073741824);
+            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -60,8 +85,7 @@ namespace amule.net
                     return;
                 }
             }
-            statusStrip.Items["toolStripConnectionStatus"].Text =
-                "Connected to [" + amuleHost + ":" + amulePort + "]";
+            toolStripConnectionStatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
 
             m_amuleRemote.SetECHandler(new amuleMainECHanler(this));
 
@@ -75,6 +99,9 @@ namespace amule.net
             m_updateTimer.Start();
         }
 
+        //
+        // Process reply for "stats"
+        //
         public void StatsReply(ecProto.ecPacket packet)
         {
             ecProto.ecTag t = null;
@@ -83,6 +110,42 @@ namespace amule.net
 
             t = packet.SubTag(ECTagNames.EC_TAG_STATS_UL_SPEED);
             int ul_speed = ((ecProto.ecTagInt)t).ValueInt();
+            //string server = ((ecProto.ecTagString)t).ToString();
+
+            ecProto.ecConnStateTag connState =
+                new ecProto.ecConnStateTag((ecProto.ecTagInt)packet.SubTag(ECTagNames.EC_TAG_CONNSTATE));
+
+            ecProto.ecTag server = connState.Server();
+
+            toolStripXferDown.Text = ValueToPrefix(dl_speed) + "/s";
+            toolStripXferUp.Text = ValueToPrefix(ul_speed) + "/s";
+            if ( connState.IsConnected() ) {
+                if (connState.IsConnectedED2K()) {
+                    toolStripStatusED2K.Text = "ED2K: connected";
+                    ecProto.ecTagString server_name = (ecProto.ecTagString)server.SubTag(ECTagNames.EC_TAG_SERVER_NAME);
+                    toolStripStatusServer.Text = server_name.StringValue();
+                } else {
+                    toolStripStatusServer.Text = "";
+                    if (connState.IsConnectingED2K() ) {
+                        toolStripStatusED2K.Text = "ED2K: connecting ...";
+                    } else {
+                        toolStripStatusED2K.Text = "ED2K: disconnected";
+                    }
+                }
+                if (connState.IsConnectedKademlia()) {
+                    toolStripStatusKad.Text = "KAD: connected";
+                }
+                
+            }
+
+        }
+
+        private void toolStripButtonDL_Click(object sender, EventArgs e)
+        {
+            ListView mv = new ListView();
+            mv.Dock = DockStyle.Fill;
+            
+            toolStripContainerMain.ContentPanel.Controls.Add(mv);
         }
     }
 
@@ -102,13 +165,6 @@ namespace amule.net
                     break;
             }
         }
-    }
-
-    public class amuleStats
-    {
-        int bpsUp, bpsDown;
-        UInt32 ID;
-        string server;
     }
 
 

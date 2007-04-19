@@ -100,7 +100,7 @@ namespace amule.net
             this.amulePort.Name = "amulePort";
             this.amulePort.Size = new System.Drawing.Size(66, 20);
             this.amulePort.TabIndex = 7;
-            this.amulePort.Text = "9999";
+            this.amulePort.Text = "4712";
             // 
             // label3
             // 
