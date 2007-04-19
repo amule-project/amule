@@ -27,7 +27,7 @@ const int versionMajor		= 1;
 const int versionMinor		= 2;
 const int versionRevision	= 0;
 
-
+#include <cstdlib>
 #include <sstream>
 #include <iostream>
 #include <fstream>
