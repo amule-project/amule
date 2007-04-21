@@ -1260,7 +1260,7 @@ void CamuleApp::OnFatalException()
 	fprintf(stderr, "Please assist us in fixing this problem by posting the backtrace below in our\n");
 	fprintf(stderr, "'aMule Crashes' forum and include as much information as possible regarding the\n");
 	fprintf(stderr, "circumstances of this crash. The forum is located here:\n");
-	fprintf(stderr, "    http://forum.amule.org/board.php?boardid=67\n");
+	fprintf(stderr, "    http://forum.amule.org/index.php?board=67.0\n");
 	fprintf(stderr, "If possible, please try to generate a real backtrace of this crash:\n");
 	fprintf(stderr, "    http://www.amule.org/wiki/index.php/Backtraces\n\n");
 	fprintf(stderr, "----------------------------=| BACKTRACE FOLLOWS: |=----------------------------\n");
