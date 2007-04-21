@@ -122,6 +122,9 @@ Trunk
 		  failing for strings like 1.2.15beta5 (e.g., debian 4.0 etch).
 		* Fix for theApp variable usage in amulegui. It was not beeing
 		  initialized and amulegui was segfaulting.
+		* Fixed the forum address in the backtrace print.
+		* Applied Bas Zoetekouw's patch for debian bug #350396:
+		  "amule depletes entropy pool".
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.

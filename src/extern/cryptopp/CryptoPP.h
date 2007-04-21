@@ -87,6 +87,7 @@
 
 #include <inttypes.h>
 #include <typeinfo> // Do_not_auto_remove (BSD + older gccs)
+#include <stdexcept>
 
 ////////////////////////////////////////////////////////////////////////////////
 #ifndef CRYPTOPP_CONFIG_H5392
@@ -359,6 +360,7 @@ NAMESPACE_END
 #define CRYPTOPP_DLL
 #define CRYPTOPP_API
 #define CRYPTOPP_CDECL
+#define CRYPTOPP_DLL_TEMPLATE_CLASS template class CRYPTOPP_DLL
 
 #if defined(CRYPTOPP_MANUALLY_INSTANTIATE_TEMPLATES) && !defined(CRYPTOPP_EXPORTS)
 #define CRYPTOPP_STATIC_TEMPLATE_CLASS template class
@@ -2457,6 +2459,36 @@ public:
 
 private:
 	const byte *m_block;
+};
+
+template <class T, class B, bool A=true>
+class PutBlock
+{
+public:
+	PutBlock(const void *xorBlock, void *block)
+		: m_xorBlock((const byte *)xorBlock), m_block((byte *)block) {}
+
+	template <class U>
+	inline PutBlock<T, B, A> & operator()(U x)
+	{
+		PutWord(A, B::ToEnum(), m_block, (T)x, m_xorBlock);
+		m_block += sizeof(T);
+		if (m_xorBlock)
+			m_xorBlock += sizeof(T);
+		return *this;
+	}
+
+private:
+	const byte *m_xorBlock;
+	byte *m_block;
+};
+
+template <class T, class B, bool A=true>
+struct BlockGetAndPut
+{
+	// function needed because of C++ grammatical ambiguity between expression-statements and declarations
+	static inline GetBlock<T, B, A> Get(const void *block) {return GetBlock<T, B, A>(block);}
+	typedef PutBlock<T, B, A> Put;
 };
 
 // ************** help remove warning on g++ ***************
@@ -6358,6 +6390,11 @@ NAMESPACE_END
 
 NAMESPACE_BEGIN(CryptoPP)
 
+inline CipherDir ReverseCipherDir(CipherDir dir)
+{
+	return (dir == ENCRYPTION) ? DECRYPTION : ENCRYPTION;
+}
+
 //! to be inherited by block ciphers with fixed block size
 template <unsigned int N>
 class FixedBlockSize
@@ -6439,6 +6476,17 @@ public:
 
 // ************** documentation ***************
 
+//! These objects usually should not be used directly. See CipherModeDocumentation instead.
+/*! Each class derived from this one defines two types, Encryption and Decryption, 
+	both of which implement the BlockCipher interface. */
+struct BlockCipherDocumentation
+{
+	//! implements the BlockCipher interface
+	typedef BlockCipher Encryption;
+	//! implements the BlockCipher interface
+	typedef BlockCipher Decryption;
+};
+
 /*! \brief Each class derived from this one defines two types, Encryption and Decryption, 
 	both of which implement the SymmetricCipher interface. Two types of classes derive
 	from this class: stream ciphers and block cipher modes. Stream ciphers can be used
@@ -6457,6 +6505,86 @@ NAMESPACE_END
 #endif
 ////////////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////////////////////////////
+#ifndef CRYPTOPP_DES_H
+#define CRYPTOPP_DES_H
+
+NAMESPACE_BEGIN(CryptoPP)
+
+class CRYPTOPP_DLL RawDES
+{
+public:
+	void UncheckedSetKey(CipherDir direction, const byte *userKey, unsigned int length = 8);
+	void RawProcessBlock(word32 &l, word32 &r) const;
+
+protected:
+	static const word32 Spbox[8][64];
+
+	FixedSizeSecBlock<word32, 32> k;
+};
+
+//! _
+struct DES_EDE3_Info : public FixedBlockSize<8>, public FixedKeyLength<24>
+{
+	CRYPTOPP_DLL static const char * StaticAlgorithmName() {return "DES-EDE3";}
+};
+
+/// <a href="http://www.weidai.com/scan-mirror/cs.html#DESede">DES-EDE3</a>
+class DES_EDE3 : public DES_EDE3_Info, public BlockCipherDocumentation
+{
+	class CRYPTOPP_DLL CRYPTOPP_NO_VTABLE Base : public BlockCipherImpl<DES_EDE3_Info>
+	{
+	public:
+		void UncheckedSetKey(CipherDir dir, const byte *key, unsigned int length);
+		void ProcessAndXorBlock(const byte *inBlock, const byte *xorBlock, byte *outBlock) const;
+
+	protected:
+		RawDES m_des1, m_des2, m_des3;
+	};
+
+public:
+	typedef BlockCipherFinal<ENCRYPTION, Base> Encryption;
+	typedef BlockCipherFinal<DECRYPTION, Base> Decryption;
+};
+
+NAMESPACE_END
+
+#endif
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+#ifndef CRYPTOPP_RNG_H
+#define CRYPTOPP_RNG_H
+
+
+NAMESPACE_BEGIN(CryptoPP)
+
+//! RNG derived from ANSI X9.17 Appendix C
+
+class CRYPTOPP_DLL X917RNG : public RandomNumberGenerator, public NotCopyable
+{
+public:
+	// cipher will be deleted by destructor, deterministicTimeVector = 0 means obtain time vector from system
+	X917RNG(BlockTransformation *cipher, const byte *seed, unsigned long deterministicTimeVector = 0);
+
+	byte GenerateByte();
+
+private:
+	member_ptr<BlockTransformation> cipher;
+	const int S;			// blocksize of cipher
+	SecByteBlock dtbuf; 	// buffer for enciphered timestamp
+	SecByteBlock randseed, randbuf;
+	int randbuf_counter;	// # of unused bytes left in randbuf
+	unsigned long m_deterministicTimeVector;
+};
+
+
+NAMESPACE_END
+
+#endif
+////////////////////////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -6547,6 +6675,78 @@ public:
 		{Reseed(blocking, seedSize);}
 	void Reseed(bool blocking = false, unsigned int seedSize = 32);
 };
+
+//! RNG from ANSI X9.17 Appendix C, seeded using an OS provided RNG
+template <class BLOCK_CIPHER>
+class AutoSeededX917RNG : public RandomNumberGenerator, public NotCopyable
+{
+public:
+	//! blocking will be ignored if the prefered RNG isn't available
+	explicit AutoSeededX917RNG(bool blocking = false)
+		{Reseed(blocking);}
+	void Reseed(bool blocking = false);
+	// exposed for testing
+	void Reseed(const byte *key, unsigned int keylength, const byte *seed, unsigned long timeVector);
+
+	byte GenerateByte();
+
+private:
+	member_ptr<RandomNumberGenerator> m_rng;
+	SecByteBlock m_lastBlock;
+	bool m_isDifferent;
+	unsigned int m_counter;
+};
+
+CRYPTOPP_DLL_TEMPLATE_CLASS AutoSeededX917RNG<DES_EDE3>;
+
+template <class BLOCK_CIPHER>
+void AutoSeededX917RNG<BLOCK_CIPHER>::Reseed(const byte *key, unsigned int keylength, const byte *seed, unsigned long timeVector)
+{
+	m_rng.reset(new X917RNG(new typename BLOCK_CIPHER::Encryption(key, keylength), seed, timeVector));
+
+	// for FIPS 140-2
+	m_lastBlock.resize(16);
+	m_rng->GenerateBlock(m_lastBlock, m_lastBlock.size());
+	m_counter = 0;
+	m_isDifferent = false;
+}
+
+template <class BLOCK_CIPHER>
+void AutoSeededX917RNG<BLOCK_CIPHER>::Reseed(bool blocking)
+{
+	SecByteBlock seed(BLOCK_CIPHER::BLOCKSIZE + BLOCK_CIPHER::DEFAULT_KEYLENGTH);
+	const byte *key;
+	do
+	{
+		OS_GenerateRandomBlock(blocking, seed, seed.size());
+		key = seed + BLOCK_CIPHER::BLOCKSIZE;
+	}	// check that seed and key don't have same value
+	while (memcmp(key, seed, STDMIN((unsigned int)BLOCK_CIPHER::BLOCKSIZE, (unsigned int)BLOCK_CIPHER::DEFAULT_KEYLENGTH)) == 0);
+
+	Reseed(key, BLOCK_CIPHER::DEFAULT_KEYLENGTH, seed, 0);
+}
+
+template <class BLOCK_CIPHER>
+byte AutoSeededX917RNG<BLOCK_CIPHER>::GenerateByte()
+{
+	byte b = m_rng->GenerateByte();
+
+	// for FIPS 140-2
+	m_isDifferent = m_isDifferent || b != m_lastBlock[m_counter];
+	m_lastBlock[m_counter] = b;
+	++m_counter;
+	if (m_counter == m_lastBlock.size())
+	{
+		if (!m_isDifferent)
+			throw std::runtime_error(
+				"AutoSeededX917RNG: "
+				"Continuous random number generator test failed.");
+		m_counter = 0;
+		m_isDifferent = false;
+	}
+
+	return b;
+}
 
 NAMESPACE_END
 

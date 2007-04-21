@@ -25,22 +25,26 @@
 
 #include "ClientCreditsList.h"	// Interface declarations
 
+
 #include <include/protocol/ed2k/Constants.h>
 #include <include/common/Macros.h>
 #include <include/common/DataFileVersion.h>
 
+
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for thePrefs
 #include "ClientCredits.h"	// Needed for CClientCredits
-#include "amule.h"			// Needed for theApp
-#include "CFile.h"			// Needed for CFile
-#include "Logger.h"			// Needed for Add(Debug)LogLine
+#include "amule.h"		// Needed for theApp
+#include "CFile.h"		// Needed for CFile
+#include "Logger.h"		// Needed for Add(Debug)LogLine
 #include "FileFunctions.h"	// Needed for GetFileSize
 #include "CryptoPP_Inc.h"	// Needed for Crypto functions
 
+
 #define CLIENTS_MET_FILENAME		wxT("clients.met")
 #define CLIENTS_MET_BAK_FILENAME	wxT("clients.met.BAK")
-#define CRYPTKEY_FILENAME			wxT("cryptkey.dat")
+#define CRYPTKEY_FILENAME		wxT("cryptkey.dat")
+
 
 CClientCreditsList::CClientCreditsList()
 {
@@ -50,9 +54,9 @@ CClientCreditsList::CClientCreditsList()
 	InitalizeCrypting();
 }
 
+
 CClientCreditsList::~CClientCreditsList()
 {
-	
 	ClientMap::iterator it = m_mapClients.begin();
 	for ( ; it != m_mapClients.end(); ++it ){
 		delete it->second;
@@ -63,6 +67,7 @@ CClientCreditsList::~CClientCreditsList()
 		m_pSignkey = NULL;
 	}
 }
+
 
 void CClientCreditsList::LoadList()
 {
@@ -240,16 +245,18 @@ CClientCredits* CClientCreditsList::GetCredit(const CMD4Hash& key)
 	return result;
 }
 
+
 void CClientCreditsList::Process()
 {
 	if (::GetTickCount() - m_nLastSaved > MIN2MS(13))
 		SaveList();
 }
 
+
 bool CClientCreditsList::CreateKeyPair()
 {
 	try{
-		CryptoPP::AutoSeededRandomPool rng;
+		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
 		CryptoPP::InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
 
@@ -334,7 +341,7 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 	
 	try {		
 		CryptoPP::SecByteBlock sbbSignature(signer->SignatureLength());
-		CryptoPP::AutoSeededRandomPool rng;
+		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
 		byte abyBuffer[MAXPUBKEYSIZE+9];
 		uint32 keylen = pTarget->GetSecIDKeyLen();
 		memcpy(abyBuffer,pTarget->GetSecureIdent(),keylen);
@@ -440,7 +447,7 @@ bool CClientCreditsList::CryptoAvailable() const
 #ifdef _DEBUG
 bool CClientCreditsList::Debug_CheckCrypting(){
 	// create random key
-	CryptoPP::AutoSeededRandomPool rng;
+	CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
 
 	CryptoPP::RSASSA_PKCS1v15_SHA_Signer priv(rng, 384);
 	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pub(priv);
