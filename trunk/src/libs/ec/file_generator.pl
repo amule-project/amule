@@ -25,6 +25,7 @@
 use File::Copy;
 use warnings; 
 use strict;
+use POSIX;
 
 my $exit_with_help;
 
@@ -354,7 +355,7 @@ sub write_cdash_enum_line {
 	}
 
 	# looks like c# can't handle such values as enums
-	if ( not ($_[2] & 0x8000000) ) { 
+	if ( not (POSIX::strtod($_[2]) & 0x8000000) ) { 
 		print OUTPUT "\t" . $_[1] . " = " . $_[2];
 	}
 }
