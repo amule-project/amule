@@ -126,6 +126,9 @@ Trunk
 		* Applied Bas Zoetekouw's patch for debian bug #350396:
 		  "amule depletes entropy pool".
 		* Implemented IP2Country using GeoIP.
+		* When converting from multibyte to wide characters,
+		  ConvAmuleBrokenFileNames now tries UTF-8 first. If this
+		  fails, then it tries ISO-8859-1.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
