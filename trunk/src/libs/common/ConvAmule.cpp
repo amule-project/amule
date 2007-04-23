@@ -73,9 +73,9 @@ size_t ConvAmuleBrokenFileNames::MB2WC(
 {
 	size_t ret;
 	
-	ret = m_conv.MB2WC(out, in, outLen);
+	ret = wxMBConvUTF8::MB2WC(out, in, outLen);
 	if (ret == wxCONV_FAILED) {
-		ret = wxMBConvUTF8::MB2WC(out, in, outLen);
+		ret = m_conv.MB2WC(out, in, outLen);
 	}
 	
 	return ret;
