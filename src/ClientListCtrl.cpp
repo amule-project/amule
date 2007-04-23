@@ -28,18 +28,19 @@
 #include <include/protocol/ed2k/ClientSoftware.h>
 #include <include/common/MenuIDs.h>
 
-#include "ClientDetailDialog.h"
-#include "ChatWnd.h"
+#include "amule.h"
 #include "amuleDlg.h"
-#include "Color.h"
-
-#include "updownclient.h"
-#include "amule.h"
-#include "KnownFile.h"
-#include "UploadQueue.h"
-#include "amule.h"
+#include "ChatWnd.h"
+#include "ClientDetailDialog.h"
 #include "ClientList.h"
+#include "Color.h"
 #include "DataToText.h"
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"	// Needed for IP2Country
+#endif
+#include "KnownFile.h"
+#include "updownclient.h"
+#include "UploadQueue.h"
 
 #include <wx/menu.h>
 #include <wx/textdlg.h>
@@ -601,7 +602,24 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 					wxIMAGELIST_DRAW_TRANSPARENT);					
 			}
 
-			dc->DrawText( client->GetUserName(), rect.x + 20, rect.y + 3 );
+			wxString userName;
+#ifdef ENABLE_IP2COUNTRY
+			// Draw the flag
+			dc->DrawBitmap(g_IP2Country->CountryFlag(client->GetFullIP()),
+				rect.x + 20, rect.y + 5,
+				wxIMAGELIST_DRAW_TRANSPARENT);
+				
+			// Get the country name
+			wxString countryName(g_IP2Country->CountryName(client->GetFullIP()));
+			if (countryName.Len()) {
+				userName << countryName;
+			} else {
+				userName << client->GetFullIP();
+			}
+			userName << wxT(" - ");
+#endif // ENABLE_IP2COUNTRY
+			userName << client->GetUserName();
+			dc->DrawText(userName, rect.x + 40, rect.y + 3);
 			
 			return;
 		}

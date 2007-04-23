@@ -77,8 +77,8 @@ libmuleappcommon_a_SOURCES = \
 libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 if ENABLE_UPNP
-libmuleappcommon_a_CFLAGS += -DENABLE_UPNP
-libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP
+libmuleappcommon_a_CFLAGS += -DENABLE_UPNP=1
+libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP=1
 endif
 
 
@@ -99,8 +99,8 @@ libmuleappcore_a_SOURCES = \
 libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 if ENABLE_UPNP
-libmuleappcore_a_CFLAGS += -DENABLE_UPNP
-libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP
+libmuleappcore_a_CFLAGS += -DENABLE_UPNP=1
+libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP=1
 endif
 
 
@@ -125,8 +125,8 @@ libmuleappgui_a_SOURCES = \
 libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 if ENABLE_UPNP
-libmuleappgui_a_CFLAGS += -DENABLE_UPNP
-libmuleappgui_a_CXXFLAGS += -DENABLE_UPNP
+libmuleappgui_a_CFLAGS += -DENABLE_UPNP=1
+libmuleappgui_a_CXXFLAGS += -DENABLE_UPNP=1
 endif
 
 core_sources = \
@@ -201,6 +201,12 @@ gui_sources = \
 	MuleTrayIcon.cpp \
 	TransferWnd.cpp 
 
+if ENABLE_IP2COUNTRY
+gui_sources += \
+	IP2Country.cpp
+endif
+
+
 remote_common_sources = \
 	OtherFunctions.cpp \
 	NetworkFunctions.cpp 
@@ -240,10 +246,16 @@ common_deps = libmuleappcommon.a $(remote_common_deps)
 #
 core_flags = 
 if ENABLE_UPNP
-core_flags += -DENABLE_UPNP
+core_flags += -DENABLE_UPNP=1
 endif
 
 gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
+if ENABLE_IP2COUNTRY
+gui_flags += -DENABLE_IP2COUNTRY=1
+endif
+if ENABLE_GEOIP
+gui_flags += -DENABLE_GEOIP=1
+endif
 
 common_flags = -I$(srcdir)/libs -Ilibs \
 	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
@@ -366,6 +378,7 @@ noinst_HEADERS = \
 		HTTPDownload.h \
 		inetdownload.h \
 		InternalEvents.h \
+		IP2Country.h \
 		IPFilter.h \
 		KadDlg.h \
 		KnownFile.h \

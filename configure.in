@@ -196,6 +196,33 @@ AC_ARG_ENABLE(
 		[do not compile UPnP code])],
 	[ENABLE_UPNP=$enableval], [ENABLE_UPNP=yes])
 
+AC_ARG_ENABLE(
+	[geoip],
+	[AS_HELP_STRING(
+		[--disable-geoip],
+		[do not compile with GeoIP IP2Country library])],
+	[ENABLE_GEOIP=$enableval], [ENABLE_GEOIP=yes])
+
+AC_ARG_WITH(
+	[geoip-headers],
+	AS_HELP_STRING([--with-geoip-headers=DIR],
+		[GeoIP include files location]),
+	[GEOIP_INCLUDE="-I$withval"])
+
+AC_ARG_WITH(
+	[geoip-lib],
+	AS_HELP_STRING([--with-geoip-lib=DIR],
+		[GeoIP library location]),
+	[GEOIP_LIB="-L$withval $GEOIP_LIB"])
+
+AC_ARG_WITH(
+	[geoip-static],
+	AS_HELP_STRING([--with-geoip-static],
+		[Explicitly link GeoIP statically (default=no)]),
+	[if test "$withval" != "no"; then
+		GEOIP_LIB="-Wl,-Bstatic $GEOIP_LIB -Wl,-Bdynamic"
+	fi])
+
 AC_ARG_WITH(
 	[denoise-level],
 	[AS_HELP_STRING(
@@ -321,6 +348,30 @@ if test "x${need_gui:+set}" != "xset" ; then
   need_gui="no"
 fi
 AC_MSG_RESULT($need_gui)
+
+
+# Check for GeoIP
+if test x"$ENABLE_GEOIP" = x"yes" ; then
+	GEOIP_LIB="-lGeoIP"
+	CPPFLAGS="$CFLAGS $GEOIP_INCLUDE"
+	LDFLAGS="$LDFLAGS $GEOIP_LIB"
+	AC_CHECK_HEADER(GeoIP.h,,
+		[AC_MSG_ERROR([GeoIP library header files not found])])
+	AC_CHECK_LIB(GeoIP, GeoIP_open,
+		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)],
+		[AC_MSG_ERROR([GeoIP library header files were found but the library was not found])])
+fi
+AC_SUBST(GEOIP_INCLUDE)
+AC_SUBST(GEOIP_LIB)
+
+
+# Check for IP2Country capability
+AC_MSG_CHECKING([for using IP2Country class])
+if test x"$ENABLE_GEOIP" = x"yes" ; then
+	ENABLE_IP2COUNTRY="yes"
+	need_ip2country="yes"
+fi
+AC_MSG_RESULT($need_ip2country)
 
 
 # Check for wx
@@ -607,6 +658,8 @@ AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
 AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes -a x$SYS != xwin32)
+AM_CONDITIONAL(ENABLE_GEOIP, test x$ENABLE_GEOIP = xyes)
+AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
@@ -656,6 +709,7 @@ AC_CONFIG_FILES([Makefile
 		 src/kademlia/routing/Makefile
 		 src/kademlia/net/Makefile
 		 src/pixmaps/Makefile
+		 src/pixmaps/flags_xpm/Makefile
 		 src/libs/Makefile
 		 src/libs/ec/Makefile
 		 src/libs/ec/abstracts/Makefile
@@ -703,6 +757,7 @@ echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
 echo "  Should aMule be compiled with UPnP support?                ${ENABLE_UPNP:-yes}"
+echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2COUNTRY:-yes}"
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
@@ -733,13 +788,15 @@ echo "  Libraries aMule will use to build:"
 echo "                                       wxWidgets             ${WX_VERSION_FULL:-Not detected}"
 echo "                                       crypto++              ${crypto_version:-embedded}"
 if test x$LIBPNG_VERSION != xnot_needed; then
-	echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
+echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
 fi
 if test x$GDLIB_VERSION != xnot_needed; then
-	echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
+echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
 fi
 echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
-
+if test x$ENABLE_IP2COUNTRY = xyes; then
+echo "                                       geoip                 ${ENABLE_GEOIP:-Not detected}"
+fi
 if test x"$LIBPNG_VERSION" = x""; then
 echo ""
 echo ""

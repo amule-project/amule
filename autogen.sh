@@ -57,6 +57,12 @@ autoheader
 echo "Running autoconf"
 autoconf
 
+echo "Creating pixmaps Makefile.am"
+pushd $(pwd) > /dev/null
+cd src/pixmaps/flags_xpm
+./makeflags.sh
+popd > /dev/null
+
 echo "Running automake --foreign -a -c -f"
 automake --foreign -a -c -f
 

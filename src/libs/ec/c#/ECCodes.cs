@@ -34,7 +34,7 @@ public enum ECFlags {
 	EC_FLAG_UTF8_NUMBERS = 0x00000002,
 	EC_FLAG_HAS_ID	 = 0x00000004,
 	EC_FLAG_ACCEPTS	 = 0x00000010,
-	//EC_FLAG_UNKNOWN_MASK = 0xff7f7f08
+
 };
 public enum ECOpCodes {
 	EC_OP_NOOP                          = 0x01,
@@ -315,13 +315,13 @@ public enum EC_DETAIL_LEVEL {
 	EC_DETAIL_UPDATE        = 0x03,
 	EC_DETAIL_INC_UPDATE    = 0x04
 };
-enum EC_SEARCH_TYPE {
+public enum EC_SEARCH_TYPE {
 	EC_SEARCH_LOCAL         = 0x00,
 	EC_SEARCH_GLOBAL        = 0x01,
 	EC_SEARCH_KAD           = 0x02,
 	EC_SEARCH_WEB           = 0x03
 };
-enum EC_STATTREE_NODE_VALUE_TYPE {
+public enum EC_STATTREE_NODE_VALUE_TYPE {
 	EC_VALUE_INTEGER        = 0x00,
 	EC_VALUE_ISTRING        = 0x01,
 	EC_VALUE_BYTES          = 0x02,
@@ -331,7 +331,7 @@ enum EC_STATTREE_NODE_VALUE_TYPE {
 	EC_VALUE_STRING         = 0x06,
 	EC_VALUE_DOUBLE         = 0x07
 };
-enum EcPrefs {
+public enum EcPrefs {
 	EC_PREFS_CATEGORIES     = 0x00000001,
 	EC_PREFS_GENERAL        = 0x00000002,
 	EC_PREFS_CONNECTIONS    = 0x00000004,

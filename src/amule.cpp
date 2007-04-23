@@ -42,12 +42,13 @@
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
 
+#include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
-#include <wx/cmdline.h>			// Needed for wxCmdLineParser
-#include <wx/wfstream.h>
-#include <wx/tokenzr.h>
+#include <wx/image.h>
 #include <wx/snglinst.h>
+#include <wx/tokenzr.h>
+#include <wx/wfstream.h>
 
 
 #include <common/Format.h>		// Needed for CFormat
@@ -60,6 +61,9 @@
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"		// Needed for IP2Country
+#endif
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "ListenSocket.h"		// Needed for CListenSocket
@@ -715,6 +719,10 @@ bool CamuleApp::OnInit()
 	}
 
 	m_statistics = new CStatistics();
+#ifdef ENABLE_IP2COUNTRY
+	wxImage::AddHandler(new wxPNGHandler);
+	g_IP2Country = new CIP2Country();
+#endif
 	
 	clientlist	= new CClientList();
 	friendlist	= new CFriendList();
