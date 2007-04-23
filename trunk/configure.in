@@ -199,9 +199,9 @@ AC_ARG_ENABLE(
 AC_ARG_ENABLE(
 	[geoip],
 	[AS_HELP_STRING(
-		[--disable-geoip],
-		[do not compile with GeoIP IP2Country library])],
-	[ENABLE_GEOIP=$enableval], [ENABLE_GEOIP=yes])
+		[--enable-geoip],
+		[compile with GeoIP IP2Country library])],
+	[ENABLE_GEOIP=$enableval], [ENABLE_GEOIP=no])
 
 AC_ARG_WITH(
 	[geoip-headers],
