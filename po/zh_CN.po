@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Chen Nan\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -6233,17 +6233,17 @@ msgstr "基于aMule的设置文件建立新设置文件。"
 msgid "Print program version."
 msgstr "打印程序版本。"
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "积分文件已载入，%u个已知用户"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr " - %u 个用户的积分已过期"
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr ""
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2005-11-24 15:03+0000\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
@@ -6380,17 +6380,17 @@ msgstr ""
 msgid "Print program version."
 msgstr "Izpi¹i razlièico programa."
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "Datoteka s krediti nalo¾ena, %u znanih uporabnikov"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr " - Krediti potekli za %u uporabnikov!"
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "Datoteka 'cryptkey.dat' ne obstaja, ustvarjam."
 

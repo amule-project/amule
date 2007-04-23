@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -6364,17 +6364,17 @@ msgstr "어뮬의 기본설정 파일에서 환경설정 파일을 생성합니�
 msgid "Print program version."
 msgstr "프로그램 버젼을 프린트합니다."
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "크레디트 파일을 읽었습니다. %u 클라이언트를 인식하였습니다."
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr "%u 클라이언트의 크리데트가 만료되었습니다."
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "'cryptkey.dat' 파일을 발견할수 없음, 생성중."
 

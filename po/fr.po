@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -6335,17 +6335,17 @@ msgstr "Créé le fichier de configuration à partir du fichier de configuration
 msgid "Print program version."
 msgstr "Affiche la version du programme."
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "Fichier de Crédits chargé, il y a %u clients connus"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr " - Crédits expirés pour %u clients!"
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "Pas de fichier 'cryptkey.dat' trouvé, création."
 

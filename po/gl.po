@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2006-12-04 16:19+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
@@ -6447,17 +6447,17 @@ msgstr ""
 msgid "Print program version."
 msgstr "Imprimir versión de programa."
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "Ficheiro de créditos cargado, %u cliente coñecidos"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr " - Expiraron os créditos de %u clientes!"
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "Non se atopou o ficheiro 'cryptkey.dat', creando."
 

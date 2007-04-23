@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule-1.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2004-02-15 01:25-0000\n"
 "Last-Translator: Lauri Kosonen/eQualizer <herra_perkele@hotmail.com>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -6195,17 +6195,17 @@ msgstr ""
 msgid "Print program version."
 msgstr ""
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "Credittiedosto ladattu, %u k‰ytt‰j‰‰ tunnetaan"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr ""
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr ""
 
