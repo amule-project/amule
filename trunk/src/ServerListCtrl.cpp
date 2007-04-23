@@ -32,11 +32,14 @@
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
 
-#include "amule.h"			// Needed for theApp
+#include "amule.h"		// Needed for theApp
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"	// Needed for IP2Country
+#endif
 #include "ServerList.h"		// Needed for CServerList
-#include "ServerConnect.h"		// Needed for CServerConnect
-#include "Server.h"			// Needed for CServer and SRV_PR_*
+#include "ServerConnect.h"	// Needed for CServerConnect
+#include "Server.h"		// Needed for CServer and SRV_PR_*
 #include "Logger.h"
 #include <common/Format.h>
 
@@ -178,39 +181,57 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		item.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 		SetItem( item );
 	}
-
-	SetItem( itemnr, COLUMN_SERVER_NAME, server->GetListName() );
-	SetItem( itemnr, COLUMN_SERVER_ADDR, server->GetAddress() );
-	if (server->GetAuxPortsList().IsEmpty()) {
-		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u"), server->GetPort()));
+	
+	wxString serverName;
+#ifdef ENABLE_IP2COUNTRY
+	// Get the country name
+	wxString countryName(g_IP2Country->CountryName(server->GetFullIP()));
+	if (countryName.Len()) {
+		serverName << countryName;
 	} else {
-		SetItem( itemnr, COLUMN_SERVER_PORT, wxString::Format(wxT("%u ("), server->GetPort()) + server->GetAuxPortsList() + wxT(")") );
+		serverName << wxT("Unknown");
+	}
+	serverName << wxT(" - ");
+#endif // ENABLE_IP2COUNTRY
+	serverName << server->GetListName();
+	SetItem(itemnr, COLUMN_SERVER_NAME, serverName);
+	SetItem(itemnr, COLUMN_SERVER_ADDR, server->GetAddress());
+	if (server->GetAuxPortsList().IsEmpty()) {
+		SetItem( itemnr, COLUMN_SERVER_PORT,
+			wxString::Format(wxT("%u"), server->GetPort()));
+	} else {
+		SetItem( itemnr, COLUMN_SERVER_PORT,
+			wxString::Format(wxT("%u ("),
+				server->GetPort()) + server->GetAuxPortsList() + wxT(")") );
 	}
 	SetItem( itemnr, COLUMN_SERVER_DESC, server->GetDescription() );
 	
 	if ( server->GetPing() ) {
-		SetItem( itemnr, COLUMN_SERVER_PING, CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
+		SetItem( itemnr, COLUMN_SERVER_PING,
+			CastSecondsToHM(server->GetPing()/1000, server->GetPing() % 1000 ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_PING, wxEmptyString );
 	}
 
 	if ( server->GetUsers() ) {
-		SetItem( itemnr, COLUMN_SERVER_USERS, wxString::Format( wxT("%u"), server->GetUsers() ) );
+		SetItem( itemnr, COLUMN_SERVER_USERS,
+			wxString::Format( wxT("%u"), server->GetUsers() ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_USERS, wxEmptyString );
 	}
 
 	if ( server->GetFiles() ) {
-		SetItem( itemnr, COLUMN_SERVER_FILES, wxString::Format( wxT("%u"), server->GetFiles() ) );
+		SetItem( itemnr, COLUMN_SERVER_FILES,
+			wxString::Format( wxT("%u"), server->GetFiles() ) );
 	} else {
 		SetItem( itemnr, COLUMN_SERVER_FILES, wxEmptyString );
 	}
 
 	switch ( server->GetPreferences() ) {
-		case SRV_PR_LOW:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("Low") );		break;
-		case SRV_PR_NORMAL:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("Normal") );	break;
-		case SRV_PR_HIGH:	SetItem( itemnr, COLUMN_SERVER_PRIO, _("High") );	break;
-		default:			SetItem( itemnr, COLUMN_SERVER_PRIO, wxT("---") ); // this should never happen
+		case SRV_PR_LOW:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Low"));		break;
+		case SRV_PR_NORMAL:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("Normal"));	break;
+		case SRV_PR_HIGH:	SetItem(itemnr, COLUMN_SERVER_PRIO, _("High") );	break;
+		default:		SetItem(itemnr, COLUMN_SERVER_PRIO, wxT("---"));	// this should never happen
 	}
 
 	SetItem( itemnr, COLUMN_SERVER_FAILS, wxString::Format( wxT("%u"),server->GetFailedCount() ) );

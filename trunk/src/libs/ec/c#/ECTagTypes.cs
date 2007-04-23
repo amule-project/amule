@@ -26,7 +26,7 @@
 
 namespace amule.net
 {
-enum ECTagTypes {
+public enum ECTagTypes {
 	EC_TAGTYPE_UNKNOWN = 0,
 	EC_TAGTYPE_CUSTOM = 1,
 	EC_TAGTYPE_UINT8 = 2,

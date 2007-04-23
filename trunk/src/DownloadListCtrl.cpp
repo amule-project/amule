@@ -41,6 +41,9 @@
 #include "DataToText.h"		// Needed for PriorityToStr
 #include "FileDetailDialog.h"	// Needed for CFileDetailDialog
 #include "GuiEvents.h"		// Needed for CoreNotify_*
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"	// Needed for IP2Country
+#endif
 #include "Logger.h"
 #include "muuli_wdr.h"		// Needed for ID_DLOADLIST
 #include "PartFile.h"		// Needed for CPartFile
@@ -1621,12 +1624,28 @@ void CDownloadListCtrl::DrawSourceItem(
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
 							
-				if ( client->GetUserName().IsEmpty() ) {
-					dc->DrawText( wxT("?"), rect.GetX() + 40, rect.GetY() );
+				wxString userName;
+#ifdef ENABLE_IP2COUNTRY
+				// Draw the flag
+				dc->DrawBitmap(g_IP2Country->CountryFlag(client->GetFullIP()),
+					rect.x + 40, rect.y + 5,
+					wxIMAGELIST_DRAW_TRANSPARENT);
+				
+				// Get the country name
+				wxString countryName(g_IP2Country->CountryName(client->GetFullIP()));
+				if (countryName.Len()) {
+					userName << countryName;
 				} else {
-					dc->DrawText( client->GetUserName(), rect.GetX() + 40,
-						rect.GetY());
+					userName << client->GetFullIP();
 				}
+				userName << wxT(" - ");
+#endif // ENABLE_IP2COUNTRY
+				if (client->GetUserName().IsEmpty()) {
+					userName << wxT("?");
+				} else {
+					userName << client->GetUserName();
+				}
+				dc->DrawText(userName, rect.GetX() + 60, rect.GetY());
 			}
 			break;
 

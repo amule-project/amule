@@ -125,6 +125,7 @@ Trunk
 		* Fixed the forum address in the backtrace print.
 		* Applied Bas Zoetekouw's patch for debian bug #350396:
 		  "amule depletes entropy pool".
+		* Implemented IP2Country using GeoIP.
 
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
@@ -150,6 +151,11 @@ Trunk
 		* Added amulegui desktop icon (with Gerd78).
 		* Manpages update.
 
+	Special Thanks to:
+		* FreeToGo for implementing the first version of IP2Country on
+		  the forum.
+		* Mark James (http://www.famfamfam.com) for providing the
+		  flags icons.
 
 --------------------------------------------------------------------------------
 
