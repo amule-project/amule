@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-2005-11-13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-15 03:31+0200\n"
+"POT-Creation-Date: 2007-04-23 03:31+0200\n"
 "PO-Revision-Date: 2005-11-15 19:02+0100\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: librezale.org <librezale@librezale.org>\n"
@@ -6426,17 +6426,17 @@ msgstr ""
 msgid "Print program version."
 msgstr "Programa bertsioa bistarazi."
 
-#: src/ClientCreditsList.cpp:160
+#: src/ClientCreditsList.cpp:165
 #, c-format
 msgid "Creditfile loaded, %u clients are known"
 msgstr "Kreditu fitxategia kargaturik, %u bezero ezagutzen dira"
 
-#: src/ClientCreditsList.cpp:163
+#: src/ClientCreditsList.cpp:168
 #, c-format
 msgid " - Credits expired for %u clients!"
 msgstr " - %u bezeroaen krefituak amaitu dira!"
 
-#: src/ClientCreditsList.cpp:298
+#: src/ClientCreditsList.cpp:305
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "Ez da 'cryptkey.dat' fitxategia aurkitu, sortzen."
 
