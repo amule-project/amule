@@ -521,11 +521,11 @@ bool CamuleApp::OnInit()
 	// Default geometry of the GUI. Can be changed with a cmdline argument...
 	bool geometry_enabled = false;
 	wxString geom_string;
-	#ifndef AMULE_DAEMON
+#ifndef AMULE_DAEMON
 	if ( cmdline.Found(wxT("geometry"), &geom_string) ) {
 		geometry_enabled = true;
 	}
-	#endif
+#endif
 
 
 	printf("Initialising aMule\n");

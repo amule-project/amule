@@ -35,30 +35,36 @@ using std::auto_ptr;
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>		// Needed for wxFileConfig
 
+
 #include <common/Format.h>
-#include <libs/common/StringFunctions.h>
+#include <common/StringFunctions.h>
 #include <common/MD5Sum.h>
+
 
 #include <include/common/EventIDs.h>
 
+
 #include "amule.h"			// Interface declarations.
-#include "Server.h"			// Needed for GetListName
-#include "TransferWnd.h"		// Needed for CTransferWnd
-#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
-#include "ServerWnd.h"			// Needed for CServerWnd
-#include "PartFile.h"			// Needed for CPartFile
-#include "updownclient.h"
+#include "amuleDlg.h"			// Needed for CamuleDlg
+#include "ClientCredits.h"
+#include "ClientListCtrl.h"
+#include "DataToText.h"			// Needed for GetSoftName()
+#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "GuiEvents.h"
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"		// Needed for IP2Country
+#endif
 #include "Logger.h"
 #include "muuli_wdr.h"			// Needed for IDs
-#include "amuleDlg.h"			// Needed for CamuleDlg
+#include "PartFile.h"			// Needed for CPartFile
 #include "SearchDlg.h"			// Needed for CSearchDlg
+#include "Server.h"			// Needed for GetListName
+#include "ServerWnd.h"			// Needed for CServerWnd
 #include "SharedFilesCtrl.h"		// Needed for CSharedFilesCtrl
-#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
-#include "ClientListCtrl.h"
+#include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
+#include "TransferWnd.h"		// Needed for CTransferWnd
+#include "updownclient.h"
 #include "ServerListCtrl.h"
-#include "ClientCredits.h"
-#include "GuiEvents.h"
-#include "DataToText.h"			// Needed for GetSoftName()
 
 
 CEConnectDlg::CEConnectDlg()
@@ -240,6 +246,11 @@ bool CamuleRemoteGuiApp::OnInit()
 	
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
+
+#ifdef ENABLE_IP2COUNTRY
+	wxImage::AddHandler(new wxPNGHandler);
+	g_IP2Country = new CIP2Country();
+#endif
 
 	bool result = ShowConnectionDialog();
 
