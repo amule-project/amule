@@ -55,6 +55,7 @@ src/ServerConnect.cpp
 src/DownloadQueue.cpp
 src/TextClient.cpp
 src/ServerSocket.cpp
+src/IP2Country.cpp
 src/TransferWnd.cpp
 src/FileDetailListCtrl.cpp
 src/KnownFile.cpp
