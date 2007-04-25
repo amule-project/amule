@@ -793,7 +793,7 @@ bool CamuleApp::OnInit()
 		//workaround amuled crash
 		#ifndef AMULE_DAEMON
 			serverlist->UpdateServerMetFromURL(wxT(
-				"http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
+				"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"));
 		#endif
 		}
 	}
