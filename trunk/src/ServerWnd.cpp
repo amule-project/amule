@@ -62,7 +62,10 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
-	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT("http://ocbmaurice.dyns.net/pl/slist.pl?download/server-best.met"));
+	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT(
+		"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"));
+	CastChild( IDC_NODESLISTURL, wxTextCtrl )->SetValue(wxT(
+		"http://emule-inside.net/nodes.dat"));
 
 	// Insert two columns, currently without a header
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
