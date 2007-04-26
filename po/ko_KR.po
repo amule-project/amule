@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-24 03:31+0200\n"
+"POT-Creation-Date: 2007-04-26 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -983,19 +983,19 @@ msgstr "%02u분 %02u초"
 msgid "%02us"
 msgstr "%02u초"
 
-#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:178
 #: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "높은아이디"
 
-#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
-#: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:866
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:165
+#: src/ServerWnd.cpp:175 src/ClientListCtrl.cpp:866
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "낮은아이디"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:703
-#: src/ServerWnd.cpp:180 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
+#: src/ServerWnd.cpp:183 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
 msgstr "아직 연결되지 않았습니다."
@@ -1557,7 +1557,7 @@ msgid "Servers (%i)"
 msgstr "서버 (%i)"
 
 #: src/ServerListCtrl.cpp:428 src/PrefsUnifiedDlg.cpp:153
-#: src/ServerWnd.cpp:171 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
+#: src/ServerWnd.cpp:174 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
 msgid "Server"
 msgstr "서버"
 
@@ -2319,85 +2319,85 @@ msgstr "클라이언트 요청이 유효하지 않습니다. %i / %i"
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr ""
 
-#: src/ServerWnd.cpp:100
+#: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
 msgstr "서버 추가되지 않음: 아이피나 호스트이름이 없습니다."
 
-#: src/ServerWnd.cpp:105
+#: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
 msgstr "서버 추가되지 않음: 유효하지 않는 서버 포트입니다."
 
-#: src/ServerWnd.cpp:153
+#: src/ServerWnd.cpp:156
 msgid "ED2K Status:"
 msgstr "ED2k 상태:"
 
-#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:679
+#: src/ServerWnd.cpp:159 src/ServerWnd.cpp:209 src/TextClient.cpp:679
 #: src/ClientListCtrl.cpp:991
 msgid "Connected"
 msgstr "연결됨"
 
-#: src/ServerWnd.cpp:160 src/muuli_wdr.cpp:3127
+#: src/ServerWnd.cpp:163 src/muuli_wdr.cpp:3127
 msgid "IP:Port"
 msgstr "아이피:포트"
 
-#: src/ServerWnd.cpp:164
+#: src/ServerWnd.cpp:167
 msgid "ID"
 msgstr "아이디"
 
-#: src/ServerWnd.cpp:196
+#: src/ServerWnd.cpp:199
 msgid "Kademlia Status:"
 msgstr "카뎀리아 상태:"
 
-#: src/ServerWnd.cpp:199
+#: src/ServerWnd.cpp:202
 msgid "Running"
 msgstr "동작중"
 
-#: src/ServerWnd.cpp:205
+#: src/ServerWnd.cpp:208
 msgid "Status:"
 msgstr "상태:"
 
-#: src/ServerWnd.cpp:206
+#: src/ServerWnd.cpp:209
 msgid "Disconnected"
 msgstr "연결이 끊김"
 
-#: src/ServerWnd.cpp:209
+#: src/ServerWnd.cpp:212
 msgid "Connection State:"
 msgstr "연결 상태:"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:213
 msgid "Firewalled"
 msgstr "방화벽"
 
-#: src/ServerWnd.cpp:210 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
+#: src/ServerWnd.cpp:213 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
 #: src/muuli_wdr.cpp:3224
 msgid "OK"
 msgstr "확인"
 
-#: src/ServerWnd.cpp:214
+#: src/ServerWnd.cpp:217
 msgid "Firewalled state: "
 msgstr "방화벽 상태:"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "Connected to buddy"
 msgstr "친구가 접속함"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "No buddy"
 msgstr "친구가 없음"
 
-#: src/ServerWnd.cpp:219
+#: src/ServerWnd.cpp:222
 msgid "Buddy address: "
 msgstr "친구 주소:"
 
-#: src/ServerWnd.cpp:225
+#: src/ServerWnd.cpp:228
 msgid "Average Users:"
 msgstr "평균 사용자:"
 
-#: src/ServerWnd.cpp:228
+#: src/ServerWnd.cpp:231
 msgid "Average Files:"
 msgstr "평균 파일:"
 
-#: src/ServerWnd.cpp:241 src/TextClient.cpp:690
+#: src/ServerWnd.cpp:244 src/TextClient.cpp:690
 msgid "Not running"
 msgstr "동작되지 않음"
 

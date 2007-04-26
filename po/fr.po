@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-24 03:31+0200\n"
+"POT-Creation-Date: 2007-04-26 03:31+0200\n"
 "PO-Revision-Date: 2006-07-24 11:21+0200\n"
 "Last-Translator:  <>\n"
 "Language-Team: \n"
@@ -989,19 +989,19 @@ msgstr "%02umin %02us"
 msgid "%02us"
 msgstr "%02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:178
 #: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "HighID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
-#: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:866
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:165
+#: src/ServerWnd.cpp:175 src/ClientListCtrl.cpp:866
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:703
-#: src/ServerWnd.cpp:180 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
+#: src/ServerWnd.cpp:183 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
 msgstr "Non connecté"
@@ -1557,7 +1557,7 @@ msgid "Servers (%i)"
 msgstr "Serveurs (%i)"
 
 #: src/ServerListCtrl.cpp:428 src/PrefsUnifiedDlg.cpp:153
-#: src/ServerWnd.cpp:171 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
+#: src/ServerWnd.cpp:174 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
 msgid "Server"
 msgstr "Serveurs"
 
@@ -2317,85 +2317,85 @@ msgstr "La requête du client est invalide! %i / %i"
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr ""
 
-#: src/ServerWnd.cpp:100
+#: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
 msgstr "Serveur non ajouté: Pas d'IP ni de nom d'hôte donné."
 
-#: src/ServerWnd.cpp:105
+#: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
 msgstr "Serveur non ajouté: Port serveur invalide."
 
-#: src/ServerWnd.cpp:153
+#: src/ServerWnd.cpp:156
 msgid "ED2K Status:"
 msgstr "Statut de ED2K:"
 
-#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:679
+#: src/ServerWnd.cpp:159 src/ServerWnd.cpp:209 src/TextClient.cpp:679
 #: src/ClientListCtrl.cpp:991
 msgid "Connected"
 msgstr "Connecté"
 
-#: src/ServerWnd.cpp:160 src/muuli_wdr.cpp:3127
+#: src/ServerWnd.cpp:163 src/muuli_wdr.cpp:3127
 msgid "IP:Port"
 msgstr "IP:Port"
 
-#: src/ServerWnd.cpp:164
+#: src/ServerWnd.cpp:167
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:196
+#: src/ServerWnd.cpp:199
 msgid "Kademlia Status:"
 msgstr "Statut de Kademlia :"
 
-#: src/ServerWnd.cpp:199
+#: src/ServerWnd.cpp:202
 msgid "Running"
 msgstr "En marche"
 
-#: src/ServerWnd.cpp:205
+#: src/ServerWnd.cpp:208
 msgid "Status:"
 msgstr "Statut :"
 
-#: src/ServerWnd.cpp:206
+#: src/ServerWnd.cpp:209
 msgid "Disconnected"
 msgstr "Déconnecté"
 
-#: src/ServerWnd.cpp:209
+#: src/ServerWnd.cpp:212
 msgid "Connection State:"
 msgstr "État de la connexion :"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:213
 msgid "Firewalled"
 msgstr "Derrière un pare-feu"
 
-#: src/ServerWnd.cpp:210 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
+#: src/ServerWnd.cpp:213 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
 #: src/muuli_wdr.cpp:3224
 msgid "OK"
 msgstr "OK"
 
-#: src/ServerWnd.cpp:214
+#: src/ServerWnd.cpp:217
 msgid "Firewalled state: "
 msgstr "État du pare-feu : "
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "Connected to buddy"
 msgstr "Connecté au buddy"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "No buddy"
 msgstr "Pas de buddy"
 
-#: src/ServerWnd.cpp:219
+#: src/ServerWnd.cpp:222
 msgid "Buddy address: "
 msgstr "Adresse du buddy : "
 
-#: src/ServerWnd.cpp:225
+#: src/ServerWnd.cpp:228
 msgid "Average Users:"
 msgstr "Nombre moyen d'utilisateurs :"
 
-#: src/ServerWnd.cpp:228
+#: src/ServerWnd.cpp:231
 msgid "Average Files:"
 msgstr "Nombre moyen de fichiers :"
 
-#: src/ServerWnd.cpp:241 src/TextClient.cpp:690
+#: src/ServerWnd.cpp:244 src/TextClient.cpp:690
 msgid "Not running"
 msgstr "À l'arrêt"
 
