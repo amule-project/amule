@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-24 03:31+0200\n"
+"POT-Creation-Date: 2007-04-26 03:31+0200\n"
 "PO-Revision-Date: 2006-12-04 16:19+0100\n"
 "Last-Translator: Ignacio Casal Quinteiro <nacho.resa@gmail.com>\n"
 "Language-Team: Galego <trasno@ceu.fi.udc.es>\n"
@@ -1001,19 +1001,19 @@ msgstr "%02umin %02us"
 msgid "%02us"
 msgstr "%02us"
 
-#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:175
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:178
 #: src/ClientDetailDialog.cpp:105
 msgid "HighID"
 msgstr "IDalta"
 
-#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:162
-#: src/ServerWnd.cpp:172 src/ClientListCtrl.cpp:866
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:165
+#: src/ServerWnd.cpp:175 src/ClientListCtrl.cpp:866
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "IDbaixa"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:703
-#: src/ServerWnd.cpp:180 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
+#: src/ServerWnd.cpp:183 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
 msgstr "Non conectado"
@@ -1578,7 +1578,7 @@ msgid "Servers (%i)"
 msgstr "Servidores (%i)"
 
 #: src/ServerListCtrl.cpp:428 src/PrefsUnifiedDlg.cpp:153
-#: src/ServerWnd.cpp:171 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
+#: src/ServerWnd.cpp:174 src/ServerSocket.cpp:258 src/ServerSocket.cpp:273
 msgid "Server"
 msgstr "Servidor"
 
@@ -2343,85 +2343,85 @@ msgstr "A petición do cliente é inválida! %i / %i"
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr ""
 
-#: src/ServerWnd.cpp:100
+#: src/ServerWnd.cpp:103
 msgid "Server not added: No IP or hostname specified."
 msgstr "Servidor non engadido: Non se especificou IP ou nome de servidor."
 
-#: src/ServerWnd.cpp:105
+#: src/ServerWnd.cpp:108
 msgid "Server not added: Invalid server-port specified."
 msgstr "Servidor non engadido: Porto de servidor especificado inválido."
 
-#: src/ServerWnd.cpp:153
+#: src/ServerWnd.cpp:156
 msgid "ED2K Status:"
 msgstr "Estado ED2K:"
 
-#: src/ServerWnd.cpp:156 src/ServerWnd.cpp:206 src/TextClient.cpp:679
+#: src/ServerWnd.cpp:159 src/ServerWnd.cpp:209 src/TextClient.cpp:679
 #: src/ClientListCtrl.cpp:991
 msgid "Connected"
 msgstr "Conectado"
 
-#: src/ServerWnd.cpp:160 src/muuli_wdr.cpp:3127
+#: src/ServerWnd.cpp:163 src/muuli_wdr.cpp:3127
 msgid "IP:Port"
 msgstr "IP:Porto"
 
-#: src/ServerWnd.cpp:164
+#: src/ServerWnd.cpp:167
 msgid "ID"
 msgstr "ID"
 
-#: src/ServerWnd.cpp:196
+#: src/ServerWnd.cpp:199
 msgid "Kademlia Status:"
 msgstr "Estado Kademlia:"
 
-#: src/ServerWnd.cpp:199
+#: src/ServerWnd.cpp:202
 msgid "Running"
 msgstr "Executando"
 
-#: src/ServerWnd.cpp:205
+#: src/ServerWnd.cpp:208
 msgid "Status:"
 msgstr "Estado:"
 
-#: src/ServerWnd.cpp:206
+#: src/ServerWnd.cpp:209
 msgid "Disconnected"
 msgstr "Desconectado"
 
-#: src/ServerWnd.cpp:209
+#: src/ServerWnd.cpp:212
 msgid "Connection State:"
 msgstr "Estado de conexión:"
 
-#: src/ServerWnd.cpp:210
+#: src/ServerWnd.cpp:213
 msgid "Firewalled"
 msgstr "Cortafogos"
 
-#: src/ServerWnd.cpp:210 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
+#: src/ServerWnd.cpp:213 src/muuli_wdr.cpp:2879 src/muuli_wdr.cpp:2982
 #: src/muuli_wdr.cpp:3224
 msgid "OK"
 msgstr "Ok"
 
-#: src/ServerWnd.cpp:214
+#: src/ServerWnd.cpp:217
 msgid "Firewalled state: "
 msgstr "Estado do cortafogos:"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "Connected to buddy"
 msgstr "Conectado a amigo"
 
-#: src/ServerWnd.cpp:215
+#: src/ServerWnd.cpp:218
 msgid "No buddy"
 msgstr "Non amigo"
 
-#: src/ServerWnd.cpp:219
+#: src/ServerWnd.cpp:222
 msgid "Buddy address: "
 msgstr "Enderezo de amigo:"
 
-#: src/ServerWnd.cpp:225
+#: src/ServerWnd.cpp:228
 msgid "Average Users:"
 msgstr "Media de usuarios:"
 
-#: src/ServerWnd.cpp:228
+#: src/ServerWnd.cpp:231
 msgid "Average Files:"
 msgstr "Media de ficheiros:"
 
-#: src/ServerWnd.cpp:241 src/TextClient.cpp:690
+#: src/ServerWnd.cpp:244 src/TextClient.cpp:690
 msgid "Not running"
 msgstr "Non executando"
 
