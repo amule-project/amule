@@ -53,12 +53,17 @@ MD5Sum::MD5Sum(const wxString& sSource)
 
 wxString MD5Sum::Calculate(const wxString& sSource)
 {
+	Calculate((const unsigned char*)(const char*)unicode2char(sSource), sSource.Length());
+}
+
+wxString MD5Sum::Calculate(const uint8* buffer, int len)
+{
 	MD5_CTX context;
 	unsigned char digest[16];
 
 	MD5Init (&context);
 	// Nothing we can do against this unicode2char
-	MD5Update (&context, (const unsigned char*)(const char*)unicode2char(sSource), sSource.Length());
+	MD5Update (&context, buffer, len);
 	MD5Final (digest, &context);
 
 	m_sHash.Clear();
