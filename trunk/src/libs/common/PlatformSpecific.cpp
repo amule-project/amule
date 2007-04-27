@@ -99,15 +99,6 @@ wxString GetDocumentsDir()
 	return doGetDirectory(CSIDL_PERSONAL);
 }
 
-#if (defined(__WXMSW__) && !wxCHECK_VERSION_FULL(2,6,0,1))
-wxString GetUserDataDir()
-{
-	return doGetDirectory(CSIDL_APPDATA) + wxT("\\aMule");
-}
-#endif
-
-
-
 #else
 
 wxString GetDocumentsDir()

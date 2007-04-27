@@ -34,13 +34,9 @@
 
 #ifdef __WXMSW__
 	#include <wx/msw/registry.h> // Do_not_auto_remove
-	#if wxCHECK_VERSION_FULL(2,6,0,1)
-		#include <wx/stdpaths.h>  // Do_not_auto_remove
-	#endif
-#else
-	#include <wx/stdpaths.h> // Do_not_auto_remove
 #endif
 
+#include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
 #include <common/PlatformSpecific.h>	// Needed for GetUserDataDir()
 
@@ -1285,7 +1281,9 @@ wxString GetLocaleDir()
 {
 #ifdef __WXMAC__
 	return JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale"));
-#elif !( defined(__WXMSW__) && wxCHECK_VERSION_FULL(2,6,0,1) )
+#elif defined(__WXMSW__)
+	return JoinPaths(wxStandardPaths::Get().GetPluginsDir(), wxT("locale"));
+#else
 	wxString localeDir(wxT(AMULE_LOCALEDIR));
 
 	// The GetInstallPrefix function is slightly fucked in <= v2.6.2 of wxWidgets,
@@ -1296,10 +1294,8 @@ wxString GetLocaleDir()
 #else
 	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
 #endif
-	
+
 	return localeDir;
-#else
-	return JoinPaths(wxStandardPaths::Get().GetPluginsDir(), wxT("locale"));
 #endif
 }
 

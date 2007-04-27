@@ -38,64 +38,27 @@ BEGIN_EVENT_TABLE(MuleGifCtrl, wxControl)
 	EVT_ERASE_BACKGROUND(MuleGifCtrl::OnErase)
 END_EVENT_TABLE()
 
-	
-#if wxCHECK_VERSION(2, 7, 1)
-// Wrapper that emulates old wxGIFDecoder API
-
 class MuleGIFDecoder : public wxGIFDecoder
 {
-private:
-	uint32_t m_nframe;
-	wxInputStream* m_stream;
-	
 public:
-	MuleGIFDecoder(wxInputStream* stream, bool dummy)
+	MuleGIFDecoder()
 	{
-		m_stream = stream;
-		dummy = dummy; // Unused.
 		m_nframe = 0;
 	}
 	
-	~MuleGIFDecoder()
-		{ /* don't delete the stream! */ }
+	~MuleGIFDecoder() { }
 	
-	wxGIFErrorCode ReadGIF()
-		{ return LoadGIF(*m_stream); }
+	void GoFirstFrame() { m_nframe = 0; }
+	void GoNextFrame() { m_nframe < GetFrameCount() - 1 ? m_nframe++ : m_nframe = 0; }
+	void GoLastFrame() { m_nframe = GetFrameCount() - 1; }
 	
-	void GoFirstFrame()
-		{ m_nframe = 0; }
-	void GoNextFrame(bool)
-		{ m_nframe < GetFrameCount() - 1 ? m_nframe++ : m_nframe = 0; }
-	void GoLastFrame()
-		{ m_nframe = GetFrameCount() - 1; }
+	void ConvertToImage(wxImage* image) { wxGIFDecoder::ConvertToImage(m_nframe, image); }
 	
-	void ConvertToImage(wxImage* image)
-		{ wxGIFDecoder::ConvertToImage(m_nframe, image); }
-	
-	size_t GetLogicalScreenWidth()
-		{ return GetAnimationSize().GetWidth(); }
-	size_t GetLogicalScreenHeight()
-		{ return GetAnimationSize().GetHeight(); }
-	
-	size_t GetLeft()
-		{ return 0; }
-	size_t GetTop()
-		{ return 0; }
-	
-	long GetDelay()
-		{ return wxGIFDecoder::GetDelay(m_nframe); }
+	long GetDelay() { return wxGIFDecoder::GetDelay(m_nframe); }
+		
+private:
+	uint32_t m_nframe;
 };
-
-#else
-class MuleGIFDecoder : public wxGIFDecoder
-{
-public:
-	MuleGIFDecoder(wxInputStream* stream, bool flag)
-	:
-	wxGIFDecoder(stream,flag) {};
-};
-#endif
-
 
 MuleGifCtrl::MuleGifCtrl(
 	wxWindow *parent,
@@ -132,8 +95,8 @@ bool MuleGifCtrl::LoadData(const char* data, int size)
 	}
 	
   	wxMemoryInputStream stream(data, size);
-  	m_decoder = new MuleGIFDecoder(&stream, TRUE);
-  	if ( m_decoder->ReadGIF() != wxGIF_OK ) {
+  	m_decoder = new MuleGIFDecoder();
+  	if ( m_decoder->LoadGIF(stream) != wxGIF_OK ) {
    		delete m_decoder;
    		m_decoder = NULL;
    		return false;
@@ -168,9 +131,7 @@ void MuleGifCtrl::Stop()
 
 wxSize MuleGifCtrl::GetBestSize()
 {
-	return wxSize(
-		m_decoder->GetLogicalScreenWidth(),
-		m_decoder->GetLogicalScreenHeight());
+	return m_decoder->GetAnimationSize();
 }
 
 
@@ -178,7 +139,7 @@ void MuleGifCtrl::OnTimer(wxTimerEvent& WXUNUSED(event))
 {
 	if (m_decoder) {
 		if (m_decoder->IsAnimation()) {
-			m_decoder->GoNextFrame(true);
+			m_decoder->GoNextFrame();
 		}
 		
 		wxImage frame;
@@ -198,13 +159,14 @@ void MuleGifCtrl::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
 	wxBufferedPaintDC dc(this);
 	
-	wxSize size = GetClientSize();
-	int x = (size.GetWidth()-m_decoder->GetLogicalScreenWidth())/2;
-	int y = (size.GetHeight()-m_decoder->GetLogicalScreenHeight())/2;
+	wxSize clientsize = GetClientSize();
+	wxSize gifsize = m_decoder->GetAnimationSize();
+	int x = (clientsize.GetWidth()-gifsize.GetWidth())/2;
+	int y = (clientsize.GetHeight()-gifsize.GetHeight())/2;
 	
 	dc.SetBackground(wxBrush(GetBackgroundColour(), wxSOLID));
 	dc.Clear();
-	dc.DrawBitmap(m_frame, x + m_decoder->GetLeft(), y + m_decoder->GetTop(), true);
+	dc.DrawBitmap(m_frame, x, y, true);
 }
 
 

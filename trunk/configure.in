@@ -376,7 +376,7 @@ AC_MSG_RESULT($need_ip2country)
 
 # Check for wx
 AM_OPTIONS_WXCONFIG
-AM_PATH_WXCONFIG(2.6.0, wxWin=1)
+AM_PATH_WXCONFIG(2.8.0, wxWin=1)
 if test "$wxWin" != 1; then
 	AC_MSG_ERROR([
 		wxWidgets must be installed on your system but wx-config 
