@@ -569,7 +569,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 
         // At this point we've got a packet to send in sendbuffer. Try to send it. Loop until entire packet
         // is sent, or until we reach maximum bytes to send for this call, or until we get an error.
-        // NOTE! If send would block (returns WSAEWOULDBLOCK), we will return from this method INSIDE this loop.
+        // NOTE! If send would block (returns WOULDBLOCK), we will return from this method INSIDE this loop.
         while (sent < sendblen &&
                sentStandardPacketBytesThisCall + sentControlPacketBytesThisCall < maxNumberOfBytesToSend &&
                (
