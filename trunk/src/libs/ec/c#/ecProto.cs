@@ -45,6 +45,11 @@ namespace amule.net
                 m_subtags = new LinkedList<ecTag>();
             }
 
+            public int SubtagCount()
+            {
+                return m_subtags.Count;
+            }
+
             protected void WriteSubtags(BinaryWriter wr)
             {
                 Int16 count16 = (Int16)m_subtags.Count;
@@ -55,6 +60,11 @@ namespace amule.net
                         t.Write(wr);
                     }
                 }
+            }
+
+            public ECTagNames Name()
+            {
+                return m_name;
             }
 
             public virtual void Write(BinaryWriter wr)
@@ -88,6 +98,11 @@ namespace amule.net
                     }
                 }
                 return total_size;
+            }
+
+            public LinkedList<ecTag>.Enumerator GetTagIterator()
+            {
+                return m_subtags.GetEnumerator();
             }
 
             public void AddSubtag(ecTag t)
@@ -208,8 +223,63 @@ namespace amule.net
             }
         }
 
+        public class ecMD5 : IComparable<ecMD5>, IEquatable<ecMD5> {
+            Int64 m_lo, m_hi;
+            public ecMD5(Int64 lo, Int64 hi)
+            {
+                m_hi = hi;
+                m_lo = lo;
+            }
+
+            //
+            // actual byte order doesn't matter, but conversion must be consistant
+            //
+            public ecMD5(byte [] v)
+            {
+                m_lo = ((Int64)v[0] << 0) | ((Int64)v[1] << 8) | ((Int64)v[2] << 16) | ((Int64)v[3] << 24) |
+                    ((Int64)v[4] << 32) | ((Int64)v[5] << 40) | ((Int64)v[6] << 48) | ((Int64)v[7] << 56);
+                m_hi = ((Int64)v[8] << 0) | ((Int64)v[9] << 8) | ((Int64)v[10] << 16) | ((Int64)v[11] << 24) |
+                    ((Int64)v[12] << 32) | ((Int64)v[13] << 40) | ((Int64)v[14] << 48) | ((Int64)v[15] << 56);
+            }
+
+            public byte [] ByteValue()
+            {
+                byte[] v = {
+                    (byte)(m_hi >> 56), (byte)(m_hi >> 48), (byte)(m_hi >> 40), (byte)(m_hi >> 32),
+                    (byte)(m_hi >> 24), (byte)(m_hi >> 16), (byte)(m_hi >> 8), (byte)(m_hi >> 0),
+                    (byte)(m_lo >> 56), (byte)(m_lo >> 48), (byte)(m_lo >> 40), (byte)(m_lo >> 32),
+                    (byte)(m_lo >> 24), (byte)(m_lo >> 16), (byte)(m_lo >> 8), (byte)(m_lo >> 0),
+                };
+                return v;
+            }
+
+            public override int GetHashCode()
+            {
+                return (int)m_lo ^ (int)m_hi;
+            }
+
+            public bool Equals(ecMD5 i)
+            {
+                return (m_hi == i.m_hi) && (m_lo == i.m_lo);
+            }
+
+            public int CompareTo(ecMD5 i)
+            {
+                Int64 r = ((m_hi == i.m_hi) ? (m_lo - i.m_lo) : (m_hi - i.m_hi));
+                return r > 0 ? 1 : (r < 0 ? -1 : 0);
+            }
+        }
+
         public class ecTagMD5 : ecTag {
             byte[] m_val;
+
+            public ecTagMD5(ECTagNames n, ecMD5 value)
+                : base(n, EcTagTypes.EC_TAGTYPE_HASH16)
+            {
+                m_val = value.ByteValue();
+                m_size = 16;
+            }
+
             public ecTagMD5(ECTagNames n, string s, bool string_is_hash)
                 : base(n, EcTagTypes.EC_TAGTYPE_HASH16)
             {
@@ -250,6 +320,11 @@ namespace amule.net
             {
                 base.Write(wr);
                 wr.Write(m_val);
+            }
+
+            public ecMD5 ValueMD5()
+            {
+                return new ecMD5(m_val);
             }
         }
 
@@ -357,6 +432,9 @@ namespace amule.net
                     default:
                         break;
                 }
+                if ( t == null ) {
+                    throw new Exception("Unexpected tag type");
+                }
                 return t;
             }
 
@@ -444,9 +522,13 @@ namespace amule.net
                     wr.Write((Int16)(0));
                 }
             }
-
-
+            
         }
+
+        //
+        // Specific - purpose tags
+        //
+
         public class ecLoginPacket : ecPacket {
             public ecLoginPacket(string client_name, string version, string pass)
                 : base(ECOpCodes.EC_OP_AUTH_REQ)
@@ -472,7 +554,7 @@ namespace amule.net
         }
 
         //
-        // Class exists only for parsing purpose. It can't be created
+        // Class exists only for parsing purpose
         //
         public class ecConnStateTag {
             ecTagInt m_tag;
@@ -524,5 +606,6 @@ namespace amule.net
                 return m_tag.SubTag(ECTagNames.EC_TAG_SERVER);
             }
         }
+
     }
 }
