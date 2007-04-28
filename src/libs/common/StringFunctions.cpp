@@ -108,7 +108,7 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 	wxString result;
 
 	for ( unsigned int i = 0; i < filename.Length(); i++ ) {
-		switch ( filename[ i ] ) {
+		switch ( (wxChar)filename[ i ] ) {
 			case wxT('/'):
 				continue;
 				

@@ -1886,7 +1886,7 @@ void CClientTCPSocket::OnError(int nErrorCode)
 			// 0    -> No Error / Disconect
 			// 107  -> Transport endpoint is not connected
 			if (m_client) {
-				if (m_client->GetUserName()) {
+				if (!m_client->GetUserName().IsEmpty()) {
 					strError = wxT("OnError: Client '") + m_client->GetUserName() +
 						wxT("' (IP:") + m_client->GetFullIP() + 
 						wxString::Format(wxT(") caused an error: %u. Disconnecting client!"), nErrorCode);

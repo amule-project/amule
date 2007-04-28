@@ -40,7 +40,6 @@
     #include "wx/wx.h"
 #endif
 
-#include <wx/filedlg.h>
 #include <wx/textfile.h>
 #include <wx/file.h>
 #include <wx/timer.h>
@@ -50,6 +49,7 @@
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
+#include <wx/filedlg.h>
 
 #ifdef __WXMSW__
 	#include <winerror.h>
@@ -364,7 +364,7 @@ AlcFrame::SetFileToHash()
   const wxString & filename =
     wxFileSelector (_("Select the file you want to compute the ed2k link"),
                     browseroot, wxEmptyString, wxEmptyString, wxT("*.*"),
-                    wxOPEN | wxFILE_MUST_EXIST );
+                    wxFD_OPEN | wxFD_FILE_MUST_EXIST );
 
   if (!filename.empty ())
     {
@@ -434,7 +434,7 @@ AlcFrame::SaveEd2kLinkToFile()
       const wxString & filename =
         wxFileSelector (_("Select the file to your computed ed2k link"),
                         wxFileName::GetHomeDir(),wxT("my_ed2k_link"),
-                        wxT("txt"), wxT("*.txt"), wxSAVE );
+                        wxT("txt"), wxT("*.txt"), wxFD_SAVE );
 
       if (!filename.empty ())
         {
