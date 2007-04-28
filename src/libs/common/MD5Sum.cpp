@@ -53,7 +53,9 @@ MD5Sum::MD5Sum(const wxString& sSource)
 
 wxString MD5Sum::Calculate(const wxString& sSource)
 {
-	Calculate((const unsigned char*)(const char*)unicode2char(sSource), sSource.Length());
+	return Calculate(
+		(const unsigned char*)(const char*)unicode2char(sSource),
+		sSource.Length());
 }
 
 wxString MD5Sum::Calculate(const uint8* buffer, int len)

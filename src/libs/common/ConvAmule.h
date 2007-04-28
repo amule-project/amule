@@ -24,6 +24,10 @@
 //
 
 
+#ifndef CONVAMULE_H
+#define CONVAMULE_H
+
+
 #include <wx/url.h>
 
 
@@ -41,9 +45,7 @@ public:
 	
 	virtual size_t MB2WC(wchar_t *out, const char *in, size_t outLen) const;
 	virtual size_t WC2MB(char *out, const wchar_t *in, size_t outLen) const;
-#if wxCHECK_VERSION(2,8,0)
 	virtual size_t GetMBNulLen() const;
-#endif
 	virtual wxMBConv *Clone() const;
 };
 
@@ -55,4 +57,7 @@ public:
 	extern wxCSConv aMuleConv;
 	extern ConvAmuleBrokenFileNames aMuleConvBrokenFileNames;
 #endif
+
+
+#endif // CONVAMULE_H
 

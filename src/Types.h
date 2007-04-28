@@ -89,7 +89,6 @@ typedef int64_t		sint64;
 typedef uint8_t		byte;
 
 
-
 class CKnownFile;
 class CUpDownClient;
 
@@ -114,36 +113,15 @@ static const wxString EmptyString = wxEmptyString;
 	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
 	#include <wingdi.h>	// Do_not_auto_remove
 	#include <winuser.h>	// Do_not_auto_remove
-
 #else 
-
 	typedef struct sRECT {
 	  uint32 left;
 	  uint32 top;
 	  uint32 right;
 	  uint32 bottom;
 	} RECT;
-
 #endif /* __WXMSW__ */
 
-/*
- * Check version stuff
- */
-#ifndef wxSUBRELEASE_NUMBER
-	#define wxSUBRELEASE_NUMBER 0
-#endif
-
-#ifndef wxCHECK_VERSION_FULL
-
-	#define wxCHECK_VERSION_FULL(major,minor,release,subrel) \
-		(wxMAJOR_VERSION > (major) || \
-		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION > (minor)) || \
-		(wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
-		 	wxRELEASE_NUMBER > (release)) || \
-		 wxMAJOR_VERSION == (major) && wxMINOR_VERSION == (minor) && \
-		 	wxRELEASE_NUMBER == (release) && wxSUBRELEASE_NUMBER >= (subrel))
-
-#endif
 
 #endif /* TYPES_H */
 // File_checked_for_headers

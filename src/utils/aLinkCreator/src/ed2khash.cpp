@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /// Name:         Ed2kHash Class
 ///
 /// Purpose:      aMule ed2k link creator
@@ -23,7 +23,7 @@
 /// along with this program; if not, write to the
 /// Free Software Foundation, Inc.,
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 // For compilers that support precompilation, includes "wx/wx.h"
 
@@ -76,11 +76,7 @@ bool Ed2kHash::SetED2KHashFromFile(const wxFileName& filename, MD4Hook hook)
 {
   // Open file and let wxFFile destructor close the file
   // Closing it explicitly may crash on Win32 ...
-#if wxCHECK_VERSION(2,5,1)
   wxFFile file(filename.GetFullPath(), wxT("rbS"));
-#else
-  wxFFile file(filename.GetFullPath(), "rbS");
-#endif
   if (! file.IsOpened())
     {
       wxLogError (_("Unable to open %s"),unicode2char(filename.GetFullPath()));
