@@ -340,6 +340,16 @@ namespace amule.net
             }
         }
 
+        public class ecTagCustom : ecTag {
+            byte[] m_val;
+            public ecTagCustom(ECTagNames n, Int32 tag_size, BinaryReader br, LinkedList<ecTag> subtags)
+                : base(n, EcTagTypes.EC_TAGTYPE_CUSTOM, subtags)
+            {
+                m_val= br.ReadBytes(tag_size);
+                m_size = tag_size;
+            }
+        }
+
         public class ecTagString : ecTag {
             byte[] m_val;
             public ecTagString(ECTagNames n, string s)
@@ -403,6 +413,7 @@ namespace amule.net
                     case EcTagTypes.EC_TAGTYPE_UNKNOWN:
                         break;
                     case EcTagTypes.EC_TAGTYPE_CUSTOM:
+                        t = new ecTagCustom(tag_name, tag_size32, br, subtags);
                         break;
 
                     case EcTagTypes.EC_TAGTYPE_UINT8:
