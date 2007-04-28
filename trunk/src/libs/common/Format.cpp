@@ -56,7 +56,7 @@ bool isTypeChar( wxChar c )
 
 CFormat::Modifiers CFormat::getModifier( const wxString& str )
 {
-	switch ( str.GetChar( str.Len() - 2 ) ) {
+	switch ( (wxChar)str[str.Len() - 2]) {
 		case wxT('h'):		// short int (integer types).
 			return modShort;
 		case wxT('l'):		// long int (interger types) or double (floating point types).
@@ -135,7 +135,7 @@ wxString CFormat::GetCurrentField()
 	m_indexEnd++;
 
 	// Extract the field
-	return wxString(m_format.c_str() + m_index, m_indexEnd - m_index);
+	return m_format.Mid(m_index, m_indexEnd - m_index);
 }
 
 
@@ -149,8 +149,8 @@ CFormat& CFormat::SetCurrentField(const wxString& str)
 	MULE_ASSERT(m_index <= m_indexEnd);
 	
 	// Locate the next format-string
-	const wxChar* start = m_format.c_str() + m_indexEnd;
-	const wxChar* end = m_format.c_str() + length;
+	const wxChar* start = (const wxChar*)m_format.c_str() + m_indexEnd;
+	const wxChar* end = (const wxChar*)m_format.c_str() + length;
 	const wxChar* ptr = start;
 
 	for ( ; ptr < end; ++ptr ) {
@@ -212,7 +212,7 @@ CFormat& CFormat::operator%(double value)
 {
 	wxString field = GetCurrentField();
 	
-	switch ( field.Last() ) {
+	switch ( (wxChar)field.Last() ) {
 		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
 		case wxT('f'):		// Decimal floating point

@@ -534,7 +534,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	}
 	
 	m_tts_time = GetTickCount();
-	m_tts_text.Append(tolower(evt.GetKeyCode()));
+	m_tts_text.Append((char)tolower(evt.GetKeyCode()));
 
 	// May happen if the subclass does not forward deletion events.
 	if (m_tts_item >= GetItemCount()) {

@@ -126,7 +126,7 @@ void CMuleUDPSocket::OnSend(int errorCode)
 }
 
 
-const unsigned UDP_BUFFER_SIZE = 8192;
+const unsigned UDP_BUFFER_SIZE = 16384;
 
 
 void CMuleUDPSocket::OnReceive(int errorCode)

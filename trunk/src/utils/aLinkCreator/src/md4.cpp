@@ -309,12 +309,10 @@ wxString MD4::calcMd4FromString(const wxString &buf)
   unsigned char ret[MD4_HASHLEN_BYTE];
 
   MD4Init(&hdc);
-  MD4Update(&hdc, reinterpret_cast<unsigned char const *>(buf.c_str()),
-            buf.length());
+  MD4Update(&hdc, (const unsigned char*)buf.c_str(), buf.length());
   MD4Final(&hdc, ret);
 
-  return charToHex(reinterpret_cast<const char *>(ret),
-                   MD4_HASHLEN_BYTE);
+  return charToHex((const char*)ret, MD4_HASHLEN_BYTE);
 }
 
 /// Get Md4 hash from a file
