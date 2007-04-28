@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-26 03:31+0200\n"
+"POT-Creation-Date: 2007-04-28 03:31+0200\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -72,22 +72,22 @@ msgid "Complete"
 msgstr "Kész"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:798
+#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:794
 msgid "Paused"
 msgstr "Szüneteltetve"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:343 src/OtherFunctions.cpp:797
+#: src/TransferWnd.cpp:343 src/OtherFunctions.cpp:793
 msgid "Erroneous"
 msgstr "Hibás"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:342 src/OtherFunctions.cpp:796
+#: src/TransferWnd.cpp:342 src/OtherFunctions.cpp:792
 msgid "Downloading"
 msgstr "Letöltés alatt"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:795
+#: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:791
 msgid "Waiting"
 msgstr "Várakozik"
 
@@ -946,7 +946,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Feltöltés: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1085 src/DownloadListCtrl.cpp:1355
-#: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:161
+#: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:157
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -2929,8 +2929,8 @@ msgstr "Kapcsolódás a távol aMule-hez"
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:282 src/OtherFunctions.cpp:134
-#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:853
+#: src/amule-remote-gui.cpp:282 src/OtherFunctions.cpp:130
+#: src/OtherFunctions.cpp:148 src/OtherFunctions.cpp:202 src/amule.cpp:853
 #: src/amule.cpp:971 src/amule.cpp:1325
 msgid "Error"
 msgstr "Hiba"
@@ -2949,7 +2949,7 @@ msgid "Transferred"
 msgstr "Átmásolva"
 
 #: src/DownloadListCtrl.cpp:200 src/TransferWnd.cpp:340
-#: src/PartFileConvert.cpp:620 src/OtherFunctions.cpp:794
+#: src/PartFileConvert.cpp:620 src/OtherFunctions.cpp:790
 msgid "Completed"
 msgstr "Befejezett"
 
@@ -3366,7 +3366,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Elégtelen lemezterület"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:345 src/OtherFunctions.cpp:799
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:345 src/OtherFunctions.cpp:795
 msgid "Stopped"
 msgstr "Megállítva"
 
@@ -4173,12 +4173,12 @@ msgstr ""
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "Nem tudom a DNS-t feloldani a %s kiszolgálóhoz: Nem tudok kapcsolódni!"
 
-#: src/IP2Country.cpp:86
+#: src/IP2Country.cpp:92
 #, c-format
 msgid "CIP2Country::CIP2Country() Failed to load country data from '%s'"
 msgstr ""
 
-#: src/IP2Country.cpp:91
+#: src/IP2Country.cpp:97
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
@@ -4197,39 +4197,39 @@ msgstr "Megerősítés szükséges"
 msgid "All others"
 msgstr "Összes egyéb"
 
-#: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:793
+#: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:789
 msgid "Incomplete"
 msgstr "Befejezetlen"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:806
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:802
 #, fuzzy
 msgid "Active"
 msgstr "Archívált"
 
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:796
 msgid "Video"
 msgstr "Film"
 
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:273
-#: src/OtherFunctions.cpp:801 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:269
+#: src/OtherFunctions.cpp:797 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Zene"
 
-#: src/TransferWnd.cpp:352 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:352 src/OtherFunctions.cpp:798
 msgid "Archive"
 msgstr "Archívált"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:287
-#: src/OtherFunctions.cpp:803 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:283
+#: src/OtherFunctions.cpp:799 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Image"
 
-#: src/TransferWnd.cpp:354 src/OtherFunctions.cpp:294
-#: src/OtherFunctions.cpp:804 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:354 src/OtherFunctions.cpp:290
+#: src/OtherFunctions.cpp:800 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Képek"
 
-#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:801
 msgid "Text"
 msgstr "Szöveg"
 
@@ -4368,119 +4368,119 @@ msgstr "Várakozás..."
 msgid "%s (Disk: %s)"
 msgstr ""
 
-#: src/OtherFunctions.cpp:124
+#: src/OtherFunctions.cpp:120
 #, fuzzy
 msgid "bytes"
 msgstr "bájt"
 
-#: src/OtherFunctions.cpp:126
+#: src/OtherFunctions.cpp:122
 #, fuzzy
 msgid "kB"
 msgstr "kB/s"
 
-#: src/OtherFunctions.cpp:128 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:124 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:130 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:126 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:132
+#: src/OtherFunctions.cpp:128
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:144
+#: src/OtherFunctions.cpp:140
 msgid "k"
 msgstr ""
 
-#: src/OtherFunctions.cpp:146
+#: src/OtherFunctions.cpp:142
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:148
+#: src/OtherFunctions.cpp:144
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:150
+#: src/OtherFunctions.cpp:146
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:159
+#: src/OtherFunctions.cpp:155
 #, fuzzy
 msgid "bytes/sec"
 msgstr "%s/mp"
 
-#: src/OtherFunctions.cpp:163
+#: src/OtherFunctions.cpp:159
 #, fuzzy
 msgid "MB/s"
 msgstr "kB/s"
 
-#: src/OtherFunctions.cpp:174 src/OtherFunctions.cpp:178
+#: src/OtherFunctions.cpp:170 src/OtherFunctions.cpp:174
 msgid "secs"
 msgstr "mp"
 
-#: src/OtherFunctions.cpp:186
+#: src/OtherFunctions.cpp:182
 msgid "mins"
 msgstr "perc"
 
-#: src/OtherFunctions.cpp:193 src/OtherFunctions.cpp:203
+#: src/OtherFunctions.cpp:189 src/OtherFunctions.cpp:199
 msgid "hours"
 msgstr "óra"
 
-#: src/OtherFunctions.cpp:201
+#: src/OtherFunctions.cpp:197
 msgid "Days"
 msgstr "nap"
 
-#: src/OtherFunctions.cpp:266 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:262 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Filmek"
 
-#: src/OtherFunctions.cpp:280 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:276 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Archívált fájlok"
 
-#: src/OtherFunctions.cpp:301 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:297 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr "Dokumentumok"
 
-#: src/OtherFunctions.cpp:308 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:304 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programok"
 
-#: src/OtherFunctions.cpp:315 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:311 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "Akármelyik"
 
-#: src/OtherFunctions.cpp:390 src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:386 src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Nincs értékelve"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:387 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Érvénytelen / Sérült / Hamis"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Gyenge"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Korrekt"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Jó"
 
-#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Kitűnő"
 
-#: src/OtherFunctions.cpp:791
+#: src/OtherFunctions.cpp:787
 msgid "all"
 msgstr "mind"
 
-#: src/OtherFunctions.cpp:792
+#: src/OtherFunctions.cpp:788
 msgid "all others"
 msgstr "összes egyéb"
 
@@ -4714,7 +4714,7 @@ msgid "Sends the specified message."
 msgstr "Megadott üzenet küldése."
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1593
-#: src/muuli_wdr.cpp:3924 src/MuleNotebook.cpp:162
+#: src/muuli_wdr.cpp:3924 src/MuleNotebook.cpp:152
 msgid "Close"
 msgstr "Bezár"
 
@@ -6791,15 +6791,15 @@ msgstr "*** Kapcsolódás a klienshez ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kapcsolódás sikertelen / Kapcsolat elveszítve ***"
 
-#: src/MuleNotebook.cpp:163
+#: src/MuleNotebook.cpp:153
 msgid "Close tab"
 msgstr "Fül bezárása"
 
-#: src/MuleNotebook.cpp:164
+#: src/MuleNotebook.cpp:154
 msgid "Close all tabs"
 msgstr "Az összes fül bezárása"
 
-#: src/MuleNotebook.cpp:165
+#: src/MuleNotebook.cpp:155
 msgid "Close other tabs"
 msgstr "A többi fül bezárása"
 
