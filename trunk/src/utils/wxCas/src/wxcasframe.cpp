@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /// Name:         wxCasFrame Class
 ///
 /// Purpose:      wxCas main frame
@@ -25,7 +25,7 @@
 /// along with this program; if not, write to the
 /// Free Software Foundation, Inc.,
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 
 #ifdef __BORLANDC__
@@ -349,19 +349,15 @@ WxCasFrame::OnBarSave ( wxCommandEvent& WXUNUSED( event ) )
 {
 	wxImage * statImage = GetStatImage ();
 
-	wxString saveFileName = wxFileSelector ( _( "Save Statistics Image" ),
-	                        wxFileName::GetHomeDir (),
-	                        WxCasCte::AMULESIG_IMG_NAME,
-	                        ( const wxChar * ) NULL,
-	                        wxT ( "PNG files (*.png)|*.png|" )
-	                        wxT ( "JPEG files (*.jpg)|*.jpg|" )
-	                        wxT ( "BMP files (*.bmp)|*.bmp|" ),
-#if wxCHECK_VERSION(2,8,0)
-	                        wxFD_SAVE
-#else
-	                        wxSAVE
-#endif
-				);
+	wxString saveFileName = wxFileSelector(
+		_( "Save Statistics Image" ),
+		wxFileName::GetHomeDir (),
+		WxCasCte::AMULESIG_IMG_NAME,
+		( const wxChar * ) NULL,
+		wxT ( "PNG files (*.png)|*.png|" )
+		wxT ( "JPEG files (*.jpg)|*.jpg|" )
+		wxT ( "BMP files (*.bmp)|*.bmp|" ),
+		wxFD_SAVE);
 	
 	if ( !saveFileName.empty () ) {
 		// This one guesses image format from filename extension

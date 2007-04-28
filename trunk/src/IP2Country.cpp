@@ -62,12 +62,6 @@ GeoIP *CIP2Country::s_geoip(NULL);
 std::auto_ptr<wxBitmap> CIP2Country::s_flagUnknown(NULL);
 
 
-#if !wxCHECK_VERSION(2,8,3)
-	#include <wx/intl.h>			// Needed for _()
-	#define IsOk() Ok()
-#endif
-
-
 CIP2Country::CIP2Country()
 :
 m_mutexGeoip(),

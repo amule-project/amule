@@ -1,4 +1,4 @@
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 /// Name:         AlcFrame Class
 ///
 /// Purpose:      aMule ed2k link creator
@@ -9,7 +9,10 @@
 ///
 /// Copyright (C) 2004 by Phoenix
 ///
-/// Pixmaps from http://jimmac.musichall.cz/ikony.php3 | http://www.everaldo.com | http://www.icomania.com
+/// Pixmaps from:
+/// 	http://jimmac.musichall.cz/ikony.php3 
+/// 	http://www.everaldo.com 
+///	http://www.icomania.com
 ///
 /// This program is free software; you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -25,7 +28,7 @@
 /// along with this program; if not, write to the
 /// Free Software Foundation, Inc.,
 /// 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 
 #ifdef __BORLANDC__
@@ -43,9 +46,7 @@
 #include <wx/timer.h>
 #include <wx/listbox.h>
 #include <wx/url.h>
-#if wxCHECK_VERSION(2,6,0)
-	#include <wx/uri.h>
-#endif
+#include <wx/uri.h>
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
@@ -554,11 +555,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
                 {
                   url += fileToHash.GetFullName();
                 }
-			#if wxCHECK_VERSION(2,6,0)
-				arrayOfUrls.Add(wxURI(url).BuildURI());
-			 #else 
-			 	arrayOfUrls.Add(wxURL::ConvertToValidURI(url));
-			 #endif
+		arrayOfUrls.Add(wxURI(url).BuildURI());
             }
           arrayOfUrls.Shrink(); // Reduce memory usage
 
@@ -614,11 +611,7 @@ AlcFrame::OnAddUrlButton (wxCommandEvent & WXUNUSED(event))
       // Add only a not already existant URL
       if (UrlNotExists)
         {
-		#if wxCHECK_VERSION(2,6,0)
-		   	m_inputUrlListBox->Append(wxURI(url).BuildURI());
-		#else 
-			m_inputUrlListBox->Append(wxURL::ConvertToValidURI(url));
-		#endif
+	  m_inputUrlListBox->Append(wxURI(url).BuildURI());
           m_inputAddTextCtrl->SetValue(wxEmptyString);
         }
       else
