@@ -61,9 +61,6 @@
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
-#ifdef ENABLE_IP2COUNTRY
-	#include "IP2Country.h"		// Needed for IP2Country
-#endif
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "ListenSocket.h"		// Needed for CListenSocket
@@ -93,6 +90,9 @@
 #endif
 
 #ifndef AMULE_DAEMON
+	#ifdef ENABLE_IP2COUNTRY
+		#include "IP2Country.h"		// Needed for IP2Country
+	#endif
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
 		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
