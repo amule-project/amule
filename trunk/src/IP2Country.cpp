@@ -41,14 +41,16 @@
 //
 
 #include "IP2Country.h"
-#include "Logger.h"			// For AddLogLineM()
 
+
+#include "Logger.h"			// For AddLogLineM()
 #include <common/Format.h>		// For CFormat()
 #include <common/StringFunctions.h>	// For unicode2char()
+#include "pixmaps/flags_xpm/CountryFlags.h"
+
 
 #include <wx/image.h>
 
-#include "pixmaps/flags_xpm/CountryFlags.h"
 
 CIP2Country::CIP2Country() : m_CountryDataMap()
 {
@@ -76,6 +78,7 @@ CIP2Country::~CIP2Country()
 	GeoIP_delete(m_geoip);
 }
 
+
 const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 {
 	const wxString CCode = wxString(char2unicode(GeoIP_country_code_by_addr(m_geoip, unicode2char(ip)))).MakeLower();
@@ -94,3 +97,4 @@ const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 	
 	return it->second;	
 }
+

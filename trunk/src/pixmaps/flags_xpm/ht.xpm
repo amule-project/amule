@@ -1,5 +1,5 @@
 /* XPM */
-static char *ht[] = {
+static char *ht_[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 157 2",
 "   c #000079",
