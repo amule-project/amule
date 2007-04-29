@@ -90,9 +90,6 @@
 #endif
 
 #ifndef AMULE_DAEMON
-	#ifdef ENABLE_IP2COUNTRY
-		#include "IP2Country.h"		// Needed for IP2Country
-	#endif
 	#ifdef __WXMAC__
 		#include <CoreFoundation/CFBundle.h>  // Do_not_auto_remove
 		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
@@ -719,10 +716,6 @@ bool CamuleApp::OnInit()
 	}
 
 	m_statistics = new CStatistics();
-#ifdef ENABLE_IP2COUNTRY
-	wxImage::AddHandler(new wxPNGHandler);
-	g_IP2Country = new CIP2Country();
-#endif
 	
 	clientlist	= new CClientList();
 	friendlist	= new CFriendList();

@@ -40,95 +40,57 @@
 // Contact: mjames@gmail.com
 //
 
-
-#define IP2COUNTRY_C
-
-
 #include "IP2Country.h"
-
+#include "Logger.h"			// For AddLogLineM()
 
 #include <common/Format.h>		// For CFormat()
 #include <common/StringFunctions.h>	// For unicode2char()
-#include "Logger.h"			// For AddLogLineM()
-
 
 #include <wx/image.h>
 
-
 #include "pixmaps/flags_xpm/CountryFlags.h"
 
-
-GeoIP *CIP2Country::s_geoip(NULL);
-std::auto_ptr<wxBitmap> CIP2Country::s_flagUnknown(NULL);
-
-
-CIP2Country::CIP2Country()
-:
-m_mutexGeoip(),
-m_flagMap()
+CIP2Country::CIP2Country() : m_CountryDataMap()
 {
-	wxMutexLocker l(m_mutexGeoip);
-	if (!s_geoip) {
-		s_geoip = GeoIP_new(GEOIP_STANDARD);
-		// Creata a black bitmap
-		wxImage imgFlagUnknown(16, 11, true);
-		s_flagUnknown.reset(new wxBitmap(imgFlagUnknown));
+	m_geoip = GeoIP_new(GEOIP_STANDARD);
 		
-		// Load data from xpm files
-		for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
-			std::string CCode = flagXPMCodeVector[i].code;
-			wxImage img(flagXPMCodeVector[i].xpm);
-			if (img.IsOk()) {
-				wxBitmap bitmap(img);
-				m_flagMap[CCode] = bitmap;
-			} else {
-				AddLogLineM(true, CFormat(_(
-					"CIP2Country::CIP2Country() "
-					"Failed to load country data from '%s'")) %
-					char2unicode(CCode.c_str()));
-			}
+	// Load data from xpm files
+	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
+		CountryData countrydata;
+		countrydata.Name = char2unicode(flagXPMCodeVector[i].code);
+		wxImage img(flagXPMCodeVector[i].xpm);
+		if (img.IsOk()) {
+			countrydata.Flag = wxBitmap(img);
+		} else {
+			AddLogLineM(true, _("CIP2Country::CIP2Country(): Failed to load country data from ") + countrydata.Name);
 		}
-		AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) %
-			m_flagMap.size());
+		m_CountryDataMap[countrydata.Name] = countrydata;
 	}
+	
+	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());
 }
 
 
 CIP2Country::~CIP2Country()
 {
+	GeoIP_delete(m_geoip);
 }
 
-
-wxString CIP2Country::CountryCode(const wxString &ip) const
+const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 {
-	wxMutexLocker l(m_mutexGeoip);
-	wxString ret(char2unicode(
-		GeoIP_country_code_by_addr(
-			s_geoip, unicode2char(ip))));
-
-	return ret.MakeLower();
-}
-
-
-wxString CIP2Country::CountryName(const wxString &ip) const
-{
-	wxMutexLocker l(m_mutexGeoip);
-	wxString ret(char2unicode(
-		GeoIP_country_name_by_addr(
-			s_geoip, unicode2char(ip))));
-
-	return ret;
-}
-
-
-const wxBitmap &CIP2Country::CountryFlag(const wxString &ip) const
-{
-	std::string CCode(unicode2char(CountryCode(ip)));
-	std::map<std::string, wxBitmap>::const_iterator it = m_flagMap.find(CCode);
-	if (it != m_flagMap.end()) {
-		return it->second;
-	} else {
-		return *s_flagUnknown;
+	const wxString CCode = wxString(char2unicode(GeoIP_country_code_by_addr(m_geoip, unicode2char(ip)))).MakeLower();
+	
+	CountryDataMap::iterator it = m_CountryDataMap.find(CCode);
+	if (it == m_CountryDataMap.end()) { 
+		// Show the code and ?? flag
+		it = m_CountryDataMap.find(wxString(wxT("unknown")));
+		wxASSERT(it != m_CountryDataMap.end());
+		if (CCode.IsEmpty()) {
+			it->second.Name = wxT("?");
+		} else{
+			it->second.Name = CCode;			
+		}
 	}
+	
+	return it->second;	
 }
-

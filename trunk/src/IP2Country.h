@@ -40,47 +40,35 @@
 // Contact: mjames@gmail.com
 //
 
-
 #ifndef IP2COUNTRY_H
 #define IP2COUNTRY_H
-
 
 #ifdef ENABLE_GEOIP
 	#include <GeoIP.h>
 #endif
 
-
 #include <map>
-
 
 #include <wx/bitmap.h>
 #include <wx/string.h>
 #include <wx/thread.h>	// Needed for wxMutex
 
+typedef struct {
+	wxString Name;
+	wxBitmap Flag;
+} CountryData;
 
-class CIP2Country
-{
-private:
-	static GeoIP *s_geoip;
-	static std::auto_ptr<wxBitmap> s_flagUnknown;
-	mutable wxMutex m_mutexGeoip;
-	std::map<std::string, wxBitmap> m_flagMap;
+typedef std::map<wxString, CountryData> CountryDataMap;
 
+class CIP2Country {
 public:
 	CIP2Country();
 	~CIP2Country();
-	wxString CountryCode(const wxString &ip) const;
-	wxString CountryName(const wxString &ip) const;
-	const wxBitmap &CountryFlag(const wxString &ip) const;
+	const CountryData& GetCountryData(const wxString& ip);
+
+private:
+	GeoIP *m_geoip;
+	CountryDataMap m_CountryDataMap;
 };
 
-
-#ifdef IP2COUNTRY_C
-	CIP2Country *g_IP2Country = NULL;
-#else // IP2COUNTRY_C
-	extern CIP2Country *g_IP2Country;
-#endif // IP2COUNTRY_C
-
-
 #endif // IP2COUNTRY_H
-

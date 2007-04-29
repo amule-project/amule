@@ -38,7 +38,7 @@
 class wxTimerEvent;
 class wxTextCtrl;
 
-
+class CIP2Country;
 class CTransferWnd;
 class CServerWnd;
 class CSharedFilesWnd;
@@ -159,6 +159,9 @@ public:
 	void CreateSystray();
 	void RemoveSystray();	
 
+#ifdef ENABLE_IP2COUNTRY	
+	CIP2Country*	m_IP2Country;
+#endif	
 	CTransferWnd*		m_transferwnd;
 	CServerWnd*		m_serverwnd;
 	CSharedFilesWnd*	m_sharedfileswnd;
