@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-28 03:31+0200\n"
+"POT-Creation-Date: 2007-04-29 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -617,7 +617,7 @@ msgstr "amulesig.dat 파일을 포함한 폴더"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
-#: src/utils/aLinkCreator/src/alcframe.cpp:141 src/muuli_wdr.cpp:1714
+#: src/utils/aLinkCreator/src/alcframe.cpp:142 src/muuli_wdr.cpp:1714
 #: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
 #: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:2586 src/muuli_wdr.cpp:3584
 msgid "Browse"
@@ -702,7 +702,7 @@ msgid "wxCas, aMule Online Statistics"
 msgstr "wxCas, 어뮬 온라인 통계"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:96
-#: src/utils/aLinkCreator/src/alcframe.cpp:83
+#: src/utils/aLinkCreator/src/alcframe.cpp:84
 msgid "Welcome!"
 msgstr "환영합니다!"
 
@@ -746,7 +746,7 @@ msgid "Preferences setting"
 msgstr "환경 설정"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
-#: src/utils/wxCas/src/wxcasframe.cpp:410
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid "About wxCas"
 msgstr "wxCas에 대하여"
 
@@ -762,23 +762,23 @@ msgstr "자동갱신을 멈춤"
 msgid "Auto Refresh started"
 msgstr "자동갱신이 시작됨"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:352
+#: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
 msgstr "통계 이미지를 저장"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:371
+#: src/utils/wxCas/src/wxcasframe.cpp:367
 msgid "No handler for this file type."
 msgstr "이파일 종류의 처리기는 없음"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:372
+#: src/utils/wxCas/src/wxcasframe.cpp:368
 msgid "File was not saved"
 msgstr "파일은 저장되지 않았습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:383
+#: src/utils/wxCas/src/wxcasframe.cpp:379
 msgid "aMule Online Statistics"
 msgstr "어뮬 온라인 통계"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:387
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
@@ -786,11 +786,11 @@ msgstr ""
 "프린트하는데 문제가 있습니다.\n"
 "혹시 현재 프린터가 올바로 설정되지 않았나요?"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:388
+#: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
 msgstr "프린트함"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:406
+#: src/utils/wxCas/src/wxcasframe.cpp:402
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -808,122 +808,122 @@ msgstr ""
 "\n"
 "GPL로 배포합니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:577
+#: src/utils/wxCas/src/wxcasframe.cpp:573
 msgid "Oh Oh, aMule is not running..."
 msgstr "어어, 어뮬이 실행중이 아닙니다..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:648
-#: src/utils/wxCas/src/wxcasframe.cpp:713
-#: src/utils/wxCas/src/wxcasframe.cpp:777
+#: src/utils/wxCas/src/wxcasframe.cpp:644
+#: src/utils/wxCas/src/wxcasframe.cpp:709
+#: src/utils/wxCas/src/wxcasframe.cpp:773
 msgid "aMule is running"
 msgstr "어뮬은 실행중입니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:842
+#: src/utils/wxCas/src/wxcasframe.cpp:838
 msgid "aMule is running, but disconnected"
 msgstr "어뮬은 실행중이나 연결이 끊겨 있습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:908
+#: src/utils/wxCas/src/wxcasframe.cpp:904
 msgid "aMule is connecting..."
 msgstr "어뮬은 연결중..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:912
+#: src/utils/wxCas/src/wxcasframe.cpp:908
 msgid "Oh Oh, aMule status is unknown..."
 msgstr "어어, 어뮬의 상태는 알수없음..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:983
+#: src/utils/wxCas/src/wxcasframe.cpp:979
+#: src/utils/wxCas/src/wxcasframe.cpp:984
 #: src/utils/wxCas/src/wxcasframe.cpp:988
 #: src/utils/wxCas/src/wxcasframe.cpp:992
 #: src/utils/wxCas/src/wxcasframe.cpp:996
-#: src/utils/wxCas/src/wxcasframe.cpp:1000
 msgid "aMule "
 msgstr "어뮬 "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:985
+#: src/utils/wxCas/src/wxcasframe.cpp:981
 msgid " has been running for "
 msgstr " 위해 실행되고있는 "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:986
 msgid " is stopped !"
 msgstr " 은 멈추어져 있습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:994
-#: src/utils/wxCas/src/wxcasframe.cpp:1018
+#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:1014
 msgid " is not connected !"
 msgstr " 은 연결되지 않았습니다."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:998
+#: src/utils/wxCas/src/wxcasframe.cpp:994
 msgid " is connecting..."
 msgstr " 은 연결중..."
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1002
+#: src/utils/wxCas/src/wxcasframe.cpp:998
 msgid " is doing something strange, check it !"
 msgstr " 무엇인가 이상하게 동작하고 있음, 확인 요망!"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1023
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
 msgid " is connected to "
 msgstr " 는 다음으로 연결중: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1024
+#: src/utils/wxCas/src/wxcasframe.cpp:1020
 msgid " Kad: "
 msgstr " 카드: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1026
-#: src/utils/wxCas/src/wxcasframe.cpp:1046 src/TextClient.cpp:683
+#: src/utils/wxCas/src/wxcasframe.cpp:1022
+#: src/utils/wxCas/src/wxcasframe.cpp:1042 src/TextClient.cpp:683
 msgid "ok"
 msgstr "확인"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1028
-#: src/utils/wxCas/src/wxcasframe.cpp:1048 src/TextClient.cpp:681
+#: src/utils/wxCas/src/wxcasframe.cpp:1024
+#: src/utils/wxCas/src/wxcasframe.cpp:1044 src/TextClient.cpp:681
 msgid "firewalled"
 msgstr "방화벽됨"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1030
-#: src/utils/wxCas/src/wxcasframe.cpp:1050
+#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1046
 msgid "off"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1036
+#: src/utils/wxCas/src/wxcasframe.cpp:1032
 msgid " is on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1038
+#: src/utils/wxCas/src/wxcasframe.cpp:1034
 msgid " ["
 msgstr " ["
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1040 src/muuli_wdr.cpp:3134
+#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/muuli_wdr.cpp:3134
 msgid ":"
 msgstr ":"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1042
+#: src/utils/wxCas/src/wxcasframe.cpp:1038
 msgid "] with "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1044
+#: src/utils/wxCas/src/wxcasframe.cpp:1040
 msgid " | Kad: "
 msgstr " | 카드: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/utils/wxCas/src/wxcasframe.cpp:1055
 msgid "Total Download: "
 msgstr "전체 내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1061
-#: src/utils/wxCas/src/wxcasframe.cpp:1072
+#: src/utils/wxCas/src/wxcasframe.cpp:1057
+#: src/utils/wxCas/src/wxcasframe.cpp:1068
 msgid ", Upload: "
 msgstr ", 올려주기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1070
+#: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid "Session Download: "
 msgstr "세션 내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1081
+#: src/utils/wxCas/src/wxcasframe.cpp:1077
 msgid "Download: "
 msgstr "내려받기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1083
+#: src/utils/wxCas/src/wxcasframe.cpp:1079
 msgid " kB/s, Upload: "
 msgstr " kB/s, 올려주기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1085 src/DownloadListCtrl.cpp:1355
+#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/DownloadListCtrl.cpp:1355
 #: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:157
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
@@ -932,34 +932,34 @@ msgstr " kB/s, 올려주기: "
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1093
+#: src/utils/wxCas/src/wxcasframe.cpp:1089
 msgid "Sharing: "
 msgstr "공유함: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
+#: src/utils/wxCas/src/wxcasframe.cpp:1091
 msgid " file(s), Clients on queue: "
 msgstr " 파일, 대기열에있는 클라이언트: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1105
+#: src/utils/wxCas/src/wxcasframe.cpp:1101
 msgid "Time: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1114
-#: src/utils/wxCas/src/wxcasframe.cpp:1124 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1110
+#: src/utils/wxCas/src/wxcasframe.cpp:1120 src/FileDetailDialog.cpp:112
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1115
-#: src/utils/wxCas/src/wxcasframe.cpp:1125
+#: src/utils/wxCas/src/wxcasframe.cpp:1111
+#: src/utils/wxCas/src/wxcasframe.cpp:1121
 msgid " on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1135
+#: src/utils/wxCas/src/wxcasframe.cpp:1131
 msgid "System Load Average (1-5-15 min): "
 msgstr "시스템 부하 평균 (1-5-15 분): "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1146
+#: src/utils/wxCas/src/wxcasframe.cpp:1142
 msgid "System uptime: "
 msgstr "시스템 연속 작동 시간: "
 
@@ -1025,39 +1025,39 @@ msgstr "%.2f GB"
 msgid "%.2f TB"
 msgstr "%.2f TB"
 
-#: src/utils/aLinkCreator/src/md4.cpp:365
-#: src/utils/aLinkCreator/src/alcframe.cpp:574
-#: src/utils/aLinkCreator/src/alcframe.cpp:575
+#: src/utils/aLinkCreator/src/md4.cpp:359
+#: src/utils/aLinkCreator/src/alcframe.cpp:571
+#: src/utils/aLinkCreator/src/alcframe.cpp:572
 msgid "Canceled !"
 msgstr "취소됨!"
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:86
+#: src/utils/aLinkCreator/src/ed2khash.cpp:82
 #, c-format
 msgid "Unable to open %s"
 msgstr "%s를 열수없음."
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:91
+#: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
 msgstr "%s 파일은 당나기로 쓰기엔 큽니다: 최대 허용은 4 GB입니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:103
+#: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr "설정값 입력"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:114
+#: src/utils/aLinkCreator/src/alcframe.cpp:115
 msgid "File to Hash"
 msgstr "파일을 해시"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:118
+#: src/utils/aLinkCreator/src/alcframe.cpp:119
 msgid "Add Optional URLs for this file"
 msgstr "이 파일의 추가주소를 더합니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:126
+#: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the Ed2k link"
 msgstr "ED2k 링크를 계산하기 원하는 파일을 이곳에 입력하세요."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:132
+#: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
@@ -1065,25 +1065,25 @@ msgstr ""
 "ED2k 링크를 추가하기 원하는 주소를 이곳에 입력하세요: aLinkCreator가 현재 파"
 "일 이름을 덧붙이게 하려면 끝에 '/'를 추가하세요."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1074
+#: src/utils/aLinkCreator/src/alcframe.cpp:145 src/muuli_wdr.cpp:1074
 #: src/muuli_wdr.cpp:3141
 msgid "Add"
 msgstr "더하기"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:149
+#: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
 msgstr "삭제"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
+#: src/utils/aLinkCreator/src/alcframe.cpp:152 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:899
 msgid "Clear"
 msgstr "깨끗이"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:160
+#: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
 msgstr "부분해시의 링크를 생성합니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:166
+#: src/utils/aLinkCreator/src/alcframe.cpp:167
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
@@ -1091,77 +1091,77 @@ msgstr ""
 "링크의 크기를 증가시키는 대신 새 파일 및 드문 파일을 빠르게 퍼지는 데에 도움"
 "을 줍니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:192
+#: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
 msgstr "md4 파일 해시"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:204
+#: src/utils/aLinkCreator/src/alcframe.cpp:205
 msgid "Ed2k File Hash"
 msgstr "ED2k 파일 해시"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:215
+#: src/utils/aLinkCreator/src/alcframe.cpp:216
 msgid "Ed2k link"
 msgstr "ED2k 링크"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:346
+#: src/utils/aLinkCreator/src/alcframe.cpp:229 src/muuli_wdr.cpp:346
 msgid "Start"
 msgstr "시작"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:230
+#: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
 msgstr "저장"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:232
+#: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
 msgstr "클립보드로 복사함"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:529
+#: src/utils/aLinkCreator/src/alcframe.cpp:235 src/MuleTrayIcon.cpp:529
 msgid "Exit"
 msgstr "종료"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:260
+#: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its ed2k link"
 msgstr "ED2k 링크를 계산하기 위한 파일을 엽니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:263
+#: src/utils/aLinkCreator/src/alcframe.cpp:264
 msgid "Copy computed ed2k link to clipboard"
 msgstr "계산된 ED2k 링크를 클립보드에 복사합니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:266
+#: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed ed2k link to file"
 msgstr "계산된 ED2k 링크를 파일로 저장합니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:271
-#: src/utils/aLinkCreator/src/alcframe.cpp:471
+#: src/utils/aLinkCreator/src/alcframe.cpp:272
+#: src/utils/aLinkCreator/src/alcframe.cpp:472
 msgid "About aLinkCreator"
 msgstr "어링크생성자에 대하여"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:364
+#: src/utils/aLinkCreator/src/alcframe.cpp:365
 msgid "Select the file you want to compute the ed2k link"
 msgstr "ED2k 링크를 계산하기 원하는 파일을 선택하세요."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:407
+#: src/utils/aLinkCreator/src/alcframe.cpp:408
 msgid "Nothing to copy for now !"
 msgstr "지금 복사할것은 아무것도 없습니다!"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:434
+#: src/utils/aLinkCreator/src/alcframe.cpp:435
 msgid "Select the file to your computed ed2k link"
 msgstr "계산된 ED2k 링크파일을 선택하세요."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:445
+#: src/utils/aLinkCreator/src/alcframe.cpp:446
 msgid "Unable to open "
 msgstr "열수 없음"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:452
-#: src/utils/aLinkCreator/src/alcframe.cpp:589
+#: src/utils/aLinkCreator/src/alcframe.cpp:453
+#: src/utils/aLinkCreator/src/alcframe.cpp:586
 msgid "Please, enter a non empty file name"
 msgstr "제발, 파일이름을 비우지 마세요."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:457
+#: src/utils/aLinkCreator/src/alcframe.cpp:458
 msgid "Nothing to save for now !"
 msgstr "지금 저장한것은 없습니다!"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:466
+#: src/utils/aLinkCreator/src/alcframe.cpp:467
 msgid ""
 "aLinkCreator, the aMule ed2k link creator\n"
 "\n"
@@ -1181,22 +1181,22 @@ msgstr ""
 "\n"
 "GPL로 배포합니다."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:515
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
-#: src/utils/aLinkCreator/src/alcframe.cpp:522
+#: src/utils/aLinkCreator/src/alcframe.cpp:517
+#: src/utils/aLinkCreator/src/alcframe.cpp:523
 msgid "Hashing..."
 msgstr "해시중..."
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:583
+#: src/utils/aLinkCreator/src/alcframe.cpp:580
 #, c-format
 msgid "Done in %.2f s"
 msgstr "%.2f 초만에 완료"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:626
+#: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "You have already added this URL !"
 msgstr "이미 이 주소가 추가되어 있습니다!"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:631
+#: src/utils/aLinkCreator/src/alcframe.cpp:624
 msgid "Please, enter a non empty URL"
 msgstr "주소를 비우지 마세요."
 
@@ -4104,12 +4104,12 @@ msgstr "서버 아이피 %s(%s)가 차단되었습니다. 연결할수 없음."
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "서버 %s DNS를 풀수 없습니다: 연결할수 없습니다!"
 
-#: src/IP2Country.cpp:92
+#: src/IP2Country.cpp:86
 #, c-format
 msgid "CIP2Country::CIP2Country() Failed to load country data from '%s'"
 msgstr ""
 
-#: src/IP2Country.cpp:97
+#: src/IP2Country.cpp:91
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
