@@ -43,22 +43,27 @@
 #ifndef IP2COUNTRY_H
 #define IP2COUNTRY_H
 
+
 #ifdef ENABLE_GEOIP
 	#include <GeoIP.h>
 #endif
 
+
 #include <map>
+
 
 #include <wx/bitmap.h>
 #include <wx/string.h>
-#include <wx/thread.h>	// Needed for wxMutex
+
 
 typedef struct {
 	wxString Name;
 	wxBitmap Flag;
 } CountryData;
 
+
 typedef std::map<wxString, CountryData> CountryDataMap;
+
 
 class CIP2Country {
 public:
