@@ -36,6 +36,7 @@
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"	// Needed for IP2Country
+	#include "amuleDlg.h"	// Needed for IP2Country
 #endif
 #include "ServerList.h"		// Needed for CServerList
 #include "ServerConnect.h"	// Needed for CServerConnect
@@ -185,12 +186,8 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	wxString serverName;
 #ifdef ENABLE_IP2COUNTRY
 	// Get the country name
-	wxString countryName(g_IP2Country->CountryName(server->GetFullIP()));
-	if (countryName.Len()) {
-		serverName << countryName;
-	} else {
-		serverName << wxT("Unknown");
-	}
+	const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(server->GetFullIP());
+	serverName << countrydata.Name;
 	serverName << wxT(" - ");
 #endif // ENABLE_IP2COUNTRY
 	serverName << server->GetListName();

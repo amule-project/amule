@@ -70,6 +70,9 @@
 
 #include "kademlia/kademlia/Kademlia.h"
 
+#ifdef ENABLE_IP2COUNTRY
+	#include "IP2Country.h"		// Needed for IP2Country
+#endif
 
 BEGIN_EVENT_TABLE(CamuleDlg, wxFrame)
 
@@ -181,6 +184,9 @@ m_transferwnd(NULL)
 	AddLogLineM(false, wxT(" - ") + wxString(_("Visit http://www.amule.org to check if a new version is available.")));
 	AddLogLineM(false, wxEmptyString);
 
+#ifdef ENABLE_IP2COUNTRY
+	m_IP2Country = new CIP2Country();
+#endif
 	m_searchwnd = new CSearchDlg(p_cnt);
 	m_transferwnd = new CTransferWnd(p_cnt);
 	m_sharedfileswnd = new CSharedFilesWnd(p_cnt);

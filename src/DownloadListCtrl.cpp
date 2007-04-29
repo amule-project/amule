@@ -1627,17 +1627,13 @@ void CDownloadListCtrl::DrawSourceItem(
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
 				// Draw the flag
-				dc->DrawBitmap(g_IP2Country->CountryFlag(client->GetFullIP()),
+				const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
+				dc->DrawBitmap(countrydata.Flag,
 					rect.x + 40, rect.y + 5,
 					wxIMAGELIST_DRAW_TRANSPARENT);
 				
-				// Get the country name
-				wxString countryName(g_IP2Country->CountryName(client->GetFullIP()));
-				if (countryName.Len()) {
-					userName << countryName;
-				} else {
-					userName << client->GetFullIP();
-				}
+				userName << countrydata.Name;
+				
 				userName << wxT(" - ");
 #endif // ENABLE_IP2COUNTRY
 				if (client->GetUserName().IsEmpty()) {

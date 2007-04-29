@@ -247,11 +247,6 @@ bool CamuleRemoteGuiApp::OnInit()
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 
-#ifdef ENABLE_IP2COUNTRY
-	wxImage::AddHandler(new wxPNGHandler);
-	g_IP2Country = new CIP2Country();
-#endif
-
 	bool result = ShowConnectionDialog();
 
 	printf("Going to event loop...\n");
