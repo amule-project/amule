@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-28 03:31+0200\n"
+"POT-Creation-Date: 2007-04-29 03:31+0200\n"
 "PO-Revision-Date: 2004-03-11 12:58+0100\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -613,7 +613,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
-#: src/utils/aLinkCreator/src/alcframe.cpp:141 src/muuli_wdr.cpp:1714
+#: src/utils/aLinkCreator/src/alcframe.cpp:142 src/muuli_wdr.cpp:1714
 #: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
 #: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:2586 src/muuli_wdr.cpp:3584
 msgid "Browse"
@@ -698,7 +698,7 @@ msgid "wxCas, aMule Online Statistics"
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:96
-#: src/utils/aLinkCreator/src/alcframe.cpp:83
+#: src/utils/aLinkCreator/src/alcframe.cpp:84
 msgid "Welcome!"
 msgstr ""
 
@@ -742,7 +742,7 @@ msgid "Preferences setting"
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
-#: src/utils/wxCas/src/wxcasframe.cpp:410
+#: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid "About wxCas"
 msgstr ""
 
@@ -758,33 +758,33 @@ msgstr ""
 msgid "Auto Refresh started"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:352
+#: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:371
+#: src/utils/wxCas/src/wxcasframe.cpp:367
 msgid "No handler for this file type."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:372
+#: src/utils/wxCas/src/wxcasframe.cpp:368
 msgid "File was not saved"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:383
+#: src/utils/wxCas/src/wxcasframe.cpp:379
 msgid "aMule Online Statistics"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:387
+#: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:388
+#: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:406
+#: src/utils/wxCas/src/wxcasframe.cpp:402
 msgid ""
 "wxCas, aMule OnLine Signature Statistics\n"
 "\n"
@@ -795,122 +795,122 @@ msgid ""
 "Distributed under GPL"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:577
+#: src/utils/wxCas/src/wxcasframe.cpp:573
 msgid "Oh Oh, aMule is not running..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:648
-#: src/utils/wxCas/src/wxcasframe.cpp:713
-#: src/utils/wxCas/src/wxcasframe.cpp:777
+#: src/utils/wxCas/src/wxcasframe.cpp:644
+#: src/utils/wxCas/src/wxcasframe.cpp:709
+#: src/utils/wxCas/src/wxcasframe.cpp:773
 msgid "aMule is running"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:842
+#: src/utils/wxCas/src/wxcasframe.cpp:838
 msgid "aMule is running, but disconnected"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:908
+#: src/utils/wxCas/src/wxcasframe.cpp:904
 msgid "aMule is connecting..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:912
+#: src/utils/wxCas/src/wxcasframe.cpp:908
 msgid "Oh Oh, aMule status is unknown..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:983
+#: src/utils/wxCas/src/wxcasframe.cpp:979
+#: src/utils/wxCas/src/wxcasframe.cpp:984
 #: src/utils/wxCas/src/wxcasframe.cpp:988
 #: src/utils/wxCas/src/wxcasframe.cpp:992
 #: src/utils/wxCas/src/wxcasframe.cpp:996
-#: src/utils/wxCas/src/wxcasframe.cpp:1000
 msgid "aMule "
 msgstr "aMule: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:985
+#: src/utils/wxCas/src/wxcasframe.cpp:981
 msgid " has been running for "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:986
 msgid " is stopped !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:994
-#: src/utils/wxCas/src/wxcasframe.cpp:1018
+#: src/utils/wxCas/src/wxcasframe.cpp:990
+#: src/utils/wxCas/src/wxcasframe.cpp:1014
 msgid " is not connected !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:998
+#: src/utils/wxCas/src/wxcasframe.cpp:994
 msgid " is connecting..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1002
+#: src/utils/wxCas/src/wxcasframe.cpp:998
 msgid " is doing something strange, check it !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1023
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
 msgid " is connected to "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1024
+#: src/utils/wxCas/src/wxcasframe.cpp:1020
 msgid " Kad: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1026
-#: src/utils/wxCas/src/wxcasframe.cpp:1046 src/TextClient.cpp:683
+#: src/utils/wxCas/src/wxcasframe.cpp:1022
+#: src/utils/wxCas/src/wxcasframe.cpp:1042 src/TextClient.cpp:683
 msgid "ok"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1028
-#: src/utils/wxCas/src/wxcasframe.cpp:1048 src/TextClient.cpp:681
+#: src/utils/wxCas/src/wxcasframe.cpp:1024
+#: src/utils/wxCas/src/wxcasframe.cpp:1044 src/TextClient.cpp:681
 msgid "firewalled"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1030
-#: src/utils/wxCas/src/wxcasframe.cpp:1050
+#: src/utils/wxCas/src/wxcasframe.cpp:1026
+#: src/utils/wxCas/src/wxcasframe.cpp:1046
 msgid "off"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1036
+#: src/utils/wxCas/src/wxcasframe.cpp:1032
 msgid " is on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1038
+#: src/utils/wxCas/src/wxcasframe.cpp:1034
 msgid " ["
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1040 src/muuli_wdr.cpp:3134
+#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/muuli_wdr.cpp:3134
 msgid ":"
 msgstr ":"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1042
+#: src/utils/wxCas/src/wxcasframe.cpp:1038
 msgid "] with "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1044
+#: src/utils/wxCas/src/wxcasframe.cpp:1040
 msgid " | Kad: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1059
+#: src/utils/wxCas/src/wxcasframe.cpp:1055
 msgid "Total Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1061
-#: src/utils/wxCas/src/wxcasframe.cpp:1072
+#: src/utils/wxCas/src/wxcasframe.cpp:1057
+#: src/utils/wxCas/src/wxcasframe.cpp:1068
 msgid ", Upload: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1070
+#: src/utils/wxCas/src/wxcasframe.cpp:1066
 msgid "Session Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1081
+#: src/utils/wxCas/src/wxcasframe.cpp:1077
 msgid "Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1083
+#: src/utils/wxCas/src/wxcasframe.cpp:1079
 msgid " kB/s, Upload: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1085 src/DownloadListCtrl.cpp:1355
+#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/DownloadListCtrl.cpp:1355
 #: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:157
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
@@ -919,34 +919,34 @@ msgstr ""
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1093
+#: src/utils/wxCas/src/wxcasframe.cpp:1089
 msgid "Sharing: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1095
+#: src/utils/wxCas/src/wxcasframe.cpp:1091
 msgid " file(s), Clients on queue: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1105
+#: src/utils/wxCas/src/wxcasframe.cpp:1101
 msgid "Time: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1114
-#: src/utils/wxCas/src/wxcasframe.cpp:1124 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1110
+#: src/utils/wxCas/src/wxcasframe.cpp:1120 src/FileDetailDialog.cpp:112
 #, c-format
 msgid "%.2f kB/s"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1115
-#: src/utils/wxCas/src/wxcasframe.cpp:1125
+#: src/utils/wxCas/src/wxcasframe.cpp:1111
+#: src/utils/wxCas/src/wxcasframe.cpp:1121
 msgid " on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1135
+#: src/utils/wxCas/src/wxcasframe.cpp:1131
 msgid "System Load Average (1-5-15 min): "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1146
+#: src/utils/wxCas/src/wxcasframe.cpp:1142
 msgid "System uptime: "
 msgstr ""
 
@@ -1012,139 +1012,139 @@ msgstr ""
 msgid "%.2f TB"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/md4.cpp:365
-#: src/utils/aLinkCreator/src/alcframe.cpp:574
-#: src/utils/aLinkCreator/src/alcframe.cpp:575
+#: src/utils/aLinkCreator/src/md4.cpp:359
+#: src/utils/aLinkCreator/src/alcframe.cpp:571
+#: src/utils/aLinkCreator/src/alcframe.cpp:572
 msgid "Canceled !"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:86
+#: src/utils/aLinkCreator/src/ed2khash.cpp:82
 #, c-format
 msgid "Unable to open %s"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/ed2khash.cpp:91
+#: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:103
+#: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:114
+#: src/utils/aLinkCreator/src/alcframe.cpp:115
 msgid "File to Hash"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:118
+#: src/utils/aLinkCreator/src/alcframe.cpp:119
 msgid "Add Optional URLs for this file"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:126
+#: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the Ed2k link"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:132
+#: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1074
+#: src/utils/aLinkCreator/src/alcframe.cpp:145 src/muuli_wdr.cpp:1074
 #: src/muuli_wdr.cpp:3141
 msgid "Add"
 msgstr "Tilføj"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:149
+#: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:151 src/MuleTextCtrl.cpp:82
+#: src/utils/aLinkCreator/src/alcframe.cpp:152 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:899
 msgid "Clear"
 msgstr "Ryd"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:160
+#: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:166
+#: src/utils/aLinkCreator/src/alcframe.cpp:167
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:192
+#: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:204
+#: src/utils/aLinkCreator/src/alcframe.cpp:205
 msgid "Ed2k File Hash"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:215
+#: src/utils/aLinkCreator/src/alcframe.cpp:216
 msgid "Ed2k link"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:346
+#: src/utils/aLinkCreator/src/alcframe.cpp:229 src/muuli_wdr.cpp:346
 msgid "Start"
 msgstr "Start"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:230
+#: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:232
+#: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:529
+#: src/utils/aLinkCreator/src/alcframe.cpp:235 src/MuleTrayIcon.cpp:529
 msgid "Exit"
 msgstr "Afslut"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:260
+#: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its ed2k link"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:263
+#: src/utils/aLinkCreator/src/alcframe.cpp:264
 msgid "Copy computed ed2k link to clipboard"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:266
+#: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed ed2k link to file"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:271
-#: src/utils/aLinkCreator/src/alcframe.cpp:471
+#: src/utils/aLinkCreator/src/alcframe.cpp:272
+#: src/utils/aLinkCreator/src/alcframe.cpp:472
 msgid "About aLinkCreator"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:364
+#: src/utils/aLinkCreator/src/alcframe.cpp:365
 msgid "Select the file you want to compute the ed2k link"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:407
+#: src/utils/aLinkCreator/src/alcframe.cpp:408
 msgid "Nothing to copy for now !"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:434
+#: src/utils/aLinkCreator/src/alcframe.cpp:435
 msgid "Select the file to your computed ed2k link"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:445
+#: src/utils/aLinkCreator/src/alcframe.cpp:446
 msgid "Unable to open "
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:452
-#: src/utils/aLinkCreator/src/alcframe.cpp:589
+#: src/utils/aLinkCreator/src/alcframe.cpp:453
+#: src/utils/aLinkCreator/src/alcframe.cpp:586
 msgid "Please, enter a non empty file name"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:457
+#: src/utils/aLinkCreator/src/alcframe.cpp:458
 msgid "Nothing to save for now !"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:466
+#: src/utils/aLinkCreator/src/alcframe.cpp:467
 msgid ""
 "aLinkCreator, the aMule ed2k link creator\n"
 "\n"
@@ -1156,22 +1156,22 @@ msgid ""
 "Distributed under GPL"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:515
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
-#: src/utils/aLinkCreator/src/alcframe.cpp:522
+#: src/utils/aLinkCreator/src/alcframe.cpp:517
+#: src/utils/aLinkCreator/src/alcframe.cpp:523
 msgid "Hashing..."
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:583
+#: src/utils/aLinkCreator/src/alcframe.cpp:580
 #, c-format
 msgid "Done in %.2f s"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:626
+#: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "You have already added this URL !"
 msgstr ""
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:631
+#: src/utils/aLinkCreator/src/alcframe.cpp:624
 msgid "Please, enter a non empty URL"
 msgstr ""
 
@@ -3984,12 +3984,12 @@ msgstr ""
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr ""
 
-#: src/IP2Country.cpp:92
+#: src/IP2Country.cpp:86
 #, c-format
 msgid "CIP2Country::CIP2Country() Failed to load country data from '%s'"
 msgstr ""
 
-#: src/IP2Country.cpp:97
+#: src/IP2Country.cpp:91
 #, c-format
 msgid "Loaded %d flag bitmaps."
 msgstr ""
