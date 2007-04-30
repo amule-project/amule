@@ -24,7 +24,7 @@
 //
 
 const int versionMajor		= 1;
-const int versionMinor		= 2;
+const int versionMinor		= 3;
 const int versionRevision	= 0;
 
 #include <cstdlib>
@@ -41,6 +41,7 @@ const int versionRevision	= 0;
 #endif
 
 #include "FileLock.h"
+#include "collection.h"
 
 using std::string;
 
@@ -420,6 +421,7 @@ int main(int argc, char *argv[])
 {
 	bool errors = false;
 	string config_path;
+	collection* my_collection;
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 
@@ -452,20 +454,38 @@ int main(int argc, char *argv[])
 			config_path = arg.substr(2);
 		} else if (arg.substr(0, 13) == "--config-dir=") {
 			config_path = arg.substr(13);
-		} else if ( arg == "--help" ) {
+		} else if (arg == "-h" || arg == "--help") {
 			std::cout << getVersion()
 				<< "\n\n"
 				<< "Usage:\n"
-				<< "    --help              Prints this help.\n"
-				<< "    --config-dir, -c    Specifies the aMule configuration directory.\n"
-				<< "    --version           Displays version info.\n\n"
-				<< "    ed2k://|file|       Causes the file to be queued for download.\n"
-				<< "    ed2k://|server|     Causes the server to be listed or updated.\n"
-				<< "    ed2k://|serverlist| Causes aMule to update the current serverlist.\n\n"
+				<< "    --help, -h              Prints this help.\n"
+				<< "    --config-dir, -c        Specifies the aMule configuration directory.\n"
+				<< "    --version, -v           Displays version info.\n\n"
+				<< "    ed2k://|file|           Causes the file to be queued for download.\n"
+				<< "    ed2k://|server|         Causes the server to be listed or updated.\n"
+				<< "    ed2k://|serverlist|     Causes aMule to update the current serverlist.\n\n"
+				<< "    --emulecollection, -e   Loads all links of an emulecollection\n\n"
 				<< "*** NOTE: Option order is important! ***\n"
 				<< std::endl;
 			
-		} else if ( arg == "--version" ) {
+		} else if (arg == "-v" || arg == "--version") {
+			std::cout << getVersion() << std::endl;
+		} else if (arg == "-e" || arg == "--emulecollection") {
+			if (i < argc - 1) {
+				my_collection = new collection;
+				if (my_collection->Open( /* emulecollection file */ argv[++i] ))
+				{
+					for(int e = 0;e < my_collection->GetFileCount();e++)
+						writeLink( my_collection->GetEd2kLink(e), config_path );
+				} else {
+					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;
+					errors = true;
+				}
+				delete my_collection;
+			} else {
+				std::cerr << "Missing mandatory argument for " << arg << std::endl;
+				errors = true;
+			}
 			std::cout << getVersion() << std::endl;
 		} else {
 			std::cerr << "Bad parameter value:\n\t" << arg << "\n" << std::endl;

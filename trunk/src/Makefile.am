@@ -309,7 +309,10 @@ amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON
 amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
 amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
-ed2k_SOURCES = ED2KLinkParser.cpp
+ed2k_SOURCES = \
+	ED2KLinkParser.cpp \
+	collection.cpp	
+
 # on Win32
 if SYS_WIN32
 ed2k_LDADD = -lshlwapi
