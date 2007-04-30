@@ -154,6 +154,9 @@ Trunk
 		* Added amulegui desktop icon (with Gerd78).
 		* Manpages update.
 
+	wuischke:
+		* Added emulecollection support on aMule ED2K Links Handler.
+
 	Special Thanks to:
 		* FreeToGo for implementing the first version of IP2Country on
 		  the forum.
