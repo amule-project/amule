@@ -41,7 +41,7 @@ const int versionRevision	= 0;
 #endif
 
 #include "FileLock.h"
-#include "collection.h"
+#include "MuleCollection.h"
 
 using std::string;
 
@@ -421,7 +421,6 @@ int main(int argc, char *argv[])
 {
 	bool errors = false;
 	string config_path;
-	collection* my_collection;
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 
@@ -472,16 +471,15 @@ int main(int argc, char *argv[])
 			std::cout << getVersion() << std::endl;
 		} else if (arg == "-e" || arg == "--emulecollection") {
 			if (i < argc - 1) {
-				my_collection = new collection;
-				if (my_collection->Open( /* emulecollection file */ argv[++i] ))
+				CMuleCollection my_collection;
+				if (my_collection.Open( /* emulecollection file */ argv[++i] ))
 				{
-					for(int e = 0;e < my_collection->GetFileCount();e++)
-						writeLink( my_collection->GetEd2kLink(e), config_path );
+					for(int e = 0;e < my_collection.GetFileCount();e++)
+						writeLink( my_collection.GetEd2kLink(e), config_path );
 				} else {
 					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;
 					errors = true;
 				}
-				delete my_collection;
 			} else {
 				std::cerr << "Missing mandatory argument for " << arg << std::endl;
 				errors = true;

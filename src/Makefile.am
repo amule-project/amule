@@ -311,7 +311,7 @@ amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
 ed2k_SOURCES = \
 	ED2KLinkParser.cpp \
-	collection.cpp	
+	MuleCollection.cpp	
 
 # on Win32
 if SYS_WIN32
@@ -443,7 +443,8 @@ noinst_HEADERS = \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
 		UPnP.h \
-		UserEvents.h
+		UserEvents.h \
+		MuleCollection.h
 
 MAINTAINERCLEANFILES = Makefile.in
 
