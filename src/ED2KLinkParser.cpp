@@ -25,7 +25,7 @@
 
 const int versionMajor		= 1;
 const int versionMinor		= 3;
-const int versionRevision	= 0;
+const int versionRevision	= 1;
 
 #include <cstdlib>
 #include <sstream>
@@ -474,7 +474,7 @@ int main(int argc, char *argv[])
 				CMuleCollection my_collection;
 				if (my_collection.Open( /* emulecollection file */ argv[++i] ))
 				{
-					for(int e = 0;e < my_collection.GetFileCount();e++)
+					for(size_t e = 0;e < my_collection.GetFileCount();e++)
 						writeLink( my_collection.GetEd2kLink(e), config_path );
 				} else {
 					std::cerr << "Invalid emulecollection file: " << argv[i] << std::endl;

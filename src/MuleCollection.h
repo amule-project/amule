@@ -1,4 +1,4 @@
-/*This file is part of amule-emc, emuleCMuleCollection support for aMule.
+/*This file is part of amule-emc, emulecollection support for aMule.
 Copyright (C) 2007  Johannes Krampf <wuischke@amule.org>
 
 This program is free software; you can redistribute it and/or
@@ -19,9 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef __MULECOLLECTION_H__
 #define __MULECOLLECTION_H__
 
-
 #include <string>
 #include <vector>
+
+#include <stdint.h> // uint64_t compilation fix for older gcc versions
 
 class CMuleCollection {
 	public:
@@ -31,10 +32,10 @@ class CMuleCollection {
 		bool		Open( std::string File );
 		size_t		GetFileCount();
 								// Return values on error:
-		std::string	GetEd2kLink( int index );	// "Invalid Index"
-		std::string	GetFileName( int index );	// "Empty String", "Invalid Index"
-		uint64_t	GetFileSize( int index );	// 0
-		std::string	GetFileHash( int index );	// "Empty String", "Invalid Index"
+		std::string	GetEd2kLink( size_t index );	// "Invalid Index"
+		std::string	GetFileName( size_t index );	// "Empty String", "Invalid Index"
+		uint64_t	GetFileSize( size_t index );	// 0
+		std::string	GetFileHash( size_t index );	// "Empty String", "Invalid Index"
 	private:
 		bool		OpenBinary( std::string File );
 		bool		OpenText( std::string File );
