@@ -1,5 +1,12 @@
-/*This file is part of amule-emc, emuleCMuleCollection support for aMule.
+/*This file is part of amule-emc, emulecollection support for aMule.
 Copyright (C) 2007  Johannes Krampf <wuischke@amule.org>
+
+Other code by:
+* Angel Vidal Veiga aka Kry <kry@amule.org>: changed class names
+* Marcelo Malheiros <mgmalheiros@gmail.com>: fixed error with FT_FILEHASH
+                                             added inital 5 tag/file support
+
+
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -46,7 +53,7 @@ size_t	CMuleCollection::GetFileCount()
 	return vCollection.size();
 };
 
-std::string	CMuleCollection::GetEd2kLink( int index )
+std::string	CMuleCollection::GetEd2kLink( size_t index )
 {
 	if (!(index < GetFileCount()))
 		return "Invalid Index!";
@@ -61,7 +68,7 @@ std::string	CMuleCollection::GetEd2kLink( int index )
 	return retvalue.str();
 };
 
-std::string	CMuleCollection::GetFileName( int index )
+std::string	CMuleCollection::GetFileName( size_t index )
 {
 	if (!(index < GetFileCount()))
 		return "Invalid Index!";
@@ -73,7 +80,7 @@ std::string	CMuleCollection::GetFileName( int index )
 	return retvalue;
 };
 
-uint64_t	CMuleCollection::GetFileSize( int index )
+uint64_t	CMuleCollection::GetFileSize( size_t index )
 {
 	if (!(index < GetFileCount()))
 		return 0;
@@ -83,7 +90,7 @@ uint64_t	CMuleCollection::GetFileSize( int index )
 	return retvalue;
 };
 
-std::string	CMuleCollection::GetFileHash( int index )
+std::string	CMuleCollection::GetFileHash( size_t index )
 {
 	if (!(index < GetFileCount()))
 		return "Invalid Index!";
@@ -124,8 +131,8 @@ bool	CMuleCollection::OpenBinary( std::string File )
 			return false;
 		}
 	
-	for (int hTi = 0; hTi < hTagCount;hTi++) {
-		int hTagType = infile.get();
+	for (size_t hTi = 0; hTi < hTagCount;hTi++) {
+		int hTagType = infile.get(); // unused variable
 		
 		uint16_t hTagFormat;	// hTagFormat == 1 -> FT-value is given
 			infile.read (reinterpret_cast<char *>(&hTagFormat),sizeof(uint16_t));
@@ -198,7 +205,7 @@ bool	CMuleCollection::OpenBinary( std::string File )
 	
 	/*
 	softlimit is set to 1024 to avoid problems with big uint32_t values
-	I don't believe anyone would want to use an emuleCMuleCollection file
+	I don't believe anyone would want to use an emulecollection file
 	to store more than 1024 files, but just raise below value in case
 	you know someone who does.
 	*/
@@ -210,12 +217,12 @@ bool	CMuleCollection::OpenBinary( std::string File )
 		return false;
 	}
 	
-	for(int cFi = 0; cFi < cFileCount; cFi++) {
+	for(size_t cFi = 0; cFi < cFileCount; cFi++) {
 		uint32_t fTagCount;
 		infile.read (reinterpret_cast<char *>(&fTagCount),sizeof(uint32_t));
 
 		if(	(!infile.good()) ||	// Read error or EOF
-			( fTagCount > 3 )	// Catch bad values
+			( fTagCount > 5 )	// Catch bad values
 		) {
 			infile.close();
 			return false;
@@ -224,8 +231,10 @@ bool	CMuleCollection::OpenBinary( std::string File )
 		std::string FileHash = std::string(32, '0');
 		uint64_t FileSize;			
 		std::string FileName;
-			
-		for(int fTi = 0; fTi < fTagCount; fTi++) {
+		std::string FileComment; // unused variable
+		uint8_t FileRating; // unused variable
+				
+		for(size_t fTi = 0; fTi < fTagCount; fTi++) {
 
 			int fTagType = infile.get();
 
@@ -247,7 +256,7 @@ bool	CMuleCollection::OpenBinary( std::string File )
 					std::vector<char> bFileHash (16);
 					infile.read(&bFileHash[0], 16);
 										
-					std::string hex = "01234567890abcdef";
+					std::string hex = "0123456789abcdef";
 					for(int pos = 0; pos < 16; pos++){
 						FileHash[pos*2] = hex[((bFileHash[pos] >> 4) & 0xF)];
 						FileHash[(pos*2) + 1] = hex[(bFileHash[pos]) & 0x0F];
@@ -298,6 +307,30 @@ bool	CMuleCollection::OpenBinary( std::string File )
 						std::vector<char> buffer (fTagStringSize);
 						infile.read(&buffer[0], fTagStringSize);
 						FileName = (buffer.empty() ? std::string() : std::string (buffer.begin(), buffer.end()));
+					}else {
+						infile.close();
+						return false;
+					}
+				break;
+				}
+				case 0xF6: {	//FT_FILECOMMENT
+					if (fTagType == 0x82) { //TAGTYPE_STR
+						uint16_t fTagStringSize;
+						infile.read (reinterpret_cast<char *>(&fTagStringSize),sizeof(uint16_t));
+
+						std::vector<char> buffer (fTagStringSize);
+						infile.read(&buffer[0], fTagStringSize);
+						FileComment = (buffer.empty() ? std::string() : std::string (buffer.begin(), buffer.end()));
+					}else {
+						infile.close();
+						return false;
+					}
+				break;
+				}
+				case 0xF7: {	//FT_FILERATING
+					if (fTagType == 0x89) { //TAGTYPE_UINT8
+							uint8_t FileRating = infile.get();
+							
 					}else {
 						infile.close();
 						return false;
@@ -355,12 +388,12 @@ bool	CMuleCollection::AddLink( std::string Link )
 	)
 		return false;
 	
-	int iName = Link.find("|",13);
+	size_t iName = Link.find("|",13);
 		if(iName == std::string::npos)
 			return false;
 	std::string FileName = Link.substr(13,iName-13);
 
-	int iSize = Link.find("|",iName+1);
+	size_t iSize = Link.find("|",iName+1);
 		if(iSize == std::string::npos)
 			return false;
 	std::stringstream sFileSize;
@@ -369,7 +402,7 @@ bool	CMuleCollection::AddLink( std::string Link )
 		if((sFileSize >> std::dec >> FileSize).fail())
 			return false;
 		
-	int iHash = Link.find("|",iSize+1);
+	size_t iHash = Link.find("|",iSize+1);
 			if(iHash == std::string::npos)
 			return false;
 	std::string FileHash = Link.substr(iSize+1,32);
@@ -405,8 +438,8 @@ bool	CMuleCollection::IsValidHash( std::string FileHash )
 		return false;
 	
 	//FileHash needs to be a valid MD4Hash
-	std::string hex = "01234567890abcdefABCDEF";
-	for(int i = 0; i < FileHash.size();i++)
+	std::string hex = "0123456789abcdefABCDEF";
+	for(size_t i = 0; i < FileHash.size();i++)
 	{
 		if(hex.find(FileHash[i]) == std::string::npos)
 			return false;
