@@ -45,7 +45,6 @@
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
 #include <wx/fileconf.h>
-#include <wx/image.h>
 #include <wx/snglinst.h>
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
