@@ -128,6 +128,34 @@ std::string CMuleCollection::GetFileHash(size_t index) const
 	return retvalue;
 }
 
+template <typename intType>
+intType CMuleCollection::ReadInt(std::ifstream& infile)
+{
+	intType integer = 0;
+	infile.read(reinterpret_cast<char *>(&integer),sizeof(intType));
+	return integer;
+}
+
+std::string CMuleCollection::ReadString(std::ifstream& infile, int TagType = 0x02)
+{
+	std::cout << TagType << std::endl;
+	if (TagType >= 0x11 && TagType <= 0x20) {
+		std::vector<char> buffer(TagType - 0x10);
+		infile.read(&buffer[0], TagType - 0x10);
+		return buffer.empty() ?
+			std::string() :
+			std::string (buffer.begin(), buffer.end());
+	}
+	if (TagType == 0x02) {
+		uint16_t TagStringSize = ReadInt<uint16_t>(infile);
+		std::vector<char> buffer (TagStringSize);
+		infile.read(&buffer[0], TagStringSize);
+		return buffer.empty() ?
+			std::string() :
+			std::string (buffer.begin(), buffer.end());
+	}
+	return std::string();
+}
 
 bool CMuleCollection::OpenBinary(const std::string &File)
 {
@@ -138,88 +166,61 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 		return false;
 	}
 
-	uint32_t cVersion;
-	infile.read(reinterpret_cast<char *>(&cVersion),sizeof(uint32_t));
+	uint32_t cVersion = ReadInt<uint32_t>(infile);
 		
-	if (!infile.good() || // Read error or EOF
-	    ( cVersion != 0x01 && cVersion != 0x02)) { // Invalid cVersion
+	if (!infile.good() ||
+	    ( cVersion != 0x01 && cVersion != 0x02)) {
 			infile.close();
 			return false;
 	}
 	
-	uint32_t hTagCount;
-	infile.read(reinterpret_cast<char *>(&hTagCount),sizeof(uint32_t));
-	if (!infile.good() ||	// Read error or EOF
-	    hTagCount > 3) {	// Catch bad values
+	uint32_t hTagCount = ReadInt<uint32_t>(infile);
+	if (!infile.good() ||
+	    hTagCount > 3) {
 		infile.close();
 		return false;
 	}
 	
 	for (size_t hTi = 0; hTi < hTagCount;hTi++) {
-		// int hTagType =
-			infile.get(); // unused variable
-		
-		uint16_t hTagFormat;	// hTagFormat == 1 -> FT-value is given
-		infile.read (reinterpret_cast<char *>(&hTagFormat),sizeof(uint16_t));
-		if (hTagFormat != 0x0001) {	// invalid string format
+		 int hTagType = infile.get();
+
+		// hTagFormat == 1 -> FT-value is given
+		uint16_t hTagFormat = ReadInt<uint16_t>(infile);
+		if (hTagFormat != 0x0001) {
 			infile.close();
 			return false;
 		}			
 
 		int hTag = infile.get();
-		if (!infile.good()) { // Read error or EOF
+		if (!infile.good()) {
 			infile.close();
 			return false;
 		}
 		switch (hTag) {
 		// FT_FILENAME
 		case 0x01: {
-			uint16_t hTagStringSize;
-			infile.read (reinterpret_cast<char *>(&hTagStringSize),sizeof(uint16_t));
-			if( !infile.good() ) { 	// Read error or EOF
-				infile.close();
-				return false;
-			}
-			std::vector<char> buffer(hTagStringSize);
-			infile.read(&buffer[0], hTagStringSize);
-			std::string fileName = buffer.empty() ?
-				std::string() :
-				std::string (buffer.begin(), buffer.end());
-			// Value is currently not processed.
+			std::string fileName = ReadString(infile, hTagType);
 			break;
 		}
 		// FT_COLLECTIONAUTHOR
 		case 0x31: {
-			uint16_t hTagStringSize;
-			infile.read (reinterpret_cast<char *>(&hTagStringSize),sizeof(uint16_t));
-			if (!infile.good()) { // Read error or EOF
-				infile.close();
-				return false;
-			}
-			std::vector<char> buffer(hTagStringSize);
-			infile.read(&buffer[0], hTagStringSize);
-			std::string CollectionAuthor = buffer.empty() ?
-				std::string() :
-				std::string (buffer.begin(), buffer.end());
-			// Value is currently not processed.
+			std::string CollectionAuthor = ReadString(infile, hTagType);
 			break;
 		}
 		// FT_COLLECTIONAUTHORKEY
 		case 0x32: {
-			uint32_t hTagBlobSize;
-			infile.read (reinterpret_cast<char *>(&hTagBlobSize),sizeof(uint32_t));
-			if (!infile.good()) { // Read error or EOF
+			uint32_t hTagBlobSize = ReadInt<uint32_t>(infile);
+			if (!infile.good()) {
 				infile.close();
 				return false;
 			}
 			std::vector<char> CollectionAuthorKey(hTagBlobSize);
 			infile.read(&CollectionAuthorKey[0], hTagBlobSize);
-			// Value is currently not processed.			
 			break;
 		}
 		// UNDEFINED TAG
 		default:
-			if (!infile.good()) { // Read error or EOF
+			if (!infile.good()) {
 				infile.close();
 				return false;
 			}
@@ -227,8 +228,7 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 		}
 	}
 
-	uint32_t cFileCount;
-	infile.read(reinterpret_cast<char *>(&cFileCount),sizeof(uint32_t));
+	uint32_t cFileCount = ReadInt<uint32_t>(infile);
 	
 	/*
 	softlimit is set to 1024 to avoid problems with big uint32_t values
@@ -237,18 +237,17 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 	you know someone who does.
 	*/
 
-	if(!infile.good() ||	// Read error or EOF
-	   cFileCount > 1024) { // Catch bad values
+	if(!infile.good() ||
+	   cFileCount > 1024) {
 		infile.close();
 		return false;
 	}
 	
 	for (size_t cFi = 0; cFi < cFileCount; ++cFi) {
-		uint32_t fTagCount;
-		infile.read(reinterpret_cast<char *>(&fTagCount),sizeof(uint32_t));
+		uint32_t fTagCount = ReadInt<uint32_t>(infile);
 
-		if (!infile.good() ||	// Read error or EOF
-		    fTagCount > 5) { // Catch bad values
+		if (!infile.good() ||
+		    fTagCount > 5) {
 			infile.close();
 			return false;
 		}
@@ -256,16 +255,16 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 		std::string fileHash = std::string(32, '0');
 		uint64_t fileSize;			
 		std::string fileName;
-		std::string FileComment; // unused variable
+		std::string FileComment;
 		for(size_t fTi = 0; fTi < fTagCount; ++fTi) {
 			int fTagType = infile.get();
-			if (!infile.good()) { // Read error or EOF
+			if (!infile.good()) {
 				infile.close();
 				return false;
 			}
 
 			int fTag = infile.get();
-			if (!infile.good()) { // Read error or EOF
+			if (!infile.good()) {
 				infile.close();
 				return false;
 			}
@@ -286,24 +285,19 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 			case 0x02: {
 				switch(fTagType) {
 				case 0x83: {
-					uint32_t fsUint32_t;
-					infile.read (reinterpret_cast<char *>(&fsUint32_t), sizeof(uint32_t));
-					fileSize = fsUint32_t;
+					fileSize = ReadInt<uint32_t>(infile);
 					break;
 				}
 				case 0x88: {
-					uint16_t fsUint16_t;
-					infile.read (reinterpret_cast<char *>(&fsUint16_t), sizeof(uint16_t));
-					fileSize = fsUint16_t;
+					fileSize = ReadInt<uint16_t>(infile);
 					break;
 				}
 				case 0x89: {
-					uint8_t fsUint8_t = infile.get();
-					fileSize = fsUint8_t;
+					fileSize = infile.get();
 					break;
 				}
 				case 0x8b: {
-					infile.read(reinterpret_cast<char *>(&fileSize), sizeof(uint64_t));
+					fileSize = ReadInt<uint64_t>(infile);
 					break;
 				}
 				default: // Invalid file structure
@@ -315,40 +309,12 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 			}
 			// FT_FILENAME
 			case 0x01: {
-				if (fTagType >= 0x91 && fTagType <= 0xa0) {
-					std::vector<char> buffer(fTagType - 0x90);
-					infile.read(&buffer[0], fTagType - 0x90);
-					fileName = buffer.empty() ?
-						std::string() :
-						std::string (buffer.begin(), buffer.end());
-				} else if (fTagType == 0x82) { // TAGTYPE_STR
-					uint16_t fTagStringSize;
-					infile.read(reinterpret_cast<char *>(&fTagStringSize),sizeof(uint16_t));
-					std::vector<char> buffer (fTagStringSize);
-					infile.read(&buffer[0], fTagStringSize);
-					fileName = buffer.empty() ?
-						std::string() :
-						std::string (buffer.begin(), buffer.end());
-				} else {
-					infile.close();
-					return false;
-				}
+				fileName = ReadString(infile, fTagType^0x80);
 				break;
 			}
 			// FT_FILECOMMENT
 			case 0xF6: {
-				if (fTagType == 0x82) { // TAGTYPE_STR
-					uint16_t fTagStringSize;
-					infile.read (reinterpret_cast<char *>(&fTagStringSize),sizeof(uint16_t));
-					std::vector<char> buffer(fTagStringSize);
-					infile.read(&buffer[0], fTagStringSize);
-					FileComment = buffer.empty() ?
-						std::string() :
-						std::string (buffer.begin(), buffer.end());
-				} else {
-					infile.close();
-					return false;
-				}
+				FileComment = ReadString(infile, fTagType^0x80);
 				break;
 			}
 			// FT_FILERATING
@@ -369,7 +335,7 @@ bool CMuleCollection::OpenBinary(const std::string &File)
 				return false;
 				break;
 			}
-			if( !infile.good() ) {	// Read error or EOF
+			if( !infile.good() ) {
 				infile.close();
 				return false;
 			}

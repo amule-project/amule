@@ -58,11 +58,11 @@ public:
 	
 	bool Open(const std::string &File);
 	size_t GetFileCount() const { return vCollection.size(); }
-							// Return values on error:
-	std::string GetEd2kLink(size_t index) const;	// "Invalid Index"
-	std::string GetFileName(size_t index) const;	// "Empty String", "Invalid Index"
-	uint64_t GetFileSize(size_t index) const;	// 0
-	std::string GetFileHash(size_t index) const;	// "Empty String", "Invalid Index"
+
+	std::string GetEd2kLink(size_t index) const;
+	std::string GetFileName(size_t index) const;
+	uint64_t GetFileSize(size_t index) const;
+	std::string GetFileHash(size_t index) const;
 	
 private:
 	bool OpenBinary(const std::string &File);
@@ -75,6 +75,11 @@ private:
 		const std::string &fileHash);
 	
 	static bool IsValidHash(const std::string &fileHash);
+	
+	template <typename intType>
+	intType ReadInt(std::ifstream& infile);
+	
+	std::string ReadString(std::ifstream& infile, int TagType);
 };
 
 #endif // __MULECOLLECTION_H__
