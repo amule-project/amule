@@ -44,13 +44,11 @@
 CMagnetURI::CMagnetURI(const STRING& uri)
 {
 	if (uri.compare(0, 7, _T("magnet:")) == 0) {
-	//if (uri.substr(0,7).compare(_T("magnet:")) == 0) {
 		size_t start = uri.find(_C('?'));
 		if (start == STRING::npos) start = uri.length();
 		while (start < uri.length() - 1) {
 			size_t end = uri.find(_C('&'), start + 1);
 			if (end == STRING::npos) end = uri.length();
-			// STRING field = uri.substr(start + 1, end - start - 1);
 			size_t pos = uri.find(_C('='), start + 1);
 			if (pos == STRING::npos) pos = uri.length();
 			if (pos < end) {
@@ -123,6 +121,8 @@ STRING CMagnetED2KConverter::GetED2KLink() const
 		if (!dn_val.empty()) {
 			dn = dn_val.front();
 		} else {
+			// This should never happen. Has anyone seen a link without a file name?
+			// Just in case, assign a reasonable(?) name to that unnamed file.
 			dn = _T("FileName.ext");
 		}
 		Value_List urn_list = GetField(_T("xt"));
