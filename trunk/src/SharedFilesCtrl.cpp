@@ -54,7 +54,8 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_PRIOAUTO,		CSharedFilesCtrl::OnSetPriorityAuto )
 
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
-	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )	
+	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )
+	EVT_MENU( MP_GETMAGNETLINK,		CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
@@ -147,6 +148,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
 */
+		m_menu->Append(MP_GETMAGNETLINK,_("Copy magnet URI to clipboard"));
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
@@ -261,7 +263,7 @@ void CSharedFilesCtrl::OnSetPriorityAuto( wxCommandEvent& WXUNUSED(event) )
 
 void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 {
-	wxString URIs;	
+	wxString URIs;
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK ) {
 		if ( !theApp->IsConnectedED2K() || theApp->serverconnect->IsLowID() ) {
@@ -272,20 +274,21 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 	}
 
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
+
 	while( index != -1 ) {
 		CKnownFile* file = (CKnownFile*)GetItemData( index );
 
 		switch ( event.GetId() ) {
+			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + wxT("\n");				break;
 			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + wxT("\n");					break;
 			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kSourceLink( file ) + wxT("\n");			break;
 			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kHostnameSourceLink( file ) + wxT("\n");	break;
-			case MP_GETAICHED2KLINK: URIs += theApp->CreateED2kAICHLink( file ) + wxT("\n");	break;
+			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kAICHLink( file ) + wxT("\n");				break;
 		}
 
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
-	
+
 	if ( !URIs.IsEmpty() ) {	
 		theApp->CopyTextToClipboard( URIs.RemoveLast() );
 	}

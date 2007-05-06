@@ -503,7 +503,7 @@ public:
 	//
 	void StopUDPRequests();
 	void AddFileLinkToDownload(CED2KFileLink*, uint8);
-	bool AddED2KLink(const wxString &link, int category = 0);
+	bool AddLink(const wxString &link, int category = 0);
 	void UnsetCompletedFilesExist();
 	void ResetCatParts(int cat);
 	void AddSearchToDownload(CSearchFile* toadd, uint8 category);
@@ -708,6 +708,7 @@ public:
 	bool AddServer(CServer *srv, bool fromUser = false);
 
 	uint32 GetPublicIP();
+	wxString CreateMagnetLink(const CAbstractFile *f);
 	wxString CreateED2kLink(const CAbstractFile* f);
 	wxString CreateED2kSourceLink(const CAbstractFile* f);
 	wxString CreateED2kAICHLink(const CKnownFile* f);

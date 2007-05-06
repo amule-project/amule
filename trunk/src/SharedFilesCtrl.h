@@ -153,7 +153,7 @@ private:
 	void	OnSetPriorityAuto( wxCommandEvent& event );
 	
 	/**
-	 * Event-handler for the Create ED2K URI items.
+	 * Event-handler for the Create ED2K/Magnet URI items.
 	 */
 	void	OnCreateURI( wxCommandEvent& event );
 	

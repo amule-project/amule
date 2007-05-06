@@ -151,7 +151,8 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_CLEARCOMPLETED,		CDownloadListCtrl::OnClearCompleted )
 
-	EVT_MENU( MP_GETED2KLINK,		CDownloadListCtrl::OnGetED2KLink )
+	EVT_MENU( MP_GETMAGNETLINK,		CDownloadListCtrl::OnGetLink )
+	EVT_MENU( MP_GETED2KLINK,		CDownloadListCtrl::OnGetLink )
 
 	EVT_MENU( MP_METINFO,			CDownloadListCtrl::OnViewFileInfo )
 	EVT_MENU( MP_VIEW,			CDownloadListCtrl::OnPreviewFile )
@@ -728,7 +729,7 @@ void CDownloadListCtrl::OnClearCompleted( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-void CDownloadListCtrl::OnGetED2KLink(wxCommandEvent& WXUNUSED(event))
+void CDownloadListCtrl::OnGetLink(wxCommandEvent& event)
 {
 	ItemList files = ::GetSelectedItems( this, itFILES );
 
@@ -737,7 +738,11 @@ void CDownloadListCtrl::OnGetED2KLink(wxCommandEvent& WXUNUSED(event))
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (*it)->GetFile();
 
-		URIs += theApp->CreateED2kLink( file ) + wxT("\n");
+		if ( event.GetId() == MP_GETED2KLINK ) {
+			URIs += theApp->CreateED2kLink( file ) + wxT("\n");
+		} else {
+			URIs += theApp->CreateMagnetLink( file ) + wxT("\n");
+		}
 	}
 
 	if ( !URIs.IsEmpty() ) {
@@ -979,6 +984,8 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		//-----------------------------------------------------
 		m_menu->AppendSeparator();
 		//-----------------------------------------------------
+		m_menu->Append(MP_GETMAGNETLINK,
+			_("Copy magnet URI to clipboard"));
 		m_menu->Append(MP_GETED2KLINK,
 			_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_WS,

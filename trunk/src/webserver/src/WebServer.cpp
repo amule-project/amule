@@ -465,7 +465,7 @@ void CWebServerBase::Send_Search_Cmd(wxString search, wxString extention, wxStri
 
 bool CWebServerBase::Send_DownloadEd2k_Cmd(wxString link, uint8 cat)
 {
-	CECPacket req(EC_OP_ED2K_LINK);
+	CECPacket req(EC_OP_ADD_LINK);
 	CECTag link_tag(EC_TAG_STRING, link);
 	link_tag.AddTag(CECTag(EC_TAG_PARTFILE_CAT, cat));
 	req.AddTag(link_tag);

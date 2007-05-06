@@ -24,8 +24,8 @@
 //
 
 const int versionMajor		= 1;
-const int versionMinor		= 3;
-const int versionRevision	= 1;
+const int versionMinor		= 4;
+const int versionRevision	= 0;
 
 #include <cstdlib>
 #include <sstream>
@@ -41,6 +41,7 @@ const int versionRevision	= 1;
 #endif
 
 #include "FileLock.h"
+#include "MagnetURI.h"
 #include "MuleCollection.h"
 
 using std::string;
@@ -424,6 +425,17 @@ int main(int argc, char *argv[])
 	for ( int i = 1; i < argc; i++ ) {
 		string arg = strip( Unescape( string( argv[i] ) ) );
 
+		if ( arg.compare(0, 7, "magnet:" ) == 0 ) {
+			string ed2k = CMagnetED2KConverter(arg);
+			if ( ed2k.empty() ) {
+				std::cerr << "Cannot convert magnet URI to ed2k:\n\t" << arg << std::endl;
+				errors = true;
+				continue;
+			} else {
+				arg = ed2k;
+			}
+		}
+
 		if ( arg.substr( 0, 8 ) == "ed2k://|" ) {
 			// Ensure the URI is valid
 			if ( arg.at( arg.length() - 1 ) != '/' ) {
@@ -460,6 +472,7 @@ int main(int argc, char *argv[])
 				<< "    --help, -h              Prints this help.\n"
 				<< "    --config-dir, -c        Specifies the aMule configuration directory.\n"
 				<< "    --version, -v           Displays version info.\n\n"
+				<< "    magnet:?                Causes the file to be queued for download.\n"
 				<< "    ed2k://|file|           Causes the file to be queued for download.\n"
 				<< "    ed2k://|server|         Causes the server to be listed or updated.\n"
 				<< "    ed2k://|serverlist|     Causes aMule to update the current serverlist.\n\n"

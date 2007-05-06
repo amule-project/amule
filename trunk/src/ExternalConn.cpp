@@ -1013,13 +1013,13 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already shutting down.")));
 			}
 			break;
-		case EC_OP_ED2K_LINK: 
+		case EC_OP_ADD_LINK: 
 			for(int i = 0; i < request->GetTagCount();i++) {
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
 				int category = tag->GetTagByIndexSafe(0)->GetInt();
-				AddLogLineM(true, CFormat(_("ExternalConn: adding ed2k link '%s'.")) % link);
-				if ( theApp->downloadqueue->AddED2KLink(link, category) ) {
+				AddLogLineM(true, CFormat(_("ExternalConn: adding link '%s'.")) % link);
+				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
 					// Error messages are printed by the add function.

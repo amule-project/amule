@@ -416,6 +416,11 @@ wxString CamuleRemoteGuiApp::GetServerLog(bool)
 //
 // Remote gui can't create links by itself. Pass request or retrieve from container ?
 //
+wxString CamuleRemoteGuiApp::CreateMagnetLink(const CAbstractFile *)
+{
+	return wxEmptyString;
+}
+
 wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*)
 {
 	return wxEmptyString;
@@ -1171,9 +1176,9 @@ CRemoteContainer<CPartFile, CMD4Hash, CEC_PartFile_Tag>(conn, true)
 }
 
 
-bool CDownQueueRem::AddED2KLink(const wxString &link, int)
+bool CDownQueueRem::AddLink(const wxString &link, int)
 {
-	CECPacket req(EC_OP_ED2K_LINK);
+	CECPacket req(EC_OP_ADD_LINK);
 	req.AddTag(CECTag(EC_TAG_STRING, link));
 	
 	m_conn->SendPacket(&req);

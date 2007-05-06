@@ -64,6 +64,7 @@ libmuleappcommon_a_SOURCES = \
 	DataToText.cpp \
 	ED2KLink.cpp \
 	FileFunctions.cpp \
+	MagnetURI.cpp \
 	MemFile.cpp \
 	NetworkFunctions.cpp \
 	Packet.cpp \
@@ -311,7 +312,10 @@ amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
 ed2k_SOURCES = \
 	ED2KLinkParser.cpp \
+	MagnetURI.cpp \
 	MuleCollection.cpp	
+
+ed2k_CPPFLAGS = -DUSE_STD_STRING
 
 # on Win32
 if SYS_WIN32
@@ -389,6 +393,7 @@ noinst_HEADERS = \
 		ListenSocket.h \
 		Logger.h \
 		MD4Hash.h \
+		MagnetURI.h \
 		MemFile.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
