@@ -265,6 +265,10 @@ public:
 	void	OnHostnameResolved(uint32 ip);
 
 
+	/**
+	 * Adds an ed2k or magnet link to download queue.
+	 */
+	bool	AddLink( const wxString& link, int category = 0 );
 
 	bool	AddED2KLink( const wxString& link, int category = 0 );
 	bool	AddED2KLink( const CED2KLink* link, int category = 0 );

@@ -59,12 +59,13 @@
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
 #include "FileFunctions.h"		// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
+#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
 #include "IPFilter.h"			// Needed for CIPFilter
 #include "KnownFileList.h"		// Needed for CKnownFileList
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "Logger.h"			// Needed for CLogger // Do_not_auto_remove
-#include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
+#include "MagnetURI.h"			// Needed for CMagnetURI
 #include "PartFile.h"			// Needed for CPartFile
 #include "Preferences.h"		// Needed for CPreferences
 #include "SearchList.h"			// Needed for CSearchList
@@ -1014,6 +1015,17 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	return ok;
 }
 
+// Returns a magnet ed2k URI
+wxString CamuleApp::CreateMagnetLink(const CAbstractFile *f)
+{
+	CMagnetURI uri;
+
+	uri.AddField(wxT("dn"), CleanupFilename(f->GetFileName(), true));
+	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2k:")) + f->GetFileHash().Encode().Lower());
+	uri.AddField(wxT("xl"), wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()));
+
+	return uri.GetLink();
+}
 
 // Returns a ed2k file URL
 wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)

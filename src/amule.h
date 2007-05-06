@@ -145,7 +145,8 @@ public:
 	// What about Kad? Is it running?
 	bool IsKadRunning();
 
-	// ed2k URL functions
+	// URL functions
+	wxString	CreateMagnetLink(const CAbstractFile *f);
 	wxString	CreateED2kLink(const CAbstractFile* f);
 	wxString	CreateED2kSourceLink(const CAbstractFile* f);
 	wxString	CreateED2kAICHLink(const CKnownFile* f);

@@ -27,10 +27,11 @@ Trunk
 		* Fixed source seeds handling on startup.
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
-		* Fixed #929: configure: BUILD_CC uses CCs CFLAGS
+		* Fixed #929: configure: BUILD_CC uses CC's CFLAGS
 		* Implemented #962: don't display (0) when not downloading from source
 		* Fixed #954 - added ability turn IPFilter on/off for servers/clients
 		  independently.
+		* Added support for magnet ed2k links.
 
 	Hermit:
 		* Patch for amulecmd history which ensures that when the same command

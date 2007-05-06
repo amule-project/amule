@@ -49,7 +49,7 @@ EC_OP_FAILED                        0x05
 EC_OP_STRINGS                       0x06
 EC_OP_MISC_DATA                     0x07
 EC_OP_SHUTDOWN                      0x08
-EC_OP_ED2K_LINK                     0x09
+EC_OP_ADD_LINK                      0x09
 EC_OP_STAT_REQ                      0x0A
 EC_OP_GET_CONNSTATE                 0x0B
 EC_OP_STATS                         0x0C

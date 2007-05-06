@@ -412,11 +412,13 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 			break;
 
 		case CMD_ID_ADDLINK:
-			//aMule doesn't like AICH links without |/| in front of h=
-			if (args.Find(wxT("|h=")) > -1 && args.Find(wxT("|/|h=")) == -1) {
-				args.Replace(wxT("|h="),wxT("|/|h="));
+			if (args.compare(0, 7, wxT("ed2k://")) == 0) {
+				//aMule doesn't like AICH links without |/| in front of h=
+				if (args.Find(wxT("|h=")) > -1 && args.Find(wxT("|/|h=")) == -1) {
+					args.Replace(wxT("|h="),wxT("|/|h="));
+				}
 			}
-			request = new CECPacket(EC_OP_ED2K_LINK);
+			request = new CECPacket(EC_OP_ADD_LINK);
 			request->AddTag(CECTag(EC_TAG_STRING, args));
 			request_list.push_back(request);
 			break;
@@ -843,12 +845,14 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("ED2K"), CMD_ID_DISCONNECT_ED2K, wxTRANSLATE("Disconnect from ED2K only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Kad"), CMD_ID_DISCONNECT_KAD, wxTRANSLATE("Disconnect from Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
- 	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Adds an ed2k link to core."),
+ 	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Adds an ed2k or magnet link to core."),
 			      wxTRANSLATE("The ed2k link to be added can be:\n"
 					  "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 					  "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 					  "*) or a serverlist link, in which case all servers in the list will be added to the\n"
-					  "   server list.\n"), CMD_PARAM_ALWAYS);
+					  "   server list.\n"
+					  "\n"
+					  "The magnet link must contain the ed2k hash and file length.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);

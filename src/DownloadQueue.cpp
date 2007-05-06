@@ -56,6 +56,7 @@
 #include "FileLock.h"		// Needed for CFileLock
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "UserEvents.h"
+#include "MagnetURI.h"		// Needed for CMagnetED2KConverter
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -986,7 +987,7 @@ void CDownloadQueue::AddLinksFromFile()
 					continue;
 				}
 				
-				AddED2KLink( line );
+				AddLink( line );
 			}
 		}
 
@@ -1261,6 +1262,27 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 				break;
 			}
 		}
+	}
+}
+
+
+bool CDownloadQueue::AddLink( const wxString& link, int category )
+{
+	wxString uri(link);
+
+	if (link.compare(0, 7, wxT("magnet:")) == 0) {
+		uri = CMagnetED2KConverter(link);
+		if (uri.empty()) {
+			AddLogLineM(true, CFormat(_("Cannot convert magnet link to ed2k: %s")) % link);
+			return false;
+		}
+	}
+
+	if (uri.compare(0, 7, wxT("ed2k://")) == 0) {
+		return AddED2KLink(uri, category);
+	} else {
+		AddLogLineM(true, CFormat(_("Unknown protocol of link: %s")) % link);
+		return false;
 	}
 }
 
