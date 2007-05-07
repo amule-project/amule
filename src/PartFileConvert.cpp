@@ -56,6 +56,10 @@ CConvertListCtrl::CConvertListCtrl(
 #include "muuli_wdr.h"
 
 
+#ifdef __WXMSW__
+#undef AddJob
+#endif
+
 
 enum convstatus{
 	CONV_OK			= 0,

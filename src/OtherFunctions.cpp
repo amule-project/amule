@@ -344,38 +344,38 @@ bool IsEmptyFile(const wxString& filename)
 	return true;
 }
 
+
 // Get the max number of connections that the OS supports, or -1 for default
-int GetMaxConnections() {
-
+int GetMaxConnections()
+{
+	int maxconn = -1;
 #ifdef __WXMSW__
-
-	int os = wxGetOsVersion();
-		
 	// Try to get the max connection value in the registry
 	wxRegKey key( wxT("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections") );
-	
 	wxString value;
-	if ( key.Exists() )
+	if ( key.Exists() ) {
 		value = key.QueryDefaultValue();
-
+	}
 	if ( !value.IsEmpty() && value.IsNumber() ) {
-		long maxconn = -1;
-
-		value.ToLong( &maxconn );
-
-		return maxconn;		
+		value.ToLong(&maxconn);
 	} else {
-		switch ( os ) {
-			case wxWIN95:		return 50;	// This includes all Win9x versions
-			case wxWINDOWS_NT:	return 500;	// This includes NT based windows
-			default:			return -1;	// Anything else. Let aMule decide...
+		switch (wxGetOsVersion()) {
+		case wxOS_WINDOWS_9X:
+			// This includes all Win9x versions
+			maxconn = 50;
+			break;
+		case wxOS_WINDOWS_NT:
+			// This includes NT based windows
+			maxconn = 500;
+			break;
+		default:
+			// Anything else. Let aMule decide...
 		}
 	}
-
-#endif
-
+#else
 	// Any other OS can just use the default number of connections
-	return -1;
+#endif
+	return maxconn;
 }
 
 
