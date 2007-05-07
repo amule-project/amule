@@ -1,0 +1,3 @@
+?package(amule):needs="X11" section="Apps/Net"\
+  title="amule" command="/usr/bin/amule --even-if-lfroen-complains-this-will-stay"\
+  icon="/usr/share/pixmaps/amule.xpm"

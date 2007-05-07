@@ -1,0 +1,425 @@
+Source: amule
+Section: web
+Priority: optional
+Maintainer: Vollstrecker <amule@vollstreckernet.de>
+Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev, libgtk2.0-dev, zlib1g-dev, libwxgtk2.8-dev, libgd2-xpm-dev, bison, flex, libcrypto++-dev, libreadline5-dev 
+Standards-Version: 3.6.2.2
+
+Package: amule
+Architecture: any
+Depends: ${shlibs:Depends}, amule-common (= ${Source-Version}), amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Recommends: amule-utils, amule-cas, amule-wxcas
+Suggests: amule-xas, amule-ed2k
+Description: aNOTHER eMule P2P Client
+ aMule stand for another eMule file-sharing program, it is also
+ another fork of the xMule project. It connects to eDonkey2000
+ network, supports Linux, *BSD and MacOS X platforms, and has
+ a new vision of the GUI
+
+Package: amule-utils
+Architecture: any
+Depends: ${shlibs:Depends}, amule-common (= ${Source-Version}), amule-alcc (= ${Source-Version}), amule-cmd (= ${Source-Version}), amule-cas (= ${Source-Version})
+Recommends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version})
+Description: utilities for amule
+ amule-utils is a set of tools to control amule.
+ .
+ alcc lets you created ed2k-links and hashes from the commandline
+ cas is a remplacement software for astats. It produces statistic from amule. 
+ amulecmd is a software which helps you to control amule trough a terminal.
+
+Package: amule-utils-gui
+Architecture: any
+Depends: ${shlibs:Depends}, amule-common (= ${Source-Version}), amule-alc (= ${Source-Version}), amule-remote-gui (= ${Source-Version}), amule-wxcas (= ${Source-Version})
+Recommends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version})
+Description: utilities for amule
+ amule-utils-gui is a set of tools to control amule.
+ .
+ This package depends on useful programs using GUI to control aMule.
+ .
+ alc is a software to created ed2k-links and hashes
+ amule trough a terminal.
+ amulegui lets you control amule or amuled from a remote machine
+ wxcas shows you statistics about your amule usage
+
+Package: amule-ed2k
+Architecture: any
+Depends: ${shlibs:Depends}, ${perl:Depends}
+Recommends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version})
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version}), xmule (<= 1.10.0b-1)
+Description: amule ed2k link-handler
+ ed2k let you use ed2k Links with your amule-app
+
+Package: amule-cas
+Architecture: any
+Depends: ${shlibs:Depends}, amule (= ${Source-Version}) | amule-daemon (= ${Source-Version})
+Conflicts: amule-utils (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: reporting module for amule
+ cas reports statistics about amule on the console
+
+Package: amule-wxcas
+Architecture: any
+Depends: ${shlibs:Depends}, amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}), amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Conflicts: amule-utils (<< ${Source-Version})
+Description: reporting module for amule (graphical)
+ wxcas reports statistics about amule on your desktop, using wxlib
+
+Package: amule-xas
+Architecture: any
+Depends: ${perl:Depends}, amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}), xchat | xchat-text
+Description: amule statistics for xchat
+ xas reports statistics about amule to IRC-Channels using XChat
+
+Package: amule-common
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: common files for amule
+ this packages contains common files for amule. atm only the
+ icon for the menu
+
+Package: amule-theme-default
+Architecture: any
+Provides: amule-web-templates
+Depends: ${shlibs:Depends}, amuleweb (= ${Source-Version})
+Conflicts: amule-common (<< ${Source-Version}), amule (<< ${Source-Version})
+Description: the default template for the webserver
+ this package contains the default template for amulewebserver
+
+Package: amule-theme-php-default
+Architecture: any
+Provides: amule-web-templates
+Depends: ${shlibs:Depends}, amuleweb (= ${Source-Version})
+Conflicts: amule-common (<< ${Source-Version})
+Description: the default template for the webserver
+ this package contains the default php template for amulewebserver
+
+Package: amule-theme-chicane
+Architecture: any
+Provides: amule-web-templates
+Depends: ${shlibs:Depends}, amuleweb (= ${Source-Version})
+Conflicts: amule-common (<< ${Source-Version}), amule (<< ${Source-Version})
+Description: a new template set for the webserver
+ this package contains a new theme for amulewebserver
+
+Package: amuleweb
+Architecture: any
+Depends: ${shlibs:Depends}, amule-web-templates, amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Recommends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version})
+Conflicts: amule (<< ${Source-Version}), amule-daemon (<< ${Source-Version})
+Description: the webserver for amule
+ this is the webserver, which gives you full access to your amule client with
+ any webbrowser you want
+
+Package: amule-remote-gui
+Architecture: any
+Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Description: the remote gui for amule
+ this is the remote GUI for amule. You can use it on every machine to execute
+ commands on the main prog. You need a running amule or amuled on at least one
+ machine in the net.
+
+Package: amule-daemon
+Architecture: any
+Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Replaces: amuled (<< ${Source-Version})
+Conflicts: amule-daemon (<< ${Source-Version})
+Description: the amule daemon
+ amule-daemon can be used on computers, that don't have X11. You can connect to
+ it with the remote-GUI, the webserver or the commandline interface.
+
+Package: amule-alc
+Architecture: any
+Depends: ${shlibs:Depends}, amule-i18n-en-gb (= ${Source-Version}) | amule-i18n
+Conflicts: amule-utils (<< ${Source-Version})
+Description: the amule-link-creator
+ amule-link-creator lets you create ed2k-link and hashes for a given file.
+
+Package: amule-alcc
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: amule-utils (<< ${Source-Version})
+Description: the amule-link-creator (commandline-version)
+ amule-link-creator lets you create ed2k-link and hashes for a given file
+ from the commandline.
+
+Package: amule-cmd
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: amule-utils (<< ${Source-Version})
+Description: the amule-commandline-client
+ amulecmd gives you control over a runnin amule-daemon or amule from
+ commandline.
+
+Package: amule-i18n-ar
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Arabic (ar) internationalized (i18n) files for amule
+ This package contains Arabic internationalized files for amule.
+
+Package: amule-i18n-bg
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Bulgarian (bg) internationalized (i18n) files for amule
+ This package contains Bulgarian internationalized files for amule.
+
+Package: amule-i18n-ca
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version}) 
+Description: Catalan (ca) internationalized (i18n) files for amule
+ This package contains Catalan internationalized files for amule.
+
+Package: amule-i18n-da
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Danish (da) internationalized (i18n) files for amule
+ This package contains Danish internationalized files for amule.
+
+Package: amule-i18n-de
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: German (de) internationalized (i18n) files for amule
+ This package contains German internationalized files for amule.
+
+Package: amule-i18n-en-gb
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: English (en_GB) internationalized (i18n) files for amule
+ This package contains English internationalized files for amule.
+
+Package: amule-i18n-en-us
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: English (en_US) internationalized (i18n) files for amule
+ This package contains English internationalized files for amule.
+
+Package: amule-i18n-es
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Spanish (es) internationalized (i18n) files for amule
+ This package contains Spanish internationalized files for amule.
+
+Package: amule-i18n-es-mx
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Spanish (es_MX) internationalized (i18n) files for amule
+ This package contains Spanish internationalized files for amule.
+
+Package: amule-i18n-et-ee
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Estonian (et_EE) internationalized (i18n) files for amule
+ This package contains Estonian internationalized files for amule.
+
+Package: amule-i18n-eu
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Basque (eu) internationalized (i18n) files for amule
+ This package contains Basque internationalized files for amule.
+
+Package: amule-i18n-fi
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Finnish (fi) internationalized (i18n) files for amule
+ This package contains Finnish internationalized files for amule.
+
+Package: amule-i18n-fr
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: French (fr) internationalized (i18n) files for amule
+ This package contains French internationalized files for amule.
+
+Package: amule-i18n-gl
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Gallegan (gl) internationalized (i18n) files for amule
+ This package contains Gallegan internationalized files for amule.
+
+Package: amule-i18n-hr
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Croatian (hr) internationalized (i18n) files for amule
+ This package contains Croatian internationalized files for amule.
+
+Package: amule-i18n-hu
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Hungarian (hu) internationalized (i18n) files for amule
+ This package contains Hungarian internationalized files for amule.
+
+Package: amule-i18n-it-ch
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Italian (it_CH) internationalized (i18n) files for amule
+ This package contains Italian internationalized files for amule.
+
+Package: amule-i18n-it
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Italian (it) internationalized (i18n) files for amule
+ This package contains Italian internationalized files for amule.
+
+Package: amule-i18n-ko-kr
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Korean (ko_KR) internationalized (i18n) files for amule
+ This package contains Korean internationalized files for amule.
+
+Package: amule-i18n-nl
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Dutch (nl) internationalized (i18n) files for amule
+ This package contains Dutch internationalized files for amule.
+
+Package: amule-i18n-pl
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Polish (pl) internationalized (i18n) files for amule
+ This package contains Polish internationalized files for amule.
+
+Package: amule-i18n-pt-br
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Portuguese (pt_BR) internationalized (i18n) files for amule
+ This package contains Purtuguese internationalized files for amule.
+
+Package: amule-i18n-pt-pt
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Portuguese (pt_PT) internationalized (i18n) files for amule
+ This package contains Portuguese internationalized files for amule.
+
+Package: amule-i18n-ru
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Russian (ru) internationalized (i18n) files for amule
+ This package contains Russian internationalized files for amule.
+
+Package: amule-i18n-sl
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Slovenian (sl) internationalized (i18n) files for amule
+ This package contains Slovenian internationalized files for amule.
+
+Package: amule-i18n-zh-cn
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Chinese (zh_CN) internationalized (i18n) files for amule
+ This package contains Chinese internationalized files for amule.
+
+Package: amule-i18n-zh-tw
+Architecture: any
+Depends: amule (= ${Source-Version}) | amule-daemon (= ${Source-Version}) | amuleweb (= ${Source-Version}) | amule-alc (= ${Source-Version}) | amule-remote-gui (= ${Source-Version}) | amule-wxcas (= ${Source-Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${Source-Version}), amule-common (<< ${Source-Version})
+Description: Chinese (zh_TW) internationalized (i18n) files for amule
+ This package contains Chinese internationalized files for amule.
+
+Package: amule-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: aNOTHER eMule P2P Client debugging symbols
+ this package contains the debugging symbols for the amule binary
+
+Package: amule-ed2k-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: amule ed2k link-handler debugging symbols
+ The debugging symbols for the ed2k binary
+
+Package: amule-cas-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: reporting module for amule debugging symbols
+ the debugging symbols for the cas binary
+
+Package: amule-wxcas-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: reporting module for amule (graphical) debugging symbols
+ the debugging symbols for the wxcas binary
+
+Package: amuleweb-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: the webserver for amule debugging symbols
+ the debugging symbols for the amuleweb binary
+
+Package: amule-remote-gui-dbg
+Architecture: any
+Description: the remote gui for amule debugging symbols
+ the debugging symbols for the amulegui binary
+
+Package: amule-daemon-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: the amule daemon debugging symbols
+ the debugging symbols for the amuled binary
+
+Package: amule-alc-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: the amule-link-creator debugging symbols
+ the debugging symbols for the alc binary
+
+Package: amule-alcc-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: the amule-link-creator (commandline-version) debugging symbols
+ the debuggung symbols for the alcc binary
+
+Package: amule-cmd-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: the amule-commandline-client-dbg
+ the debuggung symbols for the amulecmd binary

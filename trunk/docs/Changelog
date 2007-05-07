@@ -154,6 +154,7 @@ Trunk
 		* Added manpage for amulegui.
 		* Added amulegui desktop icon (with Gerd78).
 		* Manpages update.
+		* Patch to add debian folder.
 
 	wuischke:
 		* Added emulecollection support on aMule ED2K Links Handler.

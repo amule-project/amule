@@ -1,0 +1,39 @@
+amule for Debian
+----------------
+
+STANDING AMULE ?
+----------------
+With some Window Manager, aMule runs, but the GUI seems to be buggy.
+So, It's not a problem from the package, you just have to uncheck
+the option : " Use Tray Icon" in your aMule preferences.
+
+
+AMULE AND XMULE PACKAGE
+-----------------
+Before the 1.2.X version, the package of amule was in conflicts with
+the xmule package. The bug comes from the /usr/bin/ed2k, which was
+used by the both packages.
+
+I wrote a wrapper, which see if amule or xmule is running and
+invoke the right binary. So, the binary ed2k from amule was
+renamed as ed2k.amule and this from xmule was renamed ed2k.xmule.
+According to Debian, I use a diversion to rename this file :-)
+
+
+
+CONFFILES IN YOUR HOME
+-----------------
+aMule is a fork of xMule, it uses the same files (~/.aMule/).
+
+
+
+TOO HIGH CPU USAGE
+------------------
+If you have a high CPU usage with amule (you can see that when you 
+run 'top'), you need maybe to compile a new kernel. See this topic :
+http://www.amule.org/wiki/index.php/AMule_makes_everything_slow
+http://xmule.org/forums/index.php?showtopic=1030
+
+
+ -- Julien Delange <julien@gunnm.org>, Sat, 27 Sep 2003 00:11:07 +0200
+ -- Modified by Vollstrecker <amule@vollstreckernet.de>, Mon, 29 Mar 2005 00:44:12 +0200
