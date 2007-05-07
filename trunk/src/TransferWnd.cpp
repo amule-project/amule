@@ -45,6 +45,11 @@
 #include "GuiEvents.h"			// Needed for CoreNotify_*
 
 
+#ifdef __WXMSW__
+    #include <wx/msw/winundef.h>
+#endif
+
+
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
 	EVT_RIGHT_DOWN(CTransferWnd::OnNMRclickDLtab)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_CATEGORIES,	CTransferWnd::OnCategoryChanged)

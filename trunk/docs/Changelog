@@ -131,6 +131,9 @@ Trunk
 		  ConvAmuleBrokenFileNames now tries UTF-8 first. If this
 		  fails, then it tries ISO-8859-1.
 
+	Radek:
+		* Patch to fix windows compilation.
+
 	spiralvoice:
 		* Patch to enable MLDonkey os_info support.
 
