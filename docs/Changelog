@@ -141,6 +141,10 @@ Trunk
 		  in the generated image
 		* Added option to generate image in JPG format (along with PNG)
 
+	Trevino:
+		* Fix for "Both the Unknown client icon and the Unknown status
+		icon points to the same file" issue.
+
 	Vollstrecker:
 		* Added possibility to give the path for output right with
 		  -p or -o in cas.
