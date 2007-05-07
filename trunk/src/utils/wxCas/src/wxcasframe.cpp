@@ -609,8 +609,13 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Hits line 1
+		// Stat line 7
+		newline = MakeStatLine_7();
+		m_statLine_7->SetLabel ( newline );
 
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
 		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
 			newline = MakeHitsLine_1();
 			m_hitLine->SetLabel ( newline );
@@ -675,8 +680,13 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Hits line 1
+		// Stat line 7
+		newline = MakeStatLine_7();
+		m_statLine_7->SetLabel ( newline );
 
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
 		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
 			newline = MakeHitsLine_1();
 			m_hitLine->SetLabel ( newline );
@@ -739,8 +749,13 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Hits line 1
+		// Stat line 7
+		newline = MakeStatLine_7();
+		m_statLine_7->SetLabel ( newline );
 
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
 		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
 			newline = MakeHitsLine_1();
 			m_hitLine->SetLabel ( newline );
@@ -804,8 +819,13 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Hits line 1
+		// Stat line 7
+		newline = MakeStatLine_7();
+		m_statLine_7->SetLabel ( newline );
 
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
 		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
 			newline = MakeHitsLine_1();
 			m_hitLine->SetLabel ( newline );
@@ -869,8 +889,13 @@ WxCasFrame::UpdateStatsPanel ()
 
 		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
 
-		// Hits line 1
+		// Stat line 7
+		newline = MakeStatLine_7();
+		m_statLine_7->SetLabel ( newline );
 
+		newMaxLineCount = GetMaxUInt( newline.Length (), newMaxLineCount );
+
+		// Hits line 1
 		if ( m_aMuleSig->IsSessionMaxDlChanged() ) {
 			newline = MakeHitsLine_1();
 			m_hitLine->SetLabel ( newline );
