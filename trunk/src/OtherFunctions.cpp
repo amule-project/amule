@@ -62,6 +62,7 @@
 #include "amule.h"		// Needed for theApp
 #endif
 
+
 wxString GetMuleVersion()
 {
 	wxString ver(wxT(VERSION));
@@ -323,6 +324,7 @@ wxString GetFiletypeByName(const wxString& filename, bool translated)
 	return GetFiletypeDesc( GetFiletype( filename ), translated );
 }
 
+
 /** 
  * Return a boolean meaning whether the file has contents or not (doesn't
  * matter if it exists)
@@ -332,7 +334,6 @@ wxString GetFiletypeByName(const wxString& filename, bool translated)
  * @return Boolean value TRUE when it has no contents (file doesn't exists
  * or it's size is 0bytes). Any othe case, FALSE
  */
-
 bool IsEmptyFile(const wxString& filename)
 {
 	if (wxFile::Exists(filename)) {
@@ -393,6 +394,7 @@ wxString GetRateString(uint16 rate)
 	}
 }
 
+
 /**
  * Return the size in bytes of the given size-type
  *
@@ -403,7 +405,6 @@ wxString GetRateString(uint16 rate)
  * Values over GB aren't handled since the amount of Bytes 1TB represents
  * is over the uint32 capacity
  */
-
 uint32 GetTypeSize(uint8 type)
 {
 	enum {Bytes, KB, MB, GB};
@@ -418,6 +419,7 @@ uint32 GetTypeSize(uint8 type)
 	}
 	return size;
 }
+
 
 // Base16 chars for encode an decode functions
 static wxChar base16Chars[17] = wxT("0123456789ABCDEF");
@@ -499,6 +501,7 @@ unsigned int DecodeBase16(const wxString &base16Buffer, unsigned int base16BufLe
 	return ret;
 }
 
+
 // Returns a BASE32 encoded byte array
 //
 // [In]
@@ -535,6 +538,7 @@ wxString EncodeBase32(const unsigned char* buffer, unsigned int bufLen)
 
 	return Base32Buff;
 }
+
 
 // Decodes a BASE32 string into a byte array
 //
@@ -587,6 +591,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
 	return nDecodeLen;
 }
 
+
 /*
  * base64.c
  *
@@ -601,10 +606,12 @@ static const wxString to_b64(
 	/*   0123456789012345678901234567890123456789012345678901234567890123 */
 	wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"));
 
+
 /* Option variables */
 static bool g_fUseCRLF = false;
 static unsigned int g_nCharsPerLine = 72;
 static wxString strHeaderLine;
+
 
 wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 {
@@ -700,6 +707,7 @@ wxString EncodeBase64(const char *pbBufferIn, unsigned int bufLen)
 	return pbBufferOut;
 }
 
+
 unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLen, unsigned char *buffer)
 {
 	int z = 0;  // 0 Normal, 1 skip MIME separator (---) to end of line
@@ -780,6 +788,7 @@ unsigned int DecodeBase64(const wxString &base64Buffer, unsigned int base64BufLe
 	return i + nData;
 }
 
+
 // Returns the text assosiated with a category type
 wxString GetCatTitle(int catid)
 {
@@ -804,9 +813,11 @@ wxString GetCatTitle(int catid)
 	}
 }
 
+
 typedef std::map<wxString, EED2KFileTypeClass> SED2KFileTypeMap;
 typedef SED2KFileTypeMap::value_type SED2KFileTypeMapElement;
 static SED2KFileTypeMap ED2KFileTypesMap;
+
 
 class CED2KFileTypes{
 public:
@@ -964,8 +975,10 @@ public:
 	}
 };
 
+
 // get the list initialized *before* any code is accessing it
 CED2KFileTypes theED2KFileTypes;
+
 
 EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 {
@@ -980,6 +993,7 @@ EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
 	// EED2KFileTypeClass(), which is ED2KFT_ANY
 	return ED2KFileTypesMap[strExt].GetType();
 }
+
 
 // Retuns the ed2k file type term which is to be used in server searches
 wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
@@ -996,6 +1010,7 @@ wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
 	return wxEmptyString;
 }
 
+
 // Returns a file type which is used eMule internally only, examining the extention of the given filename
 wxString GetFileTypeByName(const wxString &strFileName)
 {
@@ -1011,6 +1026,8 @@ wxString GetFileTypeByName(const wxString &strFileName)
 		default:		return wxEmptyString;
 	}
 }
+
+
 // Retuns the ed2k file type integer ID which is to be used for publishing+searching
 EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID)
 {
@@ -1028,6 +1045,7 @@ EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID)
 	}
 }
 
+
 /**
  * Dumps a buffer to a wxString
  */
@@ -1035,19 +1053,15 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 {
 	const unsigned char *p = (const unsigned char *)buff;
 	int lines = (n + 15)/ 16;
-
 	
 	wxString result;
 	// Allocate aproximetly what is needed
 	result.Alloc( ( lines + 1 ) * 80 ); 
-	
-	
 	if ( !msg.IsEmpty() ) {
 		result += msg + wxT(" - ok=") + ( ok ? wxT("true, ") : wxT("false, ") );
 	}
 
 	result += wxString::Format( wxT("%d bytes\n"), n );
-	
 	for ( int i = 0; i < lines; ++i) {
 		// Show address
 		result += wxString::Format( wxT("%08x  "), i * 16 );
@@ -1063,12 +1077,9 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 					result += wxT("   ");
 				}
 			}
-
 			result += wxT(" ");
 		}
-
 		result += wxT("|");
-	
 		// Show a column of ascii-values
 		for ( int k = 0; k < 16; ++k) {
 			int pos = 16 * i + k;
@@ -1085,10 +1096,8 @@ wxString DumpMemToStr(const void *buff, int n, const wxString& msg, bool ok)
 				result += wxT(" ");
 			}
 		}
-		
 		result += wxT("|\n");
 	}
-
 	result.Shrink();
 	
 	return result;
@@ -1102,6 +1111,7 @@ void DumpMem(const void *buff, int n, const wxString& msg, bool ok)
 {
 	printf("%s\n", (const char*)unicode2char(DumpMemToStr( buff, n, msg, ok )) );
 }
+
 
 //
 // Dump mem in dword format
@@ -1165,7 +1175,6 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 			}
 			file = wxFileName(finder.GetNextFile()).GetFullName();
 		}
-
 		file = wxFileName(finder.GetFirstFile(CDirIterator::File, wxT("*"))).GetFullName();
 		while (!file.IsEmpty()) {
 			if (copy) {
@@ -1176,7 +1185,6 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 			
 			file = wxFileName(finder.GetNextFile()).GetFullName();
 		}
-
 		if (!copy) {
 			wxRmdir(oldPath);
 		}
@@ -1184,7 +1192,13 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 	return true;
 }
 
-bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName, wxString oldConfigDir, wxString newConfigDir, bool copy)
+
+bool MoveConfigFile(
+	const wxString& oldConfigName,
+	const wxString& newConfigName,
+	wxString oldConfigDir,
+	wxString newConfigDir,
+	bool copy)
 {
 	if (!CheckFileExists(oldConfigName)) {
 		return false;
@@ -1244,59 +1258,75 @@ bool MoveConfigFile(const wxString& oldConfigName, const wxString& newConfigName
 	return true;
 }
 
-bool RelocateConfiguration(const wxString& oldPath, const wxString& newPath, const wxString& oldConfigFile, bool copy)
+
+bool RelocateConfiguration(
+	const wxString& oldPath,
+	const wxString& newPath,
+	const wxString& oldConfigFile,
+	bool copy)
 {
 	if (!CheckDirExists(oldPath)) {
 		return false;
 	}
 
-	return MoveConfigFile(oldConfigFile, JoinPaths(newPath, wxT("amule.conf")), copy ? wxString(wxEmptyString) : oldPath, copy ? wxString(wxEmptyString) : newPath, copy)
-		&& MoveFolder(oldPath, newPath, copy);
+	return
+		MoveConfigFile(
+			oldConfigFile,
+			JoinPaths(newPath, wxT("amule.conf")),
+			copy ? wxString(wxEmptyString) : oldPath,
+			copy ? wxString(wxEmptyString) : newPath,
+			copy) &&
+		MoveFolder(oldPath, newPath, copy);
 }	
+
 
 bool CheckConfig()
 {
 	wxString configDir = GetConfigDir().BeforeLast(wxFileName::GetPathSeparator());
-	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
-
 	if (CheckFileExists(JoinPaths(configDir, wxT("amule.conf")))) {
 		return false;
 	}
 
-	return RelocateConfiguration(homeDir + wxT(".aMule"), configDir, JoinPaths(JoinPaths(homeDir, wxT(".aMule")), wxT("amule.conf")), false)
-		|| RelocateConfiguration(homeDir + wxT(".aMule"), configDir, homeDir +
+	wxString homeDir = wxGetHomeDir() + wxFileName::GetPathSeparator();
+	return
+		RelocateConfiguration(
+			homeDir + wxT(".aMule"),
+			configDir,
+			JoinPaths(JoinPaths(homeDir, wxT(".aMule")), wxT("amule.conf")),
+			false) ||
+		RelocateConfiguration(
+			homeDir + wxT(".aMule"),
+			configDir, homeDir +
 #ifdef __APPLE__
-					 wxT("Library/Preferences/eMule Preferences"),
+			wxT("Library/Preferences/eMule Preferences"),
 #else
-					 wxT(".eMule"),
+			wxT(".eMule"),
 #endif
-					 false)
-		|| RelocateConfiguration(homeDir + wxT(".lmule"), configDir, homeDir + wxT(".eMule"), false)
-		|| RelocateConfiguration(homeDir + wxT(".xmule"), configDir, homeDir + wxT(".eMule"), true);
+			false) ||
+		RelocateConfiguration(
+			homeDir + wxT(".lmule"),
+			configDir,
+			homeDir + wxT(".eMule"),
+			false) ||
+		RelocateConfiguration(
+			homeDir + wxT(".xmule"),
+			configDir,
+			homeDir + wxT(".eMule"),
+			true);
 }
 #endif /* EC_REMOTE */
 
 
 wxString GetLocaleDir()
 {
-#ifdef __WXMAC__
-	return JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale"));
-#elif defined(__WXMSW__)
-	return JoinPaths(wxStandardPaths::Get().GetPluginsDir(), wxT("locale"));
+	wxStandardPathsBase &spb(wxStandardPaths::Get());
+#ifdef __WXMSW__
+	wxString localeDir(JoinPaths(spb.GetPluginsDir(), wxT("locale")));
 #else
-	wxString localeDir(wxT(AMULE_LOCALEDIR));
-
-	// The GetInstallPrefix function is slightly fucked in <= v2.6.2 of wxWidgets,
-	// so only use it when we have to, and can patch the sources anyway.
-#ifdef AUTOPACKAGE
-	#warning Remember to patch GetInstallPrefix()
-	localeDir.Replace(wxT("${prefix}"), dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix());
-#else
-	localeDir.Replace(wxT("${prefix}"), wxT(AMULE_INSTALL_PREFIX));
+	wxString localeDir(JoinPaths(spb.GetDataDir(), wxT("locale")));
 #endif
-
+	
 	return localeDir;
-#endif
 }
 
 
@@ -1313,15 +1343,18 @@ void InitCustomLanguages()
 void InitLocale(wxLocale& locale, int language)
 {
 	int language_flags = 0;
-	if ((language != wxLANGUAGE_CUSTOM) && (language != wxLANGUAGE_ITALIAN_NAPOLITAN)) {
+	if (language != wxLANGUAGE_CUSTOM && language != wxLANGUAGE_ITALIAN_NAPOLITAN) {
 		language_flags = wxLOCALE_LOAD_DEFAULT | wxLOCALE_CONV_ENCODING;
 	}
 	
 	locale.Init(language,language_flags); 
 	
 	if (language != wxLANGUAGE_CUSTOM) {
-		locale.AddCatalogLookupPathPrefix(GetLocaleDir());
+		wxString localeDir(GetLocaleDir());
+		locale.AddCatalogLookupPathPrefix(localeDir);
 		locale.AddCatalog(wxT(PACKAGE));
+		printf("Using localeDir = '%s'.\n",
+			(const char *)unicode2char(localeDir));
 	} else {
 		locale.AddCatalogLookupPathPrefix(GetConfigDir());
 		locale.AddCatalog(wxT("custom"));
