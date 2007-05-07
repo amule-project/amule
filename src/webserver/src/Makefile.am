@@ -29,14 +29,10 @@ amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libe
 amuleweb_CFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
 	$(WXBASE_CFLAGS) $(LIBPNG_CFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) \
 	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
-	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
-	-DAMULE_LOCALEDIR="\"$(datadir)/locale\"" \
 	-DECSOCKET_USE_EVENTS=0
 amuleweb_CXXFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
 	$(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS) $(AMULEWEB_DEFS) $(BFD_FLAGS) \
 	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
-	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
-	-DAMULE_LOCALEDIR="\"$(datadir)/locale\"" \
 	-DECSOCKET_USE_EVENTS=0
 
 if ENABLE_UPNP

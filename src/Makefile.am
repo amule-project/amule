@@ -258,9 +258,7 @@ if ENABLE_GEOIP
 gui_flags += -DENABLE_GEOIP=1
 endif
 
-common_flags = -I$(srcdir)/libs -Ilibs \
-	-DAMULE_INSTALL_PREFIX="\"$(prefix)\"" \
-	-DAMULE_LOCALEDIR="\"$(datadir)/locale\""
+common_flags = -I$(srcdir)/libs -Ilibs
 
 #
 # Extras 
