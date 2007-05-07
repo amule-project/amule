@@ -1321,14 +1321,14 @@ wxString GetLocaleDir()
 {
 	wxStandardPathsBase &spb(wxStandardPaths::Get());
 #ifdef __WXMSW__
-	wxString localeDir(JoinPaths(spb.GetPluginsDir(), wxT("locale")));
+	wxString dataDir(spb.GetPluginsDir());
 #elif defined(__WXMAC__)
-	wxString localeDir(JoinPaths(spb.GetDataDir(), wxT("locale")));
+	wxString dataDir(spb.GetDataDir());
 #else
 	// Remove the application name ("aMule") from GetDataDir()
-	wxString dataDir = spb.GetDataDir().BeforeLast(wxT('/'));
-	wxString localeDir(JoinPaths(dataDir, wxT("locale")));
+	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')));
 #endif
+	wxString localeDir(JoinPaths(dataDir, wxT("locale")));
 	
 	return localeDir;
 }
