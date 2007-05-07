@@ -66,3 +66,15 @@ popd > /dev/null
 echo "Running automake --foreign -a -c -f"
 automake --foreign -a -c -f
 
+echo "Setting current date for CVS builds."
+sed -e 1c\\"%define cvsdate $(date +%Y%m%d)" < aMule-CVS.spec > aMule-CVS.spec-tmp
+mv aMule-CVS.spec-tmp aMule-CVS.spec
+PATTERN="[A-Z][a-z][a-z], [0-9][0-9].*$"
+sed -e "/$PATTERN/{
+s/$PATTERN/`date -R`/
+:loop
+n
+b loop
+}" < debian/changelog | 
+sed -e "1s/+CVS[0-9]\{8\}-/+CVS$(date +%Y%m%d)-/" > debian/changelog-tmp
+mv debian/changelog-tmp debian/changelog
