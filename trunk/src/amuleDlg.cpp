@@ -1217,7 +1217,7 @@ void CamuleDlg::Apply_Clients_Skin(wxString skinFileName)
 				    bitmaps_found[Client_Grey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
 				// Client_Unknown_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_Unknown="))) {
+				if (skinfile[i].StartsWith(wxT("Client_StatusUnknown="))) {
 					bitmaps_found[Client_White_Smiley].found = true;
 				    bitmaps_found[Client_White_Smiley].filename=skinfile[i].AfterLast(wxT('='));
 				}
