@@ -1,0 +1,525 @@
+amule (2.1.3+CVS20070504-1) testing; urgency=low
+
+  * New Upstream CVS-Snapshot
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 04 May 2007  8:01:03 +0100
+
+amule (2.1.3+CVS20070430-2) testing; urgency=low
+
+  * Switched build-deps to wx-2.8
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 30 Apr 2007 19:13:40 +0100
+
+amule (2.1.3+CVS20070422-2) testing; urgency=low
+
+  * Removed the wrapper-script for ed2k
+  * Removed debian/amule-ed2k.links
+  * debian/control: Set the conflict with xmule for amule-ed2k
+  * debian/rules: Removed all wrapper related stuff
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 22 Apr 2007  18:00:52 +0100
+
+amule (2.1.3+CVS20061228-2) testing; urgency=low
+
+  * Corrected install-failure, really install amulegui.desktop this time
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Dec 2006  19:10:41 +0100
+
+amule (2.1.3+CVS20061227-2) testing; urgency=low
+
+  * Added amulegui.xpm, and debian/amulegui.menu
+  * Moved amule.xpm from amule-common to amule
+  * Added manpages for amulegui
+  * Added amulegui.desktop to amule-remote-gui
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Dec 2006  6:03:41 +0100
+
+
+amule (2.1.3+CVS20061224-2) testing; urgency=low
+
+  * Readjusted startflag, I think it will stay now
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 24 Dec 2006  13:12:55 +0100
+
+amule (2.1.3+CVS20061112-2) testing; urgency=low
+
+  * Added Basque translation of the manpages
+  * Removed --enable-kad-compile from debian/rules, it's dafault now
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 12 Nov 2006  20:56:12 +0100
+
+amule (2.1.3+CVS20060926-2) testing; urgency=low
+
+  * Changed Build-Depency from libglib1.2-dev to libglib2.0-dev
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 26 Sep 2006  9:13:06 +0100
+
+amule (2.1.3+CVS20060711-2) testing; urgency=low
+
+  * Finally added autostart-xas
+  * Readjusted snv-flag
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 11 Jul 2006  23:22:36 +0100
+
+
+amule (2.1.3+CVS20060625-2) testing; urgency=low
+
+  * Changed amule.menu and the sed's in rules to reflect the new svn-flags
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 25 Jun 2006 15:42:34 +0100
+
+amule (2.1.3+CVS20060611-2) testing; urgency=low
+
+  * Updated version to 2.1.3
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 11 Jun 2006 23:03:38 +0100
+
+amule (2.1.2+CVS20060605-2) testing; urgency=low
+
+  * Added newlines to the end of all .install files to get rid of some warnings
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 05 Jun 2006 14:45:31 +0100
+
+amule (2.1.2+CVS20060604-2) testing; urgency=low
+
+  * Added patch for amule.desktop to debian/rules
+  * Added patch for the path of the Icon of alc and wxcas to debian/rules
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 04 Jun 2006 21:49:54 +0100
+
+amule (2.1.2+CVS20060528-2) testing; urgency=low
+
+  * Updated to Version 2.1.2
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 28 May 2006  18:17:22 +0100
+
+amule (2.1.1+CVS20060523-2) testing; urgency=low
+
+  * Fixed removing of divertion by amule-ed2k
+  * Fixed typo in deps of all i18n pkg's
+  * Added the Chuck Norris Option to the menu-entry, to make it work.
+    Thanks to uwe for the patches.
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 23 May 2006  22:25:01 +0100
+
+amule (2.1.1+CVS20060513-2) testing; urgency=low
+
+  * Moved amule.xpm back to amule-common
+  * Fixed typo in description of amule-dbg
+  * Removed Version from dep to amule-i18n
+    Thanks to jere for reposting all three
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 13 May 2006  15:44:40 +0100
+
+amule (2.1.1+CVS20060510-2) testing; urgency=low
+
+  * Now fixed divertion of ed2k completely. ed2k is now really a symlink
+    to ed2k.wrapper
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Wed, 10 May 2006  19:54:26 +0100
+
+amule (2.1.1+CVS20060509-2) testing; urgency=low
+
+  * Fixed installation of ed2k.amule and ed2k.wrapper and the manpages
+    for them. Divertion and the links doesn't work.
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 09 May 2006  13:01:31 +0100
+
+amule (2.1.1+CVS20060508-2) testing; urgency=low
+
+  * Now really fixed dependencies of amuleweb
+  * Started to fix divertion of ed2k binary, atm it installs the
+    binaries in /, but today I don't get this fixed
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 08 May 2006  14:48:34 +0100
+
+amule (2.1.1+CVS20060507-2) testing; urgency=low
+
+  * Fixed some lintian Errors for debian/changelog
+  * Fixed typo in description of amule-ed2k
+  * Prevented the docs from being install in amule-pkg the second time
+  * Moved ED2K-Links Howto to amule-ed2k package
+  * Split the debugging symbols for each binary to separate pkg'S
+  * Bumped debhelper compatiblity-level to 5
+  * Fixed lintian-Warning in description of amuleweb
+  * Fixed lintian-Warning in description of amule-daemon
+  * Fixed lintian-Warning in description of amule-remote-gui
+  * Fixed lintian-Warning in description of amule-wxcas
+  * Fixed lintian-Warning in description of amule-cmd
+  * Fixed lintian-Warning in description of amule-alcc
+  * Fixed lintian-Warning for menu entry of wxcas
+  * Prevented license.txt.gz from being installed
+  * Fixed lintian-Warning for menu entry of alc
+  * Set Standards Version to 3.6.2.2
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 07 May 2006 13:02:46 +0100
+
+amule (2.1.1+CVS20060506-2) testing; urgency=low
+
+  * Removed menu-entry for amulewebDLG from amule pkg
+  * Fixed installation of amule-alc
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 06 May 2006 13:35:59 +0100
+
+amule (2.1.1+CVS20060505-2) testing; urgency=low
+
+  * Renamed package amuled to amule-daemon to be compatible to the official deb
+    thanks to Jacobo221 for the hint.
+  * Split off all languages to separate pkg's. Thanks to Uwe for initial work.
+  * Cleaned up TODO-Debian 
+  * Moved complete to dh_install
+  * Removed usr/share and usr/share/pixmaps from debian/amule.dirs
+  * Moved /usr/share/doc/amule/TODO and /usr/share/doc/amule/TODO to amule-common
+  * Split alc, alcc and amulecmd to separate pkg's
+  * Set conflicts and replaces for full compatiblity with official debs
+  * Set Depends for amule-theme-default, amule-theme-chicane and amule-theme-php-default
+    on amuleweb, because without that they are useless
+  * Made amule-utils a meta pkg for compatiblity with official debs
+  * Moved amule-utils.README.Debian to amule-cas.README.Debian, because that's what it is
+  * Removed amulecmdDLG from menu
+  * Created amule-utils-gui meta-pkg for compatiblity with official debs.
+  * Moved all common docs to amule-common
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 05 May 2006 16:12:26 +0100
+
+amule (2.1.1+CVS20060318-2) testing; urgency=low
+
+  * Updated Version to 2.1.1
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 19 Mar 2006  0:26:17 +0100
+
+
+amule (2.1.0+CVS20060216-2) testing; urgency=low
+
+  * Fixed typo in amule-utils.menu, thanks to JohnGH
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 16 Feb 2006  18:36:28 +0100
+
+amule (2.0.3+CVS20051203-2) testing; urgency=low
+
+  * Acknowledged Non-maintainer upload.
+   * debian/control
+     * added bison and flex to build-depends (fixes FTBFS)
+     * added libcrypto++-dev
+   * debian/rules
+     * added --disable-embedded-crypto to configure command
+     * made configure command prettier ;)
+   * Thanks to Uwe for the good work
+   * debian/rules
+     * removed --enable-webservergui from configure line
+     * removed --enable-amulecmdgui from configure line
+   *debian/control
+     * added libreadline5-dev to build-depencies, thanks to RR4T
+   * THE REMOVAL OF EMBEDDED CRYPTO IS FIRST TO TEST. I HOPE IT WORKS
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 05 Dec 2005  22:21:52 +0100
+
+amule (2.0.3+CVS20051126-2) testing; urgency=low
+
+  * Fixed Typo in conflicts line of amuled <thanks to Uwe for reporting>
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 27 Nov 2005  5:56:14 +0100
+
+amule (2.0.3+CVS20051114-2) testing; urgency=low
+  * Removed amulewebdlg package
+  * Removed amulecmdDLG from amule-utils package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 14 Nov 2005  10:37:41 +0100
+
+amule (2.0.3+CVS20051022-2) testing; urgency=low
+
+  * Added some Conflicts because of appearance of amule-deamon in unstable
+  * Made my repository checkable with gpg by apt. For use of this do:
+    gpg --keyserver wwwkeys.eu.pgp.net --recv 50D0AE60
+    gpg -a --export 50D0AE60 > /tmp/key
+    apt-key add /tmp/key
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 22 Oct 2005  20:56:22 +0200
+
+amule (2.0.3+CVS20050916-2) testing; urgency=low
+
+  * Added php theme package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 16 Sep 2005  13:35:49 +0200
+
+amule (2.0.3+CVS20050729-2) testing; urgency=low
+
+  * Fixed creation of wxcas pkg
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 29 Jul 2005  19:17:15 +0200
+
+amule (2.0.3+CVS20050728-2) testing; urgency=low
+
+  * Added support for kad
+  * Split package amule-theme-default for better understanding
+  * Redesinged amule-common to take pixmaps for menu
+  * Overworked menu-system, wxcas is now created by wxcas package, not amule-utils
+  * Added wxcas.xpm
+  * Added alc.xmp
+  * Now put ed2k.amule really to package amule-ed2k
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Jul 2005  23:01:15 +0200
+
+amule (2.0.3+CVS20050719-1) testing; urgency=low
+
+  * Split of ed2k Package
+  * Rebuild with official wxgtk
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 19 Jul 2005  23:01:15 +0200
+
+amule (2.0.0-rel+CVS20050508-1) testing; urgency=low
+
+  * The now we have 2.0.0 release
+  * Fixed the Scripts to present 2.0.0
+  * Added some missing manpages
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 08 May 2005  10:01:23 +0100
+
+amule (2.0.0-rc8+CVS20050418-2) testing; urgency=low
+
+  * Fixed amule-common, so amuleweb(DLG) can find their Data
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 18 Apr 2005  19:45:15 +0100
+
+amule (2.0.0-rc8+CVS20050405-2) testing; urgency=low
+
+  * Adjusted build depencies
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 05 Apr 2005  09:14:02 +0200
+
+amule (2.0.0-rc8+CVS20050402-2) testing; urgency=low
+
+  * Added conflict for amuleweb and amulewebdlg against older amule package
+  * Added conflict for cas and wxcas against older amule-utils package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 02 Apr 2005  01:14:02 +0100
+
+amule (2.0.0-rc8+CVS20050328-1) testing; urgency=low
+
+  * Fixed typo in debian/control, so amule-remote-gui, amuled, amulewebdlg and amuleweb
+    get their right dependencies set
+  * amule-cas, amule-wxcas and amule-xas depend now either on amule or amuled
+  * amule-utils, amuleweb and amulewebdlg recommend now amule or amuled instead of
+    depending on them
+  * Modified amule.README.debian, thakns to kry for correcting it.
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 28 Mar 2005  8:02:22 +0100
+
+amule (2.0.0-rc8+CVS20050322-1) testing; urgency=low
+
+  * Added remote gui package
+  * Fixed Typo in debian/control so we now have Descriptins for amule-common,
+    amuleweb and amulewebdlg
+  * Removed mans german and french translations because they get merged in upstream
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 22 Mar 2005 14:38:49 +0100
+
+amule (2.0.0-rc8+CVS20050311-1) testing; urgency=low
+
+  * Splittet of amulecmddlg package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 13 Mar 2005 08:23:54 +0100
+
+amule (2.0.0-rc8+CVS20050311-1) testing; urgency=low
+
+  * Splittet of amulecmd package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 12 Mar 2005 12:23:54 +0100
+
+
+amule (2.0.0-rc8+CVS20050311-1) testing; urgency=low
+
+  * Made the binarie backtraceable
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 11 Mar 2005 20:23:54 +0100
+
+amule (2.0.0-rc8+CVS20050306-3) testing; urgency=low
+
+  * Fixed Versioning Bug (hopefully)
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon,  7 Mar 2005 04:39:13 +0100
+
+amule (2.0.0-rc8+CVS20050306-2) testing; urgency=low
+
+  * Removed manpages for amule, amulecmdDLG, amuleweb, amulecmd and amulewebDLG
+    because they were merged in Upstream
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun,  6 Mar 2005 16:34:30 +0100
+
+amule (2.0.0rc8+CVS20050130-1) testing; urgency=low
+
+  * Introduced /usr/share/amule directory
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun,  30 Jan 2005 10:47:58 +0100
+
+amule (2.0.0rc8+CVS20050129-1) testing; urgency=low
+
+  * Set Dependencies more restrictive
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat,  29 Jan 2005 13:47:58 +0100
+
+amule (2.0.0rc8+CVS20050128-1) testing; urgency=low
+
+  * Splitted of amule-common package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri,  28 Jan 2005 20:57:58 +0100
+
+amule (2.0.0rc8+CVS20050127-1) testing; urgency=low
+
+  * Splittet of amulewebDLG package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu,  27 Jan 2005 20:18:58 +0100
+
+amule (2.0.0rc8+CVS20050126-1) testing; urgency=low
+
+  * Splittet of amuleweb package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Wed,  26 Jan 2005 18:47:58 +0100
+
+amule (2.0.0rc8+CVS20050125-1) testing; urgency=low
+
+  * Added translated amulewebDLG manpage
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue,  25 Jan 2005 15:47:58 +0100
+
+amule (2.0.0rc8+CVS20050124-1) testing; urgency=low
+
+  * Added amulewebDLG manpage
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon,  24 Jan 2005 20:18:58 +0100
+
+amule (2.0.0rc8+CVS20050123-1) testing; urgency=low
+
+  * Added translated amuleweb manpage
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun,  23 Jan 2005 20:17:58 +0100
+
+amule (2.0.0rc8+CVS20050122-1) testing; urgency=low
+
+  * Added amuleweb manpage
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat,  22 Jan 2005 20:43:58 +0100
+
+amule (2.0.0rc8+CVS20050121-1) testing; urgency=low
+
+  * Changed debhelper version to 3.6.0.0
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri,  21 Jan 2005 20:29:58 +0100
+
+amule (2.0.0rc8+CVS20050120-1) testing; urgency=low
+
+  * Changed section to web
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu,  20 Jan 2005 19:47:58 +0100
+
+amule (2.0.0rc8+CVS20050119-1) testing; urgency=low
+
+  * Fixed Dependencies for amule-xas
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Wed,  19 Jan 2005 23:47:58 +0100
+
+amule (2.0.0rc8+CVS20050118-1) testing; urgency=low
+
+  * Fixed permissions of files
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue,  18 Jan 2005 20:39:58 +0100
+
+amule (2.0.0rc8+CVS20050117-1) testing; urgency=low
+
+  * Made some cleanup rules
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon,  17 Jan 2005 02:39:16 +0100
+
+amule (2.0.0rc7+CVS20041205-1) testing; urgency=low
+
+  * First build with wx2.5, gtk2, unicode and amule daemon
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun,  5 Dec 2004 20:47:58 +0100
+
+amule (2.0.0rc7+CVS20041116-2) testing; urgency=low
+
+  * Fixed Version Typo for amule-utils
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 16 Nov 2004 20:51:45 +0100
+
+amule (2.0.0rc7+CVS20041116-1) testing; urgency=low
+
+  * Fixed packaging of amule-cas
+  * Fixed packaging of amule-xas
+  * Added some files to debian-dir
+  * Cleaned up debian-dir
+  * Cleaned up debian/rules
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 16 Nov 2004 19:46:42 +0100
+
+amule (2.0.0rc7+CVS20041110-4) testing; urgency=low
+
+  * Downgraded amule-xas to Suggests
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Wed,  10 Nov 2004 16:46:24 +0100
+
+amule (2.0.0rc7+CVS20041031) unstable; urgency=low
+
+  * Another Versioning fix
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu,  4 Nov 2004 03:02:47 +0100
+
+amule (2.0.0rc7+CVS20041030) unstable; urgency=low
+
+  * Changed Versionerror for yesterdays Version in Changelog
+  * Added Recommends for amule-utils, amule-cas, amule-wxcas and 
+    amule-xas to amule
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue,  2 Nov 2004 13:20:45 +0100
+
+amule (2.0.0rc7+CVS20041029) unstable; urgency=low
+
+  * Added stat-png to amule-cas package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 31 Oct 2004 21:04:27 +0100
+
+amule (2.0.0rc7+CVS20041028) unstable; urgency=low
+
+  * Added Manpage for cas
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Oct 2004 20:02:23 +0200
+
+amule (2.0.0rc7+CVS20041027) unstable; urgency=low
+
+  * Added Manpage for xas
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Oct 2004 19:30:42 +0200
+
+amule (2.0.0rc7+CVS20041026) unstable; urgency=low
+
+  * Added Version-Tag to debian/control
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Tue, 26 Oct 2004 21:54:18 +0200
+
+amule (2.0.0rc7+CVS20041025) unstable; urgency=low
+
+  * Now really fixed xas.pl
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 25 Oct 2004 12:49:08 +0200
+
+amule (2.0.0rc7+CVS20041024) unstable; urgency=low
+
+  * xas.pl will no longer be compressed
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 24 Oct 2004 23:36:59 +0200
+
+amule (2.0.0rc7+CVS20041023-1) unstable; urgency=low
+
+  * Splitted xas in a separate Package
+    Splitted cas in a separate Package
+    Splitted wxcas in a separate Package
+    Created group amule and moved packages from x11 to that
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 23 Oct 2004 18:14:00 +0200
+
+amule (2.0.0rc7-1) unstable; urgency=low
+
+  * Initial Release. Based on the work of Julien Delange 
+    <julien@gunnm.org>
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri,  8 Oct 2004 18:46:26 +0200

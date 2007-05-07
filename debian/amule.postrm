@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "remove" ] && [ -x /usr/bin/update-menus ]; then update-menus ; fi
+
+#DEBHELPER#

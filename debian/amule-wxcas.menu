@@ -1,0 +1,3 @@
+?package(amule-wxcas):needs="X11" section="Apps/Net"\
+  title="aMule Stats" command="/usr/bin/wxcas"\
+  icon="/usr/share/pixmaps/wxcas.xpm"
