@@ -358,7 +358,9 @@ int GetMaxConnections()
 		value = key.QueryDefaultValue();
 	}
 	if ( !value.IsEmpty() && value.IsNumber() ) {
-		value.ToLong(&maxconn);
+		long mc;
+		value.ToLong(&mc);
+		maxconn = (int)mc;
 	} else {
 		switch (wxGetOsVersion()) {
 		case wxOS_WINDOWS_9X:

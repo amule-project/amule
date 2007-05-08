@@ -29,25 +29,27 @@
 
 #include <wx/config.h>
 
-#include "amuleDlg.h"		// Needed for CamuleDlg
-#include "PartFile.h"		// Needed for PR_LOW
-#include "DownloadQueue.h"	// Needed for CDownloadQueue
-#include "CatDialog.h"		// Needed for CCatDialog
-#include "DownloadListCtrl.h"	// Needed for CDownloadListCtrl
-#include "ClientListCtrl.h"	// Needed for CClientListCtrl
-#include "amule.h"		// Needed for theApp
-#include "muuli_wdr.h"		// Needed for ID_CATEGORIES
-#include "SearchDlg.h"		// Needed for CSearchDlg->UpdateCatChoice()
+
+// This include must be before amuleDlg.h
+#ifdef __WXMSW__
+    #include <wx/msw/winundef.h>	// Needed for windows compilation
+#endif
+
+
+#include "amuleDlg.h"			// Needed for CamuleDlg
+#include "PartFile.h"			// Needed for PR_LOW
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
+#include "CatDialog.h"			// Needed for CCatDialog
+#include "DownloadListCtrl.h"		// Needed for CDownloadListCtrl
+#include "ClientListCtrl.h"		// Needed for CClientListCtrl
+#include "amule.h"			// Needed for theApp
+#include "muuli_wdr.h"			// Needed for ID_CATEGORIES
+#include "SearchDlg.h"			// Needed for CSearchDlg->UpdateCatChoice()
 #include "MuleNotebook.h"
 #include "Preferences.h"
 #include "Statistics.h"			// Needed for theStats
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "GuiEvents.h"			// Needed for CoreNotify_*
-
-
-#ifdef __WXMSW__
-    #include <wx/msw/winundef.h>
-#endif
 
 
 BEGIN_EVENT_TABLE(CTransferWnd, wxPanel)
