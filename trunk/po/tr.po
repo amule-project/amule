@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-07 03:31+0200\n"
+"POT-Creation-Date: 2007-05-08 03:31+0200\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: alican <can@itu.edu.tr>\n"
 "Language-Team: Türlçe <kde-i18n-tr@mail.kde.org>\n"
@@ -64,22 +64,22 @@ msgid "Complete"
 msgstr "Tamamlanan boyut:"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:794
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
 msgid "Paused"
 msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:343 src/OtherFunctions.cpp:793
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
 msgid "Erroneous"
 msgstr ""
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:342 src/OtherFunctions.cpp:792
+#: src/TransferWnd.cpp:347 src/OtherFunctions.cpp:801
 msgid "Downloading"
 msgstr "İndir"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:341 src/OtherFunctions.cpp:791
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
 msgid "Waiting"
 msgstr ""
 
@@ -244,7 +244,7 @@ msgstr ""
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:552
 #: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:657
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
-#: src/TransferWnd.cpp:369 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
+#: src/TransferWnd.cpp:374 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
 #: src/muuli_wdr.cpp:2986 src/muuli_wdr.cpp:3820
 msgid "Cancel"
@@ -267,7 +267,7 @@ msgid "File Name"
 msgstr "Tam isim:"
 
 #: src/SharedFilesCtrl.cpp:97 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:639
+#: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr ""
 
@@ -803,119 +803,119 @@ msgstr ""
 msgid "Oh Oh, aMule is not running..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:644
-#: src/utils/wxCas/src/wxcasframe.cpp:709
-#: src/utils/wxCas/src/wxcasframe.cpp:773
+#: src/utils/wxCas/src/wxcasframe.cpp:649
+#: src/utils/wxCas/src/wxcasframe.cpp:719
+#: src/utils/wxCas/src/wxcasframe.cpp:788
 msgid "aMule is running"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:838
+#: src/utils/wxCas/src/wxcasframe.cpp:858
 msgid "aMule is running, but disconnected"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:904
+#: src/utils/wxCas/src/wxcasframe.cpp:929
 msgid "aMule is connecting..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:908
+#: src/utils/wxCas/src/wxcasframe.cpp:933
 msgid "Oh Oh, aMule status is unknown..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:979
-#: src/utils/wxCas/src/wxcasframe.cpp:984
-#: src/utils/wxCas/src/wxcasframe.cpp:988
-#: src/utils/wxCas/src/wxcasframe.cpp:992
-#: src/utils/wxCas/src/wxcasframe.cpp:996
+#: src/utils/wxCas/src/wxcasframe.cpp:1004
+#: src/utils/wxCas/src/wxcasframe.cpp:1009
+#: src/utils/wxCas/src/wxcasframe.cpp:1013
+#: src/utils/wxCas/src/wxcasframe.cpp:1017
+#: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid "aMule "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:981
+#: src/utils/wxCas/src/wxcasframe.cpp:1006
 msgid " has been running for "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:986
+#: src/utils/wxCas/src/wxcasframe.cpp:1011
 msgid " is stopped !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:990
-#: src/utils/wxCas/src/wxcasframe.cpp:1014
+#: src/utils/wxCas/src/wxcasframe.cpp:1015
+#: src/utils/wxCas/src/wxcasframe.cpp:1039
 msgid " is not connected !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:994
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
 msgid " is connecting..."
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:998
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is doing something strange, check it !"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1019
+#: src/utils/wxCas/src/wxcasframe.cpp:1044
 msgid " is connected to "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1020
+#: src/utils/wxCas/src/wxcasframe.cpp:1045
 msgid " Kad: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1022
-#: src/utils/wxCas/src/wxcasframe.cpp:1042 src/TextClient.cpp:685
+#: src/utils/wxCas/src/wxcasframe.cpp:1047
+#: src/utils/wxCas/src/wxcasframe.cpp:1067 src/TextClient.cpp:685
 msgid "ok"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1024
-#: src/utils/wxCas/src/wxcasframe.cpp:1044 src/TextClient.cpp:683
+#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:683
 msgid "firewalled"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1026
-#: src/utils/wxCas/src/wxcasframe.cpp:1046
+#: src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "off"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1032
+#: src/utils/wxCas/src/wxcasframe.cpp:1057
 msgid " is on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1034
+#: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " ["
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1036 src/muuli_wdr.cpp:3134
+#: src/utils/wxCas/src/wxcasframe.cpp:1061 src/muuli_wdr.cpp:3134
 msgid ":"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1038
+#: src/utils/wxCas/src/wxcasframe.cpp:1063
 msgid "] with "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1040
+#: src/utils/wxCas/src/wxcasframe.cpp:1065
 msgid " | Kad: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1055
+#: src/utils/wxCas/src/wxcasframe.cpp:1080
 msgid "Total Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1057
-#: src/utils/wxCas/src/wxcasframe.cpp:1068
+#: src/utils/wxCas/src/wxcasframe.cpp:1082
+#: src/utils/wxCas/src/wxcasframe.cpp:1093
 msgid ", Upload: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1066
+#: src/utils/wxCas/src/wxcasframe.cpp:1091
 msgid "Session Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1077
+#: src/utils/wxCas/src/wxcasframe.cpp:1102
 msgid "Download: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1079
+#: src/utils/wxCas/src/wxcasframe.cpp:1104
 msgid " kB/s, Upload: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1081 src/DownloadListCtrl.cpp:1362
-#: src/DownloadListCtrl.cpp:1665 src/OtherFunctions.cpp:157
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1362
+#: src/DownloadListCtrl.cpp:1665 src/OtherFunctions.cpp:158
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:638
@@ -923,34 +923,34 @@ msgstr ""
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1089
+#: src/utils/wxCas/src/wxcasframe.cpp:1114
 msgid "Sharing: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1091
+#: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid " file(s), Clients on queue: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1101
+#: src/utils/wxCas/src/wxcasframe.cpp:1126
 msgid "Time: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1110
-#: src/utils/wxCas/src/wxcasframe.cpp:1120 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1135
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:112
 #, c-format
 msgid "%.2f kB/s"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1111
-#: src/utils/wxCas/src/wxcasframe.cpp:1121
+#: src/utils/wxCas/src/wxcasframe.cpp:1136
+#: src/utils/wxCas/src/wxcasframe.cpp:1146
 msgid " on "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1131
+#: src/utils/wxCas/src/wxcasframe.cpp:1156
 msgid "System Load Average (1-5-15 min): "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1142
+#: src/utils/wxCas/src/wxcasframe.cpp:1167
 msgid "System uptime: "
 msgstr ""
 
@@ -1231,7 +1231,7 @@ msgstr "Bağlantı türü"
 msgid "Queue Full"
 msgstr ""
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:442 src/ClientListCtrl.cpp:673
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:447 src/ClientListCtrl.cpp:673
 msgid "On Queue"
 msgstr ""
 
@@ -1263,7 +1263,7 @@ msgstr ""
 msgid "Too many Kad connections"
 msgstr ""
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:302
+#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:307
 #: src/ClientListCtrl.cpp:820
 msgid "Banned"
 msgstr ""
@@ -2352,7 +2352,7 @@ msgstr ""
 msgid "Transfer"
 msgstr "Aktarım"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:438 src/muuli_wdr.cpp:469
+#: src/Statistics.cpp:646 src/TransferWnd.cpp:443 src/muuli_wdr.cpp:469
 msgid "Uploads"
 msgstr "Gönderilenler"
 
@@ -2490,7 +2490,7 @@ msgstr ""
 msgid "Peak Connections (estimate): %i"
 msgstr ""
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:446 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:451 src/ClientListCtrl.cpp:249
 msgid "Clients"
 msgstr "Kullanıcı Portu"
 
@@ -2594,7 +2594,7 @@ msgstr ""
 msgid "Cut"
 msgstr ""
 
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:430
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:434
 msgid "Copy"
 msgstr ""
 
@@ -2771,7 +2771,7 @@ msgid "Download"
 msgstr "İndir"
 
 #: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
-#: src/TransferWnd.cpp:329 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
+#: src/TransferWnd.cpp:334 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr ""
 
@@ -2799,13 +2799,13 @@ msgstr ""
 msgid "Connection failed "
 msgstr ""
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:130
-#: src/OtherFunctions.cpp:148 src/OtherFunctions.cpp:202 src/amule.cpp:846
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
+#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:846
 #: src/amule.cpp:964 src/amule.cpp:1329
 msgid "Error"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:334
+#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:339
 msgid "All"
 msgstr ""
 
@@ -2818,8 +2818,8 @@ msgstr ""
 msgid "Transferred"
 msgstr "İndirilmişler"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:340
-#: src/PartFileConvert.cpp:620 src/OtherFunctions.cpp:790
+#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:345
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:799
 msgid "Completed"
 msgstr "Tamamlanan boyut:"
 
@@ -2894,15 +2894,15 @@ msgstr ""
 msgid "Message to send:"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:370
+#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:375
 msgid "&Stop"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:371
+#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:376
 msgid "&Pause"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:372
+#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:377
 msgid "&Resume"
 msgstr "Sıfırla"
 
@@ -3219,7 +3219,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr ""
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:345 src/OtherFunctions.cpp:795
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
 msgid "Stopped"
 msgstr ""
 
@@ -4005,289 +4005,289 @@ msgstr ""
 msgid "Loaded %d flag bitmaps."
 msgstr ""
 
-#: src/TransferWnd.cpp:187
+#: src/TransferWnd.cpp:192
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr ""
 
-#: src/TransferWnd.cpp:187
+#: src/TransferWnd.cpp:192
 msgid "Confirmation Required"
 msgstr ""
 
-#: src/TransferWnd.cpp:335
+#: src/TransferWnd.cpp:340
 msgid "All others"
 msgstr ""
 
-#: src/TransferWnd.cpp:339 src/OtherFunctions.cpp:789
+#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:798
 msgid "Incomplete"
 msgstr ""
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:811
 msgid "Active"
 msgstr ""
 
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:796
+#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:805
 msgid "Video"
 msgstr "Video"
 
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:269
-#: src/OtherFunctions.cpp:797 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:356 src/OtherFunctions.cpp:270
+#: src/OtherFunctions.cpp:806 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Ses"
 
-#: src/TransferWnd.cpp:352 src/OtherFunctions.cpp:798
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
 msgid "Archive"
 msgstr "Arşivler"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:283
-#: src/OtherFunctions.cpp:799 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:284
+#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-imajları"
 
-#: src/TransferWnd.cpp:354 src/OtherFunctions.cpp:290
-#: src/OtherFunctions.cpp:800 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:291
+#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Resimler"
 
-#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:810
 msgid "Text"
 msgstr ""
 
-#: src/TransferWnd.cpp:357
+#: src/TransferWnd.cpp:362
 msgid "Select view filter"
 msgstr ""
 
-#: src/TransferWnd.cpp:360
+#: src/TransferWnd.cpp:365
 msgid "Add category"
 msgstr ""
 
-#: src/TransferWnd.cpp:363
+#: src/TransferWnd.cpp:368
 msgid "Edit category"
 msgstr ""
 
-#: src/TransferWnd.cpp:364
+#: src/TransferWnd.cpp:369
 msgid "Remove category"
 msgstr ""
 
-#: src/PartFileConvert.cpp:236
+#: src/PartFileConvert.cpp:240
 #, c-format
 msgid "Importing %s: %s"
 msgstr ""
 
-#: src/PartFileConvert.cpp:266
+#: src/PartFileConvert.cpp:270
 msgid "Reading temp folder"
 msgstr ""
 
-#: src/PartFileConvert.cpp:272
+#: src/PartFileConvert.cpp:276
 msgid "Retrieving basic information from download info file"
 msgstr ""
 
-#: src/PartFileConvert.cpp:352
+#: src/PartFileConvert.cpp:356
 msgid "Creating destination file"
 msgstr ""
 
-#: src/PartFileConvert.cpp:361
+#: src/PartFileConvert.cpp:365
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
 msgstr ""
 
-#: src/PartFileConvert.cpp:381
+#: src/PartFileConvert.cpp:385
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
 msgstr ""
 
-#: src/PartFileConvert.cpp:451
+#: src/PartFileConvert.cpp:455
 msgid "Retrieving source downloadfile information"
 msgstr ""
 
-#: src/PartFileConvert.cpp:476
+#: src/PartFileConvert.cpp:480
 msgid "Adding download and saving new partfile"
 msgstr ""
 
-#: src/PartFileConvert.cpp:557
+#: src/PartFileConvert.cpp:561
 msgid "Fetching status..."
 msgstr ""
 
-#: src/PartFileConvert.cpp:621
+#: src/PartFileConvert.cpp:625
 msgid "In progress"
 msgstr ""
 
-#: src/PartFileConvert.cpp:622
+#: src/PartFileConvert.cpp:626
 msgid "Error: Out of diskspace"
 msgstr ""
 
-#: src/PartFileConvert.cpp:623
+#: src/PartFileConvert.cpp:627
 msgid "Error: Partmet not found"
 msgstr ""
 
-#: src/PartFileConvert.cpp:624
+#: src/PartFileConvert.cpp:628
 msgid "Error: IO error!"
 msgstr ""
 
-#: src/PartFileConvert.cpp:625
+#: src/PartFileConvert.cpp:629
 msgid "Error: Failed!"
 msgstr ""
 
-#: src/PartFileConvert.cpp:626
+#: src/PartFileConvert.cpp:630
 msgid "Queued"
 msgstr ""
 
-#: src/PartFileConvert.cpp:627
+#: src/PartFileConvert.cpp:631
 msgid "Already downloading"
 msgstr ""
 
-#: src/PartFileConvert.cpp:628
+#: src/PartFileConvert.cpp:632
 msgid "Unknown or bad tempfile format."
 msgstr ""
 
-#: src/PartFileConvert.cpp:637
+#: src/PartFileConvert.cpp:641
 msgid "File name"
 msgstr ""
 
-#: src/PartFileConvert.cpp:638
+#: src/PartFileConvert.cpp:642
 msgid "State"
 msgstr ""
 
-#: src/PartFileConvert.cpp:640
+#: src/PartFileConvert.cpp:644
 msgid "Filehash"
 msgstr ""
 
-#: src/PartFileConvert.cpp:686
+#: src/PartFileConvert.cpp:690
 msgid "Import partfiles"
 msgstr ""
 
-#: src/PartFileConvert.cpp:705
+#: src/PartFileConvert.cpp:709
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr ""
 
-#: src/PartFileConvert.cpp:708
+#: src/PartFileConvert.cpp:712
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 
-#: src/PartFileConvert.cpp:709
+#: src/PartFileConvert.cpp:713
 msgid "Remove sources?"
 msgstr ""
 
-#: src/PartFileConvert.cpp:730 src/muuli_wdr.cpp:3887
+#: src/PartFileConvert.cpp:734 src/muuli_wdr.cpp:3887
 msgid "Waiting..."
 msgstr ""
 
-#: src/PartFileConvert.cpp:745
+#: src/PartFileConvert.cpp:749
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr ""
 
-#: src/OtherFunctions.cpp:120
+#: src/OtherFunctions.cpp:121
 msgid "bytes"
 msgstr ""
 
-#: src/OtherFunctions.cpp:122
+#: src/OtherFunctions.cpp:123
 msgid "kB"
 msgstr ""
 
-#: src/OtherFunctions.cpp:124 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:125 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr ""
 
-#: src/OtherFunctions.cpp:126 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr ""
 
-#: src/OtherFunctions.cpp:128
+#: src/OtherFunctions.cpp:129
 msgid "TB"
 msgstr ""
 
-#: src/OtherFunctions.cpp:140
+#: src/OtherFunctions.cpp:141
 msgid "k"
 msgstr ""
 
-#: src/OtherFunctions.cpp:142
+#: src/OtherFunctions.cpp:143
 msgid "M"
 msgstr ""
 
-#: src/OtherFunctions.cpp:144
+#: src/OtherFunctions.cpp:145
 msgid "G"
 msgstr ""
 
-#: src/OtherFunctions.cpp:146
+#: src/OtherFunctions.cpp:147
 msgid "T"
 msgstr ""
 
-#: src/OtherFunctions.cpp:155
+#: src/OtherFunctions.cpp:156
 msgid "bytes/sec"
 msgstr ""
 
-#: src/OtherFunctions.cpp:159
+#: src/OtherFunctions.cpp:160
 msgid "MB/s"
 msgstr ""
 
-#: src/OtherFunctions.cpp:170 src/OtherFunctions.cpp:174
+#: src/OtherFunctions.cpp:171 src/OtherFunctions.cpp:175
 msgid "secs"
 msgstr ""
 
-#: src/OtherFunctions.cpp:182
+#: src/OtherFunctions.cpp:183
 msgid "mins"
 msgstr ""
 
-#: src/OtherFunctions.cpp:189 src/OtherFunctions.cpp:199
+#: src/OtherFunctions.cpp:190 src/OtherFunctions.cpp:200
 msgid "hours"
 msgstr ""
 
-#: src/OtherFunctions.cpp:197
+#: src/OtherFunctions.cpp:198
 msgid "Days"
 msgstr ""
 
-#: src/OtherFunctions.cpp:262 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Videolar"
 
-#: src/OtherFunctions.cpp:276 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:277 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Arşivler"
 
-#: src/OtherFunctions.cpp:297 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:298 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr ""
 
-#: src/OtherFunctions.cpp:304 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:305 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programlar"
 
-#: src/OtherFunctions.cpp:311 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:312 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "herhangibiri"
 
-#: src/OtherFunctions.cpp:386 src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:387 src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Derecelendirilmemiş"
 
-#: src/OtherFunctions.cpp:387 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Geçersiz / Bozuk / Sahte"
 
-#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Zayıf"
 
-#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Güzel"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "iyi"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Mükemmel"
 
-#: src/OtherFunctions.cpp:787
+#: src/OtherFunctions.cpp:796
 msgid "all"
 msgstr ""
 
-#: src/OtherFunctions.cpp:788
+#: src/OtherFunctions.cpp:797
 msgid "all others"
 msgstr ""
 
