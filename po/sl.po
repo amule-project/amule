@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-08 03:31+0200\n"
+"POT-Creation-Date: 2007-05-09 03:31+0200\n"
 "PO-Revision-Date: 2005-11-24 15:03+0000\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
@@ -64,22 +64,22 @@ msgid "Complete"
 msgstr "Konèano"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:805
 msgid "Paused"
 msgstr "Na pavzi"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
 msgid "Erroneous"
 msgstr "Vsebuje napake"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:347 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
 msgid "Downloading"
 msgstr "Prena¹am"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
 msgid "Waiting"
 msgstr "Èakam"
 
@@ -248,7 +248,7 @@ msgstr "Ste preprièani da ¾elite zbrisati izbrane prijatelje?"
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:552
 #: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:657
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
-#: src/TransferWnd.cpp:374 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
+#: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
 #: src/muuli_wdr.cpp:2986 src/muuli_wdr.cpp:3820
 msgid "Cancel"
@@ -1260,7 +1260,7 @@ msgstr "Povezujem preko stre¾nika"
 msgid "Queue Full"
 msgstr "Vrsta polna"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:447 src/ClientListCtrl.cpp:673
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:673
 msgid "On Queue"
 msgstr "V vrsti"
 
@@ -1292,7 +1292,7 @@ msgstr "Povezujem preko Kad"
 msgid "Too many Kad connections"
 msgstr "Preveè Kad povezav"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:307
+#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:820
 msgid "Banned"
 msgstr "Izloèen"
@@ -2407,7 +2407,7 @@ msgstr "Uptime: %s"
 msgid "Transfer"
 msgstr "Prenos"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:443 src/muuli_wdr.cpp:469
+#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:469
 msgid "Uploads"
 msgstr "Prenosi gor"
 
@@ -2545,7 +2545,7 @@ msgstr "Povpreèno povezav (pribli¾ek): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Povezav v konici (pribli¾ek): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:451 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
 msgid "Clients"
 msgstr "Uporabniki"
 
@@ -2829,7 +2829,7 @@ msgid "Download"
 msgstr "Prenos"
 
 #: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
-#: src/TransferWnd.cpp:334 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
+#: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategorija"
 
@@ -2863,7 +2863,7 @@ msgstr ""
 msgid "Error"
 msgstr "Napaka"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:339
+#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Vse"
 
@@ -2876,8 +2876,8 @@ msgstr "Skupno Uporabnikov: %s | Skupno datotek: %s"
 msgid "Transferred"
 msgstr "Prene¹eno"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:345
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:799
+#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:801
 msgid "Completed"
 msgstr "Konèano"
 
@@ -2952,15 +2952,15 @@ msgstr "Po¹lji uporabniku sporoèilo"
 msgid "Message to send:"
 msgstr "Poslano sporoèilo: "
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:375
+#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Stop"
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:376
+#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pavza"
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Nadaljuj"
 
@@ -3293,7 +3293,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Ni dovolj prostora na disku"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:806
 msgid "Stopped"
 msgstr "Ustavljeno"
 
@@ -4121,68 +4121,68 @@ msgstr ""
 msgid "Loaded %d flag bitmaps."
 msgstr ""
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr ""
 "Ste preprièani, da ¾elite prekiniti prenos in zbrisati vse datoteke v tej "
 "kategoriji?"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
 msgstr "Potrebna je potrditev"
 
-#: src/TransferWnd.cpp:340
+#: src/TransferWnd.cpp:342
 msgid "All others"
 msgstr "Vse ostalo"
 
-#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:798
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
 msgid "Incomplete"
 msgstr "Nedokonèano"
 
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:811
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:813
 msgid "Active"
 msgstr "Aktiven"
 
-#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
 msgid "Video"
 msgstr "Video"
 
-#: src/TransferWnd.cpp:356 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:806 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
+#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Avdio"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:809
 msgid "Archive"
 msgstr "Arhiv"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
+#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Images"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Slike"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:812
 msgid "Text"
 msgstr "Tekst"
 
-#: src/TransferWnd.cpp:362
+#: src/TransferWnd.cpp:364
 msgid "Select view filter"
 msgstr "Filtriraj prikaz"
 
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:367
 msgid "Add category"
 msgstr "Dodaj kategorijo"
 
-#: src/TransferWnd.cpp:368
+#: src/TransferWnd.cpp:370
 msgid "Edit category"
 msgstr "Uredi kategorijo"
 
-#: src/TransferWnd.cpp:369
+#: src/TransferWnd.cpp:371
 msgid "Remove category"
 msgstr "Odstrani kategorijo"
 
@@ -4377,35 +4377,35 @@ msgstr "Programi"
 msgid "Any"
 msgstr "Vse"
 
-#: src/OtherFunctions.cpp:387 src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:389 src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Ni ocenjeno"
 
-#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Neveljaven / Pokvarjen / Fake"
 
-#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Slabo"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Povpreèno"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Dobro"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Odlièno"
 
-#: src/OtherFunctions.cpp:796
+#: src/OtherFunctions.cpp:798
 msgid "all"
 msgstr "vse"
 
-#: src/OtherFunctions.cpp:797
+#: src/OtherFunctions.cpp:799
 msgid "all others"
 msgstr "vse ostalo"
 
