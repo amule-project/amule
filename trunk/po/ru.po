@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_ru\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-08 03:31+0200\n"
+"POT-Creation-Date: 2007-05-09 03:31+0200\n"
 "PO-Revision-Date: 2006-03-01 01:46+0300\n"
 "Last-Translator: toshi <K.Koshelyaev@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -68,22 +68,22 @@ msgid "Complete"
 msgstr "Завершён"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:805
 msgid "Paused"
 msgstr "Приостановлен"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
 msgid "Erroneous"
 msgstr "Ошибочный"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:347 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
 msgid "Downloading"
 msgstr "Загружается"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
 msgid "Waiting"
 msgstr "Ожидает"
 
@@ -251,7 +251,7 @@ msgstr ""
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:552
 #: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:657
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
-#: src/TransferWnd.cpp:374 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
+#: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
 #: src/muuli_wdr.cpp:2986 src/muuli_wdr.cpp:3820
 msgid "Cancel"
@@ -1266,7 +1266,7 @@ msgstr "Соединение через сервер"
 msgid "Queue Full"
 msgstr "Очередь заполнена"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:447 src/ClientListCtrl.cpp:673
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:673
 msgid "On Queue"
 msgstr "В очереди"
 
@@ -1298,7 +1298,7 @@ msgstr "Подключение Kad"
 msgid "Too many Kad connections"
 msgstr "Слишком много соединений Kad"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:307
+#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:820
 msgid "Banned"
 msgstr "Забанен"
@@ -2415,7 +2415,7 @@ msgstr "Время работы: %s"
 msgid "Transfer"
 msgstr "Передача"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:443 src/muuli_wdr.cpp:469
+#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:469
 msgid "Uploads"
 msgstr "Отдача"
 
@@ -2553,7 +2553,7 @@ msgstr ""
 msgid "Peak Connections (estimate): %i"
 msgstr "Максимальное число соединений (примерно): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:451 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
 msgid "Clients"
 msgstr "Клиенты"
 
@@ -2839,7 +2839,7 @@ msgid "Download"
 msgstr "Загрузка"
 
 #: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
-#: src/TransferWnd.cpp:334 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
+#: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Категория"
 
@@ -2874,7 +2874,7 @@ msgstr "Попытка подключиться не удалась "
 msgid "Error"
 msgstr "Ошибка"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:339
+#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Все"
 
@@ -2887,8 +2887,8 @@ msgstr "Всего пользователей: %s | Всего файлов: %s"
 msgid "Transferred"
 msgstr "Передано"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:345
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:799
+#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:801
 msgid "Completed"
 msgstr "Завершён"
 
@@ -2963,15 +2963,15 @@ msgstr "Послать сообщение"
 msgid "Message to send:"
 msgstr "Сообщение:"
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:375
+#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Остановить"
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:376
+#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Пауза"
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Возобновить"
 
@@ -3306,7 +3306,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Недостаточно места на диске"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:806
 msgid "Stopped"
 msgstr "Остановлен"
 
@@ -4109,66 +4109,66 @@ msgstr ""
 msgid "Loaded %d flag bitmaps."
 msgstr ""
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr "Вы уверены, что хотите отменить и удалить все файлы в этой категории?"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
 msgstr "Требуется подтверждение"
 
-#: src/TransferWnd.cpp:340
+#: src/TransferWnd.cpp:342
 msgid "All others"
 msgstr "Все остальные"
 
-#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:798
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
 msgid "Incomplete"
 msgstr "Незаконченный"
 
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:811
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:813
 msgid "Active"
 msgstr ""
 
-#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
 msgid "Video"
 msgstr "Видео"
 
-#: src/TransferWnd.cpp:356 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:806 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
+#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Звук"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:809
 msgid "Archive"
 msgstr "Архив"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
+#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-образ"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Изображение"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:812
 msgid "Text"
 msgstr "Текст"
 
-#: src/TransferWnd.cpp:362
+#: src/TransferWnd.cpp:364
 msgid "Select view filter"
 msgstr "Выбрать фильтр просмотра"
 
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:367
 msgid "Add category"
 msgstr "Добавить категорию"
 
-#: src/TransferWnd.cpp:368
+#: src/TransferWnd.cpp:370
 msgid "Edit category"
 msgstr "Редакировать категорию"
 
-#: src/TransferWnd.cpp:369
+#: src/TransferWnd.cpp:371
 msgid "Remove category"
 msgstr "Удалить категорию"
 
@@ -4367,35 +4367,35 @@ msgstr "Программа"
 msgid "Any"
 msgstr "Любой"
 
-#: src/OtherFunctions.cpp:387 src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:389 src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Без оценки"
 
-#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Ошибочный / Повреждённый / Фальшивка"
 
-#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Плохой"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Очень хороший"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Хороший"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Великолепный"
 
-#: src/OtherFunctions.cpp:796
+#: src/OtherFunctions.cpp:798
 msgid "all"
 msgstr "все"
 
-#: src/OtherFunctions.cpp:797
+#: src/OtherFunctions.cpp:799
 msgid "all others"
 msgstr "все остальные"
 

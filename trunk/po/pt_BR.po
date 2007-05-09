@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-08 03:31+0200\n"
+"POT-Creation-Date: 2007-05-09 03:31+0200\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -67,22 +67,22 @@ msgid "Complete"
 msgstr "Completo"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:805
 msgid "Paused"
 msgstr "Pausa"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
 msgid "Erroneous"
 msgstr "Com Erro"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:347 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
 msgid "Downloading"
 msgstr "Baixando"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
 msgid "Waiting"
 msgstr "Esperando"
 
@@ -248,7 +248,7 @@ msgstr "Deseja eliminar o(s) amigo(s) selecionado(s) de sua lista?"
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:552
 #: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:657
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
-#: src/TransferWnd.cpp:374 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
+#: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
 #: src/muuli_wdr.cpp:2986 src/muuli_wdr.cpp:3820
 msgid "Cancel"
@@ -1258,7 +1258,7 @@ msgstr "Conectando via servidor"
 msgid "Queue Full"
 msgstr "Lista de espera cheia"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:447 src/ClientListCtrl.cpp:673
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:673
 msgid "On Queue"
 msgstr "Na fila de espera"
 
@@ -1290,7 +1290,7 @@ msgstr "Conectando via Kad"
 msgid "Too many Kad connections"
 msgstr "Muitas conexões Kad"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:307
+#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:820
 msgid "Banned"
 msgstr "Banido"
@@ -2410,7 +2410,7 @@ msgstr "Uptime: %s"
 msgid "Transfer"
 msgstr "Tranferência"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:443 src/muuli_wdr.cpp:469
+#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:469
 msgid "Uploads"
 msgstr "Uploads"
 
@@ -2548,7 +2548,7 @@ msgstr "Média de conexões (estimativa): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Pico de conexões (estimada): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:451 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
 msgid "Clients"
 msgstr "Clientes"
 
@@ -2833,7 +2833,7 @@ msgid "Download"
 msgstr "Download"
 
 #: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
-#: src/TransferWnd.cpp:334 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
+#: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Categoria"
 
@@ -2867,7 +2867,7 @@ msgstr ""
 msgid "Error"
 msgstr "Erro"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:339
+#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Tudo"
 
@@ -2880,8 +2880,8 @@ msgstr "Total Users: %s | Total arquivos: %s"
 msgid "Transferred"
 msgstr "Transferido"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:345
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:799
+#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:801
 msgid "Completed"
 msgstr "Completado"
 
@@ -2956,15 +2956,15 @@ msgstr "Enviar mensagem ao usuário"
 msgid "Message to send:"
 msgstr "Mensagem a Enviar:"
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:375
+#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Parar"
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:376
+#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "Pau&se"
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Resumir"
 
@@ -3295,7 +3295,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Espaço em disco insuficiente"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:806
 msgid "Stopped"
 msgstr "Parado"
 
@@ -4128,66 +4128,66 @@ msgstr ""
 msgid "Loaded %d flag bitmaps."
 msgstr ""
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr "Deseja cancelar e APAGAR TODOS os arquivos desta categoria?"
 
-#: src/TransferWnd.cpp:192
+#: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
 msgstr "Confirmação requerida"
 
-#: src/TransferWnd.cpp:340
+#: src/TransferWnd.cpp:342
 msgid "All others"
 msgstr "Todos os outros"
 
-#: src/TransferWnd.cpp:344 src/OtherFunctions.cpp:798
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
 msgid "Incomplete"
 msgstr "Incompleto"
 
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:811
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:813
 msgid "Active"
 msgstr "Ativos"
 
-#: src/TransferWnd.cpp:355 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
 msgid "Video"
 msgstr "Vídeo"
 
-#: src/TransferWnd.cpp:356 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:806 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
+#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Áudio"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:809
 msgid "Archive"
 msgstr "Arquivo"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
+#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "Imagem-CD"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Figuras"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:812
 msgid "Text"
 msgstr "Texto"
 
-#: src/TransferWnd.cpp:362
+#: src/TransferWnd.cpp:364
 msgid "Select view filter"
 msgstr "Selecione o filtro de exibiçao"
 
-#: src/TransferWnd.cpp:365
+#: src/TransferWnd.cpp:367
 msgid "Add category"
 msgstr "Adicionar categoria"
 
-#: src/TransferWnd.cpp:368
+#: src/TransferWnd.cpp:370
 msgid "Edit category"
 msgstr "Editar categoria"
 
-#: src/TransferWnd.cpp:369
+#: src/TransferWnd.cpp:371
 msgid "Remove category"
 msgstr "Remover categoria"
 
@@ -4384,35 +4384,35 @@ msgstr "Programas"
 msgid "Any"
 msgstr "Todos"
 
-#: src/OtherFunctions.cpp:387 src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:389 src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Não avaliado"
 
-#: src/OtherFunctions.cpp:388 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Inválido / Corrompido / Falso"
 
-#: src/OtherFunctions.cpp:389 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Ruim"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Regular"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Bom"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Excelente"
 
-#: src/OtherFunctions.cpp:796
+#: src/OtherFunctions.cpp:798
 msgid "all"
 msgstr "todos"
 
-#: src/OtherFunctions.cpp:797
+#: src/OtherFunctions.cpp:799
 msgid "all others"
 msgstr "todos os outros"
 
