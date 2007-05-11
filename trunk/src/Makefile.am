@@ -1,5 +1,5 @@
 if WEB
-  OPT_WEB = webserver
+OPT_WEB = webserver
 endif
 
 SUBDIRS = libs utils pixmaps kademlia $(OPT_WEB)
