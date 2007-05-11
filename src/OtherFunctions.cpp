@@ -373,6 +373,7 @@ int GetMaxConnections()
 			break;
 		default:
 			// Anything else. Let aMule decide...
+			break;
 		}
 	}
 #else
