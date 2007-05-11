@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="amuleData.cs" />
     <Compile Include="amuleRemote.cs" />
     <Compile Include="ConnectDlg.cs">
       <SubType>Form</SubType>
