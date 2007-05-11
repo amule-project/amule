@@ -364,7 +364,7 @@ AlcFrame::SetFileToHash()
   const wxString & filename =
     wxFileSelector (_("Select the file you want to compute the ed2k link"),
                     browseroot, wxEmptyString, wxEmptyString, wxT("*.*"),
-                    wxFD_OPEN | wxFD_FILE_MUST_EXIST );
+                    wxFD_OPEN | wxFD_FILE_MUST_EXIST, this);
 
   if (!filename.empty ())
     {
@@ -434,7 +434,7 @@ AlcFrame::SaveEd2kLinkToFile()
       const wxString & filename =
         wxFileSelector (_("Select the file to your computed ed2k link"),
                         wxFileName::GetHomeDir(),wxT("my_ed2k_link"),
-                        wxT("txt"), wxT("*.txt"), wxFD_SAVE );
+                        wxT("txt"), wxT("*.txt"), wxFD_SAVE, this);
 
       if (!filename.empty ())
         {

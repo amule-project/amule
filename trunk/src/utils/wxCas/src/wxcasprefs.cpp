@@ -326,10 +326,11 @@ END_EVENT_TABLE ()
 // Browse for OS Path
 void WxCasPrefs::OnOSPathBrowseButton ( wxCommandEvent& WXUNUSED( event ) )
 {
-	const wxString & dir =
-	    wxDirSelector ( _( "Folder containing your signature file" ),
-	                    WxCasCte::DEFAULT_AMULESIG_PATH );
-
+	const wxString &dir = wxDirSelector(_
+		("Folder containing your signature file"),
+	        WxCasCte::DEFAULT_AMULESIG_PATH,
+		wxDD_DEFAULT_STYLE,
+		wxDefaultPosition, this);
 	if ( !dir.empty () ) {
 		m_osPathTextCtrl->SetValue ( dir );
 	}
@@ -339,9 +340,11 @@ void WxCasPrefs::OnOSPathBrowseButton ( wxCommandEvent& WXUNUSED( event ) )
 void
 WxCasPrefs::OnAutoStatImgBrowseButton ( wxCommandEvent& WXUNUSED( event ) )
 {
-	const wxString & dir =
-	    wxDirSelector ( _( "Folder where generating the statistic image" ),
-	                    WxCasCte::DEFAULT_AUTOSTATIMG_PATH );
+	const wxString & dir = wxDirSelector(
+		_("Folder where generating the statistic image"),
+	        WxCasCte::DEFAULT_AUTOSTATIMG_PATH,
+		wxDD_DEFAULT_STYLE,
+		wxDefaultPosition, this);
 
 	if ( !dir.empty () ) {
 		m_autoStatImgTextCtrl->SetValue ( dir );

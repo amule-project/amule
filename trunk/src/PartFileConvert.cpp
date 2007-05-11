@@ -706,8 +706,10 @@ CPartFileConvertDlg::CPartFileConvertDlg(wxWindow* parent)
 
 void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 {
-	wxString folder = ::wxDirSelector(_("Please choose a folder to search for temporary downloads! (subfolders will be included)"),
-					  GetDocumentsDir());
+	wxString folder = ::wxDirSelector(
+		_("Please choose a folder to search for temporary downloads! (subfolders will be included)"),
+		GetDocumentsDir(), wxDD_DEFAULT_STYLE,
+		wxDefaultPosition, this);
 	if (!folder.IsEmpty()) {
 		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),
 					 _("Remove sources?"),
