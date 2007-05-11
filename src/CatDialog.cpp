@@ -129,7 +129,9 @@ void CCatDialog::OnBnClickedBrowse(wxCommandEvent& WXUNUSED(evt))
 {	
 	wxString dir = CastChild(IDC_INCOMING, wxTextCtrl)->GetValue();
 	
-	dir = wxDirSelector( _("Choose a folder for incoming files"), dir);
+	dir = wxDirSelector(
+		_("Choose a folder for incoming files"),
+		dir, wxDD_DEFAULT_STYLE, wxDefaultPosition, this);
 	if (!dir.IsEmpty()) {
 		CastChild(IDC_INCOMING, wxTextCtrl)->SetValue(dir);
 	}

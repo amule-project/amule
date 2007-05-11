@@ -807,19 +807,19 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		break;
 
 	default:
-		wxASSERT( false );
+		wxASSERT(false);
 		return;
 	}
 
 	type = CFormat(_("Choose a folder for %s")) % type;
-
 	wxTextCtrl* widget = CastChild( id, wxTextCtrl );
 	wxString dir = widget->GetValue();
-
-	wxString str = wxDirSelector( type, dir, 0, wxDefaultPosition, this );
-
-	if ( !str.IsEmpty() ) {
-		widget->SetValue( str );
+	wxString str = wxDirSelector(
+		type, dir,
+		wxDD_DEFAULT_STYLE,
+		wxDefaultPosition, this);
+	if (!str.IsEmpty()) {
+		widget->SetValue(str);
 	}
 }
 
