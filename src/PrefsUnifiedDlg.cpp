@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	// The rest. Organize it!
 	EVT_CHECKBOX(IDC_UDPDISABLE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_CHECKDISKSPACE,	PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_USESKIN,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_USESKINFILES,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange)
@@ -89,7 +89,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
 
 	// Browse buttons
-	EVT_BUTTON(IDC_SELSKINFILE,		PrefsUnifiedDlg::OnButtonBrowseSkin)
+	EVT_BUTTON(IDC_SELSKINDIR,		PrefsUnifiedDlg::OnButtonDir)
 	EVT_BUTTON(IDC_BTN_BROWSE_WAV,		PrefsUnifiedDlg::OnButtonBrowseWav)
 	EVT_BUTTON(IDC_BROWSEV,			PrefsUnifiedDlg::OnButtonBrowseApplication)
 	EVT_BUTTON(IDC_SELTEMPDIR,		PrefsUnifiedDlg::OnButtonDir)
@@ -354,7 +354,7 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		FindWindow( IDC_BROWSERTABS )->Enable( !customBrowser );
 	#endif
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
-	FindWindow( IDC_SKINFILE )->Enable( thePrefs::UseSkin() );
+	FindWindow( IDC_SKINDIR )->Enable( thePrefs::UseSkins() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
@@ -565,8 +565,8 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->amuledlg->m_statisticswnd->SetARange( false, thePrefs::GetMaxGraphUploadRate() );
 	}
 
-	if (CfgChanged(IDC_SKINFILE) || CfgChanged(IDC_USESKIN)) {
-		theApp->amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
+	if (CfgChanged(IDC_SKINDIR) || CfgChanged(IDC_USESKINFILES)) {
+		theApp->amuledlg->Create_Toolbar(thePrefs::VerticalToolbar());
 	}
 
 	if (!thePrefs::GetNetworkED2K() && theApp->IsConnectedED2K()) {
@@ -650,8 +650,8 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			FindWindow( IDC_MINDISKSPACE )->Enable(value);
 			break;	
 		
-		case IDC_USESKIN:
-			FindWindow( IDC_SKINFILE )->Enable(value);;
+		case IDC_USESKINFILES:
+			FindWindow( IDC_SKINDIR )->Enable(value);;
 			break;
 
 		case IDC_ONLINESIG:
@@ -738,7 +738,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
 			break;
 		case IDC_VERTTOOLBAR:
-			theApp->amuledlg->Create_Toolbar(thePrefs::GetSkinFile(), value);
+			theApp->amuledlg->Create_Toolbar(value);
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
 			break;
@@ -806,6 +806,11 @@ void PrefsUnifiedDlg::OnButtonDir(wxCommandEvent& event)
 		type = _("Online Signatures");
 		break;
 
+	case IDC_SELSKINDIR:
+		id = IDC_SKINDIR;
+		type = _("Skins directory");
+		break;
+
 	default:
 		wxASSERT(false);
 		return;
@@ -832,19 +837,6 @@ void PrefsUnifiedDlg::OnButtonBrowseWav(wxCommandEvent& WXUNUSED(evt))
 	
 	if ( !str.IsEmpty() ) {
 		wxTextCtrl* widget = CastChild( IDC_EDIT_TBN_WAVFILE, wxTextCtrl );
-
-		widget->SetValue( str );
-	}
-}
-
-
-void PrefsUnifiedDlg::OnButtonBrowseSkin(wxCommandEvent& WXUNUSED(evt))
-{
-	wxString str = wxFileSelector(
-		_("Browse skin file"), wxEmptyString, wxEmptyString, wxT("*"),  wxT("*.*"), 0, this );
-
-	if ( !str.IsEmpty() ) {
-		wxTextCtrl* widget = CastChild( IDC_SKINFILE, wxTextCtrl );
 
 		widget->SetValue( str );
 	}

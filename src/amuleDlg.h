@@ -27,9 +27,10 @@
 #define AMULEDLG_H
 
 
+#include <wx/filename.h>
 #include <wx/frame.h>			// Needed for wxFrame
-#include <wx/timer.h>
 #include <wx/imaglist.h>
+#include <wx/timer.h>
 
 
 #include "Types.h"			// Needed for uint32
@@ -90,7 +91,7 @@ enum ClientSkinEnum {
 	Client_ExcellentRating_Smiley,
 	Client_CommentOnly_Smiley,
 	// Add items here.
-	CLIENT_SKIN_UNUSED
+	CLIENT_SKIN_SIZE
 };
 
 
@@ -98,7 +99,9 @@ enum ClientSkinEnum {
 class CamuleDlg : public wxFrame 
 {
 public:
-	CamuleDlg(wxWindow* pParent = NULL, const wxString &title = wxEmptyString,
+	CamuleDlg(
+		wxWindow *pParent = NULL,
+		const wxString &title = wxEmptyString,
 		wxPoint where = wxDefaultPosition,
 		wxSize dlg_size = wxSize(DEFAULT_SIZE_X,DEFAULT_SIZE_Y));
 	~CamuleDlg();
@@ -111,7 +114,8 @@ public:
 	void ShowConnectionState();
 	void ShowTransferRate();
 	
-	bool StatisticsWindowActive()	{ return (m_activewnd == (wxWindow*)m_statisticswnd); }
+	bool StatisticsWindowActive()
+		{ return (m_activewnd == (wxWindow*)m_statisticswnd); }
 	
 	/* Returns the active dialog. Needed to check what to redraw. */
 	enum DialogType {
@@ -123,7 +127,8 @@ public:
 		DT_STATS_WND,
 		DT_KAD_WND	// this one is still unused
 	};
-	DialogType GetActiveDialog()	{ return m_nActiveDialog; }
+	DialogType GetActiveDialog()
+		{ return m_nActiveDialog; }
 	void SetActiveDialog(DialogType type, wxWindow* dlg);
 
 	/**
@@ -133,7 +138,7 @@ public:
 	 */
 	bool IsDialogVisible( DialogType dlg )
 	{
-		return ( m_nActiveDialog == dlg ) && ( m_is_safe_state ) /* && ( !IsIconized() ) */; 
+		return m_nActiveDialog == dlg && m_is_safe_state /* && !IsIconized() */; 
 	}
 
 	void ShowED2KLinksHandler( bool show );
@@ -159,23 +164,6 @@ public:
 	void CreateSystray();
 	void RemoveSystray();	
 
-#ifdef ENABLE_IP2COUNTRY	
-	CIP2Country*	m_IP2Country;
-#endif	
-	CTransferWnd*		m_transferwnd;
-	CServerWnd*		m_serverwnd;
-	CSharedFilesWnd*	m_sharedfileswnd;
-	CSearchDlg*		m_searchwnd;
-	CChatWnd*		m_chatwnd;
-	wxWindow*		m_activewnd;
-	CStatisticsDlg*		m_statisticswnd;
-	CKadDlg*		m_kademliawnd;
-
-	int			m_srv_split_pos;
-	
-	wxImageList m_imagelist;
-	wxImageList m_tblist;
-	
 	void StartGuiTimer()	{ gui_timer->Start(100); }
 	void StopGuiTimer()	{ gui_timer->Stop(); }
 
@@ -185,11 +173,27 @@ public:
 	void InitSort();
 
 	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
-	void Create_Toolbar(wxString skinfile, bool orientation);
+	void Create_Toolbar(bool orientation);
 	
+#ifdef ENABLE_IP2COUNTRY	
+	CIP2Country*		m_IP2Country;
+#endif	
+	wxWindow*		m_activewnd;
+	CTransferWnd*		m_transferwnd;
+	CServerWnd*		m_serverwnd;
+	CSharedFilesWnd*	m_sharedfileswnd;
+	CSearchDlg*		m_searchwnd;
+	CChatWnd*		m_chatwnd;
+	CStatisticsDlg*		m_statisticswnd;
+	CKadDlg*		m_kademliawnd;
 	//! Pointer to the current preference dialog, if any.
-	PrefsUnifiedDlg* m_prefsDialog;
+	PrefsUnifiedDlg*	m_prefsDialog;
 
+	int			m_srv_split_pos;
+	
+	wxImageList m_imagelist;
+	wxImageList m_tblist;
+	
 protected:
 	void OnToolBarButton(wxCommandEvent& ev);
 	void OnAboutButton(wxCommandEvent& ev);
@@ -207,25 +211,31 @@ protected:
 private:
 	//! Specifies if the prefs-dialog was shown before minimizing.
 	bool m_prefsVisible;
-	wxToolBar*	m_wndToolbar;
-
-	bool		LoadGUIPrefs(bool override_pos, bool override_size); 
-	bool		SaveGUIPrefs();
-
-	wxTimer* gui_timer;
-
-	// Systray functions
-	void UpdateTrayIcon(int percent);
-	
-	CMuleTrayIcon* m_wndTaskbarNotifier;
+	wxToolBar *m_wndToolbar;
+	wxTimer *gui_timer;
+	CMuleTrayIcon *m_wndTaskbarNotifier;
 	DialogType m_nActiveDialog;
 	bool m_is_safe_state;
 	bool m_BlinkMessages;
 	int m_CurrentBlinkBitmap;
 	uint32 m_last_iconizing;
+	wxFileName m_skinDirName;
+	std::vector<wxString> m_clientSkinNames;
 
-	void Apply_Clients_Skin(wxString file);
-	void Apply_Toolbar_Skin(wxString skinfile, wxToolBar* wndToolbar);
+	bool LoadGUIPrefs(
+		bool override_pos,
+		bool override_size); 
+	bool SaveGUIPrefs();
+
+	void UpdateTrayIcon(int percent);
+	
+	void Apply_Clients_Skin();
+	void Apply_Toolbar_Skin(wxToolBar *wndToolbar);
+	bool Check_and_Init_SkinDir();
+	void Add_Skin_Icon(
+		const wxString &iconName,
+		const wxBitmap &stdIcon,
+		bool useSkins);
 	void ToogleED2KLinksHandler();
 	void SetMessagesTool();
 	void OnKeyPressed(wxKeyEvent& evt);

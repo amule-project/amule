@@ -102,7 +102,6 @@ protected:
 	void OnClose(wxCloseEvent &event);
 
 	void OnButtonBrowseWav(wxCommandEvent &event);
-	void OnButtonBrowseSkin(wxCommandEvent &event);
 	void OnButtonBrowseApplication(wxCommandEvent &event);
 	void OnButtonDir(wxCommandEvent& event);
 	void OnButtonEditAddr(wxCommandEvent& event);
