@@ -1539,7 +1539,7 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 			// If we have added 30 files or files with a total size of ~300mb
 			if ( ( filecount == 30 ) || ( bytecount >= 314572800 ) ) {
 				AddDebugLogLineM(false, logKnownFiles, wxT("Failsafe for crash on file hashing creation"));
-				if ( m_app_state != APP_STATE_SHUTINGDOWN ) {
+				if ( m_app_state != APP_STATE_SHUTTINGDOWN ) {
 					knownfiles->Save();
 					filecount = 0;
 					bytecount = 0;
@@ -1607,7 +1607,7 @@ void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 void CamuleApp::ShutDown()
 {
 	// Signal the hashing thread to terminate
-	m_app_state = APP_STATE_SHUTINGDOWN;
+	m_app_state = APP_STATE_SHUTTINGDOWN;
 	
 	StopKad();
 	
