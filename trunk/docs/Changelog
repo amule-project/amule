@@ -130,6 +130,7 @@ Trunk
 		* When converting from multibyte to wide characters,
 		  ConvAmuleBrokenFileNames now tries UTF-8 first. If this
 		  fails, then it tries ISO-8859-1.
+		* New directory based skin support, reworked Trevino's patch.
 
 	Radek:
 		* Patch to fix windows compilation.
@@ -147,6 +148,7 @@ Trunk
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
 		icon points to the same file" issue.
+		* Skin support with relative paths.
 
 	Vollstrecker:
 		* Added possibility to give the path for output right with

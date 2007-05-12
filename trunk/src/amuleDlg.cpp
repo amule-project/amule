@@ -23,13 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/config.h> // Do_not_auto_remove (MacOS 10.3, wx 2.7)
-#include <wx/confbase.h> // Do_not_auto_remove (MacOS 10.3, wx 2.7)
-#include <wx/stattext.h>
-#include <wx/tokenzr.h>
+#include <wx/config.h>		// Do_not_auto_remove (MacOS 10.3, wx 2.7)
+#include <wx/confbase.h>	// Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/html/htmlwin.h>
 #include <wx/mimetype.h>	// Do_not_auto_remove (win32)
+#include <wx/stattext.h>
 #include <wx/textfile.h>	// Do_not_auto_remove (win32)
+#include <wx/tokenzr.h>
 
 #include <include/common/EventIDs.h>
 
@@ -122,40 +122,68 @@ wxFrame(
 	wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxDIALOG_NO_PARENT|
 	wxRESIZE_BORDER|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX,
 	wxT("aMule")),
-m_transferwnd(NULL)
+m_activewnd(NULL),
+m_transferwnd(NULL),
+m_serverwnd(NULL),
+m_sharedfileswnd(NULL),
+m_searchwnd(NULL),
+m_chatwnd(NULL),
+m_statisticswnd(NULL),
+m_kademliawnd(NULL),
+m_prefsDialog(NULL),
+m_srv_split_pos(0),
+m_imagelist(16,16),
+m_tblist(32,32),
+m_prefsVisible(false),
+m_wndTaskbarNotifier(NULL),
+m_nActiveDialog(DT_NETWORKS_WND),
+m_is_safe_state(false),
+m_BlinkMessages(false),
+m_CurrentBlinkBitmap(24),
+m_last_iconizing(0),
+m_skinDirName(),
+m_clientSkinNames(CLIENT_SKIN_SIZE)
 {
-	m_is_safe_state = false;
+	// Initialize sikin names
+	m_clientSkinNames[Client_Green_Smiley]            = wxT("Transfer");
+	m_clientSkinNames[Client_Red_Smiley]              = wxT("Connecting");
+	m_clientSkinNames[Client_Yellow_Smiley]           = wxT("OnQueue");
+	m_clientSkinNames[Client_Grey_Smiley]             = wxT("A4AFNoNeededPartsQueueFull");
+	m_clientSkinNames[Client_White_Smiley]            = wxT("StatusUnknown");
+	m_clientSkinNames[Client_ExtendedProtocol_Smiley] = wxT("ExtendedProtocol");
+	m_clientSkinNames[Client_SecIdent_Smiley]         = wxT("SecIdent");
+	m_clientSkinNames[Client_BadGuy_Smiley]           = wxT("BadGuy");
+	m_clientSkinNames[Client_CreditsGrey_Smiley]      = wxT("CreditsGrey");
+	m_clientSkinNames[Client_CreditsYellow_Smiley]    = wxT("CreditsYellow");
+	m_clientSkinNames[Client_Upload_Smiley]           = wxT("Upload");
+	m_clientSkinNames[Client_Friend_Smiley]           = wxT("Friend");
+	m_clientSkinNames[Client_eMule_Smiley]            = wxT("eMule");
+	m_clientSkinNames[Client_mlDonkey_Smiley]         = wxT("mlDonkey");
+	m_clientSkinNames[Client_eDonkeyHybrid_Smiley]    = wxT("eDonkeyHybrid");
+	m_clientSkinNames[Client_aMule_Smiley]            = wxT("aMule");
+	m_clientSkinNames[Client_lphant_Smiley]           = wxT("lphant");
+	m_clientSkinNames[Client_Shareaza_Smiley]         = wxT("Shareaza");
+	m_clientSkinNames[Client_xMule_Smiley]            = wxT("xMule");
+	m_clientSkinNames[Client_Unknown]                 = wxT("Unknown");
+	m_clientSkinNames[Client_InvalidRating_Smiley]    = wxT("InvalidRatingOnFile");
+	m_clientSkinNames[Client_PoorRating_Smiley]       = wxT("PoorRatingOnFile");
+	m_clientSkinNames[Client_GoodRating_Smiley]       = wxT("GoodRatingOnFile");
+	m_clientSkinNames[Client_FairRating_Smiley]       = wxT("FairRatingOnFile");
+	m_clientSkinNames[Client_ExcellentRating_Smiley]  = wxT("ExcellentRatingOnFile");
 	
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
 	wxUpdateUIEvent::SetMode(wxUPDATE_UI_PROCESS_SPECIFIED);
-	
-	m_last_iconizing = 0;
-	m_prefsDialog = NULL;
-	m_prefsVisible = false;
-	
-	m_wndTaskbarNotifier = NULL;
-
 	wxInitAllImageHandlers();
-	m_imagelist.Create(16,16);
-	m_tblist.Create(32,32);
+	Apply_Clients_Skin();
 	
-	static int ClientItemNumber = CLIENT_SKIN_UNUSED;
-
-	if (thePrefs::UseSkin()) {		
-		Apply_Clients_Skin(thePrefs::GetSkinFile());
-	} else {
-		for (int i = 0; i < ClientItemNumber; ++i) {
-			m_imagelist.Add(wxBitmap(clientImages(i)));
-		}
-	}
-
-	bool override_where = (where != wxDefaultPosition);
-	bool override_size = ((dlg_size.x != DEFAULT_SIZE_X) || (dlg_size.y != DEFAULT_SIZE_Y));
-
+	bool override_where = where != wxDefaultPosition;
+	bool override_size =
+		dlg_size.x != DEFAULT_SIZE_X ||
+		dlg_size.y != DEFAULT_SIZE_Y;
 	if (!LoadGUIPrefs(override_where, override_size)) {
 		// Prefs not loaded for some reason, exit
-		AddLogLineM( true, wxT("ERROR! Unable to load Preferences") );
+		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
 		return;
 	}
 
@@ -171,17 +199,17 @@ m_transferwnd(NULL)
 	wxPanel* p_cnt = new wxPanel(this, -1, wxDefaultPosition, wxDefaultSize);
 	s_main->Add(p_cnt, 0, wxGROW|wxEXPAND, 0);
 	muleDlg(p_cnt, false, true);
-
-	SetSizer( s_main, true );
-
-	Create_Toolbar(thePrefs::GetSkinFile(), thePrefs::VerticalToolbar());
+	SetSizer(s_main, true);
+	Create_Toolbar(thePrefs::VerticalToolbar());
 
 	m_serverwnd = new CServerWnd(p_cnt, m_srv_split_pos);
-
 	AddLogLineM(false, wxEmptyString);
-	AddLogLineM(false, wxT(" - ") + CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
-	AddLogLineM(false, wxT("   ") + CFormat(_("Running on %s")) % wxGetOsDescription());
-	AddLogLineM(false, wxT(" - ") + wxString(_("Visit http://www.amule.org to check if a new version is available.")));
+	AddLogLineM(false, wxT(" - ") +
+		CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
+	AddLogLineM(false, wxT("   ") +
+		CFormat(_("Running on %s")) % wxGetOsDescription());
+	AddLogLineM(false, wxT(" - ") +
+		wxString(_("Visit http://www.amule.org to check if a new version is available.")));
 	AddLogLineM(false, wxEmptyString);
 
 #ifdef ENABLE_IP2COUNTRY
@@ -193,12 +221,13 @@ m_transferwnd(NULL)
 	m_statisticswnd = new CStatisticsDlg(p_cnt, theApp->m_statistics);
 	m_chatwnd = new CChatWnd(p_cnt);
 	m_kademliawnd = CastChild(wxT("kadWnd"), CKadDlg);
-	m_serverwnd->Show(FALSE);
-	m_searchwnd->Show(FALSE);
-	m_transferwnd->Show(FALSE);
-	m_sharedfileswnd->Show(FALSE);
-	m_statisticswnd->Show(FALSE);
-	m_chatwnd->Show(FALSE);
+
+	m_serverwnd->Show(false);
+	m_searchwnd->Show(false);
+	m_transferwnd->Show(false);
+	m_sharedfileswnd->Show(false);
+	m_statisticswnd->Show(false);
+	m_chatwnd->Show(false);
 
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
@@ -208,7 +237,6 @@ m_transferwnd(NULL)
 	}
 
 	// Set Serverlist as active window
-	m_activewnd=NULL;
 	SetActiveDialog(DT_NETWORKS_WND, m_serverwnd);
 	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
 
@@ -217,26 +245,20 @@ m_transferwnd(NULL)
 	// Init statistics stuff, better do it asap
 	m_statisticswnd->Init();
 	m_kademliawnd->Init();
-	
 	m_searchwnd->UpdateCatChoice();
-
 	if (thePrefs::UseTrayIcon()) {
 		CreateSystray();
 	}
 
-	Show(TRUE);
-
+	Show(true);
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) { 
 		if (thePrefs::UseTrayIcon() && thePrefs::DoMinToTray()) {
 			Hide_aMule();
 		} else {
-			Iconize(TRUE);
+			Iconize(true);
 		}
 	}
-	m_BlinkMessages = false;
-	m_CurrentBlinkBitmap = 24;
-
 
 	// Set shortcut keys
 	wxAcceleratorEntry entries[] = { 
@@ -244,7 +266,6 @@ m_transferwnd(NULL)
 	};
 	
 	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
-	
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
 }
 
@@ -284,12 +305,12 @@ void CamuleDlg::SetActiveDialog(DialogType type, wxWindow* dlg)
 	}
 	
 	if ( m_activewnd ) {
-		m_activewnd->Show(FALSE);
+		m_activewnd->Show(false);
 		contentSizer->Detach(m_activewnd);
 	}
 
 	contentSizer->Add(dlg, 1, wxALIGN_LEFT|wxEXPAND);
-	dlg->Show(TRUE);
+	dlg->Show(true);
 	m_activewnd=dlg;
 	s_dlgcnt->Layout();
 
@@ -655,7 +676,8 @@ void CamuleDlg::ShowConnectionState()
 		if ((NewED2KState != sDisconnected) || (NewKadState != sOff)) {
 			if (NewED2KState == sConnecting) {
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Cancel"),
-					thePrefs::UseSkin() ? m_tblist.GetBitmap(2) : connButImg(2), wxNullBitmap, wxITEM_NORMAL,
+					thePrefs::UseSkins() ? m_tblist.GetBitmap(2) : connButImg(2),
+					wxNullBitmap, wxITEM_NORMAL,
 					_("Stops the current connection attempts"));
 			} else {
 				/* ED2K connected or Kad connected */
@@ -673,13 +695,15 @@ void CamuleDlg::ShowConnectionState()
 				}					
 				
 				m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Disconnect"),
-					thePrefs::UseSkin() ? m_tblist.GetBitmap(1) : connButImg(1), wxNullBitmap, wxITEM_NORMAL,
+					thePrefs::UseSkins() ? m_tblist.GetBitmap(1) : connButImg(1),
+					wxNullBitmap, wxITEM_NORMAL,
 					popup);
 				
 			}
 		} else {
 			m_wndToolbar->InsertTool(0, ID_BUTTONCONNECT, _("Connect"),
-				thePrefs::UseSkin() ? m_tblist.GetBitmap(0) : connButImg(0), wxNullBitmap, wxITEM_NORMAL,
+				thePrefs::UseSkins() ? m_tblist.GetBitmap(0) : connButImg(0),
+				wxNullBitmap, wxITEM_NORMAL,
 				_("Connect to any server and/or Kad"));
 		}
 		
@@ -870,14 +894,13 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	wxString section = wxT("/Razor_Preferences/");
 
 	// Get window size and position
-	int x1 = config->Read(section+wxT("MAIN_X_POS"), -1l);
-	int y1 = config->Read(section+wxT("MAIN_Y_POS"), -1l);
-	int x2 = config->Read(section+wxT("MAIN_X_SIZE"), 0l);
-	int y2 = config->Read(section+wxT("MAIN_Y_SIZE"), 0l);
+	int x1 = config->Read(section + wxT("MAIN_X_POS"), -1l);
+	int y1 = config->Read(section + wxT("MAIN_Y_POS"), -1l);
+	int x2 = config->Read(section + wxT("MAIN_X_SIZE"), 0l);
+	int y2 = config->Read(section + wxT("MAIN_Y_SIZE"), 0l);
 
 	// Kry - Random usable pos for m_srv_split_pos
-	m_srv_split_pos = config->Read(section+wxT("SRV_SPLITTER_POS"), 463l);
-
+	m_srv_split_pos = config->Read(section + wxT("SRV_SPLITTER_POS"), 463l);
 	if (!override_size) {
 		if (x2 > 0 && y2 > 0) {
 			SetSize(x2, y2);
@@ -891,7 +914,7 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 
 	if (!override_pos) {
 		// If x1 and y1 != 0 Redefine location
-		if((x1 != -1) && (y1 != -1)) {
+		if(x1 != -1 && y1 != -1) {
 			Move(x1, y1);
 		}
 	}
@@ -950,10 +973,10 @@ void CamuleDlg::Hide_aMule(bool iconize)
 		}
 		
 		if (iconize) {
-			Iconize(TRUE);
+			Iconize(true);
 		}
 		
-		Show(FALSE);
+		Show(false);
 	}
 
 }
@@ -970,7 +993,7 @@ void CamuleDlg::Show_aMule(bool uniconize)
 		}
 		
 		if (uniconize) {
-			Show(TRUE);
+			Show(true);
 			Raise();
 		}
 	}
@@ -1137,7 +1160,6 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 }
 
 
-
 wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvider )
 {
 	wxString URL;
@@ -1154,409 +1176,155 @@ wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvid
 }
 
 
-struct SkinItem {
-	bool found;
-	wxString filename;
-};
-
-
-void CamuleDlg::Apply_Clients_Skin(wxString skinFileName)
-{	
-	static int ClientItemNumber = CLIENT_SKIN_UNUSED;
-
-	SkinItem bitmaps_found[ClientItemNumber];
-	for (int i = 0; i < ClientItemNumber; ++i) {	
-		bitmaps_found[i].found = false;
-	}
-
-	wxTextFile skinfile;
-	try {
-		if (skinFileName.IsEmpty()) {			
-			throw wxString(_("Skin file name is empty"));
-		}
-		if (!::wxFileExists(skinFileName)) {
-			throw (CFormat(_("Skin file %s does not exist")) % skinFileName ).GetString();
-		}
-		if (!skinfile.Open(skinFileName)) {
-			throw (CFormat(_("Unable to open skin file: %s")) % skinFileName).GetString();
-		}
-		
-		int client_header_found = -1;
-		for (uint32 i=0; i < skinfile.GetLineCount(); ++i) {
-			if (skinfile[i] == wxT("[Client Bitmaps]")) {
-				client_header_found = i;	
-				break;
-			}
-		}
-		if (client_header_found != -1) {
-			
-			wxImage new_image;
-			
-			for (uint32 i=client_header_found+1; i < skinfile.GetLineCount(); i++) {
-				if (skinfile[i].StartsWith(wxT("["))) {
-					break;
-				}				
-				// Client_Green_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_Transfer="))) {
-					bitmaps_found[Client_Green_Smiley].found = true;
-					bitmaps_found[Client_Green_Smiley].filename = skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Red_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_Connecting="))) {
-					bitmaps_found[Client_Red_Smiley].found = true;
-					bitmaps_found[Client_Red_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Yellow_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_OnQueue="))) {
-					bitmaps_found[Client_Yellow_Smiley].found = true;
-				    bitmaps_found[Client_Yellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Grey_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_A4AFNoNeededPartsQueueFull="))) {
-				    bitmaps_found[Client_Grey_Smiley].found = true;
-				    bitmaps_found[Client_Grey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Unknown_Smiley
-				if (skinfile[i].StartsWith(wxT("Client_StatusUnknown="))) {
-					bitmaps_found[Client_White_Smiley].found = true;
-				    bitmaps_found[Client_White_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Extended_Protocol
-				if (skinfile[i].StartsWith(wxT("Client_ExtendedProtocol="))) {
-					bitmaps_found[Client_ExtendedProtocol_Smiley].found = true;
-				    bitmaps_found[Client_ExtendedProtocol_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_SecIdent
-				if (skinfile[i].StartsWith(wxT("Client_SecIdent="))) {
-					bitmaps_found[Client_SecIdent_Smiley].found = true;
-				    bitmaps_found[Client_SecIdent_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_BadGuy
-				if (skinfile[i].StartsWith(wxT("Client_BadGuy="))) {
-				    bitmaps_found[Client_BadGuy_Smiley].found = true;
-				    bitmaps_found[Client_BadGuy_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_CreditsGrey
-				if (skinfile[i].StartsWith(wxT("Client_CreditsGrey="))) {
-					bitmaps_found[Client_CreditsGrey_Smiley].found = true;
-				    bitmaps_found[Client_CreditsGrey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_CreditsYellow
-				if (skinfile[i].StartsWith(wxT("Client_CreditsYellow="))) {
-					bitmaps_found[Client_CreditsYellow_Smiley].found = true;
-				    bitmaps_found[Client_CreditsYellow_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Upload
-				if (skinfile[i].StartsWith(wxT("Client_Upload="))) {
-					bitmaps_found[Client_Upload_Smiley].found = true;
-				    bitmaps_found[Client_Upload_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Friend
-				if (skinfile[i].StartsWith(wxT("Client_Friend="))) {
-					bitmaps_found[Client_Friend_Smiley].found = true;
-				    bitmaps_found[Client_Friend_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_eMule
-				if (skinfile[i].StartsWith(wxT("Client_eMule="))) {
-					bitmaps_found[Client_eMule_Smiley].found = true;
-				    bitmaps_found[Client_eMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_mlDonkey
-				if (skinfile[i].StartsWith(wxT("Client_mlDonkey="))) {
-					bitmaps_found[Client_mlDonkey_Smiley].found = true;
-				    bitmaps_found[Client_mlDonkey_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_eDonkeyHybrid
-				if (skinfile[i].StartsWith(wxT("Client_eDonkeyHybrid="))) {
-					bitmaps_found[Client_eDonkeyHybrid_Smiley].found = true;
-				    bitmaps_found[Client_eDonkeyHybrid_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_aMule
-				if (skinfile[i].StartsWith(wxT("Client_aMule="))) {
-					bitmaps_found[Client_aMule_Smiley].found = true;
-				    bitmaps_found[Client_aMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_lphant
-				if (skinfile[i].StartsWith(wxT("Client_lphant="))) {
-					bitmaps_found[Client_lphant_Smiley].found = true;
-				    bitmaps_found[Client_lphant_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Shareaza
-				if (skinfile[i].StartsWith(wxT("Client_Shareaza="))) {
-					bitmaps_found[Client_Shareaza_Smiley].found = true;
-				    bitmaps_found[Client_Shareaza_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_xMule
-				if (skinfile[i].StartsWith(wxT("Client_xMule="))) {
-					bitmaps_found[Client_xMule_Smiley].found = true;
-				    bitmaps_found[Client_xMule_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Unknown
-				if (skinfile[i].StartsWith(wxT("Client_Unknown="))) {
-					bitmaps_found[Client_Unknown].found = true;
-				    bitmaps_found[Client_Unknown].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Invalid_Rating_On_File
-				if (skinfile[i].StartsWith(wxT("Client_InvalidRatingOnFile="))) {
-					bitmaps_found[Client_InvalidRating_Smiley].found = true;
-					bitmaps_found[Client_InvalidRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Poor_Rating_On_File
-				if (skinfile[i].StartsWith(wxT("Client_PoorRatingOnFile="))) {
-					bitmaps_found[Client_PoorRating_Smiley].found = true;
-					bitmaps_found[Client_PoorRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}				
-				// Client_Good_Rating_On_File
-				if (skinfile[i].StartsWith(wxT("Client_GoodRatingOnFile="))) {
-					bitmaps_found[Client_GoodRating_Smiley].found = true;
-					bitmaps_found[Client_GoodRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Fair_Rating_On_File
-				if (skinfile[i].StartsWith(wxT("Client_FairRatingOnFile="))) {
-					bitmaps_found[Client_FairRating_Smiley].found = true;
-					bitmaps_found[Client_FairRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-				// Client_Excellent_Rating_On_File
-				if (skinfile[i].StartsWith(wxT("Client_ExcellentRatingOnFile="))) {
-					bitmaps_found[Client_ExcellentRating_Smiley].found = true;
-					bitmaps_found[Client_ExcellentRating_Smiley].filename=skinfile[i].AfterLast(wxT('='));
-				}
-			}
-		}
-		
-		for (int i = 0; i < ClientItemNumber; ++i) {
-			if (bitmaps_found[i].found) {
-				wxImage new_image;
-				wxFileName file_name(bitmaps_found[i].filename);
-				file_name.Normalize();
-				if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-					m_imagelist.Add(wxBitmap(new_image));
-				} else {
-					printf(	"Warning: wrong client bitmap file No.%i: %s",
-						i, (const char *)unicode2char(bitmaps_found[i].filename));
-					m_imagelist.Add(wxBitmap(clientImages(i)));
-				}
-			} else {
-				m_imagelist.Add(wxBitmap(clientImages(i)));
-			}
-		}		
-
-		skinfile.Close();
-	} catch (const wxString &error) {
-		AddLogLineM( true, error + _(" - loading defaults"));
-		
-		// Load defaults
-		for (int i = 0; i < ClientItemNumber; ++i) {
-			m_imagelist.Add(wxBitmap(clientImages(i)));
-		}
-	}
-}
-
-
-void CamuleDlg::Apply_Toolbar_Skin(wxString skinFileName, wxToolBar* wndToolbar)
+bool CamuleDlg::Check_and_Init_SkinDir()
 {
-	try {
-		wxTextFile skinFile;
-		if (skinFileName.IsEmpty()) {			
-			throw wxString(_("Skin file name is empty"));
-		}
-		if (!::wxFileExists(skinFileName)) {
-			throw (CFormat(_("Skin file %s does not exist")) % skinFileName ).GetString();
-		}
-		if (!skinFile.Open(skinFileName)) {
-			throw (CFormat(_("Unable to open skin file: %s")) % skinFileName).GetString();
-		}
+	bool ret = true;
+	wxString skinDirName(thePrefs::GetSkinDir());
+	m_skinDirName.AssignDir(skinDirName);
+	if (skinDirName.IsEmpty()) {
+		AddLogLineM(true, _("Warning: Skin directory name is empty"));
+		ret = false;
+	} else if (!m_skinDirName.DirExists()) {
+		AddLogLineM(true, CFormat(
+			_("Skin directory '%s' does not exist")) %
+			skinDirName );
+		ret = false;
+	} else if (!m_skinDirName.IsDirReadable()) {
+		AddLogLineM(true, CFormat(
+			_("Warning: Unable to open skin directory '%s' for read")) %
+			skinDirName);
+		ret = false;
+	}
 
-		int client_header_found = -1;    
-		for (uint32 i=0; i < skinFile.GetLineCount(); ++i) {
-			if (skinFile[i] == wxT("[Toolbar Bitmaps]")) {
-				client_header_found = i;	
-				break;
-			}
-		}
-			
-		if (client_header_found != -1) {
-			for (uint32 i=client_header_found+1; i < skinFile.GetLineCount(); i++) {
-				if (skinFile[i].StartsWith(wxT("["))) {
-					break;
-				}				
-				// Connect Icon
-				if (skinFile[i].StartsWith(wxT("Connect_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(connButImg(0)));
-					}
-				}
-				// Disconnect Icon
-				if (skinFile[i].StartsWith(wxT("Disconnect_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(connButImg(1)));
-					}
-				}
-				// Connecting Icon
-				if (skinFile[i].StartsWith(wxT("Connecting_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						connButImg(2) = wxBitmap(new_image);
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(connButImg(2)));
-					}
-				}
-				// Network Icon
-				if (skinFile[i].StartsWith(wxT("Network_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(20)));
-					}
-				}
-				// Transfer Icon
-				if (skinFile[i].StartsWith(wxT("Transfer_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(21)));
-					}
-				}
-				// Search Icon
-				if (skinFile[i].StartsWith(wxT("Search_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(22)));
-					}
-				}
-				// Share Icon
-				if (skinFile[i].StartsWith(wxT("Share_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(23)));
-					}
-				}
-				// Messages Icon
-				if (skinFile[i].StartsWith(wxT("Messages_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(24)));
-					}
-				}
-				// Stat Icon
-				if (skinFile[i].StartsWith(wxT("Stat_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(25)));
-					}
-				}
-				// Pref Icon
-				if (skinFile[i].StartsWith(wxT("Pref_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(26)));
-					}
-				}
-				// Import Icon
-				if (skinFile[i].StartsWith(wxT("Import_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(29)));
-					}
-				}
-				// Help Icon
-				if (skinFile[i].StartsWith(wxT("Help_icon="))) {
-					wxImage new_image;
-					wxFileName file_name(skinFile[i].AfterLast(wxT('=')));
-					file_name.Normalize();
-					if (file_name.FileExists() && new_image.LoadFile(file_name.GetFullPath())) {
-						m_tblist.Add(wxBitmap(new_image));
-					} else {
-						m_tblist.Add(wxBitmap(amuleDlgImages(32)));
-					}
-				}
-			}
+	return ret;
+}
 
-			wndToolbar->SetMargins(0, 0);
-			wndToolbar->AddTool( ID_BUTTONCONNECT, _("Connect"), m_tblist.GetBitmap(0),
-				wxNullBitmap, wxITEM_NORMAL, _("Connect to any server and/or Kad") );
-			wndToolbar->AddSeparator();
-			wndToolbar->AddTool( ID_BUTTONNETWORKS, _("Networks"), m_tblist.GetBitmap(3),
-				wxNullBitmap, wxITEM_CHECK, _("Networks Window") );
-			wndToolbar->ToggleTool( ID_BUTTONNETWORKS, TRUE );
-			wndToolbar->AddTool( ID_BUTTONSEARCH, _("Searches"), m_tblist.GetBitmap(5),
-				wxNullBitmap, wxITEM_CHECK, _("Searches Window") );
-			wndToolbar->AddTool( ID_BUTTONTRANSFER, _("Transfers"), m_tblist.GetBitmap(4),
-				wxNullBitmap, wxITEM_CHECK, _("Files Transfers Window") );
-			wndToolbar->AddTool( ID_BUTTONSHARED, _("Shared Files"), m_tblist.GetBitmap(6),
-				wxNullBitmap, wxITEM_CHECK, _("Shared Files Window") );
-			wndToolbar->AddTool( ID_BUTTONMESSAGES, _("Messages"), m_tblist.GetBitmap(7),
-				wxNullBitmap, wxITEM_CHECK, _("Messages Window") );
-			wndToolbar->AddTool( ID_BUTTONSTATISTICS, _("Statistics"), m_tblist.GetBitmap(8),
-				wxNullBitmap, wxITEM_CHECK, _("Statistics Graph Window") );
-			wndToolbar->AddSeparator();
-			wndToolbar->AddTool( ID_BUTTONNEWPREFERENCES, _("Preferences"), m_tblist.GetBitmap(9),
-				wxNullBitmap, wxITEM_NORMAL, _("Preferences Settings Window") );
-			wndToolbar->AddTool( ID_BUTTONIMPORT, _("Import"), m_tblist.GetBitmap(10),
-				wxNullBitmap, wxITEM_NORMAL, _("The partfile importer tool") );
-			wndToolbar->AddTool( ID_ABOUT, _("About"), m_tblist.GetBitmap(11),
-				wxNullBitmap, wxITEM_NORMAL, _("About/Help") );
-			wndToolbar->Realize();
+
+void CamuleDlg::Add_Skin_Icon(
+	const wxString &iconName,
+	const wxBitmap &stdIcon,
+	bool useSkins)
+{
+	wxImage new_image;
+	if (useSkins) {
+		if (!m_skinDirName.GetFullPath().IsEmpty()) {
+			wxFileName iconWxFileName(
+				m_skinDirName.GetFullPath(),
+				iconName,
+				wxT("png"));
+			wxString iconFileName(iconWxFileName.GetFullPath());
+			if (!iconWxFileName.FileExists() ||
+			    !iconWxFileName.IsFileReadable() ||
+			    !new_image.LoadFile(iconWxFileName.GetFullPath())) {
+				AddLogLineM(false,
+					wxT("Warning: Can't load icon for ") +
+						iconFileName);
+				useSkins = false;
+			}
 		} else {
-			muleToolbar(m_wndToolbar);
+			useSkins = false;
 		}
-	} catch (const wxString &error) {
-		AddLogLineM( true, error + _(" - loading toolbar defaults"));
-
-		// Load defaults
-		muleToolbar(m_wndToolbar);
+	}
+	
+	wxBitmap bmp(useSkins ? new_image : stdIcon);
+	if (iconName.StartsWith(wxT("Client_"))) {
+		m_imagelist.Add(bmp);
+	} else if (iconName.StartsWith(wxT("Toolbar_"))) {
+		m_tblist.Add(bmp);
 	}
 }
 
 
-void CamuleDlg::Create_Toolbar(wxString skinFileName, bool orientation)
+void CamuleDlg::Apply_Clients_Skin()
+{
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_SkinDir();
+	
+	// Clear the client image list
+	m_imagelist.RemoveAll();
+	
+	// Add the images to the image list
+	for (int i = 0; i < CLIENT_SKIN_SIZE; ++i) {
+		Add_Skin_Icon(wxT("Client_") + m_clientSkinNames[i],
+			clientImages(i), useSkins);
+	}
+}
+
+
+void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
+{
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_SkinDir();
+	
+	// Clear the toolbar image list
+	m_tblist.RemoveAll();
+	
+	// Add the images to the image list
+	Add_Skin_Icon(wxT("Toolbar_Connect"),    connButImg(0),      useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Disconnect"), connButImg(1),      useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Connecting"), connButImg(2),      useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Network"),    amuleDlgImages(20), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Transfers"),  amuleDlgImages(21), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Search"),     amuleDlgImages(22), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Shared"),     amuleDlgImages(23), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Messages"),   amuleDlgImages(24), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Stats"),      amuleDlgImages(25), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(29), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(32), useSkins);
+	
+	// Build aMule toolbar
+	wndToolbar->SetMargins(0, 0);
+	wndToolbar->AddTool(ID_BUTTONCONNECT,
+		_("Connect"), m_tblist.GetBitmap(0),
+		wxNullBitmap, wxITEM_NORMAL,
+		_("Connect to any server and/or Kad"));
+	wndToolbar->AddSeparator();
+	wndToolbar->AddTool(ID_BUTTONNETWORKS,
+		_("Networks"), m_tblist.GetBitmap(3),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Networks Window"));
+	wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true);
+	wndToolbar->AddTool(ID_BUTTONSEARCH,
+		_("Searches"), m_tblist.GetBitmap(5),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Searches Window"));
+	wndToolbar->AddTool(ID_BUTTONTRANSFER,
+		_("Transfers"), m_tblist.GetBitmap(4),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Files Transfers Window"));
+	wndToolbar->AddTool(ID_BUTTONSHARED,
+		_("Shared Files"), m_tblist.GetBitmap(6),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Shared Files Window"));
+	wndToolbar->AddTool(ID_BUTTONMESSAGES,
+		_("Messages"), m_tblist.GetBitmap(7),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Messages Window"));
+	wndToolbar->AddTool(ID_BUTTONSTATISTICS,
+		_("Statistics"), m_tblist.GetBitmap(8),
+		wxNullBitmap, wxITEM_CHECK,
+		_("Statistics Graph Window"));
+	wndToolbar->AddSeparator();
+	wndToolbar->AddTool(ID_BUTTONNEWPREFERENCES,
+		_("Preferences"), m_tblist.GetBitmap(9),
+		wxNullBitmap, wxITEM_NORMAL,
+		_("Preferences Settings Window"));
+	wndToolbar->AddTool(ID_BUTTONIMPORT,
+		_("Import"), m_tblist.GetBitmap(10),
+		wxNullBitmap, wxITEM_NORMAL,
+		_("The partfile importer tool"));
+	wndToolbar->AddTool(ID_ABOUT,
+		_("About"), m_tblist.GetBitmap(11),
+		wxNullBitmap, wxITEM_NORMAL,
+		_("About/Help"));
+	wndToolbar->Realize();
+}
+
+
+void CamuleDlg::Create_Toolbar(bool orientation)
 {
 	Freeze();
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
-	wxToolBar* current = GetToolBar();
+	wxToolBar *current = GetToolBar();
 	if (current) {
 		current->Destroy();
 		SetToolBar(NULL); // Remove old one if present
@@ -1566,17 +1334,10 @@ void CamuleDlg::Create_Toolbar(wxString skinFileName, bool orientation)
 		wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
 		wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
 	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
-	
-	if (!thePrefs::UseSkin()) {
-		muleToolbar( m_wndToolbar );
-	} else {
-		Apply_Toolbar_Skin( skinFileName, m_wndToolbar );		
-	}
-
-	#ifdef CLIENT_GUI
+	Apply_Toolbar_Skin(m_wndToolbar);		
+#ifdef CLIENT_GUI
 	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
-	#endif
-
+#endif
 	Thaw();
 }
 
@@ -1586,12 +1347,11 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 	wxFrame::OnSize(evt);	
 	if (m_transferwnd && m_transferwnd->clientlistctrl) {
 		// Transfer window's splitter set again if it's hidden.
-		if ( m_transferwnd->clientlistctrl->GetListView() == vtNone ) {
-			int height  = m_transferwnd->clientlistctrl->GetSize().GetHeight();
-		
-			wxSplitterWindow* splitter = CastChild( wxT("splitterWnd"), wxSplitterWindow );
+		if (m_transferwnd->clientlistctrl->GetListView() == vtNone) {
+			int height = m_transferwnd->clientlistctrl->GetSize().GetHeight();
+			wxSplitterWindow* splitter =
+				CastChild(wxT("splitterWnd"), wxSplitterWindow);
 			height += splitter->GetWindow1()->GetSize().GetHeight();
-		
 			splitter->SetSashPosition( height );
 		}
 	}
@@ -1613,4 +1373,5 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
 	Close();
 }
+
 // File_checked_for_headers
