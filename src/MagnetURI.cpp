@@ -26,7 +26,7 @@
 #include "MagnetURI.h"
 
 
-#if USE_STD_STRING
+#ifdef USE_STD_STRING
 #	ifdef _T
 #		undef	_T
 #	endif
@@ -36,7 +36,7 @@
 #	define	_T(str)	str
 #	define	_C(ch)	ch
 #else
-#	// wx/chartype.h defines _T
+	// wx/chartype.h defines _T
 #	define	_C(ch)	wxChar(ch)
 #endif
 
