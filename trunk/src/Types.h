@@ -101,9 +101,6 @@ typedef std::list<CUpDownClient*> CClientPtrList;
 
 typedef std::vector<uint16> ArrayOfUInts16;
 
-/* This is the Evil Void String For Returning On Const References From Hell */
-static const wxString EmptyString = wxEmptyString;
-
 #ifndef __cplusplus
 	typedef int bool;
 #endif
