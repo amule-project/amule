@@ -25,14 +25,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
 #include "KnownFile.h"		// Do_not_auto_remove
+
 
 #include <include/protocol/kad/Constants.h>
 #include <include/protocol/ed2k/Client2Client/TCP.h>
 #include <include/protocol/Protocols.h>
 #include <include/tags/FileTags.h>
 
+
 #include <wx/config.h>
+
 
 #include "MemFile.h"		// Needed for CMemFile
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -48,6 +52,7 @@
 
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
+
 
 CFileStatistic::CFileStatistic() : 
 	requested(0), 
@@ -86,6 +91,11 @@ void CFileStatistic::AddTransferred(uint64 bytes){
 
 
 /* Abstract File (base class)*/
+
+
+/* This is the Evil Void String For Returning On Const References From Hell */
+const wxString CAbstractFile::EmptyString = wxEmptyString;
+
 
 CAbstractFile::CAbstractFile()
 :

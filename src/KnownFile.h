@@ -23,19 +23,25 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+
 #ifndef KNOWNFILE_H
 #define KNOWNFILE_H
+
 
 #include "MD4Hash.h"
 #include "SHAHashSet.h"
 
+
 #include <include/protocol/ed2k/Constants.h>
 
+
 #include "kademlia/kademlia/Indexed.h"
+
 
 #ifdef CLIENT_GUI
 #include <ec/cpp/ECSpecialTags.h>
 #endif
+
 
 #define	PS_READY			0
 #define	PS_EMPTY			1
@@ -48,30 +54,43 @@
 #define PS_COMPLETING			8
 #define PS_COMPLETE			9
 
-#define PR_VERYLOW			4 // I Had to change this because it didn't save negative number correctly.. Had to modify the sort function for this change..
+
+#define PR_VERYLOW			4 // I Had to change this because
+					  // it didn't save negative number
+					  // correctly.. Had to modify the
+					  // sort function for this change..
 #define PR_LOW				0 //*
-#define PR_NORMAL			1 // Don't change this - needed for edonkey clients and server!
-#define	PR_HIGH				2 //*
+#define PR_NORMAL			1 // Don't change this - needed for
+					  // edonkey clients and server!
+#define PR_HIGH				2 //*
 #define PR_VERYHIGH			3
 #define PR_AUTO				5
-#define PR_POWERSHARE                   6 //added for powershare (deltaHF)
+#define PR_POWERSHARE			6 //added for powershare (deltaHF)
+
 
 class CUpDownClient;
 class CFileDataIO;
 class CPacket;
 class CTag;
 
-namespace Kademlia{
+
+namespace Kademlia
+{
 	class CEntry;
 };
 
+
 typedef vector<CMD4Hash> ArrayOfCMD4Hash;
+
 
 typedef vector<CTag> ArrayOfCTag;
 
-class CFileStatistic {
+
+class CFileStatistic
+{
 	friend class CKnownFile;
 	friend class CSharedFilesRem;
+
 public:
 	CFileStatistic();
 	void	AddRequest();
@@ -98,16 +117,19 @@ private:
 };
 
 /*
-					   CPartFile
-					 /
-		  CKnownFile
-		/
-CAbstractFile 
-		\ 
-		  CSearchFile
+                             CPartFile
+                           /
+                CKnownFile
+              /
+CAbstractFile
+              \ 
+                CSearchFile
 */
 class CAbstractFile
 {
+private:
+	static const wxString EmptyString;
+
 public:
 	CAbstractFile();
 	explicit CAbstractFile(const CAbstractFile& other);
