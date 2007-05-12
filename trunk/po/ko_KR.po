@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-09 03:31+0200\n"
+"POT-Creation-Date: 2007-05-12 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -63,22 +63,22 @@ msgid "Complete"
 msgstr "완료"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
 msgid "Paused"
 msgstr "중지됨"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
 msgid "Erroneous"
 msgstr "오류투성이"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
 msgid "Downloading"
 msgstr "받는중"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
 msgid "Waiting"
 msgstr "대기중"
 
@@ -692,7 +692,7 @@ msgstr "유효합니다"
 msgid "Folder containing your signature file"
 msgstr "서명파일이 포함하는 폴더"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:343
+#: src/utils/wxCas/src/wxcasprefs.cpp:344
 msgid "Folder where generating the statistic image"
 msgstr "통계 이미지를 생성하는곳의 폴더"
 
@@ -1525,8 +1525,8 @@ msgstr ""
 "연결된 서버를 삭제하려고 합니다. 먼저 연결을 끊으세요. 서버는 삭제되지 않습니"
 "다."
 
-#: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
-#: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
+#: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
+#: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:311
 #: src/amule.cpp:715 src/amule.cpp:1318
 msgid "Info"
 msgstr "정보"
@@ -2881,7 +2881,7 @@ msgid "Transferred"
 msgstr "전송됨"
 
 #: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:801
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
 msgid "Completed"
 msgstr "완료됨"
 
@@ -3295,7 +3295,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "불충분한 디스크공간"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:806
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
 msgid "Stopped"
 msgstr "멈춤"
 
@@ -4136,38 +4136,38 @@ msgstr "확인이 요청됨"
 msgid "All others"
 msgstr "다른 전부"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:801
 msgid "Incomplete"
 msgstr "내려받음"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:813
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:814
 msgid "Active"
 msgstr "동적인"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:808
 msgid "Video"
 msgstr "비디오"
 
 #: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:228
+#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "음악"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:809
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:810
 msgid "Archive"
 msgstr "압축"
 
 #: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD이미지"
 
 #: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "그림"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:812
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:813
 msgid "Text"
 msgstr "문자"
 
@@ -4274,26 +4274,26 @@ msgstr "파일 해시"
 msgid "Import partfiles"
 msgstr "부분파일 가져오기"
 
-#: src/PartFileConvert.cpp:709
+#: src/PartFileConvert.cpp:710
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr "임시 내려받기를 위해 검색할 폴더를 선택하세요! (하위 폴더 포함)"
 
-#: src/PartFileConvert.cpp:712
+#: src/PartFileConvert.cpp:714
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "성공적으로 가져온 내려받기 파일을 삭제하겠습니까?"
 
-#: src/PartFileConvert.cpp:713
+#: src/PartFileConvert.cpp:715
 msgid "Remove sources?"
 msgstr "자료 삭제?"
 
-#: src/PartFileConvert.cpp:734 src/muuli_wdr.cpp:3887
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3887
 msgid "Waiting..."
 msgstr "기달리는중..."
 
-#: src/PartFileConvert.cpp:749
+#: src/PartFileConvert.cpp:751
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr "%s(디스크: %s)"
@@ -4378,35 +4378,35 @@ msgstr "프로그램"
 msgid "Any"
 msgstr "어떤"
 
-#: src/OtherFunctions.cpp:389 src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:390 src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "선택되지 않은"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "쓸모없는 / 손상된 / 가짜"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "나쁜"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "깨끗한"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "좋은"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "아주좋은"
 
-#: src/OtherFunctions.cpp:798
+#: src/OtherFunctions.cpp:799
 msgid "all"
 msgstr "전부"
 
-#: src/OtherFunctions.cpp:799
+#: src/OtherFunctions.cpp:800
 msgid "all others"
 msgstr "다른 모두"
 
@@ -6166,19 +6166,19 @@ msgstr ""
 msgid "New Category"
 msgstr "새로운 분류"
 
-#: src/CatDialog.cpp:132
+#: src/CatDialog.cpp:133
 msgid "Choose a folder for incoming files"
 msgstr "저장할 폴더를 선택하세요"
 
-#: src/CatDialog.cpp:146
+#: src/CatDialog.cpp:148
 msgid "You must specify a name for the category!"
 msgstr "분류 이름을 정하세요."
 
-#: src/CatDialog.cpp:157
+#: src/CatDialog.cpp:159
 msgid "You must specify a path for the category!"
 msgstr "분류 경로를 정하세요"
 
-#: src/CatDialog.cpp:166
+#: src/CatDialog.cpp:168
 msgid ""
 "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr "분류 디렉토리를 생성하지 못했습니다. 유효한 경로를 지정하세요."
