@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-09 03:31+0200\n"
+"POT-Creation-Date: 2007-05-12 03:31+0200\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -72,22 +72,22 @@ msgid "Complete"
 msgstr "Kész"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3715
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
 msgid "Paused"
 msgstr "Szüneteltetve"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3718
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:804
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
 msgid "Erroneous"
 msgstr "Hibás"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3725
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
 msgid "Downloading"
 msgstr "Letöltés alatt"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3727
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
 msgid "Waiting"
 msgstr "Várakozik"
 
@@ -714,7 +714,7 @@ msgstr "Mentés"
 msgid "Folder containing your signature file"
 msgstr "Aláírás fájlt tartalmazó könyvtár"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:343
+#: src/utils/wxCas/src/wxcasprefs.cpp:344
 msgid "Folder where generating the statistic image"
 msgstr "A statisztika készítésének könyvtára"
 
@@ -1560,8 +1560,8 @@ msgstr ""
 "Olyan kiszolgálót próbál törölni, amelyikhez csatlakozva van. Kérém először "
 "válassza le. A kiszolgáló NEM került törlésre."
 
-#: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:147
-#: src/CatDialog.cpp:158 src/CatDialog.cpp:168 src/ServerList.cpp:311
+#: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
+#: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:311
 #: src/amule.cpp:715 src/amule.cpp:1318
 msgid "Info"
 msgstr "Infó"
@@ -2953,7 +2953,7 @@ msgid "Transferred"
 msgstr "Átmásolva"
 
 #: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:801
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
 msgid "Completed"
 msgstr "Befejezett"
 
@@ -3370,7 +3370,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Elégtelen lemezterület"
 
-#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:806
+#: src/PartFile.cpp:3732 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
 msgid "Stopped"
 msgstr "Megállítva"
 
@@ -4212,39 +4212,39 @@ msgstr "Megerősítés szükséges"
 msgid "All others"
 msgstr "Összes egyéb"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:800
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:801
 msgid "Incomplete"
 msgstr "Befejezetlen"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:813
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:814
 #, fuzzy
 msgid "Active"
 msgstr "Archívált"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:808
 msgid "Video"
 msgstr "Film"
 
 #: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:808 src/muuli_wdr.cpp:228
+#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Zene"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:809
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:810
 msgid "Archive"
 msgstr "Archívált"
 
 #: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Image"
 
 #: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Képek"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:812
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:813
 msgid "Text"
 msgstr "Szöveg"
 
@@ -4358,27 +4358,27 @@ msgstr "Fájl Hash"
 msgid "Import partfiles"
 msgstr "az Ideiglenes fájloknak"
 
-#: src/PartFileConvert.cpp:709
+#: src/PartFileConvert.cpp:710
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr ""
 
-#: src/PartFileConvert.cpp:712
+#: src/PartFileConvert.cpp:714
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 
-#: src/PartFileConvert.cpp:713
+#: src/PartFileConvert.cpp:715
 #, fuzzy
 msgid "Remove sources?"
 msgstr "Források megtartása"
 
-#: src/PartFileConvert.cpp:734 src/muuli_wdr.cpp:3887
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3887
 msgid "Waiting..."
 msgstr "Várakozás..."
 
-#: src/PartFileConvert.cpp:749
+#: src/PartFileConvert.cpp:751
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr ""
@@ -4467,35 +4467,35 @@ msgstr "Programok"
 msgid "Any"
 msgstr "Akármelyik"
 
-#: src/OtherFunctions.cpp:389 src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:390 src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Nincs értékelve"
 
-#: src/OtherFunctions.cpp:390 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Érvénytelen / Sérült / Hamis"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Gyenge"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Korrekt"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Jó"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Kitűnő"
 
-#: src/OtherFunctions.cpp:798
+#: src/OtherFunctions.cpp:799
 msgid "all"
 msgstr "mind"
 
-#: src/OtherFunctions.cpp:799
+#: src/OtherFunctions.cpp:800
 msgid "all others"
 msgstr "összes egyéb"
 
@@ -6287,19 +6287,19 @@ msgstr ""
 msgid "New Category"
 msgstr "Új kategória"
 
-#: src/CatDialog.cpp:132
+#: src/CatDialog.cpp:133
 msgid "Choose a folder for incoming files"
 msgstr "Könyvtár kiválasztása az érkező fájloknak"
 
-#: src/CatDialog.cpp:146
+#: src/CatDialog.cpp:148
 msgid "You must specify a name for the category!"
 msgstr "Meg kell adnod a kategória nevét!"
 
-#: src/CatDialog.cpp:157
+#: src/CatDialog.cpp:159
 msgid "You must specify a path for the category!"
 msgstr "Meg kell adnod a kategória elérési útvonalát!"
 
-#: src/CatDialog.cpp:166
+#: src/CatDialog.cpp:168
 msgid ""
 "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
