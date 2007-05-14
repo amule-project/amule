@@ -1268,8 +1268,8 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	Add_Skin_Icon(wxT("Toolbar_Messages"),   amuleDlgImages(24), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Stats"),      amuleDlgImages(25), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(29), useSkins);
-	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(32), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
 	
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
