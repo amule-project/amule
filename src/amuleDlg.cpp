@@ -1273,10 +1273,22 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
-	wndToolbar->AddTool(ID_BUTTONCONNECT,
-		_("Connect"), m_tblist.GetBitmap(0),
-		wxNullBitmap, wxITEM_NORMAL,
-		_("Connect to any server and/or Kad"));
+	if (theApp->IsConnectedED2K()) {
+		wndToolbar->AddTool(ID_BUTTONCONNECT,
+			_("Disconnect"), m_tblist.GetBitmap(1),
+			wxNullBitmap, wxITEM_NORMAL,
+			_("Disconnect from any server and/or Kad"));
+	} else if (theApp->serverconnect && theApp->serverconnect->IsConnecting()) {
+		wndToolbar->AddTool(ID_BUTTONCONNECT,
+			_("Cancel"), m_tblist.GetBitmap(2),
+			wxNullBitmap, wxITEM_NORMAL,
+			_("Stops the current connection attempts"));
+	} else {
+		wndToolbar->AddTool(ID_BUTTONCONNECT,
+			_("Connect"), m_tblist.GetBitmap(0),
+			wxNullBitmap, wxITEM_NORMAL,
+			_("Connect to any server and/or Kad"));
+	}
 	wndToolbar->AddSeparator();
 	wndToolbar->AddTool(ID_BUTTONNETWORKS,
 		_("Networks"), m_tblist.GetBitmap(3),
