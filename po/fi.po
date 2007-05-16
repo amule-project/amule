@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule-1.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-13 03:30+0200\n"
+"POT-Creation-Date: 2007-05-16 03:31+0200\n"
 "PO-Revision-Date: 2004-02-15 01:25-0000\n"
 "Last-Translator: Lauri Kosonen/eQualizer <herra_perkele@hotmail.com>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -243,7 +243,7 @@ msgstr ""
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:552
-#: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:678
+#: src/ServerListCtrl.cpp:566 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1283
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2884
@@ -315,7 +315,7 @@ msgstr ""
 msgid "Directory Path"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:124 src/amuleDlg.cpp:1295 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:124 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4048
 msgid "Shared Files"
 msgstr "Jaetut tiedostot"
@@ -607,7 +607,7 @@ msgstr "Ladataan..."
 msgid "( %s / %s )"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1308
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4052
 msgid "Preferences"
 msgstr "Asetukset"
@@ -1634,7 +1634,7 @@ msgstr ""
 msgid "Status text"
 msgstr ""
 
-#: src/amuleDlg.cpp:681
+#: src/amuleDlg.cpp:681 src/amuleDlg.cpp:1285
 msgid "Stops the current connection attempts"
 msgstr "Lopettaa tämän hetkiset yhdistämis aikeet"
 
@@ -1650,16 +1650,17 @@ msgstr ""
 msgid " and "
 msgstr ""
 
-#: src/amuleDlg.cpp:697 src/muuli_wdr.cpp:3148 src/MuleTrayIcon.cpp:508
+#: src/amuleDlg.cpp:697 src/amuleDlg.cpp:1278 src/muuli_wdr.cpp:3148
+#: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
-#: src/amuleDlg.cpp:704 src/amuleDlg.cpp:1277 src/muuli_wdr.cpp:3368
+#: src/amuleDlg.cpp:704 src/amuleDlg.cpp:1288 src/muuli_wdr.cpp:3368
 #: src/muuli_wdr.cpp:3816 src/muuli_wdr.cpp:4042 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Yhdistä"
 
-#: src/amuleDlg.cpp:707 src/amuleDlg.cpp:1279 src/muuli_wdr.cpp:4042
+#: src/amuleDlg.cpp:707 src/amuleDlg.cpp:1290 src/muuli_wdr.cpp:4042
 msgid "Connect to any server and/or Kad"
 msgstr ""
 
@@ -1708,12 +1709,12 @@ msgstr "Haluatko varmasti sulkea aMulen?"
 msgid "Exit confirmation"
 msgstr "Lopettamisen varmennus"
 
-#: src/amuleDlg.cpp:1091 src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1091 src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3609 src/muuli_wdr.cpp:4049
 msgid "Messages"
 msgstr "Viestit"
 
-#: src/amuleDlg.cpp:1095 src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1095 src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4049
 msgid "Messages Window"
 msgstr "Viestit-ikkuna"
 
@@ -1735,61 +1736,65 @@ msgstr ""
 msgid "Warning: Unable to open skin directory '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1282 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:1280
+msgid "Disconnect from any server and/or Kad"
+msgstr ""
+
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4044
 msgid "Networks"
 msgstr ""
 
-#: src/amuleDlg.cpp:1284 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:4044
 msgid "Networks Window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1287 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:4046
 msgid "Searches"
 msgstr "Haut"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:4046
 msgid "Searches Window"
 msgstr "Haku ikkuna -ikkuna"
 
-#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:4047
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:4047
 msgid "Transfers"
 msgstr "Siirrot"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:4047
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:4047
 msgid "Files Transfers Window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:4048
 msgid "Shared Files Window"
 msgstr "Jaetut tiedostot -ikkuna"
 
-#: src/amuleDlg.cpp:1303 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4050
 msgid "Statistics"
 msgstr "Statistiikka"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:4050
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4050
 msgid "Statistics Graph Window"
 msgstr "Statistiikka-ikkuna"
 
-#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:4052
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4052
 msgid "Preferences Settings Window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:4053
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4053
 msgid "Import"
 msgstr ""
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:4053
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4053
 msgid "The partfile importer tool"
 msgstr ""
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4054
 msgid "About"
 msgstr ""
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4054
 msgid "About/Help"
 msgstr ""
 
