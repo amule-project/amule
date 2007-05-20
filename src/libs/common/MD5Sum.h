@@ -37,10 +37,11 @@ public:
 	wxString Calculate(const uint8* buffer, int len);
 
 	wxString GetHash();
-	Unicode2CharBuf GetRawHash() const { return unicode2char(m_sHash); }
+	const uint8* GetRawHash() const { return m_rawhash; }
 
 private:
 	wxString	m_sHash;
+	uint8 m_rawhash[16];
 };
 
 #endif // MD5SUM_H

@@ -49,8 +49,8 @@ public:
 	CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData = NULL);
 	virtual ~CServerSocket();
 
-	void	ConnectToServer(CServer* server);
-	sint8	GetConnectionState()		{ return connectionstate; } 
+	void	ConnectToServer(CServer* server, bool bNoCrypt = false);
+	sint8	GetConnectionState()	const	{ return connectionstate; } 
  	uint32  GetLastTransmission() const	{ return m_dwLastTransmission; }
 	wxString info;
 
@@ -64,12 +64,15 @@ public:
  	void	OnHostnameResolved(uint32 ip);
  	CServer *GetServerConnected() const { return serverconnect->GetCurrentServer(); }
 	
+	uint32 GetServerIP() const;
+	
 private:
 	bool	ProcessPacket(const byte* packet, uint32 size, int8 opcode);
 	void	SetConnectionState(sint8 newstate);
 	CServerConnect*	serverconnect; 
 	sint8	connectionstate;
 	CServer*	cur_server;
+	bool m_bNoCrypt;
 	bool	headercomplete;
 	int32	sizetoget;
 	int32	sizereceived;

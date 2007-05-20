@@ -51,10 +51,15 @@ MD5Sum::MD5Sum(const wxString& sSource)
 	Calculate(sSource);
 }
 
+MD5Sum::MD5Sum(const uint8* buffer, int len)
+{
+	Calculate(buffer, len);
+}
+
 wxString MD5Sum::Calculate(const wxString& sSource)
 {
 	return Calculate(
-		(const unsigned char*)(const char*)unicode2char(sSource),
+		(const uint8*)(const char*)unicode2char(sSource),
 		sSource.Length());
 }
 
@@ -76,6 +81,8 @@ wxString MD5Sum::Calculate(const uint8* buffer, int len)
 		m_sHash += sT;
 	}
 
+	memcpy(m_rawhash, digest, 16);
+	
 	return m_sHash;
 }
 

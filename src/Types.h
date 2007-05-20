@@ -101,6 +101,15 @@ typedef std::list<CUpDownClient*> CClientPtrList;
 
 typedef std::vector<uint16> ArrayOfUInts16;
 
+/* This is the Evil Void String For Returning On Const References From Hell */
+// IT MEANS I WANT TO USE IT EVERYWHERE. DO NOT MOVE IT. 
+// THE FACT SOMETHING IS USED IN JUST ONE PLACE DOESN'T MEAN IT HAS
+// TO BE MOVED TO THAT PLACE. I MIGHT NEED IT ELSEWHERE LATER.
+//
+// FUCKTARD.
+
+static const wxString EmptyString = wxEmptyString;
+
 #ifndef __cplusplus
 	typedef int bool;
 #endif

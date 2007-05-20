@@ -116,7 +116,7 @@ public:
 	void	WritePartStatus(CMemFile* file);
 	void	WriteCompleteSourcesCount(CMemFile* file);
 	static bool 	CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16 serverport, uint8* pdebug_lowiddropped = NULL, bool ed2kID = true);
-	void	AddSources(CMemFile& sources, uint32 serverip, uint16 serverport, unsigned origin);
+	void	AddSources(CMemFile& sources, uint32 serverip, uint16 serverport, unsigned origin, bool bWithObfuscationAndHash);
 #ifdef CLIENT_GUI
 	uint8	GetStatus() const { return status; }
 	uint8	GetStatus(bool /*ignorepause = false*/) const { return status; }
@@ -167,8 +167,8 @@ public:
 	void	PauseFile(bool bInsufficient = false);
 	void	ResumeFile();
 
-	virtual	CPacket* CreateSrcInfoPacket(const CUpDownClient* forClient);
-	void    AddClientSources(CMemFile* sources, uint8 sourceexchangeversion, unsigned nSourceFrom);
+	virtual	CPacket* CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions);
+	void    AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* pClient = NULL);
 
 	bool	PreviewAvailable();
 	uint8	GetAvailablePartCount() const	{ return m_availablePartsCount; }

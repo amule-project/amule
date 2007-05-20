@@ -339,6 +339,10 @@ public:
 	void RemoveFromKadList(CUpDownClient* torem);
 	void AddToKadList(CUpDownClient* toadd);
 
+	// We lack the kad firewall check
+	#warning ALSO FIX THIS, NOW!!!
+	bool IsKadFirewallCheckIP(uint32 ip) { return false; }
+	
 private:
 	/**
 	 * Helperfunction which finds a client matching the specified client.

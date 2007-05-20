@@ -25,51 +25,121 @@
 
 
 #include "RC4Encrypt.h"
-
+#include <common/MD5Sum.h>
 
 #include <stdexcept>
 
-
-///////////////////////////////////////////////////////////////////////////////
-// RC4 Encryption
-//
-
-
-RC4_Key_Struct* RC4CreateKey(
-	const uint8* pachKeyData,
-	uint32 nLen,
-	RC4_Key_Struct *key,
-	bool bSkipDiscard);
+CRC4EncryptableBuffer::CRC4EncryptableBuffer() 
+:
+m_encrypted(false),
+m_hasKey(false),
+m_key()
+{
+}
 
 
-void RC4Crypt(
-	const uint8 *pachIn,
-	uint8 *pachOut,
-	uint32 nLen,
-	RC4_Key_Struct *key);
+CRC4EncryptableBuffer::~CRC4EncryptableBuffer()
+{
+}
+
+void CRC4EncryptableBuffer::Append(const uint8* buffer, int n)
+{
+	wxASSERT(!m_encrypted);
+	if (!m_encrypted) {
+		CMemFile::Append(buffer, n);
+	} else {
+		throw std::runtime_error(
+			"(CRC4EncryptableBuffer::Append): "
+			"Tryed to append data to an encrypted buffer.");
+	}
+}
 
 
-RC4_Key_Struct* RC4CreateKey(
-	const uint8* pachKeyData,
-	uint32 nLen,
-	RC4_Key_Struct *key,
-	bool bSkipDiscard)
+void CRC4EncryptableBuffer::Encrypt()
+{
+	wxASSERT(!m_encrypted);
+	// This is not optimal. At all.
+	int n = GetLength();
+	printf("Encrypting a %i bytes buffer\n", n);
+	byte orig_buffer[n];
+	memcpy(orig_buffer, GetRawBuffer(), n);
+	RC4Crypt(orig_buffer, GetRawBuffer(), n);
+	DumpMem(orig_buffer, n, wxT("Orig buffer: "));
+	DumpMem(GetRawBuffer() ,n, wxT("Encrypted buffer: "));
+	m_encrypted = true;
+}
+
+void CRC4EncryptableBuffer::RC4Crypt( const uint8 *pachIn, uint8 *pachOut, uint32 nLen)
+{
+	wxASSERT( m_hasKey && nLen > 0 );
+	
+	if (m_hasKey) {
+		uint8 byX = m_key.byX;;
+		uint8 byY = m_key.byY;
+		uint8* pabyState = &m_key.abyState[0];;
+		uint8 byXorIndex;
+		
+		for (uint32 i = 0; i < nLen; ++i) {
+			byX = (byX + 1) % 256;
+			byY = (pabyState[byX] + byY) % 256;
+			std::swap(pabyState[byX], pabyState[byY]);
+			byXorIndex = (pabyState[byX] + pabyState[byY]) % 256;
+			
+			if (pachIn != NULL) {
+				pachOut[i] = pachIn[i] ^ pabyState[byXorIndex];
+			}
+		}
+		
+		m_key.byX = byX;
+		m_key.byY = byY;
+	} else {
+		throw std::runtime_error(
+			"(CRC4EncryptableBuffer::RC4Crypt): "
+			"Encrypt() has been called without a previous call"
+			"to SetKey().");		
+	}
+}
+
+uint8 *CRC4EncryptableBuffer::Detach()
+{
+	int n = GetLength();
+	uint8 *ret = new uint8[n];
+	memcpy(ret, GetRawBuffer(), n);
+	ResetData();
+	m_encrypted = false;
+	return ret;
+}
+
+
+void CRC4EncryptableBuffer::SetKey(const MD5Sum& keyhash, bool bSkipDiscard)
+{
+	wxASSERT(!m_hasKey);
+	if (!m_hasKey) {
+		m_hasKey = true;
+		RC4CreateKey(
+			keyhash.GetRawHash(),
+			16, bSkipDiscard);
+	} else {
+		throw std::runtime_error(
+			"(CRC4EncryptableBuffer::SetKey): "
+			"SetKey() has been called twice.");
+	}
+}
+
+
+void CRC4EncryptableBuffer::RC4CreateKey(const uint8* pachKeyData, uint32 nLen, bool bSkipDiscard)
 {
 	uint8 index1;
 	uint8 index2;
 	uint8* pabyState;
 
-	if (key == NULL) {
-		key = new RC4_Key_Struct;
-	}
-
-	pabyState= &key->abyState[0];
+	pabyState= &m_key.abyState[0];
 	for (int i = 0; i < 256; ++i) {
 		pabyState[i] = (uint8)i;
 	}
 
-	key->byX = 0;
-	key->byY = 0;
+	m_key.byX = 0;
+	m_key.byY = 0;
 	index1 = 0;
 	index2 = 0;
 	
@@ -80,130 +150,13 @@ RC4_Key_Struct* RC4CreateKey(
 	}
 	
 	if (!bSkipDiscard) {
-		RC4Crypt(NULL, NULL, 1024, key);
-	}
-	
-	return key;
-}
-
-
-void RC4Crypt(
-	const uint8 *pachIn,
-	uint8 *pachOut,
-	uint32 nLen,
-	RC4_Key_Struct *key)
-{
-	wxASSERT( key != NULL && nLen > 0 );
-	
-	if (key == NULL) {
-		return;
-	}
-	
-	uint8 byX = key->byX;;
-	uint8 byY = key->byY;
-	uint8* pabyState = &key->abyState[0];;
-	uint8 byXorIndex;
-	
-	for (uint32 i = 0; i < nLen; ++i) {
-		byX = (byX + 1) % 256;
-		byY = (pabyState[byX] + byY) % 256;
-		std::swap(pabyState[byX], pabyState[byY]);
-		byXorIndex = (pabyState[byX] + pabyState[byY]) % 256;
-		
-		if (pachIn != NULL) {
-			pachOut[i] = pachIn[i] ^ pabyState[byXorIndex];
-		}
-	}
-	
-	key->byX = byX;
-	key->byY = byY;
-}
-
-
-CRC4EncryptableBuffer::CRC4EncryptableBuffer()
-:
-std::vector<uint8>(0),
-m_encrypted(false),
-m_hasKey(false),
-m_key(),
-m_tmpBuf(0)
-{
-}
-
-
-CRC4EncryptableBuffer::~CRC4EncryptableBuffer()
-{
-}
-
-
-bool CRC4EncryptableBuffer::IsEmpty()
-{
-	return empty();
-}
-
-
-void CRC4EncryptableBuffer::Append(uint8* buffer, int n)
-{
-	wxASSERT(!m_encrypted);
-	if (!m_encrypted) {
-		for(int i = 0; i < n; ++i) {
-			push_back(buffer[i]);
-		}
-	} else {
-		throw std::runtime_error(
-			"(CRC4EncryptableBuffer::Append): "
-			"Tryed to append data to an encrypted buffer.");
+		RC4Crypt(NULL, NULL, 1024);
 	}
 }
 
-
-void CRC4EncryptableBuffer::SetKey(MD5Sum keyhash)
+void CRC4EncryptableBuffer::ResetData()
 {
-	wxASSERT(!m_hasKey);
-	if (!m_hasKey) {
-		m_hasKey = true;
-		RC4CreateKey(
-			(const uint8 *)((const char *)keyhash.GetRawHash()),
-			16, &m_key, false);
-	} else {
-		throw std::runtime_error(
-			"(CRC4EncryptableBuffer::SetKey): "
-			"SetKey() has been called twice.");
-	}
-}
-
-
-void CRC4EncryptableBuffer::Encrypt()
-{
-	wxASSERT(m_hasKey);
-	if (m_hasKey) {
-		uint32 n = GetSize();
-		std::vector<uint8> &outBuf = dynamic_cast<std::vector<uint8> &>(*this);
-		std::swap(m_tmpBuf, outBuf);
-		RC4Crypt(&m_tmpBuf[0], &outBuf[0], n, &m_key);
-	} else {
-		throw std::runtime_error(
-			"(CRC4EncryptableBuffer::Encrypt): "
-			"Encrypt() has been called without a previous call"
-			"to SetKey().");
-	}
-}
-
-
-size_t CRC4EncryptableBuffer::GetSize()
-{
-	return size();
-}
-
-
-uint8 *CRC4EncryptableBuffer::Detach()
-{
-	int n = GetSize();
-	uint8 *ret = new uint8[n];
-	memcpy(ret, &this[0], n);
-	resize(0);
 	m_encrypted = false;
-
-	return ret;
+	// Should we clear the keys?
+	CMemFile::ResetData();
 }
-

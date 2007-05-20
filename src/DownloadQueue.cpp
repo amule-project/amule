@@ -213,7 +213,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-
+#warning We must add the sources, review CSearchFile constructor.
 void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 {
 	if ( IsFileExisting(toadd->GetFileHash()) ) {
@@ -493,6 +493,11 @@ void CDownloadQueue::CheckAndAddSource(CPartFile* sender, CUpDownClient* source)
 		return;
 	}
 
+	// Filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
+	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash()))) {
+		source->Safe_Delete();
+		return;
+	}	
 	
 	// Find all clients with the same hash
 	if ( source->HasValidHash() ) {
@@ -595,6 +600,13 @@ void CDownloadQueue::CheckAndAddKnownSource(CPartFile* sender,CUpDownClient* sou
 			return;
 		}
 	}	
+	
+	// Filter sources which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
+	if ( (source->RequiresCryptLayer() && (!thePrefs::IsClientCryptLayerSupported() || !source->HasValidHash())) || (thePrefs::IsClientCryptLayerRequired() && (!source->SupportsCryptLayer() || !source->HasValidHash())))
+	{
+		source->Safe_Delete();
+		return;
+	}		
 	
 	CPartFile* file = source->GetRequestFile();
 	
@@ -931,7 +943,13 @@ void CDownloadQueue::ProcessLocalRequests()
 					} else {
 						data.WriteUInt32(cur_file->GetFileSize());
 					}
-					CPacket packet(data, OP_EDONKEYPROT, OP_GETSOURCES);
+					uint8 byOpcode = 0;
+					if (thePrefs::IsClientCryptLayerSupported() && theApp->serverconnect->GetCurrentServer() != NULL && theApp->serverconnect->GetCurrentServer()->SupportsGetSourcesObfuscation()) {
+						byOpcode = OP_GETSOURCES_OBFU;
+					} else {
+						byOpcode = OP_GETSOURCES;
+					}
+					CPacket packet(data, OP_EDONKEYPROT, byOpcode);
 					dataTcpFrame.Write(packet.GetPacket(), packet.GetRealPacketSize());
 				}
 			}
@@ -1240,7 +1258,7 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 			sources.WriteUInt16(resolved.port);
 			sources.Seek(0,wxFromStart);
 			
-			file->AddSources(sources, 0, 0, SF_LINK);
+			file->AddSources(sources, 0, 0, SF_LINK, false);
 		}
 	}
 	
@@ -1405,7 +1423,7 @@ void CDownloadQueue::ObserverAdded( ObserverType* o )
 	NotifyObservers( EventType( EventType::INITIAL, &list ), o );
 }
 
-void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint32 WXUNUSED(clientid))
+void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt128* pcontactID, const Kademlia::CUInt128* pbuddyID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 serverport, uint8 byCryptOptions)
 {
 	
 	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
@@ -1438,6 +1456,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	
 	CUpDownClient* ctemp = NULL; 
 	switch( type ) {
+		case 4:
 		case 1: {
 			//NonFirewalled users
 			if(!tcp) {
@@ -1463,6 +1482,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			//Don't use this type... Some clients will process it wrong..
 			break;
 		}
+		case 5:
 		case 3: {
 			//This will be a firewaled client connected to Kad only.
 			//We set the clientID to 1 as a Kad user only has 1 buddy.
@@ -1483,6 +1503,11 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	}
 
 	if (ctemp) {
+		// add encryption settings
+		ctemp->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+		ctemp->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
+		ctemp->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+
 		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ip, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}

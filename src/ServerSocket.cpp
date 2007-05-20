@@ -142,6 +142,7 @@ CEMSocket(ProxyData)
 
 	m_dwLastTransmission = 0;	
 	m_IsSolving = false;
+	m_bNoCrypt = false;
 }
 
 CServerSocket::~CServerSocket()
@@ -299,7 +300,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				}
 				break;
 			}
-			case OP_IDCHANGE:{
+			case OP_IDCHANGE: {
 				AddDebugLogLineM(false,logServer,wxT("Server: OP_IDCHANGE"));
 				
 				theStats::AddDownOverheadServer(size);
@@ -312,12 +313,13 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				
 				uint32 new_id = data.ReadUInt32();
 
-				/* Add more from 0.30c (Creteil) BEGIN */
 				// save TCP flags in 'cur_server'
 				wxASSERT(cur_server);
 				uint32 ConnPort = 0;
+				CServer* pServer = NULL;
 				if (cur_server) {
-					uint32 rport = cur_server->GetConnPort();					
+					uint32 rport = cur_server->GetConnPort();
+					pServer = theApp->serverlist->GetServerByAddress(cur_server->GetAddress(), rport);
 					if (size >= 4+4 /* uint32 (ID) + uint32 (TCP flags)*/) {			
 						cur_server->SetTCPFlags(data.ReadUInt32());
 						if (size >= 4+4+4 /* uint32 (ID) + uint32 (TCP flags) + uint32 (aux port) */) {
@@ -334,7 +336,6 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						cur_server->SetTCPFlags(0);
 					}
 					// copy TCP flags into the server in the server list
-					CServer* pServer = theApp->serverlist->GetServerByAddress(cur_server->GetAddress(), rport);
 					if (pServer) {
 						pServer->SetTCPFlags(cur_server->GetTCPFlags());
 						if (ConnPort) {
@@ -349,7 +350,26 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 						}
 					}
 				}
-				/* Add more from 0.30c (Creteil) END */
+				
+				uint32 dwServerReportedIP = 0;
+				uint32 dwObfuscationTCPPort = 0;
+				if (size >= 4 + 4 + 4 + 4 + 4 /* All of the above + reported ip + obfuscation port */) {
+					dwServerReportedIP = data.ReadUInt32();
+					if (::IsLowID(dwServerReportedIP)){
+						wxASSERT( false );
+						dwServerReportedIP = 0;
+					}
+					wxASSERT( dwServerReportedIP == new_id || ::IsLowID(new_id) );
+					dwObfuscationTCPPort = data.ReadUInt32();
+					if (cur_server != NULL && dwObfuscationTCPPort != 0) {
+						cur_server->SetObfuscationPortTCP((uint16)dwObfuscationTCPPort);
+					}
+					
+					if (pServer != NULL && dwObfuscationTCPPort != 0) {
+						pServer->SetObfuscationPortTCP((uint16)dwObfuscationTCPPort);
+					}
+				}				
+				
 				if (new_id == 0) {
 					uint8 state = thePrefs::GetSmartIdState();
 					if ( state > 0 ) {
@@ -382,6 +402,10 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				// we need to know our client when sending our shared files (done indirectly on SetConnectionState)
 
 				serverconnect->SetClientID(new_id);
+
+				if (::IsLowID(new_id) && dwServerReportedIP != 0) {
+					theApp->SetPublicIP(dwServerReportedIP);
+				}
 				
 				if (connectionstate != CS_CONNECTED) {
 					AddDebugLogLineM(true,logServer,wxT("Connected"));
@@ -412,13 +436,14 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				theApp->searchlist->LocalSearchEnd();
 				break;
 			}
+			case OP_FOUNDSOURCES_OBFU:			
 			case OP_FOUNDSOURCES: {
 				AddDebugLogLineM(false,logServer,wxString::Format(wxT("ServerMsg - OP_FoundSources; sources = %u"), (uint32)(byte)packet[16]));
 				theStats::AddDownOverheadServer(size);
 				CMemFile sources(packet,size);
 				CMD4Hash fileid = sources.ReadHash();
 				if (CPartFile* file = theApp->downloadqueue->GetFileByID(fileid)) {
-					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_LOCAL_SERVER);
+					file->AddSources(sources, cur_server->GetIP(), cur_server->GetPort(), SF_LOCAL_SERVER, (opcode == OP_FOUNDSOURCES_OBFU));
 				} else {
 					AddDebugLogLineM(true, logServer, wxT("Sources received for unknown file: ") + fileid.Encode());			
 				}
@@ -522,7 +547,34 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 					CMemFile data(packet,size);
 					uint32 dwIP = data.ReadUInt32();
 					uint16 nPort = data.ReadUInt16();
+					
+					uint8 byCryptOptions = 0;
+					CMD4Hash achUserHash;
+					if (size >= 23){
+						byCryptOptions = data.ReadUInt8();;
+						achUserHash = data.ReadHash();
+					}
+					
 					CUpDownClient* client = theApp->clientlist->FindClientByIP(dwIP,nPort);
+					if (size >= 23 && client->HasValidHash()){
+						if (client->GetUserHash() != achUserHash){
+							AddDebugLogLineM(false, logServer, wxT("Reported Userhash from OP_CALLBACKREQUESTED differs with our stored hash"));
+							// disable crypt support since we dont know which hash is true
+							client->SetCryptLayerRequest(false);
+							client->SetCryptLayerSupport(false);
+							client->SetCryptLayerRequires(false);
+						} else {
+							client->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+							client->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
+							client->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+						}
+					} else if (size >= 23) {
+						client->SetUserHash(achUserHash);
+						client->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+						client->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
+						client->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+					}
+					
 					if (client) {
 						client->TryToConnect();
 					} else {
@@ -565,16 +617,20 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 	return false;	
 }
 
-void CServerSocket::ConnectToServer(CServer* server)
+void CServerSocket::ConnectToServer(CServer* server, bool bNoCrypt)
 {
 	AddDebugLogLineM(true,logServer,wxT("Trying to connect"));
 	
+	if (cur_server){
+		wxASSERT(0);
+		delete cur_server;
+		cur_server = NULL;
+	}
+	
 	cur_server = new CServer(server);
-	AddLogLineM(false, CFormat( _("Connecting to %s (%s - %s:%i)") )
-		% cur_server->GetListName()
-		% server->GetAddress()
-		% cur_server->GetFullIP()
-		% cur_server->GetConnPort() );
+	
+	m_bNoCrypt = bNoCrypt;	
+	
 	SetConnectionState(CS_CONNECTING);
 	
 	info = cur_server->GetListName();		
@@ -677,7 +733,27 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		} else {
 			amuleIPV4Address addr;
 			addr.Hostname(ip);
-			addr.Service(cur_server->GetConnPort());
+			uint16 nPort = 0;
+			wxString useObfuscation;
+			if ( !m_bNoCrypt && thePrefs::IsServerCryptLayerTCPRequested() && cur_server->GetObfuscationPortTCP() != 0 && cur_server->SupportsObfuscationTCP()){
+				nPort = cur_server->GetObfuscationPortTCP();
+				useObfuscation = _("using protocol obfuscation.");
+				SetConnectionEncryption(true, NULL, true);
+			} else {
+				nPort = cur_server->GetConnPort();
+				SetConnectionEncryption(false, NULL, true);
+			}
+			
+			addr.Service(nPort);			
+			
+			AddLogLineM(false, CFormat( _("Connecting to %s (%s - %s:%i) %s") )
+				% cur_server->GetListName()
+				% cur_server->GetAddress()
+				% cur_server->GetFullIP()
+				% nPort 
+				% useObfuscation
+			);
+			
 			AddDebugLogLineM(false, logServer, wxT("Server ") + cur_server->GetAddress() + wxT("(") + Uint32toStringIP(ip) + wxT(")") + wxString::Format(wxT(" Port %i"), cur_server->GetConnPort()));
 			Connect(addr, false);
 		}
@@ -687,5 +763,9 @@ void CServerSocket::OnHostnameResolved(uint32 ip) {
 		OnConnect(wxSOCKET_NOHOST);
 	}
 	
+}
+uint32 CServerSocket::GetServerIP() const
+{
+	return cur_server ? cur_server->GetIP() : 0;
 }
 // File_checked_for_headers

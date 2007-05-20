@@ -41,6 +41,8 @@
 #include "Types.h"
 #include "Proxy.h"
 
+#include "RC4Encrypt.h"
+
 #define ERR_WRONGHEADER				0x01
 #define ERR_TOOBIG					0x02
 #define ERR_ENCRYPTION				0x03
@@ -80,14 +82,13 @@ enum EEncryptionMethods {
 	ENM_OBFUSCATION = 0x00
 };
 
-class CMemFile;
-struct RC4_Key_Struct;
+class CRC4EncryptableBuffer;
 
 class CEncryptedStreamSocket : public CSocketClientProxy
 {
 	DECLARE_DYNAMIC_CLASS(CEncryptedStreamSocket)
 public:
-	CEncryptedStreamSocket();
+	CEncryptedStreamSocket(wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedStreamSocket();
 
 	void	SetConnectionEncryption(bool bEnabled, const uint8* pTargetClientHash, bool bServerConnection);
@@ -101,8 +102,8 @@ public:
 	uint8	m_dbgbyEncryptionMethodSet;
 
 protected:
-	int Send(const void* lpBuf, wxUint32 nBufLen);
-	int Receive(void* lpBuf, wxUint32 nBufLen);
+	int Write(const void* lpBuf, wxUint32 nBufLen);
+	int Read(void* lpBuf, wxUint32 nBufLen);
 	virtual void OnError(int nErrorCode) {};
 	virtual void	OnSend(int nErrorCode);
 	wxString			DbgGetIPString();
@@ -121,12 +122,10 @@ private:
 	void	StartNegotiation(bool bOutgoing);
 	int		SendNegotiatingData(const void* lpBuf, uint32 nBufLen, uint32 nStartCryptFromByte = 0, bool bDelaySend = false);
 
-	RC4_Key_Struct*		m_pRC4SendKey;
-	RC4_Key_Struct*		m_pRC4ReceiveKey;
 	ENegotiatingState	m_NegotiatingState;
-	CMemFile*		m_pfiReceiveBuffer;
+	CRC4EncryptableBuffer		m_pfiReceiveBuffer;
 	uint32				m_nReceiveBytesWanted;
-	CMemFile*		m_pfiSendBuffer;
+	CRC4EncryptableBuffer		m_pfiSendBuffer;
 	uint32				m_nRandomKeyPart;
 	CryptoPP::Integer	m_cryptDHA;
 

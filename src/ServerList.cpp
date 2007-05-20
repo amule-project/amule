@@ -275,6 +275,8 @@ void CServerList::ServerStats()
 			return;
 		}
 				
+		#warning OBFUSCATION - needs UDP socket for encrypted ping
+		
 		CPacket* packet = new CPacket(OP_GLOBSERVSTATREQ, 4, OP_EDONKEYPROT);
 		srand((unsigned)time(NULL));
 		uint32 challenge = 0x55AA0000 + (uint16)rand();
@@ -511,13 +513,21 @@ void CServerList::Sort()
 }
 
 
-CServer* CServerList::GetNextServer()
+CServer* CServerList::GetNextServer(bool bOnlyObfuscated)
 {
+	while (bOnlyObfuscated && (m_serverpos != m_servers.end()) && !(*m_serverpos)->SupportsObfuscationTCP()) {
+		wxASSERT(*m_serverpos != NULL);			
+		++m_serverpos;
+	}
+		
 	if (m_serverpos == m_servers.end()) {
 		return 0;
 	} else {
-		wxASSERT(*m_serverpos != NULL);
-		return *m_serverpos++;
+		if (*m_serverpos) {
+			return *m_serverpos++;
+		} else {
+			return 0;
+		}
 	}
 }
 
@@ -603,7 +613,23 @@ bool CServerList::SaveServerMet()
 			if ( !server->GetDescription().IsEmpty() ) {
 				++tagcount;
 			}
-			if (!server->GetVersion().IsEmpty()){
+			if (!server->GetVersion().IsEmpty()) {
+				++tagcount;
+			}
+			
+			if (server->GetServerKeyUDP(true)) {
+				++tagcount;
+			}
+
+			if (server->GetServerKeyUDPIP()) {
+				++tagcount;
+			}
+
+			if (server->GetObfuscationPortTCP()) {
+				++tagcount;
+			}
+
+			if (server->GetObfuscationPortUDP()) {
 				++tagcount;
 			}
 			
@@ -648,6 +674,23 @@ bool CServerList::SaveServerMet()
 			}
 			CTagInt32( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
 			CTagInt32( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
+			
+			if (server->GetServerKeyUDP(true)) {
+				CTagInt32(ST_UDPKEY, server->GetServerKeyUDP(true)).WriteTagToFile( &servermet );;
+			}
+
+			if (server->GetServerKeyUDPIP()) {
+				CTagInt32(ST_UDPKEYIP, server->GetServerKeyUDPIP()).WriteTagToFile( &servermet );;;
+			}
+
+			if (server->GetObfuscationPortTCP()) {
+				CTagInt16(ST_TCPPORTOBFUSCATION, server->GetObfuscationPortTCP()).WriteTagToFile( &servermet );;;
+			}
+
+			if (server->GetObfuscationPortUDP()) {
+				CTagInt16(ST_UDPPORTOBFUSCATION, server->GetObfuscationPortUDP()).WriteTagToFile( &servermet );;;
+			}
+			
 		}
 	} catch (const CIOFailureException& e) {
 		AddLogLineM(true, wxT("IO failure while writing 'server.met': ") + e.what());

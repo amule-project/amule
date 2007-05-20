@@ -176,6 +176,7 @@ void CUpDownClient::SendStartupLoadReq()
 
 bool CUpDownClient::IsSourceRequestAllowed()
 {
+	#warning REWRITE - OBFUSCATION
 	// 0.42e
 	uint32 dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
 	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
@@ -185,7 +186,7 @@ bool CUpDownClient::IsSourceRequestAllowed()
 	uint32 uSources = m_reqfile->GetSourceCount();
 	return (
 		// if client has the correct extended protocol
-		ExtProtocolAvailable() && m_bySourceExchangeVer >= 1 &&
+		ExtProtocolAvailable() && (SupportsSourceExchange2() || GetSourceExchange1Version() > 1) &&
 		// AND if we need more sources
 		thePrefs::GetMaxSourcePerFileSoft() > uSources &&
 		// AND if...
@@ -212,7 +213,6 @@ bool CUpDownClient::IsSourceRequestAllowed()
 
 void CUpDownClient::SendFileRequest()
 {
-	// 0.42e
 	wxCHECK_RET(m_reqfile, wxT("Cannot request file when no reqfile is set"));	
 	
 	CMemFile dataFileReq(16+16);
@@ -245,8 +245,17 @@ void CUpDownClient::SendFileRequest()
 			SetRemoteQueueRank(0);
 		}
 		if (IsSourceRequestAllowed()) {
-			sent_opcodes += wxT("|RSRC|");
-			dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
+			if (SupportsSourceExchange2()){
+				sent_opcodes += wxT("|RSRC2|");
+				printf("Sending a source request type 2 (a)\n");				
+				dataFileReq.WriteUInt8(OP_REQUESTSOURCES2);
+				dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
+				const uint16 nOptions = 0; // 16 ... Reserved
+				dataFileReq.WriteUInt16(nOptions);
+			} else{
+				sent_opcodes += wxT("|RSRC|");
+				dataFileReq.WriteUInt8(OP_REQUESTSOURCES);
+			}
 			m_reqfile->SetLastAnsweredTimeTimeout();
 			SetLastAskedForSources();
 		}
@@ -293,8 +302,19 @@ void CUpDownClient::SendFileRequest()
 		// Sending the packet could have deleted the client, check m_reqfile		
 		if (m_reqfile && IsSourceRequestAllowed()) {
 			m_reqfile->SetLastAnsweredTimeTimeout();
-			packet = new CPacket(OP_REQUESTSOURCES,16,OP_EMULEPROT);
-			packet->Copy16ToDataBuffer((const char *)m_reqfile->GetFileHash().GetHash());
+			
+			CMemFile packetdata;
+			
+			if (SupportsSourceExchange2()) {
+				printf("Sending a source request type 2\n");
+				packetdata.WriteUInt8(SOURCEEXCHANGE2_VERSION);
+				packetdata.WriteUInt16(0 /* Reserved */);
+			} 
+			
+			packetdata.WriteHash(m_reqfile->GetFileHash());
+			
+			packet = new CPacket(packetdata, OP_EMULEPROT, SupportsSourceExchange2() ? OP_REQUESTSOURCES2 : OP_REQUESTSOURCES);
+			
 			theStats::AddUpOverheadSourceExchange(packet->GetPacketSize());
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQUESTSOURCES to ") + GetFullIP() );
 			SendPacket(packet,true,true);

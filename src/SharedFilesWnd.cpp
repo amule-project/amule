@@ -52,6 +52,7 @@ CSharedFilesWnd::CSharedFilesWnd( wxWindow* pParent )
 	m_bar_accepted	= CastChild( wxT("popbarAccept"), wxGauge );
 	m_bar_transfer	= CastChild( wxT("popbarTrans"), wxGauge );
 	sharedfilesctrl = CastChild( wxT("sharedFilesCt"), CSharedFilesCtrl );
+	wxASSERT(sharedfilesctrl);
 }
 
 

@@ -522,7 +522,6 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 	list->InsertColumn( 9,	_("Upload/Download"),	wxLIST_FORMAT_LEFT, 100 );
 	list->InsertColumn( 10,	_("Remote Status"),		wxLIST_FORMAT_LEFT, 100 );			
 			
-			
 	// Insert any existing items on the list
 	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = uploading.begin();
@@ -599,6 +598,12 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 			} else if (client->IsBadGuy()) {
 				// the 'X'
 				m_imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
+					wxIMAGELIST_DRAW_TRANSPARENT);					
+			}
+			
+			if (client->IsObfuscatedConnectionEstablished()) {
+				// the "¿" except it's a key
+				m_imagelist.Draw(Client_Encryption_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT);					
 			}
 
@@ -985,7 +990,7 @@ void CClientsView::Initialize( CClientListCtrl* list )
 	list->InsertColumn( 5, _("Client Software"),	wxLIST_FORMAT_LEFT,	150 );
 	list->InsertColumn( 6, _("Connected"),		wxLIST_FORMAT_LEFT,	150 );
 	list->InsertColumn( 7, _("Userhash"),			wxLIST_FORMAT_LEFT,	150 );
-
+	list->InsertColumn( 8,	_("Encrypted"),		wxLIST_FORMAT_LEFT, 100 );			
 
 	const CClientList::IDMap& clist = theApp->clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
@@ -1040,7 +1045,9 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 		case 7:
 			buffer = client->GetUserHash().Encode();
 			break;
-		
+		case 8:
+			buffer = client->IsObfuscatedConnectionEstablished() ? wxT("Yes") : wxT("No");
+			break;		
 	}
 	
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
@@ -1096,6 +1103,9 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		// Sort by user-hash
 		case 7: return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
 		
+		// Sort by Obfuscation state
+		case 8: return mode * CmpAny( client2->IsObfuscatedConnectionEstablished(), client1->IsObfuscatedConnectionEstablished() );		
+			
 		default:
 			return 0;
 	}

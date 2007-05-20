@@ -26,14 +26,11 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
-#include "Proxy.h"				// Needed for CSocketClientProxy
+#include "EncryptedStreamSocket.h"				// Needed for CEncryptedDatagramSocket
 
 #include "ThrottledSocket.h"	// Needed for ThrottledFileSocket
 
-
-
 class CPacket;
-
 
 #define ERR_WRONGHEADER		0x01
 #define ERR_TOOBIG			0x02
@@ -46,7 +43,7 @@ class CPacket;
 const sint32 PACKET_HEADER_SIZE	= 6;
 
 
-class CEMSocket : public CSocketClientProxy, public ThrottledFileSocket
+class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket
 {
 	DECLARE_DYNAMIC_CLASS(CEMSocket)
 	

@@ -507,8 +507,15 @@ public:
 	// Dropping slow sources
 	static bool GetDropSlowSources()					{ return s_DropSlowSources; }
 	
-	// Cyrpt
+	// Crypt
 	static bool IsClientCryptLayerSupported() { return s_IsClientCryptLayerSupported; }
+	static bool		IsClientCryptLayerRequested()		{return IsClientCryptLayerSupported() && s_bCryptLayerRequested;}	
+	static bool IsClientCryptLayerRequired() { return s_IsClientCryptLayerRequired; }
+	static bool		IsClientCryptLayerRequiredStrict()	{return false;} // not even incoming test connections will be answered
+	static bool		IsServerCryptLayerUDPEnabled()		{return IsClientCryptLayerSupported();}
+	static bool		IsServerCryptLayerTCPRequested()	{return IsClientCryptLayerRequested();}
+	static uint32	GetKadUDPKey()						{return s_dwKadUDPKey;}
+	static uint8 GetCryptTCPPaddingLength() { return s_byCryptTCPPaddingLength; }
 	
 protected:
 	void	CreateUserHash();
@@ -728,6 +735,10 @@ protected:
 	
 	// Crypt
 	static bool s_IsClientCryptLayerSupported;
+	static bool s_IsClientCryptLayerRequired;
+	static bool s_bCryptLayerRequested;	
+	static uint32	s_dwKadUDPKey;
+	static uint8 s_byCryptTCPPaddingLength;	
 };
 
 

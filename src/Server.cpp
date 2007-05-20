@@ -29,6 +29,7 @@
 
 #include "NetworkFunctions.h" // Needed for StringIPtoUint32
 #include "OtherStructs.h"	// Needed for ServerMet_Struct
+#include "amule.h"
 
 CServer::CServer(ServerMet_Struct* in_data)
 {
@@ -113,6 +114,11 @@ CServer::CServer(CServer* pOld)
 	m_uLowIDUsers = pOld->m_uLowIDUsers;
 	lastdescpingedcout = pOld->lastdescpingedcout;
 	m_auxPorts = pOld->m_auxPorts;
+	m_dwServerKeyUDP = pOld->m_dwServerKeyUDP;
+	m_bCryptPingReplyPending = pOld->m_bCryptPingReplyPending;
+	m_dwIPServerKeyUDP = pOld->m_dwIPServerKeyUDP;
+	m_nObfuscationPortTCP = pOld->m_nObfuscationPortTCP;
+	m_nObfuscationPortUDP = pOld->m_nObfuscationPortUDP;
 }
 
 CServer::~CServer()
@@ -154,6 +160,13 @@ void CServer::Init() {
 	m_auxPorts.Clear();
 	m_lastdnssolve = 0;
 	m_dnsfailure = false;
+
+	m_dwServerKeyUDP = 0;
+	m_bCryptPingReplyPending = false;
+	m_dwIPServerKeyUDP = 0;
+	m_nObfuscationPortTCP = 0;
+	m_nObfuscationPortUDP = 0;
+	
 }	
 
 
@@ -237,6 +250,22 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 	case ST_LOWIDUSERS:
 		m_uLowIDUsers = tag.GetInt();
 		break;
+	
+	case ST_UDPKEY:
+		m_dwServerKeyUDP = tag.GetInt();
+		break;
+	
+	case ST_UDPKEYIP:
+		m_dwIPServerKeyUDP = tag.GetInt();
+		break;
+	
+	case ST_TCPPORTOBFUSCATION:
+		m_nObfuscationPortTCP = (uint16)tag.GetInt();
+		break;
+	
+	case ST_UDPPORTOBFUSCATION:
+		m_nObfuscationPortUDP = (uint16)tag.GetInt();
+		break;
 
 	default:
 		if (!tag.GetName().IsEmpty()) {
@@ -284,5 +313,21 @@ void CServer::SetLastDescPingedCount(bool bReset)
 	} else {
 		lastdescpingedcout++;
 	}
+}
+
+uint32 CServer::GetServerKeyUDP(bool bForce) const
+{
+	if (m_dwIPServerKeyUDP != 0 && m_dwIPServerKeyUDP == theApp->GetPublicIP() || bForce) {
+		return m_dwServerKeyUDP;
+	} else {
+		return 0;
+	}
+}
+
+void CServer::SetServerKeyUDP(uint32 dwServerKeyUDP)
+{
+	wxASSERT( theApp->GetPublicIP() != 0 || dwServerKeyUDP == 0 );
+	m_dwServerKeyUDP = dwServerKeyUDP;
+	m_dwIPServerKeyUDP = theApp->GetPublicIP();
 }
 // File_checked_for_headers

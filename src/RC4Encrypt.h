@@ -32,10 +32,11 @@
 
 #include "Types.h"
 #include <libs/common/StringFunctions.h>
-#include <common/MD5Sum.h>
-
+#include "MemFile.h"
 
 // Helper class
+
+class MD5Sum;
 
 class RC4_Key_Struct
 {
@@ -50,14 +51,8 @@ public:
 };
 
 
-class CRC4EncryptableBuffer : public std::vector<uint8>
+class CRC4EncryptableBuffer : public CMemFile
 {
-private:
-	bool m_encrypted;
-	bool m_hasKey;
-	RC4_Key_Struct m_key;
-	std::vector<uint8> m_tmpBuf;
-	
 public:
 	// Create, empty
 	CRC4EncryptableBuffer();
@@ -65,26 +60,32 @@ public:
 	// Clear memory
 	~CRC4EncryptableBuffer();
 
-	// Obvious
-	bool IsEmpty();
-
-	// Appends to the end
-	void Append(uint8* buffer, int n);
+	// Appends to the end, checking encrypted state.
+	void Append(const uint8* buffer, int n);
 
 	// Sets the encryption key
-	void SetKey(MD5Sum keyhash);
+	void SetKey(const MD5Sum& keyhash, bool bSkipDiscard = false);
 
 	// RC4 encrypts the internal buffer. Marks it as encrypted, any other further call 
 	// to add data, as Append(), must assert if the inner data is encrypted.
 	// Make sure to check SetKey has been called!
 	void Encrypt();
 
-	// Obvious
-	size_t GetSize();
+	// RC4 encrypts an external buffer with the current key.
+	void RC4Crypt(const uint8 *pachIn, uint8 *pachOut, uint32 nLen);
 	
-	// Returns a uint8* buffer with the internal data, and clears the internal one.
-	// Don't forget to clear the encryption flag.
+	// Returns a uint8* buffer with a copy of the internal data, and clears the internal one.
 	uint8* Detach();
+
+	// Also clears the encryption flag	
+	void ResetData();
+
+private:
+	bool m_encrypted;
+	bool m_hasKey;
+	RC4_Key_Struct m_key;
+	
+	void RC4CreateKey(const uint8* pachKeyData, uint32 nLen, bool bSkipDiscard);
 };
 
 #endif // __RC4ENCRYPT_H__

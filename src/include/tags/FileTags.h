@@ -104,6 +104,7 @@
 #define	TAG_MEDIA_LENGTH		wxT("\xD3")	// <uint32> !!!
 #define	TAG_MEDIA_BITRATE		wxT("\xD4")	// <uint32>
 #define	TAG_MEDIA_CODEC			wxT("\xD5")	// <string>
+#define	TAG_ENCRYPTION			wxT("\xF3")	// <uint8>
 #define	TAG_FILERATING			wxT("\xF7")	// <uint8>
 #define	TAG_BUDDYHASH			wxT("\xF8")	// <string>
 #define	TAG_CLIENTLOWID			wxT("\xF9")	// <uint32>

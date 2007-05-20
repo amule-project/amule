@@ -426,6 +426,17 @@ void CSearch::StorePacket()
 					taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
 				}
 
+				// Encryption options Tag
+				// 5 Reserved (!)
+				// 1 CryptLayer Required
+				// 1 CryptLayer Requested
+				// 1 CryptLayer Supported
+				const uint8 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
+				const uint8 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
+				const uint8 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
+				const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+				taglist.push_back(new CTagInt8(TAG_ENCRYPTION, byCryptOptions));
+				
 				CKademlia::GetUDPListener()->PublishPacket(from->GetIPAddress(), from->GetUDPPort(),m_target,id, taglist);
 				m_totalRequestAnswers++;
 				TagPtrList::const_iterator it;
@@ -594,6 +605,7 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 	uint32 serverip = 0;
 	uint16 serverport = 0;
 	uint32 clientid = 0;
+	uint8 byCryptOptions = 0;
 	CUInt128 buddy;
 
 	CTag *tag;
@@ -622,8 +634,9 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 				printf("Invalid buddy-hash: '%s'\n", (const char*)tag->GetStr().fn_str());
 #endif
 			}
-			
 			buddy.SetValueBE(hash.GetHash());
+		} else if (!tag->GetName().Cmp(TAG_ENCRYPTION)) {
+			byCryptOptions = (uint8)tag->GetInt();
 		}
 
 		delete tag;
@@ -632,15 +645,16 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 
 	switch( type ) {
 		case 1:
-		case 3: {
+		case 3:
+		case 4:
+		case 5:
 			m_uAnswers++;
-			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, clientid);
+			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, byCryptOptions);
 			break;
-		}
-		case 2: {
-			//Don't use this type, some clients will process it wrong..
+		case 2: 
+			//Don't use this type, some clients will process it wrong.
+		default:
 			break;
-		}
 	}
 }
 

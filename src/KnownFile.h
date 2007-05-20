@@ -127,9 +127,6 @@ CAbstractFile
 */
 class CAbstractFile
 {
-private:
-	static const wxString EmptyString;
-
 public:
 	CAbstractFile();
 	explicit CAbstractFile(const CAbstractFile& other);
@@ -272,7 +269,7 @@ public:
 	uint32	GetMetaDataVer() const { return /*m_uMetaDataVer*/ 0; }
 	
 	// file sharing
-	virtual	CPacket*	CreateSrcInfoPacket(const CUpDownClient* forClient);
+	virtual	CPacket*	CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions);
 	
 	virtual void	UpdatePartsInfo();	
 
