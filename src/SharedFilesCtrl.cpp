@@ -39,7 +39,9 @@
 #include "BarShader.h"			// Needed for CBarShader
 #include "DataToText.h"			// Needed for PriorityToStr
 #include "GuiEvents.h"			// Needed for CoreNotify_*
-
+#include "MuleCollection.h"		// Needed for CMuleCollection
+#include "DownloadQueue.h"		// Needed for CDownloadQueue
+#include "TransferWnd.h"		// Needed for CTransferWnd
 
 
 BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
@@ -55,6 +57,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 
 	EVT_MENU( MP_CMT,			CSharedFilesCtrl::OnEditComment )
 	EVT_MENU( MP_RAZORSTATS, 		CSharedFilesCtrl::OnGetRazorStats )
+	EVT_MENU( MP_ADDCOLLECTION,		CSharedFilesCtrl::OnAddCollection )
 	EVT_MENU( MP_GETMAGNETLINK,		CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
@@ -148,6 +151,10 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
 */
+		if (file->GetFileName().Right(16) == wxT(".emulecollection")) {
+			m_menu->Append( MP_ADDCOLLECTION, _("Add files in collection to transfer list"));
+			m_menu->AppendSeparator();
+		}
 		m_menu->Append(MP_GETMAGNETLINK,_("Copy magnet URI to clipboard"));
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
@@ -673,4 +680,25 @@ void CSharedFilesCtrl::OnKeyPressed( wxKeyEvent& event )
 
 	event.Skip();
 }
+void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
+{
+	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if ( item != -1 ) {
+		CKnownFile* file = (CKnownFile*)GetItemData(item);
+		wxString CollectionFile = file->GetFilePath()
+								 + 	wxFileName::GetPathSeparator()
+								 + 	file->GetFileName();
+		CMuleCollection my_collection;
+		if (my_collection.Open( (std::string)CollectionFile.mb_str() ))
+#warning This is probably not working on Unicode
+		{
+			for(size_t e = 0;e < my_collection.GetFileCount();e++)
+				theApp->downloadqueue->AddLink( 
+					wxString( my_collection.GetEd2kLink(e).c_str(), wxConvUTF8 )
+					);
+				
+		}
+	}
+}
+
 // File_checked_for_headers

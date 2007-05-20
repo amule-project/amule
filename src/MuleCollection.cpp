@@ -138,7 +138,6 @@ intType CMuleCollection::ReadInt(std::ifstream& infile)
 
 std::string CMuleCollection::ReadString(std::ifstream& infile, int TagType = 0x02)
 {
-	std::cout << TagType << std::endl;
 	if (TagType >= 0x11 && TagType <= 0x20) {
 		std::vector<char> buffer(TagType - 0x10);
 		infile.read(&buffer[0], TagType - 0x10);

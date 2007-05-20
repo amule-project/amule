@@ -177,6 +177,10 @@ private:
 	 */
 	void	OnKeyPressed( wxKeyEvent& event );
 
+	/**
+	 * Adds links in a collection to transfers
+	 */
+	void	OnAddCollection( wxCommandEvent& WXUNUSED(evt) );
 
 	//! Pointer used to ensure that the menu isn't displayed twice.
 	wxMenu* m_menu;
