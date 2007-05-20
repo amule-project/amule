@@ -1436,7 +1436,7 @@ void CDynStatisticImage::DrawImage()
 	m_digits[0]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, m_y_axis_size-m_num_font_h_size-5);
 	
 	//
-	// When data is scaled down, axis are scaled UP and visa versa
+	// When data is scaled down, axis are scaled UP and viceversa
 	int y_axis_max = m_y_axis_size;
 	if ( m_scale_down != 1 ) {
 		y_axis_max *= m_scale_down;
@@ -1824,7 +1824,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		
 		wxString PwStr(Data.parsedURL.Param(wxT("pass")));
 		if (webInterface->m_AdminPass.IsEmpty() and webInterface->m_GuestPass.IsEmpty()) {
-			session->m_vars["login_error"] = "No passwords specified, login impossible!";
+			session->m_vars["login_error"] = "No password specified, login will not be allowed.";
 		} else if ( PwStr.Length() ) {
 			Print(_("Checking password\n"));
 			session->m_loggedin = false;
@@ -1832,7 +1832,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 			CMD4Hash PwHash;
 			if (not PwHash.Decode(MD5Sum(PwStr).GetHash())) {
 				Print(_("Password hash invalid\n"));
-				session->m_vars["login_error"] = "Invalid password hash, please report!";
+				session->m_vars["login_error"] = "Invalid password hash, please report on http://forum.amule.org";
 			} else if ( PwHash == webInterface->m_AdminPass ) {
 				session->m_loggedin = true;
 				// m_vars is map<string, string> - so _() will not work here !
@@ -1851,7 +1851,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 				Print(_("Password bad\n"));
 			}
 		} else {
-			Print(_("Session is not logged and request have no password\n"));
+			Print(_("You did not enter any password. Blank password is not allowed.\n"));
 		}
 	} else {
 		//
@@ -1882,7 +1882,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 		session->m_vars["content_type"] = "text/javascript";
 		httpOut = ProcessHtmlRequest(unicode2char(req_file), httpOutLen);
 	} else {
-		httpOut = GetErrorPage("This file type amuleweb doesn't handle", httpOutLen);
+		httpOut = GetErrorPage("aMuleweb doesn't handle the requested file type ", httpOutLen);
 	}
 	
 	bool isUseGzip = webInterface->m_UseGzip;
@@ -1924,25 +1924,25 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 {
 	/*
 	 * Since template has not been found, I suspect that installation is broken. Falling back
-	 * into hard-coded page as last resolt.
+	 * into hardcoded page as last resort.
 	 */
 	char *httpOut = ""
 	"<html>"
-	"<head>"
-		"<title>aMuleWeb error page</title>"
-		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
-	"</head>"
-	"<body>"
-	"<p>You seeing this page instead of aMuleWeb page because valid template has not been found.</p>"
-	"<p>This means that there's problem with aMule installation </p>"
-	"<ul>"
-		"<li>Before installation please ensure that you uninstalled previous versions of amule</li>"
-	"<li>If you installing by recompiling from source, check configuration and run &quot;make install&quot; again </li>"
-		"<li>If you installing binary package, you may need to contact package maintainer </li>"
-	"</ul>"
-	"<p>For more information please visit</p>"
-	"<p><a href=\"http://www.amule.org\">aMule main site</a> <a href=\"http://forum.amule.org\">aMule forum</a></p>"
-	"</body>"
+		"<head>"
+			"<title>aMuleWeb error page</title>"
+			"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">"
+		"</head>"
+		"<body>"
+			"<p>You are seeing this page instead of aMuleWeb login page because a valid template has not been found.</p>"
+			"<p>This probably means that there's a problem with your aMule installation </p>"
+			"<ul>"
+				"<li>Before installing new versions, please ensure that you uninstalled older versions of aMule.</li>"
+				"<li>If you are installing by compiling from source, check configuration and run &quot;make&quot; and &quot;make install&quot; again </li>"
+				"<li>If you are installing by using a precompiled package, you may need to contact the package maintainer </li>"
+			"</ul>"
+			"<p>For more information please visit</p>"
+			"<p><a href=\"http://www.amule.org\">aMule main site</a> or <a href=\"http://forum.amule.org\">aMule forums</a></p>"
+		"</body>"
 	"</html>";
 
 	long httpOutLen = strlen(httpOut);
