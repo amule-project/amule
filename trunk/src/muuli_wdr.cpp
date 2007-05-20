@@ -1663,8 +1663,8 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     item16->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
     item11->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to trayicon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetToolTip( _("Enabling this will make aMule minimize to the system-tray, rather than the taskbar.") );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
     item11->Add( item17, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
