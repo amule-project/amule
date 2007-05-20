@@ -121,7 +121,8 @@ libmuleappgui_a_SOURCES = \
 	MuleTextCtrl.cpp \
 	FileDetailListCtrl.cpp \
 	muuli_wdr.cpp \
-	ColorFrameCtrl.cpp
+	ColorFrameCtrl.cpp \
+	MuleCollection.cpp
 
 libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
