@@ -53,6 +53,7 @@
 #include "StatisticsDlg.h"
 #endif
 
+#include "RandomFunctions.h"
 
 #define DEFAULT_TCP_PORT 4662
 
@@ -203,6 +204,10 @@ bool		CPreferences::s_ConnectToED2K;
 unsigned	CPreferences::s_maxClientVersions;
 bool		CPreferences::s_DropSlowSources;
 bool		CPreferences::s_IsClientCryptLayerSupported;
+bool		CPreferences::s_bCryptLayerRequested;
+bool		CPreferences::s_IsClientCryptLayerRequired;
+uint32	CPreferences::s_dwKadUDPKey;
+uint8	CPreferences::s_byCryptTCPPaddingLength;
 
 /**
  * Template Cfg class for connecting with widgets.
@@ -1026,7 +1031,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), s_DropSlowSources, false ) );
 	
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, false ) );	
-
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsCryptLayerRequested"), s_bCryptLayerRequested, false ) );		
+	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false ) );
+	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 255 ) );
+	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
+	
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  

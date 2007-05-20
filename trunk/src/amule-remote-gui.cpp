@@ -1639,14 +1639,14 @@ bool CUpDownClient::SwapToAnotherFile(
 // Those functions are virtual. So even they don't get called they must
 // be defined so linker will be happy
 //
-CPacket* CKnownFile::CreateSrcInfoPacket(CUpDownClient const*)
+CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient*, uint8 byRequestedVersion, uint16 nRequestedOptions)
 {
 	wxASSERT(0);
 	return 0;
 }
 
 
-bool CKnownFile::LoadFromFile(class CFileDataIO const*)
+bool CKnownFile::LoadFromFile(const class CFileDataIO*)
 {
 	wxASSERT(0);
 	return false;
@@ -1665,7 +1665,7 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 }
 
 
-CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const*)
+CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const*, uint8 byRequestedVersion, uint16 nRequestedOptions)
 {
 	wxASSERT(0);
 	return 0;

@@ -73,6 +73,7 @@ libmuleappcommon_a_SOURCES = \
 	SHA.cpp \
 	Tag.cpp \
 	Timer.cpp \
+	RandomFunctions.cpp \
 	kademlia/utils/UInt128.cpp
 
 libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
@@ -110,19 +111,19 @@ endif
 libmuleappgui_a_SOURCES = \
 	BarShader.cpp \
 	ChatWnd.cpp \
+	ColorFrameCtrl.cpp \
 	CommentDialog.cpp \
 	CommentDialogLst.cpp \
 	DirectoryTreeCtrl.cpp \
 	EditServerListDlg.cpp \
 	extern/wxWidgets/listctrl.cpp \
+	FileDetailListCtrl.cpp \
 	MuleGifCtrl.cpp \
 	MuleListCtrl.cpp \
 	MuleNotebook.cpp \
 	MuleTextCtrl.cpp \
-	FileDetailListCtrl.cpp \
-	muuli_wdr.cpp \
-	ColorFrameCtrl.cpp \
-	MuleCollection.cpp
+	MuleCollection.cpp \
+	muuli_wdr.cpp 
 
 libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
 libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
@@ -233,7 +234,7 @@ common_sources = \
 
 # Libs
 
-core_libs = -L. -lmuleappcore
+core_libs = -L. -lmuleappcore  $(CRYPTOLIBS)
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)

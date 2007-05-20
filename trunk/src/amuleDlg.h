@@ -90,6 +90,7 @@ enum ClientSkinEnum {
 	Client_FairRating_Smiley,
 	Client_ExcellentRating_Smiley,
 	Client_CommentOnly_Smiley,
+	Client_Encryption_Smiley,
 	// Add items here.
 	CLIENT_SKIN_SIZE
 };

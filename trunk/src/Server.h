@@ -120,10 +120,30 @@ public:
 	void	SetDescReqChallenge(uint32 uDescReqChallenge) {m_uDescReqChallenge = uDescReqChallenge;}
 	uint8	GetLastDescPingedCount() const	{return lastdescpingedcout;}
 	void	SetLastDescPingedCount(bool reset);
+	
+	uint16	GetObfuscationPortTCP() const			{return m_nObfuscationPortTCP;}
+	void	SetObfuscationPortTCP(uint16 nPort)		{m_nObfuscationPortTCP = nPort;}
+
+	#warning review;
+	uint16	GetObfuscationPortUDP() const			{return m_nObfuscationPortUDP;}
+	void	SetObfuscationPortUDP(uint16 nPort)		{m_nObfuscationPortUDP = nPort;}
+
+	uint32	GetServerKeyUDP(bool bForce = false) const;
+	void	SetServerKeyUDP(uint32 dwServerKeyUDP);
+
+	bool	GetCryptPingReplyPending() const		{return m_bCryptPingReplyPending;}
+	void	SetCryptPingReplyPending(bool bVal)		{m_bCryptPingReplyPending = bVal;}
+
+	uint32	GetServerKeyUDPIP() const				{return m_dwIPServerKeyUDP;}
+	
 	bool	GetUnicodeSupport() const				{return GetTCPFlags() & SRV_TCPFLG_UNICODE;}
 	bool	GetRelatedSearchSupport() const			{return GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH;}
 	bool	SupportsLargeFilesTCP() const			{return GetTCPFlags() & SRV_TCPFLG_LARGEFILES;}
 	bool	SupportsLargeFilesUDP() const			{return GetUDPFlags() & SRV_UDPFLG_LARGEFILES;}	
+	bool	SupportsObfuscationUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION)!=0;}
+	bool	SupportsObfuscationTCP() const			{return GetObfuscationPortTCP() != 0 && ((GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION)!=0 || (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION)!=0);}
+	bool	SupportsGetSourcesObfuscation() const	{return (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION)!=0;} // mapped to TCPFLAG_TCPOBFU
+	
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
 	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
 	
@@ -165,8 +185,13 @@ private:
 	uint64		m_lastdnssolve;
 	bool		m_dnsfailure;
 	
+	bool		m_bCryptPingReplyPending;	
+	uint32		m_dwServerKeyUDP;
+	uint32		m_dwIPServerKeyUDP;
+	uint16		m_nObfuscationPortTCP;
+	uint16		m_nObfuscationPortUDP;	
+	
 	void Init();
-
 };
 
 #endif // SERVER_H

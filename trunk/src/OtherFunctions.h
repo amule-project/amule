@@ -148,9 +148,6 @@ void DeleteContents(STL_CONTAINER& container)
 	std::for_each(copy.begin(), copy.end(), SDoDelete());
 }
 
-
-
-
 /**
  * Returns a description of the version of aMule being used.
  *

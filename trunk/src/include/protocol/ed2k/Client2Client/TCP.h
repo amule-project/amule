@@ -70,6 +70,8 @@ enum ED2KExtendedClientTCP {
 	OP_UDPVERIFYUPA				= 0x74,	// (never used)
 	OP_REQUESTSOURCES			= 0x81,	// <HASH 16>
 	OP_ANSWERSOURCES			= 0x82,	//
+	OP_REQUESTSOURCES2			= 0x83,	// <HASH 16>
+	OP_ANSWERSOURCES2			= 0x84,	//	
 	OP_PUBLICKEY				= 0x85,	// <len 1><pubkey len>
 	OP_SIGNATURE				= 0x86,	// v1: <len 1><signature len>
 										// v2:<len 1><signature len><sigIPused 1>

@@ -190,6 +190,7 @@ public:
 
 	bool		Disconnected(const wxString& strReason, bool bFromSocket = false);
 	bool		TryToConnect(bool bIgnoreMaxCon = false);
+	bool		Connect();
 	void		ConnectionEstablished();
 	const wxString&	GetUserName() const		{ return m_Username; }
 	//Only use this when you know the real IP or when your clearing it.
@@ -252,7 +253,9 @@ public:
 	bool		GetFriendSlot() const 		{ return m_bFriendSlot; }
 	void		SetFriendSlot(bool bNV)		{ m_bFriendSlot = bNV; }
 	void		SetCommentDirty(bool bDirty = true)	{ m_bCommentDirty = bDirty; }
-	uint8		GetSourceExchangeVersion() const	{ return m_bySourceExchangeVer; }
+	uint8			GetSourceExchange1Version() const				{ return m_bySourceExchange1Ver; }
+	bool			SupportsSourceExchange2() const					{ return m_fSupportsSourceEx2; }
+	
 	bool		SafeSendPacket(CPacket* packet);
 
 	void		ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSize, bool largeblocks);
@@ -613,7 +616,23 @@ public:
 	/* Kry - Debug. See connection_reason definition comment below */
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
 	#endif
-	
+
+	// Encryption / Obfuscation
+	bool			SupportsCryptLayer() const						{ return m_fSupportsCryptLayer; }
+	bool			RequestsCryptLayer() const						{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
+	bool			RequiresCryptLayer() const						{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
+#ifdef 	CLIENT_GUI
+	bool			IsObfuscatedConnectionEstablished() const { return false; }
+#else
+	bool			IsObfuscatedConnectionEstablished() const;	
+#endif	
+	void			SetCryptLayerSupport(bool bVal)				{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
+	void			SetCryptLayerRequest(bool bVal)				{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
+	void			SetCryptLayerRequires(bool bVal)				{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
+	#warning CHECK FOR USAGE - OBFUSCATION (rewrite addsources / server code)
+	#warning CHECK FOR USAGE - UDP encrypted send
+	bool			ShouldReceiveCryptUDPPackets() const;
+
 private:
 	
 	CClientCredits	*credits;
@@ -689,7 +708,7 @@ private:
 	bool		m_HasValidHash;
 	uint16		m_nUDPPort;
 	uint8		m_byUDPVer;
-	uint8		m_bySourceExchangeVer;
+	uint8		m_bySourceExchange1Ver;
 	uint8		m_byAcceptCommentVer;
 	uint8		m_byExtendedRequestsVer;
 	uint8		m_clientSoft;
@@ -782,8 +801,12 @@ private:
 		m_fAICHRequested     : 1,
 		m_fSupportsLargeFiles : 1,
 		m_fSentOutOfPartReqs : 1,
-		m_fExtMultiPacket : 1;
-
+		m_fExtMultiPacket : 1,
+		m_fRequestsCryptLayer: 1,
+	    m_fSupportsCryptLayer: 1,
+		m_fRequiresCryptLayer: 1,
+		m_fSupportsSourceEx2 : 1;
+		
 	unsigned int
 		m_fOsInfoSupport : 1,
 		m_fValueBasedTypeTags : 1;		

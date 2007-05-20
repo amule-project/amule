@@ -123,7 +123,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				do {
 					CMD4Hash fileid = packet.ReadHash();
 					if (CPartFile* file = theApp->downloadqueue->GetFileByID(fileid)) {
-						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_REMOTE_SERVER);
+						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_REMOTE_SERVER, false);
 					} else {
 						AddDebugLogLineM( true, logServerUDP, wxT("Sources received for unknown file") );
 						// skip sources for that file
@@ -158,6 +158,12 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				if (challenge != update->GetChallenge()) {
 					throw(wxString(wxString::Format(wxT("Invalid challenge on OP_GLOBSERVSTATRES packet (0x%x != 0x%x)"),challenge,update->GetChallenge())));
 				}
+				if (update){
+					update->SetChallenge(0);
+					update->SetCryptPingReplyPending(false);
+					uint32 tNow = (uint32)time(NULL);
+					update->SetLastPinged(tNow - (rand() % HR2S(1))); // if we used Obfuscated ping, we still need to reset the time properly
+				}				
 				uint32 cur_user = packet.ReadUInt32();
 				uint32 cur_files = packet.ReadUInt32();
 				uint32 cur_maxusers = 0;

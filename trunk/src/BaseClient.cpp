@@ -254,7 +254,11 @@ void CUpDownClient::Init()
 
 	m_last_block_start = 0;
 	m_lastaverage = 0;
-	
+
+	m_fRequestsCryptLayer = 0;
+	m_fSupportsCryptLayer = 0;
+	m_fRequiresCryptLayer = 0;
+	m_fSupportsSourceEx2 = 0;	
 }
 
 
@@ -329,7 +333,7 @@ void CUpDownClient::ClearHelloProperties()
 	m_byUDPVer = 0;
 	m_byDataCompVer = 0;
 	m_byEmuleVersion = 0;
-	m_bySourceExchangeVer = 0;
+	m_bySourceExchange1Ver = 0;
 	m_byAcceptCommentVer = 0;
 	m_byExtendedRequestsVer = 0;
 	m_byCompatibleClient = 0;
@@ -343,6 +347,10 @@ void CUpDownClient::ClearHelloProperties()
 	m_fValueBasedTypeTags = 0;
 	SecIdentSupRec = 0;
 	m_byKadVersion = 0;
+	m_fRequestsCryptLayer = 0;
+	m_fSupportsCryptLayer = 0;
+	m_fRequiresCryptLayer = 0;
+	m_fSupportsSourceEx2 = 0;	
 }
 
 bool CUpDownClient::ProcessHelloPacket(const byte* pachPacket, uint32 nSize)
@@ -484,7 +492,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				m_byUDPVer				= (flags >> 4*6) & 0x0f;
 				m_byDataCompVer			= (flags >> 4*5) & 0x0f;
 				m_bySupportSecIdent		= (flags >> 4*4) & 0x0f;
-				m_bySourceExchangeVer	= (flags >> 4*3) & 0x0f;
+				m_bySourceExchange1Ver	= (flags >> 4*3) & 0x0f;
 				m_byExtendedRequestsVer	= (flags >> 4*2) & 0x0f;
 				m_byAcceptCommentVer	= (flags >> 4*1) & 0x0f;
 				m_fNoViewSharedFiles	= (flags >> 1*2) & 0x01;
@@ -496,7 +504,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				printf("m_byUDPVer = %i\n",m_byUDPVer);
 				printf("m_byDataCompVer = %i\n",m_byDataCompVer);
 				printf("m_bySupportSecIdent = %i\n",m_bySupportSecIdent);
-				printf("m_bySourceExchangeVer = %i\n",m_bySourceExchangeVer);
+				printf("m_bySourceExchangeVer = %i\n",m_bySourceExchange1Ver);
 				printf("m_byExtendedRequestsVer = %i\n",m_byExtendedRequestsVer);
 				printf("m_byAcceptCommentVer = %i\n",m_byAcceptCommentVer);
 				printf("m_fNoViewSharedFiles = %i\n",m_fNoViewSharedFiles);
@@ -509,18 +517,25 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 			}
 
 			case CT_EMULE_MISCOPTIONS2:
-				//	27 Reserved
-				//	 1 Large Files (includes support for 64bit tags)
-				//   4 Kad Version
+				//	22 Reserved
+				m_fSupportsSourceEx2	= (temptag.GetInt() >>  10) & 0x01;
+				m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
+				m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
+				m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
+				// reserved 1
 				m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
 				m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
 				m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
 				dwEmuleTags |= 8;
+			
+				m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
+				m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
+			
 				#ifdef __PACKET_DEBUG__
 				printf("Hello type packet processing with eMule Misc Options 2:\n");
 				printf("  KadVersion = %u\n" , m_byKadVersion );
 				printf("That's all.\n");
-				#endif
+				#endif			
 				break;
 				
 			// Special tag fo Compat. Clients Misc options.
@@ -835,7 +850,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 				case ET_SOURCEEXCHANGE:
 					// Bits 31- 8: 0 - reserved
 					// Bits  7- 0: source exchange protocol version
-					m_bySourceExchangeVer = temptag.GetInt();
+					m_bySourceExchange1Ver = temptag.GetInt();
 					break;
 					
 				case ET_COMMENTS:
@@ -888,7 +903,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 		}				
 
 		if( m_byDataCompVer == 0 ){
-			m_bySourceExchangeVer = 0;
+			m_bySourceExchange1Ver = 0;
 			m_byExtendedRequestsVer = 0;
 			m_byAcceptCommentVer = 0;
 			m_nUDPPort = 0;
@@ -901,7 +916,7 @@ bool CUpDownClient::ProcessMuleInfoPacket(const byte* pachPacket, uint32 nSize)
 		}
 
 		if(m_byEmuleVersion < 0x25 && m_byEmuleVersion > 0x21) {
-			m_bySourceExchangeVer = 1;
+			m_bySourceExchange1Ver = 1;
 		}
 
 		if(m_byEmuleVersion == 0x24) {
@@ -1035,8 +1050,18 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	const uint32 uKadVersion			= 1;
 	const uint32 uSupportLargeFiles	= 1;
 	const uint32 uExtMultiPacket		= 1;
+	const uint32 uReserved			= 0; // mod bit
+	const uint32 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
+	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
+	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
+	const uint32 uSupportsSourceEx2	= 1;					
 	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
+				(uSupportsSourceEx2		<< 10) |
+				(uRequiresCryptLayer	<<  9) |
+				(uRequestsCryptLayer	<<  8) |
+				(uSupportsCryptLayer	<<  7) |
+				(uReserved				<<  6) |
 				(uExtMultiPacket		<<  5) |
 				(uSupportLargeFiles		<<  4) |
 				(uKadVersion			<<  0) 
@@ -1268,6 +1293,16 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		}
 	}
 
+	// Do not try to connect to source which are incompatible with our encryption setting (one requires it, and the other one doesn't supports it)
+	if ( (RequiresCryptLayer() && !thePrefs::IsClientCryptLayerSupported()) || (thePrefs::IsClientCryptLayerRequired() && !SupportsCryptLayer()) ){
+		if(Disconnected(wxT("CryptLayer-Settings (Obfuscation) incompatible"))){
+			Safe_Delete();
+			return false;
+		} else {
+			return true;
+		}
+	}	
+	
 	// Ipfilter check
 	uint32 uClientIP = GetIP();
 	if (uClientIP == 0 && !HasLowID()) {
@@ -1282,8 +1317,9 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			if (Disconnected(wxT("IPFilter"))) {
 				Safe_Delete();
 				return false;
+			} else {
+				return true;
 			}
-			return true;
 		}
 
 		// for safety: check again whether that IP is banned
@@ -1426,15 +1462,35 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			}	
 		}
 	} else {
+		if (!Connect()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool CUpDownClient::Connect()
+{
+	if (!m_socket->IsOk()) {
+		// Enable or disable crypting based on our and the remote clients preference
+		if (HasValidHash() && SupportsCryptLayer() && thePrefs::IsClientCryptLayerSupported() && (RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested())){
+			printf("Set connection encryption for socket\n");
+			//DebugLog(_T("Enabling CryptLayer on outgoing connection to client %s"), DbgGetClientInfo()); // to be removed later
+			m_socket->SetConnectionEncryption(true, GetUserHash().GetHash(), false);
+		} else {
+			m_socket->SetConnectionEncryption(false, NULL, false);
+		}
 		amuleIPV4Address tmp;
 		tmp.Hostname(GetConnectIP());
 		tmp.Service(GetUserPort());
 		AddDebugLogLineM(false, logClient, wxT("Trying to connect to ") + Uint32_16toStringIP_Port(GetConnectIP(),GetUserPort()));
 		m_socket->Connect(tmp, false);
 		// We should send hello packets AFTER connecting!
-		// so I moved it to OnConnect
+		// so I moved it to OnConnect	
+		return true;
+	} else {
+		return false;
 	}
-	return true;
 }
 
 void CUpDownClient::ConnectionEstablished()
@@ -2358,6 +2414,19 @@ const wxString CUpDownClient::GetServerName() const
 	}
 	
 	return ret;
+}
+
+bool  CUpDownClient::IsObfuscatedConnectionEstablished() const {
+	if (m_socket != NULL && m_socket->IsConnected()) {
+		return m_socket->IsObfusicating();
+	} else {
+		return false;
+	}
+}
+
+bool CUpDownClient::ShouldReceiveCryptUDPPackets() const {
+	return (thePrefs::IsClientCryptLayerSupported() && SupportsCryptLayer() && theApp->GetPublicIP() != 0
+		&& HasValidHash() && (thePrefs::IsClientCryptLayerRequested() || RequestsCryptLayer()) );
 }
 
 // File_checked_for_headers

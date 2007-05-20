@@ -50,7 +50,7 @@ public:
 	bool		SaveServerMet();
 	void		ServerStats();
 	void		ResetServerPos()	{m_serverpos = m_servers.begin();}
-	CServer*	GetNextServer();
+	CServer*	GetNextServer(bool bOnlyObfuscated = false);
 	uint32		GetServerCount()	{return m_servers.size();}
 	CServer*	GetServerByAddress(const wxString& address, uint16 port);
 	CServer*	GetServerByIP(uint32 nIP);

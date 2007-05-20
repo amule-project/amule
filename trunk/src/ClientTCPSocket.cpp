@@ -1187,10 +1187,19 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					}
 					//We still send the source packet separately.. 
 					//We could send it within this packet.. If agreeded, I will fix it..
+					case OP_REQUESTSOURCES2:
 					case OP_REQUESTSOURCES: {
-						AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_REQUESTSOURCES") );
+						AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_REQUESTSOURCES(2)") );
+						uint8 byRequestedVersion = 0;
+						uint16 byRequestedOptions = 0;
+						if (opcode == OP_REQUESTSOURCES2){ // SX2 requests contains additional data
+							byRequestedVersion = data_in.ReadUInt8();
+							byRequestedOptions = data_in.ReadUInt16();
+						}						
+						
 						//Although this shouldn't happen, it's a just in case to any Mods that mess with version numbers.
-						if (m_client->GetSourceExchangeVersion() > 1) {
+						
+						if (byRequestedVersion > 0 || m_client->GetSourceExchange1Version() > 1) {
 							uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
 							bool bNeverAskedBefore = m_client->GetLastSrcReqTime() == 0;
 							if( 
@@ -1204,7 +1213,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 									) 
 							{
 								m_client->SetLastSrcReqTime();
-								CPacket* tosend = reqfile->CreateSrcInfoPacket(m_client);
+								CPacket* tosend = reqfile->CreateSrcInfoPacket(m_client, byRequestedVersion, byRequestedOptions);
 								if(tosend) {
 									theStats::AddUpOverheadSourceExchange(tosend->GetPacketSize());
 									AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ANSWERSOURCES to ") + m_client->GetFullIP() );
@@ -1465,8 +1474,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			m_client->SetRemoteQueueRank(newrank);
 			break;
 		}
-		
-		case OP_REQUESTSOURCES:{	// 0.43b
+		case OP_REQUESTSOURCES:{
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_REQUESTSOURCES from ") + m_client->GetFullIP()  );
 			
 			theStats::AddDownOverheadSourceExchange(size);
@@ -1476,8 +1484,16 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_REQUESTSOURCES before finishing handshake"));
 			}
-			
-			if (m_client->GetSourceExchangeVersion() >= 1) {
+
+			uint8 byRequestedVersion = 0;
+			uint16 byRequestedOptions = 0;
+			CMemFile data_in(buffer, size);
+			if (opcode == OP_REQUESTSOURCES2){ // SX2 requests contains additional data
+				byRequestedVersion = data_in.ReadUInt8();
+				byRequestedOptions = data_in.ReadUInt16();
+			}
+					
+			if (byRequestedVersion > 0 || m_client->GetSourceExchange1Version() >= 1) {
 				if(size != 16) {
 					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 				}
@@ -1488,6 +1504,14 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					file = theApp->downloadqueue->GetFileByID(fileID);
 				}
 				if(file) {
+					// There are some clients which do not follow the correct protocol procedure of sending
+					// the sequence OP_REQUESTFILENAME, OP_SETREQFILEID, OP_REQUESTSOURCES. If those clients
+					// are doing this, they will not get the optimal set of sources which we could offer if
+					// the would follow the above noted protocol sequence. They better to it the right way
+					// or they will get just a random set of sources because we do not know their download
+					// part status which may get cleared with the call of 'SetUploadFileID'.
+					m_client->SetUploadFileID(file);					
+					
 					uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
 					bool bNeverAskedBefore = m_client->GetLastSrcReqTime() == 0;
 					if( 
@@ -1501,7 +1525,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					)
 					{
 						m_client->SetLastSrcReqTime();
-						CPacket* tosend = file->CreateSrcInfoPacket(m_client);
+						CPacket* tosend = file->CreateSrcInfoPacket(m_client, byRequestedVersion, byRequestedOptions);
 						if(tosend) {
 							theStats::AddUpOverheadSourceExchange(tosend->GetPacketSize());
 							AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ANSWERSOURCES to ") + m_client->GetFullIP() );
@@ -1512,7 +1536,6 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 			break;
 		}
-		
 		case OP_ANSWERSOURCES: {
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ANSWERSOURCES from ") + m_client->GetFullIP()  );
 			
@@ -1534,11 +1557,36 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					//and set the file's last answer time
 					((CPartFile*)file)->SetLastAnsweredTime();
 
-					((CPartFile*)file)->AddClientSources(&data, m_client->GetSourceExchangeVersion(), SF_SOURCE_EXCHANGE);
+					((CPartFile*)file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, m_client->GetSourceExchange1Version(), false, m_client);
 				}
 			}
 			break;
 		}
+		case OP_ANSWERSOURCES2: {
+			printf("Received OP_ANSWERSOURCES2\n");
+			theStats::AddDownOverheadSourceExchange(size);
+
+			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
+				// Here comes a extended packet without finishing the hanshake.
+				// IMHO, we should disconnect the client.
+				throw wxString(wxT("Client send OP_ANSWERSOURCES2 before finishing handshake"));
+			}
+			
+			CMemFile data(buffer, size);
+			uint8 byVersion = data.ReadUInt8();
+			CMD4Hash hash = data.ReadHash();
+			const CKnownFile* file = theApp->downloadqueue->GetFileByID(hash);
+			if (file){
+				if (file->IsPartFile()){
+					//set the client's answer time
+					m_client->SetLastSrcAnswerTime();
+					//and set the file's last answer time
+					((CPartFile*)file)->SetLastAnsweredTime();
+					((CPartFile*)file)->AddClientSources(&data, SF_SOURCE_EXCHANGE, byVersion, true, m_client);
+				}
+			}
+			break;
+		}		
 		case OP_FILEDESC: {		// 0.43b
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_FILEDESC from ") + m_client->GetFullIP()  );
 			

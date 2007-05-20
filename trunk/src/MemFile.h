@@ -130,6 +130,9 @@ public:
 	 * Resets the memfile to the starting values.
 	 */
 	virtual void ResetData();
+
+	// Sometimes it's useful to get the buffer and do stuff with it.
+	byte* GetRawBuffer() const { return m_buffer; }
 	
 protected:
 	/** @see CFileDataIO::doRead */
@@ -140,7 +143,7 @@ protected:
 	
 	/** @see CFileDataIO::doSeek */
 	virtual sint64 doSeek(sint64 offset) const;
-	
+
 private:
 	//! A CMemFile is neither copyable nor assignable.
 	//@{
@@ -161,10 +164,10 @@ private:
 	size_t	m_fileSize;
 	//! If true, the buffer will be freed upon termination.
 	bool	m_delete;
-	//! The actual buffer.
-	byte*	m_buffer;
 	//! read-only mark.
 	bool	m_readonly;
+	//! The actual buffer.
+	byte*	m_buffer;
 };
 
 #endif // MEMFILE_H

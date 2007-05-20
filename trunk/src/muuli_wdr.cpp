@@ -5101,6 +5101,36 @@ wxBitmap clientImages( size_t index )
         wxBitmap bitmap( image );
         return bitmap;
     }
+    if (index == 26)
+    {
+        /* XPM */
+        static const char *xpm_data[] = {
+        /* columns rows colors chars-per-pixel */
+        "16 16 3 1",
+        "  c None",
+        "b c #00FFFF",
+        "c c #0000FF",
+        /* pixels */
+        "  cccb          ",
+        "  ccb           ",
+        "  cb            ",
+        "  cb            ",
+        " cccb           ",
+        "ccbccb          ",
+        " cccb           ",
+        "  cb            ",
+        "                ",
+        "                ",
+        "                ",
+        "                ",
+        "                ",
+        "                ",
+        "                ",
+        "                "
+        };
+        wxBitmap bitmap( xpm_data );
+        return bitmap;
+    }
     return wxNullBitmap;
 }
 

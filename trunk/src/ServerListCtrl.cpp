@@ -256,6 +256,10 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	if (server->GetTCPFlags() & SRV_TCPFLG_LARGEFILES) {
 		flags += wxT("l");
 	}
+	if (server->GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) {
+		flags += wxT("o");
+	}
+	
 	SetItem( itemnr, COLUMN_SERVER_TCPFLAGS, flags );
 	
 	/* UDP */
@@ -277,6 +281,12 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	}
 	if (server->GetUDPFlags() & SRV_UDPFLG_LARGEFILES) {
 		flags += wxT("l");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION) {
+		flags += wxT("o");
+	}
+	if (server->GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION) {
+		flags += wxT("O");
 	}
 	SetItem( itemnr, COLUMN_SERVER_UDPFLAGS, flags );
 	

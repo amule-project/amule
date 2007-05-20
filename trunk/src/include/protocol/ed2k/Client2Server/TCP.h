@@ -42,6 +42,7 @@ enum OP_ClientToServerTCP {
 //	OP_CHAT_MESSAGE				= 0x1E,	// (deprecated, not supported by server any longer)
 //	OP_JOIN_ROOM				= 0x1F,	// (deprecated, not supported by server any longer)
 	OP_QUERY_MORE_RESULT		= 0x21,	// (null)
+	OP_GETSOURCES_OBFU	= 0x23,	
 	OP_SERVERLIST				= 0x32,	// <count 1>(<IP 4><PORT 2>)[count] server->client
 	OP_SEARCHRESULT				= 0x33,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
 	OP_SERVERSTATUS				= 0x34,	// <USER 4><FILES 4>
@@ -56,7 +57,8 @@ enum OP_ClientToServerTCP {
 	OP_IDCHANGE					= 0x40,	// <NEW_ID 4>
 	OP_SERVERIDENT				= 0x41,	// <HASH 16><IP 4><PORT 2>{1 TAG_SET}
 	OP_FOUNDSOURCES				= 0x42,	// <HASH 16><count 1>(<ID 4><PORT 2>)[count]
-	OP_USERS_LIST				= 0x43	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+	OP_USERS_LIST				= 0x43,	// <count 4>(<HASH 16><ID 4><PORT 2><1 Tag_set>)[count]
+	OP_FOUNDSOURCES_OBFU = 0x44    // <HASH 16><count 1>(<ID 4><PORT 2><obf settings 1>(UserHash16 if obf&0x08))[count]
 };
 
 // Server TCP flags
@@ -66,5 +68,6 @@ enum OP_ClientToServerTCP {
 #define SRV_TCPFLG_RELATEDSEARCH        0x00000040
 #define SRV_TCPFLG_TYPETAGINTEGER       0x00000080
 #define SRV_TCPFLG_LARGEFILES           0x00000100
+#define SRV_TCPFLG_TCPOBFUSCATION	0x00000400
 
 #endif // ED2KC2STCP_H

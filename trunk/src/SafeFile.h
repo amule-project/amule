@@ -197,8 +197,8 @@ public:
 	 */
 	virtual void WriteString(const wxString& str, EUtf8Str encoding = utf8strNone, uint8 lenBytes = 2);
 
-/* Special Kad functions, needs documentation */
-#warning DOCS
+/* Warning: Special Kad functions, needs documentation */
+
 	CTag*		ReadTag(bool bOptACP = false);
 	void		ReadTagPtrList(TagPtrList* taglist, bool bOptACP = false);
 
@@ -207,6 +207,13 @@ public:
 
 /* Special ED2Kv2 function */
 	uint64		GetIntTagValue() const;
+
+/* Some functions I added for simplicity */
+	// Very obvious 
+	bool IsEmpty() { return (GetLength() == 0); }
+
+	// Appends to the end
+	void Append(const uint8* buffer, int n) { Seek(0, wxFromEnd); Write(buffer, n); }
 
 protected:
 	/**
@@ -250,7 +257,6 @@ private:
 	 * @param encoding The encoding of the string.
 	 * @param lenBytes The number of bytes used to store the string length.
 	 *
-	 * The 
 	 */
 	void WriteStringCore(const char* str, EUtf8Str encoding, uint8 lenBytes);
 };

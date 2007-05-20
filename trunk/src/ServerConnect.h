@@ -53,6 +53,8 @@ class CServerUDPSocket;
 #define	CS_WAITFORLOGIN	3
 #define CS_RETRYCONNECTTIME  30 // seconds
 
+typedef std::map<uint32, CServerSocket*> ServerSocketMap;
+
 class CServerConnect {
 public:
 	CServerConnect(CServerList* in_serverlist, amuleIPV4Address &address);
@@ -61,8 +63,8 @@ public:
 	void	ConnectionFailed(CServerSocket* sender);
 	void	ConnectionEstablished(CServerSocket* sender);
 	
-	void	ConnectToAnyServer(bool prioSort = true);
-	void	ConnectToServer(CServer* toconnect, bool multiconnect = false);
+	void	ConnectToAnyServer(bool prioSort = true, bool bNoCrypt = false);
+	void	ConnectToServer(CServer* toconnect, bool multiconnect = false, bool bNoCrypt = false);
 	void	StopConnectionTry();
 	void	CheckForTimeout();
 	
@@ -89,11 +91,15 @@ public:
 	bool	IsSingleConnect()	{ return singleconnecting; }
 	void	KeepConnectionAlive();	
 
+	bool AwaitingTestFromIP(uint32 ip);
+	bool IsConnectedObfuscated() const;
+	
 private:
 	bool	connecting;
 	bool	singleconnecting;
 	bool	connected;
 	int8	max_simcons;
+	bool	m_bTryObfuscated;
 	CServerSocket*	connectedsocket;
 	CServerList*	used_list;
 	CServerUDPSocket*	serverudpsocket;
@@ -103,7 +109,7 @@ private:
 	SocketsList	m_lstOpenSockets;
 	CTimer	m_idRetryTimer;
 
-	std::map<uint32, CServerSocket*> connectionattemps;
+	ServerSocketMap connectionattemps;
 };
 
 #endif // SERVERCONNECT_H

@@ -1631,6 +1631,12 @@ void CDownloadListCtrl::DrawSourceItem(
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
 							
+				if (client->IsObfuscatedConnectionEstablished()) {
+					// the "¿" except it's a key
+					m_ImageList.Draw(Client_Encryption_Smiley, *dc, rect.x, rect.y + 1,
+						wxIMAGELIST_DRAW_TRANSPARENT);					
+				}				
+				
 				wxString userName;
 #ifdef ENABLE_IP2COUNTRY
 				// Draw the flag

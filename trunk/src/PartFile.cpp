@@ -992,6 +992,7 @@ void CPartFile::SaveSourceSeeds()
 	}	
 
 	try {
+		file.WriteUInt8(0); // v3, to avoid v2 clients choking on it.
 		file.WriteUInt8(source_seeds.size());
 		
 		CClientPtrList::iterator it2 = source_seeds.begin();
@@ -999,6 +1000,13 @@ void CPartFile::SaveSourceSeeds()
 			CUpDownClient* cur_src = *it2;		
 			file.WriteUInt32(cur_src->GetUserIDHybrid());
 			file.WriteUInt16(cur_src->GetUserPort());
+			file.WriteHash(cur_src->GetUserHash());
+			// CryptSettings - See SourceExchange V4
+			const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
+			const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
+			const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
+			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+			file.WriteUInt8(byCryptOptions);		
 		}
 
 		/* v2: Added to keep track of too old seeds */
@@ -1018,7 +1026,6 @@ void CPartFile::SaveSourceSeeds()
 		wxRemoveFile(m_fullname + wxT(".seeds"));
 	}
 }	
-
 
 void CPartFile::LoadSourceSeeds()
 {	
@@ -1048,19 +1055,34 @@ void CPartFile::LoadSourceSeeds()
 		return;
 	}	
 		
+	bool bUseSX2Format = false;
+	
 	try {
 		uint8 src_count = file.ReadUInt8();
+
+		bool bUseSX2Format = (src_count == 0);
+
+		if (bUseSX2Format) {
+			// v3 sources seeds
+			src_count = file.ReadUInt8();
+		}
 		
 		sources_data.WriteUInt16(src_count);
 	
 		for (int i = 0; i< src_count; ++i) {		
 			uint32 dwID = file.ReadUInt32();
 			uint16 nPort = file.ReadUInt16();
-			
-			sources_data.WriteUInt32(dwID);
+
+			sources_data.WriteUInt32(bUseSX2Format ? dwID : wxUINT32_SWAP_ALWAYS(dwID));
 			sources_data.WriteUInt16(nPort);
 			sources_data.WriteUInt32(0);
 			sources_data.WriteUInt16(0);	
+
+			if (bUseSX2Format) {
+				sources_data.WriteHash(file.ReadHash());
+				sources_data.WriteUInt8(file.ReadUInt8());
+			}
+			
 		}
 		
 		if (!file.Eof()) {
@@ -1080,19 +1102,18 @@ void CPartFile::LoadSourceSeeds()
 			valid_sources = true;
 		}
 		
+		if (valid_sources) {
+			sources_data.Seek(0);
+			AddClientSources(&sources_data, SF_SOURCE_SEEDS, bUseSX2Format ? 4 : 1, bUseSX2Format);		
+		}
+	
 	} catch (const CSafeIOException& e) {
 		AddLogLineM(false, CFormat( _("Error reading partfile's seeds file (%s - %s): %s") )
 				% m_partmetfilename
 				% GetFileName()
-				% e.what() );
-		return;
+				% e.what() );		
 	}
-	
-	if (valid_sources) {
-		sources_data.Seek(0);
-		AddClientSources(&sources_data, 1, SF_SOURCE_SEEDS);		
-	}
-	
+
 	file.Close();
 }		
 
@@ -1682,12 +1703,13 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned origin)
+void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned origin, bool bWithObfuscationAndHash)
 {
 	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
 	uint8 debug_possiblesources = 0;
-
+	CMD4Hash achUserHash;
+	
 	if (m_stopped) {
 		// since we may received multiple search source UDP results we have to "consume" all data of that packet
 		AddDebugLogLineM(false, logPartFile, wxT("Trying to add sources for a stopped file"));
@@ -1698,6 +1720,22 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 	for (int i = 0;i != count;++i) {
 		uint32 userid = sources.ReadUInt32();
 		uint16 port   = sources.ReadUInt16();
+		
+		uint8 byCryptOptions = 0;
+		if (bWithObfuscationAndHash){
+			byCryptOptions = sources.ReadUInt8();
+			if ((byCryptOptions & 0x80) > 0) {
+				achUserHash = sources.ReadHash();
+			}
+
+			if ((thePrefs::IsClientCryptLayerRequested() && (byCryptOptions & 0x01/*supported*/) > 0 && (byCryptOptions & 0x80) == 0)
+				|| (thePrefs::IsClientCryptLayerSupported() && (byCryptOptions & 0x02/*requested*/) > 0 && (byCryptOptions & 0x80) == 0)) {
+				AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Server didn't provide UserHash for source %u, even if it was expected to (or local obfuscationsettings changed during serverconnect"), userid));
+			} else if (!thePrefs::IsClientCryptLayerRequested() && (byCryptOptions & 0x02/*requested*/) == 0 && (byCryptOptions & 0x80) != 0) {
+				AddDebugLogLineM(false, logPartFile, wxString::Format(wxT("Server provided UserHash for source %u, even if it wasn't expected to (or local obfuscationsettings changed during serverconnect"), userid));
+			}
+		}
+			
 		
 		// "Filter LAN IPs" and "IPfilter" the received sources IP addresses
 		if (!IsLowID(userid)) {
@@ -1713,10 +1751,18 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 		if (!CanAddSource(userid, port, serverip, serverport, &debug_lowiddropped)) {
 			continue;
 		}
+		
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			++debug_possiblesources;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
-			newsource->SetSourceFrom((ESourceFrom)origin);
+			
+			newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+			newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
+			newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+			if ((byCryptOptions & 0x80) != 0) {
+				newsource->SetUserHash(achUserHash);
+			}
+
 			theApp->downloadqueue->CheckAndAddSource(this,newsource);
 		} else {
 			AddDebugLogLineM(false, logPartFile, wxT("Consuming a packet because of max sources reached"));
@@ -2548,13 +2594,19 @@ void CPartFile::SetLastAnsweredTimeTimeout()
 	m_ClientSrcAnswered = 2 * CONNECTION_LATENCY + ::GetTickCount() - SOURCECLIENTREASKS;
 }
 
-CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
+CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 byRequestedVersion, uint16 nRequestedOptions)
 {
+
+	if ( m_SrcList.empty() ) {
+		return NULL;
+	}
+
+	if(!IsPartFile())  {
+		return CKnownFile::CreateSrcInfoPacket(forClient, byRequestedVersion, nRequestedOptions);
+	}
 	
-	// Kad reviewed
-	
-	if ((forClient->GetRequestFile() != this)
-		&& (forClient->GetUploadFile() != this)) {
+	if (((forClient->GetRequestFile() != this)
+		&& (forClient->GetUploadFile() != this)) || forClient->GetUploadFileID() != GetFileHash()) {
 		wxString file1 = _("Unknown");
 		if (forClient->GetRequestFile() && !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
 			file1 = forClient->GetRequestFile()->GetFileName();
@@ -2569,15 +2621,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		return NULL;
 	}
 
-	if(!IsPartFile())  {
-		return CKnownFile::CreateSrcInfoPacket(forClient);
-	}
-
 	if ( !(GetStatus() == PS_READY || GetStatus() == PS_EMPTY)) {
-		return NULL;
-	}
-
-	if ( m_SrcList.empty() ) {
 		return NULL;
 	}
 
@@ -2591,6 +2635,28 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	}	
 	
 	CMemFile data(1024);
+	
+	uint8 byUsedVersion;
+	bool bIsSX2Packet;
+	if (forClient->SupportsSourceExchange2() && byRequestedVersion > 0){
+		// the client uses SourceExchange2 and requested the highest version he knows
+		// and we send the highest version we know, but of course not higher than his request
+		byUsedVersion = std::min(byRequestedVersion, (uint8)SOURCEEXCHANGE2_VERSION);
+		bIsSX2Packet = true;
+		data.WriteUInt8(byUsedVersion);
+
+		// we don't support any special SX2 options yet, reserved for later use
+		if (nRequestedOptions != 0) {
+			AddDebugLogLineM(false, logKnownFiles, CFormat(wxT("Client requested unknown options for SourceExchange2: %u")) % nRequestedOptions);
+		}
+	} else {
+		byUsedVersion = forClient->GetSourceExchange1Version();
+		bIsSX2Packet = false;
+		if (forClient->SupportsSourceExchange2()) {
+			AddDebugLogLineM(false, logKnownFiles, wxT("Client which announced to support SX2 sent SX1 packet instead"));
+		}
+	}
+	
 	uint16 nCount = 0;
 
 	data.WriteHash(m_abyFileHash);
@@ -2640,7 +2706,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 		if(bNeeded) {
 			++nCount;
 			uint32 dwID;
-			if(forClient->GetSourceExchangeVersion() > 2) {
+			if(forClient->GetSourceExchange1Version() > 2) {
 				dwID = cur_src->GetUserIDHybrid();
 			} else {
 				dwID = wxUINT32_SWAP_ALWAYS(cur_src->GetUserIDHybrid());
@@ -2649,9 +2715,24 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 			data.WriteUInt16(cur_src->GetUserPort());
 			data.WriteUInt32(cur_src->GetServerIP());
 			data.WriteUInt16(cur_src->GetServerPort());
-			if (forClient->GetSourceExchangeVersion()>1) {
-				data.WriteHash(cur_src->GetUserHash());
+			
+			if (byUsedVersion >= 2) {
+			    data.WriteHash(cur_src->GetUserHash());
 			}
+			
+			if (byUsedVersion >= 4){
+				// CryptSettings - SourceExchange V4
+				// 5 Reserved (!)
+				// 1 CryptLayer Required
+				// 1 CryptLayer Requested
+				// 1 CryptLayer Supported
+				const uint8 uSupportsCryptLayer	= cur_src->SupportsCryptLayer() ? 1 : 0;
+				const uint8 uRequestsCryptLayer	= cur_src->RequestsCryptLayer() ? 1 : 0;
+				const uint8 uRequiresCryptLayer	= cur_src->RequiresCryptLayer() ? 1 : 0;
+				const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+				data.WriteUInt8(byCryptOptions);
+			}			
+			
 			if (nCount > 500) {
 				break;
 			}
@@ -2660,10 +2741,10 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	if (!nCount) {
 		return 0;
 	}
-	data.Seek(16, wxFromStart);
+	data.Seek(bIsSX2Packet ? 17 : 16, wxFromStart);
 	data.WriteUInt16(nCount);
 
-	CPacket* result = new CPacket(data, OP_EMULEPROT, OP_ANSWERSOURCES);
+	CPacket* result = new CPacket(data, OP_EMULEPROT, bIsSX2Packet ? OP_ANSWERSOURCES2 : OP_ANSWERSOURCES);
 
 	// 16+2+501*(4+2+4+2+16) = 14046 bytes max.
 	if (result->GetPacketSize() > 354) {
@@ -2673,7 +2754,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient)
 	return result;
 }
 
-void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion, unsigned nSourceFrom)
+void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* pClient)
 {
 	// Kad reviewed
 	
@@ -2681,30 +2762,80 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 		return;
 	}
 
-	uint16 nCount = sources->ReadUInt16();
-	
-	// Check if the data size matches the 'nCount' for v1 or v2 and eventually correct the source
-	// exchange version while reading the packet data. Otherwise we could experience a higher
-	// chance in dealing with wrong source data, userhashs and finally duplicate sources.
-	uint32 uDataSize = sources->GetLength() - sources->GetPosition();
-	
-	if ((uint32)(nCount*(4+2+4+2)) == uDataSize) { //Checks if version 1 packet is correct size
-		if( sourceexchangeversion != 1 ) {
-			return;
-		}
-	} else if ((uint32)(nCount*(4+2+4+2+16)) == uDataSize) { // Checks if version 2&3 packet is correct size
-		if( sourceexchangeversion == 1 ) {
+	uint16 nCount = 0;
+	uint8 uPacketSXVersion = 0;
+	if (!bSourceExchange2) {
+		nCount = sources->ReadUInt16();
+		
+		// Check if the data size matches the 'nCount' for v1 or v2 and eventually correct the source
+		// exchange version while reading the packet data. Otherwise we could experience a higher
+		// chance in dealing with wrong source data, userhashs and finally duplicate sources.
+		uint32 uDataSize = sources->GetLength() - sources->GetPosition();
+		
+		if ((uint32)(nCount*(4+2+4+2)) == uDataSize) { //Checks if version 1 packet is correct size
+			if(uClientSXVersion != 1) {
+				return;
+			}
+			uPacketSXVersion = 1;
+		} else if ((uint32)(nCount*(4+2+4+2+16)) == uDataSize) { // Checks if version 2&3 packet is correct size
+			if (uClientSXVersion == 2) {
+				uPacketSXVersion = 2;
+			} else if (uClientSXVersion > 2) {
+				uPacketSXVersion = 3;
+			} else {
+				return;
+			}
+		} else if (nCount*(4+2+4+2+16+1) == uDataSize) {
+			if (uClientSXVersion != 4 ) {
+				return;
+			}
+			uPacketSXVersion = 4;
+		} else {
+			// If v5 inserts additional data (like v2), the above code will correctly filter those packets.
+			// If v5 appends additional data after <count>(<Sources>)[count], we are in trouble with the 
+			// above code. Though a client which does not understand v5+ should never receive such a packet.
+			AddDebugLogLineM(false, logClient, CFormat(wxT("Received invalid source exchange packet (v%u) of data size %u for %s")) % uClientSXVersion % uDataSize % GetFileName());
 			return;
 		}
 	} else {
-		// If v4 inserts additional data (like v2), the above code will correctly filter those packets.
-		// If v4 appends additional data after <count>(<Sources>)[count], we are in trouble with the 
-		// above code. Though a client which does not understand v4+ should never receive such a packet.
-		AddDebugLogLineM(false, logClient, CFormat(wxT("Received invalid source exchange packet (v%u) of data size %u for %s")) % sourceexchangeversion % uDataSize % GetFileName());
-		return;
+		// for SX2:
+		// We only check if the version is known by us and do a quick sanitize check on known version
+		// other then SX1, the packet will be ignored if any error appears, sicne it can't be a "misunderstanding" anymore
+		if (uClientSXVersion > SOURCEEXCHANGE2_VERSION || uClientSXVersion == 0 ){
+			AddDebugLogLineM(false, logPartFile, CFormat(wxT("Invalid source exchange type version: %i")) % uClientSXVersion);
+			return;
+		}
+		
+		// all known versions use the first 2 bytes as count and unknown version are already filtered above
+		nCount = sources->ReadUInt16();
+		printf("Adding %i client sources type 2\n",nCount);
+		uint32 uDataSize = (uint32)(sources->GetLength() - sources->GetPosition());	
+		bool bError = false;
+		printf("Where %i == %i if %i=4?\n", nCount*(4+2+4+2+16+1), uDataSize, uClientSXVersion);		
+		switch (uClientSXVersion){
+			case 1:
+				bError = nCount*(4+2+4+2) != uDataSize;
+				break;
+			case 2:
+			case 3:
+				bError = nCount*(4+2+4+2+16) != uDataSize;
+				break;
+			case 4:
+				bError = nCount*(4+2+4+2+16+1) != uDataSize;
+				break;
+			default:
+				wxASSERT( 0 );
+		}
+
+		if (bError){
+			wxASSERT( 0 );
+			AddDebugLogLineM(false, logPartFile, wxT("Invalid source exchange data size."));
+			return;
+		}
+		uPacketSXVersion = uClientSXVersion;		
 	}
 	
-	for (int i = 0;i != nCount;++i) {
+	for (uint16 i = 0;i != nCount;++i) {
 		
 		uint32 dwID = sources->ReadUInt32();
 		uint16 nPort = sources->ReadUInt16();
@@ -2712,67 +2843,63 @@ void CPartFile::AddClientSources(CMemFile* sources, uint8 sourceexchangeversion,
 		uint16 nServerPort = sources->ReadUInt16();
 	
 		CMD4Hash userHash;
-		if (sourceexchangeversion > 1) {
+		if (uPacketSXVersion > 1) {
 			userHash = sources->ReadHash();
 		}
 		
+		uint8 byCryptOptions = 0;
+		if (uPacketSXVersion >= 4) {
+			byCryptOptions = sources->ReadUInt8();
+			printf("\tSource has cryptoptions %i\n", byCryptOptions);
+		}
+		
 		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
-		if (sourceexchangeversion == 3) {
-			uint32 dwIDED2K = wxUINT32_SWAP_ALWAYS(dwID);
-
-			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-			if (!IsLowID(dwID)) {
-				if (!IsGoodIP(dwIDED2K, thePrefs::FilterLanIPs())) {
-					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
-					continue;
-				}
-				if (theApp->ipfilter->IsFiltered(dwIDED2K)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPFilter")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
-					continue;
-				}
-				if (theApp->clientlist->IsBannedClient(dwIDED2K)){
-					continue;
-				}
-			}
-
-			// additionally check for LowID and own IP
-			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort, NULL, false)) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwIDED2K));
+		uint32 dwIDED2K;
+		if (uPacketSXVersion >= 3) {
+			dwIDED2K = wxUINT32_SWAP_ALWAYS(dwID);
+		} else {
+			dwIDED2K = dwID;
+		}
+		
+		// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
+		if (!IsLowID(dwID)) {
+			if (!IsGoodIP(dwIDED2K, thePrefs::FilterLanIPs())) {
+				// check for 0-IP, localhost and optionally for LAN addresses
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
 				continue;
 			}
-		} else {
-			// check the HighID(IP) - "Filter LAN IPs" and "IPfilter" the received sources IP addresses
-			if (!IsLowID(dwID)) {
-				if (!IsGoodIP(dwID, thePrefs::FilterLanIPs())) { 
-					// check for 0-IP, localhost and optionally for LAN addresses
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - bad IP")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
-					continue;
-				}
-				if (theApp->ipfilter->IsFiltered(dwID)) {
-					AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPfilter")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
-					continue;
-				}
-				if (theApp->clientlist->IsBannedClient(dwID)){
-					continue;
-				}
+			if (theApp->ipfilter->IsFiltered(dwIDED2K)) {
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s - IPFilter")) % Uint32toStringIP(dwIDED2K) % OriginToText(nSourceFrom));
+				continue;
 			}
-
-			// additionally check for LowID and own IP
-			if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort)) {
-				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via %s")) % Uint32toStringIP(dwID) % OriginToText(nSourceFrom));
+			if (theApp->clientlist->IsBannedClient(dwIDED2K)){
 				continue;
 			}
 		}
+
+		// additionally check for LowID and own IP
+		if (!CanAddSource(dwID, nPort, dwServerIP, nServerPort, NULL, false)) {
+			AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received via source exchange")) % Uint32toStringIP(dwIDED2K));
+			continue;
+		}
 		
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
-			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, (sourceexchangeversion != 3), true);
-			if (sourceexchangeversion > 1) {
+			CUpDownClient* newsource = new CUpDownClient(nPort,dwID,dwServerIP,nServerPort,this, (uPacketSXVersion < 3), true);
+			if (uPacketSXVersion > 1) {
 				newsource->SetUserHash(userHash);
 			}
+			
+			if (uPacketSXVersion >= 4) {
+				printf("\tSetting Crypt layer options\n");
+				newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+				newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
+				newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+			}
+
 			newsource->SetSourceFrom((ESourceFrom)nSourceFrom);
 			theApp->downloadqueue->CheckAndAddSource(this,newsource);
-		} else {
+			
+	} else {
 			break;
 		}
 	}
