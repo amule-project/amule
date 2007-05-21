@@ -181,7 +181,7 @@ void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8*
 // unfortunatly sending cannot be made transparent for the derived class, because of WSA_WOULDBLOCK
 // together with the fact that each byte must pass the keystream only once
 int CEncryptedStreamSocket::Write(const void* lpBuf, wxUint32 nBufLen){
-//	printf("Starting write for %s\n", (const char*) unicode2char(DbgGetIPString()));	
+	printf("Starting write for %s\n", (const char*) unicode2char(DbgGetIPString()));	
 	if (!IsEncryptionLayerReady()) {
 		wxASSERT(0);
 		return 0;
@@ -194,7 +194,7 @@ int CEncryptedStreamSocket::Write(const void* lpBuf, wxUint32 nBufLen){
 		(void)nRes;
 		return nBufLen;	// report a full send, even if we didn't for some reason - the data is now in our buffer and will be handled later
 	}	else if (m_NegotiatingState == ONS_BASIC_SERVER_DELAYEDSENDING) {
-		wxASSERT( false );
+		wxASSERT(0);
 	}
 
 	if (m_StreamCryptState == ECS_UNKNOWN) {
@@ -204,7 +204,7 @@ int CEncryptedStreamSocket::Write(const void* lpBuf, wxUint32 nBufLen){
 		//DebugLogError(_T("CEncryptedStreamSocket: Overwriting State ECS_UNKNOWN with ECS_NONE because of premature Send() (%s)"), DbgGetIPString());
 	}
 	
-	//printf("Writing %i bytes of data\n", nBufLen);
+	printf("Writing %i bytes of data\n", nBufLen);
 	CSocketClientProxy::Write(lpBuf, nBufLen);
 	return CSocketClientProxy::LastCount();
 }
@@ -214,6 +214,8 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 	m_nObfusicationBytesReceived = CSocketClientProxy::LastCount();
 	m_bFullReceive = m_nObfusicationBytesReceived == (uint32)nBufLen;
 
+	printf("Read %i bytes on %s\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()));
+	
 	if (m_nObfusicationBytesReceived == SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
 		return m_nObfusicationBytesReceived;
 	}
@@ -291,6 +293,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 			printf("Encryption enabled on data receiving, decrypting and passing along\n");
 			// basic obfusication enabled and set, so decrypt and pass along
 			m_pfiReceiveBuffer.RC4Crypt((uint8*)lpBuf, (uint8*)lpBuf, m_nObfusicationBytesReceived);
+			DumpMem(lpBuf, m_nObfusicationBytesReceived, wxT("Directly decrypted data:"));
 			return m_nObfusicationBytesReceived;
 		case ECS_NEGOTIATING:{
 			printf("Negotiating on data receive\n");
@@ -441,7 +444,7 @@ int CEncryptedStreamSocket::Negotiate(const uint8* pBuffer, uint32 nLen){
 			}
 
 			const uint32 nToRead =  std::min(nLen - nRead, m_nReceiveBytesWanted);
-			printf("Reading %i bytes, add from %i position on %i position\n",nToRead, nRead, m_pfiReceiveBuffer.GetPosition());
+			printf("Reading %i bytes, add from %i position on %i position\n",nToRead, nRead, (int)m_pfiReceiveBuffer.GetPosition());
 			DumpMem(pBuffer + nRead, nToRead, wxT("Recv Buffer: "));
 			m_pfiReceiveBuffer.ResetData();
 			m_pfiReceiveBuffer.Write(pBuffer + nRead, nToRead);
