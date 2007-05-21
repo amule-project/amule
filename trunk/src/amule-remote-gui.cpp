@@ -421,7 +421,7 @@ wxString CamuleRemoteGuiApp::CreateMagnetLink(const CAbstractFile *)
 	return wxEmptyString;
 }
 
-wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*, bool, bool)
+wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*, bool, bool, bool)
 {
 	return wxEmptyString;
 }

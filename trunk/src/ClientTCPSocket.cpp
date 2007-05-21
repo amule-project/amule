@@ -288,7 +288,7 @@ void CClientTCPSocket::Safe_Delete()
 bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
-	printf("Rec: OPCODE %x \n",opcode);
+	//printf("Rec: OPCODE %x \n",opcode);
 	DumpMem(buffer, size);
 	#endif
 	if (!m_client && opcode != OP_HELLO) {
@@ -1069,7 +1069,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
-	printf("Rec: OPCODE %x \n",opcode);
+	//printf("Rec: OPCODE %x \n",opcode);
 	DumpMem(buffer,size);
 	#endif
 		
@@ -1563,7 +1563,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			break;
 		}
 		case OP_ANSWERSOURCES2: {
-			printf("Received OP_ANSWERSOURCES2\n");
+			//printf("Received OP_ANSWERSOURCES2\n");
 			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
@@ -1821,7 +1821,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 bool CClientTCPSocket::ProcessED2Kv2Packet(const byte* buffer, uint32 size, uint8 opcode)
 {
 	#ifdef __PACKET_RECV_DUMP__
-	printf("Rec: OPCODE %x ED2Kv2\n",opcode);
+	//printf("Rec: OPCODE %x ED2Kv2\n",opcode);
 	DumpMem(buffer,size);
 	#endif
 		
@@ -1908,7 +1908,7 @@ void CClientTCPSocket::OnReceive(int nErrorCode)
 
 void CClientTCPSocket::OnError(int nErrorCode)
 {
-	printf("* Called OnError for %p\n",this);
+	//printf("* Called OnError for %p\n",this);
 	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	

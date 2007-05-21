@@ -380,11 +380,11 @@ void CEMSocket::DisableDownloadLimit()
  */
 void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
-	printf("* SendPacket called on socket %p\n", this);
+	//printf("* SendPacket called on socket %p\n", this);
 	wxMutexLocker lock(m_sendLocker);
 
 	if (byConnected == ES_DISCONNECTED) {
-		printf("* Disconnected, drop packet\n");
+		//printf("* Disconnected, drop packet\n");
         if(delpacket) {
 			delete packet;
         }
@@ -394,13 +394,13 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 	    }
 
         if (controlpacket) {
-			printf("* Adding a control packet\n");
+			//printf("* Adding a control packet\n");
 	        m_control_queue.push_back(packet);
 
             // queue up for controlpacket
             theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	    } else {
-			printf("* Adding a normal packet to the queue\n");
+			//printf("* Adding a normal packet to the queue\n");
             bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
             StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
 		    m_standard_queue.push_back(queueEntry);
@@ -504,14 +504,14 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 {
 	wxMutexLocker lock(m_sendLocker);
 
-	printf("* Attempt to send a packet on socket %p\n", this);
+	//printf("* Attempt to send a packet on socket %p\n", this);
 	
 	if (byConnected == ES_DISCONNECTED) {
-		printf("* Disconnected socket %p\n", this);
+		//printf("* Disconnected socket %p\n", this);
         SocketSentBytes returnVal = { false, 0, 0 };
         return returnVal;
     } else if (m_bBusy && onlyAllowedToSendControlPacket) {
-		printf("* Busy socket %p\n", this);
+		//printf("* Busy socket %p\n", this);
         SocketSentBytes returnVal = { true, 0, 0 };
         return returnVal;
     }	
@@ -522,7 +522,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 	
     if(byConnected == ES_CONNECTED && IsEncryptionLayerReady() && !(m_bBusy && onlyAllowedToSendControlPacket)) {
 
-		printf("* Internal attemptto send on %p\n", this);
+		//printf("* Internal attemptto send on %p\n", this);
 		
 		if(minFragSize < 1) {
 			minFragSize = 1;
@@ -616,8 +616,6 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 				uint32 result = CEncryptedStreamSocket::Write(sendbuffer+sent,tosend);
 				
 				if (Error()){
-					if (result)
-						printf("LastCount: %u\n", result);
 					
 					uint32 error = LastError();
 					if (error == wxSOCKET_WOULDBLOCK){
@@ -678,11 +676,11 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 		// we might enter control packet queue several times for the same package,
 		// but that costs very little overhead. Less overhead than trying to make sure
 		// that we only enter the queue once.
-		printf("* Requeueing control packet on %p\n", this);
+		//printf("* Requeueing control packet on %p\n", this);
 		theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	}
 
-	printf("* Finishing send debug on %p\n",this);
+	//printf("* Finishing send debug on %p\n",this);
 	
 	SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
 	
