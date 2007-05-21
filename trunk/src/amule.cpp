@@ -1058,7 +1058,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 			const uint8 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 			const uint8 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 			const uint8 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
-			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0) | (uSupportsCryptLayer ? 0x80 : 0x00);
 			
 			strURL << wxT(":") << byCryptOptions;
 			
