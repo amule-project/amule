@@ -342,7 +342,7 @@ private:
 	int		GetMaxFilesPerUDPServerPacket() const;
 	bool	SendGlobGetSourcesUDPPacket(CMemFile& data);
 	
-	void 	AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port);
+	void 	AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port, const wxString& hash, uint8 cryptoptions);
 
 	//! The mutex assosiated with this class, mutable to allow for const functions.
 	mutable wxMutex m_mutex;
@@ -371,6 +371,10 @@ private:
 		wxString strHostname;
 		//! The user-port of the source.
 		uint16 port;
+		//! The hash of the source
+		wxString hash;
+		//! The cryptoptions for the source
+		uint8 cryptoptions;
 	};
 
 	std::deque<Hostname_Entry>	m_toresolve;

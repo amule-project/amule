@@ -61,7 +61,9 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETMAGNETLINK,		CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETED2KLINK,				CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )
+	EVT_MENU( MP_GETCRYPTSOURCEDED2KLINK,			CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_GETHOSTNAMESOURCEED2KLINK,	CSharedFilesCtrl::OnCreateURI )
+	EVT_MENU( MP_GETHOSTNAMECRYPTSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )	
 	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_RENAME,		CSharedFilesCtrl::OnRename )
 
@@ -155,13 +157,15 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 			m_menu->Append( MP_ADDCOLLECTION, _("Add files in collection to transfer list"));
 			m_menu->AppendSeparator();
 		}
-		m_menu->Append(MP_GETMAGNETLINK,_("Copy magnet URI to clipboard"));
+		m_menu->Append(MP_GETMAGNETLINK,_("Copy magnet &URI to clipboard"));
 		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
 		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
-		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname)"));
+		m_menu->Append(MP_GETCRYPTSOURCEDED2KLINK,_("Copy ED2k link to clipboard (Source) (&With Crypt options)"));
+		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (&Hostname)"));
+		m_menu->Append(MP_GETHOSTNAMECRYPTSOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname) (With &Crypt options)"));		
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
-
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
+		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_RENAME, file->IsPartFile());
 		
 		PopupMenu( m_menu, event.GetPoint() );
@@ -272,7 +276,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 {
 	wxString URIs;
 
-	if ( event.GetId() == MP_GETSOURCEED2KLINK ) {
+	if ( event.GetId() == MP_GETSOURCEED2KLINK || event.GetId() == MP_GETCRYPTSOURCEDED2KLINK) {
 		if ( !theApp->IsConnectedED2K() || theApp->serverconnect->IsLowID() ) {
 			wxMessageBox(_("You need a HighID to create a valid sourcelink"), _("Warning"), wxOK | wxICON_ERROR, this);
 
@@ -288,8 +292,10 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 		switch ( event.GetId() ) {
 			case MP_GETMAGNETLINK:				URIs += theApp->CreateMagnetLink( file ) + wxT("\n");				break;
 			case MP_GETED2KLINK:				URIs += theApp->CreateED2kLink( file ) + wxT("\n");					break;
-			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kSourceLink( file ) + wxT("\n");			break;
-			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kHostnameSourceLink( file ) + wxT("\n");	break;
+			case MP_GETSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file , true) + wxT("\n");			break;
+			case MP_GETCRYPTSOURCEDED2KLINK:			URIs += theApp->CreateED2kLink( file , true, false, true) + wxT("\n");			break;
+			case MP_GETHOSTNAMESOURCEED2KLINK:	URIs += theApp->CreateED2kLink( file , true, true) + wxT("\n");	break;
+			case MP_GETHOSTNAMECRYPTSOURCEED2KLINK:			URIs += theApp->CreateED2kLink( file, true, true, true ) + wxT("\n");			break;				
 			case MP_GETAICHED2KLINK:			URIs += theApp->CreateED2kAICHLink( file ) + wxT("\n");				break;
 		}
 
