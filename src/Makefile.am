@@ -234,7 +234,7 @@ common_sources = \
 
 # Libs
 
-core_libs = -L. -lmuleappcore  $(CRYPTOLIBS)
+core_libs = -L. -lmuleappcore
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)

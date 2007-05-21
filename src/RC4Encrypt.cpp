@@ -60,12 +60,11 @@ void CRC4EncryptableBuffer::Encrypt()
 	wxASSERT(!m_encrypted);
 	// This is not optimal. At all.
 	int n = GetLength();
-	printf("Encrypting a %i bytes buffer\n", n);
 	byte orig_buffer[n];
 	memcpy(orig_buffer, GetRawBuffer(), n);
 	RC4Crypt(orig_buffer, GetRawBuffer(), n);
-	DumpMem(orig_buffer, n, wxT("Orig buffer: "));
-	DumpMem(GetRawBuffer() ,n, wxT("Encrypted buffer: "));
+	//DumpMem(orig_buffer, n, wxT("Orig buffer: "));
+	//DumpMem(GetRawBuffer() ,n, wxT("Encrypted buffer: "));
 	m_encrypted = true;
 }
 
