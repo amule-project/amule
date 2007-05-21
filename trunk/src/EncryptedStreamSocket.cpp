@@ -214,7 +214,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 	m_nObfusicationBytesReceived = CSocketClientProxy::LastCount();
 	m_bFullReceive = m_nObfusicationBytesReceived == (uint32)nBufLen;
 
-	printf("Read %i bytes on %s\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()));
+	printf("Read %i bytes on %s, socket %p\n", m_nObfusicationBytesReceived, (const char*) unicode2char(DbgGetIPString()), this);
 	
 	if (m_nObfusicationBytesReceived == SOCKET_ERROR || m_nObfusicationBytesReceived <= 0){
 		return m_nObfusicationBytesReceived;
@@ -254,6 +254,7 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 					// this means we have more data then the current negotiation step required (or there is a bug) and this should never happen
 					// (note: even if it just finished the handshake here, there still can be no data left, since the other client didnt received our response yet)
 					//DebugLogError(_T("CEncryptedStreamSocket: Client %s sent more data then expected while negotiating, disconnecting (1)"), DbgGetIPString());
+					printf("On error: encryption\n");
 					OnError(ERR_ENCRYPTION);
 				}
 				return 0;
@@ -299,20 +300,22 @@ int CEncryptedStreamSocket::Read(void* lpBuf, wxUint32 nBufLen) {
 			printf("Negotiating on data receive\n");
 			const uint32 nRead = Negotiate((uint8*)lpBuf, m_nObfusicationBytesReceived);
 			if (nRead == (-1)) {
+				printf("-> Encryption read error on negotiation\n");
 				return 0;
 			} else if (nRead != (uint32)m_nObfusicationBytesReceived && m_StreamCryptState != ECS_ENCRYPTING) {
-				printf("Too much data, bailing out of negotiation step\n");
+				printf("-> Too much data, bailing out of negotiation step\n");
 				// this means we have more data then the current negotiation step required (or there is a bug) and this should never happen
 				//DebugLogError(_T("CEncryptedStreamSocket: Client %s sent more data then expected while negotiating, disconnecting (2)"), DbgGetIPString());
 				OnError(ERR_ENCRYPTION);
 				return 0;
 			} else if (nRead != (uint32)m_nObfusicationBytesReceived && m_StreamCryptState == ECS_ENCRYPTING){
-				printf("Handshake negotiation finished\n");
+				printf("-> Handshake negotiation finished\n");
 				// we finished the handshake and if we this was an outgoing connection it is allowed (but strange and unlikely) that the client sent payload
 				//DebugLogWarning(_T("CEncryptedStreamSocket: Client %s has finished the handshake but also sent payload on a outgoing connection"), DbgGetIPString());
 				memmove(lpBuf, (uint8*)lpBuf + nRead, m_nObfusicationBytesReceived - nRead);
 				return m_nObfusicationBytesReceived - nRead;
 			} else {
+				printf("-> Negotiation went probably ok\n");
 				return 0;
 			}
 		}
