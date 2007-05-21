@@ -1033,7 +1033,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, false ) );	
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsCryptLayerRequested"), s_bCryptLayerRequested, false ) );		
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 255 ) );
+	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
 	
 #ifndef AMULE_DAEMON
@@ -1114,6 +1114,9 @@ void CPreferences::LoadAllItems(wxConfigBase* cfg)
 	// Now do some post-processing / sanity checking on the values we just loaded
 	CheckUlDlRatio();
 	SetPort(s_port);
+	if (s_byCryptTCPPaddingLength > 254) {
+		s_byCryptTCPPaddingLength = GetRandomUint8() % 254;
+	}
 }
 
 
