@@ -347,7 +347,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				throw;
 			}
 			
-			if (thePrefs::ParanoidFilter() && !IsLowID(wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid())) && (GetRemoteIP() != wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid()))) {
+			if (thePrefs::ParanoidFilter() && !IsLowID(m_client->GetUserIDHybrid()) && (GetRemoteIP() != wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid()))) {
 				wxString reason = wxT("Client claims a different IP from the one we received the hello packet from: ");
 				reason += Uint32toStringIP(wxUINT32_SWAP_ALWAYS(m_client->GetUserIDHybrid())) + wxT(" / ") + Uint32toStringIP(GetRemoteIP());
 				AddDebugLogLineM(false, logClient, reason);
