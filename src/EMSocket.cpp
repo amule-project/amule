@@ -398,6 +398,7 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
             // queue up for controlpacket
             theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	    } else {
+			printf("Adding a normal packet to the queue\n");
             bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
             StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
 		    m_standard_queue.push_back(queueEntry);
@@ -564,7 +565,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 					return returnVal;
 				}
 	
-				// We found a package to send. Get the data to send from the
+				// We found a packet to send. Get the data to send from the
 				// package container and dispose of the container.
 				sendblen = curPacket->GetRealPacketSize();
 				sendbuffer = curPacket->DetachPacket();
