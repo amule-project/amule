@@ -84,6 +84,10 @@ public:
 		wxString addr;
 		//! The source's TCP-port.
 		uint16 port;
+		//! Client hash for encryption
+		wxString hash;
+		//! Client cryptoptions
+		uint8 cryptoptions;		
 	};
 
 	typedef std::deque<SED2KLinkSource> CED2KLinkSourceList;	

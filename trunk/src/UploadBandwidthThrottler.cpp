@@ -389,6 +389,7 @@ void* UploadBandwidthThrottler::Entry()
 				}
 	
 				if(socket != NULL) {
+					printf("Sending control data for socket %p\n",socket);
 					SocketSentBytes socketSentBytes = socket->SendControlData(bytesToSpend-spentBytes, minFragSize);
 					uint32 lastSpentBytes = socketSentBytes.sentBytesControlPackets + socketSentBytes.sentBytesStandardPackets;
 					spentBytes += lastSpentBytes;

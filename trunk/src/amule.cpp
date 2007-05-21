@@ -1028,33 +1028,52 @@ wxString CamuleApp::CreateMagnetLink(const CAbstractFile *f)
 }
 
 // Returns a ed2k file URL
-wxString CamuleApp::CreateED2kLink(const CAbstractFile *f)
+wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool use_hostname, bool addcryptoptions)
 {
+	wxASSERT(!(!add_source && (use_hostname || addcryptoptions)));
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
 	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
 		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
 		wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()) << wxT("|") <<
 		f->GetFileHash().Encode() << wxT("|/");
-	return strURL;
-}
-
-// Returns a ed2k source URL
-wxString CamuleApp::CreateED2kSourceLink(const CAbstractFile *f)
-{
-	if ( !IsConnectedED2K() || serverconnect->IsLowID() ) {
-		return wxEmptyString;
+	
+	if (add_source && IsConnectedED2K() && !serverconnect->IsLowID() ) {
+		
+		uint32 clientID = GetID();
+		// Create the first part of the URL
+		strURL<< wxT("|sources,");
+		if (use_hostname) {
+			strURL << thePrefs::GetYourHostname();
+		} else {
+			strURL << (uint8) clientID << wxT(".") <<
+			(uint8)(clientID >> 8) << wxT(".") <<
+			(uint8)(clientID >> 16) << wxT(".") <<
+			(uint8)(clientID >> 24);
+		}
+		
+ 		strURL << wxT(":") <<
+			thePrefs::GetPort();
+		
+		if (addcryptoptions) {
+			const uint8 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
+			const uint8 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
+			const uint8 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
+			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0);
+			
+			strURL << wxT(":") << byCryptOptions;
+			
+			if (byCryptOptions & 0x80) {
+				strURL << wxT(":") << thePrefs::GetUserHash().Encode();
+			}
+			
+		}
+	} else if (add_source) {
+		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
 	}
-	uint32 clientID = GetID();
-	// Create the first part of the URL
-	// And append the source information: "|sources,<ip>:<port>|/"
-	wxString strURL = CreateED2kLink(f) <<
-		wxT("|sources,") <<
-		(uint8) clientID << wxT(".") <<
-		(uint8)(clientID >> 8) << wxT(".") <<
-		(uint8)(clientID >> 16) << wxT(".") <<
-		(uint8)(clientID >> 24) << wxT(":") <<
-		thePrefs::GetPort() << wxT("|/");
-	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<ip>:<port>|/"
+
+	strURL << wxT("|/");
+	
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
 	return strURL;
 }
 
@@ -1076,21 +1095,6 @@ wxString CamuleApp::CreateED2kAICHLink(const CKnownFile* f)
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|h=<AICH master hash>|/"
 	return strURL;
 }
-
-// Returns a ed2k source URL using a hostname rather than IP. Currently, the
-// hostname doesn't appear to be set, thus this function wont work as intended.
-wxString CamuleApp::CreateED2kHostnameSourceLink(const CAbstractFile* f)
-{
-	// Create the first part of the URL
-	// Append the source information: "|sources,<host>:port|/"
-	wxString strURL = CreateED2kLink(f) <<
-		wxT("|sources,") <<
-		thePrefs::GetYourHostname() << wxT(":") <<
-		thePrefs::GetPort() << wxT("|/");
-	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,<host>:<port>|/"
-	return strURL;
-}
-
 
 /* Original implementation by Bouc7 of the eMule Project.
    aMule Signature idea was designed by BigBob and implemented

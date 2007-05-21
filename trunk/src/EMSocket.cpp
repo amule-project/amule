@@ -381,9 +381,11 @@ void CEMSocket::DisableDownloadLimit()
  */
 void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, uint32 actualPayloadSize)
 {
+	printf("* SendPacket called on socket %p\n", this);
 	wxMutexLocker lock(m_sendLocker);
 
 	if (byConnected == ES_DISCONNECTED) {
+		printf("* Disconnected, drop packet\n");
         if(delpacket) {
 			delete packet;
         }
@@ -393,12 +395,13 @@ void CEMSocket::SendPacket(CPacket* packet, bool delpacket, bool controlpacket, 
 	    }
 
         if (controlpacket) {
+			printf("* Adding a control packet\n");
 	        m_control_queue.push_back(packet);
 
             // queue up for controlpacket
             theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	    } else {
-			printf("Adding a normal packet to the queue\n");
+			printf("* Adding a normal packet to the queue\n");
             bool first = !((sendbuffer && !m_currentPacket_is_controlpacket) || !m_standard_queue.empty());
             StandardPacketQueueEntry queueEntry = { actualPayloadSize, packet };
 		    m_standard_queue.push_back(queueEntry);
@@ -502,6 +505,8 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 {
 	wxMutexLocker lock(m_sendLocker);
 
+	printf("* Attempt to send a packet on socket %p\n", this);
+	
 	if (byConnected == ES_DISCONNECTED) {
         SocketSentBytes returnVal = { false, 0, 0 };
         return returnVal;

@@ -1209,7 +1209,7 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 }
 
 
-void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port)
+void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHostname, uint16 port, const wxString& hash, uint8 cryptoptions)
 {
 	// double checking
 	if ( !GetFileByID(fileid) ) {
@@ -1218,7 +1218,7 @@ void CDownloadQueue::AddToResolve(const CMD4Hash& fileid, const wxString& pszHos
 
 	wxMutexLocker lock( m_mutex );
 		
-	Hostname_Entry entry = { fileid, pszHostname, port };
+	Hostname_Entry entry = { fileid, pszHostname, port, hash, cryptoptions };
 	m_toresolve.push_front(entry);
 
 	// Check if there are other DNS lookups on queue
@@ -1256,9 +1256,16 @@ void CDownloadQueue::OnHostnameResolved(uint32 ip)
 			sources.WriteUInt8(1); // No. Sources
 			sources.WriteUInt32(ip);
 			sources.WriteUInt16(resolved.port);
+			sources.WriteUInt8(resolved.cryptoptions);
+			if (resolved.cryptoptions & 0x80) {
+				wxASSERT(!resolved.hash.IsEmpty());
+				CMD4Hash sourcehash;
+				sourcehash.Decode(resolved.hash);
+				sources.WriteHash(sourcehash);
+			}
 			sources.Seek(0,wxFromStart);
 			
-			file->AddSources(sources, 0, 0, SF_LINK, false);
+			file->AddSources(sources, 0, 0, SF_LINK, true);
 		}
 	}
 	
@@ -1379,7 +1386,7 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 	const CED2KFileLink::CED2KLinkSourceList& list = link->m_sources;
 	CED2KFileLink::CED2KLinkSourceList::const_iterator it = list.begin();
 	for (; it != list.end(); ++it) {
-		AddToResolve(link->GetHashKey(), it->addr, it->port);
+		AddToResolve(link->GetHashKey(), it->addr, it->port, it->hash, it->cryptoptions);
 	}
 
 	return true;	

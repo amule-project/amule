@@ -421,23 +421,10 @@ wxString CamuleRemoteGuiApp::CreateMagnetLink(const CAbstractFile *)
 	return wxEmptyString;
 }
 
-wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*)
+wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*, bool, bool)
 {
 	return wxEmptyString;
 }
-
-
-wxString CamuleRemoteGuiApp::CreateED2kSourceLink(CAbstractFile const *)
-{
-	return wxEmptyString;
-}
-
-
-wxString CamuleRemoteGuiApp::CreateED2kHostnameSourceLink(CAbstractFile const *)
-{
-	return wxEmptyString;
-}
-
 
 wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
 {

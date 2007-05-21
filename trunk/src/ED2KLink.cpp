@@ -188,16 +188,40 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 			wxString token = srcTokens.GetNextToken();
 			while (srcTokens.HasMoreTokens()) {
 				token = srcTokens.GetNextToken().Strip(wxString::both);
-
-				wxString addr = token.BeforeFirst(wxT(':'));
-				unsigned port = StrToULong(token.AfterFirst(wxT(':')));
+				
+				wxStringTokenizer sourceTokens(token, wxT(":"));
+				wxString addr = sourceTokens.GetNextToken();
+				if (addr.IsEmpty()) {
+					throw wxString( wxT("Empty address" ) );
+				}
+				
+				wxString strport = sourceTokens.GetNextToken();
+				if (strport.IsEmpty()) {
+					throw wxString( wxT("Empty port" ) );
+				}				
+				
+				unsigned port = StrToULong(strport);
 
 				// Sanity checking
-				if ((port == 0) or (port > 0xFFFF) or addr.IsEmpty()) {
-					throw wxString( wxT("Invalid Address/Port" ) );
+				if ((port == 0) or (port > 0xFFFF)) {
+					throw wxString( wxT("Invalid Port" ) );
 				}
-
-				SED2KLinkSource entry = {addr, port};
+				
+				wxString sourcehash;
+				uint8 cryptoptions =0;
+				wxString strcryptoptions = sourceTokens.GetNextToken();
+				if (!strcryptoptions.IsEmpty()) {
+					cryptoptions = (uint8) StrToULong(strcryptoptions);
+					if ((cryptoptions & 0x80) > 0) {
+						// Source ready for encryption, hash included.
+						sourcehash = sourceTokens.GetNextToken();
+						if (sourcehash.IsEmpty()) {
+							throw wxString( wxT("Empty sourcehash conflicts with cryptoptions flag 0x80" ) );
+						}
+					}
+				}
+				
+				SED2KLinkSource entry = { addr, port, sourcehash, cryptoptions };
 
 				m_sources.push_back(entry);
 			}

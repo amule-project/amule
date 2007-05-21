@@ -152,8 +152,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
-					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file), this);
+					theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level)
@@ -194,8 +193,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
-					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file)));
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()))));
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuemap) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
@@ -213,8 +211,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-		(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
-					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file), this);
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
 }
 
 CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL detail_level) : CECTag(EC_TAG_KNOWNFILE, file->GetFileHash())
@@ -239,10 +236,8 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
-
 	AddTag(CECTag(EC_TAG_PARTFILE_ED2K_LINK,
-				(theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()) ?
-					theApp->CreateED2kSourceLink(file) : theApp->CreateED2kLink(file)));
+			theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID()))));
 }
 
 CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAIL_LEVEL detail_level) :

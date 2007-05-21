@@ -147,10 +147,8 @@ public:
 
 	// URL functions
 	wxString	CreateMagnetLink(const CAbstractFile *f);
-	wxString	CreateED2kLink(const CAbstractFile* f);
-	wxString	CreateED2kSourceLink(const CAbstractFile* f);
+	wxString	CreateED2kLink(const CAbstractFile* f, bool add_source = false, bool use_hostname = false, bool addcryptoptions = false);	
 	wxString	CreateED2kAICHLink(const CKnownFile* f);
-	wxString	CreateED2kHostnameSourceLink(const CAbstractFile* f);
 
 	// Misc functions
 	void		OnlineSig(bool zero = false);
