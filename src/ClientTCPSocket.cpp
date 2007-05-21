@@ -1908,6 +1908,7 @@ void CClientTCPSocket::OnReceive(int nErrorCode)
 
 void CClientTCPSocket::OnError(int nErrorCode)
 {
+	printf("* Called OnError for %p\n",this);
 	// 0.42e + Kry changes for handling of socket lost events
 	wxString strError;
 	

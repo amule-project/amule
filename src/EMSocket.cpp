@@ -211,9 +211,8 @@ void CEMSocket::OnReceive(int nErrorCode)
 
 	{
 		wxMutexLocker lock(m_sendLocker);
-		Read(GlobalReadBuffer + pendingHeaderSize, readMax);
-		ret = LastCount();
-		if (Error() || ret == 0) {
+		ret = Read(GlobalReadBuffer + pendingHeaderSize, readMax);
+		if (Error() || (ret == 0)) {
 			if (LastError() == wxSOCKET_WOULDBLOCK) {
 				pendingOnReceive = true;
 			}
@@ -508,9 +507,11 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 	printf("* Attempt to send a packet on socket %p\n", this);
 	
 	if (byConnected == ES_DISCONNECTED) {
+		printf("* Disconnected socket %p\n", this);
         SocketSentBytes returnVal = { false, 0, 0 };
         return returnVal;
     } else if (m_bBusy && onlyAllowedToSendControlPacket) {
+		printf("* Busy socket %p\n", this);
         SocketSentBytes returnVal = { true, 0, 0 };
         return returnVal;
     }	
@@ -521,6 +522,8 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 	
     if(byConnected == ES_CONNECTED && IsEncryptionLayerReady() && !(m_bBusy && onlyAllowedToSendControlPacket)) {
 
+		printf("* Internal attemptto send on %p\n", this);
+		
 		if(minFragSize < 1) {
 			minFragSize = 1;
 		}
@@ -651,7 +654,7 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 			}
 	
 			if (sent == sendblen){
-				// we are done sending the current package. Delete it and set
+				// we are done sending the current packet. Delete it and set
 				// sendbuffer to NULL so a new packet can be fetched.
 				delete[] sendbuffer;
 				sendbuffer = NULL;
@@ -675,9 +678,12 @@ SocketSentBytes CEMSocket::Send(uint32 maxNumberOfBytesToSend, uint32 minFragSiz
 		// we might enter control packet queue several times for the same package,
 		// but that costs very little overhead. Less overhead than trying to make sure
 		// that we only enter the queue once.
+		printf("* Requeueing control packet on %p\n", this);
 		theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this, HasSent());
 	}
 
+	printf("* Finishing send debug on %p\n",this);
+	
 	SocketSentBytes returnVal = { !anErrorHasOccured, sentStandardPacketBytesThisCall, sentControlPacketBytesThisCall };
 	
     return returnVal;
