@@ -28,175 +28,129 @@ namespace amule.net
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.StatusStrip statusStripMain;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.toolStripConnectionStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripXferUp = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripXferDown = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusED2K = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusKad = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusServer = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripContainerMain = new System.Windows.Forms.ToolStripContainer();
-            this.toolStripMain = new System.Windows.Forms.ToolStrip();
-            this.toolStripButtonDL = new System.Windows.Forms.ToolStripButton();
-            statusStripMain = new System.Windows.Forms.StatusStrip();
-            statusStripMain.SuspendLayout();
-            this.toolStripContainerMain.ContentPanel.SuspendLayout();
-            this.toolStripContainerMain.TopToolStripPanel.SuspendLayout();
-            this.toolStripContainerMain.SuspendLayout();
-            this.toolStripMain.SuspendLayout();
+            this.panelStatus = new System.Windows.Forms.Panel();
+            this.textLinktatus = new System.Windows.Forms.TextBox();
+            this.panelToolbar = new System.Windows.Forms.Panel();
+            this.buttonShared = new System.Windows.Forms.Button();
+            this.buttonNetwork = new System.Windows.Forms.Button();
+            this.buttonSearch = new System.Windows.Forms.Button();
+            this.buttonXfer = new System.Windows.Forms.Button();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.panelStatus.SuspendLayout();
+            this.panelToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
-            // statusStripMain
+            // panelStatus
             // 
-            statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripConnectionStatus,
-            this.toolStripXferUp,
-            this.toolStripXferDown,
-            this.toolStripStatusED2K,
-            this.toolStripStatusKad,
-            this.toolStripStatusServer});
-            statusStripMain.Location = new System.Drawing.Point(0, 339);
-            statusStripMain.Name = "statusStripMain";
-            statusStripMain.Size = new System.Drawing.Size(678, 22);
-            statusStripMain.TabIndex = 0;
-            statusStripMain.Text = "statusStrip1";
+            this.panelStatus.Controls.Add(this.textLinktatus);
+            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStatus.Location = new System.Drawing.Point(0, 362);
+            this.panelStatus.Name = "panelStatus";
+            this.panelStatus.Size = new System.Drawing.Size(678, 24);
+            this.panelStatus.TabIndex = 0;
             // 
-            // toolStripConnectionStatus
+            // textLinktatus
             // 
-            this.toolStripConnectionStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripConnectionStatus.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripConnectionStatus.Margin = new System.Windows.Forms.Padding(1, 3, 1, 2);
-            this.toolStripConnectionStatus.Name = "toolStripConnectionStatus";
-            this.toolStripConnectionStatus.Size = new System.Drawing.Size(136, 17);
-            this.toolStripConnectionStatus.Text = "toolStripConnectionStatus";
+            this.textLinktatus.Dock = System.Windows.Forms.DockStyle.Left;
+            this.textLinktatus.Location = new System.Drawing.Point(0, 0);
+            this.textLinktatus.Name = "textLinktatus";
+            this.textLinktatus.ReadOnly = true;
+            this.textLinktatus.Size = new System.Drawing.Size(160, 20);
+            this.textLinktatus.TabIndex = 0;
             // 
-            // toolStripXferUp
+            // panelToolbar
             // 
-            this.toolStripXferUp.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripXferUp.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripXferUp.Name = "toolStripXferUp";
-            this.toolStripXferUp.Size = new System.Drawing.Size(19, 17);
-            this.toolStripXferUp.Text = "--";
+            this.panelToolbar.Controls.Add(this.buttonShared);
+            this.panelToolbar.Controls.Add(this.buttonNetwork);
+            this.panelToolbar.Controls.Add(this.buttonSearch);
+            this.panelToolbar.Controls.Add(this.buttonXfer);
+            this.panelToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelToolbar.Location = new System.Drawing.Point(0, 0);
+            this.panelToolbar.Name = "panelToolbar";
+            this.panelToolbar.Size = new System.Drawing.Size(678, 45);
+            this.panelToolbar.TabIndex = 1;
             // 
-            // toolStripXferDown
+            // buttonShared
             // 
-            this.toolStripXferDown.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripXferDown.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripXferDown.Name = "toolStripXferDown";
-            this.toolStripXferDown.Size = new System.Drawing.Size(19, 17);
-            this.toolStripXferDown.Text = "--";
+            this.buttonShared.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonShared.Image = global::remote_gui.net.Properties.Resources.Shared_Files;
+            this.buttonShared.Location = new System.Drawing.Point(135, 0);
+            this.buttonShared.Name = "buttonShared";
+            this.buttonShared.Size = new System.Drawing.Size(45, 45);
+            this.buttonShared.TabIndex = 3;
+            this.buttonShared.UseVisualStyleBackColor = true;
+            this.buttonShared.Click += new System.EventHandler(this.buttonShared_Click);
             // 
-            // toolStripStatusED2K
+            // buttonNetwork
             // 
-            this.toolStripStatusED2K.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusED2K.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripStatusED2K.Name = "toolStripStatusED2K";
-            this.toolStripStatusED2K.Size = new System.Drawing.Size(107, 17);
-            this.toolStripStatusED2K.Text = "toolStripStatusED2K";
+            this.buttonNetwork.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonNetwork.Image = ((System.Drawing.Image)(resources.GetObject("buttonNetwork.Image")));
+            this.buttonNetwork.Location = new System.Drawing.Point(90, 0);
+            this.buttonNetwork.Name = "buttonNetwork";
+            this.buttonNetwork.Size = new System.Drawing.Size(45, 45);
+            this.buttonNetwork.TabIndex = 2;
+            this.buttonNetwork.UseVisualStyleBackColor = true;
+            this.buttonNetwork.Click += new System.EventHandler(this.buttonNetwork_Click);
             // 
-            // toolStripStatusKad
+            // buttonSearch
             // 
-            this.toolStripStatusKad.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusKad.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripStatusKad.Name = "toolStripStatusKad";
-            this.toolStripStatusKad.Size = new System.Drawing.Size(100, 17);
-            this.toolStripStatusKad.Text = "toolStripStatusKad";
+            this.buttonSearch.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
+            this.buttonSearch.Location = new System.Drawing.Point(45, 0);
+            this.buttonSearch.Name = "buttonSearch";
+            this.buttonSearch.Size = new System.Drawing.Size(45, 45);
+            this.buttonSearch.TabIndex = 1;
+            this.buttonSearch.UseVisualStyleBackColor = true;
+            this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
             // 
-            // toolStripStatusServer
+            // buttonXfer
             // 
-            this.toolStripStatusServer.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusServer.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
-            this.toolStripStatusServer.Name = "toolStripStatusServer";
-            this.toolStripStatusServer.Size = new System.Drawing.Size(114, 17);
-            this.toolStripStatusServer.Text = "toolStripStatusServer";
+            this.buttonXfer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonXfer.Image = ((System.Drawing.Image)(resources.GetObject("buttonXfer.Image")));
+            this.buttonXfer.Location = new System.Drawing.Point(0, 0);
+            this.buttonXfer.Name = "buttonXfer";
+            this.buttonXfer.Size = new System.Drawing.Size(45, 45);
+            this.buttonXfer.TabIndex = 0;
+            this.buttonXfer.UseVisualStyleBackColor = true;
+            this.buttonXfer.Click += new System.EventHandler(this.buttonXfer_Click);
             // 
-            // toolStripContainerMain
+            // panelMain
             // 
-            // 
-            // toolStripContainerMain.ContentPanel
-            // 
-            this.toolStripContainerMain.ContentPanel.Controls.Add(statusStripMain);
-            this.toolStripContainerMain.ContentPanel.Size = new System.Drawing.Size(678, 361);
-            this.toolStripContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.toolStripContainerMain.LeftToolStripPanelVisible = false;
-            this.toolStripContainerMain.Location = new System.Drawing.Point(0, 0);
-            this.toolStripContainerMain.Name = "toolStripContainerMain";
-            this.toolStripContainerMain.RightToolStripPanelVisible = false;
-            this.toolStripContainerMain.Size = new System.Drawing.Size(678, 386);
-            this.toolStripContainerMain.TabIndex = 0;
-            this.toolStripContainerMain.Text = "toolStripContainer1";
-            // 
-            // toolStripContainerMain.TopToolStripPanel
-            // 
-            this.toolStripContainerMain.TopToolStripPanel.Controls.Add(this.toolStripMain);
-            // 
-            // toolStripMain
-            // 
-            this.toolStripMain.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonDL});
-            this.toolStripMain.Location = new System.Drawing.Point(3, 0);
-            this.toolStripMain.Name = "toolStripMain";
-            this.toolStripMain.Size = new System.Drawing.Size(33, 25);
-            this.toolStripMain.TabIndex = 0;
-            // 
-            // toolStripButtonDL
-            // 
-            this.toolStripButtonDL.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonDL.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonDL.Image")));
-            this.toolStripButtonDL.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonDL.Name = "toolStripButtonDL";
-            this.toolStripButtonDL.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonDL.Text = "Downloads";
-            this.toolStripButtonDL.Click += new System.EventHandler(this.toolStripButtonDL_Click);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 45);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(678, 317);
+            this.panelMain.TabIndex = 2;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(678, 386);
-            this.Controls.Add(this.toolStripContainerMain);
+            this.Controls.Add(this.panelMain);
+            this.Controls.Add(this.panelToolbar);
+            this.Controls.Add(this.panelStatus);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
             this.Load += new System.EventHandler(this.MainWindow_Load);
-            statusStripMain.ResumeLayout(false);
-            statusStripMain.PerformLayout();
-            this.toolStripContainerMain.ContentPanel.ResumeLayout(false);
-            this.toolStripContainerMain.ContentPanel.PerformLayout();
-            this.toolStripContainerMain.TopToolStripPanel.ResumeLayout(false);
-            this.toolStripContainerMain.TopToolStripPanel.PerformLayout();
-            this.toolStripContainerMain.ResumeLayout(false);
-            this.toolStripContainerMain.PerformLayout();
-            this.toolStripMain.ResumeLayout(false);
-            this.toolStripMain.PerformLayout();
+            this.panelStatus.ResumeLayout(false);
+            this.panelStatus.PerformLayout();
+            this.panelToolbar.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolStripContainer toolStripContainerMain;
-        public System.Windows.Forms.ToolStripStatusLabel toolStripConnectionStatus;
-        public System.Windows.Forms.ToolStripStatusLabel toolStripXferDown;
-        public System.Windows.Forms.ToolStripStatusLabel toolStripXferUp;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusServer;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusED2K;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusKad;
-        private System.Windows.Forms.ToolStrip toolStripMain;
-        private System.Windows.Forms.ToolStripButton toolStripButtonDL;
+        private System.Windows.Forms.Panel panelStatus;
+        private System.Windows.Forms.Panel panelToolbar;
+        private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Button buttonXfer;
+        private System.Windows.Forms.Button buttonSearch;
+        private System.Windows.Forms.TextBox textLinktatus;
+        private System.Windows.Forms.Button buttonNetwork;
+        private System.Windows.Forms.Button buttonShared;
 
     }
 }

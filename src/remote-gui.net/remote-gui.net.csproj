@@ -48,7 +48,7 @@
     <Compile Include="ecProto.cs" />
     <Compile Include="ECTagTypes.cs" />
     <Compile Include="MainWindow.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainWindow.designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
@@ -82,6 +82,39 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amule-human\Transfers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amule-human\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amule-human\Preferences.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amule-human\Statistics.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="amule-human\Network.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Network.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Preferences.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Shared_Files.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Transfers.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
