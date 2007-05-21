@@ -13,6 +13,12 @@ namespace amule.net
         amuleRemote m_amuleRemote = new amuleRemote();
         Timer m_updateTimer = null;
 
+        DownloadQueueContainer m_dload_info;
+
+
+        amuleDownloadStatusList m_download_status_ctrl = new amuleDownloadStatusList();
+        amuleSharedFilesList m_shared_list_ctrl = new amuleSharedFilesList();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,12 +27,22 @@ namespace amule.net
         enum UpdateRequestState { Stats, MainInfo };
         UpdateRequestState m_req_state;
 
+        ecProto.ecPacket GetFullInfoRequest()
+        {
+            ecProto.ecPacket req = null;
+
+            req = m_dload_info.ReQuery();
+
+            return req;
+        }
+
         private static void UpdateTimerProc(Object myObject,
                                             EventArgs myEventArgs)
         {
             MainWindow w = (MainWindow)((Timer)myObject).Tag;
 
-            //w.m_updateTimer.Stop();
+            // TODO: for testing 1 request is enough
+            w.m_updateTimer.Stop();
 
             ecProto.ecPacket req = null;
             switch(w.m_req_state) {
@@ -35,6 +51,7 @@ namespace amule.net
                     w.m_req_state = UpdateRequestState.MainInfo;
                     break;
                 case UpdateRequestState.MainInfo:
+                    req = w.GetFullInfoRequest();
                     w.m_req_state = UpdateRequestState.Stats;
                     break;
             }
@@ -85,18 +102,27 @@ namespace amule.net
                     return;
                 }
             }
-            toolStripConnectionStatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
+
+            // default - download list view
+            panelMain.Controls.Add(m_download_status_ctrl);
+
+            textLinktatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
 
             m_amuleRemote.SetECHandler(new amuleMainECHanler(this));
 
             //
             // Connection OK at this point
             //
+            m_dload_info = new DownloadQueueContainer(m_download_status_ctrl);
+
             m_updateTimer = new Timer();
             m_updateTimer.Tag = this;
             m_updateTimer.Tick += new EventHandler(UpdateTimerProc);
             m_updateTimer.Interval = 1000;
             m_updateTimer.Start();
+
+            // for testing set needed state!
+            m_req_state = UpdateRequestState.MainInfo;
         }
 
         //
@@ -116,7 +142,7 @@ namespace amule.net
                 new ecProto.ecConnStateTag((ecProto.ecTagInt)packet.SubTag(ECTagNames.EC_TAG_CONNSTATE));
 
             ecProto.ecTag server = connState.Server();
-
+            /*
             toolStripXferDown.Text = ValueToPrefix(dl_speed) + "/s";
             toolStripXferUp.Text = ValueToPrefix(ul_speed) + "/s";
             if ( connState.IsConnected() ) {
@@ -137,15 +163,42 @@ namespace amule.net
                 }
                 
             }
+            */
+        }
+
+        public void DloadQueueReply(ecProto.ecPacket packet)
+        {
+            ecProto.ecPacket reply = m_dload_info.HandlePacket(packet);
+            if ( reply != null ) {
+                m_amuleRemote.SendPacket(reply);
+            }
+        }
+
+        private void buttonXfer_Click(object sender, EventArgs e)
+        {
+            if ( panelMain.Controls[0] != m_download_status_ctrl ) {
+                panelMain.Controls.Clear();
+                panelMain.Controls.Add(m_download_status_ctrl);
+            }
+        }
+
+        private void buttonNetwork_Click(object sender, EventArgs e)
+        {
+            UpdateTimerProc(m_updateTimer, null);
+        }
+
+        private void buttonSearch_Click(object sender, EventArgs e)
+        {
 
         }
 
-        private void toolStripButtonDL_Click(object sender, EventArgs e)
+        private void buttonShared_Click(object sender, EventArgs e)
         {
-            ListView mv = new ListView();
-            mv.Dock = DockStyle.Fill;
-            
-            toolStripContainerMain.ContentPanel.Controls.Add(mv);
+            if ( panelMain.Controls[0] != m_shared_list_ctrl ) {
+                panelMain.Controls.Clear();
+                panelMain.Controls.Add(m_shared_list_ctrl);
+            }
+
         }
     }
 
@@ -163,9 +216,80 @@ namespace amule.net
                 case ECOpCodes.EC_OP_STATS:
                     m_owner.StatsReply(packet);
                     break;
+                case ECOpCodes.EC_OP_DLOAD_QUEUE:
+                    m_owner.DloadQueueReply(packet);
+                    break;
             }
         }
     }
 
+    public class amuleListView : ListView {
+        public amuleListView()
+        {
+            Dock = DockStyle.Fill;
+            View = View.Details;
+        }
 
+        public void LoadColumns(string [] columns, int [] width)
+        {
+            int i = 0;
+            foreach (string c in columns) {
+                ColumnHeader h = new ColumnHeader();
+                h.Text = c;
+                h.Width = width[i++];
+                Columns.Add(h);
+            }
+        }
+    }
+
+    public class amuleDownloadStatusList : amuleListView {
+        public amuleDownloadStatusList()
+        {
+            string[] columns = { "File name", "Status", "Size", "Transferred" };
+            int[] width = { 200, 100, 100, 100 };
+            LoadColumns(columns, width);
+
+            OwnerDraw = true;
+            DrawColumnHeader +=
+                new DrawListViewColumnHeaderEventHandler(amuleDownloadStatusList_DrawColumnHeader);
+
+            DrawSubItem += new DrawListViewSubItemEventHandler(amuleDownloadStatusList_DrawSubItem);
+        }
+
+        void amuleDownloadStatusList_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawText();
+        }
+
+        void amuleDownloadStatusList_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawText();
+        }
+
+        ///
+        // interface to core
+        ///
+        public void AddItem(DownloadQueueItem i)
+        {
+            ListViewItem it = new ListViewItem(i.Name);
+            if ( InvokeRequired ) {
+                AddItemCallback d = new AddItemCallback(AddItem);
+                Invoke(d, i);
+            } else {
+                Items.Add(it);
+            }
+        }
+        delegate void AddItemCallback(DownloadQueueItem i);
+
+    }
+    public class amuleSharedFilesList : amuleListView {
+        public amuleSharedFilesList()
+        {
+            string[] columns = { "File name", "Size" };
+            int[] width = { 100, 100, 100, 100 };
+            LoadColumns(columns, width);
+        }
+    }
 }

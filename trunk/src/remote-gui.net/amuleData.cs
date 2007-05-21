@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
@@ -22,11 +23,24 @@ namespace amule.net
             m_buff = new byte[m_len];
         }
 
-        void Decode(byte [] buff)
+        public void Realloc(int size)
+        {
+	        if ( size == m_len ) {
+		        return;
+	        }
+
+            if ( (size > m_len) && (size > m_buff.Length) ) {
+                m_buff = new byte[size];
+                m_enc_buff = new byte[size * 4 / 3 + 1];
+            }
+            m_len = size;
+        }
+
+        public void Decode(byte [] buff, int start_offset)
         {
             int len = buff.Length;
 
-            int i = 0, j = 0;
+            int i = start_offset, j = 0;
             while ( j != m_len ) {
                 if ( i < (len -1) ) {
                     if (buff[i+1] == buff[i]) {
@@ -61,6 +75,32 @@ namespace amule.net
         }
     }
 
+    class PartFileEncoderData {
+        public RLE_Data m_part_status;
+        public RLE_Data m_gap_status;
+
+        public PartFileEncoderData(int partcount, int gapcount)
+        {
+            m_part_status = new RLE_Data(partcount+1, true);
+            m_gap_status = new RLE_Data(gapcount*sizeof(Int64)+1, true);
+        }
+
+        public void Decode(byte [] gapdata, byte [] partdata)
+        {
+            m_part_status.Decode(partdata, 0);
+
+            // in a first dword - real size
+            //uint32 gapsize = ENDIAN_NTOHL(RawPeekUInt32(gapdata));
+            //gapdata += sizeof(uint32);
+            //m_gap_status.Realloc(gapsize * 2 * sizeof(uint64));
+            Int32 gapsize = System.Net.IPAddress.NetworkToHostOrder(
+                (Int32)gapdata[0] | ((Int32)gapdata[1] << 8) |
+                ((Int32)gapdata[2] << 16) | ((Int32)gapdata[3] << 24));
+
+            m_gap_status.Realloc(gapsize*2*sizeof(Int64));
+            m_gap_status.Decode(gapdata, 4);
+        }
+    }
 
     //
     // I: ID for this kind of tag
@@ -78,36 +118,33 @@ namespace amule.net
 
     //
     // T: item in container
-    // I: ID (key) for those items
-    // G: EC tag used for xfer
-    abstract class amuleGenericContainer<T, I, G> {
+    abstract class amuleGenericContainer<T> {
         private enum REQ_STATE { IDLE, REQ_SENT, FULL_REQ_SENT };
         REQ_STATE m_state = REQ_STATE.IDLE;
 
         LinkedList<T> m_items = new LinkedList<T>();
-        //T[] m_items = new T[32];
-        Dictionary<I, T> m_items_hash = new Dictionary<I, T>(32);
-
-        bool m_inc_tags = false;
+        Dictionary<ecProto.ecMD5, T> m_items_hash = new Dictionary<ecProto.ecMD5, T>(32);
 
         ECOpCodes m_req_cmd;
 
         ECTagNames m_item_tagname;
 
-        amuleTag2ItemConnector<I> m_tag2id;
+        bool m_inc_tags = true;
 
-        public amuleGenericContainer(ECOpCodes req_cmd, ECTagNames item_tagname, bool use_inc_tags,
-            amuleTag2ItemConnector<I> tag2id)
+        public amuleGenericContainer(ECOpCodes req_cmd, ECTagNames item_tagname)
         {
             m_req_cmd = req_cmd;
             m_item_tagname = item_tagname;
-            m_tag2id = tag2id;
-            m_inc_tags = use_inc_tags;
         }
 
         protected virtual bool Phase1Done()
         {
             return true;
+        }
+
+        protected virtual ecProto.ecTag CreateItemTag(ecProto.ecMD5 id)
+        {
+            return null;
         }
 
         public ecProto.ecPacket ReQuery()
@@ -134,16 +171,16 @@ namespace amule.net
                 if ( t.Name() != m_item_tagname ) {
                     continue;
                 }
-                I item_id = m_tag2id.ID(t);
+                ecProto.ecMD5 item_id = ((ecProto.ecTagMD5)t).ValueMD5();
                 if ( m_items_hash.ContainsKey(item_id) ) {
                     ProcessItemUpdate(m_items_hash[item_id], t);
                 } else {
                     if ( m_inc_tags ) {
                         T item = CreateItem(t);
                         m_items.AddLast(item);
-                        m_items_hash[item_id] = item;// CreateItem(t);
+                        m_items_hash[item_id] = item;
                     } else {
-                        full_req.AddSubtag(m_tag2id.CreateTag(item_id));
+                        full_req.AddSubtag(CreateItemTag(item_id));
                     }
                 }
                 //
@@ -189,7 +226,7 @@ namespace amule.net
         }
     }
 
-    class DownloadQueueItem {
+    public class DownloadQueueItem {
         ecProto.ecMD5 m_id;
         string m_filename;
         UInt64 m_filesize, m_size_xfered, m_size_done;
@@ -201,38 +238,54 @@ namespace amule.net
             m_filesize = size;
         }
 
-        public class DownloadTag2ItemConnector : amuleTag2ItemConnector<ecProto.ecMD5>
-        {
-            public override ecProto.ecMD5 ID(ecProto.ecTag tag)
-            {
-                ecProto.ecTagMD5 md5_tag = (ecProto.ecTagMD5)tag;
-                return md5_tag.ValueMD5();
-            }
-
-            public override ecProto.ecTag CreateTag(ecProto.ecMD5 value)
-            {
-                return new ecProto.ecTagMD5(ECTagNames.EC_TAG_PARTFILE, value);
-            }
-        }
-
         public void UpdateItem(ecProto.ecTag tag)
         {
-            m_size_done = ((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_DONE)).Value64();
-            m_size_xfered = ((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_XFER)).Value64();
+            ecProto.ecTagInt itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_DONE);
+            if ( itag != null ) {
+                m_size_done = itag.Value64();
+            }
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_XFER);
+            if ( itag != null ) {
+                m_size_xfered = itag.Value64();
+            }
+
         }
+
+        public string Name
+        {
+            get { return m_filename; }
+        }
+	
     }
 
-    class DownloadQueueContainer : amuleGenericContainer<DownloadQueueItem, ecProto.ecMD5, ecProto.ecDownloadsInfoReq>
-    {
-        public DownloadQueueContainer()
-            : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE, ECTagNames.EC_TAG_PARTFILE, true,
-            new DownloadQueueItem.DownloadTag2ItemConnector())
+    class DownloadQueueContainer : amuleGenericContainer<DownloadQueueItem> {
+        Dictionary<ecProto.ecMD5, PartFileEncoderData> m_enc_map;
+
+        amuleDownloadStatusList m_owner = null;
+
+        public DownloadQueueContainer(amuleDownloadStatusList owner)
+            : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE, ECTagNames.EC_TAG_PARTFILE)
         {
+            m_enc_map = new Dictionary<ecProto.ecMD5, PartFileEncoderData>();
+
+            m_owner = owner;
         }
 
         override protected void ProcessItemUpdate(DownloadQueueItem item, ecProto.ecTag tag)
         {
             item.UpdateItem(tag);
+
+            ecProto.ecMD5 id = ((ecProto.ecTagMD5)tag).ValueMD5();
+            if ( !m_enc_map.ContainsKey(id) ) {
+                throw new Exception("No RLE decoder for download queue item");
+            }
+            PartFileEncoderData decoder = m_enc_map[id];
+            ecProto.ecTagCustom gapstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_GAP_STATUS);
+            ecProto.ecTagCustom partstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_PART_STATUS);
+            decoder.Decode(gapstat.Value(), partstat.Value());
+
+            ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
+            BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
         }
 
         override protected DownloadQueueItem CreateItem(ecProto.ecTag tag)
@@ -241,9 +294,33 @@ namespace amule.net
             string filename = ((ecProto.ecTagString)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_NAME)).StringValue();
             UInt64 filesize = ((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_FULL)).Value64();
             DownloadQueueItem i = new DownloadQueueItem(id, filename, filesize);
+
+            m_enc_map[id] = new PartFileEncoderData((int)(filesize / 9728000), 10);
+
             i.UpdateItem(tag);
+
+            if ( m_owner != null ) {
+                m_owner.AddItem(i);
+            }
             return i;
         }
     }
+    /*
+    public class SharedFileItem {
+    }
 
+    class SharedFileListContainer : amuleGenericContainer<SharedFileItem>
+    {
+        public class SharedFileTag2ItemConnector : amuleTag2ItemConnector<ecProto.ecMD5>
+        {
+        }
+        override protected void ProcessItemUpdate(SharedFileItem item, ecProto.ecTag tag)
+        {
+        }
+        override protected SharedFileItem CreateItem(ecProto.ecTag tag)
+        {
+            return null;
+        }
+    }
+     * */
 }
