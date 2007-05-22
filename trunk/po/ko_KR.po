@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-21 03:30+0200\n"
+"POT-Creation-Date: 2007-05-22 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -264,159 +264,167 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "멀티 구간"
 
-#: src/SharedFilesCtrl.cpp:99 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:78
 #: src/DownloadListCtrl.cpp:198 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "파일 이름"
 
-#: src/SharedFilesCtrl.cpp:100 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:79
 #: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "크기"
 
-#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "종류"
 
-#: src/SharedFilesCtrl.cpp:102 src/SharedFilesCtrl.cpp:137
+#: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:139
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:205 src/DownloadListCtrl.cpp:938
 msgid "Priority"
 msgstr "우선권"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:105 src/SearchListCtrl.cpp:82
 msgid "FileID"
 msgstr "파일아이디"
 
-#: src/SharedFilesCtrl.cpp:104
+#: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
 msgstr "요청"
 
-#: src/SharedFilesCtrl.cpp:105
+#: src/SharedFilesCtrl.cpp:107
 msgid "Accepted Requests"
 msgstr "허락된 요청"
 
-#: src/SharedFilesCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:108
 msgid "Transferred Data"
 msgstr "전송된 크기"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:109
 msgid "Share Ratio"
 msgstr "공유 비율"
 
-#: src/SharedFilesCtrl.cpp:108 src/ClientListCtrl.cpp:521
+#: src/SharedFilesCtrl.cpp:110 src/ClientListCtrl.cpp:521
 #: src/ClientListCtrl.cpp:826
 msgid "Obtained Parts"
 msgstr "획득한 부분"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:111
 msgid "Complete Sources"
 msgstr "완료된 자료"
 
-#: src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:112
 msgid "Directory Path"
 msgstr "폴더 경로"
 
-#: src/SharedFilesCtrl.cpp:127 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4048
 msgid "Shared Files"
 msgstr "공유 파일"
 
-#: src/SharedFilesCtrl.cpp:129 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "매우 낮음"
 
-#: src/SharedFilesCtrl.cpp:130 src/DataToText.cpp:42
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
 #: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:2948
 msgid "Low"
 msgstr "낮음"
 
-#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:43
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
 #: src/DownloadListCtrl.cpp:934 src/muuli_wdr.cpp:2949
 msgid "Normal"
 msgstr "보통"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:44
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:2950
 msgid "High"
 msgstr "높음"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "매우높음"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:46
 msgid "Release"
 msgstr "개방"
 
-#: src/SharedFilesCtrl.cpp:135 src/DownloadListCtrl.cpp:936
+#: src/SharedFilesCtrl.cpp:137 src/DownloadListCtrl.cpp:936
 #: src/muuli_wdr.cpp:2951
 msgid "Auto"
 msgstr "자동"
 
-#: src/SharedFilesCtrl.cpp:142
+#: src/SharedFilesCtrl.cpp:144
 msgid "Add Comment/Rating"
 msgstr "코멘트/등급 추가"
 
-#: src/SharedFilesCtrl.cpp:144
+#: src/SharedFilesCtrl.cpp:146
 msgid "Edit Comment/Rating"
 msgstr "코멘트/등급 편집"
 
-#: src/SharedFilesCtrl.cpp:148
+#: src/SharedFilesCtrl.cpp:150
 msgid "Rename"
 msgstr "이름 변경"
 
-#: src/SharedFilesCtrl.cpp:155
+#: src/SharedFilesCtrl.cpp:157
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:158 src/DownloadListCtrl.cpp:988
-msgid "Copy magnet URI to clipboard"
+#: src/SharedFilesCtrl.cpp:160
+msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:159 src/DownloadListCtrl.cpp:990
+#: src/SharedFilesCtrl.cpp:161 src/DownloadListCtrl.cpp:990
 msgid "Copy ED2k &link to clipboard"
 msgstr "ED2k 링크를 클립보드로 복사"
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:162
 msgid "Copy ED2k link to clipboard (&Source)"
 msgstr "ED2k 링크를 클립보드에 복사합니다.(&S자료)"
 
-#: src/SharedFilesCtrl.cpp:161
-msgid "Copy ED2k link to clipboard (Hostname)"
-msgstr "ED2k 링크를 클립보드에 복사합니다.(호스트 이름)"
+#: src/SharedFilesCtrl.cpp:163
+msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162
+#: src/SharedFilesCtrl.cpp:164
+msgid "Copy ED2k link to clipboard (&Hostname)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:165
+msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "ED2k 링크를 클립보드에 복사합니다(&AICH 정보)"
 
-#: src/SharedFilesCtrl.cpp:277
+#: src/SharedFilesCtrl.cpp:281
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
 
-#: src/SharedFilesCtrl.cpp:277 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:675
 msgid "Warning"
 msgstr "경고"
 
-#: src/SharedFilesCtrl.cpp:420
+#: src/SharedFilesCtrl.cpp:426
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "공유된 파일(%i)"
 
-#: src/SharedFilesCtrl.cpp:581
+#: src/SharedFilesCtrl.cpp:587
 msgid "[PartFile]"
 msgstr "[부분 파일]"
 
-#: src/SharedFilesCtrl.cpp:661 src/DownloadListCtrl.cpp:1125
+#: src/SharedFilesCtrl.cpp:667 src/DownloadListCtrl.cpp:1125
 msgid "Enter new name for this file:"
 msgstr "새이름 넣으시오:"
 
-#: src/SharedFilesCtrl.cpp:662 src/DownloadListCtrl.cpp:1126
+#: src/SharedFilesCtrl.cpp:668 src/DownloadListCtrl.cpp:1126
 msgid "File rename"
 msgstr "이름 수정"
 
@@ -1458,16 +1466,16 @@ msgstr "스페인말"
 msgid "Spanish (Mexican)"
 msgstr "스페인말 (멕시코)"
 
-#: src/Preferences.cpp:1491 src/Preferences.cpp:1505 src/Preferences.cpp:1512
+#: src/Preferences.cpp:1494 src/Preferences.cpp:1508 src/Preferences.cpp:1515
 msgid "Unable to determine selected browser!"
 msgstr "선택된 브라우저를 판단할수 없습니다!"
 
-#: src/Preferences.cpp:1541
+#: src/Preferences.cpp:1544
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP포트가 서버UDP 소켓이 TCP+3이 되기위해서 65532보다 커서는 안됩니다."
 
-#: src/Preferences.cpp:1542
+#: src/Preferences.cpp:1545
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "기본 포트가 사용될 것입니다.(%d)"
@@ -1531,7 +1539,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:715 src/amule.cpp:1318
+#: src/amule.cpp:715 src/amule.cpp:1322
 msgid "Info"
 msgstr "정보"
 
@@ -2864,15 +2872,15 @@ msgstr "연결 실패"
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
 #: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:846
-#: src/amule.cpp:964 src/amule.cpp:1329
+#: src/amule.cpp:964 src/amule.cpp:1333
 msgid "Error"
 msgstr "오류"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "전부"
 
-#: src/amule-remote-gui.cpp:763
+#: src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "전체 사용자: %s | 전체 파일: %s"
@@ -3016,6 +3024,10 @@ msgstr "상세하게 파일 보기(&D)"
 #: src/DownloadListCtrl.cpp:983 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "모든 덧글 확인"
+
+#: src/DownloadListCtrl.cpp:988
+msgid "Copy magnet URI to clipboard"
+msgstr ""
 
 #: src/DownloadListCtrl.cpp:992
 msgid "Copy feedback to clipboard"
@@ -3461,17 +3473,17 @@ msgstr "이미 %s 파일을 받고있습니다."
 msgid "You are already trying to download the file %s"
 msgstr "이미 %s 파일을 내려받으려고 하고있습니다."
 
-#: src/DownloadQueue.cpp:1294
+#: src/DownloadQueue.cpp:1301
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1302
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1325
+#: src/DownloadQueue.cpp:1332
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "유효하지 않은 ED2k링크입니다. 오류: %s"
@@ -3557,11 +3569,11 @@ msgstr "ED2k"
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s에 연결됨"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with HighID"
 msgstr "높은아이디로"
 
@@ -6870,15 +6882,21 @@ msgstr ""
 "\n"
 "네트워크의 포트가 열려있는지 체크하세요. "
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1071
+msgid ""
+"WARNING: You can't add yourself as a source for a ed2k link while being "
+"lowid."
+msgstr ""
+
+#: src/amule.cpp:1122
 msgid "Failed to create OnlineSig File"
 msgstr "온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1130
 msgid "Failed to create aMule OnlineSig File"
 msgstr "어뮬 온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1298
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6886,39 +6904,39 @@ msgstr ""
 "선택한 로케일이 컴퓨터에 설치되지 않아 보입니다. (주: 어쨌든 지정한 대로 설정"
 "해 보겠습니다)"
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1308
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "이번에 어뮬 %s를 처음 실행했습니다."
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1310
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "이버젼은 테스트 버젼으로, 매일 업데이트되며, \n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1311
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "이 프로그램이 어느 것도 부수지 않는다고, 집을 태우지 않는다고, 혹은 \n"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1312
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입"
 "니다.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1317
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "더 많은 정보, 지원, 새 릴리즈는 홈페이지 www.amule.org, 또는 IRC 채널\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1318
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "(irc.freenode.net의 #aMule)에서 찾을 수 있습니다.\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1320
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "버그는 http://forum.amule.org로 보고해 주십시오."
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1333
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6926,101 +6944,101 @@ msgstr ""
 "지정한 온라인 서명 파일을 위한 폴더가 부정확합니다.\n"
 " 온라인 서명은 폴더를 환경설정에서 수정할 때까지 사용하지 않습니다."
 
-#: src/amule.cpp:1723
+#: src/amule.cpp:1727
 msgid "ERROR: can't open logfile"
 msgstr "오류: 로그파일을 열수없습니다."
 
-#: src/amule.cpp:1727
+#: src/amule.cpp:1731
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습니다."
 
-#: src/amule.cpp:1746
+#: src/amule.cpp:1750
 msgid "Log has been reset"
 msgstr "로그가 초기화되었습니다."
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1778
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "서버메시지: %s"
 
-#: src/amule.cpp:1812
+#: src/amule.cpp:1816
 msgid "Failed to download the nodes list."
 msgstr "노드 목록을 내려받지 못했습니다."
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1829
 msgid "Failed to open the downloaded version check file"
 msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
 
-#: src/amule.cpp:1828 src/amule.cpp:1838 src/amule.cpp:1844
+#: src/amule.cpp:1832 src/amule.cpp:1842 src/amule.cpp:1848
 msgid "Corrupted version check file"
 msgstr "버젼 검사 파일이 손상되었습니다."
 
-#: src/amule.cpp:1854
+#: src/amule.cpp:1858
 msgid "You are using an outdated version of aMule!"
 msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 
-#: src/amule.cpp:1855
+#: src/amule.cpp:1859
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
-#: src/amule.cpp:1856
+#: src/amule.cpp:1860
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "최신 버젼은 항상 http://www.amule.org 에서 찾을 수 있습니다."
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1863
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "경고: 어뮬 버젼은 낡았습니다: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1867
 msgid "Your copy of aMule is up to date."
 msgstr "어뮬은 최신입니다."
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1874
 msgid "Failed to download the version check file"
 msgstr "버젼 검사 파일을 내려받지 못했습니다."
 
-#: src/amule.cpp:1972
+#: src/amule.cpp:1976
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "사용자: E: %s K: %s | 파일 E: %s K: %s"
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2045
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s에 연결되어 있습니다."
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2048
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s에 연결중입니다."
 
-#: src/amule.cpp:2046
+#: src/amule.cpp:2050
 msgid "Disconnected from ED2K"
 msgstr "ED2k로부터 연결이 끊김"
 
-#: src/amule.cpp:2053
+#: src/amule.cpp:2057
 msgid "Kad started."
 msgstr "카드를 시작했습니다."
 
-#: src/amule.cpp:2055
+#: src/amule.cpp:2059
 msgid "Kad stopped."
 msgstr "카드를 멈췄습니다."
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2066
 msgid "Connected to Kad (ok)"
 msgstr "카드에 연결됨 (양호)"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2068
 msgid "Connected to Kad (firewalled)"
 msgstr "카드에 연결됨 (방화벽)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2071
 msgid "Disconnected from Kad"
 msgstr "카드로부터 연결이 끊김"
 
-#: src/amule.cpp:2123
+#: src/amule.cpp:2127
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7028,7 +7046,7 @@ msgstr ""
 "카드 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
 "니다."
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2130
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "카드 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
@@ -7039,6 +7057,9 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "Copy ED2k link to clipboard (Hostname)"
+#~ msgstr "ED2k 링크를 클립보드에 복사합니다.(호스트 이름)"
 
 #~ msgid "Session is not logged and request have no password\n"
 #~ msgstr "세션은 로그인 되지 않았으며, 암호를 요청하지 않습니다.\n"

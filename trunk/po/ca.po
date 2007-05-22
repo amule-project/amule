@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-21 03:30+0200\n"
+"POT-Creation-Date: 2007-05-22 03:31+0200\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -276,159 +276,167 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Selecció múltiple"
 
-#: src/SharedFilesCtrl.cpp:99 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:78
 #: src/DownloadListCtrl.cpp:198 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fitxer"
 
-#: src/SharedFilesCtrl.cpp:100 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:79
 #: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Mida"
 
-#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "Tipus"
 
-#: src/SharedFilesCtrl.cpp:102 src/SharedFilesCtrl.cpp:137
+#: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:139
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:205 src/DownloadListCtrl.cpp:938
 msgid "Priority"
 msgstr "Prioritat"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:105 src/SearchListCtrl.cpp:82
 msgid "FileID"
 msgstr "ID del Fitxer"
 
-#: src/SharedFilesCtrl.cpp:104
+#: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
 msgstr "Peticions"
 
-#: src/SharedFilesCtrl.cpp:105
+#: src/SharedFilesCtrl.cpp:107
 msgid "Accepted Requests"
 msgstr "Peticions Acceptades"
 
-#: src/SharedFilesCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:108
 msgid "Transferred Data"
 msgstr "Dades Transferides"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:109
 msgid "Share Ratio"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:108 src/ClientListCtrl.cpp:521
+#: src/SharedFilesCtrl.cpp:110 src/ClientListCtrl.cpp:521
 #: src/ClientListCtrl.cpp:826
 msgid "Obtained Parts"
 msgstr "Parts"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:111
 msgid "Complete Sources"
 msgstr "Fonts Completes"
 
-#: src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:112
 msgid "Directory Path"
 msgstr "Ubicació"
 
-#: src/SharedFilesCtrl.cpp:127 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4048
 msgid "Shared Files"
 msgstr "Compartits"
 
-#: src/SharedFilesCtrl.cpp:129 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "Molt Baixa"
 
-#: src/SharedFilesCtrl.cpp:130 src/DataToText.cpp:42
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
 #: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:2948
 msgid "Low"
 msgstr "Baixa"
 
-#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:43
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
 #: src/DownloadListCtrl.cpp:934 src/muuli_wdr.cpp:2949
 msgid "Normal"
 msgstr "Normal"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:44
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:2950
 msgid "High"
 msgstr "Alta"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "Molt Alta"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:46
 msgid "Release"
 msgstr "Llançament"
 
-#: src/SharedFilesCtrl.cpp:135 src/DownloadListCtrl.cpp:936
+#: src/SharedFilesCtrl.cpp:137 src/DownloadListCtrl.cpp:936
 #: src/muuli_wdr.cpp:2951
 msgid "Auto"
 msgstr "Auto"
 
-#: src/SharedFilesCtrl.cpp:142
+#: src/SharedFilesCtrl.cpp:144
 msgid "Add Comment/Rating"
 msgstr "Afegeix Comentari/Valoració"
 
-#: src/SharedFilesCtrl.cpp:144
+#: src/SharedFilesCtrl.cpp:146
 msgid "Edit Comment/Rating"
 msgstr "Edita Comentari/Valoració"
 
-#: src/SharedFilesCtrl.cpp:148
+#: src/SharedFilesCtrl.cpp:150
 msgid "Rename"
 msgstr "Reanomena"
 
-#: src/SharedFilesCtrl.cpp:155
+#: src/SharedFilesCtrl.cpp:157
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:158 src/DownloadListCtrl.cpp:988
-msgid "Copy magnet URI to clipboard"
+#: src/SharedFilesCtrl.cpp:160
+msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:159 src/DownloadListCtrl.cpp:990
+#: src/SharedFilesCtrl.cpp:161 src/DownloadListCtrl.cpp:990
 msgid "Copy ED2k &link to clipboard"
 msgstr "Copia &l'enllaç ED2K al porta-retalls"
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:162
 msgid "Copy ED2k link to clipboard (&Source)"
 msgstr "Copia l'enllaç ED2K al porta-retalls (&Font)"
 
-#: src/SharedFilesCtrl.cpp:161
-msgid "Copy ED2k link to clipboard (Hostname)"
-msgstr "Copia l'enllaç ED2K al porta-retalls (Hostname)"
+#: src/SharedFilesCtrl.cpp:163
+msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162
+#: src/SharedFilesCtrl.cpp:164
+msgid "Copy ED2k link to clipboard (&Hostname)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:165
+msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Copia l'enllaç ED2k al porta-retalls (info &AICH)"
 
-#: src/SharedFilesCtrl.cpp:277
+#: src/SharedFilesCtrl.cpp:281
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Necessiteu ID Alta per crear un enllaç font vàlid"
 
-#: src/SharedFilesCtrl.cpp:277 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:675
 msgid "Warning"
 msgstr "Avís"
 
-#: src/SharedFilesCtrl.cpp:420
+#: src/SharedFilesCtrl.cpp:426
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Fitxers Compartits (%i)"
 
-#: src/SharedFilesCtrl.cpp:581
+#: src/SharedFilesCtrl.cpp:587
 msgid "[PartFile]"
 msgstr "[Fitxer de Parts]"
 
-#: src/SharedFilesCtrl.cpp:661 src/DownloadListCtrl.cpp:1125
+#: src/SharedFilesCtrl.cpp:667 src/DownloadListCtrl.cpp:1125
 msgid "Enter new name for this file:"
 msgstr "Introduïu un nom nou per al fitxer:"
 
-#: src/SharedFilesCtrl.cpp:662 src/DownloadListCtrl.cpp:1126
+#: src/SharedFilesCtrl.cpp:668 src/DownloadListCtrl.cpp:1126
 msgid "File rename"
 msgstr "Reanomena"
 
@@ -1471,18 +1479,18 @@ msgstr "Castellà"
 msgid "Spanish (Mexican)"
 msgstr "Castellà (Mèxic)"
 
-#: src/Preferences.cpp:1491 src/Preferences.cpp:1505 src/Preferences.cpp:1512
+#: src/Preferences.cpp:1494 src/Preferences.cpp:1508 src/Preferences.cpp:1515
 msgid "Unable to determine selected browser!"
 msgstr "No s'ha pogut determinar el navegador seleccionat!"
 
-#: src/Preferences.cpp:1541
+#: src/Preferences.cpp:1544
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "El port TCP no pot ser més gran que 65532 puix el sòcol UDP del servidor és "
 "TCP+3"
 
-#: src/Preferences.cpp:1542
+#: src/Preferences.cpp:1545
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "S'usarà el port per defecte (%d)"
@@ -1546,7 +1554,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:715 src/amule.cpp:1318
+#: src/amule.cpp:715 src/amule.cpp:1322
 msgid "Info"
 msgstr "Informació"
 
@@ -2910,15 +2918,15 @@ msgstr "La connexió ha fallat "
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
 #: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:846
-#: src/amule.cpp:964 src/amule.cpp:1329
+#: src/amule.cpp:964 src/amule.cpp:1333
 msgid "Error"
 msgstr "Error"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Tots"
 
-#: src/amule-remote-gui.cpp:763
+#: src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"
@@ -3062,6 +3070,10 @@ msgstr "Mostra els &detalls del fitxer"
 #: src/DownloadListCtrl.cpp:983 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Mostra tots els comentaris"
+
+#: src/DownloadListCtrl.cpp:988
+msgid "Copy magnet URI to clipboard"
+msgstr ""
 
 #: src/DownloadListCtrl.cpp:992
 msgid "Copy feedback to clipboard"
@@ -3511,17 +3523,17 @@ msgstr "Ja disposeu del fitxer '%s'"
 msgid "You are already trying to download the file %s"
 msgstr "Ja esteu intentant descarregar el fitxer %s"
 
-#: src/DownloadQueue.cpp:1294
+#: src/DownloadQueue.cpp:1301
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1302
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1325
+#: src/DownloadQueue.cpp:1332
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Enllaç e2dk invàlid! Error: %s"
@@ -3609,11 +3621,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Connectat a %s %s %s"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with LowID"
 msgstr "amb ID Baixa"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with HighID"
 msgstr "amb ID Alta"
 
@@ -6982,15 +6994,21 @@ msgstr ""
 "Comproveu la xarxa per estar segurs que el port està obert per l'entrada i "
 "la sortida."
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1071
+msgid ""
+"WARNING: You can't add yourself as a source for a ed2k link while being "
+"lowid."
+msgstr ""
+
+#: src/amule.cpp:1122
 msgid "Failed to create OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la Signatura en línia"
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1130
 msgid "Failed to create aMule OnlineSig File"
 msgstr "No s'ha pogut crear el fitxer de la Signatura en línia de l'aMule"
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1298
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6998,37 +7016,37 @@ msgstr ""
 "La localització seleccionada no està instal·lada al PC. (Nota: s'intentarà "
 "establir-la igualment)"
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1308
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Aquesta és la primera vegada que executeu l'aMule %s"
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1310
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Aquesta és una versió de prova, actualitzada diariament, i \n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1311
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "no donem garanties de que no es trequi res, es cremi la vostra casa,\n"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1312
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "o es mori el gos. Tanmateix *hauria* de ser segur el seu ús.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1317
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Podeu trobar més informació, ajuda i noves versions a la nostra pàgina web,\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1318
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "a www.aMule.org, o a l'IRC al canal #aMule de irc.freenode.net.\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1320
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Podeu informar de qualsevol errada a http://forum.amule.org"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1333
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -7038,102 +7056,102 @@ msgstr ""
 " Es INHABILITARÀ la Signatura en línia fins que ho resolgueu a les "
 "preferències."
 
-#: src/amule.cpp:1723
+#: src/amule.cpp:1727
 msgid "ERROR: can't open logfile"
 msgstr "ERROR: no es pot obrir el fitxer de registre"
 
-#: src/amule.cpp:1727
+#: src/amule.cpp:1731
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "AVÍS: el fitxer de registre està buit. Quelcom no va bé."
 
-#: src/amule.cpp:1746
+#: src/amule.cpp:1750
 msgid "Log has been reset"
 msgstr "S'ha reiniciat el registre"
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1778
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Missatge del Servidor: %s"
 
-#: src/amule.cpp:1812
+#: src/amule.cpp:1816
 msgid "Failed to download the nodes list."
 msgstr "No s'ha pogut descarregar la llista de nodes."
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1829
 msgid "Failed to open the downloaded version check file"
 msgstr "No s'ha pogut obrir el fitxer de comprovació de versió descarregada"
 
-#: src/amule.cpp:1828 src/amule.cpp:1838 src/amule.cpp:1844
+#: src/amule.cpp:1832 src/amule.cpp:1842 src/amule.cpp:1848
 msgid "Corrupted version check file"
 msgstr "Fitxer de comprovació de versió corromput"
 
-#: src/amule.cpp:1854
+#: src/amule.cpp:1858
 msgid "You are using an outdated version of aMule!"
 msgstr "Esteu usant una versió antiga de l'aMule!"
 
-#: src/amule.cpp:1855
+#: src/amule.cpp:1859
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 "La vostra versió de l'aMule és %i.%i.%i i l'última versió és %li.%li.%li"
 
-#: src/amule.cpp:1856
+#: src/amule.cpp:1860
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Sempre podeu trobar l'última versió a http://www.amule.org"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1863
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "AVÍS: La vostra versió d'aMuled és antiga: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1867
 msgid "Your copy of aMule is up to date."
 msgstr "La vostra versió de l'aMule és l'última."
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1874
 msgid "Failed to download the version check file"
 msgstr "No s'ha pogut descarregar el fitxer de comprovació de versió"
 
-#: src/amule.cpp:1972
+#: src/amule.cpp:1976
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Usuaris: E: %s K: %s | Fitxers E: %s K: %s"
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2045
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Connectat a %s %s"
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2048
 #, c-format
 msgid "Connecting to %s"
 msgstr "Connectant a %s"
 
-#: src/amule.cpp:2046
+#: src/amule.cpp:2050
 msgid "Disconnected from ED2K"
 msgstr "Desconnectat de ED2K"
 
-#: src/amule.cpp:2053
+#: src/amule.cpp:2057
 msgid "Kad started."
 msgstr "S'ha engegat la xarxa Kad."
 
-#: src/amule.cpp:2055
+#: src/amule.cpp:2059
 msgid "Kad stopped."
 msgstr "S'ha aturat la xarxa Kad."
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2066
 msgid "Connected to Kad (ok)"
 msgstr "Connectat a Kad (ok)"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2068
 msgid "Connected to Kad (firewalled)"
 msgstr "Connectat a Kad (rere tallafocs)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2071
 msgid "Disconnected from Kad"
 msgstr "Desconnectat de Kad"
 
-#: src/amule.cpp:2123
+#: src/amule.cpp:2127
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7141,7 +7159,7 @@ msgstr ""
 "No es pot usar la xarxa Kad si el port UDP està inhabilitat a les "
 "preferències, no s'engegarà."
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2130
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "La xarxa Kad està inhabilitada a les preferències, no es connectarà."
 
@@ -7156,6 +7174,9 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "No s'ha pogut obrir el fitxer de la llista d'amics 'emfriends.met' per a "
 "escriure!"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname)"
+#~ msgstr "Copia l'enllaç ED2K al porta-retalls (Hostname)"
 
 #~ msgid "Session is not logged and request have no password\n"
 #~ msgstr "La sessió no està iniciada i la petició no té cap contrasenya\n"

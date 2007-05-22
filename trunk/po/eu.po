@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-21 03:30+0200\n"
+"POT-Creation-Date: 2007-05-22 03:31+0200\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -273,159 +273,167 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Aukera anitza"
 
-#: src/SharedFilesCtrl.cpp:99 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:78
 #: src/DownloadListCtrl.cpp:198 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fitxategi izena"
 
-#: src/SharedFilesCtrl.cpp:100 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:79
 #: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Tamaina"
 
-#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "Mota"
 
-#: src/SharedFilesCtrl.cpp:102 src/SharedFilesCtrl.cpp:137
+#: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:139
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:205 src/DownloadListCtrl.cpp:938
 msgid "Priority"
 msgstr "Lehentasuna"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:105 src/SearchListCtrl.cpp:82
 msgid "FileID"
 msgstr "FitxategiID"
 
-#: src/SharedFilesCtrl.cpp:104
+#: src/SharedFilesCtrl.cpp:106
 msgid "Requests"
 msgstr "Eskaerak"
 
-#: src/SharedFilesCtrl.cpp:105
+#: src/SharedFilesCtrl.cpp:107
 msgid "Accepted Requests"
 msgstr "Onartutako eskaerak"
 
-#: src/SharedFilesCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:108
 msgid "Transferred Data"
 msgstr "Transferitutako Datuak"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:109
 msgid "Share Ratio"
 msgstr "Partekatze Erlazioa"
 
-#: src/SharedFilesCtrl.cpp:108 src/ClientListCtrl.cpp:521
+#: src/SharedFilesCtrl.cpp:110 src/ClientListCtrl.cpp:521
 #: src/ClientListCtrl.cpp:826
 msgid "Obtained Parts"
 msgstr "Eskuratutako zatiak"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:111
 msgid "Complete Sources"
 msgstr "Jatorri Osoak"
 
-#: src/SharedFilesCtrl.cpp:110
+#: src/SharedFilesCtrl.cpp:112
 msgid "Directory Path"
 msgstr "Karpeta Bidea"
 
-#: src/SharedFilesCtrl.cpp:127 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4048
 msgid "Shared Files"
 msgstr "Partekatutako Fitxategiak"
 
-#: src/SharedFilesCtrl.cpp:129 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "Oso txikia"
 
-#: src/SharedFilesCtrl.cpp:130 src/DataToText.cpp:42
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
 #: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:2948
 msgid "Low"
 msgstr "Baxua"
 
-#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:43
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
 #: src/DownloadListCtrl.cpp:934 src/muuli_wdr.cpp:2949
 msgid "Normal"
 msgstr "Normala"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:44
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:2950
 msgid "High"
 msgstr "Altua"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "Oso Altua"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:46
 msgid "Release"
 msgstr "Bertsioa"
 
-#: src/SharedFilesCtrl.cpp:135 src/DownloadListCtrl.cpp:936
+#: src/SharedFilesCtrl.cpp:137 src/DownloadListCtrl.cpp:936
 #: src/muuli_wdr.cpp:2951
 msgid "Auto"
 msgstr "Auto"
 
-#: src/SharedFilesCtrl.cpp:142
+#: src/SharedFilesCtrl.cpp:144
 msgid "Add Comment/Rating"
 msgstr "Iruzkina/Kalifikazioa gehitu"
 
-#: src/SharedFilesCtrl.cpp:144
+#: src/SharedFilesCtrl.cpp:146
 msgid "Edit Comment/Rating"
 msgstr "Iruzkina/Kalifikazioa editatu"
 
-#: src/SharedFilesCtrl.cpp:148
+#: src/SharedFilesCtrl.cpp:150
 msgid "Rename"
 msgstr "Izena aldatu"
 
-#: src/SharedFilesCtrl.cpp:155
+#: src/SharedFilesCtrl.cpp:157
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:158 src/DownloadListCtrl.cpp:988
-msgid "Copy magnet URI to clipboard"
+#: src/SharedFilesCtrl.cpp:160
+msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:159 src/DownloadListCtrl.cpp:990
+#: src/SharedFilesCtrl.cpp:161 src/DownloadListCtrl.cpp:990
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopiatu ED2k &lotura arbelera"
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:162
 msgid "Copy ED2k link to clipboard (&Source)"
 msgstr "Kopiatu ED2k lotura arbelara (&Jatorria)"
 
-#: src/SharedFilesCtrl.cpp:161
-msgid "Copy ED2k link to clipboard (Hostname)"
-msgstr "Kopiatu ED2k lotura arbelara (Ostalaria)"
+#: src/SharedFilesCtrl.cpp:163
+msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162
+#: src/SharedFilesCtrl.cpp:164
+msgid "Copy ED2k link to clipboard (&Hostname)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:165
+msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
+
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Kopi&atu"
 
-#: src/SharedFilesCtrl.cpp:277
+#: src/SharedFilesCtrl.cpp:281
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "ID altua behar duzu baliozko jatorri lotura bat sortzeko"
 
-#: src/SharedFilesCtrl.cpp:277 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:675
 msgid "Warning"
 msgstr "Oharra"
 
-#: src/SharedFilesCtrl.cpp:420
+#: src/SharedFilesCtrl.cpp:426
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Partekatutako fitxategiak (%i)"
 
-#: src/SharedFilesCtrl.cpp:581
+#: src/SharedFilesCtrl.cpp:587
 msgid "[PartFile]"
 msgstr "[ZatiFitxategia]"
 
-#: src/SharedFilesCtrl.cpp:661 src/DownloadListCtrl.cpp:1125
+#: src/SharedFilesCtrl.cpp:667 src/DownloadListCtrl.cpp:1125
 msgid "Enter new name for this file:"
 msgstr "Sar izen berri bat fitxategi honentzat:"
 
-#: src/SharedFilesCtrl.cpp:662 src/DownloadListCtrl.cpp:1126
+#: src/SharedFilesCtrl.cpp:668 src/DownloadListCtrl.cpp:1126
 msgid "File rename"
 msgstr "Fitxategia berrizendatu"
 
@@ -1472,16 +1480,16 @@ msgstr "Gaztelera"
 msgid "Spanish (Mexican)"
 msgstr "Gaztelera (Mexikarra)"
 
-#: src/Preferences.cpp:1491 src/Preferences.cpp:1505 src/Preferences.cpp:1512
+#: src/Preferences.cpp:1494 src/Preferences.cpp:1508 src/Preferences.cpp:1515
 msgid "Unable to determine selected browser!"
 msgstr "Ezin da ezarritako nabigatzailea jakin!"
 
-#: src/Preferences.cpp:1541
+#: src/Preferences.cpp:1544
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP ataka ezin da 65532 baino altuagoa izan UDP socket-a TCP+3 bait da"
 
-#: src/Preferences.cpp:1542
+#: src/Preferences.cpp:1545
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Lehenetsiriko ataka erabiliko da (%d)"
@@ -1545,7 +1553,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:715 src/amule.cpp:1318
+#: src/amule.cpp:715 src/amule.cpp:1322
 msgid "Info"
 msgstr "Argb"
 
@@ -2906,15 +2914,15 @@ msgstr "Konexioak huts egin du"
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
 #: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:846
-#: src/amule.cpp:964 src/amule.cpp:1329
+#: src/amule.cpp:964 src/amule.cpp:1333
 msgid "Error"
 msgstr "Errorea"
 
-#: src/amule-remote-gui.cpp:532 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Guztiak"
 
-#: src/amule-remote-gui.cpp:763
+#: src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Guztira Erab: %s | Guztira Fitxategiak: %s"
@@ -3058,6 +3066,10 @@ msgstr "Erakutsi &xehetasunak"
 #: src/DownloadListCtrl.cpp:983 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Erakutsi iruzkin guztiak"
+
+#: src/DownloadListCtrl.cpp:988
+msgid "Copy magnet URI to clipboard"
+msgstr ""
 
 #: src/DownloadListCtrl.cpp:992
 msgid "Copy feedback to clipboard"
@@ -3513,17 +3525,17 @@ msgstr "Dagoeneko baduzu '%s' fitxategia"
 msgid "You are already trying to download the file %s"
 msgstr "Dagoeneko %s fitxategia deskargatzen ari zara"
 
-#: src/DownloadQueue.cpp:1294
+#: src/DownloadQueue.cpp:1301
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1302
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1325
+#: src/DownloadQueue.cpp:1332
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "ed2k lotura baliogabea! Errorea: %s"
@@ -3615,11 +3627,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s-ra konektaturik"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with LowID"
 msgstr "IDBaxuarekin"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2043
 msgid "with HighID"
 msgstr "IDAltuarekin"
 
@@ -6990,15 +7002,21 @@ msgstr ""
 "Egiaztatu zure sarea ataka sarrera eta irteerarako irekirik dagoela "
 "ziurtatzeko."
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1071
+msgid ""
+"WARNING: You can't add yourself as a source for a ed2k link while being "
+"lowid."
+msgstr ""
+
+#: src/amule.cpp:1122
 msgid "Failed to create OnlineSig File"
 msgstr "Huts Online Sinadura Fitxategia sortzerakoan"
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1130
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Huts aMule Online Sinadura Fitxategia sortzerakoan"
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1298
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -7006,39 +7024,39 @@ msgstr ""
 "Aukeratutako lokalak ez dirudi zure sisteman instalaturik (Oharra: Hala ere "
 "erabiltzen saiatuko da)"
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1308
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "aMule %s abiarazten duzun lehen aldia da"
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1310
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Bertsioa hau beta bertsio bat da, egunero eguneratzen da, eta\n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1311
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "ez gara ezer apurtu, zure etxea erre, edo zure zakurra akatzen\n"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1312
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "badu ere kargu egingo, baina erabiltzeko ziurra izan *beharko* litzateke.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1317
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Argibide gehiago, laguntza eta bertsio berriak gure webgunean aurki "
 "ditzakezu,\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1318
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org -en, edo irc.freenode.net IRC sareko #aMule kanalean.\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1320
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Edozein akatsen berri emateko:http://forum.amule.org"
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1333
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -7046,101 +7064,101 @@ msgstr ""
 "Zuk aukeratutako sinadura karpeta BALIOGABEA da!\n"
 " Lehenespenak konpondu artean lineako sinadura EZGAITU egingo da."
 
-#: src/amule.cpp:1723
+#: src/amule.cpp:1727
 msgid "ERROR: can't open logfile"
 msgstr "ERROREA: ezin da erregistro fitxategia ireki"
 
-#: src/amule.cpp:1727
+#: src/amule.cpp:1731
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ABISUA: erregistro fitxategia hutsik dago. Zerbait oker dago."
 
-#: src/amule.cpp:1746
+#: src/amule.cpp:1750
 msgid "Log has been reset"
 msgstr "Erregistroa berrezarri egin da"
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1778
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "ZerbitzariMezua: %s"
 
-#: src/amule.cpp:1812
+#: src/amule.cpp:1816
 msgid "Failed to download the nodes list."
 msgstr "Huts egin du nodo zerrenda deskargatzerakoan."
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1829
 msgid "Failed to open the downloaded version check file"
 msgstr "Huts egin du"
 
-#: src/amule.cpp:1828 src/amule.cpp:1838 src/amule.cpp:1844
+#: src/amule.cpp:1832 src/amule.cpp:1842 src/amule.cpp:1848
 msgid "Corrupted version check file"
 msgstr "Hondaturiko bertsio arakatze fitxategia"
 
-#: src/amule.cpp:1854
+#: src/amule.cpp:1858
 msgid "You are using an outdated version of aMule!"
 msgstr "Zaharkiturik dagoen aMule bertsio bat erabiltzen ari zara!"
 
-#: src/amule.cpp:1855
+#: src/amule.cpp:1859
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Zure aMule bertsioa %i.%i.%i da eta azken bertsioa %li.%li.%li da"
 
-#: src/amule.cpp:1856
+#: src/amule.cpp:1860
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Azken bertsioa beti http://www.amule.org webgunean aurki daiteke"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1863
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "OHARRA: Zure aMuled bertsioa zaharkiturik dago: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1867
 msgid "Your copy of aMule is up to date."
 msgstr "Zure aMule kopia zaharkiturik dago."
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1874
 msgid "Failed to download the version check file"
 msgstr "Huts bertsio arakatze fitxategia deskargatzerakoan"
 
-#: src/amule.cpp:1972
+#: src/amule.cpp:1976
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Erabiltzaileak: E: %s K: %s | Fitxategiak E: %s K: %s"
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2045
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s-ra konektaturik"
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2048
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s-ra konektatzen"
 
-#: src/amule.cpp:2046
+#: src/amule.cpp:2050
 msgid "Disconnected from ED2K"
 msgstr "ED2K-tik Deskonektatuta"
 
-#: src/amule.cpp:2053
+#: src/amule.cpp:2057
 msgid "Kad started."
 msgstr "Kad abiarazirik."
 
-#: src/amule.cpp:2055
+#: src/amule.cpp:2059
 msgid "Kad stopped."
 msgstr "Kad gelditurik."
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2066
 msgid "Connected to Kad (ok)"
 msgstr "Kad-era Konektatuta (ondo)"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2068
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad-era Konektatuta (suebakirik)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2071
 msgid "Disconnected from Kad"
 msgstr "Kad-etik deskonektatua"
 
-#: src/amule.cpp:2123
+#: src/amule.cpp:2127
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7148,7 +7166,7 @@ msgstr ""
 "Kad sarea ezin da erabili hobespenetan UDP ataka ezgaiturik badago, ez da "
 "abiaraziko."
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2130
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad sarea hobespenetan ezgaiturik, ez da konektatuko."
 
@@ -7159,6 +7177,9 @@ msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname)"
+#~ msgstr "Kopiatu ED2k lotura arbelara (Ostalaria)"
 
 #~ msgid "Session is not logged and request have no password\n"
 #~ msgstr "Saioa ez dago hasirik eta eskakizunak ez du pasahitzik\n"
