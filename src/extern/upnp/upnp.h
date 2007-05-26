@@ -37,6 +37,8 @@
 
 #include "ixml.h"
 
+#include <netinet/in.h>
+
 #define LINE_SIZE  180
 #define NAME_SIZE  256
 
