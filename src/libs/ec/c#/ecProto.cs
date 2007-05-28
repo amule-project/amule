@@ -127,7 +127,7 @@ namespace amule.net
         }
 
         public class ecTagInt : ecTag {
-            protected UInt64 m_val;
+            protected Int64 m_val;
             public ecTagInt(ECTagNames n, byte v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT8)
             {
@@ -135,21 +135,21 @@ namespace amule.net
                 m_size = 1;
             }
 
-            public ecTagInt(ECTagNames n, UInt16 v)
+            public ecTagInt(ECTagNames n, Int16 v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT16)
             {
                 m_val = v;
                 m_size = 2;
             }
 
-            public ecTagInt(ECTagNames n, UInt32 v)
+            public ecTagInt(ECTagNames n, Int32 v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT32)
             {
                 m_val = v;
                 m_size = 4;
             }
 
-            public ecTagInt(ECTagNames n, UInt64 v)
+            public ecTagInt(ECTagNames n, Int64 v)
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT64)
             {
                 m_val = v;
@@ -160,29 +160,37 @@ namespace amule.net
                 : base(n, EcTagTypes.EC_TAGTYPE_UINT8, subtags)
             {
                 m_size = tag_size;
+                UInt64 raw_val;
+                Int32 hi, lo, v32;
+                Int16 v16;
                 switch ( m_size ) {
                     case 8:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT64;
-                        m_val = (UInt32)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
-                        m_val <<= 32;
-                        m_val |= ((UInt32)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32()));
+                        lo = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                        hi = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                        raw_val = ((UInt64)hi) << 32 | (UInt32)lo;
                         break;
                     case 4:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT32;
-                        m_val = (UInt64)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32());
+                        v32 = (System.Net.IPAddress.NetworkToHostOrder(br.ReadInt32()));
+                        raw_val = (UInt32)v32;
                         break;
                     case 2:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT16;
-                        m_val = (UInt64)System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+                        v16 = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt16());
+                        raw_val = (UInt16)v16;
                         break;
                     case 1:
                         m_type = EcTagTypes.EC_TAGTYPE_UINT8;
-                        m_val = (UInt64)br.ReadByte();
+                        raw_val = (UInt64)br.ReadByte();
                         break;
                     default:
                         throw new Exception("Unexpected size of data in integer tag");
                 }
-
+                m_val = (Int64)raw_val;
+                if ( m_val < 0 ) {
+                    throw new Exception("WTF - typecasting is broken?!");
+                }
             }
 
             public int ValueInt()
@@ -190,7 +198,7 @@ namespace amule.net
                 return (int)m_val;
             }
 
-            public UInt64 Value64()
+            public Int64 Value64()
             {
                 return m_val;
             }
@@ -348,6 +356,11 @@ namespace amule.net
                 m_val= br.ReadBytes(tag_size);
                 m_size = tag_size;
             }
+            public byte [] Value()
+            {
+            	return m_val;
+            }
+
         }
 
         public class ecTagString : ecTag {
@@ -488,6 +501,15 @@ namespace amule.net
                 m_flags = 0x20;
                 m_opcode = cmd;
             }
+            
+            public ecPacket(ECOpCodes cmd, EC_DETAIL_LEVEL detail_level)
+            {
+                m_flags = 0x20;
+                m_opcode = cmd;
+                if ( detail_level != EC_DETAIL_LEVEL.EC_DETAIL_FULL ) {
+                    AddSubtag(new ecTagInt(ECTagNames.EC_TAG_DETAIL_LEVEL, (Int64)detail_level));
+                }
+            }
 
             //
             // Size of data for TX, not of payload
@@ -549,7 +571,7 @@ namespace amule.net
                 AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT_NAME, client_name));
                 AddSubtag(new ecTagString(ECTagNames.EC_TAG_CLIENT_VERSION, version));
                 AddSubtag(new ecTagInt(ECTagNames.EC_TAG_PROTOCOL_VERSION,
-                    (UInt64)ProtocolVersion.EC_CURRENT_PROTOCOL_VERSION));
+                    (Int64)ProtocolVersion.EC_CURRENT_PROTOCOL_VERSION));
 
                 AddSubtag(new ecTagMD5(ECTagNames.EC_TAG_PASSWD_HASH, pass, false));
 

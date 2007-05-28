@@ -42,7 +42,7 @@ namespace amule.net
             MainWindow w = (MainWindow)((Timer)myObject).Tag;
 
             // TODO: for testing 1 request is enough
-            w.m_updateTimer.Stop();
+            //w.m_updateTimer.Stop();
 
             ecProto.ecPacket req = null;
             switch(w.m_req_state) {
@@ -56,19 +56,6 @@ namespace amule.net
                     break;
             }
             w.m_amuleRemote.SendPacket(req);
-        }
-
-        string ValueToPrefix(Int64 value)
-        {
-            if ( value < 1024 ) {
-                return string.Format("{0} bytes", value);
-            } else if ( value < 1048576 ) {
-                return string.Format("{0:f} Kb", ((float)value) / 1024);
-            } else if ( value < 1073741824 ) {
-                return string.Format("{0:f} Mb", ((float)value) / 1048576);
-            } else {
-                return string.Format("{0:f} Gb", ((float)value) / 1073741824);
-            }
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -242,13 +229,14 @@ namespace amule.net
         }
     }
 
-    public class amuleDownloadStatusList : amuleListView {
+    public class amuleDownloadStatusList : amuleListView, IContainerUI {
         public amuleDownloadStatusList()
         {
-            string[] columns = { "File name", "Status", "Size", "Transferred" };
-            int[] width = { 200, 100, 100, 100 };
+            string[] columns = { "File name", "Status", "Size", "Completed", "Speed"};
+            int[] width = { 200, 100, 100, 100, 100 };
             LoadColumns(columns, width);
 
+            
             OwnerDraw = true;
             DrawColumnHeader +=
                 new DrawListViewColumnHeaderEventHandler(amuleDownloadStatusList_DrawColumnHeader);
@@ -260,6 +248,9 @@ namespace amule.net
         {
             e.DrawBackground();
             e.DrawText();
+            if ( e.Item.Selected ) {
+                e.DrawFocusRectangle(e.Bounds);
+            }
         }
 
         void amuleDownloadStatusList_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
@@ -271,25 +262,110 @@ namespace amule.net
         ///
         // interface to core
         ///
-        public void AddItem(DownloadQueueItem i)
+        void DoInsertItem(DownloadQueueItem i)
         {
             ListViewItem it = new ListViewItem(i.Name);
-            if ( InvokeRequired ) {
-                AddItemCallback d = new AddItemCallback(AddItem);
-                Invoke(d, i);
+            
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.PercentDone));
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.SizeDone));
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Speed));
+            Items.Add(it);
+
+            i.UiItem = it;
+        }
+
+        void DoUpdateItem(DownloadQueueItem i)
+        {
+            ListViewItem it =  i.UiItem as ListViewItem;
+            it.SubItems[1].Text = i.PercentDone;
+            it.SubItems[3].Text = i.SizeDone;
+            it.SubItems[4].Text = i.Speed;
+            //Items
+        }
+
+        #region IContainerUI Members
+
+        delegate void UpdateCallback();
+
+        public void MyEndUpdate()
+        {
+            if (InvokeRequired) {
+                UpdateCallback d = new UpdateCallback(MyEndUpdate);
+                Invoke(d);
             } else {
-                Items.Add(it);
+                EndUpdate();
+            }            
+        }
+
+        public void MyBeginUpdate()
+        {
+            if (InvokeRequired) {
+                UpdateCallback d = new UpdateCallback(MyEndUpdate);
+                Invoke(d);
+            } else {
+                MyEndUpdate();
             }
         }
-        delegate void AddItemCallback(DownloadQueueItem i);
 
+        delegate void ItemCallback(DownloadQueueItem i);
+
+        public void InsertItem(object i)
+        {
+            DownloadQueueItem it = i as DownloadQueueItem;
+            if ( InvokeRequired ) {
+                ItemCallback d = new ItemCallback(DoInsertItem);
+                Invoke(d, it);
+            } else {
+                DoInsertItem(it);
+            }
+        }
+
+        public void UpdateItem(object i)
+        {
+            DownloadQueueItem it = i as DownloadQueueItem;
+            if (InvokeRequired) {
+                ItemCallback d = new ItemCallback(DoUpdateItem);
+                Invoke(d, it);
+            } else {
+                DoUpdateItem(it);
+            }
+        }
+
+        #endregion
     }
-    public class amuleSharedFilesList : amuleListView {
+
+
+    public class amuleSharedFilesList : amuleListView, IContainerUI {
         public amuleSharedFilesList()
         {
             string[] columns = { "File name", "Size" };
             int[] width = { 100, 100, 100, 100 };
             LoadColumns(columns, width);
         }
+
+        #region IContainerUI Members
+
+        void IContainerUI.MyEndUpdate()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        void IContainerUI.MyBeginUpdate()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        void IContainerUI.InsertItem(object i)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        void IContainerUI.UpdateItem(object i)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        #endregion
     }
 }
