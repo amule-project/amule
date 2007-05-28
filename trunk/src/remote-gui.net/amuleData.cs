@@ -116,6 +116,14 @@ namespace amule.net
         }
     }
 
+    public interface IContainerUI {
+        void MyEndUpdate();
+        void MyBeginUpdate();
+
+        void InsertItem(object i);
+        void UpdateItem(object i);
+    }
+
     //
     // T: item in container
     abstract class amuleGenericContainer<T> {
@@ -131,8 +139,11 @@ namespace amule.net
 
         bool m_inc_tags = true;
 
-        public amuleGenericContainer(ECOpCodes req_cmd, ECTagNames item_tagname)
+        protected IContainerUI m_owner;
+
+        public amuleGenericContainer(ECOpCodes req_cmd, ECTagNames item_tagname, IContainerUI owner)
         {
+            m_owner = owner;
             m_req_cmd = req_cmd;
             m_item_tagname = item_tagname;
         }
@@ -163,6 +174,7 @@ namespace amule.net
 
         void ProcessUpdate(ecProto.ecPacket packet, ecProto.ecPacket full_req)
         {
+            m_owner.MyBeginUpdate();
             LinkedList<ecProto.ecTag>.Enumerator i = packet.GetTagIterator();
             while (i.MoveNext())
             {
@@ -173,12 +185,22 @@ namespace amule.net
                 }
                 ecProto.ecMD5 item_id = ((ecProto.ecTagMD5)t).ValueMD5();
                 if ( m_items_hash.ContainsKey(item_id) ) {
-                    ProcessItemUpdate(m_items_hash[item_id], t);
+                    T item = m_items_hash[item_id];
+                    ProcessItemUpdate(item, t);
+
+                    if ( m_owner != null ) {
+                        m_owner.UpdateItem(item);
+                    }
                 } else {
                     if ( m_inc_tags ) {
                         T item = CreateItem(t);
                         m_items.AddLast(item);
                         m_items_hash[item_id] = item;
+
+                        if (m_owner != null) {
+                            m_owner.InsertItem(item);
+                        }
+
                     } else {
                         full_req.AddSubtag(CreateItemTag(item_id));
                     }
@@ -188,6 +210,7 @@ namespace amule.net
                 //
                 // TODO
             }
+            m_owner.MyEndUpdate();
         }
 
         //
@@ -226,12 +249,56 @@ namespace amule.net
         }
     }
 
-    public class DownloadQueueItem {
-        ecProto.ecMD5 m_id;
-        string m_filename;
-        UInt64 m_filesize, m_size_xfered, m_size_done;
+    public class amuleFileItem {
+        protected ecProto.ecMD5 m_id;
 
-        public DownloadQueueItem(ecProto.ecMD5 id, string name, UInt64 size)
+        protected string m_filename;
+        protected Int64 m_filesize;
+
+        object m_ui_item;
+
+        public string ValueToPrefix(Int64 value)
+        {
+            if (value < 1024)
+            {
+                return string.Format("{0} bytes", value);
+            }
+            else if (value < 1048576)
+            {
+                return string.Format("{0:f} Kb", ((float)value) / 1024);
+            }
+            else if (value < 1073741824)
+            {
+                return string.Format("{0:f} Mb", ((float)value) / 1048576);
+            }
+            else
+            {
+                return string.Format("{0:f} Gb", ((float)value) / 1073741824);
+            }
+        }
+
+        public string Name
+        {
+            get { return m_filename; }
+        }
+	
+        public string Size
+        {
+            get { return ValueToPrefix(m_filesize); }
+        }
+        public object UiItem
+        {
+            get { return m_ui_item; }
+            set { m_ui_item = value; }
+        }
+    }
+
+    public class DownloadQueueItem : amuleFileItem {
+        Int64 m_size_xfered, m_size_done;
+        Int32 m_speed;
+
+
+        public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size)
         {
             m_id = id;
             m_filename = name;
@@ -249,26 +316,33 @@ namespace amule.net
                 m_size_xfered = itag.Value64();
             }
 
-        }
-
-        public string Name
-        {
-            get { return m_filename; }
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SPEED);
+            if ( itag != null ) {
+                m_speed = (Int32)itag.Value64();
+            }
         }
 	
+        public string SizeDone
+        {
+            get { return ValueToPrefix(m_size_done); }
+        }
+        public string Speed
+        {
+            get { return (m_speed == 0) ? "" : (ValueToPrefix(m_speed) + "/s"); }
+        }
+        public string PercentDone
+        {
+            get { return String.Format("{0} %", m_size_done * 100 / m_filesize); }
+        }
     }
 
     class DownloadQueueContainer : amuleGenericContainer<DownloadQueueItem> {
         Dictionary<ecProto.ecMD5, PartFileEncoderData> m_enc_map;
 
-        amuleDownloadStatusList m_owner = null;
-
-        public DownloadQueueContainer(amuleDownloadStatusList owner)
-            : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE, ECTagNames.EC_TAG_PARTFILE)
+        public DownloadQueueContainer(IContainerUI owner)
+            : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE, ECTagNames.EC_TAG_PARTFILE, owner)
         {
             m_enc_map = new Dictionary<ecProto.ecMD5, PartFileEncoderData>();
-
-            m_owner = owner;
         }
 
         override protected void ProcessItemUpdate(DownloadQueueItem item, ecProto.ecTag tag)
@@ -286,41 +360,42 @@ namespace amule.net
 
             ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
             BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
+            // TODO: add colored status bar code
         }
 
         override protected DownloadQueueItem CreateItem(ecProto.ecTag tag)
         {
             ecProto.ecMD5 id = ((ecProto.ecTagMD5)tag).ValueMD5();
             string filename = ((ecProto.ecTagString)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_NAME)).StringValue();
-            UInt64 filesize = ((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_FULL)).Value64();
+            Int64 filesize = (Int64)((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_FULL)).Value64();
             DownloadQueueItem i = new DownloadQueueItem(id, filename, filesize);
 
             m_enc_map[id] = new PartFileEncoderData((int)(filesize / 9728000), 10);
 
             i.UpdateItem(tag);
 
-            if ( m_owner != null ) {
-                m_owner.AddItem(i);
-            }
             return i;
         }
     }
-    /*
-    public class SharedFileItem {
+
+    public class SharedFileItem : amuleFileItem {
     }
 
     class SharedFileListContainer : amuleGenericContainer<SharedFileItem>
     {
-        public class SharedFileTag2ItemConnector : amuleTag2ItemConnector<ecProto.ecMD5>
+        public SharedFileListContainer(IContainerUI owner)
+            : base(ECOpCodes.EC_OP_GET_SHARED_FILES, ECTagNames.EC_TAG_PARTFILE, owner)
         {
         }
+
         override protected void ProcessItemUpdate(SharedFileItem item, ecProto.ecTag tag)
         {
         }
+
         override protected SharedFileItem CreateItem(ecProto.ecTag tag)
         {
             return null;
         }
     }
-     * */
+
 }
