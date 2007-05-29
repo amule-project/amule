@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-22 03:31+0200\n"
+"POT-Creation-Date: 2007-05-29 03:31+0200\n"
 "PO-Revision-Date: 2005-11-24 15:03+0000\n"
 "Last-Translator: Uros Vampl <mobile.leecher@gmail.com>\n"
 "Language-Team: sloven¹èina <sl@li.org>\n"
@@ -409,7 +409,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "Potrebujete visok ID, da naredite povezavo z virom"
 
 #: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:675
+#: src/amule.cpp:671
 msgid "Warning"
 msgstr ""
 
@@ -1255,7 +1255,7 @@ msgid "Auto [Hi]"
 msgstr "Samod. [Vi]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:503 src/amuleDlg.cpp:729
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:797
+#: src/ClientListCtrl.cpp:661 src/amule.cpp:793
 msgid "Connecting"
 msgstr "Povezujem"
 
@@ -1543,7 +1543,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3210 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:715 src/amule.cpp:1322
+#: src/amule.cpp:711 src/amule.cpp:1318
 msgid "Info"
 msgstr "Info"
 
@@ -2867,8 +2867,8 @@ msgid "Connection failed "
 msgstr ""
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
-#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:846
-#: src/amule.cpp:964 src/amule.cpp:1333
+#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:842
+#: src/amule.cpp:960 src/amule.cpp:1329
 msgid "Error"
 msgstr "Napaka"
 
@@ -3567,11 +3567,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Povezan z %s %s %s"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2043
+#: src/TextClient.cpp:671 src/amule.cpp:2039
 msgid "with LowID"
 msgstr "z nizkim ID-jem"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2043
+#: src/TextClient.cpp:671 src/amule.cpp:2039
 msgid "with HighID"
 msgstr "z visokim ID-jem"
 
@@ -6850,7 +6850,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
 
-#: src/amule.cpp:713
+#: src/amule.cpp:709
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6858,22 +6858,22 @@ msgstr ""
 "Va¹e podroène nastavitve so bile spremenjene na sistemsko privzete zaradi "
 "spremembev nastavitvah. Oprostite."
 
-#: src/amule.cpp:779
+#: src/amule.cpp:775
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
 
-#: src/amule.cpp:781
+#: src/amule.cpp:777
 msgid "Server list download"
 msgstr ""
 
-#: src/amule.cpp:839
+#: src/amule.cpp:835
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "webserver teèe s pid-om %d"
 
-#: src/amule.cpp:842
+#: src/amule.cpp:838
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6883,12 +6883,12 @@ msgstr ""
 "mogoèe zagnati. Prosimo, namestite paket, ki vsebuje aMule Webserver ali "
 "prevedite aMule z --enable-webserver in za¾enite make install"
 
-#: src/amule.cpp:954
+#: src/amule.cpp:950
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u ni dosegljiv. Imeli boste nizek ID\n"
 
-#: src/amule.cpp:960
+#: src/amule.cpp:956
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6903,21 +6903,21 @@ msgstr ""
 "\n"
 "Preverite omre¾ne nastavitve in se preprièajte, da je port odprt v obe smeri."
 
-#: src/amule.cpp:1071
+#: src/amule.cpp:1067
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
 
-#: src/amule.cpp:1122
+#: src/amule.cpp:1118
 msgid "Failed to create OnlineSig File"
 msgstr "Ni bilo mogoèe ustvariti Online Podpis datoteke"
 
-#: src/amule.cpp:1130
+#: src/amule.cpp:1126
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Ni bilo mogoèe ustvariti aMule Online Podpis datoteke"
 
-#: src/amule.cpp:1298
+#: src/amule.cpp:1294
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6925,40 +6925,40 @@ msgstr ""
 "Izgleda, da izbrana podroèna nastavitev ni name¹èena na va¹em raèunalniku. "
 "(Opomba: Vseeno jo bom poizkusil nastaviti)"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1304
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "To je va¹ prvi zagon aMule %s"
 
-#: src/amule.cpp:1310
+#: src/amule.cpp:1306
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "To je testna verzija, posodobljena dnevno in\n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1307
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "zato ne dajemo zagotovila, da ne bo nièesar po¹kodovala, za¾gala va¹e hi¹e \n"
 
-#: src/amule.cpp:1312
+#: src/amule.cpp:1308
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr "ali ubila va¹ega psa. Vendar bi vseeno morala biti varna za uporabo.\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1313
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Veè informacij, podporo in nove razlièice, lahko najdete na na¹i domaèi "
 "strani,\n"
 
-#: src/amule.cpp:1318
+#: src/amule.cpp:1314
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "na www.aMule.org, ali na IRC kanalu #aMule na stre¾niku irc.freenode.net.\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1316
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Morebitne hro¹èe lahko sporoèite na http://forum.amule.org"
 
-#: src/amule.cpp:1333
+#: src/amule.cpp:1329
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6966,107 +6966,107 @@ msgstr ""
 "Mapa, ki ste jo navedli za Online Podpis je NEVELJAVNA!\n"
 " Online Podpis bo ONEMOGOÈEN dokler te¾ave ne odpravite v nastavitvah."
 
-#: src/amule.cpp:1727
+#: src/amule.cpp:1723
 msgid "ERROR: can't open logfile"
 msgstr "NAPAKA: Ni mogoèe odpreti zapisni¹ke datoteke"
 
-#: src/amule.cpp:1731
+#: src/amule.cpp:1727
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "OPOZORILO: Zapisni¹ka datoteka je prazna. Nekaj je narobe."
 
-#: src/amule.cpp:1750
+#: src/amule.cpp:1746
 msgid "Log has been reset"
 msgstr "Zapisnik poèi¹èen"
 
-#: src/amule.cpp:1778
+#: src/amule.cpp:1774
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Sporoèilo stre¾nika: %s"
 
-#: src/amule.cpp:1816
+#: src/amule.cpp:1812
 msgid "Failed to download the nodes list."
 msgstr "Ni bilo mogoèe prenesti seznama vozli¹è."
 
-#: src/amule.cpp:1829
+#: src/amule.cpp:1825
 msgid "Failed to open the downloaded version check file"
 msgstr "Ni bilo mogoèe odpreti datoteke za preverjanje razlièice"
 
-#: src/amule.cpp:1832 src/amule.cpp:1842 src/amule.cpp:1848
+#: src/amule.cpp:1828 src/amule.cpp:1838 src/amule.cpp:1844
 msgid "Corrupted version check file"
 msgstr "Datoteka za preverjanje razlièice je pokvarjena"
 
-#: src/amule.cpp:1858
+#: src/amule.cpp:1854
 msgid "You are using an outdated version of aMule!"
 msgstr "Uporabljate zastarelo razlièico aMule!"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1855
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1860
+#: src/amule.cpp:1856
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Najnovej¹o razlièico lahko vedno najdete na http://www.amule.org"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1859
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 
-#: src/amule.cpp:1867
+#: src/amule.cpp:1863
 msgid "Your copy of aMule is up to date."
 msgstr "Uporabljate najnovej¹o razlièico."
 
-#: src/amule.cpp:1874
+#: src/amule.cpp:1870
 msgid "Failed to download the version check file"
 msgstr "Ni bilo mogoèe prenesti datoteke za preverjanje razlièice"
 
-#: src/amule.cpp:1976
+#: src/amule.cpp:1972
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Uporabnikov: E: %s K: %s | Datoteke E: %s K: %s"
 
-#: src/amule.cpp:2045
+#: src/amule.cpp:2041
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Povezan z %s %s"
 
-#: src/amule.cpp:2048
+#: src/amule.cpp:2044
 #, c-format
 msgid "Connecting to %s"
 msgstr "Povezujem se z %s"
 
-#: src/amule.cpp:2050
+#: src/amule.cpp:2046
 msgid "Disconnected from ED2K"
 msgstr "Povezava z ED2K prekinjena"
 
-#: src/amule.cpp:2057
+#: src/amule.cpp:2053
 msgid "Kad started."
 msgstr ""
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2055
 msgid "Kad stopped."
 msgstr ""
 
-#: src/amule.cpp:2066
+#: src/amule.cpp:2062
 msgid "Connected to Kad (ok)"
 msgstr "Povezan z Kad (ok)"
 
-#: src/amule.cpp:2068
+#: src/amule.cpp:2064
 msgid "Connected to Kad (firewalled)"
 msgstr "Povezan z Kad (za po¾. zidom)"
 
-#: src/amule.cpp:2071
+#: src/amule.cpp:2067
 msgid "Disconnected from Kad"
 msgstr "Povezava z Kad prekinjena"
 
-#: src/amule.cpp:2127
+#: src/amule.cpp:2123
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 
-#: src/amule.cpp:2130
+#: src/amule.cpp:2126
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 
