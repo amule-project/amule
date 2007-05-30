@@ -103,8 +103,8 @@ CDynamicLibHandle::~CDynamicLibHandle()
 		msg << "error(CDynamicLibHandle): Error closing " <<
 			m_libname << ": " << dlerror() <<
 			".";
-		AddLogLineM(true, logUPnP, msg);
 		fprintf(stderr, "%s\n", msg.str().c_str());
+		AddLogLineM(true, logUPnP, msg);
 	} else {
 		msg << "Successfully closed " << m_libname << ".";
 		AddLogLineM(false, logUPnP, msg);
@@ -1542,8 +1542,8 @@ eventSubscriptionRequest:
 			EventType);
 		msg << "error(UPnP::Callback): Event not handled:'" <<
 			EventType << "'.";
-		AddDebugLogLineM(true, logUPnP, msg);
 		fprintf(stderr, "%s\n", msg.str().c_str());
+		AddDebugLogLineM(true, logUPnP, msg);
 		// Better not throw in the callback. Who would catch it?
 		//throw CUPnPException(msg);
 		break;
