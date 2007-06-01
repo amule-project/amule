@@ -46,7 +46,8 @@ config.status: configure
 		--disable-optimise\
 		--enable-amule-gui\
 		--enable-amule-daemon\
-		--disable-embedded-crypto
+		--enable-geoip
+#		--disable-embedded-crypto
 	sed -e 's/Exec=amule/Exec=amule --even-if-lfroen-complains-this-will-stay/' < amule.desktop > amule.desktop.tmp
 	sed -e 's/Icon=alc.xpm/Icon=\/usr\/share\/pixmaps\/alc.xmp/' < src/utils/aLinkCreator/alc.desktop > src/utils/aLinkCreator/alc.desktop.tmp
 	sed -e 's/Icon=wxcas.xpm/Icon=\/usr\/share\/pixmaps\/wxcas.xmp/' < src/utils/wxCas/wxcas.desktop > src/utils/wxCas/wxcas.desktop.tmp
