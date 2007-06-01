@@ -1,8 +1,20 @@
-amule (2.1.3+CVS20070504-1) testing; urgency=low
+amule (2.1.3+CVS20070530-1) testing; urgency=low
 
   * New Upstream CVS-Snapshot
 
- -- Vollstrecker <amule@vollstreckernet.de>  Fri, 04 May 2007  8:01:03 +0100
+ -- Vollstrecker <amule@vollstreckernet.de>  Wed, 30 May 2007  8:00:02 +0100
+
+amule (2.1.3+CVS20070526-2) testing; urgency=low
+
+  * debian/rules
+    - disabled external-crypto till it is fixed
+    - added geoip-support
+  * debian/control
+    - added libgeoip-dev to build-dependencies
+  * Removed unneded debian/mans folder
+  * Place the right pkg-name in debian/amule-remote-gui.menu
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 26 May 2007 14:40:08 +0100
 
 amule (2.1.3+CVS20070430-2) testing; urgency=low
 
