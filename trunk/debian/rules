@@ -1,10 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
+# This file was originally written by Vollstrecker
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
@@ -15,7 +11,6 @@ export DH_VERBOSE=1
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -24,30 +19,215 @@ else
 	CFLAGS += -O2
 endif
 
+#Here are the packages that can't be compiled separate now
+general_pkgs = "amule-i18n-ar"\
+	"amule-i18n-bg"\
+	"amule-i18n-ca"\
+	"amule-i18n-da"\
+	"amule-i18n-de"\
+	"amule-i18n-en-gb"\
+	"amule-i18n-en-us"\
+	"amule-i18n-es"\
+	"amule-i18n-es-mx"\
+	"amule-i18n-et-ee"\
+	"amule-i18n-eu"\
+	"amule-i18n-fi"\
+	"amule-i18n-fr"\
+	"amule-i18n-gl"\
+	"amule-i18n-hr"\
+	"amule-i18n-hu"\
+	"amule-i18n-it-ch"\
+	"amule-i18n-it"\
+	"amule-i18n-ko-kr"\
+	"amule-i18n-nl"\
+	"amule-i18n-pl"\
+	"amule-i18n-pt-br"\
+	"amule-i18n-pt-pt"\
+	"amule-i18n-ru"\
+	"amule-i18n-sl"\
+	"amule-i18n-zh-cn"\
+	"amule-i18n-zh-tw"\
+	"amule-theme-default"\
+	"amule-theme-php-default"\
+	"amule-theme-chicane"\
+	"amule-common"\
+	"amule-xas"\
+	"amule-utils-gui"\
+	"amule-utils"
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+# First, get the targets from commandline
+flags = ${MAKECMDGOALS}
+
+#First we have to find out, if we are called from dpkg-buildpackage
+
+ifeq ("binary", "$(findstring binary, $(flags))")
+
+	WXCAS = --enable-wxcas
+	CAS = --enable-cas
+	WEBSERVER = --enable-webserver
+	REMOTEGUI = --enable-amule-gui
+	DAEMON = --enable-amule-daemon
+	ALCC = --enable-alcc
+	ALC = --enable-alc
+	AMULECMD = --enable-amulecmd
+	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+
+else ifeq ("clean", "$(findstring clean, $(flags))")
+
+	WXCAS = --enable-wxcas
+	CAS = --enable-cas
+	WEBSERVER = --enable-webserver
+	REMOTEGUI = --enable-amule-gui
+	DAEMON = --enable-amule-daemon
+	ALCC = --enable-alcc
+	ALC = --enable-alc
+	AMULECMD = --enable-amulecmd
+	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+
+else ifeq ("build", "$(findstring build, $(flags))")
+
+	WXCAS = --enable-wxcas
+	CAS = --enable-cas
+	WEBSERVER = --enable-webserver
+	REMOTEGUI = --enable-amule-gui
+	DAEMON = --enable-amule-daemon
+	ALCC = --enable-alcc
+	ALC = --enable-alc
+	AMULECMD = --enable-amulecmd
+	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+
+else
+	#Now we have to check what packages are build to configure only them
+
+	#We have to filter the right targets (wo_ means without)
+	wo_wxcas = $(subst wxcas, , ${flags})
+	wo_alcc = $(subst alcc, , ${flags})
+	wo_amule_utils_gui = $(subst amule-utils-gui, ,${flags})
+	wo_all_other_amules = $(subst amulecmd, ,$(subst amule-utils-gui, ,$(subst amule-utils, ,${flags})))
+
+	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
+		WXCAS = --enable-wxcas
+	endif
+
+	ifeq ("cas", "$(findstring cas, $(wo_wxcas))")
+		CAS = --enable-cas
+	endif
+
+	ifeq ("webserver", "$(findstring webserver, $(flags))")
+		WEBSERVER = --enable-webserver
+	endif
+
+	ifeq ("remotegui", "$(findstring remotegui, $(flags))")
+		REMOTEGUI = --enable-amule-gui
+	endif
+
+	ifeq ("daemon", "$(findstring daemon, $(flags))")
+		DAEMON = --enable-amule-daemon
+	endif
+
+	ifeq ("alcc", "$(findstring alcc, $(flags))")
+		ALCC = --enable-alcc
+	endif
+
+	ifeq ("alc", "$(findstring alc, $(wo_alcc))")
+		ALC = --enable-alc
+	endif
+
+	ifeq ("amulecmd", "$(findstring amulecmd, $(flags))")
+		AMULECMD = --enable-amulecmd
+	endif
+
+	ifneq ("amule", "$(findstring amule, $(wo_all_other_amules))")
+		AMULE = --disable-monolithic
+	endif
+
+	ifneq ("ed2k", "$(findstring ed2k, $(flags))")
+		ED2K = --disable-ed2k
+	endif
+
+	#Now find out if a Metapackage should be build
+	ifeq ("amule-utils-gui", "$(findstring amule-utils-gui, $(flags))")
+		ALC = --enable-alc
+		REMOTEGUI = --enable-amule-gui
+		WXCAS = --enable-wxcas
+	endif
+
+	ifeq ("amule-utils", "$(findstring amule-utils, $(wo_amule_utils_gui))")
+		ALCC = --enable-alcc
+		AMULECMD = --enable-amulecmd
+		CAS = --enable-cas
+	endif
+
+	#And at Last, find out if we compile a debug-package or not.
+	ifeq ("dbg", "$(findstring dbg, $(flags))")
+		DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	else
+		DEBUGGING = --disable-debug --enable-optimize --enable-profile 
+	endif
+endif
+
+#Before we start, I want to introduce two sequences for building the packages
+#I define two, so I can put the commands for the *-dbg packages between them
+define stage1
+	dh_testdir -p$@
+	dh_testroot -p$@
+	dh_installchangelogs docs/Changelog -p$@
+	dh_installdocs -p$@
+	dh_install -Xlicense.txt -p$@
+	dh_installmenu -p$@
+	dh_installdebconf -p$@	
+	dh_installman -p$@
+	dh_link -p$@
+endef
+
+define stage2
+	dh_compress -X.pl -p$@
+	dh_perl -p$@
+	dh_makeshlibs
+	dh_installdeb -p$@
+	dh_shlibdeps -p$@
+	dh_gencontrol -p$@
+	dh_md5sums -p$@
+	dh_fixperms -p$@
+	dh_builddeb -p$@
+endef
+
+#Now we configure this whole thing
 config.status: configure
 	dh_testdir
-	# Add here commands to configure the package.
 	CFLAGS="$(CFLAGS)" ./configure\
 		--host=$(DEB_HOST_GNU_TYPE)\
 		--build=$(DEB_BUILD_GNU_TYPE)\
 		--prefix=/usr\
 		--mandir=\$${prefix}/share/man\
 		--infodir=\$${prefix}/share/info\
-		--enable-amulecmd\
-		--enable-debug\
 		--enable-systray\
 		--with-ccache\
-		--enable-webserver\
 		--enable-utf8-systray\
-		--enable-cas\
-		--enable-wxcas\
-		--enable-alc\
-		--enable-alcc\
-		--disable-optimise\
-		--enable-amule-gui\
-		--enable-amule-daemon\
-		--enable-geoip
-#		--disable-embedded-crypto
+		--enable-geoip\
+		${AMULECMD}\
+		${DEBUGGING}\
+		${WEBSERVER}\
+		${CAS}\
+		${WXCAS}\
+		${ALC}\
+		${ALCC}\
+		${REMOTEGUI}\
+		${DAEMON}\
+		${AMULE}\
+		${ED2K}
+#Disabled till support for external crypto is fixed		--disable-embedded-crypto
+
+#I do this substitution before the install, regardless if the packages get biuld
+	cp amule.desktop amule.desktop.bak
+	cp src/utils/aLinkCreator/alc.desktop src/utils/aLinkCreator/alc.desktop.bak
+	cp src/utils/wxCas/wxcas.desktop src/utils/wxCas/wxcas.desktop.bak
 	sed -e 's/Exec=amule/Exec=amule --even-if-lfroen-complains-this-will-stay/' < amule.desktop > amule.desktop.tmp
 	sed -e 's/Icon=alc.xpm/Icon=\/usr\/share\/pixmaps\/alc.xmp/' < src/utils/aLinkCreator/alc.desktop > src/utils/aLinkCreator/alc.desktop.tmp
 	sed -e 's/Icon=wxcas.xpm/Icon=\/usr\/share\/pixmaps\/wxcas.xmp/' < src/utils/wxCas/wxcas.desktop > src/utils/wxCas/wxcas.desktop.tmp
@@ -55,7 +235,30 @@ config.status: configure
 	mv src/utils/aLinkCreator/alc.desktop.tmp src/utils/aLinkCreator/alc.desktop
 	mv src/utils/wxCas/wxcas.desktop.tmp src/utils/wxCas/wxcas.desktop
 
+#And here is the well known clean target
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
 
+	-$(MAKE) distclean
+ifneq "$(wildcard /usr/share/misc/config.sub)" ""
+	cp -f /usr/share/misc/config.sub config.sub
+endif
+ifneq "$(wildcard /usr/share/misc/config.guess)" ""
+	cp -f /usr/share/misc/config.guess config.guess
+endif
+	
+	rm -f debian/files
+	dh_clean -k
+
+	-mv amule.desktop.bak amule.desktop
+	-mv src/utils/aLinkCreator/alc.desktop.bak src/utils/aLinkCreator/alc.desktop
+	-mv src/utils/wxCas/wxcas.desktop.bak src/utils/wxCas/wxcas.desktop
+
+
+
+#Some generic targets to check the build process
 build: build-stamp
 
 build-stamp:  config.status
@@ -66,68 +269,186 @@ build-stamp:  config.status
 
 	touch build-stamp
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp 
-
-	# Add here commands to clean up after the build process.
-	-$(MAKE) distclean
-ifneq "$(wildcard /usr/share/misc/config.sub)" ""
-	cp -f /usr/share/misc/config.sub config.sub
-endif
-ifneq "$(wildcard /usr/share/misc/config.guess)" ""
-	cp -f /usr/share/misc/config.guess config.guess
-endif
-	
-	rm -f debian/files
-
-	dh_clean -k
-
+#Now we install the packages all together to the tmp-dir inside of debian/
 install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -a -k 
 	dh_installdirs -a
 
-	# Add here commands to install the package into debian/amule.
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
+#Now first build the packages that are compiled and installed on every build
+amule-common: install
 
-# Build architecture-independent files here.
-binary-indep: build install
-# We have nothing to do by default.
+	for pkg in $(general_pkgs); do \
+		dh_testdir -p$$pkg; \
+		dh_testroot -p$$pkg; \
+		dh_installchangelogs docs/Changelog -p$$pkg; \
+		dh_installdocs -p$$pkg; \
+		dh_install -Xlicense.txt -p$$pkg; \
+		dh_installmenu -p$$pkg; \
+		dh_installdebconf -p$$pkg; \
+		dh_installman -p$$pkg; \
+		dh_link -p$$pkg; \
+		dh_compress -X.pl -p$$pkg; \
+		dh_perl -p$$pkg; \
+		dh_makeshlibs; \
+		dh_installdeb -p$$pkg; \
+		dh_shlibdeps -p$$pkg; \
+		dh_gencontrol -p$$pkg; \
+		dh_md5sums -p$$pkg; \
+		dh_fixperms -p$$pkg; \
+		dh_builddeb -p$$pkg; \
+	done
 
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir -a
-	dh_testroot -a
-	dh_installchangelogs docs/Changelog
-	dh_installdocs
-	dh_install -Xlicense.txt
-	dh_installmenu -a
-	dh_installdebconf -a	
-	dh_installman -a
-	dh_link -a
+amule: amule-common
+	${stage1}
+	${stage2}
+
+amule-ed2k: amule-common
+	${stage1}
+	${stage2}
+
+amule-cas: amule-common
+	${stage1}
+	${stage2}
+
+amule-wxcas: amule-common
+	${stage1}
+	${stage2}
+
+amuleweb: amule-common
+	${stage1}
+	${stage2}
+
+amule-remote-gui: amule-common
+	${stage1}
+	${stage2}
+
+amule-daemon: amule-common
+	${stage1}
+	${stage2}
+
+amule-alc: amule-common
+	${stage1}
+	${stage2}
+
+amule-alcc: amule-common
+	${stage1}
+	${stage2}
+
+amule-cmd: amule-common
+	${stage1}
+	${stage2}
+
+amule-dbg: amule
+	${stage1}
 	dh_strip -pamule --dbg-package=amule-dbg
+	${stage2}
+
+amule-ed2k-dbg: ed2k
+	${stage1}
 	dh_strip -pamule-ed2k --dbg-package=amule-ed2k-dbg
+	${stage2}
+
+amule-cas-dbg: cas
+	${stage1}
 	dh_strip -pamule-cas --dbg-package=amule-cas-dbg
+	${stage2}
+
+amule-wxcas-dbg: wxcas
+	${stage1}
 	dh_strip -pamule-wxcas --dbg-package=amule-wxcas-dbg
+	${stage2}
+
+amuleweb-dbg: webserver
+	${stage1}
 	dh_strip -pamuleweb --dbg-package=amuleweb-dbg
+	${stage2}
+
+amule-remote-gui-dbg: remotegui
+	${stage1}
 	dh_strip -pamule-remote-gui --dbg-package=amule-remote-gui-dbg
+	${stage2}
+
+amule-daemon-dbg: daemon
+	${stage1}
 	dh_strip -pamule-daemon --dbg-package=amule-daemon-dbg
+	${stage2}
+
+amule-alc-dbg: alc
+	${stage1}
 	dh_strip -pamule-alc --dbg-package=amule-alc-dbg
+	${stage2}
+
+amule-alcc-dbg: alcc
+	${stage1}
 	dh_strip -pamule-alcc --dbg-package=amule-alcc-dbg
+	${stage2}
+
+amule-cmd-dbg: amulecmd
+	${stage1}
 	dh_strip -pamule-cmd --dbg-package=amule-cmd-dbg
-	dh_compress -a -X.pl
-	dh_perl
-	dh_makeshlibs
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_fixperms -a
-	dh_builddeb -a
+	${stage2}
+
+#Now just the targets to map the Commandline Name to the package names
+ed2k: amule-ed2k
+
+cas: amule-cas
+
+wxcas: amule-wxcas
+
+webserver: amuleweb
+
+remotegui: amule-remote-gui
+
+daemon: amule-daemon
+
+alc: amule-alc
+
+alcc: amule-alcc
+
+amulecmd: amule-cmd
+
+amule-dbg: amule-dbg
+
+ed2k-dbg: amule-ed2k-dbg
+
+cas-dbg: amule-cas-dbg
+
+wxcas-dbg: amule-wxcas-dbg
+
+webserver-dbg: amuleweb-dbg
+
+remotegui-dbg: amule-remote-gui-dbg
+
+daemon-dbg: amule-daemon-dbg
+
+alc-dbg: amule-alc-dbg
+
+alcc-dbg: amule-alcc-dbg
+
+amulecmd-dbg: amule-cmd-dbg
+
+
+#These two targets are empty (with a space after the semicolon. They are just metapackages
+amule-utils: alcc amulecmd cas ; 
+amule-utils-gui: alc remotegui wxcas ; 
+
+#Now the targets for dpkg-buildpackage
+binary-indep: build install
+
+binary-arch: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install 
+
+help:
+	cat README.Debian-Packages
+
+.DEFAULT_GOAL = help
+.PHONY: build clean binary-indep binary-arch binary install amule amule-ed2k amule-cas amule-wxcas
+.PHONY: amuleweb amule-remote-gui amule-daemon amule-alc amule-alcc amule-cmd amule-dbg amule-ed2k-dbg
+.PHONY: amule-cas-dbg amule-wxcas-dbg amuleweb-dbg amule-remote-gui-dbg amule-daemon-dbg amule-alc-dbg
+.PHONY: amule-alcc-dbg amule-cmd-dbg amule-utils amule-utils-gui amule-common ed2k cas wxcas webserver remotegui
+.PHONY: daemon alc alcc amulecmd 
