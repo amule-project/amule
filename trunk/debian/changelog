@@ -1,8 +1,8 @@
-amule (2.1.3+CVS20070608-1) testing; urgency=low
+amule (2.1.3+CVS20070610-1) testing; urgency=low
 
   * New Upstream CVS-Snapshot
 
- -- Vollstrecker <amule@vollstreckernet.de>  Fri, 09 Jun 2007  8:00:01 +0100
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 10 Jun 2007  8:00:01 +0100
 
 amule (2.1.3+CVS20070608-2) testing; urgency=low
 
