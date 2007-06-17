@@ -966,7 +966,7 @@ void CamuleDlg::Hide_aMule(bool iconize)
 
 		if (m_prefsDialog and m_prefsDialog->IsShown()) {
 			m_prefsVisible = true;
-			m_prefsDialog->Iconize(true);;
+			m_prefsDialog->Iconize(true);
 			m_prefsDialog->Show(false);
 		} else {
 			m_prefsVisible = false;
