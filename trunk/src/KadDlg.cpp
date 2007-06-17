@@ -212,6 +212,10 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 			return;
 		}
 		wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
+		
+		// Save it
+		thePrefs::SetKadNodesUrl(strURL);
+		
 		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_NodesDat);
 		downloader->Create();
 		downloader->Run();

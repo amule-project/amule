@@ -507,6 +507,13 @@ public:
 	// Dropping slow sources
 	static bool GetDropSlowSources()					{ return s_DropSlowSources; }
 	
+	// server.met and nodes.dat urls
+	static const wxString& GetKadNodesUrl() { return s_KadURL; }
+	static void SetKadNodesUrl(const wxString& url) { s_KadURL = url; }
+
+	static const wxString& GetEd2kServersUrl() { return s_Ed2kURL; }
+	static void SetEd2kServersUrl(const wxString& url) { s_Ed2kURL = url; }
+	
 	// Crypt
 	static bool IsClientCryptLayerSupported() { return s_IsClientCryptLayerSupported; }
 	static bool		IsClientCryptLayerRequested()		{return IsClientCryptLayerSupported() && s_bCryptLayerRequested;}	
@@ -732,6 +739,9 @@ protected:
 
 	// Drop slow sources if needed
 	static bool s_DropSlowSources;
+	
+	static wxString s_Ed2kURL;
+	static wxString s_KadURL;
 	
 	// Crypt
 	static bool s_IsClientCryptLayerSupported;
