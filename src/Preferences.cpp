@@ -209,6 +209,9 @@ bool		CPreferences::s_IsClientCryptLayerRequired;
 uint32	CPreferences::s_dwKadUDPKey;
 uint8	CPreferences::s_byCryptTCPPaddingLength;
 
+wxString CPreferences::s_Ed2kURL;
+wxString CPreferences::s_KadURL;
+
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -1035,6 +1038,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
+	
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://emule-inside.net/nodes.dat") ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),			s_Ed2kURL, wxT("http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met") ) );
 	
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg

@@ -62,10 +62,8 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashPosition(splitter_pos, true);
 	CastChild( ID_SRV_SPLITTER, wxSplitterWindow )->SetSashGravity(0.5f);
-	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(wxT(
-		"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"));
-	CastChild( IDC_NODESLISTURL, wxTextCtrl )->SetValue(wxT(
-		"http://emule-inside.net/nodes.dat"));
+	CastChild( IDC_NODESLISTURL, wxTextCtrl )->SetValue(thePrefs::GetKadNodesUrl());
+	CastChild( IDC_SERVERLISTURL, wxTextCtrl )->SetValue(thePrefs::GetEd2kServersUrl());
 
 	// Insert two columns, currently without a header
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
@@ -84,11 +82,14 @@ CServerWnd::CServerWnd(wxWindow* pParent /*=NULL*/, int splitter_pos)
 
 CServerWnd::~CServerWnd()
 {
+	thePrefs::SetEd2kServersUrl(CastChild( IDC_SERVERLISTURL, wxTextCtrl )->GetValue());
+	thePrefs::SetKadNodesUrl(CastChild( IDC_NODESLISTURL, wxTextCtrl )->GetValue());	
 }
 
 
 void CServerWnd::UpdateServerMetFromURL(const wxString& strURL)
 {
+	thePrefs::SetEd2kServersUrl(strURL);
 	theApp->serverlist->UpdateServerMetFromURL(strURL);
 }
 
