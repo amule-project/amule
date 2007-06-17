@@ -497,9 +497,9 @@ bool CECTag::ReadFromSocket(CECSocket& socket)
 
 bool CECTag::WriteTag(CECSocket& socket) const
 {
-	ec_taglen_t tagLen = GetTagLen();
 	ec_tagname_t tmp_tagName = (m_tagName << 1) | (m_tagList.empty() ? 0 : 1);
 	ec_tagtype_t type = m_dataType;
+	ec_taglen_t tagLen = GetTagLen();
 	wxASSERT(type != EC_TAGTYPE_UNKNOWN);
 	
 	if (!socket.WriteNumber(&tmp_tagName, sizeof(ec_tagname_t))) return false;

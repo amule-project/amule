@@ -142,7 +142,10 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(byte* pbyBufIn, int nBufLen,
 		case OP_UDPRESERVEDPROT2:
 		case OP_PACKEDPROT:
 			return nResult; // no encrypted packet (see description on top)
+		default:
+			;
 	}
+	
 	bool bKad = (pbyBufIn[0] & 0x01) == 0; // check the marker bit if this is a kad or ed2k packet, this is only an indicator since old clients have it set random
 	// might be an encrypted packet, try to decrypt
 	
