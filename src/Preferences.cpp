@@ -34,6 +34,7 @@
 #include <wx/tokenzr.h>
 #include <wx/textfile.h>		// Do_not_auto_remove (win32)
 #include <wx/config.h>
+#include <wx/dir.h>
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
@@ -54,6 +55,7 @@
 #endif
 
 #include "RandomFunctions.h"
+#include "OtherFunctions.h"
 
 #define DEFAULT_TCP_PORT 4662
 
@@ -713,6 +715,124 @@ protected:
 	int	m_selection;
 };
 
+class Cfg_Skin : public Cfg_Tmpl<wxString>
+{
+public:
+//	Cfg_Tmpl( const wxString& keyname, TYPE& value, const TYPE& defaultVal )
+//	 : Cfg_Base( keyname ),
+//	   m_value( value ),
+//	   m_default( defaultVal ),
+//	   m_widget( NULL )
+//	{}
+//	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
+//	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
+//	{}
+	Cfg_Skin( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
+	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
+	{
+	}
+
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		cfg->Read( GetKey(), &m_value, m_default );
+	}
+
+	
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		cfg->Write( GetKey(), m_value );
+	}
+
+
+	virtual bool TransferFromWindow()
+	{
+		if ( Cfg_Tmpl<wxString>::TransferFromWindow() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	virtual bool TransferToWindow()
+	{
+
+		wxChoice *skinSelector = dynamic_cast<wxChoice*>(m_widget);
+		skinSelector->Clear();
+
+		wxString folder;
+		bool skins = false;
+#warning there has to be a better way...
+		if ( GetKey() == wxT("/SkinGUIOptions/SkinDir") ) {
+			folder = wxT("skins");
+			skins = true;
+		} else {
+			folder = wxT("webserver");
+		}
+		wxString dirName = GetConfigDir() + folder;
+		wxString Filename;
+		wxDir d(dirName);
+		
+		if (d.IsOpened() &&
+			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
+			)
+		{
+			do
+			{
+				if ((Filename != wxT(".")) && (Filename != wxT("..")))
+				{
+					if (skins == true) {
+						Filename = wxT("User:") + Filename;
+					}
+					skinSelector->Append(Filename);
+				}
+			}
+			while (d.GetNext(&Filename));
+		}
+
+		// I particulary dislike makefiles
+		// will be written some other day...
+#warning wuischke: hardcoded value
+		d.Open(wxT("/usr/local/share/amule/") + folder);
+		
+		if (d.IsOpened() &&
+			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
+			)
+		{
+			do
+			{
+				if ((Filename != wxT(".")) && (Filename != wxT("..")))
+				{
+					if (skins == true) {
+						Filename = wxT("System:") +  Filename;
+					}
+					// avoid duplicates for webserver templates
+					if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
+						skinSelector->Append(Filename);
+					}
+				}
+			}
+			while (d.GetNext(&Filename));
+		}			
+
+		if ( skinSelector->GetCount() == 0 ) {
+			skinSelector->Append(wxT("no options available"));	
+		}
+
+		int id = skinSelector->FindString(m_value);
+		if ( id == wxNOT_FOUND ) {
+			id = 0;
+		}
+		skinSelector->SetSelection(id);
+
+		return Cfg_Tmpl<wxString>::TransferToWindow();
+	}
+
+
+protected:
+	int	m_selection;
+};
+
 #endif /* ! AMULE_DAEMON */
 
 
@@ -912,7 +1032,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_WEB_GZIP,	(new Cfg_Bool( wxT("/WebServer/UseGzip"), s_bWebUseGzip, true )));
 	NewCfgItem(IDC_ENABLE_WEB_LOW,	(new Cfg_Bool( wxT("/WebServer/UseLowRightsUser"), s_bWebLowEnabled, false )));
 	NewCfgItem(IDC_WEB_REFRESH_TIMEOUT,	(MkCfg_Int( wxT("/WebServer/PageRefreshTime"), s_nWebPageRefresh, 120 )));
-	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Str( wxT("/WebServer/Template"), s_WebTemplate, wxEmptyString )));
+	NewCfgItem(IDC_WEBTEMPLATE,	(new Cfg_Skin( wxT("/WebServer/Template"), s_WebTemplate, wxEmptyString )));
 
 	/**
 	 * External Connections
@@ -942,7 +1062,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_PROGBAR,		(new Cfg_Bool( wxT("/ExternalConnect/ShowProgressBar"), s_ProgBar, true )));
 	NewCfgItem(IDC_PERCENT,		(new Cfg_Bool( wxT("/ExternalConnect/ShowPercent"), s_Percent, false )));
 	NewCfgItem(IDC_USESKINFILES,	(new Cfg_Bool( wxT("/SkinGUIOptions/UseSkinFiles"), s_UseSkinFiles, false )));
-	NewCfgItem(IDC_SKINDIR,		(new Cfg_Str(  wxT("/SkinGUIOptions/SkinDir"), s_SkinDir, wxEmptyString )));
+	NewCfgItem(IDC_SKIN,		(new Cfg_Skin(  wxT("/SkinGUIOptions/SkinDir"), s_SkinDir, wxEmptyString )));
 	NewCfgItem(IDC_SHOWRATEONTITLE,	(new Cfg_Bool( wxT("/eMule/ShowRatesOnTitle"), s_ShowRatesOnTitle, false )));
 	NewCfgItem(IDC_VERTTOOLBAR,	(new Cfg_Bool( wxT("/eMule/VerticalToolbar"), s_ToolbarOrientation, false )));
 	NewCfgItem(IDC_SHOWPARTFILENUMBER,(new Cfg_Bool( wxT("/eMule/ShowPartFileNumber"), s_ShowPartFileNumber, false )));
