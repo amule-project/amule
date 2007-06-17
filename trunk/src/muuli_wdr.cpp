@@ -2572,56 +2572,57 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
     item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Skin Support") );
-    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
+    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxHORIZONTAL );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_USESKINFILES, _("Use skin files to set aMule bitmaps."), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_USESKINFILES, _("Enable skin support "), wxDefaultPosition, wxDefaultSize, 0 );
     item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Skin files directory:") );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Skin:") );
     wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxHORIZONTAL );
 
-    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_SKINDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item18->Add( item20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-    wxButton *item21 = new wxButton( parent, IDC_SELSKINDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item21, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxString strs20[] = 
+    {
+        _("- no skins available -")
+    };
+    wxChoice *item20 = new wxChoice( parent, IDC_SKIN, wxDefaultPosition, wxSize(200,-1), 1, strs20, 0 );
+    item18->Add( item20, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item15->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
     item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item23 = new wxStaticBox( parent, -1, _("Column Sorting") );
-    wxStaticBoxSizer *item22 = new wxStaticBoxSizer( item23, wxVERTICAL );
+    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Column Sorting") );
+    wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
-    wxCheckBox *item24 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files in the download queue (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->SetValue( TRUE );
-    item24->SetToolTip( _("aMule will sort the columns in your download list automatically") );
-    item22->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files in the download queue (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetValue( TRUE );
+    item23->SetToolTip( _("aMule will sort the columns in your download list automatically") );
+    item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item22, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item26 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
-    wxStaticBoxSizer *item25 = new wxStaticBoxSizer( item26, wxVERTICAL );
+    wxStaticBox *item25 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
+    wxStaticBoxSizer *item24 = new wxStaticBoxSizer( item25, wxVERTICAL );
 
-    wxCheckBox *item27 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast ED2K Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->SetValue( TRUE );
+    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+
+    wxCheckBox *item27 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
     item27->SetValue( TRUE );
-    item25->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    item24->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item28 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
     item28->SetValue( TRUE );
-    item25->Add( item28, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    item24->Add( item28, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->SetValue( TRUE );
-    item25->Add( item29, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item30 = new wxCheckBox( parent, IDC_SHOWPARTFILENUMBER, _("Show part file number before file name"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item31 = new wxCheckBox( parent, IDC_SHOWPARTFILENUMBER, _("Show part file number before file name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item25, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     if (set_sizer)
     {
@@ -2792,8 +2793,9 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     wxStaticText *item24 = new wxStaticText( parent, ID_TEXT, _("Web template"), wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item24, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxRIGHT|wxTOP, 5 );
 
-    CMuleTextCtrl *item25 = new CMuleTextCtrl( parent, IDC_WEBTEMPLATE, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item19->Add( item25, 1, wxGROW|wxALIGN_RIGHT|wxTOP, 5 );
+    wxString *strs25 = (wxString*) NULL;
+    wxChoice *item25 = new wxChoice( parent, IDC_WEBTEMPLATE, wxDefaultPosition, wxSize(200,-1), 0, strs25, 0 );
+    item19->Add( item25, 0, wxALIGN_CENTER|wxALL, 5 );
 
     item4->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -3263,7 +3265,7 @@ wxSizer *KadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item5->SetName( wxT("nodesListLabel") );
     item3->Add( item5, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_NODESLISTURL, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_NODESLISTURL, _("http://download.overnet2000.de/nodes.dat"), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     item6->SetToolTip( _("Enter the url to a nodes.dat file here and press the button to the left to update the list of known nodes.") );
     item3->Add( item6, 1, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_HORIZONTAL|wxLEFT, 5 );
 

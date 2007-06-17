@@ -966,7 +966,7 @@ void CamuleDlg::Hide_aMule(bool iconize)
 
 		if (m_prefsDialog and m_prefsDialog->IsShown()) {
 			m_prefsVisible = true;
-			m_prefsDialog->Iconize(true);
+			m_prefsDialog->Iconize(true);;
 			m_prefsDialog->Show(false);
 		} else {
 			m_prefsVisible = false;
@@ -1180,6 +1180,13 @@ bool CamuleDlg::Check_and_Init_SkinDir()
 {
 	bool ret = true;
 	wxString skinDirName(thePrefs::GetSkinDir());
+
+	wxString userdir = GetConfigDir() + wxT("skins/");
+#warning wuischke: hardcoded value
+	wxString systemdir = wxT("/usr/local/share/amule/skins/");
+	skinDirName.Replace(wxT("User:"), userdir );
+	skinDirName.Replace(wxT("System:"), systemdir );
+
 	m_skinDirName.AssignDir(skinDirName);
 	if (skinDirName.IsEmpty()) {
 		AddLogLineM(true, _("Warning: Skin directory name is empty"));
