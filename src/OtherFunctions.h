@@ -347,6 +347,7 @@ inline const long int make_full_ed2k_version(int a, int b, int c) {
 }
 
 wxString GetConfigDir();
+wxString GetLocaleDir();
 
 #ifndef EC_REMOTE
 bool CheckConfig();

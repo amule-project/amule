@@ -715,6 +715,8 @@ protected:
 	int	m_selection;
 };
 
+#endif /* ! AMULE_DAEMON */
+
 class Cfg_Skin : public Cfg_Tmpl<wxString>
 {
 public:
@@ -744,6 +746,7 @@ public:
 	}
 
 
+#ifndef AMULE_DAEMON
 	virtual bool TransferFromWindow()
 	{
 		if ( Cfg_Tmpl<wxString>::TransferFromWindow() ) {
@@ -790,10 +793,9 @@ public:
 			while (d.GetNext(&Filename));
 		}
 
-		// I particulary dislike makefiles
-		// will be written some other day...
-#warning wuischke: hardcoded value
-		d.Open(wxT("/usr/local/share/amule/") + folder);
+		wxString dataDir(GetLocaleDir().BeforeLast(wxFileName::GetPathSeparator()));
+		wxString systemDir(JoinPaths(JoinPaths(dataDir, wxT("amule")),folder));
+		d.Open(systemDir);
 		
 		if (d.IsOpened() &&
 			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
@@ -827,13 +829,9 @@ public:
 
 		return Cfg_Tmpl<wxString>::TransferToWindow();
 	}
-
-
-protected:
-	int	m_selection;
-};
-
 #endif /* ! AMULE_DAEMON */
+
+};
 
 
 /// new implementation
