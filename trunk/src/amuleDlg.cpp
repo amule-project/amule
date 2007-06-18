@@ -1181,11 +1181,12 @@ bool CamuleDlg::Check_and_Init_SkinDir()
 	bool ret = true;
 	wxString skinDirName(thePrefs::GetSkinDir());
 
-	wxString userdir = GetConfigDir() + wxT("skins/");
-#warning wuischke: hardcoded value
-	wxString systemdir = wxT("/usr/local/share/amule/skins/");
-	skinDirName.Replace(wxT("User:"), userdir );
-	skinDirName.Replace(wxT("System:"), systemdir );
+	wxString userDir = GetConfigDir() + wxT("skins") + wxFileName::GetPathSeparator();
+	wxString dataDir(GetLocaleDir().BeforeLast(wxFileName::GetPathSeparator()));
+	wxString systemDir(JoinPaths(JoinPaths(dataDir, wxT("amule")),wxT("skins")));
+	systemDir += wxFileName::GetPathSeparator();
+	skinDirName.Replace(wxT("User:"), userDir );
+	skinDirName.Replace(wxT("System:"), systemDir );
 
 	m_skinDirName.AssignDir(skinDirName);
 	if (skinDirName.IsEmpty()) {
