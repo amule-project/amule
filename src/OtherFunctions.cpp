@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2007 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -601,7 +601,7 @@ unsigned int DecodeBase32(const wxString &base32Buffer, unsigned int base32BufLe
  * Base64 encoding/decoding command line filter
  *
  * Copyright (c) 2002 Matthias Gaertner 29.06.2002
- * Adapted by (C) 2005-2006Phoenix to use wxWidgets.
+ * Adapted by (C) 2005-2007 Phoenix to use wxWidgets.
  *
  */
 static const wxString to_b64(

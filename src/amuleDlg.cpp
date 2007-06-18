@@ -1,7 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2003-2006 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2003-2007 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2002 Merkur ( devs@emule-project.net / http://www.emule-project.net )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
@@ -435,7 +435,7 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 		" Forum: http://forum.amule.org \n"
 		" FAQ: http://wiki.amule.org \n\n"
 		" Contact: admin@amule.org (administrative issues) \n"
-		" Copyright (C) 2003-2006 aMule Team \n\n"
+		" Copyright (C) 2003-2007 aMule Team \n\n"
 		" Part of aMule is based on \n"
 		" Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 		" Copyright (C) 2002 Petar Maymounkov\n"
