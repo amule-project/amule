@@ -454,7 +454,7 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-	cmdline.AddSwitch(wxT("eveniflfroensubrepticiallyremovesitthiswillstay"), wxT("even-if-lfroen-subrepticially-removes-it-this-will-stay"), wxT("Runs aMule scary SVN development version at your own risk. Even if lfroen subrepticially tried to remove it."));
+	cmdline.AddSwitch(wxT("eveniflfroensurreptitiouslyremovesitthiswillstay"), wxT("even-if-lfroen-surreptitiously-removes-it-this-will-stay"), wxT("Runs aMule scary SVN development version at your own risk. Even if lfroen surreptitiously tried to remove it."));
 	
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
@@ -464,8 +464,8 @@ bool CamuleApp::OnInit()
 		return false;
 	}	
 
-	if ( !cmdline.Found(wxT("even-if-lfroen-subrepticially-removes-it-this-will-stay")) ) {
-		printf("This binary requires you to use the flag --even-if-lfroen-subrepticially-removes-it-this-will-stay and only if you're very sure of it. Warning: If you're lfroen, you might find this annoying. That pleases me.\n");
+	if ( !cmdline.Found(wxT("even-if-lfroen-surreptitiously-removes-it-this-will-stay")) ) {
+		printf("This binary requires you to use the flag --even-if-lfroen-surreptitiously-removes-it-this-will-stay and only if you're very sure of it. Warning: If you're lfroen or wuischke, you might find this annoying. That pleases me.\n");
 		return false;
 	}	
 	
