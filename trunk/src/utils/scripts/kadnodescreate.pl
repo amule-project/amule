@@ -3,8 +3,8 @@
 
 ## This file is part of the aMule Project
 ##
-## Copyright (c) 2006 Angel Vidal (Kry) ( kry@amule.org )
-## Copyright (c) 2006 aMule Project     ( http://www.amule-project.net )
+## Copyright (c) 2006-2007 Angel Vidal (Kry) ( kry@amule.org )
+## Copyright (c) 2006-2007 aMule Project     ( http://www.amule-project.net )
 ##
 ## This program is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License
