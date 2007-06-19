@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-18 03:30+0200\n"
+"POT-Creation-Date: 2007-06-19 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -244,7 +244,7 @@ msgstr "선택한 친구들을 삭제하시겠습니까?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
-#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1290
+#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1291
 #: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
@@ -318,7 +318,7 @@ msgstr "완료된 자료"
 msgid "Directory Path"
 msgstr "폴더 경로"
 
-#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1314 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1315 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4050
 msgid "Shared Files"
 msgstr "공유 파일"
@@ -407,7 +407,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
 
 #: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:671
+#: src/amule.cpp:674
 msgid "Warning"
 msgstr "경고"
 
@@ -622,7 +622,7 @@ msgstr "내려받기중..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1327
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1328
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4054
 msgid "Preferences"
 msgstr "환경설정"
@@ -1251,7 +1251,7 @@ msgid "Auto [Hi]"
 msgstr "자동[높음]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:503 src/amuleDlg.cpp:729
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:793
+#: src/ClientListCtrl.cpp:661 src/amule.cpp:796
 msgid "Connecting"
 msgstr "연결중"
 
@@ -1466,16 +1466,16 @@ msgstr "스페인말"
 msgid "Spanish (Mexican)"
 msgstr "스페인말 (멕시코)"
 
-#: src/Preferences.cpp:1620 src/Preferences.cpp:1634 src/Preferences.cpp:1641
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "선택된 브라우저를 판단할수 없습니다!"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1668
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP포트가 서버UDP 소켓이 TCP+3이 되기위해서 65532보다 커서는 안됩니다."
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1669
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "기본 포트가 사용될 것입니다.(%d)"
@@ -1539,7 +1539,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3212 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:711 src/amule.cpp:1318
+#: src/amule.cpp:714 src/amule.cpp:1321
 msgid "Info"
 msgstr "정보"
 
@@ -1653,26 +1653,13 @@ msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 " Contact: admin@amule.org (administrative issues) \n"
-" Copyright (C) 2003-2006 aMule Team \n"
+" Copyright (C) 2003-2007 aMule Team \n"
 "\n"
 " Part of aMule is based on \n"
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
-" '모든 플렛폼' 이뮬기반 p2p 클라이언트\n"
-"\n"
-" 웹사이트: http://www.amule.org \n"
-" 게시판: http://forum.amule.org \n"
-" 질문과 답변: http://wiki.amule.org \n"
-"\n"
-" 연락: admin@amule.org (행정적인 문제) \n"
-" 저작권 (C) 2003-2006 어뮬 팀 \n"
-"\n"
-" 어뮬의 일부분은 카뎀리아기반입니다.\n"
-" 카뎀리아: XOR 측정 기반으로 사람간을 연결합니다.\n"
-" 저작권 (C) 2002 페타 마이모운구브\n"
-" http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:445 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:677 src/KadDlg.cpp:182
@@ -1685,7 +1672,7 @@ msgstr "메시지"
 msgid "Status text"
 msgstr "상태 문자"
 
-#: src/amuleDlg.cpp:681 src/amuleDlg.cpp:1292
+#: src/amuleDlg.cpp:681 src/amuleDlg.cpp:1293
 msgid "Stops the current connection attempts"
 msgstr "현재접속하는것을 멈춥니다."
 
@@ -1701,17 +1688,17 @@ msgstr "현재 서버"
 msgid " and "
 msgstr "와 "
 
-#: src/amuleDlg.cpp:697 src/amuleDlg.cpp:1285 src/muuli_wdr.cpp:3150
+#: src/amuleDlg.cpp:697 src/amuleDlg.cpp:1286 src/muuli_wdr.cpp:3150
 #: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "연결 끊기"
 
-#: src/amuleDlg.cpp:704 src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3370
+#: src/amuleDlg.cpp:704 src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3370
 #: src/muuli_wdr.cpp:3818 src/muuli_wdr.cpp:4044 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "연결"
 
-#: src/amuleDlg.cpp:707 src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:707 src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:4044
 msgid "Connect to any server and/or Kad"
 msgstr "어떤서버 혹은 카드에 연결함"
 
@@ -1760,12 +1747,12 @@ msgstr "어뮬을 종료하시겠습니까?"
 msgid "Exit confirmation"
 msgstr "종료 확인"
 
-#: src/amuleDlg.cpp:1091 src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1091 src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3611 src/muuli_wdr.cpp:4051
 msgid "Messages"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:1095 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:4051
+#: src/amuleDlg.cpp:1095 src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:4051
 msgid "Messages Window"
 msgstr "메시지 창"
 
@@ -1773,79 +1760,79 @@ msgstr "메시지 창"
 msgid "Could not determine the command for running the browser."
 msgstr "기본 브라우저가 선택되지 않았습니다."
 
-#: src/amuleDlg.cpp:1192
+#: src/amuleDlg.cpp:1193
 msgid "Warning: Skin directory name is empty"
 msgstr ""
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1197
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr ""
 
-#: src/amuleDlg.cpp:1201
+#: src/amuleDlg.cpp:1202
 #, c-format
 msgid "Warning: Unable to open skin directory '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1288
 msgid "Disconnect from any server and/or Kad"
 msgstr ""
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1302 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
 msgid "Networks"
 msgstr "통신망"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1304 src/muuli_wdr.cpp:4046
 msgid "Networks Window"
 msgstr "통신망 창"
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:4048
 msgid "Searches"
 msgstr "검색"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:4048
 msgid "Searches Window"
 msgstr "검색 창"
 
-#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:4049
 msgid "Transfers"
 msgstr "전송"
 
-#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4049
 msgid "Files Transfers Window"
 msgstr "파일 전송 창"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:4050
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4050
 msgid "Shared Files Window"
 msgstr "공유 파일 창"
 
-#: src/amuleDlg.cpp:1322 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1323 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4052
 msgid "Statistics"
 msgstr "통계"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4052
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:4052
 msgid "Statistics Graph Window"
 msgstr "동적 그래프 창"
 
-#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4054
 msgid "Preferences Settings Window"
 msgstr "환경 설정 창"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4055
 msgid "Import"
 msgstr "가져오기"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:4055
 msgid "The partfile importer tool"
 msgstr "부분파일 가져오기 도구"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:4056
 msgid "About"
 msgstr "정보"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:4056
 msgid "About/Help"
 msgstr "정보/도움"
 
@@ -2867,8 +2854,8 @@ msgid "Connection failed "
 msgstr "연결 실패"
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
-#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:842
-#: src/amule.cpp:960 src/amule.cpp:1329
+#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:845
+#: src/amule.cpp:963 src/amule.cpp:1332
 msgid "Error"
 msgstr "오류"
 
@@ -3565,11 +3552,11 @@ msgstr "ED2k"
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s에 연결됨"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2042
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2039
+#: src/TextClient.cpp:671 src/amule.cpp:2042
 msgid "with HighID"
 msgstr "높은아이디로"
 
@@ -5862,10 +5849,6 @@ msgstr "주소로부터 노드를 갱신하기 위해 이 버튼을 클릭하세
 msgid "Nodes (0)"
 msgstr "노드 (0)"
 
-#: src/muuli_wdr.cpp:3268
-msgid "http://download.overnet2000.de/nodes.dat"
-msgstr "http://download.overnet2000.de/nodes.dat"
-
 #: src/muuli_wdr.cpp:3269
 msgid ""
 "Enter the url to a nodes.dat file here and press the button to the left to "
@@ -6830,29 +6813,29 @@ msgstr "지역 서버가 IPFilter에 의해 걸러져서, 다른 서버로 재�
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr ""
 
-#: src/amule.cpp:709
+#: src/amule.cpp:712
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
 msgstr ""
 "로케일이 설정 변경으로 인해 시스템 기본값으로 변경되었습니다. 죄송합니다."
 
-#: src/amule.cpp:775
+#: src/amule.cpp:778
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
 msgstr ""
 
-#: src/amule.cpp:777
+#: src/amule.cpp:780
 msgid "Server list download"
 msgstr ""
 
-#: src/amule.cpp:835
+#: src/amule.cpp:838
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "웝서버가 PID %d로 작동중"
 
-#: src/amule.cpp:838
+#: src/amule.cpp:841
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6862,12 +6845,12 @@ msgstr ""
 "패키지 설치할때 어뮬웹서버를 포함하거나, --enable-webserver 옵션 이용하여 어"
 "뮬을 컴파일후 make install을 실행하세요."
 
-#: src/amule.cpp:950
+#: src/amule.cpp:953
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "포트 %u는 사용할수 없습니다. 낮은아이디입니다.\n"
 
-#: src/amule.cpp:956
+#: src/amule.cpp:959
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6882,21 +6865,21 @@ msgstr ""
 "\n"
 "네트워크의 포트가 열려있는지 체크하세요. "
 
-#: src/amule.cpp:1067
+#: src/amule.cpp:1070
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
 
-#: src/amule.cpp:1118
+#: src/amule.cpp:1121
 msgid "Failed to create OnlineSig File"
 msgstr "온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1126
+#: src/amule.cpp:1129
 msgid "Failed to create aMule OnlineSig File"
 msgstr "어뮬 온라인서명 파일을 생성하지 못했습니다."
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1297
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6904,39 +6887,39 @@ msgstr ""
 "선택한 로케일이 컴퓨터에 설치되지 않아 보입니다. (주: 어쨌든 지정한 대로 설정"
 "해 보겠습니다)"
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1307
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "이번에 어뮬 %s를 처음 실행했습니다."
 
-#: src/amule.cpp:1306
+#: src/amule.cpp:1309
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "이버젼은 테스트 버젼으로, 매일 업데이트되며, \n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1310
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "이 프로그램이 어느 것도 부수지 않는다고, 집을 태우지 않는다고, 혹은 \n"
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1311
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "개를 죽이지 않는다고 보장하지 않습니다. 그렇지만 안전하게 사용할 수 있을 것입"
 "니다.\n"
 
-#: src/amule.cpp:1313
+#: src/amule.cpp:1316
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "더 많은 정보, 지원, 새 릴리즈는 홈페이지 www.amule.org, 또는 IRC 채널\n"
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1317
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "(irc.freenode.net의 #aMule)에서 찾을 수 있습니다.\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1319
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "버그는 http://forum.amule.org로 보고해 주십시오."
 
-#: src/amule.cpp:1329
+#: src/amule.cpp:1332
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6944,101 +6927,101 @@ msgstr ""
 "지정한 온라인 서명 파일을 위한 폴더가 부정확합니다.\n"
 " 온라인 서명은 폴더를 환경설정에서 수정할 때까지 사용하지 않습니다."
 
-#: src/amule.cpp:1723
+#: src/amule.cpp:1726
 msgid "ERROR: can't open logfile"
 msgstr "오류: 로그파일을 열수없습니다."
 
-#: src/amule.cpp:1727
+#: src/amule.cpp:1730
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "경고: 로그파일이 비어있습니다. 뭔가 잘못되어 있습니다."
 
-#: src/amule.cpp:1746
+#: src/amule.cpp:1749
 msgid "Log has been reset"
 msgstr "로그가 초기화되었습니다."
 
-#: src/amule.cpp:1774
+#: src/amule.cpp:1777
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "서버메시지: %s"
 
-#: src/amule.cpp:1812
+#: src/amule.cpp:1815
 msgid "Failed to download the nodes list."
 msgstr "노드 목록을 내려받지 못했습니다."
 
-#: src/amule.cpp:1825
+#: src/amule.cpp:1828
 msgid "Failed to open the downloaded version check file"
 msgstr "내려받은 버젼 검사 파일을 열지 못했습니다."
 
-#: src/amule.cpp:1828 src/amule.cpp:1838 src/amule.cpp:1844
+#: src/amule.cpp:1831 src/amule.cpp:1841 src/amule.cpp:1847
 msgid "Corrupted version check file"
 msgstr "버젼 검사 파일이 손상되었습니다."
 
-#: src/amule.cpp:1854
+#: src/amule.cpp:1857
 msgid "You are using an outdated version of aMule!"
 msgstr "오래된 어뮬 버젼을 사용하고 있습니다!"
 
-#: src/amule.cpp:1855
+#: src/amule.cpp:1858
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "어뮬 버젼은 %i.%i.%i이며 최신 버젼은 %li.%li.%li입니다."
 
-#: src/amule.cpp:1856
+#: src/amule.cpp:1859
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "최신 버젼은 항상 http://www.amule.org 에서 찾을 수 있습니다."
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1862
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "경고: 어뮬 버젼은 낡았습니다: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1863
+#: src/amule.cpp:1866
 msgid "Your copy of aMule is up to date."
 msgstr "어뮬은 최신입니다."
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1873
 msgid "Failed to download the version check file"
 msgstr "버젼 검사 파일을 내려받지 못했습니다."
 
-#: src/amule.cpp:1972
+#: src/amule.cpp:1975
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "사용자: E: %s K: %s | 파일 E: %s K: %s"
 
-#: src/amule.cpp:2041
+#: src/amule.cpp:2044
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s에 연결되어 있습니다."
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2047
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s에 연결중입니다."
 
-#: src/amule.cpp:2046
+#: src/amule.cpp:2049
 msgid "Disconnected from ED2K"
 msgstr "ED2k로부터 연결이 끊김"
 
-#: src/amule.cpp:2053
+#: src/amule.cpp:2056
 msgid "Kad started."
 msgstr "카드를 시작했습니다."
 
-#: src/amule.cpp:2055
+#: src/amule.cpp:2058
 msgid "Kad stopped."
 msgstr "카드를 멈췄습니다."
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2065
 msgid "Connected to Kad (ok)"
 msgstr "카드에 연결됨 (양호)"
 
-#: src/amule.cpp:2064
+#: src/amule.cpp:2067
 msgid "Connected to Kad (firewalled)"
 msgstr "카드에 연결됨 (방화벽)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2070
 msgid "Disconnected from Kad"
 msgstr "카드로부터 연결이 끊김"
 
-#: src/amule.cpp:2123
+#: src/amule.cpp:2126
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7046,7 +7029,7 @@ msgstr ""
 "카드 네트워크는 UDP 포트가 비활성될 시 사용할 수 없으며, 따라서 시작하지 않습"
 "니다."
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2129
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "카드 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
@@ -7057,6 +7040,38 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid ""
+#~ " 'All-Platform' p2p client based on eMule \n"
+#~ "\n"
+#~ " Website: http://www.amule.org \n"
+#~ " Forum: http://forum.amule.org \n"
+#~ " FAQ: http://wiki.amule.org \n"
+#~ "\n"
+#~ " Contact: admin@amule.org (administrative issues) \n"
+#~ " Copyright (C) 2003-2006 aMule Team \n"
+#~ "\n"
+#~ " Part of aMule is based on \n"
+#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
+#~ " Copyright (C) 2002 Petar Maymounkov\n"
+#~ " http://kademlia.scs.cs.nyu.edu\n"
+#~ msgstr ""
+#~ " '모든 플렛폼' 이뮬기반 p2p 클라이언트\n"
+#~ "\n"
+#~ " 웹사이트: http://www.amule.org \n"
+#~ " 게시판: http://forum.amule.org \n"
+#~ " 질문과 답변: http://wiki.amule.org \n"
+#~ "\n"
+#~ " 연락: admin@amule.org (행정적인 문제) \n"
+#~ " 저작권 (C) 2003-2006 어뮬 팀 \n"
+#~ "\n"
+#~ " 어뮬의 일부분은 카뎀리아기반입니다.\n"
+#~ " 카뎀리아: XOR 측정 기반으로 사람간을 연결합니다.\n"
+#~ " 저작권 (C) 2002 페타 마이모운구브\n"
+#~ " http://kademlia.scs.cs.nyu.edu\n"
+
+#~ msgid "http://download.overnet2000.de/nodes.dat"
+#~ msgstr "http://download.overnet2000.de/nodes.dat"
 
 #~ msgid "Copy ED2k link to clipboard (Hostname)"
 #~ msgstr "ED2k 링크를 클립보드에 복사합니다.(호스트 이름)"
