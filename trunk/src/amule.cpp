@@ -895,8 +895,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		thePrefs::SetUDPPort( port );
 
 		wxString err = wxT(
-			"Network configuration failed! You can't use the port which\n"
-			"has the value of the main TCP port plus 3 for the UDP port.\n"
+			"Network configuration failed! You set your UDP port to\n"
+			"the value of the main TCP port plus 3.\n"
 			"This port has been reserved for the Server-UDP port. The\n"
 			"port value has been changed to avoid conflict, see the\n"
 			"preferences for the new value\n");
