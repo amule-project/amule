@@ -214,7 +214,7 @@ char *get_amule_path(const char *file, int force_directory, const char *cmdline_
  */
 char *convbytes(char *input)
 {
-	char *units[] = { "bytes", "Kb", "Mb", "Gb", "Tb", "Pb" };
+	char *units[] = { "Bytes", "KB", "MB", "GB", "TB", "PB" };
 	char *endptr;
 	static char output[50];
 	float bytes;
