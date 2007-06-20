@@ -240,10 +240,10 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 			str = UTF82unicode(val);
 			if (str.IsEmpty()) {
 				// Fallback to system locale
-				str = char2unicode(val);
+				str = wxString(val, wxConvISO8859_1);
 			}
 		} else {
-			str = char2unicode(val);
+			str = wxString(val, wxConvISO8859_1);
 		}
 	}
 
