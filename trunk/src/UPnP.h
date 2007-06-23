@@ -121,7 +121,9 @@ private:
 	static const int NUM_LIB_UPNP_SYMBOLS = 17;
 	static const char *s_LibUPnPSymbols[NUM_LIB_UPNP_SYMBOLS];
 	CDynamicLibHandle m_LibIXMLHandle;
-	CDynamicLibHandle m_LibUPnPHandle;
+	CDynamicLibHandle m_LibUPnPHandle2;
+	CDynamicLibHandle m_LibUPnPHandle3;
+	CDynamicLibHandle *m_LibUPnPHandle;
 	
 public:
 	CUPnPLib(CUPnPControlPoint &ctrlPoint);

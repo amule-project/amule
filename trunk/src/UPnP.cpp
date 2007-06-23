@@ -87,7 +87,7 @@ m_LibraryHandle(dlopen(libname, RTLD_LAZY))
 		msg << "error(CDynamicLibHandle): Unable to dlopen " <<
 			m_libname << ". Check PATH and LD_LIBRARY_PATH.";
 		AddLogLineM(true, logUPnP, msg);
-		throw CUPnPException(msg);
+//		throw CUPnPException(msg);
 	} else {
 		msg << "Successfully opened " << m_libname << ".";
 		AddLogLineM(false, logUPnP, msg);
@@ -173,8 +173,25 @@ CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
 m_ctrlPoint(ctrlPoint),
 m_LibIXMLHandle("libixml.so.2"),
-m_LibUPnPHandle("libupnp.so.2")
+m_LibUPnPHandle2("libupnp.so.2"),
+m_LibUPnPHandle3("libupnp.so.3"),
+m_LibUPnPHandle(NULL)
 {
+	// There are two versions of libUPnP in the market,
+	// check for the one that we have in the system.
+	if (m_LibUPnPHandle3.Get()) {
+		m_LibUPnPHandle = &m_LibUPnPHandle3;
+	} else if (m_LibUPnPHandle2.Get()) {
+		m_LibUPnPHandle = &m_LibUPnPHandle2;
+	} else {
+		std::ostringstream msg;
+		msg << "error(CDynamicLibHandle): Unable to dlopen "
+			"one or more UPnP component libraries. "
+			"Check PATH and LD_LIBRARY_PATH.";
+		AddLogLineM(true, logUPnP, msg);
+		throw CUPnPException(msg);
+	}
+	
 	// IXML
 	m_ixmlNode_getFirstChild =
 		REINTERPRET_CAST(IXML_Node *(*)(IXML_Node *))
@@ -204,57 +221,57 @@ m_LibUPnPHandle("libupnp.so.2")
 	// UPnP
 	m_UpnpInit =
 		REINTERPRET_CAST(int (*)(const char *, int))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[0]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[0]));
 	m_UpnpFinish =
 		REINTERPRET_CAST(void (*)())
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[1]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[1]));
 	m_UpnpGetServerPort =
 		REINTERPRET_CAST(unsigned short (*)())
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[2]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[2]));
 	m_UpnpGetServerIpAddress =
 		REINTERPRET_CAST(char * (*)())
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[3]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[3]));
 	m_UpnpRegisterClient =
 		REINTERPRET_CAST(int (*)(Upnp_FunPtr, const void *, UpnpClient_Handle *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[4]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[4]));
 	m_UpnpUnRegisterClient =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[5]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[5]));
 	m_UpnpSearchAsync =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, int, const char *, const void *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[6]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[6]));
 	m_UpnpGetServiceVarStatus =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, DOMString *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[7]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[7]));
 	m_UpnpSendAction =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, const char *,
 			IXML_Document *, IXML_Document **))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[8]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[8]));
 	m_UpnpSendActionAsync =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, const char *,
 			IXML_Document *, Upnp_FunPtr, const void *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[9]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[9]));
 	m_UpnpSubscribe =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, int *, Upnp_SID))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[10]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[10]));
 	m_UpnpUnSubscribe =
 		REINTERPRET_CAST(int (*)(UpnpClient_Handle, Upnp_SID))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[11]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[11]));
 	m_UpnpDownloadXmlDoc =
 		REINTERPRET_CAST(int (*)(const char *, IXML_Document **))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[12]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[12]));
 	m_UpnpResolveURL =
 		REINTERPRET_CAST(int (*)(const char *, const char *, char *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[13]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[13]));
 	m_UpnpMakeAction =
 		REINTERPRET_CAST(IXML_Document *(*)(const char *, const char *, int, const char *, ...))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[14]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[14]));
 	m_UpnpAddToAction =
 		REINTERPRET_CAST(int (*)(IXML_Document **, const char *, const char *, const char *, const char *))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[15]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[15]));
 	m_UpnpGetErrorMessage =
 		REINTERPRET_CAST(const char *(*)(int))
-		(dlsym(m_LibUPnPHandle.Get(), s_LibUPnPSymbols[16]));
+		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[16]));
 }
 
 
