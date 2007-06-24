@@ -314,7 +314,7 @@ void* UploadBandwidthThrottler::Entry()
 			sleepTime = extraSleepTime;
 		} else {
 			// sleep for just as long as we need to get back to having one byte to send
-			sleepTime = std::max((uint32)ceil((double)(-realBytesToSpend + 1000)/allowedDataRate), TIME_BETWEEN_UPLOAD_LOOPS);
+			sleepTime = std::max((uint32)ceil((double)(-realBytesToSpend + 1000)/allowedDataRate), extraSleepTime);
 		}
 
 		if(timeSinceLastLoop < sleepTime) {
