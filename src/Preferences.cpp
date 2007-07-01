@@ -774,9 +774,10 @@ public:
 		}
 		wxString dirName = GetConfigDir() + folder;
 		wxString Filename;
-		wxDir d(dirName);
+		wxDir d;
 		
-		if (d.IsOpened() &&
+		if (wxDir::Exists(dirName) &&
+			d.Open(dirName) &&
 			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
 			)
 		{
@@ -795,9 +796,9 @@ public:
 
 		wxString dataDir(GetLocaleDir().BeforeLast(wxFileName::GetPathSeparator()));
 		wxString systemDir(JoinPaths(JoinPaths(dataDir, wxT("amule")),folder));
-		d.Open(systemDir);
 		
-		if (d.IsOpened() &&
+		if (wxDir::Exists(systemDir) &&
+			d.Open(systemDir) &&
 			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
 			)
 		{
