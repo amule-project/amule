@@ -1,12 +1,24 @@
-amule (2.1.3+CVS20070610-1) testing; urgency=low
+amule (2.1.3+CVS20070702-1) testing; urgency=low
 
   * New Upstream CVS-Snapshot
 
- -- Vollstrecker <amule@vollstreckernet.de>  Fri, 10 Jun 2007  8:00:01 +0100
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 02 Jul 2007 07:00:00 +0100
+
+amule (2.1.3+CVS20070701-2) testing; urgency=low
+
+  * Added missing libupnp-dev to Build-Deps
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 01 Jul 2007 17:28:13 +0100
+
+amule (2.1.3+CVS20070628-2) testing; urgency=low
+
+  * Updated to new startup flag
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Thu, 28 Jun 2007  19:48:02 +0100
 
 amule (2.1.3+CVS20070608-2) testing; urgency=low
 
-  * Complete rewrite of debian/rules. Now separate packages can be choos to build
+  * Complete rewrite of debian/rules. Now separate packages can be choose to build
 
  -- Vollstrecker <amule@vollstreckernet.de>  Fri, 08 Jun 2007  19:19:01 +0100
 
