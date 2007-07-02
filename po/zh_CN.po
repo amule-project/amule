@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-19 03:31+0200\n"
+"POT-Creation-Date: 2007-07-02 03:30+0200\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Chen Nan\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1460,16 +1460,16 @@ msgstr "西班牙语"
 msgid "Spanish (Mexican)"
 msgstr "西班牙语 (墨西哥)"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1669
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可已高于65532，因为服务器UDP端口值为TCP端口值+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1670
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口将被使用(%d)"
