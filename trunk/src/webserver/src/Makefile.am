@@ -23,7 +23,7 @@ php_parser.c: php_parser.y
 	bison --debug -t -d -v -o $@ $<
 
 php_lexer.c: php_lexer.l
-	lex -o$@ $<
+	$(LEX) -o$@ $<
 
 amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a
 amuleweb_CFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs \
