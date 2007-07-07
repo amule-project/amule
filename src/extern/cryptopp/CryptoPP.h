@@ -3355,11 +3355,6 @@ private:
 	Sign sign;
 };
 
-//! modular multiplication
-Integer a_times_b_mod_c(const Integer &x, const Integer& y, const Integer& m);
-//! modular exponentiation
-Integer a_exp_b_mod_c(const Integer &x, const Integer& e, const Integer& m);
-
 //!
 inline bool operator==(const CryptoPP::Integer& a, const CryptoPP::Integer& b) {return a.Compare(b)==0;}
 //!
