@@ -97,17 +97,19 @@ m_LibraryHandle(dlopen(libname, RTLD_LAZY))
 
 CDynamicLibHandle::~CDynamicLibHandle()
 {
-	std::ostringstream msg;
-	int err_code = dlclose(m_LibraryHandle);
-	if (err_code) {
-		msg << "error(CDynamicLibHandle): Error closing " <<
-			m_libname << ": " << dlerror() <<
-			".";
-		fprintf(stderr, "%s\n", msg.str().c_str());
-		AddLogLineM(true, logUPnP, msg);
-	} else {
-		msg << "Successfully closed " << m_libname << ".";
-		AddLogLineM(false, logUPnP, msg);
+	if (m_LibraryHandle) {
+		std::ostringstream msg;
+		int err_code = dlclose(m_LibraryHandle);
+		if (err_code) {
+			msg << "error(CDynamicLibHandle): Error closing " <<
+				m_libname << ": " << dlerror() <<
+				".";
+			fprintf(stderr, "%s\n", msg.str().c_str());
+			AddLogLineM(true, logUPnP, msg);
+		} else {
+			msg << "Successfully closed " << m_libname << ".";
+			AddLogLineM(false, logUPnP, msg);
+		}
 	}
 }
 
