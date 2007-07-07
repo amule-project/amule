@@ -37,6 +37,7 @@
 		#include <crypto++/osrng.h>
 		#include <crypto++/files.h>
 		#include <crypto++/sha.h>
+		#include <crypto++/des.h>
 	#else 
 		#include <cryptopp/config.h>
 		#include <cryptopp/md4.h>
@@ -45,6 +46,7 @@
 		#include <cryptopp/osrng.h>
 		#include <cryptopp/files.h>
 		#include <cryptopp/sha.h>
+		#include <cryptopp/des.h>
 	#endif
 #endif
 
