@@ -6,6 +6,9 @@ Trunk
 	centaur:
 		* OpenBSD patch.
 
+	deloun:
+		* skins
+
 	DLH:
 		* amulegui.xpm icon.
 
