@@ -628,8 +628,7 @@ static LangInfo aMuleLanguages[] = {
 // Apparently there's no es_CL.po
 //	{ wxLANGUAGE_SPANISH_CHILE,			true,	wxTRANSLATE("Spanish (Chile)") },
 	{ wxLANGUAGE_SPANISH_MEXICAN,		true,	wxTRANSLATE("Spanish (Mexican)") },
-// Turkish had caused problems with the config file, disabled until tested
-//	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
+	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
 // Yet no real support for "custom"
 //	{ wxLANGUAGE_CUSTOM,				true,	wxTRANSLATE("Custom") },
 };
