@@ -2,7 +2,7 @@ if WEB
 OPT_WEB = webserver
 endif
 
-SUBDIRS = libs utils pixmaps kademlia $(OPT_WEB)
+SUBDIRS = libs utils pixmaps kademlia skins $(OPT_WEB)
 
 EXTRA_DIST = Makengfile aMule.xpm
 
