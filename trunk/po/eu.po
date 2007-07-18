@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-02 03:30+0200\n"
+"POT-Creation-Date: 2007-07-18 03:31+0200\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -1480,16 +1480,20 @@ msgstr "Gaztelera"
 msgid "Spanish (Mexican)"
 msgstr "Gaztelera (Mexikarra)"
 
-#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
+#: src/Preferences.cpp:631
+msgid "Turkish"
+msgstr ""
+
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "Ezin da ezarritako nabigatzailea jakin!"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP ataka ezin da 65532 baino altuagoa izan UDP socket-a TCP+3 bait da"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1669
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Lehenetsiriko ataka erabiliko da (%d)"
