@@ -23,10 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for VERSION
-#endif
-
 #include <include/protocol/ed2k/ClientSoftware.h>
 #include <include/common/MenuIDs.h>
 
@@ -759,14 +755,9 @@ void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
 
 	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
 		CPartFile* file = (*it)->GetFile();
-	
-		feed += CFormat(_("Feedback from: %s")) % thePrefs::GetUserNick() + wxT("\n");
-		feed += CFormat(_("Client: aMule %s")) % wxT(VERSION) + wxT("\n");
-		feed += CFormat(_("File Name: %s")) % file->GetFileName() + wxT("\n");
-		feed += CFormat(_("File size: %s")) % CastItoXBytes(file->GetFileSize()) + wxT("\n");
-		feed += CFormat(_("Download: %s")) % CastItoXBytes(file->GetCompletedSize()) + wxT("\n");
-		feed += wxString::Format(_("Sources: %u"), file->GetSourceCount()) + wxT("\n");
-		feed += wxString::Format(_("Complete Sources: %u"), file->m_nCompleteSourcesCount) + wxT("\n");
+
+		feed = file->GetFeedback();
+
 	}
 
 	if ( !feed.IsEmpty() ) {

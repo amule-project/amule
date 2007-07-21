@@ -145,6 +145,8 @@ public:
 	
 	uint64	GetNeededSpace();
 	
+	wxString GetFeedback();
+	
 	wxString getPartfileStatus() const; //<<--9/21/02
 	sint32	getTimeRemaining() const; //<<--9/21/02
 	time_t	lastseencomplete;

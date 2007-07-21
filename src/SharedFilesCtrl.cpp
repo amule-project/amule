@@ -66,6 +66,7 @@ BEGIN_EVENT_TABLE(CSharedFilesCtrl,CMuleListCtrl)
 	EVT_MENU( MP_GETHOSTNAMECRYPTSOURCEED2KLINK,			CSharedFilesCtrl::OnCreateURI )	
 	EVT_MENU( MP_GETAICHED2KLINK,	CSharedFilesCtrl::OnCreateURI )
 	EVT_MENU( MP_RENAME,		CSharedFilesCtrl::OnRename )
+	EVT_MENU( MP_WS,		CSharedFilesCtrl::OnGetFeedback )
 
 
 	EVT_CHAR( CSharedFilesCtrl::OnKeyPressed )
@@ -164,6 +165,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (&Hostname)"));
 		m_menu->Append(MP_GETHOSTNAMECRYPTSOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname) (With &Crypt options)"));		
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
+		m_menu->Append(MP_WS,_("Copy feedback to clipboard"));
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_RENAME, file->IsPartFile());
@@ -176,6 +178,25 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 	}
 }
 
+void CSharedFilesCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
+{
+
+	wxString feed;
+	
+	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	
+	while( index != -1 ) {
+		CPartFile* file = (CPartFile*)GetItemData( index );
+
+		feed = file->GetFeedback();
+
+		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	}
+
+	if ( !feed.IsEmpty() ) {
+		theApp->CopyTextToClipboard( feed );
+	}
+}
 
 #ifndef CLIENT_GUI
 void CSharedFilesCtrl::ShowFileList()

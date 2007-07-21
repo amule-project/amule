@@ -25,6 +25,10 @@
 
 #include "PartFile.h"		// Interface declarations.
 
+#ifdef HAVE_CONFIG_H
+	#include "config.h"		// Needed for VERSION
+#endif
+
 #include <include/protocol/kad/Constants.h>
 #include <include/protocol/ed2k/Client2Client/TCP.h>
 #include <include/protocol/Protocols.h>
@@ -3342,6 +3346,36 @@ uint64 CPartFile::GetNeededSpace()
 	return GetFileSize()-m_hpartfile.GetLength();
 }
 
+wxString CPartFile::GetFeedback()
+{
+wxString download,
+	retvalue,
+	additional_feedback,
+	upload_feedback;
+
+if ( GetStatus() == PS_COMPLETE) {
+	CKnownFile* pFile = theApp->sharedfiles->GetFileByID(GetFileHash());
+	download = _("Complete");
+	upload_feedback = _("Upload: ") + CastItoXBytes(pFile->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(pFile->statistic.GetAllTimeTransfered()) + wxT(")\n");
+	additional_feedback = wxString::Format(_("Requests: %u (%u)"), pFile->statistic.GetAccepts(), pFile->statistic.GetAllTimeRequests()) + wxT("\n")
+		+ wxString::Format(_("Accepted: %u (%u)"), pFile->statistic.GetRequests(), pFile->statistic.GetAllTimeAccepts()) + wxT("\n");
+}else {
+	download = CastItoXBytes(GetCompletedSize()) + wxString::Format(wxT(" (%.2f%%)"), GetPercentCompleted());
+	upload_feedback = CFormat(_("Upload: %s")) % CastItoXBytes(GetTransfered()) + wxT("\n");
+	additional_feedback = wxString::Format(_("Sources: %u"), GetSourceCount()) + wxT("\n");
+}
+
+return
+	CFormat(_("Feedback from: %s")) % thePrefs::GetUserNick() + wxT("\n")
+	+ CFormat(_("Client: aMule %s")) % wxT(VERSION) + wxT("\n")
+	+ CFormat(_("File Name: %s")) % GetFileName() + wxT("\n")
+	+ CFormat(_("File size: %s")) % CastItoXBytes(GetFileSize()) + wxT("\n")
+	+ CFormat(_("Download: %s")) % download + wxT("\n")
+	+ upload_feedback
+	+ wxString::Format(_("Complete Sources: %u"), m_nCompleteSourcesCount) + wxT("\n")
+	+ additional_feedback;
+
+}
 
 void CPartFile::SetStatus(uint8 in)
 {
