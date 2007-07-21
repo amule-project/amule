@@ -37,6 +37,7 @@
 #include "Color.h"		// Needed for SYSCOLOR
 #include "amule.h"		// Needed for theApp
 #include "SharedFileList.h"	// Needed for CSharedFileList
+#include "OtherFunctions.h"
 
 #define ID_MY_TIMER 1652
 
@@ -97,7 +98,9 @@ void CFileDetailDialog::UpdateData()
 	}
 
 	CastChild(IDC_FHASH,wxStaticText)->SetLabel(m_file->GetFileHash().Encode());
-	bufferS = wxString::Format(wxT("%llu"), m_file->GetFileSize());
+	bufferS = wxString::Format(wxT("%llu bytes ("), m_file->GetFileSize())
+			+ CastItoXBytes(m_file->GetFileSize())
+			+ wxT(")");
 	CastChild(IDC_FSIZE,wxControl)->SetLabel(bufferS);
 	CastChild(IDC_PFSTATUS,wxControl)->SetLabel(m_file->getPartfileStatus());
 	bufferS = wxString::Format(wxT("%i (%i)"),m_file->GetPartCount(),m_file->GetHashCount());
