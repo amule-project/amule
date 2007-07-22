@@ -9712,6 +9712,8 @@ void AutoSeededRandomPool::Reseed(bool blocking, unsigned int seedSize)
 	Put(seed, seedSize);
 }
 
+CRYPTOPP_DLL_TEMPLATE_CLASS AutoSeededX917RNG<DES_EDE3>;
+
 NAMESPACE_END
 
 #endif
