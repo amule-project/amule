@@ -261,14 +261,14 @@ void CSearchListCtrl::UpdateItemColor( long index )
 			if ( sameFile->IsPartFile() ) {
 				// File is already being downloaded. Mark as red.
 				red = 255;
-			} else if ( theApp->knownfiles->IsKnownFile(sameFile) ) {
+			} else if ( sameFile->GetStatus() == PS_COMPLETE ) {
+				// File has already been downloaded. Mark as green.
+				green = 200;
+			} else {
 				// File has been cancelled or removed. Mark as grey.
 				red = 128;
 				green = 128;
 				blue = 128;
-			} else {
-				// File has already been downloaded. Mark as green.
-				green = 200;
 			}
 		} else {
 			// File is new, colour after number of files
