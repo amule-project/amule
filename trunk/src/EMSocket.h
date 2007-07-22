@@ -26,7 +26,7 @@
 #ifndef EMSOCKET_H
 #define EMSOCKET_H
 
-#include "EncryptedStreamSocket.h"				// Needed for CEncryptedDatagramSocket
+#include "EncryptedStreamSocket.h"				// Needed for CEncryptedStreamSocket
 
 #include "ThrottledSocket.h"	// Needed for ThrottledFileSocket
 

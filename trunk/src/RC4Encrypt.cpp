@@ -29,11 +29,7 @@
 
 #include <stdexcept>
 
-CRC4EncryptableBuffer::CRC4EncryptableBuffer() 
-:
-m_encrypted(false),
-m_hasKey(false),
-m_key()
+CRC4EncryptableBuffer::CRC4EncryptableBuffer() : m_encrypted(false), m_hasKey(false), m_key()
 {
 }
 
@@ -115,13 +111,9 @@ void CRC4EncryptableBuffer::SetKey(const MD5Sum& keyhash, bool bSkipDiscard)
 	wxASSERT(!m_hasKey);
 	if (!m_hasKey) {
 		m_hasKey = true;
-		RC4CreateKey(
-			keyhash.GetRawHash(),
-			16, bSkipDiscard);
+		RC4CreateKey( keyhash.GetRawHash(), 16, bSkipDiscard);
 	} else {
-		throw std::runtime_error(
-			"(CRC4EncryptableBuffer::SetKey): "
-			"SetKey() has been called twice.");
+		throw std::runtime_error( "(CRC4EncryptableBuffer::SetKey): SetKey() has been called twice.");
 	}
 }
 

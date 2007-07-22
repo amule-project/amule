@@ -35,7 +35,7 @@
 #include "Proxy.h"			// Needed for CDatagramSocketProxy
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "UploadBandwidthThrottler.h"
-
+#include "EncryptedDatagramSocket.h"
 
 CMuleUDPSocket::CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData)
 	: m_busy(false),
@@ -62,7 +62,7 @@ void CMuleUDPSocket::CreateSocket()
 {
 	wxCHECK_RET(!m_socket, wxT("Socket already opened."));
 	
-	m_socket = new CDatagramSocketProxy(m_addr, wxSOCKET_NOWAIT, m_proxy);
+	m_socket = new CEncryptedDatagramSocket(m_addr, wxSOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
 	m_socket->SetEventHandler(*theApp, m_id);
 	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);

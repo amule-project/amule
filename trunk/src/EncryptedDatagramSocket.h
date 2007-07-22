@@ -24,11 +24,12 @@
 //
 
 #include "Types.h"
+#include "Proxy.h"
 
-class CEncryptedDatagramSocket
+class CEncryptedDatagramSocket : public CDatagramSocketProxy
 {
 public:
-	CEncryptedDatagramSocket();
+	CEncryptedDatagramSocket( wxIPaddress &address, wxSocketFlags flags = wxSOCKET_NONE,	const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedDatagramSocket();
 
 protected:
