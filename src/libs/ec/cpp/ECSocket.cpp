@@ -172,7 +172,7 @@ m_curr_rx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_curr_tx_data(new CQueuedData(EC_SOCKET_BUFFER_SIZE)),
 m_rx_flags(0),
 m_tx_flags(0),
-m_my_flags(0x20 /*| EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS*/ | EC_FLAG_ACCEPTS),
+m_my_flags(0x20 | EC_FLAG_ZLIB | EC_FLAG_UTF8_NUMBERS | EC_FLAG_ACCEPTS),
 // setup initial state: 4 flags + 4 length
 m_bytes_needed(8),
 m_in_header(true)
@@ -314,9 +314,9 @@ void CECSocket::OnInput()
 				// Client sends its capabilities, update the internal mask.
 				m_curr_rx_data->Read(&m_my_flags, sizeof(m_my_flags));
 				m_my_flags = ENDIAN_NTOHL(m_my_flags);
-				printf("Reading accepts mask: %%%x\n", m_my_flags);
+				printf("Reading accepts mask: %x\n", m_my_flags);
 				wxASSERT(m_my_flags & 0x20);
-				// There have to be 4 more bytes. THERE HAVE TO BE, DAMN IT.
+				// There has to be 4 more bytes. THERE HAS TO BE, DAMN IT.
 				m_curr_rx_data->ReadFromSocketAll(this, sizeof(m_curr_packet_len));
 			}
 			m_curr_rx_data->Read(&m_curr_packet_len, sizeof(m_curr_packet_len));
@@ -617,15 +617,11 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		}
 	}
 
-	bool send_accepts = true;
-	
-	uint32_t tmp_flags = ENDIAN_HTONL(flags | (send_accepts ? EC_FLAG_ACCEPTS : 0));
+	uint32_t tmp_flags = ENDIAN_HTONL(flags/* | EC_FLAG_ACCEPTS*/);
 	WriteBufferToSocket(&tmp_flags, sizeof(uint32));
 	
-	if (send_accepts) {
-		uint32_t tmp_accepts_flags = ENDIAN_HTONL(0x20);
-		WriteBufferToSocket(&tmp_accepts_flags, sizeof(uint32));
-	}
+/*	uint32_t tmp_accepts_flags = ENDIAN_HTONL(m_my_flags);
+	WriteBufferToSocket(&tmp_accepts_flags, sizeof(uint32));*/
 
 	// preallocate 4 bytes in buffer for packet length
 	uint32_t packet_len = 0;
@@ -641,16 +637,13 @@ void CECSocket::WritePacket(const CECPacket *packet)
 		packet_len += (*i)->GetDataLength();
 	}
 	// 4 flags and 4 length are not counted
-	packet_len -= send_accepts ? 12 : 8;
-	// now write actual length @ offset 4 or 8
+	packet_len -= 8;
+	// now write actual length @ offset 4
 	packet_len = ENDIAN_HTONL(packet_len);
 	
 	CQueuedData *first_buff = m_output_queue.front();
-	if ( !first_buff ) {
-		first_buff = m_curr_tx_data.get();
-	}
-	
-	first_buff->WriteAt(&packet_len, sizeof(uint32_t) * (send_accepts ? 2 : 1), sizeof(uint32_t));
+	if ( !first_buff ) first_buff = m_curr_tx_data.get();
+	first_buff->WriteAt(&packet_len, sizeof(uint32_t), sizeof(uint32_t));
 	
 	if (flags & EC_FLAG_ZLIB) {
 		int zerror = deflateEnd(&m_z);
