@@ -53,10 +53,12 @@ Trunk
 
 	LittleAbacus:
 		* Patch to show part file numbers.
+		* set the search string to the search text of currently
+		  selected tab.
 
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may
-		affect only the debugging.
+		  affect only the debugging.
 
 	Phoenix:
 		* Fix for crash in amulegui/DownloadListCtrl.cpp.

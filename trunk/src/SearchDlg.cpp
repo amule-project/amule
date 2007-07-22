@@ -225,12 +225,19 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 {
 	int selection = m_notebook->GetSelection();
-
+	CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
 	// Only enable the Download button for pages where files have been selected
 	if ( selection != -1 ) {
-		bool enable = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection))->GetSelectedItemCount();
-
+		bool enable = ctrl->GetSelectedItemCount();
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
+
+		// set IDC_SEARCHNAME control to search text of currently selected tab
+		wxString SearchText = m_notebook->GetPageText(selection).BeforeLast(wxT(' '));
+		wxString rest;
+		if (SearchText.StartsWith(wxT("!"), &rest)) {
+		    SearchText = rest;
+		}
+		CastChild(IDC_SEARCHNAME, wxTextCtrl)->SetValue(SearchText);
 	}
 
 }
