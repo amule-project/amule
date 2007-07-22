@@ -6400,7 +6400,7 @@ template <unsigned int N>
 class FixedBlockSize
 {
 public:
-	enum {BLOCKSIZE = N};
+	enum FixedBlockSizeBlockSizeEnum {BLOCKSIZE = N};
 };
 
 // ************** key length ***************
@@ -6697,7 +6697,7 @@ private:
 	unsigned int m_counter;
 };
 
-CRYPTOPP_DLL_TEMPLATE_CLASS AutoSeededX917RNG<DES_EDE3>;
+extern CRYPTOPP_DLL_TEMPLATE_CLASS AutoSeededX917RNG<DES_EDE3>;
 
 template <class BLOCK_CIPHER>
 void AutoSeededX917RNG<BLOCK_CIPHER>::Reseed(const byte *key, unsigned int keylength, const byte *seed, unsigned long timeVector)
