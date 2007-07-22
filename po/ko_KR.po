@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-18 03:31+0200\n"
+"POT-Creation-Date: 2007-07-22 03:31+0200\n"
 "PO-Revision-Date: 2006-07-31 11:47+0900\n"
 "Last-Translator: Byunghyun Oh <octaphial@yahoo.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -50,34 +50,35 @@ msgstr "성공! 어뮬은 연결이 되었습니다 "
 msgid "Succeeded! Connection established."
 msgstr "성공! 연결이 되었습니다."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3866
 msgid "Hashing"
 msgstr "해시중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3870
 msgid "Completing"
 msgstr "완료중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3358
+#: src/PartFile.cpp:3873
 msgid "Complete"
 msgstr "완료"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3876
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
 msgid "Paused"
 msgstr "중지됨"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3879
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
 msgid "Erroneous"
 msgstr "오류투성이"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3886
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
 msgid "Downloading"
 msgstr "받는중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3888
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
 msgid "Waiting"
 msgstr "대기중"
@@ -139,10 +140,10 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1480
-#: src/DownloadListCtrl.cpp:1493 src/DownloadListCtrl.cpp:1503
-#: src/PartFile.cpp:2610 src/PartFile.cpp:2616 src/KnownFile.cpp:831
-#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:126
+#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1471
+#: src/DownloadListCtrl.cpp:1484 src/DownloadListCtrl.cpp:1494
+#: src/PartFile.cpp:2614 src/PartFile.cpp:2620 src/KnownFile.cpp:831
+#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
 #: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -212,7 +213,7 @@ msgstr "사용자이름"
 msgid "Friends"
 msgstr "친구"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1067
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1058
 #: src/ClientListCtrl.cpp:250
 msgid "Show &Details"
 msgstr "상세히 보기(&D)"
@@ -229,7 +230,7 @@ msgstr "친구 제거"
 msgid "Send &Message"
 msgstr "메시지 보내기(&M)"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1069
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1060
 #: src/ClientListCtrl.cpp:252
 msgid "View Files"
 msgstr "파일 보기"
@@ -245,7 +246,7 @@ msgstr "선택한 친구들을 삭제하시겠습니까?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1291
-#: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:930
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3822
@@ -264,167 +265,171 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "멀티 구간"
 
-#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:198 src/CommentDialogLst.cpp:50
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "파일 이름"
 
-#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "크기"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "종류"
 
-#: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:139
+#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:205 src/DownloadListCtrl.cpp:938
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:929
 msgid "Priority"
 msgstr "우선권"
 
-#: src/SharedFilesCtrl.cpp:105 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
 msgid "FileID"
 msgstr "파일아이디"
 
-#: src/SharedFilesCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
 msgstr "요청"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:108
 msgid "Accepted Requests"
 msgstr "허락된 요청"
 
-#: src/SharedFilesCtrl.cpp:108
+#: src/SharedFilesCtrl.cpp:109
 msgid "Transferred Data"
 msgstr "전송된 크기"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:110
 msgid "Share Ratio"
 msgstr "공유 비율"
 
-#: src/SharedFilesCtrl.cpp:110 src/ClientListCtrl.cpp:521
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:521
 #: src/ClientListCtrl.cpp:826
 msgid "Obtained Parts"
 msgstr "획득한 부분"
 
-#: src/SharedFilesCtrl.cpp:111
+#: src/SharedFilesCtrl.cpp:112
 msgid "Complete Sources"
 msgstr "완료된 자료"
 
-#: src/SharedFilesCtrl.cpp:112
+#: src/SharedFilesCtrl.cpp:113
 msgid "Directory Path"
 msgstr "폴더 경로"
 
-#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1315 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1315 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4050
 msgid "Shared Files"
 msgstr "공유 파일"
 
-#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "매우 낮음"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:42
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:924 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "낮음"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:43
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:934 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:925 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "보통"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:44
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "높음"
 
-#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "매우높음"
 
-#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:46
 msgid "Release"
 msgstr "개방"
 
-#: src/SharedFilesCtrl.cpp:137 src/DownloadListCtrl.cpp:936
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:927
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "자동"
 
-#: src/SharedFilesCtrl.cpp:144
+#: src/SharedFilesCtrl.cpp:145
 msgid "Add Comment/Rating"
 msgstr "코멘트/등급 추가"
 
-#: src/SharedFilesCtrl.cpp:146
+#: src/SharedFilesCtrl.cpp:147
 msgid "Edit Comment/Rating"
 msgstr "코멘트/등급 편집"
 
-#: src/SharedFilesCtrl.cpp:150
+#: src/SharedFilesCtrl.cpp:151
 msgid "Rename"
 msgstr "이름 변경"
 
-#: src/SharedFilesCtrl.cpp:157
+#: src/SharedFilesCtrl.cpp:158
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:161
 msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:161 src/DownloadListCtrl.cpp:990
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:981
 msgid "Copy ED2k &link to clipboard"
 msgstr "ED2k 링크를 클립보드로 복사"
 
-#: src/SharedFilesCtrl.cpp:162
+#: src/SharedFilesCtrl.cpp:163
 msgid "Copy ED2k link to clipboard (&Source)"
 msgstr "ED2k 링크를 클립보드에 복사합니다.(&S자료)"
 
-#: src/SharedFilesCtrl.cpp:163
+#: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:164
+#: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:165
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:166
+#: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "ED2k 링크를 클립보드에 복사합니다(&AICH 정보)"
 
-#: src/SharedFilesCtrl.cpp:281
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:983
+msgid "Copy feedback to clipboard"
+msgstr "귀환을 클립보드에 복사"
+
+#: src/SharedFilesCtrl.cpp:302
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
 
-#: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:302 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:674
 msgid "Warning"
 msgstr "경고"
 
-#: src/SharedFilesCtrl.cpp:426
+#: src/SharedFilesCtrl.cpp:447
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "공유된 파일(%i)"
 
-#: src/SharedFilesCtrl.cpp:587
+#: src/SharedFilesCtrl.cpp:608
 msgid "[PartFile]"
 msgstr "[부분 파일]"
 
-#: src/SharedFilesCtrl.cpp:667 src/DownloadListCtrl.cpp:1125
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "새이름 넣으시오:"
 
-#: src/SharedFilesCtrl.cpp:668 src/DownloadListCtrl.cpp:1126
+#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "이름 수정"
 
@@ -939,8 +944,8 @@ msgstr "내려받기: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, 올려주기: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1362
-#: src/DownloadListCtrl.cpp:1671 src/OtherFunctions.cpp:158
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1353
+#: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:158
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -961,7 +966,7 @@ msgid "Time: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
-#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
@@ -1263,7 +1268,7 @@ msgstr "요청"
 msgid "Connecting via server"
 msgstr "비아 서버에 접속합니다"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1756
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1747
 #: src/ClientListCtrl.cpp:699
 msgid "Queue Full"
 msgstr "대기열이 가득차다"
@@ -1667,8 +1672,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:445 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:677 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:910
-#: src/PartFile.cpp:923
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:914
+#: src/PartFile.cpp:927
 msgid "Message"
 msgstr "메시지"
 
@@ -2469,7 +2474,7 @@ msgstr "전체 실패한 올려주기 세션: %s"
 msgid "Average upload time: %s"
 msgstr "평균 올려주기 시간: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:930 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "내려받기"
 
@@ -2813,39 +2818,39 @@ msgstr "정보"
 msgid "The specified userhash is not valid!"
 msgstr "사용자 해시의 특징이 정확하지 않습니다!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:204
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "자료"
 
-#: src/SearchListCtrl.cpp:520 src/ClientListCtrl.cpp:514
+#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:514
 #: src/ClientListCtrl.cpp:817
 msgid "File"
 msgstr "파일"
 
-#: src/SearchListCtrl.cpp:521 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
 msgstr "내려받기"
 
-#: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:988
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "분류"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
+#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr "주"
 
-#: src/SearchListCtrl.cpp:530
+#: src/SearchListCtrl.cpp:535
 msgid "Download in category"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:536
+#: src/SearchListCtrl.cpp:541
 msgid "Search related files (ED2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:539
+#: src/SearchListCtrl.cpp:544
 msgid "Copy ED2k link to clipboard"
 msgstr "클립보드에 ED2k링크를 복사"
 
@@ -2872,205 +2877,166 @@ msgstr "전부"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "전체 사용자: %s | 전체 파일: %s"
 
-#: src/DownloadListCtrl.cpp:200 src/ClientListCtrl.cpp:517
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:517
 msgid "Transferred"
 msgstr "전송됨"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
 msgid "Completed"
 msgstr "완료됨"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:516
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:516
 msgid "Speed"
 msgstr "속도"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:199
 msgid "Progress"
 msgstr "과정"
 
-#: src/DownloadListCtrl.cpp:206 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:520
 msgid "Status"
 msgstr "상태"
 
-#: src/DownloadListCtrl.cpp:207
+#: src/DownloadListCtrl.cpp:203
 msgid "Time Remaining"
 msgstr "남은 시간"
 
-#: src/DownloadListCtrl.cpp:208
+#: src/DownloadListCtrl.cpp:204
 msgid "Last Seen Complete"
 msgstr "최종 완료"
 
-#: src/DownloadListCtrl.cpp:209
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Reception"
 msgstr "최종 받음"
 
-#: src/DownloadListCtrl.cpp:614
+#: src/DownloadListCtrl.cpp:610
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "선택된파일을 지우시겠습니까?"
 
-#: src/DownloadListCtrl.cpp:763
-#, c-format
-msgid "Feedback from: %s"
-msgstr "다음에서 귀환: %s"
-
-#: src/DownloadListCtrl.cpp:764
-#, c-format
-msgid "Client: aMule %s"
-msgstr "클라이언트: 어뮬 %s"
-
-#: src/DownloadListCtrl.cpp:765
-#, c-format
-msgid "File Name: %s"
-msgstr "파일 이름: %s"
-
-#: src/DownloadListCtrl.cpp:766
-#, c-format
-msgid "File size: %s"
-msgstr "파일 크기: %s"
-
-#: src/DownloadListCtrl.cpp:767
-#, c-format
-msgid "Download: %s"
-msgstr "내려받기: %s"
-
-#: src/DownloadListCtrl.cpp:768
-#, c-format
-msgid "Sources: %u"
-msgstr "자료: %u"
-
-#: src/DownloadListCtrl.cpp:769
-#, c-format
-msgid "Complete Sources: %u"
-msgstr "완료된 자료: %u"
-
-#: src/DownloadListCtrl.cpp:879 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:870 src/ClientListCtrl.cpp:359
 msgid "Send message to user"
 msgstr "사용자에게 메시지를 보내기"
 
-#: src/DownloadListCtrl.cpp:880 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:871 src/ClientListCtrl.cpp:359
 msgid "Message to send:"
 msgstr "보낼 메시지:"
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:931 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&S멈춤"
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:932 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&P중지"
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:933 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&R계속"
 
-#: src/DownloadListCtrl.cpp:943
+#: src/DownloadListCtrl.cpp:934
 msgid "C&lear completed"
 msgstr "&l완료된것을 깨끗이함"
 
-#: src/DownloadListCtrl.cpp:949
+#: src/DownloadListCtrl.cpp:940
 msgid "Swap every A4AF to this file now"
 msgstr "모든 A4AF를 이 파일로 바꿉니다."
 
-#: src/DownloadListCtrl.cpp:951
+#: src/DownloadListCtrl.cpp:942
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "모든 A4AF를 이 파일로 바꿉니다.(자동)"
 
-#: src/DownloadListCtrl.cpp:956
+#: src/DownloadListCtrl.cpp:947
 msgid "Swap every A4AF to any other file now"
 msgstr "모든 A4AF를 다른 파일로 바꿉니다."
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:952
 msgid "Drop No Needed Sources now"
 msgstr "더 이상 필요하지 않는 자료를 제거합니다."
 
-#: src/DownloadListCtrl.cpp:963
+#: src/DownloadListCtrl.cpp:954
 msgid "Drop Full Queue Sources now"
 msgstr "가득찬 대기열 자료를 제거합니다."
 
-#: src/DownloadListCtrl.cpp:965
+#: src/DownloadListCtrl.cpp:956
 msgid "Drop High Queue Rating Sources now"
 msgstr "대기열 사용이 많은 자료를 제거합니다."
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:958
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
 msgstr "자료를 깨끗히 합니다. (NNS, FQS && HQRS)"
 
-#: src/DownloadListCtrl.cpp:969
+#: src/DownloadListCtrl.cpp:960
 msgid "Extended Options"
 msgstr "확장 옵션"
 
-#: src/DownloadListCtrl.cpp:980 src/DownloadListCtrl.cpp:1033
+#: src/DownloadListCtrl.cpp:971 src/DownloadListCtrl.cpp:1024
 msgid "Preview"
 msgstr "미리보기"
 
-#: src/DownloadListCtrl.cpp:981
+#: src/DownloadListCtrl.cpp:972
 msgid "Show file &details"
 msgstr "상세하게 파일 보기(&D)"
 
-#: src/DownloadListCtrl.cpp:983 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:974 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "모든 덧글 확인"
 
-#: src/DownloadListCtrl.cpp:988
+#: src/DownloadListCtrl.cpp:979
 msgid "Copy magnet URI to clipboard"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:992
-msgid "Copy feedback to clipboard"
-msgstr "귀환을 클립보드에 복사"
-
-#: src/DownloadListCtrl.cpp:1001
 msgid "unassign"
 msgstr "서명되지않은"
 
-#: src/DownloadListCtrl.cpp:1008
+#: src/DownloadListCtrl.cpp:999
 msgid "Assign to category"
 msgstr "서명되지않은 분류"
 
-#: src/DownloadListCtrl.cpp:1037
+#: src/DownloadListCtrl.cpp:1028
 msgid "&Open the file"
 msgstr "파일 열기(&O)"
 
-#: src/DownloadListCtrl.cpp:1068 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
 msgid "Remove from friends"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1068 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
 msgid "Add to Friends"
 msgstr "친구 추가하기"
 
-#: src/DownloadListCtrl.cpp:1070 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1061 src/ClientListCtrl.cpp:253
 msgid "Send message"
 msgstr "메시지 보내기"
 
-#: src/DownloadListCtrl.cpp:1071
+#: src/DownloadListCtrl.cpp:1062
 msgid "Swap to this file"
 msgstr "파일을 교환"
 
-#: src/DownloadListCtrl.cpp:1491 src/DownloadListCtrl.cpp:1501
+#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1725
+#: src/DownloadListCtrl.cpp:1716
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1775
+#: src/DownloadListCtrl.cpp:1766
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1789
+#: src/DownloadListCtrl.cpp:1780
 msgid "Asked for another file"
 msgstr "이미 다른 파일을 요청받음"
 
-#: src/DownloadListCtrl.cpp:2119
+#: src/DownloadListCtrl.cpp:2110
 #, c-format
 msgid "Downloads (%i)"
 msgstr "내려받기 (%i)"
 
-#: src/DownloadListCtrl.cpp:2302
+#: src/DownloadListCtrl.cpp:2293
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3080,28 +3046,28 @@ msgstr ""
 "그 동안 어뮬에서 미리보기를 할때마다 mplayer를 사용하도록 시도하며 미리보기"
 "할 때마다 이 경고를 받을 것입니다."
 
-#: src/DownloadListCtrl.cpp:2305
+#: src/DownloadListCtrl.cpp:2296
 msgid "File preview"
 msgstr "미리보기"
 
-#: src/DownloadListCtrl.cpp:2324
+#: src/DownloadListCtrl.cpp:2315
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "오류: 외부 재생기를 실행하지 못했습니다."
 
-#: src/DownloadListCtrl.cpp:2325
+#: src/DownloadListCtrl.cpp:2316
 #, c-format
 msgid "Command: %s"
 msgstr "명령: %s"
 
-#: src/PartFile.cpp:243
+#: src/PartFile.cpp:247
 msgid "ERROR: Failed to open partfile)"
 msgstr "오류: 부분파일을 열지 못했습니다.)"
 
-#: src/PartFile.cpp:247
+#: src/PartFile.cpp:251
 msgid "ERROR: Failed to create partfile)"
 msgstr "오류: 부분파일을 생성하지 못했습니다.)"
 
-#: src/PartFile.cpp:289 src/PartFile.cpp:320
+#: src/PartFile.cpp:293 src/PartFile.cpp:324
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
@@ -3109,12 +3075,12 @@ msgstr ""
 "오류: 예비파일을 읽지 못했습니다. .part.met 복구 방법을 http://forum.amule."
 "org에서 검색하세요."
 
-#: src/PartFile.cpp:292
+#: src/PartFile.cpp:296
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr "오류: part.met 파일을 열지 못했습니다: %s ==> %s"
 
-#: src/PartFile.cpp:301
+#: src/PartFile.cpp:305
 msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
@@ -3122,100 +3088,100 @@ msgstr ""
 "오류: 예비 part.met파일은 크기가 0입니다. .part.met회복 방법을 위해 http://"
 "forum.amule.org에서 검색하세요."
 
-#: src/PartFile.cpp:304
+#: src/PartFile.cpp:308
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
 msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
 
-#: src/PartFile.cpp:314
+#: src/PartFile.cpp:318
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "%s로부터 met파일의 예비을 읽을려고 합니다."
 
-#: src/PartFile.cpp:325
+#: src/PartFile.cpp:329
 #, c-format
 msgid "Error: part.met backup file is 0 size: %s ==> %s"
 msgstr "오류: part.met 예비 파일은 크기가 0입니다: %s ==> %s"
 
-#: src/PartFile.cpp:339
+#: src/PartFile.cpp:343
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "오류: 유효하지 안은 part.met 파일버젼: %s ==> %s"
 
-#: src/PartFile.cpp:594
+#: src/PartFile.cpp:598
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
 
-#: src/PartFile.cpp:597
+#: src/PartFile.cpp:601
 msgid "Trying to recover file info..."
 msgstr "파일 정보를 회복하려고 하고있습니다..."
 
-#: src/PartFile.cpp:612
+#: src/PartFile.cpp:616
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "이름없는 파일을 회복합니다. - 이것은 RecoveredFile.dat로 회복될겁니다."
 
-#: src/PartFile.cpp:617
+#: src/PartFile.cpp:621
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "모든 가능한 파일정보를 회복되었습니다. :D - 이것을 이용하여 시도합니다..."
 
-#: src/PartFile.cpp:619
+#: src/PartFile.cpp:623
 msgid "Unable to recover file info :("
 msgstr "파일정보 회복이 불가능합니다. :("
 
-#: src/PartFile.cpp:653
+#: src/PartFile.cpp:657
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "%s(%s)을 열지 못했습니다."
 
-#: src/PartFile.cpp:698
+#: src/PartFile.cpp:702
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "경고: %s는 분명히 손상되었습니다. (%i)"
 
-#: src/PartFile.cpp:878 src/PartFile.cpp:883
+#: src/PartFile.cpp:882 src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "부분파일을 저장하는 동안에 오류: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:907
+#: src/PartFile.cpp:911
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "%s파일을 열수 없습니다. - %s 파일을 사용합니다."
 
-#: src/PartFile.cpp:920
+#: src/PartFile.cpp:924
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s'은 어찌된일인지 크기가 0입니다. - %s 파일을 사용합니다."
 
-#: src/PartFile.cpp:989
+#: src/PartFile.cpp:993
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s에 대한 part.met.seeds 파일을 저장하지 못했습니다."
 
-#: src/PartFile.cpp:1015
+#: src/PartFile.cpp:1019
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "부분파일을 위해 %i 자료핵심을 저장되었습니다: %s(%s)"
 
-#: src/PartFile.cpp:1044
+#: src/PartFile.cpp:1048
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "부분파일 %s(%s)은 핵심파일을 가지고 있지 않습니다."
 
-#: src/PartFile.cpp:1051
+#: src/PartFile.cpp:1055
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "부분파일 %s(%s)은 빈 핵심파일을 가지고 있습니다."
 
-#: src/PartFile.cpp:1111
+#: src/PartFile.cpp:1115
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "부분파일의 핵심파일(%s - %s)을 읽는중 오류: %s"
 
-#: src/PartFile.cpp:1127 src/PartFile.cpp:1150
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1154
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3224,38 +3190,38 @@ msgstr ""
 "손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |%"
 "s| 파일해시 |%s|"
 
-#: src/PartFile.cpp:1164
+#: src/PartFile.cpp:1168
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "완료된 부분(%i)이 발견되었습니다.  (%s에 있는)"
 
-#: src/PartFile.cpp:1201
+#: src/PartFile.cpp:1205
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%s의 재해시가 완료되었습니다."
 
-#: src/PartFile.cpp:2230
+#: src/PartFile.cpp:2234
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
 
-#: src/PartFile.cpp:2256
+#: src/PartFile.cpp:2260
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "내려받기 완료: %s"
 
-#: src/PartFile.cpp:2313
+#: src/PartFile.cpp:2317
 #, c-format
 msgid "Deleting file: %s"
 msgstr "파일 삭제: %s"
 
-#: src/PartFile.cpp:2377
+#: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "경고: 내려받은 부분의 해시가 불가능합니다. - %s를 위해 내려받기 해시설정"
 
-#: src/PartFile.cpp:2382
+#: src/PartFile.cpp:2386
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3264,38 +3230,92 @@ msgstr ""
 "오류: 내려받은 부분의 해시가 불가능합니다. - %s의 내려받기 해시설정 이것은 결"
 "코 일어나지 않습니다."
 
-#: src/PartFile.cpp:3064
+#: src/PartFile.cpp:3068
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "경고: 충분한 디스크공간이 없습니다! 파일 정지: %s"
 
-#: src/PartFile.cpp:3129
+#: src/PartFile.cpp:3133
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 
-#: src/PartFile.cpp:3172
+#: src/PartFile.cpp:3176
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: 손상된 부분 %i를 회복합니다. (%s를 위해) -> 저장된 바이트: %s"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3359
+msgid "Upload: "
+msgstr ""
+
+#: src/PartFile.cpp:3360
+#, c-format
+msgid "Requests: %u (%u)"
+msgstr ""
+
+#: src/PartFile.cpp:3361
+#, c-format
+msgid "Accepted: %u (%u)"
+msgstr ""
+
+#: src/PartFile.cpp:3364
+#, c-format
+msgid "Upload: %s"
+msgstr ""
+
+#: src/PartFile.cpp:3365
+#, c-format
+msgid "Sources: %u"
+msgstr "자료: %u"
+
+#: src/PartFile.cpp:3369
+#, c-format
+msgid "Feedback from: %s"
+msgstr "다음에서 귀환: %s"
+
+#: src/PartFile.cpp:3370
+#, c-format
+msgid "Client: aMule %s"
+msgstr "클라이언트: 어뮬 %s"
+
+#: src/PartFile.cpp:3371
+#, c-format
+msgid "File Name: %s"
+msgstr "파일 이름: %s"
+
+#: src/PartFile.cpp:3372
+#, c-format
+msgid "File size: %s"
+msgstr "파일 크기: %s"
+
+#: src/PartFile.cpp:3373
+#, c-format
+msgid "Download: %s"
+msgstr "내려받기: %s"
+
+#: src/PartFile.cpp:3375
+#, c-format
+msgid "Complete Sources: %u"
+msgstr "완료된 자료: %u"
+
+#: src/PartFile.cpp:3782
 msgid "Comments"
 msgstr ""
 
-#: src/PartFile.cpp:3749
+#: src/PartFile.cpp:3783
 msgid "doesn't work"
 msgstr ""
 
-#: src/PartFile.cpp:3751
+#: src/PartFile.cpp:3785
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3848
+#: src/PartFile.cpp:3882
 msgid "Insufficient Diskspace"
 msgstr "불충분한 디스크공간"
 
-#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
+#: src/PartFile.cpp:3893 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
 msgid "Stopped"
 msgstr "멈춤"
 
@@ -4446,11 +4466,11 @@ msgstr ""
 msgid "Active connections (1:%u)"
 msgstr "연결 활성화(1:%u)"
 
-#: src/FileDetailDialog.cpp:59
+#: src/FileDetailDialog.cpp:60
 msgid "File Details"
 msgstr "상세한 파일"
 
-#: src/FileDetailDialog.cpp:110
+#: src/FileDetailDialog.cpp:113
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%% 완료"

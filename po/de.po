@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-18 03:31+0200\n"
+"POT-Creation-Date: 2007-07-22 03:31+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -56,34 +56,35 @@ msgstr "Gelungen! Verbindung aufgebaut zu aMule "
 msgid "Succeeded! Connection established."
 msgstr "Verbindung hergestellt."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3866
 msgid "Hashing"
 msgstr "Prüfsumme erstellen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3870
 msgid "Completing"
 msgstr "Wird abgeschlossen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3358
+#: src/PartFile.cpp:3873
 msgid "Complete"
 msgstr "Vollständig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3876
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
 msgid "Paused"
 msgstr "Pausiert"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3879
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
 msgid "Erroneous"
 msgstr "Fehlerhaft"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3886
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
 msgid "Downloading"
 msgstr "Herunterladen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3888
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
 msgid "Waiting"
 msgstr "Warten"
@@ -146,10 +147,10 @@ msgstr "Konnte Liste der freigegebenen Dateien von Benutzer '%s' nicht abrufen"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1480
-#: src/DownloadListCtrl.cpp:1493 src/DownloadListCtrl.cpp:1503
-#: src/PartFile.cpp:2610 src/PartFile.cpp:2616 src/KnownFile.cpp:831
-#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:126
+#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1471
+#: src/DownloadListCtrl.cpp:1484 src/DownloadListCtrl.cpp:1494
+#: src/PartFile.cpp:2614 src/PartFile.cpp:2620 src/KnownFile.cpp:831
+#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
 #: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -220,7 +221,7 @@ msgstr "Benutzername"
 msgid "Friends"
 msgstr "Freunde"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1067
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1058
 #: src/ClientListCtrl.cpp:250
 msgid "Show &Details"
 msgstr "Zeige &Details"
@@ -237,7 +238,7 @@ msgstr "Freund entfernen"
 msgid "Send &Message"
 msgstr "&Message senden"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1069
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1060
 #: src/ClientListCtrl.cpp:252
 msgid "View Files"
 msgstr "Dateien ansehen"
@@ -253,7 +254,7 @@ msgstr "Markierte(n) Freund(e) wirklich löschen?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1291
-#: src/DownloadListCtrl.cpp:615 src/DownloadListCtrl.cpp:939
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:930
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3822
@@ -272,169 +273,173 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Mehrfachauswahl"
 
-#: src/SharedFilesCtrl.cpp:101 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:198 src/CommentDialogLst.cpp:50
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:50
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Dateiname"
 
-#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:199 src/PartFileConvert.cpp:643
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Größe"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "Suchtyp"
 
-#: src/SharedFilesCtrl.cpp:104 src/SharedFilesCtrl.cpp:139
+#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:205 src/DownloadListCtrl.cpp:938
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:929
 msgid "Priority"
 msgstr "Priorität"
 
-#: src/SharedFilesCtrl.cpp:105 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
 msgid "FileID"
 msgstr "Datei-ID"
 
-#: src/SharedFilesCtrl.cpp:106
+#: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
 msgstr "Anfragen"
 
-#: src/SharedFilesCtrl.cpp:107
+#: src/SharedFilesCtrl.cpp:108
 msgid "Accepted Requests"
 msgstr "Akzeptierte Anfragen"
 
-#: src/SharedFilesCtrl.cpp:108
+#: src/SharedFilesCtrl.cpp:109
 msgid "Transferred Data"
 msgstr "Übertragene Datenmenge"
 
-#: src/SharedFilesCtrl.cpp:109
+#: src/SharedFilesCtrl.cpp:110
 msgid "Share Ratio"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:110 src/ClientListCtrl.cpp:521
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:521
 #: src/ClientListCtrl.cpp:826
 msgid "Obtained Parts"
 msgstr "Erhaltene Teile"
 
-#: src/SharedFilesCtrl.cpp:111
+#: src/SharedFilesCtrl.cpp:112
 msgid "Complete Sources"
 msgstr "Vollständige Quellen"
 
-#: src/SharedFilesCtrl.cpp:112
+#: src/SharedFilesCtrl.cpp:113
 msgid "Directory Path"
 msgstr "Verzeichnispfad"
 
-#: src/SharedFilesCtrl.cpp:129 src/amuleDlg.cpp:1315 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1315 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4050
 msgid "Shared Files"
 msgstr "Freigaben"
 
-#: src/SharedFilesCtrl.cpp:131 src/DataToText.cpp:41
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:41
 msgid "Very low"
 msgstr "Sehr niedrig"
 
-#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:42
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:933 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:924 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Niedrig"
 
-#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:43
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:934 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:925 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normal"
 
-#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:44
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:935 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Hoch"
 
-#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:45
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:45
 msgid "Very High"
 msgstr "Sehr hoch"
 
-#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:46
+#: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:46
 msgid "Release"
 msgstr "Release"
 
-#: src/SharedFilesCtrl.cpp:137 src/DownloadListCtrl.cpp:936
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:927
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Automatisch"
 
-#: src/SharedFilesCtrl.cpp:144
+#: src/SharedFilesCtrl.cpp:145
 msgid "Add Comment/Rating"
 msgstr "Kommentar/Bewertung abgeben"
 
-#: src/SharedFilesCtrl.cpp:146
+#: src/SharedFilesCtrl.cpp:147
 msgid "Edit Comment/Rating"
 msgstr "Kommentar/Bewertung ändern"
 
-#: src/SharedFilesCtrl.cpp:150
+#: src/SharedFilesCtrl.cpp:151
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: src/SharedFilesCtrl.cpp:157
+#: src/SharedFilesCtrl.cpp:158
 msgid "Add files in collection to transfer list"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:160
+#: src/SharedFilesCtrl.cpp:161
 msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:161 src/DownloadListCtrl.cpp:990
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:981
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopiere eD2k-&Link in die Zwischenablage"
 
-#: src/SharedFilesCtrl.cpp:162
+#: src/SharedFilesCtrl.cpp:163
 msgid "Copy ED2k link to clipboard (&Source)"
 msgstr "Kopiere eD2k-Link in die Zwischenablage (&Source)"
 
-#: src/SharedFilesCtrl.cpp:163
+#: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:164
+#: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:165
+#: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:166
+#: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Kopiere eD2k-Link in die Zwischenablage (&AICH Info)"
 
-#: src/SharedFilesCtrl.cpp:281
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:983
+msgid "Copy feedback to clipboard"
+msgstr "Feedback in die Zwischenablage kopieren"
+
+#: src/SharedFilesCtrl.cpp:302
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 "Du brauchst eine hohe ID (HighID), um einen gültigen Quellen-Link zu "
 "erstellen"
 
-#: src/SharedFilesCtrl.cpp:281 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:302 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:674
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/SharedFilesCtrl.cpp:426
+#: src/SharedFilesCtrl.cpp:447
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Freigegebene Dateien (%i)"
 
-#: src/SharedFilesCtrl.cpp:587
+#: src/SharedFilesCtrl.cpp:608
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:667 src/DownloadListCtrl.cpp:1125
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "Einen neuen Namen für diese Datei eingeben:"
 
-#: src/SharedFilesCtrl.cpp:668 src/DownloadListCtrl.cpp:1126
+#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "Datei umbenennen"
 
@@ -950,8 +955,8 @@ msgstr "Download: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Upload: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1362
-#: src/DownloadListCtrl.cpp:1671 src/OtherFunctions.cpp:158
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1353
+#: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:158
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -972,7 +977,7 @@ msgid "Time: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
-#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:112
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
@@ -1275,7 +1280,7 @@ msgstr "Anfragen"
 msgid "Connecting via server"
 msgstr "Verbunden über Server"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1756
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1747
 #: src/ClientListCtrl.cpp:699
 msgid "Queue Full"
 msgstr "Warteschlange voll"
@@ -1682,8 +1687,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:445 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:677 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:910
-#: src/PartFile.cpp:923
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:914
+#: src/PartFile.cpp:927
 msgid "Message"
 msgstr "Nachricht"
 
@@ -2491,7 +2496,7 @@ msgstr "Fehlgeschlagene Uploadsessions insgesamt: %s"
 msgid "Average upload time: %s"
 msgstr "Gesamte Uploadzeit: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:930 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Downloads"
 
@@ -2858,39 +2863,39 @@ msgstr "Information"
 msgid "The specified userhash is not valid!"
 msgstr "Der angegebene Userhash ist nicht gültig!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:204
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Quellen"
 
-#: src/SearchListCtrl.cpp:520 src/ClientListCtrl.cpp:514
+#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:514
 #: src/ClientListCtrl.cpp:817
 msgid "File"
 msgstr "Datei"
 
-#: src/SearchListCtrl.cpp:521 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
 msgstr "Download"
 
-#: src/SearchListCtrl.cpp:523 src/DownloadListCtrl.cpp:997
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:988
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategorie"
 
-#: src/SearchListCtrl.cpp:524 src/SearchDlg.cpp:578
+#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:578
 msgid "Main"
 msgstr "Main"
 
-#: src/SearchListCtrl.cpp:530
+#: src/SearchListCtrl.cpp:535
 msgid "Download in category"
 msgstr "Download in Kategorie"
 
-#: src/SearchListCtrl.cpp:536
+#: src/SearchListCtrl.cpp:541
 msgid "Search related files (ED2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:539
+#: src/SearchListCtrl.cpp:544
 msgid "Copy ED2k link to clipboard"
 msgstr "Kopiere eD2k-Link in die Zwischenablage"
 
@@ -2917,205 +2922,166 @@ msgstr "Alle"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Benutzer insgesamt: %s | Dateien insgesamt: %s"
 
-#: src/DownloadListCtrl.cpp:200 src/ClientListCtrl.cpp:517
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:517
 msgid "Transferred"
 msgstr "Übertragen"
 
-#: src/DownloadListCtrl.cpp:201 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
 msgid "Completed"
 msgstr "Fertiggestellt"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:516
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:516
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:199
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: src/DownloadListCtrl.cpp:206 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:520
 msgid "Status"
 msgstr "Status"
 
-#: src/DownloadListCtrl.cpp:207
+#: src/DownloadListCtrl.cpp:203
 msgid "Time Remaining"
 msgstr "Verbleibende Zeit"
 
-#: src/DownloadListCtrl.cpp:208
+#: src/DownloadListCtrl.cpp:204
 msgid "Last Seen Complete"
 msgstr "Zuletzt vollständig gesehen"
 
-#: src/DownloadListCtrl.cpp:209
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Reception"
 msgstr "Letzter Empfang"
 
-#: src/DownloadListCtrl.cpp:614
+#: src/DownloadListCtrl.cpp:610
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Wirklich die ausgewählte(n) Datei(en) löschen?"
 
-#: src/DownloadListCtrl.cpp:763
-#, c-format
-msgid "Feedback from: %s"
-msgstr "Feedback von: %s"
-
-#: src/DownloadListCtrl.cpp:764
-#, c-format
-msgid "Client: aMule %s"
-msgstr "Client: aMule %s"
-
-#: src/DownloadListCtrl.cpp:765
-#, c-format
-msgid "File Name: %s"
-msgstr "Dateiname: %s"
-
-#: src/DownloadListCtrl.cpp:766
-#, c-format
-msgid "File size: %s"
-msgstr "Dateigröße: %s"
-
-#: src/DownloadListCtrl.cpp:767
-#, c-format
-msgid "Download: %s"
-msgstr "Download: %s"
-
-#: src/DownloadListCtrl.cpp:768
-#, c-format
-msgid "Sources: %u"
-msgstr "Quellen: %u"
-
-#: src/DownloadListCtrl.cpp:769
-#, c-format
-msgid "Complete Sources: %u"
-msgstr "Vollständige Quellen: %u"
-
-#: src/DownloadListCtrl.cpp:879 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:870 src/ClientListCtrl.cpp:359
 msgid "Send message to user"
 msgstr "Sende Nachricht an User"
 
-#: src/DownloadListCtrl.cpp:880 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:871 src/ClientListCtrl.cpp:359
 msgid "Message to send:"
 msgstr "Zu sendende Nachricht:"
 
-#: src/DownloadListCtrl.cpp:940 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:931 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Stopp"
 
-#: src/DownloadListCtrl.cpp:941 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:932 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausieren"
 
-#: src/DownloadListCtrl.cpp:942 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:933 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "Fo&rtsetzen"
 
-#: src/DownloadListCtrl.cpp:943
+#: src/DownloadListCtrl.cpp:934
 msgid "C&lear completed"
 msgstr "&Lösche fertige Datei(n)"
 
-#: src/DownloadListCtrl.cpp:949
+#: src/DownloadListCtrl.cpp:940
 msgid "Swap every A4AF to this file now"
 msgstr "[A4AF] Weise alle Quellen dieser Datei zu"
 
-#: src/DownloadListCtrl.cpp:951
+#: src/DownloadListCtrl.cpp:942
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "[A4AF] Automatisches Zuweisen von Quellen zu dieser Datei"
 
-#: src/DownloadListCtrl.cpp:956
+#: src/DownloadListCtrl.cpp:947
 msgid "Swap every A4AF to any other file now"
 msgstr "[A4AF] Weise alle Quellen einer anderen Datei zu"
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:952
 msgid "Drop No Needed Sources now"
 msgstr "Entferne unbenötigte Quellen"
 
-#: src/DownloadListCtrl.cpp:963
+#: src/DownloadListCtrl.cpp:954
 msgid "Drop Full Queue Sources now"
 msgstr "Entferne Quellen mit voller Warteliste"
 
-#: src/DownloadListCtrl.cpp:965
+#: src/DownloadListCtrl.cpp:956
 msgid "Drop High Queue Rating Sources now"
 msgstr "Entferne Quellen mit hoher Warteposition"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:958
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
 msgstr "Quellen aufräumen (NBQ, QVW && QHW)"
 
-#: src/DownloadListCtrl.cpp:969
+#: src/DownloadListCtrl.cpp:960
 msgid "Extended Options"
 msgstr "Erweiterte Optionen"
 
-#: src/DownloadListCtrl.cpp:980 src/DownloadListCtrl.cpp:1033
+#: src/DownloadListCtrl.cpp:971 src/DownloadListCtrl.cpp:1024
 msgid "Preview"
 msgstr "Vorschau"
 
-#: src/DownloadListCtrl.cpp:981
+#: src/DownloadListCtrl.cpp:972
 msgid "Show file &details"
 msgstr "Zeige &Dateieigenschaften"
 
-#: src/DownloadListCtrl.cpp:983 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:974 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Zeige alle Kommentare"
 
-#: src/DownloadListCtrl.cpp:988
+#: src/DownloadListCtrl.cpp:979
 msgid "Copy magnet URI to clipboard"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:992
-msgid "Copy feedback to clipboard"
-msgstr "Feedback in die Zwischenablage kopieren"
-
-#: src/DownloadListCtrl.cpp:1001
 msgid "unassign"
 msgstr "Zuweisung rückgängig machen"
 
-#: src/DownloadListCtrl.cpp:1008
+#: src/DownloadListCtrl.cpp:999
 msgid "Assign to category"
 msgstr "Einer Kategorie hinzufügen"
 
-#: src/DownloadListCtrl.cpp:1037
+#: src/DownloadListCtrl.cpp:1028
 msgid "&Open the file"
 msgstr "&Oeffne diese Datei"
 
-#: src/DownloadListCtrl.cpp:1068 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
 msgid "Remove from friends"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1068 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
 msgid "Add to Friends"
 msgstr "Zu Freunden hinzufügen"
 
-#: src/DownloadListCtrl.cpp:1070 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1061 src/ClientListCtrl.cpp:253
 msgid "Send message"
 msgstr "Sende Nachricht"
 
-#: src/DownloadListCtrl.cpp:1071
+#: src/DownloadListCtrl.cpp:1062
 msgid "Swap to this file"
 msgstr "Zu dieser Datei verschieben"
 
-#: src/DownloadListCtrl.cpp:1491 src/DownloadListCtrl.cpp:1501
+#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1725
+#: src/DownloadListCtrl.cpp:1716
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1775
+#: src/DownloadListCtrl.cpp:1766
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1789
+#: src/DownloadListCtrl.cpp:1780
 msgid "Asked for another file"
 msgstr "Andere Datei angefordert"
 
-#: src/DownloadListCtrl.cpp:2119
+#: src/DownloadListCtrl.cpp:2110
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Downloads (%i)"
 
-#: src/DownloadListCtrl.cpp:2302
+#: src/DownloadListCtrl.cpp:2293
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3125,28 +3091,28 @@ msgstr ""
 "Bis dahin wird aMule versuchen, mplayer zu starten, und du wirst bei jeder "
 "Vorschau diese Warnung angezeigt bekommen"
 
-#: src/DownloadListCtrl.cpp:2305
+#: src/DownloadListCtrl.cpp:2296
 msgid "File preview"
 msgstr "Dateivorschau"
 
-#: src/DownloadListCtrl.cpp:2324
+#: src/DownloadListCtrl.cpp:2315
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "FEHLER: Konnte externen Mediaplayer nicht starten!"
 
-#: src/DownloadListCtrl.cpp:2325
+#: src/DownloadListCtrl.cpp:2316
 #, c-format
 msgid "Command: %s"
 msgstr "Befehl: %s"
 
-#: src/PartFile.cpp:243
+#: src/PartFile.cpp:247
 msgid "ERROR: Failed to open partfile)"
 msgstr "FEHLER: Erstellen der Part-Datei fehlgeschlagen)"
 
-#: src/PartFile.cpp:247
+#: src/PartFile.cpp:251
 msgid "ERROR: Failed to create partfile)"
 msgstr "FEHLER: Erstellen der Part-Datei fehlgeschlagen)"
 
-#: src/PartFile.cpp:289 src/PartFile.cpp:320
+#: src/PartFile.cpp:293 src/PartFile.cpp:324
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
@@ -3154,12 +3120,12 @@ msgstr ""
 "FEHLER: Fehler beim Laden der Backupdatei. Suche in http://forum.amule.org "
 "nach .part.met-Wiederherstellungslösungen."
 
-#: src/PartFile.cpp:292
+#: src/PartFile.cpp:296
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr "Fehler: Konnte part.met-Datei nicht öffnen: %s ==> %s"
 
-#: src/PartFile.cpp:301
+#: src/PartFile.cpp:305
 msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
@@ -3167,103 +3133,103 @@ msgstr ""
 "Fehler: Backup part-met-Datei hat die Größe 0! Suche auf http://forum.amule."
 "org nach part-met-Wiederherstellungslösungen"
 
-#: src/PartFile.cpp:304
+#: src/PartFile.cpp:308
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
 msgstr "Fehler: part.met-Datei hat die Größe 0: %s ==> %s"
 
-#: src/PartFile.cpp:314
+#: src/PartFile.cpp:318
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Versuche, Backup der met-Datei von %s zu laden"
 
-#: src/PartFile.cpp:325
+#: src/PartFile.cpp:329
 #, c-format
 msgid "Error: part.met backup file is 0 size: %s ==> %s"
 msgstr "Fehler: part.met-Sicherheitskopie hat die Größe 0: %s ==> %s"
 
-#: src/PartFile.cpp:339
+#: src/PartFile.cpp:343
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "Fehler: Ungültige part.met-Dateiversion: %s ==> %s"
 
-#: src/PartFile.cpp:594
+#: src/PartFile.cpp:598
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "Fehler: %s (%s) ist defekt (falscher Tagcount), kann Datei nicht öffnen)."
 
-#: src/PartFile.cpp:597
+#: src/PartFile.cpp:601
 msgid "Trying to recover file info..."
 msgstr "Versuche, Dateiinformation wiederherzustellen..."
 
-#: src/PartFile.cpp:612
+#: src/PartFile.cpp:616
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Unbenannte Datei wird versucht wiederherzustellen - Es wird versucht, sie "
 "als RecoveredFile.dat zu speichern"
 
-#: src/PartFile.cpp:617
+#: src/PartFile.cpp:621
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Alle verfügbaren Dateiinformationen wiederhergestellt :D - Versuche, sie zu "
 "benutzen..."
 
-#: src/PartFile.cpp:619
+#: src/PartFile.cpp:623
 msgid "Unable to recover file info :("
 msgstr "Konnte Dateiinfo nicht wiederherstellen :("
 
-#: src/PartFile.cpp:653
+#: src/PartFile.cpp:657
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Fehler beim Öffnen von %s (%s)"
 
-#: src/PartFile.cpp:698
+#: src/PartFile.cpp:702
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "Warnung: %s könnte defekt sein (%i)"
 
-#: src/PartFile.cpp:878 src/PartFile.cpp:883
+#: src/PartFile.cpp:882 src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "FEHLER beim Speichern der Part-Datei: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:907
+#: src/PartFile.cpp:911
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "Kann %s-Datei nicht öffnen - benutze %s-Datei."
 
-#: src/PartFile.cpp:920
+#: src/PartFile.cpp:924
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' hat die Größe 0 - benutze Datei %s."
 
-#: src/PartFile.cpp:989
+#: src/PartFile.cpp:993
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Speichern der part.met.seeds für %s fehlgeschlagen"
 
-#: src/PartFile.cpp:1015
+#: src/PartFile.cpp:1019
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "%i Quellen für Part-Datei %s (%s) gespeichert."
 
-#: src/PartFile.cpp:1044
+#: src/PartFile.cpp:1048
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Part-Datei %s (%s) hat keine Quellen-Datei"
 
-#: src/PartFile.cpp:1051
+#: src/PartFile.cpp:1055
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Part-Datei %s (%s) hat eine leere Quellen-Datei"
 
-#: src/PartFile.cpp:1111
+#: src/PartFile.cpp:1115
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Fehler beim Lesen der Partfile-Quelldatei (%s - %s): %s"
 
-#: src/PartFile.cpp:1127 src/PartFile.cpp:1150
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1154
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3272,40 +3238,40 @@ msgstr ""
 "Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1164
+#: src/PartFile.cpp:1168
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Vollständigen Teil (%i) in %s gefunden"
 
-#: src/PartFile.cpp:1201
+#: src/PartFile.cpp:1205
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Prüfsumme für %s neu erstellt"
 
-#: src/PartFile.cpp:2230
+#: src/PartFile.cpp:2234
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr ""
 "Unerwarteter Fehler beim Abschliessen des Downloads von %s. Datei pausiert."
 
-#: src/PartFile.cpp:2256
+#: src/PartFile.cpp:2260
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Download abgeschlossen: %s"
 
-#: src/PartFile.cpp:2313
+#: src/PartFile.cpp:2317
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Lösche Datei: %s"
 
-#: src/PartFile.cpp:2377
+#: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Warnung: Konnte heruntergeladenen Teil nicht hashen - Hashset für '%s' "
 "unvollständig"
 
-#: src/PartFile.cpp:2382
+#: src/PartFile.cpp:2386
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3314,38 +3280,92 @@ msgstr ""
 "Fehler: Prüfsumme für einen Teil konnte nicht erstellt werden - Prüfsumme "
 "unvollständig (%s). Dies dürfte eigentlich nie passieren."
 
-#: src/PartFile.cpp:3064
+#: src/PartFile.cpp:3068
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "WARNUNG: Nicht genügend freier Festplattenplatz! Pausiere Datei: %s"
 
-#: src/PartFile.cpp:3129
+#: src/PartFile.cpp:3133
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Heruntergeladener Teil %i in Datei: %s ist defekt"
 
-#: src/PartFile.cpp:3172
+#: src/PartFile.cpp:3176
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Defekter Teil %i in %s wiederhergestellt -> Gesparte Bytes: %s"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3359
+msgid "Upload: "
+msgstr ""
+
+#: src/PartFile.cpp:3360
+#, c-format
+msgid "Requests: %u (%u)"
+msgstr ""
+
+#: src/PartFile.cpp:3361
+#, c-format
+msgid "Accepted: %u (%u)"
+msgstr ""
+
+#: src/PartFile.cpp:3364
+#, c-format
+msgid "Upload: %s"
+msgstr ""
+
+#: src/PartFile.cpp:3365
+#, c-format
+msgid "Sources: %u"
+msgstr "Quellen: %u"
+
+#: src/PartFile.cpp:3369
+#, c-format
+msgid "Feedback from: %s"
+msgstr "Feedback von: %s"
+
+#: src/PartFile.cpp:3370
+#, c-format
+msgid "Client: aMule %s"
+msgstr "Client: aMule %s"
+
+#: src/PartFile.cpp:3371
+#, c-format
+msgid "File Name: %s"
+msgstr "Dateiname: %s"
+
+#: src/PartFile.cpp:3372
+#, c-format
+msgid "File size: %s"
+msgstr "Dateigröße: %s"
+
+#: src/PartFile.cpp:3373
+#, c-format
+msgid "Download: %s"
+msgstr "Download: %s"
+
+#: src/PartFile.cpp:3375
+#, c-format
+msgid "Complete Sources: %u"
+msgstr "Vollständige Quellen: %u"
+
+#: src/PartFile.cpp:3782
 msgid "Comments"
 msgstr ""
 
-#: src/PartFile.cpp:3749
+#: src/PartFile.cpp:3783
 msgid "doesn't work"
 msgstr ""
 
-#: src/PartFile.cpp:3751
+#: src/PartFile.cpp:3785
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3848
+#: src/PartFile.cpp:3882
 msgid "Insufficient Diskspace"
 msgstr "Ungenügender Festplattenplatz"
 
-#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
+#: src/PartFile.cpp:3893 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
 msgid "Stopped"
 msgstr "Angehalten"
 
@@ -4511,11 +4531,11 @@ msgstr "%u IP-Bereiche von %s geladen. %u fehlerhafte Zeilen wurden ignoriert."
 msgid "Active connections (1:%u)"
 msgstr "Aktive Verbindungen (1:%u)"
 
-#: src/FileDetailDialog.cpp:59
+#: src/FileDetailDialog.cpp:60
 msgid "File Details"
 msgstr "Dateieinzelheiten"
 
-#: src/FileDetailDialog.cpp:110
+#: src/FileDetailDialog.cpp:113
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%% erledigt"
