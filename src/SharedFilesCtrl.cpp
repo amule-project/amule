@@ -178,25 +178,24 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 	}
 }
 
-void CSharedFilesCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
+
+void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 {
-
 	wxString feed;
-	
-	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	
-	while( index != -1 ) {
-		CPartFile* file = (CPartFile*)GetItemData( index );
-
-		feed = file->GetFeedback();
-
-		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+#warning wuischke will fix this soon :P
+#if 0
+	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	while (index != -1) {
+		CPartFile *file = (CPartFile *)GetItemData(index);
+		feed += file->GetFeedback();
+		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
-
-	if ( !feed.IsEmpty() ) {
-		theApp->CopyTextToClipboard( feed );
+#endif
+	if (!feed.IsEmpty()) {
+		theApp->CopyTextToClipboard(feed);
 	}
 }
+
 
 #ifndef CLIENT_GUI
 void CSharedFilesCtrl::ShowFileList()
@@ -704,25 +703,25 @@ void CSharedFilesCtrl::OnKeyPressed( wxKeyEvent& event )
 		
 		return;
 	}
-
 	event.Skip();
 }
+
+
 void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	if ( item != -1 ) {
-		CKnownFile* file = (CKnownFile*)GetItemData(item);
+	if (item != -1) {
+		CKnownFile *file = (CKnownFile*)GetItemData(item);
 		wxString CollectionFile = file->GetFilePath()
-								 + 	wxFileName::GetPathSeparator()
-								 + 	file->GetFileName();
+			+ wxFileName::GetPathSeparator()
+			+ file->GetFileName();
 		CMuleCollection my_collection;
-		if (my_collection.Open( (std::string)CollectionFile.mb_str() ))
+		if (my_collection.Open( (std::string)CollectionFile.mb_str() )) {
 #warning This is probably not working on Unicode
-		{
-			for(size_t e = 0;e < my_collection.GetFileCount();e++)
-				theApp->downloadqueue->AddLink( 
-					wxString( my_collection.GetEd2kLink(e).c_str(), wxConvUTF8 )
-					);
+			for (size_t e = 0; e < my_collection.GetFileCount(); ++e) {
+				theApp->downloadqueue->AddLink(
+					wxString(my_collection.GetEd2kLink(e).c_str(), wxConvUTF8));
+			}
 				
 		}
 	}

@@ -747,21 +747,19 @@ void CDownloadListCtrl::OnGetLink(wxCommandEvent& event)
 }
 
 
-void CDownloadListCtrl::OnGetFeedback( wxCommandEvent& WXUNUSED(event) )
+void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 {
-	ItemList files = ::GetSelectedItems( this, itFILES );
-
 	wxString feed;
-
-	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
+#warning wuischke will fix this soon :P
+#if 0
+	ItemList files = ::GetSelectedItems(this, itFILES);
+	for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 		CPartFile* file = (*it)->GetFile();
-
-		feed = file->GetFeedback();
-
+		feed += file->GetFeedback();
 	}
-
-	if ( !feed.IsEmpty() ) {
-		theApp->CopyTextToClipboard( feed );
+#endif
+	if (!feed.IsEmpty()) {
+		theApp->CopyTextToClipboard(feed);
 	}
 }
 
