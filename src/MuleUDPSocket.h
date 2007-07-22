@@ -30,11 +30,9 @@
 #include "ThrottledSocket.h"	// Needed for ThrottledControlSocket
 #include "amuleIPV4Address.h"	// Needed for amuleIPV4Address
 
-
-class CDatagramSocketProxy;
+class CEncryptedDatagramSocket;
 class CProxyData;
 class CPacket;
-
 
 /***
  * This class provides a UBT governed UDP-socket.
@@ -48,10 +46,11 @@ class CPacket;
  *  - Fallover recovery for when a socket becomes invalid (error 4).
  *
  * @see ThrottledControlSocket
- * @see CDatagramSocketProxy
+ * @see CEncryptedDatagramSocket
  */
 class CMuleUDPSocket : public ThrottledControlSocket
 {
+	
 public:
 	/**
 	 * Opens a UDP socket at the specified address.
@@ -169,8 +168,7 @@ private:
 	//! Mutex needed due to the use of the UBT.
 	wxMutex					m_mutex;
 	//! The currently opened socket, if any.
-	CDatagramSocketProxy*	m_socket;
-
+	CEncryptedDatagramSocket*	m_socket;
 	
 	//! Storage struct used for queueing packets.
 	struct UDPPack
