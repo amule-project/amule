@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-22 03:31+0200\n"
+"POT-Creation-Date: 2007-07-23 03:31+0200\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Chen Nan\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -141,8 +141,8 @@ msgstr "无法获取用户 '%s' 的共享文件"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1471
-#: src/DownloadListCtrl.cpp:1484 src/DownloadListCtrl.cpp:1494
+#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1469
+#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
 #: src/PartFile.cpp:2614 src/PartFile.cpp:2620 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
@@ -211,7 +211,7 @@ msgstr "用户名"
 msgid "Friends"
 msgstr "好友"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1058
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1056
 #: src/ClientListCtrl.cpp:250
 msgid "Show &Details"
 msgstr "显示附加信息 (&D)"
@@ -228,7 +228,7 @@ msgstr "删除好友"
 msgid "Send &Message"
 msgstr "发消息 (&M)"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1060
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1058
 #: src/ClientListCtrl.cpp:252
 msgid "View Files"
 msgstr "显示文件"
@@ -244,7 +244,7 @@ msgstr ""
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1291
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:930
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:928
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3822
@@ -280,7 +280,7 @@ msgstr "类型"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:927
 msgid "Priority"
 msgstr "优先级"
 
@@ -328,19 +328,19 @@ msgstr "极低"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:924 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "低"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:925 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "普通"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:924 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "高"
 
@@ -352,7 +352,7 @@ msgstr "极高"
 msgid "Release"
 msgstr "发行"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:927
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:925
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "自动"
@@ -377,7 +377,7 @@ msgstr ""
 msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:981
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "拷贝 ED2k 连接到剪贴板 (&l)"
 
@@ -401,33 +401,33 @@ msgstr ""
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:983
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "拷贝反馈信息到剪贴板"
 
-#: src/SharedFilesCtrl.cpp:302
+#: src/SharedFilesCtrl.cpp:301
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高ID来产生源链接"
 
-#: src/SharedFilesCtrl.cpp:302 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:301 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:674
 msgid "Warning"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:447
+#: src/SharedFilesCtrl.cpp:446
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "共享文件 (%i)"
 
-#: src/SharedFilesCtrl.cpp:608
+#: src/SharedFilesCtrl.cpp:607
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1116
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1114
 msgid "Enter new name for this file:"
 msgstr "请输入新文件名"
 
-#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1117
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1115
 msgid "File rename"
 msgstr "更改文件名"
 
@@ -942,8 +942,8 @@ msgstr "下载"
 msgid " kB/s, Upload: "
 msgstr " kB/s, 上传："
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1353
-#: src/DownloadListCtrl.cpp:1662 src/OtherFunctions.cpp:158
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1351
+#: src/DownloadListCtrl.cpp:1660 src/OtherFunctions.cpp:158
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -1262,7 +1262,7 @@ msgstr "正在询问"
 msgid "Connecting via server"
 msgstr "通过服务器连接中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1747
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1745
 #: src/ClientListCtrl.cpp:699
 msgid "Queue Full"
 msgstr "队列已满"
@@ -2454,7 +2454,7 @@ msgstr ""
 msgid "Average upload time: %s"
 msgstr "平均上传时间: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "下载次数"
 
@@ -2813,12 +2813,12 @@ msgstr "文件"
 msgid "Download"
 msgstr "下载"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:988
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "分类"
 
-#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:578
+#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:585
 msgid "Main"
 msgstr "主要"
 
@@ -2894,129 +2894,129 @@ msgstr "最后一次下载"
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "您确定要取消下载并删除这些文件吗？"
 
-#: src/DownloadListCtrl.cpp:870 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:359
 msgid "Send message to user"
 msgstr "发消息给用户"
 
-#: src/DownloadListCtrl.cpp:871 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:869 src/ClientListCtrl.cpp:359
 msgid "Message to send:"
 msgstr "发送消息："
 
-#: src/DownloadListCtrl.cpp:931 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "停止(&S)"
 
-#: src/DownloadListCtrl.cpp:932 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "暂停 (&P)"
 
-#: src/DownloadListCtrl.cpp:933 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:931 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "续传(&R)"
 
-#: src/DownloadListCtrl.cpp:934
+#: src/DownloadListCtrl.cpp:932
 msgid "C&lear completed"
 msgstr "清除已完成的文件 (&l)"
 
-#: src/DownloadListCtrl.cpp:940
+#: src/DownloadListCtrl.cpp:938
 msgid "Swap every A4AF to this file now"
 msgstr "立即转移所有 A4AF 到这个文件"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:940
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "自动转移所有 A4AF 到这个文件"
 
-#: src/DownloadListCtrl.cpp:947
+#: src/DownloadListCtrl.cpp:945
 msgid "Swap every A4AF to any other file now"
 msgstr "立即转移所有 A4AF 到其它文件"
 
-#: src/DownloadListCtrl.cpp:952
+#: src/DownloadListCtrl.cpp:950
 msgid "Drop No Needed Sources now"
 msgstr "立即清理无可供下载的源"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:952
 msgid "Drop Full Queue Sources now"
 msgstr "立即清理队列已满的源"
 
-#: src/DownloadListCtrl.cpp:956
+#: src/DownloadListCtrl.cpp:954
 msgid "Drop High Queue Rating Sources now"
 msgstr "立即清理队列超长的源"
 
-#: src/DownloadListCtrl.cpp:958
+#: src/DownloadListCtrl.cpp:956
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
 msgstr "立即清理所有无用源"
 
-#: src/DownloadListCtrl.cpp:960
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "扩展选项"
 
-#: src/DownloadListCtrl.cpp:971 src/DownloadListCtrl.cpp:1024
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "预览"
 
-#: src/DownloadListCtrl.cpp:972
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "显示文件信息"
 
-#: src/DownloadListCtrl.cpp:974 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "显示所有注释"
 
-#: src/DownloadListCtrl.cpp:979
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:992
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "清除"
 
-#: src/DownloadListCtrl.cpp:999
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "分类"
 
-#: src/DownloadListCtrl.cpp:1028
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "打开文件 (&O)"
 
-#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1057 src/ClientListCtrl.cpp:251
 msgid "Remove from friends"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1057 src/ClientListCtrl.cpp:251
 msgid "Add to Friends"
 msgstr "加为好友"
 
-#: src/DownloadListCtrl.cpp:1061 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:253
 msgid "Send message"
 msgstr "发送短消息"
 
-#: src/DownloadListCtrl.cpp:1062
+#: src/DownloadListCtrl.cpp:1060
 msgid "Swap to this file"
 msgstr "转移到这个文件"
 
-#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
+#: src/DownloadListCtrl.cpp:1480 src/DownloadListCtrl.cpp:1490
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1716
+#: src/DownloadListCtrl.cpp:1714
 msgid "A4AF"
 msgstr "已请求其它文件"
 
-#: src/DownloadListCtrl.cpp:1766
+#: src/DownloadListCtrl.cpp:1764
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1780
+#: src/DownloadListCtrl.cpp:1778
 msgid "Asked for another file"
 msgstr "已要求其它文件 (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2110
+#: src/DownloadListCtrl.cpp:2108
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下载 (%i)"
 
-#: src/DownloadListCtrl.cpp:2293
+#: src/DownloadListCtrl.cpp:2291
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3025,15 +3025,15 @@ msgstr ""
 "请设置您的动画播放器。\n"
 "aMule会尝试使用mplayer。这个提示会在每次预览时出现 "
 
-#: src/DownloadListCtrl.cpp:2296
+#: src/DownloadListCtrl.cpp:2294
 msgid "File preview"
 msgstr "文件预览"
 
-#: src/DownloadListCtrl.cpp:2315
+#: src/DownloadListCtrl.cpp:2313
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "错误: 无法运行媒体播放器!"
 
-#: src/DownloadListCtrl.cpp:2316
+#: src/DownloadListCtrl.cpp:2314
 #, c-format
 msgid "Command: %s"
 msgstr "命令: %s"
@@ -6450,15 +6450,15 @@ msgstr "验证已通过"
 msgid "Not Available"
 msgstr "不在"
 
-#: src/SearchDlg.cpp:461
+#: src/SearchDlg.cpp:468
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:462
+#: src/SearchDlg.cpp:469
 msgid "Search warning"
 msgstr ""
 
-#: src/SearchDlg.cpp:518
+#: src/SearchDlg.cpp:525
 msgid "Search warning."
 msgstr ""
 
