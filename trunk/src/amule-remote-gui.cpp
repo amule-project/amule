@@ -913,7 +913,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 		tag->SetAllRequests(file->statistic.alltimerequested);
 		tag->SetAccepts(file->statistic.accepted);
 		tag->SetAllAccepts(file->statistic.alltimeaccepted);
-		tag->SetXferred(file->statistic.transfered );
+		tag->SetXferred(file->statistic.transferred );
 		tag->SetAllXferred(file->statistic.alltimetransferred);
 		tag->SetPrio(file->m_iUpPriority);
 	} else {
@@ -921,7 +921,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 		file->statistic.alltimerequested = tag->GetAllRequests();
 		file->statistic.accepted = tag->GetAccepts();
 		file->statistic.alltimeaccepted = tag->GetAllAccepts();
-		file->statistic.transfered = tag->GetXferred();
+		file->statistic.transferred = tag->GetXferred();
 		file->statistic.alltimetransferred = tag->GetAllXferred();
 	}
 	if (file->m_iUpPriority >= 10) {
@@ -932,8 +932,8 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 	}
 
 	theApp->knownfiles->requested += file->statistic.requested;
-	theApp->knownfiles->transfered += file->statistic.transfered;
-	theApp->knownfiles->accepted += file->statistic.transfered;
+	theApp->knownfiles->transferred += file->statistic.transferred;
+	theApp->knownfiles->accepted += file->statistic.transferred;
 	
 	theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 }
@@ -941,7 +941,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 bool CSharedFilesRem::Phase1Done(const CECPacket *)
 {
 	theApp->knownfiles->requested = 0;
-	theApp->knownfiles->transfered = 0;
+	theApp->knownfiles->transferred = 0;
 	theApp->knownfiles->accepted = 0;
 	
 	return true;
@@ -1234,7 +1234,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		tag->SetSpeed(tmpval);
 		file->kBpsDown = tmpval / 1024.0;
 		
-		tag->SetSizeXfer(file->transfered);
+		tag->SetSizeXfer(file->transferred);
 		tag->SetSizeDone(file->completedsize);
 		tag->SetSourceXferCount(file->transferingsrc);
 		tag->SetSourceNotCurrCount(file->m_notCurrentSources);
@@ -1251,7 +1251,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->kBpsDown = tag->Speed() / 1024.0;
 	
 		if ( file->kBpsDown > 0 ) {
-			file->transfered = tag->SizeXfer();
+			file->transferred = tag->SizeXfer();
 			file->SetCompletedSize(tag->SizeDone());
 		}
 	

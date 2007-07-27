@@ -125,7 +125,7 @@ public:
 #endif
 	virtual void	UpdatePartsInfo();
 	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
-	uint64	GetTransfered() const		{ return transfered; }
+	uint64	GetTransferred() const		{ return transferred; }
 	const wxString& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
@@ -311,7 +311,7 @@ private:
 	uint16	m_anStates[STATES_COUNT];
 	uint16	transferingsrc;
 	uint64  completedsize;
-	uint64	transfered;
+	uint64	transferred;
 	
 	uint64	m_iLostDueToCorruption;
 	uint64	m_iGainDueToCompression;

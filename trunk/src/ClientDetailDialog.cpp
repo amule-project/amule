@@ -134,7 +134,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// Upload
 	CastChild(ID_DDUP, wxStaticText)->SetLabel(
-		CastItoXBytes(m_client->GetTransferedDown()));
+		CastItoXBytes(m_client->GetTransferredDown()));
 	
 	// Download
 	CastChild(ID_DDOWN, wxStaticText)->SetLabel(

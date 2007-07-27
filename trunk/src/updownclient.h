@@ -202,7 +202,7 @@ public:
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
 	void		SetUserIDHybrid(uint32 val);
 	uint32		GetUserPort() const		{ return m_nUserPort; }
-	uint32		GetTransferedDown() const	{ return m_nTransferedDown; }
+	uint32		GetTransferredDown() const	{ return m_nTransferredDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
 	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
 	uint16		GetServerPort()	const		{ return m_nServerPort; }
@@ -767,7 +767,7 @@ private:
 	uint16		m_nPartCount;
 	uint32		m_dwLastAskedTime;
 	wxString	m_clientFilename;
-	uint32		m_nTransferedDown;
+	uint32		m_nTransferredDown;
 	uint32		m_nLastBlockOffset;   // Patch for show parts that you download [Cax2]
 	uint16		m_cShowDR;
 	uint32		m_dwLastBlockReceived;

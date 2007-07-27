@@ -1005,7 +1005,7 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 				}
 				// These checks only need to be done if any data was written
 				if (lenWritten > 0) {
-					m_nTransferedDown += lenWritten;
+					m_nTransferredDown += lenWritten;
 	
 					// If finished reserved block
 					if (nEndPos == cur_block->block->EndOffset) {

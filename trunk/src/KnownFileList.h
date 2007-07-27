@@ -47,7 +47,7 @@ public:
 	bool	IsKnownFile(const CKnownFile* file);
 
 	uint16 requested;
-	uint32 transfered;
+	uint32 transferred;
 	uint16 accepted;
 
 private:

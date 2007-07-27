@@ -130,7 +130,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetTransferingSrcCount(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_A4AF, file->GetSrcA4AFCount(), this);
 		
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024), this);
 	
@@ -167,7 +167,7 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		
 	if ( (file->GetTransferingSrcCount() > 0) || (detail_level != EC_DETAIL_UPDATE) ) {
 		
-		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransfered()));
+		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, file->GetTransferred()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SIZE_DONE, file->GetCompletedSize()));
 		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024)));
 	}
@@ -202,8 +202,8 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_REQ_COUNT_ALL, file->statistic.GetAllTimeRequests(), this);
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts(), this);
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransfered(), this);
-	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
 		(uint64)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
@@ -222,8 +222,8 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT, file->statistic.GetAccepts()));
 	AddTag(CECTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts()));
 
-	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransfered()));
-	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransfered()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred()));
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));
@@ -262,7 +262,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 		AddTag(CECTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0)));
 	}
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp()));
-	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown()));
+	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferredDown()));
 	AddTag(CECTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal()));
 	AddTag(CECTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal()));
 	
@@ -305,7 +305,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	valuemap.CreateTag(EC_TAG_CLIENT_UP_SPEED, client->GetUploadDatarate(), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_DOWN_SPEED, (uint64)(client->GetKBpsDown()*1024.0), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_SESSION, client->GetSessionUp(), this);
-	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferedDown(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_XFER, client->GetTransferredDown(), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_UPLOAD_TOTAL, client->GetUploadedTotal(), this);
 	valuemap.CreateTag(EC_TAG_CLIENT_DOWNLOAD_TOTAL, client->GetDownloadedTotal(), this);
 	

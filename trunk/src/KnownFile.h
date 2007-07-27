@@ -98,18 +98,18 @@ public:
 	void    AddTransferred(uint64 bytes);
 	uint16	GetRequests() const			{return requested;}
 	uint16	GetAccepts() const			{return accepted;}
-	uint64  GetTransfered() const			{return transfered;}
+	uint64  GetTransferred() const			{return transferred;}
 	uint32	GetAllTimeRequests() const	{return alltimerequested;}
 	void	SetAllTimeRequests(uint32 new_value) { alltimerequested = new_value; };
 	uint32	GetAllTimeAccepts() const		{return alltimeaccepted;}
 	void	SetAllTimeAccepts(uint32 new_value) { alltimeaccepted = new_value; };	
-	uint64	GetAllTimeTransfered() const	{return alltimetransferred;}
-	void	SetAllTimeTransfered(uint64 new_value) { alltimetransferred = new_value; };
+	uint64	GetAllTimeTransferred() const	{return alltimetransferred;}
+	void	SetAllTimeTransferred(uint64 new_value) { alltimetransferred = new_value; };
 	CKnownFile* fileParent;
 	
 private:
 	uint16 requested;
-	uint64 transfered;
+	uint64 transferred;
 	uint16 accepted;
 	uint32 alltimerequested;
 	uint64 alltimetransferred;

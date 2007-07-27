@@ -160,7 +160,7 @@ void CUpDownClient::Init()
 	m_dwLastAskedTime = 0;
 	m_nDownloadState = DS_NONE;
 	m_dwUploadTime = 0;
-	m_nTransferedDown = 0;
+	m_nTransferredDown = 0;
 	m_nUploadState = US_NONE;
 	m_dwLastBlockReceived = 0;
 	m_bUnicodeSupport = false;
@@ -1864,8 +1864,8 @@ wxString CUpDownClient::GetUploadFileInfo()
 	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
-		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransfered());
-		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAllTimeAccepts() % m_reqfile->statistic.GetAllTimeRequests() % CastItoXBytes(m_reqfile->statistic.GetAllTimeTransfered());
+		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransferred());
+		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAllTimeAccepts() % m_reqfile->statistic.GetAllTimeRequests() % CastItoXBytes(m_reqfile->statistic.GetAllTimeTransferred());
 	} else {
 		sRet += _("Requested unknown file");
 	}

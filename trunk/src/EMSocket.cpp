@@ -261,7 +261,7 @@ void CEMSocket::OnReceive(int nErrorCode)
 		//
 		// Conclusion: When the download limit is disabled, this method can be at least 
 		// called 8 times (10240/1300) by the lower layer before a splitted packet is 
-		// rebuild and transfered to the above layer for processing.
+		// rebuild and transferred to the above layer for processing.
 		//
 		// The purpose of this algorithm is to limit the amount of data exchanged between buffers
 
