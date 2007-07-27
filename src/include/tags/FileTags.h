@@ -33,7 +33,7 @@
 #define	FT_FILETYPE			0x03	// <string> or <uint32>
 #define	FT_FILEFORMAT			0x04	// <string>
 #define	FT_LASTSEENCOMPLETE		0x05	// <uint32>
-#define	FT_TRANSFERED			0x08	// <uint32>
+#define	FT_TRANSFERRED			0x08	// <uint32>
 #define	FT_GAPSTART			0x09	// <uint32>
 #define	FT_GAPEND			0x0A	// <uint32>
 #define	FT_PARTFILENAME			0x12	// <string>
@@ -57,11 +57,11 @@
 						// associated file (supported
 						// by eserver 16.46+) statistic
 
-#define	FT_ATTRANSFERED			0x50	// <uint32>
+#define	FT_ATTRANSFERRED			0x50	// <uint32>
 #define	FT_ATREQUESTED			0x51	// <uint32>
 #define	FT_ATACCEPTED			0x52	// <uint32>
 #define	FT_CATEGORY			0x53	// <uint32>
-#define	FT_ATTRANSFEREDHI		0x54	// <uint32>
+#define	FT_ATTRANSFERREDHI		0x54	// <uint32>
 #define	FT_MEDIA_ARTIST			0xD0	// <string>
 #define	FT_MEDIA_ALBUM			0xD1	// <string>
 #define	FT_MEDIA_TITLE			0xD2	// <string>

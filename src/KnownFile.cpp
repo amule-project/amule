@@ -56,7 +56,7 @@
 
 CFileStatistic::CFileStatistic() : 
 	requested(0), 
-	transfered(0),
+	transferred(0),
 	accepted(0),
 	alltimerequested(0),
 	alltimetransferred(0),
@@ -81,9 +81,9 @@ void CFileStatistic::AddAccepted(){
 }
 	
 void CFileStatistic::AddTransferred(uint64 bytes){
-	transfered += bytes;
+	transferred += bytes;
 	alltimetransferred += bytes;
-	theApp->knownfiles->transfered += bytes;
+	theApp->knownfiles->transferred += bytes;
 	theApp->sharedfiles->UpdateItem(fileParent);
 }
 
@@ -510,11 +510,11 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 					GetPartCount(), 0);
 				break;
 			
-			case FT_ATTRANSFERED:
+			case FT_ATTRANSFERRED:
 				statistic.alltimetransferred += newtag.GetInt();
 				break;
 			
-			case FT_ATTRANSFEREDHI:
+			case FT_ATTRANSFERREDHI:
 				statistic.alltimetransferred =
 					(((uint64)newtag.GetInt()) << 32) +
 					((uint64)statistic.alltimetransferred);
@@ -673,11 +673,11 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	// statistic
 	uint32 tran;
 	tran=statistic.alltimetransferred & 0xFFFFFFFF;
-	CTagInt32 attag1(FT_ATTRANSFERED, tran);
+	CTagInt32 attag1(FT_ATTRANSFERRED, tran);
 	attag1.WriteTagToFile(file);
 	
 	tran=statistic.alltimetransferred>>32;
-	CTagInt32 attag4(FT_ATTRANSFEREDHI, tran);
+	CTagInt32 attag4(FT_ATTRANSFERREDHI, tran);
 	attag4.WriteTagToFile(file);
 
 	CTagInt32 attag2(FT_ATREQUESTED, statistic.GetAllTimeRequests());

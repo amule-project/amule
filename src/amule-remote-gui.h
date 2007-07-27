@@ -560,7 +560,7 @@ public:
 		m_shared_files = shared;
 		
 		requested = 0;
-		transfered = 0;
+		transferred = 0;
 		accepted = 0;
 	}
 	
@@ -570,7 +570,7 @@ public:
 	}
 
 	uint16 requested;
-	uint32 transfered;
+	uint32 transferred;
 	uint16 accepted;
 };
 

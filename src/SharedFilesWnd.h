@@ -85,7 +85,7 @@ private:
 	wxGauge* m_bar_requests;
 	//! Pointer to the gauge used for showing accepted-requests ratio.
 	wxGauge* m_bar_accepted;
-	//! Pointer to the gauge used for showing the transfered ratio.
+	//! Pointer to the gauge used for showing the transferred ratio.
 	wxGauge* m_bar_transfer;
 
 	

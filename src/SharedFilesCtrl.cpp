@@ -182,15 +182,12 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 {
 	wxString feed;
-#warning wuischke will fix this soon :P
-#if 0
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index != -1) {
 		CPartFile *file = (CPartFile *)GetItemData(index);
 		feed += file->GetFeedback();
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
-#endif
 	if (!feed.IsEmpty()) {
 		theApp->CopyTextToClipboard(feed);
 	}
@@ -395,15 +392,15 @@ int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
 		// Sort by transferred. Ascending.
 		case  ID_SHARED_COL_TRA:
 			if (altSorting) {
-				return mod * CmpAny( file1->statistic.GetAllTimeTransfered(), file2->statistic.GetAllTimeTransfered() );
+				return mod * CmpAny( file1->statistic.GetAllTimeTransferred(), file2->statistic.GetAllTimeTransferred() );
 			} else {
-				return mod * CmpAny( file1->statistic.GetTransfered(), file2->statistic.GetTransfered() );
+				return mod * CmpAny( file1->statistic.GetTransferred(), file2->statistic.GetTransferred() );
 			}
 
 		// Sort by Share Ratio. Ascending.
 		case  ID_SHARED_COL_RTIO:
-			return mod * CmpAny( (double)file1->statistic.GetAllTimeTransfered() / file1->GetFileSize(),
-					(double)file2->statistic.GetAllTimeTransfered() / file2->GetFileSize() );
+			return mod * CmpAny( (double)file1->statistic.GetAllTimeTransferred() / file1->GetFileSize(),
+					(double)file2->statistic.GetAllTimeTransferred() / file2->GetFileSize() );
 
 		// Complete sources asc
 		case ID_SHARED_COL_CMPL:
@@ -567,13 +564,13 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					break;
 
 				case ID_SHARED_COL_TRA:
-					textBuffer = CastItoXBytes(file->statistic.GetTransfered())
-						+ wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransfered()) + wxT(")");
+					textBuffer = CastItoXBytes(file->statistic.GetTransferred())
+						+ wxT(" (") + CastItoXBytes(file->statistic.GetAllTimeTransferred()) + wxT(")");
 					break;
 					
 				case ID_SHARED_COL_RTIO:
 					textBuffer = wxString::Format(wxT("%.2f"),
-							(double)file->statistic.GetAllTimeTransfered() / file->GetFileSize() );
+							(double)file->statistic.GetAllTimeTransferred() / file->GetFileSize() );
 					break;
 				
 				case ID_SHARED_COL_PART:

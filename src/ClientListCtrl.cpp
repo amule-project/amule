@@ -751,7 +751,7 @@ int CUploadingView::SortProc(long item1, long item2, long sortData)
 		// Sort by speed
 		case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
 		
-		// Sort by transfered
+		// Sort by transferred
 		case 4: return mode * CmpAny( client1->GetSessionUp(), client2->GetSessionUp() );
 		
 		// Sort by wait-time

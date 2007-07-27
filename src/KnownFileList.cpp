@@ -38,7 +38,7 @@ CKnownFileList::CKnownFileList()
 {
 	accepted = 0;
 	requested = 0;
-	transfered = 0;
+	transferred = 0;
 	Init();
 }
 

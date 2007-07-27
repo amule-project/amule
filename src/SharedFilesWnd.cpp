@@ -63,12 +63,12 @@ CSharedFilesWnd::~CSharedFilesWnd()
 
 void CSharedFilesWnd::SelectionUpdated()
 {
-	uint64 lTransfered = theApp->knownfiles->transfered;
+	uint64 lTransferred = theApp->knownfiles->transferred;
 	uint32 lAccepted = theApp->knownfiles->accepted;
 	uint32 lRequested = theApp->knownfiles->requested;
 	m_bar_requests->SetRange( lRequested );
 	m_bar_accepted->SetRange( lAccepted );
-	m_bar_transfer->SetRange( lTransfered / 1024 );
+	m_bar_transfer->SetRange( lTransferred / 1024 );
 	
 	if ( !sharedfilesctrl->GetSelectedItemCount() ) {
 		// Requests
@@ -83,16 +83,16 @@ void CSharedFilesWnd::SelectionUpdated()
 
 		// Transferred
 		m_bar_transfer->SetValue( 0 );
-		CastChild(IDC_STRANSFERED, wxStaticText)->SetLabel( wxT("-") );
-		CastChild(IDC_STRANSFERED2, wxStaticText)->SetLabel( wxT("-") );
+		CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( wxT("-") );
+		CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( wxT("-") );
 	} else {
 		// Create a total statistic for the selected item(s)
 		uint32 session_requests = 0;
 		uint32 session_accepted = 0;
-		uint64 session_transfered = 0;
+		uint64 session_transferred = 0;
 		uint32 all_requests = 0;
 		uint32 all_accepted = 0;
-		uint64 all_transfered = 0;
+		uint64 all_transferred = 0;
 		
 		long index = sharedfilesctrl->GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 		while ( index > -1 ) {
@@ -101,11 +101,11 @@ void CSharedFilesWnd::SelectionUpdated()
 			
 				session_requests   += file->statistic.GetRequests();
 				session_accepted   += file->statistic.GetAccepts();
-				session_transfered += file->statistic.GetTransfered();
+				session_transferred += file->statistic.GetTransferred();
 		
 				all_requests   += file->statistic.GetAllTimeRequests();
 				all_accepted   += file->statistic.GetAllTimeAccepts();
-				all_transfered += file->statistic.GetAllTimeTransfered();
+				all_transferred += file->statistic.GetAllTimeTransferred();
 			}
 			index = sharedfilesctrl->GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 		};
@@ -123,10 +123,10 @@ void CSharedFilesWnd::SelectionUpdated()
 		CastChild(IDC_SACCEPTED2, wxStaticText)->SetLabel( wxString::Format(wxT("%u"), all_accepted ) );
 
 		// Transferred
-		session_transfered = session_transfered > lTransfered ? lTransfered : session_transfered;
-		m_bar_transfer->SetValue( session_transfered / 1024 );
-		CastChild(IDC_STRANSFERED, wxStaticText)->SetLabel( CastItoXBytes( session_transfered ) );
-		CastChild(IDC_STRANSFERED2, wxStaticText)->SetLabel( CastItoXBytes( all_transfered ) );
+		session_transferred = session_transferred > lTransferred ? lTransferred : session_transferred;
+		m_bar_transfer->SetValue( session_transferred / 1024 );
+		CastChild(IDC_STRANSFERRED, wxStaticText)->SetLabel( CastItoXBytes( session_transferred ) );
+		CastChild(IDC_STRANSFERRED2, wxStaticText)->SetLabel( CastItoXBytes( all_transferred ) );
 	}
 	Layout();
 }

@@ -750,14 +750,11 @@ void CDownloadListCtrl::OnGetLink(wxCommandEvent& event)
 void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 {
 	wxString feed;
-#warning wuischke will fix this soon :P
-#if 0
 	ItemList files = ::GetSelectedItems(this, itFILES);
 	for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 		CPartFile* file = (*it)->GetFile();
 		feed += file->GetFeedback();
 	}
-#endif
 	if (!feed.IsEmpty()) {
 		theApp->CopyTextToClipboard(feed);
 	}
@@ -1334,9 +1331,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		text = CastItoXBytes( file->GetFileSize() );
 		break;
 
-	// Transfered
+	// Transferred
 	case 2:
-		text = CastItoXBytes( file->GetTransfered() );
+		text = CastItoXBytes( file->GetTransferred() );
 		break;
 	
 	// Completed
@@ -1648,8 +1645,8 @@ void CDownloadListCtrl::DrawSourceItem(
 			break;
 
 		case 3:	// completed
-			if (item->GetType() != A4AF_SOURCE && client->GetTransferedDown()) {
-				buffer = CastItoXBytes(client->GetTransferedDown());
+			if (item->GetType() != A4AF_SOURCE && client->GetTransferredDown()) {
+				buffer = CastItoXBytes(client->GetTransferredDown());
 				dc->DrawText(buffer, rect.GetX(), rect.GetY());
 			}
 			break;
@@ -1888,11 +1885,11 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 			file2->GetFileSize() );
 		break;
 
-	// Sort by transfered
+	// Sort by transferred
 	case 2:
 		result = CmpAny(
-			file1->GetTransfered(),
-			file2->GetTransfered() );
+			file1->GetTransferred(),
+			file2->GetTransferred() );
 		break;
 
 	// Sort by completed
@@ -1993,10 +1990,10 @@ int CDownloadListCtrl::Compare(
 		case 1:
 			return CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
 	
-		// Sort by transfered in the following fields
+		// Sort by transferred in the following fields
 		case 2:	
 		case 3:
-			return CmpAny( client1->GetTransferedDown(), client2->GetTransferedDown() );
+			return CmpAny( client1->GetTransferredDown(), client2->GetTransferredDown() );
 
 		// Sort by speed
 		case 4:

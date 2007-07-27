@@ -272,7 +272,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	uint8 version,partmettype=PMT_UNKNOWN;
 	
 	std::map<uint16, Gap_Struct*> gap_map; // Slugfiller
-	transfered = 0;
+	transferred = 0;
 	
 	m_partmetfilename = filename;
 	m_strFilePath = in_directory;
@@ -401,8 +401,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						SetFileSize(newtag.GetInt());
 						break;
 					}
-					case FT_TRANSFERED: {
-						transfered = newtag.GetInt();
+					case FT_TRANSFERRED: {
+						transferred = newtag.GetInt();
 						break;
 					}
 					case FT_FILETYPE:{
@@ -499,12 +499,12 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						}
 						break;
 					}
-					case FT_ATTRANSFERED:{
-						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (uint64)newtag.GetInt());
+					case FT_ATTRANSFERRED:{
+						statistic.SetAllTimeTransferred(statistic.GetAllTimeTransferred() + (uint64)newtag.GetInt());
 						break;
 					}
-					case FT_ATTRANSFEREDHI:{
-						statistic.SetAllTimeTransfered(statistic.GetAllTimeTransfered() + (((uint64)newtag.GetInt()) << 32));	
+					case FT_ATTRANSFERREDHI:{
+						statistic.SetAllTimeTransferred(statistic.GetAllTimeTransferred() + (((uint64)newtag.GetInt()) << 32));	
 						break;
 					}
 					case FT_ATREQUESTED:{
@@ -661,7 +661,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 	
 	// Update last-changed date if anything has been written
-	if ( transfered ) {
+	if ( transferred ) {
 		m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
 	}
 
@@ -711,10 +711,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 
 	UpdateCompletedInfos();
-	if (completedsize > transfered) {
-		m_iGainDueToCompression = completedsize - transfered;
-	} else if (completedsize != transfered) {
-		m_iLostDueToCorruption = transfered - completedsize;
+	if (completedsize > transferred) {
+		m_iGainDueToCompression = completedsize - transferred;
+	} else if (completedsize != transferred) {
+		m_iLostDueToCorruption = transferred - completedsize;
 	}
 	
 	return true;
@@ -797,7 +797,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		CTagString(	FT_FILENAME,	GetFileName()).WriteTagToFile( &file, utf8strOptBOM );
 		CTagString(	FT_FILENAME,	GetFileName()).WriteTagToFile( &file );                         // 1
 		CTagIntSized(	FT_FILESIZE,	GetFileSize(), IsLargeFile() ? 64 : 32).WriteTagToFile( &file );// 2
-		CTagIntSized(	FT_TRANSFERED,	transfered, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );   // 3
+		CTagIntSized(	FT_TRANSFERRED,	transferred, IsLargeFile() ? 64 : 32).WriteTagToFile( &file );   // 3
 		CTagInt32(	FT_STATUS,	(m_paused?1:0)).WriteTagToFile( &file );                        // 4
 
 		if ( IsAutoDownPriority() ) {
@@ -819,8 +819,8 @@ bool CPartFile::SavePartFile(bool Initial)
 		}
 	
 		CTagInt32(FT_CATEGORY,       m_category).WriteTagToFile( &file );                       // 10
-		CTagInt32(FT_ATTRANSFERED,   statistic.GetAllTimeTransfered() & 0xFFFFFFFF).WriteTagToFile( &file );// 11
-		CTagInt32(FT_ATTRANSFEREDHI, statistic.GetAllTimeTransfered() >>32).WriteTagToFile( &file );// 12
+		CTagInt32(FT_ATTRANSFERRED,   statistic.GetAllTimeTransferred() & 0xFFFFFFFF).WriteTagToFile( &file );// 11
+		CTagInt32(FT_ATTRANSFERREDHI, statistic.GetAllTimeTransferred() >>32).WriteTagToFile( &file );// 12
 		CTagInt32(FT_ATREQUESTED,    statistic.GetAllTimeRequests()).WriteTagToFile( &file );	// 13
 		CTagInt32(FT_ATACCEPTED,     statistic.GetAllTimeAccepts()).WriteTagToFile( &file );	// 14
 
@@ -2958,8 +2958,8 @@ int CPartFile::GetCommonFilePenalty()
 // look at the lenData below.
 uint32 CPartFile::WriteToBuffer(uint32 transize, byte* data, uint64 start, uint64 end, Requested_Block_Struct *block)
 {
-	// Increment transfered bytes counter for this file
-	transfered += transize;
+	// Increment transferred bytes counter for this file
+	transferred += transize;
 
 	// This is needed a few times
 	// Kry - should not need a uint64 here - no block is larger than
@@ -3140,7 +3140,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 				if (!bNoAICH) {
 					RequestAICHRecovery((uint16)partNumber);					
 				}
-				// Reduce transfered amount by corrupt amount
+				// Reduce transferred amount by corrupt amount
 				m_iLostDueToCorruption += (partRange + 1);
 			} else {
 				if (!m_hashsetneeded) {
@@ -3344,37 +3344,6 @@ uint64 CPartFile::GetNeededSpace()
 		return 0;	// Shouldn't happen, but just in case
 	}
 	return GetFileSize()-m_hpartfile.GetLength();
-}
-
-wxString CPartFile::GetFeedback()
-{
-wxString download,
-	retvalue,
-	additional_feedback,
-	upload_feedback;
-
-if ( GetStatus() == PS_COMPLETE) {
-	CKnownFile* pFile = theApp->sharedfiles->GetFileByID(GetFileHash());
-	download = _("Complete");
-	upload_feedback = _("Upload: ") + CastItoXBytes(pFile->statistic.GetTransfered()) + wxT(" (") + CastItoXBytes(pFile->statistic.GetAllTimeTransfered()) + wxT(")\n");
-	additional_feedback = wxString::Format(_("Requests: %u (%u)"), pFile->statistic.GetAccepts(), pFile->statistic.GetAllTimeRequests()) + wxT("\n")
-		+ wxString::Format(_("Accepted: %u (%u)"), pFile->statistic.GetRequests(), pFile->statistic.GetAllTimeAccepts()) + wxT("\n");
-}else {
-	download = CastItoXBytes(GetCompletedSize()) + wxString::Format(wxT(" (%.2f%%)"), GetPercentCompleted());
-	upload_feedback = CFormat(_("Upload: %s")) % CastItoXBytes(GetTransfered()) + wxT("\n");
-	additional_feedback = wxString::Format(_("Sources: %u"), GetSourceCount()) + wxT("\n");
-}
-
-return
-	CFormat(_("Feedback from: %s")) % thePrefs::GetUserNick() + wxT("\n")
-	+ CFormat(_("Client: aMule %s")) % wxT(VERSION) + wxT("\n")
-	+ CFormat(_("File Name: %s")) % GetFileName() + wxT("\n")
-	+ CFormat(_("File size: %s")) % CastItoXBytes(GetFileSize()) + wxT("\n")
-	+ CFormat(_("Download: %s")) % download + wxT("\n")
-	+ upload_feedback
-	+ wxString::Format(_("Complete Sources: %u"), m_nCompleteSourcesCount) + wxT("\n")
-	+ additional_feedback;
-
 }
 
 void CPartFile::SetStatus(uint8 in)
@@ -3747,7 +3716,7 @@ CPartFile::CPartFile(CEC_PartFile_Tag *tag)
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	m_partmetfilename = tag->PartMetName();
-	transfered = tag->SizeXfer();
+	transferred = tag->SizeXfer();
 	percentcompleted = (100.0*completedsize) / GetFileSize();
 	completedsize = tag->SizeDone();
 
@@ -3800,7 +3769,7 @@ void CPartFile::Init()
 
 	status = PS_EMPTY;
 	
-	transfered = 0;
+	transferred = 0;
 	m_iLastPausePurge = time(NULL);
 	
 	if(thePrefs::GetNewAutoDown()) {
@@ -3922,6 +3891,27 @@ int CPartFile::getPartfileStatusRang() const
 	} 
 	return tempstatus;
 } 
+
+wxString CPartFile::GetFeedback()
+{
+wxString retval
+	= wxT("Feedback from: ") + thePrefs::GetUserNick() + wxT("\n")
+	+ GetFullMuleVersion() + wxT("\n")
+	+ wxT("File name: ") + GetFileName() + wxT("\n")
+	+ wxT("File size: ") + CastItoXBytes(GetFileSize())  + wxT("\n");
+retval += ( GetStatus() == PS_COMPLETE )
+	? wxT("Downloaded: Complete\n")
+	: wxString::Format(wxT("Downloaded: %s (%.2f%%)\n"), CastItoXBytes(GetCompletedSize()).c_str(), GetPercentCompleted());
+retval += wxString::Format(wxT("Transferred: %s (%s)\n"), CastItoXBytes(statistic.GetTransferred()).c_str(), CastItoXBytes(statistic.GetAllTimeTransferred()).c_str())
+	+ wxString::Format(wxT("Requested: %u (%u)\n"), statistic.GetRequests(), statistic.GetAllTimeRequests())
+	+ wxString::Format(wxT("Accepted: %d (%d)\n"), statistic.GetAccepts(), statistic.GetAllTimeAccepts());
+if ( GetStatus() != PS_COMPLETE ) {
+	retval += wxString::Format(wxT("Sources: %u\n"), GetSourceCount());
+}
+retval += wxString::Format(wxT("Complete Sources: %u\n"), m_nCompleteSourcesCount);
+return retval;
+
+}
 
 sint32 CPartFile::getTimeRemaining() const
 {

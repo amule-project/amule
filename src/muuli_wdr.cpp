@@ -729,7 +729,7 @@ wxSizer *fileDetails( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item44 = new wxStaticText( parent, IDC_FD_X14, _("Transferred :"), wxDefaultPosition, wxDefaultSize, 0 );
     item43->Add( item44, 0, wxADJUST_MINSIZE|wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item45 = new wxStaticText( parent, IDC_TRANSFERED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item45 = new wxStaticText( parent, IDC_TRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item45->SetForegroundColour( *wxBLUE );
     item43->Add( item45, 0, wxADJUST_MINSIZE|wxALIGN_CENTER|wxLEFT, 5 );
 
@@ -1179,7 +1179,7 @@ wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item23 = new wxStaticText( parent, ID_TEXT, _("Transferred :"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item24 = new wxStaticText( parent, IDC_STRANSFERED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item24 = new wxStaticText( parent, IDC_STRANSFERRED, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item24->SetForegroundColour( *wxBLUE );
     item9->Add( item24, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -1190,7 +1190,7 @@ wxSizer *sharedfilesDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item26 = new wxStaticText( parent, ID_TEXT, _("Transferred :"), wxDefaultPosition, wxDefaultSize, 0 );
     item9->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticText *item27 = new wxStaticText( parent, IDC_STRANSFERED2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item27 = new wxStaticText( parent, IDC_STRANSFERRED2, _("N/A"), wxDefaultPosition, wxDefaultSize, 0 );
     item27->SetForegroundColour( *wxBLUE );
     item9->Add( item27, 0, wxADJUST_MINSIZE|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
