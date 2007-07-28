@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-23 03:31+0200\n"
+"POT-Creation-Date: 2007-07-28 03:31+0200\n"
 "PO-Revision-Date: 2007-03-12 22:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -51,35 +51,34 @@ msgstr "Lyckades! Anslutning etablerad till aMule "
 msgid "Succeeded! Connection established."
 msgstr "Lyckades! Anslutning etablerad."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3866
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3835
 msgid "Hashing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3870
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3839
 msgid "Completing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3358
-#: src/PartFile.cpp:3873
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3842
 msgid "Complete"
 msgstr "Färdig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3876
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
 msgid "Paused"
 msgstr "Pausad"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3879
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3848
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
 msgid "Erroneous"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3886
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3855
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
 msgid "Downloading"
 msgstr "Hämtar"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3888
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
 msgid "Waiting"
 msgstr "Väntar"
@@ -141,8 +140,8 @@ msgstr ""
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1469
-#: src/DownloadListCtrl.cpp:1482 src/DownloadListCtrl.cpp:1492
+#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1466
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 #: src/PartFile.cpp:2614 src/PartFile.cpp:2620 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
@@ -211,7 +210,7 @@ msgstr "Användarnamn"
 msgid "Friends"
 msgstr "Vänner"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1056
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
 #: src/ClientListCtrl.cpp:250
 msgid "Show &Details"
 msgstr "Visa &detaljer"
@@ -228,7 +227,7 @@ msgstr "Ta bort vän"
 msgid "Send &Message"
 msgstr "Skicka &meddelande"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1058
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
 #: src/ClientListCtrl.cpp:252
 msgid "View Files"
 msgstr "Visa filer"
@@ -244,7 +243,7 @@ msgstr ""
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:678 src/amuleDlg.cpp:1291
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:928
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3822
@@ -278,7 +277,7 @@ msgstr "Typ"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:927
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
 msgid "Priority"
 msgstr "Prioritet"
 
@@ -326,19 +325,19 @@ msgstr "Mycket låg"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Låg"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:924 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Hög"
 
@@ -350,7 +349,7 @@ msgstr "Mycket hög"
 msgid "Release"
 msgstr "Utgåva"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:925
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Auto"
@@ -375,7 +374,7 @@ msgstr ""
 msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopiera ED2k-&länk till urklipp"
 
@@ -399,33 +398,33 @@ msgstr ""
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
 msgid "Copy feedback to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:301
+#: src/SharedFilesCtrl.cpp:298
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:301 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:674
 msgid "Warning"
 msgstr "Varning"
 
-#: src/SharedFilesCtrl.cpp:446
+#: src/SharedFilesCtrl.cpp:443
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Utdelade filer (%i)"
 
-#: src/SharedFilesCtrl.cpp:607
+#: src/SharedFilesCtrl.cpp:604
 msgid "[PartFile]"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1114
+#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1111
 msgid "Enter new name for this file:"
 msgstr "Ange nytt namn för den här filen:"
 
-#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1115
+#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1112
 msgid "File rename"
 msgstr ""
 
@@ -931,8 +930,8 @@ msgstr ""
 msgid " kB/s, Upload: "
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1351
-#: src/DownloadListCtrl.cpp:1660 src/OtherFunctions.cpp:158
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
+#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:158
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -1243,7 +1242,7 @@ msgstr ""
 msgid "Connecting via server"
 msgstr "Ansluter via server"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1745
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1742
 #: src/ClientListCtrl.cpp:699
 msgid "Queue Full"
 msgstr ""
@@ -2430,7 +2429,7 @@ msgstr ""
 msgid "Average upload time: %s"
 msgstr ""
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Hämtningar"
 
@@ -2789,7 +2788,7 @@ msgstr "Fil"
 msgid "Download"
 msgstr "Hämta"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategori"
@@ -2870,145 +2869,145 @@ msgstr ""
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:359
 msgid "Send message to user"
 msgstr "Skicka meddelande till användare"
 
-#: src/DownloadListCtrl.cpp:869 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:359
 msgid "Message to send:"
 msgstr "Meddelande att skicka:"
 
-#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Stoppa"
 
-#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:931 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Fortsätt"
 
-#: src/DownloadListCtrl.cpp:932
+#: src/DownloadListCtrl.cpp:929
 msgid "C&lear completed"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:938
+#: src/DownloadListCtrl.cpp:935
 msgid "Swap every A4AF to this file now"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:940
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file (Auto)"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:945
+#: src/DownloadListCtrl.cpp:942
 msgid "Swap every A4AF to any other file now"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:950
+#: src/DownloadListCtrl.cpp:947
 msgid "Drop No Needed Sources now"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:952
+#: src/DownloadListCtrl.cpp:949
 msgid "Drop Full Queue Sources now"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:951
 msgid "Drop High Queue Rating Sources now"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:956
+#: src/DownloadListCtrl.cpp:953
 msgid "Clean Up Sources now (NNS, FQS && HQRS)"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:958
+#: src/DownloadListCtrl.cpp:955
 msgid "Extended Options"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
+#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
 msgid "Preview"
 msgstr "Förhandsgranska"
 
-#: src/DownloadListCtrl.cpp:970
+#: src/DownloadListCtrl.cpp:967
 msgid "Show file &details"
 msgstr "Visa fil&detaljer"
 
-#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Visa alla kommentarer"
 
-#: src/DownloadListCtrl.cpp:977
+#: src/DownloadListCtrl.cpp:974
 msgid "Copy magnet URI to clipboard"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:990
+#: src/DownloadListCtrl.cpp:987
 msgid "unassign"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:997
+#: src/DownloadListCtrl.cpp:994
 msgid "Assign to category"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1026
+#: src/DownloadListCtrl.cpp:1023
 msgid "&Open the file"
 msgstr "&Öppna filen"
 
-#: src/DownloadListCtrl.cpp:1057 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
 #, fuzzy
 msgid "Remove from friends"
 msgstr "Ta bort vän"
 
-#: src/DownloadListCtrl.cpp:1057 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
 msgid "Add to Friends"
 msgstr "Lägg till i vänner"
 
-#: src/DownloadListCtrl.cpp:1059 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:253
 msgid "Send message"
 msgstr "Skicka meddelande"
 
-#: src/DownloadListCtrl.cpp:1060
+#: src/DownloadListCtrl.cpp:1057
 msgid "Swap to this file"
 msgstr "Växla till den här filen"
 
-#: src/DownloadListCtrl.cpp:1480 src/DownloadListCtrl.cpp:1490
+#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H.%M.%S"
 
-#: src/DownloadListCtrl.cpp:1714
+#: src/DownloadListCtrl.cpp:1711
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1764
+#: src/DownloadListCtrl.cpp:1761
 #, c-format
 msgid "QR: %u (%i)"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1778
+#: src/DownloadListCtrl.cpp:1775
 msgid "Asked for another file"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2108
+#: src/DownloadListCtrl.cpp:2105
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Hämtningar (%i)"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2288
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2294
+#: src/DownloadListCtrl.cpp:2291
 msgid "File preview"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2313
+#: src/DownloadListCtrl.cpp:2310
 msgid "ERROR: Failed to execute external media-player!"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2314
+#: src/DownloadListCtrl.cpp:2311
 #, c-format
 msgid "Command: %s"
 msgstr "Kommando: %s"
@@ -3188,77 +3187,23 @@ msgstr ""
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3359
-msgid "Upload: "
-msgstr ""
-
-#: src/PartFile.cpp:3360
-#, c-format
-msgid "Requests: %u (%u)"
-msgstr ""
-
-#: src/PartFile.cpp:3361
-#, c-format
-msgid "Accepted: %u (%u)"
-msgstr ""
-
-#: src/PartFile.cpp:3364
-#, c-format
-msgid "Upload: %s"
-msgstr ""
-
-#: src/PartFile.cpp:3365
-#, c-format
-msgid "Sources: %u"
-msgstr "Källor: %u"
-
-#: src/PartFile.cpp:3369
-#, c-format
-msgid "Feedback from: %s"
-msgstr ""
-
-#: src/PartFile.cpp:3370
-#, c-format
-msgid "Client: aMule %s"
-msgstr "Klient: aMule %s"
-
-#: src/PartFile.cpp:3371
-#, c-format
-msgid "File Name: %s"
-msgstr "Filnamn: %s"
-
-#: src/PartFile.cpp:3372
-#, c-format
-msgid "File size: %s"
-msgstr "Filstorlek: %s"
-
-#: src/PartFile.cpp:3373
-#, c-format
-msgid "Download: %s"
-msgstr "Hämta: %s"
-
-#: src/PartFile.cpp:3375
-#, c-format
-msgid "Complete Sources: %u"
-msgstr ""
-
-#: src/PartFile.cpp:3782
+#: src/PartFile.cpp:3751
 msgid "Comments"
 msgstr "Kommentarer"
 
-#: src/PartFile.cpp:3783
+#: src/PartFile.cpp:3752
 msgid "doesn't work"
 msgstr "fungerar inte"
 
-#: src/PartFile.cpp:3785
+#: src/PartFile.cpp:3754
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3882
+#: src/PartFile.cpp:3851
 msgid "Insufficient Diskspace"
 msgstr "Otillräckligt diskutrymme"
 
-#: src/PartFile.cpp:3893 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
+#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
 msgid "Stopped"
 msgstr "Stoppad"
 
@@ -6904,6 +6849,21 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "Sources: %u"
+#~ msgstr "Källor: %u"
+
+#~ msgid "Client: aMule %s"
+#~ msgstr "Klient: aMule %s"
+
+#~ msgid "File Name: %s"
+#~ msgstr "Filnamn: %s"
+
+#~ msgid "File size: %s"
+#~ msgstr "Filstorlek: %s"
+
+#~ msgid "Download: %s"
+#~ msgstr "Hämta: %s"
 
 #~ msgid ""
 #~ " 'All-Platform' p2p client based on eMule \n"
