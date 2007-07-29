@@ -384,6 +384,11 @@ int StrLang2wx(const wxString& language);
  */
 wxString wxLang2Str(const int lang);
 
+/**
+ * Generate MD5Hash of prompt input
+ */
+wxString GetPassword();
+
 
 #if wxUSE_THREADS
 

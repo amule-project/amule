@@ -66,6 +66,7 @@
 #include "ListenSocket.h"		// Needed for CListenSocket
 #include "Logger.h"			// Needed for CLogger // Do_not_auto_remove
 #include "MagnetURI.h"			// Needed for CMagnetURI
+#include "OtherFunctions.h"
 #include "PartFile.h"			// Needed for CPartFile
 #include "Preferences.h"		// Needed for CPreferences
 #include "SearchList.h"			// Needed for CSearchList
@@ -445,6 +446,7 @@ bool CamuleApp::OnInit()
 #ifdef AMULE_DAEMON
 	cmdline.AddSwitch(wxT("f"), wxT("full-daemon"), wxT("Fork to background."));
 	cmdline.AddOption(wxT("c"), wxT("config-dir"), wxT("read config from <dir> instead of home"));
+	cmdline.AddSwitch(wxT("e"), wxT("ec-config"), wxT("Configure EC (External Connections)."));
 #else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString,
 		wxT(	"Sets the geometry of the app.\n"
@@ -489,6 +491,7 @@ bool CamuleApp::OnInit()
 	}
 
 	bool reset_config = cmdline.Found(wxT("reset-config"));
+	bool ec_config = cmdline.Found(wxT("ec-config"));
 	
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
@@ -640,6 +643,14 @@ bool CamuleApp::OnInit()
 	// Load localization settings
 	Localize_mule();
 
+	// Configure EC for amuled when invoked with ec-config
+	if (ec_config) {
+		printf("\nEC configuration\n");
+		thePrefs::SetECPass(GetPassword());
+		thePrefs::EnableExternalConnections(true);
+		printf("Password set and external connections enabled.\n");
+		}
+	
 #ifndef __WXMSW__
 	// This line is what makes wxWidgets handle correctly unix file names.
 	wxConvFileName = &aMuleConvBrokenFileNames;

@@ -39,6 +39,8 @@
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
 #include <common/PlatformSpecific.h>	// Needed for GetUserDataDir()
+#include <common/MD5Sum.h>
+#include "MD4Hash.h"
 
 #ifndef EC_REMOTE
 	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
@@ -1399,6 +1401,32 @@ wxString wxLang2Str(const int lang)
 	} else {
 		return wxEmptyString;
 	}
+}
+
+wxString GetPassword() {
+wxString pass_plain;
+CMD4Hash password;
+		#ifndef __WXMSW__
+			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
+		#else
+			#warning This way, pass enter is not hidden on windows. Bad thing.
+			char temp_str[512];
+			fflush(stdin);
+			printf("Enter password for mule connection: \n");
+			fflush(stdout);
+			fgets(temp_str, 512, stdin);
+			temp_str[strlen(temp_str)-1] = '\0';
+			pass_plain = char2unicode(temp_str);
+		#endif
+		wxCHECK2(password.Decode(MD5Sum(pass_plain).GetHash()), /* Do nothing. */ );
+		// MD5 hash for an empty string, according to rfc1321.
+		if (password.Encode() == wxT("D41D8CD98F00B204E9800998ECF8427E")) {
+			printf("No empty password allowed.\n");
+			return GetPassword();
+		}
+
+
+return password.Encode();
 }
 
 #if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
