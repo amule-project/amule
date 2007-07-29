@@ -403,7 +403,7 @@ int CamuleDaemonApp::OnRun()
 	
 	if (!thePrefs::AcceptExternalConnections()) {
 		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
-			"To enable External Connections, use either a normal aMule or set the key"
+			"To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key"
 			"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf");
 		
 		AddLogLineM(true, warning);
@@ -414,7 +414,7 @@ int CamuleDaemonApp::OnRun()
 			"external connections, and aMule daemon cannot be used without "
 			"external connections. To run aMule deamon, you must set the "
 			"\"ECPassword\" field in the file ~/.aMule/amule.conf with an "
-			"appropriate value. More information can be found at "
+			"appropriate value. Execute amuled with the flag --ec-config to set the password. More information can be found at "
 			"http://wiki.amule.org");
 	
 		AddLogLineM(true, warning);
