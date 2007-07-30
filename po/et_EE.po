@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 03:31+0200\n"
+"POT-Creation-Date: 2007-07-30 03:30+0200\n"
 "PO-Revision-Date: 2007-05-23 21:22+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -69,22 +69,22 @@ msgid "Complete"
 msgstr "Valmis"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3845
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Pausitud"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3848
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Vigane"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3855
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Tõmban"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3857
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Ootan"
 
@@ -419,7 +419,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr "Allika lingi loomiseks pead omama HighID'd."
 
 #: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:674
+#: src/amule.cpp:685
 msgid "Warning"
 msgstr "Hoiatus"
 
@@ -952,7 +952,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
-#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:158
+#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:160
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -1263,7 +1263,7 @@ msgid "Auto [Hi]"
 msgstr "Auto [Kõrge]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:503 src/amuleDlg.cpp:729
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:796
+#: src/ClientListCtrl.cpp:661 src/amule.cpp:807
 msgid "Connecting"
 msgstr "Ühendun"
 
@@ -1555,7 +1555,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3212 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:714 src/amule.cpp:1321
+#: src/amule.cpp:725 src/amule.cpp:1332
 msgid "Info"
 msgstr "Info"
 
@@ -2877,9 +2877,9 @@ msgstr "Ühendu eemalasuva amuulaga"
 msgid "Connection failed "
 msgstr "Ühendus ebaõnnestus "
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
-#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:845
-#: src/amule.cpp:963 src/amule.cpp:1332
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:856
+#: src/amule.cpp:974 src/amule.cpp:1343
 msgid "Error"
 msgstr "Viga"
 
@@ -2897,7 +2897,7 @@ msgid "Transferred"
 msgstr "Siiratud"
 
 #: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
 msgid "Completed"
 msgstr "Valmis"
 
@@ -3273,7 +3273,7 @@ msgstr "kasutajaliides eemalt"
 msgid "Insufficient Diskspace"
 msgstr "Kettaruumi ei jätku"
 
-#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
+#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Peatatud"
 
@@ -3537,11 +3537,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Ühendatud %s %s %s"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2042
+#: src/TextClient.cpp:671 src/amule.cpp:2053
 msgid "with LowID"
 msgstr "koos LowID"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2042
+#: src/TextClient.cpp:671 src/amule.cpp:2053
 msgid "with HighID"
 msgstr "koos HighID"
 
@@ -4145,38 +4145,38 @@ msgstr "Ootan kinnitust"
 msgid "All others"
 msgstr "kõik teised"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
 msgid "Incomplete"
 msgstr "Poolik"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:814
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
 msgid "Active"
 msgstr "Aktiivne"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:808
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
 msgid "Video"
 msgstr "Film"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Muusika"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
 msgid "Archive"
 msgstr "Arhiiv"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
+#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Image"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
+#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Pildid"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:813
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
 msgid "Text"
 msgstr "Tekst"
 
@@ -4309,115 +4309,115 @@ msgstr "Ootan..."
 msgid "%s (Disk: %s)"
 msgstr "%s (Ketas: %s)"
 
-#: src/OtherFunctions.cpp:121
+#: src/OtherFunctions.cpp:123
 msgid "bytes"
 msgstr "baiti"
 
-#: src/OtherFunctions.cpp:123
+#: src/OtherFunctions.cpp:125
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:125 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:129
+#: src/OtherFunctions.cpp:131
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:141
+#: src/OtherFunctions.cpp:143
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:143
+#: src/OtherFunctions.cpp:145
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:145
+#: src/OtherFunctions.cpp:147
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:149
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:156
+#: src/OtherFunctions.cpp:158
 msgid "bytes/sec"
 msgstr "baiti/sek"
 
-#: src/OtherFunctions.cpp:160
+#: src/OtherFunctions.cpp:162
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:171 src/OtherFunctions.cpp:175
+#: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
 msgid "secs"
 msgstr "sek"
 
-#: src/OtherFunctions.cpp:183
+#: src/OtherFunctions.cpp:185
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:190 src/OtherFunctions.cpp:200
+#: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
 msgid "hours"
 msgstr "tundi"
 
-#: src/OtherFunctions.cpp:198
+#: src/OtherFunctions.cpp:200
 msgid "Days"
 msgstr "päev(a)"
 
-#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Filmid"
 
-#: src/OtherFunctions.cpp:277 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Archiwum"
 
-#: src/OtherFunctions.cpp:298 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr "Tekst"
 
-#: src/OtherFunctions.cpp:305 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programmid"
 
-#: src/OtherFunctions.cpp:312 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "Suvaline"
 
-#: src/OtherFunctions.cpp:390 src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Pole hinnatud"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Vigane / Vigastatud / Pole õige"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Halb"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Hea"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Keskpärane"
 
-#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Väga hea"
 
-#: src/OtherFunctions.cpp:799
+#: src/OtherFunctions.cpp:801
 msgid "all"
 msgstr "kõik"
 
-#: src/OtherFunctions.cpp:800
+#: src/OtherFunctions.cpp:802
 msgid "all others"
 msgstr "kõik teised"
 
@@ -6429,13 +6429,10 @@ msgstr "Alamprotsessi lõpetamise ootamine ebaõnnestus"
 #: src/amuled.cpp:405
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule or set the key"
-"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+"To enable External Connections, use either a normal aMule, start amuled with "
+"the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
+"the file ~/.aMule/amule.conf"
 msgstr ""
-"VIGA: aMule deemonit ei saa kasutada kui Välisühendused on katkestatud. "
-"VälisÜhenduste lubamiseks kasuta tavalist aMule või määra võtme "
-"\"AcceptExternalConnections\" väärtuseks 1 konfiguratsioonifailis ~/.aMule/"
-"amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6840,7 +6837,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "Käsu '%s' käivitamine '%s' sündmuse puhul ebaõnnestus"
 
-#: src/amule.cpp:712
+#: src/amule.cpp:723
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6848,7 +6845,7 @@ msgstr ""
 "Sinu keelelokaat muudeti süsteemi vaikeväärtuseks seoses konfiguratsiooni "
 "muudatustega. Sorry."
 
-#: src/amule.cpp:778
+#: src/amule.cpp:789
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -6856,16 +6853,16 @@ msgstr ""
 "Serverite nimekirjas pole ühtegi serverit.\n"
 "Kas aMule võiks uue nimekirja tõmmata?"
 
-#: src/amule.cpp:780
+#: src/amule.cpp:791
 msgid "Server list download"
 msgstr "Serverite nimekiri tõmmatud"
 
-#: src/amule.cpp:838
+#: src/amule.cpp:849
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "webserver töötab, pid %d"
 
-#: src/amule.cpp:841
+#: src/amule.cpp:852
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6876,12 +6873,12 @@ msgstr ""
 "kompileeri aMule kasutades võtit --enable-webserver ja peale seda käivita "
 "'make install'"
 
-#: src/amule.cpp:953
+#: src/amule.cpp:964
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port %u ei ole kasutatav. Sa saad LOWID\n"
 
-#: src/amule.cpp:959
+#: src/amule.cpp:970
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6896,7 +6893,7 @@ msgstr ""
 "Kasuta netstat programmi kontrollimaks kuna port vabaneb\n"
 "ja proovi amule uuesti käivitada."
 
-#: src/amule.cpp:1070
+#: src/amule.cpp:1081
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
@@ -6904,15 +6901,15 @@ msgstr ""
 "HOIATUS: Sa ei saa lisada ennast allikana ed2k linki, omades ise sealjuures "
 "lowid."
 
-#: src/amule.cpp:1121
+#: src/amule.cpp:1132
 msgid "Failed to create OnlineSig File"
 msgstr "Ei suutnud luua OnlineSig Faili"
 
-#: src/amule.cpp:1129
+#: src/amule.cpp:1140
 msgid "Failed to create aMule OnlineSig File"
 msgstr "Ei suutnud luua aMule OnlineSig Faili"
 
-#: src/amule.cpp:1297
+#: src/amule.cpp:1308
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6920,45 +6917,45 @@ msgstr ""
 "Tundub et valitud keelelokaat pole sinu karpi installeritud. (Märkus: Ma "
 "proovin seda seada sellest hoolimata)"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1318
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "See on aMule %s käivitamise esimene kord"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1320
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "See on testversioon, mida igapäevaselt uuendatakse ja\n"
 
-#: src/amule.cpp:1310
+#: src/amule.cpp:1321
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 "me ei anna mingit garantiid, et see ei lõhu midagi, ei süüta sinu elamist\n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1322
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "ega tapa sinu koera. Sellest hoolimata peaks see olema *turvaline* "
 "kasutada.\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1327
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Rohkem informatsiooni, tuge ja uusi programmi versioone leiad meie "
 "kodulehelt,\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1328
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr ""
 "aadressil www.aMule.org või meie IRC kanalis #aMule aadressil irc.freenode."
 "net.\n"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1330
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr ""
 "Tunne ennast vabalt suvaliste vigade leidmisest teavitamisel aadressil "
 "http://forum.amule.org"
 
-#: src/amule.cpp:1332
+#: src/amule.cpp:1343
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6966,108 +6963,108 @@ msgstr ""
 "Online Allkirja kataloog on VIGANE!\n"
 " Online Allkirja ei kasutata, kuni parandad vea seadetes."
 
-#: src/amule.cpp:1726
+#: src/amule.cpp:1737
 msgid "ERROR: can't open logfile"
 msgstr "VIGA: Ei suutnud avada logifaili"
 
-#: src/amule.cpp:1730
+#: src/amule.cpp:1741
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "HOIATUS: logifail on tühi, miskit on kapitaalselt viltu."
 
-#: src/amule.cpp:1749
+#: src/amule.cpp:1760
 msgid "Log has been reset"
 msgstr "Log on nullitud"
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1788
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Serveri teade: %s"
 
-#: src/amule.cpp:1815
+#: src/amule.cpp:1826
 msgid "Failed to download the nodes list."
 msgstr "Ebaõnnestus sõlmede nimekirja tõmbamine."
 
-#: src/amule.cpp:1828
+#: src/amule.cpp:1839
 msgid "Failed to open the downloaded version check file"
 msgstr "Ebaõnnestus tõmmatud versiooni kotrollfaili avamine"
 
-#: src/amule.cpp:1831 src/amule.cpp:1841 src/amule.cpp:1847
+#: src/amule.cpp:1842 src/amule.cpp:1852 src/amule.cpp:1858
 msgid "Corrupted version check file"
 msgstr "Versiooni kontrollfail on korrumpeerunud"
 
-#: src/amule.cpp:1857
+#: src/amule.cpp:1868
 msgid "You are using an outdated version of aMule!"
 msgstr "Kasutad aegunud aMule versiooni!"
 
-#: src/amule.cpp:1858
+#: src/amule.cpp:1869
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Sinu aMule versioon on %i.%i.%i ja uusim versioon on %li.%li.%li"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1870
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Uuema aMule versiooni saad alati aadressilt http://www.amule.org"
 
-#: src/amule.cpp:1862
+#: src/amule.cpp:1873
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "HOAITUS: Sinu aMuled versioon on vananenud: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1866
+#: src/amule.cpp:1877
 msgid "Your copy of aMule is up to date."
 msgstr "Sinu aMule koopia on ajakohane."
 
-#: src/amule.cpp:1873
+#: src/amule.cpp:1884
 msgid "Failed to download the version check file"
 msgstr "Versiooni kontrollfaili tõmbamine ebaõnnestus"
 
-#: src/amule.cpp:1975
+#: src/amule.cpp:1986
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Kasutajaid: E:%s K:%s | Faile E:%s K:%s"
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2055
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Ühendatud %s %s"
 
-#: src/amule.cpp:2047
+#: src/amule.cpp:2058
 #, c-format
 msgid "Connecting to %s"
 msgstr "Ühendun %s"
 
-#: src/amule.cpp:2049
+#: src/amule.cpp:2060
 msgid "Disconnected from ED2K"
 msgstr "ED2K ühendus katkestatud"
 
-#: src/amule.cpp:2056
+#: src/amule.cpp:2067
 msgid "Kad started."
 msgstr "Kad käivitatud."
 
-#: src/amule.cpp:2058
+#: src/amule.cpp:2069
 msgid "Kad stopped."
 msgstr "Kad peatatud."
 
-#: src/amule.cpp:2065
+#: src/amule.cpp:2076
 msgid "Connected to Kad (ok)"
 msgstr "Ühendus Kad võrk (ok)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2078
 msgid "Connected to Kad (firewalled)"
 msgstr "Ühendus Kad võrku (tulemüüriga)"
 
-#: src/amule.cpp:2070
+#: src/amule.cpp:2081
 msgid "Disconnected from Kad"
 msgstr "Ühendus Kad võrguga katkestatud"
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2137
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr ""
 "Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
 
-#: src/amule.cpp:2129
+#: src/amule.cpp:2140
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad on seadetes väljalülitatud, ei ühenda."
 
@@ -7078,6 +7075,17 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ei õnnestunud!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ei õnnestunud!"
+
+#~ msgid ""
+#~ "ERROR: aMule daemon cannot be used when external connections are "
+#~ "disabled. To enable External Connections, use either a normal aMule or "
+#~ "set the key\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule."
+#~ "conf"
+#~ msgstr ""
+#~ "VIGA: aMule deemonit ei saa kasutada kui Välisühendused on katkestatud. "
+#~ "VälisÜhenduste lubamiseks kasuta tavalist aMule või määra võtme "
+#~ "\"AcceptExternalConnections\" väärtuseks 1 konfiguratsioonifailis ~/."
+#~ "aMule/amule.conf"
 
 #~ msgid "Sources: %u"
 #~ msgstr "Allikaid: %u"

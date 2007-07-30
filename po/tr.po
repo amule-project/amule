@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_TR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-28 03:31+0200\n"
+"POT-Creation-Date: 2007-07-30 03:30+0200\n"
 "PO-Revision-Date: 2007-07-13 01:14+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -65,22 +65,22 @@ msgid "Complete"
 msgstr "Tamamlandı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3845
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:806
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Duraklatıldı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3848
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Hatalı"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3855
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:804
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Aktarılıyor"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3857
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Bekliyor"
 
@@ -416,7 +416,7 @@ msgstr ""
 "Geçerli bir kanak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
 
 #: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
-#: src/amule.cpp:674
+#: src/amule.cpp:685
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -949,7 +949,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Gönderme "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
-#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:158
+#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:160
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
@@ -1260,7 +1260,7 @@ msgid "Auto [Hi]"
 msgstr "Oto (Yük)"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:503 src/amuleDlg.cpp:729
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:796
+#: src/ClientListCtrl.cpp:661 src/amule.cpp:807
 msgid "Connecting"
 msgstr "Bağlanıyor"
 
@@ -1553,7 +1553,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3212 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:313
-#: src/amule.cpp:714 src/amule.cpp:1321
+#: src/amule.cpp:725 src/amule.cpp:1332
 msgid "Info"
 msgstr "Bilgi"
 
@@ -2880,9 +2880,9 @@ msgstr "Bağlan"
 msgid "Connection failed "
 msgstr "Bağlantı başarısız "
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:131
-#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:845
-#: src/amule.cpp:963 src/amule.cpp:1332
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:856
+#: src/amule.cpp:974 src/amule.cpp:1343
 msgid "Error"
 msgstr "Hata"
 
@@ -2900,7 +2900,7 @@ msgid "Transferred"
 msgstr "Aktarılan"
 
 #: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:802
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
 msgid "Completed"
 msgstr "Tamamlanmış"
 
@@ -3280,7 +3280,7 @@ msgstr "uzak arayüz"
 msgid "Insufficient Diskspace"
 msgstr "Yetersiz Disk Alanı"
 
-#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:807
+#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Durduruldu"
 
@@ -3547,11 +3547,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Bağlandı: %s %s %s"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2042
+#: src/TextClient.cpp:671 src/amule.cpp:2053
 msgid "with LowID"
 msgstr "DüşükID"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2042
+#: src/TextClient.cpp:671 src/amule.cpp:2053
 msgid "with HighID"
 msgstr "YüksekID"
 
@@ -4158,38 +4158,38 @@ msgstr "Onaylama Gerekiyor"
 msgid "All others"
 msgstr "Tüm Diğerleri"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:801
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
 msgid "Incomplete"
 msgstr "Tamamlanmamış"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:814
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
 msgid "Active"
 msgstr "Aktif"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:808
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
 msgid "Video"
 msgstr "Görüntü"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:270
-#: src/OtherFunctions.cpp:809 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Ses"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
 msgid "Archive"
 msgstr "Sıkıştırılmış"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:284
-#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
+#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-İmajı"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:291
-#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
+#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Resim"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:813
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
 msgid "Text"
 msgstr "Döküman"
 
@@ -4323,115 +4323,115 @@ msgstr "Bekliyor..."
 msgid "%s (Disk: %s)"
 msgstr "%s (Disk: %s)"
 
-#: src/OtherFunctions.cpp:121
+#: src/OtherFunctions.cpp:123
 msgid "bytes"
 msgstr "bayt"
 
-#: src/OtherFunctions.cpp:123
+#: src/OtherFunctions.cpp:125
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:125 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:129
+#: src/OtherFunctions.cpp:131
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:141
+#: src/OtherFunctions.cpp:143
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:143
+#: src/OtherFunctions.cpp:145
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:145
+#: src/OtherFunctions.cpp:147
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:149
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:156
+#: src/OtherFunctions.cpp:158
 msgid "bytes/sec"
 msgstr "bayt/sn"
 
-#: src/OtherFunctions.cpp:160
+#: src/OtherFunctions.cpp:162
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:171 src/OtherFunctions.cpp:175
+#: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
 msgid "secs"
 msgstr "sn"
 
-#: src/OtherFunctions.cpp:183
+#: src/OtherFunctions.cpp:185
 msgid "mins"
 msgstr "dk"
 
-#: src/OtherFunctions.cpp:190 src/OtherFunctions.cpp:200
+#: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
 msgid "hours"
 msgstr "saat"
 
-#: src/OtherFunctions.cpp:198
+#: src/OtherFunctions.cpp:200
 msgid "Days"
 msgstr "Gün"
 
-#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Görüntüler"
 
-#: src/OtherFunctions.cpp:277 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Sıkıştırılmış Dosyalar"
 
-#: src/OtherFunctions.cpp:298 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr "Dökümanlar"
 
-#: src/OtherFunctions.cpp:305 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programlar"
 
-#: src/OtherFunctions.cpp:312 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "Herhangi"
 
-#: src/OtherFunctions.cpp:390 src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Derecelendirilmemiş"
 
-#: src/OtherFunctions.cpp:391 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Geçersiz / Bozuk / Sahte"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Zayıf"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Doğru"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "İyi"
 
-#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Mükemmel"
 
-#: src/OtherFunctions.cpp:799
+#: src/OtherFunctions.cpp:801
 msgid "all"
 msgstr "hepsi"
 
-#: src/OtherFunctions.cpp:800
+#: src/OtherFunctions.cpp:802
 msgid "all others"
 msgstr "tüm diğerleri"
 
@@ -6449,12 +6449,10 @@ msgstr "Alt işlem bekleniyor, durdurma başarısız oldu."
 #: src/amuled.cpp:405
 msgid ""
 "ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule or set the key"
-"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
+"To enable External Connections, use either a normal aMule, start amuled with "
+"the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
+"the file ~/.aMule/amule.conf"
 msgstr ""
-"ERROR: aMule daemon cannot be used when external connections are disabled. "
-"To enable External Connections, use either a normal aMule or set the key"
-"\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6860,7 +6858,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "%s komutunun %s olayında çalıştırılması başarısız oldu."
 
-#: src/amule.cpp:712
+#: src/amule.cpp:723
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6868,7 +6866,7 @@ msgstr ""
 "Bir yapılandırma değişikliği nedeniyle dil ayarınız 'Sistem Varsayılanı'na "
 "çevrildi.Üzgünüm."
 
-#: src/amule.cpp:778
+#: src/amule.cpp:789
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -6876,16 +6874,16 @@ msgstr ""
 "Sunucu listesinde mevcut bir sunucu yok.\n"
 "aMule'nin yeni bir liste indirmesini ister misiniz?"
 
-#: src/amule.cpp:780
+#: src/amule.cpp:791
 msgid "Server list download"
 msgstr "Sunucu listesi indirme"
 
-#: src/amule.cpp:838
+#: src/amule.cpp:849
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "webserver running on pid %d"
 
-#: src/amule.cpp:841
+#: src/amule.cpp:852
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6895,12 +6893,12 @@ msgstr ""
 "be run. Please install the package containing aMule webserver, or compile "
 "aMule using --enable-webserver and run make install"
 
-#: src/amule.cpp:953
+#: src/amule.cpp:964
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port. %u kullanılamıyor. DÜŞÜKID alacaksınız.\n"
 
-#: src/amule.cpp:959
+#: src/amule.cpp:970
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6916,22 +6914,22 @@ msgstr ""
 "Ağ ayarlarınız kontrol ederek protun giriş ve çıkışlar için açık olup "
 "olmadığını kontrol ediniz."
 
-#: src/amule.cpp:1070
+#: src/amule.cpp:1081
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
 "UYARI: Kendiniz bir kaynak olarak ekleyebilirsiniz; ancak DüşükID alırsınız."
 
-#: src/amule.cpp:1121
+#: src/amule.cpp:1132
 msgid "Failed to create OnlineSig File"
 msgstr "Online İmza dosyası oluşturma başarısız."
 
-#: src/amule.cpp:1129
+#: src/amule.cpp:1140
 msgid "Failed to create aMule OnlineSig File"
 msgstr "aMule Online İmza dosyası oluşturma başarısız."
 
-#: src/amule.cpp:1297
+#: src/amule.cpp:1308
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6939,38 +6937,38 @@ msgstr ""
 "Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: Bunu "
 "yine de yapmaya çalışacağım)"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1318
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "aMule %s sürümünü ilk kez kullanıyorsunuz"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1320
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Bu sürüm bir deneme sürümü, her gün güncellenir ve\n"
 
-#: src/amule.cpp:1310
+#: src/amule.cpp:1321
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "bir şeyleri bozmayacağını veya evinizi yakmayacağını \n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1322
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "yahut da köpeğinizi öldürmeyeceğini garanti edemeyiz. Fakat kullanmak sizin "
 "elinizde\n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1327
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Daha fazla bilgi, detek ve yeni sürümler ana sayfamızda bulunabilir\n"
 
-#: src/amule.cpp:1317
+#: src/amule.cpp:1328
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org veya IRC Kanalımız: #aMule at irc.freenode.net.\n"
 
-#: src/amule.cpp:1319
+#: src/amule.cpp:1330
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Her türlü hatayı bize bildirmekten çekinmeyin http://forum.amule.org"
 
-#: src/amule.cpp:1332
+#: src/amule.cpp:1343
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6978,101 +6976,101 @@ msgstr ""
 "Belirlediğiniz Online İmza dosyaları klasörü GEÇERSİZ!\n"
 " Online İmza, ayarlarınızda düzeltene kadar DEVREDIŞI bırakıldı."
 
-#: src/amule.cpp:1726
+#: src/amule.cpp:1737
 msgid "ERROR: can't open logfile"
 msgstr "HATA: Kayıt dosyası açılamıyor."
 
-#: src/amule.cpp:1730
+#: src/amule.cpp:1741
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "UYARI: Kayıt dosyası boş, bir şeyler yanlış."
 
-#: src/amule.cpp:1749
+#: src/amule.cpp:1760
 msgid "Log has been reset"
 msgstr "Kayıt silindi."
 
-#: src/amule.cpp:1777
+#: src/amule.cpp:1788
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Sunucu İletisi: %s"
 
-#: src/amule.cpp:1815
+#: src/amule.cpp:1826
 msgid "Failed to download the nodes list."
 msgstr "Nod listesini indirme başarısız."
 
-#: src/amule.cpp:1828
+#: src/amule.cpp:1839
 msgid "Failed to open the downloaded version check file"
 msgstr "İndirilen sürüm kontrol dosyasını açma başarısız oldu."
 
-#: src/amule.cpp:1831 src/amule.cpp:1841 src/amule.cpp:1847
+#: src/amule.cpp:1842 src/amule.cpp:1852 src/amule.cpp:1858
 msgid "Corrupted version check file"
 msgstr "Bozuk sürüm kontrol dosyası"
 
-#: src/amule.cpp:1857
+#: src/amule.cpp:1868
 msgid "You are using an outdated version of aMule!"
 msgstr "aMule'nin eski bir sürümünü kullanıyorsunuz!"
 
-#: src/amule.cpp:1858
+#: src/amule.cpp:1869
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "aMule sürümünüz %i.%i.%i ve en güncel sürüm %li.%li.%li"
 
-#: src/amule.cpp:1859
+#: src/amule.cpp:1870
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "En güncel sürüm her zaman http://www.amule.org adresinde bulunabilir."
 
-#: src/amule.cpp:1862
+#: src/amule.cpp:1873
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "UYARI: aMule sürümünü eski: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1866
+#: src/amule.cpp:1877
 msgid "Your copy of aMule is up to date."
 msgstr "aMule sürmünüz güncel."
 
-#: src/amule.cpp:1873
+#: src/amule.cpp:1884
 msgid "Failed to download the version check file"
 msgstr "Sürüm kotnrol dosyasını indirme başarısız oldu."
 
-#: src/amule.cpp:1975
+#: src/amule.cpp:1986
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Kullanıcı: E: %s K: %s | Dosya E: %s K: %s"
 
-#: src/amule.cpp:2044
+#: src/amule.cpp:2055
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Bağlandı: %s %s"
 
-#: src/amule.cpp:2047
+#: src/amule.cpp:2058
 #, c-format
 msgid "Connecting to %s"
 msgstr "Bağlanıyor: %s"
 
-#: src/amule.cpp:2049
+#: src/amule.cpp:2060
 msgid "Disconnected from ED2K"
 msgstr "ED2K bağlantısı kesildi"
 
-#: src/amule.cpp:2056
+#: src/amule.cpp:2067
 msgid "Kad started."
 msgstr "Kademlia başladı."
 
-#: src/amule.cpp:2058
+#: src/amule.cpp:2069
 msgid "Kad stopped."
 msgstr "Kademlia durdu."
 
-#: src/amule.cpp:2065
+#: src/amule.cpp:2076
 msgid "Connected to Kad (ok)"
 msgstr "Kademila ağına bağlanıldı (tamam)"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2078
 msgid "Connected to Kad (firewalled)"
 msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
 
-#: src/amule.cpp:2070
+#: src/amule.cpp:2081
 msgid "Disconnected from Kad"
 msgstr "Kademlia bağlantısı kesildi."
 
-#: src/amule.cpp:2126
+#: src/amule.cpp:2137
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7080,7 +7078,7 @@ msgstr ""
 "UDP portu ayarlarda devredışı bırakılmışsa Kad ağı kullanılamaz. "
 "Başlatılmıyor."
 
-#: src/amule.cpp:2129
+#: src/amule.cpp:2140
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad. ağı ayarlarda devredışı bırakılmış, bağlanılmıyor."
 
@@ -7091,6 +7089,17 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#~ msgid ""
+#~ "ERROR: aMule daemon cannot be used when external connections are "
+#~ "disabled. To enable External Connections, use either a normal aMule or "
+#~ "set the key\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule."
+#~ "conf"
+#~ msgstr ""
+#~ "ERROR: aMule daemon cannot be used when external connections are "
+#~ "disabled. To enable External Connections, use either a normal aMule or "
+#~ "set the key\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule."
+#~ "conf"
 
 #~ msgid "Sources: %u"
 #~ msgstr "Kaynaklar: %u"
