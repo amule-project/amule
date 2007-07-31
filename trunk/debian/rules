@@ -20,7 +20,8 @@ else
 endif
 
 #Here are the packages that can't be compiled separate now
-general_pkgs = "amule-i18n-ar"\
+general_pkgs = "amule-common"\
+	"amule-i18n-ar"\
 	"amule-i18n-bg"\
 	"amule-i18n-ca"\
 	"amule-i18n-da"\
@@ -45,15 +46,20 @@ general_pkgs = "amule-i18n-ar"\
 	"amule-i18n-pt-pt"\
 	"amule-i18n-ru"\
 	"amule-i18n-sl"\
+	"amule-i18n-sv"\
+	"amule-i18n-tr"\
 	"amule-i18n-zh-cn"\
 	"amule-i18n-zh-tw"\
+	"amule-skin-gnome"\
+	"amule-skin-kde4"\
+	"amule-skin-tango"\
+	"amule-skin-ubuntu"\
 	"amule-theme-default"\
 	"amule-theme-php-default"\
 	"amule-theme-chicane"\
-	"amule-common"\
-	"amule-xas"\
+	"amule-utils"\
 	"amule-utils-gui"\
-	"amule-utils"
+	"amule-xas"
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -175,27 +181,31 @@ endif
 #Before we start, I want to introduce two sequences for building the packages
 #I define two, so I can put the commands for the *-dbg packages between them
 define stage1
-	dh_testdir -p$@
-	dh_testroot -p$@
-	dh_installchangelogs docs/Changelog -p$@
-	dh_installdocs -p$@
-	dh_install -Xlicense.txt -p$@
-	dh_installmenu -p$@
-	dh_installdebconf -p$@	
-	dh_installman -p$@
-	dh_link -p$@
+	dh_testdir -p${pkg}
+	dh_testroot -p${pkg}
+	dh_installdirs -p${pkg}
+	dh_installchangelogs docs/Changelog -p${pkg}
+	dh_installdocs -p${pkg}
+	dh_install -Xlicense.txt -p${pkg}
+	dh_installmenu -p${pkg}
+	dh_installdebconf -p${pkg}
+	dh_installman -p${pkg}
+	dh_link -p${pkg}
+	install -D --mode=644 debian/${pkg}.override debian/${pkg}/usr/share/lintian/overrides/${pkg}
+	touch $@
 endef
 
 define stage2
-	dh_compress -X.pl -p$@
-	dh_perl -p$@
-	dh_makeshlibs
-	dh_installdeb -p$@
-	dh_shlibdeps -p$@
-	dh_gencontrol -p$@
-	dh_md5sums -p$@
-	dh_fixperms -p$@
-	dh_builddeb -p$@
+	dh_compress -X.pl -p${pkg}
+	dh_perl -p${pkg}
+	dh_makeshlibs -p${pkg}
+	dh_installdeb -p${pkg}
+	dh_shlibdeps -p${pkg}
+	dh_gencontrol -p${pkg}
+	dh_md5sums -p${pkg}
+	dh_fixperms -p${pkg}
+	dh_builddeb -p${pkg}
+	touch $@
 endef
 
 #Now we configure this whole thing
@@ -211,6 +221,7 @@ config.status: configure
 		--with-ccache\
 		--enable-utf8-systray\
 		--enable-geoip\
+		--disable-embedded-crypto\
 		${AMULECMD}\
 		${DEBUGGING}\
 		${WEBSERVER}\
@@ -222,13 +233,12 @@ config.status: configure
 		${DAEMON}\
 		${AMULE}\
 		${ED2K}
-#Disabled till support for external crypto is fixed		--disable-embedded-crypto
 
 #I do this substitution before the install, regardless if the packages get biuld
 	cp amule.desktop amule.desktop.bak
 	cp src/utils/aLinkCreator/alc.desktop src/utils/aLinkCreator/alc.desktop.bak
 	cp src/utils/wxCas/wxcas.desktop src/utils/wxCas/wxcas.desktop.bak
-	sed -e 's/Exec=amule/Exec=amule --even-if-lfroen-complains-this-will-stay/' < amule.desktop > amule.desktop.tmp
+	sed -e 's/Exec=amule/Exec=amule --even-if-lfroen-surreptitiously-removes-it-this-will-stay/' < amule.desktop > amule.desktop.tmp
 	sed -e 's/Icon=alc.xpm/Icon=\/usr\/share\/pixmaps\/alc.xmp/' < src/utils/aLinkCreator/alc.desktop > src/utils/aLinkCreator/alc.desktop.tmp
 	sed -e 's/Icon=wxcas.xpm/Icon=\/usr\/share\/pixmaps\/wxcas.xmp/' < src/utils/wxCas/wxcas.desktop > src/utils/wxCas/wxcas.desktop.tmp
 	mv amule.desktop.tmp amule.desktop
@@ -240,6 +250,47 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
+	-rm amule-common
+	-rm amule-stage1
+	-rm amule-stage2
+	-rm amule-dbg
+	-rm amule-ed2k-stage1
+	-rm amule-ed2k-stage2
+	-rm amule-ed2k-dbg
+	-rm amule-cas-stage1
+	-rm amule-cas-stage2
+	-rm amule-cas-dbg
+	-rm amule-wxcas-stage1
+	-rm amule-wxcas-stage2
+	-rm amule-wxcas-dbg
+	-rm amuleweb-stage1
+	-rm amuleweb-stage2
+	-rm amuleweb-dbg
+	-rm amule-remote-gui-stage1
+	-rm amule-remote-gui-stage2
+	-rm amule-remote-gui-dbg
+	-rm amule-daemon-stage1
+	-rm amule-daemon-stage2
+	-rm amule-daemon-dbg
+	-rm amule-alc-stage1
+	-rm amule-alc-stage2
+	-rm amule-alc-dbg
+	-rm amule-alcc-stage1
+	-rm amule-alcc-stage2
+	-rm amule-alcc-dbg
+	-rm amule-cmd-stage1
+	-rm amule-cmd-stage2
+	-rm amule-cmd-dbg
+	-rm amule
+	-rm ed2k
+	-rm cas
+	-rm wxcas
+	-rm webserver
+	-rm remotegui
+	-rm daemon
+	-rm alc
+	-rm alcc
+	-rm amulecmd
 
 	-$(MAKE) distclean
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
@@ -274,7 +325,7 @@ install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -a -k 
-	dh_installdirs -a
+	dh_installdirs
 
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
 
@@ -284,6 +335,7 @@ amule-common: install
 	for pkg in $(general_pkgs); do \
 		dh_testdir -p$$pkg; \
 		dh_testroot -p$$pkg; \
+		dh_installdirs -p$$pkg; \
 		dh_installchangelogs docs/Changelog -p$$pkg; \
 		dh_installdocs -p$$pkg; \
 		dh_install -Xlicense.txt -p$$pkg; \
@@ -291,9 +343,10 @@ amule-common: install
 		dh_installdebconf -p$$pkg; \
 		dh_installman -p$$pkg; \
 		dh_link -p$$pkg; \
+		install -D --mode=644 debian/$$pkg.override debian/$$pkg/usr/share/lintian/overrides/$$pkg; \
 		dh_compress -X.pl -p$$pkg; \
 		dh_perl -p$$pkg; \
-		dh_makeshlibs; \
+		dh_makeshlibs -p$$pkg; \
 		dh_installdeb -p$$pkg; \
 		dh_shlibdeps -p$$pkg; \
 		dh_gencontrol -p$$pkg; \
@@ -301,145 +354,226 @@ amule-common: install
 		dh_fixperms -p$$pkg; \
 		dh_builddeb -p$$pkg; \
 	done
+	touch amule-common
 
-amule: amule-common
+amule-stage1: pkg=amule
+amule-stage1: amule-common
 	${stage1}
+
+amule-stage2: pkg=amule
+amule-stage2: amule-stage1
 	${stage2}
 
-amule-ed2k: amule-common
+amule-ed2k-stage1: pkg=amule-ed2k
+amule-ed2k-stage1: amule-common
 	${stage1}
+
+amule-ed2k-stage2: pkg=amule-ed2k
+amule-ed2k-stage2: amule-ed2k-stage1
 	${stage2}
 
-amule-cas: amule-common
+amule-cas-stage1: pkg=amule-cas
+amule-cas-stage1: amule-common
 	${stage1}
+
+amule-cas-stage2: pkg=amule-cas
+amule-cas-stage2: amule-cas-stage1
 	${stage2}
 
-amule-wxcas: amule-common
+amule-wxcas-stage1: pkg=amule-wxcas
+amule-wxcas-stage1: amule-common
 	${stage1}
+
+amule-wxcas-stage2: pkg=amule-wxcas
+amule-wxcas-stage2: amule-wxcas-stage1
 	${stage2}
 
-amuleweb: amule-common
+amuleweb-stage1: pkg=amuleweb
+amuleweb-stage1: amule-common
 	${stage1}
+
+amuleweb-stage2: pkg=amuleweb
+amuleweb-stage2: amuleweb-stage1
 	${stage2}
 
-amule-remote-gui: amule-common
+amule-remote-gui-stage1: pkg=amule-remote-gui
+amule-remote-gui-stage1: amule-common
 	${stage1}
+
+amule-remote-gui-stage2: pkg=amule-remote-gui
+amule-remote-gui-stage2: amule-remote-gui-stage1
 	${stage2}
 
-amule-daemon: amule-common
+amule-daemon-stage1: pkg=amule-daemon
+amule-daemon-stage1: amule-common
 	${stage1}
+
+amule-daemon-stage2: pkg=amule-daemon
+amule-daemon-stage2: amule-daemon-stage1
 	${stage2}
 
-amule-alc: amule-common
+amule-alc-stage1: pkg=amule-alc
+amule-alc-stage1: amule-common
 	${stage1}
+
+amule-alc-stage2: pkg=amule-alc
+amule-alc-stage2: amule-alc-stage1
 	${stage2}
 
-amule-alcc: amule-common
+amule-alcc-stage1: pkg=amule-alcc
+amule-alcc-stage1: amule-common
 	${stage1}
+
+amule-alcc-stage2: pkg=amule-alcc
+amule-alcc-stage2: amule-alcc-stage1
 	${stage2}
 
-amule-cmd: amule-common
+amule-cmd-stage1: pkg=amule-cmd
+amule-cmd-stage1: amule-common
 	${stage1}
+
+amule-cmd-stage2: pkg=amule-cmd
+amule-cmd-stage2: amule-alcc-stage1
 	${stage2}
 
-amule-dbg: amule
-	${stage1}
-	dh_strip -pamule --dbg-package=amule-dbg
-	${stage2}
 
-amule-ed2k-dbg: ed2k
+amule-ed2k-dbg: pkg=amule-ed2k-dbg
+amule-ed2k-dbg: amule-ed2k-stage1
 	${stage1}
 	dh_strip -pamule-ed2k --dbg-package=amule-ed2k-dbg
 	${stage2}
 
-amule-cas-dbg: cas
+amule-cas-dbg: pkg=amule-cas-dbg
+amule-cas-dbg: amule-cas-stage1
 	${stage1}
 	dh_strip -pamule-cas --dbg-package=amule-cas-dbg
 	${stage2}
 
-amule-wxcas-dbg: wxcas
+amule-wxcas-dbg: pkg=amule-wxcas-dbg
+amule-wxcas-dbg: amule-wxcas-stage1
 	${stage1}
 	dh_strip -pamule-wxcas --dbg-package=amule-wxcas-dbg
 	${stage2}
 
-amuleweb-dbg: webserver
+amuleweb-dbg: pkg=amuleweb-dbg
+amuleweb-dbg: amuleweb-stage1
 	${stage1}
 	dh_strip -pamuleweb --dbg-package=amuleweb-dbg
 	${stage2}
 
-amule-remote-gui-dbg: remotegui
+amule-remote-gui-dbg: pkg=amule-remote-gui-dbg
+amule-remote-gui-dbg: amule-remote-gui-stage1
 	${stage1}
 	dh_strip -pamule-remote-gui --dbg-package=amule-remote-gui-dbg
 	${stage2}
 
-amule-daemon-dbg: daemon
+amule-daemon-dbg: pkg=amule-daemon-dbg
+amule-daemon-dbg: amule-daemon-stage1
 	${stage1}
 	dh_strip -pamule-daemon --dbg-package=amule-daemon-dbg
 	${stage2}
 
-amule-alc-dbg: alc
+amule-alc-dbg: pkg=amule-alc-dbg
+amule-alc-dbg: amule-alc-stage1
 	${stage1}
 	dh_strip -pamule-alc --dbg-package=amule-alc-dbg
 	${stage2}
 
-amule-alcc-dbg: alcc
+amule-alcc-dbg: pkg=amule-alcc-dbg
+amule-alcc-dbg: amule-alcc-stage1
 	${stage1}
 	dh_strip -pamule-alcc --dbg-package=amule-alcc-dbg
 	${stage2}
 
-amule-cmd-dbg: amulecmd
+amule-cmd-dbg: pkg=amule-cmd-dbg
+amule-cmd-dbg: amule-cmd-stage1
 	${stage1}
 	dh_strip -pamule-cmd --dbg-package=amule-cmd-dbg
 	${stage2}
 
 #Now just the targets to map the Commandline Name to the package names
-ed2k: amule-ed2k
+amule: amule-stage2
+	touch amule
 
-cas: amule-cas
+ed2k: amule-ed2k-stage2
+	touch ed2k
 
-wxcas: amule-wxcas
+cas: amule-cas-stage2
+	touch cas
 
-webserver: amuleweb
+wxcas: amule-wxcas-stage2
+	touch wxcas
 
-remotegui: amule-remote-gui
+webserver: amuleweb-stage2
+	touch webserver
 
-daemon: amule-daemon
+remotegui: amule-remote-gui-stage2
+	touch remotegui
 
-alc: amule-alc
+daemon: amule-daemon-stage2
+	touch daemon
 
-alcc: amule-alcc
+alc: amule-alc-stage2
+	touch alc
 
-amulecmd: amule-cmd
+alcc: amule-alcc-stage2
+	touch alcc
 
-amule-dbg: amule-dbg
+amulecmd: amule-cmd-stage2
+	touch amulecmd
 
 ed2k-dbg: amule-ed2k-dbg
+	touch ed2k-dbg
 
 cas-dbg: amule-cas-dbg
+	touch cas-dbg
 
 wxcas-dbg: amule-wxcas-dbg
+	touch wxcas-dbg
 
 webserver-dbg: amuleweb-dbg
+	touch webserver-dbg
 
 remotegui-dbg: amule-remote-gui-dbg
+	touch remotegui-dbg
 
 daemon-dbg: amule-daemon-dbg
+	touch damon-dbg
 
 alc-dbg: amule-alc-dbg
+	touch alc-dbg
 
 alcc-dbg: amule-alcc-dbg
+	touch alcc-dbg
 
 amulecmd-dbg: amule-cmd-dbg
+	touch amulecmd-dbg
 
+amule-dbg: pkg=amule-dbg
+amule-dbg: amule-stage1
+	${stage1}
+	dh_strip -pamule --dbg-package=amule-dbg
+	${stage2}
 
-#These two targets are empty (with a space after the semicolon. They are just metapackages
-amule-utils: alcc amulecmd cas ; 
-amule-utils-gui: alc remotegui wxcas ; 
+#They are just metapackages
+amule-utils: pkg=amule-utils
+amule-utils: alcc amulecmd cas
+	${stage1}
+	${stage2}
+
+amule-utils-gui: pkg=amule-utils-gui
+amule-utils-gui: alc remotegui wxcas
+	${stage1}
+	${stage2}
+
+#These Two are empty (Space after Semicolon)
+debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg ; 
+normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon ; 
 
 #Now the targets for dpkg-buildpackage
 binary-indep: build install
 
-binary-arch: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg
+binary-arch: debug-packages normal-packages
 
 binary: binary-indep binary-arch
 
@@ -447,8 +581,4 @@ help:
 	cat README.Debian-Packages
 
 .DEFAULT_GOAL = help
-.PHONY: build clean binary-indep binary-arch binary install amule amule-ed2k amule-cas amule-wxcas
-.PHONY: amuleweb amule-remote-gui amule-daemon amule-alc amule-alcc amule-cmd amule-dbg amule-ed2k-dbg
-.PHONY: amule-cas-dbg amule-wxcas-dbg amuleweb-dbg amule-remote-gui-dbg amule-daemon-dbg amule-alc-dbg
-.PHONY: amule-alcc-dbg amule-cmd-dbg amule-utils amule-utils-gui amule-common ed2k cas wxcas webserver remotegui
-.PHONY: daemon alc alcc amulecmd 
+.PHONY: build clean binary-indep binary-arch binary install debug-packages normal-packages amule-utils-gui amule-utils

@@ -1,1 +1,10 @@
-/usr/bin/
+usr/bin
+usr/share/lintian/overrides
+usr/share/pixmaps
+usr/share/menu
+usr/share/man/man1
+usr/share/man/hu/man1
+usr/share/man/eu/man1
+usr/share/man/es/man1
+usr/share/man/de/man1
+usr/share/doc/amule-alc

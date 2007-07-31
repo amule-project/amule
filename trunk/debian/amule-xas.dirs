@@ -1,1 +1,10 @@
+usr/bin
 usr/share/doc/xchat-common/scripts-perl
+usr/share/lintian/overrides
+usr/lib/xchat/plugins
+usr/share/man/man1
+usr/share/man/hu/man1
+usr/share/man/eu/man1
+usr/share/man/es/man1
+usr/share/man/de/man1
+usr/share/doc/amule-xas
