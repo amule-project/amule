@@ -1,8 +1,32 @@
-amule (2.1.3+CVS20070702-1) testing; urgency=low
+amule (2.1.3+CVS20070730-1) testing; urgency=low
 
   * New Upstream CVS-Snapshot
 
- -- Vollstrecker <amule@vollstreckernet.de>  Mon, 02 Jul 2007 07:00:00 +0100
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 30 Jul 2007  8:00:01 +0100
+
+amule (2.1.3+CVS20070729-2) testing; urgency=low
+
+  * Fixed redundand call of make_shlibsdep for all pkgs
+  * Renabled External Crypto Build
+  * Added amule-i18n-sv package
+  * Added amule-i18n-tr package
+  * Added amule-skin-gnome package
+  * Added amule-skin-kde4 package
+  * Added amule-skin-tango package
+  * Added amule-skin-ubuntu package
+  * Corrected many typos in debian/control
+  * Added lintian override files
+  * Made sure that the binaries get stripped correct
+  * Added and Updated *.dirs and *.install files
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 29 Jul 2007 18:50:12 +0100
+
+amule (2.1.3+CVS20070708-2) testing; urgency=low
+
+  * Todays version is dedicated to Mathias Dittmar who decided for suicide.
+    I'll miss you friend
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 08 Jul 2007 23:49:05 +0100
 
 amule (2.1.3+CVS20070701-2) testing; urgency=low
 
