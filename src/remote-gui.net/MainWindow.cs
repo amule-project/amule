@@ -14,7 +14,7 @@ namespace amule.net
         Timer m_updateTimer = null;
 
         DownloadQueueContainer m_dload_info;
-
+        SharedFileListContainer m_shared_info;
 
         amuleDownloadStatusList m_download_status_ctrl = new amuleDownloadStatusList();
         amuleSharedFilesList m_shared_list_ctrl = new amuleSharedFilesList();
@@ -30,9 +30,20 @@ namespace amule.net
         ecProto.ecPacket GetFullInfoRequest()
         {
             ecProto.ecPacket req = null;
+            Control current_ctrl = panelMain.Controls[0];
+            if (current_ctrl == m_download_status_ctrl) {
+                req = m_dload_info.ReQuery();
+            } else if (current_ctrl == m_shared_list_ctrl) {
+                req = m_shared_info.ReQuery();
+                m_updateTimer.Stop();
+                if (req == null) {
+                    throw new Exception("m_shared_info.ReQuery()");
+                }
+            }
 
-            req = m_dload_info.ReQuery();
-
+            if ( req == null ) {
+                throw new Exception("unhandled GUI state");
+            }
             return req;
         }
 
@@ -101,6 +112,7 @@ namespace amule.net
             // Connection OK at this point
             //
             m_dload_info = new DownloadQueueContainer(m_download_status_ctrl);
+            m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
 
             m_updateTimer = new Timer();
             m_updateTimer.Tag = this;
@@ -161,6 +173,14 @@ namespace amule.net
             }
         }
 
+        public void SharedFilesReply(ecProto.ecPacket packet)
+        {
+            ecProto.ecPacket reply = m_shared_info.HandlePacket(packet);
+            if (reply != null) {
+                m_amuleRemote.SendPacket(reply);
+            }
+        }
+
         private void buttonXfer_Click(object sender, EventArgs e)
         {
             if ( panelMain.Controls[0] != m_download_status_ctrl ) {
@@ -206,6 +226,11 @@ namespace amule.net
                 case ECOpCodes.EC_OP_DLOAD_QUEUE:
                     m_owner.DloadQueueReply(packet);
                     break;
+                case ECOpCodes.EC_OP_SHARED_FILES:
+                    m_owner.SharedFilesReply(packet);
+                    break;
+                default:
+                    throw new Exception("Unhandled EC reply");
             }
         }
     }
@@ -233,7 +258,7 @@ namespace amule.net
         public amuleDownloadStatusList()
         {
             string[] columns = { "File name", "Status", "Size", "Completed", "Speed"};
-            int[] width = { 200, 100, 100, 100, 100 };
+            int[] width = { 300, 100, 100, 100, 100 };
             LoadColumns(columns, width);
 
             
@@ -291,7 +316,7 @@ namespace amule.net
         public void MyEndUpdate()
         {
             if (InvokeRequired) {
-                UpdateCallback d = new UpdateCallback(MyEndUpdate);
+                UpdateCallback d = new UpdateCallback(EndUpdate);
                 Invoke(d);
             } else {
                 EndUpdate();
@@ -301,10 +326,10 @@ namespace amule.net
         public void MyBeginUpdate()
         {
             if (InvokeRequired) {
-                UpdateCallback d = new UpdateCallback(MyEndUpdate);
+                UpdateCallback d = new UpdateCallback(BeginUpdate);
                 Invoke(d);
             } else {
-                MyEndUpdate();
+                BeginUpdate();
             }
         }
 
@@ -340,30 +365,66 @@ namespace amule.net
         public amuleSharedFilesList()
         {
             string[] columns = { "File name", "Size" };
-            int[] width = { 100, 100, 100, 100 };
+            int[] width = { 300, 100, 100, 100 };
             LoadColumns(columns, width);
         }
 
         #region IContainerUI Members
 
+        delegate void UpdateCallback();
         void IContainerUI.MyEndUpdate()
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (InvokeRequired) {
+                UpdateCallback d = new UpdateCallback(EndUpdate);
+                Invoke(d);
+            } else {
+                EndUpdate();
+            }
         }
 
         void IContainerUI.MyBeginUpdate()
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (InvokeRequired) {
+                UpdateCallback d = new UpdateCallback(BeginUpdate);
+                Invoke(d);
+            } else {
+                BeginUpdate();
+            }
         }
+
+        delegate void ItemCallback(SharedFileItem i);
 
         void IContainerUI.InsertItem(object i)
         {
-            throw new Exception("The method or operation is not implemented.");
+            SharedFileItem it = i as SharedFileItem;
+            if (InvokeRequired) {
+                ItemCallback d = new ItemCallback(DoInsertItem);
+                Invoke(d, it);
+            } else {
+                DoInsertItem(it);
+            }
         }
 
         void IContainerUI.UpdateItem(object i)
         {
             throw new Exception("The method or operation is not implemented.");
+        }
+
+        void DoInsertItem(SharedFileItem i)
+        {
+            ListViewItem it = new ListViewItem(i.Name);
+
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
+
+            Items.Add(it);
+
+            i.UiItem = it;
+        }
+
+        void DoUpdateItem(SharedFileItem i)
+        {
+            ListViewItem it = i.UiItem as ListViewItem;
+            //Items
         }
 
         #endregion

@@ -257,6 +257,13 @@ namespace amule.net
 
         object m_ui_item;
 
+        public amuleFileItem(ecProto.ecMD5 id, string name, Int64 size)
+        {
+            m_id = id;
+            m_filename = name;
+            m_filesize = size;
+        }
+
         public string ValueToPrefix(Int64 value)
         {
             if (value < 1024)
@@ -298,11 +305,8 @@ namespace amule.net
         Int32 m_speed;
 
 
-        public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size)
+        public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size) : base(id, name, size)
         {
-            m_id = id;
-            m_filename = name;
-            m_filesize = size;
         }
 
         public void UpdateItem(ecProto.ecTag tag)
@@ -379,12 +383,16 @@ namespace amule.net
     }
 
     public class SharedFileItem : amuleFileItem {
+        public SharedFileItem(ecProto.ecMD5 id, string name, Int64 size)
+            : base(id, name, size)
+        {
+        }
     }
 
     class SharedFileListContainer : amuleGenericContainer<SharedFileItem>
     {
         public SharedFileListContainer(IContainerUI owner)
-            : base(ECOpCodes.EC_OP_GET_SHARED_FILES, ECTagNames.EC_TAG_PARTFILE, owner)
+            : base(ECOpCodes.EC_OP_GET_SHARED_FILES, ECTagNames.EC_TAG_KNOWNFILE, owner)
         {
         }
 
@@ -394,7 +402,14 @@ namespace amule.net
 
         override protected SharedFileItem CreateItem(ecProto.ecTag tag)
         {
-            return null;
+            ecProto.ecMD5 id = ((ecProto.ecTagMD5)tag).ValueMD5();
+            string filename = ((ecProto.ecTagString)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_NAME)).StringValue();
+            Int64 filesize = (Int64)((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_FULL)).Value64();
+            SharedFileItem i = new SharedFileItem(id, filename, filesize);
+
+            //i.UpdateItem(tag);
+
+            return i;
         }
     }
 
