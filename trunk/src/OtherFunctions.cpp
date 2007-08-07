@@ -1321,24 +1321,6 @@ bool CheckConfig()
 }
 #endif /* EC_REMOTE */
 
-
-wxString GetLocaleDir()
-{
-	wxStandardPathsBase &spb(wxStandardPaths::Get());
-#ifdef __WXMSW__
-	wxString dataDir(spb.GetPluginsDir());
-#elif defined(__WXMAC__)
-	wxString dataDir(spb.GetDataDir());
-#else
-	// Remove the application name ("aMule") from GetDataDir()
-	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')));
-#endif
-	wxString localeDir(JoinPaths(dataDir, wxT("locale")));
-	
-	return localeDir;
-}
-
-
 void InitCustomLanguages()
 {
 	wxLanguageInfo CustomLanguage;
@@ -1359,11 +1341,12 @@ void InitLocale(wxLocale& locale, int language)
 	locale.Init(language,language_flags); 
 	
 	if (language != wxLANGUAGE_CUSTOM) {
-		wxString localeDir(GetLocaleDir());
-		locale.AddCatalogLookupPathPrefix(localeDir);
+
+#if defined(__WXMAC__)
+		wxStandardPathsBase &spb(wxStandardPaths::Get());
+		locale.AddCatalogLookupPathPrefix(JoinPaths(spb.GetDataDir(), wxT("locale")));
+#endif
 		locale.AddCatalog(wxT(PACKAGE));
-		printf("Using localeDir = '%s'.\n",
-			(const char *)unicode2char(localeDir));
 	} else {
 		locale.AddCatalogLookupPathPrefix(GetConfigDir());
 		locale.AddCatalog(wxT("custom"));

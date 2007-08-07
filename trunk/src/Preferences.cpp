@@ -30,11 +30,12 @@
 #include <include/common/Constants.h>
 #include <include/common/DataFileVersion.h>
 
+#include <wx/config.h>
+#include <wx/dir.h>
+#include <wx/stdpaths.h>
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
 #include <wx/textfile.h>		// Do_not_auto_remove (win32)
-#include <wx/config.h>
-#include <wx/dir.h>
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
@@ -771,7 +772,7 @@ public:
 		} else {
 			folder = wxT("webserver");
 		}
-		wxString dirName = GetConfigDir() + folder;
+		wxString dirName(JoinPaths(GetConfigDir(), folder));
 		wxString Filename;
 		wxDir d;
 		
@@ -793,9 +794,16 @@ public:
 			while (d.GetNext(&Filename));
 		}
 
-		wxString dataDir(GetLocaleDir().BeforeLast(wxFileName::GetPathSeparator()));
-		wxString systemDir(JoinPaths(JoinPaths(dataDir, wxT("amule")),folder));
-		
+		wxStandardPathsBase &spb(wxStandardPaths::Get());
+#ifdef __WXMSW__
+		wxString dataDir(spb.GetPluginsDir());
+#elif defined(__WXMAC__)
+		wxString dataDir(spb.GetDataDir());
+#else
+	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+#endif
+		wxString systemDir(JoinPaths(dataDir,folder));
+
 		if (wxDir::Exists(systemDir) &&
 			d.Open(systemDir) &&
 			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
