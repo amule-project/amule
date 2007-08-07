@@ -28,6 +28,7 @@
 #include <wx/html/htmlwin.h>
 #include <wx/mimetype.h>	// Do_not_auto_remove (win32)
 #include <wx/stattext.h>
+#include <wx/stdpaths.h>
 #include <wx/textfile.h>	// Do_not_auto_remove (win32)
 #include <wx/tokenzr.h>
 
@@ -1181,10 +1182,19 @@ bool CamuleDlg::Check_and_Init_SkinDir()
 	bool ret = true;
 	wxString skinDirName(thePrefs::GetSkinDir());
 
-	wxString userDir = GetConfigDir() + wxT("skins") + wxFileName::GetPathSeparator();
-	wxString dataDir(GetLocaleDir().BeforeLast(wxFileName::GetPathSeparator()));
-	wxString systemDir(JoinPaths(JoinPaths(dataDir, wxT("amule")),wxT("skins")));
-	systemDir += wxFileName::GetPathSeparator();
+	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
+	
+	wxStandardPathsBase &spb(wxStandardPaths::Get());
+#ifdef __WXMSW__
+	wxString dataDir(spb.GetPluginsDir());
+#elif defined(__WXMAC__)
+		wxString dataDir(spb.GetDataDir());
+#else
+	wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+#endif
+	wxString systemDir(JoinPaths(dataDir,wxT("skins")) + wxFileName::GetPathSeparator());
+
+		
 	skinDirName.Replace(wxT("User:"), userDir );
 	skinDirName.Replace(wxT("System:"), systemDir );
 
