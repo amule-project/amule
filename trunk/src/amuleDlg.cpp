@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/archive.h>
 #include <wx/config.h>		// Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/confbase.h>	// Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/html/htmlwin.h>
@@ -31,6 +32,8 @@
 #include <wx/stdpaths.h>
 #include <wx/textfile.h>	// Do_not_auto_remove (win32)
 #include <wx/tokenzr.h>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 
 #include <include/common/EventIDs.h>
 
@@ -171,6 +174,8 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	m_clientSkinNames[Client_GoodRating_Smiley]       = wxT("GoodRatingOnFile");
 	m_clientSkinNames[Client_FairRating_Smiley]       = wxT("FairRatingOnFile");
 	m_clientSkinNames[Client_ExcellentRating_Smiley]  = wxT("ExcellentRatingOnFile");
+	m_clientSkinNames[Client_CommentOnly_Smiley]      = wxT("CommentOnly");
+	m_clientSkinNames[Client_Encryption_Smiley]       = wxT("Encrypted");
 	
 	// wxWidgets send idle events to ALL WINDOWS by default... *SIGH*
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
@@ -1198,16 +1203,19 @@ bool CamuleDlg::Check_and_Init_SkinDir()
 	skinDirName.Replace(wxT("User:"), userDir );
 	skinDirName.Replace(wxT("System:"), systemDir );
 
-	m_skinDirName.AssignDir(skinDirName);
+#warning dirty,dirty,dirty
+// there's a lot of clean up needed in this code section, will do asap
+
+	m_skinDirName.Assign(skinDirName);
 	if (skinDirName.IsEmpty()) {
 		AddLogLineM(true, _("Warning: Skin directory name is empty"));
 		ret = false;
-	} else if (!m_skinDirName.DirExists()) {
+	} else if (!m_skinDirName.FileExists()) {
 		AddLogLineM(true, CFormat(
 			_("Skin directory '%s' does not exist")) %
 			skinDirName );
 		ret = false;
-	} else if (!m_skinDirName.IsDirReadable()) {
+	} else if (!m_skinDirName.IsFileReadable()) {
 		AddLogLineM(true, CFormat(
 			_("Warning: Unable to open skin directory '%s' for read")) %
 			skinDirName);
@@ -1225,23 +1233,41 @@ void CamuleDlg::Add_Skin_Icon(
 {
 	wxImage new_image;
 	if (useSkins) {
-		if (!m_skinDirName.GetFullPath().IsEmpty()) {
-			wxFileName iconWxFileName(
-				m_skinDirName.GetFullPath(),
-				iconName,
-				wxT("png"));
-			wxString iconFileName(iconWxFileName.GetFullPath());
-			if (!iconWxFileName.FileExists() ||
-			    !iconWxFileName.IsFileReadable() ||
-			    !new_image.LoadFile(iconWxFileName.GetFullPath())) {
+		WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
+		ZipCatalog::iterator it;
+		wxZipEntry *entry;
+		ZipCatalog cat;
+
+		// open the zip
+		wxFFileInputStream in(m_skinDirName.GetFullPath());
+		wxZipInputStream zip(in);
+
+		// load the zip catalog
+		while ((entry = zip.GetNextEntry()) != NULL) {
+			wxZipEntry*& current = cat[entry->GetInternalName()];
+			// some archive formats can have multiple entries with the same name
+			// (e.g. tar) though it is an error in the case of zip
+			delete current;
+			current = entry;
+		}
+
+		// open an entry by name
+		if ((it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")))) != cat.end()) {
+			zip.OpenEntry(*it->second);
+			// ... now read entry's data
+			if ( !new_image.LoadFile(zip,wxBITMAP_TYPE_PNG) ) {
 				AddLogLineM(false,
-					wxT("Warning: Can't load icon for ") +
-						iconFileName);
+					wxT("Warning: Error loading icon for ") +
+						iconName);
 				useSkins = false;
 			}
-		} else {
-			useSkins = false;
+		}else {
+				AddLogLineM(false,
+					wxT("Warning: Can't load icon for ") +
+						iconName);
+				useSkins = false;
 		}
+		
 	}
 	
 	wxBitmap bmp(useSkins ? new_image : stdIcon);

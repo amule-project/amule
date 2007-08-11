@@ -765,10 +765,14 @@ public:
 
 		wxString folder;
 		bool skins = false;
+		int flags = wxDIR_DIRS;
+		wxString filespec = wxEmptyString;
 #warning there has to be a better way...
 		if ( GetKey() == wxT("/SkinGUIOptions/SkinDir") ) {
 			folder = wxT("skins");
 			skins = true;
+			flags = wxDIR_FILES;
+			filespec = wxT("*.zip");
 		} else {
 			folder = wxT("webserver");
 		}
@@ -778,18 +782,15 @@ public:
 		
 		if (wxDir::Exists(dirName) &&
 			d.Open(dirName) &&
-			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
+			d.GetFirst(& Filename, filespec, flags)
 			)
 		{
 			do
 			{
-				if ((Filename != wxT(".")) && (Filename != wxT("..")))
-				{
-					if (skins == true) {
-						Filename = wxT("User:") + Filename;
-					}
-					skinSelector->Append(Filename);
+				if (skins == true) {
+					Filename = wxT("User:") + Filename;
 				}
+				skinSelector->Append(Filename);
 			}
 			while (d.GetNext(&Filename));
 		}
@@ -806,20 +807,17 @@ public:
 
 		if (wxDir::Exists(systemDir) &&
 			d.Open(systemDir) &&
-			d.GetFirst(& Filename, wxEmptyString, wxDIR_DIRS)
+			d.GetFirst(& Filename, filespec, flags)
 			)
 		{
 			do
 			{
-				if ((Filename != wxT(".")) && (Filename != wxT("..")))
-				{
-					if (skins == true) {
-						Filename = wxT("System:") +  Filename;
-					}
-					// avoid duplicates for webserver templates
-					if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
-						skinSelector->Append(Filename);
-					}
+				if (skins == true) {
+					Filename = wxT("System:") +  Filename;
+				}
+				// avoid duplicates for webserver templates
+				if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
+					skinSelector->Append(Filename);
 				}
 			}
 			while (d.GetNext(&Filename));
