@@ -470,8 +470,11 @@ bool CamuleApp::OnInit()
 		printf("This binary requires you to use the flag --even-if-lfroen-surreptitiously-removes-it-this-will-stay and only if you're very sure of it. Warning: If you're lfroen or wuischke, you might find this annoying. That pleases me.\n");
 		return false;
 	}	
+
+	bool ec_config = false;	
 	
 #ifdef AMULE_DAEMON
+	ec_config = cmdline.Found(wxT("ec-config"))
 	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
 		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
 			ConfigDir += wxFileName::GetPathSeparator();
@@ -491,7 +494,6 @@ bool CamuleApp::OnInit()
 	}
 
 	bool reset_config = cmdline.Found(wxT("reset-config"));
-	bool ec_config = cmdline.Found(wxT("ec-config"));
 	
 	enable_stdout_log = cmdline.Found(wxT("log-stdout"));
 #ifdef AMULE_DAEMON		
