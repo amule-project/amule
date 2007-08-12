@@ -377,7 +377,11 @@ void COScopeCtrl::DoBlit()
 	memDC->Blit(0,0,nClientWidth,nClientHeight,dcGrid,0,0);
 	// now add the plot on top as a "pattern" via SRCPAINT.
 	// works well with dark background and a light plot
-	memDC->Blit(0,0,nClientWidth,nClientHeight,dcPlot,0,0,wxOR);
+	memDC->Blit(0,0,nClientWidth,nClientHeight,dcPlot,0,0
+#ifndef __WXMAC__
+        ,wxOR
+#endif
+        );
 	
 	// Ready.
 	
