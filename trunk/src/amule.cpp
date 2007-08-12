@@ -474,7 +474,7 @@ bool CamuleApp::OnInit()
 	bool ec_config = false;	
 	
 #ifdef AMULE_DAEMON
-	ec_config = cmdline.Found(wxT("ec-config"))
+	ec_config = cmdline.Found(wxT("ec-config"));
 	if ( cmdline.Found(wxT("config-dir"), &ConfigDir) ) {
 		if (ConfigDir.Last() != wxFileName::GetPathSeparator()) {
 			ConfigDir += wxFileName::GetPathSeparator();
