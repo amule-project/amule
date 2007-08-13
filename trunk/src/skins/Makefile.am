@@ -1,1 +1,7 @@
-SUBDIRS = gnome kde4 tango ubuntu
+dist_skin_DATA = \
+		gnome.zip \
+		kde4.zip \
+		tango.zip \
+		ubuntu.zip
+
+skindir = $(pkgdatadir)/skins
