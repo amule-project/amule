@@ -443,7 +443,7 @@ public:
 
 	static wxString 	GetBrowser();
 	
-	static const wxString&	GetSkinDir()			{ return s_SkinDir; }
+	static const wxString&	GetSkin()			{ return s_Skin; }
 	
 	static bool		UseSkins()			{ return s_UseSkinFiles; }
 
@@ -712,7 +712,7 @@ protected:
 	static wxString	s_OSDirectory;
 	static uint16	s_OSUpdate;
 	
-	static wxString	s_SkinDir;
+	static wxString	s_Skin;
 	static bool	s_UseSkinFiles;
 	
 	static bool	s_FastED2KLinksHandler;	// Madcat - Toggle Fast ED2K Links Handler

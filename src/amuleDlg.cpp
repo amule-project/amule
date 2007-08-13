@@ -145,10 +145,10 @@ m_is_safe_state(false),
 m_BlinkMessages(false),
 m_CurrentBlinkBitmap(24),
 m_last_iconizing(0),
-m_skinDirName(),
+m_skinFileName(),
 m_clientSkinNames(CLIENT_SKIN_SIZE)
 {
-	// Initialize sikin names
+	// Initialize skin names
 	m_clientSkinNames[Client_Green_Smiley]            = wxT("Transfer");
 	m_clientSkinNames[Client_Red_Smiley]              = wxT("Connecting");
 	m_clientSkinNames[Client_Yellow_Smiley]           = wxT("OnQueue");
@@ -1182,10 +1182,10 @@ wxString CamuleDlg::GenWebSearchUrl(const wxString &filename, WebSearch wsProvid
 }
 
 
-bool CamuleDlg::Check_and_Init_SkinDir()
+bool CamuleDlg::Check_and_Init_Skin()
 {
 	bool ret = true;
-	wxString skinDirName(thePrefs::GetSkinDir());
+	wxString skinFileName(thePrefs::GetSkin());
 
 	wxString userDir(JoinPaths(GetConfigDir(), wxT("skins")) + wxFileName::GetPathSeparator());
 	
@@ -1200,27 +1200,33 @@ bool CamuleDlg::Check_and_Init_SkinDir()
 	wxString systemDir(JoinPaths(dataDir,wxT("skins")) + wxFileName::GetPathSeparator());
 
 		
-	skinDirName.Replace(wxT("User:"), userDir );
-	skinDirName.Replace(wxT("System:"), systemDir );
+	skinFileName.Replace(wxT("User:"), userDir );
+	skinFileName.Replace(wxT("System:"), systemDir );
 
 #warning dirty,dirty,dirty
 // there's a lot of clean up needed in this code section, will do asap
 
-	m_skinDirName.Assign(skinDirName);
-	if (skinDirName.IsEmpty()) {
-		AddLogLineM(true, _("Warning: Skin directory name is empty"));
-		ret = false;
-	} else if (!m_skinDirName.FileExists()) {
+	m_skinFileName.Assign(skinFileName);
+	if (!m_skinFileName.FileExists()) {
 		AddLogLineM(true, CFormat(
 			_("Skin directory '%s' does not exist")) %
-			skinDirName );
+			skinFileName );
 		ret = false;
-	} else if (!m_skinDirName.IsFileReadable()) {
+	} else if (!m_skinFileName.IsFileReadable()) {
 		AddLogLineM(true, CFormat(
-			_("Warning: Unable to open skin directory '%s' for read")) %
-			skinDirName);
+			_("Warning: Unable to open skin file '%s' for read")) %
+			skinFileName);
 		ret = false;
 	}
+
+		wxFFileInputStream in(m_skinFileName.GetFullPath());
+		wxZipInputStream zip(in);
+
+		while ((entry = zip.GetNextEntry()) != NULL) {
+			wxZipEntry*& current = cat[entry->GetInternalName()];
+			delete current;
+			current = entry;
+		}
 
 	return ret;
 }
@@ -1233,28 +1239,11 @@ void CamuleDlg::Add_Skin_Icon(
 {
 	wxImage new_image;
 	if (useSkins) {
-		WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
-		ZipCatalog::iterator it;
-		wxZipEntry *entry;
-		ZipCatalog cat;
-
-		// open the zip
-		wxFFileInputStream in(m_skinDirName.GetFullPath());
+		wxFFileInputStream in(m_skinFileName.GetFullPath());
 		wxZipInputStream zip(in);
-
-		// load the zip catalog
-		while ((entry = zip.GetNextEntry()) != NULL) {
-			wxZipEntry*& current = cat[entry->GetInternalName()];
-			// some archive formats can have multiple entries with the same name
-			// (e.g. tar) though it is an error in the case of zip
-			delete current;
-			current = entry;
-		}
-
-		// open an entry by name
+		
 		if ((it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")))) != cat.end()) {
 			zip.OpenEntry(*it->second);
-			// ... now read entry's data
 			if ( !new_image.LoadFile(zip,wxBITMAP_TYPE_PNG) ) {
 				AddLogLineM(false,
 					wxT("Warning: Error loading icon for ") +
@@ -1281,7 +1270,7 @@ void CamuleDlg::Add_Skin_Icon(
 
 void CamuleDlg::Apply_Clients_Skin()
 {
-	bool useSkins = thePrefs::UseSkins() && Check_and_Init_SkinDir();
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
 	
 	// Clear the client image list
 	m_imagelist.RemoveAll();
@@ -1296,7 +1285,7 @@ void CamuleDlg::Apply_Clients_Skin()
 
 void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 {
-	bool useSkins = thePrefs::UseSkins() && Check_and_Init_SkinDir();
+	bool useSkins = thePrefs::UseSkins() && Check_and_Init_Skin();
 	
 	// Clear the toolbar image list
 	m_tblist.RemoveAll();
