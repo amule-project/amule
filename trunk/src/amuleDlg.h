@@ -27,11 +27,13 @@
 #define AMULEDLG_H
 
 
+#include <wx/archive.h>
 #include <wx/filename.h>
 #include <wx/frame.h>			// Needed for wxFrame
 #include <wx/imaglist.h>
 #include <wx/timer.h>
-
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 
 #include "Types.h"			// Needed for uint32
 
@@ -220,8 +222,13 @@ private:
 	bool m_BlinkMessages;
 	int m_CurrentBlinkBitmap;
 	uint32 m_last_iconizing;
-	wxFileName m_skinDirName;
+	wxFileName m_skinFileName;
 	std::vector<wxString> m_clientSkinNames;
+
+	WX_DECLARE_STRING_HASH_MAP(wxZipEntry*, ZipCatalog);
+	ZipCatalog::iterator it;
+	wxZipEntry *entry;
+	ZipCatalog cat;
 
 	bool LoadGUIPrefs(
 		bool override_pos,
@@ -232,7 +239,7 @@ private:
 	
 	void Apply_Clients_Skin();
 	void Apply_Toolbar_Skin(wxToolBar *wndToolbar);
-	bool Check_and_Init_SkinDir();
+	bool Check_and_Init_Skin();
 	void Add_Skin_Icon(
 		const wxString &iconName,
 		const wxBitmap &stdIcon,
