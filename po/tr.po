@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_TR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-12 03:31+0200\n"
+"POT-Creation-Date: 2007-08-14 03:31+0200\n"
 "PO-Revision-Date: 2007-07-13 01:14+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -246,7 +246,7 @@ msgstr "Seçili arkadaş(lar)ınızı silmek istediğinizden emin misiniz?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
-#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1327
+#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1316
 #: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
@@ -320,7 +320,7 @@ msgstr "Tam Kaynaklar"
 msgid "Directory Path"
 msgstr "Dizin Yolu"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1351 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1340 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4050
 msgid "Shared Files"
 msgstr "Paylaşılan Dosyalar"
@@ -631,7 +631,7 @@ msgstr "Aktarılıyor..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1364
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1353
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4054
 msgid "Preferences"
 msgstr "Ayarlar"
@@ -1699,7 +1699,7 @@ msgstr "İleti"
 msgid "Status text"
 msgstr "Durum iletisi"
 
-#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1329
+#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1318
 msgid "Stops the current connection attempts"
 msgstr "Şu anki bağlanma girşimlerini durdurun"
 
@@ -1715,17 +1715,17 @@ msgstr "şu anki sunucu"
 msgid " and "
 msgstr " ve "
 
-#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3150
+#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3150
 #: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
-#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3370
+#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3370
 #: src/muuli_wdr.cpp:3818 src/muuli_wdr.cpp:4044 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Bağlan"
 
-#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:4044
 msgid "Connect to any server and/or Kad"
 msgstr "Herhangi bir sunucuya ve/ya Kad.'a bağlan."
 
@@ -1774,12 +1774,12 @@ msgstr "aMule'den çıkmayı gerçekten istiyor musunuz?"
 msgid "Exit confirmation"
 msgstr "Çıkışı onaylayınız"
 
-#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3611 src/muuli_wdr.cpp:4051
 msgid "Messages"
 msgstr "Sohbet"
 
-#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:4051
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:4051
 msgid "Messages Window"
 msgstr "Sohbet Penceresi"
 
@@ -1787,79 +1787,75 @@ msgstr "Sohbet Penceresi"
 msgid "Could not determine the command for running the browser."
 msgstr "Tarayıcıyı çalıştırmak için gerekli komut belirlenemedi."
 
-#: src/amuleDlg.cpp:1211
-msgid "Warning: Skin directory name is empty"
-msgstr "Uyarı: Kaplama klasörü ismi boş."
-
-#: src/amuleDlg.cpp:1215
+#: src/amuleDlg.cpp:1212
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Kaplama klasörü '%s'yok."
 
-#: src/amuleDlg.cpp:1220
+#: src/amuleDlg.cpp:1217
 #, c-format
-msgid "Warning: Unable to open skin directory '%s' for read"
-msgstr "Uyarı: Okumak için kaplama klasörü '%s' açılamıyor."
+msgid "Warning: Unable to open skin file '%s' for read"
+msgstr ""
 
-#: src/amuleDlg.cpp:1324
+#: src/amuleDlg.cpp:1313
 msgid "Disconnect from any server and/or Kad"
 msgstr "Tüm sunucular ve/ya Kad. bağlantılarını kes."
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
 msgid "Networks"
 msgstr "Ağlar"
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:4046
 msgid "Networks Window"
 msgstr "Ağ Penceresi"
 
-#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4048
 msgid "Searches"
 msgstr "Aramalar"
 
-#: src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:4048
 msgid "Searches Window"
 msgstr "Arama Penceresi"
 
-#: src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:4049
 msgid "Transfers"
 msgstr "Aktarımlar"
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:4049
 msgid "Files Transfers Window"
 msgstr "Dosya Aktarım Penceresi"
 
-#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:4050
+#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:4050
 msgid "Shared Files Window"
 msgstr "Paylaşılan Dosya Penceresi"
 
-#: src/amuleDlg.cpp:1359 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1348 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4052
 msgid "Statistics"
 msgstr "İstatistikler"
 
-#: src/amuleDlg.cpp:1361 src/muuli_wdr.cpp:4052
+#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:4052
 msgid "Statistics Graph Window"
 msgstr "İstatistik Grafik Penceresi"
 
-#: src/amuleDlg.cpp:1366 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:4054
 msgid "Preferences Settings Window"
 msgstr "Ayar Penceresi"
 
-#: src/amuleDlg.cpp:1368 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:4055
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: src/amuleDlg.cpp:1370 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1359 src/muuli_wdr.cpp:4055
 msgid "The partfile importer tool"
 msgstr "Parça dosyası içe aktarım aracı"
 
-#: src/amuleDlg.cpp:1372 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1361 src/muuli_wdr.cpp:4056
 msgid "About"
 msgstr "Hakkında"
 
-#: src/amuleDlg.cpp:1374 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1363 src/muuli_wdr.cpp:4056
 msgid "About/Help"
 msgstr "Hakkında/Yardım"
 
@@ -7089,6 +7085,12 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#~ msgid "Warning: Skin directory name is empty"
+#~ msgstr "Uyarı: Kaplama klasörü ismi boş."
+
+#~ msgid "Warning: Unable to open skin directory '%s' for read"
+#~ msgstr "Uyarı: Okumak için kaplama klasörü '%s' açılamıyor."
 
 #~ msgid ""
 #~ "ERROR: aMule daemon cannot be used when external connections are "
