@@ -341,7 +341,7 @@ public:
 
 	// We lack the kad firewall check
 	#warning ALSO FIX THIS, NOW!!!
-	bool IsKadFirewallCheckIP(uint32 ip) { return false; }
+	bool IsKadFirewallCheckIP(uint32 /*ip*/) { return false; }
 	
 private:
 	/**
