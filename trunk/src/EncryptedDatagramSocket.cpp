@@ -28,69 +28,66 @@
 
 ****************************** ED2K Packets
 
-	-Keycreation Client <-> Clinet:
-	 - Client A (Outgoing connection):
-				Sendkey:	Md5(<UserHashClientB 16><IPClientA 4><MagicValue91 1><RandomKeyPartClientA 2>)  23
-	 - Client B (Incomming connection):
-				Receivekey: Md5(<UserHashClientB 16><IPClientA 4><MagicValue91 1><RandomKeyPartClientA 2>)  23
+-Keycreation Client <-> Clinet:
+	- Client A (Outgoing connection):
+		Sendkey: Md5(<UserHashClientB 16><IPClientA 4><MagicValue91 1><RandomKeyPartClientA 2>)  23
+	- Client B (Incomming connection):
+		Receivekey: Md5(<UserHashClientB 16><IPClientA 4><MagicValue91 1><RandomKeyPartClientA 2>)  23
 	 - Note: The first 1024 Bytes will be _NOT_ discarded for UDP keys to safe CPU time
 
 	- Handshake
-			-> The handshake is encrypted - except otherwise noted - by the Keys created above
-			-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
+		-> The handshake is encrypted - except otherwise noted - by the Keys created above
+		-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
 		Client A: <SemiRandomNotProtocolMarker 7 Bits[Unencrypted]><ED2K Marker 1Bit = 1><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>	
 	
 	- Additional Comments:
-			- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
-		    - SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining
-			  a lower CPU usage
-		    - Kad/Ed2k Marker are only indicators, which possibility could be tried first, and should not be trusted
+		- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
+		- SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining a lower CPU usage
+		- Kad/Ed2k Marker are only indicators, which possibility could be tried first, and should not be trusted
 
 ****************************** Server Packets
 
-	-Keycreation Client <-> Server:
-	 - Client A (Outgoing connection client -> server):
-				Sendkey:	Md5(<BaseKey 4><MagicValueClientServer 1><RandomKeyPartClientA 2>)  7
-	 - Client B (Incomming connection):
-				Receivekey: Md5(<BaseKey 4><MagicValueServerClient 1><RandomKeyPartClientA 2>)  7
-	 - Note: The first 1024 Bytes will be _NOT_ discarded for UDP keys to safe CPU time
+-Keycreation Client <-> Server:
+	- Client A (Outgoing connection client -> server):
+		Sendkey: Md5(<BaseKey 4><MagicValueClientServer 1><RandomKeyPartClientA 2>)  7
+	- Client B (Incomming connection):
+		Receivekey: Md5(<BaseKey 4><MagicValueServerClient 1><RandomKeyPartClientA 2>)  7
+	- Note: The first 1024 Bytes will be _NOT_ discarded for UDP keys to safe CPU time
 
 	- Handshake
-			-> The handshake is encrypted - except otherwise noted - by the Keys created above
-			-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
+		-> The handshake is encrypted - except otherwise noted - by the Keys created above
+		-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
 		Client A: <SemiRandomNotProtocolMarker 1[Unencrypted]><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16>	
 
 	- Overhead: 8 Bytes per UDP Packet
 	
 	- Security for Basic Obfusication:
-			- Random looking packets, very limited protection against passive eavesdropping single packets
+		- Random looking packets, very limited protection against passive eavesdropping single packets
 	
 	- Additional Comments:
-			- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
-		    - SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining
-			  a lower CPU usage
+		- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
+		- SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining a lower CPU usage
 
 ****************************** KAD Packets
 			  
-	-Keycreation Client <-> Client:
-	 - Client A (Outgoing connection):
-				Sendkey:	Md5(<KadID 16><RandomKeyPartClientA 2>)  18
-	 - Client B (Incomming connection):
-				Receivekey: Md5(<KadID 16><RandomKeyPartClientA 2>)  18
-	 - Note: The first 1024 Bytes will be _NOT_ discarded for UDP keys to safe CPU time
+-Keycreation Client <-> Client:
+	- Client A (Outgoing connection):
+		Sendkey: Md5(<KadID 16><RandomKeyPartClientA 2>)  18
+	- Client B (Incomming connection):
+		Receivekey: Md5(<KadID 16><RandomKeyPartClientA 2>)  18
+	- Note: The first 1024 Bytes will be _NOT_ discarded for UDP keys to safe CPU time
 
 	- Handshake
-			-> The handshake is encrypted - except otherwise noted - by the Keys created above
-			-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
+		-> The handshake is encrypted - except otherwise noted - by the Keys created above
+		-> Padding is cucrently not used for UDP meaning that PaddingLen will be 0, using PaddingLens up to 16 Bytes is acceptable however
 		Client A: <SemiRandomNotProtocolMarker 7 Bits[Unencrypted]><Kad Marker 1Bit = 0><RandomKeyPart 2[Unencrypted]><MagicValue 4><PaddingLen 1><RandomBytes PaddingLen%16><ReceiverVerifyKey 2><SenderVerifyKey 2>
 
 	- Overhead: 12 Bytes per UDP Packet
 	
 	- Additional Comments:
-			- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
-		    - SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining
-			  a lower CPU usage
-		    - Kad/Ed2k Marker are only indicators, which possibility could be tried first, and should not be trusted
+		- For obvious reasons the UDP handshake is actually no handshake. If a different Encryption method (or better a different Key) is to be used this has to be negotiated in a TCP connection
+		- SemiRandomNotProtocolMarker is a Byte which has a value unequal any Protocol header byte. This is a compromiss, turning in complete randomness (and nice design) but gaining a lower CPU usage
+		- Kad/Ed2k Marker are only indicators, which possibility could be tried first, and should not be trusted
 */
 
 #include "EncryptedDatagramSocket.h"
@@ -308,7 +305,12 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, co
 	return nCryptedLen;
 }
 
-int CEncryptedDatagramSocket::DecryptReceivedServer(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwBaseKey, uint32 dbgIP) const{
+int CEncryptedDatagramSocket::DecryptReceivedServer(
+	uint8* pbyBufIn,
+	int nBufLen, uint8 **ppbyBufOut,
+	uint32 dwBaseKey,
+	uint32 /*dbgIP*/) const
+{
 	int nResult = nBufLen;
 	*ppbyBufOut = pbyBufIn;
 	

@@ -43,9 +43,9 @@
 
 #include "RC4Encrypt.h"
 
-#define ERR_WRONGHEADER				0x01
-#define ERR_TOOBIG					0x02
-#define ERR_ENCRYPTION				0x03
+#define ERR_WRONGHEADER			0x01
+#define ERR_TOOBIG			0x02
+#define ERR_ENCRYPTION			0x03
 #define ERR_ENCRYPTION_NOTALLOWED	0x04
 
 enum EStreamCryptState {
@@ -88,14 +88,30 @@ class CEncryptedStreamSocket : public CSocketClientProxy
 {
 	DECLARE_DYNAMIC_CLASS(CEncryptedStreamSocket)
 public:
-	CEncryptedStreamSocket(wxSocketFlags flags = wxSOCKET_NONE, const CProxyData *proxyData = NULL);
+	CEncryptedStreamSocket(
+		wxSocketFlags flags = wxSOCKET_NONE,
+		const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedStreamSocket();
 
-	void	SetConnectionEncryption(bool bEnabled, const uint8* pTargetClientHash, bool bServerConnection);
-	uint32	GetRealReceivedBytes() const		{ return m_nObfusicationBytesReceived; } // indicates how many bytes were received including obfusication so that the parent knows if the receive limit was reached
-	bool	IsObfusicating() const				{ return m_StreamCryptState == ECS_ENCRYPTING && m_EncryptionMethod == ENM_OBFUSCATION; }
+	void SetConnectionEncryption(
+		bool bEnabled,
+		const uint8 *pTargetClientHash,
+		bool bServerConnection);
+
+	//! Indicates how many bytes were received including obfusication
+	//! so that the parent knows if the receive limit was reached
+	uint32 GetRealReceivedBytes() const
+	{
+		return m_nObfusicationBytesReceived;
+	}
+
+	bool IsObfusicating() const
+	{
+		return m_StreamCryptState == ECS_ENCRYPTING &&
+			m_EncryptionMethod == ENM_OBFUSCATION;
+	}
 	
-	bool	IsServerCryptEnabledConnection() const { return m_bServerCrypt; }	
+	bool IsServerCryptEnabledConnection() const { return m_bServerCrypt; }	
 
 	uint8	m_dbgbyEncryptionSupported;
 	uint8	m_dbgbyEncryptionRequested;
@@ -104,29 +120,35 @@ public:
 protected:
 	int Write(const void* lpBuf, wxUint32 nBufLen);
 	int Read(void* lpBuf, wxUint32 nBufLen);
-	virtual void OnError(int nErrorCode) {};
-	virtual void	OnSend(int nErrorCode);
-	wxString			DbgGetIPString();
-	void			CryptPrepareSendData(uint8* pBuffer, uint32 nLen);
-	bool			IsEncryptionLayerReady();
-	uint8			GetSemiRandomNotProtocolMarker() const;
+
+	virtual void OnError(int /*nErrorCode*/) {};
+	virtual void OnSend(int nErrorCode);
+
+	wxString	DbgGetIPString();
+	void		CryptPrepareSendData(uint8* pBuffer, uint32 nLen);
+	bool		IsEncryptionLayerReady();
+	uint8		GetSemiRandomNotProtocolMarker() const;
 	
 	uint32	m_nObfusicationBytesReceived;
-	EStreamCryptState	m_StreamCryptState;
+	EStreamCryptState m_StreamCryptState;
 	EEncryptionMethods  m_EncryptionMethod;
-	bool	m_bFullReceive;
-	bool	m_bServerCrypt;
+	bool m_bFullReceive;
+	bool m_bServerCrypt;
 
 private:
-	int		Negotiate(const uint8* pBuffer, uint32 nLen);
-	void	StartNegotiation(bool bOutgoing);
-	int		SendNegotiatingData(const void* lpBuf, uint32 nBufLen, uint32 nStartCryptFromByte = 0, bool bDelaySend = false);
+	int Negotiate(const uint8* pBuffer, uint32 nLen);
+	void StartNegotiation(bool bOutgoing);
+	int SendNegotiatingData(
+		const void *lpBuf,
+		uint32 nBufLen,
+		uint32 nStartCryptFromByte = 0,
+		bool bDelaySend = false);
 
 	ENegotiatingState	m_NegotiatingState;
-	CRC4EncryptableBuffer		m_pfiReceiveBuffer;
-	uint32				m_nReceiveBytesWanted;
-	CRC4EncryptableBuffer		m_pfiSendBuffer;
-	uint32				m_nRandomKeyPart;
+	CRC4EncryptableBuffer	m_pfiReceiveBuffer;
+	uint32			m_nReceiveBytesWanted;
+	CRC4EncryptableBuffer	m_pfiSendBuffer;
+	uint32			m_nRandomKeyPart;
 	CryptoPP::Integer	m_cryptDHA;
 
 };

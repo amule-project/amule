@@ -1059,8 +1059,6 @@ void CPartFile::LoadSourceSeeds()
 		return;
 	}	
 		
-	bool bUseSX2Format = false;
-	
 	try {
 		uint8 src_count = file.ReadUInt8();
 
