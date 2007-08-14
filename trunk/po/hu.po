@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-12 03:31+0200\n"
+"POT-Creation-Date: 2007-08-14 03:31+0200\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -257,7 +257,7 @@ msgstr "Biztos, hogy törlöd ez(eke)t a fájl(oka)t?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
-#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1327
+#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1316
 #: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
@@ -331,7 +331,7 @@ msgstr "Komplett források száma"
 msgid "Directory Path"
 msgstr "Könyvtár útvonal"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1351 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1340 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4050
 msgid "Shared Files"
 msgstr "Megosztott fájlok"
@@ -647,7 +647,7 @@ msgstr "Letöltés..."
 msgid "( %s / %s )"
 msgstr ""
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1364
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1353
 #: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4054
 msgid "Preferences"
 msgstr "Beállítások"
@@ -1717,7 +1717,7 @@ msgstr "Üzenet"
 msgid "Status text"
 msgstr "Állapot"
 
-#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1329
+#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1318
 msgid "Stops the current connection attempts"
 msgstr "Aktuális kapcsolódási kísérletek leállítása"
 
@@ -1736,17 +1736,17 @@ msgstr "Aktuális keresések"
 msgid " and "
 msgstr " IP címen "
 
-#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3150
+#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3150
 #: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "Szétkapcsolás"
 
-#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:3370
+#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3370
 #: src/muuli_wdr.cpp:3818 src/muuli_wdr.cpp:4044 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Kapcsolatfelvétel"
 
-#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:4044
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:4044
 #, fuzzy
 msgid "Connect to any server and/or Kad"
 msgstr "Kapcsolódás bármelyik kiszolgálóhoz"
@@ -1797,12 +1797,12 @@ msgstr "Biztos, hogy ki akarsz lépni az aMule-ból?"
 msgid "Exit confirmation"
 msgstr "Kilépés megerősítése"
 
-#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1344 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3611 src/muuli_wdr.cpp:4051
 msgid "Messages"
 msgstr "Üzenetek"
 
-#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:4051
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1346 src/muuli_wdr.cpp:4051
 msgid "Messages Window"
 msgstr "Üzenetek ablaka"
 
@@ -1810,81 +1810,77 @@ msgstr "Üzenetek ablaka"
 msgid "Could not determine the command for running the browser."
 msgstr "Nem lehet a parancsot végrehajtani futó böngészőnél."
 
-#: src/amuleDlg.cpp:1211
-msgid "Warning: Skin directory name is empty"
-msgstr ""
-
-#: src/amuleDlg.cpp:1215
+#: src/amuleDlg.cpp:1212
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr ""
 
-#: src/amuleDlg.cpp:1220
+#: src/amuleDlg.cpp:1217
 #, c-format
-msgid "Warning: Unable to open skin directory '%s' for read"
+msgid "Warning: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1324
+#: src/amuleDlg.cpp:1313
 msgid "Disconnect from any server and/or Kad"
 msgstr ""
 
-#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4046
 msgid "Networks"
 msgstr ""
 
-#: src/amuleDlg.cpp:1340 src/muuli_wdr.cpp:4046
+#: src/amuleDlg.cpp:1329 src/muuli_wdr.cpp:4046
 #, fuzzy
 msgid "Networks Window"
 msgstr "Keresés ablaka"
 
-#: src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4048
 msgid "Searches"
 msgstr "Keresések"
 
-#: src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4048
+#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:4048
 msgid "Searches Window"
 msgstr "Keresés ablaka"
 
-#: src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1336 src/muuli_wdr.cpp:4049
 msgid "Transfers"
 msgstr "Átvitelek"
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4049
+#: src/amuleDlg.cpp:1338 src/muuli_wdr.cpp:4049
 msgid "Files Transfers Window"
 msgstr "Fájlátvitel ablaka"
 
-#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:4050
+#: src/amuleDlg.cpp:1342 src/muuli_wdr.cpp:4050
 msgid "Shared Files Window"
 msgstr "Megosztott fájlok ablaka"
 
-#: src/amuleDlg.cpp:1359 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1348 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4052
 msgid "Statistics"
 msgstr "Statisztikák"
 
-#: src/amuleDlg.cpp:1361 src/muuli_wdr.cpp:4052
+#: src/amuleDlg.cpp:1350 src/muuli_wdr.cpp:4052
 msgid "Statistics Graph Window"
 msgstr "Statisztikai grafikonok ablaka"
 
-#: src/amuleDlg.cpp:1366 src/muuli_wdr.cpp:4054
+#: src/amuleDlg.cpp:1355 src/muuli_wdr.cpp:4054
 msgid "Preferences Settings Window"
 msgstr "Tulajdonságok beállításának ablaka"
 
-#: src/amuleDlg.cpp:1368 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1357 src/muuli_wdr.cpp:4055
 #, fuzzy
 msgid "Import"
 msgstr "IP:Port"
 
-#: src/amuleDlg.cpp:1370 src/muuli_wdr.cpp:4055
+#: src/amuleDlg.cpp:1359 src/muuli_wdr.cpp:4055
 msgid "The partfile importer tool"
 msgstr ""
 
-#: src/amuleDlg.cpp:1372 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1361 src/muuli_wdr.cpp:4056
 msgid "About"
 msgstr "Névjegy"
 
-#: src/amuleDlg.cpp:1374 src/muuli_wdr.cpp:4056
+#: src/amuleDlg.cpp:1363 src/muuli_wdr.cpp:4056
 msgid "About/Help"
 msgstr "Névjegy/Súgó"
 
