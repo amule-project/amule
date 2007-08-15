@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-14 03:31+0200\n"
+"POT-Creation-Date: 2007-08-15 03:31+0200\n"
 "PO-Revision-Date: 2007-05-23 21:22+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -56,34 +56,34 @@ msgstr "Õnnestus! Ühendus aMulaga loodud "
 msgid "Succeeded! Connection established."
 msgstr "Õnnestus! Ühendus loodud."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3835
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3833
 msgid "Hashing"
 msgstr "Räsin"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3837
 msgid "Completing"
 msgstr "Lõpetatud"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3840
 msgid "Complete"
 msgstr "Valmis"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3845
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3843
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Pausitud"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3848
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3846
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Vigane"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3855
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Tõmban"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3857
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3855
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Ootan"
@@ -148,7 +148,7 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:156 src/DownloadListCtrl.cpp:1466
 #: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
-#: src/PartFile.cpp:2614 src/PartFile.cpp:2620 src/KnownFile.cpp:831
+#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
 #: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
@@ -3185,12 +3185,12 @@ msgstr "Osafail %s (%s) ei oma toitefaili"
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Osafailil %s (%s) on kehtetu toitefail"
 
-#: src/PartFile.cpp:1115
+#: src/PartFile.cpp:1113
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "VIGA osafaili toitefaili lugemisel (%s - %s): %s"
 
-#: src/PartFile.cpp:1131 src/PartFile.cpp:1154
+#: src/PartFile.cpp:1129 src/PartFile.cpp:1152
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3199,37 +3199,37 @@ msgstr ""
 "Leidsin riknenud osa (%d) %d osast fail '%s' - Arvutatud Kontrollsumma |%s| "
 "Saadetud Kontrollsumma |%s|"
 
-#: src/PartFile.cpp:1168
+#: src/PartFile.cpp:1166
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Leitud lõpetatud osa (%i)  %s"
 
-#: src/PartFile.cpp:1205
+#: src/PartFile.cpp:1203
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "'%s' faili kontrollsumma arvutamine lõpetatud"
 
-#: src/PartFile.cpp:2234
+#: src/PartFile.cpp:2232
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Ootamatu failiviga %s lõpetamise ajal. Fail pausitud"
 
-#: src/PartFile.cpp:2260
+#: src/PartFile.cpp:2258
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Faili '%s' tõmbamine lõpetatud"
 
-#: src/PartFile.cpp:2317
+#: src/PartFile.cpp:2315
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Kustutan faili: %s"
 
-#: src/PartFile.cpp:2381
+#: src/PartFile.cpp:2379
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "HOIATUS: Ei suuda luua hash'i - hashset mittetäielik '%s'"
 
-#: src/PartFile.cpp:2386
+#: src/PartFile.cpp:2384
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3238,38 +3238,38 @@ msgstr ""
 "VIGA: ei suuda tõmmatud osale arvutada kontrollsummat- kontrollsumma on "
 "mittetäielik(%s). Seda ei tohiks kunagi juhtuda."
 
-#: src/PartFile.cpp:3068
+#: src/PartFile.cpp:3066
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "HOIATUS: Pole piisavalt vaba kettaruumi! Pausin faili: %s"
 
-#: src/PartFile.cpp:3133
+#: src/PartFile.cpp:3131
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Tõmmatud osa %i on failis %s vigane"
 
-#: src/PartFile.cpp:3176
+#: src/PartFile.cpp:3174
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Taastatud riknenud osa %i %s jaoks -> Päästsin: %s baiti"
 
-#: src/PartFile.cpp:3751
+#: src/PartFile.cpp:3749
 msgid "Comments"
 msgstr "Kommentaarid"
 
-#: src/PartFile.cpp:3752
+#: src/PartFile.cpp:3750
 msgid "doesn't work"
 msgstr "ei toimi"
 
-#: src/PartFile.cpp:3754
+#: src/PartFile.cpp:3752
 msgid "remote gui"
 msgstr "kasutajaliides eemalt"
 
-#: src/PartFile.cpp:3851
+#: src/PartFile.cpp:3849
 msgid "Insufficient Diskspace"
 msgstr "Kettaruumi ei jätku"
 
-#: src/PartFile.cpp:3862 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+#: src/PartFile.cpp:3860 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Peatatud"
 
