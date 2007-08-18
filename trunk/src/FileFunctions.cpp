@@ -45,11 +45,13 @@
 
 bool UTF8_MoveFile(const wxString& from, const wxString& to)
 {
-	bool ok = wxRenameFile(from, to);
+	bool ok = !rename( (const char*)from.mb_str(wxConvLocal), 
+						(const char*)to.mb_str(wxConvLocal));
+
 	if (!ok) {
-		AddDebugLogLineM( true, logFileIO,
-			wxT("Error on file move from: ") +
-				from + wxT(" to: ") + to);
+		   AddDebugLogLineM( true, logFileIO,
+				  wxT("Error on file move from: ") +
+						 from + wxT(" to: ") + to);
 	}
 
 	return ok;
@@ -58,7 +60,7 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to)
 
 bool UTF8_RemoveFile(const wxString& fileName)
 {
-	bool ok = wxRemoveFile(fileName);
+	bool ok = !remove((const char*)fileName.mb_str(wxConvLocal));
 	if (!ok) {
 		AddDebugLogLineM( true, logFileIO,
 			wxT("Error on file remove: ") +
@@ -71,12 +73,21 @@ bool UTF8_RemoveFile(const wxString& fileName)
 
 bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
-	bool ok = wxCopyFile(from, to);
+
+wxFFileInputStream in(from);
+wxFFileOutputStream out(to);
+	bool ok = in.IsOk() && out.IsOk();
 	if (!ok) {
 		AddDebugLogLineM( true, logFileIO,
 			wxT("Error on file copy from: ") +
 				from + wxT(" to: ") + to);
+	} else {
+		out << in;
+		ok &= (out.GetLastError() != wxSTREAM_WRITE_ERROR) && 
+				(in.GetLastError() != wxSTREAM_READ_ERROR);
 	}
+	
+	
 	return ok;
 }
 
