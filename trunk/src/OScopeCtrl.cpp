@@ -337,12 +337,12 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 		else if (bRecreateGraph)
 			RecreateGraph(true);
 	}
+	
 	if (nDelayedPoints>0) {				// we've just come out of hiding, so catch up
 		int n = std::min(nPlotWidth, nDelayedPoints);		
 		nDelayedPoints = 0;				// (this is more efficient than plotting in the 
 		PlotHistory(n, true, false);	// background because the bitmap is shifted only 
 	}									// once for all delayed points together)
-
 	
 	wxPaintDC dc(this);
 	DoBlit();
