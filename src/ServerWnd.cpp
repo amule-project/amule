@@ -119,6 +119,11 @@ void CServerWnd::OnBnClickedAddserver(wxCommandEvent& WXUNUSED(evt))
 		CastChild( IDC_SPORT, wxTextCtrl )->Clear();
 	} else {
 		CServer* update = theApp->serverlist->GetServerByAddress(toadd->GetAddress(), toadd->GetPort());
+		// See note on CServerList::AddServer
+		if (update == NULL && toadd->GetIP() != 0) {
+			update = theApp->serverlist->GetServerByIPTCP(toadd->GetIP(), toadd->GetPort());
+		}		
+		
 		if ( update ) {
 			update->SetListName(toadd->GetListName());
 			serverlistctrl->RefreshServer(update);

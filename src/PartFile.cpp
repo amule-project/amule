@@ -2810,10 +2810,8 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 		
 		// all known versions use the first 2 bytes as count and unknown version are already filtered above
 		nCount = sources->ReadUInt16();
-		printf("Adding %i client sources type 2\n",nCount);
 		uint32 uDataSize = (uint32)(sources->GetLength() - sources->GetPosition());	
 		bool bError = false;
-		printf("Where %i == %i if %i=4?\n", nCount*(4+2+4+2+16+1), uDataSize, uClientSXVersion);		
 		switch (uClientSXVersion){
 			case 1:
 				bError = nCount*(4+2+4+2) != uDataSize;
@@ -2852,7 +2850,6 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 		uint8 byCryptOptions = 0;
 		if (uPacketSXVersion >= 4) {
 			byCryptOptions = sources->ReadUInt8();
-			printf("\tSource has cryptoptions %i\n", byCryptOptions);
 		}
 		
 		//Clients send ID's the the Hyrbid format so highID clients with *.*.*.0 won't be falsely switched to a lowID..
@@ -2892,7 +2889,6 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 			}
 			
 			if (uPacketSXVersion >= 4) {
-				printf("\tSetting Crypt layer options\n");
 				newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
 				newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
 				newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
@@ -4119,22 +4115,22 @@ uint16 CPartFile::GetMaxSourcePerFileUDP() const
 #define DROP_FACTOR 2
 
 CUpDownClient* CPartFile::GetSlowerDownloadingClient(uint32 speed, CUpDownClient* caller) {
-	printf("Start slower source calculation\n");
+//	printf("Start slower source calculation\n");
 	for( SourceSet::iterator it = m_SrcList.begin(); it != m_SrcList.end(); ) {
 		CUpDownClient* cur_src = *it++;
 		if ((cur_src->GetDownloadState() == DS_DOWNLOADING) && (cur_src != caller)) {
 			uint32 factored_bytes_per_second = static_cast<uint32>(
 				(cur_src->GetKBpsDown() * 1024) * DROP_FACTOR);
 			if ( factored_bytes_per_second< speed) {
-				printf("Selecting source %p to drop: %d < %d\n", cur_src, factored_bytes_per_second, speed);
-				printf("End slower source calculation\n");
+//				printf("Selecting source %p to drop: %d < %d\n", cur_src, factored_bytes_per_second, speed);
+//				printf("End slower source calculation\n");
 				return cur_src;
 			} else {
-				printf("Not selecting source %p to drop: %d > %d\n", cur_src, factored_bytes_per_second, speed);
+//				printf("Not selecting source %p to drop: %d > %d\n", cur_src, factored_bytes_per_second, speed);
 			}
 		}
 	}	
-	printf("End slower source calculation\n");
+//	printf("End slower source calculation\n");
 	return NULL;
 }
 

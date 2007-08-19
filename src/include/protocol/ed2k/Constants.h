@@ -38,8 +38,8 @@
 #define	SOURCECLIENTREASKS			MIN2MS(40)	//40 mins
 #define	SOURCECLIENTREASKF			MIN2MS(5)	//5 mins
 #define	UDPSERVERSTATTIME		SEC2MS(5)	//5 secs
-#define	UDPSERVSTATREASKTIME	HR2MS(4)		//4 hours - eMule uses HR2S, we are based on GetTickCount, hence MS
-
+#define	UDPSERVSTATREASKTIME	HR2MS(4.5)		//4 hours - eMule uses HR2S, we are based on GetTickCount, hence MS
+#define	UDPSERVSTATMINREASKTIME	MIN2MS(20)	//minimum time between two pings even when trying to force a premature ping for a new UDP key
 #define	MINCOMMONPENALTY		4 // For file sources reask
 
 #define	ED2KREPUBLISHTIME		MIN2MS(1)	//1 min

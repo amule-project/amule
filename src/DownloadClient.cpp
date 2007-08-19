@@ -176,7 +176,7 @@ void CUpDownClient::SendStartupLoadReq()
 
 bool CUpDownClient::IsSourceRequestAllowed()
 {
-	#warning REWRITE - OBFUSCATION
+	#warning REWRITE - Source swapping from eMule.
 	// 0.42e
 	uint32 dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
 	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
@@ -247,7 +247,6 @@ void CUpDownClient::SendFileRequest()
 		if (IsSourceRequestAllowed()) {
 			if (SupportsSourceExchange2()){
 				sent_opcodes += wxT("|RSRC2|");
-				printf("Sending a source request type 2 (a)\n");				
 				dataFileReq.WriteUInt8(OP_REQUESTSOURCES2);
 				dataFileReq.WriteUInt8(SOURCEEXCHANGE2_VERSION);
 				const uint16 nOptions = 0; // 16 ... Reserved
@@ -306,7 +305,6 @@ void CUpDownClient::SendFileRequest()
 			CMemFile packetdata;
 			
 			if (SupportsSourceExchange2()) {
-				printf("Sending a source request type 2\n");
 				packetdata.WriteUInt8(SOURCEEXCHANGE2_VERSION);
 				packetdata.WriteUInt16(0 /* Reserved */);
 			} 
@@ -648,7 +646,6 @@ void CUpDownClient::SendBlockRequests()
 		CUpDownClient* slower_client = NULL;
 		
 		if (thePrefs::GetDropSlowSources()) {		
-			printf("Checking slower client from client %p\n",this);
 			slower_client = m_reqfile->GetSlowerDownloadingClient(m_lastaverage, this);
 		}
 		
@@ -660,7 +657,7 @@ void CUpDownClient::SendBlockRequests()
 			CPacket* packet = new CPacket(OP_CANCELTRANSFER, 0, OP_EDONKEYPROT);
 			theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 			if (slower_client != this) {
-				printf("Dropped client %p to allow client %p to download\n",slower_client, this);
+//				printf("Dropped client %p to allow client %p to download\n",slower_client, this);
 			}
 			slower_client->ClearDownloadBlockRequests();
 			slower_client->SendPacket(packet,true,true);
@@ -1308,34 +1305,32 @@ void CUpDownClient::UDPReaskForDownload()
 		CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKFILEPING);
 		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKFILEPING") );
 		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-		theApp->clientudp->SendPacket(response,GetConnectIP(),GetUDPPort());
-	} else  {
-		if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
-			
-			m_bUDPPending = true;
-			
-			CMemFile data(128);
-			
-			data.WriteHash(CMD4Hash(GetBuddyID()));
-			data.WriteHash(m_reqfile->GetFileHash());
-			
-			if (GetUDPVersion() > 3) {
-				if (m_reqfile->IsPartFile()) {
-					((CPartFile*)m_reqfile)->WritePartStatus(&data);
-				} else {
-					data.WriteUInt16(0);
-				}
+		theApp->clientudp->SendPacket(response,GetConnectIP(),GetUDPPort(), ShouldReceiveCryptUDPPackets(), GetUserHash().GetHash(), false, 0);
+	} else  if (HasLowID() && GetBuddyIP() && GetBuddyPort() && HasValidBuddyID()) {
+
+		m_bUDPPending = true;
+		
+		CMemFile data(128);
+		
+		data.WriteHash(CMD4Hash(GetBuddyID()));
+		data.WriteHash(m_reqfile->GetFileHash());
+		
+		if (GetUDPVersion() > 3) {
+			if (m_reqfile->IsPartFile()) {
+				((CPartFile*)m_reqfile)->WritePartStatus(&data);
+			} else {
+				data.WriteUInt16(0);
 			}
-			
-			if (GetUDPVersion() > 2) {
-				data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
-			}
-			
-			CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
-			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKUDP") );
-			theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-			theApp->clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort() );
 		}
+		
+		if (GetUDPVersion() > 2) {
+			data.WriteUInt16(m_reqfile->m_nCompleteSourcesCount);
+		}
+		
+		CPacket* response = new CPacket(data, OP_EMULEPROT, OP_REASKCALLBACKUDP);
+		AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: send OP_REASKCALLBACKUDP") );
+		theStats::AddUpOverheadFileRequest(response->GetPacketSize());
+		theApp->clientudp->SendPacket(response, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0 );
 	}
 }
 

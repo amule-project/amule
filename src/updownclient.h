@@ -629,8 +629,6 @@ public:
 	void			SetCryptLayerSupport(bool bVal)				{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
 	void			SetCryptLayerRequest(bool bVal)				{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
 	void			SetCryptLayerRequires(bool bVal)				{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
-	#warning CHECK FOR USAGE - OBFUSCATION (rewrite addsources / server code)
-	#warning CHECK FOR USAGE - UDP encrypted send
 	bool			ShouldReceiveCryptUDPPackets() const;
 
 private:

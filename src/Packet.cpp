@@ -233,8 +233,8 @@ byte* CPacket::GetUDPHeader() {
 
 	memset(head, 0, 6);
 	UDP_Header_Struct* header = (UDP_Header_Struct*) head;
-	header->command = opcode;
 	header->eDonkeyID =  prot;
+	header->command = opcode;
 
 	return head;
 }

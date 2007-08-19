@@ -30,6 +30,7 @@
 #include <include/protocol/ed2k/Client2Client/TCP.h> // Sometimes we reply with TCP packets.
 #include <include/protocol/ed2k/Client2Client/UDP.h>
 #include <include/common/EventIDs.h>
+#include <common/Format.h>	// Needed for CFormat
 
 #include "Preferences.h"		// Needed for CPreferences
 #include "PartFile.h"			// Needed for CPartFile
@@ -157,13 +158,21 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			CMemFile data_in(packet, size);
 			CMD4Hash reqfilehash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(reqfilehash);
+			bool bSenderMultipleIpUnknown = false;
+			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(host, port, true, &bSenderMultipleIpUnknown);
+			
 			if (!reqfile) {
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-				SendPacket(response,host,port);
+				if (sender) {
+					SendPacket(response, host, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
+				} else {
+					SendPacket(response, host, port, false, NULL, false, 0);
+				}
+				
 				break;
 			}
-			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(host, port);
+			
 			if (sender){
 				sender->CheckForAggressive();
 				
@@ -197,15 +206,19 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_REASKACK to ") + sender->GetFullIP());
-					SendPacket(response, host, port);
+					SendPacket(response, host, port, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
 				} else {
 					AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket; ReaskFilePing; reqfile does not match") );
 				}						
 			} else {
-				if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
-					CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-					SendPacket(response,host,port);
+				if (!bSenderMultipleIpUnknown) {
+					if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
+						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
+						theStats::AddUpOverheadFileRequest(response->GetPacketSize());
+						SendPacket(response,host,port, false, NULL, false, 0); // we cannot answer this one encrypted since we dont know this client
+					}
+				} else {
+					AddDebugLogLineM(false, logClientUDP, CFormat(wxT("UDP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u")) % Uint32toStringIP(host) % port);
 				}
 			}
 			break;

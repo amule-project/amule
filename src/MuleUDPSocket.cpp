@@ -36,6 +36,7 @@
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "UploadBandwidthThrottler.h"
 #include "EncryptedDatagramSocket.h"
+#include "OtherFunctions.h"
 
 CMuleUDPSocket::CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData)
 	: m_busy(false),
@@ -156,7 +157,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	}
 	
 	if (error) {
-		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Error while reading: ")) << lastError);
+		OnReceiveError(error, addr);
 		return;
 	} else if (length < 2) {
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
@@ -179,15 +180,21 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	OnPacketReceived(addr, (byte*)buffer, length);
 }
 
+void CMuleUDPSocket::OnReceiveError(int errorCode, amuleIPV4Address& WXUNUSED(addr))
+{
+	AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);	
+}
 
-void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
+void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint16 nReceiverVerifyKey)
 {
 	wxCHECK_RET(packet, wxT("Invalid packet."));
 	/*wxCHECK_RET(port, wxT("Invalid port."));
 	wxCHECK_RET(IP, wxT("Invalid IP."));
 	*/
 
-	if (!port || !IP) return;
+	if (!port || !IP) {
+		return;
+	}
 	
 	if (!Ok()) {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet discarded (socket not Ok): ")) 
@@ -208,7 +215,15 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port)
 	newpending.port = port;
 	newpending.packet = packet;
 	newpending.time = GetTickCount();
-    
+ 	newpending.bEncrypt = bEncrypt && pachTargetClientHashORKadID != NULL;
+	newpending.bKad = bKad;
+	newpending.nReceiverVerifyKey = nReceiverVerifyKey;   
+	if (newpending.bEncrypt) {
+		md4cpy(newpending.pachTargetClientHashORKadID, pachTargetClientHashORKadID);
+	} else {
+		md4clr(newpending.pachTargetClientHashORKadID);
+	}
+
 	{
 		wxMutexLocker lock(m_mutex);		
 		m_queue.push_back(newpending);
@@ -298,7 +313,7 @@ bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 				// to suddenly become invalid. In order to work around
 				// this problem, we simply create a replacement socket.
 				AddDebugLogLineM(true, logMuleUDP, wxT("Socket died. Recreating socket."));
-				
+							
 				DestroySocket();
 				CreateSocket();
 				break;

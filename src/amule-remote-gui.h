@@ -428,7 +428,8 @@ public:
 	
 	void UpdateUserFileStatus(CServer *server);
 	
-	CServer *GetServerByAddress(const wxString& address, uint16 port);
+	CServer* GetServerByAddress(const wxString& address, uint16 port) const;
+	CServer* GetServerByIPTCP(uint32 nIP, uint16 nPort) const;
 
 	void ReloadControl();
 

@@ -1434,7 +1434,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 						bio.WriteUInt128(Kademlia::CUInt128(m_reqfile->GetFileHash().GetHash()));
 						bio.WriteUInt16(thePrefs::GetPort());
 						CPacket* packet = new CPacket(bio, OP_KADEMLIAHEADER, KADEMLIA_CALLBACK_REQ);
-						theApp->clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort());
+						// eMule FIXME: We dont know which kadversion the buddy has, so we need to send unencrypted
+						theApp->clientudp->SendPacket(packet, GetBuddyIP(), GetBuddyPort(), false, NULL, true, 0);
 						AddDebugLogLineM(false,logLocalClient, wxString::Format(wxT("KADEMLIA_CALLBACK_REQ (%i) to"),packet->GetPacketSize()) + GetFullIP());
 						theStats::AddUpOverheadKad(packet->GetRealPacketSize());
 						SetDownloadState(DS_WAITCALLBACKKAD);
@@ -1474,7 +1475,7 @@ bool CUpDownClient::Connect()
 	if (!m_socket->IsOk()) {
 		// Enable or disable crypting based on our and the remote clients preference
 		if (HasValidHash() && SupportsCryptLayer() && thePrefs::IsClientCryptLayerSupported() && (RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested())){
-			printf("Set connection encryption for socket\n");
+//			printf("Set connection encryption for socket\n");
 			//DebugLog(_T("Enabling CryptLayer on outgoing connection to client %s"), DbgGetClientInfo()); // to be removed later
 			m_socket->SetConnectionEncryption(true, GetUserHash().GetHash(), false);
 		} else {

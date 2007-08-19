@@ -32,11 +32,11 @@ public:
 	CEncryptedDatagramSocket( wxIPaddress &address, wxSocketFlags flags = wxSOCKET_NONE,	const CProxyData *proxyData = NULL);
 	virtual ~CEncryptedDatagramSocket();
 
-protected:
-	int DecryptReceivedClient(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwIP, uint16* nReceiverVerifyKey, uint16* nSenderVerifyKey) const;
-	int EncryptSendClient(uint8** ppbyBuf, int nBufLen, const uint8* pachClientHashOrKadID, bool bKad, uint16 nReceiverVerifyKey, uint16 nSenderVerifyKey) const;
+// TODO: Make protected once the UDP socket is again its own class.
+	static int DecryptReceivedClient(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwIP, uint16* nReceiverVerifyKey, uint16* nSenderVerifyKey);
+	static int EncryptSendClient(uint8** ppbyBuf, int nBufLen, const uint8* pachClientHashOrKadID, bool bKad, uint16 nReceiverVerifyKey, uint16 nSenderVerifyKey);
 	
-	int DecryptReceivedServer(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwBaseKey, uint32 dbgIP) const;
-	int EncryptSendServer(uint8** ppbyBuf, int nBufLen, uint32 dwBaseKey) const;
+	static int DecryptReceivedServer(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwBaseKey, uint32 dbgIP);
+	static int EncryptSendServer(uint8** ppbyBuf, int nBufLen, uint32 dwBaseKey);
 
 };

@@ -754,12 +754,17 @@ void CServerListRem::UpdateUserFileStatus(CServer *server)
 }
 
 
-CServer *CServerListRem::GetServerByAddress(const wxString& WXUNUSED(address), uint16 WXUNUSED(port))
+CServer *CServerListRem::GetServerByAddress(const wxString& WXUNUSED(address), uint16 WXUNUSED(port)) const
 {
 	// It's ok to return 0 for context where this code is used in remote gui
 	return 0;
 }
 
+CServer *CServerListRem::GetServerByIPTCP(uint32 WXUNUSED(nIP), uint16 WXUNUSED(nPort)) const
+{
+	// It's ok to return 0 for context where this code is used in remote gui
+	return 0;
+}
 
 CServer *CServerListRem::CreateItem(CEC_Server_Tag *tag)
 {

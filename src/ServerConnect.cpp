@@ -319,10 +319,10 @@ bool CServerConnect::SendPacket(CPacket* packet,bool delpacket, CServerSocket* t
 }
 
 
-bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacket)
+bool CServerConnect::SendUDPPacket(CPacket* packet, CServer* host, bool delpacket, bool rawpacket, uint16 port_offset)
 {
 	if (connected) {
-		serverudpsocket->SendPacket(packet, host, delpacket);
+		serverudpsocket->SendPacket(packet, host, delpacket, rawpacket, port_offset);
 	} else if (delpacket) {
 		delete packet;
 	}

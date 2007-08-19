@@ -95,6 +95,10 @@ public:
 	 */
 	virtual void	OnReceive(int errorCode);
 	
+	/**
+	 * This function is called by aMule when there is an error in the socket while receiving.
+	 */
+	virtual void OnReceiveError(int errorCode, amuleIPV4Address& addr);
 
 	/**
 	 * Queues a packet for sending.
@@ -102,10 +106,15 @@ public:
 	 * @param packet The packet to send.
 	 * @param IP The target IP address.
 	 * @param port The target port.
+	 * @param bEncrypt If the packet must be encrypted
+	 * @param port The target port.	 
+	 * @param pachTargetClientHashORKadID The client hash or Kad ID
+	 * @param bKad
+	 * @param nReceiverVerifyKey
 	 *
 	 * Note that CMuleUDPSocket takes ownership of the packet.
 	 */
-	void	SendPacket(CPacket* packet, uint32 IP, uint16 port);
+	void	SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint16 nReceiverVerifyKey);
 
 
 	/**
@@ -181,6 +190,14 @@ private:
 		uint32		IP;
 		//! Target port.
 		uint16		port;
+		//! If the packet is encrypted.
+		bool	bEncrypt;
+		//! Is it a kad packet?
+		bool	bKad;
+		// The verification key for RC4 encryption.
+		uint16 nReceiverVerifyKey;
+		// Client hash or kad ID.
+		uint8 pachTargetClientHashORKadID[16];		
 	};
 	
 	//! The queue of packets waiting to be sent.

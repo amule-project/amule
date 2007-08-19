@@ -39,8 +39,9 @@ class CServerUDPSocket : public CMuleUDPSocket
 public:
 	CServerUDPSocket(amuleIPV4Address& addr, const CProxyData* ProxyData = NULL);
 
-	void	SendPacket(CPacket* packet, CServer* host, bool delPacket);
+	void	SendPacket(CPacket* packet, CServer* host, bool delPacket, bool rawpacket, uint16 port_offset);
 	void	OnHostnameResolved(uint32 ip);
+	virtual void OnReceiveError(int errorCode, amuleIPV4Address& addr);
 
 private:
 	void	OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length);

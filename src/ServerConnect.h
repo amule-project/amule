@@ -76,7 +76,7 @@ public:
 	bool	IsUDPSocketAvailable() const { return serverudpsocket != NULL; }
 	// Creteil End
 
-	bool	SendUDPPacket(CPacket* packet,CServer* host, bool delpacket = false );
+	bool	SendUDPPacket(CPacket* packet,CServer* host, bool delpacket, bool rawpacket = false, uint16 port_offset = 4);
 	bool	Disconnect();
 	bool	IsConnecting()	{ return connecting; }
 	bool	IsConnected()	{ return connected; }
