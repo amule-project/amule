@@ -25,11 +25,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without threading support.
-		* Sed denoiser - removes excessive messages from compilation - 
-		  Thanks to Vollstrecker for the idea and discussions.
+		* Fixed source seeds handling on startup.
 		* Proper restoration of startup locale after checking available
 		  locales.
-		* Fixed source seeds handling on startup.
 		* Fixed linkage with wxMSW.
 		* Got rid of a few more warnings.
 		* Fixed #929: configure: BUILD_CC uses CC's CFLAGS
@@ -46,6 +44,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
 		* Improve debug output
 		* Don't add clients when shutting down
 		* Added a simple (ascii) text file reader class
+		* Sed denoiser - removes excessive messages from compilation - 
+		  Thanks to Vollstrecker for the idea and discussions.
 		* Drop path component from logged file names.
 		* Fix for perl v5.8.8
 		* wxCas compilation fixes for wxCVS
@@ -70,9 +70,11 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
 		* Quick-n-dirty hack for stats graphs on the Mac.
 
 	Kry:
-		* Protocol Obfuscation
-		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
+		* Protocol Obfuscation (enabled by default)
 		* Large file support (>4GB)
+		* Disabled auto-update of servers from clients and other servers by default.
+		* Fixed a bug while getting sources for large files (>4GB)
+		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 		* Improve exception handling
 		* Add generic CTag classes support for Kad data types
 		* Remove kad IO classes
