@@ -156,7 +156,7 @@ void CEncryptedStreamSocket::SetConnectionEncryption(bool bEnabled, const uint8*
 
 		uint8 achKeyData[21];
 		md4cpy(achKeyData, pTargetClientHash);
-		memcpy(achKeyData + 17, &m_nRandomKeyPart, 4);
+		PokeUInt32(achKeyData + 17, m_nRandomKeyPart);
 		
 		achKeyData[16] = MAGICVALUE_REQUESTER;
 		MD5Sum md5(achKeyData, sizeof(achKeyData));
