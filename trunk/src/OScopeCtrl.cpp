@@ -25,6 +25,7 @@
 
 #include <cmath>
 #include <wx/dcmemory.h>
+#include <wx/dcclient.h>
 
 #include <common/Format.h>
 
