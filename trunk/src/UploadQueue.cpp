@@ -274,18 +274,33 @@ bool CUploadQueue::IsDownloading(CUpDownClient* client) const
 }	
 
 
-CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort)
+CUpDownClient* CUploadQueue::GetWaitingClientByIP_UDP(uint32 dwIP, uint16 nUDPPort, bool bIgnorePortOnUniqueIP, bool* pbMultipleIPs)
 {
+	CUpDownClient* pMatchingIPClient = NULL;
+	
+	int cMatches = 0;
+	
 	CClientPtrList::iterator it = m_waitinglist.begin();
 	for (; it != m_waitinglist.end(); ++it) {
 		CUpDownClient* cur_client = *it;
 		
 		if ((dwIP == cur_client->GetIP()) && (nUDPPort == cur_client->GetUDPPort())) {
 			return cur_client;
+		} else if ((dwIP == cur_client->GetIP()) && bIgnorePortOnUniqueIP) {
+			pMatchingIPClient = cur_client;
+			cMatches++;
 		}
 	}
+
+	if (pbMultipleIPs) {
+		*pbMultipleIPs = cMatches > 1;
+	}
 	
-	return NULL;
+	if (pMatchingIPClient && cMatches == 1) {
+		return pMatchingIPClient;	
+	} else {
+		return NULL;
+	}
 }
 
 

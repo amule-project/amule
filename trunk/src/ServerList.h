@@ -26,9 +26,6 @@
 #ifndef SERVERLIST_H
 #define SERVERLIST_H
 
-
-
-
 #include "ObservableQueue.h"
 
 class CServer;
@@ -52,9 +49,10 @@ public:
 	void		ResetServerPos()	{m_serverpos = m_servers.begin();}
 	CServer*	GetNextServer(bool bOnlyObfuscated = false);
 	uint32		GetServerCount()	{return m_servers.size();}
-	CServer*	GetServerByAddress(const wxString& address, uint16 port);
-	CServer*	GetServerByIP(uint32 nIP);
-	CServer*	GetServerByIP(uint32 nIP, uint16 nPort);	
+	CServer*	GetServerByAddress(const wxString& address, uint16 port) const;
+	CServer*	GetServerByIP(uint32 nIP) const;
+	CServer*	GetServerByIPTCP(uint32 nIP, uint16 nPort) const;
+	CServer*	GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfuscationPorts = true) const;
 	void		GetStatus(uint32 &failed, uint32 &user, uint32 &file, uint32 &tuser, uint32 &tfile, float &occ);
 	void		GetUserFileStatus( uint32 &user, uint32 &file);
 	void		Sort();
@@ -67,6 +65,8 @@ public:
 	
 	/** Refilters all servers though the IPFilter. */
 	void FilterServers();
+
+	void CheckForExpiredUDPKeys();
 	
 private:
 	virtual void 	ObserverAdded( ObserverType* );

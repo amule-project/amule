@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
 #include "ServerList.h"			// Interface declarations.
-
 
 #include <include/protocol/Protocols.h>
 #include <include/protocol/ed2k/Constants.h>
@@ -51,8 +49,6 @@
 #include <common/Format.h>
 #include "IPFilter.h"
 #include "FileFunctions.h"		// Needed for UnpackArchive
-
-
 
 CServerList::CServerList()
 {
@@ -219,7 +215,13 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	}
 	
 	CServer* test_server = GetServerByAddress(in_server->GetAddress(), in_server->GetPort());
-
+	// Avoid duplicate (dynIP) servers: If the server which is to be added, is a dynIP-server
+	// but we don't know yet it's DN, we need to search for an already available server with
+	// that IP.
+	if (test_server == NULL && in_server->GetIP() != 0) {
+		test_server = GetServerByIPTCP(in_server->GetIP(), in_server->GetPort());
+	}
+	
 	if (test_server) {
 		if ( fromUser ) {
 			AddLogLineM( true,
@@ -256,52 +258,79 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 
 void CServerList::ServerStats()
 {
+	uint32 tNow = ::GetTickCount();
 
-	if(theApp->IsConnectedED2K() && m_servers.size() > 0) {
+	if (theApp->IsConnectedED2K() && m_servers.size() > 0) {
 		CServer* ping_server = GetNextStatServer();
 		CServer* test = ping_server;
-		if(!ping_server) {
+		if (!ping_server) {
 			return;
 		}
 
-		while(ping_server->GetLastPinged() != 0 && (::GetTickCount() - ping_server->GetLastPinged()) < UDPSERVSTATREASKTIME) {
+		while (ping_server->GetLastPingedTime() && (tNow - ping_server->GetLastPingedTime()) < UDPSERVSTATREASKTIME) {
 			ping_server = GetNextStatServer();
-			if(ping_server == test) {
+			if (ping_server == test) {
 				return;
 			}
 		}
-		if(ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer() && !ping_server->IsStaticMember()) {
+		
+		if (ping_server->GetFailedCount() >= thePrefs::GetDeadserverRetries() && thePrefs::DeadServer() && !ping_server->IsStaticMember()) {
 			RemoveServer(ping_server);
 			return;
 		}
 				
-		#warning OBFUSCATION - needs UDP socket for encrypted ping
-		
-		CPacket* packet = new CPacket(OP_GLOBSERVSTATREQ, 4, OP_EDONKEYPROT);
 		srand((unsigned)time(NULL));
-		uint32 challenge = 0x55AA0000 + (uint16)rand();
-		ping_server->SetChallenge(challenge);
-		packet->CopyUInt32ToDataBuffer(challenge);
-		ping_server->SetLastPinged(::GetTickCount());
-		ping_server->AddFailedCount();
-		Notify_ServerRefresh(ping_server);
-		theStats::AddUpOverheadServer(packet->GetPacketSize());
-		theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
-		
-		ping_server->SetLastDescPingedCount(false);
-		if(ping_server->GetLastDescPingedCount() < 2) {
-			// eserver 16.45+ supports a new OP_SERVER_DESC_RES answer, if the OP_SERVER_DESC_REQ contains a uint32
-			// challenge, the server returns additional info with OP_SERVER_DESC_RES. To properly distinguish the
-			// old and new OP_SERVER_DESC_RES answer, the challenge has to be selected carefully. The first 2 bytes 
-			// of the challenge (in network byte order) MUST NOT be a valid string-len-int16!
-			uint32 randomness = 1 + (int) (((float)(0xFFFF))*rand()/(RAND_MAX+1.0));
-			uint32 uDescReqChallenge = ((uint32)randomness << 16) + INV_SERV_DESC_LEN; // 0xF0FF = an 'invalid' string length.
-			packet = new CPacket( OP_SERVER_DESC_REQ, 4, OP_EDONKEYPROT);
-			packet->CopyUInt32ToDataBuffer(uDescReqChallenge);
+		ping_server->SetRealLastPingedTime(tNow); // this is not used to calcualte the next ping, but only to ensure a minimum delay for premature pings		
+		if (!ping_server->GetCryptPingReplyPending() && (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
+			// We try a obfsucation ping first and wait 20 seconds for an answer
+			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
+			ping_server->SetCryptPingReplyPending(true);
+			uint32 nPacketLen = 4 + (uint8)(rand() % 16); // max padding 16 bytes
+			byte* pRawPacket = new byte[nPacketLen];
+			uint32 dwChallenge = (rand() << 17) | (rand() << 2) | (rand() & 0x03);
+			if (dwChallenge == 0) {
+				dwChallenge++;
+			}
+			
+			memcpy(pRawPacket, &dwChallenge, sizeof(uint32));
+			for (uint32 i = 4; i < nPacketLen; i++) { // fillng up the remaining bytes with random data
+				pRawPacket[i] = (uint8)rand();
+			}
+
+			ping_server->SetChallenge(dwChallenge);
+			ping_server->SetLastPinged(tNow);
+			ping_server->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
+			
+			AddDebugLogLineM(false, logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
+
+			CPacket* packet = new CPacket(pRawPacket[1], nPacketLen - 2, pRawPacket[0]);
+			packet->CopyToDataBuffer(0, pRawPacket + 2, nPacketLen - 2);
+			
+			theStats::AddUpOverheadServer(packet->GetPacketSize());
+			theApp->serverconnect->SendUDPPacket(packet, ping_server, true, true /*raw packet*/, 12 /* Port offset is 12 for obfuscated encryption*/);
+		} else if (ping_server->GetCryptPingReplyPending() || theApp->GetPublicIP() == 0 || !thePrefs::IsServerCryptLayerUDPEnabled()){
+			// our obfsucation ping request was not answered, so probably the server doesn'T supports obfuscation
+			// continue with a normal request
+			if (ping_server->GetCryptPingReplyPending() && thePrefs::IsServerCryptLayerUDPEnabled()) {
+				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing failed for server ") + ping_server->GetListName());
+			} else if (thePrefs::IsServerCryptLayerUDPEnabled()) {
+				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing skipped because our public IP is unknown for server ") + ping_server->GetListName());
+			}
+			
+			ping_server->SetCryptPingReplyPending(false);			
+			
+			CPacket* packet = new CPacket(OP_GLOBSERVSTATREQ, 4, OP_EDONKEYPROT);
+			uint32 challenge = 0x55AA0000 + (uint16)rand();
+			ping_server->SetChallenge(challenge);
+			packet->CopyUInt32ToDataBuffer(challenge);
+			ping_server->SetLastPinged(tNow);
+			ping_server->SetLastPingedTime(tNow - (rand() % HR2S(1)));
+			ping_server->AddFailedCount();
+			Notify_ServerRefresh(ping_server);
 			theStats::AddUpOverheadServer(packet->GetPacketSize());
 			theApp->serverconnect->SendUDPPacket(packet, ping_server, true);
 		} else {
-			ping_server->SetLastDescPingedCount(true);
+			wxASSERT( false );
 		}
 	}
 }
@@ -547,7 +576,7 @@ CServer* CServerList::GetNextStatServer()
 }
 
 
-CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
+CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port) const
 {
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
 		CServer* const s = *it;
@@ -559,7 +588,8 @@ CServer* CServerList::GetServerByAddress(const wxString& address, uint16 port)
 }
 
 
-CServer* CServerList::GetServerByIP(uint32 nIP){
+CServer* CServerList::GetServerByIP(uint32 nIP) const
+{
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
         CServer* const s = *it;
 		if (s->GetIP() == nIP)
@@ -569,7 +599,8 @@ CServer* CServerList::GetServerByIP(uint32 nIP){
 }
 
 
-CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
+CServer* CServerList::GetServerByIPTCP(uint32 nIP, uint16 nPort) const
+{
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
         CServer* const s = *it;
 		if (s->GetIP() == nIP && s->GetPort() == nPort)
@@ -578,6 +609,16 @@ CServer* CServerList::GetServerByIP(uint32 nIP, uint16 nPort){
 	return NULL;
 }
 
+CServer* CServerList::GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfuscationPorts) const
+{
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it){
+        CServer* const s =*it;
+		if (s->GetIP() == nIP && (s->GetPort() == nUDPPort-4 ||
+			(bObfuscationPorts && (s->GetObfuscationPortUDP() == nUDPPort) || (s->GetPort() == nUDPPort - 12))))
+			return s;
+	}
+	return NULL;
+}
 
 bool CServerList::SaveServerMet()
 {
@@ -664,7 +705,7 @@ bool CServerList::SaveServerMet()
 			CTagInt32( wxT("users"),			server->GetUsers()			).WriteTagToFile( &servermet );
 			CTagInt32( wxT("files"),			server->GetFiles()			).WriteTagToFile( &servermet );
 			CTagInt32( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
-			CTagInt32( ST_LASTPING,		server->GetLastPinged()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_LASTPING,		server->GetLastPingedTime()		).WriteTagToFile( &servermet );
 			CTagInt32( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
 			CTagInt32( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
 			CTagInt32( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
@@ -888,6 +929,37 @@ void CServerList::FilterServers()
 			} else {
 				RemoveServer(server);
 			}			
+		}
+	}
+}
+
+void CServerList::CheckForExpiredUDPKeys() {
+	
+	if (!thePrefs::IsServerCryptLayerUDPEnabled()) {
+		return;
+	}
+
+	uint32 cKeysTotal = 0;
+	uint32 cKeysExpired = 0;
+	uint32 cPingDelayed = 0;
+	const uint32 dwIP = theApp->GetPublicIP();
+	const uint32 tNow = ::GetTickCount();
+	wxASSERT( dwIP != 0 );
+	
+	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
+        CServer* pServer = *it;
+		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 && pServer->GetServerKeyUDPIP() != dwIP){
+			cKeysTotal++;
+			cKeysExpired++;
+			if (tNow - pServer->GetRealLastPingedTime() < UDPSERVSTATMINREASKTIME){
+				cPingDelayed++;
+				// next ping: Now + (MinimumDelay - already elapsed time)
+				pServer->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
+			} else {
+				pServer->SetLastPingedTime(0);
+			}
+		} else if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(false) != 0) {
+			cKeysTotal++;
 		}
 	}
 }

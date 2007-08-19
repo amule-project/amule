@@ -742,6 +742,11 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
 			break;
+		case IDC_SUPPORT_PO:
+			FindWindow(IDC_ENABLE_PO_OUTGOING)->Enable(value);
+			FindWindow(IDC_ENFORCE_PO_INCOMING)->Enable(value);
+		default:
+			break;
 	}
 }
 

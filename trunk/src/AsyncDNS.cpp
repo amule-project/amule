@@ -28,12 +28,10 @@
 
 #include "InternalEvents.h"	// Needed for wxEVT_*
 #include "NetworkFunctions.h" // Needed for StringHosttoUint32
-#warning DEBUG! Remove!
-#include <common/StringFunctions.h>
 
 CAsyncDNS::CAsyncDNS(const wxString& ipName, DnsSolveType type, wxEvtHandler* handler, void* socket) : wxThread(wxTHREAD_DETACHED)
 {
-	printf("Created async DNS checker for %s (type %i)\n",(const char*)unicode2char(ipName),type);
+	//printf("Created async DNS checker for %s (type %i)\n",(const char*)unicode2char(ipName),type);
 	m_type = type;
 	m_ipName = ipName;
 	m_socket = socket;

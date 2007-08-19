@@ -122,7 +122,7 @@ CEncryptedDatagramSocket::~CEncryptedDatagramSocket()
 
 }
 
-int CEncryptedDatagramSocket::DecryptReceivedClient(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwIP, uint16* nReceiverVerifyKey, uint16* nSenderVerifyKey) const{
+int CEncryptedDatagramSocket::DecryptReceivedClient(uint8* pbyBufIn, int nBufLen, uint8** ppbyBufOut, uint32 dwIP, uint16* nReceiverVerifyKey, uint16* nSenderVerifyKey) {
 	int nResult = nBufLen;
 	*ppbyBufOut = pbyBufIn;
 	
@@ -221,7 +221,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8* pbyBufIn, int nBufLen
 	}
 }
 
-int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, const uint8* pachClientHashOrKadID, bool bKad, uint16 nReceiverVerifyKey, uint16 nSenderVerifyKey) const{
+int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, const uint8* pachClientHashOrKadID, bool bKad, uint16 nReceiverVerifyKey, uint16 nSenderVerifyKey) {
 	wxASSERT( theApp->GetPublicIP() != 0 || bKad );
 	wxASSERT( thePrefs::IsClientCryptLayerSupported() );
 
@@ -309,7 +309,7 @@ int CEncryptedDatagramSocket::DecryptReceivedServer(
 	uint8* pbyBufIn,
 	int nBufLen, uint8 **ppbyBufOut,
 	uint32 dwBaseKey,
-	uint32 /*dbgIP*/) const
+	uint32 /*dbgIP*/)
 {
 	int nResult = nBufLen;
 	*ppbyBufOut = pbyBufIn;
@@ -363,7 +363,7 @@ int CEncryptedDatagramSocket::DecryptReceivedServer(
 	}
 }
 
-int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, uint32 dwBaseKey) const{
+int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, uint32 dwBaseKey) {
 	wxASSERT( thePrefs::IsServerCryptLayerUDPEnabled() );
 	wxASSERT( dwBaseKey != 0 );
 	

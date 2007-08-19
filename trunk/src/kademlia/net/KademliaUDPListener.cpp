@@ -1172,7 +1172,7 @@ void CKademliaUDPListener::SendPacket(const CMemFile &data, byte opcode, uint32 
 		packet->PackPacket();
 	}
 	theStats::AddUpOverheadKad(packet->GetPacketSize());
-	theApp->clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort);
+	theApp->clientudp->SendPacket(packet,wxUINT32_SWAP_ALWAYS(destinationHost), destinationPort, false, NULL, true, 0);
 }
 
 void CKademliaUDPListener::DebugClientOutput(const wxString& place, uint32 kad_ip, uint32 port, const byte* data, int len)

@@ -1136,8 +1136,19 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 **/
 	 NewCfgItem(IDC_NEWVERSION,	(new Cfg_Bool( wxT("/eMule/NewVersionCheck"), s_NewVersionCheck, false )));
 	 
+	 /**
+	  * Obfuscation
+	  **/
+	 
+	NewCfgItem( IDC_SUPPORT_PO, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, false )));
+	NewCfgItem( IDC_ENABLE_PO_OUTGOING, ( new Cfg_Bool( wxT("/Obfuscation/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false )));
+	NewCfgItem( IDC_ENFORCE_PO_INCOMING, ( new Cfg_Bool( wxT("/Obfuscation/IsCryptLayerRequested"), s_bCryptLayerRequested, false )));
+	// There is no need for GUI items for this two.
+	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
+	s_MiscList.push_back( MkCfg_Int( wxT("/Obfuscation/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );	 
+	 
 	/**
-	 * The following doesn't have an associated widget.
+	 * The following doesn't have an associated widget or section
 	 **/
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Language"),			s_languageID ) );
 	s_MiscList.push_back( new Cfg_Counter( wxT("/Statistics/TotalDownloadedBytes"), s_totalDownloadedBytes ) );
@@ -1156,13 +1167,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/SmartIdState"), s_smartidstate, 0 ) );
 	
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), s_DropSlowSources, false ) );
-	
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerSupported"), s_IsClientCryptLayerSupported, false ) );	
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsCryptLayerRequested"), s_bCryptLayerRequested, false ) );		
-	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/IsClientCryptLayerRequired"), s_IsClientCryptLayerRequired, false ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoPaddingLenght"), s_byCryptTCPPaddingLength, 254 ) );
-	s_MiscList.push_back( MkCfg_Int( wxT("/eMule/CryptoKadUDPKey"), s_dwKadUDPKey, GetRandomUint32() ) );
-	
+		
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://emule-inside.net/nodes.dat") ) );
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),			s_Ed2kURL, wxT("http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met") ) );
 	

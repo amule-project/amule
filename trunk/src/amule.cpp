@@ -456,18 +456,12 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
 	cmdline.AddSwitch(wxT("r"), wxT("reset-config"), wxT("Resets config to default values."));
-	cmdline.AddSwitch(wxT("eveniflfroensurreptitiouslyremovesitthiswillstay"), wxT("even-if-lfroen-surreptitiously-removes-it-this-will-stay"), wxT("Runs aMule scary SVN development version at your own risk. Even if lfroen surreptitiously tried to remove it."));
 	
 	// Show help on --help or invalid commands
 	if ( cmdline.Parse() ) {
 		return false;		
 	} else if ( cmdline.Found(wxT("help")) ) {
 		cmdline.Usage();
-		return false;
-	}	
-
-	if ( !cmdline.Found(wxT("even-if-lfroen-surreptitiously-removes-it-this-will-stay")) ) {
-		printf("This binary requires you to use the flag --even-if-lfroen-surreptitiously-removes-it-this-will-stay and only if you're very sure of it. Warning: If you're lfroen or wuischke, you might find this annoying. That pleases me.\n");
 		return false;
 	}	
 
@@ -1725,6 +1719,10 @@ uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 void CamuleApp::SetPublicIP(const uint32 dwIP)
 {
 	wxASSERT((dwIP == 0) or !IsLowID(dwIP));
+	
+	if (dwIP != 0 && dwIP != m_dwPublicIP && serverlist != NULL) {
+		serverlist->CheckForExpiredUDPKeys();
+	}
 	
 	m_dwPublicIP = dwIP;
 }

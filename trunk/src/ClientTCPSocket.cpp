@@ -1750,15 +1750,21 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			uint16 destport = data_in.ReadUInt16();
 			CMD4Hash hash = data_in.ReadHash();
 			CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(hash);
+			
+			bool bSenderMultipleIpUnknown = false;
+			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(destip, destport, true, &bSenderMultipleIpUnknown);
 			if (!reqfile) {
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_FILENOTFOUND to ") + m_client->GetFullIP() );
 				CPacket* response = new CPacket(OP_FILENOTFOUND,0,OP_EMULEPROT);
 				theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-				theApp->clientudp->SendPacket(response, destip, destport);
+				if (sender) {
+					theApp->clientudp->SendPacket(response, destip, destport, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
+				} else {
+					theApp->clientudp->SendPacket(response, destip, destport, false, NULL, false, 0);
+				}
 				break;
 			}
 			
-			CUpDownClient* sender = theApp->uploadqueue->GetWaitingClientByIP_UDP(destip, destport);
 			if (sender) {
 				//Make sure we are still thinking about the same file
 				if (hash == sender->GetUploadFileID()) {
@@ -1795,16 +1801,20 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					CPacket* response = new CPacket(data_out, OP_EMULEPROT, OP_REASKACK);
 					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client UDP: OP_REASKACK to ") + m_client->GetFullIP()  );
-					theApp->clientudp->SendPacket(response, destip, destport);
+					theApp->clientudp->SendPacket(response, destip, destport, sender->ShouldReceiveCryptUDPPackets(), sender->GetUserHash().GetHash(), false, 0);
 				} else {
 					AddDebugLogLineM(false, logListenSocket, wxT("Client UDP socket; OP_REASKCALLBACKTCP; reqfile does not match"));
 				}
 			} else {
-				if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
-					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL to ") + m_client->GetFullIP()  );
-					CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
-					theStats::AddUpOverheadFileRequest(response->GetPacketSize());
-					theApp->clientudp->SendPacket(response, destip, destport);
+				if (!bSenderMultipleIpUnknown){
+					if ((theStats::GetWaitingUserCount() + 50) > thePrefs::GetQueueSize()) {
+						AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_QUEUEFULL to ") + m_client->GetFullIP()  );
+						CPacket* response = new CPacket(OP_QUEUEFULL,0,OP_EMULEPROT);
+						theStats::AddUpOverheadFileRequest(response->GetPacketSize());
+						theApp->clientudp->SendPacket(response, destip, destport, false, NULL, false, 0);
+					}
+				} else {
+					AddDebugLogLineM(false, logRemoteClient, CFormat(wxT("OP_REASKCALLBACKTCP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u")) % Uint32toStringIP(destip) % destport);
 				}
 			}
 			break;
