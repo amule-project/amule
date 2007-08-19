@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 
-Version 2.2.0 - The "So what? If it's new, it has to be good" version
+Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
 ----------
 2007-08-19
 
@@ -72,36 +72,36 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* Quick-n-dirty hack for stats graphs on the Mac.
 
 	Kry:
+		* Protocol Obfuscation
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
-		* large file support
+		* Large file support (>4GB)
 		* Improve exception handling
-		* Add CTag classes for data types
+		* Add generic CTag classes support for Kad data types
 		* Remove kad IO classes
 		* Safety on memfiles created from packets
-		* Fixes publishing and sending shared files requests
-		* Fixes for Unittest
+		* Fixed publishing and sending shared files requests
+		* Fixed Unittest
 		* Update audio and video types
 		* Update EC to use the equivalent of VBT tags
 		* Fix ID sending on hello packet to use the hybrid ID instead of plain ed2k id
 		* Fix a bug on sending info to other clients on file list request
-		* upgrade lex generated code
+		* Upgrade lex generated code
 		* Add the --reset-config flag
-		* Modified getclosetsto() fix by tatikiran
-		* Changes to flex
-		* Fix missing variable initialization
+		* Modified getclosetsto() fix, originally by tatikiran
+		* Changes to flex parsing of search expressions.
+		* Fix several missing variable initializations
 		* Swap bytes for int types in EC code
 		* Lower reask times
 		* Fix Memleak in ECSocket
-		* Extend amulecmd with 'show log' and 'reset' command, by quinox, bug #856
+		* Extend amulecmd with 'show log' and 'reset' command, originally by quinox, bug #856
 		* Usage of HOSTCC for compile-time executions
-		* translation status scripts
+		* Created translation status scripts
 		* Move server packets to the back of the UDP queue if the server is still
 		  resolving a dynamic host
 		* Script to wikify changelog
-		* Change flex code
 		* Separate ECTag from ECPacket
 		* Fix crash on startup
-		* Fix rare memleak
+		* Fix several rare memleaks
 		* Fixes on Kademlia keyword store
 		* Initial Kademlia 2 integration
 		* Remove duplicated SendPacket functions in Kad
@@ -109,32 +109,31 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* Fix for (rare) bogus packets being send on kad
 		* Fix for empty packets in Kad Search
 		* Fixed server IP for EC
-		* Fixed script for current sources
 		* Don't destroy shareddir.dat on remote GUI, bug #945
 		* Incorrect percentage displayed by amulecmd for files > 4Gb, bug #949
-		* Ask user to download server list, when list is empty and ed2k active
+		* Ask user to download server list when list is empty and ed2k active
 		* Support automake 1.10
 		* Reorganization of EC code
 		* Added script to generate EC files for different programming languages
 		  (C#, Java and C++) from an abstract language
-		* Protocol Obfuscation
-		* Dropped support for < wx2.8.x
-		* Added remote gui datastructure
-		* Fixed compilation with wx2.9, also with disabled 2.6 comatibility
+		* Dropped support for < wx2.8.x (in case you want to blame someone)
+		* Added remote gui datastructure for new classes.
+		* Fixed compilation with wx2.9, also with disabled 2.6 comatibility.
 		* Heavily modified IP2Country code.
-		* Proper names, guards, creation on the heap... etc
+		  Proper names, guards, creation on the heap... etc.
 		* Added script to create Kad nodes files
 		* Fixes for emule-collection support
 		* Added some sanity checks
 		* Source links with crypt data support.
-		* Fix mac build
-		* Remember kad and ed2k urls
+		* Fix Mac build
+		* Remember kad and ed2k urls and restore them on restart.
 		* Force conversion to be ISO8859 for tag names, obvious from the network
 		  standards. This also fixes Kad.
-		* Changed the inheritance for the UDP sockets to include the encrypted layer,
-		  also fixed the encrypted layer compilation
-		* Blind fix for MuleGifDecoder issue
+		* Changed the inheritance for the UDP sockets to include the encrypted layer
+		* Fix for MuleGifDecoder issue
 		* Windows fixes
+		* Added OnO patch for Toolbar display.
+		* Fixed validation of preferences items for wxWidgets 2.8.4
 
 	lfroen:
 		* Fix partcount not being set in remote gui
@@ -218,12 +217,12 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* CheckFileExists() now uses wxFile::Exists().
 		* GetLastModificationTime() now uses wxFileModificationTime().
 		* GetFileSize() now uses wxFile::Length().
-		* UTF8_CopyFile() now uses wxCopyFile().
-		* UTF8_RemoveFile() now uses wxRemoveFile().
-		* UTF8_MoveFile() now uses wxRenameFile().
+		* UTF8_CopyFile() now uses wxCopyFile(). Later reverted for locale fixes.
+		* UTF8_RemoveFile() now uses wxRemoveFile(). Later reverted for locale fixes.
+		* UTF8_MoveFile() now uses wxRenameFile(). Later reverted for locale fixes.
 		* theApp is now a global pointer, so that we can access the
 		  global application object from within a core file.
-		* Fix for the COLORREF compilation problem on windows.
+		* Partial fix for the COLORREF compilation problem on Windows.
 		* Fix for libpng version detection on acinclude.m4. It was
 		  failing for strings like 1.2.15beta5 (e.g., debian 4.0 etch).
 		* Fix for theApp variable usage in amulegui. It was not beeing
@@ -254,7 +253,7 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* Patch to fix windows compilation.
 
 	Raziel:
-		* Adapt KAD code to the standard
+		* Adapt Kad code to the standard coding guidelines.
 		* Work on EC API
 
 	spiralvoice:
@@ -309,6 +308,8 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* Removed GetLocaleDir()
 		* Zipped skin format
 		* Fix utf8 problem with file names
+		* Fixed toolbar display with skins when blinking on incoming message
+		* Fix #1114, missing break statement, thanks to mr_hyde
 
 	Xaignar:
 		* Renaming the SearchList typedef to CSearchResultList
@@ -356,6 +357,7 @@ Version 2.2.0 - The "So what? If it's new, it has to be good" version
 		* Mark James (http://www.famfamfam.com) for providing the
 		  flags icons.
 		* deloun and mischamajskij for their work on aMule skins
+		* Bun Bun, for being there to tell me I'm not stupid.
 
 --------------------------------------------------------------------------------
 
