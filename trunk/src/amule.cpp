@@ -1316,7 +1316,14 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
 		info += _("or kill your dog. But it *should* be safe to use anyway.\n");
-	} 
+	} else if (new_version == wxT("2.2.0")) {
+		thePrefs::SetAddServersFromServer(false);
+		thePrefs::SetAddServersFromClient(false);
+		info += _("The following options have been changed in this release for security reasons:\n");
+		info += _("\n* Enabled Protocol Obfuscation support for incoming and outgoing connections.\n");
+		info += _("\n* Disabled updating the server list from other server and clients.\n");
+		info += _("\nFor more information on the reason for this changes, seach\nthe aMule wiki at http://wiki.amule.org for \"fake servers\" info.\nIt's important that you clear any fake server from your server list for aMule to work properly.");
+	}
 	
 	// General info
 	info += wxT("\n");
