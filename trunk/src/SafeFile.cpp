@@ -440,6 +440,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 				CScopedArray<unsigned char> value(ReadBsob(&size));
 				
 				retVal = new CTagBsob(name, value.get(), size);
+				break;
 			}
 
 			default:
