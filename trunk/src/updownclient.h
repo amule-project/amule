@@ -621,11 +621,8 @@ public:
 	bool			SupportsCryptLayer() const						{ return m_fSupportsCryptLayer; }
 	bool			RequestsCryptLayer() const						{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
 	bool			RequiresCryptLayer() const						{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
-#ifdef 	CLIENT_GUI
-	bool			IsObfuscatedConnectionEstablished() const { return false; }
-#else
-	bool			IsObfuscatedConnectionEstablished() const;	
-#endif	
+	bool			HasObfuscatedConnectionBeenEstablished() const { return m_hasbeenobfuscatinglately; }	
+	
 	void			SetCryptLayerSupport(bool bVal)				{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
 	void			SetCryptLayerRequest(bool bVal)				{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
 	void			SetCryptLayerRequires(bool bVal)				{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
@@ -864,6 +861,9 @@ private:
 	/* Calculation of last average speed */
 	uint32 m_lastaverage;
 	uint32 m_last_block_start;
+	
+	/* Save the encryption status for display when disconnected */
+	bool m_hasbeenobfuscatinglately;
 	
 	/* Kry - Debug thing. Clients created just to check their data
 	   have this string set to the reason we want to check them. 

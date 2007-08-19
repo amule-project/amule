@@ -259,6 +259,8 @@ void CUpDownClient::Init()
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
 	m_fSupportsSourceEx2 = 0;	
+	
+	m_hasbeenobfuscatinglately = false;
 }
 
 
@@ -1472,6 +1474,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 
 bool CUpDownClient::Connect()
 {
+	m_hasbeenobfuscatinglately = false;
+	
 	if (!m_socket->IsOk()) {
 		// Enable or disable crypting based on our and the remote clients preference
 		if (HasValidHash() && SupportsCryptLayer() && thePrefs::IsClientCryptLayerSupported() && (RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested())){
@@ -1500,6 +1504,8 @@ void CUpDownClient::ConnectionEstablished()
 	/* Kry - First thing, check if this client was just used to retrieve 
 	   info. That's some debug thing for myself... check connection_reason
 	   definition */
+	
+	m_hasbeenobfuscatinglately = (m_socket && m_socket->IsConnected() && m_socket->IsObfusicating());
 	
 	#ifdef __DEBUG__
 	if (!connection_reason.IsEmpty()) {
@@ -2415,14 +2421,6 @@ const wxString CUpDownClient::GetServerName() const
 	}
 	
 	return ret;
-}
-
-bool  CUpDownClient::IsObfuscatedConnectionEstablished() const {
-	if (m_socket != NULL && m_socket->IsConnected()) {
-		return m_socket->IsObfusicating();
-	} else {
-		return false;
-	}
 }
 
 bool CUpDownClient::ShouldReceiveCryptUDPPackets() const {
