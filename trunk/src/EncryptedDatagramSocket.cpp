@@ -167,13 +167,15 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8* pbyBufIn, int nBufLen
 			uint8 achKeyData[23];
 			md4cpy(achKeyData, thePrefs::GetUserHash().GetHash());
 			achKeyData[20] = MAGICVALUE_UDP;
-			memcpy(achKeyData + 16, &dwIP, 4);
+			PokeUInt32(achKeyData + 16, dwIP);
 			memcpy(achKeyData + 21, pbyBufIn + 1, 2); // random key part sent from remote client
 			md5.Calculate(achKeyData, sizeof(achKeyData));
 		}
 		
 		receivebuffer.SetKey(md5, true);
 		receivebuffer.RC4Crypt(pbyBufIn + 3, (uint8*)&dwValue, sizeof(dwValue));
+		ENDIAN_SWAP_I_32(dwValue);
+		
 		bFlipTry = !bFlipTry; // next round try the other possibility
 	} while (dwValue != MAGICVALUE_UDP_SYNC_CLIENT && bFlipTry); // try to decrypt as ed2k as well as kad packet if needed (max 2 rounds)
 	
@@ -236,14 +238,13 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, co
 	if (bKad) {
 		uint8 achKeyData[18];
 		md4cpy(achKeyData, pachClientHashOrKadID);
-		memcpy(achKeyData+16, &nRandomKeyPart, 2);
+		PokeUInt16(achKeyData+16, nRandomKeyPart);
 		md5.Calculate(achKeyData, sizeof(achKeyData));
 	} else {
 		uint8 achKeyData[23];
 		md4cpy(achKeyData, pachClientHashOrKadID);
-		uint32 dwIP = theApp->GetPublicIP();
-		memcpy(achKeyData+16, &dwIP, 4);
-		memcpy(achKeyData+21, &nRandomKeyPart, 2);
+		PokeUInt32(achKeyData+16, theApp->GetPublicIP());
+		PokeUInt16(achKeyData+21, nRandomKeyPart);
 		achKeyData[20] = MAGICVALUE_UDP;
 		md5.Calculate(achKeyData, sizeof(achKeyData));
 	}
@@ -281,10 +282,12 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8** ppbyBuf, int nBufLen, co
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 
-	uint32 dwMagicValue = MAGICVALUE_UDP_SYNC_CLIENT;
 	pachCryptedBuffer[0] = bySemiRandomNotProtocolMarker;
-	memcpy(pachCryptedBuffer + 1, &nRandomKeyPart, 2);
+	PokeUInt16(pachCryptedBuffer + 1, nRandomKeyPart);
+	
+	uint32 dwMagicValue = ENDIAN_SWAP_32(MAGICVALUE_UDP_SYNC_CLIENT);
 	sendbuffer.RC4Crypt((uint8*)&dwMagicValue, pachCryptedBuffer + 3, 4);
+	
 	sendbuffer.RC4Crypt((uint8*)&byPadLen, pachCryptedBuffer + 7, 1);
 
 	for (int j = 0; j < byPadLen; j++){
@@ -324,7 +327,7 @@ int CEncryptedDatagramSocket::DecryptReceivedServer(
 
 	// might be an encrypted packet, try to decrypt
 	uint8 achKeyData[7];
-	memcpy(achKeyData, &dwBaseKey, 4);
+	PokeUInt32(achKeyData, dwBaseKey);
 	achKeyData[4] = MAGICVALUE_UDP_SERVERCLIENT;
 	memcpy(achKeyData + 5, pbyBufIn + 1, 2); // random key part sent from remote server
 	
@@ -334,6 +337,7 @@ int CEncryptedDatagramSocket::DecryptReceivedServer(
 	
 	uint32 dwValue;
 	receivebuffer.RC4Crypt(pbyBufIn + 3, (uint8*)&dwValue, sizeof(dwValue));
+	ENDIAN_SWAP_I_32(dwValue);
 	if (dwValue == MAGICVALUE_UDP_SYNC_SERVER){
 		// yup this is an encrypted packet
 		//DEBUG_ONLY( DebugLog(_T("Received obfuscated UDP packet from ServerIP: %s"), ipstr(dbgIP)) );
@@ -374,9 +378,9 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	uint16 nRandomKeyPart = GetRandomUint16();
 
 	uint8 achKeyData[7];
-	memcpy(achKeyData, &dwBaseKey, 4);
+	PokeUInt32(achKeyData, dwBaseKey);
 	achKeyData[4] = MAGICVALUE_UDP_CLIENTSERVER;
-	memcpy(achKeyData + 5, &nRandomKeyPart, 2);
+	PokeUInt16(achKeyData + 5, nRandomKeyPart);
 	MD5Sum md5(achKeyData, sizeof(achKeyData));
 	CRC4EncryptableBuffer sendbuffer;
 	sendbuffer.SetKey(md5);
@@ -398,10 +402,12 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 		bySemiRandomNotProtocolMarker = 0x01;
 	}
 
-	uint32 dwMagicValue = MAGICVALUE_UDP_SYNC_SERVER;
 	pachCryptedBuffer[0] = bySemiRandomNotProtocolMarker;
-	memcpy(pachCryptedBuffer + 1, &nRandomKeyPart, 2);
+	PokeUInt16(pachCryptedBuffer + 1, nRandomKeyPart);
+
+	uint32 dwMagicValue = ENDIAN_SWAP_32(MAGICVALUE_UDP_SYNC_SERVER);
 	sendbuffer.RC4Crypt((uint8*)&dwMagicValue, pachCryptedBuffer + 3, 4);
+	
 	sendbuffer.RC4Crypt((uint8*)&byPadLen, pachCryptedBuffer + 7, 1);
 
 	for (int j = 0; j < byPadLen; j++){
