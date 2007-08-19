@@ -22,6 +22,7 @@ darwin*)
 	SYS=darwin
 	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
 	LDFLAGS="$LDFLAGS -bind_at_load"
+	touch src/Scanner.cpp
 	;;
 openbsd*) 
 	SYS=openbsd
