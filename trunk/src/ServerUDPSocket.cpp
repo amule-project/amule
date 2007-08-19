@@ -110,7 +110,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 	
 	theStats::AddDownOverheadOther(size);
 	AddDebugLogLineM( false, logServerUDP,
-					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)!")) % host % port % opcode );
+					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)")) % host % port % opcode );
 	
 	try {
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
@@ -371,7 +371,7 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 		memcpy(pRawPacket + 2, packet->GetDataBuffer(), packet->GetPacketSize());
 		
 		uRawPacketSize = CEncryptedDatagramSocket::EncryptSendServer(&pRawPacket, uRawPacketSize, host->GetServerKeyUDP());
-		AddDebugLogLineM(false, logServerUDP, CFormat(wxT("Sending encrypted packet to server %s, UDPKey %u, port %u")) % host->GetListName() % host->GetServerKeyUDP() % host->GetObfuscationPortUDP());
+		AddDebugLogLineM(false, logServerUDP, CFormat(wxT("Sending encrypted packet to server %s, UDPKey %u, port %u, original OPCode 0x%02x")) % host->GetListName() % host->GetServerKeyUDP() % host->GetObfuscationPortUDP() % packet->GetOpCode());
 		item.port = host->GetObfuscationPortUDP();
 		
 		CMemFile encryptedpacket(pRawPacket + 2, uRawPacketSize - 2);
@@ -382,7 +382,7 @@ void CServerUDPSocket::SendPacket(CPacket* packet, CServer* host, bool delPacket
 		}
 		
 	} else {
-		AddDebugLogLineM(false, logServerUDP, CFormat(wxT("Sending regular packet to server %s, port %u (raw = %s)")) % host->GetListName() % host->GetObfuscationPortUDP() % (rawpacket ? wxT("True") : wxT("False")));
+		AddDebugLogLineM(false, logServerUDP, CFormat(wxT("Sending regular packet to server %s, port %u (raw = %s), OPCode 0x%02x")) % host->GetListName() % host->GetObfuscationPortUDP() % (rawpacket ? wxT("True") : wxT("False")) % packet->GetOpCode());
 		if (delPacket) {
 			item.packet = packet;
 		} else {
