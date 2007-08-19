@@ -601,7 +601,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 					wxIMAGELIST_DRAW_TRANSPARENT);					
 			}
 			
-			if (client->IsObfuscatedConnectionEstablished()) {
+			if (client->HasObfuscatedConnectionBeenEstablished()) {
 				// the "¿" except it's a key
 				m_imagelist.Draw(Client_Encryption_Smiley, *dc, rect.x, rect.y + 1,
 					wxIMAGELIST_DRAW_TRANSPARENT);					
@@ -1046,7 +1046,7 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 			buffer = client->GetUserHash().Encode();
 			break;
 		case 8:
-			buffer = client->IsObfuscatedConnectionEstablished() ? wxT("Yes") : wxT("No");
+			buffer = client->HasObfuscatedConnectionBeenEstablished() ? wxT("Yes") : wxT("No");
 			break;		
 	}
 	
@@ -1104,7 +1104,7 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		case 7: return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
 		
 		// Sort by Obfuscation state
-		case 8: return mode * CmpAny( client2->IsObfuscatedConnectionEstablished(), client1->IsObfuscatedConnectionEstablished() );		
+		case 8: return mode * CmpAny( client2->HasObfuscatedConnectionBeenEstablished(), client1->HasObfuscatedConnectionBeenEstablished() );
 			
 		default:
 			return 0;

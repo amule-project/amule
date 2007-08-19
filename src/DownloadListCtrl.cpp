@@ -1617,7 +1617,7 @@ void CDownloadListCtrl::DrawSourceItem(
 						wxIMAGELIST_DRAW_TRANSPARENT);					
 				}
 							
-				if (client->IsObfuscatedConnectionEstablished()) {
+				if (client->HasObfuscatedConnectionBeenEstablished()) {
 					// the "¿" except it's a key
 					m_ImageList.Draw(Client_Encryption_Smiley, *dc, point2.x, point.y,
 						wxIMAGELIST_DRAW_TRANSPARENT);					
