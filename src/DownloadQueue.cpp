@@ -751,10 +751,11 @@ bool CDownloadQueue::SendNextUDPPacket()
   		}
   
  		// Memoryfile containing the hash of every file to request
-		// 20bytes allocation because 16b + 4b is the worse case scenario.
- 		CMemFile hashlist( 20 );
+		// 28bytes allocation because 16b + 4b + 8b is the worse case scenario.
+ 		CMemFile hashlist( 28 );
  		
 		CPartFile* file = m_queueFiles.GetNext();
+		
 		while ( file && filesAllowed ) {
  			uint8 status = file->GetStatus();
  			
@@ -762,6 +763,7 @@ bool CDownloadQueue::SendNextUDPPacket()
 				if (file->IsLargeFile() && !m_udpserver->SupportsLargeFilesUDP()) {
 					AddDebugLogLineM(false, logDownloadQueue, wxT("UDP Request for sources on a large file ignored: server doesn't support it")); 	
 				} else {
+					++m_cRequestsSentToServer;
 					hashlist.WriteHash( file->GetFileHash() );
 					// See the notes on TCP packet
 					if ( m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2 ) {
@@ -788,13 +790,11 @@ bool CDownloadQueue::SendNextUDPPacket()
  			packetSent = SendGlobGetSourcesUDPPacket(hashlist);
 		}
  		
- 		
  		// Check if we've covered every file
 		if ( file == NULL ) {
  			// Reset the list of asked files so that the loop will start over
 			m_queueFiles.Reset();
 			
- 		
  			// Unset the server so that the next server will be used
  			m_udpserver = NULL;
   		}
@@ -1190,21 +1190,11 @@ bool CDownloadQueue::SendGlobGetSourcesUDPPacket(CMemFile& data)
 		return false;
 	}
 	
-	int item_size;
-	if (m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) {
-		item_size = (16 + 4); // (hash + size)
-	} else {
-		item_size = 16;
-	}
-	
-	int iFileIDs = data.GetLength() / item_size;
-	
-	CPacket packet(data, OP_EDONKEYPROT, ((item_size == 16) ? OP_GLOBGETSOURCES : OP_GLOBGETSOURCES2));
+	CPacket packet(data, OP_EDONKEYPROT, ((m_udpserver->GetUDPFlags() & SRV_UDPFLG_EXT_GETSOURCES2) ? OP_GLOBGETSOURCES2 : OP_GLOBGETSOURCES));
 
 	theStats::AddUpOverheadServer(packet.GetPacketSize());
 	theApp->serverconnect->SendUDPPacket(&packet,m_udpserver,false);
 
-	m_cRequestsSentToServer += iFileIDs;
 	return true;
 }
 
