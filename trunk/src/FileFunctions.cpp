@@ -74,20 +74,29 @@ bool UTF8_RemoveFile(const wxString& fileName)
 bool UTF8_CopyFile(const wxString& from, const wxString& to)
 {
 
-wxFFileInputStream in(from);
-wxFFileOutputStream out(to);
-	bool ok = in.IsOk() && out.IsOk();
-	if (!ok) {
-		AddDebugLogLineM( true, logFileIO,
-			wxT("Error on file copy from: ") +
-				from + wxT(" to: ") + to);
-	} else {
-		out << in;
-		ok &= (out.GetLastError() != wxSTREAM_WRITE_ERROR) && 
+	bool ok = false;
+
+	// Dont' remove this scope.
+	{
+		wxFFileInputStream in(from);
+		wxFFileOutputStream out(to);
+
+		ok = in.IsOk() && out.IsOk();
+		if (!ok) {
+			AddDebugLogLineM( true, logFileIO,
+				wxT("Error on file copy from: ") +
+					from + wxT(" to: ") + to);
+		} else {
+			out << in;
+			ok &= (out.GetLastError() != wxSTREAM_WRITE_ERROR) && 
 				(in.GetLastError() != wxSTREAM_READ_ERROR);
+		}
 	}
 	
-	
+	if (!ok) {
+		UTF8_RemoveFile(to);
+	}
+
 	return ok;
 }
 
