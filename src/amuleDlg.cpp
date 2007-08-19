@@ -1074,12 +1074,12 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	
 	if (msCur-msPrev1 > 1000) {  // every second
 		msPrev1 = msCur;
-		if (m_CurrentBlinkBitmap == 33) {
-			m_CurrentBlinkBitmap = 24;
+		if (m_CurrentBlinkBitmap == 12) {
+			m_CurrentBlinkBitmap = 7;
 			SetMessagesTool();		
 		} else {
 			if (m_BlinkMessages) {
-				m_CurrentBlinkBitmap = 33;
+				m_CurrentBlinkBitmap = 12;
 				SetMessagesTool();
 			}
 		}
@@ -1095,7 +1095,7 @@ void CamuleDlg::SetMessagesTool()
 	
 	m_wndToolbar->DeleteTool(ID_BUTTONMESSAGES);
 	m_wndToolbar->InsertTool(pos,ID_BUTTONMESSAGES, _("Messages"), 
-		amuleDlgImages( m_CurrentBlinkBitmap ), 
+		m_tblist.GetBitmap(m_CurrentBlinkBitmap), 
 		wxNullBitmap, 
 		wxITEM_CHECK, 
 		_("Messages Window") );
@@ -1203,9 +1203,6 @@ bool CamuleDlg::Check_and_Init_Skin()
 	skinFileName.Replace(wxT("User:"), userDir );
 	skinFileName.Replace(wxT("System:"), systemDir );
 
-#warning dirty,dirty,dirty
-// there's a lot of clean up needed in this code section, will do asap
-
 	m_skinFileName.Assign(skinFileName);
 	if (!m_skinFileName.FileExists()) {
 		AddLogLineM(true, CFormat(
@@ -1242,7 +1239,8 @@ void CamuleDlg::Add_Skin_Icon(
 		wxFFileInputStream in(m_skinFileName.GetFullPath());
 		wxZipInputStream zip(in);
 		
-		if ((it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")))) != cat.end()) {
+		it = cat.find(wxZipEntry::GetInternalName(iconName + wxT(".png")));
+		if ( it != cat.end() ) {
 			zip.OpenEntry(*it->second);
 			if ( !new_image.LoadFile(zip,wxBITMAP_TYPE_PNG) ) {
 				AddLogLineM(false,
@@ -1303,6 +1301,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	Add_Skin_Icon(wxT("Toolbar_Prefs"),      amuleDlgImages(26), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_Import"),     amuleDlgImages(32), useSkins);
 	Add_Skin_Icon(wxT("Toolbar_About"),      amuleDlgImages(29), useSkins);
+	Add_Skin_Icon(wxT("Toolbar_Blink"),	     amuleDlgImages(33), useSkins);
 	
 	// Build aMule toolbar
 	wndToolbar->SetMargins(0, 0);
