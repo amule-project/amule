@@ -15,3 +15,5 @@ if ALCC
 endif
 
 SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
+
+MAINTAINERCLEANFILES = Makefile.in

@@ -47,3 +47,5 @@ dist_webserver_DATA = \
 	index.html
 
 webserverdir = $(pkgdatadir)/webserver/php-default
+
+MAINTAINERCLEANFILES = Makefile.in

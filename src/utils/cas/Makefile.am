@@ -27,3 +27,5 @@ cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS)
 if NEED_CORESERVICES
 cas_LDFLAGS = -framework CoreServices
 endif
+
+MAINTAINERCLEANFILES = Makefile.in

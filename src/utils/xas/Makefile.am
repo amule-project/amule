@@ -8,3 +8,5 @@ bin_SCRIPTS = autostart-xas
 DISTCLEANFILES = autostart-xas
 
 EXTRA_DIST = autostart-xas.in
+
+MAINTAINERCLEANFILES = Makefile.in

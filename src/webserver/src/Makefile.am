@@ -48,3 +48,5 @@ noinst_HEADERS = \
 		 WebInterface.h \
 		 WebServer.h \
 		 WebSocket.h
+
+MAINTAINERCLEANFILES = Makefile.in

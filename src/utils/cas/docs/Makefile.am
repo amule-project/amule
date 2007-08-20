@@ -27,3 +27,5 @@ uninstall-hook:
 			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$file ; \
 		done ; \
 	done
+
+MAINTAINERCLEANFILES = Makefile.in

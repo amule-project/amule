@@ -16,3 +16,5 @@ EXTRA_DIST = chat.ico.xpm \
 	sort_upx2.xpm \
 	sort_up.xpm 
 
+
+MAINTAINERCLEANFILES = Makefile.in

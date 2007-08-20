@@ -32,3 +32,5 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-webserver
 
 # Avoid everything getting built when doing "make check"
 check-recursive: SUBDIRS = unittests
+
+MAINTAINERCLEANFILES = Makefile.in

@@ -1,1 +1,3 @@
 noinst_HEADERS = UInt128.h
+
+MAINTAINERCLEANFILES = Makefile.in

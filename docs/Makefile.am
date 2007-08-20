@@ -11,3 +11,5 @@ dist_doc_DATA = ABOUT-NLS \
 		TODO \
 		EC_Protocol.txt \
 		socks4.protocol
+
+MAINTAINERCLEANFILES = Makefile.in

@@ -65,3 +65,5 @@ dist_webserver_DATA = \
 	index.php
 
 webserverdir = $(pkgdatadir)/webserver/chicane
+
+MAINTAINERCLEANFILES = Makefile.in
