@@ -296,7 +296,19 @@ dist_util_DATA = $(am__append_3) $(am__append_5)
 utildir = $(datadir)/applications
 ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-webserver
-MAINTAINERCLEANFILES = Makefile.in
+MAINTAINERCLEANFILES = ABOUT-NLS \
+					   Makefile.in \
+					   aclocal.m4 \
+					   config.guess \
+					   config.h.in \
+					   config.rpath \
+					   config.sub \
+					   configure \
+					   depcomp \
+					   install-sh \
+					   missing \
+					   mkinstalldirs
+
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

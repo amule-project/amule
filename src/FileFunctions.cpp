@@ -43,8 +43,13 @@
 #include "Logger.h"
 
 
-bool UTF8_MoveFile(const wxString& from, const wxString& to)
+bool UTF8_MoveFile(const wxString& from, const wxString& to, bool overwrite)
 {
+	
+	if (overwrite) {
+		UTF8_RemoveFile(to);
+	}
+	
 	bool ok = !rename( (const char*)from.mb_str(wxConvLocal), 
 						(const char*)to.mb_str(wxConvLocal));
 

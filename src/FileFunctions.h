@@ -31,8 +31,11 @@
 #include <dirent.h>		// Needed for DIR	// Do_not_auto_remove (mingw-gcc-3.4.5)
 #include <wx/dir.h>
 
+// Remove file with safe UTF8 name.
+bool UTF8_RemoveFile(const wxString& fileName);
+
 // Move file with safe UTF8 name.
-bool UTF8_MoveFile(const wxString& from, const wxString& to); 
+bool UTF8_MoveFile(const wxString& from, const wxString& to, bool overwrite = false); 
 
 // Copy file with safe UTF8 name.
 bool UTF8_CopyFile(const wxString& from, const wxString& to); 
