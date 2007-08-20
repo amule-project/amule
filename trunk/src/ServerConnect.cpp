@@ -58,12 +58,12 @@ void CServerConnect::TryAnotherConnectionrequest()
 		CServer*  next_server = used_list->GetNextServer(m_bTryObfuscated);
 
 		if ( thePrefs::AutoConnectStaticOnly() ) {
-			while (next_server && !next_server->IsStaticMember())
+			while (next_server && !next_server->IsStaticMember()) {
 				next_server = used_list->GetNextServer(m_bTryObfuscated);
+			}
 		}
 
-		if (!next_server)
-		{
+		if (!next_server) {
 			if ( connectionattemps.empty() ) {
 				if (m_bTryObfuscated && !thePrefs::IsClientCryptLayerRequired()){
 					AddLogLineM(true, _("Failed to connect to all obfuscated servers listed. Making another pass without obfuscation."));					
@@ -94,7 +94,7 @@ void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 	connecting = true;
 	singleconnecting = false;
 	m_bTryObfuscated = thePrefs::IsServerCryptLayerTCPRequested() && !bNoCrypt;
-	
+		
 	// Barry - Only auto-connect to static server option
 	if (thePrefs::AutoConnectStaticOnly()) {
 		bool anystatic = false;

@@ -544,7 +544,7 @@ void CServerList::Sort()
 
 CServer* CServerList::GetNextServer(bool bOnlyObfuscated)
 {
-	while (bOnlyObfuscated && (m_serverpos != m_servers.end()) && !(*m_serverpos)->SupportsObfuscationTCP()) {
+	while (bOnlyObfuscated && (m_serverpos != m_servers.end()) && !((*m_serverpos)->SupportsObfuscationTCP() || (*m_serverpos)->SupportsObfuscationUDP())) {
 		wxASSERT(*m_serverpos != NULL);			
 		++m_serverpos;
 	}
