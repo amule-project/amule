@@ -35,7 +35,7 @@ if expr "$confver" \> "$gettext_version" >/dev/null; then
 fi
 
 # Force intl regenration to get last update from installed gettext templates
-rm -rf intl
+rm -rf intl/*
 #if [ ! -d intl ]; then
     echo "Setting up internationalization files."
     autopoint --force
