@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 03:31+0200\n"
+"POT-Creation-Date: 2007-08-20 13:54+0200\n"
 "PO-Revision-Date: 2006-03-12 17:36+0100\n"
 "Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
 "Language-Team: deutsch <de@li.org>\n"
@@ -3900,7 +3900,7 @@ msgstr ""
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
-"the prvious search.\n"
+"the previous search.\n"
 msgstr ""
 
 #: src/TextClient.cpp:916
@@ -3924,19 +3924,19 @@ msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 
 #: src/TextClient.cpp:927
-msgid "Set riority to low."
+msgid "Set priority to low."
 msgstr ""
 
 #: src/TextClient.cpp:928
-msgid "Set riority to normal."
+msgid "Set priority to normal."
 msgstr ""
 
 #: src/TextClient.cpp:929
-msgid "Set riority to high."
+msgid "Set priority to high."
 msgstr ""
 
 #: src/TextClient.cpp:930
-msgid "Set riority to auto."
+msgid "Set priority to auto."
 msgstr ""
 
 #: src/TextClient.cpp:932
