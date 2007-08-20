@@ -18,3 +18,5 @@ EXTRA_DIST = build-tools.m4 \
 	     ulonglong.m4 \
 	     wxwin.m4 \
 	     zlib.m4
+
+MAINTAINERCLEANFILES = Makefile.in
