@@ -592,8 +592,7 @@ bool CamuleApp::OnInit()
 	wxString logfileName(ConfigDir + wxT("logfile"));
 	if (wxFileName::FileExists(logfileName)) {
 		wxString logBackupName(ConfigDir + wxT("logfile.bak"));
-		UTF8_RemoveFile(logBackupName);
-		UTF8_MoveFile(logfileName, logBackupName);
+		UTF8_MoveFile(logfileName, logBackupName, true);
 	}
 
 	// Open the log file
