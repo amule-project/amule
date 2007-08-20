@@ -253,6 +253,7 @@ top_srcdir = @top_srcdir@
 @ALCC_TRUE@OPT_ALC = aLinkCreator
 @ALC_TRUE@OPT_ALC = aLinkCreator
 SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
+MAINTAINERCLEANFILES = Makefile.in
 all: all-recursive
 
 .SUFFIXES:
@@ -489,6 +490,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-recursive
 
 clean-am: clean-generic mostlyclean-am
