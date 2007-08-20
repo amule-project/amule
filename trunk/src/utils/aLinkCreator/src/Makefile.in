@@ -296,6 +296,7 @@ alcc_SOURCES = alcc.cpp \
 alcc_CFLAGS = $(WXBASE_CFLAGS)
 alcc_CXXFLAGS = $(WXBASE_CXXFLAGS)
 alcc_LDADD = $(WXBASE_LIBS)
+MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -605,6 +606,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am

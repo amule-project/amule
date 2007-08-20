@@ -265,6 +265,7 @@ libmuleunit_a_SOURCES = \
 	$(top_srcdir)/src/libs/common/MuleDebug.cpp
 
 libmuleunit_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(top_srcdir)/src/libs/common/ -DMULEUNIT 
+MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -504,6 +505,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am

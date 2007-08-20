@@ -272,6 +272,7 @@ dist_doc_DATA = ABOUT-NLS \
 		EC_Protocol.txt \
 		socks4.protocol
 
+MAINTAINERCLEANFILES = Makefile.in
 all: all-recursive
 
 .SUFFIXES:
@@ -528,6 +529,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-recursive
 
 clean-am: clean-generic mostlyclean-am

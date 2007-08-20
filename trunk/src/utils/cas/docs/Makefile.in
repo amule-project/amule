@@ -244,6 +244,7 @@ top_srcdir = @top_srcdir@
 dist_man_MANS = cas.1
 man_langs = de es eu hu
 EXTRA_DIST = cas.de.1 cas.es.1 cas.eu.1 cas.hu.1
+MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -385,6 +386,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic mostlyclean-am

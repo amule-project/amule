@@ -38,13 +38,13 @@ host_triplet = @host@
 @AMULE_GUI_TRUE@am__append_4 = amulegui.xpm
 @AMULE_GUI_TRUE@am__append_5 = amulegui.desktop
 subdir = .
-DIST_COMMON = $(am__configure_deps) $(am__dist_icon_DATA_DIST) \
+DIST_COMMON = README $(am__configure_deps) $(am__dist_icon_DATA_DIST) \
 	$(am__dist_util_DATA_DIST) $(srcdir)/Compilation.flags.in \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in $(top_srcdir)/configure \
-	$(top_srcdir)/intl/Makefile.in ABOUT-NLS config.guess \
-	config.rpath config.sub depcomp install-sh missing \
-	mkinstalldirs
+	$(top_srcdir)/intl/Makefile.in ABOUT-NLS NEWS TODO acconfig.h \
+	compile config.guess config.rpath config.sub depcomp \
+	install-sh missing mkinstalldirs
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/build-tools.m4 \
 	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/gettext.m4 \
@@ -296,6 +296,7 @@ dist_util_DATA = $(am__append_3) $(am__append_5)
 utildir = $(datadir)/applications
 ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-webserver
+MAINTAINERCLEANFILES = Makefile.in
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
@@ -343,7 +344,7 @@ config.h: stamp-h1
 stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
 	cd $(top_builddir) && $(SHELL) ./config.status config.h
-$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps) 
+$(srcdir)/config.h.in: @MAINTAINER_MODE_TRUE@ $(am__configure_deps) $(top_srcdir)/acconfig.h
 	cd $(top_srcdir) && $(AUTOHEADER)
 	rm -f stamp-h1
 	touch $@
@@ -695,6 +696,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-recursive
 
 clean-am: clean-generic mostlyclean-am

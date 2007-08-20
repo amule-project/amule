@@ -257,6 +257,7 @@ EXTRA_DIST = \
 	amule.hu.1 amuled.hu.1 amulecmd.hu.1 amuleweb.hu.1 ed2k.hu.1
 
 man_langs = de es eu fr hu
+MAINTAINERCLEANFILES = Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -398,6 +399,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-generic mostlyclean-am
