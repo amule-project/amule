@@ -38,8 +38,8 @@
 
 // cryptoPP used for DH integer calculations
 #include "CryptoPP_Inc.h"	// Needed for Crypto functions
-#include "Types.h"
 #include "Proxy.h"
+#include "Types.h"
 
 #include "RC4Encrypt.h"
 
