@@ -694,7 +694,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 	uint8* pBuffer = NULL;
 	bool bProcess = false;
 	if (lpBuf != NULL) {
-		pBuffer = (uint8*)malloc(nBufLen);
+		pBuffer = new uint8[nBufLen];
 		if (pBuffer == NULL) {
 			throw CMuleException(wxT("Memory exception"), wxT("Memory exception on TCP encrypted socket"));				
 		}
@@ -718,7 +718,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 				wxASSERT( false );
 			}
 			m_pfiSendBuffer.Append(pBuffer, nBufLen);
-			free(pBuffer);
+			delete[] pBuffer;
 			pBuffer = NULL;
 			nStartCryptFromByte = 0;
 			bProcess = true; // we want to try to send it right now
@@ -747,7 +747,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 	
 	if (result == (uint32)SOCKET_ERROR || bDelaySend){
 		m_pfiSendBuffer.Write(pBuffer, nBufLen);
-		free(pBuffer);
+		delete[] pBuffer;
 		return result;
     } else {
 		if (result < nBufLen){
@@ -755,7 +755,7 @@ int CEncryptedStreamSocket::SendNegotiatingData(const void* lpBuf, uint32 nBufLe
 			//printf("Partial negotiation pending on %s\n", (const char*) unicode2char(DbgGetIPString()));					
 			m_pfiSendBuffer.Write(pBuffer + result, nBufLen - result);			
 		}
-		free(pBuffer);
+		delete[] pBuffer;
 		return result;
 	}
 }

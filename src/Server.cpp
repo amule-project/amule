@@ -100,6 +100,8 @@ CServer::CServer(CServer* pOld)
 	ping = pOld->ping;
 	failedcount = pOld->failedcount; 
 	lastpinged = pOld->lastpinged;
+	lastpingedtime = pOld->lastpingedtime;
+	m_dwRealLastPingedTime = pOld->m_dwRealLastPingedTime;
 	description = pOld->description;
 	listname = pOld->listname;
 	dynip = pOld->dynip;
@@ -146,6 +148,8 @@ void CServer::Init() {
 	dynip.Clear();
 	failedcount = 0; 
 	lastpinged = 0;
+	lastpingedtime = 0;
+	m_dwRealLastPingedTime = 0;
 	staticservermember=0;
 	maxusers=0;
 	m_uTCPFlags = 0;
