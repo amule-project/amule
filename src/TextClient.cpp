@@ -924,10 +924,10 @@ void CamulecmdApp::OnInitCommandSet()
 
 	tmp = m_commands.AddCommand(wxT("Priority"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set download priority."),
 				    wxTRANSLATE("Set priority of a download to Low, Normal, High or Auto.\n"), CMD_PARAM_ALWAYS);
-	tmp->AddCommand(wxT("Low"), CMD_ID_PRIORITY_LOW, wxTRANSLATE("Set riority to low."), wxEmptyString, CMD_PARAM_ALWAYS);
-	tmp->AddCommand(wxT("Normal"), CMD_ID_PRIORITY_NORMAL, wxTRANSLATE("Set riority to normal."), wxEmptyString, CMD_PARAM_ALWAYS);
-	tmp->AddCommand(wxT("High"), CMD_ID_PRIORITY_HIGH, wxTRANSLATE("Set riority to high."), wxEmptyString, CMD_PARAM_ALWAYS);
-	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set riority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Low"), CMD_ID_PRIORITY_LOW, wxTRANSLATE("Set priority to low."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Normal"), CMD_ID_PRIORITY_NORMAL, wxTRANSLATE("Set priority to normal."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("High"), CMD_ID_PRIORITY_HIGH, wxTRANSLATE("Set priority to high."), wxEmptyString, CMD_PARAM_ALWAYS);
+	tmp->AddCommand(wxT("Auto"), CMD_ID_PRIORITY_AUTO, wxTRANSLATE("Set priority to auto."), wxEmptyString, CMD_PARAM_ALWAYS);
 				  
 	tmp = m_commands.AddCommand(wxT("Show"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Show queues/lists."),
 				    wxTRANSLATE("Shows upload/download queue, server list or shared files list.\n"), CMD_PARAM_NEVER);
