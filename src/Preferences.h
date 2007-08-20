@@ -522,6 +522,7 @@ public:
 	static bool		IsClientCryptLayerRequiredStrict()	{return false;} // not even incoming test connections will be answered
 	static bool		IsServerCryptLayerUDPEnabled()		{return IsClientCryptLayerSupported();}
 	static bool		IsServerCryptLayerTCPRequested()	{return IsClientCryptLayerRequested();}
+	static bool		IsServerCryptLayerTCPRequired()	{return IsClientCryptLayerRequired();}
 	static uint32	GetKadUDPKey()						{return s_dwKadUDPKey;}
 	static uint8 GetCryptTCPPaddingLength() { return s_byCryptTCPPaddingLength; }
 	
