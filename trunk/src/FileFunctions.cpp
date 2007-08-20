@@ -49,7 +49,7 @@ bool UTF8_MoveFile(const wxString& from, const wxString& to)
 						(const char*)to.mb_str(wxConvLocal));
 
 	if (!ok) {
-		   AddDebugLogLineM( true, logFileIO,
+		   AddDebugLogLineM( false, logFileIO,
 				  wxT("Error on file move from: ") +
 						 from + wxT(" to: ") + to);
 	}
@@ -62,7 +62,7 @@ bool UTF8_RemoveFile(const wxString& fileName)
 {
 	bool ok = !remove((const char*)fileName.mb_str(wxConvLocal));
 	if (!ok) {
-		AddDebugLogLineM( true, logFileIO,
+		AddDebugLogLineM( false, logFileIO,
 			wxT("Error on file remove: ") +
 				fileName);
 	}
@@ -83,7 +83,7 @@ bool UTF8_CopyFile(const wxString& from, const wxString& to)
 
 		ok = in.IsOk() && out.IsOk();
 		if (!ok) {
-			AddDebugLogLineM( true, logFileIO,
+			AddDebugLogLineM( false, logFileIO,
 				wxT("Error on file copy from: ") +
 					from + wxT(" to: ") + to);
 		} else {
