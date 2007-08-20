@@ -5,3 +5,5 @@ dist_skin_DATA = \
 		xfce.zip
 
 skindir = $(pkgdatadir)/skins
+
+MAINTAINERCLEANFILES = Makefile.in

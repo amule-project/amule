@@ -47,3 +47,5 @@ alcrc.$(OBJEXT): $(srcdir)/../alc.rc
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
 endif
+
+MAINTAINERCLEANFILES = Makefile.in

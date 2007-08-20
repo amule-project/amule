@@ -9,3 +9,5 @@ icondir = $(datadir)/pixmaps
 dist_util_DATA = alc.desktop
 utildir = $(datadir)/applications
 endif
+
+MAINTAINERCLEANFILES = Makefile.in

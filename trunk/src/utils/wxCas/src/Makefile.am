@@ -34,3 +34,5 @@ wxcasrc.$(OBJEXT): $(srcdir)/../wxcas.rc
 	cd $${thisdir} ; \
 	mv "$(srcdir)/../$@" "$@"
 endif
+
+MAINTAINERCLEANFILES = Makefile.in

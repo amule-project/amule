@@ -7,3 +7,5 @@ noinst_HEADERS = Defines.h \
 	Search.h \
 	SearchManager.h \
 	Tag.h
+
+MAINTAINERCLEANFILES = Makefile.in
