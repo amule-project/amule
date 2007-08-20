@@ -906,7 +906,7 @@ void CamulecmdApp::OnInitCommandSet()
 
 	m_commands.AddCommand(wxT("Download"), CMD_ID_DOWNLOAD, wxTRANSLATE("Start downloading a file"),
 			      wxTRANSLATE("The number of a file from the last search has to be given.\n"
-					  "Example: 'download 12' will start to download the file with the number 12 of the prvious search.\n"), CMD_PARAM_ALWAYS);
+					  "Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"), CMD_PARAM_ALWAYS);
 
 
 	//
