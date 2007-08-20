@@ -29,8 +29,16 @@ ACLOCAL_AMFLAGS = -I m4
 
 DISTCHECK_CONFIGURE_FLAGS = --enable-amulecmd --enable-webserver
 
-
 # Avoid everything getting built when doing "make check"
 check-recursive: SUBDIRS = unittests
 
-MAINTAINERCLEANFILES = Makefile.in
+MAINTAINERCLEANFILES = ABOUT-NLS \
+					   Makefile.in \
+					   aclocal.m4 \
+					   config.guess \
+					   config.h.in \
+					   config.rpath \
+					   config.sub \
+					   configure \
+					   missing \
+					   mkinstalldirs
