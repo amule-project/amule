@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 03:31+0200\n"
+"POT-Creation-Date: 2007-08-20 13:54+0200\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -3909,11 +3909,8 @@ msgstr "Fitxategia deskargatzen hasi"
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
-"the prvious search.\n"
+"the previous search.\n"
 msgstr ""
-"Azken bilaketako fitxategi baten zenbakia eman behar da.\n"
-"Adibidez: 'download 12' azken bilaketaren 12 zenbakia duen fitxategia "
-"deskargatzen hasiko da.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -3937,20 +3934,20 @@ msgstr ""
 "Deskarga baten lehenespena ezarri Baxua, Normala, Altua edo Auto bezala.\n"
 
 #: src/TextClient.cpp:927
-msgid "Set riority to low."
-msgstr "Lehenespena baxua bezala ezarri."
+msgid "Set priority to low."
+msgstr ""
 
 #: src/TextClient.cpp:928
-msgid "Set riority to normal."
-msgstr "Lehenespena normala bezala ezarri."
+msgid "Set priority to normal."
+msgstr ""
 
 #: src/TextClient.cpp:929
-msgid "Set riority to high."
-msgstr "Lehenespena altua bezala ezarri."
+msgid "Set priority to high."
+msgstr ""
 
 #: src/TextClient.cpp:930
-msgid "Set riority to auto."
-msgstr "Lehenespena auto bezala ezarri."
+msgid "Set priority to auto."
+msgstr ""
 
 #: src/TextClient.cpp:932
 msgid "Show queues/lists."
@@ -7185,6 +7182,27 @@ msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
+
+#~ msgid ""
+#~ "The number of a file from the last search has to be given.\n"
+#~ "Example: 'download 12' will start to download the file with the number 12 "
+#~ "of the prvious search.\n"
+#~ msgstr ""
+#~ "Azken bilaketako fitxategi baten zenbakia eman behar da.\n"
+#~ "Adibidez: 'download 12' azken bilaketaren 12 zenbakia duen fitxategia "
+#~ "deskargatzen hasiko da.\n"
+
+#~ msgid "Set riority to low."
+#~ msgstr "Lehenespena baxua bezala ezarri."
+
+#~ msgid "Set riority to normal."
+#~ msgstr "Lehenespena normala bezala ezarri."
+
+#~ msgid "Set riority to high."
+#~ msgstr "Lehenespena altua bezala ezarri."
+
+#~ msgid "Set riority to auto."
+#~ msgstr "Lehenespena auto bezala ezarri."
 
 #~ msgid ""
 #~ "ERROR: aMule daemon cannot be used when external connections are "

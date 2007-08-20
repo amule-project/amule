@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_TR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 03:31+0200\n"
+"POT-Creation-Date: 2007-08-20 13:54+0200\n"
 "PO-Revision-Date: 2007-07-13 01:14+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -3882,10 +3882,8 @@ msgstr "Dosyayı indirmeye başla."
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
-"the prvious search.\n"
+"the previous search.\n"
 msgstr ""
-"Son arama sonucundaki dosya numarası verilmelidir.\n"
-"Örnek: 'indir 12' önceki aramadaki 12 numaralı dosyayı indirmeyi başlatır.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -3908,20 +3906,20 @@ msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Bir aktarımın önceliğini Düşük, Normal, Yüksek veya OTO. ayarla.\n"
 
 #: src/TextClient.cpp:927
-msgid "Set riority to low."
-msgstr "Önceliği düşük olarak ata"
+msgid "Set priority to low."
+msgstr ""
 
 #: src/TextClient.cpp:928
-msgid "Set riority to normal."
-msgstr "Önceliği normal olarak ata"
+msgid "Set priority to normal."
+msgstr ""
 
 #: src/TextClient.cpp:929
-msgid "Set riority to high."
-msgstr "Önceliği yüksek olarak ata"
+msgid "Set priority to high."
+msgstr ""
 
 #: src/TextClient.cpp:930
-msgid "Set riority to auto."
-msgstr "Önceliği otomatik olarak ata"
+msgid "Set priority to auto."
+msgstr ""
 
 #: src/TextClient.cpp:932
 msgid "Show queues/lists."
@@ -7147,6 +7145,27 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#~ msgid ""
+#~ "The number of a file from the last search has to be given.\n"
+#~ "Example: 'download 12' will start to download the file with the number 12 "
+#~ "of the prvious search.\n"
+#~ msgstr ""
+#~ "Son arama sonucundaki dosya numarası verilmelidir.\n"
+#~ "Örnek: 'indir 12' önceki aramadaki 12 numaralı dosyayı indirmeyi "
+#~ "başlatır.\n"
+
+#~ msgid "Set riority to low."
+#~ msgstr "Önceliği düşük olarak ata"
+
+#~ msgid "Set riority to normal."
+#~ msgstr "Önceliği normal olarak ata"
+
+#~ msgid "Set riority to high."
+#~ msgstr "Önceliği yüksek olarak ata"
+
+#~ msgid "Set riority to auto."
+#~ msgstr "Önceliği otomatik olarak ata"
 
 #~ msgid "Warning: Skin directory name is empty"
 #~ msgstr "Uyarı: Kaplama klasörü ismi boş."

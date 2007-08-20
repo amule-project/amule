@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 03:31+0200\n"
+"POT-Creation-Date: 2007-08-20 13:54+0200\n"
 "PO-Revision-Date: 2007-05-23 21:22+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -3871,10 +3871,8 @@ msgstr "Alusta faili tõmbamist"
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
-"the prvious search.\n"
+"the previous search.\n"
 msgstr ""
-"Pead andma eelmise/viimase otsingu faili numbri.\n"
-"Näiteks 'download 12' alustab eelmise otsingu 12'nda faili tõmbamist.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -3897,20 +3895,20 @@ msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Määra tõmbamise prioriteet Low, Normal, High või Auto.\n"
 
 #: src/TextClient.cpp:927
-msgid "Set riority to low."
-msgstr "Määra madal prioriteet."
+msgid "Set priority to low."
+msgstr ""
 
 #: src/TextClient.cpp:928
-msgid "Set riority to normal."
-msgstr "Määra normaalne prioriteet."
+msgid "Set priority to normal."
+msgstr ""
 
 #: src/TextClient.cpp:929
-msgid "Set riority to high."
-msgstr "Määra kõrge prioriteet."
+msgid "Set priority to high."
+msgstr ""
 
 #: src/TextClient.cpp:930
-msgid "Set riority to auto."
-msgstr "Määra automaatne prioriteet."
+msgid "Set priority to auto."
+msgstr ""
 
 #: src/TextClient.cpp:932
 msgid "Show queues/lists."
@@ -7133,6 +7131,26 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ei õnnestunud!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ei õnnestunud!"
+
+#~ msgid ""
+#~ "The number of a file from the last search has to be given.\n"
+#~ "Example: 'download 12' will start to download the file with the number 12 "
+#~ "of the prvious search.\n"
+#~ msgstr ""
+#~ "Pead andma eelmise/viimase otsingu faili numbri.\n"
+#~ "Näiteks 'download 12' alustab eelmise otsingu 12'nda faili tõmbamist.\n"
+
+#~ msgid "Set riority to low."
+#~ msgstr "Määra madal prioriteet."
+
+#~ msgid "Set riority to normal."
+#~ msgstr "Määra normaalne prioriteet."
+
+#~ msgid "Set riority to high."
+#~ msgstr "Määra kõrge prioriteet."
+
+#~ msgid "Set riority to auto."
+#~ msgstr "Määra automaatne prioriteet."
 
 #~ msgid "Warning: Skin directory name is empty"
 #~ msgstr "HOIATUS: Rüüde kataloogi nimi on tühi"
