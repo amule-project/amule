@@ -639,12 +639,13 @@ bool TranslatedSort( const LangInfo& a, const LangInfo& b ) {
 	return wxStricmp( wxGetTranslation( a.name ), wxGetTranslation( b.name) ) < 0;
 }
 
+typedef Cfg_Int<int> Cfg_PureInt;
 
-class Cfg_Lang : public Cfg_Tmpl<int>
+class Cfg_Lang : public Cfg_PureInt
 {
 public:
 	Cfg_Lang()
-		: Cfg_Tmpl<int>( wxEmptyString, m_selection, 0 )
+		: Cfg_PureInt( wxEmptyString, m_selection, 0 )
 	{
 	}
 
@@ -654,7 +655,7 @@ public:
 
 	virtual bool TransferFromWindow()
 	{
-		if ( Cfg_Tmpl<int>::TransferFromWindow() ) { 
+		if ( Cfg_PureInt::TransferFromWindow() ) { 
 			// find wx ID of selected language
 			int i = 0;
 			while (m_selection > 0) {
@@ -707,7 +708,7 @@ public:
 			InitLocale(tmpLocale, theApp->m_locale.GetLanguage());
 		}
 
-		return Cfg_Tmpl<int>::TransferToWindow();
+		return Cfg_PureInt::TransferToWindow();
 	}
 
 
@@ -717,7 +718,7 @@ protected:
 
 #endif /* ! AMULE_DAEMON */
 
-class Cfg_Skin : public Cfg_Tmpl<wxString>
+class Cfg_Skin : public Cfg_Str
 {
 public:
 //	Cfg_Tmpl( const wxString& keyname, TYPE& value, const TYPE& defaultVal )
@@ -730,26 +731,14 @@ public:
 //	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
 //	{}
 	Cfg_Skin( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
-	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
+	 : Cfg_Str( keyname, value, defaultVal )
 	{
 	}
-
-	virtual void LoadFromFile(wxConfigBase* cfg)
-	{
-		cfg->Read( GetKey(), &m_value, m_default );
-	}
-
-	
-	virtual void SaveToFile(wxConfigBase* cfg)
-	{
-		cfg->Write( GetKey(), m_value );
-	}
-
 
 #ifndef AMULE_DAEMON
 	virtual bool TransferFromWindow()
 	{
-		if ( Cfg_Tmpl<wxString>::TransferFromWindow() ) {
+		if ( Cfg_Str::TransferFromWindow() ) {
 			return true;
 		}
 
@@ -833,7 +822,7 @@ public:
 		}
 		skinSelector->SetSelection(id);
 
-		return Cfg_Tmpl<wxString>::TransferToWindow();
+		return Cfg_Str::TransferToWindow();
 	}
 #endif /* ! AMULE_DAEMON */
 
