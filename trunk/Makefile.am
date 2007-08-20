@@ -40,5 +40,7 @@ MAINTAINERCLEANFILES = ABOUT-NLS \
 					   config.rpath \
 					   config.sub \
 					   configure \
+					   depcomp \
+					   install-sh \
 					   missing \
 					   mkinstalldirs
