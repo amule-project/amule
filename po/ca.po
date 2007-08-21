@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-20 13:54+0200\n"
+"POT-Creation-Date: 2007-08-21 03:31+0200\n"
 "PO-Revision-Date: 2006-06-16 19:33+0100\n"
 "Last-Translator: Carles Escrig (simkin) <royo@aditel.org>\n"
 "Language-Team: Catalan <gentoo@softcatala.net>\n"
@@ -150,7 +150,7 @@ msgstr "No s'han pogut obtenir els compartits de l'usuari %s'"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:156 src/DownloadListCtrl.cpp:1466
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1466
 #: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 #: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
@@ -1487,18 +1487,18 @@ msgstr "Castellà (Mèxic)"
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1629 src/Preferences.cpp:1643 src/Preferences.cpp:1650
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "No s'ha pogut determinar el navegador seleccionat!"
 
-#: src/Preferences.cpp:1679
+#: src/Preferences.cpp:1668
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "El port TCP no pot ser més gran que 65532 puix el sòcol UDP del servidor és "
 "TCP+3"
 
-#: src/Preferences.cpp:1680
+#: src/Preferences.cpp:1669
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "S'usarà el port per defecte (%d)"
