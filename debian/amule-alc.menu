@@ -1,4 +1,4 @@
-?package(amule-alc):needs="X11" section="Apps/Net"\
+?package(amule-alc):needs="X11" section="Apps/Tools"\
   title="aMule Link Creator" command="/usr/bin/alc"\
   icon="/usr/share/pixmaps/alc.xpm"
 
