@@ -53,7 +53,7 @@ general_pkgs = "amule-common"\
 	"amule-skin-gnome"\
 	"amule-skin-kde4"\
 	"amule-skin-tango"\
-	"amule-skin-ubuntu"\
+	"amule-skin-xfce"\
 	"amule-theme-default"\
 	"amule-theme-php-default"\
 	"amule-theme-chicane"\
@@ -234,65 +234,56 @@ config.status: configure
 		${AMULE}\
 		${ED2K}
 
-#I do this substitution before the install, regardless if the packages get biuld
-	cp amule.desktop amule.desktop.bak
-	cp src/utils/aLinkCreator/alc.desktop src/utils/aLinkCreator/alc.desktop.bak
-	cp src/utils/wxCas/wxcas.desktop src/utils/wxCas/wxcas.desktop.bak
-	sed -e 's/Exec=amule/Exec=amule --even-if-lfroen-surreptitiously-removes-it-this-will-stay/' < amule.desktop > amule.desktop.tmp
-	sed -e 's/Icon=alc.xpm/Icon=\/usr\/share\/pixmaps\/alc.xmp/' < src/utils/aLinkCreator/alc.desktop > src/utils/aLinkCreator/alc.desktop.tmp
-	sed -e 's/Icon=wxcas.xpm/Icon=\/usr\/share\/pixmaps\/wxcas.xmp/' < src/utils/wxCas/wxcas.desktop > src/utils/wxCas/wxcas.desktop.tmp
-	mv amule.desktop.tmp amule.desktop
-	mv src/utils/aLinkCreator/alc.desktop.tmp src/utils/aLinkCreator/alc.desktop
-	mv src/utils/wxCas/wxcas.desktop.tmp src/utils/wxCas/wxcas.desktop
 
 #And here is the well known clean target
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp 
-	-rm amule-common
-	-rm amule-stage1
-	-rm amule-stage2
-	-rm amule-dbg
-	-rm amule-ed2k-stage1
-	-rm amule-ed2k-stage2
-	-rm amule-ed2k-dbg
-	-rm amule-cas-stage1
-	-rm amule-cas-stage2
-	-rm amule-cas-dbg
-	-rm amule-wxcas-stage1
-	-rm amule-wxcas-stage2
-	-rm amule-wxcas-dbg
-	-rm amuleweb-stage1
-	-rm amuleweb-stage2
-	-rm amuleweb-dbg
-	-rm amule-remote-gui-stage1
-	-rm amule-remote-gui-stage2
-	-rm amule-remote-gui-dbg
-	-rm amule-daemon-stage1
-	-rm amule-daemon-stage2
-	-rm amule-daemon-dbg
-	-rm amule-alc-stage1
-	-rm amule-alc-stage2
-	-rm amule-alc-dbg
-	-rm amule-alcc-stage1
-	-rm amule-alcc-stage2
-	-rm amule-alcc-dbg
-	-rm amule-cmd-stage1
-	-rm amule-cmd-stage2
-	-rm amule-cmd-dbg
-	-rm amule
-	-rm ed2k
-	-rm cas
-	-rm wxcas
-	-rm webserver
-	-rm remotegui
-	-rm daemon
-	-rm alc
-	-rm alcc
-	-rm amulecmd
+	rm -f amule-common
+	rm -f amule-stage1
+	rm -f amule-stage2
+	rm -f amule-dbg
+	rm -f amule-ed2k-stage1
+	rm -f amule-ed2k-stage2
+	rm -f amule-ed2k-dbg
+	rm -f amule-cas-stage1
+	rm -f amule-cas-stage2
+	rm -f amule-cas-dbg
+	rm -f amule-wxcas-stage1
+	rm -f amule-wxcas-stage2
+	rm -f amule-wxcas-dbg
+	rm -f amuleweb-stage1
+	rm -f amuleweb-stage2
+	rm -f amuleweb-dbg
+	rm -f amule-remote-gui-stage1
+	rm -f amule-remote-gui-stage2
+	rm -f amule-remote-gui-dbg
+	rm -f amule-daemon-stage1
+	rm -f amule-daemon-stage2
+	rm -f amule-daemon-dbg
+	rm -f amule-alc-stage1
+	rm -f amule-alc-stage2
+	rm -f amule-alc-dbg
+	rm -f amule-alcc-stage1
+	rm -f amule-alcc-stage2
+	rm -f amule-alcc-dbg
+	rm -f amule-cmd-stage1
+	rm -f amule-cmd-stage2
+	rm -f amule-cmd-dbg
+	rm -f amule
+	rm -f ed2k
+	rm -f cas
+	rm -f wxcas
+	rm -f webserver
+	rm -f remotegui
+	rm -f daemon
+	rm -f alc
+	rm -f alcc
+	rm -f amulecmd
 
-	-$(MAKE) distclean
+	[ ! -f Makefile ] || $(MAKE) distclean
+
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
 endif
@@ -302,12 +293,6 @@ endif
 	
 	rm -f debian/files
 	dh_clean -k
-
-	-mv amule.desktop.bak amule.desktop
-	-mv src/utils/aLinkCreator/alc.desktop.bak src/utils/aLinkCreator/alc.desktop
-	-mv src/utils/wxCas/wxcas.desktop.bak src/utils/wxCas/wxcas.desktop
-
-
 
 #Some generic targets to check the build process
 build: build-stamp

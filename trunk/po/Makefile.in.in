@@ -239,7 +239,7 @@ dvi info tags TAGS ID:
 
 mostlyclean:
 	rm -f remove-potcdate.sed
-	rm -f core core.* $(DOMAIN).po $(DOMAIN).1po $(DOMAIN).2po *.new.po
+	rm -f core core.* $(DOMAIN).po $(DOMAIN).1po $(DOMAIN).2po *.new.po *.gmo
 	rm -fr *.o
 
 clean: mostlyclean
