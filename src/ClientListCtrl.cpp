@@ -236,6 +236,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		bool banned = false;
 		bool validIP = false;
 		bool isfriend = false;
+		bool hasdisabledsharedfiles = false;
 
 		// Check if the client is banned
 		if ( index > -1 ) {
@@ -244,6 +245,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 			banned = client->IsBanned();
 			validIP = client->GetIP();
 			isfriend = client->IsFriend();
+			hasdisabledsharedfiles = client->HasDisabledSharedFiles();
 		}
 				
 		m_menu = new wxMenu(_("Clients"));
@@ -268,6 +270,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		m_menu->Enable( MP_SHOWLIST,	index > -1 );
 				
 		m_menu->Enable( MP_UNBAN, 		banned );		
+		m_menu->Enable( MP_SHOWLIST, 		!hasdisabledsharedfiles );		
 		m_menu->Enable( MP_ADDFRIEND,	validIP );
 		m_menu->Enable( MP_SENDMESSAGE,	validIP );
 
@@ -991,6 +994,7 @@ void CClientsView::Initialize( CClientListCtrl* list )
 	list->InsertColumn( 6, _("Connected"),		wxLIST_FORMAT_LEFT,	150 );
 	list->InsertColumn( 7, _("Userhash"),			wxLIST_FORMAT_LEFT,	150 );
 	list->InsertColumn( 8,	_("Encrypted"),		wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 9,	_("Hide shared files"),		wxLIST_FORMAT_LEFT, 100 );			
 
 	const CClientList::IDMap& clist = theApp->clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
@@ -1045,8 +1049,13 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 		case 7:
 			buffer = client->GetUserHash().Encode();
 			break;
+
 		case 8:
 			buffer = client->HasObfuscatedConnectionBeenEstablished() ? wxT("Yes") : wxT("No");
+			break;		
+
+		case 9:
+			buffer = client->GetUserName().IsEmpty() ? wxT("?") : (client->HasDisabledSharedFiles() ? wxT("Yes") : wxT("No"));
 			break;		
 	}
 	
@@ -1106,6 +1115,9 @@ int CClientsView::SortProc( long item1, long item2, long sortData )
 		// Sort by Obfuscation state
 		case 8: return mode * CmpAny( client2->HasObfuscatedConnectionBeenEstablished(), client1->HasObfuscatedConnectionBeenEstablished() );
 			
+		// Sort by Shared Files DISabled
+		case 9: return mode * CmpAny( client2->HasDisabledSharedFiles(), client1->HasDisabledSharedFiles() );
+
 		default:
 			return 0;
 	}
