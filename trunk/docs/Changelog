@@ -1,4 +1,4 @@
-Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
+Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then we lied about the date." version
 ----------
 2007-08-19
 
@@ -76,6 +76,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday." version
 		* Fixed a bug while getting sources for large files (>4GB)
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 		* Improve exception handling
+		* Added a column on client view that shows if the user has reported having 
+		  disabled shared files.
+		* Disable the "Show files" option in context menu if the user has reported 
+		  having disabled shared files.
 		* Add generic CTag classes support for Kad data types
 		* Remove kad IO classes
 		* Safety on memfiles created from packets
