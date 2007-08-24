@@ -1,0 +1,1611 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2007-08-23 18:27+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING"
+
+# type: TH
+#: docs/man/amule.1:1
+#, no-wrap
+msgid "AMULE"
+msgstr ""
+
+# type: TH
+#: docs/man/amule.1:1 docs/man/amuled.1:1 docs/man/amulecmd.1:1 docs/man/amulegui.1:1 docs/man/amuleweb.1:1 docs/man/ed2k.1:1 src/utils/cas/docs/cas.1:1 src/utils/cas/docs/cas.1:6 src/utils/wxCas/docs/wxcas.1:1 src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "January 2007"
+msgstr ""
+
+# type: TH
+#: docs/man/amule.1:1
+#, no-wrap
+msgid "aMule v2.2.0"
+msgstr ""
+
+# type: TH
+#: docs/man/amule.1:1
+#, no-wrap
+msgid "aMule"
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:2 docs/man/amuled.1:2 docs/man/amulecmd.1:2 docs/man/amulegui.1:2 docs/man/amuleweb.1:2 docs/man/ed2k.1:2 src/utils/cas/docs/cas.1:2 src/utils/wxCas/docs/wxcas.1:2 src/utils/xas/docs/xas.1:2
+#, no-wrap
+msgid "NAME"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:4
+msgid "amule - the all-platform eMule p2p client"
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:4 docs/man/amuled.1:4 docs/man/amulecmd.1:4 docs/man/amulegui.1:4 docs/man/amuleweb.1:4 docs/man/ed2k.1:4 src/utils/cas/docs/cas.1:4 src/utils/wxCas/docs/wxcas.1:4 src/utils/xas/docs/xas.1:4
+#, no-wrap
+msgid "SYNOPSIS"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:13
+msgid ""
+"B<amule> [B<-v>] [B<-h>] [B<-i>] [B<-geometry> I<E<lt>geomE<gt>>] [B<-d>] "
+"[B<-o>] [B<-r>]"
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:13 docs/man/amuled.1:15 docs/man/amulecmd.1:24 docs/man/amulegui.1:6 docs/man/amuleweb.1:36 docs/man/ed2k.1:12 src/utils/cas/docs/cas.1:7 src/utils/wxCas/docs/wxcas.1:6 src/utils/xas/docs/xas.1:6
+#, no-wrap
+msgid "DESCRIPTION"
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:14 docs/man/amuled.1:16
+#, no-wrap
+msgid "B<-v>, B<--version>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:17 docs/man/amuled.1:19 docs/man/amulecmd.1:65 docs/man/amuleweb.1:118 docs/man/ed2k.1:26
+msgid "Displays the current version number."
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:17 docs/man/amuled.1:19 src/utils/cas/docs/cas.1:28
+#, no-wrap
+msgid "B<-h>, B<--help>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:20 docs/man/amuled.1:22 docs/man/amulecmd.1:62 docs/man/amuleweb.1:115 docs/man/ed2k.1:20 src/utils/cas/docs/cas.1:31
+msgid "Prints a short usage description."
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:20 docs/man/amuled.1:22
+#, no-wrap
+msgid "B<-i>, B<--enable-stdin>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:23 docs/man/amuled.1:25
+msgid "Does not disable stdin."
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:23
+#, no-wrap
+msgid "B<-geometry> I<E<lt>geomE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:27
+msgid ""
+"Sets the geometry of the app.  I<E<lt>geomE<gt>> uses the same format as "
+"standard X11 "
+"apps:\t[B<=>][I<E<lt>widthE<gt>>{B<xX>}I<E<lt>heightE<gt>>][{B<+->}I<E<lt>xoffsetE<gt>>{B<+->}I<E<lt>yoffsetE<gt>>]"
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:27 docs/man/amuled.1:31
+#, no-wrap
+msgid "B<-d>, B<--disable-fatal>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:30 docs/man/amuled.1:34
+msgid "Does not handle fatal exception."
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:30 docs/man/amuled.1:34
+#, no-wrap
+msgid "B<-o>, B<--log-stdout>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:33 docs/man/amuled.1:37
+msgid "Print log messages to stdout."
+msgstr ""
+
+# type: TP
+#: docs/man/amule.1:33
+#, no-wrap
+msgid "B<-r>, B<--reset-config>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:36
+msgid "Resets config to default values."
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:36 docs/man/amuled.1:37 docs/man/amulecmd.1:238 docs/man/amuleweb.1:159 docs/man/ed2k.1:26 src/utils/cas/docs/cas.1:33
+#, no-wrap
+msgid "FILES"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:39 docs/man/amuled.1:39
+msgid "~/.aMule/*"
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:39 docs/man/amuled.1:39 docs/man/amulecmd.1:254 docs/man/amulegui.1:13 docs/man/amuleweb.1:179 docs/man/ed2k.1:28 src/utils/cas/docs/cas.1:41 src/utils/wxCas/docs/wxcas.1:17 src/utils/xas/docs/xas.1:16
+#, no-wrap
+msgid "REPORTING BUGS"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:42 docs/man/amuled.1:42 docs/man/amulecmd.1:257 docs/man/amulegui.1:16 docs/man/amuleweb.1:182 docs/man/ed2k.1:31 src/utils/cas/docs/cas.1:44 src/utils/wxCas/docs/wxcas.1:20 src/utils/xas/docs/xas.1:19
+msgid ""
+"Please report bugs either on our forum (I<http://forum.amule.org/>), or in "
+"our bugtracker (I<http://bugs.amule.org/>).  Please do not report bugs in "
+"e-mail, neither to our mailing list nor directly to any team member."
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:42 docs/man/amuled.1:42 docs/man/amulecmd.1:257 docs/man/amulegui.1:16 docs/man/amuleweb.1:182 docs/man/ed2k.1:31 src/utils/cas/docs/cas.1:44 src/utils/wxCas/docs/wxcas.1:20 src/utils/xas/docs/xas.1:19
+#, no-wrap
+msgid "COPYRIGHT"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amule.1:44 docs/man/amuled.1:44 docs/man/amulecmd.1:259 docs/man/amulegui.1:18 docs/man/amuleweb.1:184 docs/man/ed2k.1:33 src/utils/cas/docs/cas.1:46 src/utils/wxCas/docs/wxcas.1:22 src/utils/xas/docs/xas.1:21
+msgid ""
+"aMule and all of its related utilities are distributed under the GNU General "
+"Public License."
+msgstr ""
+
+# type: SH
+#: docs/man/amule.1:44 docs/man/amuled.1:44 docs/man/amulecmd.1:259 docs/man/amulegui.1:18 docs/man/amuleweb.1:184 docs/man/ed2k.1:33 src/utils/cas/docs/cas.1:46 src/utils/wxCas/docs/wxcas.1:22 src/utils/xas/docs/xas.1:21
+#, no-wrap
+msgid "SEE ALSO"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuled.1:1
+msgid ""
+"B<alc>(1), B<alcc>(1), B<amuled>(1), B<amulecmd>(1), B<amulegui>(1), "
+"B<amuleweb>(1), B<cas>(1), B<ed2k>(1), B<wxcas>(1), B<xas>(1)"
+msgstr ""
+
+# type: TH
+#: docs/man/amuled.1:1
+#, no-wrap
+msgid "AMULED"
+msgstr ""
+
+# type: TH
+#: docs/man/amuled.1:1
+#, no-wrap
+msgid "aMule Daemon v2.2.0"
+msgstr ""
+
+# type: TH
+#: docs/man/amuled.1:1
+#, no-wrap
+msgid "aMule Daemon"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuled.1:4
+msgid "amuled - the all-platform eMule p2p client - daemonized version"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuled.1:14
+msgid ""
+"B<amuled> [B<-v>] [B<-h>] [B<-i>] [B<-f>] [B<-c> I<E<lt>dirE<gt>>] [B<-d>] "
+"[B<-o>] [B<-r>]"
+msgstr ""
+
+# type: TP
+#: docs/man/amuled.1:25
+#, no-wrap
+msgid "B<-f>, B<--full-daemon>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuled.1:28
+msgid "Fork to Background"
+msgstr ""
+
+# type: TP
+#: docs/man/amuled.1:28
+#, no-wrap
+msgid "B<-c>, B<--config-dir>=I<E<lt>dirE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuled.1:31
+msgid "Read config from E<lt>dirE<gt> instead of home."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:1
+msgid ""
+"B<alcc>(1), B<amule>(1), B<amulecmd>(1), B<amulegui>(1), B<amuleweb>(1), "
+"B<cas>(1), B<ed2k>(1)"
+msgstr ""
+
+# type: TH
+#: docs/man/amulecmd.1:1
+#, no-wrap
+msgid "AMULECMD"
+msgstr ""
+
+# type: TH
+#: docs/man/amulecmd.1:1
+#, no-wrap
+msgid "aMuleCmd v2.2.0"
+msgstr ""
+
+# type: TH
+#: docs/man/amulecmd.1:1 docs/man/amuleweb.1:1 docs/man/ed2k.1:1 src/utils/cas/docs/cas.1:1 src/utils/cas/docs/cas.1:6 src/utils/wxCas/docs/wxcas.1:1 src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "aMule utilities"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:4
+msgid "amulecmd - Console-based program to control aMule"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:15
+msgid ""
+"B<amulecmd> [B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portE<gt>>] [B<-P> "
+"I<E<lt>passwdE<gt>>] [B<-f> I<E<lt>pathE<gt>>] [B<-q>] [B<-v>] [B<-l> "
+"I<E<lt>langE<gt>>] [B<-w>] [B<-c> I<E<lt>commandE<gt>>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:18
+msgid "B<amulecmd> B<--create-config-from=>I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:21
+msgid "B<amulecmd> [B<--help>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:24
+msgid "B<amulecmd> [B<--version>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:26
+msgid "B<amulecmd> is a console-based client to control aMule."
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:26 docs/man/amuleweb.1:41
+#, no-wrap
+msgid "B<-h>, B<--host>=I<E<lt>hostE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:30 docs/man/amuleweb.1:45
+msgid ""
+"Host where aMule is running (default: I<localhost>).  I<E<lt>hostE<gt>> "
+"might be an IP address or a DNS name"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:30 docs/man/amuleweb.1:45
+#, no-wrap
+msgid "B<-p>, B<--port>=I<E<lt>portE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:33 docs/man/amuleweb.1:48
+msgid ""
+"aMule's port for External Connections, as set in Preferences-E<gt>Remote "
+"Controls (default: I<4712>)"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:33 docs/man/amuleweb.1:48
+#, no-wrap
+msgid "B<-P>, B<--password>=I<E<lt>passwdE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:36 docs/man/amuleweb.1:51
+msgid "External Connections password"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:36 docs/man/amuleweb.1:51
+#, no-wrap
+msgid "B<-f>, B<--config-file>=I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:40 docs/man/amuleweb.1:55
+msgid ""
+"Use the given configuration file.  Default configuration file is "
+"I<~/.aMule/remote.conf>"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:40 docs/man/amuleweb.1:55
+#, no-wrap
+msgid "B<-q>, B<--quiet>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:43
+msgid ""
+"Ddo not print any output to stdout. This seems to be a very much useless "
+"option with B<amulecmd>."
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:43 docs/man/amuleweb.1:59
+#, no-wrap
+msgid "B<-v>, B<--verbose>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:46 docs/man/amuleweb.1:62
+msgid "Be verbose - show also debug messages"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:46 docs/man/amuleweb.1:62
+#, no-wrap
+msgid "B<-l>, B<--locale>=I<E<lt>langE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:50 docs/man/amuleweb.1:66
+msgid ""
+"Sets program locale (language).  See section B<LANGUAGES> for the "
+"description of the I<E<lt>langE<gt>> parameter."
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:50 docs/man/amuleweb.1:66
+#, no-wrap
+msgid "B<-w>, B<--write-config>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:53 docs/man/amuleweb.1:69
+msgid "Write command line options to config file and exit"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:53
+#, no-wrap
+msgid "B<-c>, B<--command>=I<E<lt>commandE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:56
+msgid ""
+"Execute I<E<lt>commandE<gt>> as if it was entered at amulecmd's prompt and "
+"exit."
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:56 docs/man/amuleweb.1:69
+#, no-wrap
+msgid "B<--create-config-from>=I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:59 docs/man/amuleweb.1:72
+msgid ""
+"Create config file based upon I<E<lt>pathE<gt>>, which must point to a valid "
+"aMule config file, and then exit"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:59 docs/man/amuleweb.1:112 docs/man/ed2k.1:17
+#, no-wrap
+msgid "B<--help>"
+msgstr ""
+
+# type: TP
+#: docs/man/amulecmd.1:62 docs/man/amuleweb.1:115 docs/man/ed2k.1:23
+#, no-wrap
+msgid "B<--version>"
+msgstr ""
+
+# type: SH
+#: docs/man/amulecmd.1:65
+#, no-wrap
+msgid "COMMANDS"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:67
+msgid "All commands are case insensitive"
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:67
+#, no-wrap
+msgid "AddR< E<lt>ed2k-linkE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:69
+msgid "Adds an ed2k-linkto the core."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:71
+msgid "The ed2k link to be added can be:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:73
+msgid "*) a file link (ed2k://|file|...), it will be added to the download queue,"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:75
+msgid "*) a server link (ed2k://|server|...), it will be added to the server list,"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:77
+msgid ""
+"*) or a serverlist link, in which case all servers in the list will be added "
+"to the server list."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:79 docs/man/amulecmd.1:104 docs/man/amulecmd.1:176
+msgid "This command must have an argument."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:79
+#, no-wrap
+msgid "CancelR< E<lt>hashE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:81
+msgid "Cancels the download specified by hash. To get the hash use I<show>."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:81
+#, no-wrap
+msgid "ConnectR< (kad|ed2kE<lt>ip|nameE<gt>)>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:83
+msgid "Connect to the network."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:85
+msgid "This will connect to all networks that are enabled in Preferences."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:90
+msgid ""
+"When giving ed2k as parameter, it connects only to ed2k-network to servers "
+"in your serverlist. You may also optionally specify a server address in "
+"IP:Port form, to connect to that server only. The IP must be a dotted "
+"decimal IPv4 address, or a resolvable DNS name."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:92
+msgid "When giving kad, it connects to Kad only."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:92
+#, no-wrap
+msgid "DisconnectR< (ed2k|kad)>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:96
+msgid ""
+"Disconnect from all networks you are cionnected to, or just disconnect from "
+"the specified network."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:96
+#, no-wrap
+msgid "DownloadR< num>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:98
+msgid "Start downloading a file"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:102
+msgid ""
+"The number of a file from the last search has to be given.  Example: "
+"'download 12' will start to download the file with the number 12 of the "
+"previous search."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:104
+#, no-wrap
+msgid "Exit"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:106
+msgid "Disconnect from amule/amuled and quit amulecmd."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:106
+#, no-wrap
+msgid "GetR< value>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:108
+msgid "Get and display a preference value."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:110 docs/man/amulecmd.1:134 docs/man/amulecmd.1:166
+msgid "This command is incomplete, aviable values are listed below."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:112 docs/man/amulecmd.1:136 docs/man/amulecmd.1:168
+msgid "Available values to get:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:114
+msgid "BwLimits\tGet bandwidth limits."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:116
+msgid "IPFilter\tGet IPFilter preferences."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:116
+#, no-wrap
+msgid "HelpR< E<lt>commandE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:120
+msgid ""
+"Get a short help.  If called without parameter, it shows a list of aviable "
+"commands.  If called with E<lt>commandE<gt>, it shows a short description of "
+"the given command."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:120
+#, no-wrap
+msgid "PauseR< E<lt>hashE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:122
+msgid "Pauses the download specified by hash. To get the hash use I<show>."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:122
+#, no-wrap
+msgid "Progress"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:124
+msgid "Shows the progress of an ongiong search."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:126 docs/man/amulecmd.1:130 docs/man/amulecmd.1:144 docs/man/amulecmd.1:148 docs/man/amulecmd.1:194
+msgid "This command can't have an argument."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:126
+#, no-wrap
+msgid "Quit"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:128
+msgid "Exits the App."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:130
+#, no-wrap
+msgid "Reload"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:132
+msgid "Reloads a given object."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:138
+msgid "BwLimits\tReload bandwidth limits."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:140
+msgid "IPFilter\tReload IPFilter preferences."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:140
+#, no-wrap
+msgid "Reset"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:142
+msgid "Reset the log."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:144
+#, no-wrap
+msgid "Results"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:146
+msgid "Shows you the results of the last search."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:148
+#, no-wrap
+msgid "ResumeR< E<lt>hashE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:150
+msgid "Resumes the download specified by hash. To get the hash use I<show>."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:150
+#, no-wrap
+msgid "SearchR< global|kad|local file>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:154
+msgid ""
+"Makes a search for the given file. A searchtype and a file to search is "
+"mandatory to do this.  I<Example> 'search kad amule' performs a kad search "
+"for amule."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:156
+msgid "Aviable searchtypes:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:158
+msgid "global\tperforms a global search"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:160
+msgid "kad\tperforms a search on kad network"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:162
+msgid "local\tperforms a local search"
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:162
+#, no-wrap
+msgid "SetR< E<lt>valueE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:164
+msgid "Sets a given preferences value."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:170
+msgid "BwLimits\tSet bandwidth limits."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:172
+msgid "IPFilter\tSet IPFilter preferences."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:172
+#, no-wrap
+msgid "ShowR< DL|Log|Servers|UL>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:174
+msgid "Shows upload/download queue, server list or shared files list."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:178
+msgid "This command is incomplete, you must use one of the extensions below."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:180
+msgid "Available extensions:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:182
+msgid "DL\t\tShow download queue."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:184
+msgid "Log\t\tShow log."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:186
+msgid "Servers\tShow servers list."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:188
+msgid "UL\t\tShow upload queue."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:188
+#, no-wrap
+msgid "Shutdown"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:192
+msgid ""
+"Shutdown the remote running core (amule/amuled).  This will also shut down "
+"the text client, since it is unusable without a running core."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:194
+#, no-wrap
+msgid "StatisticsR< E<lt>numE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:196
+msgid "Show statistics tree."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:200
+msgid ""
+"The optional number in the range of 0-255 can be passed as argument to this "
+"command, which tells how many entries of the client version subtree should "
+"be shown. Passing 0, or omitting it means 'unlimited'."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:203
+msgid ""
+"I<Example:> 'statistics 5' will show only the top 5 versions for each client "
+"type."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:203
+#, no-wrap
+msgid "Status"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:205
+msgid "Show connection status, current up/download speeds, etc."
+msgstr ""
+
+# type: SH
+#: docs/man/amulecmd.1:206 docs/man/amuleweb.1:118
+#, no-wrap
+msgid "NOTES"
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:207 docs/man/amuleweb.1:119
+#, no-wrap
+msgid "Paths"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:211 docs/man/amuleweb.1:123
+msgid ""
+"For all options which take a I<E<lt>pathE<gt>> value, if the I<path> "
+"contains no directory part (i.e. just a plain filename), then it is "
+"considered to be under the aMule configuration directory, I<~/.aMule>."
+msgstr ""
+
+# type: SS
+#: docs/man/amulecmd.1:211 docs/man/amuleweb.1:123
+#, no-wrap
+msgid "LANGUAGES"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:217 docs/man/amuleweb.1:129
+msgid ""
+"The I<E<lt>langE<gt>> parameter for the B<-l> option has the following form: "
+"I<lang>[B<_>I<LANG>][B<.>I<encoding>][B<@>I<modifier>] where I<lang> is the "
+"primary language, I<LANG> is a sublanguage/territory, I<encoding> is the "
+"character set to use and I<modifier> \"allows the user to select a specific "
+"instance of localization data within a single category\"."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:219 docs/man/amuleweb.1:131
+msgid "For example, the following strings are valid:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:221 docs/man/amuleweb.1:133
+msgid "de"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:223 docs/man/amuleweb.1:135
+msgid "de_DE"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:225 docs/man/amuleweb.1:137
+msgid "de_DE.iso88591"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:227 docs/man/amuleweb.1:139
+msgid "de_DE@euro"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:229 docs/man/amuleweb.1:141
+msgid "de_DE.iso88591@euro"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:232 docs/man/amuleweb.1:144
+msgid ""
+"Though all the above strings are accepted as valid language definitions, "
+"I<encoding> and I<modifier> are yet unused."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:235 docs/man/amuleweb.1:147
+msgid ""
+"In addition to the format above, you can also specify full language names in "
+"English - so B<-l german> is also valid and is equal to B<-l de_DE>."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:238 docs/man/amuleweb.1:150
+msgid ""
+"When no locale is defined, either on command-line or in config file, system "
+"default language will be used."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:240 docs/man/amuleweb.1:161
+msgid "~/.aMule/remote.conf"
+msgstr ""
+
+# type: SH
+#: docs/man/amulecmd.1:240 docs/man/amuleweb.1:165
+#, no-wrap
+msgid "EXAMPLE"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:242
+msgid "Typically amulecmd will be first run as:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:244
+msgid "B<amulecmd> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-w>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:246 docs/man/amuleweb.1:171
+msgid "or"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:248
+msgid "B<amulecmd> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:250 docs/man/amuleweb.1:175
+msgid ""
+"These will save settings to I<$HOME/.aMule/remote.conf>, and later you only "
+"need to type:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:252
+msgid "B<amulecmd>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulecmd.1:254
+msgid "Of course, you don't have to follow this example."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:1
+msgid "B<amule>(1), B<amuleweb>(1)"
+msgstr ""
+
+# type: TH
+#: docs/man/amulegui.1:1
+#, no-wrap
+msgid "AMULEGUI"
+msgstr ""
+
+# type: TH
+#: docs/man/amulegui.1:1
+#, no-wrap
+msgid "aMuleGUI v2.2.0"
+msgstr ""
+
+# type: TH
+#: docs/man/amulegui.1:1
+#, no-wrap
+msgid "aMuleGUI"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:4
+msgid "amulegui - aMule control program with GUI"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:6
+msgid "B<amulegui>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:11
+msgid ""
+"B<amulegui> is a client program, and can be connected on amule or amuled via "
+"EC. You can manage your amule program with it. It provides the almost same "
+"functionality as amule, even if the core works on another computer."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:13 src/utils/wxCas/docs/wxcas.1:13
+msgid "This program doesn't take any arguments."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:20
+msgid ""
+"B<alc>(1), B<alcc>(1), B<amuled>(1), B<amulecmd>(1), B<amuleweb>(1), "
+"B<cas>(1), B<ed2k>(1), B<wxcas>(1), B<xas>(1)"
+msgstr ""
+
+# type: SH
+#: docs/man/amulegui.1:20 src/utils/cas/docs/cas.1:39 src/utils/wxCas/docs/wxcas.1:15 src/utils/xas/docs/xas.1:14
+#, no-wrap
+msgid "AUTHOR"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amulegui.1:23
+msgid ""
+"This manpage was written by Julien Delange for Debian E<lt>julien AT gunnm "
+"DOT orgE<gt> This manpage was rewritten by Vollstrecker for aMule "
+"E<lt>amule@vollstreckernet.deE<gt>"
+msgstr ""
+
+# type: TH
+#: docs/man/amuleweb.1:1
+#, no-wrap
+msgid "AMULEWEB"
+msgstr ""
+
+# type: TH
+#: docs/man/amuleweb.1:1
+#, no-wrap
+msgid "aMule webserver v2.2.0"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:4
+msgid "amuleweb - aMule web server"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:24
+msgid ""
+"B<amuleweb> [B<-h> I<E<lt>hostE<gt>>] [B<-p> I<E<lt>portE<gt>>] [B<-P> "
+"I<E<lt>passE<gt>>] [B<-f> I<E<lt>pathE<gt>>] [B<-q>] [B<-v>] [B<-l> "
+"I<E<lt>langE<gt>>] [B<-w>] [B<-t> I<E<lt>nameE<gt>>] [B<-s> "
+"I<E<lt>portE<gt>>] [B<-z>] [B<-Z>] [B<-A> I<E<lt>passE<gt>>] [B<-G> "
+"I<E<lt>passE<gt>>] [B<-a>] [B<-d>] [B<-L>] [B<-N>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:28
+msgid ""
+"B<amuleweb> [B<-f> I<E<lt>pathE<gt>>] "
+"B<--create-config-from=>I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:32
+msgid "B<amuleweb> [B<--help>] [B<--version>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:34
+msgid "B<amuleweb --amule-config-file=>I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:36
+msgid "B<amuleweb --no-php>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:41
+msgid ""
+"B<amuleweb> manages your access to amule through a webbrowser.  You can "
+"start amuleweb together with B<amule>(1), or separately, any time later.  "
+"Options can be specified via command-line or via config-file.  Command-line "
+"options take precedence over config-file options."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:59
+msgid ""
+"Do not print any output to stdout.  You may want to use B<-q> to daemonize "
+"the webserver, i.e. running as 'B<amuleweb -q &>'"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:72
+#, no-wrap
+msgid "B<-t>, B<--template>=I<E<lt>nameE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:76
+msgid ""
+"Loads the template named I<E<lt>nameE<gt>>. See also the section B<SKIN "
+"SUPPORT>"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:76
+#, no-wrap
+msgid "B<-s>, B<--server-port>=I<E<lt>portE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:79
+msgid ""
+"Webserver's HTTP port. This is the port you can point your browser to "
+"(default: I<4711>)"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:79
+#, no-wrap
+msgid "B<-z>, B<--enable-gzip>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:82
+msgid "Enable using gzip compression in HTTP traffic to save bandwidth"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:82
+#, no-wrap
+msgid "B<-Z>, B<--disable-gzip>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:85
+msgid "Disable using gzip compression (this is the default)"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:85
+#, no-wrap
+msgid "B<-A>, B<--admin-pass>=I<E<lt>passwdE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:88
+msgid "Full access password for webserver"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:88
+#, no-wrap
+msgid "B<-G>, B<--guest-pass>=I<E<lt>passwdE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:91
+msgid "Guest password for webserver"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:91
+#, no-wrap
+msgid "B<-a>, B<--allow-guest>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:94
+msgid "Allow guest access"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:94
+#, no-wrap
+msgid "B<-d>, B<--deny-guest>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:97
+msgid "Deny guest access (default)"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:97
+#, no-wrap
+msgid "B<-L>, B<--load-settings>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:103
+msgid ""
+"Load/save webserver settings from/to remote aMule.  This causes amuleweb to "
+"ignore command-line and config-file settings, and load them from aMule.  "
+"When saving preferences none will be written to the config file, but to "
+"aMule.  (Of course, this works only for those settings, that can be set in "
+"aMule's Preferences-E<gt>Remote Controls)"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:103
+#, no-wrap
+msgid "B<-N>, B<--no-script-cache>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:106
+msgid "Recompile PHP pages on each request"
+msgstr ""
+
+# type: TP
+#: docs/man/amuleweb.1:106
+#, no-wrap
+msgid "B<--amule-config-file>=I<E<lt>pathE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:112
+msgid ""
+"aMule config file path.  B<DO NOT USE DIRECTLY!> aMule uses this option when "
+"starting amuleweb at aMule startup.  This option causes all other "
+"command-line and config-file settings to be ignored, preferences to be read "
+"from the given config file, and also implies the B<-q -L> options."
+msgstr ""
+
+# type: SH
+#: docs/man/amuleweb.1:150
+#, no-wrap
+msgid "SKIN SUPPORT"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:157
+msgid ""
+"B<amuleweb> is capable of displaying information in different skins.  These "
+"skins are called templates, and you can make amuleweb load a specific "
+"template via the B<-t> command line option.  Templates are searched in two "
+"places: first in I<~/.aMule/webserver/> and then in "
+"I<$(pkgdatadir)/webserver/> (I<$(pkgdatadir)> is the install location of "
+"architecture independent data, most likely something like "
+"/usr/share/amule).  Each template must be in a subdirectory of the template "
+"name, and this directory must contain all files the template needs.  The "
+"actual template filename must be aMule.tmpl."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:159
+msgid ""
+"For example, the default template (named 'default') is in "
+"webserver/default/, and this directory contains aMule.tmpl amongst a lot of "
+"image files."
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:163
+msgid "~/.aMule/webserver/"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:165
+msgid "I<$(pkgdatadir)>/webserver/"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:167
+msgid "Typically amuleweb will be first run as:"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:169
+msgid ""
+"B<amuleweb> B<-h> I<hostname> B<-p> I<ECport> B<-P> I<ECpassword> B<-s> "
+"I<HTTPport> B<-A> I<AdminPassword> B<-w>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:173
+msgid "B<amuleweb> B<--create-config-from>=I</home/username/.aMule/amule.conf>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:177
+msgid "B<amuleweb>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/amuleweb.1:179
+msgid ""
+"Of course, you may specify any more or less options on the first example "
+"line, and you may also totally omit it."
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:1
+msgid "B<amule>(1), B<amulecmd>(1)"
+msgstr ""
+
+# type: TH
+#: docs/man/ed2k.1:1
+#, no-wrap
+msgid "ED2K"
+msgstr ""
+
+# type: TH
+#: docs/man/ed2k.1:1
+#, no-wrap
+msgid "aMule ED2k link parser v1.2.0"
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:4
+msgid "ed2k - aMule ED2k link parser"
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:7
+msgid "B<ed2k> I<E<lt>ED2k_linkE<gt>>"
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:12
+msgid "B<ed2k> [B<--help>] [B<--config-dir,>-cB<]> [B<--version>]"
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:16
+msgid ""
+"aMule ED2k link parser v1.1.0.  Sends the given I<E<lt>ED2k_linkE<gt>> to "
+"aMule, i.e. writes it to the file ~/.aMule/ED2KLinks, which will be checked "
+"by aMule every second for links.  B<ed2k> accepts file, server and "
+"serverlist links."
+msgstr ""
+
+# type: SS
+#: docs/man/ed2k.1:16
+#, no-wrap
+msgid "Usage:"
+msgstr ""
+
+# type: TP
+#: docs/man/ed2k.1:20
+#, no-wrap
+msgid "B<-c>, B<--config-dir>=I<E<lt>dirE<gt>> "
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:23
+msgid ""
+"Specifies the aMule configuration directory. This must be writeable by the "
+"user running B<ed2k>."
+msgstr ""
+
+# type: Plain text
+#: docs/man/ed2k.1:28
+msgid "~/.aMule/ED2KLinks"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:1 src/utils/xas/docs/xas.1:22
+msgid "B<amule>(1)"
+msgstr ""
+
+# type: TH
+#: src/utils/cas/docs/cas.1:1 src/utils/cas/docs/cas.1:6
+#, no-wrap
+msgid "CAS"
+msgstr ""
+
+# type: TH
+#: src/utils/cas/docs/cas.1:1
+#, no-wrap
+msgid "cas v0.8"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:4
+msgid "cas - c aMule statistics"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:6
+msgid "B<cas>"
+msgstr ""
+
+# type: TH
+#: src/utils/cas/docs/cas.1:6
+#, no-wrap
+msgid "aMule ED2k links calculator"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:13
+#, no-wrap
+msgid ""
+"    ___    _ _   ___    c aMule statistics\n"
+"  /'___) /'_` )/',__)   by Pedro de Oliveira\n"
+" ( (___ ( (_| |\\e\\__, \\e   E<lt>falso@rdk.homeip.netE<gt>\n"
+" `\\e____)`\\e__,_)(____/   Version 0.5\n"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:16
+msgid ""
+"B<cas> is a program for displaying the contents of your aMule online "
+"signature file to console (in a human readable form)."
+msgstr ""
+
+# type: SS
+#: src/utils/cas/docs/cas.1:16
+#, no-wrap
+msgid "OPTIONS:"
+msgstr ""
+
+# type: TP
+#: src/utils/cas/docs/cas.1:17
+#, no-wrap
+msgid "B<-o>, B<--picture>, B<-P>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:21
+msgid ""
+"Writes the online signature picture.  You can optionally append "
+"I<\\=\\E<lt>PATH\\E<gt>> to this option, to specify where the picture should "
+"be written"
+msgstr ""
+
+# type: TP
+#: src/utils/cas/docs/cas.1:21
+#, no-wrap
+msgid "B<-p>, B<--html>, B<-H>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:25
+msgid ""
+"HTML page with stats and picture.  You can optionally append "
+"I<\\=\\E<lt>PATH\\E<gt>> to this option, to specify where the page should be "
+"written"
+msgstr ""
+
+# type: TP
+#: src/utils/cas/docs/cas.1:25
+#, no-wrap
+msgid "B<-c>, B<--config-dir>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:28
+msgid "Specifies a config-dir different from home"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:33
+msgid "Without any options, prints online signature data to stdout."
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:35
+msgid "~/.aMule/casrc"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:37
+msgid "stat.png"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:39
+msgid "tmp.html"
+msgstr ""
+
+# type: Plain text
+#: src/utils/cas/docs/cas.1:41
+msgid "B<cas> was written by Pedro de Oliveira E<lt>falso@rdk.homeip.netE<gt>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:1
+msgid "B<amule>(1), B<wxcas>(1)"
+msgstr ""
+
+# type: TH
+#: src/utils/wxCas/docs/wxcas.1:1
+#, no-wrap
+msgid "WXCAS"
+msgstr ""
+
+# type: TH
+#: src/utils/wxCas/docs/wxcas.1:1
+#, no-wrap
+msgid "wxCas"
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:4
+msgid "wxcas - wx c aMule statistics"
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:6
+msgid "B<wxcas>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:11
+msgid ""
+"B<wxcas> is a program for displaying the contents of your online signature "
+"file in a nice wx Window on your Desktop.  Based on Pedro de Oliveira's "
+"B<cas>(1)."
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:15
+msgid ""
+"The full documentation of wxcas can be downloaded from "
+"I<http://download.berlios.de/amule/wxcas_user_manual.pdf>."
+msgstr ""
+
+# type: Plain text
+#: src/utils/wxCas/docs/wxcas.1:17
+msgid "B<wxcas> was written by ThePolish E<lt>thepolish@vipmail.ruE<gt>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:1
+msgid "B<amule>(1), B<cas>(1)"
+msgstr ""
+
+# type: TH
+#: src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "XAS"
+msgstr ""
+
+# type: TH
+#: src/utils/xas/docs/xas.1:1
+#, no-wrap
+msgid "xas v1.9"
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:4
+msgid "xas - X-Chat aMule Statistics"
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:6
+msgid "B<none>"
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:12
+msgid ""
+"B<xas> is a plugin for xchat. For loading see your xchat "
+"documentation. After loading type /xas and it will send statistics to the "
+"channel you are in. These are taken from your Online Signature file.  For "
+"this to work, you must enable the \"Online Signature\" option in aMules "
+"preferences."
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:14
+msgid ""
+"To enable it on every startup of xchat you can just run the script in "
+"/usr/bin/autstart-xas."
+msgstr ""
+
+# type: Plain text
+#: src/utils/xas/docs/xas.1:16
+msgid "B<xas> was originally written by niet"
+msgstr ""
