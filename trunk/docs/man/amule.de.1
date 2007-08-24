@@ -1,44 +1,48 @@
-.TH AMULE 1 "March 2005" "aMule v2.0.0" "aMule"
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULE 1 "Januar 2007" "aMule v2.2.0" aMule
 .SH NAME
-amule \- the all\-platform eMule p2p client
-.SH SYNOPSIS
-.B amule
-.RB [ \-v ]
-.RB [ \-h ]
-.RB [ \-i ]
-.RB [ \-geometry " " \fI<geom> ]
-.RB [ \-d ]
-.RB [ \-o ]
-.RB [ \-r ]
+amule \- der alle\-Plattformen eMule p2p Client
+.SH SYNTAX
+\fBamule\fP [\fB\-v\fP] [\fB\-h\fP] [\fB\-i\fP] [\fB\-geometry\fP \fI<geom>\fP] [\fB\-d\fP]
+[\fB\-o\fP] [\fB\-r\fP]
 .SH BESCHREIBUNG
-.TP
-\fB\-v\fR, \fB\-\-version\fR
-Zeigt die Versionsnummer an.
-.TP
-\fB\-h\fR, \fB\-\-help\fR
-Zeigt diese Infos an.
-.TP
-\fB-i\fR, \fB\-\-enable\-stdin\fR
+.TP 
+\fB\-v\fP, \fB\-\-version\fP
+Zeigt die derzeitige Versionsnummer an.
+.TP 
+\fB\-h\fP, \fB\-\-help\fP
+Gibt eine kurze Beschreibung aus.
+.TP 
+\fB\-i\fP, \fB\-\-enable\-stdin\fP
 Schaltet stdin nicht ab.
-.TP
-\fB\-geometry\fR \fI<geom>\fR
-Setzt die Breite und Höhe der Anwendung.
-\fI<geom>\fR es wird das selbe standart Format wie bei andern X11 Anwendungen genutzt:	[\fB=\fR][\fI<width>\fR{\fBxX\fR}\fI<height>\fR][{\fB+-\fR}\fI<xoffset>\fR{\fB+-\fR}\fI<yoffset>\fR]
-.TP
-\fB\-d\fR, \fB\-\-disable\-fatal\fR
-Verarbeitet keine fatalen Fehler.
-.TP
-\fB\-o\fR, \fB\-\-log\-stdout\fR
-Gibt log messages nach stdout.
-.TP
-\fB\-r\fR, \fB\-\-reset\-config\fR
+.TP 
+\fB\-geometry\fP \fI<geom>\fP
+Gibt die Geometrie des Programms an.  \fI<geom>\fP benutzt das selbe
+Format wie Standard X11
+Anwendungen	[\fB=\fP][\fI<Breite>\fP{\fBxX\fP}\fI<Höhe>\fP][{\fB+\-\fP}\fI<xoffset>\fP{\fB+\-\fP}\fI<yoffset>\fP]
+.TP 
+\fB\-d\fP, \fB\-\-disable\-fatal\fP
+Fehlerbehandlung für fatale Fehler abschalten.
+.TP 
+\fB\-o\fP, \fB\-\-log\-stdout\fP
+Gibt Log\-Meldungen auf der Standardausgabe aus.
+.TP 
+\fB\-r\fP, \fB\-\-reset\-config\fP
 Setzt die Konfiguration auf die Standardwerte zurück.
-.SH Dateien
+.SH DATEIEN
 ~/.aMule/*
-.SH PROBLEME BERICHTEN
-Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
-Bitte berichte keine Fehler per E-Mail, auch nicht an unsere Mailingliste oder direkt an ein Teammitglied.
+.SH "FEHLER MELDEN"
+Bitte meldet Fehler entweder in unserem Forum (\fIhttp://forum.amule.org/\fP),
+oder in unseren Bugtracker (\fIhttp://bugs.amule.org/\fP). Bitte meldet uns
+keine Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
+Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine Tools stehen unter der GNU General Public License.
-.SH SIEHE AUCH
-\fBalc\fR(1), \fBalcc\fR(1), \fBamuled\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1), \fBwxcas\fR(1), \fBxas\fR(1)
+aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
+General Public License
+.SH "SIEHE AUCH"
+\fBalc\fP(1), \fBalcc\fP(1), \fBamuled\fP(1), \fBamulecmd\fP(1), \fBamulegui\fP(1),
+\fBamuleweb\fP(1), \fBcas\fP(1), \fBed2k\fP(1), \fBwxcas\fP(1), \fBxas\fP(1)

@@ -1,45 +1,47 @@
-.TH AMULED 1
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH AMULED 1 "Januar 2007" "aMule Daemon v2.2.0" "aMule Daemon"
 .SH NAME
-amuled \- the all\-platform eMule p2p client \- daemon version
-.SH SYNOPSIS
-.B amuled
-.RB [ \-v ]
-.RB [ \-h ]
-.RB [ \-i ]
-.RB [ \-f ]
-.RB [ \-\-config\-dir\=\<str\> ]
-.RB [ \-d ]
-.RB [ \-o ]
+amuled \- Der alle\-Plattformen eMule p2p Client \- dämonisierte Version
+.SH SYNTAX
+\fBamuled\fP [\fB\-v\fP] [\fB\-h\fP] [\fB\-i\fP] [\fB\-f\fP] [\fB\-c\fP \fI<Pfad>\fP] [\fB\-d\fP]
+[\fB\-o\fP] [\fB\-r\fP]
+
 .SH BESCHREIBUNG
-.TP
-\fB\-v\fR, \fB\-\-version\fR
-Zeigt die Versionsnummer an.
-.TP
-\fB\-h\fR, \fB\-\-help\fR
-Zeigt diese Infos an.
-.TP
-\fB-i\fR, \fB\-\-enable\-stdin\fR
+.TP 
+\fB\-v\fP, \fB\-\-version\fP
+Zeigt die derzeitige Versionsnummer an.
+.TP 
+\fB\-h\fP, \fB\-\-help\fP
+Gibt eine kurze Beschreibung aus.
+.TP 
+\fB\-i\fP, \fB\-\-enable\-stdin\fP
 Schaltet stdin nicht ab.
-.TP
-\fB\-f\fR, \fB\-\-full\-daemon\fR
-Geht in den Hintergrund
-.TP
-\fB\-\-config\-dir\=\<str\>\fR
-Liest die Konfiguration aus dem angegebenen Verzeichnis anstatt aus dem Heimatverzeichnis.
-.TP
-\fB\-d\fR, \fB\-\-disable\-fatal\fR
-Verarbeitet keine fatalen Fehler.
-.TP
-\fB-o\fR, \fB\-\-log\-stdout\fR
-Gib log messages nach stdout.
+.TP 
+\fB\-f\fP, \fB\-\-full\-daemon\fP
+Im Hintergrund ausführen
+.TP 
+\fB\-c\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP
+Liest die Konfiguration <Pfad> anstelle des Home.
+.TP 
+\fB\-d\fP, \fB\-\-disable\-fatal\fP
+Fehlerbehandlung für fatale Fehler abschalten.
+.TP 
+\fB\-o\fP, \fB\-\-log\-stdout\fP
+Gibt Log\-Meldungen auf der Standardausgabe aus.
 .SH DATEIEN
 ~/.aMule/*
-.br
-~/.eMule
-.SH PROBLEME BERICHTEN
-Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
-Bitte berichte keine Fehler per E-Mail, auch nicht an unsere Mailingliste oder direkt an ein Teammitglied.
+.SH "FEHLER MELDEN"
+Bitte meldet Fehler entweder in unserem Forum (\fIhttp://forum.amule.org/\fP),
+oder in unseren Bugtracker (\fIhttp://bugs.amule.org/\fP). Bitte meldet uns
+keine Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
+Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine Tools stehen unter der GNU General Public License.
-.SH SIEHE AUCH
-\fBalcc\fR(1), \fBamule\fR(1), \fBamulecmd\fR(1), \fBamulegui\fR(1), \fBamuleweb\fR(1), \fBcas\fR(1), \fBed2k\fR(1)
+aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
+General Public License
+.SH "SIEHE AUCH"
+\fBalcc\fP(1), \fBamule\fP(1), \fBamulecmd\fP(1), \fBamulegui\fP(1), \fBamuleweb\fP(1),
+\fBcas\fP(1), \fBed2k\fP(1)

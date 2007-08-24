@@ -1,34 +1,40 @@
-.TH ED2K "1" "March 2005" "aMule ED2k link parser v1.1.0" "Nutzer Kommandos"
+.\"*******************************************************************
+.\"
+.\" This file was generated with po4a. Translate the source file.
+.\"
+.\"*******************************************************************
+.TH ED2K 1 "Januar 2007" "aMule ED2k link parser v1.2.0" "aMule Hilfsprogramme"
 .SH NAME
 ed2k \- aMule ED2k link parser
-.SH SYNOPSIS
-.B ed2k
-.I <ED2k_link>
+.SH SYNTAX
+\fBed2k\fP \fI<ED2k\-Link>\fP
 .PP
-.B ed2k
-.RB [ \-\-help ]
-.RB [ \-\-config\-dir, \-c ]
-.RB [ \-\-version ]
+\fBed2k\fP [\fB\-\-help\fP] [\fB\-\-config\-dir,\fP\-c\fB]\fP [\fB\-\-version\fP]
 .SH BESCHREIBUNG
-aMule ED2k link parser v1.1.0.
-Sendet den gegebenen \fI<ED2k_link>\fR zu aMule, z.B schreibt es in die Datei ~/.aMule/ED2KLinks, welche von aMule jede Sekunde gechecked wird nach Links.
-\fBed2k\fR akzeptiert Datein, Server und Serverlist Links.
-.SS "BENUTZUNG:"
-.TP
-\fB\-\-help\fR
-Gibt diese Hilfe aus.
-.TP
-\fB \-\-config\-dir, \fB \-c\fR
-Spezifiziert das aMule-Konfigurations-Verzeichnis.
-.TP
-\fB\-\-version\fR
-Zeigt die Versionsnummer an.
+aMule ED2k link parser v1.1.0. Sendet den übergebenen \fI<ED2k\-Link>\fP
+an aMule, z.B. schreibt ihn in die Datei ~/.aMule/ED2KLinks, welche von
+aMule auf neue Links überprüft wird.  \fBed2k\fP akzeptiert Datei\-, Server\- und
+Serverlistenlinks.
+.SS Nutzung:
+.TP 
+\fB\-\-help\fP
+Gibt eine kurze Beschreibung aus.
+.TP 
+\fB\-c\fP, \fB\-\-config\-dir\fP=\fI<Pfad>\fP 
+Gibt das aMule Konfigurationsverzeichnis an. Dieses muss durch den Nutzer
+der \fBed2k\fP aufruft Beschreibbar sein.
+.TP 
+\fB\-\-version\fP
+Zeigt die derzeitige Versionsnummer an.
 .SH DATEIEN
 ~/.aMule/ED2KLinks
-.SH PROBLEME BERICHTEN
-Bitte berichte Fehler im Programm entweder im Forum (\fIhttp://forum.amule.org/\fR), oder in unserem Bugtracker (\fIhttp://bugs.amule.org/\fR).
-Bitte berichte keine Fehler per E-Mail, auch nicht an unsere Mailingliste oder direkt an ein Teammitglied.
+.SH "FEHLER MELDEN"
+Bitte meldet Fehler entweder in unserem Forum (\fIhttp://forum.amule.org/\fP),
+oder in unseren Bugtracker (\fIhttp://bugs.amule.org/\fP). Bitte meldet uns
+keine Fehler per E\-Mail, noch auf unsere Mailingliste oder direkt an unsere
+Teammitglieder.
 .SH COPYRIGHT
-aMule und alle seine Tools stehen unter der GNU General Public License.
-.SH SIEHE AUCH
-\fBamule\fR(1)
+aMule und alle seine zugehörigen Anwendungen werden verteilt unter der GNU
+General Public License
+.SH "SIEHE AUCH"
+\fBamule\fP(1)
