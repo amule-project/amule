@@ -1061,6 +1061,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		// We need a valid IP if we are to message the client
 		m_menu->Enable(MP_SENDMESSAGE, client->GetIP());
 		
+		m_menu->Enable(MP_SHOWLIST, !client->HasDisabledSharedFiles());
 		
 		PopupMenu(m_menu, evt.GetPoint());
 					

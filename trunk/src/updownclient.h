@@ -628,6 +628,8 @@ public:
 	void			SetCryptLayerRequires(bool bVal)				{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
 	bool			ShouldReceiveCryptUDPPackets() const;
 
+	bool			HasDisabledSharedFiles() const { return m_fNoViewSharedFiles; }
+	
 private:
 	
 	CClientCredits	*credits;
