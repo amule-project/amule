@@ -115,12 +115,14 @@ msgstr "Pretvarjanje starih hashov AICH v '%s' v 64b v '%s'."
 #: src/ThreadTasks.cpp:444
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "OPOZORILO: Ime datoteke '%s' ni veljavno in je bilo preimenovano v '%s'."
+msgstr ""
+"OPOZORILO: Ime datoteke '%s' ni veljavno in je bilo preimenovano v '%s'."
 
 #: src/ThreadTasks.cpp:463
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "OPOZORILO: Datoteka '%s' že obstaja, nova datoteka je preimenovana v '%s'."
+msgstr ""
+"OPOZORILO: Datoteka '%s' že obstaja, nova datoteka je preimenovana v '%s'."
 
 #: src/ThreadTasks.cpp:477
 #, c-format
@@ -184,13 +186,17 @@ msgstr "Zahtevano:"
 
 #: src/BaseClient.cpp:1874
 #, c-format
-msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr "Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
+msgid ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr ""
+"Statistika datotek v tej seji: Sprejetih %d od %d zahtev, %s prenesenih\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
-msgid "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr "Statistika datotek vseh sej: Sprejetih %d od %d zahtev, %s prenesenih\n"
+msgid ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr ""
+"Statistika datotek vseh sej: Sprejetih %d od %d zahtev, %s prenesenih\n"
 
 #: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
@@ -395,7 +401,8 @@ msgstr "Kopiraj povezavo ED2k v odložišče (&Ime gostitelja)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopiraj povezavo ED2k v odložišče (Ime gostitelja) (z k&ripto nastavitvami)"
+msgstr ""
+"Kopiraj povezavo ED2k v odložišče (Ime gostitelja) (z k&ripto nastavitvami)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
@@ -1060,7 +1067,8 @@ msgstr "Ni mogoče odpreti %s"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "Datoteka %s je prevelika za Donkey: največja dovoljena velikost je 4 GB."
+msgstr ""
+"Datoteka %s je prevelika za Donkey: največja dovoljena velikost je 4 GB."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
@@ -1480,7 +1488,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Ni mogoče določiti izbranega brskalnika!"
 
 #: src/Preferences.cpp:1668
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Vrata TCP ne smejo biti večja od 65532, ker so vrata UDP TCP+3"
 
 #: src/Preferences.cpp:1669
@@ -1638,7 +1647,8 @@ msgstr "Operacijski sistem: %s"
 
 #: src/amuleDlg.cpp:218
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "Obiščite http://www.amule.org da preverite, če je na voljo nova različica."
+msgstr ""
+"Obiščite http://www.amule.org da preverite, če je na voljo nova različica."
 
 #: src/amuleDlg.cpp:241
 msgid "Fatal Error: Failed to create Timer"
@@ -2720,11 +2730,13 @@ msgstr "Uporabnik %s (%u) je zahteval vaš seznam deljenih imenikov -> Sprejeto"
 #: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr "Uporabnik %s (%u) je zahteval vaš seznam deljenih imenikov -> Zavrnjeno"
+msgstr ""
+"Uporabnik %s (%u) je zahteval vaš seznam deljenih imenikov -> Zavrnjeno"
 
 #: src/ClientTCPSocket.cpp:942
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Uporabnik %s (%u) je zahteval seznam deljenih datotek za imenik %s -> "
 "sprejeto"
@@ -2764,7 +2776,8 @@ msgstr "Uporabnik %s (%u) je poslal nezaželen seznam deljenih datotek"
 #: src/ClientTCPSocket.cpp:1052
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Uporabnik %s (%u) je zavrnil dostop do seznama deljenih datotek/imenikov"
+msgstr ""
+"Uporabnik %s (%u) je zavrnil dostop do seznama deljenih datotek/imenikov"
 
 #: src/KadDlg.cpp:131
 #, c-format
@@ -2781,7 +2794,9 @@ msgstr "Neveljavna vrata za začetno nalaganje"
 
 #: src/KadDlg.cpp:182
 msgid "You can't bootstrap an specific ip from remote GUI yet."
-msgstr "V oddaljenem vmesniku še ni mogoče izvesti začetnega nalaganja iz določenega IP-ja."
+msgstr ""
+"V oddaljenem vmesniku še ni mogoče izvesti začetnega nalaganja iz določenega "
+"IP-ja."
 
 #: src/KadDlg.cpp:185
 msgid "Please fill all fields required"
@@ -2792,8 +2807,10 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Ali ste prepričani, da želite prenesti novo datoteko nodes.dat?\n"
 
 #: src/KadDlg.cpp:207
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
-msgstr "S tem boste odstranili trenutna vozlišča in ponovno zagnali povezavo Kad."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
+msgstr ""
+"S tem boste odstranili trenutna vozlišča in ponovno zagnali povezavo Kad."
 
 #: src/KadDlg.cpp:208
 msgid "Continue?"
@@ -3233,7 +3250,9 @@ msgstr "Brisanje datoteke: %s"
 #: src/PartFile.cpp:2379
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "Opozorilo: Ni mogoče ustvariti hasha za prenesen del - hashset nepopoln za '%s'"
+msgstr ""
+"Opozorilo: Ni mogoče ustvariti hasha za prenesen del - hashset nepopoln za '%"
+"s'"
 
 #: src/PartFile.cpp:2384
 #, c-format
@@ -3241,8 +3260,8 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"Napaka: Ni mogoče ustvariti hasha za prenesen del, hashset nepopoln (%s). To se "
-"ne bi smelo zgoditi"
+"Napaka: Ni mogoče ustvariti hasha za prenesen del, hashset nepopoln (%s). To "
+"se ne bi smelo zgoditi"
 
 #: src/PartFile.cpp:3062
 #, c-format
@@ -3289,7 +3308,8 @@ msgstr "Opozorilo: known.met ni mogoče odpreti."
 
 #: src/KnownFileList.cpp:70
 msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr "Opozorilo: Seznam znanih datotek je pokvarjen, vsebuje neveljavno glavo."
+msgstr ""
+"Opozorilo: Seznam znanih datotek je pokvarjen, vsebuje neveljavno glavo."
 
 #: src/KnownFileList.cpp:94
 #, c-format
@@ -3307,8 +3327,8 @@ msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
 "directory not found."
 msgstr ""
-"CSharedFileList::FindSharedFiles: Odstranjevanje %s iz seznama deljenih imenikov: "
-"imenika ni mogoče najti."
+"CSharedFileList::FindSharedFiles: Odstranjevanje %s iz seznama deljenih "
+"imenikov: imenika ni mogoče najti."
 
 #: src/SharedFileList.cpp:376
 #, c-format
@@ -3351,8 +3371,8 @@ msgid ""
 "Failed to connect to all obfuscated servers listed. Making another pass "
 "without obfuscation."
 msgstr ""
-"Ni bilo mogoče vzpostaviti maskirane povezave s strežniki na seznamu. Ponoven poskus "
-"brez maskiranja."
+"Ni bilo mogoče vzpostaviti maskirane povezave s strežniki na seznamu. "
+"Ponoven poskus brez maskiranja."
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
@@ -3377,7 +3397,8 @@ msgstr "Povezan z %s (%s:%i)"
 
 #: src/ServerConnect.cpp:345
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Kritična napaka med povezovanjem. Internetna povezava je mogoče prekinjena"
+msgstr ""
+"Kritična napaka med povezovanjem. Internetna povezava je mogoče prekinjena"
 
 #: src/ServerConnect.cpp:349
 #, c-format
@@ -3470,7 +3491,8 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Neveljaven format IP. Uporabite xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
-msgid "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+msgid ""
+"This command requieres an argument. Valid arguments: 'all' or a number.\n"
 msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: 'all' ali število.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
@@ -3630,8 +3652,8 @@ msgid ""
 "Example: 'statistics 5' will show only the top 5 versions for each client "
 "type.\n"
 msgstr ""
-"Neobvezno: kot argument tega ukaza lahko podate število v obsegu 0-"
-"255, ki določa,\n"
+"Neobvezno: kot argument tega ukaza lahko podate število v obsegu 0-255, ki "
+"določa,\n"
 "koliko različic odjemalca naj bo prikazanih v poddrevesu tipa odjemalcev.\n"
 "Vrednost 0 ali izpuščen argument pomeni 'neomejeno'.\n"
 "\n"
@@ -3722,9 +3744,12 @@ msgid ""
 "The magnet link must contain the ed2k hash and file length.\n"
 msgstr ""
 "Dodana povezava ed2k je lahko:\n"
-"*) datotečna povezava (ed2k://|datoteka|...), ki bo dodana na seznam prenosov\n"
-"*) strežniška povezava (ed2k://|strežnik|...), ki bo dodana na seznam strežnikov\n"
-"*) povezava do seznama strežnikov, vsi strežniki bodo dodani na seznam strežnikov\n"
+"*) datotečna povezava (ed2k://|datoteka|...), ki bo dodana na seznam "
+"prenosov\n"
+"*) strežniška povezava (ed2k://|strežnik|...), ki bo dodana na seznam "
+"strežnikov\n"
+"*) povezava do seznama strežnikov, vsi strežniki bodo dodani na seznam "
+"strežnikov\n"
 "\n"
 "Povezava magnet mora vsebovati hash ed2k in velikost datoteke.\n"
 
@@ -3900,7 +3925,9 @@ msgstr "Nastavi prioriteto prenosa dol."
 
 #: src/TextClient.cpp:926
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
-msgstr "Nastavi prioriteto prenosa dol na 'Nizka', 'Normalna', 'Visoka' ali 'Samodejna'.\n"
+msgstr ""
+"Nastavi prioriteto prenosa dol na 'Nizka', 'Normalna', 'Visoka' ali "
+"'Samodejna'.\n"
 
 #: src/TextClient.cpp:927
 msgid "Set priority to low."
@@ -4128,7 +4155,8 @@ msgstr "Ni mogoče razrešiti DNS za strežnik: %s: Povezava ni mogoča!"
 
 #: src/IP2Country.cpp:67
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr "CIP2Country::CIP2Country(): Ni bilo mogoče naložiti podatkov o državah iz "
+msgstr ""
+"CIP2Country::CIP2Country(): Ni bilo mogoče naložiti podatkov o državah iz "
 
 #: src/IP2Country.cpp:72
 #, c-format
@@ -4296,7 +4324,8 @@ msgstr ""
 "podmape)"
 
 #: src/PartFileConvert.cpp:714
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Ali želite zbrisati izvirne datoteke uspešno uvoženih prenosov?"
 
 #: src/PartFileConvert.cpp:715
@@ -4468,7 +4497,8 @@ msgid "Commit"
 msgstr "Izvrši"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr "Kliknite tukaj, da dodate povezavo ed2k na seznam prenosov."
 
 #: src/muuli_wdr.cpp:85
@@ -5152,7 +5182,8 @@ msgstr "Vrata UDP razširjenega odjemalca:"
 
 #: src/muuli_wdr.cpp:1850
 msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr "Ta vrata UDP se uporabljajo za razširjene zahteve ED2K in za omrežje Kad."
+msgstr ""
+"Ta vrata UDP se uporabljajo za razširjene zahteve ED2K in za omrežje Kad."
 
 #: src/muuli_wdr.cpp:1853
 msgid "disable"
@@ -5308,7 +5339,8 @@ msgstr "Preveri prostor na disku"
 
 #: src/muuli_wdr.cpp:2127
 msgid "Select this if you want aMule to check your Disk Space"
-msgstr "Vklopite to, če želite, da aMule preverja ali je na disku dovolj prostora"
+msgstr ""
+"Vklopite to, če želite, da aMule preverja ali je na disku dovolj prostora"
 
 #: src/muuli_wdr.cpp:2134
 msgid "Min Disk Space:"
@@ -5917,7 +5949,9 @@ msgstr "Omogoči maskiranje protokola"
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
-msgstr "Ob vklopu te možnosti, bo aMule sprejemal maskirane povezave od drugih odjemalcev."
+msgstr ""
+"Ob vklopu te možnosti, bo aMule sprejemal maskirane povezave od drugih "
+"odjemalcev."
 
 #: src/muuli_wdr.cpp:3452
 msgid "Use obfuscation for outgoing connections"
@@ -5972,16 +6006,22 @@ msgid "Filter clients"
 msgstr "Filtriraj odjemalce"
 
 #: src/muuli_wdr.cpp:3487
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Omogoči filtriranje odjemalčevih IP-jev, določenih v datoteki ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Omogoči filtriranje odjemalčevih IP-jev, določenih v datoteki ~/.aMule/"
+"ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3490
 msgid "Filter servers"
 msgstr "Filtriraj strežnike"
 
 #: src/muuli_wdr.cpp:3492
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Omogoči filtriranje strežnikovih IP-jev, določenih v datoteki ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Omogoči filtriranje strežnikovih IP-jev, določenih v datoteki ~/.aMule/"
+"ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3499
 msgid "Reload List"
@@ -6068,8 +6108,10 @@ msgid "Online Signature Directory:"
 msgstr "Imenik za Spletni podpis:"
 
 #: src/muuli_wdr.cpp:3606
-msgid "Click here to select the directory containing the the Online Signature files."
-msgstr "Kliknite tukaj, da nastavite imenik, ki vsebuje datoteke za Spletni podpis."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
+msgstr ""
+"Kliknite tukaj, da nastavite imenik, ki vsebuje datoteke za Spletni podpis."
 
 #: src/muuli_wdr.cpp:3635 src/muuli_wdr.cpp:3870
 msgid "Disable/Enable"
@@ -6238,7 +6280,8 @@ msgid "You must specify a path for the category!"
 msgstr "Navesti morate pot za kategorijo!"
 
 #: src/CatDialog.cpp:168
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Ni bilo mogoče ustvariti imenika prihajajočih datotek za kategorijo. Prosim, "
 "navedite veljavno pot!"
@@ -6275,7 +6318,8 @@ msgid ""
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 "\n"
-"Ta ukaz je nepopoln, uporabiti morate enega od spodaj navedenih dodatnih ukazov.\n"
+"Ta ukaz je nepopoln, uporabiti morate enega od spodaj navedenih dodatnih "
+"ukazov.\n"
 
 #: src/ExternalConnector.cpp:167
 msgid ""
@@ -6377,7 +6421,8 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "Povezava ni uspela. Ni se bilo mogoče povezati z navedenim gostiteljem\n"
+msgstr ""
+"Povezava ni uspela. Ni se bilo mogoče povezati z navedenim gostiteljem\n"
 
 #: src/ExternalConnector.cpp:426
 #, c-format
@@ -6440,7 +6485,8 @@ msgstr "Zapiši možnosti ukazne vrstice v nastavitveno datoteko."
 
 #: src/ExternalConnector.cpp:469
 msgid "Creates config file based on aMule's config file."
-msgstr "Ustvari nastavitveno datoteko, ki temelji na nastavitveni datoteki aMule."
+msgstr ""
+"Ustvari nastavitveno datoteko, ki temelji na nastavitveni datoteki aMule."
 
 #: src/ExternalConnector.cpp:472
 msgid "Print program version."
@@ -6471,9 +6517,10 @@ msgid ""
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
-"NAPAKA: Ne morete uporabljati demona aMule, ko so zunanje povezave onemogočene. "
-"Za vklop zunanjih povezav uporabite ali navaden aMule ali zaženite amuled z možnostjo "
-"--ec-config ali pa nastavite vrednost ključa\"AcceptExternalConnections\"  na 1 v datoteki ~/.aMule/amule.conf"
+"NAPAKA: Ne morete uporabljati demona aMule, ko so zunanje povezave "
+"onemogočene. Za vklop zunanjih povezav uporabite ali navaden aMule ali "
+"zaženite amuled z možnostjo --ec-config ali pa nastavite vrednost ključa"
+"\"AcceptExternalConnections\"  na 1 v datoteki ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6605,7 +6652,9 @@ msgstr "Ni na voljo"
 
 #: src/SearchDlg.cpp:468
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr "Min. velikost mora biti manjša kot maks. velikost. Maks. velikost ni upoštevana."
+msgstr ""
+"Min. velikost mora biti manjša kot maks. velikost. Maks. velikost ni "
+"upoštevana."
 
 #: src/SearchDlg.cpp:469
 msgid "Search warning"
@@ -6825,7 +6874,8 @@ msgstr "Strežnik ni bil dodan: [%s:%d] IP je filtriran ali neveljaven."
 #: src/ServerList.cpp:228
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr "Strežnik ni bil dodan: Strežnik z IP:vrata [%s:%d] že obstaja na seznamu."
+msgstr ""
+"Strežnik ni bil dodan: Strežnik z IP:vrata [%s:%d] že obstaja na seznamu."
 
 #: src/ServerList.cpp:247
 #, c-format
@@ -6861,17 +6911,21 @@ msgstr ""
 #: src/ServerList.cpp:828
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-msgstr "Opozorilo: naveden je neveljaven URL za samodejno posodabljanje strežnikov: %s"
+msgstr ""
+"Opozorilo: naveden je neveljaven URL za samodejno posodabljanje strežnikov: %"
+"s"
 
 #: src/ServerList.cpp:834
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr "V addresses.dat ni veljavnega server.met URL-ja za samodejno posodabljanje."
+msgstr ""
+"V addresses.dat ni veljavnega server.met URL-ja za samodejno posodabljanje."
 
 #: src/ServerList.cpp:925
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "IP Filter je filtriral krajevni strežnik. Povezovanje z drugim strežnikom!"
+msgstr ""
+"IP Filter je filtriral krajevni strežnik. Povezovanje z drugim strežnikom!"
 
 #: src/UserEvents.cpp:129
 #, c-format
@@ -6939,8 +6993,7 @@ msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
-"OPOZORILO: Ne morete dodati sebe kot vir za ed2k povezave, če imate "
-"nizek ID."
+"OPOZORILO: Ne morete dodati sebe kot vir za ed2k povezave, če imate nizek ID."
 
 #: src/amule.cpp:1128
 msgid "Failed to create OnlineSig File"
@@ -6969,7 +7022,8 @@ msgstr "To je testna različica, posodobljena dnevno in\n"
 
 #: src/amule.cpp:1317
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "ne dajemo zagotovila, da ne bo ničesar poškodovala, zažgala vaše hiše \n"
+msgstr ""
+"ne dajemo zagotovila, da ne bo ničesar poškodovala, zažgala vaše hiše \n"
 
 #: src/amule.cpp:1318
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -6990,8 +7044,7 @@ msgid ""
 "connections.\n"
 msgstr ""
 "\n"
-"* Vklop maskiranja protokola za prihajajoče in odhajajoče "
-"povezave.\n"
+"* Vklop maskiranja protokola za prihajajoče in odhajajoče povezave.\n"
 
 #: src/amule.cpp:1324
 msgid ""
@@ -6999,7 +7052,8 @@ msgid ""
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
 "\n"
-"* Izklop posodobitev seznama strežnikov ob povezavi s strežnikom in z odjemalcem.\n"
+"* Izklop posodobitev seznama strežnikov ob povezavi s strežnikom in z "
+"odjemalcem.\n"
 
 #: src/amule.cpp:1325
 msgid ""
@@ -7012,8 +7066,8 @@ msgstr ""
 "\n"
 "Za več informacij o razlogih za te spremembe, preiščite wiki\n"
 "na http://wiki.amule.org za informacije o \"lažnih strežnikih\".\n"
-"Za pravilno delovanje aMule je zelo pomembno, da odstranite vse "
-"lažne strežnike iz seznama strežnikov."
+"Za pravilno delovanje aMule je zelo pomembno, da odstranite vse lažne "
+"strežnike iz seznama strežnikov."
 
 #: src/amule.cpp:1330
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7023,7 +7077,8 @@ msgstr ""
 
 #: src/amule.cpp:1331
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "na www.aMule.org, ali na kanalu IRC #aMule, na strežniku irc.freenode.net.\n"
+msgstr ""
+"na www.aMule.org, ali na kanalu IRC #aMule, na strežniku irc.freenode.net.\n"
 
 #: src/amule.cpp:1333
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -7073,7 +7128,8 @@ msgstr "Uporabljate zastarelo različico aMule!"
 #: src/amule.cpp:1876
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr "Različica vaše aMule je %i.%i.%i, najnovejša različica pa je %li.%li.%li"
+msgstr ""
+"Različica vaše aMule je %i.%i.%i, najnovejša različica pa je %li.%li.%li"
 
 #: src/amule.cpp:1877
 msgid "The latest version can always be found at http://www.amule.org"
@@ -7149,5 +7205,5 @@ msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
 
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
-
+msgstr ""
+"Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
