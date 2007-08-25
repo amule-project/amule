@@ -1,4 +1,4 @@
-# translation of new_de.po to deutsch
+# translation of de.po to
 # aMule i18n resource file.
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the same license as the aMule package.
@@ -7,17 +7,19 @@
 # Stefan Baldus <stefanero@amule.org>, 2004, 2005.
 # Michael Weyershäuser <thedude0001@gmx.de>, 2005.
 # ihmselbst <griesotron@tiscalinet.de>, 2005, 2006.
+# Werner Mahr <werner@vollstreckernet.de>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: new_de\n"
+"Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-08-21 03:31+0200\n"
-"PO-Revision-Date: 2007-08-24 20:04+0200\n"
-"Last-Translator: ihmselbst <griesotron@tiscalinet.de>\n"
-"Language-Team: deutsch <de@li.org>\n"
+"PO-Revision-Date: 2007-08-25 04:30+0200\n"
+"Last-Translator: Werner Mahr <werner@vollstreckernet.de>\n"
+"Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -113,7 +115,7 @@ msgstr "Hauptprüfsummen bekannter Dateien wurden geladen"
 #: src/ThreadTasks.cpp:362
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "Wandle alte AICH-Prüfsummensätze um in 64b in '%s'"
+msgstr "Wandle alte AICH-Prüfsummensätze von '%s' um in 64b in '%s'."
 
 #: src/ThreadTasks.cpp:444
 #, c-format
@@ -128,8 +130,7 @@ msgstr "WARNUNG: Die Datei '%s' gibt es schon, neue Datei in '%s' umbenannt."
 #: src/ThreadTasks.cpp:477
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr ""
-"WARNUNG: Konnte original '%s' nach Erstellen des Backups nicht entfernen"
+msgstr "WARNUNG: Konnte original '%s' nach Erstellen des Backups nicht entfernen"
 
 #: src/ThreadTasks.cpp:489
 #, c-format
@@ -186,16 +187,14 @@ msgstr "Angefordert:"
 
 #: src/BaseClient.cpp:1874
 #, c-format
-msgid ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
 "Dateistatus für diese Sitzung: Akzeptiert wurden %d von %d Anfragen, %s "
 "übertragen\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
-msgid ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
 "Dateistatistik für alle Sitzungen: %d von %d Anfragen akzeptiert, %s "
 "übertragen\n"
@@ -686,8 +685,7 @@ msgstr "Hier die URL deines FTP-Servers eingeben"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
-"Hier das Zielverzeichnis für das Statistikbild auf dem FTP-Server angeben"
+msgstr "Hier das Zielverzeichnis für das Statistikbild auf dem FTP-Server angeben"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -1490,8 +1488,7 @@ msgid "Unable to determine selected browser!"
 msgstr "Kann ausgewählten Browser nicht bestimmen!"
 
 #: src/Preferences.cpp:1668
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP-Port kann nicht größer als 65532 sein, da der Server-UDP-Port=TCP-Port+3 "
 "ist"
@@ -1651,8 +1648,7 @@ msgstr "Läuft auf %s"
 
 #: src/amuleDlg.cpp:218
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr ""
-"Besuche http://www.amule.org um zu sehen, ob eine neue Version verfügbar ist."
+msgstr "Besuche http://www.amule.org um zu sehen, ob eine neue Version verfügbar ist."
 
 #: src/amuleDlg.cpp:241
 msgid "Fatal Error: Failed to create Timer"
@@ -1681,7 +1677,8 @@ msgid ""
 " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
-msgstr " 'Universal-Plattform' p2p-Client basierend auf eMule \n"
+msgstr ""
+" 'Universal-Plattform' p2p-Client basierend auf eMule \n"
 "\n"
 " Netzseite: http://www.amule.org \n"
 " Forum: http://forum.amule.org \n"
@@ -1690,7 +1687,7 @@ msgstr " 'Universal-Plattform' p2p-Client basierend auf eMule \n"
 " Kontakt: admin@amule.org·(für administrative Anliegen) \n"
 "Copyright (C) 2003-2007 aMule-Team \n"
 "\n"
-" Teile von aMule basieren auf \"
+" Teile von aMule basieren auf \n"
 " Kademlia: Peer-to-peer-Routing basierend auf der XOR-Metrik.\n"
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
@@ -2151,8 +2148,7 @@ msgstr "Fehler: Konnte keine neue externe Verbindung akzeptieren"
 
 #: src/ExternalConn.cpp:184
 msgid "External connection refused due to empty password in preferences!"
-msgstr ""
-"Externe Verbindung verweigert. Kein Passwort in den Einstellungen angegeben!"
+msgstr "Externe Verbindung verweigert. Kein Passwort in den Einstellungen angegeben!"
 
 #: src/ExternalConn.cpp:194
 #, c-format
@@ -2749,8 +2745,7 @@ msgstr ""
 
 #: src/ClientTCPSocket.cpp:942
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Benutzer %s (%u) hat deine Liste der freigegebenen Dateien für Verzeichnis %"
 "s angefordert -> Akzeptiert"
@@ -2770,8 +2765,7 @@ msgstr "Benutzer %s (%u) hat Verzeichnis  %s freigegeben"
 #: src/ClientTCPSocket.cpp:1013
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr ""
-"Benutzer %s (%u) hat ungefragt seine freigegebenen Verzeichnisse gesendet."
+msgstr "Benutzer %s (%u) hat ungefragt seine freigegebenen Verzeichnisse gesendet."
 
 #: src/ClientTCPSocket.cpp:1028
 #, c-format
@@ -2783,8 +2777,7 @@ msgstr ""
 #: src/ClientTCPSocket.cpp:1035
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr ""
-"Benutzer %s (%u) hat das Senden der Liste freigegebener Dateien abgeschlossen"
+msgstr "Benutzer %s (%u) hat das Senden der Liste freigegebener Dateien abgeschlossen"
 
 #: src/ClientTCPSocket.cpp:1040
 #, c-format
@@ -2815,8 +2808,7 @@ msgstr "Ungültiger Bootstrap-Port"
 
 #: src/KadDlg.cpp:182
 msgid "You can't bootstrap an specific ip from remote GUI yet."
-msgstr ""
-"Bootstrap über eine bestimmte IP von Remote-GUI noch nicht unterstützt."
+msgstr "Bootstrap über eine bestimmte IP von Remote-GUI noch nicht unterstützt."
 
 #: src/KadDlg.cpp:185
 msgid "Please fill all fields required"
@@ -2827,8 +2819,7 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Wirklich neue nodes.dat runterladen?\n"
 
 #: src/KadDlg.cpp:207
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Dies wird alle momentanen Knoten entfernen, und die Kademliaverbindung "
 "neustarten."
@@ -3162,8 +3153,7 @@ msgstr "Fehler: Ungültige part.met-Dateiversion: %s ==> %s"
 #: src/PartFile.cpp:598
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
-"Fehler: %s (%s) ist defekt (falscher Tagcount), kann Datei nicht öffnen)."
+msgstr "Fehler: %s (%s) ist defekt (falscher Tagcount), kann Datei nicht öffnen)."
 
 #: src/PartFile.cpp:601
 msgid "Trying to recover file info..."
@@ -3257,8 +3247,7 @@ msgstr "Prüfsumme für %s neu erstellt"
 #: src/PartFile.cpp:2232
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr ""
-"Unerwarteter Fehler beim Abschliessen des Downloads von %s. Datei pausiert."
+msgstr "Unerwarteter Fehler beim Abschliessen des Downloads von %s. Datei pausiert."
 
 #: src/PartFile.cpp:2258
 #, c-format
@@ -3441,8 +3430,7 @@ msgstr "%s (%s:%i) scheint voll zu sein."
 #: src/ServerConnect.cpp:391
 #, c-format
 msgid "Automatic connection to server will retry in %d seconds"
-msgstr ""
-"Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
+msgstr "Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
 
 #: src/ServerConnect.cpp:411
 msgid "Connection lost"
@@ -3515,8 +3503,7 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Ungültiges IP-Format. Benutze xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
-msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+msgid "This command requieres an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
 "Dieser Befehl benötigt ein Argument. Gültige Argumente: 'all', oder eine "
 "Nummer.\n"
@@ -3536,12 +3523,12 @@ msgstr "Dieser Befehl benötigt als gültiges Argument eine Dateiprüfsumme (\"H
 #: src/TextClient.cpp:570
 #, c-format
 msgid "     %d"
-msgstr ""
+msgstr "     %d"
 
 #: src/TextClient.cpp:571
 #, c-format
 msgid ".%d"
-msgstr ""
+msgstr ".%d"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3648,7 +3635,7 @@ msgstr "Anzahl der Suchergebnisse: %i\n"
 
 #: src/TextClient.cpp:797
 msgid "TODO - show progress of a search"
-msgstr ""
+msgstr "TODO - Suchfortschrittsanzeige"
 
 #: src/TextClient.cpp:803
 #, c-format
@@ -3661,8 +3648,7 @@ msgstr "Zeige kurze Statusinformation."
 
 #: src/TextClient.cpp:817
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr ""
-"Verbindungszustand, momentane Up/Downloadgeschwindigkeit, usw. zeigen\n"
+msgstr "Verbindungszustand, momentane Up/Downloadgeschwindigkeit, usw. zeigen\n"
 
 #: src/TextClient.cpp:819
 msgid "Show full statistics tree."
@@ -3791,7 +3777,7 @@ msgstr "Aktiviere IP-Filterung sowohl für Clients als auch für Server."
 
 #: src/TextClient.cpp:862
 msgid "Turn IP filtering off for both clients and servers."
-msgstr ""
+msgstr "Deaktiviere IP-Filterung sowohl für Clients als auch für Server."
 
 #: src/TextClient.cpp:863
 msgid "Enable/Disable IP filtering for clients."
@@ -3885,6 +3871,11 @@ msgid ""
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
 msgstr ""
+"Ein Suchtyp muss angegeben werden durch Auswahl von:\n"
+"    GLOBAL\n"
+"    LOCAL\n"
+"    KAD\n"
+"Beispiel: 'search kad Datei' führt eine kad Suche für \"Datei\" aus.\n"
 
 #: src/TextClient.cpp:897
 msgid "Executes a global search."
@@ -3926,7 +3917,7 @@ msgid ""
 msgstr ""
 "Die Nummer einer Datei aus der letzten Suche muss angegeben sein.\n"
 "Beispiel: 'download 12' beginnt das Herunterladen der Datei Nr. 12 der "
-"letzten Suche."
+"letzten Suche.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -4104,7 +4095,7 @@ msgstr ""
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-msgstr ""
+msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
 
 #: src/ServerSocket.cpp:261
 #, c-format
@@ -4342,8 +4333,7 @@ msgstr ""
 "(Unterordner werden mit eingeschlossen!)"
 
 #: src/PartFileConvert.cpp:714
-msgid ""
-"Do you want the source files of succesfully imported downloads be deleted?"
+msgid "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Quelldateien der erfolgreich importierten Downloads löschen?"
 
 #: src/PartFileConvert.cpp:715
@@ -4478,14 +4468,12 @@ msgstr "Lade IP-Filter 'ipfilter.dat'·und·'ipfilter_static.dat'."
 #: src/IPFilter.cpp:267
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
-"Laden der ipfilter.dat '%s' fehlgeschlagen, unbekanntes Format aufgetreten."
+msgstr "Laden der ipfilter.dat '%s' fehlgeschlagen, unbekanntes Format aufgetreten."
 
 #: src/IPFilter.cpp:305
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr ""
-"Fehler beim Laden der ipfilter.dat '%s', Datei konnte nicht geöffnet werden."
+msgstr "Fehler beim Laden der ipfilter.dat '%s', Datei konnte nicht geöffnet werden."
 
 #: src/IPFilter.cpp:310
 #, c-format
@@ -4515,8 +4503,7 @@ msgid "Commit"
 msgstr "Übernehmen"
 
 #: src/muuli_wdr.cpp:77
-msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
+msgid "Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
 "Hier klicken, um den eD2k-Link im Texteingabefeld zur Downloadschlange "
 "hinzuzufügen. "
@@ -4598,7 +4585,7 @@ msgstr "Global"
 
 #: src/muuli_wdr.cpp:196
 msgid "FileHash"
-msgstr ""
+msgstr "FileHash"
 
 #: src/muuli_wdr.cpp:204
 msgid "Extended Parameters"
@@ -5035,8 +5022,7 @@ msgstr "http://www.aMule.org - Der Linux-Muli"
 
 #: src/muuli_wdr.cpp:1628
 msgid "This is the name that other users will see when connecting to you."
-msgstr ""
-"Dies ist der Name, den andere User sehen, wenn sie mit dir verbunden sind."
+msgstr "Dies ist der Name, den andere User sehen, wenn sie mit dir verbunden sind."
 
 #: src/muuli_wdr.cpp:1633
 msgid "Language"
@@ -5092,7 +5078,8 @@ msgstr "Minimiere zu Tray-Symbol"
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
-msgstr "Wird dies aktiviert, minimiert aMule zu einem System-Tray-Symbol, anstatt zur "
+msgstr ""
+"Wird dies aktiviert, minimiert aMule zu einem System-Tray-Symbol, anstatt zur "
 "Taskbar."
 
 #: src/muuli_wdr.cpp:1672
@@ -5389,8 +5376,7 @@ msgstr "Freigegebene Verzeichnisse"
 
 #: src/muuli_wdr.cpp:2197
 msgid "(Right click on folder icon for recursive share)"
-msgstr ""
-"(Rechtsklick auf das Symbol des rekursiv freizugebenden Verzeichnisses)"
+msgstr "(Rechtsklick auf das Symbol des rekursiv freizugebenden Verzeichnisses)"
 
 #: src/muuli_wdr.cpp:2208
 msgid "Share hidden files"
@@ -5630,8 +5616,7 @@ msgstr "Spaltensortierung"
 
 #: src/muuli_wdr.cpp:2597
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr ""
-"Automatisches Sortieren der Dateien in der Downloadschlange (hohe CPU-Last)"
+msgstr "Automatisches Sortieren der Dateien in der Downloadschlange (hohe CPU-Last)"
 
 #: src/muuli_wdr.cpp:2599
 msgid "aMule will sort the columns in your download list automatically"
@@ -5675,8 +5660,7 @@ msgstr "Quellen verwerfen"
 
 #: src/muuli_wdr.cpp:2655
 msgid "Send sources to any other file before dropping (High CPU)"
-msgstr ""
-"Quellen vor dem Verwurf auf eine andere Datei übertragen (hohe CPU-Last)"
+msgstr "Quellen vor dem Verwurf auf eine andere Datei übertragen (hohe CPU-Last)"
 
 #: src/muuli_wdr.cpp:2657
 msgid "Sources with no needed file-parts."
@@ -5778,7 +5762,8 @@ msgstr "Externe Verbindungen annehmen"
 msgid ""
 "IP of the listening interface\n"
 "(empty for any)"
-msgstr "IP-Adresse der lauschenden Schnittstelle\n"
+msgstr ""
+"IP-Adresse der lauschenden Schnittstelle\n"
 "(leerlassen für beliebig)"
 
 #: src/muuli_wdr.cpp:2831
@@ -5851,8 +5836,7 @@ msgstr "aMule-Log"
 
 #: src/muuli_wdr.cpp:3106
 msgid "Click on this button to update the servers list from URL ..."
-msgstr ""
-"Hier klicken, um die Serverliste über die angegebene URL zu aktualisieren"
+msgstr "Hier klicken, um die Serverliste über die angegebene URL zu aktualisieren"
 
 #: src/muuli_wdr.cpp:3110
 msgid "Serverlist"
@@ -5884,8 +5868,7 @@ msgstr "Hier den Serverport eingeben."
 
 #: src/muuli_wdr.cpp:3144
 msgid "Add manually a server (fill fields to the left before) ..."
-msgstr ""
-"Einen Server manuell hinzufügen (vorher bitte links die Felder ausfüllen)..."
+msgstr "Einen Server manuell hinzufügen (vorher bitte links die Felder ausfüllen)..."
 
 #: src/muuli_wdr.cpp:3190 src/muuli_wdr.cpp:3412
 msgid "ED2K Info"
@@ -6033,8 +6016,7 @@ msgid "Filter clients"
 msgstr "Filtere Clients"
 
 #: src/muuli_wdr.cpp:3487
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Aktiviere die Filterung von Client-IPs, die in der Datei ~/.aMule/ipfilter.dat "
 "definiert sind."
@@ -6044,9 +6026,9 @@ msgid "Filter servers"
 msgstr "Filtere Server"
 
 #: src/muuli_wdr.cpp:3492
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Aktiviere das Filtern von Server-IPs, die in der Datei ~/.aMule/ipfilter.dat "
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Aktiviere das Filtern von Server-IPs, die in der Datei ~/.aMule/ipfilter.dat "
 "definiert sind."
 
 #: src/muuli_wdr.cpp:3499
@@ -6055,8 +6037,7 @@ msgstr "Aktualisieren der Liste"
 
 #: src/muuli_wdr.cpp:3500
 msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
-msgstr ""
-"Aktualisiert die Liste der zu filternden IPs in der ~/.aMule/ipfilter.dat"
+msgstr "Aktualisiert die Liste der zu filternden IPs in der ~/.aMule/ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3508
 msgid "URL:"
@@ -6135,8 +6116,7 @@ msgid "Online Signature Directory:"
 msgstr "Onlinesignaturverzeichnis:"
 
 #: src/muuli_wdr.cpp:3606
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "Hier klicken, um das Verzeichnis mit den Dateien für die Onlinesignatur "
 "auszuwählen."
@@ -6159,8 +6139,7 @@ msgstr "Filtere alle Nachrichten"
 
 #: src/muuli_wdr.cpp:3647
 msgid "Filter messages from people not on your friend list"
-msgstr ""
-"Filtere Nachrichten von Usern, die nicht auf deiner Freundesliste stehen"
+msgstr "Filtere Nachrichten von Usern, die nicht auf deiner Freundesliste stehen"
 
 #: src/muuli_wdr.cpp:3650
 msgid "Filter messages from unknown clients"
@@ -6168,8 +6147,7 @@ msgstr "Filtere Nachrichten von unbekannten Clients"
 
 #: src/muuli_wdr.cpp:3653
 msgid "Filter messages containing (use ',' as separator):"
-msgstr ""
-"Filtere Nachrichten, die folgende Worte enthalten (benutzt ',' als Trennung):"
+msgstr "Filtere Nachrichten, die folgende Worte enthalten (benutzt ',' als Trennung):"
 
 #: src/muuli_wdr.cpp:3657
 msgid "add here the words amule should filter and block messages including it"
@@ -6191,11 +6169,11 @@ msgstr "Proxytyp:"
 
 #: src/muuli_wdr.cpp:3705
 msgid "SOCKS5"
-msgstr ""
+msgstr "SOCKS5"
 
 #: src/muuli_wdr.cpp:3706
 msgid "SOCKS4"
-msgstr ""
+msgstr "SOCKS4"
 
 #: src/muuli_wdr.cpp:3707
 msgid "HTTP"
@@ -6203,7 +6181,7 @@ msgstr "HTTP"
 
 #: src/muuli_wdr.cpp:3708
 msgid "SOCKS4a"
-msgstr ""
+msgstr "SOCKS4a"
 
 #: src/muuli_wdr.cpp:3711
 msgid "The type of proxy you are connecting to"
@@ -6310,8 +6288,7 @@ msgid "You must specify a path for the category!"
 msgstr "Du musst einen Pfad für diese Kategorie festlegen!"
 
 #: src/CatDialog.cpp:168
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Anlegen des Verzeichnisses für eingehende Dateien der Kategorie "
 "fehlgeschlagen. Bitte einen gültigen Pfad angeben!"
@@ -6451,8 +6428,7 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr ""
-"Verbindung fehlgeschlagen. Verbindung zum angegebenen Host nicht möglich\n"
+msgstr "Verbindung fehlgeschlagen. Verbindung zum angegebenen Host nicht möglich\n"
 
 #: src/ExternalConnector.cpp:426
 #, c-format
@@ -6546,6 +6522,9 @@ msgid ""
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
+"FEHLER: aMule daemon kann nicht verwendet werden wenn Externe Verbindungen deaktiviert sind. "
+"Zum aktivieren von Externen Verbindungen, nutze entweder den normalen aMule, starte amuled mit "
+"der Option --ec-config oder ändere \"AcceptExternalConnections\" auf 1 in ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6673,8 +6652,7 @@ msgstr "Nicht verfügbar"
 
 #: src/SearchDlg.cpp:468
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr ""
-"Mindestgröße muss kleiner sein, als die Höchstgröße: Höchstgröße ignoriert."
+msgstr "Mindestgröße muss kleiner sein, als die Höchstgröße: Höchstgröße ignoriert."
 
 #: src/SearchDlg.cpp:469
 msgid "Search warning"
@@ -6858,8 +6836,7 @@ msgstr "Datei server.met nicht gefunden!"
 #: src/ServerList.cpp:97
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr ""
-"Laden der server.met '%s' fehlgeschlagen, unbekanntes Format aufgetreten."
+msgstr "Laden der server.met '%s' fehlgeschlagen, unbekanntes Format aufgetreten."
 
 #: src/ServerList.cpp:103
 msgid "Failed to open server.met!"
@@ -6868,8 +6845,7 @@ msgstr "Konnte Datei server.met nicht öffnen!"
 #: src/ServerList.cpp:114
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
-"Server.met unbrauchbar, unzulässiges Versionstag gefunden: 0x%x, Größe %i"
+msgstr "Server.met unbrauchbar, unzulässiges Versionstag gefunden: 0x%x, Größe %i"
 
 #: src/ServerList.cpp:169
 #, c-format
@@ -6889,8 +6865,7 @@ msgstr "Server nicht hinzugefügt: [%s:%d] Gibt keinen gültigen Port an."
 #: src/ServerList.cpp:208
 #, c-format
 msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
-msgstr ""
-"Server nicht hinzugefügt: Die IP-Adresse [%s:%d] ist gefiltert oder ungültig."
+msgstr "Server nicht hinzugefügt: Die IP-Adresse [%s:%d] ist gefiltert oder ungültig."
 
 #: src/ServerList.cpp:228
 #, c-format
@@ -7045,13 +7020,11 @@ msgstr "Dies ist eine Testversion, täglich aktualisiert, und\n"
 
 #: src/amule.cpp:1317
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr ""
-"wir garantieren nicht, dass sie keine Daten zerstört, dein Haus anzündet\n"
+msgstr "wir garantieren nicht, dass sie keine Daten zerstört, dein Haus anzündet\n"
 
 #: src/amule.cpp:1318
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr ""
-"oder deinen Hund tötet. Aber es *sollte* sicher sein, sie zu benutzen.\n"
+msgstr "oder deinen Hund tötet. Aber es *sollte* sicher sein, sie zu benutzen.\n"
 
 #: src/amule.cpp:1322
 msgid ""
@@ -7154,8 +7127,7 @@ msgstr "Du benutzt eine veraltete aMule-Version!"
 #: src/amule.cpp:1876
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr ""
-"Diese Version von aMule ist %i.%i.%i und die aktuelle Version ist %li.%li.%li"
+msgstr "Diese Version von aMule ist %i.%i.%i und die aktuelle Version ist %li.%li.%li"
 
 #: src/amule.cpp:1877
 msgid "The latest version can always be found at http://www.amule.org"
@@ -7235,1378 +7207,3 @@ msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht lesen!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
 
-#~ msgid ""
-#~ "ERROR: aMule daemon cannot be used when external connections are "
-#~ "disabled. To enable External Connections, use either a normal aMule or "
-#~ "set the key\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule."
-#~ "conf"
-#~ msgstr ""
-#~ "FEHLER: Der aMule Daemon kann nicht benutzt werden, wenn die externen "
-#~ "Verbindungen deaktiviert sind. Um die externen Verbindungen zu "
-#~ "aktivieren, benutze entweder einen normalen aMule, oder setze den "
-#~ "Schlüssel \"AcceptExternalConnections\" in der Datei ~/.aMule/amule.conf "
-#~ "auf 1"
-
-#~ msgid "Sources: %u"
-#~ msgstr "Quellen: %u"
-
-#~ msgid "Feedback from: %s"
-#~ msgstr "Feedback von: %s"
-
-#~ msgid "Client: aMule %s"
-#~ msgstr "Client: aMule %s"
-
-#~ msgid "File Name: %s"
-#~ msgstr "Dateiname: %s"
-
-#~ msgid "File size: %s"
-#~ msgstr "Dateigröße: %s"
-
-#~ msgid "Download: %s"
-#~ msgstr "Download: %s"
-
-#~ msgid "Complete Sources: %u"
-#~ msgstr "Vollständige Quellen: %u"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ " 'All-Platform' P2P Client basierend auf eMule \n"
-#~ "\n"
-#~ " Webseite: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Kontakt: admin@amule.org (administrative Angelegenheiten) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Teile von aMule basieren auf Kademlia: \n"
-#~ " Peer-to-peer routing basiert auf XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "http://download.overnet2000.de/nodes.dat"
-#~ msgstr "http://download.overnet2000.de/nodes.dat"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname)"
-#~ msgstr "Kopiere eD2k-Link in die Zwischenablage (Hostname)"
-
-#~ msgid "Session is not logged and request have no password\n"
-#~ msgstr "Sitzung nicht geloggt, und Anfrage hat kein Passwort\n"
-
-#~ msgid "Connecting to %s (%s - %s:%i)"
-#~ msgstr "Verbinde zu %s (%s - %s:%i)"
-
-#~ msgid "Minimize to trayicon"
-#~ msgstr "Zum Systemicon minimieren"
-
-#~ msgid ""
-#~ "Enabling this will make aMule minimize to the system-tray, rather than "
-#~ "the taskbar."
-#~ msgstr ""
-#~ "Bei Aktivierung wird aMule zum Systemtray minimiert, anstatt zur Taskbar."
-
-#~ msgid "Unable to open skin file: %s"
-#~ msgstr "Kann Skin-Datei nicht öffnen: %s"
-
-#~ msgid "Browse skin file"
-#~ msgstr "Suche nach Skindatei"
-
-#~ msgid "Use skin file to set aMule bitmaps."
-#~ msgstr "Benutze Skin-Datei, um aMule-Bitmaps zu setzen."
-
-#~ msgid "Skin file:"
-#~ msgstr "Skin-Datei:"
-
-#~ msgid "ExternalConn: adding ed2k link '%s'."
-#~ msgstr "ExternalConn: eD2k-Link '%s' hinzugefügt."
-
-#~ msgid "Adds an ed2k link to core."
-#~ msgstr "Übergibt einen eD2k-Link an den core."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ msgstr ""
-#~ "Der hinzuzufügende eD2k.Link kann folgendes sein:\n"
-#~ "*) ein Dateilink (ed2k://|file|...), wird der Downloadschlange "
-#~ "hinzugefügt,\n"
-#~ "*) ein Serverlink (ed2k://|server|...), wird der Serverliste "
-#~ "hinzugefügt,\n"
-#~ "*) oder ein Serverlistenlink, wobei alle Server darin der Serverliste\n"
-#~ "hinzugefügt werden.\n"
-
-#~ msgid "theApp.serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "Die App.serverlist->GetServerByAddress() gab NULL zurück"
-
-#~ msgid "IP of the listening interface (empty for any)"
-#~ msgstr "IP des lauschenden Interfaces (leer = beliebig)"
-
-#~ msgid "Skin file name is empty - loading defaults"
-#~ msgstr "Skin-Datei ist leer - lade Standardwerte "
-
-#~ msgid "Skin file %s does not exist - loading defaults"
-#~ msgstr "Skin-Datei %s existiert nicht, lade Standardwerte"
-
-#~ msgid "IPFilter is %s.\n"
-#~ msgstr "IPFilter ist %s.\n"
-
-#~ msgid "Turn IP filtering on."
-#~ msgstr "IP-Filter ein."
-
-#~ msgid "Turn IP filtering off."
-#~ msgstr "IP-Filter aus."
-
-#~ msgid "Get IPFilter state."
-#~ msgstr "IP-Filter-Status holen."
-
-#~ msgid "Enable IP-Filtering"
-#~ msgstr "Aktiviere IP-Filterung"
-
-#~ msgid ""
-#~ "Enable filtering of the IPs defined in the file ~/.aMule/ipfilter.dat."
-#~ msgstr ""
-#~ "Aktiviere IP-Filter laut Einträgen in der Datei ~/.aMule/ipfilter.dat."
-
-#~ msgid "ReadPacket: packet have invalid flags %08x"
-#~ msgstr "ReadPacket: Paket hat ungültige Flags %08x"
-
-#~ msgid "ReadPacket: failed zlib init"
-#~ msgstr "ReadPacket: zlib init fehlgeschlagen"
-
-#~ msgid "ReadPacket: error %d in packet read"
-#~ msgstr "ReadPacket: Fehler %d in packet read"
-
-#~ msgid "ReadPacket: failed zlib free"
-#~ msgstr "ReadPacket: zlib free fehlgeschlagen"
-
-#~ msgid "ED2K Link Handler"
-#~ msgstr "eD2k-Linkverarbeitung"
-
-#~ msgid "Local Search"
-#~ msgstr "Lokale Suche"
-
-#~ msgid "Global Search"
-#~ msgstr "Globale Suche"
-
-#~ msgid "FileHash (WWW)"
-#~ msgstr "Datei-Hash (WWW)"
-
-#~ msgid "Execute command on file completion"
-#~ msgstr "Bei Dateifertigstellung Befehl ausführen"
-
-#~ msgid "Enable command execution"
-#~ msgstr "Befehlsausführung einschalten"
-
-#~ msgid "Command:"
-#~ msgstr "Befehl:"
-
-#~ msgid ""
-#~ "The following variables will be replaced by the\n"
-#~ "values from the completed file:\n"
-#~ " %FILE - The full path to the file.\n"
-#~ " %HASH - The ED2k hash of the file."
-#~ msgstr ""
-#~ "Die folgenden Variablen werden durch die\n"
-#~ "Werte der abgeschlossenen Datei ersetzt:\n"
-#~ " %FILE - Vollständiger Pfad zur Datei.\n"
-#~ " %HASH - Der eD2k-Dateihash."
-
-#~ msgid "Socks5"
-#~ msgstr "Socks5"
-
-#~ msgid "Socks4"
-#~ msgstr "Socks4"
-
-#~ msgid "Failed to execute on-completion command. Template is: %s"
-#~ msgstr ""
-#~ "Ausführung des Befehls bei Dateifertigstellung fehlgeschlagen. Vorlage "
-#~ "ist: %s"
-
-#~ msgid "Index file not found: bad template\n"
-#~ msgstr "Indexdatei nicht gefunden: Template falsch\n"
-
-#~ msgid "Failed to create file-completion thread!"
-#~ msgstr "Erstellen des Datei-Fertigstellungsthreads gescheitert!"
-
-#~ msgid "Failed to start file-completion thread!"
-#~ msgstr "Starten des Datei-Fertigstellungsthreads gescheitert!"
-
-#~ msgid "aMule is not connected!"
-#~ msgstr "aMule ist nicht verbunden"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s %s"
-#~ msgstr "Client %s auf IP:Port %s:%d verwendet %s %s"
-
-#~ msgid "AICH Thread: Signaling for thread to terminate."
-#~ msgstr "AICH-Thread: Signalisiere Thread sich zu beenden."
-
-#~ msgid "AICH Thread: Terminated."
-#~ msgstr "AICH-Thread: Beendet."
-
-#~ msgid "AICH Thread: Syncronization thread started."
-#~ msgstr "AICH-Thread: Synchronisations-Thread gestartet."
-
-#~ msgid "AICH Thread: Masterhashes of known files have been loaded."
-#~ msgstr "AICH-Thread: Masterhashes von bekannten Dateien wurden geladen."
-
-#~ msgid "AICH Thread: Starting to hash files. %li files found."
-#~ msgstr ""
-#~ "AICH-Thread: Beginne damit, Dateien zu hashen. %li Dateien gefunden."
-
-#~ msgid "AICH Thread: Hashing file: %s, total files left: %li"
-#~ msgstr "AICH-Thread: Hashe Datei: %s, noch übrige Dateien: %li"
-
-#~ msgid "AICH Thread: Hashing completed."
-#~ msgstr "AICH-Thread: Hashen abgeschlossen."
-
-#~ msgid "AICH Thread: No new files found."
-#~ msgstr "AICH-Thread: Keine neuen Dateien gefunden."
-
-#~ msgid "Client requests invalid %u "
-#~ msgstr "Client hat ungültige %u angefordert "
-
-#~ msgid "Default Permissions"
-#~ msgstr "Standardrechte"
-
-#~ msgid "Owner permissions, must at least be read/write'able."
-#~ msgstr "Besitzerrechte, müssen mindestens les-/schreibbar sein."
-
-#~ msgid "Group permissions."
-#~ msgstr "Gruppenrechte."
-
-#~ msgid "Other permissions."
-#~ msgstr "Andere Rechte."
-
-#~ msgid "Get Razorback 2's stats for this file"
-#~ msgstr "Hole Razorback2's Statistiken für diese Datei"
-
-#~ msgid "Hasher: Creating new thread."
-#~ msgstr "Hasher: Erstelle neuen Thread."
-
-#~ msgid "Hasher: Signaling for remaining threads to terminate."
-#~ msgstr "Hasher: Signalisiere verbleibendem Thread, sich zu beenden."
-
-#~ msgid "Hasher: No files on queue, stopping thread."
-#~ msgstr "Hasher: Keine Dateien in der Warteschlange, beende Thread."
-
-#~ msgid "Hasher: Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "Hasher: Beginne MD4- und AICH-Hash zu erstellen für Datei: %s"
-
-#~ msgid "Hasher: Starting to create MD4 hash for file: %s"
-#~ msgstr "Hasher: Beginne MD4-Hash zu erstellen für Datei: %s"
-
-#~ msgid "Hasher: Finished hashing file: %s"
-#~ msgstr "Hasher: Hashen von Datei %s abgeschlossen."
-
-#~ msgid "Hasher: A thread has died."
-#~ msgstr "Hasher: Ein Thread ist gestorben."
-
-#~ msgid "Loading ipfilter.dat files."
-#~ msgstr "Lade ipfilter.dat-Dateien."
-
-#~ msgid "WARNING: aMule is stopped !"
-#~ msgstr "WARNUNG: aMule wird angehalten!"
-
-#~ msgid " is STOPPED !"
-#~ msgstr " ist ANGEHALTEN!"
-
-#~ msgid ""
-#~ "WARNING: A file with that name already exists, the file has been renamed"
-#~ msgstr ""
-#~ "WARNUNG: Eine Datei mit dem selben Namen existiert bereits, die Datei "
-#~ "wurde umbenannt"
-
-#~ msgid "WARNING: Failed to delete %s.seeds"
-#~ msgstr "WARNUNG: Konnte %s.seeds nicht löschen"
-
-#~ msgid ""
-#~ "Downloaded:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Heruntergeladen:\n"
-#~ "%s"
-
-#~ msgid "\tStopped"
-#~ msgstr "\tAngehalten"
-
-#~ msgid "\tRemoved from shared"
-#~ msgstr "\tAus Freigaben entfernt"
-
-#~ msgid "\tRemoved from download queue"
-#~ msgstr "\tAus der Downloadschlange entfernt"
-
-#~ msgid "\tRemoved transferwnd"
-#~ msgstr "\tÜbertragungsfenster entfernt"
-
-#~ msgid "\tClosed"
-#~ msgstr "\tGeschlossen"
-
-#~ msgid "\tFailed to delete '%s'"
-#~ msgstr "\tKonnte '%s' nicht löschen"
-
-#~ msgid "\tRemoved .part.met"
-#~ msgstr "\t.part.met entfernt"
-
-#~ msgid "Failed to delete '%s'"
-#~ msgstr "Konnte '%s' nicht löschen"
-
-#~ msgid "\tRemoved .part"
-#~ msgstr "\t.part entfernt"
-
-#~ msgid "\tRemoved .BAK"
-#~ msgstr "\t.BAK entfernt"
-
-#~ msgid "\tRemoved .seeds"
-#~ msgstr "\t.seeds entfernt"
-
-#~ msgid "Done"
-#~ msgstr "Erledigt"
-
-#~ msgid "%s: Expected part-hash: %s"
-#~ msgstr "%s: Erwarteter Part-Hash: %s"
-
-#~ msgid "%s: Actual part-hash: %s"
-#~ msgstr "%s: Tatsächlicher Part-Hash: %s"
-
-#~ msgid "Info not Available"
-#~ msgstr "Info nicht verfügbar"
-
-#~ msgid "Client %s on IP:Port %s:%d using %s"
-#~ msgstr "Client %s auf IP:Port %s:%d benutzt %s"
-
-#~ msgid "You can't bootstrap from remote GUI yet."
-#~ msgstr "Bootstrap von RemoteGUI noch nicht unterstützt."
-
-#~ msgid "aMule Tray Menu Info"
-#~ msgstr "aMule Traymenü-Info"
-
-#~ msgid "Disconnect from server"
-#~ msgstr "Serververbindung trennen"
-
-#~ msgid "Connect to any server"
-#~ msgstr "Mit irgendeinem Server verbinden"
-
-#~ msgid "aMule for Linux"
-#~ msgstr "aMule für Linux"
-
-#~ msgid "Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"
-#~ msgstr ""
-#~ "Deine aMule-Version ist %i.%i.%i, und die neueste Version ist %i.%i.%i"
-
-#~ msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %i.%i.%i\n"
-#~ msgstr "WARNUNG: Veraltete Version von aMuled: %i.%i.%i < %i.%i.%i\n"
-
-#~ msgid "Desktop integration"
-#~ msgstr "Desktopintegration"
-
-#~ msgid "Copy ED2k link to clipboard (&HTML)"
-#~ msgstr "eD2k-Link in Zwischenablage kopieren (&HTML)"
-
-#~ msgid ""
-#~ "For system tray integration to work,\n"
-#~ "you must specify which desktop you are using.\n"
-#~ "You can change this later from preferences."
-#~ msgstr ""
-#~ "Um die Systrayintegration nutzen zu können,\n"
-#~ "mußt du deinen Desktop auswählen.\n"
-#~ "Dies kann später in den Einstellungen geändert werden."
-
-#~ msgid "Gnome 2.x (or other XEMBED compatible)"
-#~ msgstr "Gnome 2.x (oder ein anderer zu XEMBED kompatibler)"
-
-#~ msgid "KDE 3.x"
-#~ msgstr "KDE 3.x"
-
-#~ msgid "KDE 2.x / Gnome 1.2 "
-#~ msgstr "KDE 2.x / Gnome 1.2 "
-
-#~ msgid "No systray integration, please"
-#~ msgstr "Keine Taskleistenintegration bitte."
-
-#~ msgid "Desktop"
-#~ msgstr "Desktop"
-
-#~ msgid "Jugle (WWW)"
-#~ msgstr "Jugle (WWW)"
-
-#~ msgid "Downloadlist doubleclick to expand"
-#~ msgstr "Doppelklick in der Downloadliste zeigt erweiterte Informationen"
-
-#~ msgid ""
-#~ "If enabled, it is possible to display the sources associated with "
-#~ "downloads by double-clicking on them."
-#~ msgstr ""
-#~ "Wenn aktiviert, ist es möglich, sich per Doppelklick die gerade "
-#~ "herunterladenden Quellen anzeigen zu lassen."
-
-#~ msgid "Select Window Manager"
-#~ msgstr "Wähle Fenstermanager"
-
-#~ msgid ""
-#~ "Click here to select the type of systray integration you wish aMule to "
-#~ "use."
-#~ msgstr "Auswahl des verwendeten Systray-Integrationstyps."
-
-#~ msgid "Save 5 sources on rare files (< 20 sources)"
-#~ msgstr "5 Quellen bei seltenen Dateien (< 20 Quellen) speichern"
-
-#~ msgid "Copy ED2k link to clipboard (HTML)"
-#~ msgstr "eD2k-Link in die Zwischenablage kopieren (HTML)"
-
-#~ msgid "aMule is not connected! Cannot do search."
-#~ msgstr "aMule ist zu keinem Server verbunden! Kann keine Suche durchführen."
-
-#~ msgid "Language change will not be applied until aMule is restarted."
-#~ msgstr ""
-#~ "Die Sprachänderung wirkt sich erst nach einem Neustart von aMule aus."
-
-#~ msgid "Failed to open shared file (%s), rechecking list of shared files."
-#~ msgstr ""
-#~ "Konnte freigegebene Datei nicht öffnen (%s), aktualisiere Liste der "
-#~ "freigegebenen Dateien."
-
-#~ msgid ""
-#~ "Impossible to make Kad search (invalid chars? keywords too short? not "
-#~ "connected?)"
-#~ msgstr ""
-#~ "Unmöglich, eine Kad Suche zu erstellen (Ungültiges Zeichen? Suchbegriff "
-#~ "zu kurz? Nicht verbunden?)"
-
-#~ msgid "You are not connected to a server!"
-#~ msgstr "Mit keinem Server verbunden!"
-
-#~ msgid "Search not possible"
-#~ msgstr "Suche nicht möglich"
-
-#~ msgid "Connection to remote aMule is lost. Exiting now."
-#~ msgstr "Verbindung zum Remote-aMule verloren. Beende jetzt."
-
-#~ msgid "Error: connection lost"
-#~ msgstr "Fehler: Verbindung verloren"
-
-#~ msgid "Enter hostname or ip of the box running aMule"
-#~ msgstr "Hostnamen oder IP des Rechners eingeben, auf dem aMule läuft"
-
-#~ msgid "Enter Hostname"
-#~ msgstr "Hostnamen eingeben"
-
-#~ msgid "Enter port for aMule's External Connection"
-#~ msgstr "Port für aMule's externe Verbindung eingeben"
-
-#~ msgid "Enter Port"
-#~ msgstr "Port eingeben"
-
-#~ msgid "Enter password for mule connection"
-#~ msgstr "Passwort zur Muliverbindung eingeben"
-
-#~ msgid "Enter Password"
-#~ msgstr "Passwort eingeben"
-
-#~ msgid "IO failure while loading '%s': %s"
-#~ msgstr "IO-Fehler während des Ladens von '%s': %s"
-
-#~ msgid "Error saving partfile's seeds file (%s - %s): %s"
-#~ msgstr "Fehler beim Speichern der Partfile-Quelle (%s - %s): %s"
-
-#~ msgid "IO failure while hashing downloaded part of partfile '%s'."
-#~ msgstr ""
-#~ "IO-Fehler während des Hashens des runtergeladenen Teils von Partfile %s"
-
-#~ msgid "EC Connection Failed. Unable to write data to the socket."
-#~ msgstr ""
-#~ "EC-Verbindung fehlgeschlagen. Kann keine Daten auf den Socket schreiben."
-
-#~ msgid ""
-#~ "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless "
-#~ "warnings."
-#~ msgstr ""
-#~ "Das Tempverzeichnis liegt auf einer FAT32 Partition. Deaktiviere chmod, "
-#~ "um sinnlose Warnungen zu vermeiden."
-
-#~ msgid ""
-#~ "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid "
-#~ "useless warnings."
-#~ msgstr ""
-#~ "Das Incomingverzeichnis liegt auf einer FAT32 Partition. Deaktiviere "
-#~ "chmod, um sinnlose Warnungen zu vermeiden."
-
-#~ msgid ""
-#~ "switch download list to clients you're downloading from, with files also "
-#~ "(some day)"
-#~ msgstr ""
-#~ "Wechsle von Downloadliste zur Liste der Clients, von denen gerade "
-#~ "übertragen wird (irgendwann)"
-
-#~ msgid "Client TCP Port:"
-#~ msgstr "Client-TCP-Port:"
-
-#~ msgid "Client UDP port: 4665"
-#~ msgstr "Client-UDP-Port: 4665"
-
-#~ msgid "eMule extended UDP Port:"
-#~ msgstr "erweiterter eMule-UDP-Port:"
-
-#~ msgid "Extract Meta Data Tags"
-#~ msgstr "Metadaten-Attribute extrahieren"
-
-#~ msgid "Reduce Fragmentation"
-#~ msgstr "Fragmentierung reduzieren"
-
-#~ msgid "Allocate full chunks for .part files"
-#~ msgstr "Belege volle Stücke für .part Dateien"
-
-#~ msgid ""
-#~ "Select this to allocate a full chunk each time data is received for it."
-#~ msgstr ""
-#~ "Wähle dies aus, um immer, wenn Daten dafür übertragen werden, volle "
-#~ "Stücke zu erhalten."
-
-#~ msgid "Allocate full disk space for .part files"
-#~ msgstr "Kompletten Festplattenplatz für .part-Dateien verwenden"
-
-#~ msgid ""
-#~ "This option reduces fragmentation but slows down the part file creation "
-#~ "and will disable sparse files"
-#~ msgstr ""
-#~ "Diese Option verringert Fragmentierung, aber verlangsamt das Erstellen "
-#~ "der Partdateien und wird spärliche Dateien deaktivieren"
-
-#~ msgid "    Min Disk Space:    "
-#~ msgstr "    Min Plattenplatz:    "
-
-#~ msgid "Nodes list"
-#~ msgstr "Knotenliste"
-
-#~ msgid ""
-#~ "Enter the url to a nodes.dat file here and press the button to the left "
-#~ "to update the list of known servers."
-#~ msgstr ""
-#~ "Hier die URL einer nodes.dat eingeben, und dann den Knopf links vom "
-#~ "Eingabefeld drücken, um die Liste bekannter Knoten zu aktualisieren."
-
-#~ msgid "SharedFiles"
-#~ msgstr "Freigaben"
-
-#~ msgid "Invalid EC packet received"
-#~ msgstr "Ungültiges EC-Paket empfangen"
-
-#~ msgid "ExternalConn: invalid opcode received: %i"
-#~ msgstr "ExternalConn: ungültigen OpCode empfangen: %i"
-
-#~ msgid "E&xit\tAlt-X"
-#~ msgstr "E&xit\tAlt-X"
-
-#~ msgid "Quit amuleweb"
-#~ msgstr "Beende amuleweb"
-
-#~ msgid "&About...\tF1"
-#~ msgstr "&Über...\tF1"
-
-#~ msgid "Show about dialog"
-#~ msgstr "Zeige \"über\" Dialog"
-
-#~ msgid "&File"
-#~ msgstr "&Datei"
-
-#~ msgid "&Help"
-#~ msgstr "&Hilfe"
-
-#~ msgid ""
-#~ "\n"
-#~ "Ok, exiting Web Client...\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Ok, beende Web Client...\n"
-
-#~ msgid ""
-#~ "amuleweb [DLG version]\n"
-#~ "Using %s\n"
-#~ "(c) aMule Dev Team"
-#~ msgstr ""
-#~ "amuleweb [DLG version]\n"
-#~ "Benutzt %s\n"
-#~ "(c) aMule Dev Team"
-
-#~ msgid "About amuleweb"
-#~ msgstr "Über aMuleweb"
-
-#~ msgid "amuleweb DLG"
-#~ msgstr "amuleweb DLG"
-
-#~ msgid "Forward page requests to external PHP script"
-#~ msgstr "Leite Seitenanfragen an externes PHP-SKript weiter"
-
-#~ msgid "FATAL ERROR: Cannot find template: %s"
-#~ msgstr "FATALER FEHLER: Kann Template nicht finden: %s"
-
-#~ msgid ""
-#~ "\n"
-#~ "----------------> Help: Available commands (case insensitive): "
-#~ "<----------------\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "----------------> Hilfe: Verfügbare Kommandos (nicht case sensitive): "
-#~ "<----------------\n"
-#~ "\n"
-
-#~ msgid "Shows this help.\n"
-#~ msgstr "Zeige diese Hilfe.\n"
-
-#~ msgid "Exits aMuleWeb.\n"
-#~ msgstr "Beendet aMule Web.\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "----------------------------> End of listing "
-#~ "<----------------------------------\n"
-#~ msgstr ""
-#~ "\n"
-#~ "----------------------------> Ende der Liste "
-#~ "<----------------------------------\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Use 'Help' for command list\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Benutze 'Help' für eine Liste der Kommandos\n"
-#~ "\n"
-
-#~ msgid "Very Low"
-#~ msgstr "Sehr niedrig"
-
-#~ msgid " Auto"
-#~ msgstr " Auto"
-
-#~ msgid "Web Server: running\n"
-#~ msgstr "Webserver: läuft\n"
-
-#~ msgid "Web Server: Restarted\n"
-#~ msgstr "Webserver: Neu gestartet\n"
-
-#~ msgid "Web Server: Stopped\n"
-#~ msgstr "Webserver: Angehalten\n"
-
-#~ msgid "Web Server: not running\n"
-#~ msgstr "Webserver: läuft nicht\n"
-
-#~ msgid "Can't load templates: Can't open file %s"
-#~ msgstr "Kann Template nicht laden: Kann Datei nicht öffnen: %s"
-
-#~ msgid ""
-#~ "Can't find template version number!\n"
-#~ "Please replace aMule.tmpl with a newer version!"
-#~ msgstr ""
-#~ "Kann Template Versionsnummer nicht finden!\n"
-#~ "Bitte ersetze aMule.tmpl mit einer aktuellen Version!"
-
-#~ msgid "Failed to load template %s\n"
-#~ msgstr "Laden fehlgeschlagen von Template %s\n"
-
-#~ msgid "Web Control Panel"
-#~ msgstr "Web-Kontroll-Konsole"
-
-#~ msgid "Server list"
-#~ msgstr "Serverliste"
-
-#~ msgid "ED2K Link(s)"
-#~ msgstr "ED2K-Link(s)"
-
-#~ msgid "Log"
-#~ msgstr "Log"
-
-#~ msgid "Serverinfo"
-#~ msgstr "Serverinfo"
-
-#~ msgid "Debug Log"
-#~ msgstr "Debug Log"
-
-#~ msgid "Logout"
-#~ msgstr "Logout"
-
-#~ msgid "Server name"
-#~ msgstr "Servername"
-
-#~ msgid "IP"
-#~ msgstr "IP"
-
-#~ msgid "users"
-#~ msgstr "Benutzer"
-
-#~ msgid "files"
-#~ msgstr "Dateien"
-
-#~ msgid "Actions"
-#~ msgstr "Aktionen"
-
-#~ msgid "Remove selected server"
-#~ msgstr "Lösche ausgewählten Server"
-
-#~ msgid "Are you sure to remove this server from list?"
-#~ msgstr ""
-#~ "Bist Du sicher das dieser Server von der Liste gelöscht werden soll?"
-
-#~ msgid "This ed2k link is invalid (%s)"
-#~ msgstr "Dieser ed2k-Link ist ungültig: %s"
-
-#~ msgid "Got no response from aMule."
-#~ msgstr "Keine Antwort von aMule."
-
-#~ msgid "Downloaded total"
-#~ msgstr "Download Gesamt"
-
-#~ msgid "Uploaded total"
-#~ msgstr "Upload Gesamt"
-
-#~ msgid "Increase Priority"
-#~ msgstr "Erhöhe Priorität"
-
-#~ msgid "Decrease Priority"
-#~ msgstr "Verringere Priorität"
-
-#~ msgid "Internal error - no item in container"
-#~ msgstr "Interner Fehler - Kein Item im Container"
-
-#~ msgid "Hide Queue"
-#~ msgstr "Verstecke Warteschlange"
-
-#~ msgid "Clear Completed"
-#~ msgstr "Abgeschlossene Downloads entfernen"
-
-#~ msgid "Uploads (%i)"
-#~ msgstr "Uploads (%i)"
-
-#~ msgid "Access denied!"
-#~ msgstr "Zugang abgelehnt!"
-
-#~ msgid "Download Selected"
-#~ msgstr "Ausgewähltes herunterladen"
-
-#~ msgid "Time"
-#~ msgstr "Zeit"
-
-#~ msgid "Refetch graph data"
-#~ msgstr "Graf-Daten erneut holen"
-
-#~ msgid "IP or Address"
-#~ msgstr "IP oder Adresse"
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "Add to list"
-#~ msgstr "Füge zur Liste hinzu"
-
-#~ msgid "Update server.met from URL"
-#~ msgstr "Aktualisiere server.met von URL"
-
-#~ msgid "URL"
-#~ msgstr "URL"
-
-#~ msgid "Web-based Search"
-#~ msgstr "Web-basierte Suche"
-
-#~ msgid "File Settings"
-#~ msgstr "Datei-Einstellungen"
-
-#~ msgid "Max Sources Per File"
-#~ msgstr "Max. Quellen pro Datei"
-
-#~ msgid "Max. Connections"
-#~ msgstr "Max. Verbindungen"
-
-#~ msgid "Max. new connections / 5secs"
-#~ msgstr "Max. neue Verbindungen / 5 Sek"
-
-#~ msgid "Gzip Compression"
-#~ msgstr "Gzip-Komprimierung"
-
-#~ msgid "Save traffic, especially in graphs."
-#~ msgstr "Spare Traffic, speziell in Graphen."
-
-#~ msgid "Enable or disable the display of waiting queue in transfer page."
-#~ msgstr ""
-#~ "Aktiviere oder Deaktiviere die Anzeige der Warteschlange im "
-#~ "Transferfenster."
-
-#~ msgid "Refresh-Time of Pages"
-#~ msgstr "Aktualisierungsintervall der Seiten"
-
-#~ msgid "Time in seconds (zero=disabled)"
-#~ msgstr "Zeit in Sekunden (Null=deaktiviert)"
-
-#~ msgid "Speed Limits"
-#~ msgstr "Geschwindigkeitsbeschränkungen"
-
-#~ msgid "Bandwidth Limits"
-#~ msgstr "Bandbreitenbeschränkungen"
-
-#~ msgid "Statistics graphs' settings"
-#~ msgstr "Einstellungen des Statistik-Graphen"
-
-#~ msgid "Graph height"
-#~ msgstr "Höhe des Graphen"
-
-#~ msgid "Graph width"
-#~ msgstr "Breite des Graphen"
-
-#~ msgid "pixels"
-#~ msgstr "Pixel"
-
-#~ msgid "In the graph, each pixel represents"
-#~ msgstr "Im Graph steht jedes Pixel für"
-
-#~ msgid "seconds"
-#~ msgstr "Sekunden"
-
-#~ msgid "Login"
-#~ msgstr "Anmelden"
-
-#~ msgid "Enter your password here"
-#~ msgstr "Passwort hier eingeben"
-
-#~ msgid "Login Now"
-#~ msgstr "Jetzt anmelden"
-
-#~ msgid "Server Preferences"
-#~ msgstr "Server-Einstellungen"
-
-#~ msgid "Connected "
-#~ msgstr "Verbunden "
-
-#~ msgid "Search Results"
-#~ msgstr "Suchergebnisse"
-
-#~ msgid "Refetch Results"
-#~ msgstr "Aktualisiere Ergebnisse"
-
-#~ msgid "File Hash"
-#~ msgstr "Dateihash"
-
-#~ msgid "Min Availability"
-#~ msgstr "Mindestverfügbarkeit"
-
-#~ msgid "Method"
-#~ msgstr "Methode"
-
-#~ msgid "Global (Server)"
-#~ msgstr "Global (Server)"
-
-#~ msgid "<img src=%s height=20 width=%d>"
-#~ msgstr "<img src=%s height=20 width=%d>"
-
-#~ msgid "index.html"
-#~ msgstr "index.html"
-
-#~ msgid "login.html"
-#~ msgstr "login.html"
-
-#~ msgid "pass"
-#~ msgstr "Password"
-
-#~ msgid ".html"
-#~ msgstr ".html"
-
-#~ msgid ".php"
-#~ msgstr ".php"
-
-#~ msgid "Error: %s (%s) is corrupt."
-#~ msgstr "Fehler: %s (%s) ist defekt."
-
-#~ msgid "Error: %s is corrupt, unable to load file."
-#~ msgstr "Fehler: %s ist defekt, kann Datei nicht laden."
-
-#~ msgid "Error saving partfile's seeds file (%s - %s)"
-#~ msgstr "Fehler beim Speichern der Seeds für partfile (%s - %s)"
-
-#~ msgid "Error reading partfile's seeds file (%s - %s)"
-#~ msgstr "Fehler beim Lesen der Seeds für partfile (%s - %s)"
-
-#~ msgid "Expected part-hash: %s"
-#~ msgstr "Erwarteter Teil-Hash: %s"
-
-#~ msgid "Actual part-hash: %s"
-#~ msgstr "Tatsächlicher Teil-Hash: %s"
-
-#~ msgid "Syntax error!\n"
-#~ msgstr "Syntax Fehler!\n"
-
-#~ msgid "Now, doing connection....\n"
-#~ msgstr "Verbindung wird hergestellt....\n"
-
-#~ msgid "Using host '%s' port: %d\n"
-#~ msgstr "Benutze Host '%s' Port: %d\n"
-
-#~ msgid "Trying to connect (timeout = 10 sec)...\n"
-#~ msgstr "Versuche zu verbinden (Timeout = 10sek)...\n"
-
-#~ msgid "ExternalConn: Access denied because: %s\n"
-#~ msgstr "ExternalConn: Zugang verweigert weil: %s\n"
-
-#~ msgid "ExternalConn: Access denied.\n"
-#~ msgstr "ExternalConn: Zugang verweigert.\n"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed.\n"
-#~ msgstr "ExternalConn: Ungültige Antwort vom Server. Verbindung beendet.\n"
-
-#~ msgid "Succeeded! Connection established to aMule %s\n"
-#~ msgstr "Verbindung hergestellt zu aMule %s\n"
-
-#~ msgid "Succeeded! Connection established.\n"
-#~ msgstr "Verbindung aufgebaut.\n"
-
-#~ msgid "A socket error occured during authentication. Exiting.\n"
-#~ msgstr "Während der Authentifizierung trat ein Socket-Fehler auf. Beende.\n"
-
-#~ msgid " (Fake eMule version %x)"
-#~ msgstr " (Fake eMule Version %x)"
-
-#~ msgid " (based on eMule v0.%u)"
-#~ msgstr " (based on eMule v0.%u)"
-
-#~ msgid "K"
-#~ msgstr "K"
-
-#~ msgid "Extracted ipfilter list from zip-archive '%s'."
-#~ msgstr "Ipfilter-Liste aus Zip-Archiv '%s' extrahiert."
-
-#~ msgid ""
-#~ "Failed to extract ipfilter list from zip-archive '%s'. File may be "
-#~ "damaged or contain misnamed files."
-#~ msgstr ""
-#~ "Konnte Ipfilter-Liste nicht aus Zip-Archiv '%s' extrahieren. Die Datei "
-#~ "könnte beschädigt sein oder falsch benannte Dateien enthalten-"
-
-#~ msgid "Extracted ipfilter list from gz-archive '%s'."
-#~ msgstr "Ipfilter-Liste aus Gip-Archiv '%s' extrahiert."
-
-#~ msgid "IPFilter stored in unknown format, file skipped: '%s'."
-#~ msgstr "IPFilter in unbekanntem Format gespeichert, überspringe Datei '%s'."
-
-#~ msgid "EC Connection Failed. Unable to connect to the specified host"
-#~ msgstr ""
-#~ "EC-Verbindung fehlgeschlagen. Konnte nicht zum angegebenen Host verbinden"
-
-#~ msgid "ExternalConn: Access denied because: %s"
-#~ msgstr "ExternalConn: Zugang verweigert weil: %s"
-
-#~ msgid "Succeeded! Connection established to aMule %s"
-#~ msgstr "Erfolgreich verbunden zu aMule %s"
-
-#~ msgid "Quit amulecmd"
-#~ msgstr "Quit amulecmd"
-
-#~ msgid ""
-#~ "\n"
-#~ "Ok, exiting Text Client...\n"
-#~ msgstr ""
-#~ "\n"
-#~ "OK, beende Text Client...\n"
-
-#~ msgid ""
-#~ "amulecmd DLG version\n"
-#~ "Using %s\n"
-#~ "(c) aMule Dev Team"
-#~ msgstr ""
-#~ "amulecmd DLG version\n"
-#~ "Using %s\n"
-#~ "(c) aMule Dev Team"
-
-#~ msgid "About amulecmd"
-#~ msgstr "Über amulecmd"
-
-#~ msgid "This command requieres an argument. Valid arguments: 'on', 'off'\n"
-#~ msgstr ""
-#~ "Dieser Befehl benötigt ein Argument. Gültige Argumente sind: 'on', 'off'\n"
-
-#~ msgid ""
-#~ "This command requieres an argument. Valid arguments: 'all', a number.\n"
-#~ msgstr ""
-#~ "Dieser Befehl benötigt ein Argument. Gültige Argumente: 'all', eine "
-#~ "Nummer.\n"
-
-#~ msgid "Hint: Use Show DL or Show UL\n"
-#~ msgstr "Hinweis: Benutze Show DL oder Show UL\n"
-
-#~ msgid "IPLevel parameter must be in the range of 0-255.\n"
-#~ msgstr "IPLevel-Parameter muß im Bereich 0 bis 255 liegen.\n"
-
-#~ msgid "This option requires an argument."
-#~ msgstr "Diese Option benötigt ein Argument."
-
-#~ msgid ""
-#~ "\n"
-#~ "Download:\t %s/sec"
-#~ msgstr ""
-#~ "\n"
-#~ "Download:\t %s/Sek"
-
-#~ msgid ""
-#~ "\n"
-#~ "Upload:\t%s/sec"
-#~ msgstr ""
-#~ "\n"
-#~ "Upload:\t%s/Sek"
-
-#~ msgid "%s/sec"
-#~ msgstr "%s/sek"
-
-#~ msgid ""
-#~ "\n"
-#~ "--------------------> Available commands (case insensitive): "
-#~ "<------------------\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "--------------------> Verfügbare Befehle (nicht case sensitive): "
-#~ "<------------------\n"
-#~ "\n"
-
-#~ msgid "server IP"
-#~ msgstr "Server IP"
-
-#~ msgid "Connect to given/random server. No warn if failed!\n"
-#~ msgstr ""
-#~ "Verbinde zu gewähltem / zufälligem Server. Keine Warnung bei Scheitern!\n"
-
-#~ msgid "Disconnect from server.\n"
-#~ msgstr "Trenne vom Server.\n"
-
-#~ msgid "Show server list.\n"
-#~ msgstr "Zeige Serverliste.\n"
-
-#~ msgid "Shows status and statistics.\n"
-#~ msgstr "Zeige Status und Statistiken.\n"
-
-#~ msgid "Shows Download/Upload queue.\n"
-#~ msgstr "Zeige Download-/Upload-Warteschlange.\n"
-
-#~ msgid "Resume file number n (or 'all').\n"
-#~ msgstr "Setze Datei Nummer n (oder 'all' für alle) fort.\n"
-
-#~ msgid "Pauses file number n (or 'all').\n"
-#~ msgstr "Pausiert Datei Nummer n (oder 'all' für alle).\n"
-
-#~ msgid "Turn on/off amule IPFilter.\n"
-#~ msgstr "Schalte amule IP-Filter an/aus (on/off).\n"
-
-#~ msgid "Reload IPFilter table from file.\n"
-#~ msgstr "IPFilter-Tabelle aus Datei neu laden.\n"
-
-#~ msgid "level"
-#~ msgstr "Level"
-
-#~ msgid "Shows/Sets current IP Filter level.\n"
-#~ msgstr "Zeigt / Setzt momentanen IP-Filter-Level.\n"
-
-#~ msgid "ED2k_Link"
-#~ msgstr "ED2k_Link"
-
-#~ msgid "Adds <ED2k_Link> (file or server) to aMule.\n"
-#~ msgstr "Fügt <ED2k_Link> (Datei oder Server) zu aMule hinzu.\n"
-
-#~ msgid "limit"
-#~ msgstr "Limit"
-
-#~ msgid "Sets maximum upload bandwidth.\n"
-#~ msgstr "Setzt maximale Upload-Bandbreite.\n"
-
-#~ msgid "Sets maximum download bandwidth.\n"
-#~ msgstr "Setzt maximale Download-Bandbreite.\n"
-
-#~ msgid "Displays bandwidth limits.\n"
-#~ msgstr "Zeigt Bandbreiten-Limits.\n"
-
-#~ msgid "Displays full statistics tree.\n"
-#~ msgstr "Zeigt vollen Statistik-Baum.\n"
-
-#~ msgid "Reload shared files list.\n"
-#~ msgstr "Freigegebene Dateien neu laden.\n"
-
-#~ msgid "Exits aMulecmd.\n"
-#~ msgstr "Beendet aMulecmd.\n"
-
-#~ msgid "Shutdown aMule\n"
-#~ msgstr "aMule herunterfahren\n"
-
-#~ msgid "aMule text client"
-#~ msgstr "aMule Text-Client"
-
-#~ msgid "Disconnect from current server"
-#~ msgstr "Verbindung zum Server trennen"
-
-#~ msgid " / ("
-#~ msgstr " / ("
-
-#~ msgid ")"
-#~ msgstr ")"
-
-#~ msgid "("
-#~ msgstr "("
-
-#~ msgid "Fake Check"
-#~ msgstr "Fake Check"
-
-#~ msgid "mplayer -idx"
-#~ msgstr "mplayer -idx"
-
-#~ msgid "Use TCP ports instead of unix local sockets"
-#~ msgstr "TCP-Ports anstelle von localen Unix-Sockets verwenden"
-
-#~ msgid "External TCP port"
-#~ msgstr "Externer TCP-Port"
-
-#~ msgid "http://www.srv1000.com/azz/server.met"
-#~ msgstr "http://www.srv1000.com/azz/server.met"
-
-#~ msgid "."
-#~ msgstr "."
-
-#~ msgid "Bootstrap known clients"
-#~ msgstr "Bootstrap bekannte Clients"
-
-#~ msgid "Current Searches"
-#~ msgstr "Aktuelle Suchen"
-
-#~ msgid "localhost"
-#~ msgstr "localhost"
-
-#~ msgid "4712"
-#~ msgstr "4712"
-
-#~ msgid "amule"
-#~ msgstr "amule"
-
-#~ msgid "Servers List Window"
-#~ msgstr "Serverlisten-Fenster"
-
-#~ msgid "Kademlia bootstrap"
-#~ msgstr "Kademlia bootstrap"
-
-#~ msgid "Download Speed: %.1f\n"
-#~ msgstr "Download-Geschwindigkeit: %.1f\n"
-
-#~ msgid "Upload Speed: %.1f\n"
-#~ msgstr "Upload-Geschwindigkeit%.1f\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "Speed Limits:\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Speed Limits:\n"
-
-#~ msgid "ClientID:"
-#~ msgstr "ClientID:"
-
-#~ msgid "ServerName:"
-#~ msgstr "ServerName:"
-
-#~ msgid "ServerIP:"
-#~ msgstr "ServerIP:"
-
-#~ msgid "Chat-Session Started: %s - %s %s"
-#~ msgstr "Chat-Sitzung begonnen: %s - %s %s"
-
-#~ msgid "jugle.net Fake Check"
-#~ msgstr "jugle.net Fake Check"
-
-#~ msgid "'Donkey Fakes' Fake Check"
-#~ msgstr "'Donkey Fakes' Fake Check"
-
-#~ msgid "FakeCheck"
-#~ msgstr "FakeCheck"
-
-#~ msgid "Error reading known.met file! (corrupted?)"
-#~ msgstr "Fehler beim Lesen der Datei known.met! (fehlerhaft?)"
-
-#~ msgid "Found Sources: %i"
-#~ msgstr "Gefundene Quellen: %i"
-
-#~ msgid "Active Downloads (chunks): %i"
-#~ msgstr "Aktive Downloads (Blöcke): %i"
-
-#~ msgid "Active Uploads: %i"
-#~ msgstr "Aktive Uploads: %i"
-
-#~ msgid "Waiting Uploads: %i"
-#~ msgstr "Wartende Uploads: %i"
-
-#~ msgid "Total successful upload sessions: %i"
-#~ msgstr "Gesamte erfolgreiche Uploadsitzungen: %i"
-
-#~ msgid "Total failed upload sessions: %i"
-#~ msgstr "Gesamte fehlgeschlagene Uploadsitzungen: %i"
-
-#~ msgid "Average Downloadrate (Session): %.2f kB/s"
-#~ msgstr "Durchschnittliche Downloadrate (Sitzung): %.2f kB/s"
-
-#~ msgid "Average Uploadrate (Session): %.2f kB/s"
-#~ msgstr "Durchschnittliche Uploadrate (Sitzung): %.2f kB/s"
-
-#~ msgid "Max Downloadrate Average (Session): %.2f kB/s"
-#~ msgstr "Höchste durchschnittliche Downloadrate (Sitzung): %.2f kB/s"
-
-#~ msgid "Max Downloadrate (Session): %.2f kB/s"
-#~ msgstr "Höchste Downloadrate (Sitzung): %.2f kB/s"
-
-#~ msgid "waiting for transfer..."
-#~ msgstr "Warte auf Übertragung..."
-
-#~ msgid "Waiting for connection..."
-#~ msgstr "Warte auf Verbindung..."
-
-#~ msgid "Max Connection Limit Reached: %i : %s"
-#~ msgstr "Max. Verbindungen-Limit erreicht: %i : %s"
-
-#~ msgid "Max Connection Limit Reached: Never"
-#~ msgstr "Max. Verbindungen-Limit erreicht: Nie"
-
-#~ msgid "Average Connections (estimate): %f"
-#~ msgstr "Durchschnittliche Verbindungen (geschätzt): %f"
-
-#~ msgid "Session UL:DL Ratio (Total): Not available"
-#~ msgstr "Sitzung UL:DL-Rate /Gesamt): Nicht verfügbar"
-
-#~ msgid "Number of Shared Files: %i"
-#~ msgstr "Anzahl freigegebener Dateien: %i"
-
-#~ msgid "Old MLDonkey: %i (%1.1f%%)"
-#~ msgstr "Alter MLDonkey: %i (%1.1f%%)"
-
-#~ msgid "New MLDonkey: %i (%1.1f%%)"
-#~ msgstr "Neuer MLDonkey: %i (%1.1f%%)"
-
-#~ msgid "Compatible: %i (%1.1f%%)"
-#~ msgstr "Kompatibel: %i (%1.1f%%)"
-
-#~ msgid "Unknown: %i"
-#~ msgstr "Unbekannt: %i"
-
-#~ msgid "Filtered: %i"
-#~ msgstr "Gefiltert: %i"
-
-#~ msgid "HasSocket: %i (%1.1f%%)"
-#~ msgstr "HatSocket: %i (%1.1f%%)"
-
-#~ msgid "Working Servers"
-#~ msgstr "Funktionierende Server"
-
-#~ msgid "Failed Servers"
-#~ msgstr "Nicht verwendbare Server"
-
-#~ msgid "Deleted Servers"
-#~ msgstr "Gelöschte Server"
-
-#~ msgid "Users on Working Servers"
-#~ msgstr "Benutzer auf funktionierenden Servern"
-
-#~ msgid "Files on Working Servers"
-#~ msgstr "Dateien auf funktionierenden Servern"
-
-#~ msgid "Total Users"
-#~ msgstr "Gesamtzahl Benutzer"
-
-#~ msgid "Total Files"
-#~ msgstr "Gesamtzahl Dateien"
-
-#~ msgid "ExternalConn: Unable to understand ed2k link '%s'."
-#~ msgstr "ExternalConn: Kann ed2k-Link '%s' nicht verstehen."
-
-#~ msgid "ExternalConn: invalid opcode received"
-#~ msgstr "ExternalConn: Ungültigen OpCode empfangen"
-
-#~ msgid "Failed to read corrupted friendlist file 'emfriends.met'!"
-#~ msgstr "Konnte beschädigte Freundes-Liste 'emfriends.dat' nicht lesen!"
-
-#~ msgid ""
-#~ "Copied old ~/.xMule config and credit files to ~/.aMule\n"
-#~ "However, be sure NOT to remove .xMule if your Incoming / Temp folders are "
-#~ "still there ;)"
-#~ msgstr ""
-#~ "Alte ~/.xMule Konfigurations- und Kredit-Dateien wurden nach ~/.aMule "
-#~ "kopiert\n"
-#~ "Aber sei sicher das .xMule Verzeichniss NICHT zu löschen wenn dein Temp "
-#~ "und Incoming Ordner noch dort drinnen sind! ;)"
-
-#~ msgid "Kad search is not available yet"
-#~ msgstr "Kad Suche ist noch nicht verfügbar"
-
-#~ msgid "New MlDonkey"
-#~ msgstr "Neuer MlDonkey"
-
-#~ msgid "eMule Compat"
-#~ msgstr "eMule Kompatibler"
-
-#~ msgid "Invalid versiontag in server.met (0x%x , size %i)!"
-#~ msgstr "Ungültiger Versionstag in server.met (0x%x , Größe %i)!"
-
-#~ msgid "Error: the file server.met is corrupted"
-#~ msgstr "Fehler: die Datei server.met ist beschädigt"
-
-#~ msgid "WARNING! Sharing the following directory is not recommended: %s"
-#~ msgstr ""
-#~ "WARNUNG! Das Freigeben folgenden Verzeichnisses wird nicht empfohlen: %s"
-
-#~ msgid "Unknown error while importing partfile."
-#~ msgstr "Unbekannter Fehler beim Importieren der Part-Datei."
-
-#~ msgid "Speed Limits: "
-#~ msgstr "Geschwindigkeits-Limit: "
-
-#~ msgid "UL: None, "
-#~ msgstr "UL: Keine, "
-
-#~ msgid "UL: %u, "
-#~ msgstr "UL: %u, "
-
-#~ msgid "Nickname: "
-#~ msgstr "Spitzname: "
-
-#~ msgid "IP: "
-#~ msgstr "IP: "
-
-#~ msgid "TCP Port: "
-#~ msgstr "TCP-Port: "
-
-#~ msgid "UDP Port: "
-#~ msgstr "UDP-Port: "
-
-#~ msgid "Uptime: "
-#~ msgstr "An seit: "
-
-#~ msgid "Shared Files: "
-#~ msgstr "Freigegebene Dateien: "
-
-#~ msgid "Queued Clients: "
-#~ msgstr "Nutzer in der Warteschlange: "
-
-#~ msgid "Total DL: "
-#~ msgstr "Gesamt DL: "
-
-#~ msgid "Total UL: "
-#~ msgstr "Gesamt UL:"
-
-#~ msgid "Change this file's comment..."
-#~ msgstr "Kommentar zu dieser Datei ändern..."

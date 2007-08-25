@@ -7405,7 +7405,7 @@ msgstr ""
 #~ msgstr "Impossibile cancellare '%s'"
 
 #~ msgid "\tRemoved .part"
-#~ msgstr "\rRimosso .part"
+#~ msgstr "\tRimosso .part"
 
 #~ msgid "\tRemoved .BAK"
 #~ msgstr "\tRimosso .BAK"
