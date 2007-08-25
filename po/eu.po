@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 03:31+0200\n"
+"POT-Creation-Date: 2007-08-25 03:31+0200\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -147,12 +147,12 @@ msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1466
-#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1467
+#: src/DownloadListCtrl.cpp:1480 src/DownloadListCtrl.cpp:1490
 #: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
-#: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
-#: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
+#: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
+#: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
 #: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
@@ -212,8 +212,8 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "%s bezeroa %s:%d IP:Atakan %s %s %s erabiliaz"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:49
-#: src/ClientListCtrl.cpp:513 src/ClientListCtrl.cpp:816
-#: src/ClientListCtrl.cpp:985
+#: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
+#: src/ClientListCtrl.cpp:988
 msgid "Username"
 msgstr "Erabiltzaile izena"
 
@@ -222,7 +222,7 @@ msgid "Friends"
 msgstr "Lagunak"
 
 #: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
-#: src/ClientListCtrl.cpp:250
+#: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "Erakutsi &Xehetasunak"
 
@@ -239,7 +239,7 @@ msgid "Send &Message"
 msgstr "Bidali &Mezua"
 
 #: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
-#: src/ClientListCtrl.cpp:252
+#: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Ikusi Fitxategiak"
 
@@ -314,8 +314,8 @@ msgstr "Transferitutako Datuak"
 msgid "Share Ratio"
 msgstr "Partekatze Erlazioa"
 
-#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:521
-#: src/ClientListCtrl.cpp:826
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:524
+#: src/ClientListCtrl.cpp:829
 msgid "Obtained Parts"
 msgstr "Eskuratutako zatiak"
 
@@ -433,11 +433,11 @@ msgstr "Partekatutako fitxategiak (%i)"
 msgid "[PartFile]"
 msgstr "[ZatiFitxategia]"
 
-#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1111
+#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1112
 msgid "Enter new name for this file:"
 msgstr "Sar izen berri bat fitxategi honentzat:"
 
-#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1113
 msgid "File rename"
 msgstr "Fitxategia berrizendatu"
 
@@ -955,12 +955,12 @@ msgstr "Deskargak: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Igoerak: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
-#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:160
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1349
+#: src/DownloadListCtrl.cpp:1658 src/OtherFunctions.cpp:160
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
-#: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
-#: src/ClientListCtrl.cpp:711
+#: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
+#: src/ClientListCtrl.cpp:714
 msgid "kB/s"
 msgstr "kB/s"
 
@@ -1021,7 +1021,7 @@ msgid "HighID"
 msgstr "IDAltua"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
-#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:866
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:869
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "IDBaxua"
@@ -1269,7 +1269,7 @@ msgid "Auto [Hi]"
 msgstr "Auto[Alt]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:509 src/amuleDlg.cpp:735
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:803
+#: src/ClientListCtrl.cpp:664 src/amule.cpp:803
 msgid "Connecting"
 msgstr "Konektatzen"
 
@@ -1277,20 +1277,20 @@ msgstr "Konektatzen"
 msgid "Asking"
 msgstr "Eskatzen"
 
-#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:665
+#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:668
 msgid "Connecting via server"
 msgstr "Konektatu zerbitzaria bidez"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1742
-#: src/ClientListCtrl.cpp:699
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1743
+#: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Ilara Osoa"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:678
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:681
 msgid "On Queue"
 msgstr "Ilaran"
 
-#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:673
 msgid "Transferring"
 msgstr "Bidaltzen"
 
@@ -1319,7 +1319,7 @@ msgid "Too many Kad connections"
 msgstr "Kad konexio gehiegi"
 
 #: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
-#: src/ClientListCtrl.cpp:825
+#: src/ClientListCtrl.cpp:828
 msgid "Banned"
 msgstr "Ukatuak"
 
@@ -1574,13 +1574,13 @@ msgstr "(Izen Ezezaguna)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Ziur al zaude %s zerbitzari tinkoa ezabatu nahi duzula?"
 
-#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:895
-#: src/ClientListCtrl.cpp:1038
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:898
+#: src/ClientListCtrl.cpp:1042
 msgid "Yes"
 msgstr "Bai"
 
-#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:897
-#: src/ClientListCtrl.cpp:1040
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:900
+#: src/ClientListCtrl.cpp:1044
 msgid "No"
 msgstr "Ez"
 
@@ -2351,7 +2351,7 @@ msgid "ED2K Status:"
 msgstr "ED2k Egoera:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:681
-#: src/ClientListCtrl.cpp:991
+#: src/ClientListCtrl.cpp:994
 msgid "Connected"
 msgstr "Konektaturik"
 
@@ -2567,7 +2567,7 @@ msgstr "Batez besteko Konexioak (ebaluazioa): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Puntako konexioak (estimazioa): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:251
 msgid "Clients"
 msgstr "Bezeroak"
 
@@ -2860,8 +2860,8 @@ msgstr "Emandako erabiltzaile egiaztapena ez da baliozkoa!"
 msgid "Sources"
 msgstr "Jatorriak"
 
-#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:514
-#: src/ClientListCtrl.cpp:817
+#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:517
+#: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "Fitxategia"
 
@@ -2914,7 +2914,7 @@ msgstr "Guztiak"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Guztira Erab: %s | Guztira Fitxategiak: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:517
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Transferituta"
 
@@ -2923,7 +2923,7 @@ msgstr "Transferituta"
 msgid "Completed"
 msgstr "Amaitua"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:516
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Abiadura"
 
@@ -2931,7 +2931,7 @@ msgstr "Abiadura"
 msgid "Progress"
 msgstr "Egoera"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Egoera"
 
@@ -2951,11 +2951,11 @@ msgstr "Azkenez jasoa"
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Ziur zaude aukeratutako fitxategia(k) ezabatu nahi d(it)uzula?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Bidali mezua erabiltzaileari"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Bidali behar de mezua:"
 
@@ -3035,15 +3035,15 @@ msgstr "Ezarri kategoria bat"
 msgid "&Open the file"
 msgstr "&Ireki fitxategia"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "Lagunetatik kendu"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Gehitu lagun zerrendara"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Mezua bidali"
 
@@ -3051,29 +3051,29 @@ msgstr "Mezua bidali"
 msgid "Swap to this file"
 msgstr "Swap fitxategi honentzat"
 
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
+#: src/DownloadListCtrl.cpp:1478 src/DownloadListCtrl.cpp:1488
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1711
+#: src/DownloadListCtrl.cpp:1712
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1761
+#: src/DownloadListCtrl.cpp:1762
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1775
+#: src/DownloadListCtrl.cpp:1776
 msgid "Asked for another file"
 msgstr "Beste fitxategi batez galdeturik"
 
-#: src/DownloadListCtrl.cpp:2105
+#: src/DownloadListCtrl.cpp:2106
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Deskargak (%i)"
 
-#: src/DownloadListCtrl.cpp:2288
+#: src/DownloadListCtrl.cpp:2289
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3083,15 +3083,15 @@ msgstr ""
 "Bestela, aMule mplayer erabiltzen saiatu eta aurreikuspen bakoitzean mezu "
 "hau bistaraziko da"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 msgid "File preview"
 msgstr "Fitxategi Aurreikuspena"
 
-#: src/DownloadListCtrl.cpp:2310
+#: src/DownloadListCtrl.cpp:2311
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "ERROREA: Huts  kanpo bideo erreproduktorea abiaraztean!"
 
-#: src/DownloadListCtrl.cpp:2311
+#: src/DownloadListCtrl.cpp:2312
 #, c-format
 msgid "Command: %s"
 msgstr "Komandoa: %s"
@@ -3358,7 +3358,7 @@ msgstr "ERROREA! %s partekatzen saiatzen"
 msgid "File Comments"
 msgstr "Fitxategi Iruzkinak"
 
-#: src/CommentDialogLst.cpp:51 src/ClientListCtrl.cpp:820
+#: src/CommentDialogLst.cpp:51 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "Kalifikazioa"
 
@@ -4712,7 +4712,7 @@ msgstr "Izen osoa:"
 #: src/muuli_wdr.cpp:1501 src/muuli_wdr.cpp:1510 src/muuli_wdr.cpp:1517
 #: src/muuli_wdr.cpp:1526 src/muuli_wdr.cpp:1533 src/muuli_wdr.cpp:1542
 #: src/muuli_wdr.cpp:1560 src/muuli_wdr.cpp:1569 src/muuli_wdr.cpp:1576
-#: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:631
+#: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:634
 msgid "N/A"
 msgstr "E/G"
 
@@ -6518,94 +6518,98 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "ERROREA: %s"
 
-#: src/ClientListCtrl.cpp:254
+#: src/ClientListCtrl.cpp:256
 msgid "Unban"
 msgstr "Barkatu"
 
-#: src/ClientListCtrl.cpp:259
+#: src/ClientListCtrl.cpp:261
 msgid "Show Uploads"
 msgstr "Erakutsi Igoerak"
 
-#: src/ClientListCtrl.cpp:260
+#: src/ClientListCtrl.cpp:262
 msgid "Show Queue"
 msgstr "Erakutsi Ilara"
 
-#: src/ClientListCtrl.cpp:261
+#: src/ClientListCtrl.cpp:263
 msgid "Show Clients"
 msgstr "Erakutsi Bezeroak"
 
-#: src/ClientListCtrl.cpp:265
+#: src/ClientListCtrl.cpp:267
 msgid "Select View"
 msgstr "Hautatu Ikuspegia"
 
-#: src/ClientListCtrl.cpp:515 src/ClientListCtrl.cpp:818
-#: src/ClientListCtrl.cpp:990
+#: src/ClientListCtrl.cpp:518 src/ClientListCtrl.cpp:821
+#: src/ClientListCtrl.cpp:993
 msgid "Client Software"
 msgstr "Bezero Softwarea"
 
-#: src/ClientListCtrl.cpp:518
+#: src/ClientListCtrl.cpp:521
 msgid "Waited"
 msgstr "Itxoindakoa"
 
-#: src/ClientListCtrl.cpp:519
+#: src/ClientListCtrl.cpp:522
 msgid "Upload Time"
 msgstr "Ordu Denbora"
 
-#: src/ClientListCtrl.cpp:522
+#: src/ClientListCtrl.cpp:525
 msgid "Upload/Download"
 msgstr "Igo/Deskargatu"
 
-#: src/ClientListCtrl.cpp:523
+#: src/ClientListCtrl.cpp:526
 msgid "Remote Status"
 msgstr "Urruneko Egoera"
 
-#: src/ClientListCtrl.cpp:702
+#: src/ClientListCtrl.cpp:705
 #, c-format
 msgid "QR: %u"
 msgstr "QR: %u"
 
-#: src/ClientListCtrl.cpp:819
+#: src/ClientListCtrl.cpp:822
 msgid "File Priority"
 msgstr "Fitxategia Lehentasuna"
 
-#: src/ClientListCtrl.cpp:821
+#: src/ClientListCtrl.cpp:824
 msgid "Score"
 msgstr "Puntuak"
 
-#: src/ClientListCtrl.cpp:822
+#: src/ClientListCtrl.cpp:825
 msgid "Asked"
 msgstr "Galdeturik"
 
-#: src/ClientListCtrl.cpp:823
+#: src/ClientListCtrl.cpp:826
 msgid "Last Seen"
 msgstr "Azkenez ikusia"
 
-#: src/ClientListCtrl.cpp:824
+#: src/ClientListCtrl.cpp:827
 msgid "Entered Queue"
 msgstr "Ilaran jarri da"
 
-#: src/ClientListCtrl.cpp:986
+#: src/ClientListCtrl.cpp:989
 msgid "Upload Status"
 msgstr "Igoera Egoera"
 
-#: src/ClientListCtrl.cpp:987
+#: src/ClientListCtrl.cpp:990
 msgid "Transferred Up"
 msgstr "Igotarikoa"
 
-#: src/ClientListCtrl.cpp:988
+#: src/ClientListCtrl.cpp:991
 msgid "Download Status"
 msgstr "Deskarga Egoera"
 
-#: src/ClientListCtrl.cpp:989
+#: src/ClientListCtrl.cpp:992
 msgid "Transferred Down"
 msgstr "Deskargaturikoa"
 
-#: src/ClientListCtrl.cpp:992
+#: src/ClientListCtrl.cpp:995
 msgid "Userhash"
 msgstr "ErabiltzaileEgiaztapena"
 
-#: src/ClientListCtrl.cpp:993
+#: src/ClientListCtrl.cpp:996
 msgid "Encrypted"
+msgstr ""
+
+#: src/ClientListCtrl.cpp:997
+msgid "Hide shared files"
 msgstr ""
 
 #: src/ClientDetailDialog.cpp:49

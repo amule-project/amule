@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 03:31+0200\n"
+"POT-Creation-Date: 2007-08-25 03:31+0200\n"
 "PO-Revision-Date: 2007-08-20 13:54+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <icq@cvs.gnome.org>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -146,12 +146,12 @@ msgstr "Error al obtener la lista de compartidos del usuario '%s'"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1466
-#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1467
+#: src/DownloadListCtrl.cpp:1480 src/DownloadListCtrl.cpp:1490
 #: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
-#: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
-#: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
+#: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
+#: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
 #: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
@@ -211,8 +211,8 @@ msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Cliente %s en IP:Puerto %s:%d usando %s %s %s"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:49
-#: src/ClientListCtrl.cpp:513 src/ClientListCtrl.cpp:816
-#: src/ClientListCtrl.cpp:985
+#: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
+#: src/ClientListCtrl.cpp:988
 msgid "Username"
 msgstr "Nombre de usuario"
 
@@ -221,7 +221,7 @@ msgid "Friends"
 msgstr "Amigos"
 
 #: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
-#: src/ClientListCtrl.cpp:250
+#: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "Mostrar &Detalles"
 
@@ -238,7 +238,7 @@ msgid "Send &Message"
 msgstr "Enviar &Mensaje"
 
 #: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
-#: src/ClientListCtrl.cpp:252
+#: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Ver archivos"
 
@@ -313,8 +313,8 @@ msgstr "Datos transferidos"
 msgid "Share Ratio"
 msgstr "Media Compartido"
 
-#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:521
-#: src/ClientListCtrl.cpp:826
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:524
+#: src/ClientListCtrl.cpp:829
 msgid "Obtained Parts"
 msgstr "Partes obtenidas"
 
@@ -433,11 +433,11 @@ msgstr "Archivos Compartidos (%i)"
 msgid "[PartFile]"
 msgstr "[Archivo part]"
 
-#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1111
+#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1112
 msgid "Enter new name for this file:"
 msgstr "Introduce el nuevo nombre para este archivo:"
 
-#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1113
 msgid "File rename"
 msgstr "Renombrar archivo"
 
@@ -950,12 +950,12 @@ msgstr "Descargado: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Subida: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
-#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:160
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1349
+#: src/DownloadListCtrl.cpp:1658 src/OtherFunctions.cpp:160
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
-#: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
-#: src/ClientListCtrl.cpp:711
+#: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
+#: src/ClientListCtrl.cpp:714
 msgid "kB/s"
 msgstr "kB/s"
 
@@ -1016,7 +1016,7 @@ msgid "HighID"
 msgstr "ID Alta"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
-#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:866
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:869
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
 msgstr "ID Baja"
@@ -1263,7 +1263,7 @@ msgid "Auto [Hi]"
 msgstr "Auto [Al]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:509 src/amuleDlg.cpp:735
-#: src/ClientListCtrl.cpp:661 src/amule.cpp:803
+#: src/ClientListCtrl.cpp:664 src/amule.cpp:803
 msgid "Connecting"
 msgstr "Conectando"
 
@@ -1271,20 +1271,20 @@ msgstr "Conectando"
 msgid "Asking"
 msgstr "Preguntando"
 
-#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:665
+#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:668
 msgid "Connecting via server"
 msgstr "Conectando vía servidor"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1742
-#: src/ClientListCtrl.cpp:699
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1743
+#: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Cola Llena"
 
-#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:678
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:681
 msgid "On Queue"
 msgstr "En Cola"
 
-#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:670
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:673
 msgid "Transferring"
 msgstr "Transfiriendo"
 
@@ -1313,7 +1313,7 @@ msgid "Too many Kad connections"
 msgstr "Demasiadas conexiones Kad"
 
 #: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
-#: src/ClientListCtrl.cpp:825
+#: src/ClientListCtrl.cpp:828
 msgid "Banned"
 msgstr "Baneado"
 
@@ -1570,13 +1570,13 @@ msgstr "(Nombre desconocido)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Estás seguro que quieres eliminar el servidor fijo %s"
 
-#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:895
-#: src/ClientListCtrl.cpp:1038
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:898
+#: src/ClientListCtrl.cpp:1042
 msgid "Yes"
 msgstr "Sí"
 
-#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:897
-#: src/ClientListCtrl.cpp:1040
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:900
+#: src/ClientListCtrl.cpp:1044
 msgid "No"
 msgstr "No"
 
@@ -2361,7 +2361,7 @@ msgid "ED2K Status:"
 msgstr "Estado ED2K:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:681
-#: src/ClientListCtrl.cpp:991
+#: src/ClientListCtrl.cpp:994
 msgid "Connected"
 msgstr "Conectado"
 
@@ -2577,7 +2577,7 @@ msgstr "Media de conexiones (estimado): %g"
 msgid "Peak Connections (estimate): %i"
 msgstr "Pico de conexiones (estimado): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:251
 msgid "Clients"
 msgstr "Clientes"
 
@@ -2857,8 +2857,8 @@ msgstr "¡El hash de usuario especificado no es válido!"
 msgid "Sources"
 msgstr "Fuentes"
 
-#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:514
-#: src/ClientListCtrl.cpp:817
+#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:517
+#: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "Archivo"
 
@@ -2911,7 +2911,7 @@ msgstr "Todos"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Total Usuarios: %s | Total Archivos: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:517
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Transferido"
 
@@ -2920,7 +2920,7 @@ msgstr "Transferido"
 msgid "Completed"
 msgstr "Completado"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:516
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Velocidad"
 
@@ -2928,7 +2928,7 @@ msgstr "Velocidad"
 msgid "Progress"
 msgstr "Progreso"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Estado"
 
@@ -2948,11 +2948,11 @@ msgstr "Última recepción"
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "¿Estás seguro que deseas borrar este(os) archivo(s)?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Enviar mensaje al usuario"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:359
+#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Mensaje a enviar:"
 
@@ -3032,15 +3032,15 @@ msgstr "Asignar a categoría"
 msgid "&Open the file"
 msgstr "&Abrir el archivo"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "Borrar desde amigos"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Añadir a Amigos"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Enviar mensaje"
 
@@ -3048,29 +3048,29 @@ msgstr "Enviar mensaje"
 msgid "Swap to this file"
 msgstr "Intercambia a este archivo"
 
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
+#: src/DownloadListCtrl.cpp:1478 src/DownloadListCtrl.cpp:1488
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1711
+#: src/DownloadListCtrl.cpp:1712
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1761
+#: src/DownloadListCtrl.cpp:1762
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "LC: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1775
+#: src/DownloadListCtrl.cpp:1776
 msgid "Asked for another file"
 msgstr "Se ha pedido otro archivo"
 
-#: src/DownloadListCtrl.cpp:2105
+#: src/DownloadListCtrl.cpp:2106
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Descargas (%i)"
 
-#: src/DownloadListCtrl.cpp:2288
+#: src/DownloadListCtrl.cpp:2289
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3080,15 +3080,15 @@ msgstr ""
 "Mientras tanto, aMule intentará usar mplayer y seguirás viendo esta alerta "
 "en todas las previsualizaciones"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 msgid "File preview"
 msgstr "Previsualizar"
 
-#: src/DownloadListCtrl.cpp:2310
+#: src/DownloadListCtrl.cpp:2311
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "ERROR: Fallo al ejecutar un reproductor de medios externo!"
 
-#: src/DownloadListCtrl.cpp:2311
+#: src/DownloadListCtrl.cpp:2312
 #, c-format
 msgid "Command: %s"
 msgstr "Comando: %s"
@@ -3350,7 +3350,7 @@ msgstr "¡ERROR! No se debe compartir %s"
 msgid "File Comments"
 msgstr "Comentarios del archivo"
 
-#: src/CommentDialogLst.cpp:51 src/ClientListCtrl.cpp:820
+#: src/CommentDialogLst.cpp:51 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "Valoración"
 
@@ -4707,7 +4707,7 @@ msgstr "Nombre Completo :"
 #: src/muuli_wdr.cpp:1501 src/muuli_wdr.cpp:1510 src/muuli_wdr.cpp:1517
 #: src/muuli_wdr.cpp:1526 src/muuli_wdr.cpp:1533 src/muuli_wdr.cpp:1542
 #: src/muuli_wdr.cpp:1560 src/muuli_wdr.cpp:1569 src/muuli_wdr.cpp:1576
-#: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:631
+#: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:634
 msgid "N/A"
 msgstr "N/D"
 
@@ -6540,95 +6540,99 @@ msgstr ""
 msgid "ERROR: %s"
 msgstr "ERROR: %s"
 
-#: src/ClientListCtrl.cpp:254
+#: src/ClientListCtrl.cpp:256
 msgid "Unban"
 msgstr "Readmitir"
 
-#: src/ClientListCtrl.cpp:259
+#: src/ClientListCtrl.cpp:261
 msgid "Show Uploads"
 msgstr "Mostrar subidas"
 
-#: src/ClientListCtrl.cpp:260
+#: src/ClientListCtrl.cpp:262
 msgid "Show Queue"
 msgstr "Mostrar cola"
 
-#: src/ClientListCtrl.cpp:261
+#: src/ClientListCtrl.cpp:263
 msgid "Show Clients"
 msgstr "Mostrar clientes"
 
-#: src/ClientListCtrl.cpp:265
+#: src/ClientListCtrl.cpp:267
 msgid "Select View"
 msgstr "Seleccionar vista"
 
-#: src/ClientListCtrl.cpp:515 src/ClientListCtrl.cpp:818
-#: src/ClientListCtrl.cpp:990
+#: src/ClientListCtrl.cpp:518 src/ClientListCtrl.cpp:821
+#: src/ClientListCtrl.cpp:993
 msgid "Client Software"
 msgstr "Software Cliente"
 
-#: src/ClientListCtrl.cpp:518
+#: src/ClientListCtrl.cpp:521
 msgid "Waited"
 msgstr "En espera"
 
-#: src/ClientListCtrl.cpp:519
+#: src/ClientListCtrl.cpp:522
 msgid "Upload Time"
 msgstr "Subiendo"
 
-#: src/ClientListCtrl.cpp:522
+#: src/ClientListCtrl.cpp:525
 msgid "Upload/Download"
 msgstr "Subida/Descarga"
 
-#: src/ClientListCtrl.cpp:523
+#: src/ClientListCtrl.cpp:526
 msgid "Remote Status"
 msgstr "Estado remoto"
 
-#: src/ClientListCtrl.cpp:702
+#: src/ClientListCtrl.cpp:705
 #, c-format
 msgid "QR: %u"
 msgstr "LC: %u"
 
-#: src/ClientListCtrl.cpp:819
+#: src/ClientListCtrl.cpp:822
 msgid "File Priority"
 msgstr "Prioridad del archivo"
 
-#: src/ClientListCtrl.cpp:821
+#: src/ClientListCtrl.cpp:824
 msgid "Score"
 msgstr "Resultado"
 
-#: src/ClientListCtrl.cpp:822
+#: src/ClientListCtrl.cpp:825
 msgid "Asked"
 msgstr "Preguntado"
 
-#: src/ClientListCtrl.cpp:823
+#: src/ClientListCtrl.cpp:826
 msgid "Last Seen"
 msgstr "Última comprobación"
 
-#: src/ClientListCtrl.cpp:824
+#: src/ClientListCtrl.cpp:827
 msgid "Entered Queue"
 msgstr "Entrado en cola"
 
-#: src/ClientListCtrl.cpp:986
+#: src/ClientListCtrl.cpp:989
 msgid "Upload Status"
 msgstr "Estado de la subida"
 
-#: src/ClientListCtrl.cpp:987
+#: src/ClientListCtrl.cpp:990
 msgid "Transferred Up"
 msgstr "Subido"
 
-#: src/ClientListCtrl.cpp:988
+#: src/ClientListCtrl.cpp:991
 msgid "Download Status"
 msgstr "Estado de la descarga"
 
-#: src/ClientListCtrl.cpp:989
+#: src/ClientListCtrl.cpp:992
 msgid "Transferred Down"
 msgstr "Descargado"
 
-#: src/ClientListCtrl.cpp:992
+#: src/ClientListCtrl.cpp:995
 msgid "Userhash"
 msgstr "Hash de usuario"
 
-#: src/ClientListCtrl.cpp:993
+#: src/ClientListCtrl.cpp:996
 msgid "Encrypted"
 msgstr "Cifrado"
+
+#: src/ClientListCtrl.cpp:997
+msgid "Hide shared files"
+msgstr ""
 
 #: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
