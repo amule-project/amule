@@ -6645,7 +6645,7 @@ msgstr "Cifrado"
 
 #: src/ClientListCtrl.cpp:997
 msgid "Hide shared files"
-msgstr ""
+msgstr "Oculta os archivos compartidos"
 
 #: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
