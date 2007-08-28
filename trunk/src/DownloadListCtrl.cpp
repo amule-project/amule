@@ -1312,10 +1312,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			wxASSERT(image >= Client_InvalidRating_Smiley);
 			wxASSERT(image <= Client_CommentOnly_Smiley);
 			
-			int imgWidth = 8;
-			if (file->UserRating() <= 1 || file->UserRating() == 5 ) {
-				imgWidth = 16;
-			}
+			int imgWidth = 16;
 			
 			// it's already centered by OnDrawItem() ...
 			m_ImageList.Draw(image, *dc, rect.GetX(), rect.GetY() - 1,

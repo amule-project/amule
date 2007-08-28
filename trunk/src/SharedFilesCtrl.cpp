@@ -520,11 +520,8 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 							
 						wxASSERT(image >= Client_InvalidRating_Smiley);
 						wxASSERT(image <= Client_CommentOnly_Smiley);
-						
-						int imgWidth = 8;
-						if (file->GetFileRating() <= 1 || file->GetFileRating() == 5 ) {
-							imgWidth = 16;
-						} 
+
+						int imgWidth = 16;
 						
 						theApp->amuledlg->m_imagelist.Draw(image, *dc, columnRect.x,
 								columnRect.y + 1, wxIMAGELIST_DRAW_TRANSPARENT);
