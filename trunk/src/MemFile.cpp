@@ -176,7 +176,7 @@ void CMemFile::ResetData() {
 	wxASSERT(m_delete);
 	wxASSERT(!m_readonly);
 	if (m_buffer) {
-		delete[] m_buffer;
+		free(m_buffer);
 		m_buffer		= NULL;
 	}
 	m_BufferSize	= 0;
