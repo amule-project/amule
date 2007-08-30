@@ -235,6 +235,14 @@ AS_HELP_STRING([], [(for more information see src/utils/scripts/denoiser.rules)]
 	],
 	[denoiselevel="$withval"], [denoiselevel=yes])
 
+dnl Default is yes, because they're most likely compatible.
+dnl However, this is only used when cross-compiling.
+AC_ARG_WITH(
+	[gnu-malloc],
+	[AS_HELP_STRING([--without-gnu-malloc],
+		[Don't assume that we use GNU libc compatible malloc/realloc when cross-compiling])],
+	[gnumalloc=$withval], [gnumalloc=yes])
+
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
 # to avoid losing to much time
@@ -491,10 +499,8 @@ if test x$SYS != xwin32; then
 AC_FUNC_LSTAT
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 fi
-AC_FUNC_MALLOC
 AC_FUNC_MEMCMP
 AC_FUNC_MMAP
-AC_FUNC_REALLOC
 AC_FUNC_SELECT_ARGTYPES
 AC_FUNC_SETVBUF_REVERSED
 AC_TYPE_SIGNAL
@@ -502,6 +508,24 @@ AC_FUNC_STAT
 AC_FUNC_STRFTIME
 AC_FUNC_STRTOD
 AC_FUNC_VPRINTF
+dnl Some other functions that worth checking deeper:
+dnl AC_FUNC_CLOSEDIR_VOID
+dnl AC_FUNC_MEMCMP
+dnl AC_FUNC_MMAP
+dnl AC_FUNC_STAT
+dnl AC_FUNC_STRTOD
+dnl AC_FUNC_SETVBUF_REVERSED
+dnl Anyways, do we actually USE them?
+if test $cross_compiling = yes -a $gnumalloc = yes ; then
+	AC_MSG_WARN([
+    configure cannot check whether malloc() and realloc() are GNU libc
+    compatible. You have to be ABSOLUTELY sure that they are, otherwise
+    run configure with the --without-gnu-malloc switch.])
+	ac_cv_func_malloc_0_nonnull=yes
+	ac_cv_func_realloc_0_nonnull=yes
+fi
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
 AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset munmap nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
 #-------------------------------------------------------------------------------
 # End of autoscan stuff
