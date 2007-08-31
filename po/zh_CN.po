@@ -6492,7 +6492,7 @@ msgstr "已加密"
 
 #: src/ClientListCtrl.cpp:997
 msgid "Hide shared files"
-msgstr ""
+msgstr "隐藏共享文件"
 
 #: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
