@@ -1,0 +1,7031 @@
+# Norwegian Nynorsk translations for aMule package.
+# Copyright (C) 2007 Free Software Foundation, Inc.
+# This file is distributed under the same license as the aMule package.
+# <PleaseInsertYour@email.here>, 2007.
+#  <PleaseInsertYour@email.here>, 2007.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: aMule CVS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-21 03:31+0200\n"
+"PO-Revision-Date: 2007-08-31 23:00+0200\n"
+"Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
+"Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);"
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
+msgid "You must specify a non-empty password."
+msgstr "Du må skrive inn eit passord som ikkje er tomt."
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:90
+msgid "Invalid password, not a MD5 hash!"
+msgstr "Feil passord! Ikkje MD5 hash!"
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:135
+msgid "Connection failure"
+msgstr "Oppkoplingsfeil"
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:193
+msgid "EC Connection Failed. Empty reply."
+msgstr "EC Kopling feila. Tomt svar."
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:199
+msgid "ExternalConn: Access denied because: "
+msgstr "Ekstern kopling: Tilgong nekta fordi: "
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:202
+msgid "ExternalConn: Access denied"
+msgstr "Ekstern kopling: Tilgong nekta"
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:206
+msgid "ExternalConn: Bad reply from server. Connection closed."
+msgstr "Ekstern kopling: Dårleg svar frå tenar. Koplinga er stengd."
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:210
+msgid "Succeeded! Connection established to aMule "
+msgstr "Vellukka! Kopling til aMule er oppretta "
+
+#: src/libs/ec/cpp/RemoteConnect.cpp:213
+msgid "Succeeded! Connection established."
+msgstr "Vellukka! Kopling oppretta."
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+msgid "Hashing"
+msgstr "Hashar"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+msgid "Completing"
+msgstr "Ferdigstiller"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+msgid "Complete"
+msgstr "Ferdig"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
+msgid "Paused"
+msgstr "Pausa"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
+msgid "Erroneous"
+msgstr "Feilaktig"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
+msgid "Downloading"
+msgstr "Lastar ned"
+
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
+msgid "Waiting"
+msgstr "Ventar"
+
+#: src/ThreadTasks.cpp:109
+#, c-format
+msgid "Starting to create MD4 and AICH hash for file: %s"
+msgstr "Opprettar MD4 og AICH hash for fila: %s"
+
+#: src/ThreadTasks.cpp:113
+#, c-format
+msgid "Starting to create MD4 hash for file: %s"
+msgstr "Opprettar MD4 hash for fila: %s"
+
+#: src/ThreadTasks.cpp:117
+#, c-format
+msgid "Starting to create AICH hash for file: %s"
+msgstr "Opprettar AICH hash for fila: %s"
+
+#: src/ThreadTasks.cpp:253
+msgid "Syncronization thread started."
+msgstr "Synkronisering av tråd starta."
+
+#: src/ThreadTasks.cpp:298
+msgid "Masterhashes of known files have been loaded."
+msgstr "Meisterhashar av kjende filer har vorte lasta."
+
+#: src/ThreadTasks.cpp:362
+#, c-format
+msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
+msgstr "Konverterer gamle AICH hashsett i '%s'·til·64b·i·'%s'."
+
+#: src/ThreadTasks.cpp:444
+#, c-format
+msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
+msgstr "ÅTVARING: Filnamnet '%s' er feil og har vorte omdøypt til '%s'."
+
+#: src/ThreadTasks.cpp:463
+#, c-format
+msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
+msgstr "ÅTVARING: Fila '%s' finst allereie; ny fil omdøypt til '%s'."
+
+#: src/ThreadTasks.cpp:477
+#, c-format
+msgid "WARNING: Could not remove original '%s' after creating backup"
+msgstr "ÅTVARING: Kunne ikkje fjerne den opphavelege '%s' etter tryggleikskopi"
+
+#: src/ThreadTasks.cpp:489
+#, c-format
+msgid "WARNING: Failed to delete %s"
+msgstr "ÅTVARING: Greidde ikkje å slette %s"
+
+#: src/BaseClient.cpp:1255
+#, c-format
+msgid "Failed to retrieve shared files from user '%s'"
+msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
+
+#: src/BaseClient.cpp:1632 src/BaseClient.cpp:2150 src/BaseClient.cpp:2420
+#: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
+#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
+#: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1466
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
+#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
+#: src/ClientListCtrl.cpp:682 src/ClientListCtrl.cpp:704
+#: src/ClientListCtrl.cpp:714 src/ClientListCtrl.cpp:855
+#: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
+#: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
+#: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
+msgid "Unknown"
+msgstr "Ukjend"
+
+#: src/BaseClient.cpp:1649
+#, c-format
+msgid " (Fake eMule version %#x)"
+msgstr " (Falsk eMuleutgåve %#x)"
+
+#: src/BaseClient.cpp:1660
+msgid " (Fake eMule)"
+msgstr " (Falsk eMule)"
+
+#: src/BaseClient.cpp:1662
+msgid "xMule (Fake eMule)"
+msgstr "xMule (Falsk eMule)"
+
+#: src/BaseClient.cpp:1701
+#, c-format
+msgid "1.x (based on eMule v0.%u)"
+msgstr "1.x·(basert på eMule·v0.%u)"
+
+#: src/BaseClient.cpp:1871
+#, c-format
+msgid "NickName: %s ID: %u"
+msgstr "Brukarnamn: %s·ID:·%u"
+
+#: src/BaseClient.cpp:1873
+msgid "Requested:"
+msgstr "Etterspurt"
+
+#: src/BaseClient.cpp:1874
+#, c-format
+msgid ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr "Filstatistikk for denne økta:·Godteke·%d·av·%d·etterspurnader,·%s·overført\n"
+
+#: src/BaseClient.cpp:1875
+#, c-format
+msgid ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr "Filstatistikk for alle økter:·Godteke·%d·av·%d·etterspurnader,·%s·overført\n"
+
+#: src/BaseClient.cpp:1877
+msgid "Requested unknown file"
+msgstr "Etterspurt ukjend fil"
+
+#: src/BaseClient.cpp:2149
+#, c-format
+msgid "Client %s on IP:Port %s:%d using %s %s %s"
+msgstr "Klient %s·på·IP:Port·%s:%d·nyttar·%s·%s·%s"
+
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:49
+#: src/ClientListCtrl.cpp:513 src/ClientListCtrl.cpp:816
+#: src/ClientListCtrl.cpp:985
+msgid "Username"
+msgstr "Brukarnamn"
+
+#: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:509 src/muuli_wdr.cpp:3469
+msgid "Friends"
+msgstr "Vener"
+
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/ClientListCtrl.cpp:250
+msgid "Show &Details"
+msgstr "Syn &detaljar"
+
+#: src/FriendListCtrl.cpp:234
+msgid "Add a friend"
+msgstr "Legg til ein ven"
+
+#: src/FriendListCtrl.cpp:237
+msgid "Remove Friend"
+msgstr "Ta bort ven"
+
+#: src/FriendListCtrl.cpp:238
+msgid "Send &Message"
+msgstr "Send &melding"
+
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/ClientListCtrl.cpp:252
+msgid "View Files"
+msgstr "Sjå filer"
+
+#: src/FriendListCtrl.cpp:240
+msgid "Establish Friend Slot"
+msgstr "Opprett venekopling"
+
+#: src/FriendListCtrl.cpp:271
+msgid "Are you sure that you wish to delete the selected friend(s)?"
+msgstr "Er du sikker på at du vil slette den valde venen/venene?"
+
+#: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
+#: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
+#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
+#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
+#: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
+#: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3841
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: src/FriendListCtrl.cpp:353
+msgid ""
+"You are not allowed to set more than one friendslot.\n"
+" Only one slot was assigned."
+msgstr "Det er ikkje tillate å opprette meir enn ei venekopling.\n"
+" Berre ei venekopling vart oppretta."
+
+#: src/FriendListCtrl.cpp:353
+msgid "Multiple selection"
+msgstr "Fleirval"
+
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:50
+#: src/FileDetailListCtrl.cpp:43
+msgid "File Name"
+msgstr "Filnamn"
+
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+msgid "Size"
+msgstr "Storleik"
+
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+msgid "Type"
+msgstr "Sort"
+
+#: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
+#: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
+#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+msgid "Priority"
+msgstr "Prioritet"
+
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
+msgid "FileID"
+msgstr "FilID"
+
+#: src/SharedFilesCtrl.cpp:107
+msgid "Requests"
+msgstr "Etterspurnader"
+
+#: src/SharedFilesCtrl.cpp:108
+msgid "Accepted Requests"
+msgstr "Godtekne etterspurnader"
+
+#: src/SharedFilesCtrl.cpp:109
+msgid "Transferred Data"
+msgstr "Overførte data"
+
+#: src/SharedFilesCtrl.cpp:110
+msgid "Share Ratio"
+msgstr "Delingssamsvar"
+
+#: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:521
+#: src/ClientListCtrl.cpp:826
+msgid "Obtained Parts"
+msgstr "Nedlasta delar"
+
+#: src/SharedFilesCtrl.cpp:112
+msgid "Complete Sources"
+msgstr "Komplette kjelder"
+
+#: src/SharedFilesCtrl.cpp:113
+msgid "Directory Path"
+msgstr "Katalogsti"
+
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1339 src/Statistics.cpp:721
+#: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4069
+msgid "Shared Files"
+msgstr "Delte filer"
+
+#: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:41
+msgid "Very low"
+msgstr "Svært låg"
+
+#: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
+#: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
+#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+msgid "Low"
+msgstr "Låg"
+
+#: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
+#: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
+#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+msgid "Normal"
+msgstr "Vanleg"
+
+#: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
+#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+msgid "High"
+msgstr "Høg"
+
+#: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:45
+msgid "Very High"
+msgstr "Svært høg"
+
+#: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:46
+msgid "Release"
+msgstr "Offentleggjering"
+
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/muuli_wdr.cpp:2953
+msgid "Auto"
+msgstr "Automatisk"
+
+#: src/SharedFilesCtrl.cpp:145
+msgid "Add Comment/Rating"
+msgstr "Legg til kommentar/Rangering"
+
+#: src/SharedFilesCtrl.cpp:147
+msgid "Edit Comment/Rating"
+msgstr "Endre kommentar/Rangering"
+
+#: src/SharedFilesCtrl.cpp:151
+msgid "Rename"
+msgstr "Endre namn"
+
+#: src/SharedFilesCtrl.cpp:158
+msgid "Add files in collection to transfer list"
+msgstr "Legg filer frå samlinga til overføringslista"
+
+#: src/SharedFilesCtrl.cpp:161
+msgid "Copy magnet &URI to clipboard"
+msgstr "Kopiér magnet &URI til utklippstavla"
+
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+msgid "Copy ED2k &link to clipboard"
+msgstr "Kopiér ED2k &lenke til utklippstavla"
+
+#: src/SharedFilesCtrl.cpp:163
+msgid "Copy ED2k link to clipboard (&Source)"
+msgstr "Kopiér ED2k lenke til utklippstavla (&Kjelde)"
+
+#: src/SharedFilesCtrl.cpp:164
+msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+msgstr "Kopiér ED2k lenke til utklippstavla (Kjelde) (&Med krypteringsval)"
+
+#: src/SharedFilesCtrl.cpp:165
+msgid "Copy ED2k link to clipboard (&Hostname)"
+msgstr "Kopiér ED2k lenke til utklippstavla (&Vertsnamn)"
+
+#: src/SharedFilesCtrl.cpp:166
+msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr "Kopiér Ed2k lenke til utklippstavla (Med &Krypteringsval)"
+
+#: src/SharedFilesCtrl.cpp:167
+msgid "Copy ED2k link to clipboard (&AICH info)"
+msgstr "Kopiér ED2k lenke til utklippstavla (&AICH info)"
+
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+msgid "Copy feedback to clipboard"
+msgstr "Kopiér tilbakemelding til utklippstavla"
+
+#: src/SharedFilesCtrl.cpp:298
+msgid "You need a HighID to create a valid sourcelink"
+msgstr "Du treng ein HøgID for å lage ei gangbar kjeldelenke"
+
+#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/amule.cpp:681
+msgid "Warning"
+msgstr "Åtvaring"
+
+#: src/SharedFilesCtrl.cpp:443
+#, c-format
+msgid "Shared Files (%i)"
+msgstr "Delte filer (%i)"
+
+#: src/SharedFilesCtrl.cpp:604
+msgid "[PartFile]"
+msgstr "[Delfil]"
+
+#: src/SharedFilesCtrl.cpp:684 src/DownloadListCtrl.cpp:1111
+msgid "Enter new name for this file:"
+msgstr "Skriv nytt namn på denne fila:"
+
+#: src/SharedFilesCtrl.cpp:685 src/DownloadListCtrl.cpp:1112
+msgid "File rename"
+msgstr "Døyp om fil"
+
+#: src/UploadQueue.cpp:512
+#, c-format
+msgid "Resuming uploads of file: %s"
+msgstr "Held fram opplastingar av fila: %s"
+
+#: src/UploadQueue.cpp:521
+#, c-format
+msgid "Suspending upload of file: %s"
+msgstr "Mellombels stogge opplastingar av fila: %s"
+
+#: src/kademlia/kademlia/SearchManager.cpp:139
+msgid "Kademlia: search keyword too short"
+msgstr "Kademlia: for kort søkjeord"
+
+#: src/kademlia/routing/RoutingZone.cpp:150
+#, c-format
+msgid "Read %u Kad contacts"
+msgstr "Las %u kadkontaktar"
+
+#: src/kademlia/routing/RoutingZone.cpp:153
+msgid "Error while reading Kad contacts - 0 entries"
+msgstr "Feil under lesing av kadkontaktar - 0 oppføringar"
+
+#: src/kademlia/routing/RoutingZone.cpp:366
+msgid "Merge attempt"
+msgstr "Sameiningsfreistad"
+
+#: src/kademlia/routing/RoutingZone.cpp:369
+msgid "Recursive merge"
+msgstr "Gjentakbar sameining"
+
+#: src/kademlia/routing/RoutingZone.cpp:408
+msgid "Sucessful merge!"
+msgstr "Vellukka sameining!"
+
+#: src/kademlia/routing/RoutingZone.cpp:414
+msgid "No merge possible"
+msgstr "Inga sameining mogleg"
+
+#: src/ListenSocket.cpp:68
+msgid "Error: Could not listen to TCP port."
+msgstr "Feil: Greidde ikkje å lytte til TCP porten."
+
+#: src/webserver/src/WebServer.cpp:320
+#, c-format
+msgid "Request failed with the following error: %s."
+msgstr "Etterspurnaden mislukka med følgjande feil: %s."
+
+#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:600
+msgid "Request failed with an unknown error."
+msgstr "Etterspurnaden mislukka med ukjend feil."
+
+#: src/webserver/src/WebServer.cpp:1672
+msgid "Index file not found: "
+msgstr "Registerfil ikkje funne: "
+
+#: src/webserver/src/WebServer.cpp:1692
+msgid "Can't create web socket thread\n"
+msgstr "Greier ikkje å lage vevkoplingstråd\n"
+
+#: src/webserver/src/WebServer.cpp:1697
+msgid "Web Server: Started\n"
+msgstr "Vevtenar: Starta\n"
+
+#: src/webserver/src/WebServer.cpp:1775
+msgid "Session expired - requesting login\n"
+msgstr "Økt utgått - ber om logginn\n"
+
+#: src/webserver/src/WebServer.cpp:1780
+msgid "Session ok, logged in\n"
+msgstr "Økt ok, logga inn\n"
+
+#: src/webserver/src/WebServer.cpp:1782
+msgid "Session ok, not logged in\n"
+msgstr "Økt ok, ikkje innlogga\n"
+
+#: src/webserver/src/WebServer.cpp:1787
+msgid "No session opened - will request login\n"
+msgstr "Inga økt opna - vil be om logginn\n"
+
+#: src/webserver/src/WebServer.cpp:1796
+msgid "Session created - requesting login\n"
+msgstr "Økt oppretta - ber om logginn\n"
+
+#: src/webserver/src/WebServer.cpp:1813
+msgid "Processing request [original]: "
+msgstr "Handsamar etterspurnad [original]: "
+
+#: src/webserver/src/WebServer.cpp:1829
+msgid "Checking password\n"
+msgstr "Sjekkar passord\n"
+
+#: src/webserver/src/WebServer.cpp:1834
+msgid "Password hash invalid\n"
+msgstr "Passord hash feil\n"
+
+#: src/webserver/src/WebServer.cpp:1849
+msgid "Password ok\n"
+msgstr "Passord ok\n"
+
+#: src/webserver/src/WebServer.cpp:1851
+msgid "Password bad\n"
+msgstr "Feil passord\n"
+
+#: src/webserver/src/WebServer.cpp:1854
+msgid "You did not enter any password. Blank password is not allowed.\n"
+msgstr "Du skreiv ikkje inn eit passord. Tomt passord er ikkje tillate.\n"
+
+#: src/webserver/src/WebServer.cpp:1862
+msgid "Logout requested\n"
+msgstr "Utlogging etterspurt\n"
+
+#: src/webserver/src/WebServer.cpp:1867
+msgid "Processing request [redirected]: "
+msgstr "Handsamar etterspurnad [omdirigert]: "
+
+#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#, c-format
+msgid "%d"
+msgstr "%d"
+
+#: src/webserver/src/WebInterface.cpp:182
+msgid "Loads template <str>"
+msgstr "Lastar modell <str>"
+
+#: src/webserver/src/WebInterface.cpp:186
+msgid "Webserver HTTP port"
+msgstr "Vevtenar HTTP port"
+
+#: src/webserver/src/WebInterface.cpp:190
+msgid "Use UPnP port forwarding on webserver port"
+msgstr "Nytt UPnP portvidaresending på vevtenarport"
+
+#: src/webserver/src/WebInterface.cpp:194
+msgid "UPnP port"
+msgstr "UPnP port"
+
+#: src/webserver/src/WebInterface.cpp:198
+msgid "Use gzip compression"
+msgstr "Nytt gzipkomprimering"
+
+#: src/webserver/src/WebInterface.cpp:206
+msgid "Full access password for webserver"
+msgstr "Fulltilgangspassord for vevtenar"
+
+#: src/webserver/src/WebInterface.cpp:210
+msgid "Guest password for webserver"
+msgstr "Gjestepassord for vevtenar"
+
+#: src/webserver/src/WebInterface.cpp:214
+msgid "Allow guest access"
+msgstr "Gje løyve til gjestetilgang"
+
+#: src/webserver/src/WebInterface.cpp:218
+msgid "Deny guest access"
+msgstr "Nekt gjestetilgang"
+
+#: src/webserver/src/WebInterface.cpp:222
+msgid "Load/save webserver settings from/to remote aMule"
+msgstr "Last/lagre vevtenarinnstillingar frå/til fjern aMule"
+
+#: src/webserver/src/WebInterface.cpp:226
+msgid "aMule config file path. DO NOT USE DIRECTLY!"
+msgstr "aMule konfugurasjonsfilsti. IKKJE NYTT DIREKTE!"
+
+#: src/webserver/src/WebInterface.cpp:234
+msgid "Disable PHP interpreter (deprecated)"
+msgstr "Deaktivér PHP tolk (frårådd)"
+
+#: src/webserver/src/WebInterface.cpp:242
+msgid "Recompile PHP pages on each request"
+msgstr "Omkompilér PHP-sider ved kvar etterspurnad"
+
+#: src/webserver/src/WebInterface.cpp:340
+msgid "aMule Web Server"
+msgstr "aMule vevtenar"
+
+#: src/StatTree.cpp:583 src/StatTree.cpp:598
+msgid "Not available"
+msgstr "Ikkje tilgjengeleg"
+
+#: src/StatTree.cpp:634 src/StatTree.cpp:648
+msgid "Never"
+msgstr "Aldri"
+
+#: src/HTTPDownload.cpp:60
+msgid "Downloading..."
+msgstr "Lastar ned..."
+
+#: src/HTTPDownload.cpp:81
+#, c-format
+msgid "( %s / %s )"
+msgstr "( %s / %s )"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1352
+#: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:4073
+msgid "Preferences"
+msgstr "Innstillingar"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:60
+msgid "Directory containing amulesig.dat file"
+msgstr "Katalog som inneheld amulesig.dat fila"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:65
+#: src/utils/wxCas/src/wxcasprefs.cpp:142
+#: src/utils/aLinkCreator/src/alcframe.cpp:142 src/muuli_wdr.cpp:1714
+#: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
+#: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3605
+msgid "Browse"
+msgstr "Bla"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:80
+msgid "Enter here the directory where your amulesig.dat file is"
+msgstr "Skriv inn kvar katalogen som inneheld amulesig.dat fila er"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:99
+msgid "Refresh rate interval in seconds"
+msgstr "Oppfriskingsintervall i sekund"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:115
+msgid "Generate a stat image at every refresh event"
+msgstr "Lag eit statistikkbilete ved kvar oppfriskingshending"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:139
+msgid "Enter here the directory where you want to generate the statistic image"
+msgstr "Skriv inn katalogen du vil lage statistikkbiletet i"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:166
+msgid "Upload periodicaly your stat image to FTP server"
+msgstr "Last regelbunde opp statistikkbilete til ein FTP tenar"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:174
+msgid "FTP Url"
+msgstr "FTP-Url"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:178
+msgid "FTP Path"
+msgstr "FTPsti"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:188
+msgid "Enter here the URL of your FTP server"
+msgstr "Skriv inn URL til FTP tenar"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:200
+msgid "Enter here the directory where putting your stat image on FTP server"
+msgstr "Skriv inn katalogen du lastar statistikkbiletet til FTPtenaren til"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:206
+msgid "User"
+msgstr "Brukar"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2812
+#: src/muuli_wdr.cpp:3813
+msgid "Password"
+msgstr "Passord"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:221
+msgid "Enter here the User name to log into your FTP server"
+msgstr "Skriv inn brukarnamnet for å logge inn på FTPtenaren din"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:233
+msgid "Enter here the User password to log into your FTP server"
+msgstr "Skriv inn brukarpassordet for å logge inn på FTPtenaren din"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:252
+msgid "FTP update rate interval in minutes"
+msgstr "FTP oppdateringsintervall i minutt"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:296
+msgid "Validate"
+msgstr "Validere"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:330
+msgid "Folder containing your signature file"
+msgstr "Katalog som inneheld signaturfila di"
+
+#: src/utils/wxCas/src/wxcasprefs.cpp:344
+msgid "Folder where generating the statistic image"
+msgstr "Katalog der statistikkbiletet vert laga"
+
+#: src/utils/wxCas/src/linuxmon.cpp:86
+#, c-format
+msgid "%i day(s) %i hour(s) %i min %i s"
+msgstr "%i dag(ar) %i timar %i min %i s"
+
+#: src/utils/wxCas/src/wxcas.cpp:85
+msgid "wxCas, aMule Online Statistics"
+msgstr "WxCas, aMule nettstatistikk"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:96
+#: src/utils/aLinkCreator/src/alcframe.cpp:84
+msgid "Welcome!"
+msgstr "Velkomen!"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:116
+msgid "aMule"
+msgstr "aMule"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:120
+msgid "Maximum DL rate since wxCas is running"
+msgstr "Høgaste nedlastingsfart medan wxCas har køyrt"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:124
+msgid "Absolute Maximum DL rate during wxCas previous runs"
+msgstr "Absolutt maksimum nedlastingsfart nokon gong medan wxCas har køyrt"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:138
+#: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:3048
+#: src/muuli_wdr.cpp:3083
+msgid "Reset"
+msgstr "Still attende"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:147
+msgid "System"
+msgstr "System"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:211
+#: src/utils/wxCas/src/wxcasframe.cpp:340
+msgid "Stop Auto Refresh"
+msgstr "Stopp. Autooppfrisking"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:216
+msgid "Save Online Statistics image"
+msgstr "Lagre nettstatistikkbiletet"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:219
+msgid "Print Online Statistics image"
+msgstr "Skriv ut nettstatistikkbiletet"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:222
+msgid "Preferences setting"
+msgstr "Innstillingsval"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:227
+#: src/utils/wxCas/src/wxcasframe.cpp:406
+msgid "About wxCas"
+msgstr "Om wxCas"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:331
+msgid "Start Auto Refresh"
+msgstr "Start autooppfrisking"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:333
+msgid "Auto Refresh stopped"
+msgstr "Autooppfrisking stogga"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:342
+msgid "Auto Refresh started"
+msgstr "Autooppfrisking starta"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:353
+msgid "Save Statistics Image"
+msgstr "Lagre statistikkbilete"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:367
+msgid "No handler for this file type."
+msgstr "Ingen handsamar for denne filtypen"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:368
+msgid "File was not saved"
+msgstr "Fila vart ikkje lagra"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:379
+msgid "aMule Online Statistics"
+msgstr "aMule nettstatistikk"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:383
+msgid ""
+"There was a problem printing.\n"
+"Perhaps your current printer is not set correctly?"
+msgstr "Det oppstod eit problem med utskrifta.\n"
+"Kanskje er ikkje skrivaren din innstilt skikkeleg?"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:384
+msgid "Printing"
+msgstr "Skriv ut"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:402
+msgid ""
+"wxCas, aMule OnLine Signature Statistics\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n"
+"\n"
+"Distributed under GPL"
+msgstr "wxCas,·aMule·nettsignaturstatistikk\n"
+"\n"
+"(c)·2004·ThePolish·<thepolish@vipmail.ru>\n"
+"\n"
+"Basert·på·CAS·av·Pedro·de·Oliveira·<falso@rdk.homeip.net>\n"
+"\n"
+"Distribuert·under·GPL"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:573
+msgid "Oh Oh, aMule is not running..."
+msgstr "Å nei, aMule køyrer ikkje..."
+
+#: src/utils/wxCas/src/wxcasframe.cpp:649
+#: src/utils/wxCas/src/wxcasframe.cpp:719
+#: src/utils/wxCas/src/wxcasframe.cpp:788
+msgid "aMule is running"
+msgstr "aMule køyrer"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:858
+msgid "aMule is running, but disconnected"
+msgstr "aMule køyrer, men fråkopla"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:929
+msgid "aMule is connecting..."
+msgstr "aMule koplar til..."
+
+#: src/utils/wxCas/src/wxcasframe.cpp:933
+msgid "Oh Oh, aMule status is unknown..."
+msgstr "Å nei, ukjend status for aMule..."
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1004
+#: src/utils/wxCas/src/wxcasframe.cpp:1009
+#: src/utils/wxCas/src/wxcasframe.cpp:1013
+#: src/utils/wxCas/src/wxcasframe.cpp:1017
+#: src/utils/wxCas/src/wxcasframe.cpp:1021
+msgid "aMule "
+msgstr "aMule"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1006
+msgid " has been running for "
+msgstr " har køyrt i "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1011
+msgid " is stopped !"
+msgstr " er stogga !"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1015
+#: src/utils/wxCas/src/wxcasframe.cpp:1039
+msgid " is not connected !"
+msgstr " er ikkje tilkopla !"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1019
+msgid " is connecting..."
+msgstr " koplar til..."
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1023
+msgid " is doing something strange, check it !"
+msgstr " gjer noko rart, sjekk det !"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1044
+msgid " is connected to "
+msgstr " er tilkopla "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1045
+msgid " Kad: "
+msgstr " Kad: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1047
+#: src/utils/wxCas/src/wxcasframe.cpp:1067 src/TextClient.cpp:685
+msgid "ok"
+msgstr "ok"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1049
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:683
+msgid "firewalled"
+msgstr "brannmura"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1051
+#: src/utils/wxCas/src/wxcasframe.cpp:1071
+msgid "off"
+msgstr "av"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1057
+msgid " is on "
+msgstr " er på "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1059
+msgid " ["
+msgstr " ["
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1061 src/muuli_wdr.cpp:3136
+msgid ":"
+msgstr ":"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1063
+msgid "] with "
+msgstr "] med "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1065
+msgid " | Kad: "
+msgstr " | Kad: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1080
+msgid "Total Download: "
+msgstr "Total nedlasting: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1082
+#: src/utils/wxCas/src/wxcasframe.cpp:1093
+msgid ", Upload: "
+msgstr " Opplasting: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1091
+msgid "Session Download: "
+msgstr "Nedlasting denne økta: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1102
+msgid "Download: "
+msgstr "Nedlasting: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1104
+msgid " kB/s, Upload: "
+msgstr " kB/s, opplasting: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1348
+#: src/DownloadListCtrl.cpp:1657 src/OtherFunctions.cpp:160
+#: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
+#: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
+#: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:643
+#: src/ClientListCtrl.cpp:711
+msgid "kB/s"
+msgstr "kB/s"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1114
+msgid "Sharing: "
+msgstr "Deler: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1116
+msgid " file(s), Clients on queue: "
+msgstr " filer, klientar i kø: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1126
+msgid "Time: "
+msgstr "Tid: "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1135
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
+#, c-format
+msgid "%.2f kB/s"
+msgstr "%.2f·kB/s"
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1136
+#: src/utils/wxCas/src/wxcasframe.cpp:1146
+msgid " on "
+msgstr " på "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1156
+msgid "System Load Average (1-5-15 min): "
+msgstr "Gjennomsnittleg systembelasting (1-5-15·min): "
+
+#: src/utils/wxCas/src/wxcasframe.cpp:1167
+msgid "System uptime: "
+msgstr "Oppetid: "
+
+#: src/utils/wxCas/src/onlinesig.cpp:234
+#, c-format
+msgid "%02uD %02uh %02umin %02us"
+msgstr "%02uD %02uh %02umin %02us"
+
+#: src/utils/wxCas/src/onlinesig.cpp:236
+#, c-format
+msgid "%02uh %02umin %02us"
+msgstr "%02uh %02umin %02us"
+
+#: src/utils/wxCas/src/onlinesig.cpp:238
+#, c-format
+msgid "%02umin %02us"
+msgstr "%02umin %02us"
+
+#: src/utils/wxCas/src/onlinesig.cpp:240
+#, c-format
+msgid "%02us"
+msgstr "%02us"
+
+#: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:184
+#: src/ClientDetailDialog.cpp:105
+msgid "HighID"
+msgstr "HøgID"
+
+#: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
+#: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:866
+#: src/ClientDetailDialog.cpp:105
+msgid "LowID"
+msgstr "LågID"
+
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:739
+#: src/ServerWnd.cpp:189 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
+#: src/MuleTrayIcon.cpp:369
+msgid "Not Connected"
+msgstr "Ikkje tilkopla"
+
+#: src/utils/wxCas/src/onlinesig.cpp:339
+#, c-format
+msgid "%.0f B"
+msgstr "%.0f B"
+
+#: src/utils/wxCas/src/onlinesig.cpp:342
+#, c-format
+msgid "%.2f KB"
+msgstr "%.2f·KB"
+
+#: src/utils/wxCas/src/onlinesig.cpp:345
+#, c-format
+msgid "%.2f MB"
+msgstr "%.2f MB"
+
+#: src/utils/wxCas/src/onlinesig.cpp:348
+#, c-format
+msgid "%.2f GB"
+msgstr "%.2f GB"
+
+#: src/utils/wxCas/src/onlinesig.cpp:351
+#, c-format
+msgid "%.2f TB"
+msgstr "%.2f TB"
+
+#: src/utils/aLinkCreator/src/md4.cpp:359
+#: src/utils/aLinkCreator/src/alcframe.cpp:571
+#: src/utils/aLinkCreator/src/alcframe.cpp:572
+msgid "Canceled !"
+msgstr "Avbrote !"
+
+#: src/utils/aLinkCreator/src/ed2khash.cpp:82
+#, c-format
+msgid "Unable to open %s"
+msgstr "Ikkje i stand til å opne %s"
+
+#: src/utils/aLinkCreator/src/ed2khash.cpp:87
+#, c-format
+msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
+msgstr "Fila %s er for stor for Muldyret: maksimal lovleg filstorleik er 4 GB."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:104
+msgid "Input parameters"
+msgstr "Innmatingsparameter"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:115
+msgid "File to Hash"
+msgstr "Fil å hashe"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:119
+msgid "Add Optional URLs for this file"
+msgstr "Legg til valfrie URL`ar for denne fila"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:127
+msgid "Enter here the file you want to compute the Ed2k link"
+msgstr "Skriv inn fila du vil lage ED2k-lenkje til"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:133
+msgid ""
+"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"aLinkCreator append the current file name"
+msgstr "Skriv inn URL`en du vil leggje til i ED2k lenkja: Skriv / på slutten for å la aLinkCreator leggje til det noverande filnamnet"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:145 src/muuli_wdr.cpp:1074
+#: src/muuli_wdr.cpp:3143
+msgid "Add"
+msgstr "Legg til"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:150
+msgid "Remove"
+msgstr "Ta bort"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:152 src/MuleTextCtrl.cpp:82
+#: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:899
+msgid "Clear"
+msgstr "Frigjer plass"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:161
+msgid "Create link with part-hashes"
+msgstr "Lag lenkje "
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:167
+msgid ""
+"Help to spread new and rare files faster, at the cost of an increased link "
+"size"
+msgstr "Hjelp til med å spreie nye og sjeldne filer raskare, men med auka lenkjestorleik"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:193
+msgid "MD4 File Hash"
+msgstr "MD4 filhash"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:205
+msgid "Ed2k File Hash"
+msgstr "ED2k filhash"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:216
+msgid "Ed2k link"
+msgstr "ED2k lenkje"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:229 src/muuli_wdr.cpp:346
+msgid "Start"
+msgstr "Start"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:231
+msgid "Save"
+msgstr "Lagre"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:233
+msgid "Copy to clipboard"
+msgstr "Kopiér til utklippstavle"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:235 src/MuleTrayIcon.cpp:529
+msgid "Exit"
+msgstr "Avslutt"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:261
+msgid "Open a file to compute its ed2k link"
+msgstr "Opne ei fil for å lage fila si ED2k lenkje"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:264
+msgid "Copy computed ed2k link to clipboard"
+msgstr "Kopiér skapt ED2k lenkje til utklippstavla"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:267
+msgid "Save computed ed2k link to file"
+msgstr "Lagre skapt ED2k lenkje til fil"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:272
+#: src/utils/aLinkCreator/src/alcframe.cpp:472
+msgid "About aLinkCreator"
+msgstr "Om aLinkCreator"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:365
+msgid "Select the file you want to compute the ed2k link"
+msgstr "Vel fil for å lage ED2k lenkja"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:408
+msgid "Nothing to copy for now !"
+msgstr "Ikkje noko å kopiére no !"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:435
+msgid "Select the file to your computed ed2k link"
+msgstr "Vel fila for di skapte ED2k lenkje"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:446
+msgid "Unable to open "
+msgstr "Ikkje i stand til å opne"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:453
+#: src/utils/aLinkCreator/src/alcframe.cpp:586
+msgid "Please, enter a non empty file name"
+msgstr "Vér god å skrive inn eit filnamn som ikkje er tomt"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:458
+msgid "Nothing to save for now !"
+msgstr "Ikkje noko å lagre akkurat no !"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:467
+msgid ""
+"aLinkCreator, the aMule ed2k link creator\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+"and http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Distributed under GPL"
+msgstr "aLinkCreator,·the·aMule·ed2k·link·skaparen\n"
+"\n"
+"(c)·2004·ThePolish·<thepolish@vipmail.ru>\n"
+"\n"
+"Pixmaps·frå·http://www.everaldo.com·and·http://www.icomania.com\n"
+"og·http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Distribuert·under·GPL"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:516
+#: src/utils/aLinkCreator/src/alcframe.cpp:517
+#: src/utils/aLinkCreator/src/alcframe.cpp:523
+msgid "Hashing..."
+msgstr "Hashar..."
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:580
+#, c-format
+msgid "Done in %.2f s"
+msgstr "Ferdig om %.2f·s"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:619
+msgid "You have already added this URL !"
+msgstr "Du har allereie lagt til denne URL`en!"
+
+#: src/utils/aLinkCreator/src/alcframe.cpp:624
+msgid "Please, enter a non empty URL"
+msgstr "Vér god å skrive inn ein URL som ikkje er tom"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:66
+#, c-format
+msgid "Processing file number %u: %s"
+msgstr "Handsamar filnummer %u: %s"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:70
+msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
+msgstr "Du har spurt etter delhashar (Berre brukt på filer > 9,5 MB)"
+
+#: src/utils/aLinkCreator/src/alcc.cpp:74
+msgid "Please wait... "
+msgstr "Vér god å vente..."
+
+#: src/utils/aLinkCreator/src/alcc.cpp:84
+#, c-format
+msgid "%s ---> Non existant file !\n"
+msgstr "%s·--->·Fila finst ikkje·!\n"
+
+#: src/utils/aLinkCreator/src/alc.cpp:53
+msgid "aLinkCreator, the aMule ed2k link creator"
+msgstr "aLinkCreator,·ED2k lenkjeskaparen"
+
+#: src/DataToText.cpp:35
+msgid "Auto [Lo]"
+msgstr "Auto [Lå]"
+
+#: src/DataToText.cpp:36
+msgid "Auto [No]"
+msgstr "Auto·[No]"
+
+#: src/DataToText.cpp:37
+msgid "Auto [Hi]"
+msgstr "Auto·[Hø]"
+
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:509 src/amuleDlg.cpp:735
+#: src/ClientListCtrl.cpp:661 src/amule.cpp:803
+msgid "Connecting"
+msgstr "Koplar til"
+
+#: src/DataToText.cpp:60
+msgid "Asking"
+msgstr "Spør"
+
+#: src/DataToText.cpp:61 src/ClientListCtrl.cpp:665
+msgid "Connecting via server"
+msgstr "Koplar til gjennom tenar"
+
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1742
+#: src/ClientListCtrl.cpp:699
+msgid "Queue Full"
+msgstr "Kø full"
+
+#: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:678
+msgid "On Queue"
+msgstr "I kø"
+
+#: src/DataToText.cpp:63 src/ClientListCtrl.cpp:670
+msgid "Transferring"
+msgstr "Overfører"
+
+#: src/DataToText.cpp:64
+msgid "Receiving hashset"
+msgstr "Tek imot hashsett"
+
+#: src/DataToText.cpp:65
+msgid "No needed parts"
+msgstr "Ingen naudsynte delar"
+
+#: src/DataToText.cpp:66
+msgid "Cannot connect LowID to LowID"
+msgstr "Greier ikkje å kople LågID til LågID"
+
+#: src/DataToText.cpp:67
+msgid "Too many connections"
+msgstr "For mange koplingar"
+
+#: src/DataToText.cpp:69
+msgid "Connecting via Kad"
+msgstr "Koplar til gjennom Kad"
+
+#: src/DataToText.cpp:70
+msgid "Too many Kad connections"
+msgstr "For mange kadkoplingar"
+
+#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
+#: src/ClientListCtrl.cpp:825
+msgid "Banned"
+msgstr "Nekta"
+
+#: src/DataToText.cpp:72
+msgid "Connection Error"
+msgstr "Koplingsfeil"
+
+#: src/DataToText.cpp:73
+msgid "Remote Queue Full"
+msgstr "Fjern kø full"
+
+#: src/DataToText.cpp:103
+msgid "Old MLDonkey"
+msgstr "Gamal MLDonkey"
+
+#: src/DataToText.cpp:106
+msgid "New MLDonkey"
+msgstr "Ny MLDonkey"
+
+#: src/DataToText.cpp:116
+msgid "eMule Compatible"
+msgstr "eMulekompatibel"
+
+#: src/DataToText.cpp:126
+msgid "Local Server"
+msgstr "Lokal tenar"
+
+#: src/DataToText.cpp:127
+msgid "Remote Server"
+msgstr "Fjern tenar"
+
+#: src/DataToText.cpp:128 src/TextClient.cpp:678 src/muuli_wdr.cpp:195
+#: src/muuli_wdr.cpp:4007 src/SearchDlg.cpp:107
+msgid "Kad"
+msgstr "Kad"
+
+#: src/DataToText.cpp:129
+msgid "Source Exchange"
+msgstr "Kjeldeutveksling"
+
+#: src/DataToText.cpp:130
+msgid "Passive"
+msgstr "Passiv"
+
+#: src/DataToText.cpp:131
+msgid "Link"
+msgstr "Lenkje"
+
+#: src/DataToText.cpp:132
+msgid "Source Seeds"
+msgstr "Kjeldefrø"
+
+#: src/Preferences.cpp:598 src/PrefsUnifiedDlg.cpp:218
+msgid "System default"
+msgstr "Standardinnstillingar"
+
+#: src/Preferences.cpp:599
+msgid "Arabic"
+msgstr "Arabisk"
+
+#: src/Preferences.cpp:600
+msgid "Basque"
+msgstr "Baskisk"
+
+#: src/Preferences.cpp:601
+msgid "Bulgarian"
+msgstr "Bulgarsk"
+
+#: src/Preferences.cpp:602
+msgid "Catalan"
+msgstr "Katalansk"
+
+#: src/Preferences.cpp:603
+msgid "Chinese (Simplified)"
+msgstr "Kinesisk (forenkla)"
+
+#: src/Preferences.cpp:604
+msgid "Chinese (Traditional)"
+msgstr "Kinesisk (tradisjonell)"
+
+#: src/Preferences.cpp:605
+msgid "Croatian"
+msgstr "Kroatisk"
+
+#: src/Preferences.cpp:606
+msgid "Danish"
+msgstr "Dansk"
+
+#: src/Preferences.cpp:607
+msgid "Dutch"
+msgstr "Nederlansk"
+
+#: src/Preferences.cpp:608
+msgid "English (U.K.)"
+msgstr "Engelsk (U.K.)"
+
+#: src/Preferences.cpp:609
+msgid "English (U.S.)"
+msgstr "Engelsk (U.S.)"
+
+#: src/Preferences.cpp:610
+msgid "Estonian"
+msgstr "Estisk"
+
+#: src/Preferences.cpp:611
+msgid "Finnish"
+msgstr "Finsk"
+
+#: src/Preferences.cpp:612
+msgid "French"
+msgstr "Fransk"
+
+#: src/Preferences.cpp:613
+msgid "Galician"
+msgstr "Galisisk"
+
+#: src/Preferences.cpp:614
+msgid "German"
+msgstr "Tysk"
+
+#: src/Preferences.cpp:615
+msgid "Hungarian"
+msgstr "Ungarsk"
+
+#: src/Preferences.cpp:616
+msgid "Italian"
+msgstr "Italiensk"
+
+#: src/Preferences.cpp:619
+msgid "Italian (Swiss)"
+msgstr "Italiensk (sveitsisk)"
+
+#: src/Preferences.cpp:620
+msgid "Korean"
+msgstr "Koreansk"
+
+#: src/Preferences.cpp:623
+msgid "Polish"
+msgstr "Polsk"
+
+#: src/Preferences.cpp:624
+msgid "Portuguese"
+msgstr "Portugisisk"
+
+#: src/Preferences.cpp:625
+msgid "Portuguese (Brazilian)"
+msgstr "Portugisisk (Brasil)"
+
+#: src/Preferences.cpp:626
+msgid "Russian"
+msgstr "Russisk"
+
+#: src/Preferences.cpp:627
+msgid "Slovenian"
+msgstr "Slovensk"
+
+#: src/Preferences.cpp:628
+msgid "Spanish"
+msgstr "Spansk"
+
+#: src/Preferences.cpp:631
+msgid "Spanish (Mexican)"
+msgstr "Spansk (Mexico)"
+
+#: src/Preferences.cpp:632
+msgid "Turkish"
+msgstr "Tyrkisk"
+
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+msgid "Unable to determine selected browser!"
+msgstr "Ikkje i stand til å fastslå valt vevlesar!"
+
+#: src/Preferences.cpp:1668
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr "TCP port kan ikkje vere høgare enn 65532 fordi tenaren si UDPkopling er TCP+3"
+
+#: src/Preferences.cpp:1669
+#, c-format
+msgid "Default port will be used (%d)"
+msgstr "Standardport vert nytta (%d)"
+
+#: src/ServerListCtrl.cpp:86
+msgid "Server Name"
+msgstr "Tenarnamn"
+
+#: src/ServerListCtrl.cpp:87
+msgid "Address"
+msgstr "Addresse"
+
+#: src/ServerListCtrl.cpp:88
+msgid "Port"
+msgstr "Port"
+
+#: src/ServerListCtrl.cpp:89
+msgid "Description"
+msgstr "Skildring"
+
+#: src/ServerListCtrl.cpp:90
+msgid "Ping"
+msgstr "Ping"
+
+#: src/ServerListCtrl.cpp:91
+msgid "Users"
+msgstr "Brukarar"
+
+#: src/ServerListCtrl.cpp:92 src/PrefsUnifiedDlg.cpp:154
+#: src/muuli_wdr.cpp:2073
+msgid "Files"
+msgstr "Filer"
+
+#: src/ServerListCtrl.cpp:94 src/ClientDetailDialog.cpp:173
+msgid "Failed"
+msgstr "Mislukka"
+
+#: src/ServerListCtrl.cpp:95
+msgid "Static"
+msgstr "Statisk"
+
+#: src/ServerListCtrl.cpp:96 src/Statistics.cpp:870
+msgid "Version"
+msgstr "Utgåve"
+
+#: src/ServerListCtrl.cpp:98
+msgid "TCP Flags"
+msgstr "TCP flagg"
+
+#: src/ServerListCtrl.cpp:99
+msgid "UDP Flags"
+msgstr "UDPflagg"
+
+#: src/ServerListCtrl.cpp:143
+msgid ""
+"You are connected to a server you are trying to delete. Please disconnect "
+"first. The server was NOT deleted."
+msgstr "Du er tilkopla ein tenar du freistar å slette. Vér god å kople frå først. Tenaren vart IKKJE sletta."
+
+#: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3212 src/CatDialog.cpp:149
+#: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:342
+#: src/amule.cpp:721 src/amule.cpp:1335
+msgid "Info"
+msgstr "Info"
+
+#: src/ServerListCtrl.cpp:146
+msgid "(Unknown name)"
+msgstr "(Ukjent namn)"
+
+#: src/ServerListCtrl.cpp:148
+#, c-format
+msgid "Are you sure you want to delete the static server %s"
+msgstr "Er du sikker på at du vil slette den statiske tenaren %s"
+
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:895
+#: src/ClientListCtrl.cpp:1038
+msgid "Yes"
+msgstr "Ja"
+
+#: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:897
+#: src/ClientListCtrl.cpp:1040
+msgid "No"
+msgstr "Nei"
+
+#: src/ServerListCtrl.cpp:344
+#, c-format
+msgid "Failed to open '%s'"
+msgstr "Greidde ikkje å opne '%s'"
+
+#: src/ServerListCtrl.cpp:387
+#, c-format
+msgid "Servers (%i)"
+msgstr "Tenarar (%i)"
+
+#: src/ServerListCtrl.cpp:435 src/PrefsUnifiedDlg.cpp:153
+#: src/ServerWnd.cpp:180 src/ServerSocket.cpp:259 src/ServerSocket.cpp:274
+msgid "Server"
+msgstr "Tenar"
+
+#: src/ServerListCtrl.cpp:440
+msgid "Connect to server"
+msgstr "Kople til tenar"
+
+#: src/ServerListCtrl.cpp:445
+msgid "Mark server(s) as static"
+msgstr "Merk tenar(ar) som statisk(e)"
+
+#: src/ServerListCtrl.cpp:446
+msgid "Mark server(s) as non-static"
+msgstr "Merk tenar(ar) som ikkje statisk(e)"
+
+#: src/ServerListCtrl.cpp:450
+msgid "Remove server(s)"
+msgstr "Fjern tenar(ar)"
+
+#: src/ServerListCtrl.cpp:451
+msgid "Remove all servers"
+msgstr "Fjern alle tenarar"
+
+#: src/ServerListCtrl.cpp:455
+msgid "Copy ED2k link(s) to clipboard"
+msgstr "Kopiér ED2k-lenkjer til utklippstavla"
+
+#: src/ServerListCtrl.cpp:463
+msgid "Reconnect to server"
+msgstr "Kople til tenar att"
+
+#: src/ServerListCtrl.cpp:560
+msgid "Are you sure that you wish to delete all servers?"
+msgstr "Er du sikker på at du vil slette alle tenarane?"
+
+#: src/ServerListCtrl.cpp:574
+msgid "Are you sure that you wish to delete the selected server(s)?"
+msgstr "Er du sikker på at du vil slette alle valte tenar(ar)?"
+
+#: src/OScopeCtrl.cpp:288
+#, c-format
+msgid "Disabled [%s]"
+msgstr "Deaktivert [%s]"
+
+#: src/amuleDlg.cpp:214
+#, c-format
+msgid "This is aMule %s based on eMule."
+msgstr "Dette er aMule %s basert på eMule."
+
+#: src/amuleDlg.cpp:216
+#, c-format
+msgid "Running on %s"
+msgstr "Køyrer på %s"
+
+#: src/amuleDlg.cpp:218
+msgid "Visit http://www.amule.org to check if a new version is available."
+msgstr "Vitje http://www.amule.org for å sjekke om ei ny utgåve er tilgjengeleg."
+
+#: src/amuleDlg.cpp:241
+msgid "Fatal Error: Failed to create Timer"
+msgstr "Alvorleg feil: Greidde ikkje å lage Timer"
+
+#: src/amuleDlg.cpp:430
+msgid "aMule remote control "
+msgstr "aMule fjernkontroll"
+
+#: src/amuleDlg.cpp:436
+msgid "Snapshot:"
+msgstr "Bilete:"
+
+#: src/amuleDlg.cpp:439
+msgid ""
+" 'All-Platform' p2p client based on eMule \n"
+"\n"
+" Website: http://www.amule.org \n"
+" Forum: http://forum.amule.org \n"
+" FAQ: http://wiki.amule.org \n"
+"\n"
+" Contact: admin@amule.org (administrative issues) \n"
+" Copyright (C) 2003-2007 aMule Team \n"
+"\n"
+" Part of aMule is based on \n"
+" Kademlia: Peer-to-peer routing based on the XOR metric.\n"
+" Copyright (C) 2002 Petar Maymounkov\n"
+" http://kademlia.scs.cs.nyu.edu\n"
+msgstr "·Fildelingsklient for 'alle' plattformer basert på eMule\n"
+"\n"
+"·Nettside:·http://www.amule.org·\n"
+"·Forum:·http://forum.amule.org·\n"
+"·Vanlege spørsmål:·http://wiki.amule.org·\n"
+"\n"
+"·Kontakt:·admin@amule.org·(administrative saker)·\n"
+"·Opphavsrett·(C)·2003-2007·aMule·Team·\n"
+"\n"
+"·Deler av·aMule·er basert på·\n"
+"·Kademlia:·Fildelingsruting basert på·XOR.\n"
+"·Opphavsrett·(C)·2002·Petar·Maymounkov\n"
+"·http://kademlia.scs.cs.nyu.edu\n"
+
+#: src/amuleDlg.cpp:451 src/PrefsUnifiedDlg.cpp:490
+#: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:677 src/KadDlg.cpp:182
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:914
+#: src/PartFile.cpp:927
+msgid "Message"
+msgstr "Melding"
+
+#: src/amuleDlg.cpp:537
+msgid "Status text"
+msgstr "Statustekst"
+
+#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1317
+msgid "Stops the current connection attempts"
+msgstr "Stoppar noverande koplingsfreistnader"
+
+#: src/amuleDlg.cpp:690
+msgid "Disconnect from "
+msgstr "Fråkople"
+
+#: src/amuleDlg.cpp:693
+msgid "current server"
+msgstr "noverande tenar"
+
+#: src/amuleDlg.cpp:695
+msgid " and "
+msgstr " og "
+
+#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3150
+#: src/MuleTrayIcon.cpp:508
+msgid "Disconnect"
+msgstr "Kople frå"
+
+#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3370
+#: src/muuli_wdr.cpp:3837 src/muuli_wdr.cpp:4063 src/MuleTrayIcon.cpp:511
+msgid "Connect"
+msgstr "Kople til"
+
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4063
+msgid "Connect to any server and/or Kad"
+msgstr "Kople til vilkårleg tenar og/eller Kad"
+
+#: src/amuleDlg.cpp:723
+msgid "WARNING: You have recieved Low-ID!"
+msgstr "ÅTVARING: Du har fått LågID!"
+
+#: src/amuleDlg.cpp:724
+msgid "\tMost likely this is because you're behind a firewall or router."
+msgstr "\tTruleg har dette skjedd fordi du er bak ein brannmur eller ruter."
+
+#: src/amuleDlg.cpp:725
+msgid "\tFor more information, please refer to http://wiki.amule.org"
+msgstr "\tFor meir informasjon, sjå http://wiki.amule.org"
+
+#: src/amuleDlg.cpp:729 src/ServerConnect.cpp:273
+#, c-format
+msgid "Connection established on: %s"
+msgstr "Kopling oppretta på: %s"
+
+#: src/amuleDlg.cpp:805
+#, c-format
+msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
+msgstr "Opp:·%.1f(%.1f)·|·Ned:·%.1f(%.1f)"
+
+#: src/amuleDlg.cpp:807
+#, c-format
+msgid "Up: %.1f | Down: %.1f"
+msgstr "Opp:·%.1f·|·Ned:·%.1f"
+
+#: src/amuleDlg.cpp:828
+#, c-format
+msgid "aMule (%s | Connected)"
+msgstr "aMule·(%s·|·Tilkopla)"
+
+#: src/amuleDlg.cpp:830
+#, c-format
+msgid "aMule (%s | Disconnected)"
+msgstr "aMule·(%s·|·Fråkopla)"
+
+#: src/amuleDlg.cpp:861
+msgid "Do you really want to exit aMule?"
+msgstr "Vil du verkeleg avslutte aMule?"
+
+#: src/amuleDlg.cpp:862
+msgid "Exit confirmation"
+msgstr "Stadfesting av avslutting"
+
+#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:527
+#: src/muuli_wdr.cpp:3630 src/muuli_wdr.cpp:4070
+msgid "Messages"
+msgstr "Meldingar"
+
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4070
+msgid "Messages Window"
+msgstr "Meldingsvindauge"
+
+#: src/amuleDlg.cpp:1150
+msgid "Could not determine the command for running the browser."
+msgstr "Fann ikkje kommando for å køyre nettlesar."
+
+#: src/amuleDlg.cpp:1209
+#, c-format
+msgid "Skin directory '%s' does not exist"
+msgstr "Skinnkatalogen '%s' finst ikkje"
+
+#: src/amuleDlg.cpp:1214
+#, c-format
+msgid "Warning: Unable to open skin file '%s' for read"
+msgstr "ÅTVARING: Greidde ikkje å opne skinnfila '%s' for lesing"
+
+#: src/amuleDlg.cpp:1312
+msgid "Disconnect from any server and/or Kad"
+msgstr "Kople frå einkvar tenar og/eller Kad"
+
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4065
+msgid "Networks"
+msgstr "Nettverk"
+
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4065
+msgid "Networks Window"
+msgstr "Nettverksavindauge"
+
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4067
+msgid "Searches"
+msgstr "Søk"
+
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4067
+msgid "Searches Window"
+msgstr "Søkjevindauge"
+
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4068
+msgid "Transfers"
+msgstr "Overføringar"
+
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4068
+msgid "Files Transfers Window"
+msgstr "Filoverføringsvindauge"
+
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4069
+msgid "Shared Files Window"
+msgstr "Vindauge for delte filer"
+
+#: src/amuleDlg.cpp:1347 src/PrefsUnifiedDlg.cpp:157 src/Statistics.cpp:637
+#: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
+#: src/muuli_wdr.cpp:4071
+msgid "Statistics"
+msgstr "Statistikk"
+
+#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4071
+msgid "Statistics Graph Window"
+msgstr "Statistikkgrafvindauge"
+
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4073
+msgid "Preferences Settings Window"
+msgstr "Innstillingsvalsvindauge"
+
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4074
+msgid "Import"
+msgstr "Importér"
+
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4074
+msgid "The partfile importer tool"
+msgstr "Verkty for delfilimport"
+
+#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4075
+msgid "About"
+msgstr "Om"
+
+#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4075
+msgid "About/Help"
+msgstr "Om/hjelp"
+
+#: src/PrefsUnifiedDlg.cpp:147 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1387
+#: src/muuli_wdr.cpp:3688
+msgid "General"
+msgstr "Generelt"
+
+#: src/PrefsUnifiedDlg.cpp:148 src/Statistics.cpp:682
+msgid "Connection"
+msgstr "Kopling"
+
+#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3683
+msgid "Proxy"
+msgstr "Proxy"
+
+#: src/PrefsUnifiedDlg.cpp:150
+msgid "Message Filter"
+msgstr "Meldingsfilter"
+
+#: src/PrefsUnifiedDlg.cpp:151
+msgid "Remote Controls"
+msgstr "Fjernkontrollar"
+
+#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3574
+msgid "Online Signature"
+msgstr "Nettsignatur"
+
+#: src/PrefsUnifiedDlg.cpp:155
+msgid "Sources Dropping"
+msgstr "Kjeldebortstøyting"
+
+#: src/PrefsUnifiedDlg.cpp:156 src/muuli_wdr.cpp:2167
+msgid "Directories"
+msgstr "Katalogar"
+
+#: src/PrefsUnifiedDlg.cpp:158 src/muuli_wdr.cpp:3439
+msgid "Security"
+msgstr "Tryggleik"
+
+#: src/PrefsUnifiedDlg.cpp:161
+msgid "Gui Tweaks"
+msgstr "Draktinnstillingar"
+
+#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:2458
+msgid "Core Tweaks"
+msgstr "Kjerneinnstillingar"
+
+#: src/PrefsUnifiedDlg.cpp:163 src/muuli_wdr.cpp:4032
+msgid "Events"
+msgstr "Hendingar"
+
+#: src/PrefsUnifiedDlg.cpp:165 src/muuli_wdr.cpp:3865
+msgid "Debugging"
+msgstr "Melde om feil"
+
+#: src/PrefsUnifiedDlg.cpp:219 src/muuli_wdr.cpp:1697
+msgid "User Defined"
+msgstr "Brukardefinert"
+
+#: src/PrefsUnifiedDlg.cpp:466
+msgid ""
+"aMule must be restarted to enable these changes:\n"
+"\n"
+msgstr "aMule·treng omstart for å gjere endringane moglege:\n"
+"\n"
+
+#: src/PrefsUnifiedDlg.cpp:473
+msgid "- TCP port changed.\n"
+msgstr "-·TCP-porten endra.\n"
+
+#: src/PrefsUnifiedDlg.cpp:478
+msgid "- UDP port changed.\n"
+msgstr "-·UDP-porten endra.\n"
+
+#: src/PrefsUnifiedDlg.cpp:488
+msgid ""
+"Your Auto-update servers list is in blank.\n"
+"'Auto-update serverlist at startup' will be disabled."
+msgstr "Lista for automatisk oppdatering av tenarer er tom.\n"
+"Automatisk oppdatering av tenarlista ved oppstart er deaktivert."
+""
+
+#: src/PrefsUnifiedDlg.cpp:497
+msgid ""
+"You have enabled external connections but have not specified a password.\n"
+"External connections cannot be enabled unless a valid password is specified."
+msgstr "Du har aktivert eksterne koplingar, men har ikkje skrive inn eit passord.\n"
+"Eksterne koplingar kan ikkje aktiverast utan eit gyldig passord."
+
+#: src/PrefsUnifiedDlg.cpp:510
+msgid "- Language changed.\n"
+msgstr "- Språk endra.\n"
+
+#: src/PrefsUnifiedDlg.cpp:515
+msgid "- Temp folder changed.\n"
+msgstr "- Mellombels mappe endra.\n"
+
+#: src/PrefsUnifiedDlg.cpp:540 src/muuli_wdr.cpp:112
+msgid "Up: 0.0 | Down: 0.0"
+msgstr "Opp:·0.0·|·Ned:·0.0"
+
+#: src/PrefsUnifiedDlg.cpp:582
+msgid ""
+"Both ED2K and Kad network are disabled.\n"
+"You won't be able to connect until you enable at least one of them."
+msgstr "Både ED2k og Kad er deaktivert.\n"
+"Du kan ikkje kople til før du har aktivert minst ein av dei."
+
+#: src/PrefsUnifiedDlg.cpp:586
+msgid ""
+"Kad will not start if your UDP port is disabled.\n"
+"Enable UDP port or disable Kad."
+msgstr "Kad kan ikkje starte dersom UDP-porten er deaktivert.\n"
+"Aktivér UDP-porten eller deaktivér Kad."
+
+#: src/PrefsUnifiedDlg.cpp:591
+msgid ""
+"\n"
+"You MUST restart aMule now.\n"
+"If you do not restart now, don't complain if anything bad happens.\n"
+msgstr "\n"
+"Du MÅ starte om att aMule no.\n"
+"Ikkje klag dersom du ikkje gjer dette og du får problem.\n"
+
+#: src/PrefsUnifiedDlg.cpp:591
+msgid "WARNING"
+msgstr "ÅTVARING"
+
+#: src/PrefsUnifiedDlg.cpp:674
+msgid ""
+"Your Auto-update servers list is in blank.\n"
+"Please fill in at least one URL to point to a valid server.met file.\n"
+"Click on the button \"List\" by this checkbox to enter an URL."
+msgstr "Lista for automatisk oppdatering av tenarar er tom.\n"
+"Vér god og fylle ut ein URL som peikar til ei gyldig server.met fil.\n"
+"Klikk på knappen \"Liste\" ved denne boksen for å skrive inn ein URL."
+
+#: src/PrefsUnifiedDlg.cpp:801
+msgid "Temporary files"
+msgstr "Mellombelse filer"
+
+#: src/PrefsUnifiedDlg.cpp:806
+msgid "Incoming files"
+msgstr "Innkomande filer"
+
+#: src/PrefsUnifiedDlg.cpp:811
+msgid "Online Signatures"
+msgstr "Nettsignaturar"
+
+#: src/PrefsUnifiedDlg.cpp:824
+#, c-format
+msgid "Choose a folder for %s"
+msgstr "Vel ei mappe for %s"
+
+#: src/PrefsUnifiedDlg.cpp:840
+msgid "Browse wav"
+msgstr "Bla gjennom wav"
+
+#: src/PrefsUnifiedDlg.cpp:841
+msgid "File wav (*.wav)|*.wav||"
+msgstr "Wavfil·(*.wav)|*.wav||"
+
+#: src/PrefsUnifiedDlg.cpp:858
+msgid "Browse for videoplayer"
+msgstr "Bla etter videospelar"
+
+#: src/PrefsUnifiedDlg.cpp:862
+msgid "Select browser"
+msgstr "Vél nettlesar"
+
+#: src/PrefsUnifiedDlg.cpp:868
+#, c-format
+msgid "Executable%s"
+msgstr "Køyrbar%s"
+
+#: src/PrefsUnifiedDlg.cpp:889
+msgid "Edit Serverlist"
+msgstr "Redigér tenarliste"
+
+#: src/PrefsUnifiedDlg.cpp:890
+msgid ""
+"Add here URL's to download server.met files.\n"
+"Only one url on each line."
+msgstr "Skriv inn URL`en for å laste ned server.met filer.\n"
+"Berre ein URL på kvar linje."
+
+#: src/PrefsUnifiedDlg.cpp:946
+#, c-format
+msgid "Update delay: %d secs"
+msgstr "Oppdateringsforseinking: %d sekund"
+
+#: src/PrefsUnifiedDlg.cpp:953
+#, c-format
+msgid "Time for average graph: %d mins"
+msgstr "Tid for gjennomsnittleg graf: %d minutt"
+
+#: src/PrefsUnifiedDlg.cpp:959
+#, c-format
+msgid "Connections Graph Scale: %d"
+msgstr "Koplingsgrafskala: %d"
+
+#: src/PrefsUnifiedDlg.cpp:965
+#, c-format
+msgid "Update delay : %d secs"
+msgstr "Oppdateringsforseinking: %d sekund"
+
+#: src/PrefsUnifiedDlg.cpp:970
+#, c-format
+msgid "File Buffer Size: %d bytes"
+msgstr "Filbufferstorleik: %d bytes"
+
+#: src/PrefsUnifiedDlg.cpp:975
+#, c-format
+msgid "Upload Queue Size: %d clients"
+msgstr "Storleik på opplastingskø: %d klientar"
+
+#: src/PrefsUnifiedDlg.cpp:982
+#, c-format
+msgid "Server connection refresh interval: %d minutes"
+msgstr "Oppfriskingsintervall for tenarkopling: %d minutt"
+
+#: src/PrefsUnifiedDlg.cpp:985
+msgid "Server connection refresh interval: Disabled"
+msgstr "Oppfriskingsintervall for tenarkopling: Deaktivert"
+
+#: src/PrefsUnifiedDlg.cpp:1052
+#, c-format
+msgid "Execute command on `%s' event"
+msgstr "Køyr kommando på `%s' hending"
+
+#: src/PrefsUnifiedDlg.cpp:1055
+msgid "Enable command execution on core"
+msgstr "Aktivér kommandokøyring i kjernen"
+
+#: src/PrefsUnifiedDlg.cpp:1063
+msgid "Core command:"
+msgstr "Kjernekommando:"
+
+#: src/PrefsUnifiedDlg.cpp:1072
+msgid "Enable command execution on GUI"
+msgstr "Aktivér kommandokøyring på drakt"
+
+#: src/PrefsUnifiedDlg.cpp:1080
+msgid "GUI command:"
+msgstr "Draktkommando:"
+
+#: src/PrefsUnifiedDlg.cpp:1089
+msgid "The following variables will be replaced:"
+msgstr "Følgjande variablar vert erstatta:"
+
+#: src/ExternalConn.cpp:81
+msgid "Unauthorized access attempt. Connection closed."
+msgstr "Uaotorisert freisting på tilgang. Kopling lukka."
+
+#: src/ExternalConn.cpp:94
+msgid "External connection closed."
+msgstr "Ekstern kopling lukka."
+
+#: src/ExternalConn.cpp:121
+msgid "External connections disabled due to empty password!"
+msgstr "Eksterne koplingar deaktiverte på grunn av tomt passord!"
+
+#: src/ExternalConn.cpp:146
+msgid "External connections disabled in config file"
+msgstr "Eksterne koplingar deaktiverte i konfigurasjonsfila"
+
+#: src/ExternalConn.cpp:162
+msgid "New external connection accepted"
+msgstr "Ny ekstern kopling akseptert"
+
+#: src/ExternalConn.cpp:165
+msgid "Error: couldn't accept a new external connection"
+msgstr "Feil: kunne ikkje godta ny ekstern kopling"
+
+#: src/ExternalConn.cpp:184
+msgid "External connection refused due to empty password in preferences!"
+msgstr "Ekstern kopling nekta på grunn av tomt passord i innstillingar!"
+
+#: src/ExternalConn.cpp:194
+#, c-format
+msgid "Connecting client: %s %s"
+msgstr "Koplar til klient: %s %s"
+
+#: src/ExternalConn.cpp:196
+msgid "Unknown version"
+msgstr "Ukjend utgåve"
+
+#: src/ExternalConn.cpp:207
+msgid ""
+"Incorrect EC version ID, there might be binary incompatibility. Use core and "
+"remote from same snapshot."
+msgstr "Ikkje rett EC utgåve ID: det kan vere binær inkompatibilitet. Bruk core og remote frå same snapshot."
+
+#: src/ExternalConn.cpp:212
+msgid ""
+"You cannot connect to a release version from an arbitrary CVS version! "
+"*sigh* possible crash prevented"
+msgstr "Du kan ikkje kople til ei utgivingsutgåve frå ei vilkårleg CVS-utgåve! "
+"*sukk* mogleg krasj hindra"
+
+#: src/ExternalConn.cpp:228
+msgid "Authentication failed."
+msgstr "Godkjenning mislukka."
+
+#: src/ExternalConn.cpp:232
+msgid "Invalid protocol version."
+msgstr "Ugyldig protokullutgåve."
+
+#: src/ExternalConn.cpp:236
+msgid "Missing protocol version tag."
+msgstr "Manglande merkelapp for protokollutgåve."
+
+#: src/ExternalConn.cpp:240
+msgid "Invalid request, you should first authenticate."
+msgstr "Ugyldig etterspurnad, du treng godkjenning først."
+
+#: src/ExternalConn.cpp:246
+msgid "Access granted."
+msgstr "Tilgang innvilga."
+
+#: src/ExternalConn.cpp:495
+#, c-format
+msgid "Remote PartFile command failed: FileHash not found: %s"
+msgstr "Kommando for fjern delfil mislukka: Filhash ikkje funnen: %s"
+
+#: src/ExternalConn.cpp:497
+#, c-format
+msgid "FileHash not found: %s"
+msgstr "Filhash ikkje funnen: %s"
+
+#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+msgid "OOPS! OpCode processing error!"
+msgstr "OPS! Handsamingsfeil i OpCode!"
+
+#: src/ExternalConn.cpp:602
+msgid "Server not added"
+msgstr "Tenar ikkje lagd til"
+
+#: src/ExternalConn.cpp:620
+#, c-format
+msgid "server not found: %s"
+msgstr "tenar ikkje funnen: %s"
+
+#: src/ExternalConn.cpp:636
+msgid "need to define server to be removed"
+msgstr "treng å velje tenar for fjerning"
+
+#: src/ExternalConn.cpp:650
+msgid "ED2K is disabled in preferences."
+msgstr "ED2k er deaktivert i innstillingar"
+
+#: src/ExternalConn.cpp:746
+msgid "Search in progress. Refetch results in a moment!"
+msgstr "Søk i framdrift. Hentar inn att resultata om ein augneblink!"
+
+#: src/ExternalConn.cpp:751
+msgid "WebSearch from remote interface makes no sense."
+msgstr "Nettsøk frå fjern adresse gir ikkje meining."
+
+#: src/ExternalConn.cpp:802
+msgid "Kad is disabled in preferences."
+msgstr "Kad er deaktivert i innstillingar."
+
+#: src/ExternalConn.cpp:964
+msgid "No points for graph."
+msgstr "Ingen punkt for graf."
+
+#: src/ExternalConn.cpp:973
+msgid "Your client is not configured for this detail level."
+msgstr "Klienten din er ikkje konfigurert for dette detaljnivået."
+
+#: src/ExternalConn.cpp:1001
+msgid "ExternalConn: shutdown requested"
+msgstr "Fjernkopling: ber om avslutting"
+
+#: src/ExternalConn.cpp:1013
+msgid "Already shutting down."
+msgstr "Avsluttar allereie."
+
+#: src/ExternalConn.cpp:1021
+#, c-format
+msgid "ExternalConn: adding link '%s'."
+msgstr "Eksternkopling: legg til lenke '%s'."
+
+#: src/ExternalConn.cpp:1027
+msgid "Invalid link or already on list."
+msgstr "Ikkje gangbar lenke eller lenka allereie på lista."
+
+#: src/ExternalConn.cpp:1104
+msgid "File not found."
+msgstr "Fil ikkje funne."
+
+#: src/ExternalConn.cpp:1109
+msgid "Invalid file name."
+msgstr "Ikkje gangbart filnamn."
+
+#: src/ExternalConn.cpp:1117
+msgid "Unable to rename file."
+msgstr "Ikkje i stand til å døype om fila."
+
+#: src/ExternalConn.cpp:1318
+msgid "Already connected to ED2K."
+msgstr "Allereie tilkopla ED2k."
+
+#: src/ExternalConn.cpp:1321
+msgid "Connecting to ED2K..."
+msgstr "Koplar til ED2k..."
+
+#: src/ExternalConn.cpp:1329
+msgid "Already connected to Kad."
+msgstr "Allereie tilkopla Kad."
+
+#: src/ExternalConn.cpp:1332
+msgid "Connecting to Kad..."
+msgstr "Koplar til Kad..."
+
+#: src/ExternalConn.cpp:1337
+msgid "All networks are disabled."
+msgstr "Alle nettverk er deaktiverte."
+
+#: src/ExternalConn.cpp:1345
+msgid "Disconnected from ED2K."
+msgstr "Fråkopla ED2k."
+
+#: src/ExternalConn.cpp:1349
+msgid "Disconnected from Kad."
+msgstr "Fråkopla Kad."
+
+#: src/ExternalConn.cpp:1357
+#, c-format
+msgid "ExternalConn: invalid opcode received: %#x"
+msgstr "Fjernkopling: ikkje gangbar opkode motteken: %#x"
+
+#: src/ExternalConn.cpp:1360
+msgid "Invalid opcode (wrong protocol version?)"
+msgstr "Ikkje gangbar opkode (feil protokollutgåve?)"
+
+#: src/UploadClient.cpp:269
+#, c-format
+msgid "Failed to open file (%s), removing from list of shared files."
+msgstr "Greidde ikkje å opne fila (%s), fjernar frå lista over delte filer."
+
+#: src/UploadClient.cpp:714
+#, c-format
+msgid "Hashset requested for unknown file: %s"
+msgstr "Hashsett etterspurt for ukjend fil: %s"
+
+#: src/UploadClient.cpp:903 src/UploadClient.cpp:948
+#, c-format
+msgid "Client requests %u"
+msgstr "Etterspurnader frå klient %u"
+
+#: src/UploadClient.cpp:904 src/UploadClient.cpp:949
+#, c-format
+msgid "File block %u-%u (%d bytes):"
+msgstr "Filblokk %u-%u·(%d·bytes):"
+
+#: src/UploadClient.cpp:918
+msgid "Client request is invalid!"
+msgstr "Klienten sin etterspurnad er ugangbar!"
+
+#: src/UploadClient.cpp:941
+#, c-format
+msgid "Client request is invalid! %i / %i"
+msgstr "Klienten sin etterspurnad er ugangbar! %i·/·%i"
+
+#: src/TerminationProcess.cpp:48
+#, c-format
+msgid "Command `%s' with pid `%d' has finished with status code `%d'."
+msgstr "Kommandoen·`%s'·med·pid·`%d'·er ferdig med statuskode·`%d'."
+
+#: src/ServerWnd.cpp:104
+msgid "Server not added: No IP or hostname specified."
+msgstr "Tenar ikkje lagd til: Manglar IP eller vertsnamn."
+
+#: src/ServerWnd.cpp:109
+msgid "Server not added: Invalid server-port specified."
+msgstr "Tenar ikkje lagd til: Ikkje gangbar tenarport."
+
+#: src/ServerWnd.cpp:162
+msgid "ED2K Status:"
+msgstr "ED2k status:"
+
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:681
+#: src/ClientListCtrl.cpp:991
+msgid "Connected"
+msgstr "Tilkopla"
+
+#: src/ServerWnd.cpp:169 src/muuli_wdr.cpp:3129
+msgid "IP:Port"
+msgstr "IP:Port"
+
+#: src/ServerWnd.cpp:173
+msgid "ID"
+msgstr "ID"
+
+#: src/ServerWnd.cpp:205
+msgid "Kademlia Status:"
+msgstr "Kademlia status"
+
+#: src/ServerWnd.cpp:208
+msgid "Running"
+msgstr "Køyrer"
+
+#: src/ServerWnd.cpp:214
+msgid "Status:"
+msgstr "Status:"
+
+#: src/ServerWnd.cpp:215
+msgid "Disconnected"
+msgstr "Fråkopla"
+
+#: src/ServerWnd.cpp:218
+msgid "Connection State:"
+msgstr "Tilkoplingsstatus:"
+
+#: src/ServerWnd.cpp:219
+msgid "Firewalled"
+msgstr "Brannmura"
+
+#: src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2881 src/muuli_wdr.cpp:2984
+#: src/muuli_wdr.cpp:3226
+msgid "OK"
+msgstr "OK"
+
+#: src/ServerWnd.cpp:223
+msgid "Firewalled state: "
+msgstr "Brannmura status: "
+
+#: src/ServerWnd.cpp:224
+msgid "Connected to buddy"
+msgstr "Tilkopla kamerat"
+
+#: src/ServerWnd.cpp:224
+msgid "No buddy"
+msgstr "Ingen kamerat"
+
+#: src/ServerWnd.cpp:228
+msgid "Buddy address: "
+msgstr "Kamerat si adresse: "
+
+#: src/ServerWnd.cpp:234
+msgid "Average Users:"
+msgstr "Gjennomsnitt brukarar:"
+
+#: src/ServerWnd.cpp:237
+msgid "Average Files:"
+msgstr "Gjennomsnitt filer:"
+
+#: src/ServerWnd.cpp:250 src/TextClient.cpp:692
+msgid "Not running"
+msgstr "Køyrer ikkje"
+
+#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:418
+#, c-format
+msgid "Uptime: %s"
+msgstr "Oppetid: %s"
+
+#: src/Statistics.cpp:644 src/muuli_wdr.cpp:653
+msgid "Transfer"
+msgstr "Overføring"
+
+#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:469
+msgid "Uploads"
+msgstr "Opplastingar"
+
+#: src/Statistics.cpp:647
+#, c-format
+msgid "Uploaded Data (Session (Total)): %s"
+msgstr "Opplasta data (økt (total)): %s"
+
+#: src/Statistics.cpp:649 src/Statistics.cpp:668
+#, c-format
+msgid "Total Overhead (Packets): %s"
+msgstr "Totalt dataoverskot (pakkar): %s"
+
+#: src/Statistics.cpp:650 src/Statistics.cpp:669
+#, c-format
+msgid "File Request Overhead (Packets): %s"
+msgstr "Dataoverskot på filetterspurnader (pakkar): %s"
+
+#: src/Statistics.cpp:652 src/Statistics.cpp:671
+#, c-format
+msgid "Source Exchange Overhead (Packets): %s"
+msgstr "Dataoverskot på kjeldeutveksling (pakkar): %s"
+
+#: src/Statistics.cpp:654 src/Statistics.cpp:673
+#, c-format
+msgid "Server Overhead (Packets): %s"
+msgstr "Dataoverskot på tenar (pakkar): %s"
+
+#: src/Statistics.cpp:656 src/Statistics.cpp:675
+#, c-format
+msgid "Kad Overhead (Packets): %s"
+msgstr "Dataoverskot Kad (pakkar): %s"
+
+#: src/Statistics.cpp:658
+#, c-format
+msgid "Active Uploads: %s"
+msgstr "Aktive opplastingar: %s"
+
+#: src/Statistics.cpp:659
+#, c-format
+msgid "Waiting Uploads: %s"
+msgstr "Ventande opplastingar: %s"
+
+#: src/Statistics.cpp:660
+#, c-format
+msgid "Total successful upload sessions: %s"
+msgstr "Tal på samtlege vellukka opplastingar: %s"
+
+#: src/Statistics.cpp:661
+#, c-format
+msgid "Total failed upload sessions: %s"
+msgstr "Tal på samtlege mislukka opplastingar: %s"
+
+#: src/Statistics.cpp:663
+#, c-format
+msgid "Average upload time: %s"
+msgstr "Gjennomsnittleg opplastingstid: %s"
+
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+msgid "Downloads"
+msgstr "Nedlastingar"
+
+#: src/Statistics.cpp:666
+#, c-format
+msgid "Downloaded Data (Session (Total)): %s"
+msgstr "Nedlasta data (økt (total)): %s"
+
+#: src/Statistics.cpp:677
+#, c-format
+msgid "Found Sources: %s"
+msgstr "Funne kjelder: %s"
+
+#: src/Statistics.cpp:678
+#, c-format
+msgid "Active Downloads (chunks): %s"
+msgstr "Aktive nedlastingar (delar): %s"
+
+#: src/Statistics.cpp:680
+#, c-format
+msgid "Session UL:DL Ratio (Total): %s"
+msgstr "Økt OL:NL proporsjon (total): %s"
+
+#: src/Statistics.cpp:683
+#, c-format
+msgid "Average Downloadrate (Session): %s"
+msgstr "Gjennomsnittleg nedlastingsfart (økt): %s"
+
+#: src/Statistics.cpp:684
+#, c-format
+msgid "Average Uploadrate (Session): %s"
+msgstr "Gjennomsnittleg opplastingsfart (økt): %s"
+
+#: src/Statistics.cpp:685
+#, c-format
+msgid "Max Downloadrate (Session): %s"
+msgstr "Maksimal nedlastingsfart (økt): %s"
+
+#: src/Statistics.cpp:686
+#, c-format
+msgid "Max Uploadrate (Session): %s"
+msgstr "Maksimal opplastingsfart (økt): %s"
+
+#: src/Statistics.cpp:687
+#, c-format
+msgid "Reconnects: %i"
+msgstr "Attkoplingar: %i"
+
+#: src/Statistics.cpp:688
+#, c-format
+msgid "Time Since First Transfer: %s"
+msgstr "Tid sidan første overføring: %s"
+
+#: src/Statistics.cpp:689
+#, c-format
+msgid "Connected To Server Since: %s"
+msgstr "Tilkopla tenar sidan: %s"
+
+#: src/Statistics.cpp:690
+#, c-format
+msgid "Active Connections (estimate): %i"
+msgstr "Aktive koplingar (berekna): %i"
+
+#: src/Statistics.cpp:691
+#, c-format
+msgid "Max Connection Limit Reached: %s"
+msgstr "Maksimal koplingsgrense nådd: %s"
+
+#: src/Statistics.cpp:692
+#, c-format
+msgid "Average Connections (estimate): %g"
+msgstr "Gjennomsnittleg tal på koplingar (berekna): %g"
+
+#: src/Statistics.cpp:694
+#, c-format
+msgid "Peak Connections (estimate): %i"
+msgstr "Topp koplingar (berekna): %i"
+
+#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:249
+msgid "Clients"
+msgstr "Klientar"
+
+#: src/Statistics.cpp:703
+msgid "Filtered"
+msgstr "Filtrert"
+
+#: src/Statistics.cpp:705
+#, c-format
+msgid "Total: %i Known: %i"
+msgstr "Total:·%i·Kjend:·%i"
+
+#: src/Statistics.cpp:708 src/muuli_wdr.cpp:1996
+msgid "Servers"
+msgstr "Tenarar"
+
+#: src/Statistics.cpp:709
+#, c-format
+msgid "Working Servers: %i"
+msgstr "Fungerande tenarar: %i"
+
+#: src/Statistics.cpp:710
+#, c-format
+msgid "Failed Servers: %i"
+msgstr "Mislukka tenarar: %i"
+
+#: src/Statistics.cpp:711
+#, c-format
+msgid "Total: %s"
+msgstr "Total:·%s"
+
+#: src/Statistics.cpp:712
+#, c-format
+msgid "Deleted Servers: %s"
+msgstr "Sletta tenarar: %s"
+
+#: src/Statistics.cpp:713
+#, c-format
+msgid "Filtered Servers: %s"
+msgstr "Filtrerte tenarar: %s"
+
+#: src/Statistics.cpp:714
+#, c-format
+msgid "Users on Working Servers: %llu"
+msgstr "Brukarar på fungerande tenarar: %llu"
+
+#: src/Statistics.cpp:715
+#, c-format
+msgid "Files on Working Servers: %llu"
+msgstr "Filer på fungerande tenarar: %llu"
+
+#: src/Statistics.cpp:716
+#, c-format
+msgid "Total Users: %llu"
+msgstr "Totalt brukertal: %llu"
+
+#: src/Statistics.cpp:717
+#, c-format
+msgid "Total Files: %llu"
+msgstr "Totalt filtal: %llu"
+
+#: src/Statistics.cpp:718
+#, c-format
+msgid "Server Occupation: %.2f%%"
+msgstr "Tenerlast: %.2f%%"
+
+#: src/Statistics.cpp:722
+#, c-format
+msgid "Number of Shared Files: %s"
+msgstr "Tal på delte filer: %s"
+
+#: src/Statistics.cpp:723
+#, c-format
+msgid "Total size of Shared Files: %s"
+msgstr "Total storleik på delte filer: %s"
+
+#: src/Statistics.cpp:725
+#, c-format
+msgid "Average filesize: %s"
+msgstr "Gjennomsnittleg filstorleik: %s"
+
+#: src/Statistics.cpp:741
+#, c-format
+msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
+msgstr "LågID:·%u·(%.2f%%·Total·%.2f%%·Kjend)"
+
+#: src/Statistics.cpp:742
+#, c-format
+msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
+msgstr "Sikident·På/Av:·%u·(%.2f%%)·:·%u·(%.2f%%)"
+
+#: src/Statistics.cpp:871
+msgid "Operating System"
+msgstr "Operativsystem"
+
+#: src/Statistics.cpp:896
+msgid "Not Received"
+msgstr "Ikkje motteke"
+
+#: src/MuleTextCtrl.cpp:79
+msgid "Cut"
+msgstr "Klipp ut"
+
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:434
+msgid "Copy"
+msgstr "Kopiér"
+
+#: src/MuleTextCtrl.cpp:81
+msgid "Paste"
+msgstr "Lim inn"
+
+#: src/MuleTextCtrl.cpp:86
+msgid "Select All"
+msgstr "Vél alle"
+
+#: src/SearchList.cpp:313
+msgid "Kad search can't be done if Kad is not running"
+msgstr "Du kan ikkje søkje på Kad dersom Kad ikkje køyrer"
+
+#: src/SearchList.cpp:315
+msgid "ED2K search can't be done if ED2K is not connected"
+msgstr "Du kan ikkje søkje på ED2k dersom du ikkje er tilkopla ED2k"
+
+#: src/SearchList.cpp:359
+msgid "Unexpected error while attempting Kad search: "
+msgstr "Uventa feil oppstod under søk på Kad: "
+
+#: src/ClientTCPSocket.cpp:797
+#, c-format
+msgid "Message filtered from '%s' (IP:%s)"
+msgstr "Melding filtrért frå '%s'·(IP:%s)"
+
+#: src/ClientTCPSocket.cpp:799
+#, c-format
+msgid "New message from '%s' (IP:%s)"
+msgstr "Ny melding frå '%s'·(IP:%s)"
+
+#: src/ClientTCPSocket.cpp:817
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
+msgstr "Brukar %s·(%u) etterspurde liste over dei delte filene dine -> Godteke"
+
+#: src/ClientTCPSocket.cpp:838
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> Denied"
+msgstr "Brukar·%s (%u)·etterspurde·liste·over·dei·delte·filene·dine·-> Nekta"
+
+#: src/ClientTCPSocket.cpp:870
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
+msgstr "Brukar %s·(%u) etterspurte lista di over delte katalogar -> Godteke"
+
+#: src/ClientTCPSocket.cpp:917
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> Denied"
+msgstr "Brukar·%s (%u)·etterspurte·lista·di·over·delte·katalogar·->·Nekta"
+
+#: src/ClientTCPSocket.cpp:942
+#, c-format
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgstr "Brukar %s·(%u) etterspurte lista over delte filer for katalogen %s·-> godteke"
+
+#: src/ClientTCPSocket.cpp:979
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
+msgstr "Brukar·%s (%u)·etterspurte·lista·over·delte·filer·for·katalogen·%s ->·nekta"
+
+#: src/ClientTCPSocket.cpp:998
+#, c-format
+msgid "User %s (%u) shares directory %s"
+msgstr "Brukar %s·(%u) deler katalogen %s"
+
+#: src/ClientTCPSocket.cpp:1013
+#, c-format
+msgid "User %s (%u) sent unrequested shared dirs."
+msgstr "Brukar %s·(%u) sende ikkje etterspurte delte kataloger."
+
+#: src/ClientTCPSocket.cpp:1028
+#, c-format
+msgid "User %s (%u) sent sharedfiles-list for directory %s"
+msgstr "Brukar %s·(%u) sende liste over delte filer for katalogen %s"
+
+#: src/ClientTCPSocket.cpp:1035
+#, c-format
+msgid "User %s (%u) finished sending sharedfiles-list"
+msgstr "Brukar %s·(%u) er ferdig med å sende liste over delte filer"
+
+#: src/ClientTCPSocket.cpp:1040
+#, c-format
+msgid "User %s (%u) sent unwanted sharedfiles-list"
+msgstr "Brukar%s·(%u) sende ikkje etterspurt liste over delte filer"
+
+#: src/ClientTCPSocket.cpp:1052
+#, c-format
+msgid "User %s (%u) denied access to shared directories/files list"
+msgstr "Brukar %s·(%u) nekta tilgang til delte kataloger/filer"
+
+#: src/KadDlg.cpp:131
+#, c-format
+msgid "Nodes (%u)"
+msgstr "Noder (%u)"
+
+#: src/KadDlg.cpp:168
+msgid "Invalid ip to bootstrap"
+msgstr "Ikkje gangbar IP for eigenoppstart"
+
+#: src/KadDlg.cpp:178
+msgid "Invalid port to bootstrap"
+msgstr "Ikkje gangbar port for eigenoppstart"
+
+#: src/KadDlg.cpp:182
+msgid "You can't bootstrap an specific ip from remote GUI yet."
+msgstr "Du kan ikkje eigenoppstarte ein bestemd IP frå ei fjern drakt enno."
+
+#: src/KadDlg.cpp:185
+msgid "Please fill all fields required"
+msgstr "Vér god å fylle ut alle naudsynte felt"
+
+#: src/KadDlg.cpp:206
+msgid "Are you sure you want to download a new nodes.dat file?\n"
+msgstr "Er du viss på at du vil laste ned ei ny nodes.dat fil?\n"
+
+#: src/KadDlg.cpp:207
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
+msgstr "Å gjere dette vil fjerne dine novérande noder og starte Kademlia på nytt."
+
+#: src/KadDlg.cpp:208
+msgid "Continue?"
+msgstr "Halde fram?"
+
+#: src/KadDlg.cpp:211 src/ServerList.cpp:774
+msgid "Invalid URL"
+msgstr "Ugangbar URL"
+
+#: src/KadDlg.cpp:224
+msgid "You can't update server.met from remote GUI yet."
+msgstr "Du kan ikkje oppdatere server.met frå ei fjern drakt enno."
+
+#: src/Logger.cpp:266
+msgid "Error: "
+msgstr "Feil: "
+
+#: src/Logger.cpp:266
+msgid "Warning: "
+msgstr "Åtvaring: "
+
+#: src/AddFriend.cpp:45
+msgid "Add a Friend"
+msgstr "Legg til ein kamerat"
+
+#: src/AddFriend.cpp:61
+msgid "You have to enter a valid IP and port!"
+msgstr "Du må skrive inn ein gangbar IP og port!"
+
+#: src/AddFriend.cpp:61 src/AddFriend.cpp:67
+msgid "Information"
+msgstr "Informasjon"
+
+#: src/AddFriend.cpp:67
+msgid "The specified userhash is not valid!"
+msgstr "Den innskrivne brukarhashen er ikkje gyldig!"
+
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/FileDetailListCtrl.cpp:44
+msgid "Sources"
+msgstr "Kjelder"
+
+#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:514
+#: src/ClientListCtrl.cpp:817
+msgid "File"
+msgstr "Fil"
+
+#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/muuli_wdr.cpp:1799
+msgid "Download"
+msgstr "Nedlasting"
+
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
+msgid "Category"
+msgstr "Kategori"
+
+#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:585
+msgid "Main"
+msgstr "Hovud"
+
+#: src/SearchListCtrl.cpp:535
+msgid "Download in category"
+msgstr "Nedlasting i kategori"
+
+#: src/SearchListCtrl.cpp:541
+msgid "Search related files (ED2k, local server)"
+msgstr "Søk beslekta filer (Ed2k, lokal tenar)"
+
+#: src/SearchListCtrl.cpp:544
+msgid "Copy ED2k link to clipboard"
+msgstr "Kopiér ED2k lenke til utklippstavla"
+
+#: src/amule-remote-gui.cpp:72
+msgid "Connect to remote amule"
+msgstr "Kople til aMule over nettet"
+
+#: src/amule-remote-gui.cpp:277
+msgid "Connection failed "
+msgstr "Oppkopling mislukka "
+
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:852
+#: src/amule.cpp:970 src/amule.cpp:1346
+msgid "Error"
+msgstr "Feil"
+
+#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
+msgid "All"
+msgstr "Alle"
+
+#: src/amule-remote-gui.cpp:750
+#, c-format
+msgid "Total Users: %s | Total Files: %s"
+msgstr "Brukarar totalt:·%s·|·Filer totalt:·%s"
+
+#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:517
+msgid "Transferred"
+msgstr "Overført"
+
+#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
+msgid "Completed"
+msgstr "Ferdig"
+
+#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:516
+msgid "Speed"
+msgstr "Fart"
+
+#: src/DownloadListCtrl.cpp:199
+msgid "Progress"
+msgstr "Framdrift"
+
+#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:520
+msgid "Status"
+msgstr "Status"
+
+#: src/DownloadListCtrl.cpp:203
+msgid "Time Remaining"
+msgstr "Attståande tid"
+
+#: src/DownloadListCtrl.cpp:204
+msgid "Last Seen Complete"
+msgstr "Sist sett komplett"
+
+#: src/DownloadListCtrl.cpp:205
+msgid "Last Reception"
+msgstr "Sist motteke"
+
+#: src/DownloadListCtrl.cpp:610
+msgid "Are you sure that you wish to delete the selected file(s)?"
+msgstr "Er du viss på at du vil slette den valde fila/filene?"
+
+#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:359
+msgid "Send message to user"
+msgstr "Send melding til brukar"
+
+#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:359
+msgid "Message to send:"
+msgstr "Melding å sende:"
+
+#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+msgid "&Stop"
+msgstr "%Stopp"
+
+#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+msgid "&Pause"
+msgstr "&Pause"
+
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+msgid "&Resume"
+msgstr "&Hald fram"
+
+#: src/DownloadListCtrl.cpp:929
+msgid "C&lear completed"
+msgstr "&Ta bort ferdige"
+
+#: src/DownloadListCtrl.cpp:935
+msgid "Swap every A4AF to this file now"
+msgstr "Byt alle A4AF til denne fila no"
+
+#: src/DownloadListCtrl.cpp:937
+msgid "Swap every A4AF to this file (Auto)"
+msgstr "Byt alle A4AF til denne fila (auto)"
+
+#: src/DownloadListCtrl.cpp:942
+msgid "Swap every A4AF to any other file now"
+msgstr "Byt alle A4AF til anna fil no"
+
+#: src/DownloadListCtrl.cpp:947
+msgid "Drop No Needed Sources now"
+msgstr "Støyt bort unaudsynte kjelder no"
+
+#: src/DownloadListCtrl.cpp:949
+msgid "Drop Full Queue Sources now"
+msgstr "Støyt bort kjelder med full kø no"
+
+#: src/DownloadListCtrl.cpp:951
+msgid "Drop High Queue Rating Sources now"
+msgstr "Støyt bort kjelder med lang kø no"
+
+#: src/DownloadListCtrl.cpp:953
+msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+msgstr "Rydd opp i kjelder no"
+
+#: src/DownloadListCtrl.cpp:955
+msgid "Extended Options"
+msgstr "Utvida innstillingar"
+
+#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+msgid "Preview"
+msgstr "Førehandssyning"
+
+#: src/DownloadListCtrl.cpp:967
+msgid "Show file &details"
+msgstr "Syn fil &detaljar"
+
+#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+msgid "Show all comments"
+msgstr "Syn alle kommentarar"
+
+#: src/DownloadListCtrl.cpp:974
+msgid "Copy magnet URI to clipboard"
+msgstr "Kopiér magnet URI til utklippstavla"
+
+#: src/DownloadListCtrl.cpp:987
+msgid "unassign"
+msgstr "ortildele"
+
+#: src/DownloadListCtrl.cpp:994
+msgid "Assign to category"
+msgstr "Vel kategori"
+
+#: src/DownloadListCtrl.cpp:1023
+msgid "&Open the file"
+msgstr "&Opne fila"
+
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+msgid "Remove from friends"
+msgstr "Fjerne frå kameratar"
+
+#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:251
+msgid "Add to Friends"
+msgstr "Legg til kameratar"
+
+#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:253
+msgid "Send message"
+msgstr "Send melding"
+
+#: src/DownloadListCtrl.cpp:1057
+msgid "Swap to this file"
+msgstr "Byt til denne fila"
+
+#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
+msgid "%y/%m/%d %H:%M:%S"
+msgstr "%y/%m/%d·%H:%M:%S"
+
+#: src/DownloadListCtrl.cpp:1711
+msgid "A4AF"
+msgstr "A4AF"
+
+#: src/DownloadListCtrl.cpp:1761
+#, c-format
+msgid "QR: %u (%i)"
+msgstr "QR:·%u·(%i)"
+
+#: src/DownloadListCtrl.cpp:1775
+msgid "Asked for another file"
+msgstr "Spurt etter anna fil (A4AF)"
+
+#: src/DownloadListCtrl.cpp:2105
+#, c-format
+msgid "Downloads (%i)"
+msgstr "Nedlastingar (%i)"
+
+#: src/DownloadListCtrl.cpp:2288
+msgid ""
+"Please set your prefered video player on preferences.\n"
+"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
+"on every preview"
+msgstr "Vér god å skrive inn videospelaren din i innstillingar.\n"
+"I mellomtida vil aMul e freiste å nytte mplayer og du vil få denne åtvaringa "
+"ved kvar førehandssyning"
+
+#: src/DownloadListCtrl.cpp:2291
+msgid "File preview"
+msgstr "Førehandssyning"
+
+#: src/DownloadListCtrl.cpp:2310
+msgid "ERROR: Failed to execute external media-player!"
+msgstr "FEIL: Greidde ikkje å køyre ekstern mediespelar!"
+
+#: src/DownloadListCtrl.cpp:2311
+#, c-format
+msgid "Command: %s"
+msgstr "Kommando: %s"
+
+#: src/PartFile.cpp:247
+msgid "ERROR: Failed to open partfile)"
+msgstr "FEIL: Greidde ikkje å opne delfil"
+
+#: src/PartFile.cpp:251
+msgid "ERROR: Failed to create partfile)"
+msgstr "FEIL: Greidde ikkje å lage delfil"
+
+#: src/PartFile.cpp:293 src/PartFile.cpp:324
+msgid ""
+"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"met recovery solutions"
+msgstr "Feil: Greidde ikkje å laste tryggleikskopifila. Søk på http://forum.amule.org for å "
+"finne måtar å attskape part.met-fila"
+
+#: src/PartFile.cpp:296
+#, c-format
+msgid "Error: Failed to open part.met file: %s ==> %s"
+msgstr "Feil: Greidde ikkje å opne part.met-fila: %s·==>·%s"
+
+#: src/PartFile.cpp:305
+msgid ""
+"Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
+"part.met recovery solutions"
+msgstr "Feil: Tryggleikskopi part-met er 0 i storleik! Søk på http://forum.amule.org·for "
+"metodar til å attskape part.met"
+
+#: src/PartFile.cpp:308
+#, c-format
+msgid "Error: part.met file is 0 size: %s ==> %s"
+msgstr "Feil: part.met fila er 0 i storleik: %s·==>·%s"
+
+#: src/PartFile.cpp:318
+#, c-format
+msgid "Trying to load backup of met-file from %s"
+msgstr "Freistar å laste tryggleikskopi av met-fila frå %s"
+
+#: src/PartFile.cpp:329
+#, c-format
+msgid "Error: part.met backup file is 0 size: %s ==> %s"
+msgstr "Feil: tryggleikskopien av part.met er 0 i storleik: %s·==>·%s"
+
+#: src/PartFile.cpp:343
+#, c-format
+msgid "Error: Invalid part.met fileversion: %s ==> %s"
+msgstr "Feil: Ugangbar filutgåve av part.met: %s·==>·%s"
+
+#: src/PartFile.cpp:598
+#, c-format
+msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgstr "Feil: %s (%s) er korrupt (feil merkelappstejlar), ikkje i stand til å laste fila."
+
+#: src/PartFile.cpp:601
+msgid "Trying to recover file info..."
+msgstr "Freistar å hente fram att filinformasjon..."
+
+#: src/PartFile.cpp:616
+msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
+msgstr "Attskaper fil utan namn - freistar å attskape ho som RecoverdFile.dat"
+
+#: src/PartFile.cpp:621
+msgid "Recovered all available file info :D - Trying to use it..."
+msgstr "Attskapte all tilgjengeleg filinformasjon :D - Freistar å nytte den..."
+
+#: src/PartFile.cpp:623
+msgid "Unable to recover file info :("
+msgstr "Ikkje i stand til å attskape filinformasjon :("
+
+#: src/PartFile.cpp:657
+#, c-format
+msgid "Failed to open %s (%s)"
+msgstr "Greidde ikkje å opne %s·(%s)"
+
+#: src/PartFile.cpp:702
+#, c-format
+msgid "Warning: %s might be corrupted (%i)"
+msgstr "Åtvaring: %s·kan vere korrupt·(%i)"
+
+#: src/PartFile.cpp:882 src/PartFile.cpp:887
+#, c-format
+msgid "ERROR while saving partfile: %s (%s ==> %s)"
+msgstr "FEIL under lagring av delfila: %s·(%s·==>·%s)"
+
+#: src/PartFile.cpp:911
+#, c-format
+msgid "Unable to open %s file - using %s file."
+msgstr "Ikkje i stand til å opne %s fila - nyttar %s fila."
+
+#: src/PartFile.cpp:924
+#, c-format
+msgid "'%s' is 0 size somehow - using %s file."
+msgstr "'%s'·er 0 i storleik på ein eller annan måte·-·nyttar·%s·fila."
+
+#: src/PartFile.cpp:993
+#, c-format
+msgid "Failed to save part.met.seeds file for %s"
+msgstr "Greidde ikkje å lagre part.met.seeds fila for %s"
+
+#: src/PartFile.cpp:1019
+#, c-format
+msgid "Saved %i sources seeds for partfile: %s (%s)"
+msgstr "Lagra %i kjeldefrø for delfila: %s·(%s)"
+
+#: src/PartFile.cpp:1048
+#, c-format
+msgid "Partfile %s (%s) has no seeds file"
+msgstr "Delfila %s·(%s) manglar kjeldefil"
+
+#: src/PartFile.cpp:1055
+#, c-format
+msgid "Partfile %s (%s) has a void seeds file"
+msgstr "Delfila ·%s·(%s) har ei ugangbar kjeldefil"
+
+#: src/PartFile.cpp:1113
+#, c-format
+msgid "Error reading partfile's seeds file (%s - %s): %s"
+msgstr "Feil i lesing av delfila si kjeldefil (%s·-·%s):·%s"
+
+#: src/PartFile.cpp:1129 src/PartFile.cpp:1152
+#, c-format
+msgid ""
+"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
+"|%s|"
+msgstr ""
+"Fann korrupt del (%d) i %d delfila %s - Filresultathash |%s| Filhash "
+"|%s|"
+
+#: src/PartFile.cpp:1166
+#, c-format
+msgid "Found completed part (%i) in %s"
+msgstr "Fann ferdig del (%i)·i·%s"
+
+#: src/PartFile.cpp:1203
+#, c-format
+msgid "Finished rehashing %s"
+msgstr "Ferdig med omhashing av %s"
+
+#: src/PartFile.cpp:2232
+#, c-format
+msgid "Unexpected file error while completing %s. File paused"
+msgstr "Uventa feil under ferdigstilling av %s. Fila er sett på pause"
+
+#: src/PartFile.cpp:2258
+#, c-format
+msgid "Finished downloading: %s"
+msgstr "Ferdig med å laste ned: %s"
+
+#: src/PartFile.cpp:2315
+#, c-format
+msgid "Deleting file: %s"
+msgstr "Slettar fila: %s"
+
+#: src/PartFile.cpp:2379
+#, c-format
+msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgstr "Åtvaring: Ikkje i stand til å hashe nedlasta del - hashsett ikkje fullstendig for '%s'"
+
+#: src/PartFile.cpp:2384
+#, c-format
+msgid ""
+"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"never happen"
+msgstr "Feil: Ikkje i stand til å hashe nedlasta del - hashsett ikkje fullstendig (%s). Dette burde "
+"aldri skje"
+
+#: src/PartFile.cpp:3062
+#, c-format
+msgid "WARNING: Not enough free disk-space! Pausing file: %s"
+msgstr "ÅTVARING: Ikkje nok ledig diskplass! Set fila %s på pause"
+
+#: src/PartFile.cpp:3127
+#, c-format
+msgid "Downloaded part %i is corrupt in file: %s"
+msgstr "Nedlasta del %i er korrupt i fila: %s"
+
+#: src/PartFile.cpp:3170
+#, c-format
+msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
+msgstr "ICH: Attskapte korrupt del %i·for·%s·->·Lagra bytes:·%s"
+
+#: src/PartFile.cpp:3745
+msgid "Comments"
+msgstr "Kommentarar"
+
+#: src/PartFile.cpp:3746
+msgid "doesn't work"
+msgstr "fungerer ikkje"
+
+#: src/PartFile.cpp:3748
+msgid "remote gui"
+msgstr "fjern drakt"
+
+#: src/PartFile.cpp:3845
+msgid "Insufficient Diskspace"
+msgstr "Ikkje nok diskplass"
+
+#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+msgid "Stopped"
+msgstr "Stogga"
+
+#: src/KnownFileList.cpp:58
+msgid "Warning: known.met does not exist."
+msgstr "Åtvaring: known.met finst ikkje."
+
+#: src/KnownFileList.cpp:63
+msgid "Warning: known.met cannot be opened."
+msgstr "Åtvaring: known.met lét seg ikkje opne."
+
+#: src/KnownFileList.cpp:70
+msgid "Warning: Knownfile list corrupted, contains invalid header."
+msgstr "Åtvaring: Kjendfillista er korrupt, inneheld ugangbar overskrift."
+
+#: src/KnownFileList.cpp:94
+#, c-format
+msgid "IO error while reading known.met file: %s"
+msgstr "IO feil underlesing av known.met fila: %s"
+
+#: src/KnownFileList.cpp:140
+#, c-format
+msgid "Error while saving known.met file: %s"
+msgstr "Feil under lagring av known.met fila: %s"
+
+#: src/SharedFileList.cpp:357
+#, c-format
+msgid ""
+"CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
+"directory not found."
+msgstr "CSharedFileList::FindSharedFiles:·Fjernar·%s·frå lista over delte katalogar: ·"
+"katalog ikkje funnen."
+
+#: src/SharedFileList.cpp:376
+#, c-format
+msgid "Found %i known shared files"
+msgstr "Funne %i delte filer"
+
+#: src/SharedFileList.cpp:384
+#, c-format
+msgid "Found %i known shared files, %i unknown"
+msgstr "Funne %i delte filer, %i ukjende"
+
+#: src/SharedFileList.cpp:394
+#, c-format
+msgid "ERROR! Attempted to share %s"
+msgstr "FEIL! Freistar å dele %s"
+
+#: src/CommentDialogLst.cpp:40 src/CommentDialog.cpp:34
+msgid "File Comments"
+msgstr "Filkommentarar"
+
+#: src/CommentDialogLst.cpp:51 src/ClientListCtrl.cpp:820
+msgid "Rating"
+msgstr "Verdi"
+
+#: src/CommentDialogLst.cpp:52
+msgid "Comment"
+msgstr "Kommentar"
+
+#: src/CommentDialogLst.cpp:95
+msgid "No comments"
+msgstr "Ingen kommentarar"
+
+#: src/CommentDialogLst.cpp:97
+#, c-format
+msgid "%s comment(s)"
+msgstr "%s kommentar(ar)"
+
+#: src/ServerConnect.cpp:69
+msgid ""
+"Failed to connect to all obfuscated servers listed. Making another pass "
+"without obfuscation."
+msgstr "Greidde ikkje å kople til alle tåkelagde tenarar i lista. Freistar ein gong til "
+"utan tåkelegging."
+
+#: src/ServerConnect.cpp:74
+msgid "Failed to connect to all servers listed. Making another pass."
+msgstr "Greidde ikkje å kople til alle tenarane i lista. Freistar ein gong til."
+
+#: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
+msgid "ED2K network disabled on preferences, not connecting."
+msgstr "ED2k nettverket er deaktivert i innstillingar, koplar ikkje til."
+
+#: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
+msgid "No valid servers to connect in serverlist found"
+msgstr "Ingen gangbare tenarar funne i tenarlista"
+
+#: src/ServerConnect.cpp:197
+#, c-format
+msgid "Connected to %s (%s:%i)"
+msgstr "Tilkopla %s·(%s:%i)"
+
+#: src/ServerConnect.cpp:345
+msgid "Fatal Error while trying to connect. Internet connection might be down"
+msgstr "Alvorleg feil i oppkopling. Internett kan vere nede"
+
+#: src/ServerConnect.cpp:349
+#, c-format
+msgid "Lost connection to %s (%s:%i)"
+msgstr "Mista kopling til %s·(%s:%i)"
+
+#: src/ServerConnect.cpp:359
+#, c-format
+msgid "%s (%s:%i) appears to be dead."
+msgstr "%s·(%s:%i) ser ut til å vere daud."
+
+#: src/ServerConnect.cpp:372
+#, c-format
+msgid "%s (%s:%i) appears to be full."
+msgstr "%s·(%s:%i) ser ut til å vere full."
+
+#: src/ServerConnect.cpp:391
+#, c-format
+msgid "Automatic connection to server will retry in %d seconds"
+msgstr "Automatisk tilkopling til tenar; freistar igjen om %d sekund"
+
+#: src/ServerConnect.cpp:411
+msgid "Connection lost"
+msgstr "Kopling mista"
+
+#: src/ServerConnect.cpp:418
+#, c-format
+msgid "Connecting to %s (%s:%i) failed."
+msgstr "Tilkopling til %s·(%s:%i)·mislukka."
+
+#: src/ServerConnect.cpp:460
+msgid "Error: Socket invalid at timeoutcheck"
+msgstr "Feil: Ugyldig kontakt ved tidsutsjekking"
+
+#: src/ServerConnect.cpp:470
+#, c-format
+msgid "Connection attempt to %s (%s:%i) timed out."
+msgstr "Tilkoplingsfreisting til %s·(%s:%i)·gjekk over tida."
+
+#: src/DownloadQueue.cpp:167
+msgid "No part files found"
+msgstr "Ingen delfiler funne"
+
+#: src/DownloadQueue.cpp:169
+#, c-format
+msgid "Found %u part files"
+msgstr "Funne %u delfiler"
+
+#: src/DownloadQueue.cpp:309
+#, c-format
+msgid "Downloading %s"
+msgstr "Lastar ned %s"
+
+#: src/DownloadQueue.cpp:317
+#, c-format
+msgid "You are already trying to download the file '%s'"
+msgstr "Du freistar allereie nedlasting av fila '%s'"
+
+#: src/DownloadQueue.cpp:329
+#, c-format
+msgid "You already have the file '%s'"
+msgstr "Du har allereie fila: '%s'"
+
+#: src/DownloadQueue.cpp:334
+#, c-format
+msgid "You are already trying to download the file %s"
+msgstr "Du freistar allereie nedlasting av fila %s"
+
+#: src/DownloadQueue.cpp:1291
+#, c-format
+msgid "Cannot convert magnet link to ed2k: %s"
+msgstr "Kan ikkje konvertere magnet lenkje til ED2k: %s"
+
+#: src/DownloadQueue.cpp:1299
+#, c-format
+msgid "Unknown protocol of link: %s"
+msgstr "Ukjend lenkjeprotokoll for: %s"
+
+#: src/DownloadQueue.cpp:1322
+#, c-format
+msgid "Invalid ed2k link! Error: %s"
+msgstr "Ugangbar ED2k lenkje! Feil: %s"
+
+#: src/TextClient.cpp:128
+msgid "Execute <str> and exit."
+msgstr "Køyr <str> og avslutt."
+
+#: src/TextClient.cpp:195
+msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
+msgstr "Ugangbart IP-format. Bruk xxx.xxx.xxx.xxx:xxxx\n"
+
+#: src/TextClient.cpp:302
+msgid ""
+"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+msgstr "Denne kommandoen treng eit argument. Gangbare argument: 'all' eller eit tal.\n"
+
+#: src/TextClient.cpp:343 src/TextClient.cpp:384
+msgid "Not a valid number\n"
+msgstr "Ikkje gangbart tal\n"
+
+#: src/TextClient.cpp:347 src/TextClient.cpp:388
+msgid "Not a valid hash (length should be exactly 32 chars)\n"
+msgstr "Ikkje gangbar hash (lengde må vere nøyaktig 32 teikn)\n"
+
+#: src/TextClient.cpp:358
+msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgstr "Denne kommandoen treng eit argument. Gangbare argument: ein filhash.\n"
+
+#: src/TextClient.cpp:570
+#, c-format
+msgid "     %d"
+msgstr "·····%d"
+
+#: src/TextClient.cpp:571
+#, c-format
+msgid ".%d"
+msgstr ".%d"
+
+#: src/TextClient.cpp:604
+msgid "Operation was successful."
+msgstr "Operasjonen var vellukka"
+
+#: src/TextClient.cpp:610
+#, c-format
+msgid "Request failed with the following error: %s"
+msgstr "Etterspurnaden mislukka med følgjande feil: %s"
+
+#: src/TextClient.cpp:626
+#, c-format
+msgid "IP filtering for clients is %s.\n"
+msgstr "IP-filtréring for klientar er %s.\n"
+
+#: src/TextClient.cpp:627 src/TextClient.cpp:633
+msgid "OFF"
+msgstr "AV"
+
+#: src/TextClient.cpp:627 src/TextClient.cpp:633
+msgid "ON"
+msgstr "PÅ"
+
+#: src/TextClient.cpp:632
+#, c-format
+msgid "IP filtering for servers is %s.\n"
+msgstr "IP-filtréring for tenarar er %s.\n"
+
+#: src/TextClient.cpp:637
+#, c-format
+msgid "Current IPFilter Level is %d.\n"
+msgstr "Novérande IPFilternivå er %d.\n"
+
+#: src/TextClient.cpp:645
+#, c-format
+msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr "Bandbreiddegrense: Opp: %u·kB/s,·Ned:·%u·kB/s.\n"
+
+#: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:4002
+msgid "ED2K"
+msgstr "ED2k"
+
+#: src/TextClient.cpp:668
+#, c-format
+msgid "Connected to %s %s %s"
+msgstr "Tilkopla %s·%s·%s"
+
+#: src/TextClient.cpp:671 src/amule.cpp:2060
+msgid "with LowID"
+msgstr "med LågID"
+
+#: src/TextClient.cpp:671 src/amule.cpp:2060
+msgid "with HighID"
+msgstr "med HøgID"
+
+#: src/TextClient.cpp:674
+msgid "Now connecting"
+msgstr "Koplar til no"
+
+#: src/TextClient.cpp:676 src/TextClient.cpp:689
+msgid "Not connected"
+msgstr "Ikkje tilkopla"
+
+#: src/TextClient.cpp:698
+#, c-format
+msgid ""
+"\n"
+"Download:\t%s"
+msgstr "\n"
+"Nedlasting:\t%s"
+
+#: src/TextClient.cpp:701
+#, c-format
+msgid ""
+"\n"
+"Upload:\t%s"
+msgstr ""
+"\n"
+"Opplasting:\t%s"
+
+#: src/TextClient.cpp:704
+#, c-format
+msgid ""
+"\n"
+"Clients in queue:\t%d\n"
+msgstr "\n"
+"Klientar i kø:\t%d\n"
+
+#: src/TextClient.cpp:707
+#, c-format
+msgid ""
+"\n"
+"Total sources:\t%d\n"
+msgstr "\n"
+"Alle kjelder:\t%d\n"
+
+#: src/TextClient.cpp:784
+#, c-format
+msgid "Number of search results: %i\n"
+msgstr "Tal på søkjeresultat: %i\n"
+
+#: src/TextClient.cpp:797
+msgid "TODO - show progress of a search"
+msgstr "TODO - syne framdrifta på eit søk"
+
+#: src/TextClient.cpp:803
+#, c-format
+msgid "Received an unknown reply from the server, OpCode = %#x."
+msgstr "Tok imot ukjend svar frå tenaren, OpCode·=·%#x."
+
+#: src/TextClient.cpp:816
+msgid "Show short status information."
+msgstr "Syne kort statusinformasjon."
+
+#: src/TextClient.cpp:817
+msgid "Show connection status, current up/download speeds, etc.\n"
+msgstr "Syne koplingsstatus, noverande opp- og nedlastingsfart, osb.\n"
+
+#: src/TextClient.cpp:819
+msgid "Show full statistics tree."
+msgstr "Syne fullt statistikktre."
+
+#: src/TextClient.cpp:820
+msgid ""
+"Optionally, a number in the range 0-255 can be passed as an argument to "
+"this\n"
+"command, which tells how many entries of the client version subtrees should "
+"be\n"
+"shown. Passing 0 or omitting it means 'unlimited'.\n"
+"\n"
+"Example: 'statistics 5' will show only the top 5 versions for each client "
+"type.\n"
+msgstr "Alternativt kan eit tal mellom 0-255 skrivast inn som argument for denne\n"
+"kommandoen, som fortel kor mange inskripsjonar frå undertréa til klientutgåva skal  verte\n"
+"synte. Å skrive 0 eller å hoppe over betyr 'ubegrensa'.\n"
+"\n"
+"Til dømes: 'statistics 5' vil berre syne dei 5 utgåvene på top for kvar klienttype.\n"
+
+#: src/TextClient.cpp:826
+msgid "Shutdown aMule."
+msgstr "Avslutt aMule"
+
+#: src/TextClient.cpp:827
+msgid ""
+"Shutdown the remote running core (amule/amuled).\n"
+"This will also shut down the text client, since it is unusable without a\n"
+"running core.\n"
+msgstr "Avslutt den fjerne kjernen (amule/amuled).\n"
+"Dette vil i tillegg avslutte tekstklienten, ettersom den er ubrukeleg utan ei\n"
+"køyrande kjerne.\n"
+
+#: src/TextClient.cpp:831
+msgid "Reloads the given object."
+msgstr "Lastar inn att valt objekt."
+
+#: src/TextClient.cpp:832
+msgid "Reloads shared files list."
+msgstr "Lastar inn att lista over delte filer."
+
+#: src/TextClient.cpp:833
+msgid "Reloads IP Filter table from file."
+msgstr "Lastar om att ipfiltertabell frå fil."
+
+#: src/TextClient.cpp:835
+msgid "Connect to the network."
+msgstr "Kople til nettverket."
+
+#: src/TextClient.cpp:836
+msgid ""
+"This will connect to all networks that are enabled in Preferences.\n"
+"You may also optionally specify a server address in IP:Port form, to connect "
+"to\n"
+"that server only. The IP must be a dotted decimal IPv4 address,\n"
+"or a resolvable DNS name."
+msgstr "Dette vil kople til alle nettverka som er aktiverte i innstillingar.\n"
+"Dy kan óg valfritt gje ei tenaradresse i IP:Port form, for å berre kople "
+"til\n"
+"den tenaren. IP`en må vere ei punktmerka og desimal IPv4-adresse.\n"
+"eller eit løyseleg DNS-namn."
+""
+
+#: src/TextClient.cpp:840
+msgid "Connect to ED2K only."
+msgstr "Berre kople til ED2k."
+
+#: src/TextClient.cpp:841
+msgid "Connect to Kad only."
+msgstr "Berre kople til Kad."
+
+#: src/TextClient.cpp:843
+msgid "Disconnect from the network."
+msgstr "Kople frå nettverket."
+
+#: src/TextClient.cpp:844
+msgid "This will disconnect from all networks that are currently connected.\n"
+msgstr "Dette vil kople frå alle nettverka som no er kopla til.\n"
+
+#: src/TextClient.cpp:845
+msgid "Disconnect from ED2K only."
+msgstr "Berre kople frå ED2k."
+
+#: src/TextClient.cpp:846
+msgid "Disconnect from Kad only."
+msgstr "Berre kople frå Kad."
+
+#: src/TextClient.cpp:848
+msgid "Adds an ed2k or magnet link to core."
+msgstr "Legg til ei ED2k lenkje eller magnet lenjke til kjerne "
+
+#: src/TextClient.cpp:849
+msgid ""
+"The ed2k link to be added can be:\n"
+"*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
+"*) a server link (ed2k://|server|...), it will be added to the server list,\n"
+"*) or a serverlist link, in which case all servers in the list will be added "
+"to the\n"
+"   server list.\n"
+"\n"
+"The magnet link must contain the ed2k hash and file length.\n"
+msgstr "ED2k lenkja som skal leggjast til kan vere:\n"
+"*) ei fillenkje (ed2k://|file|...), som vil verte lagd til nedlastingskøa,\n"
+"*) ei tenarlenkje (ed2k://|server|...), som vil verte lagd til tenarlista,\n"
+"*) eller ei tenarlistelenkje, der alle tenarane på lista vert langde "
+"til\n"
+"...tearlista.\n"
+"\n"
+"Magnetlenkja må innehalde ED2k hashen og fillengda.\n"
+
+#: src/TextClient.cpp:857
+msgid "Set a preference value."
+msgstr "Set ein brukarvalverdi."
+
+#: src/TextClient.cpp:860
+msgid "Set IPFilter preferences."
+msgstr "Set brukarval for ipfilter."
+
+#: src/TextClient.cpp:861
+msgid "Turn IP filtering on for both clients and servers."
+msgstr "Slå IP-filtréring på for både klientar og tenarar."
+
+#: src/TextClient.cpp:862
+msgid "Turn IP filtering off for both clients and servers."
+msgstr "Slå IP-filtréring av for både klientar og tenarar."
+
+#: src/TextClient.cpp:863
+msgid "Enable/Disable IP filtering for clients."
+msgstr "Aktivér/deaktivér IP-filtrering av klientar."
+
+#: src/TextClient.cpp:864
+msgid "Turn IP filtering on for clients."
+msgstr "Slå IP-filtréring på for klientar."
+
+#: src/TextClient.cpp:865
+msgid "Turn IP filtering off for clients."
+msgstr "Slå IP-filtréring av for klientar."
+
+#: src/TextClient.cpp:866
+msgid "Enable/Disable IP filtering for servers."
+msgstr "Aktivér/deaktivér IP-filtrering av tenarar."
+
+#: src/TextClient.cpp:867
+msgid "Turn IP filtering on for servers."
+msgstr "Slå IP-filtréring på for tenarar."
+
+#: src/TextClient.cpp:868
+msgid "Turn IP filtering off for servers."
+msgstr "Slå IP-filtréring av for tenarar."
+
+#: src/TextClient.cpp:869
+msgid "Select IP filtering level."
+msgstr "Vel Ipfilternivå"
+
+#: src/TextClient.cpp:870
+msgid ""
+"Valid filtering levels are in the range 0-255, and it's default (initial)\n"
+"value is 127.\n"
+msgstr "Gangbart filtréringsnivå er mellom 0-255, og den opprinnelege\n"
+"verdien er 127.\n"
+
+#: src/TextClient.cpp:873
+msgid "Set bandwidth limits."
+msgstr "Set bandbreiddegrense."
+
+#: src/TextClient.cpp:874
+msgid "The value given to these commands has to be in kilobytes/sec.\n"
+msgstr "Verdien i desse kommandoane må vere i kilobytes/sek.\n"
+
+#: src/TextClient.cpp:875
+msgid "Set upload bandwidth limit."
+msgstr "Set bandbreiddegrense for opplastingar."
+
+#: src/TextClient.cpp:877
+msgid "Set download bandwidth limit."
+msgstr "Set bandbreiddegrense for nedlastingar."
+
+#: src/TextClient.cpp:880
+msgid "Get and display a preference value."
+msgstr "Hent og syne ein preferanseverdi."
+
+#: src/TextClient.cpp:883
+msgid "Get IPFilter preferences."
+msgstr "Hent ipfilterinnstillingar"
+
+#: src/TextClient.cpp:884
+msgid "Get IPFilter state for both clients and servers."
+msgstr "Hent ipfilterstatus for både klientar og tenarar."
+
+#: src/TextClient.cpp:885
+msgid "Get IPFilter state for clients only."
+msgstr "Hent ipfilterstatus for klientar."
+
+#: src/TextClient.cpp:886
+msgid "Get IPFilter state for servers only."
+msgstr "Hent ipfilterstatus for tenarar."
+
+#: src/TextClient.cpp:887
+msgid "Get IPFilter level."
+msgstr "Få "
+
+#: src/TextClient.cpp:889
+msgid "Get bandwidth limits."
+msgstr "Hent bandbreiddegrense."
+
+#: src/TextClient.cpp:891
+msgid "Makes a search."
+msgstr "Lagar eit søk."
+
+#: src/TextClient.cpp:892
+msgid ""
+"A search type has to be specified by giving the type:\n"
+"    GLOBAL\n"
+"    LOCAL\n"
+"    KAD\n"
+"Example: 'search kad file' will execute a kad search for \"file\".\n"
+msgstr "Ei søkjetype må verte spesifisert:\n"
+"····GLOBAL\n"
+"····LOKAL\n"
+"····KAD\n"
+"Døme:·'søk kad fil'·vil starte eit kadsøk for \"fil\".\n"
+
+#: src/TextClient.cpp:897
+msgid "Executes a global search."
+msgstr "Startar eit globalt søk"
+
+#: src/TextClient.cpp:898
+msgid "Executes a local search"
+msgstr "Startar eit lokalt søk"
+
+#: src/TextClient.cpp:899
+msgid "Executes a kad search"
+msgstr "Startar eit kadsøk"
+
+#: src/TextClient.cpp:901
+msgid "Shows the results of the last search."
+msgstr "Syne resultata av siste søk."
+
+#: src/TextClient.cpp:902
+msgid "Returns the results of the previous search.\n"
+msgstr "Returnerer resultata frå det tidlegare søket.\n"
+
+#: src/TextClient.cpp:904
+msgid "Shows the process of a search."
+msgstr "Syne søkjeprosessen."
+
+#: src/TextClient.cpp:905
+msgid "Shows the process of a search..\n"
+msgstr "Syner søkjeprosessen..\n"
+
+#: src/TextClient.cpp:907
+msgid "Start downloading a file"
+msgstr "Start nedlasting av ei fil"
+
+#: src/TextClient.cpp:908
+msgid ""
+"The number of a file from the last search has to be given.\n"
+"Example: 'download 12' will start to download the file with the number 12 of "
+"the previous search.\n"
+msgstr "Talet på ei fil frå siste søk må verte gjeve.\n"
+"Døme: 'download·12' vil starte nedlastinga av fil nummer 12 frå "
+"forrige søk.\n"
+
+#: src/TextClient.cpp:916
+msgid "Pause download."
+msgstr "Set nedlasting på pause"
+
+#: src/TextClient.cpp:919
+msgid "Resume download."
+msgstr "Hald fram nedlasting"
+
+#: src/TextClient.cpp:922
+msgid "Cancel download."
+msgstr "Avbryt nedlasting"
+
+#: src/TextClient.cpp:925
+msgid "Set download priority."
+msgstr "Set nedlastingsprioritet."
+
+#: src/TextClient.cpp:926
+msgid "Set priority of a download to Low, Normal, High or Auto.\n"
+msgstr "Gje prioritet Låg, Normal, Høg eller Auto til ei nedlasting.\n"
+
+#: src/TextClient.cpp:927
+msgid "Set priority to low."
+msgstr "Set prioritet til låg."
+
+#: src/TextClient.cpp:928
+msgid "Set priority to normal."
+msgstr "Set prioritet til normal."
+
+#: src/TextClient.cpp:929
+msgid "Set priority to high."
+msgstr "Set prioritet til høg."
+
+#: src/TextClient.cpp:930
+msgid "Set priority to auto."
+msgstr "Set prioritet til auto."
+
+#: src/TextClient.cpp:932
+msgid "Show queues/lists."
+msgstr "Syne køer/lister."
+
+#: src/TextClient.cpp:933
+msgid "Shows upload/download queue, server list or shared files list.\n"
+msgstr "Syner opplastings-/nedlastingskøa, tenarlista eller lista over delte filer.\n"
+
+#: src/TextClient.cpp:934
+msgid "Show upload queue."
+msgstr "Syne opplastingskø"
+
+#: src/TextClient.cpp:935
+msgid "Show download queue."
+msgstr "Syne nedlastingskø."
+
+#: src/TextClient.cpp:936
+msgid "Show log."
+msgstr "Syne logg."
+
+#: src/TextClient.cpp:937
+msgid "Show servers list."
+msgstr "Syne tenarlister."
+
+#: src/TextClient.cpp:940
+msgid "Reset log."
+msgstr "Nullstill logg"
+
+#: src/TextClient.cpp:946
+msgid "Deprecated command, now 'Status'."
+msgstr "Frårådd kommando, no 'Status'."
+
+#: src/TextClient.cpp:947
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Status' instead.\n"
+msgstr "Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
+"Bruk 'Status'·i staden.\n"
+
+#: src/TextClient.cpp:950
+msgid "Deprecated command, now 'Set IPFilter'."
+msgstr "Frårådd kommando, no 'Set·IPFilter'."
+
+#: src/TextClient.cpp:951
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Set IPFilter' instead.\n"
+msgstr "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+"Bruk 'Set·IPFilter'·i staden.\n"
+
+#: src/TextClient.cpp:954
+msgid "Deprecated command, now 'Get IPFilter Level'."
+msgstr "Frårådd kommando, no 'Get·IPFilter·Level'."
+
+#: src/TextClient.cpp:955
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Get IPFilter Level' instead.\n"
+msgstr "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+"Bruk 'Get·IPFilter·Level' i staden.\n"
+
+#: src/TextClient.cpp:958
+msgid "Deprecated command, now 'Set IPFilter Level'."
+msgstr "Frårådd kommando, no 'Set·IPFilter·Level'."
+
+#: src/TextClient.cpp:959
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Set IPFilter Level' instead.\n"
+msgstr "Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
+"Bruk 'Set·IPFilter·Level'·i staden.\n"
+
+#: src/TextClient.cpp:962
+msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+msgstr "Frårådd kommando, no 'Get/Set·IPFilter·Level'."
+
+#: src/TextClient.cpp:963
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Get/Set IPFilter Level' instead.\n"
+msgstr "Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
+"Bruk 'Get/Set·IPFilter·Level' i staden.\n"
+
+#: src/TextClient.cpp:966
+msgid "Deprecated command, now 'Show Servers'."
+msgstr "Frårådd kommando, no 'Show·Servers'."
+
+#: src/TextClient.cpp:967
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Show Servers' instead.\n"
+msgstr "Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
+"Bruk 'Show·Servers'·i staden.\n"
+
+#: src/TextClient.cpp:970
+msgid "Deprecated command, now 'Get BwLimits'."
+msgstr "Frårådd kommando, no 'Get·BwLimits'."
+
+#: src/TextClient.cpp:971
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Get BwLimits' instead.\n"
+msgstr "Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
+"Bruk 'Get·BwLimits'·i staden.\n"
+
+#: src/TextClient.cpp:974
+msgid "Deprecated command, now 'Set BwLimit Up'."
+msgstr "Frårådd kommando, no 'Set·BwLimit·Up'."
+
+#: src/TextClient.cpp:975
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Set BwLimit Up' instead.\n"
+msgstr "Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
+"Bruk 'Set·BwLimit·Up'·i staden.\n"
+
+#: src/TextClient.cpp:978
+msgid "Deprecated command, now 'Set BwLimit Down'."
+msgstr "Frårådd kommando, no 'Set·BwLimit·Down'."
+
+#: src/TextClient.cpp:979
+msgid ""
+"This is a deprecated command, and may be removed in the future.\n"
+"Use 'Set BwLimit Down' instead.\n"
+msgstr "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+"Bruk 'Set·BwLimit·Down'·i staden.\n"
+
+#: src/ServerSocket.cpp:178
+msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+msgstr "theApp->tenarliste->GetServerByAddress()·ga attende NULL"
+
+#: src/ServerSocket.cpp:261
+#, c-format
+msgid "Error: %s (%s) - %s"
+msgstr "Feil: %s·(%s)·-·%s"
+
+#: src/ServerSocket.cpp:276
+#, c-format
+msgid "Warning: %s (%s) - %s"
+msgstr "Åtvaring: %s (%s) - %s"
+
+#: src/ServerSocket.cpp:419
+#, c-format
+msgid "New clientid is %u"
+msgstr "Ny klientid er %u"
+
+#: src/ServerSocket.cpp:475
+msgid "Unknown server info received! - too short"
+msgstr "Ukjend tenarinfo motteke! - for kort"
+
+#: src/ServerSocket.cpp:536
+#, c-format
+msgid "Received %d new servers"
+msgstr "Tok imot %d nye tenarar"
+
+#: src/ServerSocket.cpp:539
+msgid "Saving of server-list completed."
+msgstr "Lagring av tenarlista ferdig."
+
+#: src/ServerSocket.cpp:594
+msgid "Server rejected last command"
+msgstr "Tenar avviste siste kommando"
+
+#: src/ServerSocket.cpp:604 src/ServerSocket.cpp:606
+#, c-format
+msgid "Bogus packet received from server: %s"
+msgstr "Falske pakkar mottekne frå tenar: %s"
+
+#: src/ServerSocket.cpp:608
+#, c-format
+msgid "Unhandled error while processing packet from server: %s"
+msgstr "Urøyvd feil under handsaming av pakke frå tenar: %s"
+
+#: src/ServerSocket.cpp:647 src/ServerSocket.cpp:651
+#, c-format
+msgid "Cannot create DNS solving thread for connecting to %s"
+msgstr "Kan ikkje skape DNS-løysande tråd for å kople til %s"
+
+#: src/ServerSocket.cpp:730
+#, c-format
+msgid "Server IP %s (%s) is filtered.  Not connecting."
+msgstr "Tenar IP %s·(%s) er filtrert.  Koplar ikkje til."
+
+#: src/ServerSocket.cpp:740
+msgid "using protocol obfuscation."
+msgstr "brukar protokolltåkelegging."
+
+#: src/ServerSocket.cpp:749
+#, c-format
+msgid "Connecting to %s (%s - %s:%i) %s"
+msgstr "Koplar til·%s·(%s·-·%s:%i)·%s"
+
+#: src/ServerSocket.cpp:761
+#, c-format
+msgid "Could not solve dns for server %s: Unable to connect!"
+msgstr "Greidde ikkje å løyse dns for tenar %s: Greier ikkje å kople til!"
+
+#: src/IP2Country.cpp:67
+msgid "CIP2Country::CIP2Country(): Failed to load country data from "
+msgstr "CIP2Country::CIP2Country():·Greidde ikkje å laste landsdata frå "
+
+#: src/IP2Country.cpp:72
+#, c-format
+msgid "Loaded %d flag bitmaps."
+msgstr "Lasta %d flaggbilete."
+
+#: src/TransferWnd.cpp:194
+msgid "Are you sure you wish to cancel and delete all files in this category?"
+msgstr "Er du viss på at du vil avbryte og slette alle filene i denne kategorien?"
+
+#: src/TransferWnd.cpp:194
+msgid "Confirmation Required"
+msgstr "Stadfesting naudsynt"
+
+#: src/TransferWnd.cpp:342
+msgid "All others"
+msgstr "Alle andre"
+
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
+msgid "Incomplete"
+msgstr "Uferdig"
+
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
+msgid "Active"
+msgstr "Aktiv"
+
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
+msgid "Video"
+msgstr "Video"
+
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
+msgid "Audio"
+msgstr "Lyd"
+
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
+msgid "Archive"
+msgstr "Arkiv"
+
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
+#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
+msgid "CD-Images"
+msgstr "CD-bilete"
+
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
+#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
+msgid "Pictures"
+msgstr "Bilete"
+
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
+msgid "Text"
+msgstr "Tekst"
+
+#: src/TransferWnd.cpp:364
+msgid "Select view filter"
+msgstr "Vel synsfilter"
+
+#: src/TransferWnd.cpp:367
+msgid "Add category"
+msgstr "Legg til kategori"
+
+#: src/TransferWnd.cpp:370
+msgid "Edit category"
+msgstr "Redigér kategori"
+
+#: src/TransferWnd.cpp:371
+msgid "Remove category"
+msgstr "Ta bort kategori"
+
+#: src/PartFileConvert.cpp:240
+#, c-format
+msgid "Importing %s: %s"
+msgstr "Importerer %s:·%s"
+
+#: src/PartFileConvert.cpp:270
+msgid "Reading temp folder"
+msgstr "Les mellombels mappe"
+
+#: src/PartFileConvert.cpp:276
+msgid "Retrieving basic information from download info file"
+msgstr "Hentar grunnleggjande informasjon frå nedlastingsinformasjonfil"
+
+#: src/PartFileConvert.cpp:356
+msgid "Creating destination file"
+msgstr "Lagar målfil"
+
+#: src/PartFileConvert.cpp:365
+#, c-format
+msgid "Loading data from old download file (%u of %u)"
+msgstr "Lastar data frå gamal nedlastingsfil (%u·av·%u)"
+
+#: src/PartFileConvert.cpp:385
+#, c-format
+msgid "Saving data block into new single download file (%u of %u)"
+msgstr "Lagrer datablokk til ei einaste nedlastingsfil (%u·of·%u)"
+
+#: src/PartFileConvert.cpp:455
+msgid "Retrieving source downloadfile information"
+msgstr "Hentar informasjon frå nedlastingsfilkjelde"
+
+#: src/PartFileConvert.cpp:480
+msgid "Adding download and saving new partfile"
+msgstr "Legg til nedlasting og lagrar ny delfil"
+
+#: src/PartFileConvert.cpp:561
+msgid "Fetching status..."
+msgstr "Hentar status..."
+
+#: src/PartFileConvert.cpp:625
+msgid "In progress"
+msgstr "I framdrift"
+
+#: src/PartFileConvert.cpp:626
+msgid "Error: Out of diskspace"
+msgstr "Feil: Tom for diskplass"
+
+#: src/PartFileConvert.cpp:627
+msgid "Error: Partmet not found"
+msgstr "Feil: part.met ikkje funnen!"
+
+#: src/PartFileConvert.cpp:628
+msgid "Error: IO error!"
+msgstr "Feil: IO feil!"
+
+#: src/PartFileConvert.cpp:629
+msgid "Error: Failed!"
+msgstr "Feil: Mislukka!"
+
+#: src/PartFileConvert.cpp:630
+msgid "Queued"
+msgstr "I kø"
+
+#: src/PartFileConvert.cpp:631
+msgid "Already downloading"
+msgstr "Lastar allereie ned"
+
+#: src/PartFileConvert.cpp:632
+msgid "Unknown or bad tempfile format."
+msgstr "Ukjend eller dårleg format på tempfil."
+
+#: src/PartFileConvert.cpp:641
+msgid "File name"
+msgstr "Filnamn"
+
+#: src/PartFileConvert.cpp:642
+msgid "State"
+msgstr "Tilstand"
+
+#: src/PartFileConvert.cpp:644
+msgid "Filehash"
+msgstr "Filhash"
+
+#: src/PartFileConvert.cpp:690
+msgid "Import partfiles"
+msgstr "Importér delfiler"
+
+#: src/PartFileConvert.cpp:710
+msgid ""
+"Please choose a folder to search for temporary downloads! (subfolders will "
+"be included)"
+msgstr "Vér god å velje ei katalog til å søkje på mellombelse nedlastingar! (underkatalogar vil verte inkluderte)"
+
+#: src/PartFileConvert.cpp:714
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
+msgstr "Vil du slette kjeldefilene til vellukka importerte nedlastingar?"
+
+#: src/PartFileConvert.cpp:715
+msgid "Remove sources?"
+msgstr "Ta bort kjelder?"
+
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3908
+msgid "Waiting..."
+msgstr "Ventar..."
+
+#: src/PartFileConvert.cpp:751
+#, c-format
+msgid "%s (Disk: %s)"
+msgstr "%s·(Disk:·%s)"
+
+#: src/OtherFunctions.cpp:123
+msgid "bytes"
+msgstr "bytes"
+
+#: src/OtherFunctions.cpp:125
+msgid "kB"
+msgstr "kB"
+
+#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+msgid "MB"
+msgstr "MB"
+
+#: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+msgid "GB"
+msgstr "GB"
+
+#: src/OtherFunctions.cpp:131
+msgid "TB"
+msgstr "TB"
+
+#: src/OtherFunctions.cpp:143
+msgid "k"
+msgstr "k"
+
+#: src/OtherFunctions.cpp:145
+msgid "M"
+msgstr "M"
+
+#: src/OtherFunctions.cpp:147
+msgid "G"
+msgstr "G"
+
+#: src/OtherFunctions.cpp:149
+msgid "T"
+msgstr "T"
+
+#: src/OtherFunctions.cpp:158
+msgid "bytes/sec"
+msgstr "bytes/sek"
+
+#: src/OtherFunctions.cpp:162
+msgid "MB/s"
+msgstr "MB/s"
+
+#: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
+msgid "secs"
+msgstr "sekund"
+
+#: src/OtherFunctions.cpp:185
+msgid "mins"
+msgstr "minutt"
+
+#: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
+msgid "hours"
+msgstr "timar"
+
+#: src/OtherFunctions.cpp:200
+msgid "Days"
+msgstr "Dagar"
+
+#: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
+msgid "Videos"
+msgstr "Videoar"
+
+#: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
+msgid "Archives"
+msgstr "Arkiv"
+
+#: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
+msgid "Texts"
+msgstr "Tekstar"
+
+#: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
+msgid "Programs"
+msgstr "Program"
+
+#: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
+msgid "Any"
+msgstr "Alle"
+
+#: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
+msgid "Not rated"
+msgstr "Ikkje gitt verdi"
+
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
+msgid "Invalid / Corrupt / Fake"
+msgstr "Ugyldig / Korrupt /Falsk"
+
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
+msgid "Poor"
+msgstr "Dårleg"
+
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
+msgid "Fair"
+msgstr "Middels"
+
+#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
+msgid "Good"
+msgstr "God"
+
+#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
+msgid "Excellent"
+msgstr "Utmerka"
+
+#: src/OtherFunctions.cpp:801
+msgid "all"
+msgstr "alle"
+
+#: src/OtherFunctions.cpp:802
+msgid "all others"
+msgstr "alle andre"
+
+#: src/IPFilter.cpp:99
+msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
+msgstr "Lastar ipfiltra 'ipfilter.dat'·og·'ipfilter_static.dat'."
+
+#: src/IPFilter.cpp:267
+#, c-format
+msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
+msgstr "Greidde ikkje å laste inn ipfilter.dat fila '%s' - ukjend filformat."
+
+#: src/IPFilter.cpp:305
+#, c-format
+msgid "Failed to load ipfilter.dat file '%s', could not open file."
+msgstr "Greidde ikkje å laste inn ipfilter.dat fila '%s' - greidde ikkje å opne fila."
+
+#: src/IPFilter.cpp:310
+#, c-format
+msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
+msgstr "Lasta %u IP-distansar frå '%s'. %u ugangbare linjer vart forkasta."
+
+#: src/StatisticsDlg.cpp:173
+#, c-format
+msgid "Active connections (1:%u)"
+msgstr "Aktive koplingar (1:%u)"
+
+#: src/FileDetailDialog.cpp:60
+msgid "File Details"
+msgstr "Fildetaljar"
+
+#: src/FileDetailDialog.cpp:113
+#, c-format
+msgid "%.2f%% done"
+msgstr "%.2f%%·ferdig"
+
+#: src/muuli_wdr.cpp:69
+msgid "ED2K Link: "
+msgstr "ED2k-lenkje: "
+
+#: src/muuli_wdr.cpp:76
+msgid "Commit"
+msgstr "Iverksetje"
+
+#: src/muuli_wdr.cpp:77
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
+msgstr "Klikk her for å leggje til ED2k lenkja i tekstkontrollen til nedlastingskøa di."
+
+#: src/muuli_wdr.cpp:85
+msgid "Pop-up status text"
+msgstr "Utsprett status tekst"
+
+#: src/muuli_wdr.cpp:88
+msgid "Loading ..."
+msgstr "Lastar ..."
+
+#: src/muuli_wdr.cpp:89
+msgid ""
+"Events are displayed here. For a complete list of events, refer to the log "
+"in the Servers-tab."
+msgstr "Hendingar visast her. Sjå i loggen under "
+"Tenarar for å sjå alle hendingane."
+
+#: src/muuli_wdr.cpp:97
+msgid "Number of users on the server you are connected to ..."
+msgstr "Tal på brukarar på tenaren du er tilkopla ..."
+
+#: src/muuli_wdr.cpp:100
+msgid "Users: 0"
+msgstr "Brukarar: 0"
+
+#: src/muuli_wdr.cpp:101
+msgid ""
+"Users connected to the current server and an estimate of the total number of "
+"users."
+msgstr "Brukarar tilkopla den aktuelle tenaren or eit overslag over det totalt antalet "
+"brukarar."
+
+#: src/muuli_wdr.cpp:113
+msgid ""
+"Current average upload and download rates. If enabled the numbers in the "
+"braces signify the overhead from client communication."
+msgstr "Novérande gjennonmsnittleg opplastings- og nedlastingsrater. Dersom aktivért vil tala i "
+"parantés syne dataoverskotet frå klientkommunikasjon."
+
+#: src/muuli_wdr.cpp:121
+msgid ""
+"Displays the connected status and active transfers. Red arrows signifies "
+"that you are currently not connected, yellow arrows signify that you have "
+"low ID (firewalled) and green arrows signify that you have high ID (The "
+"optimal connection type)."
+msgstr "Syner novérande sratus og aktive overføringar. Raude piler syner "
+"at du ikkje er tilkopla akkurat no, gule piler syner at du har ein "
+"låg ID (brannmura) og grøne piler syner at du har ein høg ID (Den"
+"beste tilkoplingstypen)."
+
+#: src/muuli_wdr.cpp:125
+msgid "Not Connected ..."
+msgstr "Ikkje tilkopla ..."
+
+#: src/muuli_wdr.cpp:126
+msgid "Currently connected server."
+msgstr "Novérande tilkopla tenar."
+
+#: src/muuli_wdr.cpp:174
+msgid "Search"
+msgstr "Søk"
+
+#: src/muuli_wdr.cpp:180
+msgid "Name:"
+msgstr "Namn:"
+
+#: src/muuli_wdr.cpp:193 src/SearchDlg.cpp:106
+msgid "Local"
+msgstr "Lokal"
+
+#: src/muuli_wdr.cpp:194
+msgid "Global"
+msgstr "Global"
+
+#: src/muuli_wdr.cpp:196
+msgid "FileHash"
+msgstr "Filhash"
+
+#: src/muuli_wdr.cpp:204
+msgid "Extended Parameters"
+msgstr "Utvida parameter"
+
+#: src/muuli_wdr.cpp:210
+msgid "Filtering"
+msgstr "Filtrerer"
+
+#: src/muuli_wdr.cpp:221
+msgid "File Type"
+msgstr "Filtype"
+
+#: src/muuli_wdr.cpp:251
+msgid "Extension"
+msgstr "Filetternamn"
+
+#: src/muuli_wdr.cpp:257
+msgid "Min Size"
+msgstr "Min storleik"
+
+#: src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290
+msgid "Bytes"
+msgstr "Bytes"
+
+#: src/muuli_wdr.cpp:268 src/muuli_wdr.cpp:291
+msgid "KB"
+msgstr "KB"
+
+#: src/muuli_wdr.cpp:280
+msgid "Max Size"
+msgstr "Maks storleik"
+
+#: src/muuli_wdr.cpp:303
+msgid "Availability"
+msgstr "Tilgjenge"
+
+#: src/muuli_wdr.cpp:316
+msgid "Filter:"
+msgstr "Filter:"
+
+#: src/muuli_wdr.cpp:325
+msgid "Filter Results"
+msgstr "Filtrér resultat"
+
+#: src/muuli_wdr.cpp:331
+msgid "Invert Result"
+msgstr "Snu resultat"
+
+#: src/muuli_wdr.cpp:337
+msgid "Hide Known Files"
+msgstr "Gøyme kjende filer"
+
+#: src/muuli_wdr.cpp:353
+msgid "More"
+msgstr "Meir"
+
+#: src/muuli_wdr.cpp:354
+msgid "Searches for more results on ED2K. Not supported for Kad yet."
+msgstr "Søkjer etter flere resultat på ED2k. Ikkje støtta i Kad enno."
+
+#: src/muuli_wdr.cpp:361
+msgid "Stop"
+msgstr "Stopp"
+
+#: src/muuli_wdr.cpp:375
+msgid "Reset Fields"
+msgstr "Nullstill felta"
+
+#: src/muuli_wdr.cpp:390
+msgid "Results"
+msgstr "Resultat"
+
+#: src/muuli_wdr.cpp:428
+msgid "Clears completed downloads"
+msgstr "Ryddar bort ferdige nedlastingar"
+
+#: src/muuli_wdr.cpp:466
+msgid "Shows Upload / Up-queue"
+msgstr "Syner opplasting / oppkøa"
+
+#: src/muuli_wdr.cpp:475
+msgid "Clients on queue :"
+msgstr "Klientar i kø :"
+
+#: src/muuli_wdr.cpp:478
+msgid "0"
+msgstr "0"
+
+#: src/muuli_wdr.cpp:542
+msgid "Send"
+msgstr "Send"
+
+#: src/muuli_wdr.cpp:543
+msgid "Sends the specified message."
+msgstr "Sender meldinga."
+
+#: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1593
+#: src/muuli_wdr.cpp:3945 src/MuleNotebook.cpp:152
+msgid "Close"
+msgstr "Stengje"
+
+#: src/muuli_wdr.cpp:548
+msgid "Close this chat-session."
+msgstr "Stengje denne lynmeldingsøkta."
+
+#: src/muuli_wdr.cpp:581
+msgid "Full Name :"
+msgstr "Fullt namn :"
+
+#: src/muuli_wdr.cpp:584 src/muuli_wdr.cpp:595 src/muuli_wdr.cpp:606
+#: src/muuli_wdr.cpp:621 src/muuli_wdr.cpp:632 src/muuli_wdr.cpp:643
+#: src/muuli_wdr.cpp:666 src/muuli_wdr.cpp:677 src/muuli_wdr.cpp:688
+#: src/muuli_wdr.cpp:699 src/muuli_wdr.cpp:710 src/muuli_wdr.cpp:721
+#: src/muuli_wdr.cpp:732 src/muuli_wdr.cpp:745 src/muuli_wdr.cpp:752
+#: src/muuli_wdr.cpp:780 src/muuli_wdr.cpp:791 src/muuli_wdr.cpp:802
+#: src/muuli_wdr.cpp:1142 src/muuli_wdr.cpp:1153 src/muuli_wdr.cpp:1162
+#: src/muuli_wdr.cpp:1173 src/muuli_wdr.cpp:1182 src/muuli_wdr.cpp:1193
+#: src/muuli_wdr.cpp:1404 src/muuli_wdr.cpp:1408 src/muuli_wdr.cpp:1423
+#: src/muuli_wdr.cpp:1432 src/muuli_wdr.cpp:1439 src/muuli_wdr.cpp:1448
+#: src/muuli_wdr.cpp:1455 src/muuli_wdr.cpp:1464 src/muuli_wdr.cpp:1486
+#: src/muuli_wdr.cpp:1501 src/muuli_wdr.cpp:1510 src/muuli_wdr.cpp:1517
+#: src/muuli_wdr.cpp:1526 src/muuli_wdr.cpp:1533 src/muuli_wdr.cpp:1542
+#: src/muuli_wdr.cpp:1560 src/muuli_wdr.cpp:1569 src/muuli_wdr.cpp:1576
+#: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:631
+msgid "N/A"
+msgstr "I/T"
+
+#: src/muuli_wdr.cpp:592
+msgid "met-File :"
+msgstr "metfil :"
+
+#: src/muuli_wdr.cpp:603
+msgid "Hash :"
+msgstr "Hash :"
+
+#: src/muuli_wdr.cpp:618
+msgid "Filesize :"
+msgstr "Filstorleik :"
+
+#: src/muuli_wdr.cpp:629
+msgid "Partfilestatus :"
+msgstr "Delfilstatus :"
+
+#: src/muuli_wdr.cpp:640
+msgid "Last seen complete :"
+msgstr "Sist sett komplett :"
+
+#: src/muuli_wdr.cpp:663
+msgid "Found Sources :"
+msgstr "Funne kjelder :"
+
+#: src/muuli_wdr.cpp:674
+msgid "Transferring Sources :"
+msgstr "Overfører kjelder :"
+
+#: src/muuli_wdr.cpp:685
+msgid "Filepart-Count :"
+msgstr "Fildelstal :"
+
+#: src/muuli_wdr.cpp:696
+msgid "Available :"
+msgstr "Tilgjengeleg:"
+
+#: src/muuli_wdr.cpp:707
+msgid "Datarate :"
+msgstr "Datasnøggleik :"
+
+#: src/muuli_wdr.cpp:718
+msgid "Download Active Time: "
+msgstr "Aktiv nedlastingstid: "
+
+#: src/muuli_wdr.cpp:729 src/muuli_wdr.cpp:1179 src/muuli_wdr.cpp:1190
+msgid "Transferred :"
+msgstr "Overført :"
+
+#: src/muuli_wdr.cpp:740
+msgid "Completed Size :"
+msgstr "Ferdig storleik :"
+
+#: src/muuli_wdr.cpp:767 src/muuli_wdr.cpp:2078
+msgid "Intelligent Corruption Handling"
+msgstr "Intelligent Korrupsjonshandsaming"
+
+#: src/muuli_wdr.cpp:777
+msgid "Lost to corruption :"
+msgstr "Tapt gjennom korrupsjon :"
+
+#: src/muuli_wdr.cpp:788
+msgid "Gained by compression :"
+msgstr "Vunne gjennom komprimering :"
+
+#: src/muuli_wdr.cpp:799
+msgid "Packages saved by I.C.H. :"
+msgstr "Pakkar lagra av I.C.H. :"
+
+#: src/muuli_wdr.cpp:819
+msgid "File Names"
+msgstr "Filnamn"
+
+#: src/muuli_wdr.cpp:833
+msgid "Takeover"
+msgstr "Overtaking"
+
+#: src/muuli_wdr.cpp:843
+msgid "Cleanup"
+msgstr "Opprensking"
+
+#: src/muuli_wdr.cpp:857 src/muuli_wdr.cpp:934
+msgid "Apply"
+msgstr "Utfør"
+
+#: src/muuli_wdr.cpp:862
+msgid "Ok"
+msgstr "Ok"
+
+#: src/muuli_wdr.cpp:891
+msgid "Comment/Rate file (Text will be visible to all users)"
+msgstr "Kommentér/verdigjé fila (Teksten vert synleg for alle brukarar)"
+
+#: src/muuli_wdr.cpp:905
+msgid ""
+"For a film you can say its length, its story, language ...\n"
+"and if it's a fake, you can tell that to other users of aMule."
+msgstr "For ein film kan du skrive lengda, historia, språket ...\n"
+"og dersom den er falsk kan du fortelje det til andre brukarar."
+
+#: src/muuli_wdr.cpp:914
+msgid "File Quality"
+msgstr "Filkvalitet"
+
+#: src/muuli_wdr.cpp:929
+msgid "Choose the file rating or advice users if the file is invalid ..."
+msgstr "Vél filverdi eller gje melding til andre brukarar dersom fila er falsk ..."
+
+#: src/muuli_wdr.cpp:966
+msgid "No comment(s)"
+msgstr "Ingen kommentar(ar)"
+
+#: src/muuli_wdr.cpp:973
+msgid "Refresh"
+msgstr "Oppfrisk"
+
+#: src/muuli_wdr.cpp:1000
+msgid "Downloading, please wait ..."
+msgstr "Lastar ned, vér god å vente ..."
+
+#: src/muuli_wdr.cpp:1006
+msgid "Unknown size"
+msgstr "Ukjend storleik"
+
+#: src/muuli_wdr.cpp:1030
+msgid "Required Information"
+msgstr "Naudsynt informasjon"
+
+#: src/muuli_wdr.cpp:1035
+msgid "IP Address :"
+msgstr "IP-adresse :"
+
+#: src/muuli_wdr.cpp:1041
+msgid "Port :"
+msgstr "Port :"
+
+#: src/muuli_wdr.cpp:1051
+msgid "Additional Information"
+msgstr "Tilleggsinformasjon"
+
+#: src/muuli_wdr.cpp:1056
+msgid "Username :"
+msgstr "Brukarnamn :"
+
+#: src/muuli_wdr.cpp:1062
+msgid "Userhash :"
+msgstr "Brukarhash :"
+
+#: src/muuli_wdr.cpp:1108
+msgid "Reload your shared files"
+msgstr "Lastar inn att delte filer"
+
+#: src/muuli_wdr.cpp:1125
+msgid "Current Session"
+msgstr "Novérande økt"
+
+#: src/muuli_wdr.cpp:1132
+msgid "Total"
+msgstr "Totalt"
+
+#: src/muuli_wdr.cpp:1139 src/muuli_wdr.cpp:1150
+msgid "Requested :"
+msgstr "Etterspurt :"
+
+#: src/muuli_wdr.cpp:1159 src/muuli_wdr.cpp:1170
+msgid "Active Uploads :"
+msgstr "Aktive opplastingar :"
+
+#: src/muuli_wdr.cpp:1217
+msgid "Download-Speed"
+msgstr "Nedlastingsfart"
+
+#: src/muuli_wdr.cpp:1235 src/muuli_wdr.cpp:1284 src/muuli_wdr.cpp:3292
+msgid "Current"
+msgstr "Novérande"
+
+#: src/muuli_wdr.cpp:1246 src/muuli_wdr.cpp:1295 src/muuli_wdr.cpp:3303
+msgid "Running average"
+msgstr "Køyregjennomsnitt"
+
+#: src/muuli_wdr.cpp:1257 src/muuli_wdr.cpp:1306 src/muuli_wdr.cpp:3314
+msgid "Session average"
+msgstr "Gjennomsnitt økt"
+
+#: src/muuli_wdr.cpp:1266
+msgid "Upload-Speed"
+msgstr "Opplastingsfart"
+
+#: src/muuli_wdr.cpp:1315 src/muuli_wdr.cpp:1745
+msgid "Connections"
+msgstr "Koplingar"
+
+#: src/muuli_wdr.cpp:1333 src/muuli_wdr.cpp:2293
+msgid "Active downloads"
+msgstr "Aktive nedlastingar"
+
+#: src/muuli_wdr.cpp:1344
+msgid "Active connections (1:1)"
+msgstr "Aktive koplingar (1:1)"
+
+#: src/muuli_wdr.cpp:1355 src/muuli_wdr.cpp:2294
+msgid "Active uploads"
+msgstr "Aktive opplastingar"
+
+#: src/muuli_wdr.cpp:1364 src/muuli_wdr.cpp:2310
+msgid "Statistics Tree"
+msgstr "Statistikktre"
+
+#: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3742
+msgid "Username:"
+msgstr "Brukarnamn:"
+
+#: src/muuli_wdr.cpp:1397
+msgid "Userhash:"
+msgstr "Brukarhash:"
+
+#: src/muuli_wdr.cpp:1420
+msgid "Client software:"
+msgstr "Klientmjukvare:"
+
+#: src/muuli_wdr.cpp:1429
+msgid "Client version:"
+msgstr "Klienten si utgåve:"
+
+#: src/muuli_wdr.cpp:1436
+msgid "IP address:"
+msgstr "IP-adresse:"
+
+#: src/muuli_wdr.cpp:1445
+msgid "User ID:"
+msgstr "BrukarID:"
+
+#: src/muuli_wdr.cpp:1452
+msgid "Server IP:"
+msgstr "Tenar IP:"
+
+#: src/muuli_wdr.cpp:1461
+msgid "Server name:"
+msgstr "Tenarnamn:"
+
+#: src/muuli_wdr.cpp:1472
+msgid "Transfers to client"
+msgstr "Overføringar til klient"
+
+#: src/muuli_wdr.cpp:1479
+msgid "Current request:"
+msgstr "Novérande etterspurnader:"
+
+#: src/muuli_wdr.cpp:1498
+msgid "Average upload rate:"
+msgstr "Gjennomsnittleg opplastingsfart:"
+
+#: src/muuli_wdr.cpp:1507
+msgid "Average download rate:"
+msgstr "Gjennomsnittleg nedlastingsfart:"
+
+#: src/muuli_wdr.cpp:1514
+msgid "Uploaded (session):"
+msgstr "Opplasta (økt):"
+
+#: src/muuli_wdr.cpp:1523
+msgid "Downloaded (session):"
+msgstr "Lasta ned (økt)"
+
+#: src/muuli_wdr.cpp:1530
+msgid "Uploaded (total):"
+msgstr "Opplasta (totalt):"
+
+#: src/muuli_wdr.cpp:1539
+msgid "Downloaded (total):"
+msgstr "Lasta ned (totalt)"
+
+#: src/muuli_wdr.cpp:1550
+msgid "Scores"
+msgstr "Scorar"
+
+#: src/muuli_wdr.cpp:1557
+msgid "DL/UP modifier:"
+msgstr "NL/OL endringsfaktor:"
+
+#: src/muuli_wdr.cpp:1566
+msgid "Secure ident:"
+msgstr "Sikker identifikasjon:"
+
+#: src/muuli_wdr.cpp:1573
+msgid "Rating (total):"
+msgstr "Verdigjeving (total):"
+
+#: src/muuli_wdr.cpp:1582
+msgid "Queue score:"
+msgstr "Køscore"
+
+#: src/muuli_wdr.cpp:1617
+msgid "General Settings"
+msgstr "Brukarval"
+
+#: src/muuli_wdr.cpp:1624
+msgid "Nick"
+msgstr "Kallenamn"
+
+#: src/muuli_wdr.cpp:1627
+msgid "http://www.aMule.org - the Linux Mule"
+msgstr "http://www.aMule.org·-·Linux-muldyret"
+
+#: src/muuli_wdr.cpp:1628
+msgid "This is the name that other users will see when connecting to you."
+msgstr "Dette er namnet andre brukarar vil sjå når dei koplar til  maskina di."
+
+#: src/muuli_wdr.cpp:1633
+msgid "Language"
+msgstr "Språk"
+
+#: src/muuli_wdr.cpp:1638
+msgid "This specifies the language used on controls."
+msgstr "Dette vel språket som vert nytta på kontrollane."
+
+#: src/muuli_wdr.cpp:1645
+msgid "Misc Options"
+msgstr "Ymse brukarval"
+
+#: src/muuli_wdr.cpp:1649
+msgid "Check for new version at startup"
+msgstr "Sjå etter ny utgåve ved oppstart"
+
+#: src/muuli_wdr.cpp:1650
+msgid "Enabling this will make aMule check for new version at startup"
+msgstr "Aktivering av denne vil få aMule til å sjå etter ei ny utgåve ved oppstart."
+
+#: src/muuli_wdr.cpp:1653
+msgid "Start minimized"
+msgstr "Start minimert"
+
+#: src/muuli_wdr.cpp:1654
+msgid "Enabling this makes aMule minimize itself upon start."
+msgstr "Aktivering av denne minimerer aMule ved oppstart."
+
+#: src/muuli_wdr.cpp:1657
+msgid "Prompt on exit"
+msgstr "Stadfest avslutting"
+
+#: src/muuli_wdr.cpp:1659
+msgid "Makes aMule promt before exiting."
+msgstr "Får aMule til å be om stadfesting før avslutting."
+
+#: src/muuli_wdr.cpp:1662
+msgid "Enable Tray Icon"
+msgstr "Aktivér trauikon"
+
+#: src/muuli_wdr.cpp:1663
+msgid "This Enables/Disables the system tray (or taskbar) icon."
+msgstr "Dette aktiverer/deaktiverer ikonet i systemtrauet (eller oppgåvelinja)."
+
+#: src/muuli_wdr.cpp:1666
+msgid "Minimize to Tray Icon"
+msgstr "Minimér til trauikon"
+
+#: src/muuli_wdr.cpp:1667
+msgid ""
+"Enabling this will make aMule minimize to the System Tray, rather than the "
+"taskbar."
+msgstr "Akrivering av denne vil få aMule til å minimere seg til systemtrauet og ikkje til "
+"oppgåvelinja."
+
+#: src/muuli_wdr.cpp:1672
+msgid "Tooltip Delay Time in secs"
+msgstr "Tidsforseinking på verktytips i sekund"
+
+#: src/muuli_wdr.cpp:1673 src/muuli_wdr.cpp:1677
+msgid "The delay before showing tool-tips."
+msgstr "Forseinkinga før ein syner verktytips."
+
+#: src/muuli_wdr.cpp:1684
+msgid "Browser Selection"
+msgstr "Nettlesarval"
+
+#: src/muuli_wdr.cpp:1689
+msgid "Konqueror"
+msgstr "Konqueror"
+
+#: src/muuli_wdr.cpp:1690
+msgid "Mozilla"
+msgstr "Mozilla"
+
+#: src/muuli_wdr.cpp:1691
+msgid "Firefox"
+msgstr "Firefox"
+
+#: src/muuli_wdr.cpp:1692
+msgid "Firebird"
+msgstr "Firebird"
+
+#: src/muuli_wdr.cpp:1693
+msgid "Opera"
+msgstr "Opera"
+
+#: src/muuli_wdr.cpp:1694
+msgid "Netscape"
+msgstr "Netscape"
+
+#: src/muuli_wdr.cpp:1695
+msgid "Galeon"
+msgstr "Galeon"
+
+#: src/muuli_wdr.cpp:1696
+msgid "Epiphany"
+msgstr "Epiphany"
+
+#: src/muuli_wdr.cpp:1700
+msgid "Select your browser here"
+msgstr "Vel nettlesar her"
+
+#: src/muuli_wdr.cpp:1706
+msgid "Custom Browser:"
+msgstr "Eigenvalt nettlesar"
+
+#: src/muuli_wdr.cpp:1710
+msgid ""
+"Enter your browser name here. To use the custom browser, select the Custom "
+"menu-item from the dropdown-menu above."
+msgstr "Skriv nettlesarnamnet her. For å nytte ein eigen nettlesar, vel ein i nedtrekksmenyen over."
+
+#: src/muuli_wdr.cpp:1719
+msgid "Open in new tab if possible"
+msgstr "Opne nytt faneblad dersom mogleg"
+
+#: src/muuli_wdr.cpp:1721
+msgid "Open the web page in a new tab instead of in a new window when possible"
+msgstr "Opne ny nettside i nytt faneblad i staden for nytt vindauge når mogleg"
+
+#: src/muuli_wdr.cpp:1752
+msgid "Bandwith Limits"
+msgstr "Bandbreiddegrenser"
+
+#: src/muuli_wdr.cpp:1768 src/muuli_wdr.cpp:1812
+msgid "Upload"
+msgstr "Opplasting"
+
+#: src/muuli_wdr.cpp:1781
+msgid "Slot Allocation"
+msgstr "Opningsdistribusjon"
+
+#: src/muuli_wdr.cpp:1796
+msgid "Line Capacities"
+msgstr "Linjekapasitet"
+
+#: src/muuli_wdr.cpp:1826
+msgid ""
+"Note: These values are\n"
+" only used for statistics."
+msgstr "Merk: Desse verdiane vert\n"
+" berre nytta til statistikk."
+
+#: src/muuli_wdr.cpp:1837
+msgid "Standard client TCP Port:"
+msgstr "Standard klient TCP-port:"
+
+#: src/muuli_wdr.cpp:1841
+msgid "This is the standard ED2K port and cannot be disabled."
+msgstr "Dette er den vanlege ED2k-porten og kan ikkje deaktiverast."
+
+#: src/muuli_wdr.cpp:1846
+msgid "Extended client UDP Port:"
+msgstr "Utvida UDP port for klient:"
+
+#: src/muuli_wdr.cpp:1850
+msgid "This UDP port is used for extended Ed2K requests and Kad network"
+msgstr "Dette er UDP-porten, som vert nytta til utvida ED2k forespurnader og kadnettverket"
+
+#: src/muuli_wdr.cpp:1853
+msgid "disable"
+msgstr "deaktivere"
+
+#: src/muuli_wdr.cpp:1860
+msgid "Bind Address"
+msgstr "Bind adresse"
+
+#: src/muuli_wdr.cpp:1871
+msgid "UDP port for extended server requests (TCP+3): 4665"
+msgstr "UDP-port for utvida tenarførespurnader (TCP+3): 4665"
+
+#: src/muuli_wdr.cpp:1878
+msgid "Max Sources per File"
+msgstr "Maks kjelder per fil"
+
+#: src/muuli_wdr.cpp:1885
+msgid "Hard Limit"
+msgstr "Hard grense"
+
+#: src/muuli_wdr.cpp:1897
+msgid "Connection Limits"
+msgstr "Koplingsgrenser"
+
+#: src/muuli_wdr.cpp:1904
+msgid "Max Connections"
+msgstr "Maks koplingar"
+
+#: src/muuli_wdr.cpp:1937
+msgid "Kademlia"
+msgstr "Kademlia"
+
+#: src/muuli_wdr.cpp:1945
+msgid "Universal Plug and Play"
+msgstr "Universell·Plug·and·Play"
+
+#: src/muuli_wdr.cpp:1948
+msgid "Enable UPnP"
+msgstr "Aktivér UPnP"
+
+#: src/muuli_wdr.cpp:1953
+msgid "UPnP TCP Port:"
+msgstr "UPnP·TCP-port:"
+
+#: src/muuli_wdr.cpp:1964
+msgid "Autoconnect on startup"
+msgstr "Automatisk tilkopling ved oppstart"
+
+#: src/muuli_wdr.cpp:1967
+msgid "Reconnect on loss"
+msgstr "Kople til dersom fråkopla"
+
+#: src/muuli_wdr.cpp:1971
+msgid "Show overhead bandwith"
+msgstr "Syne dataoverskotsbandbreidde"
+
+#: src/muuli_wdr.cpp:2001
+msgid "Server Options"
+msgstr "Tenarval"
+
+#: src/muuli_wdr.cpp:2006
+msgid "Remove dead server after"
+msgstr "Ta bort daude tenarar etter"
+
+#: src/muuli_wdr.cpp:2012
+msgid "retries"
+msgstr "freistnader"
+
+#: src/muuli_wdr.cpp:2019
+msgid "Auto-update serverlist at startup"
+msgstr "Automatisk oppdatering av tenarlista ved oppstart"
+
+#: src/muuli_wdr.cpp:2022
+msgid "List"
+msgstr "Liste"
+
+#: src/muuli_wdr.cpp:2027
+msgid "Update serverlist when connecting to a server"
+msgstr "Oppdater tenarlista ved tilkopling til ein tenar"
+
+#: src/muuli_wdr.cpp:2030
+msgid "Update serverlist when a client connect"
+msgstr "Oppdatere tenarlista når ein klient koplar til"
+
+#: src/muuli_wdr.cpp:2033
+msgid "Use priority system"
+msgstr "Bruk prioritetssystem"
+
+#: src/muuli_wdr.cpp:2037
+msgid "Use smart LowID check on connect"
+msgstr "Bruk smart LågID sjekk ved tilkopling"
+
+#: src/muuli_wdr.cpp:2041
+msgid "Safe connect"
+msgstr "Trygg tilkopling"
+
+#: src/muuli_wdr.cpp:2045
+msgid "Autoconnect to servers in static list only"
+msgstr "Automatisk tilkopling berre til tenarar i statisk liste"
+
+#: src/muuli_wdr.cpp:2048
+msgid "Set manually added servers to High Priority"
+msgstr "Gje høg prioritet til manuelt tillagde tenarar"
+
+#: src/muuli_wdr.cpp:2081
+msgid "I.C.H. active"
+msgstr "I.C.H. aktiv"
+
+#: src/muuli_wdr.cpp:2085
+msgid "AICH trusts every hash (not recomended)"
+msgstr "AICH stolar på alle hashar (ikkje tilrådd)"
+
+#: src/muuli_wdr.cpp:2093
+msgid "Add files to download in pause mode"
+msgstr "Legg filer til nedlasting i pausemodus"
+
+#: src/muuli_wdr.cpp:2096
+msgid "Add files to download with auto priority"
+msgstr "Legg filer til nedlasting med autoprioritet"
+
+#: src/muuli_wdr.cpp:2099
+msgid "Try to download first and last chunks first"
+msgstr "Prøv å laste ned første og siste del først"
+
+#: src/muuli_wdr.cpp:2103
+msgid "Add new shared files with auto priority"
+msgstr "Legg til nye delte filer med autoprioritet"
+
+#: src/muuli_wdr.cpp:2106
+msgid "Try to transfer full chunks to all uploads"
+msgstr "Forsøk å overføre heile delar til alle opplastingar"
+
+#: src/muuli_wdr.cpp:2110
+msgid "Start next paused file when a file completed"
+msgstr "Start neste fil på pause når ei fil vert ferdig."
+
+#: src/muuli_wdr.cpp:2114
+msgid "From the same category"
+msgstr "Frå same kategori"
+
+#: src/muuli_wdr.cpp:2117
+msgid "Save 10 sources on rare files (< 20 sources)"
+msgstr "Lagre 10 kjelder til sjeldne filer (< 20 kjelder)"
+
+#: src/muuli_wdr.cpp:2123
+msgid "Disk Space"
+msgstr "Diskplass"
+
+#: src/muuli_wdr.cpp:2126
+msgid "Check Disk Space"
+msgstr "Sjekk diskplass"
+
+#: src/muuli_wdr.cpp:2127
+msgid "Select this if you want aMule to check your Disk Space"
+msgstr "Vel dette dersom du vil at aMule skal sjekke diskplassen din"
+
+#: src/muuli_wdr.cpp:2134
+msgid "Min Disk Space:"
+msgstr "Minste diskplass"
+
+#: src/muuli_wdr.cpp:2138
+msgid "Enter here the min disk space desired."
+msgstr "Skriv inn mimimum ønska diskplass."
+
+#: src/muuli_wdr.cpp:2141
+msgid "Mb"
+msgstr "Mb"
+
+#: src/muuli_wdr.cpp:2172
+msgid "Incoming Directory :"
+msgstr "Innkomande mappe :"
+
+#: src/muuli_wdr.cpp:2183
+msgid "Temporary Directory :"
+msgstr "Mellombels katalog :"
+
+#: src/muuli_wdr.cpp:2194
+msgid "Shared Directories"
+msgstr "Delte katalogar"
+
+#: src/muuli_wdr.cpp:2197
+msgid "(Right click on folder icon for recursive share)"
+msgstr "(Høgreklikk på mappeikonet for å dele underkatalogar)"
+
+#: src/muuli_wdr.cpp:2208
+msgid "Share hidden files"
+msgstr "Dele gøymde filer"
+
+#: src/muuli_wdr.cpp:2214
+msgid "Video Player"
+msgstr "Videospelar"
+
+#: src/muuli_wdr.cpp:2227
+msgid "Create Backup to preview"
+msgstr "Lag tryggleikskopi for førehandssyning"
+
+#: src/muuli_wdr.cpp:2256
+msgid "Graphs"
+msgstr "Grafar"
+
+#: src/muuli_wdr.cpp:2259 src/muuli_wdr.cpp:2313
+msgid "Update delay : 5 secs"
+msgstr "Oppdateringsforseinking: 5 sek"
+
+#: src/muuli_wdr.cpp:2265
+msgid "Time for average graph: 100 mins"
+msgstr "Tid for gjennomsnittleg graf: 100 min"
+
+#: src/muuli_wdr.cpp:2271
+msgid "Connections Graph Scale: 100 "
+msgstr "Koplingsgrafskala: 100 "
+
+#: src/muuli_wdr.cpp:2277
+msgid "Select Statistics Colors"
+msgstr "Vel statistikkfargar"
+
+#: src/muuli_wdr.cpp:2284
+msgid "Background"
+msgstr "Bakgrunn"
+
+#: src/muuli_wdr.cpp:2285
+msgid "Grid"
+msgstr "Rutenett"
+
+#: src/muuli_wdr.cpp:2286
+msgid "Download current"
+msgstr "Last ned novérande"
+
+#: src/muuli_wdr.cpp:2287
+msgid "Download running average"
+msgstr "Last ned køyregjennomsnitt"
+
+#: src/muuli_wdr.cpp:2288
+msgid "Download session average"
+msgstr "Last ned øktgjennomsnitt"
+
+#: src/muuli_wdr.cpp:2289
+msgid "Upload current"
+msgstr "Opplasting no"
+
+#: src/muuli_wdr.cpp:2290
+msgid "Upload running average"
+msgstr "Gjennomsnittleg køyrande opplasting"
+
+#: src/muuli_wdr.cpp:2291
+msgid "Upload session average"
+msgstr "Gjennomsnittleg økt opplasting"
+
+#: src/muuli_wdr.cpp:2292
+msgid "Active connections"
+msgstr "Aktive koplingar"
+
+#: src/muuli_wdr.cpp:2295
+msgid "Systray Icon Speedbar"
+msgstr "Fartslinje i ikontrauet"
+
+#: src/muuli_wdr.cpp:2296
+msgid "Kad-nodes current"
+msgstr "Kadnodar no"
+
+#: src/muuli_wdr.cpp:2297
+msgid "Kad-nodes running"
+msgstr "Køyrande kadnodar"
+
+#: src/muuli_wdr.cpp:2298
+msgid "Kad-nodes session"
+msgstr "Kadnodar (økt)"
+
+#: src/muuli_wdr.cpp:2303 src/muuli_wdr.cpp:2974
+msgid "Select"
+msgstr "Velje"
+
+#: src/muuli_wdr.cpp:2321
+msgid "Number of Client Versions shown (0=unlimited)"
+msgstr "Tal på klienutgåver synt (0=uinnskrenka)"
+
+#: src/muuli_wdr.cpp:2350
+msgid "Notifications"
+msgstr "Meldingar"
+
+#: src/muuli_wdr.cpp:2355
+msgid "Messages popup"
+msgstr "Oppsprettmeldingar"
+
+#: src/muuli_wdr.cpp:2358
+msgid "Use sound"
+msgstr "Bruk lyd"
+
+#: src/muuli_wdr.cpp:2376
+msgid "Pop out when :"
+msgstr "Sprett ut når :"
+
+#: src/muuli_wdr.cpp:2379
+msgid "New entry on log"
+msgstr "Ny oppføring i logg"
+
+#: src/muuli_wdr.cpp:2383
+msgid "Starts a new chat session"
+msgstr "Startar ei ny lynmeldingsøkt"
+
+#: src/muuli_wdr.cpp:2387
+msgid "A new chat message is received"
+msgstr "Ei ny melding er motteken"
+
+#: src/muuli_wdr.cpp:2391
+msgid "A download is added or finished"
+msgstr "Ei nedlasting er lagd til eller ferdig"
+
+#: src/muuli_wdr.cpp:2395
+msgid "New aMule version detected"
+msgstr "Ny utgåve av aMule funne"
+
+#: src/muuli_wdr.cpp:2399
+msgid "Urgent OOD, serverconnection lost"
+msgstr "Viktig OOD, tenarkopling mista"
+
+#: src/muuli_wdr.cpp:2408
+msgid "Notify by Mail"
+msgstr "Epostmelding"
+
+#: src/muuli_wdr.cpp:2411
+msgid "Send an Email when transfer complete."
+msgstr "Send ein epost når overføring er ferdig"
+
+#: src/muuli_wdr.cpp:2418
+msgid "SMTP server :"
+msgstr "SMPT-tenar :"
+
+#: src/muuli_wdr.cpp:2425
+msgid "Email Address :"
+msgstr "Epostadresse :"
+
+#: src/muuli_wdr.cpp:2465
+msgid "!!! WARNING !!!"
+msgstr "!!! ÅTVARING !!!"
+
+#: src/muuli_wdr.cpp:2471
+msgid ""
+"Do not change these setting unless you know\n"
+"what you are doing, otherwise you can easily\n"
+"make things worse for yourself.\n"
+"\n"
+"aMule will run fine without adjusting any of\n"
+"these settings."
+msgstr "Ikkje endre desse innstillingane med mindre du veit\n"
+"kva du gjer, ellers kan du fort\n"
+"gjere ting verre for deg sjølv.\n"
+"\n"
+"aMule køyrer fint utan justering av nokon av\n"
+"desse innstillingane."
+
+#: src/muuli_wdr.cpp:2483
+msgid "Advanced Settings"
+msgstr "Avanserte innstillingar"
+
+#: src/muuli_wdr.cpp:2486
+msgid "Max new connections / 5 secs"
+msgstr "Maks nye koplingar / 5 sek"
+
+#: src/muuli_wdr.cpp:2492
+msgid "File Buffer Size: 240000 bytes"
+msgstr "Filbufferstorleik: 240000·bytes"
+
+#: src/muuli_wdr.cpp:2498
+msgid "Upload Queue Size: 5000 clients"
+msgstr "Storleik på opplastingskø: 5000 klientar"
+
+#: src/muuli_wdr.cpp:2504
+msgid "Server connection refresh interval: Disable"
+msgstr "Oppfriskingsintervall for tenarkopling: Deaktiver"
+
+#: src/muuli_wdr.cpp:2532
+msgid "GUI Tweaks"
+msgstr "Draktinnstillingar"
+
+#: src/muuli_wdr.cpp:2537
+msgid "Download Queue Files Progress"
+msgstr "Filframgang i nedlastingskø"
+
+#: src/muuli_wdr.cpp:2540
+msgid "Show percentage"
+msgstr "Syne prosent"
+
+#: src/muuli_wdr.cpp:2544
+msgid "Show progressbar "
+msgstr "Syne framdriftsbar"
+
+#: src/muuli_wdr.cpp:2550
+msgid "Progressbar Style"
+msgstr "Stil på framdriftsbar"
+
+#: src/muuli_wdr.cpp:2560
+msgid "Flat"
+msgstr "Flat"
+
+#: src/muuli_wdr.cpp:2563
+msgid "Round"
+msgstr "Rund"
+
+#: src/muuli_wdr.cpp:2574
+msgid "Skin Support"
+msgstr "Hudstøtte"
+
+#: src/muuli_wdr.cpp:2577
+msgid "Enable skin support "
+msgstr "Aktiver hudstøtte"
+
+#: src/muuli_wdr.cpp:2580
+msgid "Skin:"
+msgstr "Hud:"
+
+#: src/muuli_wdr.cpp:2585
+msgid "- no skins available -"
+msgstr "- ingen huder tilgjengeleg -"
+
+#: src/muuli_wdr.cpp:2594
+msgid "Column Sorting"
+msgstr "Kolonnesortering"
+
+#: src/muuli_wdr.cpp:2597
+msgid "Auto-sort files in the download queue (high CPU)"
+msgstr "Automatisk sortering av filene i nedlastigskøa (høg CPU)"
+
+#: src/muuli_wdr.cpp:2599
+msgid "aMule will sort the columns in your download list automatically"
+msgstr "aMule sorterer kolonnene i nedlastingslista di automatisk"
+
+#: src/muuli_wdr.cpp:2604
+msgid "Misc Gui Tweaks"
+msgstr "Ymse draktinnstillingar"
+
+#: src/muuli_wdr.cpp:2607
+msgid "Show Fast ED2K Links Handler"
+msgstr "Syne snøgg ED2k lenkjehandsamar"
+
+#: src/muuli_wdr.cpp:2611
+msgid "Show extended info on categories tabs"
+msgstr "Syne utvida informasjon i kategorifaneblad"
+
+#: src/muuli_wdr.cpp:2615
+msgid "Show transfer rates on title"
+msgstr "Syne overføringsfart i tittellinja"
+
+#: src/muuli_wdr.cpp:2619
+msgid "Vertical toolbar orientation"
+msgstr "Vertikal verktylinjeorientering"
+
+#: src/muuli_wdr.cpp:2622
+msgid "Show part file number before file name"
+msgstr "Syne delfilnummer før filnamn"
+
+#: src/muuli_wdr.cpp:2646
+msgid "Source Dropping"
+msgstr "Støyt bort kjelder"
+
+#: src/muuli_wdr.cpp:2653
+msgid "Keep sources"
+msgstr "Behald kjelder"
+
+#: src/muuli_wdr.cpp:2654
+msgid "Drop sources"
+msgstr "Støyt bort kjelder"
+
+#: src/muuli_wdr.cpp:2655
+msgid "Send sources to any other file before dropping (High CPU)"
+msgstr "Send kjelder til andre filer før bortstøyting (Høg CPU)"
+
+#: src/muuli_wdr.cpp:2657
+msgid "Sources with no needed file-parts."
+msgstr "Kjelder utan naudsynte fildelar."
+
+#: src/muuli_wdr.cpp:2660
+msgid "Full Queue Sources Handling"
+msgstr "Kjeldehandsaming for full kø"
+
+#: src/muuli_wdr.cpp:2663
+msgid "Enable auto drop Full Queue Sources"
+msgstr "Aktivér automatisk bortstøyting av kjelder med full kø"
+
+#: src/muuli_wdr.cpp:2669
+msgid "High Queue Rating Sources Handling"
+msgstr "Kjeldehandsaming for lang kø"
+
+#: src/muuli_wdr.cpp:2672
+msgid "Enable auto drop High Queue Rating Sources"
+msgstr "Aktivér·automatisk·bortstøyting av kjelder med lang kø"
+
+#: src/muuli_wdr.cpp:2678
+msgid "High Queue Rating value"
+msgstr "Verdi for lang kø"
+
+#: src/muuli_wdr.cpp:2684
+msgid "(Min 300 / Max 3000)"
+msgstr "(Min·300·/·Maks·3000)"
+
+#: src/muuli_wdr.cpp:2691
+msgid "Auto Drop Sources Timer"
+msgstr "Automatisk bortstøytingstid"
+
+#: src/muuli_wdr.cpp:2694
+msgid "Timer (in secs)"
+msgstr "Tidtakar (i sekund)"
+
+#: src/muuli_wdr.cpp:2700
+msgid "(Min 60 / 3600 Max)"
+msgstr "(Min·60·/·3600·Maks)"
+
+#: src/muuli_wdr.cpp:2726
+msgid "Remote Control"
+msgstr "Fjernkontroll"
+
+#: src/muuli_wdr.cpp:2731
+msgid "Webserver Parameters"
+msgstr "Vevtenarparameter"
+
+#: src/muuli_wdr.cpp:2734
+msgid "Run amuleweb on startup"
+msgstr "Køyre amuleweb ved oppstart"
+
+#: src/muuli_wdr.cpp:2739
+msgid "Webserver port"
+msgstr "Vevtenarport"
+
+#: src/muuli_wdr.cpp:2747
+msgid "Enable UPnP port forwarding on the Webserver port"
+msgstr "Aktivér UPnP portvidaresending på vevtenarporten"
+
+#: src/muuli_wdr.cpp:2752
+msgid "Webserver UPnP TCP port"
+msgstr "Vevtenaren sin UPnP·TCP-port"
+
+#: src/muuli_wdr.cpp:2762
+msgid "Page Refresh Time (in secs)"
+msgstr "Sideoppfriskingstid (i sekund)"
+
+#: src/muuli_wdr.cpp:2770
+msgid "Enable Gzip compression"
+msgstr "Aktivér Gzipkompresjon"
+
+#: src/muuli_wdr.cpp:2774
+msgid "Enable Low rights User"
+msgstr "Aktivér brukar med få rettar"
+
+#: src/muuli_wdr.cpp:2781
+msgid "Full rights password"
+msgstr "Passord for fulle rettar"
+
+#: src/muuli_wdr.cpp:2787
+msgid "Low rights password"
+msgstr "Passord for låge rettar"
+
+#: src/muuli_wdr.cpp:2793
+msgid "Web template"
+msgstr "Vevmønster"
+
+#: src/muuli_wdr.cpp:2804
+msgid "External Connection Parameters"
+msgstr "Parameter for ekstern kopling"
+
+#: src/muuli_wdr.cpp:2807
+msgid "Accept external connections"
+msgstr "Akseptér eksterne koplingar"
+
+#: src/muuli_wdr.cpp:2825
+msgid ""
+"IP of the listening interface\n"
+"(empty for any)"
+msgstr "IP for lyttande grensesnitt\n"
+"(tom for einkvar)"
+
+#: src/muuli_wdr.cpp:2831
+msgid ""
+"Enter here a valid ip in the a.b.c.d format for the listening EC interface. "
+"An empty field or 0.0.0.0 will mean any interface."
+msgstr "Skriv in ei gyldig IP i a.b.c.d format for det lyttande EC-grensesnittet. "
+"Eit tomt felt eller 0.0.0.0 betyr samtlege grensesnitt."
+
+#: src/muuli_wdr.cpp:2838
+msgid "TCP port"
+msgstr "TCP-port"
+
+#: src/muuli_wdr.cpp:2846
+msgid "Enable UPnP port forwarding on the EC port"
+msgstr "Aktivér UPnP-portvidaresending på EC-porten"
+
+#: src/muuli_wdr.cpp:2883
+msgid "Click here to apply any changes made to the preferences."
+msgstr "Klikk her for å utføre samtlege endringar gjorde i innstillingar."
+
+#: src/muuli_wdr.cpp:2887
+msgid "Reset any changes made to the preferences."
+msgstr "Nullstill alle endringar i innstillingar."
+
+#: src/muuli_wdr.cpp:2911
+msgid "Title :"
+msgstr "Tittel :"
+
+#: src/muuli_wdr.cpp:2921
+msgid "Comment :"
+msgstr "Kommentar :"
+
+#: src/muuli_wdr.cpp:2931
+msgid "Incoming Dir :"
+msgstr "Innkomande kat:"
+
+#: src/muuli_wdr.cpp:2937
+msgid "..."
+msgstr "..."
+
+#: src/muuli_wdr.cpp:2944
+msgid "Change priority for new assigned files :"
+msgstr "Endre prioritet for nytileigna filer :"
+
+#: src/muuli_wdr.cpp:2949
+msgid "Dont change"
+msgstr "Ikkje endre"
+
+#: src/muuli_wdr.cpp:2963
+msgid "Select color for this Category (currently selected) :"
+msgstr "Vel farge for denne kategprien (no valt)"
+
+#: src/muuli_wdr.cpp:3035
+msgid "Display server motd when connected ..."
+msgstr "Syne tenar motd når tilkopla ..."
+
+#: src/muuli_wdr.cpp:3038 src/muuli_wdr.cpp:3186
+msgid "Server Info"
+msgstr "Tenarinfo"
+
+#: src/muuli_wdr.cpp:3049 src/muuli_wdr.cpp:3084
+msgid "Click this button to reset the log."
+msgstr "Klikk denne knappen for å nullstille loggen."
+
+#: src/muuli_wdr.cpp:3073 src/muuli_wdr.cpp:3182
+msgid "aMule Log"
+msgstr "aMulelogg"
+
+#: src/muuli_wdr.cpp:3106
+msgid "Click on this button to update the servers list from URL ..."
+msgstr "Klikk på denne knappen for å oppdatere tenarlista frå nettadresse ..."
+
+#: src/muuli_wdr.cpp:3110
+msgid "Serverlist"
+msgstr "Tenarliste"
+
+#: src/muuli_wdr.cpp:3115
+msgid ""
+"Enter the url to a server.met file here and press the button to the left to "
+"update the list of known servers."
+msgstr "Skriv inn nettadressa til ei server.met fil her og klikk på knappen til venstre for å oppdatere tenarlista."
+
+#: src/muuli_wdr.cpp:3122
+msgid "Manual Server Add : Name"
+msgstr "Legg til tenar manuelt : Namn"
+
+#: src/muuli_wdr.cpp:3126
+msgid "Enter the name of the new server here"
+msgstr "Skriv inn namnet på den nye tenaren her"
+
+#: src/muuli_wdr.cpp:3133
+msgid "Enter the IP of the server here, using the x.x.x.x format."
+msgstr "Skriv inn IP`en til tenaren her, i x.x.x.x format."
+
+#: src/muuli_wdr.cpp:3140
+msgid "Enter the port of the server here."
+msgstr "Skriv inn porten til tenaren her."
+
+#: src/muuli_wdr.cpp:3144
+msgid "Add manually a server (fill fields to the left before) ..."
+msgstr "Legg til ein tenar manuelt (fyll først ut felta til venstre) ..."
+
+#: src/muuli_wdr.cpp:3190 src/muuli_wdr.cpp:3412
+msgid "ED2K Info"
+msgstr "ED2k-info"
+
+#: src/muuli_wdr.cpp:3194 src/muuli_wdr.cpp:3969
+msgid "Kad Info"
+msgstr "Kad-info"
+
+#: src/muuli_wdr.cpp:3216
+msgid ""
+"The selected locale seems not to be installed on your box\n"
+"You must generate it to use this language.\n"
+"A good start on linux systems is the file /etc/locale.gen and the package "
+"'locales'\n"
+"Good luck!\n"
+"(Note: I'll try to set it anyway)"
+msgstr "Dei lokale innstillingane ser ikkje ut til å vere installert på maskina di\n"
+"Du må generere den for å nytte dette språket.\n"
+"Ein god start på linuxsystem er fila /etc/lokale.gen og pakken "
+"'locales'\n"
+"Lukke til!\n"
+"(Merk: Eg freistar å velje det likevel)"
+
+#: src/muuli_wdr.cpp:3230
+msgid "Never show this again"
+msgstr "Aldri syne dette igjen"
+
+#: src/muuli_wdr.cpp:3260
+msgid "Click on this button to update the nodes list from URL ..."
+msgstr "Klikk på denne knappen for å oppdatere nodelista frå internettadresse ..."
+
+#: src/muuli_wdr.cpp:3264
+msgid "Nodes (0)"
+msgstr "Nodar (0)"
+
+#: src/muuli_wdr.cpp:3269
+msgid ""
+"Enter the url to a nodes.dat file here and press the button to the left to "
+"update the list of known nodes."
+msgstr "Skriv inn internettadressa til ei nodes-dat fil her og klikk på knappen til venstre for "
+"å oppdatere lista over kjende nodar."
+
+#: src/muuli_wdr.cpp:3274
+msgid "Nodes stats"
+msgstr "Nodestatistikk"
+
+#: src/muuli_wdr.cpp:3325
+msgid "Bootstrap"
+msgstr "Eigenoppstart"
+
+#: src/muuli_wdr.cpp:3328
+msgid "New node"
+msgstr "Ny node"
+
+#: src/muuli_wdr.cpp:3333
+msgid "IP:"
+msgstr "IP:"
+
+#: src/muuli_wdr.cpp:3362
+msgid "Port:"
+msgstr "Port:"
+
+#: src/muuli_wdr.cpp:3379
+msgid ""
+"Bootstrap from \n"
+"known clients"
+msgstr "Eigenoppstart frå \n"
+"kjende klientar"
+
+#: src/muuli_wdr.cpp:3386
+msgid "Disconnect Kad"
+msgstr "Kople frå Kad"
+
+#: src/muuli_wdr.cpp:3444
+msgid "Protocol Obfuscation"
+msgstr "Protokolltåkeleggjing"
+
+#: src/muuli_wdr.cpp:3447
+msgid "Support Protocol Obfuscation"
+msgstr "Støtte protokolltåkeleggjing"
+
+#: src/muuli_wdr.cpp:3449
+msgid ""
+"This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
+"connections from other clients."
+msgstr "Dette valet aktiverer protokolltåkeleggjing og gjer at aMule tek imot tåkelagde "
+"koplingar frå andre klientar."
+
+#: src/muuli_wdr.cpp:3452
+msgid "Use obfuscation for outgoing connections"
+msgstr "Bruk tåkeleggjing for utgåande koplingar"
+
+#: src/muuli_wdr.cpp:3454
+msgid ""
+"This option makes aMule use Protocol Obfuscation when connecting other "
+"clients/servers."
+msgstr "Dette valet får aMule til å nytte protokolltåkeleggjing ved tilkopling til andre"
+"klientar/tenarar."
+
+#: src/muuli_wdr.cpp:3457
+msgid "Accept only obfuscated connections"
+msgstr "Berre godta tåkelagde koplingar"
+
+#: src/muuli_wdr.cpp:3458
+msgid ""
+"This option makes aMule only accept obfuscated connections. You will have "
+"less sources, but all your traffic will be obfuscated"
+msgstr "Dette valet får aMule til å berre godta tåkelagde koplingar. Du vil få "
+"færre kjelder, men all trafikken din vert tåkelagd"
+
+#: src/muuli_wdr.cpp:3463
+msgid "File Options"
+msgstr "Filinnstillingar"
+
+#: src/muuli_wdr.cpp:3468
+msgid "Everybody"
+msgstr "Alle"
+
+#: src/muuli_wdr.cpp:3470
+msgid "No One"
+msgstr "Ingen"
+
+#: src/muuli_wdr.cpp:3472
+msgid "Who can see shared files:"
+msgstr "Kven kan sjå delte filer:"
+
+#: src/muuli_wdr.cpp:3473
+msgid "Select who can request to view a list of your shared files."
+msgstr "Vel kven som kan be om å sjå ei liste over dei delte filene dine."
+
+#: src/muuli_wdr.cpp:3478
+msgid "IP-Filtering"
+msgstr "IP-filtrering"
+
+#: src/muuli_wdr.cpp:3485
+msgid "Filter clients"
+msgstr "Filtrér klientar"
+
+#: src/muuli_wdr.cpp:3487
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "Aktivér IP-filterring av klientar i fila ~/.aMule/ipfilter.dat."
+
+#: src/muuli_wdr.cpp:3490
+msgid "Filter servers"
+msgstr "Filtrér tenarar"
+
+#: src/muuli_wdr.cpp:3492
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr "Aktivér filtrering av tenarar i fila ~/.aMule/ipfilter.dat."
+
+#: src/muuli_wdr.cpp:3499
+msgid "Reload List"
+msgstr "Last om att lista"
+
+#: src/muuli_wdr.cpp:3500
+msgid "Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat"
+msgstr "Last om att lista av IP`ar å filtre frå fila ~/.aMule/ipfilter.dat"
+
+#: src/muuli_wdr.cpp:3508
+msgid "URL:"
+msgstr "Nettadresse:"
+
+#: src/muuli_wdr.cpp:3514
+msgid "Update now"
+msgstr "Oppdatér no"
+
+#: src/muuli_wdr.cpp:3519
+msgid "Auto-update ipfilter at startup"
+msgstr "Automatisk oppdatér ipfilter ved oppstart"
+
+#: src/muuli_wdr.cpp:3524
+msgid "Filtering Level:"
+msgstr "Filternivå:"
+
+#: src/muuli_wdr.cpp:3534
+msgid "Always filter LAN IPs"
+msgstr "Alltid filtrér LAN IP`ar"
+
+#: src/muuli_wdr.cpp:3538
+msgid "Paranoid handling of non-matching IPs"
+msgstr "Paranoid handsaming av ujamne IP`ar"
+
+#: src/muuli_wdr.cpp:3540
+msgid ""
+"Rejects packet if the client ip is different from the ip where the packet is "
+"received from. Use with caution."
+msgstr "Avviser pakkar dersom klientadressa er ulik adressa pakken vert motteken frå. Vér varsam med dette."
+
+#: src/muuli_wdr.cpp:3545
+msgid "Client Identification:"
+msgstr "Klientidentifikasjon:"
+
+#: src/muuli_wdr.cpp:3548
+msgid "Use Secure Identification"
+msgstr "Nytte sikker identifikasjon"
+
+#: src/muuli_wdr.cpp:3550
+msgid ""
+"Secure Identification uses a handshake approch to safely identify clients "
+"for use with the credit system."
+msgstr "Sikker identifikasjon nyttar elektroniske handtrykk for å identifisere klientar "
+"trygt for bruk med kredittsystemet."
+
+#: src/muuli_wdr.cpp:3579
+msgid "Enable/Disable"
+msgstr "Aktivér/deaktivér"
+
+#: src/muuli_wdr.cpp:3582
+msgid "Enable Online-Signature"
+msgstr "Aktivér nettsignatur"
+
+#: src/muuli_wdr.cpp:3584
+msgid ""
+"Enables the writing of the OS file, which can be used by external apps to "
+"create signatures and the like."
+msgstr "Aktiverer skriving av OS-fila, som kan verte nytta av eksterne program for"
+"å lage signaturar og liknande."
+
+#: src/muuli_wdr.cpp:3589
+msgid "Update Frequency (Secs):"
+msgstr "Oppdateringsfrekvens (sekund):"
+
+#: src/muuli_wdr.cpp:3593
+msgid "Change the frequency (in seconds) of Online Signature updates."
+msgstr "Endre frekvensen (i sekund) for oppdatering av nettsignaturar."
+
+#: src/muuli_wdr.cpp:3599
+msgid "Online Signature Directory:"
+msgstr "Nettsignaturkatalog:"
+
+#: src/muuli_wdr.cpp:3606
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
+msgstr "Klikk her for å velje katalogen med nettsignaturfilene."
+
+#: src/muuli_wdr.cpp:3635 src/muuli_wdr.cpp:3870
+msgid "Disable/Enable"
+msgstr "Deaktivere/Aktivere"
+
+#: src/muuli_wdr.cpp:3638
+msgid "Filter incoming messages (except current chat):"
+msgstr "Filtrér innkomande meldingar (utanom novérande samtale):"
+
+#: src/muuli_wdr.cpp:3641
+msgid "Filtering Options:"
+msgstr "Filterval:"
+
+#: src/muuli_wdr.cpp:3644
+msgid "Filter all messages"
+msgstr "Filtrér alle meldingar"
+
+#: src/muuli_wdr.cpp:3647
+msgid "Filter messages from people not on your friend list"
+msgstr "Filtrér meldingar frå alle som ikkje er på kameratlista"
+
+#: src/muuli_wdr.cpp:3650
+msgid "Filter messages from unknown clients"
+msgstr "Filtrér meldingar frå ukjende klientar"
+
+#: src/muuli_wdr.cpp:3653
+msgid "Filter messages containing (use ',' as separator):"
+msgstr "Filtrér meldingar som inneheld (bruk ','som skiljeteikn):"
+
+#: src/muuli_wdr.cpp:3657
+msgid "add here the words amule should filter and block messages including it"
+msgstr "legg til ord aMule skal filtrére og blokkere"
+
+#: src/muuli_wdr.cpp:3694
+msgid "Enable Proxy"
+msgstr "Aktivér vikar"
+
+#: src/muuli_wdr.cpp:3695
+msgid "Enable/disable proxy support"
+msgstr "Aktivere/deaktivere vikarstøtte"
+
+#: src/muuli_wdr.cpp:3700
+msgid "Proxy type:"
+msgstr "Vikartype:"
+
+#: src/muuli_wdr.cpp:3705
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+#: src/muuli_wdr.cpp:3706
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+#: src/muuli_wdr.cpp:3707
+msgid "HTTP"
+msgstr "HTTP"
+
+#: src/muuli_wdr.cpp:3708
+msgid "SOCKS4a"
+msgstr "SOCKS4a"
+
+#: src/muuli_wdr.cpp:3711
+msgid "The type of proxy you are connecting to"
+msgstr "Typen vikar du koplar til"
+
+#: src/muuli_wdr.cpp:3714
+msgid "Proxy host:"
+msgstr "Vikarvert:"
+
+#: src/muuli_wdr.cpp:3718
+msgid "The proxy host name"
+msgstr "Vikaren sitt vertsnamn"
+
+#: src/muuli_wdr.cpp:3721
+msgid "Proxy port:"
+msgstr "Vikarport:"
+
+#: src/muuli_wdr.cpp:3725
+msgid "The proxy port"
+msgstr "Vikarport"
+
+#: src/muuli_wdr.cpp:3732
+msgid "Authentication"
+msgstr "Godkjenning"
+
+#: src/muuli_wdr.cpp:3735
+msgid "Enable authentication"
+msgstr "Aktivér godkjenning"
+
+#: src/muuli_wdr.cpp:3736
+msgid "Enable/disable username/password authentication"
+msgstr "Aktivér/deaktivér godkjenning av brukarnamn/passord"
+
+#: src/muuli_wdr.cpp:3746
+msgid "The username to use to connect to the proxy"
+msgstr "Brukarnamn å nytte for å kople til vikar"
+
+#: src/muuli_wdr.cpp:3749
+msgid "Password:"
+msgstr "Passord:"
+
+#: src/muuli_wdr.cpp:3753
+msgid "The password to use to connect to the proxy"
+msgstr "Passord å nytte for å kople til vikar"
+
+#: src/muuli_wdr.cpp:3760
+msgid "Automatic server connect without proxy"
+msgstr "Automatisk tenartilkopling utan vikar"
+
+#: src/muuli_wdr.cpp:3783
+msgid "Connect to:"
+msgstr "Kople til:"
+
+#: src/muuli_wdr.cpp:3797
+msgid "Login to remote amule"
+msgstr "Logge inn på fjern aMule"
+
+#: src/muuli_wdr.cpp:3802
+msgid "User name"
+msgstr "Brukarnamn"
+
+#: src/muuli_wdr.cpp:3829
+msgid "Remember those settings"
+msgstr "Hugs desse innstillingane"
+
+#: src/muuli_wdr.cpp:3875
+msgid "Enable Verbose Debug-Logging."
+msgstr "Aktivér utførleg avfeilingslogg."
+
+#: src/muuli_wdr.cpp:3880
+msgid "Message Categories:"
+msgstr "Meldingskategoriar:"
+
+#: src/muuli_wdr.cpp:3935
+msgid "Add imports"
+msgstr "Importér"
+
+#: src/muuli_wdr.cpp:3939
+msgid "Retry selected"
+msgstr "Prøv om att valde"
+
+#: src/muuli_wdr.cpp:3942
+msgid "Remove selected"
+msgstr "Fjern valde"
+
+#: src/muuli_wdr.cpp:4037
+msgid "Event types"
+msgstr "Hendingstypar"
+
+#: src/CatDialog.cpp:85
+msgid "New Category"
+msgstr "Ny kategori"
+
+#: src/CatDialog.cpp:133
+msgid "Choose a folder for incoming files"
+msgstr "Vél ei mappe for innkomande filer"
+
+#: src/CatDialog.cpp:148
+msgid "You must specify a name for the category!"
+msgstr "Du må skrive inn eit namn på kategorien!"
+
+#: src/CatDialog.cpp:159
+msgid "You must specify a path for the category!"
+msgstr "Du mp skrive inn ein sti for kategorien!"
+
+#: src/CatDialog.cpp:168
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
+msgstr "Greidde ikkje å skape innkomande katalog for kategorien. Vér god å skrive inn ein gangbar sti!"
+
+#: src/ExternalConnector.cpp:142
+#, c-format
+msgid "Unknown extension '%s' for the '%s' command.\n"
+msgstr "Ukjend forlenging·'%s'·for·'%s'·kommandoen.\n"
+
+#: src/ExternalConnector.cpp:144
+#, c-format
+msgid "Unknown command '%s'.\n"
+msgstr "Ukjend kommando '%s'.\n"
+
+#: src/ExternalConnector.cpp:156
+msgid ""
+"\n"
+"This command cannot have an argument.\n"
+msgstr "\n"
+"Denne kommandoen kan ikkje ha eit argument.\n"
+
+#: src/ExternalConnector.cpp:158
+msgid ""
+"\n"
+"This command must have an argument.\n"
+msgstr "\n"
+"Denne kommandoen må ha eit argument.\n"
+
+#: src/ExternalConnector.cpp:161
+msgid ""
+"\n"
+"This command is incomplete, you must use one of the extensions below.\n"
+msgstr "\n"
+"Denne kommandoen er ikkje komplett; du må nytte ein av forlengjarane under.\n"
+
+#: src/ExternalConnector.cpp:167
+msgid ""
+"\n"
+"Available extensions:\n"
+msgstr "\n"
+"Tilgjengelege forlengjarar:\n"
+
+#: src/ExternalConnector.cpp:169
+msgid "Available commands:\n"
+msgstr "Tilgjengelege kommandoar:\n"
+
+#: src/ExternalConnector.cpp:186
+msgid ""
+"\n"
+"All commands are case insensitive.\n"
+"Type 'help <command>' to get detailed info on <command>.\n"
+msgstr "\n"
+"Alle kommandoar kan skrivast med store eller små bokstavar.\n"
+"Skriv 'help·<command>'for å få detaljert info om·<command>.\n"
+
+#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
+msgid "Exits from the application."
+msgstr "Avsluttar programmet."
+
+#: src/ExternalConnector.cpp:218
+msgid "Show help."
+msgstr "Syne hjelp."
+
+#: src/ExternalConnector.cpp:219
+msgid ""
+"To get help on a command, type 'help <command>'.\n"
+"To get the full command list type 'help'.\n"
+msgstr "For å få hjelp til ein kommando, skriv 'help·<kommando>'.\n"
+"For full kommandoliste, skriv 'help'.\n"
+
+#: src/ExternalConnector.cpp:241
+#, c-format
+msgid ""
+"\n"
+"Use '%s' for command list\n"
+"\n"
+msgstr ""
+"\n"
+"Bruk·'%s'·for·kommandoliste\n"
+"\n"
+
+#: src/ExternalConnector.cpp:271
+msgid "Syntax error!"
+msgstr "Syntaksfeil!"
+
+#: src/ExternalConnector.cpp:274
+msgid "Error processing command - should never happen! Report bug, please\n"
+msgstr "Handsamingsfeil av kommando - burde aldri skje! Vér god å rapportere feilen\n"
+
+#: src/ExternalConnector.cpp:277
+msgid "This command should not have any parameters."
+msgstr "Denne kommandoen skulle ikkje ha nokon parameter."
+
+#: src/ExternalConnector.cpp:280
+msgid "This command must have a parameter."
+msgstr "Denne komamndoen må ha eit parameter."
+
+#: src/ExternalConnector.cpp:283
+msgid "Invalid argument."
+msgstr "Ugangbart argument."
+
+#: src/ExternalConnector.cpp:286
+msgid "This is an incomplete command."
+msgstr "Denne kommandoen er ikkje komplett."
+
+#: src/ExternalConnector.cpp:295
+#, c-format
+msgid "Type '%s' to get more help.\n"
+msgstr "Skriv '%s'·for å få meir hjelp.\n"
+
+#: src/ExternalConnector.cpp:362
+#, c-format
+msgid "This is %s %s %s\n"
+msgstr "Dette er %s·%s·%s\n"
+
+#: src/ExternalConnector.cpp:364
+#, c-format
+msgid "This is %s %s\n"
+msgstr "Dette er %s·%s\n"
+
+#: src/ExternalConnector.cpp:395
+msgid ""
+"\n"
+"Creating client...\n"
+msgstr "\n"
+"Opprettar klient...\n"
+
+#: src/ExternalConnector.cpp:405
+msgid "Connection Failed. Unable to connect to the specified host\n"
+msgstr "Greidde ikkje å opprette kopling. Ikkje i stand til å kople til verten\n"
+
+#: src/ExternalConnector.cpp:426
+#, c-format
+msgid ""
+"\n"
+"Ok, exiting %s...\n"
+msgstr "\n"
+"Ok,·avsluttar·%s...\n"
+
+#: src/ExternalConnector.cpp:431
+msgid ""
+"Cannot connect with an empty password.\n"
+"You must specify a password either in config file\n"
+"or on command-line, or enter one when asked.\n"
+"\n"
+"Exiting...\n"
+msgstr "Kan ikkje kople til med eit tomt passord.\n"
+"Du må skrive inn eit passord anten i konfigurasjonsfila,\n"
+"i kommandolinja eller når du vert spurt.\n"
+"\n"
+"Avsluttar...\n"
+
+#: src/ExternalConnector.cpp:442
+msgid "Show this help text."
+msgstr "Syne denne hjelpeteksten."
+
+#: src/ExternalConnector.cpp:445
+msgid "Host where aMule is running. (default: localhost)"
+msgstr "Vert der aMule køyrer (standard: localhost)"
+
+#: src/ExternalConnector.cpp:448
+msgid "aMule's port for External Connection. (default: 4712)"
+msgstr "aMule sin port for eksternkopling (standard: 4712)"
+
+#: src/ExternalConnector.cpp:451
+msgid "External Connection password."
+msgstr "Passord for eksternkopling."
+
+#: src/ExternalConnector.cpp:454
+msgid "Read configuration from file."
+msgstr "Les innstillingar frå fil."
+
+#: src/ExternalConnector.cpp:457
+msgid "Do not print any output to stdout."
+msgstr "Ikkje skriv ut data til stdout."
+
+#: src/ExternalConnector.cpp:460
+msgid "Be verbose - show also debug messages."
+msgstr "Vér utførleg - syne óg avfeilingsmeldingar,"
+
+#: src/ExternalConnector.cpp:463
+msgid "Sets program locale (language)."
+msgstr "Set programspråk."
+
+#: src/ExternalConnector.cpp:466
+msgid "Write command line options to config file."
+msgstr "Skriv kommandolinjealternativa til konfigurasjonsfila."
+
+#: src/ExternalConnector.cpp:469
+msgid "Creates config file based on aMule's config file."
+msgstr "Lagar konfigurasjonsfil basert på aMule si konfigurasjonsfil."
+
+#: src/ExternalConnector.cpp:472
+msgid "Print program version."
+msgstr "Skriv programutgåve."
+
+#: src/ClientCreditsList.cpp:165
+#, c-format
+msgid "Creditfile loaded, %u clients are known"
+msgstr "Kredittfila lasta, %u klientar er kjende"
+
+#: src/ClientCreditsList.cpp:168
+#, c-format
+msgid " - Credits expired for %u clients!"
+msgstr " - Kredittar gått ut for %u klientar!"
+
+#: src/ClientCreditsList.cpp:305
+msgid "No 'cryptkey.dat' file found, creating."
+msgstr "Inga 'cryptkey.dat' fil funne - opprettar."
+
+#: src/amuled.cpp:354
+msgid "Waiting for subprocess termination failed"
+msgstr "Venting på avslutting av underprosess mislukka"
+
+#: src/amuled.cpp:405
+msgid ""
+"ERROR: aMule daemon cannot be used when external connections are disabled. "
+"To enable External Connections, use either a normal aMule, start amuled with "
+"the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
+"the file ~/.aMule/amule.conf"
+msgstr "FEIL: aMule daemon kan ikkje nyttast dersom eksterne koplingar er deaktiverte. "
+"For å aktivere eksterne koplingar må du anten nytte vanleg aMule, starte amuled med "
+"valet --ec-config eller set lykelen \"AcceptExternalConnections\" til 1 i fila "
+"~/.aMule/amule.conf"
+
+#: src/amuled.cpp:513
+#, c-format
+msgid "ERROR: %s"
+msgstr "Feil: %s"
+
+#: src/ClientListCtrl.cpp:254
+msgid "Unban"
+msgstr "Gje amnesti"
+
+#: src/ClientListCtrl.cpp:259
+msgid "Show Uploads"
+msgstr "Syne opplastingar"
+
+#: src/ClientListCtrl.cpp:260
+msgid "Show Queue"
+msgstr "Syne kø"
+
+#: src/ClientListCtrl.cpp:261
+msgid "Show Clients"
+msgstr "Syne klientar"
+
+#: src/ClientListCtrl.cpp:265
+msgid "Select View"
+msgstr "Vel utsyn"
+
+#: src/ClientListCtrl.cpp:515 src/ClientListCtrl.cpp:818
+#: src/ClientListCtrl.cpp:990
+msgid "Client Software"
+msgstr "Klientmjukvare"
+
+#: src/ClientListCtrl.cpp:518
+msgid "Waited"
+msgstr "Venta"
+
+#: src/ClientListCtrl.cpp:519
+msgid "Upload Time"
+msgstr "Opplastingstid"
+
+#: src/ClientListCtrl.cpp:522
+msgid "Upload/Download"
+msgstr "Opplasting/nedlasting"
+
+#: src/ClientListCtrl.cpp:523
+msgid "Remote Status"
+msgstr "Fjernstatus"
+
+#: src/ClientListCtrl.cpp:702
+#, c-format
+msgid "QR: %u"
+msgstr "KR: %u"
+
+#: src/ClientListCtrl.cpp:819
+msgid "File Priority"
+msgstr "Filprioritet"
+
+#: src/ClientListCtrl.cpp:821
+msgid "Score"
+msgstr "Score"
+
+#: src/ClientListCtrl.cpp:822
+msgid "Asked"
+msgstr "Spurt"
+
+#: src/ClientListCtrl.cpp:823
+msgid "Last Seen"
+msgstr "Sist sett"
+
+#: src/ClientListCtrl.cpp:824
+msgid "Entered Queue"
+msgstr "Kom inn i kø"
+
+#: src/ClientListCtrl.cpp:986
+msgid "Upload Status"
+msgstr "Opplastingsstatus"
+
+#: src/ClientListCtrl.cpp:987
+msgid "Transferred Up"
+msgstr "Overført Opp"
+
+#: src/ClientListCtrl.cpp:988
+msgid "Download Status"
+msgstr "Nedlastingsstatus"
+
+#: src/ClientListCtrl.cpp:989
+msgid "Transferred Down"
+msgstr "Overført Ned"
+
+#: src/ClientListCtrl.cpp:992
+msgid "Userhash"
+msgstr "Brukarhash"
+
+#: src/ClientListCtrl.cpp:993
+msgid "Encrypted"
+msgstr "Kryptért"
+
+#: src/ClientDetailDialog.cpp:49
+msgid "Client Details"
+msgstr "Klientdetaljar"
+
+#: src/ClientDetailDialog.cpp:145 src/ClientDetailDialog.cpp:150
+#, c-format
+msgid "%.1f kB/s"
+msgstr "%.1f·kB/s"
+
+#: src/ClientDetailDialog.cpp:170
+msgid "Not Supported"
+msgstr "Ikkje støtta"
+
+#: src/ClientDetailDialog.cpp:176
+msgid "Not complete"
+msgstr "Ikkje ferdig"
+
+#: src/ClientDetailDialog.cpp:179
+msgid "Bad Guy"
+msgstr "Kjeltring"
+
+#: src/ClientDetailDialog.cpp:182
+msgid "Verified - OK"
+msgstr "Granska - OK"
+
+#: src/ClientDetailDialog.cpp:186
+msgid "Not Available"
+msgstr "Ikkje tilgjengeleg"
+
+#: src/SearchDlg.cpp:468
+msgid "Min size must be smaller than max size. Max size ignored."
+msgstr "Min storleik må vere mindre enn maks storleik. Maks storleik ignorert."
+
+#: src/SearchDlg.cpp:469
+msgid "Search warning"
+msgstr "Søkeåtvaring"
+
+#: src/SearchDlg.cpp:525
+msgid "Search warning."
+msgstr "Søkeåtvaring."
+
+#: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
+#: src/MuleTrayIcon.cpp:484
+msgid "Unlimited"
+msgstr "Ubegrensa"
+
+#: src/MuleTrayIcon.cpp:301
+msgid "aMule Tray Menu"
+msgstr "aMule traumeny"
+
+#: src/MuleTrayIcon.cpp:307
+msgid "Speed Limits:"
+msgstr "Fartsgrenser:"
+
+#: src/MuleTrayIcon.cpp:312
+msgid "UL: None"
+msgstr "OL: Inga"
+
+#: src/MuleTrayIcon.cpp:315
+#, c-format
+msgid "UL: %u"
+msgstr "OL: %u"
+
+#: src/MuleTrayIcon.cpp:322
+msgid "DL: None"
+msgstr "NL: Ingen"
+
+#: src/MuleTrayIcon.cpp:325
+#, c-format
+msgid "DL: %u"
+msgstr "NL: %u"
+
+#: src/MuleTrayIcon.cpp:329
+#, c-format
+msgid "Download Speed: %.1f"
+msgstr "Nedlastingsfart: %.1f"
+
+#: src/MuleTrayIcon.cpp:331
+#, c-format
+msgid "Upload Speed: %.1f"
+msgstr "Opplastingsfart: %.1f"
+
+#: src/MuleTrayIcon.cpp:337
+msgid "Client Information"
+msgstr "Klientinformasjon"
+
+#: src/MuleTrayIcon.cpp:341
+#, c-format
+msgid "Nickname: %s"
+msgstr "Kallenamn: %s"
+
+#: src/MuleTrayIcon.cpp:341
+msgid "No Nickname Selected!"
+msgstr "Ikkje valt kallenamn!"
+
+#: src/MuleTrayIcon.cpp:348
+msgid "ClientID: "
+msgstr "KlientID: "
+
+#: src/MuleTrayIcon.cpp:361
+msgid "ServerName: "
+msgstr "Tenarnamn: "
+
+#: src/MuleTrayIcon.cpp:362
+msgid "ServerIP: "
+msgstr "TenarIP: "
+
+#: src/MuleTrayIcon.cpp:377
+#, c-format
+msgid "IP: %s"
+msgstr "IP:·%s"
+
+#: src/MuleTrayIcon.cpp:386
+#, c-format
+msgid "TCP Port: %d"
+msgstr "TCP-port: %d"
+
+#: src/MuleTrayIcon.cpp:388
+msgid "TCP Port: Not Ready"
+msgstr "TCP-port: Ikkje klar"
+
+#: src/MuleTrayIcon.cpp:397
+#, c-format
+msgid "UDP Port: %d"
+msgstr "UDP-port: %d"
+
+#: src/MuleTrayIcon.cpp:399
+msgid "UDP Port: Not Ready"
+msgstr "UDP-port: Ikkje klar"
+
+#: src/MuleTrayIcon.cpp:408
+msgid "Online Signature: Enabled"
+msgstr "Nettsignatur: Aktivert"
+
+#: src/MuleTrayIcon.cpp:411
+msgid "Online Signature: Disabled"
+msgstr "Nettsignatur: Deaktivert"
+
+#: src/MuleTrayIcon.cpp:424
+#, c-format
+msgid "Shared Files: %d"
+msgstr "Delte filer: %d"
+
+#: src/MuleTrayIcon.cpp:430
+#, c-format
+msgid "Queued Clients: %d"
+msgstr "Klientar i kø: %d"
+
+#: src/MuleTrayIcon.cpp:437
+#, c-format
+msgid "Total DL: %s"
+msgstr "Totalt NL: %s"
+
+#: src/MuleTrayIcon.cpp:444
+#, c-format
+msgid "Total UL: %s"
+msgstr "Totalt OL: %s"
+
+#: src/MuleTrayIcon.cpp:455
+msgid "Upload Limit"
+msgstr "Opplastingsgrense"
+
+#: src/MuleTrayIcon.cpp:459
+msgid "Download Limit"
+msgstr "Nedlastingsgrense"
+
+#: src/MuleTrayIcon.cpp:519
+msgid "Hide aMule"
+msgstr "Gøyme aMule"
+
+#: src/MuleTrayIcon.cpp:522
+msgid "Show aMule"
+msgstr "Syne aMule"
+
+#: src/ChatSelector.cpp:127
+#, c-format
+msgid "Chat-Session Started: %s (%s:%u) - %s %s"
+msgstr "Lynmeldingsøkt starta: %s·(%s:%u)·-·%s·%s"
+
+#: src/ChatSelector.cpp:206 src/ChatSelector.cpp:286
+msgid "*** Connected to Client ***"
+msgstr "***·Tilkopla klient·***"
+
+#: src/ChatSelector.cpp:249
+msgid "*** Connecting to Client ***"
+msgstr "***·Koplar til klient·***"
+
+#: src/ChatSelector.cpp:280
+msgid "*** Failed to Connect to client / Connection lost ***"
+msgstr "*** Greidde ikkje å kople til klient / Kopling mista ***"
+
+#: src/MuleNotebook.cpp:153
+msgid "Close tab"
+msgstr "Stengje faneblad"
+
+#: src/MuleNotebook.cpp:154
+msgid "Close all tabs"
+msgstr "Stengje alle faneblad"
+
+#: src/MuleNotebook.cpp:155
+msgid "Close other tabs"
+msgstr "Stengje andre faneblad"
+
+#: src/ServerList.cpp:84
+#, c-format
+msgid "Loading server.met file: %s"
+msgstr "Lastar server.met fila: %s"
+
+#: src/ServerList.cpp:89
+msgid "Server.met file not found!"
+msgstr "Server.met fila ikkje funnen!"
+
+#: src/ServerList.cpp:97
+#, c-format
+msgid "Failed to load server.met file '%s', unknown format encountered."
+msgstr "Greidde ikkje å laste inn server.met fila '%s' - ukjend filformat."
+
+#: src/ServerList.cpp:103
+msgid "Failed to open server.met!"
+msgstr "Greidde ikkje å opne server.met!"
+
+#: src/ServerList.cpp:114
+#, c-format
+msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
+msgstr "Server.met fila er korrupt, ugangbar merkelapp på utgåve: 0x%x,·storleik·%i"
+
+#: src/ServerList.cpp:169
+#, c-format
+msgid "%i servers in server.met found"
+msgstr "%i tenarar i server.met funne"
+
+#: src/ServerList.cpp:171
+#, c-format
+msgid "%d servers added"
+msgstr "%d tenarar lagde til"
+
+#: src/ServerList.cpp:192
+#, c-format
+msgid "Server not added: [%s:%d] does not specify a valid port."
+msgstr "Tenar ikkje lagd til: [%s:%d] oppgir ikkje ein gangbar port."
+
+#: src/ServerList.cpp:208
+#, c-format
+msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
+msgstr "Tenar ikkje lagd til: IP`en til [%s:%d] er filtrert eller ugangbar."
+
+#: src/ServerList.cpp:228
+#, c-format
+msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
+msgstr "Tenar ikkje lagd til: Tenar med lik IP:Port [%s:%d] funne i lista."
+
+#: src/ServerList.cpp:247
+#, c-format
+msgid "Server added: Server at [%s:%d] using the name '%s'."
+msgstr "Tenar lagd til: Tenar på [%s:%d] som nyttar namnet '%s'."
+
+#: src/ServerList.cpp:342
+msgid ""
+"You are connected to the server you are trying to delete. please disconnect "
+"first."
+msgstr "Du er tilkopla tenaren du freistar å slette. Vér god "
+"å kople frå først."
+
+#: src/ServerList.cpp:629
+msgid "Failed to save server.met!"
+msgstr "Greidde ikkje å lagre server.met!"
+
+#: src/ServerList.cpp:794 src/ServerList.cpp:849
+#, c-format
+msgid "Failed to download the server list from %s"
+msgstr "Greidde ikkje å laste ned tenarlista frå %s"
+
+#: src/ServerList.cpp:805
+msgid ""
+"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
+"serverlist address into this file in order to auto-update your serverlist"
+msgstr "Ingen tenarlisteadresser funne i 'addresses.dat'. Vér god å lime inn ei "
+"gangbar adresse til tenarliste i denne fila for automatisk oppdatering av tenarlista di"
+
+#: src/ServerList.cpp:828
+#, c-format
+msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+msgstr "Åtvaring, ugangbar nettadresse spesifisert for automatisk oppdatering av tenarane: %s"
+
+#: src/ServerList.cpp:834
+msgid "No valid server.met auto-download url on addresses.dat"
+msgstr "Ugangbar autonedlastingsnettside for server.met i addresses.dat"
+
+#: src/ServerList.cpp:925
+msgid ""
+"Local server is filtered by the IPFilters, reconnecting to a different "
+"server!"
+msgstr "Lokal tenar er filtrert av ipfiltra - koplar til ein anna tenar!"
+
+#: src/UserEvents.cpp:129
+#, c-format
+msgid "Failed to execute command `%s' on `%s' event."
+msgstr "Greidde ikkje å utføre kommendoen `%s'·på·`%s hending."
+
+#: src/amule.cpp:719
+msgid ""
+"Your locale has been changed to System Default due to a configuration "
+"change. Sorry."
+msgstr "Dine lokale innstilingar har vorte endra til opprinnelege systeminnstillingar på grunn av "
+"konfigurasjonsending. Beklager."
+
+#: src/amule.cpp:785
+msgid ""
+"You don't have any server in the server list.\n"
+"Do you want aMule to download a new list now?"
+msgstr "Du har ingen tenarar i tenarlista.\n"
+"Vil du at aMule skal laste ned ei ny liste no?"
+
+#: src/amule.cpp:787
+msgid "Server list download"
+msgstr "Nedlasting av tenarliste"
+
+#: src/amule.cpp:845
+#, c-format
+msgid "webserver running on pid %d"
+msgstr "vevtenar køyrer på pid %d"
+
+#: src/amule.cpp:848
+msgid ""
+"You requested to run webserver from startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule webserver, or compile "
+"aMule using --enable-webserver and run make install"
+msgstr "Du freista å køyre vevtenar frå start, men binærane til amuleweb lét seg "
+"ikkje køyre. Vér god å installere pakken som inneheld aMule vevtenar, eller kompilér "
+"aMule med --aktivér vevtenar og køyr make install."
+
+#: src/amule.cpp:960
+#, c-format
+msgid "Port %u is not available. You will be LOWID\n"
+msgstr "Port·%u er ikkje tilgjengeleg. Du vil få LågID\n"
+
+#: src/amule.cpp:966
+#, c-format
+msgid ""
+"Port %u is not available!\n"
+"\n"
+"This means that you will be LOWID.\n"
+"\n"
+"Check your network to make sure the port is open for output and input."
+msgstr "Port·%u·er ikkje tilgjengeleg!\n"
+"\n"
+"Dette betyr at du vil vere LågID.\n"
+"\n"
+"Sjekk nettverket ditt for å vere viss på at porten er open for inn- og utgåande trafikk."
+
+#: src/amule.cpp:1077
+msgid ""
+"WARNING: You can't add yourself as a source for a ed2k link while being "
+"lowid."
+msgstr "ÅTVARING: Du kan ikkje leggje deg sjølv til som kjelde for ei ED2k lenkje medan du har lågID."
+
+#: src/amule.cpp:1128
+msgid "Failed to create OnlineSig File"
+msgstr "Greidde ikkje å lage OnlineSigfil"
+
+#: src/amule.cpp:1136
+msgid "Failed to create aMule OnlineSig File"
+msgstr "Greidde ikkje å lage aMule si OnlineSigfil."
+
+#: src/amule.cpp:1304
+msgid ""
+"The selected locale seems not to be installed on your box. (Note: I'll try "
+"to set it anyway)"
+msgstr "Dei valte lokale innstillingane ser ikkje ut til å vere installerte på maskina di. (Merk: Eg freistar "
+"å setje dei likevel)"
+
+#: src/amule.cpp:1314
+#, c-format
+msgid "This is the first time you run aMule %s"
+msgstr "Dette er første gongen du køyrer aMule %s"
+
+#: src/amule.cpp:1316
+msgid "This version is a testing version, updated daily, and\n"
+msgstr "Denne utgåva er ei testutgåve, oppdatert dagleg, og\n"
+
+#: src/amule.cpp:1317
+msgid "we give no warranty it won't break anything, burn your house,\n"
+msgstr "vi gir ingen garanti for skade eller nedbrenning av huset ditt,\n"
+
+#: src/amule.cpp:1318
+msgid "or kill your dog. But it *should* be safe to use anyway.\n"
+msgstr "eller drep hunden din. Men det *burde* vere trygt å nytte uansett.\n"
+
+#: src/amule.cpp:1322
+msgid ""
+"The following options have been changed in this release for security "
+"reasons:\n"
+msgstr "Dei følgjande alternativa har vorte endra i denne utgåva av "
+"tryggleiksomsyn:\n"
+
+#: src/amule.cpp:1323
+msgid ""
+"\n"
+"* Enabled Protocol Obfuscation support for incoming and outgoing "
+"connections.\n"
+msgstr "\n"
+"*·Støtte for protokolltåkeleggjing er aktivert for innkomande og utgåande "
+"koplingar.\n"
+
+#: src/amule.cpp:1324
+msgid ""
+"\n"
+"* Disabled updating the server list from other server and clients.\n"
+msgstr "\n"
+"* Oppdatering av tenarlista frå andre tenarar og klientar er deaktivert.\n"
+
+#: src/amule.cpp:1325
+msgid ""
+"\n"
+"For more information on the reason for this changes, seach\n"
+"the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
+"It's important that you clear any fake server from your server list for "
+"aMule to work properly."
+msgstr "\n"
+"For meir informasjon om årsaka for desse endringane, søk\n"
+"på \"fake servers\" i wikien til aMule på http://wiki.amule.org.\n"
+"Det er viktig at du tek bort alle falske tenarar frå tenarlista"
+"for at aMule skal fungere skikkeleg."
+
+#: src/amule.cpp:1330
+msgid "More information, support and new releases can found at our homepage,\n"
+msgstr "Meir informasjon, brukarstøtte og nye utgåver kan verte funne på heimesida vår.\n"
+
+#: src/amule.cpp:1331
+msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
+msgstr "på www.aMule.org, eller på IRC-kanalen vår #aMule·på·irc.freenode.net.\n"
+
+#: src/amule.cpp:1333
+msgid "Feel free to report any bugs to http://forum.amule.org"
+msgstr "Vér god å rapportere feil til http://forum.amule.org"
+
+#: src/amule.cpp:1346
+msgid ""
+"The folder for Online Signature files you specified is INVALID!\n"
+" OnlineSignature will be DISABLED until you fix it on preferences."
+msgstr "Mappa spesifisert for nettsignaturar er UGANGBAR!\n"
+" Nettsignaturar vert DEAKTIVERT fram til du ordnar det i innstillingar."
+
+#: src/amule.cpp:1744
+msgid "ERROR: can't open logfile"
+msgstr "FEIL: Greier ikkje å opne loggfila"
+
+#: src/amule.cpp:1748
+msgid "WARNING: logfile is empty. Something is wrong."
+msgstr "ÅTVARING: loggfila er tom. Noko er gale."
+
+#: src/amule.cpp:1767
+msgid "Log has been reset"
+msgstr "Loggen har vorte nullstilt"
+
+#: src/amule.cpp:1795
+#, c-format
+msgid "ServerMessage: %s"
+msgstr "Tenarmelding: %s"
+
+#: src/amule.cpp:1833
+msgid "Failed to download the nodes list."
+msgstr "Klarte ikkje å laste ned nodelista."
+
+#: src/amule.cpp:1846
+msgid "Failed to open the downloaded version check file"
+msgstr "Klarte ikkje å opne den nedlaste utgåvesjekkfila"
+
+#: src/amule.cpp:1849 src/amule.cpp:1859 src/amule.cpp:1865
+msgid "Corrupted version check file"
+msgstr "Korrupt utgåvesjekkfil"
+
+#: src/amule.cpp:1875
+msgid "You are using an outdated version of aMule!"
+msgstr "Du nyttar ei utdatert utgåve av aMule!"
+
+#: src/amule.cpp:1876
+#, c-format
+msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
+msgstr "Di utgåve av aMule er %i.%i.%i og den siste utgåva er %li.%li.%li"
+
+#: src/amule.cpp:1877
+msgid "The latest version can always be found at http://www.amule.org"
+msgstr "Den siste utgåva finst alltid på http://www.amule.org"
+
+#: src/amule.cpp:1880
+#, c-format
+msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
+msgstr "ÅTVARING: Utgåva du av aMule er utdatert: %i.%i.%i·<·%li.%li.%li"
+
+#: src/amule.cpp:1884
+msgid "Your copy of aMule is up to date."
+msgstr "Utgåva di av aMule er oppdatert."
+
+#: src/amule.cpp:1891
+msgid "Failed to download the version check file"
+msgstr "Klarte ikkje å laste ned utgåvesjekkfila"
+
+#: src/amule.cpp:1993
+#, c-format
+msgid "Users: E: %s K: %s | Files E: %s K: %s"
+msgstr "Brukarar:·E:·%s·K:·%s·|·Filer·E:·%s·K:·%s"
+
+#: src/amule.cpp:2062
+#, c-format
+msgid "Connected to %s %s"
+msgstr "Tilkopla %s·%s"
+
+#: src/amule.cpp:2065
+#, c-format
+msgid "Connecting to %s"
+msgstr "Koplar til %s"
+
+#: src/amule.cpp:2067
+msgid "Disconnected from ED2K"
+msgstr "Fråkopla ED2k"
+
+#: src/amule.cpp:2074
+msgid "Kad started."
+msgstr "Kad starta"
+
+#: src/amule.cpp:2076
+msgid "Kad stopped."
+msgstr "Kad stogga."
+
+#: src/amule.cpp:2083
+msgid "Connected to Kad (ok)"
+msgstr "Tilkopla Kad (ok)"
+
+#: src/amule.cpp:2085
+msgid "Connected to Kad (firewalled)"
+msgstr "Tilkopla Kad (brannmura)"
+
+#: src/amule.cpp:2088
+msgid "Disconnected from Kad"
+msgstr "Fråkopla Kad"
+
+#: src/amule.cpp:2144
+msgid ""
+"Kad network cannot be used if UDP port is disabled on preferences, not "
+"starting."
+msgstr "Kad kan ikkje nyttast dersom UDP-porten er deaktivert i innstillingar. Startar ikkje."
+
+#: src/amule.cpp:2147
+msgid "Kad network disabled on preferences, not connecting."
+msgstr "Kad-nettverket er deaktivert i innstillingar. Koplar ikkje til."
+
+#: src/FriendList.cpp:120
+msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+msgstr "Klarte ikkje å lese kameratlistefila 'emfriends.met'!"
+
+#: src/FriendList.cpp:146
+msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+msgstr "Klarte·ikkje·å·skrive til·kameratlistefila·'emfriends.met'!"
+
