@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=(n > 1);"
+"Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -119,18 +119,21 @@ msgstr "Conversion des anciens hashsets AICH en '%s' vers 64b en '%s'."
 #: src/ThreadTasks.cpp:444
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "ATTENTION : Le nom de fichier '%s' est invalide et a été renommé en '%s'."
+msgstr ""
+"ATTENTION : Le nom de fichier '%s' est invalide et a été renommé en '%s'."
 
 #: src/ThreadTasks.cpp:463
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "ATTENTION : Le fichier '%s' existe déjà, le nouveau fichier a été renommé en "
+msgstr ""
+"ATTENTION : Le fichier '%s' existe déjà, le nouveau fichier a été renommé en "
 "'%s'."
 
 #: src/ThreadTasks.cpp:477
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr "ATTENTION : Suppression du fichier '%s' original après la création de la "
+msgstr ""
+"ATTENTION : Suppression du fichier '%s' original après la création de la "
 "sauvegarde"
 
 #: src/ThreadTasks.cpp:489
@@ -190,13 +193,16 @@ msgstr "Demandé:"
 #, c-format
 msgid ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr "Statistiques des fichiers pour cette session: %d requêtes acceptées sur %d, %s transférées\n"
+msgstr ""
+"Statistiques des fichiers pour cette session: %d requêtes acceptées sur %d, %"
+"s transférées\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
 msgid ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr "Statistiques des fichiers pour toutes les sessions: %d requêtes acceptées "
+msgstr ""
+"Statistiques des fichiers pour toutes les sessions: %d requêtes acceptées "
 "sur %d, %s transférées\n"
 
 #: src/BaseClient.cpp:1877
@@ -394,7 +400,8 @@ msgstr "Copier le lien ED2k dans le presse papier (&Source)"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Copier le lien ED2K dans le presse-papiers (Source) (&Avec options de "
+msgstr ""
+"Copier le lien ED2K dans le presse-papiers (Source) (&Avec options de "
 "cryptage)"
 
 #: src/SharedFilesCtrl.cpp:165
@@ -403,7 +410,8 @@ msgstr "Copier le lien ED2K dans le presse-papiers (&Nom d'hôte)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Copier le lien ED2K dans le presse-papiers (Nom d'hôte) (Avec &Options de "
+msgstr ""
+"Copier le lien ED2K dans le presse-papiers (Nom d'hôte) (Avec &Options de "
 "cryptage)"
 
 #: src/SharedFilesCtrl.cpp:167
@@ -2021,7 +2029,8 @@ msgstr ""
 "Votre liste de mise à jour auto des serveurs est vide.\n"
 "Entrez s'il vous plaît au moins une URL qui pointe sur un fichier server.met "
 "valide.\n"
-"Cliquer sur le bouton \"Liste\" à coté de cette case d'option pour entrer une URL."
+"Cliquer sur le bouton \"Liste\" à coté de cette case d'option pour entrer "
+"une URL."
 
 #: src/PrefsUnifiedDlg.cpp:801
 msgid "Temporary files"
@@ -2147,7 +2156,8 @@ msgstr "Connexion externe fermée."
 
 #: src/ExternalConn.cpp:121
 msgid "External connections disabled due to empty password!"
-msgstr "Les connexions externes (EC) sont désactivées car le mot de passe est vide!"
+msgstr ""
+"Les connexions externes (EC) sont désactivées car le mot de passe est vide!"
 
 #: src/ExternalConn.cpp:146
 msgid "External connections disabled in config file"
@@ -3372,7 +3382,9 @@ msgstr "Erreur lors de la sauvegarde du fichier known.met : %s"
 msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
 "directory not found."
-msgstr "CSharedFileList::FindSharedFiles: Suppression de %s de la liste des répertoires partagés: répertoire non trouvé"
+msgstr ""
+"CSharedFileList::FindSharedFiles: Suppression de %s de la liste des "
+"répertoires partagés: répertoire non trouvé"
 
 #: src/SharedFileList.cpp:376
 #, c-format
@@ -3793,11 +3805,14 @@ msgid ""
 "   server list.\n"
 "\n"
 "The magnet link must contain the ed2k hash and file length.\n"
-msgstr "Le lien ed2k à ajouter peut être:\n"
-""
-"*) un lien vers un fichier (ed2k://|file|...), il sera ajouté à la queue des téléchargements,\n"
-"*) un lien vers un serveur (ed2k://|server|...), il sera ajouté à la liste des serveurs,\n"
-"*) ou un lien vers une liste de serveurs, auquel cas, tous les serveurs dans la liste seront\n"
+msgstr ""
+"Le lien ed2k à ajouter peut être:\n"
+"*) un lien vers un fichier (ed2k://|file|...), il sera ajouté à la queue des "
+"téléchargements,\n"
+"*) un lien vers un serveur (ed2k://|server|...), il sera ajouté à la liste "
+"des serveurs,\n"
+"*) ou un lien vers une liste de serveurs, auquel cas, tous les serveurs dans "
+"la liste seront\n"
 "   ajoutés à la liste des serveurs.\n"
 "\n"
 "Le lien magnet doit contenir le hash ed2k et la longueur du fichier.\n"
@@ -3910,11 +3925,13 @@ msgid ""
 "    LOCAL\n"
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
-msgstr "Un type de recherche doit être spécifié en donnnant le type:\n"
+msgstr ""
+"Un type de recherche doit être spécifié en donnnant le type:\n"
 "    GLOBAL\n"
 "    LOCAL\n"
 "    KAD\n"
-"Exemple: 'recherche fichier kad' exécutera une recherche kad pour \"fichier\".\n"
+"Exemple: 'recherche fichier kad' exécutera une recherche kad pour \"fichier"
+"\".\n"
 
 #: src/TextClient.cpp:897
 msgid "Executes a global search."
@@ -3976,7 +3993,8 @@ msgstr "Régler la priorité de téléchargement."
 
 #: src/TextClient.cpp:926
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
-msgstr "Passer la priorité d'un téléchargement en Basse, Normale, Haute, ou Auto.\n"
+msgstr ""
+"Passer la priorité d'un téléchargement en Basse, Normale, Haute, ou Auto.\n"
 
 #: src/TextClient.cpp:927
 msgid "Set priority to low."
@@ -4206,7 +4224,9 @@ msgstr ""
 
 #: src/IP2Country.cpp:67
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr "CIP2Country::CIP2Country(): Impossible de charger les informations de pays depuis "
+msgstr ""
+"CIP2Country::CIP2Country(): Impossible de charger les informations de pays "
+"depuis "
 
 #: src/IP2Country.cpp:72
 #, c-format
@@ -6595,8 +6615,11 @@ msgid ""
 "To enable External Connections, use either a normal aMule, start amuled with "
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
-msgstr "ERREUR: le daemon aMule ne peut être utilisé quand les connexions externes dont désactivées. "
-"Pour activer les Connexions Externes, utilisez soit un aMule normal, démarrez amuled avec l'option --ec-config ou passez la clé \"AcceptExternalConnections\" à 1 dans le fichier ~/.aMule/amule.conf"
+msgstr ""
+"ERREUR: le daemon aMule ne peut être utilisé quand les connexions externes "
+"dont désactivées. Pour activer les Connexions Externes, utilisez soit un "
+"aMule normal, démarrez amuled avec l'option --ec-config ou passez la clé "
+"\"AcceptExternalConnections\" à 1 dans le fichier ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -7292,6 +7315,6 @@ msgstr ""
 
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
+msgstr ""
+"Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
 "l'écriture!"
-
