@@ -1,55 +1,45 @@
-dnl ----------------------------------------------------
-dnl CHECK_WX_BUILT_WITH_GTK2
-dnl check gtk version wx widgets was compiled
-dnl ----------------------------------------------------
-
-AC_DEFUN([CHECK_WX_BUILT_WITH_GTK2],
+dnl ---------------------------------------------------------------------------
+dnl AM_WXCONFIG_LARGEFILE()
+dnl
+dnl Test that wxWidgets is built with support for large-files. If not
+dnl configure is terminated.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([AM_WXCONFIG_LARGEFILE],
 [
-  AC_MSG_CHECKING(if wxWidgets was linked with GTK2)
-  if $WX_CONFIG_WITH_ARGS --cppflags | grep -q 'gtk2' ; then
-     GTK_USEDVERSION=2
-     AC_MSG_RESULT(yes)
-  else
-     AC_MSG_RESULT(no)
-  fi
+	AC_LANG_PUSH(C++)
+	
+	dnl Backup current flags and setup flags for testing
+	__CPPFLAGS=${CPPFLAGS}
+	CPPFLAGS=${WX_CPPFLAGS}
+	
+	AC_MSG_CHECKING(that wxWidgets has support for large files)
+	AC_PREPROC_IFELSE([
+		#include <wx/wx.h>
 
-  AC_SUBST(GTK_USEDVERSION)
-])
+		int main() {
+		#if !HAVE_LARGEFILE_SUPPORT && !defined(__WXMSW__)
+			#error No LargeFile support!;
+		#endif
+			exit(0);
+		}
+	], , NO_LF="true")
 
-dnl ----------------------------------------------------
-dnl GET_WX_VERSION
-dnl get wx widgets
-dnl ----------------------------------------------------
+	if test "x${NO_LF}" != "x";
+	then
+		AC_MSG_RESULT(no)
+		AC_MSG_ERROR([
+		Support for large files in wxWidgets is required by aMule.
+		To continue you must recompile wxWidgets with support for 
+		large files enabled.
+		])
+	else
+		AC_MSG_RESULT(yes)
+	fi
 
-AC_DEFUN([GET_WX_VERSION],
-[
-  WX_VERSION_FULL=`$WX_CONFIG_WITH_ARGS --version`
-  WX_VERSION_MAJOR=`echo $WX_VERSION_FULL | cut -d . -f 1`
-  WX_VERSION_MINOR=`echo $WX_VERSION_FULL | cut -d . -f 2`
-  WX_VERSION_RELEASE=`echo $WX_VERSION_FULL | cut -d . -f 3`
-])
+	dnl Restore backup'd flags
+	CPPFLAGS=${__CPPFLAGS}	
 
-
-dnl ----------------------------------------------------
-dnl GET_GTK_VERSION
-dnl get gtk 1.x version
-dnl ----------------------------------------------------
-
-AC_DEFUN([GET_GTK_VERSION],
-[
-  GTK_VERSION=`$GTK_CONFIG --version`
-  AC_SUBST(GTK_VERSION)
-])
-
-dnl ----------------------------------------------------
-dnl GET_GTK2_VERSION
-dnl get gtk 2.x version
-dnl ----------------------------------------------------
-
-AC_DEFUN([GET_GTK2_VERSION],
-[
-  GTK_VERSION=`$PKG_CONFIG --modversion gtk+-2.0`
-  AC_SUBST(GTK_VERSION)
+	AC_LANG_POP(C++)
 ])
 
 dnl ---------------------------------------------------------------------------
