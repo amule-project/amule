@@ -384,8 +384,14 @@ AC_MSG_RESULT($need_ip2country)
 
 
 # Check for wx
-AM_OPTIONS_WXCONFIG
-AM_PATH_WXCONFIG(2.8.0, wxWin=1)
+WX_CONFIG_OPTIONS
+WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
+# Force using a static wxWidgets library if the executable is to be linked statically.
+AS_IF([test "$USE_DEBUG_STATIC" = "yes"], [WX_SHARED=0])
+WX_UNICODE=1
+DEBUG=$WX_DEBUG
+WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
+WX_CONFIG_CHECK([2.8.0], [wxWin=1],, , [$WXCONFIG_FLAGS])
 if test "$wxWin" != 1; then
 	AC_MSG_ERROR([
 		wxWidgets must be installed on your system but wx-config 
@@ -396,10 +402,8 @@ if test "$wxWin" != 1; then
 		equivalent variable and wxWidgets version is 2.6.0 or above.
 	])
 fi
+WX_DETECT_STANDARD_OPTION_VALUES
 AM_WXCONFIG_LARGEFILE
-AM_WXCONFIG_UNICODE
-
-GET_WX_VERSION
 
 dnl Get flags for windres
 if test x$SYS = xwin32; then
@@ -811,7 +815,10 @@ echo
 echo "  **** General Libraries and Tools ****"
 echo "  Should ccache support be enabled?                          ${ccache:-no}"
 echo "  Libraries aMule will use to build:"
-echo "                                       wxWidgets             ${WX_VERSION_FULL:-Not detected}"
+wxinfo="$WX_PORT"
+AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
+AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
+echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${crypto_version:-embedded}"
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
