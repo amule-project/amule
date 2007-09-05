@@ -1156,8 +1156,8 @@ msgid "Select the file you want to compute the ed2k link"
 msgstr "选择要创建 ED2K 链接的文件"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:408
-msgid "Nothing to copy for now！"
-msgstr "暂时没有东西可复制！"
+msgid "Nothing to copy for now !"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:435
 msgid "Select the file to your computed ed2k link"
@@ -3068,8 +3068,8 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
 msgstr ""
-"错误：无法载入备份文件，请到 http://forum.amule.org 搜索关于恢复 .part.met 文件的"
-"解决办法"
+"错误：无法载入备份文件，请到 http://forum.amule.org 搜索关于恢复 .part.met 文"
+"件的解决办法"
 
 #: src/PartFile.cpp:296
 #, c-format
@@ -3081,8 +3081,8 @@ msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
 msgstr ""
-"错误：备份的 part.met 文件长度为 0，请到 http://forum.amule.org 搜索关于恢复 .part.met "
-"文件的解决办法"
+"错误：备份的 part.met 文件长度为 0，请到 http://forum.amule.org 搜索关于恢"
+"复 .part.met 文件的解决办法"
 
 #: src/PartFile.cpp:308
 #, c-format
@@ -7052,6 +7052,9 @@ msgstr "无法打开好友列表文件 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "无法写入好友列表文件 'emfriends.met'!"
+
+#~ msgid "Nothing to copy for now！"
+#~ msgstr "暂时没有东西可复制！"
 
 #~ msgid "Copy ED2k link to clipboard (Hostname)"
 #~ msgstr "拷贝 ED2K 链接到剪贴板 (计算机名)"
