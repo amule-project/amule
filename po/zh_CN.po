@@ -1157,7 +1157,7 @@ msgstr "选择要创建 ED2K 链接的文件"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:408
 msgid "Nothing to copy for now !"
-msgstr ""
+msgstr "当前无内容需要复制！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:435
 msgid "Select the file to your computed ed2k link"
