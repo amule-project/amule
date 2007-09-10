@@ -388,10 +388,11 @@ WX_CONFIG_OPTIONS
 WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
 # Force using a static wxWidgets library if the executable is to be linked statically.
 AS_IF([test "$USE_DEBUG_STATIC" = "yes"], [WX_SHARED=0])
+# Force using a unicode build of the library
 WX_UNICODE=1
 DEBUG=$WX_DEBUG
 WX_CONVERT_STANDARD_OPTIONS_TO_WXCONFIG_FLAGS
-WX_CONFIG_CHECK([2.8.0], [wxWin=1],, , [$WXCONFIG_FLAGS])
+WX_CONFIG_CHECK([2.8.0], [wxWin=1],,, [$WXCONFIG_FLAGS])
 if test "$wxWin" != 1; then
 	AC_MSG_ERROR([
 		wxWidgets must be installed on your system but wx-config 
@@ -399,7 +400,7 @@ if test "$wxWin" != 1; then
 		in path or specified by --with-wx-config=path flag, the 
 		directory where wxWidgets libraries are installed (returned 
 		by 'wx-config --libs' command) is in LD_LIBRARY_PATH or
-		equivalent variable and wxWidgets version is 2.6.0 or above.
+		equivalent variable and wxWidgets version is 2.8.0 or above.
 	])
 fi
 WX_DETECT_STANDARD_OPTION_VALUES
