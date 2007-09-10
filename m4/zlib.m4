@@ -25,9 +25,9 @@ dnl check if zlib is on the system
 dnl ----------------------------------------------------
 AC_DEFUN([AC_CHECK_ZLIB],
 [
-ac_zver_max="`echo $1 | cut -d. -f1`"
-ac_zver_mid="`echo $1 | cut -d. -f2`"
-ac_zver_min="`echo $1 | cut -d. -f3`"
+ac_zver_max="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])"
+ac_zver_mid="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])"
+ac_zver_min="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])"
 
 case "$ac_zlib" in
 no)
