@@ -765,10 +765,7 @@ void CSearchListCtrl::OnDrawItem(
 				if (file->HasRating()) {
 					int image = Client_InvalidRating_Smiley + file->UserRating() - 1;
 					
-					int imgWidth = 8;
-					if (file->UserRating() <= 1 || file->UserRating() == 5 ) {
-						imgWidth = 16;
-					}
+					int imgWidth = 16;
 					
 					theApp->amuledlg->m_imagelist.Draw(image, *dc, target_rec.GetX(),
 							target_rec.GetY() - 1, wxIMAGELIST_DRAW_TRANSPARENT);
