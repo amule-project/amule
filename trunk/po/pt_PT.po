@@ -17,7 +17,7 @@ msgstr ""
 "Language-Team: Portuguese <helder.pereira.correia@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -123,7 +123,8 @@ msgstr "AVISO: O nome do ficheiro '%s' é invalido e foi mudado para '%s'."
 #: src/ThreadTasks.cpp:463
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "AVISO: O ficheiro '%s' já existe, o novo ficheiro tem agora o nome '%s'."
+msgstr ""
+"AVISO: O ficheiro '%s' já existe, o novo ficheiro tem agora o nome '%s'."
 
 #: src/ThreadTasks.cpp:477
 #, c-format
@@ -1925,7 +1926,8 @@ msgstr "Personalizado"
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
-msgstr "aMule tem de ser reinicializado para activar estas mudanças:\n"
+msgstr ""
+"aMule tem de ser reinicializado para activar estas mudanças:\n"
 "\n"
 
 #: src/PrefsUnifiedDlg.cpp:473
@@ -1969,14 +1971,16 @@ msgstr "Saída: 0.0 | Entrada: 0.0"
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
-msgstr "ED2K e Kad estão desactivados.\n"
+msgstr ""
+"ED2K e Kad estão desactivados.\n"
 "Não vai conseguir uma ligação até activar pelo menos um deles."
 
 #: src/PrefsUnifiedDlg.cpp:586
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
-msgstr "Kad nao vai funcionar se a porta UDP estiver deactivada.\n"
+msgstr ""
+"Kad nao vai funcionar se a porta UDP estiver deactivada.\n"
 "Active a porta UDP ou deactive Kad."
 
 #: src/PrefsUnifiedDlg.cpp:591
@@ -2313,7 +2317,8 @@ msgstr "Instrução inválida (versão de protocol errada?)"
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr "Abertura do ficheiro (%s) falhou, remoção da lista de ficheiros partilhados."
+msgstr ""
+"Abertura do ficheiro (%s) falhou, remoção da lista de ficheiros partilhados."
 
 #: src/UploadClient.cpp:714
 #, c-format
@@ -3331,8 +3336,8 @@ msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
 "directory not found."
 msgstr ""
-"CSharedFileList::FindSharedFiles: Remoção de %s da lista de directórios partilhados: "
-"Directório não foi encontrado."
+"CSharedFileList::FindSharedFiles: Remoção de %s da lista de directórios "
+"partilhados: Directório não foi encontrado."
 
 #: src/SharedFileList.cpp:376
 #, c-format
@@ -3374,8 +3379,8 @@ msgstr "%s comentário(s)"
 msgid ""
 "Failed to connect to all obfuscated servers listed. Making another pass "
 "without obfuscation."
-msgstr "Ligação a servidores obfuscados falhou. Mais uma tentativa "
-"sem obfuscaçao"
+msgstr ""
+"Ligação a servidores obfuscados falhou. Mais uma tentativa sem obfuscaçao"
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
@@ -3505,7 +3510,8 @@ msgstr "Não é uma chave válida (o comprimento deveria ser de 32 caracteres)\n
 
 #: src/TextClient.cpp:358
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "Este commando requer um argumento. Argumentos validos: chave de ficheiro.\n"
+msgstr ""
+"Este commando requer um argumento. Argumentos validos: chave de ficheiro.\n"
 
 #: src/TextClient.cpp:570
 #, c-format
@@ -3750,8 +3756,7 @@ msgstr ""
 "*) link dum servidor (ed2k://|server|...), sera adicionado a lista \n"
 "dos servidores,\n"
 "*) ou um link para uma lista de servidores, todos dos quais \n"
-"serão adicionados a lista dos servidores "
-"\n"
+"serão adicionados a lista dos servidores \n"
 "O ímã tem de conter a chave ed2k e o tamanho do ficheiro.\n"
 
 #: src/TextClient.cpp:857
@@ -3861,7 +3866,8 @@ msgid ""
 "    LOCAL\n"
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
-msgstr "O tipo de busca tem de ser definido com um tipo:\n"
+msgstr ""
+"O tipo de busca tem de ser definido com um tipo:\n"
 "    GLOBAL\n"
 "    LOCAL\n"
 "    KAD\n"
@@ -5074,7 +5080,9 @@ msgstr "Icone minimizar"
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
-msgstr "Se activar isto aMule vai minimizar para o system tray inves de para o taskbar."
+msgstr ""
+"Se activar isto aMule vai minimizar para o system tray inves de para o "
+"taskbar."
 
 #: src/muuli_wdr.cpp:1672
 msgid "Tooltip Delay Time in secs"
@@ -5757,7 +5765,8 @@ msgstr "Aceitar conexões externas"
 msgid ""
 "IP of the listening interface\n"
 "(empty for any)"
-msgstr "IP da interface do servidor\n"
+msgstr ""
+"IP da interface do servidor\n"
 "(deixe em branco para qualquer um)"
 
 #: src/muuli_wdr.cpp:2831
