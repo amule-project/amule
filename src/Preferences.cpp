@@ -606,7 +606,8 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_DANISH,				true,	wxTRANSLATE("Danish") },
 	{ wxLANGUAGE_DUTCH,					true,	wxTRANSLATE("Dutch") },
 	{ wxLANGUAGE_ENGLISH_UK,			true,	wxTRANSLATE("English (U.K.)") },
-	{ wxLANGUAGE_ENGLISH_US,			true,	wxTRANSLATE("English (U.S.)") },
+// Unmaintained language file: en_US.po
+//	{ wxLANGUAGE_ENGLISH_US,			true,	wxTRANSLATE("English (U.S.)") },
 	{ wxLANGUAGE_ESTONIAN,				true,	wxTRANSLATE("Estonian") },
 	{ wxLANGUAGE_FINNISH,				true,	wxTRANSLATE("Finnish") },
 	{ wxLANGUAGE_FRENCH,				true,	wxTRANSLATE("French") },
@@ -614,21 +615,19 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_GERMAN,				true,	wxTRANSLATE("German") },
 	{ wxLANGUAGE_HUNGARIAN,				true,	wxTRANSLATE("Hungarian") },
 	{ wxLANGUAGE_ITALIAN,				true,	wxTRANSLATE("Italian") },
-// Hmm, it_NA.po not present ...
-//	{ wxLANGUAGE_ITALIAN_NAPOLITAN,		true,	wxTRANSLATE("Italian (Napolitan)") },
 	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
 	{ wxLANGUAGE_KOREAN,				true,	wxTRANSLATE("Korean") },
-// There is no such file as lt.po
-//	{ wxLANGUAGE_LITHUANIAN,			true,	wxTRANSLATE("Lithuanian") },
+	{ wxLANGUAGE_LITHUANIAN,			true,	wxTRANSLATE("Lithuanian") },
+	{ wxLANGUAGE_NORWEGIAN_NYNORSK,		true,	wxTRANSLATE("Norwegian (Nynorsk)") }, // nn_NO would be the full id
 	{ wxLANGUAGE_POLISH,				true,	wxTRANSLATE("Polish") },
 	{ wxLANGUAGE_PORTUGUESE,			true,	wxTRANSLATE("Portuguese") },
 	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	true,	wxTRANSLATE("Portuguese (Brazilian)") },
 	{ wxLANGUAGE_RUSSIAN,				true,	wxTRANSLATE("Russian") },
 	{ wxLANGUAGE_SLOVENIAN,				true,	wxTRANSLATE("Slovenian") },
 	{ wxLANGUAGE_SPANISH,				true,	wxTRANSLATE("Spanish") },
-// Apparently there's no es_CL.po
-//	{ wxLANGUAGE_SPANISH_CHILE,			true,	wxTRANSLATE("Spanish (Chile)") },
-	{ wxLANGUAGE_SPANISH_MEXICAN,		true,	wxTRANSLATE("Spanish (Mexican)") },
+	{ wxLANGUAGE_SWEDISH,				true,	wxTRANSLATE("Swedish") }, // sv_SE would be the full id
+// Unmaintained language file: es_MX.po
+//	{ wxLANGUAGE_SPANISH_MEXICAN,		true,	wxTRANSLATE("Spanish (Mexican)") },
 	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
 // Yet no real support for "custom"
 //	{ wxLANGUAGE_CUSTOM,				true,	wxTRANSLATE("Custom") },
