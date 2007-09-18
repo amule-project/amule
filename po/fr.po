@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2007-09-01 18:12+0200\n"
 "Last-Translator: Guillaume <guilo19@free.fr>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -1430,90 +1430,94 @@ msgstr "Hollandais"
 msgid "English (U.K.)"
 msgstr "Anglais (U.K.)"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "Anglais (U.S.)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "Estonien"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "Finlandais"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "Français"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "Galicien"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "Allemand"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "Hongrois"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "Italien"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "Italien (Suisse)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "Coréen"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr ""
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "Polonais"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "Portugais (Brésilien)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "Russe"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "Slovène"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "Espagnol (Mexicain)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr "Turque"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "Impossible de déterminer le navigateur sélectionné!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Le port TCP ne peut pas dépasser 65532 car le socket UDP du serveur sera à "
 "TCP+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Le port par défaut sera utilisé (%d)"
@@ -7318,3 +7322,9 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
 "l'écriture!"
+
+#~ msgid "English (U.S.)"
+#~ msgstr "Anglais (U.S.)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "Espagnol (Mexicain)"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2005-11-23 20:36-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -1404,88 +1404,92 @@ msgstr "Holandês"
 msgid "English (U.K.)"
 msgstr "Inglês (UK)"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "Inglês (USA)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "Estônia"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "Finlandês"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "Francês"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "Galego"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "Alemão"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "Hungria"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "Italiano (Suíço)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "Coreano"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr ""
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "Polonês"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "Português (Portugal)"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "Português do Brasil"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "Russo"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "Esloveno"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "Espanhol (Mexicano)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "Impossível determinar browser selecionado!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Porta TCP nao pode ser maior do que 65532, pois a UDP escuta em TCP+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Porta padrão será utilizada (%d)"
@@ -7084,6 +7088,12 @@ msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para leitura!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para escrita!"
+
+#~ msgid "English (U.S.)"
+#~ msgstr "Inglês (USA)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "Espanhol (Mexicano)"
 
 #~ msgid ""
 #~ "ERROR: aMule daemon cannot be used when external connections are "

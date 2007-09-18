@@ -13,13 +13,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2007-09-17 18:44+0100\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -1411,90 +1411,94 @@ msgstr "Holandês"
 msgid "English (U.K.)"
 msgstr "Inglês"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "Inglês (E.U.A.)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "Estoniano"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "Finlandês"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "Francês"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "Galego"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "Alemão"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "Húngaro"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "Italiano (Suíço)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "Coreano"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr ""
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "Polaco"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "Português"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "Português (Brasil)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "Russo"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "Esloveno"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "Espanhol (México)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr "Turco"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "Não é possível determinar o navegador seleccionado!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "O porto TCP não pode ser superior a 65532 devido ao socket UDP do servidor "
 "ser TCP+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "O porto predefinido será usado (%d)"
@@ -3912,8 +3916,10 @@ msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the previous search.\n"
-msgstr "O número do ficheiro da última pesquisa tem de ser especificado.\n"
-"Exemplo: 'download 12' iniciará o download do ficheiro com o número 12 da última pesquisa.\n"
+msgstr ""
+"O número do ficheiro da última pesquisa tem de ser especificado.\n"
+"Exemplo: 'download 12' iniciará o download do ficheiro com o número 12 da "
+"última pesquisa.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -5967,7 +5973,9 @@ msgstr "Supporte do Protocolo de Obfuscação"
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
-msgstr "Esta opção activou a Obfuscação de Protocolo e faz com que o aMule aceite ligações obfuscadas de outros clientes."
+msgstr ""
+"Esta opção activou a Obfuscação de Protocolo e faz com que o aMule aceite "
+"ligações obfuscadas de outros clientes."
 
 #: src/muuli_wdr.cpp:3452
 msgid "Use obfuscation for outgoing connections"
@@ -5977,7 +5985,9 @@ msgstr "Usar obfuscação para ligações para fora"
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
-msgstr "Esta opção faz com que o aMule use a Obfuscação de Protocolo quando ligando a outros clientes/servidores."
+msgstr ""
+"Esta opção faz com que o aMule use a Obfuscação de Protocolo quando ligando "
+"a outros clientes/servidores."
 
 #: src/muuli_wdr.cpp:3457
 msgid "Accept only obfuscated connections"
@@ -5987,7 +5997,9 @@ msgstr "Aceitar apenas ligações obfuscadas"
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
-msgstr "Esta opção faz com que o aMUle aceite apenas ligações obfuscadas. Terá menos fontes, mas todo o tráfico será obfuscado"
+msgstr ""
+"Esta opção faz com que o aMUle aceite apenas ligações obfuscadas. Terá menos "
+"fontes, mas todo o tráfico será obfuscado"
 
 #: src/muuli_wdr.cpp:3463
 msgid "File Options"
@@ -6020,7 +6032,9 @@ msgstr "Filtrar clientes"
 #: src/muuli_wdr.cpp:3487
 msgid ""
 "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Activar filtragem por IPs dos clientes definidos no ficheiro ~/.aMule/ipfilter.dat"
+msgstr ""
+"Activar filtragem por IPs dos clientes definidos no ficheiro ~/.aMule/"
+"ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3490
 msgid "Filter servers"
@@ -6029,7 +6043,8 @@ msgstr "Filtrar servidores"
 #: src/muuli_wdr.cpp:3492
 msgid ""
 "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Activar filtragem da lista de IPs definia no ficheiro ~/.aMule/ipfilter.dat."
+msgstr ""
+"Activar filtragem da lista de IPs definia no ficheiro ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3499
 msgid "Reload List"
@@ -6069,7 +6084,9 @@ msgstr "Tratamento paranóico de IPs sem correspondência"
 msgid ""
 "Rejects packet if the client ip is different from the ip where the packet is "
 "received from. Use with caution."
-msgstr "Rejeitar pacotes se o IP do cliente é diferente do IP de onde o pacote é recebido. Usar com cautela."
+msgstr ""
+"Rejeitar pacotes se o IP do cliente é diferente do IP de onde o pacote é "
+"recebido. Usar com cautela."
 
 #: src/muuli_wdr.cpp:3545
 msgid "Client Identification:"
@@ -6525,7 +6542,11 @@ msgid ""
 "To enable External Connections, use either a normal aMule, start amuled with "
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
-msgstr "ERRO: o daemon do aMule não pode ser usado quando as ligações externas estão desactivadas. Paraactivar as Ligações Externas, use um aMule normal, inicie o amuled com a opção --ec-config ou mude a chave \"AcceptExternalConnections\" para 1 no ficheiro ~/.aMule/amule.conf"
+msgstr ""
+"ERRO: o daemon do aMule não pode ser usado quando as ligações externas estão "
+"desactivadas. Paraactivar as Ligações Externas, use um aMule normal, inicie "
+"o amuled com a opção --ec-config ou mude a chave \"AcceptExternalConnections"
+"\" para 1 no ficheiro ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6657,7 +6678,8 @@ msgstr "Indisponível"
 
 #: src/SearchDlg.cpp:468
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr "Tamanho mínimo tem de ser menor que o tamanho máximo. Tamanho máximo ignorado"
+msgstr ""
+"Tamanho mínimo tem de ser menor que o tamanho máximo. Tamanho máximo ignorado"
 
 #: src/SearchDlg.cpp:469
 msgid "Search warning"
@@ -6929,7 +6951,8 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "Servidor local filtrado pelo Filtro de IPs, ligando a um servidor diferente!"
+msgstr ""
+"Servidor local filtrado pelo Filtro de IPs, ligando a um servidor diferente!"
 
 #: src/UserEvents.cpp:129
 #, c-format
@@ -6948,7 +6971,8 @@ msgstr ""
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
-msgstr "Não tem nenhum servidor na lista de servidores.\n"
+msgstr ""
+"Não tem nenhum servidor na lista de servidores.\n"
 "Quer que o aMule descarrege uma lista nova agora?"
 
 #: src/amule.cpp:787
@@ -6995,7 +7019,9 @@ msgstr ""
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
-msgstr "AVISO: Não se poderá adicionar a si próprio como fonte para um link ed2k enquanto tiver lowid."
+msgstr ""
+"AVISO: Não se poderá adicionar a si próprio como fonte para um link ed2k "
+"enquanto tiver lowid."
 
 #: src/amule.cpp:1128
 msgid "Failed to create OnlineSig File"
@@ -7034,23 +7060,28 @@ msgstr "mas, em princípio, deverá ser seguro usá-lo.\n"
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr "As seguintes opções foram mudadas nesta distribuição por motivos de segurança:\n"
-""
+msgstr ""
+"As seguintes opções foram mudadas nesta distribuição por motivos de "
+"segurança:\n"
 
 #: src/amule.cpp:1323
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
 "connections.\n"
-msgstr "\n"
-"* Activado o suporte de Obfuscação de Protocolo para todas as ligações de entrada e saída.\n"
+msgstr ""
+"\n"
+"* Activado o suporte de Obfuscação de Protocolo para todas as ligações de "
+"entrada e saída.\n"
 
 #: src/amule.cpp:1324
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
-msgstr "\n"
-"* Desactivado o update da lista de servidores de outros servidores e clientes.\n"
+msgstr ""
+"\n"
+"* Desactivado o update da lista de servidores de outros servidores e "
+"clientes.\n"
 
 #: src/amule.cpp:1325
 msgid ""
@@ -7059,10 +7090,12 @@ msgid ""
 "the aMule wiki at http://wiki.amule.org for \"fake servers\" info.\n"
 "It's important that you clear any fake server from your server list for "
 "aMule to work properly."
-msgstr "\n"
+msgstr ""
+"\n"
 "Para mais informação acerca da razão para estas mudanças, procure\n"
 "informação na wiki do aMule em http://wiki.amule.org for \"fake servers\"\n"
-"É importante que remova todos os servidores falsos da sua lista para que o aMule funcione correctamente."
+"É importante que remova todos os servidores falsos da sua lista para que o "
+"aMule funcione correctamente."
 
 #: src/amule.cpp:1330
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7130,7 +7163,8 @@ msgstr "A última versão pode ser sempre encontrada em http://www.amule.org"
 #: src/amule.cpp:1880
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
-msgstr "AVISO: A sua versao do aMuled está desactualizada: %i.%i.%i < %li.%li.%li"
+msgstr ""
+"AVISO: A sua versao do aMuled está desactualizada: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:1884
 msgid "Your copy of aMule is up to date."
@@ -7183,7 +7217,9 @@ msgstr "Desconectado de Kad"
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
-msgstr "A rede Kad não pode ser usada se a porta UDP está desactivada nas preferências, inicialização não efectuada."
+msgstr ""
+"A rede Kad não pode ser usada se a porta UDP está desactivada nas "
+"preferências, inicialização não efectuada."
 
 #: src/amule.cpp:2147
 msgid "Kad network disabled on preferences, not connecting."
@@ -7199,6 +7235,12 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
 
+#~ msgid "English (U.S.)"
+#~ msgstr "Inglês (E.U.A.)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "Espanhol (México)"
+
 #~ msgid ""
 #~ "ERROR: aMule daemon cannot be used when external connections are "
 #~ "disabled. To enable External Connections, use either a normal aMule or "
@@ -7206,9 +7248,9 @@ msgstr ""
 #~ "conf"
 #~ msgstr ""
 #~ "ERRO: o servidor do aMule nÃ£o pode ser usado quando conexÃµes externas "
-#~ "estÃ£o desactivadas. Para activar ConexÃµes Externas, use o aMule normal ou "
-#~ "defina a chave\"AcceptExternalConnections\" como 1 no ficheiro ~/.aMule/"
-#~ "amule.conf"
+#~ "estÃ£o desactivadas. Para activar ConexÃµes Externas, use o aMule normal "
+#~ "ou defina a chave\"AcceptExternalConnections\" como 1 no ficheiro ~/."
+#~ "aMule/amule.conf"
 
 #~ msgid "Sources: %u"
 #~ msgstr "Fontes: %u"
@@ -7279,8 +7321,8 @@ msgstr ""
 #~ "Enabling this will make aMule minimize to the system-tray, rather than "
 #~ "the taskbar."
 #~ msgstr ""
-#~ "Quando activado, o aMule Ã© minimizado para a bandeja do sistema em vez da "
-#~ "barra de tarefas."
+#~ "Quando activado, o aMule Ã© minimizado para a bandeja do sistema em vez "
+#~ "da barra de tarefas."
 
 #~ msgid "Unable to open skin file: %s"
 #~ msgstr "NÃ£o Ã© possÃ­vel abrir o ficheiro de tema: %s"
@@ -7486,7 +7528,8 @@ msgstr ""
 #~ msgstr "Cliente %s no IP:Porto %s:%d usando %s"
 
 #~ msgid "You can't bootstrap from remote GUI yet."
-#~ msgstr "Ainda nÃ£o Ã© possÃ­vel arrancar a partir da interface grÃ¡fica remota."
+#~ msgstr ""
+#~ "Ainda nÃ£o Ã© possÃ­vel arrancar a partir da interface grÃ¡fica remota."
 
 #~ msgid "aMule Tray Menu Info"
 #~ msgstr "InformaÃ§Ã£o do menu de bandeja do aMule"
@@ -7504,7 +7547,8 @@ msgstr ""
 #~ msgstr "A carregar ficheiros ipfilter.dat."
 
 #~ msgid "Your aMule version is %i.%i.%i and the latest version is %i.%i.%i"
-#~ msgstr "A sua versÃ£o do aMule Ã© a %i.%i.%i e a Ãºltima versÃ£o Ã© a %i.%i.%i"
+#~ msgstr ""
+#~ "A sua versÃ£o do aMule Ã© a %i.%i.%i e a Ãºltima versÃ£o Ã© a %i.%i.%i"
 
 #~ msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %i.%i.%i\n"
 #~ msgstr "AVISO: A sua versÃ£o do aMuled Ã© antiga: %i.%i.%i < %i.%i.%i\n"
@@ -7553,7 +7597,8 @@ msgstr ""
 #~ msgstr ""
 #~ "Para que a integraÃ§Ã£o com a bandeja do sistema funcione,\n"
 #~ "Ã© necessÃ¡rio especificar o seu ambiente de trabalho.\n"
-#~ "Se necessÃ¡rio, pode alterar esta informaÃ§Ã£o, mais tarde, nas preferÃªncias."
+#~ "Se necessÃ¡rio, pode alterar esta informaÃ§Ã£o, mais tarde, nas "
+#~ "preferÃªncias."
 
 #~ msgid "Gnome 2.x (or other XEMBED compatible)"
 #~ msgstr "Gnome 2.x (ou outro compatÃ­vel com XEMBED)"
@@ -7681,8 +7726,8 @@ msgstr ""
 #~ "Temp dir is placed on a FAT32 partition. Disabling chmod to avoid useless "
 #~ "warnings."
 #~ msgstr ""
-#~ "A pasta temporÃ¡ria situa-se numa partiÃ§Ã£o FAT32. A desactivar o 'chmod' "
-#~ "para evitar avisos inÃºteis."
+#~ "A pasta temporÃ¡ria situa-se numa partiÃ§Ã£o FAT32. A desactivar o "
+#~ "'chmod' para evitar avisos inÃºteis."
 
 #~ msgid ""
 #~ "Incoming dir is placed on a FAT32 partition. Disabling chmod to avoid "
@@ -7742,8 +7787,8 @@ msgstr ""
 #~ "Enter the url to a nodes.dat file here and press the button to the left "
 #~ "to update the list of known servers."
 #~ msgstr ""
-#~ "Insira o endereÃ§o dum ficheiro nodes.dat e pressione o botÃ£o Ã  esquerda "
-#~ "para actualizar a lista de servidores conhecidos."
+#~ "Insira o endereÃ§o dum ficheiro nodes.dat e pressione o botÃ£o Ã  "
+#~ "esquerda para actualizar a lista de servidores conhecidos."
 
 #~ msgid "SharedFiles"
 #~ msgstr "Ficheiros partilhados"

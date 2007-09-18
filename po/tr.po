@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2007-08-25 20:20+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -1408,89 +1408,93 @@ msgstr "Felemenkçe"
 msgid "English (U.K.)"
 msgstr "İngilizce (U.K)"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "İngilizce (U.S.)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "Estonyaca"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "Fince"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "Fransızca"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "Galce"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "Almanca"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "Macarca"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "İtalyanca"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "İtalyanca (İsviçre)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "Korece"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr ""
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "Lehçe"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "Portekizce (Brezilya)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "Rusça"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "Slovence"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "İspanyolca (Meksika)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "Seçili tarayıcı tanımlanamıyor!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Varsayılan port kullanılacak (%d)"
@@ -7172,3 +7176,9 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#~ msgid "English (U.S.)"
+#~ msgstr "İngilizce (U.S.)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "İspanyolca (Meksika)"

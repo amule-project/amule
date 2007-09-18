@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2007-08-31 23:21+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -1413,90 +1413,94 @@ msgstr "Nederlands"
 msgid "English (U.K.)"
 msgstr "Engels (V.K.)"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "Engels (V.S.)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "Estonisch"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "Fins"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "Frans"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "Galicisch"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "Duits"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "Hongaars"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "Italiaans"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "Italiaans (Zwitsers)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "Koreaans"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr "Litouws"
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "Pools"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "Portugees"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "Portugees (Braziliaans)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "Russisch"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "Sloveens"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "Spaans"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "Spaans (Mexicaans)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr "Turks"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "Kon geselecteerde browser niet bepalen!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP poort kan niet hoger zijn dan 65532 omdat de server UDP poort de TCP "
 "poort + 3 is"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Standaard poort zal worden gebruikt (%d)"
@@ -7218,6 +7222,12 @@ msgstr "Kon vriendenlijst bestand 'emfriends.met' niet lezen!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst bestand 'emfriends.met'!"
 
+#~ msgid "English (U.S.)"
+#~ msgstr "Engels (V.S.)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "Spaans (Mexicaans)"
+
 #~ msgid ""
 #~ "ERROR: aMule daemon cannot be used when external connections are "
 #~ "disabled. To enable External Connections, use either a normal aMule or "
@@ -9301,9 +9311,6 @@ msgstr "Kon niet schrijven naar vriendenlijst bestand 'emfriends.met'!"
 
 #~ msgid "Galego"
 #~ msgstr "Gallicisch"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Litouws"
 
 #~ msgid "Portuguese (Brazil)"
 #~ msgstr "Portugees (Brzilië)"

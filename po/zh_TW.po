@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 03:30+0200\n"
+"POT-Creation-Date: 2007-09-18 03:30+0200\n"
 "PO-Revision-Date: 2007-08-26 00:30+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -1398,88 +1398,92 @@ msgstr "荷蘭語"
 msgid "English (U.K.)"
 msgstr "英語 (英國)"
 
-#: src/Preferences.cpp:609
-msgid "English (U.S.)"
-msgstr "英語 (美國)"
-
-#: src/Preferences.cpp:610
+#: src/Preferences.cpp:611
 msgid "Estonian"
 msgstr "愛斯托尼亞語"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Finnish"
 msgstr "芬蘭語"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "French"
 msgstr "法語"
 
-#: src/Preferences.cpp:613
+#: src/Preferences.cpp:614
 msgid "Galician"
 msgstr "加利西亞語"
 
-#: src/Preferences.cpp:614
+#: src/Preferences.cpp:615
 msgid "German"
 msgstr "德語"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Hungarian"
 msgstr "匈牙利語"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Italian"
 msgstr "意大利語"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:618
 msgid "Italian (Swiss)"
 msgstr "意大利語 (瑞士)"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:619
 msgid "Korean"
 msgstr "韓語"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:620
+msgid "Lithuanian"
+msgstr "立托尼亞語"
+
+#: src/Preferences.cpp:621
+msgid "Norwegian (Nynorsk)"
+msgstr ""
+
+#: src/Preferences.cpp:622
 msgid "Polish"
 msgstr "芬蘭語"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:623
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:624
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙語 (巴西)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:625
 msgid "Russian"
 msgstr "俄語"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:626
 msgid "Slovenian"
 msgstr "斯洛文尼亞語"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:627
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: src/Preferences.cpp:631
-msgid "Spanish (Mexican)"
-msgstr "西班牙語 (墨西哥)"
+#: src/Preferences.cpp:628
+msgid "Swedish"
+msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:631
 msgid "Turkish"
 msgstr "土耳其語"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1617 src/Preferences.cpp:1631 src/Preferences.cpp:1638
 msgid "Unable to determine selected browser!"
 msgstr "未檢測到所選擇的浏覽器"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1667
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因爲服務器UDP端口值爲TCP端口值+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1668
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口將被使用(%d)"
@@ -7064,6 +7068,12 @@ msgstr "無法打開好友列表文件 'emfriends.met'!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "無法寫入好友列表文件 'emfriends.met'!"
 
+#~ msgid "English (U.S.)"
+#~ msgstr "英語 (美國)"
+
+#~ msgid "Spanish (Mexican)"
+#~ msgstr "西班牙語 (墨西哥)"
+
 #~ msgid "Copy ED2k link to clipboard (Hostname)"
 #~ msgstr "拷貝 ED2K 連結到剪貼簿 (計算機名)"
 
@@ -7522,9 +7532,6 @@ msgstr "無法寫入好友列表文件 'emfriends.met'!"
 
 #~ msgid "German (Swiss)"
 #~ msgstr "德語 (瑞士)"
-
-#~ msgid "Lithuanian"
-#~ msgstr "立托尼亞語"
 
 #~ msgid "Portuguese (Brazil)"
 #~ msgstr "葡萄牙語 (巴西)"
