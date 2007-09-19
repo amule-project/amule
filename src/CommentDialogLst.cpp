@@ -28,6 +28,7 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include <common/Format.h>				// Needed for CFormat
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
+#include "Preferences.h"
 
 
 
@@ -82,12 +83,14 @@ void CCommentDialogLst::UpdateList()
 	FileRatingList list;
 	m_file->GetRatingAndComments(list);
 	for (FileRatingList::iterator it = list.begin(); it != list.end(); ++it) {
-		m_list->InsertItem(count, (*it)->UserName);
-		m_list->SetItem(count, 1, (*it)->FileName);
-		m_list->SetItem(count, 2, ((*it)->Rating != -1) ? GetRateString((*it)->Rating) : wxString(wxT("on")));
-		m_list->SetItem(count, 3, (*it)->Comment);
-		m_list->SetItemData(count, (long)(*it));
-		count++;
+		if (!thePrefs::IsCommentFiltered((*it)->Comment)) {
+			m_list->InsertItem(count, (*it)->UserName);
+			m_list->SetItem(count, 1, (*it)->FileName);
+			m_list->SetItem(count, 2, ((*it)->Rating != -1) ? GetRateString((*it)->Rating) : wxString(wxT("on")));
+			m_list->SetItem(count, 3, (*it)->Comment);
+			m_list->SetItemData(count, (long)(*it));
+			count++;
+		}
 	}
 
 	wxString info;

@@ -192,12 +192,14 @@ bool		CPreferences::s_ShowPartFileNumber;
 int		CPreferences::s_perms_files;
 int		CPreferences::s_perms_dirs;
 bool		CPreferences::s_AICHTrustEveryHash;
+wxString 	CPreferences::s_CommentFilterString;
 bool		CPreferences::s_IPFilterAutoLoad;
 wxString	CPreferences::s_IPFilterURL;
 CMD4Hash	CPreferences::s_userhash;
 bool		CPreferences::s_MustFilterMessages;
 wxString 	CPreferences::s_MessageFilterString;
 bool		CPreferences::s_FilterAllMessages;
+bool 		CPreferences::s_FilterComments;
 bool		CPreferences::s_FilterSomeMessages;
 bool		CPreferences::s_ShareHiddenFiles;
 bool		CPreferences::s_AutoSortDownload;
@@ -618,16 +620,15 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
 	{ wxLANGUAGE_KOREAN,				true,	wxTRANSLATE("Korean") },
 	{ wxLANGUAGE_LITHUANIAN,			true,	wxTRANSLATE("Lithuanian") },
-	{ wxLANGUAGE_NORWEGIAN_NYNORSK,		true,	wxTRANSLATE("Norwegian (Nynorsk)") }, // nn_NO would be the full id
+	{ wxLANGUAGE_NORWEGIAN_NYNORSK,         true,   wxTRANSLATE("Norwegian (Nynorsk)") }, // nn_NO would be the full id
 	{ wxLANGUAGE_POLISH,				true,	wxTRANSLATE("Polish") },
 	{ wxLANGUAGE_PORTUGUESE,			true,	wxTRANSLATE("Portuguese") },
 	{ wxLANGUAGE_PORTUGUESE_BRAZILIAN,	true,	wxTRANSLATE("Portuguese (Brazilian)") },
 	{ wxLANGUAGE_RUSSIAN,				true,	wxTRANSLATE("Russian") },
 	{ wxLANGUAGE_SLOVENIAN,				true,	wxTRANSLATE("Slovenian") },
 	{ wxLANGUAGE_SPANISH,				true,	wxTRANSLATE("Spanish") },
-	{ wxLANGUAGE_SWEDISH,				true,	wxTRANSLATE("Swedish") }, // sv_SE would be the full id
 // Unmaintained language file: es_MX.po
-//	{ wxLANGUAGE_SPANISH_MEXICAN,		true,	wxTRANSLATE("Spanish (Mexican)") },
+//	{ wxLANGUAGE_SPANISH_MEXICAN,           true,   wxTRANSLATE("Spanish (Mexican)") },
 	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
 // Yet no real support for "custom"
 //	{ wxLANGUAGE_CUSTOM,				true,	wxTRANSLATE("Custom") },
@@ -1108,6 +1109,9 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_MSGFILTER_NONSECURE,	(new Cfg_Bool( wxT("/eMule/MessageFromValidSourcesOnly"),	s_msgsecure, true )));
 	NewCfgItem(IDC_MSGFILTER_WORD,	(new Cfg_Bool( wxT("/eMule/FilterWordMessages"), s_FilterSomeMessages, false )));
 	NewCfgItem(IDC_MSGWORD,		(new Cfg_Str(  wxT("/eMule/MessageFilter"), s_MessageFilterString, wxEmptyString )));
+
+	NewCfgItem(IDC_FILTERCOMMENTS,	(new Cfg_Bool( wxT("/eMule/FilterComments"), s_FilterComments, false )));
+	NewCfgItem(IDC_COMMENTWORD,		(new Cfg_Str(  wxT("/eMule/CommentFilter"), s_CommentFilterString, wxEmptyString )));
 	 
 	/**
 	 * Hidden files sharing
@@ -1714,4 +1718,18 @@ bool CPreferences::IsMessageFiltered(const wxString& message) {
 		}
 	}
 }
+
+bool CPreferences::IsCommentFiltered(const wxString& comment) { 
+	if (s_FilterComments) { 
+		wxStringTokenizer tokenizer( s_CommentFilterString, wxT(",") );
+		while (tokenizer.HasMoreTokens()) {
+			if ( comment.Lower().Trim(false).Trim(true).Contains(
+					tokenizer.GetNextToken().Lower().Trim(false).Trim(true))) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 // File_checked_for_headers

@@ -314,6 +314,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix utf8 problem with file names
 		* Fixed toolbar display with skins when blinking on incoming message
 		* Fix #1114, missing break statement, thanks to mr_hyde
+		* Add option to filter file comments
 
 	Xaignar:
 		* Renaming the SearchList typedef to CSearchResultList
