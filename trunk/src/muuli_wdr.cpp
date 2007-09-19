@@ -3661,6 +3661,32 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
 
     item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
+    wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticBitmap *item15 = new wxStaticBitmap( parent, ID_STATICBITMAP, amuleSpecial( 23 ), wxDefaultPosition, wxDefaultSize );
+    item14->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    wxStaticText *item16 = new wxStaticText( parent, ID_TEXT, _("Comments"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item0->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
+
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_FILTERCOMMENTS, _("Filter comments containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxTextCtrl *item20 = new wxTextCtrl( parent, IDC_COMMENTWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item20->SetToolTip( _("add here the words amule should filter and block messages including it") );
+    item17->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
+
+    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxBoxSizer *item21 = new wxBoxSizer( wxVERTICAL );
+
+    item0->Add( item21, 0, wxALL, 5 );
+
     if (set_sizer)
     {
         parent->SetSizer( item0 );

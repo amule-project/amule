@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_ALL,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER_WORD,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_FILTERCOMMENTS,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_VERTTOOLBAR,	PrefsUnifiedDlg::OnCheckBoxChange)
@@ -382,7 +383,9 @@ bool PrefsUnifiedDlg::TransferToWindow()
 		FindWindow(IDC_MSGWORD)->Enable(false);	
 	}
 
-	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());	
+	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+	
+	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());	
 	
 	// Set debugging toggles
 #ifdef __DEBUG__
@@ -709,6 +712,10 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_MSGFILTER_WORD:
 			// Toogle filter word list.
 			FindWindow(IDC_MSGWORD)->Enable(value);
+			break;
+
+		case IDC_FILTERCOMMENTS:
+			FindWindow(IDC_COMMENTWORD)->Enable(value);
 			break;
 
 		case ID_PROXY_ENABLE_PROXY:

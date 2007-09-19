@@ -483,6 +483,12 @@ public:
 	static void		SetMessageFilterString(const wxString& val) { s_MessageFilterString = val; }
 	static bool		IsMessageFiltered(const wxString& message);
 
+	static bool		FilterComments()		{ return s_FilterComments; }
+	static void		SetFilterComments(bool val)	{ s_FilterComments = val; }
+	static const wxString&	GetCommentFilterString()	{ return s_CommentFilterString; }
+	static void		SetCommentFilterString(const wxString& val) { s_CommentFilterString = val; }
+	static bool		IsCommentFiltered(const wxString& comment);
+	
 	// Can't have it return a reference, will need a pointer later.
 	static const CProxyData *GetProxyData()			{ return &s_ProxyData; }
 	
@@ -723,6 +729,10 @@ protected:
 	static wxString 	s_MessageFilterString;
 	static bool		s_FilterAllMessages;
 	static bool		s_FilterSomeMessages;
+
+	static bool 		s_FilterComments;
+	static wxString 	s_CommentFilterString;
+
 	
 	// Hidden files sharing
 	static bool	s_ShareHiddenFiles;
