@@ -601,9 +601,10 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                     if test "$TOOLKIT" != "gtk1" -a "$TOOLKIT" != "gtk2" -a \
                             "$TOOLKIT" != "msw" -a "$TOOLKIT" != "motif" -a \
                             "$TOOLKIT" != "x11" -a "$TOOLKIT" != "mac" -a \
-                            "$TOOLKIT" != "mgl" -a "$TOOLKIT" != "dfb" ; then
+                            "$TOOLKIT" != "mgl" -a "$TOOLKIT" != "dfb" -a \
+                            "$TOOLKIT" != "base" ; then
                         AC_MSG_ERROR([
-    Unrecognized option value (allowed values: auto, gtk1, gtk2, msw, motif, x11, mac, mgl, dfb)
+    Unrecognized option value (allowed values: auto, gtk1, gtk2, msw, motif, x11, mac, mgl, dfb, base)
                         ])
                     fi
 
