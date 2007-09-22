@@ -27,9 +27,7 @@ general_pkgs = "amule-common"\
 	"amule-i18n-da"\
 	"amule-i18n-de"\
 	"amule-i18n-en-gb"\
-	"amule-i18n-en-us"\
 	"amule-i18n-es"\
-	"amule-i18n-es-mx"\
 	"amule-i18n-et-ee"\
 	"amule-i18n-eu"\
 	"amule-i18n-fi"\
@@ -40,6 +38,8 @@ general_pkgs = "amule-common"\
 	"amule-i18n-it-ch"\
 	"amule-i18n-it"\
 	"amule-i18n-ko-kr"\
+	"amule-i18n-lt"\
+	"amule-i18n-nn"\
 	"amule-i18n-nl"\
 	"amule-i18n-pl"\
 	"amule-i18n-pt-br"\

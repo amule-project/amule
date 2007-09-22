@@ -1,3 +1,12 @@
+amule (2.1.3+CVS20070922) testing; urgency=low
+
+  * removed amule-i18n-en_us package
+  * removed amule-i18n-es_mx package
+  * added amule-i18n-lt package
+  * added amule-i18n-nn package
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Fri, 21 Sep 2007  16:57:01 +0100
+
 amule (2.1.3+CVS20070910) testing; urgency=low
 
   * Readded *.override
