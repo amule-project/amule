@@ -197,14 +197,6 @@ Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: English (en_GB) internationalized (i18n) files for amule
  This package contains the British-English internationalized files for amule.
 
-Package: amule-i18n-en-us
-Architecture: any
-Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version})
-Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: English (en_US) internationalized (i18n) files for amule
- This package contains the US-English internationalized files for amule.
-
 Package: amule-i18n-es
 Architecture: any
 Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version})
@@ -212,14 +204,6 @@ Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Spanish (es) internationalized (i18n) files for amule
  This package contains the Spanish internationalized files for amule.
-
-Package: amule-i18n-es-mx
-Architecture: any
-Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version})
-Provides: amule-i18n
-Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
-Description: Spanish (es_MX) internationalized (i18n) files for amule
- This package contains the Mexican internationalized files for amule.
 
 Package: amule-i18n-et-ee
 Architecture: any
@@ -300,6 +284,22 @@ Provides: amule-i18n
 Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
 Description: Korean (ko_KR) internationalized (i18n) files for amule
  This package contains the Korean internationalized files for amule.
+
+Package: amule-i18n-lt
+Architecture: any
+Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
+Description: Lithunian (lt) internationalized (i18n) files for amule
+ This package contains the Lithunian internationalized files for amule.
+
+Package: amule-i18n-nn
+Architecture: any
+Depends: amule (= ${binary:Version}) | amule-daemon (= ${binary:Version}) | amuleweb (= ${binary:Version}) | amule-alc (= ${binary:Version}) | amule-remote-gui (= ${binary:Version}) | amule-wxcas (= ${binary:Version})
+Provides: amule-i18n
+Conflicts: amule (<< ${binary:Version}), amule-common (<< ${binary:Version})
+Description: Norwegian (Nyorsk) (nn) internationalized (i18n) files for amule
+ This package contains the Norwegian (Nyorsk) internationalized files for amule.
 
 Package: amule-i18n-nl
 Architecture: any
