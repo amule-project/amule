@@ -10,6 +10,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 
 	Coronas:
 		* Patch to show kad status in amuleweb (Bug 1103)
+		* typo in src/webserver/default/shared.php.
 
 	DLH:
 		* amulegui.xpm icon.

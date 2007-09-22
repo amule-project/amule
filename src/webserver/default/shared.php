@@ -241,7 +241,7 @@ border-color: black;
 <td valign=middle class="shared-header-left"><a href="shared.php?sort=name"><b>File Name</b></a></td>
 <td valign=middle class="shared-header">
 	<a href="shared.php?sort=xfer"><b>Transferred Data</b></a>&nbsp
-	<a href="shared.php?sort=allxref">(Total)
+	<a href="shared.php?sort=allxfer">(Total)
 </td>
 <td valign=middle class="shared-header">
 	<a href="shared.php?sort=req"><b>Requests</b></a>&nbsp
