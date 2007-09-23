@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-20 03:30+0200\n"
+"POT-Creation-Date: 2007-09-23 03:30+0200\n"
 "PO-Revision-Date: 2007-08-26 00:30+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -1466,20 +1466,24 @@ msgstr "斯洛文尼亞語"
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:630
+msgid "Swedish"
+msgstr ""
+
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr "土耳其語"
 
-#: src/Preferences.cpp:1621 src/Preferences.cpp:1635 src/Preferences.cpp:1642
+#: src/Preferences.cpp:1622 src/Preferences.cpp:1636 src/Preferences.cpp:1643
 msgid "Unable to determine selected browser!"
 msgstr "未檢測到所選擇的浏覽器"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因爲服務器UDP端口值爲TCP端口值+3"
 
-#: src/Preferences.cpp:1672
+#: src/Preferences.cpp:1673
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口將被使用(%d)"

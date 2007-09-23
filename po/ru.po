@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-20 03:30+0200\n"
+"POT-Creation-Date: 2007-09-23 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -1487,20 +1487,24 @@ msgstr "Словакский"
 msgid "Spanish"
 msgstr "Испанский"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:630
+msgid "Swedish"
+msgstr ""
+
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr "Турецкий"
 
-#: src/Preferences.cpp:1621 src/Preferences.cpp:1635 src/Preferences.cpp:1642
+#: src/Preferences.cpp:1622 src/Preferences.cpp:1636 src/Preferences.cpp:1643
 msgid "Unable to determine selected browser!"
 msgstr "Не удалось найти выбранный броузер!"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP порт не может быть выше 65532, так как UDP сокет - TCP+3"
 
-#: src/Preferences.cpp:1672
+#: src/Preferences.cpp:1673
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Используется пот по умолчанию (%d)"

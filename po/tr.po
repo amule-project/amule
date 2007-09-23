@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-20 03:30+0200\n"
+"POT-Creation-Date: 2007-09-23 03:30+0200\n"
 "PO-Revision-Date: 2007-08-25 20:20+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -1476,21 +1476,25 @@ msgstr "Slovence"
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:630
+msgid "Swedish"
+msgstr ""
+
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: src/Preferences.cpp:1621 src/Preferences.cpp:1635 src/Preferences.cpp:1642
+#: src/Preferences.cpp:1622 src/Preferences.cpp:1636 src/Preferences.cpp:1643
 msgid "Unable to determine selected browser!"
 msgstr "Seçili tarayıcı tanımlanamıyor!"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
-#: src/Preferences.cpp:1672
+#: src/Preferences.cpp:1673
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Varsayılan port kullanılacak (%d)"
