@@ -627,6 +627,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_RUSSIAN,				true,	wxTRANSLATE("Russian") },
 	{ wxLANGUAGE_SLOVENIAN,				true,	wxTRANSLATE("Slovenian") },
 	{ wxLANGUAGE_SPANISH,				true,	wxTRANSLATE("Spanish") },
+	{ wxLANGUAGE_SWEDISH,				true,	wxTRANSLATE("Swedish") },
 // Unmaintained language file: es_MX.po
 //	{ wxLANGUAGE_SPANISH_MEXICAN,           true,   wxTRANSLATE("Spanish (Mexican)") },
 	{ wxLANGUAGE_TURKISH,				true,	wxTRANSLATE("Turkish") },
