@@ -38,7 +38,6 @@
 
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
-#include <common/PlatformSpecific.h>	// Needed for GetUserDataDir()
 #include <common/MD5Sum.h>
 #include "MD4Hash.h"
 
@@ -1154,7 +1153,7 @@ void MilliSleep(uint32 msecs)
 
 wxString GetConfigDir()
 {
-	return GetUserDataDir() + wxFileName::GetPathSeparator();
+	return wxStandardPaths::Get().GetUserDataDir() + wxFileName::GetPathSeparator();
 }
 
 
