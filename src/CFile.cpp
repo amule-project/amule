@@ -244,7 +244,7 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 	}
 	
 	// Test if it is possible to use an ANSI name, otherwise use UTF-8
-	Unicode2CharBuf tmpFileName = unicode_2_broken(fileName);
+	Unicode2CharBuf tmpFileName = (const char*)fileName.mb_str(wxConvLocal);
 	if (tmpFileName) {
 		m_fd = open(tmpFileName, flags, accessMode);
 	} 
