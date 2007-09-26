@@ -52,7 +52,7 @@ CConvertListCtrl::CConvertListCtrl(
 #include "SharedFileList.h"
 #include "FileFunctions.h"
 
-#include <common/PlatformSpecific.h>
+#include <wx/stdpaths.h>
 #include "muuli_wdr.h"
 
 
@@ -708,7 +708,7 @@ void CPartFileConvertDlg::OnAddFolder(wxCommandEvent& WXUNUSED(event))
 {
 	wxString folder = ::wxDirSelector(
 		_("Please choose a folder to search for temporary downloads! (subfolders will be included)"),
-		GetDocumentsDir(), wxDD_DEFAULT_STYLE,
+		wxStandardPaths::Get().GetDocumentsDir(), wxDD_DEFAULT_STYLE,
 		wxDefaultPosition, this);
 	if (!folder.IsEmpty()) {
 		int reply = wxMessageBox(_("Do you want the source files of succesfully imported downloads be deleted?"),

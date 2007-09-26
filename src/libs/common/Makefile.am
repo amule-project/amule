@@ -12,7 +12,6 @@ libmulecommon_a_SOURCES = \
 	Format.cpp \
 	MD5Sum.cpp \
 	MuleDebug.cpp \
-	PlatformSpecific.cpp \
 	StringFunctions.cpp
 	
 libmulecommon_a_CFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
@@ -22,7 +21,6 @@ noinst_HEADERS =  \
 		ConvAmule.h \
 		MD5Sum.h \
 		MuleDebug.h \
-		PlatformSpecific.h \
 		StringFunctions.h
 
 MAINTAINERCLEANFILES = Makefile.in

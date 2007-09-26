@@ -46,7 +46,6 @@
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
-#include <common/PlatformSpecific.h>	// Needed for GetDocumentsDir()	// Do_not_auto_remove (win32, mac)
 #include "UserEvents.h"
 
 #ifndef AMULE_DAEMON
@@ -984,7 +983,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
 	
 	#if defined(__WXMAC__) || defined(__WINDOWS__)
-		wxString incpath = GetDocumentsDir();
+		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
 		if (incpath.IsEmpty()) {
 			// There is a built-in possibility for this call to fail, though I can't imagine a reason for that.
 			incpath = appdir + wxT("Incoming");
