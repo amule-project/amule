@@ -5,17 +5,18 @@
 # GhePeU <ghepeu@virgilio.it>, 2004,2005.
 # BELiAL <carlo.casta@gmail.com>, 2007.
 # Vincenzo Reale <smart2128@baslug.org>, 2007.
+# Giuseppe Bilotta <giuseppe.bilotta@gmail.com>, 2007.
 # Italian language translation
 # translation of source_strings.po to
 # aMule i18n resource file.
 # Copyright (C) 2004,2005 aMule Team
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the aMule package.
 msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-27 03:30+0200\n"
-"PO-Revision-Date: 2007-09-16 12:06+0200\n"
+"PO-Revision-Date: 2007-09-27 09:40+0200\n"
 "Last-Translator: Vincenzo Reale <smart2128@baslug.org>\n"
 "Language-Team: Italian <kde-i18n-it@mail.kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -1458,11 +1459,11 @@ msgstr "Coreano"
 
 #: src/Preferences.cpp:621
 msgid "Lithuanian"
-msgstr ""
+msgstr "Lituano"
 
 #: src/Preferences.cpp:622
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norvegese (Nynorsk)"
 
 #: src/Preferences.cpp:623
 msgid "Polish"
@@ -1490,7 +1491,7 @@ msgstr "Spagnolo"
 
 #: src/Preferences.cpp:629
 msgid "Swedish"
-msgstr ""
+msgstr "Svedese"
 
 #: src/Preferences.cpp:632
 msgid "Turkish"
@@ -6194,7 +6195,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3677
 msgid "Filter comments containing (use ',' as separator):"
-msgstr ""
+msgstr "Filtra i commenti che contengono (usa ',' come separatore):"
 
 #: src/muuli_wdr.cpp:3720
 msgid "Enable Proxy"
