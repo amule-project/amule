@@ -30,8 +30,6 @@
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
 
-#include <sys/stat.h>
-#include <sys/types.h>
 
 #include <errno.h>
 #include <map>
@@ -180,15 +178,16 @@ wxString CDirIterator::GetNextFile()
 
 time_t GetLastModificationTime(const wxString& file)
 {
-	struct	stat	sbuf;
-		
-	if ( stat((const char*)file.mb_str(wxConvLocal),&sbuf) == -1) {
-		AddDebugLogLineM( true, logFileIO,
-			wxT("Error on GetLastModificationTime from `") +
-			file + wxT("'"));
-	}
-	
-	return sbuf.st_mtime;
+       time_t ret = wxFileModificationTime(file);
+       // Notice that wxFileModificationTime() documentation is wrong.
+       // This function returns -1 if there was an error, not zero.
+       if (ret == -1) {
+               AddDebugLogLineM( true, logFileIO,
+                       wxT("Error on GetLastModificationTime from `") +
+                       file + wxT("'"));
+       }
+
+       return ret;
 }
 
 
