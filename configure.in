@@ -411,7 +411,6 @@ if test x$SYS = xwin32; then
 	AC_CHECK_TOOL([RC], [windres], [:])
 	AC_ARG_VAR([RC], [Win32 Resource Compiler])
 	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
-	
 else
 	RCFLAGS=""
 fi
