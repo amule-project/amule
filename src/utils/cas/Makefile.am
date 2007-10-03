@@ -28,4 +28,24 @@ if NEED_CORESERVICES
 cas_LDFLAGS = -framework CoreServices
 endif
 
+# Resources
+
+if NEED_RC
+
+SUFFIXES = .rc
+
+.rc.$(OBJEXT):
+	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+
+nodist_cas_SOURCES = cas-version.rc
+
+cas-version.rc: $(top_builddir)/version.rc
+	@sed -e 's/VER_FILEDESCRIPTION_STR/"C aMule Statistics"/' \
+	     -e 's/VER_INTERNALNAME_STR/"cas"/' \
+	     -e 's/VER_ORIGINALFILENAME_STR/"cas$(EXEEXT)"/' "$<" > "$@"
+
+CLEANFILES = *-version.rc
+
+endif
+
 MAINTAINERCLEANFILES = Makefile.in

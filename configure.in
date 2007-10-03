@@ -410,7 +410,8 @@ dnl Get flags for windres
 if test x$SYS = xwin32; then
 	AC_CHECK_TOOL([RC], [windres], [:])
 	AC_ARG_VAR([RC], [Win32 Resource Compiler])
-	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") == 1) sub("-I", "--include-dir ", $i); else if (index($i, "-D") == 1) sub("-D", "--define ", $i); else $i = ""; print }']`
+	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
+	
 else
 	RCFLAGS=""
 fi
@@ -548,6 +549,7 @@ AC_CACHE_SAVE
 
 case "$USE_DEBUG" in
 yes)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
+	AS_IF([test x$SYS = xwin32], [RCFLAGS="$RCFLAGS -D__DEBUG__"])
     ;;
 *)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef"
     ;;
@@ -619,6 +621,9 @@ then
 fi
 AC_MSG_RESULT(${cvsdate:-None required})
 test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date or svn revision number.])
+test x$SYS = xwin32 && test "$cvsdate" && RCFLAGS="$RCFLAGS -D__PRERELEASE__"
+CVSDATE="$cvsdate"
+AC_SUBST(CVSDATE)
 
 XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS -DUSE_WX_EXTENSIONS"
@@ -771,6 +776,7 @@ dnl autoscan has missed these, i wonder why...
 dnl
 AC_CONFIG_FILES([po/Makefile.in
 		 Compilation.flags])
+AS_IF([test x$SYS = xwin32], [AC_CONFIG_FILES([version.rc])])
 AC_OUTPUT
 
 echo

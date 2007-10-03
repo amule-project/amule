@@ -49,4 +49,24 @@ noinst_HEADERS = \
 		 WebServer.h \
 		 WebSocket.h
 
+# Resources
+
+if NEED_RC
+
+SUFFIXES = .rc
+
+.rc.$(OBJEXT):
+	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+
+nodist_amuleweb_SOURCES = amuleweb-version.rc
+
+amuleweb-version.rc: $(top_builddir)/version.rc
+	@sed -e 's/VER_FILEDESCRIPTION_STR/"aMule Web Server"/' \
+	     -e 's/VER_INTERNALNAME_STR/"amuleweb"/' \
+	     -e 's/VER_ORIGINALFILENAME_STR/"amuleweb$(EXEEXT)"/' "$<" > "$@"
+
+CLEANFILES = *-version.rc
+
+endif
+
 MAINTAINERCLEANFILES = Makefile.in

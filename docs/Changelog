@@ -25,7 +25,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Test for perl File::Copy in configure.
 
 	GonoszTopi:
-		* Added ability to compile amulecmd without threading support.
+		* Added ability to compile amulecmd without thread support in wx.
 		* Fixed source seeds handling on startup.
 		* Proper restoration of startup locale after checking available
 		  locales.
@@ -51,6 +51,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for perl v5.8.8
 		* wxCas compilation fixes for wxCVS
 		* Doxyfile doesn't need to be installed, it's unusable without the sources.
+		* Fixed #979: No win32 version information
 		
 		
 	Hermit:
