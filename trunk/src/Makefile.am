@@ -472,8 +472,10 @@ SUFFIXES = .rc
 nodist_amuled_SOURCES = amuled-version.rc
 nodist_amulecmd_SOURCES = amulecmd-version.rc
 nodist_ed2k_SOURCES = ed2k-version.rc
-amule_LDADD += amulerc.o
-amulegui_LDADD += amuleguirc.o
+amule_LDADD += amulerc.$(OBJEXT)
+amule_DEPENDENCIES += amulerc.$(OBJEXT)
+amulegui_LDADD += amuleguirc.$(OBJEXT)
+amulegui_DEPENDENCIES += amuleguirc.$(OBJEXT)
 
 amulerc.$(OBJEXT): $(srcdir)/../amule.rc amule-version.rc
 	cat $^ | \
