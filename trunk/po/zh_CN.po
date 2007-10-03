@@ -1,4 +1,4 @@
-# SOME DESCRIPTIVE TITLE.
+# Chinese translation of aMule.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # 
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-27 03:30+0200\n"
-"PO-Revision-Date: 2007-09-03 23:30+0800\n"
+"PO-Revision-Date: 2007-09-27 23:31+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -1435,11 +1435,11 @@ msgstr "韩语"
 
 #: src/Preferences.cpp:621
 msgid "Lithuanian"
-msgstr ""
+msgstr "立陶宛语"
 
 #: src/Preferences.cpp:622
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "新挪威语"
 
 #: src/Preferences.cpp:623
 msgid "Polish"
@@ -1467,7 +1467,7 @@ msgstr "西班牙语"
 
 #: src/Preferences.cpp:629
 msgid "Swedish"
-msgstr ""
+msgstr "瑞典语"
 
 #: src/Preferences.cpp:632
 msgid "Turkish"
@@ -6035,7 +6035,7 @@ msgstr "输入需过滤的词组"
 
 #: src/muuli_wdr.cpp:3677
 msgid "Filter comments containing (use ',' as separator):"
-msgstr ""
+msgstr "过滤包含以下内容的备注（使用‘,’作为分隔符）："
 
 #: src/muuli_wdr.cpp:3720
 msgid "Enable Proxy"
