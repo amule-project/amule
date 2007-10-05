@@ -32,11 +32,13 @@ namespace amule.net
             this.panelStatus = new System.Windows.Forms.Panel();
             this.textLinktatus = new System.Windows.Forms.TextBox();
             this.panelToolbar = new System.Windows.Forms.Panel();
+            this.buttonAddLink = new System.Windows.Forms.Button();
             this.buttonShared = new System.Windows.Forms.Button();
             this.buttonNetwork = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.buttonXfer = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.buttonPrefs = new System.Windows.Forms.Button();
             this.panelStatus.SuspendLayout();
             this.panelToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +63,8 @@ namespace amule.net
             // 
             // panelToolbar
             // 
+            this.panelToolbar.Controls.Add(this.buttonPrefs);
+            this.panelToolbar.Controls.Add(this.buttonAddLink);
             this.panelToolbar.Controls.Add(this.buttonShared);
             this.panelToolbar.Controls.Add(this.buttonNetwork);
             this.panelToolbar.Controls.Add(this.buttonSearch);
@@ -70,6 +74,17 @@ namespace amule.net
             this.panelToolbar.Name = "panelToolbar";
             this.panelToolbar.Size = new System.Drawing.Size(678, 45);
             this.panelToolbar.TabIndex = 1;
+            // 
+            // buttonAddLink
+            // 
+            this.buttonAddLink.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonAddLink.Image = global::remote_gui.net.Properties.Resources.Import;
+            this.buttonAddLink.Location = new System.Drawing.Point(180, 0);
+            this.buttonAddLink.Name = "buttonAddLink";
+            this.buttonAddLink.Size = new System.Drawing.Size(45, 45);
+            this.buttonAddLink.TabIndex = 4;
+            this.buttonAddLink.UseVisualStyleBackColor = true;
+            this.buttonAddLink.Click += new System.EventHandler(this.buttonAddLink_Click);
             // 
             // buttonShared
             // 
@@ -123,6 +138,17 @@ namespace amule.net
             this.panelMain.Size = new System.Drawing.Size(678, 317);
             this.panelMain.TabIndex = 2;
             // 
+            // buttonPrefs
+            // 
+            this.buttonPrefs.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonPrefs.Image = global::remote_gui.net.Properties.Resources.Preferences;
+            this.buttonPrefs.Location = new System.Drawing.Point(225, 0);
+            this.buttonPrefs.Name = "buttonPrefs";
+            this.buttonPrefs.Size = new System.Drawing.Size(45, 45);
+            this.buttonPrefs.TabIndex = 5;
+            this.buttonPrefs.UseVisualStyleBackColor = true;
+            this.buttonPrefs.Click += new System.EventHandler(this.buttonPrefs_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -151,6 +177,8 @@ namespace amule.net
         private System.Windows.Forms.TextBox textLinktatus;
         private System.Windows.Forms.Button buttonNetwork;
         private System.Windows.Forms.Button buttonShared;
+        private System.Windows.Forms.Button buttonAddLink;
+        private System.Windows.Forms.Button buttonPrefs;
 
     }
 }
