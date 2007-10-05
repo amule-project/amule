@@ -36,6 +36,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddLinkDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddLinkDialog.Designer.cs">
+      <DependentUpon>AddLinkDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="amuleData.cs" />
     <Compile Include="amuleRemote.cs" />
     <Compile Include="ConnectDlg.cs">
@@ -48,13 +54,17 @@
     <Compile Include="ecProto.cs" />
     <Compile Include="ECTagTypes.cs" />
     <Compile Include="MainWindow.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainWindow.designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddLinkDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddLinkDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConnectDlg.resx">
       <DependentUpon>ConnectDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -84,21 +94,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="amule-human\Transfers.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="amule-human\Search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="amule-human\Preferences.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="amule-human\Statistics.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="amule-human\Network.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="images\About.png" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\Transfers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="images\Import.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

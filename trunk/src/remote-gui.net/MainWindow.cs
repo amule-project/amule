@@ -207,6 +207,23 @@ namespace amule.net
             }
 
         }
+
+        private void buttonAddLink_Click(object sender, EventArgs e)
+        {
+            AddLinkDialog dlg = new AddLinkDialog();
+            if ( dlg.ShowDialog() == DialogResult.OK ) {
+                string link = dlg.textBoxLink.Text;
+                ecProto.ecPacket cmd = new ecProto.ecPacket(ECOpCodes.EC_OP_ADD_LINK);
+                ecProto.ecTagString linktag = new ecProto.ecTagString(ECTagNames.EC_TAG_STRING, link);
+                cmd.AddSubtag(linktag);
+                m_amuleRemote.SendPacket(cmd);
+            }
+        }
+
+        private void buttonPrefs_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class amuleMainECHanler : amuleECHandler {
@@ -228,6 +245,8 @@ namespace amule.net
                     break;
                 case ECOpCodes.EC_OP_SHARED_FILES:
                     m_owner.SharedFilesReply(packet);
+                    break;
+                case ECOpCodes.EC_OP_NOOP:
                     break;
                 default:
                     throw new Exception("Unhandled EC reply");
