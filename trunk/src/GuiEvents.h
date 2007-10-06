@@ -111,10 +111,11 @@ namespace MuleNotify
 	// GUI -> core notification
 	//
 
-	void PartFile_RemoveNoNeeded(CPartFile* file);
-	void PartFile_RemoveFullQueue(CPartFile* file);
-	void PartFile_RemoveHighQueue(CPartFile* file);
-	void PartFile_SourceCleanup(CPartFile* file);
+#warning Remove source dropping
+//	void PartFile_RemoveNoNeeded(CPartFile* file);
+//	void PartFile_RemoveFullQueue(CPartFile* file);
+//	void PartFile_RemoveHighQueue(CPartFile* file);
+//	void PartFile_SourceCleanup(CPartFile* file);
 	void PartFile_Swap_A4AF(CPartFile* file);
 	void PartFile_Swap_A4AF_Auto(CPartFile* file);
 	void PartFile_Swap_A4AF_Others(CPartFile* file);
@@ -445,10 +446,11 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 //
 
 // PartFile
-#define CoreNotify_PartFile_RemoveNoNeeded(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveNoNeeded, ptr)
-#define CoreNotify_PartFile_RemoveFullQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveFullQueue, ptr)
-#define CoreNotify_PartFile_RemoveHighQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveHighQueue, ptr)
-#define CoreNotify_PartFile_SourceCleanup(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_SourceCleanup, ptr)
+#warning Remove source dropping
+//#define CoreNotify_PartFile_RemoveNoNeeded(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveNoNeeded, ptr)
+//#define CoreNotify_PartFile_RemoveFullQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveFullQueue, ptr)
+//#define CoreNotify_PartFile_RemoveHighQueue(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_RemoveHighQueue, ptr)
+//#define CoreNotify_PartFile_SourceCleanup(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_SourceCleanup, ptr)
 #define CoreNotify_PartFile_Swap_A4AF(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF, ptr)
 #define CoreNotify_PartFile_Swap_A4AF_Auto(ptr)		MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Auto, ptr)
 #define CoreNotify_PartFile_Swap_A4AF_Others(ptr)	MuleNotify::DoNotify(&MuleNotify::PartFile_Swap_A4AF_Others, ptr)

@@ -1572,10 +1572,11 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		
 		// swap No needed partfiles if possible
 		/* Sources droping engine. Auto drop allowed type of sources at interval. */
-		if (dwCurTick > m_LastSourceDropTime + thePrefs::GetAutoDropTimer() * 1000) {
-			m_LastSourceDropTime = dwCurTick;
+#warning Remove source dropping
+//		if (dwCurTick > m_LastSourceDropTime + thePrefs::GetAutoDropTimer() * 1000) {
+//			m_LastSourceDropTime = dwCurTick;
 			/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
-			
+/*			
 			bool noNeeded  = thePrefs::DropNoNeededSources();
 			bool fullQueue = thePrefs::DropFullQueueSources();
 			bool highQueue = thePrefs::DropHighQueueRankingSources();
@@ -1583,7 +1584,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 			if ( noNeeded || fullQueue || highQueue )
 				CleanUpSources( noNeeded, fullQueue, highQueue );
 		}
-	
+*/	
 		if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
 			SetPartFileStatus(status);
 		}
@@ -3272,7 +3273,8 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 	return result;
 }
 
-void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
+#warning Remove source dropping
+/*void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 {
 	SourceSet::iterator it = m_SrcList.begin();
 	for ( ; it != m_SrcList.end(); ) {
@@ -3297,7 +3299,7 @@ void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
 		if ( remove )
 			RemoveSource( client );
 	}
-}
+}*/
 
 
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
@@ -3809,7 +3811,8 @@ void CPartFile::Init()
 	m_nCompleteSourcesCountHi = 0;
 	
 	// Sources dropping
-	m_LastSourceDropTime = 0;
+#warning Remove source dropping
+//	m_LastSourceDropTime = 0;
 
 	m_validSources = 0;
 	m_notCurrentSources = 0;
