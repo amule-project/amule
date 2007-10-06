@@ -32,13 +32,14 @@ namespace amule.net
             this.panelStatus = new System.Windows.Forms.Panel();
             this.textLinktatus = new System.Windows.Forms.TextBox();
             this.panelToolbar = new System.Windows.Forms.Panel();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.buttonAbout = new System.Windows.Forms.Button();
+            this.buttonPrefs = new System.Windows.Forms.Button();
             this.buttonAddLink = new System.Windows.Forms.Button();
             this.buttonShared = new System.Windows.Forms.Button();
             this.buttonNetwork = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.buttonXfer = new System.Windows.Forms.Button();
-            this.panelMain = new System.Windows.Forms.Panel();
-            this.buttonPrefs = new System.Windows.Forms.Button();
             this.panelStatus.SuspendLayout();
             this.panelToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -63,6 +64,7 @@ namespace amule.net
             // 
             // panelToolbar
             // 
+            this.panelToolbar.Controls.Add(this.buttonAbout);
             this.panelToolbar.Controls.Add(this.buttonPrefs);
             this.panelToolbar.Controls.Add(this.buttonAddLink);
             this.panelToolbar.Controls.Add(this.buttonShared);
@@ -75,10 +77,40 @@ namespace amule.net
             this.panelToolbar.Size = new System.Drawing.Size(678, 45);
             this.panelToolbar.TabIndex = 1;
             // 
+            // panelMain
+            // 
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 45);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(678, 317);
+            this.panelMain.TabIndex = 2;
+            // 
+            // buttonAbout
+            // 
+            this.buttonAbout.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonAbout.Image = global::amule.net.Properties.Resources.About1;
+            this.buttonAbout.Location = new System.Drawing.Point(270, 0);
+            this.buttonAbout.Name = "buttonAbout";
+            this.buttonAbout.Size = new System.Drawing.Size(45, 45);
+            this.buttonAbout.TabIndex = 6;
+            this.buttonAbout.UseVisualStyleBackColor = true;
+            this.buttonAbout.Click += new System.EventHandler(this.buttonAbout_Click);
+            // 
+            // buttonPrefs
+            // 
+            this.buttonPrefs.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonPrefs.Image = global::amule.net.Properties.Resources.Preferences;
+            this.buttonPrefs.Location = new System.Drawing.Point(225, 0);
+            this.buttonPrefs.Name = "buttonPrefs";
+            this.buttonPrefs.Size = new System.Drawing.Size(45, 45);
+            this.buttonPrefs.TabIndex = 5;
+            this.buttonPrefs.UseVisualStyleBackColor = true;
+            this.buttonPrefs.Click += new System.EventHandler(this.buttonPrefs_Click);
+            // 
             // buttonAddLink
             // 
             this.buttonAddLink.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonAddLink.Image = global::remote_gui.net.Properties.Resources.Import;
+            this.buttonAddLink.Image = global::amule.net.Properties.Resources.Import;
             this.buttonAddLink.Location = new System.Drawing.Point(180, 0);
             this.buttonAddLink.Name = "buttonAddLink";
             this.buttonAddLink.Size = new System.Drawing.Size(45, 45);
@@ -89,7 +121,7 @@ namespace amule.net
             // buttonShared
             // 
             this.buttonShared.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonShared.Image = global::remote_gui.net.Properties.Resources.Shared_Files;
+            this.buttonShared.Image = global::amule.net.Properties.Resources.Shared_Files;
             this.buttonShared.Location = new System.Drawing.Point(135, 0);
             this.buttonShared.Name = "buttonShared";
             this.buttonShared.Size = new System.Drawing.Size(45, 45);
@@ -130,25 +162,6 @@ namespace amule.net
             this.buttonXfer.UseVisualStyleBackColor = true;
             this.buttonXfer.Click += new System.EventHandler(this.buttonXfer_Click);
             // 
-            // panelMain
-            // 
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 45);
-            this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(678, 317);
-            this.panelMain.TabIndex = 2;
-            // 
-            // buttonPrefs
-            // 
-            this.buttonPrefs.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonPrefs.Image = global::remote_gui.net.Properties.Resources.Preferences;
-            this.buttonPrefs.Location = new System.Drawing.Point(225, 0);
-            this.buttonPrefs.Name = "buttonPrefs";
-            this.buttonPrefs.Size = new System.Drawing.Size(45, 45);
-            this.buttonPrefs.TabIndex = 5;
-            this.buttonPrefs.UseVisualStyleBackColor = true;
-            this.buttonPrefs.Click += new System.EventHandler(this.buttonPrefs_Click);
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -179,6 +192,7 @@ namespace amule.net
         private System.Windows.Forms.Button buttonShared;
         private System.Windows.Forms.Button buttonAddLink;
         private System.Windows.Forms.Button buttonPrefs;
+        private System.Windows.Forms.Button buttonAbout;
 
     }
 }

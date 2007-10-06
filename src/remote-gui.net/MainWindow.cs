@@ -224,6 +224,12 @@ namespace amule.net
         {
 
         }
+
+        private void buttonAbout_Click(object sender, EventArgs e)
+        {
+            AboutBox dlg = new AboutBox();
+            dlg.ShowDialog();
+        }
     }
 
     public class amuleMainECHanler : amuleECHandler {

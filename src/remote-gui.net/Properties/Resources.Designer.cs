@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace remote_gui.net.Properties {
+namespace amule.net.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace remote_gui.net.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("remote_gui.net.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("amule.net.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,6 +63,13 @@ namespace remote_gui.net.Properties {
         internal static System.Drawing.Bitmap About {
             get {
                 object obj = ResourceManager.GetObject("About", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap About1 {
+            get {
+                object obj = ResourceManager.GetObject("About1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
