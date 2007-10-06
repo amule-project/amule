@@ -351,7 +351,8 @@ private:
 	time_t  m_tActivated;
 	bool	m_is_A4AF_auto;
 
-	uint32	m_LastSourceDropTime;
+#warning Remove source dropping
+//	uint32	m_LastSourceDropTime;
 
 	SourceSet	m_SrcList;
 	SourceSet	m_A4AFsrclist;
@@ -376,7 +377,7 @@ public:
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }
 	
 
-	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
+//	void CleanUpSources( bool noNeeded, bool fullQueue = false, bool highQueue = false );
 
 	void AddDownloadingSource(CUpDownClient* client);
           

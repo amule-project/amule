@@ -80,7 +80,8 @@ namespace MuleNotify
 	
 #ifdef CLIENT_GUI
 	
-	void PartFile_RemoveNoNeeded(CPartFile* file)
+#warning Remove source dropping
+/*	void PartFile_RemoveNoNeeded(CPartFile* file)
 	{
 		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
 	}
@@ -99,7 +100,7 @@ namespace MuleNotify
 	{
 		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_CLEANUP_SOURCES);
 	}
-	
+*/	
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{
 		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS);
@@ -546,7 +547,8 @@ namespace MuleNotify
 	}
 
 	
-	void PartFile_RemoveNoNeeded(CPartFile* file)
+#warning Remove source dropping
+/*	void PartFile_RemoveNoNeeded(CPartFile* file)
 	{
 		file->CleanUpSources( true,  false, false );
 	}
@@ -564,7 +566,7 @@ namespace MuleNotify
 	void PartFile_SourceCleanup(CPartFile* file)
 	{
 		file->CleanUpSources( true,  true,  true  );
-	}
+	}*/
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{

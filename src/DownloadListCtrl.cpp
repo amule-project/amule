@@ -123,10 +123,11 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 
 	EVT_CHAR( CDownloadListCtrl::OnKeyPressed )
 
-	EVT_MENU( MP_DROP_NO_NEEDED_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-	EVT_MENU( MP_DROP_FULL_QUEUE_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-	EVT_MENU( MP_DROP_HIGH_QUEUE_RATING_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-	EVT_MENU( MP_CLEAN_UP_SOURCES,		CDownloadListCtrl::OnCleanUpSources )
+#warning Remove source dropping
+//	EVT_MENU( MP_DROP_NO_NEEDED_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
+//	EVT_MENU( MP_DROP_FULL_QUEUE_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
+//	EVT_MENU( MP_DROP_HIGH_QUEUE_RATING_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
+//	EVT_MENU( MP_CLEAN_UP_SOURCES,		CDownloadListCtrl::OnCleanUpSources )
 
 	EVT_MENU( MP_CANCEL, 			CDownloadListCtrl::OnCancelFile )
 	
@@ -574,7 +575,8 @@ ItemList GetSelectedItems( CDownloadListCtrl* list, int types )
 }
 
 
-void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
+#warning Remove source dropping
+/*void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
 {
 	ItemList files = ::GetSelectedItems( this, itFILES );
 
@@ -599,7 +601,7 @@ void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
 				break;
 		}
 	}
-}
+}*/
 
 
 void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
@@ -941,7 +943,8 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER,
 			_("Swap every A4AF to any other file now"));
 		//-----------------------------------------------------
-		extendedmenu->AppendSeparator();
+#warning Remove source dropping
+/*		extendedmenu->AppendSeparator();
 		//-----------------------------------------------------
 		extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES,
 			_("Drop No Needed Sources now"));
@@ -951,7 +954,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 			_("Drop High Queue Rating Sources now"));
 		extendedmenu->Append(MP_CLEAN_UP_SOURCES,
 			_("Clean Up Sources now (NNS, FQS && HQRS)"));
-		m_menu->Append(MP_MENU_EXTD,
+*/		m_menu->Append(MP_MENU_EXTD,
 			_("Extended Options"), extendedmenu);
 		//-----------------------------------------------------
 		m_menu->AppendSeparator();
@@ -1025,11 +1028,12 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		menu->SetLabel(MP_VIEW, view);
 		menu->Enable(MP_VIEW, file->PreviewAvailable() );
 
-		menu->Enable( MP_DROP_NO_NEEDED_SOURCES,	fileReady );
+#warning Remove source dropping
+/*		menu->Enable( MP_DROP_NO_NEEDED_SOURCES,	fileReady );
 		menu->Enable( MP_DROP_FULL_QUEUE_SOURCES,	fileReady );
 		menu->Enable( MP_DROP_HIGH_QUEUE_RATING_SOURCES,fileReady );
 		menu->Enable( MP_CLEAN_UP_SOURCES,		fileReady );
-		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
+*/		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
 		menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
 		menu->Enable( MP_SWAP_A4AF_TO_ANY_OTHER, 	fileReady );
 
