@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-27 03:30+0200\n"
+"POT-Creation-Date: 2007-10-07 03:30+0200\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -59,34 +59,34 @@ msgstr "Sikerült! Kapcsolat létrejött az aMule %s-val"
 msgid "Succeeded! Connection established."
 msgstr "Sikerült! Kapcsolat létrejött."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
 msgid "Hashing"
 msgstr "Tördelőalgoritmizálás"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
 msgid "Completing"
 msgstr "Befejezés"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
 msgid "Complete"
 msgstr "Kész"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
 msgid "Paused"
 msgstr "Szüneteltetve"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
 msgid "Erroneous"
 msgstr "Hibás"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
 msgid "Downloading"
 msgstr "Letöltés alatt"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
 msgid "Waiting"
 msgstr "Várakozik"
@@ -150,9 +150,9 @@ msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1464
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
-#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1468
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
+#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -224,7 +224,7 @@ msgstr "Felhasználói név"
 msgid "Friends"
 msgstr "Barátok"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "&Részletek megjelenítése"
@@ -241,7 +241,7 @@ msgstr "Barát törlése"
 msgid "Send &Message"
 msgstr "&Üzenet küldése"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Fájlok megtekintése"
@@ -258,7 +258,7 @@ msgstr "Biztos, hogy törlöd ez(eke)t a fájl(oka)t?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/DownloadListCtrl.cpp:613 src/DownloadListCtrl.cpp:927
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3867
@@ -278,13 +278,13 @@ msgid "Multiple selection"
 msgstr "Többszörös kiválasztás"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fájlnév"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Méret"
 
@@ -294,7 +294,7 @@ msgstr "Típus"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:926
 msgid "Priority"
 msgstr "Prioritás"
 
@@ -342,19 +342,19 @@ msgstr "Nagyon alacsony"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Alacsony"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normál"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Magas"
 
@@ -366,7 +366,7 @@ msgstr "Nagyon magas"
 msgid "Release"
 msgstr "Forgalomba helyez"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:924
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Automatikus"
@@ -391,7 +391,7 @@ msgstr ""
 msgid "Copy magnet &URI to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "ED2k &link másolása a vágólapra"
 
@@ -416,7 +416,7 @@ msgstr ""
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "ED2k link másolása a vágólapra (&HTML)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "Visszajelzés másolása a vágólapra"
 
@@ -438,11 +438,11 @@ msgstr "Megosztott fájlok (%i)"
 msgid "[PartFile]"
 msgstr "[Részfájl]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "Írd be az új nevet ennek a fájlnak:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1113
+#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "Fájl átnevezés"
 
@@ -965,8 +965,8 @@ msgstr "Letöltés: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Feltöltés: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1346
-#: src/DownloadListCtrl.cpp:1655 src/OtherFunctions.cpp:159
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -1289,7 +1289,7 @@ msgstr "Engedély kérése"
 msgid "Connecting via server"
 msgstr "Kapcsolódás a kiszolgálón keresztül"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1740
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1744
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Várólista betelt"
@@ -2215,118 +2215,118 @@ msgstr "Távoli PartFile parancs sikertelen: nem található FileHash: %s"
 msgid "FileHash not found: %s"
 msgstr "FileHash nem található: %s"
 
-#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:573 src/ExternalConn.cpp:657
 msgid "OOPS! OpCode processing error!"
 msgstr "Hoppá! Opkód feldolgozási hiba!"
 
-#: src/ExternalConn.cpp:602
+#: src/ExternalConn.cpp:603
 #, fuzzy
 msgid "Server not added"
 msgstr "Kiszolgáló neve"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:621
 #, c-format
 msgid "server not found: %s"
 msgstr "kiszolgáló nem található: %s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:637
 msgid "need to define server to be removed"
 msgstr "ki kell jelölnöd a kiszolgálót az eltávolításhoz"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:651
 msgid "ED2K is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Keresés folyamatban. Kérdezze le az eredményeket egy rövid idő múlva!"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:752
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Webes keresésnek a távoli felületről nincs értelme."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:803
 msgid "Kad is disabled in preferences."
 msgstr ""
 
-#: src/ExternalConn.cpp:964
+#: src/ExternalConn.cpp:965
 msgid "No points for graph."
 msgstr ""
 
-#: src/ExternalConn.cpp:973
+#: src/ExternalConn.cpp:974
 msgid "Your client is not configured for this detail level."
 msgstr ""
 
-#: src/ExternalConn.cpp:1001
+#: src/ExternalConn.cpp:1002
 msgid "ExternalConn: shutdown requested"
 msgstr "ExternalConn: leállítás kérve"
 
-#: src/ExternalConn.cpp:1013
+#: src/ExternalConn.cpp:1014
 msgid "Already shutting down."
 msgstr ""
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1022
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr ""
 
-#: src/ExternalConn.cpp:1027
+#: src/ExternalConn.cpp:1028
 msgid "Invalid link or already on list."
 msgstr ""
 
-#: src/ExternalConn.cpp:1104
+#: src/ExternalConn.cpp:1105
 #, fuzzy
 msgid "File not found."
 msgstr "FileHash nem található: %s"
 
-#: src/ExternalConn.cpp:1109
+#: src/ExternalConn.cpp:1110
 #, fuzzy
 msgid "Invalid file name."
 msgstr "Érvénytelen paraméter."
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1118
 #, fuzzy
 msgid "Unable to rename file."
 msgstr "Nem lehet megnyitni"
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1319
 msgid "Already connected to ED2K."
 msgstr ""
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1322
 #, fuzzy
 msgid "Connecting to ED2K..."
 msgstr "Kapcsolódás %s-hez"
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1330
 msgid "Already connected to Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:1332
+#: src/ExternalConn.cpp:1333
 #, fuzzy
 msgid "Connecting to Kad..."
 msgstr "Kapcsolódás %s-hez"
 
-#: src/ExternalConn.cpp:1337
+#: src/ExternalConn.cpp:1338
 msgid "All networks are disabled."
 msgstr ""
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1346
 #, fuzzy
 msgid "Disconnected from ED2K."
 msgstr "Leválaszt a kiszolgálóról.\n"
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1350
 #, fuzzy
 msgid "Disconnected from Kad."
 msgstr "Leválaszt a kiszolgálóról.\n"
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 #, fuzzy, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: érvénytelen opcode fogadva"
 
-#: src/ExternalConn.cpp:1360
+#: src/ExternalConn.cpp:1361
 #, fuzzy
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Érvénytelen protokoll verzió."
@@ -2525,7 +2525,7 @@ msgstr "Összes sikertelen feltöltési folyamat: %i"
 msgid "Average upload time: %s"
 msgstr "Átlagos feltöltési idő: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:918 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Letöltések"
 
@@ -2893,7 +2893,7 @@ msgstr ""
 msgid "The specified userhash is not valid!"
 msgstr "A megadott felhasználói azonosító (userhash) érvénytelen!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Források"
@@ -2908,7 +2908,7 @@ msgstr "Fájl"
 msgid "Download"
 msgstr "Letöltés"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategória"
@@ -2952,166 +2952,150 @@ msgstr "Mind"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Megosztott fájlok teljes mérete: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Átmásolva"
 
-#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
 msgid "Completed"
 msgstr "Befejezett"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Sebesség"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:200
 msgid "Progress"
 msgstr "Folyamatjelző"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
+#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Állapot"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:204
 msgid "Time Remaining"
 msgstr "Hátralévő idő"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Seen Complete"
 msgstr "Utoljára teljesnek látott"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:206
 msgid "Last Reception"
 msgstr "Utoljára fogadott"
 
-#: src/DownloadListCtrl.cpp:610
+#: src/DownloadListCtrl.cpp:612
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Biztos, hogy törlöd ez(eke)t a fájl(oka)t?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:867 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Üzenet küldése ennek a személynek"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Küldendő üzenet:"
 
-#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Állj"
 
-#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Szüneteltet"
 
-#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Folytatás"
 
-#: src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:931
 msgid "C&lear completed"
 msgstr "Befejezettek &eltávolítása"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file now"
 msgstr "Összes A4AF cseréje ehhez a fájhoz most"
 
-#: src/DownloadListCtrl.cpp:937
+#: src/DownloadListCtrl.cpp:939
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Összes A4AF cseréje ehhez a fájhoz most (Automatikusan)"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:944
 msgid "Swap every A4AF to any other file now"
 msgstr "Összes A4AF cseréje a többi fájhoz most"
 
-#: src/DownloadListCtrl.cpp:947
-msgid "Drop No Needed Sources now"
-msgstr "Hiányzó fájlrésszel nem rendelkező források (HFNRF) kihagyása most"
-
-#: src/DownloadListCtrl.cpp:949
-msgid "Drop Full Queue Sources now"
-msgstr "Teli várólistás források (VTF) kihagyása most"
-
-#: src/DownloadListCtrl.cpp:951
-msgid "Drop High Queue Rating Sources now"
-msgstr "Magas Várólistás Források (MVF) kihagyása most"
-
-#: src/DownloadListCtrl.cpp:953
-msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "Források rendbetétele most (HFNRF, VTF &és MVF)"
-
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "Kibővített beállítások"
 
-#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "Előnézet"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "Fájl &részleteinek megjelenítése"
 
-#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Összes megjegyzés megjelenítése"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:987
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "aláíratlan"
 
-#: src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "Hozzárendelés kategórához"
 
-#: src/DownloadListCtrl.cpp:1023
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "Fájl &megnyitása"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Hozzáadás a barátokhoz"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Üzenet küldése"
 
-#: src/DownloadListCtrl.cpp:1057
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "Csere ehhez a fájlhoz"
 
-#: src/DownloadListCtrl.cpp:1475 src/DownloadListCtrl.cpp:1485
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y.%m.%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1709
+#: src/DownloadListCtrl.cpp:1713
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1759
+#: src/DownloadListCtrl.cpp:1763
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1773
+#: src/DownloadListCtrl.cpp:1777
 msgid "Asked for another file"
 msgstr "Másik fájl kérve"
 
-#: src/DownloadListCtrl.cpp:2103
+#: src/DownloadListCtrl.cpp:2107
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Letöltések (%i)"
 
-#: src/DownloadListCtrl.cpp:2286
+#: src/DownloadListCtrl.cpp:2290
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3121,15 +3105,15 @@ msgstr ""
 "Addig is, az aMule az mplayert fogja megpróbálni használni, és minden "
 "előnézetnél megkapod ezt a figyelmeztetést."
 
-#: src/DownloadListCtrl.cpp:2289
+#: src/DownloadListCtrl.cpp:2293
 msgid "File preview"
 msgstr "Fájl előnézet"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "HIBA: Külső média-lejátszó indítása sikertelen!"
 
-#: src/DownloadListCtrl.cpp:2309
+#: src/DownloadListCtrl.cpp:2313
 #, c-format
 msgid "Command: %s"
 msgstr "Parancs: %s"
@@ -3277,29 +3261,29 @@ msgstr "(%i) befejezett fájlrészt találtam a(z) %s fájlban"
 msgid "Finished rehashing %s"
 msgstr "%s újra algoritmizálása befejeződött"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2233
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Váratlan fájlhiba %s fájl befejezésénél. Fájl szüneteltetve"
 
-#: src/PartFile.cpp:2258
+#: src/PartFile.cpp:2259
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Letöltés befejeződött: %s"
 
-#: src/PartFile.cpp:2315
+#: src/PartFile.cpp:2316
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Fájl törlése: %s"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Figyelmeztetés: A letöltött rész hash-elése nem lehetséges - a hash készlet "
 "hiányos '%s'-hez"
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2385
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3308,38 +3292,38 @@ msgstr ""
 "Hiba: A letetöltött rész hash algoritmizálása nem lehetséges - HashSet "
 "hiányos (%s). Ennek sosem kéne előfordulnia"
 
-#: src/PartFile.cpp:3062
+#: src/PartFile.cpp:3063
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "FIGYELEM: Nincs elég szabad hely a lemezen! Fájl szüneteltetése: %s"
 
-#: src/PartFile.cpp:3127
+#: src/PartFile.cpp:3128
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "A %i. letöltött fájlrész sérült a %s fájlban"
 
-#: src/PartFile.cpp:3170
+#: src/PartFile.cpp:3171
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: %i. sérült rész helyreállítva a '%s'-hez -> megmentett bájtok: %s"
 
-#: src/PartFile.cpp:3745 src/muuli_wdr.cpp:3669
+#: src/PartFile.cpp:3747 src/muuli_wdr.cpp:3669
 msgid "Comments"
 msgstr ""
 
-#: src/PartFile.cpp:3746
+#: src/PartFile.cpp:3748
 msgid "doesn't work"
 msgstr ""
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3750
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3848
 msgid "Insufficient Diskspace"
 msgstr "Elégtelen lemezterület"
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
 msgid "Stopped"
 msgstr "Megállítva"
 
@@ -7215,6 +7199,18 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Barátok listáját tartalmazó 'emfriends.met' fájl íráshoz történő megnyitása "
 "sikertelen!"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "Hiányzó fájlrésszel nem rendelkező források (HFNRF) kihagyása most"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "Teli várólistás források (VTF) kihagyása most"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "Magas Várólistás Források (MVF) kihagyása most"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr "Források rendbetétele most (HFNRF, VTF &és MVF)"
 
 #~ msgid "English (U.S.)"
 #~ msgstr "Angol (Amerikai)"

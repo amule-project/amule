@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-27 03:30+0200\n"
+"POT-Creation-Date: 2007-10-07 03:30+0200\n"
 "PO-Revision-Date: 2007-08-20 13:56+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <icq@cvs.gnome.org>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
@@ -62,34 +62,34 @@ msgstr "Éxisto! Conexión establecida en aMule"
 msgid "Succeeded! Connection established."
 msgstr "Éxito! Conexión establecida."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
 msgid "Hashing"
 msgstr "Hasheando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
 msgid "Completing"
 msgstr "Completando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
 msgid "Complete"
 msgstr "Completado"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
 msgid "Paused"
 msgstr "Pausado"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
 msgid "Erroneous"
 msgstr "Erróneo"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
 msgid "Downloading"
 msgstr "Descargando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
 msgid "Waiting"
 msgstr "Agardando"
@@ -154,9 +154,9 @@ msgstr "Erro ao recupera-los ficheiros compartidos do usuario '%s'"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1464
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
-#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1468
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
+#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -228,7 +228,7 @@ msgstr "Nome de usuario"
 msgid "Friends"
 msgstr "Amigos"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "Ver &Detalles"
@@ -245,7 +245,7 @@ msgstr "Borrar amigo"
 msgid "Send &Message"
 msgstr "Enviar &Mensaxe"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Ver ficheiros"
@@ -261,7 +261,7 @@ msgstr "Estás seguro de que queres borrar o(s) amigo(s) seleccionado(s)?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/DownloadListCtrl.cpp:613 src/DownloadListCtrl.cpp:927
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3867
@@ -281,13 +281,13 @@ msgid "Multiple selection"
 msgstr "Selección múltiple"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Nome do arquivo"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Tamaño"
 
@@ -297,7 +297,7 @@ msgstr "Tipo"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:926
 msgid "Priority"
 msgstr "Prioridade"
 
@@ -345,19 +345,19 @@ msgstr "Moi baixo"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Baixo"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Alto"
 
@@ -369,7 +369,7 @@ msgstr "Moi alto"
 msgid "Release"
 msgstr "Lanzamento"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:924
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Automático"
@@ -394,7 +394,7 @@ msgstr "Engadir os ficheiros en colección á lista de tranferencia"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Copiar a &URI magnética ao portapapeis"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "Copiar ED2K en&lace o suxeitapapeis"
 
@@ -419,7 +419,7 @@ msgstr ""
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Copiar ED2K enlace o suxeitapapeis (&AICH info)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "Copiar resposta ao portapapeis"
 
@@ -441,11 +441,11 @@ msgstr "Ficheiros compartidos (%i)"
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "Introducir un novo nome para este ficheiro:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1113
+#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "Renomear o ficheiro"
 
@@ -965,8 +965,8 @@ msgstr "Descargado: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Subido: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1346
-#: src/DownloadListCtrl.cpp:1655 src/OtherFunctions.cpp:159
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -1290,7 +1290,7 @@ msgstr "Preguntando"
 msgid "Connecting via server"
 msgstr "Conectando ví­a servidor"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1740
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1744
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Cola chea"
@@ -2222,110 +2222,110 @@ msgstr "Fallou o comando remoto PartFile: Ficheiro hash non atopado: %s"
 msgid "FileHash not found: %s"
 msgstr "Ficheiro hash non atopado: %s"
 
-#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:573 src/ExternalConn.cpp:657
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! Erro de proceso de OpCode!"
 
-#: src/ExternalConn.cpp:602
+#: src/ExternalConn.cpp:603
 msgid "Server not added"
 msgstr "Servidor non engadido"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:621
 #, c-format
 msgid "server not found: %s"
 msgstr "servidor non atopado: %s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:637
 msgid "need to define server to be removed"
 msgstr "necesita definir o servidor que se vai a eliminar"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:651
 msgid "ED2K is disabled in preferences."
 msgstr "ED2K está desactivado nas preferencias."
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Busca en progreso. Resultado obtidos en breve!"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:752
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Buscador web da interface remota non fai sensible."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:803
 msgid "Kad is disabled in preferences."
 msgstr "Kad está desactivado nas preferencias."
 
-#: src/ExternalConn.cpp:964
+#: src/ExternalConn.cpp:965
 msgid "No points for graph."
 msgstr "Sen puntos para gráfica."
 
-#: src/ExternalConn.cpp:973
+#: src/ExternalConn.cpp:974
 msgid "Your client is not configured for this detail level."
 msgstr "Seu cliente non está configurado para este nivel de detalle."
 
-#: src/ExternalConn.cpp:1001
+#: src/ExternalConn.cpp:1002
 msgid "ExternalConn: shutdown requested"
 msgstr "Conexión externa: apagado solicitado"
 
-#: src/ExternalConn.cpp:1013
+#: src/ExternalConn.cpp:1014
 msgid "Already shutting down."
 msgstr "Xa está apagando."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1022
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Conexión externa: engadindo ligazón '%s'."
 
-#: src/ExternalConn.cpp:1027
+#: src/ExternalConn.cpp:1028
 msgid "Invalid link or already on list."
 msgstr "Ligazón inválido ou xa está na lista."
 
-#: src/ExternalConn.cpp:1104
+#: src/ExternalConn.cpp:1105
 msgid "File not found."
 msgstr "Ficheiro non atopado."
 
-#: src/ExternalConn.cpp:1109
+#: src/ExternalConn.cpp:1110
 msgid "Invalid file name."
 msgstr "Nome de ficheiro inválido."
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1118
 msgid "Unable to rename file."
 msgstr "Imposible renomear o ficheiro."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1319
 msgid "Already connected to ED2K."
 msgstr "Xa está conectado a ED2K."
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1322
 msgid "Connecting to ED2K..."
 msgstr "Conectando a ED2K..."
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1330
 msgid "Already connected to Kad."
 msgstr "Xa está conectado a Kad."
 
-#: src/ExternalConn.cpp:1332
+#: src/ExternalConn.cpp:1333
 msgid "Connecting to Kad..."
 msgstr "Conectando a Kad..."
 
-#: src/ExternalConn.cpp:1337
+#: src/ExternalConn.cpp:1338
 msgid "All networks are disabled."
 msgstr "Tódalas redes están desactivadas."
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from ED2K."
 msgstr "Desconectado de ED2K."
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1350
 msgid "Disconnected from Kad."
 msgstr "Desconectado de Kad."
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "Conexión externa: recibido opcode inválido: %#x"
 
-#: src/ExternalConn.cpp:1360
+#: src/ExternalConn.cpp:1361
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "opcode inválido (versión de protocolo inválido?)"
 
@@ -2515,7 +2515,7 @@ msgstr "Total de subidas erradas na sesión: %s"
 msgid "Average upload time: %s"
 msgstr "Tempo medio de subida: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:918 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Descargas"
 
@@ -2876,7 +2876,7 @@ msgstr "Información"
 msgid "The specified userhash is not valid!"
 msgstr "O hash de usuario especificado non é válido!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fontes"
@@ -2891,7 +2891,7 @@ msgstr "Ficheiro"
 msgid "Download"
 msgstr "Descarga"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Categoría"
@@ -2935,166 +2935,150 @@ msgstr "Todo"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuarios totais: %s | Ficheiros totais: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Transferido"
 
-#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
 msgid "Completed"
 msgstr "Completado"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Velocidade"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:200
 msgid "Progress"
 msgstr "Progreso"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
+#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Estado"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:204
 msgid "Time Remaining"
 msgstr "Tempo para rematar"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Seen Complete"
 msgstr "Última vez visto completo"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:206
 msgid "Last Reception"
 msgstr "Última recepción"
 
-#: src/DownloadListCtrl.cpp:610
+#: src/DownloadListCtrl.cpp:612
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "¿Estás seguro de que queres borrar o(s) ficheiro(s) seleccionado(s)?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:867 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Enviar mensaxe a usuario"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Mensaxes a enviar:"
 
-#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Deter"
 
-#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "Continua&R"
 
-#: src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:931
 msgid "C&lear completed"
 msgstr "&limpeza completada"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file now"
 msgstr "Pasar todas as A4AF a este ficheiro agora"
 
-#: src/DownloadListCtrl.cpp:937
+#: src/DownloadListCtrl.cpp:939
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Pasar todas as A4AF a este ficheiro (Automático)"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:944
 msgid "Swap every A4AF to any other file now"
 msgstr "Pasar todas as A4AF a outro ficheiro agora"
 
-#: src/DownloadListCtrl.cpp:947
-msgid "Drop No Needed Sources now"
-msgstr "Descartar as Fontes Non Necesarias agora"
-
-#: src/DownloadListCtrl.cpp:949
-msgid "Drop Full Queue Sources now"
-msgstr "Descartar as Fontes Coa Cola Chea agora"
-
-#: src/DownloadListCtrl.cpp:951
-msgid "Drop High Queue Rating Sources now"
-msgstr "Descartar as Fontes Con Posición Alta en Cola agora"
-
-#: src/DownloadListCtrl.cpp:953
-msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "Limpar Fontes agora (NNS, FQS e HQRS)"
-
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "Opcións extendidas"
 
-#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "Previsualizar"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "Mirar &detalles do ficheiro"
 
-#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Ver todo-los comentarios"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr "Copiar a URI magnética ao portapapeis"
 
-#: src/DownloadListCtrl.cpp:987
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "sen asignar"
 
-#: src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "Asignar a categoría"
 
-#: src/DownloadListCtrl.cpp:1023
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "Abri-lo arquiv&O"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "Eliminar de amigos"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Engadir a amigos"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Enviar mensaxe"
 
-#: src/DownloadListCtrl.cpp:1057
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "Intercambiar este ficheiro"
 
-#: src/DownloadListCtrl.cpp:1475 src/DownloadListCtrl.cpp:1485
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1709
+#: src/DownloadListCtrl.cpp:1713
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1759
+#: src/DownloadListCtrl.cpp:1763
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1773
+#: src/DownloadListCtrl.cpp:1777
 msgid "Asked for another file"
 msgstr "Preguntando por outro ficheiro"
 
-#: src/DownloadListCtrl.cpp:2103
+#: src/DownloadListCtrl.cpp:2107
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Descargas (%i)"
 
-#: src/DownloadListCtrl.cpp:2286
+#: src/DownloadListCtrl.cpp:2290
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3104,15 +3088,15 @@ msgstr ""
 "Entretanto, aMule tentará empregar mplayer e recibirá este aviso en todas as "
 "previsualizacións"
 
-#: src/DownloadListCtrl.cpp:2289
+#: src/DownloadListCtrl.cpp:2293
 msgid "File preview"
 msgstr "Previsualizar ficheiro"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "ERRO: -Non se pode executar o reproductor de medios externo!"
 
-#: src/DownloadListCtrl.cpp:2309
+#: src/DownloadListCtrl.cpp:2313
 #, c-format
 msgid "Command: %s"
 msgstr "Comando: %s"
@@ -3260,28 +3244,28 @@ msgstr "Parte (%i) completada atopada en %s"
 msgid "Finished rehashing %s"
 msgstr "Rematado de rehashear %s"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2233
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Erro inesperado ao completar o ficheiro %s. Ficheiro pausado"
 
-#: src/PartFile.cpp:2258
+#: src/PartFile.cpp:2259
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Descarga rematada: %s"
 
-#: src/PartFile.cpp:2315
+#: src/PartFile.cpp:2316
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Eliminando ficheiro: %s"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Perigo: Non se pode hashear o part descargado - hahset incompleto para '%s'"
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2385
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3290,38 +3274,38 @@ msgstr ""
 "Erro:  Non se puido hashear o part descargado - hahset incompleto (%s) - "
 "Isto non debe pasar nunca"
 
-#: src/PartFile.cpp:3062
+#: src/PartFile.cpp:3063
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "AVISO: Non hai suficiente espazo libre en disco! Pausando ficheiro: %s"
 
-#: src/PartFile.cpp:3127
+#: src/PartFile.cpp:3128
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Part descargado %i é corrupto no ficheiro: %s"
 
-#: src/PartFile.cpp:3170
+#: src/PartFile.cpp:3171
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Part corrupto recuperado %i para %s -> Bytes gardados: %s"
 
-#: src/PartFile.cpp:3745 src/muuli_wdr.cpp:3669
+#: src/PartFile.cpp:3747 src/muuli_wdr.cpp:3669
 msgid "Comments"
 msgstr "Comentarios"
 
-#: src/PartFile.cpp:3746
+#: src/PartFile.cpp:3748
 msgid "doesn't work"
 msgstr "non funciona"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3750
 msgid "remote gui"
 msgstr "gui remoto"
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3848
 msgid "Insufficient Diskspace"
 msgstr "Espazo en disco insuficiente"
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
 msgid "Stopped"
 msgstr "Parado"
 
@@ -7242,6 +7226,18 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Fallou ao abrir o ficheiro da lista de amigos 'emfriends.met' para escribir!"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "Descartar as Fontes Non Necesarias agora"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "Descartar as Fontes Coa Cola Chea agora"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "Descartar as Fontes Con Posición Alta en Cola agora"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr "Limpar Fontes agora (NNS, FQS e HQRS)"
 
 #~ msgid "English (U.S.)"
 #~ msgstr "Inglés (E. U)"

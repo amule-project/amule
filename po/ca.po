@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-27 03:30+0200\n"
+"POT-Creation-Date: 2007-10-07 03:30+0200\n"
 "PO-Revision-Date: 2007-08-28 02:34+0200\n"
 "Last-Translator: Joel Sevilleja <Joelregs@hotmail.com>\n"
 "Language-Team: Catalán\n"
@@ -59,34 +59,34 @@ msgstr "Èxit! Connexió establerta amb l'aMule "
 msgid "Succeeded! Connection established."
 msgstr "Èxit! Connexió establerta."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
 msgid "Hashing"
 msgstr "Fent hash"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
 msgid "Completing"
 msgstr "Completant"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
 msgid "Complete"
 msgstr "Complet"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
 msgid "Paused"
 msgstr "Pausat"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
 msgid "Erroneous"
 msgstr "Erroni"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
 msgid "Downloading"
 msgstr "Baixant"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
 msgid "Waiting"
 msgstr "Esperant"
@@ -153,9 +153,9 @@ msgstr "No s'han pogut obtenir els compartits de l'usuari %s'"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1464
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
-#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1468
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
+#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -227,7 +227,7 @@ msgstr "Usuari"
 msgid "Friends"
 msgstr "Amics"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "Mostra els &Detalls"
@@ -244,7 +244,7 @@ msgstr "Elimina l'amic"
 msgid "Send &Message"
 msgstr "Envia un &Missatge"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Veure els compartits"
@@ -260,7 +260,7 @@ msgstr "Esteu segur que voleu esborrar l'amic(s) seleccionat(s)?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/DownloadListCtrl.cpp:613 src/DownloadListCtrl.cpp:927
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3867
@@ -280,13 +280,13 @@ msgid "Multiple selection"
 msgstr "Selecció múltiple"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fitxer"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Mida"
 
@@ -296,7 +296,7 @@ msgstr "Tipus"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:926
 msgid "Priority"
 msgstr "Prioritat"
 
@@ -344,19 +344,19 @@ msgstr "Molt Baixa"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Baixa"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Alta"
 
@@ -368,7 +368,7 @@ msgstr "Molt Alta"
 msgid "Release"
 msgstr "Llançament"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:924
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Auto"
@@ -393,7 +393,7 @@ msgstr "Anyadir fitxers en col·lecció a la llista de transferència"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Copiar &URI magnètic al portapapers"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "Copia &l'enllaç ED2K al porta-retalls"
 
@@ -417,7 +417,7 @@ msgstr "Copiar l'enllaç ED2K al portapapers (Font) (Amb opcions de &cifrat)"
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Copia l'enllaç ED2k al porta-retalls (info &AICH)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "Copia la retroalimentació al porta-retalls"
 
@@ -439,11 +439,11 @@ msgstr "Fitxers Compartits (%i)"
 msgid "[PartFile]"
 msgstr "[Fitxer de Parts]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "Introduïu un nom nou per al fitxer:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1113
+#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "Reanomena"
 
@@ -960,8 +960,8 @@ msgstr "Baixant: "
 msgid " kB/s, Upload: "
 msgstr "kB/s, Pujat: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1346
-#: src/DownloadListCtrl.cpp:1655 src/OtherFunctions.cpp:159
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -1284,7 +1284,7 @@ msgstr "Preguntant"
 msgid "Connecting via server"
 msgstr "Connectant via servidor"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1740
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1744
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Cua Plena"
@@ -2227,110 +2227,110 @@ msgstr ""
 msgid "FileHash not found: %s"
 msgstr "No s'ha trobat el hash del fitxer: %s"
 
-#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:573 src/ExternalConn.cpp:657
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! Error processant OpCode!"
 
-#: src/ExternalConn.cpp:602
+#: src/ExternalConn.cpp:603
 msgid "Server not added"
 msgstr "No s'ha afegit el servidor"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:621
 #, c-format
 msgid "server not found: %s"
 msgstr "no s'ha trobat el servidor: %s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:637
 msgid "need to define server to be removed"
 msgstr "és necessari definir el servidor a esborrar"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:651
 msgid "ED2K is disabled in preferences."
 msgstr "ED2K està inhabilitat a les preferències."
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Cerca en procés. S'obtindran resultats en un moment!"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:752
 msgid "WebSearch from remote interface makes no sense."
 msgstr "La cerca web des de l'interfície remota no té sentit."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:803
 msgid "Kad is disabled in preferences."
 msgstr "Kad està inhabilitada a les preferències."
 
-#: src/ExternalConn.cpp:964
+#: src/ExternalConn.cpp:965
 msgid "No points for graph."
 msgstr "Cap punt per al gràfic."
 
-#: src/ExternalConn.cpp:973
+#: src/ExternalConn.cpp:974
 msgid "Your client is not configured for this detail level."
 msgstr "El vostre client no està configurat per a aquest nivell de detall."
 
-#: src/ExternalConn.cpp:1001
+#: src/ExternalConn.cpp:1002
 msgid "ExternalConn: shutdown requested"
 msgstr "ExternalConn: s'ha demanat la parada"
 
-#: src/ExternalConn.cpp:1013
+#: src/ExternalConn.cpp:1014
 msgid "Already shutting down."
 msgstr "Ja s'està aturant."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1022
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Connexió externa: anyadint enllaç '%s'"
 
-#: src/ExternalConn.cpp:1027
+#: src/ExternalConn.cpp:1028
 msgid "Invalid link or already on list."
 msgstr "Enllaç invàlid o ja present a la llista."
 
-#: src/ExternalConn.cpp:1104
+#: src/ExternalConn.cpp:1105
 msgid "File not found."
 msgstr "No s'ha trobat el fitxer."
 
-#: src/ExternalConn.cpp:1109
+#: src/ExternalConn.cpp:1110
 msgid "Invalid file name."
 msgstr "Nom de fitxer invàlid."
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1118
 msgid "Unable to rename file."
 msgstr "No s'ha pogut canviar el nom del fitxer."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1319
 msgid "Already connected to ED2K."
 msgstr "Ja esteu connectat a ED2K."
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1322
 msgid "Connecting to ED2K..."
 msgstr "Connectant a ED2K..."
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1330
 msgid "Already connected to Kad."
 msgstr "Ja esteu connectat a Kad."
 
-#: src/ExternalConn.cpp:1332
+#: src/ExternalConn.cpp:1333
 msgid "Connecting to Kad..."
 msgstr "Connectant a Kad..."
 
-#: src/ExternalConn.cpp:1337
+#: src/ExternalConn.cpp:1338
 msgid "All networks are disabled."
 msgstr "Totes les xarxes estan inhabilitades."
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from ED2K."
 msgstr "Desconnectat de ED2K."
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1350
 msgid "Disconnected from Kad."
 msgstr "Desconnectat de Kad."
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: rebut opcode invàlid: %#x"
 
-#: src/ExternalConn.cpp:1360
+#: src/ExternalConn.cpp:1361
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Opcode invàlid (versió de protocol errònia?)"
 
@@ -2521,7 +2521,7 @@ msgstr "Total de sessions de pujada fallades: %s"
 msgid "Average upload time: %s"
 msgstr "Temps mitjà d'enviament: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:918 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Baixades"
 
@@ -2880,7 +2880,7 @@ msgstr "Informació"
 msgid "The specified userhash is not valid!"
 msgstr "El hash d'usuari especificat no és vàlid!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fonts"
@@ -2895,7 +2895,7 @@ msgstr "Fitxer"
 msgid "Download"
 msgstr "Descarrega"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Categoria"
@@ -2939,166 +2939,150 @@ msgstr "Tots"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Usuaris Totals: %s | Fitxers Totals: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Transferit"
 
-#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
 msgid "Completed"
 msgstr "Completat"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Velocitat"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:200
 msgid "Progress"
 msgstr "Progrés"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
+#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Estat"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:204
 msgid "Time Remaining"
 msgstr "Temps Restant"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Seen Complete"
 msgstr "Últim Cop Vist Complet"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:206
 msgid "Last Reception"
 msgstr "Última Recepció"
 
-#: src/DownloadListCtrl.cpp:610
+#: src/DownloadListCtrl.cpp:612
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Esteu segur d'esborrar el fitxer(s) seleccionat(s)?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:867 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Envia un missatge a l'usuari"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Missatge a enviar:"
 
-#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Atura"
 
-#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Continua"
 
-#: src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:931
 msgid "C&lear completed"
 msgstr "&Neteja els completats"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file now"
 msgstr "Intercanvia cada A4AF a aquest fitxer ara"
 
-#: src/DownloadListCtrl.cpp:937
+#: src/DownloadListCtrl.cpp:939
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Intercanvia cada A4AF a aquest fitxer (Automàtic)"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:944
 msgid "Swap every A4AF to any other file now"
 msgstr "Intercanvia cada A4AF a qualsevol altre fitxer ara"
 
-#: src/DownloadListCtrl.cpp:947
-msgid "Drop No Needed Sources now"
-msgstr "Elimina les Fonts Innecessàries ara"
-
-#: src/DownloadListCtrl.cpp:949
-msgid "Drop Full Queue Sources now"
-msgstr "Elimina les Fonts amb la Cua Plena ara"
-
-#: src/DownloadListCtrl.cpp:951
-msgid "Drop High Queue Rating Sources now"
-msgstr "Elimina les Fonts amb una Cua Massa Llarga ara"
-
-#: src/DownloadListCtrl.cpp:953
-msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "Neteja les Fonts ara (FI, FCP && FCML)"
-
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "Opcions avançades"
 
-#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "Previsualitza"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "Mostra els &detalls del fitxer"
 
-#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Mostra tots els comentaris"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr "Copiar la URI magnètica al portapapers"
 
-#: src/DownloadListCtrl.cpp:987
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "Cap categoria"
 
-#: src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "Assigna a una categoria"
 
-#: src/DownloadListCtrl.cpp:1023
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "&Obre el fitxer"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "Eliminar d'amics"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Afegeix a la llista d'amics"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Envia un missatge"
 
-#: src/DownloadListCtrl.cpp:1057
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "Intercanvia cap a aquest fitxer"
 
-#: src/DownloadListCtrl.cpp:1475 src/DownloadListCtrl.cpp:1485
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%d/%m/%y %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1709
+#: src/DownloadListCtrl.cpp:1713
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1759
+#: src/DownloadListCtrl.cpp:1763
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "C: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1773
+#: src/DownloadListCtrl.cpp:1777
 msgid "Asked for another file"
 msgstr "S'ha preguntat per un altre fitxer"
 
-#: src/DownloadListCtrl.cpp:2103
+#: src/DownloadListCtrl.cpp:2107
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Descàrregues (%i)"
 
-#: src/DownloadListCtrl.cpp:2286
+#: src/DownloadListCtrl.cpp:2290
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3108,15 +3092,15 @@ msgstr ""
 "Mentrestant, l'aMule intentarà usar l'mplayer i rebreu aquest avís a cada "
 "previsualització"
 
-#: src/DownloadListCtrl.cpp:2289
+#: src/DownloadListCtrl.cpp:2293
 msgid "File preview"
 msgstr "Previsualització"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "ERROR: No s'ha pogut executar un reproductor multimèdia extern!"
 
-#: src/DownloadListCtrl.cpp:2309
+#: src/DownloadListCtrl.cpp:2313
 #, c-format
 msgid "Command: %s"
 msgstr "Comanda: %s"
@@ -3264,29 +3248,29 @@ msgstr "S'ha trobat una part completa (%i) a %s"
 msgid "Finished rehashing %s"
 msgstr "Acabat el rehashing %s"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2233
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Error inesperat mentre es completava %s. Fitxer pausat"
 
-#: src/PartFile.cpp:2258
+#: src/PartFile.cpp:2259
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "S'ha acabat de baixar: %s"
 
-#: src/PartFile.cpp:2315
+#: src/PartFile.cpp:2316
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Esborrant el fitxer: %s"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Avís: Ha estat impossible fer el hash de la part descarregada - hashset "
 "incomplet per a '%s'"
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2385
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3295,38 +3279,38 @@ msgstr ""
 "Error: No s'ha pogut fer el hash a la part descarregada - hashset incomplet "
 "(%s). Açò no hauria de passar mai"
 
-#: src/PartFile.cpp:3062
+#: src/PartFile.cpp:3063
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "AVÍS: No hi ha suficient espai al disc dur! Pausant el fitxer: %s"
 
-#: src/PartFile.cpp:3127
+#: src/PartFile.cpp:3128
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "La part descarregada %i és corrupta al fitxer: %s"
 
-#: src/PartFile.cpp:3170
+#: src/PartFile.cpp:3171
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: S'ha recuperat la part corrupta %i de %s -> Bytes desats: %s"
 
-#: src/PartFile.cpp:3745 src/muuli_wdr.cpp:3669
+#: src/PartFile.cpp:3747 src/muuli_wdr.cpp:3669
 msgid "Comments"
 msgstr "Comentaris"
 
-#: src/PartFile.cpp:3746
+#: src/PartFile.cpp:3748
 msgid "doesn't work"
 msgstr "No funciona"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3750
 msgid "remote gui"
 msgstr "Interfaç gràfica remota"
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3848
 msgid "Insufficient Diskspace"
 msgstr "No hi ha espai al disc"
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
 msgid "Stopped"
 msgstr "Aturat"
 
@@ -7272,6 +7256,18 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "No s'ha pogut obrir el fitxer de la llista d'amics 'emfriends.met' per a "
 "escriure!"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "Elimina les Fonts Innecessàries ara"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "Elimina les Fonts amb la Cua Plena ara"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "Elimina les Fonts amb una Cua Massa Llarga ara"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr "Neteja les Fonts ara (FI, FCP && FCML)"
 
 #~ msgid "English (U.S.)"
 #~ msgstr "Anglès (EUA)"

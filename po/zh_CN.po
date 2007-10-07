@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-27 03:30+0200\n"
+"POT-Creation-Date: 2007-10-07 03:30+0200\n"
 "PO-Revision-Date: 2007-09-27 23:31+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -52,34 +52,34 @@ msgstr "成功！连接成功建立"
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
 msgid "Hashing"
 msgstr "正在校检"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
 msgid "Complete"
 msgstr "完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
 msgid "Paused"
 msgstr "已暂停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
 msgid "Erroneous"
 msgstr "已出错"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
 msgid "Downloading"
 msgstr "正在下载"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
 msgid "Waiting"
 msgstr "等待中"
@@ -141,9 +141,9 @@ msgstr "无法获取用户 %s 的共享文件"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1464
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
-#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1468
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
+#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -211,7 +211,7 @@ msgstr "用户名"
 msgid "Friends"
 msgstr "好友"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "显示详细信息 (&D)"
@@ -228,7 +228,7 @@ msgstr "删除好友"
 msgid "Send &Message"
 msgstr "发送消息 (&M)"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "查看共享文件"
@@ -244,7 +244,7 @@ msgstr "确定删除选中的好友吗？"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/DownloadListCtrl.cpp:613 src/DownloadListCtrl.cpp:927
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3867
@@ -264,13 +264,13 @@ msgid "Multiple selection"
 msgstr "多选"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "文件名"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "大小"
 
@@ -280,7 +280,7 @@ msgstr "类型"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:926
 msgid "Priority"
 msgstr "优先级"
 
@@ -328,19 +328,19 @@ msgstr "极低"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "低"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "普通"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "高"
 
@@ -352,7 +352,7 @@ msgstr "极高"
 msgid "Release"
 msgstr "发布"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:924
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "自动"
@@ -377,7 +377,7 @@ msgstr "添加收藏中的文件至传输列表"
 msgid "Copy magnet &URI to clipboard"
 msgstr "复制 magnet 地址到剪贴板（&U）"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "复制 ED2k 链接到剪贴板 (&L)"
 
@@ -401,7 +401,7 @@ msgstr "复制 ED2K 链接到剪贴板（主机名） （使用加密选项(&C)�
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "复制 ED2K 链接到剪贴板（&AICH 信息）"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "复制反馈信息到剪贴板"
 
@@ -423,11 +423,11 @@ msgstr "共享文件 (%i)"
 msgid "[PartFile]"
 msgstr "[part 文件]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "请输入新文件名"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1113
+#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "更改文件名"
 
@@ -942,8 +942,8 @@ msgstr "下载"
 msgid " kB/s, Upload: "
 msgstr " kB/s，上传："
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1346
-#: src/DownloadListCtrl.cpp:1655 src/OtherFunctions.cpp:159
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -1262,7 +1262,7 @@ msgstr "正在询问"
 msgid "Connecting via server"
 msgstr "通过服务器连接中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1740
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1744
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "队列已满"
@@ -2184,110 +2184,110 @@ msgstr "远程 Part 文件命令失败：文件校验码不存在：%s"
 msgid "FileHash not found: %s"
 msgstr "文件校验码不存在：%s"
 
-#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:573 src/ExternalConn.cpp:657
 msgid "OOPS! OpCode processing error!"
 msgstr "哇靠! OpCode处理错误！"
 
-#: src/ExternalConn.cpp:602
+#: src/ExternalConn.cpp:603
 msgid "Server not added"
 msgstr "服务器没有被添加"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:621
 #, c-format
 msgid "server not found: %s"
 msgstr "找不到服务器：%s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:637
 msgid "need to define server to be removed"
 msgstr "必须定义需删除的服务器"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:651
 msgid "ED2K is disabled in preferences."
 msgstr "ED2K 在设置中被禁用了。"
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "正在搜索，请稍等然后刷新结果！"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:752
 msgid "WebSearch from remote interface makes no sense."
 msgstr "远程界面使用网络搜索没有意义。"
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:803
 msgid "Kad is disabled in preferences."
 msgstr "Kad 在设置中被禁用了"
 
-#: src/ExternalConn.cpp:964
+#: src/ExternalConn.cpp:965
 msgid "No points for graph."
 msgstr "此图没有节点"
 
-#: src/ExternalConn.cpp:973
+#: src/ExternalConn.cpp:974
 msgid "Your client is not configured for this detail level."
 msgstr "你的客户端没有为详细级别进行配置。"
 
-#: src/ExternalConn.cpp:1001
+#: src/ExternalConn.cpp:1002
 msgid "ExternalConn: shutdown requested"
 msgstr "外部连接：收到关机请求"
 
-#: src/ExternalConn.cpp:1013
+#: src/ExternalConn.cpp:1014
 msgid "Already shutting down."
 msgstr "已经在关闭。"
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1022
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "外部连接：正在添加链接 '%s'。"
 
-#: src/ExternalConn.cpp:1027
+#: src/ExternalConn.cpp:1028
 msgid "Invalid link or already on list."
 msgstr "非法链接或已经存在列表中。"
 
-#: src/ExternalConn.cpp:1104
+#: src/ExternalConn.cpp:1105
 msgid "File not found."
 msgstr "文件未找到。"
 
-#: src/ExternalConn.cpp:1109
+#: src/ExternalConn.cpp:1110
 msgid "Invalid file name."
 msgstr "非法文件名。"
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1118
 msgid "Unable to rename file."
 msgstr "无法重命名文件。"
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1319
 msgid "Already connected to ED2K."
 msgstr "已连接至 ED2K。"
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1322
 msgid "Connecting to ED2K..."
 msgstr "正在连接至 ED2K..."
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1330
 msgid "Already connected to Kad."
 msgstr "已连接至 Kad。"
 
-#: src/ExternalConn.cpp:1332
+#: src/ExternalConn.cpp:1333
 msgid "Connecting to Kad..."
 msgstr "正在连接至 Kad..."
 
-#: src/ExternalConn.cpp:1337
+#: src/ExternalConn.cpp:1338
 msgid "All networks are disabled."
 msgstr "全部网络都被禁用了。"
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from ED2K."
 msgstr "断开 ED2K。"
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1350
 msgid "Disconnected from Kad."
 msgstr "断开 Kad。"
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "外部连接：收到错误的操作码：%#x"
 
-#: src/ExternalConn.cpp:1360
+#: src/ExternalConn.cpp:1361
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "错误的操作码（错误的协议版本？）"
 
@@ -2475,7 +2475,7 @@ msgstr "失败上传会话总数：%s"
 msgid "Average upload time: %s"
 msgstr "平均上传时间：%s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:918 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "下载"
 
@@ -2819,7 +2819,7 @@ msgstr "信息"
 msgid "The specified userhash is not valid!"
 msgstr "该用户编码无效"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "源"
@@ -2834,7 +2834,7 @@ msgstr "文件"
 msgid "Download"
 msgstr "下载"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "分类"
@@ -2878,166 +2878,150 @@ msgstr "全部"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "用户总数：%s | 文件总数：%s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "已传输"
 
-#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
 msgid "Completed"
 msgstr "已完成"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "速度"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:200
 msgid "Progress"
 msgstr "进度"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
+#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "状态"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:204
 msgid "Time Remaining"
 msgstr "剩余时间"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Seen Complete"
 msgstr "最后一次发现完整文件"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:206
 msgid "Last Reception"
 msgstr "最后一次下载"
 
-#: src/DownloadListCtrl.cpp:610
+#: src/DownloadListCtrl.cpp:612
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "您确定要取消下载并删除这些文件吗？"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:867 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "发消息给用户"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "发送消息："
 
-#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "停止(&S)"
 
-#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "暂停 (&P)"
 
-#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "续传(&R)"
 
-#: src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:931
 msgid "C&lear completed"
 msgstr "清除已完成的文件 (&l)"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file now"
 msgstr "立即转移所有 A4AF 到这个文件"
 
-#: src/DownloadListCtrl.cpp:937
+#: src/DownloadListCtrl.cpp:939
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "自动转移所有 A4AF 到这个文件"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:944
 msgid "Swap every A4AF to any other file now"
 msgstr "立即转移所有 A4AF 到其它文件"
 
-#: src/DownloadListCtrl.cpp:947
-msgid "Drop No Needed Sources now"
-msgstr "立即清理无可供下载的源"
-
-#: src/DownloadListCtrl.cpp:949
-msgid "Drop Full Queue Sources now"
-msgstr "立即清理队列已满的源"
-
-#: src/DownloadListCtrl.cpp:951
-msgid "Drop High Queue Rating Sources now"
-msgstr "立即清理队列超长的源"
-
-#: src/DownloadListCtrl.cpp:953
-msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr "立即清理所有无用源"
-
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "扩展选项"
 
-#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "预览"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "显示文件信息"
 
-#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "显示所有注释"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr "复制 magnet 地址到剪贴板"
 
-#: src/DownloadListCtrl.cpp:987
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "清除"
 
-#: src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "分类"
 
-#: src/DownloadListCtrl.cpp:1023
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "打开文件 (&O)"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "从好友中删除"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "加为好友"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "发送消息"
 
-#: src/DownloadListCtrl.cpp:1057
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "转移到这个文件"
 
-#: src/DownloadListCtrl.cpp:1475 src/DownloadListCtrl.cpp:1485
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1709
+#: src/DownloadListCtrl.cpp:1713
 msgid "A4AF"
 msgstr "已请求其它文件"
 
-#: src/DownloadListCtrl.cpp:1759
+#: src/DownloadListCtrl.cpp:1763
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "排队顺序：%u（%i）"
 
-#: src/DownloadListCtrl.cpp:1773
+#: src/DownloadListCtrl.cpp:1777
 msgid "Asked for another file"
 msgstr "已要求其它文件 (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2103
+#: src/DownloadListCtrl.cpp:2107
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下载（%i）"
 
-#: src/DownloadListCtrl.cpp:2286
+#: src/DownloadListCtrl.cpp:2290
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3046,15 +3030,15 @@ msgstr ""
 "请在设置中设置您的视频播放器，\n"
 "同时 aMule 会尝试使用 mplayer，并在每次预览时你都会看到这个提示 "
 
-#: src/DownloadListCtrl.cpp:2289
+#: src/DownloadListCtrl.cpp:2293
 msgid "File preview"
 msgstr "文件预览"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "错误：无法运行媒体播放器！"
 
-#: src/DownloadListCtrl.cpp:2309
+#: src/DownloadListCtrl.cpp:2313
 #, c-format
 msgid "Command: %s"
 msgstr "命令：%s"
@@ -3197,65 +3181,65 @@ msgstr "发现了已完成的数据段 %i 在%s"
 msgid "Finished rehashing %s"
 msgstr "重新校验 %s 完成"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2233
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "在完成文件 %s 时遇到意外文件错误，文件已暂停"
 
-#: src/PartFile.cpp:2258
+#: src/PartFile.cpp:2259
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下载：%s"
 
-#: src/PartFile.cpp:2315
+#: src/PartFile.cpp:2316
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正在删除文件：%s "
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集残缺 '%s'"
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2385
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "警告：无法生成校检码 - 校检码残缺（%s）， 正常情况下这是不应该发生的"
 
-#: src/PartFile.cpp:3062
+#: src/PartFile.cpp:3063
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盘空间不足！暂停文件：%s"
 
-#: src/PartFile.cpp:3127
+#: src/PartFile.cpp:3128
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下载的数据段 %i 已损坏 文件： (%s)"
 
-#: src/PartFile.cpp:3170
+#: src/PartFile.cpp:3171
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）： %s"
 
-#: src/PartFile.cpp:3745 src/muuli_wdr.cpp:3669
+#: src/PartFile.cpp:3747 src/muuli_wdr.cpp:3669
 msgid "Comments"
 msgstr "备注"
 
-#: src/PartFile.cpp:3746
+#: src/PartFile.cpp:3748
 msgid "doesn't work"
 msgstr "没有工作"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3750
 msgid "remote gui"
 msgstr "远程GUI"
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3848
 msgid "Insufficient Diskspace"
 msgstr "硬盘空间不足"
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
 msgid "Stopped"
 msgstr "已停止"
 
@@ -7060,6 +7044,18 @@ msgstr "无法打开好友列表文件 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "无法写入好友列表文件 'emfriends.met'!"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "立即清理无可供下载的源"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "立即清理队列已满的源"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "立即清理队列超长的源"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr "立即清理所有无用源"
 
 #~ msgid "English (U.S.)"
 #~ msgstr "英语（美国）"

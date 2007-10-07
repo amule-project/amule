@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-27 03:30+0200\n"
+"POT-Creation-Date: 2007-10-07 03:30+0200\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -55,34 +55,34 @@ msgstr "Pavyko! Užmegztas ryšys su aMule "
 msgid "Succeeded! Connection established."
 msgstr "Pavyko! Ryšys užmegztas."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3832
 msgid "Hashing"
 msgstr "Vykdoma maiša"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3836
 msgid "Completing"
 msgstr "Patvirtinama"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3839
 msgid "Complete"
 msgstr "Baigta"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
 msgid "Paused"
 msgstr "Pristabdyta"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
 msgid "Erroneous"
 msgstr "Klaidinga"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
 msgid "Downloading"
 msgstr "Atsiunčiama"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
 msgid "Waiting"
 msgstr "Laukiama"
@@ -145,9 +145,9 @@ msgstr "Nepavyko gauti dalinamų failų iš vartotojo „%s“"
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1464
-#: src/DownloadListCtrl.cpp:1477 src/DownloadListCtrl.cpp:1487
-#: src/PartFile.cpp:2612 src/PartFile.cpp:2618 src/KnownFile.cpp:831
+#: src/Server.cpp:160 src/DownloadListCtrl.cpp:1468
+#: src/DownloadListCtrl.cpp:1481 src/DownloadListCtrl.cpp:1491
+#: src/PartFile.cpp:2613 src/PartFile.cpp:2619 src/KnownFile.cpp:831
 #: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -215,7 +215,7 @@ msgstr "Vardas"
 msgid "Friends"
 msgstr "Draugai"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1053
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1057
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
 msgstr "Rodyti &išsamiau"
@@ -232,7 +232,7 @@ msgstr "Pašalinti draugą"
 msgid "Send &Message"
 msgstr "Siųsti &žinutę"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1055
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1059
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
 msgstr "Peržiūrėti failus"
@@ -248,7 +248,7 @@ msgstr "Ar tikrai pašalinti pažymėtus draugus?"
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
 #: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
-#: src/DownloadListCtrl.cpp:611 src/DownloadListCtrl.cpp:925
+#: src/DownloadListCtrl.cpp:613 src/DownloadListCtrl.cpp:927
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2886
 #: src/muuli_wdr.cpp:2988 src/muuli_wdr.cpp:3867
@@ -268,13 +268,13 @@ msgid "Multiple selection"
 msgstr "Pažymėta keletas"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
-#: src/DownloadListCtrl.cpp:194 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:195 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Failo pavadinimas"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
-#: src/DownloadListCtrl.cpp:195 src/PartFileConvert.cpp:643
+#: src/DownloadListCtrl.cpp:196 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Dydis"
 
@@ -284,7 +284,7 @@ msgstr "Tipas"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
-#: src/DownloadListCtrl.cpp:201 src/DownloadListCtrl.cpp:924
+#: src/DownloadListCtrl.cpp:202 src/DownloadListCtrl.cpp:926
 msgid "Priority"
 msgstr "Prioritetas"
 
@@ -332,19 +332,19 @@ msgstr "Labai žemas"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
-#: src/DownloadListCtrl.cpp:919 src/muuli_wdr.cpp:2950
+#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2950
 msgid "Low"
 msgstr "Žemas"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
-#: src/DownloadListCtrl.cpp:920 src/muuli_wdr.cpp:2951
+#: src/DownloadListCtrl.cpp:922 src/muuli_wdr.cpp:2951
 msgid "Normal"
 msgstr "Normalus"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
-#: src/DownloadListCtrl.cpp:921 src/muuli_wdr.cpp:2952
+#: src/DownloadListCtrl.cpp:923 src/muuli_wdr.cpp:2952
 msgid "High"
 msgstr "Aukštas"
 
@@ -356,7 +356,7 @@ msgstr "Labai aukštas"
 msgid "Release"
 msgstr "Leidinys"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:922
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:924
 #: src/muuli_wdr.cpp:2953
 msgid "Auto"
 msgstr "Automatiškas"
@@ -381,7 +381,7 @@ msgstr "Failus iš kolekcijos įkelti į siuntimo sąrašą"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Kopijuoti magneto &URI į talpyklę"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:976
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:979
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopijuoti ED2K &nuorodą į talpyklę"
 
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Kopijuoti ED2K nuorodą į talpyklę (&klaidų taisymo info)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:978
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:981
 msgid "Copy feedback to clipboard"
 msgstr "Kopijuoti aprašymą į talpyklę"
 
@@ -430,11 +430,11 @@ msgstr "Dalinami failai (%i)"
 msgid "[PartFile]"
 msgstr "[Dalių failas]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1112
+#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1116
 msgid "Enter new name for this file:"
 msgstr "Įrašykite naują failo pavadinimą:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1113
+#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1117
 msgid "File rename"
 msgstr "Pervadinti failą"
 
@@ -949,8 +949,8 @@ msgstr "Atsiųsta: "
 msgid " kB/s, Upload: "
 msgstr " kB/s, Išsiųsta: "
 
-#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1346
-#: src/DownloadListCtrl.cpp:1655 src/OtherFunctions.cpp:159
+#: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -1273,7 +1273,7 @@ msgstr "Klausiama"
 msgid "Connecting via server"
 msgstr "Jungiamasi per serverį"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1740
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1744
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Eilė pilna"
@@ -2210,110 +2210,110 @@ msgstr ""
 msgid "FileHash not found: %s"
 msgstr "Failo maišos funkcija nerasta: %s"
 
-#: src/ExternalConn.cpp:572 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:573 src/ExternalConn.cpp:657
 msgid "OOPS! OpCode processing error!"
 msgstr "Oi! OpCode vykdymo klaida!"
 
-#: src/ExternalConn.cpp:602
+#: src/ExternalConn.cpp:603
 msgid "Server not added"
 msgstr "Serveris neįdėtas"
 
-#: src/ExternalConn.cpp:620
+#: src/ExternalConn.cpp:621
 #, c-format
 msgid "server not found: %s"
 msgstr "serveris nerastas: %s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:637
 msgid "need to define server to be removed"
 msgstr "Nurodykite serverį, kurį pašalinti"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:651
 msgid "ED2K is disabled in preferences."
 msgstr "ED2K išjungta parinktyse."
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:747
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Ieškoma. Tuoj bus gauti rezultatai!"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:752
 msgid "WebSearch from remote interface makes no sense."
 msgstr "www paieška iš nutolusios programos neturi prasmės."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:803
 msgid "Kad is disabled in preferences."
 msgstr "Kademlia išjungta parinktyse."
 
-#: src/ExternalConn.cpp:964
+#: src/ExternalConn.cpp:965
 msgid "No points for graph."
 msgstr "Grafikui nėra duomenų."
 
-#: src/ExternalConn.cpp:973
+#: src/ExternalConn.cpp:974
 msgid "Your client is not configured for this detail level."
 msgstr "Ši programa nesutvarkyta pateikti tiek detalių."
 
-#: src/ExternalConn.cpp:1001
+#: src/ExternalConn.cpp:1002
 msgid "ExternalConn: shutdown requested"
 msgstr "Išoriniai ryšiai: prašoma baigti darbą"
 
-#: src/ExternalConn.cpp:1013
+#: src/ExternalConn.cpp:1014
 msgid "Already shutting down."
 msgstr "Darbas jau baigiamas."
 
-#: src/ExternalConn.cpp:1021
+#: src/ExternalConn.cpp:1022
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Išoriniai ryšiai: įdedama nuoroda %s."
 
-#: src/ExternalConn.cpp:1027
+#: src/ExternalConn.cpp:1028
 msgid "Invalid link or already on list."
 msgstr "Klaidinga nuoroda arba failas sąraše jau yra."
 
-#: src/ExternalConn.cpp:1104
+#: src/ExternalConn.cpp:1105
 msgid "File not found."
 msgstr "Failas nerastas."
 
-#: src/ExternalConn.cpp:1109
+#: src/ExternalConn.cpp:1110
 msgid "Invalid file name."
 msgstr "Klaidingas failo pavadinimas."
 
-#: src/ExternalConn.cpp:1117
+#: src/ExternalConn.cpp:1118
 msgid "Unable to rename file."
 msgstr "Nepavyko pervadinti failo."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1319
 msgid "Already connected to ED2K."
 msgstr "Prie ED2K jau prisijungta."
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1322
 msgid "Connecting to ED2K..."
 msgstr "Jungiamasi prie ED2K..."
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1330
 msgid "Already connected to Kad."
 msgstr "Prie Kademlia jau prisijungta."
 
-#: src/ExternalConn.cpp:1332
+#: src/ExternalConn.cpp:1333
 msgid "Connecting to Kad..."
 msgstr "Jungiamsi prie Kademlia..."
 
-#: src/ExternalConn.cpp:1337
+#: src/ExternalConn.cpp:1338
 msgid "All networks are disabled."
 msgstr "Visi tinklai išjungti."
 
-#: src/ExternalConn.cpp:1345
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from ED2K."
 msgstr "Atsijungta nuo ED2K."
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1350
 msgid "Disconnected from Kad."
 msgstr "Atsijungta nuo Kademlia."
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1358
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "Išoriniai ryšiai: gautas klaidingas opcode: %#x"
 
-#: src/ExternalConn.cpp:1360
+#: src/ExternalConn.cpp:1361
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Klaidingas opcode (bloga protokolo versija?)"
 
@@ -2503,7 +2503,7 @@ msgstr "Iš viso nepavykusių išsiuntimų: %s"
 msgid "Average upload time: %s"
 msgstr "Vidutiniškai išsiuntimas trunka: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:916 src/muuli_wdr.cpp:423
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:918 src/muuli_wdr.cpp:423
 msgid "Downloads"
 msgstr "Siuntimai"
 
@@ -2853,7 +2853,7 @@ msgstr "Informacija"
 msgid "The specified userhash is not valid!"
 msgstr "Nurodyta naudotojo maišos f-ja klaidinga!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:200
+#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:201
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Šaltiniai"
@@ -2868,7 +2868,7 @@ msgstr "Failas"
 msgid "Download"
 msgstr "Atsiųsti"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:983
+#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:986
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Kategorija"
@@ -2912,168 +2912,150 @@ msgstr "Viskas"
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Iš viso naudotojų: %s | Iš viso failų: %s"
 
-#: src/DownloadListCtrl.cpp:196 src/ClientListCtrl.cpp:520
+#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:520
 msgid "Transferred"
 msgstr "Persiųsta"
 
-#: src/DownloadListCtrl.cpp:197 src/TransferWnd.cpp:347
+#: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
 msgid "Completed"
 msgstr "Baigtos"
 
-#: src/DownloadListCtrl.cpp:198 src/ClientListCtrl.cpp:519
+#: src/DownloadListCtrl.cpp:199 src/ClientListCtrl.cpp:519
 msgid "Speed"
 msgstr "Sparta"
 
-#: src/DownloadListCtrl.cpp:199
+#: src/DownloadListCtrl.cpp:200
 msgid "Progress"
 msgstr "Progresas"
 
-#: src/DownloadListCtrl.cpp:202 src/ClientListCtrl.cpp:523
+#: src/DownloadListCtrl.cpp:203 src/ClientListCtrl.cpp:523
 msgid "Status"
 msgstr "Būsena"
 
-#: src/DownloadListCtrl.cpp:203
+#: src/DownloadListCtrl.cpp:204
 msgid "Time Remaining"
 msgstr "Likęs laikas"
 
-#: src/DownloadListCtrl.cpp:204
+#: src/DownloadListCtrl.cpp:205
 msgid "Last Seen Complete"
 msgstr "Paskutinį kartą matyta pilna"
 
-#: src/DownloadListCtrl.cpp:205
+#: src/DownloadListCtrl.cpp:206
 msgid "Last Reception"
 msgstr "Paskutinį kartą siųsta"
 
-#: src/DownloadListCtrl.cpp:610
+#: src/DownloadListCtrl.cpp:612
 msgid "Are you sure that you wish to delete the selected file(s)?"
 msgstr "Ar tikrai norite pašalinti pažymėtus failus?"
 
-#: src/DownloadListCtrl.cpp:865 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:867 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
 msgstr "Siųsti žinutę naudotojui"
 
-#: src/DownloadListCtrl.cpp:866 src/ClientListCtrl.cpp:362
+#: src/DownloadListCtrl.cpp:868 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
 msgstr "Siųsti žinutę:"
 
-#: src/DownloadListCtrl.cpp:926 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Sustabdyti"
 
-#: src/DownloadListCtrl.cpp:927 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:929 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pauzė"
 
-#: src/DownloadListCtrl.cpp:928 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:930 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Tęsti"
 
-#: src/DownloadListCtrl.cpp:929
+#: src/DownloadListCtrl.cpp:931
 msgid "C&lear completed"
 msgstr "I&švalyti baigtus failus"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:937
 msgid "Swap every A4AF to this file now"
 msgstr "Visų naudotojų, turinčių šį failą, prašyti šio failo dabar pat"
 
-#: src/DownloadListCtrl.cpp:937
+#: src/DownloadListCtrl.cpp:939
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Visų naudotojų, turinčių šį failą, prašyti šio failo automatiškai"
 
-#: src/DownloadListCtrl.cpp:942
+#: src/DownloadListCtrl.cpp:944
 msgid "Swap every A4AF to any other file now"
 msgstr "Visų naudotojų, turinčių šį failą, prašyti kito failo dabar pat"
 
-#: src/DownloadListCtrl.cpp:947
-msgid "Drop No Needed Sources now"
-msgstr "Atmesti nereikalingus šaltinius dabar pat"
-
-#: src/DownloadListCtrl.cpp:949
-msgid "Drop Full Queue Sources now"
-msgstr "Atmesti šaltinius, kurių eilės pilnos, dabar pat"
-
-#: src/DownloadListCtrl.cpp:951
-msgid "Drop High Queue Rating Sources now"
-msgstr "Atmesti šaltinius, kurių eilės aukšto reitingo, dabar pat"
-
-#: src/DownloadListCtrl.cpp:953
-msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-msgstr ""
-"Išvalyti šaltinius dabar pat (nereikalingus, pilnomis eilėmis ir aukšto "
-"reitingo)"
-
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:958
 msgid "Extended Options"
 msgstr "Papildomi veiksmai"
 
-#: src/DownloadListCtrl.cpp:966 src/DownloadListCtrl.cpp:1019
+#: src/DownloadListCtrl.cpp:969 src/DownloadListCtrl.cpp:1022
 msgid "Preview"
 msgstr "Peržiūra"
 
-#: src/DownloadListCtrl.cpp:967
+#: src/DownloadListCtrl.cpp:970
 msgid "Show file &details"
 msgstr "&Rodyti failo savybes"
 
-#: src/DownloadListCtrl.cpp:969 src/muuli_wdr.cpp:838
+#: src/DownloadListCtrl.cpp:972 src/muuli_wdr.cpp:838
 msgid "Show all comments"
 msgstr "Rodyti komentarus"
 
-#: src/DownloadListCtrl.cpp:974
+#: src/DownloadListCtrl.cpp:977
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopijuoti magneto URI į talpyklę"
 
-#: src/DownloadListCtrl.cpp:987
+#: src/DownloadListCtrl.cpp:990
 msgid "unassign"
 msgstr "Nepriskirti niekur"
 
-#: src/DownloadListCtrl.cpp:994
+#: src/DownloadListCtrl.cpp:997
 msgid "Assign to category"
 msgstr "Priskirti į kategoriją"
 
-#: src/DownloadListCtrl.cpp:1023
+#: src/DownloadListCtrl.cpp:1026
 msgid "&Open the file"
 msgstr "&Atverti failą"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
 msgstr "Pašalinti iš draugų"
 
-#: src/DownloadListCtrl.cpp:1054 src/ClientListCtrl.cpp:253
+#: src/DownloadListCtrl.cpp:1058 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
 msgstr "Įdėti į draugus"
 
-#: src/DownloadListCtrl.cpp:1056 src/ClientListCtrl.cpp:255
+#: src/DownloadListCtrl.cpp:1060 src/ClientListCtrl.cpp:255
 msgid "Send message"
 msgstr "Siųsti žinutę"
 
-#: src/DownloadListCtrl.cpp:1057
+#: src/DownloadListCtrl.cpp:1061
 msgid "Swap to this file"
 msgstr "Keisti į šį failą"
 
-#: src/DownloadListCtrl.cpp:1475 src/DownloadListCtrl.cpp:1485
+#: src/DownloadListCtrl.cpp:1479 src/DownloadListCtrl.cpp:1489
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1709
+#: src/DownloadListCtrl.cpp:1713
 msgid "A4AF"
 msgstr "Ats. kitą failą"
 
-#: src/DownloadListCtrl.cpp:1759
+#: src/DownloadListCtrl.cpp:1763
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "Reitingas: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1773
+#: src/DownloadListCtrl.cpp:1777
 msgid "Asked for another file"
 msgstr "Atsiunčiamas kitas failas"
 
-#: src/DownloadListCtrl.cpp:2103
+#: src/DownloadListCtrl.cpp:2107
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Atsiuntimai (%i)"
 
-#: src/DownloadListCtrl.cpp:2286
+#: src/DownloadListCtrl.cpp:2290
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3082,15 +3064,15 @@ msgstr ""
 "Nurodykite parinktyse pageidaujamą vi parinktysedeo grotuvą.\n"
 "Tuo tarpu aMule bandys naudoti mplayer grotuvą ir kaskart rodys šį pranešimą."
 
-#: src/DownloadListCtrl.cpp:2289
+#: src/DownloadListCtrl.cpp:2293
 msgid "File preview"
 msgstr "Failo peržiūra"
 
-#: src/DownloadListCtrl.cpp:2308
+#: src/DownloadListCtrl.cpp:2312
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "KLAIDA: Nepavyko paleisti išorinio vaizdo grotuvo!"
 
-#: src/DownloadListCtrl.cpp:2309
+#: src/DownloadListCtrl.cpp:2313
 #, c-format
 msgid "Command: %s"
 msgstr "Komanda: %s"
@@ -3236,31 +3218,31 @@ msgstr "Aptikta baigta dalis (%i) %s"
 msgid "Finished rehashing %s"
 msgstr "Baigtas maišos funkcijos perskaičiavimas %s"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2233
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr ""
 "Patvirtinant baigtą failo %s siuntimą įvyko nežinoma klaida. Failas "
 "pristabdytas."
 
-#: src/PartFile.cpp:2258
+#: src/PartFile.cpp:2259
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Atsiųsta: %s"
 
-#: src/PartFile.cpp:2315
+#: src/PartFile.cpp:2316
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Šalinamas failas: %s"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2380
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Dėmesio: nepavyko apskaičiuoti atsiųstos dalies maišos funkcijos – nebaigta "
 "dalis %s."
 
-#: src/PartFile.cpp:2384
+#: src/PartFile.cpp:2385
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3269,39 +3251,39 @@ msgstr ""
 "Klaida: nepavyko apskaičiuoti atsiųstos dalie smaišos funkcijos – nebaigta "
 "dalis (%s). To neturėjo niekada atsitikti."
 
-#: src/PartFile.cpp:3062
+#: src/PartFile.cpp:3063
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "Dėmesio: diske nepakanka laisvos vietos! Failas pristabdomas: %s"
 
-#: src/PartFile.cpp:3127
+#: src/PartFile.cpp:3128
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Atsiųsta sugadinta %i dalis: %s"
 
-#: src/PartFile.cpp:3170
+#: src/PartFile.cpp:3171
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "Klaidų taisymo įrankis: atstatyta sugadinta dalis %i %s –> išgelbėta %s baitų"
 
-#: src/PartFile.cpp:3745 src/muuli_wdr.cpp:3669
+#: src/PartFile.cpp:3747 src/muuli_wdr.cpp:3669
 msgid "Comments"
 msgstr "Komentarai"
 
-#: src/PartFile.cpp:3746
+#: src/PartFile.cpp:3748
 msgid "doesn't work"
 msgstr "neveikia"
 
-#: src/PartFile.cpp:3748
+#: src/PartFile.cpp:3750
 msgid "remote gui"
 msgstr "nutolusi grafinė aplinka"
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3848
 msgid "Insufficient Diskspace"
 msgstr "Nepakanka vietos diske"
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
 msgid "Stopped"
 msgstr "Sustabdyta"
 
@@ -7211,6 +7193,20 @@ msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti skaitymui!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti rašymui!"
+
+#~ msgid "Drop No Needed Sources now"
+#~ msgstr "Atmesti nereikalingus šaltinius dabar pat"
+
+#~ msgid "Drop Full Queue Sources now"
+#~ msgstr "Atmesti šaltinius, kurių eilės pilnos, dabar pat"
+
+#~ msgid "Drop High Queue Rating Sources now"
+#~ msgstr "Atmesti šaltinius, kurių eilės aukšto reitingo, dabar pat"
+
+#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
+#~ msgstr ""
+#~ "Išvalyti šaltinius dabar pat (nereikalingus, pilnomis eilėmis ir aukšto "
+#~ "reitingo)"
 
 #~ msgid "English (U.S.)"
 #~ msgstr "English (U.S.)"
