@@ -1,5 +1,5 @@
 /* XPM */
-static char *wxcas_xpm[] = {
+static const char *wxcas_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 190 2",
 "   c None",

@@ -1,5 +1,5 @@
 /* XPM */
-static char *va[] = {
+static const char *va[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 143 2",
 "   c #BBB732",

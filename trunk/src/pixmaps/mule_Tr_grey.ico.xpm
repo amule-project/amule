@@ -1,5 +1,5 @@
 /* XPM */
-static char *mule_Tr_grey_ico[] = {
+static const char *mule_Tr_grey_ico[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 27 1",
 "  c None",

@@ -1,5 +1,5 @@
 /* XPM */
-static char * amule_xpm[] = {
+static const char * amule_xpm[] = {
 "128 128 1652 2",
 "  	c None",
 ". 	c #753B0E",

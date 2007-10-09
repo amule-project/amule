@@ -1,5 +1,5 @@
 /* XPM */
-static char *tg[] = {
+static const char *tg[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 155 2",
 "   c #002700",

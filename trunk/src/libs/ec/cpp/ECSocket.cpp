@@ -422,7 +422,7 @@ void CECSocket::WriteBufferToSocket(const void *buffer, size_t len)
 
 void ShowZError(int zerror, z_streamp strm)
 {
-	char *p = NULL;
+	const char *p = NULL;
 
 	switch (zerror) {
 		case Z_STREAM_END: p = "Z_STREAM_END"; break;

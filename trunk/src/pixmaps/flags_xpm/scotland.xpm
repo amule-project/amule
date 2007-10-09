@@ -1,5 +1,5 @@
 /* XPM */
-static char *scotland[] = {
+static const char *scotland[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 143 2",
 "   c #000061",

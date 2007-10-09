@@ -1,5 +1,5 @@
 /* XPM */
-static char *ie[] = {
+static const char *ie[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 134 2",
 "   c #005300",

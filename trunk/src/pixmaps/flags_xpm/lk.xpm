@@ -1,5 +1,5 @@
 /* XPM */
-static char *lk[] = {
+static const char *lk[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 159 2",
 "   c #9B2D3F",

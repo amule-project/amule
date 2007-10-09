@@ -1,5 +1,5 @@
 /* XPM */
-static char * mule_Tr_grey_big_ico_xpm[] = {
+static const char * mule_Tr_grey_big_ico_xpm[] = {
 "22 22 106 2",
 "  	c #ff0000",
 ". 	c #3B3B3B",
