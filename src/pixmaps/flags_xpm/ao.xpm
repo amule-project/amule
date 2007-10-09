@@ -1,5 +1,5 @@
 /* XPM */
-static char *ao[] = {
+static const char *ao[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 114 2",
 "   c gray11",

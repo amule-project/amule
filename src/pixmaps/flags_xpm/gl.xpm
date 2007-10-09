@@ -1,5 +1,5 @@
 /* XPM */
-static char *gl[] = {
+static const char *gl[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 124 2",
 "   c #DD0000",

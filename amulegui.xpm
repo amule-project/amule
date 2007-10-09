@@ -1,5 +1,5 @@
 /* XPM */
-static char *amule[]={
+static const char *amule[]={
 "32 32 496 2",
 "Qt c None",
 ".i c #75777a",

@@ -1,5 +1,5 @@
 /* XPM */
-static char *gi[] = {
+static const char *gi[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 113 2",
 "   c #B93D35",

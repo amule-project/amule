@@ -1,5 +1,5 @@
 /* XPM */
-static char *yt[] = {
+static const char *yt[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 133 2",
 "   c #D83B29",

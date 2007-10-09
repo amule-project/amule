@@ -1,5 +1,5 @@
 /* XPM */
-static char *kn[] = {
+static const char *kn[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 145 2",
 "   c black",

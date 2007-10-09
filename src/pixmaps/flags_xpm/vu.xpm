@@ -1,5 +1,5 @@
 /* XPM */
-static char *vu[] = {
+static const char *vu[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 155 2",
 "   c black",

@@ -1,5 +1,5 @@
 /* XPM */
-static char *bg[] = {
+static const char *bg[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 143 2",
 "   c black",

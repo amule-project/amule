@@ -1,5 +1,5 @@
 /* XPM */
-static char *iq[] = {
+static const char *iq[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 141 2",
 "   c black",

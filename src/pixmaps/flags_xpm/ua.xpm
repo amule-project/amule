@@ -1,5 +1,5 @@
 /* XPM */
-static char *ua[] = {
+static const char *ua[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 148 2",
 "   c #DDB500",

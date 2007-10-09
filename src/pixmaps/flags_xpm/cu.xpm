@@ -1,5 +1,5 @@
 /* XPM */
-static char *cu[] = {
+static const char *cu[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 160 2",
 "   c #00005F",

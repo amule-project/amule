@@ -1,5 +1,5 @@
 /* XPM */
-static char * aMule_xpm[] = {
+static const char * aMule_xpm[] = {
 "32 42 589 2",
 "  	c None",
 ". 	c #EFEFEF",

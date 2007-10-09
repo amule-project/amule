@@ -1,5 +1,5 @@
 /* XPM */
-static char *europeanunion[] = {
+static const char *europeanunion[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 136 2",
 "   c #333A66",

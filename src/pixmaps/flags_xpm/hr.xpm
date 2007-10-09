@@ -1,5 +1,5 @@
 /* XPM */
-static char *hr[] = {
+static const char *hr[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 129 2",
 "   c #E70000",

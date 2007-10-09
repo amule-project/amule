@@ -1,5 +1,5 @@
 /* XPM */
-static char *catalonia[] = {
+static const char *catalonia[] = {
 /* columns rows colors chars-per-pixel */
 "16 11 137 2",
 "   c #E71802",

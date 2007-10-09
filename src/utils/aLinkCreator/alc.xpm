@@ -1,5 +1,5 @@
 /* XPM */
-static char *alc[] = {
+static const char *alc[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 17 1",
 "  c black",
