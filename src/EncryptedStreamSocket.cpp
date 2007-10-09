@@ -112,8 +112,12 @@ static unsigned char dh768_p[]={
         0x8F,0x05,0x15,0x0F,0x54,0x8B,0x5F,0x43,0x6A,0xF7,0x0D,0xF3,
         };
 
-#define SOCKET_ERROR -1
-		
+// winsock2.h already defines it
+#ifdef SOCKET_ERROR
+#undef SOCKET_ERROR
+#endif
+#define SOCKET_ERROR (-1)
+
 IMPLEMENT_DYNAMIC_CLASS(CEncryptedStreamSocket, CSocketClientProxy)
 
 CEncryptedStreamSocket::CEncryptedStreamSocket(wxSocketFlags flags, const CProxyData *proxyData) : CSocketClientProxy(flags, proxyData)
