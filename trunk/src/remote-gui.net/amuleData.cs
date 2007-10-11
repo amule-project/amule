@@ -5,6 +5,36 @@ using System.Security.Cryptography;
 
 namespace amule.net
 {
+    public class FileGap : IComparable {
+        public Int64 m_start, m_end;
+
+        public int CompareTo(object obj)
+        {
+            if ( obj is FileGap ) {
+                FileGap temp = (FileGap)obj;
+                return m_start.CompareTo(temp.m_start);
+            }
+            throw new ArgumentException("object is not a FileGap");
+        }
+    }
+
+    public class GapBuffer {
+        FileGap[] m_buffer;
+
+        public GapBuffer(byte[] raw_buffer)
+        {
+            BinaryReader br = new BinaryReader(new MemoryStream(raw_buffer));
+            int bufsize = raw_buffer.GetLength(0) / (2 * sizeof(Int64));
+            m_buffer = new FileGap[bufsize];
+            for ( int i = 0; i < bufsize; i++ ) {
+                m_buffer[i] = new FileGap();
+                m_buffer[i].m_start = br.ReadInt64();
+                m_buffer[i].m_end = br.ReadInt64();
+            }
+            System.Array.Sort(m_buffer);
+        }
+    }
+
     ///
     /// RLE implementation. I need only decoder part
     ///
@@ -75,7 +105,7 @@ namespace amule.net
         }
     }
 
-    class PartFileEncoderData {
+    public class PartFileEncoderData {
         public RLE_Data m_part_status;
         public RLE_Data m_gap_status;
 
@@ -304,9 +334,12 @@ namespace amule.net
         Int64 m_size_xfered, m_size_done;
         Int32 m_speed;
 
+        PartFileEncoderData m_encoder;
 
-        public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size) : base(id, name, size)
+        public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size, PartFileEncoderData encoder)
+            : base(id, name, size)
         {
+            m_encoder = encoder;
         }
 
         public void UpdateItem(ecProto.ecTag tag)
@@ -324,6 +357,17 @@ namespace amule.net
             if ( itag != null ) {
                 m_speed = (Int32)itag.Value64();
             }
+
+            ecProto.ecTagCustom gapstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_GAP_STATUS);
+            ecProto.ecTagCustom partstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_PART_STATUS);
+            m_encoder.Decode(gapstat.Value(), partstat.Value());
+
+            ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
+            BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
+
+            // TODO: add colored status bar code
+            // ported code from webserver
+            GapBuffer b = new GapBuffer(reqstat.Value());
         }
 	
         public string SizeDone
@@ -357,14 +401,6 @@ namespace amule.net
             if ( !m_enc_map.ContainsKey(id) ) {
                 throw new Exception("No RLE decoder for download queue item");
             }
-            PartFileEncoderData decoder = m_enc_map[id];
-            ecProto.ecTagCustom gapstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_GAP_STATUS);
-            ecProto.ecTagCustom partstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_PART_STATUS);
-            decoder.Decode(gapstat.Value(), partstat.Value());
-
-            ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
-            BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
-            // TODO: add colored status bar code
         }
 
         override protected DownloadQueueItem CreateItem(ecProto.ecTag tag)
@@ -372,9 +408,11 @@ namespace amule.net
             ecProto.ecMD5 id = ((ecProto.ecTagMD5)tag).ValueMD5();
             string filename = ((ecProto.ecTagString)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_NAME)).StringValue();
             Int64 filesize = (Int64)((ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SIZE_FULL)).Value64();
-            DownloadQueueItem i = new DownloadQueueItem(id, filename, filesize);
 
-            m_enc_map[id] = new PartFileEncoderData((int)(filesize / 9728000), 10);
+            PartFileEncoderData e = new PartFileEncoderData((int)(filesize / 9728000), 10);
+            m_enc_map[id] = e;
+
+            DownloadQueueItem i = new DownloadQueueItem(id, filename, filesize, e);
 
             i.UpdateItem(tag);
 

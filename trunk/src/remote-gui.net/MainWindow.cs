@@ -265,6 +265,7 @@ namespace amule.net
         {
             Dock = DockStyle.Fill;
             View = View.Details;
+            DoubleBuffered = true;
         }
 
         public void LoadColumns(string [] columns, int [] width)
@@ -288,6 +289,7 @@ namespace amule.net
 
             
             OwnerDraw = true;
+            DoubleBuffered = true;
             DrawColumnHeader +=
                 new DrawListViewColumnHeaderEventHandler(amuleDownloadStatusList_DrawColumnHeader);
 
@@ -296,7 +298,20 @@ namespace amule.net
 
         void amuleDownloadStatusList_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
-            e.DrawBackground();
+            if ( e.ColumnIndex == 1 ) {
+                // status is colored bar
+                Rectangle r = e.Bounds;
+                Brush br = new SolidBrush(Color.Aqua);
+                e.Graphics.FillRectangle(br, r);
+                DownloadQueueItem it = e.Item.Tag as DownloadQueueItem;
+                Bitmap status_bmp = new Bitmap(r.Width, r.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                e.Graphics.DrawImage(status_bmp, r);
+
+                e.DrawDefault = false;
+            }
+            else {
+                e.DrawBackground();
+            }
             e.DrawText();
             if ( e.Item.Selected ) {
                 e.DrawFocusRectangle(e.Bounds);
@@ -320,6 +335,8 @@ namespace amule.net
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.SizeDone));
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Speed));
+            it.Tag = i;
+
             Items.Add(it);
 
             i.UiItem = it;
@@ -328,9 +345,15 @@ namespace amule.net
         void DoUpdateItem(DownloadQueueItem i)
         {
             ListViewItem it =  i.UiItem as ListViewItem;
-            it.SubItems[1].Text = i.PercentDone;
-            it.SubItems[3].Text = i.SizeDone;
-            it.SubItems[4].Text = i.Speed;
+            if ( it.SubItems[1].Text != i.PercentDone ) {
+                it.SubItems[1].Text = i.PercentDone;
+            }
+            if ( it.SubItems[3].Text != i.SizeDone ) {
+                it.SubItems[3].Text = i.SizeDone;
+            }
+            if ( it.SubItems[4].Text != i.Speed ) {
+                it.SubItems[4].Text = i.Speed;
+            }
             //Items
         }
 

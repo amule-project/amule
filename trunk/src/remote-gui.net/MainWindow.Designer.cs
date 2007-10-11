@@ -32,7 +32,6 @@ namespace amule.net
             this.panelStatus = new System.Windows.Forms.Panel();
             this.textLinktatus = new System.Windows.Forms.TextBox();
             this.panelToolbar = new System.Windows.Forms.Panel();
-            this.panelMain = new System.Windows.Forms.Panel();
             this.buttonAbout = new System.Windows.Forms.Button();
             this.buttonPrefs = new System.Windows.Forms.Button();
             this.buttonAddLink = new System.Windows.Forms.Button();
@@ -40,6 +39,7 @@ namespace amule.net
             this.buttonNetwork = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
             this.buttonXfer = new System.Windows.Forms.Button();
+            this.panelMain = new System.Windows.Forms.Panel();
             this.panelStatus.SuspendLayout();
             this.panelToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -76,14 +76,6 @@ namespace amule.net
             this.panelToolbar.Name = "panelToolbar";
             this.panelToolbar.Size = new System.Drawing.Size(678, 45);
             this.panelToolbar.TabIndex = 1;
-            // 
-            // panelMain
-            // 
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 45);
-            this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(678, 317);
-            this.panelMain.TabIndex = 2;
             // 
             // buttonAbout
             // 
@@ -161,6 +153,14 @@ namespace amule.net
             this.buttonXfer.TabIndex = 0;
             this.buttonXfer.UseVisualStyleBackColor = true;
             this.buttonXfer.Click += new System.EventHandler(this.buttonXfer_Click);
+            // 
+            // panelMain
+            // 
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 45);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(678, 317);
+            this.panelMain.TabIndex = 2;
             // 
             // MainWindow
             // 
