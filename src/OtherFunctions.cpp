@@ -40,6 +40,7 @@
 #include <common/StringFunctions.h>
 #include <common/MD5Sum.h>
 #include "MD4Hash.h"
+#include "Logger.h"
 
 #ifndef EC_REMOTE
 	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
@@ -1153,6 +1154,19 @@ void MilliSleep(uint32 msecs)
 
 wxString GetConfigDir()
 {
+#ifndef EC_REMOTE
+// "Portable aMule" - Use aMule from an external USB drive
+// Check for ./config/amule.conf and use this configuration if found
+
+	wxString ConfigDir = JoinPaths(wxFileName::GetCwd(),wxT("config"));
+	if ( CheckDirExists( ConfigDir ) && 
+		CheckFileExists( JoinPaths(ConfigDir,wxT("amule.conf")) )
+		)
+	{
+		AddLogLineM(false, wxT("Using configDir: %s\n") + ConfigDir);
+		return ConfigDir + wxFileName::GetPathSeparator();
+	}
+#endif
 	return wxStandardPaths::Get().GetUserDataDir() + wxFileName::GetPathSeparator();
 }
 
