@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-07 03:30+0200\n"
+"POT-Creation-Date: 2007-10-12 03:30+0200\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -69,22 +69,22 @@ msgid "Complete"
 msgstr "Amaitua"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3842
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Geraturik"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3845
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:806
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Akatsduna"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3852
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Deskargatzen"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3854
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:804
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Zain"
 
@@ -956,7 +956,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Igoerak: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1350
-#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:159
+#: src/DownloadListCtrl.cpp:1659 src/OtherFunctions.cpp:160
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -2903,8 +2903,8 @@ msgstr "Urruneko amulera konektatu"
 msgid "Connection failed "
 msgstr "Konexioak huts egin du"
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:132
-#: src/OtherFunctions.cpp:150 src/OtherFunctions.cpp:204 src/amule.cpp:852
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:852
 #: src/amule.cpp:970 src/amule.cpp:1346
 msgid "Error"
 msgstr "Errorea"
@@ -2923,7 +2923,7 @@ msgid "Transferred"
 msgstr "Transferituta"
 
 #: src/DownloadListCtrl.cpp:198 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:803
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
 msgid "Completed"
 msgstr "Amaitua"
 
@@ -3291,7 +3291,7 @@ msgstr "Urruneko interfazea"
 msgid "Insufficient Diskspace"
 msgstr "Disko leku askieza"
 
-#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:808
+#: src/PartFile.cpp:3859 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Gelditua"
 
@@ -4168,38 +4168,38 @@ msgstr "Baieztapena Beharrezkoa"
 msgid "All others"
 msgstr "Beste guztiak"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:802
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
 msgid "Incomplete"
 msgstr "Amaitugabea"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:815
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
 msgid "Active"
 msgstr "Martxan"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:809
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
 msgid "Video"
 msgstr "Bideoa"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:271
-#: src/OtherFunctions.cpp:810 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
+#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Audioa"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:811
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
 msgid "Archive"
 msgstr "Fitxategia"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:285
-#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
+#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Imaginak"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:292
-#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
+#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Irudiak"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:814
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
 msgid "Text"
 msgstr "Testua"
 
@@ -4332,115 +4332,115 @@ msgstr "Zain..."
 msgid "%s (Disk: %s)"
 msgstr "%s (Diskoa: %s)"
 
-#: src/OtherFunctions.cpp:122
+#: src/OtherFunctions.cpp:123
 msgid "bytes"
 msgstr "byte"
 
-#: src/OtherFunctions.cpp:124
+#: src/OtherFunctions.cpp:125
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:126 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:128 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:130
+#: src/OtherFunctions.cpp:131
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:142
+#: src/OtherFunctions.cpp:143
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:144
+#: src/OtherFunctions.cpp:145
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:146
+#: src/OtherFunctions.cpp:147
 msgid "G"
 msgstr "A"
 
-#: src/OtherFunctions.cpp:148
+#: src/OtherFunctions.cpp:149
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:157
+#: src/OtherFunctions.cpp:158
 msgid "bytes/sec"
 msgstr "byte/seg"
 
-#: src/OtherFunctions.cpp:161
+#: src/OtherFunctions.cpp:162
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:172 src/OtherFunctions.cpp:176
+#: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
 msgid "secs"
 msgstr "seg"
 
-#: src/OtherFunctions.cpp:184
+#: src/OtherFunctions.cpp:185
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:191 src/OtherFunctions.cpp:201
+#: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
 msgid "hours"
 msgstr "ordu"
 
-#: src/OtherFunctions.cpp:199
+#: src/OtherFunctions.cpp:200
 msgid "Days"
 msgstr "Egunak"
 
-#: src/OtherFunctions.cpp:264 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Bideoak"
 
-#: src/OtherFunctions.cpp:278 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Konprimituak"
 
-#: src/OtherFunctions.cpp:299 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr "Testuak"
 
-#: src/OtherFunctions.cpp:306 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programak"
 
-#: src/OtherFunctions.cpp:313 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "Edozein"
 
-#: src/OtherFunctions.cpp:391 src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Kalifikatu gabea"
 
-#: src/OtherFunctions.cpp:392 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Baliogabe / Apurturik / Gezurra"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Pobrea"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Oso ona"
 
-#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Ondo"
 
-#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Ezinobea"
 
-#: src/OtherFunctions.cpp:800
+#: src/OtherFunctions.cpp:801
 msgid "all"
 msgstr "denak"
 
-#: src/OtherFunctions.cpp:801
+#: src/OtherFunctions.cpp:802
 msgid "all others"
 msgstr "Beste denak"
 
