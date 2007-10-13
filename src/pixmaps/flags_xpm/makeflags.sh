@@ -22,8 +22,8 @@ echo >> CountryFlags.h
 # Define the struct
 echo 'struct FlagXPMCode' >> CountryFlags.h
 echo '{' >> CountryFlags.h
-echo '	char **xpm;' >> CountryFlags.h
-echo '	char *code;' >> CountryFlags.h
+echo '	const char **xpm;' >> CountryFlags.h
+echo '	const char *code;' >> CountryFlags.h
 echo '};' >> CountryFlags.h
 echo >> CountryFlags.h
 echo >> CountryFlags.h
