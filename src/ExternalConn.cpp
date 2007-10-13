@@ -844,7 +844,6 @@ CPartFile_Encoder &CPartFile_Encoder::operator=(const CPartFile_Encoder &obj)
 	return *this;
 }
 
-#warning Kry - lfroen, please fix this to work with 64bits
 void CPartFile_Encoder::Encode(CECTag *parent)
 {
 	const CPartFile::CGapPtrList& gaplist = m_file->GetGapList();
