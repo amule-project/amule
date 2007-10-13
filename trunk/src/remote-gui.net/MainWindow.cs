@@ -53,7 +53,7 @@ namespace amule.net
             MainWindow w = (MainWindow)((Timer)myObject).Tag;
 
             // TODO: for testing 1 request is enough
-            //w.m_updateTimer.Stop();
+            w.m_updateTimer.Stop();
 
             ecProto.ecPacket req = null;
             switch(w.m_req_state) {
@@ -296,17 +296,47 @@ namespace amule.net
             DrawSubItem += new DrawListViewSubItemEventHandler(amuleDownloadStatusList_DrawSubItem);
         }
 
+        unsafe void DrawStatusBar(DownloadQueueItem it, Graphics g, Rectangle posR)
+        {
+            //
+            // Bitmap is created as 24bpp, but locked as 32bpp (rgb+alpha)
+            //
+            Bitmap status_bmp = new Bitmap(posR.Width, posR.Height,
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            System.Drawing.Imaging.BitmapData bmd = status_bmp.LockBits(new Rectangle(0, 0, status_bmp.Width, status_bmp.Height),
+                System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            Int32 [] item_color_line = it.ColorLine();
+
+            for ( int y = 0; y < bmd.Height; y++ ) {
+                byte* row = (byte *)bmd.Scan0 + (y * bmd.Stride);
+
+                for ( int x = 0; x < bmd.Width; x++ ) {
+                    Int32* pixel_ptr = (Int32*)(row + x * 4);
+                    //row[x * 3 + 2] = 255;
+                    //*pixel_ptr = 0xff0000; RED
+                    //*pixel_ptr = 0x00ff00; GREEN
+                    //*pixel_ptr = 0x0000ff; BLUE
+                    *pixel_ptr = item_color_line[x];
+                }
+
+            }
+
+            status_bmp.UnlockBits(bmd);
+
+            g.DrawImage(status_bmp, posR);
+            status_bmp.Dispose();
+        }
+
         void amuleDownloadStatusList_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
             if ( e.ColumnIndex == 1 ) {
                 // status is colored bar
                 Rectangle r = e.Bounds;
-                Brush br = new SolidBrush(Color.Aqua);
-                e.Graphics.FillRectangle(br, r);
                 DownloadQueueItem it = e.Item.Tag as DownloadQueueItem;
-                Bitmap status_bmp = new Bitmap(r.Width, r.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                e.Graphics.DrawImage(status_bmp, r);
-
+                DrawStatusBar(it, e.Graphics, r);
                 e.DrawDefault = false;
             }
             else {

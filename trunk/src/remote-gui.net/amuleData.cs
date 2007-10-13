@@ -7,6 +7,7 @@ namespace amule.net
 {
     public class FileGap : IComparable {
         public Int64 m_start, m_end;
+        public Int32 m_color;
 
         public int CompareTo(object obj)
         {
@@ -19,7 +20,7 @@ namespace amule.net
     }
 
     public class GapBuffer {
-        FileGap[] m_buffer;
+        public FileGap[] m_buffer;
 
         public GapBuffer(byte[] raw_buffer)
         {
@@ -28,10 +29,20 @@ namespace amule.net
             m_buffer = new FileGap[bufsize];
             for ( int i = 0; i < bufsize; i++ ) {
                 m_buffer[i] = new FileGap();
-                m_buffer[i].m_start = br.ReadInt64();
-                m_buffer[i].m_end = br.ReadInt64();
+                m_buffer[i].m_start = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt64());
+                m_buffer[i].m_end = System.Net.IPAddress.NetworkToHostOrder(br.ReadInt64());
             }
             System.Array.Sort(m_buffer);
+        }
+        public GapBuffer(int size)
+        {
+            m_buffer = new FileGap[size];
+            for ( int i = 0; i < size; i++ ) {
+                m_buffer[i] = new FileGap();
+            }
+            m_buffer[0].m_start = 0;
+            m_buffer[0].m_end = 0;
+            m_buffer[0].m_color = 0;
         }
     }
 
@@ -51,6 +62,11 @@ namespace amule.net
             // in worst case 2-byte sequence encoded as 3. So, data can grow at 1/3
             m_enc_buff = new byte[m_len*4/3 + 1];
             m_buff = new byte[m_len];
+        }
+
+        public byte[] Buffer()
+        {
+            return m_buff;
         }
 
         public void Realloc(int size)
@@ -285,6 +301,7 @@ namespace amule.net
         protected string m_filename;
         protected Int64 m_filesize;
 
+        protected const Int32 FILE_PARTSIZE = 9728000;
         object m_ui_item;
 
         public amuleFileItem(ecProto.ecMD5 id, string name, Int64 size)
@@ -334,12 +351,29 @@ namespace amule.net
         Int64 m_size_xfered, m_size_done;
         Int32 m_speed;
 
-        PartFileEncoderData m_encoder;
+        PartFileEncoderData m_decoder;
+
+        //
+        // Used for colored status
+        //
+        GapBuffer m_color_gap_buff;
+        GapBuffer m_req_parts;
+        //
+        // In Format24BppRgb format order is BLUE.GREEN.RED
+        //
+        Int32[] m_color_line;
+
+        public Int32[] ColorLine()
+        {
+            return m_color_line;
+        }
 
         public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size, PartFileEncoderData encoder)
             : base(id, name, size)
         {
-            m_encoder = encoder;
+            m_decoder = encoder;
+            m_color_gap_buff = new GapBuffer((Int32)(size / FILE_PARTSIZE) + 1);
+            m_color_line = new Int32[256];
         }
 
         public void UpdateItem(ecProto.ecTag tag)
@@ -360,16 +394,87 @@ namespace amule.net
 
             ecProto.ecTagCustom gapstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_GAP_STATUS);
             ecProto.ecTagCustom partstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_PART_STATUS);
-            m_encoder.Decode(gapstat.Value(), partstat.Value());
+            m_decoder.Decode(gapstat.Value(), partstat.Value());
 
             ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
             BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
 
-            // TODO: add colored status bar code
-            // ported code from webserver
-            GapBuffer b = new GapBuffer(reqstat.Value());
+            m_req_parts = new GapBuffer(reqstat.Value());
+            DrawLine();
         }
-	
+
+        public void DrawLine()
+        {
+            GapBuffer status_gaps = new GapBuffer(m_decoder.m_gap_status.Buffer());
+            byte[] part_info = m_decoder.m_part_status.Buffer();
+
+            int colored_gaps_size = 0;
+            for ( int j = 0; j < status_gaps.m_buffer.Length; j++ ) {
+                Int64 gap_start = status_gaps.m_buffer[j].m_start;
+                Int64 gap_end = status_gaps.m_buffer[j].m_end;
+                Int64 start = gap_start / FILE_PARTSIZE;
+                Int64 end = (gap_end / FILE_PARTSIZE) + 1;
+
+                //
+                // Order is RGB
+                //
+                Int32 color = 0xff0000;
+                for ( Int64 i = start; i < end; i++ ) {
+                    if ( part_info[i] != 0 ) {
+                        int blue = 210 - (22 * (part_info[i] - 1));
+                        if ( blue < 0 ) { blue = 0; }
+                        color = (blue << 8) | 255;
+                        //color = 0x0000ff;
+                        //color = blue;
+                    }
+                    Int64 fill_gap_begin = ((i == start) ? gap_start : FILE_PARTSIZE * i);
+                    Int64 fill_gap_end = ((i == (end - 1)) ? gap_end : FILE_PARTSIZE * (i + 1));
+
+                    if ( (m_color_gap_buff.m_buffer[colored_gaps_size].m_end == fill_gap_begin) &&
+                        (m_color_gap_buff.m_buffer[colored_gaps_size].m_color == color) ) {
+                        m_color_gap_buff.m_buffer[colored_gaps_size].m_end = fill_gap_end;
+                    }
+                    else {
+                        colored_gaps_size++;
+                        m_color_gap_buff.m_buffer[colored_gaps_size].m_start = fill_gap_begin;
+                        m_color_gap_buff.m_buffer[colored_gaps_size].m_end = fill_gap_end;
+                        m_color_gap_buff.m_buffer[colored_gaps_size].m_color = color;
+                    }
+                }
+            }
+            //
+            // Now actual drawing
+            //
+            int width = m_color_line.Length;
+            for ( int i = 0; i < width; i++ ) {
+                m_color_line[i] = 0;
+            }
+            if ( m_filesize < width ) {
+                //
+                // if file is that small, draw it in single step
+                //
+                if ( m_req_parts.m_buffer.Length != 0 ) {
+                    for ( int i = 0; i < width; i++ ) {
+                        // yellow
+                        m_color_line[i] = 0xffd000;
+                    }
+                } else if ( m_color_gap_buff.m_buffer.Length != 0 ) {
+                    for ( int i = 0; i < width; i++ ) {
+                        m_color_line[i] = m_color_gap_buff.m_buffer[i].m_color;
+                    }
+                }
+            } else {
+                Int32 factor = (Int32)(m_filesize / width);
+                for ( int i = 1; i <= colored_gaps_size; i++ ) {
+                    Int32 start = (Int32)(m_color_gap_buff.m_buffer[i].m_start / factor);
+                    Int32 end = (Int32)(m_color_gap_buff.m_buffer[i].m_end / factor);
+                    for ( Int32 j = start; j < end; j++ ) {
+                        m_color_line[j] = m_color_gap_buff.m_buffer[i].m_color;
+                    }
+                }
+            }
+        }
+
         public string SizeDone
         {
             get { return ValueToPrefix(m_size_done); }
