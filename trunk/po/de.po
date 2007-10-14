@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-12 03:30+0200\n"
+"POT-Creation-Date: 2007-10-14 03:30+0200\n"
 "PO-Revision-Date: 2007-10-01 21:11+0200\n"
 "Last-Translator: Adrian Bense\n"
 "Language-Team:  <de@li.org>\n"
@@ -2252,77 +2252,77 @@ msgstr "Websuche mit der Fernsteuerungsschnittstelle macht keinen Sinn."
 msgid "Kad is disabled in preferences."
 msgstr "Kad ist in den Einstellungen deaktiviert."
 
-#: src/ExternalConn.cpp:965
+#: src/ExternalConn.cpp:964
 msgid "No points for graph."
 msgstr "Keine Punkte für Graphen."
 
-#: src/ExternalConn.cpp:974
+#: src/ExternalConn.cpp:973
 msgid "Your client is not configured for this detail level."
 msgstr "Der Client ist nicht nicht für diese Detailstufe eingestellt."
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1001
 msgid "ExternalConn: shutdown requested"
 msgstr "Externe Verbindungen: Herunterfahren gefordert"
 
-#: src/ExternalConn.cpp:1014
+#: src/ExternalConn.cpp:1013
 msgid "Already shutting down."
 msgstr "Wird bereits heruntergefahren."
 
-#: src/ExternalConn.cpp:1022
+#: src/ExternalConn.cpp:1021
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Externe Verbindungen: Füge hinzu Verweis '%s'."
 
-#: src/ExternalConn.cpp:1028
+#: src/ExternalConn.cpp:1027
 msgid "Invalid link or already on list."
 msgstr "Ungültiger Verweis oder schon auf der Liste"
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1104
 msgid "File not found."
 msgstr "Datei nicht gefunden."
 
-#: src/ExternalConn.cpp:1110
+#: src/ExternalConn.cpp:1109
 msgid "Invalid file name."
 msgstr "Ungültiger Dateiname."
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1117
 msgid "Unable to rename file."
 msgstr "Datei kann nicht umbenannt werden."
 
-#: src/ExternalConn.cpp:1319
+#: src/ExternalConn.cpp:1318
 msgid "Already connected to ED2K."
 msgstr "Bereits mit eD2k verbunden."
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1321
 msgid "Connecting to ED2K..."
 msgstr "Verbinde mit eD2k..."
 
-#: src/ExternalConn.cpp:1330
+#: src/ExternalConn.cpp:1329
 msgid "Already connected to Kad."
 msgstr "Bereits mit Kad verbunden."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1332
 msgid "Connecting to Kad..."
 msgstr "Verbinde mit Kad..."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1337
 msgid "All networks are disabled."
 msgstr "Alle Netzwerke sind deaktiviert."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1345
 msgid "Disconnected from ED2K."
 msgstr "Von eD2k getrennt."
 
-#: src/ExternalConn.cpp:1350
+#: src/ExternalConn.cpp:1349
 msgid "Disconnected from Kad."
 msgstr "Von Kad getrennt."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1357
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "Externe Verbindungen: ungültigen Opcode empfangen: %#x"
 
-#: src/ExternalConn.cpp:1361
+#: src/ExternalConn.cpp:1360
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Ungültiger OpCode (falsche Protokollversion?)"
 

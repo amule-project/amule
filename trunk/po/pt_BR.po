@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-12 03:30+0200\n"
+"POT-Creation-Date: 2007-10-14 03:30+0200\n"
 "PO-Revision-Date: 2007-10-12 02:39-0000\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -2237,77 +2237,77 @@ msgstr "Pesquisa web pela interface remota não faz sentido."
 msgid "Kad is disabled in preferences."
 msgstr "Kad está desabilitado nas preferências"
 
-#: src/ExternalConn.cpp:965
+#: src/ExternalConn.cpp:964
 msgid "No points for graph."
 msgstr "Sem dados para gráfico."
 
-#: src/ExternalConn.cpp:974
+#: src/ExternalConn.cpp:973
 msgid "Your client is not configured for this detail level."
 msgstr "Seu cliente não está configurado para esse nível de detalhes."
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1001
 msgid "ExternalConn: shutdown requested"
 msgstr "ExternalConn: desligamento solicitado"
 
-#: src/ExternalConn.cpp:1014
+#: src/ExternalConn.cpp:1013
 msgid "Already shutting down."
 msgstr "Já estou desligando."
 
-#: src/ExternalConn.cpp:1022
+#: src/ExternalConn.cpp:1021
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: adicionar ligação '%s'."
 
-#: src/ExternalConn.cpp:1028
+#: src/ExternalConn.cpp:1027
 msgid "Invalid link or already on list."
 msgstr "Link inválido ou já está na lista."
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1104
 msgid "File not found."
 msgstr "Arquivo não encontrado."
 
-#: src/ExternalConn.cpp:1110
+#: src/ExternalConn.cpp:1109
 msgid "Invalid file name."
 msgstr "Nome de arquivo inválido."
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1117
 msgid "Unable to rename file."
 msgstr "Não foi possível renomear o arquivo."
 
-#: src/ExternalConn.cpp:1319
+#: src/ExternalConn.cpp:1318
 msgid "Already connected to ED2K."
 msgstr "Já conectado a rede ED2K."
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1321
 msgid "Connecting to ED2K..."
 msgstr "Conectando a rede ED2K..."
 
-#: src/ExternalConn.cpp:1330
+#: src/ExternalConn.cpp:1329
 msgid "Already connected to Kad."
 msgstr "Já conectado a rede Kad."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1332
 msgid "Connecting to Kad..."
 msgstr "Conectando a rede Kad..."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1337
 msgid "All networks are disabled."
 msgstr "Todas as redes estão DESATIVADAS."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1345
 msgid "Disconnected from ED2K."
 msgstr "Desconectado da rede ED2k."
 
-#: src/ExternalConn.cpp:1350
+#: src/ExternalConn.cpp:1349
 msgid "Disconnected from Kad."
 msgstr "Desconectado da rede Kad."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1357
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: opcode inválido recebido: %#x"
 
-#: src/ExternalConn.cpp:1361
+#: src/ExternalConn.cpp:1360
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "opcode inválido (versão errada do protocolo?)"
 
