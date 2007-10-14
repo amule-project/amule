@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-12 03:30+0200\n"
+"POT-Creation-Date: 2007-10-14 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -2250,77 +2250,77 @@ msgstr "При удаленном использовании aMule WWW поис�
 msgid "Kad is disabled in preferences."
 msgstr "Kad выключена в настройках."
 
-#: src/ExternalConn.cpp:965
+#: src/ExternalConn.cpp:964
 msgid "No points for graph."
 msgstr "В графике нет точек."
 
-#: src/ExternalConn.cpp:974
+#: src/ExternalConn.cpp:973
 msgid "Your client is not configured for this detail level."
 msgstr "Ваш клиент не настроен на этот уровень детализации."
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1001
 msgid "ExternalConn: shutdown requested"
 msgstr "Внешнее соединение: запрос на выключение"
 
-#: src/ExternalConn.cpp:1014
+#: src/ExternalConn.cpp:1013
 msgid "Already shutting down."
 msgstr "Уже завершаю работу."
 
-#: src/ExternalConn.cpp:1022
+#: src/ExternalConn.cpp:1021
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: добавляю ссылку '%s'."
 
-#: src/ExternalConn.cpp:1028
+#: src/ExternalConn.cpp:1027
 msgid "Invalid link or already on list."
 msgstr "Ссылка неверна, или уже в списке."
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1104
 msgid "File not found."
 msgstr "Файл не найден."
 
-#: src/ExternalConn.cpp:1110
+#: src/ExternalConn.cpp:1109
 msgid "Invalid file name."
 msgstr "Неверное имя файла."
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1117
 msgid "Unable to rename file."
 msgstr "Невозможно переименовать файл."
 
-#: src/ExternalConn.cpp:1319
+#: src/ExternalConn.cpp:1318
 msgid "Already connected to ED2K."
 msgstr "Уже подключен к ED2K."
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1321
 msgid "Connecting to ED2K..."
 msgstr "Подключаюсь к ED2K..."
 
-#: src/ExternalConn.cpp:1330
+#: src/ExternalConn.cpp:1329
 msgid "Already connected to Kad."
 msgstr "Уже подключен к Kad."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1332
 msgid "Connecting to Kad..."
 msgstr "Подключаюсь к Kad..."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1337
 msgid "All networks are disabled."
 msgstr "Все сети выключены."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1345
 msgid "Disconnected from ED2K."
 msgstr "Отключен от ED2K"
 
-#: src/ExternalConn.cpp:1350
+#: src/ExternalConn.cpp:1349
 msgid "Disconnected from Kad."
 msgstr "Отключен от Kad."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1357
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: получен неверный opcode: %#x"
 
-#: src/ExternalConn.cpp:1361
+#: src/ExternalConn.cpp:1360
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Неверный opcode (Возможно, не та версия протокола)"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-12 03:30+0200\n"
+"POT-Creation-Date: 2007-10-14 03:30+0200\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -2240,77 +2240,77 @@ msgstr "Spletno iskanje iz oddaljenega vmesnika nima smisla."
 msgid "Kad is disabled in preferences."
 msgstr "Kad je onemogočen v nastavitvah."
 
-#: src/ExternalConn.cpp:965
+#: src/ExternalConn.cpp:964
 msgid "No points for graph."
 msgstr "Ni točk za graf."
 
-#: src/ExternalConn.cpp:974
+#: src/ExternalConn.cpp:973
 msgid "Your client is not configured for this detail level."
 msgstr "Vaš odjemalec ni nastavljen za to stopnjo podrobnosti."
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1001
 msgid "ExternalConn: shutdown requested"
 msgstr "ExternalConn: zahteva za ustavitev"
 
-#: src/ExternalConn.cpp:1014
+#: src/ExternalConn.cpp:1013
 msgid "Already shutting down."
 msgstr "Ustavljanje že poteka."
 
-#: src/ExternalConn.cpp:1022
+#: src/ExternalConn.cpp:1021
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn: dodajanje povezave '%s'."
 
-#: src/ExternalConn.cpp:1028
+#: src/ExternalConn.cpp:1027
 msgid "Invalid link or already on list."
 msgstr "Neveljavna povezava oz. je že na seznamu."
 
-#: src/ExternalConn.cpp:1105
+#: src/ExternalConn.cpp:1104
 msgid "File not found."
 msgstr "Datoteke ni mogoče najti."
 
-#: src/ExternalConn.cpp:1110
+#: src/ExternalConn.cpp:1109
 msgid "Invalid file name."
 msgstr "Neveljavno ime datoteke."
 
-#: src/ExternalConn.cpp:1118
+#: src/ExternalConn.cpp:1117
 msgid "Unable to rename file."
 msgstr "Ni mogoče preimenovati datoteke."
 
-#: src/ExternalConn.cpp:1319
+#: src/ExternalConn.cpp:1318
 msgid "Already connected to ED2K."
 msgstr "Povezava z ED2K že obstaja."
 
-#: src/ExternalConn.cpp:1322
+#: src/ExternalConn.cpp:1321
 msgid "Connecting to ED2K..."
 msgstr "Povezovanje z ED2K..."
 
-#: src/ExternalConn.cpp:1330
+#: src/ExternalConn.cpp:1329
 msgid "Already connected to Kad."
 msgstr "Povezava s Kad že obstaja."
 
-#: src/ExternalConn.cpp:1333
+#: src/ExternalConn.cpp:1332
 msgid "Connecting to Kad..."
 msgstr "Povezovanje s Kad..."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1337
 msgid "All networks are disabled."
 msgstr "Vsa omrežja so onemogočena."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1345
 msgid "Disconnected from ED2K."
 msgstr "Povezava z ED2K prekinjena."
 
-#: src/ExternalConn.cpp:1350
+#: src/ExternalConn.cpp:1349
 msgid "Disconnected from Kad."
 msgstr "Povezava s Kad prekinjena."
 
-#: src/ExternalConn.cpp:1358
+#: src/ExternalConn.cpp:1357
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: sprejet neveljaven 'opcode': %#x"
 
-#: src/ExternalConn.cpp:1361
+#: src/ExternalConn.cpp:1360
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Neveljaven 'opcode' (napačna različica protokola?)"
 
