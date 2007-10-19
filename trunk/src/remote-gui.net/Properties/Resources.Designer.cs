@@ -60,58 +60,65 @@ namespace amule.net.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap About {
+        internal static System.Drawing.Bitmap Toolbar_About {
             get {
-                object obj = ResourceManager.GetObject("About", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_About", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap About1 {
+        internal static System.Drawing.Bitmap Toolbar_Disconnect {
             get {
-                object obj = ResourceManager.GetObject("About1", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Disconnect", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Import {
+        internal static System.Drawing.Bitmap Toolbar_Import {
             get {
-                object obj = ResourceManager.GetObject("Import", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Import", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Network {
+        internal static System.Drawing.Bitmap Toolbar_Network {
             get {
-                object obj = ResourceManager.GetObject("Network", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Network", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Preferences {
+        internal static System.Drawing.Bitmap Toolbar_Prefs {
             get {
-                object obj = ResourceManager.GetObject("Preferences", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Prefs", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Search {
+        internal static System.Drawing.Bitmap Toolbar_Search {
             get {
-                object obj = ResourceManager.GetObject("Search", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Search", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Shared_Files {
+        internal static System.Drawing.Bitmap Toolbar_Shared {
             get {
-                object obj = ResourceManager.GetObject("Shared_Files", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Shared", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        internal static System.Drawing.Bitmap Transfers {
+        internal static System.Drawing.Bitmap Toolbar_Stats {
             get {
-                object obj = ResourceManager.GetObject("Transfers", resourceCulture);
+                object obj = ResourceManager.GetObject("Toolbar_Stats", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Toolbar_Transfers {
+            get {
+                object obj = ResourceManager.GetObject("Toolbar_Transfers", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

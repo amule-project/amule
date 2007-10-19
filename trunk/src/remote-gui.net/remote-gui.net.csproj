@@ -106,25 +106,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="images\About.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Network.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Preferences.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Shared_Files.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Transfers.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Import.png" />
+    <Content Include="images\Toolbar_About.png" />
+    <Content Include="images\Toolbar_Disconnect.png" />
+    <Content Include="images\Toolbar_Import.png" />
+    <Content Include="images\Toolbar_Network.png" />
+    <Content Include="images\Toolbar_Prefs.png" />
+    <Content Include="images\Toolbar_Search.png" />
+    <Content Include="images\Toolbar_Shared.png" />
+    <Content Include="images\Toolbar_Stats.png" />
+    <Content Include="images\Toolbar_Transfers.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

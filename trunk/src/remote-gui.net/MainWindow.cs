@@ -296,13 +296,19 @@ namespace amule.net
             DrawSubItem += new DrawListViewSubItemEventHandler(amuleDownloadStatusList_DrawSubItem);
         }
 
+        override protected void OnColumnWidthChanged(ColumnWidthChangedEventArgs e)
+        {
+            if ( e.ColumnIndex == 1 ) {
+            }
+        }
+
         unsafe void DrawStatusBar(DownloadQueueItem it, Graphics g, Rectangle posR)
         {
             //
             // Bitmap is created as 24bpp, but locked as 32bpp (rgb+alpha)
             //
             Bitmap status_bmp = new Bitmap(posR.Width, posR.Height,
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             System.Drawing.Imaging.BitmapData bmd = status_bmp.LockBits(new Rectangle(0, 0, status_bmp.Width, status_bmp.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadWrite,
@@ -314,12 +320,12 @@ namespace amule.net
                 byte* row = (byte *)bmd.Scan0 + (y * bmd.Stride);
 
                 for ( int x = 0; x < bmd.Width; x++ ) {
-                    Int32* pixel_ptr = (Int32*)(row + x * 4);
+                    UInt32* pixel_ptr = (UInt32*)(row + x * 4);
                     //row[x * 3 + 2] = 255;
-                    //*pixel_ptr = 0xff0000; RED
-                    //*pixel_ptr = 0x00ff00; GREEN
-                    //*pixel_ptr = 0x0000ff; BLUE
-                    *pixel_ptr = item_color_line[x];
+                    //*pixel_ptr = 0xff0000; //RED
+                    //*pixel_ptr = 0x00ff00; //GREEN
+                    *pixel_ptr = 0x1f0000ff; // BLUE
+                    //*pixel_ptr = item_color_line[x] | (x << 24);
                 }
 
             }

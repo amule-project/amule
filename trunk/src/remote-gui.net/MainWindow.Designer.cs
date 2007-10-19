@@ -28,7 +28,6 @@ namespace amule.net
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.panelStatus = new System.Windows.Forms.Panel();
             this.textLinktatus = new System.Windows.Forms.TextBox();
             this.panelToolbar = new System.Windows.Forms.Panel();
@@ -80,7 +79,7 @@ namespace amule.net
             // buttonAbout
             // 
             this.buttonAbout.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonAbout.Image = global::amule.net.Properties.Resources.About1;
+            this.buttonAbout.Image = global::amule.net.Properties.Resources.Toolbar_About;
             this.buttonAbout.Location = new System.Drawing.Point(270, 0);
             this.buttonAbout.Name = "buttonAbout";
             this.buttonAbout.Size = new System.Drawing.Size(45, 45);
@@ -91,7 +90,7 @@ namespace amule.net
             // buttonPrefs
             // 
             this.buttonPrefs.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonPrefs.Image = global::amule.net.Properties.Resources.Preferences;
+            this.buttonPrefs.Image = global::amule.net.Properties.Resources.Toolbar_Prefs;
             this.buttonPrefs.Location = new System.Drawing.Point(225, 0);
             this.buttonPrefs.Name = "buttonPrefs";
             this.buttonPrefs.Size = new System.Drawing.Size(45, 45);
@@ -102,7 +101,7 @@ namespace amule.net
             // buttonAddLink
             // 
             this.buttonAddLink.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonAddLink.Image = global::amule.net.Properties.Resources.Import;
+            this.buttonAddLink.Image = global::amule.net.Properties.Resources.Toolbar_Import;
             this.buttonAddLink.Location = new System.Drawing.Point(180, 0);
             this.buttonAddLink.Name = "buttonAddLink";
             this.buttonAddLink.Size = new System.Drawing.Size(45, 45);
@@ -113,7 +112,7 @@ namespace amule.net
             // buttonShared
             // 
             this.buttonShared.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonShared.Image = global::amule.net.Properties.Resources.Shared_Files;
+            this.buttonShared.Image = global::amule.net.Properties.Resources.Toolbar_Shared;
             this.buttonShared.Location = new System.Drawing.Point(135, 0);
             this.buttonShared.Name = "buttonShared";
             this.buttonShared.Size = new System.Drawing.Size(45, 45);
@@ -124,7 +123,7 @@ namespace amule.net
             // buttonNetwork
             // 
             this.buttonNetwork.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonNetwork.Image = ((System.Drawing.Image)(resources.GetObject("buttonNetwork.Image")));
+            this.buttonNetwork.Image = global::amule.net.Properties.Resources.Toolbar_Network;
             this.buttonNetwork.Location = new System.Drawing.Point(90, 0);
             this.buttonNetwork.Name = "buttonNetwork";
             this.buttonNetwork.Size = new System.Drawing.Size(45, 45);
@@ -135,7 +134,7 @@ namespace amule.net
             // buttonSearch
             // 
             this.buttonSearch.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonSearch.Image = ((System.Drawing.Image)(resources.GetObject("buttonSearch.Image")));
+            this.buttonSearch.Image = global::amule.net.Properties.Resources.Toolbar_Search;
             this.buttonSearch.Location = new System.Drawing.Point(45, 0);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(45, 45);
@@ -146,7 +145,7 @@ namespace amule.net
             // buttonXfer
             // 
             this.buttonXfer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonXfer.Image = ((System.Drawing.Image)(resources.GetObject("buttonXfer.Image")));
+            this.buttonXfer.Image = global::amule.net.Properties.Resources.Toolbar_Transfers;
             this.buttonXfer.Location = new System.Drawing.Point(0, 0);
             this.buttonXfer.Name = "buttonXfer";
             this.buttonXfer.Size = new System.Drawing.Size(45, 45);
