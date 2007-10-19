@@ -294,6 +294,7 @@ namespace amule.net
                 new DrawListViewColumnHeaderEventHandler(amuleDownloadStatusList_DrawColumnHeader);
 
             DrawSubItem += new DrawListViewSubItemEventHandler(amuleDownloadStatusList_DrawSubItem);
+            DownloadQueueItem.InitDraw3DModifiers(FontHeight+1);
         }
 
         override protected void OnColumnWidthChanged(ColumnWidthChangedEventArgs e)
@@ -305,16 +306,18 @@ namespace amule.net
         unsafe void DrawStatusBar(DownloadQueueItem it, Graphics g, Rectangle posR)
         {
             //
-            // Bitmap is created as 24bpp, but locked as 32bpp (rgb+alpha)
+            // Bitmap is created as 32bpp (rgb+alpha)
             //
             Bitmap status_bmp = new Bitmap(posR.Width, posR.Height,
                 System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            System.Drawing.Imaging.BitmapData bmd = status_bmp.LockBits(new Rectangle(0, 0, status_bmp.Width, status_bmp.Height),
+            System.Drawing.Imaging.BitmapData bmd = status_bmp.LockBits(
+                new Rectangle(0, 0, status_bmp.Width, status_bmp.Height),
                 System.Drawing.Imaging.ImageLockMode.ReadWrite,
                 System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            Int32 [] item_color_line = it.ColorLine();
+            RGB[] item_color_line = it.ColorLine;
+            byte[] modifiers = DownloadQueueItem.Get_3D_Modifiers();
 
             for ( int y = 0; y < bmd.Height; y++ ) {
                 byte* row = (byte *)bmd.Scan0 + (y * bmd.Stride);
@@ -324,8 +327,9 @@ namespace amule.net
                     //row[x * 3 + 2] = 255;
                     //*pixel_ptr = 0xff0000; //RED
                     //*pixel_ptr = 0x00ff00; //GREEN
-                    *pixel_ptr = 0x1f0000ff; // BLUE
+                    //*pixel_ptr = 0x1f0000ff; // BLUE
                     //*pixel_ptr = item_color_line[x] | (x << 24);
+                    item_color_line[x].WriteToBuffWithModifier(pixel_ptr, modifiers[y]);
                 }
 
             }

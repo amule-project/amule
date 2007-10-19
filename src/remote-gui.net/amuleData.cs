@@ -7,7 +7,6 @@ namespace amule.net
 {
     public class FileGap : IComparable {
         public Int64 m_start, m_end;
-        public Int32 m_color;
 
         public int CompareTo(object obj)
         {
@@ -28,21 +27,32 @@ namespace amule.net
             val |= 0xff000000;
             *ptr = val;
         }
-        unsafe public void WriteToBuff(UInt32* ptr)
+
+        unsafe public void WriteToBuffWithModifier(UInt32* ptr, byte modif)
         {
-            UInt32 val = (UInt32)((m_R << 16) | (m_G << 8) | m_B);
+            byte R = (m_R > modif) ? (byte)(m_R - modif) : (byte)0;
+            byte G = (m_G > modif) ? (byte)(m_G - modif) : (byte)0;
+            byte B = (m_B > modif) ? (byte)(m_B - modif) : (byte)0;
+            UInt32 val = (UInt32)((R << 16) | (G << 8) | B);
+            val |= 0xff000000;
             *ptr = val;
         }
-        void SubstractSat(byte val)
+
+        public Int32 Color
         {
-            m_R = (m_R > val) ? (byte)(m_R - val) : (byte)0;
-            m_G = (m_G > val) ? (byte)(m_G - val) : (byte)0;
-            m_B = (m_B > val) ? (byte)(m_B - val) : (byte)0;
+            get { return (Int32)((m_R << 16) | (m_G << 8) | m_B); }
+            set 
+            {
+                m_R = (byte)(value >> 16);
+                m_G = (byte)((value >> 8) & 0xff);
+                m_B = (byte)(value & 0xff);
+            }
         }
+
     }
 
     public class FileColoredGap : FileGap {
-        public byte m_R, m_G, m_B;
+        public Int32 m_color;
 
     }
 
@@ -61,16 +71,6 @@ namespace amule.net
             }
             System.Array.Sort(m_buffer);
         }
-        public GapBuffer(int size)
-        {
-            m_buffer = new FileGap[size];
-            for ( int i = 0; i < size; i++ ) {
-                m_buffer[i] = new FileGap();
-            }
-            m_buffer[0].m_start = 0;
-            m_buffer[0].m_end = 0;
-            m_buffer[0].m_color = 0;
-        }
     }
 
     public class ColoredGapBuffer {
@@ -84,9 +84,7 @@ namespace amule.net
             }
             m_buffer[0].m_start = 0;
             m_buffer[0].m_end = 0;
-            m_buffer[0].m_R = 0;
-            m_buffer[0].m_G = 0;
-            m_buffer[0].m_B = 0;
+            m_buffer[0].m_color = 0;
         }
     }
 
@@ -400,34 +398,55 @@ namespace amule.net
         //
         // Used for colored status
         //
-        GapBuffer m_color_gap_buff;
+        ColoredGapBuffer m_color_gap_buff;
         GapBuffer m_req_parts;
+
         //
         // Format24BppRgb or similar
         //
-        Int32[] m_color_line;
+        RGB[] m_color_line;
 
-        public static Int32[] m_modifiers;
+        public static byte[] m_modifiers;
 
-        public Int32[] ColorLine()
+        public RGB [] ColorLine
         {
-            return m_color_line;
+            get { return m_color_line; }
+        }
+	
+        public static byte[] Get_3D_Modifiers()
+        {
+            return m_modifiers;
         }
 
         public DownloadQueueItem(ecProto.ecMD5 id, string name, Int64 size, PartFileEncoderData encoder)
             : base(id, name, size)
         {
             m_decoder = encoder;
-            m_color_gap_buff = new GapBuffer((Int32)(size / FILE_PARTSIZE) + 1);
-            m_color_line = new Int32[256];
+            m_color_gap_buff = new ColoredGapBuffer((Int32)(size / FILE_PARTSIZE) + 1);
+
+            m_color_line = new RGB[256];
+            for ( int i = 0; i < m_color_line.Length; i++ ) {
+                m_color_line[i] = new RGB();
+            }
         }
 
-        public void InitDraw3DModifiers(int height)
+        public static void InitDraw3DModifiers(int height)
         {
-            m_modifiers = new Int32[height];
+            if ( m_modifiers != null && m_modifiers.Length == height ) {
+                return;
+            }
+            m_modifiers = new byte[height];
             for ( int i = 0; i < height; i++ ) {
                 double curr_mod = 30 * (1 + System.Math.Cos((2*System.Math.PI)*(height-(((double)i)/height))));
-                m_modifiers[i] = (int)System.Math.Floor(curr_mod);
+                m_modifiers[i] = (byte)System.Math.Floor(curr_mod);
+            }
+        }
+
+        public void AllocColorLine(int size)
+        {
+            m_color_line = new RGB[size];
+            for ( int i = 0; i < m_color_line.Length; i++ ) {
+                m_color_line[i] = new RGB();
             }
         }
 
@@ -479,8 +498,6 @@ namespace amule.net
                         int blue = 210 - (22 * (part_info[i] - 1));
                         if ( blue < 0 ) { blue = 0; }
                         color = (blue << 8) | 255;
-                        //color = 0x0000ff;
-                        //color = blue;
                     }
                     Int64 fill_gap_begin = ((i == start) ? gap_start : FILE_PARTSIZE * i);
                     Int64 fill_gap_end = ((i == (end - 1)) ? gap_end : FILE_PARTSIZE * (i + 1));
@@ -501,7 +518,7 @@ namespace amule.net
             //
             int width = m_color_line.Length;
             for ( int i = 0; i < width; i++ ) {
-                m_color_line[i] = 0;
+                m_color_line[i].Color = 0;
             }
             if ( m_filesize < width ) {
                 //
@@ -510,11 +527,11 @@ namespace amule.net
                 if ( m_req_parts.m_buffer.Length != 0 ) {
                     for ( int i = 0; i < width; i++ ) {
                         // yellow
-                        m_color_line[i] = 0xffd000;
+                        m_color_line[i].Color = 0xffd000;
                     }
                 } else if ( m_color_gap_buff.m_buffer.Length != 0 ) {
                     for ( int i = 0; i < width; i++ ) {
-                        m_color_line[i] = m_color_gap_buff.m_buffer[i].m_color;
+                        m_color_line[i].Color = m_color_gap_buff.m_buffer[i].m_color;
                     }
                 }
             } else {
@@ -523,14 +540,14 @@ namespace amule.net
                     Int32 start = (Int32)(m_color_gap_buff.m_buffer[i].m_start / factor);
                     Int32 end = (Int32)(m_color_gap_buff.m_buffer[i].m_end / factor);
                     for ( Int32 j = start; j < end; j++ ) {
-                        m_color_line[j] = m_color_gap_buff.m_buffer[i].m_color;
+                        m_color_line[j].Color = m_color_gap_buff.m_buffer[i].m_color;
                     }
                 }
                 foreach ( FileGap g in m_req_parts.m_buffer ) {
                     Int32 start = (Int32)(g.m_start / factor);
                     Int32 end = (Int32)(g.m_end / factor);
                     for ( Int32 j = start; j < end; j++ ) {
-                        m_color_line[j] = 0xffd000;
+                        m_color_line[j].Color = 0xffd000;
                     }
                 }
             }
