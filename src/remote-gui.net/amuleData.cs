@@ -19,6 +19,33 @@ namespace amule.net
         }
     }
 
+    public class RGB {
+        public byte m_R, m_G, m_B;
+
+        unsafe public void WriteToBuffAlpha(UInt32* ptr)
+        {
+            UInt32 val = (UInt32)((m_R << 16) | (m_G << 8) | m_B);
+            val |= 0xff000000;
+            *ptr = val;
+        }
+        unsafe public void WriteToBuff(UInt32* ptr)
+        {
+            UInt32 val = (UInt32)((m_R << 16) | (m_G << 8) | m_B);
+            *ptr = val;
+        }
+        void SubstractSat(byte val)
+        {
+            m_R = (m_R > val) ? (byte)(m_R - val) : (byte)0;
+            m_G = (m_G > val) ? (byte)(m_G - val) : (byte)0;
+            m_B = (m_B > val) ? (byte)(m_B - val) : (byte)0;
+        }
+    }
+
+    public class FileColoredGap : FileGap {
+        public byte m_R, m_G, m_B;
+
+    }
+
     public class GapBuffer {
         public FileGap[] m_buffer;
 
@@ -43,6 +70,23 @@ namespace amule.net
             m_buffer[0].m_start = 0;
             m_buffer[0].m_end = 0;
             m_buffer[0].m_color = 0;
+        }
+    }
+
+    public class ColoredGapBuffer {
+        public FileColoredGap[] m_buffer;
+
+        public ColoredGapBuffer(int size)
+        {
+            m_buffer = new FileColoredGap[size];
+            for ( int i = 0; i < size; i++ ) {
+                m_buffer[i] = new FileColoredGap();
+            }
+            m_buffer[0].m_start = 0;
+            m_buffer[0].m_end = 0;
+            m_buffer[0].m_R = 0;
+            m_buffer[0].m_G = 0;
+            m_buffer[0].m_B = 0;
         }
     }
 
@@ -359,9 +403,11 @@ namespace amule.net
         GapBuffer m_color_gap_buff;
         GapBuffer m_req_parts;
         //
-        // In Format24BppRgb format order is BLUE.GREEN.RED
+        // Format24BppRgb or similar
         //
         Int32[] m_color_line;
+
+        public static Int32[] m_modifiers;
 
         public Int32[] ColorLine()
         {
@@ -374,6 +420,15 @@ namespace amule.net
             m_decoder = encoder;
             m_color_gap_buff = new GapBuffer((Int32)(size / FILE_PARTSIZE) + 1);
             m_color_line = new Int32[256];
+        }
+
+        public void InitDraw3DModifiers(int height)
+        {
+            m_modifiers = new Int32[height];
+            for ( int i = 0; i < height; i++ ) {
+                double curr_mod = 30 * (1 + System.Math.Cos((2*System.Math.PI)*(height-(((double)i)/height))));
+                m_modifiers[i] = (int)System.Math.Floor(curr_mod);
+            }
         }
 
         public void UpdateItem(ecProto.ecTag tag)
@@ -433,8 +488,7 @@ namespace amule.net
                     if ( (m_color_gap_buff.m_buffer[colored_gaps_size].m_end == fill_gap_begin) &&
                         (m_color_gap_buff.m_buffer[colored_gaps_size].m_color == color) ) {
                         m_color_gap_buff.m_buffer[colored_gaps_size].m_end = fill_gap_end;
-                    }
-                    else {
+                    } else {
                         colored_gaps_size++;
                         m_color_gap_buff.m_buffer[colored_gaps_size].m_start = fill_gap_begin;
                         m_color_gap_buff.m_buffer[colored_gaps_size].m_end = fill_gap_end;
@@ -470,6 +524,13 @@ namespace amule.net
                     Int32 end = (Int32)(m_color_gap_buff.m_buffer[i].m_end / factor);
                     for ( Int32 j = start; j < end; j++ ) {
                         m_color_line[j] = m_color_gap_buff.m_buffer[i].m_color;
+                    }
+                }
+                foreach ( FileGap g in m_req_parts.m_buffer ) {
+                    Int32 start = (Int32)(g.m_start / factor);
+                    Int32 end = (Int32)(g.m_end / factor);
+                    for ( Int32 j = start; j < end; j++ ) {
+                        m_color_line[j] = 0xffd000;
                     }
                 }
             }
