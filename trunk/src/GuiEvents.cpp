@@ -80,27 +80,6 @@ namespace MuleNotify
 	
 #ifdef CLIENT_GUI
 	
-#warning Remove source dropping
-/*	void PartFile_RemoveNoNeeded(CPartFile* file)
-	{
-		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_NO_NEEDED);
-	}
-
-	void PartFile_RemoveFullQueue(CPartFile* file)
-	{
-		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_FULL_QUEUE);
-	}
-	
-	void PartFile_RemoveHighQueue(CPartFile* file)
-	{
-		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_REMOVE_HIGH_QUEUE);
-	}
-	
-	void PartFile_SourceCleanup(CPartFile* file)
-	{
-		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_CLEANUP_SOURCES);
-	}
-*/	
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{
 		theApp->downloadqueue->SendFileCommand(file, EC_OP_PARTFILE_SWAP_A4AF_THIS);
@@ -546,27 +525,6 @@ namespace MuleNotify
 #endif
 	}
 
-	
-#warning Remove source dropping
-/*	void PartFile_RemoveNoNeeded(CPartFile* file)
-	{
-		file->CleanUpSources( true,  false, false );
-	}
-	
-	void PartFile_RemoveFullQueue(CPartFile* file)
-	{
-		file->CleanUpSources( false, true,  false );
-	}
-	
-	void PartFile_RemoveHighQueue(CPartFile* file)
-	{
-		file->CleanUpSources( false, false, true  );
-	}
-	
-	void PartFile_SourceCleanup(CPartFile* file)
-	{
-		file->CleanUpSources( true,  true,  true  );
-	}*/
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{

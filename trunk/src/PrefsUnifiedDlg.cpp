@@ -73,7 +73,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_USESKINFILES,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ONLINESIG,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_REMOVEDEAD,		PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_ENABLE_AUTO_HQRS,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_AUTOSERVER,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_AUTOIPFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_MSGFILTER,		PrefsUnifiedDlg::OnCheckBoxChange)
@@ -153,7 +152,6 @@ PrefsPage pages[] =
 	{ wxTRANSLATE("Online Signature"),	PreferencesOnlineSigTab,	21, NULL },
 	{ wxTRANSLATE("Server"),		PreferencesServerTab,		15, NULL },
 	{ wxTRANSLATE("Files"),			PreferencesFilesTab,		16, NULL },
-	{ wxTRANSLATE("Sources Dropping"),	PreferencesSourcesDroppingTab,	20, NULL },
 	{ wxTRANSLATE("Directories"),		PreferencesDirectoriesTab,	17, NULL },
 	{ wxTRANSLATE("Statistics"),		PreferencesStatisticsTab,	10, NULL },
 	{ wxTRANSLATE("Security"),		PreferencesSecurityTab,		22, NULL },
@@ -360,7 +358,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow( IDC_OSUPDATE )->Enable( thePrefs::IsOnlineSignatureEnabled() );
 	FindWindow( IDC_UDPPORT )->Enable( !thePrefs::s_UDPDisable );
 	FindWindow( IDC_SERVERRETRIES )->Enable( thePrefs::DeadServer() );
-	FindWindow( IDC_HQR_VALUE )->Enable( thePrefs::DropHighQueueRankingSources() );
 	FindWindow( IDC_STARTNEXTFILE_SAME )->Enable(thePrefs::StartNextFile());
 
 #ifdef __WXMAC__
@@ -664,10 +661,6 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 
 		case IDC_REMOVEDEAD:
 			FindWindow( IDC_SERVERRETRIES )->Enable(value);;
-			break;
-
-		case IDC_ENABLE_AUTO_HQRS:
-			FindWindow( IDC_HQR_VALUE )->Enable(value);;
 			break;
 
 		case IDC_AUTOSERVER:

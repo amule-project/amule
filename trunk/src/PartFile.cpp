@@ -1571,20 +1571,7 @@ uint32 CPartFile::Process(uint32 reducedownload/*in percent*/,uint8 m_icounter)
 		/* eMule 0.30c implementation, i give it a try (Creteil) END ... */
 		
 		// swap No needed partfiles if possible
-		/* Sources droping engine. Auto drop allowed type of sources at interval. */
-#warning Remove source dropping
-//		if (dwCurTick > m_LastSourceDropTime + thePrefs::GetAutoDropTimer() * 1000) {
-//			m_LastSourceDropTime = dwCurTick;
-			/* If all three are enabled, use CleanUpSources() function, will save us some CPU. */
-/*			
-			bool noNeeded  = thePrefs::DropNoNeededSources();
-			bool fullQueue = thePrefs::DropFullQueueSources();
-			bool highQueue = thePrefs::DropHighQueueRankingSources();
-			
-			if ( noNeeded || fullQueue || highQueue )
-				CleanUpSources( noNeeded, fullQueue, highQueue );
-		}
-*/	
+
 		if (((old_trans==0) && (transferingsrc>0)) || ((old_trans>0) && (transferingsrc==0))) {
 			SetPartFileStatus(status);
 		}
@@ -3273,35 +3260,6 @@ bool CPartFile::RemoveSource(CUpDownClient* toremove, bool updatewindow, bool bD
 	return result;
 }
 
-#warning Remove source dropping
-/*void CPartFile::CleanUpSources( bool noNeeded, bool fullQueue, bool highQueue )
-{
-	SourceSet::iterator it = m_SrcList.begin();
-	for ( ; it != m_SrcList.end(); ) {
-		CUpDownClient* client = *it++;
-
-		bool remove = false;
-	
-		// Using val = val || <blah>, to avoid unnescesarry evaluations
-		if ( noNeeded && ( client->GetDownloadState() == DS_NONEEDEDPARTS ) ) {
-			if ( client->SwapToAnotherFile(true, true, true) ) {
-				continue;
-			} else {
-				remove = true;
-			}
-		} 
-		
-		if ( client->GetDownloadState() == DS_ONQUEUE ) {
-			remove = remove || ( fullQueue && ( client->IsRemoteQueueFull() ) );
-			remove = remove || ( highQueue && ( client->GetRemoteQueueRank() > thePrefs::HighQueueRanking() ) );
-		}
-
-		if ( remove )
-			RemoveSource( client );
-	}
-}*/
-
-
 void CPartFile::AddDownloadingSource(CUpDownClient* client)
 {
 	CClientPtrList::iterator it = 
@@ -3810,10 +3768,6 @@ void CPartFile::Init()
 	m_nCompleteSourcesCountLo = 0;
 	m_nCompleteSourcesCountHi = 0;
 	
-	// Sources dropping
-#warning Remove source dropping
-//	m_LastSourceDropTime = 0;
-
 	m_validSources = 0;
 	m_notCurrentSources = 0;
 
