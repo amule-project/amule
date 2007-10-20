@@ -1,24 +1,23 @@
-# translation of et_EE.po to Estonian
 # translation of aMule to Estonian
 # aMule i18n resource file.
 # Copyright (C) 2006 aMule Team
 # This file is distributed under the same license as the aMule package.
+#
 # Kry <elkry@users.sourceforge.net>, 2004.
 # Hans <herringfish@hot.ee>, 2006, 2007.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-14 03:30+0200\n"
-"PO-Revision-Date: 2007-05-23 21:22+0300\n"
+"POT-Creation-Date: 2007-10-20 08:45+0300\n"
+"PO-Revision-Date: 2007-10-20 08:45+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -380,7 +379,7 @@ msgstr "Nimeta ringi"
 
 #: src/SharedFilesCtrl.cpp:158
 msgid "Add files in collection to transfer list"
-msgstr ""
+msgstr "Lisa failid ülekantavate failide loetellu"
 
 #: src/SharedFilesCtrl.cpp:161
 msgid "Copy magnet &URI to clipboard"
@@ -1448,11 +1447,11 @@ msgstr "Korea"
 
 #: src/Preferences.cpp:621
 msgid "Lithuanian"
-msgstr ""
+msgstr "Leedu"
 
 #: src/Preferences.cpp:622
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "Norra"
 
 #: src/Preferences.cpp:623
 msgid "Polish"
@@ -1480,11 +1479,11 @@ msgstr "Hispaania"
 
 #: src/Preferences.cpp:629
 msgid "Swedish"
-msgstr ""
+msgstr "Rootsi"
 
 #: src/Preferences.cpp:632
 msgid "Turkish"
-msgstr ""
+msgstr "Türgi"
 
 #: src/Preferences.cpp:1621 src/Preferences.cpp:1635 src/Preferences.cpp:1642
 msgid "Unable to determine selected browser!"
@@ -1680,6 +1679,19 @@ msgid ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
+"eMule'l põhinev 'Platvormist sõltumatu ' p2p klient\n"
+"\n"
+" Webaadress: http://www.amule.org \n"
+" Foorum: http://forum.amule.org \n"
+" KKK: http://wiki.amule.org \n"
+"\n"
+" Kontakt: admin@amule.org (administratiivsed küsimused) \n"
+" Copyright (C) 2003-2007 aMule Team \n"
+"\n"
+" Osa aMule põhineb  \n"
+" Kademlia: Peer-to-peer ruutimine põhineb XOR meetrikal.\n"
+" Copyright (C) 2002 Petar Maymounkov\n"
+" http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:451 src/PrefsUnifiedDlg.cpp:493
 #: src/PrefsUnifiedDlg.cpp:590 src/PrefsUnifiedDlg.cpp:680 src/KadDlg.cpp:182
@@ -1788,7 +1800,7 @@ msgstr "Rüüde kataloogi  '%s' ei eksiteeri"
 #: src/amuleDlg.cpp:1214
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
-msgstr ""
+msgstr "Hoiatus: Ei suuda rüüfaili '%s' lugemiseks avada"
 
 #: src/amuleDlg.cpp:1312
 msgid "Disconnect from any server and/or Kad"
@@ -3861,6 +3873,8 @@ msgid ""
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the previous search.\n"
 msgstr ""
+"Pead andma eelmise/viimase otsingu faili numbri.\n"
+"Näiteks 'download 12' alustab eelmise otsingu 12'nda faili tõmbamist.\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
@@ -3884,19 +3898,19 @@ msgstr "Määra tõmbamise prioriteet Low, Normal, High või Auto.\n"
 
 #: src/TextClient.cpp:927
 msgid "Set priority to low."
-msgstr ""
+msgstr "Määra madal prioriteet."
 
 #: src/TextClient.cpp:928
 msgid "Set priority to normal."
-msgstr ""
+msgstr "Määra normaalne prioriteet."
 
 #: src/TextClient.cpp:929
 msgid "Set priority to high."
-msgstr ""
+msgstr "Määra kõrge prioriteet."
 
 #: src/TextClient.cpp:930
 msgid "Set priority to auto."
-msgstr ""
+msgstr "Määra automaatne prioriteet."
 
 #: src/TextClient.cpp:932
 msgid "Show queues/lists."
@@ -5535,15 +5549,15 @@ msgstr "Rüüde tugi"
 
 #: src/muuli_wdr.cpp:2577
 msgid "Enable skin support "
-msgstr ""
+msgstr "Võimalda rüüde tugi"
 
 #: src/muuli_wdr.cpp:2580
 msgid "Skin:"
-msgstr ""
+msgstr "Rüü:"
 
 #: src/muuli_wdr.cpp:2585
 msgid "- no skins available -"
-msgstr ""
+msgstr "- rüüd pole saadaval -"
 
 #: src/muuli_wdr.cpp:2594
 msgid "Column Sorting"
@@ -5882,37 +5896,43 @@ msgstr "Lõpeta Kad ühendus"
 
 #: src/muuli_wdr.cpp:3444
 msgid "Protocol Obfuscation"
-msgstr ""
+msgstr "Protokolli Hämamine"
 
 #: src/muuli_wdr.cpp:3447
 msgid "Support Protocol Obfuscation"
-msgstr ""
+msgstr "Protokolli Hämamise Tugi"
 
 #: src/muuli_wdr.cpp:3449
 msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
 msgstr ""
+"See valik lülitab Protokolli Hämamise sisse ja sunnib aMule aksepteerima "
+"ainult teiste klientide hämatud ühendusi."
 
 #: src/muuli_wdr.cpp:3452
 msgid "Use obfuscation for outgoing connections"
-msgstr ""
+msgstr "Kasuta hämamist väljuvatel ühendustel"
 
 #: src/muuli_wdr.cpp:3454
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
 msgstr ""
+"See valik sunnib aMule kasutama teiste serverite/klientidega ühendumisel "
+"Protokolli Hämamist."
 
 #: src/muuli_wdr.cpp:3457
 msgid "Accept only obfuscated connections"
-msgstr ""
+msgstr "Aksepteeri ainult hämatud ühendusi"
 
 #: src/muuli_wdr.cpp:3458
 msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
+"See valik sunnib aMule aksepteerima ainult hämatud ühendusi. Sul on vähem "
+"allikaid aga kogu liiklus on hämatud."
 
 #: src/muuli_wdr.cpp:3463
 msgid "File Options"
@@ -6085,7 +6105,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3677
 msgid "Filter comments containing (use ',' as separator):"
-msgstr ""
+msgstr "Filtreeri teateid, mis sisaldavad (kasuta ',' eraldajana):"
 
 #: src/muuli_wdr.cpp:3720
 msgid "Enable Proxy"
@@ -6453,6 +6473,10 @@ msgid ""
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
+"VIGA: aMule deemonit ei saa kasutada kui Välisühendused on katkestatud. "
+"Välisühenduste lubamiseks kasuta tavalist aMule, käivita amuled võtmega '--"
+"ec-config' või määra võtme \"AcceptExternalConnections\" väärtuseks 1 "
+"konfiguratsioonifailis ~/.aMule/amule.conf"
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6551,7 +6575,7 @@ msgstr "Krüpteeritud"
 
 #: src/ClientListCtrl.cpp:997
 msgid "Hide shared files"
-msgstr ""
+msgstr "Peida jagatud failid"
 
 #: src/ClientDetailDialog.cpp:49
 msgid "Client Details"
@@ -6966,6 +6990,7 @@ msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr ""
+"Selles versioonis on turvalisusest johtuvalt muudetud järgmisi seadeid:\n"
 
 #: src/amule.cpp:1323
 msgid ""
@@ -6973,12 +6998,18 @@ msgid ""
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
 "connections.\n"
 msgstr ""
+"\n"
+"* Lisatud on Protokolli Hämamise tugi sisenevatele ja väljuvatele "
+"ühendustele.\n"
 
 #: src/amule.cpp:1324
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
+"\n"
+"* Eemaldatud on serverite nimekirja värskendmine teistest serveritest ja "
+"klientidest.\n"
 
 #: src/amule.cpp:1325
 msgid ""
@@ -6988,6 +7019,11 @@ msgid ""
 "It's important that you clear any fake server from your server list for "
 "aMule to work properly."
 msgstr ""
+"\n"
+"See muudatuse põhjustest leiad lisainfot aMule wiki'st, otsides \n"
+"aadressilt http://wiki.amule.org märksõna \"fake servers\" järgi\n"
+"On oluline et aMule ei kasutaks võltsservereid, vastasel juhul ei pruugi\n"
+"aMule korralikult toimida."
 
 #: src/amule.cpp:1330
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7127,120 +7163,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ei õnnestunud!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ei õnnestunud!"
-
-#~ msgid "Drop No Needed Sources now"
-#~ msgstr "Unusta Mittevajalikud Allikad (MA)"
-
-#~ msgid "Drop Full Queue Sources now"
-#~ msgstr "Unusta Hõivatud Järjekorraga Allikad (HJA)"
-
-#~ msgid "Drop High Queue Rating Sources now"
-#~ msgstr "Unusta Kõrge JK(Queue Rating) Järjekorraga Allikad (KQRJA)"
-
-#~ msgid "Clean Up Sources now (NNS, FQS && HQRS)"
-#~ msgstr "Puhasta Allikad (MA, HJA ja KQRJA)"
-
-#~ msgid "English (U.S.)"
-#~ msgstr "Inglise (U.S.)"
-
-#~ msgid "Spanish (Mexican)"
-#~ msgstr "Hispaania (Mehhiko)"
-
-#~ msgid ""
-#~ "The number of a file from the last search has to be given.\n"
-#~ "Example: 'download 12' will start to download the file with the number 12 "
-#~ "of the prvious search.\n"
-#~ msgstr ""
-#~ "Pead andma eelmise/viimase otsingu faili numbri.\n"
-#~ "Näiteks 'download 12' alustab eelmise otsingu 12'nda faili tõmbamist.\n"
-
-#~ msgid "Set riority to low."
-#~ msgstr "Määra madal prioriteet."
-
-#~ msgid "Set riority to normal."
-#~ msgstr "Määra normaalne prioriteet."
-
-#~ msgid "Set riority to high."
-#~ msgstr "Määra kõrge prioriteet."
-
-#~ msgid "Set riority to auto."
-#~ msgstr "Määra automaatne prioriteet."
-
-#~ msgid "Warning: Skin directory name is empty"
-#~ msgstr "HOIATUS: Rüüde kataloogi nimi on tühi"
-
-#~ msgid "Warning: Unable to open skin directory '%s' for read"
-#~ msgstr "Hoiatus: Ei suuda lugemiseks avada rüüde kataloogi '%s'"
-
-#~ msgid ""
-#~ "ERROR: aMule daemon cannot be used when external connections are "
-#~ "disabled. To enable External Connections, use either a normal aMule or "
-#~ "set the key\"AcceptExternalConnections\" to 1 in the file ~/.aMule/amule."
-#~ "conf"
-#~ msgstr ""
-#~ "VIGA: aMule deemonit ei saa kasutada kui Välisühendused on katkestatud. "
-#~ "VälisÜhenduste lubamiseks kasuta tavalist aMule või määra võtme "
-#~ "\"AcceptExternalConnections\" väärtuseks 1 konfiguratsioonifailis ~/."
-#~ "aMule/amule.conf"
-
-#~ msgid "Sources: %u"
-#~ msgstr "Allikaid: %u"
-
-#~ msgid "Feedback from: %s"
-#~ msgstr "%s tagasiside"
-
-#~ msgid "Client: aMule %s"
-#~ msgstr "Kliendi: aMule %s"
-
-#~ msgid "File Name: %s"
-#~ msgstr "Faili nimi: %s"
-
-#~ msgid "File size: %s"
-#~ msgstr "Faili suurus: %s"
-
-#~ msgid "Download: %s"
-#~ msgstr "Tõmbamine: %s"
-
-#~ msgid "Complete Sources: %u"
-#~ msgstr "Täielikke allikaid: %u"
-
-#~ msgid ""
-#~ " 'All-Platform' p2p client based on eMule \n"
-#~ "\n"
-#~ " Website: http://www.amule.org \n"
-#~ " Forum: http://forum.amule.org \n"
-#~ " FAQ: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Part of aMule is based on \n"
-#~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-#~ msgstr ""
-#~ "eMule'l põhinev 'Platvormist sõltumatu ' p2p klient\n"
-#~ "\n"
-#~ " Webaadress: http://www.amule.org \n"
-#~ " Foorum: http://forum.amule.org \n"
-#~ " KKK: http://wiki.amule.org \n"
-#~ "\n"
-#~ " Kontakt: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2006 aMule Team \n"
-#~ "\n"
-#~ " Osa aMule põhineb  \n"
-#~ " Kademlia: Peer-to-peer ruutimine põhineb XOR meetrikal.\n"
-#~ " Copyright (C) 2002 Petar Maymounkov\n"
-#~ " http://kademlia.scs.cs.nyu.edu\n"
-
-#~ msgid "http://download.overnet2000.de/nodes.dat"
-#~ msgstr "http://download.overnet2000.de/nodes.dat"
-
-#~ msgid "Skins directory"
-#~ msgstr "Rüüde kataloog"
-
-#~ msgid "Use skin files to set aMule bitmaps."
-#~ msgstr "Kasuta rüüd aMule väljanägemise muutmiseks."
-
-#~ msgid "Skin files directory:"
-#~ msgstr "Rüüfail kataloog:"
