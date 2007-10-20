@@ -123,12 +123,6 @@ BEGIN_EVENT_TABLE(CDownloadListCtrl, CMuleListCtrl)
 
 	EVT_CHAR( CDownloadListCtrl::OnKeyPressed )
 
-#warning Remove source dropping
-//	EVT_MENU( MP_DROP_NO_NEEDED_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-//	EVT_MENU( MP_DROP_FULL_QUEUE_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-//	EVT_MENU( MP_DROP_HIGH_QUEUE_RATING_SOURCES,	CDownloadListCtrl::OnCleanUpSources )
-//	EVT_MENU( MP_CLEAN_UP_SOURCES,		CDownloadListCtrl::OnCleanUpSources )
-
 	EVT_MENU( MP_CANCEL, 			CDownloadListCtrl::OnCancelFile )
 	
 	EVT_MENU( MP_PAUSE,			CDownloadListCtrl::OnSetStatus )
@@ -575,35 +569,6 @@ ItemList GetSelectedItems( CDownloadListCtrl* list, int types )
 }
 
 
-#warning Remove source dropping
-/*void CDownloadListCtrl::OnCleanUpSources( wxCommandEvent& event )
-{
-	ItemList files = ::GetSelectedItems( this, itFILES );
-
-	for ( ItemList::iterator it = files.begin(); it != files.end(); ++it ) {
-		CPartFile* file = (*it)->GetFile();
-		
-		switch ( event.GetId() ) {
-			case MP_DROP_NO_NEEDED_SOURCES:
-				CoreNotify_PartFile_RemoveNoNeeded( file );
-				break;
-				
-			case MP_DROP_FULL_QUEUE_SOURCES:
-				CoreNotify_PartFile_RemoveFullQueue( file );
-				break;
-				
-			case MP_DROP_HIGH_QUEUE_RATING_SOURCES:
-				CoreNotify_PartFile_RemoveHighQueue( file );
-				break;
-				
-			case MP_CLEAN_UP_SOURCES:
-				CoreNotify_PartFile_SourceCleanup( file );
-				break;
-		}
-	}
-}*/
-
-
 void CDownloadListCtrl::OnCancelFile(wxCommandEvent& WXUNUSED(event))
 {
 	ItemList files = ::GetSelectedItems(this, itFILES);
@@ -943,18 +908,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		extendedmenu->Append(MP_SWAP_A4AF_TO_ANY_OTHER,
 			_("Swap every A4AF to any other file now"));
 		//-----------------------------------------------------
-#warning Remove source dropping
-/*		extendedmenu->AppendSeparator();
-		//-----------------------------------------------------
-		extendedmenu->Append(MP_DROP_NO_NEEDED_SOURCES,
-			_("Drop No Needed Sources now"));
-		extendedmenu->Append(MP_DROP_FULL_QUEUE_SOURCES,
-			_("Drop Full Queue Sources now"));
-		extendedmenu->Append(MP_DROP_HIGH_QUEUE_RATING_SOURCES,
-			_("Drop High Queue Rating Sources now"));
-		extendedmenu->Append(MP_CLEAN_UP_SOURCES,
-			_("Clean Up Sources now (NNS, FQS && HQRS)"));
-*/		m_menu->Append(MP_MENU_EXTD,
+		m_menu->Append(MP_MENU_EXTD,
 			_("Extended Options"), extendedmenu);
 		//-----------------------------------------------------
 		m_menu->AppendSeparator();
@@ -1028,12 +982,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		menu->SetLabel(MP_VIEW, view);
 		menu->Enable(MP_VIEW, file->PreviewAvailable() );
 
-#warning Remove source dropping
-/*		menu->Enable( MP_DROP_NO_NEEDED_SOURCES,	fileReady );
-		menu->Enable( MP_DROP_FULL_QUEUE_SOURCES,	fileReady );
-		menu->Enable( MP_DROP_HIGH_QUEUE_RATING_SOURCES,fileReady );
-		menu->Enable( MP_CLEAN_UP_SOURCES,		fileReady );
-*/		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
+		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
 		menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
 		menu->Enable( MP_SWAP_A4AF_TO_ANY_OTHER, 	fileReady );
 

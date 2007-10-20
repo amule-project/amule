@@ -1078,16 +1078,6 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_CLIENTVERSIONS,	(MkCfg_Int( wxT("/Statistics/MaxClientVersions"), s_maxClientVersions, 0 )));
 
 	/**
-	 * Sources
-	 **/
-	NewCfgItem(IDC_ENABLE_AUTO_FQS,	(new Cfg_Bool( wxT("/Razor_Preferences/FullQueueSources"), s_DropFullQueueSources,  false )));
-	NewCfgItem(IDC_ENABLE_AUTO_HQRS,	(new Cfg_Bool( wxT("/Razor_Preferences/HighQueueRankingSources"), s_DropHighQueueRankingSources, false )));
-	NewCfgItem(IDC_HQR_VALUE,	(MkCfg_Int( wxT("/Razor_Preferences/HighQueueRanking"), s_HighQueueRanking, 1200 )));
-	NewCfgItem(IDC_AUTO_DROP_TIMER,	(MkCfg_Int( wxT("/Razor_Preferences/AutoDropTimer"), s_AutoDropTimer, 240 )));
-	NewCfgItem(IDC_NNS_HANDLING,	(MkCfg_Int( wxT("/Razor_Preferences/NoNeededSourcesHandling"), s_NoNeededSources, 2 )));
-	NewCfgItem(IDC_SRCSEEDS,	(new Cfg_Bool( wxT("/ExternalConnect/UseSrcSeeds"), s_UseSrcSeeds, false )));
-
-	/**
 	 * Security
 	 **/
 	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 )));

@@ -499,19 +499,6 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 			break;
 		}
 		switch (request->GetOpCode()) {
-#warning Remove source dropping
-/*			case EC_OP_PARTFILE_REMOVE_NO_NEEDED:
-				pfile->CleanUpSources(true,  false, false);
-				break;
-			case EC_OP_PARTFILE_REMOVE_FULL_QUEUE:
-				pfile->CleanUpSources(false, true, false);
-				break;
-			case EC_OP_PARTFILE_REMOVE_HIGH_QUEUE:
-				pfile->CleanUpSources(false, false, true);
-				break;
-			case EC_OP_PARTFILE_CLEANUP_SOURCES:
-				pfile->CleanUpSources(true, true, true);
-				break;*/
 			case EC_OP_PARTFILE_SWAP_A4AF_THIS:
 				if ((pfile->GetStatus(false) == PS_READY) ||
 					(pfile->GetStatus(false) == PS_EMPTY)) {

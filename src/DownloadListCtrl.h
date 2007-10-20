@@ -216,8 +216,6 @@ private:
 	
 
 	// Event-handlers for files
-#warning Remove source dropping
-//	void	OnCleanUpSources( wxCommandEvent& event ); 
 	void	OnCancelFile( wxCommandEvent& event );
 	void	OnSetPriority( wxCommandEvent& event );
 	void	OnSwapSources( wxCommandEvent& event );

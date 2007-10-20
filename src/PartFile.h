@@ -351,9 +351,6 @@ private:
 	time_t  m_tActivated;
 	bool	m_is_A4AF_auto;
 
-#warning Remove source dropping
-//	uint32	m_LastSourceDropTime;
-
 	SourceSet	m_SrcList;
 	SourceSet	m_A4AFsrclist;
 	bool		m_hashsetneeded;
