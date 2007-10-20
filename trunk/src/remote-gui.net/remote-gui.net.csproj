@@ -58,6 +58,9 @@
     <Compile Include="ConnectDlg.designer.cs">
       <DependentUpon>ConnectDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="DownloadControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ECCodes.cs" />
     <Compile Include="ecProto.cs" />
     <Compile Include="ECTagTypes.cs" />
