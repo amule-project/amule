@@ -59,10 +59,10 @@ namespace amule.net
     public class GapBuffer {
         public FileGap[] m_buffer;
 
-        public GapBuffer(byte[] raw_buffer)
+        public GapBuffer(byte[] raw_buffer, int size)
         {
             BinaryReader br = new BinaryReader(new MemoryStream(raw_buffer));
-            int bufsize = raw_buffer.GetLength(0) / (2 * sizeof(Int64));
+            int bufsize = size / (2 * sizeof(Int64));
             m_buffer = new FileGap[bufsize];
             for ( int i = 0; i < bufsize; i++ ) {
                 m_buffer[i] = new FileGap();
@@ -106,9 +106,14 @@ namespace amule.net
             m_buff = new byte[m_len];
         }
 
-        public byte[] Buffer()
+        public byte[] Buffer
         {
-            return m_buff;
+            get { return m_buff; }
+        }
+
+        public int Length
+        {
+            get { return m_len; }
         }
 
         public void Realloc(int size)
@@ -214,7 +219,7 @@ namespace amule.net
 
     //
     // T: item in container
-    abstract class amuleGenericContainer<T> {
+    abstract public class amuleGenericContainer<T> {
         private enum REQ_STATE { IDLE, REQ_SENT, FULL_REQ_SENT };
         REQ_STATE m_state = REQ_STATE.IDLE;
 
@@ -422,12 +427,7 @@ namespace amule.net
             : base(id, name, size)
         {
             m_decoder = encoder;
-            m_color_gap_buff = new ColoredGapBuffer((Int32)(size / FILE_PARTSIZE) + 1);
-
-            m_color_line = new RGB[256];
-            for ( int i = 0; i < m_color_line.Length; i++ ) {
-                m_color_line[i] = new RGB();
-            }
+            m_color_gap_buff = new ColoredGapBuffer((Int32)(size / FILE_PARTSIZE) + 1 + 1);
         }
 
         public static void InitDraw3DModifiers(int height)
@@ -473,14 +473,14 @@ namespace amule.net
             ecProto.ecTagCustom reqstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_REQ_STATUS);
             BinaryReader br = new BinaryReader(new MemoryStream(reqstat.Value()));
 
-            m_req_parts = new GapBuffer(reqstat.Value());
+            m_req_parts = new GapBuffer(reqstat.Value(), reqstat.Value().Length);
             DrawLine();
         }
 
         public void DrawLine()
         {
-            GapBuffer status_gaps = new GapBuffer(m_decoder.m_gap_status.Buffer());
-            byte[] part_info = m_decoder.m_part_status.Buffer();
+            GapBuffer status_gaps = new GapBuffer(m_decoder.m_gap_status.Buffer, m_decoder.m_gap_status.Length);
+            byte[] part_info = m_decoder.m_part_status.Buffer;
 
             int colored_gaps_size = 0;
             for ( int j = 0; j < status_gaps.m_buffer.Length; j++ ) {
@@ -567,8 +567,16 @@ namespace amule.net
         }
     }
 
-    class DownloadQueueContainer : amuleGenericContainer<DownloadQueueItem> {
+    public class DownloadQueueContainer : amuleGenericContainer<DownloadQueueItem> {
         Dictionary<ecProto.ecMD5, PartFileEncoderData> m_enc_map;
+
+        private int m_new_item_status_length;
+
+        public int NewItemStatusLineLength
+        {
+            get { return m_new_item_status_length; }
+            set { m_new_item_status_length = value; }
+        }
 
         public DownloadQueueContainer(IContainerUI owner)
             : base(ECOpCodes.EC_OP_GET_DLOAD_QUEUE, ECTagNames.EC_TAG_PARTFILE, owner)
@@ -596,6 +604,8 @@ namespace amule.net
             m_enc_map[id] = e;
 
             DownloadQueueItem i = new DownloadQueueItem(id, filename, filesize, e);
+
+            i.AllocColorLine(m_new_item_status_length);
 
             i.UpdateItem(tag);
 

@@ -16,8 +16,8 @@ namespace amule.net
         DownloadQueueContainer m_dload_info;
         SharedFileListContainer m_shared_info;
 
-        amuleDownloadStatusList m_download_status_ctrl = new amuleDownloadStatusList();
-        amuleSharedFilesList m_shared_list_ctrl = new amuleSharedFilesList();
+        amuleDownloadStatusList m_download_status_ctrl;
+        amuleSharedFilesList m_shared_list_ctrl;
 
         public MainWindow()
         {
@@ -101,9 +101,6 @@ namespace amule.net
                 }
             }
 
-            // default - download list view
-            panelMain.Controls.Add(m_download_status_ctrl);
-
             textLinktatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
 
             m_amuleRemote.SetECHandler(new amuleMainECHanler(this));
@@ -111,14 +108,23 @@ namespace amule.net
             //
             // Connection OK at this point
             //
+            m_download_status_ctrl = new amuleDownloadStatusList();
+            m_shared_list_ctrl = new amuleSharedFilesList();
+
             m_dload_info = new DownloadQueueContainer(m_download_status_ctrl);
             m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
+
+            m_download_status_ctrl.ItemContainer = m_dload_info;
+            //m_dload_info.NewItemStatusLineLength = m_download_status_ctrl.Columns[1].Width;
 
             m_updateTimer = new Timer();
             m_updateTimer.Tag = this;
             m_updateTimer.Tick += new EventHandler(UpdateTimerProc);
             m_updateTimer.Interval = 1000;
             m_updateTimer.Start();
+
+            // default - download list view
+            panelMain.Controls.Add(m_download_status_ctrl);
 
             // for testing set needed state!
             m_req_state = UpdateRequestState.MainInfo;
@@ -281,13 +287,14 @@ namespace amule.net
     }
 
     public class amuleDownloadStatusList : amuleListView, IContainerUI {
+        DownloadQueueContainer m_item_container;
+
         public amuleDownloadStatusList()
         {
             string[] columns = { "File name", "Status", "Size", "Completed", "Speed"};
             int[] width = { 300, 100, 100, 100, 100 };
             LoadColumns(columns, width);
 
-            
             OwnerDraw = true;
             DoubleBuffered = true;
             DrawColumnHeader +=
@@ -297,9 +304,27 @@ namespace amule.net
             DownloadQueueItem.InitDraw3DModifiers(FontHeight+1);
         }
 
+        public DownloadQueueContainer ItemContainer
+        {
+            get { return m_item_container; }
+            set 
+            {
+                m_item_container = value;
+                m_item_container.NewItemStatusLineLength = Columns[1].Width;
+            }
+        }
+
         override protected void OnColumnWidthChanged(ColumnWidthChangedEventArgs e)
         {
             if ( e.ColumnIndex == 1 ) {
+                int new_size = Columns[1].Width + 1;
+                m_item_container.NewItemStatusLineLength = new_size;
+
+                foreach(ListViewItem i in Items) {
+                    DownloadQueueItem it = i.Tag as DownloadQueueItem;
+                    it.AllocColorLine(new_size);
+                    it.DrawLine();
+                }
             }
         }
 
