@@ -171,6 +171,7 @@ namespace amule.net
             this.Controls.Add(this.panelStatus);
             this.Name = "MainWindow";
             this.Text = "MainWindow";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainWindow_FormClosed);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.panelStatus.ResumeLayout(false);
             this.panelStatus.PerformLayout();
