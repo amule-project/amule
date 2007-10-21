@@ -65,7 +65,7 @@
     <Compile Include="ecProto.cs" />
     <Compile Include="ECTagTypes.cs" />
     <Compile Include="MainWindow.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>

@@ -29,6 +29,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace amule.net
 {
@@ -42,6 +43,8 @@ namespace amule.net
 
         amuleDownloadStatusList m_download_status_ctrl;
         amuleSharedFilesList m_shared_list_ctrl;
+
+        amuleSettings m_settings = new amuleSettings();
 
         public MainWindow()
         {
@@ -118,6 +121,8 @@ namespace amule.net
                     connect_ok = m_amuleRemote.ConnectToCore(amuleHost, amulePort_int, pass, ref errorMsg);
                     if (!connect_ok) {
                         Console.WriteLine("Connect failed '{0}'", errorMsg);
+                        MessageBox.Show(errorMsg, "Connection to aMule core failed",
+                            MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     }
                 } else {
                     Application.Exit();
@@ -126,6 +131,7 @@ namespace amule.net
             }
 
             textLinktatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
+            Size = m_settings.MainWindowSize;
 
             m_amuleRemote.SetECHandler(new amuleMainECHanler(this));
 
@@ -260,6 +266,38 @@ namespace amule.net
             AboutBox dlg = new AboutBox();
             dlg.ShowDialog();
         }
+
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            m_settings.MainWindowSize = Size;
+
+            m_settings.Save();
+        }
+    }
+
+    public class amuleSettings : ApplicationSettingsBase {
+
+        [UserScopedSettingAttribute()]
+        public string Host
+        {
+            get { return (string)this["Host"]; }
+            set { this["Host"] = value; }
+        }
+
+        [UserScopedSettingAttribute()]
+        public string Password
+        {
+            get { return (string)this["Password"]; }
+            set { this["Password"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("225, 200")]
+        public Size MainWindowSize
+        {
+            get { return (Size)this["MainWindowSize"]; }
+            set { this["MainWindowSize"] = value; }
+        }
     }
 
     public class amuleMainECHanler : amuleECHandler {
@@ -296,6 +334,8 @@ namespace amule.net
             Dock = DockStyle.Fill;
             View = View.Details;
             DoubleBuffered = true;
+
+
         }
 
         public void LoadColumns(string [] columns, int [] width)
