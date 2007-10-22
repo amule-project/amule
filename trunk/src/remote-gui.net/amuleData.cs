@@ -422,6 +422,8 @@ namespace amule.net
         Int64 m_size_xfered, m_size_done;
         Int32 m_speed;
 
+        Int32 m_src_count, m_non_current_src_count, m_xfer_src_count, m_a4af_src_count;
+
         PartFileEncoderData m_decoder;
 
         //
@@ -488,6 +490,26 @@ namespace amule.net
             itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SPEED);
             if ( itag != null ) {
                 m_speed = (Int32)itag.Value64();
+            }
+
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SOURCE_COUNT);
+            if ( itag != null ) {
+                m_src_count = (Int32)itag.Value64();
+            }
+
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SOURCE_COUNT_A4AF);
+            if ( itag != null ) {
+                m_a4af_src_count = (Int32)itag.Value64();
+            }
+
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SOURCE_COUNT_NOT_CURRENT);
+            if ( itag != null ) {
+                m_non_current_src_count = (Int32)itag.Value64();
+            }
+
+            itag = (ecProto.ecTagInt)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_SOURCE_COUNT_XFER);
+            if ( itag != null ) {
+                m_xfer_src_count = (Int32)itag.Value64();
             }
 
             ecProto.ecTagCustom gapstat = (ecProto.ecTagCustom)tag.SubTag(ECTagNames.EC_TAG_PARTFILE_GAP_STATUS);
@@ -588,6 +610,26 @@ namespace amule.net
         public string PercentDone
         {
             get { return String.Format("{0} %", m_size_done * 100 / m_filesize); }
+        }
+        public string Sources
+        {
+            get 
+            {
+                string result;
+                if (m_non_current_src_count != 0) {
+                    result = String.Format("{0} / {1}",
+                        m_src_count - m_non_current_src_count, m_src_count);
+                } else {
+                    result = String.Format("{0}", m_src_count);
+                }
+                if (m_a4af_src_count != 0) {
+                    result += String.Format(" +{0}", m_a4af_src_count);
+                }
+                if ( m_xfer_src_count != 0 ) {
+                    result += String.Format(" ({0})", m_xfer_src_count);
+                }
+                return result; 
+            }
         }
     }
 
