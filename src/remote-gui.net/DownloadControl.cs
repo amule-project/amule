@@ -37,8 +37,8 @@ namespace amule.net {
 
         public amuleDownloadStatusList()
         {
-            string[] columns = { "File name", "Status", "Size", "Completed", "Speed" };
-            int[] width = { 300, 100, 100, 100, 100 };
+            string[] columns = { "File name", "Status", "Size", "Completed", "Speed", "Sources" };
+            int[] width = { 300, 100, 100, 100, 100, 100 };
             LoadColumns(columns, width);
 
             OwnerDraw = true;
@@ -48,6 +48,9 @@ namespace amule.net {
 
             DrawSubItem += new DrawListViewSubItemEventHandler(amuleDownloadStatusList_DrawSubItem);
             DownloadQueueItem.InitDraw3DModifiers(FontHeight + 1);
+
+            MouseClick += new MouseEventHandler(amuleDownloadStatusList_MouseClickHandler);
+            ColumnClick += new ColumnClickEventHandler(amuleDownloadStatusList_ColumtClickHandler);
         }
 
         public DownloadQueueContainer ItemContainer
@@ -72,6 +75,16 @@ namespace amule.net {
                     it.DrawLine();
                 }
             }
+        }
+
+        void amuleDownloadStatusList_MouseClickHandler(object o, MouseEventArgs e)
+        {
+            if ( e.Button == MouseButtons.Right ) {
+            }
+        }
+
+        void amuleDownloadStatusList_ColumtClickHandler(object o, ColumnClickEventArgs e)
+        {
         }
 
         unsafe void DrawStatusBar(DownloadQueueItem it, Graphics g, Rectangle posR)
@@ -146,6 +159,7 @@ namespace amule.net {
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.SizeDone));
             it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Speed));
+            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Sources));
             it.Tag = i;
 
             Items.Add(it);
