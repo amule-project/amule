@@ -1344,6 +1344,10 @@ upnpDiscovery:
 				d_event->Location << ": " <<
 				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) << ".";
 			AddDebugLogLineM(true, logUPnP, msg);
+		} else {
+			msg << "Retrieving device description from " <<
+				d_event->Location << ".";
+			AddDebugLogLineM(false, logUPnP, msg);
 		}
 		if (doc) {
 			// Get the root node
