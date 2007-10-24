@@ -1345,9 +1345,11 @@ upnpDiscovery:
 				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) << ".";
 			AddDebugLogLineM(true, logUPnP, msg);
 		} else {
-			msg << "Retrieving device description from " <<
+			std::ostringstream msg2;
+			msg2 << "UPNP_DISCOVERY_SEARCH_RESULT: "
+				"Retrieving device description from " <<
 				d_event->Location << ".";
-			AddDebugLogLineM(false, logUPnP, msg);
+			AddDebugLogLineM(false, logUPnP, msg2);
 		}
 		if (doc) {
 			// Get the root node
