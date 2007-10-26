@@ -314,7 +314,7 @@ void CECSocket::OnInput()
 				// Client sends its capabilities, update the internal mask.
 				m_curr_rx_data->Read(&m_my_flags, sizeof(m_my_flags));
 				m_my_flags = ENDIAN_NTOHL(m_my_flags);
-				printf("Reading accepts mask: %x\n", m_my_flags);
+				//printf("Reading accepts mask: %x\n", m_my_flags);
 				wxASSERT(m_my_flags & 0x20);
 				// There has to be 4 more bytes. THERE HAS TO BE, DAMN IT.
 				m_curr_rx_data->ReadFromSocketAll(this, sizeof(m_curr_packet_len));
