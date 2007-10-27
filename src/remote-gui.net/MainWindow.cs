@@ -139,13 +139,13 @@ namespace amule.net
             // Connection OK at this point
             //
             m_download_status_ctrl = new amuleDownloadStatusList();
-            m_shared_list_ctrl = new amuleSharedFilesList();
-
             m_dload_info = new DownloadQueueContainer(m_download_status_ctrl);
-            m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
-
             m_download_status_ctrl.ItemContainer = m_dload_info;
+            m_download_status_ctrl.OnCancelItem += new DownloadStatusListEventHandler(m_download_status_ctrl_OnCancelItem);
             //m_dload_info.NewItemStatusLineLength = m_download_status_ctrl.Columns[1].Width;
+
+            m_shared_list_ctrl = new amuleSharedFilesList();
+            m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
 
             m_updateTimer = new Timer();
             m_updateTimer.Tag = this;
@@ -158,6 +158,11 @@ namespace amule.net
 
             // for testing set needed state!
             m_req_state = UpdateRequestState.MainInfo;
+        }
+
+        void m_download_status_ctrl_OnCancelItem()
+        {
+            throw new Exception("The method or operation is not implemented.");
         }
 
         //
@@ -275,6 +280,7 @@ namespace amule.net
         }
     }
 
+    [SettingsGroupNameAttribute("Application")]
     public class amuleSettings : ApplicationSettingsBase {
 
         [UserScopedSettingAttribute()]
@@ -292,12 +298,13 @@ namespace amule.net
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValueAttribute("225, 200")]
+        [DefaultSettingValueAttribute("500, 400")]
         public Size MainWindowSize
         {
             get { return (Size)this["MainWindowSize"]; }
             set { this["MainWindowSize"] = value; }
         }
+
     }
 
     public class amuleMainECHanler : amuleECHandler {
@@ -329,24 +336,50 @@ namespace amule.net
     }
 
     public class amuleListView : ListView {
+        protected int[] m_column_index;
+
         public amuleListView()
         {
             Dock = DockStyle.Fill;
             View = View.Details;
             DoubleBuffered = true;
-
-
         }
-
+        
         public void LoadColumns(string [] columns, int [] width)
         {
             int i = 0;
             foreach (string c in columns) {
+                if ( width[i] == 0 ) {
+                    continue;
+                }
                 ColumnHeader h = new ColumnHeader();
                 h.Text = c;
                 h.Width = width[i++];
                 Columns.Add(h);
             }
+        }
+
+        public void CreateColumtAt(string name, int width, int index)
+        {
+            ColumnHeader h = new ColumnHeader();
+            h.Text = name;
+            h.Width = width;
+            h.Tag = index;
+            Columns.Insert(m_column_index[index], h);
+        }
+        public void RemoveColumnAt(int index)
+        {
+            Columns.RemoveAt(m_column_index[index]);
+        }
+
+        public void AppendItemToCtxMenu(ContextMenuStrip menu, string text,
+            object tag, bool check_state, EventHandler target)
+        {
+            ToolStripMenuItem it = new ToolStripMenuItem(text);
+            it.Click += target;
+            it.CheckState = check_state ? CheckState.Checked : CheckState.Unchecked;
+            it.Tag = tag;
+            menu.Items.Add(it);
         }
     }
 
