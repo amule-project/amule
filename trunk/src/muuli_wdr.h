@@ -460,7 +460,7 @@ const int IDC_AUTOIPFILTER = 10338;
 const int ID_IPFILTERLEVEL = 10339;
 const int IDC_FILTERLAN = 10340;
 const int IDC_PARANOID = 10341;
-const int IDC_SECIDENT = 10342;
+const int IDC_IPFILTERSYS = 10342;
 wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
 const int IDC_ONLINESIG = 10343;

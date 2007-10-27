@@ -3462,17 +3462,11 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
     item28->SetToolTip( _("Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution.") );
     item12->Add( item28, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
+    wxCheckBox *item29 = new wxCheckBox( parent, IDC_IPFILTERSYS, _("Allow usage of system wide ipfilter.dat"), wxDefaultPosition, wxDefaultSize, 0 );
+    item29->SetToolTip( _("If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter file.") );
+    item12->Add( item29, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
     item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item30 = new wxStaticBox( parent, -1, _("Client Identification:") );
-    wxStaticBoxSizer *item29 = new wxStaticBoxSizer( item30, wxVERTICAL );
-
-    wxCheckBox *item31 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure Identification"), wxDefaultPosition, wxDefaultSize, 0 );
-    item31->SetValue( TRUE );
-    item31->SetToolTip( _("Secure Identification uses a handshake approch to safely identify clients for use with the credit system.") );
-    item29->Add( item31, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
