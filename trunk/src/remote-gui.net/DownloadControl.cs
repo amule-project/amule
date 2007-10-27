@@ -30,19 +30,163 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace amule.net {
+
+    [SettingsGroupNameAttribute("XferControl")]
+    public class amuleXferControlSettings : ApplicationSettingsBase {
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool FilenameVisible
+        {
+            get { return (bool)this["FilenameVisible"]; }
+            set { this["FilenameVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("200")]
+        public int FilenameWidth
+        {
+            get { return (int)this["FilenameWidth"]; }
+            set { this["FilenameWidth"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool StatusVisible
+        {
+            get { return (bool)this["StatusVisible"]; }
+            set { this["StatusVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("100")]
+        public int StatusWidth
+        {
+            get { return (int)this["StatusWidth"]; }
+            set { this["StatusWidth"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool SizeVisible
+        {
+            get { return (bool)this["SizeVisible"]; }
+            set { this["StatusVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("100")]
+        public int SizeWidth
+        {
+            get { return (int)this["SizeWidth"]; }
+            set { this["StatusWidth"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool SpeedVisible
+        {
+            get { return (bool)this["SpeedVisible"]; }
+            set { this["SpeedVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("100")]
+        public int SpeedWidth
+        {
+            get { return (int)this["SpeedWidth"]; }
+            set { this["SpeedWidth"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool CompletedVisible
+        {
+            get { return (bool)this["CompletedVisible"]; }
+            set { this["CompletedVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("100")]
+        public int CompletedWidth
+        {
+            get { return (int)this["CompletedWidth"]; }
+            set { this["CompletedWidth"] = value; }
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("true")]
+        public bool SourcesVisible
+        {
+            get { return (bool)this["SourcesVisible"]; }
+            set { this["SourcesVisible"] = value; }
+        }
+        [UserScopedSetting()]
+        [DefaultSettingValueAttribute("100")]
+        public int SourcesWidth
+        {
+            get { return (int)this["SourcesWidth"]; }
+            set { this["SourcesWidth"] = value; }
+        }
+    }
+
+    public delegate void DownloadStatusListEventHandler();
+
     public class amuleDownloadStatusList : amuleListView, IContainerUI {
         DownloadQueueContainer m_item_container;
+        amuleXferControlSettings m_settings = new amuleXferControlSettings();
+
+        int m_filename_idx;
+        int m_status_idx;
+        int m_size_idx;
+        int m_completed_idx;
+        int m_speed_idx;
+        int m_sources_idx;
+
+        enum DOWNLOAD_CTRL_COL_ID {
+            COL_FILENAME_ID = 0,
+            COL_STATUS_ID,
+            COL_SIZE_ID,
+            COL_COMPLETED_ID,
+            COL_SPEED_ID,
+            COL_SOURCES_ID,
+
+            COL_LAST_ID,
+        };
+
+        private ContextMenuStrip m_ctx_menu = new ContextMenuStrip();
+
+        public event DownloadStatusListEventHandler OnCancelItem, OnPauseItem;
+
+        void UpdateColumnIndexes()
+        {
+            int i = 0;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_FILENAME_ID] = i;
+            if ( m_settings.FilenameVisible ) i++;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID] = i;
+            if ( m_settings.StatusVisible ) i++;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_SIZE_ID] = i;
+            if ( m_settings.SizeVisible ) i++;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_COMPLETED_ID] = i;
+            if ( m_settings.CompletedVisible ) i++;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_SPEED_ID] = i;
+            if ( m_settings.SpeedVisible ) i++;
+            m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_SOURCES_ID] = i;
+            if ( m_settings.SourcesVisible ) i++;
+        }
+
+        void SaveSettigs()
+        {
+            if ( m_settings.FilenameVisible ) {
+                m_settings.FilenameWidth = Columns[m_filename_idx].Width;
+            }
+            if ( m_settings.StatusVisible ) {
+                m_settings.StatusWidth = Columns[m_status_idx].Width;
+            }
+            m_settings.Save();
+        }
 
         public amuleDownloadStatusList()
         {
-            string[] columns = { "File name", "Status", "Size", "Completed", "Speed", "Sources" };
-            int[] width = { 300, 100, 100, 100, 100, 100 };
-            LoadColumns(columns, width);
-
             OwnerDraw = true;
-            DoubleBuffered = true;
+
             DrawColumnHeader +=
                 new DrawListViewColumnHeaderEventHandler(amuleDownloadStatusList_DrawColumnHeader);
 
@@ -51,8 +195,175 @@ namespace amule.net {
 
             MouseClick += new MouseEventHandler(amuleDownloadStatusList_MouseClickHandler);
             ColumnClick += new ColumnClickEventHandler(amuleDownloadStatusList_ColumtClickHandler);
+
+            m_ctx_menu.Opening += new System.ComponentModel.CancelEventHandler(cms_Opening);
+            m_ctx_menu.Items.Add(new ToolStripLabel("Downloads"));
+            m_ctx_menu.Items.Add(new ToolStripSeparator());
+
+            ToolStripButton it_pause = new ToolStripButton("Pause");
+            it_pause.Click += new EventHandler(it_pause_Click);
+            m_ctx_menu.Items.Add(it_pause);
+            ContextMenuStrip = m_ctx_menu;
+
+            ToolStripButton it_resume = new ToolStripButton("Resume");
+            it_resume.Click += new EventHandler(it_resume_Click);
+            m_ctx_menu.Items.Add(it_resume);
+
+            ToolStripButton it_cancel = new ToolStripButton("Cancel");
+            it_cancel.Click += new EventHandler(it_cancel_Click);
+            m_ctx_menu.Items.Add(it_cancel);
+
+            m_ctx_menu.Items.Add(new ToolStripSeparator());
+            //
+            // Init columns
+            //
+            m_column_index = new int[(int)DOWNLOAD_CTRL_COL_ID.COL_LAST_ID];
+            UpdateColumnIndexes();
+            // File name
+            if ( m_settings.FilenameVisible ) {
+                CreateColumtAt("File name", m_settings.FilenameWidth,
+                    (int)DOWNLOAD_CTRL_COL_ID.COL_FILENAME_ID);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "File name", DOWNLOAD_CTRL_COL_ID.COL_FILENAME_ID,
+                m_settings.FilenameVisible, new EventHandler(column_Click));
+            // Status
+            if ( m_settings.StatusVisible ) {
+                CreateColumtAt("Status", m_settings.StatusWidth,
+                    (int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "Status", DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID,
+                m_settings.StatusVisible, new EventHandler(column_Click));
+            // Size
+            if ( m_settings.SizeVisible ) {
+                CreateColumtAt("Size", m_settings.SizeWidth,
+                    (int)DOWNLOAD_CTRL_COL_ID.COL_SIZE_ID);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "Size", DOWNLOAD_CTRL_COL_ID.COL_SIZE_ID,
+                m_settings.SizeVisible, new EventHandler(column_Click));
+            // Completed size
+            if ( m_settings.CompletedVisible ) {
+                CreateColumtAt("Completed", m_settings.CompletedWidth,
+                    (int)DOWNLOAD_CTRL_COL_ID.COL_COMPLETED_ID);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "Completed", DOWNLOAD_CTRL_COL_ID.COL_COMPLETED_ID,
+                m_settings.CompletedVisible, new EventHandler(column_Click));
+            // Speed
+            if ( m_settings.SpeedVisible ) {
+                CreateColumtAt("Speed", m_settings.SpeedWidth,
+                    (int)DOWNLOAD_CTRL_COL_ID.COL_SPEED_ID);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "Speed", DOWNLOAD_CTRL_COL_ID.COL_SPEED_ID,
+                m_settings.SpeedVisible, new EventHandler(column_Click));
+            // Sources
+            if ( m_settings.SourcesVisible ) {
+                CreateColumtAt("Sources", m_settings.SourcesWidth,
+                    m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_SOURCES_ID]);
+            }
+            AppendItemToCtxMenu(m_ctx_menu, "Sources", DOWNLOAD_CTRL_COL_ID.COL_SOURCES_ID,
+                m_settings.SizeVisible, new EventHandler(column_Click));
+
+            ContextMenuStrip = m_ctx_menu;
         }
 
+        //
+        // Click on column visibility checkbox in context menu
+        //
+        void column_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem col = sender as ToolStripMenuItem;
+            DOWNLOAD_CTRL_COL_ID col_id = (DOWNLOAD_CTRL_COL_ID)col.Tag;
+            bool status = !col.Checked;
+            col.Checked = status;
+            if ( !status ) {
+                RemoveColumnAt((int)col_id);
+            }
+            switch ( col_id ) {
+                case DOWNLOAD_CTRL_COL_ID.COL_FILENAME_ID:
+                    m_settings.FilenameVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("File name", m_settings.FilenameWidth, (int)col_id);
+                    }
+                    break;
+                case DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID:
+                    m_settings.StatusVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("Status", m_settings.StatusWidth, (int)col_id);
+                    }
+                    break;
+                case DOWNLOAD_CTRL_COL_ID.COL_SIZE_ID:
+                    m_settings.SizeVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("Size", m_settings.SizeWidth, (int)col_id);
+                    }
+                    break;
+                case DOWNLOAD_CTRL_COL_ID.COL_COMPLETED_ID:
+                    m_settings.CompletedVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("Completed", m_settings.CompletedWidth, (int)col_id);
+                    }
+                    break;
+                case DOWNLOAD_CTRL_COL_ID.COL_SPEED_ID:
+                    m_settings.SpeedVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("Speed", m_settings.SpeedWidth, (int)col_id);
+                    }
+                    break;
+                case DOWNLOAD_CTRL_COL_ID.COL_SOURCES_ID:
+                    m_settings.SourcesVisible = status;
+                    UpdateColumnIndexes();
+                    if ( status ) {
+                        CreateColumtAt("Sources", m_settings.SourcesWidth, (int)col_id);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            Items.Clear();
+            foreach ( DownloadQueueItem i in m_item_container.Items ) {
+                DoInsertItem(i);
+            }
+        }
+
+        //
+        // "Cancel" command in context menu
+        //
+        void it_cancel_Click(object sender, EventArgs e)
+        {
+            OnCancelItem();
+        }
+
+        void it_resume_Click(object sender, EventArgs e)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        //
+        // "Pause" command in context menu
+        //
+        void it_pause_Click(object sender, EventArgs e)
+        {
+            OnPauseItem();
+        }
+
+        //
+        // Context menu - on opening. Can support dynamic menu creation
+        //
+        void cms_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            
+            e.Cancel = false;
+        }
+
+        protected override void OnHandleDestroyed(EventArgs e)
+        {
+            SaveSettigs();
+            base.OnHandleDestroyed(e);
+        }
         public DownloadQueueContainer ItemContainer
         {
             get { return m_item_container; }
@@ -65,8 +376,9 @@ namespace amule.net {
 
         override protected void OnColumnWidthChanged(ColumnWidthChangedEventArgs e)
         {
-            if ( e.ColumnIndex == 1 ) {
-                int new_size = Columns[1].Width + 1;
+            int status_index = m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID];
+            if ( (e.ColumnIndex == status_index) && m_settings.StatusVisible) {
+                int new_size = Columns[status_index].Width + 1;
                 m_item_container.NewItemStatusLineLength = new_size;
 
                 foreach ( ListViewItem i in Items ) {
@@ -80,6 +392,7 @@ namespace amule.net {
         void amuleDownloadStatusList_MouseClickHandler(object o, MouseEventArgs e)
         {
             if ( e.Button == MouseButtons.Right ) {
+                
             }
         }
 
@@ -126,7 +439,8 @@ namespace amule.net {
 
         void amuleDownloadStatusList_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
         {
-            if ( e.ColumnIndex == 1 ) {
+            if ( (e.ColumnIndex == m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID])
+                && m_settings.StatusVisible ) {
                 // status is colored bar
                 Rectangle r = e.Bounds;
                 DownloadQueueItem it = e.Item.Tag as DownloadQueueItem;
@@ -153,13 +467,40 @@ namespace amule.net {
         ///
         void DoInsertItem(DownloadQueueItem i)
         {
-            ListViewItem it = new ListViewItem(i.Name);
+            string first_col_txt;
+            if ( m_settings.FilenameVisible ) {
+                first_col_txt = i.Name;
+            } else if ( m_settings.StatusVisible ) {
+                first_col_txt = i.PercentDone;
+            } else if ( m_settings.SizeVisible ) {
+                first_col_txt = i.Size;
+            } else if ( m_settings.CompletedVisible ) {
+                first_col_txt = i.SizeDone;
+            } else if ( m_settings.SpeedVisible ) {
+                first_col_txt = i.Speed;
+            } else if ( m_settings.SourcesVisible ) {
+                first_col_txt = i.Sources;
+            } else {
+                first_col_txt = "all columns hidden";
+            }
 
-            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.PercentDone));
-            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
-            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.SizeDone));
-            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Speed));
-            it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Sources));
+            ListViewItem it = new ListViewItem(first_col_txt);
+
+            if ( m_settings.StatusVisible ) {
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.PercentDone));
+            }
+            if ( m_settings.SizeVisible ) {
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Size));
+            }
+            if ( m_settings.CompletedVisible ) {
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.SizeDone));
+            }
+            if ( m_settings.SpeedVisible ) {
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Speed));
+            }
+            if ( m_settings.SourcesVisible ) {
+                it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Sources));
+            }
             it.Tag = i;
 
             Items.Add(it);
@@ -170,14 +511,17 @@ namespace amule.net {
         void DoUpdateItem(DownloadQueueItem i)
         {
             ListViewItem it = i.UiItem as ListViewItem;
-            if ( it.SubItems[1].Text != i.PercentDone ) {
-                it.SubItems[1].Text = i.PercentDone;
+            int idx = m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID];
+            if ( it.SubItems[idx].Text != i.PercentDone ) {
+                it.SubItems[idx].Text = i.PercentDone;
             }
-            if ( it.SubItems[3].Text != i.SizeDone ) {
-                it.SubItems[3].Text = i.SizeDone;
+            idx = (int)DOWNLOAD_CTRL_COL_ID.COL_COMPLETED_ID;
+            if ( it.SubItems[idx].Text != i.SizeDone ) {
+                it.SubItems[idx].Text = i.SizeDone;
             }
-            if ( it.SubItems[4].Text != i.Speed ) {
-                it.SubItems[4].Text = i.Speed;
+            idx = (int)DOWNLOAD_CTRL_COL_ID.COL_SPEED_ID;
+            if ( it.SubItems[idx].Text != i.Speed ) {
+                it.SubItems[idx].Text = i.Speed;
             }
             //Items
         }

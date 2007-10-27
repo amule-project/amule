@@ -270,6 +270,11 @@ namespace amule.net
             return true;
         }
 
+        public LinkedList<T> Items
+        {
+            get { return m_items; }
+        }
+
         protected virtual ecProto.ecTag CreateItemTag(ecProto.ecMD5 id)
         {
             return null;
