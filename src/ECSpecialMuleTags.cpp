@@ -295,9 +295,6 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		if (thePrefs::FilterLanIPs()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_IPFILTER_FILTER_LAN));
 		}
-		if (thePrefs::IsSecureIdentEnabled()) {
-			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_USE_SECIDENT));
-		}
 		AddTag(secPrefs);
 	}
 
@@ -500,7 +497,6 @@ void CEC_Prefs_Packet::Apply()
 			thePrefs::SetIPFilterLevel(oneTag->GetInt());
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilterLanIPs, EC_TAG_IPFILTER_FILTER_LAN);
-		ApplyBoolean(use_tag, thisTab, thePrefs::SetSecureIdentEnabled, EC_TAG_SECURITY_USE_SECIDENT);
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {

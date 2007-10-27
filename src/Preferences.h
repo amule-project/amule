@@ -422,13 +422,12 @@ public:
 	static void		SetIPFilterAutoLoad(bool val)	{ s_IPFilterAutoLoad = val; }
 	static const wxString&	IPFilterURL()			{ return s_IPFilterURL; }
 	static void		SetIPFilterURL(const wxString& url)	{ s_IPFilterURL = url; }
+	static bool		UseIPFilterSystem()		{ return s_IPFilterSys; }
+	static void		SetIPFilterSystem(bool val)	{ s_IPFilterSys = val; }
 
 	// Source seeds On/Off
 	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
-	
-	static bool		IsSecureIdentEnabled()		{ return s_SecIdent; }
-	static void		SetSecureIdentEnabled(bool val)	{ s_SecIdent = val; }
 	
 	static bool		GetExtractMetaData()		{ return s_ExtractMetaData; }
 	static void		SetExtractMetaData(bool val)	{ s_ExtractMetaData = val; }
@@ -698,14 +697,13 @@ protected:
 	static uint8	s_filterlevel;
 	static bool	s_IPFilterAutoLoad;
 	static wxString s_IPFilterURL;
+	static bool	s_IPFilterSys;
 	
 	// Kry - Source seeds on/off
 	static bool	s_UseSrcSeeds;
 	
 	static bool	s_ProgBar;
 	static bool	s_Percent;	
-	
-	static bool	s_SecIdent;
 	
 	static bool	s_ExtractMetaData;
 	

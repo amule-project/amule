@@ -284,11 +284,6 @@ void CClientCreditsList::InitalizeCrypting()
 	memset(m_abyMyPublicKey,0,80); // not really needed; better for debugging tho
 	m_pSignkey = NULL;
 
-	if (!thePrefs::IsSecureIdentEnabled()) {
-		return;
-	}
-
- 
 	try {
 		// check if keyfile is there
  		if (wxFileExists(theApp->ConfigDir + CRYPTKEY_FILENAME)) {
@@ -440,7 +435,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 
 bool CClientCreditsList::CryptoAvailable() const
 {
-	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0 && thePrefs::IsSecureIdentEnabled());
+	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0);
 }
 
 
