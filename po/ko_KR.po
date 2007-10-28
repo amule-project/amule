@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-21 03:30+0200\n"
+"POT-Creation-Date: 2007-10-28 03:30+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -253,7 +253,7 @@ msgstr "선택한 친구들을 삭제하시겠습니까?"
 #: src/DownloadListCtrl.cpp:578 src/DownloadListCtrl.cpp:892
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2808
-#: src/muuli_wdr.cpp:2910 src/muuli_wdr.cpp:3789
+#: src/muuli_wdr.cpp:2910 src/muuli_wdr.cpp:3783
 msgid "Cancel"
 msgstr "취소"
 
@@ -324,7 +324,7 @@ msgid "Directory Path"
 msgstr "폴더 경로"
 
 #: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1339 src/Statistics.cpp:721
-#: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4017
+#: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4011
 msgid "Shared Files"
 msgstr "공유 파일"
 
@@ -632,7 +632,7 @@ msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1352
-#: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4021
+#: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4015
 msgid "Preferences"
 msgstr "환경설정"
 
@@ -644,7 +644,7 @@ msgstr "amulesig.dat 파일을 포함한 폴더"
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
 #: src/utils/aLinkCreator/src/alcframe.cpp:142 src/muuli_wdr.cpp:1714
 #: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
-#: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3527
+#: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3521
 msgid "Browse"
 msgstr "탐색"
 
@@ -689,7 +689,7 @@ msgid "User"
 msgstr "사용자"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2734
-#: src/muuli_wdr.cpp:3761
+#: src/muuli_wdr.cpp:3755
 msgid "Password"
 msgstr "암호"
 
@@ -1343,7 +1343,7 @@ msgid "Remote Server"
 msgstr "원격 서버"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:678 src/muuli_wdr.cpp:195
-#: src/muuli_wdr.cpp:3955 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:3949 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -1725,11 +1725,11 @@ msgid "Disconnect"
 msgstr "연결 끊기"
 
 #: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3292
-#: src/muuli_wdr.cpp:3785 src/muuli_wdr.cpp:4011 src/MuleTrayIcon.cpp:511
+#: src/muuli_wdr.cpp:3779 src/muuli_wdr.cpp:4005 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "연결"
 
-#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4011
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4005
 msgid "Connect to any server and/or Kad"
 msgstr "서버 혹은 Kad에 연결"
 
@@ -1779,11 +1779,11 @@ msgid "Exit confirmation"
 msgstr "종료 확인"
 
 #: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:527
-#: src/muuli_wdr.cpp:3552 src/muuli_wdr.cpp:4018
+#: src/muuli_wdr.cpp:3546 src/muuli_wdr.cpp:4012
 msgid "Messages"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4018
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4012
 msgid "Messages Window"
 msgstr "메시지 창"
 
@@ -1805,66 +1805,66 @@ msgstr "경고: 외형 파일 '%s'(을)를 읽을 수 없습니다."
 msgid "Disconnect from any server and/or Kad"
 msgstr "서버 또는 Kad 접속이 끊겼습니다."
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4013
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4007
 msgid "Networks"
 msgstr "통신망"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4013
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4007
 msgid "Networks Window"
 msgstr "통신망 창"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4015
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4009
 msgid "Searches"
 msgstr "검색"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4015
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4009
 msgid "Searches Window"
 msgstr "검색 창"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4010
 msgid "Transfers"
 msgstr "전송"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4010
 msgid "Files Transfers Window"
 msgstr "파일 전송 창"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4017
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4011
 msgid "Shared Files Window"
 msgstr "공유 파일 창"
 
 #: src/amuleDlg.cpp:1347 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
-#: src/muuli_wdr.cpp:4019
+#: src/muuli_wdr.cpp:4013
 msgid "Statistics"
 msgstr "통계"
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4019
+#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4013
 msgid "Statistics Graph Window"
 msgstr "통계 그래프 창"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4021
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4015
 msgid "Preferences Settings Window"
 msgstr "환경 설정 창"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4022
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4016
 msgid "Import"
 msgstr "가져오기"
 
-#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4022
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4016
 msgid "The partfile importer tool"
 msgstr "부분파일 가져오기 도구"
 
-#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4023
+#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4017
 msgid "About"
 msgstr "정보"
 
-#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4023
+#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4017
 msgid "About/Help"
 msgstr "정보/도움"
 
 #: src/PrefsUnifiedDlg.cpp:147 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1387
-#: src/muuli_wdr.cpp:3636
+#: src/muuli_wdr.cpp:3630
 msgid "General"
 msgstr "일반"
 
@@ -1872,7 +1872,7 @@ msgstr "일반"
 msgid "Connection"
 msgstr "연결"
 
-#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3631
+#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3625
 msgid "Proxy"
 msgstr "프록시"
 
@@ -1884,7 +1884,7 @@ msgstr "메시지 차단"
 msgid "Remote Controls"
 msgstr "원격 조정"
 
-#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3496
+#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3490
 msgid "Online Signature"
 msgstr "온라인 서명"
 
@@ -1904,11 +1904,11 @@ msgstr "GUI 조정"
 msgid "Core Tweaks"
 msgstr "코어 조정"
 
-#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3980
+#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3974
 msgid "Events"
 msgstr "사건들"
 
-#: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3813
+#: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3807
 msgid "Debugging"
 msgstr "디버깅"
 
@@ -3241,7 +3241,7 @@ msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: 손상된 부분 %i를 복구했습니다. (%s의) -> 저장된 바이트: %s"
 
-#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3591
+#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3585
 msgid "Comments"
 msgstr "의견들"
 
@@ -3511,7 +3511,7 @@ msgstr "현재 IP 차단 수준은 %d입니다.\n"
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "대역폭 제한: 올려주기: %u kB/초, 내려받기: %u kB/초\n"
 
-#: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3950
+#: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3944
 msgid "ED2K"
 msgstr "ED2k"
 
@@ -4275,7 +4275,7 @@ msgstr "성공적으로 가져온 내려받기 파일을 삭제하겠습니까?"
 msgid "Remove sources?"
 msgstr "자료를 삭제하겠습니까?"
 
-#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3856
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3850
 msgid "Waiting..."
 msgstr "대기중..."
 
@@ -4618,7 +4618,7 @@ msgid "Sends the specified message."
 msgstr "지정된 메시지를 보냅니다."
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1593
-#: src/muuli_wdr.cpp:3893 src/MuleNotebook.cpp:152
+#: src/muuli_wdr.cpp:3887 src/MuleNotebook.cpp:152
 msgid "Close"
 msgstr "닫기"
 
@@ -4857,7 +4857,7 @@ msgstr "활성화된 올려주기"
 msgid "Statistics Tree"
 msgstr "통계 트리"
 
-#: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3690
+#: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3684
 msgid "Username:"
 msgstr "사용자 이름:"
 
@@ -5744,7 +5744,7 @@ msgstr "서버 수동 추가 (미리 왼쪽 부분을 채울 것) ..."
 msgid "ED2K Info"
 msgstr "ED2k 정보"
 
-#: src/muuli_wdr.cpp:3116 src/muuli_wdr.cpp:3917
+#: src/muuli_wdr.cpp:3116 src/muuli_wdr.cpp:3911
 msgid "Kad Info"
 msgstr "Kad 정보"
 
@@ -5938,31 +5938,25 @@ msgstr ""
 "클라이언트 IP가 패킷이 수신된 IP와 다르면 패킷을 거부합니다. 조심해서 사용하"
 "세요."
 
-#: src/muuli_wdr.cpp:3467
-msgid "Client Identification:"
-msgstr "클라인트 확인:"
-
-#: src/muuli_wdr.cpp:3470
-msgid "Use Secure Identification"
-msgstr "안전한 확인을 사용"
-
-#: src/muuli_wdr.cpp:3472
-msgid ""
-"Secure Identification uses a handshake approch to safely identify clients "
-"for use with the credit system."
+#: src/muuli_wdr.cpp:3465
+msgid "Allow usage of system wide ipfilter.dat"
 msgstr ""
-"안전한 확인은 신용시스템을 사용함에 있어서 클라이언트를 안전하게 확인하기 위"
-"해 핸드쉐이크 접근을 사용합니다."
 
-#: src/muuli_wdr.cpp:3501
+#: src/muuli_wdr.cpp:3466
+msgid ""
+"If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
+"file."
+msgstr ""
+
+#: src/muuli_wdr.cpp:3495
 msgid "Enable/Disable"
 msgstr "활성화/비활성화"
 
-#: src/muuli_wdr.cpp:3504
+#: src/muuli_wdr.cpp:3498
 msgid "Enable Online-Signature"
 msgstr "온라인서명을 활성화"
 
-#: src/muuli_wdr.cpp:3506
+#: src/muuli_wdr.cpp:3500
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
@@ -5970,172 +5964,172 @@ msgstr ""
 "서명을 생성할 수 있는 외부 응용프로그램에 의해 사용될 수 있는 운영체제 파일"
 "의 기록을 활성화합니다."
 
-#: src/muuli_wdr.cpp:3511
+#: src/muuli_wdr.cpp:3505
 msgid "Update Frequency (Secs):"
 msgstr "갱신 주기(초)"
 
-#: src/muuli_wdr.cpp:3515
+#: src/muuli_wdr.cpp:3509
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr "온라인 서명 갱신 주기(초)를 바꿉니다."
 
-#: src/muuli_wdr.cpp:3521
+#: src/muuli_wdr.cpp:3515
 msgid "Online Signature Directory:"
 msgstr "온라인 서명 폴더:"
 
-#: src/muuli_wdr.cpp:3528
+#: src/muuli_wdr.cpp:3522
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr "온라인서명 파일을 포함하는 폴더를 선택하려면 클릭하세요."
 
-#: src/muuli_wdr.cpp:3557 src/muuli_wdr.cpp:3596 src/muuli_wdr.cpp:3818
+#: src/muuli_wdr.cpp:3551 src/muuli_wdr.cpp:3590 src/muuli_wdr.cpp:3812
 msgid "Disable/Enable"
 msgstr "비활성화/활성화"
 
-#: src/muuli_wdr.cpp:3560
+#: src/muuli_wdr.cpp:3554
 msgid "Filter incoming messages (except current chat):"
 msgstr "받는 메시지 차단(현재 채팅은 제외)"
 
-#: src/muuli_wdr.cpp:3563
+#: src/muuli_wdr.cpp:3557
 msgid "Filtering Options:"
 msgstr "차단 설정:"
 
-#: src/muuli_wdr.cpp:3566
+#: src/muuli_wdr.cpp:3560
 msgid "Filter all messages"
 msgstr "모든 메시지를 차단"
 
-#: src/muuli_wdr.cpp:3569
+#: src/muuli_wdr.cpp:3563
 msgid "Filter messages from people not on your friend list"
 msgstr "친구 목록에 없는 사람으로부터 메시지를 차단"
 
-#: src/muuli_wdr.cpp:3572
+#: src/muuli_wdr.cpp:3566
 msgid "Filter messages from unknown clients"
 msgstr "알 수 없는 클라이언트로부터 메시지를 차단"
 
-#: src/muuli_wdr.cpp:3575
+#: src/muuli_wdr.cpp:3569
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "다음 내용이 포함된 메시지를 차단 (쉼표로 분리):"
 
-#: src/muuli_wdr.cpp:3579 src/muuli_wdr.cpp:3603
+#: src/muuli_wdr.cpp:3573 src/muuli_wdr.cpp:3597
 msgid "add here the words amule should filter and block messages including it"
 msgstr "이곳에 어뮬이 차단하고 막을 메시지에 포함될 단어를 추가하세요."
 
-#: src/muuli_wdr.cpp:3599
+#: src/muuli_wdr.cpp:3593
 msgid "Filter comments containing (use ',' as separator):"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3642
+#: src/muuli_wdr.cpp:3636
 msgid "Enable Proxy"
 msgstr "프록시 활성화"
 
-#: src/muuli_wdr.cpp:3643
+#: src/muuli_wdr.cpp:3637
 msgid "Enable/disable proxy support"
 msgstr "프록시지원을 활성화/비활성화"
 
-#: src/muuli_wdr.cpp:3648
+#: src/muuli_wdr.cpp:3642
 msgid "Proxy type:"
 msgstr "프록시 종류:"
 
-#: src/muuli_wdr.cpp:3653
+#: src/muuli_wdr.cpp:3647
 msgid "SOCKS5"
 msgstr "SOCKS5"
 
-#: src/muuli_wdr.cpp:3654
+#: src/muuli_wdr.cpp:3648
 msgid "SOCKS4"
 msgstr "SOCKS4"
 
-#: src/muuli_wdr.cpp:3655
+#: src/muuli_wdr.cpp:3649
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/muuli_wdr.cpp:3656
+#: src/muuli_wdr.cpp:3650
 msgid "SOCKS4a"
 msgstr "SOCKS4a"
 
-#: src/muuli_wdr.cpp:3659
+#: src/muuli_wdr.cpp:3653
 msgid "The type of proxy you are connecting to"
 msgstr "연결하고 있는 프록시 타입"
 
-#: src/muuli_wdr.cpp:3662
+#: src/muuli_wdr.cpp:3656
 msgid "Proxy host:"
 msgstr "프록시 호스트:"
 
-#: src/muuli_wdr.cpp:3666
+#: src/muuli_wdr.cpp:3660
 msgid "The proxy host name"
 msgstr "프록시 호스트 이름"
 
-#: src/muuli_wdr.cpp:3669
+#: src/muuli_wdr.cpp:3663
 msgid "Proxy port:"
 msgstr "프록시 포트:"
 
-#: src/muuli_wdr.cpp:3673
+#: src/muuli_wdr.cpp:3667
 msgid "The proxy port"
 msgstr "프록시 포트"
 
-#: src/muuli_wdr.cpp:3680
+#: src/muuli_wdr.cpp:3674
 msgid "Authentication"
 msgstr "인증"
 
-#: src/muuli_wdr.cpp:3683
+#: src/muuli_wdr.cpp:3677
 msgid "Enable authentication"
 msgstr "인증 활성화"
 
-#: src/muuli_wdr.cpp:3684
+#: src/muuli_wdr.cpp:3678
 msgid "Enable/disable username/password authentication"
 msgstr "사용자이름/암호 인증을 활성화/비활성화"
 
-#: src/muuli_wdr.cpp:3694
+#: src/muuli_wdr.cpp:3688
 msgid "The username to use to connect to the proxy"
 msgstr "프록시에 접속하기 위한 사용자이름"
 
-#: src/muuli_wdr.cpp:3697
+#: src/muuli_wdr.cpp:3691
 msgid "Password:"
 msgstr "암호:"
 
-#: src/muuli_wdr.cpp:3701
+#: src/muuli_wdr.cpp:3695
 msgid "The password to use to connect to the proxy"
 msgstr "프록시에 접속하기 위한 암호"
 
-#: src/muuli_wdr.cpp:3708
+#: src/muuli_wdr.cpp:3702
 msgid "Automatic server connect without proxy"
 msgstr "프록시 없이 서버에 자동으로 연결"
 
-#: src/muuli_wdr.cpp:3731
+#: src/muuli_wdr.cpp:3725
 msgid "Connect to:"
 msgstr "연결함:"
 
-#: src/muuli_wdr.cpp:3745
+#: src/muuli_wdr.cpp:3739
 msgid "Login to remote amule"
 msgstr "원격 어뮬에 로그인"
 
-#: src/muuli_wdr.cpp:3750
+#: src/muuli_wdr.cpp:3744
 msgid "User name"
 msgstr "사용자이름"
 
-#: src/muuli_wdr.cpp:3777
+#: src/muuli_wdr.cpp:3771
 msgid "Remember those settings"
 msgstr "설정을 기억"
 
-#: src/muuli_wdr.cpp:3823
+#: src/muuli_wdr.cpp:3817
 msgid "Enable Verbose Debug-Logging."
 msgstr "상세한 디버그-로깅 활성화"
 
-#: src/muuli_wdr.cpp:3828
+#: src/muuli_wdr.cpp:3822
 msgid "Message Categories:"
 msgstr "메시지 분류:"
 
-#: src/muuli_wdr.cpp:3883
+#: src/muuli_wdr.cpp:3877
 msgid "Add imports"
 msgstr "가져오기 추가"
 
-#: src/muuli_wdr.cpp:3887
+#: src/muuli_wdr.cpp:3881
 msgid "Retry selected"
 msgstr "선택된 것을 재시도"
 
-#: src/muuli_wdr.cpp:3890
+#: src/muuli_wdr.cpp:3884
 msgid "Remove selected"
 msgstr "선택된 것을 삭제"
 
-#: src/muuli_wdr.cpp:3985
+#: src/muuli_wdr.cpp:3979
 msgid "Event types"
 msgstr "사건 종류"
 
@@ -6371,7 +6365,7 @@ msgstr "신용 파일을 읽었습니다. %u 클라이언트가 인식되었습�
 msgid " - Credits expired for %u clients!"
 msgstr "%u 클라이언트에 대한 신용이 만료되었습니다."
 
-#: src/ClientCreditsList.cpp:305
+#: src/ClientCreditsList.cpp:300
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "'cryptkey.dat' 파일을 찾을 수 없습니다. 생성합니다."
 
@@ -7057,6 +7051,19 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "Client Identification:"
+#~ msgstr "클라인트 확인:"
+
+#~ msgid "Use Secure Identification"
+#~ msgstr "안전한 확인을 사용"
+
+#~ msgid ""
+#~ "Secure Identification uses a handshake approch to safely identify clients "
+#~ "for use with the credit system."
+#~ msgstr ""
+#~ "안전한 확인은 신용시스템을 사용함에 있어서 클라이언트를 안전하게 확인하기 "
+#~ "위해 핸드쉐이크 접근을 사용합니다."
 
 #~ msgid "Sources Dropping"
 #~ msgstr "자료 버림"

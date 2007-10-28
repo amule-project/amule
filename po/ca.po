@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-21 03:30+0200\n"
+"POT-Creation-Date: 2007-10-28 03:30+0100\n"
 "PO-Revision-Date: 2007-08-28 02:34+0200\n"
 "Last-Translator: Joel Sevilleja <Joelregs@hotmail.com>\n"
 "Language-Team: Catalán\n"
@@ -263,7 +263,7 @@ msgstr "Esteu segur que voleu esborrar l'amic(s) seleccionat(s)?"
 #: src/DownloadListCtrl.cpp:578 src/DownloadListCtrl.cpp:892
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2808
-#: src/muuli_wdr.cpp:2910 src/muuli_wdr.cpp:3789
+#: src/muuli_wdr.cpp:2910 src/muuli_wdr.cpp:3783
 msgid "Cancel"
 msgstr "Cancel.la"
 
@@ -334,7 +334,7 @@ msgid "Directory Path"
 msgstr "Ubicació"
 
 #: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1339 src/Statistics.cpp:721
-#: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4017
+#: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4011
 msgid "Shared Files"
 msgstr "Compartits"
 
@@ -644,7 +644,7 @@ msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1352
-#: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4021
+#: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4015
 msgid "Preferences"
 msgstr "Preferències"
 
@@ -656,7 +656,7 @@ msgstr "El directori on està el fitxer amulesig.dat"
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
 #: src/utils/aLinkCreator/src/alcframe.cpp:142 src/muuli_wdr.cpp:1714
 #: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
-#: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3527
+#: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3521
 msgid "Browse"
 msgstr "Explora"
 
@@ -701,7 +701,7 @@ msgid "User"
 msgstr "Usuari"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2734
-#: src/muuli_wdr.cpp:3761
+#: src/muuli_wdr.cpp:3755
 msgid "Password"
 msgstr "Contrasenya"
 
@@ -1355,7 +1355,7 @@ msgid "Remote Server"
 msgstr "Servidor Remot"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:678 src/muuli_wdr.cpp:195
-#: src/muuli_wdr.cpp:3955 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:3949 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -1740,11 +1740,11 @@ msgid "Disconnect"
 msgstr "Desconnecta"
 
 #: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3292
-#: src/muuli_wdr.cpp:3785 src/muuli_wdr.cpp:4011 src/MuleTrayIcon.cpp:511
+#: src/muuli_wdr.cpp:3779 src/muuli_wdr.cpp:4005 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Connecta"
 
-#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4011
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4005
 msgid "Connect to any server and/or Kad"
 msgstr "Connecta amb qualsevol servidor i/o Kad"
 
@@ -1795,11 +1795,11 @@ msgid "Exit confirmation"
 msgstr "Confirmació de sortida"
 
 #: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:527
-#: src/muuli_wdr.cpp:3552 src/muuli_wdr.cpp:4018
+#: src/muuli_wdr.cpp:3546 src/muuli_wdr.cpp:4012
 msgid "Messages"
 msgstr "Missatges"
 
-#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4018
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4012
 msgid "Messages Window"
 msgstr "Finestra de Missatges"
 
@@ -1821,66 +1821,66 @@ msgstr "AVÍS: Impossible d'obrir el fitxer de tema '%s' per a lectura"
 msgid "Disconnect from any server and/or Kad"
 msgstr "Desconectat des d'algún servidor i/o Kad"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4013
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4007
 msgid "Networks"
 msgstr "Xarxes"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4013
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4007
 msgid "Networks Window"
 msgstr "Finestra de les Xarxes"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4015
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4009
 msgid "Searches"
 msgstr "Cerca"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4015
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4009
 msgid "Searches Window"
 msgstr "Finestra de Recerques"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4010
 msgid "Transfers"
 msgstr "Transferències"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4010
 msgid "Files Transfers Window"
 msgstr "Finestra de Transferència de Fitxers"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4017
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4011
 msgid "Shared Files Window"
 msgstr "Finestra de Fitxers Compartits"
 
 #: src/amuleDlg.cpp:1347 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
-#: src/muuli_wdr.cpp:4019
+#: src/muuli_wdr.cpp:4013
 msgid "Statistics"
 msgstr "Estadístiques"
 
-#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4019
+#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4013
 msgid "Statistics Graph Window"
 msgstr "Finestra del Gràfic d'Estadístiques"
 
-#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4021
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4015
 msgid "Preferences Settings Window"
 msgstr "Finestra de la Configuració de Preferències"
 
-#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4022
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4016
 msgid "Import"
 msgstr "Importa"
 
-#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4022
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4016
 msgid "The partfile importer tool"
 msgstr "Eina d'importació de fitxers de parts"
 
-#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4023
+#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4017
 msgid "About"
 msgstr "Quant a"
 
-#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4023
+#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4017
 msgid "About/Help"
 msgstr "Quant a / Ajuda"
 
 #: src/PrefsUnifiedDlg.cpp:147 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1387
-#: src/muuli_wdr.cpp:3636
+#: src/muuli_wdr.cpp:3630
 msgid "General"
 msgstr "General"
 
@@ -1888,7 +1888,7 @@ msgstr "General"
 msgid "Connection"
 msgstr "Connexió"
 
-#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3631
+#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3625
 msgid "Proxy"
 msgstr "Proxy"
 
@@ -1900,7 +1900,7 @@ msgstr "Filtre de Missatges"
 msgid "Remote Controls"
 msgstr "Control Remot"
 
-#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3496
+#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3490
 msgid "Online Signature"
 msgstr "Signatura en línia"
 
@@ -1920,11 +1920,11 @@ msgstr "GUI"
 msgid "Core Tweaks"
 msgstr "Nucli"
 
-#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3980
+#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3974
 msgid "Events"
 msgstr "Events"
 
-#: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3813
+#: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3807
 msgid "Debugging"
 msgstr "Depuració"
 
@@ -3290,7 +3290,7 @@ msgstr "La part descarregada %i és corrupta al fitxer: %s"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: S'ha recuperat la part corrupta %i de %s -> Bytes desats: %s"
 
-#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3591
+#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3585
 msgid "Comments"
 msgstr "Comentaris"
 
@@ -3567,7 +3567,7 @@ msgstr "El nivell actual del FiltreIP és %d.\n"
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Límits d'ample de banda: Pujada: %u kB/s, Baixada: %u kB/s.\n"
 
-#: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3950
+#: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3944
 msgid "ED2K"
 msgstr "ED2K"
 
@@ -4349,7 +4349,7 @@ msgstr ""
 msgid "Remove sources?"
 msgstr "Voleu esborrar les fonts?"
 
-#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3856
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3850
 msgid "Waiting..."
 msgstr "Esperant..."
 
@@ -4701,7 +4701,7 @@ msgid "Sends the specified message."
 msgstr "Envia el missatge especificat."
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1593
-#: src/muuli_wdr.cpp:3893 src/MuleNotebook.cpp:152
+#: src/muuli_wdr.cpp:3887 src/MuleNotebook.cpp:152
 msgid "Close"
 msgstr "Tanca"
 
@@ -4939,7 +4939,7 @@ msgstr "Pujades Actives"
 msgid "Statistics Tree"
 msgstr "Arbre d'Estadístiques"
 
-#: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3690
+#: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3684
 msgid "Username:"
 msgstr "Nom d'usuari:"
 
@@ -5836,7 +5836,7 @@ msgstr ""
 msgid "ED2K Info"
 msgstr "Info. ED2K"
 
-#: src/muuli_wdr.cpp:3116 src/muuli_wdr.cpp:3917
+#: src/muuli_wdr.cpp:3116 src/muuli_wdr.cpp:3911
 msgid "Kad Info"
 msgstr "Info. Kad"
 
@@ -6036,31 +6036,25 @@ msgstr ""
 "Rebutjar paquets si la IP del client és diferent de la IP des d'on el paquet "
 "és rebut. Utilitzar amb prudència."
 
-#: src/muuli_wdr.cpp:3467
-msgid "Client Identification:"
-msgstr "Identificació del Client:"
-
-#: src/muuli_wdr.cpp:3470
-msgid "Use Secure Identification"
-msgstr "Usa la identificació segura"
-
-#: src/muuli_wdr.cpp:3472
-msgid ""
-"Secure Identification uses a handshake approch to safely identify clients "
-"for use with the credit system."
+#: src/muuli_wdr.cpp:3465
+msgid "Allow usage of system wide ipfilter.dat"
 msgstr ""
-"La Identificació Segura fa una aproximació per tal d'identificar amb "
-"seguretat els clients que intervenen al sistema de crèdits."
 
-#: src/muuli_wdr.cpp:3501
+#: src/muuli_wdr.cpp:3466
+msgid ""
+"If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
+"file."
+msgstr ""
+
+#: src/muuli_wdr.cpp:3495
 msgid "Enable/Disable"
 msgstr "Habilita/Inhabilita"
 
-#: src/muuli_wdr.cpp:3504
+#: src/muuli_wdr.cpp:3498
 msgid "Enable Online-Signature"
 msgstr "Habilita la Signatura en línia"
 
-#: src/muuli_wdr.cpp:3506
+#: src/muuli_wdr.cpp:3500
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
@@ -6068,177 +6062,177 @@ msgstr ""
 "Habilita l'escriptura del fitxer de Signatura, que altres aplicacions "
 "externes poden usar per a crear signatures i similars."
 
-#: src/muuli_wdr.cpp:3511
+#: src/muuli_wdr.cpp:3505
 msgid "Update Frequency (Secs):"
 msgstr "Freqüència d'actualització (Segs):"
 
-#: src/muuli_wdr.cpp:3515
+#: src/muuli_wdr.cpp:3509
 msgid "Change the frequency (in seconds) of Online Signature updates."
 msgstr ""
 "Canvia la freqüència d'actualització (en segons) de la Signatura en línia."
 
-#: src/muuli_wdr.cpp:3521
+#: src/muuli_wdr.cpp:3515
 msgid "Online Signature Directory:"
 msgstr "Directori de la Signatura en línia:"
 
-#: src/muuli_wdr.cpp:3528
+#: src/muuli_wdr.cpp:3522
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "Feu clic ací per a seleccionar el directori que conté els fitxers de "
 "Signatura en línia."
 
-#: src/muuli_wdr.cpp:3557 src/muuli_wdr.cpp:3596 src/muuli_wdr.cpp:3818
+#: src/muuli_wdr.cpp:3551 src/muuli_wdr.cpp:3590 src/muuli_wdr.cpp:3812
 msgid "Disable/Enable"
 msgstr "Inhabilita/Habilita"
 
-#: src/muuli_wdr.cpp:3560
+#: src/muuli_wdr.cpp:3554
 msgid "Filter incoming messages (except current chat):"
 msgstr "Filtra els missatges entrants (excepte el xat actual):"
 
-#: src/muuli_wdr.cpp:3563
+#: src/muuli_wdr.cpp:3557
 msgid "Filtering Options:"
 msgstr "Opcions de filtrat:"
 
-#: src/muuli_wdr.cpp:3566
+#: src/muuli_wdr.cpp:3560
 msgid "Filter all messages"
 msgstr "Filtra tots els missatges"
 
-#: src/muuli_wdr.cpp:3569
+#: src/muuli_wdr.cpp:3563
 msgid "Filter messages from people not on your friend list"
 msgstr "Filtra els missatges de la gent que no és a la llista d'amics"
 
-#: src/muuli_wdr.cpp:3572
+#: src/muuli_wdr.cpp:3566
 msgid "Filter messages from unknown clients"
 msgstr "Filtra els missatges dels clients desconeguts"
 
-#: src/muuli_wdr.cpp:3575
+#: src/muuli_wdr.cpp:3569
 msgid "Filter messages containing (use ',' as separator):"
 msgstr "Filtra els missatges que continguin (useu ',' per a separar):"
 
-#: src/muuli_wdr.cpp:3579 src/muuli_wdr.cpp:3603
+#: src/muuli_wdr.cpp:3573 src/muuli_wdr.cpp:3597
 msgid "add here the words amule should filter and block messages including it"
 msgstr ""
 "Els missatges que continguin aquestes paraules seran filtrats i bloquejats "
 "per l'aMule"
 
-#: src/muuli_wdr.cpp:3599
+#: src/muuli_wdr.cpp:3593
 msgid "Filter comments containing (use ',' as separator):"
 msgstr ""
 
-#: src/muuli_wdr.cpp:3642
+#: src/muuli_wdr.cpp:3636
 msgid "Enable Proxy"
 msgstr "Habilita el proxy"
 
-#: src/muuli_wdr.cpp:3643
+#: src/muuli_wdr.cpp:3637
 msgid "Enable/disable proxy support"
 msgstr "Habilita/inhabilita el suport per a proxy"
 
-#: src/muuli_wdr.cpp:3648
+#: src/muuli_wdr.cpp:3642
 msgid "Proxy type:"
 msgstr "Tipus de proxy:"
 
-#: src/muuli_wdr.cpp:3653
+#: src/muuli_wdr.cpp:3647
 msgid "SOCKS5"
 msgstr "SOCKS5"
 
-#: src/muuli_wdr.cpp:3654
+#: src/muuli_wdr.cpp:3648
 msgid "SOCKS4"
 msgstr "SOCKS4"
 
-#: src/muuli_wdr.cpp:3655
+#: src/muuli_wdr.cpp:3649
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/muuli_wdr.cpp:3656
+#: src/muuli_wdr.cpp:3650
 msgid "SOCKS4a"
 msgstr "SOCKS4a"
 
-#: src/muuli_wdr.cpp:3659
+#: src/muuli_wdr.cpp:3653
 msgid "The type of proxy you are connecting to"
 msgstr "El tipus de servidor intermediari al que esteu connectant"
 
-#: src/muuli_wdr.cpp:3662
+#: src/muuli_wdr.cpp:3656
 msgid "Proxy host:"
 msgstr "Host proxy:"
 
-#: src/muuli_wdr.cpp:3666
+#: src/muuli_wdr.cpp:3660
 msgid "The proxy host name"
 msgstr "El nom del host del servidor intermediari"
 
-#: src/muuli_wdr.cpp:3669
+#: src/muuli_wdr.cpp:3663
 msgid "Proxy port:"
 msgstr "Port del proxy:"
 
-#: src/muuli_wdr.cpp:3673
+#: src/muuli_wdr.cpp:3667
 msgid "The proxy port"
 msgstr "El port del servidor intermediari"
 
-#: src/muuli_wdr.cpp:3680
+#: src/muuli_wdr.cpp:3674
 msgid "Authentication"
 msgstr "Autenticació"
 
-#: src/muuli_wdr.cpp:3683
+#: src/muuli_wdr.cpp:3677
 msgid "Enable authentication"
 msgstr "Habilita l'autenticació"
 
-#: src/muuli_wdr.cpp:3684
+#: src/muuli_wdr.cpp:3678
 msgid "Enable/disable username/password authentication"
 msgstr "Habilita/inhabilita l'identificació amb nom d'usuari/contrasenya"
 
-#: src/muuli_wdr.cpp:3694
+#: src/muuli_wdr.cpp:3688
 msgid "The username to use to connect to the proxy"
 msgstr "El nom d'usuari per a connectar al proxy"
 
-#: src/muuli_wdr.cpp:3697
+#: src/muuli_wdr.cpp:3691
 msgid "Password:"
 msgstr "Contrasenya:"
 
-#: src/muuli_wdr.cpp:3701
+#: src/muuli_wdr.cpp:3695
 msgid "The password to use to connect to the proxy"
 msgstr "La contrasenya per a connectar al proxy"
 
-#: src/muuli_wdr.cpp:3708
+#: src/muuli_wdr.cpp:3702
 msgid "Automatic server connect without proxy"
 msgstr "Connexió automàtica al servidor sense proxy"
 
-#: src/muuli_wdr.cpp:3731
+#: src/muuli_wdr.cpp:3725
 msgid "Connect to:"
 msgstr "Connecta a:"
 
-#: src/muuli_wdr.cpp:3745
+#: src/muuli_wdr.cpp:3739
 msgid "Login to remote amule"
 msgstr "Identificació a l'amule remot"
 
-#: src/muuli_wdr.cpp:3750
+#: src/muuli_wdr.cpp:3744
 msgid "User name"
 msgstr "Nom de l'usuari"
 
-#: src/muuli_wdr.cpp:3777
+#: src/muuli_wdr.cpp:3771
 msgid "Remember those settings"
 msgstr "Recorda aquesta configuració"
 
-#: src/muuli_wdr.cpp:3823
+#: src/muuli_wdr.cpp:3817
 msgid "Enable Verbose Debug-Logging."
 msgstr "Habilita la depuració-registre detallats."
 
-#: src/muuli_wdr.cpp:3828
+#: src/muuli_wdr.cpp:3822
 msgid "Message Categories:"
 msgstr "Categories de missatge:"
 
-#: src/muuli_wdr.cpp:3883
+#: src/muuli_wdr.cpp:3877
 msgid "Add imports"
 msgstr "Afegeix"
 
-#: src/muuli_wdr.cpp:3887
+#: src/muuli_wdr.cpp:3881
 msgid "Retry selected"
 msgstr "Reintenta"
 
-#: src/muuli_wdr.cpp:3890
+#: src/muuli_wdr.cpp:3884
 msgid "Remove selected"
 msgstr "Esborra"
 
-#: src/muuli_wdr.cpp:3985
+#: src/muuli_wdr.cpp:3979
 msgid "Event types"
 msgstr "Tipus d'events"
 
@@ -6480,7 +6474,7 @@ msgstr "El fitxer de crèdits ha estat carregat, %u són clients coneguts"
 msgid " - Credits expired for %u clients!"
 msgstr " - Han vençut els crèdits de %u clients!"
 
-#: src/ClientCreditsList.cpp:305
+#: src/ClientCreditsList.cpp:300
 msgid "No 'cryptkey.dat' file found, creating."
 msgstr "No s'ha trobat el fitxer 'cryptkey.dat', creant-lo."
 
@@ -7195,6 +7189,19 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "No s'ha pogut obrir el fitxer de la llista d'amics 'emfriends.met' per a "
 "escriure!"
+
+#~ msgid "Client Identification:"
+#~ msgstr "Identificació del Client:"
+
+#~ msgid "Use Secure Identification"
+#~ msgstr "Usa la identificació segura"
+
+#~ msgid ""
+#~ "Secure Identification uses a handshake approch to safely identify clients "
+#~ "for use with the credit system."
+#~ msgstr ""
+#~ "La Identificació Segura fa una aproximació per tal d'identificar amb "
+#~ "seguretat els clients que intervenen al sistema de crèdits."
 
 #~ msgid "Sources Dropping"
 #~ msgstr "Gestió de Fonts"
