@@ -24,6 +24,7 @@
 //
 
 #include <wx/textfile.h>		// Needed for wxTextFile
+#include <wx/stdpaths.h>		// Needed for GetDataDir
 #include "TextFile.h"			// Needed for CTextFile
 
 #include "IPFilter.h"			// Interface declarations.
@@ -96,8 +97,23 @@ public:
 	}
 	
 	void Entry() {
+		wxStandardPathsBase &spb(wxStandardPaths::Get());
+#ifdef __WXMSW__
+		wxString dataDir(spb.GetPluginsDir());
+#elif defined(__WXMAC__)
+		wxString dataDir(spb.GetDataDir());
+#else
+		wxString dataDir(spb.GetDataDir().BeforeLast(wxT('/')) + wxT("/amule"));
+#endif
+		wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
+
 		AddLogLineM(false, _("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
-		LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat"));		
+		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
+		     thePrefs::UseIPFilterSystem() ) {
+			LoadFromFile(systemwideFile);
+		}
+
+
 		LoadFromFile(theApp->ConfigDir + wxT("ipfilter_static.dat"));
 
 		CIPFilterEvent evt(m_result);
@@ -249,10 +265,11 @@ private:
 	 *
 	 * @return True if the file was loaded, false otherwise.
 	 **/
-	void LoadFromFile(const wxString& file)
+	int LoadFromFile(const wxString &file)
 	{
+		AddLogLineM(false, file);
 		if (!wxFileExists(file) /*|| TestDestroy()*/) {	
-			return;
+			return 0;
 		}
 
 		const wxChar* ipfilter_files[] = {
@@ -264,8 +281,9 @@ private:
 		// Try to unpack the file, might be an archive
 		if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
 			AddLogLineM(true, 
-				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
-			return;
+				CFormat(_("Failed to load ipfilter.dat file '%s',"
+					" unknown format encountered.")) % file);
+			return 0;
 		}
 		
 		int filtercount = 0;
@@ -297,23 +315,25 @@ private:
 					
 					if (!line.IsEmpty() && !line.StartsWith(wxT("#"))) {
 						discardedCount++;
-						AddDebugLogLineM(false, logIPFilter, wxT("Invalid line found while reading ipfilter file: ") + line);
+						AddDebugLogLineM(false, logIPFilter, wxT(
+							"Invalid line found while reading ipfilter file: ") + line);
 					}
 				}
 			}
 		} else {
-			AddLogLineM(true, CFormat(_("Failed to load ipfilter.dat file '%s', could not open file.")) % file);
-			return;
+			AddLogLineM(true, CFormat(_(
+				"Failed to load ipfilter.dat file '%s', could not open file.")) % file);
+			return 0;
 		}
 
 		AddLogLineM(false,
 			CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
 			% filtercount
-			% wxFileName(file).GetFullName()
+			% file
 			% discardedCount
 		);
 
-		return;
+		return filtercount;
 	}
 	
 private:
