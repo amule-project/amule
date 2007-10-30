@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-28 03:30+0100\n"
+"POT-Creation-Date: 2007-10-30 03:30+0100\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -4472,21 +4472,21 @@ msgstr "все"
 msgid "all others"
 msgstr "все остальные"
 
-#: src/IPFilter.cpp:99
+#: src/IPFilter.cpp:110
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Загружаю IP-фильтры 'ipfilter.dat' и 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:267
+#: src/IPFilter.cpp:284
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Не удалось загрузить ipfilter.dat файл '%s', формат файла неизвестен."
 
-#: src/IPFilter.cpp:305
+#: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Не удалось загрузить ipfilter.dat файл '%s', не удалось открыть файл."
 
-#: src/IPFilter.cpp:310
+#: src/IPFilter.cpp:330
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""
