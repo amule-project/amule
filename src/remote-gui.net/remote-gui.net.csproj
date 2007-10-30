@@ -55,7 +55,7 @@
     <Compile Include="ConnectDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConnectDlg.designer.cs">
+    <Compile Include="ConnectDlg.Designer.cs">
       <DependentUpon>ConnectDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="DownloadControl.cs">

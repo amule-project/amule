@@ -118,6 +118,7 @@ namespace amule.net
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(432, 272);
+            this.ControlBox = false;
             this.Controls.Add(this.amulePort);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.amulePwd);
@@ -126,8 +127,11 @@ namespace amule.net
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonConnect);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "ConnectDlg";
-            this.Text = "Connect";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "Connect to aMule core";
             this.Load += new System.EventHandler(this.ConnectDlg_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
