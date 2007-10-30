@@ -165,6 +165,16 @@ namespace amule.net
 
                     o.m_rx_remaining_count = (int)IPAddress.NetworkToHostOrder(val32) - (bytesRead - 8);
                     Console.WriteLine("RxCallback: expecting packet size={0}", o.m_rx_remaining_count);
+                    if ( o.m_rx_buffer.Length <= (o.m_rx_remaining_count+o.m_rx_byte_count) ) {
+                        byte [] new_buffer = new byte[o.m_rx_remaining_count + o.m_rx_buffer.Length + 1];
+                        o.m_rx_buffer.CopyTo(new_buffer, 0);
+                        o.m_rx_buffer = new_buffer;
+                        //
+                        // update stream reader with new buffer
+                        //
+                        o.m_rx_mem_stream = new MemoryStream(o.m_rx_buffer);
+                        o.m_sock_reader = new BinaryReader(o.m_rx_mem_stream);
+                    }
                 }
             } else {
                 if ( o.m_rx_remaining_count == 0 ) {
@@ -173,7 +183,9 @@ namespace amule.net
                     //
                     if ( o.m_handler != null ) {
                         o.m_rx_mem_stream.Seek(0, SeekOrigin.Begin);
-                        o.m_handler.HandlePacket(new ecProto.ecPacket(o.m_sock_reader));
+                        Console.WriteLine("Packet received - call handler\n");
+                        ecProto.ecPacket p = new ecProto.ecPacket(o.m_sock_reader);
+                        o.m_handler.HandlePacket(p);
                     }
                     m_socket_op_Done.Set();
                     //
