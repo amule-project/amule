@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-28 03:30+0100\n"
+"POT-Creation-Date: 2007-10-30 03:30+0100\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -4438,23 +4438,23 @@ msgstr "vse"
 msgid "all others"
 msgstr "vse ostalo"
 
-#: src/IPFilter.cpp:99
+#: src/IPFilter.cpp:110
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Nalaganje datotek IP filtrov 'ipfilter.dat' in 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:267
+#: src/IPFilter.cpp:284
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Ni bilo mogoče naložiti datoteke ipfilter.dat '%s', neznan format."
 
-#: src/IPFilter.cpp:305
+#: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Ni bilo mogoče naložiti datoteke ipfilter.dat '%s', datoteke ni mogoče "
 "odpreti."
 
-#: src/IPFilter.cpp:310
+#: src/IPFilter.cpp:330
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr "Naloženih %u nizov IP iz '%s'. %u nepravilnih vrstic izpuščenih."

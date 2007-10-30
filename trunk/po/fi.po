@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule-1.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-28 03:30+0100\n"
+"POT-Creation-Date: 2007-10-30 03:30+0100\n"
 "PO-Revision-Date: 2007-10-04 19:14+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -4431,22 +4431,22 @@ msgstr "kaikki"
 msgid "all others"
 msgstr "kaikki muut"
 
-#: src/IPFilter.cpp:99
+#: src/IPFilter.cpp:110
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Lataan IP-suodattimet 'ipfilter.dat' sekä 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:267
+#: src/IPFilter.cpp:284
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Ipfilter.dat-tiedoston '%s' lataaminen epäonnistui, muoto tuntematon."
 
-#: src/IPFilter.cpp:305
+#: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Ipfilter.dat-tiedoston '%s' lataaminen epäonnistui, tiedostoa ei voitu avata."
 
-#: src/IPFilter.cpp:310
+#: src/IPFilter.cpp:330
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""
