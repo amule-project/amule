@@ -267,7 +267,6 @@ private:
 	 **/
 	int LoadFromFile(const wxString &file)
 	{
-		AddLogLineM(false, file);
 		if (!wxFileExists(file) /*|| TestDestroy()*/) {	
 			return 0;
 		}
