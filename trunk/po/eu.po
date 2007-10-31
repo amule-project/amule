@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-30 03:30+0100\n"
+"POT-Creation-Date: 2007-10-31 03:31+0100\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -4444,21 +4444,21 @@ msgstr "Beste denak"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "'ipfilter.dat' eta 'ipfilter_static.dat' IP iragazkiak kargatzen."
 
-#: src/IPFilter.cpp:284
+#: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, formatu ezezagunak "
 "aurkitu dira."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Huts egin du ipfilter.dat '%s' fitxategia kargatzerakoan, ezin da fitxategia "
 "ireki."
 
-#: src/IPFilter.cpp:330
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""

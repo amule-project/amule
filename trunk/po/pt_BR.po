@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-30 03:30+0100\n"
+"POT-Creation-Date: 2007-10-31 03:31+0100\n"
 "PO-Revision-Date: 2007-10-12 02:39-0000\n"
 "Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
@@ -4427,17 +4427,17 @@ msgstr "todos os outros"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Carregando  Filtros-IP 'ipfilter.dat' e 'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:284
+#: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Falha ao carregar arquivo ipfilter.dat '%s', formato desconhecido."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Falha ao carregar arquivo ipfilter.dat '%s', impossível abrir arquivo."
 
-#: src/IPFilter.cpp:330
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr ""

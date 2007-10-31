@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-30 03:30+0100\n"
+"POT-Creation-Date: 2007-10-31 03:31+0100\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -4417,18 +4417,18 @@ msgstr "alle andre"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Lastar ipfiltra 'ipfilter.dat'·og·'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:284
+#: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "Greidde ikkje å laste inn ipfilter.dat fila '%s' - ukjend filformat."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Greidde ikkje å laste inn ipfilter.dat fila '%s' - greidde ikkje å opne fila."
 
-#: src/IPFilter.cpp:330
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr "Lasta %u IP-distansar frå '%s'. %u ugangbare linjer vart forkasta."

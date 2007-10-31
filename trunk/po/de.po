@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-30 03:30+0100\n"
+"POT-Creation-Date: 2007-10-31 03:31+0100\n"
 "PO-Revision-Date: 2007-10-01 21:11+0200\n"
 "Last-Translator: Adrian Bense\n"
 "Language-Team:  <de@li.org>\n"
@@ -4482,19 +4482,19 @@ msgstr "alle anderen"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "Lade IP-Filter 'ipfilter.dat'·und·'ipfilter_static.dat'."
 
-#: src/IPFilter.cpp:284
+#: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr ""
 "Laden der ipfilter.dat '%s' fehlgeschlagen, unbekanntes Format aufgetreten."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr ""
 "Fehler beim Laden der ipfilter.dat '%s', Datei konnte nicht geöffnet werden."
 
-#: src/IPFilter.cpp:330
+#: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
 msgstr "%u IP-Bereiche von %s geladen. %u fehlerhafte Zeilen wurden ignoriert."
