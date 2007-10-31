@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-31 03:31+0100\n"
-"PO-Revision-Date: 2007-09-27 23:31+0800\n"
+"PO-Revision-Date: 2007-10-31 21:42+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -705,7 +705,7 @@ msgstr "检测"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
-msgstr "签名文件所在文件夹"
+msgstr "统计文件所在文件夹"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:344
 msgid "Folder where generating the statistic image"
@@ -754,11 +754,11 @@ msgstr "停止自动刷新"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:216
 msgid "Save Online Statistics image"
-msgstr "保存统计图表"
+msgstr "保存在线统计图"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:219
 msgid "Print Online Statistics image"
-msgstr "打印统计图表"
+msgstr "打印在线统计图"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:222
 msgid "Preferences setting"
@@ -783,7 +783,7 @@ msgstr "自动刷新已开始"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
-msgstr "保存统计图表"
+msgstr "保存统计图"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:367
 msgid "No handler for this file type."
@@ -819,7 +819,7 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"wxCas, aMule OnLine Signature Statistics\n"
+"wxCas, aMule 在线统计\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -936,7 +936,7 @@ msgstr "本次运行下载："
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1102
 msgid "Download: "
-msgstr "下载"
+msgstr "下载："
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1104
 msgid " kB/s, Upload: "
@@ -1829,7 +1829,7 @@ msgstr "统计"
 
 #: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4013
 msgid "Statistics Graph Window"
-msgstr "统计图表窗口"
+msgstr "统计图窗口"
 
 #: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4015
 msgid "Preferences Settings Window"
@@ -1874,7 +1874,7 @@ msgstr "远程控制"
 
 #: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3490
 msgid "Online Signature"
-msgstr "在线签名"
+msgstr "在线统计"
 
 #: src/PrefsUnifiedDlg.cpp:155 src/muuli_wdr.cpp:2167
 msgid "Directories"
@@ -1996,7 +1996,7 @@ msgstr "传入文件"
 
 #: src/PrefsUnifiedDlg.cpp:811
 msgid "Online Signatures"
-msgstr "在线签名"
+msgstr "在线统计"
 
 #: src/PrefsUnifiedDlg.cpp:824
 #, c-format
@@ -5882,13 +5882,13 @@ msgstr "拒绝用户IP不同于接收包中的IP的数据包，请谨慎使用�
 
 #: src/muuli_wdr.cpp:3465
 msgid "Allow usage of system wide ipfilter.dat"
-msgstr ""
+msgstr "允许使用系统级别的 ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
-msgstr ""
+msgstr "如果没有找到本地 ipfilter.dat 文件，则允许使用系统级的IP过滤文件。"
 
 #: src/muuli_wdr.cpp:3495
 msgid "Enable/Disable"
@@ -5896,13 +5896,13 @@ msgstr "启用/禁用"
 
 #: src/muuli_wdr.cpp:3498
 msgid "Enable Online-Signature"
-msgstr "启用在线签名"
+msgstr "启用在线统计"
 
 #: src/muuli_wdr.cpp:3500
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
-msgstr "输出该文件以用于在线签名等等。"
+msgstr "输出该文件以用于在线统计等等。"
 
 #: src/muuli_wdr.cpp:3505
 msgid "Update Frequency (Secs):"
@@ -5910,16 +5910,16 @@ msgstr "更新频率（秒）："
 
 #: src/muuli_wdr.cpp:3509
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "更改在线签名文件的更行频率（秒）。"
+msgstr "更改在线统计文件的更新频率（秒）。"
 
 #: src/muuli_wdr.cpp:3515
 msgid "Online Signature Directory:"
-msgstr "在线签名目录："
+msgstr "在线统计目录："
 
 #: src/muuli_wdr.cpp:3522
 msgid ""
 "Click here to select the directory containing the the Online Signature files."
-msgstr "点击选择包含在线签名文件的目录。"
+msgstr "点击选择包含在线统计文件的目录。"
 
 #: src/muuli_wdr.cpp:3551 src/muuli_wdr.cpp:3590 src/muuli_wdr.cpp:3812
 msgid "Disable/Enable"
@@ -6554,11 +6554,11 @@ msgstr "UDP 端口：未就绪"
 
 #: src/MuleTrayIcon.cpp:408
 msgid "Online Signature: Enabled"
-msgstr "在线签名： 启用"
+msgstr "在线统计： 启用"
 
 #: src/MuleTrayIcon.cpp:411
 msgid "Online Signature: Disabled"
-msgstr "在线签名： 禁用"
+msgstr "在线统计： 禁用"
 
 #: src/MuleTrayIcon.cpp:424
 #, c-format
@@ -6782,11 +6782,11 @@ msgstr "警告：在低 ID 的情况下，你不能添加你自己作为 ed2k �
 
 #: src/amule.cpp:1128
 msgid "Failed to create OnlineSig File"
-msgstr "创建在线签名文件失败"
+msgstr "创建在线统计文件失败"
 
 #: src/amule.cpp:1136
 msgid "Failed to create aMule OnlineSig File"
-msgstr "创建 aMule 在线签名文件失败"
+msgstr "创建 aMule 在线统计文件失败"
 
 #: src/amule.cpp:1304
 msgid ""
@@ -6866,8 +6866,8 @@ msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
 msgstr ""
-"您为在线签名文件所选择的文件夹无效！\n"
-"在您更正设置之前在线签名将被禁用。"
+"您为在线统计文件所选择的文件夹无效！\n"
+"在您更正设置之前在线统计将被禁用。"
 
 #: src/amule.cpp:1744
 msgid "ERROR: can't open logfile"
