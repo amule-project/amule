@@ -278,10 +278,10 @@ namespace amule.net
             public byte [] ByteValue()
             {
                 byte[] v = {
-                    (byte)(m_hi >> 56), (byte)(m_hi >> 48), (byte)(m_hi >> 40), (byte)(m_hi >> 32),
-                    (byte)(m_hi >> 24), (byte)(m_hi >> 16), (byte)(m_hi >> 8), (byte)(m_hi >> 0),
-                    (byte)(m_lo >> 56), (byte)(m_lo >> 48), (byte)(m_lo >> 40), (byte)(m_lo >> 32),
-                    (byte)(m_lo >> 24), (byte)(m_lo >> 16), (byte)(m_lo >> 8), (byte)(m_lo >> 0),
+                    (byte)(m_lo >> 0), (byte)(m_lo >> 8), (byte)(m_lo >> 16), (byte)(m_lo >> 24),
+                    (byte)(m_lo >> 32), (byte)(m_lo >> 40), (byte)(m_lo >> 48), (byte)(m_lo >> 56),
+                    (byte)(m_hi >> 0), (byte)(m_hi >> 8), (byte)(m_hi >> 16), (byte)(m_hi >> 24),
+                    (byte)(m_hi >> 32), (byte)(m_hi >> 40), (byte)(m_hi >> 48), (byte)(m_hi >> 56),
                 };
                 return v;
             }
