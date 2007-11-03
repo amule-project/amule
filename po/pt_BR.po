@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the aMule package.
 # Kry <elkry@users.sourceforge.net>, 2004.
 # IgoR <igor.spy@gmx.net>, 2004.
-# Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>, 2004, 2005.
-#
+# Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>, 2004, 2005.felipe augusto <flipeicl@gmail.com>, 2007.
+# 
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-31 03:31+0100\n"
-"PO-Revision-Date: 2007-10-12 02:39-0000\n"
-"Last-Translator: felipe augusto <flipeicl@gmail.com>\n"
-"Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr. "
-"Beneditto <kamikazenh@yahoo.com.br>\n"
+"PO-Revision-Date: 2007-11-03 01:32-0200\n"
+"Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
+"Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr.>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bit"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:85 src/libs/ec/cpp/RemoteConnect.cpp:93
 msgid "You must specify a non-empty password."
@@ -5975,13 +5975,13 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3465
 msgid "Allow usage of system wide ipfilter.dat"
-msgstr ""
+msgstr "Permita o uso global do ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
-msgstr ""
+msgstr "Se nenhum ipfilter.dat local for encontrado, permita o uso global de um arquivo ipfilter"
 
 #: src/muuli_wdr.cpp:3495
 msgid "Enable/Disable"
