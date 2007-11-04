@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-31 03:31+0100\n"
-"PO-Revision-Date: 2007-08-26 00:30+0800\n"
+"POT-Creation-Date: 2007-11-04 06:01+0100\n"
+"PO-Revision-Date: 2007-11-04 13:56+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgstr "無法獲取用戶 '%s' 的共享文件"
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
 #: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
-msgstr "不名"
+msgstr "不明"
 
 #: src/BaseClient.cpp:1649
 #, c-format
@@ -1440,7 +1440,7 @@ msgstr "立托尼亞語"
 
 #: src/Preferences.cpp:622
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "新挪威語"
 
 #: src/Preferences.cpp:623
 msgid "Polish"
@@ -1468,7 +1468,7 @@ msgstr "西班牙語"
 
 #: src/Preferences.cpp:629
 msgid "Swedish"
-msgstr ""
+msgstr "瑞典語"
 
 #: src/Preferences.cpp:632
 msgid "Turkish"
@@ -1887,7 +1887,7 @@ msgstr "安全"
 
 #: src/PrefsUnifiedDlg.cpp:160
 msgid "Gui Tweaks"
-msgstr "使用者界面特殊設定"
+msgstr "界面設定"
 
 #: src/PrefsUnifiedDlg.cpp:161 src/muuli_wdr.cpp:2458
 msgid "Core Tweaks"
@@ -2476,7 +2476,7 @@ msgstr "平均上傳時間: %s"
 
 #: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:883 src/muuli_wdr.cpp:423
 msgid "Downloads"
-msgstr "下載次數"
+msgstr "下載"
 
 #: src/Statistics.cpp:666
 #, c-format
@@ -3500,11 +3500,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "已連接到 %s %s %s"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2060
+#: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with LowID"
 msgstr "有低ID"
 
-#: src/TextClient.cpp:671 src/amule.cpp:2060
+#: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with HighID"
 msgstr "有高ID"
 
@@ -5462,7 +5462,7 @@ msgstr "伺服器連線重新整理週期: 停用"
 
 #: src/muuli_wdr.cpp:2532
 msgid "GUI Tweaks"
-msgstr "用戶界面特殊設置"
+msgstr "界面設定"
 
 #: src/muuli_wdr.cpp:2537
 msgid "Download Queue Files Progress"
@@ -5891,13 +5891,13 @@ msgstr "拒絕客戶端IP不同于接收包中的IP的數據包，請謹慎使�
 
 #: src/muuli_wdr.cpp:3465
 msgid "Allow usage of system wide ipfilter.dat"
-msgstr ""
+msgstr "允許使用系統級別的ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
-msgstr ""
+msgstr "如果沒有找到本地ipfilter.dat文件，則允許使用系統級的IP過濾文件。"
 
 #: src/muuli_wdr.cpp:3495
 msgid "Enable/Disable"
@@ -5964,7 +5964,7 @@ msgstr "輸入需過濾的詞組"
 
 #: src/muuli_wdr.cpp:3593
 msgid "Filter comments containing (use ',' as separator):"
-msgstr ""
+msgstr "過濾包含以下內容的備註（使用‘,’作為分隔符）："
 
 #: src/muuli_wdr.cpp:3636
 msgid "Enable Proxy"
@@ -6016,7 +6016,7 @@ msgstr "代理服務器端口"
 
 #: src/muuli_wdr.cpp:3674
 msgid "Authentication"
-msgstr "登錄失敗。"
+msgstr "登錄驗證"
 
 #: src/muuli_wdr.cpp:3677
 msgid "Enable authentication"
@@ -6056,7 +6056,7 @@ msgstr "用戶名"
 
 #: src/muuli_wdr.cpp:3771
 msgid "Remember those settings"
-msgstr "記住那些設置"
+msgstr "記住這些設置"
 
 #: src/muuli_wdr.cpp:3817
 msgid "Enable Verbose Debug-Logging."
@@ -6880,107 +6880,107 @@ msgstr ""
 "您爲在線簽名文件所選擇的文件夾無效！\n"
 "在您更正設置之前在線簽名將被禁用。"
 
-#: src/amule.cpp:1744
+#: src/amule.cpp:1746
 msgid "ERROR: can't open logfile"
 msgstr "錯誤: 無法打開日志文件"
 
-#: src/amule.cpp:1748
+#: src/amule.cpp:1750
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "警告：日志文件爲空。肯定有什麽地方出錯了。"
 
-#: src/amule.cpp:1767
+#: src/amule.cpp:1769
 msgid "Log has been reset"
 msgstr "記錄文件已被重啓"
 
-#: src/amule.cpp:1795
+#: src/amule.cpp:1797
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "服務器消息：%s"
 
-#: src/amule.cpp:1833
+#: src/amule.cpp:1835
 msgid "Failed to download the nodes list."
 msgstr "下載節點列表失敗。"
 
-#: src/amule.cpp:1846
+#: src/amule.cpp:1848
 msgid "Failed to open the downloaded version check file"
 msgstr "打開已下載的版本檢查文件失敗"
 
-#: src/amule.cpp:1849 src/amule.cpp:1859 src/amule.cpp:1865
+#: src/amule.cpp:1851 src/amule.cpp:1861 src/amule.cpp:1867
 msgid "Corrupted version check file"
 msgstr "損壞的版本檢查文件"
 
-#: src/amule.cpp:1875
+#: src/amule.cpp:1877
 msgid "You are using an outdated version of aMule!"
 msgstr "你使用的是老版本的 aMule！"
 
-#: src/amule.cpp:1876
+#: src/amule.cpp:1878
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "你的 aMule 版本是%i.%i.%i，最新版本是 %li.%li.%li"
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1879
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "最新版本可從此下載：http://www.amule.org"
 
-#: src/amule.cpp:1880
+#: src/amule.cpp:1882
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "警告：你的 aMuled 版本太舊：%i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1884
+#: src/amule.cpp:1886
 msgid "Your copy of aMule is up to date."
 msgstr "你的 aMule 是最新版本。"
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1893
 msgid "Failed to download the version check file"
 msgstr "下載版本檢查文件失敗"
 
-#: src/amule.cpp:1993
+#: src/amule.cpp:1995
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "用戶：E：%s K：%s | 文件 E：%s K：%s"
 
-#: src/amule.cpp:2062
+#: src/amule.cpp:2064
 #, c-format
 msgid "Connected to %s %s"
 msgstr "已連接到 %s %s"
 
-#: src/amule.cpp:2065
+#: src/amule.cpp:2067
 #, c-format
 msgid "Connecting to %s"
 msgstr "正在連接到 %s"
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2069
 msgid "Disconnected from ED2K"
 msgstr "已斷開 ED2K"
 
-#: src/amule.cpp:2074
+#: src/amule.cpp:2076
 msgid "Kad started."
 msgstr "Kad 已啓動。"
 
-#: src/amule.cpp:2076
+#: src/amule.cpp:2078
 msgid "Kad stopped."
 msgstr "Kad 已停止。"
 
-#: src/amule.cpp:2083
+#: src/amule.cpp:2085
 msgid "Connected to Kad (ok)"
 msgstr "已連接至 Kad"
 
-#: src/amule.cpp:2085
+#: src/amule.cpp:2087
 msgid "Connected to Kad (firewalled)"
 msgstr "已連接至 Kad 網絡(有防火牆)"
 
-#: src/amule.cpp:2088
+#: src/amule.cpp:2090
 msgid "Disconnected from Kad"
 msgstr "已斷開 Kad 連接"
 
-#: src/amule.cpp:2144
+#: src/amule.cpp:2146
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
 msgstr "如果在設置中禁用了 UDP 端口，Kad 網絡將不能使用，沒有啓動。"
 
-#: src/amule.cpp:2147
+#: src/amule.cpp:2149
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 網絡在設置中被禁用了，沒有連接。"
 
