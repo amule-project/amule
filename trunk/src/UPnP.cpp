@@ -1314,6 +1314,7 @@ bool CUPnPControlPoint::PrivateDeletePortMapping(
 int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*Cookie*/)
 {
 	std::ostringstream msg;
+	std::ostringstream msg2;
 	// Somehow, this is unreliable. UPNP_DISCOVERY_ADVERTISEMENT_ALIVE events
 	// happen with a wrong cookie and... boom!
 	// CUPnPControlPoint *upnpCP = static_cast<CUPnPControlPoint *>(Cookie);
@@ -1324,10 +1325,12 @@ int CUPnPControlPoint::Callback(Upnp_EventType EventType, void *Event, void * /*
 	case UPNP_DISCOVERY_ADVERTISEMENT_ALIVE:
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_ADVERTISEMENT_ALIVE\n");
 		msg << "error(UPNP_DISCOVERY_ADVERTISEMENT_ALIVE): ";
+		msg2<< "UPNP_DISCOVERY_ADVERTISEMENT_ALIVE: ";
 		goto upnpDiscovery;
 	case UPNP_DISCOVERY_SEARCH_RESULT: {
 		//fprintf(stderr, "Callback: UPNP_DISCOVERY_SEARCH_RESULT\n");
 		msg << "error(UPNP_DISCOVERY_SEARCH_RESULT): ";
+		msg2<< "UPNP_DISCOVERY_SEARCH_RESULT: ";
 		// UPnP Discovery
 upnpDiscovery:
 		struct Upnp_Discovery *d_event = (struct Upnp_Discovery *)Event;
@@ -1345,9 +1348,7 @@ upnpDiscovery:
 				upnpCP->m_upnpLib.GetUPnPErrorMessage(ret) << ".";
 			AddDebugLogLineM(true, logUPnP, msg);
 		} else {
-			std::ostringstream msg2;
-			msg2 << "UPNP_DISCOVERY_SEARCH_RESULT: "
-				"Retrieving device description from " <<
+			msg2 << "Retrieving device description from " <<
 				d_event->Location << ".";
 			AddDebugLogLineM(false, logUPnP, msg2);
 		}
@@ -1459,10 +1460,12 @@ upnpEventRenewalComplete:
 	case UPNP_EVENT_AUTORENEWAL_FAILED:
 		//fprintf(stderr, "Callback: UPNP_EVENT_AUTORENEWAL_FAILED\n");
 		msg << "error(UPNP_EVENT_AUTORENEWAL_FAILED): ";
+		msg2 << "UPNP_EVENT_AUTORENEWAL_FAILED: ";
 		goto upnpEventSubscriptionExpired;
 	case UPNP_EVENT_SUBSCRIPTION_EXPIRED: {
 		//fprintf(stderr, "Callback: UPNP_EVENT_SUBSCRIPTION_EXPIRED\n");
 		msg << "error(UPNP_EVENT_SUBSCRIPTION_EXPIRED): ";
+		msg2 << "UPNP_EVENT_SUBSCRIPTION_EXPIRED: ";
 upnpEventSubscriptionExpired:
 		struct Upnp_Event_Subscribe *es_event =
 			(struct Upnp_Event_Subscribe *)Event;
@@ -1484,11 +1487,11 @@ upnpEventSubscriptionExpired:
 				CUPnPService &service = *(it->second);
 				service.SetTimeout(TimeOut);
 				service.SetSID(newSID);
-				msg << "Re-subscribed to EventURL '" <<
+				msg2 << "Re-subscribed to EventURL '" <<
 					es_event->PublisherUrl <<
 					"' with SID == '" <<
 					newSID << "'.";
-				AddDebugLogLineM(true, logUPnP, msg);
+				AddDebugLogLineM(true, logUPnP, msg2);
 				// In principle, we should test to see if the
 				// service is the same. But here we only have one
 				// service, so...
@@ -1557,7 +1560,7 @@ upnpEventSubscriptionExpired:
 		//fprintf(stderr, "Callback: UPNP_EVENT_SUBSCRIPTION_REQUEST\n");
 		msg << "error(UPNP_EVENT_SUBSCRIPTION_REQUEST): ";
 eventSubscriptionRequest:
-		msg << "This is not a device, event ignored.";
+		msg << "This is not a UPnP Device, this is a UPnP Control Point, event ignored.";
 		AddDebugLogLineM(true, logUPnP, msg);
 		break;
 	default:
