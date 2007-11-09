@@ -1328,9 +1328,9 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	m_num_font_w_size = 8;
 	m_num_font_h_size = 16;
 	
-	// leave enough space for 3 digit number
+	// leave enough space for 4 digit number
 	int img_delta = m_num_font_w_size / 4;
-	m_left_margin = 3*(m_num_font_w_size + img_delta) + img_delta;
+	m_left_margin = 4*(m_num_font_w_size + img_delta) + img_delta;
 	// leave enough space for number height
 	m_bottom_margin = m_num_font_h_size;
 	
@@ -1444,11 +1444,22 @@ void CDynStatisticImage::DrawImage()
 		y_axis_max /= m_scale_up;
 	}
 
-	if ( y_axis_max > 99 ) {
-		m_digits[y_axis_max / 100]->Apply(m_row_ptrs, img_delta, img_delta);
+	// X---
+	if ( y_axis_max > 999 ) {
+		m_digits[y_axis_max / 1000]->Apply(m_row_ptrs, img_delta, img_delta);
 	}
-	m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs, 2*img_delta+m_num_font_w_size, img_delta);
-	m_digits[y_axis_max % 10]->Apply(m_row_ptrs, 3*img_delta+2*m_num_font_w_size, img_delta);
+	// -X--
+	if ( y_axis_max > 99 ) {
+		m_digits[(y_axis_max % 1000) / 100]->Apply(m_row_ptrs,
+			2*img_delta+m_num_font_w_size, img_delta);
+	}
+	// --X-
+	if ( y_axis_max > 9 ) {
+		m_digits[(y_axis_max % 100) / 10]->Apply(m_row_ptrs, 
+			3*img_delta+2*m_num_font_w_size, img_delta);
+	}
+	// ---X
+	m_digits[y_axis_max % 10]->Apply(m_row_ptrs, 4*img_delta+3*m_num_font_w_size, img_delta);
 
 	int prev_data = m_data->GetFirst();
 	if ( m_scale_down != 1 ) {
