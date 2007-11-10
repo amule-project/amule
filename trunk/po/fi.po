@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule-1.2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-05 03:30+0100\n"
+"POT-Creation-Date: 2007-11-10 03:30+0100\n"
 "PO-Revision-Date: 2007-10-04 19:14+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -487,71 +487,71 @@ msgstr "Pyyntö ei onnistunut, virhe: %s."
 msgid "Request failed with an unknown error."
 msgstr "Pyyntö ei onnistunut, tuntematon virhe."
 
-#: src/webserver/src/WebServer.cpp:1672
+#: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
 msgstr "Indeksitiedostoa ei löydetty: "
 
-#: src/webserver/src/WebServer.cpp:1692
+#: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
 msgstr "Ei voitu luoda web socket -säiettä\n"
 
-#: src/webserver/src/WebServer.cpp:1697
+#: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
 msgstr "Web-palvelin: Käynnistetty\n"
 
-#: src/webserver/src/WebServer.cpp:1775
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
 msgstr "Sessio vanhentunut - pyydetään kirjautumista\n"
 
-#: src/webserver/src/WebServer.cpp:1780
+#: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
 msgstr "Sessio kunnossa, kirjautuneena\n"
 
-#: src/webserver/src/WebServer.cpp:1782
+#: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
 msgstr "Sessio kunnossa, ei kirjautuneena\n"
 
-#: src/webserver/src/WebServer.cpp:1787
+#: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
 msgstr "Ei avattua sessiota - tulee pyytämään kirjautumista\n"
 
-#: src/webserver/src/WebServer.cpp:1796
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
 msgstr "Sessio luotu - pyytää kirjautumista\n"
 
-#: src/webserver/src/WebServer.cpp:1813
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
 msgstr "Käsittelee pyyntöä [alkuperäinen]: "
 
-#: src/webserver/src/WebServer.cpp:1829
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
 msgstr "Tarkistaa salasanaa\n"
 
-#: src/webserver/src/WebServer.cpp:1834
+#: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
 msgstr "Salasanatarkiste ei kelpaa\n"
 
-#: src/webserver/src/WebServer.cpp:1849
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
 msgstr "Salasana hyväksytty\n"
 
-#: src/webserver/src/WebServer.cpp:1851
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
 msgstr "Virheellinen salasana\n"
 
-#: src/webserver/src/WebServer.cpp:1854
+#: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Et antanut salasanaa. Tyhjä salasana ei ole sallittu.\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
 msgstr "Uloskirjautumista pyydetty\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
 
-#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
 msgstr "%d"

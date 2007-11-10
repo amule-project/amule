@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-05 03:30+0100\n"
+"POT-Creation-Date: 2007-11-10 03:30+0100\n"
 "PO-Revision-Date: 2007-10-31 21:42+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -483,71 +483,71 @@ msgstr "请求失败，错误为：%s"
 msgid "Request failed with an unknown error."
 msgstr "请求失败，错误未知。"
 
-#: src/webserver/src/WebServer.cpp:1672
+#: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
 msgstr "索引文件未找到："
 
-#: src/webserver/src/WebServer.cpp:1692
+#: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
 msgstr "无法创建 Web 端口进程\n"
 
-#: src/webserver/src/WebServer.cpp:1697
+#: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
 msgstr "Web 服务器：已启动\n"
 
-#: src/webserver/src/WebServer.cpp:1775
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
 msgstr "会话过期 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1780
+#: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
 msgstr "会话正常，已登录\n"
 
-#: src/webserver/src/WebServer.cpp:1782
+#: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
 msgstr "会话正常，未登录\n"
 
-#: src/webserver/src/WebServer.cpp:1787
+#: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
 msgstr "没有会话已打开 - 将请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1796
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
 msgstr "会话已创建 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1813
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
 msgstr "正在处理请求 [原始]："
 
-#: src/webserver/src/WebServer.cpp:1829
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
 msgstr "检查密码\n"
 
-#: src/webserver/src/WebServer.cpp:1834
+#: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
 msgstr "密码校验值错误\n"
 
-#: src/webserver/src/WebServer.cpp:1849
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
 msgstr "密码正确\n"
 
-#: src/webserver/src/WebServer.cpp:1851
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
 msgstr "密码错误\n"
 
-#: src/webserver/src/WebServer.cpp:1854
+#: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "您没有输入密码，不允许空密码。\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
 msgstr "已请求注销\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "正在处理请求 [已重定向]："
 
-#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
 msgstr "%d"
