@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-05 03:30+0100\n"
+"POT-Creation-Date: 2007-11-10 03:30+0100\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -487,71 +487,71 @@ msgstr "Etterspurnaden mislukka med følgjande feil: %s."
 msgid "Request failed with an unknown error."
 msgstr "Etterspurnaden mislukka med ukjend feil."
 
-#: src/webserver/src/WebServer.cpp:1672
+#: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
 msgstr "Registerfil ikkje funne: "
 
-#: src/webserver/src/WebServer.cpp:1692
+#: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
 msgstr "Greier ikkje å lage vevkoplingstråd\n"
 
-#: src/webserver/src/WebServer.cpp:1697
+#: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
 msgstr "Vevtenar: Starta\n"
 
-#: src/webserver/src/WebServer.cpp:1775
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
 msgstr "Økt utgått - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1780
+#: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
 msgstr "Økt ok, logga inn\n"
 
-#: src/webserver/src/WebServer.cpp:1782
+#: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
 msgstr "Økt ok, ikkje innlogga\n"
 
-#: src/webserver/src/WebServer.cpp:1787
+#: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
 msgstr "Inga økt opna - vil be om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1796
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
 msgstr "Økt oppretta - ber om logginn\n"
 
-#: src/webserver/src/WebServer.cpp:1813
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
 msgstr "Handsamar etterspurnad [original]: "
 
-#: src/webserver/src/WebServer.cpp:1829
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
 msgstr "Sjekkar passord\n"
 
-#: src/webserver/src/WebServer.cpp:1834
+#: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
 msgstr "Passord hash feil\n"
 
-#: src/webserver/src/WebServer.cpp:1849
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
 msgstr "Passord ok\n"
 
-#: src/webserver/src/WebServer.cpp:1851
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
 msgstr "Feil passord\n"
 
-#: src/webserver/src/WebServer.cpp:1854
+#: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Du skreiv ikkje inn eit passord. Tomt passord er ikkje tillate.\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
 msgstr "Utlogging etterspurt\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Handsamar etterspurnad [omdirigert]: "
 
-#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
 msgstr "%d"

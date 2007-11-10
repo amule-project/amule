@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-05 03:30+0100\n"
+"POT-Creation-Date: 2007-11-10 03:30+0100\n"
 "PO-Revision-Date: 2007-10-09 19:44+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -489,71 +489,71 @@ msgstr "İstem şu hatayla başarısız oldu: %s"
 msgid "Request failed with an unknown error."
 msgstr "İstem bilinmeyen bir hatayla başarısız oldu."
 
-#: src/webserver/src/WebServer.cpp:1672
+#: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
 msgstr "İndeks dosyası bulunamadı: "
 
-#: src/webserver/src/WebServer.cpp:1692
+#: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
 msgstr "Web soketi oluşturulamıyor.\n"
 
-#: src/webserver/src/WebServer.cpp:1697
+#: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
 msgstr "Web Sunucusu: Başladı\n"
 
-#: src/webserver/src/WebServer.cpp:1775
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
 msgstr "Oturum sona erdi - giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1780
+#: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
 msgstr "Oturum tamam, giriş yapıldı.\n"
 
-#: src/webserver/src/WebServer.cpp:1782
+#: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
 msgstr "Oturum tamam, giriş yapılmadı.\n"
 
-#: src/webserver/src/WebServer.cpp:1787
+#: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
 msgstr "Hiç oturum açılmadı -  giriş gerekecek\n"
 
-#: src/webserver/src/WebServer.cpp:1796
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
 msgstr "Oturum oluşturuldu.-  giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1813
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
 msgstr "İstem işleniyor [özgün]: "
 
-#: src/webserver/src/WebServer.cpp:1829
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
 msgstr "Şifre kontrol ediliyor\n"
 
-#: src/webserver/src/WebServer.cpp:1834
+#: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
 msgstr "Şifre adreslemesi geçersiz.\n"
 
-#: src/webserver/src/WebServer.cpp:1849
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
 msgstr "Şifre kabul edildi.\n"
 
-#: src/webserver/src/WebServer.cpp:1851
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
 msgstr "Şifre kötü.\n"
 
-#: src/webserver/src/WebServer.cpp:1854
+#: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Herhangi bir şifre girmediniz. Boş şifre kullanılamaz.\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
 msgstr "Çıkış istendi.\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
 
-#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
 msgstr "%d"

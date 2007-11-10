@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-05 03:30+0100\n"
+"POT-Creation-Date: 2007-11-10 03:30+0100\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -497,72 +497,72 @@ msgstr "Запрос не удался из-за следующей ошибки
 msgid "Request failed with an unknown error."
 msgstr "Запрос не удался - неизвестная ошибка."
 
-#: src/webserver/src/WebServer.cpp:1672
+#: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
 msgstr "Индексный файл не найден:"
 
-#: src/webserver/src/WebServer.cpp:1692
+#: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
 msgstr "Не удалось создать поток веб-сокета\n"
 
-#: src/webserver/src/WebServer.cpp:1697
+#: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
 msgstr "Веб-сервер: запущен\n"
 
-#: src/webserver/src/WebServer.cpp:1775
+#: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
 msgstr "Сессия просрочена - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1780
+#: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
 msgstr "Сессия в порядке, авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1782
+#: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
 msgstr "Сессия в порядке, не авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1787
+#: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
 msgstr "Нет открытых сессий - буду запрашивать логин\n"
 
-#: src/webserver/src/WebServer.cpp:1796
+#: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
 msgstr "Сессия открыта - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1813
+#: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
 msgstr "Обрабатываю запрос [исходный]:"
 
-#: src/webserver/src/WebServer.cpp:1829
+#: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
 msgstr "Проверяю пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1834
+#: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
 msgstr "Хеш пароля неверен\n"
 
-#: src/webserver/src/WebServer.cpp:1849
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
 msgstr "Пароль верен\n"
 
-#: src/webserver/src/WebServer.cpp:1851
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
 msgstr "Неверный пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1854
+#: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Вы не ввели пароль. Пустой пароль недопустим.\n"
 
 # в eMule - так и пишут: логин/логаут, но мне не нравится
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
 msgstr "Запрошено отсоединение:\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Обрабатываю запрос [перенаправленный]:"
 
-#: src/webserver/src/WebServer.cpp:1870 src/webserver/src/php_core_lib.cpp:345
+#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
 msgstr "%d"
