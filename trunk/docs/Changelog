@@ -24,6 +24,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Patch for fixing aMule spec file in Fedora and Mandriva.
 		* Test for perl File::Copy in configure.
 
+	Gnucco:
+		* Workaround for string serialization bug
+
 	GonoszTopi:
 		* Added ability to compile amulecmd without thread support in wx.
 		* Fixed source seeds handling on startup.

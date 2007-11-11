@@ -321,8 +321,14 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 			}
 		}
 		default: {
-			Unicode2CharBuf s1(unicode2char(str));
-			WriteStringCore(s1, utf8strNone, SizeLen);			
+			 if (str.Length() == 1 )  {
+				 // Handle special case (ie: single char tag names!)
+				 WriteUInt16(1);
+				 WriteUInt8(str[0]);
+			} else {
+				 Unicode2CharBuf s1(unicode2char(str));
+				 WriteStringCore(s1, utf8strNone, SizeLen);			
+			}
 		}
 	}
 }
