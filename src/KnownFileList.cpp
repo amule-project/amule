@@ -28,11 +28,12 @@
 
 #include <include/common/DataFileVersion.h>
 
-#include <memory>              // Do_not_auto_remove (lionel's Mac, 10.3)
+#include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
 #include "PartFile.h"		// Needed for CPartFile
 #include "amule.h"
 #include "Logger.h"
 #include <common/Format.h>
+
 
 CKnownFileList::CKnownFileList()
 {
@@ -73,18 +74,20 @@ bool CKnownFileList::Init()
 		
 		wxMutexLocker sLock(list_mut);
 		uint32 RecordsNumber = file.ReadUInt32();
-		AddDebugLogLineM(false, logKnownFiles, wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),RecordsNumber, version));
+		AddDebugLogLineM(false, logKnownFiles,
+			wxString::Format(wxT("Reading %i known files from file format 0x%2.2x."),
+			RecordsNumber, version));
 		for (uint32 i = 0; i < RecordsNumber; i++) {
 			std::auto_ptr<CKnownFile> record(new CKnownFile());
-			
 			if (record->LoadFromFile(&file)) {
-				AddDebugLogLineM(false, logKnownFiles, wxT("Known file read: ") + record->GetFileName());
+				AddDebugLogLineM(false, logKnownFiles,
+					wxT("Known file read: ") + record->GetFileName());
 				Append(record.release());
 			} else {
-				AddLogLineM(true, wxT("Failed to load entry in knownfilelist, file may be corrupt"));
+				AddLogLineM(true,
+					wxT("Failed to load entry in knownfilelist, file may be corrupt"));
 			}
 		}
-		
 		AddDebugLogLineM(false, logKnownFiles, wxT("Finished reading known files"));
 	
 		return true;
@@ -96,6 +99,7 @@ bool CKnownFileList::Init()
 	
 	return false;
 }
+
 
 void CKnownFileList::Save()
 {
@@ -135,7 +139,6 @@ void CKnownFileList::Save()
 		
 		file.Seek(0);
 		file.WriteUInt8(bContainsAnyLargeFiles ? MET_HEADER_WITH_LARGEFILES : MET_HEADER);
-		
 	} catch (const CIOFailureException& e) {
 		AddLogLineM(true, CFormat(_("Error while saving known.met file: %s")) % e.what());
 	}
@@ -145,28 +148,30 @@ void CKnownFileList::Save()
 void CKnownFileList::Clear()
 {	
 	wxMutexLocker sLock(list_mut);
-	for ( CKnownFileMap::iterator it = m_map.begin(); it != m_map.end(); it++ )
+
+	for (CKnownFileMap::iterator it = m_map.begin();
+	     it != m_map.end(); ++it) {
 		delete it->second;
+	}
 	m_map.clear();
 
-	KnownFileList::iterator it = m_duplicates.begin();
-	for ( ; it != m_duplicates.end(); ++it ) {
+	for (KnownFileList::iterator it = m_duplicates.begin();
+	     it != m_duplicates.end(); ++it) {
 		delete *it;
 	}
 	m_duplicates.clear();
 }
 
+
 CKnownFile* CKnownFileList::FindKnownFile(
 	const wxString &filename,
 	time_t in_date,
-	uint64 in_size){
-
+	uint64 in_size)
+{
 	wxMutexLocker sLock(list_mut);
 	
-	CKnownFile* cur_file;
-
 	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
-		cur_file = pos->second;
+		CKnownFile *cur_file = pos->second;
 		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) &&
 		    cur_file->GetFileSize() == in_size &&
 		    cur_file->GetFileName() == filename) {
@@ -177,12 +182,12 @@ CKnownFile* CKnownFileList::FindKnownFile(
 	return IsOnDuplicates(filename, in_date, in_size);
 }
 
-CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash) {
-	
+
+CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
+{
 	wxMutexLocker sLock(list_mut);
 	
-	if (!hash.IsEmpty())
-	{
+	if (!hash.IsEmpty()) {
 		if (m_map.find(hash) != m_map.end()) {
 			return m_map[hash];
 		} else {
@@ -193,10 +198,13 @@ CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash) {
 
 }
 
-bool CKnownFileList::SafeAddKFile(CKnownFile* toadd) {
+
+bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
+{
 	wxMutexLocker sLock(list_mut);
 	return Append(toadd);
 }
+
 
 bool CKnownFileList::Append(CKnownFile* Record)
 {
@@ -211,7 +219,10 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			uint32 in_date =  it->second->GetFileDate();
 			uint64 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
-			if (((abs((int)Record->GetFileDate() - (int)in_date) < 20) && Record->GetFileSize() == in_size && (Record->GetFileName() == filename)) || IsOnDuplicates(filename, in_date, in_size)) {
+			if ((abs((int)Record->GetFileDate() - (int)in_date) < 20 &&
+			     Record->GetFileSize() == in_size &&
+			     Record->GetFileName() == filename) ||
+			    IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.
 				return false;
 			} else {
@@ -227,26 +238,29 @@ bool CKnownFileList::Append(CKnownFile* Record)
 			}
 		}
 	} else {
-		AddDebugLogLineM( false, logGeneral,
-			CFormat( wxT("%s is 0-size, not added") )
-				% Record->GetFileName()
-		);
+		AddDebugLogLineM(false, logGeneral,
+			CFormat(wxT("%s is 0-size, not added")) %
+			Record->GetFileName());
 		
 		return false;
 	}
 }
 
 
-CKnownFile* CKnownFileList::IsOnDuplicates(wxString filename,uint32 in_date,uint64 in_size) const
+CKnownFile* CKnownFileList::IsOnDuplicates(
+	const wxString &filename,
+	uint32 in_date,
+	uint64 in_size) const
 {
 	KnownFileList::const_iterator it = m_duplicates.begin();
 	for ( ; it != m_duplicates.end(); ++it ) {
-		CKnownFile* cur_file = *it;
-		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) && cur_file->GetFileSize() == in_size && (cur_file->GetFileName() == filename)) {
+		CKnownFile *cur_file = *it;
+		if (abs((int)cur_file->GetFileDate() - (int)in_date) < 20 &&
+		    cur_file->GetFileSize() == in_size &&
+		    cur_file->GetFileName() == filename) {
 			return cur_file;
 		}
-		
-	}	
+	}
 	return NULL;
 }
 
@@ -257,24 +271,19 @@ bool CKnownFileList::IsKnownFile(const CKnownFile* file)
 
 	wxMutexLocker sLock(list_mut);
 
-	{
-		CKnownFileMap::iterator it = m_map.begin();
-		for (; it != m_map.end(); ++it) {
-			if (it->second == file) {
-				return true;
-			}
-		}
-	}
-	
-	{
-		KnownFileList::iterator it = m_duplicates.begin();
-		for (; it != m_duplicates.end(); ++it) {
-			if (*it == file) {
-				return true;
-			}
+	for (CKnownFileMap::iterator it = m_map.begin();
+	     it != m_map.end(); ++it) {
+		if (it->second == file) {
+			return true;
 		}
 	}
 
+	for (KnownFileList::iterator it = m_duplicates.begin();
+	     it != m_duplicates.end(); ++it) {
+		if (*it == file) {
+			return true;
+		}
+	}
 	
 	return false;
 }

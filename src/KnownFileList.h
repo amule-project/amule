@@ -27,7 +27,6 @@
 #define KNOWNFILELIST_H
 
 
-
 #include "SharedFileList.h" // CKnownFileMap
 
 
@@ -42,7 +41,10 @@ public:
 	bool	Init();
 	void	Save();
 	void	Clear();
-	CKnownFile* FindKnownFile(const wxString &filename, time_t in_date, uint64 in_size);
+	CKnownFile* FindKnownFile(
+		const wxString &filename,
+		time_t in_date,
+		uint64 in_size);
 	CKnownFile* FindKnownFileByID(const CMD4Hash& hash);
 	bool	IsKnownFile(const CKnownFile* file);
 
@@ -55,7 +57,10 @@ private:
 
 	bool	Append(CKnownFile*);
 
-	CKnownFile* IsOnDuplicates(wxString filename,uint32 in_date,uint64 in_size) const;
+	CKnownFile* IsOnDuplicates(
+		const wxString &filename,
+		uint32 in_date,
+		uint64 in_size) const;
 
 	typedef std::list<CKnownFile*> KnownFileList;
 	KnownFileList	m_duplicates;
