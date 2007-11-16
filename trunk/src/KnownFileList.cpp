@@ -35,6 +35,19 @@
 #include <common/Format.h>
 
 
+inline bool CKnownFileList::KnownFileMatches(
+	CKnownFile *knownFile,
+	const wxString &filename,
+	uint32 in_date,
+	uint64 in_size) const
+{
+	return
+		abs((int)knownFile->GetFileDate() - (int)in_date) < 20 &&
+		knownFile->GetFileSize() == in_size &&
+		knownFile->GetFileName() == filename;
+}
+
+
 CKnownFileList::CKnownFileList()
 {
 	accepted = 0;
@@ -117,20 +130,20 @@ void CKnownFileList::Save()
 		bool bContainsAnyLargeFiles = false;
 		file.WriteUInt8(0);
 		
-		file.WriteUInt32(m_map.size() + m_duplicates.size());
+		file.WriteUInt32(m_knownFileMap.size() + m_duplicateFileList.size());
 
 		// Duplicates handling. Duplicates needs to be saved first,
 		// since it is the last entry that gets used.
-		KnownFileList::iterator itDup = m_duplicates.begin();
-		for ( ; itDup != m_duplicates.end(); ++itDup ) {
+		KnownFileList::iterator itDup = m_duplicateFileList.begin();
+		for ( ; itDup != m_duplicateFileList.end(); ++itDup ) {
 			(*itDup)->WriteToFile(&file);
 			if ((*itDup)->IsLargeFile()) {
 				bContainsAnyLargeFiles = true;
 			}
 		}
 		
-		CKnownFileMap::iterator it = m_map.begin();
-		for (; it != m_map.end(); ++it) {
+		CKnownFileMap::iterator it = m_knownFileMap.begin();
+		for (; it != m_knownFileMap.end(); ++it) {
 			it->second->WriteToFile(&file);
 			if (it->second->IsLargeFile()) {
 				bContainsAnyLargeFiles = true;
@@ -149,17 +162,17 @@ void CKnownFileList::Clear()
 {	
 	wxMutexLocker sLock(list_mut);
 
-	for (CKnownFileMap::iterator it = m_map.begin();
-	     it != m_map.end(); ++it) {
+	for (CKnownFileMap::iterator it = m_knownFileMap.begin();
+	     it != m_knownFileMap.end(); ++it) {
 		delete it->second;
 	}
-	m_map.clear();
+	m_knownFileMap.clear();
 
-	for (KnownFileList::iterator it = m_duplicates.begin();
-	     it != m_duplicates.end(); ++it) {
+	for (KnownFileList::iterator it = m_duplicateFileList.begin();
+	     it != m_duplicateFileList.end(); ++it) {
 		delete *it;
 	}
-	m_duplicates.clear();
+	m_duplicateFileList.clear();
 }
 
 
@@ -170,11 +183,10 @@ CKnownFile* CKnownFileList::FindKnownFile(
 {
 	wxMutexLocker sLock(list_mut);
 	
-	for (CKnownFileMap::iterator pos = m_map.begin(); pos != m_map.end(); pos++ ) {
-		CKnownFile *cur_file = pos->second;
-		if ((abs((int)cur_file->GetFileDate() - (int)in_date) < 20) &&
-		    cur_file->GetFileSize() == in_size &&
-		    cur_file->GetFileName() == filename) {
+	for (CKnownFileMap::const_iterator it = m_knownFileMap.begin();
+	     it != m_knownFileMap.end(); ++it) {
+		CKnownFile *cur_file = it->second;
+		if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
 			return cur_file;
 		}
 	}
@@ -183,13 +195,52 @@ CKnownFile* CKnownFileList::FindKnownFile(
 }
 
 
+CKnownFile *CKnownFileList::IsOnDuplicates(
+	const wxString &filename,
+	uint32 in_date,
+	uint64 in_size) const
+{
+	for (KnownFileList::const_iterator it = m_duplicateFileList.begin();
+	     it != m_duplicateFileList.end(); ++it) {
+		CKnownFile *cur_file = *it;
+		if (KnownFileMatches(cur_file, filename, in_date, in_size)) {
+			return cur_file;
+		}
+	}
+	return NULL;
+}
+
+
+bool CKnownFileList::IsKnownFile(const CKnownFile *file) 
+{
+	wxCHECK(file, false);
+
+	wxMutexLocker sLock(list_mut);
+
+	// For the map, search with the key
+	const CMD4Hash &key = file->GetFileHash();
+	CKnownFileMap::const_iterator itMap = m_knownFileMap.find(key);
+	if (itMap != m_knownFileMap.end()) {
+		return true;
+	}
+	// For the list, we have to iterate to search
+	for (KnownFileList::iterator it = m_duplicateFileList.begin();
+	     it != m_duplicateFileList.end(); ++it) {
+		if (*it == file) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
 CKnownFile* CKnownFileList::FindKnownFileByID(const CMD4Hash& hash)
 {
 	wxMutexLocker sLock(list_mut);
 	
 	if (!hash.IsEmpty()) {
-		if (m_map.find(hash) != m_map.end()) {
-			return m_map[hash];
+		if (m_knownFileMap.find(hash) != m_knownFileMap.end()) {
+			return m_knownFileMap[hash];
 		} else {
 			return NULL;	
 		}
@@ -206,34 +257,32 @@ bool CKnownFileList::SafeAddKFile(CKnownFile* toadd)
 }
 
 
-bool CKnownFileList::Append(CKnownFile* Record)
+bool CKnownFileList::Append(CKnownFile *Record)
 {
 	if (Record->GetFileSize() > 0) {
 		const CMD4Hash& tkey = Record->GetFileHash();
-		CKnownFileMap::iterator it = m_map.find(tkey);
-		if ( it == m_map.end() ) {
-			m_map[tkey] = Record;			
+		CKnownFileMap::iterator it = m_knownFileMap.find(tkey);
+		if (it == m_knownFileMap.end()) {
+			m_knownFileMap[tkey] = Record;			
 			return true;
 		} else {
 			it->second;
 			uint32 in_date =  it->second->GetFileDate();
 			uint64 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
-			if ((abs((int)Record->GetFileDate() - (int)in_date) < 20 &&
-			     Record->GetFileSize() == in_size &&
-			     Record->GetFileName() == filename) ||
+			if (KnownFileMatches(Record, filename, in_date, in_size) ||
 			    IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.
 				return false;
 			} else {
 				// The file is a duplicated hash. Add THE OLD ONE to the duplicates list.
-				m_duplicates.push_back(m_map[tkey]);
+				m_duplicateFileList.push_back(m_knownFileMap[tkey]);
 				// Is this thread-safe? If John is not sure and I'm not sure either...
 				if (theApp->sharedfiles) {
 					// Removing the old kad keywords created with the old filename
 					theApp->sharedfiles->RemoveKeywords(it->second);
 				}
-				m_map[tkey] = Record;	
+				m_knownFileMap[tkey] = Record;	
 				return true;
 			}
 		}
@@ -246,45 +295,4 @@ bool CKnownFileList::Append(CKnownFile* Record)
 	}
 }
 
-
-CKnownFile* CKnownFileList::IsOnDuplicates(
-	const wxString &filename,
-	uint32 in_date,
-	uint64 in_size) const
-{
-	KnownFileList::const_iterator it = m_duplicates.begin();
-	for ( ; it != m_duplicates.end(); ++it ) {
-		CKnownFile *cur_file = *it;
-		if (abs((int)cur_file->GetFileDate() - (int)in_date) < 20 &&
-		    cur_file->GetFileSize() == in_size &&
-		    cur_file->GetFileName() == filename) {
-			return cur_file;
-		}
-	}
-	return NULL;
-}
-
-
-bool CKnownFileList::IsKnownFile(const CKnownFile* file) 
-{
-	wxCHECK(file, false);
-
-	wxMutexLocker sLock(list_mut);
-
-	for (CKnownFileMap::iterator it = m_map.begin();
-	     it != m_map.end(); ++it) {
-		if (it->second == file) {
-			return true;
-		}
-	}
-
-	for (KnownFileList::iterator it = m_duplicates.begin();
-	     it != m_duplicates.end(); ++it) {
-		if (*it == file) {
-			return true;
-		}
-	}
-	
-	return false;
-}
 // File_checked_for_headers
