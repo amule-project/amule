@@ -159,7 +159,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* GUI implementation in C# (work in progress)
 		* Implementing split() call
 		* Compilation fix for MuleGifDecoder
-		
+
 	LittleAbacus:
 		* Patch to show part file numbers.
 		* set the search string to the search text of currently
@@ -360,7 +360,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Optimized and simplified adding of shared files to the listctrl
 		* Remove partially copied files when a UTF8_CopyFile fails.
 		* Drop the file/directory permission settings, use umask instead
-		
+
+	ycjhi:
+		* fix for OSX aMule-CVS-20071115 fails in loading libixml and
+		  libupnp.
 
 	Special Thanks to:
 		* FreeToGo for implementing the first version of IP2Country on
