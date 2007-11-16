@@ -62,8 +62,7 @@ private:
 		uint32 in_date,
 		uint64 in_size) const;
 
-	// This function is inline for performance
-	inline bool KnownFileMatches(
+	bool KnownFileMatches(
 		CKnownFile *knownFile,
 		const wxString &filename,
 		uint32 in_date,
