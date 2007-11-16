@@ -903,7 +903,8 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 			} else {
 				taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
 			}
-			taglist.push_back(new CTagVarInt(TAG_SOURCES, (uint32)file->m_nCompleteSourcesCount));
+			taglist.push_back(new CTagVarInt(TAG_SOURCES,
+				std::max((uint32)1, (uint32)file->m_nCompleteSourcesCount)));
 			
 			// eD2K file type (Audio, Video, ...)
 			// NOTE: Archives and CD-Images are published with file type "Pro"
