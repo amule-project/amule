@@ -35,6 +35,7 @@
 #include <common/Format.h>
 
 
+// This function is inlined for performance
 inline bool CKnownFileList::KnownFileMatches(
 	CKnownFile *knownFile,
 	const wxString &filename,
