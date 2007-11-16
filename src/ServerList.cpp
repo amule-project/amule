@@ -798,46 +798,44 @@ void CServerList::DownloadFinished(uint32 result)
 
 void CServerList::AutoUpdate() 
 {
-	
 	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
-	
 	if (!url_count) {
-		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
+		AddLogLineM(true,
+			_("No serverlist address entry in 'addresses.dat' "
+			"found. Please paste a valid serverlist address into "
+			"this file in order to auto-update your serverlist"));
 		return;
 	}
-	
-	wxString strURLToDownload; 
-	wxString strTempFilename;
-
 	// Do current URL. Callback function will take care of the others.
 	while ( current_url_index < url_count ) {
 		wxString URI = theApp->glob_prefs->adresses_list[current_url_index];
-
 		// We use wxURL to validate the URI
 		if ( wxURL( URI ).GetError() == wxURL_NOERR ) {
 			// Ok, got a valid URI
-			URLAutoUpdate = strURLToDownload;
-			strTempFilename =  theApp->ConfigDir + wxT("server_auto.met");
-		
-			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURLToDownload,strTempFilename, HTTP_ServerMetAuto);
+			URLAutoUpdate = URI;
+			wxString strTempFilename =
+				theApp->ConfigDir + wxT("server_auto.met");
+			AddLogLineM(true, CFormat(
+				_("Start downloading server list from %s")) % URI);
+			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
+				URI, strTempFilename, HTTP_ServerMetAuto);
 			downloader->Create();
 			downloader->Run();
 		
 			return;
 		} else {
-			AddLogLineM(true, CFormat( _("Warning, invalid URL specified for auto-updating of servers: %s") ) % URI);
+			AddLogLineM(true, CFormat(
+				_("Warning, invalid URL specified for auto-updating "
+				"of servers: %s") ) % URI);
 		}
-		
 		current_url_index++;
 	}
-
 	AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat"));
 }
 
 
 void CServerList::AutoDownloadFinished(uint32 result) 
 {
-	
 	if(result==1) {
 		wxString strTempFilename(theApp->ConfigDir + wxT("server_auto.met"));
 		// curl succeeded. proceed with server.met loading
@@ -846,17 +844,15 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
+		AddLogLineM(true, CFormat(
+			_("Failed to download the server list from %s") ) %
+				URLAutoUpdate);
 	}
-	
 	++current_url_index;
-	
-
 	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {		
 		// Next!	
 		AutoUpdate();
 	}
-	
 }
 
 
