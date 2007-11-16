@@ -45,6 +45,18 @@
 #endif
 
 
+// Dynamic libraries have different names in different systems
+#ifdef __DARWIN__
+	const char *libIXMLName = "libixml.2.dylib";
+	const char *libUPnP2Name = "libupnp.2.dylib";
+	const char *libUPNP3Name = "libupnp.3.dylib";
+#else // Linux and other compatible systems
+	const char *libIXMLName = "libixml.2.so";
+	const char *libUPnP2Name = "libupnp.2.so";
+	const char *libUPNP3Name = "libupnp.3.so";
+#endif
+
+
 /**
  * Case insensitive std::string comparison
  */
@@ -174,9 +186,9 @@ const char *CUPnPLib::s_LibUPnPSymbols[] =
 CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
 m_ctrlPoint(ctrlPoint),
-m_LibIXMLHandle("libixml.so.2"),
-m_LibUPnPHandle2("libupnp.so.2"),
-m_LibUPnPHandle3("libupnp.so.3"),
+m_LibIXMLHandle(libIXMLName),
+m_LibUPnPHandle2(libUPnP2Name),
+m_LibUPnPHandle3(libUPNP3Name),
 m_LibUPnPHandle(NULL)
 {
 	// There are two versions of libUPnP in the market,
