@@ -25,7 +25,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Test for perl File::Copy in configure.
 
 	Gnucco:
-		* Workaround for string serialization bug
+		* Workaround for string serialization bug.
+		* Workaround for aMule does not publish new files on kad.
 
 	GonoszTopi:
 		* Added ability to compile amulecmd without thread support in wx.
