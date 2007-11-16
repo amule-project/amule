@@ -639,10 +639,18 @@ bool CServerList::SaveServerMet()
 			const CServer* const server = *it;
 
 			uint16 tagcount = 12;
-			if ( !server->GetListName().IsEmpty() ) 			++tagcount;
-			if ( !server->GetDynIP().IsEmpty() )				++tagcount;
-			if ( !server->GetDescription().IsEmpty() )			++tagcount;
-			if ( server->GetConnPort() != server->GetPort() )	++tagcount;		
+			if (!server->GetListName().IsEmpty()) {
+				++tagcount;
+			}
+			if (!server->GetDynIP().IsEmpty()) {
+				++tagcount;
+			}
+			if (!server->GetDescription().IsEmpty()) {
+				++tagcount;
+			}
+			if (server->GetConnPort() != server->GetPort()) {
+				++tagcount;
+			}
 
 			// For unicoded name, description, and dynip
 			if ( !server->GetListName().IsEmpty() ) {
@@ -680,41 +688,41 @@ bool CServerList::SaveServerMet()
 						
 			if ( !server->GetListName().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTagString( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet,  utf8strOptBOM);
-				CTagString( ST_SERVERNAME,	server->GetListName()		).WriteTagToFile( &servermet );
+				CTagString( ST_SERVERNAME, server->GetListName()).WriteTagToFile( &servermet,  utf8strOptBOM);
+				CTagString( ST_SERVERNAME, server->GetListName()).WriteTagToFile( &servermet );
 			}
 			
 			if ( !server->GetDynIP().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTagString( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTagString( ST_DYNIP,			server->GetDynIP()			).WriteTagToFile( &servermet );
+				CTagString( ST_DYNIP, server->GetDynIP()).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_DYNIP, server->GetDynIP()).WriteTagToFile( &servermet );
 			}
 			
 			if ( !server->GetDescription().IsEmpty() ) {
 				// This is BOM to keep eMule compatibility
-				CTagString( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTagString( ST_DESCRIPTION,	server->GetDescription()	).WriteTagToFile( &servermet );
+				CTagString( ST_DESCRIPTION, server->GetDescription()).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_DESCRIPTION, server->GetDescription()).WriteTagToFile( &servermet );
 			}
 			
 			if ( server->GetConnPort() != server->GetPort() ) {
-				CTagString( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
+				CTagString( ST_AUXPORTSLIST, server->GetAuxPortsList()).WriteTagToFile( &servermet );
 			}
 			
-			CTagInt32( ST_FAIL,			server->GetFailedCount()	).WriteTagToFile( &servermet );
-			CTagInt32( ST_PREFERENCE,	server->GetPreferences()	).WriteTagToFile( &servermet );
-			CTagInt32( wxT("users"),			server->GetUsers()			).WriteTagToFile( &servermet );
-			CTagInt32( wxT("files"),			server->GetFiles()			).WriteTagToFile( &servermet );
-			CTagInt32( ST_PING,			server->GetPing()			).WriteTagToFile( &servermet );
-			CTagInt32( ST_LASTPING,		server->GetLastPingedTime()		).WriteTagToFile( &servermet );
-			CTagInt32( ST_MAXUSERS,		server->GetMaxUsers()		).WriteTagToFile( &servermet );
-			CTagInt32( ST_SOFTFILES,		server->GetSoftFiles()		).WriteTagToFile( &servermet );
-			CTagInt32( ST_HARDFILES,		server->GetHardFiles()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_FAIL,       server->GetFailedCount()   ).WriteTagToFile( &servermet );
+			CTagInt32( ST_PREFERENCE, server->GetPreferences()   ).WriteTagToFile( &servermet );
+			CTagInt32( wxT("users"),  server->GetUsers()         ).WriteTagToFile( &servermet );
+			CTagInt32( wxT("files"),  server->GetFiles()         ).WriteTagToFile( &servermet );
+			CTagInt32( ST_PING,       server->GetPing()          ).WriteTagToFile( &servermet );
+			CTagInt32( ST_LASTPING,   server->GetLastPingedTime()).WriteTagToFile( &servermet );
+			CTagInt32( ST_MAXUSERS,   server->GetMaxUsers()      ).WriteTagToFile( &servermet );
+			CTagInt32( ST_SOFTFILES,  server->GetSoftFiles()     ).WriteTagToFile( &servermet );
+			CTagInt32( ST_HARDFILES,  server->GetHardFiles()     ).WriteTagToFile( &servermet );
 			if (!server->GetVersion().IsEmpty()){
-				CTagString( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet, utf8strOptBOM );
-				CTagString( ST_VERSION,		server->GetVersion()		).WriteTagToFile( &servermet );
+				CTagString( ST_VERSION,	server->GetVersion() ).WriteTagToFile( &servermet, utf8strOptBOM );
+				CTagString( ST_VERSION,	server->GetVersion() ).WriteTagToFile( &servermet );
 			}
-			CTagInt32( ST_UDPFLAGS,		server->GetUDPFlags()		).WriteTagToFile( &servermet );
-			CTagInt32( ST_LOWIDUSERS,	server->GetLowIDUsers()		).WriteTagToFile( &servermet );
+			CTagInt32( ST_UDPFLAGS,   server->GetUDPFlags()      ).WriteTagToFile( &servermet );
+			CTagInt32( ST_LOWIDUSERS, server->GetLowIDUsers()    ).WriteTagToFile( &servermet );
 			
 			if (server->GetServerKeyUDP(true)) {
 				CTagInt32(ST_UDPKEY, server->GetServerKeyUDP(true)).WriteTagToFile( &servermet );;
@@ -761,12 +769,14 @@ void CServerList::RemoveDeadServers()
 	if ( thePrefs::DeadServer() ) {
 		for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ) {
 			CServer* server = *it++;
-			if ( server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !server->IsStaticMember()) {
+			if (server->GetFailedCount() > thePrefs::GetDeadserverRetries() &&
+			    !server->IsStaticMember()) {
 				RemoveServer(server);
 			}
 		}
 	}
 }
+
 
 void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
@@ -780,6 +790,7 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 	downloader->Create();
 	downloader->Run();
 }
+
 
 void CServerList::DownloadFinished(uint32 result) 
 {
@@ -918,7 +929,9 @@ void CServerList::FilterServers()
 		
 		if (theApp->ipfilter->IsFiltered(server->GetIP(), true)) {
 			if (server == theApp->serverconnect->GetCurrentServer()) {
-				AddLogLineM(true, _("Local server is filtered by the IPFilters, reconnecting to a different server!"));
+				AddLogLineM(true,
+					_("Local server is filtered by the IPFilters, "
+					"reconnecting to a different server!"));
 				theApp->serverconnect->Disconnect();
 				RemoveServer(server);
 				theApp->serverconnect->ConnectToAnyServer();
@@ -944,17 +957,22 @@ void CServerList::CheckForExpiredUDPKeys() {
 	
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
         CServer* pServer = *it;
-		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 && pServer->GetServerKeyUDPIP() != dwIP){
+		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 &&
+		    pServer->GetServerKeyUDPIP() != dwIP){
 			cKeysTotal++;
 			cKeysExpired++;
 			if (tNow - pServer->GetRealLastPingedTime() < UDPSERVSTATMINREASKTIME){
 				cPingDelayed++;
 				// next ping: Now + (MinimumDelay - already elapsed time)
-				pServer->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
+				pServer->SetLastPingedTime(
+					(tNow - (uint32)UDPSERVSTATREASKTIME) +
+					(UDPSERVSTATMINREASKTIME -
+						(tNow - pServer->GetRealLastPingedTime())));
 			} else {
 				pServer->SetLastPingedTime(0);
 			}
-		} else if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(false) != 0) {
+		} else if (pServer->SupportsObfuscationUDP() &&
+		           pServer->GetServerKeyUDP(false) != 0) {
 			cKeysTotal++;
 		}
 	}
