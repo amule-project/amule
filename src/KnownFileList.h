@@ -41,7 +41,7 @@ public:
 	bool	Init();
 	void	Save();
 	void	Clear();
-	CKnownFile* FindKnownFile(
+	CKnownFile *FindKnownFile(
 		const wxString &filename,
 		time_t in_date,
 		uint64 in_size);
@@ -57,14 +57,21 @@ private:
 
 	bool	Append(CKnownFile*);
 
-	CKnownFile* IsOnDuplicates(
+	CKnownFile *IsOnDuplicates(
+		const wxString &filename,
+		uint32 in_date,
+		uint64 in_size) const;
+
+	// This function is inline for performance
+	inline bool KnownFileMatches(
+		CKnownFile *knownFile,
 		const wxString &filename,
 		uint32 in_date,
 		uint64 in_size) const;
 
 	typedef std::list<CKnownFile*> KnownFileList;
-	KnownFileList	m_duplicates;
-	CKnownFileMap	m_map;
+	KnownFileList	m_duplicateFileList;
+	CKnownFileMap	m_knownFileMap;
 };
 
 #endif // KNOWNFILELIST_H
