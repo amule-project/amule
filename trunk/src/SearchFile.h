@@ -75,7 +75,14 @@ public:
 	 * @param directory If from a clients shared files, the directory this file is in.
 	 * @param kademlia Specifies if this was from a kad-search.
 	 */
-	CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint32 serverIP = 0, uint16 serverPort = 0, const wxString& directory = wxEmptyString, bool kademlia = false);
+	CSearchFile(
+		const CMemFile& data,
+		bool optUTF8,
+		long searchID,
+		uint32 serverIP = 0,
+		uint16 serverPort = 0,
+		const wxString& directory = wxEmptyString,
+		bool kademlia = false);
 
 	
 	/** Frees all children owned by this file. */
@@ -90,28 +97,28 @@ public:
 	 *
 	 * Note that for Kademlia results, only the largest value is used.
 	 */
-	void	AddSources(uint32 count, uint32 count_complete);
+	void AddSources(uint32 count, uint32 count_complete);
 
 	/** Returns the total number of sources. */
-	inline uint32		GetSourceCount() const;
+	uint32 GetSourceCount() const;
 	/** Returns the number of sources that have the entire file. */
-	inline uint32		GetCompleteSourceCount() const;
+	uint32 GetCompleteSourceCount() const;
 	/** Returns the ID of the search, used to select the right list when displaying. */
-	inline long			GetSearchID() const;
+	long GetSearchID() const;
 	/** Returns true if the result is from a Kademlia search. */
-	inline bool			IsKademlia() const;
+	bool IsKademlia() const;
 	
 		
 	/** Returns the parent of this file. */
-	inline CSearchFile*	GetParent() const;
+	CSearchFile *GetParent() const;
 	/** Returns the list of children belonging to this file. */
-	inline const CSearchResultList&	GetChildren() const;
+	const CSearchResultList &GetChildren() const;
 	/** Returns true if this item has children. */
-	inline bool			HasChildren() const;
+	bool HasChildren() const;
 	/** Returns true if children should be displayed. */
-	inline bool			ShowChildren() const;
+	bool ShowChildren() const;
 	/** Enable/Disable displaying of children (set in CSearchListCtrl). */
-	inline void			SetShowChildren(bool show);
+	void SetShowChildren(bool show);
 	
 	/**
 	 * Adds the given file as a child of this file.
@@ -122,15 +129,15 @@ public:
 	 * filehash matches the parent's. AddChild takes
 	 * ownership of the file.
 	 */
-	void				AddChild(CSearchFile* file);
+	void		AddChild(CSearchFile* file);
 
 	
 	//@{
 	//! TODO: Currently not used.
-	inline uint32		GetClientID() const;
-	inline void			SetClientID(uint32 clientID);
-	inline uint16		GetClientPort() const;
-	inline void			SetClientPort(uint16 port);
+	uint32 	GetClientID() const;
+	void SetClientID(uint32 clientID);
+	uint16 GetClientPort() const;
+	void SetClientPort(uint16 port);
 	//@}
 	
 private:
@@ -144,115 +151,111 @@ private:
 	 * of fileratings is set, based on files that have a rating only.
 	 */
 	void	UpdateParent();
-
 	
 	//! The parent of this result.
 	CSearchFile*		m_parent;
 	//! Any children this result may have.
 	CSearchResultList	m_children;
 	//! If true, children will be shown on the GUI.
-	bool				m_showChildren;
+	bool			m_showChildren;
 	//! The unique ID of this search owning this result.
-	long				m_searchID;
+	long			m_searchID;
 	//! The total number of sources for this file.
-	uint32				m_sourceCount;
+	uint32			m_sourceCount;
 	//! The number of sources that have the complete file.
-	uint32				m_completeSourceCount;
+	uint32			m_completeSourceCount;
 	//! Specifies if the result is from a kademlia search.
-	bool				m_kademlia;
-
+	bool			m_kademlia;
 
 	//@{
 	//! TODO: Currently not used.
-	uint32				m_clientID;
-	uint16				m_clientPort;
-	wxString			m_directory;
+	uint32			m_clientID;
+	uint16			m_clientPort;
+	wxString		m_directory;
 	//@}
-	
 
 	friend class CPartFile;
 	friend class CSearchListRem;
 };
 
 
-
 ////////////////////////////////////////////////////////////
 // Implementations
 
 
-uint32 CSearchFile::GetSourceCount() const
+inline uint32 CSearchFile::GetSourceCount() const
 {
 	return m_sourceCount;
 }
 
 
-uint32 CSearchFile::GetCompleteSourceCount() const
+inline uint32 CSearchFile::GetCompleteSourceCount() const
 {
 	return m_completeSourceCount; 
 }
 
 
-long CSearchFile::GetSearchID() const
+inline long CSearchFile::GetSearchID() const
 {
 	return m_searchID;
 }
 
 
-bool CSearchFile::IsKademlia() const
+inline bool CSearchFile::IsKademlia() const
 {
 	return m_kademlia;
 }
 
 
-CSearchFile* CSearchFile::GetParent() const
+inline CSearchFile* CSearchFile::GetParent() const
 {
 	return m_parent;
 }
 
 
-bool CSearchFile::ShowChildren() const
+inline bool CSearchFile::ShowChildren() const
 {
 	return m_showChildren;
 }
 
 
-void CSearchFile::SetShowChildren(bool show)
+inline void CSearchFile::SetShowChildren(bool show)
 {
 	m_showChildren = show;
 }
 
 
-const CSearchResultList& CSearchFile::GetChildren() const
+inline const CSearchResultList& CSearchFile::GetChildren() const
 {
 	return m_children;
 }
 
 
-bool CSearchFile::HasChildren() const
+inline bool CSearchFile::HasChildren() const
 {
 	return not m_children.empty();
 }
 
 
-uint32 CSearchFile::GetClientID() const
+inline uint32 CSearchFile::GetClientID() const
 {
-   return m_clientID;
+	return m_clientID;
 }
 
 
-void CSearchFile::SetClientID(uint32 clientID)
+inline void CSearchFile::SetClientID(uint32 clientID)
 {
 	m_clientID = clientID;
 }
 
 
-uint16 CSearchFile::GetClientPort() const
+inline uint16 CSearchFile::GetClientPort() const
 {
 	return m_clientPort;
 }
 
 
-void CSearchFile::SetClientPort(uint16 port)
+inline void CSearchFile::SetClientPort(uint16 port)
 {
 	m_clientPort = port;
 }
