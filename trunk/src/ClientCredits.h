@@ -45,7 +45,7 @@ struct CreditStruct
 	uint16		nReserved3;
 	uint8		nKeySize;
 	byte		abySecureIdent[MAXPUBKEYSIZE];
-};
+}__attribute__ ((packed)) ;
 
 enum EIdentState{
 	IS_NOTAVAILABLE,
