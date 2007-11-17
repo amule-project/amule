@@ -124,6 +124,7 @@ private:
 	CDynamicLibHandle m_LibUPnPHandle2;
 	CDynamicLibHandle m_LibUPnPHandle3;
 	CDynamicLibHandle *m_LibUPnPHandle;
+	const std::string addLibrayPath(const char *name);
 	
 public:
 	CUPnPLib(CUPnPControlPoint &ctrlPoint);
