@@ -71,7 +71,6 @@ public:
 	 */
 	virtual ~CSearchListCtrl();
 
-
 	/**
 	 * Adds ths specified file to the list.
 	 *
@@ -88,7 +87,6 @@ public:
 	 * Removes the specified file from the list.
 	 */
 	void	RemoveResult(CSearchFile* toshow);
-
 	
 	/**
 	 * Updates the specified source.
@@ -104,7 +102,6 @@ public:
 	 */
 	void	ShowResults( long ResultsId );
 
-
 	/**
 	 * Updates the colors of item at the specified index.
 	 *
@@ -115,8 +112,12 @@ public:
 	 *  - Known (shared/completed) files are marked in green.
 	 *  - New files are marked in blue depending on the number of sources.
 	 */
-	void	UpdateItemColor( long index );
+	void UpdateItemColor(long index);
 
+	/**
+	 * Updates the colors of all assosiated items, which means parents and/or siblings.
+	 */
+	void UpdateAllRelativesColor(CSearchFile *file, long index);
 
 	/**
 	 * Returns the current Search Id. 
@@ -125,7 +126,6 @@ public:
 	 */
 	long	GetSearchId();
 	
-
 	/**
 	 * Sets the filter which decides which results should be shown.
 	 *
@@ -141,13 +141,11 @@ public:
 	 * Toggels the use of filtering on and off.
 	 */
 	void	EnableFiltering(bool enabled);
-
 	
 	/**
 	 * Returns the number of items hidden due to filtering.
 	 */
 	size_t	GetHiddenItemCount() const;
-
 	
 	/**
 	 * Attempts to download all selected items, updating color-scheme as needed.
@@ -177,12 +175,10 @@ protected:
 	//! Specifies if filtering should be used
 	bool		m_filterEnabled;
 
-
 	/**
 	 * Returns true if the filename is filtered.
 	 */
 	bool	IsFiltered(const CSearchFile* file);
-	
 	
 	/**
 	 * Sorter function used by wxListCtrl::SortItems function.
@@ -197,7 +193,6 @@ protected:
 
 	/** @see CMuleListCtrl::GetTTSText */
 	virtual wxString GetTTSText(unsigned item) const;
-	
 
 	/**
 	 * Helper function which syncs two lists.
@@ -225,7 +220,6 @@ protected:
 	 * the src argument as the src argument of the SyncLists function.
 	 */
 	static void SyncOtherLists( CSearchListCtrl* src );
-
 	
 	//! This list contains pointers to all current instances of CSearchListCtrl.
 	static std::list<CSearchListCtrl*> s_lists;
@@ -233,10 +227,8 @@ protected:
 	//! The ID of the search-results which the list is displaying or zero if unset. 
 	long	m_nResultsID;
 
-
 	//! Custom drawing, needed to display children of search-results.
 	void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
-
 
 	/**
 	 * Removes or adds child-entries for the given file.
@@ -266,7 +258,6 @@ protected:
 	 * This eventhandler takes care of sync'ing all the other lists with this one.
 	 */
 	void OnColumnResize( wxListEvent& event );
-
 	
 	/**
 	 * Event handler for get-url menu items.
@@ -282,6 +273,11 @@ protected:
 	 * Event handler for related search.
 	 */
 	void OnRelatedSearch( wxCommandEvent& event );
+
+	/**
+	 * Event handler for "mark as known".
+	 */
+	void OnMarkAsKnown( wxCommandEvent& event );
 
 	/**
 	 * Event handler for download-file(s) menu item.
