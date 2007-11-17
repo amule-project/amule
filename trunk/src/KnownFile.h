@@ -140,7 +140,7 @@ public:
 
 	virtual void SetFileSize(uint64 nFileSize)	{ m_nFileSize = nFileSize; }
 	
-	virtual void SetFileName(const wxString& strmakeFilename);
+	virtual void SetFileName(const wxString &strFilename);
 
 	/* Tags and Notes handling */
 	uint32 GetIntTagValue(uint8 tagname) const;
@@ -188,11 +188,15 @@ private:
 };
 
 
+class CSearchFile;
+
+
 class CKnownFile : public CAbstractFile
 {
 friend class CHashingTask;
 public:
 	CKnownFile();
+	explicit CKnownFile(const CSearchFile &searchFile);
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);
 	friend class CSharedFilesRem;
@@ -201,7 +205,7 @@ public:
 	virtual ~CKnownFile();
 
 	#ifndef CLIENT_GUI	
-	virtual void SetFileName(const wxString& strmakeFilename);
+	virtual void SetFileName(const wxString &strFilename);
 	#endif
 		
 	void SetFilePath(const wxString& strFilePath);
@@ -211,7 +215,7 @@ public:
 	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFileDataIO* file);	
-	uint32	GetFileDate() const	{return date;}
+	uint32	GetFileDate() const	{return m_date;}
 
 	virtual void SetFileSize(uint64 nFileSize);
 
@@ -273,7 +277,7 @@ public:
 	
 	virtual void	UpdatePartsInfo();	
 
-	uint32	date;
+	uint32	m_date;
 	
 	CFileStatistic statistic;
 	

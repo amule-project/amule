@@ -98,7 +98,7 @@ void CHashingTask::Entry()
 	knownfile->m_strFilePath = m_path;
 	knownfile->SetFileName(m_filename);
 	knownfile->SetFileSize(file.GetLength());
-	knownfile->date = GetLastModificationTime(fullPath);
+	knownfile->m_date = GetLastModificationTime(fullPath);
 	knownfile->m_AvailPartFrequency.insert(
 		knownfile->m_AvailPartFrequency.begin(),
 		knownfile->GetPartCount(), 0);

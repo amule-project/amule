@@ -49,6 +49,7 @@
 #include "Logger.h"
 #include "ScopedPtr.h"		// Needed for CScopedArray and CScopedPtr
 #include "GuiEvents.h"		// Needed for Notify_*
+#include "SearchFile.h"		// Needed for CSearchFile
 
 #include "CryptoPP_Inc.h"       // Needed for MD4
 
@@ -277,9 +278,28 @@ CKnownFile::CKnownFile()
 }
 
 
+#warning Experimental: Construct a CKnownFile from a CSearchFile
+CKnownFile::CKnownFile(const CSearchFile &searchFile)
+:
+// This will copy the file hash
+CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
+{
+	// Use CKnownFile::SetFileName()
+	SetFileName(searchFile.GetFileName());
+
+	// Use CKnownFile::SetFileSize()
+	SetFileSize(searchFile.GetFileSize());
+	
+	Init();
+	
+	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
+	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
+}
+
+
 void CKnownFile::Init() 
 {
-	date = 0;
+	m_date = 0;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
 	m_nCompleteSourcesCountLo = 0;
@@ -592,7 +612,7 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 
 bool CKnownFile::LoadDateFromFile(const CFileDataIO* file)
 {
-	date = file->ReadUInt32();
+	m_date = file->ReadUInt32();
 	return true;
 }
 
@@ -615,7 +635,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	wxCHECK(!IsPartFile(), false);
 	
 	// date
-	file->WriteUInt32(date); 
+	file->WriteUInt32(m_date); 
 	// hashset
 	file->WriteHash(m_abyFileHash);
 	
@@ -1244,13 +1264,13 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
-void CKnownFile::SetFileName(const wxString& strmakeFilename)
+void CKnownFile::SetFileName(const wxString& strFilename)
 { 
-	CAbstractFile::SetFileName(strmakeFilename);
-	#ifndef CLIENT_GUI
+	CAbstractFile::SetFileName(strFilename);
+#ifndef CLIENT_GUI
 		wordlist.clear();
 		Kademlia::CSearchManager::GetWords(GetFileName(), &wordlist);
-	#endif
+#endif
 }
 
 #endif // CLIENT_GUI
