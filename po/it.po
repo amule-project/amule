@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-10 03:30+0100\n"
+"POT-Creation-Date: 2007-11-17 03:30+0100\n"
 "PO-Revision-Date: 2007-11-11 20:58+0100\n"
 "Last-Translator: luca <lucadipiazza@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@mail.kde.org>\n"
@@ -157,8 +157,8 @@ msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:831
-#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:851
+#: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -281,18 +281,18 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Selezione multipla"
 
-#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Nome file"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
 #: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Dimensione"
 
-#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "Tipo"
 
@@ -302,7 +302,7 @@ msgstr "Tipo"
 msgid "Priority"
 msgstr "Priorità"
 
-#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:91
 msgid "FileID"
 msgstr "ID File"
 
@@ -2838,7 +2838,7 @@ msgstr ""
 msgid "Continue?"
 msgstr "Continuare?"
 
-#: src/KadDlg.cpp:211 src/ServerList.cpp:774
+#: src/KadDlg.cpp:211 src/ServerList.cpp:784
 msgid "Invalid URL"
 msgstr "URL non valido"
 
@@ -2870,39 +2870,43 @@ msgstr "Informazione"
 msgid "The specified userhash is not valid!"
 msgstr "L'hash utente specificato non è valido!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:195
+#: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fonti"
 
-#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:517
+#: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "File"
 
-#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
 msgstr "Download"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:940
+#: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Categoria"
 
-#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:585
+#: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:585
 msgid "Main"
 msgstr "Principale"
 
-#: src/SearchListCtrl.cpp:535
+#: src/SearchListCtrl.cpp:561
 msgid "Download in category"
 msgstr "Download nella categoria"
 
-#: src/SearchListCtrl.cpp:541
+#: src/SearchListCtrl.cpp:567
 msgid "Search related files (ED2k, local server)"
 msgstr "Ricerca file simili (ED2k, local server)"
 
-#: src/SearchListCtrl.cpp:544
+#: src/SearchListCtrl.cpp:573
+msgid "Mark as known file"
+msgstr ""
+
+#: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
 msgstr "Copia link ed2k negli appunti"
 
@@ -3309,26 +3313,26 @@ msgstr "Spazio su disco insufficiente"
 msgid "Stopped"
 msgstr "Fermo"
 
-#: src/KnownFileList.cpp:58
+#: src/KnownFileList.cpp:73
 msgid "Warning: known.met does not exist."
 msgstr "Attenzione: known.met non esiste."
 
-#: src/KnownFileList.cpp:63
+#: src/KnownFileList.cpp:78
 msgid "Warning: known.met cannot be opened."
 msgstr "Attenzione: impossibile aprire known.met."
 
-#: src/KnownFileList.cpp:70
+#: src/KnownFileList.cpp:85
 msgid "Warning: Knownfile list corrupted, contains invalid header."
 msgstr ""
 "Attenzione: lista dei file conosciuti danneggiata, potrebbe contenere un "
 "header non valido."
 
-#: src/KnownFileList.cpp:94
+#: src/KnownFileList.cpp:111
 #, c-format
 msgid "IO error while reading known.met file: %s"
 msgstr "Errore IO durante la lettura del file known.met: %s"
 
-#: src/KnownFileList.cpp:140
+#: src/KnownFileList.cpp:157
 #, c-format
 msgid "Error while saving known.met file: %s"
 msgstr "Errore nel salvataggio del file known.met: %s"
@@ -6860,12 +6864,12 @@ msgstr "Sei connesso al server che vuoi eliminare. Disconnettiti prima."
 msgid "Failed to save server.met!"
 msgstr "Impossibile salvare il file server.met!"
 
-#: src/ServerList.cpp:794 src/ServerList.cpp:849
+#: src/ServerList.cpp:805 src/ServerList.cpp:859
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Impossibile scaricare la lista dei server da %s"
 
-#: src/ServerList.cpp:805
+#: src/ServerList.cpp:815
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6874,18 +6878,23 @@ msgstr ""
 "indirizzo che contenga la lista di server in questo file in modo da poter "
 "aggiornare automaticamente la lista"
 
-#: src/ServerList.cpp:828
+#: src/ServerList.cpp:830
+#, c-format
+msgid "Start downloading server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:839
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "Attenzione, indicato URL non valido per l'aggiornamento automatico dei "
 "server: %s"
 
-#: src/ServerList.cpp:834
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "Nessun URL di file server.met valido in addresses.dat"
 
-#: src/ServerList.cpp:925
+#: src/ServerList.cpp:933
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
