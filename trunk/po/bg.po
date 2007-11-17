@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-10 03:30+0100\n"
+"POT-Creation-Date: 2007-11-17 03:30+0100\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -146,8 +146,8 @@ msgstr ""
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:831
-#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:851
+#: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -264,18 +264,18 @@ msgstr ""
 msgid "Multiple selection"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Име на файл"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
 #: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Размер"
 
-#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "Тип"
 
@@ -285,7 +285,7 @@ msgstr "Тип"
 msgid "Priority"
 msgstr "Приоритет"
 
-#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:91
 msgid "FileID"
 msgstr ""
 
@@ -2738,7 +2738,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: src/KadDlg.cpp:211 src/ServerList.cpp:774
+#: src/KadDlg.cpp:211 src/ServerList.cpp:784
 msgid "Invalid URL"
 msgstr "Грешен URL"
 
@@ -2770,39 +2770,43 @@ msgstr ""
 msgid "The specified userhash is not valid!"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:195
+#: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Източници"
 
-#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:517
+#: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "Файл"
 
-#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
 msgstr "Изтегляне"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:940
+#: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "Категория"
 
-#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:585
+#: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:585
 msgid "Main"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:535
+#: src/SearchListCtrl.cpp:561
 msgid "Download in category"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:541
+#: src/SearchListCtrl.cpp:567
 msgid "Search related files (ED2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:544
+#: src/SearchListCtrl.cpp:573
+msgid "Mark as known file"
+msgstr ""
+
+#: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
 msgstr ""
 
@@ -3187,24 +3191,24 @@ msgstr ""
 msgid "Stopped"
 msgstr "Спрян"
 
-#: src/KnownFileList.cpp:58
+#: src/KnownFileList.cpp:73
 msgid "Warning: known.met does not exist."
 msgstr ""
 
-#: src/KnownFileList.cpp:63
+#: src/KnownFileList.cpp:78
 msgid "Warning: known.met cannot be opened."
 msgstr ""
 
-#: src/KnownFileList.cpp:70
+#: src/KnownFileList.cpp:85
 msgid "Warning: Knownfile list corrupted, contains invalid header."
 msgstr ""
 
-#: src/KnownFileList.cpp:94
+#: src/KnownFileList.cpp:111
 #, c-format
 msgid "IO error while reading known.met file: %s"
 msgstr ""
 
-#: src/KnownFileList.cpp:140
+#: src/KnownFileList.cpp:157
 #, c-format
 msgid "Error while saving known.met file: %s"
 msgstr ""
@@ -6544,27 +6548,32 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "Грешка при записа на server.met!"
 
-#: src/ServerList.cpp:794 src/ServerList.cpp:849
+#: src/ServerList.cpp:805 src/ServerList.cpp:859
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:805
+#: src/ServerList.cpp:815
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
 msgstr ""
 
-#: src/ServerList.cpp:828
+#: src/ServerList.cpp:830
+#, c-format
+msgid "Start downloading server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:839
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 
-#: src/ServerList.cpp:834
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 
-#: src/ServerList.cpp:925
+#: src/ServerList.cpp:933
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"

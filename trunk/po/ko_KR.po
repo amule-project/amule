@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-10 03:30+0100\n"
+"POT-Creation-Date: 2007-11-17 03:30+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -146,8 +146,8 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:831
-#: src/KnownFile.cpp:837 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:851
+#: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -269,18 +269,18 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "다중 선택"
 
-#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:78
+#: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "파일 이름"
 
-#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:79
+#: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
 #: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "크기"
 
-#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:81 src/muuli_wdr.cpp:188
+#: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:188
 msgid "Type"
 msgstr "종류"
 
@@ -290,7 +290,7 @@ msgstr "종류"
 msgid "Priority"
 msgstr "우선권"
 
-#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:82
+#: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:91
 msgid "FileID"
 msgstr "파일아이디"
 
@@ -2800,7 +2800,7 @@ msgstr "현재노드는 제거되고 카뎀리아 연결이 다시 시작됩니�
 msgid "Continue?"
 msgstr "계속할까요?"
 
-#: src/KadDlg.cpp:211 src/ServerList.cpp:774
+#: src/KadDlg.cpp:211 src/ServerList.cpp:784
 msgid "Invalid URL"
 msgstr "유효하지 않는 주소입니다."
 
@@ -2832,39 +2832,43 @@ msgstr "정보"
 msgid "The specified userhash is not valid!"
 msgstr "설정된 사용자 해시가 옳바르지 않습니다!"
 
-#: src/SearchListCtrl.cpp:80 src/DownloadListCtrl.cpp:195
+#: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "자료"
 
-#: src/SearchListCtrl.cpp:525 src/ClientListCtrl.cpp:517
+#: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "파일"
 
-#: src/SearchListCtrl.cpp:526 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
+#: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
 msgstr "내려받기"
 
-#: src/SearchListCtrl.cpp:528 src/DownloadListCtrl.cpp:940
+#: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
 msgstr "분류"
 
-#: src/SearchListCtrl.cpp:529 src/SearchDlg.cpp:585
+#: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:585
 msgid "Main"
 msgstr "주"
 
-#: src/SearchListCtrl.cpp:535
+#: src/SearchListCtrl.cpp:561
 msgid "Download in category"
 msgstr "분류내 내려받기"
 
-#: src/SearchListCtrl.cpp:541
+#: src/SearchListCtrl.cpp:567
 msgid "Search related files (ED2k, local server)"
 msgstr "관련 파일 검색 (ED2k, 지역서버)"
 
-#: src/SearchListCtrl.cpp:544
+#: src/SearchListCtrl.cpp:573
+msgid "Mark as known file"
+msgstr ""
+
+#: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
 msgstr "클립보드에 ED2k링크를 복사"
 
@@ -3261,25 +3265,25 @@ msgstr "불충분한 디스크공간"
 msgid "Stopped"
 msgstr "멈춤"
 
-#: src/KnownFileList.cpp:58
+#: src/KnownFileList.cpp:73
 msgid "Warning: known.met does not exist."
 msgstr "경고: known.met이 없습니다."
 
-#: src/KnownFileList.cpp:63
+#: src/KnownFileList.cpp:78
 msgid "Warning: known.met cannot be opened."
 msgstr "경고: known.met을 열 수 없습니다."
 
-#: src/KnownFileList.cpp:70
+#: src/KnownFileList.cpp:85
 msgid "Warning: Knownfile list corrupted, contains invalid header."
 msgstr ""
 "경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고 있습니다."
 
-#: src/KnownFileList.cpp:94
+#: src/KnownFileList.cpp:111
 #, c-format
 msgid "IO error while reading known.met file: %s"
 msgstr "known.met 파일을 읽는동안 입출력 오류: %s"
 
-#: src/KnownFileList.cpp:140
+#: src/KnownFileList.cpp:157
 #, c-format
 msgid "Error while saving known.met file: %s"
 msgstr "known.met 파일을 저장하는 동안 오류: %s"
@@ -6750,12 +6754,12 @@ msgstr "삭제하려고하는 서버에 접속되어있습니다. 부디 먼저 
 msgid "Failed to save server.met!"
 msgstr "server.met을 저장하지 못함!"
 
-#: src/ServerList.cpp:794 src/ServerList.cpp:849
+#: src/ServerList.cpp:805 src/ServerList.cpp:859
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "%s로부터 서버 목록를 내려받지 못함"
 
-#: src/ServerList.cpp:805
+#: src/ServerList.cpp:815
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6763,16 +6767,21 @@ msgstr ""
 "'addresses.dat'에 서버 목록 주소 항목이 없습니다. 서버 목록을 자동갱신하려면 "
 "유효한 서버 목록 주소를 이 파일에 붙여넣어 주세요."
 
-#: src/ServerList.cpp:828
+#: src/ServerList.cpp:830
+#, c-format
+msgid "Start downloading server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:839
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr "경고, 서버의 자동 갱신을 위한 URL이 유효하지 않음: %s"
 
-#: src/ServerList.cpp:834
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "adrresses.dat에 유효한 server.met 자동갱신 주소가 없습니다."
 
-#: src/ServerList.cpp:925
+#: src/ServerList.cpp:933
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
