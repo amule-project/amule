@@ -697,11 +697,11 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 
 	if (!isnewstyle) { // not for importing	
 		time_t file_date = GetLastModificationTime(m_fullname);
-		if (	(((time_t)date) < (time_t)(file_date - 10)) ||
-			(((time_t)date) > (time_t)(file_date + 10))) {
+		if (	(((time_t)m_date) < (time_t)(file_date - 10)) ||
+			(((time_t)m_date) > (time_t)(file_date + 10))) {
 			AddLogLineM(false, CFormat( _("Warning: %s might be corrupted (%i)") )
 				% m_fullname 
-				% (date - file_date) );
+				% (m_date - file_date) );
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			
@@ -1121,7 +1121,7 @@ void CPartFile::LoadSourceSeeds()
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
 {
-	date = result->date;
+	m_date = result->m_date;
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
