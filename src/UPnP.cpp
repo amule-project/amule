@@ -51,9 +51,9 @@
 	const char *libUPnP2Name = "libupnp.2.dylib";
 	const char *libUPNP3Name = "libupnp.3.dylib";
 #else // Linux and other compatible systems
-	const char *libIXMLName = "libixml.2.so";
-	const char *libUPnP2Name = "libupnp.2.so";
-	const char *libUPNP3Name = "libupnp.3.so";
+	const char *libIXMLName = "libixml.so.2";
+	const char *libUPnP2Name = "libupnp.so.2";
+	const char *libUPNP3Name = "libupnp.so.3";
 #endif
 
 
