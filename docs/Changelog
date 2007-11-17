@@ -5,6 +5,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 	Bas Zoetekouw:
 		* Patch for debian bug #350396: "amule depletes entropy pool".
 
+	brainnolo:
+		* Patch for loading the correct path for the UPnP libraries
+		  in Mac.
+
 	centaur:
 		* OpenBSD patch.
 

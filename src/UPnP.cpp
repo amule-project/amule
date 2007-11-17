@@ -45,18 +45,6 @@
 #endif
 
 
-// Dynamic libraries have different names in different systems
-#ifdef __DARWIN__
-	const char *libIXMLName = "libixml.2.dylib";
-	const char *libUPnP2Name = "libupnp.2.dylib";
-	const char *libUPNP3Name = "libupnp.3.dylib";
-#else // Linux and other compatible systems
-	const char *libIXMLName = "libixml.so.2";
-	const char *libUPnP2Name = "libupnp.so.2";
-	const char *libUPNP3Name = "libupnp.so.3";
-#endif
-
-
 /**
  * Case insensitive std::string comparison
  */
@@ -183,12 +171,48 @@ const char *CUPnPLib::s_LibUPnPSymbols[] =
 };
 
 
+#ifdef __DARWIN__
+	#include <CoreFoundation/CoreFoundation.h>
+	#include <sys/param.h>
+
+	// Dynamic libraries have different names in different systems
+	const char *libIXMLName = "libixml.2.dylib";
+	const char *libUPnP2Name = "libupnp.2.dylib";
+	const char *libUPNP3Name = "libupnp.3.dylib";
+#else // Linux and other compatible systems
+	const char *libIXMLName = "libixml.so.2";
+	const char *libUPnP2Name = "libupnp.so.2";
+	const char *libUPNP3Name = "libupnp.so.3";
+#endif
+
+
+const std::string CUPnPLib::addLibrayPath(const char *name)
+{
+#ifdef __DARWIN__
+	CFBundleRef bundle = CFBundleGetMainBundle();
+	CFURLRef frameworkURL = CFBundleCopyPrivateFrameworksURL(bundle);
+	CFStringRef libName = CFSTR(name);
+	CFURLRef libURL = CFURLCreateCopyAppendingPathComponent(
+		NULL, frameworkURL, libName, false);
+	char result[MAXPATHLEN];
+	CFURLGetFileSystemRepresentation(
+		libURL, true, (UInt8 *)result, (CFIndex)MAXPATHLEN);
+	CFRelease(libURL);
+	CFRelease(frameworkURL);
+
+	return static_cast<std::string>(result);
+#else // Linux and other compatible systems
+	return static_cast<std::string>(name);
+#endif
+}
+
+
 CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
 m_ctrlPoint(ctrlPoint),
-m_LibIXMLHandle(libIXMLName),
-m_LibUPnPHandle2(libUPnP2Name),
-m_LibUPnPHandle3(libUPNP3Name),
+m_LibIXMLHandle(addLibrayPath(libIXMLName).c_str()),
+m_LibUPnPHandle2(addLibrayPath(libUPnP2Name).c_str()),
+m_LibUPnPHandle3(addLibrayPath(libUPNP3Name).c_str()),
 m_LibUPnPHandle(NULL)
 {
 	// There are two versions of libUPnP in the market,
