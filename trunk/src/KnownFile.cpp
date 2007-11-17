@@ -284,13 +284,13 @@ CKnownFile::CKnownFile(const CSearchFile &searchFile)
 // This will copy the file hash
 CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
 {
+	Init();
+	
 	// Use CKnownFile::SetFileName()
 	SetFileName(searchFile.GetFileName());
 
 	// Use CKnownFile::SetFileSize()
 	SetFileSize(searchFile.GetFileSize());
-	
-	Init();
 	
 	m_bAutoUpPriority = thePrefs::GetNewAutoUp();
 	m_iUpPriority = ( m_bAutoUpPriority ) ? PR_HIGH : PR_NORMAL;
