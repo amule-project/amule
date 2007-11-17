@@ -46,7 +46,8 @@ BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 
 	EVT_MENU( MP_GETED2KLINK,     CSearchListCtrl::OnPopupGetUrl)
 	EVT_MENU( MP_RAZORSTATS,      CSearchListCtrl::OnRazorStatsCheck)
-	EVT_MENU( MP_SEARCHRELATED,      CSearchListCtrl::OnRelatedSearch)	
+	EVT_MENU( MP_SEARCHRELATED,   CSearchListCtrl::OnRelatedSearch)	
+	EVT_MENU( MP_MARK_AS_KNOWN,   CSearchListCtrl::OnMarkAsKnown)
 	EVT_MENU( MP_RESUME,          CSearchListCtrl::OnPopupDownload)
 	EVT_MENU_RANGE( MP_ASSIGNCAT, MP_ASSIGNCAT + 99, CSearchListCtrl::OnPopupDownload )
 
@@ -66,11 +67,19 @@ enum SearchListColumns {
 };
 
 
-CSearchListCtrl::CSearchListCtrl( wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name )
-	: CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name),
-	  m_filterKnown(false),
-	  m_invert(false),
-	  m_filterEnabled(false)
+CSearchListCtrl::CSearchListCtrl(
+	wxWindow *parent,
+	wxWindowID winid,
+	const wxPoint &pos,
+	const wxSize &size,
+	long style,
+	const wxValidator &validator,
+	const wxString &name)
+:
+CMuleListCtrl(parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name),
+m_filterKnown(false),
+m_invert(false),
+m_filterEnabled(false)
 {
 	// Setting the sorter function.
 	SetSortFunc( SortProc );
@@ -247,7 +256,6 @@ void CSearchListCtrl::UpdateItemColor( long index )
 		wxColour newcol = SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT);
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
-
 		CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(file->GetFileHash());
 		if ( !sameFile ) {
 			sameFile = theApp->knownfiles->FindKnownFileByID(file->GetFileHash());
@@ -287,15 +295,33 @@ void CSearchListCtrl::UpdateItemColor( long index )
 }
 
 
+// Update the colors of all assosiated items, which means parents and/or siblings.
+void CSearchListCtrl::UpdateAllRelativesColor(
+	CSearchFile *file,
+	long index)
+{
+	if ((file->ShowChildren() && file->HasChildren()) ||
+	    file->GetParent()) {
+		CSearchFile *parent = file->GetParent() ?
+			file->GetParent() : file;
+		const CSearchResultList &list = parent->GetChildren();
+		for (size_t j = 0; j < list.size(); ++j) {
+			UpdateItemColor(FindItem(-1, (long)list.at(j)));
+		}
+		UpdateItemColor(FindItem(-1, (long)parent));
+	} else {		
+		UpdateItemColor(index);
+	}
+}
+
+
 void CSearchListCtrl::ShowResults( long ResultsID )
 {
 	DeleteAllItems();
 	m_nResultsID = ResultsID;
-
 	if (ResultsID) {
 		const CSearchResultList& list = theApp->searchlist->GetSearchResults(ResultsID);
-
-		for ( unsigned int i = 0; i < list.size(); i++ ) {
+		for (unsigned int i = 0; i < list.size(); ++i) {
 			AddResult( list[i] );
 		}
 	}
@@ -541,6 +567,13 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_SEARCHRELATED, _("Search related files (ED2k, local server)"));
 		menu.AppendSeparator();
 
+#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! \
+You are on your own here, this might break "known.met"
+#if 0
+		menu.Append(MP_MARK_AS_KNOWN, _("Mark as known file"));
+		menu.AppendSeparator();
+#endif
+
 		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
 
 		// These should only be enabled for single-selections
@@ -601,6 +634,7 @@ void CSearchListCtrl::OnRazorStatsCheck( wxCommandEvent& WXUNUSED(event) )
 	theApp->amuledlg->LaunchUrl(wxT("http://stats.razorback2.com/ed2khistory?ed2k=") + file->GetFileHash().Encode());
 }
 
+
 void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 {
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -611,8 +645,25 @@ void CSearchListCtrl::OnRelatedSearch( wxCommandEvent& WXUNUSED(event) )
 	CSearchFile* file = (CSearchFile*)GetItemData( item );
 	theApp->searchlist->StopGlobalSearch();
 	theApp->amuledlg->m_searchwnd->ResetControls();
-	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->SetValue(wxT("related::")+file->GetFileHash().Encode());
+	CastByID( IDC_SEARCHNAME, theApp->amuledlg->m_searchwnd, wxTextCtrl )->
+		SetValue(wxT("related::") + file->GetFileHash().Encode());
 	theApp->amuledlg->m_searchwnd->StartNewSearch();
+}
+
+
+void CSearchListCtrl::OnMarkAsKnown( wxCommandEvent& WXUNUSED(event) )
+{
+	int index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+	if (index == -1) {
+		return;
+	}
+
+#ifndef CLIENT_GUI	
+	CSearchFile *searchFile = (CSearchFile *)GetItemData(index);
+	CKnownFile *knownFile(new CKnownFile(*searchFile));
+	theApp->knownfiles->SafeAddKFile(knownFile);
+	UpdateAllRelativesColor(searchFile, index);
+#endif
 }
 
 
@@ -668,23 +719,8 @@ void CSearchListCtrl::DownloadSelected(int category)
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index > -1) {
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
-		
 		CoreNotify_Search_Add_Download(file, category);
-		
-		// Update the colors of all assosiated items, which means parents and/or siblings.
-		if ((file->ShowChildren() and file->HasChildren()) or file->GetParent()) {
-			CSearchFile* parent = (file->GetParent() ? file->GetParent() : file);
-		
-			const CSearchResultList& list = parent->GetChildren();
-			for (size_t j = 0; j < list.size(); ++j) {
-				UpdateItemColor(FindItem(-1, (long)list.at(j)));
-			}
-
-			UpdateItemColor(FindItem(-1, (long)parent));
-		} else {		
-			UpdateItemColor(index);
-		}
-		
+		UpdateAllRelativesColor(file, index);
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 }
