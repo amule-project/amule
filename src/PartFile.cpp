@@ -2549,9 +2549,10 @@ bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
 {
 	wxLongLong free = 0;
 	if ( !wxGetDiskSpace( GetFilePath(), NULL, &free ) ) {
-		return true;
+		// If wxGetDiskSpace() fails, then the path probably does not exist.
+		return false;
 	}
-
+	
 	// The very least acceptable diskspace is a single PART
 	if ( free < PARTSIZE ) {
 		// Always fail in this case, since we risk losing data if we try to
