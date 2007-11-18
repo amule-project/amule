@@ -8,6 +8,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 	brainnolo:
 		* Patch for loading the correct path for the UPnP libraries
 		  in Mac.
+		* Added the binaries for libUPnP for Mac to the directory
+		  aMule.app/Contents/Frameworks.
 
 	centaur:
 		* OpenBSD patch.
