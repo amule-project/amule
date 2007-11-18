@@ -453,8 +453,8 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 				throw wxString(wxT("Invalid Kad tag type on packet"));
 		}
 	} catch (...) {
-		printf("Invalid Kad tag; type=0x%02x name=0x%02x\n",
-			type, ((const char *)unicode2char(name))[0]);
+		printf("Invalid Kad tag; type=0x%02x name=%s\n",
+			type, (const char *)unicode2char(name));
 		delete retVal;
 		throw;
 	}
