@@ -191,12 +191,13 @@ const std::string CUPnPLib::addLibrayPath(const char *name)
 #ifdef __DARWIN__
 	CFBundleRef bundle = CFBundleGetMainBundle();
 	CFURLRef frameworkURL = CFBundleCopyPrivateFrameworksURL(bundle);
-	CFStringRef libName = CFSTR(name);
+	CFStringRef libName = CFStringCreateWithCString(NULL, name, kCFStringEncodingUTF8);
 	CFURLRef libURL = CFURLCreateCopyAppendingPathComponent(
 		NULL, frameworkURL, libName, false);
 	char result[MAXPATHLEN];
 	CFURLGetFileSystemRepresentation(
 		libURL, true, (UInt8 *)result, (CFIndex)MAXPATHLEN);
+	CFRelease(libName);
 	CFRelease(libURL);
 	CFRelease(frameworkURL);
 
