@@ -1783,7 +1783,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 
     wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("2"), wxDefaultPosition, wxSize(100,-1), 0, 1, 30, 2 );
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("4"), wxDefaultPosition, wxSize(100,-1), 0, 1, 100, 4 );
     item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item18 = new wxStaticText( parent, ID_TEXT, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
