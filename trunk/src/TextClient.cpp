@@ -149,7 +149,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 	CECPacket *request = 0;
 	std::list<CECPacket *> request_list;
 	int tmp_int = 0;
-	EC_SEARCH_TYPE search_type;
+	EC_SEARCH_TYPE search_type = EC_SEARCH_KAD;
 
 	// Implementation of the deprecated command 'SetIPFilter'.
 	if (CmdId == CMD_ID_SET_IPFILTER) {

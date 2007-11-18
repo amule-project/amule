@@ -169,6 +169,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* set the search string to the search text of currently
 		  selected tab.
 
+	mr_hyde:
+		* Patch to enable Kad search with amulecmd
+
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may
 		  affect only the debugging.
