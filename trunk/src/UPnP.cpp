@@ -1090,12 +1090,12 @@ m_WanService(NULL)
 	// Wait for the UPnP initialization to complete.
 	{
 		// Lock the search timeout mutex
-		m_WaitForSearchTimeout.Lock();
+		m_WaitForSearchTimeoutMutex.Lock();
 
 		// Lock it again, so that we block. Unlocking will only happen
 		// when the UPNP_DISCOVERY_SEARCH_TIMEOUT event occurs at the
 		// callback.
-		wxMutexLocker lock(m_WaitForSearchTimeout);
+		CUPnPMutexLocker lock(m_WaitForSearchTimeoutMutex);
 	}
 	return;
 
@@ -1433,7 +1433,7 @@ upnpDiscovery:
 		AddDebugLogLineM(false, logUPnP, msg);
 		
 		// Unlock the search timeout mutex
-		upnpCP->m_WaitForSearchTimeout.Unlock();
+		upnpCP->m_WaitForSearchTimeoutMutex.Unlock();
 		
 		break;
 	}
@@ -1659,7 +1659,7 @@ void CUPnPControlPoint::AddRootDevice(
 	const char *location, int expires)
 {
 	// Lock the Root Device List
-	wxMutexLocker lock(m_RootDeviceListMutex);
+	CUPnPMutexLocker lock(m_RootDeviceListMutex);
 	
 	// Root node's URLBase
 	std::string OriginalURLBase(urlBase);
@@ -1689,7 +1689,7 @@ void CUPnPControlPoint::AddRootDevice(
 void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 {
 	// Lock the Root Device List
-	wxMutexLocker lock(m_RootDeviceListMutex);
+	CUPnPMutexLocker lock(m_RootDeviceListMutex);
 
 	// Remove
 	std::string UDN(udn);
