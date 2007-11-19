@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-17 03:30+0100\n"
+"POT-Creation-Date: 2007-11-19 03:30+0100\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -54,34 +54,34 @@ msgstr "Vellukka! Kopling til aMule er oppretta "
 msgid "Succeeded! Connection established."
 msgstr "Vellukka! Kopling oppretta."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3786
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3787
 msgid "Hashing"
 msgstr "Hashar"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3790
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3791
 msgid "Completing"
 msgstr "Ferdigstiller"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3793
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3794
 msgid "Complete"
 msgstr "Ferdig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3796
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3797
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3799
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3800
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Feilaktig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3806
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3807
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Lastar ned"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3808
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3809
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Ventar"
@@ -145,7 +145,7 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:851
+#: src/PartFile.cpp:2601 src/PartFile.cpp:2607 src/KnownFile.cpp:851
 #: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -3234,38 +3234,38 @@ msgstr ""
 "Feil: Ikkje i stand til å hashe nedlasta del - hashsett ikkje fullstendig (%"
 "s). Dette burde aldri skje"
 
-#: src/PartFile.cpp:3050
+#: src/PartFile.cpp:3051
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "ÅTVARING: Ikkje nok ledig diskplass! Set fila %s på pause"
 
-#: src/PartFile.cpp:3115
+#: src/PartFile.cpp:3116
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Nedlasta del %i er korrupt i fila: %s"
 
-#: src/PartFile.cpp:3158
+#: src/PartFile.cpp:3159
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Attskapte korrupt del %i·for·%s·->·Lagra bytes:·%s"
 
-#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3585
+#: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3585
 msgid "Comments"
 msgstr "Kommentarar"
 
-#: src/PartFile.cpp:3706
+#: src/PartFile.cpp:3707
 msgid "doesn't work"
 msgstr "fungerer ikkje"
 
-#: src/PartFile.cpp:3708
+#: src/PartFile.cpp:3709
 msgid "remote gui"
 msgstr "fjern drakt"
 
-#: src/PartFile.cpp:3802
+#: src/PartFile.cpp:3803
 msgid "Insufficient Diskspace"
 msgstr "Ikkje nok diskplass"
 
-#: src/PartFile.cpp:3813 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+#: src/PartFile.cpp:3814 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Stogga"
 

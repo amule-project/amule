@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-17 03:30+0100\n"
+"POT-Creation-Date: 2007-11-19 03:30+0100\n"
 "PO-Revision-Date: 2007-11-04 13:56+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -52,34 +52,34 @@ msgstr "成功！連接成功建立"
 msgid "Succeeded! Connection established."
 msgstr "已成功連接。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3786
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3787
 msgid "Hashing"
 msgstr "正在生成檢驗碼"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3790
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3791
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3793
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3794
 msgid "Complete"
 msgstr "完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3796
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3797
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "已暫停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3799
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3800
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "已出錯"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3806
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3807
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "正在下載"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3808
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3809
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "等待中"
@@ -143,7 +143,7 @@ msgstr "無法獲取用戶 '%s' 的共享文件"
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2600 src/PartFile.cpp:2606 src/KnownFile.cpp:851
+#: src/PartFile.cpp:2601 src/PartFile.cpp:2607 src/KnownFile.cpp:851
 #: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -3213,38 +3213,38 @@ msgid ""
 "never happen"
 msgstr "警告: 無法生成檢驗碼 - 檢驗碼殘缺 (%s). 正常情況下這是不應該發生的"
 
-#: src/PartFile.cpp:3050
+#: src/PartFile.cpp:3051
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盤空間不足！暫停文件：%s"
 
-#: src/PartFile.cpp:3115
+#: src/PartFile.cpp:3116
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下載的數據段 %i 已損壞 文件： (%s)"
 
-#: src/PartFile.cpp:3158
+#: src/PartFile.cpp:3159
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修複了損壞的數據段 %i (%s) -> 挽救數據(字節): %s"
 
-#: src/PartFile.cpp:3705 src/muuli_wdr.cpp:3585
+#: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3585
 msgid "Comments"
 msgstr "備注"
 
-#: src/PartFile.cpp:3706
+#: src/PartFile.cpp:3707
 msgid "doesn't work"
 msgstr "沒有工作"
 
-#: src/PartFile.cpp:3708
+#: src/PartFile.cpp:3709
 msgid "remote gui"
 msgstr "遠程GUI"
 
-#: src/PartFile.cpp:3802
+#: src/PartFile.cpp:3803
 msgid "Insufficient Diskspace"
 msgstr "硬盤空間不足"
 
-#: src/PartFile.cpp:3813 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+#: src/PartFile.cpp:3814 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "已停止"
 
