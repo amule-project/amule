@@ -637,11 +637,11 @@ private:
 	RootDeviceMap m_RootDeviceMap;
 	ServiceMap m_ServiceMap;
 	PortMappingMap m_ActivePortMappingsMap;
-	wxMutex m_RootDeviceListMutex;
+	CUPnPMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
 #warning This variable is for testing purposes only and should disappear on release.
 	CUPnPService *m_WanService;
-	wxMutex m_WaitForSearchTimeout;
+	CUPnPMutex m_WaitForSearchTimeoutMutex;
 
 public:
 	CUPnPControlPoint(unsigned short udpPort);
