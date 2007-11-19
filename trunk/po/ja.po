@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-18 11:00+0100\n"
+"POT-Creation-Date: 2007-11-19 03:30+0100\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -42,7 +42,8 @@ msgstr "ExternalConn: アクセスは拒否されました"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:206
 msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
+msgstr ""
+"ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:210
 msgid "Succeeded! Connection established to aMule "
