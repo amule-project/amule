@@ -25,7 +25,7 @@
 
 echo ""
 echo -n "Step 1: Cleaning bundle... "
-rm aMule.app/Contents/Frameworks/* aMule.app/Contents/MacOS/* 1> /dev/null 2> /dev/null
+rm aMule.app/Contents/Frameworks/libwx_* aMule.app/Contents/MacOS/* 1> /dev/null 2> /dev/null
 rm -r aMule.app/Contents/Resources/webserver 1> /dev/null 2> /dev/null
 rm -r aMule.app/Contents/SharedSupport 1> /dev/null 2> /dev/null
 echo "Done"
