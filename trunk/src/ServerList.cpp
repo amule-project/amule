@@ -794,15 +794,18 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 
 void CServerList::DownloadFinished(uint32 result) 
 {
-	if(result==1) {
+	if(result == 1) {
 		wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
 		// curl succeeded. proceed with server.met loading
 		LoadServerMet(strTempFilename);
 		SaveServerMet();
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
+		AddLogLineM(true, CFormat(
+			_("Finished to download the server list from %s")) % URLUpdate);
 	} else {
-		AddLogLineM(true, CFormat( _("Failed to download the server list from %s") ) % URLUpdate);
+		AddLogLineM(true, CFormat(
+			_("Failed to download the server list from %s")) % URLUpdate);
 	}
 }
 
