@@ -833,20 +833,19 @@ public:
 CPreferences::CPreferences()
 {
 	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
-
 	CreateUserHash();
 
 	// load preferences.dat or set standart values
 	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
-
 	CFile preffile;
-	if ( wxFileExists( fullpath ) ) {
-		if ( preffile.Open(fullpath, CFile::read) ) {
+	if (wxFileExists(fullpath)) {
+		if (preffile.Open(fullpath, CFile::read)) {
 			try {
 				preffile.ReadUInt8(); // Version. Value is not used.
 				s_userhash = preffile.ReadHash();
 			} catch (const CSafeIOException& e) {
-				AddDebugLogLineM(true, logGeneral, wxT("Error while reading userhash: ") + e.what());
+				AddDebugLogLineM(true, logGeneral,
+					wxT("Error while reading userhash: ") + e.what());
 				SetStandartValues();
 			}
 		} else {
@@ -858,27 +857,25 @@ CPreferences::CPreferences()
 	
 #ifndef CLIENT_GUI
 	LoadPreferences();
-
-
-	 ReloadSharedFolders();
-
+	ReloadSharedFolders();
 	// serverlist adresses
 	wxTextFile slistfile(theApp->ConfigDir + wxT("addresses.dat"));
-	if ( slistfile.Exists() && slistfile.Open()) {
-		for ( size_t i = 0; i < slistfile.GetLineCount(); i++ ) {
-    		adresses_list.Add( slistfile.GetLine( i ) );
+	if (slistfile.Exists() && slistfile.Open()) {
+		for (size_t i = 0; i < slistfile.GetLineCount(); ++i) {
+			wxString line = slistfile.GetLine(i);
+			adresses_list.Add(line);
+			AddDebugLogLineM(false, logGeneral,
+				wxT("addresses.dat: Adding '") + line + wxT("'"));
+
 		}
-		
 		slistfile.Close();
 	}
 
 	s_userhash[5] = 14;
 	s_userhash[14] = 111;
-
 	if (s_userhash.IsEmpty()) {
 		CreateUserHash();
 	}
-	
 #endif
 }
 
