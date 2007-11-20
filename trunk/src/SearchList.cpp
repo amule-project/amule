@@ -686,13 +686,14 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	_astrParserErrors.Empty();	
 	_SearchExpr.m_aExpr.Empty();
 	
-    LexInit(params.searchString);
-    int iParseResult = yyparse();
-    LexFree();
+	LexInit(params.searchString);
+	int iParseResult = yyparse();
+	LexFree();
 	
-	#ifdef __DEBUG__
-	printf("Search parsing resultfor \"%s\": %i\n",(const char*)unicode2UTF8(params.searchString),iParseResult);
-	#endif
+#ifdef __DEBUG__
+	printf("Search parsing result for \"%s\": %i\n",
+		(const char*)unicode2UTF8(params.searchString),iParseResult);
+#endif
 	if (_astrParserErrors.Count() > 0) {
 		for (unsigned int i=0; i < _astrParserErrors.Count(); ++i) {
 			printf("Error %u: %s\n",i,(const char*)unicode2UTF8(_astrParserErrors[i]));
@@ -987,7 +988,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 
 
 void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
-										const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
+	const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
 {
 	EUtf8Str eStrEncode = utf8strRaw;
 
