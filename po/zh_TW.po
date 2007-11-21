@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-21 03:30+0100\n"
-"PO-Revision-Date: 2007-11-04 13:56+0800\n"
+"PO-Revision-Date: 2007-11-21 20:45+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -2853,7 +2853,7 @@ msgstr "搜索相關文件（ED2K，本地服務器）"
 
 #: src/SearchListCtrl.cpp:573
 msgid "Mark as known file"
-msgstr ""
+msgstr "標記為已知文件"
 
 #: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
@@ -6706,7 +6706,7 @@ msgstr "無法存檔 server.met"
 #: src/ServerList.cpp:805
 #, c-format
 msgid "Finished to download the server list from %s"
-msgstr ""
+msgstr "從%s下載服務器列表完成"
 
 #: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
@@ -6724,7 +6724,7 @@ msgstr ""
 #: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
-msgstr ""
+msgstr "正在開始從%s下載服務器列表"
 
 #: src/ServerList.cpp:842
 #, c-format
