@@ -156,20 +156,20 @@ msgstr "不明です"
 #: src/BaseClient.cpp:1649
 #, c-format
 msgid " (Fake eMule version %#x)"
-msgstr "(偽のeMuleバージョン %#x)"
+msgstr "（偽のeMuleバージョン %#x）"
 
 #: src/BaseClient.cpp:1660
 msgid " (Fake eMule)"
-msgstr "(偽のeMule)"
+msgstr "（偽のeMule）"
 
 #: src/BaseClient.cpp:1662
 msgid "xMule (Fake eMule)"
-msgstr "xMule (偽のeMule)"
+msgstr "xMule（偽のeMule）"
 
 #: src/BaseClient.cpp:1701
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
-msgstr "1.x (eMule v0.%u に基づいています)"
+msgstr "1.x（eMule v0.%u に基づいています）"
 
 #: src/BaseClient.cpp:1871
 #, c-format
@@ -185,12 +185,14 @@ msgstr "要求："
 msgid ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
+"当セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
 msgid ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
+"全セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
 
 #: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
@@ -256,6 +258,7 @@ msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
 msgstr ""
+"スロットが一つのみ提供されました。"
 
 #: src/FriendListCtrl.cpp:353
 msgid "Multiple selection"
@@ -369,43 +372,43 @@ msgstr "改名する"
 
 #: src/SharedFilesCtrl.cpp:158
 msgid "Add files in collection to transfer list"
-msgstr ""
+msgstr "コレクションに存在するファイルを転送リストに追加する"
 
 #: src/SharedFilesCtrl.cpp:161
 msgid "Copy magnet &URI to clipboard"
-msgstr ""
+msgstr "マグネット &URI をクリップボードにコピーする"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:933
 msgid "Copy ED2k &link to clipboard"
-msgstr ""
+msgstr "ED2K &link をクリップボードにコピーする"
 
 #: src/SharedFilesCtrl.cpp:163
 msgid "Copy ED2k link to clipboard (&Source)"
-msgstr ""
+msgstr "ED2kリンクをクリップボードにコピーする（&Source）"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
+msgstr "ED2kリンクをクリップボードにコピーする（Source）（&With クリプトオプション）"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr ""
+msgstr "ED2kリンクをクリップボードにコピーする（&Hostname）"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
+msgstr "ED2kリンクをクリップボードにコピーする（Hostname）（With &Crypt オプション）"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr ""
+msgstr "ED2kリンクをクリップボードにコピーする（&AICH インフォ）"
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:935
 msgid "Copy feedback to clipboard"
-msgstr ""
+msgstr "フィードバックをクリップボードにコピーする"
 
 #: src/SharedFilesCtrl.cpp:298
 msgid "You need a HighID to create a valid sourcelink"
-msgstr ""
+msgstr "有効なソースリンク作るにはHighIDが必要です"
 
 #: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:681
@@ -415,7 +418,7 @@ msgstr "注意"
 #: src/SharedFilesCtrl.cpp:443
 #, c-format
 msgid "Shared Files (%i)"
-msgstr "共有ファイル (%i)"
+msgstr "共有ファイル（%i）"
 
 #: src/SharedFilesCtrl.cpp:601
 msgid "[PartFile]"
@@ -432,205 +435,205 @@ msgstr "ファイルの改名"
 #: src/UploadQueue.cpp:512
 #, c-format
 msgid "Resuming uploads of file: %s"
-msgstr ""
+msgstr "ファイル %s のアップロードを再開します"
 
 #: src/UploadQueue.cpp:521
 #, c-format
 msgid "Suspending upload of file: %s"
-msgstr ""
+msgstr "ファイル %s のアップロードを一時停止します"
 
 #: src/kademlia/kademlia/SearchManager.cpp:139
 msgid "Kademlia: search keyword too short"
-msgstr ""
+msgstr "Kademlia: 検索キーワードが短過ぎます"
 
 #: src/kademlia/routing/RoutingZone.cpp:150
 #, c-format
 msgid "Read %u Kad contacts"
-msgstr ""
+msgstr "%u Kadコンタクトを読みました"
 
 #: src/kademlia/routing/RoutingZone.cpp:153
 msgid "Error while reading Kad contacts - 0 entries"
-msgstr ""
+msgstr "Kadコンタクトを読む途中にエラーが発生しました - 0 エントリー"
 
 #: src/kademlia/routing/RoutingZone.cpp:366
 msgid "Merge attempt"
-msgstr ""
+msgstr "マージ試み"
 
 #: src/kademlia/routing/RoutingZone.cpp:369
 msgid "Recursive merge"
-msgstr ""
+msgstr "再帰的マージ"
 
 #: src/kademlia/routing/RoutingZone.cpp:408
 msgid "Sucessful merge!"
-msgstr ""
+msgstr "マージ成功！"
 
 #: src/kademlia/routing/RoutingZone.cpp:414
 msgid "No merge possible"
-msgstr ""
+msgstr "マージ不嘉納です"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
-msgstr ""
+msgstr "エラー：TCPポートを聞くことが出来ませんでした。"
 
 #: src/webserver/src/WebServer.cpp:320
 #, c-format
 msgid "Request failed with the following error: %s."
-msgstr ""
+msgstr "次のエラーで要求が失敗しました： %s。"
 
 #: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:600
 msgid "Request failed with an unknown error."
-msgstr ""
+msgstr "要求が不明なエラーで失敗しました。"
 
 #: src/webserver/src/WebServer.cpp:1683
 msgid "Index file not found: "
-msgstr ""
+msgstr "インデックスファイルが見付かりませんでした： "
 
 #: src/webserver/src/WebServer.cpp:1703
 msgid "Can't create web socket thread\n"
-msgstr ""
+msgstr "ウェッブソッケトスレッドを作ることが出来ません\n"
 
 #: src/webserver/src/WebServer.cpp:1708
 msgid "Web Server: Started\n"
-msgstr ""
+msgstr "ウェッブサーバ： 始動しました\n"
 
 #: src/webserver/src/WebServer.cpp:1786
 msgid "Session expired - requesting login\n"
-msgstr ""
+msgstr "セッション有効期限が切れ間した - ログインを要求しています\n"
 
 #: src/webserver/src/WebServer.cpp:1791
 msgid "Session ok, logged in\n"
-msgstr ""
+msgstr "セッションOK、ログインしています\n"
 
 #: src/webserver/src/WebServer.cpp:1793
 msgid "Session ok, not logged in\n"
-msgstr ""
+msgstr "セッションOK、ログインしていません\n"
 
 #: src/webserver/src/WebServer.cpp:1798
 msgid "No session opened - will request login\n"
-msgstr ""
+msgstr "セッションが開いていません - ログインを要求します\n"
 
 #: src/webserver/src/WebServer.cpp:1807
 msgid "Session created - requesting login\n"
-msgstr ""
+msgstr "セッションを作成しました - ログインを要求しています\n"
 
 #: src/webserver/src/WebServer.cpp:1824
 msgid "Processing request [original]: "
-msgstr ""
+msgstr "要求を処理中です [original]: "
 
 #: src/webserver/src/WebServer.cpp:1840
 msgid "Checking password\n"
-msgstr ""
+msgstr "パスワードをチェック中です\n"
 
 #: src/webserver/src/WebServer.cpp:1845
 msgid "Password hash invalid\n"
-msgstr ""
+msgstr "パスワードのハッシュが無効です\n"
 
 #: src/webserver/src/WebServer.cpp:1860
 msgid "Password ok\n"
-msgstr ""
+msgstr "パスワードOKです\n"
 
 #: src/webserver/src/WebServer.cpp:1862
 msgid "Password bad\n"
-msgstr ""
+msgstr "パスワードが不利です\n"
 
 #: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
-msgstr ""
+msgstr "パスワードを入力しませんでした。空欄のパスワードは許可されていません。\n"
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
-msgstr ""
+msgstr "ログアウトが要求されました\n"
 
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
-msgstr ""
+msgstr "要求を処理中です [変更しました]： "
 
 #: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
 #, c-format
 msgid "%d"
-msgstr ""
+msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
-msgstr ""
+msgstr "テンプレート <str> をロードします"
 
 #: src/webserver/src/WebInterface.cpp:186
 msgid "Webserver HTTP port"
-msgstr ""
+msgstr "ウェッブサーバのHTTPポート"
 
 #: src/webserver/src/WebInterface.cpp:190
 msgid "Use UPnP port forwarding on webserver port"
-msgstr ""
+msgstr "ウェッブサーバポートでUPnPポート転送を使用してください"
 
 #: src/webserver/src/WebInterface.cpp:194
 msgid "UPnP port"
-msgstr ""
+msgstr "UPnPポート"
 
 #: src/webserver/src/WebInterface.cpp:198
 msgid "Use gzip compression"
-msgstr ""
+msgstr "gzipコンプレションを使用してください"
 
 #: src/webserver/src/WebInterface.cpp:206
 msgid "Full access password for webserver"
-msgstr ""
+msgstr "ウェッブサーバのフルアクセスパスワード"
 
 #: src/webserver/src/WebInterface.cpp:210
 msgid "Guest password for webserver"
-msgstr ""
+msgstr "ウェッブサーバのゲストパスワード"
 
 #: src/webserver/src/WebInterface.cpp:214
 msgid "Allow guest access"
-msgstr ""
+msgstr "ゲストアクセスを許可する"
 
 #: src/webserver/src/WebInterface.cpp:218
 msgid "Deny guest access"
-msgstr ""
+msgstr "ゲストアクセスを拒否する"
 
 #: src/webserver/src/WebInterface.cpp:222
 msgid "Load/save webserver settings from/to remote aMule"
-msgstr ""
+msgstr "リモートaMuleへ／からのウェッブサーバ設定をロード／セーブする"
 
 #: src/webserver/src/WebInterface.cpp:226
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
-msgstr ""
+msgstr "aMuleの設定ファイルパス。注意：直接使用しないでください！"
 
 #: src/webserver/src/WebInterface.cpp:234
 msgid "Disable PHP interpreter (deprecated)"
-msgstr ""
+msgstr "PHPインタープレタを無効にする（廃止予定）"
 
 #: src/webserver/src/WebInterface.cpp:242
 msgid "Recompile PHP pages on each request"
-msgstr ""
+msgstr "各リクエストでPHPページを再コンパイルする"
 
 #: src/webserver/src/WebInterface.cpp:340
 msgid "aMule Web Server"
-msgstr ""
+msgstr "aMuleウェッブサーバ"
 
 #: src/StatTree.cpp:583 src/StatTree.cpp:598
 msgid "Not available"
-msgstr ""
+msgstr "利用不可能"
 
 #: src/StatTree.cpp:634 src/StatTree.cpp:648
 msgid "Never"
-msgstr ""
+msgstr "記憶ありません"
 
 #: src/HTTPDownload.cpp:60
 msgid "Downloading..."
-msgstr ""
+msgstr "ダウンロード中..."
 
 #: src/HTTPDownload.cpp:81
 #, c-format
 msgid "( %s / %s )"
-msgstr ""
+msgstr "（ %s / %s）"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1352
 #: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4015
 msgid "Preferences"
-msgstr ""
+msgstr "個人設定"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:60
 msgid "Directory containing amulesig.dat file"
-msgstr ""
+msgstr "amulesig.datファイルの入っているディレクトリー"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
@@ -638,172 +641,173 @@ msgstr ""
 #: src/muuli_wdr.cpp:2178 src/muuli_wdr.cpp:2189 src/muuli_wdr.cpp:2222
 #: src/muuli_wdr.cpp:2368 src/muuli_wdr.cpp:3521
 msgid "Browse"
-msgstr ""
+msgstr "ブラウズ"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:80
 msgid "Enter here the directory where your amulesig.dat file is"
-msgstr ""
+msgstr "amulesig.datファイルが入っているディレクトリーをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:99
 msgid "Refresh rate interval in seconds"
-msgstr ""
+msgstr "秒単位のリフレッシュレート間隔"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:115
 msgid "Generate a stat image at every refresh event"
-msgstr ""
+msgstr "各リフレッシュイベントで統計イメージを生成する"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr ""
+msgstr "統計イメージを生成したいディレクトリーをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
-msgstr ""
+msgstr "統計イメージを定期的にFTPサーバへアップロードする"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:174
 msgid "FTP Url"
-msgstr ""
+msgstr "FTPのUrl"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:178
 msgid "FTP Path"
-msgstr ""
+msgstr "FTPのパース"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:188
 msgid "Enter here the URL of your FTP server"
-msgstr ""
+msgstr "FTPサーバのURLをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr ""
+msgstr "統計イメージを置きたいFTPサーバのディレクトリーをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
-msgstr ""
+msgstr "ユーザ"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:210 src/muuli_wdr.cpp:2734
 #: src/muuli_wdr.cpp:3755
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:221
 msgid "Enter here the User name to log into your FTP server"
-msgstr ""
+msgstr "FTPサーバのログインに使うユーザ名をここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:233
 msgid "Enter here the User password to log into your FTP server"
-msgstr ""
+msgstr "FTPサーバのログインに使うパスワードをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:252
 msgid "FTP update rate interval in minutes"
-msgstr ""
+msgstr "分単位のFTPアップデートレート間隔"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:296
 msgid "Validate"
-msgstr ""
+msgstr "実証"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:330
 msgid "Folder containing your signature file"
-msgstr ""
+msgstr "署名ファイルが入ているフォルダ"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:344
 msgid "Folder where generating the statistic image"
-msgstr ""
+msgstr "統計イメージを生成するフォルダ"
 
 #: src/utils/wxCas/src/linuxmon.cpp:86
 #, c-format
 msgid "%i day(s) %i hour(s) %i min %i s"
-msgstr ""
+msgstr "%i 日 %i 時間 %i 分 %i 秒"
 
 #: src/utils/wxCas/src/wxcas.cpp:85
 msgid "wxCas, aMule Online Statistics"
-msgstr ""
+msgstr "wxCas、aMuleのオンライン統計"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:96
 #: src/utils/aLinkCreator/src/alcframe.cpp:84
 msgid "Welcome!"
-msgstr ""
+msgstr "ようこそ！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:116
 msgid "aMule"
-msgstr ""
+msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:120
 msgid "Maximum DL rate since wxCas is running"
-msgstr ""
+msgstr "wxCasの起動以来の最大DLレート"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:124
 msgid "Absolute Maximum DL rate during wxCas previous runs"
-msgstr ""
+msgstr "前のwxCas起動を含めて記憶した最大DLレート"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:138
 #: src/utils/wxCas/src/wxcasframe.cpp:142 src/muuli_wdr.cpp:2970
 #: src/muuli_wdr.cpp:3005
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:147
 msgid "System"
-msgstr ""
+msgstr "システム"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:211
 #: src/utils/wxCas/src/wxcasframe.cpp:340
 msgid "Stop Auto Refresh"
-msgstr ""
+msgstr "オートリフレッシュを中止する"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:216
 msgid "Save Online Statistics image"
-msgstr ""
+msgstr "オンライン統計イメージを保存する"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:219
 msgid "Print Online Statistics image"
-msgstr ""
+msgstr "オンライン統計イメージをプリントする"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:222
 msgid "Preferences setting"
-msgstr ""
+msgstr "個人設定"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:227
 #: src/utils/wxCas/src/wxcasframe.cpp:406
 msgid "About wxCas"
-msgstr ""
+msgstr "wxCasについて"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:331
 msgid "Start Auto Refresh"
-msgstr ""
+msgstr "オートリフレッシュを開始する"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:333
 msgid "Auto Refresh stopped"
-msgstr ""
+msgstr "オートリフレッシュを中止しました"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:342
 msgid "Auto Refresh started"
-msgstr ""
+msgstr "オートリフレッシュを開始しました"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:353
 msgid "Save Statistics Image"
-msgstr ""
+msgstr "統計イメージを保存する"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:367
 msgid "No handler for this file type."
-msgstr ""
+msgstr "このファイルタイプのハンドラがありません。"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:368
 msgid "File was not saved"
-msgstr ""
+msgstr "ファイルは保存されてませでした"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:379
 msgid "aMule Online Statistics"
-msgstr ""
+msgstr "aMuleのオンライン統計"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
 msgstr ""
+"現在選択されたプリンタの設定に異常がありませんか？"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
-msgstr ""
+msgstr "プリント中です"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:402
 msgid ""
@@ -815,16 +819,23 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"wxCas、aMuleのオンライン署名統計\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pedro de Oliveira <falso@rdk.homeip.net>のCASに基いています\n"
+"\n"
+"GPLの元で配布されます"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:573
 msgid "Oh Oh, aMule is not running..."
-msgstr ""
+msgstr "あら、aMuleは始動されていません..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:649
 #: src/utils/wxCas/src/wxcasframe.cpp:719
 #: src/utils/wxCas/src/wxcasframe.cpp:788
 msgid "aMule is running"
-msgstr ""
+msgstr "aMuleは始動されています"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:858
 msgid "aMule is running, but disconnected"
@@ -832,11 +843,11 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:929
 msgid "aMule is connecting..."
-msgstr ""
+msgstr "aMuleは接続中です..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:933
 msgid "Oh Oh, aMule status is unknown..."
-msgstr ""
+msgstr "あら、aMuleのステータスは不明です..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1004
 #: src/utils/wxCas/src/wxcasframe.cpp:1009
@@ -844,7 +855,7 @@ msgstr ""
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid "aMule "
-msgstr ""
+msgstr "aMule"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1006
 msgid " has been running for "
