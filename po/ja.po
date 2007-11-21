@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-21 03:30+0100\n"
+"POT-Creation-Date: 2007-11-18 11:00+0100\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -42,8 +42,7 @@ msgstr "ExternalConn: アクセスは拒否されました"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:206
 msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr ""
-"ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
+msgstr "ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:210
 msgid "Succeeded! Connection established to aMule "
@@ -106,37 +105,37 @@ msgstr "同期化スレドを始めました。"
 
 #: src/ThreadTasks.cpp:298
 msgid "Masterhashes of known files have been loaded."
-msgstr ""
+msgstr "既知のファイルのマースタハッシュはロードされました。"
 
 #: src/ThreadTasks.cpp:362
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr ""
+msgstr "'%s' の古いAICHハッシュセットを '%s' の64bに変換中です。"
 
 #: src/ThreadTasks.cpp:444
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr ""
+msgstr "注意：ファイルネーム '%s' は無効で、 '%s' に改名されました。"
 
 #: src/ThreadTasks.cpp:463
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr ""
+msgstr "注意：ファイル '%s' は既に存在していて、新しいファイルを '%s' に改名しました。"
 
 #: src/ThreadTasks.cpp:477
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr ""
+msgstr "注意：バックアップをしてからオリジナル '%s' を消すことが出来ませんでした"
 
 #: src/ThreadTasks.cpp:489
 #, c-format
 msgid "WARNING: Failed to delete %s"
-msgstr ""
+msgstr "注意： %s を消すことが出来ませんでした"
 
 #: src/BaseClient.cpp:1255
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
-msgstr ""
+msgstr "ユーザ '%s' から共有ファイルを回収出来ませんでした"
 
 #: src/BaseClient.cpp:1632 src/BaseClient.cpp:2150 src/BaseClient.cpp:2420
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
@@ -152,34 +151,34 @@ msgstr ""
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:121
 #: src/ClientDetailDialog.cpp:122 src/MuleTrayIcon.cpp:377
 msgid "Unknown"
-msgstr ""
+msgstr "不明です"
 
 #: src/BaseClient.cpp:1649
 #, c-format
 msgid " (Fake eMule version %#x)"
-msgstr ""
+msgstr "(偽のeMuleバージョン %#x)"
 
 #: src/BaseClient.cpp:1660
 msgid " (Fake eMule)"
-msgstr ""
+msgstr "(偽のeMule)"
 
 #: src/BaseClient.cpp:1662
 msgid "xMule (Fake eMule)"
-msgstr ""
+msgstr "xMule (偽のeMule)"
 
 #: src/BaseClient.cpp:1701
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
-msgstr ""
+msgstr "1.x (eMule v0.%u に基づいています)"
 
 #: src/BaseClient.cpp:1871
 #, c-format
 msgid "NickName: %s ID: %u"
-msgstr ""
+msgstr "NickName: %s ID: %u"
 
 #: src/BaseClient.cpp:1873
 msgid "Requested:"
-msgstr ""
+msgstr "要求："
 
 #: src/BaseClient.cpp:1874
 #, c-format
@@ -195,52 +194,52 @@ msgstr ""
 
 #: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
-msgstr ""
+msgstr "不明なファイルが要求されました"
 
 #: src/BaseClient.cpp:2149
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
-msgstr ""
+msgstr "クライアント %s がIP：ポート %s:%d にいて、  %s %s %s を使用しています"
 
 #: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:50
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
-msgstr ""
+msgstr "ユーザ名"
 
 #: src/FriendListCtrl.cpp:226 src/muuli_wdr.cpp:509 src/muuli_wdr.cpp:3391
 msgid "Friends"
-msgstr ""
+msgstr "友達"
 
 #: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1006
 #: src/ClientListCtrl.cpp:252
 msgid "Show &Details"
-msgstr ""
+msgstr "表示 &Details"
 
 #: src/FriendListCtrl.cpp:234
 msgid "Add a friend"
-msgstr ""
+msgstr "友達を追加する"
 
 #: src/FriendListCtrl.cpp:237
 msgid "Remove Friend"
-msgstr ""
+msgstr "友達を削除する"
 
 #: src/FriendListCtrl.cpp:238
 msgid "Send &Message"
-msgstr ""
+msgstr "送信 &Message"
 
 #: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1008
 #: src/ClientListCtrl.cpp:254
 msgid "View Files"
-msgstr ""
+msgstr "ファイルを見る"
 
 #: src/FriendListCtrl.cpp:240
 msgid "Establish Friend Slot"
-msgstr ""
+msgstr "友達スロットを設立する"
 
 #: src/FriendListCtrl.cpp:271
 msgid "Are you sure that you wish to delete the selected friend(s)?"
-msgstr ""
+msgstr "確認：選択された友達を削除しますか？"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
@@ -250,7 +249,7 @@ msgstr ""
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2808
 #: src/muuli_wdr.cpp:2910 src/muuli_wdr.cpp:3783
 msgid "Cancel"
-msgstr ""
+msgstr "カンセル"
 
 #: src/FriendListCtrl.cpp:353
 msgid ""
@@ -260,113 +259,113 @@ msgstr ""
 
 #: src/FriendListCtrl.cpp:353
 msgid "Multiple selection"
-msgstr ""
+msgstr "複数選択"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
-msgstr ""
+msgstr "ファイル名"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
 #: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:643
 msgid "Size"
-msgstr ""
+msgstr "サイズ"
 
 #: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:188
 msgid "Type"
-msgstr ""
+msgstr "タイプ"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:891
 msgid "Priority"
-msgstr ""
+msgstr "プライオリティー"
 
 #: src/SharedFilesCtrl.cpp:106 src/SearchListCtrl.cpp:91
 msgid "FileID"
-msgstr ""
+msgstr "ファイルID"
 
 #: src/SharedFilesCtrl.cpp:107
 msgid "Requests"
-msgstr ""
+msgstr "要求"
 
 #: src/SharedFilesCtrl.cpp:108
 msgid "Accepted Requests"
-msgstr ""
+msgstr "認められた要求"
 
 #: src/SharedFilesCtrl.cpp:109
 msgid "Transferred Data"
-msgstr ""
+msgstr "転送されたデータ"
 
 #: src/SharedFilesCtrl.cpp:110
 msgid "Share Ratio"
-msgstr ""
+msgstr "共有非"
 
 #: src/SharedFilesCtrl.cpp:111 src/ClientListCtrl.cpp:524
 #: src/ClientListCtrl.cpp:829
 msgid "Obtained Parts"
-msgstr ""
+msgstr "得られた部分"
 
 #: src/SharedFilesCtrl.cpp:112
 msgid "Complete Sources"
-msgstr ""
+msgstr "完成したソース"
 
 #: src/SharedFilesCtrl.cpp:113
 msgid "Directory Path"
-msgstr ""
+msgstr "ディレクトリパース"
 
 #: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1339 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4011
 msgid "Shared Files"
-msgstr ""
+msgstr "共有ファイル"
 
 #: src/SharedFilesCtrl.cpp:132 src/DataToText.cpp:41
 msgid "Very low"
-msgstr ""
+msgstr "非常に低い"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
 #: src/DownloadListCtrl.cpp:886 src/muuli_wdr.cpp:2872
 msgid "Low"
-msgstr ""
+msgstr "低い"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
 #: src/DownloadListCtrl.cpp:887 src/muuli_wdr.cpp:2873
 msgid "Normal"
-msgstr ""
+msgstr "普通"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:888 src/muuli_wdr.cpp:2874
 msgid "High"
-msgstr ""
+msgstr "高い"
 
 #: src/SharedFilesCtrl.cpp:136 src/DataToText.cpp:45
 msgid "Very High"
-msgstr ""
+msgstr "非常に高い"
 
 #: src/SharedFilesCtrl.cpp:137 src/DataToText.cpp:46
 msgid "Release"
-msgstr ""
+msgstr "離す"
 
 #: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:889
 #: src/muuli_wdr.cpp:2875
 msgid "Auto"
-msgstr ""
+msgstr "オート"
 
 #: src/SharedFilesCtrl.cpp:145
 msgid "Add Comment/Rating"
-msgstr ""
+msgstr "コメント・レーティングを追加する"
 
 #: src/SharedFilesCtrl.cpp:147
 msgid "Edit Comment/Rating"
-msgstr ""
+msgstr "コメント・レーティングを編集する"
 
 #: src/SharedFilesCtrl.cpp:151
 msgid "Rename"
-msgstr ""
+msgstr "改名する"
 
 #: src/SharedFilesCtrl.cpp:158
 msgid "Add files in collection to transfer list"
@@ -411,24 +410,24 @@ msgstr ""
 #: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:681
 msgid "Warning"
-msgstr ""
+msgstr "注意"
 
 #: src/SharedFilesCtrl.cpp:443
 #, c-format
 msgid "Shared Files (%i)"
-msgstr ""
+msgstr "共有ファイル (%i)"
 
 #: src/SharedFilesCtrl.cpp:601
 msgid "[PartFile]"
-msgstr ""
+msgstr "[部分ファイル]"
 
 #: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
-msgstr ""
+msgstr "このファイルの新しい名前を記入してください："
 
 #: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
-msgstr ""
+msgstr "ファイルの改名"
 
 #: src/UploadQueue.cpp:512
 #, c-format
@@ -1455,16 +1454,16 @@ msgstr ""
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1658
+#: src/Preferences.cpp:1661
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 
-#: src/Preferences.cpp:1659
+#: src/Preferences.cpp:1662
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr ""
@@ -6541,37 +6540,32 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr ""
 
-#: src/ServerList.cpp:805
-#, c-format
-msgid "Finished to download the server list from %s"
-msgstr ""
-
-#: src/ServerList.cpp:808 src/ServerList.cpp:862
+#: src/ServerList.cpp:805 src/ServerList.cpp:859
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:818
+#: src/ServerList.cpp:815
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
 msgstr ""
 
-#: src/ServerList.cpp:833
+#: src/ServerList.cpp:830
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:842
+#: src/ServerList.cpp:839
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 
-#: src/ServerList.cpp:847
+#: src/ServerList.cpp:844
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 
-#: src/ServerList.cpp:936
+#: src/ServerList.cpp:933
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
