@@ -617,6 +617,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_HUNGARIAN,				true,	wxTRANSLATE("Hungarian") },
 	{ wxLANGUAGE_ITALIAN,				true,	wxTRANSLATE("Italian") },
 	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
+	{ wxLANGUAGE_JAPANESE,				true,	wxTRANSLATE("Japanese") },
 	{ wxLANGUAGE_KOREAN,				true,	wxTRANSLATE("Korean") },
 	{ wxLANGUAGE_LITHUANIAN,			true,	wxTRANSLATE("Lithuanian") },
 	{ wxLANGUAGE_NORWEGIAN_NYNORSK,         true,   wxTRANSLATE("Norwegian (Nynorsk)") }, // nn_NO would be the full id
