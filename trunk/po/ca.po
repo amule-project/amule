@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-19 03:30+0100\n"
+"POT-Creation-Date: 2007-11-21 03:30+0100\n"
 "PO-Revision-Date: 2007-08-28 02:34+0200\n"
 "Last-Translator: Joel Sevilleja <Joelregs@hotmail.com>\n"
 "Language-Team: Catalán\n"
@@ -1495,18 +1495,18 @@ msgstr ""
 msgid "Turkish"
 msgstr "Turc"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr "No s'ha pogut determinar el navegador seleccionat!"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1658
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "El port TCP no pot ser més gran que 65532 puix el sòcol UDP del servidor és "
 "TCP+3"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1659
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "S'usarà el port per defecte (%d)"
@@ -6874,12 +6874,17 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "No s'ha pogut guardar el server.met"
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "No s'ha pogut baixar la llista de servidors des de %s"
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6888,25 +6893,25 @@ msgstr ""
 "favor enganxeu a dins d'aquest fitxer una adreça d'una llista de servidors "
 "vàlida per tal d'actualitzar automàticament la llista de servidors."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "Avís, l'adreça especificada és invàlida per a l'actualtizació automàtica de "
 "servidors: %s"
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "No s'ha trobat una adreça automàtica de baixada d'un server.met a a "
 "addresses.dat"
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"

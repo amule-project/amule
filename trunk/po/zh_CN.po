@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-19 03:30+0100\n"
+"POT-Creation-Date: 2007-11-21 03:30+0100\n"
 "PO-Revision-Date: 2007-10-31 21:42+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -1473,16 +1473,16 @@ msgstr "瑞典语"
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr "未检测到所选择的浏览器"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1658
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因为服务器UDP端口值为TCP端口值+3"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1659
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口将被使用（%d）"
@@ -6692,12 +6692,17 @@ msgstr "您在连接您已决定删除的服务器，请断开连接。"
 msgid "Failed to save server.met!"
 msgstr "无法 server.met 保存"
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "无法从 %s 下载服务器列表"
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6705,21 +6710,21 @@ msgstr ""
 "'addresses.dat' 文件内没有服务器列表地址. 请粘贴一个有效服务器列表地址到该文"
 "件以自动更新服务器列表."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr "警告，该自动更新地址无效：%s"
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "addresses.dat 文件中没有有效的自动更新服务器列表URL"
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-19 03:30+0100\n"
+"POT-Creation-Date: 2007-11-21 03:30+0100\n"
 "PO-Revision-Date: 2007-11-03 01:32-0200\n"
 "Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr."
@@ -1485,16 +1485,16 @@ msgstr "Suécia"
 msgid "Turkish"
 msgstr "Turquia"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr "Impossível determinar browser selecionado!"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1658
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Porta TCP nao pode ser maior do que 65532, pois a UDP escuta em TCP+3"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1659
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Porta padrão será utilizada (%d)"
@@ -6801,12 +6801,17 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "Falha ao salvar server.met!"
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Falha ao obter a lista de servidores de %s"
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6814,21 +6819,21 @@ msgstr ""
 "Não foi encontrado nenhum endereço de servidor em 'addresses.dat'. Favor "
 "adicionar um endereço server.met correto para o auto-update funcionar."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr "Cuidado, URL para atualizar servidores é inválida: %s"
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr "Nenhuma URL com server.met da lista addresses.dat é válida"
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"

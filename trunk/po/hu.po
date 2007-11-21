@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-19 03:30+0100\n"
+"POT-Creation-Date: 2007-11-21 03:30+0100\n"
 "PO-Revision-Date: 2005-11-13 16:28+0100\n"
 "Last-Translator: biger [HUN] <biger1@index.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -1512,17 +1512,17 @@ msgstr ""
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1658
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "A TCP port nem lehet magasabb 65532-nél, mert a kiszolgáló UDP port = TCP+3"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1659
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Alapértelmezett port lesz használva (%d)"
@@ -6832,12 +6832,17 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "A server.met mentése sikertelen!"
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Kiszolgáló lista letöltése sikertelen %s-ről"
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6846,25 +6851,25 @@ msgstr ""
 "fájlban. Kérlek érvényes kiszolgálólista-hivatkozást illessz be ebbe a "
 "fájlba, hogy automatikusan frissüljön a kiszolgálólista"
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "Figyelmeztetés, érvénytelen URL lett megadva a kiszolgálók automatikus "
 "frissítéséhez: %s"
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Nincs érvényes url a server.met fájl automatikus letöltéséhez az addresses."
 "dat fájlban"
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
