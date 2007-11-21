@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-21 03:30+0100\n"
-"PO-Revision-Date: 2007-10-31 21:42+0800\n"
+"PO-Revision-Date: 2007-11-21 20:45+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -2849,7 +2849,7 @@ msgstr "搜索相关文件（ED2K，本地服务器）"
 
 #: src/SearchListCtrl.cpp:573
 msgid "Mark as known file"
-msgstr ""
+msgstr "标记为已知文件"
 
 #: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
@@ -6039,11 +6039,11 @@ msgstr "自动连接服务器时忽略代理设置"
 
 #: src/muuli_wdr.cpp:3725
 msgid "Connect to:"
-msgstr "已连接到："
+msgstr "连接到："
 
 #: src/muuli_wdr.cpp:3739
 msgid "Login to remote amule"
-msgstr "登录远端 amule"
+msgstr "登录远程 amule"
 
 #: src/muuli_wdr.cpp:3744
 msgid "User name"
@@ -6051,7 +6051,7 @@ msgstr "用户名"
 
 #: src/muuli_wdr.cpp:3771
 msgid "Remember those settings"
-msgstr "记住那些设置"
+msgstr "记住这些设置"
 
 #: src/muuli_wdr.cpp:3817
 msgid "Enable Verbose Debug-Logging."
@@ -6695,7 +6695,7 @@ msgstr "无法 server.met 保存"
 #: src/ServerList.cpp:805
 #, c-format
 msgid "Finished to download the server list from %s"
-msgstr ""
+msgstr "从 %s 下载服务器列表完成"
 
 #: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
@@ -6713,7 +6713,7 @@ msgstr ""
 #: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
-msgstr ""
+msgstr "正在开始从 %s 下载服务器列表"
 
 #: src/ServerList.cpp:842
 #, c-format
