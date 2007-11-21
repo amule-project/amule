@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-19 03:30+0100\n"
+"POT-Creation-Date: 2007-11-21 03:30+0100\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -1484,18 +1484,18 @@ msgstr ""
 msgid "Turkish"
 msgstr "Turkish"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr "Nurodytos naršyklės rasti nepavyko!"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1658
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP prievadas negali būti didesnis nei 65532, nes serverio UDP prievadas yra "
 "TCP+3"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1659
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Bus naudojamas numatytas prievadas (%d)"
@@ -6820,12 +6820,17 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "Nepavyko įrašyti server.met failo!"
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr "Nepavyko iš %s atsiųsti serverių sąrašo"
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
@@ -6834,24 +6839,24 @@ msgstr ""
 "automatiškai atnaujinti serverių sąrašą įrašykite teisingą serverių sąrašo "
 "adresą į šį failą."
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 "Dėmesio! Serverių automatiniam atnaujinimui nurodytas klaidingas URL: %s"
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 "Faile addresses.dat nerasta nei vieno teisingo server.met failo automatinio "
 "atsiuntimo URL"
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
