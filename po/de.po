@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-21 03:30+0100\n"
+"POT-Creation-Date: 2007-11-22 03:30+0100\n"
 "PO-Revision-Date: 2007-11-17 13:21+0100\n"
 "Last-Translator: emperor <emperor2000@web.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -1449,61 +1449,65 @@ msgid "Italian (Swiss)"
 msgstr "Italienisch (Schweiz)"
 
 #: src/Preferences.cpp:620
+msgid "Japanese"
+msgstr ""
+
+#: src/Preferences.cpp:621
 msgid "Korean"
 msgstr "Koreanisch"
 
-#: src/Preferences.cpp:621
+#: src/Preferences.cpp:622
 msgid "Lithuanian"
 msgstr "Litauisch"
 
-#: src/Preferences.cpp:622
+#: src/Preferences.cpp:623
 msgid "Norwegian (Nynorsk)"
 msgstr "Norwegisch"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:624
 msgid "Polish"
 msgstr "Polnisch"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:625
 msgid "Portuguese"
 msgstr "Portugiesisch"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:626
 msgid "Portuguese (Brazilian)"
 msgstr "Portugiesisch (Brasilianisch)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
 msgid "Russian"
 msgstr "Russisch"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Slovenian"
 msgstr "Slowenisch"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Swedish"
 msgstr "Schwedisch"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr "Türkisch"
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1609 src/Preferences.cpp:1623 src/Preferences.cpp:1630
 msgid "Unable to determine selected browser!"
 msgstr "Kann ausgewählten Browser nicht bestimmen!"
 
-#: src/Preferences.cpp:1658
+#: src/Preferences.cpp:1659
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP-Port kann nicht größer als 65532 sein, da der Server-UDP-Port=TCP-Port+3 "
 "ist"
 
-#: src/Preferences.cpp:1659
+#: src/Preferences.cpp:1660
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Standard-Port wird verwendet (%d)"

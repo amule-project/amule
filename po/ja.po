@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-18 11:00+0100\n"
+"POT-Creation-Date: 2007-11-22 03:30+0100\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -42,7 +42,8 @@ msgstr "ExternalConn: アクセスは拒否されました"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:206
 msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
+msgstr ""
+"ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:210
 msgid "Succeeded! Connection established to aMule "
@@ -120,12 +121,15 @@ msgstr "注意：ファイルネーム '%s' は無効で、 '%s' に改名され
 #: src/ThreadTasks.cpp:463
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "注意：ファイル '%s' は既に存在していて、新しいファイルを '%s' に改名しました。"
+msgstr ""
+"注意：ファイル '%s' は既に存在していて、新しいファイルを '%s' に改名しまし"
+"た。"
 
 #: src/ThreadTasks.cpp:477
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr "注意：バックアップをしてからオリジナル '%s' を消すことが出来ませんでした"
+msgstr ""
+"注意：バックアップをしてからオリジナル '%s' を消すことが出来ませんでした"
 
 #: src/ThreadTasks.cpp:489
 #, c-format
@@ -184,15 +188,13 @@ msgstr "要求："
 #, c-format
 msgid ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"当セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
+msgstr "当セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
 msgid ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"全セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
+msgstr "全セッションのファイル統計： %d 要求の中 %d 認識され、 %s 転送された\n"
 
 #: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
@@ -257,8 +259,7 @@ msgstr "カンセル"
 msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
-msgstr ""
-"スロットが一つのみ提供されました。"
+msgstr "スロットが一つのみ提供されました。"
 
 #: src/FriendListCtrl.cpp:353
 msgid "Multiple selection"
@@ -388,7 +389,8 @@ msgstr "ED2kリンクをクリップボードにコピーする（&Source）"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "ED2kリンクをクリップボードにコピーする（Source）（&With クリプトオプション）"
+msgstr ""
+"ED2kリンクをクリップボードにコピーする（Source）（&With クリプトオプション）"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
@@ -396,7 +398,8 @@ msgstr "ED2kリンクをクリップボードにコピーする（&Hostname）"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "ED2kリンクをクリップボードにコピーする（Hostname）（With &Crypt オプション）"
+msgstr ""
+"ED2kリンクをクリップボードにコピーする（Hostname）（With &Crypt オプション）"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
@@ -538,7 +541,8 @@ msgstr "パスワードが不利です\n"
 
 #: src/webserver/src/WebServer.cpp:1865
 msgid "You did not enter any password. Blank password is not allowed.\n"
-msgstr "パスワードを入力しませんでした。空欄のパスワードは許可されていません。\n"
+msgstr ""
+"パスワードを入力しませんでした。空欄のパスワードは許可されていません。\n"
 
 #: src/webserver/src/WebServer.cpp:1873
 msgid "Logout requested\n"
@@ -677,7 +681,8 @@ msgstr "FTPサーバのURLをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "統計イメージを置きたいFTPサーバのディレクトリーをここで入力してください"
+msgstr ""
+"統計イメージを置きたいFTPサーバのディレクトリーをここで入力してください"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -802,8 +807,7 @@ msgstr "aMuleのオンライン統計"
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
-msgstr ""
-"現在選択されたプリンタの設定に異常がありませんか？"
+msgstr "現在選択されたプリンタの設定に異常がありませんか？"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
@@ -1422,59 +1426,63 @@ msgid "Italian (Swiss)"
 msgstr ""
 
 #: src/Preferences.cpp:620
-msgid "Korean"
+msgid "Japanese"
 msgstr ""
 
 #: src/Preferences.cpp:621
-msgid "Lithuanian"
+msgid "Korean"
 msgstr ""
 
 #: src/Preferences.cpp:622
-msgid "Norwegian (Nynorsk)"
+msgid "Lithuanian"
 msgstr ""
 
 #: src/Preferences.cpp:623
-msgid "Polish"
+msgid "Norwegian (Nynorsk)"
 msgstr ""
 
 #: src/Preferences.cpp:624
-msgid "Portuguese"
+msgid "Polish"
 msgstr ""
 
 #: src/Preferences.cpp:625
-msgid "Portuguese (Brazilian)"
+msgid "Portuguese"
 msgstr ""
 
 #: src/Preferences.cpp:626
-msgid "Russian"
+msgid "Portuguese (Brazilian)"
 msgstr ""
 
 #: src/Preferences.cpp:627
-msgid "Slovenian"
+msgid "Russian"
 msgstr ""
 
 #: src/Preferences.cpp:628
-msgid "Spanish"
+msgid "Slovenian"
 msgstr ""
 
 #: src/Preferences.cpp:629
+msgid "Spanish"
+msgstr ""
+
+#: src/Preferences.cpp:630
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1609 src/Preferences.cpp:1623 src/Preferences.cpp:1630
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1659
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1660
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr ""
@@ -6551,32 +6559,37 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr ""
 
-#: src/ServerList.cpp:805 src/ServerList.cpp:859
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr ""
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
 #, c-format
 msgid "Failed to download the server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:815
+#: src/ServerList.cpp:818
 msgid ""
 "No serverlist address entry in 'addresses.dat' found. Please paste a valid "
 "serverlist address into this file in order to auto-update your serverlist"
 msgstr ""
 
-#: src/ServerList.cpp:830
+#: src/ServerList.cpp:833
 #, c-format
 msgid "Start downloading server list from %s"
 msgstr ""
 
-#: src/ServerList.cpp:839
+#: src/ServerList.cpp:842
 #, c-format
 msgid "Warning, invalid URL specified for auto-updating of servers: %s"
 msgstr ""
 
-#: src/ServerList.cpp:844
+#: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
 msgstr ""
 
-#: src/ServerList.cpp:933
+#: src/ServerList.cpp:936
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"

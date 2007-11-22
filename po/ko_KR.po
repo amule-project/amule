@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-21 03:30+0100\n"
+"POT-Creation-Date: 2007-11-22 03:30+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1440,60 +1440,64 @@ msgid "Italian (Swiss)"
 msgstr "이탈리아어(스위스)"
 
 #: src/Preferences.cpp:620
+msgid "Japanese"
+msgstr ""
+
+#: src/Preferences.cpp:621
 msgid "Korean"
 msgstr "한국어"
 
-#: src/Preferences.cpp:621
+#: src/Preferences.cpp:622
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:622
+#: src/Preferences.cpp:623
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:624
 msgid "Polish"
 msgstr "폴란드어"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:625
 msgid "Portuguese"
 msgstr "포르투갈어"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:626
 msgid "Portuguese (Brazilian)"
 msgstr "포르투갈어(브라질)"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
 msgid "Russian"
 msgstr "러시아어"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Slovenian"
 msgstr "슬로베니아어"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Spanish"
 msgstr "스페인어"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr "터키어"
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1609 src/Preferences.cpp:1623 src/Preferences.cpp:1630
 msgid "Unable to determine selected browser!"
 msgstr "선택된 브라우저를 판단할수 없습니다!"
 
-#: src/Preferences.cpp:1658
+#: src/Preferences.cpp:1659
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "서버 UDP 소켓이 TCP+3이 되기위해서 TCP 포트가 65532보다 커서는 안됩니다."
 
-#: src/Preferences.cpp:1659
+#: src/Preferences.cpp:1660
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "기본 포트가 사용될 것입니다.(%d)"

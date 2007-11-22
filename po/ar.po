@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-21 03:30+0100\n"
+"POT-Creation-Date: 2007-11-22 03:30+0100\n"
 "PO-Revision-Date: 2004-03-28 22:15+0300\n"
 "Last-Translator: saleh alhathal <hathalsal@hotmail.com>\n"
 "Language-Team: \n"
@@ -1410,59 +1410,63 @@ msgid "Italian (Swiss)"
 msgstr ""
 
 #: src/Preferences.cpp:620
+msgid "Japanese"
+msgstr ""
+
+#: src/Preferences.cpp:621
 msgid "Korean"
 msgstr "الكوريه"
 
-#: src/Preferences.cpp:621
+#: src/Preferences.cpp:622
 msgid "Lithuanian"
 msgstr "الليتوانيه"
 
-#: src/Preferences.cpp:622
+#: src/Preferences.cpp:623
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:624
 msgid "Polish"
 msgstr ""
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:625
 msgid "Portuguese"
 msgstr "البرتغاليه"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:626
 msgid "Portuguese (Brazilian)"
 msgstr ""
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
 msgid "Russian"
 msgstr "الروسيه"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Slovenian"
 msgstr ""
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Spanish"
 msgstr "الإسبانيه"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1609 src/Preferences.cpp:1623 src/Preferences.cpp:1630
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1658
+#: src/Preferences.cpp:1659
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 
-#: src/Preferences.cpp:1659
+#: src/Preferences.cpp:1660
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr ""
