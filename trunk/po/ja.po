@@ -839,11 +839,11 @@ msgstr "あら、aMuleは始動されていません..."
 #: src/utils/wxCas/src/wxcasframe.cpp:719
 #: src/utils/wxCas/src/wxcasframe.cpp:788
 msgid "aMule is running"
-msgstr "aMuleは始動されています"
+msgstr "aMuleは始動しています"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:858
 msgid "aMule is running, but disconnected"
-msgstr ""
+msgstr "aMuleは始動していますが接続はしていません"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:929
 msgid "aMule is connecting..."
@@ -859,92 +859,92 @@ msgstr "あら、aMuleのステータスは不明です..."
 #: src/utils/wxCas/src/wxcasframe.cpp:1017
 #: src/utils/wxCas/src/wxcasframe.cpp:1021
 msgid "aMule "
-msgstr "aMule"
+msgstr "aMule "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1006
 msgid " has been running for "
-msgstr ""
+msgstr " の始動時間は "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1011
 msgid " is stopped !"
-msgstr ""
+msgstr " は停止しています！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1015
 #: src/utils/wxCas/src/wxcasframe.cpp:1039
 msgid " is not connected !"
-msgstr ""
+msgstr " は接続していません！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 msgid " is connecting..."
-msgstr ""
+msgstr " は接続中です..."
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is doing something strange, check it !"
-msgstr ""
+msgstr " は何か可笑しいことをやっています。チェックしてくだい！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1044
 msgid " is connected to "
-msgstr ""
+msgstr " は次の物に接続しています： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1045
 msgid " Kad: "
-msgstr ""
+msgstr " Kas: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
 #: src/utils/wxCas/src/wxcasframe.cpp:1067 src/TextClient.cpp:685
 msgid "ok"
-msgstr ""
+msgstr "ok"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1049
 #: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:683
 msgid "firewalled"
-msgstr ""
+msgstr "ファイアウォールされています"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1051
 #: src/utils/wxCas/src/wxcasframe.cpp:1071
 msgid "off"
-msgstr ""
+msgstr "オッフ"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1057
 msgid " is on "
-msgstr ""
+msgstr " はオンです "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1059
 msgid " ["
-msgstr ""
+msgstr " ["
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1061 src/muuli_wdr.cpp:3058
 msgid ":"
-msgstr ""
+msgstr "："
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1063
 msgid "] with "
-msgstr ""
+msgstr "] とともに "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1065
 msgid " | Kad: "
-msgstr ""
+msgstr " | Kad： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1080
 msgid "Total Download: "
-msgstr ""
+msgstr "合計ダウンロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1082
 #: src/utils/wxCas/src/wxcasframe.cpp:1093
 msgid ", Upload: "
-msgstr ""
+msgstr "、 アップロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1091
 msgid "Session Download: "
-msgstr ""
+msgstr "セションダウンロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1102
 msgid "Download: "
-msgstr ""
+msgstr "ダウンロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1104
 msgid " kB/s, Upload: "
-msgstr ""
+msgstr " kB/s、アップロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
 #: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:160
@@ -953,147 +953,149 @@ msgstr ""
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
 #: src/ClientListCtrl.cpp:714
 msgid "kB/s"
-msgstr ""
+msgstr "kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1114
 msgid "Sharing: "
-msgstr ""
+msgstr "共通： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid " file(s), Clients on queue: "
-msgstr ""
+msgstr " ファイル、列で待っているクライアント： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1126
 msgid "Time: "
-msgstr ""
+msgstr "時間： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
 #: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
 #, c-format
 msgid "%.2f kB/s"
-msgstr ""
+msgstr "%.2f kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1136
 #: src/utils/wxCas/src/wxcasframe.cpp:1146
 msgid " on "
-msgstr ""
+msgstr " オン "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1156
 msgid "System Load Average (1-5-15 min): "
-msgstr ""
+msgstr "システムロード平均 （1-5-15分）： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1167
 msgid "System uptime: "
-msgstr ""
+msgstr "システムアップタイム： "
 
 #: src/utils/wxCas/src/onlinesig.cpp:234
 #, c-format
 msgid "%02uD %02uh %02umin %02us"
-msgstr ""
+msgstr "%02uD %02uh %02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:236
 #, c-format
 msgid "%02uh %02umin %02us"
-msgstr ""
+msgstr "%02uh %02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:238
 #, c-format
 msgid "%02umin %02us"
-msgstr ""
+msgstr "%02umin %02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:240
 #, c-format
 msgid "%02us"
-msgstr ""
+msgstr "%02us"
 
 #: src/utils/wxCas/src/onlinesig.cpp:267 src/ServerWnd.cpp:184
 #: src/ClientDetailDialog.cpp:105
 msgid "HighID"
-msgstr ""
+msgstr "HighID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:269 src/ServerWnd.cpp:171
 #: src/ServerWnd.cpp:181 src/ClientListCtrl.cpp:869
 #: src/ClientDetailDialog.cpp:105
 msgid "LowID"
-msgstr ""
+msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:739
 #: src/ServerWnd.cpp:189 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
-msgstr ""
+msgstr "接続されていません"
 
 #: src/utils/wxCas/src/onlinesig.cpp:339
 #, c-format
 msgid "%.0f B"
-msgstr ""
+msgstr "%.0f B"
 
 #: src/utils/wxCas/src/onlinesig.cpp:342
 #, c-format
 msgid "%.2f KB"
-msgstr ""
+msgstr "%.2f KB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:345
 #, c-format
 msgid "%.2f MB"
-msgstr ""
+msgstr "%.2f MB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:348
 #, c-format
 msgid "%.2f GB"
-msgstr ""
+msgstr "%.2f GB"
 
 #: src/utils/wxCas/src/onlinesig.cpp:351
 #, c-format
 msgid "%.2f TB"
-msgstr ""
+msgstr "%.2f TB"
 
 #: src/utils/aLinkCreator/src/md4.cpp:359
 #: src/utils/aLinkCreator/src/alcframe.cpp:571
 #: src/utils/aLinkCreator/src/alcframe.cpp:572
 msgid "Canceled !"
-msgstr ""
+msgstr "キャンセルされました！"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:82
 #, c-format
 msgid "Unable to open %s"
-msgstr ""
+msgstr "%s を開くことが出来ません"
 
 #: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr ""
+msgstr "ファイル %s はDonkeyにとって大きすぎます：最大許可サイズは4GBです。"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
-msgstr ""
+msgstr "インプットパラメタ"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:115
 msgid "File to Hash"
-msgstr ""
+msgstr "ハッシュをするファイル"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:119
 msgid "Add Optional URLs for this file"
-msgstr ""
+msgstr "このファイルにオプショナルURLを追加する"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the Ed2k link"
-msgstr ""
+msgstr "Ed2kリンクを計算したいフィアルをここで記入してください"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
+"Ed2kリンクを追加したいURLをここで記入してください：最後に「/」を書いて、 "
+"それでaLinkCreatorは現在のファイル名を追加ことが出来ます"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:145 src/muuli_wdr.cpp:1074
 #: src/muuli_wdr.cpp:3065
 msgid "Add"
-msgstr ""
+msgstr "追加"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:150
 msgid "Remove"
-msgstr ""
+msgstr "消除"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:152 src/MuleTextCtrl.cpp:82
 #: src/muuli_wdr.cpp:382 src/muuli_wdr.cpp:899
@@ -1102,7 +1104,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:161
 msgid "Create link with part-hashes"
-msgstr ""
+msgstr "パートハッシュでリンクを生成する"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:167
 msgid ""
