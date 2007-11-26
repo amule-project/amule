@@ -1085,8 +1085,8 @@ msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"Ed2kリンクを追加したいURLをここで記入してください：最後に「/」を書いて、 "
-"それでaLinkCreatorは現在のファイル名を追加ことが出来ます"
+"Ed2kリンクを追加したいURLをここで記入してください：最後に「/」を書いて、 それ"
+"でaLinkCreatorは現在のファイル名を追加ことが出来ます"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:145 src/muuli_wdr.cpp:1074
 #: src/muuli_wdr.cpp:3065
@@ -1111,22 +1111,24 @@ msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
 msgstr ""
+"新しくて珍しいファイルを配布のに手伝って、コストとしてリンクサイズが少し "
+"大きくなります"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
-msgstr ""
+msgstr "MD4ファイルハッシュ"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:205
 msgid "Ed2k File Hash"
-msgstr ""
+msgstr "Ed2kファイルハッシュ"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:216
 msgid "Ed2k link"
-msgstr ""
+msgstr "Ed2kリンク"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:229 src/muuli_wdr.cpp:346
 msgid "Start"
-msgstr ""
+msgstr "開始"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:231
 msgid "Save"
@@ -1134,53 +1136,53 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:233
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "クリップボードへコピーする"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:235 src/MuleTrayIcon.cpp:529
 msgid "Exit"
-msgstr ""
+msgstr "終了"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:261
 msgid "Open a file to compute its ed2k link"
-msgstr ""
+msgstr "Ed2kリンクを計算するためにファイルを開く"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:264
 msgid "Copy computed ed2k link to clipboard"
-msgstr ""
+msgstr "計算したEd2kリンクをクリップボードへコピーする"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:267
 msgid "Save computed ed2k link to file"
-msgstr ""
+msgstr "計算したEd2kリンクをフィアルに保存する"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:272
 #: src/utils/aLinkCreator/src/alcframe.cpp:472
 msgid "About aLinkCreator"
-msgstr ""
+msgstr "aLinkCreatorについて"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:365
 msgid "Select the file you want to compute the ed2k link"
-msgstr ""
+msgstr "Ed2kリンクを計算したいファイルを選択してください"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:408
 msgid "Nothing to copy for now !"
-msgstr ""
+msgstr "現在コピー出来る物がありません！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:435
 msgid "Select the file to your computed ed2k link"
-msgstr ""
+msgstr "Ed2kリンクに対応するファイルを選択してください"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:446
 msgid "Unable to open "
-msgstr ""
+msgstr "次のを開くことが出来ません： "
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:453
 #: src/utils/aLinkCreator/src/alcframe.cpp:586
 msgid "Please, enter a non empty file name"
-msgstr ""
+msgstr "空欄でないファイル名を記入してください"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:458
 msgid "Nothing to save for now !"
-msgstr ""
+msgstr "現在保存出来る物がありません！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
 msgid ""
@@ -1193,463 +1195,474 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aLinkCreator、aMuleのed2kリンク製作プログラム\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"ピクスマップはhttp://www.everaldo.com、http://www.icomania.com\n"
+"とhttp://jimmac.musichall.cz/ikony.php3からです\n"
+"\n"
+"GPLの元で配布されます"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:516
 #: src/utils/aLinkCreator/src/alcframe.cpp:517
 #: src/utils/aLinkCreator/src/alcframe.cpp:523
 msgid "Hashing..."
-msgstr ""
+msgstr "ハッシュ中..."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:580
 #, c-format
 msgid "Done in %.2f s"
-msgstr ""
+msgstr " %.2f 秒で出来ました"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:619
 msgid "You have already added this URL !"
-msgstr ""
+msgstr "このURLはもう追加しました！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:624
 msgid "Please, enter a non empty URL"
-msgstr ""
+msgstr "空欄でないURLを記入してください"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:66
 #, c-format
 msgid "Processing file number %u: %s"
-msgstr ""
+msgstr "ファイル %u: %s 番を処理中です"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr ""
+msgstr "パートハッシュを頼みました（9.5MB以上のファイルサイズのみに使用されます）"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "Please wait... "
-msgstr ""
+msgstr "お待ちください..."
 
 #: src/utils/aLinkCreator/src/alcc.cpp:84
 #, c-format
 msgid "%s ---> Non existant file !\n"
-msgstr ""
+msgstr "%s ---> このファイルは存在していません！\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:53
 msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr ""
+msgstr "aLinkCreator、aMuleのed2kリンク作成プログラム"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
-msgstr ""
+msgstr "オート [Lo]"
 
 #: src/DataToText.cpp:36
 msgid "Auto [No]"
-msgstr ""
+msgstr "オート [No]"
 
 #: src/DataToText.cpp:37
 msgid "Auto [Hi]"
-msgstr ""
+msgstr "オート [Hi]"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:509 src/amuleDlg.cpp:735
 #: src/ClientListCtrl.cpp:664 src/amule.cpp:803
 msgid "Connecting"
-msgstr ""
+msgstr "接続中"
 
 #: src/DataToText.cpp:60
 msgid "Asking"
-msgstr ""
+msgstr "頼み中"
 
 #: src/DataToText.cpp:61 src/ClientListCtrl.cpp:668
 msgid "Connecting via server"
-msgstr ""
+msgstr "サーバ経由に接続中"
 
 #: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
-msgstr ""
+msgstr "列が一杯"
 
 #: src/DataToText.cpp:62 src/TransferWnd.cpp:449 src/ClientListCtrl.cpp:681
 msgid "On Queue"
-msgstr ""
+msgstr "列に入っています"
 
 #: src/DataToText.cpp:63 src/ClientListCtrl.cpp:673
 msgid "Transferring"
-msgstr ""
+msgstr "転送中"
 
 #: src/DataToText.cpp:64
 msgid "Receiving hashset"
-msgstr ""
+msgstr "ハッシュセットを貰い中"
 
 #: src/DataToText.cpp:65
 msgid "No needed parts"
-msgstr ""
+msgstr "必要な部分がありません"
 
 #: src/DataToText.cpp:66
 msgid "Cannot connect LowID to LowID"
-msgstr ""
+msgstr "LowIDとLowIDの間の接続が出来ません"
 
 #: src/DataToText.cpp:67
 msgid "Too many connections"
-msgstr ""
+msgstr "コネクションが多すぎます"
 
 #: src/DataToText.cpp:69
 msgid "Connecting via Kad"
-msgstr ""
+msgstr "Kad経由に接続中"
 
 #: src/DataToText.cpp:70
 msgid "Too many Kad connections"
-msgstr ""
+msgstr "Kadコネクションが多すぎます"
 
 #: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:828
 msgid "Banned"
-msgstr ""
+msgstr "禁止された"
 
 #: src/DataToText.cpp:72
 msgid "Connection Error"
-msgstr ""
+msgstr "コネクションエラー"
 
 #: src/DataToText.cpp:73
 msgid "Remote Queue Full"
-msgstr ""
+msgstr "リモート列が一杯"
 
 #: src/DataToText.cpp:103
 msgid "Old MLDonkey"
-msgstr ""
+msgstr "古いMLDonkey"
 
 #: src/DataToText.cpp:106
 msgid "New MLDonkey"
-msgstr ""
+msgstr "新しいMLDonkey"
 
 #: src/DataToText.cpp:116
 msgid "eMule Compatible"
-msgstr ""
+msgstr "eMuleと互換性がある"
 
 #: src/DataToText.cpp:126
 msgid "Local Server"
-msgstr ""
+msgstr "ローカルサーバ"
 
 #: src/DataToText.cpp:127
 msgid "Remote Server"
-msgstr ""
+msgstr "リモートサーバ"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:678 src/muuli_wdr.cpp:195
 #: src/muuli_wdr.cpp:3949 src/SearchDlg.cpp:107
 msgid "Kad"
-msgstr ""
+msgstr "Kad"
 
 #: src/DataToText.cpp:129
 msgid "Source Exchange"
-msgstr ""
+msgstr "ソース交流"
 
 #: src/DataToText.cpp:130
 msgid "Passive"
-msgstr ""
+msgstr "パシブ"
 
 #: src/DataToText.cpp:131
 msgid "Link"
-msgstr ""
+msgstr "リンク"
 
 #: src/DataToText.cpp:132
 msgid "Source Seeds"
-msgstr ""
+msgstr "ソーヅシード"
 
 #: src/Preferences.cpp:599 src/PrefsUnifiedDlg.cpp:217
 msgid "System default"
-msgstr ""
+msgstr "システムデファオルト"
 
 #: src/Preferences.cpp:600
 msgid "Arabic"
-msgstr ""
+msgstr "アラブ語"
 
 #: src/Preferences.cpp:601
 msgid "Basque"
-msgstr ""
+msgstr "バスク語"
 
 #: src/Preferences.cpp:602
 msgid "Bulgarian"
-msgstr ""
+msgstr "ブルガリア語"
 
 #: src/Preferences.cpp:603
 msgid "Catalan"
-msgstr ""
+msgstr "カタロニア語"
 
 #: src/Preferences.cpp:604
 msgid "Chinese (Simplified)"
-msgstr ""
+msgstr "中国語（簡体字）"
 
 #: src/Preferences.cpp:605
 msgid "Chinese (Traditional)"
-msgstr ""
+msgstr "中国語（繁体字）"
 
 #: src/Preferences.cpp:606
 msgid "Croatian"
-msgstr ""
+msgstr "クロアチア語"
 
 #: src/Preferences.cpp:607
 msgid "Danish"
-msgstr ""
+msgstr "デンマーク語"
 
 #: src/Preferences.cpp:608
 msgid "Dutch"
-msgstr ""
+msgstr "オランダ語"
 
 #: src/Preferences.cpp:609
 msgid "English (U.K.)"
-msgstr ""
+msgstr "英語（イギリス）"
 
 #: src/Preferences.cpp:612
 msgid "Estonian"
-msgstr ""
+msgstr "エストニア語"
 
 #: src/Preferences.cpp:613
 msgid "Finnish"
-msgstr ""
+msgstr "フィンランド語"
 
 #: src/Preferences.cpp:614
 msgid "French"
-msgstr ""
+msgstr "フランス語"
 
 #: src/Preferences.cpp:615
 msgid "Galician"
-msgstr ""
+msgstr "ガリシア語"
 
 #: src/Preferences.cpp:616
 msgid "German"
-msgstr ""
+msgstr "ドイツ語"
 
 #: src/Preferences.cpp:617
 msgid "Hungarian"
-msgstr ""
+msgstr "ハンガリー語"
 
 #: src/Preferences.cpp:618
 msgid "Italian"
-msgstr ""
+msgstr "イタリア語"
 
 #: src/Preferences.cpp:619
 msgid "Italian (Swiss)"
-msgstr ""
+msgstr "イタリア語（スイス）"
 
 #: src/Preferences.cpp:620
 msgid "Japanese"
-msgstr ""
+msgstr "日本語"
 
 #: src/Preferences.cpp:621
 msgid "Korean"
-msgstr ""
+msgstr "韓国語"
 
 #: src/Preferences.cpp:622
 msgid "Lithuanian"
-msgstr ""
+msgstr "リトアニア語"
 
 #: src/Preferences.cpp:623
 msgid "Norwegian (Nynorsk)"
-msgstr ""
+msgstr "ルウェー語"
 
 #: src/Preferences.cpp:624
 msgid "Polish"
-msgstr ""
+msgstr "ポーランド語"
 
 #: src/Preferences.cpp:625
 msgid "Portuguese"
-msgstr ""
+msgstr "ポルトガル語"
 
 #: src/Preferences.cpp:626
 msgid "Portuguese (Brazilian)"
-msgstr ""
+msgstr "ポルトガル語（ブラジル）"
 
 #: src/Preferences.cpp:627
 msgid "Russian"
-msgstr ""
+msgstr "ロシア語"
 
 #: src/Preferences.cpp:628
 msgid "Slovenian"
-msgstr ""
+msgstr "スロベニア語"
 
 #: src/Preferences.cpp:629
 msgid "Spanish"
-msgstr ""
+msgstr "スペイン語"
 
 #: src/Preferences.cpp:630
 msgid "Swedish"
-msgstr ""
+msgstr "スウェーデン語"
 
 #: src/Preferences.cpp:633
 msgid "Turkish"
-msgstr ""
+msgstr "トルコ語"
 
 #: src/Preferences.cpp:1609 src/Preferences.cpp:1623 src/Preferences.cpp:1630
 msgid "Unable to determine selected browser!"
-msgstr ""
+msgstr "選択されたブラウザが見付かりません！"
 
 #: src/Preferences.cpp:1659
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
+"サーバのUDPソケトがTCP+3であるためTCPポートを65532以上には設定出来ません"
 
 #: src/Preferences.cpp:1660
 #, c-format
 msgid "Default port will be used (%d)"
-msgstr ""
+msgstr "デフォルトポートを使用します (%d)"
 
 #: src/ServerListCtrl.cpp:86
 msgid "Server Name"
-msgstr ""
+msgstr "サーバ名"
 
 #: src/ServerListCtrl.cpp:87
 msgid "Address"
-msgstr ""
+msgstr "アドレス"
 
 #: src/ServerListCtrl.cpp:88
 msgid "Port"
-msgstr ""
+msgstr "ポート"
 
 #: src/ServerListCtrl.cpp:89
 msgid "Description"
-msgstr ""
+msgstr "説明"
 
 #: src/ServerListCtrl.cpp:90
 msgid "Ping"
-msgstr ""
+msgstr "ピング"
 
 #: src/ServerListCtrl.cpp:91
 msgid "Users"
-msgstr ""
+msgstr "ユーザ"
 
 #: src/ServerListCtrl.cpp:92 src/PrefsUnifiedDlg.cpp:154
 #: src/muuli_wdr.cpp:2073
 msgid "Files"
-msgstr ""
+msgstr "ファイル"
 
 #: src/ServerListCtrl.cpp:94 src/ClientDetailDialog.cpp:173
 msgid "Failed"
-msgstr ""
+msgstr "失敗しました"
 
 #: src/ServerListCtrl.cpp:95
 msgid "Static"
-msgstr ""
+msgstr "スタティック"
 
 #: src/ServerListCtrl.cpp:96 src/Statistics.cpp:870
 msgid "Version"
-msgstr ""
+msgstr "バージョン"
 
 #: src/ServerListCtrl.cpp:98
 msgid "TCP Flags"
-msgstr ""
+msgstr "TCPフラッグ"
 
 #: src/ServerListCtrl.cpp:99
 msgid "UDP Flags"
-msgstr ""
+msgstr "UDPフラッグ"
 
 #: src/ServerListCtrl.cpp:143
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
 msgstr ""
+"只今接続中のサーバを消除しようとしています。先に切断してください。 "
+"このサーバは消除されませんでした。"
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3134 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:342
 #: src/amule.cpp:721 src/amule.cpp:1335
 msgid "Info"
-msgstr ""
+msgstr "インフォ"
 
 #: src/ServerListCtrl.cpp:146
 msgid "(Unknown name)"
-msgstr ""
+msgstr "（不明な名前）"
 
 #: src/ServerListCtrl.cpp:148
 #, c-format
 msgid "Are you sure you want to delete the static server %s"
-msgstr ""
+msgstr "確認：次スタティックサーバ %s を本当に消除しますか？"
 
 #: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:898
 #: src/ClientListCtrl.cpp:1042
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: src/ServerListCtrl.cpp:235 src/ClientListCtrl.cpp:900
 #: src/ClientListCtrl.cpp:1044
 msgid "No"
-msgstr ""
+msgstr "いいえ"
 
 #: src/ServerListCtrl.cpp:344
 #, c-format
 msgid "Failed to open '%s'"
-msgstr ""
+msgstr "'%s'を開くことが出来ませんでした"
 
 #: src/ServerListCtrl.cpp:387
 #, c-format
 msgid "Servers (%i)"
-msgstr ""
+msgstr "サーバ （%i）"
 
 #: src/ServerListCtrl.cpp:435 src/PrefsUnifiedDlg.cpp:153
 #: src/ServerWnd.cpp:180 src/ServerSocket.cpp:259 src/ServerSocket.cpp:274
 msgid "Server"
-msgstr ""
+msgstr "サーバ"
 
 #: src/ServerListCtrl.cpp:440
 msgid "Connect to server"
-msgstr ""
+msgstr "サーバへ接続する"
 
 #: src/ServerListCtrl.cpp:445
 msgid "Mark server(s) as static"
-msgstr ""
+msgstr "サーバをスタティックとしてマークする"
 
 #: src/ServerListCtrl.cpp:446
 msgid "Mark server(s) as non-static"
-msgstr ""
+msgstr "サーバをノンスタティックとしてマークする"
 
 #: src/ServerListCtrl.cpp:450
 msgid "Remove server(s)"
-msgstr ""
+msgstr "サーバを消除する"
 
 #: src/ServerListCtrl.cpp:451
 msgid "Remove all servers"
-msgstr ""
+msgstr "全てのサーバを消除する"
 
 #: src/ServerListCtrl.cpp:455
 msgid "Copy ED2k link(s) to clipboard"
-msgstr ""
+msgstr "ED2Kリンクをクリップボードへコピーする"
 
 #: src/ServerListCtrl.cpp:463
 msgid "Reconnect to server"
-msgstr ""
+msgstr "サーバへ再接続する"
 
 #: src/ServerListCtrl.cpp:560
 msgid "Are you sure that you wish to delete all servers?"
-msgstr ""
+msgstr "確認：全てのサーバを本当に消除しますか？"
 
 #: src/ServerListCtrl.cpp:574
 msgid "Are you sure that you wish to delete the selected server(s)?"
-msgstr ""
+msgstr "確認：全ての選択されたサーバを本当に消除しますか？"
 
 #: src/OScopeCtrl.cpp:288
 #, c-format
 msgid "Disabled [%s]"
-msgstr ""
+msgstr "使用不可能 [%s]"
 
 #: src/amuleDlg.cpp:214
 #, c-format
 msgid "This is aMule %s based on eMule."
-msgstr ""
+msgstr "これはeMuleに基ずいたaMule %s です。"
 
 #: src/amuleDlg.cpp:216
 #, c-format
 msgid "Running on %s"
-msgstr ""
+msgstr "%s に起動しています"
 
 #: src/amuleDlg.cpp:218
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr ""
+msgstr "http://www.amule.orgを訪れて、新しいバージョンチェックをしてください。"
 
 #: src/amuleDlg.cpp:241
 msgid "Fatal Error: Failed to create Timer"
-msgstr ""
+msgstr "致命的なエラー：タイマを生成出来ませんでした"
 
 #: src/amuleDlg.cpp:430
 msgid "aMule remote control "
-msgstr ""
+msgstr "aMuleリモートコントロール"
 
 #: src/amuleDlg.cpp:436
 msgid "Snapshot:"
-msgstr ""
+msgstr "スナップショット："
 
 #: src/amuleDlg.cpp:439
 msgid ""
@@ -1667,244 +1680,258 @@ msgid ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
+" 'All-Platform' p2p client based on eMule \n"
+"\n"
+" ウエッブサイト：http://www.amule.org \n"
+" フォーラム：http://forum.amule.org \n"
+" FAQ：http://wiki.amule.org \n"
+"\n"
+" コンタクト：admin@amule.org（事務的関係） \n"
+" 著作権 (C) 2003-2007 aMuleチーム \n"
+"\n"
+" aMuleの一部は \n"
+" Kademliaに基ずいてます： XORメトリクに基ずいたPeer-to-peerルーティング。\n"
+" 著作権 (C) 2002 Petar Maymounkov\n"
+" http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:451 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:673 src/KadDlg.cpp:182
 #: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:914
 #: src/PartFile.cpp:927
 msgid "Message"
-msgstr ""
+msgstr "メッセージ"
 
 #: src/amuleDlg.cpp:537
 msgid "Status text"
-msgstr ""
+msgstr "ステータステキスト"
 
 #: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1317
 msgid "Stops the current connection attempts"
-msgstr ""
+msgstr "現在のコネクション試みを中止する"
 
 #: src/amuleDlg.cpp:690
 msgid "Disconnect from "
-msgstr ""
+msgstr "次の物から切断する： "
 
 #: src/amuleDlg.cpp:693
 msgid "current server"
-msgstr ""
+msgstr "現在のサーバ"
 
 #: src/amuleDlg.cpp:695
 msgid " and "
-msgstr ""
+msgstr " と "
 
 #: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3072
 #: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
-msgstr ""
+msgstr "切断する"
 
 #: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3292
 #: src/muuli_wdr.cpp:3779 src/muuli_wdr.cpp:4005 src/MuleTrayIcon.cpp:511
 msgid "Connect"
-msgstr ""
+msgstr "接続する"
 
 #: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4005
 msgid "Connect to any server and/or Kad"
-msgstr ""
+msgstr "どのサーバにも、もしくはKadに接続する"
 
 #: src/amuleDlg.cpp:723
 msgid "WARNING: You have recieved Low-ID!"
-msgstr ""
+msgstr "注意：Low-IDを貰いました！"
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr ""
+msgstr "\t恐らくパソコンがファイラウォールやルータの裏にあるのが原因です。"
 
 #: src/amuleDlg.cpp:725
 msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr ""
+msgstr "\t詳しい情報にはhttp://wiki.amule.orgを参考してください"
 
 #: src/amuleDlg.cpp:729 src/ServerConnect.cpp:273
 #, c-format
 msgid "Connection established on: %s"
-msgstr ""
+msgstr " %s にコネクションを確立しました"
 
 #: src/amuleDlg.cpp:805
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
-msgstr ""
+msgstr "アップ： %.1f(%.1f) | ダウン： %.1f(%.1f)"
 
 #: src/amuleDlg.cpp:807
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
-msgstr ""
+msgstr "アップ： %.1f | ダウン： %.1f"
 
 #: src/amuleDlg.cpp:828
 #, c-format
 msgid "aMule (%s | Connected)"
-msgstr ""
+msgstr "aMule (%s | 接続しています)"
 
 #: src/amuleDlg.cpp:830
 #, c-format
 msgid "aMule (%s | Disconnected)"
-msgstr ""
+msgstr "aMule (%s | 切断しています)"
 
 #: src/amuleDlg.cpp:861
 msgid "Do you really want to exit aMule?"
-msgstr ""
+msgstr "確認：本当にaMuleを終了しますか？"
 
 #: src/amuleDlg.cpp:862
 msgid "Exit confirmation"
-msgstr ""
+msgstr "終了の確認"
 
 #: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3546 src/muuli_wdr.cpp:4012
 msgid "Messages"
-msgstr ""
+msgstr "メッセージ"
 
 #: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4012
 msgid "Messages Window"
-msgstr ""
+msgstr "メッセージウィンドウ"
 
 #: src/amuleDlg.cpp:1150
 msgid "Could not determine the command for running the browser."
-msgstr ""
+msgstr "ブラウザを起動させるコマンドを見付けられませんでした。"
 
 #: src/amuleDlg.cpp:1209
 #, c-format
 msgid "Skin directory '%s' does not exist"
-msgstr ""
+msgstr "スキンディレクトリー '%s' は存在しません"
 
 #: src/amuleDlg.cpp:1214
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
-msgstr ""
+msgstr "注意： スキンファイル '%s' を読むために開けませんでした"
 
 #: src/amuleDlg.cpp:1312
 msgid "Disconnect from any server and/or Kad"
-msgstr ""
+msgstr "サーバやKadから切断する"
 
 #: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4007
 msgid "Networks"
-msgstr ""
+msgstr "ネットワーク"
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4007
 msgid "Networks Window"
-msgstr ""
+msgstr "ネットワークウィンドウ"
 
 #: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4009
 msgid "Searches"
-msgstr ""
+msgstr "検索"
 
 #: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4009
 msgid "Searches Window"
-msgstr ""
+msgstr "検索ウィンドウ"
 
 #: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4010
 msgid "Transfers"
-msgstr ""
+msgstr "転送"
 
 #: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4010
 msgid "Files Transfers Window"
-msgstr ""
+msgstr "ファイル転送ウィンドウ"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4011
 msgid "Shared Files Window"
-msgstr ""
+msgstr "共通ファイルウィンドウ"
 
 #: src/amuleDlg.cpp:1347 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4013
 msgid "Statistics"
-msgstr ""
+msgstr "統計"
 
 #: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4013
 msgid "Statistics Graph Window"
-msgstr ""
+msgstr "統計グラフウィインドウ"
 
 #: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4015
 msgid "Preferences Settings Window"
-msgstr ""
+msgstr "個人設定ウィンドウ"
 
 #: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4016
 msgid "Import"
-msgstr ""
+msgstr "インポート"
 
 #: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4016
 msgid "The partfile importer tool"
-msgstr ""
+msgstr "パートファイルインポータツール"
 
 #: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4017
 msgid "About"
-msgstr ""
+msgstr "について"
 
 #: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4017
 msgid "About/Help"
-msgstr ""
+msgstr "について／ヘルプ"
 
 #: src/PrefsUnifiedDlg.cpp:147 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1387
 #: src/muuli_wdr.cpp:3630
 msgid "General"
-msgstr ""
+msgstr "全般的"
 
 #: src/PrefsUnifiedDlg.cpp:148 src/Statistics.cpp:682
 msgid "Connection"
-msgstr ""
+msgstr "コネクション"
 
 #: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3625
 msgid "Proxy"
-msgstr ""
+msgstr "プロクシ"
 
 #: src/PrefsUnifiedDlg.cpp:150
 msgid "Message Filter"
-msgstr ""
+msgstr "メッセージフィルタ"
 
 #: src/PrefsUnifiedDlg.cpp:151
 msgid "Remote Controls"
-msgstr ""
+msgstr "リモートコントロール"
 
 #: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3490
 msgid "Online Signature"
-msgstr ""
+msgstr "オンライン署名"
 
 #: src/PrefsUnifiedDlg.cpp:155 src/muuli_wdr.cpp:2167
 msgid "Directories"
-msgstr ""
+msgstr "ディレクトリー"
 
 #: src/PrefsUnifiedDlg.cpp:157 src/muuli_wdr.cpp:3361
 msgid "Security"
-msgstr ""
+msgstr "セキュリティー"
 
 #: src/PrefsUnifiedDlg.cpp:160
 msgid "Gui Tweaks"
-msgstr ""
+msgstr "GUI設定"
 
 #: src/PrefsUnifiedDlg.cpp:161 src/muuli_wdr.cpp:2458
 msgid "Core Tweaks"
-msgstr ""
+msgstr "コア設定"
 
 #: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3974
 msgid "Events"
-msgstr ""
+msgstr "イベント"
 
 #: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3807
 msgid "Debugging"
-msgstr ""
+msgstr "ディバッギング"
 
 #: src/PrefsUnifiedDlg.cpp:218 src/muuli_wdr.cpp:1697
 msgid "User Defined"
-msgstr ""
+msgstr "ユーザ定義"
 
 #: src/PrefsUnifiedDlg.cpp:466
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
 msgstr ""
+"この変更点を有効するにはaMuleを再起動しなければなりません：\n"
 
 #: src/PrefsUnifiedDlg.cpp:473
 msgid "- TCP port changed.\n"
-msgstr ""
+msgstr "- TCPポートを変更しました。\n"
 
 #: src/PrefsUnifiedDlg.cpp:478
 msgid "- UDP port changed.\n"
-msgstr ""
+msgstr "- UDPポートを変更しました。\n"
 
 #: src/PrefsUnifiedDlg.cpp:488
 msgid ""
