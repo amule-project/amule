@@ -1938,36 +1938,44 @@ msgid ""
 "Your Auto-update servers list is in blank.\n"
 "'Auto-update serverlist at startup' will be disabled."
 msgstr ""
+"オートアップデートサーバリストが空欄です。\n"
+"'スタートアップにサーバリストをオートアップデートする'を使用不可能にします。"
 
 #: src/PrefsUnifiedDlg.cpp:497
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
 msgstr ""
+"外部コネクションを有効にしましたがパスワードを設定していません。\n"
+"有効なパスワードを設定しないと外部コネクションを可能出来ません。"
 
 #: src/PrefsUnifiedDlg.cpp:510
 msgid "- Language changed.\n"
-msgstr ""
+msgstr "- 言語を変更しました。\n"
 
 #: src/PrefsUnifiedDlg.cpp:515
 msgid "- Temp folder changed.\n"
-msgstr ""
+msgstr "- 臨時フォルダーを変更しました。\n"
 
 #: src/PrefsUnifiedDlg.cpp:540 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
-msgstr ""
+msgstr "アップ： 0.0 | ダウン： 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:582
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
+"ED2KとKadネットワークの両方が無効です。\n"
+"せめてその一つを有効しないと接続出来ません。"
 
 #: src/PrefsUnifiedDlg.cpp:586
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
 msgstr ""
+"UDPポートが無効だとKadは始まりません。\n"
+"UDPポートを有効にして、それともKadを無効にしてください。"
 
 #: src/PrefsUnifiedDlg.cpp:591
 msgid ""
@@ -1975,10 +1983,13 @@ msgid ""
 "You MUST restart aMule now.\n"
 "If you do not restart now, don't complain if anything bad happens.\n"
 msgstr ""
+"\n"
+"必ず早急にaMuleを再起動してください。\n"
+"今再起動しななければおかしいことが行ってもしかたがありません。\n"
 
 #: src/PrefsUnifiedDlg.cpp:591
 msgid "WARNING"
-msgstr ""
+msgstr "注意"
 
 #: src/PrefsUnifiedDlg.cpp:670
 msgid ""
@@ -1986,187 +1997,196 @@ msgid ""
 "Please fill in at least one URL to point to a valid server.met file.\n"
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
+"オートアップデートサーバリストが空欄です。\n"
+"せめて一つのURLを記入して、有効なserver.metファイルを指示してください。\n"
+"このチェックボクスの近くの\"表\"ボタンをクリックして、URLを記入してください。"
 
 #: src/PrefsUnifiedDlg.cpp:801
 msgid "Temporary files"
-msgstr ""
+msgstr "臨時ファイル"
 
 #: src/PrefsUnifiedDlg.cpp:806
 msgid "Incoming files"
-msgstr ""
+msgstr "到着ファイル"
 
 #: src/PrefsUnifiedDlg.cpp:811
 msgid "Online Signatures"
-msgstr ""
+msgstr "オンライン署名"
 
 #: src/PrefsUnifiedDlg.cpp:824
 #, c-format
 msgid "Choose a folder for %s"
-msgstr ""
+msgstr " %s のためのフォルダーを選択する"
 
 #: src/PrefsUnifiedDlg.cpp:840
 msgid "Browse wav"
-msgstr ""
+msgstr "wavをブラウズする"
 
 #: src/PrefsUnifiedDlg.cpp:841
 msgid "File wav (*.wav)|*.wav||"
-msgstr ""
+msgstr "ファイルwav (*.wav)|*.wav||"
 
 #: src/PrefsUnifiedDlg.cpp:858
 msgid "Browse for videoplayer"
-msgstr ""
+msgstr "ビデオプレヤーを探すためにブラウズする"
 
 #: src/PrefsUnifiedDlg.cpp:862
 msgid "Select browser"
-msgstr ""
+msgstr "ブラウザを選択する"
 
 #: src/PrefsUnifiedDlg.cpp:868
 #, c-format
 msgid "Executable%s"
-msgstr ""
+msgstr "実行ファイル%s"
 
 #: src/PrefsUnifiedDlg.cpp:889
 msgid "Edit Serverlist"
-msgstr ""
+msgstr "サーバリストを編集する"
 
 #: src/PrefsUnifiedDlg.cpp:890
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
+"ここでserver.metファイルをダウンロードするにURLを追加してください。\n"
+"一行に一つのURLのみ。"
 
 #: src/PrefsUnifiedDlg.cpp:946
 #, c-format
 msgid "Update delay: %d secs"
-msgstr ""
+msgstr "アップデート遅延時間： %d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:953
 #, c-format
 msgid "Time for average graph: %d mins"
-msgstr ""
+msgstr "平均グラフの時間： %d 分"
 
 #: src/PrefsUnifiedDlg.cpp:959
 #, c-format
 msgid "Connections Graph Scale: %d"
-msgstr ""
+msgstr "コネクショングラフ規模： %d"
 
 #: src/PrefsUnifiedDlg.cpp:965
 #, c-format
 msgid "Update delay : %d secs"
-msgstr ""
+msgstr "アップデート遅延時間： %d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:970
 #, c-format
 msgid "File Buffer Size: %d bytes"
-msgstr ""
+msgstr "ファイルバッファサイズ： %d バイト"
 
 #: src/PrefsUnifiedDlg.cpp:975
 #, c-format
 msgid "Upload Queue Size: %d clients"
-msgstr ""
+msgstr "アップロード列サイズ： %d クライアント"
 
 #: src/PrefsUnifiedDlg.cpp:982
 #, c-format
 msgid "Server connection refresh interval: %d minutes"
-msgstr ""
+msgstr "サーバコネクションリフレッシュ遅延時間： %d 分"
 
 #: src/PrefsUnifiedDlg.cpp:985
 msgid "Server connection refresh interval: Disabled"
-msgstr ""
+msgstr "サーバコネクションリフレッシュ遅延時間： 無効"
 
 #: src/PrefsUnifiedDlg.cpp:1052
 #, c-format
 msgid "Execute command on `%s' event"
-msgstr ""
+msgstr " `%s' イベントにコマンドを実行する"
 
 #: src/PrefsUnifiedDlg.cpp:1055
 msgid "Enable command execution on core"
-msgstr ""
+msgstr "コアにコマンドを実行するのを有効する"
 
 #: src/PrefsUnifiedDlg.cpp:1063
 msgid "Core command:"
-msgstr ""
+msgstr "コアコマンド："
 
 #: src/PrefsUnifiedDlg.cpp:1072
 msgid "Enable command execution on GUI"
-msgstr ""
+msgstr "GUIにコマンドを実行するのを有効する"
 
 #: src/PrefsUnifiedDlg.cpp:1080
 msgid "GUI command:"
-msgstr ""
+msgstr "GUIコマンド："
 
 #: src/PrefsUnifiedDlg.cpp:1089
 msgid "The following variables will be replaced:"
-msgstr ""
+msgstr "次の任意は交換されます："
 
 #: src/ExternalConn.cpp:81
 msgid "Unauthorized access attempt. Connection closed."
-msgstr ""
+msgstr "不正アクセスの試し。コネクションは終了しました。"
 
 #: src/ExternalConn.cpp:94
 msgid "External connection closed."
-msgstr ""
+msgstr "外部コネクションは終了しました。"
 
 #: src/ExternalConn.cpp:121
 msgid "External connections disabled due to empty password!"
-msgstr ""
+msgstr "外部コネクションは空欄のパスワードのため無効にしました！"
 
 #: src/ExternalConn.cpp:146
 msgid "External connections disabled in config file"
-msgstr ""
+msgstr "外部コネクションを設定ファイルに無効しました"
 
 #: src/ExternalConn.cpp:162
 msgid "New external connection accepted"
-msgstr ""
+msgstr "新しい外部コネクションを認められました"
 
 #: src/ExternalConn.cpp:165
 msgid "Error: couldn't accept a new external connection"
-msgstr ""
+msgstr "エラー：新しい外部コネクションを認めることが出来ませんでした"
 
 #: src/ExternalConn.cpp:184
 msgid "External connection refused due to empty password in preferences!"
-msgstr ""
+msgstr "外部コネクションを個人設定に空欄のパスワードがあるため許否しました！"
 
 #: src/ExternalConn.cpp:194
 #, c-format
 msgid "Connecting client: %s %s"
-msgstr ""
+msgstr "クライアントを接続中： %s %s"
 
 #: src/ExternalConn.cpp:196
 msgid "Unknown version"
-msgstr ""
+msgstr "不明なバージョン"
 
 #: src/ExternalConn.cpp:207
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr ""
+"間違ったECバージョンID。バイナリー不互換性の可能性があります。同じスナップショットの "
+"コアとリモートを使用してください。"
 
 #: src/ExternalConn.cpp:212
 msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
 msgstr ""
+"任意CVSバージョンからリリースバージョンに接続は出来ません！ "
+"*ハァ...*起こり得るクラッシュを予防しました"
 
 #: src/ExternalConn.cpp:228
 msgid "Authentication failed."
-msgstr ""
+msgstr "認証に失敗しました。"
 
 #: src/ExternalConn.cpp:232
 msgid "Invalid protocol version."
-msgstr ""
+msgstr "無効なプロトコルバージョン。"
 
 #: src/ExternalConn.cpp:236
 msgid "Missing protocol version tag."
-msgstr ""
+msgstr "プロトコルバージョンタッグがありません。"
 
 #: src/ExternalConn.cpp:240
 msgid "Invalid request, you should first authenticate."
-msgstr ""
+msgstr "無効なリクエスト、先に認証をしてください。"
 
 #: src/ExternalConn.cpp:246
 msgid "Access granted."
-msgstr ""
+msgstr "アクセスを認められました。"
 
 #: src/ExternalConn.cpp:495
 #, c-format
