@@ -1111,8 +1111,8 @@ msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
 msgstr ""
-"新しくて珍しいファイルを配布のに手伝って、コストとしてリンクサイズが少し "
-"大きくなります"
+"新しくて珍しいファイルを配布のに手伝って、コストとしてリンクサイズが少し 大き"
+"くなります"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:193
 msgid "MD4 File Hash"
@@ -1230,7 +1230,8 @@ msgstr "ファイル %u: %s 番を処理中です"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "パートハッシュを頼みました（9.5MB以上のファイルサイズのみに使用されます）"
+msgstr ""
+"パートハッシュを頼みました（9.5MB以上のファイルサイズのみに使用されます）"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "Please wait... "
@@ -1554,8 +1555,8 @@ msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
 msgstr ""
-"只今接続中のサーバを消除しようとしています。先に切断してください。 "
-"このサーバは消除されませんでした。"
+"只今接続中のサーバを消除しようとしています。先に切断してください。 このサーバ"
+"は消除されませんでした。"
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3134 src/CatDialog.cpp:149
 #: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:342
@@ -1922,8 +1923,7 @@ msgstr "ユーザ定義"
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
-msgstr ""
-"この変更点を有効するにはaMuleを再起動しなければなりません：\n"
+msgstr "この変更点を有効するにはaMuleを再起動しなければなりません：\n"
 
 #: src/PrefsUnifiedDlg.cpp:473
 msgid "- TCP port changed.\n"
