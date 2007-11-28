@@ -2157,16 +2157,16 @@ msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr ""
-"間違ったECバージョンID。バイナリー不互換性の可能性があります。同じスナップショットの "
-"コアとリモートを使用してください。"
+"間違ったECバージョンID。バイナリー不互換性の可能性があります。同じスナップ"
+"ショットの コアとリモートを使用してください。"
 
 #: src/ExternalConn.cpp:212
 msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"任意CVSバージョンからリリースバージョンに接続は出来ません！ "
-"*ハァ...*起こり得るクラッシュを予防しました"
+"任意CVSバージョンからリリースバージョンに接続は出来ません！ *ハァ...*起こり得"
+"るクラッシュを予防しました"
 
 #: src/ExternalConn.cpp:228
 msgid "Authentication failed."
