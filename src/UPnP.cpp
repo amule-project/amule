@@ -186,7 +186,7 @@ const char *CUPnPLib::s_LibUPnPSymbols[] =
 #endif
 
 
-const std::string CUPnPLib::addLibrayPath(const char *name)
+const std::string CUPnPLib::addLibraryPath(const char *name)
 {
 #ifdef __DARWIN__
 	CFBundleRef bundle = CFBundleGetMainBundle();
@@ -211,9 +211,9 @@ const std::string CUPnPLib::addLibrayPath(const char *name)
 CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
 m_ctrlPoint(ctrlPoint),
-m_LibIXMLHandle(addLibrayPath(libIXMLName).c_str()),
-m_LibUPnPHandle2(addLibrayPath(libUPnP2Name).c_str()),
-m_LibUPnPHandle3(addLibrayPath(libUPNP3Name).c_str()),
+m_LibIXMLHandle(addLibraryPath(libIXMLName).c_str()),
+m_LibUPnPHandle2(addLibraryPath(libUPnP2Name).c_str()),
+m_LibUPnPHandle3(addLibraryPath(libUPNP3Name).c_str()),
 m_LibUPnPHandle(NULL)
 {
 	// There are two versions of libUPnP in the market,
