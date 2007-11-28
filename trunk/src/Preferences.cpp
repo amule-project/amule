@@ -614,6 +614,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_FRENCH,				true,	wxTRANSLATE("French") },
 	{ wxLANGUAGE_GALICIAN,				true,	wxTRANSLATE("Galician") },
 	{ wxLANGUAGE_GERMAN,				true,	wxTRANSLATE("German") },
+	{ wxLANGUAGE_GREEK,				true,	wxTRANSLATE("Greek") },
 	{ wxLANGUAGE_HUNGARIAN,				true,	wxTRANSLATE("Hungarian") },
 	{ wxLANGUAGE_ITALIAN,				true,	wxTRANSLATE("Italian") },
 	{ wxLANGUAGE_ITALIAN_SWISS,			true,	wxTRANSLATE("Italian (Swiss)") },
