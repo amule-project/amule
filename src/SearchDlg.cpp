@@ -494,11 +494,14 @@ void CSearchDlg::StartNewSearch()
 		
 		if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxT("Any")) {
 			if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxGetTranslation(params.typeText)) {
-				printf("wxASSERT-SearchDlg.cpp(486):\n\t'%s'\n\t'%s'\n",
+				printf("Translation problem: %s(%d):\n\t'%s'\n\t'%s'\n\t'%s'\n", __FILE__, __LINE__,
 					(const char *)unicode2char(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection()),
-					(const char *)unicode2char(wxGetTranslation(params.typeText)));
+					(const char *)unicode2char(wxGetTranslation(params.typeText)),
+					(const char *)unicode2char(params.typeText));
 			}
-			wxASSERT(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() == wxGetTranslation(params.typeText));
+			wxASSERT(/* Translation problem */
+				CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() ==
+				wxGetTranslation(params.typeText));
 		}
 	}
 
