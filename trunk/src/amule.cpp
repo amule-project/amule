@@ -797,14 +797,12 @@ bool CamuleApp::OnInit()
 		}
 	}
 	
-	
 	// Autoconnect if that option is enabled
 	if (thePrefs::DoAutoConnect() && (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia())) {
-		AddLogLineM(true, _("Connecting"));
+		AddLogLineM(true, wxT("Connecting"));
 		if (thePrefs::GetNetworkED2K()) {
 			theApp->serverconnect->ConnectToAnyServer();
 		}
-
 		StartKad();
 
 	}
@@ -842,7 +840,7 @@ bool CamuleApp::OnInit()
 		CTerminationProcess *p = new CTerminationProcess(cmd);
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		if (webserver_pid) {
-			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
+			AddLogLineM(true, CFormat(wxT("webserver running on pid %d")) % webserver_pid);
 		} else {
 			ShowAlert(_(
 				"You requested to run webserver from startup, "
@@ -1074,9 +1072,8 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 			
 		}
 	} else if (add_source) {
-		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
+		AddLogLineM(true, wxT("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
 	}
-
 	strURL << wxT("|/");
 	
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
@@ -1125,7 +1122,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	
 	// Open both files if needed
 	if ( !emulesig_out.Create( m_emulesig_path) ) {
-		AddLogLineM(true, _("Failed to create OnlineSig File"));
+		AddLogLineM(true, wxT("Failed to create OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -1133,7 +1130,7 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	}
 
 	if ( !amulesig_out.Create(m_amulesig_path) ) {
-		AddLogLineM(true, _("Failed to create aMule OnlineSig File"));
+		AddLogLineM(true, wxT("Failed to create aMule OnlineSig File"));
 		// Will never try again.
 		m_amulesig_path.Clear();
 		m_emulesig_path.Clear();
@@ -1301,7 +1298,7 @@ void CamuleApp::Localize_mule()
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 	if (!m_locale.IsOk()) {
-		AddLogLineM(false,_("The selected locale seems not to be installed on your box."
+		AddLogLineM(false, wxT("The selected locale seems not to be installed on your box."
 				    " (Note: I'll try to set it anyway)"));
 	}
 }
@@ -1311,7 +1308,8 @@ void CamuleApp::Localize_mule()
 // Is called when the user runs a new version of aMule
 void CamuleApp::Trigger_New_version(wxString new_version)
 {
-	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s")) % new_version + wxT(" ---\n\n");
+	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s"))
+		% new_version + wxT(" ---\n\n");
 	if (new_version == wxT("CVS")) {
 		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
@@ -1322,7 +1320,9 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 		info += _("The following options have been changed in this release for security reasons:\n");
 		info += _("\n* Enabled Protocol Obfuscation support for incoming and outgoing connections.\n");
 		info += _("\n* Disabled updating the server list from other server and clients.\n");
-		info += _("\nFor more information on the reason for this changes, seach\nthe aMule wiki at http://wiki.amule.org for \"fake servers\" info.\nIt's important that you clear any fake server from your server list for aMule to work properly.");
+		info += _("\nFor more information on the reason for this changes, seach\nthe aMule wiki at "
+			"http://wiki.amule.org for \"fake servers\" info.\n"
+			"It's important that you clear any fake server from your server list for aMule to work properly.");
 	}
 	
 	// General info
@@ -1766,7 +1766,7 @@ wxString CamuleApp::GetLog(bool reset)
 		delete applog;
 		applog = new wxFFileOutputStream(ConfigDir + wxT("logfile"));
 		if ( applog->Ok() ) {
-			AddLogLine(_("Log has been reset"));
+			AddLogLine(wxT("Log has been reset"));
 		} else {
 			delete applog;
 			applog = 0;
@@ -1794,7 +1794,7 @@ wxString CamuleApp::GetDebugLog(bool reset)
 void CamuleApp::AddServerMessageLine(wxString &msg)
 {
 	server_msg += msg + wxT("\n");
-	AddLogLine(CFormat(_("ServerMessage: %s")) % msg);
+	AddLogLine(CFormat(wxT("ServerMessage: %s")) % msg);
 }
 
 
@@ -1832,7 +1832,7 @@ void CamuleApp::OnFinishedHTTPDownload(CMuleInternalEvent& event)
 				theApp->ShowConnectionState();
 				
 			} else {
-				AddLogLineM(true, _("Failed to download the nodes list."));
+				AddLogLineM(true, wxT("Failed to download the nodes list."));
 			}
 			break;
 	}
@@ -1845,26 +1845,28 @@ void CamuleApp::CheckNewVersion(uint32 result)
 		wxTextFile file;
 		
 		if (!file.Open(filename)) {
-			AddLogLineM(true, _("Failed to open the downloaded version check file") );
+			AddLogLineM(true, wxT("Failed to open the downloaded version check file") );
 			return;
 		} else if (!file.GetLineCount()) {
-			AddLogLineM(true, _("Corrupted version check file"));
+			AddLogLineM(true, wxT("Corrupted version check file"));
 		} else {
 			wxString versionLine = file.GetFirstLine();
 			wxStringTokenizer tkz(versionLine, wxT("."));
 			
-			AddDebugLogLineM(false, logGeneral, wxString(wxT("Running: ")) + wxT(VERSION) + wxT(", Version check: ") + versionLine);
+			AddDebugLogLineM(false, logGeneral,
+				wxString(wxT("Running: ")) + wxT(VERSION) +
+				wxT(", Version check: ") + versionLine);
 			
 			long fields[] = {0, 0, 0};
 			for (int i = 0; i < 3; ++i) {
 				if (!tkz.HasMoreTokens()) {
-					AddLogLineM(true, _("Corrupted version check file"));
+					AddLogLineM(true, wxT("Corrupted version check file"));
 					return;
 				} else {
 					wxString token = tkz.GetNextToken();
 					
 					if (!token.ToLong(&fields[i])) {
-						AddLogLineM(true, _("Corrupted version check file"));
+						AddLogLineM(true, wxT("Corrupted version check file"));
 						return;
 					}
 				}
@@ -1874,23 +1876,36 @@ void CamuleApp::CheckNewVersion(uint32 result)
 			long newVer = make_full_ed2k_version(fields[0], fields[1], fields[2]);
 			
 			if (curVer < newVer) {
-				AddLogLineM(true, _("You are using an outdated version of aMule!"));
-				AddLogLineM(false, wxString::Format(_("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"), VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2]));
-				AddLogLineM(false, _("The latest version can always be found at http://www.amule.org"));
-				#ifdef AMULE_DAEMON
-				printf("%s\n", (const char*)unicode2UTF8(wxString::Format(
-					_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"),
-					VERSION_MJR, VERSION_MIN, VERSION_UPDATE, fields[0], fields[1], fields[2])));
-				#endif
+				AddLogLineM(true, wxT("You are using an outdated version of aMule!"));
+				AddLogLineM(false, CFormat(
+					wxT("Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"))
+						% VERSION_MJR
+						% VERSION_MIN
+						% VERSION_UPDATE
+						% fields[0]
+						% fields[1]
+						% fields[2]);
+				AddLogLineM(false, wxT("The latest version can always be found at http://www.amule.org"));
+#ifdef AMULE_DAEMON
+				wxString msg = CFormat(
+					_("WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"))
+					% VERSION_MJR
+					% VERSION_MIN
+					% VERSION_UPDATE
+					% fields[0]
+					% fields[1]
+					% fields[2];
+				printf("%s\n", (const char*)unicode2UTF8(msg));
+#endif
 			} else {
-				AddLogLineM(false, _("Your copy of aMule is up to date."));
+				AddLogLineM(false, wxT("Your copy of aMule is up to date."));
 			}
 		}
 		
 		file.Close();
 		wxRemoveFile(filename);
 	} else {
-		AddLogLineM(true, _("Failed to download the version check file") );
+		AddLogLineM(true, wxT("Failed to download the version check file") );
 	}	
 	
 }
@@ -1992,8 +2007,11 @@ void CamuleApp::ShowUserCount() {
 	theApp->serverlist->GetUserFileStatus( totaluser, totalfile );
 	
 	wxString buffer = 
-		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
-		CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
+		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s"))
+			% CastItoIShort(totaluser)
+			% CastItoIShort(Kademlia::CKademlia::GetKademliaUsers())
+			% CastItoIShort(totalfile)
+			% CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
 	
 	Notify_ShowUserCount(buffer);
 }
@@ -2059,35 +2077,35 @@ void CamuleApp::ShowConnectionState()
 			}
 			if (state & CONNECTED_ED2K) {
 				// We connected to some server
-				const wxString id = theApp->serverconnect->IsLowID() ? _("with LowID") : _("with HighID");
+				const wxString id = theApp->serverconnect->IsLowID() ? wxT("with LowID") : wxT("with HighID");
 
-				AddLogLine(CFormat(_("Connected to %s %s")) % connected_server % id);
+				AddLogLine(CFormat(wxT("Connected to %s %s")) % connected_server % id);
 			} else {
 				if ( theApp->serverconnect->IsConnecting() ) {
-					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
+					AddLogLine(CFormat(wxT("Connecting to %s")) % connected_server);
 				} else {
-					AddLogLine(_("Disconnected from ED2K"));
+					AddLogLine(wxT("Disconnected from ED2K"));
 				}
 			}
 		}
 		
 		if (changed_flags & CONNECTED_KAD_NOT) {
 			if (state & CONNECTED_KAD_NOT) {
-				AddLogLine(_("Kad started."));
+				AddLogLine(wxT("Kad started."));
 			} else {
-				AddLogLine(_("Kad stopped."));
+				AddLogLine(wxT("Kad stopped."));
 			}
 		}
 		
 		if (changed_flags & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 			if (state & (CONNECTED_KAD_OK | CONNECTED_KAD_FIREWALLED)) {
 				if (state & CONNECTED_KAD_OK) {
-					AddLogLine(_("Connected to Kad (ok)"));
+					AddLogLine(wxT("Connected to Kad (ok)"));
 				} else {
-					AddLogLine(_("Connected to Kad (firewalled)"));
+					AddLogLine(wxT("Connected to Kad (firewalled)"));
 				}
 			} else {
-				AddLogLine(_("Disconnected from Kad"));
+				AddLogLine(wxT("Disconnected from Kad"));
 			}
 		}
 		
@@ -2143,10 +2161,10 @@ void CamuleApp::StartKad()
 		if (!thePrefs::IsUDPDisabled()) {
 			Kademlia::CKademlia::Start();
 		} else {
-			AddLogLineM(true,_("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
+			AddLogLineM(true,wxT("Kad network cannot be used if UDP port is disabled on preferences, not starting."));
 		}
 	} else if (!thePrefs::GetNetworkKademlia()) {
-		AddLogLineM(true,_("Kad network disabled on preferences, not connecting."));
+		AddLogLineM(true,wxT("Kad network disabled on preferences, not connecting."));
 	}
 }
 

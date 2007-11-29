@@ -30,6 +30,7 @@
 #include <include/common/Macros.h>
 #include <include/common/DataFileVersion.h>
 
+#include <common/Format.h>	// Needed for CFormat
 
 #include "GetTickCount.h"	// Needed for GetTickCount
 #include "Preferences.h"	// Needed for thePrefs
@@ -161,14 +162,15 @@ void CClientCreditsList::LoadList()
 			CClientCredits* newcredits = new CClientCredits(newcstruct);
 			m_mapClients[newcredits->GetKey()] = newcredits;
 		}
-
-		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
-	
+		AddLogLineM(false, CFormat(wxT(
+			"Creditfile loaded, %u clients are known")) % (count-cDeleted));
 		if (cDeleted) {
-			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
+			AddLogLineM(false, CFormat(wxT(
+				" - Credits expired for %u clients!")) % cDeleted);
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(true, logCredits, wxT("IO erro while loading clients.met file: ") + e.what());
+		AddDebugLogLineM(true, logCredits,
+			wxT("IO erro while loading clients.met file: ") + e.what());
 	}
 }
 
@@ -288,21 +290,24 @@ void CClientCreditsList::InitalizeCrypting()
 		// check if keyfile is there
  		if (wxFileExists(theApp->ConfigDir + CRYPTKEY_FILENAME)) {
 			off_t keySize = GetFileSize(theApp->ConfigDir + CRYPTKEY_FILENAME);
-			
 			if (keySize < 0) {
-				AddDebugLogLineM(true, logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
+				AddDebugLogLineM(true, logCredits,
+					wxT("Cannot access 'cryptkey.dat', please check permissions."));
 				return;
 			} else if (keySize == 0) {
-				AddDebugLogLineM(true, logCredits, wxT("'cryptkey.dat' is empty, recreating keypair."));
+				AddDebugLogLineM(true, logCredits,
+					wxT("'cryptkey.dat' is empty, recreating keypair."));
 				CreateKeyPair();
  			}
  		} else {
-			AddLogLineM( false, _("No 'cryptkey.dat' file found, creating.") );
+			AddLogLineM(false, wxT("No 'cryptkey.dat' file found, creating."));
  			CreateKeyPair();
  		}
 			
  		// load private key
- 		CryptoPP::FileSource filesource(unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
+ 		CryptoPP::FileSource filesource(
+			unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,
+			new CryptoPP::Base64Decoder);
  		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
  		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));
@@ -313,8 +318,9 @@ void CClientCreditsList::InitalizeCrypting()
 	} catch (const CryptoPP::Exception& e) {
 		delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
 		m_pSignkey = NULL;
-		
-		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while initializing encryption keys: ")) + char2unicode(e.what()));
+		AddDebugLogLineM(true, logCredits,
+			wxString(wxT("Error while initializing encryption keys: ")) +
+			char2unicode(e.what()));
  	}
 }
 
@@ -357,7 +363,9 @@ uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOut
 		
 		return asink.TotalPutLength();			
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while creating signature: ")) + char2unicode(e.what()));
+		AddDebugLogLineM(true, logCredits,
+			wxString(wxT("Error while creating signature: ")) +
+			char2unicode(e.what()));
 		wxASSERT(false);
 		
 		return 0;
@@ -397,7 +405,8 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 					// Ignore local ip...
 					if (!theApp->GetPublicIP(true)) {
 						if (::IsLowID(theApp->GetED2KID())){
-							AddDebugLogLineM( false, logCredits, wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
+							AddDebugLogLineM( false, logCredits,
+								wxT("Warning: Maybe SecureHash Ident fails because LocalIP is unknown"));
 							// Fallback to local ip...
 							ChallengeIP = theApp->GetPublicIP();
 						} else {
@@ -418,7 +427,9 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 		
  		bResult = pubkey.VerifyMessage(abyBuffer, m_nMyPublicKeyLen+4+nChIpSize, pachSignature, nInputSize);
 	} catch (const CryptoPP::Exception& e) {
-		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while verifying identity: ")) + char2unicode(e.what()));
+		AddDebugLogLineM(true, logCredits,
+			wxString(wxT("Error while verifying identity: ")) +
+			char2unicode(e.what()));
  		bResult = false;
  	}
 
