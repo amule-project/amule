@@ -794,17 +794,23 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 
 			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
 			if (IsMessageFiltered(message, m_client)) {
-				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
+				AddLogLineM(true, CFormat(wxT("Message filtered from '%s' (IP:%s)"))
+					% m_client->GetUserName()
+					% m_client->GetFullIP());
 			} else {
-				AddLogLineM( true, CFormat(_("New message from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
-				
-				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),m_client->GetUserPort()), m_client->GetUserName() + wxT("|") + message);
+				AddLogLineM(true, CFormat(wxT("New message from '%s' (IP:%s)"))
+					% m_client->GetUserName()
+					% m_client->GetFullIP());
+				Notify_ChatProcessMsg(GUI_ID(m_client->GetIP(),
+					m_client->GetUserPort()),
+					m_client->GetUserName() + wxT("|") + message);
 			}
 			break;
 		}
 		
 		case OP_ASKSHAREDFILES:	{	// 0.43b (well, er, it does the same, but in our own way)
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDFILES from ") + m_client->GetFullIP() );
+			AddDebugLogLineM(false, logRemoteClient,
+				wxT("Remote Client: OP_ASKSHAREDFILES from ") + m_client->GetFullIP() );
 			
 			// client wants to know what we have in share, let's see if we allow him to know that
 			theStats::AddDownOverheadOther(size);
@@ -814,7 +820,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			}
 			
 			if (thePrefs::CanSeeShares() == vsfaEverybody || (thePrefs::CanSeeShares() == vsfaFriends && m_client->IsFriend())) {
-				AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Accepted"))
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your sharedfiles-list -> Accepted"))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
 				
@@ -835,7 +841,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 				SendPacket(replypacket, true, true);
 			} else {
-				AddLogLineM( true, CFormat( _("User %s (%u) requested your sharedfiles-list -> Denied"))
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your sharedfiles-list -> Denied"))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
 			
@@ -867,9 +873,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				break;
 			}
 			if ((thePrefs::CanSeeShares()==vsfaEverybody) || ((thePrefs::CanSeeShares()==vsfaFriends) && m_client->IsFriend())) {
-				AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Accepted") )
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your shareddirectories-list -> Accepted"))
 					% m_client->GetUserName()
-					% m_client->GetUserIDHybrid() );
+					% m_client->GetUserIDHybrid());
 
 				// This list will contain all (unique) folders.
 				CStringList foldersToSend;
@@ -914,9 +920,9 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDIRSANS to ") + m_client->GetFullIP() );
 				SendPacket(replypacket, true, true);
 			} else {
-				AddLogLineM( true, CFormat( _("User %s (%u) requested your shareddirectories-list -> Denied") )
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your shareddirectories-list -> Denied"))
 					% m_client->GetUserName()
-					% m_client->GetUserIDHybrid() );
+					% m_client->GetUserIDHybrid());
 
 				CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0, OP_EDONKEYPROT);
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
@@ -939,7 +945,10 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 										
 			wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
-				AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your sharedfiles-list for directory %s -> accepted"))
+					% m_client->GetUserName()
+					% m_client->GetUserIDHybrid()
+					% strReqDir);
 				wxASSERT( data.GetPosition() == data.GetLength() );
 				
 				CKnownFilePtrList list;
@@ -976,18 +985,23 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESDIRANS to ") + m_client->GetFullIP() );
 				SendPacket(replypacket, true, true);
 			} else {
-				AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> denied")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
+				AddLogLineM( true, CFormat(wxT("User %s (%u) requested your sharedfiles-list for directory %s -> denied"))
+					% m_client->GetUserName()
+					% m_client->GetUserIDHybrid()
+					% strReqDir);
 				
 				CPacket* replypacket = new CPacket(OP_ASKSHAREDDENIEDANS, 0, OP_EDONKEYPROT);
 				theStats::AddUpOverheadOther(replypacket->GetPacketSize());
-				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDDENIEDANS to ") + m_client->GetFullIP() );
+				AddDebugLogLineM( false, logLocalClient,
+					wxT("Local Client: OP_ASKSHAREDDENIEDANS to ") + m_client->GetFullIP());
 				SendPacket(replypacket, true, true);
 			}
 			break;
 		}		
 		
 		case OP_ASKSHAREDDIRSANS:{		// 0.43b
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDDIRSANS from ") + m_client->GetFullIP() );
+			AddDebugLogLineM( false, logRemoteClient,
+				wxT("Remote Client: OP_ASKSHAREDDIRSANS from ") + m_client->GetFullIP() );
 			
 			theStats::AddDownOverheadOther(size);
 			if (m_client->GetFileListRequested() == 1){
@@ -995,7 +1009,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				uint32 uDirs = data.ReadUInt32();
 				for (uint32 i = 0; i < uDirs; i++){
 					wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
-					AddLogLineM( true, CFormat( _("User %s (%u) shares directory %s") )
+					AddLogLineM( true, CFormat(wxT("User %s (%u) shares directory %s"))
 						% m_client->GetUserName()
 						% m_client->GetUserIDHybrid()
 						% strDir );
@@ -1004,13 +1018,14 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					tempfile.WriteString(strDir);
 					CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIR);
 					theStats::AddUpOverheadOther(replypacket->GetPacketSize());
-					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESD to ") + m_client->GetFullIP() );
+					AddDebugLogLineM( false, logLocalClient,
+						wxT("Local Client: OP_ASKSHAREDFILESD to ") + m_client->GetFullIP());
 					SendPacket(replypacket, true, true);
 				}
 				wxASSERT( data.GetPosition() == data.GetLength() );
 				m_client->SetFileListRequested(uDirs);
 			} else {
-				AddLogLineM( true, CFormat( _("User %s (%u) sent unrequested shared dirs.") )
+				AddLogLineM( true, CFormat(wxT("User %s (%u) sent unrequested shared dirs."))
 					% m_client->GetUserName() 
 					% m_client->GetUserIDHybrid() );
 			}
@@ -1025,19 +1040,19 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
 
 			if (m_client->GetFileListRequested() > 0){
-				AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory %s") )
+				AddLogLineM( true, CFormat(wxT("User %s (%u) sent sharedfiles-list for directory %s"))
 					% m_client->GetUserName()
 					% m_client->GetUserIDHybrid()
 					% strDir );
 				
 				m_client->ProcessSharedFileList(buffer + data.GetPosition(), size - data.GetPosition(), strDir);
 				if (m_client->GetFileListRequested() == 0) {
-					AddLogLineM( true, CFormat( _("User %s (%u) finished sending sharedfiles-list") )
+					AddLogLineM( true, CFormat(wxT("User %s (%u) finished sending sharedfiles-list"))
 						% m_client->GetUserName()
 						% m_client->GetUserIDHybrid() );
 				}
 			} else {
-				AddLogLineM( true, CFormat( _("User %s (%u) sent unwanted sharedfiles-list") )
+				AddLogLineM( true, CFormat(wxT("User %s (%u) sent unwanted sharedfiles-list"))
 					% m_client->GetUserName()
 					% m_client->GetUserIDHybrid() );
 			}
@@ -1045,20 +1060,27 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 		}
 		
 		case OP_ASKSHAREDDENIEDANS:
-			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_ASKSHAREDDENIEDANS from ") + m_client->GetFullIP() );
+			AddDebugLogLineM( false, logRemoteClient,
+				wxT("Remote Client: OP_ASKSHAREDDENIEDANS from ") +
+				m_client->GetFullIP());
 			
 			theStats::AddDownOverheadOther(size);
 			wxASSERT( size == 0 );
-			AddLogLineM( true, CFormat( _("User %s (%u) denied access to shared directories/files list") )
-				% m_client->GetUserName()
-				% m_client->GetUserIDHybrid() );
+			AddLogLineM(true,
+				CFormat(wxT("User %s (%u) denied access to shared directories/files list"))
+					% m_client->GetUserName()
+					% m_client->GetUserIDHybrid());
 					
 			m_client->SetFileListRequested(0);			
 			break;
 		
 		default:
 			theStats::AddDownOverheadOther(size);
-			AddDebugLogLineM( false, logRemoteClient, wxString::Format(wxT("Edonkey packet: unknown opcode: %i %x from "), opcode, opcode) + m_client->GetFullIP());
+			AddDebugLogLineM( false, logRemoteClient,
+				CFormat(wxT("Edonkey packet: unknown opcode: %i %x from %s"))
+					% opcode
+					% opcode
+					% m_client->GetFullIP());
 			return false;
 	}
 	

@@ -106,15 +106,15 @@ void CHashingTask::Entry()
 	if ((m_toHash & EH_MD4) and (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
 		AddLogLineM( false, logHasher, CFormat( 
-			_("Starting to create MD4 and AICH hash for file: %s")) %
+			wxT("Starting to create MD4 and AICH hash for file: %s")) %
 			m_filename );
 	} else if ((m_toHash & EH_MD4)) {
 		AddLogLineM( false, logHasher, CFormat(
-			_("Starting to create MD4 hash for file: %s")) % m_filename );
+			wxT("Starting to create MD4 hash for file: %s")) % m_filename );
 	} else if ((m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
 		AddLogLineM( false, logHasher, CFormat(
-			_("Starting to create AICH hash for file: %s")) % m_filename );
+			wxT("Starting to create AICH hash for file: %s")) % m_filename );
 	} else {
 		wxCHECK_RET(0, wxT("No hashes requested for file, skipping: ") +
 			m_filename);
@@ -250,7 +250,7 @@ void CAICHSyncTask::Entry()
 {
 	ConvertToKnown2ToKnown264();
 	
-	AddDebugLogLineM( false, logAICHThread, _("Syncronization thread started.") );
+	AddDebugLogLineM( false, logAICHThread, wxT("Syncronization thread started.") );
 	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
@@ -295,7 +295,7 @@ void CAICHSyncTask::Entry()
 		return;		
 	}
 	
-	AddDebugLogLineM( false, logAICHThread, _("Masterhashes of known files have been loaded.") );
+	AddDebugLogLineM( false, logAICHThread, wxT("Masterhashes of known files have been loaded.") );
 
 #ifndef AMULE_DAEMON
 	// Since we will be modifying objects in the main thread, 
@@ -359,7 +359,7 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 		return false;
 	}
 
-	AddLogLineM(false, CFormat(_("Converting old AICH hashsets in '%s' to 64b in '%s'."))
+	AddLogLineM(false, CFormat(wxT("Converting old AICH hashsets in '%s' to 64b in '%s'."))
 			% OLD_KNOWN2_MET_FILENAME % KNOWN2_MET_FILENAME);
 
 	try {
@@ -441,7 +441,7 @@ void CCompletionTask::Entry()
 	}
 
 	if (m_filename != oldName) {
-		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
+		AddLogLineM(true, logPartFile, CFormat(wxT("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
 			% oldName % m_filename);
 	}
 	
@@ -460,7 +460,7 @@ void CCompletionTask::Entry()
 					+ wxString::Format(wxT("(%u)"), count) + postfix;
 		} while (CheckFileExists(newName));
 		
-		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
+		AddLogLineM(true, logPartFile, CFormat(wxT("WARNING: The file '%s' already exists, new file renamed to '%s'."))
 			% m_filename
 			% wxFileName(newName).GetFullName());
 	}
@@ -474,7 +474,7 @@ void CCompletionTask::Entry()
 		}
 		
 		if (!wxRemoveFile(partfilename)) {
-			AddLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
+			AddLogLineM(true, logPartFile, CFormat(wxT("WARNING: Could not remove original '%s' after creating backup"))
 				% partfilename);
 		}
 	}
@@ -486,7 +486,7 @@ void CCompletionTask::Entry()
 
 		if (wxFileName::FileExists(toRemove)) {
 			if (!wxRemoveFile(toRemove)) {
-				AddLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
+				AddLogLineM(true, logPartFile, CFormat(wxT("WARNING: Failed to delete %s")) % toRemove);
 			}
 		}
 	}

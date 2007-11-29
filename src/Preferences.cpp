@@ -1607,7 +1607,7 @@ wxString CPreferences::GetBrowser()
 			case 7: cmd = wxT("epiphany -n '%s'"); break;
 			case 8: cmd = s_CustomBrowser; break;
 			default:
-				AddLogLineM( true, _("Unable to determine selected browser!") );
+				AddLogLineM( true, wxT("Unable to determine selected browser!"));
 		}
 	else
 		switch ( s_Browser ) {
@@ -1621,14 +1621,14 @@ wxString CPreferences::GetBrowser()
 			case 7: cmd = wxT("epiphany '%s'"); break;
 			case 8: cmd = s_CustomBrowser; break;
 			default:
-				AddLogLineM( true, _("Unable to determine selected browser!") );
+				AddLogLineM( true, wxT("Unable to determine selected browser!"));
 		}
 #else
 	switch ( s_Browser ) {
 		case 0: cmd = wxT(""); break;
 		case 1: cmd = s_CustomBrowser; break;
 		default:
-			AddLogLineM( true, _("Unable to determine selected browser!") );
+			AddLogLineM( true, wxT("Unable to determine selected browser!"));
 	}
 #endif /* !__WXMSW__ / __WXMSW__ */
 	return cmd;
@@ -1657,8 +1657,8 @@ void CPreferences::SetPort(uint16 val) {
 	// Warning: Check for +3, because server UDP is TCP+3
 	
 	if (val +3 > 65535) {
-		AddLogLineM(true, _("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
-		AddLogLineM(false, wxString::Format(_("Default port will be used (%d)"),DEFAULT_TCP_PORT));
+		AddLogLineM(true, wxT("TCP port can't be higher than 65532 due to server UDP socket being TCP+3"));
+		AddLogLineM(false, CFormat(wxT("Default port will be used (%d)")) % DEFAULT_TCP_PORT);
 		s_port = DEFAULT_TCP_PORT;
 	} else {
 		s_port = val;

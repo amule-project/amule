@@ -70,19 +70,19 @@ bool CKnownFileList::Init()
 	
 	wxString fullpath = theApp->ConfigDir + wxT("known.met");
 	if (!wxFileExists(fullpath)) {
-		AddLogLineM(true, _("Warning: known.met does not exist."));
+		AddLogLineM(true, wxT("Warning: known.met does not exist."));
 		return false;
 	}
 
 	if (!file.Open(fullpath)) {
-		AddLogLineM(true, _("Warning: known.met cannot be opened."));
+		AddLogLineM(true, wxT("Warning: known.met cannot be opened."));
 		return false;
 	}
 	
 	try {
 		uint8 version = file.ReadUInt8();
 		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
-			AddLogLineM(true, _("Warning: Knownfile list corrupted, contains invalid header."));
+			AddLogLineM(true, wxT("Warning: Knownfile list corrupted, contains invalid header."));
 			return false;
 		}
 		
@@ -108,7 +108,7 @@ bool CKnownFileList::Init()
 	} catch (const CInvalidPacket& e) {
 		AddLogLineM(true, wxT("Invalid entry in knownfilelist, file may be corrupt: ") + e.what());
 	} catch (const CSafeIOException& e) {
-		AddLogLineM(true, CFormat(_("IO error while reading known.met file: %s")) % e.what());
+		AddLogLineM(true, CFormat(wxT("IO error while reading known.met file: %s")) % e.what());
 	}	
 	
 	return false;
@@ -154,7 +154,7 @@ void CKnownFileList::Save()
 		file.Seek(0);
 		file.WriteUInt8(bContainsAnyLargeFiles ? MET_HEADER_WITH_LARGEFILES : MET_HEADER);
 	} catch (const CIOFailureException& e) {
-		AddLogLineM(true, CFormat(_("Error while saving known.met file: %s")) % e.what());
+		AddLogLineM(true, CFormat(wxT("Error while saving known.met file: %s")) % e.what());
 	}
 }
 
@@ -289,8 +289,8 @@ bool CKnownFileList::Append(CKnownFile *Record)
 		}
 	} else {
 		AddDebugLogLineM(false, logGeneral,
-			CFormat(wxT("%s is 0-size, not added")) %
-			Record->GetFileName());
+			CFormat(wxT("%s is 0-size, not added"))
+				% Record->GetFileName());
 		
 		return false;
 	}

@@ -64,12 +64,15 @@ CIP2Country::CIP2Country() : m_CountryDataMap()
 		if (img.IsOk()) {
 			countrydata.Flag = wxBitmap(img);
 		} else {
-			AddLogLineM(true, _("CIP2Country::CIP2Country(): Failed to load country data from ") + countrydata.Name);
+			AddLogLineM(true, CFormat(
+				wxT("CIP2Country::CIP2Country(): Failed to load country data from %s"))
+					% countrydata.Name);
 		}
 		m_CountryDataMap[countrydata.Name] = countrydata;
 	}
 	
-	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());
+	AddLogLineM(false, CFormat(wxT("Loaded %d flag bitmaps."))
+		% m_CountryDataMap.size());
 }
 
 

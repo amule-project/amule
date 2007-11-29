@@ -503,14 +503,16 @@ uint16 CUploadQueue::GetWaitingPosition(const CUpDownClient *client) const
 void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
 {
 	//Find the position of the filehash in the list and remove it.
-	suspendlist::iterator it = std::find( suspended_uploads_list.begin(), 
-			                              suspended_uploads_list.end(),
-			                              filehash );
-	if ( it != suspended_uploads_list.end() )
-		suspended_uploads_list.erase( it );
+	suspendlist::iterator it = std::find(
+		suspended_uploads_list.begin(), 
+		suspended_uploads_list.end(),
+		filehash );
+	if (it != suspended_uploads_list.end()) {
+		suspended_uploads_list.erase(it);
+	}
 	
-	AddLogLineM( false, CFormat( _("Resuming uploads of file: %s" ) )
-				% filehash.Encode() );
+	AddLogLineM( false, CFormat(wxT("Resuming uploads of file: %s"))
+		% filehash.Encode());
 }
 
 /*
@@ -518,8 +520,8 @@ void CUploadQueue::ResumeUpload( const CMD4Hash& filehash )
  */
 void CUploadQueue::SuspendUpload( const CMD4Hash& filehash )
 {
-	AddLogLineM( false, CFormat( _("Suspending upload of file: %s" ) )
-				% filehash.Encode() );
+	AddLogLineM( false, CFormat(wxT("Suspending upload of file: %s"))
+		% filehash.Encode());
 
 	//Append the filehash to the list.
 	suspended_uploads_list.push_back(filehash);

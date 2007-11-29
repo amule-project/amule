@@ -1252,7 +1252,9 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
 	SetSocket(NULL);
 
 	if (m_iFileListRequested){
-		AddLogLineM( false, CFormat(_("Failed to retrieve shared files from user '%s'")) % GetUserName() );
+		AddLogLineM(false, CFormat(
+			wxT("Failed to retrieve shared files from user '%s'"))
+				% GetUserName());
 		m_iFileListRequested = 0;
 	}
 
@@ -1646,7 +1648,7 @@ void CUpDownClient::ReGetClientSoft()
 		}
 		// Isn't xMule annoying?
 		if ((m_clientSoft == SO_LXMULE) && (GetMuleVersion() > 0x26) && (GetMuleVersion() != 0x99)) {
-			m_clientSoftString += wxString::Format(_(" (Fake eMule version %#x)"),GetMuleVersion());
+			m_clientSoftString += CFormat(_(" (Fake eMule version %#x)")) % GetMuleVersion();
 		}
 		if ((m_clientSoft == SO_EMULE) && 
 			(
@@ -1698,14 +1700,14 @@ void CUpDownClient::ReGetClientSoft()
 			m_nClientVersion = MAKE_CLIENT_VERSION(0,nClientMinVersion,0);
 			switch (m_clientSoft) {
 				case SO_AMULE:
-					m_clientVerString = wxString::Format(_("1.x (based on eMule v0.%u)"), nClientMinVersion);
+					m_clientVerString = CFormat(_("1.x (based on eMule v0.%u)")) % nClientMinVersion;
 					break;
 				case SO_LPHANT:
 					m_clientVerString = wxT("< v0.05");
 					break;
 				default:
 					clientModString = GetClientModString();
-					m_clientVerString = wxString::Format(wxT("v0.%u"), nClientMinVersion);
+					m_clientVerString = CFormat(wxT("v0.%u")) % nClientMinVersion;
 					break;
 			}
 		} else {
@@ -1868,11 +1870,19 @@ wxString CUpDownClient::GetUploadFileInfo()
 {
 	// build info text and display it
 	wxString sRet;
-	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
+	sRet = (CFormat(_("NickName: %s ID: %u"))
+		% GetUserName()
+		% GetUserIDHybrid()) + wxT(" ");
 	if (m_reqfile) {
 		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
-		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransferred());
-		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAllTimeAccepts() % m_reqfile->statistic.GetAllTimeRequests() % CastItoXBytes(m_reqfile->statistic.GetAllTimeTransferred());
+		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n"))
+			% m_reqfile->statistic.GetAccepts()
+			% m_reqfile->statistic.GetRequests()
+			% CastItoXBytes(m_reqfile->statistic.GetTransferred());
+		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"))
+			% m_reqfile->statistic.GetAllTimeAccepts()
+			% m_reqfile->statistic.GetAllTimeRequests()
+			% CastItoXBytes(m_reqfile->statistic.GetAllTimeTransferred());
 	} else {
 		sRet += _("Requested unknown file");
 	}
@@ -2146,7 +2156,7 @@ wxString CUpDownClient::GetClientFullInfo() {
 		ReGetClientSoft();
 	}
 
-	return CFormat( _("Client %s on IP:Port %s:%d using %s %s %s") )
+	return CFormat(_("Client %s on IP:Port %s:%d using %s %s %s"))
 		% ( m_Username.IsEmpty() ? wxString(_("Unknown")) : m_Username )
 		% GetFullIP()
 		% GetUserPort()
