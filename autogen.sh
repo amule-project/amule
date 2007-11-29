@@ -39,6 +39,13 @@ rm -rf intl/*
 #if [ ! -d intl ]; then
     echo "Setting up internationalization files."
     autopoint --force
+    if grep -q datarootdir po/Makefile.in.in; then
+        echo autopoint honors dataroot variable, not patching.
+    else 
+	echo autopoint does not honor dataroot variable, patching.
+        sed -i -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' po/Makefile.in.in
+        sed -i -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' intl/Makefile.in
+    fi
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
 #    fi
