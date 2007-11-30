@@ -164,10 +164,10 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 	printf("\nAll PartFiles Loaded.\n");
 	
 	if ( GetFileCount() == 0 ) {
-		AddLogLineM(false, wxT("No part files found"));
+		AddLogLineM(false, _("No part files found"));
 	} else {
-		AddLogLineM(false, CFormat(wxT("Found %u part files"))
-			% GetFileCount());
+		AddLogLineM(false, wxString::Format(_("Found %u part files"), GetFileCount()) );
+		
 		DoSortByPriority();
 		CheckDiskspace( path );
 	}
@@ -306,7 +306,7 @@ void CDownloadQueue::AddDownload(CPartFile* file, bool paused, uint8 category)
 
 	file->SetCategory(category);
 	Notify_DownloadCtrlAddFile( file );
-	AddLogLineM(true, CFormat(wxT("Downloading %s")) % file->GetFileName());
+	AddLogLineM(true, CFormat(_("Downloading %s")) % file->GetFileName() );
 }
 
 
@@ -314,8 +314,7 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 {
 	if (CKnownFile* file = theApp->sharedfiles->GetFileByID(fileid)) {
 		if (file->IsPartFile()) {
-			AddLogLineM(true, CFormat(wxT("You are already trying to download the file '%s'"))
-				% file->GetFileName());
+			AddLogLineM(true, CFormat( _("You are already trying to download the file '%s'") ) % file->GetFileName());
 		} else {
 			// Check if the file exists, since otherwise the user is forced to 
 			// manually reload the shares to download a file again.
@@ -326,14 +325,13 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 				
 				return false;
 			}
-			AddLogLineM(true, CFormat(wxT("You already have the file '%s'"))
-				% file->GetFileName());
+			
+			AddLogLineM(true, CFormat( _("You already have the file '%s'") ) % file->GetFileName());
 		}
 		
 		return true;
 	} else if ((file = GetFileByID(fileid))) {
-		AddLogLineM(true, CFormat(wxT("You are already trying to download the file %s"))
-			% file->GetFileName());
+		AddLogLineM(true, CFormat( _("You are already trying to download the file %s") ) % file->GetFileName());
 		return true;
 	}
 	
@@ -1290,8 +1288,7 @@ bool CDownloadQueue::AddLink( const wxString& link, int category )
 	if (link.compare(0, 7, wxT("magnet:")) == 0) {
 		uri = CMagnetED2KConverter(link);
 		if (uri.empty()) {
-			AddLogLineM(true, CFormat(
-				wxT("Cannot convert magnet link to ed2k: %s")) % link);
+			AddLogLineM(true, CFormat(_("Cannot convert magnet link to ed2k: %s")) % link);
 			return false;
 		}
 	}
@@ -1299,7 +1296,7 @@ bool CDownloadQueue::AddLink( const wxString& link, int category )
 	if (uri.compare(0, 7, wxT("ed2k://")) == 0) {
 		return AddED2KLink(uri, category);
 	} else {
-		AddLogLineM(true, CFormat(wxT("Unknown protocol of link: %s")) % link);
+		AddLogLineM(true, CFormat(_("Unknown protocol of link: %s")) % link);
 		return false;
 	}
 }
@@ -1322,7 +1319,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 		
 		return result;
 	} catch ( const wxString& err ) {
-		AddLogLineM( true, CFormat(wxT("Invalid ed2k link! Error: %s")) % err);
+		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s")) % err);
 	}
 	
 	return false;
@@ -1445,9 +1442,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	
 	if (theApp->ipfilter->IsFiltered(ED2KID)) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Source ip got filtered"));
-		AddDebugLogLineM(false, logIPFilter, CFormat(
-			wxT("IPfiltered source IP=%s received from Kademlia"))
-				% Uint32toStringIP(ED2KID));
+		AddDebugLogLineM(false, logIPFilter, CFormat(wxT("IPfiltered source IP=%s received from Kademlia")) % Uint32toStringIP(ED2KID));
 		return;
 	}
 	
@@ -1462,18 +1457,12 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		case 1: {
 			//NonFirewalled users
 			if(!tcp) {
-				AddDebugLogLineM(false, logKadSearch, CFormat(
-					wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received"))
-						% Uint32toStringIP(ip));
+				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, no tcp port received")) % Uint32toStringIP(ip));
 				return;
 			}
 			if (!IsGoodIP(ED2KID,thePrefs::FilterLanIPs())) {
-				AddDebugLogLineM(false, logKadSearch, CFormat(
-					wxT("%s got filtered"))
-						% Uint32toStringIP(ED2KID));
-				AddDebugLogLineM(false, logIPFilter, CFormat(
-					wxT("Ignored source (IP=%s) received from Kademlia, filtered"))
-						% Uint32toStringIP(ED2KID));
+				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("%s got filtered")) % Uint32toStringIP(ED2KID));
+				AddDebugLogLineM(false, logIPFilter, CFormat(wxT("Ignored source (IP=%s) received from Kademlia, filtered")) % Uint32toStringIP(ED2KID));
 				return;
 			}
 			ctemp = new CUpDownClient(tcp,ip,0,0,temp,false, true);
@@ -1512,14 +1501,11 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 
 	if (ctemp) {
 		// add encryption settings
-		ctemp->SetCryptLayerSupport( (byCryptOptions & 0x01) != 0);
-		ctemp->SetCryptLayerRequest( (byCryptOptions & 0x02) != 0);
+		ctemp->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
+		ctemp->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
 		ctemp->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
 
-		AddDebugLogLineM(false, logKadSearch, CFormat(
-			wxT("Happily adding a source (%s) type %d"))
-				% Uint32_16toStringIP_Port(ip, ctemp->GetUserPort())
-				% type);
+		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ip, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}
 }

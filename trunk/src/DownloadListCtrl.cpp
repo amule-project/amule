@@ -2258,8 +2258,8 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// We can't use wxShell here, it blocks the app
 	CTerminationProcess *p = new CTerminationProcess(command);
 	if (!wxExecute(command, wxEXEC_ASYNC, p)) {
-		AddLogLineM(true, wxT("ERROR: Failed to execute external media-player!"));
-		AddLogLineM(false, CFormat(wxT("Command: %s")) % command);
+		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
+		AddLogLineM( false, CFormat( _("Command: %s") ) % command );
 	}
 }
 // File_checked_for_headers

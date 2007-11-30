@@ -208,7 +208,7 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO, this) == wxYES ) {
 		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
 		if (strURL.Find(wxT("://")) == -1) {
-			AddLogLineM(true, wxT("Invalid URL"));
+			AddLogLineM(true, _("Invalid URL"));
 			return;
 		}
 		wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));

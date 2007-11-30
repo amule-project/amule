@@ -266,11 +266,9 @@ void CUpDownClient::CreateNextBlockPackage()
 				if ( !file.Open(fullname,CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 
-					AddLogLineM(false,
-						CFormat(wxT("Failed to open file (%s), removing from list of shared files."))
-							% srcfile->GetFileName() );
+					AddLogLineM( false, CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
 					theApp->sharedfiles->RemoveFile(srcfile);
-
+					
 					throw wxString(wxT("Failed to open requested file: Removing from list of shared files!"));
 				}			
 			
@@ -318,16 +316,11 @@ void CUpDownClient::CreateNextBlockPackage()
 
 		return;
 	} catch (const wxString& error) {
-		AddDebugLogLineM(false, logClient,
-			CFormat(wxT("Client '%s' caused error while creating packet (%s) - disconnecting client"))
-				% GetUserName()
-				% error);
+		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
 	} catch (const CIOFailureException& error) {
-		AddDebugLogLineM(true, logClient,
-			wxT("IO failure while reading requested file: ") + error.what());
+		AddDebugLogLineM(true, logClient, wxT("IO failure while reading requested file: ") + error.what());
 	} catch (const CEOFException& error) {
-		AddDebugLogLineM(true, logClient,
-			GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
+		AddDebugLogLineM(true, logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
 	}
 	
 	// Error occured.	
@@ -718,8 +711,7 @@ void CUpDownClient::SendHashsetPacket(const CMD4Hash& forfileid)
 	if ( !file ) {
 		from_dq = true;
 		if ((file = theApp->downloadqueue->GetFileByID(forfileid)) == NULL) {
-			AddLogLineM(false, CFormat(wxT("Hashset requested for unknown file: %s"))
-				% forfileid.Encode());
+			AddLogLineM(false, CFormat( _("Hashset requested for unknown file: %s") ) % forfileid.Encode() );
 		
 			return;
 		}
@@ -908,12 +900,9 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 	
 	for (unsigned int i = 0; i < itemsof(auStartOffsets); i++) {
 		if ( CLogger::IsEnabled( logClient ) ) {
-			wxString msg = CFormat(wxT("Client requests %u File block %u-%u (%d bytes): %s"))
-				% i
-				% auStartOffsets[i]
-				% auEndOffsets[i]
-				% (auEndOffsets[i] - auStartOffsets[i])
-				% GetFullIP();
+			wxString msg = wxString::Format(_("Client requests %u"), i);
+			msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
+			msg += wxT(" ") + GetFullIP();
 			AddLogLineM(false, msg);
 		}
 		if (auEndOffsets[i] > auStartOffsets[i]) {
@@ -926,7 +915,7 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 		} else {
 			if ( CLogger::IsEnabled( logClient ) ) {
 				if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-					AddLogLineM(false, wxT("Client request is invalid!"));
+					AddLogLineM(false, _("Client request is invalid!"));
 				}
 			}
 		}
@@ -949,21 +938,16 @@ void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
 				&& (reqblock->StartOffset > reqblock->EndOffset)) {
 						
 				if ( CLogger::IsEnabled( logClient ) ) {
-					AddLogLineM(false, CFormat(wxT("Client request is invalid! %i / %i"))
-						% reqblock->StartOffset
-						% reqblock->EndOffset);
+					AddLogLineM(false, wxString::Format(_("Client request is invalid! %i / %i"),reqblock->StartOffset, reqblock->EndOffset));
 				}
 				
 				throw wxString(wxT("Client request is invalid!"));
 			}
 			
 			if ( CLogger::IsEnabled( logClient ) ) {
-				wxString msg = CFormat(wxT("Client requests %u File block %u-%u (%d bytes): %s"))
-					% i
-					% reqblock->StartOffset
-					% reqblock->EndOffset
-					% (reqblock->EndOffset - reqblock->StartOffset)
-					% GetFullIP();
+				wxString msg = wxString::Format(_("Client requests %u"), i);
+				msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"),reqblock->StartOffset, reqblock->EndOffset, reqblock->EndOffset - reqblock->StartOffset);
+				msg += wxT(" ") + GetFullIP();
 				AddLogLineM(false, msg);
 			}
 			

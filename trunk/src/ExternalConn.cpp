@@ -24,12 +24,12 @@
 //
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"	// Needed for VERSION
+	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <ec/cpp/ECMuleSocket.h>// Needed for CECSocket
+#include <ec/cpp/ECMuleSocket.h>		// Needed for CECSocket
 
-#include <common/Format.h>	// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 
 #include "ExternalConn.h"	// Interface declarations
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -78,7 +78,7 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 		reply = ExternalConn::Authenticate(packet);
 		if (reply->GetOpCode() != EC_OP_AUTH_OK) {
 			// Access denied!
-			AddLogLineM(false, wxT("Unauthorized access attempt. Connection closed."));
+			AddLogLineM(false, _("Unauthorized access attempt. Connection closed."));
 			DestroySocket();
 		} else {
 			m_authenticated = true;
@@ -91,8 +91,8 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 
 void CECServerSocket::OnLost()
 {
-	AddLogLineM(false, wxT("External connection closed."));
-	DestroySocket();
+		AddLogLineM(false,_("External connection closed."));
+		DestroySocket();
 }
 
 
@@ -118,7 +118,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		// We must have a valid password, otherwise we will not allow EC connections
 		if (thePrefs::ECPassword().IsEmpty()) {
 			*msg += wxT("External connections disabled due to empty password!\n");
-			AddLogLineM(true, wxT("External connections disabled due to empty password!"));
+			AddLogLineM(true, _("External connections disabled due to empty password!"));
 			return;
 		}
 		
@@ -143,7 +143,7 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 		}
 	} else {
 		*msg += wxT("External connections disabled in config file\n");
-		AddLogLineM(false,wxT("External connections disabled in config file"));
+		AddLogLineM(false,_("External connections disabled in config file"));
 	}
 }
 
@@ -159,10 +159,10 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 	// non-blocking accept (although if we got here, there
 	// should ALWAYS be a pending connection).
 	if ( m_ECServer->AcceptWith(*sock, false) ) {
-		AddLogLineM(false, wxT("New external connection accepted"));
+		AddLogLineM(false, _("New external connection accepted"));
 	} else {
 		delete sock;
-		AddLogLineM(false, wxT("Error: couldn't accept a new external connection"));
+		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
 	}
 	
 }
@@ -181,7 +181,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 
 	// Password must be specified if we are to allow remote connections
 	if ( thePrefs::ECPassword().IsEmpty() ) {
-		AddLogLineM(true, wxT("External connection refused due to empty password in preferences!"));	
+		AddLogLineM(true, _("External connection refused due to empty password in preferences!"));	
 		
 		return new CECPacket(EC_OP_AUTH_FAIL);
 	}
@@ -191,7 +191,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		const CECTag *clientName = request->GetTagByName(EC_TAG_CLIENT_NAME);
 		const CECTag *clientVersion = request->GetTagByName(EC_TAG_CLIENT_VERSION);
 		
-		AddLogLineM(false, CFormat(wxT("Connecting client: %s %s"))
+		AddLogLineM(false, CFormat( _("Connecting client: %s %s") )
 			% ( clientName ? clientName->GetStringData() : wxString(_("Unknown")) )
 			% ( clientVersion ? clientVersion->GetStringData() : wxString(_("Unknown version")) ) );
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
@@ -204,16 +204,12 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STRING, wxT("Fatal error, version hash is not a valid MD4-hash.")));
 		} else if (!request->GetTagByName(EC_TAG_VERSION_ID) || request->GetTagByNameSafe(EC_TAG_VERSION_ID)->GetMD4Data() != vhash) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING,
-				wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. "
-					"Use core and remote from same snapshot.")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else
 		// For release versions, we don't want to allow connections from any arbitrary CVS client.
 		if (request->GetTagByName(EC_TAG_VERSION_ID)) { 
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING,
-				wxTRANSLATE("You cannot connect to a release version from "
-					"an arbitrary CVS version! *sigh* possible crash prevented")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary CVS version! *sigh* possible crash prevented")));
 #endif
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt();
@@ -221,23 +217,19 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 				CMD4Hash passh;
 
 				if (not passh.Decode(thePrefs::ECPassword())) {
-					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") +
-						thePrefs::ECPassword());
+					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
 					response = new CECPacket(EC_OP_AUTH_FAIL);
-					response->AddTag(CECTag(EC_TAG_STRING,
-						wxT("Authentication failed, invalid hash specified as EC password.")));				
+					response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
 				} else if (passwd && passwd->GetMD4Data() == passh) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
-					AddLogLineM(false, wxT("EC Auth failed: (") +
-						passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
+					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 				}
 			} else {
 				response = new CECPacket(EC_OP_AUTH_FAIL);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.") +
-					wxString::Format(wxT("( %i != %i )"),proto_version,EC_CURRENT_PROTOCOL_VERSION)));
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid protocol version.") + wxString::Format(wxT("( %i != %i )"),proto_version,EC_CURRENT_PROTOCOL_VERSION)));
 			}
 		} else {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -251,7 +243,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 	response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
 
 	if (response->GetOpCode() == EC_OP_AUTH_OK) {
-		AddLogLineM(false, wxT("Access granted."));
+		AddLogLineM(false, _("Access granted."));
 	} else {
 		AddLogLineM(false, wxGetTranslation(response->GetTagByIndex(0)->GetStringData()));
 	}
@@ -500,11 +492,9 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		CPartFile *pfile = theApp->downloadqueue->GetFileByID( hash );
 		
 		if ( !pfile ) {
-			AddLogLineM(false, CFormat(wxT("Remote PartFile command failed: FileHash not found: %s"))
-				% hash.Encode());
+			AddLogLineM(false,CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
 			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING,
-				CFormat(wxTRANSLATE("FileHash not found: %s")) % hash.Encode()));
+			response->AddTag(CECTag(EC_TAG_STRING, CFormat(wxTRANSLATE("FileHash not found: %s")) % hash.Encode()));
 			//return response;
 			break;
 		}
@@ -515,6 +505,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 					CPartFile::SourceSet::const_iterator it = pfile->GetA4AFList().begin();
 					while ( it != pfile->GetA4AFList().end() ) {
 						CUpDownClient *cur_source = *it++;
+						
 						cur_source->SwapToAnotherFile(true, false, false, pfile);
 					}
 				}
@@ -609,15 +600,12 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 	const CECTag *srv_tag = request->GetTagByIndex(0);
 	CServer *srv = 0;
 	if ( srv_tag ) {
-		srv = theApp->serverlist->GetServerByIPTCP(
-			srv_tag->GetIPv4Data().IP(),
-			srv_tag->GetIPv4Data().m_port);
+		srv = theApp->serverlist->GetServerByIPTCP(srv_tag->GetIPv4Data().IP(), srv_tag->GetIPv4Data().m_port);
 		// server tag passed, but server not found
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING,
-				CFormat(wxTRANSLATE("server not found: %s"))
-					% srv_tag->GetIPv4Data().StringIP()));
+						CFormat(wxTRANSLATE("server not found: %s")) % srv_tag->GetIPv4Data().StringIP()));
 			return response;
 		}
 	}
@@ -633,7 +621,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
 				response->AddTag(CECTag(EC_TAG_STRING,
-					wxTRANSLATE("need to define server to be removed")));
+							wxTRANSLATE("need to define server to be removed")));
 			}
 			break;
 		case EC_OP_SERVER_CONNECT:
@@ -997,7 +985,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SHUTDOWN:
 			if (!theApp->IsOnShutDown()) {
 				response = new CECPacket(EC_OP_NOOP);
-				AddLogLineM(true, wxT("ExternalConn: shutdown requested"));
+				AddLogLineM(true, _("ExternalConn: shutdown requested"));
 #ifndef AMULE_DAEMON
 				{
 					wxCloseEvent evt;
@@ -1017,7 +1005,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
 				int category = tag->GetTagByIndexSafe(0)->GetInt();
-				AddLogLineM(true, CFormat(wxT("ExternalConn: adding link '%s'.")) % link);
+				AddLogLineM(true, CFormat(_("ExternalConn: adding link '%s'.")) % link);
 				if ( theApp->downloadqueue->AddLink(link, category) ) {
 					response = new CECPacket(EC_OP_NOOP);
 				} else {
@@ -1353,12 +1341,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		default:
-			AddLogLineM(false, CFormat(wxT("ExternalConn: invalid opcode received: %#x"))
-				% request->GetOpCode());
+			AddLogLineM(false, wxString::Format(_("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
 			wxFAIL;
 			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING,
-				wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));
 			break;
 	}
 	return response;
