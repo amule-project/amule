@@ -50,8 +50,6 @@ there client on the eMule forum..
 #include <include/protocol/kad/Client2Client/UDP.h>
 #include <include/common/Macros.h>
 
-#include <common/Format.h>		// Needed for CFormat
-
 #include "Contact.h"
 #include "RoutingBin.h"
 #include "../kademlia/SearchManager.h"
@@ -149,11 +147,10 @@ void CRoutingZone::ReadFile(void)
 					}
 				}
 			}
-			AddLogLineM( false, CFormat(wxT("Read %u Kad contacts")) % numContacts);
+			AddLogLineM( false, wxString::Format(_("Read %u Kad contacts"), numContacts));
 		}
 		if (numContacts == 0) {
-			AddDebugLogLineM( false, logKadRouting,
-				wxT("Error while reading Kad contacts - 0 entries"));
+			AddDebugLogLineM( false, logKadRouting, _("Error while reading Kad contacts - 0 entries"));
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(false, logKadRouting, wxT("IO error in CRoutingZone::readFile: ") + e.what());
@@ -366,10 +363,10 @@ void CRoutingZone::Merge(void)
 {
 	dirty = false; /* This subzone/superzone won't be re-checked */
 	
-	AddDebugLogLineM(false, logKadRouting, wxT("Merge attempt"));
+	AddDebugLogLineM( false, logKadRouting, _("Merge attempt"));
 	
 	if (IsLeaf() && m_superZone != NULL) {
-		AddDebugLogLineM(false, logKadRouting, wxT("Recursive merge"));
+		AddDebugLogLineM( false, logKadRouting, _("Recursive merge"));
 		m_superZone->Merge();
 	} else if ((!IsLeaf())
 		&& (m_subZones[0]->IsLeaf() && m_subZones[1]->IsLeaf()) 
@@ -408,13 +405,13 @@ void CRoutingZone::Merge(void)
 
 		StartTimer();
 			
-		AddDebugLogLineM(false, logKadRouting, wxT("Sucessful merge!"));
+		AddDebugLogLineM( false, logKadRouting, _("Sucessful merge!"));
 		
 		if (m_superZone != NULL) {
 			m_superZone->Merge();
 		}
 	} else {
-		AddDebugLogLineM(false, logKadRouting, wxT("No merge possible"));
+		AddDebugLogLineM( false, logKadRouting, _("No merge possible"));
 	}
 }
 

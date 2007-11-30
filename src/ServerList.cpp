@@ -46,7 +46,7 @@
 #include "Statistics.h"			// Needed for theStats
 #include "Packet.h"			// Neeed for CPacket
 #include "Logger.h"
-#include <common/Format.h>		// Needed for CFormat
+#include <common/Format.h>
 #include "IPFilter.h"
 #include "FileFunctions.h"		// Needed for UnpackArchive
 
@@ -81,12 +81,12 @@ bool CServerList::Init()
 
 bool CServerList::LoadServerMet(const wxString& strFile)
 {
-	AddLogLineM(false, CFormat(wxT("Loading server.met file: %s")) % strFile);
+	AddLogLineM( false, CFormat( _("Loading server.met file: %s") ) % strFile );
 	
 	bool merge = !m_servers.empty();
 	
 	if ( !wxFileExists(strFile) ) {
-		AddLogLineM(false, wxT("Server.met file not found!"));
+		AddLogLineM( false, _("Server.met file not found!") );
 		return false;
 	}
 
@@ -94,15 +94,13 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 	const wxChar* mets[] = { wxT("server.met"), NULL };
 	// Try to unpack the file, might be an archive
 	if (UnpackArchive(strFile, mets).second != EFT_Met) {
-		AddLogLineM(true, CFormat(
-			wxT("Failed to load server.met file '%s', unknown format encountered."))
-				% strFile);
+		AddLogLineM(true, CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % strFile);
 		return false;
 	}	
 
 	CFile servermet( strFile,CFile::read );
 	if ( !servermet.IsOpened() ){ 
-		AddLogLineM(false, wxT("Failed to open server.met!"));
+		AddLogLineM( false, _("Failed to open server.met!") );
 		return false;
 	}
 
@@ -113,10 +111,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		byte version = servermet.ReadUInt8();
 		
 		if (version != 0xE0 && version != MET_HEADER) {
-			AddLogLineM(true, CFormat(
-				wxT("Server.met file corrupt, found invalid versiontag: 0x%x, size %i"))
-					% version
-					% sizeof(version));
+			AddLogLineM(true, wxString::Format(_("Server.met file corrupt, found invalid versiontag: 0x%x, size %i"), version, sizeof(version)));
 			Notify_ServerThaw();
 			return false;
 		}
@@ -126,7 +121,7 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		ServerMet_Struct sbuffer;
 		uint32 iAddCount = 0;
 
-		for (uint32 j = 0; j < fservercount; ++j) {
+		for ( uint32 j = 0; j < fservercount; ++j ) {
 			sbuffer.ip		= servermet.ReadUInt32();
 			sbuffer.port		= servermet.ReadUInt16();
 			sbuffer.tagcount	= servermet.ReadUInt32();
@@ -171,9 +166,9 @@ bool CServerList::LoadServerMet(const wxString& strFile)
 		Notify_ServerThaw();
     
 		if (!merge) {
-			AddLogLineM(true, CFormat(wxT("%i servers in server.met found")) % fservercount);
+			AddLogLineM(true, wxString::Format(_("%i servers in server.met found"),fservercount));
 		} else {
-			AddLogLineM(true, CFormat(wxT("%d servers added")) % iAddCount);
+			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
 		}
 	} catch (const CInvalidPacket& err) {
 		AddLogLineM(true, wxT("Error: the file server.met is corrupted: ") + err.what());
@@ -194,7 +189,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	if ( !in_server->GetPort() ) {
 		if ( fromUser ) {
 			AddLogLineM( true,
-				CFormat(wxT("Server not added: [%s:%d] does not specify a valid port."))
+				CFormat( _("Server not added: [%s:%d] does not specify a valid port.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -210,7 +205,7 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	          ) {
 		if ( fromUser ) {
 			AddLogLineM( true,
-				CFormat(wxT("Server not added: The IP of [%s:%d] is filtered or invalid."))
+				CFormat( _("Server not added: The IP of [%s:%d] is filtered or invalid.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -229,8 +224,8 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 	
 	if (test_server) {
 		if ( fromUser ) {
-			AddLogLineM( true, CFormat(
-				wxT("Server not added: Server with matching IP:Port [%s:%d] found in list."))
+			AddLogLineM( true,
+				CFormat( _("Server not added: Server with matching IP:Port [%s:%d] found in list.") )
 					% in_server->GetAddress()
 					% in_server->GetPort()
 			);
@@ -249,12 +244,13 @@ bool CServerList::AddServer(CServer* in_server, bool fromUser)
 
 	if ( fromUser ) {
 		AddLogLineM( true,
-			CFormat(wxT("Server added: Server at [%s:%d] using the name '%s'."))
+			CFormat( _("Server added: Server at [%s:%d] using the name '%s'.") )
 				% in_server->GetAddress()
 				% in_server->GetPort()
 				% in_server->GetListName()
 		);
 	}
+
 	
 	return true;
 }
@@ -305,10 +301,7 @@ void CServerList::ServerStats()
 			ping_server->SetLastPinged(tNow);
 			ping_server->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + 20); // give it 20 seconds to respond
 			
-			AddDebugLogLineM(false, logServerUDP, CFormat(
-				wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u"))
-					% ping_server->GetAddress()
-					% ping_server->GetPort());
+			AddDebugLogLineM(false, logServerUDP, CFormat(wxT(">> Sending OP__GlobServStatReq (obfuscated) to server %s:%u")) % ping_server->GetAddress() % ping_server->GetPort());
 
 			CPacket* packet = new CPacket(pRawPacket[1], nPacketLen - 2, pRawPacket[0]);
 			packet->CopyToDataBuffer(0, pRawPacket + 2, nPacketLen - 2);
@@ -319,12 +312,9 @@ void CServerList::ServerStats()
 			// our obfsucation ping request was not answered, so probably the server doesn'T supports obfuscation
 			// continue with a normal request
 			if (ping_server->GetCryptPingReplyPending() && thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineM(false, logServerUDP,
-					wxT("CryptPing failed for server ") + ping_server->GetListName());
+				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing failed for server ") + ping_server->GetListName());
 			} else if (thePrefs::IsServerCryptLayerUDPEnabled()) {
-				AddDebugLogLineM(false, logServerUDP,
-					wxT("CryptPing skipped because our public IP is unknown for server ") +
-					ping_server->GetListName());
+				AddDebugLogLineM(false, logServerUDP, wxT("CryptPing skipped because our public IP is unknown for server ") + ping_server->GetListName());
 			}
 			
 			ping_server->SetCryptPingReplyPending(false);			
@@ -349,8 +339,7 @@ void CServerList::ServerStats()
 void CServerList::RemoveServer(CServer* in_server)
 {
 	if (in_server == theApp->serverconnect->GetCurrentServer()) {
-		theApp->ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."),
-			_("Info"), wxOK);	
+		theApp->ShowAlert(_("You are connected to the server you are trying to delete. please disconnect first."), _("Info"), wxOK);	
 	} else {
 		CInternalList::iterator it = std::find(m_servers.begin(), m_servers.end(), in_server);
 		if ( it != m_servers.end() ) {
@@ -637,7 +626,7 @@ bool CServerList::SaveServerMet()
 	
 	CFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
-		AddLogLineM(false, wxT("Failed to save server.met!"));
+		AddLogLineM(false,_("Failed to save server.met!"));
 		return false;
 	}
 
@@ -792,7 +781,7 @@ void CServerList::RemoveDeadServers()
 void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
 	if (strURL.Find(wxT("://")) == -1) {
-		AddLogLineM(true, wxT("Invalid URL"));
+		AddLogLineM(true, _("Invalid URL"));
 		return;
 	}
 	URLUpdate = strURL;
@@ -813,10 +802,10 @@ void CServerList::DownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 		AddLogLineM(true, CFormat(
-			wxT("Finished to download the server list from %s")) % URLUpdate);
+			_("Finished to download the server list from %s")) % URLUpdate);
 	} else {
 		AddLogLineM(true, CFormat(
-			wxT("Failed to download the server list from %s")) % URLUpdate);
+			_("Failed to download the server list from %s")) % URLUpdate);
 	}
 }
 
@@ -826,7 +815,7 @@ void CServerList::AutoUpdate()
 	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
 	if (!url_count) {
 		AddLogLineM(true,
-			wxT("No serverlist address entry in 'addresses.dat' "
+			_("No serverlist address entry in 'addresses.dat' "
 			"found. Please paste a valid serverlist address into "
 			"this file in order to auto-update your serverlist"));
 		return;
@@ -841,7 +830,7 @@ void CServerList::AutoUpdate()
 			wxString strTempFilename =
 				theApp->ConfigDir + wxT("server_auto.met");
 			AddLogLineM(true, CFormat(
-				wxT("Start downloading server list from %s")) % URI);
+				_("Start downloading server list from %s")) % URI);
 			CHTTPDownloadThread *downloader = new CHTTPDownloadThread(
 				URI, strTempFilename, HTTP_ServerMetAuto);
 			downloader->Create();
@@ -850,12 +839,12 @@ void CServerList::AutoUpdate()
 			return;
 		} else {
 			AddLogLineM(true, CFormat(
-				wxT("Warning, invalid URL specified for auto-updating "
-				"of servers: %s")) % URI);
+				_("Warning, invalid URL specified for auto-updating "
+				"of servers: %s") ) % URI);
 		}
 		current_url_index++;
 	}
-	AddLogLineM(true, wxT("No valid server.met auto-download url on addresses.dat"));
+	AddLogLineM(true, _("No valid server.met auto-download url on addresses.dat"));
 }
 
 
@@ -870,8 +859,8 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		wxRemoveFile(strTempFilename);
 	} else {
 		AddLogLineM(true, CFormat(
-			wxT("Failed to download the server list from %s"))
-				% URLAutoUpdate);
+			_("Failed to download the server list from %s") ) %
+				URLAutoUpdate);
 	}
 	++current_url_index;
 	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {		
@@ -944,7 +933,7 @@ void CServerList::FilterServers()
 		if (theApp->ipfilter->IsFiltered(server->GetIP(), true)) {
 			if (server == theApp->serverconnect->GetCurrentServer()) {
 				AddLogLineM(true,
-					wxT("Local server is filtered by the IPFilters, "
+					_("Local server is filtered by the IPFilters, "
 					"reconnecting to a different server!"));
 				theApp->serverconnect->Disconnect();
 				RemoveServer(server);

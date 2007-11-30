@@ -233,10 +233,11 @@ wxThread::ExitCode CPartFileConvert::Entry()
 				s_jobs.clear();
 				break;
 			}
+
+
 			UpdateGUI(s_pfconverting);
-			AddLogLineM(true, CFormat(wxT("Importing %s: %s"))
-				% s_pfconverting->folder
-				% GetReturncodeText(s_pfconverting->state));
+
+			AddLogLineM(true, CFormat(_("Importing %s: %s")) % s_pfconverting->folder % GetReturncodeText(s_pfconverting->state));
 		} else {
 			break; // nothing more to do now
 		}

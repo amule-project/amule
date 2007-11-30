@@ -341,21 +341,15 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 		file.Create();
 
 	if ( !file.Open() ) {
-		AddLogLineM(false, CFormat(wxT("Failed to open '%s'")) % filename);
+		AddLogLineM( false, CFormat( _("Failed to open '%s'") ) % filename );
 		return false;
 	}
 
 	
 	if ( isStatic ) {
-		file.AddLine(CFormat(wxT("%s:%u,%u,%s"))
-			% server->GetAddress()
-			% server->GetPort()
-			% server->GetPreferences()
-			% server->GetListName());
+		file.AddLine( server->GetAddress() + wxString::Format( wxT(":%u,%u," ), server->GetPort(), server->GetPreferences() ) + server->GetListName() );
 	} else {
-		wxString searchStr = CFormat(wxT("%s:%u"))
-			% server->GetAddress()
-			% server->GetPort();
+		wxString searchStr = server->GetAddress() + wxString::Format( wxT(":%u" ), server->GetPort() );
 	
 		for ( unsigned int i = 0; i < file.GetLineCount(); ) {
 			wxString line = file.GetLine( i );
@@ -387,9 +381,10 @@ bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 
 void CServerListCtrl::ShowServerCount()
 {
-	wxStaticText* label = CastByName(wxT("serverListLabel"), GetParent(), wxStaticText);
+	wxStaticText* label = CastByName( wxT("serverListLabel"), GetParent(), wxStaticText );
+
 	if ( label ) {
-		label->SetLabel(CFormat(_("Servers (%i)")) % GetItemCount());
+		label->SetLabel( wxString::Format( _("Servers (%i)"), GetItemCount() ) );
 		label->GetParent()->Layout();
 	}
 }
@@ -460,8 +455,8 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 	serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k link(s) to clipboard") );
 
 
-	serverMenu->Enable( MP_REMOVEFROMSTATIC,enable_static_off);
-	serverMenu->Enable( MP_ADDTOSTATIC,	enable_static_on );
+	serverMenu->Enable( MP_REMOVEFROMSTATIC, 	enable_static_off );
+	serverMenu->Enable( MP_ADDTOSTATIC,			enable_static_on  );
 
 	if ( GetSelectedItemCount() == 1 ) {
 		if ( enable_reconnect )
@@ -469,6 +464,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 	} else {
 		serverMenu->Enable( MP_CONNECTTO, false );
 	}
+
 
 	PopupMenu( serverMenu, event.GetPoint() );
 }

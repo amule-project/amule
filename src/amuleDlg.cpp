@@ -210,11 +210,12 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 
 	m_serverwnd = new CServerWnd(p_cnt, m_srv_split_pos);
 	AddLogLineM(false, wxEmptyString);
-	AddLogLineM(false, wxT(" - ") + CFormat(wxT("This is aMule %s based on eMule."))
-		% GetMuleVersion());
-	AddLogLineM(false, wxT("   ") + CFormat(wxT("Running on %s"))
-		% wxGetOsDescription());
-	AddLogLineM(false, wxT(" - Visit http://www.amule.org to check if a new version is available."));
+	AddLogLineM(false, wxT(" - ") +
+		CFormat(_("This is aMule %s based on eMule.")) % GetMuleVersion());
+	AddLogLineM(false, wxT("   ") +
+		CFormat(_("Running on %s")) % wxGetOsDescription());
+	AddLogLineM(false, wxT(" - ") +
+		wxString(_("Visit http://www.amule.org to check if a new version is available.")));
 	AddLogLineM(false, wxEmptyString);
 
 #ifdef ENABLE_IP2COUNTRY
@@ -237,7 +238,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
-		AddLogLine(false, wxT("Fatal Error: Failed to create Timer"));
+		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
 		exit(1);
 	}
 
@@ -505,7 +506,7 @@ void CamuleDlg::OnBnConnect(wxCommandEvent& WXUNUSED(evt))
 			}
 		} else {		
 			//connect if not currently connected
-			AddLogLine(true, wxT("Connecting"));
+			AddLogLine(true, _("Connecting"));
 			theApp->serverconnect->ConnectToAnyServer();
 		}
 	} else {
@@ -719,9 +720,9 @@ void CamuleDlg::ShowConnectionState()
 			switch ( NewED2KState ) {
 				case sLowID:
 					// Display a warning about LowID connections
-					AddLogLine(true,  wxT("WARNING: You have recieved Low-ID!"));
-					AddLogLine(false, wxT("\tMost likely this is because you're behind a firewall or router."));
-					AddLogLine(false, wxT("\tFor more information, please refer to http://wiki.amule.org"));
+					AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
+					AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
+					AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
 			
 				case sHighID: {
 					wxStaticText* tx = CastChild( wxT("infoLabel"), wxStaticText );
@@ -801,15 +802,9 @@ void CamuleDlg::ShowTransferRate()
 	wxString buffer;
 	if( thePrefs::ShowOverhead() )
 	{
-		buffer = CFormat(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"))
-			% kBpsUp
-			% (theStats::GetUpOverheadRate() / 1024.0)
-			% kBpsDown
-			% (theStats::GetDownOverheadRate() / 1024.0);
+		buffer = wxString::Format(_("Up: %.1f(%.1f) | Down: %.1f(%.1f)"), kBpsUp, theStats::GetUpOverheadRate() / 1024.0, kBpsDown, theStats::GetDownOverheadRate() / 1024.0);
 	} else {
-		buffer = CFormat(_("Up: %.1f | Down: %.1f"))
-			% kBpsUp
-			% kBpsDown;
+		buffer = wxString::Format(_("Up: %.1f | Down: %.1f"), kBpsUp, kBpsDown);
 	}
 	buffer.Truncate(50); // Max size 50
 
@@ -1210,24 +1205,25 @@ bool CamuleDlg::Check_and_Init_Skin()
 
 	m_skinFileName.Assign(skinFileName);
 	if (!m_skinFileName.FileExists()) {
-		AddLogLineM(true, CFormat(wxT("Skin directory '%s' does not exist"))
-			% skinFileName );
+		AddLogLineM(true, CFormat(
+			_("Skin directory '%s' does not exist")) %
+			skinFileName );
 		ret = false;
 	} else if (!m_skinFileName.IsFileReadable()) {
 		AddLogLineM(true, CFormat(
-			wxT("Warning: Unable to open skin file '%s' for read"))
-			% skinFileName);
+			_("Warning: Unable to open skin file '%s' for read")) %
+			skinFileName);
 		ret = false;
 	}
 
-	wxFFileInputStream in(m_skinFileName.GetFullPath());
-	wxZipInputStream zip(in);
+		wxFFileInputStream in(m_skinFileName.GetFullPath());
+		wxZipInputStream zip(in);
 
-	while ((entry = zip.GetNextEntry()) != NULL) {
-		wxZipEntry*& current = cat[entry->GetInternalName()];
-		delete current;
-		current = entry;
-	}
+		while ((entry = zip.GetNextEntry()) != NULL) {
+			wxZipEntry*& current = cat[entry->GetInternalName()];
+			delete current;
+			current = entry;
+		}
 
 	return ret;
 }

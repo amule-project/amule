@@ -107,7 +107,7 @@ public:
 #endif
 		wxString systemwideFile(JoinPaths(dataDir,wxT("ipfilter.dat")));
 
-		AddLogLineM(false, wxT("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
+		AddLogLineM(false, _("Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."));
 		if ( !LoadFromFile(theApp->ConfigDir + wxT("ipfilter.dat")) &&
 		     thePrefs::UseIPFilterSystem() ) {
 			LoadFromFile(systemwideFile);
@@ -144,6 +144,7 @@ private:
 #ifdef __DEBUG__
 				item.Description = Description;
 #endif
+
 				m_result.insert(IPStart, IPEnd, item);
 
 				return true;
@@ -278,9 +279,9 @@ private:
 		
 		// Try to unpack the file, might be an archive
 		if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
-			AddLogLineM(true, CFormat(
-				wxT("Failed to load ipfilter.dat file '%s', unknown format encountered."))
-					% file);
+			AddLogLineM(true, 
+				CFormat(_("Failed to load ipfilter.dat file '%s',"
+					" unknown format encountered.")) % file);
 			return 0;
 		}
 		
@@ -319,17 +320,16 @@ private:
 				}
 			}
 		} else {
-			AddLogLineM(true, CFormat(
-				wxT("Failed to load ipfilter.dat file '%s', could not open file."))
-					% file);
+			AddLogLineM(true, CFormat(_(
+				"Failed to load ipfilter.dat file '%s', could not open file.")) % file);
 			return 0;
 		}
 
-		AddLogLineM(false, CFormat(
-			wxT("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
-				% filtercount
-				% file
-				% discardedCount
+		AddLogLineM(false,
+			CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
+			% filtercount
+			% file
+			% discardedCount
 		);
 
 		return filtercount;
@@ -348,6 +348,7 @@ private:
 BEGIN_EVENT_TABLE(CIPFilter, wxEvtHandler)
 	EVT_MULE_IPFILTER_LOADED(CIPFilter::OnIPFilterEvent)
 END_EVENT_TABLE()
+
 
 
 /**
@@ -428,11 +429,8 @@ bool CIPFilter::IsFiltered(uint32 IPTest, bool isServer)
 		if (it != m_iplist.end()) {
 			if (it->AccessLevel < thePrefs::GetIPFilterLevel()) {
 #ifdef __DEBUG__
-				AddDebugLogLineM(false, logIPFilter,
-					CFormat(wxT("Filtered IP (AccLvl: %d): %s (%s)"))
-						% (long)it->AccessLevel
-						% Uint32toStringIP(IPTest)
-						% it->Description);
+				AddDebugLogLineM(false, logIPFilter, wxString(wxT("Filtered IP (AccLvl: ")) << (long)it->AccessLevel << wxT("): ")
+						<< Uint32toStringIP(IPTest) << wxT(" (") << it->Description + wxT(")"));
 #endif
 				
 				if (isServer) {
