@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-29 02:30+0000\n"
+"POT-Creation-Date: 2007-12-01 02:30+0000\n"
 "PO-Revision-Date: 2007-11-29 02:35+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -52,45 +52,99 @@ msgstr "Başarıldı! aMule'ye bağlantı kuruldu. "
 msgid "Succeeded! Connection established."
 msgstr "Başarıldı! Bağlantı kuruldu."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3841
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3787
 msgid "Hashing"
 msgstr "Adreslemesi Yapılıyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3845
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3791
 msgid "Completing"
 msgstr "Tamamlanıyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3848
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3794
 msgid "Complete"
 msgstr "Tamamlandı"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3797
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
 msgid "Paused"
 msgstr "Duraklatıldı"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3854
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3800
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
 msgid "Erroneous"
 msgstr "Hatalı"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3861
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3807
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
 msgid "Downloading"
 msgstr "Aktarılıyor"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3863
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3809
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
 msgid "Waiting"
 msgstr "Bekliyor"
 
-#: src/BaseClient.cpp:1634 src/BaseClient.cpp:2160 src/BaseClient.cpp:2430
+#: src/ThreadTasks.cpp:109
+#, c-format
+msgid "Starting to create MD4 and AICH hash for file: %s"
+msgstr "%s dosyası için MD4 ve AICH adreslemesi oluşturulmaya başlanıyor "
+
+#: src/ThreadTasks.cpp:113
+#, c-format
+msgid "Starting to create MD4 hash for file: %s"
+msgstr "%s dosyası için MD4 adreslemesi oluşturulmaya başlanıyor."
+
+#: src/ThreadTasks.cpp:117
+#, c-format
+msgid "Starting to create AICH hash for file: %s"
+msgstr "%s dosyası için AICH adreslemesi oluşturulmaya başlanıyor."
+
+#: src/ThreadTasks.cpp:253
+msgid "Syncronization thread started."
+msgstr "Senkronizasyon işlemi başladı."
+
+#: src/ThreadTasks.cpp:298
+msgid "Masterhashes of known files have been loaded."
+msgstr "Bilinen dosyaların Temel adreslemesi yüklendi."
+
+#: src/ThreadTasks.cpp:362
+#, c-format
+msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
+msgstr ""
+"'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
+
+#: src/ThreadTasks.cpp:444
+#, c-format
+msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
+msgstr "UYARI: '%s' dosya adı geçersiz ve'%s'olarak yeniden adlandırıldı."
+
+#: src/ThreadTasks.cpp:463
+#, c-format
+msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
+msgstr "UYARI: '%s' dosyası zaten var ve '%s'olarak yeniden adlandırıldı."
+
+#: src/ThreadTasks.cpp:477
+#, c-format
+msgid "WARNING: Could not remove original '%s' after creating backup"
+msgstr "UYARI: Yedekleme oluşturulduktan sonra özgün '%s' çıkartılamıyor."
+
+#: src/ThreadTasks.cpp:489
+#, c-format
+msgid "WARNING: Failed to delete %s"
+msgstr "UYARI: %s dosyası silinemiyor."
+
+#: src/BaseClient.cpp:1255
+#, c-format
+msgid "Failed to retrieve shared files from user '%s'"
+msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız."
+
+#: src/BaseClient.cpp:1632 src/BaseClient.cpp:2150 src/BaseClient.cpp:2420
 #: src/HTTPDownload.cpp:87 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:195 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2627 src/PartFile.cpp:2633 src/KnownFile.cpp:851
+#: src/PartFile.cpp:2601 src/PartFile.cpp:2607 src/KnownFile.cpp:851
 #: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -100,52 +154,52 @@ msgstr "Bekliyor"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/BaseClient.cpp:1651
+#: src/BaseClient.cpp:1649
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Sahte eMule sürümü %#x)"
 
-#: src/BaseClient.cpp:1662
+#: src/BaseClient.cpp:1660
 msgid " (Fake eMule)"
 msgstr "(Sahte eMule)"
 
-#: src/BaseClient.cpp:1664
+#: src/BaseClient.cpp:1662
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Sahte eMule)"
 
-#: src/BaseClient.cpp:1703
+#: src/BaseClient.cpp:1701
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (eMule s.0.%u üzerine kurulu)"
 
-#: src/BaseClient.cpp:1873
+#: src/BaseClient.cpp:1871
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Rumuz: %s ID: %u"
 
-#: src/BaseClient.cpp:1877
+#: src/BaseClient.cpp:1873
 msgid "Requested:"
 msgstr "İstendi:"
 
-#: src/BaseClient.cpp:1878
+#: src/BaseClient.cpp:1874
 #, c-format
 msgid ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
 "Bu oturum için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
 
-#: src/BaseClient.cpp:1882
+#: src/BaseClient.cpp:1875
 #, c-format
 msgid ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr ""
 "Bütün oturumlar için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
 
-#: src/BaseClient.cpp:1887
+#: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
 msgstr "Bilinmeyen dosya istendi"
 
-#: src/BaseClient.cpp:2159
+#: src/BaseClient.cpp:2149
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "%s Kullanıcısı IP:Port %s:%d üzerinde ve %s %s %s kullanıyor."
@@ -191,8 +245,8 @@ msgid "Are you sure that you wish to delete the selected friend(s)?"
 msgstr "Seçili arkadaş(lar)ınızı silmek istediğinizden emin misiniz?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
-#: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:566
-#: src/ServerListCtrl.cpp:580 src/amuleDlg.cpp:683 src/amuleDlg.cpp:1319
+#: src/ServerListCtrl.cpp:148 src/ServerListCtrl.cpp:562
+#: src/ServerListCtrl.cpp:576 src/amuleDlg.cpp:684 src/amuleDlg.cpp:1315
 #: src/DownloadListCtrl.cpp:578 src/DownloadListCtrl.cpp:892
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:938
 #: src/muuli_wdr.cpp:1012 src/muuli_wdr.cpp:1078 src/muuli_wdr.cpp:2808
@@ -219,7 +273,7 @@ msgid "File Name"
 msgstr "Dosya Adı"
 
 #: src/SharedFilesCtrl.cpp:103 src/SearchListCtrl.cpp:88
-#: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:642
+#: src/DownloadListCtrl.cpp:190 src/PartFileConvert.cpp:643
 msgid "Size"
 msgstr "Boyut"
 
@@ -228,7 +282,7 @@ msgid "Type"
 msgstr "Tür"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
-#: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:446
+#: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:891
 msgid "Priority"
 msgstr "Öncelik"
@@ -266,7 +320,7 @@ msgstr "Tam Kaynaklar"
 msgid "Directory Path"
 msgstr "Dizin Yolu"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1343 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1339 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1103 src/muuli_wdr.cpp:4011
 msgid "Shared Files"
 msgstr "Paylaşılan Dosyalar"
@@ -276,19 +330,19 @@ msgid "Very low"
 msgstr "Çok düşük"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
-#: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:442
+#: src/ServerListCtrl.cpp:228 src/ServerListCtrl.cpp:437
 #: src/DownloadListCtrl.cpp:886 src/muuli_wdr.cpp:2872
 msgid "Low"
 msgstr "Düşük"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
-#: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:443
+#: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
 #: src/DownloadListCtrl.cpp:887 src/muuli_wdr.cpp:2873
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
-#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:444
+#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:888 src/muuli_wdr.cpp:2874
 msgid "High"
 msgstr "Yüksek"
@@ -383,9 +437,48 @@ msgstr "Bu dosya için yeni bir isim girin:"
 msgid "File rename"
 msgstr "Dosya yeniden adlandır."
 
+#: src/UploadQueue.cpp:512
+#, c-format
+msgid "Resuming uploads of file: %s"
+msgstr "Şu dosya için gönderimler başlatılıyor:%s"
+
+#: src/UploadQueue.cpp:521
+#, c-format
+msgid "Suspending upload of file: %s"
+msgstr "Şu dosya için gönderimler bekletiliyor: %s"
+
 #: src/kademlia/kademlia/SearchManager.cpp:139
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: Arama sözcüğü çok kısa."
+
+#: src/kademlia/routing/RoutingZone.cpp:150
+#, c-format
+msgid "Read %u Kad contacts"
+msgstr "%u adet Kad. bağlantısı okundu."
+
+#: src/kademlia/routing/RoutingZone.cpp:153
+msgid "Error while reading Kad contacts - 0 entries"
+msgstr "Kad. bağlantıları okunurken hata oluştu.- 0 giriş"
+
+#: src/kademlia/routing/RoutingZone.cpp:366
+msgid "Merge attempt"
+msgstr "Birleştirme denemesi"
+
+#: src/kademlia/routing/RoutingZone.cpp:369
+msgid "Recursive merge"
+msgstr "Tekrarlanan birleştirme"
+
+#: src/kademlia/routing/RoutingZone.cpp:408
+msgid "Sucessful merge!"
+msgstr "Başarılı birleştirme!"
+
+#: src/kademlia/routing/RoutingZone.cpp:414
+msgid "No merge possible"
+msgstr "Birleştirme yapılamaz."
+
+#: src/ListenSocket.cpp:68
+msgid "Error: Could not listen to TCP port."
+msgstr "Hata: TCP portu dinlenilemiyor."
 
 #: src/webserver/src/WebServer.cpp:320
 #, c-format
@@ -538,7 +631,7 @@ msgstr "Aktarılıyor..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1356
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1352
 #: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4015
 msgid "Preferences"
 msgstr "Ayarlar"
@@ -927,7 +1020,7 @@ msgstr "YüksekID"
 msgid "LowID"
 msgstr "DüşükID"
 
-#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:738
+#: src/utils/wxCas/src/onlinesig.cpp:272 src/amuleDlg.cpp:739
 #: src/ServerWnd.cpp:189 src/MuleTrayIcon.cpp:354 src/MuleTrayIcon.cpp:368
 #: src/MuleTrayIcon.cpp:369
 msgid "Not Connected"
@@ -1167,7 +1260,8 @@ msgstr "Oto [Nor]"
 msgid "Auto [Hi]"
 msgstr "Oto (Yük)"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:734 src/ClientListCtrl.cpp:664
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:509 src/amuleDlg.cpp:735
+#: src/ClientListCtrl.cpp:664 src/amule.cpp:803
 msgid "Connecting"
 msgstr "Bağlanıyor"
 
@@ -1270,6 +1364,149 @@ msgstr "Bağlantı"
 msgid "Source Seeds"
 msgstr "Kaynak Girdileri"
 
+#: src/Preferences.cpp:599 src/PrefsUnifiedDlg.cpp:217
+msgid "System default"
+msgstr "Sistem Varsayılanı"
+
+#: src/Preferences.cpp:600
+msgid "Arabic"
+msgstr "Arapça"
+
+#: src/Preferences.cpp:601
+msgid "Basque"
+msgstr "Baskça"
+
+#: src/Preferences.cpp:602
+msgid "Bulgarian"
+msgstr "Bulgarca"
+
+#: src/Preferences.cpp:603
+msgid "Catalan"
+msgstr "Katalanca"
+
+#: src/Preferences.cpp:604
+msgid "Chinese (Simplified)"
+msgstr "Çince (Simplified)"
+
+#: src/Preferences.cpp:605
+msgid "Chinese (Traditional)"
+msgstr "Çince (Traditional)"
+
+#: src/Preferences.cpp:606
+msgid "Croatian"
+msgstr "Hırvatça"
+
+#: src/Preferences.cpp:607
+msgid "Danish"
+msgstr "Danca"
+
+#: src/Preferences.cpp:608
+msgid "Dutch"
+msgstr "Felemenkçe"
+
+#: src/Preferences.cpp:609
+msgid "English (U.K.)"
+msgstr "İngilizce (U.K)"
+
+#: src/Preferences.cpp:612
+msgid "Estonian"
+msgstr "Estonyaca"
+
+#: src/Preferences.cpp:613
+msgid "Finnish"
+msgstr "Fince"
+
+#: src/Preferences.cpp:614
+msgid "French"
+msgstr "Fransızca"
+
+#: src/Preferences.cpp:615
+msgid "Galician"
+msgstr "Galce"
+
+#: src/Preferences.cpp:616
+msgid "German"
+msgstr "Almanca"
+
+#: src/Preferences.cpp:617
+msgid "Greek"
+msgstr "Yunanca"
+
+#: src/Preferences.cpp:618
+msgid "Hungarian"
+msgstr "Macarca"
+
+#: src/Preferences.cpp:619
+msgid "Italian"
+msgstr "İtalyanca"
+
+#: src/Preferences.cpp:620
+msgid "Italian (Swiss)"
+msgstr "İtalyanca (İsviçre)"
+
+#: src/Preferences.cpp:621
+msgid "Japanese"
+msgstr "Japonca"
+
+#: src/Preferences.cpp:622
+msgid "Korean"
+msgstr "Korece"
+
+#: src/Preferences.cpp:623
+msgid "Lithuanian"
+msgstr "Litvanyaca"
+
+#: src/Preferences.cpp:624
+msgid "Norwegian (Nynorsk)"
+msgstr "Norveççe(Nynorsk)"
+
+#: src/Preferences.cpp:625
+msgid "Polish"
+msgstr "Lehçe"
+
+#: src/Preferences.cpp:626
+msgid "Portuguese"
+msgstr "Portekizce"
+
+#: src/Preferences.cpp:627
+msgid "Portuguese (Brazilian)"
+msgstr "Portekizce (Brezilya)"
+
+#: src/Preferences.cpp:628
+msgid "Russian"
+msgstr "Rusça"
+
+#: src/Preferences.cpp:629
+msgid "Slovenian"
+msgstr "Slovence"
+
+#: src/Preferences.cpp:630
+msgid "Spanish"
+msgstr "İspanyolca"
+
+#: src/Preferences.cpp:631
+msgid "Swedish"
+msgstr "İsveçce"
+
+#: src/Preferences.cpp:634
+msgid "Turkish"
+msgstr "Türkçe"
+
+#: src/Preferences.cpp:1610 src/Preferences.cpp:1624 src/Preferences.cpp:1631
+msgid "Unable to determine selected browser!"
+msgstr "Seçili tarayıcı tanımlanamıyor!"
+
+#: src/Preferences.cpp:1660
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr ""
+"TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
+
+#: src/Preferences.cpp:1661
+#, c-format
+msgid "Default port will be used (%d)"
+msgstr "Varsayılan port kullanılacak (%d)"
+
 #: src/ServerListCtrl.cpp:86
 msgid "Server Name"
 msgstr "Sunucu Adı"
@@ -1328,7 +1565,7 @@ msgstr ""
 "kesiniz. Sunucu SİLİNMEDİ."
 
 #: src/ServerListCtrl.cpp:143 src/muuli_wdr.cpp:3134 src/CatDialog.cpp:149
-#: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:353
+#: src/CatDialog.cpp:160 src/CatDialog.cpp:170 src/ServerList.cpp:342
 #: src/amule.cpp:721 src/amule.cpp:1335
 msgid "Info"
 msgstr "Bilgi"
@@ -1352,49 +1589,54 @@ msgstr "Evet"
 msgid "No"
 msgstr "Hayır"
 
-#: src/ServerListCtrl.cpp:392
+#: src/ServerListCtrl.cpp:344
+#, c-format
+msgid "Failed to open '%s'"
+msgstr "'%s' açma başarısız"
+
+#: src/ServerListCtrl.cpp:387
 #, c-format
 msgid "Servers (%i)"
 msgstr "Sunucular (%i)"
 
-#: src/ServerListCtrl.cpp:440 src/PrefsUnifiedDlg.cpp:153
-#: src/ServerWnd.cpp:180
+#: src/ServerListCtrl.cpp:435 src/PrefsUnifiedDlg.cpp:153
+#: src/ServerWnd.cpp:180 src/ServerSocket.cpp:259 src/ServerSocket.cpp:274
 msgid "Server"
 msgstr "Sunucu"
 
-#: src/ServerListCtrl.cpp:445
+#: src/ServerListCtrl.cpp:440
 msgid "Connect to server"
 msgstr "Sunucuya bağlan"
 
-#: src/ServerListCtrl.cpp:450
+#: src/ServerListCtrl.cpp:445
 msgid "Mark server(s) as static"
 msgstr "Sunucuyu statik sunucu olarak işaretle"
 
-#: src/ServerListCtrl.cpp:451
+#: src/ServerListCtrl.cpp:446
 msgid "Mark server(s) as non-static"
 msgstr "Sunucuyu statik-olmayan olarak işaretle"
 
-#: src/ServerListCtrl.cpp:455
+#: src/ServerListCtrl.cpp:450
 msgid "Remove server(s)"
 msgstr "Sunucu(ları) kaldır"
 
-#: src/ServerListCtrl.cpp:456
+#: src/ServerListCtrl.cpp:451
 msgid "Remove all servers"
 msgstr "Bütün sunucuları kaldır"
 
-#: src/ServerListCtrl.cpp:460
+#: src/ServerListCtrl.cpp:455
 msgid "Copy ED2k link(s) to clipboard"
 msgstr "Ed2k adres(ler)ini panoya kopyala"
 
-#: src/ServerListCtrl.cpp:468
+#: src/ServerListCtrl.cpp:463
 msgid "Reconnect to server"
 msgstr "Sunucuya yeniden bağlan"
 
-#: src/ServerListCtrl.cpp:564
+#: src/ServerListCtrl.cpp:560
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "Hepsini silmek istediğinizden emin misiniz?"
 
-#: src/ServerListCtrl.cpp:578
+#: src/ServerListCtrl.cpp:574
 msgid "Are you sure that you wish to delete the selected server(s)?"
 msgstr "Seçili sunucu(lar)yu silmek istediğinize emin misiniz?"
 
@@ -1403,15 +1645,33 @@ msgstr "Seçili sunucu(lar)yu silmek istediğinize emin misiniz?"
 msgid "Disabled [%s]"
 msgstr "Devredışı [%s]"
 
-#: src/amuleDlg.cpp:429
+#: src/amuleDlg.cpp:214
+#, c-format
+msgid "This is aMule %s based on eMule."
+msgstr "Bu, eMule üzerine kurulu olan aMule %s yazılımıdır."
+
+#: src/amuleDlg.cpp:216
+#, c-format
+msgid "Running on %s"
+msgstr "%s üzerinde çalışıyor"
+
+#: src/amuleDlg.cpp:218
+msgid "Visit http://www.amule.org to check if a new version is available."
+msgstr "Yeni sürüm kontrolü için http://www.amule.org adresini ziyaret ediniz."
+
+#: src/amuleDlg.cpp:241
+msgid "Fatal Error: Failed to create Timer"
+msgstr "Önemli Hata: Zamanlayıcı  oluşturma başarısız"
+
+#: src/amuleDlg.cpp:430
 msgid "aMule remote control "
 msgstr "aMule uzak kontrolü"
 
-#: src/amuleDlg.cpp:435
+#: src/amuleDlg.cpp:436
 msgid "Snapshot:"
 msgstr "Bilgileri:"
 
-#: src/amuleDlg.cpp:438
+#: src/amuleDlg.cpp:439
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1441,152 +1701,174 @@ msgstr ""
 " Copyright (C) 2002 Petar Maymounkov\n"
 " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:450 src/PrefsUnifiedDlg.cpp:490
+#: src/amuleDlg.cpp:451 src/PrefsUnifiedDlg.cpp:490
 #: src/PrefsUnifiedDlg.cpp:587 src/PrefsUnifiedDlg.cpp:673 src/KadDlg.cpp:182
 #: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:914
 #: src/PartFile.cpp:927
 msgid "Message"
 msgstr "İleti"
 
-#: src/amuleDlg.cpp:536
+#: src/amuleDlg.cpp:537
 msgid "Status text"
 msgstr "Durum iletisi"
 
-#: src/amuleDlg.cpp:686 src/amuleDlg.cpp:1321
+#: src/amuleDlg.cpp:687 src/amuleDlg.cpp:1317
 msgid "Stops the current connection attempts"
 msgstr "Şu anki bağlanma girşimlerini durdurun"
 
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:690
 msgid "Disconnect from "
 msgstr "Bağlantıyı Kes :"
 
-#: src/amuleDlg.cpp:692
+#: src/amuleDlg.cpp:693
 msgid "current server"
 msgstr "Şu anki sunucu"
 
-#: src/amuleDlg.cpp:694
+#: src/amuleDlg.cpp:695
 msgid " and "
 msgstr " ve "
 
-#: src/amuleDlg.cpp:702 src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3072
+#: src/amuleDlg.cpp:703 src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3072
 #: src/MuleTrayIcon.cpp:508
 msgid "Disconnect"
 msgstr "Bağlantıyı Kes"
 
-#: src/amuleDlg.cpp:709 src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3292
+#: src/amuleDlg.cpp:710 src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3292
 #: src/muuli_wdr.cpp:3779 src/muuli_wdr.cpp:4005 src/MuleTrayIcon.cpp:511
 msgid "Connect"
 msgstr "Bağlan"
 
-#: src/amuleDlg.cpp:712 src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:713 src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4005
 msgid "Connect to any server and/or Kad"
 msgstr "Herhangi bir sunucuya ve/ya Kad.'a bağlan."
 
-#: src/amuleDlg.cpp:728
+#: src/amuleDlg.cpp:723
+msgid "WARNING: You have recieved Low-ID!"
+msgstr "UYARI: Düşük ID aldınız!"
+
+#: src/amuleDlg.cpp:724
+msgid "\tMost likely this is because you're behind a firewall or router."
+msgstr "\tBüyük ihtimalle bir güvenlik duvarı veya router arkasındasınız."
+
+#: src/amuleDlg.cpp:725
+msgid "\tFor more information, please refer to http://wiki.amule.org"
+msgstr "\tDaha fazla bilgi için: http://wiki.amule.org"
+
+#: src/amuleDlg.cpp:729 src/ServerConnect.cpp:273
 #, c-format
 msgid "Connection established on: %s"
 msgstr "%s sunucusuna bağlanıldı"
 
-#: src/amuleDlg.cpp:804
+#: src/amuleDlg.cpp:805
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Gön: %.1f(%.1f) | İnd:%.1f(%.1f)"
 
-#: src/amuleDlg.cpp:810
+#: src/amuleDlg.cpp:807
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Gön: %.1f | İnd:%.1f"
 
-#: src/amuleDlg.cpp:833
+#: src/amuleDlg.cpp:828
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | Bağlandı)"
 
-#: src/amuleDlg.cpp:835
+#: src/amuleDlg.cpp:830
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | Bağlantı kesildi)"
 
-#: src/amuleDlg.cpp:866
+#: src/amuleDlg.cpp:861
 msgid "Do you really want to exit aMule?"
 msgstr "aMule'den çıkmayı gerçekten istiyor musunuz?"
 
-#: src/amuleDlg.cpp:867
+#: src/amuleDlg.cpp:862
 msgid "Exit confirmation"
 msgstr "Çıkışı onaylayınız"
 
-#: src/amuleDlg.cpp:1102 src/amuleDlg.cpp:1347 src/muuli_wdr.cpp:527
+#: src/amuleDlg.cpp:1097 src/amuleDlg.cpp:1343 src/muuli_wdr.cpp:527
 #: src/muuli_wdr.cpp:3546 src/muuli_wdr.cpp:4012
 msgid "Messages"
 msgstr "Sohbet"
 
-#: src/amuleDlg.cpp:1106 src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4012
+#: src/amuleDlg.cpp:1101 src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4012
 msgid "Messages Window"
 msgstr "Sohbet Penceresi"
 
-#: src/amuleDlg.cpp:1155
+#: src/amuleDlg.cpp:1150
 msgid "Could not determine the command for running the browser."
 msgstr "Tarayıcıyı çalıştırmak için gerekli komut belirlenemedi."
 
-#: src/amuleDlg.cpp:1316
+#: src/amuleDlg.cpp:1209
+#, c-format
+msgid "Skin directory '%s' does not exist"
+msgstr "Kaplama dizini '%s'yok."
+
+#: src/amuleDlg.cpp:1214
+#, c-format
+msgid "Warning: Unable to open skin file '%s' for read"
+msgstr "Uyarı: Kaplama dosyası '%s' açılamıyor"
+
+#: src/amuleDlg.cpp:1312
 msgid "Disconnect from any server and/or Kad"
 msgstr "Tüm sunucular ve/ya Kad. bağlantılarını kes."
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4007
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:1918 src/muuli_wdr.cpp:4007
 msgid "Networks"
 msgstr "Ağ"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4007
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4007
 msgid "Networks Window"
 msgstr "Ağ Penceresi"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4009
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4009
 msgid "Searches"
 msgstr "Ara"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4009
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4009
 msgid "Searches Window"
 msgstr "Arama Penceresi"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:4010
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4010
 msgid "Transfers"
 msgstr "Aktarımlar"
 
-#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4010
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4010
 msgid "Files Transfers Window"
 msgstr "Dosya Aktarım Penceresi"
 
-#: src/amuleDlg.cpp:1345 src/muuli_wdr.cpp:4011
+#: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:4011
 msgid "Shared Files Window"
 msgstr "Paylaşılan Dosya Penceresi"
 
-#: src/amuleDlg.cpp:1351 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1347 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1117 src/muuli_wdr.cpp:2251
 #: src/muuli_wdr.cpp:4013
 msgid "Statistics"
 msgstr "İstatistikler"
 
-#: src/amuleDlg.cpp:1353 src/muuli_wdr.cpp:4013
+#: src/amuleDlg.cpp:1349 src/muuli_wdr.cpp:4013
 msgid "Statistics Graph Window"
 msgstr "İstatistik Grafik Penceresi"
 
-#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4015
+#: src/amuleDlg.cpp:1354 src/muuli_wdr.cpp:4015
 msgid "Preferences Settings Window"
 msgstr "Ayar Penceresi"
 
-#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1356 src/muuli_wdr.cpp:4016
 msgid "Import"
 msgstr "İçe Aktar"
 
-#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4016
+#: src/amuleDlg.cpp:1358 src/muuli_wdr.cpp:4016
 msgid "The partfile importer tool"
 msgstr "Parça dosyası içe aktarım aracı"
 
-#: src/amuleDlg.cpp:1364 src/muuli_wdr.cpp:4017
+#: src/amuleDlg.cpp:1360 src/muuli_wdr.cpp:4017
 msgid "About"
 msgstr "Hakkında"
 
-#: src/amuleDlg.cpp:1366 src/muuli_wdr.cpp:4017
+#: src/amuleDlg.cpp:1362 src/muuli_wdr.cpp:4017
 msgid "About/Help"
 msgstr "Hakkında/Yardım"
 
@@ -1638,10 +1920,6 @@ msgstr "Olaylar"
 #: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3807
 msgid "Debugging"
 msgstr "Hata Çıktısı"
-
-#: src/PrefsUnifiedDlg.cpp:217
-msgid "System default"
-msgstr "Sistem Varsayılanı"
 
 #: src/PrefsUnifiedDlg.cpp:218 src/muuli_wdr.cpp:1697
 msgid "User Defined"
@@ -1843,11 +2121,44 @@ msgstr "Arayüz komutu:"
 msgid "The following variables will be replaced:"
 msgstr "Şu girdiler değiştirilecek:"
 
+#: src/ExternalConn.cpp:81
+msgid "Unauthorized access attempt. Connection closed."
+msgstr "Yetkilendirilmemiş giriş denemesi. Bağlantı kesildi."
+
+#: src/ExternalConn.cpp:94
+msgid "External connection closed."
+msgstr "Dışarıdan bağlantı kesildi."
+
+#: src/ExternalConn.cpp:121
+msgid "External connections disabled due to empty password!"
+msgstr "Boş şifre sebebiyle dışarıdan bağlantı devredışı!"
+
+#: src/ExternalConn.cpp:146
+msgid "External connections disabled in config file"
+msgstr "Yapılandırma dosyasında dışarıdan bağlantılar devredışı bırakılmış."
+
+#: src/ExternalConn.cpp:162
+msgid "New external connection accepted"
+msgstr "Yeni dışarıdan bağlantı kabul edildi"
+
+#: src/ExternalConn.cpp:165
+msgid "Error: couldn't accept a new external connection"
+msgstr "Hata: yeni bir dışarıdan bağlantı kabul edilemiyor."
+
+#: src/ExternalConn.cpp:184
+msgid "External connection refused due to empty password in preferences!"
+msgstr "Ayarlardaki boş şifre sebebiyle dışarıdan bağlantılar reddedildi."
+
+#: src/ExternalConn.cpp:194
+#, c-format
+msgid "Connecting client: %s %s"
+msgstr "Kullanıcıya bağlanılıyor: %s %s"
+
 #: src/ExternalConn.cpp:196
 msgid "Unknown version"
 msgstr "Bilinmeyen sürüm"
 
-#: src/ExternalConn.cpp:208
+#: src/ExternalConn.cpp:207
 msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
@@ -1855,7 +2166,7 @@ msgstr ""
 "Yanlış EC sürüm ID, bir çift uyumsuzluğu olabilir. Aynı görüntüden çekirdek "
 "ve uzak kullanınız."
 
-#: src/ExternalConn.cpp:215
+#: src/ExternalConn.cpp:212
 msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
@@ -1863,124 +2174,185 @@ msgstr ""
 "Kararsız bir CVs sürümden stabil bir sürüme bağlanamazsınız! Muhtemel bir "
 "arıza önlendi."
 
-#: src/ExternalConn.cpp:235
+#: src/ExternalConn.cpp:228
 msgid "Authentication failed."
 msgstr "Doğrulanamadı."
 
-#: src/ExternalConn.cpp:239
+#: src/ExternalConn.cpp:232
 msgid "Invalid protocol version."
 msgstr "Geçersiz protokol sürümü."
 
-#: src/ExternalConn.cpp:244
+#: src/ExternalConn.cpp:236
 msgid "Missing protocol version tag."
 msgstr "Kayıp protokol sürüm eki."
 
-#: src/ExternalConn.cpp:248
+#: src/ExternalConn.cpp:240
 msgid "Invalid request, you should first authenticate."
 msgstr "Geçersiz istem, öncelikle doğrulatmanız lazım."
 
-#: src/ExternalConn.cpp:507
+#: src/ExternalConn.cpp:246
+msgid "Access granted."
+msgstr "Giriş izni verildi."
+
+#: src/ExternalConn.cpp:495
+#, c-format
+msgid "Remote PartFile command failed: FileHash not found: %s"
+msgstr "Uzak Parça Dosyası komutu başarısız: Dosya Adreslemesi bulunamadı: %s"
+
+#: src/ExternalConn.cpp:497
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Dosya adreslemesi bulunamadı: %s"
 
-#: src/ExternalConn.cpp:569 src/ExternalConn.cpp:656
+#: src/ExternalConn.cpp:560 src/ExternalConn.cpp:644
 msgid "OOPS! OpCode processing error!"
 msgstr "Aman aman! OpCode işleme hatası!"
 
-#: src/ExternalConn.cpp:599
+#: src/ExternalConn.cpp:590
 msgid "Server not added"
 msgstr "Sunucu eklenmedi."
 
-#: src/ExternalConn.cpp:619
+#: src/ExternalConn.cpp:608
 #, c-format
 msgid "server not found: %s"
 msgstr "sunucu bulunamadı: %s"
 
-#: src/ExternalConn.cpp:636
+#: src/ExternalConn.cpp:624
 msgid "need to define server to be removed"
 msgstr "çıkarılacak sunucunun tanımlanması gerekli"
 
-#: src/ExternalConn.cpp:650
+#: src/ExternalConn.cpp:638
 msgid "ED2K is disabled in preferences."
 msgstr "ED2K ayarlarda devredışı bırakılmış."
 
-#: src/ExternalConn.cpp:746
+#: src/ExternalConn.cpp:734
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Arama sürüyor.Bir dakikaya sonuçlanır!"
 
-#: src/ExternalConn.cpp:751
+#: src/ExternalConn.cpp:739
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Uzak arayüzden Web araması yapmak anlamsız."
 
-#: src/ExternalConn.cpp:802
+#: src/ExternalConn.cpp:790
 msgid "Kad is disabled in preferences."
 msgstr "Kad. ayarlarda devredışı bırakılmış."
 
-#: src/ExternalConn.cpp:963
+#: src/ExternalConn.cpp:951
 msgid "No points for graph."
 msgstr "Grafik için hiç nokta yok."
 
-#: src/ExternalConn.cpp:972
+#: src/ExternalConn.cpp:960
 msgid "Your client is not configured for this detail level."
 msgstr "Yazılımınız bu ayrıntı düzeyi için yapılandırılmamış."
 
-#: src/ExternalConn.cpp:1012
+#: src/ExternalConn.cpp:988
+msgid "ExternalConn: shutdown requested"
+msgstr "Dışarıdan Bağ.: kapatma istendi."
+
+#: src/ExternalConn.cpp:1000
 msgid "Already shutting down."
 msgstr "Zaten kapatılıyor."
 
-#: src/ExternalConn.cpp:1026
+#: src/ExternalConn.cpp:1008
+#, c-format
+msgid "ExternalConn: adding link '%s'."
+msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
+
+#: src/ExternalConn.cpp:1014
 msgid "Invalid link or already on list."
 msgstr "Geçersiz bağlantı veya zaten listede mevcut."
 
-#: src/ExternalConn.cpp:1103
+#: src/ExternalConn.cpp:1091
 msgid "File not found."
 msgstr "Dosya bulunamadı."
 
-#: src/ExternalConn.cpp:1108
+#: src/ExternalConn.cpp:1096
 msgid "Invalid file name."
 msgstr "Geçersiz dosya adı."
 
-#: src/ExternalConn.cpp:1116
+#: src/ExternalConn.cpp:1104
 msgid "Unable to rename file."
 msgstr "Dosya yeniden adlandırılamıyor."
 
-#: src/ExternalConn.cpp:1317
+#: src/ExternalConn.cpp:1305
 msgid "Already connected to ED2K."
 msgstr "ED2K'ya zaten bağlı."
 
-#: src/ExternalConn.cpp:1320
+#: src/ExternalConn.cpp:1308
 msgid "Connecting to ED2K..."
 msgstr "Ed2k bağlanıyor..."
 
-#: src/ExternalConn.cpp:1328
+#: src/ExternalConn.cpp:1316
 msgid "Already connected to Kad."
 msgstr "Kad. zaten bağlı."
 
-#: src/ExternalConn.cpp:1331
+#: src/ExternalConn.cpp:1319
 msgid "Connecting to Kad..."
 msgstr "Kad.' a bağlanıyor..."
 
-#: src/ExternalConn.cpp:1336
+#: src/ExternalConn.cpp:1324
 msgid "All networks are disabled."
 msgstr "Bütün ağlar devredışı"
 
-#: src/ExternalConn.cpp:1344
+#: src/ExternalConn.cpp:1332
 msgid "Disconnected from ED2K."
 msgstr "Bağlantı kesildi.:ED2K"
 
-#: src/ExternalConn.cpp:1348
+#: src/ExternalConn.cpp:1336
 msgid "Disconnected from Kad."
 msgstr "Bağlantı kesildi :Kad."
 
-#: src/ExternalConn.cpp:1361
+#: src/ExternalConn.cpp:1344
+#, c-format
+msgid "ExternalConn: invalid opcode received: %#x"
+msgstr "Dışarıdan Bağ.: geçersiz opcode alındı: %#x"
+
+#: src/ExternalConn.cpp:1347
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Geçersiz opcode (yanlış protokol sürümü mü?)"
+
+#: src/UploadClient.cpp:269
+#, c-format
+msgid "Failed to open file (%s), removing from list of shared files."
+msgstr ""
+"(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
+
+#: src/UploadClient.cpp:714
+#, c-format
+msgid "Hashset requested for unknown file: %s"
+msgstr "Bilinmeyen dosya için adresleme seti istendi: %s"
+
+#: src/UploadClient.cpp:903 src/UploadClient.cpp:948
+#, c-format
+msgid "Client requests %u"
+msgstr "Kullanıcı %u istiyor."
+
+#: src/UploadClient.cpp:904 src/UploadClient.cpp:949
+#, c-format
+msgid "File block %u-%u (%d bytes):"
+msgstr "Dosya bloğu%u-%u (%d bayt)"
+
+#: src/UploadClient.cpp:918
+msgid "Client request is invalid!"
+msgstr "Kullanıcı istemi geçersiz!"
+
+#: src/UploadClient.cpp:941
+#, c-format
+msgid "Client request is invalid! %i / %i"
+msgstr "Kullanıcı istemi geçersiz! %i %i"
 
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
 msgstr "`%s' komutu, pid `%d' içermekteydi ve durum kodu `%d' ile bitti."
+
+#: src/ServerWnd.cpp:104
+msgid "Server not added: No IP or hostname specified."
+msgstr "Sunucu eklenmedi: Bir IP veya host adı girilmedi."
+
+#: src/ServerWnd.cpp:109
+msgid "Server not added: Invalid server-port specified."
+msgstr "Sunucu eklenmde: Geçersiz sunucu portu girildi."
 
 #: src/ServerWnd.cpp:162
 msgid "ED2K Status:"
@@ -2307,7 +2679,7 @@ msgstr "Alınmadı"
 msgid "Cut"
 msgstr "Kes"
 
-#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:433
+#: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:434
 msgid "Copy"
 msgstr "Kopyala"
 
@@ -2330,6 +2702,81 @@ msgstr "ED2k bağlı değilse, ED2K araması yapılamaz."
 #: src/SearchList.cpp:359
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kad. araması sırasında beklenilmeyen hata oluştu."
+
+#: src/ClientTCPSocket.cpp:797
+#, c-format
+msgid "Message filtered from '%s' (IP:%s)"
+msgstr "'%s' kullanıcısından gelen ileti engellendi. (IP: %s)"
+
+#: src/ClientTCPSocket.cpp:799
+#, c-format
+msgid "New message from '%s' (IP:%s)"
+msgstr "'%s' kullanıcısından yeni ileti geldi (IP: %s)"
+
+#: src/ClientTCPSocket.cpp:817
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
+msgstr "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Kabul edildi"
+
+#: src/ClientTCPSocket.cpp:838
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list -> Denied"
+msgstr "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Reddedildi"
+
+#: src/ClientTCPSocket.cpp:870
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
+msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Kabul edildi"
+
+#: src/ClientTCPSocket.cpp:917
+#, c-format
+msgid "User %s (%u) requested your shareddirectories-list -> Denied"
+msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedildi"
+
+#: src/ClientTCPSocket.cpp:942
+#, c-format
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgstr ""
+"Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
+"kabul edildi"
+
+#: src/ClientTCPSocket.cpp:979
+#, c-format
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
+msgstr ""
+"Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
+"reddedildi."
+
+#: src/ClientTCPSocket.cpp:998
+#, c-format
+msgid "User %s (%u) shares directory %s"
+msgstr "Kullanıcı %s (%u), %s dizinini paylaşıyor"
+
+#: src/ClientTCPSocket.cpp:1013
+#, c-format
+msgid "User %s (%u) sent unrequested shared dirs."
+msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
+
+#: src/ClientTCPSocket.cpp:1028
+#, c-format
+msgid "User %s (%u) sent sharedfiles-list for directory %s"
+msgstr "Kullanıcı %s (%u) %s dizini için paylaşılmış dosya listesini gönderdi"
+
+#: src/ClientTCPSocket.cpp:1035
+#, c-format
+msgid "User %s (%u) finished sending sharedfiles-list"
+msgstr "Kullanıcı %s (%u) paylaşılmış dosya listesini göndermeyi tamamladı"
+
+#: src/ClientTCPSocket.cpp:1040
+#, c-format
+msgid "User %s (%u) sent unwanted sharedfiles-list"
+msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
+
+#: src/ClientTCPSocket.cpp:1052
+#, c-format
+msgid "User %s (%u) denied access to shared directories/files list"
+msgstr "Kullanıcı %s (%u)nın paylaşılmış dizin/dosyalara erişimi  reddedildi."
 
 #: src/KadDlg.cpp:131
 #, c-format
@@ -2366,6 +2813,10 @@ msgstr ""
 #: src/KadDlg.cpp:208
 msgid "Continue?"
 msgstr "Devam mı?"
+
+#: src/KadDlg.cpp:211 src/ServerList.cpp:784
+msgid "Invalid URL"
+msgstr "Geçersiz adres"
 
 #: src/KadDlg.cpp:224
 msgid "You can't update server.met from remote GUI yet."
@@ -2444,8 +2895,8 @@ msgid "Connection failed "
 msgstr "Bağlantı başarısız "
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
-#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:850
-#: src/amule.cpp:968 src/amule.cpp:1346
+#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:852
+#: src/amule.cpp:970 src/amule.cpp:1346
 msgid "Error"
 msgstr "Hata"
 
@@ -2463,7 +2914,7 @@ msgid "Transferred"
 msgstr "Aktarıldı"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:623 src/OtherFunctions.cpp:804
+#: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
 msgid "Completed"
 msgstr "Tamamlandı"
 
@@ -2615,6 +3066,101 @@ msgstr ""
 msgid "File preview"
 msgstr "Dosya Önizlemesi"
 
+#: src/DownloadListCtrl.cpp:2261
+msgid "ERROR: Failed to execute external media-player!"
+msgstr "HATA: Ortam oynatıcısı çalıştırılamıyor!"
+
+#: src/DownloadListCtrl.cpp:2262
+#, c-format
+msgid "Command: %s"
+msgstr "Komut: %s"
+
+#: src/PartFile.cpp:247
+msgid "ERROR: Failed to open partfile)"
+msgstr "HATA: Part dosyası açma başarısız)"
+
+#: src/PartFile.cpp:251
+msgid "ERROR: Failed to create partfile)"
+msgstr "HATA: Part odsyası oluşturma başarısız)"
+
+#: src/PartFile.cpp:293 src/PartFile.cpp:324
+msgid ""
+"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"met recovery solutions"
+msgstr ""
+"Hata: Yedekleme dosyası yükleme başarısız. http://forum.amule.org 'adresini "
+"part.met kurtarma çözümleri için araştırınız."
+
+#: src/PartFile.cpp:296
+#, c-format
+msgid "Error: Failed to open part.met file: %s ==> %s"
+msgstr "Hata: part.met dosyasını açma başarısız: %s ==> %s"
+
+#: src/PartFile.cpp:305
+msgid ""
+"Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
+"part.met recovery solutions"
+msgstr ""
+"Hata: part.met 0 boyutlu! Kurtarma çözümleri için http://forum.amule.org "
+"adresini ziyaret ediniz."
+
+#: src/PartFile.cpp:308
+#, c-format
+msgid "Error: part.met file is 0 size: %s ==> %s"
+msgstr "Hata: part.met 0 boyutlu: %s ==> %s"
+
+#: src/PartFile.cpp:318
+#, c-format
+msgid "Trying to load backup of met-file from %s"
+msgstr "Met-dosyası yedeklemesi %s konumundan yüklenmeye çalışılıyor."
+
+#: src/PartFile.cpp:329
+#, c-format
+msgid "Error: part.met backup file is 0 size: %s ==> %s"
+msgstr "Hata: part.met yedekleme dosyası 0 boyutlu: %s ==> %s"
+
+#: src/PartFile.cpp:343
+#, c-format
+msgid "Error: Invalid part.met fileversion: %s ==> %s"
+msgstr "Hata: Geçersiz part.met sürümü: %s ==> %s"
+
+#: src/PartFile.cpp:598
+#, c-format
+msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgstr "Hata: %s (%s) bozuk(yanlış eksayısı).Dosya yüklenemyor."
+
+#: src/PartFile.cpp:601
+msgid "Trying to recover file info..."
+msgstr "Dosya bilgisi kurtarılmaya çalışılıyor..."
+
+#: src/PartFile.cpp:616
+msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
+msgstr ""
+"İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
+
+#: src/PartFile.cpp:621
+msgid "Recovered all available file info :D - Trying to use it..."
+msgstr "Uygun olan tüm bilgiler kurtarıldı. :-D - bunlar kullanılcak..."
+
+#: src/PartFile.cpp:623
+msgid "Unable to recover file info :("
+msgstr "Dosya bilgisi kurtarılamıyor :("
+
+#: src/PartFile.cpp:657
+#, c-format
+msgid "Failed to open %s (%s)"
+msgstr "%s (%s) açma başarısız"
+
+#: src/PartFile.cpp:702
+#, c-format
+msgid "Warning: %s might be corrupted (%i)"
+msgstr "Uyarı: %s bozulmuş olabilir. (%i)"
+
+#: src/PartFile.cpp:882 src/PartFile.cpp:887
+#, c-format
+msgid "ERROR while saving partfile: %s (%s ==> %s)"
+msgstr "Parça dosyası kaydedilirken HATA: %s (%s ==> %s)"
+
 #: src/PartFile.cpp:911
 #, c-format
 msgid "Unable to open %s file - using %s file."
@@ -2625,25 +3171,138 @@ msgstr "%s dosyası açılamıyor.-%s dosyası kullanılacak."
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' bir şekilde 0 boyutlu-%s dosyası kullanılacak."
 
-#: src/PartFile.cpp:3760 src/muuli_wdr.cpp:3585
+#: src/PartFile.cpp:993
+#, c-format
+msgid "Failed to save part.met.seeds file for %s"
+msgstr "%s için pat.met girdilerini kaydetme başarısız."
+
+#: src/PartFile.cpp:1019
+#, c-format
+msgid "Saved %i sources seeds for partfile: %s (%s)"
+msgstr "%i kaynak girdileri %s (%s) için kaydedildi."
+
+#: src/PartFile.cpp:1048
+#, c-format
+msgid "Partfile %s (%s) has no seeds file"
+msgstr "%s (%s) parça dosyası girdi dosyasına sahip değil."
+
+#: src/PartFile.cpp:1055
+#, c-format
+msgid "Partfile %s (%s) has a void seeds file"
+msgstr "Parça dosyası %s (%s) geçersiz girdi dosyası içeriyor."
+
+#: src/PartFile.cpp:1113
+#, c-format
+msgid "Error reading partfile's seeds file (%s - %s): %s"
+msgstr "Parça dosyasına ait girdi dosyası  (%s - %s): %s okunamıyor."
+
+#: src/PartFile.cpp:1129 src/PartFile.cpp:1152
+#, c-format
+msgid ""
+"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
+"|%s|"
+msgstr ""
+"Bozulan parça (%d), %d ye aitti ve %s içinde bulundu. - DosyaSonuç "
+"Adreslemesi |%s| DosyaAdreslemesi |%s|"
+
+#: src/PartFile.cpp:1166
+#, c-format
+msgid "Found completed part (%i) in %s"
+msgstr "Tamamlanmış (%i) parçası %s içinde bulundu."
+
+#: src/PartFile.cpp:1203
+#, c-format
+msgid "Finished rehashing %s"
+msgstr "%s dosyasının yeniden adreslenmesi bitti"
+
+#: src/PartFile.cpp:2220
+#, c-format
+msgid "Unexpected file error while completing %s. File paused"
+msgstr ""
+"%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
+
+#: src/PartFile.cpp:2246
+#, c-format
+msgid "Finished downloading: %s"
+msgstr "Aktarım tamamlandı: %s"
+
+#: src/PartFile.cpp:2303
+#, c-format
+msgid "Deleting file: %s"
+msgstr "Dosya siliniyor: %s"
+
+#: src/PartFile.cpp:2367
+#, c-format
+msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgstr "Uyarı: İndirilen dosya adreslenemiyor.-'%s' için adresleme seti eksik."
+
+#: src/PartFile.cpp:2372
+#, c-format
+msgid ""
+"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"never happen"
+msgstr ""
+"Uyarı: Aktarılan parçanın adreslemesi yapılamıyor - adres seti eksik (%s). "
+"Bu hiç olmamalıydı"
+
+#: src/PartFile.cpp:3051
+#, c-format
+msgid "WARNING: Not enough free disk-space! Pausing file: %s"
+msgstr "UYARI: Yetersiz disk alanı! %s dosyası duraklatılıyor."
+
+#: src/PartFile.cpp:3116
+#, c-format
+msgid "Downloaded part %i is corrupt in file: %s"
+msgstr "İndirilen %i parçası %s dosyasındaydı ve bozuk."
+
+#: src/PartFile.cpp:3159
+#, c-format
+msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
+msgstr ""
+"ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: "
+"%s bayt"
+
+#: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3585
 msgid "Comments"
 msgstr "Yorumlar"
 
-#: src/PartFile.cpp:3761
+#: src/PartFile.cpp:3707
 msgid "doesn't work"
 msgstr "çalışmaz"
 
-#: src/PartFile.cpp:3763
+#: src/PartFile.cpp:3709
 msgid "remote gui"
 msgstr "uzak arayüz"
 
-#: src/PartFile.cpp:3857
+#: src/PartFile.cpp:3803
 msgid "Insufficient Diskspace"
 msgstr "Yetersiz Disk Alanı"
 
-#: src/PartFile.cpp:3868 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+#: src/PartFile.cpp:3814 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
 msgstr "Durduruldu"
+
+#: src/KnownFileList.cpp:73
+msgid "Warning: known.met does not exist."
+msgstr "Uyarı: 'known.met' dosyası yok."
+
+#: src/KnownFileList.cpp:78
+msgid "Warning: known.met cannot be opened."
+msgstr "Uyarı: 'known.met' dosyası açılamıyor."
+
+#: src/KnownFileList.cpp:85
+msgid "Warning: Knownfile list corrupted, contains invalid header."
+msgstr "Uyarı: Bilinen Dosyalar listesi bozuk, geçersiz başlıklar içeriyor."
+
+#: src/KnownFileList.cpp:111
+#, c-format
+msgid "IO error while reading known.met file: %s"
+msgstr "known.met dosyası okumada IO hatası: %s"
+
+#: src/KnownFileList.cpp:157
+#, c-format
+msgid "Error while saving known.met file: %s"
+msgstr "known.met dosyası kaydedilirken hata: %s"
 
 #: src/SharedFileList.cpp:357
 #, c-format
@@ -2653,6 +3312,21 @@ msgid ""
 msgstr ""
 "PaylaşılanDosyaListesi::PaylaşılanDosyalarıBul:: Paylaşılan dizinler "
 "listesinden %s siliniyor.: dizin bulunamadı."
+
+#: src/SharedFileList.cpp:376
+#, c-format
+msgid "Found %i known shared files"
+msgstr "Bilinen %i adet paylaşılmış dosya bulundu"
+
+#: src/SharedFileList.cpp:384
+#, c-format
+msgid "Found %i known shared files, %i unknown"
+msgstr "Bilinen %i, bilinmeyen %i adet paylaşılmış dosya bulundu."
+
+#: src/SharedFileList.cpp:394
+#, c-format
+msgid "ERROR! Attempted to share %s"
+msgstr "HATA! Paylaşma denemesi %s"
 
 #: src/CommentDialogLst.cpp:41 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -2674,6 +3348,119 @@ msgstr "Yorum yok"
 #, c-format
 msgid "%s comment(s)"
 msgstr "%s yorum(lar)"
+
+#: src/ServerConnect.cpp:69
+msgid ""
+"Failed to connect to all obfuscated servers listed. Making another pass "
+"without obfuscation."
+msgstr ""
+"Listelenen gizlenmiş bağlantılı tüm sunuculara bağlanma başarısız.Gizlenmiş "
+"bağlantı olmadan geçiş yapılacak."
+
+#: src/ServerConnect.cpp:74
+msgid "Failed to connect to all servers listed. Making another pass."
+msgstr ""
+"Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
+
+#: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
+msgid "ED2K network disabled on preferences, not connecting."
+msgstr "ED2K ağı ayarlarda devredışı bırakılmış, bağlanılmıyor."
+
+#: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
+msgid "No valid servers to connect in serverlist found"
+msgstr "Sunucu listesinde bağlanılabilcek geçerli bir sunucu bulunamadı"
+
+#: src/ServerConnect.cpp:197
+#, c-format
+msgid "Connected to %s (%s:%i)"
+msgstr " %s (%s:%i) sunucusuna bağlanıldı"
+
+#: src/ServerConnect.cpp:345
+msgid "Fatal Error while trying to connect. Internet connection might be down"
+msgstr ""
+"Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
+
+#: src/ServerConnect.cpp:349
+#, c-format
+msgid "Lost connection to %s (%s:%i)"
+msgstr "Bağlantı kaybedildi: %s (%s:%i)"
+
+#: src/ServerConnect.cpp:359
+#, c-format
+msgid "%s (%s:%i) appears to be dead."
+msgstr "%s (%s:%i) görünüşe göre ölü."
+
+#: src/ServerConnect.cpp:372
+#, c-format
+msgid "%s (%s:%i) appears to be full."
+msgstr "%s (%s:%i) görünüşe göre dolu."
+
+#: src/ServerConnect.cpp:391
+#, c-format
+msgid "Automatic connection to server will retry in %d seconds"
+msgstr "%d saniye içinde sunucuya otomatik bağlantı yeniden denenecek"
+
+#: src/ServerConnect.cpp:411
+msgid "Connection lost"
+msgstr "Bağlantı Koptu"
+
+#: src/ServerConnect.cpp:418
+#, c-format
+msgid "Connecting to %s (%s:%i) failed."
+msgstr "%s (%s:%i) adresine bağlantı başarısız."
+
+#: src/ServerConnect.cpp:460
+msgid "Error: Socket invalid at timeoutcheck"
+msgstr "Hata: Zaman aşımı kontrolündeki soket geçersiz"
+
+#: src/ServerConnect.cpp:470
+#, c-format
+msgid "Connection attempt to %s (%s:%i) timed out."
+msgstr "%s (%s:%i) adresine bağlanma denemesi zamanaşımına uğradı."
+
+#: src/DownloadQueue.cpp:167
+msgid "No part files found"
+msgstr "Hiç part dosyası bulunamadı"
+
+#: src/DownloadQueue.cpp:169
+#, c-format
+msgid "Found %u part files"
+msgstr "%u adet parça dosyası bulundu."
+
+#: src/DownloadQueue.cpp:309
+#, c-format
+msgid "Downloading %s"
+msgstr "Aktarılıyor %s"
+
+#: src/DownloadQueue.cpp:317
+#, c-format
+msgid "You are already trying to download the file '%s'"
+msgstr "Zaten %s dosyasını indirmeye çalışıyorsunuz."
+
+#: src/DownloadQueue.cpp:329
+#, c-format
+msgid "You already have the file '%s'"
+msgstr "Zaten %s dosyası var."
+
+#: src/DownloadQueue.cpp:334
+#, c-format
+msgid "You are already trying to download the file %s"
+msgstr "%s dosyasını indirmeyi zaten deniyorsunuz"
+
+#: src/DownloadQueue.cpp:1291
+#, c-format
+msgid "Cannot convert magnet link to ed2k: %s"
+msgstr "Magnet bağlantısı ed2k bağlantısına çevrilemiyor: %s"
+
+#: src/DownloadQueue.cpp:1299
+#, c-format
+msgid "Unknown protocol of link: %s"
+msgstr "Bağlantı için bilinmeyen protokol: %s"
+
+#: src/DownloadQueue.cpp:1322
+#, c-format
+msgid "Invalid ed2k link! Error: %s"
+msgstr "Geçersiz ed2k bağlantısı! Hata: %s"
 
 #: src/TextClient.cpp:128
 msgid "Execute <str> and exit."
@@ -2759,11 +3546,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Bağlandı: %s %s %s"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with LowID"
 msgstr "DüşükID ile"
 
-#: src/TextClient.cpp:671
+#: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with HighID"
 msgstr "YüksekID ile"
 
@@ -3279,6 +4066,85 @@ msgstr ""
 "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
 "Yerine, 'Bğ.Sınırını Aşağı Çek' kullanın.\n"
 
+#: src/ServerSocket.cpp:178
+msgid "theApp->serverlist->GetServerByAddress() returned NULL"
+msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
+
+#: src/ServerSocket.cpp:261
+#, c-format
+msgid "Error: %s (%s) - %s"
+msgstr "Hata: %s (%s) - %s"
+
+#: src/ServerSocket.cpp:276
+#, c-format
+msgid "Warning: %s (%s) - %s"
+msgstr "Uyarı: %s (%s) - %s"
+
+#: src/ServerSocket.cpp:419
+#, c-format
+msgid "New clientid is %u"
+msgstr "Yeni kullanıcı kimliğiniz %u"
+
+#: src/ServerSocket.cpp:475
+msgid "Unknown server info received! - too short"
+msgstr "Bilinmeyen sunucu bilgisi alındı! - çok kısa"
+
+#: src/ServerSocket.cpp:536
+#, c-format
+msgid "Received %d new servers"
+msgstr "%d adet yeni sunucu alındı"
+
+#: src/ServerSocket.cpp:539
+msgid "Saving of server-list completed."
+msgstr "Sunucu listesinin kaydı tamamlandı."
+
+#: src/ServerSocket.cpp:594
+msgid "Server rejected last command"
+msgstr "Sunucu son komutu reddetti"
+
+#: src/ServerSocket.cpp:604 src/ServerSocket.cpp:606
+#, c-format
+msgid "Bogus packet received from server: %s"
+msgstr "Sunucudan Bogus paketi alındı: %s"
+
+#: src/ServerSocket.cpp:608
+#, c-format
+msgid "Unhandled error while processing packet from server: %s"
+msgstr "Sunucudan paket alınırken beklenmeyen hata: %s"
+
+#: src/ServerSocket.cpp:647 src/ServerSocket.cpp:651
+#, c-format
+msgid "Cannot create DNS solving thread for connecting to %s"
+msgstr "%s bağlantısı için DNS çözümlemesi yapılamıyor."
+
+#: src/ServerSocket.cpp:730
+#, c-format
+msgid "Server IP %s (%s) is filtered.  Not connecting."
+msgstr "Sunucu IP. %s (%s) süzüldü.  Bağlanılmıyor."
+
+#: src/ServerSocket.cpp:740
+msgid "using protocol obfuscation."
+msgstr "adresine protokol gizleme kullanılarak "
+
+#: src/ServerSocket.cpp:749
+#, c-format
+msgid "Connecting to %s (%s - %s:%i) %s"
+msgstr "%s (%s - %s:%i) bağlanıyor %s ."
+
+#: src/ServerSocket.cpp:761
+#, c-format
+msgid "Could not solve dns for server %s: Unable to connect!"
+msgstr "Sunucu %s için DNS çözümlenemiyor: Bağlanmak imkansız!"
+
+#: src/IP2Country.cpp:67
+msgid "CIP2Country::CIP2Country(): Failed to load country data from "
+msgstr "CIP2Country::CIP2Country(): Ülke verisi yükleme başarısız "
+
+#: src/IP2Country.cpp:72
+#, c-format
+msgid "Loaded %d flag bitmaps."
+msgstr "%d işaretli bitmapler yükleniyor."
+
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
 msgstr ""
@@ -3344,89 +4210,94 @@ msgstr "Kategoriyi Düzenle"
 msgid "Remove category"
 msgstr "Kategoriyi Kaldır"
 
-#: src/PartFileConvert.cpp:269
+#: src/PartFileConvert.cpp:240
+#, c-format
+msgid "Importing %s: %s"
+msgstr "İçe Aktarılıyor %s: %s"
+
+#: src/PartFileConvert.cpp:270
 msgid "Reading temp folder"
 msgstr "Geçici dosyalar dizini okunuyor."
 
-#: src/PartFileConvert.cpp:275
+#: src/PartFileConvert.cpp:276
 msgid "Retrieving basic information from download info file"
 msgstr "Aktarım bilgisi dosyasından temel bilgiler alınıyor."
 
-#: src/PartFileConvert.cpp:355
+#: src/PartFileConvert.cpp:356
 msgid "Creating destination file"
 msgstr "Hedef dosya oluşturuluyor."
 
-#: src/PartFileConvert.cpp:364
+#: src/PartFileConvert.cpp:365
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
 msgstr "Eski aktarım dosyasından veri yükleniyor.  (%u of %u)"
 
-#: src/PartFileConvert.cpp:384
+#: src/PartFileConvert.cpp:385
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
 msgstr "Yeni tek aktarım dosyasına veri bloğu kaydediliyor.  (%u of %u)"
 
-#: src/PartFileConvert.cpp:454
+#: src/PartFileConvert.cpp:455
 msgid "Retrieving source downloadfile information"
 msgstr "Kaynak aktarım dosyası bilgisi alınıyor."
 
-#: src/PartFileConvert.cpp:479
+#: src/PartFileConvert.cpp:480
 msgid "Adding download and saving new partfile"
 msgstr "Aktarım ekleniyor ve yeni parça dosyası kaydediliyor."
 
-#: src/PartFileConvert.cpp:560
+#: src/PartFileConvert.cpp:561
 msgid "Fetching status..."
 msgstr "Aktarım durumu ..."
 
-#: src/PartFileConvert.cpp:624
+#: src/PartFileConvert.cpp:625
 msgid "In progress"
 msgstr "İşlem yapılıyor"
 
-#: src/PartFileConvert.cpp:625
+#: src/PartFileConvert.cpp:626
 msgid "Error: Out of diskspace"
 msgstr "Hata: Disk dolu"
 
-#: src/PartFileConvert.cpp:626
+#: src/PartFileConvert.cpp:627
 msgid "Error: Partmet not found"
 msgstr "Hata: part.met bulunamadı"
 
-#: src/PartFileConvert.cpp:627
+#: src/PartFileConvert.cpp:628
 msgid "Error: IO error!"
 msgstr "Hata: IO hatası !"
 
-#: src/PartFileConvert.cpp:628
+#: src/PartFileConvert.cpp:629
 msgid "Error: Failed!"
 msgstr "Hata: Başarısız!"
 
-#: src/PartFileConvert.cpp:629
+#: src/PartFileConvert.cpp:630
 msgid "Queued"
 msgstr "Sıraya girdi"
 
-#: src/PartFileConvert.cpp:630
+#: src/PartFileConvert.cpp:631
 msgid "Already downloading"
 msgstr "Zaten aktarılıyor"
 
-#: src/PartFileConvert.cpp:631
+#: src/PartFileConvert.cpp:632
 msgid "Unknown or bad tempfile format."
 msgstr "Bilinmeyen yada bozuk geçici dosya formatı."
 
-#: src/PartFileConvert.cpp:640
+#: src/PartFileConvert.cpp:641
 msgid "File name"
 msgstr "Dosya adı"
 
-#: src/PartFileConvert.cpp:641
+#: src/PartFileConvert.cpp:642
 msgid "State"
 msgstr "Durum"
 
-#: src/PartFileConvert.cpp:643
+#: src/PartFileConvert.cpp:644
 msgid "Filehash"
 msgstr "Dosya adreslemesi"
 
-#: src/PartFileConvert.cpp:689
+#: src/PartFileConvert.cpp:690
 msgid "Import partfiles"
 msgstr "Parça dosyalarını içe aktar"
 
-#: src/PartFileConvert.cpp:709
+#: src/PartFileConvert.cpp:710
 msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
@@ -3434,21 +4305,21 @@ msgstr ""
 "Lütfen geçici aktarım dosyaları için bir dizin seçiniz. (Alt dizinler de "
 "taranacaktır.)"
 
-#: src/PartFileConvert.cpp:713
+#: src/PartFileConvert.cpp:714
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 "İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
 
-#: src/PartFileConvert.cpp:714
+#: src/PartFileConvert.cpp:715
 msgid "Remove sources?"
 msgstr "Kaynakları çıkar?"
 
-#: src/PartFileConvert.cpp:735 src/muuli_wdr.cpp:3850
+#: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3850
 msgid "Waiting..."
 msgstr "Bekliyor..."
 
-#: src/PartFileConvert.cpp:750
+#: src/PartFileConvert.cpp:751
 #, c-format
 msgid "%s (Disk: %s)"
 msgstr "%s (Disk: %s)"
@@ -3564,6 +4435,27 @@ msgstr "Tümü"
 #: src/OtherFunctions.cpp:802
 msgid "all others"
 msgstr "Diğer"
+
+#: src/IPFilter.cpp:110
+msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
+msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
+
+#: src/IPFilter.cpp:283
+#, c-format
+msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
+msgstr ""
+"ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
+
+#: src/IPFilter.cpp:324
+#, c-format
+msgid "Failed to load ipfilter.dat file '%s', could not open file."
+msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor."
+
+#: src/IPFilter.cpp:329
+#, c-format
+msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
+msgstr ""
+"%u IP aralığı  '%s' dosyasından yüklendi. %u hasarlı satır gözardı edildi."
 
 #: src/StatisticsDlg.cpp:173
 #, c-format
@@ -5519,6 +6411,20 @@ msgstr ""
 msgid "Print program version."
 msgstr "Yazılım sürümünü yazdır."
 
+#: src/ClientCreditsList.cpp:165
+#, c-format
+msgid "Creditfile loaded, %u clients are known"
+msgstr "Kredi dosyası yüklendi, %u kullanıcı biliniyor."
+
+#: src/ClientCreditsList.cpp:168
+#, c-format
+msgid " - Credits expired for %u clients!"
+msgstr "%u modlar için krediler sona erdi!"
+
+#: src/ClientCreditsList.cpp:300
+msgid "No 'cryptkey.dat' file found, creating."
+msgstr "'cryptkey.dat' dosyası bulunamadı. Oluşturuluyor..."
+
 #: src/amuled.cpp:354
 msgid "Waiting for subprocess termination failed"
 msgstr "Alt işlem bekleniyor, durdurma başarısız oldu."
@@ -5839,13 +6745,114 @@ msgstr "Tüm sekmeleri kapat"
 msgid "Close other tabs"
 msgstr "Diğer sekmeleri kapat"
 
-#: src/ServerList.cpp:352
+#: src/ServerList.cpp:84
+#, c-format
+msgid "Loading server.met file: %s"
+msgstr "Server.met dosyası yükleniyor: %s"
+
+#: src/ServerList.cpp:89
+msgid "Server.met file not found!"
+msgstr "Server.met dosyası bulunamadı!"
+
+#: src/ServerList.cpp:97
+#, c-format
+msgid "Failed to load server.met file '%s', unknown format encountered."
+msgstr "Server.met dosyası '%s' açılamadı. Bilinmeyen format."
+
+#: src/ServerList.cpp:103
+msgid "Failed to open server.met!"
+msgstr "Server.met açılamadı!"
+
+#: src/ServerList.cpp:114
+#, c-format
+msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
+msgstr "Server.met dosyası bozuk, geçersiz sürüm eki bulundu: 0x%x, size %i"
+
+#: src/ServerList.cpp:169
+#, c-format
+msgid "%i servers in server.met found"
+msgstr "Server.met dosyasında %i adet sunucu bulundu"
+
+#: src/ServerList.cpp:171
+#, c-format
+msgid "%d servers added"
+msgstr "%d adet sunucu eklendi"
+
+#: src/ServerList.cpp:192
+#, c-format
+msgid "Server not added: [%s:%d] does not specify a valid port."
+msgstr "Sunucu eklenmedi: [%s:%d] geçerli bir port içermiyor."
+
+#: src/ServerList.cpp:208
+#, c-format
+msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
+msgstr "Sunucu eklenmedi: [%s:%d] IP'si süzüldü veya geçersiz."
+
+#: src/ServerList.cpp:228
+#, c-format
+msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
+msgstr "Sunucu eklenmdi: Listede IP:Portu [%s:%d] eşleşen bir sunucu bulundu."
+
+#: src/ServerList.cpp:247
+#, c-format
+msgid "Server added: Server at [%s:%d] using the name '%s'."
+msgstr "Sunucu eklendi: [%s:%d] adresindeki sunucu '%s' adını kullanıyor."
+
+#: src/ServerList.cpp:342
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
 msgstr ""
 "Silmeye çalıştığınız sunucuya bağlı durumdasınız. Lütfen, öncelikle "
 "bağlantıyı kesiniz."
+
+#: src/ServerList.cpp:629
+msgid "Failed to save server.met!"
+msgstr "Server.met kaydetme işlemi başarısız!"
+
+#: src/ServerList.cpp:805
+#, c-format
+msgid "Finished to download the server list from %s"
+msgstr "%s adresinden sunucu aktarımı tamamlandı."
+
+#: src/ServerList.cpp:808 src/ServerList.cpp:862
+#, c-format
+msgid "Failed to download the server list from %s"
+msgstr "%s adresinden sunucu listesi alınamadı."
+
+#: src/ServerList.cpp:818
+msgid ""
+"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
+"serverlist address into this file in order to auto-update your serverlist"
+msgstr ""
+"addresses.met dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen "
+"otomatik güncelleyebilmek için bu dosyaya geçerli bir sunucu listesi adresi "
+"yapıştırınız."
+
+#: src/ServerList.cpp:833
+#, c-format
+msgid "Start downloading server list from %s"
+msgstr "Sunucu listesini %s adresinden indirmeye başla."
+
+#: src/ServerList.cpp:842
+#, c-format
+msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+msgstr ""
+"Uyarı, şu sunucuların otomatikman güncellenmesi için girilen adres geçersiz: "
+"%s"
+
+#: src/ServerList.cpp:847
+msgid "No valid server.met auto-download url on addresses.dat"
+msgstr ""
+"address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
+
+#: src/ServerList.cpp:936
+msgid ""
+"Local server is filtered by the IPFilters, reconnecting to a different "
+"server!"
+msgstr ""
+"Yerel sunucu IP Süzgeci tarafından engellendi, başka bir sunucuya "
+"bağlanılıyor!"
 
 #: src/UserEvents.cpp:129
 #, c-format
@@ -5872,7 +6879,12 @@ msgstr ""
 msgid "Server list download"
 msgstr "Sunucu listesi indirme"
 
-#: src/amule.cpp:846
+#: src/amule.cpp:845
+#, c-format
+msgid "webserver running on pid %d"
+msgstr "web sunucusu pid %d üzerinde çalışıyor."
+
+#: src/amule.cpp:848
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -5882,12 +6894,12 @@ msgstr ""
 "çalıştırılamıyor. Lütfen ya web sunucusu içeren aMule paketini yükleyin ya "
 "da aMule'yi --enable-webserver kullanarak derleyip kurun."
 
-#: src/amule.cpp:958
+#: src/amule.cpp:960
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port. %u kullanılamıyor. DÜŞÜKID alacaksınız.\n"
 
-#: src/amule.cpp:964
+#: src/amule.cpp:966
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -5903,32 +6915,56 @@ msgstr ""
 "Ağ ayarlarınızı kontrol ederek portun giriş ve çıkışlar için açık olup "
 "olmadığını kontrol ediniz."
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1077
+msgid ""
+"WARNING: You can't add yourself as a source for a ed2k link while being "
+"lowid."
+msgstr ""
+"UYARI: Kendinizi bir ed'k bağlantısına kaynak olarak ekleyebilirsiniz; ancak "
+"DüşükID alırsınız."
+
+#: src/amule.cpp:1128
+msgid "Failed to create OnlineSig File"
+msgstr "Çevrimiçi İmza dosyası oluşturma başarısız."
+
+#: src/amule.cpp:1136
+msgid "Failed to create aMule OnlineSig File"
+msgstr "aMule Çevrimiçi İmza dosyası oluşturma başarısız."
+
+#: src/amule.cpp:1304
+msgid ""
+"The selected locale seems not to be installed on your box. (Note: I'll try "
+"to set it anyway)"
+msgstr ""
+"Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: Bunu "
+"yine de yapmaya çalışacağım)"
+
+#: src/amule.cpp:1314
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Hoşgeldiniz! aMule %s sürümünü ilk kez kullanıyorsunuz."
 
-#: src/amule.cpp:1314
+#: src/amule.cpp:1316
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Bu sürüm bir deneme sürümü, her gün güncellenir ve\n"
 
-#: src/amule.cpp:1315
+#: src/amule.cpp:1317
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "bir şeyleri bozmayacağını veya evinizi yakmayacağını \n"
 
-#: src/amule.cpp:1316
+#: src/amule.cpp:1318
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "yahut da köpeğinizi öldürmeyeceğini garanti edemeyiz. Fakat bir *sorun* "
 "yaratmayacağını da umuyoruz.\n"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1322
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "Aşağıdaki seçenekler güvenlik sebebiyle bu sürümde değiştirilmiştir:\n"
 
-#: src/amule.cpp:1321
+#: src/amule.cpp:1323
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -5938,7 +6974,7 @@ msgstr ""
 "* Gelen ve giden bağlantılar için Protokopl Gizleme \n"
 "etkinleştirildi.\n"
 
-#: src/amule.cpp:1322
+#: src/amule.cpp:1324
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -5947,7 +6983,7 @@ msgstr ""
 "* Sunucu listesinin diğer sunucular ve kullanıcılardan güncellenmesi "
 "devredışı bırakıldı.\n"
 
-#: src/amule.cpp:1323
+#: src/amule.cpp:1325
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -5990,805 +7026,108 @@ msgstr "HATA: Kayıt dosyası açılamıyor."
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "UYARI: Kayıt dosyası boş, bir şeyler yanlış."
 
-#: src/amule.cpp:1891
+#: src/amule.cpp:1769
+msgid "Log has been reset"
+msgstr "Kayıt silindi."
+
+#: src/amule.cpp:1797
+#, c-format
+msgid "ServerMessage: %s"
+msgstr "Sunucu İletisi: %s"
+
+#: src/amule.cpp:1835
+msgid "Failed to download the nodes list."
+msgstr "Nod listesini indirme başarısız."
+
+#: src/amule.cpp:1848
+msgid "Failed to open the downloaded version check file"
+msgstr "İndirilen sürüm kontrol dosyasını açma başarısız oldu."
+
+#: src/amule.cpp:1851 src/amule.cpp:1861 src/amule.cpp:1867
+msgid "Corrupted version check file"
+msgstr "Bozuk sürüm kontrol dosyası"
+
+#: src/amule.cpp:1877
+msgid "You are using an outdated version of aMule!"
+msgstr "aMule'nin eski bir sürümünü kullanıyorsunuz!"
+
+#: src/amule.cpp:1878
+#, c-format
+msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
+msgstr "aMule sürümünüz %i.%i.%i ve en güncel sürüm %li.%li.%li"
+
+#: src/amule.cpp:1879
+msgid "The latest version can always be found at http://www.amule.org"
+msgstr "En güncel sürüm her zaman http://www.amule.org adresinde bulunabilir."
+
+#: src/amule.cpp:1882
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "UYARI: aMuled sürümünüz eski: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:2010
+#: src/amule.cpp:1886
+msgid "Your copy of aMule is up to date."
+msgstr "aMule sürümünüz güncel."
+
+#: src/amule.cpp:1893
+msgid "Failed to download the version check file"
+msgstr "Sürüm kontrol dosyasını indirme başarısız oldu."
+
+#: src/amule.cpp:1995
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Kullanıcı: E: %s K: %s | Dosya E: %s K: %s"
 
-#~ msgid "Starting to create MD4 and AICH hash for file: %s"
-#~ msgstr "%s dosyası için MD4 ve AICH adreslemesi oluşturulmaya başlanıyor "
-
-#~ msgid "Starting to create MD4 hash for file: %s"
-#~ msgstr "%s dosyası için MD4 adreslemesi oluşturulmaya başlanıyor."
-
-#~ msgid "Starting to create AICH hash for file: %s"
-#~ msgstr "%s dosyası için AICH adreslemesi oluşturulmaya başlanıyor."
-
-#~ msgid "Syncronization thread started."
-#~ msgstr "Senkronizasyon işlemi başladı."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Bilinen dosyaların Temel adreslemesi yüklendi."
-
-#~ msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-#~ msgstr ""
-#~ "'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye "
-#~ "çevriliyor."
-
-#~ msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-#~ msgstr "UYARI: '%s' dosya adı geçersiz ve'%s'olarak yeniden adlandırıldı."
-
-#~ msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-#~ msgstr "UYARI: '%s' dosyası zaten var ve '%s'olarak yeniden adlandırıldı."
-
-#~ msgid "WARNING: Could not remove original '%s' after creating backup"
-#~ msgstr "UYARI: Yedekleme oluşturulduktan sonra özgün '%s' çıkartılamıyor."
-
-#~ msgid "WARNING: Failed to delete %s"
-#~ msgstr "UYARI: %s dosyası silinemiyor."
-
-#~ msgid "Failed to retrieve shared files from user '%s'"
-#~ msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız."
-
-#~ msgid "Resuming uploads of file: %s"
-#~ msgstr "Şu dosya için gönderimler başlatılıyor:%s"
-
-#~ msgid "Suspending upload of file: %s"
-#~ msgstr "Şu dosya için gönderimler bekletiliyor: %s"
-
-#~ msgid "Read %u Kad contacts"
-#~ msgstr "%u adet Kad. bağlantısı okundu."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Kad. bağlantıları okunurken hata oluştu.- 0 giriş"
-
-#~ msgid "Merge attempt"
-#~ msgstr "Birleştirme denemesi"
-
-#~ msgid "Recursive merge"
-#~ msgstr "Tekrarlanan birleştirme"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "Başarılı birleştirme!"
-
-#~ msgid "No merge possible"
-#~ msgstr "Birleştirme yapılamaz."
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Hata: TCP portu dinlenilemiyor."
-
-#~ msgid "Arabic"
-#~ msgstr "Arapça"
-
-#~ msgid "Basque"
-#~ msgstr "Baskça"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Bulgarca"
-
-#~ msgid "Catalan"
-#~ msgstr "Katalanca"
-
-#~ msgid "Chinese (Simplified)"
-#~ msgstr "Çince (Simplified)"
-
-#~ msgid "Chinese (Traditional)"
-#~ msgstr "Çince (Traditional)"
-
-#~ msgid "Croatian"
-#~ msgstr "Hırvatça"
-
-#~ msgid "Danish"
-#~ msgstr "Danca"
-
-#~ msgid "Dutch"
-#~ msgstr "Felemenkçe"
-
-#~ msgid "English (U.K.)"
-#~ msgstr "İngilizce (U.K)"
-
-#~ msgid "Estonian"
-#~ msgstr "Estonyaca"
-
-#~ msgid "Finnish"
-#~ msgstr "Fince"
-
-#~ msgid "French"
-#~ msgstr "Fransızca"
-
-#~ msgid "Galician"
-#~ msgstr "Galce"
-
-#~ msgid "German"
-#~ msgstr "Almanca"
-
-#~ msgid "Greek"
-#~ msgstr "Yunanca"
-
-#~ msgid "Hungarian"
-#~ msgstr "Macarca"
-
-#~ msgid "Italian"
-#~ msgstr "İtalyanca"
-
-#~ msgid "Italian (Swiss)"
-#~ msgstr "İtalyanca (İsviçre)"
-
-#~ msgid "Japanese"
-#~ msgstr "Japonca"
-
-#~ msgid "Korean"
-#~ msgstr "Korece"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Litvanyaca"
-
-#~ msgid "Norwegian (Nynorsk)"
-#~ msgstr "Norveççe(Nynorsk)"
-
-#~ msgid "Polish"
-#~ msgstr "Lehçe"
-
-#~ msgid "Portuguese"
-#~ msgstr "Portekizce"
-
-#~ msgid "Portuguese (Brazilian)"
-#~ msgstr "Portekizce (Brezilya)"
-
-#~ msgid "Russian"
-#~ msgstr "Rusça"
-
-#~ msgid "Slovenian"
-#~ msgstr "Slovence"
-
-#~ msgid "Spanish"
-#~ msgstr "İspanyolca"
-
-#~ msgid "Swedish"
-#~ msgstr "İsveçce"
-
-#~ msgid "Turkish"
-#~ msgstr "Türkçe"
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "Seçili tarayıcı tanımlanamıyor!"
-
-#~ msgid ""
-#~ "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-#~ msgstr ""
-#~ "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
-
-#~ msgid "Default port will be used (%d)"
-#~ msgstr "Varsayılan port kullanılacak (%d)"
-
-#~ msgid "Failed to open '%s'"
-#~ msgstr "'%s' açma başarısız"
-
-#~ msgid "This is aMule %s based on eMule."
-#~ msgstr "Bu, eMule üzerine kurulu olan aMule %s yazılımıdır."
-
-#~ msgid "Running on %s"
-#~ msgstr "%s üzerinde çalışıyor"
-
-#~ msgid "Visit http://www.amule.org to check if a new version is available."
-#~ msgstr ""
-#~ "Yeni sürüm kontrolü için http://www.amule.org adresini ziyaret ediniz."
-
-#~ msgid "Fatal Error: Failed to create Timer"
-#~ msgstr "Önemli Hata: Zamanlayıcı  oluşturma başarısız"
-
-#~ msgid "WARNING: You have recieved Low-ID!"
-#~ msgstr "UYARI: Düşük ID aldınız!"
-
-#~ msgid "\tMost likely this is because you're behind a firewall or router."
-#~ msgstr "\tBüyük ihtimalle bir güvenlik duvarı veya router arkasındasınız."
-
-#~ msgid "\tFor more information, please refer to http://wiki.amule.org"
-#~ msgstr "\tDaha fazla bilgi için: http://wiki.amule.org"
-
-#~ msgid "Skin directory '%s' does not exist"
-#~ msgstr "Kaplama dizini '%s'yok."
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "Uyarı: Kaplama dosyası '%s' açılamıyor"
-
-#~ msgid "Unauthorized access attempt. Connection closed."
-#~ msgstr "Yetkilendirilmemiş giriş denemesi. Bağlantı kesildi."
-
-#~ msgid "External connection closed."
-#~ msgstr "Dışarıdan bağlantı kesildi."
-
-#~ msgid "External connections disabled due to empty password!"
-#~ msgstr "Boş şifre sebebiyle dışarıdan bağlantı devredışı!"
-
-#~ msgid "External connections disabled in config file"
-#~ msgstr "Yapılandırma dosyasında dışarıdan bağlantılar devredışı bırakılmış."
-
-#~ msgid "New external connection accepted"
-#~ msgstr "Yeni dışarıdan bağlantı kabul edildi"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "Hata: yeni bir dışarıdan bağlantı kabul edilemiyor."
-
-#~ msgid "External connection refused due to empty password in preferences!"
-#~ msgstr "Ayarlardaki boş şifre sebebiyle dışarıdan bağlantılar reddedildi."
-
-#~ msgid "Connecting client: %s %s"
-#~ msgstr "Kullanıcıya bağlanılıyor: %s %s"
-
-#~ msgid "Access granted."
-#~ msgstr "Giriş izni verildi."
-
-#~ msgid "Remote PartFile command failed: FileHash not found: %s"
-#~ msgstr ""
-#~ "Uzak Parça Dosyası komutu başarısız: Dosya Adreslemesi bulunamadı: %s"
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "Dışarıdan Bağ.: kapatma istendi."
-
-#~ msgid "ExternalConn: adding link '%s'."
-#~ msgstr "Dışarıdan Bağ.:'%s' bağlantısı ekleniyor."
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "Dışarıdan Bağ.: geçersiz opcode alındı: %#x"
-
-#~ msgid "Failed to open file (%s), removing from list of shared files."
-#~ msgstr ""
-#~ "(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
-
-#~ msgid "Hashset requested for unknown file: %s"
-#~ msgstr "Bilinmeyen dosya için adresleme seti istendi: %s"
-
-#~ msgid "Client requests %u"
-#~ msgstr "Kullanıcı %u istiyor."
-
-#~ msgid "File block %u-%u (%d bytes):"
-#~ msgstr "Dosya bloğu%u-%u (%d bayt)"
-
-#~ msgid "Client request is invalid!"
-#~ msgstr "Kullanıcı istemi geçersiz!"
-
-#~ msgid "Client request is invalid! %i / %i"
-#~ msgstr "Kullanıcı istemi geçersiz! %i %i"
-
-#~ msgid "Server not added: No IP or hostname specified."
-#~ msgstr "Sunucu eklenmedi: Bir IP veya host adı girilmedi."
-
-#~ msgid "Server not added: Invalid server-port specified."
-#~ msgstr "Sunucu eklenmde: Geçersiz sunucu portu girildi."
-
-#~ msgid "Message filtered from '%s' (IP:%s)"
-#~ msgstr "'%s' kullanıcısından gelen ileti engellendi. (IP: %s)"
-
-#~ msgid "New message from '%s' (IP:%s)"
-#~ msgstr "'%s' kullanıcısından yeni ileti geldi (IP: %s)"
-
-#~ msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Kabul edildi"
-
-#~ msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Reddedildi"
-
-#~ msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Kabul edildi"
-
-#~ msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedildi"
-
-#~ msgid ""
-#~ "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
-#~ "kabul edildi"
-
-#~ msgid ""
-#~ "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
-#~ "reddedildi."
-
-#~ msgid "User %s (%u) shares directory %s"
-#~ msgstr "Kullanıcı %s (%u), %s dizinini paylaşıyor"
-
-#~ msgid "User %s (%u) sent unrequested shared dirs."
-#~ msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
-
-#~ msgid "User %s (%u) sent sharedfiles-list for directory %s"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u) %s dizini için paylaşılmış dosya listesini gönderdi"
-
-#~ msgid "User %s (%u) finished sending sharedfiles-list"
-#~ msgstr "Kullanıcı %s (%u) paylaşılmış dosya listesini göndermeyi tamamladı"
-
-#~ msgid "User %s (%u) sent unwanted sharedfiles-list"
-#~ msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
-
-#~ msgid "User %s (%u) denied access to shared directories/files list"
-#~ msgstr ""
-#~ "Kullanıcı %s (%u)nın paylaşılmış dizin/dosyalara erişimi  reddedildi."
-
-#~ msgid "Invalid URL"
-#~ msgstr "Geçersiz adres"
-
-#~ msgid "ERROR: Failed to execute external media-player!"
-#~ msgstr "HATA: Ortam oynatıcısı çalıştırılamıyor!"
-
-#~ msgid "Command: %s"
-#~ msgstr "Komut: %s"
-
-#~ msgid "ERROR: Failed to open partfile)"
-#~ msgstr "HATA: Part dosyası açma başarısız)"
-
-#~ msgid "ERROR: Failed to create partfile)"
-#~ msgstr "HATA: Part odsyası oluşturma başarısız)"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Hata: Yedekleme dosyası yükleme başarısız. http://forum.amule.org "
-#~ "'adresini part.met kurtarma çözümleri için araştırınız."
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "Hata: part.met dosyasını açma başarısız: %s ==> %s"
-
-#~ msgid ""
-#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-#~ "part.met recovery solutions"
-#~ msgstr ""
-#~ "Hata: part.met 0 boyutlu! Kurtarma çözümleri için http://forum.amule.org "
-#~ "adresini ziyaret ediniz."
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "Hata: part.met 0 boyutlu: %s ==> %s"
-
-#~ msgid "Trying to load backup of met-file from %s"
-#~ msgstr "Met-dosyası yedeklemesi %s konumundan yüklenmeye çalışılıyor."
-
-#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
-#~ msgstr "Hata: part.met yedekleme dosyası 0 boyutlu: %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "Hata: Geçersiz part.met sürümü: %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr "Hata: %s (%s) bozuk(yanlış eksayısı).Dosya yüklenemyor."
-
-#~ msgid "Trying to recover file info..."
-#~ msgstr "Dosya bilgisi kurtarılmaya çalışılıyor..."
-
-#~ msgid ""
-#~ "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-#~ msgstr ""
-#~ "İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak "
-#~ "kaydedilecek."
-
-#~ msgid "Recovered all available file info :D - Trying to use it..."
-#~ msgstr "Uygun olan tüm bilgiler kurtarıldı. :-D - bunlar kullanılcak..."
-
-#~ msgid "Unable to recover file info :("
-#~ msgstr "Dosya bilgisi kurtarılamıyor :("
-
-#~ msgid "Failed to open %s (%s)"
-#~ msgstr "%s (%s) açma başarısız"
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "Uyarı: %s bozulmuş olabilir. (%i)"
-
-#~ msgid "ERROR while saving partfile: %s (%s ==> %s)"
-#~ msgstr "Parça dosyası kaydedilirken HATA: %s (%s ==> %s)"
-
-#~ msgid "Failed to save part.met.seeds file for %s"
-#~ msgstr "%s için pat.met girdilerini kaydetme başarısız."
-
-#~ msgid "Saved %i sources seeds for partfile: %s (%s)"
-#~ msgstr "%i kaynak girdileri %s (%s) için kaydedildi."
-
-#~ msgid "Partfile %s (%s) has no seeds file"
-#~ msgstr "%s (%s) parça dosyası girdi dosyasına sahip değil."
-
-#~ msgid "Partfile %s (%s) has a void seeds file"
-#~ msgstr "Parça dosyası %s (%s) geçersiz girdi dosyası içeriyor."
-
-#~ msgid "Error reading partfile's seeds file (%s - %s): %s"
-#~ msgstr "Parça dosyasına ait girdi dosyası  (%s - %s): %s okunamıyor."
-
-#~ msgid ""
-#~ "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| "
-#~ "FileHash |%s|"
-#~ msgstr ""
-#~ "Bozulan parça (%d), %d ye aitti ve %s içinde bulundu. - DosyaSonuç "
-#~ "Adreslemesi |%s| DosyaAdreslemesi |%s|"
-
-#~ msgid "Found completed part (%i) in %s"
-#~ msgstr "Tamamlanmış (%i) parçası %s içinde bulundu."
-
-#~ msgid "Finished rehashing %s"
-#~ msgstr "%s dosyasının yeniden adreslenmesi bitti"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr ""
-#~ "%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
-
-#~ msgid "Finished downloading: %s"
-#~ msgstr "Aktarım tamamlandı: %s"
-
-#~ msgid "Deleting file: %s"
-#~ msgstr "Dosya siliniyor: %s"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr ""
-#~ "Uyarı: İndirilen dosya adreslenemiyor.-'%s' için adresleme seti eksik."
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "Uyarı: Aktarılan parçanın adreslemesi yapılamıyor - adres seti eksik (%"
-#~ "s). Bu hiç olmamalıydı"
-
-#~ msgid "WARNING: Not enough free disk-space! Pausing file: %s"
-#~ msgstr "UYARI: Yetersiz disk alanı! %s dosyası duraklatılıyor."
-
-#~ msgid "Downloaded part %i is corrupt in file: %s"
-#~ msgstr "İndirilen %i parçası %s dosyasındaydı ve bozuk."
-
-#~ msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-#~ msgstr ""
-#~ "ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen "
-#~ "miktar: %s bayt"
-
-#~ msgid "Warning: known.met does not exist."
-#~ msgstr "Uyarı: 'known.met' dosyası yok."
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "Uyarı: 'known.met' dosyası açılamıyor."
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr "Uyarı: Bilinen Dosyalar listesi bozuk, geçersiz başlıklar içeriyor."
-
-#~ msgid "IO error while reading known.met file: %s"
-#~ msgstr "known.met dosyası okumada IO hatası: %s"
-
-#~ msgid "Error while saving known.met file: %s"
-#~ msgstr "known.met dosyası kaydedilirken hata: %s"
-
-#~ msgid "Found %i known shared files"
-#~ msgstr "Bilinen %i adet paylaşılmış dosya bulundu"
-
-#~ msgid "Found %i known shared files, %i unknown"
-#~ msgstr "Bilinen %i, bilinmeyen %i adet paylaşılmış dosya bulundu."
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "HATA! Paylaşma denemesi %s"
-
-#~ msgid ""
-#~ "Failed to connect to all obfuscated servers listed. Making another pass "
-#~ "without obfuscation."
-#~ msgstr ""
-#~ "Listelenen gizlenmiş bağlantılı tüm sunuculara bağlanma başarısız."
-#~ "Gizlenmiş bağlantı olmadan geçiş yapılacak."
-
-#~ msgid "Failed to connect to all servers listed. Making another pass."
-#~ msgstr ""
-#~ "Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş "
-#~ "yapılıyor."
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "ED2K ağı ayarlarda devredışı bırakılmış, bağlanılmıyor."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "Sunucu listesinde bağlanılabilcek geçerli bir sunucu bulunamadı"
-
-#~ msgid "Connected to %s (%s:%i)"
-#~ msgstr " %s (%s:%i) sunucusuna bağlanıldı"
-
-#~ msgid ""
-#~ "Fatal Error while trying to connect. Internet connection might be down"
-#~ msgstr ""
-#~ "Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
-
-#~ msgid "Lost connection to %s (%s:%i)"
-#~ msgstr "Bağlantı kaybedildi: %s (%s:%i)"
-
-#~ msgid "%s (%s:%i) appears to be dead."
-#~ msgstr "%s (%s:%i) görünüşe göre ölü."
-
-#~ msgid "%s (%s:%i) appears to be full."
-#~ msgstr "%s (%s:%i) görünüşe göre dolu."
-
-#~ msgid "Automatic connection to server will retry in %d seconds"
-#~ msgstr "%d saniye içinde sunucuya otomatik bağlantı yeniden denenecek"
-
-#~ msgid "Connection lost"
-#~ msgstr "Bağlantı Koptu"
-
-#~ msgid "Connecting to %s (%s:%i) failed."
-#~ msgstr "%s (%s:%i) adresine bağlantı başarısız."
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "Hata: Zaman aşımı kontrolündeki soket geçersiz"
-
-#~ msgid "Connection attempt to %s (%s:%i) timed out."
-#~ msgstr "%s (%s:%i) adresine bağlanma denemesi zamanaşımına uğradı."
-
-#~ msgid "No part files found"
-#~ msgstr "Hiç part dosyası bulunamadı"
-
-#~ msgid "Found %u part files"
-#~ msgstr "%u adet parça dosyası bulundu."
-
-#~ msgid "Downloading %s"
-#~ msgstr "Aktarılıyor %s"
-
-#~ msgid "You are already trying to download the file '%s'"
-#~ msgstr "Zaten %s dosyasını indirmeye çalışıyorsunuz."
-
-#~ msgid "You already have the file '%s'"
-#~ msgstr "Zaten %s dosyası var."
-
-#~ msgid "You are already trying to download the file %s"
-#~ msgstr "%s dosyasını indirmeyi zaten deniyorsunuz"
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "Magnet bağlantısı ed2k bağlantısına çevrilemiyor: %s"
-
-#~ msgid "Unknown protocol of link: %s"
-#~ msgstr "Bağlantı için bilinmeyen protokol: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Geçersiz ed2k bağlantısı! Hata: %s"
-
-#~ msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-#~ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Hata: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Uyarı: %s (%s) - %s"
-
-#~ msgid "New clientid is %u"
-#~ msgstr "Yeni kullanıcı kimliğiniz %u"
-
-#~ msgid "Unknown server info received! - too short"
-#~ msgstr "Bilinmeyen sunucu bilgisi alındı! - çok kısa"
-
-#~ msgid "Received %d new servers"
-#~ msgstr "%d adet yeni sunucu alındı"
-
-#~ msgid "Saving of server-list completed."
-#~ msgstr "Sunucu listesinin kaydı tamamlandı."
-
-#~ msgid "Server rejected last command"
-#~ msgstr "Sunucu son komutu reddetti"
-
-#~ msgid "Bogus packet received from server: %s"
-#~ msgstr "Sunucudan Bogus paketi alındı: %s"
-
-#~ msgid "Unhandled error while processing packet from server: %s"
-#~ msgstr "Sunucudan paket alınırken beklenmeyen hata: %s"
-
-#~ msgid "Cannot create DNS solving thread for connecting to %s"
-#~ msgstr "%s bağlantısı için DNS çözümlemesi yapılamıyor."
-
-#~ msgid "Server IP %s (%s) is filtered.  Not connecting."
-#~ msgstr "Sunucu IP. %s (%s) süzüldü.  Bağlanılmıyor."
-
-#~ msgid "using protocol obfuscation."
-#~ msgstr "adresine protokol gizleme kullanılarak "
-
-#~ msgid "Connecting to %s (%s - %s:%i) %s"
-#~ msgstr "%s (%s - %s:%i) bağlanıyor %s ."
-
-#~ msgid "Could not solve dns for server %s: Unable to connect!"
-#~ msgstr "Sunucu %s için DNS çözümlenemiyor: Bağlanmak imkansız!"
-
-#~ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-#~ msgstr "CIP2Country::CIP2Country(): Ülke verisi yükleme başarısız "
-
-#~ msgid "Loaded %d flag bitmaps."
-#~ msgstr "%d işaretli bitmapler yükleniyor."
-
-#~ msgid "Importing %s: %s"
-#~ msgstr "İçe Aktarılıyor %s: %s"
-
-#~ msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
-#~ msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
-
-#~ msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-#~ msgstr ""
-#~ "ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format "
-#~ "algılandı."
-
-#~ msgid "Failed to load ipfilter.dat file '%s', could not open file."
-#~ msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor."
-
-#~ msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
-#~ msgstr ""
-#~ "%u IP aralığı  '%s' dosyasından yüklendi. %u hasarlı satır gözardı edildi."
-
-#~ msgid "Creditfile loaded, %u clients are known"
-#~ msgstr "Kredi dosyası yüklendi, %u kullanıcı biliniyor."
-
-#~ msgid " - Credits expired for %u clients!"
-#~ msgstr "%u modlar için krediler sona erdi!"
-
-#~ msgid "No 'cryptkey.dat' file found, creating."
-#~ msgstr "'cryptkey.dat' dosyası bulunamadı. Oluşturuluyor..."
-
-#~ msgid "Loading server.met file: %s"
-#~ msgstr "Server.met dosyası yükleniyor: %s"
-
-#~ msgid "Server.met file not found!"
-#~ msgstr "Server.met dosyası bulunamadı!"
-
-#~ msgid "Failed to load server.met file '%s', unknown format encountered."
-#~ msgstr "Server.met dosyası '%s' açılamadı. Bilinmeyen format."
-
-#~ msgid "Failed to open server.met!"
-#~ msgstr "Server.met açılamadı!"
-
-#~ msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-#~ msgstr "Server.met dosyası bozuk, geçersiz sürüm eki bulundu: 0x%x, size %i"
-
-#~ msgid "%i servers in server.met found"
-#~ msgstr "Server.met dosyasında %i adet sunucu bulundu"
-
-#~ msgid "%d servers added"
-#~ msgstr "%d adet sunucu eklendi"
-
-#~ msgid "Server not added: [%s:%d] does not specify a valid port."
-#~ msgstr "Sunucu eklenmedi: [%s:%d] geçerli bir port içermiyor."
-
-#~ msgid "Server not added: The IP of [%s:%d] is filtered or invalid."
-#~ msgstr "Sunucu eklenmedi: [%s:%d] IP'si süzüldü veya geçersiz."
-
-#~ msgid ""
-#~ "Server not added: Server with matching IP:Port [%s:%d] found in list."
-#~ msgstr ""
-#~ "Sunucu eklenmdi: Listede IP:Portu [%s:%d] eşleşen bir sunucu bulundu."
-
-#~ msgid "Server added: Server at [%s:%d] using the name '%s'."
-#~ msgstr "Sunucu eklendi: [%s:%d] adresindeki sunucu '%s' adını kullanıyor."
-
-#~ msgid "Failed to save server.met!"
-#~ msgstr "Server.met kaydetme işlemi başarısız!"
-
-#~ msgid "Finished to download the server list from %s"
-#~ msgstr "%s adresinden sunucu aktarımı tamamlandı."
-
-#~ msgid "Failed to download the server list from %s"
-#~ msgstr "%s adresinden sunucu listesi alınamadı."
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "addresses.met dosyasında hiç sunucu listesi adresi bulunamadı. Lütfen "
-#~ "otomatik güncelleyebilmek için bu dosyaya geçerli bir sunucu listesi "
-#~ "adresi yapıştırınız."
-
-#~ msgid "Start downloading server list from %s"
-#~ msgstr "Sunucu listesini %s adresinden indirmeye başla."
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Uyarı, şu sunucuların otomatikman güncellenmesi için girilen adres "
-#~ "geçersiz: %s"
-
-#~ msgid "No valid server.met auto-download url on addresses.dat"
-#~ msgstr ""
-#~ "address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
-
-#~ msgid ""
-#~ "Local server is filtered by the IPFilters, reconnecting to a different "
-#~ "server!"
-#~ msgstr ""
-#~ "Yerel sunucu IP Süzgeci tarafından engellendi, başka bir sunucuya "
-#~ "bağlanılıyor!"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "web sunucusu pid %d üzerinde çalışıyor."
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "UYARI: Kendinizi bir ed'k bağlantısına kaynak olarak ekleyebilirsiniz; "
-#~ "ancak DüşükID alırsınız."
-
-#~ msgid "Failed to create OnlineSig File"
-#~ msgstr "Çevrimiçi İmza dosyası oluşturma başarısız."
-
-#~ msgid "Failed to create aMule OnlineSig File"
-#~ msgstr "aMule Çevrimiçi İmza dosyası oluşturma başarısız."
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box. (Note: I'll "
-#~ "try to set it anyway)"
-#~ msgstr ""
-#~ "Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: "
-#~ "Bunu yine de yapmaya çalışacağım)"
-
-#~ msgid "Log has been reset"
-#~ msgstr "Kayıt silindi."
-
-#~ msgid "ServerMessage: %s"
-#~ msgstr "Sunucu İletisi: %s"
-
-#~ msgid "Failed to download the nodes list."
-#~ msgstr "Nod listesini indirme başarısız."
-
-#~ msgid "Failed to open the downloaded version check file"
-#~ msgstr "İndirilen sürüm kontrol dosyasını açma başarısız oldu."
-
-#~ msgid "Corrupted version check file"
-#~ msgstr "Bozuk sürüm kontrol dosyası"
-
-#~ msgid "You are using an outdated version of aMule!"
-#~ msgstr "aMule'nin eski bir sürümünü kullanıyorsunuz!"
-
-#~ msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-#~ msgstr "aMule sürümünüz %i.%i.%i ve en güncel sürüm %li.%li.%li"
-
-#~ msgid "The latest version can always be found at http://www.amule.org"
-#~ msgstr ""
-#~ "En güncel sürüm her zaman http://www.amule.org adresinde bulunabilir."
-
-#~ msgid "Your copy of aMule is up to date."
-#~ msgstr "aMule sürümünüz güncel."
-
-#~ msgid "Failed to download the version check file"
-#~ msgstr "Sürüm kontrol dosyasını indirme başarısız oldu."
-
-#~ msgid "Connected to %s %s"
-#~ msgstr "Bağlandı: %s %s"
-
-#~ msgid "Connecting to %s"
-#~ msgstr "Bağlanıyor: %s"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "ED2K bağlantısı kesildi"
-
-#~ msgid "Kad started."
-#~ msgstr "Kademlia başladı."
-
-#~ msgid "Kad stopped."
-#~ msgstr "Kademlia durdu."
-
-#~ msgid "Connected to Kad (ok)"
-#~ msgstr "Kademila ağına bağlanıldı (tamam)"
-
-#~ msgid "Connected to Kad (firewalled)"
-#~ msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
-
-#~ msgid "Disconnected from Kad"
-#~ msgstr "Kademlia bağlantısı kesildi."
-
-#~ msgid ""
-#~ "Kad network cannot be used if UDP port is disabled on preferences, not "
-#~ "starting."
-#~ msgstr ""
-#~ "UDP portu ayarlarda devredışı bırakılmışsa Kad ağı kullanılamaz. "
-#~ "Başlatılmıyor."
-
-#~ msgid "Kad network disabled on preferences, not connecting."
-#~ msgstr "Kad. ağı ayarlarda devredışı bırakılmış, bağlanılmıyor."
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+#: src/amule.cpp:2064
+#, c-format
+msgid "Connected to %s %s"
+msgstr "Bağlandı: %s %s"
+
+#: src/amule.cpp:2067
+#, c-format
+msgid "Connecting to %s"
+msgstr "Bağlanıyor: %s"
+
+#: src/amule.cpp:2069
+msgid "Disconnected from ED2K"
+msgstr "ED2K bağlantısı kesildi"
+
+#: src/amule.cpp:2076
+msgid "Kad started."
+msgstr "Kademlia başladı."
+
+#: src/amule.cpp:2078
+msgid "Kad stopped."
+msgstr "Kademlia durdu."
+
+#: src/amule.cpp:2085
+msgid "Connected to Kad (ok)"
+msgstr "Kademila ağına bağlanıldı (tamam)"
+
+#: src/amule.cpp:2087
+msgid "Connected to Kad (firewalled)"
+msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
+
+#: src/amule.cpp:2090
+msgid "Disconnected from Kad"
+msgstr "Kademlia bağlantısı kesildi."
+
+#: src/amule.cpp:2146
+msgid ""
+"Kad network cannot be used if UDP port is disabled on preferences, not "
+"starting."
+msgstr ""
+"UDP portu ayarlarda devredışı bırakılmışsa Kad ağı kullanılamaz. "
+"Başlatılmıyor."
+
+#: src/amule.cpp:2149
+msgid "Kad network disabled on preferences, not connecting."
+msgstr "Kad. ağı ayarlarda devredışı bırakılmış, bağlanılmıyor."
+
+#: src/FriendList.cpp:120
+msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#: src/FriendList.cpp:146
+msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
