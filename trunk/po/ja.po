@@ -623,7 +623,7 @@ msgstr "記憶ありません"
 
 #: src/HTTPDownload.cpp:60
 msgid "Downloading..."
-msgstr "ダウンロード中..."
+msgstr "ダウンロード中…"
 
 #: src/HTTPDownload.cpp:81
 #, c-format
@@ -833,7 +833,7 @@ msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:573
 msgid "Oh Oh, aMule is not running..."
-msgstr "あら、aMuleは始動されていません..."
+msgstr "あら、aMuleは始動されていません…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:649
 #: src/utils/wxCas/src/wxcasframe.cpp:719
@@ -847,11 +847,11 @@ msgstr "aMuleは始動していますが接続はしていません"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:929
 msgid "aMule is connecting..."
-msgstr "aMuleは接続中です..."
+msgstr "aMuleは接続中です…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:933
 msgid "Oh Oh, aMule status is unknown..."
-msgstr "あら、aMuleのステータスは不明です..."
+msgstr "あら、aMuleのステータスは不明です…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1004
 #: src/utils/wxCas/src/wxcasframe.cpp:1009
@@ -876,7 +876,7 @@ msgstr " は接続していません！"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1019
 msgid " is connecting..."
-msgstr " は接続中です..."
+msgstr " は接続中です…"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1023
 msgid " is doing something strange, check it !"
@@ -1208,7 +1208,7 @@ msgstr ""
 #: src/utils/aLinkCreator/src/alcframe.cpp:517
 #: src/utils/aLinkCreator/src/alcframe.cpp:523
 msgid "Hashing..."
-msgstr "ハッシュ中..."
+msgstr "ハッシュ中…"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:580
 #, c-format
@@ -1235,7 +1235,7 @@ msgstr ""
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "Please wait... "
-msgstr "お待ちください..."
+msgstr "お待ちください…"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:84
 #, c-format
@@ -2169,7 +2169,7 @@ msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"任意CVSバージョンからリリースバージョンに接続は出来ません！ *ハァ...*起こり得"
+"任意CVSバージョンからリリースバージョンに接続は出来ません！ *ハァ…*起こり得"
 "るクラッシュを予防しました"
 
 #: src/ExternalConn.cpp:228
@@ -2195,25 +2195,25 @@ msgstr "アクセスを認められました。"
 #: src/ExternalConn.cpp:495
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr ""
+msgstr "リモート部分ファイルコマンドが失敗しました：ファイルハッシュは見付かりませんでした： %s"
 
 #: src/ExternalConn.cpp:497
 #, c-format
 msgid "FileHash not found: %s"
-msgstr ""
+msgstr "ファイルハッシュは見付かりませんでした： %s"
 
 #: src/ExternalConn.cpp:560 src/ExternalConn.cpp:644
 msgid "OOPS! OpCode processing error!"
-msgstr ""
+msgstr "あら！OpCode処理エラーが発生しました！"
 
 #: src/ExternalConn.cpp:590
 msgid "Server not added"
-msgstr ""
+msgstr "サーバは追加しませんでした"
 
 #: src/ExternalConn.cpp:608
 #, c-format
 msgid "server not found: %s"
-msgstr ""
+msgstr "サーバは見付かりませんでした： %s"
 
 #: src/ExternalConn.cpp:624
 msgid "need to define server to be removed"
@@ -2221,773 +2221,775 @@ msgstr ""
 
 #: src/ExternalConn.cpp:638
 msgid "ED2K is disabled in preferences."
-msgstr ""
+msgstr "Ed2kは個人設定に無効されています。"
 
 #: src/ExternalConn.cpp:734
 msgid "Search in progress. Refetch results in a moment!"
-msgstr ""
+msgstr "検索中です。あと少しで結果をもう一度取ってきます！"
 
 #: src/ExternalConn.cpp:739
 msgid "WebSearch from remote interface makes no sense."
-msgstr ""
+msgstr "リモートインタフェイスからWebSearchする意味がありません。"
 
 #: src/ExternalConn.cpp:790
 msgid "Kad is disabled in preferences."
-msgstr ""
+msgstr "Kadは個人設定に無効されています。"
 
 #: src/ExternalConn.cpp:951
 msgid "No points for graph."
-msgstr ""
+msgstr "グラフを表示するための点がありません。"
 
 #: src/ExternalConn.cpp:960
 msgid "Your client is not configured for this detail level."
-msgstr ""
+msgstr "あなたのクライアントはこの詳細レベルには設定されていません。"
 
 #: src/ExternalConn.cpp:988
 msgid "ExternalConn: shutdown requested"
-msgstr ""
+msgstr "ExternalConn：シャットダウンが要求されました"
 
 #: src/ExternalConn.cpp:1000
 msgid "Already shutting down."
-msgstr ""
+msgstr "もうシャットダウン中です。"
 
 #: src/ExternalConn.cpp:1008
 #, c-format
 msgid "ExternalConn: adding link '%s'."
-msgstr ""
+msgstr "ExternalConn：次のリンクを追加中です： '%s'。"
 
 #: src/ExternalConn.cpp:1014
 msgid "Invalid link or already on list."
-msgstr ""
+msgstr "不正なリンク、またはリンクがすでにリストに入っています。"
 
 #: src/ExternalConn.cpp:1091
 msgid "File not found."
-msgstr ""
+msgstr "ファイルは見付かりませんでした。"
 
 #: src/ExternalConn.cpp:1096
 msgid "Invalid file name."
-msgstr ""
+msgstr "不正なファイル名。"
 
 #: src/ExternalConn.cpp:1104
 msgid "Unable to rename file."
-msgstr ""
+msgstr "ファイルを改名出来ません。"
 
 #: src/ExternalConn.cpp:1305
 msgid "Already connected to ED2K."
-msgstr ""
+msgstr "すでにEd2kに接続しています。"
 
 #: src/ExternalConn.cpp:1308
 msgid "Connecting to ED2K..."
-msgstr ""
+msgstr "Ed2kに接続中です…"
 
 #: src/ExternalConn.cpp:1316
 msgid "Already connected to Kad."
-msgstr ""
+msgstr "すでにKadに接続しています。"
 
 #: src/ExternalConn.cpp:1319
 msgid "Connecting to Kad..."
-msgstr ""
+msgstr "Kadに接続中です…"
 
 #: src/ExternalConn.cpp:1324
 msgid "All networks are disabled."
-msgstr ""
+msgstr "全てのネットワークが無効されています。"
 
 #: src/ExternalConn.cpp:1332
 msgid "Disconnected from ED2K."
-msgstr ""
+msgstr "Ed2kから切断しています。"
 
 #: src/ExternalConn.cpp:1336
 msgid "Disconnected from Kad."
-msgstr ""
+msgstr "Kadから切断しています。"
 
 #: src/ExternalConn.cpp:1344
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
-msgstr ""
+msgstr "ExternalConn：不正なOpCodeを貰いました： %#x"
 
 #: src/ExternalConn.cpp:1347
 msgid "Invalid opcode (wrong protocol version?)"
-msgstr ""
+msgstr "不正なOpCode（プロトコルバージョンが違いますか？）"
 
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr ""
+msgstr "ファイル（%s）を開くことが出来ませんでした、共通ファイルのリストから外します。"
 
 #: src/UploadClient.cpp:714
 #, c-format
 msgid "Hashset requested for unknown file: %s"
-msgstr ""
+msgstr "不明なファイルのハッシュセットが要求されました： %s"
 
 #: src/UploadClient.cpp:903 src/UploadClient.cpp:948
 #, c-format
 msgid "Client requests %u"
-msgstr ""
+msgstr "クライアントの要求数： %u"
 
 #: src/UploadClient.cpp:904 src/UploadClient.cpp:949
 #, c-format
 msgid "File block %u-%u (%d bytes):"
-msgstr ""
+msgstr "ファイルブロック %u-%u（%d バイト）"
 
 #: src/UploadClient.cpp:918
 msgid "Client request is invalid!"
-msgstr ""
+msgstr "クライアントの要求が不正です！"
 
 #: src/UploadClient.cpp:941
 #, c-format
 msgid "Client request is invalid! %i / %i"
-msgstr ""
+msgstr "クライアントの要求が不正です！ %i / %i"
 
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr ""
+msgstr "`%s' がステータスコード PID `%d' のコマンド  `%d' で終了しました。"
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
-msgstr ""
+msgstr "サーバは追加しませんでした：IPまたはホスト名は指示されていませんでした。"
 
 #: src/ServerWnd.cpp:109
 msgid "Server not added: Invalid server-port specified."
-msgstr ""
+msgstr "サーバは追加しませんでした：不正なサーバ・ポートが指示されました。"
 
 #: src/ServerWnd.cpp:162
 msgid "ED2K Status:"
-msgstr ""
+msgstr "Ed2kのステータス："
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:681
 #: src/ClientListCtrl.cpp:994
 msgid "Connected"
-msgstr ""
+msgstr "接続"
 
 #: src/ServerWnd.cpp:169 src/muuli_wdr.cpp:3051
 msgid "IP:Port"
-msgstr ""
+msgstr "IP:ポート"
 
 #: src/ServerWnd.cpp:173
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: src/ServerWnd.cpp:205
 msgid "Kademlia Status:"
-msgstr ""
+msgstr "Kademliaのステータス："
 
 #: src/ServerWnd.cpp:208
 msgid "Running"
-msgstr ""
+msgstr "走っています"
 
 #: src/ServerWnd.cpp:214
 msgid "Status:"
-msgstr ""
+msgstr "ステータス："
 
 #: src/ServerWnd.cpp:215
 msgid "Disconnected"
-msgstr ""
+msgstr "切断"
 
 #: src/ServerWnd.cpp:218
 msgid "Connection State:"
-msgstr ""
+msgstr "コネクション情況："
 
 #: src/ServerWnd.cpp:219
 msgid "Firewalled"
-msgstr ""
+msgstr "ファイアワォールされています"
 
 #: src/ServerWnd.cpp:219 src/muuli_wdr.cpp:2803 src/muuli_wdr.cpp:2906
 #: src/muuli_wdr.cpp:3148
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: src/ServerWnd.cpp:223
 msgid "Firewalled state: "
-msgstr ""
+msgstr "ファイアワォールされた情況："
 
 #: src/ServerWnd.cpp:224
 msgid "Connected to buddy"
-msgstr ""
+msgstr "仲間と接続しています"
 
 #: src/ServerWnd.cpp:224
 msgid "No buddy"
-msgstr ""
+msgstr "仲間がありません"
 
 #: src/ServerWnd.cpp:228
 msgid "Buddy address: "
-msgstr ""
+msgstr "仲間のアドレス："
 
 #: src/ServerWnd.cpp:234
 msgid "Average Users:"
-msgstr ""
+msgstr "平均のユーザ数："
 
 #: src/ServerWnd.cpp:237
 msgid "Average Files:"
-msgstr ""
+msgstr "平均のファイル数："
 
 #: src/ServerWnd.cpp:250 src/TextClient.cpp:692
 msgid "Not running"
-msgstr ""
+msgstr "走っていません"
 
 #: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:418
 #, c-format
 msgid "Uptime: %s"
-msgstr ""
+msgstr "アップタイム： %s"
 
 #: src/Statistics.cpp:644 src/muuli_wdr.cpp:653
 msgid "Transfer"
-msgstr ""
+msgstr "転送"
 
 #: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:469
 msgid "Uploads"
-msgstr ""
+msgstr "アップロード数"
 
 #: src/Statistics.cpp:647
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
-msgstr ""
+msgstr "アップロードされたデータ（セッション合計）： %s"
 
 #: src/Statistics.cpp:649 src/Statistics.cpp:668
 #, c-format
 msgid "Total Overhead (Packets): %s"
-msgstr ""
+msgstr "合計オーバヘッド（パッケト数）： %s"
 
 #: src/Statistics.cpp:650 src/Statistics.cpp:669
 #, c-format
 msgid "File Request Overhead (Packets): %s"
-msgstr ""
+msgstr "ファイル要求のオーバヘッド（パケット数）： %s"
 
 #: src/Statistics.cpp:652 src/Statistics.cpp:671
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
-msgstr ""
+msgstr "ソース交換のオーバヘッド（パケット数）： %s"
 
 #: src/Statistics.cpp:654 src/Statistics.cpp:673
 #, c-format
 msgid "Server Overhead (Packets): %s"
-msgstr ""
+msgstr "サーバのオーバヘッド（パケット数）： %s"
 
 #: src/Statistics.cpp:656 src/Statistics.cpp:675
 #, c-format
 msgid "Kad Overhead (Packets): %s"
-msgstr ""
+msgstr "Kadのオーバヘッド（パケット数）： %s"
 
 #: src/Statistics.cpp:658
 #, c-format
 msgid "Active Uploads: %s"
-msgstr ""
+msgstr "アクティブなアップロード数： %s"
 
 #: src/Statistics.cpp:659
 #, c-format
 msgid "Waiting Uploads: %s"
-msgstr ""
+msgstr "待機中のアップロード数： %s"
 
 #: src/Statistics.cpp:660
 #, c-format
 msgid "Total successful upload sessions: %s"
-msgstr ""
+msgstr "成功したアップロードセッションの合計： %s"
 
 #: src/Statistics.cpp:661
 #, c-format
 msgid "Total failed upload sessions: %s"
-msgstr ""
+msgstr "失敗したアップロードセッションの合計： %s"
 
 #: src/Statistics.cpp:663
 #, c-format
 msgid "Average upload time: %s"
-msgstr ""
+msgstr "平均アップロード時間： %s"
 
 #: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:883 src/muuli_wdr.cpp:423
 msgid "Downloads"
-msgstr ""
+msgstr "ダウンロード数"
 
 #: src/Statistics.cpp:666
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
-msgstr ""
+msgstr "ダウンロードされたデータ（セッション合計）： %s"
 
 #: src/Statistics.cpp:677
 #, c-format
 msgid "Found Sources: %s"
-msgstr ""
+msgstr "見付かったソース： %s"
 
 #: src/Statistics.cpp:678
 #, c-format
 msgid "Active Downloads (chunks): %s"
-msgstr ""
+msgstr "アクティブなダウンロード数（塊数）： %s"
 
 #: src/Statistics.cpp:680
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
-msgstr ""
+msgstr "セッションの合計UL/DL非： %s"
 
 #: src/Statistics.cpp:683
 #, c-format
 msgid "Average Downloadrate (Session): %s"
-msgstr ""
+msgstr "平均ダウンロードレート（セッション）： %s"
 
 #: src/Statistics.cpp:684
 #, c-format
 msgid "Average Uploadrate (Session): %s"
-msgstr ""
+msgstr "平均アップロードレート（セッション）： %s"
 
 #: src/Statistics.cpp:685
 #, c-format
 msgid "Max Downloadrate (Session): %s"
-msgstr ""
+msgstr "最大ダウンロdーレート（セッション）： %s"
 
 #: src/Statistics.cpp:686
 #, c-format
 msgid "Max Uploadrate (Session): %s"
-msgstr ""
+msgstr "最大アップロードレート（セッション）： %s"
 
 #: src/Statistics.cpp:687
 #, c-format
 msgid "Reconnects: %i"
-msgstr ""
+msgstr "再接続数： %i"
 
 #: src/Statistics.cpp:688
 #, c-format
 msgid "Time Since First Transfer: %s"
-msgstr ""
+msgstr "最初の転送から経った時間： %s"
 
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Connected To Server Since: %s"
-msgstr ""
+msgstr "この時間からサーバに接続されています： %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Active Connections (estimate): %i"
-msgstr ""
+msgstr "アクティブなコネクション数（推測）： %i"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Max Connection Limit Reached: %s"
-msgstr ""
+msgstr "最大コネクション数の限定に達しました： %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Average Connections (estimate): %g"
-msgstr ""
+msgstr "平均コネクション数（推測）： %g"
 
 #: src/Statistics.cpp:694
 #, c-format
 msgid "Peak Connections (estimate): %i"
-msgstr ""
+msgstr "ピークコネクション数（推測）： %i"
 
 #: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:251
 msgid "Clients"
-msgstr ""
+msgstr "クライアント数"
 
 #: src/Statistics.cpp:703
 msgid "Filtered"
-msgstr ""
+msgstr "フィルターされた数"
 
 #: src/Statistics.cpp:705
 #, c-format
 msgid "Total: %i Known: %i"
-msgstr ""
+msgstr "合計： %i 知られた： %i"
 
 #: src/Statistics.cpp:708 src/muuli_wdr.cpp:1996
 msgid "Servers"
-msgstr ""
+msgstr "サーバ数"
 
 #: src/Statistics.cpp:709
 #, c-format
 msgid "Working Servers: %i"
-msgstr ""
+msgstr "働いているサーバ数： %i"
 
 #: src/Statistics.cpp:710
 #, c-format
 msgid "Failed Servers: %i"
-msgstr ""
+msgstr "失敗したサーバ数： %i"
 
 #: src/Statistics.cpp:711
 #, c-format
 msgid "Total: %s"
-msgstr ""
+msgstr "合計： %s"
 
 #: src/Statistics.cpp:712
 #, c-format
 msgid "Deleted Servers: %s"
-msgstr ""
+msgstr "消除されたサーバ数： %s"
 
 #: src/Statistics.cpp:713
 #, c-format
 msgid "Filtered Servers: %s"
-msgstr ""
+msgstr "フィルターされたサーバ数： %s"
 
 #: src/Statistics.cpp:714
 #, c-format
 msgid "Users on Working Servers: %llu"
-msgstr ""
+msgstr "働いているサーバのユーザ数： %llu"
 
 #: src/Statistics.cpp:715
 #, c-format
 msgid "Files on Working Servers: %llu"
-msgstr ""
+msgstr "働いているサーバのファイル数： %llu"
 
 #: src/Statistics.cpp:716
 #, c-format
 msgid "Total Users: %llu"
-msgstr ""
+msgstr "ユーザ合計： %llu"
 
 #: src/Statistics.cpp:717
 #, c-format
 msgid "Total Files: %llu"
-msgstr ""
+msgstr "ファイル合計： %llu"
 
 #: src/Statistics.cpp:718
 #, c-format
 msgid "Server Occupation: %.2f%%"
-msgstr ""
+msgstr "サーバオキュペーション： %.2f%%"
 
 #: src/Statistics.cpp:722
 #, c-format
 msgid "Number of Shared Files: %s"
-msgstr ""
+msgstr "共通ファイル数： %s"
 
 #: src/Statistics.cpp:723
 #, c-format
 msgid "Total size of Shared Files: %s"
-msgstr ""
+msgstr "共通ファイルの合計サイズ： %s"
 
 #: src/Statistics.cpp:725
 #, c-format
 msgid "Average filesize: %s"
-msgstr ""
+msgstr "平均ファイルサイズ： %s"
 
 #: src/Statistics.cpp:741
 #, c-format
 msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-msgstr ""
+msgstr "LowID：%u（%.2f%% 合計 %.2f%% 知られている）"
 
 #: src/Statistics.cpp:742
 #, c-format
 msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-msgstr ""
+msgstr "SecIdentオン／オッフ：%u（%.2f%%）： %u（%.2f%%）"
 
 #: src/Statistics.cpp:871
 msgid "Operating System"
-msgstr ""
+msgstr "オペレーティング・システム"
 
 #: src/Statistics.cpp:896
 msgid "Not Received"
-msgstr ""
+msgstr "受信していません"
 
 #: src/MuleTextCtrl.cpp:79
 msgid "Cut"
-msgstr ""
+msgstr "カット"
 
 #: src/MuleTextCtrl.cpp:80 src/PartFileConvert.cpp:434
 msgid "Copy"
-msgstr ""
+msgstr "コピー"
 
 #: src/MuleTextCtrl.cpp:81
 msgid "Paste"
-msgstr ""
+msgstr "ペースト"
 
 #: src/MuleTextCtrl.cpp:86
 msgid "Select All"
-msgstr ""
+msgstr "全ての選択"
 
 #: src/SearchList.cpp:313
 msgid "Kad search can't be done if Kad is not running"
-msgstr ""
+msgstr "Kadが走っていない中にはKadの検索は出来ません"
 
 #: src/SearchList.cpp:315
 msgid "ED2K search can't be done if ED2K is not connected"
-msgstr ""
+msgstr "Ed2kに接続されていない中にはEd2kの検索は出来ません"
 
 #: src/SearchList.cpp:359
 msgid "Unexpected error while attempting Kad search: "
-msgstr ""
+msgstr "Kadを検索する間に不明なエラーが発生しました： "
 
 #: src/ClientTCPSocket.cpp:797
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
-msgstr ""
+msgstr "%s（IP：%s）からのメッセージがフィルターされました"
 
 #: src/ClientTCPSocket.cpp:799
 #, c-format
 msgid "New message from '%s' (IP:%s)"
-msgstr ""
+msgstr "%s（IP：%s）から新しいメッセージが届きました"
 
 #: src/ClientTCPSocket.cpp:817
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr ""
+msgstr "ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→許可しました"
 
 #: src/ClientTCPSocket.cpp:838
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-msgstr ""
+msgstr "ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→拒否しました"
 
 #: src/ClientTCPSocket.cpp:870
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr ""
+msgstr "ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→許可しました"
 
 #: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr ""
+msgstr "ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→拒否しました"
 
 #: src/ClientTCPSocket.cpp:942
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
+"ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しました→許可しました"
 
 #: src/ClientTCPSocket.cpp:979
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr ""
+msgstr "ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しました→拒否しました"
 
 #: src/ClientTCPSocket.cpp:998
 #, c-format
 msgid "User %s (%u) shares directory %s"
-msgstr ""
+msgstr "ユーザ %s（%u）はディレクトリー %s の共通しています"
 
 #: src/ClientTCPSocket.cpp:1013
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
-msgstr ""
+msgstr "ユーザ %s（%u）は要求されていない共通ディレクトリーを送りました。"
 
 #: src/ClientTCPSocket.cpp:1028
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr ""
+msgstr "ユーザ %s（%u）はディレクトリー %s の共通ファイル・リストを送りました。"
 
 #: src/ClientTCPSocket.cpp:1035
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
-msgstr ""
+msgstr "ユーザ %s（%u）は共通ファイル・リストの送信を終了しました"
 
 #: src/ClientTCPSocket.cpp:1040
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
-msgstr ""
+msgstr "ユーザ %s（%u）は無用の共通ファイル・リストを送りました。"
 
 #: src/ClientTCPSocket.cpp:1052
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr ""
+msgstr "ユーザ %s（%u）は共通ファイル／ディレクトリー・リストのアクセスを拒否されました。"
 
 #: src/KadDlg.cpp:131
 #, c-format
 msgid "Nodes (%u)"
-msgstr ""
+msgstr "ノード数（%u）"
 
 #: src/KadDlg.cpp:168
 msgid "Invalid ip to bootstrap"
-msgstr ""
+msgstr "ブートストラップに不正なIP"
 
 #: src/KadDlg.cpp:178
 msgid "Invalid port to bootstrap"
-msgstr ""
+msgstr "ブートストラップに不正なポート"
 
 #: src/KadDlg.cpp:182
 msgid "You can't bootstrap an specific ip from remote GUI yet."
-msgstr ""
+msgstr "リモートGUIから指定されたIPをブートストラップすることはまだ不可能です。"
 
 #: src/KadDlg.cpp:185
 msgid "Please fill all fields required"
-msgstr ""
+msgstr "必要なフィールドの全てを記入してください"
 
 #: src/KadDlg.cpp:206
 msgid "Are you sure you want to download a new nodes.dat file?\n"
-msgstr ""
+msgstr "確認：本当に新しいnodes.datファイルをダウンロードしますか？\n"
 
 #: src/KadDlg.cpp:207
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
+"そうすると、現在のノードがなくありますし、Kademliaへのコネクションも初期化されます。"
 
 #: src/KadDlg.cpp:208
 msgid "Continue?"
-msgstr ""
+msgstr "進みますか？"
 
 #: src/KadDlg.cpp:211 src/ServerList.cpp:784
 msgid "Invalid URL"
-msgstr ""
+msgstr "不正なURL"
 
 #: src/KadDlg.cpp:224
 msgid "You can't update server.met from remote GUI yet."
-msgstr ""
+msgstr "リモートGUIからserver.metをアップデートすることはまだ不可能です。"
 
 #: src/Logger.cpp:266
 msgid "Error: "
-msgstr ""
+msgstr "エラー： "
 
 #: src/Logger.cpp:266
 msgid "Warning: "
-msgstr ""
+msgstr "注意： "
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
-msgstr ""
+msgstr "仲間を追加する"
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
-msgstr ""
+msgstr "正当なIPとポートを記入しなければなりません！"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
-msgstr ""
+msgstr "情報"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
-msgstr ""
+msgstr "指定されたユーザハッシュは不正です！"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
 #: src/FileDetailListCtrl.cpp:44
 msgid "Sources"
-msgstr ""
+msgstr "ソース数"
 
 #: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
-msgstr ""
+msgstr "ファイル"
 
 #: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1755
 #: src/muuli_wdr.cpp:1799
 msgid "Download"
-msgstr ""
+msgstr "ダウンロード"
 
 #: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:59
 msgid "Category"
-msgstr ""
+msgstr "カテゴリー"
 
 #: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:588
 msgid "Main"
-msgstr ""
+msgstr "メイン"
 
 #: src/SearchListCtrl.cpp:561
 msgid "Download in category"
-msgstr ""
+msgstr "カテゴリーにダウンロードする"
 
 #: src/SearchListCtrl.cpp:567
 msgid "Search related files (ED2k, local server)"
-msgstr ""
+msgstr "関連ファイルを検索する（ED2k、ローカル・サーバ）"
 
 #: src/SearchListCtrl.cpp:573
 msgid "Mark as known file"
-msgstr ""
+msgstr "知られたファイルとしてマークをする"
 
 #: src/SearchListCtrl.cpp:577
 msgid "Copy ED2k link to clipboard"
-msgstr ""
+msgstr "ED2kリンクをクリップボードへコピーする"
 
 #: src/amule-remote-gui.cpp:72
 msgid "Connect to remote amule"
-msgstr ""
+msgstr "リモートamuleへ接続する"
 
 #: src/amule-remote-gui.cpp:277
 msgid "Connection failed "
-msgstr ""
+msgstr "コネクションに失敗しました "
 
 #: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
 #: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:852
 #: src/amule.cpp:970 src/amule.cpp:1346
 msgid "Error"
-msgstr ""
+msgstr "エラー"
 
 #: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
 msgid "All"
-msgstr ""
+msgstr "全て"
 
 #: src/amule-remote-gui.cpp:750
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
-msgstr ""
+msgstr "ユーザ合計： %s | ファイル合計： %s"
 
 #: src/DownloadListCtrl.cpp:191 src/ClientListCtrl.cpp:520
 msgid "Transferred"
-msgstr ""
+msgstr "転送された数"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
 #: src/PartFileConvert.cpp:624 src/OtherFunctions.cpp:804
 msgid "Completed"
-msgstr ""
+msgstr "完成された数"
 
 #: src/DownloadListCtrl.cpp:193 src/ClientListCtrl.cpp:519
 msgid "Speed"
-msgstr ""
+msgstr "スピード"
 
 #: src/DownloadListCtrl.cpp:194
 msgid "Progress"
-msgstr ""
+msgstr "進歩"
 
 #: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:523
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: src/DownloadListCtrl.cpp:198
 msgid "Time Remaining"
-msgstr ""
+msgstr "残る時間"
 
 #: src/DownloadListCtrl.cpp:199
 msgid "Last Seen Complete"
-msgstr ""
+msgstr "最後に完全として見た時間"
 
 #: src/DownloadListCtrl.cpp:200
 msgid "Last Reception"
-msgstr ""
+msgstr "最後に受信された時間"
 
 #: src/DownloadListCtrl.cpp:577
 msgid "Are you sure that you wish to delete the selected file(s)?"
-msgstr ""
+msgstr "確認：本当に選択されたファイルを消除しますか？"
 
 #: src/DownloadListCtrl.cpp:832 src/ClientListCtrl.cpp:362
 msgid "Send message to user"
-msgstr ""
+msgstr "ユーザへメッセージを送る"
 
 #: src/DownloadListCtrl.cpp:833 src/ClientListCtrl.cpp:362
 msgid "Message to send:"
-msgstr ""
+msgstr "送りたいメッセージ："
 
 #: src/DownloadListCtrl.cpp:893 src/TransferWnd.cpp:377
 msgid "&Stop"
-msgstr ""
+msgstr "中止(&Stop)する"
 
 #: src/DownloadListCtrl.cpp:894 src/TransferWnd.cpp:378
 msgid "&Pause"
-msgstr ""
+msgstr "ポーズ(&Pause)する"
 
 #: src/DownloadListCtrl.cpp:895 src/TransferWnd.cpp:379
 msgid "&Resume"
-msgstr ""
+msgstr "再開(&Resume)する"
 
 #: src/DownloadListCtrl.cpp:896
 msgid "C&lear completed"
-msgstr ""
+msgstr "完成した物をクリアする(C&lear completed)"
 
 #: src/DownloadListCtrl.cpp:902
 msgid "Swap every A4AF to this file now"
-msgstr ""
+msgstr "すぐにこのファイルの全てのA4AFを交換する"
 
 #: src/DownloadListCtrl.cpp:904
 msgid "Swap every A4AF to this file (Auto)"
-msgstr ""
+msgstr "このファイルの全てのA4AFを交換する（オート）"
 
 #: src/DownloadListCtrl.cpp:909
 msgid "Swap every A4AF to any other file now"
-msgstr ""
+msgstr "このファイル以外の全てのA4AFを交換する"
 
 #: src/DownloadListCtrl.cpp:912
 msgid "Extended Options"
-msgstr ""
+msgstr "拡張オプション"
 
 #: src/DownloadListCtrl.cpp:923 src/DownloadListCtrl.cpp:976
 msgid "Preview"
-msgstr ""
+msgstr "プレビュー"
 
 #: src/DownloadListCtrl.cpp:924
 msgid "Show file &details"
-msgstr ""
+msgstr "ファイルの詳細(&details)を見せる"
 
 #: src/DownloadListCtrl.cpp:926 src/muuli_wdr.cpp:838
 msgid "Show all comments"
-msgstr ""
+msgstr "全てのコメントを表示する"
 
 #: src/DownloadListCtrl.cpp:931
 msgid "Copy magnet URI to clipboard"
