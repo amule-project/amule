@@ -1,4 +1,4 @@
-# translation of es.po to Spanish
+# translation of [aMule]es.po to Spanish
 # translation of es.po to
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the terms of the GNU General Public
@@ -12,10 +12,10 @@
 # mad_soft <mad.soft@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
+"Project-Id-Version: [aMule]es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-01 02:30+0000\n"
-"PO-Revision-Date: 2007-12-02 16:20+0100\n"
+"PO-Revision-Date: 2007-12-02 17:47+0100\n"
 "Last-Translator: mad_soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -288,7 +288,7 @@ msgstr "Tamaño"
 
 #: src/SharedFilesCtrl.cpp:104 src/SearchListCtrl.cpp:90 src/muuli_wdr.cpp:188
 msgid "Type"
-msgstr "Método"
+msgstr "Tipo"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:93 src/ServerListCtrl.cpp:441
