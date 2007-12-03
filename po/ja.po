@@ -2169,8 +2169,8 @@ msgid ""
 "You cannot connect to a release version from an arbitrary CVS version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"任意CVSバージョンからリリースバージョンに接続は出来ません！ *ハァ…*起こり得"
-"るクラッシュを予防しました"
+"任意CVSバージョンからリリースバージョンに接続は出来ません！ *ハァ…*起こり得る"
+"クラッシュを予防しました"
 
 #: src/ExternalConn.cpp:228
 msgid "Authentication failed."
@@ -2195,7 +2195,9 @@ msgstr "アクセスを認められました。"
 #: src/ExternalConn.cpp:495
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "リモート部分ファイルコマンドが失敗しました：ファイルハッシュは見付かりませんでした： %s"
+msgstr ""
+"リモート部分ファイルコマンドが失敗しました：ファイルハッシュは見付かりません"
+"でした： %s"
 
 #: src/ExternalConn.cpp:497
 #, c-format
@@ -2312,7 +2314,9 @@ msgstr "不正なOpCode（プロトコルバージョンが違いますか？）
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr "ファイル（%s）を開くことが出来ませんでした、共通ファイルのリストから外します。"
+msgstr ""
+"ファイル（%s）を開くことが出来ませんでした、共通ファイルのリストから外しま"
+"す。"
 
 #: src/UploadClient.cpp:714
 #, c-format
@@ -2345,7 +2349,8 @@ msgstr "`%s' がステータスコード PID `%d' のコマンド  `%d' で終�
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
-msgstr "サーバは追加しませんでした：IPまたはホスト名は指示されていませんでした。"
+msgstr ""
+"サーバは追加しませんでした：IPまたはホスト名は指示されていませんでした。"
 
 #: src/ServerWnd.cpp:109
 msgid "Server not added: Invalid server-port specified."
@@ -2713,34 +2718,43 @@ msgstr "%s（IP：%s）から新しいメッセージが届きました"
 #: src/ClientTCPSocket.cpp:817
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr "ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→許可しました"
+msgstr ""
+"ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→許可しました"
 
 #: src/ClientTCPSocket.cpp:838
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
-msgstr "ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→拒否しました"
+msgstr ""
+"ユーザ %s（%u）はあなたの共通ファイル・リストを要求しました→拒否しました"
 
 #: src/ClientTCPSocket.cpp:870
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→許可しました"
+msgstr ""
+"ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→許可しまし"
+"た"
 
 #: src/ClientTCPSocket.cpp:917
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr "ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→拒否しました"
+msgstr ""
+"ユーザ %s（%u）はあなたの共通ディレクトリー・リストを要求しました→拒否しまし"
+"た"
 
 #: src/ClientTCPSocket.cpp:942
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
-"ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しました→許可しました"
+"ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しまし"
+"た→許可しました"
 
 #: src/ClientTCPSocket.cpp:979
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr "ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しました→拒否しました"
+msgstr ""
+"ユーザ %s（%u）はあなたのディレクトリー %s の共通ファイル・リストを要求しまし"
+"た→拒否しました"
 
 #: src/ClientTCPSocket.cpp:998
 #, c-format
@@ -2755,7 +2769,8 @@ msgstr "ユーザ %s（%u）は要求されていない共通ディレクトリ�
 #: src/ClientTCPSocket.cpp:1028
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr "ユーザ %s（%u）はディレクトリー %s の共通ファイル・リストを送りました。"
+msgstr ""
+"ユーザ %s（%u）はディレクトリー %s の共通ファイル・リストを送りました。"
 
 #: src/ClientTCPSocket.cpp:1035
 #, c-format
@@ -2770,7 +2785,9 @@ msgstr "ユーザ %s（%u）は無用の共通ファイル・リストを送り�
 #: src/ClientTCPSocket.cpp:1052
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "ユーザ %s（%u）は共通ファイル／ディレクトリー・リストのアクセスを拒否されました。"
+msgstr ""
+"ユーザ %s（%u）は共通ファイル／ディレクトリー・リストのアクセスを拒否されまし"
+"た。"
 
 #: src/KadDlg.cpp:131
 #, c-format
@@ -2787,7 +2804,8 @@ msgstr "ブートストラップに不正なポート"
 
 #: src/KadDlg.cpp:182
 msgid "You can't bootstrap an specific ip from remote GUI yet."
-msgstr "リモートGUIから指定されたIPをブートストラップすることはまだ不可能です。"
+msgstr ""
+"リモートGUIから指定されたIPをブートストラップすることはまだ不可能です。"
 
 #: src/KadDlg.cpp:185
 msgid "Please fill all fields required"
@@ -2801,7 +2819,8 @@ msgstr "確認：本当に新しいnodes.datファイルをダウンロードし
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
-"そうすると、現在のノードがなくありますし、Kademliaへのコネクションも初期化されます。"
+"そうすると、現在のノードがなくありますし、Kademliaへのコネクションも初期化さ"
+"れます。"
 
 #: src/KadDlg.cpp:208
 msgid "Continue?"
