@@ -944,7 +944,7 @@ msgstr "ダウンロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1104
 msgid " kB/s, Upload: "
-msgstr " kB/s、アップロード： "
+msgstr " キロバイト（毎秒）、アップロード： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
 #: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:160
@@ -953,7 +953,7 @@ msgstr " kB/s、アップロード： "
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
 #: src/ClientListCtrl.cpp:714
 msgid "kB/s"
-msgstr "kB/s"
+msgstr "キロバイト（毎秒）"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1114
 msgid "Sharing: "
@@ -971,7 +971,7 @@ msgstr "時間： "
 #: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
 #, c-format
 msgid "%.2f kB/s"
-msgstr "%.2f kB/s"
+msgstr "毎秒%.2fキロバイト"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1136
 #: src/utils/wxCas/src/wxcasframe.cpp:1146
@@ -1026,27 +1026,27 @@ msgstr "接続されていません"
 #: src/utils/wxCas/src/onlinesig.cpp:339
 #, c-format
 msgid "%.0f B"
-msgstr "%.0f B"
+msgstr "%.0fバイト"
 
 #: src/utils/wxCas/src/onlinesig.cpp:342
 #, c-format
 msgid "%.2f KB"
-msgstr "%.2f KB"
+msgstr "%.2fキロバイト"
 
 #: src/utils/wxCas/src/onlinesig.cpp:345
 #, c-format
 msgid "%.2f MB"
-msgstr "%.2f MB"
+msgstr "%.2fメガバイト"
 
 #: src/utils/wxCas/src/onlinesig.cpp:348
 #, c-format
 msgid "%.2f GB"
-msgstr "%.2f GB"
+msgstr "%.2fギガバイト"
 
 #: src/utils/wxCas/src/onlinesig.cpp:351
 #, c-format
 msgid "%.2f TB"
-msgstr "%.2f TB"
+msgstr "%.2fテラバイト"
 
 #: src/utils/aLinkCreator/src/md4.cpp:359
 #: src/utils/aLinkCreator/src/alcframe.cpp:571
@@ -2243,7 +2243,7 @@ msgstr "グラフを表示するための点がありません。"
 
 #: src/ExternalConn.cpp:960
 msgid "Your client is not configured for this detail level."
-msgstr "あなたのクライアントはこの詳細レベルには設定されていません。"
+msgstr "あなたのクライアントはこの詳細段階には設定されていません。"
 
 #: src/ExternalConn.cpp:988
 msgid "ExternalConn: shutdown requested"
@@ -2345,7 +2345,7 @@ msgstr "クライアントの要求が不正です！ %i / %i"
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr "`%s' がステータスコード PID `%d' のコマンド  `%d' で終了しました。"
+msgstr "PID `%2$d' のコマンド  `%1$s' がステータスコード  `%3$d' で終了しました。"
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
@@ -3012,57 +3012,57 @@ msgstr "全てのコメントを表示する"
 
 #: src/DownloadListCtrl.cpp:931
 msgid "Copy magnet URI to clipboard"
-msgstr ""
+msgstr "マグネットURIをクリップボードへコピーする"
 
 #: src/DownloadListCtrl.cpp:944
 msgid "unassign"
-msgstr ""
+msgstr "割り当てない"
 
 #: src/DownloadListCtrl.cpp:951
 msgid "Assign to category"
-msgstr ""
+msgstr "カテゴリーに割り当てる"
 
 #: src/DownloadListCtrl.cpp:980
 msgid "&Open the file"
-msgstr ""
+msgstr "ファイルを開く（&Open）"
 
 #: src/DownloadListCtrl.cpp:1007 src/ClientListCtrl.cpp:253
 msgid "Remove from friends"
-msgstr ""
+msgstr "仲間リストから外す"
 
 #: src/DownloadListCtrl.cpp:1007 src/ClientListCtrl.cpp:253
 msgid "Add to Friends"
-msgstr ""
+msgstr "仲間リストに追加する"
 
 #: src/DownloadListCtrl.cpp:1009 src/ClientListCtrl.cpp:255
 msgid "Send message"
-msgstr ""
+msgstr "メッセージを送る"
 
 #: src/DownloadListCtrl.cpp:1010
 msgid "Swap to this file"
-msgstr ""
+msgstr "このファイルへ交換する"
 
 #: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1438
 msgid "%y/%m/%d %H:%M:%S"
-msgstr ""
+msgstr "%y/%m/%d %H:%M:%S"
 
 #: src/DownloadListCtrl.cpp:1662
 msgid "A4AF"
-msgstr ""
+msgstr "A4AF"
 
 #: src/DownloadListCtrl.cpp:1712
 #, c-format
 msgid "QR: %u (%i)"
-msgstr ""
+msgstr "QR: %u (%i)"
 
 #: src/DownloadListCtrl.cpp:1726
 msgid "Asked for another file"
-msgstr ""
+msgstr "他のファイルを頼みました"
 
 #: src/DownloadListCtrl.cpp:2056
 #, c-format
 msgid "Downloads (%i)"
-msgstr ""
+msgstr "ダウンロード数（%i）"
 
 #: src/DownloadListCtrl.cpp:2239
 msgid ""
@@ -3070,135 +3070,142 @@ msgid ""
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
+"推奨のビデオプレイヤーを個人設定で設定してください。\n"
+"その間、aMuleはmplayerを使用しようとしながら、プレビュー毎にこの注意が "
+"表示されます"
 
 #: src/DownloadListCtrl.cpp:2242
 msgid "File preview"
-msgstr ""
+msgstr "ファイル・プレビュー"
 
 #: src/DownloadListCtrl.cpp:2261
 msgid "ERROR: Failed to execute external media-player!"
-msgstr ""
+msgstr "エラー：外部メディア・プレイヤーは実行出来ませんでした！"
 
 #: src/DownloadListCtrl.cpp:2262
 #, c-format
 msgid "Command: %s"
-msgstr ""
+msgstr "コマンド： %s"
 
 #: src/PartFile.cpp:247
 msgid "ERROR: Failed to open partfile)"
-msgstr ""
+msgstr "エラー：部分ファイルを開くことは出来ませんでした！"
 
 #: src/PartFile.cpp:251
 msgid "ERROR: Failed to create partfile)"
-msgstr ""
+msgstr "エラー：部分ファイルは作成出来ませんでした！"
 
 #: src/PartFile.cpp:293 src/PartFile.cpp:324
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
 msgstr ""
+"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule.orgをpart.met"
+"で回復ソリューションを検索してください。"
 
 #: src/PartFile.cpp:296
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr ""
+msgstr "エラー：part.metファイルは開くことが出来ませんでした：%s ==> %s"
 
 #: src/PartFile.cpp:305
 msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
 msgstr ""
+"エラー：バックアップpart.metファイルはゼロ・サイズです！http://forum.amule.orgで"
+"part.met回復ソリューションを検索してください。"
 
 #: src/PartFile.cpp:308
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr ""
+msgstr "エラー：part.metファイルはゼロ・サイズです： %s ==> %s"
 
 #: src/PartFile.cpp:318
 #, c-format
 msgid "Trying to load backup of met-file from %s"
-msgstr ""
+msgstr "metファイルのバック・アップを%sからロードしようとしています"
 
 #: src/PartFile.cpp:329
 #, c-format
 msgid "Error: part.met backup file is 0 size: %s ==> %s"
-msgstr ""
+msgstr "エラー：part.metのバックアップ・ファイルはゼロ・サイズです： %s ==> %s"
 
 #: src/PartFile.cpp:343
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr ""
+msgstr "エラー：不正なpart.metファイル・バージョン： %s ==> %s"
 
 #: src/PartFile.cpp:598
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
+msgstr "エラー： %s（%s）は破損されて（tagcountが間違っています）、ファイルはロード出来ません。"
 
 #: src/PartFile.cpp:601
 msgid "Trying to recover file info..."
-msgstr ""
+msgstr "ファイル情報を回復しようとしています…"
 
 #: src/PartFile.cpp:616
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
+msgstr "無名なファイルを回復中です：RecoveredFile.datとして回復しようとします"
 
 #: src/PartFile.cpp:621
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr ""
+msgstr "得られる全てのファイル情報を回復しました：使用しようとしています…"
 
 #: src/PartFile.cpp:623
 msgid "Unable to recover file info :("
-msgstr ""
+msgstr "残念ながら、ファイル情報を回復出来ませんでした。"
 
 #: src/PartFile.cpp:657
 #, c-format
 msgid "Failed to open %s (%s)"
-msgstr ""
+msgstr "%s（%s）を開くことは出来ませんでした"
 
 #: src/PartFile.cpp:702
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
-msgstr ""
+msgstr "注意：%sは破損されている恐れがあります（%i）"
 
 #: src/PartFile.cpp:882 src/PartFile.cpp:887
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
-msgstr ""
+msgstr "部分ファイル%s（%s ==> %s）の保存中にエラーが発生しました"
 
 #: src/PartFile.cpp:911
 #, c-format
 msgid "Unable to open %s file - using %s file."
-msgstr ""
+msgstr "%sファイルを開くことはできません：%sファイルを使用しています。"
 
 #: src/PartFile.cpp:924
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
-msgstr ""
+msgstr "どうか、'%s'はゼロ・サイズです：%sファイルを使用しています。"
 
 #: src/PartFile.cpp:993
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
-msgstr ""
+msgstr "%sのためのpart.met.seedsファイルは保存出来ませんでした"
 
 #: src/PartFile.cpp:1019
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
-msgstr ""
+msgstr "%iソース・シーヅを部分ファイルに保存しました：%s（%s）"
 
 #: src/PartFile.cpp:1048
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
-msgstr ""
+msgstr "部分ファイル%s（%s）にはシーヅ・フィアルはありません"
 
 #: src/PartFile.cpp:1055
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
-msgstr ""
+msgstr "部分ファイル%s（%s）のシーヅ・フィアルは空ファイルです"
 
 #: src/PartFile.cpp:1113
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
-msgstr ""
+msgstr "部分ファイルのシーヅ・ファイルを読む時にエラーが発生しました：（%s - %s）%s"
 
 #: src/PartFile.cpp:1129 src/PartFile.cpp:1152
 #, c-format
@@ -3206,36 +3213,38 @@ msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr ""
+"破損されている部分（%d）を%d部分、ファイル%sに見付かりました：FileResultHash |%s| FileHash "
+"|%s|"
 
 #: src/PartFile.cpp:1166
 #, c-format
 msgid "Found completed part (%i) in %s"
-msgstr ""
+msgstr "完成した部分（%i）を%sに見付かりました"
 
 #: src/PartFile.cpp:1203
 #, c-format
 msgid "Finished rehashing %s"
-msgstr ""
+msgstr "%sの再ハッシュを終了しました"
 
 #: src/PartFile.cpp:2220
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr ""
+msgstr "%sを完成しながら予期外のエラーが発生しました：ファイルをポーズしました"
 
 #: src/PartFile.cpp:2246
 #, c-format
 msgid "Finished downloading: %s"
-msgstr ""
+msgstr "ダウンロードが終了しました：%s"
 
 #: src/PartFile.cpp:2303
 #, c-format
 msgid "Deleting file: %s"
-msgstr ""
+msgstr "ファイルを消除します：%s"
 
 #: src/PartFile.cpp:2367
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr ""
+msgstr "注意：ダウンロードした部分はハッシュ出来ません：'%s'のためのハッシュ・セットが未完成です"
 
 #: src/PartFile.cpp:2372
 #, c-format
@@ -3243,63 +3252,65 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
+"エラー：ダウンロードした部分はハッシュ出来ません：ハッシュ・セットは未完成です（%s）。"
+"こういうことはありえません。"
 
 #: src/PartFile.cpp:3051
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
-msgstr ""
+msgstr "注意：ディスク・スペースは足りません！ファイルをポーズします：%s"
 
 #: src/PartFile.cpp:3116
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
-msgstr ""
+msgstr "ダウンロードした部分%i（ファイル：%s）は損被されています"
 
 #: src/PartFile.cpp:3159
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr ""
+msgstr "ICH：損被された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
 
 #: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3585
 msgid "Comments"
-msgstr ""
+msgstr "コメント"
 
 #: src/PartFile.cpp:3707
 msgid "doesn't work"
-msgstr ""
+msgstr "働きません"
 
 #: src/PartFile.cpp:3709
 msgid "remote gui"
-msgstr ""
+msgstr "リモートGUI"
 
 #: src/PartFile.cpp:3803
 msgid "Insufficient Diskspace"
-msgstr ""
+msgstr "不十分なディスク・スペース"
 
 #: src/PartFile.cpp:3814 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
 msgid "Stopped"
-msgstr ""
+msgstr "中止されています"
 
 #: src/KnownFileList.cpp:73
 msgid "Warning: known.met does not exist."
-msgstr ""
+msgstr "注意：known.metは存在しません。"
 
 #: src/KnownFileList.cpp:78
 msgid "Warning: known.met cannot be opened."
-msgstr ""
+msgstr "注意：known.metを開くことは出来ません。"
 
 #: src/KnownFileList.cpp:85
 msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr ""
+msgstr "注意：Knownfileリストは損被されて、不正なヘッダーが含まれています。"
 
 #: src/KnownFileList.cpp:111
 #, c-format
 msgid "IO error while reading known.met file: %s"
-msgstr ""
+msgstr "known.metファイル%sを読む時にIOエラーが発生しました"
 
 #: src/KnownFileList.cpp:157
 #, c-format
 msgid "Error while saving known.met file: %s"
-msgstr ""
+msgstr "known.metファイル%sを保存する時にIOエラーが発生しました"
 
 #: src/SharedFileList.cpp:357
 #, c-format
@@ -3307,248 +3318,253 @@ msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
 "directory not found."
 msgstr ""
+"CSharedFileList::FindSharedFiles：%sを共通ディレクトリーから外します："
+"ディレクトリーは見付かりません。"
 
 #: src/SharedFileList.cpp:376
 #, c-format
 msgid "Found %i known shared files"
-msgstr ""
+msgstr "%i知られた共通ファイルを見付かりました"
 
 #: src/SharedFileList.cpp:384
 #, c-format
 msgid "Found %i known shared files, %i unknown"
-msgstr ""
+msgstr "%i知られた共通ファイルを見付かり、%iは知られていません"
 
 #: src/SharedFileList.cpp:394
 #, c-format
 msgid "ERROR! Attempted to share %s"
-msgstr ""
+msgstr "エラー：%sを共通しようとしました"
 
 #: src/CommentDialogLst.cpp:41 src/CommentDialog.cpp:34
 msgid "File Comments"
-msgstr ""
+msgstr "ファイル・コメント"
 
 #: src/CommentDialogLst.cpp:52 src/ClientListCtrl.cpp:823
 msgid "Rating"
-msgstr ""
+msgstr "レーティング"
 
 #: src/CommentDialogLst.cpp:53
 msgid "Comment"
-msgstr ""
+msgstr "コメント"
 
 #: src/CommentDialogLst.cpp:98
 msgid "No comments"
-msgstr ""
+msgstr "コメントありません"
 
 #: src/CommentDialogLst.cpp:100
 #, c-format
 msgid "%s comment(s)"
-msgstr ""
+msgstr "%sコメントあります"
 
 #: src/ServerConnect.cpp:69
 msgid ""
 "Failed to connect to all obfuscated servers listed. Making another pass "
 "without obfuscation."
 msgstr ""
+"全てのリストされ、ぼかされたされたサーバに接続のに失敗しました。ぼかすこと無にもう一度"
+"パスをします。"
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr ""
+msgstr "全てのリストされたサーバに接続のに失敗しました。もう一度パスをします。"
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "ED2K network disabled on preferences, not connecting."
-msgstr ""
+msgstr "ED2Kネットワークは個人設定に無効されて、接続はしません。"
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
 msgid "No valid servers to connect in serverlist found"
-msgstr ""
+msgstr "サーバ・リストに接続出来るために正当なサーバは見付かりません"
 
 #: src/ServerConnect.cpp:197
 #, c-format
 msgid "Connected to %s (%s:%i)"
-msgstr ""
+msgstr "%s（%s：%i）に接続しています"
 
 #: src/ServerConnect.cpp:345
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
+msgstr "接続中に致命的なエラーが発生しました。インターネット・コネクションがダウンの恐れがあります。"
 
 #: src/ServerConnect.cpp:349
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
-msgstr ""
+msgstr "%s（%s：%i）のコネクションを失いました"
 
 #: src/ServerConnect.cpp:359
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
-msgstr ""
+msgstr "%s（%s：%i）は死んでいるそうです。"
 
 #: src/ServerConnect.cpp:372
 #, c-format
 msgid "%s (%s:%i) appears to be full."
-msgstr ""
+msgstr "%s（%s：%i）は一杯だそうです。"
 
 #: src/ServerConnect.cpp:391
 #, c-format
 msgid "Automatic connection to server will retry in %d seconds"
-msgstr ""
+msgstr "サーバへの自動的な接続で、後%d秒で再試しします"
 
 #: src/ServerConnect.cpp:411
 msgid "Connection lost"
-msgstr ""
+msgstr "接続を失いました"
 
 #: src/ServerConnect.cpp:418
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
-msgstr ""
+msgstr "%s（%s：%i）の接続に失敗しました。"
 
 #: src/ServerConnect.cpp:460
 msgid "Error: Socket invalid at timeoutcheck"
-msgstr ""
+msgstr "エラー：timeoutcheckの時ソケットは不正でした"
 
 #: src/ServerConnect.cpp:470
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
-msgstr ""
+msgstr "%s（%s：%i）の接続の試しがタイム・アウトました。"
 
 #: src/DownloadQueue.cpp:167
 msgid "No part files found"
-msgstr ""
+msgstr "部分ファイルは見付かりませんでした"
 
 #: src/DownloadQueue.cpp:169
 #, c-format
 msgid "Found %u part files"
-msgstr ""
+msgstr "%u部分ファイルが見付かりました"
 
 #: src/DownloadQueue.cpp:309
 #, c-format
 msgid "Downloading %s"
-msgstr ""
+msgstr "%sをダウンロード中です"
 
 #: src/DownloadQueue.cpp:317
 #, c-format
 msgid "You are already trying to download the file '%s'"
-msgstr ""
+msgstr "あなたはすでにファイル'%s'をダウンロードしようとしています"
 
 #: src/DownloadQueue.cpp:329
 #, c-format
 msgid "You already have the file '%s'"
-msgstr ""
+msgstr "あなたはすでにファイル'%s'を持っています"
 
 #: src/DownloadQueue.cpp:334
 #, c-format
 msgid "You are already trying to download the file %s"
-msgstr ""
+msgstr "あなたはすでにファイル%sをダウンロードしようとしています"
 
 #: src/DownloadQueue.cpp:1291
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
-msgstr ""
+msgstr "マグネット・リンクをED2Kに変更出来ません：%s"
 
 #: src/DownloadQueue.cpp:1299
 #, c-format
 msgid "Unknown protocol of link: %s"
-msgstr ""
+msgstr "リンクの不明なプロトコル：%s"
 
 #: src/DownloadQueue.cpp:1322
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
-msgstr ""
+msgstr "不正なED2Kリンク！エラー：%s"
 
 #: src/TextClient.cpp:128
 msgid "Execute <str> and exit."
-msgstr ""
+msgstr "<str>を実行してから終了する。"
 
 #: src/TextClient.cpp:195
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
-msgstr ""
+msgstr "不正なIPフォーマット。xx.xxx.xxx.xxx:xxxxを使用ください\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
+"このコマンドには引数が要ります。有効な引数：'all'、または数字。\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
-msgstr ""
+msgstr "正当な数字ではありません\n"
 
 #: src/TextClient.cpp:347 src/TextClient.cpp:388
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
-msgstr ""
+msgstr "正当なハッシュではありません（長さは丁度32半角文字あるべきです）\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr ""
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr "このコマンドには引数が要ります。有効な引数：ファイル・ハッシュ。\n"
 
 #: src/TextClient.cpp:570
 #, c-format
 msgid "     %d"
-msgstr ""
+msgstr "     %d"
 
 #: src/TextClient.cpp:571
 #, c-format
 msgid ".%d"
-msgstr ""
+msgstr ".%d"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
-msgstr ""
+msgstr "オペレーションは成功に終了しました。"
 
 #: src/TextClient.cpp:610
 #, c-format
 msgid "Request failed with the following error: %s"
-msgstr ""
+msgstr "リクエストは次のエラーで失敗しました：%s"
 
 #: src/TextClient.cpp:626
 #, c-format
 msgid "IP filtering for clients is %s.\n"
-msgstr ""
+msgstr "クライアントのIPフィルターリングは%sです。\n"
 
 #: src/TextClient.cpp:627 src/TextClient.cpp:633
 msgid "OFF"
-msgstr ""
+msgstr "オッフ"
 
 #: src/TextClient.cpp:627 src/TextClient.cpp:633
 msgid "ON"
-msgstr ""
+msgstr "オン"
 
 #: src/TextClient.cpp:632
 #, c-format
 msgid "IP filtering for servers is %s.\n"
-msgstr ""
+msgstr "サーバのIPフィルターリングは%sです。\n"
 
 #: src/TextClient.cpp:637
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
-msgstr ""
+msgstr "現在のIPフィルター段階は%dです。\n"
 
 #: src/TextClient.cpp:645
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr ""
+msgstr "バン幅制限：アップ：毎秒%uキロバイト、ダウン：毎秒%uキロバイト。\n"
 
 #: src/TextClient.cpp:663 src/muuli_wdr.cpp:1930 src/muuli_wdr.cpp:3944
 msgid "ED2K"
-msgstr ""
+msgstr "ED2K"
 
 #: src/TextClient.cpp:668
 #, c-format
 msgid "Connected to %s %s %s"
-msgstr ""
+msgstr "%s %s %sに接続されています"
 
 #: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with LowID"
-msgstr ""
+msgstr "LowIDを持っています"
 
 #: src/TextClient.cpp:671 src/amule.cpp:2062
 msgid "with HighID"
-msgstr ""
+msgstr "HighIDを持っています"
 
 #: src/TextClient.cpp:674
 msgid "Now connecting"
-msgstr ""
+msgstr "只今接続中です"
 
 #: src/TextClient.cpp:676 src/TextClient.cpp:689
 msgid "Not connected"
-msgstr ""
+msgstr "切断しています"
 
 #: src/TextClient.cpp:698
 #, c-format
@@ -3556,6 +3572,8 @@ msgid ""
 "\n"
 "Download:\t%s"
 msgstr ""
+"\n"
+"ダウンロード数：\t%s"
 
 #: src/TextClient.cpp:701
 #, c-format
@@ -3563,6 +3581,8 @@ msgid ""
 "\n"
 "Upload:\t%s"
 msgstr ""
+"\n"
+"アップロード数：\t%s"
 
 #: src/TextClient.cpp:704
 #, c-format
@@ -3570,6 +3590,8 @@ msgid ""
 "\n"
 "Clients in queue:\t%d\n"
 msgstr ""
+"\n"
+"列に入っているクライアント数：\t%d\n"
 
 #: src/TextClient.cpp:707
 #, c-format
@@ -3577,32 +3599,34 @@ msgid ""
 "\n"
 "Total sources:\t%d\n"
 msgstr ""
+"\n"
+"合計ソース数：\t%d\n"
 
 #: src/TextClient.cpp:784
 #, c-format
 msgid "Number of search results: %i\n"
-msgstr ""
+msgstr "検索結果数：%i\n"
 
 #: src/TextClient.cpp:797
 msgid "TODO - show progress of a search"
-msgstr ""
+msgstr "まだ実現されていない：検索結果の進歩を表示する"
 
 #: src/TextClient.cpp:803
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
-msgstr ""
+msgstr "サーバから不明な返事が届きまして、OpCodeは%#xです。"
 
 #: src/TextClient.cpp:816
 msgid "Show short status information."
-msgstr ""
+msgstr "短縮に状態情報を表示する"
 
 #: src/TextClient.cpp:817
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr ""
+msgstr "コネクション状態、現在のアップロード／ダウンロードスピード等を表示する。\n"
 
 #: src/TextClient.cpp:819
 msgid "Show full statistics tree."
-msgstr ""
+msgstr "詳細な統計木を表示する。"
 
 #: src/TextClient.cpp:820
 msgid ""
@@ -3615,10 +3639,18 @@ msgid ""
 "Example: 'statistics 5' will show only the top 5 versions for each client "
 "type.\n"
 msgstr ""
+"オプションとして、, 数0〜255を引数としてこのコマンドに渡すことが出来ます。"
+"\n"
+"こういう風に、クライアント・バージョン・サッブツリーの表示したいエントリー数を指示出来ます。"
+"\n"
+"ゼロ、または空欄の引数は'無制限'の意味を示します。\n"
+"\n"
+"例： 'statistics 5'は各クライアントの一番上の５つのバージョンしか表示しません。"
+"\n"
 
 #: src/TextClient.cpp:826
 msgid "Shutdown aMule."
-msgstr ""
+msgstr "aMuleを終了します。"
 
 #: src/TextClient.cpp:827
 msgid ""
@@ -3626,22 +3658,25 @@ msgid ""
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
+"走っているリモート・コア（amule/amuled）を終了します\n"
+"すると、同時にテキスト・クライアントも一緒に終了します：走っているコアがなければ\n"
+"使えないからです。\n"
 
 #: src/TextClient.cpp:831
 msgid "Reloads the given object."
-msgstr ""
+msgstr "指示されたオブジェクトを再ロードします。"
 
 #: src/TextClient.cpp:832
 msgid "Reloads shared files list."
-msgstr ""
+msgstr "指示された共通ファイル・リストを再ロードします。"
 
 #: src/TextClient.cpp:833
 msgid "Reloads IP Filter table from file."
-msgstr ""
+msgstr "指示されたIPフィルター・テーブルをファイルから再ロードします。"
 
 #: src/TextClient.cpp:835
 msgid "Connect to the network."
-msgstr ""
+msgstr "ネットワークへ接続します。"
 
 #: src/TextClient.cpp:836
 msgid ""
@@ -3651,34 +3686,39 @@ msgid ""
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
+"これで個人設定に有効になっている全てのネットワークへ接続します。\n"
+"オプションとして、一つのサーバのみに接続したいなら、そのサーバのアドレスを「IP：ポート」"
+"\n"
+"形で指示出来ます。IPアドレスはIPv4形のドット10進数字、或いは解決出来る\n"
+"DNS名として指示しなければなりません。"
 
 #: src/TextClient.cpp:840
 msgid "Connect to ED2K only."
-msgstr ""
+msgstr "ED2Kのみに接続します。"
 
 #: src/TextClient.cpp:841
 msgid "Connect to Kad only."
-msgstr ""
+msgstr "Kadのみに接続します。"
 
 #: src/TextClient.cpp:843
 msgid "Disconnect from the network."
-msgstr ""
+msgstr "ネットワークから切断します。"
 
 #: src/TextClient.cpp:844
 msgid "This will disconnect from all networks that are currently connected.\n"
-msgstr ""
+msgstr "これで現在に接続している全てのネットワークから切断します。\n"
 
 #: src/TextClient.cpp:845
 msgid "Disconnect from ED2K only."
-msgstr ""
+msgstr "ED2Kのみから切断します。"
 
 #: src/TextClient.cpp:846
 msgid "Disconnect from Kad only."
-msgstr ""
+msgstr "Kadのみから切断します。"
 
 #: src/TextClient.cpp:848
 msgid "Adds an ed2k or magnet link to core."
-msgstr ""
+msgstr "コアにED2K、またはマグネット・リンクを追加します。"
 
 #: src/TextClient.cpp:849
 msgid ""
@@ -3691,104 +3731,114 @@ msgid ""
 "\n"
 "The magnet link must contain the ed2k hash and file length.\n"
 msgstr ""
+"追加可能なED2Kリンクの種類は次の通りです：\n"
+"*) ファイル・リンク（ed2k://|file|...）ならば、ダウンロード列に追加されます；\n"
+"*) サーバ・リンク(ed2k://|server|...)ならば、サーバ・リスト追加されます；\n"
+"*) サーバリスト・リンクならば、 そのリストに存在する全てのサーバはサーバ・リストに"
+"\n"
+"追加されます。\n"
+"\n"
+"マグネット・リンクはED2kハッシュとファイル長さを含めなければなりません。\n"
 
 #: src/TextClient.cpp:857
 msgid "Set a preference value."
-msgstr ""
+msgstr "個人設定の値を設定してください。"
 
 #: src/TextClient.cpp:860
 msgid "Set IPFilter preferences."
-msgstr ""
+msgstr "IPFilterの個人設定を設定してください。"
 
 #: src/TextClient.cpp:861
 msgid "Turn IP filtering on for both clients and servers."
-msgstr ""
+msgstr "クライアントとサーバの両方のIPフィルターリングをオンします。"
 
 #: src/TextClient.cpp:862
 msgid "Turn IP filtering off for both clients and servers."
-msgstr ""
+msgstr "クライアントとサーバの両方のIPフィルターリングをオッフします。"
 
 #: src/TextClient.cpp:863
 msgid "Enable/Disable IP filtering for clients."
-msgstr ""
+msgstr "クライアントのフィルターリングを有効／無効します。"
 
 #: src/TextClient.cpp:864
 msgid "Turn IP filtering on for clients."
-msgstr ""
+msgstr "クライアントのフィルターリングをオンします。"
 
 #: src/TextClient.cpp:865
 msgid "Turn IP filtering off for clients."
-msgstr ""
+msgstr "クライアントのフィルターリングをオッフします。"
 
 #: src/TextClient.cpp:866
 msgid "Enable/Disable IP filtering for servers."
-msgstr ""
+msgstr "サーバのフィルターリングを有効／無効します。"
 
 #: src/TextClient.cpp:867
 msgid "Turn IP filtering on for servers."
-msgstr ""
+msgstr "サーバのフィルターリングをオンします。"
 
 #: src/TextClient.cpp:868
 msgid "Turn IP filtering off for servers."
-msgstr ""
+msgstr "サーバのフィルターリングをオッフします。"
 
 #: src/TextClient.cpp:869
 msgid "Select IP filtering level."
-msgstr ""
+msgstr "IPフィルターリング段階を選択してください。"
 
 #: src/TextClient.cpp:870
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
 msgstr ""
+"有効なフィルターリング段階は0〜255の間で、\n"
+"デフォルト値は127です。\n"
 
 #: src/TextClient.cpp:873
 msgid "Set bandwidth limits."
-msgstr ""
+msgstr "バンド幅の制限を設定します。"
 
 #: src/TextClient.cpp:874
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
-msgstr ""
+msgstr "このコマンドの引数の値は毎秒のキロバイトです。\n"
 
 #: src/TextClient.cpp:875
 msgid "Set upload bandwidth limit."
-msgstr ""
+msgstr "アップロード・バンド幅の制限を設定します。"
 
 #: src/TextClient.cpp:877
 msgid "Set download bandwidth limit."
-msgstr ""
+msgstr "ダウンロード・バンド幅の制限を設定します。"
 
 #: src/TextClient.cpp:880
 msgid "Get and display a preference value."
-msgstr ""
+msgstr "個人設定の値を取ってきて、表示します。"
 
 #: src/TextClient.cpp:883
 msgid "Get IPFilter preferences."
-msgstr ""
+msgstr "IPFilterの個人設定の値を取ってきます。"
 
 #: src/TextClient.cpp:884
 msgid "Get IPFilter state for both clients and servers."
-msgstr ""
+msgstr "クライアントとサーバの両方のIPFilter状況を取ってきます。"
 
 #: src/TextClient.cpp:885
 msgid "Get IPFilter state for clients only."
-msgstr ""
+msgstr "クライアントのみのIPFilter状況を取ってきます。"
 
 #: src/TextClient.cpp:886
 msgid "Get IPFilter state for servers only."
-msgstr ""
+msgstr "サーバのみのIPFilter状況を取ってきます。"
 
 #: src/TextClient.cpp:887
 msgid "Get IPFilter level."
-msgstr ""
+msgstr "IPFilter段階を取ってきます。"
 
 #: src/TextClient.cpp:889
 msgid "Get bandwidth limits."
-msgstr ""
+msgstr "バンド幅の制限の値を取ってきます。"
 
 #: src/TextClient.cpp:891
 msgid "Makes a search."
-msgstr ""
+msgstr "検索を実行します。"
 
 #: src/TextClient.cpp:892
 msgid ""
@@ -3798,38 +3848,43 @@ msgid ""
 "    KAD\n"
 "Example: 'search kad file' will execute a kad search for \"file\".\n"
 msgstr ""
+"検索（search）の種類を下記から選択してください：\n"
+"    GLOBAL\n"
+"    LOCAL\n"
+"    KAD\n"
+"例：'search kad file'はkadで\"file\"を検索します。\n"
 
 #: src/TextClient.cpp:897
 msgid "Executes a global search."
-msgstr ""
+msgstr "グローバル検索（GLOBAL）を実行します。"
 
 #: src/TextClient.cpp:898
 msgid "Executes a local search"
-msgstr ""
+msgstr "ローカル検索（LOCAL）を実行します"
 
 #: src/TextClient.cpp:899
 msgid "Executes a kad search"
-msgstr ""
+msgstr "Kadを検索します"
 
 #: src/TextClient.cpp:901
 msgid "Shows the results of the last search."
-msgstr ""
+msgstr "最後の検索の結果を表示します。"
 
 #: src/TextClient.cpp:902
 msgid "Returns the results of the previous search.\n"
-msgstr ""
+msgstr "以前の検索の結果を回答します。\n"
 
 #: src/TextClient.cpp:904
 msgid "Shows the process of a search."
-msgstr ""
+msgstr "検索の進歩状態を表示します。"
 
 #: src/TextClient.cpp:905
 msgid "Shows the process of a search..\n"
-msgstr ""
+msgstr "検索の進歩状態を表示します…\n"
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
-msgstr ""
+msgstr "ファイルのダウンロードを開始します"
 
 #: src/TextClient.cpp:908
 msgid ""
@@ -3837,389 +3892,410 @@ msgid ""
 "Example: 'download 12' will start to download the file with the number 12 of "
 "the previous search.\n"
 msgstr ""
+"以前の検索からファイル番号を選んで指定しなければなりません。\n"
+"例： 'download 12'は以前の検索結果で12として指定されたファイルのダウンロード"
+"を開始します。\n"
 
 #: src/TextClient.cpp:916
 msgid "Pause download."
-msgstr ""
+msgstr "ダウンロードをポーズします。"
 
 #: src/TextClient.cpp:919
 msgid "Resume download."
-msgstr ""
+msgstr "ダウンロードを再開します。"
 
 #: src/TextClient.cpp:922
 msgid "Cancel download."
-msgstr ""
+msgstr "ダウンロードをキャンセルします。"
 
 #: src/TextClient.cpp:925
 msgid "Set download priority."
-msgstr ""
+msgstr "ダウンロードのプライオリティーを設定します。"
 
 #: src/TextClient.cpp:926
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
-msgstr ""
+msgstr "ダウンロードのプライオリティーを低い（Low）、普通（Normal）、高い（High）、またはオート（Auto）に設定します。\n"
 
 #: src/TextClient.cpp:927
 msgid "Set priority to low."
-msgstr ""
+msgstr "プライオリティーを低いに設定します。"
 
 #: src/TextClient.cpp:928
 msgid "Set priority to normal."
-msgstr ""
+msgstr "プライオリティーを普通に設定します。"
 
 #: src/TextClient.cpp:929
 msgid "Set priority to high."
-msgstr ""
+msgstr "プライオリティーを高いに設定します。"
 
 #: src/TextClient.cpp:930
 msgid "Set priority to auto."
-msgstr ""
+msgstr "プライオリティーをオートに設定します。"
 
 #: src/TextClient.cpp:932
 msgid "Show queues/lists."
-msgstr ""
+msgstr "列／リストを表示します。"
 
 #: src/TextClient.cpp:933
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr ""
+msgstr "アップロード／ダウンロード列、サーバ・リスト、または共通リストを表示します。\n"
 
 #: src/TextClient.cpp:934
 msgid "Show upload queue."
-msgstr ""
+msgstr "アップロード列を表示します。"
 
 #: src/TextClient.cpp:935
 msgid "Show download queue."
-msgstr ""
+msgstr "ダウンロード列を表示します。"
 
 #: src/TextClient.cpp:936
 msgid "Show log."
-msgstr ""
+msgstr "ログを表示します。"
 
 #: src/TextClient.cpp:937
 msgid "Show servers list."
-msgstr ""
+msgstr "サーバ・リストを表示します。"
 
 #: src/TextClient.cpp:940
 msgid "Reset log."
-msgstr ""
+msgstr "ログを再初期化します。"
 
 #: src/TextClient.cpp:946
 msgid "Deprecated command, now 'Status'."
-msgstr ""
+msgstr "廃止予定のコマンドで、現在は'Status'です。"
 
 #: src/TextClient.cpp:947
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Status' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Status'を使ってください。\n"
 
 #: src/TextClient.cpp:950
 msgid "Deprecated command, now 'Set IPFilter'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Set IPFilter'です。"
 
 #: src/TextClient.cpp:951
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Set IPFilter'を使ってください。\n"
 
 #: src/TextClient.cpp:954
 msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Get IPFilter Level'です。"
 
 #: src/TextClient.cpp:955
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get IPFilter Level' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Get IPFilter Level'を使ってください。\n"
 
 #: src/TextClient.cpp:958
 msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Set IPFilter Level'です。"
 
 #: src/TextClient.cpp:959
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set IPFilter Level' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Set IPFilter Level'を使ってください。\n"
 
 #: src/TextClient.cpp:962
 msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Get/Set IPFilter Level'です。"
 
 #: src/TextClient.cpp:963
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get/Set IPFilter Level' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Get/Set IPFilter Level'を使ってください。\n"
 
 #: src/TextClient.cpp:966
 msgid "Deprecated command, now 'Show Servers'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Show Servers'です。"
 
 #: src/TextClient.cpp:967
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Show Servers' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Show Servers'を使ってください。\n"
 
 #: src/TextClient.cpp:970
 msgid "Deprecated command, now 'Get BwLimits'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Get BwLimits'です。"
 
 #: src/TextClient.cpp:971
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Get BwLimits' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Get BwLimits'を使ってください。\n"
 
 #: src/TextClient.cpp:974
 msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Set BwLimits Up'です。"
 
 #: src/TextClient.cpp:975
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Up' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Set BwLimits Up'を使ってください。\n"
 
 #: src/TextClient.cpp:978
 msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr ""
+msgstr "廃棄予定のコマンドで、現在は'Set BwLimits Down'です。"
 
 #: src/TextClient.cpp:979
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use 'Set BwLimit Down' instead.\n"
 msgstr ""
+"廃止予定のコマンドで、将来に存在しない可能性が高いです。\n"
+"代わりに、'Set BwLimits Down'を使ってください。\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
-msgstr ""
+msgstr "theApp->serverlist->GetServerByAddress()はNULLを回答しました"
 
 #: src/ServerSocket.cpp:261
 #, c-format
 msgid "Error: %s (%s) - %s"
-msgstr ""
+msgstr "エラー：%s（%s）- %s"
 
 #: src/ServerSocket.cpp:276
 #, c-format
 msgid "Warning: %s (%s) - %s"
-msgstr ""
+msgstr "注意：%s（%s）- %s"
 
 #: src/ServerSocket.cpp:419
 #, c-format
 msgid "New clientid is %u"
-msgstr ""
+msgstr "新しいclientidは%uです"
 
 #: src/ServerSocket.cpp:475
 msgid "Unknown server info received! - too short"
-msgstr ""
+msgstr "不明なサーバ情報を受信しました！理由：短しぎます"
 
 #: src/ServerSocket.cpp:536
 #, c-format
 msgid "Received %d new servers"
-msgstr ""
+msgstr "%d新しいサーバを受信しました"
 
 #: src/ServerSocket.cpp:539
 msgid "Saving of server-list completed."
-msgstr ""
+msgstr "サーバ・リストの保存を終了しました。"
 
 #: src/ServerSocket.cpp:594
 msgid "Server rejected last command"
-msgstr ""
+msgstr "サーバは最後のコマンドを断りました"
 
 #: src/ServerSocket.cpp:604 src/ServerSocket.cpp:606
 #, c-format
 msgid "Bogus packet received from server: %s"
-msgstr ""
+msgstr "サーバ%sから偽造のパケットが届きました"
 
 #: src/ServerSocket.cpp:608
 #, c-format
 msgid "Unhandled error while processing packet from server: %s"
-msgstr ""
+msgstr "サーバ%sのパケットを処理する時に未処理例外エラーが発生しました"
 
 #: src/ServerSocket.cpp:647 src/ServerSocket.cpp:651
 #, c-format
 msgid "Cannot create DNS solving thread for connecting to %s"
-msgstr ""
+msgstr "%sに接続するためのDNS解決スレッドを作成せきません。"
 
 #: src/ServerSocket.cpp:730
 #, c-format
 msgid "Server IP %s (%s) is filtered.  Not connecting."
-msgstr ""
+msgstr "IPアドレス%sのサーバ%sはフィルターリングされています。接続はしません。"
 
 #: src/ServerSocket.cpp:740
 msgid "using protocol obfuscation."
-msgstr ""
+msgstr "ぼかしているプロトコルを使用しています。"
 
 #: src/ServerSocket.cpp:749
 #, c-format
 msgid "Connecting to %s (%s - %s:%i) %s"
-msgstr ""
+msgstr "%s（%s - %s：%i）%sへ接続中です。"
 
 #: src/ServerSocket.cpp:761
 #, c-format
 msgid "Could not solve dns for server %s: Unable to connect!"
-msgstr ""
+msgstr "%sに接続するためのDNSは解決出来ませんでした：接続は出来ません！"
 
 #: src/IP2Country.cpp:67
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
-msgstr ""
+msgstr "CIP2Country::CIP2Country()：次から国データはロード出来ませんでした："
 
 #: src/IP2Country.cpp:72
 #, c-format
 msgid "Loaded %d flag bitmaps."
-msgstr ""
+msgstr "%dの旗ビットマップをロードしました。"
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr ""
+msgstr "確認：本当にこのカテゴリーの全てのファイルをキャンセルして消除しますか？"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
-msgstr ""
+msgstr "確認が必要です"
 
 #: src/TransferWnd.cpp:342
 msgid "All others"
-msgstr ""
+msgstr "他の全て"
 
 #: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
 msgid "Incomplete"
-msgstr ""
+msgstr "未完成"
 
 #: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
 msgid "Active"
-msgstr ""
+msgstr "アクティブ"
 
 #: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
 msgid "Video"
-msgstr ""
+msgstr "ビデオ"
 
 #: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
 #: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
 msgid "Audio"
-msgstr ""
+msgstr "オーディオ"
 
 #: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
 msgid "Archive"
-msgstr ""
+msgstr "アーカイブ"
 
 #: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
 #: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
 msgid "CD-Images"
-msgstr ""
+msgstr "CDイメージ"
 
 #: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
 #: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
 msgid "Pictures"
-msgstr ""
+msgstr "画像"
 
 #: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
 msgid "Text"
-msgstr ""
+msgstr "テキスト"
 
 #: src/TransferWnd.cpp:364
 msgid "Select view filter"
-msgstr ""
+msgstr "ビュー・フィルターを選択してください"
 
 #: src/TransferWnd.cpp:367
 msgid "Add category"
-msgstr ""
+msgstr "カテゴリーを追加します"
 
 #: src/TransferWnd.cpp:370
 msgid "Edit category"
-msgstr ""
+msgstr "カテゴリーを編集します"
 
 #: src/TransferWnd.cpp:371
 msgid "Remove category"
-msgstr ""
+msgstr "カテゴリーを消除します"
 
 #: src/PartFileConvert.cpp:240
 #, c-format
 msgid "Importing %s: %s"
-msgstr ""
+msgstr "%s：%sをインポートします"
 
 #: src/PartFileConvert.cpp:270
 msgid "Reading temp folder"
-msgstr ""
+msgstr "臨時フォルダーを読み中です"
 
 #: src/PartFileConvert.cpp:276
 msgid "Retrieving basic information from download info file"
-msgstr ""
+msgstr "基本情報をダウンロード情報ファイルから取ってきます"
 
 #: src/PartFileConvert.cpp:356
 msgid "Creating destination file"
-msgstr ""
+msgstr "当てファイルを作成中です"
 
 #: src/PartFileConvert.cpp:365
 #, c-format
 msgid "Loading data from old download file (%u of %u)"
-msgstr ""
+msgstr "古いダウンロード・ファイル（%uから%u）からデータをロード中です"
 
 #: src/PartFileConvert.cpp:385
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
-msgstr ""
+msgstr "データ・ブロックを一つの新しいダウンロード・ファイル（%uから%u）に纏め中です"
 
 #: src/PartFileConvert.cpp:455
 msgid "Retrieving source downloadfile information"
-msgstr ""
+msgstr "ソース・ダウンロードファイル情報を取ってきます"
 
 #: src/PartFileConvert.cpp:480
 msgid "Adding download and saving new partfile"
-msgstr ""
+msgstr "ダウンロードを追加して、新しい部分ファイルを保存中です"
 
 #: src/PartFileConvert.cpp:561
 msgid "Fetching status..."
-msgstr ""
+msgstr "状態を取ってきています…"
 
 #: src/PartFileConvert.cpp:625
 msgid "In progress"
-msgstr ""
+msgstr "途中です"
 
 #: src/PartFileConvert.cpp:626
 msgid "Error: Out of diskspace"
-msgstr ""
+msgstr "エラー：ディスク・スペースが無くなりました"
 
 #: src/PartFileConvert.cpp:627
 msgid "Error: Partmet not found"
-msgstr ""
+msgstr "エラー：Partmetは見つかりませんでした"
 
 #: src/PartFileConvert.cpp:628
 msgid "Error: IO error!"
-msgstr ""
+msgstr "エラー：I/Oエラー！"
 
 #: src/PartFileConvert.cpp:629
 msgid "Error: Failed!"
-msgstr ""
+msgstr "エラー：失敗しました！"
 
 #: src/PartFileConvert.cpp:630
 msgid "Queued"
-msgstr ""
+msgstr "列に追加しました"
 
 #: src/PartFileConvert.cpp:631
 msgid "Already downloading"
-msgstr ""
+msgstr "すでにダウンロード中です"
 
 #: src/PartFileConvert.cpp:632
 msgid "Unknown or bad tempfile format."
-msgstr ""
+msgstr "不明な、または不利なtempfileフォーマット。"
 
 #: src/PartFileConvert.cpp:641
 msgid "File name"
-msgstr ""
+msgstr "ファイル名"
 
 #: src/PartFileConvert.cpp:642
 msgid "State"
-msgstr ""
+msgstr "状況"
 
 #: src/PartFileConvert.cpp:644
 msgid "Filehash"
-msgstr ""
+msgstr "ファイル・ハッシュ"
 
 #: src/PartFileConvert.cpp:690
 msgid "Import partfiles"
-msgstr ""
+msgstr "部分ファイルをインポートをします"
 
 #: src/PartFileConvert.cpp:710
 msgid ""
