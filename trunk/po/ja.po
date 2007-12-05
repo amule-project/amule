@@ -2345,7 +2345,8 @@ msgstr "クライアントの要求が不正です！ %i / %i"
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr "PID `%2$d' のコマンド  `%1$s' がステータスコード  `%3$d' で終了しました。"
+msgstr ""
+"PID `%2$d' のコマンド  `%1$s' がステータスコード  `%3$d' で終了しました。"
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
@@ -3071,8 +3072,8 @@ msgid ""
 "on every preview"
 msgstr ""
 "推奨のビデオプレイヤーを個人設定で設定してください。\n"
-"その間、aMuleはmplayerを使用しようとしながら、プレビュー毎にこの注意が "
-"表示されます"
+"その間、aMuleはmplayerを使用しようとしながら、プレビュー毎にこの注意が 表示さ"
+"れます"
 
 #: src/DownloadListCtrl.cpp:2242
 msgid "File preview"
@@ -3100,8 +3101,8 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions"
 msgstr ""
-"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule.orgをpart.met"
-"で回復ソリューションを検索してください。"
+"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule."
+"orgをpart.metで回復ソリューションを検索してください。"
 
 #: src/PartFile.cpp:296
 #, c-format
@@ -3113,8 +3114,8 @@ msgid ""
 "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
 "part.met recovery solutions"
 msgstr ""
-"エラー：バックアップpart.metファイルはゼロ・サイズです！http://forum.amule.orgで"
-"part.met回復ソリューションを検索してください。"
+"エラー：バックアップpart.metファイルはゼロ・サイズです！http://forum.amule."
+"orgでpart.met回復ソリューションを検索してください。"
 
 #: src/PartFile.cpp:308
 #, c-format
@@ -3139,7 +3140,9 @@ msgstr "エラー：不正なpart.metファイル・バージョン： %s ==> %s
 #: src/PartFile.cpp:598
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "エラー： %s（%s）は破損されて（tagcountが間違っています）、ファイルはロード出来ません。"
+msgstr ""
+"エラー： %s（%s）は破損されて（tagcountが間違っています）、ファイルはロード出"
+"来ません。"
 
 #: src/PartFile.cpp:601
 msgid "Trying to recover file info..."
@@ -3205,7 +3208,8 @@ msgstr "部分ファイル%s（%s）のシーヅ・フィアルは空ファイ�
 #: src/PartFile.cpp:1113
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
-msgstr "部分ファイルのシーヅ・ファイルを読む時にエラーが発生しました：（%s - %s）%s"
+msgstr ""
+"部分ファイルのシーヅ・ファイルを読む時にエラーが発生しました：（%s - %s）%s"
 
 #: src/PartFile.cpp:1129 src/PartFile.cpp:1152
 #, c-format
@@ -3213,8 +3217,8 @@ msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr ""
-"破損されている部分（%d）を%d部分、ファイル%sに見付かりました：FileResultHash |%s| FileHash "
-"|%s|"
+"破損されている部分（%d）を%d部分、ファイル%sに見付かりました：FileResultHash "
+"|%s| FileHash |%s|"
 
 #: src/PartFile.cpp:1166
 #, c-format
@@ -3244,7 +3248,9 @@ msgstr "ファイルを消除します：%s"
 #: src/PartFile.cpp:2367
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "注意：ダウンロードした部分はハッシュ出来ません：'%s'のためのハッシュ・セットが未完成です"
+msgstr ""
+"注意：ダウンロードした部分はハッシュ出来ません：'%s'のためのハッシュ・セット"
+"が未完成です"
 
 #: src/PartFile.cpp:2372
 #, c-format
@@ -3252,8 +3258,8 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"エラー：ダウンロードした部分はハッシュ出来ません：ハッシュ・セットは未完成です（%s）。"
-"こういうことはありえません。"
+"エラー：ダウンロードした部分はハッシュ出来ません：ハッシュ・セットは未完成で"
+"す（%s）。こういうことはありえません。"
 
 #: src/PartFile.cpp:3051
 #, c-format
@@ -3268,7 +3274,8 @@ msgstr "ダウンロードした部分%i（ファイル：%s）は損被され�
 #: src/PartFile.cpp:3159
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr "ICH：損被された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
+msgstr ""
+"ICH：損被された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
 
 #: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3585
 msgid "Comments"
@@ -3318,8 +3325,8 @@ msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
 "directory not found."
 msgstr ""
-"CSharedFileList::FindSharedFiles：%sを共通ディレクトリーから外します："
-"ディレクトリーは見付かりません。"
+"CSharedFileList::FindSharedFiles：%sを共通ディレクトリーから外します：ディレ"
+"クトリーは見付かりません。"
 
 #: src/SharedFileList.cpp:376
 #, c-format
@@ -3362,8 +3369,8 @@ msgid ""
 "Failed to connect to all obfuscated servers listed. Making another pass "
 "without obfuscation."
 msgstr ""
-"全てのリストされ、ぼかされたされたサーバに接続のに失敗しました。ぼかすこと無にもう一度"
-"パスをします。"
+"全てのリストされ、ぼかされたされたサーバに接続のに失敗しました。ぼかすこと無"
+"にもう一度パスをします。"
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
@@ -3384,7 +3391,9 @@ msgstr "%s（%s：%i）に接続しています"
 
 #: src/ServerConnect.cpp:345
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "接続中に致命的なエラーが発生しました。インターネット・コネクションがダウンの恐れがあります。"
+msgstr ""
+"接続中に致命的なエラーが発生しました。インターネット・コネクションがダウンの"
+"恐れがあります。"
 
 #: src/ServerConnect.cpp:349
 #, c-format
@@ -3478,9 +3487,8 @@ msgstr "不正なIPフォーマット。xx.xxx.xxx.xxx:xxxxを使用ください
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requires an argument. Valid arguments: 'all' or a number.\n"
+"This command requieres an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"このコマンドには引数が要ります。有効な引数：'all'、または数字。\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3491,8 +3499,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "正当なハッシュではありません（長さは丁度32半角文字あるべきです）\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "このコマンドには引数が要ります。有効な引数：ファイル・ハッシュ。\n"
+msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:570
 #, c-format
@@ -3622,7 +3630,8 @@ msgstr "短縮に状態情報を表示する"
 
 #: src/TextClient.cpp:817
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr "コネクション状態、現在のアップロード／ダウンロードスピード等を表示する。\n"
+msgstr ""
+"コネクション状態、現在のアップロード／ダウンロードスピード等を表示する。\n"
 
 #: src/TextClient.cpp:819
 msgid "Show full statistics tree."
@@ -3639,14 +3648,13 @@ msgid ""
 "Example: 'statistics 5' will show only the top 5 versions for each client "
 "type.\n"
 msgstr ""
-"オプションとして、, 数0〜255を引数としてこのコマンドに渡すことが出来ます。"
-"\n"
-"こういう風に、クライアント・バージョン・サッブツリーの表示したいエントリー数を指示出来ます。"
-"\n"
+"オプションとして、, 数0〜255を引数としてこのコマンドに渡すことが出来ます。\n"
+"こういう風に、クライアント・バージョン・サッブツリーの表示したいエントリー数"
+"を指示出来ます。\n"
 "ゼロ、または空欄の引数は'無制限'の意味を示します。\n"
 "\n"
-"例： 'statistics 5'は各クライアントの一番上の５つのバージョンしか表示しません。"
-"\n"
+"例： 'statistics 5'は各クライアントの一番上の５つのバージョンしか表示しませ"
+"ん。\n"
 
 #: src/TextClient.cpp:826
 msgid "Shutdown aMule."
@@ -3659,7 +3667,8 @@ msgid ""
 "running core.\n"
 msgstr ""
 "走っているリモート・コア（amule/amuled）を終了します\n"
-"すると、同時にテキスト・クライアントも一緒に終了します：走っているコアがなければ\n"
+"すると、同時にテキスト・クライアントも一緒に終了します：走っているコアがなけ"
+"れば\n"
 "使えないからです。\n"
 
 #: src/TextClient.cpp:831
@@ -3687,8 +3696,8 @@ msgid ""
 "or a resolvable DNS name."
 msgstr ""
 "これで個人設定に有効になっている全てのネットワークへ接続します。\n"
-"オプションとして、一つのサーバのみに接続したいなら、そのサーバのアドレスを「IP：ポート」"
-"\n"
+"オプションとして、一つのサーバのみに接続したいなら、そのサーバのアドレスを"
+"「IP：ポート」\n"
 "形で指示出来ます。IPアドレスはIPv4形のドット10進数字、或いは解決出来る\n"
 "DNS名として指示しなければなりません。"
 
@@ -3732,10 +3741,11 @@ msgid ""
 "The magnet link must contain the ed2k hash and file length.\n"
 msgstr ""
 "追加可能なED2Kリンクの種類は次の通りです：\n"
-"*) ファイル・リンク（ed2k://|file|...）ならば、ダウンロード列に追加されます；\n"
+"*) ファイル・リンク（ed2k://|file|...）ならば、ダウンロード列に追加されま"
+"す；\n"
 "*) サーバ・リンク(ed2k://|server|...)ならば、サーバ・リスト追加されます；\n"
-"*) サーバリスト・リンクならば、 そのリストに存在する全てのサーバはサーバ・リストに"
-"\n"
+"*) サーバリスト・リンクならば、 そのリストに存在する全てのサーバはサーバ・リ"
+"ストに\n"
 "追加されます。\n"
 "\n"
 "マグネット・リンクはED2kハッシュとファイル長さを含めなければなりません。\n"
@@ -3914,7 +3924,9 @@ msgstr "ダウンロードのプライオリティーを設定します。"
 
 #: src/TextClient.cpp:926
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
-msgstr "ダウンロードのプライオリティーを低い（Low）、普通（Normal）、高い（High）、またはオート（Auto）に設定します。\n"
+msgstr ""
+"ダウンロードのプライオリティーを低い（Low）、普通（Normal）、高い（High）、ま"
+"たはオート（Auto）に設定します。\n"
 
 #: src/TextClient.cpp:927
 msgid "Set priority to low."
@@ -3938,7 +3950,9 @@ msgstr "列／リストを表示します。"
 
 #: src/TextClient.cpp:933
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "アップロード／ダウンロード列、サーバ・リスト、または共通リストを表示します。\n"
+msgstr ""
+"アップロード／ダウンロード列、サーバ・リスト、または共通リストを表示しま"
+"す。\n"
 
 #: src/TextClient.cpp:934
 msgid "Show upload queue."
@@ -4149,7 +4163,8 @@ msgstr "%dの旗ビットマップをロードしました。"
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "確認：本当にこのカテゴリーの全てのファイルをキャンセルして消除しますか？"
+msgstr ""
+"確認：本当にこのカテゴリーの全てのファイルをキャンセルして消除しますか？"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
@@ -4235,7 +4250,8 @@ msgstr "古いダウンロード・ファイル（%uから%u）からデータ�
 #: src/PartFileConvert.cpp:385
 #, c-format
 msgid "Saving data block into new single download file (%u of %u)"
-msgstr "データ・ブロックを一つの新しいダウンロード・ファイル（%uから%u）に纏め中です"
+msgstr ""
+"データ・ブロックを一つの新しいダウンロード・ファイル（%uから%u）に纏め中です"
 
 #: src/PartFileConvert.cpp:455
 msgid "Retrieving source downloadfile information"
@@ -6987,3 +7003,10 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid ""
+#~ "This command requires an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr "このコマンドには引数が要ります。有効な引数：'all'、または数字。\n"
+
+#~ msgid "This command requires an argument. Valid arguments: a file hash.\n"
+#~ msgstr "このコマンドには引数が要ります。有効な引数：ファイル・ハッシュ。\n"
