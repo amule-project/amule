@@ -4318,216 +4318,226 @@ msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr ""
+"臨時ダウンロード目標のフォルダーを選択してください"
+"（サッブ・フォルダーは含まれます）"
 
 #: src/PartFileConvert.cpp:714
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
+"成功にインポートしたダウンロードのソース・ファイルを消除しますか？"
 
 #: src/PartFileConvert.cpp:715
 msgid "Remove sources?"
-msgstr ""
+msgstr "ソースを消除しますか？"
 
 #: src/PartFileConvert.cpp:736 src/muuli_wdr.cpp:3850
 msgid "Waiting..."
-msgstr ""
+msgstr "待期中…"
 
 #: src/PartFileConvert.cpp:751
 #, c-format
 msgid "%s (Disk: %s)"
-msgstr ""
+msgstr "%s（ディスク：%s）"
 
 #: src/OtherFunctions.cpp:123
 msgid "bytes"
-msgstr ""
+msgstr "バイト"
 
 #: src/OtherFunctions.cpp:125
 msgid "kB"
-msgstr ""
+msgstr "キロバイト"
 
 #: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
-msgstr ""
+msgstr "メガバイト"
 
 #: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
-msgstr ""
+msgstr "ギガバイト"
 
 #: src/OtherFunctions.cpp:131
 msgid "TB"
-msgstr ""
+msgstr "テラバイト"
 
 #: src/OtherFunctions.cpp:143
 msgid "k"
-msgstr ""
+msgstr "キロ"
 
 #: src/OtherFunctions.cpp:145
 msgid "M"
-msgstr ""
+msgstr "メガ"
 
 #: src/OtherFunctions.cpp:147
 msgid "G"
-msgstr ""
+msgstr "ギガ"
 
 #: src/OtherFunctions.cpp:149
 msgid "T"
-msgstr ""
+msgstr "テラ"
 
 #: src/OtherFunctions.cpp:158
 msgid "bytes/sec"
-msgstr ""
+msgstr "（毎秒）バイト"
 
 #: src/OtherFunctions.cpp:162
 msgid "MB/s"
-msgstr ""
+msgstr "（毎秒）バイト"
 
 #: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
 msgid "secs"
-msgstr ""
+msgstr "秒"
 
 #: src/OtherFunctions.cpp:185
 msgid "mins"
-msgstr ""
+msgstr "分"
 
 #: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
 msgid "hours"
-msgstr ""
+msgstr "時"
 
 #: src/OtherFunctions.cpp:200
 msgid "Days"
-msgstr ""
+msgstr "日"
 
 #: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
 msgid "Videos"
-msgstr ""
+msgstr "ビデオ"
 
 #: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
 msgid "Archives"
-msgstr ""
+msgstr "アーカイブ"
 
 #: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
 msgid "Texts"
-msgstr ""
+msgstr "テキスト"
 
 #: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
 msgid "Programs"
-msgstr ""
+msgstr "プログラム"
 
 #: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
 msgid "Any"
-msgstr ""
+msgstr "どれも"
 
 #: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
 msgid "Not rated"
-msgstr ""
+msgstr "レーティングされていません"
 
 #: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
-msgstr ""
+msgstr "不正／損被／偽造"
 
 #: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
 msgid "Poor"
-msgstr ""
+msgstr "悪い"
 
 #: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
 msgid "Fair"
-msgstr ""
+msgstr "順調"
 
 #: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
 msgid "Good"
-msgstr ""
+msgstr "良い"
 
 #: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
 msgid "Excellent"
-msgstr ""
+msgstr "優秀"
 
 #: src/OtherFunctions.cpp:801
 msgid "all"
-msgstr ""
+msgstr "全て"
 
 #: src/OtherFunctions.cpp:802
 msgid "all others"
-msgstr ""
+msgstr "他に全て"
 
 #: src/IPFilter.cpp:110
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
-msgstr ""
+msgstr "IPフィルター'ipfilter.dat'と'ipfilterstatic.dat'をロード中です。"
 
 #: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
+msgstr "'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイル・フォーマットに出会いました。"
 
 #: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr ""
+msgstr "'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイルを開くことは出来ませんでした。"
 
 #: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
-msgstr ""
+msgstr "%uのIPレンジを'%s'からロードしました。%uの奇形な行を捨てましたた。"
 
 #: src/StatisticsDlg.cpp:173
 #, c-format
 msgid "Active connections (1:%u)"
-msgstr ""
+msgstr "アクティブなコネクション（1:%u）"
 
 #: src/FileDetailDialog.cpp:60
 msgid "File Details"
-msgstr ""
+msgstr "ファイルの詳細"
 
 #: src/FileDetailDialog.cpp:113
 #, c-format
 msgid "%.2f%% done"
-msgstr ""
+msgstr "%.2f%%終わりました"
 
 #: src/muuli_wdr.cpp:69
 msgid "ED2K Link: "
-msgstr ""
+msgstr "ED2Kリンク："
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
-msgstr ""
+msgstr "コミット"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
 "Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
+"ここで、テキスト・コントロールにあるED2kリンクをダウンロード列に追加するのにクリックをしてください。"
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
-msgstr ""
+msgstr "ポップ・アップ状態テキスト"
 
 #: src/muuli_wdr.cpp:88
 msgid "Loading ..."
-msgstr ""
+msgstr "ロード中…"
 
 #: src/muuli_wdr.cpp:89
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
+"イベントはここで表示されます。イベントの全てのリストにはサーバ・タブに存在するログを"
+"参考してください。"
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
-msgstr ""
+msgstr "接続中のサーバのユーザ数…"
 
 #: src/muuli_wdr.cpp:100
 msgid "Users: 0"
-msgstr ""
+msgstr "ユーザ：0"
 
 #: src/muuli_wdr.cpp:101
 msgid ""
 "Users connected to the current server and an estimate of the total number of "
 "users."
 msgstr ""
+"現在接続中のサーバのユーザ数と合計ユーザ数の"
+"推測。"
 
 #: src/muuli_wdr.cpp:113
 msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
 msgstr ""
+"現在のひえ金アップロードダウンロード・レート。有効であれば、ブレースに囲まれている"
+"数字はクライアント・コミュニケーションのオーバヘッドを意味します。"
 
 #: src/muuli_wdr.cpp:121
 msgid ""
@@ -4536,143 +4546,146 @@ msgid ""
 "low ID (firewalled) and green arrows signify that you have high ID (The "
 "optimal connection type)."
 msgstr ""
+"接続状態とアクティブ転送数を表示します。赤い矢印は現在接続しちないことを意味します。"
+"黄色の矢印はlow ID（ファイアウォールされている）を意味します。緑色の矢印はhigh ID"
+"（最善のコネクションの種類）を意味します。"
 
 #: src/muuli_wdr.cpp:125
 msgid "Not Connected ..."
-msgstr ""
+msgstr "切断しています…"
 
 #: src/muuli_wdr.cpp:126
 msgid "Currently connected server."
-msgstr ""
+msgstr "現在接続しているサーバ。"
 
 #: src/muuli_wdr.cpp:174
 msgid "Search"
-msgstr ""
+msgstr "検索"
 
 #: src/muuli_wdr.cpp:180
 msgid "Name:"
-msgstr ""
+msgstr "名前："
 
 #: src/muuli_wdr.cpp:193 src/SearchDlg.cpp:106
 msgid "Local"
-msgstr ""
+msgstr "ローカル"
 
 #: src/muuli_wdr.cpp:194
 msgid "Global"
-msgstr ""
+msgstr "グローバル"
 
 #: src/muuli_wdr.cpp:196
 msgid "FileHash"
-msgstr ""
+msgstr "ファイル・ハッシュ"
 
 #: src/muuli_wdr.cpp:204
 msgid "Extended Parameters"
-msgstr ""
+msgstr "拡張パラメタ"
 
 #: src/muuli_wdr.cpp:210
 msgid "Filtering"
-msgstr ""
+msgstr "フィルターリング"
 
 #: src/muuli_wdr.cpp:221
 msgid "File Type"
-msgstr ""
+msgstr "フィルターの種類"
 
 #: src/muuli_wdr.cpp:251
 msgid "Extension"
-msgstr ""
+msgstr "拡張子"
 
 #: src/muuli_wdr.cpp:257
 msgid "Min Size"
-msgstr ""
+msgstr "最小サイズ"
 
 #: src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290
 msgid "Bytes"
-msgstr ""
+msgstr "バイト"
 
 #: src/muuli_wdr.cpp:268 src/muuli_wdr.cpp:291
 msgid "KB"
-msgstr ""
+msgstr "キロバイト"
 
 #: src/muuli_wdr.cpp:280
 msgid "Max Size"
-msgstr ""
+msgstr "最大サイズ"
 
 #: src/muuli_wdr.cpp:303
 msgid "Availability"
-msgstr ""
+msgstr "可用性"
 
 #: src/muuli_wdr.cpp:316
 msgid "Filter:"
-msgstr ""
+msgstr "フィルター："
 
 #: src/muuli_wdr.cpp:325
 msgid "Filter Results"
-msgstr ""
+msgstr "フィルターの結果"
 
 #: src/muuli_wdr.cpp:331
 msgid "Invert Result"
-msgstr ""
+msgstr "結果を反転する"
 
 #: src/muuli_wdr.cpp:337
 msgid "Hide Known Files"
-msgstr ""
+msgstr "知られているファイルを隠す"
 
 #: src/muuli_wdr.cpp:353
 msgid "More"
-msgstr ""
+msgstr "もっと"
 
 #: src/muuli_wdr.cpp:354
 msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr ""
+msgstr "もっと結果をED2kで検索する。Kadのサポートはまだありません。"
 
 #: src/muuli_wdr.cpp:361
 msgid "Stop"
-msgstr ""
+msgstr "中止する"
 
 #: src/muuli_wdr.cpp:375
 msgid "Reset Fields"
-msgstr ""
+msgstr "フィールドをリセットする"
 
 #: src/muuli_wdr.cpp:390
 msgid "Results"
-msgstr ""
+msgstr "結果"
 
 #: src/muuli_wdr.cpp:428
 msgid "Clears completed downloads"
-msgstr ""
+msgstr "完成したダウンロードをクリアします"
 
 #: src/muuli_wdr.cpp:466
 msgid "Shows Upload / Up-queue"
-msgstr ""
+msgstr "アップロード／アップ列を表示します"
 
 #: src/muuli_wdr.cpp:475
 msgid "Clients on queue :"
-msgstr ""
+msgstr "列に入っているクライアント："
 
 #: src/muuli_wdr.cpp:478
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: src/muuli_wdr.cpp:542
 msgid "Send"
-msgstr ""
+msgstr "送信する"
 
 #: src/muuli_wdr.cpp:543
 msgid "Sends the specified message."
-msgstr ""
+msgstr "指示するメッセージを送信します。"
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:976 src/muuli_wdr.cpp:1593
 #: src/muuli_wdr.cpp:3887 src/MuleNotebook.cpp:152
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: src/muuli_wdr.cpp:548
 msgid "Close this chat-session."
-msgstr ""
+msgstr "チャット・セションを閉じます。"
 
 #: src/muuli_wdr.cpp:581
 msgid "Full Name :"
-msgstr ""
+msgstr "フル・ネイム："
 
 #: src/muuli_wdr.cpp:584 src/muuli_wdr.cpp:595 src/muuli_wdr.cpp:606
 #: src/muuli_wdr.cpp:621 src/muuli_wdr.cpp:632 src/muuli_wdr.cpp:643
@@ -4690,281 +4703,283 @@ msgstr ""
 #: src/muuli_wdr.cpp:1560 src/muuli_wdr.cpp:1569 src/muuli_wdr.cpp:1576
 #: src/muuli_wdr.cpp:1585 src/ClientListCtrl.cpp:634
 msgid "N/A"
-msgstr ""
+msgstr "非適用"
 
 #: src/muuli_wdr.cpp:592
 msgid "met-File :"
-msgstr ""
+msgstr "metファイル："
 
 #: src/muuli_wdr.cpp:603
 msgid "Hash :"
-msgstr ""
+msgstr "ハッシュ："
 
 #: src/muuli_wdr.cpp:618
 msgid "Filesize :"
-msgstr ""
+msgstr "ファイル・サイズ："
 
 #: src/muuli_wdr.cpp:629
 msgid "Partfilestatus :"
-msgstr ""
+msgstr "部分ファイルの状態："
 
 #: src/muuli_wdr.cpp:640
 msgid "Last seen complete :"
-msgstr ""
+msgstr "最後に完全として見た時間："
 
 #: src/muuli_wdr.cpp:663
 msgid "Found Sources :"
-msgstr ""
+msgstr "ソースを見つかりました："
 
 #: src/muuli_wdr.cpp:674
 msgid "Transferring Sources :"
-msgstr ""
+msgstr "ソースを転送中です："
 
 #: src/muuli_wdr.cpp:685
 msgid "Filepart-Count :"
-msgstr ""
+msgstr "ファイル部分の数："
 
 #: src/muuli_wdr.cpp:696
 msgid "Available :"
-msgstr ""
+msgstr "入手できます："
 
 #: src/muuli_wdr.cpp:707
 msgid "Datarate :"
-msgstr ""
+msgstr "データ・レート："
 
 #: src/muuli_wdr.cpp:718
 msgid "Download Active Time: "
-msgstr ""
+msgstr "ダウンロードのアクティブ時間："
 
 #: src/muuli_wdr.cpp:729 src/muuli_wdr.cpp:1179 src/muuli_wdr.cpp:1190
 msgid "Transferred :"
-msgstr ""
+msgstr "転送しました："
 
 #: src/muuli_wdr.cpp:740
 msgid "Completed Size :"
-msgstr ""
+msgstr "完全サイズ："
 
 #: src/muuli_wdr.cpp:767 src/muuli_wdr.cpp:2078
 msgid "Intelligent Corruption Handling"
-msgstr ""
+msgstr "知的損被処理"
 
 #: src/muuli_wdr.cpp:777
 msgid "Lost to corruption :"
-msgstr ""
+msgstr "損被に失われました："
 
 #: src/muuli_wdr.cpp:788
 msgid "Gained by compression :"
-msgstr ""
+msgstr "圧縮で得られる："
 
 #: src/muuli_wdr.cpp:799
 msgid "Packages saved by I.C.H. :"
-msgstr ""
+msgstr "I.C.H.に助かったパケット："
 
 #: src/muuli_wdr.cpp:819
 msgid "File Names"
-msgstr ""
+msgstr "ファイル名"
 
 #: src/muuli_wdr.cpp:833
 msgid "Takeover"
-msgstr ""
+msgstr "テークオーバーする"
 
 #: src/muuli_wdr.cpp:843
 msgid "Cleanup"
-msgstr ""
+msgstr "掃除する"
 
 #: src/muuli_wdr.cpp:857 src/muuli_wdr.cpp:934
 msgid "Apply"
-msgstr ""
+msgstr "応用する"
 
 #: src/muuli_wdr.cpp:862
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: src/muuli_wdr.cpp:891
 msgid "Comment/Rate file (Text will be visible to all users)"
-msgstr ""
+msgstr "コメントレート・ファイル（テキストは全ユーザは見ることが出来ます）"
 
 #: src/muuli_wdr.cpp:905
 msgid ""
 "For a film you can say its length, its story, language ...\n"
 "and if it's a fake, you can tell that to other users of aMule."
 msgstr ""
+"映画なら、長さ、課題、言語等を説明出来ます…\n"
+"万が一偽造なら、それもaMuleの他のユーザに伝えることが出来ます。"
 
 #: src/muuli_wdr.cpp:914
 msgid "File Quality"
-msgstr ""
+msgstr "ファイルの質"
 
 #: src/muuli_wdr.cpp:929
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
+msgstr "ファイル・レーティングを選択して、またはユーザに偽造の注意を伝えてください…"
 
 #: src/muuli_wdr.cpp:966
 msgid "No comment(s)"
-msgstr ""
+msgstr "コメント無"
 
 #: src/muuli_wdr.cpp:973
 msgid "Refresh"
-msgstr ""
+msgstr "リフレッシュする"
 
 #: src/muuli_wdr.cpp:1000
 msgid "Downloading, please wait ..."
-msgstr ""
+msgstr "ダウンロード中で、しばらくお待ちください…"
 
 #: src/muuli_wdr.cpp:1006
 msgid "Unknown size"
-msgstr ""
+msgstr "サイズが不明です"
 
 #: src/muuli_wdr.cpp:1030
 msgid "Required Information"
-msgstr ""
+msgstr "不可欠な情報"
 
 #: src/muuli_wdr.cpp:1035
 msgid "IP Address :"
-msgstr ""
+msgstr "IPアドレス："
 
 #: src/muuli_wdr.cpp:1041
 msgid "Port :"
-msgstr ""
+msgstr "ポート："
 
 #: src/muuli_wdr.cpp:1051
 msgid "Additional Information"
-msgstr ""
+msgstr "追加情報"
 
 #: src/muuli_wdr.cpp:1056
 msgid "Username :"
-msgstr ""
+msgstr "ユーザ名："
 
 #: src/muuli_wdr.cpp:1062
 msgid "Userhash :"
-msgstr ""
+msgstr "ユーザ・ハッシュ："
 
 #: src/muuli_wdr.cpp:1108
 msgid "Reload your shared files"
-msgstr ""
+msgstr "共通ファイルを再ロードする"
 
 #: src/muuli_wdr.cpp:1125
 msgid "Current Session"
-msgstr ""
+msgstr "現在のセッション"
 
 #: src/muuli_wdr.cpp:1132
 msgid "Total"
-msgstr ""
+msgstr "合計"
 
 #: src/muuli_wdr.cpp:1139 src/muuli_wdr.cpp:1150
 msgid "Requested :"
-msgstr ""
+msgstr "要求数："
 
 #: src/muuli_wdr.cpp:1159 src/muuli_wdr.cpp:1170
 msgid "Active Uploads :"
-msgstr ""
+msgstr "アクティブなアップロード数："
 
 #: src/muuli_wdr.cpp:1217
 msgid "Download-Speed"
-msgstr ""
+msgstr "ダウンロード速度："
 
 #: src/muuli_wdr.cpp:1235 src/muuli_wdr.cpp:1284 src/muuli_wdr.cpp:3214
 msgid "Current"
-msgstr ""
+msgstr "現在"
 
 #: src/muuli_wdr.cpp:1246 src/muuli_wdr.cpp:1295 src/muuli_wdr.cpp:3225
 msgid "Running average"
-msgstr ""
+msgstr "移動平均"
 
 #: src/muuli_wdr.cpp:1257 src/muuli_wdr.cpp:1306 src/muuli_wdr.cpp:3236
 msgid "Session average"
-msgstr ""
+msgstr "セッション平均"
 
 #: src/muuli_wdr.cpp:1266
 msgid "Upload-Speed"
-msgstr ""
+msgstr "アップロード速度"
 
 #: src/muuli_wdr.cpp:1315 src/muuli_wdr.cpp:1745
 msgid "Connections"
-msgstr ""
+msgstr "コネクション数"
 
 #: src/muuli_wdr.cpp:1333 src/muuli_wdr.cpp:2293
 msgid "Active downloads"
-msgstr ""
+msgstr "アクティブなダウンロード数"
 
 #: src/muuli_wdr.cpp:1344
 msgid "Active connections (1:1)"
-msgstr ""
+msgstr "アクティブなコネクション（1:1）"
 
 #: src/muuli_wdr.cpp:1355 src/muuli_wdr.cpp:2294
 msgid "Active uploads"
-msgstr ""
+msgstr "アクティブなアップロード数"
 
 #: src/muuli_wdr.cpp:1364 src/muuli_wdr.cpp:2310
 msgid "Statistics Tree"
-msgstr ""
+msgstr "統計木"
 
 #: src/muuli_wdr.cpp:1394 src/muuli_wdr.cpp:3684
 msgid "Username:"
-msgstr ""
+msgstr "ユーザ名："
 
 #: src/muuli_wdr.cpp:1397
 msgid "Userhash:"
-msgstr ""
+msgstr "ユーザ・ハッシュ："
 
 #: src/muuli_wdr.cpp:1420
 msgid "Client software:"
-msgstr ""
+msgstr "クライアント・ソフトウェア："
 
 #: src/muuli_wdr.cpp:1429
 msgid "Client version:"
-msgstr ""
+msgstr "クライアント・バージョン："
 
 #: src/muuli_wdr.cpp:1436
 msgid "IP address:"
-msgstr ""
+msgstr "IPアドレス："
 
 #: src/muuli_wdr.cpp:1445
 msgid "User ID:"
-msgstr ""
+msgstr "ユーザID："
 
 #: src/muuli_wdr.cpp:1452
 msgid "Server IP:"
-msgstr ""
+msgstr "サーバIP："
 
 #: src/muuli_wdr.cpp:1461
 msgid "Server name:"
-msgstr ""
+msgstr "サーバ名："
 
 #: src/muuli_wdr.cpp:1472
 msgid "Transfers to client"
-msgstr ""
+msgstr "クライアントへの転送数"
 
 #: src/muuli_wdr.cpp:1479
 msgid "Current request:"
-msgstr ""
+msgstr "現在の要求："
 
 #: src/muuli_wdr.cpp:1498
 msgid "Average upload rate:"
-msgstr ""
+msgstr "平均アップロード・レート："
 
 #: src/muuli_wdr.cpp:1507
 msgid "Average download rate:"
-msgstr ""
+msgstr "平均ダウンロード・レート："
 
 #: src/muuli_wdr.cpp:1514
 msgid "Uploaded (session):"
-msgstr ""
+msgstr "アップロードされた（セッション）："
 
 #: src/muuli_wdr.cpp:1523
 msgid "Downloaded (session):"
-msgstr ""
+msgstr "ダウンロードされた（セッション）："
 
 #: src/muuli_wdr.cpp:1530
 msgid "Uploaded (total):"
-msgstr ""
+msgstr "アップロードされた（合計）："
 
 #: src/muuli_wdr.cpp:1539
 msgid "Downloaded (total):"
-msgstr ""
+msgstr "ダウンロードされた（合計）："
 
 #: src/muuli_wdr.cpp:1550
 msgid "Scores"
-msgstr ""
+msgstr "スコア"
 
 #: src/muuli_wdr.cpp:1557
 msgid "DL/UP modifier:"
