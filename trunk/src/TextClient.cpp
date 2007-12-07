@@ -567,8 +567,8 @@ void CamulecmdApp::ShowResults(CResultMap results_map)
 		
 		output.Printf(wxT("%i.      "), id);		
 		output = output.SubString(0, nr_max).Append(file->sFileName).Append(' ', name_max);		
-		mb.Printf(_("     %d"), file->lFileSize/1024/1024);
-		kb.Printf(_(".%d"), file->lFileSize/1024%1024);
+		mb.Printf(wxT("     %d"), file->lFileSize/1024/1024);
+		kb.Printf(wxT(".%d"), file->lFileSize/1024%1024);
 		output = output.SubString(0, nr_max + name_max + mb_max - mb.Length() ).Append(mb).Append(kb);	
 		printf("%s     %ld\n",(const char*)unicode2char(output), file->lSourceCount );
  	}
@@ -901,8 +901,8 @@ void CamulecmdApp::OnInitCommandSet()
 	m_commands.AddCommand(wxT("Results"), CMD_ID_SEARCH_RESULTS, wxTRANSLATE("Shows the results of the last search."),
 			      wxTRANSLATE("Returns the results of the previous search.\n"), CMD_PARAM_NEVER);
 
-	m_commands.AddCommand(wxT("Progress"), CMD_ID_SEARCH_PROGRESS, wxTRANSLATE("Shows the process of a search."),
-			      wxTRANSLATE("Shows the process of a search..\n"), CMD_PARAM_NEVER);
+	m_commands.AddCommand(wxT("Progress"), CMD_ID_SEARCH_PROGRESS, wxTRANSLATE("Shows the progress of a search."),
+			      wxTRANSLATE("Shows the progress of a search.\n"), CMD_PARAM_NEVER);
 
 	m_commands.AddCommand(wxT("Download"), CMD_ID_DOWNLOAD, wxTRANSLATE("Start downloading a file"),
 			      wxTRANSLATE("The number of a file from the last search has to be given.\n"
