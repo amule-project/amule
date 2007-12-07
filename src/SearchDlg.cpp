@@ -525,7 +525,7 @@ void CSearchDlg::StartNewSearch()
 	wxString error = theApp->searchlist->StartNewSearch(&real_id, search_type, params);
 	if (!error.IsEmpty()) {
 		// Search failed / Remote in progress
-		wxMessageBox(error, _("Search warning."),
+		wxMessageBox(error, _("Search warning"),
 			wxOK | wxCENTRE | wxICON_INFORMATION, this);
 		FindWindow(IDC_STARTS)->Enable();
 		FindWindow(IDC_SDOWNLOAD)->Disable();
