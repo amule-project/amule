@@ -4318,14 +4318,13 @@ msgid ""
 "Please choose a folder to search for temporary downloads! (subfolders will "
 "be included)"
 msgstr ""
-"臨時ダウンロード目標のフォルダーを選択してください"
-"（サッブ・フォルダーは含まれます）"
+"臨時ダウンロード目標のフォルダーを選択してください（サッブ・フォルダーは含ま"
+"れます）"
 
 #: src/PartFileConvert.cpp:714
 msgid ""
 "Do you want the source files of succesfully imported downloads be deleted?"
-msgstr ""
-"成功にインポートしたダウンロードのソース・ファイルを消除しますか？"
+msgstr "成功にインポートしたダウンロードのソース・ファイルを消除しますか？"
 
 #: src/PartFileConvert.cpp:715
 msgid "Remove sources?"
@@ -4459,12 +4458,16 @@ msgstr "IPフィルター'ipfilter.dat'と'ipfilterstatic.dat'をロード中で
 #: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr "'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイル・フォーマットに出会いました。"
+msgstr ""
+"'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイル・フォーマッ"
+"トに出会いました。"
 
 #: src/IPFilter.cpp:324
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr "'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイルを開くことは出来ませんでした。"
+msgstr ""
+"'ipfilter.dat'ファイル'%s'のロードに失敗しました：不明なファイルを開くことは"
+"出来ませんでした。"
 
 #: src/IPFilter.cpp:329
 #, c-format
@@ -4497,7 +4500,8 @@ msgstr "コミット"
 msgid ""
 "Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
-"ここで、テキスト・コントロールにあるED2kリンクをダウンロード列に追加するのにクリックをしてください。"
+"ここで、テキスト・コントロールにあるED2kリンクをダウンロード列に追加するのに"
+"クリックをしてください。"
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4512,8 +4516,8 @@ msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
-"イベントはここで表示されます。イベントの全てのリストにはサーバ・タブに存在するログを"
-"参考してください。"
+"イベントはここで表示されます。イベントの全てのリストにはサーバ・タブに存在す"
+"るログを参考してください。"
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -4527,17 +4531,15 @@ msgstr "ユーザ：0"
 msgid ""
 "Users connected to the current server and an estimate of the total number of "
 "users."
-msgstr ""
-"現在接続中のサーバのユーザ数と合計ユーザ数の"
-"推測。"
+msgstr "現在接続中のサーバのユーザ数と合計ユーザ数の推測。"
 
 #: src/muuli_wdr.cpp:113
 msgid ""
 "Current average upload and download rates. If enabled the numbers in the "
 "braces signify the overhead from client communication."
 msgstr ""
-"現在のひえ金アップロードダウンロード・レート。有効であれば、ブレースに囲まれている"
-"数字はクライアント・コミュニケーションのオーバヘッドを意味します。"
+"現在のひえ金アップロードダウンロード・レート。有効であれば、ブレースに囲まれ"
+"ている数字はクライアント・コミュニケーションのオーバヘッドを意味します。"
 
 #: src/muuli_wdr.cpp:121
 msgid ""
@@ -4546,9 +4548,9 @@ msgid ""
 "low ID (firewalled) and green arrows signify that you have high ID (The "
 "optimal connection type)."
 msgstr ""
-"接続状態とアクティブ転送数を表示します。赤い矢印は現在接続しちないことを意味します。"
-"黄色の矢印はlow ID（ファイアウォールされている）を意味します。緑色の矢印はhigh ID"
-"（最善のコネクションの種類）を意味します。"
+"接続状態とアクティブ転送数を表示します。赤い矢印は現在接続しちないことを意味"
+"します。黄色の矢印はlow ID（ファイアウォールされている）を意味します。緑色の"
+"矢印はhigh ID（最善のコネクションの種類）を意味します。"
 
 #: src/muuli_wdr.cpp:125
 msgid "Not Connected ..."
@@ -4811,7 +4813,8 @@ msgstr "ファイルの質"
 
 #: src/muuli_wdr.cpp:929
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr "ファイル・レーティングを選択して、またはユーザに偽造の注意を伝えてください…"
+msgstr ""
+"ファイル・レーティングを選択して、またはユーザに偽造の注意を伝えてください…"
 
 #: src/muuli_wdr.cpp:966
 msgid "No comment(s)"
