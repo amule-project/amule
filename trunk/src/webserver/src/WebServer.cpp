@@ -1878,7 +1878,7 @@ void CScriptWebServer::ProcessURL(ThreadData Data)
 	Print(_("Processing request [redirected]: ") + filename + wxT("\n"));
 	
 	session->m_vars["auto_refresh"] = (const char *)unicode2char(
-		wxString::Format(_("%d"), webInterface->m_PageRefresh));
+		wxString::Format(wxT("%d"), webInterface->m_PageRefresh));
 	session->m_vars["content_type"] = "text/html";
 	
 	wxString req_file(wxFileName(m_wwwroot, filename).GetFullPath());

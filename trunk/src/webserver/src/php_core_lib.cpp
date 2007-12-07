@@ -342,7 +342,7 @@ void php_native_add_server_cmd(PHP_VALUE_NODE *)
 
 #ifndef PHP_STANDALONE_EN
 	CPhPLibContext::g_curr_context->WebServer()->Send_AddServer_Cmd(wxString(char2unicode(addr)),
-		wxString::Format(_("%d"), port), wxString(char2unicode(name)));
+		wxString::Format(wxT("%d"), port), wxString(char2unicode(name)));
 #else
 	printf("php_native_add_server_cmd: addr=%s port=%04d name=%s\n", addr, port, name);
 #endif
