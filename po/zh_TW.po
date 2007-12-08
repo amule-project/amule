@@ -1415,7 +1415,7 @@ msgstr "德語"
 
 #: src/Preferences.cpp:617
 msgid "Greek"
-msgstr ""
+msgstr "希臘語"
 
 #: src/Preferences.cpp:618
 msgid "Hungarian"
@@ -1431,7 +1431,7 @@ msgstr "意大利語 (瑞士)"
 
 #: src/Preferences.cpp:621
 msgid "Japanese"
-msgstr ""
+msgstr "日語"
 
 #: src/Preferences.cpp:622
 msgid "Korean"
@@ -3816,11 +3816,11 @@ msgstr "返回以前搜索的結果。\n"
 
 #: src/TextClient.cpp:904
 msgid "Shows the progress of a search."
-msgstr ""
+msgstr "顯示搜索進度。"
 
 #: src/TextClient.cpp:905
 msgid "Shows the progress of a search.\n"
-msgstr ""
+msgstr "顯示搜索進度。\n"
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
