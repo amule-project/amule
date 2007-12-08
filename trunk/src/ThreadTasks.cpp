@@ -250,7 +250,7 @@ void CAICHSyncTask::Entry()
 {
 	ConvertToKnown2ToKnown264();
 	
-	AddDebugLogLineM( false, logAICHThread, _("Syncronization thread started.") );
+	AddDebugLogLineM( false, logAICHThread, wxT("Syncronization thread started.") );
 	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
@@ -295,7 +295,7 @@ void CAICHSyncTask::Entry()
 		return;		
 	}
 	
-	AddDebugLogLineM( false, logAICHThread, _("Masterhashes of known files have been loaded.") );
+	AddDebugLogLineM( false, logAICHThread, wxT("Masterhashes of known files have been loaded.") );
 
 #ifndef AMULE_DAEMON
 	// Since we will be modifying objects in the main thread, 
