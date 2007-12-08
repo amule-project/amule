@@ -1414,7 +1414,7 @@ msgstr "德语"
 
 #: src/Preferences.cpp:617
 msgid "Greek"
-msgstr ""
+msgstr "希腊语"
 
 #: src/Preferences.cpp:618
 msgid "Hungarian"
@@ -1430,7 +1430,7 @@ msgstr "意大利语（瑞士）"
 
 #: src/Preferences.cpp:621
 msgid "Japanese"
-msgstr ""
+msgstr "日语"
 
 #: src/Preferences.cpp:622
 msgid "Korean"
@@ -3810,11 +3810,11 @@ msgstr "返回以前搜索的结果。\n"
 
 #: src/TextClient.cpp:904
 msgid "Shows the progress of a search."
-msgstr ""
+msgstr "显示搜索进度。"
 
 #: src/TextClient.cpp:905
 msgid "Shows the progress of a search.\n"
-msgstr ""
+msgstr "显示搜索进度。\n"
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -5988,19 +5988,19 @@ msgstr "正在连接的代理服务器类型"
 
 #: src/muuli_wdr.cpp:3656
 msgid "Proxy host:"
-msgstr "代理主机："
+msgstr "代理服务器："
 
 #: src/muuli_wdr.cpp:3660
 msgid "The proxy host name"
-msgstr "代理主机名"
+msgstr "代理服务器名称"
 
 #: src/muuli_wdr.cpp:3663
 msgid "Proxy port:"
-msgstr "代理服务器端口："
+msgstr "代理端口："
 
 #: src/muuli_wdr.cpp:3667
 msgid "The proxy port"
-msgstr "代理服务器端口"
+msgstr "代理端口"
 
 #: src/muuli_wdr.cpp:3674
 msgid "Authentication"
