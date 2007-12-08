@@ -225,7 +225,7 @@ void CServerWnd::UpdateKadInfo()
 				++next_row;
 				#ifdef __DEBUG__
 				if (theApp->clientlist->GetBuddy()) {
-					KadInfoList->InsertItem(next_row, _("Buddy address: "));
+					KadInfoList->InsertItem(next_row, wxT("Buddy address: "));
 					KadInfoList->SetItem(next_row, 1, Uint32_16toStringIP_Port(theApp->clientlist->GetBuddy()->GetIP(), theApp->clientlist->GetBuddy()->GetUDPPort()));
 					++next_row;		
 				}
