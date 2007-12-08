@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -546,11 +546,6 @@ msgstr ""
 
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
-msgstr ""
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
 msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:182
@@ -3399,16 +3394,6 @@ msgstr ""
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr ""
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr ""
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ""
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr ""
@@ -3741,11 +3726,11 @@ msgid "Returns the results of the previous search.\n"
 msgstr ""
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
+msgid "Shows the progress of a search."
 msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
+msgid "Shows the progress of a search.\n"
 msgstr ""
 
 #: src/TextClient.cpp:907
@@ -6323,12 +6308,8 @@ msgstr ""
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
-msgstr ""
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
 msgstr ""
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463

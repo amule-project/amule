@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -553,11 +553,6 @@ msgstr "Prašoma atsijungti\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Apdorojamas prašymas [persiųstas]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3504,16 +3499,6 @@ msgstr "Neteisinga maišos funkcija (turi būti 32 simbolių dydžio)\n"
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "Šiai komandai reikia kintamojo. Tinkami kintamieji: failo maiša.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Užduotis įvykdyta sėkmingai."
@@ -3886,12 +3871,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Pateikti ankstesnės paieškos rezultatus.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Rodyti paieškos proceso indikatorių."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Rodyti paieškos proceso indikatorių.\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6590,13 +6575,9 @@ msgstr ""
 "Apatinė dydžio riba turi būti mažesnė už viršutinę dydžio ribą. Įvestos "
 "viršutinės ribos nebus paisoma."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Dėmesio"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Dėmesio."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7148,6 +7129,24 @@ msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti skaitymui!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti rašymui!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Rodyti paieškos proceso indikatorių."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Rodyti paieškos proceso indikatorių.\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Dėmesio."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Kliento identifikavimas:"

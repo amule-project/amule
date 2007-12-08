@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-11-01 16:47+0100\n"
 "Last-Translator: Youpla <youpla@youpla.com>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -566,11 +566,6 @@ msgstr "Déconnexion demandée\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Requête en cours [redirigée] :"
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3560,16 +3555,6 @@ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Cette commande requiert un argument. Arguments valides: hash d'un fichier.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "·····%d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "L'opération s'est déroulée avec succès."
@@ -3948,12 +3933,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Retourne les résultats de la recherche précédente.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Montre la progression d'une recherche."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Montre la progression d'une recherche..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6690,12 +6675,8 @@ msgstr ""
 "La taille minimum doit être inférieur à la taille maximum. Taille maximum "
 "ignorée."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
-msgstr "Avertissement dans la recherche"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
 msgstr "Avertissement dans la recherche"
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
@@ -7263,6 +7244,24 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
 "l'écriture!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "·····%d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Montre la progression d'une recherche."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Montre la progression d'une recherche..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Avertissement dans la recherche"
 
 #~ msgid "Client Identification:"
 #~ msgstr "Identification client :"

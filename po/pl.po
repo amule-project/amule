@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-09-12 15:40+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -554,11 +554,6 @@ msgstr "Zażądano wylogowania\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Przetwarzam żądanie (przekierowane): "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3504,16 +3499,6 @@ msgstr "Nieprawidłowy skrót (długość powinna wynosić dokładnie 32 znaki)\
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "Ta komenda wymaga argumentu. Poprawne argumenty: skrót pliku.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Operacja zakończona pomyślnie."
@@ -3869,12 +3854,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Zwraca wyniki poprzedniego wyszukiwania.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Pokazuje przebieg wyszukiwania."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Pokazuje przebieg wyszukiwania.\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6568,13 +6553,9 @@ msgstr "Niedostępne"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min. rozmiar musi być mniejszy od maks. Zignorowano maks. rozmiar."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Ostrzeżenie wyszukiwania"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Ostrzeżenie wyszukiwania."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7125,6 +7106,24 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Nie udało się otworzyć pliku listy znajomych 'emfriends.met' do zapisu!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Pokazuje przebieg wyszukiwania."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Pokazuje przebieg wyszukiwania.\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Ostrzeżenie wyszukiwania."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Identyfikacja klienta:"

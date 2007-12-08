@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-12-02 13:02+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -553,11 +553,6 @@ msgstr "Nõuti väljalogimist\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Töötlen päringut [ümbersuunatud]:"
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3484,16 +3479,6 @@ msgstr "Pole kehtiv kontrollsumma (pikkus peab olema täpselt 32 märki)\n"
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "See käsk vajab argumenti. Kehtivad argumendid on: faili räasi.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Operatsioon oli edukas."
@@ -3863,12 +3848,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Tagastab eelmise otsingu tulemuse.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Näitab otsingu edenemist."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Näitab otsingu edenemist..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6557,13 +6542,9 @@ msgstr "Info Puudub"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min suurus peab olema väiksem kui max suurus. Ignoreerin Max suurust."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Otsingu hoiatus"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Otsingu hoiatus."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7119,3 +7100,21 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Näitab otsingu edenemist."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Näitab otsingu edenemist..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Otsingu hoiatus."

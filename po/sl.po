@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -554,11 +554,6 @@ msgstr "Zahtevana odjava\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Obdelovanje zahteve [preusmerjeno]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3504,16 +3499,6 @@ msgstr "Ni veljaven hash (dolžina mora biti točno 32 znakov)\n"
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: hash datoteke.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Operacija je bila uspešna."
@@ -3883,12 +3868,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Vrne rezultate prejšnjega iskanja.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Prikaže postopek iskanja."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Prikaže postopek iskanja..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6595,13 +6580,9 @@ msgstr ""
 "Min. velikost mora biti manjša kot maks. velikost. Maks. velikost ni "
 "upoštevana."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Opozorilo iskanja"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Opozorilo iskanja."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7156,6 +7137,24 @@ msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Prikaže postopek iskanja."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Prikaže postopek iskanja..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Opozorilo iskanja."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Identifikacija odjemalca:"

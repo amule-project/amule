@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -550,11 +550,6 @@ msgstr "Utlogging etterspurt\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Handsamar etterspurnad [omdirigert]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3483,16 +3478,6 @@ msgstr "Ikkje gangbar hash (lengde må vere nøyaktig 32 teikn)\n"
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "Denne kommandoen treng eit argument. Gangbare argument: ein filhash.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "·····%d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Operasjonen var vellukka"
@@ -3863,12 +3848,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Returnerer resultata frå det tidlegare søket.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Syne søkjeprosessen."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Syner søkjeprosessen..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6557,13 +6542,9 @@ msgstr "Ikkje tilgjengeleg"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min storleik må vere mindre enn maks storleik. Maks storleik ignorert."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Søkeåtvaring"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Søkeåtvaring."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7111,6 +7092,24 @@ msgstr "Klarte ikkje å lese kameratlistefila 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Klarte·ikkje·å·skrive til·kameratlistefila·'emfriends.met'!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "·····%d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Syne søkjeprosessen."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Syner søkjeprosessen..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Søkeåtvaring."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Klientidentifikasjon:"

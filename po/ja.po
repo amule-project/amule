@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -551,11 +551,6 @@ msgstr "ログアウトが要求されました\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "要求を処理中です [変更しました]： "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3502,16 +3497,6 @@ msgstr "正当なハッシュではありません（長さは丁度32半角文�
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr ""
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "オペレーションは成功に終了しました。"
@@ -3885,12 +3870,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "以前の検索の結果を回答します。\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "検索の進歩状態を表示します。"
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "検索の進歩状態を表示します…\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6510,12 +6495,8 @@ msgstr ""
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
-msgstr ""
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
 msgstr ""
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
@@ -7021,6 +7002,21 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "検索の進歩状態を表示します。"
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "検索の進歩状態を表示します…\n"
 
 #~ msgid ""
 #~ "This command requires an argument. Valid arguments: 'all' or a number.\n"

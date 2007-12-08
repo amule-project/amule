@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-11-25 22:38+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -550,11 +550,6 @@ msgstr "Uloskirjautumista pyydetty\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3496,16 +3491,6 @@ msgstr "Tarkiste ei ole kelvollinen (pituuden on oltava tasan 32 merkkiä)\n"
 msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr "Tämä komento vaatii parametrin. Käypiä ovat: tiedostotarkiste.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Toiminto onnistui."
@@ -3875,12 +3860,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Näyttää edellisen haun tulokset.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Näyttää haun edistymisen."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Näyttää haun edistymisen..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6591,13 +6576,9 @@ msgstr ""
 "Vähimmäiskoon pitää olla pienempi kuin enimmäiskoon. Enimmäiskokoa ei "
 "huomioida."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Hakuvaroitus"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Hakuvaroitus."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7145,6 +7126,24 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Näyttää haun edistymisen."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Näyttää haun edistymisen..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Hakuvaroitus."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Asiakkaan tunnistus:"

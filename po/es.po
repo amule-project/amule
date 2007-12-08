@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: [aMule]es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-12-02 17:47+0100\n"
 "Last-Translator: mad_soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -564,11 +564,6 @@ msgstr "Desconexión solicitada\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]:"
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3509,16 +3504,6 @@ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Este comando requiere un argumento. Argumentos válidos: un hash de archivo.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Operación satisfactoria."
@@ -3894,12 +3879,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Devuelve los resultados de la búsqueda anterior.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Muestra el proceso de una búsqueda."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Muestra el proceso de una búsqueda..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6613,13 +6598,9 @@ msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "El tamaño mínimo debe ser menor al tamaño máximo. Tamaño máximo ignorado."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Alerta de búsqueda"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Alerta de búsqueda."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7174,3 +7155,21 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "¡Error al abrir el archivo lista de amigos 'emfriends.met' para la escritura!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Muestra el proceso de una búsqueda."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Muestra el proceso de una búsqueda..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Alerta de búsqueda."
