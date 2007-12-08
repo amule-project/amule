@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-10-16 00:19+0200\n"
 "Last-Translator: Oliver Heesakkers <dev2@heesakkers.info>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -555,11 +555,6 @@ msgstr "Loguit aangevraagd\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Aanvraag wordt verwerkt [omgeleid]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3508,16 +3503,6 @@ msgstr ""
 "Dit commando heeft een argument nodig. Geldige argumenten: een "
 "bestandshash.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "Bewerking was succesvol."
@@ -3892,12 +3877,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Levert de resultaten van de vorige zoekopdracht op.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Toont de voortgang van een zoekopdracht."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Toont de voortgang van een zoekopdracht..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6607,13 +6592,9 @@ msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "Min grootte moet kleiner zijn dan max grootte. Max grootte wordt genegeerd."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Zoekwaarschuwing"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Zoekwaarschuwing."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7166,6 +7147,24 @@ msgstr "Kon vriendenlijst bestand 'emfriends.met' niet lezen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst bestand 'emfriends.met'!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Toont de voortgang van een zoekopdracht."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Toont de voortgang van een zoekopdracht..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Zoekwaarschuwing."
 
 #~ msgid "Sources Dropping"
 #~ msgstr "Bronnen Laten Vallen"

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-01 02:30+0000\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-11-27 23:42+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -562,11 +562,6 @@ msgstr "Eixida sol·licitada\n"
 #: src/webserver/src/WebServer.cpp:1878
 msgid "Processing request [redirected]: "
 msgstr "Processant la petició [redirigit]: "
-
-#: src/webserver/src/WebServer.cpp:1881 src/webserver/src/php_core_lib.cpp:345
-#, c-format
-msgid "%d"
-msgstr "%d"
 
 #: src/webserver/src/WebInterface.cpp:182
 msgid "Loads template <str>"
@@ -3530,16 +3525,6 @@ msgstr ""
 "Aquesta ordre requereix un argument. Arguments vàlids: una clau (hash) de "
 "fitxer.\n"
 
-#: src/TextClient.cpp:570
-#, c-format
-msgid "     %d"
-msgstr "     %d"
-
-#: src/TextClient.cpp:571
-#, c-format
-msgid ".%d"
-msgstr ".%d"
-
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
 msgstr "La operació ha finalitzat amb èxit."
@@ -3917,12 +3902,12 @@ msgid "Returns the results of the previous search.\n"
 msgstr "Retorna els resultats de la cerca anterior.\n"
 
 #: src/TextClient.cpp:904
-msgid "Shows the process of a search."
-msgstr "Mostra el procés d'una cerca."
+msgid "Shows the progress of a search."
+msgstr ""
 
 #: src/TextClient.cpp:905
-msgid "Shows the process of a search..\n"
-msgstr "Mostra el procés d'una cerca..\n"
+msgid "Shows the progress of a search.\n"
+msgstr ""
 
 #: src/TextClient.cpp:907
 msgid "Start downloading a file"
@@ -6642,13 +6627,9 @@ msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "La mida mínima ha de ser menor que la màxima. S'ignorarà la mida màxima."
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:469 src/SearchDlg.cpp:528
 msgid "Search warning"
 msgstr "Avís de cerca"
-
-#: src/SearchDlg.cpp:528
-msgid "Search warning."
-msgstr "Avís de cerca."
 
 #: src/MuleTrayIcon.cpp:119 src/MuleTrayIcon.cpp:140 src/MuleTrayIcon.cpp:463
 #: src/MuleTrayIcon.cpp:484
@@ -7212,6 +7193,24 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "No s'ha pogut obrir per a escriure el fitxer de la llista d'amics 'emfriends."
 "met'!"
+
+#~ msgid "%d"
+#~ msgstr "%d"
+
+#~ msgid "     %d"
+#~ msgstr "     %d"
+
+#~ msgid ".%d"
+#~ msgstr ".%d"
+
+#~ msgid "Shows the process of a search."
+#~ msgstr "Mostra el procés d'una cerca."
+
+#~ msgid "Shows the process of a search..\n"
+#~ msgstr "Mostra el procés d'una cerca..\n"
+
+#~ msgid "Search warning."
+#~ msgstr "Avís de cerca."
 
 #~ msgid "Client Identification:"
 #~ msgstr "Identificació del client:"
