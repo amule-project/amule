@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-08 16:06+0100\n"
+"POT-Creation-Date: 2007-12-08 02:30+0000\n"
 "PO-Revision-Date: 2007-12-08 15:56+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -101,6 +101,15 @@ msgstr ""
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr ""
+
+#: src/ThreadTasks.cpp:253
+msgid "Syncronization thread started."
+msgstr "Szinkronizációs szál elindítva."
+
+#: src/ThreadTasks.cpp:298
+#, fuzzy
+msgid "Masterhashes of known files have been loaded."
+msgstr "AICH szál: Mester hash-ek az ismert fájlokhoz betöltve."
 
 #: src/ThreadTasks.cpp:362
 #, c-format
@@ -450,6 +459,27 @@ msgstr ""
 #, c-format
 msgid "Read %u Kad contacts"
 msgstr "%u Kad kapcsolat beolvasva"
+
+#: src/kademlia/routing/RoutingZone.cpp:153
+#, fuzzy
+msgid "Error while reading Kad contacts - 0 entries"
+msgstr "IO hiba a known.met fájl olvasása közben: %s"
+
+#: src/kademlia/routing/RoutingZone.cpp:366
+msgid "Merge attempt"
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:369
+msgid "Recursive merge"
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:408
+msgid "Sucessful merge!"
+msgstr ""
+
+#: src/kademlia/routing/RoutingZone.cpp:414
+msgid "No merge possible"
+msgstr ""
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -2373,6 +2403,11 @@ msgstr "Pajtáshoz kapcsolódva"
 #: src/ServerWnd.cpp:224
 msgid "No buddy"
 msgstr "Nincs pajtás"
+
+#: src/ServerWnd.cpp:228
+#, fuzzy
+msgid "Buddy address: "
+msgstr "IP-cím:"
 
 #: src/ServerWnd.cpp:234
 msgid "Average Users:"
@@ -6997,21 +7032,6 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Barátok listáját tartalmazó 'emfriends.met' fájl íráshoz történő megnyitása "
 "sikertelen!"
-
-#~ msgid "Syncronization thread started."
-#~ msgstr "Szinkronizációs szál elindítva."
-
-#, fuzzy
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "AICH szál: Mester hash-ek az ismert fájlokhoz betöltve."
-
-#, fuzzy
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "IO hiba a known.met fájl olvasása közben: %s"
-
-#, fuzzy
-#~ msgid "Buddy address: "
-#~ msgstr "IP-cím:"
 
 #~ msgid "Client Identification:"
 #~ msgstr "Kliens azonosítás:"
