@@ -1163,7 +1163,7 @@ wxString GetConfigDir()
 		CheckFileExists( JoinPaths(ConfigDir,wxT("amule.conf")) )
 		)
 	{
-		AddLogLineM(false, wxT("Using configDir: %s\n") + ConfigDir);
+		AddLogLineM(true, wxT("Using configDir: %s\n") + ConfigDir);
 		return ConfigDir + wxFileName::GetPathSeparator();
 	}
 #endif
