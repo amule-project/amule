@@ -175,7 +175,8 @@ bool		CPreferences::s_IPFilterClients;
 bool		CPreferences::s_IPFilterServers;
 bool		CPreferences::s_UseSrcSeeds;
 bool		CPreferences::s_ProgBar;
-bool		CPreferences::s_Percent;	
+bool		CPreferences::s_Percent;
+bool           CPreferences::s_SecIdent;
 bool		CPreferences::s_ExtractMetaData;
 bool		CPreferences::s_AllocFullPart;
 bool		CPreferences::s_AllocFullChunk;
@@ -1080,6 +1081,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Security
 	 **/
 	NewCfgItem(IDC_SEESHARES,	(MkCfg_Int( wxT("/eMule/SeeShare"),	s_iSeeShares, 2 )));
+	NewCfgItem(IDC_SECIDENT,        (new Cfg_Bool( wxT("/ExternalConnect/UseSecIdent"), s_SecIdent, true )));
 	NewCfgItem(IDC_IPFCLIENTS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterClients"), s_IPFilterClients, true )));
 	NewCfgItem(IDC_IPFSERVERS,	(new Cfg_Bool( wxT("/ExternalConnect/IpFilterServers"), s_IPFilterServers, true )));
 	NewCfgItem(IDC_FILTERLAN,		(new Cfg_Bool( wxT("/eMule/FilterLanIPs"), s_filterLanIP, true )));
@@ -1087,7 +1089,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_AUTOIPFILTER,	(new Cfg_Bool( wxT("/eMule/IPFilterAutoLoad"), s_IPFilterAutoLoad, true )));
 	NewCfgItem(IDC_IPFILTERURL,	(new Cfg_Str(  wxT("/eMule/IPFilterURL"), s_IPFilterURL, wxEmptyString )));
 	NewCfgItem(ID_IPFILTERLEVEL,	(MkCfg_Int( wxT("/eMule/FilterLevel"), s_filterlevel, 127 )));
-	NewCfgItem(IDC_IPFILTERSYS,	(new Cfg_Bool( wxT("/eMule/IPFilterSystem"), s_IPFilterSys, true )));
+	NewCfgItem(IDC_IPFILTERSYS,	(new Cfg_Bool( wxT("/eMule/IPFilterSystem"), s_IPFilterSys, false )));
 		
 	/** 
 	 * Message Filter 

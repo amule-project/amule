@@ -346,6 +346,9 @@ FILE *yyin = (FILE *) 0, *yyout = (FILE *) 0;
 typedef int yy_state_type;
 
 extern int yylineno;
+
+int yylineno = 1;
+
 extern char *yytext;
 #define yytext_ptr yytext
 
@@ -577,7 +580,7 @@ static void FatalLexError(yyconst char msg[]);
 static char* _pszLexBuff;
 static char* _pszLexStr;
 
-#line 581 "Scanner.cpp"
+#line 584 "Scanner.cpp"
 
 #define INITIAL 0
 
@@ -733,7 +736,7 @@ YY_DECL
 #line 36 "./Scanner.l"
 
 
-#line 737 "Scanner.cpp"
+#line 740 "Scanner.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -967,7 +970,7 @@ YY_RULE_SETUP
 #line 156 "./Scanner.l"
 ECHO;
 	YY_BREAK
-#line 971 "Scanner.cpp"
+#line 974 "Scanner.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1777,6 +1780,15 @@ static void yy_fatal_error (yyconst char* msg )
 
 /* Accessor  methods (get/set functions) to struct members. */
 
+/** Get the current line number.
+ * 
+ */
+int yyget_lineno  (void)
+{
+        
+    return yylineno;
+}
+
 /** Get the input stream.
  * 
  */
@@ -1808,6 +1820,16 @@ int yyget_leng  (void)
 char *yyget_text  (void)
 {
         return yytext;
+}
+
+/** Set the current line number.
+ * @param line_number
+ * 
+ */
+void yyset_lineno (int  line_number )
+{
+    
+    yylineno = line_number;
 }
 
 /** Set the input stream. This does not discard the current

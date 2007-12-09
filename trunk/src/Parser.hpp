@@ -63,7 +63,7 @@ typedef union YYSTYPE
 	wxString*		pstr;
 	CSearchExpr*	pexpr;
 }
-/* Line 1529 of yacc.c.  */
+/* Line 1489 of yacc.c.  */
 #line 68 "Parser.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
