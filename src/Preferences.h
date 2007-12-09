@@ -426,10 +426,13 @@ public:
 	static void		SetIPFilterSystem(bool val)	{ s_IPFilterSys = val; }
 
 	// Source seeds On/Off
-	static bool		GetSrcSeedsOn() 		{ return s_UseSrcSeeds; }
+	static bool		GetSrcSeedsOn() 			{ return s_UseSrcSeeds; }
 	static void		SetSrcSeedsOn(bool val)		{ s_UseSrcSeeds = val; }
-	
-	static bool		GetExtractMetaData()		{ return s_ExtractMetaData; }
+
+	static bool		IsSecureIdentEnabled()			{ return s_SecIdent; }
+	static void		SetSecureIdentEnabled(bool val)	{ s_SecIdent = val; }
+
+	static bool		GetExtractMetaData()			{ return s_ExtractMetaData; }
 	static void		SetExtractMetaData(bool val)	{ s_ExtractMetaData = val; }
 	
 	static bool		ShowProgBar()			{ return s_ProgBar; }
@@ -704,7 +707,9 @@ protected:
 	
 	static bool	s_ProgBar;
 	static bool	s_Percent;	
-	
+
+	static bool s_SecIdent;
+
 	static bool	s_ExtractMetaData;
 	
 	static bool	s_AllocFullPart;
