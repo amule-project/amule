@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -3452,8 +3452,8 @@ msgstr "Neveljaven format IP. Uporabite xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
-msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: 'all' ali število.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
+msgstr ""
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3464,8 +3464,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Ni veljaven hash (dolžina mora biti točno 32 znakov)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: hash datoteke.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3925,113 +3925,17 @@ msgstr "Prikaži seznam strežnikov."
 msgid "Reset log."
 msgstr "Ponastavi dnevnik."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Zastarel ukaz, uporabite 'Status'."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Status'.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Zastarel ukaz, uporabite 'Set IPFilter'."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Set IPFilter'.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Zastarel ukaz, uporabite 'Get IPFilter Level'."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Get IPFilter Level'.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Zastarel ukaz, uporabite 'Set IPFilter Level'."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Set IPFilter Level'.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Zastarel ukaz, uporabite 'Get/Set IPFilter Level'."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Get/Set IPFilter Level'.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Zastarel ukaz, uporabite 'Show Servers'."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Show Servers'.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Zastarel ukaz, uporabite 'Get BwLimits'."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Get BwLimits'.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Zastarel ukaz, uporabite'Set BwLimit Up'."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Set BwLimit Up'.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Zastarel ukaz, uporabite 'Set BwLimit Down'."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
-"Namesto njega uporabite 'Set BwLimit Down'.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7115,6 +7019,104 @@ msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Ta ukaz potrebuje argument. Veljavni argumenti: 'all' ali število.\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr "Ta ukaz potrebuje argument. Veljavni argumenti: hash datoteke.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Zastarel ukaz, uporabite 'Status'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Status'.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Zastarel ukaz, uporabite 'Set IPFilter'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Set IPFilter'.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Zastarel ukaz, uporabite 'Get IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Get IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Zastarel ukaz, uporabite 'Set IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Set IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Zastarel ukaz, uporabite 'Get/Set IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Get/Set IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Zastarel ukaz, uporabite 'Show Servers'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Show Servers'.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Zastarel ukaz, uporabite 'Get BwLimits'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Get BwLimits'.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Zastarel ukaz, uporabite'Set BwLimit Up'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Set BwLimit Up'.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Zastarel ukaz, uporabite 'Set BwLimit Down'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Ta ukaz je zastarel in bo v prihodnosti odstranjen.\n"
+#~ "Namesto njega uporabite 'Set BwLimit Down'.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Zagon sinhronizacijske niti."

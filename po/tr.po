@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-12-08 23:51+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -3435,10 +3435,8 @@ msgstr "Geçersiz IP biçimi. xxx.xxx.xxx.xxx:xxxx kullanınız.\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"Bu komut bir argümana gereksinim duyar. Geçerli argümanlar: 'all' veya bir "
-"sayı.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3449,9 +3447,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Geçerli bir adresleme değil (uzunluğu tam olarak 32 karakter olmalı)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
-"Komut bir argüman gerektiriyor.Geçerli argümanlar: bir dosya adreslemesi.\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3911,113 +3908,17 @@ msgstr "Sunucu listesini göster."
 msgid "Reset log."
 msgstr "Kaydı (Log) Sıfırla."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Uygun olmayan komut, şimdi'Durum'."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Bunun yerine 'Durum' kullanın.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Uygun olmayan komut, şimdi 'IPSüzgecini' ayarla."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Bunun yerine IPSÜzgeci ayarla kullanın.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Al."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'IP Süzgeci Seviyesini Al'kullanın.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'IP Süzgeci Seviyesini Ayarala' kullanın.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla/Al."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'IP Süzgeci Seviyesini Ayarala/Al' kullanın.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Uygun olmayan komut, şimdi 'Sunucuları Göster'."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'Sunucuları Göster' kullanın.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Uygun olmayan komut, şimdi 'Bağlantı Sınırlarını Al'."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'Bağlantı Sınırlarını Al' kullanın.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Yukarı Çek'."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'Bğ.Sınırını Yukarı Çek' kullanın.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Aşağı Çek'."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-"Yerine, 'Bğ.Sınırını Aşağı Çek' kullanın.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7090,6 +6991,107 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Bu komut bir argümana gereksinim duyar. Geçerli argümanlar: 'all' veya "
+#~ "bir sayı.\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr ""
+#~ "Komut bir argüman gerektiriyor.Geçerli argümanlar: bir dosya "
+#~ "adreslemesi.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Uygun olmayan komut, şimdi'Durum'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Bunun yerine 'Durum' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Uygun olmayan komut, şimdi 'IPSüzgecini' ayarla."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Bunun yerine IPSÜzgeci ayarla kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Al."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'IP Süzgeci Seviyesini Al'kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'IP Süzgeci Seviyesini Ayarala' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla/Al."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'IP Süzgeci Seviyesini Ayarala/Al' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Uygun olmayan komut, şimdi 'Sunucuları Göster'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'Sunucuları Göster' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Uygun olmayan komut, şimdi 'Bağlantı Sınırlarını Al'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'Bağlantı Sınırlarını Al' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Yukarı Çek'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'Bğ.Sınırını Yukarı Çek' kullanın.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Aşağı Çek'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
+#~ "Yerine, 'Bğ.Sınırını Aşağı Çek' kullanın.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Senkronizasyon işlemi başladı."

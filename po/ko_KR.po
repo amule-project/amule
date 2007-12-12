@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -3424,8 +3424,8 @@ msgstr "유효하지 않은 IP 형식. xxx.xxx.xxx.xxx:xxxx를 사용하세요.\
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
-msgstr "이 명령은 인수를 필요로합니다. 유효한 인수: 'all' 또는 숫자\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
+msgstr ""
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3436,8 +3436,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "유효한 해시가 아님 (길이는 정확히 32자여야 함)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "이 명령은 인수를 필요로 합니다. 올바른 인수들: 파일 해시.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3888,113 +3888,17 @@ msgstr "서버 목록 보여줍니다."
 msgid "Reset log."
 msgstr "로그를 초기화합니다."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "권장되지 않는 명령어, 지금 'Status'를 쓰세요."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
-"대신에 'Status'를 사용하세요.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "권장되지 않는 명령어, 지금 'Set IPFilter'를 쓰세요."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
-"대신에 'Set IPFilter'를 사용하세요.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "권장되지 않는 명령어, 지금 'Get IPFilter Level'을 쓰세요."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Get IPFilter Level'을 사용하세요.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "권장되지 않는 명령어, 지금 'Set IPFilter Level'을 쓰세요."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Set IPFilter Level'을 사용하세요.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "권장되지 않는 명령어, 지금 'Get/Set IPFilter Level'을 쓰세요."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Get/Set IPFilter Level'을 사용하세요.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "권장되지 않는 명령어, 지금 'Show Severs'를 쓰세요."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Show Servers'를 사용하세요.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "권장되지 않는 명령어, 지금 'Get BwLimits'를 쓰세요."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Get BwLimits'를 사용하세요.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Up'을 쓰세요."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Set BwLimit Up'을 사용하세요.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Down'을 쓰세요."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
-"대신에 'Set BwLimit Down'을 사용하세요.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7032,6 +6936,103 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr "이 명령은 인수를 필요로합니다. 유효한 인수: 'all' 또는 숫자\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr "이 명령은 인수를 필요로 합니다. 올바른 인수들: 파일 해시.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Status'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
+#~ "대신에 'Status'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set IPFilter'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만간 제거될것입니다.\n"
+#~ "대신에 'Set IPFilter'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get/Set IPFilter Level'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get/Set IPFilter Level'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Show Severs'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Show Servers'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Get BwLimits'를 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Get BwLimits'를 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Up'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set BwLimit Up'을 사용하세요.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "권장되지 않는 명령어, 지금 'Set BwLimit Down'을 쓰세요."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "권장되지 않는 명령어이고, 조만만 제거될것입니다.\n"
+#~ "대신에 'Set BwLimit Down'을 사용하세요.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "동기화 스레드가 시작되었습니다."
