@@ -299,7 +299,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_CANCEL:
 		case CMD_ID_RESUME:
 			if ( args.IsEmpty() ) {
-				Show(_("This command requieres an argument. Valid arguments: 'all' or a number.\n"));
+				Show(_("This command requires an argument. Valid arguments: 'all' or a number.\n"));
 				return 0;
 			} else if ( args.Left(3) == wxT("all") ) {
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
@@ -355,7 +355,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_PRIORITY_HIGH:
 		case CMD_ID_PRIORITY_AUTO:
 			if ( args.IsEmpty() ) {
-				Show(_("This command requieres an argument. Valid arguments: a file hash.\n"));
+				Show(_("This command requires an argument. Valid arguments: a file hash.\n"));
 				return 0;
 			} else {
 				CMD4Hash hash;
@@ -943,41 +943,20 @@ void CamulecmdApp::OnInitCommandSet()
 	// Deprecated commands, kept for backwards compatibility only.
 	//
 
-	m_commands.AddCommand(wxT("Stats"), CMD_ID_STATUS | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Status'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Status' instead.\n"), CMD_PARAM_NEVER);
+#define DEPRECATED(OLDCMD, ID, NEWCMD, PARAM) \
+	m_commands.AddCommand(wxT(OLDCMD), CMD_ID_##ID | CMD_DEPRECATED, CFormat(wxTRANSLATE("Deprecated command, now '%s'.")) % wxT(NEWCMD), \
+			      CFormat(wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n" \
+					  "Use '%s' instead.\n")) % wxT(NEWCMD), CMD_PARAM_##PARAM)
 
-	m_commands.AddCommand(wxT("SetIPFilter"), CMD_ID_SET_IPFILTER | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Set IPFilter'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Set IPFilter' instead.\n"), CMD_PARAM_OPTIONAL);
-
-	m_commands.AddCommand(wxT("GetIPLevel"), CMD_ID_GET_IPFILTER_LEVEL | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Get IPFilter Level'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Get IPFilter Level' instead.\n"), CMD_PARAM_NEVER);
-
-	m_commands.AddCommand(wxT("SetIPLevel"), CMD_ID_SET_IPFILTER_LEVEL | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Set IPFilter Level'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Set IPFilter Level' instead.\n"), CMD_PARAM_ALWAYS);
-
-	m_commands.AddCommand(wxT("IPLevel"), CMD_ID_SET_IPFILTER_LEVEL | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Get/Set IPFilter Level'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Get/Set IPFilter Level' instead.\n"), CMD_PARAM_OPTIONAL);
-
-	m_commands.AddCommand(wxT("Servers"), CMD_ID_SHOW_SERVERS | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Show Servers'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Show Servers' instead.\n"), CMD_PARAM_NEVER);
-
-	m_commands.AddCommand(wxT("GetBWLimits"), CMD_ID_GET_BWLIMITS | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Get BwLimits'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Get BwLimits' instead.\n"), CMD_PARAM_NEVER);
-
-	m_commands.AddCommand(wxT("SetUpBWLimit"), CMD_ID_SET_BWLIMIT_UP | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Set BwLimit Up'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Set BwLimit Up' instead.\n"), CMD_PARAM_ALWAYS);
-
-	m_commands.AddCommand(wxT("SetDownBWLimit"), CMD_ID_SET_BWLIMIT_DOWN | CMD_DEPRECATED, wxTRANSLATE("Deprecated command, now 'Set BwLimit Down'."),
-			      wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n"
-					  "Use 'Set BwLimit Down' instead.\n"), CMD_PARAM_ALWAYS);
+	DEPRECATED("Stats", STATUS, "Status", NEVER);
+	DEPRECATED("SetIPFilter", SET_IPFILTER, "Set IPFilter", OPTIONAL);
+	DEPRECATED("GetIPLevel", GET_IPFILTER_LEVEL, "Get IPFilter Level", NEVER);
+	DEPRECATED("SetIPLevel", SET_IPFILTER_LEVEL, "Set IPFilter Level", ALWAYS);
+	DEPRECATED("IPLevel", SET_IPFILTER_LEVEL, "Get/Set IPFilter Level", OPTIONAL);
+	DEPRECATED("Servers", SHOW_SERVERS, "Show Servers", NEVER);
+	DEPRECATED("GetBWLimits", GET_BWLIMITS, "Get BwLimits", NEVER);
+	DEPRECATED("SetUpBWLimit", SET_BWLIMIT_UP, "Set BwLimit Up", ALWAYS);
+	DEPRECATED("SetDownBWLimit", SET_BWLIMIT_DOWN, "Set BwLimit Down", ALWAYS);
 }
 
 int CamulecmdApp::OnRun()
