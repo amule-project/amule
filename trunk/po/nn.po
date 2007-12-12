@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -3429,10 +3429,8 @@ msgstr "Ugangbart IP-format. Bruk xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"Denne kommandoen treng eit argument. Gangbare argument: 'all' eller eit "
-"tal.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3443,8 +3441,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Ikkje gangbar hash (lengde må vere nøyaktig 32 teikn)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "Denne kommandoen treng eit argument. Gangbare argument: ein filhash.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3902,113 +3900,17 @@ msgstr "Syne tenarlister."
 msgid "Reset log."
 msgstr "Nullstill logg"
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Frårådd kommando, no 'Status'."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
-"Bruk 'Status'·i staden.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Frårådd kommando, no 'Set·IPFilter'."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
-"Bruk 'Set·IPFilter'·i staden.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Frårådd kommando, no 'Get·IPFilter·Level'."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
-"Bruk 'Get·IPFilter·Level' i staden.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Frårådd kommando, no 'Set·IPFilter·Level'."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
-"Bruk 'Set·IPFilter·Level'·i staden.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Frårådd kommando, no 'Get/Set·IPFilter·Level'."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
-"Bruk 'Get/Set·IPFilter·Level' i staden.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Frårådd kommando, no 'Show·Servers'."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
-"Bruk 'Show·Servers'·i staden.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Frårådd kommando, no 'Get·BwLimits'."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
-"Bruk 'Get·BwLimits'·i staden.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Frårådd kommando, no 'Set·BwLimit·Up'."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
-"Bruk 'Set·BwLimit·Up'·i staden.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Frårådd kommando, no 'Set·BwLimit·Down'."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
-"Bruk 'Set·BwLimit·Down'·i staden.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7070,6 +6972,106 @@ msgstr "Klarte ikkje å lese kameratlistefila 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Klarte·ikkje·å·skrive til·kameratlistefila·'emfriends.met'!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Denne kommandoen treng eit argument. Gangbare argument: 'all' eller eit "
+#~ "tal.\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr ""
+#~ "Denne kommandoen treng eit argument. Gangbare argument: ein filhash.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Frårådd kommando, no 'Status'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
+#~ "Bruk 'Status'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Frårådd kommando, no 'Set·IPFilter'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+#~ "Bruk 'Set·IPFilter'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Frårådd kommando, no 'Get·IPFilter·Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+#~ "Bruk 'Get·IPFilter·Level' i staden.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Frårådd kommando, no 'Set·IPFilter·Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Dette·er·ein·ikkje·tilrådd·kommando,·og·kan·verte·fjerna·i·framtida.\n"
+#~ "Bruk 'Set·IPFilter·Level'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Frårådd kommando, no 'Get/Set·IPFilter·Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
+#~ "Bruk 'Get/Set·IPFilter·Level' i staden.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Frårådd kommando, no 'Show·Servers'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
+#~ "Bruk 'Show·Servers'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Frårådd kommando, no 'Get·BwLimits'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Dette er ein ikkje tilrådd kommando, og kan verte fjerna i framtida.\n"
+#~ "Bruk 'Get·BwLimits'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Frårådd kommando, no 'Set·BwLimit·Up'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Dette·er·ein·ikkje·tilrådd·kommendo,·og·kan·verte·fjerna·i·framtida.\n"
+#~ "Bruk 'Set·BwLimit·Up'·i staden.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Frårådd kommando, no 'Set·BwLimit·Down'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Dette er ein ikkje tilrådd kommendo, og kan verte fjerna i framtida.\n"
+#~ "Bruk 'Set·BwLimit·Down'·i staden.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Synkronisering av tråd starta."

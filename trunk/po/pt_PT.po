@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-11-08 12:11+0000\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -3457,9 +3457,8 @@ msgstr "Formato de IP inválido. Use xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"Este comando requere um argumento. Argumentos válidos: 'all' ou um número.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3470,9 +3469,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Não é uma chave válida (o comprimento deveria ser de 32 caracteres)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
-"Este commando requer um argumento. Argumentos validos: chave de ficheiro.\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3932,113 +3930,17 @@ msgstr "Mostrar lista de servidores."
 msgid "Reset log."
 msgstr "Apagar o registro."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Comando obsoleto, agora 'Status'."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Status'.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Comando obsoleto, agora 'Set IPFilter'."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Set IPFilter'.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Comando obsoleto, agora 'Get IPFilter Level'."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Get IPFilter Level'.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Comando obsoleto, agora 'Set IPFilter Level'."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Set IPFilter Level'.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Comando obsoleto, agora 'Get/Set IPFilter Level'."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Get/Set IPFilter Level'.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Comando obsoleto, agora 'Show Servers'."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Show Servers'.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Comando obsoleto, agora 'Get BwLimits'."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Get BwLimits'.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Comando obsoleto, agora 'Set BwLimit Up'."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no futuro.\n"
-"Utilize 'Set BwLimit Up'.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Comando obsoleto, agora 'Set BwLimit Down'."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Este comando está obsoleto e pode ser removido no future.\n"
-"Utilize 'Set BwLimit Down'.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7139,6 +7041,107 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Erro ao abrir o ficheiro de lista de amigos 'emfriends.met' para escrita!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Este comando requere um argumento. Argumentos válidos: 'all' ou um "
+#~ "número.\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr ""
+#~ "Este commando requer um argumento. Argumentos validos: chave de "
+#~ "ficheiro.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Comando obsoleto, agora 'Status'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Status'.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Comando obsoleto, agora 'Set IPFilter'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Set IPFilter'.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Comando obsoleto, agora 'Get IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Get IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Comando obsoleto, agora 'Set IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Set IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Comando obsoleto, agora 'Get/Set IPFilter Level'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Get/Set IPFilter Level'.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Comando obsoleto, agora 'Show Servers'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Show Servers'.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Comando obsoleto, agora 'Get BwLimits'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Get BwLimits'.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Comando obsoleto, agora 'Set BwLimit Up'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no futuro.\n"
+#~ "Utilize 'Set BwLimit Up'.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Comando obsoleto, agora 'Set BwLimit Down'."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Este comando está obsoleto e pode ser removido no future.\n"
+#~ "Utilize 'Set BwLimit Down'.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Processo de sincronização iniciado."

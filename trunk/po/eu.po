@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -3457,10 +3457,8 @@ msgstr "IP Formatu baliogabea erabili xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' edo "
-"zenbaki bat\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3473,10 +3471,8 @@ msgstr ""
 "da)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
-"Komando honek argumentu bat behar du: Baliozko argumentuak: fitxategi "
-"egiaztapen bat.\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3928,113 +3924,17 @@ msgstr "Zerbitzari zerrenda bistarazi."
 msgid "Reset log."
 msgstr "Erregistroa garbitu."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Zaharkitutako komandoa, 'Status' erabili."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Status' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Zaharkitutako komandoa, 'Set IPFilter' erabili."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Set IPFilter' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Zaharkitutako komandoa, 'Get IPFilter Level' erabili."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Get IPFilter Level' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Zaharkitutako komandoa, 'Set IPFilter Level' erabili."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Set IPFilter Level' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Zaharkitutako komandoa, 'Get/Set IPFilter Level'.erabili."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Get/Set IPFilter Level' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Zaharkitutako komandoa, 'Show Servers' erabili."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Show Servers' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Zaharkitutako komandoa, 'Get BwLimits' erabili."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Get BwLimits' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Zaharkitutako komandoa, 'Set BwLimit Up' erabili."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Set BwLimit Up' erabili horren ordez.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Zaharkitutako komandoa, 'Set BwLimit Down' erabili."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
-"'Set BwLimit Down' erabili horren ordez.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7093,6 +6993,107 @@ msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Komando honek argumentu bat behar du. Baliozko argumentuak: 'all' edo "
+#~ "zenbaki bat\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr ""
+#~ "Komando honek argumentu bat behar du: Baliozko argumentuak: fitxategi "
+#~ "egiaztapen bat.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Zaharkitutako komandoa, 'Status' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Status' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Zaharkitutako komandoa, 'Set IPFilter' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Set IPFilter' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Zaharkitutako komandoa, 'Get IPFilter Level' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Get IPFilter Level' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Zaharkitutako komandoa, 'Set IPFilter Level' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Set IPFilter Level' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Zaharkitutako komandoa, 'Get/Set IPFilter Level'.erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Get/Set IPFilter Level' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Zaharkitutako komandoa, 'Show Servers' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Show Servers' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Zaharkitutako komandoa, 'Get BwLimits' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Get BwLimits' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Zaharkitutako komandoa, 'Set BwLimit Up' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Set BwLimit Up' erabili horren ordez.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Zaharkitutako komandoa, 'Set BwLimit Down' erabili."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Hau zaharkituriko komandoa bat da, eta etorkizunean ezabatua izango da.\n"
+#~ "'Set BwLimit Down' erabili horren ordez.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Sinkronizazio haria abiarazia."

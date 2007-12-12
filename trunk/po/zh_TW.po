@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-11-21 20:45+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -3404,8 +3404,8 @@ msgstr "無效IP地址格式。請使用 xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
-msgstr "該命令需要一個參數。有效參數爲：'all', 或一數字\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
+msgstr ""
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3416,8 +3416,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "無效的校驗值（長度必須爲32個字符）\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "此命令需要一個參數，參數無效，需要文件校驗碼。\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3867,113 +3867,17 @@ msgstr "顯示服務器列表。"
 msgid "Reset log."
 msgstr "重設日志。"
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "過時的命令，現已改爲 'Status'。"
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"'Status' 替代。\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "過時的命令，現已改爲 'Set IPFilter'。"
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Set IPFilter' 替代。\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "過時的命令，現已改爲 'Get IPFilter Level'。"
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Get IPFilter Level' 替代。\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "過時的命令，現已改爲 'Set IPFilter Level'。"
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Set IPFilter Level' 替代。\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "過時的命令，現已改爲 'Get/Set IPFilter Level'。"
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Get/Set IPFilter Level' 替代。\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "過時的命令，現已改爲 'Show Servers'。"
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Show Servers' 替代。\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "過時的命令，現已改爲 'Get BwLimits'。"
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Get BwLimits' 替代。\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "過時的命令，現已改爲 'Set BwLimit Up'。"
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Set BwLimit Up' 替代。\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "過時的命令，現已改爲 'Set BwLimit Down'。"
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"此命令已過時，將來可能會刪除。\n"
-"請用 'Set BwLimit Down' 替代。\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -6972,6 +6876,103 @@ msgstr "無法打開好友列表文件 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "無法寫入好友列表文件 'emfriends.met'!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr "該命令需要一個參數。有效參數爲：'all', 或一數字\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr "此命令需要一個參數，參數無效，需要文件校驗碼。\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "過時的命令，現已改爲 'Status'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "'Status' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "過時的命令，現已改爲 'Set IPFilter'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Set IPFilter' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "過時的命令，現已改爲 'Get IPFilter Level'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Get IPFilter Level' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "過時的命令，現已改爲 'Set IPFilter Level'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Set IPFilter Level' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "過時的命令，現已改爲 'Get/Set IPFilter Level'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Get/Set IPFilter Level' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "過時的命令，現已改爲 'Show Servers'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Show Servers' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "過時的命令，現已改爲 'Get BwLimits'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Get BwLimits' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "過時的命令，現已改爲 'Set BwLimit Up'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Set BwLimit Up' 替代。\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "過時的命令，現已改爲 'Set BwLimit Down'。"
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "此命令已過時，將來可能會刪除。\n"
+#~ "請用 'Set BwLimit Down' 替代。\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "同步線程已開始"

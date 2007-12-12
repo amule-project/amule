@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-10 02:30+0000\n"
+"POT-Creation-Date: 2007-12-12 02:30+0000\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -3450,10 +3450,8 @@ msgstr "Neteisingas IP formatas. Naudokite xxx.xxx.xxx.xxx:xxxx formą\n"
 
 #: src/TextClient.cpp:302
 msgid ""
-"This command requieres an argument. Valid arguments: 'all' or a number.\n"
+"This command requires an argument. Valid arguments: 'all' or a number.\n"
 msgstr ""
-"Šiai komandai reikia kintamojo. Tinkami kintamieji: „all“ (viskas) arba "
-"skaičius.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3464,8 +3462,8 @@ msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Neteisinga maišos funkcija (turi būti 32 simbolių dydžio)\n"
 
 #: src/TextClient.cpp:358
-msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-msgstr "Šiai komandai reikia kintamojo. Tinkami kintamieji: failo maiša.\n"
+msgid "This command requires an argument. Valid arguments: a file hash.\n"
+msgstr ""
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3925,113 +3923,17 @@ msgstr "Rodyti serverių sąrašą."
 msgid "Reset log."
 msgstr "Atstatyti žurnalą."
 
-#: src/TextClient.cpp:946
-msgid "Deprecated command, now 'Status'."
-msgstr "Pasenusi komanda, dabar „Būsena“."
-
 #: src/TextClient.cpp:947
+#, c-format
+msgid "Deprecated command, now '%s'."
+msgstr ""
+
+#: src/TextClient.cpp:948
+#, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
-"Use 'Status' instead.\n"
+"Use '%s' instead.\n"
 msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Būsena“.\n"
-
-#: src/TextClient.cpp:950
-msgid "Deprecated command, now 'Set IPFilter'."
-msgstr "Pasenusi komanda, dabar „Nurodyti IP filtro parinktis“."
-
-#: src/TextClient.cpp:951
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Nurodyti IP filtro parinktis“.\n"
-
-#: src/TextClient.cpp:954
-msgid "Deprecated command, now 'Get IPFilter Level'."
-msgstr "Pasenusi komanda, dabar „Pateikti IP filtro lygmenį“."
-
-#: src/TextClient.cpp:955
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get IPFilter Level' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Pateikti IP filtro lygmenį“.\n"
-
-#: src/TextClient.cpp:958
-msgid "Deprecated command, now 'Set IPFilter Level'."
-msgstr "Pasenusi komanda, dabar „Nurodyti IP filtro lygmenį“."
-
-#: src/TextClient.cpp:959
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set IPFilter Level' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Nurodyti IP filtro lygmenį“.\n"
-
-#: src/TextClient.cpp:962
-msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-msgstr "Pasenusi komanda, dabar „Pateikti/nurodyti IP filtro lygmenį“."
-
-#: src/TextClient.cpp:963
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get/Set IPFilter Level' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Pateikti/nurodyti IP filtro lygmenį“.\n"
-
-#: src/TextClient.cpp:966
-msgid "Deprecated command, now 'Show Servers'."
-msgstr "Pasenusi komanda, dabar „Rodyti serverius“."
-
-#: src/TextClient.cpp:967
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Show Servers' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Rodyti serverius“.\n"
-
-#: src/TextClient.cpp:970
-msgid "Deprecated command, now 'Get BwLimits'."
-msgstr "Pasenusi komanda, dabar „Pateikti kanalo apribojimus“."
-
-#: src/TextClient.cpp:971
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Get BwLimits' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Pateikti kanalo apribojimus“.\n"
-
-#: src/TextClient.cpp:974
-msgid "Deprecated command, now 'Set BwLimit Up'."
-msgstr "Pasenusi komanda, dabar „Nurodyti išsiuntimo kanalo apribojimus“."
-
-#: src/TextClient.cpp:975
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Up' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Nurodyti išsiuntimo kanalo apribojimus“.\n"
-
-#: src/TextClient.cpp:978
-msgid "Deprecated command, now 'Set BwLimit Down'."
-msgstr "Pasenusi komanda, dabar „Nurodyti atsiuntimo kanalo apribojimus“."
-
-#: src/TextClient.cpp:979
-msgid ""
-"This is a deprecated command, and may be removed in the future.\n"
-"Use 'Set BwLimit Down' instead.\n"
-msgstr ""
-"Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
-"Vietoje jos naudokite „Nurodyti atsiuntimo kanalo apribojimus“.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -7107,6 +7009,105 @@ msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti skaitymui!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti rašymui!"
+
+#~ msgid ""
+#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
+#~ msgstr ""
+#~ "Šiai komandai reikia kintamojo. Tinkami kintamieji: „all“ (viskas) arba "
+#~ "skaičius.\n"
+
+#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
+#~ msgstr "Šiai komandai reikia kintamojo. Tinkami kintamieji: failo maiša.\n"
+
+#~ msgid "Deprecated command, now 'Status'."
+#~ msgstr "Pasenusi komanda, dabar „Būsena“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Status' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Būsena“.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter'."
+#~ msgstr "Pasenusi komanda, dabar „Nurodyti IP filtro parinktis“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Nurodyti IP filtro parinktis“.\n"
+
+#~ msgid "Deprecated command, now 'Get IPFilter Level'."
+#~ msgstr "Pasenusi komanda, dabar „Pateikti IP filtro lygmenį“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Pateikti IP filtro lygmenį“.\n"
+
+#~ msgid "Deprecated command, now 'Set IPFilter Level'."
+#~ msgstr "Pasenusi komanda, dabar „Nurodyti IP filtro lygmenį“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Nurodyti IP filtro lygmenį“.\n"
+
+#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
+#~ msgstr "Pasenusi komanda, dabar „Pateikti/nurodyti IP filtro lygmenį“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get/Set IPFilter Level' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Pateikti/nurodyti IP filtro lygmenį“.\n"
+
+#~ msgid "Deprecated command, now 'Show Servers'."
+#~ msgstr "Pasenusi komanda, dabar „Rodyti serverius“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Show Servers' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Rodyti serverius“.\n"
+
+#~ msgid "Deprecated command, now 'Get BwLimits'."
+#~ msgstr "Pasenusi komanda, dabar „Pateikti kanalo apribojimus“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Get BwLimits' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Pateikti kanalo apribojimus“.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Up'."
+#~ msgstr "Pasenusi komanda, dabar „Nurodyti išsiuntimo kanalo apribojimus“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Up' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Nurodyti išsiuntimo kanalo apribojimus“.\n"
+
+#~ msgid "Deprecated command, now 'Set BwLimit Down'."
+#~ msgstr "Pasenusi komanda, dabar „Nurodyti atsiuntimo kanalo apribojimus“."
+
+#~ msgid ""
+#~ "This is a deprecated command, and may be removed in the future.\n"
+#~ "Use 'Set BwLimit Down' instead.\n"
+#~ msgstr ""
+#~ "Ši komanda pasenusi ir ateityje gali būti pašalinta.\n"
+#~ "Vietoje jos naudokite „Nurodyti atsiuntimo kanalo apribojimus“.\n"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Sinchronizavimo gija paleista."
