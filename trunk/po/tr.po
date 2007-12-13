@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-12 02:30+0000\n"
-"PO-Revision-Date: 2007-12-08 23:51+0200\n"
+"PO-Revision-Date: 2007-12-13 09:37+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -103,8 +103,7 @@ msgstr "%s dosyası için AICH adreslemesi oluşturulmaya başlanıyor."
 #: src/ThreadTasks.cpp:362
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr ""
-"'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
+msgstr "'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
 
 #: src/ThreadTasks.cpp:444
 #, c-format
@@ -176,17 +175,13 @@ msgstr "İstendi:"
 
 #: src/BaseClient.cpp:1874
 #, c-format
-msgid ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Bu oturum için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
+msgid "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr "Bu oturum için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:1875
 #, c-format
-msgid ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Bütün oturumlar için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
+msgid "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr "Bütün oturumlar için dosya durumu:Kabul edilen %d %d de istek, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:1877
 msgid "Requested unknown file"
@@ -383,8 +378,7 @@ msgstr "Ed2k bağlantısını panoya kopyalayın (&Kaynak)"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
-"Ed2k bağlantısını panoya kopyala.(Kaynak) (Şifreleme seçeneğiyle &birlikte)"
+msgstr "Ed2k bağlantısını panoya kopyala.(Kaynak) (Şifreleme seçeneğiyle &birlikte)"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
@@ -392,8 +386,7 @@ msgstr "Ed2k bağlantısını panoya kopyala (&Hostname)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
-"Ed2k bağlantısını panoya kopyala (Hostname)(Şifreleme &seçeneğiyle birlikte)"
+msgstr "Ed2k bağlantısını panoya kopyala (Hostname)(Şifreleme &seçeneğiyle birlikte)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
@@ -405,8 +398,7 @@ msgstr "Geri beslemeyi panoya kopyala"
 
 #: src/SharedFilesCtrl.cpp:298
 msgid "You need a HighID to create a valid sourcelink"
-msgstr ""
-"Geçerli bir kanak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
+msgstr "Geçerli bir kanak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
 
 #: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:681
@@ -1465,10 +1457,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Seçili tarayıcı tanımlanamıyor!"
 
 #: src/Preferences.cpp:1662
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr ""
-"TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
 #: src/Preferences.cpp:1663
 #, c-format
@@ -2282,8 +2272,7 @@ msgstr "Geçersiz opcode (yanlış protokol sürümü mü?)"
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr ""
-"(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
+msgstr "(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
 
 #: src/UploadClient.cpp:714
 #, c-format
@@ -2699,8 +2688,7 @@ msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedil
 
 #: src/ClientTCPSocket.cpp:942
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
 "kabul edildi"
@@ -2768,8 +2756,7 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Yeni bir nodes.dat dosyası indirmek istediğinizden emin misiniz?\n"
 
 #: src/KadDlg.cpp:207
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Bunu yapmanız şu anki nodları silecek ve Kademlia bağlantısını baştan "
 "başlatacaktır."
@@ -3099,8 +3086,7 @@ msgstr "Dosya bilgisi kurtarılmaya çalışılıyor..."
 
 #: src/PartFile.cpp:616
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr ""
-"İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
+msgstr "İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
 
 #: src/PartFile.cpp:621
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -3182,8 +3168,7 @@ msgstr "%s dosyasının yeniden adreslenmesi bitti"
 #: src/PartFile.cpp:2220
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr ""
-"%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
+msgstr "%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
 
 #: src/PartFile.cpp:2246
 #, c-format
@@ -3223,7 +3208,8 @@ msgstr "İndirilen %i parçası %s dosyasındaydı ve bozuk."
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
-"ICH: Bozulan %i parçası [Dosya: %s] kurtarıldı -> Kaydedilen miktar: %s bayt"
+"ICH: Bozulan %i parçası %s dosyasındaydı ve kurtarıldı -> Kaydedilen miktar: "
+"%s bayt"
 
 #: src/PartFile.cpp:3706 src/muuli_wdr.cpp:3590
 msgid "Comments"
@@ -3322,8 +3308,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr ""
-"Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
+msgstr "Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "ED2K network disabled on preferences, not connecting."
@@ -3340,8 +3325,7 @@ msgstr " %s (%s:%i) sunucusuna bağlanıldı"
 
 #: src/ServerConnect.cpp:345
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
+msgstr "Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
 
 #: src/ServerConnect.cpp:349
 #, c-format
@@ -3434,9 +3418,8 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Geçersiz IP biçimi. xxx.xxx.xxx.xxx:xxxx kullanınız.\n"
 
 #: src/TextClient.cpp:302
-msgid ""
-"This command requires an argument. Valid arguments: 'all' or a number.\n"
-msgstr ""
+msgid "This command requires an argument. Valid arguments: 'all' or a number.\n"
+msgstr "Bu komut bir argüman gerektiriyor. Geçerli argümanlar: 'hepsi' veya bir sayı.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3448,7 +3431,7 @@ msgstr "Geçerli bir adresleme değil (uzunluğu tam olarak 32 karakter olmalı)
 
 #: src/TextClient.cpp:358
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
+msgstr "Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adrelemesi.\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3911,7 +3894,7 @@ msgstr "Kaydı (Log) Sıfırla."
 #: src/TextClient.cpp:947
 #, c-format
 msgid "Deprecated command, now '%s'."
-msgstr ""
+msgstr "Onyalanmayan komut, şimdi '%s'."
 
 #: src/TextClient.cpp:948
 #, c-format
@@ -3919,6 +3902,8 @@ msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use '%s' instead.\n"
 msgstr ""
+"Bu geçersiz bir komut, ve gelecekti belki çıkartılabilir.\n"
+"Bunun yerine '%s' kullanın.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -4160,10 +4145,8 @@ msgstr ""
 "taranacaktır.)"
 
 #: src/PartFileConvert.cpp:714
-msgid ""
-"Do you want the source files of succesfully imported downloads be deleted?"
-msgstr ""
-"İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
+msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgstr "İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
 
 #: src/PartFileConvert.cpp:715
 msgid "Remove sources?"
@@ -4297,8 +4280,7 @@ msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
 #: src/IPFilter.cpp:283
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr ""
-"ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
+msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
 
 #: src/IPFilter.cpp:324
 #, c-format
@@ -4308,8 +4290,7 @@ msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. Dosya açılamıyor
 #: src/IPFilter.cpp:329
 #, c-format
 msgid "Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."
-msgstr ""
-"%u IP aralığı  '%s' dosyasından yüklendi. %u hasarlı satır gözardı edildi."
+msgstr "%u IP aralığı  '%s' dosyasından yüklendi. %u hasarlı satır gözardı edildi."
 
 #: src/StatisticsDlg.cpp:173
 #, c-format
@@ -4334,8 +4315,7 @@ msgid "Commit"
 msgstr "Onayla"
 
 #: src/muuli_wdr.cpp:77
-msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
+msgid "Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
 "ED2k bağlantısı ekleyerek aktarım sıranızı kontrol etmek için buraya "
 "tıklayınız."
@@ -4650,8 +4630,7 @@ msgstr "Dosya Kalitesi"
 
 #: src/muuli_wdr.cpp:929
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr ""
-"Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
+msgstr "Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
 
 #: src/muuli_wdr.cpp:966
 msgid "No comment(s)"
@@ -5439,8 +5418,7 @@ msgstr "Sütun Sıralama"
 
 #: src/muuli_wdr.cpp:2597
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr ""
-"Aktarım sırasındaki dosyaları, otomatikman sırala (Yüksek işlemci yükü)"
+msgstr "Aktarım sırasındaki dosyaları, otomatikman sırala (Yüksek işlemci yükü)"
 
 #: src/muuli_wdr.cpp:2599
 msgid "aMule will sort the columns in your download list automatically"
@@ -5727,8 +5705,8 @@ msgid ""
 "This option enabled Protocol Obfuscation, and makes aMule accept obfuscated "
 "connections from other clients."
 msgstr ""
-"Bu seçenek Protokol Gizleme'yi etkinleştirir ve aMule'nin gizlenmiş "
-"bağlantıları kabul etmesini sağlar."
+"Bu seçenek Protokol Gizleme'yi etkinleştirir ve aMule'nin gizlenmiş bağlantıları "
+"kabul etmesini sağlar."
 
 #: src/muuli_wdr.cpp:3374
 msgid "Use obfuscation for outgoing connections"
@@ -5738,9 +5716,7 @@ msgstr "Giden bağlantılar için gizleme kullan"
 msgid ""
 "This option makes aMule use Protocol Obfuscation when connecting other "
 "clients/servers."
-msgstr ""
-"Bu seçenek diğer kullanıcı veya sunucularla olan bağlantılarda Protokol "
-"Gizleme'yi etkinleştirir."
+msgstr "Bu seçenek diğer kullanıcı veya sunucularla olan bağlantılarda Protokol Gizleme'yi etkinleştirir."
 
 #: src/muuli_wdr.cpp:3379
 msgid "Accept only obfuscated connections"
@@ -5751,8 +5727,8 @@ msgid ""
 "This option makes aMule only accept obfuscated connections. You will have "
 "less sources, but all your traffic will be obfuscated"
 msgstr ""
-"Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini sağlar."
-"Daha az kaynak bulursunuz;ancak tüm trafiğiniz de gizlenmiş olur."
+"Bu seçenek aMule'nin sadece gizlenmiş bağlantıları kabul etmesini sağlar.Daha az kaynak "
+"bulursunuz;ancak tüm trafiğiniz de gizlenmiş olur."
 
 #: src/muuli_wdr.cpp:3385
 msgid "File Options"
@@ -5783,8 +5759,7 @@ msgid "Filter clients"
 msgstr "Kullanıcıları Süz"
 
 #: src/muuli_wdr.cpp:3409
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.dat dosyasında tanımlanan kullanıcı IP'lerini süzmeyi "
 "etkinleştir."
@@ -5794,8 +5769,7 @@ msgid "Filter servers"
 msgstr "Sunucuları süz"
 
 #: src/muuli_wdr.cpp:3414
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.dat dosyasında tanımlanan sunucu IP'lerini süzmeyi "
 "etkinleştir."
@@ -5842,25 +5816,26 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3465
 msgid "Use system-wide ipfilter.dat if available"
-msgstr ""
+msgstr "Varsa, sistem geneli ipfilter.dat kullan"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
 msgstr ""
-"Yerel bir ipfilter.dat dosyası bulunamazsa, sistem geneli ipfilter "
+"Yerel bir ipfilter.dat dosyası bulunamazsa, sistem "
+"geneli ipfilter "
 "kullanımına izin ver"
 
 #: src/muuli_wdr.cpp:3469
 msgid "Use Secure User Identification"
-msgstr ""
+msgstr "Kullanıcı"
 
 #: src/muuli_wdr.cpp:3471
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr ""
+msgstr "Bu seçeneği aktifleştirmeniz önerilir. SUI akftif değilse, kredi alamazasınız."
 
 #: src/muuli_wdr.cpp:3500
 msgid "Enable/Disable"
@@ -5884,16 +5859,14 @@ msgstr "Güncelleme Sıklığı (Sn.):"
 
 #: src/muuli_wdr.cpp:3514
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr ""
-"Çevrimiçi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
+msgstr "Çevrimiçi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
 
 #: src/muuli_wdr.cpp:3520
 msgid "Online Signature Directory:"
 msgstr "Çevrimiçi İmza Dizini:"
 
 #: src/muuli_wdr.cpp:3527
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr "Çevrimiçi İmza dosyalarını içeren dizini seçiniz."
 
 #: src/muuli_wdr.cpp:3556 src/muuli_wdr.cpp:3595 src/muuli_wdr.cpp:3817
@@ -5926,8 +5899,7 @@ msgstr "Şu içerikteki iletileri süz (ayraç olarak ','  kullanınız.):"
 
 #: src/muuli_wdr.cpp:3578 src/muuli_wdr.cpp:3602
 msgid "add here the words amule should filter and block messages including it"
-msgstr ""
-"Buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
+msgstr "Buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
 
 #: src/muuli_wdr.cpp:3598
 msgid "Filter comments containing (use ',' as separator):"
@@ -6066,8 +6038,7 @@ msgid "You must specify a path for the category!"
 msgstr "Kategori için bir yol girmelisiniz!"
 
 #: src/CatDialog.cpp:168
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Kategori için gelen dizini oluşturma başarısız. Lütfen geçerli bir yol "
 "giriniz!"
@@ -6161,8 +6132,7 @@ msgstr "Syntax hatası!"
 
 #: src/ExternalConnector.cpp:274
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr ""
-"Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
+msgstr "Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
 
 #: src/ExternalConnector.cpp:277
 msgid "This command should not have any parameters."
@@ -6268,8 +6238,7 @@ msgstr "Komut satırı seçeneklerini yapılandırma dosyasına yaz."
 
 #: src/ExternalConnector.cpp:469
 msgid "Creates config file based on aMule's config file."
-msgstr ""
-"aMule' nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
+msgstr "aMule' nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
 
 #: src/ExternalConnector.cpp:472
 msgid "Print program version."
@@ -6301,9 +6270,9 @@ msgid ""
 "the file ~/.aMule/amule.conf"
 msgstr ""
 "HATA: aMule daemon dış bağlantılar devre dışı bırakıldığında kullanılamaz. "
-"Dış Bağlantıları etkinleştirmek için ya aMule'yi, --ec-config seçeneği ile "
-"birlekte amuledi başlatarak ya da ~/.aMule/amule.conf dosyasındaki "
-"\"AcceptExternalConnections\" seçeneğini 1 olarak ayarlayın."
+"Dış Bağlantıları etkinleştirmek için ya aMule'yi, --ec-config seçeneği ile birlekte amuledi başlatarak "
+"ya da ~/.aMule/amule.conf dosyasındaki \"AcceptExternalConnections\" seçeneğini 1 olarak "
+"ayarlayın."
 
 #: src/amuled.cpp:513
 #, c-format
@@ -6703,8 +6672,7 @@ msgstr ""
 
 #: src/ServerList.cpp:847
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr ""
-"address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
+msgstr "address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
 
 #: src/ServerList.cpp:936
 msgid ""
@@ -6840,8 +6808,7 @@ msgid ""
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
 "\n"
-"* Sunucu listesinin diğer sunucular ve kullanıcılardan güncellenmesi "
-"devredışı bırakıldı.\n"
+"* Sunucu listesinin diğer sunucular ve kullanıcılardan güncellenmesi devredışı bırakıldı.\n"
 
 #: src/amule.cpp:1325
 msgid ""
@@ -6853,8 +6820,7 @@ msgid ""
 msgstr ""
 "\n"
 "Bu değişikliklerin sebepleri hakkında bilgi için;\n"
-" http://wiki.amule.org adresindeki aMule Wiki \"sahte sunucular\" bilgisini "
-"araştırın.\n"
+" http://wiki.amule.org adresindeki aMule Wiki \"sahte sunucular\" bilgisini araştırın.\n"
 "aMule'nin düzgün çalışabilmesi için sunucu listenizdeki sahte sunucuları "
 "temizlemeniz çok önemlidir."
 
@@ -6992,130 +6958,3 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 
-#~ msgid ""
-#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
-#~ msgstr ""
-#~ "Bu komut bir argümana gereksinim duyar. Geçerli argümanlar: 'all' veya "
-#~ "bir sayı.\n"
-
-#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-#~ msgstr ""
-#~ "Komut bir argüman gerektiriyor.Geçerli argümanlar: bir dosya "
-#~ "adreslemesi.\n"
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr "Uygun olmayan komut, şimdi'Durum'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Status' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Bunun yerine 'Durum' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr "Uygun olmayan komut, şimdi 'IPSüzgecini' ayarla."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Bunun yerine IPSÜzgeci ayarla kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Al."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'IP Süzgeci Seviyesini Al'kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'IP Süzgeci Seviyesini Ayarala' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr "Uygun olmayan komut,şimdi IP Süzgeci Seviyesini Ayarla/Al."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get/Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'IP Süzgeci Seviyesini Ayarala/Al' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr "Uygun olmayan komut, şimdi 'Sunucuları Göster'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Show Servers' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'Sunucuları Göster' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr "Uygun olmayan komut, şimdi 'Bağlantı Sınırlarını Al'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get BwLimits' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'Bağlantı Sınırlarını Al' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Yukarı Çek'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Up' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'Bğ.Sınırını Yukarı Çek' kullanın.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr "Uygun olmayan komut, şimdi 'Bğ.Sınırını Aşağı Çek'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Down' instead.\n"
-#~ msgstr ""
-#~ "Bu uygun olmayan bir komut ve belki gelecekte çıkarılacak.\n"
-#~ "Yerine, 'Bğ.Sınırını Aşağı Çek' kullanın.\n"
-
-#~ msgid "Syncronization thread started."
-#~ msgstr "Senkronizasyon işlemi başladı."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Bilinen dosyaların Temel adreslemesi yüklendi."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Kad. bağlantıları okunurken hata oluştu.- 0 giriş"
-
-#~ msgid "Merge attempt"
-#~ msgstr "Birleştirme denemesi"
-
-#~ msgid "Recursive merge"
-#~ msgstr "Tekrarlanan birleştirme"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "Başarılı birleştirme!"
-
-#~ msgid "No merge possible"
-#~ msgstr "Birleştirme yapılamaz"
-
-#~ msgid "Buddy address: "
-#~ msgstr "En yakın adres: "
-
-#~ msgid "Allow usage of system wide ipfilter.dat"
-#~ msgstr "Tüm sistemde ipfilter.dat kullanımına izin ver"
