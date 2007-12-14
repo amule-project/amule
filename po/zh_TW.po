@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-12 02:30+0000\n"
-"PO-Revision-Date: 2007-11-21 20:45+0800\n"
+"PO-Revision-Date: 2007-12-14 21:30+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -3405,7 +3405,7 @@ msgstr "無效IP地址格式。請使用 xxx.xxx.xxx.xxx:xxxx\n"
 #: src/TextClient.cpp:302
 msgid ""
 "This command requires an argument. Valid arguments: 'all' or a number.\n"
-msgstr ""
+msgstr "此命令需要一個參數，合法參數為：'all'或一個數字。\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3417,7 +3417,7 @@ msgstr "無效的校驗值（長度必須爲32個字符）\n"
 
 #: src/TextClient.cpp:358
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
+msgstr "此命令需要一個參數，合法參數為文件校驗碼。\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3870,14 +3870,14 @@ msgstr "重設日志。"
 #: src/TextClient.cpp:947
 #, c-format
 msgid "Deprecated command, now '%s'."
-msgstr ""
+msgstr "已廢棄的命令，現用'%s'。"
 
 #: src/TextClient.cpp:948
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use '%s' instead.\n"
-msgstr ""
+msgstr "這是一個已廢棄的命令，將來可能被刪除，請使用'%s'替代。\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -5760,7 +5760,7 @@ msgstr "拒絕客戶端IP不同于接收包中的IP的數據包，請謹慎使�
 
 #: src/muuli_wdr.cpp:3465
 msgid "Use system-wide ipfilter.dat if available"
-msgstr ""
+msgstr "在可用的情況下使用系統級的 ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
@@ -5770,13 +5770,13 @@ msgstr "如果沒有找到本地ipfilter.dat文件，則允許使用系統級的
 
 #: src/muuli_wdr.cpp:3469
 msgid "Use Secure User Identification"
-msgstr ""
+msgstr "使用安全用戶認證"
 
 #: src/muuli_wdr.cpp:3471
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr ""
+msgstr "建議使用此選項，如果安全用戶認證沒有啟用，將不會接收信用證明。"
 
 #: src/muuli_wdr.cpp:3500
 msgid "Enable/Disable"
