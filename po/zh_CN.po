@@ -1,7 +1,7 @@
 # Chinese translation of aMule.
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
-# 
+# Chen Nan, 2004.
 # xiaoqiao <29551030@qq.com>, 2007.
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-12 02:30+0000\n"
-"PO-Revision-Date: 2007-11-21 20:45+0800\n"
+"PO-Revision-Date: 2007-12-14 21:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -1706,7 +1706,7 @@ msgstr "\t大概这是因为您处在防火墙或路由器后面。"
 
 #: src/amuleDlg.cpp:725
 msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\t如需了解详情，请访问 http://wiki.amule.org"
+msgstr "\t如需了解更多相关信息，请访问 http://wiki.amule.org"
 
 #: src/amuleDlg.cpp:729 src/ServerConnect.cpp:273
 #, c-format
@@ -3399,7 +3399,7 @@ msgstr "无效 IP 地址格式，请使用 xxx.xxx.xxx.xxx:xxxx\n"
 #: src/TextClient.cpp:302
 msgid ""
 "This command requires an argument. Valid arguments: 'all' or a number.\n"
-msgstr ""
+msgstr "此命令需要一个参数，合法参数为 'all' 或一个数字。\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3411,7 +3411,7 @@ msgstr "无效的校验值（长度必须为32个字符）\n"
 
 #: src/TextClient.cpp:358
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
+msgstr "此命令需要一个参数，合法参数为文件校验码。\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3864,14 +3864,14 @@ msgstr "重设日志。"
 #: src/TextClient.cpp:947
 #, c-format
 msgid "Deprecated command, now '%s'."
-msgstr ""
+msgstr "已废弃的命令，现用 '%s'。"
 
 #: src/TextClient.cpp:948
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use '%s' instead.\n"
-msgstr ""
+msgstr "这是一个已废弃的命令，将来可能被删除，请使用 '%s' 替代。\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -5751,7 +5751,7 @@ msgstr "拒绝用户IP不同于接收包中的IP的数据包，请谨慎使用�
 
 #: src/muuli_wdr.cpp:3465
 msgid "Use system-wide ipfilter.dat if available"
-msgstr ""
+msgstr "在可用的情况下使用系统级的 ipfilter.dat"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
@@ -5761,13 +5761,13 @@ msgstr "如果没有找到本地 ipfilter.dat 文件，则允许使用系统级�
 
 #: src/muuli_wdr.cpp:3469
 msgid "Use Secure User Identification"
-msgstr ""
+msgstr "使用安全用户认证"
 
 #: src/muuli_wdr.cpp:3471
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr ""
+msgstr "建议使用此选项，如果安全用户认证没有启用，将不会接收信用证明。"
 
 #: src/muuli_wdr.cpp:3500
 msgid "Enable/Disable"
