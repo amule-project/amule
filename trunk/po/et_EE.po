@@ -1,3 +1,4 @@
+# translation of et_EE.po to
 # translation of aMule to Estonian
 # aMule i18n resource file.
 # Copyright (C) 2006 aMule Team
@@ -9,10 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
-"PO-Revision-Date: 2007-12-08 10:00+0200\n"
+"POT-Creation-Date: 2007-12-14 20:28+0200\n"
+"PO-Revision-Date: 2007-12-14 20:39+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
-"Language-Team: Estonian <et@li.org>\n"
+"Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3433,7 +3434,7 @@ msgstr "Vigane IP formaat. Kasuta xxx.xxx.xxx.xxx:xxxx\n"
 #: src/TextClient.cpp:302
 msgid ""
 "This command requires an argument. Valid arguments: 'all' or a number.\n"
-msgstr ""
+msgstr "See käsk vajab muutujat. Sobivad muutujad on: 'all' või number.\n"
 
 #: src/TextClient.cpp:343 src/TextClient.cpp:384
 msgid "Not a valid number\n"
@@ -3445,7 +3446,7 @@ msgstr "Pole kehtiv kontrollsumma (pikkus peab olema täpselt 32 märki)\n"
 
 #: src/TextClient.cpp:358
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
+msgstr "See käsk vajab argumenti. Sobivad argumendid on: faili räasi.\n"
 
 #: src/TextClient.cpp:604
 msgid "Operation was successful."
@@ -3904,7 +3905,7 @@ msgstr "Tühjenda logi."
 #: src/TextClient.cpp:947
 #, c-format
 msgid "Deprecated command, now '%s'."
-msgstr ""
+msgstr "Vananenud käsk, nüüd on '%s'."
 
 #: src/TextClient.cpp:948
 #, c-format
@@ -3912,6 +3913,8 @@ msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use '%s' instead.\n"
 msgstr ""
+"See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
+"Selle asemel kasuta '%s'.\n"
 
 #: src/ServerSocket.cpp:178
 msgid "theApp->serverlist->GetServerByAddress() returned NULL"
@@ -5830,7 +5833,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3465
 msgid "Use system-wide ipfilter.dat if available"
-msgstr ""
+msgstr "Kasuta süsteemi ipfilter.dat kui see on saadaval"
 
 #: src/muuli_wdr.cpp:3466
 msgid ""
@@ -5842,13 +5845,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:3469
 msgid "Use Secure User Identification"
-msgstr ""
+msgstr "Kasuta Turvalist Kasutaja tuvastamist"
 
 #: src/muuli_wdr.cpp:3471
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
 msgstr ""
+"On soovitatav see omadus lubada. Sa ei saa krediiti kui SUI on välja "
+"lülitatud."
 
 #: src/muuli_wdr.cpp:3500
 msgid "Enable/Disable"
@@ -6982,127 +6987,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
-#~ msgid ""
-#~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
-#~ msgstr "See käsk vajab muutujat. Kehtivad muutujad on: 'all' või number.\n"
-
-#~ msgid "This command requieres an argument. Valid arguments: a file hash.\n"
-#~ msgstr "See käsk vajab argumenti. Kehtivad argumendid on: faili räasi.\n"
-
-#~ msgid "Deprecated command, now 'Status'."
-#~ msgstr "Vananenud käsk, nüüd on 'Status'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Status' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Status'.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter'."
-#~ msgstr "Vananenud käsk, nüüd on 'Set IPFilter'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Set IPFilter'.\n"
-
-#~ msgid "Deprecated command, now 'Get IPFilter Level'."
-#~ msgstr "Vananenud käsk, nüüd on 'Get IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Get IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Set IPFilter Level'."
-#~ msgstr "Vananenud käsk, nüüd on 'Set IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Set IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Get/Set IPFilter Level'."
-#~ msgstr "Vananenud käsk, nüüd on 'Get/Set IPFilter Level'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get/Set IPFilter Level' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Get/Set IPFilter Level'.\n"
-
-#~ msgid "Deprecated command, now 'Show Servers'."
-#~ msgstr "Vananenud käsk, nüüd on 'Show Servers'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Show Servers' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Show Servers'.\n"
-
-#~ msgid "Deprecated command, now 'Get BwLimits'."
-#~ msgstr "Vananenud käsk, nüüd on 'Get BwLimits'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Get BwLimits' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Get BwLimits'.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Up'."
-#~ msgstr "Vananenud käsk, nüüd on 'Set BwLimit Up'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Up' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Set BwLimit Up'.\n"
-
-#~ msgid "Deprecated command, now 'Set BwLimit Down'."
-#~ msgstr "Vananenud käsk, nüüd on 'Set BwLimit Down'."
-
-#~ msgid ""
-#~ "This is a deprecated command, and may be removed in the future.\n"
-#~ "Use 'Set BwLimit Down' instead.\n"
-#~ msgstr ""
-#~ "See on vananenud/aegunud käsk ja võidakse tulevikus eemaldada.\n"
-#~ "Selle asemel kasuta 'Set BwLimit Down'.\n"
-
-#~ msgid "Syncronization thread started."
-#~ msgstr "Sünkroniseerimise lõim starditud."
-
-#~ msgid "Masterhashes of known files have been loaded."
-#~ msgstr "Tuntud failide kontrollsummad laetud."
-
-#~ msgid "Error while reading Kad contacts - 0 entries"
-#~ msgstr "Viga Kad kontaktide lugemisel - 0 kirjet"
-
-#~ msgid "Merge attempt"
-#~ msgstr "Proovin liita"
-
-#~ msgid "Recursive merge"
-#~ msgstr "Rekursiivne liitmine"
-
-#~ msgid "Sucessful merge!"
-#~ msgstr "Õnnestunud liitmine"
-
-#~ msgid "No merge possible"
-#~ msgstr "Liitmine pole võimalik"
-
-#~ msgid "Buddy address: "
-#~ msgstr "Semu aadress: "
-
-#~ msgid "Allow usage of system wide ipfilter.dat"
-#~ msgstr "Süsteemi ipfilter.dat kasutamine on lubatud"
