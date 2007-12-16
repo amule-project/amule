@@ -720,7 +720,7 @@ void CamuleDlg::ShowConnectionState()
 			switch ( NewED2KState ) {
 				case sLowID:
 					// Display a warning about LowID connections
-					AddLogLine(true,  _("WARNING: You have recieved Low-ID!"));
+					AddLogLine(true,  _("WARNING: You have received Low-ID!"));
 					AddLogLine(false, _("\tMost likely this is because you're behind a firewall or router."));
 					AddLogLine(false, _("\tFor more information, please refer to http://wiki.amule.org"));
 			

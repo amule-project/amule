@@ -31,7 +31,7 @@ enum ViewType
 	//! The "neutral" state, where nothing is displayed.
 	vtNone = 0,
 	
-	//! Clients which are recieved files are displayed.
+	//! Clients which are received files are displayed.
 	vtUploading = 1,
 	
 	//! Clients which are queued for files are displayed.

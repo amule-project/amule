@@ -1927,7 +1927,7 @@ void CUpDownClient::SendSignaturePacket(){
 	if (credits->GetSecIDKeyLen() == 0) {
 		return; // We don't have his public key yet, will be back here later
 	}
-	// do we have a challenge value recieved (actually we should if we are in this function)
+	// do we have a challenge value received (actually we should if we are in this function)
 	if (credits->m_dwCryptRndChallengeFrom == 0){
 		AddDebugLogLineM( false, logClient, wxString(wxT("Want to send signature but challenge value is invalid - User ")) + GetUserName());
 		return;
@@ -1998,7 +1998,7 @@ void CUpDownClient::ProcessPublicKeyPacket(const byte* pachPacket, uint32 nSize)
 			AddDebugLogLineM( false, logClient, wxT("Invalid State error: IS_KEYANDSIGNEEDED in ProcessPublicKeyPacket") );
 		}
 	} else{
-		AddDebugLogLineM( false, logClient, wxT("Failed to use new recieved public key") );
+		AddDebugLogLineM( false, logClient, wxT("Failed to use new received public key") );
 	}
 }
 
@@ -2027,17 +2027,17 @@ void CUpDownClient::ProcessSignaturePacket(const byte* pachPacket, uint32 nSize)
 
 	// we accept only one signature per IP, to avoid floods which need a lot cpu time for cryptfunctions
 	if (m_dwLastSignatureIP == GetIP()){
-		AddDebugLogLineM( false, logClient, wxT("recieved multiple signatures from one client") );
+		AddDebugLogLineM( false, logClient, wxT("received multiple signatures from one client") );
 		return;
 	}
 	// also make sure this client has a public key
 	if (credits->GetSecIDKeyLen() == 0){
-		AddDebugLogLineM( false, logClient, wxT("recieved signature for client without public key") );
+		AddDebugLogLineM( false, logClient, wxT("received signature for client without public key") );
 		return;
 	}
 	// and one more check: did we ask for a signature and sent a challange packet?
 	if (credits->m_dwCryptRndChallengeFor == 0){
-		AddDebugLogLineM( false, logClient, wxT("recieved signature for client with invalid challenge value - User ") + GetUserName() );
+		AddDebugLogLineM( false, logClient, wxT("received signature for client with invalid challenge value - User ") + GetUserName() );
 		return;
 	}
 

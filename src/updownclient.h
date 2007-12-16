@@ -561,7 +561,7 @@ public:
 	 *
 	 * To check if a client is aggressive use the IsClientAggressive() function.
 	 * 
-	 * Currently this function is called when the following packets are recieved:
+	 * Currently this function is called when the following packets are received:
 	 *  - OP_STARTUPLOADREQ
 	 *  - OP_REASKFILEPING
 	 */
