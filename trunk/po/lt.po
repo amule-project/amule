@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -1714,8 +1714,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Prisijungti prie bet kurio serverio ir/ar Kademlia tinklo"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "Dėmesio! Gavote žemą ID!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7009,6 +7009,9 @@ msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti skaitymui!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Nepavyko draugų sąrašo failo emfriends.met atverti rašymui!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "Dėmesio! Gavote žemą ID!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

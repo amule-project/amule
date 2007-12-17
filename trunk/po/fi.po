@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-11-25 22:38+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1710,8 +1710,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Yhdistä mihin tahansa palvelimeen ja/tai Kadiin"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "VAROITUS: Sinulla on Low-ID!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7008,6 +7008,9 @@ msgstr "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua luettavaksi!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Kaverilistatiedostoa 'emfriends.met' ei saatu avattua kirjoitettavaksi!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "VAROITUS: Sinulla on Low-ID!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

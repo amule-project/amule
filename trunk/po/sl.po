@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -1714,8 +1714,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Poveži se s katerimkoli strežnikom in/ali s Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "OPOZORILO: Imate Nizek ID!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7019,6 +7019,9 @@ msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "OPOZORILO: Imate Nizek ID!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

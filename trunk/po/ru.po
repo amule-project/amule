@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -1721,8 +1721,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Соединиться с произвольным сервером и/или Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "Предупреждение: Вы получили LowID!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7029,6 +7029,9 @@ msgstr "Не удалось открыть файл со списком друз
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Не удалось открыть файл со списком друзей 'emfriends.met' для записи."
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "Предупреждение: Вы получили LowID!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"
