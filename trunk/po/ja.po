@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-17 02:31+0000\n"
+"POT-Creation-Date: 2007-12-17 01:01+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -4843,321 +4843,327 @@ msgstr "スコア"
 
 #: src/muuli_wdr.cpp:1557
 msgid "DL/UP modifier:"
-msgstr ""
+msgstr "DL/UP変更："
 
 #: src/muuli_wdr.cpp:1566
 msgid "Secure ident:"
-msgstr ""
+msgstr "確実認識："
 
 #: src/muuli_wdr.cpp:1573
 msgid "Rating (total):"
-msgstr ""
+msgstr "レーティング（合計）："
 
 #: src/muuli_wdr.cpp:1582
 msgid "Queue score:"
-msgstr ""
+msgstr "列スコア："
 
 #: src/muuli_wdr.cpp:1617
 msgid "General Settings"
-msgstr ""
+msgstr "一般設定："
 
 #: src/muuli_wdr.cpp:1624
 msgid "Nick"
-msgstr ""
+msgstr "ニック"
 
 #: src/muuli_wdr.cpp:1627
 msgid "http://www.aMule.org - the Linux Mule"
-msgstr ""
+msgstr "http://www.aMule.org - Linux Mule"
 
 #: src/muuli_wdr.cpp:1628
 msgid "This is the name that other users will see when connecting to you."
-msgstr ""
+msgstr "あなたに接続してくる方はこの名前を見ることとになっています。"
 
 #: src/muuli_wdr.cpp:1633
 msgid "Language"
-msgstr ""
+msgstr "言語"
 
 #: src/muuli_wdr.cpp:1638
 msgid "This specifies the language used on controls."
-msgstr ""
+msgstr "コントロールに使う言語はここで設定します。"
 
 #: src/muuli_wdr.cpp:1645
 msgid "Misc Options"
-msgstr ""
+msgstr "雑なオプション"
 
 #: src/muuli_wdr.cpp:1649
 msgid "Check for new version at startup"
-msgstr ""
+msgstr "スタート・アップに新バージョンをチェックする"
 
 #: src/muuli_wdr.cpp:1650
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr ""
+msgstr "これを有効にするとaMuleはスタート・アップの時に新バージョンのチェックするを行う"
 
 #: src/muuli_wdr.cpp:1653
 msgid "Start minimized"
-msgstr ""
+msgstr "スタートを最小化にした"
 
 #: src/muuli_wdr.cpp:1654
 msgid "Enabling this makes aMule minimize itself upon start."
-msgstr ""
+msgstr "これを有効にするとaMuleはスタートの時に最小化する。"
 
 #: src/muuli_wdr.cpp:1657
 msgid "Prompt on exit"
-msgstr ""
+msgstr "終了の時に確認する"
 
 #: src/muuli_wdr.cpp:1659
 msgid "Makes aMule promt before exiting."
-msgstr ""
+msgstr "これでaMuleが終了するの時に確認します。"
 
 #: src/muuli_wdr.cpp:1662
 msgid "Enable Tray Icon"
-msgstr ""
+msgstr "トレイ・アイコンを有効にする"
 
 #: src/muuli_wdr.cpp:1663
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr ""
+msgstr "これでシステム・トレイ、またはタスク・バーのアイコンを有効／無効にします。"
 
 #: src/muuli_wdr.cpp:1666
 msgid "Minimize to Tray Icon"
-msgstr ""
+msgstr "トレイ・アイコンを最小化する"
 
 #: src/muuli_wdr.cpp:1667
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
+"これを有効にするとaMuleはタスク・バーの代わりにシステム・トレイに"
+"最小化します。"
 
 #: src/muuli_wdr.cpp:1672
 msgid "Tooltip Delay Time in secs"
-msgstr ""
+msgstr "ツール・チップ延期時間（秒単位）"
 
 #: src/muuli_wdr.cpp:1673 src/muuli_wdr.cpp:1677
 msgid "The delay before showing tool-tips."
-msgstr ""
+msgstr "ツール・チップを表示するまでの延期時間。"
 
 #: src/muuli_wdr.cpp:1684
 msgid "Browser Selection"
-msgstr ""
+msgstr "ブラウザー選択"
 
 #: src/muuli_wdr.cpp:1689
 msgid "Konqueror"
-msgstr ""
+msgstr "Konqueror"
 
 #: src/muuli_wdr.cpp:1690
 msgid "Mozilla"
-msgstr ""
+msgstr "Mozilla"
 
 #: src/muuli_wdr.cpp:1691
 msgid "Firefox"
-msgstr ""
+msgstr "Firefox"
 
 #: src/muuli_wdr.cpp:1692
 msgid "Firebird"
-msgstr ""
+msgstr "Firebird"
 
 #: src/muuli_wdr.cpp:1693
 msgid "Opera"
-msgstr ""
+msgstr "Opera"
 
 #: src/muuli_wdr.cpp:1694
 msgid "Netscape"
-msgstr ""
+msgstr "Netscape"
 
 #: src/muuli_wdr.cpp:1695
 msgid "Galeon"
-msgstr ""
+msgstr "Galeon"
 
 #: src/muuli_wdr.cpp:1696
 msgid "Epiphany"
-msgstr ""
+msgstr "Epiphany"
 
 #: src/muuli_wdr.cpp:1700
 msgid "Select your browser here"
-msgstr ""
+msgstr "こちらで自分のブラウザーを選択してください"
 
 #: src/muuli_wdr.cpp:1706
 msgid "Custom Browser:"
-msgstr ""
+msgstr "個人選択のブラウザー："
 
 #: src/muuli_wdr.cpp:1710
 msgid ""
 "Enter your browser name here. To use the custom browser, select the Custom "
 "menu-item from the dropdown-menu above."
 msgstr ""
+"こちらで選択したいブラウザーの名前を記入してください。個人選択のブラウザーを利用するには、"
+"個人設定のメニュー・アイテムをドロップ・ダウン・メニューから選択してください。"
 
 #: src/muuli_wdr.cpp:1719
 msgid "Open in new tab if possible"
-msgstr ""
+msgstr "出きれば新しいタッブで開く"
 
 #: src/muuli_wdr.cpp:1721
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr ""
+msgstr "ウエッブ・ページを出きれば新しいウインドーではなくて新しいタッブで開きます"
 
 #: src/muuli_wdr.cpp:1752
 msgid "Bandwith Limits"
-msgstr ""
+msgstr "バンド幅の制限"
 
 #: src/muuli_wdr.cpp:1768 src/muuli_wdr.cpp:1812
 msgid "Upload"
-msgstr ""
+msgstr "アップロード"
 
 #: src/muuli_wdr.cpp:1781
 msgid "Slot Allocation"
-msgstr ""
+msgstr "スロット割り当て"
 
 #: src/muuli_wdr.cpp:1796
 msgid "Line Capacities"
-msgstr ""
+msgstr "ライン収容"
 
 #: src/muuli_wdr.cpp:1826
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr ""
+"留意：この値は統計に"
+"しか使われていません。"
 
 #: src/muuli_wdr.cpp:1837
 msgid "Standard client TCP Port:"
-msgstr ""
+msgstr "標準クライアントTCPポート："
 
 #: src/muuli_wdr.cpp:1841
 msgid "This is the standard ED2K port and cannot be disabled."
-msgstr ""
+msgstr "これは標準のED2Kポートなんで、無効にすることは出来ません。"
 
 #: src/muuli_wdr.cpp:1846
 msgid "Extended client UDP Port:"
-msgstr ""
+msgstr "延長クライアントUDPポート："
 
 #: src/muuli_wdr.cpp:1850
 msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr ""
+msgstr "このUDPポートは延長ED2KリクエストとKadネットワークに使用されます"
 
 #: src/muuli_wdr.cpp:1853
 msgid "disable"
-msgstr ""
+msgstr "無効にする"
 
 #: src/muuli_wdr.cpp:1860
 msgid "Bind Address"
-msgstr ""
+msgstr "アドレスをバインドする"
 
 #: src/muuli_wdr.cpp:1871
 msgid "UDP port for extended server requests (TCP+3): 4665"
-msgstr ""
+msgstr "延長サーバ・リクエストのUDPポート（TCP+3）： 4665"
 
 #: src/muuli_wdr.cpp:1878
 msgid "Max Sources per File"
-msgstr ""
+msgstr "一つのファイルに当たる最大のソース数"
 
 #: src/muuli_wdr.cpp:1885
 msgid "Hard Limit"
-msgstr ""
+msgstr "ハード制限"
 
 #: src/muuli_wdr.cpp:1897
 msgid "Connection Limits"
-msgstr ""
+msgstr "コネクション数の制限"
 
 #: src/muuli_wdr.cpp:1904
 msgid "Max Connections"
-msgstr ""
+msgstr "最大のコネクション数"
 
 #: src/muuli_wdr.cpp:1937
 msgid "Kademlia"
-msgstr ""
+msgstr "Kademlia"
 
 #: src/muuli_wdr.cpp:1945
 msgid "Universal Plug and Play"
-msgstr ""
+msgstr "ユニバーサル・プラグ・アンド・プレイ"
 
 #: src/muuli_wdr.cpp:1948
 msgid "Enable UPnP"
-msgstr ""
+msgstr "UPnPを有効にする"
 
 #: src/muuli_wdr.cpp:1953
 msgid "UPnP TCP Port:"
-msgstr ""
+msgstr "UPnPのTCPポート："
 
 #: src/muuli_wdr.cpp:1964
 msgid "Autoconnect on startup"
-msgstr ""
+msgstr "スタート・アップに自動接続する"
 
 #: src/muuli_wdr.cpp:1967
 msgid "Reconnect on loss"
-msgstr ""
+msgstr "接続を失う時に再接続する"
 
 #: src/muuli_wdr.cpp:1971
 msgid "Show overhead bandwith"
-msgstr ""
+msgstr "オーバヘッドのバンド幅を表示する"
 
 #: src/muuli_wdr.cpp:2001
 msgid "Server Options"
-msgstr ""
+msgstr "サーバのオプション"
 
 #: src/muuli_wdr.cpp:2006
 msgid "Remove dead server after"
-msgstr ""
+msgstr "何回か失敗してから死んでいるサーバを放棄する："
 
 #: src/muuli_wdr.cpp:2012
 msgid "retries"
-msgstr ""
+msgstr "回の再接続の試み"
 
 #: src/muuli_wdr.cpp:2019
 msgid "Auto-update serverlist at startup"
-msgstr ""
+msgstr "スタート・アップの時にサーバ・リストを自動アップデートする"
 
 #: src/muuli_wdr.cpp:2022
 msgid "List"
-msgstr ""
+msgstr "リスト"
 
 #: src/muuli_wdr.cpp:2027
 msgid "Update serverlist when connecting to a server"
-msgstr ""
+msgstr "あるサーバに接続する時にサーバ・リストを自動アップデートする"
 
 #: src/muuli_wdr.cpp:2030
 msgid "Update serverlist when a client connect"
-msgstr ""
+msgstr "クライアントが接続するの時にサーバ・リストを自動アップデートする"
 
 #: src/muuli_wdr.cpp:2033
 msgid "Use priority system"
-msgstr ""
+msgstr "優先システムを使用する"
 
 #: src/muuli_wdr.cpp:2037
 msgid "Use smart LowID check on connect"
-msgstr ""
+msgstr "接続の時にLowIDチェックを使用する"
 
 #: src/muuli_wdr.cpp:2041
 msgid "Safe connect"
-msgstr ""
+msgstr "安全接続"
 
 #: src/muuli_wdr.cpp:2045
 msgid "Autoconnect to servers in static list only"
-msgstr ""
+msgstr "スタティック・リストに含まれているサーバのみに自動接続する"
 
 #: src/muuli_wdr.cpp:2048
 msgid "Set manually added servers to High Priority"
-msgstr ""
+msgstr "手で追加したサーバを高い優先度に設定する"
 
 #: src/muuli_wdr.cpp:2081
 msgid "I.C.H. active"
-msgstr ""
+msgstr "I.C.H.が有効です"
 
 #: src/muuli_wdr.cpp:2085
 msgid "AICH trusts every hash (not recomended)"
-msgstr ""
+msgstr "AICHはすべてのハッシュを信頼します（推奨ではありません）"
 
 #: src/muuli_wdr.cpp:2093
 msgid "Add files to download in pause mode"
-msgstr ""
+msgstr "ダウンロードしたいファイルをポーズ・モードとして追加する"
 
 #: src/muuli_wdr.cpp:2096
 msgid "Add files to download with auto priority"
-msgstr ""
+msgstr "ダウンロードしたいファイルを自動優先度として追加する"
 
 #: src/muuli_wdr.cpp:2099
 msgid "Try to download first and last chunks first"
-msgstr ""
+msgstr "最初と最後のチャンクを先にダウンロードしようとする"
 
 #: src/muuli_wdr.cpp:2103
 msgid "Add new shared files with auto priority"
-msgstr ""
+msgstr "新しい共通ファイルを自動優先度として追加する"
 
 #: src/muuli_wdr.cpp:2106
 msgid "Try to transfer full chunks to all uploads"
