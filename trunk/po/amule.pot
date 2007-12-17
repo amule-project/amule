@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1664,7 +1664,7 @@ msgid "Connect to any server and/or Kad"
 msgstr ""
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
+msgid "WARNING: You have received Low-ID!"
 msgstr ""
 
 #: src/amuleDlg.cpp:724
