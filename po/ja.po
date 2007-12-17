@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -1708,8 +1708,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "どのサーバにも、もしくはKadに接続する"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "注意：Low-IDを貰いました！"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -6884,6 +6884,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "注意：Low-IDを貰いました！"
 
 #~ msgid "Deprecated command, now 'Status'."
 #~ msgstr "廃止予定のコマンドで、現在は'Status'です。"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-11-03 01:32-0200\n"
 "Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr."
@@ -1710,8 +1710,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Conectar a qualquer servidor e/ou Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "ATENÇÃO: Você recebeu uma ID baixa (LowID)!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -6990,6 +6990,9 @@ msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para leitura!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para escrita!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "ATENÇÃO: Você recebeu uma ID baixa (LowID)!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

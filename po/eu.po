@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -1706,8 +1706,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Konektatu edozein zerbitzari eta/edo Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "ABISUA: ID Baxua jaso duzu!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -6993,6 +6993,9 @@ msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "ABISUA: ID Baxua jaso duzu!"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

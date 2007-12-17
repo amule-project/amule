@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-12-11 23:14+0100\n"
 "Last-Translator: Youpla <youpla@youpla.com>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -1735,8 +1735,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Se connecter à n'importe quel serveur et/ou Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "ATTENTION: Vous êtes en Low-ID !"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7125,6 +7125,9 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
 "l'écriture!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "ATTENTION: Vous êtes en Low-ID !"
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

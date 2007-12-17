@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-03-12 22:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -1664,8 +1664,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Anslut till någon server och/eller Kad"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "VARNING: Du har tagit emot Low-ID!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -6743,6 +6743,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "VARNING: Du har tagit emot Low-ID!"
 
 #~ msgid "%d"
 #~ msgstr "%d"

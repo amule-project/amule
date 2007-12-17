@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1709,8 +1709,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "서버 혹은 Kad에 연결"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "경고: 낮은아이디를 받았습니다."
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -6936,6 +6936,9 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "경고: 낮은아이디를 받았습니다."
 
 #~ msgid ""
 #~ "This command requieres an argument. Valid arguments: 'all' or a number.\n"

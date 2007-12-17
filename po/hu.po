@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-12 02:30+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-12-12 00:57+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -1713,8 +1713,8 @@ msgid "Connect to any server and/or Kad"
 msgstr "Kapcsolódás bármelyik kiszolgálóhoz és/vagy a Kad-hoz"
 
 #: src/amuleDlg.cpp:723
-msgid "WARNING: You have recieved Low-ID!"
-msgstr "FIGYELMEZTETÉS: Low-ID-t kaptál!"
+msgid "WARNING: You have received Low-ID!"
+msgstr ""
 
 #: src/amuleDlg.cpp:724
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -7015,6 +7015,9 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Barátok listáját tartalmazó 'emfriends.met' fájl íráshoz történő megnyitása "
 "sikertelen!"
+
+#~ msgid "WARNING: You have recieved Low-ID!"
+#~ msgstr "FIGYELMEZTETÉS: Low-ID-t kaptál!"
 
 #~ msgid "Syncronization thread started."
 #~ msgstr "Szinkronizációs szál elindítva."
