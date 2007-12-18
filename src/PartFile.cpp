@@ -23,18 +23,20 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
+
 #include "PartFile.h"		// Interface declarations.
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for VERSION
 #endif
 
-#include <include/protocol/kad/Constants.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/protocol/Protocols.h>
-#include <include/common/DataFileVersion.h>
-#include <include/common/Constants.h>
-#include <include/tags/FileTags.h>
+#include <protocol/kad/Constants.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/Protocols.h>
+#include <common/DataFileVersion.h>
+#include <common/Constants.h>
+#include <tags/FileTags.h>
 
 #include <wx/utils.h>
 #include <wx/tokenzr.h>		// Needed for wxStringTokenizer
@@ -255,7 +257,7 @@ void CPartFile::CreatePartFile()
 	SetFilePath( thePrefs::GetTempDir() );
 			
 	if (thePrefs::GetAllocFullPart()) {
-		#warning Code for full file alloc - should be done on thread.
+		//#warning Code for full file alloc - should be done on thread.
 	}
 	
 	
@@ -290,8 +292,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	if (!metFile.Open(file_to_open,CFile::read)) {
 		if (from_backup) {
 			AddLogLineM(false, 
-				_("Error: Failed to load backup file. "
-				"Search http://forum.amule.org for .part.met recovery solutions"));
+				_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));
 		} else {
 			AddLogLineM(false, CFormat( _("Error: Failed to open part.met file: %s ==> %s") )
 				% m_partmetfilename
@@ -301,9 +302,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	} else {
 		if (!(metFile.GetLength()>0)) {
 			if (from_backup) {
-				AddLogLineM(false, _(
-					"Error: Backup part.met file is 0 size! "
-					"Search http://forum.amule.org for .part.met recovery solutions"));	
+				AddLogLineM(false, _("Error: Backup part.met file is 0 size! Search http://forum.amule.org for .part.met recovery solutions"));	
 			} else {
 				AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
 					% m_partmetfilename
@@ -320,9 +319,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		wxString BackupFile;
 		BackupFile = m_fullname + PARTMET_BAK_EXT;
 		if (!metFile.Open(BackupFile)) {
-			AddLogLineM(false, _(
-				"Error: Failed to load backup file. "
-				"Search http://forum.amule.org for .part.met recovery solutions"));				
+			AddLogLineM(false, _("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));				
 			return false;
 		} else {
 			if (!(metFile.GetLength()>0)) {
@@ -406,7 +403,7 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 						break;
 					}
 					case FT_FILETYPE:{
-						#warning needs setfiletype string
+						//#warning needs setfiletype string
 						//SetFileType(newtag.GetStr());
 						break;
 					}					
@@ -568,10 +565,10 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 
 			CMD4Hash checkhash;
 			if (!m_hashlist.empty()){
-				byte buffer[m_hashlist.size() * 16];
+				std::vector<byte> buffer(m_hashlist.size() * 16);
 				for (size_t i = 0; i < m_hashlist.size(); ++i)
-					md4cpy(buffer+(i*16), m_hashlist[i].GetHash());
-				CreateHashFromString(buffer, m_hashlist.size()*16, checkhash.GetHash());
+					md4cpy(&(buffer[i*16]), m_hashlist[i].GetHash());
+				CreateHashFromString(&(buffer[0]), m_hashlist.size()*16, checkhash.GetHash());
 			}
 			bool flag=false;
 			if (m_abyFileHash == checkhash) {
@@ -768,7 +765,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		// tags		
 		#define FIXED_TAGS 15
 		uint32 tagcount = m_taglist.size() + FIXED_TAGS + (m_gaplist.size()*2);
-		if (not m_corrupted_list.empty()) {			
+		if (!m_corrupted_list.empty()) {			
 			++tagcount;
 		}
 		
@@ -790,7 +787,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		
 		file.WriteUInt32(tagcount);
 
-		#warning Kry - Where are lost by coruption and gained by compression?
+		//#warning Kry - Where are lost by coruption and gained by compression?
 		
 		// 0 (unicoded part file name) 
 		// We write it with BOM to kep eMule compatibility
@@ -825,7 +822,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		CTagInt32(FT_ATACCEPTED,     statistic.GetAllTimeAccepts()).WriteTagToFile( &file );	// 14
 
 		// currupt part infos
-		if (not m_corrupted_list.empty()) {
+		if (!m_corrupted_list.empty()) {
 			wxString strCorruptedParts;
 			std::list<uint16>::iterator it = m_corrupted_list.begin();
 			for (; it != m_corrupted_list.end(); ++it) {
@@ -1391,7 +1388,7 @@ void CPartFile::UpdateCompletedInfos()
 		}
 	}
 
-	if ((not m_gaplist.empty()) || (not m_requestedblocks_list.empty())) {
+	if ((!m_gaplist.empty()) || (!m_requestedblocks_list.empty())) {
 		percentcompleted = (1.0f-(double)allgaps/GetFileSize()) * 100;
 		completedsize = GetFileSize() - allgaps;
 	} else {
@@ -2108,7 +2105,7 @@ bool CPartFile::GetNextRequestedBlock(CUpDownClient* sender, Requested_Block_Str
 			}
 
 			// Select the next chunk to download
-			if(not chunksList.empty()) {
+			if(!chunksList.empty()) {
 				// Find and count the chunck(s) with the highest priority
 				uint16 chunkCount = 0; // Number of found chunks with same priority
 				uint16 rank = 0xffff; // Highest priority found
@@ -2536,7 +2533,7 @@ void CPartFile::ResumeFile()
 	SetStatus(status);
 	SetActive(theApp->IsConnected());
 
-	if (m_gaplist.empty() and (GetStatus() == PS_ERROR)) {
+	if (m_gaplist.empty() && (GetStatus() == PS_ERROR)) {
 		// The file has already been hashed at this point
 		CompleteFile(true);
 	}
@@ -3028,7 +3025,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 
 	
 	uint32 partCount = GetPartCount();
-	bool changedPart[partCount];
+	std::vector<bool> changedPart(partCount);
 	
 	// Remember which parts need to be checked at the end of the flush
 	for ( uint32 i = 0; i < partCount; ++i ) {
@@ -3507,8 +3504,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		// make sure that MD4 agrres to this fact too
 		if (!HashSinglePart(nPart)){
 			AddDebugLogLineM( false, logAICHRecovery, 
-				wxString::Format(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering "
-				"- but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart));
+				wxString::Format(wxT("Processing AICH Recovery data: The part (%u) got completed while recovering - but MD4 says it corrupt! Setting hashset to error state, deleting part"), nPart));
 			// now we are fu... unhappy
 			m_pAICHHashSet->SetStatus(AICH_ERROR);
 			AddGap(PARTSIZE*nPart, ((nPart*PARTSIZE)+length)-1);
@@ -3517,8 +3513,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		}
 		else{
 			AddDebugLogLineM( false, logAICHRecovery, wxString::Format( 
-				wxT("Processing AICH Recovery data: The part (%u) "
-				"got completed while recovering and MD4 agrees"), nPart) );
+				wxT("Processing AICH Recovery data: The part (%u) got completed while recovering and MD4 agrees"), nPart) );
 			// alrighty not so bad
 			EraseFirstValue(m_corrupted_list, nPart);
 			if (status == PS_EMPTY && theApp->IsRunning()){
@@ -3878,7 +3873,7 @@ bool CPartFile::PreviewAvailable()
 #ifndef CLIENT_GUI
 	FileType type = GetFiletype(GetFileName());
 
-	return (((type == ftVideo) or (type == ftAudio)) and IsComplete(0, 256*1024));
+	return (((type == ftVideo) || (type == ftAudio)) && IsComplete(0, 256*1024));
 #else
 	return false;
 #endif
