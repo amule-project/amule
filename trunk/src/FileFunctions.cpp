@@ -199,7 +199,7 @@ bool CheckDirExists(const wxString& dir)
 	
 	// Root paths must end with a separator (X:\ rather than X:).
 	// See comments in wxDirExists.
-	if ((cleanPath.Length() == 2) and (cleanPath.Last() == wxT(':'))) {
+	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
 		cleanPath += wxFileName::GetPathSeparator();
 	}
 #else

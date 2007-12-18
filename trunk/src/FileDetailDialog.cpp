@@ -162,7 +162,7 @@ void CFileDetailDialog::FillSourcenameList()
 
 	// update
 	const CPartFile::SourceSet& sources = m_file->GetSourceList();
-	CPartFile::SourceSet::iterator it = sources.begin();
+	CPartFile::SourceSet::const_iterator it = sources.begin();
 	for ( ; it != sources.end(); ++it ) {
 		cur_src = *it; 
 		if (cur_src->GetRequestFile()!=m_file || cur_src->GetClientFilename().Length()==0)
@@ -259,7 +259,7 @@ void CFileDetailDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fileName = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
 
-	if (!fileName.IsEmpty() and (fileName != m_file->GetFileName())) {
+	if (!fileName.IsEmpty() && (fileName != m_file->GetFileName())) {
 		if (theApp->sharedfiles->RenameFile(m_file, fileName)) {
 			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
 			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());

@@ -31,6 +31,8 @@
 
 #include <common/Format.h>		// Needed for CFormat
 
+#include <common/ClientVersion.h>
+
 #include "ExternalConn.h"	// Interface declarations
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "Server.h"		// Needed for CServer
@@ -216,7 +218,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			if (proto_version == EC_CURRENT_PROTOCOL_VERSION) {
 				CMD4Hash passh;
 
-				if (not passh.Decode(thePrefs::ECPassword())) {
+				if (!passh.Decode(thePrefs::ECPassword())) {
 					AddLogLineM(false, wxT("EC Auth failed, invalid hash specificed as EC password: ") + thePrefs::ECPassword());
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxT("Authentication failed, invalid hash specified as EC password.")));				
@@ -1278,7 +1280,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				delete tree;
 			}
 			if (request->GetDetailLevel() == EC_DETAIL_WEB) {
-				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(PACKAGE_VERSION)));
+				response->AddTag(CECTag(EC_TAG_SERVER_VERSION, wxT(VERSION)));
 				response->AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
 			}
 			break;

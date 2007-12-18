@@ -136,7 +136,7 @@ public:
 	bool Parse_Command(const wxString& buffer);
 	void GetCommand(const wxString &prompt, char* buffer, size_t buffer_size);
 	const CECPacket *SendRecvMsg_v2(const CECPacket *request) { return m_ECClient->SendRecvPacket(request); }
-	void ConnectAndRun(const wxString &ProgName, const wxString& ProgName);
+	void ConnectAndRun(const wxString &ProgName, const wxString& ProgVersion);
 	void ShowGreet();
 
 	//
