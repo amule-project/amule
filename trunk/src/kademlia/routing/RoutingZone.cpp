@@ -47,8 +47,8 @@ there client on the eMule forum..
  */
 #include "RoutingZone.h"
 
-#include <include/protocol/kad/Client2Client/UDP.h>
-#include <include/common/Macros.h>
+#include <protocol/kad/Client2Client/UDP.h>
+#include <common/Macros.h>
 
 #include "Contact.h"
 #include "RoutingBin.h"
@@ -60,15 +60,7 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
 
-
 #include <cmath>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -467,12 +459,12 @@ uint32 CRoutingZone::EstimateCount()
 		return 0;
 	}
 	if( m_level < KBASE ) {
-		return (uint32)(pow(2, m_level)*10);
+		return (uint32)(pow((double)2, (int)m_level)*10);
 	}
 	CRoutingZone* curZone = m_superZone->m_superZone->m_superZone;
 
 	float modify = ((float)curZone->GetNumContacts())/20.0F;
-	return (uint32)(pow( 2, m_level-2)*10*(modify));
+	return (uint32)(pow((double) 2, (int)m_level-2)*10*(modify));
 }
 
 void CRoutingZone::OnSmallTimer(void)
