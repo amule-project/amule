@@ -25,11 +25,11 @@
 
 #include "ClientTCPSocket.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/protocol/ed2k/Client2Client/UDP.h> // Sometimes we reply with UDP packets.
-#include <include/protocol/ed2k/ClientSoftware.h>
-#include <include/common/EventIDs.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/ed2k/Client2Client/UDP.h> // Sometimes we reply with UDP packets.
+#include <protocol/ed2k/ClientSoftware.h>
+#include <common/EventIDs.h>
 
 #include "Preferences.h"	// Needed for thePrefs
 #include "Packet.h"		// Needed for CPacket
@@ -898,7 +898,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					}
 				}
 				
-				if (not bFoundFolder) {
+				if (!bFoundFolder) {
 					foldersToSend.push_back(wxString(OP_INCOMPLETE_SHARED_FILES));
 				}
 				
@@ -963,7 +963,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				tempfile.WriteString(strReqDir);
 				tempfile.WriteUInt32(list.size());
 				
-				while (not list.empty()) {
+				while (!list.empty()) {
 					if (!list.front()->IsLargeFile() || m_client->SupportsLargeFiles()) {
 						theApp->sharedfiles->CreateOfferedFilePacket(list.front(), &tempfile, NULL, m_client);
 					}
@@ -1698,7 +1698,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			CUpDownClient* callback;
 			callback = theApp->clientlist->FindClientByIP(wxUINT32_SWAP_ALWAYS(ip), tcp);
 			if( callback == NULL ) {
-				#warning Do we actually have to check friend status here?
+				//#warning Do we actually have to check friend status here?
 				callback = new CUpDownClient(tcp,ip,0,0,NULL,false, false);
 				theApp->clientlist->AddClient(callback);
 			}
@@ -2034,14 +2034,12 @@ bool CClientTCPSocket::PacketReceived(CPacket* packet)
 	} catch (const CInvalidPacket& err) {
 		exception = wxT("InvalidPacket exception: ") + err.what();
 	} catch (const wxString& error) {
-		exception = wxT("error: ") + (error.IsEmpty() ? wxT("Unknown error") : error);
+		exception = wxT("error: ") + (error.IsEmpty() ? wxString(wxT("Unknown error")) : error);
 	}
 
 	if (!exception.IsEmpty()) {
 		AddDebugLogLineM( false, logPacketErrors,
-			CFormat(wxT("Caught %s\n"
-						"On packet with protocol %x, opcode %x, size %u"
-						"\tClientData: %s\n"))
+			CFormat(wxT("Caught %s\nOn packet with protocol %x, opcode %x, size %u\tClientData: %s\n"))
 				% exception
 				% packet->GetProtocol()
 				% packet->GetOpCode()
