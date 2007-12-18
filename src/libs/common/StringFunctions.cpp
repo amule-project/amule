@@ -144,7 +144,7 @@ wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
 
 wxString StripSeparators(wxString path, wxString::stripType type)
 {
-	wxASSERT((type == wxString::leading) or (type == wxString::trailing));
+	wxASSERT((type == wxString::leading) || (type == wxString::trailing));
 	const wxString seps = wxFileName::GetPathSeparators();
 
 	while (!path.IsEmpty()) {

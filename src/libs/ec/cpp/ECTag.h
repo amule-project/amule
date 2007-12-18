@@ -35,7 +35,7 @@
 #endif
 
 /* aMule/libcommon generic includes */
-#include "MD4Hash.h"		// Needed for CMD4Hash
+#include "../../../MD4Hash.h"		// Needed for CMD4Hash
 
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types

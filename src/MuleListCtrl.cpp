@@ -30,7 +30,7 @@
 #include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
 #include <common/StringFunctions.h>		// Needed for StrToLong
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include "MuleListCtrl.h"		// Interface declarations
 #include "GetTickCount.h"		// Needed for GetTickCount()
@@ -93,7 +93,7 @@ CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& 
 
 CMuleListCtrl::~CMuleListCtrl()
 {
-	if (not m_name.IsEmpty()) {
+	if (!m_name.IsEmpty()) {
 		SaveSettings();
 	}
 }
@@ -101,7 +101,7 @@ CMuleListCtrl::~CMuleListCtrl()
 
 void CMuleListCtrl::SaveSettings()
 {
-	wxCHECK_RET(not m_name.IsEmpty(), wxT("Cannot save settings for unnamed list"));
+	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot save settings for unnamed list"));
 	
 	wxConfigBase* cfg = wxConfigBase::Get();
 
@@ -127,7 +127,7 @@ void CMuleListCtrl::SaveSettings()
 
 void CMuleListCtrl::LoadSettings()
 {
-	wxCHECK_RET(not m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
+	wxCHECK_RET(!m_name.IsEmpty(), wxT("Cannot load settings for unnamed list"));
 
 	wxConfigBase* cfg = wxConfigBase::Get();
 
@@ -251,7 +251,7 @@ void CMuleListCtrl::SortList()
 	wxCHECK_RET(g_sort_func == NULL, wxT("Sort-function already set"));
 	wxCHECK_RET(g_sort_list == NULL, wxT("Sort-list already set"));
 	
-	if (m_sort_func and GetColumnCount()) {
+	if (m_sort_func && GetColumnCount()) {
 		// Positions are likely to be invalid after sorting.
 		ResetTTS();
 		
@@ -420,7 +420,7 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 	MULE_VALIDATE_PARAMS(column < (unsigned)GetColumnCount(), wxT("Invalid column to sort by."));
 	MULE_VALIDATE_PARAMS(!(order & ~SORTING_MASK), wxT("Sorting order contains invalid data."));
 	
-	if (not m_sort_orders.empty()) {
+	if (!m_sort_orders.empty()) {
 		SetColumnImage(m_sort_orders.front().first, -1);
 	
 		CSortingList::iterator it = m_sort_orders.begin();
@@ -447,7 +447,7 @@ void CMuleListCtrl::SetSorting(unsigned column, unsigned order)
 bool CMuleListCtrl::IsItemSorted(long item)
 {
 	wxCHECK_MSG(m_sort_func, true, wxT("No sort function specified!"));
-	wxCHECK_MSG((item >= 0) and (item < GetItemCount()), true, wxT("Invalid item"));
+	wxCHECK_MSG((item >= 0) && (item < GetItemCount()), true, wxT("Invalid item"));
 	
 	bool sorted = true;
 	long data = GetItemData(item);
@@ -458,7 +458,7 @@ bool CMuleListCtrl::IsItemSorted(long item)
 	}
 
 	// Check that the item after the current item is greater (or equal)
-	if (sorted and (item < GetItemCount() - 1)) {
+	if (sorted && (item < GetItemCount() - 1)) {
 		sorted &= (CompareItems(GetItemData(item + 1), data) >= 0);
 	}
 
@@ -519,8 +519,8 @@ wxString CMuleListCtrl::GetTTSText(unsigned item) const
 
 void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 {
-	if (evt.AltDown() or evt.ControlDown() or evt.MetaDown()) {
-		if (evt.CmdDown() and (evt.GetKeyCode() ==  0x01 )) {
+	if (evt.AltDown() || evt.ControlDown() || evt.MetaDown()) {
+		if (evt.CmdDown() && (evt.GetKeyCode() ==  0x01 )) {
 			// Ctrl+a (Command+a on Mac) was pressed, select all items
 			for (int i = 0; i < GetItemCount(); ++i) {
 				SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);

@@ -29,7 +29,7 @@
 
 #include <common/Format.h>		// Needed for CFormat
 
-#include "KnownFile.h"		// Needed for PS_*
+#include "../../../KnownFile.h"		// Needed for PS_*
 
 wxString CEC_PartFile_Tag::GetFileStatusString()
 {

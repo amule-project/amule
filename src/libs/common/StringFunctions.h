@@ -27,10 +27,9 @@
 #ifndef STRING_FUNCTIONS_H
 #define STRING_FUNCTIONS_H
 
-
 #include "../../Types.h"		// Needed for uint16 and uint32
-#include <wx/filename.h>
 
+#include <wx/filename.h>
 
 #include "ConvAmule.h"
 
@@ -136,7 +135,11 @@ inline unsigned long StrToULong( const wxString& str ) {
 }
 
 inline unsigned long long StrToULongLong( const wxString& str ) {
+#ifdef MSVC
+	return _atoi64(unicode2char(str));
+#else
 	return atoll(unicode2char(str));
+#endif
 }
 
 inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)

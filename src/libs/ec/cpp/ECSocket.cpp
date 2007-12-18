@@ -332,7 +332,7 @@ void CECSocket::OnInput()
 			    m_curr_rx_data->GetLength() < needed_size) {
 				m_curr_rx_data.reset(new CQueuedData(needed_size));
 			}
-			#warning Kry TODO: Read packet?
+			//#warning Kry TODO: Read packet?
 		} else {
 			//m_curr_rx_data->DumpMem();
 			std::auto_ptr<const CECPacket> packet(ReadPacket());

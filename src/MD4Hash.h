@@ -30,10 +30,10 @@
 
 #include "kademlia/utils/UInt128.h" // Needed for CUInt128
 
-#include <libs/common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
+#include <common/MuleDebug.h>		// Needed for MULE_VALIDATE_PARAMS
 
 #ifdef USE_WX_EXTENSIONS
-#include <libs/common/StringFunctions.h>
+#include <common/StringFunctions.h>
 #endif
 
 #include <string>
