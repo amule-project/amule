@@ -93,7 +93,7 @@ Basic Obfuscated Handshake Protocol Client <-> Server:
 #include <algorithm>
 
 #include <common/MD5Sum.h>
-#include <include/protocol/Protocols.h>
+#include <protocol/Protocols.h>
 
 #define	MAGICVALUE_REQUESTER	34							// modification of the requester-send and server-receive key
 #define	MAGICVALUE_SERVER		203							// modification of the server-send and requester-send key
