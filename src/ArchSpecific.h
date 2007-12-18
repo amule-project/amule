@@ -33,7 +33,7 @@
 #define ENDIAN_SWAP_32(x) (wxUINT32_SWAP_ON_BE(x))
 #define ENDIAN_SWAP_I_32(x) x = wxUINT32_SWAP_ON_BE(x)
 
-#if defined __GNUC__ && __GNUC__ >= 2
+#if ((defined __GNUC__) && __GNUC__ >= 2) || defined (MSVC)
 	#define ENDIAN_SWAP_64(x) (wxUINT64_SWAP_ON_BE(x))
 	#define ENDIAN_SWAP_I_64(x) x = wxUINT64_SWAP_ON_BE(x)
 #endif
@@ -103,7 +103,7 @@ inline void PokeUInt64(void* p, uint64 nVal);
 // \}
 
 
-#if defined(__arm__) or defined(__sparc__)
+#if defined(__arm__) || defined(__sparc__)
 	#define ARM_OR_SPARC
 #endif
 
