@@ -24,8 +24,10 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
 #include "DirectoryTreeCtrl.h"	// Interface declarations
+
+#include <wx/app.h>
+
 #include "FileFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
@@ -154,7 +156,7 @@ void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 {
 	// Ensure that children are added, otherwise we might only get a "." entry.
-	if (not IsExpanded(hChild) and ItemHasChildren(hChild)) {
+	if (!IsExpanded(hChild) && ItemHasChildren(hChild)) {
 		DeleteChildren(hChild);
 		AddSubdirectories(hChild, GetFullPath(hChild));
 		SortChildren(hChild);
