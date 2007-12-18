@@ -23,13 +23,15 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
+
 #include "ED2KLink.h"			// Interface declarations.
 
 #include <wx/string.h>
 #include <wx/regex.h>			// Needed for wxRegEx
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
 
-#include <include/protocol/ed2k/Constants.h>
+#include <protocol/ed2k/Constants.h>
 
 #include "MemFile.h"			// Needed for CMemFile
 #include "NetworkFunctions.h"	// Needed for Uint32toStringIP
@@ -170,11 +172,11 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 	// that this check is valid, as odd as it seems
 	wxString size = tokens.GetNextToken().Strip(wxString::both);
 	m_size = StrToULongLong(size);
-	if ((m_size == 0) or (m_size > MAX_FILE_SIZE)) {
-		throw wxString(wxT("Invalid file size"));
+	if ((m_size == 0) || (m_size > MAX_FILE_SIZE)) {
+		throw wxString::Format(wxT("Invalid file size %i"), m_size);
 	}
 	
-	if (not m_hash.Decode(tokens.GetNextToken().Strip(wxString::both))) {
+	if (!m_hash.Decode(tokens.GetNextToken().Strip(wxString::both))) {
 		throw wxString(wxT("Invalid hash"));
 	}
 
@@ -203,7 +205,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 				unsigned port = StrToULong(strport);
 
 				// Sanity checking
-				if ((port == 0) or (port > 0xFFFF)) {
+				if ((port == 0) || (port > 0xFFFF)) {
 					throw wxString( wxT("Invalid Port" ) );
 				}
 				
@@ -234,7 +236,7 @@ CED2KFileLink::CED2KFileLink(const wxString& link)
 
 			while (hashTokens.HasMoreTokens()) {
 				CMD4Hash hash;
-				if (not hash.Decode(hashTokens.GetNextToken().Strip(wxString::both))) {
+				if (!hash.Decode(hashTokens.GetNextToken().Strip(wxString::both))) {
 					throw wxString(wxT("Invalid hash in part-hashes list"));
 				}
 
