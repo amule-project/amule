@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-17 01:01+0000\n"
+"POT-Creation-Date: 2007-12-17 02:31+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -4891,7 +4891,9 @@ msgstr "スタート・アップに新バージョンをチェックする"
 
 #: src/muuli_wdr.cpp:1650
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr "これを有効にするとaMuleはスタート・アップの時に新バージョンのチェックするを行う"
+msgstr ""
+"これを有効にするとaMuleはスタート・アップの時に新バージョンのチェックするを行"
+"う"
 
 #: src/muuli_wdr.cpp:1653
 msgid "Start minimized"
@@ -4915,7 +4917,8 @@ msgstr "トレイ・アイコンを有効にする"
 
 #: src/muuli_wdr.cpp:1663
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr "これでシステム・トレイ、またはタスク・バーのアイコンを有効／無効にします。"
+msgstr ""
+"これでシステム・トレイ、またはタスク・バーのアイコンを有効／無効にします。"
 
 #: src/muuli_wdr.cpp:1666
 msgid "Minimize to Tray Icon"
@@ -4926,8 +4929,8 @@ msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
-"これを有効にするとaMuleはタスク・バーの代わりにシステム・トレイに"
-"最小化します。"
+"これを有効にするとaMuleはタスク・バーの代わりにシステム・トレイに最小化しま"
+"す。"
 
 #: src/muuli_wdr.cpp:1672
 msgid "Tooltip Delay Time in secs"
@@ -4986,8 +4989,9 @@ msgid ""
 "Enter your browser name here. To use the custom browser, select the Custom "
 "menu-item from the dropdown-menu above."
 msgstr ""
-"こちらで選択したいブラウザーの名前を記入してください。個人選択のブラウザーを利用するには、"
-"個人設定のメニュー・アイテムをドロップ・ダウン・メニューから選択してください。"
+"こちらで選択したいブラウザーの名前を記入してください。個人選択のブラウザーを"
+"利用するには、個人設定のメニュー・アイテムをドロップ・ダウン・メニューから選"
+"択してください。"
 
 #: src/muuli_wdr.cpp:1719
 msgid "Open in new tab if possible"
@@ -4995,7 +4999,8 @@ msgstr "出きれば新しいタッブで開く"
 
 #: src/muuli_wdr.cpp:1721
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr "ウエッブ・ページを出きれば新しいウインドーではなくて新しいタッブで開きます"
+msgstr ""
+"ウエッブ・ページを出きれば新しいウインドーではなくて新しいタッブで開きます"
 
 #: src/muuli_wdr.cpp:1752
 msgid "Bandwith Limits"
@@ -5017,9 +5022,7 @@ msgstr "ライン収容"
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
-msgstr ""
-"留意：この値は統計に"
-"しか使われていません。"
+msgstr "留意：この値は統計にしか使われていません。"
 
 #: src/muuli_wdr.cpp:1837
 msgid "Standard client TCP Port:"
