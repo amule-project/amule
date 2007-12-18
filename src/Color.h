@@ -26,7 +26,6 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-
 #if !defined(__WXPM__) && !defined(__WXMSW__)  // Otherwise already defined in wx/defs.h.
 #include <inttypes.h>	// Do_not_auto_remove (old gcc)
 typedef uint32_t COLORREF;
@@ -43,7 +42,7 @@ inline int G_BLEND(int a, int percentage)
 }
 
 
-#ifndef __WXMSW__
+#if !defined(__WXMSW__)
 inline COLORREF RGB(int a, int b, int c)
 {
 	COLORREF result;
