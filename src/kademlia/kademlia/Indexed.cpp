@@ -39,27 +39,19 @@ there client on the eMule forum..
 #include "Indexed.h"
 
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/protocol/kad/Client2Client/UDP.h>
-#include <include/common/Macros.h>
-#include <include/tags/FileTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/kad/Constants.h>
+#include <protocol/kad/Client2Client/UDP.h>
+#include <common/Macros.h>
+#include <tags/FileTags.h>
 
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
 #include "../../CFile.h"
-#include "../MemFile.h"
-#include "amule.h"
-#include "Preferences.h"
-#include "Logger.h"
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
+#include "../../MemFile.h"
+#include "../../amule.h"
+#include "../../Preferences.h"
+#include "../../Logger.h"
 
 ////////////////////////////////////////
 using namespace Kademlia;

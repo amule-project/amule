@@ -89,7 +89,7 @@ public:
 	
 		CastChild(IDC_DOWNLOADSIZE, wxStaticText)->SetLabel(label.GetString());
 	
-		if (total and (total != m_progressbar->GetRange())) {
+		if (total && (total != m_progressbar->GetRange())) {
 			m_progressbar->SetRange(total);
 		}
 	

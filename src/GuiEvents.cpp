@@ -36,7 +36,7 @@ namespace MuleNotify
 	void HandleNotification(const CMuleNotiferBase& ntf)
 	{
 		if (wxThread::IsMain()) {
-#if defined(AMULE_DAEMON) or defined(REMOTE_GUI)
+#if defined(AMULE_DAEMON) || defined(REMOTE_GUI)
 			ntf.Notify();
 #else
 			if (theApp->amuledlg) {
@@ -153,7 +153,7 @@ namespace MuleNotify
 	void SharedFilesShowFile(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
 			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFile(file);
 		}
 #endif
@@ -162,7 +162,7 @@ namespace MuleNotify
 	void SharedFilesRemoveFile(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
 			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->RemoveFile(file);
 		}
 #endif
@@ -181,7 +181,7 @@ namespace MuleNotify
 	void SharedFilesShowFileList()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
 			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->ShowFileList();
 		}
 #endif
@@ -191,7 +191,7 @@ namespace MuleNotify
 	void SharedFilesUpdateItem(CKnownFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_sharedfileswnd and theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
+		if (theApp->amuledlg->m_sharedfileswnd && theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl) {
 			theApp->amuledlg->m_sharedfileswnd->sharedfilesctrl->UpdateItem(file);
 		}
 #endif
@@ -201,7 +201,7 @@ namespace MuleNotify
 	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
 		}
 #endif
@@ -210,7 +210,7 @@ namespace MuleNotify
 	void DownloadCtrlAddFile(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl ) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->AddFile(file);
 		}
 #endif
@@ -219,7 +219,7 @@ namespace MuleNotify
 	void DownloadCtrlAddSource(CPartFile* NOT_ON_DAEMON(owner), CUpDownClient* NOT_ON_DAEMON(source), DownloadItemType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			if (owner->ShowSources()) {
 				theApp->amuledlg->m_transferwnd->downloadlistctrl->AddSource(owner, source, type);
 			}
@@ -230,7 +230,7 @@ namespace MuleNotify
 	void DownloadCtrlRemoveFile(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveFile(file);
 		}
 #endif
@@ -239,8 +239,8 @@ namespace MuleNotify
 	void DownloadCtrlRemoveSource(const CUpDownClient* NOT_ON_DAEMON(source), const CPartFile* NOT_ON_DAEMON(owner))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
-			if ((owner == NULL) or owner->ShowSources()) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			if ((owner == NULL) || owner->ShowSources()) {
 				theApp->amuledlg->m_transferwnd->downloadlistctrl->RemoveSource(source, owner);
 			}
 		}
@@ -250,7 +250,7 @@ namespace MuleNotify
 	void DownloadCtrlHideSource(CPartFile* NOT_ON_DAEMON(file))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->ShowSources(file, false);
 		}
 #endif
@@ -259,7 +259,7 @@ namespace MuleNotify
 	void DownloadCtrlSort()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
 			theApp->amuledlg->m_transferwnd->downloadlistctrl->SortList();
 		}
 #endif
@@ -269,7 +269,7 @@ namespace MuleNotify
 	void ClientCtrlAddClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
 			theApp->amuledlg->m_transferwnd->clientlistctrl->InsertClient(client, type);
 		}
 #endif
@@ -278,7 +278,7 @@ namespace MuleNotify
 	void ClientCtrlRefreshClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
 			theApp->amuledlg->m_transferwnd->clientlistctrl->UpdateClient(client, type);
 		}
 #endif
@@ -287,7 +287,7 @@ namespace MuleNotify
 	void ClientCtrlRemoveClient(CUpDownClient* NOT_ON_DAEMON(client), ViewType NOT_ON_DAEMON(type))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd and theApp->amuledlg->m_transferwnd->clientlistctrl) {
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->clientlistctrl) {
 			theApp->amuledlg->m_transferwnd->clientlistctrl->RemoveClient(client, type);
 		}
 #endif
@@ -297,7 +297,7 @@ namespace MuleNotify
 	void ServerAdd(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->AddServer(server);
 		}
 #endif
@@ -306,7 +306,7 @@ namespace MuleNotify
 	void ServerRemove(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->RemoveServer(server);
 		}
 #endif
@@ -322,7 +322,7 @@ namespace MuleNotify
 	void ServerRemoveAll()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->DeleteAllItems();
 		}
 #endif
@@ -331,7 +331,7 @@ namespace MuleNotify
 	void ServerHighlight(CServer* NOT_ON_DAEMON(server), bool NOT_ON_DAEMON(highlight))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->HighlightServer(server, highlight);
 		}
 #endif
@@ -340,7 +340,7 @@ namespace MuleNotify
 	void ServerRefresh(CServer* NOT_ON_DAEMON(server))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->RefreshServer(server);
 		}
 #endif
@@ -349,7 +349,7 @@ namespace MuleNotify
 	void ServerFreeze()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->Freeze();
 		}
 #endif
@@ -358,7 +358,7 @@ namespace MuleNotify
 	void ServerThaw()
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_serverwnd and theApp->amuledlg->m_serverwnd->serverlistctrl) {
+		if (theApp->amuledlg->m_serverwnd && theApp->amuledlg->m_serverwnd->serverlistctrl) {
 			theApp->amuledlg->m_serverwnd->serverlistctrl->Thaw();
 		}
 #endif
@@ -413,7 +413,7 @@ namespace MuleNotify
 	void Search_Update_Sources(CSearchFile* NOT_ON_DAEMON(result))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg and theApp->amuledlg->m_searchwnd) {
+		if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
 			theApp->amuledlg->m_searchwnd->UpdateResult(result);
 		}
 #endif
@@ -422,7 +422,7 @@ namespace MuleNotify
 	void Search_Add_Result(CSearchFile* NOT_ON_DAEMON(result))
 	{
 #ifndef AMULE_DAEMON
-		if (theApp->amuledlg and theApp->amuledlg->m_searchwnd) {
+		if (theApp->amuledlg && theApp->amuledlg->m_searchwnd) {
 			theApp->amuledlg->m_searchwnd->AddResult(result);
 		}
 #endif
@@ -529,7 +529,7 @@ namespace MuleNotify
 	void PartFile_Swap_A4AF(CPartFile* file)
 	{
 		if ((file->GetStatus(false) == PS_READY || file->GetStatus(false) == PS_EMPTY)) {
-			CPartFile::SourceSet::iterator it = file->GetA4AFList().begin();
+			CPartFile::SourceSet::const_iterator it = file->GetA4AFList().begin();
 			for ( ; it != file->GetA4AFList().end(); ) {
 				CUpDownClient *cur_source = *it++;
 
@@ -540,13 +540,13 @@ namespace MuleNotify
 	
 	void PartFile_Swap_A4AF_Auto(CPartFile* file)
 	{
-		file->SetA4AFAuto(not file->IsA4AFAuto());
+		file->SetA4AFAuto(!file->IsA4AFAuto());
 	}
 	
 	void PartFile_Swap_A4AF_Others(CPartFile* file)
 	{
 		if ((file->GetStatus(false) == PS_READY) || (file->GetStatus(false) == PS_EMPTY)) {
-			CPartFile::SourceSet::iterator it = file->GetSourceList().begin();
+			CPartFile::SourceSet::const_iterator it = file->GetSourceList().begin();
 			for( ; it != file->GetSourceList().end(); ) {
 				CUpDownClient* cur_source = *it++;
 

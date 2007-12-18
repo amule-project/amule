@@ -26,7 +26,7 @@
 
 #include "FriendListCtrl.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
@@ -38,7 +38,7 @@
 #include "muuli_wdr.h"
 #include "SafeFile.h"
 
-#warning REMOVE WHEN EC IS CODED!
+//#warning REMOVE WHEN EC IS CODED!
 #include "FriendList.h"		// Needed for the friends list
 
 BEGIN_EVENT_TABLE(CFriendListCtrl, CMuleListCtrl)
@@ -94,7 +94,7 @@ void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_name);
 	SetItemData(itemnr, (long)toadd);
 	
-	#warning CORE/GUI
+	//#warning CORE/GUI
 	if (send_to_core) {
 	#ifndef CLIENT_GUI
 		theApp->friendlist->AddFriend(toadd->m_hash, 0, toadd->m_ip, toadd->m_port, 0,toadd->m_name);
@@ -117,7 +117,7 @@ void CFriendListCtrl::AddFriend(CUpDownClient* toadd)
 		return;
 	}
 	
-	#warning CORE/GUI
+	//#warning CORE/GUI
 	// This links the friend to the client also
 	#ifndef CLIENT_GUI
 	theApp->friendlist->AddFriend(toadd);
@@ -140,7 +140,7 @@ void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 	if ( itemnr == -1 )
 		return;
 	
-	#warning CORE/GUI
+	//#warning CORE/GUI
 	#ifndef CLIENT_GUI
 	theApp->friendlist->RemoveFriend(toremove->m_hash, toremove->m_ip, toremove->m_port);
 	#endif
@@ -155,7 +155,7 @@ void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 	if (itemnr != -1) {
 		SetItem(itemnr, 0, toupdate->m_name);
 	}	
-	#warning CORE/GUI
+	//#warning CORE/GUI
 	#ifndef CLIENT_GUI
 	theApp->friendlist->UpdateFriendName(toupdate->m_hash, toupdate->m_name, toupdate->m_ip, toupdate->m_port);
 	#endif
@@ -180,7 +180,7 @@ void CFriendListCtrl::OnItemActivated(wxListEvent& WXUNUSED(event))
 
 void CFriendListCtrl::LoadList()
 {
-	#warning EC: ASK THE LIST TO CORE!
+	//#warning EC: ASK THE LIST TO CORE!
 	
 	#ifndef CLIENT_GUI
 	for(FriendList::iterator it = theApp->friendlist->m_FriendList.begin(); it != theApp->friendlist->m_FriendList.end(); ++it) {
@@ -256,7 +256,7 @@ void CFriendListCtrl::OnSendMessage(wxCommandEvent& WXUNUSED(event)) {
 	while( index != -1 ) {
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
 		theApp->amuledlg->m_chatwnd->StartSession(cur_friend);			
-		#warning CORE/GUI!			
+		//#warning CORE/GUI!			
 		#ifndef CLIENT_GUI
 		theApp->friendlist->StartChatSession(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
 		#endif		
@@ -295,7 +295,7 @@ void CFriendListCtrl::OnShowDetails(wxCommandEvent& WXUNUSED(event))
 	while( index != -1 ) {
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
 		if (cur_friend->islinked) {
-			#warning EC: We need a reply packet with a full CUpDownClient
+			//#warning EC: We need a reply packet with a full CUpDownClient
 			#ifndef CLIENT_GUI
 			CClientDetailDialog
 				(
@@ -320,7 +320,7 @@ void CFriendListCtrl::OnViewFiles(wxCommandEvent& WXUNUSED(event))
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	while( index != -1 ) {
-		#warning CORE/GUI!
+		//#warning CORE/GUI!
 		#ifndef CLIENT_GUI
 			CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);
 			theApp->friendlist->RequestSharedFileList(cur_friend->m_hash, cur_friend->m_ip, cur_friend->m_port);
@@ -342,7 +342,7 @@ void CFriendListCtrl::OnSetFriendslot(wxCommandEvent& event)
 	}
 	// Now set the proper one
 	index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-	#warning CORE/GUI!
+	//#warning CORE/GUI!
 	#ifndef CLIENT_GUI
 		CDlgFriend* cur_friend = (CDlgFriend*)GetItemData(index);	
 		cur_friend->hasfriendslot = event.IsChecked();
@@ -368,7 +368,7 @@ void CFriendListCtrl::SetLinked(const CMD4Hash& userhash, uint32 dwIP, uint16 nP
 void CFriendListCtrl::OnKeyPressed(wxKeyEvent& event)
 {
 	// Check if delete was pressed
-	if ((event.GetKeyCode() == WXK_DELETE) or (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
+	if ((event.GetKeyCode() == WXK_DELETE) || (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
 		if (GetItemCount()) {
 			wxCommandEvent evt;
 			evt.SetId( MP_REMOVEFRIEND );
