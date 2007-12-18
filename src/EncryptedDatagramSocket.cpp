@@ -99,7 +99,7 @@
 #include "./kademlia/kademlia/Kademlia.h"
 #include "RandomFunctions.h"
 
-#include <include/protocol/Protocols.h>
+#include <protocol/Protocols.h>
 #include <common/MD5Sum.h>
 
 // random generator
