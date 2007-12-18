@@ -27,6 +27,8 @@ const int versionMajor		= 1;
 const int versionMinor		= 4;
 const int versionRevision	= 0;
 
+
+
 #include <cstdlib>
 #include <sstream>
 #include <iostream>
@@ -41,11 +43,11 @@ const int versionRevision	= 0;
 #endif
 
 #include "FileLock.h"
+#define USE_STD_STRING
 #include "MagnetURI.h"
 #include "MuleCollection.h"
 
 using std::string;
-
 
 string GetLinksFilePath(const string& configDir)
 {
@@ -53,7 +55,7 @@ string GetLinksFilePath(const string& configDir)
 #ifdef __WIN32__
 		char buffer[MAX_PATH + 1];
 		configDir.copy(buffer, MAX_PATH);
-		if (PathAppend(buffer, "ED2KLinks")) {
+		if (PathAppendA(buffer, "ED2KLinks")) {
 			string strDir;
 			strDir.assign(buffer);
 			return strDir;
@@ -95,8 +97,8 @@ string GetLinksFilePath(const string& configDir)
 	HRESULT hr = SHGetSpecialFolderLocation(NULL, CSIDL_APPDATA, &pidl);
 
 	if (SUCCEEDED(hr)) {
-		if (SHGetPathFromIDList(pidl, buffer)) {
-			if (PathAppend(buffer, "aMule\\ED2KLinks")) {
+		if (SHGetPathFromIDListA(pidl, buffer)) {
+			if (PathAppendA(buffer, "aMule\\ED2KLinks")) {
 				strDir.assign(buffer);
 			}
 		}
@@ -273,11 +275,11 @@ void writeLink( const string& uri, const string& config_dir )
 	static CFileLock lock(GetLinksFilePath(config_dir));
 	static std::ofstream file;
 	
-	if (not file.is_open()) {
+	if (!file.is_open()) {
 		string path = GetLinksFilePath(config_dir);
 		file.open( path.c_str(), std::ofstream::out | std::ofstream::app );
 
-		if (not file.is_open()) {
+		if (!file.is_open()) {
 			std::cout << "ERROR! Failed to open " << path << " for writing!" << std::endl;
 			exit(1);
 		}
@@ -444,11 +446,11 @@ int main(int argc, char *argv[])
 			
 			string type = arg.substr( 8, arg.find( '|', 9 ) - 8 );
 		
-			if ( (type == "file") and checkFileLink( arg ) ) {
+			if ( (type == "file") && checkFileLink( arg ) ) {
 				writeLink( arg, config_path );
-			} else if ( (type == "server") and checkServerLink( arg ) ) {
+			} else if ( (type == "server") && checkServerLink( arg ) ) {
 				writeLink( arg, config_path );
-			} else if ( (type == "serverlist") and checkServerListLink( arg ) ) {
+			} else if ( (type == "serverlist") && checkServerListLink( arg ) ) {
 				writeLink( arg, config_path );
 			} else {
 				std::cout << "Unknown or invalid link-type:\n\t" << arg << std::endl;
