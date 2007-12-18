@@ -37,7 +37,11 @@
 
 #include "ixml.h"
 
+#ifndef __WIN32__
 #include <netinet/in.h>
+#else
+#include <winsock.h>
+#endif
 
 #define LINE_SIZE  180
 #define NAME_SIZE  256

@@ -34,6 +34,7 @@
 #ifndef __ENCRYPTEDSTREAMSOCKET_H__
 #define __ENCRYPTEDSTREAMSOCKET_H__
 
+#include <wx/wx.h>
 #include <wx/string.h>
 
 // cryptoPP used for DH integer calculations
