@@ -34,6 +34,9 @@
 #define CRYPT_CIP_LOCALCLIENT	20
 #define CRYPT_CIP_NONECLIENT	30
 
+#ifdef MSVC
+#pragma pack(1)
+#endif
 struct CreditStruct
 {
 	CreditStruct();
@@ -45,7 +48,13 @@ struct CreditStruct
 	uint16		nReserved3;
 	uint8		nKeySize;
 	byte		abySecureIdent[MAXPUBKEYSIZE];
-}__attribute__ ((packed)) ;
+}
+#ifdef MSVC
+;
+#pragma pack()
+#else
+__attribute__((__packed__));
+#endif
 
 enum EIdentState{
 	IS_NOTAVAILABLE,
