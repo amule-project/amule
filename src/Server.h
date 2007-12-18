@@ -28,8 +28,8 @@
 
 #include "Tag.h"
 
-#include <include/protocol/ed2k/Client2Server/TCP.h> 
-#include <include/protocol/ed2k/Client2Server/UDP.h> 
+#include <protocol/ed2k/Client2Server/TCP.h> 
+#include <protocol/ed2k/Client2Server/UDP.h> 
 
 #ifdef CLIENT_GUI
 #include <ec/cpp/ECSpecialTags.h>

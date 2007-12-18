@@ -23,10 +23,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/app.h>
 
 #include <wx/gauge.h>		// Do_not_auto_remove (win32)
 
-#include <include/tags/FileTags.h>
+#include <tags/FileTags.h>
 
 #include "SearchDlg.h"		// Interface declarations.
 #include "SearchListCtrl.h"	// Needed for CSearchListCtrl
@@ -93,7 +94,7 @@ CSearchDlg::CSearchDlg(wxWindow* pParent)
 	m_notebook = CastChild( ID_NOTEBOOK, CMuleNotebook );
 
 #if defined(__WXMAC__)
-	#warning TODO: restore the image list if/when wxMac supports locating the image
+	//#warning TODO: restore the image list if/when wxMac supports locating the image
 #else
 	// Initialise the image list
 	wxImageList* m_ImageList = new wxImageList(16,16);
@@ -298,15 +299,15 @@ void CSearchDlg::OnFieldChanged( wxEvent& WXUNUSED(evt) )
 	}
 
 	// Check if either of the dropdowns have been changed
-	enable |= CastChild(IDC_SEARCHMINSIZE, wxChoice)->GetSelection() != 2;
-	enable |= CastChild(IDC_SEARCHMAXSIZE, wxChoice)->GetSelection() != 2;
-	enable |= CastChild(IDC_TypeSearch, wxChoice)->GetSelection();
-	enable |= CastChild(ID_AUTOCATASSIGN, wxChoice)->GetSelection();
+	enable |= (CastChild(IDC_SEARCHMINSIZE, wxChoice)->GetSelection() != 2);
+	enable |= (CastChild(IDC_SEARCHMAXSIZE, wxChoice)->GetSelection() != 2);
+	enable |= (CastChild(IDC_TypeSearch, wxChoice)->GetSelection() > 0);
+	enable |= (CastChild(ID_AUTOCATASSIGN, wxChoice)->GetSelection() > 0);
 	
 	// These are the IDs of the search-fields
 	int spinfields[] = { IDC_SPINSEARCHMIN, IDC_SPINSEARCHMAX, IDC_SPINSEARCHAVAIBILITY };
 	for ( uint16 i = 0; i < itemsof(spinfields); i++ ) {
-		enable |= CastChild( spinfields[i], wxSpinCtrl )->GetValue();
+		enable |= (CastChild( spinfields[i], wxSpinCtrl )->GetValue() > 0);
 	}
 
 	// Enable the "Reset" button if any fields contain text
@@ -463,7 +464,7 @@ void CSearchDlg::StartNewSearch()
 		// Parameter Maximum Size
 		params.maxSize = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
 
-		if ((params.maxSize < params.minSize) and (params.maxSize)) {
+		if ((params.maxSize < params.minSize) && (params.maxSize)) {
 			wxMessageDialog dlg(this,
 				_("Min size must be smaller than max size. Max size ignored."),
 				_("Search warning"), wxOK|wxCENTRE|wxICON_INFORMATION);

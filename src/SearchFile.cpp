@@ -25,7 +25,7 @@
 
 #include "SearchFile.h"			// Interface declarations.
 
-#include <include/tags/FileTags.h>
+#include <tags/FileTags.h>
 
 #include "MemFile.h"			// Needed for CMemFile
 #include "Preferences.h"		// Needed for thePrefs
@@ -44,9 +44,9 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint
 	m_clientID = data.ReadUInt32();
 	m_clientPort = data.ReadUInt16();
 
-	if ((not m_clientID) or (not m_clientPort)) {
+	if ((!m_clientID) || (!m_clientPort)) {
 		m_clientID = m_clientPort = 0;
-	} else if (not IsGoodIP(m_clientID, thePrefs::FilterLanIPs())) {
+	} else if (!IsGoodIP(m_clientID, thePrefs::FilterLanIPs())) {
 		m_clientID = m_clientPort = 0;
 	}
 	
@@ -125,9 +125,9 @@ void CSearchFile::AddSources(uint32 count, uint32 count_complete)
 void CSearchFile::AddChild(CSearchFile* file)
 {
 	wxCHECK_RET(file, wxT("Not a valid child!"));
-	wxCHECK_RET(not file->GetParent(), wxT("Search-result can only be child of one other result"));
-	wxCHECK_RET(not file->HasChildren(), wxT("Result already has children, cannot become child."));
-	wxCHECK_RET(not GetParent(), wxT("A child cannot have children of its own"));
+	wxCHECK_RET(!file->GetParent(), wxT("Search-result can only be child of one other result"));
+	wxCHECK_RET(!file->HasChildren(), wxT("Result already has children, cannot become child."));
+	wxCHECK_RET(!GetParent(), wxT("A child cannot have children of its own"));
 	wxCHECK_RET(GetFileHash() == file->GetFileHash(), wxT("Mismatching child/parent hashes"));
 	wxCHECK_RET(GetFileSize() == file->GetFileSize(), wxT("Mismatching child/parent sizes"));
 	
@@ -158,7 +158,7 @@ void CSearchFile::AddChild(CSearchFile* file)
 
 void CSearchFile::UpdateParent()
 {
-	wxCHECK_RET(not m_parent, wxT("UpdateParent called on child item"));
+	wxCHECK_RET(!m_parent, wxT("UpdateParent called on child item"));
 	
 	size_t ratingCount = 0, ratingTotal = 0;
 	size_t max = 0, index = 0;

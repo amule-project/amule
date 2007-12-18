@@ -561,7 +561,6 @@ char *yytext;
 #include "libs/common/StringFunctions.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -589,7 +588,9 @@ static char* _pszLexStr;
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
+#ifndef MSVC
 #include <unistd.h>
+#endif
 #endif
 
 #ifndef YY_EXTRA_TYPE
