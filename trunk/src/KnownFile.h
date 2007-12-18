@@ -32,7 +32,7 @@
 #include "SHAHashSet.h"
 
 
-#include <include/protocol/ed2k/Constants.h>
+#include <protocol/ed2k/Constants.h>
 
 
 #include "kademlia/kademlia/Indexed.h"
