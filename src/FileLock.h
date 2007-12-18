@@ -28,7 +28,9 @@
 
 #include <fcntl.h>
 #include <cerrno>
+#ifndef MSVC
 #include <unistd.h> // Do_not_auto_remove (Needed for OpenBSD)
+#endif
 #include <string> // Do_not_auto_remove (g++-4.0.1 except win32)
 
 
@@ -55,7 +57,7 @@ public:
 	 * file is not removed afterwards.
 	 */
 	CFileLock(const std::string& file)
-#ifdef __WIN32__
+#if defined(__WIN32__) || defined(MSVC)
 	{
 	}
 #else

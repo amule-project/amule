@@ -28,6 +28,8 @@
 	#include "config.h"	// Needed for VERSION and readline detection
 #endif
 
+#include <common/ClientVersion.h>
+
 #include <common/Format.h>		// Needed for CFormat
 
 #include <wx/tokenzr.h>		// For wxStringTokenizer
@@ -183,8 +185,7 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 				}
 			}
 			if (!m_parent) {
-				m_app.Show(_("\nAll commands are case insensitive.\n"
-					   "Type 'help <command>' to get detailed info on <command>.\n"));
+				m_app.Show(_("\nAll commands are case insensitive.\nType 'help <command>' to get detailed info on <command>.\n"));
 			}
 		}
 	}
@@ -216,8 +217,7 @@ void CaMuleExternalConnector::OnInitCommandSet()
 	m_commands.AddCommand(wxT("Quit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
 	m_commands.AddCommand(wxT("Exit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
 	m_commands.AddCommand(wxT("Help"), CMD_ID_HELP, wxTRANSLATE("Show help."),
-			      wxTRANSLATE("To get help on a command, type 'help <command>'.\n"
-					  "To get the full command list type 'help'.\n"));
+			      wxTRANSLATE("To get help on a command, type 'help <command>'.\nTo get the full command list type 'help'.\n"));
 }
 
 void CaMuleExternalConnector::Show(const wxString &s)
@@ -370,7 +370,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		#ifndef __WXMSW__
 			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
 		#else
-			#warning This way, pass enter is not hidden on windows. Bad thing.
+			//#warning This way, pass enter is not hidden on windows. Bad thing.
 			char temp_str[512];
 			fflush(stdin);
 			printf("Enter password for mule connection: \n");
@@ -428,11 +428,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 		}
 		m_ECClient->DestroySocket();
 	} else {
-		Show(_("Cannot connect with an empty password.\n"
-			"You must specify a password either in config file\n"
-			"or on command-line, or enter one when asked.\n"
-			"\n"
-			"Exiting...\n"));
+		Show(_("Cannot connect with an empty password.\nYou must specify a password either in config file\nor on command-line, or enter one when asked.\n\nExiting...\n"));
 	}
 }
 
