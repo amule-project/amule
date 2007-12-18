@@ -2640,7 +2640,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 				rect.x = 0;
 				rect.y = 0;
 
-				if ((buffer.GetWidth() != rect.width) or (buffer.GetHeight() != rect.height)) {
+				if ((buffer.GetWidth() != rect.width) || (buffer.GetHeight() != rect.height)) {
 					dbDC.SelectObject(wxNullBitmap);
 					buffer.Create(rect.width, rect.height);
 					dbDC.SelectObject(buffer);
@@ -2654,7 +2654,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 					bool isHighL = IsHighlighted(line);
 					
 					// Background is only cleared automatically if the item is high-lighted or a bg-color is set
-					if (!isHighL and !(lineAttr and lineAttr->HasBackgroundColour())) {
+					if (!isHighL && !(lineAttr && lineAttr->HasBackgroundColour())) {
 						dbDC.SetBrush(wxBrush(GetBackgroundColour()));
 						dbDC.SetPen(wxPen(GetBackgroundColour()));
 						dbDC.DrawRectangle(highl.x, highl.y, highl.width, highl.height);
