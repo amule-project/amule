@@ -271,11 +271,11 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 	}
 
 	if (selection & EC_PREFS_DIRECTORIES) {
-		#warning TODO
+		//#warning TODO
 	}
 
 	if (selection & EC_PREFS_STATISTICS) {
-		#warning TODO
+		//#warning TODO
 	}
 
 	if (selection & EC_PREFS_SECURITY) {
@@ -479,11 +479,11 @@ void CEC_Prefs_Packet::Apply()
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_DIRECTORIES)) != NULL) {
-		#warning TODO
+		//#warning TODO
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_STATISTICS)) != NULL) {
-		#warning TODO
+		//#warning TODO
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_SECURITY)) != NULL) {
