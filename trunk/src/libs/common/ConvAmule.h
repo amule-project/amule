@@ -50,14 +50,18 @@ public:
 };
 
 
-#ifdef CONVAMULE_CPP
-	wxCSConv aMuleConv(wxConvLocal);
-	ConvAmuleBrokenFileNames aMuleConvBrokenFileNames(wxT("ISO-8859-1"));
+#ifdef MSVC
+	#define aMuleConv wxConvLocal
+	#define aMuleConvBrokenFileNames wxConvLocal
 #else
-	extern wxCSConv aMuleConv;
-	extern ConvAmuleBrokenFileNames aMuleConvBrokenFileNames;
+	#ifdef CONVAMULE_CPP
+		wxCSConv aMuleConv(wxConvLocal);
+		ConvAmuleBrokenFileNames aMuleConvBrokenFileNames(wxT("ISO-8859-1"));
+	#else
+		extern wxCSConv aMuleConv;
+		extern ConvAmuleBrokenFileNames aMuleConvBrokenFileNames;
+	#endif
 #endif
-
 
 #endif // CONVAMULE_H
 
