@@ -35,7 +35,7 @@
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 #include "UserEvents.h"
 
-#warning Needed while not ported
+//#warning Needed while not ported
 #include "ClientList.h"
 #include <common/Format.h>		// Needed for CFormat
 
@@ -57,7 +57,7 @@ CChatSession::CChatSession(wxWindow* parent, wxWindowID id, const wxString& valu
 
 CChatSession::~CChatSession()
 {
-	#warning EC NEEDED
+	//#warning EC NEEDED
 	#ifndef CLIENT_GUI
 	theApp->clientlist->SetChatState(m_client_id,MS_NONE);
 	#endif
@@ -239,7 +239,7 @@ bool CChatSelector::SendMessage( const wxString& message, const wxString& client
 
 	ci->m_active = true;
 	
-	#warning EC needed here.
+	//#warning EC needed here.
 	
 	#ifndef CLIENT_GUI
 	if (theApp->clientlist->SendMessage(ci->m_client_id, message)) {
