@@ -233,7 +233,7 @@ inline const CSearchResultList& CSearchFile::GetChildren() const
 
 inline bool CSearchFile::HasChildren() const
 {
-	return not m_children.empty();
+	return !m_children.empty();
 }
 
 

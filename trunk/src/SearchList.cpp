@@ -25,9 +25,9 @@
 
 #include "SearchList.h"		// Interface declarations.
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/tags/FileTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/kad/Constants.h>
+#include <tags/FileTags.h>
 
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
@@ -282,7 +282,7 @@ CSearchList::~CSearchList()
 {
 	StopGlobalSearch();
 
-	while (not m_results.empty()) {
+	while (!m_results.empty()) {
 		RemoveResults(m_results.begin()->first);
 	}
 }
@@ -309,9 +309,9 @@ void CSearchList::RemoveResults(long searchID)
 wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CSearchParams& params)
 {
 	// Check that we can actually perform the specified desired search.
-	if ((type == KadSearch) and not Kademlia::CKademlia::IsRunning()) {
+	if ((type == KadSearch) && !Kademlia::CKademlia::IsRunning()) {
 		return _("Kad search can't be done if Kad is not running");
-	} else if ((type != KadSearch) and not theApp->IsConnectedED2K()) {
+	} else if ((type != KadSearch) && !theApp->IsConnectedED2K()) {
 		return _("ED2K search can't be done if ED2K is not connected");
 	}
 	
@@ -426,7 +426,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 	if (m_searchPacket == NULL) {
 		// This was a pending event, handled after 'Stop' was pressed.
 		return;
-	} else if (not m_serverQueue.IsActive()) {
+	} else if (!m_serverQueue.IsActive()) {
 		theApp->serverlist->AddObserver(&m_serverQueue);		
 	}
 
@@ -439,7 +439,7 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 			CServer* server = m_serverQueue.GetNext();
 
 			// Compare against the currently connected server.
-			if ((server->GetPort() == localPort) and (server->GetIP() == localIP)) {
+			if ((server->GetPort() == localPort) && (server->GetIP() == localIP)) {
 				// We've already requested from the local server.
 				continue;
 			} else {
@@ -517,7 +517,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 {
 	const uint64 fileSize = toadd->GetFileSize();
 	// If filesize is 0, or file is too large for the network, drop it 
-	if ((fileSize == 0) or (fileSize > MAX_FILE_SIZE)) {
+	if ((fileSize == 0) || (fileSize > MAX_FILE_SIZE)) {
 		AddDebugLogLineM(false, logSearch,
 				CFormat(wxT("Dropped result with filesize %u: %s"))
 					% fileSize
@@ -528,7 +528,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	}
 	
 	// If the result was not the type the user wanted, drop it.
-	if ((clientResponse == false) and not m_resultType.IsEmpty()) {
+	if ((clientResponse == false) && !m_resultType.IsEmpty()) {
 		if (GetFileTypeByName(toadd->GetFileName()) != m_resultType) {
 			AddDebugLogLineM( false, logSearch,
 				CFormat( wxT("Dropped result type %s != %s, file %s") )
@@ -549,7 +549,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 		CSearchFile* item = results.at(i);
 		
 		if ((toadd->GetFileHash() == item->GetFileHash())
-			and (toadd->GetFileSize() == item->GetFileSize())) {
+			&& (toadd->GetFileSize() == item->GetFileSize())) {
 			
 			AddDebugLogLineM(false, logSearch, 
 				CFormat(wxT("Received duplicate results for '%s' : %s"))
@@ -781,7 +781,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 			target.WriteMetaDataSearchParam(FT_FILEFORMAT, params.extension);
 		}
 
-		#warning TODO - I keep this here, ready if we ever allow such searches...
+		//#warning TODO - I keep this here, ready if we ever allow such searches...
 		#if 0
 		if (complete > 0){
 			if (++iParameterCount < parametercount) {
@@ -868,7 +868,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 			}
 		}
         
-		#warning TODO - same as above...
+		//#warning TODO - same as above...
 		#if 0
 		if (complete > 0){
 			if (++iParameterCount < parametercount) {
@@ -949,7 +949,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 			target.WriteMetaDataSearchParam(FT_FILEFORMAT, params.extension);
 		}
 
-		#warning TODO - third and last warning of the same series.
+		//#warning TODO - third and last warning of the same series.
 		#if 0
 		if (complete > 0) {
 			target.WriteOldMinMetaDataSearchParam(FT_COMPLETE_SOURCES, pParams->uComplete, !kad);
@@ -1010,7 +1010,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	tagName.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;
 
-	#warning Kry - UPDATE
+	//#warning Kry - UPDATE
 	CTagInt32 tagSize(FT_FILESIZE, size);
 	tagSize.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;

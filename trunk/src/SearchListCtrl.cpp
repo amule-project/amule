@@ -25,7 +25,7 @@
 
 #include "SearchListCtrl.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KnownFileList.h"	// Needed for CKnownFileList
@@ -133,10 +133,10 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	// Check if the result should be shown
 	if (FindItem(-1, (long)toshow) != -1) {
 		return;
-	} else if (toshow->GetParent() and not toshow->GetParent()->ShowChildren()) {
+	} else if (toshow->GetParent() && !toshow->GetParent()->ShowChildren()) {
 		return;
 	} else if (!IsFiltered(toshow)) {
-		if (toshow->HasChildren() and toshow->ShowChildren()) {
+		if (toshow->HasChildren() && toshow->ShowChildren()) {
 			// Only filter the parent if none of the children are shown.
 			bool foundChild = false;
 			const CSearchResultList& children = toshow->GetChildren();
@@ -147,7 +147,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 				}
 			}
 
-			if (not foundChild) {
+			if (!foundChild) {
 				// No children left, and the parent is filtered.
 				m_filteredOut.push_back(toshow);
 				return;
@@ -170,7 +170,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);			
 			wxASSERT(before);
 			if (parent) {
-				wxASSERT((before->GetParent() == parent) or (before == parent));
+				wxASSERT((before->GetParent() == parent) || (before == parent));
 			} else {
 				wxASSERT(before->GetParent() != toshow);
 			}
@@ -180,9 +180,9 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 			CSearchFile* after = (CSearchFile*)GetItemData(newid + 1);
 			wxASSERT(after);
 			if (parent) {
-				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
+				wxASSERT((after->GetParent() == parent) || (!after->GetParent()));
 			} else {
-				wxASSERT((after->GetParent() == toshow) or (not after->GetParent()));
+				wxASSERT((after->GetParent() == toshow) || (!after->GetParent()));
 			}
 		}
 	}
@@ -436,7 +436,7 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 	// Decide if which should files we should sort by.
 	CSearchFile* parent1 = file1->GetParent();
 	CSearchFile* parent2 = file2->GetParent();
-	if (parent1 and parent2) {
+	if (parent1 && parent2) {
 		if (parent1 != parent2) {
 			return SortProc((long)parent1, (long)parent2, sortData);
 		}
@@ -511,7 +511,7 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 
 void CSearchListCtrl::SyncLists( CSearchListCtrl* src, CSearchListCtrl* dst )
 {
-	wxCHECK_RET(src and dst, wxT("NULL argument in SyncLists"));
+	wxCHECK_RET(src && dst, wxT("NULL argument in SyncLists"));
 
 	// Column widths
 	for ( int i = 0; i < src->GetColumnCount(); i++ ) {
@@ -567,8 +567,8 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_SEARCHRELATED, _("Search related files (ED2k, local server)"));
 		menu.AppendSeparator();
 
-#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! \
-You are on your own here, this might break "known.met"
+//#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! \
+//You are on your own here, this might break "known.met"
 #if 0
 		menu.Append(MP_MARK_AS_KNOWN, _("Mark as known file"));
 		menu.AppendSeparator();
@@ -683,7 +683,7 @@ void CSearchListCtrl::OnItemActivated(wxListEvent& event)
 {
 	CSearchFile* file = ((CSearchFile*)GetItemData(event.GetIndex()));
 	if (file->HasChildren()) {
-		ShowChildren(file, not file->ShowChildren());
+		ShowChildren(file, !file->ShowChildren());
 	} else {
 		DownloadSelected();
 	}
@@ -785,7 +785,7 @@ void CSearchListCtrl::OnDrawItem(
 			target_rec.y += iTextOffset;
 			
 			if (i == 0) {
-				if (file->HasChildren() or file->GetParent()) {
+				if (file->HasChildren() || file->GetParent()) {
 					tree_show = (listitem.GetWidth() > 0);
 					target_rec.x += treeOffset;
 					target_rec.width -= treeOffset;
@@ -835,7 +835,7 @@ void CSearchListCtrl::OnDrawItem(
 		// Gather some information
 		const bool notLast = (item + 1 < GetItemCount());
 		const bool notFirst = (item != 0);
-		const bool hasNext = notLast and ((CSearchFile*)GetItemData(item + 1))->GetParent();
+		const bool hasNext = notLast && ((CSearchFile*)GetItemData(item + 1))->GetParent();
 		const int middle = ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
@@ -865,7 +865,7 @@ void CSearchListCtrl::OnDrawItem(
 			dc->DrawCircle( treeCenter, middle, 3 );
 
 			// Draw the line to the child node if there are any children
-			if (hasNext and file->ShowChildren()) {
+			if (hasNext && file->ShowChildren()) {
 				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
 			}
 		}
@@ -880,7 +880,7 @@ void CSearchListCtrl::OnDrawItem(
 			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);			
 			wxASSERT(before);
 			if (parent) {
-				wxASSERT((before->GetParent() == parent) or (before == parent));
+				wxASSERT((before->GetParent() == parent) || (before == parent));
 			} else {
 				wxASSERT(before->GetParent() != file);
 			}
@@ -890,9 +890,9 @@ void CSearchListCtrl::OnDrawItem(
 			CSearchFile* after = (CSearchFile*)GetItemData(item + 1);
 			wxASSERT(after);
 			if (parent) {
-				wxASSERT((after->GetParent() == parent) or (not after->GetParent()));
+				wxASSERT((after->GetParent() == parent) || (!after->GetParent()));
 			} else {
-				wxASSERT((after->GetParent() == file) or (not after->GetParent()));
+				wxASSERT((after->GetParent() == file) || (!after->GetParent()));
 			}
 		}
 	}
