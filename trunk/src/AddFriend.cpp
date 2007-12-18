@@ -63,7 +63,7 @@ void CAddFriend::OnAddBtn(wxCommandEvent& WXUNUSED(evt))
 	}
 	
 	CMD4Hash userhash;
-	if ((not hash.IsEmpty()) and (not userhash.Decode(hash))) {
+	if ((!hash.IsEmpty()) && (!userhash.Decode(hash))) {
 		wxMessageBox(_("The specified userhash is not valid!"), _("Information"), wxOK | wxICON_INFORMATION, this);
 		return;
 	};
