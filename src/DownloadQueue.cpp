@@ -25,11 +25,11 @@
 
 #include "DownloadQueue.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/common/Macros.h>
-#include <include/common/MenuIDs.h>
-#include <include/common/Constants.h>
+#include <protocol/Protocols.h>
+#include <protocol/kad/Constants.h>
+#include <common/Macros.h>
+#include <common/MenuIDs.h>
+#include <common/Constants.h>
 
 #include <wx/textfile.h>	// Needed for wxTextFile
 #include <wx/utils.h>
@@ -213,7 +213,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-#warning We must add the sources, review CSearchFile constructor.
+//#warning We must add the sources, review CSearchFile constructor.
 void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 {
 	if ( IsFileExisting(toadd->GetFileHash()) ) {
@@ -240,13 +240,13 @@ struct SFindBestPF
 {
 	void operator()(CPartFile* file) {
 		// Check if we should filter out other categories
-		if ((m_category != -1) and (file->GetCategory() != m_category)) {
+		if ((m_category != -1) && (file->GetCategory() != m_category)) {
 			return;
 		} else if (file->GetStatus() != PS_PAUSED) {
 			return;
 		}
 	
-		if (!m_result or (file->GetDownPriority() > m_result->GetDownPriority())) {
+		if (!m_result || (file->GetDownPriority() > m_result->GetDownPriority())) {
 			m_result = file;				
 		}
 	}
@@ -687,7 +687,7 @@ CUpDownClient* CDownloadQueue::GetDownloadClientByIP_UDP(uint32 dwIP, uint16 nUD
 	for ( unsigned int i = 0; i < m_filelist.size(); i++ ) {
 		const CPartFile::SourceSet& set = m_filelist[i]->GetSourceList();
 		
-		for ( CPartFile::SourceSet::iterator it = set.begin(); it != set.end(); it++ ) {
+		for ( CPartFile::SourceSet::const_iterator it = set.begin(); it != set.end(); it++ ) {
 			if ( (*it)->GetIP() == dwIP && (*it)->GetUDPPort() == nUDPPort ) {
 				return *it;
 			}
@@ -986,7 +986,7 @@ void CDownloadQueue::SendLocalSrcRequest(CPartFile* sender)
 void CDownloadQueue::AddLinksFromFile()
 {
 	const wxString fullPath = theApp->ConfigDir + wxT("ED2KLinks");
-	if (not wxFile::Exists(fullPath)) {
+	if (!wxFile::Exists(fullPath)) {
 		return;
 	}
 	
