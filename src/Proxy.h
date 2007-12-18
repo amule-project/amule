@@ -26,6 +26,7 @@
 #ifndef __PROXY_H__
 #define __PROXY_H__
 
+#include <wx/wx.h>
 
 #include "amuleIPV4Address.h"	// For amuleIPV4address
 #include "StateMachine.h"	// For CStateMachine

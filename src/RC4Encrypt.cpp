@@ -56,9 +56,9 @@ void CRC4EncryptableBuffer::Encrypt()
 	wxASSERT(!m_encrypted);
 	// This is not optimal. At all.
 	int n = GetLength();
-	byte orig_buffer[n];
-	memcpy(orig_buffer, GetRawBuffer(), n);
-	RC4Crypt(orig_buffer, GetRawBuffer(), n);
+	std::vector<byte> orig_buffer(n);
+	memcpy(&(orig_buffer[0]), GetRawBuffer(), n);
+	RC4Crypt(&(orig_buffer[0]), GetRawBuffer(), n);
 	//DumpMem(orig_buffer, n, wxT("Orig buffer: "));
 	//DumpMem(GetRawBuffer() ,n, wxT("Encrypted buffer: "));
 	m_encrypted = true;

@@ -226,15 +226,17 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 	// We only need to set the the NULL terminator, since we know that
 	// reads will either succeed or throw an exception, in which case
 	// we wont be returning anything
-	char val[raw_len + 1];
-	val[raw_len] = 0;
+	std::vector<char> val_array(raw_len + 1);
+	val_array[raw_len] = 0;
 		
+	char* val = &(val_array[0]);
+
 	Read(val, raw_len);
 	wxString str;
 	
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
-		str = UTF82unicode(val + 3);
+		str = UTF82unicode(val +3);
 	} else {
 		if (bOptUTF8) {
 			str = UTF82unicode(val);

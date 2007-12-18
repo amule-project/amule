@@ -26,7 +26,7 @@
 
 #include "PrefsUnifiedDlg.h"
 
-#include <include/common/Constants.h>
+#include <common/Constants.h>
 
 #include <wx/colordlg.h>
 #include <wx/tooltip.h>
@@ -484,18 +484,14 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if (	IsEmptyFile(theApp->ConfigDir + wxT("addresses.dat")) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
-		wxMessageBox(wxString::wxString( _(
-			"Your Auto-update servers list is in blank.\n"
-			"'Auto-update serverlist at startup' will be disabled.")),
+		wxMessageBox(wxString::wxString( _("Your Auto-update servers list is in blank.\n'Auto-update serverlist at startup' will be disabled.")),
 			_("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 
 	if (thePrefs::AcceptExternalConnections() && thePrefs::ECPassword().IsEmpty()) {
 		thePrefs::EnableExternalConnections( false );
 
-		wxMessageBox( _(
-			"You have enabled external connections but have not specified a password.\n"
-			"External connections cannot be enabled unless a valid password is specified."));
+		wxMessageBox( _("You have enabled external connections but have not specified a password.\nExternal connections cannot be enabled unless a valid password is specified."));
 	}
 	
 	// save the preferences on ok
@@ -526,7 +522,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 		theApp->SetOSFiles( widget->GetValue() );
 	}
 
-	if (CfgChanged(IDC_IPFCLIENTS) or CfgChanged(IDC_IPFSERVERS) or CfgChanged(ID_IPFILTERLEVEL)) {
+	if (CfgChanged(IDC_IPFCLIENTS) || CfgChanged(IDC_IPFSERVERS) || CfgChanged(ID_IPFILTERLEVEL)) {
 		if (thePrefs::IsFilteringClients()) {
 			theApp->clientlist->FilterQueues();
 		}
@@ -666,10 +662,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 		case IDC_AUTOSERVER:
 			if (	IsEmptyFile(theApp->ConfigDir + wxT("addresses.dat")) && 
 				CastChild(event.GetId(), wxCheckBox)->IsChecked() ) {
-				wxMessageBox(wxString::wxString( _(
-					"Your Auto-update servers list is in blank.\n"
-					"Please fill in at least one URL to point to a valid server.met file.\n"
-					"Click on the button \"List\" by this checkbox to enter an URL.")),
+				wxMessageBox(wxString::wxString( _("Your Auto-update servers list is in blank.\nPlease fill in at least one URL to point to a valid server.met file.\nClick on the button \"List\" by this checkbox to enter an URL.")),
 					_("Message"), wxOK | wxICON_INFORMATION);
 				CastChild(event.GetId(), wxCheckBox)->SetValue(false);
 			}
