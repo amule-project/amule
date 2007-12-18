@@ -547,10 +547,12 @@ AC_CACHE_SAVE
 # Other tests
 
 case "$USE_DEBUG" in
-yes)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef -g -ggdb -fno-inline -D__DEBUG__ -fmessage-length=0 -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
+yes)	DEBUG_FLAGS="-g -D__DEBUG__ -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
+	AS_IF([test x$GCC = xyes], [DEBUG_FLAGS="$DEBUG_FLAGS -W -Wall -Wshadow -Wundef -ggdb -fno-inline -fmessage-length=0"])
 	AS_IF([test x$SYS = xwin32], [RCFLAGS="$RCFLAGS -D__DEBUG__"])
     ;;
-*)	DEBUG_FLAGS="-W -Wall -Wshadow -Wundef"
+*)	DEBUG_FLAGS=""
+	AS_IF([test x$GCC = xyes], [DEBUG_FLAGS="$DEBUG_FLAGS -W -Wall -Wshadow -Wundef"])
     ;;
 esac
 
