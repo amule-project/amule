@@ -23,6 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/app.h>
+
 #include <wx/archive.h>
 #include <wx/config.h>		// Do_not_auto_remove (MacOS 10.3, wx 2.7)
 #include <wx/confbase.h>	// Do_not_auto_remove (MacOS 10.3, wx 2.7)
@@ -35,10 +37,12 @@
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
 
-#include <include/common/EventIDs.h>
+#include <common/EventIDs.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
+#else
+#include <common/ClientVersion.h>
 #endif // HAVE_CONFIG_H
 
 #include "amuleDlg.h"		// Interface declarations.
@@ -435,17 +439,16 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 #ifdef CVSDATE
 	msg << _("Snapshot:") << wxT("\n ") << wxT(CVSDATE);
 #endif
-	msg << wxT("\n\n") << _(
-		" 'All-Platform' p2p client based on eMule \n\n"
-		" Website: http://www.amule.org \n"
-		" Forum: http://forum.amule.org \n"
-		" FAQ: http://wiki.amule.org \n\n"
-		" Contact: admin@amule.org (administrative issues) \n"
-		" Copyright (C) 2003-2007 aMule Team \n\n"
-		" Part of aMule is based on \n"
-		" Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-		" Copyright (C) 2002 Petar Maymounkov\n"
-		" http://kademlia.scs.cs.nyu.edu\n");
+	msg << wxT("\n\n") << _(" 'All-Platform' p2p client based on eMule \n\n") <<
+		_(" Website: http://www.amule.org \n") <<
+		_(" Forum: http://forum.amule.org \n") << 
+		_(" FAQ: http://wiki.amule.org \n\n") <<
+		_(" Contact: admin@amule.org (administrative issues) \n") <<
+		_(" Copyright (C) 2003-2007 aMule Team \n\n") <<
+		_(" Part of aMule is based on \n") <<
+		_("Kademlia: Peer-to-peer routing based on the XOR metric.\n") <<
+		_(" Copyright (C) 2002 Petar Maymounkov\n") <<
+		_(" http://kademlia.scs.cs.nyu.edu\n");
 	
 	if (m_is_safe_state) {
 		wxMessageBox(msg, _("Message"), wxOK | wxICON_INFORMATION, this);
@@ -970,7 +973,7 @@ void CamuleDlg::Hide_aMule(bool iconize)
 	if (IsShown() && ((m_last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
 		m_last_iconizing = GetTickCount();
 
-		if (m_prefsDialog and m_prefsDialog->IsShown()) {
+		if (m_prefsDialog && m_prefsDialog->IsShown()) {
 			m_prefsVisible = true;
 			m_prefsDialog->Iconize(true);;
 			m_prefsDialog->Show(false);
@@ -1050,7 +1053,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		m_kademliawnd->UpdateGraph(!IsIconized() && (m_activewnd == m_serverwnd), update);
 	}
 #else
-	#warning TODO: CORE/GUI -- EC needed
+	//#warning TODO: CORE/GUI -- EC needed
 #endif
 	
 	int sStatsUpdate = thePrefs::GetStatsInterval();
@@ -1135,9 +1138,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		wxFileType* ft =
 			wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
 		if (!ft) {
-			wxLogError(
-				wxT("Impossible to determine the file type for extension html."
-				"Please edit your MIME types."));
+			wxLogError(wxT("Impossible to determine the file type for extension html. Please edit your MIME types."));
 			return;
 		}
 
@@ -1160,9 +1161,7 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
-	wxLogError(wxT(
-		"Unable to launch browser. "
-		"Please set correct browser executable path in Preferences."));
+	wxLogError(wxT("Unable to launch browser. Please set correct browser executable path in Preferences."));
 }
 
 
