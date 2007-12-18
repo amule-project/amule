@@ -23,8 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <include/protocol/ed2k/ClientSoftware.h>
-#include <include/common/MenuIDs.h>
+#include <protocol/ed2k/ClientSoftware.h>
+#include <common/MenuIDs.h>
 
 #include <common/Format.h>	// Needed for CFormat
 #include "amule.h"		// Needed for theApp
@@ -462,7 +462,7 @@ void CDownloadListCtrl::ShowSources( CPartFile* file, bool show )
 		const CPartFile::SourceSet& a4afSources = file->GetA4AFList();
 			
 		// Adding normal sources
-		CPartFile::SourceSet::iterator it;
+		CPartFile::SourceSet::const_iterator it;
 		for ( it = normSources.begin(); it != normSources.end(); ++it ) {
 			switch ((*it)->GetDownloadState()) {
 				case DS_DOWNLOADING:
@@ -1065,7 +1065,7 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 						_("Enter new name for this file:"),
 						_("File rename"), file->GetFileName());
 				
-					if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+					if (!newName.IsEmpty() && (newName != file->GetFileName())) {
 						theApp->sharedfiles->RenameFile(file, newName);
 					}
 				}
@@ -2236,9 +2236,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		wxMessageBox(_(
-			"Please set your prefered video player on preferences.\n"
-			"Meanwhile, aMule will attempt to use mplayer"
-			" and you will get this warning on every preview"),
+			"Please set your prefered video player on preferences.\nMeanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output decivce and needs a parameter, go figure...
