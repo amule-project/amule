@@ -40,11 +40,11 @@ there client on the eMule forum..
 
 #include "Search.h"
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/kad/Client2Client/UDP.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/protocol/kad2/Client2Client/UDP.h>
-#include <include/tags/FileTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/kad/Client2Client/UDP.h>
+#include <protocol/kad/Constants.h>
+#include <protocol/kad2/Client2Client/UDP.h>
+#include <tags/FileTags.h>
 
 #include "Defines.h"
 #include "../routing/RoutingZone.h"
@@ -61,13 +61,6 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include "../../Preferences.h"
 #include "../../GuiEvents.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -629,7 +622,7 @@ void CSearch::ProcessResultFile(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(fromPor
 		} else if (!tag->GetName().Cmp(TAG_BUDDYHASH)) {
 			CMD4Hash hash;
 			// TODO: Error handling
-			if (not hash.Decode(tag->GetStr())) {
+			if (!hash.Decode(tag->GetStr())) {
 #ifdef __DEBUG__
 				printf("Invalid buddy-hash: '%s'\n", (const char*)tag->GetStr().fn_str());
 #endif

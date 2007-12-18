@@ -36,24 +36,19 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
+#include <wx/wx.h>
+
 #include "Search.h"
 
-#include <include/common/Macros.h>
+#include <common/Macros.h>
 
 #include "Indexed.h"
 #include "Defines.h"
 #include "../routing/Contact.h"
-#include "MemFile.h"
-#include "Logger.h"
+#include "../../MemFile.h"
+#include "../../Logger.h"
 
 #include <wx/tokenzr.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 
 wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:;\\/");
 
