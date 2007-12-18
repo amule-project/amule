@@ -79,22 +79,19 @@
 #define TOK_OR 260
 #define TOK_NOT 261
 #define TOK_ED2K_LINK 262
-
-
-
-
 /* Copy the first part of user declarations.  */
 #line 1 "./Parser.y"
 
-#include "SearchExpr.h"
+class wxString;
+
 #include "Scanner.h.in"
 #include "Scanner.h"
 #include "OtherFunctions.h"
+#include "SearchExpr.h"
 
 #include "libs/common/StringFunctions.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
