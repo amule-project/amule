@@ -22,10 +22,11 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
 
 #include "MuleUDPSocket.h"	// Interface declarations
 
-#include <include/protocol/ed2k/Constants.h>
+#include <protocol/ed2k/Constants.h>
 
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include "amule.h"			// Needed for theApp
@@ -134,7 +135,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 {
 	AddDebugLogLineM(false, logMuleUDP, wxString::Format(wxT("Got UDP callback for read: Error %i Socket state %i"),errorCode, Ok() ? 1 : 0));
 	
-	if (errorCode or !Ok() or !m_socket) {
+	if (errorCode || !Ok() || !m_socket) {
 		if (m_socket) {
 			DestroySocket();
 		}
@@ -237,7 +238,7 @@ bool CMuleUDPSocket::Ok()
 {
     wxMutexLocker lock(m_mutex);
 
-	return m_socket and m_socket->Ok();
+	return m_socket && m_socket->Ok();
 }
 
 
@@ -251,11 +252,11 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 		CPacket* packet = item.packet;
 		
 		if (GetTickCount() - item.time < UDPMAXQUEUETIME) {
-			char sendbuffer[packet->GetPacketSize() + 2];
-			memcpy(sendbuffer, packet->GetUDPHeader(), 2);
-			memcpy(sendbuffer + 2, packet->GetDataBuffer(), packet->GetPacketSize());
+			std::vector<char> sendbuffer(packet->GetPacketSize() + 2);
+			memcpy(&(sendbuffer[0]), packet->GetUDPHeader(), 2);
+			memcpy(&(sendbuffer[2]), packet->GetDataBuffer(), packet->GetPacketSize());
 
-            if (SendTo(sendbuffer, packet->GetPacketSize() + 2, item.IP, item.port)){
+            if (SendTo(&(sendbuffer[0]), packet->GetPacketSize() + 2, item.IP, item.port)){
                 sentBytes += packet->GetPacketSize() + 2; 
 
 				m_queue.pop_front();
@@ -282,7 +283,7 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 {
 	// Just pretend that we sent the packet in order to avoid infinete loops.
-	if (!(m_socket and m_socket->Ok())) {
+	if (!(m_socket && m_socket->Ok())) {
 		return true;
 	}
 	
