@@ -26,7 +26,7 @@
 
 #include "KnownFileList.h"	// Interface declarations
 
-#include <include/common/DataFileVersion.h>
+#include <common/DataFileVersion.h>
 
 #include <memory>		// Do_not_auto_remove (lionel's Mac, 10.3)
 #include "PartFile.h"		// Needed for CPartFile

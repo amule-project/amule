@@ -29,10 +29,10 @@
 #include "KnownFile.h"		// Do_not_auto_remove
 
 
-#include <include/protocol/kad/Constants.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/protocol/Protocols.h>
-#include <include/tags/FileTags.h>
+#include <protocol/kad/Constants.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/Protocols.h>
+#include <tags/FileTags.h>
 
 
 #include <wx/config.h>
@@ -278,7 +278,7 @@ CKnownFile::CKnownFile()
 }
 
 
-#warning Experimental: Construct a CKnownFile from a CSearchFile
+//#warning Experimental: Construct a CKnownFile from a CSearchFile
 CKnownFile::CKnownFile(const CSearchFile &searchFile)
 :
 // This will copy the file hash
@@ -495,11 +495,11 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	// wtf you guys are weird.
 
 	if (!m_hashlist.empty()){
-		byte buffer[m_hashlist.size() * 16];
+		std::vector<byte> buffer(m_hashlist.size() * 16);
 		for (size_t i = 0;i != m_hashlist.size();++i) {
-			md4cpy(buffer+(i*16),m_hashlist[i].GetHash());
+			md4cpy(&(buffer[i*16]),m_hashlist[i].GetHash());
 		}
-		CreateHashFromString(buffer,m_hashlist.size()*16,checkid.GetHash());
+		CreateHashFromString(&(buffer[0]),m_hashlist.size()*16,checkid.GetHash());
 	}
 	if ( m_abyFileHash == checkid ) {
 		return true;
@@ -739,11 +739,11 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	return true;
 }
 
-#warning Kry - const
+//#warning Kry - const
 void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
 {
-	wxASSERT_MSG(Output or pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
-	wxCHECK_RET(file or in_string, wxT("No input to hash from in CreateHashFromInput"));
+	wxASSERT_MSG(Output || pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
+	wxCHECK_RET(file || in_string, wxT("No input to hash from in CreateHashFromInput"));
 	wxASSERT(Length <= PARTSIZE); // We never hash more than one PARTSIZE
 	
 	// When reading from files, this scoped array will take ownership of the temporary array.
