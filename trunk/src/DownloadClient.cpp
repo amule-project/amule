@@ -25,12 +25,12 @@
 
 #include "updownclient.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/protocol/ed2k/Client2Client/UDP.h> 
-#include <include/common/EventIDs.h>
-#include <include/common/Macros.h>
-#include <include/common/Constants.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/ed2k/Client2Client/UDP.h> 
+#include <common/EventIDs.h>
+#include <common/Macros.h>
+#include <common/Constants.h>
 
 #include <zlib.h>
 #include <cmath>		// Needed for std:exp
@@ -176,7 +176,7 @@ void CUpDownClient::SendStartupLoadReq()
 
 bool CUpDownClient::IsSourceRequestAllowed()
 {
-	#warning REWRITE - Source swapping from eMule.
+	//#warning REWRITE - Source swapping from eMule.
 	// 0.42e
 	uint32 dwTickCount = ::GetTickCount() + CONNECTION_LATENCY;
 	uint32 nTimePassedClient = dwTickCount - GetLastSrcAnswerTime();
@@ -619,8 +619,8 @@ void CUpDownClient::SendBlockRequests()
 	if (m_DownloadBlocks_list.empty()) {
 		// Barry - instead of getting 3, just get how many is needed
 		uint16 count = m_MaxBlockRequests - m_PendingBlocks_list.size();
-		Requested_Block_Struct* toadd[count];
-		if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
+		std::vector<Requested_Block_Struct*> toadd(count);
+		if (m_reqfile->GetNextRequestedBlock(this,&(toadd[0]),&count)) {
 			for (int i = 0; i != count; i++) {
 				m_DownloadBlocks_list.push_back(toadd[i]);
 			}
@@ -672,8 +672,8 @@ void CUpDownClient::SendBlockRequests()
 			wxASSERT(m_DownloadBlocks_list.empty());
 			wxASSERT(m_PendingBlocks_list.empty());
 			uint16 count = m_MaxBlockRequests;
-			Requested_Block_Struct* toadd[count];
-			if (m_reqfile->GetNextRequestedBlock(this,toadd,&count)) {
+			std::vector<Requested_Block_Struct*> toadd(count);
+			if (m_reqfile->GetNextRequestedBlock(this, &(toadd[0]),&count)) {
 				for (int i = 0; i != count; i++) {
 					Pending_Block_Struct* pblock = new Pending_Block_Struct;
 					pblock->block = toadd[i];
@@ -691,7 +691,7 @@ void CUpDownClient::SendBlockRequests()
 		} else {
 			// Drop this one.
 			AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_CANCELTRANSFER (no free blocks) to ") + GetFullIP() );			
-			#warning Kry - Would be nice to swap A4AF here.		
+			//#warning Kry - Would be nice to swap A4AF here.		
 			return;
 		}
 	}
@@ -735,7 +735,7 @@ void CUpDownClient::SendBlockRequests()
 		case 1: {
 			wxASSERT(m_MaxBlockRequests == STANDARD_BLOCKS_REQUEST);
 			
-			#warning Kry - I dont specially like this approach, we iterate one time too many
+			//#warning Kry - I dont specially like this approach, we iterate one time too many
 			
 			bool bHasLongBlocks =  false;
 		
@@ -1166,10 +1166,10 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 float CUpDownClient::CalculateKBpsDown()
 {
 												// -- all timing values are in seconds --
-	const	float tcLoop   =  0.1;				// _assumed_ Process() loop time = 0.1 sec
-	const	float tcInit   =  0.4;				// initial filter time constant
-	const	float tcFinal  = 50.0;				// final filter time constant
-	const	float tcReduce =  5.0;				// transition from tcInit to tcFinal
+	const	float tcLoop   =  0.1f;				// _assumed_ Process() loop time = 0.1 sec
+	const	float tcInit   =  0.4f;				// initial filter time constant
+	const	float tcFinal  = 50.0f;				// final filter time constant
+	const	float tcReduce =  5.0f;				// transition from tcInit to tcFinal
 	
 	const	float fInit  = tcLoop/tcInit;		// initial averaging factor
 	const	float fFinal = tcLoop/tcFinal;		// final averaging factor
@@ -1267,7 +1267,7 @@ void CUpDownClient::UDPReaskForDownload()
 		return;
 	}
 	
-	#warning We should implement the quality tests for udp reliability
+	//#warning We should implement the quality tests for udp reliability
 	/*
 	if( m_nTotalUDPPackets > 3 && ((float)(m_nFailedUDPPackets/m_nTotalUDPPackets) > .3)) {
 		return;
