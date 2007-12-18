@@ -23,16 +23,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
+
 #include "updownclient.h"	// Needed for CUpDownClient
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/protocol/ed2k/ClientSoftware.h>
-#include <include/protocol/kad/Client2Client/UDP.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/ed2k/ClientSoftware.h>
+#include <protocol/kad/Client2Client/UDP.h>
 
-#include <include/common/ClientVersion.h>
+#include <common/ClientVersion.h>
 
-#include <include/tags/ClientTags.h>
+#include <tags/ClientTags.h>
 
 #include <zlib.h>		// Needed for inflateEnd
 
@@ -1585,7 +1587,7 @@ void CUpDownClient::ConnectionEstablished()
 		}
 	}
 	
-	while (not m_WaitingPackets_list.empty()) {
+	while (!m_WaitingPackets_list.empty()) {
 		CPacket* packet = m_WaitingPackets_list.front();
 		m_WaitingPackets_list.pop_front();
 		
