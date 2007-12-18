@@ -42,7 +42,7 @@ class CECLoginPacket : public CECPacket {
 						const wxString& client, const wxString& version);
 };
 
-#warning Kry TODO - move to abstract layer.
+//#warning Kry TODO - move to abstract layer.
 class CRemoteConnect : public CECMuleSocket {
 private:
 	// State enums for connection SM ( client side ) in case of async processing

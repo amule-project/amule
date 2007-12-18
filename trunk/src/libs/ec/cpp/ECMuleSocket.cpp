@@ -25,7 +25,7 @@
 
 #include "ECMuleSocket.h"
 
-#include "NetworkFunctions.h"
+#include "../../../NetworkFunctions.h"
 
 //-------------------- CECSocketHandler --------------------
 

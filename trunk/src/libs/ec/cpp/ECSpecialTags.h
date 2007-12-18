@@ -25,9 +25,9 @@
 #ifndef ECSPECIALTAGS_H
 #define ECSPECIALTAGS_H
 
-#warning Kry - Preferences packet derived from packet, and that's ok, but shouldn't be here because this is a tag file and forces a stupid include
+//#warning Kry - Preferences packet derived from packet, and that's ok, but shouldn't be here because this is a tag file and forces a stupid include
 #include "ECPacket.h"	// Needed for CECPacket
-#include "NetworkFunctions.h" // Needed for IsLowID
+#include "../../../NetworkFunctions.h" // Needed for IsLowID
 
 
 #include <map>

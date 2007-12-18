@@ -25,7 +25,7 @@
 
 #include "ListenSocket.h"	// Interface declarations
 
-#include <include/common/EventIDs.h>
+#include <common/EventIDs.h>
 
 #include "ClientTCPSocket.h"	// Needed for CClientRequestSocket
 #include "Logger.h"			// Needed for AddLogLineM

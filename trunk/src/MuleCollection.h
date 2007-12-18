@@ -26,13 +26,10 @@
 #ifndef __MULECOLLECTION_H__
 #define __MULECOLLECTION_H__
 
-
 #include <string>
 #include <vector>
 
-
-#include <stdint.h> // uint64_t compilation fix for older gcc versions
-
+#include "Types.h"
 
 struct CollectionFile
 {

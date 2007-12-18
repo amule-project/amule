@@ -86,7 +86,7 @@ bool CRemoteConnect::ConnectToCore(const wxString &host, int port,
 		return false;
 	} else {
 		CMD4Hash hash;
-		if (not hash.Decode(m_connectionPassword)) {
+		if (!hash.Decode(m_connectionPassword)) {
 			m_server_reply = _("Invalid password, not a MD5 hash!");
 			return false;
 		} else if (hash.IsEmpty()) {
