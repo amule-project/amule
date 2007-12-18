@@ -23,7 +23,6 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <cxxabi.h>				// Needed for __cxxabiv1::
 #include <csignal>				// Needed for raise()
 
 #include "MuleDebug.h"			// Interface declaration
@@ -51,6 +50,7 @@
  */
 void OnUnhandledException()
 {
+#ifndef MSVC
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
 	if (t) {
 		// Note that "name" is the mangled name.
@@ -76,7 +76,7 @@ void OnUnhandledException()
 
 		fprintf(stderr, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
-
+#endif MSVC
 	raise(SIGABRT);
 };
 
