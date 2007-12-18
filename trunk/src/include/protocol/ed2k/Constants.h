@@ -26,7 +26,7 @@
 #ifndef ED2KCONSTANTS_H
 #define ED2KCONSTANTS_H
 
-#include <include/common/Macros.h>
+#include <common/Macros.h>
 
 // MOD Note: Do not change this part - Merkur
 
@@ -75,11 +75,20 @@
 #define	CLIENTLIST_CLEANUP_TIME	MIN2MS(34)	// 34 min
 
 // (4294967295/PARTSIZE)*PARTSIZE = ~4GB
+#ifdef MSVC
+#define OLD_MAX_FILE_SIZE 4290048000ui64
+#else
 #define OLD_MAX_FILE_SIZE 4290048000ull
+#endif
+
+// = 2^38 = 256GB
+#ifdef MSVC
+	#define MAX_FILE_SIZE 0x4000000000ui64
+#else
+	#define MAX_FILE_SIZE 0x4000000000ull
+#endif
 
 enum FileConstants { 
-	// = 2^38 = 256GB
-	MAX_FILE_SIZE	= 0x4000000000ull,
 	PARTSIZE		= 9728000ull,
 	BLOCKSIZE		= 184320u,
 	EMBLOCKSIZE		= 184320u

@@ -30,9 +30,11 @@
 #include "Types.h"		// Needed for uint32
 
 #ifndef __WINDOWS__
-uint32 GetTickCount();
+	uint32 GetTickCount();
 #else
-#include <winbase.h> // Do_not_auto_remove
+	#ifndef MSVC
+		#include <winbase.h> // Do_not_auto_remove
+	#endif
 #endif
 
 // Ideally, same than GetTickCount.

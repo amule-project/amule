@@ -39,16 +39,24 @@
 // RELEASERS: REMOVE THE DEFINE ON THE RELEASES, PLEASE
 // AND FIX THE MOD_VERSION_LONG
 
-#define __CVS__
+#define __SVN__
 
-#ifdef __CVS__
-	#define	MOD_VERSION_LONG		wxT("aMule CVS")
+#ifndef VERSION
+	#define VERSION "2.2.0"
+#endif
+
+#ifdef __SVN__
+	#define	MOD_VERSION_LONG		wxT("aMule SVN")
 #else
-	#define	MOD_VERSION_LONG		wxT("aMule 2.2.0")
+	#define	MOD_VERSION_LONG		(wxT("aMule ") wxT(VERSION))
 #endif
 
 #define	VERSION_MJR		2
 #define	VERSION_MIN		2
 #define	VERSION_UPDATE		0
+
+#ifndef PACKAGE
+#define PACKAGE "amule"
+#endif
 
 #endif // CLIENTVERSION_H

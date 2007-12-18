@@ -26,7 +26,7 @@
 
 #include "FriendList.h" // Interface
 
-#include <include/common/DataFileVersion.h>
+#include <common/DataFileVersion.h>
 
 #include "amule.h"			// Needed for theApp: let it first or fail under win32
 #include "ClientList.h"		// Needed for CClientList

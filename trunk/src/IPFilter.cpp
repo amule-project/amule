@@ -280,8 +280,7 @@ private:
 		// Try to unpack the file, might be an archive
 		if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
 			AddLogLineM(true, 
-				CFormat(_("Failed to load ipfilter.dat file '%s',"
-					" unknown format encountered.")) % file);
+				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return 0;
 		}
 		

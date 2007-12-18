@@ -152,7 +152,7 @@ void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
-		#warning TODO EC
+		//#warning TODO EC
 		#ifndef CLIENT_GUI
 		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
@@ -201,7 +201,7 @@ void CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt))
 
 void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 {
-	#warning TODO EC
+	//#warning TODO EC
 	#ifndef CLIENT_GUI
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")

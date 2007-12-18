@@ -59,7 +59,7 @@ public:
 
 //private:
 
-	#warning THIS MUST BE MADE PRIVATE AFTER EC IS CODED
+//	//#warning THIS MUST BE MADE PRIVATE AFTER EC IS CODED
 	FriendList m_FriendList;
 };
 

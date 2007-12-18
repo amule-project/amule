@@ -38,24 +38,16 @@ there client on the eMule forum..
 
 #include "Kademlia.h" // Interface declarations
 
-#include <include/protocol/kad/Constants.h>
-#include <include/common/Macros.h>
+#include <protocol/kad/Constants.h>
+#include <common/Macros.h>
 
 #include "Defines.h"
 #include "Indexed.h"
 #include "../net/KademliaUDPListener.h"
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
-#include "amule.h"
-#include "Logger.h"
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
+#include "../../amule.h"
+#include "../../Logger.h"
 
 ////////////////////////////////////////
 using namespace Kademlia;
