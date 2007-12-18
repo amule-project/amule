@@ -23,6 +23,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Patch to show kad status in amuleweb (Bug 1103)
 		* typo in src/webserver/default/shared.php.
 
+	drkirkby:
+		* Test for gcc before including gcc specific flags on the
+		  compiler line.
+
 	DLH:
 		* amulegui.xpm icon.
 
@@ -225,7 +229,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  downloading the file IPFIlter.dat.
 		* Fix for ECSocket.cpp, amulegui was crashing upon entry.
 		* Fix for ClientDetailDialog in amulegui. Was showing
-		incorrect IP / Server / Software version information.
+		  incorrect IP / Server / Software version information.
 		* Switch binding of UPnP libraries to use one digit version
 		  names instead of unversioned names.
 		* Fix for crash in amuleweb when the image file did not exist.
