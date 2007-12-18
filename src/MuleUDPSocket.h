@@ -198,7 +198,7 @@ private:
 		uint16 nReceiverVerifyKey;
 		// Client hash or kad ID.
 		uint8 pachTargetClientHashORKadID[16];		
-	} __attribute__ ((packed));
+	} ;
 	
 	//! The queue of packets waiting to be sent.
 	std::list<UDPPack> m_queue;
