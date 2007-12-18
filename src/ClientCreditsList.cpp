@@ -26,9 +26,9 @@
 #include "ClientCreditsList.h"	// Interface declarations
 
 
-#include <include/protocol/ed2k/Constants.h>
-#include <include/common/Macros.h>
-#include <include/common/DataFileVersion.h>
+#include <protocol/ed2k/Constants.h>
+#include <common/Macros.h>
+#include <common/DataFileVersion.h>
 
 
 #include "GetTickCount.h"	// Needed for GetTickCount
@@ -452,7 +452,7 @@ bool CClientCreditsList::Debug_CheckCrypting(){
 	CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pub(priv);
 
 	byte abyPublicKey[80];
-	ArraySink asink(abyPublicKey, 80);
+	CryptoPP::ArraySink asink(abyPublicKey, 80);
 	pub.DEREncode(asink);
 	int8 PublicKeyLen = asink.TotalPutLength();
 	asink.MessageEnd();
