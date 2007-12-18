@@ -25,9 +25,9 @@
 
 #include "ClientList.h"		// Interface declarations.
 
-#include <include/protocol/ed2k/Constants.h>
-#include <include/protocol/kad/Client2Client/UDP.h>
-#include <include/protocol/kad/Constants.h>
+#include <protocol/ed2k/Constants.h>
+#include <protocol/kad/Client2Client/UDP.h>
+#include <protocol/kad/Constants.h>
 
 #include "amule.h"		// Needed for theApp
 #include "ClientTCPSocket.h"	// Needed for CClientTCPSocket
@@ -278,16 +278,16 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 	// LowID clients need a different set of checks
 	if (client->HasLowID()) {
 		// User is firewalled ... Must do two checks.
-		if (userIP and (userPort or userKadPort)) {
+		if (userIP && (userPort || userKadPort)) {
 			IDMapIteratorPair range = m_ipList.equal_range(userIP);
 
 			for ( ; range.first != range.second; ++range.first ) {
 				CUpDownClient* other = range.first->second;
 				wxASSERT(userIP == other->GetIP());
 						
-				if (userPort and (userPort == other->GetUserPort())) {
+				if (userPort && (userPort == other->GetUserPort())) {
 					return other;
-				  } else if (userKadPort and (userKadPort == other->GetKadPort())) {
+				  } else if (userKadPort && (userKadPort == other->GetKadPort())) {
 					return other;
 				}
 			}
@@ -295,7 +295,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 
 		const uint32 serverIP = client->GetServerIP();
 		const uint32 serverPort = client->GetServerPort();		
-		if (userID and serverIP and serverPort) {		
+		if (userID && serverIP && serverPort) {		
 			IDMapIteratorPair range = m_clientList.equal_range(userID);
 
 			for (; range.first != range.second; ++range.first) {
@@ -310,7 +310,7 @@ CUpDownClient* CClientList::FindMatchingClient( CUpDownClient* client )
 				}
 			}
 		}
-	} else if (userPort or userKadPort) {
+	} else if (userPort || userKadPort) {
 		// Check by IP first, then by ID
 		struct { const IDMap& map; uint32 value; } toCheck[] = {
 			{ m_ipList, userIP }, { m_clientList, userID }
@@ -845,7 +845,7 @@ void CClientList::RequestTCP(Kademlia::CContact* contact)
 	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
 
 	if (!pNewClient) {
-		#warning Do we actually have to check friendstate here?
+		//#warning Do we actually have to check friendstate here?
 		pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true);
 	}
 
