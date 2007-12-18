@@ -38,15 +38,9 @@ there client on the eMule forum..
 
 #include "Contact.h"
 
-#include <include/common/Macros.h>
+#include <common/Macros.h>
 
 #include "../../Statistics.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -73,7 +67,7 @@ m_inUse(0)
 	m_distance.XOR(clientID);
 	wxASSERT(udpPort);
 	theStats::AddKadNode();
-	#warning Kry KAD2 - Update the version on code.
+	//#warning Kry KAD2 - Update the version on code.
 	m_uVersion = 1;
 }
 

@@ -31,14 +31,17 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
+#include <wx/wx.h>
+
 #include "KademliaUDPListener.h"
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/protocol/kad/Client2Client/UDP.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h> // OP_CALLBACK is sent in some cases.
-#include <include/common/Macros.h>
-#include <include/tags/FileTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/kad/Constants.h>
+#include <protocol/kad/Client2Client/UDP.h>
+#include <protocol/ed2k/Client2Client/TCP.h> // OP_CALLBACK is sent in some cases.
+#include <common/Macros.h>
+#include <common/Format.h>
+#include <tags/FileTags.h>
 
 #include "../routing/Contact.h"
 #include "../routing/RoutingZone.h"
@@ -53,17 +56,10 @@ there client on the eMule forum..
 #include "../../updownclient.h"
 #include "../../ClientTCPSocket.h"
 #include "../../Logger.h"
-#include <common/Format.h>
 #include "../../Preferences.h"
-#include "ScopedPtr.h"
+#include "../../ScopedPtr.h"
 
 #include <wx/tokenzr.h>
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 #define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 

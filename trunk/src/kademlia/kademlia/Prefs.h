@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __PREFS_H__
 
 #include "../utils/UInt128.h"
+#include <time.h>
 
 ////////////////////////////////////////
 namespace Kademlia {
