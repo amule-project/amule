@@ -25,8 +25,8 @@
 
 #include "ClientListCtrl.h"
 
-#include <include/protocol/ed2k/ClientSoftware.h>
-#include <include/common/MenuIDs.h>
+#include <protocol/ed2k/ClientSoftware.h>
+#include <common/MenuIDs.h>
 
 #include "amule.h"
 #include "amuleDlg.h"
