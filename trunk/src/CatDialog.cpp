@@ -23,6 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
 #include <wx/colordlg.h>
 
 #ifdef __WXMSW__
@@ -164,9 +165,7 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 
 	if (!::wxDirExists(newpath)) {
 		if (!wxMkdir(newpath)) {
-			wxMessageBox(_(
-				"Failed to create incoming dir for category. "
-				"Please specify a valid path!"),
+			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"),
 				_("Info"), wxOK, this);
 			return;
 		}
