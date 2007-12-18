@@ -28,7 +28,7 @@
 
 #include "MuleNotebook.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
@@ -114,7 +114,7 @@ void CMuleNotebook::SetPopupHandler( wxWindow* widget )
 }
 
 
-#warning wxMac does not support selection by right-clicking on tabs!
+//#warning wxMac does not support selection by right-clicking on tabs!
 void CMuleNotebook::OnRMButton(wxMouseEvent& event)
 {
 	// Cases where we shouldn't be showing a popup-menu.
