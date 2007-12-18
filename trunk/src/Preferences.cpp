@@ -23,12 +23,12 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
+#include <wx/wx.h>
 #include "Preferences.h"
 
-#include <include/protocol/ed2k/Constants.h>
-#include <include/common/Constants.h>
-#include <include/common/DataFileVersion.h>
+#include <protocol/ed2k/Constants.h>
+#include <common/Constants.h>
+#include <common/DataFileVersion.h>
 
 #include <wx/config.h>
 #include <wx/dir.h>
@@ -46,6 +46,8 @@
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
+#include <common/ClientVersion.h>
+
 #include "UserEvents.h"
 
 #ifndef AMULE_DAEMON
@@ -759,7 +761,7 @@ public:
 		bool skins = false;
 		int flags = wxDIR_DIRS;
 		wxString filespec = wxEmptyString;
-#warning there has to be a better way...
+//#warning there has to be a better way...
 		if ( GetKey() == wxT("/SkinGUIOptions/Skin") ) {
 			folder = wxT("skins");
 			skins = true;
@@ -1406,7 +1408,7 @@ void CPreferences::SavePreferences()
 {
 	wxConfigBase* cfg = wxConfigBase::Get();
 
-	cfg->Write( wxT("/eMule/AppVersion"), wxT(PACKAGE_STRING) );
+	cfg->Write( wxT("/eMule/AppVersion"), wxT(VERSION) );
 
 	// Save the options
 	SaveAllItems( cfg );
@@ -1543,7 +1545,7 @@ const wxString&	CPreferences::GetCatPath(uint8 index)
 }
 
 
-uint32 CPreferences::CPreferences::GetCatColor(size_t index)
+uint32 CPreferences::GetCatColor(size_t index)
 {
 	wxASSERT( index < m_CatList.size() );
 

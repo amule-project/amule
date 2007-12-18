@@ -23,6 +23,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/app.h>
+
 #include "PartFileConvert.h"
 
 #ifdef CLIENT_GUI
@@ -54,11 +56,6 @@ CConvertListCtrl::CConvertListCtrl(
 
 #include <wx/stdpaths.h>
 #include "muuli_wdr.h"
-
-
-#ifdef __WXMSW__
-#undef AddJob
-#endif
 
 
 enum convstatus{
@@ -497,7 +494,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			#ifndef __VMS__
 				wxRmdir(folder);
 			#else
-				#warning wxRmdir does not work under VMS !
+				//#warning wxRmdir does not work under VMS !
 			#endif
 		}
 	}

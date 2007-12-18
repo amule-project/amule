@@ -451,7 +451,7 @@ protected:
 				// (it->first) is used to avoid checking against (uintXX)-1 by accident
 				else if ( entry.first == it->first - 1 && it->first ) {
 					// If same type: Merge
-					if (merge and (entry == it->second)) {
+					if (merge && (entry == it->second)) {
 						entry.first = it->second.first;
 						m_ranges.erase( it++ );
 					}
@@ -462,7 +462,7 @@ protected:
 				// Covers part of the span
 				else if ( entry.first < it->second.first ) {
 					// Same type, merge
-					if (merge and (entry == it->second)) {
+					if (merge && (entry == it->second)) {
 						entry.first = it->second.first;
 						m_ranges.erase( it++ );
 					} else {
@@ -484,7 +484,7 @@ protected:
 					// Ends inside the current span
 					if ( entry.first < it->second.first ) {
 						// Adding a span with same type inside a existing span is fruitless
-						if (merge and (entry == it->second)) {
+						if (merge && (entry == it->second)) {
 							return it;
 						}
 
@@ -497,7 +497,7 @@ protected:
 						break;
 					} else {
 						// Ends past the current span, resize or merge
-						if (merge and (entry == it->second)) {
+						if (merge && (entry == it->second)) {
 							start = it->first;
 							m_ranges.erase( it++ );
 						} else {
@@ -509,7 +509,7 @@ protected:
 					// Start past the current span
 					if ( start == it->second.first + 1 ) {
 						// Touches the current span
-						if (merge and (entry == it->second)) {
+						if (merge && (entry == it->second)) {
 							start = it->first;
 							m_ranges.erase( it++ );
 						} else {

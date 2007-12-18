@@ -31,7 +31,7 @@
 
 
 #include "Types.h"
-#include <libs/common/StringFunctions.h>
+#include <common/StringFunctions.h>
 #include "MemFile.h"
 
 // Helper class

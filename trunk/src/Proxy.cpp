@@ -26,7 +26,7 @@
 
 #include "Proxy.h"		/* for Interface		*/
 
-#include <include/common/EventIDs.h>
+#include <common/EventIDs.h>
 
 #include "ArchSpecific.h"	/* for ENDIAN_HTONS()		*/
 #include "Logger.h"		/* for AddDebugLogLineM		*/
