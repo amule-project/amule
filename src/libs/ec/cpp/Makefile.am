@@ -13,10 +13,10 @@ libec_a_SOURCES = \
 	RemoteConnect.cpp \
 	ECSpecialTags.cpp
 
-libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs
-libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs
+libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include
+libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include
 
-libec_noevt_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -DECSOCKET_USE_EVENTS=0
+libec_noevt_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include -DECSOCKET_USE_EVENTS=0
 
 noinst_HEADERS =  \
 		ECTag.h \

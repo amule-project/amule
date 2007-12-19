@@ -26,7 +26,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#ifndef USE_STD_STRING
 #include <wx/string.h>		// Needed for wxString and wxEmptyString
+#endif 
 
 #include <list>			// Needed for std::list
 #include <vector>		// Needed for std::vector
@@ -106,7 +108,9 @@ class CUpDownClient;
 
 //! Various common list-types.
 //@{ 
+#ifndef USE_STD_STRING
 typedef std::list<wxString> CStringList;
+#endif
 typedef std::list<CKnownFile*> CKnownFilePtrList;
 typedef std::list<CUpDownClient*> CClientPtrList;
 //@}
@@ -119,7 +123,9 @@ typedef std::vector<uint16> ArrayOfUInts16;
 // TO BE MOVED TO THAT PLACE. I MIGHT NEED IT ELSEWHERE LATER.
 //
 
+#ifndef USE_STD_STRING
 static const wxString EmptyString = wxEmptyString;
+#endif
 
 #ifndef __cplusplus
 	typedef int bool;
