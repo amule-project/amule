@@ -25,8 +25,8 @@
 
 #include "updownclient.h"	// Interface
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
 
 #include <zlib.h>
 
@@ -171,7 +171,7 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 	bool different_part = false;
 	
 	// Check if we have good lists and proceed to check for different chunks
-	if ((not m_BlockRequests_queue.empty()) && !m_DoneBlocks_list.empty())
+	if ((!m_BlockRequests_queue.empty()) && !m_DoneBlocks_list.empty())
 	{
 		Requested_Block_Struct* last_done_block = NULL;
 		Requested_Block_Struct* next_requested_block = NULL;
@@ -215,7 +215,7 @@ void CUpDownClient::CreateNextBlockPackage()
 	wxString fullname;
 	try {
         // Buffer new data if current buffer is less than 100 KBytes
-        while ((not m_BlockRequests_queue.empty()) &&
+        while ((!m_BlockRequests_queue.empty()) &&
                (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
@@ -226,7 +226,7 @@ void CUpDownClient::CreateNextBlockPackage()
 			}
 
 			if (srcfile->IsPartFile() && ((CPartFile*)srcfile)->GetStatus() != PS_COMPLETE) {
-				#warning This seems a good idea from eMule. We must import this.
+				//#warning This seems a good idea from eMule. We must import this.
 				#if 0
 				// Do not access a part file, if it is currently moved into the incoming directory.
 				// Because the moving of part file into the incoming directory may take a noticable 
@@ -286,7 +286,7 @@ void CUpDownClient::CreateNextBlockPackage()
 				// Partfile should NOT be closed!!!
 			}
 
-			#warning Part of the above import.
+			//#warning Part of the above import.
 			#if 0
 			if (lockFile.m_pObject){
 				lockFile.m_pObject->Unlock(); // Unlock the (part) file as soon as we are done with accessing it.
@@ -646,14 +646,14 @@ uint32 CUpDownClient::SendBlockData()
     }
 
     // remove to old values in list
-    while ((not m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 10*1000) {
+    while ((!m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 10*1000) {
         // keep sum of all values in list up to date
         m_nSumForAvgUpDataRate -= m_AvarageUDR_list.front().datalen;
 		m_AvarageUDR_list.pop_front();
     }
 
     // Calculate average speed for this slot
-    if ((not m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 0 && GetUpStartTimeDelay() > 2*1000) {
+    if ((!m_AvarageUDR_list.empty()) && (curTick - m_AvarageUDR_list.front().timestamp) > 0 && GetUpStartTimeDelay() > 2*1000) {
         m_nUpDatarate = ((uint64)m_nSumForAvgUpDataRate*1000) / (curTick-m_AvarageUDR_list.front().timestamp);
     } else {
         // not enough values to calculate trustworthy speed. Use -1 to tell this

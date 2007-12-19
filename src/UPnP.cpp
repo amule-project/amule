@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-
 #define UPNP_C
-
 
 #include "UPnP.h"
 
@@ -732,11 +730,11 @@ m_SCPD(NULL)
 
 	if (	m_serviceType == upnpLib.UPNP_SERVICE_WAN_IP_CONNECTION ||
 		m_serviceType == upnpLib.UPNP_SERVICE_WAN_PPP_CONNECTION) {
-#warning Delete this code on release.
+//#warning Delete this code on release.
 		//if (!upnpLib.m_ctrlPoint.WanServiceDetected()) {
 			// This condition can be used to suspend the parse
 			// of the XML tree.
-#warning Delete this code when m_WanService is no longer used.
+//#warning Delete this code when m_WanService is no longer used.
 			upnpLib.m_ctrlPoint.SetWanService(this);
 			// Log it
 			msg.str("");
@@ -745,7 +743,7 @@ m_SCPD(NULL)
 			AddDebugLogLineM(true, logUPnP, msg);
 			// Subscribe
 			upnpLib.m_ctrlPoint.Subscribe(*this);
-#warning Delete this code on release.
+//#warning Delete this code on release.
 #if 0
 		} else {
 			msg.str("");
