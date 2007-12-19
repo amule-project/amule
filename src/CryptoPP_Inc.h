@@ -29,6 +29,9 @@
 #ifdef USE_EMBEDDED_CRYPTO
 	#include "extern/cryptopp/CryptoPP.h"
 #else
+	#ifdef __WEAK_CRYPTO__
+		#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
+	#endif
 	#ifdef __CRYPTO_DEBIAN_GENTOO__
 		#include <crypto++/config.h>
 		#include <crypto++/md4.h>

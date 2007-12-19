@@ -452,6 +452,12 @@ case "$CRYPTO_PP_STYLE" in
  ;;
 esac
 
+# Check for CryptoPP >= 5.5
+if test ${vers} -ge "5005000"; then
+	CXXFLAGS="$CXXFLAGS -D__WEAK_CRYPTO__"
+fi
+
+
 AC_SUBST(CRYPTOLIBS)
 
 # Check for bfd.h (to have proper backtraces without using wxExecute)
@@ -845,4 +851,5 @@ echo " WARNING! libpng >= 1.2.0 not found."
 echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
 echo ""
 fi
+
 

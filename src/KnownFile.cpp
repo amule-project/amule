@@ -826,7 +826,11 @@ void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Out
 	}
 
 	if (Output != NULL){
-		 CryptoPP::MD4 md4_hasher;
+		#ifdef __WEAK_CRYPTO__
+			CryptoPP::Weak::MD4 md4_hasher;
+		#else
+			CryptoPP::MD4 md4_hasher;
+		#endif
 		 md4_hasher.CalculateDigest(Output, in_string, Length);
 	}
 }

@@ -315,7 +315,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Added manpage for amulegui.
 		* Added amulegui desktop icon (with Gerd78).
 		* Manpages update.
-		* Add debian folder
+		* Add debian folder.
+		* Correct use of libcrypto >= 5.5 and update of debian-dir.
 
 	wuischke:
 		* Add emulecollection support on aMule ED2K Links Handler
