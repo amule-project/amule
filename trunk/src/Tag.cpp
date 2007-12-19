@@ -124,7 +124,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				break;
 			
 			case TAGTYPE_FLOAT32:
-				#warning Endianess problem?
+				//#warning Endianess problem?
 				data.Read(&m_fVal, 4);
 				break;
 			
@@ -142,7 +142,7 @@ CTag::CTag(const CFileDataIO& data, bool bOptUTF8)
 				uint16 len = data.ReadUInt16();
 			
 				// 07-Apr-2004: eMule versions prior to 0.42e.29 used the formula "(len+7)/8"!
-				#warning This seems to be off by one! 8 / 8 + 1 == 2, etc.
+				//#warning This seems to be off by one! 8 / 8 + 1 == 2, etc.
 				data.Seek((len / 8) + 1, wxFromCurrent);
 				break;
 			}
@@ -346,7 +346,7 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			data->WriteUInt8(m_uVal);
 			break;
 		case TAGTYPE_FLOAT32:
-			#warning Endianess problem?
+			//#warning Endianess problem?
 			data->Write(&m_fVal, 4);
 			break;
 		case TAGTYPE_HASH16:

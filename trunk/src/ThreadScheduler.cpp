@@ -138,7 +138,7 @@ wxString GetErrMsg(wxThreadError err)
 
 void CThreadScheduler::CreateSchedulerThread()
 {
-	if ((m_thread and m_thread->IsAlive()) || m_tasks.empty()) {
+	if ((m_thread && m_thread->IsAlive()) || m_tasks.empty()) {
 		return;
 	}
 
@@ -300,7 +300,7 @@ void* CThreadScheduler::Entry()
 			// If the task has been aborted, the entry now refers to
 			// a different task, so dont remove it. That also means 
 			// that it cant be the last task of this type.
-			if (not task->m_abort) {
+			if (!task->m_abort) {
 				AddLogLineM(false, logThreads,
 					CFormat(wxT("Completed task '%s%s', %u tasks remaining.")) 
 						% task->GetType()
@@ -308,7 +308,7 @@ void* CThreadScheduler::Entry()
 						% m_tasks.size() );
 				
 				CDescMap& map = m_taskDescs[task->GetType()];
-				if (not map.erase(task->GetDesc())) {
+				if (!map.erase(task->GetDesc())) {
 					wxASSERT(0);
 				} else if (map.empty()) {
 					m_taskDescs.erase(task->GetType());
@@ -364,7 +364,7 @@ bool CThreadTask::TestDestroy() const
 {
 	wxCHECK(m_owner, m_abort);
 	
-	return m_abort or m_owner->TestDestroy();
+	return m_abort || m_owner->TestDestroy();
 }
 
 

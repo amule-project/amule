@@ -25,9 +25,9 @@
 
 #include "ServerSocket.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/common/EventIDs.h>
-#include <include/tags/ServerTags.h>
+#include <protocol/Protocols.h>
+#include <common/EventIDs.h>
+#include <tags/ServerTags.h>
 
 #include <wx/tokenzr.h>
 

@@ -46,7 +46,9 @@
 #else
 	// #include <bits/wordsize.h> would be enough, but we shouldn't depend on
 	// non-standard includes. However, we still do it :)
+#ifndef MSVC
 	#include <stdint.h>
+#endif
 	#ifdef __WORDSIZE
 		#if __WORDSIZE == 64
 			#define USE_64BIT_ARCH

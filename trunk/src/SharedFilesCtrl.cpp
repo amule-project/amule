@@ -25,7 +25,7 @@
 
 #include "SharedFilesCtrl.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include "muuli_wdr.h"			// Needed for ID_SHFILELIST
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
@@ -234,7 +234,7 @@ void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 
 void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 {
-	if ((not batch) and (FindItem(-1, (long)file) > -1)) {
+	if ((!batch) && (FindItem(-1, (long)file) > -1)) {
 		return;
 	}
 	
@@ -243,7 +243,7 @@ void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 	long newitem = InsertItem(insertPos, wxEmptyString);
 	SetItemData( newitem, (long)file );
 
-	if (not batch) {	
+	if (!batch) {	
 		ShowFilesCount();
 	}
 }
@@ -604,7 +604,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					}
 			}
 
-			if (not textBuffer.IsEmpty()) {
+			if (!textBuffer.IsEmpty()) {
 				dc->DrawText(textBuffer, columnRect.x, columnRect.y + textVOffset);
 			}
 		}
@@ -681,7 +681,7 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 				_("Enter new name for this file:"),
 				_("File rename"), file->GetFileName());
 				
-			if (!newName.IsEmpty() and (newName != file->GetFileName())) {
+			if (!newName.IsEmpty() && (newName != file->GetFileName())) {
 				theApp->sharedfiles->RenameFile(file, newName);
 			}
 		}
@@ -711,7 +711,7 @@ void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
 			+ file->GetFileName();
 		CMuleCollection my_collection;
 		if (my_collection.Open( (std::string)CollectionFile.mb_str() )) {
-#warning This is probably not working on Unicode
+//#warning This is probably not working on Unicode
 			for (size_t e = 0; e < my_collection.GetFileCount(); ++e) {
 				theApp->downloadqueue->AddLink(
 					wxString(my_collection.GetEd2kLink(e).c_str(), wxConvUTF8));

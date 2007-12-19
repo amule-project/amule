@@ -26,7 +26,7 @@
 
 #include "Statistics.h"		// Interface declarations
 
-#include <include/protocol/ed2k/ClientSoftware.h>
+#include <protocol/ed2k/ClientSoftware.h>
 
 #include <ec/cpp/ECTag.h>		// Needed for CECTag
 
