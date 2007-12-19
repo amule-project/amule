@@ -552,7 +552,7 @@ void COScopeCtrl::PlotHistory(unsigned cntPoints, bool bShiftGraph, bool bRefres
 	}
 } // PlotHistory
 #else
-#warning CORE/GUI -- EC needed
+//#warning CORE/GUI -- EC needed
 void COScopeCtrl::PlotHistory(unsigned, bool, bool) 
 {
 }

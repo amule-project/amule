@@ -26,7 +26,7 @@
 // The backtrace functions contain modified code from libYaMa, (c) Venkatesha Murthy G.
 // You can check libYaMa at http://personal.pavanashree.org/libyama/
 
-#include <include/tags/FileTags.h>
+#include <tags/FileTags.h>
 
 #include <wx/utils.h>
 #include <wx/file.h>		// Needed for wxFile
@@ -38,6 +38,7 @@
 
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
+#include <common/ClientVersion.h>	
 #include <common/MD5Sum.h>
 #include "MD4Hash.h"
 #include "Logger.h"
@@ -1360,6 +1361,7 @@ void InitLocale(wxLocale& locale, int language)
 		locale.AddCatalogLookupPathPrefix(JoinPaths(spb.GetDataDir(), wxT("locale")));
 #endif
 		locale.AddCatalog(wxT(PACKAGE));
+
 	} else {
 		locale.AddCatalogLookupPathPrefix(GetConfigDir());
 		locale.AddCatalog(wxT("custom"));
@@ -1405,7 +1407,7 @@ CMD4Hash password;
 		#ifndef __WXMSW__
 			pass_plain = char2unicode(getpass("Enter password for mule connection: "));
 		#else
-			#warning This way, pass enter is not hidden on windows. Bad thing.
+			//#warning This way, pass enter is not hidden on windows. Bad thing.
 			char temp_str[512];
 			fflush(stdin);
 			printf("Enter password for mule connection: \n");
