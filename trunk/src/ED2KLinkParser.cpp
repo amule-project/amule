@@ -27,8 +27,6 @@ const int versionMajor		= 1;
 const int versionMinor		= 4;
 const int versionRevision	= 0;
 
-
-
 #include <cstdlib>
 #include <sstream>
 #include <iostream>
@@ -43,7 +41,6 @@ const int versionRevision	= 0;
 #endif
 
 #include "FileLock.h"
-#define USE_STD_STRING
 #include "MagnetURI.h"
 #include "MuleCollection.h"
 

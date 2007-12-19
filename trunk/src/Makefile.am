@@ -76,8 +76,8 @@ libmuleappcommon_a_SOURCES = \
 	RandomFunctions.cpp \
 	kademlia/utils/UInt128.cpp
 
-libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include 
+libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
 libmuleappcommon_a_CFLAGS += -DENABLE_UPNP=1
 libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP=1
@@ -98,8 +98,8 @@ libmuleappcore_a_SOURCES = \
 	TextFile.cpp \
 	ThreadScheduler.cpp
 
-libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
 libmuleappcore_a_CFLAGS += -DENABLE_UPNP=1
 libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP=1
@@ -125,8 +125,8 @@ libmuleappgui_a_SOURCES = \
 	MuleCollection.cpp \
 	muuli_wdr.cpp 
 
-libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
-libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs
+libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
 libmuleappgui_a_CFLAGS += -DENABLE_UPNP=1
 libmuleappgui_a_CXXFLAGS += -DENABLE_UPNP=1
@@ -260,7 +260,7 @@ if ENABLE_GEOIP
 gui_flags += -DENABLE_GEOIP=1
 endif
 
-common_flags = -I$(srcdir)/libs -Ilibs
+common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include
 
 #
 # Extras 

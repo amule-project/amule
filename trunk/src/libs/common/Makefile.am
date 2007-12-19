@@ -8,7 +8,6 @@ noinst_LIBRARIES = \
 # Common to external apps and core/gui/monolithic
 
 libmulecommon_a_SOURCES = \
-	ConvAmule.cpp \
 	Format.cpp \
 	MD5Sum.cpp \
 	MuleDebug.cpp \
@@ -18,7 +17,6 @@ libmulecommon_a_CFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS)
 libmulecommon_a_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
 
 noinst_HEADERS =  \
-		ConvAmule.h \
 		MD5Sum.h \
 		MuleDebug.h \
 		StringFunctions.h
