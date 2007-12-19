@@ -25,7 +25,7 @@
 
 #include "ServerListCtrl.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include <wx/textfile.h>
 #include <wx/menu.h>
@@ -331,7 +331,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 	}
 }
 
-#warning Kry TODO: Dude, this gotta be moved to core
+//#warning Kry TODO: Dude, this gotta be moved to core
 bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 {
 	wxString filename = theApp->ConfigDir + wxT("staticservers.dat");
@@ -584,7 +584,7 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 {
 	// Check if delete was pressed
-	if ((event.GetKeyCode() == WXK_DELETE) or (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
+	if ((event.GetKeyCode() == WXK_DELETE) || (event.GetKeyCode() == WXK_NUMPAD_DELETE)) {
 		wxCommandEvent evt;
 		evt.SetId( MP_REMOVE );
 		OnRemoveServers( evt );

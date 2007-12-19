@@ -1004,7 +1004,8 @@ void CAICHHashSet::DbgTest()
 	TestHashSet.SetFileSize(m_pOwner->GetFileSize());
 	TestHashSet.SetMasterHash(GetMasterHash(), AICH_VERIFIED);
 	CMemFile file;
-	for (uint64 i = 0; i+9728000 < TESTSIZE; i += 9728000) {
+	uint64 i;
+	for (i = 0; i+9728000 < TESTSIZE; i += 9728000) {
 		VERIFY( CreatePartRecoveryData(i, &file) );
 		
 		/*uint32 nRandomCorruption = (rand() * rand()) % (file.GetLength()-4);
@@ -1015,7 +1016,8 @@ void CAICHHashSet::DbgTest()
 		VERIFY( TestHashSet.ReadRecoveryData(i, &file) );
 		file.Seek(0,wxFromStart);
 		TestHashSet.FreeHashSet();
-		for (uint32 j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE) {
+		uint32 j;
+		for (j = 0; j+EMBLOCKSIZE < 9728000; j += EMBLOCKSIZE) {
 			VERIFY( m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel) );
 			//TRACE(wxT("%u - %s\r\n"), cHash, m_pHashTree.FindHash(i+j, EMBLOCKSIZE, &curLevel)->m_Hash.GetString());
 			maxLevel = max(curLevel, maxLevel);
@@ -1042,7 +1044,7 @@ void CAICHHashSet::DbgTest()
 		cHash++;
 	}
 	//VERIFY( m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel) );
-	TRACE(wxT("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
+	//TRACE(wxT("%u - %s\r\n"), cHash,m_pHashTree.FindHash(i+j, (TESTSIZE-i)-j, &curLevel)->m_Hash.GetString());
 	maxLevel = max(curLevel, maxLevel);
 #endif
 }

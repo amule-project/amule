@@ -25,10 +25,10 @@
 
 #include "SharedFileList.h"	// Interface declarations  // Do_not_auto_remove
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/ClientSoftware.h>
-#include <include/protocol/kad/Constants.h>
-#include <include/tags/FileTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/ClientSoftware.h>
+#include <protocol/kad/Constants.h>
+#include <tags/FileTags.h>
 
 #include <wx/utils.h>
 
@@ -353,10 +353,7 @@ void CSharedFileList::FindSharedFiles()
 			sharedPaths.push_back(ReadyPath(path));
 			++i;
 		} else {
-			wxString msg = CFormat( _(
-				"CSharedFileList::FindSharedFiles: Removing "
-				"%s from shared directory list: "
-				"directory not found.") ) % path;
+			wxString msg = CFormat( _("CSharedFileList::FindSharedFiles: Removing %s from shared directory list: directory not found.") ) % path;
 			AddLogLineM(true, msg);
 			printf("%s\n", (const char *)unicode2char(msg));
 			theApp->glob_prefs->shareddir_list.RemoveAt(i);
@@ -1081,7 +1078,7 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
 			return true;
 		}
 	} else {
-#warning Renaming of completed files causes problems on kad. Enable when reviewed.
+//#warning Renaming of completed files causes problems on kad. Enable when reviewed.
 #if 0
 		wxString oldPath = JoinPaths(file->GetFilePath(), file->GetFileName());
 		wxString newPath = JoinPaths(file->GetFilePath(), newName);

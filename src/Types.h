@@ -30,8 +30,20 @@
 
 #include <list>			// Needed for std::list
 #include <vector>		// Needed for std::vector
-#include <inttypes.h>		// Do_not_auto_remove (Old gccs)
 
+#ifndef MSVC
+	#include <inttypes.h>
+#else
+	typedef unsigned __int8 byte;
+	typedef unsigned __int8 uint8_t;
+	typedef unsigned __int16 uint16_t;
+	typedef unsigned __int32 uint32_t;
+	typedef unsigned __int64 uint64_t;
+	typedef signed __int8 int8_t;
+	typedef signed __int16 int16_t;
+	typedef signed __int32 int32_t;
+	typedef signed __int64 int64_t;
+#endif
 
 // These are MSVC defines used in eMule. They should 
 // not be used in aMule, instead, use this table to 
@@ -106,7 +118,6 @@ typedef std::vector<uint16> ArrayOfUInts16;
 // THE FACT SOMETHING IS USED IN JUST ONE PLACE DOESN'T MEAN IT HAS
 // TO BE MOVED TO THAT PLACE. I MIGHT NEED IT ELSEWHERE LATER.
 //
-// FUCKTARD.
 
 static const wxString EmptyString = wxEmptyString;
 
@@ -116,9 +127,21 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
+	#define NOMINMAX
+	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
 	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
 	#include <wingdi.h>	// Do_not_auto_remove
 	#include <winuser.h>	// Do_not_auto_remove
+	// Windows compilers don't have these constants
+	#ifndef W_OK
+		enum
+		{
+			F_OK = 0,   // test for existence
+			X_OK = 1,   //          execute permission
+			W_OK = 2,   //          write
+			R_OK = 4    //          read
+		};
+	#endif // W_OK
 #else 
 	typedef struct sRECT {
 	  uint32 left;

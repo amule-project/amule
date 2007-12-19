@@ -25,7 +25,7 @@
 
 #include "TransferWnd.h"	// Interface declarations
 
-#include <include/common/MenuIDs.h>
+#include <common/MenuIDs.h>
 
 #include <wx/config.h>
 

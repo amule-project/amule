@@ -26,9 +26,9 @@
 
 #include "ServerUDPSocket.h"	// Interface declarations.
 
-#include <include/protocol/Protocols.h>
-#include <include/common/EventIDs.h>
-#include <include/tags/ServerTags.h>
+#include <protocol/Protocols.h>
+#include <common/EventIDs.h>
+#include <tags/ServerTags.h>
 
 #include "Packet.h"		// Needed for CPacket
 #include "PartFile.h"		// Needed for CPartFile
@@ -416,7 +416,7 @@ void CServerUDPSocket::SendQueue()
 				if (update->GetLastDNSSolve() + DNS_SOLVE_TIME < ::GetTickCount64()) {
 					// Its time for a new check.
 					CAsyncDNS* dns = new CAsyncDNS(item.addr, DNS_UDP, theApp, this);
-					if ((dns->Create() != wxTHREAD_NO_ERROR) or (dns->Run() != wxTHREAD_NO_ERROR)) {
+					if ((dns->Create() != wxTHREAD_NO_ERROR) || (dns->Run() != wxTHREAD_NO_ERROR)) {
 						// Not much we can do here, just drop the packet.
 						m_queue.pop_front();
 						continue;
@@ -477,7 +477,7 @@ void CServerUDPSocket::OnHostnameResolved(uint32 ip)
 	wxCHECK_RET(m_queue.size(), wxT("DNS query returned, but no packets are queued."));
 	
 	ServerUDPPacket item = m_queue.front();
-	wxCHECK_RET(!item.ip and !item.addr.IsEmpty(), wxT("DNS resolution not expected."));
+	wxCHECK_RET(!item.ip && !item.addr.IsEmpty(), wxT("DNS resolution not expected."));
 		
 	/* An asynchronous database routine completed. */
 	CServer* update = theApp->serverlist->GetServerByAddress(item.addr, item.port);

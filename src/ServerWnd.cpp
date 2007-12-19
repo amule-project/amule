@@ -238,7 +238,7 @@ void CServerWnd::UpdateKadInfo()
 			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaFiles()));
 			
 			#else 
-			#warning TODO: Buddy state on remote GUI
+			//#warning TODO: Buddy state on remote GUI
 			/* Maybe Averages too, but that would be redundant 
 			   they are already on the status bar */
 			#endif

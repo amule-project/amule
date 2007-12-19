@@ -30,7 +30,7 @@
 #include "ThreadTasks.h"		// Interface declarations
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"			// Needed for Add(Debug)LogLineM
-#include <libs/common/Format.h>		// Needed for CFormat
+#include <common/Format.h>		// Needed for CFormat
 #include "FileFunctions.h"		// Needed for CheckFileExists
 #include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"		// Needed for theApp->knownfiles
@@ -60,7 +60,7 @@ CHashingTask::CHashingTask(const wxString& path, const wxString& filename, const
 	// so that the AICH hashset only gets assigned if the MD4 hashset 
 	// matches what we expected. Due to the rareity of post-completion
 	// corruptions, this gives us a nice speedup in most cases.
-	if (part and not part->GetGapList().empty()) {
+	if (part && !part->GetGapList().empty()) {
 		m_toHash = EH_MD4;
 	}
 }
@@ -87,7 +87,7 @@ void CHashingTask::Entry()
 	} else  if (file.GetLength() > MAX_FILE_SIZE) {
 		AddDebugLogLineM(true, logHasher, wxT("Warning, file is larger than supported size, skipping: ") + fullPath);
 		return;
-	} else if ((file.GetLength() == 0) and ((m_owner == NULL) or (m_toHash == EH_AICH))) {
+	} else if ((file.GetLength() == 0) && ((m_owner == NULL) || (m_toHash == EH_AICH))) {
 		// Zero-size partfiles should be hashed, but not zero-sized shared-files.
 		AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
 		return;			
@@ -103,7 +103,7 @@ void CHashingTask::Entry()
 		knownfile->m_AvailPartFrequency.begin(),
 		knownfile->GetPartCount(), 0);
 	
-	if ((m_toHash & EH_MD4) and (m_toHash & EH_AICH)) {
+	if ((m_toHash & EH_MD4) && (m_toHash & EH_AICH)) {
 		knownfile->GetAICHHashset()->FreeHashSet();
 		AddLogLineM( false, logHasher, CFormat( 
 			_("Starting to create MD4 and AICH hash for file: %s")) %
@@ -122,7 +122,7 @@ void CHashingTask::Entry()
 	
 	
 	// This loops creates the part-hashes, loop-de-loop.
-	while (!file.Eof() and not TestDestroy()) {
+	while (!file.Eof() && !TestDestroy()) {
 		if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
 			AddDebugLogLineM(true, logHasher,
 				wxT("Error while hashing file, skipping: ") +
@@ -132,7 +132,7 @@ void CHashingTask::Entry()
 		}
 	}
 
-	if ((m_toHash & EH_MD4) and not TestDestroy()) {
+	if ((m_toHash & EH_MD4) && !TestDestroy()) {
 		// If the file is < PARTSIZE, then the filehash is that one hash,
 		// otherwise, the filehash is the hash of the parthashes
 		if ( knownfile->m_hashlist.size() == 1 ) {
@@ -140,20 +140,20 @@ void CHashingTask::Entry()
 			knownfile->m_hashlist.clear();
 		} else {
 			const unsigned int len = knownfile->m_hashlist.size() * 16;
-			byte data[len];
+			std::vector<byte> data(len);
 			
 			for (size_t i = 0; i < knownfile->m_hashlist.size(); ++i) {
-				memcpy(data + 16*i, knownfile->m_hashlist[i].GetHash(), 16);
+				memcpy(&(data[16*i]), knownfile->m_hashlist[i].GetHash(), 16);
 			}
 
-			byte hash[16];
-			knownfile->CreateHashFromString( data, len, hash, NULL );
-			knownfile->m_abyFileHash.SetHash( (byte*)hash );
+			std::vector<byte> hash(16);
+			knownfile->CreateHashFromString( &(data[0]), len, &(hash[0]), NULL );
+			knownfile->m_abyFileHash.SetHash( (byte*)&(hash[0]) );
 		}
 	}
 	
 	// Did we create a AICH hashset?
-	if ((m_toHash & EH_AICH) and not TestDestroy()) {
+	if ((m_toHash & EH_AICH) && !TestDestroy()) {
 		CAICHHashSet* AICHHashSet = knownfile->GetAICHHashset();
 
 		AICHHashSet->ReCalculateHash(false);
@@ -166,11 +166,11 @@ void CHashingTask::Entry()
 		}
 	}
 	
-	if ((m_toHash == EH_AICH) and not TestDestroy()) {
+	if ((m_toHash == EH_AICH) && !TestDestroy()) {
 		CHashingEvent evt(MULE_EVT_AICH_HASHING, knownfile.release(), m_owner);
 		
 		wxPostEvent(wxTheApp, evt);
-	} else if (not TestDestroy()) {
+	} else if (!TestDestroy()) {
 		CHashingEvent evt(MULE_EVT_HASHING, knownfile.release(), m_owner);
 		
 		wxPostEvent(wxTheApp, evt);
@@ -180,7 +180,7 @@ void CHashingTask::Entry()
 
 bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes toHash)
 {
-	wxCHECK_MSG(not file->Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
+	wxCHECK_MSG(!file->Eof(), false, wxT("Unexpected EOF in CreateNextPartHash"));
 	
 	// We'll read at most PARTSIZE bytes per cycle
 	const uint64 partLength = std::min<uint64>(PARTSIZE, file->GetLength() - file->GetPosition());
@@ -215,7 +215,7 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 		// file i.e. will have 3 parts (see CKnownFile::SetFileSize for comments). 
 		// So we have to create the hash for the 0-size data, which will be the default
 		// md4 hash for null data: 31D6CFE0D16AE931B73C59D7E0C089C0	
-		if ((partLength == PARTSIZE) and file->Eof()) {
+		if ((partLength == PARTSIZE) && file->Eof()) {
 			owner->m_hashlist.push_back(CMD4Hash(g_emptyMD4Hash));
 		}
 	}
@@ -302,7 +302,7 @@ void CAICHSyncTask::Entry()
 	// we need to keep it from messing with the same objects.
 	wxMutexGuiLocker guiLock;
 #else
-	#warning Thread-safety needed
+	//#warning Thread-safety needed
 #endif
 	
 	// Now we check that all files which are in the sharedfilelist have a
@@ -312,7 +312,7 @@ void CAICHSyncTask::Entry()
 	
 		if (TestDestroy()) {
 			break;
-		} else if (kfile and not kfile->IsPartFile()) {
+		} else if (kfile && !kfile->IsPartFile()) {
 			CAICHHashSet* hashset = kfile->GetAICHHashset();
 
 			if (hashset->GetStatus() == AICH_HASHSETCOMPLETE) {
@@ -420,7 +420,7 @@ void CCompletionTask::Entry()
 		// Prevent the preference values from changing underneeth us.
 		wxMutexGuiLocker guiLock;
 #else
-		#warning Thread-safety needed
+		//#warning Thread-safety needed
 #endif
 		
 		targetPath = theApp->glob_prefs->GetCategory(m_category)->incomingpath;

@@ -520,7 +520,7 @@ public:
 
 	uint32		GetPayloadInBuffer() const	{ return m_addedPayloadQueueSession - GetQueueSessionPayloadUp(); }
 	uint32		GetQueueSessionPayloadUp() const	{ return m_nCurQueueSessionPayloadUp; }
-	bool		HasBlocks() const		{ return not m_BlockRequests_queue.empty(); }
+	bool		HasBlocks() const		{ return !m_BlockRequests_queue.empty(); }
 
 	/* Source comes from? */
 	ESourceFrom		GetSourceFrom() const	{ return (ESourceFrom)m_nSourceFrom; }
