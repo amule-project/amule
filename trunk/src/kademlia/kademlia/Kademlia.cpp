@@ -388,9 +388,13 @@ CIndexed *CKademlia::GetIndexed(void)
 void KadGetKeywordHash(const wxString& rstrKeyword, Kademlia::CUInt128* pKadID)
 {
 	byte Output[16];
-	
-	CryptoPP::MD4 md4_hasher; 	
-	
+
+	#ifdef __WEAK_CRYPTO__
+		CryptoPP::Weak::MD4 md4_hasher;
+	#else
+		CryptoPP::MD4 md4_hasher;
+	#endif
+
 	// This should be safe - we assume rstrKeyword is ANSI anyway.
 	char* ansi_buffer = strdup(unicode2UTF8(rstrKeyword));
 	
