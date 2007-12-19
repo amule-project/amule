@@ -27,6 +27,13 @@
 
 #include <wx/intl.h>		// Needed for wxTRANSLATE
 
+
+#ifdef MSVC
+	#define ATTR(x) 
+#else
+	#define ATTR(x) __attribute__((x))
+#endif
+
 /* Each event will use 5 IDs:
    - the panel that shows the prefs for this event
    - the 'Core command enabled' checkbox
@@ -133,30 +140,30 @@ class CUserEvents {
 	/**
 	 * Returns the number of defined user events.
 	 */
-	static unsigned int	GetCount() __attribute__((__const__));
+	static unsigned int	GetCount() ATTR(__const__);
 
 	/**
 	 * Returs the human-readable name of the event.
 	 */
-	static const wxString&	GetDisplayName(enum EventType event) __attribute__((__pure__));
+	static const wxString&	GetDisplayName(enum EventType event) ATTR(__pure__);
 
 	/**
 	 * Checks whether the core command is enabled.
 	 */
-	static bool		IsCoreCommandEnabled(enum EventType event) __attribute__((__pure__));
+	static bool		IsCoreCommandEnabled(enum EventType event) ATTR(__pure__);
 
 	/**
 	 * Checks whether the GUI command is enabled.
 	 */
-	static bool		IsGUICommandEnabled(enum EventType event) __attribute__((__pure__));
+	static bool		IsGUICommandEnabled(enum EventType event) ATTR(__pure__);
 
  private:
 	// functions for CPreferences
-	static const wxString&	GetKey(const unsigned int event) __attribute__((__pure__));
-	static bool&		GetCoreEnableVar(const unsigned int event) __attribute__((__pure__));
-	static wxString&	GetCoreCommandVar(const unsigned int event) __attribute__((__pure__));
-	static bool&		GetGUIEnableVar(const unsigned int event) __attribute__((__pure__));
-	static wxString&	GetGUICommandVar(const unsigned int event) __attribute__((__pure__));
+	static const wxString&	GetKey(const unsigned int event) ATTR(__pure__);
+	static bool&		GetCoreEnableVar(const unsigned int event) ATTR(__pure__);
+	static wxString&	GetCoreCommandVar(const unsigned int event) ATTR(__pure__);
+	static bool&		GetGUIEnableVar(const unsigned int event) ATTR(__pure__);
+	static wxString&	GetGUICommandVar(const unsigned int event) ATTR(__pure__);
 };
 
 #undef USEREVENTS_EVENT

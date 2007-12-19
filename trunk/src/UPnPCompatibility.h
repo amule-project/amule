@@ -33,8 +33,8 @@
 #include <sstream>
 
 
-#include <libs/common/MuleDebug.h>		// for CMuleException::
-#include <libs/common/StringFunctions.h>	// for char2unicode()
+#include <common/MuleDebug.h>		// for CMuleException::
+#include <common/StringFunctions.h>	// for char2unicode()
 
 
 #include "Logger.h"				// for Add(Debug)LogLineM()

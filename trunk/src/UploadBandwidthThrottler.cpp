@@ -25,9 +25,9 @@
 
 #include "UploadBandwidthThrottler.h"
 
-#include <include/protocol/ed2k/Constants.h>
-#include <include/common/Macros.h>
-#include <include/common/Constants.h>
+#include <protocol/ed2k/Constants.h>
+#include <common/Macros.h>
+#include <common/Constants.h>
 
 #include <cmath>
 #include <limits> // Do_not_auto_remove (NetBSD)
@@ -38,6 +38,7 @@
 #include "amule.h"
 #include "Statistics.h"
 
+#ifndef MSVC
 
 #ifdef _UI64_MAX
 #undef _UI64_MAX
@@ -51,6 +52,8 @@ const uint32 _UI32_MAX = std::numeric_limits<uint32>::max();
 const sint32 _I32_MAX = std::numeric_limits<sint32>::max();
 const uint64 _UI64_MAX = std::numeric_limits<uint64>::max();
 const sint64 _I64_MAX = std::numeric_limits<sint64>::max();
+
+#endif
 
 /////////////////////////////////////
 
@@ -475,7 +478,7 @@ void* UploadBandwidthThrottler::Entry()
 			m_SentBytesSinceLastCall += spentBytes;
 			m_SentBytesSinceLastCallOverhead += spentOverhead;
 
-			if ((spentBytes == 0) and (spentOverhead == 0)) {
+			if ((spentBytes == 0) && (spentOverhead == 0)) {
 				extraSleepTime = std::min<uint32>(extraSleepTime * 5, 1000); // 1s at most
 			} else {
 				extraSleepTime = TIME_BETWEEN_UPLOAD_LOOPS;

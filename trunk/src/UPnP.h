@@ -639,7 +639,7 @@ private:
 	PortMappingMap m_ActivePortMappingsMap;
 	CUPnPMutex m_RootDeviceListMutex;
 	bool m_IGWDeviceDetected;
-#warning This variable is for testing purposes only and should disappear on release.
+//#warning This variable is for testing purposes only and should disappear on release.
 	CUPnPService *m_WanService;
 	CUPnPMutex m_WaitForSearchTimeoutMutex;
 

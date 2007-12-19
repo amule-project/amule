@@ -25,10 +25,10 @@
 
 #include "UploadQueue.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h>
-#include <include/common/Macros.h>
-#include <include/common/Constants.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h>
+#include <common/Macros.h>
+#include <common/Constants.h>
 
 #include <cmath>
 
@@ -187,7 +187,7 @@ void CUploadQueue::AddUpNextClient(CUpDownClient* directadd)
 
 void CUploadQueue::Process()
 {
-	if (AcceptNewClient() && not m_waitinglist.empty()) {
+	if (AcceptNewClient() && !m_waitinglist.empty()) {
 		m_nLastStartUpload = ::GetTickCount();
 		AddUpNextClient();
 	}
