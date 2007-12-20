@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-19 02:30+0000\n"
+"POT-Creation-Date: 2007-12-20 02:31+0000\n"
 "PO-Revision-Date: 2007-12-14 20:39+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -69,22 +69,22 @@ msgid "Complete"
 msgstr "Valmis"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3792
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:808
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausitud"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3795
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:807
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Vigane"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3802
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:806
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Tõmban"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3804
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:805
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Ootan"
 
@@ -140,8 +140,8 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2598 src/PartFile.cpp:2604 src/KnownFile.cpp:851
-#: src/KnownFile.cpp:857 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2598 src/PartFile.cpp:2604 src/KnownFile.cpp:855
+#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -918,7 +918,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
-#: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:160
+#: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1763
 #: src/muuli_wdr.cpp:1776 src/muuli_wdr.cpp:1789 src/muuli_wdr.cpp:1807
 #: src/muuli_wdr.cpp:1820 src/ClientListCtrl.cpp:646
@@ -2876,8 +2876,8 @@ msgstr "Ühendu eemalasuva amuulaga"
 msgid "Connection failed "
 msgstr "Ühendus ebaõnnestus "
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:133
-#: src/OtherFunctions.cpp:151 src/OtherFunctions.cpp:205 src/amule.cpp:852
+#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:134
+#: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:852
 #: src/amule.cpp:970 src/amule.cpp:1346
 msgid "Error"
 msgstr "Viga"
@@ -2896,7 +2896,7 @@ msgid "Transferred"
 msgstr "Siiratud"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:621 src/OtherFunctions.cpp:804
+#: src/PartFileConvert.cpp:621 src/OtherFunctions.cpp:805
 msgid "Completed"
 msgstr "Valmis"
 
@@ -3256,7 +3256,7 @@ msgstr "kasutajaliides eemalt"
 msgid "Insufficient Diskspace"
 msgstr "Kettaruumi ei jätku"
 
-#: src/PartFile.cpp:3809 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:809
+#: src/PartFile.cpp:3809 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Peatatud"
 
@@ -3283,7 +3283,7 @@ msgstr "IO viga known.met faili lugemisel: %s"
 msgid "Error while saving known.met file: %s"
 msgstr "VIGA: tekkis known.met faili salvestamisel: %s"
 
-#: src/SharedFileList.cpp:357
+#: src/SharedFileList.cpp:356
 #, c-format
 msgid ""
 "CSharedFileList::FindSharedFiles: Removing %s from shared directory list: "
@@ -3292,17 +3292,17 @@ msgstr ""
 "CSharedFileList::FindSharedFiles: Eemaldan %s jagatud failide "
 "kataloogiloetelust: kataloogi ei leitud."
 
-#: src/SharedFileList.cpp:376
+#: src/SharedFileList.cpp:373
 #, c-format
 msgid "Found %i known shared files"
 msgstr "Leitud %i tuntud ja jagatud faili."
 
-#: src/SharedFileList.cpp:384
+#: src/SharedFileList.cpp:381
 #, c-format
 msgid "Found %i known shared files, %i unknown"
 msgstr "Leitud %i tuntud ja jagatud faili, %i tundmatut."
 
-#: src/SharedFileList.cpp:394
+#: src/SharedFileList.cpp:391
 #, c-format
 msgid "ERROR! Attempted to share %s"
 msgstr "VIGA! Proovisid jagada %s"
@@ -4024,38 +4024,38 @@ msgstr "Ootan kinnitust"
 msgid "All others"
 msgstr "kõik teised"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:803
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:804
 msgid "Incomplete"
 msgstr "Poolik"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:816
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:817
 msgid "Active"
 msgstr "Aktiivne"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:810
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:811
 msgid "Video"
 msgstr "Film"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:272
-#: src/OtherFunctions.cpp:811 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:273
+#: src/OtherFunctions.cpp:812 src/muuli_wdr.cpp:228
 msgid "Audio"
 msgstr "Muusika"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:812
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:813
 msgid "Archive"
 msgstr "Arhiiv"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:286
-#: src/OtherFunctions.cpp:813 src/muuli_wdr.cpp:229
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:287
+#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:229
 msgid "CD-Images"
 msgstr "CD-Image"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:293
-#: src/OtherFunctions.cpp:814 src/muuli_wdr.cpp:230
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:294
+#: src/OtherFunctions.cpp:815 src/muuli_wdr.cpp:230
 msgid "Pictures"
 msgstr "Pildid"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:815
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:816
 msgid "Text"
 msgstr "Tekst"
 
@@ -4188,115 +4188,115 @@ msgstr "Ootan..."
 msgid "%s (Disk: %s)"
 msgstr "%s (Ketas: %s)"
 
-#: src/OtherFunctions.cpp:123
+#: src/OtherFunctions.cpp:124
 msgid "bytes"
 msgstr "baiti"
 
-#: src/OtherFunctions.cpp:125
+#: src/OtherFunctions.cpp:126
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:127 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
+#: src/OtherFunctions.cpp:128 src/muuli_wdr.cpp:269 src/muuli_wdr.cpp:292
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:129 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
+#: src/OtherFunctions.cpp:130 src/muuli_wdr.cpp:270 src/muuli_wdr.cpp:293
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:131
+#: src/OtherFunctions.cpp:132
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:143
+#: src/OtherFunctions.cpp:144
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:145
+#: src/OtherFunctions.cpp:146
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:147
+#: src/OtherFunctions.cpp:148
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:149
+#: src/OtherFunctions.cpp:150
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:158
+#: src/OtherFunctions.cpp:159
 msgid "bytes/sec"
 msgstr "baiti/sek"
 
-#: src/OtherFunctions.cpp:162
+#: src/OtherFunctions.cpp:163
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:173 src/OtherFunctions.cpp:177
+#: src/OtherFunctions.cpp:174 src/OtherFunctions.cpp:178
 msgid "secs"
 msgstr "sek"
 
-#: src/OtherFunctions.cpp:185
+#: src/OtherFunctions.cpp:186
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:192 src/OtherFunctions.cpp:202
+#: src/OtherFunctions.cpp:193 src/OtherFunctions.cpp:203
 msgid "hours"
 msgstr "tundi"
 
-#: src/OtherFunctions.cpp:200
+#: src/OtherFunctions.cpp:201
 msgid "Days"
 msgstr "päev(a)"
 
-#: src/OtherFunctions.cpp:265 src/muuli_wdr.cpp:233
+#: src/OtherFunctions.cpp:266 src/muuli_wdr.cpp:233
 msgid "Videos"
 msgstr "Filmid"
 
-#: src/OtherFunctions.cpp:279 src/muuli_wdr.cpp:227
+#: src/OtherFunctions.cpp:280 src/muuli_wdr.cpp:227
 msgid "Archives"
 msgstr "Archiwum"
 
-#: src/OtherFunctions.cpp:300 src/muuli_wdr.cpp:232
+#: src/OtherFunctions.cpp:301 src/muuli_wdr.cpp:232
 msgid "Texts"
 msgstr "Tekst"
 
-#: src/OtherFunctions.cpp:307 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:308 src/muuli_wdr.cpp:231
 msgid "Programs"
 msgstr "Programmid"
 
-#: src/OtherFunctions.cpp:314 src/muuli_wdr.cpp:226
+#: src/OtherFunctions.cpp:315 src/muuli_wdr.cpp:226
 msgid "Any"
 msgstr "Suvaline"
 
-#: src/OtherFunctions.cpp:392 src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:919
+#: src/OtherFunctions.cpp:393 src/OtherFunctions.cpp:399 src/muuli_wdr.cpp:919
 msgid "Not rated"
 msgstr "Pole hinnatud"
 
-#: src/OtherFunctions.cpp:393 src/muuli_wdr.cpp:920
+#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:920
 msgid "Invalid / Corrupt / Fake"
 msgstr "Vigane / Vigastatud / Pole õige"
 
-#: src/OtherFunctions.cpp:394 src/muuli_wdr.cpp:921
+#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:921
 msgid "Poor"
 msgstr "Halb"
 
-#: src/OtherFunctions.cpp:395 src/muuli_wdr.cpp:922
+#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:922
 msgid "Fair"
 msgstr "Hea"
 
-#: src/OtherFunctions.cpp:396 src/muuli_wdr.cpp:923
+#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:923
 msgid "Good"
 msgstr "Keskpärane"
 
-#: src/OtherFunctions.cpp:397 src/muuli_wdr.cpp:924
+#: src/OtherFunctions.cpp:398 src/muuli_wdr.cpp:924
 msgid "Excellent"
 msgstr "Väga hea"
 
-#: src/OtherFunctions.cpp:801
+#: src/OtherFunctions.cpp:802
 msgid "all"
 msgstr "kõik"
 
-#: src/OtherFunctions.cpp:802
+#: src/OtherFunctions.cpp:803
 msgid "all others"
 msgstr "kõik teised"
 
