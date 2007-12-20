@@ -31,6 +31,7 @@
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
+#include <wx/settings.h>
 
 #include "amule.h"		// Needed for theApp
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
