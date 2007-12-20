@@ -567,8 +567,7 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_SEARCHRELATED, _("Search related files (ED2k, local server)"));
 		menu.AppendSeparator();
 
-//#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! \
-//You are on your own here, this might break "known.met"
+//#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! You are on your own here, this might break "known.met"
 #if 0
 		menu.Append(MP_MARK_AS_KNOWN, _("Mark as known file"));
 		menu.AppendSeparator();
