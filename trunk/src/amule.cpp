@@ -29,10 +29,6 @@
 
 #include "amule.h"			// Interface declarations.
 
-
-#include <include/common/ClientVersion.h>
-
-
 #include <csignal>
 #include <wx/process.h>
 #include <wx/sstream.h>	
@@ -41,6 +37,8 @@
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
+
+#include <include/common/ClientVersion.h>
 
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)

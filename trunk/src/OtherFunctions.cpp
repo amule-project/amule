@@ -36,6 +36,10 @@
 	#include <wx/msw/registry.h> // Do_not_auto_remove
 #endif
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"		// Needed for a number of defines
+#endif
+
 #include <wx/stdpaths.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
 #include <common/ClientVersion.h>	
@@ -45,10 +49,6 @@
 
 #ifndef EC_REMOTE
 	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
-#endif
-
-#ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for a number of defines
 #endif
 
 #include "OtherFunctions.h"	// Interface declarations
