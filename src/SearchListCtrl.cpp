@@ -769,7 +769,7 @@ void CSearchListCtrl::OnDrawItem(
 	const int treeCenter = 6;
 	bool tree_show = false;
 
-	wxRect cur_rec(iOffset, 0, 0, rect.height );
+	wxRect cur_rec(iOffset, rect.y, 0, rect.height );
 	for (int i = 0; i < GetColumnCount(); i++) {
 		wxListItem listitem;
 		GetColumn(i, listitem);
@@ -835,7 +835,7 @@ void CSearchListCtrl::OnDrawItem(
 		const bool notLast = (item + 1 < GetItemCount());
 		const bool notFirst = (item != 0);
 		const bool hasNext = notLast && ((CSearchFile*)GetItemData(item + 1))->GetParent();
-		const int middle = ( cur_rec.height + 1 ) / 2;
+		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
 		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
@@ -846,12 +846,12 @@ void CSearchListCtrl::OnDrawItem(
 
 			// Draw the line to the child node
 			if (hasNext) {
-				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 
 			// Draw the line back up to parent node
 			if (notFirst) {
-				dc->DrawLine(treeCenter, middle, treeCenter, -1);
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y - 1);
 			}
 		} else if (file->HasChildren()) {
 		   	if (file->ShowChildren()) {
@@ -865,7 +865,7 @@ void CSearchListCtrl::OnDrawItem(
 
 			// Draw the line to the child node if there are any children
 			if (hasNext && file->ShowChildren()) {
-				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 		}
 	}
