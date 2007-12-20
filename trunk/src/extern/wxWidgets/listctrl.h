@@ -8,60 +8,35 @@
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef LISTCTRL_260_H
-#define LISTCTRL_260_H
+#ifndef LISTCTRL_287_H
+#define LISTCTRL_287_H
 
-#include <wx/version.h>		// Needed for wxCHECK_VERSION
+#include <wx/defs.h>
+#include <wx/listbase.h>
+#include <wx/textctrl.h>
 
-#if defined(__WXMAC__) || defined(__WIN32__) || wxCHECK_VERSION(2,7,0)
-#include "wx/imaglist.h" // Do_not_auto_remove
-#else
-#include "wx/generic/imaglist.h"
-#endif
+#define wxLC_OWNERDRAW 0x10000
 
-#include "wx/timer.h"
-#include "wx/scrolwin.h"
-#include "wx/settings.h"
-#include "wx/listbase.h"
-#include "wx/textctrl.h"
+class WXDLLIMPEXP_CORE wxImageList;
 
 #if wxUSE_DRAG_AND_DROP
 class WXDLLEXPORT wxDropTarget;
 #endif
 
-#define wxLC_OWNERDRAW 0x10000
-#if wxCHECK_VERSION(2,7,0)
-	extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
-#else
-	#define WXWIN_COMPATIBILITY_2_6 1
-	extern WXDLLEXPORT_DATA(const wxChar *) wxListCtrlNameStr;
-#endif
+namespace MuleExtern {
 
-//-----------------------------------------------------------------------------
-// classes
-//-----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// constants
+// ----------------------------------------------------------------------------
 
-class WXDLLEXPORT wxListItem;
-class WXDLLEXPORT wxListEvent;
+extern WXDLLEXPORT_DATA(const char) wxListCtrlNameStr[];
 
-class WXDLLEXPORT wxListCtrl;
-#define wxImageListType wxImageList
-
-namespace MuleExtern
-{
 //-----------------------------------------------------------------------------
 // internal classes
 //-----------------------------------------------------------------------------
 
-class WXDLLEXPORT wxListHeaderData;
-class WXDLLEXPORT wxListItemData;
-class WXDLLEXPORT wxListLineData;
-
 class WXDLLEXPORT wxListHeaderWindow;
 class WXDLLEXPORT wxListMainWindow;
-
-class WXDLLEXPORT wxListRenameTimer;
-class WXDLLEXPORT wxListTextCtrl;
 
 //-----------------------------------------------------------------------------
 // wxListCtrl
@@ -70,6 +45,7 @@ class WXDLLEXPORT wxListTextCtrl;
 class WXDLLEXPORT wxGenericListCtrl: public wxControl
 {
 public:
+
     wxGenericListCtrl();
     wxGenericListCtrl( wxWindow *parent,
                 wxWindowID winid = wxID_ANY,
@@ -81,7 +57,7 @@ public:
     {
         Create(parent, winid, pos, size, style, validator, name);
     }
-    ~wxGenericListCtrl();
+    virtual ~wxGenericListCtrl();
 
     bool Create( wxWindow *parent,
                  wxWindowID winid = wxID_ANY,
@@ -96,12 +72,11 @@ public:
     int GetColumnWidth( int col ) const;
     bool SetColumnWidth( int col, int width);
     int GetCountPerPage() const; // not the same in wxGLC as in Windows, I think
-
     void GetVisibleLines(long* first, long* last);
     wxRect GetViewRect() const;
 
     bool GetItem( wxListItem& info ) const;
-    bool SetItem( wxListItem& info ) ;
+    bool SetItem( wxListItem& info );
     long SetItem( long index, int col, const wxString& label, int imageId = -1 );
     int  GetItemState( long item, long stateMask ) const;
     bool SetItemState( long item, long state, long stateMask);
@@ -110,7 +85,10 @@ public:
     wxString GetItemText( long item ) const;
     void SetItemText( long item, const wxString& str );
     wxUIntPtr GetItemData( long item ) const;
-    bool SetItemData( long item, long data );
+#if wxABI_VERSION >= 20804
+    bool SetItemPtrData(long item, wxUIntPtr data);
+#endif // wxABI 2.8.4+
+    bool SetItemData(long item, long data);
     bool GetItemRect( long item, wxRect& rect, int code = wxLIST_RECT_BOUNDS ) const;
     bool GetItemPosition( long item, wxPoint& pos ) const;
     bool SetItemPosition( long item, const wxPoint& pos ); // not supported in wxGLC
@@ -133,9 +111,9 @@ public:
     void SetWindowStyleFlag( long style );
     void RecreateWindow() {}
     long GetNextItem( long item, int geometry = wxLIST_NEXT_ALL, int state = wxLIST_STATE_DONTCARE ) const;
-    wxImageListType *GetImageList( int which ) const;
-    void SetImageList( wxImageListType *imageList, int which );
-    void AssignImageList( wxImageListType *imageList, int which );
+    wxImageList *GetImageList( int which ) const;
+    void SetImageList( wxImageList *imageList, int which );
+    void AssignImageList( wxImageList *imageList, int which );
     bool Arrange( int flag = wxLIST_ALIGN_DEFAULT ); // always wxLIST_ALIGN_LEFT in wxGLC
 
     void ClearAll();
@@ -155,7 +133,7 @@ public:
     long FindItem( long start, const wxString& str, bool partial = false );
     long FindItem( long start, wxUIntPtr data );
     long FindItem( long start, const wxPoint& pt, int direction ); // not supported in wxGLC
-    long HitTest( const wxPoint& point, int& flags);
+    long HitTest( const wxPoint& point, int& flags, long *pSubItem = NULL ) const;
     long InsertItem(wxListItem& info);
     long InsertItem( long index, const wxString& label );
     long InsertItem( long index, int imageIndex );
@@ -208,7 +186,7 @@ public:
 
     virtual void Freeze();
     virtual void Thaw();
-    virtual void OnDrawItem(int item,wxDC* dc,const wxRect& rect,const wxRect& rectHL,bool highlighted);
+    virtual void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);
 
     virtual bool SetBackgroundColour( const wxColour &colour );
     virtual bool SetForegroundColour( const wxColour &colour );
@@ -216,6 +194,9 @@ public:
     virtual wxColour GetForegroundColour() const;
     virtual bool SetFont( const wxFont &font );
     virtual bool SetCursor( const wxCursor &cursor );
+
+    virtual int GetScrollPos(int orient) const;
+    virtual void SetScrollPos(int orient, int pos, bool refresh = true); 
 
 #if wxUSE_DRAG_AND_DROP
     virtual void SetDropTarget( wxDropTarget *dropTarget );
@@ -229,9 +210,9 @@ public:
     // implementation
     // --------------
 
-    wxImageListType         *m_imageListNormal;
-    wxImageListType         *m_imageListSmall;
-    wxImageListType         *m_imageListState;  // what's that ?
+    wxImageList         *m_imageListNormal;
+    wxImageList         *m_imageListSmall;
+    wxImageList         *m_imageListState;  // what's that ?
     bool                 m_ownsImageListNormal,
                          m_ownsImageListSmall,
                          m_ownsImageListState;
@@ -280,7 +261,7 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-#if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
+#if (!defined(__WXMSW__) || defined(__WXUNIVERSAL__)) && (!defined(__WXMAC__) || defined(__WXUNIVERSAL__))
 /*
  * wxListCtrl has to be a real class or we have problems with
  * the run-time information.
@@ -288,7 +269,6 @@ private:
 
 class WXDLLEXPORT wxListCtrl: public wxGenericListCtrl
 {
-
 public:
     wxListCtrl() {}
 
@@ -301,10 +281,10 @@ public:
     : wxGenericListCtrl(parent, winid, pos, size, style, validator, name)
     {
     }
+    
 };
 #endif // !__WXMSW__ || __WXUNIVERSAL__
 
-}
+} // namespace MuleExtern
 
-#endif // __LISTCTRLH_G__
-// File_checked_for_headers
+#endif // LISTCTRL_287_H

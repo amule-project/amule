@@ -1147,7 +1147,7 @@ void CDownloadListCtrl::OnDrawItem(
 	int tree_start = 0;
 	int tree_end = 0;
 
-	wxRect cur_rec( iOffset, 0, 0, rect.height );
+	wxRect cur_rec( iOffset, rect.y, 0, rect.height );
 	for (int i = 0; i < GetColumnCount(); i++) {
 		wxListItem listitem;
 		GetColumn(i, listitem);
@@ -1197,7 +1197,7 @@ void CDownloadListCtrl::OnDrawItem(
 
 		// Might as well calculate these now
 		const int treeCenter = tree_start + 3;
-		const int middle = ( cur_rec.height + 1 ) / 2;
+		const int middle = cur_rec.y + ( cur_rec.height + 1 ) / 2;
 
 		// Set up a new pen for drawing the tree
 		dc->SetPen( *(wxThePenList->FindOrCreatePen(dc->GetTextForeground(), 1, wxSOLID)) );
@@ -1208,12 +1208,12 @@ void CDownloadListCtrl::OnDrawItem(
 
 			// Draw the line to the child node
 			if (hasNext) {
-				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 
 			// Draw the line back up to parent node
 			if (notFirst) {
-				dc->DrawLine(treeCenter, middle, treeCenter, -1);
+				dc->DrawLine(treeCenter, middle, treeCenter, cur_rec.y - 1);
 			}
 		} else if ( isOpenRoot ) {
 			// Draw empty circle
@@ -1223,7 +1223,7 @@ void CDownloadListCtrl::OnDrawItem(
 
 			// Draw the line to the child node if there are any children
 			if (hasNext) {
-				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.height + 1);
+				dc->DrawLine(treeCenter, middle + 3, treeCenter, cur_rec.y + cur_rec.height + 1);
 			}
 		}
 
