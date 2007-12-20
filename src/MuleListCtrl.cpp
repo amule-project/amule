@@ -26,6 +26,7 @@
 #include <wx/menu.h>			// Needed for wxMenu
 #include <wx/fileconf.h>		// Needed for wxConfig
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
+#include <wx/imaglist.h>		// Needed for wxImageList
 
 #include <common/MuleDebug.h>			// Needed for MULE_VALIDATE_
 #include <common/StringFunctions.h>		// Needed for StrToLong
@@ -67,8 +68,8 @@ END_EVENT_TABLE()
 
 
 //! Shared list of arrow-pixmaps
-static wxImageListType imgList(16, 16, true, 0);
-	
+static wxImageList imgList(16, 16, true, 0);
+
 
 CMuleListCtrl::CMuleListCtrl(wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxValidator& validator, const wxString& name)
 	: MuleExtern::wxGenericListCtrl(parent, winid, pos, size, style, validator, name)

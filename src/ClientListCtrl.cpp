@@ -45,7 +45,7 @@
 #include <wx/menu.h>
 #include <wx/textdlg.h>
 #include <wx/dc.h>
-
+#include <wx/settings.h>
 
 ////////////////////////////////////////////////////////////
 // Sorter functions.
