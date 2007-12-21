@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-12-21 02:30+0000\n"
-"PO-Revision-Date: 2007-12-14 21:30+0800\n"
+"PO-Revision-Date: 2007-12-21 23:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -248,8 +248,8 @@ msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
 msgstr ""
-"不允许设置超过一个好友空档。\n"
-"只设置了一个空档"
+"只设计了一个通道，不允许设置超过一个好友通道。\n"
+" "
 
 #: src/FriendListCtrl.cpp:353
 msgid "Multiple selection"
@@ -599,7 +599,7 @@ msgstr "设置"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:60
 msgid "Directory containing amulesig.dat file"
-msgstr "amulesig.dat 文件所在的文件夹"
+msgstr "amulesig.dat 文件所在的目录"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:65
 #: src/utils/wxCas/src/wxcasprefs.cpp:142
@@ -611,7 +611,7 @@ msgstr "浏览"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:80
 msgid "Enter here the directory where your amulesig.dat file is"
-msgstr "请输入 amulesig.dat 文件所在的文件夹"
+msgstr "请输入 amulesig.dat 文件所在的目录"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:99
 msgid "Refresh rate interval in seconds"
@@ -623,11 +623,11 @@ msgstr "每次刷新都生成统计图"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr "输入存放所产生的统计图的文件夹"
+msgstr "输入存放所产生的统计图的目录"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
-msgstr "周期性上传统计图到FTP服务器"
+msgstr "周期性上传统计图到 FTP 服务器"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:174
 msgid "FTP Url"
@@ -643,7 +643,7 @@ msgstr "输入 FTP 服务器的地址"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "输入FTP服务器上存放统计图的文件夹"
+msgstr "输入 FTP 服务器上存放统计图的目录"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -656,7 +656,7 @@ msgstr "密码"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:221
 msgid "Enter here the User name to log into your FTP server"
-msgstr "输入登录FTP服务器的用户名"
+msgstr "输入登录 FTP 服务器的用户名"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:233
 msgid "Enter here the User password to log into your FTP server"
@@ -762,7 +762,7 @@ msgstr "文件未被保存"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:379
 msgid "aMule Online Statistics"
-msgstr "aMule线上统计"
+msgstr "aMule 在线统计"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:383
 msgid ""
@@ -1342,11 +1342,11 @@ msgstr "加泰罗尼亚语"
 
 #: src/Preferences.cpp:607
 msgid "Chinese (Simplified)"
-msgstr "中文简体"
+msgstr "简体中文"
 
 #: src/Preferences.cpp:608
 msgid "Chinese (Traditional)"
-msgstr "中文繁体"
+msgstr "繁体中文"
 
 #: src/Preferences.cpp:609
 msgid "Croatian"
@@ -1629,47 +1629,49 @@ msgstr "快照："
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
-msgstr ""
+msgstr " 基于 eMule 的“全平台”P2P 客户端\n"
 
 #: src/amuleDlg.cpp:443
 msgid " Website: http://www.amule.org \n"
-msgstr ""
+msgstr " 网站：http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:444
 msgid " Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr " 论坛：http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:445
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr ""
+msgstr " FAQ: http://wiki.amule.org \n"
+"\n"
 
 #: src/amuleDlg.cpp:446
 msgid " Contact: admin@amule.org (administrative issues) \n"
-msgstr ""
+msgstr " 联系邮件：admin@amule.org (管理问题) \n"
 
 #: src/amuleDlg.cpp:447
 msgid ""
 " Copyright (C) 2003-2007 aMule Team \n"
 "\n"
-msgstr ""
+msgstr " 版权所有 (C) 2003-2007 aMule 团队 \n"
+"\n"
 
 #: src/amuleDlg.cpp:448
 msgid " Part of aMule is based on \n"
-msgstr ""
+msgstr " aMule 的一部分是基于 \n"
 
 #: src/amuleDlg.cpp:449
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr ""
+msgstr "KAD：基于异或算法的点对点路由。\n"
 
 #: src/amuleDlg.cpp:450
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
-msgstr ""
+msgstr " 版权所有 (C) 2002 Petar Maymounkov\n"
 
 #: src/amuleDlg.cpp:451
 msgid " http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
@@ -1714,7 +1716,7 @@ msgstr "连接至任何服务器和/或 Kad"
 
 #: src/amuleDlg.cpp:726
 msgid "WARNING: You have received Low-ID!"
-msgstr ""
+msgstr "警告：你收到了低 ID！"
 
 #: src/amuleDlg.cpp:727
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -1973,9 +1975,9 @@ msgid ""
 "Please fill in at least one URL to point to a valid server.met file.\n"
 "Click on the button \"List\" by this checkbox to enter an URL."
 msgstr ""
-"自动更新服务器列表空白。\n"
-"请输入至少一个指向有效server.met的URL。\n"
-"点击这个检验栏旁边的\"列表\"按钮然后输入URL。"
+"您的自动更新服务器列表是的空的，\n"
+"请输入至少一个指向有效 server.met 的网址，\n"
+"点击这个勾选框旁边的\"列表\"按钮然后输入网址。"
 
 #: src/PrefsUnifiedDlg.cpp:794
 msgid "Temporary files"
@@ -2024,8 +2026,8 @@ msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
 msgstr ""
-"加入下载 server.met 文件的网址。\n"
-"每行只限一个网址。"
+"加入下载 server.met 文件的网址，每行只限一个网址。\n"
+" "
 
 #: src/PrefsUnifiedDlg.cpp:939
 #, c-format
@@ -2709,7 +2711,7 @@ msgstr "用户 %s（%u）请求目录 %s 的共享文件列表 -> 已拒绝"
 #: src/ClientTCPSocket.cpp:998
 #, c-format
 msgid "User %s (%u) shares directory %s"
-msgstr "用户 %s（%u）共享了文件夹 %s"
+msgstr "用户 %s（%u）共享了目录 %s"
 
 #: src/ClientTCPSocket.cpp:1013
 #, c-format
@@ -2719,7 +2721,7 @@ msgstr "用户%s（%u）发送了未经请求的共享文件夹列表"
 #: src/ClientTCPSocket.cpp:1028
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr "用户%s（%u）发送了文件夹 %s 内的共享文件列表"
+msgstr "用户%s（%u）发送了目录 %s 内的共享文件列表"
 
 #: src/ClientTCPSocket.cpp:1035
 #, c-format
@@ -4863,11 +4865,11 @@ msgstr "启用此选项将使 aMule 最小化到系统状态栏，而不是任�
 
 #: src/muuli_wdr.cpp:1672
 msgid "Tooltip Delay Time in secs"
-msgstr "提示延迟时间秒数"
+msgstr "提示延迟时间（秒）"
 
 #: src/muuli_wdr.cpp:1673 src/muuli_wdr.cpp:1677
 msgid "The delay before showing tool-tips."
-msgstr "显示提示的延迟时间。"
+msgstr "显示提示前的延迟时间。"
 
 #: src/muuli_wdr.cpp:1684
 msgid "Browser Selection"
@@ -4938,19 +4940,19 @@ msgstr "上传"
 
 #: src/muuli_wdr.cpp:1781
 msgid "Slot Allocation"
-msgstr "空挡分派"
+msgstr "单用户上传速度"
 
 #: src/muuli_wdr.cpp:1796
 msgid "Line Capacities"
-msgstr "连线容量"
+msgstr "连接带宽"
 
 #: src/muuli_wdr.cpp:1826
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr ""
-"注意：这些数值只是\n"
-" 作为统计用途。"
+"注意：这些数值只作为统计用途。\n"
+" "
 
 #: src/muuli_wdr.cpp:1837
 msgid "Standard client TCP Port:"
@@ -5030,11 +5032,11 @@ msgstr "服务器选项"
 
 #: src/muuli_wdr.cpp:2006
 msgid "Remove dead server after"
-msgstr "删除无法连接服务器如果"
+msgstr "如果"
 
 #: src/muuli_wdr.cpp:2012
 msgid "retries"
-msgstr "次连接失败"
+msgstr "次连接失败，则删除该服务器。"
 
 #: src/muuli_wdr.cpp:2019
 msgid "Auto-update serverlist at startup"
@@ -5351,11 +5353,11 @@ msgstr "显示百分比"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Show progressbar "
-msgstr "显示进程条"
+msgstr "显示进度条"
 
 #: src/muuli_wdr.cpp:2550
 msgid "Progressbar Style"
-msgstr "进程条风格"
+msgstr "进度条风格"
 
 #: src/muuli_wdr.cpp:2560
 msgid "Flat"
