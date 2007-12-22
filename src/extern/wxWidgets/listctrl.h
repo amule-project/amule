@@ -29,7 +29,7 @@ namespace MuleExtern {
 // constants
 // ----------------------------------------------------------------------------
 
-extern WXDLLEXPORT_DATA(const char) wxListCtrlNameStr[];
+extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
 
 //-----------------------------------------------------------------------------
 // internal classes
