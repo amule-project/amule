@@ -1643,7 +1643,8 @@ msgstr " 论坛：http://forum.amule.org \n"
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr " FAQ: http://wiki.amule.org \n"
+msgstr ""
+" FAQ: http://wiki.amule.org \n"
 "\n"
 
 #: src/amuleDlg.cpp:446
@@ -1654,7 +1655,8 @@ msgstr " 联系邮件：admin@amule.org (管理问题) \n"
 msgid ""
 " Copyright (C) 2003-2007 aMule Team \n"
 "\n"
-msgstr " 版权所有 (C) 2003-2007 aMule 团队 \n"
+msgstr ""
+" 版权所有 (C) 2003-2007 aMule 团队 \n"
 "\n"
 
 #: src/amuleDlg.cpp:448

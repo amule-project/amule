@@ -1644,7 +1644,8 @@ msgstr " 論壇：http://forum.amule.org \n"
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr " FAQ: http://wiki.amule.org \n"
+msgstr ""
+" FAQ: http://wiki.amule.org \n"
 "\n"
 
 #: src/amuleDlg.cpp:446
