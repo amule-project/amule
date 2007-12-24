@@ -33,6 +33,10 @@
 	#include <cxxabi.h>
 #endif
 
+#ifdef WIN32
+	#include <cxxabi.h>
+#endif
+
 #include <wx/thread.h> // Do_not_auto_remove (Old wx < 2.7)
 #include <wx/utils.h> // Do_not_auto_remove (Old wx < 2.7)
 

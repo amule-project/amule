@@ -133,8 +133,10 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
+#ifdef MSVC
 	#define NOMINMAX
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
+#endif
 	#include <windef.h>	// Needed for RECT  // Do_not_auto_remove
 	#include <wingdi.h>	// Do_not_auto_remove
 	#include <winuser.h>	// Do_not_auto_remove
