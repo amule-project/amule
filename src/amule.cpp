@@ -375,7 +375,13 @@ std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxStrin
 
 			return std::pair<bool, wxString>(false, wxEmptyString);
 		}
-	} else if (wxAccess(directory, R_OK | W_OK | X_OK)) {
+	} else
+	
+#ifndef __WXMSW__
+ if (wxAccess(directory, R_OK | W_OK | X_OK)) {
+#else
+if (wxAccess(directory, R_OK | W_OK)) {
+#endif
 		wxString msg;
 		msg << wxT("Permissions on the aMule ") << desc << wxT(" directory too strict!\n")
 		    << wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
