@@ -251,7 +251,9 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 		UDPPack item = m_queue.front();
 		CPacket* packet = item.packet;
 		
-		if (GetTickCount() - item.time < UDPMAXQUEUETIME) {
+		if (	(GetTickCount() - item.time < UDPMAXQUEUETIME) &&
+			(0 != packet->GetPacketSize())
+		) {
 			std::vector<char> sendbuffer(packet->GetPacketSize() + 2);
 			memcpy(&(sendbuffer[0]), packet->GetUDPHeader(), 2);
 			memcpy(&(sendbuffer[2]), packet->GetDataBuffer(), packet->GetPacketSize());
