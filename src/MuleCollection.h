@@ -29,8 +29,6 @@
 #include <string>
 #include <vector>
 
-#include "Types.h"
-
 struct CollectionFile
 {
 	std::string m_fileName;
