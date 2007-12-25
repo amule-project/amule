@@ -657,18 +657,10 @@ int CServerListCtrl::SortProc(long item1, long item2, long sortData)
 		// Sort by static servers
 		case COLUMN_SERVER_STATIC:
 			{
-				if ( server2->IsStaticMember() || server1->IsStaticMember() ) {
-					if ( server1->IsStaticMember() ) {
-						return mode * -1;
-					} else {
-						return mode *  1;
-					}
-				} else {
-					return 0;
-				}
+				return mode * CmpAny( server2->IsStaticMember(), server1->IsStaticMember() );
 			}
 		// Sort by version
-		case COLUMN_SERVER_VERSION: return mode * server1->GetVersion().CmpNoCase( server2->GetVersion() );
+		case COLUMN_SERVER_VERSION: return mode * FuzzyStrCmp(server1->GetVersion(), server2->GetVersion());
 
 		default:
 			return 0;
