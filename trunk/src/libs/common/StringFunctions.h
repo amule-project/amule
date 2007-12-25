@@ -239,6 +239,28 @@ wxString validateURI(const wxString& url);
 
 
 /**
+ * Compares two strings, while taking numerals into consideration.
+ *
+ * @return Returns -1 if a < b, 1 if a > b and 0 if a = b
+ *
+ * This function basically splits the two strings into a number of
+ * fields, deliniated by whitespace, non-alphanumerical chars. The 
+ * numerals are then converted to integers, and the fields are
+ * compared. This allows strings such as "a (2)" and "a (10)" to
+ * be properly sorted for displaying.
+ *
+ * Currently does not handle floats (they are treated as to seperate
+ * fields, nor negative numbers.
+ */
+int FuzzyStrCmp(const wxString& a, const wxString& b);
+
+/**
+ * As with FuzzyStrCmp, but case insensitive.
+ */
+int FuzzyStrCaseCmp(const wxString& a, const wxString& b);
+
+
+/**
  * This class provides a simple and fast tokenizer.
  */
 class CSimpleTokenizer
