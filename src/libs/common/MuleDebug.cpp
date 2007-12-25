@@ -80,7 +80,7 @@ void OnUnhandledException()
 
 		fprintf(stderr, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
-#endif MSVC
+#endif // MSVC
 	raise(SIGABRT);
 };
 
