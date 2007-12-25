@@ -35,6 +35,8 @@
 
 #ifndef MSVC
 	#include <inttypes.h>
+	#define LONGLONG(x) x##ll
+	#define ULONGLONG(x) x##llu
 #else
 	typedef unsigned __int8 byte;
 	typedef unsigned __int8 uint8_t;
@@ -45,6 +47,8 @@
 	typedef signed __int16 int16_t;
 	typedef signed __int32 int32_t;
 	typedef signed __int64 int64_t;
+	#define LONGLONG(x) x##i64
+	#define ULONGLONG(x) x##ui64
 #endif
 
 // These are MSVC defines used in eMule. They should 

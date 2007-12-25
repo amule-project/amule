@@ -29,7 +29,7 @@
 
 #include <common/StringFunctions.h>	// Needed for EUtf8Str
 
-#include <include/tags/TagTypes.h>
+#include <tags/TagTypes.h>
 
 #include "OtherFunctions.h"
 
@@ -129,7 +129,7 @@ protected:
 	void Init(uint64 value, uint8 bitsize) {
 			switch (bitsize) {
 				case 64:
-					wxASSERT(value <= 0xFFFFFFFFFFFFFFFFllu); 
+					wxASSERT(value <= ULONGLONG(0xFFFFFFFFFFFFFFFF)); 
 					m_uVal = value;
 					m_uType = TAGTYPE_UINT64;
 					break;
