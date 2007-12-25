@@ -26,10 +26,10 @@
 
 #include "ClientUDPSocket.h"	// Interface declarations
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Client2Client/TCP.h> // Sometimes we reply with TCP packets.
-#include <include/protocol/ed2k/Client2Client/UDP.h>
-#include <include/common/EventIDs.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Client2Client/TCP.h> // Sometimes we reply with TCP packets.
+#include <protocol/ed2k/Client2Client/UDP.h>
+#include <common/EventIDs.h>
 #include <common/Format.h>	// Needed for CFormat
 
 #include "Preferences.h"		// Needed for CPreferences
@@ -95,13 +95,13 @@ void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, si
 			case OP_KADEMLIAPACKEDPROT: {
 				theStats::AddDownOverheadKad(length);
 				uint32 nNewSize = length*10+300; // Should be enough...
-				byte unpack[nNewSize];
+				std::vector<byte> unpack(nNewSize);
 				uLongf unpackedsize = nNewSize-2;
-				uint16 result = uncompress(unpack + 2, &unpackedsize, buffer + 2, length-2);
+				uint16 result = uncompress(&(unpack[2]), &unpackedsize, buffer + 2, length-2);
 				if (result == Z_OK) {
 					unpack[0] = OP_KADEMLIAHEADER;
 					unpack[1] = opcode;
-					Kademlia::CKademlia::ProcessPacket(unpack, unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
+					Kademlia::CKademlia::ProcessPacket(&(unpack[0]), unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
 				} else {
 					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
 				}
