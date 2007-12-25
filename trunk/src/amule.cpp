@@ -38,7 +38,7 @@
 					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
 #endif
 
-#include <include/common/ClientVersion.h>
+#include <common/ClientVersion.h>
 
 #include <wx/cmdline.h>			// Needed for wxCmdLineParser
 #include <wx/config.h>			// Do_not_auto_remove (win32)
@@ -299,7 +299,7 @@ int CamuleApp::OnExit()
 	CPreferences::EraseItemList();
 
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
-	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
+	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
 #else
 	delete m_singleInstance;
 #endif
@@ -352,16 +352,16 @@ int CamuleApp::InitGui(bool, wxString &)
  */
 std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxString& directory, const wxString& fallback)
 {
-	if (not CheckDirExists(directory)) {
-		if (not wxMkdir(directory)) {
+	if (!CheckDirExists(directory)) {
+		if (!wxMkdir(directory)) {
 			wxString msg = wxString()
 				<< wxT("Could not create the aMule ") << desc << wxT(" directory\n")
 				<< wxT("at location '") << directory << wxT("'.\n");
 
 			// For the temp and incoming folder, we may be able to fall back 
 			// to the default values, in case of bad overrides.
-			if (fallback.Length() and (directory != fallback)) {
-				if (CheckDirExists(fallback) or wxMkdir(fallback)) {
+			if (fallback.Length() && (directory != fallback)) {
+				if (CheckDirExists(fallback) || wxMkdir(fallback)) {
 					msg << wxT("Using default directory at location \n'")
 						<< fallback << wxT("'.");
 					theApp->ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
@@ -453,9 +453,9 @@ bool CamuleApp::OnInit()
 	cmdline.AddSwitch(wxT("e"), wxT("ec-config"), wxT("Configure EC (External Connections)."));
 #else
 	cmdline.AddOption(wxT("geometry"), wxEmptyString,
-		wxT(	"Sets the geometry of the app.\n"
-			"\t\t\t<str> uses the same format as standard X11 apps:\n"
-			"\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+			wxT("Sets the geometry of the app.\n")
+			wxT("\t\t\t<str> uses the same format as standard X11 apps:\n")
+			wxT("\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 #endif
 	cmdline.AddSwitch(wxT("d"), wxT("disable-fatal"), wxT("Does not handle fatal exception."));
 	cmdline.AddSwitch(wxT("o"), wxT("log-stdout"), wxT("Print log messages to stdout."));
@@ -530,7 +530,7 @@ bool CamuleApp::OnInit()
 	printf("Initialising aMule\n");
 
 	// Ensure that "~/.aMule/" is accessible.
-	if (not CheckMuleDirectory(wxT("configuration"), ConfigDir, wxEmptyString).first) {
+	if (!CheckMuleDirectory(wxT("configuration"), ConfigDir, wxEmptyString).first) {
 		return false;
 	}
 	
@@ -545,7 +545,7 @@ bool CamuleApp::OnInit()
 	}
 	
 #if defined(__WXMAC__) && defined(AMULE_DAEMON)
-	#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
+	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
 	printf("WARNING: The check for other instances is currently disabled in amuled.\n"
 		"Please make sure that no other instance of aMule is running or your files might be corrupted.\n");
 #else
@@ -658,7 +658,7 @@ bool CamuleApp::OnInit()
 
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxT("lastversion") );
-	wxString newMule(wxT(VERSION));
+	wxString newMule(wxT( VERSION ));
 	
 	// Test if there's any new version
 	if (thePrefs::CheckNewVersion()) {
@@ -785,9 +785,8 @@ bool CamuleApp::OnInit()
 		// Kry TODO: Store server.met URL on preferences and use it here and in GUI.
 		#ifndef AMULE_DAEMON
 		if (wxYES == wxMessageBox(
-			wxString(_(
-				"You don't have any server in the server list.\n"
-				"Do you want aMule to download a new list now?")),
+			wxString(
+				_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
 			wxString(_("Server list download")),
 			wxYES_NO,
 			(wxWindow*)theApp->amuledlg))
@@ -883,11 +882,11 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		}
 		thePrefs::SetECPort( port );
 		
-		wxString err = wxT(
-			"Network configuration failed! You cannot use the same port\n"
-			"for the main TCP port and the External Connections port.\n"
-			"The EC port has been changed to avoid conflict, see the\n"
-			"preferences for the new value.\n");
+		wxString err =
+			wxT("Network configuration failed! You cannot use the same port\n")
+			wxT("for the main TCP port and the External Connections port.\n") 
+			wxT("The EC port has been changed to avoid conflict, see the\n")
+			wxT("preferences for the new value.\n");
 		*msg << err;
 
 		AddLogLineM( false, wxEmptyString );
@@ -905,12 +904,12 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		}
 		thePrefs::SetUDPPort( port );
 
-		wxString err = wxT(
-			"Network configuration failed! You set your UDP port to\n"
-			"the value of the main TCP port plus 3.\n"
-			"This port has been reserved for the Server-UDP port. The\n"
-			"port value has been changed to avoid conflict, see the\n"
-			"preferences for the new value\n");
+		wxString err = 
+			wxT("Network configuration failed! You set your UDP port to\n")
+			wxT("the value of the main TCP port plus 3.\n")
+			wxT("This port has been reserved for the Server-UDP port. The\n")
+			wxT("port value has been changed to avoid conflict, see the\n")
+			wxT("preferences for the new value\n");
 		*msg << err;
 
 		AddLogLineM( false, wxEmptyString );
@@ -966,10 +965,8 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		*msg << err;
 		AddLogLineM(true, err);
 		err.Clear();
-		err = CFormat(_(
-			"Port %u is not available!\n\n"
-			"This means that you will be LOWID.\n\n"
-			"Check your network to make sure the port is open for output and input.")) % 
+		err = CFormat(
+			_("Port %u is not available!\n\nThis means that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input.")) % 
 			(unsigned int)(thePrefs::GetPort());
 		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
 	}
@@ -1305,8 +1302,7 @@ void CamuleApp::Localize_mule()
 	InitCustomLanguages();
 	InitLocale(m_locale, StrLang2wx(thePrefs::GetLanguageID()));
 	if (!m_locale.IsOk()) {
-		AddLogLineM(false,_("The selected locale seems not to be installed on your box."
-				    " (Note: I'll try to set it anyway)"));
+		AddLogLineM(false,_("The selected locale seems not to be installed on your box. (Note: I'll try to set it anyway)"));
 	}
 }
 
@@ -1731,13 +1727,14 @@ uint32 CamuleApp::GetPublicIP(bool ignorelocal) const
 
 void CamuleApp::SetPublicIP(const uint32 dwIP)
 {
-	wxASSERT((dwIP == 0) or !IsLowID(dwIP));
+	wxASSERT((dwIP == 0) || !IsLowID(dwIP));
 	
 	if (dwIP != 0 && dwIP != m_dwPublicIP && serverlist != NULL) {
+		m_dwPublicIP = dwIP;
 		serverlist->CheckForExpiredUDPKeys();
+	} else {
+		m_dwPublicIP = dwIP;
 	}
-	
-	m_dwPublicIP = dwIP;
 }
 
 
@@ -2107,7 +2104,7 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 	CMuleUDPSocket* socket = (CMuleUDPSocket*)(event.GetClientData());
 	wxCHECK_RET(socket, wxT("No socket owner specified."));
 
-	if (IsOnShutDown()) return;
+	if (IsOnShutDown() || thePrefs::IsUDPDisabled()) return;
 
 	if (!IsRunning()) {
 		if (event.GetSocketEvent() == wxSOCKET_INPUT) {
