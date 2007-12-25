@@ -231,7 +231,8 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		
 	case ST_VERSION:
 		if (tag.IsStr()) {
-			if (m_strVersion.IsEmpty()) {
+			// m_strVersion defaults to _("Unknown"), so check for that as well
+			if ((m_strVersion.IsEmpty()) || (m_strVersion == _("Unknown"))) {
 				m_strVersion = tag.GetStr();
 			}
 		} else if (tag.IsInt()) {
