@@ -7,6 +7,10 @@ using namespace muleunit;
 
 DECLARE_SIMPLE(StringFunctions)
 
+
+///////////////////////////////////////////////////////////
+// Tests for the JoinPaths function
+
 TEST(StringFunctions, JoinPaths)
 {
 	const wxString seps = wxFileName::GetPathSeparators();
@@ -24,6 +28,51 @@ TEST(StringFunctions, JoinPaths)
 		ASSERT_EQUALS(wxEmptyString, JoinPaths(wxEmptyString, wxEmptyString));
 	}
 }
+
+
+///////////////////////////////////////////////////////////
+// Tests for the FuzzyStrCmp function
+
+//! Returns the number of items in an array.
+#define itemsof(x) (sizeof(x)/sizeof(x[0]))
+
+TEST(StringFunctions, FuzzyStrCmp)
+{
+	struct FuzzyTest {
+		const wxChar* a;
+		const wxChar* b;
+		int expected;
+	};
+
+	FuzzyTest checks[] = {
+		{ wxT("a (10)"),	wxT("a (2)"),		 1},
+		{ wxT("a (10)"),	wxT("b (2)"),		-1},
+		{ wxT("c3 (7)"),	wxT("c3 (12)"),		-1},
+		{ wxT("c3 (12)"),	wxT("c3 (7)"),		 1},
+		{ wxT("c3 12d"),	wxT("c3 12d"),		 0},
+		{ wxT("a (10)  "),	wxT("a (2)  "),		 1},
+		{ wxT("a (10)  "),	wxT("b (2)  "),		-1},
+		{ wxT("  c3 (7)"),	wxT("  c3 (12)"),	-1},
+		{ wxT("  c3 (12)"),	wxT("  c3 (7)"),	 1},
+		{ wxT("c3 12d"),	wxT("c3 12d"),		 0},
+		{ wxT(""),		wxT(""),		 0},
+		{ wxT(""),		wxT("c3 12d"),		-1},
+		{ wxT("c3 12d"),	wxT(""),		 1},
+		{ wxT(" "),		wxT("c3 12d"),		-1},
+		{ wxT("c3 12d"),	wxT(" "),		 1},
+		{ wxT("17.10"),		wxT("17.2"),		 1},
+		{ wxT("  c3 (a)"),	wxT("  c3 (12)"),	 1},
+		{ wxT("  c3 (12)"),	wxT("  c3 (a)"),	-1},
+	};
+
+	for (size_t i = 0; i < itemsof(checks); ++i) {
+		wxString a = checks[i].a;
+		wxString b = checks[i].b;
+
+		ASSERT_EQUALS(checks[i].expected, FuzzyStrCmp(a, b));
+	}
+}
+
 
 ///////////////////////////////////////////////////////////
 // Tests for the CSimpleParser class

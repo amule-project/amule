@@ -232,6 +232,83 @@ wxString validateURI(const wxString& url)
 }
 
 
+enum ECharType {
+	ECTInteger,
+	ECTText,
+	ECTNone
+};
+
+inline wxString GetNextField(const wxString& str, size_t& cookie)
+{
+	// These are taken to seperate "fields"
+	static const wxChar* s_delims = wxT("\t\n\x0b\x0c\r !\"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~");
+	
+	wxString field;
+	ECharType curType = ECTNone;
+	for (; cookie < str.Length(); ++cookie) {
+		wxChar c = str[cookie];
+
+		if ((c >= wxT('0')) && (c <= wxT('9'))) {
+			if (curType == ECTText) {
+				break;
+			}
+
+			curType = ECTInteger;
+			field += c;
+		} else if (wxStrchr(s_delims, c)) {
+			if (curType == ECTNone) {
+				continue;
+			} else {
+				break;
+			}
+		} else {
+			if (curType == ECTInteger) {
+				break;
+			}
+
+			curType = ECTText;
+			field += c;
+		}
+	}
+
+	return field;
+}
+
+
+int FuzzyStrCmp(const wxString& a, const wxString& b)
+{
+	size_t aCookie = 0, bCookie = 0;
+	wxString aField, bField;
+
+	do {
+		aField = GetNextField(a, aCookie);
+		bField = GetNextField(b, bCookie);
+
+		if (aField.IsNumber() && bField.IsNumber()) {
+			unsigned long aInteger = StrToULong(aField);
+			unsigned long bInteger = StrToULong(bField);
+			
+			if (aInteger < bInteger) {
+				return -1;
+			} else if (aInteger > bInteger) {
+				return  1;
+			}
+		} else if (aField < bField) {
+			return -1;
+		} else if (aField > bField) {
+			return  1;
+		}
+	} while (!aField.IsEmpty() && !bField.IsEmpty());
+
+	return 0;
+}
+
+
+int FuzzyStrCaseCmp(const wxString& a, const wxString& b)
+{
+	return FuzzyStrCmp(a.Lower(), b.Lower());
+}
+
 
 	
 CSimpleTokenizer::CSimpleTokenizer(const wxString& str, wxChar token)
