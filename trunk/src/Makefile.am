@@ -76,8 +76,8 @@ libmuleappcommon_a_SOURCES = \
 	RandomFunctions.cpp \
 	kademlia/utils/UInt128.cpp
 
-libmuleappcommon_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include 
-libmuleappcommon_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcommon_a_CFLAGS = $(WXBASE_CFLAGS) -I$(srcdir)/libs -I$(srcdir)/include 
+libmuleappcommon_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
 libmuleappcommon_a_CFLAGS += -DENABLE_UPNP=1
 libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP=1
@@ -98,8 +98,8 @@ libmuleappcore_a_SOURCES = \
 	TextFile.cpp \
 	ThreadScheduler.cpp
 
-libmuleappcore_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
-libmuleappcore_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcore_a_CFLAGS = $(WXBASE_CFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcore_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
 libmuleappcore_a_CFLAGS += -DENABLE_UPNP=1
 libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP=1
