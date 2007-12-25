@@ -23,12 +23,14 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/wx.h>
+
 #include "ServerList.h"			// Interface declarations.
 
-#include <include/protocol/Protocols.h>
-#include <include/protocol/ed2k/Constants.h>
-#include <include/common/DataFileVersion.h>
-#include <include/tags/ServerTags.h>
+#include <protocol/Protocols.h>
+#include <protocol/ed2k/Constants.h>
+#include <common/DataFileVersion.h>
+#include <tags/ServerTags.h>
 
 #include <wx/txtstrm.h>
 #include <wx/wfstream.h>
@@ -281,7 +283,7 @@ void CServerList::ServerStats()
 				
 		srand((unsigned)time(NULL));
 		ping_server->SetRealLastPingedTime(tNow); // this is not used to calcualte the next ping, but only to ensure a minimum delay for premature pings		
-		if (!ping_server->GetCryptPingReplyPending() && (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
+		if (!ping_server->GetCryptPingReplyPending() && (!ping_server->GetLastPingedTime() || (tNow - ping_server->GetLastPingedTime()) >= UDPSERVSTATREASKTIME) && theApp->GetPublicIP() && thePrefs::IsServerCryptLayerUDPEnabled()) {
 			// We try a obfsucation ping first and wait 20 seconds for an answer
 			// if it doesn't get responsed, we don't count it as error but continue with a normal ping
 			ping_server->SetCryptPingReplyPending(true);
@@ -705,7 +707,7 @@ bool CServerList::SaveServerMet()
 			}
 			
 			if ( server->GetConnPort() != server->GetPort() ) {
-				CTagString( ST_AUXPORTSLIST, server->GetAuxPortsList()).WriteTagToFile( &servermet );
+				CTagString( ST_AUXPORTSLIST,	server->GetAuxPortsList()	).WriteTagToFile( &servermet );
 			}
 			
 			CTagInt32( ST_FAIL,       server->GetFailedCount()   ).WriteTagToFile( &servermet );
@@ -769,14 +771,12 @@ void CServerList::RemoveDeadServers()
 	if ( thePrefs::DeadServer() ) {
 		for ( CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ) {
 			CServer* server = *it++;
-			if (server->GetFailedCount() > thePrefs::GetDeadserverRetries() &&
-			    !server->IsStaticMember()) {
+			if ( server->GetFailedCount() > thePrefs::GetDeadserverRetries() && !server->IsStaticMember()) {
 				RemoveServer(server);
 			}
 		}
 	}
 }
-
 
 void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 {
@@ -791,7 +791,6 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 	downloader->Run();
 }
 
-
 void CServerList::DownloadFinished(uint32 result) 
 {
 	if(result == 1) {
@@ -804,20 +803,18 @@ void CServerList::DownloadFinished(uint32 result)
 		AddLogLineM(true, CFormat(
 			_("Finished to download the server list from %s")) % URLUpdate);
 	} else {
-		AddLogLineM(true, CFormat(
-			_("Failed to download the server list from %s")) % URLUpdate);
+		AddLogLineM(true, CFormat( _("Failed to download the server list from %s") ) % URLUpdate);
 	}
 }
 
 
 void CServerList::AutoUpdate() 
 {
+	
 	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
+	
 	if (!url_count) {
-		AddLogLineM(true,
-			_("No serverlist address entry in 'addresses.dat' "
-			"found. Please paste a valid serverlist address into "
-			"this file in order to auto-update your serverlist"));
+		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
 		return;
 	}
 	// Do current URL. Callback function will take care of the others.
@@ -839,8 +836,7 @@ void CServerList::AutoUpdate()
 			return;
 		} else {
 			AddLogLineM(true, CFormat(
-				_("Warning, invalid URL specified for auto-updating "
-				"of servers: %s") ) % URI);
+				_("Warning, invalid URL specified for auto-updating of servers: %s") ) % URI);
 		}
 		current_url_index++;
 	}
@@ -850,6 +846,7 @@ void CServerList::AutoUpdate()
 
 void CServerList::AutoDownloadFinished(uint32 result) 
 {
+	
 	if(result==1) {
 		wxString strTempFilename(theApp->ConfigDir + wxT("server_auto.met"));
 		// curl succeeded. proceed with server.met loading
@@ -858,15 +855,17 @@ void CServerList::AutoDownloadFinished(uint32 result)
 		// So, file is loaded and merged, and also saved
 		wxRemoveFile(strTempFilename);
 	} else {
-		AddLogLineM(true, CFormat(
-			_("Failed to download the server list from %s") ) %
-				URLAutoUpdate);
+		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
 	}
+	
 	++current_url_index;
+	
+
 	if (current_url_index < theApp->glob_prefs->adresses_list.GetCount()) {		
 		// Next!	
 		AutoUpdate();
 	}
+	
 }
 
 
@@ -932,9 +931,7 @@ void CServerList::FilterServers()
 		
 		if (theApp->ipfilter->IsFiltered(server->GetIP(), true)) {
 			if (server == theApp->serverconnect->GetCurrentServer()) {
-				AddLogLineM(true,
-					_("Local server is filtered by the IPFilters, "
-					"reconnecting to a different server!"));
+				AddLogLineM(true, _("Local server is filtered by the IPFilters, reconnecting to a different server!"));
 				theApp->serverconnect->Disconnect();
 				RemoveServer(server);
 				theApp->serverconnect->ConnectToAnyServer();
@@ -960,22 +957,17 @@ void CServerList::CheckForExpiredUDPKeys() {
 	
 	for (CInternalList::const_iterator it = m_servers.begin(); it != m_servers.end(); ++it) {
         CServer* pServer = *it;
-		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 &&
-		    pServer->GetServerKeyUDPIP() != dwIP){
+		if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(true) != 0 && pServer->GetServerKeyUDPIP() != dwIP){
 			cKeysTotal++;
 			cKeysExpired++;
 			if (tNow - pServer->GetRealLastPingedTime() < UDPSERVSTATMINREASKTIME){
 				cPingDelayed++;
 				// next ping: Now + (MinimumDelay - already elapsed time)
-				pServer->SetLastPingedTime(
-					(tNow - (uint32)UDPSERVSTATREASKTIME) +
-					(UDPSERVSTATMINREASKTIME -
-						(tNow - pServer->GetRealLastPingedTime())));
+				pServer->SetLastPingedTime((tNow - (uint32)UDPSERVSTATREASKTIME) + (UDPSERVSTATMINREASKTIME - (tNow - pServer->GetRealLastPingedTime())));
 			} else {
 				pServer->SetLastPingedTime(0);
 			}
-		} else if (pServer->SupportsObfuscationUDP() &&
-		           pServer->GetServerKeyUDP(false) != 0) {
+		} else if (pServer->SupportsObfuscationUDP() && pServer->GetServerKeyUDP(false) != 0) {
 			cKeysTotal++;
 		}
 	}
