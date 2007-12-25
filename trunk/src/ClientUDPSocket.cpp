@@ -72,7 +72,7 @@ void CClientUDPSocket::OnReceive(int errorCode)
 }
 
 
-void CClientUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length)
+void CClientUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
