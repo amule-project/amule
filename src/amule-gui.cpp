@@ -24,11 +24,8 @@
 
 #include "amule.h"				// Interface declarations.
 
-#include <include/common/EventIDs.h>
-
-#ifdef HAVE_CONFIG_H
-	#include "config.h"			// Needed for VERSION
-#endif
+#include <common/EventIDs.h>
+#include <common/ClientVersion.h>
 
 #include <wx/clipbrd.h>			// Needed for wxClipBoard
 #include <wx/tokenzr.h>			// Needed for wxStringTokenizer
@@ -186,15 +183,15 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	// Should default/last-used position be overridden?
 #ifdef CVSDATE
 	#ifdef CLIENT_GUI
-		m_FrameTitle = wxString::Format(wxT("aMule remote control %s %s"), wxT(VERSION), wxT(CVSDATE));
+		m_FrameTitle = wxString::Format(wxT("aMule remote control %s %s"), wxT( VERSION ), wxT( CVSDATE ));
 	#else
-		m_FrameTitle = wxString::Format(wxT("aMule %s %s"), wxT(VERSION), wxT(CVSDATE));
+		m_FrameTitle = wxString::Format(wxT("aMule %s %s"), wxT( VERSION ), wxT( CVSDATE ));
 	#endif
 #else
 	#ifdef CLIENT_GUI
-		m_FrameTitle = wxString::Format(wxT("aMule remote control %s"), wxT(VERSION));
+		m_FrameTitle = wxString::Format(wxT("aMule remote control %s"), wxT( VERSION ));
 	#else
-		m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT(VERSION));
+		m_FrameTitle = wxString::Format(wxT("aMule %s"), wxT( VERSION ));
 	#endif
 #endif
 	if ( geometry_enabled ) {
