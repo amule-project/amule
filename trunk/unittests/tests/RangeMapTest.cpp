@@ -1,5 +1,6 @@
 #include <muleunit/test.h>
 #include <algorithm>
+#include "Types.h"
 #include "RangeMap.h"
 
 
