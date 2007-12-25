@@ -248,8 +248,12 @@ bool CServer::AddTagFromFile(CFileDataIO* servermet)
 		
 	case ST_AUXPORTSLIST:
 		m_auxPorts = tag.GetStr();
-		realport = port;
-		port = StrToULong(m_auxPorts.BeforeFirst(','));
+
+		// Some server.mets contain empty ST_AUXPORTSLIST tags
+		if (!m_auxPorts.IsEmpty()) {
+			realport = port;
+			port = StrToULong(m_auxPorts.BeforeFirst(','));
+		}
 		break;
 		
 	case ST_LOWIDUSERS:
