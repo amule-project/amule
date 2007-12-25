@@ -28,6 +28,7 @@
 
 #include <string>
 #include <vector>
+#include "Types.h"
 
 struct CollectionFile
 {
