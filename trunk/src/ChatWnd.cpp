@@ -23,9 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/app.h>
 
 #include "ChatWnd.h"		// Interface declarations
 
+#ifndef MSVC
+#include <wx/winundef.h>
+#endif
 
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
