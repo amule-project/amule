@@ -27,10 +27,6 @@
 
 #include "ChatWnd.h"		// Interface declarations
 
-#ifndef MSVC
-#include <wx/winundef.h>
-#endif
-
 #include "amule.h"		// Needed for theApp
 #include "amuleDlg.h"		// Needed for CamuleDlg
 #include "FriendListCtrl.h"	// Needed for CFriendListCtrl
