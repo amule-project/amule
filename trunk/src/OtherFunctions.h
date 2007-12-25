@@ -148,6 +148,17 @@ void DeleteContents(STL_CONTAINER& container)
 	std::for_each(copy.begin(), copy.end(), SDoDelete());
 }
 
+
+/**
+ * Copies elements from the range [first, first + n) to the range [result, result + n).
+ */
+template <class InputIterator, class OutputIterator>
+OutputIterator STLCopy_n(InputIterator first, size_t n, OutputIterator result)
+{
+	return std::copy(first, first + n, result);
+}
+
+
 /**
  * Returns a description of the version of aMule being used.
  *
