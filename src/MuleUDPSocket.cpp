@@ -147,7 +147,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	}
 	
 	char buffer[UDP_BUFFER_SIZE];
-	amuleIPV4Address addr;
+	wxIPV4address addr;
 	unsigned length = 0;
 	bool error = false;
 	int lastError = 0;
@@ -181,7 +181,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 }
 
 
-void CMuleUDPSocket::OnReceiveError(int errorCode, amuleIPV4Address& WXUNUSED(addr))
+void CMuleUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& WXUNUSED(addr))
 {
 	AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);	
 }

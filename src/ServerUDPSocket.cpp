@@ -60,7 +60,7 @@ CServerUDPSocket::CServerUDPSocket(amuleIPV4Address &address, const CProxyData *
 }
 
 
-void CServerUDPSocket::OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length)
+void CServerUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
@@ -336,7 +336,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 	
 }
 
-void CServerUDPSocket::OnReceiveError(int errorCode, amuleIPV4Address& addr)
+void CServerUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& addr)
 {
 	CMuleUDPSocket::OnReceiveError(errorCode, addr);
 	

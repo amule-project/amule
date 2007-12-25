@@ -41,10 +41,10 @@ public:
 
 	void	SendPacket(CPacket* packet, CServer* host, bool delPacket, bool rawpacket, uint16 port_offset);
 	void	OnHostnameResolved(uint32 ip);
-	virtual void OnReceiveError(int errorCode, amuleIPV4Address& addr);
+	virtual void OnReceiveError(int errorCode, const wxIPV4address& addr);
 
 private:
-	void	OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length);
+	void	OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length);
 	void	ProcessPacket(CMemFile& packet, uint8 opcode, const wxString& host, uint16 port);
 	void	SendQueue();
 

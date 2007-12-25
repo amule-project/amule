@@ -98,7 +98,7 @@ public:
 	/**
 	 * This function is called by aMule when there is an error in the socket while receiving.
 	 */
-	virtual void OnReceiveError(int errorCode, amuleIPV4Address& addr);
+	virtual void OnReceiveError(int errorCode, const wxIPV4address& addr);
 
 	/**
 	 * Queues a packet for sending.
@@ -132,7 +132,7 @@ protected:
 	 * @param buffer The data that has been received.
 	 * @param length The length of the data buffer.
 	 */
-	virtual void OnPacketReceived(amuleIPV4Address& addr, byte* buffer, size_t length) = 0;
+	virtual void OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length) = 0;
 
 	
 	/** See ThrottledControlSocket::SendControlData */
