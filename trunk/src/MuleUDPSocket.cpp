@@ -248,11 +248,15 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 	while (!m_queue.empty() && !m_busy && (sentBytes < maxNumberOfBytesToSend)) {
 		UDPPack item = m_queue.front();
 		CPacket* packet = item.packet;
-		if (GetTickCount() - item.time < UDPMAXQUEUETIME &&
-		    packet->GetPacketSize() != 0) {
+		if (GetTickCount() - item.time < UDPMAXQUEUETIME) {
 			std::vector<char> sendbuffer(packet->GetPacketSize() + 2);
 			memcpy(&(sendbuffer[0]), packet->GetUDPHeader(), 2);
-			memcpy(&(sendbuffer[2]), packet->GetDataBuffer(), packet->GetPacketSize());
+			
+			// Packet size can be 0 when receiving some kind of responses, so just go ahead with just the header.
+			if (packet->GetPacketSize()) {
+				memcpy(&(sendbuffer[2]), packet->GetDataBuffer(), packet->GetPacketSize());
+			}
+			
 			if (SendTo(&(sendbuffer[0]), packet->GetPacketSize() + 2, item.IP, item.port)) {
 				sentBytes += packet->GetPacketSize() + 2;
 				m_queue.pop_front();
