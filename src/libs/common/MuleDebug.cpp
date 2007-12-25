@@ -34,7 +34,9 @@
 #endif
 
 #ifdef WIN32
+	#ifndef MSVC
 	#include <cxxabi.h>
+	#endif
 #endif
 
 #include <wx/thread.h> // Do_not_auto_remove (Old wx < 2.7)
