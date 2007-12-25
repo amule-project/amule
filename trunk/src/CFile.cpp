@@ -38,7 +38,6 @@
 #include <sys/param.h>
 #endif
 
-
 // standard
 #if defined(__WXMSW__) && !defined(__GNUWIN32__) && !defined(__WXWINE__) && !defined(__WXMICROWIN__)
 #	include <io.h>
@@ -85,17 +84,6 @@ char* mktemp( char * path ) { return path ;}
 #	error  "Please specify the header with file functions declarations."
 #endif  //Win/UNIX
 
-
-// Windows compilers don't have these constants
-#ifndef W_OK
-enum {
-	F_OK = 0,   // test for existence
-	X_OK = 1,   //          execute permission
-	W_OK = 2,   //          write
-	R_OK = 4    //          read
-};
-#endif // W_OK
-
 // there is no distinction between text and binary files under Unix, so define
 // O_BINARY as 0 if the system headers don't do it already
 #if defined(__UNIX__) && !defined(O_BINARY)
@@ -115,7 +103,7 @@ enum {
 	#define TELL_FD(x)			_telli64(x)
 
 	#if (__MSVCRT_VERSION__ < 0x0601)
-		#warning MSCVRT-Version smaller than 6.01
+		//#warning MSCVRT-Version smaller than 6.01
 		#define STAT_FD(x, y)		_fstati64(x, y)
 		#define STAT_STRUCT		struct _stati64
 	#else
