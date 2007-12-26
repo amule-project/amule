@@ -1358,12 +1358,12 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 #ifndef wxUSE_STACKWALKER
 #define wxUSE_STACKWALKER 0
 #endif
-void CamuleApp::OnAssert(const wxChar *file, int line, 
-						 const wxChar *cond, const wxChar *msg)
+void CamuleApp::OnAssertFailure(const wxChar* file, int line, 
+				const wxChar* func, const wxChar* cond, const wxChar* msg)
 {
 	if (!wxUSE_STACKWALKER || !wxThread::IsMain() || !IsRunning()) {
-		wxString errmsg = CFormat( wxT("%s:%d: Assertion '%s' failed. %s") )
-			% file % line % cond % ( msg ? msg : wxT("") );
+		wxString errmsg = CFormat( wxT("%s:%s:%d: Assertion '%s' failed. %s") )
+			% file % func % line % cond % ( msg ? msg : wxT("") );
 
 		fprintf(stderr, "Assertion failed: %s\n", (const char*)unicode2char(errmsg));
 		
@@ -1374,7 +1374,7 @@ void CamuleApp::OnAssert(const wxChar *file, int line,
 	}
 		
 	if (wxThread::IsMain() && IsRunning()) {
-		AMULE_APP_BASE::OnAssert(file, line, cond, msg);
+		AMULE_APP_BASE::OnAssertFailure(file, line, func, cond, msg);
 	} else {	
 		// Abort, allows gdb to catch the assertion
 		raise( SIGABRT );
