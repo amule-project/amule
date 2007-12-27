@@ -24,6 +24,8 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#include <wx/file.h>
+
 #include "SHAHashSet.h"
 #include "amule.h"
 #include "MemFile.h"
@@ -618,41 +620,33 @@ bool CAICHHashSet::SaveHashSet()
 		wxASSERT( false );
 		return false;
 	}
-	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
-	CFile file;
-	if (wxFileExists(fullpath)) {	
-		if (!file.Open(fullpath, CFile::read_write)) {
+
+
+	try {
+		const wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
+		const bool exists = wxFile::Exists(fullpath);
+
+		CFile file(fullpath, exists ? CFile::read_write : CFile::write);
+		if (!file.IsOpened()) {
 			AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: opening met file failed!"));
 			return false;
 		}
-	} else {
-		if (!file.Create(fullpath)) {
-			AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: creating met file failed!"));			
-			return false;			
-		} else {
-			AddDebugLogLineM( false, logSHAHashSet, wxT("Creating met file."));
-			file.WriteUInt8(KNOWN2_MET_VERSION);
-			// Rewind so it can be read below
-			file.Close();						
-			if (!file.Open(fullpath, CFile::read_write)) {
-				AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to save HashSet: opening met file failed!"));
-				return false;
-			}			
-			AddDebugLogLineM( true, logSHAHashSet, wxT("Created met file with no hashes."));
-		}
-	}
 
-	try {
-		uint8 header = file.ReadUInt8();
-		if (header != KNOWN2_MET_VERSION) {
-			throw wxString(wxT("Not a met2-file"));
-		} else {
+		uint64 nExistingSize = file.GetLength();
+		if (nExistingSize) {
+			uint8 header = file.ReadUInt8();
+			if (header != KNOWN2_MET_VERSION) {
+				AddDebugLogLineM( true, logSHAHashSet, wxT("Saving failed: Current file is not a met-file!"));
+				return false;
+			}
+			
 			AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Met file is version 0x%2.2x."),header));
+		} else {
+			file.WriteUInt8(KNOWN2_MET_VERSION);
 		}
-		
+
 		// first we check if the hashset we want to write is already stored
 		CAICHHash CurrentHash;
-		uint64 nExistingSize = file.GetLength();
 		while (file.GetPosition() < nExistingSize) {
 			CurrentHash.Read(&file);
 			if (m_pHashTree.m_Hash == CurrentHash) {
@@ -661,11 +655,13 @@ bool CAICHHashSet::SaveHashSet()
 			}
 			uint32 nHashCount = file.ReadUInt32();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {
-				throw fullpath;
+				AddDebugLogLineM( true, logSHAHashSet, wxT("Saving failed: File contains fewer entries than specified!"));
+				return false;
 			}
 			// skip the rest of this hashset
 			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
+
 		// write hashset
 		m_pHashTree.m_Hash.Write(&file);
 		uint32 nHashCount = (PARTSIZE/EMBLOCKSIZE + ((PARTSIZE % EMBLOCKSIZE != 0)? 1 : 0)) * (m_pHashTree.m_nDataSize/PARTSIZE);
@@ -686,9 +682,6 @@ bool CAICHHashSet::SaveHashSet()
 			return false;
 		}
 		AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Sucessfully saved eMuleAC Hashset, %u Hashs + 1 Masterhash written"), nHashCount));
-	} catch (const wxString& error) {
-		AddDebugLogLineM(true, logSHAHashSet, wxT("Error: ") + error);
-		return false;
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(true, logSHAHashSet, wxT("IO error while saving AICH HashSet: ") + e.what());
 		return false;
@@ -710,7 +703,7 @@ bool CAICHHashSet::LoadHashSet()
 		return false;
 	}
 	wxString fullpath = theApp->ConfigDir + KNOWN2_MET_FILENAME;
-	CFile file(fullpath, CFile::read_write);
+	CFile file(fullpath, CFile::read);
 	if (!file.IsOpened()) {
 		if (wxFileExists(fullpath)) {
 			wxString strError(wxT("Failed to load ") KNOWN2_MET_FILENAME wxT(" file"));
@@ -722,7 +715,8 @@ bool CAICHHashSet::LoadHashSet()
 	try {
 		uint8 header = file.ReadUInt8();
 		if (header != KNOWN2_MET_VERSION) {
-			throw wxString(wxT("Not a met2-file"));
+			AddDebugLogLineM( true, logSHAHashSet, wxT("Loading failed: Current file is not a met-file!"));
+			return false;
 		}		
 		
 		CAICHHash CurrentHash;
@@ -757,20 +751,16 @@ bool CAICHHashSet::LoadHashSet()
 			}
 			nHashCount = file.ReadUInt32();
 			if (file.GetPosition() + nHashCount*HASHSIZE > nExistingSize) {
-				throw fullpath;
+				AddDebugLogLineM( true, logSHAHashSet, wxT("Saving failed: File contains fewer entries than specified!"));
+				return false;
 			}
 			// skip the rest of this hashset
 			file.Seek(nHashCount*HASHSIZE, wxFromCurrent);
 		}
 		AddDebugLogLineM( true, logSHAHashSet, wxT("Failed to load HashSet: HashSet not found!"));
-	} catch (const wxString& error) {
-		AddDebugLogLineM(true, logSHAHashSet, wxT("Error: ") + error);
-		return false;
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(true, logSHAHashSet, wxT("IO error while loading AICH HashSet: ") + e.what());
-		return false;
 	}
-
 
 	return false;
 }
