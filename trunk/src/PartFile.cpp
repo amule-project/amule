@@ -280,59 +280,30 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	m_strFilePath = in_directory;
 	m_fullname = JoinPaths(m_strFilePath, m_partmetfilename);
 	
-	CFile metFile;
-
 	// readfile data form part.met file
-	wxString file_to_open;
+	wxString curMetFilename = m_fullname;
 	if (from_backup) {
-		file_to_open = m_fullname + PARTMET_BAK_EXT;
-	} else {
-		file_to_open = m_fullname;
-	}
-	if (!metFile.Open(file_to_open,CFile::read)) {
-		if (from_backup) {
-			AddLogLineM(false, 
-				_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));
-		} else {
-			AddLogLineM(false, CFormat( _("Error: Failed to open part.met file: %s ==> %s") )
-				% m_partmetfilename
-				% GetFileName() );
-		}
-		return false;
-	} else {
-		if (!(metFile.GetLength()>0)) {
-			if (from_backup) {
-				AddLogLineM(false, _("Error: Backup part.met file is 0 size! Search http://forum.amule.org for .part.met recovery solutions"));	
-			} else {
-				AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
-					% m_partmetfilename
-					% GetFileName() );
-			}
-			metFile.Close();
-			return false;
-		}
-	}
-
-	if (from_backup) {
+		curMetFilename += PARTMET_BAK_EXT;
 		AddLogLineM(false, CFormat( _("Trying to load backup of met-file from %s") )
-			% ( m_partmetfilename + PARTMET_BAK_EXT) );
-		wxString BackupFile;
-		BackupFile = m_fullname + PARTMET_BAK_EXT;
-		if (!metFile.Open(BackupFile)) {
-			AddLogLineM(false, _("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions"));				
-			return false;
-		} else {
-			if (!(metFile.GetLength()>0)) {
-				AddLogLineM(false, CFormat( _("Error: part.met backup file is 0 size: %s ==> %s") )
-					% m_partmetfilename
-					% GetFileName() );
-				metFile.Close();
-				return false;
-			}
-		}
+			% curMetFilename );
 	}
 	
 	try {
+		CFile metFile(curMetFilename, CFile::read);
+		if (!metFile.IsOpened()) {
+			AddLogLineM(false, CFormat( _("Error: Failed to open part.met file: %s ==> %s") )
+				% curMetFilename
+				% GetFileName() );
+
+			return false;
+		} else if (metFile.GetLength() == 0) {
+			AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
+				% m_partmetfilename
+				% GetFileName() );
+			
+			return false;
+		}
+
 		version = metFile.ReadUInt8();
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
@@ -578,8 +549,6 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 				flag=false;
 			}
 		}			
-			
-		metFile.Close();
 	} catch (const CInvalidPacket& e) {
 		AddLogLineM(true, CFormat(wxT("Error: %s (%s) is corrupt (bad tags: %s), unable to load file.")) 
 			% m_partmetfilename
@@ -662,17 +631,23 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
 	}
 
-	// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
-	if (m_hpartfile.GetLength() < GetFileSize())
-		AddGap(m_hpartfile.GetLength(), GetFileSize()-1);
-	// Goes both ways - Partfile should never be too large
-	if (m_hpartfile.GetLength() > GetFileSize()){
-		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % (m_hpartfile.GetLength() - GetFileSize()));
-		m_hpartfile.SetLength(GetFileSize());
-	}
-	// SLUGFILLER: SafeHash
-
 	SetPartFileStatus(PS_EMPTY);
+
+	try {
+		// SLUGFILLER: SafeHash - final safety, make sure any missing part of the file is gap
+		if (m_hpartfile.GetLength() < GetFileSize())
+			AddGap(m_hpartfile.GetLength(), GetFileSize()-1);
+		// Goes both ways - Partfile should never be too large
+		if (m_hpartfile.GetLength() > GetFileSize()) {
+			AddDebugLogLineM( true, logPartFile, CFormat( wxT("Partfile \"%s\" is too large! Truncating %llu bytes.") ) % GetFileName() % (m_hpartfile.GetLength() - GetFileSize()));
+			m_hpartfile.SetLength(GetFileSize());
+		}
+		// SLUGFILLER: SafeHash
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM( true, logPartFile, CFormat( wxT("Error while accessing partfile \"%s\": %s") ) % GetFileName() % e.what());
+		SetPartFileStatus(PS_ERROR);
+	}
+
 	
 	// check hashcount, file status etc
 	if (GetHashCount() != GetED2KPartHashCount()){	
@@ -912,8 +887,22 @@ bool CPartFile::SavePartFile(bool Initial)
 
 		UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT, m_fullname);
 	} else {
-		if (newpartmet.GetLength()>0) {			
-			// not error, just backup
+		uint64 metLength = 0;
+		try {
+			metLength = newpartmet.GetLength();
+		} catch (const CIOFailureException& e) {
+			theApp->ShowAlert( CFormat( _("Could not retrieve length of '%s' - using %s file.") )
+				% m_fullname
+				% PARTMET_BAK_EXT,
+				_("Message"), wxOK);
+
+			newpartmet.Close();
+			UTF8_CopyFile(m_fullname + PARTMET_BAK_EXT,m_fullname);
+			return true;
+		}
+
+		if (metLength) {			
+			// no error, just backup
 			newpartmet.Close();
 			BackupFile(m_fullname, PARTMET_BAK_EXT);
 		} else {
@@ -1048,15 +1037,15 @@ void CPartFile::LoadSourceSeeds()
 		return;
 	}	
 	
-	if (file.GetLength() <= 1) {
-		AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
-			% m_partmetfilename
-			% GetFileName() );
-		file.Close();
-		return;
-	}	
 		
 	try {
+		if (file.GetLength() <= 1) {
+			AddLogLineM(false, CFormat( _("Partfile %s (%s) has a void seeds file") )
+				% m_partmetfilename
+				% GetFileName() );
+			return;
+		}
+
 		uint8 src_count = file.ReadUInt8();
 
 		bool bUseSX2Format = (src_count == 0);
@@ -2371,21 +2360,23 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 		return true;		
 	} else {
 		CMD4Hash hashresult;
-		m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
 		uint64 length = PARTSIZE;
-		if ((uint64)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
-			length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
-			wxASSERT( length <= PARTSIZE );
-		}
 		
 		try {
+			m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
+			if ((uint64)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
+				length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
+				wxASSERT( length <= PARTSIZE );
+			}
+			
 			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
 		} catch (const CIOFailureException& e) {
-			AddLogLineM(true, CFormat( wxT("IO failure while hashing downloaded part of partfile '%s': %s"))
-				% GetFileName() % e.what());
+			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+				% partnumber % length % ((partnumber*PARTSIZE)+length) % GetFileName() % GetFileSize() % e.what());
+			SetPartFileStatus(PS_ERROR);
 			return false;
 		} catch (const CEOFException& e) {
-			AddLogLineM(true, CFormat( wxT("Critical IO failure (EOF) while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
+			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % ((partnumber*PARTSIZE)+length) % GetFileName() % GetFileSize() % e.what());
 			return false;
 		}
@@ -3074,6 +3065,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 			m_hpartfile.Write(item->data, lenData);
 		} catch (const CIOFailureException& e) {
 			AddDebugLogLineM(true, logPartFile, wxT("Error while saving part-file: ") + e.what());
+			SetPartFileStatus(PS_ERROR);
 		}
 
 		// Decrease buffer size
@@ -3088,17 +3080,36 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	// Update last-changed date
 	m_lastDateChanged = wxDateTime().Now();
 
-	
-	// Partfile should never be too large
-	if (m_hpartfile.GetLength() > GetFileSize()){
-		// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
-		m_hpartfile.SetLength(GetFileSize());
-	}		
+	try {	
+		// Partfile should never be too large
+		if (m_hpartfile.GetLength() > GetFileSize()) {
+			// it's "last chance" correction. the real bugfix has to be applied 'somewhere' else
+			m_hpartfile.SetLength(GetFileSize());
+		}
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while truncating part-file (%s): %s"))
+				% m_fullname.Left( m_fullname.Length() - 4 ) % e.what());
+		SetPartFileStatus(PS_ERROR);
+	}
+
+
 	
 	// Check each part of the file
-	uint32 partRange = (uint32)((m_hpartfile.GetLength() % PARTSIZE > 0) ? ((m_hpartfile.GetLength() % PARTSIZE) - 1) : (PARTSIZE - 1));
-	wxASSERT(((int)partRange) > 0);
-	for (int partNumber = partCount-1; partNumber >= 0; partNumber--) {
+	uint32 partRange = 0;
+	try {
+		uint64 curLength = m_hpartfile.GetLength();
+
+		partRange = (uint32)((curLength % PARTSIZE > 0) ? ((curLength % PARTSIZE) - 1) : (PARTSIZE - 1));
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while accessing part-file (%s): %s"))
+				% m_fullname.Left( m_fullname.Length() - 4 ) % e.what());
+		SetPartFileStatus(PS_ERROR);
+	}
+	
+	wxASSERT(partRange);
+	for (int partNumber = partCount-1; partRange && partNumber >= 0; partNumber--) {
 		if (changedPart[partNumber] == false) {
 			// Any parts other than last must be full size
 			partRange = PARTSIZE - 1;
@@ -3292,10 +3303,21 @@ void CPartFile::SetPartFileStatus(uint8 newstatus)
 
 uint64 CPartFile::GetNeededSpace()
 {
-	if (m_hpartfile.GetLength() > GetFileSize()) {
-		return 0;	// Shouldn't happen, but just in case
+	try {
+		uint64 length = m_hpartfile.GetLength();
+
+		if (length > GetFileSize()) {
+			return 0;	// Shouldn't happen, but just in case
+		}
+	
+		return GetFileSize() - length;
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while retrieving file-length (%s): %s"))
+				% m_fullname.Left( m_fullname.Length() - 4 ) % e.what());
+		SetPartFileStatus(PS_ERROR);
+		return 0;
 	}
-	return GetFileSize()-m_hpartfile.GetLength();
 }
 
 void CPartFile::SetStatus(uint8 in)
@@ -3443,12 +3465,24 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 		wxASSERT( false );
 		return;
 	}
-	FlushBuffer(true,true,true);
+
+	FlushBuffer(true, true, true);
+	
 	uint64 length = PARTSIZE;
-	if ((unsigned)(PARTSIZE * (nPart + 1)) > m_hpartfile.GetLength()){
-		length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
-		wxASSERT( length <= PARTSIZE );
-	}	
+
+	try {
+		if ((unsigned)(PARTSIZE * (nPart + 1)) > m_hpartfile.GetLength()){
+			length = (m_hpartfile.GetLength() - (PARTSIZE * nPart));
+			wxASSERT( length <= PARTSIZE );
+		}
+	} catch (const CIOFailureException& e) {
+		AddDebugLogLineM(true, logPartFile,
+			CFormat(wxT("Error while retrieving file-length (%s): %s"))
+				% m_fullname.Left( m_fullname.Length() - 4 ) % e.what());
+		SetPartFileStatus(PS_ERROR);
+		return;
+	}
+	
 	// if the part was already ok, it would now be complete
 	if (IsComplete(nPart*PARTSIZE, ((nPart*PARTSIZE)+length)-1)){
 		AddDebugLogLineM( false, logAICHRecovery,
@@ -3471,7 +3505,7 @@ void CPartFile::AICHRecoveryDataAvailable(uint16 nPart)
 	} catch (const CIOFailureException& e) {
 		AddDebugLogLineM(true, logAICHRecovery, wxT("IO failure while hashing part-file '") + m_hpartfile.GetFilePath()
 			+ wxT("': ") );
-		wxASSERT( false );
+		SetPartFileStatus(PS_ERROR);
 		return;
 	}
 	

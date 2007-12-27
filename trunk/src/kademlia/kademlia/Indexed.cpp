@@ -235,8 +235,8 @@ void CIndexed::ReadFile(void)
 			m_totalIndexKeyword = totalKeyword;
 			AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Read %u source, %u keyword, and %u load entries"),totalSource,totalKeyword,totalLoad));
 		}
-	} catch (const CEOFException& err) {
-		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::readFile: ") + err.what());
+	} catch (const CSafeIOException& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CSafeIOException in CIndexed::readFile: ") + err.what());
 	} catch (const CInvalidPacket& err) {
 		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::readFile: ") + err.what());		
 	} catch (const wxString& e) {
@@ -374,8 +374,8 @@ CIndexed::~CIndexed()
 		} 
 
 		m_Notes_map.clear();
-	} catch (const CEOFException& err) {
-		AddDebugLogLineM(true, logKadIndex, wxT("CEOFException in CIndexed::~CIndexed: ") + err.what());
+	} catch (const CSafeIOException& err) {
+		AddDebugLogLineM(true, logKadIndex, wxT("CSafeIOException in CIndexed::~CIndexed: ") + err.what());
 	} catch (const CInvalidPacket& err) {
 		AddDebugLogLineM(true, logKadIndex, wxT("CInvalidPacket Exception in CIndexed::~CIndexed: ") + err.what());		
 	} catch (const wxString& e) {

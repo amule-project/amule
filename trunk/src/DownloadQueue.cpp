@@ -151,8 +151,11 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 					<< toadd->GetFileHash().Encode() << wxT("' found, skipping: ")
 					<< fileName;
 			} else {
+				// If result is false, then reading of both the primary and the backup .met failed
+				AddLogLineM(false, 
+					_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << wxT("ERROR: Failed to load PartFile '") << fileName << wxT("'");
-			} 
+			}
 			
 			AddDebugLogLineM(true, logPartFile, msg);
 			

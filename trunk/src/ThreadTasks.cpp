@@ -84,10 +84,20 @@ void CHashingTask::Entry()
 	if (!file.Open( fullPath, CFile::read)) {
 		AddDebugLogLineM(true, logHasher, wxT("Warning, failed to open file, skipping: " ) + fullPath);
 		return;
-	} else  if (file.GetLength() > MAX_FILE_SIZE) {
+	}
+	
+	uint64 fileLength = 0;
+	try {
+		fileLength = file.GetLength();
+	} catch (const CIOFailureException&) {
+		AddDebugLogLineM(true, logHasher, wxT("Warning, failed to retrieve file-length, skipping: ") + fullPath);
+		return;
+	}
+
+	if (fileLength > MAX_FILE_SIZE) {
 		AddDebugLogLineM(true, logHasher, wxT("Warning, file is larger than supported size, skipping: ") + fullPath);
 		return;
-	} else if ((file.GetLength() == 0) && ((m_owner == NULL) || (m_toHash == EH_AICH))) {
+	} else if ((fileLength == 0) && ((m_owner == NULL) || (m_toHash == EH_AICH))) {
 		// Zero-size partfiles should be hashed, but not zero-sized shared-files.
 		AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
 		return;			
@@ -97,7 +107,7 @@ void CHashingTask::Entry()
 	CScopedPtr<CKnownFile> knownfile(new CKnownFile());
 	knownfile->m_strFilePath = m_path;
 	knownfile->SetFileName(m_filename);
-	knownfile->SetFileSize(file.GetLength());
+	knownfile->SetFileSize(fileLength);
 	knownfile->m_date = GetLastModificationTime(fullPath);
 	knownfile->m_AvailPartFrequency.insert(
 		knownfile->m_AvailPartFrequency.begin(),
@@ -122,14 +132,19 @@ void CHashingTask::Entry()
 	
 	
 	// This loops creates the part-hashes, loop-de-loop.
-	while (!file.Eof() && !TestDestroy()) {
-		if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
-			AddDebugLogLineM(true, logHasher,
-				wxT("Error while hashing file, skipping: ") +
-				m_filename);
-		
-			return;
+	try {
+		while (!file.Eof() && !TestDestroy()) {
+			if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
+				AddDebugLogLineM(true, logHasher,
+					wxT("Error while hashing file, skipping: ") +
+					m_filename);
+			
+				return;
+			}
 		}
+	} catch (const CSafeIOException& e) {
+		AddDebugLogLineM(true, logHasher, wxT("IO exception while hashing file: ") + e.what());
+		return;
 	}
 
 	if ((m_toHash & EH_MD4) && !TestDestroy()) {
@@ -186,12 +201,7 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 	const uint64 partLength = std::min<uint64>(PARTSIZE, file->GetLength() - file->GetPosition());
 	
 	CScopedArray<byte> data(new byte[partLength]);
-	try {
-		file->Read(data.get(), partLength);
-	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(true, logHasher, wxT("IO exception while hashing file: ") + e.what());
-		return false;
-	}
+	file->Read(data.get(), partLength);
 
 	CMD4Hash hash;
 	byte* md4Hash = ((toHash & EH_MD4) ? hash.GetHash() : NULL);
