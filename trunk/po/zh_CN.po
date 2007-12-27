@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-26 02:30+0000\n"
+"POT-Creation-Date: 2007-12-27 02:31+0000\n"
 "PO-Revision-Date: 2007-12-21 23:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -52,74 +52,74 @@ msgstr "成功！连接成功建立"
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3782
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3816
 msgid "Hashing"
 msgstr "正在校检"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3786
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3820
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3789
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3823
 msgid "Complete"
 msgstr "完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3792
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3826
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "已暂停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3795
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3829
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "已出错"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3802
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3836
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "正在下载"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3804
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3838
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "等待中"
 
-#: src/ThreadTasks.cpp:109
+#: src/ThreadTasks.cpp:119
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "开始为文件 %s 创建 MD4 和 AICH 校验码"
 
-#: src/ThreadTasks.cpp:113
+#: src/ThreadTasks.cpp:123
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "开始为文件 %s 创建 MD4 校验码"
 
-#: src/ThreadTasks.cpp:117
+#: src/ThreadTasks.cpp:127
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "开始为文件 %s 创建 AICH 校验码"
 
-#: src/ThreadTasks.cpp:362
+#: src/ThreadTasks.cpp:372
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "正在转换在 '%s'在 '%s' 中旧的 AICH 校验集至64b"
 
-#: src/ThreadTasks.cpp:444
+#: src/ThreadTasks.cpp:454
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "警告：文件名 '%s' 非法，已经重命名为 '%s'。"
 
-#: src/ThreadTasks.cpp:463
+#: src/ThreadTasks.cpp:473
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "警告：文件 '%s' 已经存在，新文件重命名为 '%s'。"
 
-#: src/ThreadTasks.cpp:477
+#: src/ThreadTasks.cpp:487
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr "警告：为 '%s' 建立备份后无法删除原文件"
 
-#: src/ThreadTasks.cpp:489
+#: src/ThreadTasks.cpp:499
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "警告：无法删除 %s"
@@ -135,7 +135,7 @@ msgstr "无法获取用户 %s 的共享文件"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2598 src/PartFile.cpp:2604 src/KnownFile.cpp:855
+#: src/PartFile.cpp:2589 src/PartFile.cpp:2595 src/KnownFile.cpp:855
 #: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -1677,8 +1677,8 @@ msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:911
-#: src/PartFile.cpp:924
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
+#: src/PartFile.cpp:897 src/PartFile.cpp:913
 msgid "Message"
 msgstr "消息"
 
@@ -3042,119 +3042,103 @@ msgstr "错误：无法打开 part 文件)"
 msgid "ERROR: Failed to create partfile)"
 msgstr "错误：无法创建 part 文件)"
 
-#: src/PartFile.cpp:295 src/PartFile.cpp:322
-msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
-"met recovery solutions"
-msgstr ""
-"错误：无法载入备份文件，请到 http://forum.amule.org 搜索关于恢复 .part.met 文"
-"件的解决办法"
-
-#: src/PartFile.cpp:297
-#, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "错误：无法打开 part.met 文件：%s ==> %s"
-
-#: src/PartFile.cpp:305
-msgid ""
-"Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-"part.met recovery solutions"
-msgstr ""
-"错误：备份的 part.met 文件长度为 0，请到 http://forum.amule.org 搜索关于恢"
-"复 .part.met 文件的解决办法"
-
-#: src/PartFile.cpp:307
-#, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "错误：part.met 文件长度为 0： %s ==> %s"
-
-#: src/PartFile.cpp:317
+#: src/PartFile.cpp:287
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "尝试从 %s 载入 met 文件的备份"
 
-#: src/PartFile.cpp:326
+#: src/PartFile.cpp:294
 #, c-format
-msgid "Error: part.met backup file is 0 size: %s ==> %s"
-msgstr "错误：part.met文件大小为 0：%s ==> %s"
+msgid "Error: Failed to open part.met file: %s ==> %s"
+msgstr "错误：无法打开 part.met 文件：%s ==> %s"
 
-#: src/PartFile.cpp:340
+#: src/PartFile.cpp:300
+#, c-format
+msgid "Error: part.met file is 0 size: %s ==> %s"
+msgstr "错误：part.met 文件长度为 0： %s ==> %s"
+
+#: src/PartFile.cpp:311
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "错误：无效的 part.met 文件版本：%s ==> %s"
 
-#: src/PartFile.cpp:595
+#: src/PartFile.cpp:564
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr "错误：文件 %s（%s）已损坏（标签数不对），无法读取文件。"
 
-#: src/PartFile.cpp:598
+#: src/PartFile.cpp:567
 msgid "Trying to recover file info..."
 msgstr "尝试恢复文件信息..."
 
-#: src/PartFile.cpp:613
+#: src/PartFile.cpp:582
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "尝试恢复无名文件 - 保存为 RecoveredFile.dat"
 
-#: src/PartFile.cpp:618
+#: src/PartFile.cpp:587
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "成功恢复所有文件信息 :D - 尝试使用文件信息..."
 
-#: src/PartFile.cpp:620
+#: src/PartFile.cpp:589
 msgid "Unable to recover file info :("
 msgstr "无法恢复文件：("
 
-#: src/PartFile.cpp:654
+#: src/PartFile.cpp:623
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "无法读取 %s（%s）"
 
-#: src/PartFile.cpp:699
+#: src/PartFile.cpp:674
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "警告：%s 可能已损坏（%i）"
 
-#: src/PartFile.cpp:879 src/PartFile.cpp:884
+#: src/PartFile.cpp:854 src/PartFile.cpp:859
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "part 文件存盘时发生错误：%s（%s => %s）"
 
-#: src/PartFile.cpp:908
+#: src/PartFile.cpp:883
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "无法读取 %s - 现在使用 %s"
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:894
+#, c-format
+msgid "Could not retrieve length of '%s' - using %s file."
+msgstr ""
+
+#: src/PartFile.cpp:910
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' 文件长度为 0 - 使用 %s 文件。"
 
-#: src/PartFile.cpp:990
+#: src/PartFile.cpp:979
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s 的 part.met.seeds 文件存盘失败"
 
-#: src/PartFile.cpp:1016
+#: src/PartFile.cpp:1005
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "保存了 %i 个源给 part 文件 %s（%s）的 "
 
-#: src/PartFile.cpp:1045
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Part 文件 %s（%s）没有种子文件"
 
-#: src/PartFile.cpp:1052
+#: src/PartFile.cpp:1043
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Part 文件 %s（%s）的种子文件为空"
 
-#: src/PartFile.cpp:1110
+#: src/PartFile.cpp:1099
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "读取 part 文件的种子文件出错（%s - %s）：%s"
 
-#: src/PartFile.cpp:1126 src/PartFile.cpp:1149
+#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3162,75 +3146,75 @@ msgid ""
 msgstr ""
 "发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
 
-#: src/PartFile.cpp:1163
+#: src/PartFile.cpp:1152
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "发现了已完成的数据段 %i 在%s"
 
-#: src/PartFile.cpp:1200
+#: src/PartFile.cpp:1189
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "重新校验 %s 完成"
 
-#: src/PartFile.cpp:2217
+#: src/PartFile.cpp:2206
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "在完成文件 %s 时遇到意外文件错误，文件已暂停"
 
-#: src/PartFile.cpp:2243
+#: src/PartFile.cpp:2232
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下载：%s"
 
-#: src/PartFile.cpp:2300
+#: src/PartFile.cpp:2289
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正在删除文件：%s "
 
-#: src/PartFile.cpp:2364
+#: src/PartFile.cpp:2353
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集残缺 '%s'"
 
-#: src/PartFile.cpp:2369
+#: src/PartFile.cpp:2358
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "警告：无法生成校检码 - 校检码残缺（%s）， 正常情况下这是不应该发生的"
 
-#: src/PartFile.cpp:3048
+#: src/PartFile.cpp:3039
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盘空间不足！暂停文件：%s"
 
-#: src/PartFile.cpp:3113
+#: src/PartFile.cpp:3124
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下载的数据段 %i 已损坏 文件： (%s)"
 
-#: src/PartFile.cpp:3156
+#: src/PartFile.cpp:3167
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）： %s"
 
-#: src/PartFile.cpp:3701 src/muuli_wdr.cpp:3577
+#: src/PartFile.cpp:3735 src/muuli_wdr.cpp:3577
 msgid "Comments"
 msgstr "备注"
 
-#: src/PartFile.cpp:3702
+#: src/PartFile.cpp:3736
 msgid "doesn't work"
 msgstr "没有工作"
 
-#: src/PartFile.cpp:3704
+#: src/PartFile.cpp:3738
 msgid "remote gui"
 msgstr "远程GUI"
 
-#: src/PartFile.cpp:3798
+#: src/PartFile.cpp:3832
 msgid "Insufficient Diskspace"
 msgstr "硬盘空间不足"
 
-#: src/PartFile.cpp:3809 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3843 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "已停止"
 
@@ -3364,46 +3348,52 @@ msgstr "错误：接口无效"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "连接超时 %s（%s：%i）"
 
-#: src/DownloadQueue.cpp:167
+#: src/DownloadQueue.cpp:156
+msgid ""
+"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"met recovery solutions."
+msgstr ""
+
+#: src/DownloadQueue.cpp:170
 msgid "No part files found"
 msgstr "没有找到 part 文件"
 
-#: src/DownloadQueue.cpp:169
+#: src/DownloadQueue.cpp:172
 #, c-format
 msgid "Found %u part files"
 msgstr "发现 %u 个 part 文件"
 
-#: src/DownloadQueue.cpp:309
+#: src/DownloadQueue.cpp:312
 #, c-format
 msgid "Downloading %s"
 msgstr "正在下载 %s"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:320
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "您已经在下载文件 '%s'"
 
-#: src/DownloadQueue.cpp:329
+#: src/DownloadQueue.cpp:332
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "您已下载了文件 '%s'"
 
-#: src/DownloadQueue.cpp:334
+#: src/DownloadQueue.cpp:337
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "您已经尝试下载文件 %s"
 
-#: src/DownloadQueue.cpp:1291
+#: src/DownloadQueue.cpp:1294
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "无法转换 magnet 链接至 ed2k：%s"
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1302
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "未知链接协议：%s"
 
-#: src/DownloadQueue.cpp:1322
+#: src/DownloadQueue.cpp:1325
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "无效 ed2k 链接！错误：%s"
@@ -6883,6 +6873,23 @@ msgstr "无法打开好友列表文件 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "无法写入好友列表文件 'emfriends.met'!"
+
+#~ msgid ""
+#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "错误：无法载入备份文件，请到 http://forum.amule.org 搜索关于恢复 .part."
+#~ "met 文件的解决办法"
+
+#~ msgid ""
+#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "错误：备份的 part.met 文件长度为 0，请到 http://forum.amule.org 搜索关于恢"
+#~ "复 .part.met 文件的解决办法"
+
+#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
+#~ msgstr "错误：part.met文件大小为 0：%s ==> %s"
 
 #~ msgid ""
 #~ "Note: These values are\n"

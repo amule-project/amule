@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-26 02:30+0000\n"
+"POT-Creation-Date: 2007-12-27 02:31+0000\n"
 "PO-Revision-Date: 2007-10-13 18:09+0200\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -51,75 +51,75 @@ msgstr "Succes! Forbindelse oprettet til aMule"
 msgid "Succeeded! Connection established."
 msgstr "Succes! Forbindelse oprettet"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3782
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3816
 msgid "Hashing"
 msgstr "Hasher"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3786
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3820
 msgid "Completing"
 msgstr "Færdiggør"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3789
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3823
 msgid "Complete"
 msgstr "Færdig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3792
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3826
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pause"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3795
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3829
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Beskadiget"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3802
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3836
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Henter"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3804
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3838
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Venter"
 
-#: src/ThreadTasks.cpp:109
+#: src/ThreadTasks.cpp:119
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Begynder at lave MD4 og AICH hash for fil: %s"
 
-#: src/ThreadTasks.cpp:113
+#: src/ThreadTasks.cpp:123
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Begynder at lave MD4 hash for fil: %s"
 
-#: src/ThreadTasks.cpp:117
+#: src/ThreadTasks.cpp:127
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Begynder at lave AICH hash for fil: %s"
 
-#: src/ThreadTasks.cpp:362
+#: src/ThreadTasks.cpp:372
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Konverter gamle AICH hashsæt i '%s' til 64b i '%s'."
 
-#: src/ThreadTasks.cpp:444
+#: src/ThreadTasks.cpp:454
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "ADVARSEL: Filnavnet '%s' er ikke understøttet og er blevet omdøbt til '%s'"
 
-#: src/ThreadTasks.cpp:463
+#: src/ThreadTasks.cpp:473
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "ADVARSEL: Filen '%s' eksistere, ny fil omdøbt til '%s'."
 
-#: src/ThreadTasks.cpp:477
+#: src/ThreadTasks.cpp:487
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr "ADVARSEL: Kunne ikke fjerne orginal '%s' efter oprettelse af backup"
 
-#: src/ThreadTasks.cpp:489
+#: src/ThreadTasks.cpp:499
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "ADVARSEL: Kunne ikke slette '%s'"
@@ -135,7 +135,7 @@ msgstr "Hentelse af delte fier fra bruger '%s' fejlede"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2598 src/PartFile.cpp:2604 src/KnownFile.cpp:855
+#: src/PartFile.cpp:2589 src/PartFile.cpp:2595 src/KnownFile.cpp:855
 #: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -1668,8 +1668,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:911
-#: src/PartFile.cpp:924
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
+#: src/PartFile.cpp:897 src/PartFile.cpp:913
 msgid "Message"
 msgstr ""
 
@@ -3016,152 +3016,140 @@ msgstr ""
 msgid "ERROR: Failed to create partfile)"
 msgstr "Fejl: Kunne ikke oprette partfil"
 
-#: src/PartFile.cpp:295 src/PartFile.cpp:322
-msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
-"met recovery solutions"
-msgstr ""
-
-#: src/PartFile.cpp:297
-#, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr ""
-
-#: src/PartFile.cpp:305
-msgid ""
-"Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-"part.met recovery solutions"
-msgstr ""
-
-#: src/PartFile.cpp:307
-#, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr ""
-
-#: src/PartFile.cpp:317
+#: src/PartFile.cpp:287
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr ""
 
-#: src/PartFile.cpp:326
+#: src/PartFile.cpp:294
 #, c-format
-msgid "Error: part.met backup file is 0 size: %s ==> %s"
+msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:340
+#: src/PartFile.cpp:300
+#, c-format
+msgid "Error: part.met file is 0 size: %s ==> %s"
+msgstr ""
+
+#: src/PartFile.cpp:311
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr ""
 
-#: src/PartFile.cpp:595
+#: src/PartFile.cpp:564
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 
-#: src/PartFile.cpp:598
+#: src/PartFile.cpp:567
 msgid "Trying to recover file info..."
 msgstr ""
 
-#: src/PartFile.cpp:613
+#: src/PartFile.cpp:582
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 
-#: src/PartFile.cpp:618
+#: src/PartFile.cpp:587
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 
-#: src/PartFile.cpp:620
+#: src/PartFile.cpp:589
 msgid "Unable to recover file info :("
 msgstr ""
 
-#: src/PartFile.cpp:654
+#: src/PartFile.cpp:623
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Kunne ikke åbne %s (%s)"
 
-#: src/PartFile.cpp:699
+#: src/PartFile.cpp:674
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr ""
 
-#: src/PartFile.cpp:879 src/PartFile.cpp:884
+#: src/PartFile.cpp:854 src/PartFile.cpp:859
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr ""
 
-#: src/PartFile.cpp:908
+#: src/PartFile.cpp:883
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:894
+#, c-format
+msgid "Could not retrieve length of '%s' - using %s file."
+msgstr ""
+
+#: src/PartFile.cpp:910
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:990
+#: src/PartFile.cpp:979
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr ""
 
-#: src/PartFile.cpp:1016
+#: src/PartFile.cpp:1005
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr ""
 
-#: src/PartFile.cpp:1045
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr ""
 
-#: src/PartFile.cpp:1052
+#: src/PartFile.cpp:1043
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr ""
 
-#: src/PartFile.cpp:1110
+#: src/PartFile.cpp:1099
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 
-#: src/PartFile.cpp:1126 src/PartFile.cpp:1149
+#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr ""
 
-#: src/PartFile.cpp:1163
+#: src/PartFile.cpp:1152
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr ""
 
-#: src/PartFile.cpp:1200
+#: src/PartFile.cpp:1189
 #, c-format
 msgid "Finished rehashing %s"
 msgstr ""
 
-#: src/PartFile.cpp:2217
+#: src/PartFile.cpp:2206
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr ""
 
-#: src/PartFile.cpp:2243
+#: src/PartFile.cpp:2232
 #, c-format
 msgid "Finished downloading: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2300
+#: src/PartFile.cpp:2289
 #, c-format
 msgid "Deleting file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2364
+#: src/PartFile.cpp:2353
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
-#: src/PartFile.cpp:2369
+#: src/PartFile.cpp:2358
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3170,38 +3158,38 @@ msgstr ""
 "Fejl: Kunne ikke hashe downloadede del - hashsæt ikke færdig (%s). Dette "
 "skulle aldrig ske"
 
-#: src/PartFile.cpp:3048
+#: src/PartFile.cpp:3039
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3113
+#: src/PartFile.cpp:3124
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3156
+#: src/PartFile.cpp:3167
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3701 src/muuli_wdr.cpp:3577
+#: src/PartFile.cpp:3735 src/muuli_wdr.cpp:3577
 msgid "Comments"
 msgstr ""
 
-#: src/PartFile.cpp:3702
+#: src/PartFile.cpp:3736
 msgid "doesn't work"
 msgstr ""
 
-#: src/PartFile.cpp:3704
+#: src/PartFile.cpp:3738
 msgid "remote gui"
 msgstr ""
 
-#: src/PartFile.cpp:3798
+#: src/PartFile.cpp:3832
 msgid "Insufficient Diskspace"
 msgstr ""
 
-#: src/PartFile.cpp:3809 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3843 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "stoppet"
 
@@ -3335,46 +3323,52 @@ msgstr ""
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr ""
 
-#: src/DownloadQueue.cpp:167
+#: src/DownloadQueue.cpp:156
+msgid ""
+"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"met recovery solutions."
+msgstr ""
+
+#: src/DownloadQueue.cpp:170
 msgid "No part files found"
 msgstr "Ingen part filer fundet"
 
-#: src/DownloadQueue.cpp:169
+#: src/DownloadQueue.cpp:172
 #, c-format
 msgid "Found %u part files"
 msgstr ""
 
-#: src/DownloadQueue.cpp:309
+#: src/DownloadQueue.cpp:312
 #, c-format
 msgid "Downloading %s"
 msgstr "Downloader %s"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:320
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr ""
 
-#: src/DownloadQueue.cpp:329
+#: src/DownloadQueue.cpp:332
 #, c-format
 msgid "You already have the file '%s'"
 msgstr ""
 
-#: src/DownloadQueue.cpp:334
+#: src/DownloadQueue.cpp:337
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Du prøver allerede at downloade denne fil %s"
 
-#: src/DownloadQueue.cpp:1291
+#: src/DownloadQueue.cpp:1294
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1302
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1322
+#: src/DownloadQueue.cpp:1325
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr ""

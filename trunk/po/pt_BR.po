@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-26 02:30+0000\n"
+"POT-Creation-Date: 2007-12-27 02:31+0000\n"
 "PO-Revision-Date: 2007-11-03 01:32-0200\n"
 "Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr."
@@ -55,74 +55,74 @@ msgstr "Sucesso! Conexão estabelecida com o aMule "
 msgid "Succeeded! Connection established."
 msgstr "Sucesso! Conexão estabelecida."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3782
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3816
 msgid "Hashing"
 msgstr "Calculando hash"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3786
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3820
 msgid "Completing"
 msgstr "Completando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3789
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3823
 msgid "Complete"
 msgstr "Completo"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3792
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3826
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3795
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3829
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Com Erro"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3802
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3836
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Baixando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3804
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3838
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Esperando"
 
-#: src/ThreadTasks.cpp:109
+#: src/ThreadTasks.cpp:119
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Iniciando para criar de um hash para arquivo MD4 e AICH: %s"
 
-#: src/ThreadTasks.cpp:113
+#: src/ThreadTasks.cpp:123
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Iniciando para criar um hash MD4 para arquivo: %s"
 
-#: src/ThreadTasks.cpp:117
+#: src/ThreadTasks.cpp:127
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Iniciando para criar um hash AICH para arquivo: %s"
 
-#: src/ThreadTasks.cpp:362
+#: src/ThreadTasks.cpp:372
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Convertendo velhos hashsets AICH em '%s' para 64b em '%s'."
 
-#: src/ThreadTasks.cpp:444
+#: src/ThreadTasks.cpp:454
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "CUIDADO: O nome de arquivo '%s' é inválido e foi renomeado para '%s'."
 
-#: src/ThreadTasks.cpp:463
+#: src/ThreadTasks.cpp:473
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "CUIDADO: O arquivo '%s' já existe, novo arquivo renomeado para '%s'."
 
-#: src/ThreadTasks.cpp:477
+#: src/ThreadTasks.cpp:487
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr "AVISO: Não foi possível remover arquivo '%s' depois de criar o backup"
 
-#: src/ThreadTasks.cpp:489
+#: src/ThreadTasks.cpp:499
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "CUIDADO: Falha ao deletar %s"
@@ -138,7 +138,7 @@ msgstr "Falha ao pedir lista de compartilhamentos do usuário '%s'"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2598 src/PartFile.cpp:2604 src/KnownFile.cpp:855
+#: src/PartFile.cpp:2589 src/PartFile.cpp:2595 src/KnownFile.cpp:855
 #: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -1686,8 +1686,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:911
-#: src/PartFile.cpp:924
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
+#: src/PartFile.cpp:897 src/PartFile.cpp:913
 msgid "Message"
 msgstr "Mensagem"
 
@@ -3066,120 +3066,104 @@ msgstr "ERRO: Falha ao abrir arquivo .part)"
 msgid "ERROR: Failed to create partfile)"
 msgstr "ERRO: falha na criação do arquivo .part)"
 
-#: src/PartFile.cpp:295 src/PartFile.cpp:322
-msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
-"met recovery solutions"
-msgstr ""
-"Falha ao carregar backup. Procure uma solução em http://forum.amule.org por ."
-"part.met recovery solutions"
-
-#: src/PartFile.cpp:297
-#, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "Erro: Falha ao abrir arquivo part.met: %s ==> %s"
-
-#: src/PartFile.cpp:305
-msgid ""
-"Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
-"part.met recovery solutions"
-msgstr ""
-"Erro: Backup do arquivo part.met está zerado. Procure em http://forum.amule."
-"org por soluções para recuperar .part.met"
-
-#: src/PartFile.cpp:307
-#, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "Erro: part.net está zerado: %s ==> %s"
-
-#: src/PartFile.cpp:317
+#: src/PartFile.cpp:287
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Tentando carregar backup do met-file de %s"
 
-#: src/PartFile.cpp:326
+#: src/PartFile.cpp:294
 #, c-format
-msgid "Error: part.met backup file is 0 size: %s ==> %s"
-msgstr "Erro: backup part.met está zerado: %s ==> %s"
+msgid "Error: Failed to open part.met file: %s ==> %s"
+msgstr "Erro: Falha ao abrir arquivo part.met: %s ==> %s"
 
-#: src/PartFile.cpp:340
+#: src/PartFile.cpp:300
+#, c-format
+msgid "Error: part.met file is 0 size: %s ==> %s"
+msgstr "Erro: part.net está zerado: %s ==> %s"
+
+#: src/PartFile.cpp:311
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "Erro: versão do arquivo part.met inválida: %s ==> %s"
 
-#: src/PartFile.cpp:595
+#: src/PartFile.cpp:564
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr "Erro: %s (%s) está corrompido, impossível carregar arquivo."
 
-#: src/PartFile.cpp:598
+#: src/PartFile.cpp:567
 msgid "Trying to recover file info..."
 msgstr "Tentando recuperar info do arquivo..."
 
-#: src/PartFile.cpp:613
+#: src/PartFile.cpp:582
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Recuperando arquivo sem nome - tentarei recuperá-lo como RecoveredFile.dat"
 
-#: src/PartFile.cpp:618
+#: src/PartFile.cpp:587
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "Recuperada todas as informações do arquivo :D - Tente usá-lo..."
 
-#: src/PartFile.cpp:620
+#: src/PartFile.cpp:589
 msgid "Unable to recover file info :("
 msgstr "Não foi possível recuperar o arquivo :("
 
-#: src/PartFile.cpp:654
+#: src/PartFile.cpp:623
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Falha ao abrir %s (%s)"
 
-#: src/PartFile.cpp:699
+#: src/PartFile.cpp:674
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "Aviso: %s parece estar corrompido (%i)"
 
-#: src/PartFile.cpp:879 src/PartFile.cpp:884
+#: src/PartFile.cpp:854 src/PartFile.cpp:859
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Erro ao salvar arquivo .part: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:908
+#: src/PartFile.cpp:883
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "Não foi possível carregar o arquivo %s - usando arquivo %s."
 
-#: src/PartFile.cpp:921
+#: src/PartFile.cpp:894
+#, c-format
+msgid "Could not retrieve length of '%s' - using %s file."
+msgstr ""
+
+#: src/PartFile.cpp:910
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "De alguma forma o arquivo '%s' está zerado - usando arquivo %s"
 
-#: src/PartFile.cpp:990
+#: src/PartFile.cpp:979
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Falha ao salvar part.met.seeds para %s"
 
-#: src/PartFile.cpp:1016
+#: src/PartFile.cpp:1005
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Salvo %i fontes do .part: %s (%s)"
 
-#: src/PartFile.cpp:1045
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Arquivo .part %s (%s) não possui fontes disponíveis"
 
-#: src/PartFile.cpp:1052
+#: src/PartFile.cpp:1043
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Arquivo .part %s (%s) tem fontes expiradas."
 
-#: src/PartFile.cpp:1110
+#: src/PartFile.cpp:1099
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Erro lendo arquivo .seeds do arquivo (%s - %s): %s"
 
-#: src/PartFile.cpp:1126 src/PartFile.cpp:1149
+#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3188,38 +3172,38 @@ msgstr ""
 "Encontrada parte corrompida (%d) em %d arquivo .part %s - Resultado |%s| "
 "Hash |%s|"
 
-#: src/PartFile.cpp:1163
+#: src/PartFile.cpp:1152
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Achado parte completa (%i) em %s"
 
-#: src/PartFile.cpp:1200
+#: src/PartFile.cpp:1189
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Terminado o rehash %s"
 
-#: src/PartFile.cpp:2217
+#: src/PartFile.cpp:2206
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Erro inesperado ao completar %s. Arquivo pausado"
 
-#: src/PartFile.cpp:2243
+#: src/PartFile.cpp:2232
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Download concluído: %s"
 
-#: src/PartFile.cpp:2300
+#: src/PartFile.cpp:2289
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Apagando arquivo: %s"
 
-#: src/PartFile.cpp:2364
+#: src/PartFile.cpp:2353
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Aviso: Impossível fazer hash de parte baixada - hash incompleto para '%s'"
 
-#: src/PartFile.cpp:2369
+#: src/PartFile.cpp:2358
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3228,39 +3212,39 @@ msgstr ""
 "Impossível calcular hash da parte baixada - informação do hash incompleta (%"
 "s).Isso nunca deveria ter acontecido..."
 
-#: src/PartFile.cpp:3048
+#: src/PartFile.cpp:3039
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "AVISO: Não há espaço em disco suficiente! Colocando arquivo %s em pausa"
 
-#: src/PartFile.cpp:3113
+#: src/PartFile.cpp:3124
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Parte baixada %i do arquivo %s está corrompida"
 
-#: src/PartFile.cpp:3156
+#: src/PartFile.cpp:3167
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Recuperada parte corrompida %i para %s -> Bytes salvos: %s"
 
-#: src/PartFile.cpp:3701 src/muuli_wdr.cpp:3577
+#: src/PartFile.cpp:3735 src/muuli_wdr.cpp:3577
 msgid "Comments"
 msgstr "Comentários"
 
-#: src/PartFile.cpp:3702
+#: src/PartFile.cpp:3736
 msgid "doesn't work"
 msgstr "não funciona"
 
-#: src/PartFile.cpp:3704
+#: src/PartFile.cpp:3738
 msgid "remote gui"
 msgstr "gui remota"
 
-#: src/PartFile.cpp:3798
+#: src/PartFile.cpp:3832
 msgid "Insufficient Diskspace"
 msgstr "Espaço em disco insuficiente"
 
-#: src/PartFile.cpp:3809 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3843 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Parado"
 
@@ -3399,46 +3383,52 @@ msgstr "Erro: Socket inválido durante tempo de verificação"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Expirado tempo de espera para conectar a %s (%s:%i)."
 
-#: src/DownloadQueue.cpp:167
+#: src/DownloadQueue.cpp:156
+msgid ""
+"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"met recovery solutions."
+msgstr ""
+
+#: src/DownloadQueue.cpp:170
 msgid "No part files found"
 msgstr "Nenhum arquivo parcial (.part) encontrado"
 
-#: src/DownloadQueue.cpp:169
+#: src/DownloadQueue.cpp:172
 #, c-format
 msgid "Found %u part files"
 msgstr "Encontrados %u arquivos parciais"
 
-#: src/DownloadQueue.cpp:309
+#: src/DownloadQueue.cpp:312
 #, c-format
 msgid "Downloading %s"
 msgstr "Baixando %s"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:320
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Ooops! Você já está tentando baixar o arquivo '%s'"
 
-#: src/DownloadQueue.cpp:329
+#: src/DownloadQueue.cpp:332
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Você já tem o arquivo '%s'"
 
-#: src/DownloadQueue.cpp:334
+#: src/DownloadQueue.cpp:337
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Ooops! Você já está tentando baixar o arquivo %s"
 
-#: src/DownloadQueue.cpp:1291
+#: src/DownloadQueue.cpp:1294
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "Não pode converter ligações magnéticas para ed2k: %s"
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1302
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Ligação do protocolo desconhecida: %s"
 
-#: src/DownloadQueue.cpp:1322
+#: src/DownloadQueue.cpp:1325
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Link ed2k inválido! Erro: %s"
@@ -7004,6 +6994,23 @@ msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para leitura!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para escrita!"
+
+#~ msgid ""
+#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "Falha ao carregar backup. Procure uma solução em http://forum.amule.org "
+#~ "por .part.met recovery solutions"
+
+#~ msgid ""
+#~ "Error: Backup part.met file is 0 size! Search http://forum.amule.org for ."
+#~ "part.met recovery solutions"
+#~ msgstr ""
+#~ "Erro: Backup do arquivo part.met está zerado. Procure em http://forum."
+#~ "amule.org por soluções para recuperar .part.met"
+
+#~ msgid "Error: part.met backup file is 0 size: %s ==> %s"
+#~ msgstr "Erro: backup part.met está zerado: %s ==> %s"
 
 #~ msgid ""
 #~ "Note: These values are\n"
