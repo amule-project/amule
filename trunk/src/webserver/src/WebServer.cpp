@@ -145,18 +145,24 @@ CUrlDecodeTable::CUrlDecodeTable()
 		snprintf(fromReplace, sizeof(fromReplace), "%%%02X", i);
 		m_enc_u_str[i] = char2unicode(fromReplace);
 
-		char toReplace[2] = {(char)i, 0};	// decode URL
-		m_dec_str[i] = char2unicode(toReplace);
+		m_dec_str[i] = wxString::Format(wxT("%c"), i);
 	}
 }
 
 void CUrlDecodeTable::DecodeString(wxString &str)
 {
 	str.Replace(wxT("+"), wxT(" "));
-	for (int i = 0 ; i < 256 ; i++) {
+	for (int i = 0 ; i < 256 ; ++i) {
 		str.Replace(m_enc_l_str[i], m_dec_str[i]);
 		str.Replace(m_enc_u_str[i], m_dec_str[i]);
 	}
+	size_t n = str.Len();
+	std::vector<char> buffer(n + 1);
+	for (size_t i = 0; i < n; ++i) {
+		buffer[i] = str[i];
+	}
+	buffer[n] = 0; // Mark the end of the string
+	str = UTF82unicode(&buffer[0]);
 }
 
 CUrlDecodeTable*	CUrlDecodeTable::ms_instance;
