@@ -1405,10 +1405,15 @@ void CamuleDlg::OnMainGUISizeChange(wxSizeEvent& evt)
 void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
 {
 	if (event.GetKeyCode() == WXK_F1) {
-		LaunchUrl(wxT("http://wiki.amule.org"));
-	} else {
-		event.Skip();
+		// Ctrl/Alt/Shift must not be pressed, to avoid
+		// conflicts with other (global) shortcuts.
+		if (!event.HasModifiers() && !event.ShiftDown()) {
+			LaunchUrl(wxT("http://wiki.amule.org"));
+			return;
+		}
 	}
+	
+	event.Skip();
 }
 
 
