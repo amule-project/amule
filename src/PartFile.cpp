@@ -2361,23 +2361,22 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 	} else {
 		CMD4Hash hashresult;
 		uint64 length = PARTSIZE;
-		
+		const uint64 offset = length * partnumber;
 		try {
-			m_hpartfile.Seek(PARTSIZE * partnumber, wxFromStart);
-			if ((uint64)(PARTSIZE * (partnumber + 1)) > m_hpartfile.GetLength()){
-				length = (m_hpartfile.GetLength() - (PARTSIZE * partnumber));
+			m_hpartfile.Seek(offset, wxFromStart);
+			if (offset + PARTSIZE > m_hpartfile.GetLength()) {
+				length = m_hpartfile.GetLength() - offset;
 				wxASSERT( length <= PARTSIZE );
 			}
-			
 			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
-				% partnumber % length % ((partnumber*PARTSIZE)+length) % GetFileName() % GetFileSize() % e.what());
+				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			SetPartFileStatus(PS_ERROR);
 			return false;
 		} catch (const CEOFException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
-				% partnumber % length % ((partnumber*PARTSIZE)+length) % GetFileName() % GetFileSize() % e.what());
+				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());
 			return false;
 		}
 

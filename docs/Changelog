@@ -278,6 +278,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Trying to make listctrls behave on Mac.
 		* Fix for CheckFreeDiskSpace(). Was probably returning ok if
 		  the directory where the file would be saved did not exist.
+		* Fix for overflow in CPartFile::HashSinglePart() as reported
+		  by visualage.
 
 	Radek:
 		* Patch to fix windows compilation.
