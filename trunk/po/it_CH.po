@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-27 02:31+0000\n"
+"POT-Creation-Date: 2007-12-29 02:31+0000\n"
 "PO-Revision-Date: 2007-12-23 20:35+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
@@ -61,34 +61,34 @@ msgstr "Fatto! Connessione stabilita con aMule "
 msgid "Succeeded! Connection established."
 msgstr "Fatto! Connessione stabilita"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3816
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3815
 msgid "Hashing"
 msgstr "Hashing in corso"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3820
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3819
 msgid "Completing"
 msgstr "In completamento"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3823
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3822
 msgid "Complete"
 msgstr "Completo"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3826
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3825
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "In pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3828
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Errato"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3835
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Download in corso"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3838
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3837
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "In attesa"
@@ -148,7 +148,7 @@ msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2589 src/PartFile.cpp:2595 src/KnownFile.cpp:855
+#: src/PartFile.cpp:2588 src/PartFile.cpp:2594 src/KnownFile.cpp:855
 #: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
@@ -463,77 +463,77 @@ msgstr "Letti %u contatti Kad"
 msgid "Error: Could not listen to TCP port."
 msgstr "ERRORE: non posso stare in ascolto sulla porta TCP"
 
-#: src/webserver/src/WebServer.cpp:320
+#: src/webserver/src/WebServer.cpp:326
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Richiesta fallita per l'errore: %s"
 
-#: src/webserver/src/WebServer.cpp:323 src/TextClient.cpp:600
+#: src/webserver/src/WebServer.cpp:329 src/TextClient.cpp:600
 msgid "Request failed with an unknown error."
 msgstr "Richiesta fallita con errore sconosciuto"
 
-#: src/webserver/src/WebServer.cpp:1683
+#: src/webserver/src/WebServer.cpp:1689
 msgid "Index file not found: "
 msgstr "File indice non trovato: "
 
-#: src/webserver/src/WebServer.cpp:1703
+#: src/webserver/src/WebServer.cpp:1709
 msgid "Can't create web socket thread\n"
 msgstr "Impossibile creare thread socket web\n"
 
-#: src/webserver/src/WebServer.cpp:1708
+#: src/webserver/src/WebServer.cpp:1714
 msgid "Web Server: Started\n"
 msgstr "Server web: eseguito\n"
 
-#: src/webserver/src/WebServer.cpp:1786
+#: src/webserver/src/WebServer.cpp:1792
 msgid "Session expired - requesting login\n"
 msgstr "Sessione scaduta - login richiesto\n"
 
-#: src/webserver/src/WebServer.cpp:1791
+#: src/webserver/src/WebServer.cpp:1797
 msgid "Session ok, logged in\n"
 msgstr "Sessione valida, utente loggato\n"
 
-#: src/webserver/src/WebServer.cpp:1793
+#: src/webserver/src/WebServer.cpp:1799
 msgid "Session ok, not logged in\n"
 msgstr "Sessione valida, utente loggato\n"
 
-#: src/webserver/src/WebServer.cpp:1798
+#: src/webserver/src/WebServer.cpp:1804
 msgid "No session opened - will request login\n"
 msgstr "Nessuna sessione aperta - richiesta login\n"
 
-#: src/webserver/src/WebServer.cpp:1807
+#: src/webserver/src/WebServer.cpp:1813
 msgid "Session created - requesting login\n"
 msgstr "Sessione creata - richiesta login\n"
 
-#: src/webserver/src/WebServer.cpp:1824
+#: src/webserver/src/WebServer.cpp:1830
 msgid "Processing request [original]: "
 msgstr "Elaborazione richiesta [originale]:"
 
-#: src/webserver/src/WebServer.cpp:1840
+#: src/webserver/src/WebServer.cpp:1846
 msgid "Checking password\n"
 msgstr "Verifica password\n"
 
-#: src/webserver/src/WebServer.cpp:1845
+#: src/webserver/src/WebServer.cpp:1851
 msgid "Password hash invalid\n"
 msgstr "Hash della password non valido\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1866
 msgid "Password ok\n"
 msgstr "Password valida\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1868
 msgid "Password bad\n"
 msgstr "Password errata\n"
 
-#: src/webserver/src/WebServer.cpp:1865
+#: src/webserver/src/WebServer.cpp:1871
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "Non hai inserito alcuna password e le password vuote non sono ammesse.\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1879
 msgid "Logout requested\n"
 msgstr "Logout richiesto\n"
 
-#: src/webserver/src/WebServer.cpp:1878
+#: src/webserver/src/WebServer.cpp:1884
 msgid "Processing request [redirected]: "
 msgstr "Elaborazione richiesta [rediretta]:"
 
@@ -3256,40 +3256,40 @@ msgstr ""
 "ERRORE: impossibile calcolare l'hash del file part scaricato - hashset "
 "incompleto (%s). Cio' non dovrebbe mai accadere"
 
-#: src/PartFile.cpp:3039
+#: src/PartFile.cpp:3038
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "ATTENZIONE: non c'e' abbastanza spazio libero su disco! Metto in pausa il "
 "file: %s"
 
-#: src/PartFile.cpp:3124
+#: src/PartFile.cpp:3123
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "La parte di file scaricata %i e' corrotta in: %s"
 
-#: src/PartFile.cpp:3167
+#: src/PartFile.cpp:3166
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: recuperata parte corrotta %i in %s -> risparmiati byte: %s"
 
-#: src/PartFile.cpp:3735 src/muuli_wdr.cpp:3577
+#: src/PartFile.cpp:3734 src/muuli_wdr.cpp:3577
 msgid "Comments"
 msgstr "Commenti"
 
-#: src/PartFile.cpp:3736
+#: src/PartFile.cpp:3735
 msgid "doesn't work"
 msgstr "non funziona"
 
-#: src/PartFile.cpp:3738
+#: src/PartFile.cpp:3737
 msgid "remote gui"
 msgstr "gui remota"
 
-#: src/PartFile.cpp:3832
+#: src/PartFile.cpp:3831
 msgid "Insufficient Diskspace"
 msgstr "Spazio su disco insufficiente"
 
-#: src/PartFile.cpp:3843 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3842 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Fermo"
 
