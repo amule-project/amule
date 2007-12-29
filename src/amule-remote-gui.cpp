@@ -166,7 +166,10 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
-			downloadqueue->DoRequery(EC_OP_GET_DLOAD_QUEUE, EC_TAG_PARTFILE);
+			downloadqueue->DoRequery(
+				theApp->m_FileDetailDialogActive ?
+					EC_OP_GET_DLOAD_QUEUE_DETAIL : EC_OP_GET_DLOAD_QUEUE,
+				EC_TAG_PARTFILE);
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();
@@ -1324,19 +1327,46 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		}
 
 		std::list<Requested_Block_Struct*>::iterator it2 = file->m_requestedblocks_list.begin();
-		for (unsigned i = 0; i < reqcount;i++) {
+		for (unsigned i = 0; i < reqcount; ++i) {
 			Requested_Block_Struct* block = *it2++;
 			block->StartOffset = ENDIAN_NTOHLL(reqparts[i].start);
 			block->EndOffset = ENDIAN_NTOHLL(reqparts[i].end);
 		}
 		// copy parts frequency
 		const unsigned char *part_info = encoder.m_part_status.Buffer();
-		for(int i = 0;i < file->GetPartCount();i++) {
+		for(int i = 0; i < file->GetPartCount(); ++i) {
 			file->m_SrcpartFrequency[i] = part_info[i];
 		}
 	} else {
 		printf("ERROR: %p %p %p\n", (void*)gaptag, (void*)parttag, (void*)reqtag);
 	}
+	
+	// Get source names
+	CECTag *srcnametag = tag->GetTagByName(EC_TAG_PARTFILE_SOURCE_NAMES);
+	if (srcnametag) {
+		file->ClearSourcenameItemList();
+		int max = srcnametag->GetTagCount();
+		for (int i = 0; i < max - 1; ) {
+			wxString name = srcnametag->GetTagByIndex(i++)->GetStringData();
+			long count = srcnametag->GetTagByIndex(i++)->GetInt();
+			file->AddSourcenameItemList(name, count);
+		}
+	}
+	
+	// Get comments
+	CECTag *commenttag = tag->GetTagByName(EC_TAG_PARTFILE_COMMENTS);
+	if (commenttag) {
+		file->ClearFileRatingList();
+		int max = commenttag->GetTagCount();
+		for (int i = 0; i < max - 3; ) {
+			wxString u = commenttag->GetTagByIndex(i++)->GetStringData();
+			wxString f = commenttag->GetTagByIndex(i++)->GetStringData();
+			int r = commenttag->GetTagByIndex(i++)->GetInt();
+			wxString c = commenttag->GetTagByIndex(i++)->GetStringData();
+			file->AddFileRatingList(u, f, r, c);
+		}
+	}
+		
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(file);
 }
 
@@ -1631,7 +1661,7 @@ bool CUpDownClient::SwapToAnotherFile(
 // Those functions are virtual. So even they don't get called they must
 // be defined so linker will be happy
 //
-CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient*, uint8 byRequestedVersion, uint16 nRequestedOptions)
+CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient *, uint8 /*byRequestedVersion*/, uint16 /*nRequestedOptions*/)
 {
 	wxASSERT(0);
 	return 0;
@@ -1657,7 +1687,7 @@ void CKnownFile::SetFileSize(uint64 nFileSize)
 }
 
 
-CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const*, uint8 byRequestedVersion, uint16 nRequestedOptions)
+CPacket* CPartFile::CreateSrcInfoPacket(CUpDownClient const *, uint8 /*byRequestedVersion*/, uint16 /*nRequestedOptions*/)
 {
 	wxASSERT(0);
 	return 0;

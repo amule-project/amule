@@ -302,6 +302,7 @@ public:
 
 	wxString	m_FrameTitle;
 	CamuleDlg*	amuledlg;
+	int m_FileDetailDialogActive;
 
 	bool CopyTextToClipboard( wxString strText );
 

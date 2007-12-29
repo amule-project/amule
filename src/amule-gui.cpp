@@ -96,6 +96,7 @@ IMPLEMENT_APP(CamuleGuiApp)
 CamuleGuiBase::CamuleGuiBase()
 {
 	amuledlg = NULL;
+	m_FileDetailDialogActive = 0;
 }
 
 

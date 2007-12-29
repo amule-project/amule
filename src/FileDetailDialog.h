@@ -44,10 +44,6 @@ protected:
 private:
 	void UpdateData();
 	CPartFile* m_file;
-	struct SourcenameItem {
-		wxString	name;
-		long		count;
-	};
 	wxTimer m_timer;
 	bool m_filenameChanged;
 	

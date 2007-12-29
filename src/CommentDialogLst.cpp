@@ -23,12 +23,13 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include "CommentDialogLst.h"	// Interface declarations
-#include "muuli_wdr.h"			// Needed for commentLstDlg
-#include "PartFile.h"			// Needed for CPartFile
-#include <common/Format.h>				// Needed for CFormat
+#include "CommentDialogLst.h"           // Interface declarations
+#include "muuli_wdr.h"                  // Needed for commentLstDlg
+#include "PartFile.h"                   // Needed for CPartFile
+#include <common/Format.h>              // Needed for CFormat
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 #include "Preferences.h"
+#include "amule.h"                      // Needed for theApp
 
 
 
@@ -37,11 +38,17 @@ BEGIN_EVENT_TABLE(CCommentDialogLst,wxDialog)
 	EVT_BUTTON(IDCREF,CCommentDialogLst::OnBnClickedRefresh)
 END_EVENT_TABLE()
 
+
+/*
+ * Constructor
+ */
 CCommentDialogLst::CCommentDialogLst(wxWindow*parent, CPartFile* file)
-	: wxDialog(parent, -1, wxString(_("File Comments")), 
-		wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
+:
+wxDialog(parent, -1, wxString(_("File Comments")), 
+	wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+m_file(file)
 {
-	m_file = file;
+	theApp->m_FileDetailDialogActive++;
 	
 	wxSizer* content = commentLstDlg(this, true);
 	content->Show(this, true);
@@ -59,6 +66,7 @@ CCommentDialogLst::CCommentDialogLst(wxWindow*parent, CPartFile* file)
 
 CCommentDialogLst::~CCommentDialogLst()
 {
+	theApp->m_FileDetailDialogActive--;
 	ClearList();
 }
 
@@ -80,16 +88,15 @@ void CCommentDialogLst::UpdateList()
 	int count = 0;
 	ClearList();
  
-	FileRatingList list;
-	m_file->GetRatingAndComments(list);
-	for (FileRatingList::iterator it = list.begin(); it != list.end(); ++it) {
-		if (!thePrefs::IsCommentFiltered((*it)->Comment)) {
-			m_list->InsertItem(count, (*it)->UserName);
-			m_list->SetItem(count, 1, (*it)->FileName);
-			m_list->SetItem(count, 2, ((*it)->Rating != -1) ? GetRateString((*it)->Rating) : wxString(wxT("on")));
-			m_list->SetItem(count, 3, (*it)->Comment);
-			m_list->SetItemData(count, (long)(*it));
-			count++;
+	const FileRatingList &list = m_file->GetRatingAndComments();
+	for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
+		if (!thePrefs::IsCommentFiltered(it->Comment)) {
+			m_list->InsertItem(count, it->UserName);
+			m_list->SetItem(count, 1, it->FileName);
+			m_list->SetItem(count, 2, (it->Rating != -1) ? GetRateString(it->Rating) : wxString(wxT("on")));
+			m_list->SetItem(count, 3, it->Comment);
+			m_list->SetItemData(count, reinterpret_cast<long>(new SFileRating(*it)));
+			++count;
 		}
 	}
 
