@@ -448,7 +448,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(CPartFile_Encoder_Map &encoders, COb
 	return 	response;
 }
 
-CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders)
+CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_Encoder_Map &encoders, bool detail = false)
 {	
 	CECPacket *response = new CECPacket(EC_OP_DLOAD_QUEUE);
 
@@ -466,7 +466,7 @@ CECPacket *Get_EC_Response_GetDownloadQueue(const CECPacket *request, CPartFile_
 			continue;
 		}
 
-		CEC_PartFile_Tag filetag(cur_file, detail_level);
+		CEC_PartFile_Tag filetag(cur_file, detail_level, detail);
 		
 		CPartFile_Encoder &enc = encoders[cur_file];
 		if ( detail_level != EC_DETAIL_UPDATE ) {
@@ -1043,6 +1043,14 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
 			} else {
 				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map);
+			}
+			break;
+		// transmit source names and comments only if file detail dialog is open	
+		case EC_OP_GET_DLOAD_QUEUE_DETAIL:
+			if ( request->GetDetailLevel() == EC_DETAIL_INC_UPDATE ) {
+				response = Get_EC_Response_GetDownloadQueue(enc_part_map, objmap);
+			} else {
+				response = Get_EC_Response_GetDownloadQueue(request, enc_part_map, true);
 			}
 			break;
 		case EC_OP_GET_ULOAD_QUEUE:

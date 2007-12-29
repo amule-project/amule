@@ -54,7 +54,6 @@ BEGIN_EVENT_TABLE(CFileDetailDialog,wxDialog)
 	EVT_TIMER(ID_MY_TIMER,CFileDetailDialog::OnTimer)
 END_EVENT_TABLE()
 
-
 CFileDetailDialog::CFileDetailDialog(wxWindow *parent, CPartFile *file)
 :
 wxDialog(parent, -1, _("File Details"), wxDefaultPosition, wxDefaultSize,
@@ -62,6 +61,7 @@ wxDialog(parent, -1, _("File Details"), wxDefaultPosition, wxDefaultSize,
 m_file(file),
 m_filenameChanged(false)
 {
+	theApp->m_FileDetailDialogActive++;
 	m_timer.SetOwner(this, ID_MY_TIMER);
 	m_timer.Start(5000);
 	wxSizer *content = fileDetails(this, true);
@@ -72,6 +72,7 @@ m_filenameChanged(false)
 
 CFileDetailDialog::~CFileDetailDialog()
 {
+	theApp->m_FileDetailDialogActive = 0;
 	m_timer.Stop();
 }
 
@@ -134,6 +135,8 @@ void CFileDetailDialog::UpdateData()
 
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
 	setEnableForApplyButton();
+	// disable "Show all comments" button if there are no comments
+	CastChild(IDC_CMTBT, wxControl)->Enable(!m_file->GetFileRatingList().empty());
 	FillSourcenameList();
 	Layout();
 }
@@ -142,71 +145,85 @@ void CFileDetailDialog::UpdateData()
 
 #define LVCFMT_LEFT wxLIST_FORMAT_LEFT
 
-// by Juanjo
+
 void CFileDetailDialog::FillSourcenameList()
 {
-	CUpDownClient* cur_src; 
 	CFileDetailListCtrl* pmyListCtrl; 
 	int itempos; 
-	wxString nameCountStr; 
 	pmyListCtrl = CastChild(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl ); 
-
-// PA: imported new version from emule 0.30e
 
 	// reset
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++){
 		pmyListCtrl->SetItem(i, 1, wxT("0"));	
-		SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(i);
+		SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(i));
 		item->count = 0;
 	}
 
 	// update
+#ifdef CLIENT_GUI
+	const SourcenameItemList &sources = m_file->GetSourcenameItemList();
+	for (SourcenameItemList::const_iterator it = sources.begin(); it != sources.end(); ++it) {
+		const SourcenameItem &cur_src = *it;
+		itempos = pmyListCtrl->FindItem(-1,cur_src.name);
+		if (itempos == -1) {
+			int itemid = pmyListCtrl->InsertItem(0, cur_src.name);
+			pmyListCtrl->SetItem(0, 1, wxString::Format(wxT("%li"), cur_src.count)); 
+			SourcenameItem *item = new SourcenameItem(cur_src.name, cur_src.count);
+			pmyListCtrl->SetItemData(0, reinterpret_cast<long>(item));
+			// background.. argh -- PA: was in old version - do we still need this?
+			wxListItem tmpitem;
+			tmpitem.m_itemId = itemid;
+			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
+			pmyListCtrl->SetItem(tmpitem);
+		} else { 
+			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
+			item->count = cur_src.count;
+			pmyListCtrl->SetItem(itempos, 1, wxString::Format(wxT("%li"), cur_src.count));
+		} 
+	}
+#else // CLIENT_GUI
 	const CPartFile::SourceSet& sources = m_file->GetSourceList();
 	CPartFile::SourceSet::const_iterator it = sources.begin();
 	for ( ; it != sources.end(); ++it ) {
-		cur_src = *it; 
-		if (cur_src->GetRequestFile()!=m_file || cur_src->GetClientFilename().Length()==0)
+		const CUpDownClient &cur_src = **it; 
+		if (cur_src.GetRequestFile() != m_file ||
+		    cur_src.GetClientFilename().Length() == 0) {
 			continue;
+		}
 
-		if ((itempos=pmyListCtrl->FindItem(-1,cur_src->GetClientFilename())) == -1) { 
-			int itemid = pmyListCtrl->InsertItem(0, cur_src->GetClientFilename()); 
+		itempos = pmyListCtrl->FindItem(-1,cur_src.GetClientFilename());
+		if (itempos == -1) { 
+			int itemid = pmyListCtrl->InsertItem(0, cur_src.GetClientFilename()); 
 			pmyListCtrl->SetItem(0, 1, wxT("1")); 
-			SourcenameItem *item = new SourcenameItem;
-			item->name = cur_src->GetClientFilename();
-			item->count = 1;
-			pmyListCtrl->SetItemData(0, (long)item); 
+			SourcenameItem *item = new SourcenameItem(cur_src.GetClientFilename(), 1);
+			pmyListCtrl->SetItemData(0, reinterpret_cast<long>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
 			wxListItem tmpitem;
 			tmpitem.m_itemId=itemid;
 			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
 		} else { 
-			SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(itempos); 
+			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
 			item->count++;
-			nameCountStr = wxString::Format(wxT("%li"), item->count); 
-			pmyListCtrl->SetItem(itempos, 1, nameCountStr); 
+			pmyListCtrl->SetItem(itempos, 1, wxString::Format(wxT("%li"), item->count)); 
 		} 
 	}
+#endif // CLIENT_GUI
 
 	pmyListCtrl->SortList();
 
 	// remove 0'er
-	for (int i=0;i<pmyListCtrl->GetItemCount();i++)
-	{
-		SourcenameItem *item = (SourcenameItem *) pmyListCtrl->GetItemData(i); 
-		if (item->count==0)
-		{
+	for (int i = 0; i < pmyListCtrl->GetItemCount(); ++i) {
+		SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(i));
+		if (item->count == 0) {
 			delete item;
 			pmyListCtrl->DeleteItem(i);
 			i--;  // PA: one step back is enough, no need to go back to 0
 		}
 	}
 
-// PA: end
-
 	Layout();
 }
-// End by Juanjo
 
 
 void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))

@@ -299,6 +299,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Added option to generate image in JPG format (along with PNG)
 		* Added new icon for aMule
 
+	Stu Redman:
+		* Fix for Transferred / Completed not updated in remote GUI.
+
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
 		icon points to the same file" issue.

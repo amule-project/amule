@@ -67,6 +67,41 @@
 #include "kademlia/kademlia/Search.h"
 
 
+SFileRating::SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c)
+:
+UserName(u),
+FileName(f),
+Rating(r),
+Comment(c)
+{
+}
+
+
+SFileRating::SFileRating(const SFileRating &fr)
+:
+UserName(fr.UserName),
+FileName(fr.FileName),
+Rating(fr.Rating),
+Comment(fr.Comment)
+{
+}
+
+
+SFileRating::SFileRating(const CUpDownClient &client)
+:
+UserName(client.GetUserName()),
+FileName(client.GetClientFilename()),
+Rating(client.GetFileRating()),
+Comment(client.GetFileComment())
+{
+}
+
+
+SFileRating::~SFileRating()
+{
+}
+
+
 typedef std::list<Chunk> ChunkList;
 
 
@@ -1679,7 +1714,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned origin, bool bWithObfuscationAndHash)
+void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned /*origin*/, bool bWithObfuscationAndHash)
 {
 	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
@@ -2732,7 +2767,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 	return result;
 }
 
-void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* pClient)
+void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 uClientSXVersion, bool bSourceExchange2, const CUpDownClient* /*pClient*/)
 {
 	// Kad reviewed
 	
@@ -2740,7 +2775,7 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 		return;
 	}
 
-	uint16 nCount = 0;
+	uint32 nCount = 0;
 	uint8 uPacketSXVersion = 0;
 	if (!bSourceExchange2) {
 		nCount = sources->ReadUInt16();
@@ -3670,23 +3705,20 @@ void CPartFile::UpdatePartsFrequency( CUpDownClient* client, bool increment )
 	}
 }
 
-void CPartFile::GetRatingAndComments(FileRatingList& list)
+const FileRatingList &CPartFile::GetRatingAndComments()
 {
+	m_FileRatingList.clear();
 	// This can be pre-processed, but is it worth the CPU?
 	CPartFile::SourceSet::iterator it = m_SrcList.begin();
 	for ( ; it != m_SrcList.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
-
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
-			SFileRating* entry =  new SFileRating;
-			entry->UserName = cur_src->GetUserName();
-			entry->FileName = cur_src->GetClientFilename();
-			entry->Rating   = cur_src->GetFileRating();
-			entry->Comment  = cur_src->GetFileComment();
-			
-			list.push_back(entry);			
+			AddDebugLogLineM(false, logPartFile, wxString(wxT("found a comment for ")) << GetFileName());
+			m_FileRatingList.push_back(SFileRating(*cur_src));
 		}
 	}
+
+	return m_FileRatingList; 
 }
 
 #else   // CLIENT_GUI
@@ -3728,16 +3760,9 @@ CPartFile::~CPartFile()
 {
 }
 
-void CPartFile::GetRatingAndComments(FileRatingList& list)
-{
-	SFileRating* entry =  new SFileRating;
-	entry->UserName = _("Comments");
-	entry->FileName = _("doesn't work");
-	entry->Rating   = -1;
-	entry->Comment  = _("remote gui");
-	
-	list.push_back(entry);			
-	
+const FileRatingList &CPartFile::GetRatingAndComments() 
+{ 
+	return m_FileRatingList; 
 }
 #endif // !CLIENT_GUI
 

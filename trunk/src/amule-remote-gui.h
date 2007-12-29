@@ -165,14 +165,21 @@ protected:
 		}
 	}
 public:
-	CRemoteContainer(CRemoteConnect *conn, bool inc_tags = false)
+	CRemoteContainer(CRemoteConnect *conn, bool /*inc_tags*/ = false)
 	{
 		m_state = IDLE;
 		
 		m_conn = conn;
 		m_item_count = 0;
 		
-		m_inc_tags = inc_tags;
+		// FIXME:
+		// The CRemoteContainer has two ways of transfer: with "inc_tags" or without.
+		// I found that with inc_tags the update of transferred/completed is broken,
+		// therefore I disabled them.
+		// Either the inc-tag-mode should be fixed (but I can't to that without some 
+		// more insight how it's supposed to be working), or removed alltogether.
+		//m_inc_tags = inc_tags;
+		m_inc_tags = false;
 	}
 	
 	virtual ~CRemoteContainer()

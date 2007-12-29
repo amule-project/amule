@@ -69,15 +69,34 @@ struct PartFileBufferedData
 };
 
 
-struct SFileRating
+class SFileRating
 {
+public:
 	wxString UserName;
 	wxString FileName;
 	sint16   Rating;
 	wxString Comment;
+public:
+	SFileRating(const wxString &u, const wxString &f, sint16 r, const wxString &c);
+	SFileRating(const SFileRating &fr);
+	SFileRating(const CUpDownClient &client);
+	~SFileRating();
 };
 
-typedef std::list<SFileRating*> FileRatingList;
+typedef std::list<SFileRating> FileRatingList;
+
+class SourcenameItem
+{
+public:
+	wxString	name;
+	long		count;
+public:
+	SourcenameItem(const wxString &n, long c)
+	:
+	name(n), count(c) {}
+};
+
+typedef std::list<SourcenameItem> SourcenameItemList;
 
 class CPartFile : public CKnownFile {
 public:
@@ -180,7 +199,7 @@ public:
 	uint64	GetLostDueToCorruption() const	{ return m_iLostDueToCorruption; }
 	uint64	GetGainDueToCompression() const	{ return m_iGainDueToCompression; }
 	uint32	TotalPacketsSavedDueToICH()const{ return m_iTotalPacketsSavedDueToICH; }
-	bool	IsStopped() const		{ return m_stopped; }
+	bool	IsStopped() const		{ return this ? m_stopped : true; }
 	bool	IsPaused() const		{ return m_paused; }
 	void	UpdateFileRatingCommentAvail();
 
@@ -276,7 +295,7 @@ public:
 	uint16	GetMaxSourcePerFileSoft() const;
 	uint16	GetMaxSourcePerFileUDP() const;		 
 
-	void GetRatingAndComments(FileRatingList& list);
+	const FileRatingList &GetRatingAndComments();
 
 private:
 	//! A local list of sources that are invalid for this file.
@@ -357,7 +376,20 @@ private:
 	uint32		m_lastsearchtime;
 	bool		m_localSrcReqQueued;
 	
+	FileRatingList m_FileRatingList;
+#ifdef CLIENT_GUI
+	SourcenameItemList m_SourcenameItem_list;
 public:
+	const SourcenameItemList &GetSourcenameItemList() { return m_SourcenameItem_list; }
+	void ClearSourcenameItemList() { m_SourcenameItem_list.clear(); }
+	void AddSourcenameItemList(const wxString &name, long count) { m_SourcenameItem_list.push_back(SourcenameItem(name, count)); }
+#endif
+public:
+	const FileRatingList &GetFileRatingList() { return m_FileRatingList; }
+	void ClearFileRatingList() { m_FileRatingList.clear(); }
+	void AddFileRatingList(const wxString & u, const wxString & f, sint16 r, const wxString & c) { 
+	       m_FileRatingList.push_back(SFileRating(u, f, r, c)); }
+
 	bool IsHashSetNeeded() const				{ return m_hashsetneeded; }
 	void SetHashSetNeeded(bool value)			{ m_hashsetneeded = value; }
 	

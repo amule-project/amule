@@ -152,11 +152,62 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
-					theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
+		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
 }
 
-CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level)
-	: CECTag(EC_TAG_PARTFILE, file->GetFileHash())
+void CEC_PartFile_Tag::Detail_Tag(CPartFile *file)
+{
+	// Tag for source names
+	CECTag sn(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) 0);
+	SourcenameItemList sil;
+	const CPartFile::SourceSet &sources = file->GetSourceList();
+	for (CPartFile::SourceSet::const_iterator it = sources.begin(); it != sources.end(); ++it) {
+		CUpDownClient *cur_src = *it; 
+		if (cur_src->GetRequestFile() != file || cur_src->GetClientFilename().Length() == 0) {
+			continue;
+		}
+			
+		bool found = false;
+		for (SourcenameItemList::iterator its = sil.begin() ; its != sil.end(); ++its ) {
+			if (its->name == cur_src->GetClientFilename()) {
+				its->count++;
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			sil.push_back(SourcenameItem(cur_src->GetClientFilename(), 1));
+		}
+	}
+	for (SourcenameItemList::const_iterator its = sil.begin() ; its != sil.end(); ++its ) {
+		// Tag children are evaluated by index, not by name
+		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, its->name));
+		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) its->count));
+	}
+	AddTag(sn);
+	
+	// Tag for comments
+	CECTag sc(EC_TAG_PARTFILE_COMMENTS, (uint64) 0);
+
+	const FileRatingList & list = file->GetRatingAndComments();
+// test code
+// file->AddFileRatingList(wxT("No user"), wxT("No File"), 2, wxT("No comment"));
+// file->AddFileRatingList(wxT("Some user"), wxT("Some File"), 2, wxT("Some comment"));
+	if (!list.empty()) {
+		for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
+			// Tag children are evaluated by index, not by name
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
+		}
+		AddTag(sc);
+	}
+}	
+
+CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail)
+:
+CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 {
 	AddTag(CECTag(EC_TAG_PARTFILE_STATUS, file->GetStatus()));
 
@@ -172,12 +223,15 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level
 		AddTag(CECTag(EC_TAG_PARTFILE_SPEED, (uint64)(file->GetKBpsDown()*1024)));
 	}
 	
-	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
-		(uint64)(file->IsAutoDownPriority() ? 
-						file->GetDownPriority() + 10 : file->GetDownPriority())));
+	AddTag(CECTag(EC_TAG_PARTFILE_PRIO, (uint64)(file->IsAutoDownPriority() ? 
+		file->GetDownPriority() + 10 : file->GetDownPriority())));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_CAT, file->GetCategory()));
 	AddTag(CECTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete));
+
+	if (detail) {
+		Detail_Tag(file);
+	}
 
 	if (detail_level == EC_DETAIL_UPDATE) {
 		return;

@@ -110,6 +110,7 @@ public final static byte EC_OP_KAD_START                     = 0x48;
 public final static byte EC_OP_KAD_STOP                      = 0x49;
 public final static byte EC_OP_CONNECT                       = 0x4A;
 public final static byte EC_OP_DISCONNECT                    = 0x4B;
+public final static byte EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C;
 
 public final static short EC_TAG_STRING                             = 0x0000;
 public final static short EC_TAG_PASSWD_HASH                        = 0x0001;
@@ -152,6 +153,8 @@ public final static short 	EC_TAG_PARTFILE_LAST_SEEN_COMP            = 0x0311;
 public final static short 	EC_TAG_PARTFILE_PART_STATUS               = 0x0312;
 public final static short 	EC_TAG_PARTFILE_GAP_STATUS                = 0x0313;
 public final static short 	EC_TAG_PARTFILE_REQ_STATUS                = 0x0314;
+public final static short 	EC_TAG_PARTFILE_SOURCE_NAMES              = 0x0315;
+public final static short 	EC_TAG_PARTFILE_COMMENTS                  = 0x0316;
 public final static short EC_TAG_KNOWNFILE                          = 0x0400;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED                  = 0x0401;
 public final static short 	EC_TAG_KNOWNFILE_XFERRED_ALL              = 0x0402;
