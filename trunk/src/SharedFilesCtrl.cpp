@@ -638,23 +638,23 @@ bool CSharedFilesCtrl::AltSortAllowed(unsigned column) const
 void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxRect& rect ) const
 {
 	// Reference to the availability list
-	const ArrayOfUInts16& list = ( file->IsPartFile() ? ((CPartFile*)file)->m_SrcpartFrequency : file->m_AvailPartFrequency );
-	
+	const ArrayOfUInts16& list = file->IsPartFile() ?
+		((CPartFile*)file)->m_SrcpartFrequency :
+		file->m_AvailPartFrequency;
 	static CBarShader s_ChunkBar;
-
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
 	s_ChunkBar.SetHeight( rect.GetHeight() );
 	s_ChunkBar.SetWidth( rect.GetWidth() );
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	s_ChunkBar.Fill( RGB(255, 0, 0) );
-
 	for ( unsigned int i = 0; i < list.size(); ++i ) {
 		if ( list[i] ) {
 			COLORREF color = RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255);
-			s_ChunkBar.FillRange(PARTSIZE*(i),PARTSIZE*(i+1),color);
+			uint64 start = PARTSIZE * static_cast<uint64>(i);
+			uint64 end   = PARTSIZE * static_cast<uint64>(i + 1);
+			s_ChunkBar.FillRange(start, end, color);
 		}
 	}
-
    	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), CPreferences::UseFlatBar() ); 
 }
 
