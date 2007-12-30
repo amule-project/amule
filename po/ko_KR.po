@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-29 02:31+0000\n"
+"POT-Creation-Date: 2007-12-30 02:31+0000\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -55,34 +55,34 @@ msgstr "성공! 어뮬에 연결 되었습니다 "
 msgid "Succeeded! Connection established."
 msgstr "성공! 연결이 되었습니다."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3815
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
 msgid "Hashing"
 msgstr "해시중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3819
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
 msgid "Completing"
 msgstr "완료중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3822
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
 msgid "Complete"
 msgstr "완료"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3825
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "중지됨"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3828
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "오류투성이"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3835
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "받는중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "대기중"
@@ -138,8 +138,8 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2588 src/PartFile.cpp:2594 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
+#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -199,7 +199,7 @@ msgstr "알 수 없는 파일이 요청되었습니다."
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "클라이언트 %s, IP:포트 %s:%d, %s %s %s 사용"
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:50
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -262,7 +262,7 @@ msgid "Multiple selection"
 msgstr "다중 선택"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "파일 이름"
@@ -937,7 +937,7 @@ msgid "Time: "
 msgstr "시간:"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
-#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
@@ -1685,8 +1685,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
-#: src/PartFile.cpp:897 src/PartFile.cpp:913
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
+#: src/PartFile.cpp:932 src/PartFile.cpp:948
 msgid "Message"
 msgstr "메시지"
 
@@ -2246,52 +2246,52 @@ msgstr "외부연결: '%s' 링크를 추가합니다."
 msgid "Invalid link or already on list."
 msgstr "유효하지 않은 링크거나 이미 목록에 존재합니다."
 
-#: src/ExternalConn.cpp:1093
+#: src/ExternalConn.cpp:1101
 msgid "File not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: src/ExternalConn.cpp:1098
+#: src/ExternalConn.cpp:1106
 msgid "Invalid file name."
 msgstr "유효하지 않은 파일 이름입니다."
 
-#: src/ExternalConn.cpp:1106
+#: src/ExternalConn.cpp:1114
 msgid "Unable to rename file."
 msgstr "파일이름을 변경할 수 없습니다."
 
-#: src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1315
 msgid "Already connected to ED2K."
 msgstr "이미 ED2k에 연결되었습니다."
 
-#: src/ExternalConn.cpp:1310
+#: src/ExternalConn.cpp:1318
 msgid "Connecting to ED2K..."
 msgstr "ED2k에 연결중..."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1326
 msgid "Already connected to Kad."
 msgstr "이미 Kad에 연결되었습니다."
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1329
 msgid "Connecting to Kad..."
 msgstr "Kad에 연결중..."
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1334
 msgid "All networks are disabled."
 msgstr "모든 통신망을 사용할수 없습니다."
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1342
 msgid "Disconnected from ED2K."
 msgstr "ED2k로부터 연결이 끊겼습니다."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from Kad."
 msgstr "Kad로부터 연결이 끊겼습니다."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1354
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "외부연결: 유효하지 않은 실행코드를 받았음: %#x"
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1357
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "유효하지 않은 실행코드(잘못된 프로토콜 버젼?)"
 
@@ -2863,21 +2863,21 @@ msgstr "클립보드에 ED2k링크를 복사"
 msgid "Connect to remote amule"
 msgstr "원격 어뮬에 연결함"
 
-#: src/amule-remote-gui.cpp:277
+#: src/amule-remote-gui.cpp:280
 msgid "Connection failed "
 msgstr "연결 실패"
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:280 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:855
 #: src/amule.cpp:971 src/amule.cpp:1346
 msgid "Error"
 msgstr "오류"
 
-#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:522 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "전부"
 
-#: src/amule-remote-gui.cpp:750
+#: src/amule-remote-gui.cpp:753
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "전체 사용자: %s | 전체 파일: %s"
@@ -3048,112 +3048,112 @@ msgstr "오류: 외부 재생기를 실행하지 못했습니다."
 msgid "Command: %s"
 msgstr "명령: %s"
 
-#: src/PartFile.cpp:249
+#: src/PartFile.cpp:284
 msgid "ERROR: Failed to open partfile)"
 msgstr "오류: 부분파일을 열지 못했습니다.)"
 
-#: src/PartFile.cpp:253
+#: src/PartFile.cpp:288
 msgid "ERROR: Failed to create partfile)"
 msgstr "오류: 부분파일을 생성하지 못했습니다.)"
 
-#: src/PartFile.cpp:287
+#: src/PartFile.cpp:322
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "%s로부터 met파일의 백업을 읽을려고 합니다."
 
-#: src/PartFile.cpp:294
+#: src/PartFile.cpp:329
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr "오류: part.met 파일을 열지 못했습니다: %s ==> %s"
 
-#: src/PartFile.cpp:300
+#: src/PartFile.cpp:335
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
 msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
 
-#: src/PartFile.cpp:311
+#: src/PartFile.cpp:346
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "오류: 유효하지 않은 part.met 파일버젼: %s ==> %s"
 
-#: src/PartFile.cpp:564
+#: src/PartFile.cpp:599
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
 
-#: src/PartFile.cpp:567
+#: src/PartFile.cpp:602
 msgid "Trying to recover file info..."
 msgstr "파일 정보를 복구하려고 하고있습니다..."
 
-#: src/PartFile.cpp:582
+#: src/PartFile.cpp:617
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "이름없는 파일을 복구합니다. - RecoveredFile.dat로 복구합니다."
 
-#: src/PartFile.cpp:587
+#: src/PartFile.cpp:622
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "모든 가능한 파일정보를 복구되었습니다. :D - 사용해 보세요..."
 
-#: src/PartFile.cpp:589
+#: src/PartFile.cpp:624
 msgid "Unable to recover file info :("
 msgstr "파일정보 복구가 불가능합니다. :("
 
-#: src/PartFile.cpp:623
+#: src/PartFile.cpp:658
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "%s(%s)을 열지 못했습니다."
 
-#: src/PartFile.cpp:674
+#: src/PartFile.cpp:709
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "경고: %s는 손상되었습니다. (%i)"
 
-#: src/PartFile.cpp:854 src/PartFile.cpp:859
+#: src/PartFile.cpp:889 src/PartFile.cpp:894
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "부분파일을 저장하는 동안에 오류: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:883
+#: src/PartFile.cpp:918
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "%s파일을 열수 없습니다. - %s 파일을 사용합니다."
 
-#: src/PartFile.cpp:894
+#: src/PartFile.cpp:929
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:910
+#: src/PartFile.cpp:945
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s'은 어찌된일인지 크기가 0입니다. - %s 파일을 사용합니다."
 
-#: src/PartFile.cpp:979
+#: src/PartFile.cpp:1014
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s에 대한 part.met.seeds 파일을 저장하지 못했습니다."
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1040
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "부분파일을 위해 %i 자료핵심을 저장되었습니다: %s(%s)"
 
-#: src/PartFile.cpp:1034
+#: src/PartFile.cpp:1069
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "부분파일 %s(%s)은 핵심파일을 가지고 있지 않습니다."
 
-#: src/PartFile.cpp:1043
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "부분파일 %s(%s)은 빈 핵심파일을 가지고 있습니다."
 
-#: src/PartFile.cpp:1099
+#: src/PartFile.cpp:1134
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "부분파일의 핵심파일(%s - %s)을 읽는중 오류: %s"
 
-#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
+#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3162,37 +3162,37 @@ msgstr ""
 "손상된 부분(%d)이 발견되었습니다. (%d부분 파일 %s에 있는) - 파일해시결과 |%"
 "s| 파일해시 |%s|"
 
-#: src/PartFile.cpp:1152
+#: src/PartFile.cpp:1187
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "완료된 부분(%i)이 발견되었습니다.  (%s에 있는)"
 
-#: src/PartFile.cpp:1189
+#: src/PartFile.cpp:1224
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%s의 재해시가 완료되었습니다."
 
-#: src/PartFile.cpp:2206
+#: src/PartFile.cpp:2241
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2267
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "내려받기 완료: %s"
 
-#: src/PartFile.cpp:2289
+#: src/PartFile.cpp:2324
 #, c-format
 msgid "Deleting file: %s"
 msgstr "파일 삭제: %s"
 
-#: src/PartFile.cpp:2353
+#: src/PartFile.cpp:2388
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "경고: 내려받은 부분의 해시가 불가능합니다. - %s의 해시설정 비완료"
 
-#: src/PartFile.cpp:2358
+#: src/PartFile.cpp:2393
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3201,38 +3201,26 @@ msgstr ""
 "오류: 내려받은 부분의 해시가 불가능합니다. - 해시설정 비완료 (%s). 발생되어서"
 "는 안됩니다."
 
-#: src/PartFile.cpp:3038
+#: src/PartFile.cpp:3073
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "경고: 충분한 디스크공간이 없습니다! 파일 정지: %s"
 
-#: src/PartFile.cpp:3123
+#: src/PartFile.cpp:3158
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 
-#: src/PartFile.cpp:3166
+#: src/PartFile.cpp:3201
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: 손상된 부분 %i를 복구했습니다. (%s의) -> 저장된 바이트: %s"
 
-#: src/PartFile.cpp:3734 src/muuli_wdr.cpp:3577
-msgid "Comments"
-msgstr "의견들"
-
-#: src/PartFile.cpp:3735
-msgid "doesn't work"
-msgstr "작동하지 않습니다."
-
-#: src/PartFile.cpp:3737
-msgid "remote gui"
-msgstr "원격 gui"
-
-#: src/PartFile.cpp:3831
+#: src/PartFile.cpp:3856
 msgid "Insufficient Diskspace"
 msgstr "불충분한 디스크공간"
 
-#: src/PartFile.cpp:3842 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "멈춤"
 
@@ -3283,23 +3271,23 @@ msgstr "알려진 공유 파일 %i개, 알수없는 %i개를 찾았음 "
 msgid "ERROR! Attempted to share %s"
 msgstr "오류! %s 공유를 시도"
 
-#: src/CommentDialogLst.cpp:41 src/CommentDialog.cpp:34
+#: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
 msgstr "파일 의견"
 
-#: src/CommentDialogLst.cpp:52 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "등급"
 
-#: src/CommentDialogLst.cpp:53
+#: src/CommentDialogLst.cpp:60
 msgid "Comment"
 msgstr "의견"
 
-#: src/CommentDialogLst.cpp:98
+#: src/CommentDialogLst.cpp:105
 msgid "No comments"
 msgstr "의견이 없음"
 
-#: src/CommentDialogLst.cpp:100
+#: src/CommentDialogLst.cpp:107
 #, c-format
 msgid "%s comment(s)"
 msgstr "%s 의견"
@@ -4296,11 +4284,11 @@ msgstr ""
 msgid "Active connections (1:%u)"
 msgstr "활성화된 연결 (1:%u)"
 
-#: src/FileDetailDialog.cpp:60
+#: src/FileDetailDialog.cpp:59
 msgid "File Details"
 msgstr "파일 세부내역"
 
-#: src/FileDetailDialog.cpp:113
+#: src/FileDetailDialog.cpp:114
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%% 완료"
@@ -5896,6 +5884,10 @@ msgstr "다음 내용이 포함된 메시지를 차단 (쉼표로 분리):"
 msgid "add here the words amule should filter and block messages including it"
 msgstr "이곳에 어뮬이 차단하고 막을 메시지에 포함될 단어를 추가하세요."
 
+#: src/muuli_wdr.cpp:3577
+msgid "Comments"
+msgstr "의견들"
+
 #: src/muuli_wdr.cpp:3585
 msgid "Filter comments containing (use ',' as separator):"
 msgstr ""
@@ -6940,6 +6932,12 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "doesn't work"
+#~ msgstr "작동하지 않습니다."
+
+#~ msgid "remote gui"
+#~ msgstr "원격 gui"
 
 #~ msgid ""
 #~ "Error: Failed to load backup file. Search http://forum.amule.org for ."

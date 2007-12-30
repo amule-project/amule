@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-29 02:31+0000\n"
+"POT-Creation-Date: 2007-12-30 02:31+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -53,34 +53,34 @@ msgstr "成功です！コネクションを設立しました：aMule "
 msgid "Succeeded! Connection established."
 msgstr "成功です！コネクションンを設立しました。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3815
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
 msgid "Hashing"
 msgstr "ハッシュ中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3819
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
 msgid "Completing"
 msgstr "終了中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3822
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
 msgid "Complete"
 msgstr "終了しました"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3825
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "ポーズ中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3828
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "誤りです"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3835
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "ダウンロード中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "待機中です"
@@ -139,8 +139,8 @@ msgstr "ユーザ '%s' から共有ファイルを回収出来ませんでした
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2588 src/PartFile.cpp:2594 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
+#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -197,7 +197,7 @@ msgstr "不明なファイルが要求されました"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "クライアント %s がIP：ポート %s:%d にいて、  %s %s %s を使用しています"
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:50
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -258,7 +258,7 @@ msgid "Multiple selection"
 msgstr "複数選択"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "ファイル名"
@@ -935,7 +935,7 @@ msgid "Time: "
 msgstr "時間： "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
-#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "毎秒%.2fキロバイト"
@@ -1690,8 +1690,8 @@ msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
-#: src/PartFile.cpp:897 src/PartFile.cpp:913
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
+#: src/PartFile.cpp:932 src/PartFile.cpp:948
 msgid "Message"
 msgstr "メッセージ"
 
@@ -2251,52 +2251,52 @@ msgstr "ExternalConn：次のリンクを追加中です： '%s'。"
 msgid "Invalid link or already on list."
 msgstr "不正なリンク、またはリンクがすでにリストに入っています。"
 
-#: src/ExternalConn.cpp:1093
+#: src/ExternalConn.cpp:1101
 msgid "File not found."
 msgstr "ファイルは見付かりませんでした。"
 
-#: src/ExternalConn.cpp:1098
+#: src/ExternalConn.cpp:1106
 msgid "Invalid file name."
 msgstr "不正なファイル名。"
 
-#: src/ExternalConn.cpp:1106
+#: src/ExternalConn.cpp:1114
 msgid "Unable to rename file."
 msgstr "ファイルを改名出来ません。"
 
-#: src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1315
 msgid "Already connected to ED2K."
 msgstr "すでにEd2kに接続しています。"
 
-#: src/ExternalConn.cpp:1310
+#: src/ExternalConn.cpp:1318
 msgid "Connecting to ED2K..."
 msgstr "Ed2kに接続中です…"
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1326
 msgid "Already connected to Kad."
 msgstr "すでにKadに接続しています。"
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1329
 msgid "Connecting to Kad..."
 msgstr "Kadに接続中です…"
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1334
 msgid "All networks are disabled."
 msgstr "全てのネットワークが無効されています。"
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1342
 msgid "Disconnected from ED2K."
 msgstr "Ed2kから切断しています。"
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from Kad."
 msgstr "Kadから切断しています。"
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1354
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn：不正なOpCodeを貰いました： %#x"
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1357
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "不正なOpCode（プロトコルバージョンが違いますか？）"
 
@@ -2888,21 +2888,21 @@ msgstr "ED2kリンクをクリップボードへコピーする"
 msgid "Connect to remote amule"
 msgstr "リモートamuleへ接続する"
 
-#: src/amule-remote-gui.cpp:277
+#: src/amule-remote-gui.cpp:280
 msgid "Connection failed "
 msgstr "コネクションに失敗しました "
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:280 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:855
 #: src/amule.cpp:971 src/amule.cpp:1346
 msgid "Error"
 msgstr "エラー"
 
-#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:522 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "全て"
 
-#: src/amule-remote-gui.cpp:750
+#: src/amule-remote-gui.cpp:753
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "ユーザ合計： %s | ファイル合計： %s"
@@ -3073,114 +3073,114 @@ msgstr "エラー：外部メディア・プレイヤーは実行出来ません
 msgid "Command: %s"
 msgstr "コマンド： %s"
 
-#: src/PartFile.cpp:249
+#: src/PartFile.cpp:284
 msgid "ERROR: Failed to open partfile)"
 msgstr "エラー：部分ファイルを開くことは出来ませんでした！"
 
-#: src/PartFile.cpp:253
+#: src/PartFile.cpp:288
 msgid "ERROR: Failed to create partfile)"
 msgstr "エラー：部分ファイルは作成出来ませんでした！"
 
-#: src/PartFile.cpp:287
+#: src/PartFile.cpp:322
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "metファイルのバック・アップを%sからロードしようとしています"
 
-#: src/PartFile.cpp:294
+#: src/PartFile.cpp:329
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr "エラー：part.metファイルは開くことが出来ませんでした：%s ==> %s"
 
-#: src/PartFile.cpp:300
+#: src/PartFile.cpp:335
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
 msgstr "エラー：part.metファイルはゼロ・サイズです： %s ==> %s"
 
-#: src/PartFile.cpp:311
+#: src/PartFile.cpp:346
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "エラー：不正なpart.metファイル・バージョン： %s ==> %s"
 
-#: src/PartFile.cpp:564
+#: src/PartFile.cpp:599
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "エラー： %s（%s）は破損されて（tagcountが間違っています）、ファイルはロード出"
 "来ません。"
 
-#: src/PartFile.cpp:567
+#: src/PartFile.cpp:602
 msgid "Trying to recover file info..."
 msgstr "ファイル情報を回復しようとしています…"
 
-#: src/PartFile.cpp:582
+#: src/PartFile.cpp:617
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr "無名なファイルを回復中です：RecoveredFile.datとして回復しようとします"
 
-#: src/PartFile.cpp:587
+#: src/PartFile.cpp:622
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "得られる全てのファイル情報を回復しました：使用しようとしています…"
 
-#: src/PartFile.cpp:589
+#: src/PartFile.cpp:624
 msgid "Unable to recover file info :("
 msgstr "残念ながら、ファイル情報を回復出来ませんでした。"
 
-#: src/PartFile.cpp:623
+#: src/PartFile.cpp:658
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "%s（%s）を開くことは出来ませんでした"
 
-#: src/PartFile.cpp:674
+#: src/PartFile.cpp:709
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "注意：%sは破損されている恐れがあります（%i）"
 
-#: src/PartFile.cpp:854 src/PartFile.cpp:859
+#: src/PartFile.cpp:889 src/PartFile.cpp:894
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "部分ファイル%s（%s ==> %s）の保存中にエラーが発生しました"
 
-#: src/PartFile.cpp:883
+#: src/PartFile.cpp:918
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "%sファイルを開くことはできません：%sファイルを使用しています。"
 
-#: src/PartFile.cpp:894
+#: src/PartFile.cpp:929
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:910
+#: src/PartFile.cpp:945
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "どうか、'%s'はゼロ・サイズです：%sファイルを使用しています。"
 
-#: src/PartFile.cpp:979
+#: src/PartFile.cpp:1014
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%sのためのpart.met.seedsファイルは保存出来ませんでした"
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1040
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "%iソース・シーヅを部分ファイルに保存しました：%s（%s）"
 
-#: src/PartFile.cpp:1034
+#: src/PartFile.cpp:1069
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "部分ファイル%s（%s）にはシーヅ・フィアルはありません"
 
-#: src/PartFile.cpp:1043
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "部分ファイル%s（%s）のシーヅ・フィアルは空ファイルです"
 
-#: src/PartFile.cpp:1099
+#: src/PartFile.cpp:1134
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 "部分ファイルのシーヅ・ファイルを読む時にエラーが発生しました：（%s - %s）%s"
 
-#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
+#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3189,39 +3189,39 @@ msgstr ""
 "破損されている部分（%d）を%d部分、ファイル%sに見付かりました：FileResultHash "
 "|%s| FileHash |%s|"
 
-#: src/PartFile.cpp:1152
+#: src/PartFile.cpp:1187
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "完成した部分（%i）を%sに見付かりました"
 
-#: src/PartFile.cpp:1189
+#: src/PartFile.cpp:1224
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%sの再ハッシュを終了しました"
 
-#: src/PartFile.cpp:2206
+#: src/PartFile.cpp:2241
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "%sを完成しながら予期外のエラーが発生しました：ファイルをポーズしました"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2267
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "ダウンロードが終了しました：%s"
 
-#: src/PartFile.cpp:2289
+#: src/PartFile.cpp:2324
 #, c-format
 msgid "Deleting file: %s"
 msgstr "ファイルを消除します：%s"
 
-#: src/PartFile.cpp:2353
+#: src/PartFile.cpp:2388
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "注意：ダウンロードした部分はハッシュ出来ません：'%s'のためのハッシュ・セット"
 "が未完成です"
 
-#: src/PartFile.cpp:2358
+#: src/PartFile.cpp:2393
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3230,39 +3230,27 @@ msgstr ""
 "エラー：ダウンロードした部分はハッシュ出来ません：ハッシュ・セットは未完成で"
 "す（%s）。こういうことはありえません。"
 
-#: src/PartFile.cpp:3038
+#: src/PartFile.cpp:3073
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "注意：ディスク・スペースは足りません！ファイルをポーズします：%s"
 
-#: src/PartFile.cpp:3123
+#: src/PartFile.cpp:3158
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "ダウンロードした部分%i（ファイル：%s）は損被されています"
 
-#: src/PartFile.cpp:3166
+#: src/PartFile.cpp:3201
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "ICH：損被された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
 
-#: src/PartFile.cpp:3734 src/muuli_wdr.cpp:3577
-msgid "Comments"
-msgstr "コメント"
-
-#: src/PartFile.cpp:3735
-msgid "doesn't work"
-msgstr "働きません"
-
-#: src/PartFile.cpp:3737
-msgid "remote gui"
-msgstr "リモートGUI"
-
-#: src/PartFile.cpp:3831
+#: src/PartFile.cpp:3856
 msgid "Insufficient Diskspace"
 msgstr "不十分なディスク・スペース"
 
-#: src/PartFile.cpp:3842 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "中止されています"
 
@@ -3312,23 +3300,23 @@ msgstr "%i知られた共通ファイルを見付かり、%iは知られてい�
 msgid "ERROR! Attempted to share %s"
 msgstr "エラー：%sを共通しようとしました"
 
-#: src/CommentDialogLst.cpp:41 src/CommentDialog.cpp:34
+#: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
 msgstr "ファイル・コメント"
 
-#: src/CommentDialogLst.cpp:52 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "レーティング"
 
-#: src/CommentDialogLst.cpp:53
+#: src/CommentDialogLst.cpp:60
 msgid "Comment"
 msgstr "コメント"
 
-#: src/CommentDialogLst.cpp:98
+#: src/CommentDialogLst.cpp:105
 msgid "No comments"
 msgstr "コメントありません"
 
-#: src/CommentDialogLst.cpp:100
+#: src/CommentDialogLst.cpp:107
 #, c-format
 msgid "%s comment(s)"
 msgstr "%sコメントあります"
@@ -4350,11 +4338,11 @@ msgstr "%uのIPレンジを'%s'からロードしました。%uの奇形な行�
 msgid "Active connections (1:%u)"
 msgstr "アクティブなコネクション（1:%u）"
 
-#: src/FileDetailDialog.cpp:60
+#: src/FileDetailDialog.cpp:59
 msgid "File Details"
 msgstr "ファイルの詳細"
 
-#: src/FileDetailDialog.cpp:113
+#: src/FileDetailDialog.cpp:114
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%%終わりました"
@@ -5975,6 +5963,10 @@ msgstr ""
 "ここでamuleがメッセージ・フィルター／ブロックの目標にする言葉を追加してくださ"
 "い"
 
+#: src/muuli_wdr.cpp:3577
+msgid "Comments"
+msgstr "コメント"
+
 #: src/muuli_wdr.cpp:3585
 msgid "Filter comments containing (use ',' as separator):"
 msgstr "次のストリングが入っていコメントをフィルターする（','で区分する）："
@@ -7037,6 +7029,12 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "友達リスト・ファイル'emfriends.met'を書き込み用に開くのに失敗しました！"
+
+#~ msgid "doesn't work"
+#~ msgstr "働きません"
+
+#~ msgid "remote gui"
+#~ msgstr "リモートGUI"
 
 #~ msgid ""
 #~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
