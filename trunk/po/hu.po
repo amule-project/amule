@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-29 02:31+0000\n"
+"POT-Creation-Date: 2007-12-30 02:31+0000\n"
 "PO-Revision-Date: 2007-12-12 00:57+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -54,34 +54,34 @@ msgstr "Sikerült! Kapcsolat létrejött ezzel: aMule "
 msgid "Succeeded! Connection established."
 msgstr "Sikerült! Kapcsolat létrejött."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3815
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
 msgid "Hashing"
 msgstr "Tördelőalgoritmizálás"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3819
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
 msgid "Completing"
 msgstr "Befejezés"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3822
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
 msgid "Complete"
 msgstr "Kész"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3825
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Szüneteltetve"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3828
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Hibás"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3835
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Letöltés alatt"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Várakozik"
@@ -139,8 +139,8 @@ msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2588 src/PartFile.cpp:2594 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:129
+#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
+#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -201,7 +201,7 @@ msgstr "Ismeretlen lekérdezett fájl"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "A %s kliens a(z) %s:%d IP:Port-on %s %s %s -t használ"
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:50
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -264,7 +264,7 @@ msgid "Multiple selection"
 msgstr "Többszörös kiválasztás"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:51
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Fájlnév"
@@ -941,7 +941,7 @@ msgid "Time: "
 msgstr "Idő: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1135
-#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:115
+#: src/utils/wxCas/src/wxcasframe.cpp:1145 src/FileDetailDialog.cpp:116
 #, c-format
 msgid "%.2f kB/s"
 msgstr "%.2f kB/s"
@@ -1689,8 +1689,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:886
-#: src/PartFile.cpp:897 src/PartFile.cpp:913
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
+#: src/PartFile.cpp:932 src/PartFile.cpp:948
 msgid "Message"
 msgstr "Üzenet"
 
@@ -2252,52 +2252,52 @@ msgstr "ExternalConn: hivatkozás hozzáadása: '%s'."
 msgid "Invalid link or already on list."
 msgstr "Érvénytelen hivatkozás, vagy már rajta van a listán."
 
-#: src/ExternalConn.cpp:1093
+#: src/ExternalConn.cpp:1101
 msgid "File not found."
 msgstr "Fájl nem található."
 
-#: src/ExternalConn.cpp:1098
+#: src/ExternalConn.cpp:1106
 msgid "Invalid file name."
 msgstr "Érvénytelen fájl név."
 
-#: src/ExternalConn.cpp:1106
+#: src/ExternalConn.cpp:1114
 msgid "Unable to rename file."
 msgstr "Nem tudom átnevezni a fájlt."
 
-#: src/ExternalConn.cpp:1307
+#: src/ExternalConn.cpp:1315
 msgid "Already connected to ED2K."
 msgstr "Már kapcsolódva az ED2K-hoz."
 
-#: src/ExternalConn.cpp:1310
+#: src/ExternalConn.cpp:1318
 msgid "Connecting to ED2K..."
 msgstr "Kapcsolódás az ED2K-hoz..."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1326
 msgid "Already connected to Kad."
 msgstr "Már kapcsolódva a Kad-hoz."
 
-#: src/ExternalConn.cpp:1321
+#: src/ExternalConn.cpp:1329
 msgid "Connecting to Kad..."
 msgstr "Kapcsolódás a Kad-hoz..."
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1334
 msgid "All networks are disabled."
 msgstr "Minden hálózat le van tiltva."
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1342
 msgid "Disconnected from ED2K."
 msgstr "Leválasztva az ED2K-ról."
 
-#: src/ExternalConn.cpp:1338
+#: src/ExternalConn.cpp:1346
 msgid "Disconnected from Kad."
 msgstr "Leválasztva a Kad-ról."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1354
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn: érvénytelen opcode fogadva: %#x"
 
-#: src/ExternalConn.cpp:1349
+#: src/ExternalConn.cpp:1357
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Érvénytelen opcode (rossz protokoll verzió?)"
 
@@ -2889,21 +2889,21 @@ msgstr "ED2k link másolása a vágólapra"
 msgid "Connect to remote amule"
 msgstr "Kapcsolódás a távoli aMule-hez"
 
-#: src/amule-remote-gui.cpp:277
+#: src/amule-remote-gui.cpp:280
 msgid "Connection failed "
 msgstr "Kapcsolódás sikertelen "
 
-#: src/amule-remote-gui.cpp:277 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:280 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:855
 #: src/amule.cpp:971 src/amule.cpp:1346
 msgid "Error"
 msgstr "Hiba"
 
-#: src/amule-remote-gui.cpp:519 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:522 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Mind"
 
-#: src/amule-remote-gui.cpp:750
+#: src/amule-remote-gui.cpp:753
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Összes felhasználó: %s | Összes fájl: %s"
@@ -3074,115 +3074,115 @@ msgstr "HIBA: Külső média-lejátszó indítása sikertelen!"
 msgid "Command: %s"
 msgstr "Parancs: %s"
 
-#: src/PartFile.cpp:249
+#: src/PartFile.cpp:284
 msgid "ERROR: Failed to open partfile)"
 msgstr "HIBA: Hiba a részfájl megnyitásánál)"
 
-#: src/PartFile.cpp:253
+#: src/PartFile.cpp:288
 msgid "ERROR: Failed to create partfile)"
 msgstr "HIBA: Részfájl létrehozása sikertelen)"
 
-#: src/PartFile.cpp:287
+#: src/PartFile.cpp:322
 #, c-format
 msgid "Trying to load backup of met-file from %s"
 msgstr "Megpróbálom betölteni a met-fájl biztonsági másolatát a %s-ből"
 
-#: src/PartFile.cpp:294
+#: src/PartFile.cpp:329
 #, c-format
 msgid "Error: Failed to open part.met file: %s ==> %s"
 msgstr "Hiba: A part.met fájl megnyitása sikertelen: %s ==> %s"
 
-#: src/PartFile.cpp:300
+#: src/PartFile.cpp:335
 #, c-format
 msgid "Error: part.met file is 0 size: %s ==> %s"
 msgstr "Hiba: part.met fájl 0 méretű: %s ==> %s"
 
-#: src/PartFile.cpp:311
+#: src/PartFile.cpp:346
 #, c-format
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "Hiba: Érvénytelen part.met fájlverzió: %s ==> %s"
 
-#: src/PartFile.cpp:564
+#: src/PartFile.cpp:599
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
 "Hiba: %s (%s) sérült (rossz tag szám), a fájl betöltése nem lehetséges."
 
-#: src/PartFile.cpp:567
+#: src/PartFile.cpp:602
 msgid "Trying to recover file info..."
 msgstr "Fájl infó helyreállításának megkísérlése..."
 
-#: src/PartFile.cpp:582
+#: src/PartFile.cpp:617
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Névtelen fájl helyreállítása - helyreállítás megkísérlése RecoveredFile.dat "
 "néven"
 
-#: src/PartFile.cpp:587
+#: src/PartFile.cpp:622
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr ""
 "Összes elérhető fájl infó helyreállítva :D - használatának megkísérlése..."
 
-#: src/PartFile.cpp:589
+#: src/PartFile.cpp:624
 msgid "Unable to recover file info :("
 msgstr "Fájl infó helyreállítása nem lehetséges :("
 
-#: src/PartFile.cpp:623
+#: src/PartFile.cpp:658
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "A(z) %s (%s) megnyitása sikertelen"
 
-#: src/PartFile.cpp:674
+#: src/PartFile.cpp:709
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "Figyelmeztetés: %s lehet, hogy sérült (%i)"
 
-#: src/PartFile.cpp:854 src/PartFile.cpp:859
+#: src/PartFile.cpp:889 src/PartFile.cpp:894
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "HIBA a fájlrész mentésénél: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:883
+#: src/PartFile.cpp:918
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "Nem lehet megnyitni a %s fájlt - a %s fájlt használom. "
 
-#: src/PartFile.cpp:894
+#: src/PartFile.cpp:929
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:910
+#: src/PartFile.cpp:945
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' valahogy 0 méretű - a %s fájlt használom."
 
-#: src/PartFile.cpp:979
+#: src/PartFile.cpp:1014
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "A %s. part.met.seeds fájl mentése sikertelen"
 
-#: src/PartFile.cpp:1005
+#: src/PartFile.cpp:1040
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "A(z) %i forrás seeds fájl elmentve a részfájlnak: %s (%s)"
 
-#: src/PartFile.cpp:1034
+#: src/PartFile.cpp:1069
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "A(z) %s (%s) részfájlnak nincs seeds fájlja"
 
-#: src/PartFile.cpp:1043
+#: src/PartFile.cpp:1078
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "A(z) %s (%s) részfájlnak üres a seeds fájlja"
 
-#: src/PartFile.cpp:1099
+#: src/PartFile.cpp:1134
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Hiba a részfájl forrás-fájljának olvasása közben (%s - %s): %s"
 
-#: src/PartFile.cpp:1115 src/PartFile.cpp:1138
+#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3191,39 +3191,39 @@ msgstr ""
 "Sérült részt (%d) találtam a %d részű %s fájlban - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1152
+#: src/PartFile.cpp:1187
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "(%i) befejezett fájlrészt találtam a(z) %s fájlban"
 
-#: src/PartFile.cpp:1189
+#: src/PartFile.cpp:1224
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "%s újra algoritmizálása befejeződött"
 
-#: src/PartFile.cpp:2206
+#: src/PartFile.cpp:2241
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Váratlan fájlhiba %s fájl befejezésénél. Fájl szüneteltetve"
 
-#: src/PartFile.cpp:2232
+#: src/PartFile.cpp:2267
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Letöltés befejeződött: %s"
 
-#: src/PartFile.cpp:2289
+#: src/PartFile.cpp:2324
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Fájl törlése: %s"
 
-#: src/PartFile.cpp:2353
+#: src/PartFile.cpp:2388
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Figyelmeztetés: A letöltött rész hash-elése nem lehetséges - a hash készlet "
 "hiányos '%s'-hez"
 
-#: src/PartFile.cpp:2358
+#: src/PartFile.cpp:2393
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3232,38 +3232,26 @@ msgstr ""
 "Hiba: A letetöltött rész hash algoritmizálása nem lehetséges - HashSet "
 "hiányos (%s). Ennek sosem kéne előfordulnia"
 
-#: src/PartFile.cpp:3038
+#: src/PartFile.cpp:3073
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "FIGYELEM: Nincs elég szabad hely a lemezen! Fájl szüneteltetése: %s"
 
-#: src/PartFile.cpp:3123
+#: src/PartFile.cpp:3158
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "A %i. letöltött fájlrész sérült a %s fájlban"
 
-#: src/PartFile.cpp:3166
+#: src/PartFile.cpp:3201
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: %i. sérült rész helyreállítva a '%s'-hez -> megmentett bájtok: %s"
 
-#: src/PartFile.cpp:3734 src/muuli_wdr.cpp:3577
-msgid "Comments"
-msgstr "Megjegyzések"
-
-#: src/PartFile.cpp:3735
-msgid "doesn't work"
-msgstr "nem működik"
-
-#: src/PartFile.cpp:3737
-msgid "remote gui"
-msgstr "távoli felület"
-
-#: src/PartFile.cpp:3831
+#: src/PartFile.cpp:3856
 msgid "Insufficient Diskspace"
 msgstr "Elégtelen lemezterület"
 
-#: src/PartFile.cpp:3842 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Megállítva"
 
@@ -3314,23 +3302,23 @@ msgstr "%i ismert és %i ismeretlen megosztott fájlt találtam"
 msgid "ERROR! Attempted to share %s"
 msgstr "HIBA: %s megosztása megkísérelve"
 
-#: src/CommentDialogLst.cpp:41 src/CommentDialog.cpp:34
+#: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
 msgstr "Fájl megjegyzés"
 
-#: src/CommentDialogLst.cpp:52 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "Értékelés"
 
-#: src/CommentDialogLst.cpp:53
+#: src/CommentDialogLst.cpp:60
 msgid "Comment"
 msgstr "Megjegyzés"
 
-#: src/CommentDialogLst.cpp:98
+#: src/CommentDialogLst.cpp:105
 msgid "No comments"
 msgstr "Nincs megjegyzés"
 
-#: src/CommentDialogLst.cpp:100
+#: src/CommentDialogLst.cpp:107
 #, c-format
 msgid "%s comment(s)"
 msgstr "%s megjegyzés"
@@ -4334,11 +4322,11 @@ msgstr "%u IP-tartomány '%s'-ból betöltve. %u hibás sor lett eldobva."
 msgid "Active connections (1:%u)"
 msgstr "Aktív kapcsolatok (1:%u)"
 
-#: src/FileDetailDialog.cpp:60
+#: src/FileDetailDialog.cpp:59
 msgid "File Details"
 msgstr "Fájl részletei"
 
-#: src/FileDetailDialog.cpp:113
+#: src/FileDetailDialog.cpp:114
 #, c-format
 msgid "%.2f%% done"
 msgstr "%.2f%% kész"
@@ -5954,6 +5942,10 @@ msgstr ""
 "Azon szavak felvétele, amelyeket az amule-nak ki kellene szűrni és blokkolni "
 "az ezeket tartalmazó üzneteket"
 
+#: src/muuli_wdr.cpp:3577
+msgid "Comments"
+msgstr "Megjegyzések"
+
 #: src/muuli_wdr.cpp:3585
 msgid "Filter comments containing (use ',' as separator):"
 msgstr "Megjegyzések kiszűrése, melyek tartalmazzák (',' az elválasztó):"
@@ -7019,6 +7011,12 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Barátok listáját tartalmazó 'emfriends.met' fájl íráshoz történő megnyitása "
 "sikertelen!"
+
+#~ msgid "doesn't work"
+#~ msgstr "nem működik"
+
+#~ msgid "remote gui"
+#~ msgstr "távoli felület"
 
 #~ msgid ""
 #~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
