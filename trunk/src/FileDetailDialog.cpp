@@ -136,7 +136,7 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_LASTSEENCOMPL,wxControl)->SetLabel(bufferS);
 	setEnableForApplyButton();
 	// disable "Show all comments" button if there are no comments
-	CastChild(IDC_CMTBT, wxControl)->Enable(!m_file->GetFileRatingList().empty());
+	CastChild(IDC_CMTBT, wxControl)->Enable(!m_file->GetRatingAndComments().empty());
 	FillSourcenameList();
 	Layout();
 }
