@@ -43,7 +43,7 @@ msgstr "ExternalConn: アクセスは拒否されました"
 #: src/libs/ec/cpp/RemoteConnect.cpp:206
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr ""
-"ExternalConn: サーバーからの回答は不利です。コネクションは終了しました。"
+"ExternalConn: サーバーからの回答は不利で、コネクションを終了しました。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:210
 msgid "Succeeded! Connection established to aMule "
@@ -114,7 +114,7 @@ msgstr "注意：ファイルネーム '%s' は無効で、 '%s' に改名され
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
-"注意：ファイル '%s' は既に存在していて、新しいファイルを '%s' に改名しまし"
+"注意：ファイル'%s'は既に存在していて、新しいファイルを'%s'に改名しまし"
 "た。"
 
 #: src/ThreadTasks.cpp:487
@@ -382,7 +382,7 @@ msgstr "ED2kリンクをクリップボードにコピーする（&Source）"
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
 msgstr ""
-"ED2kリンクをクリップボードにコピーする（Source）（&With クリプトオプション）"
+"ED2kリンクをクリップボードにコピーする（Source）（&Withクリプトオプション）"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
@@ -391,7 +391,7 @@ msgstr "ED2kリンクをクリップボードにコピーする（&Hostname）"
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
-"ED2kリンクをクリップボードにコピーする（Hostname）（With &Crypt オプション）"
+"ED2kリンクをクリップボードにコピーする（Hostname）（With &Cryptオプション）"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
@@ -3147,7 +3147,7 @@ msgstr "%sファイルを開くことはできません：%sファイルを使�
 #: src/PartFile.cpp:929
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
-msgstr ""
+msgstr "'%s'の長さを読み込むことができませんでした。%sファイルを使用します。"
 
 #: src/PartFile.cpp:945
 #, c-format
@@ -3395,6 +3395,8 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
+"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule.orgで"
+".part.metにつぃて検索することで解決方法を見付けてください。"
 
 #: src/DownloadQueue.cpp:170
 msgid "No part files found"
@@ -5025,6 +5027,8 @@ msgid ""
 "Note: These values are\n"
 "only used for statistics."
 msgstr ""
+"類意：この値は\n"
+"統計のみに使用されます。"
 
 #: src/muuli_wdr.cpp:1835
 msgid "Standard client TCP Port:"
@@ -6950,7 +6954,7 @@ msgstr "あなたは時代遅れのaMuleを使用しています！"
 #: src/amule.cpp:1879
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
-msgstr ""
+msgstr "あなたのaMuleバージョンは%i.%i.%iで、最先端バージョンは%li.%li.%liです"
 
 #: src/amule.cpp:1880
 msgid "The latest version can always be found at http://www.amule.org"
