@@ -42,8 +42,7 @@ msgstr "ExternalConn: アクセスは拒否されました"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:206
 msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr ""
-"ExternalConn: サーバーからの回答は不利で、コネクションを終了しました。"
+msgstr "ExternalConn: サーバーからの回答は不利で、コネクションを終了しました。"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:210
 msgid "Succeeded! Connection established to aMule "
@@ -114,8 +113,7 @@ msgstr "注意：ファイルネーム '%s' は無効で、 '%s' に改名され
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
-"注意：ファイル'%s'は既に存在していて、新しいファイルを'%s'に改名しまし"
-"た。"
+"注意：ファイル'%s'は既に存在していて、新しいファイルを'%s'に改名しました。"
 
 #: src/ThreadTasks.cpp:487
 #, c-format
@@ -3395,8 +3393,8 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
-"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule.orgで"
-".part.metにつぃて検索することで解決方法を見付けてください。"
+"エラー：バックアップ・ファイルはロード出来ませんでした。http://forum.amule."
+"orgで.part.metにつぃて検索することで解決方法を見付けてください。"
 
 #: src/DownloadQueue.cpp:170
 msgid "No part files found"
