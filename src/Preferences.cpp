@@ -607,6 +607,7 @@ static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_CHINESE_SIMPLIFIED,	true,	wxTRANSLATE("Chinese (Simplified)") },
 	{ wxLANGUAGE_CHINESE_TRADITIONAL,	true,	wxTRANSLATE("Chinese (Traditional)") },
 	{ wxLANGUAGE_CROATIAN,				true,	wxTRANSLATE("Croatian") },
+	{ wxLANGUAGE_CZECH,				true,	wxTRANSLATE("Czech") },
 	{ wxLANGUAGE_DANISH,				true,	wxTRANSLATE("Danish") },
 	{ wxLANGUAGE_DUTCH,					true,	wxTRANSLATE("Dutch") },
 	{ wxLANGUAGE_ENGLISH_UK,			true,	wxTRANSLATE("English (U.K.)") },
