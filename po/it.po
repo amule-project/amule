@@ -1,3 +1,4 @@
+# translation of it2.po to
 # translation of it.po to
 # translation of amule.po to Italian
 # Italian language translation
@@ -30,6 +31,9 @@
 # rik, 2008.
 # rik, 2008.
 # rik, 2008.
+# rik, 2008.
+# rik, 2008.
+# rik, 2008.
 # Kry <elkry@users.sourceforge.net>, 2004,2005.
 # ilbuio <ilbuio.bnf@iol.it>, 2004,2005.
 # AnonimoVeneziano <voloterreno@tin.it>, 2004.
@@ -40,10 +44,10 @@
 # rik, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: it\n"
+"Project-Id-Version: it2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-01-02 02:31+0000\n"
-"PO-Revision-Date: 2008-01-02 13:06+0100\n"
+"PO-Revision-Date: 2008-01-02 15:56+0100\n"
 "Last-Translator: rik\n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3436,7 +3440,7 @@ msgid ""
 "met recovery solutions."
 msgstr ""
 "Errore: Impossibile caricare il file di backup. Cerca su http://forum.amule."
-"org for .part.met recovery solutions."
+"org come recuperare i file .part.met."
 
 #: src/DownloadQueue.cpp:170
 msgid "No part files found"
