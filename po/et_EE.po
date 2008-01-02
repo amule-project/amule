@@ -1,16 +1,17 @@
+# translation of et_EE.po to
 # translation of aMule to Estonian
 # aMule i18n resource file.
 # Copyright (C) 2006 aMule Team
 # This file is distributed under the same license as the aMule package.
 #
 # Kry <elkry@users.sourceforge.net>, 2004.
-# Hans <herringfish@hot.ee>, 2006, 2007.
+# Hans <herringfish@hot.ee>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
-"PO-Revision-Date: 2007-12-28 20:45+0200\n"
+"POT-Creation-Date: 2008-01-02 21:48+0200\n"
+"PO-Revision-Date: 2008-01-02 21:50+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1365,7 +1366,7 @@ msgstr "Kroaatia"
 
 #: src/Preferences.cpp:610
 msgid "Czech"
-msgstr ""
+msgstr "Tšehhi"
 
 #: src/Preferences.cpp:611
 msgid "Danish"
@@ -6996,9 +6997,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
-#~ msgid "doesn't work"
-#~ msgstr "ei toimi"
-
-#~ msgid "remote gui"
-#~ msgstr "kasutajaliides eemalt"
