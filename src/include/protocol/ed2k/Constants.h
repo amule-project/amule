@@ -88,11 +88,9 @@
 	#define MAX_FILE_SIZE 0x4000000000ull
 #endif
 
-enum FileConstants { 
-	PARTSIZE		= 9728000ull,
-	BLOCKSIZE		= 184320u,
-	EMBLOCKSIZE		= 184320u
-};
+const uint64 PARTSIZE		= 9728000ull;
+const uint32 BLOCKSIZE		= 184320u;
+const uint32 EMBLOCKSIZE	= 184320u;
 
 #define INV_SERV_DESC_LEN			0xF0FF	// Used as an 'invalid' string len for OP_SERVER_DESC_REQ/RES
 
