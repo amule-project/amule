@@ -7,6 +7,6 @@ libmuleunit_a_SOURCES = \
 	$(top_srcdir)/src/libs/common/MuleDebug.cpp \
 	$(top_srcdir)/src/libs/common/ConvAmule.cpp
 
-libmuleunit_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(top_srcdir)/src/libs/common/ -DMULEUNIT 
+libmuleunit_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(top_srcdir)/src/libs -DMULEUNIT 
 
 MAINTAINERCLEANFILES = Makefile.in
