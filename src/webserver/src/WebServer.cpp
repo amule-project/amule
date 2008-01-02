@@ -293,7 +293,7 @@ void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
 	
 	// Only static images are available to visitors, in order to prevent
 	// information leakage, but still allowing images on the login page.
-	if (session->m_loggedin || (img && dynamic_cast<CFileImage*>(img))) {
+	if (img && (session->m_loggedin || dynamic_cast<CFileImage*>(img))) {
 		int img_size = 0;
 		unsigned char* img_data = img->RequestData(img_size);
 		// This unicode2char is ok.

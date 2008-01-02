@@ -312,6 +312,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 
 	visualage:
 		* Fix for aMuleWeb unicode search/download link error.
+		* Fix for aMuleWeb segfault when refreshing too frequently.
 
 	Vollstrecker:
 		* Added possibility to give the path for output right with
