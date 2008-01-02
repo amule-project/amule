@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-30 02:31+0000\n"
+"POT-Creation-Date: 2008-01-02 02:31+0000\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -1368,111 +1368,115 @@ msgid "Croatian"
 msgstr "hrvaški"
 
 #: src/Preferences.cpp:610
+msgid "Czech"
+msgstr ""
+
+#: src/Preferences.cpp:611
 msgid "Danish"
 msgstr "danski"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Dutch"
 msgstr "nizozemski"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "English (U.K.)"
 msgstr "angleški (UK)"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Estonian"
 msgstr "estonski"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Finnish"
 msgstr "finski"
 
-#: src/Preferences.cpp:617
+#: src/Preferences.cpp:618
 msgid "French"
 msgstr "francoski"
 
-#: src/Preferences.cpp:618
+#: src/Preferences.cpp:619
 msgid "Galician"
 msgstr "galicijski"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:620
 msgid "German"
 msgstr "nemški"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:621
 msgid "Greek"
 msgstr ""
 
-#: src/Preferences.cpp:621
+#: src/Preferences.cpp:622
 msgid "Hungarian"
 msgstr "madžarski"
 
-#: src/Preferences.cpp:622
+#: src/Preferences.cpp:623
 msgid "Italian"
 msgstr "italijanski"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:624
 msgid "Italian (Swiss)"
 msgstr "italijanski (švicarski)"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:625
 msgid "Japanese"
 msgstr ""
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:626
 msgid "Korean"
 msgstr "korejski"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Polish"
 msgstr "poljski"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Portuguese"
 msgstr "portugalski"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:631
 msgid "Portuguese (Brazilian)"
 msgstr "portugalski (brazilski)"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "Russian"
 msgstr "ruski"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Slovenian"
 msgstr "slovenski"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Spanish"
 msgstr "španski"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Turkish"
 msgstr "turški"
 
-#: src/Preferences.cpp:1614 src/Preferences.cpp:1628 src/Preferences.cpp:1635
+#: src/Preferences.cpp:1615 src/Preferences.cpp:1629 src/Preferences.cpp:1636
 msgid "Unable to determine selected browser!"
 msgstr "Ni mogoče določiti izbranega brskalnika!"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Vrata TCP ne smejo biti večja od 65532, ker so vrata UDP TCP+3"
 
-#: src/Preferences.cpp:1665
+#: src/Preferences.cpp:1666
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Uporabljena bodo privzeta vrata (%d)"

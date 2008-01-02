@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-30 02:31+0000\n"
+"POT-Creation-Date: 2008-01-02 02:31+0000\n"
 "PO-Revision-Date: 2007-12-21 23:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -1353,111 +1353,115 @@ msgid "Croatian"
 msgstr "克罗的亚语"
 
 #: src/Preferences.cpp:610
+msgid "Czech"
+msgstr ""
+
+#: src/Preferences.cpp:611
 msgid "Danish"
 msgstr "丹麦语"
 
-#: src/Preferences.cpp:611
+#: src/Preferences.cpp:612
 msgid "Dutch"
 msgstr "荷兰语"
 
-#: src/Preferences.cpp:612
+#: src/Preferences.cpp:613
 msgid "English (U.K.)"
 msgstr "英语（英国）"
 
-#: src/Preferences.cpp:615
+#: src/Preferences.cpp:616
 msgid "Estonian"
 msgstr "爱斯托尼亚语"
 
-#: src/Preferences.cpp:616
+#: src/Preferences.cpp:617
 msgid "Finnish"
 msgstr "芬兰语"
 
-#: src/Preferences.cpp:617
+#: src/Preferences.cpp:618
 msgid "French"
 msgstr "法语"
 
-#: src/Preferences.cpp:618
+#: src/Preferences.cpp:619
 msgid "Galician"
 msgstr "加利西亚语"
 
-#: src/Preferences.cpp:619
+#: src/Preferences.cpp:620
 msgid "German"
 msgstr "德语"
 
-#: src/Preferences.cpp:620
+#: src/Preferences.cpp:621
 msgid "Greek"
 msgstr "希腊语"
 
-#: src/Preferences.cpp:621
+#: src/Preferences.cpp:622
 msgid "Hungarian"
 msgstr "匈牙利语"
 
-#: src/Preferences.cpp:622
+#: src/Preferences.cpp:623
 msgid "Italian"
 msgstr "意大利语"
 
-#: src/Preferences.cpp:623
+#: src/Preferences.cpp:624
 msgid "Italian (Swiss)"
 msgstr "意大利语（瑞士）"
 
-#: src/Preferences.cpp:624
+#: src/Preferences.cpp:625
 msgid "Japanese"
 msgstr "日语"
 
-#: src/Preferences.cpp:625
+#: src/Preferences.cpp:626
 msgid "Korean"
 msgstr "韩语"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
 msgid "Lithuanian"
 msgstr "立陶宛语"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Norwegian (Nynorsk)"
 msgstr "新挪威语"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Polish"
 msgstr "芬兰语"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Portuguese"
 msgstr "葡萄牙语"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:631
 msgid "Portuguese (Brazilian)"
 msgstr "葡萄牙语（巴西）"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "Russian"
 msgstr "俄语"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Slovenian"
 msgstr "斯洛文尼亚语"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Spanish"
 msgstr "西班牙语"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Swedish"
 msgstr "瑞典语"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: src/Preferences.cpp:1614 src/Preferences.cpp:1628 src/Preferences.cpp:1635
+#: src/Preferences.cpp:1615 src/Preferences.cpp:1629 src/Preferences.cpp:1636
 msgid "Unable to determine selected browser!"
 msgstr "未检测到所选择的浏览器"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP端口不可高于65532，因为服务器UDP端口值为TCP端口值+3"
 
-#: src/Preferences.cpp:1665
+#: src/Preferences.cpp:1666
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "缺省端口将被使用（%d）"
