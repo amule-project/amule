@@ -21,8 +21,6 @@
 #include "testcase.h"
 #include "test.h"
 
-#include "MuleDebug.h"
-
 #include <exception>
 
 using namespace muleunit;

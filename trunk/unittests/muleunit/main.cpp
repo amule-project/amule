@@ -19,7 +19,7 @@
 
 #include <wx/wx.h>
 #include "testregistry.h"
-#include "MuleDebug.h"
+#include <common/MuleDebug.h>
 
 using namespace muleunit;
 
@@ -42,6 +42,4 @@ public:
 };
 
 
-DECLARE_APP(UnitTestApp);
 IMPLEMENT_APP(UnitTestApp);
-
