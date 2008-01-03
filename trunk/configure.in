@@ -423,16 +423,16 @@ CHECK_CRYPTO(5.1)
 
 case "$CRYPTO_PP_STYLE" in
  
- gentoo_debian) CXXFLAGS="$CXXFLAGS -I$crypto_prefix/include -D__CRYPTO_DEBIAN_GENTOO__"
+ gentoo_debian) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix/include -D__CRYPTO_DEBIAN_GENTOO__"
                 # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
                 LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
 		CRYPTOLIBS="-lcrypto++"
  ;;
- mdk_suse_fc) CXXFLAGS="$CXXFLAGS -I$crypto_prefix/include -D__CRYPTO_MDK_SUSE_FC__"
+ mdk_suse_fc) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix/include -D__CRYPTO_MDK_SUSE_FC__"
               LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
 	      CRYPTOLIBS="-lcryptopp"
  ;;
- sources) CXXFLAGS="$CXXFLAGS -I$crypto_prefix -D__CRYPTO_SOURCE__"
+ sources) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix -D__CRYPTO_SOURCE__"
 	  LDFLAGS="$LDFLAGS -L$crypto_prefix/cryptopp"
           CRYPTOLIBS="-lcryptopp"
  ;;
@@ -579,6 +579,11 @@ WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
 WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
 WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
 WXBASE_CFLAGS="$WX_CFLAGS -DwxUSE_GUI=0"
+
+WX_CFLAGS="`echo $WX_CFLAGS | sed "s#-I/#-isystem /#g"`"
+WX_CXXFLAGS="`echo $WX_CXXFLAGS | sed "s#-I/#-isystem /#g"`"
+WXBASE_CFLAGS="`echo $WXBASE_CFLAGS | sed "s#-I/#-isystem /#g"`"
+WXBASE_CXXFLAGS="`echo $WXBASE_CXXFLAGS | sed "s#-I/#-isystem /#g"`"
 
 AC_SUBST(WXBASE_LIBS)
 AC_SUBST(WXBASE_CFLAGS)
