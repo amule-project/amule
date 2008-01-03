@@ -246,7 +246,7 @@ public:
 	t_sm_state	HandleEvent(t_sm_event event);
 	void		AddDummyEvent();
 	void		ReactivateSocket();
-	char 		*GetBuffer() const			{ return (char *)m_buffer; }
+	char 		*GetBuffer()				{ return m_buffer; }
 	wxIPaddress	&GetProxyBoundAddress(void) const	{ return *m_proxyBoundAddress; }
 	unsigned char	GetLastReply(void) const		{ return m_lastReply; }
 	bool		IsEndState() const			{ return GetState() == PROXY_STATE_END; }
@@ -472,7 +472,7 @@ public:
 	/* Interface */
 	void		SetProxyData(const CProxyData *proxyData);
 	bool		GetUseProxy() const	{ return m_useProxy; }
-	char 		*GetBuffer() const	{ return m_proxyStateMachine->GetBuffer(); }
+	char 		*GetBuffer()		{ return m_proxyStateMachine->GetBuffer(); }
 	wxIPaddress	&GetProxyBoundAddress(void) const
 						{ return m_proxyStateMachine->GetProxyBoundAddress(); }
 	bool Start(const wxIPaddress &peerAddress);
