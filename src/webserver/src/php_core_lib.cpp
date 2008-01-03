@@ -1475,7 +1475,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	}
 	regex_t preg;
 	char error_buff[256];
-	int reg_result = regcomp(&preg, pattern->str_val, 0);
+	int reg_result = regcomp(&preg, pattern->str_val, REG_EXTENDED);
 	if ( reg_result ) {
 		regerror(reg_result, &preg, error_buff, sizeof(error_buff));
 		php_report_error(PHP_ERROR, "Failed in regcomp: %s", error_buff);
