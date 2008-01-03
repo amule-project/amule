@@ -169,6 +169,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_RENAME, file->IsPartFile());
+		m_menu->Enable(MP_WS, file->IsPartFile());
 		
 		PopupMenu( m_menu, event.GetPoint() );
 
@@ -184,8 +185,12 @@ void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 	wxString feed;
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index != -1) {
-		CPartFile *file = (CPartFile *)GetItemData(index);
-		feed += file->GetFeedback();
+		CKnownFile* file = (CKnownFile*)GetItemData(index);
+		
+		if (file->IsPartFile()) {
+			feed += dynamic_cast<CPartFile*>(file)->GetFeedback();
+		}
+		
 		index = GetNextItem(index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 	if (!feed.IsEmpty()) {
