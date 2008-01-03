@@ -306,6 +306,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for Transferred / Completed not updated in remote GUI.
 		* Fix for PARTSIZE not beeing 64 bits. Enums are always 32
 		  bits, even if we use a 64 bit constant to initialize it.
+		* Fix for malicious buffer overflow attempt in OP_MESSAGE
+		  processing.
 
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
