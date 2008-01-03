@@ -792,7 +792,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			CMemFile message_file(buffer, size);
 
-			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
+			wxString message = message_file.ReadString(m_client->GetUnicodeSupport(), 2, true);
 			if (IsMessageFiltered(message, m_client)) {
 				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			} else {
