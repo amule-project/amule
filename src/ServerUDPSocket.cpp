@@ -64,7 +64,7 @@ void CServerUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer,
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
-	int nPayLoadLen = length;
+	size_t nPayLoadLen = length;
 	byte* pBuffer = buffer;
 	uint32 serverip = StringIPtoUint32(addr.IPAddress());
 	CServer* pServer = theApp->serverlist->GetServerByIPUDP(serverip, addr.Service(), true);
