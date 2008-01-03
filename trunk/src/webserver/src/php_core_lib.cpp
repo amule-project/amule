@@ -975,7 +975,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 	}
 	// 3-rd is optional
 	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "end");
-	PHP_VALUE_NODE end = { PHP_VAL_INT, 0 };
+	PHP_VALUE_NODE end = { PHP_VAL_INT, { 0 } };
 	if ( si_end ) {
 		end = si_end->var->value;
 	}
