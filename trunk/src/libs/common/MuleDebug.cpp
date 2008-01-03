@@ -44,7 +44,7 @@
 
 #if wxUSE_STACKWALKER && defined(__WXMSW__)
 	#include <wx/stackwalk.h> // Do_not_auto_remove
-#elif HAVE_BFD
+#elif defined(HAVE_BFD)
 	#include <ansidecl.h> // Do_not_auto_remove
 	#include <bfd.h> // Do_not_auto_remove
 #endif
@@ -153,7 +153,7 @@ wxString get_backtrace(unsigned n)
 
 #elif defined(__LINUX__)
 
-#if HAVE_BFD
+#ifdef HAVE_BFD
 
 static bfd* s_abfd;
 static asymbol** s_symbol_list;
@@ -354,7 +354,7 @@ wxString get_backtrace(unsigned n)
 	wxArrayString out;
 	bool hasLineNumberInfo = false;
 
-#if HAVE_BFD
+#ifdef HAVE_BFD
 	if (!s_have_backtrace_symbols) {
 		init_backtrace_info();
 		wxASSERT(s_have_backtrace_symbols);
