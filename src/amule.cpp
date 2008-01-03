@@ -1420,7 +1420,7 @@ void CamuleApp::OnTCPTimer(CTimerEvent& WXUNUSED(evt))
 void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 {
 	// Former TimerProc section
-	static uint64	msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
+	static uint64 msPrev1, msPrev5, msPrevSave, msPrevHist, msPrevOS, msPrevKnownMet;
 	uint64 msCur = theStats::GetUptimeMillis();
 
 	if (!IsRunning()) {
@@ -1515,7 +1515,7 @@ void CamuleApp::OnCoreTimer(CTimerEvent& WXUNUSED(evt))
 	}
 
 	// Special
-	if (msCur-msPrevOS >= thePrefs::GetOSUpdate()*1000) {
+	if (msCur - msPrevOS >= thePrefs::GetOSUpdate() * 1000ull) {
 		OnlineSig(); // Added By Bouc7		
 		msPrevOS = msCur;
 	}
