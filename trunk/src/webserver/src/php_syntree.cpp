@@ -400,7 +400,7 @@ void free_var_node(PHP_VAR_NODE *v)
  *  2. Lvalue-evaluate all by-ref params and adjust pointers
  */
 void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
-	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array,
+	PHP_SCOPE_TABLE_TYPE * /*scope_map*/, PHP_VALUE_NODE *arg_array,
 	std::map<std::string, PHP_VAR_NODE *> &saved_vars)
 {
 	//
@@ -469,7 +469,7 @@ void func_scope_init(PHP_FUNC_PARAM_DEF *params, int param_count,
  *  2. Next call may be using same params by-value, so it need independent varnode
  */
 void func_scope_copy_back(PHP_FUNC_PARAM_DEF *params, int param_count,
-	PHP_SCOPE_TABLE_TYPE *scope_map, PHP_VALUE_NODE *arg_array,
+	PHP_SCOPE_TABLE_TYPE * /*scope_map*/, PHP_VALUE_NODE *arg_array,
 	std::map<std::string, PHP_VAR_NODE *> &saved_vars)
 {
 	/*
