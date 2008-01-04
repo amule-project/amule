@@ -210,7 +210,7 @@ private:
 	void	DrawSourceStatusBar( const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool  bFlat) const;
 
 
-	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 	static int Compare( const CPartFile* file1, const CPartFile* file2, long lParamSort );
 	static int Compare( const CUpDownClient* client1, const CUpDownClient* client2, long lParamSort);
 	

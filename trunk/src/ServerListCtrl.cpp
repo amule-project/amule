@@ -123,7 +123,7 @@ void CServerListCtrl::AddServer( CServer* toadd )
 
 void CServerListCtrl::RemoveServer(CServer* server)
 {
-	long result = FindItem(-1, (long)server);
+	long result = FindItem(-1, reinterpret_cast<wxUIntPtr>(server));
 	if ( result != -1 ) {
 		DeleteItem(result);
 		ShowServerCount();
@@ -140,7 +140,7 @@ void CServerListCtrl::RemoveAllServers(int state)
 	while ( pos != -1 ) {
 		CServer* server = (CServer*)GetItemData(pos);
 		
-		if ((long)server == m_connected && connected) {
+		if (reinterpret_cast<wxUIntPtr>(server) == m_connected && connected) {
 			wxMessageBox(_("You are connected to a server you are trying to delete. Please disconnect first. The server was NOT deleted."), _("Info"), wxOK, this);
 			++pos;
 		} else if (server->IsStaticMember()) {
@@ -172,11 +172,12 @@ void CServerListCtrl::RefreshServer( CServer* server )
 		return;
 	}
 
-	long itemnr = FindItem( -1, (long)server );
+	wxUIntPtr ptr = reinterpret_cast<wxUIntPtr>(server);
+	long itemnr = FindItem( -1, ptr );
 	if ( itemnr == -1 ) {
 		// We are not at the sure that the server isn't in the list, so we can re-add
-		itemnr = InsertItem( GetInsertPos( (long)server ), server->GetListName() );
-		SetItemData( itemnr, (long)server );
+		itemnr = InsertItem( GetInsertPos( ptr ), server->GetListName() );
+		SetItemPtrData( itemnr, ptr );
 	
 		wxListItem item;
 		item.SetId( itemnr );
@@ -311,7 +312,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 		m_connected = 0;
 	}
 	
-	long itemnr = FindItem( -1, (long)server );
+	long itemnr = FindItem( -1,  reinterpret_cast<wxUIntPtr>(server) );
 	if ( itemnr > -1 ) {
 		wxListItem item;
 		item.SetId( itemnr );
@@ -322,7 +323,7 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 			if ( highlight ) {
 				font.SetWeight( wxBOLD );
 
-				m_connected = (long)server;
+				m_connected = reinterpret_cast<wxUIntPtr>(server);
 			}
 
 			item.SetFont( font );
@@ -422,7 +423,7 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 		CServer* server = (CServer*)GetItemData( index );
 
 		// The current server is selected, so we might display the reconnect option
-		if ( (long)server == m_connected ) 
+		if ( reinterpret_cast<wxUIntPtr>(server) == m_connected ) 
 			enable_reconnect = true;
 		
 		// We want to know which options should be enabled, either one or both
@@ -595,7 +596,7 @@ void CServerListCtrl::OnKeyPressed( wxKeyEvent& event )
 }
 
 
-int CServerListCtrl::SortProc(long item1, long item2, long sortData)
+int CServerListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CServer* server1 = (CServer*)item1;
 	CServer* server2 = (CServer*)item2;

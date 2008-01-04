@@ -95,7 +95,7 @@ void CCommentDialogLst::UpdateList()
 			m_list->SetItem(count, 1, it->FileName);
 			m_list->SetItem(count, 2, (it->Rating != -1) ? GetRateString(it->Rating) : wxString(wxT("on")));
 			m_list->SetItem(count, 3, it->Comment);
-			m_list->SetItemData(count, reinterpret_cast<long>(new SFileRating(*it)));
+			m_list->SetItemPtrData(count, reinterpret_cast<wxUIntPtr>(new SFileRating(*it)));
 			++count;
 		}
 	}
@@ -125,7 +125,7 @@ void CCommentDialogLst::ClearList()
 }
 
 
-int CCommentDialogLst::SortProc(long item1, long item2, long sortData)
+int CCommentDialogLst::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	SFileRating* file1 = (SFileRating*)item1;
 	SFileRating* file2 = (SFileRating*)item2;

@@ -31,7 +31,7 @@
 #include "Preferences.h"		// Needed for thePrefs
 #include "GuiEvents.h"
 
-CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, long searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
+CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
 	: m_parent(NULL),
 	  m_showChildren(false),
 	  m_searchID(searchID),

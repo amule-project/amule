@@ -92,7 +92,7 @@ CFriendListCtrl::~CFriendListCtrl()
 void CFriendListCtrl::AddFriend(CDlgFriend* toadd, bool send_to_core)
 {
 	uint32 itemnr = InsertItem(GetItemCount(), toadd->m_name);
-	SetItemData(itemnr, (long)toadd);
+	SetItemPtrData(itemnr, reinterpret_cast<wxUIntPtr>(toadd));
 	
 	//#warning CORE/GUI
 	if (send_to_core) {
@@ -135,7 +135,7 @@ void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 		return;
 	}
 	
-	sint32 itemnr = FindItem(-1, (long)toremove);
+	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toremove));
 	
 	if ( itemnr == -1 )
 		return;
@@ -151,7 +151,7 @@ void CFriendListCtrl::RemoveFriend(CDlgFriend* toremove)
 
 void CFriendListCtrl::RefreshFriend(CDlgFriend* toupdate)
 {
-	sint32 itemnr = FindItem(-1, (long)toupdate);
+	sint32 itemnr = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (itemnr != -1) {
 		SetItem(itemnr, 0, toupdate->m_name);
 	}	

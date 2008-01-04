@@ -45,7 +45,7 @@ public:
 	/**
 	 * Sorter function for the CMuleListCtrl used to contain the lists.
 	 */
-	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 
 private:
 	void OnBnClickedApply(wxCommandEvent& evt); 

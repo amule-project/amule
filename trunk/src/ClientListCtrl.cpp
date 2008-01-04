@@ -108,7 +108,7 @@ struct ClientListView
 	void		(*m_draw)(CUpDownClient*, int, wxDC*, const wxRect&);
 	
 	//! Pointer to the sorting function.
-	wxListCtrlCompare	m_sort;
+	MuleListCtrlCompare	m_sort;
 };
 
 
@@ -391,7 +391,7 @@ void CClientListCtrl::InsertClient( CUpDownClient* client, ViewType view )
 	}
 	
 	long index = InsertItem( GetItemCount(), wxEmptyString );
-	SetItemData( index, (long)client );
+	SetItemPtrData( index, reinterpret_cast<wxUIntPtr>(client) );
 
 	wxListItem myitem;
 	myitem.SetId( index );
@@ -411,7 +411,7 @@ void CClientListCtrl::RemoveClient( CUpDownClient* client, ViewType view )
 		return;
 	}
 	
-	long index = FindItem( -1, (long)client );
+	long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(client) );
 	
 	if ( index > -1 ) {
 		DeleteItem( index );
@@ -431,7 +431,7 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 		// Visible lines, default to all because not all platforms support the GetVisibleLines function
 		long first = 0, last = GetItemCount();
 		
-		long result = FindItem( -1, (long)client );
+		long result = FindItem( -1, reinterpret_cast<wxUIntPtr>(client) );
 	
 		if ( result > -1 ) {
 			#ifndef __WXMSW__
@@ -723,7 +723,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 }
 
 
-int CUploadingView::SortProc(long item1, long item2, long sortData)
+int CUploadingView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CUpDownClient* client1 = (CUpDownClient*)item1;
 	CUpDownClient* client2 = (CUpDownClient*)item2;
@@ -914,7 +914,7 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 }
 
 
-int CQueuedView::SortProc( long item1, long item2, long sortData )
+int CQueuedView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CUpDownClient* client1 = (CUpDownClient*)item1;
 	CUpDownClient* client2 = (CUpDownClient*)item2;
@@ -1063,7 +1063,7 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 }
 
 
-int CClientsView::SortProc( long item1, long item2, long sortData )
+int CClientsView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CUpDownClient* client1 = (CUpDownClient*)item1;
 	CUpDownClient* client2 = (CUpDownClient*)item2;

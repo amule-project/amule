@@ -78,7 +78,7 @@ public:
 	CSearchFile(
 		const CMemFile& data,
 		bool optUTF8,
-		long searchID,
+		wxUIntPtr searchID,
 		uint32 serverIP = 0,
 		uint16 serverPort = 0,
 		const wxString& directory = wxEmptyString,
@@ -104,7 +104,7 @@ public:
 	/** Returns the number of sources that have the entire file. */
 	uint32 GetCompleteSourceCount() const;
 	/** Returns the ID of the search, used to select the right list when displaying. */
-	long GetSearchID() const;
+	wxUIntPtr GetSearchID() const;
 	/** Returns true if the result is from a Kademlia search. */
 	bool IsKademlia() const;
 	
@@ -159,7 +159,7 @@ private:
 	//! If true, children will be shown on the GUI.
 	bool			m_showChildren;
 	//! The unique ID of this search owning this result.
-	long			m_searchID;
+	wxUIntPtr		m_searchID;
 	//! The total number of sources for this file.
 	uint32			m_sourceCount;
 	//! The number of sources that have the complete file.
@@ -195,7 +195,7 @@ inline uint32 CSearchFile::GetCompleteSourceCount() const
 }
 
 
-inline long CSearchFile::GetSearchID() const
+inline wxUIntPtr CSearchFile::GetSearchID() const
 {
 	return m_searchID;
 }

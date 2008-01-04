@@ -460,7 +460,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 {
 	wxCHECK_RET(sender, wxT("No sender in search-results from client."));
 	
-	long searchID = (long)sender;
+	long searchID = reinterpret_cast<wxUIntPtr>(sender);
 
 #ifndef AMULE_DAEMON
 	if (!theApp->amuledlg->m_searchwnd->CheckTabNameExists(sender->GetUserName())) {
