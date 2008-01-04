@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
+"POT-Creation-Date: 2008-01-04 02:31+0000\n"
 "PO-Revision-Date: 2004-02-04 07:00+0100\n"
 "Last-Translator: Angel Vidal Veiga <elkry@users.sourceforge.net>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -394,29 +394,29 @@ msgstr ""
 msgid "Copy feedback to clipboard"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:298
+#: src/SharedFilesCtrl.cpp:303
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:443
+#: src/SharedFilesCtrl.cpp:448
 #, c-format
 msgid "Shared Files (%i)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:601
+#: src/SharedFilesCtrl.cpp:606
 msgid "[PartFile]"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr ""
 

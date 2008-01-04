@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
+"POT-Creation-Date: 2008-01-04 02:31+0000\n"
 "PO-Revision-Date: 2007-11-03 01:32-0200\n"
 "Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr."
@@ -405,29 +405,29 @@ msgstr "Copiar link ED2K para a área de transferência (info &AICH)"
 msgid "Copy feedback to clipboard"
 msgstr "Copiar retorno para a área de transferência"
 
-#: src/SharedFilesCtrl.cpp:298
+#: src/SharedFilesCtrl.cpp:303
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Você precisa ter HighID para criar uma fonte ED2K válida"
 
-#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "Cuidado"
 
-#: src/SharedFilesCtrl.cpp:443
+#: src/SharedFilesCtrl.cpp:448
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Arquivos Compartilhados (%i)"
 
-#: src/SharedFilesCtrl.cpp:601
+#: src/SharedFilesCtrl.cpp:606
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "Informe o novo nome para o arquivo:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "Renomear"
 
