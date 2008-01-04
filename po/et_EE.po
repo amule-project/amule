@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
+"POT-Creation-Date: 2008-01-04 02:31+0000\n"
 "PO-Revision-Date: 2008-01-02 21:50+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -405,29 +405,29 @@ msgstr "Kopeeri ED2k link lõikepuhvrisse (&AICH info)"
 msgid "Copy feedback to clipboard"
 msgstr "Kopeeri tagasiside lõikepuhvrisse"
 
-#: src/SharedFilesCtrl.cpp:298
+#: src/SharedFilesCtrl.cpp:303
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Allika lingi loomiseks pead omama HighID'd."
 
-#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "Hoiatus"
 
-#: src/SharedFilesCtrl.cpp:443
+#: src/SharedFilesCtrl.cpp:448
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Jagatud failid (%i)"
 
-#: src/SharedFilesCtrl.cpp:601
+#: src/SharedFilesCtrl.cpp:606
 msgid "[PartFile]"
 msgstr "[FailiOsa]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "Sisesta selle faili uus nimi:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "Faili ümbernimetamine"
 

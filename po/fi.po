@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
+"POT-Creation-Date: 2008-01-04 02:31+0000\n"
 "PO-Revision-Date: 2007-11-25 22:38+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -401,29 +401,29 @@ msgstr "Kopioi Ed2k-linkki leikepöydälle (&AICH-tiedot)"
 msgid "Copy feedback to clipboard"
 msgstr "Kopioi palaute leikepöydälle"
 
-#: src/SharedFilesCtrl.cpp:298
+#: src/SharedFilesCtrl.cpp:303
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Tarvitset HighID:een luodaksesi voimassa olevan lähdelinkin"
 
-#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "Varoitus"
 
-#: src/SharedFilesCtrl.cpp:443
+#: src/SharedFilesCtrl.cpp:448
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Jaetut tiedostot (%i)"
 
-#: src/SharedFilesCtrl.cpp:601
+#: src/SharedFilesCtrl.cpp:606
 msgid "[PartFile]"
 msgstr "[Osatiedosto]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "Anna uusi nimi tälle tiedostolle:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "Tiedoston uudelleennimeäminen"
 

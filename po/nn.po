@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-02 02:31+0000\n"
+"POT-Creation-Date: 2008-01-04 02:31+0000\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -401,29 +401,29 @@ msgstr "Kopiér ED2k lenke til utklippstavla (&AICH info)"
 msgid "Copy feedback to clipboard"
 msgstr "Kopiér tilbakemelding til utklippstavla"
 
-#: src/SharedFilesCtrl.cpp:298
+#: src/SharedFilesCtrl.cpp:303
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Du treng ein HøgID for å lage ei gangbar kjeldelenke"
 
-#: src/SharedFilesCtrl.cpp:298 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "Åtvaring"
 
-#: src/SharedFilesCtrl.cpp:443
+#: src/SharedFilesCtrl.cpp:448
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Delte filer (%i)"
 
-#: src/SharedFilesCtrl.cpp:601
+#: src/SharedFilesCtrl.cpp:606
 msgid "[PartFile]"
 msgstr "[Delfil]"
 
-#: src/SharedFilesCtrl.cpp:681 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "Skriv nytt namn på denne fila:"
 
-#: src/SharedFilesCtrl.cpp:682 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "Døyp om fil"
 
