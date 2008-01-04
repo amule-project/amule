@@ -275,12 +275,12 @@ void CDownloadListCtrl::AddSource(CPartFile* owner, CUpDownClient* source, Downl
 		ListItems::iterator it = m_ListItems.find( owner );
 	
 		if ( it != m_ListItems.end() ) {
-			long item = FindItem( -1, (long)it->second );
+			long item = FindItem( -1, reinterpret_cast<wxUIntPtr>(it->second) );
 			
 			if ( item > -1 ) {
 				item = InsertItem( item + 1, wxEmptyString );
 				
-				SetItemData( item, (long)newitem );
+				SetItemPtrData( item, reinterpret_cast<wxUIntPtr>(newitem) );
 
 				// background.. this should be in a function
 				wxListItem listitem;
@@ -310,7 +310,7 @@ void CDownloadListCtrl::RemoveSource( const CUpDownClient* source, const CPartFi
 			// Remove it from the m_ListItems
 			m_ListItems.erase( tmp );
 
-			long index = FindItem( -1, (long)item );
+			long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 			
 			if ( index > -1 ) {
 				DeleteItem( index );
@@ -359,7 +359,7 @@ void CDownloadListCtrl::UpdateItem(const void* toupdate)
 	for ( ListItems::iterator it = rangeIt.first; it != rangeIt.second; ++it ) {
 		CtrlItem_Struct* item = it->second;
 
-		long index = FindItem( -1, (long)item );
+		long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 
 		// Determine if the file should be shown in the current category
 		if ( item->GetType() == FILE_TYPE ) {
@@ -415,11 +415,11 @@ void CDownloadListCtrl::ShowFile( CPartFile* file, bool show )
 	
 		if ( show ) {
 			// Check if the file is already being displayed
-			long index = FindItem( -1, (long)item );
+			long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 			if ( index == -1 ) {	
 				long newitem = InsertItem( GetItemCount(), wxEmptyString );
 				
-				SetItemData( newitem, (long)item );
+				SetItemPtrData( newitem, reinterpret_cast<wxUIntPtr>(item) );
 
 				wxListItem myitem;
 				myitem.m_itemId = newitem;
@@ -436,7 +436,7 @@ void CDownloadListCtrl::ShowFile( CPartFile* file, bool show )
 			ShowSources( file, false );
 
 			// Try to find the file and remove it
-			long index = FindItem( -1, (long)item );
+			long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(item) );
 			if ( index > -1 ) {
 				DeleteItem( index );
 				ShowFilesCount( -1 );
@@ -1757,7 +1757,7 @@ wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 }
 
 
-int CDownloadListCtrl::SortProc(long param1, long param2, long sortData)
+int CDownloadListCtrl::SortProc(wxUIntPtr param1, wxUIntPtr param2, long sortData)
 {
 	CtrlItem_Struct* item1 = (CtrlItem_Struct*)param1;
 	CtrlItem_Struct* item2 = (CtrlItem_Struct*)param2;

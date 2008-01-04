@@ -740,7 +740,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
 	wxString buffer;
 
 	// search jobitem in listctrl
-	long itemnr = m_joblist->FindItem(-1, (long)job);
+	long itemnr = m_joblist->FindItem(-1, reinterpret_cast<wxUIntPtr>(job));
 	if (itemnr != -1) {
 		m_joblist->SetItem(itemnr, 0, job->filename.IsEmpty() ? job->folder : job->filename );
 		m_joblist->SetItem(itemnr, 1, CPartFileConvert::GetReturncodeText(job->state) );
@@ -759,7 +759,7 @@ void CPartFileConvertDlg::UpdateJobInfo(ConvertJob* job)
 
 void CPartFileConvertDlg::RemoveJob(ConvertJob* job)
 {
-	long itemnr = m_joblist->FindItem(-1, (long)job);
+	long itemnr = m_joblist->FindItem(-1, reinterpret_cast<wxUIntPtr>(job));
 	if (itemnr != -1) {
 		m_joblist->DeleteItem(itemnr);
 	}
@@ -769,7 +769,7 @@ void CPartFileConvertDlg::AddJob(ConvertJob* job)
 {
 	long ix = m_joblist->InsertItem(m_joblist->GetItemCount(), job->folder);
 	if (ix != -1) {
-		m_joblist->SetItemData(ix, (long)job);
+		m_joblist->SetItemData(ix, reinterpret_cast<wxUIntPtr>(job));
 		m_joblist->SetItem(ix, 1, CPartFileConvert::GetReturncodeText(job->state));
 	}
 }

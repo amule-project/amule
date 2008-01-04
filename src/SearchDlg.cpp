@@ -130,7 +130,7 @@ CSearchDlg::~CSearchDlg()
 }
 
 
-CSearchListCtrl* CSearchDlg::GetSearchList( long id )
+CSearchListCtrl* CSearchDlg::GetSearchList( wxUIntPtr id )
 {
 	int nPages = m_notebook->GetPageCount();
 	for ( int i = 0; i < nPages; i++ ) {
@@ -354,7 +354,7 @@ bool CSearchDlg::CheckTabNameExists(const wxString& searchString)
 }
 
 
-void CSearchDlg::CreateNewTab(const wxString& searchString, long nSearchID)
+void CSearchDlg::CreateNewTab(const wxString& searchString, wxUIntPtr nSearchID)
 {
 	CSearchListCtrl* list = new CSearchListCtrl( (wxWindow*)m_notebook, ID_SEARCHLISTCTRL, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxNO_BORDER);
 	m_notebook->AddPage(list, searchString, true, 0);
@@ -401,7 +401,7 @@ void CSearchDlg::KadSearchEnd(uint32 id)
 	for (int i = 0; i < nPages; ++i) {
 		CSearchListCtrl* page =
 			dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(i));
-		if (page->GetSearchId() == (int)id) {
+		if (page->GetSearchId() == id) {
 			wxString rest;
 			if (m_notebook->GetPageText(i).StartsWith(wxT("!"),&rest)) {
 				m_notebook->SetPageText(i,rest);

@@ -124,7 +124,7 @@ public:
 	 *
 	 * @return The Search Id of the displayed results (set through ShowResults()).
 	 */
-	long	GetSearchId();
+	wxUIntPtr	GetSearchId();
 	
 	/**
 	 * Sets the filter which decides which results should be shown.
@@ -186,7 +186,7 @@ protected:
 	 * @see CMuleListCtrl::SetSortFunc
 	 * @see wxListCtrl::SortItems
 	 */
-	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 
 	/** @see CMuleListCtrl::AltSortAllowed */
 	virtual bool AltSortAllowed(unsigned column) const;
@@ -225,7 +225,7 @@ protected:
 	static std::list<CSearchListCtrl*> s_lists;
 	
 	//! The ID of the search-results which the list is displaying or zero if unset. 
-	long	m_nResultsID;
+	wxUIntPtr m_nResultsID;
 
 	//! Custom drawing, needed to display children of search-results.
 	void OnDrawItem(int item, wxDC* dc, const wxRect& rect, const wxRect& rectHL, bool highlighted);

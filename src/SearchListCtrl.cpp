@@ -131,7 +131,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
 
 	// Check if the result should be shown
-	if (FindItem(-1, (long)toshow) != -1) {
+	if (FindItem(-1, reinterpret_cast<wxUIntPtr>(toshow)) != -1) {
 		return;
 	} else if (toshow->GetParent() && !toshow->GetParent()->ShowChildren()) {
 		return;
@@ -159,7 +159,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	}
 
 	// Insert the item before the item found by the search
-	uint32 newid = InsertItem(GetInsertPos( (long)toshow ), toshow->GetFileName());
+	uint32 newid = InsertItem(GetInsertPos( reinterpret_cast<wxUIntPtr>(toshow) ), toshow->GetFileName());
 
 	// Sanity checks to ensure that results/children are properly positioned.
 #ifdef __WXDEBUG__
@@ -188,7 +188,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	}
 #endif
 
-	SetItemData( newid, (long)toshow );
+	SetItemPtrData( newid, reinterpret_cast<wxUIntPtr>(toshow) );
 
 	// Filesize
 	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
@@ -212,7 +212,7 @@ void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
 {
 	ShowChildren(toremove, false);
 	
-	long index = FindItem(-1, (long)toremove);
+	long index = FindItem(-1, reinterpret_cast<wxUIntPtr>(toremove));
 	if (index != -1) {
 		DeleteItem(index);
 	} else {
@@ -226,7 +226,7 @@ void CSearchListCtrl::RemoveResult(CSearchFile* toremove)
 
 void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 {
-	long index = FindItem(-1, (long)toupdate);
+	long index = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (index != -1) {
 		// Update the filename, which may be changed in case of multiple variants.
 		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName());
@@ -306,9 +306,9 @@ void CSearchListCtrl::UpdateAllRelativesColor(
 			file->GetParent() : file;
 		const CSearchResultList &list = parent->GetChildren();
 		for (size_t j = 0; j < list.size(); ++j) {
-			UpdateItemColor(FindItem(-1, (long)list.at(j)));
+			UpdateItemColor(FindItem(-1, reinterpret_cast<wxUIntPtr>(list.at(j))));
 		}
-		UpdateItemColor(FindItem(-1, (long)parent));
+		UpdateItemColor(FindItem(-1, reinterpret_cast<wxUIntPtr>(parent)));
 	} else {		
 		UpdateItemColor(index);
 	}
@@ -328,7 +328,7 @@ void CSearchListCtrl::ShowResults( long ResultsID )
 }
 
 
-long CSearchListCtrl::GetSearchId()
+wxUIntPtr CSearchListCtrl::GetSearchId()
 {
 	return m_nResultsID;
 }
@@ -424,7 +424,7 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 }
 
 
-int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
+int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CSearchFile* file1 = (CSearchFile*)item1;
 	CSearchFile* file2 = (CSearchFile*)item2;
@@ -434,23 +434,25 @@ int CSearchListCtrl::SortProc(long item1, long item2, long sortData)
 	bool alternate = (sortData & CMuleListCtrl::SORT_ALT);
 
 	// Decide if which should files we should sort by.
-	CSearchFile* parent1 = file1->GetParent();
-	CSearchFile* parent2 = file2->GetParent();
+	wxUIntPtr parent1 = reinterpret_cast<wxUIntPtr>(file1->GetParent());
+	wxUIntPtr parent2 = reinterpret_cast<wxUIntPtr>(file2->GetParent());
+	wxUIntPtr filePtr1 = reinterpret_cast<wxUIntPtr>(file1);
+	wxUIntPtr filePtr2 = reinterpret_cast<wxUIntPtr>(file2);
 	if (parent1 && parent2) {
 		if (parent1 != parent2) {
-			return SortProc((long)parent1, (long)parent2, sortData);
+			return SortProc(parent1, parent2, sortData);
 		}
 	} else if (parent1) {
-		if (parent1 == file2) {
+		if (parent1 == filePtr2) {
 			return 1;
 		} else {
-			return SortProc((long)parent1, (long)file2, sortData);
+			return SortProc(parent1, filePtr2, sortData);
 		}
 	} else if (parent2) {
-		if (parent2 == file1) {
+		if (parent2 == filePtr1) {
 			return -1;
 		} else {
-			return SortProc((long)file1, (long)parent2, sortData);
+			return SortProc(filePtr1, parent2, sortData);
 		}
 	}
 

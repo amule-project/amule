@@ -221,7 +221,7 @@ void CSharedFilesCtrl::ShowFileList()
 
 void CSharedFilesCtrl::RemoveFile(CKnownFile *toRemove)
 {
-	long index = FindItem( -1, (long)toRemove );
+	long index = FindItem( -1, reinterpret_cast<wxUIntPtr>(toRemove) );
 	
 	if ( index != -1 ) {
 		DeleteItem( index );
@@ -239,14 +239,15 @@ void CSharedFilesCtrl::ShowFile(CKnownFile* file)
 
 void CSharedFilesCtrl::DoShowFile(CKnownFile* file, bool batch)
 {
-	if ((!batch) && (FindItem(-1, (long)file) > -1)) {
+	wxUIntPtr ptr = reinterpret_cast<wxUIntPtr>(file);
+	if ((!batch) && (FindItem(-1, ptr) > -1)) {
 		return;
 	}
 	
-	const long insertPos = (batch ? GetItemCount() : GetInsertPos((long)file));
+	const long insertPos = (batch ? GetItemCount() : GetInsertPos(ptr));
 
 	long newitem = InsertItem(insertPos, wxEmptyString);
-	SetItemData( newitem, (long)file );
+	SetItemPtrData( newitem, ptr );
 
 	if (!batch) {	
 		ShowFilesCount();
@@ -344,7 +345,7 @@ void CSharedFilesCtrl::OnEditComment( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
+int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 {
 	CKnownFile* file1 = (CKnownFile*)item1;
 	CKnownFile* file2 = (CKnownFile*)item2;
@@ -431,7 +432,7 @@ int CSharedFilesCtrl::SortProc(long item1, long item2, long sortData)
 
 void CSharedFilesCtrl::UpdateItem(CKnownFile* toupdate)
 {
-	long result = FindItem( -1, (long)toupdate );
+	long result = FindItem( -1, reinterpret_cast<wxUIntPtr>(toupdate) );
 	
 	if ( result > -1 ) {
 		RefreshItem(result);

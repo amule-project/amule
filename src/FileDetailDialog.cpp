@@ -169,7 +169,7 @@ void CFileDetailDialog::FillSourcenameList()
 			int itemid = pmyListCtrl->InsertItem(0, cur_src.name);
 			pmyListCtrl->SetItem(0, 1, wxString::Format(wxT("%li"), cur_src.count)); 
 			SourcenameItem *item = new SourcenameItem(cur_src.name, cur_src.count);
-			pmyListCtrl->SetItemData(0, reinterpret_cast<long>(item));
+			pmyListCtrl->SetItemPtrData(0, reinterpret_cast<wxUIntPtr>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
 			wxListItem tmpitem;
 			tmpitem.m_itemId = itemid;
@@ -196,7 +196,7 @@ void CFileDetailDialog::FillSourcenameList()
 			int itemid = pmyListCtrl->InsertItem(0, cur_src.GetClientFilename()); 
 			pmyListCtrl->SetItem(0, 1, wxT("1")); 
 			SourcenameItem *item = new SourcenameItem(cur_src.GetClientFilename(), 1);
-			pmyListCtrl->SetItemData(0, reinterpret_cast<long>(item));
+			pmyListCtrl->SetItemPtrData(0, reinterpret_cast<wxUIntPtr>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
 			wxListItem tmpitem;
 			tmpitem.m_itemId=itemid;

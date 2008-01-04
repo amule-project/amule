@@ -137,7 +137,7 @@ void CMuleListCtrl::LoadSettings()
 	wxString setting = cfg->Read(wxT("/eMule/TableOrdering") + m_name, wxEmptyString);
 	
 	// Prevent sorting from occuring when calling SetSorting
-	wxListCtrlCompare sortFunc = m_sort_func;
+	MuleListCtrlCompare sortFunc = m_sort_func;
 	m_sort_func = NULL;
 	
 	wxStringTokenizer tokens(setting, wxT(","));
@@ -182,7 +182,7 @@ void CMuleListCtrl::LoadSettings()
 }
 
 
-long CMuleListCtrl::GetInsertPos(long data)
+long CMuleListCtrl::GetInsertPos(wxUIntPtr data)
 {
 	// Find the best place to position the item through a binary search
 	int Min = 0;
@@ -211,7 +211,7 @@ long CMuleListCtrl::GetInsertPos(long data)
 
 
 
-int CMuleListCtrl::CompareItems(long item1, long item2)
+int CMuleListCtrl::CompareItems(wxUIntPtr item1, wxUIntPtr item2)
 {
 	CSortingList::const_iterator it = m_sort_orders.begin();
 	for (; it != m_sort_orders.end(); ++it) {
@@ -226,11 +226,11 @@ int CMuleListCtrl::CompareItems(long item1, long item2)
 }
 
 
-wxListCtrlCompare	g_sort_func = NULL;
+MuleListCtrlCompare	g_sort_func = NULL;
 CMuleListCtrl*		g_sort_list = NULL;
 
 
-int CMuleListCtrl::SortProc(long item1, long item2, long)
+int CMuleListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long)
 {
 	const CSortingList& orders = g_sort_list->m_sort_orders;
 	
@@ -328,7 +328,7 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 
 	// Get the currently focused item
 	long pos = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED );
-	long item = -1;
+	wxUIntPtr item = 0;
 	if (pos != -1) {
 		item = GetItemData(pos);
 	}
@@ -365,8 +365,8 @@ void CMuleListCtrl::OnColumnLClick(wxListEvent& evt)
 	
 	
 	// Set focus on item if any was focused
-	if (item != -1) {
-		long it_pos = FindItem(-1,item);
+	if (item != 0) {
+		long it_pos = FindItem(-1, item);
 		if (it_pos != -1) {
 			SetItemState(it_pos,wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED | wxLIST_STATE_SELECTED);
 		}
@@ -404,7 +404,7 @@ unsigned CMuleListCtrl::GetSortOrder() const
 }
 
 
-void CMuleListCtrl::SetSortFunc(wxListCtrlCompare func)
+void CMuleListCtrl::SetSortFunc(MuleListCtrlCompare func)
 {
 	m_sort_func = func;
 }
@@ -451,7 +451,7 @@ bool CMuleListCtrl::IsItemSorted(long item)
 	wxCHECK_MSG((item >= 0) && (item < GetItemCount()), true, wxT("Invalid item"));
 	
 	bool sorted = true;
-	long data = GetItemData(item);
+	wxUIntPtr data = GetItemData(item);
 
 	// Check that the item before the current item is smaller (or equal)
 	if (item > 0) {

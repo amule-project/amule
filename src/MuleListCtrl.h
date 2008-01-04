@@ -122,7 +122,7 @@ public:
 	 * though the SetSortFunc function, otherwise it will just return the 
 	 * position after the last item.
 	 */
-	long GetInsertPos( long data );
+	long GetInsertPos( wxUIntPtr data );
 
 
 	/**
@@ -136,7 +136,7 @@ public:
 
 
 	//! The type of the list of item specific data
-	typedef std::vector<long> ItemDataList;
+	typedef std::vector<wxUIntPtr> ItemDataList;
 
 	/**
 	 * Returns a list the user-data of all selected items.
@@ -158,7 +158,7 @@ public:
 	 * See the documentation on wxListCtrl::SortItems for more information
 	 * about the expected function type.
 	 */
-	void SetSortFunc(wxListCtrlCompare func);
+	void SetSortFunc(MuleListCtrlCompare func);
 
 
 	/**
@@ -293,7 +293,7 @@ private:
 	//! The name of the table. Used to load/save settings.
 	wxString			m_name;
 	//! The sorter function needed by wxListCtrl.
-	wxListCtrlCompare	m_sort_func;
+	MuleListCtrlCompare	m_sort_func;
 
 	//! Contains the current search string.
 	wxString			m_tts_text;
@@ -313,10 +313,10 @@ private:
 	 * otherwise, parents may not end up properly located in
 	 * relation to child-items.
 	 */	
-	static int wxCALLBACK SortProc(long item1, long item2, long sortData);
+	static int wxCALLBACK SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData);
 
 	/** Compares two items in the list, using the current sort sequence. */
-	int CompareItems(long item1, long item2);
+	int CompareItems(wxUIntPtr item1, wxUIntPtr item2);
 	
 	
 	//! This pair contains a column number and its sorting order.

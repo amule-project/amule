@@ -23,6 +23,9 @@ class WXDLLIMPEXP_CORE wxImageList;
 class WXDLLEXPORT wxDropTarget;
 #endif
 
+// Fix for bug in wx's implementation, which uses longs for item*
+typedef int (wxCALLBACK *MuleListCtrlCompare)(wxUIntPtr item1, wxUIntPtr item2, long sortData);
+
 namespace MuleExtern {
 
 // ----------------------------------------------------------------------------
@@ -88,7 +91,13 @@ public:
 #if wxABI_VERSION >= 20804
     bool SetItemPtrData(long item, wxUIntPtr data);
 #endif // wxABI 2.8.4+
+
+// It is not certain that sizeof(long) == sizeof(void*), and since we 
+// just about only use pointers as item-data, I've choosen to disable
+// this function to prevent mistakes. Use SetItemPtrData instead.
+#if 0
     bool SetItemData(long item, long data);
+#endif
     bool GetItemRect( long item, wxRect& rect, int code = wxLIST_RECT_BOUNDS ) const;
     bool GetItemPosition( long item, wxPoint& pos ) const;
     bool SetItemPosition( long item, const wxPoint& pos ); // not supported in wxGLC
@@ -142,7 +151,7 @@ public:
     long InsertColumn( long col, const wxString& heading,
                        int format = wxLIST_FORMAT_LEFT, int width = -1 );
     bool ScrollList( int dx, int dy );
-    bool SortItems( wxListCtrlCompare fn, long data );
+    bool SortItems( MuleListCtrlCompare fn, long data );
     bool Update( long item );
     // Must provide overload to avoid hiding it (and warnings about it)
     virtual void Update() { wxControl::Update(); }

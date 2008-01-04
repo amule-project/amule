@@ -94,7 +94,7 @@ public:
 	 * @param searchString This will be the heading of the new page.
 	 * @param nSearchID The results with this searchId will be displayed.
 	 */
-	void		CreateNewTab(const wxString& searchString, long nSearchID);
+	void		CreateNewTab(const wxString& searchString, wxUIntPtr nSearchID);
 
 
 	/**
@@ -130,7 +130,7 @@ public:
 	// Event handler and helper function
 	void		OnBnClickedDownload(wxCommandEvent& ev);
 
-	CSearchListCtrl* GetSearchList( long id );
+	CSearchListCtrl* GetSearchList( wxUIntPtr id );
 	
 	void	UpdateProgress(uint32 new_value);
 
