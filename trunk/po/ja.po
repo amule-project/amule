@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-04 02:31+0000\n"
+"POT-Creation-Date: 2008-01-05 02:31+0000\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -52,34 +52,34 @@ msgstr "成功です！コネクションを設立しました：aMule "
 msgid "Succeeded! Connection established."
 msgstr "成功です！コネクションンを設立しました。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
 msgid "Hashing"
 msgstr "ハッシュ中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3847
 msgid "Completing"
 msgstr "終了中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3850
 msgid "Complete"
 msgstr "終了しました"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "ポーズ中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3856
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "誤りです"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3863
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "ダウンロード中です"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3865
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "待機中です"
@@ -236,8 +236,8 @@ msgid "Are you sure that you wish to delete the selected friend(s)?"
 msgstr "確認：選択された友達を削除しますか？"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
-#: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:563
-#: src/ServerListCtrl.cpp:577 src/amuleDlg.cpp:687 src/amuleDlg.cpp:1314
+#: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:564
+#: src/ServerListCtrl.cpp:578 src/amuleDlg.cpp:687 src/amuleDlg.cpp:1314
 #: src/DownloadListCtrl.cpp:578 src/DownloadListCtrl.cpp:892
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1011 src/muuli_wdr.cpp:1077 src/muuli_wdr.cpp:2800
@@ -271,7 +271,7 @@ msgid "Type"
 msgstr "タイプ"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:442
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:443
 #: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:891
 msgid "Priority"
 msgstr "プライオリティー"
@@ -319,19 +319,19 @@ msgid "Very low"
 msgstr "非常に低い"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
-#: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
+#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:886 src/muuli_wdr.cpp:2864
 msgid "Low"
 msgstr "低い"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
-#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
+#: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:440
 #: src/DownloadListCtrl.cpp:887 src/muuli_wdr.cpp:2865
 msgid "Normal"
 msgstr "普通"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
-#: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:440
+#: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:888 src/muuli_wdr.cpp:2866
 msgid "High"
 msgstr "高い"
@@ -399,29 +399,29 @@ msgstr "ED2kリンクをクリップボードにコピーする（&AICH イン�
 msgid "Copy feedback to clipboard"
 msgstr "フィードバックをクリップボードにコピーする"
 
-#: src/SharedFilesCtrl.cpp:303
+#: src/SharedFilesCtrl.cpp:304
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "有効なソースリンク作るにはHighIDが必要です"
 
-#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:304 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "注意"
 
-#: src/SharedFilesCtrl.cpp:448
+#: src/SharedFilesCtrl.cpp:449
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "共有ファイル（%i）"
 
-#: src/SharedFilesCtrl.cpp:606
+#: src/SharedFilesCtrl.cpp:607
 msgid "[PartFile]"
 msgstr "[部分ファイル]"
 
-#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "このファイルの新しい名前を記入してください："
 
-#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "ファイルの改名"
 
@@ -1546,64 +1546,64 @@ msgstr "（不明な名前）"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "確認：次スタティックサーバ %s を本当に消除しますか？"
 
-#: src/ServerListCtrl.cpp:236 src/ClientListCtrl.cpp:898
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:898
 #: src/ClientListCtrl.cpp:1042
 msgid "Yes"
 msgstr "はい"
 
-#: src/ServerListCtrl.cpp:236 src/ClientListCtrl.cpp:900
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:900
 #: src/ClientListCtrl.cpp:1044
 msgid "No"
 msgstr "いいえ"
 
-#: src/ServerListCtrl.cpp:345
+#: src/ServerListCtrl.cpp:346
 #, c-format
 msgid "Failed to open '%s'"
 msgstr "'%s'を開くことが出来ませんでした"
 
-#: src/ServerListCtrl.cpp:388
+#: src/ServerListCtrl.cpp:389
 #, c-format
 msgid "Servers (%i)"
 msgstr "サーバ （%i）"
 
-#: src/ServerListCtrl.cpp:436 src/PrefsUnifiedDlg.cpp:153
+#: src/ServerListCtrl.cpp:437 src/PrefsUnifiedDlg.cpp:153
 #: src/ServerWnd.cpp:180 src/ServerSocket.cpp:259 src/ServerSocket.cpp:274
 msgid "Server"
 msgstr "サーバ"
 
-#: src/ServerListCtrl.cpp:441
+#: src/ServerListCtrl.cpp:442
 msgid "Connect to server"
 msgstr "サーバへ接続する"
 
-#: src/ServerListCtrl.cpp:446
+#: src/ServerListCtrl.cpp:447
 msgid "Mark server(s) as static"
 msgstr "サーバをスタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:447
+#: src/ServerListCtrl.cpp:448
 msgid "Mark server(s) as non-static"
 msgstr "サーバをノンスタティックとしてマークする"
 
-#: src/ServerListCtrl.cpp:451
+#: src/ServerListCtrl.cpp:452
 msgid "Remove server(s)"
 msgstr "サーバを消除する"
 
-#: src/ServerListCtrl.cpp:452
+#: src/ServerListCtrl.cpp:453
 msgid "Remove all servers"
 msgstr "全てのサーバを消除する"
 
-#: src/ServerListCtrl.cpp:456
+#: src/ServerListCtrl.cpp:457
 msgid "Copy ED2k link(s) to clipboard"
 msgstr "ED2Kリンクをクリップボードへコピーする"
 
-#: src/ServerListCtrl.cpp:464
+#: src/ServerListCtrl.cpp:465
 msgid "Reconnect to server"
 msgstr "サーバへ再接続する"
 
-#: src/ServerListCtrl.cpp:561
+#: src/ServerListCtrl.cpp:562
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "確認：全てのサーバを本当に消除しますか？"
 
-#: src/ServerListCtrl.cpp:575
+#: src/ServerListCtrl.cpp:576
 msgid "Are you sure that you wish to delete the selected server(s)?"
 msgstr "確認：全ての選択されたサーバを本当に消除しますか？"
 
@@ -2183,122 +2183,122 @@ msgstr "無効なリクエスト、先に認証をしてください。"
 msgid "Access granted."
 msgstr "アクセスを認められました。"
 
-#: src/ExternalConn.cpp:497
+#: src/ExternalConn.cpp:506
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "リモート部分ファイルコマンドが失敗しました：ファイルハッシュは見付かりません"
 "でした： %s"
 
-#: src/ExternalConn.cpp:499
+#: src/ExternalConn.cpp:508
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "ファイルハッシュは見付かりませんでした： %s"
 
-#: src/ExternalConn.cpp:562 src/ExternalConn.cpp:646
+#: src/ExternalConn.cpp:571 src/ExternalConn.cpp:655
 msgid "OOPS! OpCode processing error!"
 msgstr "あら！OpCode処理エラーが発生しました！"
 
-#: src/ExternalConn.cpp:592
+#: src/ExternalConn.cpp:601
 msgid "Server not added"
 msgstr "サーバは追加しませんでした"
 
-#: src/ExternalConn.cpp:610
+#: src/ExternalConn.cpp:619
 #, c-format
 msgid "server not found: %s"
 msgstr "サーバは見付かりませんでした： %s"
 
-#: src/ExternalConn.cpp:626
+#: src/ExternalConn.cpp:635
 msgid "need to define server to be removed"
 msgstr "削除したいサーバを定義しなければなりません"
 
-#: src/ExternalConn.cpp:640
+#: src/ExternalConn.cpp:649
 msgid "ED2K is disabled in preferences."
 msgstr "Ed2kは個人設定に無効されています。"
 
-#: src/ExternalConn.cpp:736
+#: src/ExternalConn.cpp:745
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "検索中です。あと少しで結果をもう一度取ってきます！"
 
-#: src/ExternalConn.cpp:741
+#: src/ExternalConn.cpp:750
 msgid "WebSearch from remote interface makes no sense."
 msgstr "リモートインタフェイスからWebSearchする意味がありません。"
 
-#: src/ExternalConn.cpp:792
+#: src/ExternalConn.cpp:801
 msgid "Kad is disabled in preferences."
 msgstr "Kadは個人設定に無効されています。"
 
-#: src/ExternalConn.cpp:953
+#: src/ExternalConn.cpp:962
 msgid "No points for graph."
 msgstr "グラフを表示するための点がありません。"
 
-#: src/ExternalConn.cpp:962
+#: src/ExternalConn.cpp:971
 msgid "Your client is not configured for this detail level."
 msgstr "あなたのクライアントはこの詳細段階には設定されていません。"
 
-#: src/ExternalConn.cpp:990
+#: src/ExternalConn.cpp:999
 msgid "ExternalConn: shutdown requested"
 msgstr "ExternalConn：シャットダウンが要求されました"
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1011
 msgid "Already shutting down."
 msgstr "もうシャットダウン中です。"
 
-#: src/ExternalConn.cpp:1010
+#: src/ExternalConn.cpp:1019
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "ExternalConn：次のリンクを追加中です： '%s'。"
 
-#: src/ExternalConn.cpp:1016
+#: src/ExternalConn.cpp:1025
 msgid "Invalid link or already on list."
 msgstr "不正なリンク、またはリンクがすでにリストに入っています。"
 
-#: src/ExternalConn.cpp:1101
+#: src/ExternalConn.cpp:1110
 msgid "File not found."
 msgstr "ファイルは見付かりませんでした。"
 
-#: src/ExternalConn.cpp:1106
+#: src/ExternalConn.cpp:1115
 msgid "Invalid file name."
 msgstr "不正なファイル名。"
 
-#: src/ExternalConn.cpp:1114
+#: src/ExternalConn.cpp:1123
 msgid "Unable to rename file."
 msgstr "ファイルを改名出来ません。"
 
-#: src/ExternalConn.cpp:1315
+#: src/ExternalConn.cpp:1324
 msgid "Already connected to ED2K."
 msgstr "すでにEd2kに接続しています。"
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1327
 msgid "Connecting to ED2K..."
 msgstr "Ed2kに接続中です…"
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1335
 msgid "Already connected to Kad."
 msgstr "すでにKadに接続しています。"
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1338
 msgid "Connecting to Kad..."
 msgstr "Kadに接続中です…"
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1343
 msgid "All networks are disabled."
 msgstr "全てのネットワークが無効されています。"
 
-#: src/ExternalConn.cpp:1342
+#: src/ExternalConn.cpp:1351
 msgid "Disconnected from ED2K."
 msgstr "Ed2kから切断しています。"
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1355
 msgid "Disconnected from Kad."
 msgstr "Kadから切断しています。"
 
-#: src/ExternalConn.cpp:1354
+#: src/ExternalConn.cpp:1363
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "ExternalConn：不正なOpCodeを貰いました： %#x"
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1366
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "不正なOpCode（プロトコルバージョンが違いますか？）"
 
@@ -2851,38 +2851,38 @@ msgstr "指定されたユーザハッシュは不正です！"
 msgid "Sources"
 msgstr "ソース数"
 
-#: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
+#: src/SearchListCtrl.cpp:553 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "ファイル"
 
-#: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1754
+#: src/SearchListCtrl.cpp:554 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1754
 #: src/muuli_wdr.cpp:1798
 msgid "Download"
 msgstr "ダウンロード"
 
-#: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
+#: src/SearchListCtrl.cpp:556 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "カテゴリー"
 
-#: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:589
+#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:589
 msgid "Main"
 msgstr "メイン"
 
-#: src/SearchListCtrl.cpp:561
+#: src/SearchListCtrl.cpp:563
 msgid "Download in category"
 msgstr "カテゴリーにダウンロードする"
 
-#: src/SearchListCtrl.cpp:567
+#: src/SearchListCtrl.cpp:569
 msgid "Search related files (ED2k, local server)"
 msgstr "関連ファイルを検索する（ED2k、ローカル・サーバ）"
 
-#: src/SearchListCtrl.cpp:572
+#: src/SearchListCtrl.cpp:574
 msgid "Mark as known file"
 msgstr "知られたファイルとしてマークをする"
 
-#: src/SearchListCtrl.cpp:576
+#: src/SearchListCtrl.cpp:578
 msgid "Copy ED2k link to clipboard"
 msgstr "ED2kリンクをクリップボードへコピーする"
 
@@ -2890,21 +2890,26 @@ msgstr "ED2kリンクをクリップボードへコピーする"
 msgid "Connect to remote amule"
 msgstr "リモートamuleへ接続する"
 
-#: src/amule-remote-gui.cpp:280
+#: src/amule-remote-gui.cpp:282
 msgid "Connection failed "
 msgstr "コネクションに失敗しました "
 
-#: src/amule-remote-gui.cpp:280 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:282 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:855
 #: src/amule.cpp:971 src/amule.cpp:1346
 msgid "Error"
 msgstr "エラー"
 
-#: src/amule-remote-gui.cpp:522 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:476 src/amule.cpp:1996
+#, c-format
+msgid "Users: E: %s K: %s | Files E: %s K: %s"
+msgstr "ユーザ： E: %s K: %s | ファイル E: %s K: %s"
+
+#: src/amule-remote-gui.cpp:533 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "全て"
 
-#: src/amule-remote-gui.cpp:753
+#: src/amule-remote-gui.cpp:764
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "ユーザ合計： %s | ファイル合計： %s"
@@ -3248,11 +3253,11 @@ msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 "ICH：損被された部分%i（%sのため）を回復しました→：%s バイトを保存しました"
 
-#: src/PartFile.cpp:3856
+#: src/PartFile.cpp:3859
 msgid "Insufficient Diskspace"
 msgstr "不十分なディスク・スペース"
 
-#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3870 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "中止されています"
 
@@ -6974,11 +6979,6 @@ msgstr "あなたのaMuleは先端のバージョンです。"
 #: src/amule.cpp:1894
 msgid "Failed to download the version check file"
 msgstr "バージョン確認ファイルをダウンロードのに失敗しました"
-
-#: src/amule.cpp:1996
-#, c-format
-msgid "Users: E: %s K: %s | Files E: %s K: %s"
-msgstr "ユーザ： E: %s K: %s | ファイル E: %s K: %s"
 
 #: src/amule.cpp:2065
 #, c-format
