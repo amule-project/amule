@@ -166,10 +166,12 @@ void CamuleRemoteGuiApp::OnPollTimer(wxTimerEvent&)
 		} else if (amuledlg->m_serverwnd->IsShown()) {
 			//serverlist->FullReload(EC_OP_GET_SERVER_LIST);
 		} else if (amuledlg->m_transferwnd->IsShown()) {
+			static bool firstcall = true;
 			downloadqueue->DoRequery(
-				theApp->m_FileDetailDialogActive ?
+				theApp->m_FileDetailDialogActive || firstcall ?
 					EC_OP_GET_DLOAD_QUEUE_DETAIL : EC_OP_GET_DLOAD_QUEUE,
 				EC_TAG_PARTFILE);
+			firstcall = false;
 			switch(amuledlg->m_transferwnd->clientlistctrl->GetListView()) {
 			case vtUploading:
 				uploadqueue->ReQueryUp();
@@ -466,6 +468,15 @@ void CamuleRemoteGuiApp::DisconnectED2K() {
 
 uint32 CamuleRemoteGuiApp::GetED2KID() const {
 	return serverconnect ? serverconnect->GetClientID() : 0;
+}
+
+
+void CamuleRemoteGuiApp::ShowUserCount() {
+	wxString buffer =
+		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(theStats::GetED2KUsers()) % 
+		CastItoIShort(theStats::GetKadUsers()) % CastItoIShort(theStats::GetED2KFiles()) % CastItoIShort(theStats::GetKadFiles());
+	
+	Notify_ShowUserCount(buffer);
 }
 
 
@@ -1365,6 +1376,7 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 			wxString c = commenttag->GetTagByIndex(i++)->GetStringData();
 			file->AddFileRatingList(u, f, r, c);
 		}
+		file->UpdateFileRatingCommentAvail();
 	}
 		
 	theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(file);
@@ -1590,6 +1602,7 @@ const CSearchResultList& CSearchListRem::GetSearchResults(long nSearchID)
 void CStatsUpdaterRem::HandlePacket(const CECPacket *packet)
 {
 	theStats::UpdateStats(packet);
+  theApp->ShowUserCount(); // maybe there should be a check if a usercount changed ?
 }
 
 
@@ -1700,12 +1713,41 @@ void CPartFile::UpdatePartsInfo()
 }
 
 
-//
-// Comments should be already here when dialog pops-up
 void CPartFile::UpdateFileRatingCommentAvail()
 {
-}
+	bool prevComment = m_hasComment;
+	int prevRating = m_iUserRating;
 
+	m_hasComment = false;
+	m_iUserRating = 0;
+	int ratingCount = 0;
+
+	FileRatingList::iterator it = m_FileRatingList.begin();
+	for (; it != m_FileRatingList.end(); ++it) {
+		SFileRating& cur_rat = *it;
+		
+		if (!cur_rat.Comment.IsEmpty()) {
+			m_hasComment = true;
+		}
+
+		uint8 rating = cur_rat.Rating;
+		if (rating) {
+			wxASSERT(rating <= 5);
+			
+			ratingCount++;
+			m_iUserRating += rating;
+		}
+	}
+	
+	if (ratingCount) {
+		m_iUserRating /= ratingCount;
+		wxASSERT(m_iUserRating > 0 && m_iUserRating <= 5);
+	}
+	
+	if ((prevComment != m_hasComment) || (prevRating != m_iUserRating)) {
+		UpdateDisplayedInfo();
+	}
+}
 
 bool CPartFile::SavePartFile(bool)
 {

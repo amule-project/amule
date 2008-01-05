@@ -673,7 +673,7 @@ double CECTag::GetDoubleData(void) const
 	return data;
 }
 
-void CECTag::ConstructStringTag(ec_tagname_t name, const std::string& data) {
+void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data) {
 	m_dataLen = strlen(data.c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {

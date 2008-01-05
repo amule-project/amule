@@ -185,24 +185,6 @@ void CEC_PartFile_Tag::Detail_Tag(CPartFile *file)
 		sn.AddTag(CECTag(EC_TAG_PARTFILE_SOURCE_NAMES, (uint64) its->count));
 	}
 	AddTag(sn);
-	
-	// Tag for comments
-	CECTag sc(EC_TAG_PARTFILE_COMMENTS, (uint64) 0);
-
-	const FileRatingList & list = file->GetRatingAndComments();
-// test code
-// file->AddFileRatingList(wxT("No user"), wxT("No File"), 2, wxT("No comment"));
-// file->AddFileRatingList(wxT("Some user"), wxT("Some File"), 2, wxT("Some comment"));
-	if (!list.empty()) {
-		for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
-			// Tag children are evaluated by index, not by name
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
-			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
-		}
-		AddTag(sc);
-	}
 }	
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, EC_DETAIL_LEVEL detail_level, bool detail)
@@ -231,6 +213,21 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 
 	if (detail) {
 		Detail_Tag(file);
+	}
+	
+	if (file->m_CommentUpdated) {
+		// Tag for comments
+		CECTag sc(EC_TAG_PARTFILE_COMMENTS, (uint64) 0);
+	
+		const FileRatingList & list = file->GetRatingAndComments();
+		for (FileRatingList::const_iterator it = list.begin(); it != list.end(); ++it) {
+			// Tag children are evaluated by index, not by name
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->UserName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->FileName));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, (uint64) it->Rating));
+			sc.AddTag(CECTag(EC_TAG_PARTFILE_COMMENTS, it->Comment));
+		}
+		AddTag(sc);
 	}
 
 	if (detail_level == EC_DETAIL_UPDATE) {

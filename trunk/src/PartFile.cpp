@@ -3266,19 +3266,6 @@ void CPartFile::UpdateFileRatingCommentAvail()
 }
 
 
-void CPartFile::UpdateDisplayedInfo(bool force)
-{
-	uint32 curTick = ::GetTickCount();
-
-	 // Wait 1.5s between each redraw
-	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
-		 Notify_DownloadCtrlUpdateItem(this);
-		m_lastRefreshedDLDisplay = curTick;
-	}
-	
-}
-
-
 void CPartFile::SetCategory(uint8 cat)
 {
 	wxASSERT( cat < theApp->glob_prefs->GetCatCount() );
@@ -3713,7 +3700,7 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 	for ( ; it != m_SrcList.end(); ++it ) {
 		CUpDownClient *cur_src = *it;
 		if (cur_src->GetFileComment().Length()>0 || cur_src->GetFileRating()>0) {
-			AddDebugLogLineM(false, logPartFile, wxString(wxT("found a comment for ")) << GetFileName());
+			// AddDebugLogLineM(false, logPartFile, wxString(wxT("found a comment for ")) << GetFileName());
 			m_FileRatingList.push_back(SFileRating(*cur_src));
 		}
 	}
@@ -3766,6 +3753,21 @@ const FileRatingList &CPartFile::GetRatingAndComments()
 }
 #endif // !CLIENT_GUI
 
+
+void CPartFile::UpdateDisplayedInfo(bool force)
+{
+	uint32 curTick = ::GetTickCount();
+	m_CommentUpdated = true;
+
+	 // Wait 1.5s between each redraw
+	 if(force || curTick-m_lastRefreshedDLDisplay > MINWAIT_BEFORE_DLDISPLAY_WINDOWUPDATE ) {
+		 Notify_DownloadCtrlUpdateItem(this);
+		m_lastRefreshedDLDisplay = curTick;
+	}
+	
+}
+
+
 void CPartFile::Init()
 {
 	m_showSources = false;
@@ -3794,6 +3796,7 @@ void CPartFile::Init()
 	
 	kBpsDown = 0.0;
 	
+	m_CommentUpdated = false;
 	m_hashsetneeded = true;
 	m_count = 0;
 	percentcompleted = 0;
