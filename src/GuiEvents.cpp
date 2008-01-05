@@ -78,6 +78,15 @@ namespace MuleNotify
 	}
 
 	
+	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
+	{
+#ifndef AMULE_DAEMON
+		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
+			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
+		}
+#endif
+	}
+
 #ifdef CLIENT_GUI
 	
 	void PartFile_Swap_A4AF(CPartFile* file)
@@ -197,15 +206,6 @@ namespace MuleNotify
 #endif
 	}
 
-
-	void DownloadCtrlUpdateItem(const void* NOT_ON_DAEMON(item))
-	{
-#ifndef AMULE_DAEMON
-		if (theApp->amuledlg->m_transferwnd && theApp->amuledlg->m_transferwnd->downloadlistctrl) {
-			theApp->amuledlg->m_transferwnd->downloadlistctrl->UpdateItem(item);
-		}
-#endif
-	}
 
 	void DownloadCtrlAddFile(CPartFile* NOT_ON_DAEMON(file))
 	{

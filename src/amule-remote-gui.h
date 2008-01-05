@@ -749,6 +749,7 @@ public:
 	
 	uint32 GetED2KID() const;
 	uint32 GetID() const;
+	void ShowUserCount();
 	
 	uint8 m_ConnState;
 

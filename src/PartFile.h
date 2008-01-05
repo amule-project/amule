@@ -202,6 +202,7 @@ public:
 	bool	IsStopped() const		{ return this ? m_stopped : true; }
 	bool	IsPaused() const		{ return m_paused; }
 	void	UpdateFileRatingCommentAvail();
+	bool	m_CommentUpdated;
 
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);

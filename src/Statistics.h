@@ -479,6 +479,10 @@ enum StatDataIndex {
 	sdDownOverhead,
 	sdWaitingClients,
 	sdBannedClients,
+	sdED2KUsers,
+	sdKadUsers,
+	sdED2KFiles,
+	sdKadFiles,
 
 	sdTotalItems
 };
@@ -512,6 +516,11 @@ private:
 	static	uint32	GetBannedCount()			{ return s_statData[sdBannedClients]; }
 
 	static	uint32	GetSharedFileCount()			{ return 0; } // TODO
+
+	static	uint32	GetED2KUsers()			{ return s_statData[sdED2KUsers]; }
+	static	uint32	GetKadUsers() 			{ return s_statData[sdKadUsers]; }
+	static	uint32	GetED2KFiles()			{ return s_statData[sdED2KFiles]; }
+	static	uint32	GetKadFiles() 			{ return s_statData[sdKadFiles]; }
 
 	static	void	UpdateStats(const CECPacket* stats);
 

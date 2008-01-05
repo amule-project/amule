@@ -270,6 +270,15 @@ CECPacket *Get_EC_Response_StatRequest(const CECPacket *request)
 			response->AddTag(CECTag(EC_TAG_STATS_DL_SPEED_LIMIT, (uint32)(thePrefs::GetMaxDownload()*1024.0)));
 			response->AddTag(CECTag(EC_TAG_STATS_UL_QUEUE_LEN, /*(uint32)*/theStats::GetWaitingUserCount()));
 			response->AddTag(CECTag(EC_TAG_STATS_TOTAL_SRC_COUNT, /*(uint32)*/theStats::GetFoundSources()));
+			// User/Filecounts
+			{
+				uint32 totaluser = 0, totalfile = 0;
+				theApp->serverlist->GetUserFileStatus( totaluser, totalfile );
+				response->AddTag(CECTag(EC_TAG_STATS_ED2K_USERS, totaluser));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_USERS, Kademlia::CKademlia::GetKademliaUsers()));
+				response->AddTag(CECTag(EC_TAG_STATS_ED2K_FILES, totalfile));
+				response->AddTag(CECTag(EC_TAG_STATS_KAD_FILES, Kademlia::CKademlia::GetKademliaFiles()));
+			}
 		case EC_DETAIL_UPDATE:
 		case EC_DETAIL_INC_UPDATE:
 			break;

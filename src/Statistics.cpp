@@ -956,6 +956,10 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdDownOverhead] = stats->GetTagByNameSafe(EC_TAG_STATS_DOWN_OVERHEAD)->GetInt();
 	s_statData[sdWaitingClients] = stats->GetTagByNameSafe(EC_TAG_STATS_UL_QUEUE_LEN)->GetInt();
 	s_statData[sdBannedClients] = stats->GetTagByNameSafe(EC_TAG_STATS_BANNED_COUNT)->GetInt();
+	s_statData[sdED2KUsers] = stats->GetTagByNameSafe(EC_TAG_STATS_ED2K_USERS)->GetInt();
+	s_statData[sdKadUsers] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_USERS)->GetInt();
+	s_statData[sdED2KFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_ED2K_FILES)->GetInt();
+	s_statData[sdKadFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FILES)->GetInt();
 };
 
 

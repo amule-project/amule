@@ -306,6 +306,15 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for Transferred / Completed not updated in remote GUI.
 		* Fix for PARTSIZE not beeing 64 bits. Enums are always 32
 		  bits, even if we use a 64 bit constant to initialize it.
+		* ratings/comment marks are now shown in the main transfer
+		  window (the little colored !! on the left).
+		* comments are now updated when comment packets arrive (not
+		  only when the show comment dialog is open).
+		* remote names are now updated once on startup. So there is no
+		  more 3s lag until the names are shown when the dialog is
+		  opened for the first time.
+		* ED2K/Kad User/Filecount is now shown in the remote-gui status
+		  bar.
 
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
