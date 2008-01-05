@@ -106,8 +106,8 @@ IMPLEMENT_APP(CamuleDaemonApp)
  */
 class CSocketSet {
 		int m_count;
-		int m_fds[1024], m_fd_idx[1024];
-		GSocket *m_gsocks[1024];
+		int m_fds[FD_SETSIZE], m_fd_idx[FD_SETSIZE];
+		GSocket *m_gsocks[FD_SETSIZE];
 
 		fd_set m_set;
 	public:
@@ -124,7 +124,7 @@ class CSocketSet {
 CSocketSet::CSocketSet()
 {
 	m_count = 0;
-	for(int i = 0; i < 1024; i++) {
+	for(int i = 0; i < FD_SETSIZE; i++) {
 		m_fds[i] = 0;
 		m_fd_idx[i] = 0xffff;
 		m_gsocks[i] = 0;
