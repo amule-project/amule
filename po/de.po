@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-04 02:31+0000\n"
+"POT-Creation-Date: 2008-01-05 02:31+0000\n"
 "PO-Revision-Date: 2007-11-17 13:21+0100\n"
 "Last-Translator: emperor <emperor2000@web.de>\n"
 "Language-Team:  <de@li.org>\n"
@@ -57,34 +57,34 @@ msgstr "Gelungen! Verbindung aufgebaut zu aMule "
 msgid "Succeeded! Connection established."
 msgstr "Verbindung hergestellt."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
 msgid "Hashing"
 msgstr "Prüfsumme erstellen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3847
 msgid "Completing"
 msgstr "Wird abgeschlossen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3850
 msgid "Complete"
 msgstr "Vollständig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausiert"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3856
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Fehlerhaft"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3863
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Herunterladen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3865
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Warten"
@@ -244,8 +244,8 @@ msgid "Are you sure that you wish to delete the selected friend(s)?"
 msgstr "Markierte(n) Freund(e) wirklich löschen?"
 
 #: src/FriendListCtrl.cpp:272 src/utils/wxCas/src/wxcasprefs.cpp:298
-#: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:563
-#: src/ServerListCtrl.cpp:577 src/amuleDlg.cpp:687 src/amuleDlg.cpp:1314
+#: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:564
+#: src/ServerListCtrl.cpp:578 src/amuleDlg.cpp:687 src/amuleDlg.cpp:1314
 #: src/DownloadListCtrl.cpp:578 src/DownloadListCtrl.cpp:892
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1011 src/muuli_wdr.cpp:1077 src/muuli_wdr.cpp:2800
@@ -281,7 +281,7 @@ msgid "Type"
 msgstr "Suchtyp"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
-#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:442
+#: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:443
 #: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:891
 msgid "Priority"
 msgstr "Priorität"
@@ -329,19 +329,19 @@ msgid "Very low"
 msgstr "Sehr niedrig"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
-#: src/ServerListCtrl.cpp:229 src/ServerListCtrl.cpp:438
+#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
 #: src/DownloadListCtrl.cpp:886 src/muuli_wdr.cpp:2864
 msgid "Low"
 msgstr "Niedrig"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
-#: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:439
+#: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:440
 #: src/DownloadListCtrl.cpp:887 src/muuli_wdr.cpp:2865
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
-#: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:440
+#: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:441
 #: src/DownloadListCtrl.cpp:888 src/muuli_wdr.cpp:2866
 msgid "High"
 msgstr "Hoch"
@@ -408,31 +408,31 @@ msgstr "Kopiere eD2k-Verweis in die Zwischenablage (&AICH Info)"
 msgid "Copy feedback to clipboard"
 msgstr "Feedback in die Zwischenablage kopieren"
 
-#: src/SharedFilesCtrl.cpp:303
+#: src/SharedFilesCtrl.cpp:304
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 "Du brauchst eine hohe ID (\"HighID\"), um einen gültigen Quellenverweis zu "
 "erstellen"
 
-#: src/SharedFilesCtrl.cpp:303 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:304 src/KadDlg.cpp:168 src/KadDlg.cpp:178
 #: src/amule.cpp:685
 msgid "Warning"
 msgstr "Warnung"
 
-#: src/SharedFilesCtrl.cpp:448
+#: src/SharedFilesCtrl.cpp:449
 #, c-format
 msgid "Shared Files (%i)"
 msgstr "Freigegebene Dateien (%i)"
 
-#: src/SharedFilesCtrl.cpp:606
+#: src/SharedFilesCtrl.cpp:607
 msgid "[PartFile]"
 msgstr "[PartFile]"
 
-#: src/SharedFilesCtrl.cpp:686 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1065
 msgid "Enter new name for this file:"
 msgstr "Einen neuen Namen für diese Datei eingeben:"
 
-#: src/SharedFilesCtrl.cpp:687 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:688 src/DownloadListCtrl.cpp:1066
 msgid "File rename"
 msgstr "Datei umbenennen"
 
@@ -1559,64 +1559,64 @@ msgstr "(Unbekannter Name)"
 msgid "Are you sure you want to delete the static server %s"
 msgstr "Wirklich den statischen Server '%s' löschen?"
 
-#: src/ServerListCtrl.cpp:236 src/ClientListCtrl.cpp:898
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:898
 #: src/ClientListCtrl.cpp:1042
 msgid "Yes"
 msgstr "Ja"
 
-#: src/ServerListCtrl.cpp:236 src/ClientListCtrl.cpp:900
+#: src/ServerListCtrl.cpp:237 src/ClientListCtrl.cpp:900
 #: src/ClientListCtrl.cpp:1044
 msgid "No"
 msgstr "Nein"
 
-#: src/ServerListCtrl.cpp:345
+#: src/ServerListCtrl.cpp:346
 #, c-format
 msgid "Failed to open '%s'"
 msgstr "Konnte '%s' nicht öffnen"
 
-#: src/ServerListCtrl.cpp:388
+#: src/ServerListCtrl.cpp:389
 #, c-format
 msgid "Servers (%i)"
 msgstr "Server (%i)"
 
-#: src/ServerListCtrl.cpp:436 src/PrefsUnifiedDlg.cpp:153
+#: src/ServerListCtrl.cpp:437 src/PrefsUnifiedDlg.cpp:153
 #: src/ServerWnd.cpp:180 src/ServerSocket.cpp:259 src/ServerSocket.cpp:274
 msgid "Server"
 msgstr "Server"
 
-#: src/ServerListCtrl.cpp:441
+#: src/ServerListCtrl.cpp:442
 msgid "Connect to server"
 msgstr "Verbinde mit Server"
 
-#: src/ServerListCtrl.cpp:446
+#: src/ServerListCtrl.cpp:447
 msgid "Mark server(s) as static"
 msgstr "Markiere Server als statisch"
 
-#: src/ServerListCtrl.cpp:447
+#: src/ServerListCtrl.cpp:448
 msgid "Mark server(s) as non-static"
 msgstr "Markiere Server als nicht statisch"
 
-#: src/ServerListCtrl.cpp:451
+#: src/ServerListCtrl.cpp:452
 msgid "Remove server(s)"
 msgstr "Entferne Server"
 
-#: src/ServerListCtrl.cpp:452
+#: src/ServerListCtrl.cpp:453
 msgid "Remove all servers"
 msgstr "Alle Server entfernen"
 
-#: src/ServerListCtrl.cpp:456
+#: src/ServerListCtrl.cpp:457
 msgid "Copy ED2k link(s) to clipboard"
 msgstr "Kopiere eD2k-Verweis(e) in die Zwischenablage"
 
-#: src/ServerListCtrl.cpp:464
+#: src/ServerListCtrl.cpp:465
 msgid "Reconnect to server"
 msgstr "Wiederverbinden mit Server"
 
-#: src/ServerListCtrl.cpp:561
+#: src/ServerListCtrl.cpp:562
 msgid "Are you sure that you wish to delete all servers?"
 msgstr "Wirklich alle Server löschen?"
 
-#: src/ServerListCtrl.cpp:575
+#: src/ServerListCtrl.cpp:576
 msgid "Are you sure that you wish to delete the selected server(s)?"
 msgstr "Wirklich markierte(n) Server löschen?"
 
@@ -2198,122 +2198,122 @@ msgstr "Ungültige Anfrage, Du solltest Dich zuerst authentifizieren."
 msgid "Access granted."
 msgstr "Zugang gewährt."
 
-#: src/ExternalConn.cpp:497
+#: src/ExternalConn.cpp:506
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
 msgstr ""
 "Fernsteuerungs-Part-Datei-Kommando gescheitert: Dateiprüfsumme nicht "
 "gefunden: %s"
 
-#: src/ExternalConn.cpp:499
+#: src/ExternalConn.cpp:508
 #, c-format
 msgid "FileHash not found: %s"
 msgstr "Dateiprüfsumme nicht gefunden: %s"
 
-#: src/ExternalConn.cpp:562 src/ExternalConn.cpp:646
+#: src/ExternalConn.cpp:571 src/ExternalConn.cpp:655
 msgid "OOPS! OpCode processing error!"
 msgstr "OOPS! OpCode-Verarbeitungsfehler!"
 
-#: src/ExternalConn.cpp:592
+#: src/ExternalConn.cpp:601
 msgid "Server not added"
 msgstr "Server nicht hinzugefügt"
 
-#: src/ExternalConn.cpp:610
+#: src/ExternalConn.cpp:619
 #, c-format
 msgid "server not found: %s"
 msgstr "Server nicht gefunden: %s"
 
-#: src/ExternalConn.cpp:626
+#: src/ExternalConn.cpp:635
 msgid "need to define server to be removed"
 msgstr "Der zu entfernende Server muss angegeben sein"
 
-#: src/ExternalConn.cpp:640
+#: src/ExternalConn.cpp:649
 msgid "ED2K is disabled in preferences."
 msgstr "eD2k ist in den Einstellungen deaktiviert."
 
-#: src/ExternalConn.cpp:736
+#: src/ExternalConn.cpp:745
 msgid "Search in progress. Refetch results in a moment!"
 msgstr "Suche läuft gerade. Aktualisiere gleich die Ergebnisse!"
 
-#: src/ExternalConn.cpp:741
+#: src/ExternalConn.cpp:750
 msgid "WebSearch from remote interface makes no sense."
 msgstr "Websuche mit der Fernsteuerungsschnittstelle macht keinen Sinn."
 
-#: src/ExternalConn.cpp:792
+#: src/ExternalConn.cpp:801
 msgid "Kad is disabled in preferences."
 msgstr "Kad ist in den Einstellungen deaktiviert."
 
-#: src/ExternalConn.cpp:953
+#: src/ExternalConn.cpp:962
 msgid "No points for graph."
 msgstr "Keine Punkte für Graphen."
 
-#: src/ExternalConn.cpp:962
+#: src/ExternalConn.cpp:971
 msgid "Your client is not configured for this detail level."
 msgstr "Der Client ist nicht nicht für diese Detailstufe eingestellt."
 
-#: src/ExternalConn.cpp:990
+#: src/ExternalConn.cpp:999
 msgid "ExternalConn: shutdown requested"
 msgstr "Externe Verbindungen: Herunterfahren gefordert"
 
-#: src/ExternalConn.cpp:1002
+#: src/ExternalConn.cpp:1011
 msgid "Already shutting down."
 msgstr "Wird bereits heruntergefahren."
 
-#: src/ExternalConn.cpp:1010
+#: src/ExternalConn.cpp:1019
 #, c-format
 msgid "ExternalConn: adding link '%s'."
 msgstr "Externe Verbindungen: Füge hinzu Verweis '%s'."
 
-#: src/ExternalConn.cpp:1016
+#: src/ExternalConn.cpp:1025
 msgid "Invalid link or already on list."
 msgstr "Ungültiger Verweis oder schon auf der Liste"
 
-#: src/ExternalConn.cpp:1101
+#: src/ExternalConn.cpp:1110
 msgid "File not found."
 msgstr "Datei nicht gefunden."
 
-#: src/ExternalConn.cpp:1106
+#: src/ExternalConn.cpp:1115
 msgid "Invalid file name."
 msgstr "Ungültiger Dateiname."
 
-#: src/ExternalConn.cpp:1114
+#: src/ExternalConn.cpp:1123
 msgid "Unable to rename file."
 msgstr "Datei kann nicht umbenannt werden."
 
-#: src/ExternalConn.cpp:1315
+#: src/ExternalConn.cpp:1324
 msgid "Already connected to ED2K."
 msgstr "Bereits mit eD2k verbunden."
 
-#: src/ExternalConn.cpp:1318
+#: src/ExternalConn.cpp:1327
 msgid "Connecting to ED2K..."
 msgstr "Verbinde mit eD2k..."
 
-#: src/ExternalConn.cpp:1326
+#: src/ExternalConn.cpp:1335
 msgid "Already connected to Kad."
 msgstr "Bereits mit Kad verbunden."
 
-#: src/ExternalConn.cpp:1329
+#: src/ExternalConn.cpp:1338
 msgid "Connecting to Kad..."
 msgstr "Verbinde mit Kad..."
 
-#: src/ExternalConn.cpp:1334
+#: src/ExternalConn.cpp:1343
 msgid "All networks are disabled."
 msgstr "Alle Netzwerke sind deaktiviert."
 
-#: src/ExternalConn.cpp:1342
+#: src/ExternalConn.cpp:1351
 msgid "Disconnected from ED2K."
 msgstr "Von eD2k getrennt."
 
-#: src/ExternalConn.cpp:1346
+#: src/ExternalConn.cpp:1355
 msgid "Disconnected from Kad."
 msgstr "Von Kad getrennt."
 
-#: src/ExternalConn.cpp:1354
+#: src/ExternalConn.cpp:1363
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr "Externe Verbindungen: ungültigen Opcode empfangen: %#x"
 
-#: src/ExternalConn.cpp:1357
+#: src/ExternalConn.cpp:1366
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr "Ungültiger OpCode (falsche Protokollversion?)"
 
@@ -2874,38 +2874,38 @@ msgstr "Die angegebene Benutzerprüfsumme ist nicht gültig!"
 msgid "Sources"
 msgstr "Quellen"
 
-#: src/SearchListCtrl.cpp:551 src/ClientListCtrl.cpp:517
+#: src/SearchListCtrl.cpp:553 src/ClientListCtrl.cpp:517
 #: src/ClientListCtrl.cpp:820
 msgid "File"
 msgstr "Datei"
 
-#: src/SearchListCtrl.cpp:552 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1754
+#: src/SearchListCtrl.cpp:554 src/muuli_wdr.cpp:368 src/muuli_wdr.cpp:1754
 #: src/muuli_wdr.cpp:1798
 msgid "Download"
 msgstr "Download"
 
-#: src/SearchListCtrl.cpp:554 src/DownloadListCtrl.cpp:940
+#: src/SearchListCtrl.cpp:556 src/DownloadListCtrl.cpp:940
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:241 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategorie"
 
-#: src/SearchListCtrl.cpp:555 src/SearchDlg.cpp:589
+#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:589
 msgid "Main"
 msgstr "Hauptkategorie"
 
-#: src/SearchListCtrl.cpp:561
+#: src/SearchListCtrl.cpp:563
 msgid "Download in category"
 msgstr "Herunterladen in Kategorie"
 
-#: src/SearchListCtrl.cpp:567
+#: src/SearchListCtrl.cpp:569
 msgid "Search related files (ED2k, local server)"
 msgstr "Suche verwandte Dateien (eD2k, lokale Server)"
 
-#: src/SearchListCtrl.cpp:572
+#: src/SearchListCtrl.cpp:574
 msgid "Mark as known file"
 msgstr "Als unbekannte Datei kennzeichnen"
 
-#: src/SearchListCtrl.cpp:576
+#: src/SearchListCtrl.cpp:578
 msgid "Copy ED2k link to clipboard"
 msgstr "Kopiere eD2k-Verweis in die Zwischenablage"
 
@@ -2913,21 +2913,26 @@ msgstr "Kopiere eD2k-Verweis in die Zwischenablage"
 msgid "Connect to remote amule"
 msgstr "Verbinde mit entferntem aMule"
 
-#: src/amule-remote-gui.cpp:280
+#: src/amule-remote-gui.cpp:282
 msgid "Connection failed "
 msgstr "Verbindung fehlgeschlagen "
 
-#: src/amule-remote-gui.cpp:280 src/OtherFunctions.cpp:134
+#: src/amule-remote-gui.cpp:282 src/OtherFunctions.cpp:134
 #: src/OtherFunctions.cpp:152 src/OtherFunctions.cpp:206 src/amule.cpp:855
 #: src/amule.cpp:971 src/amule.cpp:1346
 msgid "Error"
 msgstr "Fehler"
 
-#: src/amule-remote-gui.cpp:522 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:476 src/amule.cpp:1996
+#, c-format
+msgid "Users: E: %s K: %s | Files E: %s K: %s"
+msgstr "User: E: %s K: %s | Dateien E: %s K: %s"
+
+#: src/amule-remote-gui.cpp:533 src/TransferWnd.cpp:341
 msgid "All"
 msgstr "Alle"
 
-#: src/amule-remote-gui.cpp:753
+#: src/amule-remote-gui.cpp:764
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr "Benutzer insgesamt: %s | Dateien insgesamt: %s"
@@ -3274,11 +3279,11 @@ msgstr "Heruntergeladener Teil %i in Datei '%s' ist defekt"
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Defekter Teil %i in %s wiederhergestellt -> Gesparte Bytes: %s"
 
-#: src/PartFile.cpp:3856
+#: src/PartFile.cpp:3859
 msgid "Insufficient Diskspace"
 msgstr "Ungenügender Festplattenplatz"
 
-#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3870 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Angehalten"
 
@@ -7019,11 +7024,6 @@ msgstr "Deine Kopie von aMule ist aktuell."
 #: src/amule.cpp:1894
 msgid "Failed to download the version check file"
 msgstr "Konnte die Versionsprüfungsdatei nicht herunterladen"
-
-#: src/amule.cpp:1996
-#, c-format
-msgid "Users: E: %s K: %s | Files E: %s K: %s"
-msgstr "User: E: %s K: %s | Dateien E: %s K: %s"
 
 #: src/amule.cpp:2065
 #, c-format
