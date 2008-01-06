@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-05 02:31+0000\n"
+"POT-Creation-Date: 2008-01-06 02:31+0000\n"
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
@@ -51,34 +51,34 @@ msgstr ""
 msgid "Succeeded! Connection established."
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "Hashing"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "Zavrsavanje"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "Zavrseno"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausirano"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3856
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Sa greskom"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3863
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Downloading"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3865
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Cekanje"
@@ -133,9 +133,9 @@ msgstr ""
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
-#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
+#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
+#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:856
+#: src/KnownFile.cpp:862 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -193,7 +193,7 @@ msgstr "Zatrazen nepoznat fajl"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr ""
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -254,7 +254,7 @@ msgid "Multiple selection"
 msgstr ""
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Ime fajla"
@@ -899,7 +899,7 @@ msgid " kB/s, Upload: "
 msgstr ""
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
-#: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:161
+#: src/DownloadListCtrl.cpp:1609 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762
 #: src/muuli_wdr.cpp:1775 src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806
 #: src/muuli_wdr.cpp:1819 src/ClientListCtrl.cpp:646
@@ -1210,7 +1210,7 @@ msgstr "Pita"
 msgid "Connecting via server"
 msgstr "Spaja preko servera"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Pun red cekanja"
@@ -1657,8 +1657,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
-#: src/PartFile.cpp:932 src/PartFile.cpp:948
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:915
+#: src/PartFile.cpp:926 src/PartFile.cpp:942
 msgid "Message"
 msgstr ""
 
@@ -2347,15 +2347,15 @@ msgstr ""
 msgid "No buddy"
 msgstr ""
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:243
 msgid "Average Users:"
 msgstr ""
 
-#: src/ServerWnd.cpp:237
+#: src/ServerWnd.cpp:246
 msgid "Average Files:"
 msgstr ""
 
-#: src/ServerWnd.cpp:250 src/TextClient.cpp:692
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:692
 msgid "Not running"
 msgstr ""
 
@@ -2960,44 +2960,44 @@ msgstr ""
 msgid "Swap to this file"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1438
+#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
 msgid "%y/%m/%d %H:%M:%S"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "Upitao za drugi fajl"
 
-#: src/DownloadListCtrl.cpp:2056
+#: src/DownloadListCtrl.cpp:2051
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Downloads (%i)"
 
-#: src/DownloadListCtrl.cpp:2239
+#: src/DownloadListCtrl.cpp:2234
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2240
+#: src/DownloadListCtrl.cpp:2235
 msgid "File preview"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2254
 msgid "ERROR: Failed to execute external media-player!"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2260
+#: src/DownloadListCtrl.cpp:2255
 #, c-format
 msgid "Command: %s"
 msgstr ""
@@ -3056,94 +3056,94 @@ msgstr ""
 msgid "Failed to open %s (%s)"
 msgstr "Neuspjelo otvaranje %s (%s)"
 
-#: src/PartFile.cpp:709
+#: src/PartFile.cpp:703
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr ""
 
-#: src/PartFile.cpp:889 src/PartFile.cpp:894
+#: src/PartFile.cpp:883 src/PartFile.cpp:888
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr ""
 
-#: src/PartFile.cpp:918
+#: src/PartFile.cpp:912
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:929
+#: src/PartFile.cpp:923
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:945
+#: src/PartFile.cpp:939
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:1014
+#: src/PartFile.cpp:1008
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Neuspjesno spasavanje part.met.seeds fajla za %s"
 
-#: src/PartFile.cpp:1040
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
 
-#: src/PartFile.cpp:1069
+#: src/PartFile.cpp:1063
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Poceti fajl %s (%s) nema seesd fajlova"
 
-#: src/PartFile.cpp:1078
+#: src/PartFile.cpp:1072
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr ""
 
-#: src/PartFile.cpp:1134
+#: src/PartFile.cpp:1128
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 
-#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
+#: src/PartFile.cpp:1144 src/PartFile.cpp:1167
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr ""
 
-#: src/PartFile.cpp:1187
+#: src/PartFile.cpp:1181
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr ""
 
-#: src/PartFile.cpp:1224
+#: src/PartFile.cpp:1218
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Zavrseno rehashing %s"
 
-#: src/PartFile.cpp:2241
+#: src/PartFile.cpp:2235
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Neocekivana fajl greska prilikom zavrsavanja %s. Fajl pauziran"
 
-#: src/PartFile.cpp:2267
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Finished downloading: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2324
+#: src/PartFile.cpp:2318
 #, c-format
 msgid "Deleting file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2388
+#: src/PartFile.cpp:2382
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
-#: src/PartFile.cpp:2393
+#: src/PartFile.cpp:2387
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3152,26 +3152,26 @@ msgstr ""
 "Upozorenje: Nemoguce hashovanje gotovog dijela - hashset nedovrsen (%s). Ovo "
 "ne smije da se desi"
 
-#: src/PartFile.cpp:3073
+#: src/PartFile.cpp:3067
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3158
+#: src/PartFile.cpp:3152
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3201
+#: src/PartFile.cpp:3195
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3859
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr ""
 
-#: src/PartFile.cpp:3870 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Stopirano"
 
@@ -3223,19 +3223,19 @@ msgstr ""
 msgid "File Comments"
 msgstr "Komentari fajla"
 
-#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "Ocjena"
 
-#: src/CommentDialogLst.cpp:60
+#: src/CommentDialogLst.cpp:58
 msgid "Comment"
 msgstr ""
 
-#: src/CommentDialogLst.cpp:105
+#: src/CommentDialogLst.cpp:102
 msgid "No comments"
 msgstr "Bez komentara"
 
-#: src/CommentDialogLst.cpp:107
+#: src/CommentDialogLst.cpp:104
 #, c-format
 msgid "%s comment(s)"
 msgstr ""

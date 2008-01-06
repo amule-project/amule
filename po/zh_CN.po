@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-05 02:31+0000\n"
+"POT-Creation-Date: 2008-01-06 02:31+0000\n"
 "PO-Revision-Date: 2007-12-21 23:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -52,34 +52,34 @@ msgstr "成功！连接成功建立"
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "正在校检"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "正在完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "完成"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "已暂停"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3856
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "已出错"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3863
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "正在下载"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3865
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "等待中"
@@ -134,9 +134,9 @@ msgstr "无法获取用户 %s 的共享文件"
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
-#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
+#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
+#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:856
+#: src/KnownFile.cpp:862 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -193,7 +193,7 @@ msgstr "请求了未知文件"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "用户 %s 位于 %s:%d，使用 %s %s %s"
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -256,7 +256,7 @@ msgid "Multiple selection"
 msgstr "多选"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "文件名"
@@ -910,7 +910,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s，上传："
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
-#: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:161
+#: src/DownloadListCtrl.cpp:1609 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762
 #: src/muuli_wdr.cpp:1775 src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806
 #: src/muuli_wdr.cpp:1819 src/ClientListCtrl.cpp:646
@@ -1229,7 +1229,7 @@ msgstr "正在询问"
 msgid "Connecting via server"
 msgstr "通过服务器连接中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "队列已满"
@@ -1681,8 +1681,8 @@ msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
-#: src/PartFile.cpp:932 src/PartFile.cpp:948
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:915
+#: src/PartFile.cpp:926 src/PartFile.cpp:942
 msgid "Message"
 msgstr "消息"
 
@@ -2386,15 +2386,15 @@ msgstr "已连接至好友"
 msgid "No buddy"
 msgstr "没有好友"
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:243
 msgid "Average Users:"
 msgstr "平均用户："
 
-#: src/ServerWnd.cpp:237
+#: src/ServerWnd.cpp:246
 msgid "Average Files:"
 msgstr "平均文件："
 
-#: src/ServerWnd.cpp:250 src/TextClient.cpp:692
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:692
 msgid "Not running"
 msgstr "没有运行"
 
@@ -2999,29 +2999,29 @@ msgstr "发送消息"
 msgid "Swap to this file"
 msgstr "转移到这个文件"
 
-#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1438
+#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "已请求其它文件"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "排队顺序：%u（%i）"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "已要求其它文件 (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2056
+#: src/DownloadListCtrl.cpp:2051
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下载（%i）"
 
-#: src/DownloadListCtrl.cpp:2239
+#: src/DownloadListCtrl.cpp:2234
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3030,15 +3030,15 @@ msgstr ""
 "请在设置中设置您的视频播放器，\n"
 "同时 aMule 会尝试使用 mplayer，并在每次预览时你都会看到这个提示 "
 
-#: src/DownloadListCtrl.cpp:2240
+#: src/DownloadListCtrl.cpp:2235
 msgid "File preview"
 msgstr "文件预览"
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2254
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "错误：无法运行媒体播放器！"
 
-#: src/DownloadListCtrl.cpp:2260
+#: src/DownloadListCtrl.cpp:2255
 #, c-format
 msgid "Command: %s"
 msgstr "命令：%s"
@@ -3097,57 +3097,57 @@ msgstr "无法恢复文件：("
 msgid "Failed to open %s (%s)"
 msgstr "无法读取 %s（%s）"
 
-#: src/PartFile.cpp:709
+#: src/PartFile.cpp:703
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "警告：%s 可能已损坏（%i）"
 
-#: src/PartFile.cpp:889 src/PartFile.cpp:894
+#: src/PartFile.cpp:883 src/PartFile.cpp:888
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "part 文件存盘时发生错误：%s（%s => %s）"
 
-#: src/PartFile.cpp:918
+#: src/PartFile.cpp:912
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "无法读取 %s - 现在使用 %s"
 
-#: src/PartFile.cpp:929
+#: src/PartFile.cpp:923
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:945
+#: src/PartFile.cpp:939
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' 文件长度为 0 - 使用 %s 文件。"
 
-#: src/PartFile.cpp:1014
+#: src/PartFile.cpp:1008
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s 的 part.met.seeds 文件存盘失败"
 
-#: src/PartFile.cpp:1040
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "保存了 %i 个源给 part 文件 %s（%s）的 "
 
-#: src/PartFile.cpp:1069
+#: src/PartFile.cpp:1063
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Part 文件 %s（%s）没有种子文件"
 
-#: src/PartFile.cpp:1078
+#: src/PartFile.cpp:1072
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Part 文件 %s（%s）的种子文件为空"
 
-#: src/PartFile.cpp:1134
+#: src/PartFile.cpp:1128
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "读取 part 文件的种子文件出错（%s - %s）：%s"
 
-#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
+#: src/PartFile.cpp:1144 src/PartFile.cpp:1167
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3155,63 +3155,63 @@ msgid ""
 msgstr ""
 "发现损坏的数据块 (%d) 于%d段文件 %s - 文件结果校检码 |%s| 文件校检码 |%s|"
 
-#: src/PartFile.cpp:1187
+#: src/PartFile.cpp:1181
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "发现了已完成的数据段 %i 在%s"
 
-#: src/PartFile.cpp:1224
+#: src/PartFile.cpp:1218
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "重新校验 %s 完成"
 
-#: src/PartFile.cpp:2241
+#: src/PartFile.cpp:2235
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "在完成文件 %s 时遇到意外文件错误，文件已暂停"
 
-#: src/PartFile.cpp:2267
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "完成下载：%s"
 
-#: src/PartFile.cpp:2324
+#: src/PartFile.cpp:2318
 #, c-format
 msgid "Deleting file: %s"
 msgstr "正在删除文件：%s "
 
-#: src/PartFile.cpp:2388
+#: src/PartFile.cpp:2382
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "警告：无法为已下载的数据段计算校检码 - 校检码集残缺 '%s'"
 
-#: src/PartFile.cpp:2393
+#: src/PartFile.cpp:2387
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr "警告：无法生成校检码 - 校检码残缺（%s）， 正常情况下这是不应该发生的"
 
-#: src/PartFile.cpp:3073
+#: src/PartFile.cpp:3067
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "警告：硬盘空间不足！暂停文件：%s"
 
-#: src/PartFile.cpp:3158
+#: src/PartFile.cpp:3152
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "下载的数据段 %i 已损坏 文件： (%s)"
 
-#: src/PartFile.cpp:3201
+#: src/PartFile.cpp:3195
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）： %s"
 
-#: src/PartFile.cpp:3859
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr "硬盘空间不足"
 
-#: src/PartFile.cpp:3870 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "已停止"
 
@@ -3263,19 +3263,19 @@ msgstr "错误！试图共享 %s"
 msgid "File Comments"
 msgstr "文件注释"
 
-#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "评级"
 
-#: src/CommentDialogLst.cpp:60
+#: src/CommentDialogLst.cpp:58
 msgid "Comment"
 msgstr "注释"
 
-#: src/CommentDialogLst.cpp:105
+#: src/CommentDialogLst.cpp:102
 msgid "No comments"
 msgstr "没有注释"
 
-#: src/CommentDialogLst.cpp:107
+#: src/CommentDialogLst.cpp:104
 #, c-format
 msgid "%s comment(s)"
 msgstr "%s 条注释"

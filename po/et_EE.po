@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-05 02:31+0000\n"
+"POT-Creation-Date: 2008-01-06 02:31+0000\n"
 "PO-Revision-Date: 2008-01-02 21:50+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -56,34 +56,34 @@ msgstr "Õnnestus! Ühendus aMulaga loodud "
 msgid "Succeeded! Connection established."
 msgstr "Õnnestus! Ühendus loodud."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "Räsin"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "Lõpetatud"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "Valmis"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausitud"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3856
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Vigane"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3863
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Tõmban"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3865
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Ootan"
@@ -139,9 +139,9 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
-#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1440
-#: src/PartFile.cpp:2623 src/PartFile.cpp:2629 src/KnownFile.cpp:855
-#: src/KnownFile.cpp:861 src/FileDetailDialog.cpp:130
+#: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
+#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:856
+#: src/KnownFile.cpp:862 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -201,7 +201,7 @@ msgstr "Küsiti tundmatut faili"
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klient %s IP:Port %s:%d kasutab %s %s %s"
 
-#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:57
+#: src/FriendListCtrl.cpp:79 src/CommentDialogLst.cpp:55
 #: src/ClientListCtrl.cpp:516 src/ClientListCtrl.cpp:819
 #: src/ClientListCtrl.cpp:988
 msgid "Username"
@@ -264,7 +264,7 @@ msgid "Multiple selection"
 msgstr "Vali mitu"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
-#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:58
+#: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
 msgid "File Name"
 msgstr "Faili nimi"
@@ -918,7 +918,7 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Saatmine: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1106 src/DownloadListCtrl.cpp:1299
-#: src/DownloadListCtrl.cpp:1608 src/OtherFunctions.cpp:161
+#: src/DownloadListCtrl.cpp:1609 src/OtherFunctions.cpp:161
 #: src/StatisticsDlg.cpp:84 src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762
 #: src/muuli_wdr.cpp:1775 src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806
 #: src/muuli_wdr.cpp:1819 src/ClientListCtrl.cpp:646
@@ -1241,7 +1241,7 @@ msgstr "Pärin"
 msgid "Connecting via server"
 msgstr "Ühendun serveri kaudu"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:702
 msgid "Queue Full"
 msgstr "Järjekord täis"
@@ -1696,8 +1696,8 @@ msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:921
-#: src/PartFile.cpp:932 src/PartFile.cpp:948
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:915
+#: src/PartFile.cpp:926 src/PartFile.cpp:942
 msgid "Message"
 msgstr "Teade"
 
@@ -2406,15 +2406,15 @@ msgstr "Ühendus semuga"
 msgid "No buddy"
 msgstr "Semu puudub"
 
-#: src/ServerWnd.cpp:234
+#: src/ServerWnd.cpp:243
 msgid "Average Users:"
 msgstr "Keskmiselt kasutajaid:"
 
-#: src/ServerWnd.cpp:237
+#: src/ServerWnd.cpp:246
 msgid "Average Files:"
 msgstr "Keskmiselt faile:"
 
-#: src/ServerWnd.cpp:250 src/TextClient.cpp:692
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:692
 msgid "Not running"
 msgstr "Ei tööta"
 
@@ -3027,29 +3027,29 @@ msgstr "Saada teade"
 msgid "Swap to this file"
 msgstr "Tõsta selle faili külge"
 
-#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1438
+#: src/DownloadListCtrl.cpp:1428 src/DownloadListCtrl.cpp:1439
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%H:%M:%S %d/%m/%y"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "JK: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "Küsitud teist faili"
 
-#: src/DownloadListCtrl.cpp:2056
+#: src/DownloadListCtrl.cpp:2051
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Tõmbamised (%i)"
 
-#: src/DownloadListCtrl.cpp:2239
+#: src/DownloadListCtrl.cpp:2234
 msgid ""
 "Please set your prefered video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3059,15 +3059,15 @@ msgstr ""
 "Senikaua proovib aMule kasutada mpalyer'it ja sa\n"
 "saad selle hoiatuse igal eelvaatuse katsel"
 
-#: src/DownloadListCtrl.cpp:2240
+#: src/DownloadListCtrl.cpp:2235
 msgid "File preview"
 msgstr "Faili eelvaade"
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2254
 msgid "ERROR: Failed to execute external media-player!"
 msgstr "VIGA: Ei suutnud käivitada välist meediamängijat!"
 
-#: src/DownloadListCtrl.cpp:2260
+#: src/DownloadListCtrl.cpp:2255
 #, c-format
 msgid "Command: %s"
 msgstr "Käsk: %s"
@@ -3126,57 +3126,57 @@ msgstr "Ei suuda faili infot taastada :("
 msgid "Failed to open %s (%s)"
 msgstr "Ei suuda avada: %s (%s)"
 
-#: src/PartFile.cpp:709
+#: src/PartFile.cpp:703
 #, c-format
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "HOIATUS: %s võib olla riknenud (%i)"
 
-#: src/PartFile.cpp:889 src/PartFile.cpp:894
+#: src/PartFile.cpp:883 src/PartFile.cpp:888
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "VIGA salvestades osafaili: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:918
+#: src/PartFile.cpp:912
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "Ei suuda avada %s faili - kasutan %s faili."
 
-#: src/PartFile.cpp:929
+#: src/PartFile.cpp:923
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr "Ei suuda tõmmata '%s' pikkust - kasutan %s faili."
 
-#: src/PartFile.cpp:945
+#: src/PartFile.cpp:939
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "'%s' on millegipärast 0 suurusega - kasutan %s faili."
 
-#: src/PartFile.cpp:1014
+#: src/PartFile.cpp:1008
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Ei saanud salvestada faili part.met.seeds %s jaoks!"
 
-#: src/PartFile.cpp:1040
+#: src/PartFile.cpp:1034
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Salvestatud %i allikat osafailile: %s (%s)"
 
-#: src/PartFile.cpp:1069
+#: src/PartFile.cpp:1063
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Osafail %s (%s) ei oma toitefaili"
 
-#: src/PartFile.cpp:1078
+#: src/PartFile.cpp:1072
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Osafailil %s (%s) on kehtetu toitefail"
 
-#: src/PartFile.cpp:1134
+#: src/PartFile.cpp:1128
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "VIGA osafaili toitefaili lugemisel (%s - %s): %s"
 
-#: src/PartFile.cpp:1150 src/PartFile.cpp:1173
+#: src/PartFile.cpp:1144 src/PartFile.cpp:1167
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3185,37 +3185,37 @@ msgstr ""
 "Leidsin riknenud osa (%d) %d osast fail '%s' - Arvutatud Kontrollsumma |%s| "
 "Saadetud Kontrollsumma |%s|"
 
-#: src/PartFile.cpp:1187
+#: src/PartFile.cpp:1181
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Leitud lõpetatud osa (%i)  %s"
 
-#: src/PartFile.cpp:1224
+#: src/PartFile.cpp:1218
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "'%s' faili kontrollsumma arvutamine lõpetatud"
 
-#: src/PartFile.cpp:2241
+#: src/PartFile.cpp:2235
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Ootamatu failiviga %s lõpetamise ajal. Fail pausitud"
 
-#: src/PartFile.cpp:2267
+#: src/PartFile.cpp:2261
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Faili '%s' tõmbamine lõpetatud"
 
-#: src/PartFile.cpp:2324
+#: src/PartFile.cpp:2318
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Kustutan faili: %s"
 
-#: src/PartFile.cpp:2388
+#: src/PartFile.cpp:2382
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "HOIATUS: Ei suuda luua hash'i - hashset mittetäielik '%s'"
 
-#: src/PartFile.cpp:2393
+#: src/PartFile.cpp:2387
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3224,26 +3224,26 @@ msgstr ""
 "VIGA: ei suuda tõmmatud osale arvutada kontrollsummat- kontrollsumma on "
 "mittetäielik(%s). Seda ei tohiks kunagi juhtuda."
 
-#: src/PartFile.cpp:3073
+#: src/PartFile.cpp:3067
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "HOIATUS: Pole piisavalt vaba kettaruumi! Pausin faili: %s"
 
-#: src/PartFile.cpp:3158
+#: src/PartFile.cpp:3152
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Tõmmatud osa %i on failis %s vigane"
 
-#: src/PartFile.cpp:3201
+#: src/PartFile.cpp:3195
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Taastatud riknenud osa %i %s jaoks -> Päästsin: %s baiti"
 
-#: src/PartFile.cpp:3859
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr "Kettaruumi ei jätku"
 
-#: src/PartFile.cpp:3870 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Peatatud"
 
@@ -3298,19 +3298,19 @@ msgstr "VIGA! Proovisid jagada %s"
 msgid "File Comments"
 msgstr "Faili kommentaarid"
 
-#: src/CommentDialogLst.cpp:59 src/ClientListCtrl.cpp:823
+#: src/CommentDialogLst.cpp:57 src/ClientListCtrl.cpp:823
 msgid "Rating"
 msgstr "Hinnang"
 
-#: src/CommentDialogLst.cpp:60
+#: src/CommentDialogLst.cpp:58
 msgid "Comment"
 msgstr "Kommentaar"
 
-#: src/CommentDialogLst.cpp:105
+#: src/CommentDialogLst.cpp:102
 msgid "No comments"
 msgstr "Kommentaarid puuduvad"
 
-#: src/CommentDialogLst.cpp:107
+#: src/CommentDialogLst.cpp:104
 #, c-format
 msgid "%s comment(s)"
 msgstr "%s kommentaar(i)"
