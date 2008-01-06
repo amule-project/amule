@@ -1434,8 +1434,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	
 	// Laste received
 	case 11: {
-		if ( file->GetLastChangeDatetime().IsValid() ) {
-			text = file->GetLastChangeDatetime().Format( _("%y/%m/%d %H:%M:%S") );
+		wxDateTime date(file->GetLastChangeDatetime());
+		if ( date.IsValid() ) {
+			text = date.Format( _("%y/%m/%d %H:%M:%S") );
 		} else {
 			text = _("Unknown");
 		}
@@ -1913,15 +1914,9 @@ int CDownloadListCtrl::Compare( const CPartFile* file1, const CPartFile* file2, 
 
 	// Sort by last reception
 	case 11:
-		if (!file1->GetLastChangeDatetime().IsValid()) {			
-			result = -1;
-		} else if (!file2->GetLastChangeDatetime().IsValid()) {
-			result = 1;
-		} else {
-			result = CmpAny(
-				file1->GetLastChangeDatetime(),
-				file2->GetLastChangeDatetime() );
-		}
+		result = CmpAny(
+			file1->GetLastChangeDatetime(),
+			file2->GetLastChangeDatetime() );
 		break;
 	}
 

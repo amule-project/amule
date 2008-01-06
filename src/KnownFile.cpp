@@ -299,7 +299,6 @@ CAbstractFile(static_cast<const CAbstractFile &>(searchFile))
 
 void CKnownFile::Init() 
 {
-	m_date = 0;
 	m_nCompleteSourcesTime = time(NULL);
 	m_nCompleteSourcesCount = 0;
 	m_nCompleteSourcesCountLo = 0;
@@ -313,6 +312,7 @@ void CKnownFile::Init()
 	m_lastPublishTimeKadSrc = 0;
 	m_lastPublishTimeKadNotes = 0;
 	m_lastBuddyIP = 0;
+	m_lastDateChanged = 0;
 
 	statistic.fileParent = this;
 	m_pAICHHashSet = new CAICHHashSet(this);
@@ -612,7 +612,8 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 
 bool CKnownFile::LoadDateFromFile(const CFileDataIO* file)
 {
-	m_date = file->ReadUInt32();
+	m_lastDateChanged = file->ReadUInt32();
+
 	return true;
 }
 
@@ -635,7 +636,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	wxCHECK(!IsPartFile(), false);
 	
 	// date
-	file->WriteUInt32(m_date); 
+	file->WriteUInt32(m_lastDateChanged); 
 	// hashset
 	file->WriteHash(m_abyFileHash);
 	

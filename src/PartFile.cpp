@@ -661,11 +661,6 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 		return false;
 	}
 	
-	// Update last-changed date if anything has been written
-	if ( transferred ) {
-		m_lastDateChanged = wxFileName( strSearchPath ).GetModificationTime();
-	}
-
 	SetPartFileStatus(PS_EMPTY);
 
 	try {
@@ -703,12 +698,11 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	}
 
 	if (!isnewstyle) { // not for importing	
-		time_t file_date = GetLastModificationTime(m_fullname);
-		if (	(((time_t)m_date) < (time_t)(file_date - 10)) ||
-			(((time_t)m_date) > (time_t)(file_date + 10))) {
+		const time_t file_date = GetLastModificationTime(strSearchPath);
+		if (m_lastDateChanged != file_date) {
 			AddLogLineM(false, CFormat( _("Warning: %s might be corrupted (%i)") )
-				% m_fullname 
-				% (m_date - file_date) );
+				% strSearchPath
+				% (m_lastDateChanged - file_date) );
 			// rehash
 			SetPartFileStatus(PS_WAITINGFORHASH);
 			
@@ -764,7 +758,7 @@ bool CPartFile::SavePartFile(bool Initial)
 		// version
 		file.WriteUInt8(IsLargeFile() ? PARTFILE_VERSION_LARGEFILE : PARTFILE_VERSION);
 		
-		file.WriteUInt32(GetLastModificationTime(m_fullname));
+		file.WriteUInt32(GetLastModificationTime(m_fullname.Left(m_fullname.Length() - 4)));
 		// hash
 		file.WriteHash(m_abyFileHash);
 		uint16 parts = m_hashlist.size();
@@ -1142,7 +1136,7 @@ void CPartFile::LoadSourceSeeds()
 
 void CPartFile::PartFileHashFinished(CKnownFile* result)
 {
-	m_date = result->m_date;
+	m_lastDateChanged = result->m_lastDateChanged;
 	bool errorfound = false;
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
@@ -3112,7 +3106,7 @@ void CPartFile::FlushBuffer(bool /*forcewait*/, bool bForceICH, bool bNoAICH)
 	
 	
 	// Update last-changed date
-	m_lastDateChanged = wxDateTime().Now();
+	m_lastDateChanged = wxDateTime::GetTimeNow();
 
 	try {	
 		// Partfile should never be too large
