@@ -520,8 +520,26 @@ wxString CMuleListCtrl::GetTTSText(unsigned item) const
 
 void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 {
+	wxChar key = evt.GetKeyCode();
+	if (key == 0) {
+		// We prefer GetKeyCode() to GetUnicodeKey(), in order to work
+		// around a bug in the GetUnicodeKey(), that causes values to
+		// be returned untranslated. This means for instance, that if
+		// shift and '1' is pressed, the result is '1' rather than '!'
+		// (as it should be on my keyboard). This has been reported:
+		// http://sourceforge.net/tracker/index.php?func=detail&aid=1864810&group_id=9863&atid=109863
+		key = evt.GetUnicodeKey();
+	} else if (key >= WXK_START) {
+		// wxKeycodes are ignored, as they signify events such as the 'home'
+		// button. Unicoded chars are not checke as there is an overlap valid
+		// chars and the wx keycodes.
+		evt.Skip();
+		return;
+	}
+	
+	// We wish to avoid handling shortcuts, with the exception of 'select-all'.
 	if (evt.AltDown() || evt.ControlDown() || evt.MetaDown()) {
-		if (evt.CmdDown() && (evt.GetKeyCode() ==  0x01 )) {
+		if (evt.CmdDown() && (evt.GetKeyCode() == 0x01)) {
 			// Ctrl+a (Command+a on Mac) was pressed, select all items
 			for (int i = 0; i < GetItemCount(); ++i) {
 				SetItemState(i, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
@@ -535,7 +553,7 @@ void CMuleListCtrl::OnChar(wxKeyEvent& evt)
 	}
 	
 	m_tts_time = GetTickCount();
-	m_tts_text.Append((char)tolower(evt.GetKeyCode()));
+	m_tts_text.Append(wxTolower(key));
 
 	// May happen if the subclass does not forward deletion events.
 	if (m_tts_item >= GetItemCount()) {
