@@ -71,7 +71,7 @@ protected:
 	 * CHashingEvents sent by this type of tasks have the id MULE_EVT_AICH_HASHING.
 	 * @see EVT_MULE_AICH_HASHING
 	 **/
-	CHashingTask(CKnownFile* toAICHHash);
+	CHashingTask(const CKnownFile* toAICHHash);
 	
 	//! Specifies which hashes should be calculated when the task is executed.
 	enum EHashes {

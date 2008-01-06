@@ -263,7 +263,7 @@ public:
 	bool SaveHashSet();
 	bool LoadHashSet(); // only call directly when debugging
 
-	CAICHHashAlgo* GetNewHashAlgo();
+	static CAICHHashAlgo* GetNewHashAlgo();
 	static void ClientAICHRequestFailed(CUpDownClient* pClient);
 	static void RemoveClientAICHRequest(const CUpDownClient* pClient);
 	static bool IsClientRequestPending(const CPartFile* pForFile, uint16 nPart);
