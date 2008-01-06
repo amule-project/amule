@@ -1008,7 +1008,7 @@ void CSharedFileList::Publish()
 				if(m_currFileSrc > GetCount()) {
 					m_currFileSrc = 0;
 				}
-				CKnownFile* pCurKnownFile = (CKnownFile*)GetFileByIndex(m_currFileSrc);
+				CKnownFile* pCurKnownFile = const_cast<CKnownFile*>(GetFileByIndex(m_currFileSrc));
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishSrc()) {
 						Kademlia::CUInt128 kadFileID;
@@ -1031,7 +1031,7 @@ void CSharedFileList::Publish()
 				if(m_currFileNotes > GetCount()) {
 					m_currFileNotes = 0;
 				}
-				CKnownFile* pCurKnownFile = (CKnownFile*) GetFileByIndex(m_currFileNotes);
+				CKnownFile* pCurKnownFile = const_cast<CKnownFile*>(GetFileByIndex(m_currFileNotes));
 				if(pCurKnownFile) {
 					if(pCurKnownFile->PublishNotes()) {
 						Kademlia::CUInt128 kadFileID;
