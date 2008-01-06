@@ -231,17 +231,20 @@ void CServerWnd::UpdateKadInfo()
 				}
 				#endif
 			}
-			KadInfoList->InsertItem(next_row, _("Average Users:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()));
-			++next_row;
-			KadInfoList->InsertItem(next_row, _("Average Files:"));
-			KadInfoList->SetItem(next_row, 1, CastItoIShort(Kademlia::CKademlia::GetKademliaFiles()));
-			
+			uint32 KademliaUsers = Kademlia::CKademlia::GetKademliaUsers();
+			uint32 KademliaFiles = Kademlia::CKademlia::GetKademliaFiles();
 			#else 
+			uint32 KademliaUsers = theStats::GetKadUsers();
+			uint32 KademliaFiles = theStats::GetKadFiles();
 			//#warning TODO: Buddy state on remote GUI
 			/* Maybe Averages too, but that would be redundant 
 			   they are already on the status bar */
 			#endif
+			KadInfoList->InsertItem(next_row, _("Average Users:"));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaUsers));
+			++next_row;
+			KadInfoList->InsertItem(next_row, _("Average Files:"));
+			KadInfoList->SetItem(next_row, 1, CastItoIShort(KademliaFiles));
 			
 		} 
 			
