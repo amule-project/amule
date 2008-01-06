@@ -3366,6 +3366,7 @@ void wxListMainWindow::OnKeyDown( wxKeyEvent &event )
 
     // propagate the key event upwards
     wxKeyEvent ke( wxEVT_KEY_DOWN );
+#if 0
     ke.m_shiftDown = event.m_shiftDown;
     ke.m_controlDown = event.m_controlDown;
     ke.m_altDown = event.m_altDown;
@@ -3373,6 +3374,12 @@ void wxListMainWindow::OnKeyDown( wxKeyEvent &event )
     ke.m_keyCode = event.m_keyCode;
     ke.m_x = event.m_x;
     ke.m_y = event.m_y;
+#else
+    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
+    // set in the new event object, thus breaking GetUnicodeKey()
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
+    ke = event;
+#endif
     ke.SetEventObject( parent );
     if (parent->GetEventHandler()->ProcessEvent( ke )) return;
 
@@ -3385,6 +3392,7 @@ void wxListMainWindow::OnKeyUp( wxKeyEvent &event )
 
     // propagate the key event upwards
     wxKeyEvent ke( wxEVT_KEY_UP );
+#if 0
     ke.m_shiftDown = event.m_shiftDown;
     ke.m_controlDown = event.m_controlDown;
     ke.m_altDown = event.m_altDown;
@@ -3392,6 +3400,12 @@ void wxListMainWindow::OnKeyUp( wxKeyEvent &event )
     ke.m_keyCode = event.m_keyCode;
     ke.m_x = event.m_x;
     ke.m_y = event.m_y;
+#else
+    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
+    // set in the new event object, thus breaking GetUnicodeKey()
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
+    ke = event;
+#endif
     ke.SetEventObject( parent );
     if (parent->GetEventHandler()->ProcessEvent( ke )) return;
 
@@ -3415,6 +3429,7 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
 
     // propagate the char event upwards
     wxKeyEvent ke( wxEVT_CHAR );
+#if 0
     ke.m_shiftDown = event.m_shiftDown;
     ke.m_controlDown = event.m_controlDown;
     ke.m_altDown = event.m_altDown;
@@ -3422,6 +3437,12 @@ void wxListMainWindow::OnChar( wxKeyEvent &event )
     ke.m_keyCode = event.m_keyCode;
     ke.m_x = event.m_x;
     ke.m_y = event.m_y;
+#else
+    // This is a fix for a bug in wxWidgets, where m_uniChar isn't
+    // set in the new event object, thus breaking GetUnicodeKey()
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1863312&group_id=9863&atid=109863
+    ke = event;
+#endif
     ke.SetEventObject( parent );
     if (parent->GetEventHandler()->ProcessEvent( ke )) return;
 
