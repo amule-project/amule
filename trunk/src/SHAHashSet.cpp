@@ -643,6 +643,8 @@ bool CAICHHashSet::SaveHashSet()
 			AddDebugLogLineM( false, logSHAHashSet, wxString::Format(wxT("Met file is version 0x%2.2x."),header));
 		} else {
 			file.WriteUInt8(KNOWN2_MET_VERSION);
+			// Update the recorded size, in order for the sanity check below to work.
+			nExistingSize += 1;
 		}
 
 		// first we check if the hashset we want to write is already stored
