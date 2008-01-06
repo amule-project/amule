@@ -62,7 +62,7 @@ BEGIN_EVENT_TABLE(CSearchDlg, wxPanel)
 	EVT_CHECKBOX(IDC_EXTENDEDSEARCHCHECK,CSearchDlg::OnExtendedSearchChange)
 	EVT_CHECKBOX(IDC_FILTERCHECK,CSearchDlg::OnFilterCheckChange)
 	
-	EVT_MULENOTEBOOK_PAGE_CLOSED(ID_NOTEBOOK, CSearchDlg::OnSearchClosed)
+	EVT_MULENOTEBOOK_PAGE_CLOSING(ID_NOTEBOOK, CSearchDlg::OnSearchClosing)
 	EVT_NOTEBOOK_PAGE_CHANGED(ID_NOTEBOOK, CSearchDlg::OnSearchPageChanged)
 
 	// Event handlers for the parameter fields getting changed
@@ -203,12 +203,13 @@ void CSearchDlg::OnFilterCheckChange(wxCommandEvent& event)
 }
 
 
-void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt) 
+void CSearchDlg::OnSearchClosing(wxNotebookEvent& evt) 
 {
 	// Abort global search if it was last tab that was closed.
 	if ( evt.GetSelection() == ((int)m_notebook->GetPageCount() - 1 ) ) {
 		OnBnClickedStop(nullEvent);
 	}
+
 	CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(evt.GetSelection()));
 	wxASSERT(ctrl);
 	// Zero to avoid results added while destructing.
@@ -223,12 +224,21 @@ void CSearchDlg::OnSearchClosed(wxNotebookEvent& evt)
 }
 
 
-void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
+void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
 {
 	int selection = m_notebook->GetSelection();
-	CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
+
+	// Workaround for a bug in wxWidgets, where deletions of pages
+	// can result in an invalid selection. This has been reported as
+	// http://sourceforge.net/tracker/index.php?func=detail&aid=1865141&group_id=9863&atid=109863
+	if (selection >= (int)m_notebook->GetPageCount()) {
+		selection = m_notebook->GetPageCount() - 1;
+	}
+
 	// Only enable the Download button for pages where files have been selected
 	if ( selection != -1 ) {
+		CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
+
 		bool enable = ctrl->GetSelectedItemCount();
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
 

@@ -147,7 +147,7 @@ private:
 	void		OnFilterCheckChange(wxCommandEvent& ev);
 	void		OnFilteringChange(wxCommandEvent& ev);
 	
-	void		OnSearchClosed(wxNotebookEvent& evt);
+	void		OnSearchClosing(wxNotebookEvent& evt);
 
 	void		OnBnClickedStart(wxCommandEvent& evt);
 	void		OnBnClickedStop(wxCommandEvent& evt);

@@ -30,7 +30,7 @@
 
 #include <common/MenuIDs.h>
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED)
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING)
 DEFINE_LOCAL_EVENT_TYPE(wxEVT_COMMAND_MULENOTEBOOK_ALL_PAGES_CLOSED)
 
 BEGIN_EVENT_TABLE(CMuleNotebook, wxNotebook)
@@ -63,8 +63,11 @@ CMuleNotebook::~CMuleNotebook()
 
 bool CMuleNotebook::DeletePage(int nPage)
 {
+	wxCHECK_MSG((nPage >= 0) && (nPage < (int)GetPageCount()), false,
+		wxT("Trying to delete invalid page-index in CMuleNotebook::DeletePage"));
+
 	// Send out close event
-	wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSED, GetId(), nPage );
+	wxNotebookEvent evt( wxEVT_COMMAND_MULENOTEBOOK_PAGE_CLOSING, GetId(), nPage );
 	evt.SetEventObject(this);
 	ProcessEvent( evt );
 
