@@ -214,7 +214,11 @@ wxString CFileDataIO::ReadString(bool bOptUTF8, uint8 SizeLen, bool SafeRead) co
 	}	
 
 	if (SafeRead) {
-		readLen = std::min<uint64>(readLen, GetLength() - GetPosition());
+		if (GetPosition() >= GetLength()) {
+			readLen = 0;
+		} else {
+			readLen = std::min<uint64>(readLen, GetLength() - GetPosition());
+		}
 	}
 	
 	return ReadOnlyString(bOptUTF8, readLen);
