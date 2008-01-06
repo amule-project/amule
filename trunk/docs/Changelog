@@ -283,6 +283,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for overflow in CSharedFilesCtrl::DrawAvailabilityBar()
 		  as reported by a3linux, CtrlAltDel and stefanero. Special
 		  thanks to a3linux for the backtrace.
+		* Improoved the macro CHECK_CRYPTO() in acinclude.m4.
+		* Fix for the check of Crypto++ library version in
+		  configure.in.
 
 	Radek:
 		* Patch to fix windows compilation.

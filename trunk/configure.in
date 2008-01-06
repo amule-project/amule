@@ -453,7 +453,7 @@ case "$CRYPTO_PP_STYLE" in
 esac
 
 # Check for CryptoPP >= 5.5
-if test ${vers} -ge "5005000"; then
+if test $CRYPTO_PP_VERSION_NUMBER -ge "5005000"; then
 	CXXFLAGS="$CXXFLAGS -D__WEAK_CRYPTO__"
 fi
 
@@ -838,7 +838,7 @@ wxinfo="$WX_PORT"
 AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
-echo "                                       crypto++              ${crypto_version:-embedded}"
+echo "                                       crypto++              ${CRYPTO_PP_VERSION_STRING} (${CRYPTO_PP_STYLE})"
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
 fi
