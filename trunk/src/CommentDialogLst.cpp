@@ -48,8 +48,6 @@ wxDialog(parent, -1, wxString(_("File Comments")),
 	wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
 m_file(file)
 {
-	theApp->m_FileDetailDialogActive++;
-	
 	wxSizer* content = commentLstDlg(this, true);
 	content->Show(this, true);
 
@@ -66,7 +64,6 @@ m_file(file)
 
 CCommentDialogLst::~CCommentDialogLst()
 {
-	theApp->m_FileDetailDialogActive--;
 	ClearList();
 }
 

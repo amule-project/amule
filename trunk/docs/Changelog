@@ -315,6 +315,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  opened for the first time.
 		* ED2K/Kad User/Filecount is now shown in the remote-gui status
 		  bar.
+		* Kad users/files also updated on the Kad Tab.
+		* Backed out a now obsolete change made in CommentDialogLst.cpp
+		  (comments are not related to remote filenames anymore).
 
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
