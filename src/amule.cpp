@@ -783,20 +783,20 @@ bool CamuleApp::OnInit()
 		// There are no servers and ED2K active -> ask for download.
 		// As we cannot ask in amuled, we just update there
 		// Kry TODO: Store server.met URL on preferences and use it here and in GUI.
-		#ifndef AMULE_DAEMON
+#ifndef AMULE_DAEMON
 		if (wxYES == wxMessageBox(
 			wxString(
 				_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
 			wxString(_("Server list download")),
 			wxYES_NO,
 			(wxWindow*)theApp->amuledlg))
-		#endif
+#endif
 		{
-		//workaround amuled crash
-		#ifndef AMULE_DAEMON
-			serverlist->UpdateServerMetFromURL(wxT(
-				"http://ocbmaurice.dyndns.org/pl/slist.pl/server.met?download/server-max.met"));
-		#endif
+		// workaround amuled crash
+#ifndef AMULE_DAEMON
+			serverlist->UpdateServerMetFromURL(
+				wxT("http://www.gruk.org/server.met"));
+#endif
 		}
 	}
 	
