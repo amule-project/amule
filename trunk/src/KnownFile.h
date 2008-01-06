@@ -306,7 +306,7 @@ public:
 	 */
 	void UpdateUpPartsFrequency( CUpDownClient* client, bool increment );
 
-	void	CreateHashFromString(byte* in_string, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL)	{CreateHashFromInput(NULL, Length,Output,in_string,pShaHashOut);}
+	static void CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash* Output);
 	
 	void	ClearPriority();
 	
@@ -314,13 +314,14 @@ public:
 protected:
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
-	void	CreateHashFromFile(CFileDataIO* file, uint32 Length, byte* Output, CAICHHashTree* pShaHashOut = NULL) const { CreateHashFromInput(file, Length, Output, NULL, pShaHashOut); }	
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash m_hashlist;
 	wxString m_strFilePath;	
 	CAICHHashSet*	m_pAICHHashSet;
 
-	void	CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
+	static void CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
+
 	bool	m_bCommentLoaded;
 	uint16	m_iPartCount;
 	uint16  m_iED2KPartCount;

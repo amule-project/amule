@@ -570,11 +570,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 			}
 
 			CMD4Hash checkhash;
-			if (!m_hashlist.empty()){
-				std::vector<byte> buffer(m_hashlist.size() * 16);
-				for (size_t i = 0; i < m_hashlist.size(); ++i)
-					md4cpy(&(buffer[i*16]), m_hashlist[i].GetHash());
-				CreateHashFromString(&(buffer[0]), m_hashlist.size()*16, checkhash.GetHash());
+			if (!m_hashlist.empty()) {
+				CreateHashFromHashlist(m_hashlist, &checkhash);
 			}
 			bool flag=false;
 			if (m_abyFileHash == checkhash) {
@@ -700,14 +697,18 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	if (!isnewstyle) { // not for importing	
 		const time_t file_date = GetLastModificationTime(strSearchPath);
 		if (m_lastDateChanged != file_date) {
-			AddLogLineM(false, CFormat( _("Warning: %s might be corrupted (%i)") )
-				% strSearchPath
-				% (m_lastDateChanged - file_date) );
-			// rehash
-			SetPartFileStatus(PS_WAITINGFORHASH);
+			// It's pointless to rehash an empty file, since the case
+			// where a user has zero'd a file is handled above ...
+			if (m_hpartfile.GetLength()) {
+				AddLogLineM(false, CFormat( _("Warning: %s might be corrupted (%i)") )
+					% strSearchPath
+					% (m_lastDateChanged - file_date) );
+				// rehash
+				SetPartFileStatus(PS_WAITINGFORHASH);
 			
-			wxString strPartFileName = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
-			CThreadScheduler::AddTask(new CHashingTask(m_strFilePath, strPartFileName, this));
+				wxString strPartFileName = m_partmetfilename.Left( m_partmetfilename.Length() - 4 );
+				CThreadScheduler::AddTask(new CHashingTask(m_strFilePath, strPartFileName, this));
+			}
 		}
 	}
 
@@ -2397,7 +2398,7 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 				length = m_hpartfile.GetLength() - offset;
 				wxASSERT( length <= PARTSIZE );
 			}
-			CreateHashFromFile(&m_hpartfile, length, hashresult.GetHash());
+			CreateHashFromFile(&m_hpartfile, length, &hashresult, NULL);
 		} catch (const CIOFailureException& e) {
 			AddLogLineM(true, CFormat( wxT("EOF while hashing downloaded part %u with length %u (max %u) of partfile '%s' with length %u: %s"))
 				% partnumber % length % (offset+length) % GetFileName() % GetFileSize() % e.what());

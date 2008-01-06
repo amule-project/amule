@@ -494,13 +494,10 @@ bool CKnownFile::LoadHashsetFromFile(const CFileDataIO* file, bool checkhash)
 	// lol, useless comment but made me lmao
 	// wtf you guys are weird.
 
-	if (!m_hashlist.empty()){
-		std::vector<byte> buffer(m_hashlist.size() * 16);
-		for (size_t i = 0;i != m_hashlist.size();++i) {
-			md4cpy(&(buffer[i*16]),m_hashlist[i].GetHash());
-		}
-		CreateHashFromString(&(buffer[0]),m_hashlist.size()*16,checkid.GetHash());
+	if (!m_hashlist.empty()) {
+		CreateHashFromHashlist(m_hashlist, &checkid);
 	}
+
 	if ( m_abyFileHash == checkid ) {
 		return true;
 	} else {
@@ -740,31 +737,47 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	return true;
 }
 
-//#warning Kry - const
-void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const
+
+void CKnownFile::CreateHashFromHashlist(const ArrayOfCMD4Hash& hashes, CMD4Hash* Output)
+{
+	wxCHECK_RET(hashes.size(), wxT("No input to hash from in CreateHashFromHashlist"));
+ 	
+	std::vector<byte> buffer(hashes.size() * MD4HASH_LENGTH);
+	std::vector<byte>::iterator it = buffer.begin();
+
+	for (size_t i = 0; i < hashes.size(); ++i) {
+		it = STLCopy_n(hashes[i].GetHash(), MD4HASH_LENGTH, it);
+ 	}
+
+	CreateHashFromInput(&buffer[0], buffer.size(), Output, NULL);
+}
+
+
+void CKnownFile::CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut)
+{
+	wxCHECK_RET(file && Length, wxT("No input to hash from in CreateHashFromFile"));
+	
+	std::vector<byte> buffer(Length);
+	file->Read(&buffer[0], Length);
+
+	CreateHashFromInput(&buffer[0], Length, Output, pShaHashOut);
+}	
+
+
+void CKnownFile::CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut )
 {
 	wxASSERT_MSG(Output || pShaHashOut, wxT("Nothing to do in CreateHashFromInput"));
-	wxCHECK_RET(file || in_string, wxT("No input to hash from in CreateHashFromInput"));
+	wxCHECK_RET(input, wxT("No input to hash from in CreateHashFromInput"));
 	wxASSERT(Length <= PARTSIZE); // We never hash more than one PARTSIZE
 	
-	// When reading from files, this scoped array will take ownership of the temporary array.
-	CScopedArray<unsigned char> tmpArray(NULL);
-	
-	if (file) {
-		wxASSERT(!in_string);
-		tmpArray.reset(new unsigned char[Length]);
-		file->Read(tmpArray.get(), Length);
-		in_string = tmpArray.get();
-	}
-	
-	CMemFile data(in_string, Length);
-		
+	CMemFile data(input, Length);
+
 	uint32 Required = Length;
 	byte   X[64*128];
 	
 	uint32	posCurrentEMBlock = 0;
 	uint32	nIACHPos = 0;
-	CScopedPtr<CAICHHashAlgo> pHashAlg(m_pAICHHashSet->GetNewHashAlgo());
+	CScopedPtr<CAICHHashAlgo> pHashAlg(CAICHHashSet::GetNewHashAlgo());
 
 	// This is all AICH.
 	while (Required >= 64) {
@@ -832,7 +845,7 @@ void CKnownFile::CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Out
 		#else
 			CryptoPP::MD4 md4_hasher;
 		#endif
-		 md4_hasher.CalculateDigest(Output, in_string, Length);
+		 md4_hasher.CalculateDigest(Output->GetHash(), input, Length);
 	}
 }
 

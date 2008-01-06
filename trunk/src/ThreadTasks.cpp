@@ -66,7 +66,7 @@ CHashingTask::CHashingTask(const wxString& path, const wxString& filename, const
 }
 
 
-CHashingTask::CHashingTask(CKnownFile* toAICHHash)
+CHashingTask::CHashingTask(const CKnownFile* toAICHHash)
 	: CThreadTask(wxT("AICH Hashing"), JoinPaths(toAICHHash->GetFilePath(), toAICHHash->GetFileName()), ETP_Low),
 	  m_path(toAICHHash->GetFilePath()),
 	  m_filename(toAICHHash->GetFileName()),
@@ -97,10 +97,16 @@ void CHashingTask::Entry()
 	if (fileLength > MAX_FILE_SIZE) {
 		AddDebugLogLineM(true, logHasher, wxT("Warning, file is larger than supported size, skipping: ") + fullPath);
 		return;
-	} else if ((fileLength == 0) && ((m_owner == NULL) || (m_toHash == EH_AICH))) {
-		// Zero-size partfiles should be hashed, but not zero-sized shared-files.
-		AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
-		return;			
+	} else if (fileLength == 0) {
+		if (m_owner) {
+			// It makes no sense to try to hash empty partfiles ...
+			wxASSERT(0);
+		} else {
+			// Zero-size partfiles should be hashed, but not zero-sized shared-files.
+			AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
+		}
+		
+		return;
 	}
 	
 	// For thread-safety, results are passed via a temporary file object.
@@ -153,17 +159,13 @@ void CHashingTask::Entry()
 		if ( knownfile->m_hashlist.size() == 1 ) {
 			knownfile->m_abyFileHash = knownfile->m_hashlist[0];
 			knownfile->m_hashlist.clear();
+		} else if ( knownfile->m_hashlist.size() ) {
+			CMD4Hash hash;
+			knownfile->CreateHashFromHashlist(knownfile->m_hashlist, &hash);
+			knownfile->m_abyFileHash = hash;
 		} else {
-			const unsigned int len = knownfile->m_hashlist.size() * 16;
-			std::vector<byte> data(len);
-			
-			for (size_t i = 0; i < knownfile->m_hashlist.size(); ++i) {
-				memcpy(&(data[16*i]), knownfile->m_hashlist[i].GetHash(), 16);
-			}
-
-			std::vector<byte> hash(16);
-			knownfile->CreateHashFromString( &(data[0]), len, &(hash[0]), NULL );
-			knownfile->m_abyFileHash.SetHash( (byte*)&(hash[0]) );
+			// This should not happen!
+			wxASSERT(0);
 		}
 	}
 	
@@ -200,22 +202,16 @@ bool CHashingTask::CreateNextPartHash(CFile* file, CKnownFile* owner, EHashes to
 	// We'll read at most PARTSIZE bytes per cycle
 	const uint64 partLength = std::min<uint64>(PARTSIZE, file->GetLength() - file->GetPosition());
 	
-	CScopedArray<byte> data(new byte[partLength]);
-	file->Read(data.get(), partLength);
-
 	CMD4Hash hash;
-	byte* md4Hash = ((toHash & EH_MD4) ? hash.GetHash() : NULL);
+	CMD4Hash* md4Hash = ((toHash & EH_MD4) ? &hash : NULL);
 	CAICHHashTree* aichHash = NULL;
 
 	// Setup for AICH hashing
 	if (toHash & EH_AICH) {
-		// Get the start-position of the current part
-		uint64 position = file->GetPosition() - partLength;
-
-		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(position, partLength);
+		aichHash = owner->GetAICHHashset()->m_pHashTree.FindHash(file->GetPosition(), partLength);
 	}
 
-	owner->CreateHashFromString(data.get(), partLength, md4Hash, aichHash);
+	owner->CreateHashFromFile(file, partLength, md4Hash, aichHash);
 	
 	if (toHash & EH_MD4) {
 		// Store the md4 hash
@@ -333,7 +329,7 @@ void CAICHSyncTask::Entry()
 
 			hashset->SetStatus(AICH_ERROR);
 
-			CThreadScheduler::AddTask(new CHashingTask(const_cast<CKnownFile*>(kfile)));
+			CThreadScheduler::AddTask(new CHashingTask(kfile));
 		}
 	}
 }
