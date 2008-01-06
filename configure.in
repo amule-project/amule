@@ -243,6 +243,14 @@ AC_ARG_WITH(
 		[Don't assume that we use GNU libc compatible malloc/realloc when cross-compiling])],
 	[gnumalloc=$withval], [gnumalloc=yes])
 
+AC_ARG_WITH(
+	[language],
+	[AS_HELP_STRING([--with-language=<langs>],
+	[Specify a comma-separated list of Languages you want to have installed])
+AS_HELP_STRING([], [See po/LINGUAS.in for aviable languages])
+	],
+	[SelectedLangs="$withval"], [SelectedLangs=all])
+
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
 # to avoid losing to much time
@@ -657,6 +665,17 @@ fi
 case "$USE_NLS" in
 
 yes)
+	echo -n "Generating ${POSUB}/LINGUAS... "
+	Generate_Langs=`echo $SelectedLangs | sed -e 's/ .*//' -e 's/,/\\\\|/g'`
+	if test "$Generate_Langs" = "all"; then
+		cp ${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+	else
+		grep $Generate_Langs ${POSUB}/LINGUAS.in > ${POSUB}/LINGUAS
+	fi
+	if test `wc -l ${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
+		cp ${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+	fi
+	AC_MSG_RESULT(Done)
 	;;
 *)
 	HAVE_GETTEXT="no"
@@ -856,5 +875,3 @@ echo " WARNING! libpng >= 1.2.0 not found."
 echo " amuleweb will be compiled but file download progress bar images will NOT be generated."
 echo ""
 fi
-
-
