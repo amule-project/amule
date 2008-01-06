@@ -629,12 +629,12 @@ AC_MSG_RESULT($docdir)
 
 # Try to set the SVN checkout-date
 AC_MSG_CHECKING([for SVNDATE])
-if test -f "$srcdir/SVNDATE" # SVNDATE for tarballs
+if test -f "$srcdir/CVSDATE" # SVNDATE for tarballs
 then
 	svndate=`cat $srcdir/SVNDATE`
-elif test -f "$srcdir/SVN/Entries" # SVNDATE for cvs
+elif test -f "$srcdir/CVS/Entries" # SVNDATE for cvs
 then
-	svndate="$(stat -Lc %y $srcdir/SVN/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
+	svndate="$(stat -Lc %y $srcdir/CVS/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
 elif test -d $srcdir/.svn # SVNDATE for svn
 then
 	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
