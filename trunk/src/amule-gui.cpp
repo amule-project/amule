@@ -182,11 +182,11 @@ int CamuleGuiBase::InitGui(bool geometry_enabled, wxString &geom_string)
 	}
 	
 	// Should default/last-used position be overridden?
-#ifdef CVSDATE
+#ifdef SVNDATE
 	#ifdef CLIENT_GUI
-		m_FrameTitle = wxString::Format(wxT("aMule remote control %s %s"), wxT( VERSION ), wxT( CVSDATE ));
+		m_FrameTitle = wxString::Format(wxT("aMule remote control %s %s"), wxT( VERSION ), wxT( SVNDATE ));
 	#else
-		m_FrameTitle = wxString::Format(wxT("aMule %s %s"), wxT( VERSION ), wxT( CVSDATE ));
+		m_FrameTitle = wxString::Format(wxT("aMule %s %s"), wxT( VERSION ), wxT( SVNDATE ));
 	#endif
 #else
 	#ifdef CLIENT_GUI
