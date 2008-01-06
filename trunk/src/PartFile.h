@@ -207,7 +207,6 @@ public:
 	int	GetCommonFilePenalty();
 	void	UpdateDisplayedInfo(bool force = false);
 	
-	const wxDateTime& GetLastChangeDatetime() const { return m_lastDateChanged; }
 	uint8	GetCategory() const { return m_category; }
 	void	SetCategory(uint8 cat);
 
@@ -358,7 +357,6 @@ private:
 	void	PerformFileComplete();
 
 	uint32		m_lastRefreshedDLDisplay;
-	wxDateTime	m_lastDateChanged;
 
 	// Barry - Buffered data to be written
 	std::list<PartFileBufferedData*> m_BufferedData_list;

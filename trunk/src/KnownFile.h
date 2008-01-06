@@ -215,7 +215,7 @@ public:
 	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
 	virtual uint8	GetStatus(bool WXUNUSED(ignorepause) = false) const { return PS_COMPLETE; }
 	bool	WriteToFile(CFileDataIO* file);	
-	uint32	GetFileDate() const	{return m_date;}
+	time_t GetLastChangeDatetime() const { return m_lastDateChanged; }
 
 	virtual void SetFileSize(uint64 nFileSize);
 
@@ -277,7 +277,6 @@ public:
 	
 	virtual void	UpdatePartsInfo();	
 
-	uint32	m_date;
 	
 	CFileStatistic statistic;
 	
@@ -311,6 +310,7 @@ public:
 	
 	void	ClearPriority();
 	
+	time_t	m_lastDateChanged;
 protected:
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
@@ -318,7 +318,7 @@ protected:
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash m_hashlist;
 	wxString m_strFilePath;	
-	CAICHHashSet* m_pAICHHashSet;
+	CAICHHashSet*	m_pAICHHashSet;
 
 	void	CreateHashFromInput(CFileDataIO* file, uint32 Length, byte* Output, byte* in_string, CAICHHashTree* pShaHashOut) const;
 	bool	m_bCommentLoaded;
@@ -328,7 +328,7 @@ protected:
 	uint8	m_iUpPriority;
 	bool	m_bAutoUpPriority;
 	bool	m_PublishedED2K;
-	
+
 	/* Kad stuff */
 	Kademlia::WordList wordlist;
 	uint32	kadFileSearchID;

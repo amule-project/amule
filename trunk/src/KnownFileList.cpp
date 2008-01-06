@@ -43,9 +43,9 @@ inline bool CKnownFileList::KnownFileMatches(
 	uint64 in_size) const
 {
 	return
-		abs((int)knownFile->GetFileDate() - (int)in_date) < 20 &&
-		knownFile->GetFileSize() == in_size &&
-		knownFile->GetFileName() == filename;
+		(knownFile->GetLastChangeDatetime() == in_date) &&
+		(knownFile->GetFileSize() == in_size) &&
+		(knownFile->GetFileName() == filename);
 }
 
 
@@ -268,7 +268,7 @@ bool CKnownFileList::Append(CKnownFile *Record)
 			return true;
 		} else {
 			it->second;
-			uint32 in_date =  it->second->GetFileDate();
+			time_t in_date =  it->second->GetLastChangeDatetime();
 			uint64 in_size =  it->second->GetFileSize();
 			wxString filename = it->second->GetFileName();
 			if (KnownFileMatches(Record, filename, in_date, in_size) ||

@@ -108,7 +108,7 @@ void CHashingTask::Entry()
 	knownfile->m_strFilePath = m_path;
 	knownfile->SetFileName(m_filename);
 	knownfile->SetFileSize(fileLength);
-	knownfile->m_date = GetLastModificationTime(fullPath);
+	knownfile->m_lastDateChanged = GetLastModificationTime(fullPath);
 	knownfile->m_AvailPartFrequency.insert(
 		knownfile->m_AvailPartFrequency.begin(),
 		knownfile->GetPartCount(), 0);
