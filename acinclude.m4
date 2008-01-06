@@ -440,62 +440,77 @@ AC_DEFUN([AM_PATH_GDLIBCONFIG],
 dnl --------------------------------------------------------------------------
 dnl Check for crypto++ library
 dnl --------------------------------------------------------------------------
- 
-
+dnl
+dnl This macro sets four variables
+dnl - CRYPTO_PP_STYLE
+dnl - CRYPTO_PP_HEADER_PATH
+dnl - CRYPTO_PP_VERSION_STRING
+dnl - CRYPTO_PP_VERSION_NUMBER
+dnl
 AC_DEFUN([CHECK_CRYPTO], [
 
+min_crypto_version=ifelse([$1], ,5.1,$1)
+AC_MSG_CHECKING([for crypto++ version >= $min_crypto_version])
+
 CRYPTO_PP_STYLE="unknown"
-
+CRYPTO_PP_HEADER_PATH=
 if test x$USE_EMBEDDED_CRYPTO = xno; then
+	#
+	# We don't use AC_CHECK_FILE to avoid caching.
+	#
 
-	  min_crypto_version=ifelse([$1], ,5.1,$1)
-	  crypto_version=0;
-	  
-	  AC_MSG_CHECKING([for crypto++ version >= $min_crypto_version])
-	  
-	  # We don't use AC_CHECK_FILE to avoid caching.
-
-	  if test x$crypto_prefix != x ; then
-		  if test -f $crypto_prefix/cryptopp/cryptlib.h; then
-		  CRYPTO_PP_STYLE="sources"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/cryptopp/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
-		  fi
-	  else
-          crypto_prefix="/usr"
-          fi
-          
-	  if test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
-		  CRYPTO_PP_STYLE="mdk_suse_fc"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/cryptopp/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
-	  fi
-	  
-	  if test -f $crypto_prefix/include/crypto++/cryptlib.h; then
-		  CRYPTO_PP_STYLE="gentoo_debian"
-		  crypto_version=`grep "Reference Manual" $crypto_prefix/include/crypto++/cryptlib.h | sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g'`
-	  fi
-
-	  vers=`echo $crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
-	  minvers=`echo $min_crypto_version | $AWK 'BEGIN { FS = "."; } { printf "% d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}'`
-	  
-	  if test -n "$vers" && test "$vers" -ge $minvers; then
-	  
-          result="yes (version $crypto_version)"
-	  
-	  else
-	  
-	  result="no"
-	  
-          fi
-	  
-	  AC_MSG_RESULT($result)
-          AC_SUBST(crypto_prefix)
+	#
+	# Set crypto_prefix if the user has not set it in the configure command line
+	#
+	if test x$crypto_prefix = x ; then
+		crypto_prefix="/usr"
+	fi
+        AC_SUBST(crypto_prefix)
+        
+	#
+	# Find the Crypto++ header
+	#
+	if test -f $crypto_prefix/cryptopp/cryptlib.h; then
+		CRYPTO_PP_STYLE="sources"
+		CRYPTO_PP_HEADER_PATH="$crypto_prefix/cryptopp/cryptlib.h"
+	elif test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
+		CRYPTO_PP_STYLE="mdk_suse_fc"
+		CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/cryptopp/cryptlib.h"
+	elif test -f $crypto_prefix/include/crypto++/cryptlib.h; then
+		CRYPTO_PP_STYLE="gentoo_debian"
+		CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/crypto++/cryptlib.h"
+	else
+		#
+		# If the execution reaches here, we have failed.
+		#
+		:
+	fi
 else
-	AC_MSG_CHECKING([whether to use embedded Crypto])
-	AC_MSG_RESULT(yes)
 	CRYPTO_PP_STYLE="embedded"
+	CRYPTO_PP_HEADER_PATH="src/extern/cryptopp/CryptoPP.h"
 fi
 
+CRYPTO_PP_VERSION_STRING=$(grep "Reference Manual" $CRYPTO_PP_HEADER_PATH | \
+	sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g')
+
+CRYPTO_PP_VERSION_NUMBER=$(echo $CRYPTO_PP_VERSION_STRING | \
+	$AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}')
+
+minvers=$(echo $min_crypto_version | \
+	$AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}')
+
+if test -n "$CRYPTO_PP_VERSION_NUMBER" && test "$CRYPTO_PP_VERSION_NUMBER" -ge $minvers; then
+	result="yes (version $CRYPTO_PP_VERSION_STRING, $CRYPTO_PP_STYLE)"
+else
+	result="no"
+fi
+AC_MSG_RESULT($result)
+
 AC_SUBST(CRYPTO_PP_STYLE)
+AC_SUBST(CRYPTO_PP_HEADER_PATH)
+AC_SUBST(CRYPTO_PP_VERSION_STRING)
+AC_SUBST(CRYPTO_PP_VERSION_NUMBER)
+AC_MSG_NOTICE([Crypto++ version number is $CRYPTO_PP_VERSION_NUMBER])
 ])
 
 AC_DEFUN([AM_OPTIONS_CRYPTO], [
