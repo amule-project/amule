@@ -1,10 +1,10 @@
-%define cvsdate %(date +%Y%m%d)
+%define svndate %(date +%Y%m%d)
 %define optflags %{nil}
 
 Summary:        aMule - another eMule p2p client
 Name:           aMule
 Version:        CVS
-Release:        %{cvsdate}
+Release:        %{svndate}
 License:        GPL
 Group:          Applications/Internet
 Packager:       The aMule Team (http://forum.amule.org/)

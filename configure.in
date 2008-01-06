@@ -623,18 +623,18 @@ AC_MSG_RESULT($docdir)
 AC_MSG_CHECKING([for SVNDATE])
 if test -f "$srcdir/SVNDATE" # SVNDATE for tarballs
 then
-	cvsdate=`cat $srcdir/SVNDATE`
+	svndate=`cat $srcdir/SVNDATE`
 elif test -f "$srcdir/SVN/Entries" # SVNDATE for cvs
 then
-	cvsdate="$(stat -Lc %y $srcdir/SVN/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
+	svndate="$(stat -Lc %y $srcdir/SVN/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
 elif test -d $srcdir/.svn # SVNDATE for svn
 then
-	cvsdate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
+	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
 fi
-AC_MSG_RESULT(${cvsdate:-None required})
-test "$cvsdate" && AC_DEFINE_UNQUOTED(SVNDATE, "$cvsdate", [The checkout date or svn revision number.])
-test x$SYS = xwin32 && test "$cvsdate" && RCFLAGS="$RCFLAGS -D__PRERELEASE__"
-SVNDATE="$cvsdate"
+AC_MSG_RESULT(${svndate:-None required})
+test "$svndate" && AC_DEFINE_UNQUOTED(SVNDATE, "$svndate", [The checkout date or svn revision number.])
+test x$SYS = xwin32 && test "$svndate" && RCFLAGS="$RCFLAGS -D__PRERELEASE__"
+SVNDATE="$svndate"
 AC_SUBST(SVNDATE)
 
 XRCFLAGS="-Isrc"
@@ -673,7 +673,7 @@ if test "$denoiselevel" = "no"; then
 	denoiselevel=0
 fi
 if test $denoiselevel -gt 4; then
-	if test "${cvsdate:+set}" = "set"; then
+	if test "${svndate:+set}" = "set"; then
 		denoiselevel=0
 	else
 		denoiselevel=4
