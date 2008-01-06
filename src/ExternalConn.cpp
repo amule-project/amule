@@ -199,7 +199,7 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 		const CECTag *passwd = request->GetTagByName(EC_TAG_PASSWD_HASH);
 		const CECTag *protocol = request->GetTagByName(EC_TAG_PROTOCOL_VERSION);
 #ifdef EC_VERSION_ID
-		// For CVS versions, both client and server must use CVSDATE, and they must be the same
+		// For SVN versions, both client and server must use SVNDATE, and they must be the same
 		CMD4Hash vhash;
 		if (not vhash.Decode(wxT(EC_VERSION_ID))) {
 			response = new CECPacket(EC_OP_AUTH_FAIL);
@@ -208,10 +208,10 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 			response = new CECPacket(EC_OP_AUTH_FAIL);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Incorrect EC version ID, there might be binary incompatibility. Use core and remote from same snapshot.")));
 #else
-		// For release versions, we don't want to allow connections from any arbitrary CVS client.
+		// For release versions, we don't want to allow connections from any arbitrary SVN client.
 		if (request->GetTagByName(EC_TAG_VERSION_ID)) { 
 			response = new CECPacket(EC_OP_AUTH_FAIL);
-			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary CVS version! *sigh* possible crash prevented")));
+			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("You cannot connect to a release version from an arbitrary SVN version! *sigh* possible crash prevented")));
 #endif
 		} else if (protocol != NULL) {
 			uint16 proto_version = protocol->GetInt();

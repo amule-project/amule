@@ -40,7 +40,7 @@
 #include <common/EventIDs.h>
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"		// Needed for CVSDATE, PACKAGE, VERSION
+#include "config.h"		// Needed for SVNDATE, PACKAGE, VERSION
 #else
 #include <common/ClientVersion.h>
 #endif // HAVE_CONFIG_H
@@ -436,8 +436,8 @@ void CamuleDlg::OnAboutButton(wxCommandEvent& WXUNUSED(ev))
 	msg << wxT("aMule ") << wxT(VERSION);
 #endif
 	msg << wxT(" ");
-#ifdef CVSDATE
-	msg << _("Snapshot:") << wxT("\n ") << wxT(CVSDATE);
+#ifdef SVNDATE
+	msg << _("Snapshot:") << wxT("\n ") << wxT(SVNDATE);
 #endif
 	msg << wxT("\n\n") << _(" 'All-Platform' p2p client based on eMule \n\n") <<
 		_(" Website: http://www.amule.org \n") <<

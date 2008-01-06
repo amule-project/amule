@@ -94,8 +94,8 @@ wxString GetMuleVersion()
 	ver += wxT(" (Debugging)");
 #endif
 	
-#ifdef CVSDATE
-	ver += wxString::Format( wxT(" (Snapshot: %s)"), wxT(CVSDATE));
+#ifdef SVNDATE
+	ver += wxString::Format( wxT(" (Snapshot: %s)"), wxT(SVNDATE));
 #endif
 	
 	return ver;

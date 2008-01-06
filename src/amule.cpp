@@ -1245,8 +1245,8 @@ void CamuleApp::OnlineSig(bool zero /* reset stats (used on shutdown) */)
 	amulesig_out.AddLine( CFormat( wxT("%llu") ) % (theStats::GetSessionSentBytes() + thePrefs::GetTotalUploaded()) );
 
 	// amule version
-#ifdef CVSDATE
-	amulesig_out.AddLine(wxT(VERSION " " CVSDATE));
+#ifdef SVNDATE
+	amulesig_out.AddLine(wxT(VERSION " " SVNDATE));
 #else
 	amulesig_out.AddLine(wxT(VERSION));
 #endif
@@ -1312,7 +1312,7 @@ void CamuleApp::Localize_mule()
 void CamuleApp::Trigger_New_version(wxString new_version)
 {
 	wxString info = wxT(" --- ") + CFormat(_("This is the first time you run aMule %s")) % new_version + wxT(" ---\n\n");
-	if (new_version == wxT("CVS")) {
+	if (new_version == wxT("SVN")) {
 		info += _("This version is a testing version, updated daily, and\n");
 		info += _("we give no warranty it won't break anything, burn your house,\n");
 		info += _("or kill your dog. But it *should* be safe to use anyway.\n");

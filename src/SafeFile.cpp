@@ -521,7 +521,7 @@ void CFileDataIO::WriteTag(const CTag& tag)
 				break;
 			case TAGTYPE_BLOB:
 				// NOTE: This will break backward compatibility with met files for eMule versions prior to 0.44a
-				// and any aMule prior to CVS 26/02/2005
+				// and any aMule prior to SVN 26/02/2005
 				WriteUInt32(tag.GetBlobSize());
 				Write(tag.GetBlob(), tag.GetBlobSize());
 				break;

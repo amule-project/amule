@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([aMule],[CVS],[admin@amule.org])
+AC_INIT([aMule],[SVN],[admin@amule.org])
 AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE
 
@@ -619,23 +619,23 @@ if test x"$docdir" = x; then
 fi
 AC_MSG_RESULT($docdir)
 
-# Try to set the CVS checkout-date
-AC_MSG_CHECKING([for CVSDATE])
-if test -f "$srcdir/CVSDATE" # CVSDATE for tarballs
+# Try to set the SVN checkout-date
+AC_MSG_CHECKING([for SVNDATE])
+if test -f "$srcdir/SVNDATE" # SVNDATE for tarballs
 then
-	cvsdate=`cat $srcdir/CVSDATE`
-elif test -f "$srcdir/CVS/Entries" # CVSDATE for cvs
+	cvsdate=`cat $srcdir/SVNDATE`
+elif test -f "$srcdir/SVN/Entries" # SVNDATE for cvs
 then
-	cvsdate="$(stat -Lc %y $srcdir/CVS/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
-elif test -d $srcdir/.svn # CVSDATE for svn
+	cvsdate="$(stat -Lc %y $srcdir/SVN/Entries | sed -e 's#\.[0-9]*##')" >/dev/null 2>&1
+elif test -d $srcdir/.svn # SVNDATE for svn
 then
 	cvsdate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
 fi
 AC_MSG_RESULT(${cvsdate:-None required})
-test "$cvsdate" && AC_DEFINE_UNQUOTED(CVSDATE, "$cvsdate", [The checkout date or svn revision number.])
+test "$cvsdate" && AC_DEFINE_UNQUOTED(SVNDATE, "$cvsdate", [The checkout date or svn revision number.])
 test x$SYS = xwin32 && test "$cvsdate" && RCFLAGS="$RCFLAGS -D__PRERELEASE__"
-CVSDATE="$cvsdate"
-AC_SUBST(CVSDATE)
+SVNDATE="$cvsdate"
+AC_SUBST(SVNDATE)
 
 XRCFLAGS="-Isrc"
 CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS -DUSE_WX_EXTENSIONS"

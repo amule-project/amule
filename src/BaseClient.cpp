@@ -972,7 +972,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	}
 	tagcount ++; // eMule misc flags 2 (kad version)
 	
-	#ifdef __CVS__
+	#ifdef __SVN__
 	// Kry - This is the tagcount!!! Be sure to update it!!
 	// Last update: CT_EMULECOMPAT_OPTIONS included
 	data->WriteUInt32(tagcount + 1);
@@ -1082,7 +1082,7 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	
 	tagMisCompatOptions.WriteTagToFile(data);
 
-#ifdef __CVS__
+#ifdef __SVN__
 	wxString mod_name(MOD_VERSION_LONG);
 	CTagString tagModName(ET_MOD_VERSION, mod_name);
 	tagModName.WriteTagToFile(data);
