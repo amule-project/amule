@@ -1,3 +1,16 @@
+amule (2.1.3+CVS20080106) testing; urgency=low
+
+  * debian/control
+      Removed amule-skin-ubuntu
+  * debian/rules
+      Moved i18n-pkgs out of general-pkgs to separate targets
+      Adjusted clean target
+      Removed utils and utils-gui from general-pkgs
+      Adjusted README.Debian-Packages acordingly
+      Enabled use of --with-language= option for configure
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sat, 05 Jan 2008  19:25:01 +0100
+
 amule (2.1.3+CVS20071220) testing; urgency=low
 
   * amule.menu: Removed old Startupflag

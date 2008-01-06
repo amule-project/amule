@@ -21,35 +21,6 @@ endif
 
 #Here are the packages that can't be compiled separate now
 general_pkgs = "amule-common"\
-	"amule-i18n-ar"\
-	"amule-i18n-bg"\
-	"amule-i18n-ca"\
-	"amule-i18n-da"\
-	"amule-i18n-de"\
-	"amule-i18n-en-gb"\
-	"amule-i18n-es"\
-	"amule-i18n-et-ee"\
-	"amule-i18n-eu"\
-	"amule-i18n-fi"\
-	"amule-i18n-fr"\
-	"amule-i18n-gl"\
-	"amule-i18n-hr"\
-	"amule-i18n-hu"\
-	"amule-i18n-it-ch"\
-	"amule-i18n-it"\
-	"amule-i18n-ko-kr"\
-	"amule-i18n-lt"\
-	"amule-i18n-nn"\
-	"amule-i18n-nl"\
-	"amule-i18n-pl"\
-	"amule-i18n-pt-br"\
-	"amule-i18n-pt-pt"\
-	"amule-i18n-ru"\
-	"amule-i18n-sl"\
-	"amule-i18n-sv"\
-	"amule-i18n-tr"\
-	"amule-i18n-zh-cn"\
-	"amule-i18n-zh-tw"\
 	"amule-skin-gnome"\
 	"amule-skin-kde4"\
 	"amule-skin-tango"\
@@ -57,8 +28,6 @@ general_pkgs = "amule-common"\
 	"amule-theme-default"\
 	"amule-theme-php-default"\
 	"amule-theme-chicane"\
-	"amule-utils"\
-	"amule-utils-gui"\
 	"amule-xas"
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -83,6 +52,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
 	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	LANGFLAG = --with-language=all
 
 else ifeq ("clean", "$(findstring clean, $(flags))")
 
@@ -95,6 +65,7 @@ else ifeq ("clean", "$(findstring clean, $(flags))")
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
 	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	LANGFLAG = --with-language=all
 
 else ifeq ("build", "$(findstring build, $(flags))")
 
@@ -107,6 +78,7 @@ else ifeq ("build", "$(findstring build, $(flags))")
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
 	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	LANGFLAG = --with-language=all
 
 else
 	#Now we have to check what packages are build to configure only them
@@ -116,6 +88,7 @@ else
 	wo_alcc = $(subst alcc, , ${flags})
 	wo_amule_utils_gui = $(subst amule-utils-gui, ,${flags})
 	wo_all_other_amules = $(subst amulecmd, ,$(subst amule-utils-gui, ,$(subst amule-utils, ,${flags})))
+	LANGUAGE := en_GB
 
 	ifeq ("wxcas", "$(findstring wxcas, $(flags))")
 		WXCAS = --enable-wxcas
@@ -169,6 +142,129 @@ else
 		AMULECMD = --enable-amulecmd
 		CAS = --enable-cas
 	endif
+
+	#Find this whole i18n stuff
+	ifneq ("i18n-en-only", "$(findstring i18n-en-only, $(flags))")
+
+		ifeq ("i18n-ar", "$(findstring i18n-ar, $(flags))")
+			LANGUAGE := $(LANGUAGE),ar
+		endif
+
+		ifeq ("i18n-bg", "$(findstring i18n-bg, $(flags))")
+			LANGUAGE := $(LANGUAGE),bg
+		endif
+
+		ifeq ("i18n-ca", "$(findstring i18n-ca, $(flags))")
+			LANGUAGE := $(LANGUAGE),ca
+		endif
+
+		ifeq ("i18n-da", "$(findstring i18n-da, $(flags))")
+			LANGUAGE := $(LANGUAGE),da
+		endif
+
+		ifeq ("i18n-de", "$(findstring i18n-de, $(flags))")
+			LANGUAGE := $(LANGUAGE),de
+		endif
+
+		ifeq ("i18n-es", "$(findstring i18n-es, $(flags))")
+			LANGUAGE := $(LANGUAGE),es
+		endif
+
+		ifeq ("i18n-et-ee", "$(findstring i18n-et-ee, $(flags))")
+			LANGUAGE := $(LANGUAGE),et_EE
+		endif
+
+		ifeq ("i18n-eu", "$(findstring i18n-eu, $(flags))")
+			LANGUAGE := $(LANGUAGE),eu
+		endif
+
+		ifeq ("i18n-fi", "$(findstring i18n-fi, $(flags))")
+			LANGUAGE := $(LANGUAGE),fi
+		endif
+
+		ifeq ("i18n-fr", "$(findstring i18n-fr, $(flags))")
+			LANGUAGE := $(LANGUAGE),fr
+		endif
+
+		ifeq ("i18n-gl", "$(findstring i18n-gl, $(flags))")
+			LANGUAGE := $(LANGUAGE),gl
+		endif
+
+		ifeq ("i18n-hr", "$(findstring i18n-hr, $(flags))")
+			LANGUAGE := $(LANGUAGE),hr
+		endif
+
+		ifeq ("i18n-hu", "$(findstring i18n-hu, $(flags))")
+			LANGUAGE := $(LANGUAGE),hu
+		endif
+
+		ifeq ("i18n-it", "$(findstring i18n-it, $(flags))")
+			LANGUAGE := $(LANGUAGE),it
+		endif
+
+		ifeq ("i18n-it-ch", "$(findstring i18n-it-ch, $(flags))")
+			LANGUAGE := $(LANGUAGE),it_CH
+		endif
+
+		ifeq ("i18n-ko-kr", "$(findstring i18n-ko-kr, $(flags))")
+			LANGUAGE := $(LANGUAGE),ko_KR
+		endif
+
+		ifeq ("i18n-lt", "$(findstring i18n-lt, $(flags))")
+			LANGUAGE := $(LANGUAGE),lt
+		endif
+
+		ifeq ("i18n-nl", "$(findstring i18n-nl, $(flags))")
+			LANGUAGE := $(LANGUAGE),hl
+		endif
+
+		ifeq ("i18n-nn", "$(findstring i18n-nn, $(flags))")
+			LANGUAGE := $(LANGUAGE),nn
+		endif
+
+		ifeq ("i18n-pl", "$(findstring i18n-pl, $(flags))")
+			LANGUAGE := $(LANGUAGE),pl
+		endif
+
+		ifeq ("i18n-pt-br", "$(findstring i18n-pt-br, $(flags))")
+			LANGUAGE := $(LANGUAGE),pt_BR
+		endif
+
+		ifeq ("i18n-pt-pt", "$(findstring i18n-pt-pt, $(flags))")
+			LANGUAGE := $(LANGUAGE),pt_PT
+		endif
+
+		ifeq ("i18n-ru", "$(findstring i18n-ru, $(flags))")
+			LANGUAGE := $(LANGUAGE),ru
+		endif
+
+		ifeq ("i18n-sl", "$(findstring i18n-sl, $(flags))")
+			LANGUAGE := $(LANGUAGE),sl
+		endif
+
+		ifeq ("i18n-sv", "$(findstring i18n-sv, $(flags))")
+			LANGUAGE := $(LANGUAGE),sv
+		endif
+
+		ifeq ("i18n-tr", "$(findstring i18n-tr, $(flags))")
+			LANGUAGE := $(LANGUAGE),tr
+		endif
+
+		ifeq ("i18n-zh-cn", "$(findstring i18n-zh-cn, $(flags))")
+			LANGUAGE := $(LANGUAGE),zh_CN
+		endif
+
+		ifeq ("i18n-zh-tw", "$(findstring i18n-zh-tw, $(flags))")
+			LANGUAGE := $(LANGUAGE),zh_TW
+		endif
+
+		ifeq ($(LANGUAGE),en_GB)
+			LANGUAGE = all
+		endif
+
+	endif
+
+	LANGFLAG = --with-language=$(LANGUAGE)
 
 	#And at Last, find out if we compile a debug-package or not.
 	ifeq ("dbg", "$(findstring dbg, $(flags))")
@@ -232,55 +328,97 @@ config.status: configure
 		${REMOTEGUI}\
 		${DAEMON}\
 		${AMULE}\
-		${ED2K}
+		${ED2K}\
+		$(LANGFLAG)
 
 
 #And here is the well known clean target
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
-	rm -f amule-common
-	rm -f amule-stage1
-	rm -f amule-stage2
-	rm -f amule-dbg
-	rm -f amule-ed2k-stage1
-	rm -f amule-ed2k-stage2
-	rm -f amule-ed2k-dbg
+	rm -f alc
+	rm -f alc-dbg
+	rm -f alcc
+	rm -f alcc-dbg
+	rm -f amule
+	rm -f amule-alc-dbg
+	rm -f amule-alc-stage1
+	rm -f amule-alc-stage2
+	rm -f amule-alcc-dbg
+	rm -f amule-alcc-stage1
+	rm -f amule-alcc-stage2
+	rm -f amule-cas-dbg
 	rm -f amule-cas-stage1
 	rm -f amule-cas-stage2
-	rm -f amule-cas-dbg
+	rm -f amule-cmd-dbg
+	rm -f amule-cmd-stage1
+	rm -f amule-cmd-stage2
+	rm -f amule-common
+	rm -f amule-daemon-dbg
+	rm -f amule-daemon-stage1
+	rm -f amule-daemon-stage2
+	rm -f amule-dbg
+	rm -f amule-ed2k-dbg
+	rm -f amule-ed2k-stage1
+	rm -f amule-ed2k-stage2
+	rm -f amule-remote-gui-dbg
+	rm -f amule-remote-gui-stage1
+	rm -f amule-remote-gui-stage2
+	rm -f amule-stage1
+	rm -f amule-stage2
+	rm -f amule-utils
+	rm -f amule-utils-gui
+	rm -f amule-wxcas-dbg
 	rm -f amule-wxcas-stage1
 	rm -f amule-wxcas-stage2
-	rm -f amule-wxcas-dbg
+	rm -f amulecmd
+	rm -f amulecmd-dbg
 	rm -f amuleweb-stage1
 	rm -f amuleweb-stage2
 	rm -f amuleweb-dbg
-	rm -f amule-remote-gui-stage1
-	rm -f amule-remote-gui-stage2
-	rm -f amule-remote-gui-dbg
-	rm -f amule-daemon-stage1
-	rm -f amule-daemon-stage2
-	rm -f amule-daemon-dbg
-	rm -f amule-alc-stage1
-	rm -f amule-alc-stage2
-	rm -f amule-alc-dbg
-	rm -f amule-alcc-stage1
-	rm -f amule-alcc-stage2
-	rm -f amule-alcc-dbg
-	rm -f amule-cmd-stage1
-	rm -f amule-cmd-stage2
-	rm -f amule-cmd-dbg
-	rm -f amule
-	rm -f ed2k
+	rm -f build-stamp 
 	rm -f cas
-	rm -f wxcas
-	rm -f webserver
-	rm -f remotegui
+	rm -f cas-dbg
+	rm -f compile
 	rm -f daemon
-	rm -f alc
-	rm -f alcc
-	rm -f amulecmd
+	rm -f daemon-dbg
+	rm -f ed2k
+	rm -f ed2k-dbg
+	rm -f i18n-ar
+	rm -f i18n-bg
+	rm -f i18n-ca
+	rm -f i18n-da
+	rm -f i18n-de
+	rm -f i18n-en-gb
+	rm -f i18n-es
+	rm -f i18n-et-ee
+	rm -f i18n-eu
+	rm -f i18n-fi
+	rm -f i18n-fr
+	rm -f i18n-gl
+	rm -f i18n-hr
+	rm -f i18n-hu
+	rm -f i18n-it
+	rm -f i18n-it-ch
+	rm -f i18n-ko-kr
+	rm -f i18n-lt
+	rm -f i18n-nl
+	rm -f i18n-nn
+	rm -f i18n-pl
+	rm -f i18n-pt-br
+	rm -f i18n-pt-pt
+	rm -f i18n-ru
+	rm -f i18n-sl
+	rm -f i18n-sv
+	rm -f i18n-tr
+	rm -f i18n-zh-cn
+	rm -f i18n-zh-tw
+	rm -f remotegui
+	rm -f remotegui-dbg
+	rm -f webserver
+	rm -f webserver-dbg
+	rm -f wxcas
+	rm -f wxcas-dbg
 
 	[ ! -f Makefile ] || $(MAKE) distclean
 
@@ -523,7 +661,7 @@ remotegui-dbg: amule-remote-gui-dbg
 	touch remotegui-dbg
 
 daemon-dbg: amule-daemon-dbg
-	touch damon-dbg
+	touch daemon-dbg
 
 alc-dbg: amule-alc-dbg
 	touch alc-dbg
@@ -538,6 +676,152 @@ amule-dbg: pkg=amule-dbg
 amule-dbg: amule-stage1
 	${stage1}
 	dh_strip -pamule --dbg-package=amule-dbg
+	${stage2}
+
+#Her come the Targets for the langauge packages
+i18n-ar: pkg=amule-i18n-ar
+i18n-ar: amule-common
+	${stage1}
+	${stage2}
+
+i18n-bg: pkg=amule-i18n-bg
+i18n-bg: amule-common
+	${stage1}
+	${stage2}
+
+i18n-ca: pkg=amule-i18n-ca
+i18n-ca: amule-common
+	${stage1}
+	${stage2}
+
+i18n-da: pkg=amule-i18n-da
+i18n-da: amule-common
+	${stage1}
+	${stage2}
+
+i18n-de: pkg=amule-i18n-de
+i18n-de: amule-common
+	${stage1}
+	${stage2}
+
+i18n-en-gb: pkg=amule-i18n-en-gb
+i18n-en-gb: amule-common
+	${stage1}
+	${stage2}
+
+i18n-es: pkg=amule-i18n-es
+i18n-es: amule-common
+	${stage1}
+	${stage2}
+
+i18n-et-ee: pkg=amule-i18n-et-ee
+i18n-et-ee: amule-common
+	${stage1}
+	${stage2}
+
+i18n-eu: pkg=amule-i18n-eu
+i18n-eu: amule-common
+	${stage1}
+	${stage2}
+
+i18n-fi: pkg=amule-i18n-fi
+i18n-fi: amule-common
+	${stage1}
+	${stage2}
+
+i18n-fr: pkg=amule-i18n-fr
+i18n-fr: amule-common
+	${stage1}
+	${stage2}
+
+i18n-gl: pkg=amule-i18n-gl
+i18n-gl: amule-common
+	${stage1}
+	${stage2}
+
+i18n-hr: pkg=amule-i18n-hr
+i18n-hr: amule-common
+	${stage1}
+	${stage2}
+
+i18n-hu: pkg=amule-i18n-hu
+i18n-hu: amule-common
+	${stage1}
+	${stage2}
+
+i18n-it-ch: pkg=amule-i18n-it-ch
+i18n-it-ch: amule-common
+	${stage1}
+	${stage2}
+
+i18n-it: pkg=amule-i18n-it
+i18n-it: amule-common
+	${stage1}
+	${stage2}
+
+i18n-ko-kr: pkg=amule-i18n-ko-kr
+i18n-ko-kr: amule-common
+	${stage1}
+	${stage2}
+
+i18n-lt: pkg=amule-i18n-lt
+i18n-lt: amule-common
+	${stage1}
+	${stage2}
+
+i18n-nn: pkg=amule-i18n-nn
+i18n-nn: amule-common
+	${stage1}
+	${stage2}
+
+i18n-nl: pkg=amule-i18n-nl
+i18n-nl: amule-common
+	${stage1}
+	${stage2}
+
+i18n-pl: pkg=amule-i18n-pl
+i18n-pl: amule-common
+	${stage1}
+	${stage2}
+
+i18n-pt-br: pkg=amule-i18n-pt-br
+i18n-pt-br: amule-common
+	${stage1}
+	${stage2}
+
+i18n-pt-pt: pkg=amule-i18n-pt-pt
+i18n-pt-pt: amule-common
+	${stage1}
+	${stage2}
+
+i18n-ru: pkg=amule-i18n-ru
+i18n-ru: amule-common
+	${stage1}
+	${stage2}
+
+i18n-sl: pkg=amule-i18n-sl
+i18n-sl: amule-common
+	${stage1}
+	${stage2}
+
+i18n-sv: pkg=amule-i18n-sv
+i18n-sv: amule-common
+	${stage1}
+	${stage2}
+
+i18n-tr: pkg=amule-i18n-tr
+i18n-tr: amule-common
+	${stage1}
+	${stage2}
+
+i18n-zh-cn: pkg=amule-i18n-zh-cn
+i18n-zh-cn: amule-common
+	${stage1}
+	${stage2}
+
+i18n-zh-tw: pkg=amule-i18n-zh-tw
+i18n-zh-tw: amule-common
+	${stage1}
 	${stage2}
 
 #They are just metapackages
@@ -555,10 +839,14 @@ amule-utils-gui: alc remotegui wxcas
 debug-packages: amule-dbg ed2k-dbg cas-dbg wxcas-dbg webserver-dbg remotegui-dbg daemon-dbg alc-dbg alcc-dbg amulecmd-dbg ; 
 normal-packages: amule-utils amule-utils-gui amule ed2k webserver daemon ; 
 
+language-packages: i18n-ar i18n-bg i18n-ca i18n-da i18n-de i18n-en-gb i18n-es i18n-et-ee i18n-eu i18n-fi i18n-fr i18n-gl i18n-hr i18n-hu i18n-it-ch i18n-it i18n-ko-kr i18n-lt i18n-nn i18n-nl i18n-pl i18n-pt-br i18n-pt-pt i18n-ru i18n-sl i18n-sv i18n-tr i18n-zh-cn i18n-zh-tw ; 
+
+i18n-en-only: ; 
+
 #Now the targets for dpkg-buildpackage
 binary-indep: build install
 
-binary-arch: debug-packages normal-packages
+binary-arch: debug-packages normal-packages language-packages
 
 binary: binary-indep binary-arch
 
@@ -566,4 +854,4 @@ help:
 	cat README.Debian-Packages
 
 .DEFAULT_GOAL = help
-.PHONY: build clean binary-indep binary-arch binary install debug-packages normal-packages amule-utils-gui amule-utils
+.PHONY: build clean binary-indep binary-arch binary install debug-packages normal-packages amule-utils-gui amule-utils i18n-only language-packages

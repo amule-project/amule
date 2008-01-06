@@ -1,9 +1,9 @@
 This debian rules file controls the buildprocess of the packages of aMule you can either run
-dpkg-package -us -uc -b -rfakeroot
+dpkg-buildpackage -us -uc -b -rfakeroot
 to build them all, or you can invoke debian/rules directly with the target you want to be build. If you run
 debian/rules without a target, or with the target help, this help will be printed. Other possible targets
 are listed below, you can combine them as you need. amule-common, the packages with the themes for the
-webserver, and the ones containing the i18n stuff are build everytime.
+webserver and i18n-en-gb are build everytime.
 
 amule			Builds the normal GUI-Version of aMule
 ed2k			Builds the ed2k-client of aMule
@@ -33,6 +33,11 @@ amule-utils-gui		Creates the Metapackage for the graphical utilities and all the
 			* alc
 			* remotegui
 			* wxcas
+i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, bg, ca, da,
+			de, es, et-ee, eu, fi, fr, gl, hr, hu, it, it-ch, ko-kr, lt, nl,
+			nn, pl, pt-br, pt-pt, ru, sl, sv, tr, zh-cn or zh-tw
+			If no i18n-package is given, all will be build.
+			If you just want en_GB, use i18n-en-only
 
 If one of the -dbg targets is choosen, the corresponding binary will be built, too. In this case,
 debugging is enabled, profiling and optimising are disabled. Is no -dbg target choosen, debugging

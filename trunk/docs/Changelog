@@ -347,6 +347,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Manpages update.
 		* Add debian folder.
 		* Correct use of libcrypto >= 5.5 and update of debian-dir.
+		* Added Option to use generic ipfilter.dat.
+		* Made possible to select which translations get build and
+		  installed.
 
 	wuischke:
 		* Add emulecollection support on aMule ED2K Links Handler

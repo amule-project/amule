@@ -464,14 +464,6 @@ Conflicts: amule (<< ${binary:Version})
 Description: Tango Skin files for amule
  This package contains the Tango Skin files for amule.
 
-Package: amule-skin-ubuntu
-Architecture: any
-Depends: amule (= ${binary:Version})
-Provides: amule-skin
-Conflicts: amule (<< ${binary:Version})
-Description: Ubuntu Skin files for amule
- This package contains the Ubuntu Skin files for amule.
-
 Package: amule-skin-xfce
 Architecture: any
 Depends: amule (= ${binary:Version})
