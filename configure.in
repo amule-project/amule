@@ -177,13 +177,6 @@ AC_ARG_ENABLE(
 	[ALCC=$enableval], [ALCC=no])
 
 AC_ARG_ENABLE(
-	[embedded_crypto],
-	[AS_HELP_STRING(
-		[--disable-embedded-crypto],
-		[do not use embedded Crypto code])],
-	[USE_EMBEDDED_CRYPTO="$enableval"], [USE_EMBEDDED_CRYPTO="yes"])
-
-AC_ARG_ENABLE(
 	[monolithic],
 	[AS_HELP_STRING(
 		[--disable-monolithic],
@@ -443,8 +436,6 @@ case "$CRYPTO_PP_STYLE" in
  sources) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix -D__CRYPTO_SOURCE__"
 	  LDFLAGS="$LDFLAGS -L$crypto_prefix/cryptopp"
           CRYPTOLIBS="-lcryptopp"
- ;;
- embedded) CXXFLAGS="$CXXFLAGS -DUSE_EMBEDDED_CRYPTO"
  ;;
  *) AC_MSG_ERROR([
           WARNING: crypto++ >= $min_crypto_version is not found.
@@ -712,7 +703,6 @@ AC_CONFIG_COMMANDS(denoiser, [[	if test $level -gt 0; then
 	fi]], [level=$denoiselevel])
 
 
-AM_CONDITIONAL(USE_EMBEDDED_CRYPTO, test x$USE_EMBEDDED_CRYPTO = xyes)
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
 AM_CONDITIONAL(CAS, test x$CAS = xyes)
@@ -829,7 +819,7 @@ echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2C
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
-echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-embedded}"
+echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-not found}"
 
 echo
 echo "  **** aMule TextClient ****"

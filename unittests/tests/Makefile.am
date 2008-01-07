@@ -44,7 +44,3 @@ NetworkFunctionsTest_LDADD = $(LDADD)
 FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp
 FileDataIOTest_CXXFLAGS = $(AM_CXXFLAGS) 
 FileDataIOTest_LDADD = $(LDADD) $(CRYPTOLIBS)
-
-if USE_EMBEDDED_CRYPTO
-FileDataIOTest_SOURCES += $(top_srcdir)/extern/cryptopp/CryptoPP.cpp
-endif
