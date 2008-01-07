@@ -4,13 +4,13 @@
 # Kry <elkry@users.sourceforge.net>, 2004.
 # IgoR <igor.spy@gmx.net>, 2004.
 # Fabio Jr. Beneditto <kamikazenh@yahoo.com.br>, 2004, 2005.felipe augusto <flipeicl@gmail.com>, 2007.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-06 02:31+0000\n"
+"POT-Creation-Date: 2008-01-07 03:31+0100\n"
 "PO-Revision-Date: 2007-11-03 01:32-0200\n"
 "Last-Translator: Israel Rodrigo Faria <israel.faria@gmail.com>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM <igor.spy@gmx.net>, Fabio Jr."
@@ -55,74 +55,74 @@ msgstr "Sucesso! Conexão estabelecida com o aMule "
 msgid "Succeeded! Connection established."
 msgstr "Sucesso! Conexão estabelecida."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3838
 msgid "Hashing"
 msgstr "Calculando hash"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3842
 msgid "Completing"
 msgstr "Completando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3845
 msgid "Complete"
 msgstr "Completo"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3848
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:809
 msgid "Paused"
 msgstr "Pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3851
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:808
 msgid "Erroneous"
 msgstr "Com Erro"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3858
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:807
 msgid "Downloading"
 msgstr "Baixando"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3860
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:806
 msgid "Waiting"
 msgstr "Esperando"
 
-#: src/ThreadTasks.cpp:119
+#: src/ThreadTasks.cpp:125
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Iniciando para criar de um hash para arquivo MD4 e AICH: %s"
 
-#: src/ThreadTasks.cpp:123
+#: src/ThreadTasks.cpp:129
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Iniciando para criar um hash MD4 para arquivo: %s"
 
-#: src/ThreadTasks.cpp:127
+#: src/ThreadTasks.cpp:133
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Iniciando para criar um hash AICH para arquivo: %s"
 
-#: src/ThreadTasks.cpp:372
+#: src/ThreadTasks.cpp:368
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Convertendo velhos hashsets AICH em '%s' para 64b em '%s'."
 
-#: src/ThreadTasks.cpp:454
+#: src/ThreadTasks.cpp:450
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "CUIDADO: O nome de arquivo '%s' é inválido e foi renomeado para '%s'."
 
-#: src/ThreadTasks.cpp:473
+#: src/ThreadTasks.cpp:469
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "CUIDADO: O arquivo '%s' já existe, novo arquivo renomeado para '%s'."
 
-#: src/ThreadTasks.cpp:487
+#: src/ThreadTasks.cpp:483
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr "AVISO: Não foi possível remover arquivo '%s' depois de criar o backup"
 
-#: src/ThreadTasks.cpp:499
+#: src/ThreadTasks.cpp:495
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "CUIDADO: Falha ao deletar %s"
@@ -138,8 +138,8 @@ msgstr "Falha ao pedir lista de compartilhamentos do usuário '%s'"
 #: src/ExternalConn.cpp:197 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1417
 #: src/DownloadListCtrl.cpp:1430 src/DownloadListCtrl.cpp:1441
-#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:856
-#: src/KnownFile.cpp:862 src/FileDetailDialog.cpp:130
+#: src/PartFile.cpp:2618 src/PartFile.cpp:2624 src/KnownFile.cpp:869
+#: src/KnownFile.cpp:875 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:685 src/ClientListCtrl.cpp:707
 #: src/ClientListCtrl.cpp:717 src/ClientListCtrl.cpp:858
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -1690,8 +1690,8 @@ msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:488
 #: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:915
-#: src/PartFile.cpp:926 src/PartFile.cpp:942
+#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:916
+#: src/PartFile.cpp:927 src/PartFile.cpp:943
 msgid "Message"
 msgstr "Mensagem"
 
@@ -2160,11 +2160,9 @@ msgstr ""
 
 #: src/ExternalConn.cpp:214
 msgid ""
-"You cannot connect to a release version from an arbitrary CVS version! "
+"You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"Você não pode se conectar a um release oficial com um cliente CVS! Possível "
-"*droga* de travamento evitada"
 
 #: src/ExternalConn.cpp:230
 msgid "Authentication failed."
@@ -2853,7 +2851,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Categoria"
 
-#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:589
+#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Principal"
 
@@ -3095,29 +3093,29 @@ msgstr "Erro: part.net está zerado: %s ==> %s"
 msgid "Error: Invalid part.met fileversion: %s ==> %s"
 msgstr "Erro: versão do arquivo part.met inválida: %s ==> %s"
 
-#: src/PartFile.cpp:599
+#: src/PartFile.cpp:596
 #, c-format
 msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr "Erro: %s (%s) está corrompido, impossível carregar arquivo."
 
-#: src/PartFile.cpp:602
+#: src/PartFile.cpp:599
 msgid "Trying to recover file info..."
 msgstr "Tentando recuperar info do arquivo..."
 
-#: src/PartFile.cpp:617
+#: src/PartFile.cpp:614
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
 msgstr ""
 "Recuperando arquivo sem nome - tentarei recuperá-lo como RecoveredFile.dat"
 
-#: src/PartFile.cpp:622
+#: src/PartFile.cpp:619
 msgid "Recovered all available file info :D - Trying to use it..."
 msgstr "Recuperada todas as informações do arquivo :D - Tente usá-lo..."
 
-#: src/PartFile.cpp:624
+#: src/PartFile.cpp:621
 msgid "Unable to recover file info :("
 msgstr "Não foi possível recuperar o arquivo :("
 
-#: src/PartFile.cpp:658
+#: src/PartFile.cpp:655
 #, c-format
 msgid "Failed to open %s (%s)"
 msgstr "Falha ao abrir %s (%s)"
@@ -3127,52 +3125,52 @@ msgstr "Falha ao abrir %s (%s)"
 msgid "Warning: %s might be corrupted (%i)"
 msgstr "Aviso: %s parece estar corrompido (%i)"
 
-#: src/PartFile.cpp:883 src/PartFile.cpp:888
+#: src/PartFile.cpp:884 src/PartFile.cpp:889
 #, c-format
 msgid "ERROR while saving partfile: %s (%s ==> %s)"
 msgstr "Erro ao salvar arquivo .part: %s (%s ==> %s)"
 
-#: src/PartFile.cpp:912
+#: src/PartFile.cpp:913
 #, c-format
 msgid "Unable to open %s file - using %s file."
 msgstr "Não foi possível carregar o arquivo %s - usando arquivo %s."
 
-#: src/PartFile.cpp:923
+#: src/PartFile.cpp:924
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
 msgstr ""
 
-#: src/PartFile.cpp:939
+#: src/PartFile.cpp:940
 #, c-format
 msgid "'%s' is 0 size somehow - using %s file."
 msgstr "De alguma forma o arquivo '%s' está zerado - usando arquivo %s"
 
-#: src/PartFile.cpp:1008
+#: src/PartFile.cpp:1009
 #, c-format
 msgid "Failed to save part.met.seeds file for %s"
 msgstr "Falha ao salvar part.met.seeds para %s"
 
-#: src/PartFile.cpp:1034
+#: src/PartFile.cpp:1035
 #, c-format
 msgid "Saved %i sources seeds for partfile: %s (%s)"
 msgstr "Salvo %i fontes do .part: %s (%s)"
 
-#: src/PartFile.cpp:1063
+#: src/PartFile.cpp:1064
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Arquivo .part %s (%s) não possui fontes disponíveis"
 
-#: src/PartFile.cpp:1072
+#: src/PartFile.cpp:1073
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr "Arquivo .part %s (%s) tem fontes expiradas."
 
-#: src/PartFile.cpp:1128
+#: src/PartFile.cpp:1129
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Erro lendo arquivo .seeds do arquivo (%s - %s): %s"
 
-#: src/PartFile.cpp:1144 src/PartFile.cpp:1167
+#: src/PartFile.cpp:1145 src/PartFile.cpp:1168
 #, c-format
 msgid ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
@@ -3181,38 +3179,38 @@ msgstr ""
 "Encontrada parte corrompida (%d) em %d arquivo .part %s - Resultado |%s| "
 "Hash |%s|"
 
-#: src/PartFile.cpp:1181
+#: src/PartFile.cpp:1182
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr "Achado parte completa (%i) em %s"
 
-#: src/PartFile.cpp:1218
+#: src/PartFile.cpp:1219
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Terminado o rehash %s"
 
-#: src/PartFile.cpp:2235
+#: src/PartFile.cpp:2236
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Erro inesperado ao completar %s. Arquivo pausado"
 
-#: src/PartFile.cpp:2261
+#: src/PartFile.cpp:2262
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Download concluído: %s"
 
-#: src/PartFile.cpp:2318
+#: src/PartFile.cpp:2319
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Apagando arquivo: %s"
 
-#: src/PartFile.cpp:2382
+#: src/PartFile.cpp:2383
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Aviso: Impossível fazer hash de parte baixada - hash incompleto para '%s'"
 
-#: src/PartFile.cpp:2387
+#: src/PartFile.cpp:2388
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3221,27 +3219,27 @@ msgstr ""
 "Impossível calcular hash da parte baixada - informação do hash incompleta (%"
 "s).Isso nunca deveria ter acontecido..."
 
-#: src/PartFile.cpp:3067
+#: src/PartFile.cpp:3068
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "AVISO: Não há espaço em disco suficiente! Colocando arquivo %s em pausa"
 
-#: src/PartFile.cpp:3152
+#: src/PartFile.cpp:3153
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Parte baixada %i do arquivo %s está corrompida"
 
-#: src/PartFile.cpp:3195
+#: src/PartFile.cpp:3196
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Recuperada parte corrompida %i para %s -> Bytes salvos: %s"
 
-#: src/PartFile.cpp:3853
+#: src/PartFile.cpp:3854
 msgid "Insufficient Diskspace"
 msgstr "Espaço em disco insuficiente"
 
-#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
+#: src/PartFile.cpp:3865 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:810
 msgid "Stopped"
 msgstr "Parado"
 
@@ -4517,7 +4515,7 @@ msgid "Sends the specified message."
 msgstr "Enviar a mensagem especificada"
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:975 src/muuli_wdr.cpp:1592
-#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:152
+#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:155
 msgid "Close"
 msgstr "Fechar"
 
@@ -6437,11 +6435,11 @@ msgstr "Verificado - OK"
 msgid "Not Available"
 msgstr "Não Disponível"
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:479
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Tamanho min deve ser menor que tamanho max. Tamanho max ignorado"
 
-#: src/SearchDlg.cpp:470 src/SearchDlg.cpp:529
+#: src/SearchDlg.cpp:480 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Alerta da busca"
 
@@ -6595,15 +6593,15 @@ msgstr "*** Conectando ao Cliente ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Falha ao conectar ao Cliente / Conexão perdida ***"
 
-#: src/MuleNotebook.cpp:153
+#: src/MuleNotebook.cpp:156
 msgid "Close tab"
 msgstr "Fechar aba"
 
-#: src/MuleNotebook.cpp:154
+#: src/MuleNotebook.cpp:157
 msgid "Close all tabs"
 msgstr "Fechar todas as abas"
 
-#: src/MuleNotebook.cpp:155
+#: src/MuleNotebook.cpp:158
 msgid "Close other tabs"
 msgstr "Fechar outras abas"
 
@@ -6990,6 +6988,13 @@ msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para leitura!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para escrita!"
+
+#~ msgid ""
+#~ "You cannot connect to a release version from an arbitrary CVS version! "
+#~ "*sigh* possible crash prevented"
+#~ msgstr ""
+#~ "Você não pode se conectar a um release oficial com um cliente CVS! "
+#~ "Possível *droga* de travamento evitada"
 
 #~ msgid "doesn't work"
 #~ msgstr "não funciona"
