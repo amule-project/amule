@@ -23,34 +23,29 @@
 //
 
 #ifndef CRYPTOPP_INC_H
-
 #define CRYPTOPP_INC_H
 
-#ifdef USE_EMBEDDED_CRYPTO
-	#include "extern/cryptopp/CryptoPP.h"
-#else
-	#ifdef __WEAK_CRYPTO__
-		#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-	#endif
-	#ifdef __CRYPTO_DEBIAN_GENTOO__
-		#include <crypto++/config.h>
-		#include <crypto++/md4.h>
-		#include <crypto++/rsa.h>
-		#include <crypto++/base64.h>
-		#include <crypto++/osrng.h>
-		#include <crypto++/files.h>
-		#include <crypto++/sha.h>
-		#include <crypto++/des.h>
-	#else 
-		#include <cryptopp/config.h>
-		#include <cryptopp/md4.h>
-		#include <cryptopp/rsa.h>
-		#include <cryptopp/base64.h>
-		#include <cryptopp/osrng.h>
-		#include <cryptopp/files.h>
-		#include <cryptopp/sha.h>
-		#include <cryptopp/des.h>
-	#endif
+#ifdef __WEAK_CRYPTO__
+	#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
+#endif
+#ifdef __CRYPTO_DEBIAN_GENTOO__
+	#include <crypto++/config.h>
+	#include <crypto++/md4.h>
+	#include <crypto++/rsa.h>
+	#include <crypto++/base64.h>
+	#include <crypto++/osrng.h>
+	#include <crypto++/files.h>
+	#include <crypto++/sha.h>
+	#include <crypto++/des.h>
+#else 
+	#include <cryptopp/config.h>
+	#include <cryptopp/md4.h>
+	#include <cryptopp/rsa.h>
+	#include <cryptopp/base64.h>
+	#include <cryptopp/osrng.h>
+	#include <cryptopp/files.h>
+	#include <cryptopp/sha.h>
+	#include <cryptopp/des.h>
 #endif
 
 #endif /* CRYPTOPP_INC_H */

@@ -454,40 +454,35 @@ AC_MSG_CHECKING([for crypto++ version >= $min_crypto_version])
 
 CRYPTO_PP_STYLE="unknown"
 CRYPTO_PP_HEADER_PATH=
-if test x$USE_EMBEDDED_CRYPTO = xno; then
-	#
-	# We don't use AC_CHECK_FILE to avoid caching.
-	#
+#
+# We don't use AC_CHECK_FILE to avoid caching.
+#
 
-	#
-	# Set crypto_prefix if the user has not set it in the configure command line
-	#
-	if test x$crypto_prefix = x ; then
-		crypto_prefix="/usr"
-	fi
-        AC_SUBST(crypto_prefix)
-        
-	#
-	# Find the Crypto++ header
-	#
-	if test -f $crypto_prefix/cryptopp/cryptlib.h; then
-		CRYPTO_PP_STYLE="sources"
-		CRYPTO_PP_HEADER_PATH="$crypto_prefix/cryptopp/cryptlib.h"
-	elif test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
-		CRYPTO_PP_STYLE="mdk_suse_fc"
-		CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/cryptopp/cryptlib.h"
-	elif test -f $crypto_prefix/include/crypto++/cryptlib.h; then
-		CRYPTO_PP_STYLE="gentoo_debian"
-		CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/crypto++/cryptlib.h"
-	else
-		#
-		# If the execution reaches here, we have failed.
-		#
-		:
-	fi
+#
+# Set crypto_prefix if the user has not set it in the configure command line
+#
+if test x$crypto_prefix = x ; then
+	crypto_prefix="/usr"
+fi
+AC_SUBST(crypto_prefix)
+
+#
+# Find the Crypto++ header
+#
+if test -f $crypto_prefix/cryptopp/cryptlib.h; then
+	CRYPTO_PP_STYLE="sources"
+	CRYPTO_PP_HEADER_PATH="$crypto_prefix/cryptopp/cryptlib.h"
+elif test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
+	CRYPTO_PP_STYLE="mdk_suse_fc"
+	CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/cryptopp/cryptlib.h"
+elif test -f $crypto_prefix/include/crypto++/cryptlib.h; then
+	CRYPTO_PP_STYLE="gentoo_debian"
+	CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/crypto++/cryptlib.h"
 else
-	CRYPTO_PP_STYLE="embedded"
-	CRYPTO_PP_HEADER_PATH="src/extern/cryptopp/CryptoPP.h"
+	#
+	# If the execution reaches here, we have failed.
+	#
+	:
 fi
 
 CRYPTO_PP_VERSION_STRING=$(grep "Reference Manual" $CRYPTO_PP_HEADER_PATH | \
