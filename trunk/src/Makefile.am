@@ -262,13 +262,6 @@ endif
 
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include
 
-#
-# Extras 
-#
-if USE_EMBEDDED_CRYPTO
-libmuleappcommon_a_SOURCES += extern/cryptopp/CryptoPP.cpp
-endif
-
 # --------- Apps ---------
 
 amulegui_SOURCES = \
