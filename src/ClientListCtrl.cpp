@@ -384,7 +384,7 @@ void CClientListCtrl::OnUnbanClient( wxCommandEvent& WXUNUSED(event) )
 
 void CClientListCtrl::InsertClient( CUpDownClient* client, ViewType view )
 {
-	wxASSERT( client );
+	wxCHECK_RET(client, wxT("Attempted to add NULL client pointer."));
 	
 	if ( ( m_viewType != view ) || ( view == vtNone ) ) {
 		return;
@@ -405,7 +405,7 @@ void CClientListCtrl::InsertClient( CUpDownClient* client, ViewType view )
 
 void CClientListCtrl::RemoveClient( CUpDownClient* client, ViewType view )
 {
-	wxASSERT( client );
+	wxCHECK_RET(client, wxT("Attempted to remove NULL client pointer."));
 
 	if ( ( m_viewType != view ) || ( view == vtNone ) ) {
 		return;
@@ -421,7 +421,7 @@ void CClientListCtrl::RemoveClient( CUpDownClient* client, ViewType view )
 
 void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 {
-	wxASSERT( client );
+	wxCHECK_RET(client, wxT("Attempted to update NULL client pointer."));
 
 	if ( ( m_viewType != view ) || ( view == vtNone ) ) {
 		return;
