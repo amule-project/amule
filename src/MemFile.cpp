@@ -40,7 +40,7 @@ CMemFile::CMemFile(unsigned int growthRate)
 
 CMemFile::CMemFile(byte* buffer, size_t bufferSize)
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to resize to attach to invalid buffer."));
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to attach invalid buffer."));
 	
 	m_buffer		= buffer;
 	m_BufferSize	= bufferSize;
@@ -53,7 +53,7 @@ CMemFile::CMemFile(byte* buffer, size_t bufferSize)
 
 CMemFile::CMemFile(const byte* buffer, size_t bufferSize)
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to resize to attach to invalid buffer."));
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempted to attach invalid buffer."));
 	
 	m_buffer		= const_cast<byte*>(buffer);
 	m_BufferSize	= bufferSize;
@@ -144,7 +144,7 @@ sint64 CMemFile::doRead(void* buffer, size_t count) const
 
 sint64 CMemFile::doWrite(const void* buffer, size_t count)
 {
-	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to write from invalid buffer"));
+	MULE_VALIDATE_PARAMS(buffer, wxT("CMemFile: Attempting to write to invalid buffer"));
 	MULE_VALIDATE_STATE(!m_readonly, wxT("CMemFile: Attempted to write to a read-only buffer."));
 	
 	// Needs more space?
@@ -167,7 +167,7 @@ sint64 CMemFile::doWrite(const void* buffer, size_t count)
 
 sint64 CMemFile::doSeek(sint64 offset) const
 {
-	MULE_VALIDATE_PARAMS(offset >= 0, wxT("Invalid position, must be positive."));
+	MULE_VALIDATE_PARAMS(offset >= 0, wxT("CMemFile: Invalid seek, position, must be positive."));
 	
 	return m_position = offset;
 }
