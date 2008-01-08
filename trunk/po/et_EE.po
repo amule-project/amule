@@ -1,4 +1,3 @@
-# translation of et_EE.po to
 # translation of aMule to Estonian
 # aMule i18n resource file.
 # Copyright (C) 2006 aMule Team
@@ -10,10 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 03:31+0100\n"
-"PO-Revision-Date: 2008-01-02 21:50+0200\n"
+"POT-Creation-Date: 2008-01-07 07:54+0200\n"
+"PO-Revision-Date: 2008-01-07 07:57+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
-"Language-Team:  <et@li.org>\n"
+"Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2166,6 +2165,8 @@ msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
+"Sa ei saa ajutise SVN versiooniga ühenduda reliisi versiooniga!!!! *RRRRRR* "
+"hoidsin ära võimaliku crässi"
 
 #: src/ExternalConn.cpp:230
 msgid "Authentication failed."
@@ -2856,7 +2857,7 @@ msgstr "Tõmba"
 msgid "Category"
 msgstr "Kategooria"
 
-#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:589
 msgid "Main"
 msgstr "Peamine"
 
@@ -4515,7 +4516,7 @@ msgid "Sends the specified message."
 msgstr "Saada määratud teade."
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:975 src/muuli_wdr.cpp:1592
-#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:155
+#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:152
 msgid "Close"
 msgstr "Sulge"
 
@@ -6438,11 +6439,11 @@ msgstr "Kontrollitud - OK"
 msgid "Not Available"
 msgstr "Info Puudub"
 
-#: src/SearchDlg.cpp:479
+#: src/SearchDlg.cpp:469
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min suurus peab olema väiksem kui max suurus. Ignoreerin Max suurust."
 
-#: src/SearchDlg.cpp:480 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:470 src/SearchDlg.cpp:529
 msgid "Search warning"
 msgstr "Otsingu hoiatus"
 
@@ -6596,15 +6597,15 @@ msgstr "*** Ühendun Kliendiga ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kliendiga ühendumine ebaõnnestus / Ühendus kadunud ***"
 
-#: src/MuleNotebook.cpp:156
+#: src/MuleNotebook.cpp:153
 msgid "Close tab"
 msgstr "Sulge leht"
 
-#: src/MuleNotebook.cpp:157
+#: src/MuleNotebook.cpp:154
 msgid "Close all tabs"
 msgstr "Sulge kõik lehed"
 
-#: src/MuleNotebook.cpp:158
+#: src/MuleNotebook.cpp:155
 msgid "Close other tabs"
 msgstr "Sulge teised lehed"
 
@@ -6995,10 +6996,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
-#~ msgid ""
-#~ "You cannot connect to a release version from an arbitrary CVS version! "
-#~ "*sigh* possible crash prevented"
-#~ msgstr ""
-#~ "Sa ei saa ajutise CVS versiooni ühendada reliisi versiooniga!!!! *RRRRRR* "
-#~ "hoidsin ära võimaliku crässi"
