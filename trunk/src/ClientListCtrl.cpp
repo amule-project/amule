@@ -64,8 +64,6 @@ int CompareVersions(const CUpDownClient* client1, const CUpDownClient* client2)
 }
 
 
-
-
 ////////////////////////////////////////////////////////////
 // CClientListCtrl
 
@@ -74,12 +72,12 @@ BEGIN_EVENT_TABLE( CClientListCtrl, CMuleListCtrl )
 	EVT_RIGHT_DOWN(CClientListCtrl::OnRightClick)
 	EVT_LIST_ITEM_MIDDLE_CLICK(-1, CClientListCtrl::OnMiddleClick)
 
-	EVT_MENU( MP_DETAIL,		CClientListCtrl::OnShowDetails	)
-	EVT_MENU( MP_ADDFRIEND,		CClientListCtrl::OnAddFriend	)
-	EVT_MENU( MP_SHOWLIST,		CClientListCtrl::OnViewFiles	)
-	EVT_MENU( MP_SENDMESSAGE,	CClientListCtrl::OnSendMessage	)
-	EVT_MENU( MP_UNBAN,			CClientListCtrl::OnUnbanClient	)
-	EVT_MENU_RANGE( MP_SWITCHCTRL_0,	MP_SWITCHCTRL_9,	CClientListCtrl::OnChangeView	)
+	EVT_MENU( MP_DETAIL,             CClientListCtrl::OnShowDetails	)
+	EVT_MENU( MP_ADDFRIEND,          CClientListCtrl::OnAddFriend	)
+	EVT_MENU( MP_SHOWLIST,           CClientListCtrl::OnViewFiles	)
+	EVT_MENU( MP_SENDMESSAGE,        CClientListCtrl::OnSendMessage	)
+	EVT_MENU( MP_UNBAN,              CClientListCtrl::OnUnbanClient	)
+	EVT_MENU_RANGE( MP_SWITCHCTRL_0, MP_SWITCHCTRL_9, CClientListCtrl::OnChangeView	)
 END_EVENT_TABLE()
 
 
@@ -151,7 +149,8 @@ ClientListView g_listViews[] =
 
 
 CClientListCtrl::CClientListCtrl( wxWindow *parent, wxWindowID winid, const wxPoint &pos, const wxSize &size, long style, const wxValidator& validator, const wxString& name )
-	: CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
+:
+CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name )
 {
 	m_viewType = vtNone;
 	
@@ -240,7 +239,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 
 		// Check if the client is banned
 		if ( index > -1 ) {
-			CUpDownClient* client = (CUpDownClient*)GetItemData( index );
+			CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 
 			banned = client->IsBanned();
 			validIP = client->GetIP();
@@ -249,11 +248,11 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		}
 				
 		m_menu = new wxMenu(_("Clients"));
-		m_menu->Append( MP_DETAIL,		_("Show &Details") );
-		m_menu->Append( MP_ADDFRIEND,	isfriend ? _("Remove from friends") : _("Add to Friends") );
-		m_menu->Append( MP_SHOWLIST,	_("View Files") );
-		m_menu->Append( MP_SENDMESSAGE,	_("Send message") );
-		m_menu->Append( MP_UNBAN,		_("Unban") );
+		m_menu->Append( MP_DETAIL,      _("Show &Details") );
+		m_menu->Append( MP_ADDFRIEND,   isfriend ? _("Remove from friends") : _("Add to Friends") );
+		m_menu->Append( MP_SHOWLIST,    _("View Files") );
+		m_menu->Append( MP_SENDMESSAGE, _("Send message") );
+		m_menu->Append( MP_UNBAN,       _("Unban") );
 		
 		m_menu->AppendSeparator();
 	
@@ -266,13 +265,13 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 		
 		m_menu->Append( 0, _("Select View"), view );
 		
-		m_menu->Enable( MP_DETAIL,		index > -1 );
-		m_menu->Enable( MP_SHOWLIST,	index > -1 );
+		m_menu->Enable( MP_DETAIL,      index > -1 );
+		m_menu->Enable( MP_SHOWLIST,    index > -1 );
 				
-		m_menu->Enable( MP_UNBAN, 		banned );		
-		m_menu->Enable( MP_SHOWLIST, 		!hasdisabledsharedfiles );		
-		m_menu->Enable( MP_ADDFRIEND,	validIP );
-		m_menu->Enable( MP_SENDMESSAGE,	validIP );
+		m_menu->Enable( MP_UNBAN,       banned );		
+		m_menu->Enable( MP_SHOWLIST,    !hasdisabledsharedfiles );		
+		m_menu->Enable( MP_ADDFRIEND,   validIP );
+		m_menu->Enable( MP_SENDMESSAGE, validIP );
 
 		PopupMenu( m_menu, event.GetPosition() );
 		
@@ -288,7 +287,7 @@ void CClientListCtrl::OnMiddleClick(wxListEvent& event)
 	long index = CheckSelection(event);
 
 	if (index > -1) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData(index);
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 
 		CClientDetailDialog dialog(this, client);
 		
@@ -310,7 +309,7 @@ void CClientListCtrl::OnAddFriend( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	while ( index != -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 		if (client->IsFriend()) {
 			theApp->amuledlg->m_chatwnd->RemoveFriend(client->GetUserHash(), client->GetIP(), client->GetUserPort());
 		} else {
@@ -326,10 +325,8 @@ void CClientListCtrl::OnShowDetails( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
-
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 		CClientDetailDialog dialog(this, client);
-		
 		dialog.ShowModal();
 	}
 }
@@ -340,8 +337,7 @@ void CClientListCtrl::OnViewFiles( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
-
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 		client->RequestSharedFileList();
 	}
 }
@@ -352,7 +348,7 @@ void CClientListCtrl::OnSendMessage( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData(index);
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 
 		// These values are cached, since calling wxGetTextFromUser will
 		// start an event-loop, in which the client may be deleted.
@@ -373,8 +369,7 @@ void CClientListCtrl::OnUnbanClient( wxCommandEvent& WXUNUSED(event) )
 	long index = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	
 	if ( index > -1 ) {
-		CUpDownClient* client = (CUpDownClient*)GetItemData( index );
-
+		CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 		if ( client->IsBanned() ) {
 			client->UnBan();
 		}		
@@ -430,14 +425,11 @@ void CClientListCtrl::UpdateClient( CUpDownClient* client, ViewType view )
 	if ( theApp->amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		// Visible lines, default to all because not all platforms support the GetVisibleLines function
 		long first = 0, last = GetItemCount();
-		
 		long result = FindItem( -1, reinterpret_cast<wxUIntPtr>(client) );
-	
 		if ( result > -1 ) {
-			#ifndef __WXMSW__
-				GetVisibleLines( &first, &last );
-			#endif
-			
+#ifndef __WXMSW__
+			GetVisibleLines( &first, &last );
+#endif
 			if ( result >= first && result <= last) {
 				RefreshItem(result);
 			}
@@ -452,7 +444,6 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 	if ( !theApp->amuledlg || !theApp->amuledlg->IsDialogVisible( CamuleDlg::DT_TRANSFER_WND ) ) {
 		return;
 	}
-
 	
 	if ( highlighted ) {
 		if ( GetFocus() ) {
@@ -463,24 +454,19 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 			dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	
-
 		wxColour colour = GetFocus() ? m_hilightBrush->GetColour() : m_hilightUnfocusBrush->GetColour();
 		dc->SetPen( wxPen( BLEND(colour, 65), 1, wxSOLID) );
 	} else {
 		dc->SetBackground( wxBrush( SYSCOLOR(wxSYS_COLOUR_LISTBOX), wxSOLID ) );
 		dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT) );
-
-
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
-	
 	
 	dc->SetBrush(dc->GetBackground());
 	dc->DrawRectangle(rectHL);
 	dc->SetPen(*wxTRANSPARENT_PEN);
-
 	
-	CUpDownClient* client = (CUpDownClient*)GetItemData(item);
+	CUpDownClient* client = reinterpret_cast<CUpDownClient *>(GetItemData(item));
 	wxRect cur_rect = rect;
 	cur_rect.x += 4;
 
@@ -489,7 +475,6 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 	if ( view.m_draw ) {
 		for ( int i = 0; i < GetColumnCount(); i++ ) {
 			int width = GetColumnWidth( i );
-	
 			if ( width ) {
 				cur_rect.width = width - 8;
 		
@@ -497,7 +482,6 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 		
 				view.m_draw( client, i, dc, cur_rect );
 			}
-		
 			cur_rect.x += width;
 		}
 	}
@@ -506,24 +490,26 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 
 wxString CClientListCtrl::GetTTSText(unsigned item) const
 {
-	return ((CUpDownClient*)GetItemData(item))->GetUserName();
+	CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
+
+	return client->GetUserName();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CUploadingView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0,	_("Username"),			wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 1,	_("File"),				wxLIST_FORMAT_LEFT, 275 );
-	list->InsertColumn( 2,	_("Client Software"),	wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 3,	_("Speed"),				wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 4,	_("Transferred"),		wxLIST_FORMAT_LEFT,  65 );
-	list->InsertColumn( 5,	_("Waited"),			wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 6,	_("Upload Time"),		wxLIST_FORMAT_LEFT,  60 );
-	list->InsertColumn( 7,	_("Status"),			wxLIST_FORMAT_LEFT, 110 );
-	list->InsertColumn( 8,	_("Obtained Parts"),	wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 9,	_("Upload/Download"),	wxLIST_FORMAT_LEFT, 100 );
-	list->InsertColumn( 10,	_("Remote Status"),		wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275 );
+	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100 );
+	list->InsertColumn( 3,	_("Speed"),           wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 4,	_("Transferred"),     wxLIST_FORMAT_LEFT,  65 );
+	list->InsertColumn( 5,	_("Waited"),          wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 6,	_("Upload Time"),     wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 7,	_("Status"),          wxLIST_FORMAT_LEFT, 110 );
+	list->InsertColumn( 8,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100 );
+	list->InsertColumn( 9,	_("Upload/Download"), wxLIST_FORMAT_LEFT, 100 );
+	list->InsertColumn( 10,	_("Remote Status"),   wxLIST_FORMAT_LEFT, 100 );			
 			
 	// Insert any existing items on the list
 	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
@@ -539,186 +525,185 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 	wxString buffer;	
 	
 	switch ( column ) {
-		case 0: {
-			uint8 clientImage;
-	
-			if ( client->IsFriend() ) {
-				clientImage = Client_Friend_Smiley;
-			} else {
-				switch (client->GetClientSoft()) {
-					case SO_AMULE:
-						clientImage = Client_aMule_Smiley;
-						break;
-					case SO_MLDONKEY:
-					case SO_NEW_MLDONKEY:
-					case SO_NEW2_MLDONKEY:
-						clientImage = Client_mlDonkey_Smiley;
-						break;
-					case SO_EDONKEY:
-					case SO_EDONKEYHYBRID:
-						// Maybe we would like to make different icons?
-						clientImage = Client_eDonkeyHybrid_Smiley;
-						break;
-					case SO_EMULE:
-						clientImage = Client_eMule_Smiley;
-					break;
-						case SO_LPHANT:
-						clientImage = Client_lphant_Smiley;
-						break;
-					case SO_SHAREAZA:
-					case SO_NEW_SHAREAZA:
-					case SO_NEW2_SHAREAZA:
-						clientImage = Client_Shareaza_Smiley;
-						break;
-					case SO_LXMULE:
-						clientImage = Client_xMule_Smiley;
-						break;
-					default:
-						// cDonkey, Compat Unk
-						// No icon for those yet. Using the eMule one + '?'
-						clientImage = Client_Unknown;
-						break;
-				}
-			}
+	case 0: {
+		uint8 clientImage;
 
-			m_imagelist.Draw(clientImage, *dc, rect.x, rect.y + 1,
-				wxIMAGELIST_DRAW_TRANSPARENT);
-
-			if (client->GetScoreRatio() > 1) {
-				// Has credits, draw the gold star
-				m_imagelist.Draw(Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1,
-					wxIMAGELIST_DRAW_TRANSPARENT );
-			} else if (client->ExtProtocolAvailable()) {
-				// Ext protocol -> Draw the '+'
-				m_imagelist.Draw(Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1,
-					wxIMAGELIST_DRAW_TRANSPARENT );
+		if ( client->IsFriend() ) {
+			clientImage = Client_Friend_Smiley;
+		} else {
+			switch (client->GetClientSoft()) {
+			case SO_AMULE:
+				clientImage = Client_aMule_Smiley;
+				break;
+			case SO_MLDONKEY:
+			case SO_NEW_MLDONKEY:
+			case SO_NEW2_MLDONKEY:
+				clientImage = Client_mlDonkey_Smiley;
+				break;
+			case SO_EDONKEY:
+			case SO_EDONKEYHYBRID:
+				// Maybe we would like to make different icons?
+				clientImage = Client_eDonkeyHybrid_Smiley;
+				break;
+			case SO_EMULE:
+				clientImage = Client_eMule_Smiley;
+				break;
+			case SO_LPHANT:
+				clientImage = Client_lphant_Smiley;
+				break;
+			case SO_SHAREAZA:
+			case SO_NEW_SHAREAZA:
+			case SO_NEW2_SHAREAZA:
+				clientImage = Client_Shareaza_Smiley;
+				break;
+			case SO_LXMULE:
+				clientImage = Client_xMule_Smiley;
+				break;
+			default:
+				// cDonkey, Compat Unk
+				// No icon for those yet. Using the eMule one + '?'
+				clientImage = Client_Unknown;
+				break;
 			}
-
-			if (client->IsIdentified()) {
-				// the 'v'
-				m_imagelist.Draw(Client_SecIdent_Smiley, *dc, rect.x, rect.y + 1,
-					wxIMAGELIST_DRAW_TRANSPARENT);					
-			} else if (client->IsBadGuy()) {
-				// the 'X'
-				m_imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
-					wxIMAGELIST_DRAW_TRANSPARENT);					
-			}
-			
-			if (client->HasObfuscatedConnectionBeenEstablished()) {
-				// the "¿" except it's a key
-				m_imagelist.Draw(Client_Encryption_Smiley, *dc, rect.x, rect.y + 1,
-					wxIMAGELIST_DRAW_TRANSPARENT);					
-			}
-
-			wxString userName;
-#ifdef ENABLE_IP2COUNTRY
-			// Draw the flag
-			const CountryData& countrydata = theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
-			dc->DrawBitmap(countrydata.Flag,
-				rect.x + 20, rect.y + 5,
-				wxIMAGELIST_DRAW_TRANSPARENT);
-				
-			userName << countrydata.Name;
-			userName << wxT(" - ");
-#endif // ENABLE_IP2COUNTRY
-			userName << client->GetUserName();
-			dc->DrawText(userName, rect.x + 40, rect.y + 3);
-			
-			return;
 		}
+
+		m_imagelist.Draw(clientImage, *dc, rect.x, rect.y + 1,
+			wxIMAGELIST_DRAW_TRANSPARENT);
+
+		if (client->GetScoreRatio() > 1) {
+			// Has credits, draw the gold star
+			m_imagelist.Draw(Client_CreditsYellow_Smiley, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT );
+		} else if (client->ExtProtocolAvailable()) {
+			// Ext protocol -> Draw the '+'
+			m_imagelist.Draw(Client_ExtendedProtocol_Smiley, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT );
+		}
+
+		if (client->IsIdentified()) {
+			// the 'v'
+			m_imagelist.Draw(Client_SecIdent_Smiley, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT);					
+		} else if (client->IsBadGuy()) {
+			// the 'X'
+			m_imagelist.Draw(Client_BadGuy_Smiley, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT);					
+		}
+		
+		if (client->HasObfuscatedConnectionBeenEstablished()) {
+			// the "¿" except it's a key
+			m_imagelist.Draw(Client_Encryption_Smiley, *dc, rect.x, rect.y + 1,
+				wxIMAGELIST_DRAW_TRANSPARENT);					
+		}
+
+		wxString userName;
+#ifdef ENABLE_IP2COUNTRY
+		// Draw the flag
+		const CountryData& countrydata =
+			theApp->amuledlg->m_IP2Country->GetCountryData(client->GetFullIP());
+		dc->DrawBitmap(countrydata.Flag, rect.x + 20, rect.y + 5,
+			wxIMAGELIST_DRAW_TRANSPARENT);
+			
+		userName << countrydata.Name;
+		userName << wxT(" - ");
+#endif // ENABLE_IP2COUNTRY
+		userName << client->GetUserName();
+		dc->DrawText(userName, rect.x + 40, rect.y + 3);
+		
+		return;
+	}
+
+	case 1:
+		if ( client->GetUploadFile() ) {
+			buffer = client->GetUploadFile()->GetFileName();
+		} else {
+			buffer = _("N/A");
+		}
+		break;
+
+	case 2:
+		buffer = client->GetClientVerString();
+		break;
 	
-		case 1:
-			if ( client->GetUploadFile() ) {
-				buffer = client->GetUploadFile()->GetFileName();
-			} else {
-				buffer = _("N/A");
+	case 3:
+		buffer = wxString::Format( wxT("%.1f"), client->GetUploadDatarate() / 1024.0f );
+	
+		buffer += wxT(" ");
+		buffer += _("kB/s");
+		break;
+		
+	case 4:
+		buffer = CastItoXBytes(client->GetSessionUp());
+		break;
+	
+	case 5:
+		buffer = CastSecondsToHM((client->GetWaitTime())/1000);
+		break;
+	
+	case 6:
+		buffer = CastSecondsToHM((client->GetUpStartTimeDelay())/1000);
+		break;
+	
+	case 7:
+		switch ( client->GetUploadState() ) {
+		case US_CONNECTING:
+			buffer = _("Connecting");
+			break;
+			
+		case US_WAITCALLBACK:
+			buffer = _("Connecting via server");
+			break;
+			
+		case US_UPLOADING:
+			buffer = wxT("<-- ");
+			buffer.Append(_("Transferring"));
+			
+			if (client->GetDownloadState() == DS_DOWNLOADING) {
+				buffer.Append(wxT(" -->"));
 			}
 			break;
-	
-		case 2:
-			buffer = client->GetClientVerString();
+			
+		case US_ONUPLOADQUEUE:
+			buffer = _("On Queue");
 			break;
+			
+		default:
+			buffer = _("Unknown");
+		}
+		break;
 		
-		case 3:
-			buffer = wxString::Format( wxT("%.1f"), client->GetUploadDatarate() / 1024.0f );
-		
+	case 8:
+		if ( client->GetUpPartCount() ) {
+			CUploadingView::DrawStatusBar( client, dc, rect );
+		}
+		return;
+	
+	case 9:
+		buffer = CastItoXBytes( client->GetUploadedTotal() ) +
+			wxT(" / ") + CastItoXBytes(client->GetDownloadedTotal());
+		break;
+ 
+	case 10: 
+		if ( client->GetDownloadState() == DS_ONQUEUE ) { 
+			if ( client->IsRemoteQueueFull() ) { 
+				buffer = _("Queue Full"); 
+			} else { 
+				if (client->GetRemoteQueueRank()) { 
+					buffer = wxString::Format(_("QR: %u"), client->GetRemoteQueueRank()); 
+				} else { 
+					buffer = _("Unknown"); 
+				} 
+			} 
+		} else if ( client->GetDownloadState() == DS_DOWNLOADING ) {
+			buffer += wxString::Format( wxT("%.1f"), client->GetKBpsDown() ); 
 			buffer += wxT(" ");
 			buffer += _("kB/s");
+		} else { 
+			buffer = _("Unknown"); 
+		} 
 		break;
-			
-		case 4:
-			buffer = CastItoXBytes(client->GetSessionUp());
-			break;
-		
-		case 5:
-			buffer = CastSecondsToHM((client->GetWaitTime())/1000);
-			break;
-		
-		case 6:
-			buffer = CastSecondsToHM((client->GetUpStartTimeDelay())/1000);
-			break;
-		
-		case 7:
-			switch ( client->GetUploadState() ) {
-				case US_CONNECTING:
-					buffer = _("Connecting");
-					break;
-					
-				case US_WAITCALLBACK:
-					buffer = _("Connecting via server");
-					break;
-					
-				case US_UPLOADING:
-					buffer = wxT("<-- ");
-					buffer.Append(_("Transferring"));
-					
-					if (client->GetDownloadState() == DS_DOWNLOADING) {
-						buffer.Append(wxT(" -->"));
-					}
-					break;
-					
-				case US_ONUPLOADQUEUE:
-					buffer = _("On Queue");
-					break;
-					
-				default:
-					buffer = _("Unknown");
-			}
-			break;
-			
-		case 8:
-			if ( client->GetUpPartCount() ) {
-				CUploadingView::DrawStatusBar( client, dc, rect );
-			}
-			return;
-		
-		case 9:
-			buffer = CastItoXBytes( client->GetUploadedTotal() ) + wxT(" / ") + CastItoXBytes(client->GetDownloadedTotal());
-			break;
- 
-        case 10: 
-            if ( client->GetDownloadState() == DS_ONQUEUE ) { 
-                if ( client->IsRemoteQueueFull() ) { 
-                    buffer = _("Queue Full"); 
-                } else { 
-                    if (client->GetRemoteQueueRank()) { 
-                        buffer = wxString::Format(_("QR: %u"), client->GetRemoteQueueRank()); 
-                    } else { 
-                        buffer = _("Unknown"); 
-                    } 
-                } 
-            } else if ( client->GetDownloadState() == DS_DOWNLOADING ) {
-				buffer += wxString::Format( wxT("%.1f"), client->GetKBpsDown() ); 
-				
-				buffer += wxT(" ");
-			    buffer += _("kB/s");
-		 
-            } else { 
-                buffer = _("Unknown"); 
-            } 
-            break;
-		}
-			
+	}
+
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
 }
 
@@ -732,51 +717,51 @@ int CUploadingView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 	
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
-		// Sort by username
-		case 0:	return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
+	// Sort by username
+	case 0:	return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
 
-		
-		// Sort by requested file
-		case 1: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
+	
+	// Sort by requested file
+	case 1: {
+		const CKnownFile* file1 = client1->GetUploadFile();
+		const CKnownFile* file2 = client2->GetUploadFile();
 
-			if ( file1 && file2  ) {
-				return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
-			} 
-			
-			return mode * CmpAny( file1, file2 );
-		}
+		if ( file1 && file2  ) {
+			return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+		} 
 		
-		// Sort by client software
-		case 2: return mode * CompareVersions(client1, client2);
-		
-		// Sort by speed
-		case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
-		
-		// Sort by transferred
-		case 4: return mode * CmpAny( client1->GetSessionUp(), client2->GetSessionUp() );
-		
-		// Sort by wait-time
-		case 5: return mode * CmpAny( client1->GetWaitTime(), client2->GetWaitTime() );
-		
-		// Sort by upload time
-		case 6: return mode * CmpAny( client1->GetUpStartTimeDelay(), client2->GetUpStartTimeDelay() );
-		
-		// Sort by state
-		case 7: return mode * CmpAny( client1->GetUploadState(), client2->GetUploadState() );
-		
-		// Sort by partcount
-		case 8: return mode * CmpAny( client1->GetUpPartCount(), client2->GetUpPartCount() );
-		
-		// Sort by U/D ratio
-		case 9: return mode * CmpAny( client2->GetDownloadedTotal(), client1->GetDownloadedTotal() );
-		
-		// Sort by remote rank
-		case 10: return mode * CmpAny( client2->GetRemoteQueueRank(), client1->GetRemoteQueueRank() );
+		return mode * CmpAny( file1, file2 );
+	}
+	
+	// Sort by client software
+	case 2: return mode * CompareVersions(client1, client2);
+	
+	// Sort by speed
+	case 3: return mode * CmpAny( client1->GetUploadDatarate(), client2->GetUploadDatarate() );
+	
+	// Sort by transferred
+	case 4: return mode * CmpAny( client1->GetSessionUp(), client2->GetSessionUp() );
+	
+	// Sort by wait-time
+	case 5: return mode * CmpAny( client1->GetWaitTime(), client2->GetWaitTime() );
+	
+	// Sort by upload time
+	case 6: return mode * CmpAny( client1->GetUpStartTimeDelay(), client2->GetUpStartTimeDelay() );
+	
+	// Sort by state
+	case 7: return mode * CmpAny( client1->GetUploadState(), client2->GetUploadState() );
+	
+	// Sort by partcount
+	case 8: return mode * CmpAny( client1->GetUpPartCount(), client2->GetUpPartCount() );
+	
+	// Sort by U/D ratio
+	case 9: return mode * CmpAny( client2->GetDownloadedTotal(), client1->GetDownloadedTotal() );
+	
+	// Sort by remote rank
+	case 10: return mode * CmpAny( client2->GetRemoteQueueRank(), client1->GetRemoteQueueRank() );
 
-		default:
-			return 0;
+	default:
+		return 0;
 	}
 }
 
@@ -803,7 +788,6 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 		if ( client->IsUpPartAvailable( i ) ) { 
 			int right = rect.x + (uint32)(((float)PARTSIZE*i/1024)*blockpixel);
 			int left  = rect.x + (uint32)((float)((float)PARTSIZE*(i+1)/1024)*blockpixel);
-
 			dc->DrawRectangle( (int)left, rect.y, right - left, rect.height );					
 		}
 	}
@@ -816,18 +800,17 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CQueuedView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0,	_("Username"),			wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 1,	_("File"),				wxLIST_FORMAT_LEFT,	275 );
-	list->InsertColumn( 2,	_("Client Software"),	wxLIST_FORMAT_LEFT,	100 );
-	list->InsertColumn( 3,	_("File Priority"),		wxLIST_FORMAT_LEFT,	110 );
-	list->InsertColumn( 4,	_("Rating"),			wxLIST_FORMAT_LEFT,	 60 );
-	list->InsertColumn( 5,	_("Score"),				wxLIST_FORMAT_LEFT,	 60 );
-	list->InsertColumn( 6,	_("Asked"),				wxLIST_FORMAT_LEFT,	 60 );
-	list->InsertColumn( 7,	_("Last Seen"),			wxLIST_FORMAT_LEFT,	110 );
-	list->InsertColumn( 8,	_("Entered Queue"),		wxLIST_FORMAT_LEFT,	110 );
-	list->InsertColumn( 9,	_("Banned"),			wxLIST_FORMAT_LEFT,	 60 );
-	list->InsertColumn( 10,	_("Obtained Parts"),	wxLIST_FORMAT_LEFT,	100 );
-
+	list->InsertColumn( 0,	_("Username"),        wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 1,	_("File"),            wxLIST_FORMAT_LEFT, 275 );
+	list->InsertColumn( 2,	_("Client Software"), wxLIST_FORMAT_LEFT, 100 );
+	list->InsertColumn( 3,	_("File Priority"),   wxLIST_FORMAT_LEFT, 110 );
+	list->InsertColumn( 4,	_("Rating"),          wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 5,	_("Score"),           wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 6,	_("Asked"),           wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 7,	_("Last Seen"),       wxLIST_FORMAT_LEFT, 110 );
+	list->InsertColumn( 8,	_("Entered Queue"),   wxLIST_FORMAT_LEFT, 110 );
+	list->InsertColumn( 9,	_("Banned"),          wxLIST_FORMAT_LEFT,  60 );
+	list->InsertColumn( 10,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100 );
 
 	// Insert any existing items on the list
 	// Insert any existing items on the list
@@ -844,70 +827,70 @@ void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const w
 	wxString buffer;
 	
 	switch ( column ) {
-		// These 3 are the same for both lists
-		case 0:
-		case 1:
-		case 2:
-			CUploadingView::DrawCell( client, column, dc, rect );
-			return;
+	// These 3 are the same for both lists
+	case 0:
+	case 1:
+	case 2:
+		CUploadingView::DrawCell( client, column, dc, rect );
+		return;
 
-		case 3:
-			if ( client->GetUploadFile() ) {
-				buffer = PriorityToStr( client->GetUploadFile()->GetUpPriority(), false );
-			} else {
-				buffer = _("Unknown");
-			}
+	case 3:
+		if ( client->GetUploadFile() ) {
+			buffer = PriorityToStr( client->GetUploadFile()->GetUpPriority(), false );
+		} else {
+			buffer = _("Unknown");
+		}
 
-			break;
-			
-		case 4:
-			buffer = wxString::Format( wxT("%.1f"), (float)client->GetScore(false,false,true) );
-			break;
+		break;
 		
-		case 5:
-			if ( client->HasLowID() ) {
-				buffer = wxString::Format( wxT("%i %s"), client->GetScore(false), _("LowID") );
-			} else {
-				buffer = wxString::Format(wxT("%i"),client->GetScore(false));
-			}
-			break;
-			
-		case 6:
-			buffer = wxString::Format( wxT("%i"), client->GetAskedCount() );
-			break;
-			
+	case 4:
+		buffer = wxString::Format( wxT("%.1f"), (float)client->GetScore(false,false,true) );
+		break;
+	
+	case 5:
+		if ( client->HasLowID() ) {
+			buffer = wxString::Format( wxT("%i %s"), client->GetScore(false), _("LowID") );
+		} else {
+			buffer = wxString::Format(wxT("%i"),client->GetScore(false));
+		}
+		break;
+		
+	case 6:
+		buffer = wxString::Format( wxT("%i"), client->GetAskedCount() );
+		break;
+		
 #ifndef CLIENT_GUI
-		case 7:
-			buffer = CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000);
-			break;
-		
-		case 8:
-			buffer = CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000);
-			break;
+	case 7:
+		buffer = CastSecondsToHM((::GetTickCount() - client->GetLastUpRequest())/1000);
+		break;
+	
+	case 8:
+		buffer = CastSecondsToHM((::GetTickCount() - client->GetWaitStartTime())/1000);
+		break;
 #else
-		case 7:
-			buffer = CastSecondsToHM(client->GetLastUpRequest()/1000);
-			break;
-		
-		case 8:
-			buffer = CastSecondsToHM(client->GetWaitStartTime()/1000);
-			break;
+	case 7:
+		buffer = CastSecondsToHM(client->GetLastUpRequest()/1000);
+		break;
+	
+	case 8:
+		buffer = CastSecondsToHM(client->GetWaitStartTime()/1000);
+		break;
 #endif
-		case 9:
-			if ( client->IsBanned() ) {
-				buffer = _("Yes");
-			} else {
-				buffer = _("No");
-			}
-			
-			break;
-			
-		case 10:
-			if ( client->GetUpPartCount() ) {
-				CUploadingView::DrawStatusBar( client, dc, rect );
-			}
-			
-			return;
+	case 9:
+		if ( client->IsBanned() ) {
+			buffer = _("Yes");
+		} else {
+			buffer = _("No");
+		}
+		
+		break;
+		
+	case 10:
+		if ( client->GetUpPartCount() ) {
+			CUploadingView::DrawStatusBar( client, dc, rect );
+		}
+		
+		return;
 	}
 			
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
@@ -923,61 +906,61 @@ int CQueuedView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
-		// Sort by username
-		case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
-		
-		// Sort by filename
-		case 1: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
-
-			if ( file1 && file2 ) {
-				return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
-			}
-
-			// Place files with filenames on top
-			return -mode * CmpAny( file1, file2 );
-		}
-		
-		// Sort by client software
-		case 2:	return mode * CompareVersions(client1, client2);
-		
-		// Sort by file upload-priority
-		case 3: {
-			const CKnownFile* file1 = client1->GetUploadFile();
-			const CKnownFile* file2 = client2->GetUploadFile();
-
-			if ( file1 && file2  ) {
-				int8 prioA = file1->GetUpPriority();
-				int8 prioB = file2->GetUpPriority();
-
-				// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
-				return mode * CmpAny( ( prioA != PR_VERYLOW ? prioA : -1 ), ( prioB != PR_VERYLOW ? prioB : -1 ) );
-			} 
-			
-			// Place files with priorities on top
-			return -mode * CmpAny( file1, file2 );
-		}
-		
-		// Sort by rating
-		case 4: return mode * CmpAny( client1->GetScore(false,false,true), client2->GetScore(false,false,true) );
-
-		// Sort by score
-		case 5: return mode * CmpAny( client1->GetScore(false), client2->GetScore(false) );
-		
-		// Sort by Asked count
-		case 6:	return mode * CmpAny( client1->GetAskedCount(), client2->GetAskedCount() );
-		
-		// Sort by Last seen
-		case 7: return mode * CmpAny( client1->GetLastUpRequest(), client2->GetLastUpRequest() );
-		
-		// Sort by entered time
-		case 8: return mode * CmpAny( client1->GetWaitStartTime(), client2->GetWaitStartTime() );
-
-		// Sort by banned
-		case 9: return mode * CmpAny( client1->IsBanned(), client2->IsBanned() );
+	// Sort by username
+	case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
 	
-		default: return 0;
+	// Sort by filename
+	case 1: {
+		const CKnownFile* file1 = client1->GetUploadFile();
+		const CKnownFile* file2 = client2->GetUploadFile();
+
+		if ( file1 && file2 ) {
+			return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+		}
+
+		// Place files with filenames on top
+		return -mode * CmpAny( file1, file2 );
+	}
+	
+	// Sort by client software
+	case 2:	return mode * CompareVersions(client1, client2);
+	
+	// Sort by file upload-priority
+	case 3: {
+		const CKnownFile* file1 = client1->GetUploadFile();
+		const CKnownFile* file2 = client2->GetUploadFile();
+
+		if ( file1 && file2  ) {
+			int8 prioA = file1->GetUpPriority();
+			int8 prioB = file2->GetUpPriority();
+
+			// Work-around for PR_VERYLOW which has value 4. See KnownFile.h for that stupidity ...
+			return mode * CmpAny( ( prioA != PR_VERYLOW ? prioA : -1 ), ( prioB != PR_VERYLOW ? prioB : -1 ) );
+		} 
+		
+		// Place files with priorities on top
+		return -mode * CmpAny( file1, file2 );
+	}
+	
+	// Sort by rating
+	case 4: return mode * CmpAny( client1->GetScore(false,false,true), client2->GetScore(false,false,true) );
+
+	// Sort by score
+	case 5: return mode * CmpAny( client1->GetScore(false), client2->GetScore(false) );
+	
+	// Sort by Asked count
+	case 6:	return mode * CmpAny( client1->GetAskedCount(), client2->GetAskedCount() );
+	
+	// Sort by Last seen
+	case 7: return mode * CmpAny( client1->GetLastUpRequest(), client2->GetLastUpRequest() );
+	
+	// Sort by entered time
+	case 8: return mode * CmpAny( client1->GetWaitStartTime(), client2->GetWaitStartTime() );
+
+	// Sort by banned
+	case 9: return mode * CmpAny( client1->IsBanned(), client2->IsBanned() );
+
+	default: return 0;
 	}
 }
 
@@ -985,16 +968,16 @@ int CQueuedView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 /////////////////////////////////////////////////////////////////////////////////////////////
 void CClientsView::Initialize( CClientListCtrl* list )
 {
-	list->InsertColumn( 0, _("Username"),			wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 1, _("Upload Status"),	wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 2, _("Transferred Up"),	wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 3, _("Download Status"),	wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 4, _("Transferred Down"),	wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 5, _("Client Software"),	wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 6, _("Connected"),		wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 7, _("Userhash"),			wxLIST_FORMAT_LEFT,	150 );
-	list->InsertColumn( 8,	_("Encrypted"),		wxLIST_FORMAT_LEFT, 100 );			
-	list->InsertColumn( 9,	_("Hide shared files"),		wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 0, _("Username"),          wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 1, _("Upload Status"),     wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 2, _("Transferred Up"),    wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 3, _("Download Status"),   wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 4, _("Transferred Down"),  wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 5, _("Client Software"),   wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 6, _("Connected"),         wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 7, _("Userhash"),          wxLIST_FORMAT_LEFT, 150 );
+	list->InsertColumn( 8, _("Encrypted"),         wxLIST_FORMAT_LEFT, 100 );			
+	list->InsertColumn( 9, _("Hide shared files"), wxLIST_FORMAT_LEFT, 100 );			
 
 	const CClientList::IDMap& clist = theApp->clientlist->GetClientList();
 	CClientList::IDMap::const_iterator it = clist.begin();
@@ -1011,52 +994,54 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 	
 	switch ( column ) {
 		case 0:
-			CUploadingView::DrawCell( client, column, dc, rect );
-			return;
-		
-		case 1:
-			CUploadingView::DrawCell( client, 7, dc, rect );
-			return;
-
-		
-		case 2:
-			buffer = CastItoXBytes( client->GetUploadedTotal() );
-			
-			break;
-			
-		case 3:
-			buffer = DownloadStateToStr( client->GetDownloadState(),
-			                             client->IsRemoteQueueFull() );
-			break;
+		CUploadingView::DrawCell( client, column, dc, rect );
+		return;
 	
-		case 4:
-			buffer = CastItoXBytes( client->GetDownloadedTotal() );
-			break;
-			
-		case 5:
-			buffer = client->GetClientVerString();
-			break;
-			
-		case 6:
-			if ( client->IsConnected() ) {
-				buffer = _("Yes");
-			} else {
-				buffer = _("No");
-			}
-			
-			break;
-			
-		case 7:
-			buffer = client->GetUserHash().Encode();
-			break;
+	case 1:
+		CUploadingView::DrawCell( client, 7, dc, rect );
+		return;
+	
+	case 2:
+		buffer = CastItoXBytes( client->GetUploadedTotal() );
+		
+		break;
+		
+	case 3:
+		buffer = DownloadStateToStr( client->GetDownloadState(),
+					     client->IsRemoteQueueFull() );
+		break;
 
-		case 8:
-			buffer = client->HasObfuscatedConnectionBeenEstablished() ? wxT("Yes") : wxT("No");
-			break;		
+	case 4:
+		buffer = CastItoXBytes( client->GetDownloadedTotal() );
+		break;
+		
+	case 5:
+		buffer = client->GetClientVerString();
+		break;
+		
+	case 6:
+		if ( client->IsConnected() ) {
+			buffer = _("Yes");
+		} else {
+			buffer = _("No");
+		}
+		
+		break;
+		
+	case 7:
+		buffer = client->GetUserHash().Encode();
+		break;
 
-		case 9:
-			buffer = client->GetUserName().IsEmpty() ? wxT("?") : (client->HasDisabledSharedFiles() ? wxT("Yes") : wxT("No"));
-			break;		
+	case 8:
+		buffer = client->HasObfuscatedConnectionBeenEstablished() ?
+			wxT("Yes") : wxT("No");
+		break;		
+
+	case 9:
+		buffer = client->GetUserName().IsEmpty() ?
+			wxT("?") :
+			(client->HasDisabledSharedFiles() ? wxT("Yes") : wxT("No"));
+		break;		
 	}
 	
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
@@ -1072,54 +1057,52 @@ int CClientsView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	int mode = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
 
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
-		// Sort by Username
-		case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
-		
-		// Sort by Uploading-state
-		case 1: return mode * CmpAny( client1->GetUploadState(), client2->GetUploadState() );
-		
-		// Sort by data-uploaded
-		case 2:			
-			return mode * CmpAny( client1->GetUploadedTotal(), client2->GetUploadedTotal() );
-		
-		// Sort by Downloading-state
-		case 3:
-		    if( client1->GetDownloadState() == client2->GetDownloadState() ){
-			    if( client1->IsRemoteQueueFull() && client2->IsRemoteQueueFull() ) {
-				    return mode *  0;
-			    } else if( client1->IsRemoteQueueFull() ) {
-				    return mode *  1;
-			    } else if( client2->IsRemoteQueueFull() ) {
-				    return mode * -1;
-			    } else {
-				    return mode *  0;
-				}
-		    }
-			return mode * CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
-		
-		// Sort by data downloaded
-		case 4: {
-			return mode * CmpAny( client1->GetDownloadedTotal(), client2->GetDownloadedTotal() );
+	// Sort by Username
+	case 0: return mode * client1->GetUserName().CmpNoCase( client2->GetUserName() );
+	
+	// Sort by Uploading-state
+	case 1: return mode * CmpAny( client1->GetUploadState(), client2->GetUploadState() );
+	
+	// Sort by data-uploaded
+	case 2:			
+		return mode * CmpAny( client1->GetUploadedTotal(), client2->GetUploadedTotal() );
+	
+	// Sort by Downloading-state
+	case 3:
+		if( client1->GetDownloadState() == client2->GetDownloadState() ){
+			if( client1->IsRemoteQueueFull() && client2->IsRemoteQueueFull() ) {
+				return mode *  0;
+			} else if( client1->IsRemoteQueueFull() ) {
+				return mode *  1;
+			} else if( client2->IsRemoteQueueFull() ) {
+				return mode * -1;
+			} else {
+				return mode *  0;
+			}
 		}
-		
-		
-		// Sort by client-software
-		case 5: return mode * CompareVersions(client1, client2);
-		
-		// Sort by connection
-		case 6: return mode * CmpAny( client1->IsConnected(), client2->IsConnected() );
+		return mode * CmpAny( client1->GetDownloadState(), client2->GetDownloadState() );
+	
+	// Sort by data downloaded
+	case 4:
+		return mode * CmpAny( client1->GetDownloadedTotal(), client2->GetDownloadedTotal() );
+	
+	// Sort by client-software
+	case 5: return mode * CompareVersions(client1, client2);
+	
+	// Sort by connection
+	case 6: return mode * CmpAny( client1->IsConnected(), client2->IsConnected() );
 
-		// Sort by user-hash
-		case 7: return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
+	// Sort by user-hash
+	case 7: return mode * CmpAny( client1->GetUserHash(), client2->GetUserHash() );
+	
+	// Sort by Obfuscation state
+	case 8: return mode * CmpAny( client2->HasObfuscatedConnectionBeenEstablished(), client1->HasObfuscatedConnectionBeenEstablished() );
 		
-		// Sort by Obfuscation state
-		case 8: return mode * CmpAny( client2->HasObfuscatedConnectionBeenEstablished(), client1->HasObfuscatedConnectionBeenEstablished() );
-			
-		// Sort by Shared Files DISabled
-		case 9: return mode * CmpAny( client2->HasDisabledSharedFiles(), client1->HasDisabledSharedFiles() );
+	// Sort by Shared Files DISabled
+	case 9: return mode * CmpAny( client2->HasDisabledSharedFiles(), client1->HasDisabledSharedFiles() );
 
-		default:
-			return 0;
+	default:
+		return 0;
 	}
 
 }
