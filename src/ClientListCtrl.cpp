@@ -490,7 +490,7 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 
 wxString CClientListCtrl::GetTTSText(unsigned item) const
 {
-	CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
+	CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( item ));
 
 	return client->GetUserName();
 }
