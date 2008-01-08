@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-01-07 07:54+0200\n"
+"POT-Creation-Date: 2008-01-07 03:31+0100\n"
 "PO-Revision-Date: 2008-01-07 07:57+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -2857,7 +2857,7 @@ msgstr "Tõmba"
 msgid "Category"
 msgstr "Kategooria"
 
-#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:589
+#: src/SearchListCtrl.cpp:557 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Peamine"
 
@@ -4516,7 +4516,7 @@ msgid "Sends the specified message."
 msgstr "Saada määratud teade."
 
 #: src/muuli_wdr.cpp:547 src/muuli_wdr.cpp:975 src/muuli_wdr.cpp:1592
-#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:152
+#: src/muuli_wdr.cpp:3879 src/MuleNotebook.cpp:155
 msgid "Close"
 msgstr "Sulge"
 
@@ -6439,11 +6439,11 @@ msgstr "Kontrollitud - OK"
 msgid "Not Available"
 msgstr "Info Puudub"
 
-#: src/SearchDlg.cpp:469
+#: src/SearchDlg.cpp:479
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min suurus peab olema väiksem kui max suurus. Ignoreerin Max suurust."
 
-#: src/SearchDlg.cpp:470 src/SearchDlg.cpp:529
+#: src/SearchDlg.cpp:480 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Otsingu hoiatus"
 
@@ -6597,15 +6597,15 @@ msgstr "*** Ühendun Kliendiga ***"
 msgid "*** Failed to Connect to client / Connection lost ***"
 msgstr "*** Kliendiga ühendumine ebaõnnestus / Ühendus kadunud ***"
 
-#: src/MuleNotebook.cpp:153
+#: src/MuleNotebook.cpp:156
 msgid "Close tab"
 msgstr "Sulge leht"
 
-#: src/MuleNotebook.cpp:154
+#: src/MuleNotebook.cpp:157
 msgid "Close all tabs"
 msgstr "Sulge kõik lehed"
 
-#: src/MuleNotebook.cpp:155
+#: src/MuleNotebook.cpp:158
 msgid "Close other tabs"
 msgstr "Sulge teised lehed"
 
