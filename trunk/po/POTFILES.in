@@ -43,7 +43,6 @@ src/Server.cpp
 src/Logger.cpp
 src/AddFriend.cpp
 src/SearchListCtrl.cpp
-src/extern/cryptopp/CryptoPP.cpp
 src/amule-remote-gui.cpp
 src/DownloadListCtrl.cpp
 src/PartFile.cpp
