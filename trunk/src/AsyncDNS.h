@@ -49,7 +49,8 @@ enum DnsSolveType {
 class CAsyncDNS : public wxThread
 {
 public:
-	CAsyncDNS(const wxString& ipName, DnsSolveType type, wxEvtHandler* handler, void* socket = NULL);
+	/** Note: wxChar* is used to circument the thread-unsafe wxString reference counting. */
+	CAsyncDNS(const wxChar* ipName, DnsSolveType type, wxEvtHandler* handler, void* socket = NULL);
 	virtual ExitCode Entry();
 
 private:

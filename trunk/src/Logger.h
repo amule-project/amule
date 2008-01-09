@@ -249,10 +249,11 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE, -1)
 class CLoggingEvent : public wxEvent
 {
 public:
-	CLoggingEvent(bool critical, const wxString &msg)
+	CLoggingEvent(bool critical, const wxString& msg)
 		: wxEvent(-1, MULE_EVT_LOGLINE)
 		, m_critical(critical)
-		, m_msg(msg)
+		// Deep copy, to avoid thread-unsafe reference counting. */
+		, m_msg(msg.c_str(), msg.Length())
 	{
 	}
 	

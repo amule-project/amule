@@ -50,6 +50,25 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1);
  */
 namespace MuleNotify
 {
+	/**
+	 * Creates a deep copy of the object passed.
+	 *
+	 * Note that this function should be overwritten as
+	 * needed. See the wxString version below.
+	 */
+	template <class ValueType>
+	inline ValueType DeepCopy(const ValueType& value)
+	{
+		return ValueType(value);
+	}
+
+	/** Special DeepCopy for wxString, which uses reference counting. */
+	inline wxString DeepCopy(const wxString& value)
+	{
+		return wxString(value.c_str(), value.Length());
+	}
+
+
 	////////////////////////////////////////////////////////////
 	// Notification handlers
 	//
@@ -191,7 +210,9 @@ namespace MuleNotify
 		
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier1(FuncType func, ARG arg)
-			: m_func(func), m_arg(arg) {}
+			: m_func(func),
+			  m_arg(DeepCopy(arg))
+		{}
 
 		/** @see CMuleNotifierBase::Notify */
 		virtual void Notify() const {
@@ -218,7 +239,10 @@ namespace MuleNotify
 		
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier2(FuncType func, ARG_1 arg1, ARG_2 arg2)
-			: m_func(func), m_arg1(arg1), m_arg2(arg2) {}
+			: m_func(func),
+			  m_arg1(DeepCopy(arg1)),
+			  m_arg2(DeepCopy(arg2))
+		{}
 
 		/** @see CMuleNotifierBase:: Notify */
 		virtual void Notify() const {
@@ -246,7 +270,11 @@ namespace MuleNotify
 		
 		/** Creates a functor from the given function and arguments. */
 		CMuleNotifier3(FuncType func, ARG_1 arg1, ARG_2 arg2, ARG_3 arg3)
-			: m_func(func), m_arg1(arg1), m_arg2(arg2), m_arg3(arg3) {}
+			: m_func(func),
+			  m_arg1(DeepCopy(arg1)),
+			  m_arg2(DeepCopy(arg2)),
+			  m_arg3(DeepCopy(arg3))
+		{}
 
 		/** @see CMuleNotifierBase:: Notify */
 		virtual void Notify() const {
