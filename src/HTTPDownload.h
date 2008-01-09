@@ -37,7 +37,8 @@ class wxInputStream;
 class CHTTPDownloadThread : public wxThread
 {
 public:
-	CHTTPDownloadThread(const wxString& url, const wxString& filename, HTTP_Download_File file_id, bool showDialog = true);
+	/** Note: wxChar* is used to circument the thread-unsafe wxString reference counting. */
+	CHTTPDownloadThread(const wxChar* url, const wxChar* filename, HTTP_Download_File file_id, bool showDialog = true);
 
 private:
 	wxThread::ExitCode	Entry();

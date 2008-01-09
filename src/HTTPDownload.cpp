@@ -136,7 +136,7 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
 #endif
 
 
-CHTTPDownloadThread::CHTTPDownloadThread(const wxString& url, const wxString& filename, HTTP_Download_File file_id, bool showDialog)
+CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filename, HTTP_Download_File file_id, bool showDialog)
 #ifdef AMULE_DAEMON
 	: wxThread(wxTHREAD_DETACHED),
 #else
