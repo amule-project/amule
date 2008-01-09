@@ -54,11 +54,10 @@ m_socket(NULL)
 
 CMuleUDPSocket::~CMuleUDPSocket()
 {
-    theApp->uploadBandwidthThrottler->RemoveFromAllQueues(this);
+	theApp->uploadBandwidthThrottler->RemoveFromAllQueues(this);
 
-	if (m_socket) {
-		DestroySocket();
-	}
+	wxMutexLocker lock(m_mutex);
+	DestroySocket();
 }
 
 
@@ -84,14 +83,14 @@ void CMuleUDPSocket::CreateSocket()
 
 void CMuleUDPSocket::DestroySocket()
 {
-	wxCHECK_RET(m_socket, wxT("Cannot destroy non-existing socket."));
-	
-	AddDebugLogLineM(true, logMuleUDP, wxT("Shutting down ") + m_name);
-	m_socket->SetNotify(0);
-	m_socket->Notify(false);
-	m_socket->Close();
-	m_socket->Destroy();
-	m_socket = NULL;
+	if (m_socket) {
+		AddDebugLogLineM(true, logMuleUDP, wxT("Shutting down ") + m_name);
+		m_socket->SetNotify(0);
+		m_socket->Notify(false);
+		m_socket->Close();
+		m_socket->Destroy();
+		m_socket = NULL;
+	}
 }	
 
 
@@ -124,6 +123,7 @@ void CMuleUDPSocket::OnSend(int errorCode)
 			return;
 		}
 	}
+
 	theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 }
 
@@ -137,15 +137,6 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		wxT("Got UDP callback for read: Error %i Socket state %i"),
 		errorCode, Ok() ? 1 : 0));
 	
-	if (errorCode || !Ok() || !m_socket) {
-		if (m_socket) {
-			DestroySocket();
-		}
-		CreateSocket();
-
-		return;
-	}
-	
 	char buffer[UDP_BUFFER_SIZE];
 	wxIPV4address addr;
 	unsigned length = 0;
@@ -154,6 +145,14 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	
 	{
 		wxMutexLocker lock(m_mutex);
+
+		if (errorCode || (m_socket == NULL) || !m_socket->Ok()) {
+			DestroySocket();
+			CreateSocket();
+
+			return;
+		}
+
 		
 		length = m_socket->RecvFrom(addr, buffer, UDP_BUFFER_SIZE).LastCount();
 		error = m_socket->Error();
