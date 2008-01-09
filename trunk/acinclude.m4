@@ -472,13 +472,16 @@ AC_SUBST(crypto_prefix)
 if test -f $crypto_prefix/cryptopp/cryptlib.h; then
 	CRYPTO_PP_STYLE="sources"
 	CRYPTO_PP_HEADER_PATH="$crypto_prefix/cryptopp/cryptlib.h"
-elif test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
+fi
+if test -f $crypto_prefix/include/cryptopp/cryptlib.h; then
 	CRYPTO_PP_STYLE="mdk_suse_fc"
 	CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/cryptopp/cryptlib.h"
-elif test -f $crypto_prefix/include/crypto++/cryptlib.h; then
+fi
+if test -f $crypto_prefix/include/crypto++/cryptlib.h; then
 	CRYPTO_PP_STYLE="gentoo_debian"
 	CRYPTO_PP_HEADER_PATH="$crypto_prefix/include/crypto++/cryptlib.h"
-else
+fi
+if test -z $CRYPTO_PP_STYLE; then
 	#
 	# If the execution reaches here, we have failed.
 	#
