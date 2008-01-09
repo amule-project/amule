@@ -1155,7 +1155,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	s_MiscList.push_back( new Cfg_Bool( wxT("/eMule/DropSlowSources"), s_DropSlowSources, false ) );
 		
 	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/KadNodesUrl"),			s_KadURL, wxT("http://emule-inside.net/nodes.dat") ) );
-	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),			s_Ed2kURL, wxT("http://www.gruk.org/server.met") ) );
+	s_MiscList.push_back( new Cfg_Str(  wxT("/eMule/Ed2kServersUrl"),		s_Ed2kURL, wxT("http://gruk.org/server.met.gz") ) );
 	
 #ifndef AMULE_DAEMON
 	// Colors have been moved from global prefs to CStatisticsDlg
