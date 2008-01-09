@@ -52,7 +52,7 @@
 #include <wx/image.h>
 
 
-CIP2Country::CIP2Country() : m_CountryDataMap()
+CIP2Country::CIP2Country()
 {
 	m_geoip = GeoIP_new(GEOIP_STANDARD);
 		
@@ -60,13 +60,14 @@ CIP2Country::CIP2Country() : m_CountryDataMap()
 	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
 		CountryData countrydata;
 		countrydata.Name = char2unicode(flagXPMCodeVector[i].code);
-		wxImage img(flagXPMCodeVector[i].xpm);
-		if (img.IsOk()) {
-			countrydata.Flag = wxBitmap(img);
+		countrydata.Flag = wxBitmap(flagXPMCodeVector[i].xpm);
+		
+		if (countrydata.Flag.IsOk()) {
+			m_CountryDataMap[countrydata.Name] = countrydata;
 		} else {
 			AddLogLineM(true, _("CIP2Country::CIP2Country(): Failed to load country data from ") + countrydata.Name);
+			continue;
 		}
-		m_CountryDataMap[countrydata.Name] = countrydata;
 	}
 	
 	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());

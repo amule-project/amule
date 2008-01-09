@@ -256,9 +256,6 @@ gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
 if ENABLE_IP2COUNTRY
 gui_flags += -DENABLE_IP2COUNTRY=1
 endif
-if ENABLE_GEOIP
-gui_flags += -DENABLE_GEOIP=1
-endif
 
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include
 

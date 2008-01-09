@@ -44,13 +44,9 @@
 #define IP2COUNTRY_H
 
 
-#ifdef ENABLE_GEOIP
-	#include <GeoIP.h>
-#endif
-
+#include <GeoIP.h>
 
 #include <map>
-
 
 #include <wx/bitmap.h>
 #include <wx/string.h>
