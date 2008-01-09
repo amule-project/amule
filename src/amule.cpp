@@ -795,7 +795,7 @@ bool CamuleApp::OnInit()
 		// workaround amuled crash
 #ifndef AMULE_DAEMON
 			serverlist->UpdateServerMetFromURL(
-				wxT("http://www.gruk.org/server.met"));
+				wxT("http://gruk.org/server.met.gz"));
 #endif
 		}
 	}
