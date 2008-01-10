@@ -400,9 +400,14 @@ wxString CTag::GetFullInfo() const
 {
 	wxString strTag;
 	if (!m_Name.IsEmpty()) {
-		strTag = wxT('\"');
-		strTag += m_Name;
-		strTag += wxT('\"');
+		// Special case: Kad tags, and some ED2k tags ...
+		if (m_Name.Length() == 1) {
+			strTag = wxString::Format(wxT("0x%02X"), m_Name[0]);
+		} else {
+			strTag = wxT('\"');
+			strTag += m_Name;
+			strTag += wxT('\"');
+		}
 	} else {
 		strTag = wxString::Format(wxT("0x%02X"), m_uName);
 	}
@@ -414,16 +419,20 @@ wxString CTag::GetFullInfo() const
 	} else if (m_uType >= TAGTYPE_STR1 && m_uType <= TAGTYPE_STR16) {
 		strTag += wxString::Format(wxT("(Str%u)\""), m_uType - TAGTYPE_STR1 + 1)
 					+  *m_pstrVal + wxT("\"");
+	} else if (m_uType == TAGTYPE_UINT64) {
+		strTag += wxString::Format(wxT("(Int64)%") wxLongLongFmtSpec wxT("u"), m_uVal);
 	} else if (m_uType == TAGTYPE_UINT32) {
-		strTag += wxString::Format(wxT("(Int32)%u"), m_uVal);
+		strTag += wxString::Format(wxT("(Int32)%u"), (unsigned)m_uVal);
 	} else if (m_uType == TAGTYPE_UINT16) {
-		strTag += wxString::Format(wxT("(Int16)%u"), m_uVal);
+		strTag += wxString::Format(wxT("(Int16)%u"), (unsigned)m_uVal);
 	} else if (m_uType == TAGTYPE_UINT8) {
-		strTag += wxString::Format(wxT("(Int8)%u"), m_uVal);
+		strTag += wxString::Format(wxT("(Int8)%u"), (unsigned)m_uVal);
 	} else if (m_uType == TAGTYPE_FLOAT32) {
 		strTag += wxString::Format(wxT("(Float32)%f"), m_fVal);
 	} else if (m_uType == TAGTYPE_BLOB) {
 		strTag += wxString::Format(wxT("(Blob)%u"), m_nSize);
+	} else if (m_uType == TAGTYPE_BSOB) {
+		strTag += wxString::Format(wxT("(Bsob)%u"), m_nSize);
 	} else {
 		strTag += wxString::Format(wxT("Type=%u"), m_uType);
 	}
