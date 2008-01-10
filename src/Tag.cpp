@@ -336,6 +336,9 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 		case TAGTYPE_STRING:
 			data->WriteString(*m_pstrVal,eStrEncode);
 			break;
+		case TAGTYPE_UINT64:
+			data->WriteUInt64(m_uVal);
+			break;
 		case TAGTYPE_UINT32:
 			data->WriteUInt32(m_uVal);
 			break;
