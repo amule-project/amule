@@ -307,8 +307,10 @@ bool CTag::WriteNewEd2kTag(CFileDataIO* data, EUtf8Str eStrEncode) const
 			uType = TAGTYPE_UINT8;
 		} else if (m_uVal <= 0xFFFF) {
 			uType = TAGTYPE_UINT16;
-		} else {
+		} else if (m_uVal <= 0xFFFFFFFF) {
 			uType = TAGTYPE_UINT32;
+		} else  {
+			uType = TAGTYPE_UINT64;
 		}
 	} else if (IsStr()) {
 		uint16 uStrValLen = GetRawSize(*m_pstrVal, eStrEncode);
