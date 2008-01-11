@@ -414,33 +414,23 @@ AM_OPTIONS_CRYPTO
 
 CHECK_CRYPTO(5.1)
 
+CXXFLAGS="$CXXFLAGS $CRYPTO_PP_CXXFLAGS"
+LDFLAGS="$LDFLAGS $CRYPTO_PP_LDFLAGS"
+CRYPTOLIBS="-l$CRYPTO_PP_LIB_NAME"
+
 case "$CRYPTO_PP_STYLE" in
- 
- gentoo_debian) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix/include -D__CRYPTO_DEBIAN_GENTOO__"
-                # Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
-                LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
-		CRYPTOLIBS="-lcrypto++"
- ;;
- mdk_suse_fc) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix/include -D__CRYPTO_MDK_SUSE_FC__"
-              LDFLAGS="$LDFLAGS -L$crypto_prefix/lib"
-	      CRYPTOLIBS="-lcryptopp"
- ;;
- sources) CXXFLAGS="$CXXFLAGS -isystem $crypto_prefix -D__CRYPTO_SOURCE__"
-	  LDFLAGS="$LDFLAGS -L$crypto_prefix/cryptopp"
-          CRYPTOLIBS="-lcryptopp"
- ;;
- *) AC_MSG_ERROR([
+	gentoo_debian | installed | sources)
+		;;
+	*) AC_MSG_ERROR([
           WARNING: crypto++ >= $min_crypto_version is not found.
           Please check that cryptopp-headers are in your default include path,
 	  check out LD_LIBRARY_PATH or equivalent variable.
           Or this might also be that your cryptopp is installed on other path.
           Please try again with --with-crypto-prefix=/my_crypto_prefix
           (replace /my_crypto_prefix with a valid path to your crypto directory).
-          The crypto include folder must be named cryptopp.
-	  Sorry about the mess but it's the only way because libcrypto has no make install.
           To download the latest version check http://www.cryptopp.com for sources.
 	  ])
- ;;
+		;;
 esac
 
 # Check for CryptoPP >= 5.5
@@ -747,6 +737,7 @@ AC_CONFIG_FILES([Makefile
 		 intl/Makefile
 		 m4/Makefile
 		 src/Makefile
+		 src/CryptoPP_Inc.h
 		 src/kademlia/Makefile
 		 src/kademlia/utils/Makefile
 		 src/kademlia/kademlia/Makefile
