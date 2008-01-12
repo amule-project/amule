@@ -714,7 +714,7 @@ void CSearch::ProcessResultKeyword(uint32 WXUNUSED(fromIP), uint16 WXUNUSED(from
 {
 	bool interested = false;
 	wxString name;
-	uint32 size = 0;
+	uint64 size = 0;
 	wxString type;
 	wxString format;
 	wxString artist;

@@ -988,7 +988,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 
 
 void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
-	const wxString&  name, uint32 size, const wxString& type, const TagPtrList& taglist)
+	const wxString&  name, uint64 size, const wxString& type, const TagPtrList& taglist)
 {
 	EUtf8Str eStrEncode = utf8strRaw;
 
@@ -1010,8 +1010,7 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	tagName.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;
 
-	//#warning Kry - UPDATE
-	CTagInt32 tagSize(FT_FILESIZE, size);
+	CTagInt64 tagSize(FT_FILESIZE, size);
 	tagSize.WriteTagToFile(&temp, eStrEncode);
 	tagcount++;
 
