@@ -160,7 +160,7 @@ public:
 	 * @param type The filetype of the result (TODO: Not used?)
 	 * @param taglist List of additional tags assosiated with the search-result.
 	 */
-	void	KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* pfileID, const wxString& name, uint32 size, const wxString& type, const TagPtrList& taglist);
+	void	KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* pfileID, const wxString& name, uint64 size, const wxString& type, const TagPtrList& taglist);
 	
 	
 private:
