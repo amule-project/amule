@@ -236,17 +236,16 @@ wxString CFileDataIO::ReadOnlyString(bool bOptUTF8, uint16 raw_len) const
 	
 	if (CHECK_BOM(raw_len, val)) {
 		// This is a UTF8 string with a BOM header, skip header.
-		str = UTF82unicode(val +3);
-	} else {
-		if (bOptUTF8) {
-			str = UTF82unicode(val);
-			if (str.IsEmpty()) {
-				// Fallback to system locale
-				str = wxString(val, wxConvISO8859_1);
-			}
-		} else {
-			str = wxString(val, wxConvISO8859_1);
+		str = UTF82unicode(val + 3);
+	} else if (bOptUTF8) {
+		str = UTF82unicode(val);
+		if (str.IsEmpty()) {
+			// Fallback to Latin-1
+			str = wxString(val, wxConvISO8859_1, raw_len);
 		}
+	} else {
+		// Raw strings are written as Latin-1 (see CFileDataIO::WriteStringCore)
+		str = wxString(val, wxConvISO8859_1, raw_len);
 	}
 
 	return str;
@@ -323,14 +322,9 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 			}
 		}
 		default: {
-			 if (str.Length() == 1 )  {
-				 // Handle special case (ie: single char tag names!)
-				 WriteUInt16(1);
-				 WriteUInt8(str[0]);
-			} else {
-				 Unicode2CharBuf s1(unicode2char(str));
-				 WriteStringCore(s1, utf8strNone, SizeLen);			
-			}
+			// Raw strings are saved as Latin-1
+			wxCharBuffer s1 = wxConvISO8859_1.cWC2MB(str);
+			WriteStringCore(s1, utf8strNone, SizeLen);			
 		}
 	}
 }
