@@ -135,7 +135,18 @@ void CIndexed::ReadFile(void)
 												// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
 												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
-												toaddN->m_iSize = tag->GetInt();
+												if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
+													// We've previously wrongly saved BSOB uint64s to key_index.dat,
+													// so we'll have to handle those here as well. Too bad ...
+													toaddN->m_iSize = PeekUInt64(tag->GetBsob());
+								
+													// Don't save as a BSOB tag again ...
+													delete tag;
+													tag = new CTagVarInt(TAG_FILESIZE, toaddN->m_iSize);
+												} else {
+													toaddN->m_iSize = tag->GetInt();	
+												}
+
 												// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
 												toaddN->m_lTagList.push_back(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEIP)) {

@@ -780,6 +780,10 @@ void CKademliaUDPListener::ProcessPublishRequest (const byte *packetData, uint32
 							if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
 								// Kad1.0 uint64 type using a BSOB.
 								entry->m_iSize = PeekUInt64(tag->GetBsob());
+								
+								// Don't save as a BSOB tag ...
+								delete tag;
+								tag = new CTagVarInt(TAG_FILESIZE, entry->m_iSize);
 							} else {
 								wxASSERT(tag->IsInt());
 								entry->m_iSize = tag->GetInt();	
