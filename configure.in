@@ -363,7 +363,7 @@ AC_MSG_RESULT($need_gui)
 # Check for GeoIP (required for IP2Country capability)
 if test x"$ENABLE_IP2COUNTRY" = x"yes" ; then
 	GEOIP_LIB="-lGeoIP"
-	CPPFLAGS="$CFLAGS $GEOIP_INCLUDE"
+	CXXFLAGS="$CXXFLAGS $GEOIP_INCLUDE"
 	LDFLAGS="$LDFLAGS $GEOIP_LIB"
 	AC_CHECK_HEADER(GeoIP.h,,
 		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP header files were not found])])
