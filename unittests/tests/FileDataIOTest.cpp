@@ -901,7 +901,7 @@ TEST(CFile, GetAvailable)
 	CFile file(testFile, CFile::read);
 
 	const uint64 length = file.GetLength();
-	while (not file.Eof()) {
+	while (!file.Eof()) {
 		ASSERT_EQUALS(length - file.GetPosition(), file.GetAvailable());
 		file.ReadUInt32();
 		ASSERT_EQUALS(length - file.GetPosition(), file.GetAvailable());
