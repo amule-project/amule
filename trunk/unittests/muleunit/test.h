@@ -251,7 +251,7 @@ inline wxString StringFrom(signed long long value)
  * Same as ASSERT_RAISES, but without an explicit message.
  */
 #define ASSERT_RAISES(type, call) \
-	ASSERT_RAISES_M(type, (call), wxT("Exception of type " #type " not raised."))
+	ASSERT_RAISES_M(type, (call), wxT("Exception of type ") wxT(#type) wxT(" not raised."))
 
 
 

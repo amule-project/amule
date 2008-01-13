@@ -102,6 +102,6 @@ bool TestCase::run()
 		}
 	}
 
-	return not failures;
+	return !failures;
 }
 
