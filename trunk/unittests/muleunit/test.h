@@ -1,7 +1,7 @@
 //
 // MuleUnit: A minimalistic C++ Unit testing framework based on EasyUnit.
 //
-// Copyright (C) 2005-2006Mikkel Schubert (Xaignar@amule.org)
+// Copyright (c) 2005-2007 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (C) 2004 Barthelemy Dagenais (barthelemy@prologique.com)
 //
 // This library is free software; you can redistribute it and/or
@@ -33,6 +33,24 @@
  */
 namespace muleunit
 {
+
+template <typename T, size_t N>
+inline size_t ArraySize(T(&)[N])
+{
+	return N;
+}
+
+inline void Printf(const wxChar *pszFormat, ...)
+{
+	va_list argptr;
+	va_start(argptr, pszFormat);
+
+	wxPuts(wxString::FormatV(pszFormat, argptr).c_str());
+
+	va_end(argptr);
+}
+
+
 
 class TestCase;
 	
