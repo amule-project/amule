@@ -74,6 +74,13 @@ if test -f $CRYPTO_PP_PREFIX/$crypto_pp_file_with_version; then
 	CRYPTO_PP_INCLUDE_PREFIX="."
 	CRYPTO_PP_DEFINE="__CRYPTO_SOURCE__"
 	CRYPTO_PP_LIB="$CRYPTO_PP_PREFIX"
+	AC_MSG_ERROR([
+	Specifying the cryptopp source files directory for "--with-crypto-prefix="
+	will not work because cryptopp uses headers with the same name of system
+	headers (e.g. zlib.h) and you must be able to distinguish the system
+	headers from cryptopp headers in an #include directive.
+	Please run "PREFIX=/home/YourUserName/usr/cryptopp make install" on
+	the cryptopp directory to properly install cryptopp in your system.])
 fi
 if test -f $CRYPTO_PP_PREFIX/include/cryptopp/$crypto_pp_file_with_version; then
 	CRYPTO_PP_STYLE="installed"
