@@ -33,7 +33,7 @@
 #include <list>			// Needed for std::list
 #include <vector>		// Needed for std::vector
 
-#ifndef MSVC
+#ifndef _MSC_VER
 	#include <inttypes.h>
 	#define LONGLONG(x) x##ll
 	#define ULONGLONG(x) x##llu
@@ -51,7 +51,7 @@
 	#define ULONGLONG(x) x##ui64
 #endif
 
-// These are MSVC defines used in eMule. They should 
+// These are _MSC_VER defines used in eMule. They should 
 // not be used in aMule, instead, use this table to 
 // find the type to use in order to get the desired 
 // effect. 
@@ -137,7 +137,7 @@ static const wxString EmptyString = wxEmptyString;
 
 
 #ifdef __WXMSW__
-#ifdef MSVC
+#ifdef _MSC_VER
 	#define NOMINMAX
 	#include <windows.h> // Needed for RECT  // Do_not_auto_remove
 #endif

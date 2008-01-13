@@ -50,7 +50,7 @@ public:
 };
 
 
-#ifdef MSVC
+#ifdef _MSC_VER
 	#define aMuleConv wxConvLocal
 	#define aMuleConvBrokenFileNames wxConvLocal
 #else

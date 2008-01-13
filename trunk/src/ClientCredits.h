@@ -34,7 +34,7 @@
 #define CRYPT_CIP_LOCALCLIENT	20
 #define CRYPT_CIP_NONECLIENT	30
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #pragma pack(1)
 #endif
 struct CreditStruct
@@ -49,7 +49,7 @@ struct CreditStruct
 	uint8		nKeySize;
 	byte		abySecureIdent[MAXPUBKEYSIZE];
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else

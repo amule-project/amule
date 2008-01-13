@@ -135,7 +135,7 @@ inline unsigned long StrToULong( const wxString& str ) {
 }
 
 inline unsigned long long StrToULongLong( const wxString& str ) {
-#ifdef MSVC
+#ifdef _MSC_VER
 	return _atoi64(unicode2char(str));
 #else
 	return atoll(unicode2char(str));

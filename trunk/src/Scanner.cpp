@@ -588,7 +588,7 @@ static char* _pszLexStr;
  * down here because we want the user's section 1 to have been scanned first.
  * The user has a chance to override it with an option.
  */
-#ifndef MSVC
+#ifndef _MSC_VER
 #include <unistd.h>
 #endif
 #endif

@@ -32,7 +32,7 @@
 #ifndef __WINDOWS__
 	uint32 GetTickCount();
 #else
-	#ifndef MSVC
+	#ifndef _MSC_VER
 		#include <winbase.h> // Do_not_auto_remove
 	#endif
 #endif
