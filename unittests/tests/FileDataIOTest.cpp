@@ -532,8 +532,8 @@ public:
 
 				// Check header (if any)
 				if (encodings[enc].header) {
-					char head[headLen];
-					file->Read(head, headLen);
+					wxCharBuffer head(headLen);
+					file->Read(head.data(), headLen);
 					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
 				}
 				
@@ -549,8 +549,8 @@ public:
 
 				// Check header (if any)
 				if (encodings[enc].header) {
-					char head[headLen];
-					file->Read(head, headLen);
+					wxCharBuffer head(headLen);
+					file->Read(head.data(), headLen);
 					ASSERT_EQUALS(0, memcmp(head, encodings[enc].header, headLen));
 				}
 				
