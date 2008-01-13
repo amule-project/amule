@@ -38,7 +38,7 @@
 #include "amule.h"
 #include "Statistics.h"
 
-#ifndef MSVC
+#ifndef _MSC_VER
 
 #ifdef _UI64_MAX
 #undef _UI64_MAX

@@ -28,7 +28,7 @@
 #include <wx/intl.h>		// Needed for wxTRANSLATE
 
 
-#ifdef MSVC
+#ifdef _MSC_VER
 	#define ATTR(x) 
 #else
 	#define ATTR(x) __attribute__((x))

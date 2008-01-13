@@ -32,7 +32,7 @@ struct z_stream_s;
 
 
 //			SERVER TO CLIENT
-#ifdef MSVC
+#ifdef _MSC_VER
 #pragma pack(1)
 #endif
 struct Header_Struct{
@@ -40,28 +40,28 @@ struct Header_Struct{
 	int32	packetlength;
 	int8	command;
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else
 __attribute__((__packed__));
 #endif
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #pragma pack(1)
 #endif
 struct UDP_Header_Struct {
 	int8	eDonkeyID;
 	int8	command;
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else
 __attribute__((__packed__));
 #endif
 
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack(1)
 #endif
@@ -72,7 +72,7 @@ struct Requested_Block_Struct{
 	unsigned char	FileID[16];
 	uint32  transferred; // Barry - This counts bytes completed
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else
@@ -84,7 +84,7 @@ struct Requested_File_Struct{
 	uint32	  lastasked;
 	uint8	  badrequests;
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else
@@ -104,7 +104,7 @@ struct Gap_Struct{
 	uint64 end;
 };
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #pragma pack(1)
 #endif
 struct ServerMet_Struct {
@@ -112,7 +112,7 @@ struct ServerMet_Struct {
 	uint16	port;
 	uint32	tagcount;
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else
@@ -127,7 +127,7 @@ struct TransferredData {
 
 //Kry import of 0.30d 
 // Maella -Enhanced Chunk Selection- (based on jicxicmic)
-#ifdef MSVC
+#ifdef _MSC_VER
 #pragma pack(1)
 #endif
 struct Chunk {
@@ -137,7 +137,7 @@ struct Chunk {
 			uint16 rank;      // Download priority factor (highest = 0, lowest = 0xffff)
 	};
 }
-#ifdef MSVC
+#ifdef _MSC_VER
 ;
 #pragma pack()
 #else

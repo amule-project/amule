@@ -128,7 +128,7 @@ static unsigned char PADDING[64] = {
 #define I(x, y, z) ((y) ^ ((x) | (~z)))
 
 /* ROTATE_LEFT rotates x left n bits.
-	15-April-2003 Sony: use MSVC intrinsic to save some cycles
+	15-April-2003 Sony: use _MSC_VER intrinsic to save some cycles
  */
 #ifdef _MSC_VER
 #pragma intrinsic(_rotl)

@@ -32,7 +32,7 @@
 	#include <execinfo.h>
 #endif
 
-#ifndef MSVC
+#ifndef _MSC_VER
 	#include <cxxabi.h>
 #endif
 
@@ -53,7 +53,7 @@
  */
 void OnUnhandledException()
 {
-#ifndef MSVC
+#ifndef _MSC_VER
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
 	if (t) {
 		// Note that "name" is the mangled name.
@@ -79,7 +79,7 @@ void OnUnhandledException()
 
 		fprintf(stderr, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
-#endif // MSVC
+#endif // _MSC_VER
 	raise(SIGABRT);
 };
 

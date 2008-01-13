@@ -46,7 +46,7 @@
 #else
 	// #include <bits/wordsize.h> would be enough, but we shouldn't depend on
 	// non-standard includes. However, we still do it :)
-#ifndef MSVC
+#ifndef _MSC_VER
 	#include <stdint.h>
 #endif
 	#ifdef __WORDSIZE
