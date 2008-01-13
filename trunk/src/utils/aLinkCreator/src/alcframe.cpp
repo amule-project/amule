@@ -130,8 +130,7 @@ AlcFrame::AlcFrame (const wxString & title):
                                        wxDefaultPosition, wxSize(300,-1));
   m_inputAddTextCtrl->
   SetToolTip (_
-              ("Enter here the URL you want to add to the Ed2k link: "
-               "Add / at the end to let aLinkCreator append the current file name"));
+              ("Enter here the URL you want to add to the Ed2k link: Add / at the end to let aLinkCreator append the current file name"));
 
   // List box
   m_inputUrlListBox = new wxListBox(m_mainPanel, -1, wxDefaultPosition,
@@ -464,11 +463,7 @@ void
 AlcFrame::OnBarAbout (wxCommandEvent & WXUNUSED(event))
 {
   wxMessageBox (_
-                ("aLinkCreator, the aMule ed2k link creator\n\n"
-                 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n\n"
-                 "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-		 "and http://jimmac.musichall.cz/ikony.php3\n\n"
-                 "Distributed under GPL"),
+                ("aLinkCreator, the aMule ed2k link creator\n\n(c) 2004 ThePolish <thepolish@vipmail.ru>\n\nPixmaps from http://www.everaldo.com and http://www.icomania.com\nand http://jimmac.musichall.cz/ikony.php3\n\nDistributed under GPL"),
                 _("About aLinkCreator"), wxOK | wxCENTRE | wxICON_INFORMATION);
 }
 

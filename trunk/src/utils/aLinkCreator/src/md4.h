@@ -48,8 +48,7 @@
     #include "wx/wx.h"
 #endif
 
-
-#include <inttypes.h> // needed for uint32_t
+#include "../../../Types.h" // needed for uint32_t
 
 // Use wxString implementation or not
 //#define WANT_STRING_IMPLEMENTATION 1
