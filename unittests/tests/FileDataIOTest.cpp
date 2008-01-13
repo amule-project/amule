@@ -486,9 +486,16 @@ public:
 	
 	struct Encoding
 	{
-		EUtf8Str		id;
+		const EUtf8Str		id;
 		const char*		header;
-		size_t			headLen;
+		const size_t		headLen;
+	};
+
+	struct TestString
+	{
+		const wxChar*		str;
+		// Raw and UTF8 expected lengths ...
+		const size_t		lengths[2];
 	};
 	
 	void run() {
@@ -498,22 +505,24 @@ public:
 		Encoding encodings[] = 
 		{
 			{utf8strNone,	NULL,			0},
-			{utf8strOptBOM,	"\xEF\xBB\xBF",	3},
+			{utf8strOptBOM,	"\xEF\xBB\xBF",		3},
 			{utf8strRaw,	NULL,			0}
 		};
 		
-		
-		const wxChar* testData[] = 
+		TestString testData[] = 
 		{
-			wxT("0123456789abcdef"),
-			wxT("")
+			{ wxT("0123456789abcdef"),	{ 16, 16 } },
+			{ wxT(""),			{  0,  0 } },
+			{ wxT("abc ø def æ ghi å"),	{ 17, 20 } },
+			{ wxT("aáeéuúó"),		{  7, 11 } },
+			{ wxT("uüoöÿeëaäyÿ"),		{ 11, 17 } },
 		};
 		
 	
-		for (size_t str = 0; str < 2; ++str) {
-			for (size_t enc = 0; enc < 3; ++enc) {
-				const wxChar* curStr = testData[str];
-				size_t strLen = wxStrlen(curStr);
+		for (size_t str = 0; str < ArraySize(testData); ++str) {
+			for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
+				const wxChar* curStr = testData[str].str;
+				size_t strLen = testData[str].lengths[(encodings[enc].id == utf8strNone) ? 0 : 1];
 				size_t headLen = encodings[enc].headLen;
 				
 				file->WriteString(curStr, encodings[enc].id, 2);
