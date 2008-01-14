@@ -1434,9 +1434,9 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	
 	// Laste received
 	case 11: {
-		wxDateTime date(file->GetLastChangeDatetime());
-		if ( date.IsValid() ) {
-			text = date.Format( _("%y/%m/%d %H:%M:%S") );
+		const time_t lastReceived = file->GetLastChangeDatetime();
+		if (lastReceived) {
+			text = wxDateTime(lastReceived).Format( _("%y/%m/%d %H:%M:%S") );
 		} else {
 			text = _("Unknown");
 		}
