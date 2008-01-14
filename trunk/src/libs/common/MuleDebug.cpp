@@ -55,31 +55,39 @@ void OnUnhandledException()
 {
 #ifndef _MSC_VER
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
+	FILE* output = stderr;
+#else 
+	FILE* output = stdout;
+	bool t = true;
+#endif
 	if (t) {
-		// Note that "name" is the mangled name.
-		char const *name = t->name();
 		int status = -1;
 		char *dem = 0;
+#ifndef _MSC_VER
+		// Note that "name" is the mangled name.
+		char const *name = t->name();
 
 		dem = __cxxabiv1::__cxa_demangle(name, 0, 0, &status);
-		fprintf(stderr, "\nTerminated after throwing an instance of '%s'\n", (status ? name : dem));
+#else
+		const char* name = "Unknown";
+#endif
+		fprintf(output, "\nTerminated after throwing an instance of '%s'\n", (status ? name : dem));
 		free(dem);
 
 		try {
 			throw;
 		} catch (const std::exception& e) {
-			fprintf(stderr, "\twhat(): %s\n", e.what());
+			fprintf(output, "\twhat(): %s\n", e.what());
 		} catch (const CMuleException& e) {
-			fprintf(stderr, "\twhat(): %s\n", (const char*)unicode2char(e.what()));
+			fprintf(output, "\twhat(): %s\n", (const char*)unicode2char(e.what()));
 		} catch (const wxString& e) {
-			fprintf(stderr, "\twhat(): %s\n", (const char*)unicode2char(e));
+			fprintf(output, "\twhat(): %s\n", (const char*)unicode2char(e));
 		} catch (...) {
 			// Unable to retrieve cause of exception
 		}
 
-		fprintf(stderr, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
+		fprintf(output, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
-#endif // _MSC_VER
 	raise(SIGABRT);
 };
 
