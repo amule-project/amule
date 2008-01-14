@@ -133,12 +133,12 @@ CEncryptedStreamSocket::CEncryptedStreamSocket(wxSocketFlags flags, const CProxy
 	m_EncryptionMethod = ENM_OBFUSCATION;
 	m_nRandomKeyPart = 0;
 	m_bServerCrypt = false;
-};
+}
 
 CEncryptedStreamSocket::~CEncryptedStreamSocket()
 {
 	
-};
+}
 
 
 /* External interface */

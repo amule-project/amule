@@ -128,7 +128,7 @@ private:
 	friend class CIPFilterEvent;
 	friend class CIPFilterTask;
 
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

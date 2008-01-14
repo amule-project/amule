@@ -113,7 +113,7 @@ void CEConnectDlg::OnOK(wxCommandEvent& evt)
 }
 
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE);
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_INIT_DONE)
 
 
 BEGIN_EVENT_TABLE(CamuleRemoteGuiApp, wxApp)
@@ -439,7 +439,7 @@ wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
 
 bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
-	#warning TODO: Add remote command
+	// #warning TODO: Add remote command
 	return true;
 }
 

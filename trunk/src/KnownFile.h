@@ -77,7 +77,7 @@ class CTag;
 namespace Kademlia
 {
 	class CEntry;
-};
+}
 
 
 typedef vector<CMD4Hash> ArrayOfCMD4Hash;

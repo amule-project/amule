@@ -117,7 +117,7 @@ protected:
 	enum {
 		IDLE,            // no request in the air
 		STATUS_REQ_SENT, // sent request for item status
-		FULL_REQ_SENT,   // sent request for full info
+		FULL_REQ_SENT    // sent request for full info
 	} m_state;
 	
 	CRemoteConnect *m_conn;

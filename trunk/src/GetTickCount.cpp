@@ -129,9 +129,9 @@ uint32 GetTickCountFullRes(void) {
  * increasingly heavy on CPU as the program uptime increases and more things
  * need to be done.
  */
-	void StartTickTimer(){};
+	void StartTickTimer() {}
 
-	void StopTickTimer(){};
+	void StopTickTimer() {}
 
 	uint32 GetTickCount() { return GetTickCountFullRes(); }
 		

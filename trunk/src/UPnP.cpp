@@ -686,6 +686,7 @@ m_SCPD(NULL)
 	} else {
 		m_absSCPDURL = scpdURL;
 	}
+	delete[] scpdURL;
 
 	char *controlURL = new char[
 		URLBase.length() + m_controlURL.length() + 1];
@@ -701,6 +702,7 @@ m_SCPD(NULL)
 	} else {
 		m_absControlURL = controlURL;
 	}
+	delete[] controlURL;
 
 	char *eventURL = new char[
 		URLBase.length() + m_eventSubURL.length() + 1];
@@ -716,6 +718,7 @@ m_SCPD(NULL)
 	} else {
 		m_absEventSubURL = eventURL;
 	}
+	delete[] eventURL;
 
 	msg <<	"\n    Service:"             <<
 		"\n        serviceType: "    << m_serviceType <<
@@ -966,7 +969,7 @@ m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"
 	std::ostringstream msg;
 	int presURLlen = strlen(URLBase.c_str()) +
 		strlen(m_presentationURL.c_str()) + 2;
-	char presURL[presURLlen];
+	char* presURL = new char[presURLlen];
 	int errcode = upnpLib.m_UpnpResolveURL(
 		URLBase.c_str(),
 		m_presentationURL.c_str(),
@@ -979,6 +982,7 @@ m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"
 	} else {
 		m_presentationURL = presURL;
 	}
+	delete[] presURL;
 	
 	msg.str("");
 	msg <<	"\n    Device: "                <<

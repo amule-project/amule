@@ -216,7 +216,7 @@ private:
 	wxString	m_resultType;
 	
 	
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 };
 
 

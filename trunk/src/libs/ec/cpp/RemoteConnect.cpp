@@ -29,7 +29,7 @@
 
 using std::auto_ptr;
 
-DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION);
+DEFINE_LOCAL_EVENT_TYPE(wxEVT_EC_CONNECTION)
 
 CECLoginPacket::CECLoginPacket(const wxString &pass,
 						const wxString& client, const wxString& version) : CECPacket(EC_OP_AUTH_REQ)

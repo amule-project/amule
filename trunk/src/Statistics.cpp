@@ -960,7 +960,7 @@ void CStatistics::UpdateStats(const CECPacket* stats)
 	s_statData[sdKadUsers] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_USERS)->GetInt();
 	s_statData[sdED2KFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_ED2K_FILES)->GetInt();
 	s_statData[sdKadFiles] = stats->GetTagByNameSafe(EC_TAG_STATS_KAD_FILES)->GetInt();
-};
+}
 
 
 void CStatistics::UpdateStatsTree()
