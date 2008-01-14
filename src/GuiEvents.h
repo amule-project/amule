@@ -39,7 +39,7 @@ class CPartFile;
 class CServer;
 
 
-DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1);
+DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY, -1)
 
 
 /**
@@ -378,7 +378,7 @@ namespace MuleNotify
 		HandleNotification(CMuleNotifier3<A1A, A2A, A3A>(func, arg1, arg2, arg3));
 	}
 	//@}
-};
+}
 
 
 //! Placing CMuleGUIEvent in the global namespace.

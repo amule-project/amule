@@ -39,7 +39,7 @@ CConvertListCtrl::CConvertListCtrl(
 			 long WXUNUSED(style),
 			 const wxValidator& WXUNUSED(validator),
 			 const wxString& WXUNUSED(name))
-			 {};
+			 {}
 				 
 #else 
 

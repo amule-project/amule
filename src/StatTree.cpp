@@ -383,7 +383,7 @@ wxString CStatTreeItemUlDlCounter::GetDisplayString() const
 {
 	return CFormat(wxGetTranslation(m_label)) %
 		a_brackets_b(CastItoXBytes(m_value), CastItoXBytes(m_value + m_totalfunc()));
-};
+}
 #endif
 
 void CStatTreeItemUlDlCounter::AddECValues(CECTag *tag) const

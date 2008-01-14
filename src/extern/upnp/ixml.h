@@ -77,7 +77,7 @@ typedef enum
     eDOCUMENT_NODE                  = 9,
     eDOCUMENT_TYPE_NODE             = 10,
     eDOCUMENT_FRAGMENT_NODE         = 11,
-    eNOTATION_NODE                  = 12,
+    eNOTATION_NODE                  = 12
 
 }   IXML_NODE_TYPE;
 

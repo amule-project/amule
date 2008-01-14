@@ -124,7 +124,7 @@ enum {
 	MP_ASSIGNCAT = 10800, // reserve some for categories!
 	MP_CAT_SET0 = 10900, // reserve some for change all-cats (about 50)
 	MP_SWITCHCTRL_0 = 10950,
-	MP_SWITCHCTRL_9	= 10959,
+	MP_SWITCHCTRL_9	= 10959
 };
 
 #endif // COMMONMENUIDS_H

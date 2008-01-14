@@ -46,6 +46,9 @@
 	#include <bfd.h> // Do_not_auto_remove
 #endif
 
+#include <vector>
+
+
 /**
  * This functions displays a verbose description of 
  * any unhandled exceptions that occour and then
@@ -89,7 +92,7 @@ void OnUnhandledException()
 		fprintf(output, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
 	raise(SIGABRT);
-};
+}
 
 
 void InstallMuleExceptionHandler()
@@ -307,9 +310,9 @@ wxString get_backtrace(unsigned n)
 		return wxEmptyString;
 	}
 
-	wxString libname[num_entries];
-	wxString funcname[num_entries];
-	wxString address[num_entries];
+	std::vector<wxString> libname(num_entries);
+	std::vector<wxString> funcname(num_entries);
+	std::vector<wxString> address(num_entries);
 	wxString AllAddresses;
 	
 	for (int i = 0; i < num_entries; ++i) {

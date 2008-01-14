@@ -40,7 +40,7 @@ typedef enum PHP_VALUE_TYPE {
 	/* Internally used (not ref counted) data */
 	PHP_VAL_INT_DATA,
 	/* ptr_val points to VAR_NODE */
-	PHP_VAL_VAR_NODE,
+	PHP_VAL_VAR_NODE
 } PHP_VALUE_TYPE;
 
 typedef struct PHP_VALUE_NODE {
@@ -118,7 +118,7 @@ typedef enum PHP_EXP_OP {
 	/* list of expressions */
 	PHP_OP_LIST,
 	/* for "switch" list of cases */
-	PHP_OP_CASE,
+	PHP_OP_CASE
 } PHP_EXP_OP;
 
 struct PHP_EXP_NODE {
@@ -181,7 +181,7 @@ typedef struct PHP_SYN_NODE PHP_SYN_NODE;
 typedef enum PHP_SCOPE_ITEM_TYPE {
 	PHP_SCOPE_NONE,
 	PHP_SCOPE_VAR, PHP_SCOPE_FUNC, PHP_SCOPE_CLASS,
-	PHP_SCOPE_PARAM,
+	PHP_SCOPE_PARAM
 } PHP_SCOPE_ITEM_TYPE;
 
 
@@ -210,7 +210,7 @@ typedef enum PHP_STATMENT_TYPE {
 	PHP_ST_WHILE, PHP_ST_DO_WHILE, PHP_ST_FOR, PHP_ST_FOREACH, PHP_ST_SWITCH,
 	PHP_ST_CONTINUE, PHP_ST_BREAK, PHP_ST_RET,
 	PHP_ST_FUNC_DECL, PHP_ST_CLASS_DECL,
-	PHP_ST_ECHO,
+	PHP_ST_ECHO
 } PHP_STATMENT_TYPE;
 
 /* 

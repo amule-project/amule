@@ -28,7 +28,7 @@
 
 
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE);
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)
 
 
 CDebugCategory::CDebugCategory( DebugType type, const wxString& name )

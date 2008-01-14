@@ -27,7 +27,7 @@
 #endif
 
 
-DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY);
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_NOTIFY)
 
 
 namespace MuleNotify
@@ -621,5 +621,5 @@ namespace MuleNotify
 	}
 
 #endif	// #ifdef CLIENT_GUI
-};
+}
 // File_checked_for_headers

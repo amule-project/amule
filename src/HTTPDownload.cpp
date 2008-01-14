@@ -101,7 +101,7 @@ public:
 	}
 
 private:
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 
 	void OnBtnCancel(wxCommandEvent& WXUNUSED(evt)) {
 		printf("HTTP download cancelled\n");
