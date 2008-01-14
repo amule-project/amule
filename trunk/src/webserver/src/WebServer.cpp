@@ -502,7 +502,7 @@ int CWebServerBase::GzipCompress(Bytef *dest, uLongf *destLen, const Bytef *sour
 		Z_DEFLATED, 0 /*flags*/, 0,0,0,0 /*time*/, 0 /*xflags*/, 255);
 
 	// wire buffers
-	stream.next_in = (Bytef*) source ;
+	stream.next_in = const_cast<Bytef*>(source);
 	stream.avail_in = (uInt)sourceLen;
 	stream.next_out = ((Bytef*) dest) + 10;
 	stream.avail_out = *destLen - 18;

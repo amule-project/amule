@@ -70,7 +70,11 @@ class CPhPLibContext {
 		void SetContext();
 		void Execute(CWriteStrBuffer *);
 		
+#if defined(__GNUC__)
+		static void Printf(const char *str, ...)  __attribute__ ((__format__ (__printf__, 1, 2)));
+#else
 		static void Printf(const char *str, ...);
+#endif
 		static void Print(const char *str);
 
 		static CPhPLibContext *g_curr_context;
