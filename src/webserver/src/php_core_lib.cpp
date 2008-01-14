@@ -1875,7 +1875,7 @@ void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
 		PHP_VAR_NODE *curr_var = array_get_by_str_key(&sess_vars->value, i->first);
 		PHP_VALUE_NODE val;
 		val.type = PHP_VAL_STRING;
-		val.str_val = (char *)i->second.c_str();
+		val.str_val = const_cast<char *>(i->second.c_str());
 		value_value_assign(&curr_var->value, &val);
 	}
 }
