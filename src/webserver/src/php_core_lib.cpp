@@ -770,7 +770,7 @@ void php_native_search_start_cmd(PHP_VALUE_NODE *)
 		case 1: search_type = EC_SEARCH_GLOBAL; break;
 		case 2: search_type = EC_SEARCH_KAD; break;
 		default: 
-			php_report_error(PHP_ERROR, "Invalid search type %d", si->var->value.int_val);
+			php_report_error(PHP_ERROR, "Invalid search type %lld", si->var->value.int_val);
 			return;
 	}
 #endif
