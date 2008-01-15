@@ -181,7 +181,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  selected tab.
 
 	mr_hyde:
-		* Patch to enable Kad search with amulecmd
+		* Patch to enable Kad search with amulecmd.
+		* Fix for some man pages have wrong name with
+		  --program-suffix.
 
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may
