@@ -187,6 +187,11 @@ CMuleTrayIcon::CMuleTrayIcon()
 
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
+	// Debug, to see if something happens to the icon while aMule
+	// still running. This is suggested by the fact that crashes
+	// have occured accessing member-variables of CMuleTrayIcon.
+	printf("Removing tray-icon.\n");
+
 	// If there's an icon set, remove it
 	if (IsIconInstalled()) {
 		RemoveIcon();
