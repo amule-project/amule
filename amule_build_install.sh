@@ -8,6 +8,7 @@
 #
 
 USERHOME=$(echo ~)
+JOBS=4
 
 #
 # cryptopp
@@ -20,7 +21,7 @@ mkdir -p ${CRYPTOPP_SOURCES_DIR}
 cd ${CRYPTOPP_SOURCES_DIR}
 
 unzip ../$1
-make -f GNUmakefile
+make -f GNUmakefile -j${JOBS}
 PREFIX=${CRYPTOPP_INSTALL_DIR} make install
 cd ..
 
@@ -34,7 +35,7 @@ cd libupnp-?.?.?
 	--enable-debug \
 	--prefix=${LIBUPNP_INSTALL_DIR} \
 	&& \
-	make > /dev/null && \
+	make -j${JOBS} > /dev/null && \
 	make install > /dev/null
 cd ..
 
@@ -57,7 +58,7 @@ cd wxWidgets-?.?.?
 	--enable-largefile \
 	--prefix=${WXWIDGETS_INSTALL_DIR} \
 	&& \
-	make && make install
+	make -j${JOBS} && make install
 cd ..
 
 #
@@ -83,7 +84,7 @@ cd amule-cvs
 	--prefix=${AMULE_INSTALL_DIR} \
 	--with-crypto-prefix=${CRYPTOPP_INSTALL_DIR} \
 	&& \
-	LD_LIBRARY_PATH=${WXWIDGETS_INSTALL_DIR}/lib make && \
+	LD_LIBRARY_PATH=${WXWIDGETS_INSTALL_DIR}/lib make -j${JOBS} && \
 	LD_LIBRARY_PATH=${WXWIDGETS_INSTALL_DIR}/lib make install > /dev/null
 
 
