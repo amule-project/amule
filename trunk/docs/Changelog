@@ -184,6 +184,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Patch to enable Kad search with amulecmd.
 		* Fix for some man pages have wrong name with
 		  --program-suffix.
+		* Temporary fix for tarball configure.in using SVNDATE.
 
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may

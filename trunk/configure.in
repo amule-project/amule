@@ -608,6 +608,10 @@ then
 elif test -d $srcdir/.svn # SVNDATE for svn
 then
 	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
+# Backward compatiblity for CVSDATE while the server script is not updated
+elif test -f "$srcdir/CVSDATE"
+then
+	svndate=`cat $srcdir/CVSDATE`
 fi
 AC_MSG_RESULT(${svndate:-None required})
 test "$svndate" && AC_DEFINE_UNQUOTED(SVNDATE, "$svndate", [The checkout date or svn revision number.])
