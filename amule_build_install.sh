@@ -58,7 +58,8 @@ cd wxWidgets-?.?.?
 	--enable-largefile \
 	--prefix=${WXWIDGETS_INSTALL_DIR} \
 	&& \
-	make -j${JOBS} && make install
+	make -j${JOBS} > /dev/null &&
+	make install > /dev/null
 cd ..
 
 #
