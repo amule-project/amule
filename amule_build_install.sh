@@ -2,7 +2,7 @@
 
 #
 # Example usage:
-# $ crypto_build_install cryptopp552.zip libupnp-1.6.3.tar.bz2 wxWidgets-2.8.7.tar.gz aMule-CVS-20080111.tar.bz2
+# $ amule_build_install cryptopp552.zip libupnp-1.6.3.tar.bz2 wxWidgets-2.8.7.tar.gz aMule-CVS-20080111.tar.bz2
 #
 # Of course, all the above files must be in the current directory.
 #
