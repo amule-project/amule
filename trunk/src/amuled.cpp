@@ -34,13 +34,13 @@
 #include <wx/utils.h>
 
 #include "Preferences.h"		// Needed for CPreferences
-#include "ServerSocket.h"		// Needed for CServerSocket
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"
 #include <common/Format.h>
 #include "InternalEvents.h"		// Needed for wxEVT_*
 #include "ThreadTasks.h"
-#include "GuiEvents.h"			// Neded for EVT_MULE_NOTIFY
+#include "GuiEvents.h"			// Needed for EVT_MULE_NOTIFY
+#include "Timer.h"			// Needed for EVT_MULE_TIMER
 
 #include "ClientUDPSocket.h"		// Do_not_auto_remove (forward declaration not enough)
 #include "ListenSocket.h"		// Do_not_auto_remove (forward declaration not enough)

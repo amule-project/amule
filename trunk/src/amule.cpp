@@ -70,7 +70,7 @@
 #include "SearchList.h"			// Needed for CSearchList
 #include "Server.h"			// Needed for GetListName
 #include "ServerList.h"			// Needed for CServerList
-#include "ServerSocket.h"		// Needed for CServerSocket
+#include "ServerConnect.h"              // Needed for CServerConnect
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "Statistics.h"			// Needed for CStatistics
 #include "TerminationProcess.h"		// Needed for CTerminationProcess
@@ -1399,8 +1399,7 @@ void CamuleApp::OnSourceDnsDone(CMuleInternalEvent& evt)
 void CamuleApp::OnServerDnsDone(CMuleInternalEvent& evt)
 {
 	printf("Server hostname notified\n");
-	CServerSocket* socket=(CServerSocket*)evt.GetClientData();	
-	socket->OnHostnameResolved(evt.GetExtraLong());
+	serverconnect->OnServerHostnameResolved(evt.GetClientData(), evt.GetExtraLong());
 }
 
 

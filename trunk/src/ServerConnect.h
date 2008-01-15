@@ -94,6 +94,16 @@ public:
 	bool AwaitingTestFromIP(uint32 ip);
 	bool IsConnectedObfuscated() const;
 	
+	/**
+	 * Called when a socket has been DNS resolved.
+	 *
+	 * @param socket The socket object requesting DNS resolution.
+	 * @param ip The found IP, or zero on error.
+	 *
+	 * Note that 'socket' may or may not refer to an valid object,
+	 * and should be checked before being used.
+	 */
+	void OnServerHostnameResolved(void* socket, uint32 ip);
 private:
 	bool	connecting;
 	bool	singleconnecting;
