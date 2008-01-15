@@ -621,7 +621,24 @@ bool CServerConnect::AwaitingTestFromIP(uint32 dwIP)
 	return false;
 }
 
-bool CServerConnect::IsConnectedObfuscated() const {
+
+bool CServerConnect::IsConnectedObfuscated() const
+{
 	return connectedsocket != NULL && connectedsocket->IsObfusicating();
 }
+
+
+void CServerConnect::OnServerHostnameResolved(void* socket, uint32 ip)
+{
+	// The socket object might have been deleted while we waited for the hostname
+	// to be resolved, so we check if it's still among the open sockets.
+	SocketsList::iterator it = std::find(m_lstOpenSockets.begin(), m_lstOpenSockets.end(), socket);
+	if (it != m_lstOpenSockets.end()) {
+		(*it)->OnHostnameResolved(ip);
+	} else {
+		printf("Received late result of DNS lookup, discarding.\n");
+	}
+}
+
+
 // File_checked_for_headers

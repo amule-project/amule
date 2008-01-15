@@ -32,7 +32,7 @@
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "MemFile.h"		// Needed for CMemFile
 #include "amule.h"			// Needed for theApp
-#include "ServerSocket.h"	// Needed for theApp->serverconnect
+#include "ServerConnect.h"	// Needed for theApp->serverconnect
 #include "Server.h"			// Needed for CServer
 #include "ServerList.h"		// Needed for theApp->serverlist
 #include "Statistics.h"		// Needed for theStats
