@@ -26,8 +26,9 @@ install-data-hook:
 			tmp=`echo $$file | sed -e "s/\.1/\.$$lang\.1/"` ; \
 			if test -f $(srcdir)/$$tmp; then name=$(srcdir)/$$tmp; \
 			else name=$$tmp; fi; \
-			echo " $(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$file" ; \
-			$(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$file ; \
+			inst=`echo $$file | sed -e "s/\.1//" -e '$(transform)'`.1 ; \
+			echo " $(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
+			$(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
 		done ; \
 	done
 
@@ -35,9 +36,9 @@ uninstall-hook:
 	@for lang in $(man_langs); do \
 		list='$(dist_man_MANS)' ; \
 		for file in $$list; do \
-			name=`echo $$file | sed -e "s/\.1/\.$$lang\.1/"` ; \
-			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$file" ; \
-			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$file ; \
+			inst=`echo $$file | sed -e "s/\.1//" -e '$(transform)'`.1 ; \
+			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
+			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
 		done ; \
 	done
 
