@@ -349,7 +349,6 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 void CamuleDlg::CreateSystray()
 {
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
-	wxASSERT(m_wndTaskbarNotifier->IsOk());			
 	// This will effectively show the Tray Icon.
 	UpdateTrayIcon(0);
 }	
