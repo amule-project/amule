@@ -483,7 +483,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					m_client->SetWaitStartTime();
 				}
 
-				const CMD4Hash fileID((byte*)buffer);
+				const CMD4Hash fileID(buffer);
 				CKnownFile *reqfile = theApp->sharedfiles->GetFileByID(fileID);
 				if ( reqfile == NULL ) {
 					reqfile = theApp->downloadqueue->GetFileByID(fileID);
@@ -528,7 +528,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			theStats::AddDownOverheadFileRequest(size);
 			if (size == 16) {
 				// if that client does not have my file maybe has another different
-				CPartFile* reqfile = theApp->downloadqueue->GetFileByID(CMD4Hash((byte*)buffer));
+				CPartFile* reqfile = theApp->downloadqueue->GetFileByID(CMD4Hash(buffer));
 				if ( reqfile) {
 					reqfile->AddDeadSource( m_client );
 				} else {
@@ -588,7 +588,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			}
 			
 			if (size == 16) {
-				const CMD4Hash fileID((byte*)buffer);
+				const CMD4Hash fileID(buffer);
 				CKnownFile* reqfile = theApp->sharedfiles->GetFileByID(fileID);
 				if (reqfile) {
 					if (m_client->GetUploadFileID() != fileID) {
@@ -669,7 +669,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_END_OF_DOWNLOAD from ") + m_client->GetFullIP() );
 			
 			theStats::AddDownOverheadFileRequest(size);
-			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash((byte*)buffer)) {
+			if (size>=16 && m_client->GetUploadFileID() == CMD4Hash(buffer)) {
 				theApp->uploadqueue->RemoveFromUploadQueue(m_client);
 				if ( CLogger::IsEnabled( logClient ) ) {
 					AddDebugLogLineM( false, logClient, m_client->GetUserName() + wxT(": Upload session ended due ended transfer."));
@@ -1346,7 +1346,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_SECIDENTSTATE before finishing handshake"));
 			}								
-			m_client->ProcessSecIdentStatePacket((byte*)buffer, size);
+			m_client->ProcessSecIdentStatePacket(buffer, size);
 			// ProcessSecIdentStatePacket() might cause the socket to die, so check
 			if (m_client) {
 				int SecureIdentState = m_client->GetSecureIdentState();
@@ -1376,7 +1376,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_PUBLICKEY before finishing handshake"));
 			}
 											
-			m_client->ProcessPublicKeyPacket((byte*)buffer, size);
+			m_client->ProcessPublicKeyPacket(buffer, size);
 			break;
 		}
 		case OP_SIGNATURE:{			// 0.43b
@@ -1388,7 +1388,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				throw wxString(wxT("Client send OP_COMPRESSEDPART before finishing handshake"));
 			}
 											
-			m_client->ProcessSignaturePacket((byte*)buffer, size);
+			m_client->ProcessSignaturePacket(buffer, size);
 			break;
 		}
 		case OP_SENDINGPART_I64:
@@ -1498,7 +1498,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					throw wxString(wxT("Invalid size (OP_QUEUERANKING)"));
 				}
 				//first check shared file list, then download list
-				const CMD4Hash fileID((byte*)buffer);
+				const CMD4Hash fileID(buffer);
 				CKnownFile* file = theApp->sharedfiles->GetFileByID(fileID);
 				if(!file) {
 					file = theApp->downloadqueue->GetFileByID(fileID);
