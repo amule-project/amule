@@ -187,15 +187,16 @@ CMuleTrayIcon::CMuleTrayIcon()
 
 CMuleTrayIcon::~CMuleTrayIcon() 
 {
-	// Debug, to see if something happens to the icon while aMule
-	// still running. This is suggested by the fact that crashes
-	// have occured accessing member-variables of CMuleTrayIcon.
-	printf("Removing tray-icon.\n");
-
-	// If there's an icon set, remove it
-	if (IsIconInstalled()) {
-		RemoveIcon();
+#ifdef __WXGTK__
+	// FIXME: EVIL HACK: We need to ensure that the superclass doesn't
+	// try to destroy a dangling pointer. See also CMuleTrayIcon::UpdateTray
+	// for comments on this issue.
+	if (m_iconWnd) {
+		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
+			m_iconWnd = NULL;
+		}
 	}
+#endif
 }
 
 /****************************************************/
@@ -296,10 +297,33 @@ void CMuleTrayIcon::SetTrayToolTip(const wxString& Tip)
 /**************** Private Functions *****************/
 /****************************************************/
 
-void CMuleTrayIcon::UpdateTray() {
+void CMuleTrayIcon::UpdateTray()
+{
+#ifdef __WXGTK__
+	// FIXME: EVIL HACK: As of wxGTK-2.8.7, closing of the trayicon
+	// window (caused for instance by a crashing kicker) is not
+	// handled, with the result that the pointer to the trayicon
+	// window becomes a dangling pointer. Since we have access to
+	// the pointer, and it's created as a top-level window, it's
+	// relatively easy to force the recreation of a valid window.
+	// Ugly as hell though ....
+	//
+	// This has been repported as bug #1872724:
+	// http://sourceforge.net/tracker/index.php?func=detail&aid=1872724&group_id=9863&atid=109863
+	if (m_iconWnd) {
+		if (wxTopLevelWindows.IndexOf((wxWindow*)m_iconWnd) == wxNOT_FOUND) {
+			printf("Traybar-icon lost, trying to recreate ...\n");
+			m_iconWnd = NULL;
+		}
+	}
+#endif
+
 	// Icon update and Tip update
-	if (IsOk()) SetIcon(CurrentIcon, CurrentTip);
+	if (IsOk()) {
+		SetIcon(CurrentIcon, CurrentTip);
+	}	
 }
+
 
 wxMenu* CMuleTrayIcon::CreatePopupMenu() 
 {
