@@ -2160,8 +2160,8 @@ msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"リリース・バージョンには任意のSVNバージョンから接続は出来ません！"
-"あー、可能のクラシュを予防しました"
+"リリース・バージョンには任意のSVNバージョンから接続は出来ません！あー、可能の"
+"クラシュを予防しました"
 
 #: src/ExternalConn.cpp:230
 msgid "Authentication failed."
