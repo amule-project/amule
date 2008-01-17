@@ -631,8 +631,8 @@ uint8 CPartFile::LoadPartFile(const wxString& in_directory, const wxString& file
 	for ( ; it != gap_map.end(); ++it ) {
 		Gap_Struct* gap = it->second;
 		// SLUGFILLER: SafeHash - revised code, and extra safety
-		if (	((int)gap->start) != -1 &&
-			((int)gap->end) != -1 &&
+		if (	(gap->start != (uint64)-1) &&
+			(gap->end != (uint64)-1) &&
 			gap->start <= gap->end &&
 			gap->start < GetFileSize()) {
 			if (gap->end >= GetFileSize()) {
