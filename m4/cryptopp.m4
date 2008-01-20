@@ -81,16 +81,14 @@ if test -f $CRYPTO_PP_PREFIX/$crypto_pp_file_with_version; then
 	headers from cryptopp headers in an #include directive.
 	Please run "PREFIX=/home/YourUserName/usr/cryptopp make install" on
 	the cryptopp directory to properly install cryptopp in your system.])
-fi
-if test -f $CRYPTO_PP_PREFIX/include/cryptopp/$crypto_pp_file_with_version; then
+elif test -f $CRYPTO_PP_PREFIX/include/cryptopp/$crypto_pp_file_with_version; then
 	CRYPTO_PP_STYLE="installed"
 	CRYPTO_PP_LIB_NAME="cryptopp"
 	crypto_pp_include_i="$CRYPTO_PP_PREFIX/include"
 	CRYPTO_PP_INCLUDE_PREFIX="$CRYPTO_PP_LIB_NAME"
 	CRYPTO_PP_DEFINE="__CRYPTO_INSTALLED__"
 	CRYPTO_PP_LIB="$CRYPTO_PP_PREFIX/lib"
-fi
-if test -f $CRYPTO_PP_PREFIX/include/crypto++/$crypto_pp_file_with_version; then
+elif test -f $CRYPTO_PP_PREFIX/include/crypto++/$crypto_pp_file_with_version; then
        	# Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
 	CRYPTO_PP_STYLE="gentoo_debian"
 	CRYPTO_PP_LIB_NAME="crypto++"

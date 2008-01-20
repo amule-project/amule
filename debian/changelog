@@ -1,3 +1,9 @@
+amule (2.1.3+CVS20080121) testing; urgency=low
+
+  * Added binutils-dev to Build-Deps
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Sun, 20 Jan 2008  15:34:01 +0100
+
 amule (2.1.3+CVS20080106) testing; urgency=low
 
   * debian/control
