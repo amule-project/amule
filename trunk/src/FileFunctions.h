@@ -28,7 +28,10 @@
 #define FILEFUNCTIONS_H
 
 #include "Types.h"
+#include <common/Path.h>
+
 #include <wx/dir.h>
+
 
 // Remove file with safe UTF8 name.
 bool UTF8_RemoveFile(const wxString& fileName);
@@ -59,7 +62,7 @@ sint64 GetFileSize(const wxString& fullPath);
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
 // wxFindFirstFile are bugged like hell.
-class CDirIterator : public wxDir
+class CDirIterator : private wxDir
 {
 public:
 	enum FileType {
@@ -68,14 +71,13 @@ public:
 		Any  = wxDIR_FILES | wxDIR_DIRS   | wxDIR_HIDDEN
 	};
 
-	CDirIterator(const wxString& dir);
+	CDirIterator(const CPath& dir);
 	~CDirIterator();
 
-	wxString GetFirstFile(FileType search_type, const wxString& search_mask = wxEmptyString);
-	wxString GetNextFile();
-	
-private:
-	wxString m_dir;
+	CPath GetFirstFile(FileType type, const wxString& mask = wxEmptyString);
+	CPath GetNextFile();
+
+	bool HasSubDirs(const wxString& spec = wxEmptyString);
 };
 	
 

@@ -120,14 +120,9 @@ sint64 GetFileSize(const wxString& fullPath)
 //
 // This line is necessary so that wxWidgets handles unix file names correctly.
 //
-CDirIterator::CDirIterator(const wxString& dir)
-:
-wxDir(dir),
-m_dir(dir)
+CDirIterator::CDirIterator(const CPath& dir)
+	: wxDir(dir.GetRaw())
 {
-	if (m_dir.Last() != wxFileName::GetPathSeparator()) {
-		m_dir += wxFileName::GetPathSeparator();
-	}
 }
 
 
@@ -136,43 +131,52 @@ CDirIterator::~CDirIterator()
 }
 
 
-wxString CDirIterator::GetFirstFile(FileType search_type, const wxString& search_mask)
+CPath CDirIterator::GetFirstFile(FileType type, const wxString& mask)
 {
-	wxString fileName;
-	wxString retFileName;
-	bool ok = IsOpened();
-	if (!ok) {
-		return wxEmptyString;
-	}
-	ok = GetFirst(&fileName, search_mask, search_type);
-	if (!ok) {
-		return wxEmptyString;
-	}
-	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
-	retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
-	if (retFileName.IsEmpty()) {
-		retFileName = fileName;
+	if (!IsOpened()) {
+		return CPath();
 	}
 	
-	return m_dir + retFileName;
+	wxString fileName;
+	if (!GetFirst(&fileName, mask, type)) {
+		return CPath();
+	}
+
+	// NB: This will be removed soon, and demangling of filenames 
+	// will be handled in the CPath class.
+	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
+	wxString retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
+	if (retFileName.IsEmpty()) {
+	       retFileName = fileName;
+	}
+
+	return CPath(retFileName, CPath::FromFS);
 }
 
 
-wxString CDirIterator::GetNextFile()
+CPath CDirIterator::GetNextFile()
 {
 	wxString fileName;
-	wxString retFileName;
-	bool ok = GetNext(&fileName);
-	if (!ok) {
-		return wxEmptyString;
+	if (!GetNext(&fileName)) {
+		return CPath();
 	}
+
+	// NB: This will be removed soon, and demangling of filenames 
+	// will be handled in the CPath class.
 	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
-	retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
+	wxString retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
 	if (retFileName.IsEmpty()) {
-		retFileName = fileName;
+	       retFileName = fileName;
 	}
-	
-	return m_dir + retFileName;
+
+	return CPath(retFileName, CPath::FromFS);
+}
+
+
+bool CDirIterator::HasSubDirs(const wxString& spec)
+{
+	// Checking IsOpened() in case we don't have permissions to read that dir.
+	return IsOpened() && wxDir::HasSubDirs(spec);
 }
 
 

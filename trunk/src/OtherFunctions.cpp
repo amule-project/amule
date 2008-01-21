@@ -30,7 +30,8 @@
 
 #include <wx/utils.h>
 #include <wx/file.h>		// Needed for wxFile
-#include <wx/log.h>			// Needed for wxLogNull
+#include <wx/filename.h>	// Needed for wxFileName
+#include <wx/log.h>		// Needed for wxLogNull
 
 #ifdef __WXMSW__
 	#include <wx/msw/registry.h> // Do_not_auto_remove
@@ -1186,15 +1187,15 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 		if (!copy && UTF8_MoveFile(oldPath, newPath)) {
 			return true;
 		}
-		CDirIterator finder(oldPath);
-		wxString file = wxFileName(finder.GetFirstFile(CDirIterator::Dir, wxT("*"))).GetFullName();
+		CDirIterator finder(CPath(oldPath, CPath::FromFS));
+		wxString file = finder.GetFirstFile(CDirIterator::Dir, wxT("*")).GetRaw();
 		while (!file.IsEmpty()) {
 			if (file != wxT(".") && file != wxT("..")) {
 				MoveFolder(JoinPaths(oldPath, file), JoinPaths(newPath, file), copy);
 			}
-			file = wxFileName(finder.GetNextFile()).GetFullName();
+			file = finder.GetNextFile().GetRaw();
 		}
-		file = wxFileName(finder.GetFirstFile(CDirIterator::File, wxT("*"))).GetFullName();
+		file = finder.GetFirstFile(CDirIterator::File, wxT("*")).GetRaw();
 		while (!file.IsEmpty()) {
 			if (copy) {
 				UTF8_CopyFile(JoinPaths(oldPath, file), JoinPaths(newPath, file));
@@ -1202,7 +1203,7 @@ bool MoveFolder(const wxString& oldPath, const wxString& newPath, bool copy)
 				UTF8_MoveFile(JoinPaths(oldPath, file), JoinPaths(newPath, file));
 			}
 			
-			file = wxFileName(finder.GetNextFile()).GetFullName();
+			file = finder.GetNextFile().GetRaw();
 		}
 		if (!copy) {
 			wxRmdir(oldPath);

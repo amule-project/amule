@@ -27,62 +27,56 @@
 #define DIRECTORYTREECTRL_H
 
 #include <wx/treectrl.h>
-#include <wx/imaglist.h>
+#include <list>
 
-#define USRMSG_ITEMSTATECHANGED		(47101) + 16
-#define MP_SHAREDFOLDERS_FIRST	46901
+#include <common/Path.h>
+
 
 class CDirectoryTreeCtrl : public wxTreeCtrl
 {
-
-  DECLARE_DYNAMIC_CLASS(CDirectoryTreeCtrl) 
-
-    CDirectoryTreeCtrl() {};
 public:
-	CDirectoryTreeCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags);
+	CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
 	virtual ~CDirectoryTreeCtrl();
 
-	// initialize control
-	void Init(void);
 	// get all shared directories
 	void GetSharedDirectories(wxArrayString* list);
 	// set shared directories
 	void SetSharedDirectories(wxArrayString* list);
+	
 	// User made any changes to list?
 	bool HasChanged;
 
 private:
-	wxImageList m_image; 
-	wxTreeItemId hRoot;
+	// initialize control
+	void Init();
+
 	// add a new item
-	void AddChildItem(wxTreeItemId hBranch, const wxString& strText);
+	void AddChildItem(wxTreeItemId hBranch, const CPath& item);
 	// add subdirectory items
-	void AddSubdirectories(wxTreeItemId hBranch, const wxString& folder);
+	void AddSubdirectories(wxTreeItemId hBranch, const CPath& path);
 	// returns true if folder has at least one subdirectory
-	bool HasSubdirectories(const wxString& folder);
+	bool HasSubdirectories(const CPath& path);
 	// return the full path of an item (like C:\abc\somewhere\inheaven\)
-	wxString GetFullPath(wxTreeItemId hItem);
+	CPath GetFullPath(wxTreeItemId hItem);
 	// check status of an item has changed
 	void CheckChanged(wxTreeItemId hItem, bool bChecked);
 	// returns true if a subdirectory of strDir is shared
-	bool HasSharedSubdirectory(const wxString& strDir);
+	bool HasSharedSubdirectory(const CPath& path);
 	// when sharing a directory, make all parent directories red
 	void UpdateParentItems(wxTreeItemId hChild, bool add);
 
 	// share list access
-	bool IsShared(const wxString& strDir);
-	void AddShare(const wxString& strDir);
-	void DelShare(const wxString& strDir);
-	void MarkChildren(wxTreeItemId hChild,bool mark);
+	bool IsShared(const CPath& path);
+	void AddShare(const CPath& path);
+	void DelShare(const CPath& path);
+	void MarkChildren(wxTreeItemId hChild, bool mark);
 	
-protected:
-	void OnTvnItemexpanding(wxTreeEvent& evt);
+	void OnItemExpanding(wxTreeEvent& evt);
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
 
-	wxArrayString m_lstShared;
-	wxString m_strLastRightClicked;
-	bool m_bSelectSubDirs;
+	typedef std::list<CPath> PathList;
+	PathList m_lstShared;
 	
 	
 	DECLARE_EVENT_TABLE()

@@ -109,15 +109,15 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 	printf("Loading temp files from %s.\n",
 		(const char *)unicode2char(path));
 	
-	CDirIterator TempDir( path );
+	CDirIterator TempDir( CPath(path, CPath::FromUser) );
 	std::vector<wxString> files;
 
 	// Locate part-files to be loaded
-	wxString fileName = TempDir.GetFirstFile( CDirIterator::File, wxT("*.part.met") );
+	wxString fileName = TempDir.GetFirstFile( CDirIterator::File, wxT("*.part.met") ).GetRaw();
 	while ( !fileName.IsEmpty() ) {
-		files.push_back( fileName );
+		files.push_back(JoinPaths(path, fileName));
 
-		fileName = TempDir.GetNextFile();
+		fileName = TempDir.GetNextFile().GetRaw();
 	}
 	std::sort( files.begin(), files.end() );
 

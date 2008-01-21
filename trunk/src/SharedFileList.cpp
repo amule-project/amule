@@ -422,9 +422,9 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 		return 0;
 	}
 
-	CDirIterator SharedDir(directory); 
+	CDirIterator SharedDir(CPath(directory, CPath::FromFS)); 
 	
-	wxString fname = SharedDir.GetFirstFile(CDirIterator::File); // We just want files
+	wxString fname = SharedDir.GetFirstFile(CDirIterator::File).GetRaw(); // We just want files
 
 	if (fname.IsEmpty()) {
 		printf("Empty dir %s shared\n", (const char *)unicode2char(directory));
@@ -432,7 +432,9 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 	}
 
 	unsigned addedFiles = 0;
-	while(!fname.IsEmpty()) {		
+	while(!fname.IsEmpty()) {
+		fname = JoinPaths(directory, fname);
+
 		AddDebugLogLineM(false, logKnownFiles,
 			wxT("Found file ") + fname + wxT(" on shared folder"));
 
@@ -442,7 +444,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			AddDebugLogLineM(false, logKnownFiles,
 				wxT("Shares: ") + fname +
 				wxT(" is a directory, skipping"));
-			fname = SharedDir.GetNextFile();
+			fname = SharedDir.GetNextFile().GetRaw();
 			continue;
 		}
 		
@@ -451,7 +453,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			AddDebugLogLineM(false, logKnownFiles,
 				wxT("No permisions to open") + fname +
 				wxT(", skipping"));
-			fname = SharedDir.GetNextFile();
+			fname = SharedDir.GetNextFile().GetRaw();
 			continue;
 		}
 		
@@ -462,7 +464,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			AddDebugLogLineM(false, logKnownFiles,
 				wxT("Ignored file ") + fname +
 				wxT(" (Hidden)"));
-			fname = SharedDir.GetNextFile();
+			fname = SharedDir.GetNextFile().GetRaw();
 			continue;
 		}
 
@@ -473,7 +475,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 			AddDebugLogLineM(true, logKnownFiles,
 				wxT("Failed to get filesize, skipping: ") +
 				fname);
-			fname = SharedDir.GetNextFile();
+			fname = SharedDir.GetNextFile().GetRaw();
 			continue;
 		}
 		
@@ -507,7 +509,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
 				addedFiles++;
 			}
 		}
-		fname = SharedDir.GetNextFile();
+		fname = SharedDir.GetNextFile().GetRaw();
 	}
 
 	return addedFiles;
