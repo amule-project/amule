@@ -294,6 +294,8 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 			return true;
 		}
 	}
+
+	return false;
 }
 
 
