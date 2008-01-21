@@ -37,6 +37,31 @@
 
 
 /**
+ * Classes that implement this interface are usable as
+ * arguments for %s format strings. This is needed because
+ * CFormat objects are typically created as temporary objects,
+ * which makes external declarations of operator% impossible,
+ * due to the fact that a non-const reference to a temporary
+ * object is prohibited, as in:
+ * 	CFormat& operator%(CFormat& fmt, ...)
+ *
+ * With this approch, it is possible to use CFormat as usual:
+ * 	CFormat(...) % <some CPrintable object>;
+ */
+class CPrintable
+{
+public:
+	/** Must return a "pretty" string representation of the object. */
+	virtual wxString GetPrintableString() const = 0;
+
+protected:
+	virtual ~CPrintable() {}
+};
+
+
+
+
+/**
  * This class offers a typesafe alternative to wxString::Format.
  *
  * Unlike normal format and printf, this class does not care about the
@@ -106,6 +131,8 @@ public:
 	CFormat& operator%(unsigned long long value);	
 	CFormat& operator%(double value);
 	CFormat& operator%(const wxChar* value);
+	CFormat& operator%(const wxString& value);
+	CFormat& operator%(const CPrintable& value);	
 	// \}
 
 
@@ -243,6 +270,17 @@ inline CFormat& CFormat::operator%(unsigned long long value)
 {
 	return SetCurrentField(wxString::Format(GetIntegerField(wxLongLongFmtSpec wxT("u")), value));
 }
+
+inline CFormat& CFormat::operator%(const wxChar* val)
+{
+	return *this % wxString(val);
+}
+
+inline CFormat& CFormat::operator%(const CPrintable& value)
+{
+	return *this % value.GetPrintableString();
+}
+
 
 #endif
 // File_checked_for_headers

@@ -406,3 +406,35 @@ TEST(Format, 64bValues)
 	}	
 }
 
+
+class CTestPrintable : public CPrintable
+{
+public:
+	CTestPrintable(int value)
+		: m_value(value)
+	{
+	}
+
+	virtual wxString GetPrintableString() const
+	{
+		return wxString::Format(wxT("%i"), m_value);
+	}
+
+private:
+	int m_value;
+};
+
+TEST(Format, Printable)
+{
+	{
+		CFormat fmt(wxT("%s"));
+		fmt % CTestPrintable(10);
+		ASSERT_EQUALS(wxT("10"), fmt.GetString());
+	}
+
+	{
+		CFormat fmt(wxT("%s"));
+		fmt % CTestPrintable(-10);
+		ASSERT_EQUALS(wxT("-10"), fmt.GetString());
+	}
+}
