@@ -238,7 +238,7 @@ CFormat& CFormat::operator%(wxChar value)
 }
 
 
-CFormat& CFormat::operator%( const wxChar* val )
+CFormat& CFormat::operator%(const wxString& val)
 {
 	wxString field = GetCurrentField();
 	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-string format string."));
@@ -250,13 +250,13 @@ CFormat& CFormat::operator%( const wxChar* val )
 
 		// Try to convert the length-field.
 		if ((size.IsEmpty() || size.ToLong(&lSize)) && (lSize >= 0)) {
-			SetCurrentField(wxString(val).Left(lSize));
+			SetCurrentField(val.Left(lSize));
 		} else {
 			MULE_VALIDATE_STATE(false, wxT("Invalid value found in 'precision' field."));
 		}
 	} else if (field.GetChar(1) == wxT('s')) {
 		// No limit on size, just set the string
-		SetCurrentField( val );
+		SetCurrentField(val);
 	} else {
 		MULE_VALIDATE_STATE(false, wxT("Malformed string format field."));
 	}
