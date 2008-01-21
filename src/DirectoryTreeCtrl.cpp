@@ -27,51 +27,48 @@
 #include "DirectoryTreeCtrl.h"	// Interface declarations
 
 #include <wx/app.h>
+#include <wx/filename.h>
+#include <wx/imaglist.h>
 
+#include <common/StringFunctions.h>
 #include "FileFunctions.h"
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 
-#ifdef __WXMSW__
-	#define ROOT_CHAR	wxT('\\')
-	#define ROOT_STRING	wxT("\\")
-#else
-	#define ROOT_CHAR	wxT('/')
-	#define ROOT_STRING	wxT("/")
-#endif
-
-// CDirectoryTreeCtrl
-
-IMPLEMENT_DYNAMIC_CLASS(CDirectoryTreeCtrl, wxTreeCtrl)
-
 BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
-	EVT_TREE_ITEM_ACTIVATED(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnItemActivated)
-	EVT_TREE_ITEM_RIGHT_CLICK(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnRButtonDown)
-	EVT_TREE_ITEM_EXPANDED(IDC_SHARESELECTOR,CDirectoryTreeCtrl::OnTvnItemexpanding)
+	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY,	CDirectoryTreeCtrl::OnRButtonDown)
+	EVT_TREE_ITEM_ACTIVATED(wxID_ANY,	CDirectoryTreeCtrl::OnItemActivated)
+	EVT_TREE_ITEM_EXPANDED(wxID_ANY,	CDirectoryTreeCtrl::OnItemExpanding)
 END_EVENT_TABLE()
 
 
-class CDirectoryTreeItemData : public wxTreeItemData
+class CItemData : public wxTreeItemData
 {
 	public:
-		CDirectoryTreeItemData() { Data = 0;};
-		~CDirectoryTreeItemData() {};
+		CItemData(const CPath& pathComponent)
+			: m_data(0)
+			, m_path(pathComponent)
+		{
+		}
 
-		void AddCount() { Data++; }
-		void SubCount() { Data--; }
-		int GetCount() { return Data; }
+		~CItemData() {}
+
+		void AddCount() { m_data++; }
+		void SubCount() { m_data--; }
+		int GetCount() const { return m_data; }
+		const CPath& GetPathComponent() const { return m_path; }
 	private:
-		int Data;
+		int	m_data;
+		CPath	m_path;
 };
 
 
-CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow*& parent,int id,const wxPoint& pos,wxSize siz,int flags)
-: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree")),
-m_image(16,16)
+CDirectoryTreeCtrl::CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags)
+	: wxTreeCtrl(parent,id,pos,siz,flags,wxDefaultValidator,wxT("ShareTree"))
 {
-	m_bSelectSubDirs = false;
 	Init();
 }
+
 
 CDirectoryTreeCtrl::~CDirectoryTreeCtrl()
 {
@@ -82,73 +79,62 @@ enum {
 	IMAGE_FOLDER_SUB_SHARED
 };
 
-void CDirectoryTreeCtrl::Init(void)
+
+void CDirectoryTreeCtrl::Init()
 {
 	// init image(s)
-	m_image.Add(wxBitmap(amuleSpecial(1)));
-	m_image.Add(wxBitmap(amuleSpecial(2)));
-	SetImageList(&m_image);
+	wxImageList* images = new wxImageList(16, 16);
+	images->Add(wxBitmap(amuleSpecial(1)));
+	images->Add(wxBitmap(amuleSpecial(2)));
+	// Gives wxTreeCtrl ownership of the list
+	AssignImageList(images);
 
-	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	hRoot=AddRoot(ROOT_STRING,IMAGE_FOLDER,-1,ItemData);
-	#ifndef __WXMSW__
-		AppendItem(hRoot,wxT("Cool. Works")); // will be deleted on expanding it
-	#else
-		// Root doesn't show on Windows because I set that flag on muuli. So add Drives here.
-		char drive;
-		for (drive = 'C'; drive <= 'Z'; drive++) {
-			wxString DriveStr = wxString::Format(wxT("%c:"),drive);
-			// Don't change this for a CheckDirExists!
-			if (::wxDirExists(DriveStr+ROOT_CHAR)) {
-				AddChildItem(hRoot,DriveStr);
-			}
+	
+	// Create an empty root item, which we can
+	// safely append when creating a full path.
+	wxTreeItemId root = AddRoot(wxEmptyString, IMAGE_FOLDER, -1,
+					new CItemData(CPath()));
+	
+
+#ifndef __WXMSW__
+	AddChildItem(root, CPath(wxT("/"), CPath::FromFS));
+#else
+	for (char drive = 'C'; drive <= 'Z'; drive++) {
+		wxString driveStr = wxString::Format(wxT("%c:"),drive);
+		
+		// Don't change this for a CheckDirExists!
+		if (CheckDirExists(driveStr)) {
+			AddChildItem(root, CPath(driveStr, CPath::FromFS));
 		}
-	#endif
+	}
+#endif
 
 	HasChanged = false;
 }
 
-// CDirectoryTreeCtrl message handlers
 
-void CDirectoryTreeCtrl::OnTvnItemexpanding(wxTreeEvent& evt)
+void CDirectoryTreeCtrl::OnItemExpanding(wxTreeEvent& evt)
 {
 	wxTreeItemId hItem = evt.GetItem();
+
+	// Force reloading of the path
 	DeleteChildren(hItem);
 	AddSubdirectories(hItem, GetFullPath(hItem));
+
 	SortChildren(hItem);
 }
 
+
 void CDirectoryTreeCtrl::OnItemActivated(wxTreeEvent& evt)
 {
-	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
-	// Kry - No more when is down... right click on image will be the way.
-	GetFirstVisibleItem(); // VQB mark initial window position
-	int flags=0;
-	wxTreeItemId hItem = HitTest(evt.GetPoint(),flags);
-	// this event is launced _after_ checkbox value is set.. if it is set at all
-	if (hItem.IsOk()) {
-		CheckChanged(hItem, !IsBold(hItem));
-		Refresh();
-	}
+	CheckChanged(evt.GetItem(), !IsBold(evt.GetItem()));
 	HasChanged = true;
 }
 
+
 void CDirectoryTreeCtrl::OnRButtonDown(wxTreeEvent& evt)
 {
-	// VQB adjustments to provide for sharing or unsharing of subdirectories when control key is Down
-	// Kry - No more when is down... right click on image will be the way.
-	wxTreeItemId hItem = evt.GetItem(); 
-	GetFirstVisibleItem(); // VQB mark initial window position
-	int flags=0;
-	HitTest(evt.GetPoint(),flags);
-	// this event is launched _after_ checkbox value is set.. if it is set at all
-	if (flags & (wxTREE_HITTEST_ONITEMICON | wxTREE_HITTEST_ONITEMLABEL)) {
-		if (hItem.IsOk()) {
-			MarkChildren(hItem, !IsBold(hItem));
-			Refresh();
-		}
-	}
-	
+	MarkChildren(evt.GetItem(), !IsBold(evt.GetItem()));
 	HasChanged = true;
 }
 
@@ -163,9 +149,10 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 	}
 	
 	wxTreeItemIdValue cookie;
-	wxTreeItemId hChild2 = GetFirstChild(hChild,cookie);
+	wxTreeItemId hChild2 = GetFirstChild(hChild, cookie);
 	while (hChild2.IsOk()) {
 		MarkChildren(hChild2, mark);
+
 		hChild2 = GetNextSibling(hChild2);
 	}
 
@@ -173,258 +160,209 @@ void CDirectoryTreeCtrl::MarkChildren(wxTreeItemId hChild, bool mark)
 }
 
 
-void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const wxString& strText)
+void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 {
-	// The place to add it is ok
-	wxASSERT(hBranch.IsOk());
+	wxCHECK_RET(hBranch.IsOk(), wxT("Attempted to add children to invalid item"));
 	
-	wxString strDir = GetFullPath(hBranch);
-
-	// Folder label has no '/' on the name
-	wxASSERT(strText.Find(ROOT_CHAR) == -1);
+	CPath fullPath = GetFullPath(hBranch).JoinPaths(item);
+	wxTreeItemId treeItem = AppendItem(hBranch, item.GetPrintable(),
+						IMAGE_FOLDER, -1,
+						new CItemData(item));
 	
-	strDir += strText + ROOT_CHAR;
-	
-	CDirectoryTreeItemData* ItemData = new CDirectoryTreeItemData();
-	wxTreeItemId item =
-		AppendItem(hBranch, strText, IMAGE_FOLDER, -1, ItemData);
-	
-	if (IsShared(strDir)) {
-		SetItemBold(item, true);
-		UpdateParentItems(item, true);
+	if (IsShared(fullPath)) {
+		SetItemBold(treeItem, true);
+		UpdateParentItems(treeItem, true);
 	}
 	
-	if (HasSharedSubdirectory(strDir)) {
-		SetItemImage(item,IMAGE_FOLDER_SUB_SHARED);
+	if (HasSharedSubdirectory(fullPath)) {
+		SetItemImage(treeItem, IMAGE_FOLDER_SUB_SHARED);
 	}
 	
-	if (HasSubdirectories(strDir)) {
+	if (HasSubdirectories(fullPath)) {
 		// Trick. will show + if it has subdirs
-		AppendItem(item,wxT("."));
+		AppendItem(treeItem, wxT("."));
 	}
 }
 
-wxString CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
-{
-	wxASSERT(hItem.IsOk());
-	// don't traverse to the root item ... it will cause extra / to the path
-	if (hItem == hRoot) {
-		#ifndef __WXMSW__
-			return ROOT_STRING;
-		#else
-			return wxEmptyString;
-		#endif
-	} else {
-		wxString strDir = ROOT_STRING;
-		while(hItem.IsOk() && (hItem != hRoot))  {	
-			#ifndef __WXMSW__
-				strDir = ROOT_STRING + GetItemText(hItem)  + strDir;
-			#else
-				if (GetItemParent(hItem) != hRoot) {
-					strDir = ROOT_STRING+ GetItemText(hItem)  + strDir;
-				} else {
-					strDir = GetItemText(hItem)  + strDir;
-				}			 
-			#endif
-			hItem = GetItemParent(hItem);		
-		}
-		// Allways has a '/' at the end
-		wxASSERT(strDir.Last() == ROOT_CHAR);
-		return strDir;
-	}
-}
 
-void CDirectoryTreeCtrl::AddSubdirectories(
-	wxTreeItemId hBranch,
-	const wxString& folder)
+CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
-	// we must collect values first because we'll call GetFirstFile()
-	// again in AddChildItem() ...
-	wxArrayString ary;
-	CDirIterator SharedDir(folder);
-	wxString directoryName = SharedDir.GetFirstFile(CDirIterator::Dir); 
-	wxString lastDirectoryName;
+	wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath"));
+
+	CItemData* data = dynamic_cast<CItemData*>(GetItemData(hItem));
+	wxCHECK_MSG(data, CPath(), wxT("Missing data-item in GetFullPath"));
+
+	// Terminate recursion once we reach the root
+	hItem = GetItemParent(hItem);
+	if (hItem.IsOk() == false) {
+		return CPath();
+	}
 	
-	while (!directoryName.IsEmpty()) {
-		// Take just the last directory level of the path
-		if (directoryName.Find(ROOT_CHAR, true) != -1) {
-			lastDirectoryName = directoryName.Mid(
-				directoryName.Find(ROOT_CHAR, true) + 1);
-		} else {
-			lastDirectoryName = directoryName;
-		}
+	// More path-components left ...
+	return GetFullPath(hItem).JoinPaths(data->GetPathComponent());
+}
+
+
+void CDirectoryTreeCtrl::AddSubdirectories(wxTreeItemId hBranch, const CPath& path)
+{
+	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddSubdirectories"));
+
+	CDirIterator sharedDir(path);
+	
+	CPath dirName = sharedDir.GetFirstFile(CDirIterator::Dir); 
+	while (dirName.IsOk()) {
+		AddChildItem(hBranch, dirName);
 		
-		// Sanity checks
-		wxASSERT(lastDirectoryName.Len() > 0);
-		wxASSERT(lastDirectoryName.Last() != ROOT_CHAR);
-		
-		ary.Add(lastDirectoryName);
-		directoryName = SharedDir.GetNextFile();
-	}
-	
-	// then add them
-	for (unsigned int i = 0; i < ary.GetCount(); ++i) {
-		AddChildItem(hBranch, ary[i]);
+		dirName = sharedDir.GetNextFile();
 	}
 }
 
-bool CDirectoryTreeCtrl::HasSubdirectories(const wxString& folder)
+
+bool CDirectoryTreeCtrl::HasSubdirectories(const CPath& folder)
 {
-	wxLogNull logNo; // prevent stupid log windows if we try to traverse somewhere we have no access.
+	// Prevent error-messages if we try to traverse somewhere we have no access.
+	wxLogNull logNo;
 
-	CDirIterator SharedDir(folder); 
-	wxString fname = SharedDir.GetFirstFile(CDirIterator::Dir); // We just want dirs
-	
-	if(!fname.IsEmpty()) {
-		return true; // at least one directory ...
-	}
-	return false; // no match
+	return CDirIterator(folder).HasSubDirs();
 }
+
 
 void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
 {
-	for(unsigned int i = 0; i < m_lstShared.GetCount(); ++i) {
-		list->Add(m_lstShared[i]);
+	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
+	
+	PathList::iterator it = m_lstShared.begin();
+	for (; it != m_lstShared.end(); ++it) {
+		// TODO: 'list' should also contain CPaths.
+		list->Add(it->GetRaw());
 	}
 }
+
 
 void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 {
-	m_lstShared.Clear();
-	for (unsigned int i = 0; i < list->GetCount(); ++i) {
-		// The references returned by Item, Last or operator[] are not const
-		wxString& folder = list->Item(i);
+	m_lstShared.clear();
+
+	for (size_t i = 0; i < list->GetCount(); ++i) {
+		wxString path = list->Item(i);
+
+		if (!path) {
+			// FIXME: This probably shouldn't happen, but I don't
+			// think we current check for empty lines in sharedfiles.dat
+			continue;
+		}
 		
-		wxASSERT(folder.Len() > 0);
-
-		if (folder != ROOT_STRING) { // no removal for root dir
-			while(folder.Len() > 0 && folder.Last() == ROOT_CHAR) {
-				folder.RemoveLast();	// Minus possible trailing slashes.
-			}
-			wxASSERT(folder.Len() > 0); // was modified by while
-			folder.Append(ROOT_CHAR);
+		path = StripSeparators(path, wxString::trailing);
+		if (!path) {
+#ifndef __WXMSW__
+			// The root dir will get stripped away by the above.
+			// Not that it should be shared in the first place ...
+			m_lstShared.push_back(CPath(wxT("/"), CPath::FromFS));
+#endif
+		} else {
+			m_lstShared.push_back(CPath(path, CPath::FromFS));
 		}
-		m_lstShared.Add(list->Item(i));
 	}
 	
+	// Mark all shared root items (on windows this can be multiple
+	// drives, on unix there is only the root dir).
+	wxTreeItemIdValue cookie;
+	wxTreeItemId hChild = GetFirstChild(GetRootItem(), cookie);
 	
-	#ifndef __WXMSW__
-		// Has root dir a subdir shared?
-		if(HasSharedSubdirectory(ROOT_STRING)) { // root folder
-			SetItemImage(hRoot,IMAGE_FOLDER_SUB_SHARED);
+	while (hChild.IsOk()) {
+		// Does this drive have shared subfolders?
+		if (HasSharedSubdirectory(GetFullPath(hChild))) { 
+			SetItemImage(hChild, IMAGE_FOLDER_SUB_SHARED);
 		}
-		// Is root dir shared?
-		if(IsShared(ROOT_STRING)) {
-			SetItemBold(hRoot, true);
+		
+		// Is this drive shared?
+		if (IsShared(GetFullPath(hChild))) {
+			SetItemBold(hChild, true);
 		}
-	#else 
-		// On Windows, we have to check every drive
-		wxTreeItemId hChild;
-		wxTreeItemIdValue cookie;
-		hChild = GetFirstChild(hRoot,cookie);
-		while (hChild.IsOk()) {
-			// Does this drive have shared subfolders?
-			if (HasSharedSubdirectory(GetFullPath(hChild))) { 
-				SetItemImage(hChild,IMAGE_FOLDER_SUB_SHARED);
-			}
-			// Is this drive shared?
-			if (IsShared(GetFullPath(hChild))) {
-				SetItemBold(hChild, true);
-			}
-			hChild = GetNextSibling(hChild);
-		}
-	#endif
-	
+
+		hChild = GetNextSibling(hChild);
+	}
 }
 
-bool CDirectoryTreeCtrl::HasSharedSubdirectory(const wxString& strDir)
+
+bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 {
-	wxString tStrDir = strDir;
-
-#ifdef __WXMSW__	
-	tStrDir.MakeLower();	// Speed reasons
-#endif
-	
-	size_t tStrDirLen = tStrDir.Len(); // Speed reasons
-	for (unsigned int i = 0; i < m_lstShared.GetCount(); ++i)
-	{
-		wxString const& str(m_lstShared[i]);
-		if (tStrDirLen < str.Len())	 { // Optimizing speed
-#ifdef __WXMSW__
-			if (wxString(str).MakeLower().StartsWith(tStrDir)) {
-#else
-               if (str.StartsWith(tStrDir)) {
-#endif
-				return true;
-			}
+	PathList::iterator it = m_lstShared.begin();
+	for (; it != m_lstShared.end(); ++it) {
+		// != to avoid the case where 'path' itself is shared.
+		if (it->StartsWith(path) && (*it != path)) {
+			return true;
 		}
 	}
-	return false;
 }
+
 
 void CDirectoryTreeCtrl::CheckChanged(wxTreeItemId hItem, bool bChecked)
 {
-	if (bChecked) {
-		if (!IsBold(hItem)) {
-			SetItemBold(hItem, true);
+	if (IsBold(hItem) != bChecked) {
+		SetItemBold(hItem, bChecked);
+
+		if (bChecked) {
 			AddShare(GetFullPath(hItem)); 
-			UpdateParentItems(hItem,true);
+		} else {
+			DelShare(GetFullPath(hItem));
 		}
-	} else {
-		if (IsBold(hItem)) {
-			SetItemBold(hItem, false);
-			DelShare(GetFullPath(hItem)); 
-			UpdateParentItems(hItem,false);
-		}
+
+		UpdateParentItems(hItem, bChecked);
 	}
 }
 
-bool CDirectoryTreeCtrl::IsShared(const wxString& strDir)
-{	
-#ifdef __WXMSW__
-	// case insensitive
-	return m_lstShared.Index(strDir, false) != wxNOT_FOUND;
-#else
-	return m_lstShared.Index(strDir) != wxNOT_FOUND;
-#endif
+
+bool CDirectoryTreeCtrl::IsShared(const CPath& path)
+{
+	wxCHECK_MSG(path.IsOk(), false, wxT("Invalid path in IsShared"));
+
+	PathList::iterator it = std::find(
+		m_lstShared.begin(),
+		m_lstShared.end(),
+		path);
+	
+	return (it != m_lstShared.end());
 }
 
-void CDirectoryTreeCtrl::AddShare(const wxString& strDir)
+
+void CDirectoryTreeCtrl::AddShare(const CPath& path)
 {
-		
-	wxASSERT(strDir.Len() > 0);
+	wxCHECK_RET(path.IsOk(), wxT("Invalid path in AddShare"));
 	
-	if (IsShared(strDir)) {
+	if (IsShared(path)) {
 		return;
 	}
 	
-	m_lstShared.Add(strDir);
+	m_lstShared.push_back(path);
 }
 
-void CDirectoryTreeCtrl::DelShare(const wxString& strDir)
+
+void CDirectoryTreeCtrl::DelShare(const CPath& path)
 {
-	wxASSERT(strDir.Len() > 0);
+	wxCHECK_RET(path.IsOk(), wxT("Invalid path in DelShare"));
 	
-	m_lstShared.Remove(strDir);
+	m_lstShared.remove(path);
 }
+
 
 void CDirectoryTreeCtrl::UpdateParentItems(wxTreeItemId hChild, bool add)
 {
 	wxTreeItemId parent = hChild;
 	while (parent != GetRootItem()) {
 		parent = GetItemParent(parent);
-		CDirectoryTreeItemData* parent_data = ((CDirectoryTreeItemData*) GetItemData(parent));
+		CItemData* parent_data = dynamic_cast<CItemData*>(GetItemData(parent));
 		if (add) {
 			parent_data->AddCount();
 			if (parent_data->GetCount()==1) {
-				SetItemImage(parent,IMAGE_FOLDER_SUB_SHARED);
+				SetItemImage(parent, IMAGE_FOLDER_SUB_SHARED);
 			}
 		} else {
 			switch (parent_data->GetCount()) {
 				case 0:
 					break;
 				case 1:
-					SetItemImage(parent,IMAGE_FOLDER);
+					SetItemImage(parent, IMAGE_FOLDER);
 				default:
 					parent_data->SubCount();
 					break;

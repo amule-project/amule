@@ -94,12 +94,11 @@ CPartFileConvertDlg*	CPartFileConvert::s_convertgui = NULL;
 int CPartFileConvert::ScanFolderToAdd(wxString folder, bool deletesource)
 {
 	int count = 0;
-	CDirIterator finder(folder);
-	wxString file;
+	CDirIterator finder(CPath(folder, CPath::FromFS));
 
-	file = finder.GetFirstFile(CDirIterator::File, wxT("*.part.met"));
-	while (!file.IsEmpty()) {
-		ConvertToeMule(file, deletesource);
+	CPath file = finder.GetFirstFile(CDirIterator::File, wxT("*.part.met"));
+	while (!file.IsOk()) {
+		ConvertToeMule(JoinPaths(folder, file.GetRaw()), deletesource);
 		file = finder.GetNextFile();
 		count++;
 	}
@@ -113,10 +112,9 @@ int CPartFileConvert::ScanFolderToAdd(wxString folder, bool deletesource)
 	*/
 
 	file = finder.GetFirstFile(CDirIterator::Dir, wxT("*.*"));
-	while (!file.IsEmpty()) {
-		if (file != wxT(".") && file != wxT("..")) {
-			ScanFolderToAdd(file, deletesource);
-		}
+	while (!file.IsOk()) {
+		ScanFolderToAdd(JoinPaths(folder, file.GetRaw()), deletesource);
+		
 		file = finder.GetNextFile();
 	}
 
@@ -262,7 +260,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	wxString partfile = folder;
 	folder = folder.BeforeLast(wxFileName::GetPathSeparator());
 	partfile = partfile.AfterLast(wxFileName::GetPathSeparator());
-	CDirIterator finder(folder);
+	CDirIterator finder(CPath(folder, CPath::FromFS));
 
 	UpdateGUI(0, _("Reading temp folder"), true);
 
@@ -303,18 +301,17 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 
 		try {			
 			CFile inputfile;
-			wxString filename;
 
 			// just count
 			unsigned maxindex = 0;
 			unsigned partfilecount = 0;
-			buffer = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
-			while (!buffer.IsEmpty()) {
+			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
+			while (!filePath.IsOk()) {
 				long l;
 				++partfilecount;
-				buffer.AfterLast(wxFileName::GetPathSeparator()).AfterFirst(wxT('.')).BeforeLast(wxT('.')).ToLong(&l);
+				filePath.GetRaw().AfterLast(wxFileName::GetPathSeparator()).AfterFirst(wxT('.')).BeforeLast(wxT('.')).ToLong(&l);
 				fileindex = (unsigned)l;
-				buffer = finder.GetNextFile();
+				filePath = finder.GetNextFile();
 				// GonoszTopi - why the hell does eMule need this??
 				//if (fileindex == 0) continue;
 				if (fileindex > maxindex) maxindex = fileindex;
@@ -355,8 +352,8 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 			file->m_hpartfile.SetLength( s_pfconverting->spaceneeded );
 
 			unsigned curindex = 0;
-			filename = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
-			while (!filename.IsEmpty()) {
+			CPath filename = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
+			while (filename.IsOk()) {
 				// stats
 				++curindex;
 				buffer = wxString::Format(_("Loading data from old download file (%u of %u)"), curindex, partfilecount);
@@ -364,7 +361,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				UpdateGUI(10 + (curindex * stepperpart), buffer);
 
 				long l;
-				filename.AfterLast(wxFileName::GetPathSeparator()).AfterFirst(wxT('.')).BeforeLast(wxT('.')).ToLong(&l);
+				filename.GetRaw().AfterLast(wxFileName::GetPathSeparator()).AfterFirst(wxT('.')).BeforeLast(wxT('.')).ToLong(&l);
 				fileindex = (unsigned)l;
 				if (fileindex == 0) {
 					filename = finder.GetNextFile();
@@ -374,7 +371,7 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 				uint32 chunkstart = (fileindex - 1) * PARTSIZE;
 				
 				// open, read data of the part-part-file into buffer, close file
-				inputfile.Open(filename, CFile::read);
+				inputfile.Open(filename.GetRaw(), CFile::read);
 				uint64 toReadWrite = std::min<uint64>(PARTSIZE, inputfile.GetLength());
 				inputfile.Read(ba, toReadWrite);
 				inputfile.Close();
@@ -484,10 +481,10 @@ int CPartFileConvert::performConvertToeMule(wxString folder)
 	}
 
 	if (s_pfconverting->removeSource) {
-		buffer = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*"));
-		while (!buffer.IsEmpty()) {
-			wxRemoveFile(buffer);
-			buffer = finder.GetNextFile();
+		CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*"));
+		while (filePath.IsOk()) {
+			wxRemoveFile(JoinPaths(folder, filePath.GetRaw()));
+			filePath = finder.GetNextFile();
 		}
 
 		if (s_pfconverting->partmettype == PMT_SPLITTED) {
