@@ -9,7 +9,7 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src
 LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest
+TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -41,6 +41,11 @@ NetworkFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS) -DEC_REMOTE # Needed to avoid com
 NetworkFunctionsTest_LDADD = $(LDADD)
 
 # Tests for the classes that implement the CFileDataIO interface
-FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp
+FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp
 FileDataIOTest_CXXFLAGS = $(AM_CXXFLAGS) 
 FileDataIOTest_LDADD = $(LDADD) $(CRYPTOLIBS)
+
+# Tests for the CPath class
+PathTest_SOURCES = PathTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp
+PathTest_CXXFLAGS = $(AM_CXXFLAGS) 
+PathTest_LDADD = $(LDADD) $(CRYPTOLIBS)
