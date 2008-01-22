@@ -934,9 +934,14 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 	
 	// Create the UDP socket TCP+3.
 	// Used for source asking on servers.
-	if (thePrefs::GetAddress().IsEmpty() || !myaddr[1].Hostname(thePrefs::GetAddress())) {
+	if (thePrefs::GetAddress().IsEmpty()) {
 		myaddr[1].AnyAddress();
+	} else if (!myaddr[1].Hostname(thePrefs::GetAddress())) {
+		myaddr[1].AnyAddress();
+		AddLogLineM(true, CFormat(_("Could not bind ports to the specified address: %s"))
+			% thePrefs::GetAddress());				
 	}
+
 	wxString ip = myaddr[1].IPAddress();
 	myaddr[1].Service(thePrefs::GetPort()+3);
 	serverconnect = new CServerConnect(serverlist, myaddr[1]);
