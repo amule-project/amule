@@ -34,6 +34,8 @@
 #include "GetTickCount.h"
 #include "UploadBandwidthThrottler.h"
 #include "Logger.h"
+#include "Preferences.h"
+
 
 const uint32 MAX_SIZE = 2000000;
 
@@ -42,6 +44,19 @@ IMPLEMENT_DYNAMIC_CLASS(CEMSocket, CEncryptedStreamSocket)
 CEMSocket::CEMSocket(const CProxyData *ProxyData)
 	: CEncryptedStreamSocket(wxSOCKET_NOWAIT, ProxyData)
 {
+	// If an interface has been specified,
+	// then we need to bind to it.
+	if (thePrefs::GetAddress().IsEmpty() == false) {
+		amuleIPV4Address host;
+		
+		// No need to warn here, in case of failure to
+		// assign the hostname. That is already done
+		// in amule.cpp when starting ...
+		if (host.Hostname(thePrefs::GetAddress())) {
+			SetLocal(host);
+		}
+	}
+
 	byConnected = ES_NOTCONNECTED;
 	m_uTimeOut = CONNECTION_TIMEOUT; // default timeout for ed2k sockets
 
