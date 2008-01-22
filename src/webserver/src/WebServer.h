@@ -37,6 +37,8 @@
 #include "OtherStructs.h"
 
 
+#include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
+
 //class TransferredData;
 class CWSThread;
 class CWebSocket;
@@ -77,6 +79,7 @@ class DownloadFile {
 		wxString	sFileHash;
 		wxString	sED2kLink;
 		uint8		nCat;
+		wxDateTime	wxtLastSeenComplete;
 
 		CMD4Hash	nHash;
 		

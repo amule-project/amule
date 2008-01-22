@@ -45,6 +45,7 @@
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
+#include <wx/datetime.h>
 
 /*
  * Built-in php functions. Those are both library and core internals.
@@ -1225,6 +1226,8 @@ void amule_download_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *re
 		result->int_val = obj->lFilePrio;
 	} else if ( strcmp(prop_name, "prio_auto") == 0 ) {
 		result->int_val = obj->bFileAutoPriority;
+	} else if ( strcmp(prop_name, "last_seen_complete") == 0 ) {
+		result->int_val = obj->wxtLastSeenComplete.GetTicks();
 	} else {
 		php_report_error(PHP_ERROR, "'DownloadFile' property [%s] is unknown", prop_name);
 	}

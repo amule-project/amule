@@ -28,6 +28,7 @@
 #include <cmath> // Needed for cos, M_PI
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
+#include <wx/datetime.h>
 
 //-------------------------------------------------------------------
 
@@ -645,6 +646,7 @@ DownloadFile::DownloadFile(CEC_PartFile_Tag *tag)
 	lFileTransferred = tag->SizeXfer();
 	lFileSpeed = tag->Speed();
 	fCompleted = (100.0*lFileCompleted) / lFileSize;
+	wxtLastSeenComplete = wxDateTime( tag->LastSeenComplete() );
 	
 	m_Encoder = PartFileEncoderData( (lFileSize + (PARTSIZE - 1)) / PARTSIZE, 10);
 
