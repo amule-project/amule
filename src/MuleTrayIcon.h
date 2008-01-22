@@ -59,7 +59,7 @@ enum {
  * The mule tray icon class is responsible for drawing the mule systray icon 
  * and reacting to the user input on it.
  */
-class CMuleTrayIcon : private wxTaskBarIcon
+class CMuleTrayIcon : public wxTaskBarIcon
 {
 public:
 	/**
