@@ -57,6 +57,7 @@
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "UserEvents.h"
 #include "MagnetURI.h"		// Needed for CMagnetED2KConverter
+#include "ScopedPtr.h"		// Needed for CScopedPtr
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -1316,11 +1317,9 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 	}
 	
 	try {
-		CED2KLink* uri = CED2KLink::CreateLinkFromUrl(URI);
-		bool result = AddED2KLink( uri, category );
-		delete uri;
-		
-		return result;
+		CScopedPtr<CED2KLink> uri(CED2KLink::CreateLinkFromUrl(URI));
+
+		return AddED2KLink( uri.get(), category );
 	} catch ( const wxString& err ) {
 		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s")) % err);
 	}
