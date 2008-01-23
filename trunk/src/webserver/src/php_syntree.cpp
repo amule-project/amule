@@ -24,11 +24,6 @@
 //
 
 
-
-#define __STDC_FORMAT_MACROS 1
-#include <inttypes.h>
-
-
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #ifdef PHP_STANDALONE_EN

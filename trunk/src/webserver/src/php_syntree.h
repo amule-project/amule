@@ -30,6 +30,9 @@
 #ifndef _PHP_SYNTREE_H_
 #define _PHP_SYNTREE_H_
 
+#ifndef __STDC_FORMAT_MACROS
+	#define __STDC_FORMAT_MACROS 1
+#endif
 #include <inttypes.h>
 
 typedef enum PHP_VALUE_TYPE {
