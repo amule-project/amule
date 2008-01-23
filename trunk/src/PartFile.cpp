@@ -3895,26 +3895,28 @@ int CPartFile::getPartfileStatusRang() const
 	return tempstatus;
 } 
 
+
 wxString CPartFile::GetFeedback()
 {
-wxString retval
-	= wxT("Feedback from: ") + thePrefs::GetUserNick() + wxT("\n")
-	+ GetFullMuleVersion() + wxT("\n")
-	+ wxT("File name: ") + GetFileName() + wxT("\n")
-	+ wxT("File size: ") + CastItoXBytes(GetFileSize())  + wxT("\n");
-retval += ( GetStatus() == PS_COMPLETE )
-	? wxT("Downloaded: Complete\n")
-	: wxString::Format(wxT("Downloaded: %s (%.2f%%)\n"), CastItoXBytes(GetCompletedSize()).c_str(), GetPercentCompleted());
-retval += wxString::Format(wxT("Transferred: %s (%s)\n"), CastItoXBytes(statistic.GetTransferred()).c_str(), CastItoXBytes(statistic.GetAllTimeTransferred()).c_str())
-	+ wxString::Format(wxT("Requested: %u (%u)\n"), statistic.GetRequests(), statistic.GetAllTimeRequests())
-	+ wxString::Format(wxT("Accepted: %d (%d)\n"), statistic.GetAccepts(), statistic.GetAllTimeAccepts());
-if ( GetStatus() != PS_COMPLETE ) {
-	retval += wxString::Format(wxT("Sources: %u\n"), GetSourceCount());
-}
-retval += wxString::Format(wxT("Complete Sources: %u\n"), m_nCompleteSourcesCount);
-return retval;
+	wxString retval
+		= wxT("Feedback from: ") + thePrefs::GetUserNick() + wxT("\n")
+		+ GetFullMuleVersion() + wxT("\n")
+		+ wxT("File name: ") + GetFileName() + wxT("\n")
+		+ wxT("File size: ") + CastItoXBytes(GetFileSize())  + wxT("\n");
 
+	if (GetStatus() == PS_COMPLETE) {
+		retval += wxT("Downloaded: Complete\n");
+	} else {
+		retval += CFormat(wxT("Downloaded: %s (%.2f%%)\n")) % CastItoXBytes(GetCompletedSize()) % GetPercentCompleted()
+			+ CFormat(wxT("Transferred: %s (%s)\n")) % CastItoXBytes(statistic.GetTransferred()) % CastItoXBytes(statistic.GetAllTimeTransferred())
+			+ CFormat(wxT("Requested: %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
+			+ CFormat(wxT("Accepted: %d (%d)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
+			+ CFormat(wxT("Sources: %u\n")) % GetSourceCount();
+	}
+	
+	return retval + wxString::Format(wxT("Complete Sources: %u\n"), m_nCompleteSourcesCount);
 }
+
 
 sint32 CPartFile::getTimeRemaining() const
 {
