@@ -46,7 +46,7 @@ CEMSocket::CEMSocket(const CProxyData *ProxyData)
 {
 	// If an interface has been specified,
 	// then we need to bind to it.
-	if (thePrefs::GetAddress().IsEmpty() == false) {
+	if (!thePrefs::GetAddress().IsEmpty()) {
 		amuleIPV4Address host;
 		
 		// No need to warn here, in case of failure to
