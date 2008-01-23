@@ -1545,9 +1545,12 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 	CKnownFile* result = evt.GetResult();
 	
 	if (owner) {
-		CPartFile* requester = dynamic_cast<CPartFile*>(owner);
-		if (downloadqueue->IsPartFile(requester)) {
-			requester->PartFileHashFinished(result);
+		// Check if the partfile still exists, as it might have
+		// been deleted in the mean time.
+		if (downloadqueue->IsPartFile(owner)) {
+			// This cast must not be done before the IsPartFile
+			// call, as dynamic_cast will barf on dangling pointers.
+			dynamic_cast<CPartFile*>(owner)->PartFileHashFinished(result);
 		}
 	} else {
 		static int filecount;
