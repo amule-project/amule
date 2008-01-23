@@ -34,6 +34,9 @@
 #include <vector>		// Needed for std::vector
 
 #ifndef _MSC_VER
+	#ifndef __STDC_FORMAT_MACROS
+		#define __STDC_FORMAT_MACROS
+	#endif
 	#include <inttypes.h>
 	#define LONGLONG(x) x##ll
 	#define ULONGLONG(x) x##llu
