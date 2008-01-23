@@ -729,9 +729,13 @@ void CServerListRem::HandlePacket(const CECPacket *packet)
 }
 
 
-void CServerListRem::UpdateServerMetFromURL(wxString WXUNUSED(url))
+void CServerListRem::UpdateServerMetFromURL(wxString url)
 {
-	// FIXME: add command
+	// FIXME: The value in the serverwnd does not get saved.
+	CECPacket req(EC_OP_SERVER_UPDATE_FROM_URL);
+	req.AddTag(CECTag(EC_TAG_SERVERS_URL_LIST, url));
+	
+	m_conn->SendPacket(&req);
 }
 
 
