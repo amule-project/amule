@@ -31,7 +31,7 @@
 #define _PHP_SYNTREE_H_
 
 #ifndef __STDC_FORMAT_MACROS
-	#define __STDC_FORMAT_MACROS 1
+	#define __STDC_FORMAT_MACROS
 #endif
 #include <inttypes.h>
 
