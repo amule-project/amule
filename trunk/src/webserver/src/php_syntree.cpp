@@ -25,6 +25,10 @@
 
 
 
+#define __STDC_FORMAT_MACROS 1
+#include <inttypes.h>
+
+
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
 #ifdef PHP_STANDALONE_EN
@@ -38,6 +42,7 @@
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
+
 
 PHP_SYN_NODE *g_syn_tree_top = 0;
 
@@ -926,7 +931,7 @@ void cast_value_str(PHP_VALUE_NODE *val)
 	switch(val->type) {
 		case PHP_VAL_NONE: buff[0] = 0; break;
 		case PHP_VAL_BOOL:
-		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%llu", val->int_val); break;
+		case PHP_VAL_INT: snprintf(buff, sizeof(buff), "%"PRIu64, val->int_val); break;
 		case PHP_VAL_FLOAT: snprintf(buff, sizeof(buff), "%.02f", val->float_val); break;
 		case PHP_VAL_STRING: return;
 		case PHP_VAL_ARRAY: {
