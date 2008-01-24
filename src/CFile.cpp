@@ -111,7 +111,15 @@ char* mktemp( char * path ) { return path ;}
 		#define STAT_STRUCT		struct __stat64
 	#endif
 #else
-	#define FLUSH_FD(x)			fsync(x)
+
+// We don't need to sync all meta-data, just the contents,
+// so use fdatasync when possible (see man fdatasync).
+	#if defined(_POSIX_SYNCHRONIZED_IO) && (_POSIX_SYNCHRONIZED_IO > 0)
+		#define FLUSH_FD(x)		fdatasync(x)
+	#else
+		#define FLUSH_FD(x)		fsync(x)
+	#endif
+
 	#define SEEK_FD(x, y, z)		lseek(x, y, z)
 	#define TELL_FD(x)			wxTell(x)
 	#define STAT_FD(x, y)			fstat(x, y)
