@@ -290,6 +290,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for the check of cryptopp library version in
 		  configure.in.
 		* Rewrote the cryptopp m4 stuff.
+		* Fixed some memory leaks related to the use of
+		  CTerminationProcess.
 
 	Radek:
 		* Patch to fix windows compilation.

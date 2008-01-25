@@ -847,6 +847,7 @@ bool CamuleApp::OnInit()
 		if (webserver_pid) {
 			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
 		} else {
+			delete p;
 			ShowAlert(_(
 				"You requested to run webserver from startup, "
 				"but the amuleweb binary cannot be run. "
