@@ -117,7 +117,7 @@ crypto_pp_include_dir="$crypto_pp_include_i/$CRYPTO_PP_INCLUDE_PREFIX"
 crypto_pp_header_path="$crypto_pp_include_dir/$crypto_pp_file_with_version"
 
 CRYPTO_PP_VERSION_STRING=$(grep "Reference Manual" $crypto_pp_header_path | \
-	sed -e's#.*\s\(\([0-9]\+\.\?\)\+\)\s.*#\1#g')
+	grep -Eo "([[0-9]]+\.?+)+")
 
 CRYPTO_PP_VERSION_NUMBER=$(echo $CRYPTO_PP_VERSION_STRING | \
 	$AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 1000 + [$]2) * 1000 + [$]3;}')
