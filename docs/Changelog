@@ -159,6 +159,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Windows fixes
 		* Added OnO patch for Toolbar display.
 		* Fixed validation of preferences items for wxWidgets 2.8.4
+		* Fixed cryptopp version recognition on Mac.
 
 	lfroen:
 		* Fix partcount not being set in remote gui
