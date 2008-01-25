@@ -1117,7 +1117,6 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	wxString cmd;
 
 	cmd = thePrefs::GetBrowser();
-	CTerminationProcess *p = new CTerminationProcess(cmd);
 	if ( !cmd.IsEmpty() ) {
 		wxString tmp = url;
 		// Pipes cause problems, so escape them
@@ -1128,9 +1127,12 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 			cmd += wxT(" ") + tmp;
 		}
 
+		CTerminationProcess *p = new CTerminationProcess(cmd);
 		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
 			printf( "Launch Command: %s\n", (const char *)unicode2char(cmd));
 			return;
+		} else {
+			delete p;
 		}
 #ifdef __WXMSW__
 	} else {
@@ -1153,10 +1155,13 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		}
 
 		wxPuts(wxT("Launch Command: ") + cmd);
+		CTerminationProcess *p = new CTerminationProcess(cmd);
 		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
 			return;
+		} else {
+			delete p;
 		}
-#endif
+#endif // __WXMSW__
 	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/
