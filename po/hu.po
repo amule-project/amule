@@ -94,7 +94,7 @@ msgstr "MD4 és AICH hash létrehozása a(z) '%s' fájlhoz."
 #: src/ThreadTasks.cpp:129
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
-msgstr "MD4 hash létrehozása a(z) '%s' fájlhoz. "
+msgstr "MD4 hash létrehozása a(z) '%s' fájlhoz."
 
 #: src/ThreadTasks.cpp:133
 #, c-format
