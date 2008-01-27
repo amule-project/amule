@@ -1671,10 +1671,10 @@ msgstr " Kontakt: admin@amule.org (administratiivsed küsimused) \n"
 
 #: src/amuleDlg.cpp:447
 msgid ""
-" Copyright (C) 2003-2007 aMule Team \n"
+" Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
-" Copyright (C) 2003-2007 aMule Meeskond \n"
+" Copyright (C) 2003-2008 aMule Meeskond \n"
 "\n"
 
 #: src/amuleDlg.cpp:448

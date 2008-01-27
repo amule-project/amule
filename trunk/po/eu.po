@@ -1677,7 +1677,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:447
 msgid ""
-" Copyright (C) 2003-2007 aMule Team \n"
+" Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 

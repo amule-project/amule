@@ -1679,7 +1679,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:447
 msgid ""
-" Copyright (C) 2003-2007 aMule Team \n"
+" Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -7073,7 +7073,7 @@ msgstr "Не удалось открыть файл со списком друз
 #~ " FAQ: http://wiki.amule.org \n"
 #~ "\n"
 #~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2007 aMule Team \n"
+#~ " Copyright (C) 2003-2008 aMule Team \n"
 #~ "\n"
 #~ " Part of aMule is based on \n"
 #~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
@@ -7087,7 +7087,7 @@ msgstr "Не удалось открыть файл со списком друз
 #~ "ЧаВо: http://wiki.amule.org \n"
 #~ "\n"
 #~ "Писать на: admin@amule.org (по административным вопросам) \n"
-#~ "Все права защищены (C) 2003-2007 aMule Team \n"
+#~ "Все права защищены (C) 2003-2008 aMule Team \n"
 #~ "\n"
 #~ "Часть aMule основана на \n"
 #~ "Kademlia: маршрутизация peer-to-peer на основе XOR-метрики.\n"
