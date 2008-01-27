@@ -26,7 +26,9 @@
 #ifndef CLIENTVERSION_H
 #define CLIENTVERSION_H
 
-#include "config.h"	// Needed for VERSION
+#ifdef HAVE_CONFIG_H
+	#include "config.h"	// Needed for VERSION
+#endif
 
 
 // eMule version used on old MuleInfo packet (unimportant).
