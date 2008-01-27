@@ -109,7 +109,7 @@ namespace amule.net {
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(300, 17);
             this.labelCopyright.TabIndex = 21;
-            this.labelCopyright.Text = "Copyright (c) 2007 aMule Team";
+            this.labelCopyright.Text = "Copyright (c) 2007-2008 aMule Team";
             this.labelCopyright.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelCompanyName
@@ -122,7 +122,7 @@ namespace amule.net {
             this.labelCompanyName.Name = "labelCompanyName";
             this.labelCompanyName.Size = new System.Drawing.Size(300, 17);
             this.labelCompanyName.TabIndex = 22;
-            this.labelCompanyName.Text = "Copyright (c) 2007 Froenchenko Lenid l(froen@gmail.com)";
+            this.labelCompanyName.Text = "Copyright (c) 2007-2008 Froenchenko Lenid l(froen@gmail.com)";
             this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // okButton

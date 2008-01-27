@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("remote-gui.net")]
-[assembly: AssemblyCopyright("Copyright ©  2007 aMule Team")]
+[assembly: AssemblyCopyright("Copyright ©  2007-2008 aMule Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

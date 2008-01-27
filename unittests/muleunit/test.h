@@ -1,7 +1,7 @@
 //
 // MuleUnit: A minimalistic C++ Unit testing framework based on EasyUnit.
 //
-// Copyright (c) 2005-2007 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2005-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (C) 2004 Barthelemy Dagenais (barthelemy@prologique.com)
 //
 // This library is free software; you can redistribute it and/or

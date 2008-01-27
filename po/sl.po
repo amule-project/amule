@@ -1,8 +1,8 @@
 # translation of sl.po to Slovenščina
 # This file is distributed under the same license as the aMule package.
 #
-# Uros Vampl <mobile.leecher@gmail.com>, 2005-2007.
-# Aljosa Vidmar <agapetos.typhonis@gmail.com>, 2006-2007.
+# Uros Vampl <mobile.leecher@gmail.com>, 2005-2008.
+# Aljosa Vidmar <agapetos.typhonis@gmail.com>, 2006-2008.
 # Aljoša Vidmar <agapetos.typhonis@gmail.com>, 2007.
 msgid ""
 msgstr ""
@@ -1672,7 +1672,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:447
 msgid ""
-" Copyright (C) 2003-2007 aMule Team \n"
+" Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
@@ -7064,7 +7064,7 @@ msgstr ""
 #~ " FAQ: http://wiki.amule.org \n"
 #~ "\n"
 #~ " Contact: admin@amule.org (administrative issues) \n"
-#~ " Copyright (C) 2003-2007 aMule Team \n"
+#~ " Copyright (C) 2003-2008 aMule Team \n"
 #~ "\n"
 #~ " Part of aMule is based on \n"
 #~ " Kademlia: Peer-to-peer routing based on the XOR metric.\n"
