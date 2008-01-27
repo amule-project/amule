@@ -29,14 +29,21 @@
 	#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #endif
 
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/config.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/md4.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/rsa.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/base64.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/osrng.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/files.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/sha.h>
-#include <@CRYPTO_PP_INCLUDE_PREFIX@/des.h>
+#ifdef HAVE_CONFIG_H
+	#include "config.h"	// Needed for CRYPTOPP_INCLUDE_PREFIX
+#else
+	#define CRYPTOPP_INCLUDE_PREFIX	cryptopp
+#endif
+
+#define CRYPTO_HEADER(hdr)	<CRYPTOPP_INCLUDE_PREFIX/hdr>
+
+#include CRYPTO_HEADER(config.h)
+#include CRYPTO_HEADER(md4.h)
+#include CRYPTO_HEADER(rsa.h)
+#include CRYPTO_HEADER(base64.h)
+#include CRYPTO_HEADER(osrng.h)
+#include CRYPTO_HEADER(files.h)
+#include CRYPTO_HEADER(sha.h)
+#include CRYPTO_HEADER(des.h)
 
 #endif /* CRYPTOPP_INC_H */
-// File_checked_for_headers

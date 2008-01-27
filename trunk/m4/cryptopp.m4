@@ -137,6 +137,8 @@ AC_MSG_RESULT([$result])
 #
 CRYPTO_PP_CXXFLAGS="-isystem $crypto_pp_include_i -D$CRYPTO_PP_DEFINE"
 CRYPTO_PP_LDFLAGS="-L$CRYPTO_PP_LIB"
+AH_TEMPLATE([CRYPTOPP_INCLUDE_PREFIX], [Define this to the include prefix of crypto++])
+AC_DEFINE_UNQUOTED([CRYPTOPP_INCLUDE_PREFIX], $CRYPTO_PP_INCLUDE_PREFIX)
 
 #
 # Exported symbols

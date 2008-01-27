@@ -741,7 +741,6 @@ AC_CONFIG_FILES([Makefile
 		 intl/Makefile
 		 m4/Makefile
 		 src/Makefile
-		 src/CryptoPP_Inc.h
 		 src/kademlia/Makefile
 		 src/kademlia/utils/Makefile
 		 src/kademlia/kademlia/Makefile
