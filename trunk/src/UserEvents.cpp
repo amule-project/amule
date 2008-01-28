@@ -124,14 +124,13 @@ static void ExecuteCommand(
 	}
 	if (!command.empty()) {
 		CTerminationProcess *p = new CTerminationProcess(cmd);
-		if (wxExecute(command, wxEXEC_ASYNC, p) == 0) {
-			AddLogLineM(true,
-				CFormat(_("Failed to execute command `%s' on `%s' event.")) %
-				command % s_EventList[event].name);
-		} else {
+		if (!wxExecute(command, wxEXEC_ASYNC, p)) {
 			// If wxExecute fails, we need to delete the CTerminationProcess
 			// otherwise it will leak.
 			delete p;
+			AddLogLineM(true,
+				CFormat(_("Failed to execute command `%s' on `%s' event.")) %
+				command % s_EventList[event].name);
 		}
 	}
 }
