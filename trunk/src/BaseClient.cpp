@@ -257,6 +257,7 @@ void CUpDownClient::Init()
 	m_last_block_start = 0;
 	m_lastaverage = 0;
 
+	SetLastBuddyPingPongTime();	
 	m_fRequestsCryptLayer = 0;
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
