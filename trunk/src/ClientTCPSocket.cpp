@@ -453,7 +453,11 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				// send filename etc
 				CMemFile data_out(128);
 				data_out.WriteHash(reqfile->GetFileHash());
-				data_out.WriteString(reqfile->GetFileName());
+
+				// Since it's for somebody else to see, we need to send the prettified
+				// filename, rather than the (possibly) mangled actual filename.
+				data_out.WriteString(reqfile->GetFileName().GetPrintable());
+				
 				CPacket* packet = new CPacket(data_out, OP_EDONKEYPROT, OP_REQFILENAMEANSWER);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
 				AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_REQFILENAMEANSWER to ") + m_client->GetFullIP() );
@@ -1162,7 +1166,10 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						AddDebugLogLineM( false, logRemoteClient, wxT("Remote Client: OP_MULTIPACKET has OP_REQUESTFILENAME") );
 						m_client->ProcessExtendedInfo(&data_in, reqfile);
 						data_out.WriteUInt8(OP_REQFILENAMEANSWER);
-						data_out.WriteString(reqfile->GetFileName());
+						
+						// Since it's for somebody else to see, we need to send the prettified
+						// filename, rather than the (possibly) mangled actual filename
+						data_out.WriteString(reqfile->GetFileName().GetPrintable());
 						break;
 					}
 					case OP_AICHFILEHASHREQ: {

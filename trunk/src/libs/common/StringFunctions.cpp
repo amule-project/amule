@@ -28,7 +28,10 @@
 
 
 #include "StringFunctions.h"
+#include "Path.h"
 
+#include <wx/filename.h>	// Needed for wxFileName
+#include <wx/uri.h>		// Needed for wxURI
 
 // Implementation of the non-inlines
 static byte base16Chars[17] = "0123456789ABCDEF";
@@ -56,13 +59,13 @@ wxString URLEncode(const wxString& sIn)
 	return sOut;
 }
 
-wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath)
+wxString TruncateFilename(const CPath& filename, size_t length, bool isFilePath)
 {
+	wxString file = filename.GetPrintable();
+
 	// Check if there's anything to do
-	if ( filename.Length() <= length )
-		return filename;
-	
-	wxString file = filename;
+	if (file.Length() <= length)
+		return file;
 	
 	// If the filename is a path, then prefer to remove from the path, rather than the filename
 	if ( isFilePath ) {
@@ -99,47 +102,6 @@ wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePa
 	return file;
 }
 
-// Strips specific chars to ensure legal filenames
-wxString CleanupFilename(const wxString& filename, bool keepSpaces, bool fat32)
-{
-#ifdef __WXMSW__
-	fat32 = true;
-#endif
-	wxString result;
-
-	for ( unsigned int i = 0; i < filename.Length(); i++ ) {
-		switch ( (wxChar)filename[ i ] ) {
-			case wxT('/'):
-				continue;
-				
-			case wxT('\"'):
-			case wxT('*'):
-			case wxT('<'):
-			case wxT('>'):
-			case wxT('?'):
-			case wxT('|'):
-			case wxT('\\'):
-			case wxT(':'):
-				if (fat32) {
-					continue;
-				}
-				
-			case wxT(' '):
-				if ( !keepSpaces ) {
-					result += wxT('_');
-					continue;
-				}
-				
-			default:
-				// Many illegal for filenames in windows below the 32th char (which is space).
-				if ( (wxUChar) filename[i] > 31 ) {
-						result += filename[i];
-				}
-		}
-	}
-
-	return result;
-}
 
 
 wxString StripSeparators(wxString path, wxString::stripType type)

@@ -479,7 +479,8 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 	}
 	if (!bDbgDontLoad) {
 		if (!LoadHashSet()) {
-			AddDebugLogLineM( false, logSHAHashSet, wxT("Created RecoveryData error: failed to load hashset. File:") + m_pOwner->GetFileName() );
+			AddDebugLogLineM(false, logSHAHashSet,
+				CFormat(wxT("Created RecoveryData error: failed to load hashset. File: %s")) % m_pOwner->GetFileName());
 			SetStatus(AICH_ERROR);
 			return false;
 		}
@@ -500,14 +501,16 @@ bool CAICHHashSet::CreatePartRecoveryData(uint64 nPartStartPos, CFileDataIO* fil
 	if (m_pHashTree.CreatePartRecoveryData(nPartStartPos, nPartSize, fileDataOut, 0, bUse32BitIdentifier)) {
 		if (nHashsToWrite*(HASHSIZE+(bUse32BitIdentifier? 4u:2u)) != fileDataOut->GetPosition() - nCheckFilePos) {
 			wxASSERT( false );
-			AddDebugLogLineM( false, logSHAHashSet, wxT("Created RecoveryData has wrong length. File: ") + m_pOwner->GetFileName() );
+			AddDebugLogLineM( false, logSHAHashSet,
+				CFormat(wxT("Created RecoveryData has wrong length. File: %s")) % m_pOwner->GetFileName() );
 			bResult = false;
 			SetStatus(AICH_ERROR);
 		} else {
 			bResult = true;
 		}
 	} else {
-		AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to create RecoveryData for ") + m_pOwner->GetFileName() );
+		AddDebugLogLineM(false, logSHAHashSet,
+			CFormat(wxT("Failed to create RecoveryData for '%s'")) % m_pOwner->GetFileName());
 		bResult = false;
 		SetStatus(AICH_ERROR);
 	}
@@ -547,7 +550,9 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 	uint16 nHashsAvailable = fileDataIn->ReadUInt16();
 	if (fileDataIn->GetLength()-fileDataIn->GetPosition() < nHashsToRead*(HASHSIZE+2u) || (nHashsToRead != nHashsAvailable && nHashsAvailable != 0)) {
 		// this check is redunant, CSafememfile would catch such an error too
-		AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT("%s - Received datasize/amounts of hashs was invalid"));
+		AddDebugLogLineM( false, logSHAHashSet,
+			CFormat(wxT("Failed to read RecoveryData for '%s' - Received datasize/amounts of hashs was invalid"))
+				% m_pOwner->GetFileName());
 		return false;
 	}
 	for (uint32 i = 0; i != nHashsAvailable; i++) {
@@ -555,7 +560,9 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 		if (wHashIdent == 1 /*never allow masterhash to be overwritten*/
 			|| !m_pHashTree.SetHash(fileDataIn, wHashIdent,(-1), false))
 		{
-			AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT(" - Error when trying to read hash into tree"));
+			AddDebugLogLineM( false, logSHAHashSet,
+				CFormat(wxT("Failed to read RecoveryData for '%s' - Error when trying to read hash into tree"))
+					% m_pOwner->GetFileName());
 			VerifyHashTree(true); // remove invalid hashs which we have already written
 			return false;
 		}
@@ -596,14 +603,18 @@ bool CAICHHashSet::ReadRecoveryData(uint64 nPartStartPos, CMemFile* fileDataIn)
 		for (uint32 nPartPos = 0; nPartPos < nPartSize; nPartPos += EMBLOCKSIZE) {
 			CAICHHashTree* phtToCheck = m_pHashTree.FindHash(nPartStartPos+nPartPos, min<uint64>(EMBLOCKSIZE, nPartSize-nPartPos));
 			if (phtToCheck == NULL || !phtToCheck->m_bHashValid) {
-				AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT(" - Error while verifying presence of all lowest level hashs"));
+				AddDebugLogLineM( false, logSHAHashSet,
+					CFormat(wxT("Failed to read RecoveryData for '%s' - Error while verifying presence of all lowest level hashs"))
+						% m_pOwner->GetFileName());
 				return false;
 			}
 		}
 		// all done
 		return true;
 	} else {
-		AddDebugLogLineM( false, logSHAHashSet, wxT("Failed to read RecoveryData for ") + m_pOwner->GetFileName() + wxT(" - Verifying received hashtree failed"));
+		AddDebugLogLineM(false, logSHAHashSet,
+			CFormat(wxT("Failed to read RecoveryData for '%s' - Verifying received hashtree failed"))
+				% m_pOwner->GetFileName());
 		return false;
 	}
 }
@@ -909,7 +920,9 @@ void CAICHHashSet::ClientAICHRequestFailed(CUpDownClient* pClient)
 		return;
 	}
 	if( theApp->downloadqueue->IsPartFile(data.m_pPartFile)) {
-		AddDebugLogLineM( false, logSHAHashSet, wxT("IACH Request failed, Trying to ask another client (file ") + data.m_pPartFile->GetFileName() + wxString::Format(wxT(", Part: %u,  Client"),data.m_nPart) + pClient->GetClientFullInfo());
+		AddDebugLogLineM(false, logSHAHashSet,
+			CFormat(wxT("IACH Request failed, Trying to ask another client (File: '%s', Part: %u, Client '%s'"))
+				% data.m_pPartFile->GetFileName() % data.m_nPart % pClient->GetClientFullInfo());
 		data.m_pPartFile->RequestAICHRecovery(data.m_nPart);
 	}
 }

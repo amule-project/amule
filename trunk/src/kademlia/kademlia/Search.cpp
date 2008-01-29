@@ -387,7 +387,7 @@ void CSearch::StorePacket()
 			m_target.ToByteArray(fileid);
 			CKnownFile* file = theApp->sharedfiles->GetFileByID(CMD4Hash(fileid));
 			if (file) {
-				m_fileName = file->GetFileName();
+				m_fileName = file->GetFileName().GetPrintable();
 
 				CUInt128 id(CKademlia::GetPrefs()->GetClientHash());
 				TagPtrList taglist;
@@ -508,7 +508,7 @@ void CSearch::StorePacket()
 				}
 				//Number of tags.
 				packetdata.WriteUInt8(tagcount);
-				CTagString fileName(TAG_FILENAME, file->GetFileName());
+				CTagString fileName(TAG_FILENAME, file->GetFileName().GetPrintable());
 				packetdata.WriteTag(fileName);
 				if(file->GetFileRating() != 0) {
 					CTagVarInt rating(TAG_FILERATING, file->GetFileRating());
@@ -888,7 +888,7 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 	try {
 		if( file && bio ) {		
 			// Name, Size
-			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName()));
+			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName().GetPrintable()));
 			if (file->IsLargeFile()) {
 				byte size64[sizeof(uint64)];
 				PokeUInt64(size64,file->GetFileSize());
@@ -907,15 +907,9 @@ void CSearch::PreparePacketForTags( CMemFile *bio, CKnownFile *file)
 			}
 			
 			// file format (filename extension)
-			int iExt = file->GetFileName().Find(wxT('.'), true);
-			if (iExt != -1) {
-				wxString strExt(file->GetFileName().Mid(iExt));
-				if (!strExt.IsEmpty()) {
-					strExt = strExt.Mid(1);
-					if (!strExt.IsEmpty()) {
-						taglist.push_back(new CTagString(TAG_FILEFORMAT, strExt));
-					}
-				}
+			const wxString strExt = file->GetFileName().GetExt();
+			if (!strExt.IsEmpty()) {
+				taglist.push_back(new CTagString(TAG_FILEFORMAT, strExt));
 			}
 
 			// additional meta data (Artist, Album, Codec, Length, ...)

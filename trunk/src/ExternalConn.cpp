@@ -1116,7 +1116,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				break;
 			}
 			
-			if (theApp->sharedfiles->RenameFile(file, newName)) {
+			if (theApp->sharedfiles->RenameFile(file, CPath(newName))) {
 				response = new CECPacket(EC_OP_NOOP);
 			} else {
 				response = new CECPacket(EC_OP_FAILED);

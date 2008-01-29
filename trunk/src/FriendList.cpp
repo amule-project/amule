@@ -99,9 +99,9 @@ void CFriendList::RemoveFriend(const CMD4Hash& userhash, uint32 lastUsedIP, uint
 
 void CFriendList::LoadList()
 {
-  	wxString metfile = theApp->ConfigDir + wxT("emfriends.met"); 
+  	CPath metfile = CPath(theApp->ConfigDir + wxT("emfriends.met"));
 	
-	if ( !wxFileExists(metfile) ) {
+	if (!metfile.FileExists()) {
 		return;
 	}
 	

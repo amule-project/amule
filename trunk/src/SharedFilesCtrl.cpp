@@ -154,7 +154,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append( MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		m_menu->AppendSeparator();
 */
-		if (file->GetFileName().Right(16) == wxT(".emulecollection")) {
+		if (file->GetFileName().GetExt() == wxT("emulecollection")) {
 			m_menu->Append( MP_ADDCOLLECTION, _("Add files in collection to transfer list"));
 			m_menu->AppendSeparator();
 		}
@@ -356,7 +356,7 @@ int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by filename.
 		case  ID_SHARED_COL_NAME:
-			return mod * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			return mod * CmpAny(file1->GetFileName(), file2->GetFileName());
 		
 		// Sort by filesize.
 		case  ID_SHARED_COL_SIZE:
@@ -421,7 +421,7 @@ int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 			if ( file2->IsPartFile() )
 				return mod *  1;
 
-			return mod * file1->GetFilePath().Cmp( file2->GetFilePath() );
+			return mod * CmpAny(file1->GetFilePath(), file2->GetFilePath());
 		}
 		
 		default:
@@ -516,7 +516,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 			wxString textBuffer;
 			switch ( i ) {
 				case ID_SHARED_COL_NAME:
-					textBuffer = file->GetFileName();
+					textBuffer = file->GetFileName().GetPrintable();
 
 					if (file->GetFileRating() || file->GetFileComment().Length()) {
 						int image = Client_CommentOnly_Smiley;
@@ -606,7 +606,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 					if ( file->IsPartFile() ) {
 						textBuffer = _("[PartFile]");
 					} else {
-						textBuffer = file->GetFilePath();
+						textBuffer = file->GetFilePath().GetPrintable();
 					}
 			}
 
@@ -623,7 +623,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 
 wxString CSharedFilesCtrl::GetTTSText(unsigned item) const
 {
-	return ((CKnownFile*)GetItemData(item))->GetFileName();
+	return reinterpret_cast<CKnownFile*>(GetItemData(item))->GetFileName().GetPrintable();
 }
 
 
@@ -683,11 +683,12 @@ void CSharedFilesCtrl::OnRename( wxCommandEvent& WXUNUSED(event) )
 
 		// Currently renaming of completed files causes problem with kad
 		if (file->IsPartFile()) {
-			wxString newName = ::wxGetTextFromUser(
+			wxString strNewName = ::wxGetTextFromUser(
 				_("Enter new name for this file:"),
-				_("File rename"), file->GetFileName());
+				_("File rename"), file->GetFileName().GetPrintable());
 				
-			if (!newName.IsEmpty() && (newName != file->GetFileName())) {
+			CPath newName = CPath(strNewName);
+			if (newName.IsOk() && (newName != file->GetFileName())) {
 				theApp->sharedfiles->RenameFile(file, newName);
 			}
 		}
@@ -712,9 +713,7 @@ void CSharedFilesCtrl::OnAddCollection( wxCommandEvent& WXUNUSED(evt) )
 	int item = GetNextItem( -1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	if (item != -1) {
 		CKnownFile *file = (CKnownFile*)GetItemData(item);
-		wxString CollectionFile = file->GetFilePath()
-			+ wxFileName::GetPathSeparator()
-			+ file->GetFileName();
+		wxString CollectionFile = file->GetFilePath().JoinPaths(file->GetFileName()).GetRaw();
 		CMuleCollection my_collection;
 		if (my_collection.Open( (std::string)CollectionFile.mb_str() )) {
 //#warning This is probably not working on Unicode

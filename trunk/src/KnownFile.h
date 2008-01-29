@@ -31,9 +31,8 @@
 #include "MD4Hash.h"
 #include "SHAHashSet.h"
 
-
 #include <protocol/ed2k/Constants.h>
-
+#include <common/Path.h>
 
 #include "kademlia/kademlia/Indexed.h"
 
@@ -99,12 +98,12 @@ public:
 	uint16	GetRequests() const			{return requested;}
 	uint16	GetAccepts() const			{return accepted;}
 	uint64  GetTransferred() const			{return transferred;}
-	uint32	GetAllTimeRequests() const	{return alltimerequested;}
-	void	SetAllTimeRequests(uint32 new_value) { alltimerequested = new_value; };
+	uint32	GetAllTimeRequests() const		{return alltimerequested;}
+	void	SetAllTimeRequests(uint32 new_value)	{ alltimerequested = new_value; };
 	uint32	GetAllTimeAccepts() const		{return alltimeaccepted;}
-	void	SetAllTimeAccepts(uint32 new_value) { alltimeaccepted = new_value; };	
-	uint64	GetAllTimeTransferred() const	{return alltimetransferred;}
-	void	SetAllTimeTransferred(uint64 new_value) { alltimetransferred = new_value; };
+	void	SetAllTimeAccepts(uint32 new_value)	{ alltimeaccepted = new_value; };	
+	uint64	GetAllTimeTransferred() const		{return alltimetransferred;}
+	void	SetAllTimeTransferred(uint64 new_value)	{ alltimetransferred = new_value; };
 	CKnownFile* fileParent;
 	
 private:
@@ -132,15 +131,14 @@ public:
 	explicit CAbstractFile(const CAbstractFile& other);
 	virtual ~CAbstractFile() {}
 
-	virtual const wxString&	GetFileName() const	{ return m_strFileName; }
-	const CMD4Hash&	GetFileHash() const		{ return m_abyFileHash; }
+	const CPath&	GetFileName() const	{ return m_fileName; }
+	const CMD4Hash&	GetFileHash() const	{ return m_abyFileHash; }
 
 	uint64	GetFileSize() const	{ return m_nFileSize;}
 	bool	IsLargeFile() const	{ return m_nFileSize > (uint64)OLD_MAX_FILE_SIZE; }
 
 	virtual void SetFileSize(uint64 nFileSize)	{ m_nFileSize = nFileSize; }
-	
-	virtual void SetFileName(const wxString &strFilename);
+	virtual void SetFileName(const CPath& filename);
 
 	/* Tags and Notes handling */
 	uint32 GetIntTagValue(uint8 tagname) const;
@@ -181,10 +179,8 @@ protected:
 	CKadEntryPtrList m_kadNotes;
 
 private:
-	// Note: These variables have virtual accessor functions,
-	//       and thus should only be accesed via those.
 	uint64		m_nFileSize;
-	wxString	m_strFileName;
+	CPath		m_fileName;
 };
 
 
@@ -205,11 +201,11 @@ public:
 	virtual ~CKnownFile();
 
 	#ifndef CLIENT_GUI	
-	virtual void SetFileName(const wxString &strFilename);
+	virtual void SetFileName(const CPath& filename);
 	#endif
 		
-	void SetFilePath(const wxString& strFilePath);
-	const wxString& GetFilePath() const { return m_strFilePath; }
+	void SetFilePath(const CPath& filePath);
+	const CPath& GetFilePath() const { return m_filePath; }
 	
 	virtual	bool	IsPartFile() const	{return false;}
 	virtual bool	LoadFromFile(const CFileDataIO* file);	//load date, hashset and tags from a .met file
@@ -316,7 +312,7 @@ protected:
 	bool	LoadDateFromFile(const CFileDataIO* file);
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash m_hashlist;
-	wxString m_strFilePath;	
+	CPath	m_filePath;	
 	CAICHHashSet*	m_pAICHHashSet;
 
 	static void CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);

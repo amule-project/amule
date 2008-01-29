@@ -25,8 +25,8 @@
 
 
 #include "CFile.h"		// Interface declarations.
-#include "FileFunctions.h"	// Needed for CheckFileExists
 #include "Logger.h"		// Needed for AddDebugLogLineM
+#include <common/Path.h>	// Needed for CPath
 
 
 #ifdef HAVE_CONFIG_H
@@ -131,16 +131,13 @@ char* mktemp( char * path ) { return path ;}
 // log an appropriate message containing the errno string.
 inline void syscall_check(
 	bool check,
-	const wxString &filePath,
-	const wxString &what)
+	const CPath& filePath,
+	const wxString& what)
 {
 	if (!check) {
 		AddDebugLogLineM(true, logCFile,
-			wxString() <<
-			wxT("Error when ") <<
-			what <<
-			wxT(" (") << filePath << wxT("): ") <<
-			wxSysErrorMsg());
+			CFormat(wxT("Error when %s (%s): %s"))
+				% what % filePath % wxSysErrorMsg());
 	}
 }
 
@@ -153,6 +150,13 @@ CSeekFailureException::CSeekFailureException(const wxString& desc)
 CFile::CFile()
 	: m_fd(fd_invalid)
 {}
+
+
+CFile::CFile(const CPath& fileName, OpenMode mode)
+	: m_fd(fd_invalid)
+{
+	Open(fileName, mode);
+}
 
 
 CFile::CFile(const wxString& fileName, OpenMode mode)
@@ -182,7 +186,7 @@ bool CFile::IsOpened() const
 }
 
 
-const wxString& CFile::GetFilePath() const
+const CPath& CFile::GetFilePath() const
 {
 	MULE_VALIDATE_STATE(IsOpened(), wxT("CFile: Cannot return path of closed file."));
 
@@ -190,19 +194,33 @@ const wxString& CFile::GetFilePath() const
 }
 
 
-bool CFile::Create(const wxString& path, bool overwrite, int accessMode)
+bool CFile::Create(const CPath& path, bool overwrite, int accessMode)
 {
-	if (!overwrite && CheckFileExists(path)) {
+	if (!overwrite && path.FileExists()) {
 		return false;
 	}
 
 	return Open(path, write, accessMode);
 }
 
+bool CFile::Create(const wxString& path, bool overwrite, int accessMode)
+{
+	return Create(CPath(path), overwrite, accessMode);
+}
+
 
 bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 {
-	MULE_VALIDATE_PARAMS(!fileName.IsEmpty(), wxT("CFile: Cannot open, empty path."));
+	MULE_VALIDATE_PARAMS(fileName.Length(), wxT("CFile: Cannot open, empty path."));
+	
+	return Open(CPath(fileName), mode, accessMode);
+}
+
+
+bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
+{
+	MULE_VALIDATE_PARAMS(fileName.IsOk(), wxT("CFile: Cannot open, empty path."));
+
 #ifdef __linux__
 	int flags = O_BINARY | O_LARGEFILE;
 #else
@@ -214,7 +232,7 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 			break;
 		
 		case write_append:
-			if (CheckFileExists(fileName))
+			if (fileName.FileExists())
 			{
 				flags |= O_WRONLY | O_APPEND;
 				break;
@@ -239,14 +257,13 @@ bool CFile::Open(const wxString& fileName, OpenMode mode, int accessMode)
 		Close();	
 	}
 	
-	// Test if it is possible to use an ANSI name, otherwise use UTF-8
-	Unicode2CharBuf tmpFileName = unicode_2_broken(fileName);
-	if (tmpFileName) {
-		m_fd = open(tmpFileName, flags, accessMode);
-	} 
+
 	
+	Unicode2CharBuf tmpFileName = wxFNCONV(fileName.GetRaw());
+	wxASSERT_MSG(tmpFileName, wxT("Convertion failed in CFile::Open"));
+
 	m_filePath = fileName;
-	
+	m_fd = open(tmpFileName, flags, accessMode);
 	syscall_check(m_fd != fd_invalid, m_filePath, wxT("opening file"));
 	
 	return IsOpened();

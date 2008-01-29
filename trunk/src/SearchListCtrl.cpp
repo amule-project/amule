@@ -130,8 +130,10 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 {
 	wxCHECK_RET(toshow->GetSearchID() == m_nResultsID, wxT("Wrong search-id for result-list"));
 
+	const wxUIntPtr toshowdata = reinterpret_cast<wxUIntPtr>(toshow);
+
 	// Check if the result should be shown
-	if (FindItem(-1, reinterpret_cast<wxUIntPtr>(toshow)) != -1) {
+	if (FindItem(-1, toshowdata) != -1) {
 		return;
 	} else if (toshow->GetParent() && !toshow->GetParent()->ShowChildren()) {
 		return;
@@ -159,7 +161,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	}
 
 	// Insert the item before the item found by the search
-	uint32 newid = InsertItem(GetInsertPos( reinterpret_cast<wxUIntPtr>(toshow) ), toshow->GetFileName());
+	uint32 newid = InsertItem(GetInsertPos(toshowdata), toshow->GetFileName().GetPrintable());
 
 	// Sanity checks to ensure that results/children are properly positioned.
 #ifdef __WXDEBUG__
@@ -188,7 +190,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	}
 #endif
 
-	SetItemPtrData( newid, reinterpret_cast<wxUIntPtr>(toshow) );
+	SetItemPtrData(newid, toshowdata);
 
 	// Filesize
 	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
@@ -229,7 +231,7 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 	long index = FindItem(-1, reinterpret_cast<wxUIntPtr>(toupdate));
 	if (index != -1) {
 		// Update the filename, which may be changed in case of multiple variants.
-		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName());
+		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
 		
 		wxString temp = wxString::Format( wxT("%d (%d)"), toupdate->GetSourceCount(), toupdate->GetCompleteSourceCount());
 		SetItem(index, ID_SEARCH_COL_SOURCES, temp);
@@ -408,7 +410,7 @@ bool CSearchListCtrl::IsFiltered(const CSearchFile* file)
 	bool result = true;
 	
 	if (m_filterEnabled && m_filter.IsValid()) {
-		result = m_filter.Matches(file->GetFileName());
+		result = m_filter.Matches(file->GetFileName().GetPrintable());
 		result = ((result && !m_invert) || (!result && m_invert));
 	
 		if (result && m_filterKnown) {
@@ -460,7 +462,7 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by filename
 		case ID_SEARCH_COL_NAME:
-			result = file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			result = CmpAny(file1->GetFileName(), file2->GetFileName());
 			break;
 
 		// Sort file-size
@@ -490,13 +492,10 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		
 		// Sort by file-types
 		case ID_SEARCH_COL_TYPE: {
-			wxString fileName1 = wxT(".") + file1->GetFileName().AfterLast('.').MakeLower();
-			wxString fileName2 = wxT(".") + file2->GetFileName().AfterLast('.').MakeLower();
-			
-			result = GetFiletypeByName(fileName1).Cmp(GetFiletypeByName(fileName2));
+			result = GetFiletypeByName(file1->GetFileName()).Cmp(GetFiletypeByName(file2->GetFileName()));
 			if (result == 0) {
 				// Same file-type, sort by extension
-				result = fileName1.Cmp(fileName2);
+				result = CmpAny(file1->GetFileName().GetExt(), file2->GetFileName().GetExt());
 			}
 
 			break;

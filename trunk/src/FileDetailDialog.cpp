@@ -234,7 +234,7 @@ void CFileDetailDialog::OnBnClickedShowComment(wxCommandEvent& WXUNUSED(evt))
 
 void CFileDetailDialog::resetValueForFilenameTextEdit()
 {
-	CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(m_file->GetFileName());
+	CastChild(IDC_FILENAME, wxTextCtrl)->SetValue(m_file->GetFileName().GetPrintable());
 	m_filenameChanged = false;
 	setEnableForApplyButton();
 }
@@ -274,12 +274,12 @@ void CFileDetailDialog::OnBnClickedOk(wxCommandEvent& evt)
 
 void CFileDetailDialog::OnBnClickedApply(wxCommandEvent& WXUNUSED(evt))
 {
-	wxString fileName = CastChild(IDC_FILENAME, wxTextCtrl)->GetValue();
+	CPath fileName = CPath(CastChild(IDC_FILENAME, wxTextCtrl)->GetValue());
 
-	if (!fileName.IsEmpty() && (fileName != m_file->GetFileName())) {
+	if (fileName.IsOk() && (fileName != m_file->GetFileName())) {
 		if (theApp->sharedfiles->RenameFile(m_file, fileName)) {
-			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName()));
-			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName());
+			FindWindow(IDC_FNAME)->SetLabel(MakeStringEscaped(m_file->GetFileName().GetPrintable()));
+			FindWindow(IDC_METFILE)->SetLabel(m_file->GetFullName().GetPrintable());
 			
 			resetValueForFilenameTextEdit();
 	

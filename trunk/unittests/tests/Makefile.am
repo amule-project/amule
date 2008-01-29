@@ -26,7 +26,7 @@ FormatTest_LDADD = $(LDADD)
 
 
 # Tests for the various string functions.
-StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp
+StringFunctionsTest_SOURCES = StringFunctionsTest.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/Path.cpp
 StringFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS)
 StringFunctionsTest_LDADD = $(LDADD)
 
@@ -41,7 +41,7 @@ NetworkFunctionsTest_CXXFLAGS = $(AM_CXXFLAGS) -DEC_REMOTE # Needed to avoid com
 NetworkFunctionsTest_LDADD = $(LDADD)
 
 # Tests for the classes that implement the CFileDataIO interface
-FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/FileFunctions.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp
+FileDataIOTest_SOURCES = FileDataIOTest.cpp $(top_srcdir)/src/SafeFile.cpp $(top_srcdir)/src/CFile.cpp $(top_srcdir)/src/MemFile.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/Tag.cpp $(top_srcdir)/src/libs/common/Path.cpp
 FileDataIOTest_CXXFLAGS = $(AM_CXXFLAGS) 
 FileDataIOTest_LDADD = $(LDADD) $(CRYPTOLIBS)
 

@@ -205,18 +205,18 @@ bool CUpDownClient::IsDifferentPartBlock() const // [Tarod 12/22/2002]
 
 void CUpDownClient::CreateNextBlockPackage()
 {
-    // See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
-    if(m_BlockRequests_queue.empty() || // There are no new blocks requested
-       m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024) { // the buffered data is large enough allready
-        return;
-    }
+	// See if we can do an early return. There may be no new blocks to load from disk and add to buffer, or buffer may be large enough allready.
+	if(m_BlockRequests_queue.empty() || // There are no new blocks requested
+		m_addedPayloadQueueSession > GetQueueSessionPayloadUp() && m_addedPayloadQueueSession-GetQueueSessionPayloadUp() > 50*1024) { // the buffered data is large enough allready
+		return;
+	}
 
-    CFile file;
-	wxString fullname;
+	CFile file;
+	CPath fullname;
 	try {
-        // Buffer new data if current buffer is less than 100 KBytes
-        while ((!m_BlockRequests_queue.empty()) &&
-               (m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
+	// Buffer new data if current buffer is less than 100 KBytes
+	while ((!m_BlockRequests_queue.empty()) &&
+		(m_addedPayloadQueueSession <= GetQueueSessionPayloadUp() || m_addedPayloadQueueSession-GetQueueSessionPayloadUp() < 100*1024)) {
 
 			Requested_Block_Struct* currentblock = m_BlockRequests_queue.front();
 			CKnownFile* srcfile = theApp->sharedfiles->GetFileByID(CMD4Hash(currentblock->FileID));
@@ -240,10 +240,10 @@ void CUpDownClient::CreateNextBlockPackage()
 				// the incoming directory.
 				#endif
 
-				fullname = ((CPartFile*)srcfile)->GetFullName();
-				fullname.Truncate(fullname.Length()-4);
+				// Get the full path to the '.part' file
+				fullname = dynamic_cast<CPartFile*>(srcfile)->GetFullName().RemoveExt();
 			} else {
-				fullname = JoinPaths(srcfile->GetFilePath(), srcfile->GetFileName());
+				fullname = srcfile->GetFilePath().JoinPaths(srcfile->GetFileName());
 			}
 		
 			uint64 togo;
@@ -263,7 +263,7 @@ void CUpDownClient::CreateNextBlockPackage()
 		
 			CScopedArray<byte> filedata(NULL);	
 			if (!srcfile->IsPartFile()){
-				if ( !file.Open(fullname,CFile::read) ) {
+				if ( !file.Open(fullname, CFile::read) ) {
 					// The file was most likely moved/deleted. However it is likely that the
 					// same is true for other files, so we recheck all shared files. 
 					AddLogLineM( false, CFormat( _("Failed to open file (%s), removing from list of shared files.") ) % srcfile->GetFileName() );
@@ -306,7 +306,7 @@ void CUpDownClient::CreateNextBlockPackage()
 			// file statistic
 			srcfile->statistic.AddTransferred(togo);
 
-            m_addedPayloadQueueSession += togo;
+			m_addedPayloadQueueSession += togo;
 
 			Requested_Block_Struct* block = m_BlockRequests_queue.front();
 			

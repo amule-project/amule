@@ -43,6 +43,8 @@ class CSearchFile;
 class CPartFile;
 class CUpDownClient;
 class CStatistics;
+class CPath;
+
 class wxEvtHandler;
 class wxTimer;
 class wxTimerEvent;
@@ -548,7 +550,7 @@ public:
 	//
 	void AddFilesFromDirectory(wxString);
 	void Reload(bool sendtoserver = true, bool firstload = false);
-	bool RenameFile(CKnownFile* file, const wxString& newName);
+	bool RenameFile(CKnownFile* file, const CPath& newName);
 
 	//
 	// template

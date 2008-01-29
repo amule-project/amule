@@ -38,7 +38,7 @@
 // This function is inlined for performance
 inline bool CKnownFileList::KnownFileMatches(
 	CKnownFile *knownFile,
-	const wxString &filename,
+	const CPath& filename,
 	uint32 in_date,
 	uint64 in_size) const
 {
@@ -68,8 +68,8 @@ bool CKnownFileList::Init()
 {
 	CFile file;
 	
-	wxString fullpath = theApp->ConfigDir + wxT("known.met");
-	if (!wxFileExists(fullpath)) {
+	CPath fullpath = CPath(theApp->ConfigDir + wxT("known.met"));
+	if (!fullpath.FileExists()) {
 		AddLogLineM(true, _("Warning: known.met does not exist."));
 		return false;
 	}
@@ -95,7 +95,7 @@ bool CKnownFileList::Init()
 			std::auto_ptr<CKnownFile> record(new CKnownFile());
 			if (record->LoadFromFile(&file)) {
 				AddDebugLogLineM(false, logKnownFiles,
-					wxT("Known file read: ") + record->GetFileName());
+					CFormat(wxT("Known file read: %s")) % record->GetFileName());
 				Append(record.release());
 			} else {
 				AddLogLineM(true,
@@ -178,7 +178,7 @@ void CKnownFileList::Clear()
 
 
 CKnownFile* CKnownFileList::FindKnownFile(
-	const wxString &filename,
+	const CPath& filename,
 	time_t in_date,
 	uint64 in_size)
 {
@@ -197,7 +197,7 @@ CKnownFile* CKnownFileList::FindKnownFile(
 
 
 CKnownFile *CKnownFileList::IsOnDuplicates(
-	const wxString &filename,
+	const CPath& filename,
 	uint32 in_date,
 	uint64 in_size) const
 {
@@ -270,7 +270,7 @@ bool CKnownFileList::Append(CKnownFile *Record)
 			it->second;
 			time_t in_date =  it->second->GetLastChangeDatetime();
 			uint64 in_size =  it->second->GetFileSize();
-			wxString filename = it->second->GetFileName();
+			CPath filename = it->second->GetFileName();
 			if (KnownFileMatches(Record, filename, in_date, in_size) ||
 			    IsOnDuplicates(filename, in_date, in_size)) {
 				// The file is already on the list, ignore it.

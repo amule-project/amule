@@ -30,7 +30,8 @@
 #include "SharedFileList.h" // CKnownFileMap
 
 
-class CKnownFile;	
+class CKnownFile;
+class CPath;
 
 class CKnownFileList
 {
@@ -41,8 +42,8 @@ public:
 	bool	Init();
 	void	Save();
 	void	Clear();
-	CKnownFile *FindKnownFile(
-		const wxString &filename,
+	CKnownFile* FindKnownFile(
+		const CPath& filename,
 		time_t in_date,
 		uint64 in_size);
 	CKnownFile* FindKnownFileByID(const CMD4Hash& hash);
@@ -58,13 +59,13 @@ private:
 	bool	Append(CKnownFile*);
 
 	CKnownFile *IsOnDuplicates(
-		const wxString &filename,
+		const CPath& filename,
 		uint32 in_date,
 		uint64 in_size) const;
 
 	bool KnownFileMatches(
 		CKnownFile *knownFile,
-		const wxString &filename,
+		const CPath& filename,
 		uint32 in_date,
 		uint64 in_size) const;
 

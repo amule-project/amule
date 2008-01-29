@@ -31,7 +31,7 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"			// Needed for Add(Debug)LogLineM
 #include <common/Format.h>		// Needed for CFormat
-#include "FileFunctions.h"		// Needed for CheckFileExists
+#include <common/FileFunctions.h>	// Needed for CheckFileExists
 #include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"		// Needed for theApp->knownfiles
 #include "Preferences.h"		// Needed for thePrefs
@@ -48,8 +48,9 @@ const byte g_emptyMD4Hash[16] = {
 ////////////////////////////////////////////////////////////
 // CHashingTask
 
-CHashingTask::CHashingTask(const wxString& path, const wxString& filename, const CPartFile* part)
-	: CThreadTask(wxT("Hashing"), JoinPaths(path, filename), (part ? ETP_High : ETP_Normal)),
+CHashingTask::CHashingTask(const CPath& path, const CPath& filename, const CPartFile* part)
+	// GetPrintable is used to improve the readability of the log.
+	: CThreadTask(wxT("Hashing"), path.JoinPaths(filename).GetPrintable(), (part ? ETP_High : ETP_Normal)),
 	  m_path(path),
 	  m_filename(filename),
 	  m_toHash((EHashes)(EH_MD4 | EH_AICH)),
@@ -67,7 +68,8 @@ CHashingTask::CHashingTask(const wxString& path, const wxString& filename, const
 
 
 CHashingTask::CHashingTask(const CKnownFile* toAICHHash)
-	: CThreadTask(wxT("AICH Hashing"), JoinPaths(toAICHHash->GetFilePath(), toAICHHash->GetFileName()), ETP_Low),
+	// GetPrintable is used to improve the readability of the log.
+	: CThreadTask(wxT("AICH Hashing"), toAICHHash->GetFilePath().JoinPaths(toAICHHash->GetFileName()).GetPrintable(), ETP_Low),
 	  m_path(toAICHHash->GetFilePath()),
 	  m_filename(toAICHHash->GetFileName()),
 	  m_toHash(EH_AICH),
@@ -80,9 +82,10 @@ void CHashingTask::Entry()
 {
 	CFile file;
 
-	wxString fullPath = JoinPaths(m_path, m_filename);
-	if (!file.Open( fullPath, CFile::read)) {
-		AddDebugLogLineM(true, logHasher, wxT("Warning, failed to open file, skipping: " ) + fullPath);
+	CPath fullPath = m_path.JoinPaths(m_filename);
+	if (!file.Open(fullPath, CFile::read)) {
+		AddDebugLogLineM(true, logHasher,
+			CFormat(wxT("Warning, failed to open file, skipping: %s")) % fullPath);
 		return;
 	}
 	
@@ -90,12 +93,14 @@ void CHashingTask::Entry()
 	try {
 		fileLength = file.GetLength();
 	} catch (const CIOFailureException&) {
-		AddDebugLogLineM(true, logHasher, wxT("Warning, failed to retrieve file-length, skipping: ") + fullPath);
+		AddDebugLogLineM(true, logHasher,
+			CFormat(wxT("Warning, failed to retrieve file-length, skipping: %s")) % fullPath);
 		return;
 	}
 
 	if (fileLength > MAX_FILE_SIZE) {
-		AddDebugLogLineM(true, logHasher, wxT("Warning, file is larger than supported size, skipping: ") + fullPath);
+		AddDebugLogLineM(true, logHasher,
+			CFormat(wxT("Warning, file is larger than supported size, skipping: %s")) % fullPath);
 		return;
 	} else if (fileLength == 0) {
 		if (m_owner) {
@@ -103,7 +108,8 @@ void CHashingTask::Entry()
 			wxASSERT(0);
 		} else {
 			// Zero-size partfiles should be hashed, but not zero-sized shared-files.
-			AddDebugLogLineM( true, logHasher, wxT("Warning, 0-size file, skipping: ") + fullPath );
+			AddDebugLogLineM( true, logHasher,
+				CFormat(wxT("Warning, 0-size file, skipping: %s")) % fullPath);
 		}
 		
 		return;
@@ -111,10 +117,10 @@ void CHashingTask::Entry()
 	
 	// For thread-safety, results are passed via a temporary file object.
 	CScopedPtr<CKnownFile> knownfile(new CKnownFile());
-	knownfile->m_strFilePath = m_path;
+	knownfile->m_filePath = m_path;
 	knownfile->SetFileName(m_filename);
 	knownfile->SetFileSize(fileLength);
-	knownfile->m_lastDateChanged = GetLastModificationTime(fullPath);
+	knownfile->m_lastDateChanged = CPath::GetModificationTime(fullPath);
 	knownfile->m_AvailPartFrequency.insert(
 		knownfile->m_AvailPartFrequency.begin(),
 		knownfile->GetPartCount(), 0);
@@ -132,8 +138,8 @@ void CHashingTask::Entry()
 		AddLogLineM( false, logHasher, CFormat(
 			_("Starting to create AICH hash for file: %s")) % m_filename );
 	} else {
-		wxCHECK_RET(0, wxT("No hashes requested for file, skipping: ") +
-			m_filename);
+		wxCHECK_RET(0, (CFormat(wxT("No hashes requested for file, skipping: %s"))
+			% m_filename).GetString());
 	}
 	
 	
@@ -142,8 +148,8 @@ void CHashingTask::Entry()
 		while (!file.Eof() && !TestDestroy()) {
 			if (CreateNextPartHash(&file, knownfile.get(), m_toHash) == false) {
 				AddDebugLogLineM(true, logHasher,
-					wxT("Error while hashing file, skipping: ") +
-					m_filename);
+					CFormat(wxT("Error while hashing file, skipping: %s"))
+						% m_filename);
 			
 				return;
 			}
@@ -178,7 +184,8 @@ void CHashingTask::Entry()
 			AICHHashSet->SetStatus(AICH_HASHSETCOMPLETE);
 			if (!AICHHashSet->SaveHashSet()) {
 				AddDebugLogLineM( true, logHasher,
-					wxT("Warning, failed to save AICH hashset for file: ") + m_filename );
+					CFormat(wxT("Warning, failed to save AICH hashset for file: %s"))
+						% m_filename );
 			}
 		}
 	}
@@ -260,11 +267,10 @@ void CAICHSyncTask::Entry()
 	
 	// We collect all masterhashs which we find in the known2.met and store them in a list
 	std::list<CAICHHash> hashlist;
-	const wxString fullpath = JoinPaths(theApp->ConfigDir, KNOWN2_MET_FILENAME);
+	const CPath fullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
 	
 	CFile file;
-	
-	if (!file.Open(fullpath, (CheckFileExists(fullpath) ? CFile::read_write : CFile::write))) {
+	if (!file.Open(fullpath, (fullpath.FileExists() ? CFile::read_write : CFile::write))) {
 		AddDebugLogLineM( true, logAICHThread, wxT("Error, failed to open 'known2_64.met' file!") );
 		return;
 	}
@@ -340,10 +346,10 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 	// converting known2.met to known2_64.met to support large files
 	// changing hashcount from uint16 to uint32
 
-	const wxString oldfullpath = JoinPaths(theApp->ConfigDir, OLD_KNOWN2_MET_FILENAME);
-	const wxString newfullpath = JoinPaths(theApp->ConfigDir, KNOWN2_MET_FILENAME);
+	const CPath oldfullpath = CPath(theApp->ConfigDir + OLD_KNOWN2_MET_FILENAME);
+	const CPath newfullpath = CPath(theApp->ConfigDir + KNOWN2_MET_FILENAME);
 	
-	if (CheckFileExists(newfullpath) || !CheckFileExists(oldfullpath)){
+	if (newfullpath.FileExists() || !oldfullpath.FileExists()) {
 		// In this case, there is nothing that we need to do.
 		return false;
 	}
@@ -404,22 +410,23 @@ bool CAICHSyncTask::ConvertToKnown2ToKnown264()
 
 
 CCompletionTask::CCompletionTask(const CPartFile* file)
-	: CThreadTask(wxT("Completing"), file->GetFullName(), ETP_High),
-      m_filename(file->GetFileName()),
+	// GetPrintable is used to improve the readability of the log.
+	: CThreadTask(wxT("Completing"), file->GetFullName().GetPrintable(), ETP_High),
+	  m_filename(file->GetFileName()),
 	  m_metPath(file->GetFullName()),
 	  m_category(file->GetCategory()),
 	  m_owner(file),
 	  m_error(false)
 {
-	wxASSERT(!m_filename.IsEmpty());
-	wxASSERT(!m_metPath.IsEmpty());
+	wxASSERT(m_filename.IsOk());
+	wxASSERT(m_metPath.IsOk());
 	wxASSERT(m_owner);
 }
 	
 
 void CCompletionTask::Entry()
 {
-	wxString targetPath;
+	CPath targetPath;
    
 	{
 #ifndef AMULE_DAEMON
@@ -429,57 +436,50 @@ void CCompletionTask::Entry()
 		//#warning Thread-safety needed
 #endif
 		
-		targetPath = theApp->glob_prefs->GetCategory(m_category)->incomingpath;
-		if (!wxFileName::DirExists(targetPath)) {
-			targetPath = thePrefs::GetIncomingDir();
+		wxString path = theApp->glob_prefs->GetCategory(m_category)->incomingpath;
+		if (!CPath::DirExists(path)) {
+			path = thePrefs::GetIncomingDir();
 		}
+
+		targetPath = CPath(path);
 	}
 	
 	// Check if the target directory is on a Fat32 FS, since that needs extra cleanups.
 	bool isFat32 = (CheckFileSystem(targetPath) == FS_IsFAT32);
-	
-	wxString oldName = m_filename;
-	m_filename = CleanupFilename(m_filename, true, isFat32).Strip(wxString::both);
+	CPath dstName = m_filename.Cleanup(true, isFat32);
 
 	// Avoid empty filenames ...
-	if (m_filename.IsEmpty()) {
-		m_filename = wxT("Unknown");
+	if (!dstName.IsOk()) {
+		dstName = CPath(wxT("Unknown"));
 	}
 
-	if (m_filename != oldName) {
+	if (m_filename != dstName) {
 		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The filename '%s' is invalid and has been renamed to '%s'."))
-			% oldName % m_filename);
+			% m_filename % dstName);
 	}
 	
-	
 	// Avoid saving to an already existing filename
-	wxString newName = JoinPaths(targetPath, m_filename);
-	if (CheckFileExists(newName)) {
-		wxString prefix  = wxFileName(m_filename).GetName();
-		wxString postfix = m_filename.Mid(prefix.Length());
-		size_t count = 0;
-			
-		do {
-			count++;
-			
-			newName = JoinPaths(targetPath, prefix) 
-					+ wxString::Format(wxT("(%u)"), count) + postfix;
-		} while (CheckFileExists(newName));
-		
+	CPath newName = targetPath.JoinPaths(dstName);
+	for (unsigned count = 0; newName.FileExists(); ++count) {
+		wxString postfix = wxString::Format(wxT("(%u)"), count);
+
+		newName = targetPath.JoinPaths(dstName.AddPostfix(postfix));
+	}
+
+	if (newName != targetPath.JoinPaths(dstName)) {
 		AddLogLineM(true, logPartFile, CFormat(_("WARNING: The file '%s' already exists, new file renamed to '%s'."))
-			% m_filename
-			% wxFileName(newName).GetFullName());
+			% dstName % newName.GetFullName());
 	}
 
 	// Move will handle dirs on the same partition, otherwise copy is needed.
-	wxString partfilename = m_metPath.BeforeLast(wxT('.'));
-	if (!UTF8_MoveFile(partfilename, newName)) {
-		if (!UTF8_CopyFile(partfilename, newName)) {
+	CPath partfilename = m_metPath.RemoveExt();
+	if (!CPath::RenameFile(partfilename, newName)) {
+		if (!CPath::CopyFile(partfilename, newName, true)) {
 			m_error = true;
 			return;
 		}
 		
-		if (!wxRemoveFile(partfilename)) {
+		if (!CPath::RemoveFile(partfilename)) {
 			AddLogLineM(true, logPartFile, CFormat(_("WARNING: Could not remove original '%s' after creating backup"))
 				% partfilename);
 		}
@@ -488,10 +488,10 @@ void CCompletionTask::Entry()
 	// Removes the various other data-files	
 	const wxChar* otherMetExt[] = { wxT(""), PARTMET_BAK_EXT, wxT(".seeds"), NULL };
 	for (size_t i = 0; otherMetExt[i]; ++i) {
-		wxString toRemove = m_metPath + otherMetExt[i];
+		CPath toRemove = m_metPath.AppendExt(otherMetExt[i]);
 
-		if (wxFileName::FileExists(toRemove)) {
-			if (!wxRemoveFile(toRemove)) {
+		if (toRemove.FileExists()) {
+			if (!CPath::RemoveFile(toRemove)) {
 				AddLogLineM(true, logPartFile, CFormat(_("WARNING: Failed to delete %s")) % toRemove);
 			}
 		}
@@ -552,7 +552,7 @@ CKnownFile* CHashingEvent::GetResult() const
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED)
 
 
-CCompletionEvent::CCompletionEvent(bool errorOccured, const CPartFile* owner, const wxString& fullPath)
+CCompletionEvent::CCompletionEvent(bool errorOccured, const CPartFile* owner, const CPath& fullPath)
 	: wxEvent(-1, MULE_EVT_FILE_COMPLETED),
 	  m_fullPath(fullPath),
 	  m_owner(owner),
@@ -579,7 +579,7 @@ const CPartFile* CCompletionEvent::GetOwner() const
 }
 	
 
-const wxString& CCompletionEvent::GetFullPath() const
+const CPath& CCompletionEvent::GetFullPath() const
 {
 	return m_fullPath;
 }

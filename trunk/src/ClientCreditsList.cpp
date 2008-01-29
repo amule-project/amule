@@ -29,6 +29,7 @@
 #include <protocol/ed2k/Constants.h>
 #include <common/Macros.h>
 #include <common/DataFileVersion.h>
+#include <common/FileFunctions.h>	// Needed for GetFileSize
 
 
 #include "GetTickCount.h"	// Needed for GetTickCount
@@ -37,7 +38,6 @@
 #include "amule.h"		// Needed for theApp
 #include "CFile.h"		// Needed for CFile
 #include "Logger.h"		// Needed for Add(Debug)LogLine
-#include "FileFunctions.h"	// Needed for GetFileSize
 #include "CryptoPP_Inc.h"	// Needed for Crypto functions
 
 
@@ -72,14 +72,15 @@ CClientCreditsList::~CClientCreditsList()
 void CClientCreditsList::LoadList()
 {
 	CFile file;
-	wxString strFileName(theApp->ConfigDir + CLIENTS_MET_FILENAME);
-	if (!::wxFileExists(strFileName)) {
-		AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile"));
+	CPath fileName = CPath(theApp->ConfigDir + CLIENTS_MET_FILENAME);
+
+	
+	if (!fileName.FileExists()) {
 		return;
 	}	
 	
 	try {
-		file.Open(strFileName, CFile::read);
+		file.Open(fileName, CFile::read);
 	
 		if (file.ReadUInt8() != CREDITFILE_VERSION) {
 			AddDebugLogLineM( true, logCredits, wxT("Creditfile is out of date and will be replaced") );
@@ -88,12 +89,12 @@ void CClientCreditsList::LoadList()
 		}
 
 		// everything is ok, lets see if the backup exist...
-		wxString strBakFileName(theApp->ConfigDir + CLIENTS_MET_BAK_FILENAME);
+		CPath bakFileName = CPath(theApp->ConfigDir + CLIENTS_MET_BAK_FILENAME);
 	
 		bool bCreateBackup = TRUE;
-		if (wxFileExists(strBakFileName)) {
+		if (bakFileName.FileExists()) {
 			// Ok, the backup exist, get the size
-			CFile hBakFile(strBakFileName);
+			CFile hBakFile(bakFileName);
 			if ( hBakFile.GetLength() > file.GetLength()) {
 				// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
 				bCreateBackup = FALSE;
@@ -105,11 +106,12 @@ void CClientCreditsList::LoadList()
 		if (bCreateBackup) {
 			file.Close(); // close the file before copying
 			// safe? you bet it is
-			if (!wxCopyFile(strFileName,strBakFileName)) {
-				AddDebugLogLineM( true, logCredits, wxT("Could not create backup file ") + strFileName );
+			if (!CPath::CopyFile(fileName, bakFileName)) {
+				AddDebugLogLineM(true, logCredits,
+					CFormat(wxT("Could not create backup file '%s'")) % fileName);
 			}
 			// reopen file
-			if (!file.Open(strFileName, CFile::read)) {
+			if (!file.Open(fileName, CFile::read)) {
 				AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile") );
 				return;
 			}
@@ -260,8 +262,8 @@ bool CClientCreditsList::CreateKeyPair()
 		CryptoPP::InvertibleRSAFunction privkey;
 		privkey.Initialize(rng,RSAKEYSIZE);
 
-		// Nothing we can do against this unicode2char :/
-		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME)));
+		// Nothing we can do against this filename2char :/
+		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME)));
 		
 		privkey.DEREncode(privkeysink);
 		
@@ -291,9 +293,9 @@ void CClientCreditsList::InitalizeCrypting()
 	try {
 		// check if keyfile is there
  		if (wxFileExists(theApp->ConfigDir + CRYPTKEY_FILENAME)) {
-			off_t keySize = GetFileSize(theApp->ConfigDir + CRYPTKEY_FILENAME);
+			off_t keySize = CPath::GetFileSize(theApp->ConfigDir + CRYPTKEY_FILENAME);
 			
-			if (keySize < 0) {
+			if (keySize == wxInvalidOffset) {
 				AddDebugLogLineM(true, logCredits, wxT("Cannot access 'cryptkey.dat', please check permissions."));
 				return;
 			} else if (keySize == 0) {
@@ -306,7 +308,7 @@ void CClientCreditsList::InitalizeCrypting()
  		}
 			
  		// load private key
- 		CryptoPP::FileSource filesource(unicode2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
+ 		CryptoPP::FileSource filesource(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
  		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
  		// calculate and store public key
 		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));

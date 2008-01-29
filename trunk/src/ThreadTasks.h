@@ -28,6 +28,7 @@
 #define TASKS_H
 
 #include "ThreadScheduler.h"
+#include <common/Path.h>
 
 class CKnownFile;
 class CPartFile;
@@ -62,7 +63,7 @@ public:
 	 * CHashingEvents sent by this type of tasks have the id MULE_EVT_HASHING.
 	 * @see EVT_MULE_HASHING
 	 */
-	CHashingTask(const wxString& path, const wxString& filename, const CPartFile* part = NULL);
+	CHashingTask(const CPath& path, const CPath& filename, const CPartFile* part = NULL);
 	
 protected:
 	/**
@@ -101,9 +102,9 @@ protected:
 
 
 	//! The path to the file to be hashed (shared or part), without filename.
-	wxString m_path;
+	CPath m_path;
 	//! The filename of the file to be hashed (filename only).
-	wxString m_filename;
+	CPath m_filename;
 	//! Specifies which hash-types should be calculated
 	EHashes m_toHash;
 	//! If a partfile or an AICH hashing, this pointer stores it for callbacks.
@@ -155,9 +156,9 @@ protected:
 	virtual void OnExit();
 	
 	//! The target filename.
-	wxString	m_filename;
+	CPath		m_filename;
 	//! The full path to the .met-file
-	wxString	m_metPath;
+	CPath		m_metPath;
 	//! The category of the download.
 	uint8		m_category;
 	//! Owner of the file, used when sending completion-event.
@@ -165,7 +166,7 @@ protected:
 	//! Specifies if an error occured during completion.
 	bool		m_error;
 	//! The resulting full path. File may be be renamed.
-	wxString	m_newName;
+	CPath		m_newName;
 };
 
 
@@ -207,7 +208,7 @@ class CCompletionEvent : public wxEvent
 {
 public:
 	/** Constructor, see getter funtion for description of parameters. */
-	CCompletionEvent(bool errorOccured, const CPartFile* owner, const wxString& fullPath);
+	CCompletionEvent(bool errorOccured, const CPartFile* owner, const CPath& fullPath);
 	
 	/** @see wxEvent::Clone */
 	virtual wxEvent* Clone() const;
@@ -219,10 +220,10 @@ public:
 	const CPartFile* GetOwner() const;
 	
 	/** Returns the full path to the completed file (empty on failure). */
-	const wxString& GetFullPath() const;
+	const CPath& GetFullPath() const;
 private:
 	//! The full path to the completed file.
-	wxString m_fullPath;
+	CPath m_fullPath;
 
 	//! The owner of the completed .part file.
 	const CPartFile* m_owner;

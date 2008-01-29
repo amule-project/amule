@@ -866,15 +866,19 @@ void CSharedFilesRem::AddFilesFromDirectory(wxString path)
 }
 
 
-bool CSharedFilesRem::RenameFile(CKnownFile* file, const wxString& newName)
+bool CSharedFilesRem::RenameFile(CKnownFile* file, const CPath& newName)
 {
+	// We use the printable name, as the filename originated from user input,
+	// and the filesystem name might not be valid on the remote host.
+	const wxString strNewName = newName.GetPrintable();
+
 	CECPacket request(EC_OP_RENAME_FILE);
 	request.AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
-	request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, newName));
+	request.AddTag(CECTag(EC_TAG_PARTFILE_NAME, strNewName));
 
 	m_conn->SendRequest(this, &request);
 	m_rename_file = file;
-	m_new_name = newName;
+	m_new_name = strNewName;
 	
 	return true;
 }
@@ -883,7 +887,7 @@ bool CSharedFilesRem::RenameFile(CKnownFile* file, const wxString& newName)
 void CSharedFilesRem::HandlePacket(const CECPacket *packet)
 {
 	if (m_rename_file && (packet->GetOpCode() == EC_OP_NOOP)) {
-		m_rename_file->SetFileName(m_new_name);
+		m_rename_file->SetFileName(CPath(m_new_name));
 		m_rename_file = NULL;
 	} else if (packet->GetOpCode() != EC_OP_FAILED) {
 		CRemoteContainer<CKnownFile, CMD4Hash, CEC_SharedFile_Tag>::HandlePacket(packet);
@@ -1523,7 +1527,7 @@ m_kademlia(false),
 m_clientID(0),
 m_clientPort(0)
 {
-	SetFileName(tag->FileName());
+	SetFileName(CPath(tag->FileName()));
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	

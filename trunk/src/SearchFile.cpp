@@ -56,7 +56,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 		CTag tag(data, optUTF8);
 		switch (tag.GetNameID()) {
 			case FT_FILENAME:
-				SetFileName(tag.GetStr());
+				SetFileName(CPath(tag.GetStr()));
 				break;
 			case FT_FILESIZE:
 				SetFileSize(tag.GetInt());
@@ -78,7 +78,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 		}
 	}
 
-	if (GetFileName().IsEmpty()) {
+	if (!GetFileName().IsOk()) {
 		throw CInvalidPacket(wxT("No filename in search result"));
 	}
 }

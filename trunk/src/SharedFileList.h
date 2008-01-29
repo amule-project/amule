@@ -40,6 +40,8 @@ class CMD4Hash;
 class CServer;
 class CUpDownClient;
 class CPublishKeywordList;
+class CPath;
+
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
 
@@ -64,7 +66,7 @@ public:
 	void	RepublishFile(CKnownFile* pFile);
 	void	Process();
 	void	PublishNextTurn()	{ m_lastPublishED2KFlag = true; }
-	bool	RenameFile(CKnownFile* pFile, const wxString& newName);
+	bool	RenameFile(CKnownFile* pFile, const CPath& newName);
 	
 	/* Kad Stuff */
 	void	Publish();

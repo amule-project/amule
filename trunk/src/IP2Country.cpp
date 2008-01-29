@@ -48,7 +48,7 @@
 #include <common/StringFunctions.h>	// For unicode2char()
 #include "pixmaps/flags_xpm/CountryFlags.h"
 
-
+#include <wx/intl.h>
 #include <wx/image.h>
 
 

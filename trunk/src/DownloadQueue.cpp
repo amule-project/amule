@@ -52,7 +52,7 @@
 #include "Logger.h"
 #include <common/Format.h>	// Needed for CFormat
 #include "IPFilter.h"
-#include "FileFunctions.h"	// Needed for CDirIterator
+#include <common/FileFunctions.h>	// Needed for CDirIterator
 #include "FileLock.h"		// Needed for CFileLock
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "UserEvents.h"
@@ -105,28 +105,31 @@ CDownloadQueue::~CDownloadQueue()
 }
 
 
-void CDownloadQueue::LoadMetFiles( const wxString& path )
+void CDownloadQueue::LoadMetFiles(const CPath& path)
 {
 	printf("Loading temp files from %s.\n",
-		(const char *)unicode2char(path));
+		(const char *)unicode2char(path.GetPrintable()));
 	
-	CDirIterator TempDir( CPath(path, CPath::FromUser) );
-	std::vector<wxString> files;
+	std::vector<CPath> files;
 
 	// Locate part-files to be loaded
-	wxString fileName = TempDir.GetFirstFile( CDirIterator::File, wxT("*.part.met") ).GetRaw();
-	while ( !fileName.IsEmpty() ) {
-		files.push_back(JoinPaths(path, fileName));
+	CDirIterator TempDir(path);
+	CPath fileName = TempDir.GetFirstFile(CDirIterator::File, wxT("*.part.met"));
+	while (fileName.IsOk()) {
+		files.push_back(path.JoinPaths(fileName));
 
-		fileName = TempDir.GetNextFile().GetRaw();
+		fileName = TempDir.GetNextFile();
 	}
-	std::sort( files.begin(), files.end() );
+
+	// Loading in order makes it easier to figure which
+	// file is broken in case of crashes, or the like.
+	std::sort(files.begin(), files.end());
 
 	// Load part-files	
 	for ( size_t i = 0; i < files.size(); i++ ) {
 		printf("\rLoading PartFile %u of %u", (unsigned int)(i + 1), (unsigned int)files.size());
 			
-		fileName = wxFileName( files[i] ).GetFullName();
+		fileName = files[i].GetFullName();
 		
 		CPartFile* toadd = new CPartFile();
 		bool result = toadd->LoadPartFile(path, fileName);
@@ -148,14 +151,13 @@ void CDownloadQueue::LoadMetFiles( const wxString& path )
 			
 			wxString msg;
 			if (result) {
-				msg << wxT("WARNING: Duplicate partfile with hash '")
-					<< toadd->GetFileHash().Encode() << wxT("' found, skipping: ")
-					<< fileName;
+				msg << CFormat(wxT("WARNING: Duplicate partfile with hash '%s' found, skipping: "))
+					% toadd->GetFileHash().Encode() % fileName;
 			} else {
 				// If result is false, then reading of both the primary and the backup .met failed
 				AddLogLineM(false, 
 					_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
-				msg << wxT("ERROR: Failed to load PartFile '") << fileName << wxT("'");
+				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName.GetPrintable();
 			}
 			
 			AddDebugLogLineM(true, logPartFile, msg);
@@ -322,8 +324,8 @@ bool CDownloadQueue::IsFileExisting( const CMD4Hash& fileid ) const
 		} else {
 			// Check if the file exists, since otherwise the user is forced to 
 			// manually reload the shares to download a file again.
-			wxString fullpath = JoinPaths(file->GetFilePath(), file->GetFileName());
-			if (!CheckFileExists(fullpath)) {
+			CPath fullpath = file->GetFilePath().JoinPaths(file->GetFileName());
+			if (!fullpath.FileExists()) {
 				// The file is no longer available, unshare it
 				theApp->sharedfiles->RemoveFile(file);
 				
@@ -409,7 +411,7 @@ void CDownloadQueue::Process()
 		}
 		// Check if any paused files can be resumed
 			
-		CheckDiskspace( thePrefs::GetTempDir() );
+		CheckDiskspace(CPath(thePrefs::GetTempDir()));
 	}
 	
 	
@@ -919,7 +921,9 @@ void CDownloadQueue::ProcessLocalRequests()
 				} else {
 					it = m_localServerReqQueue.erase(it);
 					cur_file->SetLocalSrcRequestQueued(false);
-					AddDebugLogLineM( false, logDownloadQueue, wxString(wxT("Local server source request for file \"")) + cur_file->GetFileName() + wxString(wxT("\" not sent because of status '")) +  cur_file->getPartfileStatus() + wxT("'"));
+					AddDebugLogLineM( false, logDownloadQueue,
+						CFormat(wxT("Local server source request for file '%s' not sent because of status '%s'"))
+							% cur_file->GetFileName() % cur_file->getPartfileStatus());
 				}
 			}
 
@@ -933,7 +937,8 @@ void CDownloadQueue::ProcessLocalRequests()
 				if (!bServerSupportsLargeFiles && cur_file->IsLargeFile()) {
 					AddDebugLogLineM(false, logDownloadQueue, wxT("TCP Request for sources on a large file ignored: server doesn't support it"));
 				} else {
-					AddDebugLogLineM(false, logDownloadQueue, wxT("Creating local sources request packet for ") + cur_file->GetFileName());
+					AddDebugLogLineM(false, logDownloadQueue,
+						CFormat(wxT("Creating local sources request packet for '%s'")) % cur_file->GetFileName());
 					// create request packet
 					CMemFile data(16 + (cur_file->IsLargeFile() ? 8 : 4));
 					data.WriteHash(cur_file->GetFileHash());
@@ -1114,7 +1119,7 @@ uint16 CDownloadQueue::GetPausedFileCount() const
 }
 
 
-void CDownloadQueue::CheckDiskspace( const wxString& path )
+void CDownloadQueue::CheckDiskspace( const CPath& path )
 {
 	if ( ::GetTickCount() - m_lastDiskCheck < DISKSPACERECHECKTIME ) {
 		return;
@@ -1135,7 +1140,7 @@ void CDownloadQueue::CheckDiskspace( const wxString& path )
 
 	// Get the current free disc-space
 	wxLongLong free = 0;
-	if ( !wxGetDiskSpace( path, NULL, &free ) ) {
+	if ( !wxGetDiskSpace( path.GetRaw(), NULL, &free ) ) {
 		return;
 	}
 

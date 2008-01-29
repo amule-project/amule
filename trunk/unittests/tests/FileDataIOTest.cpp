@@ -8,6 +8,15 @@
 using Kademlia::CUInt128;
 using namespace muleunit;
 
+namespace muleunit
+{
+	template <>
+	wxString StringFrom<CPath>(const CPath& path)
+	{
+		return path.GetPrintable();
+	}
+}
+
 
 //! The max file-size of auto-generated files to test.
 const size_t TEST_LENGTH = 512;
@@ -74,19 +83,21 @@ public:
 	
 	void setUp() {
 		m_emptyFile = m_predefFile = NULL;
+		const CPath emptyPath = CPath(wxT("FileDataIOTest.empty"));
+		const CPath datPath   = CPath(wxT("FileDataIOTest.dat"));
 
 		m_emptyFile = new CFile();
-		m_emptyFile->Create(wxT("FileDataIOTest.empty"), true);
+		m_emptyFile->Create(emptyPath, true);
 		ASSERT_TRUE(m_emptyFile->IsOpened());
 		m_emptyFile->Close();
-		m_emptyFile->Open(wxT("FileDataIOTest.empty"), CFile::read_write);
+		m_emptyFile->Open(emptyPath, CFile::read_write);
 		ASSERT_TRUE(m_emptyFile->IsOpened());
 		
 		m_predefFile = new CFile();
-		m_predefFile->Create(wxT("FileDataIOTest.dat"), true);
+		m_predefFile->Create(datPath, true);
 		ASSERT_TRUE(m_predefFile->IsOpened());
 		m_predefFile->Close();
-		m_predefFile->Open(wxT("FileDataIOTest.dat"), CFile::read_write);
+		m_predefFile->Open(datPath, CFile::read_write);
 		ASSERT_TRUE(m_predefFile->IsOpened());
 
 		writePredefData(m_predefFile);
@@ -695,22 +706,22 @@ TEST(CMemFile, SetLength)
 /////////////////////////////////////////////////////////////////////
 // CFile specific tests
 
-const wxChar* testFile = wxT("TestFile.dat");
+const CPath testFile = CPath(wxT("TestFile.dat"));
 const unsigned testMode = 0600;
 
 DECLARE(CFile);
 	void setUp() {
 		// Ensure that the testfile doesn't exist
-		if (wxFileExists(testFile)) {
-			if (!wxRemoveFile(testFile)) {
+		if (testFile.FileExists()) {
+			if (!CPath::RemoveFile(testFile)) {
 				MULE_VALIDATE_STATE(false, wxT("Failed to remove temporary file."));
 			}
 		}
 	}
 
 	void tearDown() {
-		if (wxFileExists(testFile)) {
-			wxRemoveFile(testFile);
+		if (testFile.FileExists()) {
+			CPath::RemoveFile(testFile);
 		}	
 	}
 END_DECLARE;
@@ -808,7 +819,7 @@ TEST(CFile, Constructor)
 
 TEST(CFile, Create)
 {
-	ASSERT_FALSE(wxFileExists(testFile));
+	ASSERT_FALSE(testFile.FileExists());
 
 	// Check creation of new file, when none exists, with/without overwrite	
 	for (size_t i = 0; i < 2; ++i) {
@@ -825,10 +836,10 @@ TEST(CFile, Create)
 		ASSERT_TRUE(file.fd() == CFile::fd_invalid);
 		ASSERT_TRUE(!file.IsOpened());
 		
-		ASSERT_TRUE(wxFile::Access(testFile, wxFile::read));
-		ASSERT_TRUE(wxFile::Access(testFile, wxFile::write));
+		ASSERT_TRUE(wxFile::Access(testFile.GetRaw(), wxFile::read));
+		ASSERT_TRUE(wxFile::Access(testFile.GetRaw(), wxFile::write));
 	
-		ASSERT_TRUE(wxRemoveFile(testFile));
+		ASSERT_TRUE(wxRemoveFile(testFile.GetRaw()));
 	}
 
 	// Create testfile, with a bit of contents
@@ -871,8 +882,8 @@ TEST(CFile, Create)
 		ASSERT_TRUE(!file.IsOpened());
 	}
 	
-	ASSERT_TRUE(wxFile::Access(testFile, wxFile::read));
-	ASSERT_TRUE(wxFile::Access(testFile, wxFile::write));
+	ASSERT_TRUE(wxFile::Access(testFile.GetRaw(), wxFile::read));
+	ASSERT_TRUE(wxFile::Access(testFile.GetRaw(), wxFile::write));
 }
 
 

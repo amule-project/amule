@@ -46,7 +46,7 @@
 #include "Statistics.h"		// Needed for theStats
 #include "Logger.h"
 #include <common/Format.h>
-#include "FileFunctions.h"
+#include <common/FileFunctions.h>
 #include "GuiEvents.h"		// Needed for Notify_*
 
 
@@ -332,7 +332,7 @@ void CSharedFileList::FindSharedFiles()
 		
 		if ( file->GetStatus(true) == PS_READY ) {
 			printf("Adding file %s to shares\n",
-				(const char *)unicode2char( file->GetFullName() ) );
+				(const char *)unicode2char(file->GetFullName().GetPrintable()));
 			AddFile(file);
 		}
 	}
@@ -349,7 +349,7 @@ void CSharedFileList::FindSharedFiles()
 	// Also remove bogus entries
 	for (size_t i = 0; i < theApp->glob_prefs->shareddir_list.GetCount(); ) {
 		const wxString& path = theApp->glob_prefs->shareddir_list.Item(i);
-		if (CheckDirExists(path)) {
+		if (CPath::DirExists(path)) {
 			sharedPaths.push_back(ReadyPath(path));
 			++i;
 		} else {
@@ -397,119 +397,90 @@ bool CheckDirectory(const wxString& a, const wxString& b)
 }
 		
 
-unsigned CSharedFileList::AddFilesFromDirectory(wxString directory)
+unsigned CSharedFileList::AddFilesFromDirectory(wxString strDir)
 {
-	if ( !wxDirExists( directory ) ) {
-		return 0;
-	}
-
-	directory = ReadyPath(directory);
-
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
 	//  - The Temp folder
 	// The following dirs just result in a warning.
 	//  - The users home-dir
-	if (CheckDirectory(wxGetHomeDir(), directory)) {
+	if (CheckDirectory(wxGetHomeDir(), strDir)) {
 		return 0;
-	}
-		
-	if (CheckDirectory(theApp->ConfigDir, directory)) {
+	} else if (CheckDirectory(theApp->ConfigDir, strDir)) {
 		return 0;
-	}
-		
-	if (CheckDirectory(thePrefs::GetTempDir(), directory)) {
+	} else if (CheckDirectory(thePrefs::GetTempDir(), strDir)) {
 		return 0;
 	}
 
-	CDirIterator SharedDir(CPath(directory, CPath::FromFS)); 
+	const CPath directory = CPath(strDir);
+	if (!directory.DirExists()) {
+		return 0;
+	}
 	
-	wxString fname = SharedDir.GetFirstFile(CDirIterator::File).GetRaw(); // We just want files
-
-	if (fname.IsEmpty()) {
-		printf("Empty dir %s shared\n", (const char *)unicode2char(directory));
-    		return 0;
+	CDirIterator::FileType searchFor = CDirIterator::FileNoHidden;
+	if (thePrefs::ShareHiddenFiles()) {
+		 searchFor = CDirIterator::File;
 	}
 
 	unsigned addedFiles = 0;
-	while(!fname.IsEmpty()) {
-		fname = JoinPaths(directory, fname);
+	CDirIterator SharedDir(directory); 
+
+	CPath fname = SharedDir.GetFirstFile(searchFor);
+	while (fname.IsOk()) {
+		CPath fullPath = directory.JoinPaths(fname);
+	
+		if (!fullPath.FileExists()) {
+			AddDebugLogLineM(false, logKnownFiles,
+				CFormat(wxT("Shared file does not exist (possibly a broken link): %s")) % fullPath);
+			
+			fname = SharedDir.GetNextFile();
+			continue;
+		}
 
 		AddDebugLogLineM(false, logKnownFiles,
-			wxT("Found file ") + fname + wxT(" on shared folder"));
+			CFormat(wxT("Found shared file: %s")) % fullPath);
 
-		time_t fdate = GetLastModificationTime(fname);
-		if (::wxDirExists(fname)) {
-			// Woops, is a dir!
-			AddDebugLogLineM(false, logKnownFiles,
-				wxT("Shares: ") + fname +
-				wxT(" is a directory, skipping"));
-			fname = SharedDir.GetNextFile().GetRaw();
-			continue;
-		}
-		
-		CFile new_file(fname, CFile::read);
-		if (!new_file.IsOpened()) {
-			AddDebugLogLineM(false, logKnownFiles,
-				wxT("No permisions to open") + fname +
-				wxT(", skipping"));
-			fname = SharedDir.GetNextFile().GetRaw();
-			continue;
-		}
-		
-		// Take just the file from the path
-		fname = wxFileName(fname).GetFullName();
+		time_t fdate = CPath::GetModificationTime(fullPath);
+		sint64 fsize = fullPath.GetFileSize();
 
-		if (!thePrefs::ShareHiddenFiles() && fname.StartsWith(wxT("."))) {
+		// This will also catch files with too strict permissions.
+		if ((fdate == (time_t)-1) || (fsize == wxInvalidOffset)) {
 			AddDebugLogLineM(false, logKnownFiles,
-				wxT("Ignored file ") + fname +
-				wxT(" (Hidden)"));
-			fname = SharedDir.GetNextFile().GetRaw();
+				CFormat(wxT("Failed to retrive modification time or size for '%s', skipping.")) % fullPath);
+			
+			fname = SharedDir.GetNextFile();
 			continue;
 		}
 
-		uint64 fileLength = 0;
-		try {
-			fileLength = new_file.GetLength();
-		} catch (const CIOFailureException& e) {
-			AddDebugLogLineM(true, logKnownFiles,
-				wxT("Failed to get filesize, skipping: ") +
-				fname);
-			fname = SharedDir.GetNextFile().GetRaw();
-			continue;
-		}
-		
-		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fileLength);
+
+		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fsize);
 		if (toadd) {
-			if ( AddFile(toadd) ) {
+			if (AddFile(toadd)) {
 				AddDebugLogLineM(false, logKnownFiles,
-					wxT("Added known file ") + fname +
-					wxT(" to shares"));
+					CFormat(wxT("Added known file '%s' to shares"))
+						% fname);
+
 				toadd->SetFilePath(directory);
 			} else {
-				if (fname != toadd->GetFileName()) {
-					AddDebugLogLineM(false, logKnownFiles,
-						wxT("Warning: File '") +
-						directory + fname +
-						wxT("' already shared as '") +
-						toadd->GetFileName() + wxT("'"));
-				} else {
-					AddDebugLogLineM(false, logKnownFiles,
-						wxT("File '") + fname +
-						wxT("' is already shared"));
-				}
+				AddDebugLogLineM(false, logKnownFiles,
+					CFormat(wxT("File already shared, skipping: %s"))
+						% fname);
 			}
 		} else {
 			//not in knownfilelist - start adding thread to hash file
 			AddDebugLogLineM(false, logKnownFiles,
-				wxT("Hashing new unknown shared file ") +
-				fname);
+				CFormat(wxT("Hashing new unknown shared file '%s'")) % fname);
 			
 			if (CThreadScheduler::AddTask(new CHashingTask(directory, fname))) {
 				addedFiles++;
 			}
 		}
-		fname = SharedDir.GetNextFile().GetRaw();
+
+		fname = SharedDir.GetNextFile();
+	}
+
+	if (addedFiles == 0) {
+		printf("No shareable files found in directory: %s\n", (const char *)unicode2char(strDir));
 	}
 
 	return addedFiles;
@@ -635,21 +606,24 @@ void CSharedFileList::CopyFileList(std::vector<CKnownFile*>& out_list)
 }
 
 
+
 void CSharedFileList::UpdateItem(CKnownFile* toupdate)
 {
 	Notify_SharedFilesUpdateItem(toupdate);
 }
+
 
 void CSharedFileList::GetSharedFilesByDirectory(const wxString& directory,
 				CKnownFilePtrList& list)
 {
 	wxMutexLocker lock(list_mut);
 
+	const CPath dir = CPath(directory);
 	for (CKnownFileMap::iterator pos = m_Files_map.begin();
 	     pos != m_Files_map.end(); ++pos ) {
 		CKnownFile *cur_file = pos->second;
 
-		if (MakeFoldername(directory).CompareTo(MakeFoldername(cur_file->GetFilePath()))) {
+		if (dir.IsSameDir(cur_file->GetFilePath())) {
 			continue;
 		}
 
@@ -833,7 +807,8 @@ void CSharedFileList::CreateOfferedFilePacket(
 	
 	TagPtrList tags;
 
-	tags.push_back(new CTagString(FT_FILENAME, cur_file->GetFileName()));
+	// The printable filename is used because it's destined for another user.
+	tags.push_back(new CTagString(FT_FILENAME, cur_file->GetFileName().GetPrintable()));
 	
 	if (pClient && pClient->GetVBTTags()) {
 		tags.push_back(new CTagVarInt(FT_FILESIZE, cur_file->GetFileSize()));
@@ -1065,7 +1040,7 @@ void CSharedFileList::RemoveKeywords(CKnownFile* pFile)
 }
 
 
-bool CSharedFileList::RenameFile(CKnownFile* file, const wxString& newName)
+bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 {
 	if (file->IsPartFile()) {
 		CPartFile* pfile = dynamic_cast<CPartFile*>(file);
