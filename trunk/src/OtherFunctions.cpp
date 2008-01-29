@@ -211,50 +211,17 @@ wxString CastSecondsToHM(uint64 count, uint16 msecs)
 // Examines a filename and determines the filetype
 FileType GetFiletype(const wxString& filename)
 {
-	if( filename.Find('.' ) == -1 )
-		return ftAny;
-
-	wxString ext = filename.AfterLast('.').MakeLower();
-
-	if ( ext==wxT("avi")  || ext==wxT("mpg")  || ext==wxT("mpeg") || ext==wxT("ogm")  ||
-		 ext==wxT("ram")  || ext==wxT("rm")   || ext==wxT("asf")  || ext==wxT("vob")  ||
-		 ext==wxT("divx") || ext==wxT("vivo") || ext==wxT("mov")  || ext==wxT("wmv")  ||
-		 ext==wxT("m2v")  || ext==wxT("swf")  || ext==wxT("qt")   || ext==wxT("mkv")  || 
-		 ext==wxT("mp4")  || ext==wxT("ogv") )
-		 return ftVideo;
-		 
-	if ( ext==wxT("cue")  || ext==wxT("bin")  || ext==wxT("iso")  || ext==wxT("ccd")  ||
-		 ext==wxT("sub")  || ext==wxT("nrg")  || ext==wxT("img")  || ext==wxT("bwa")  ||
-		 ext==wxT("bwi")  || ext==wxT("bws")  || ext==wxT("bwt")  || ext==wxT("mds")  ||
-		 ext==wxT("mdf") )
-	  return ftCDImage;
-		
-	if ( ext==wxT("mpc")  || ext==wxT("aac")  || ext==wxT("ape")  || ext==wxT("mp3")  || 
-		 ext==wxT("mp2")  || ext==wxT("wav")  || ext==wxT("au")   || ext==wxT("ogg")  || 
-		 ext==wxT("wma")  || ext==wxT("rma")  || ext==wxT("mid")  || ext==wxT("m4a")  || 
-		 ext==wxT("m4b")  || ext==wxT("m4p")  || ext==wxT("flac") || ext==wxT("mka")  ||
-		 ext==wxT("shn")  || ext==wxT("tta")  || ext==wxT("wv")   || ext==wxT("oga") )
-		 return ftAudio;
-
-	if ( ext==wxT("jpg")  || ext==wxT("jpeg") || ext==wxT("bmp")  || ext==wxT("gif")  ||
-	     ext==wxT("tiff") || ext==wxT("png")  || ext==wxT("rle")  || ext==wxT("psp")  ||
-		 ext==wxT("tga")  || ext==wxT("wmf")  || ext==wxT("xpm")  || ext==wxT("pcx")  ||
-		 ext==wxT("psd")  || ext==wxT("xcf"))
-		 return ftPicture;
-
-	if ( ext==wxT("rar")  || ext==wxT("zip")  || ext==wxT("ace")  || ext==wxT("gz")   ||
-	     ext==wxT("bz2")  || ext==wxT("tar")  || ext==wxT("arj")  || ext==wxT("lhz")  ||
-		 ext==wxT("bz") || ext==wxT("7z"))
-		return ftArchive;
-
-	if ( ext==wxT("exe")  || ext==wxT("com") )
-		return ftProgram;
-
-	if ( ext==wxT("txt")  || ext==wxT("html") || ext==wxT("htm")  || ext==wxT("doc")  ||
-	     ext==wxT("pdf")  || ext==wxT("ps")   || ext==wxT("sxw")  || ext==wxT("log") )
-		return ftText;
-
-	return ftAny;
+	// FIXME: WTF do we have two such functions in the first place?
+	switch (GetED2KFileTypeID(filename)) {
+		case ED2KFT_AUDIO:	return ftAudio;
+		case ED2KFT_VIDEO:	return ftVideo;
+		case ED2KFT_IMAGE:	return ftPicture;
+		case ED2KFT_PROGRAM:	return ftProgram;
+		case ED2KFT_DOCUMENT:	return ftText;
+		case ED2KFT_ARCHIVE:	return ftArchive;
+		case ED2KFT_CDIMAGE:	return ftCDImage;
+		default:		return ftAny;
+	}
 }
 
 
