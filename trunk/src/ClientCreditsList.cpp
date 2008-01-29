@@ -106,7 +106,7 @@ void CClientCreditsList::LoadList()
 		if (bCreateBackup) {
 			file.Close(); // close the file before copying
 			// safe? you bet it is
-			if (!CPath::CopyFile(fileName, bakFileName)) {
+			if (!CPath::CopyFile(fileName, bakFileName, true)) {
 				AddDebugLogLineM(true, logCredits,
 					CFormat(wxT("Could not create backup file '%s'")) % fileName);
 			}
