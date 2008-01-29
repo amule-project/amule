@@ -142,10 +142,10 @@ CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_LAST_SEEN_COMP, (uint64)file->lastseencomplete, this);
 	
-	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
 
 	long l;
-	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
+	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
 		valuemap.CreateTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l, this);
 	}
 
@@ -234,10 +234,10 @@ CECTag(EC_TAG_PARTFILE, file->GetFileHash())
 		return;
 	}
 	
-	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable()));
 
 	long l;
-	if (file->GetPartMetFileName().BeforeFirst(wxT('.')).ToLong(&l)) {
+	if (file->GetPartMetFileName().RemoveAllExt().GetRaw().ToLong(&l)) {
 		AddTag(CECTag(EC_TAG_PARTFILE_PARTMETID, (uint64)l));
 	}
 
@@ -259,7 +259,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
 		(uint64)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
 	
-	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 	valuemap.CreateTag(EC_TAG_PARTFILE_ED2K_LINK,
 		theApp->CreateED2kLink(file, (theApp->IsConnectedED2K() && !theApp->serverconnect->IsLowID())), this);
@@ -283,7 +283,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 			return;
 	}
 	
-	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName()));
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME,file->GetFileName().GetPrintable()));
 
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 
@@ -330,7 +330,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, EC_DETAI
 	}
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
-		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+		AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()));
 		AddTag(CECTag(EC_TAG_KNOWNFILE, file->GetFileHash()));
 	}
 	
@@ -370,7 +370,7 @@ CEC_UpDownClient_Tag::CEC_UpDownClient_Tag(const CUpDownClient* client, CValueMa
 	
 	const CKnownFile* file = client->GetUploadFile();
 	if (file) {
-		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+		valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
 		valuemap.CreateTag(EC_TAG_KNOWNFILE, file->GetFileHash(), this);
 	}
 	
@@ -388,7 +388,7 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, EC_DETAIL_LEVEL detail
 			return;
 	}
 
-	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName()));
+	AddTag(CECTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable()));
 	AddTag(CECTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize()));
 	if ( theApp->sharedfiles->GetFileByID(file->GetFileHash()) ) {
 		AddTag(CECEmptyTag(EC_TAG_KNOWNFILE));
@@ -401,7 +401,7 @@ CEC_SearchFile_Tag::CEC_SearchFile_Tag(CSearchFile *file, CValueMap &valuemap) :
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_SOURCE_COUNT_XFER, file->GetCompleteSourceCount(), this);
 
-	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName(), this);
+	valuemap.CreateTag(EC_TAG_PARTFILE_NAME, file->GetFileName().GetPrintable(), this);
 
 	valuemap.CreateTag(EC_TAG_PARTFILE_SIZE_FULL, file->GetFileSize(), this);
 

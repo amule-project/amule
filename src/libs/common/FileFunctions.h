@@ -27,37 +27,10 @@
 #ifndef FILEFUNCTIONS_H
 #define FILEFUNCTIONS_H
 
-#include "Types.h"
-#include <common/Path.h>
+#include "../../Types.h"
+#include "Path.h"
 
 #include <wx/dir.h>
-
-
-// Remove file with safe UTF8 name.
-bool UTF8_RemoveFile(const wxString& fileName);
-
-// Move file with safe UTF8 name.
-bool UTF8_MoveFile(const wxString& from, const wxString& to, bool overwrite = false); 
-
-// Copy file with safe UTF8 name.
-bool UTF8_CopyFile(const wxString& from, const wxString& to); 
-
-// Makes a backup of a file, by copying the original file to filename + appendix
-bool BackupFile(const wxString& filename, const wxString& appendix);
-
-// Get the LastModificationTime for a file.
-time_t GetLastModificationTime(const wxString& file);
-
-/**
- * Returns the size of the specified file.
- *
- * @param fullPath The full path of the file to check.
- * @return The size of the file, or a negative value on failures.
- *
- * GetFileSize will fail if the file doesn't exist, if we
- * dont have read-access to it, or if the path was invalid.
- */
-sint64 GetFileSize(const wxString& fullPath);
 
 
 // Dir iterator: needed because wxWidget's wxFindNextFile and 
@@ -66,6 +39,8 @@ class CDirIterator : private wxDir
 {
 public:
 	enum FileType {
+		FileNoHidden = wxDIR_FILES,
+		DirNoHidden  = wxDIR_DIRS,
 		File = wxDIR_FILES | wxDIR_HIDDEN,
 		Dir  = wxDIR_DIRS  | wxDIR_HIDDEN,
 		Any  = wxDIR_FILES | wxDIR_DIRS   | wxDIR_HIDDEN
@@ -80,11 +55,6 @@ public:
 	bool HasSubDirs(const wxString& spec = wxEmptyString);
 };
 	
-
-bool CheckDirExists(const wxString& dir);
-
-bool CheckFileExists(const wxString& file);
-
 
 //! Filetypes understood by UnpackArchive
 enum EFileType
@@ -117,7 +87,7 @@ typedef std::pair<bool, EFileType> UnpackResult;
  * Zip archive, the first file found matching any in the files array (case-
  * insensitive) will be unpacked and overwrite the archive.
  */
-UnpackResult UnpackArchive(const wxString& file, const wxChar* files[]);
+UnpackResult UnpackArchive(const CPath& file, const wxChar* files[]);
 
 
 enum FSCheckResult {
@@ -135,7 +105,7 @@ enum FSCheckResult {
  *
  * Note that CheckFileSystem always returns FS_IsFAT32 on wxMSW.
  */
-FSCheckResult CheckFileSystem(const wxString& path);
+FSCheckResult CheckFileSystem(const CPath& path);
 
 
 #endif

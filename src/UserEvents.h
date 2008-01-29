@@ -61,11 +61,11 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 		USEREVENTS_REPLACE_VAR( \
 			wxT("FILE"), \
 			wxTRANSLATE("The full path to the file."), \
-			((CPartFile*)object)->GetFullName() ) \
+			((CPartFile*)object)->GetFullName().GetRaw() ) \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("NAME"), \
 			wxTRANSLATE("The name of the file without path component."), \
-			((CPartFile*)object)->GetFileName() ) \
+			((CPartFile*)object)->GetFileName().GetRaw() ) \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("HASH"), \
 			wxTRANSLATE("The ed2k hash of the file."), \
@@ -101,7 +101,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 		USEREVENTS_REPLACE_VAR( \
 			wxT("FILE"), \
 			wxTRANSLATE("The full path to the file."), \
-			((CPartFile*)object)->GetFullName() ) \
+			((CPartFile*)object)->GetFullName().GetRaw() ) \
 	)
 
 

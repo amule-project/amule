@@ -45,12 +45,9 @@
 #include <common/StringFunctions.h>
 #include <common/ClientVersion.h>	
 #include <common/MD5Sum.h>
+#include <common/Path.h>
 #include "MD4Hash.h"
 #include "Logger.h"
-
-#ifndef EC_REMOTE
-	#include "FileFunctions.h"	// Needed for CDirIterator and CheckDirExists()
-#endif
 
 #include "OtherFunctions.h"	// Interface declarations
 
@@ -209,7 +206,7 @@ wxString CastSecondsToHM(uint64 count, uint16 msecs)
 
 
 // Examines a filename and determines the filetype
-FileType GetFiletype(const wxString& filename)
+FileType GetFiletype(const CPath& filename)
 {
 	// FIXME: WTF do we have two such functions in the first place?
 	switch (GetED2KFileTypeID(filename)) {
@@ -288,11 +285,11 @@ wxString GetFiletypeDesc(FileType type, bool translated)
 	}
 }
 
-
 // Returns the Typename, examining the extention of the given filename
-wxString GetFiletypeByName(const wxString& filename, bool translated)
+
+wxString GetFiletypeByName(const CPath& filename, bool translated)
 {
-	return GetFiletypeDesc( GetFiletype( filename ), translated );
+	return GetFiletypeDesc(GetFiletype(filename), translated);
 }
 
 
@@ -953,19 +950,19 @@ public:
 // get the list initialized *before* any code is accessing it
 CED2KFileTypes theED2KFileTypes;
 
-
-EED2KFileType GetED2KFileTypeID(const wxString &strFileName)
+EED2KFileType GetED2KFileTypeID(const CPath& fileName)
 {
-	int i = strFileName.Find(wxT('.'),true/* from end*/);
-	if (i == -1) {
+	const wxString ext = fileName.GetExt().Lower();
+	if (ext.IsEmpty()) {
 		return ED2KFT_ANY;
 	}
 	
-	wxString strExt(strFileName.Mid(i));
-	strExt.MakeLower();
-	// If the extension is not in the map, this returns
-	// EED2KFileTypeClass(), which is ED2KFT_ANY
-	return ED2KFileTypesMap[strExt].GetType();
+	SED2KFileTypeMap::iterator it = ED2KFileTypesMap.find(ext);
+	if (it != ED2KFileTypesMap.end()) {
+		return it->second.GetType();
+	} else {
+		return ED2KFT_ANY;
+	}
 }
 
 
@@ -986,9 +983,9 @@ wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID)
 
 
 // Returns a file type which is used eMule internally only, examining the extention of the given filename
-wxString GetFileTypeByName(const wxString &strFileName)
+wxString GetFileTypeByName(const CPath& fileName)
 {
-	EED2KFileType iFileType = GetED2KFileTypeID(strFileName);
+	EED2KFileType iFileType = GetED2KFileTypeID(fileName);
 	switch (iFileType) {
 		case ED2KFT_AUDIO:	return ED2KFTSTR_AUDIO;
 		case ED2KFT_VIDEO:	return ED2KFTSTR_VIDEO;
@@ -1123,20 +1120,31 @@ void MilliSleep(uint32 msecs)
 
 wxString GetConfigDir()
 {
-#ifndef EC_REMOTE
-// "Portable aMule" - Use aMule from an external USB drive
-// Check for ./config/amule.conf and use this configuration if found
+	// Cache the path.
+	static wxString configPath;
 
-	wxString ConfigDir = JoinPaths(wxFileName::GetCwd(),wxT("config"));
-	if ( CheckDirExists( ConfigDir ) && 
-		CheckFileExists( JoinPaths(ConfigDir,wxT("amule.conf")) )
-		)
-	{
-		AddLogLineM(true, wxT("Using configDir: %s\n") + ConfigDir);
-		return ConfigDir + wxFileName::GetPathSeparator();
-	}
+	if (configPath.IsEmpty()) {
+#ifndef EC_REMOTE
+		// "Portable aMule" - Use aMule from an external USB drive
+		// Check for ./config/amule.conf and use this configuration if found
+		const wxString configDir = JoinPaths(wxFileName::GetCwd(), wxT("config"));
+		const wxString configFile = JoinPaths(configDir, wxT("amule.conf"));
+
+		if (CPath::DirExists(configDir) && CPath::FileExists(configFile)) {
+			AddLogLineM(true, CFormat(wxT("Using configDir: %s")) % configDir);
+
+			configPath = configDir;
+		} else {
+			configPath = wxStandardPaths::Get().GetUserDataDir();
+		}
+#else
+		configPath = wxStandardPaths::Get().GetUserDataDir();
 #endif
-	return wxStandardPaths::Get().GetUserDataDir() + wxFileName::GetPathSeparator();
+
+		configPath += wxFileName::GetPathSeparator();
+	}
+
+	return configPath;
 }
 
 

@@ -32,6 +32,10 @@
 
 #include <algorithm>		// Needed for std::for_each	// Do_not_auto_remove (mingw-gcc-3.4.5)
 
+
+class CPath;
+
+
 /**
  * Helper function.
  *
@@ -250,13 +254,11 @@ wxString GetRateString(uint16 rate);
 // The following functions are used to identify and/or name the type of a file
 enum FileType { ftAny, ftVideo, ftAudio, ftArchive, ftCDImage, ftPicture, ftText, ftProgram };
 // Examins a filename and returns the enumerated value assosiated with it, or ftAny if unknown extension
-FileType GetFiletype(const wxString& filename);
+FileType GetFiletype(const CPath& filename);
 // Returns the description of a filetype: Movies, Audio, Pictures and so on...
 wxString GetFiletypeDesc(FileType type, bool translated = true);
 // Shorthand for GetFiletypeDesc(GetFiletype(filename))
-wxString GetFiletypeByName(const wxString& filename, bool translated = true);
-// Reports if the file has contents or not (no need for the file to exist)
-bool IsEmptyFile(const wxString& filename);
+wxString GetFiletypeByName(const CPath& filename, bool translated = true);
 
 
 // Returns the max number of connections the current OS can handle.
@@ -308,9 +310,9 @@ private:
 	EED2KFileType s_t;
 };
 
-EED2KFileType GetED2KFileTypeID(const wxString &strFileName);
+EED2KFileType GetED2KFileTypeID(const CPath& fileName);
 wxString GetED2KFileTypeSearchTerm(EED2KFileType iFileID);
-wxString GetFileTypeByName(const wxString &strFileName);
+wxString GetFileTypeByName(const CPath& fileName);
 EED2KFileType GetED2KFileTypeSearchID(EED2KFileType iFileID);
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -356,6 +358,7 @@ void MilliSleep(uint32 msecs);
 inline const long int make_full_ed2k_version(int a, int b, int c) {
 	return ((a << 17) | (b << 10) | (c << 7));
 }
+
 
 wxString GetConfigDir();
 

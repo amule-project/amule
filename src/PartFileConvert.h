@@ -35,12 +35,14 @@
 
 struct ConvertJob;
 class CPartFileConvertDlg;
+class CPath;
+
 
 class CPartFileConvert : private wxThread
 {
 public:
-	static int	ScanFolderToAdd(wxString folder, bool deletesource = false);
-	static void	ConvertToeMule(wxString folder, bool deletesource = false);
+	static int	ScanFolderToAdd(const CPath& folder, bool deletesource = false);
+	static void	ConvertToeMule(const CPath& file, bool deletesource = false);
 	static void	StartThread();
 	static void	StopThread();
 
@@ -59,7 +61,7 @@ public:
 private:
 	CPartFileConvert() : wxThread(wxTHREAD_DETACHED) {}
 
-	static int	performConvertToeMule(wxString folder);
+	static int	performConvertToeMule(const CPath& file);
 	virtual ExitCode Entry();
 
 	static wxThread*		s_convertPfThread;

@@ -35,7 +35,7 @@
 #include "Logger.h"			// Needed for AddDebugLogLineM
 #include <common/Format.h>		// Needed for CFormat
 #include <common/StringFunctions.h>	// Needed for CSimpleTokenizer
-#include "FileFunctions.h"		// Needed for UnpackArchive
+#include <common/FileFunctions.h>	// Needed for UnpackArchive
 #include "ThreadScheduler.h"		// Needed for CThreadScheduler and CThreadTask
 #include "ClientList.h"			// Needed for CClientList
 #include "ServerList.h"			// Needed for CServerList
@@ -265,9 +265,9 @@ private:
 	 *
 	 * @return True if the file was loaded, false otherwise.
 	 **/
-	int LoadFromFile(const wxString &file)
+	int LoadFromFile(const wxString& file)
 	{
-		if (!wxFileExists(file) /*|| TestDestroy()*/) {	
+		if (!CPath::FileExists(file) /* || TestDestroy() (see CIPFilter::Reload()) */) {
 			return 0;
 		}
 
@@ -278,7 +278,7 @@ private:
 		};
 		
 		// Try to unpack the file, might be an archive
-		if (UnpackArchive(file, ipfilter_files).second != EFT_Text) {
+		if (UnpackArchive(CPath(file), ipfilter_files).second != EFT_Text) {
 			AddLogLineM(true, 
 				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return 0;
@@ -297,9 +297,10 @@ private:
 			while (!readFile.Eof()) {
 				wxString line = readFile.GetNextLine();
 
-				/*if (TestDestroy()) {
-					return;
-				} else */if (func && (*this.*func)(line)) {
+				/* See CIPFilter::Reload()
+				  if (TestDestroy()) {
+					return 0;
+				} else */ if (func && (*this.*func)(line)) {
 					filtercount++;
 				} else if (ProcessPeerGuardianLine(line)) {
 					func = &CIPFilterTask::ProcessPeerGuardianLine;

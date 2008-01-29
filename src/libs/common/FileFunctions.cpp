@@ -29,7 +29,7 @@
 #include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
-
+#include <wx/thread.h>		// Needed for wxMutex
 
 #include <errno.h>
 #include <map>
@@ -39,79 +39,7 @@
 
 
 #include "FileFunctions.h"
-#include "CFile.h"
-#include "Logger.h"
-
-
-bool UTF8_MoveFile(const wxString& from, const wxString& to, bool overwrite)
-{
-	
-	if (overwrite) {
-		UTF8_RemoveFile(to);
-	}
-	
-	bool ok = !rename( (const char*)from.mb_str(wxConvLocal), 
-						(const char*)to.mb_str(wxConvLocal));
-
-	if (!ok) {
-		   AddDebugLogLineM( false, logFileIO,
-				  wxT("Error on file move from: ") +
-						 from + wxT(" to: ") + to);
-	}
-
-	return ok;
-}
-
-
-bool UTF8_RemoveFile(const wxString& fileName)
-{
-	bool ok = !remove((const char*)fileName.mb_str(wxConvLocal));
-	if (!ok) {
-		AddDebugLogLineM( false, logFileIO,
-			wxT("Error on file remove: ") +
-				fileName);
-	}
-
-	return ok;
-}
-
-
-bool UTF8_CopyFile(const wxString& from, const wxString& to)
-{
-
-	bool ok = false;
-
-	// Dont' remove this scope.
-	{
-		wxFFileInputStream in(from);
-		wxFFileOutputStream out(to);
-
-		ok = in.IsOk() && out.IsOk();
-		if (!ok) {
-			AddDebugLogLineM( false, logFileIO,
-				wxT("Error on file copy from: ") +
-					from + wxT(" to: ") + to);
-		} else {
-			out << in;
-			ok &= (out.GetLastError() != wxSTREAM_WRITE_ERROR) && 
-				(in.GetLastError() != wxSTREAM_READ_ERROR);
-		}
-	}
-	
-	if (!ok) {
-		UTF8_RemoveFile(to);
-	}
-
-	return ok;
-}
-
-
-sint64 GetFileSize(const wxString& fullPath)
-{
-	wxFile f(fullPath);
-	return f.Length();
-}
-
+#include "StringFunctions.h"
 
 //
 // This class assumes that the following line has been executed:
@@ -142,15 +70,7 @@ CPath CDirIterator::GetFirstFile(FileType type, const wxString& mask)
 		return CPath();
 	}
 
-	// NB: This will be removed soon, and demangling of filenames 
-	// will be handled in the CPath class.
-	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
-	wxString retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
-	if (retFileName.IsEmpty()) {
-	       retFileName = fileName;
-	}
-
-	return CPath(retFileName, CPath::FromFS);
+	return CPath(fileName);
 }
 
 
@@ -161,15 +81,7 @@ CPath CDirIterator::GetNextFile()
 		return CPath();
 	}
 
-	// NB: This will be removed soon, and demangling of filenames 
-	// will be handled in the CPath class.
-	// Try to convert it to UTF-8. If it fails, revert to ISO-8859-1.
-	wxString retFileName = UTF82unicode(char2UTF8(unicode_2_broken(fileName)));
-	if (retFileName.IsEmpty()) {
-	       retFileName = fileName;
-	}
-
-	return CPath(retFileName, CPath::FromFS);
+	return CPath(fileName);
 }
 
 
@@ -180,67 +92,6 @@ bool CDirIterator::HasSubDirs(const wxString& spec)
 }
 
 
-time_t GetLastModificationTime(const wxString& file)
-{
-       time_t ret = wxFileModificationTime(file);
-       // Notice that wxFileModificationTime() documentation is wrong.
-       // This function returns -1 if there was an error, not zero.
-       if (ret == -1) {
-               AddDebugLogLineM( true, logFileIO,
-                       wxT("Error on GetLastModificationTime from `") +
-                       file + wxT("'"));
-       }
-
-       return ret;
-}
-
-
-bool CheckDirExists(const wxString& dir)
-{
-#ifdef __WXMSW__
-	// stat fails on windows if there are trailing path-separators.
-	wxString cleanPath = StripSeparators(dir, wxString::trailing);
-	
-	// Root paths must end with a separator (X:\ rather than X:).
-	// See comments in wxDirExists.
-	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
-		cleanPath += wxFileName::GetPathSeparator();
-	}
-#else
-	const wxString& cleanPath = dir;
-#endif
-
-	return wxDir::Exists(cleanPath);
-}
-
-
-bool CheckFileExists(const wxString& file)
-{
-	return wxFile::Exists(file);
-}
-
-
-bool BackupFile(const wxString& filename, const wxString& appendix)
-{
-	if ( !UTF8_CopyFile(filename, filename + appendix) ) {
-		AddDebugLogLineM( false, logFileIO, wxT("Could not create backup of ") + filename);
-		return false;
-	}
-	
-	// Kry - Safe Backup
-	CFile safebackupfile;
-	safebackupfile.Open(filename + appendix,CFile::read_write);
-	safebackupfile.Flush();
-	safebackupfile.Close();
-	// Kry - Safe backup end
-	
-	return true;
-}
-
-
-/**
- * Returns true if the file is a zip-archive.
- */
 EFileType GuessFiletype(const wxString& file)
 {
 	wxFile archive(file, wxFile::read);
@@ -327,15 +178,15 @@ bool UnpackGZipFile(const wxString& file)
 	bool write = false;
 
 #ifdef __WXMAC__
-	AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
+	// AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
 
-	gzFile inputFile = gzopen(unicode2char(file), "rb");
+	gzFile inputFile = gzopen(filename2char(file), "rb");
 	if (inputFile != NULL) {
 		write = true;
 
 		while (int bytesRead = gzread(inputFile, buffer, sizeof(buffer))) {
 			if (bytesRead > 0) {
-				AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"), bytesRead) );
+				// AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"), bytesRead) );
 				target.Write(buffer, bytesRead);
 			} else if (bytesRead < 0) {
 				wxString errString;
@@ -346,20 +197,21 @@ bool UnpackGZipFile(const wxString& file)
 				} else {
 					errString = wxString::FromAscii(gzerrstr);
 				}
-				AddDebugLogLineM( false, logFileIO, wxT("Error reading gzip stream (") + errString + wxT(")") );
+				
+				// AddDebugLogLineM( false, logFileIO, wxT("Error reading gzip stream (") + errString + wxT(")") );
 				write = false;
 				break;
 			}
 		}
 
-		AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
+		// AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
 		gzclose(inputFile);
 	} else {
-		AddDebugLogLineM( false, logFileIO, wxT("Error opening gzip file (") + wxString(wxSysErrorMsg()) + wxT(")") );
+		// AddDebugLogLineM( false, logFileIO, wxT("Error opening gzip file (") + wxString(wxSysErrorMsg()) + wxT(")") );
 	}
 #else
 	{
-		AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
+		// AddDebugLogLineM( false, logFileIO, wxT("Reading gzip stream") );
 
 		wxFileInputStream source(file);
 		wxZlibInputStream inputStream(source);
@@ -367,7 +219,7 @@ bool UnpackGZipFile(const wxString& file)
 		while (!inputStream.Eof()) {
 			inputStream.Read(buffer, sizeof(buffer));
 
-			AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
+			// AddDebugLogLineM( false, logFileIO, wxString::Format(wxT("Read %u bytes"),inputStream.LastRead()) );
 			if (inputStream.LastRead()) {
 				target.Write(buffer, inputStream.LastRead());
 			} else {
@@ -375,7 +227,7 @@ bool UnpackGZipFile(const wxString& file)
 			}
 		};
 
-		AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
+		// AddDebugLogLineM( false, logFileIO, wxT("End reading gzip stream") );
 
 		write = inputStream.IsOk() || inputStream.Eof();
 	}
@@ -383,22 +235,24 @@ bool UnpackGZipFile(const wxString& file)
 
 	if (write) {
 		target.Commit();
-		AddDebugLogLineM( false, logFileIO, wxT("Commited gzip stream") );
+		// AddDebugLogLineM( false, logFileIO, wxT("Commited gzip stream") );
 	}
 
 	return write;
 }
 
 
-UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
+UnpackResult UnpackArchive(const CPath& path, const wxChar* files[])
 {
+	const wxString file = path.GetRaw();
+
 	// Attempt to discover the filetype and uncompress
 	EFileType type = GuessFiletype(file);
 	switch (type) {
 		case EFT_Zip:
 			if (UnpackZipFile(file, files)) {
 				// Unpack nested archives if needed.
-				return UnpackResult(true, UnpackArchive(file, files).second);
+				return UnpackResult(true, UnpackArchive(path, files).second);
 			} else {
 				return UnpackResult(false, EFT_Zip);
 			}
@@ -406,7 +260,7 @@ UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
 		case EFT_GZip:
 			if (UnpackGZipFile(file)) {
 				// Unpack nested archives if needed.
-				return UnpackResult(true, UnpackArchive(file, files).second);
+				return UnpackResult(true, UnpackArchive(path, files).second);
 			} else {
 				return UnpackResult(false, EFT_GZip);
 			}
@@ -419,17 +273,17 @@ UnpackResult UnpackArchive(const wxString& file, const wxChar* files[])
 
 #ifdef __WXMSW__
 
-FSCheckResult CheckFileSystem(const wxString& path) 
+FSCheckResult CheckFileSystem(const CPath& WXUNUSED(path)) 
 {
 	return FS_IsFAT32;
 }
 
 #else
 
-FSCheckResult DoCheckFileSystem(const wxString& path)
+FSCheckResult DoCheckFileSystem(const CPath& path)
 {
-	// This is an invalid filename on FAT32
-	wxString fullName = JoinPaths(path, wxT(":"));
+	// This is an invalid filename on FAT32/NTFS
+	wxString fullName = JoinPaths(path.GetRaw(), wxT(":"));
 
 	// Try to open the file, without overwriting existing files.
 	int fd = open(fullName.fn_str(), O_WRONLY | O_CREAT | O_EXCL);
@@ -457,7 +311,7 @@ FSCheckResult DoCheckFileSystem(const wxString& path)
 }
 
 
-typedef std::map<wxString, FSCheckResult> CPathCache;
+typedef std::map<CPath, FSCheckResult> CPathCache;
 
 //! Lock used to ensure the integrity of the cache.
 static wxMutex		s_lock;
@@ -465,9 +319,9 @@ static wxMutex		s_lock;
 static CPathCache	s_cache;
 
 
-FSCheckResult CheckFileSystem(const wxString& path) 
+FSCheckResult CheckFileSystem(const CPath& path) 
 {
-	wxCHECK_MSG(path.Length(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
+	wxCHECK_MSG(path.IsOk(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
 
 	wxMutexLocker locker(s_lock);
 	CPathCache::iterator it = s_cache.find(path);

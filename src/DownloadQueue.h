@@ -45,6 +45,7 @@ class CED2KLink;
 class CED2KFileLink;
 class CED2KServerLink;
 class CED2KServerListLink;
+class CPath;
 
 namespace Kademlia {
 	class CUInt128;
@@ -69,12 +70,8 @@ public:
 	 */
 	~CDownloadQueue();
 
-	/**
-	 * Loads met-files from the specified directory.
-	 *
-	 * @param path The directory containing the .met files.
-	 */
-	void	LoadMetFiles(const wxString& path);
+	/** Loads met-files from the specified directory. */
+	void	LoadMetFiles(const CPath& path);
 
 	/**
 	 * Main worker function.
@@ -318,12 +315,8 @@ private:
 	 */
 	void	DoSortByPriority();
 	
-	/**
-	 * Checks that there is enough free spaces for temp-files at that specified path.
-	 *
-	 * @param path The path to a folder containing temp-files.
-	 */
-	void	CheckDiskspace( const wxString& path );
+	/** Checks that there is enough free spaces for temp-files at that specified path. */
+	void	CheckDiskspace(const CPath& path);
 
 	/**
 	 * Parses all links in the ED2KLink file and resets it.

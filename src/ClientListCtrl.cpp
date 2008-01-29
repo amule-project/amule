@@ -615,7 +615,7 @@ void CUploadingView::DrawCell( CUpDownClient* client, int column, wxDC* dc, cons
 
 	case 1:
 		if ( client->GetUploadFile() ) {
-			buffer = client->GetUploadFile()->GetFileName();
+			buffer = client->GetUploadFile()->GetFileName().GetPrintable();
 		} else {
 			buffer = _("N/A");
 		}
@@ -727,7 +727,7 @@ int CUploadingView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		const CKnownFile* file2 = client2->GetUploadFile();
 
 		if ( file1 && file2  ) {
-			return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			return mode * CmpAny(file1->GetFileName(), file2->GetFileName());
 		} 
 		
 		return mode * CmpAny( file1, file2 );
@@ -915,7 +915,7 @@ int CQueuedView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 		const CKnownFile* file2 = client2->GetUploadFile();
 
 		if ( file1 && file2 ) {
-			return mode * file1->GetFileName().CmpNoCase( file2->GetFileName() );
+			return mode * CmpAny(file1->GetFileName(), file2->GetFileName());
 		}
 
 		// Place files with filenames on top

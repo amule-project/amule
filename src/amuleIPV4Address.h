@@ -28,7 +28,7 @@
 
 #include <wx/object.h>			// Needed by wx/sckaddr.h
 
-#include "NetworkFunctions.h"	// Needed for unicode2char
+#include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 
 
 // This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal

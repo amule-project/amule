@@ -108,7 +108,7 @@ public:
 #ifdef CLIENT_GUI
 	CPartFile(CEC_PartFile_Tag *tag);
 #else 
-	virtual void	SetFileName(const wxString& strmakeFilename);
+	virtual void	SetFileName(const CPath& filename);
 #endif
 	CPartFile(CSearchFile* searchresult);  //used when downloading a new file
 	CPartFile(const CED2KFileLink* fileLink);
@@ -120,7 +120,7 @@ public:
 	bool	WriteToFile(CFileDataIO* WXUNUSED(file))	{ return false; }
 	bool	IsPartFile() const		{ return !(status == PS_COMPLETE); }
 	uint32	Process(uint32 reducedownload, uint8 m_icounter);
-	uint8	LoadPartFile(const wxString& in_directory, const wxString& filename, bool from_backup = false, bool getsizeonly = false);
+	uint8	LoadPartFile(const CPath& in_directory, const CPath& filename, bool from_backup = false, bool getsizeonly = false);
 	bool	SavePartFile(bool Initial = false);
 	void	PartFileHashFinished(CKnownFile* result);
 	bool	HashSinglePart(uint16 partnumber); // true = ok , false = corrupted
@@ -143,9 +143,9 @@ public:
 	uint8	GetStatus(bool ignorepause = false) const;
 #endif
 	virtual void	UpdatePartsInfo();
-	const wxString& GetPartMetFileName() const { return m_partmetfilename; }
+	const CPath& GetPartMetFileName() const { return m_partmetfilename; }
 	uint64	GetTransferred() const		{ return transferred; }
-	const wxString& GetFullName() const	{ return m_fullname; }
+	const CPath& GetFullName() const	{ return m_fullname; }
 	float	GetKBpsDown() const		{ return kBpsDown; }
 	double	GetPercentCompleted() const	{ return percentcompleted; }
 
@@ -221,7 +221,7 @@ public:
 	uint32	GetDlActiveTime() const;
 	bool	GetInsufficient() const		{ return m_insufficient; }
 	
-	void	CompleteFileEnded(bool errorOccured, const wxString& newname);	
+	void	CompleteFileEnded(bool errorOccured, const CPath& newname);	
 
 	bool	RemoveSource(CUpDownClient* toremove, bool updatewindow = true, bool bDoStatsUpdate = true);
 
@@ -336,8 +336,8 @@ private:
 	uint64	m_iGainDueToCompression;
 	uint32  m_iTotalPacketsSavedDueToICH;
 	float 	kBpsDown;
-	wxString m_fullname;
-	wxString m_partmetfilename;
+	CPath	m_fullname;
+	CPath	m_partmetfilename;
 	bool	m_paused;
 	bool	m_stopped;
 	bool	m_insufficient;

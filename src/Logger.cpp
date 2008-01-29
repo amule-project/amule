@@ -26,6 +26,7 @@
 #include "amule.h"
 #include "Preferences.h"
 
+#include <wx/filename.h>
 
 
 DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_LOGLINE)

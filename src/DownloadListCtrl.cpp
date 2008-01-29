@@ -974,7 +974,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		wxString view;
 		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
 			view << _("Preview") << wxT(" [") <<
-				file->GetPartMetFileName().BeforeLast(wxT('.')) <<
+				file->GetPartMetFileName().RemoveExt().GetPrintable() <<
 				wxT("]");
 		} else if ( file->GetStatus() == PS_COMPLETE ) {
 			view << _("&Open the file");
@@ -1061,11 +1061,12 @@ void CDownloadListCtrl::OnKeyPressed( wxKeyEvent& event )
 				
 				// Currently renaming of completed files causes problem with kad
 				if (file->IsPartFile()) {
-					wxString newName = ::wxGetTextFromUser(
+					wxString strNewName = ::wxGetTextFromUser(
 						_("Enter new name for this file:"),
-						_("File rename"), file->GetFileName());
+						_("File rename"), file->GetFileName().GetPrintable());
 				
-					if (!newName.IsEmpty() && (newName != file->GetFileName())) {
+					CPath newName = CPath(strNewName);
+					if (newName.IsOk() && (newName != file->GetFileName())) {
 						theApp->sharedfiles->RenameFile(file, newName);
 					}
 				}
@@ -1246,15 +1247,12 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 	case 0: {
 		// show no. of partfile in filename column
 		wxString filename;
-		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-			if (thePrefs::ShowPartFileNumber()) {
-				filename << wxT(" [") << file->GetPartMetFileName().BeforeLast(wxT('.')).BeforeLast(wxT('.')) << wxT("] ") << file->GetFileName();
-			} else {
-				filename = file->GetFileName();
+		if (thePrefs::ShowPartFileNumber()) {
+			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+				filename = CFormat(wxT("[%s] ")) % file->GetPartMetFileName().RemoveExt().RemoveExt();
 			}
-		} else if (file->GetStatus() == PS_COMPLETE) {
-			filename = file->GetFileName();
 		}
+		filename += file->GetFileName().GetPrintable();
 
 		if (file->HasRating() || file->HasComment()) {
 			int image = Client_CommentOnly_Smiley;
@@ -1726,10 +1724,9 @@ void CDownloadListCtrl::DrawSourceItem(
 			} else {
 				buffer = _("Asked for another file");
 				if (	client->GetRequestFile() &&
-					!client->GetRequestFile()->GetFileName().IsEmpty()) {
-					buffer += wxT(" (") +
-						client->GetRequestFile()->GetFileName() +
-						wxT(")");
+					client->GetRequestFile()->GetFileName().IsOk()) {
+					buffer += CFormat(wxT(" (%s)")) 
+						% client->GetRequestFile()->GetFileName();
 				}
 			}
 			dc->DrawText(buffer, rect.GetX(), rect.GetY());
@@ -1751,7 +1748,7 @@ wxString CDownloadListCtrl::GetTTSText(unsigned item) const
 	if (content->GetType() == FILE_TYPE) {
 		CPartFile* file = content->GetFile();
 
-		return file->GetFileName();
+		return file->GetFileName().GetPrintable();
 	}
 
 	return wxEmptyString;
@@ -2241,7 +2238,9 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	}
 	// Need to use quotes in case filename contains spaces.
 	command += wxT(" '");
-	command += file->GetFullName();
+
+	// FIXME: This is probably not going to work if the filenames are mangled ...
+	command += file->GetFullName().GetRaw();
 	if (file->GetStatus() != PS_COMPLETE) {
 		// Remove the .met
 		command = command.BeforeLast( wxT('.') );

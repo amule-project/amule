@@ -63,7 +63,6 @@ libmuleappcommon_a_SOURCES = \
 	CFile.cpp \
 	DataToText.cpp \
 	ED2KLink.cpp \
-	FileFunctions.cpp \
 	MagnetURI.cpp \
 	MemFile.cpp \
 	NetworkFunctions.cpp \
@@ -288,7 +287,7 @@ amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
 amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
 amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
-amulegui_LDADD =  $(common_libs) $(gui_libs)
+amulegui_LDADD =  $(gui_libs) $(common_libs) 
 
 amuled_DEPENDENCIES = $(core_deps) $(common_deps)
 amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
@@ -360,7 +359,6 @@ noinst_HEADERS = \
 		ExternalConn.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
-		FileFunctions.h \
 		FileLock.h \
 		Friend.h \
 		FriendList.h \

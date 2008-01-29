@@ -915,7 +915,9 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 				}
 				
 				if (cur_block->fZStreamError){
-					AddDebugLogLineM( false, logZLib, wxString::Format(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file : "), size - header_size, nStartPos, nEndPos) + m_reqfile->GetFileName());
+					AddDebugLogLineM( false, logZLib, 
+						CFormat(wxT("Ignoring %u bytes of block %u-%u because of erroneous zstream state for file: %s"))
+							% (size - header_size) % nStartPos % nEndPos % m_reqfile->GetFileName());
 					m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 					return;
 				}
@@ -963,7 +965,8 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 							nEndPos = cur_block->block->StartOffset + cur_block->totalUnzipped - 1;
 	
 							if (nStartPos > cur_block->block->EndOffset || nEndPos > cur_block->block->EndOffset) {
-								AddDebugLogLineM( false, logZLib, wxT("Corrupted compressed packet for ") + m_reqfile->GetFileName() + wxT(" received (error 666)"));
+								AddDebugLogLineM( false, logZLib, 
+									CFormat(wxT("Corrupted compressed packet for '%s' received (error 666)")) % m_reqfile->GetFileName());
 								m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 							} else {
 								// Write uncompressed data to file
@@ -980,7 +983,9 @@ void CUpDownClient::ProcessBlockPacket(const byte* packet, uint32 size, bool pac
 							strZipError = wxT(" - ") + wxString::FromAscii(cur_block->zStream->msg);
 						} 
 						
-						AddDebugLogLineM( false, logZLib, wxString(wxT("Corrupted compressed packet for")) + m_reqfile->GetFileName() + wxString::Format(wxT("received (error %i) ") , result) + strZipError );
+						AddDebugLogLineM( false, logZLib,
+							CFormat(wxT("Corrupted compressed packet for '%s' received (error %i): %s"))
+								% m_reqfile->GetFileName() % result % strZipError);
 						
 						m_reqfile->RemoveBlockFromList(cur_block->block->StartOffset, cur_block->block->EndOffset);
 	
@@ -1141,7 +1146,9 @@ int CUpDownClient::unzip(Pending_Block_Struct *block, byte *zipped, uint32 lenZi
 			strZipError = wxString::Format(wxT(" %d"), err);
 		}
 		
-		AddDebugLogLineM( false, logZLib, wxString(wxT("Unexpected zip error ")) +  strZipError + wxString(wxT("in file \"")) + (m_reqfile ? m_reqfile->GetFileName() : wxString(wxT("?"))) + wxT("\""));
+		AddDebugLogLineM(false, logZLib,
+			CFormat(wxT("Unexpected zip error %s in file '%s'"))
+				% strZipError % (m_reqfile ? m_reqfile->GetFileName() : CPath(wxT("?"))));
 	}
 
 	if (err != Z_OK) {
@@ -1640,7 +1647,9 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 			fileResponse.WriteUInt16(nPart);
 			pKnownFile->GetAICHHashset()->GetMasterHash().Write(&fileResponse);
 			if (pKnownFile->GetAICHHashset()->CreatePartRecoveryData(nPart*PARTSIZE, &fileResponse)){
-				AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Sucessfully created and send recoverydata for ") + pKnownFile->GetFileName() + wxT(" to ") + GetClientFullInfo() );
+				AddDebugLogLineM(false, logAICHTransfer,
+					CFormat(wxT("AICH Packet Request: Sucessfully created and send recoverydata for '%s' to %s"))
+						% pKnownFile->GetFileName() % GetClientFullInfo());
 				
 				CPacket* packAnswer = new CPacket(fileResponse, OP_EMULEPROT, OP_AICHANSWER);			
 				theStats::AddUpOverheadOther(packAnswer->GetPacketSize());
@@ -1648,10 +1657,14 @@ void CUpDownClient::ProcessAICHRequest(const byte* packet, uint32 size)
 				SafeSendPacket(packAnswer);
 				return;
 			} else {
-				AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Failed to create recoverydata for ") + pKnownFile->GetFileName() + wxT(" to ") + GetClientFullInfo() );
+				AddDebugLogLineM(false, logAICHTransfer,
+					CFormat(wxT("AICH Packet Request: Failed to create recoverydata for '%s' to %s"))
+						% pKnownFile->GetFileName() % GetClientFullInfo());
 			}
-		} else{
-			AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Failed to create ecoverydata - Hashset not ready or requested Hash differs from Masterhash for ") + pKnownFile->GetFileName() + wxT(" to ") + GetClientFullInfo() );
+		} else {
+			AddDebugLogLineM(false, logAICHTransfer,
+				CFormat(wxT("AICH Packet Request: Failed to create recoverydata - Hashset not ready or requested Hash differs from Masterhash for '%s' to %s"))
+					% pKnownFile->GetFileName() % GetClientFullInfo());
 		}
 	} else {
 		AddDebugLogLineM( false, logAICHTransfer, wxT("AICH Packet Request: Failed to find requested shared file - ") + GetClientFullInfo() );

@@ -43,7 +43,7 @@ public:
 	void		RemoveServer(CServer* in_server);
 	void		RemoveAllServers();
 	void		RemoveDeadServers();	
-	bool		LoadServerMet(const wxString& strFile);
+	bool		LoadServerMet(const CPath& path);
 	bool		SaveServerMet();
 	void		ServerStats();
 	void		ResetServerPos()	{m_serverpos = m_servers.begin();}

@@ -27,8 +27,8 @@
 #define SAFEFILE_H
 
 
+#include <wx/filename.h>			// Needed for wxFileName
 #include <common/MuleDebug.h>			// Needef for CMuleException
-
 #include "Tag.h"
 
 namespace Kademlia {

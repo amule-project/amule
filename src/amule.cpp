@@ -55,7 +55,7 @@
 #include "ClientList.h"			// Needed for CClientList
 #include "ClientUDPSocket.h"		// Needed for CClientUDPSocket & CMuleUDPSocket
 #include "ExternalConn.h"		// Needed for ExternalConn & MuleConnection
-#include "FileFunctions.h"		// Needed for CDirIterator
+#include <common/FileFunctions.h>	// Needed for CDirIterator
 #include "FriendList.h"			// Needed for CFriendList
 #include "HTTPDownload.h"		// Needed for CHTTPDownloadThread
 #include "InternalEvents.h"		// Needed for CMuleInternalEvent
@@ -352,7 +352,7 @@ int CamuleApp::InitGui(bool, wxString &)
  */
 std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxString& directory, const wxString& fallback)
 {
-	if (!CheckDirExists(directory)) {
+	if (!CPath::DirExists(directory)) {
 		if (!wxMkdir(directory)) {
 			wxString msg = wxString()
 				<< wxT("Could not create the aMule ") << desc << wxT(" directory\n")
@@ -361,7 +361,7 @@ std::pair<bool, wxString> CheckMuleDirectory(const wxString& desc, const wxStrin
 			// For the temp and incoming folder, we may be able to fall back 
 			// to the default values, in case of bad overrides.
 			if (fallback.Length() && (directory != fallback)) {
-				if (CheckDirExists(fallback) || wxMkdir(fallback)) {
+				if (CPath::DirExists(fallback) || wxMkdir(fallback)) {
 					msg << wxT("Using default directory at location \n'")
 						<< fallback << wxT("'.");
 					theApp->ShowAlert(msg, wxT("FATAL ERROR"), wxICON_ERROR | wxOK);
@@ -590,14 +590,15 @@ bool CamuleApp::OnInit()
 	wxConfig::Set( cfg );
 
 	// Make a backup of the log file
-	wxString logfileName(ConfigDir + wxT("logfile"));
-	if (wxFileName::FileExists(logfileName)) {
-		wxString logBackupName(ConfigDir + wxT("logfile.bak"));
-		UTF8_MoveFile(logfileName, logBackupName, true);
+	CPath logfileName = CPath(ConfigDir + wxT("logfile"));
+	if (logfileName.FileExists()) {
+		CPath logBackupName = CPath(ConfigDir + wxT("logfile.bak"));
+		
+		CPath::RenameFile(logfileName, logBackupName, true);
 	}
 
 	// Open the log file
-	applog = new wxFFileOutputStream(logfileName);
+	applog = new wxFFileOutputStream(logfileName.GetRaw());
 	if (!applog->Ok()) {
 		// use std err as last resolt to indicate problem
 		fputs("ERROR: unable to open log file\n", stderr);
@@ -646,13 +647,8 @@ bool CamuleApp::OnInit()
 		thePrefs::SetECPass(GetPassword());
 		thePrefs::EnableExternalConnections(true);
 		printf("Password set and external connections enabled.\n");
-		}
+	}
 	
-#ifndef __WXMSW__
-	// This line is what makes wxWidgets handle correctly unix file names.
-	wxConvFileName = &aMuleConvBrokenFileNames;
-#endif
-
 	// Display notification on new version or first run
 	wxTextFile vfile( ConfigDir + wxT("lastversion") );
 	wxString newMule(wxT( VERSION ));
@@ -746,7 +742,7 @@ bool CamuleApp::OnInit()
 	serverlist->Init();
 
 	// init downloadqueue
-	downloadqueue->LoadMetFiles( thePrefs::GetTempDir() );
+	downloadqueue->LoadMetFiles(CPath(thePrefs::GetTempDir()));
 
 	// Creates all needed listening sockets
 	wxString msg;
@@ -1030,7 +1026,7 @@ wxString CamuleApp::CreateMagnetLink(const CAbstractFile *f)
 {
 	CMagnetURI uri;
 
-	uri.AddField(wxT("dn"), CleanupFilename(f->GetFileName(), true));
+	uri.AddField(wxT("dn"), f->GetFileName().Cleanup(true).GetPrintable());
 	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2k:")) + f->GetFileHash().Encode().Lower());
 	uri.AddField(wxT("xl"), wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()));
 
@@ -1042,10 +1038,9 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 {
 	wxASSERT(!(!add_source && (use_hostname || addcryptoptions)));
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
-	wxString strURL	= wxString(wxT("ed2k://|file|")) <<
-		CleanupFilename(f->GetFileName(), true) << wxT("|") <<
-		wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()) << wxT("|") <<
-		f->GetFileHash().Encode() << wxT("|/");
+	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|/"))
+		% f->GetFileName().Cleanup(true)
+		% f->GetFileSize() % f->GetFileHash().Encode();
 	
 	if (add_source && IsConnectedED2K() && !serverconnect->IsLowID() ) {
 		
@@ -1555,7 +1550,8 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 		static uint64 bytecount;
 
 		if (knownfiles->SafeAddKFile(result)) {
-			AddDebugLogLineM(false, logKnownFiles, wxT("Safe adding file to sharedlist: ") + result->GetFileName());			
+			AddDebugLogLineM(false, logKnownFiles,
+				CFormat(wxT("Safe adding file to sharedlist: %s")) % result->GetFileName());
 			sharedfiles->SafeAddKFile(result);
 
 			filecount++;
@@ -1570,7 +1566,8 @@ void CamuleApp::OnFinishedHashing(CHashingEvent& evt)
 				}
 			}
 		} else {
-			AddDebugLogLineM(false, logKnownFiles, wxT("File not added to sharedlist: ") + result->GetFileName());
+			AddDebugLogLineM(false, logKnownFiles,
+				CFormat(wxT("File not added to sharedlist: %s")) % result->GetFileName());
 			delete result;
 		}
 	}

@@ -112,7 +112,7 @@ m_hasComment(other.m_hasComment),
 m_iUserRating(other.m_iUserRating),
 m_taglist(other.m_taglist),
 m_nFileSize(other.m_nFileSize),
-m_strFileName(other.m_strFileName)
+m_fileName(other.m_fileName)
 {
 /* // TODO: Currently it's not safe to duplicate the entries, but isn't needed either.
 	CKadEntryPtrList::const_iterator it = other.m_kadNotes.begin();
@@ -123,9 +123,9 @@ m_strFileName(other.m_strFileName)
 }
 
 
-void CAbstractFile::SetFileName(const wxString& strFileName)
+void CAbstractFile::SetFileName(const CPath& fileName)
 { 
-	m_strFileName = strFileName;
+	m_fileName = fileName;
 } 
 
 uint32 CAbstractFile::GetIntTagValue(uint8 tagname) const
@@ -325,7 +325,7 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 {
 	Init();
 	
-	SetFileName(tag->FileName());
+	SetFileName(CPath(tag->FileName()));
 	m_abyFileHash = tag->ID();
 	SetFileSize(tag->SizeFull());
 	m_iPartCount = (GetFileSize() + (PARTSIZE - 1)) / PARTSIZE;
@@ -372,9 +372,9 @@ void CKnownFile::RemoveUploadingClient(CUpDownClient* client)
 }
 
 
-void CKnownFile::SetFilePath(const wxString& strFilePath)
+void CKnownFile::SetFilePath(const CPath& filePath)
 {
-	m_strFilePath = strFilePath;
+	m_filePath = filePath;
 }
 
 
@@ -514,8 +514,8 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
 			case FT_FILENAME:
-				if (GetFileName().IsEmpty()) {
-					SetFileName(newtag.GetStr());
+				if (!GetFileName().IsOk()) {
+					SetFileName(CPath(newtag.GetStr()));
 				}
 				break;
 			
@@ -678,11 +678,11 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 	file->WriteUInt32(tagcount);
 	
-	CTagString nametag_unicode(FT_FILENAME, GetFileName());
+	CTagString nametag_unicode(FT_FILENAME, GetFileName().GetRaw());
 	// We write it with BOM to kep eMule compatibility
 	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);	
 	
-	CTagString nametag(FT_FILENAME, GetFileName());
+	CTagString nametag(FT_FILENAME, GetFileName().GetRaw());
 	nametag.WriteTagToFile(file);
 	
 	CTagIntSized sizetag(FT_FILESIZE, GetFileSize(), IsLargeFile() ? 64 : 32);
@@ -867,14 +867,14 @@ CPacket* CKnownFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 b
 	if ((((CKnownFile*)forClient->GetRequestFile() != this)
 		&& ((CKnownFile*)forClient->GetUploadFile() != this)) || forClient->GetUploadFileID() != GetFileHash()) {
 		wxString file1 = _("Unknown");
-		if (forClient->GetRequestFile() &&  !forClient->GetRequestFile()->GetFileName().IsEmpty()) {
-			file1 = forClient->GetRequestFile()->GetFileName();
-		} else if (forClient->GetUploadFile() &&  !forClient->GetUploadFile()->GetFileName().IsEmpty()) {
-			file1 = forClient->GetUploadFile()->GetFileName();
+		if (forClient->GetRequestFile() && forClient->GetRequestFile()->GetFileName().IsOk()) {
+			file1 = forClient->GetRequestFile()->GetFileName().GetPrintable();
+		} else if (forClient->GetUploadFile() && forClient->GetUploadFile()->GetFileName().IsOk()) {
+			file1 = forClient->GetUploadFile()->GetFileName().GetPrintable();
 		}
 		wxString file2 = _("Unknown");
-		if (!GetFileName().IsEmpty()) {
-			file2 = GetFileName();
+		if (GetFileName().IsOk()) {
+			file2 = GetFileName().GetPrintable();
 		}
 		AddDebugLogLineM(false, logKnownFiles, wxT("File missmatch on source packet (K) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
@@ -1282,12 +1282,12 @@ void CKnownFile::ClearPriority() {
 	UpdateAutoUpPriority();
 }
 
-void CKnownFile::SetFileName(const wxString& strFilename)
+void CKnownFile::SetFileName(const CPath& filename)
 { 
-	CAbstractFile::SetFileName(strFilename);
+	CAbstractFile::SetFileName(filename);
 #ifndef CLIENT_GUI
 		wordlist.clear();
-		Kademlia::CSearchManager::GetWords(GetFileName(), &wordlist);
+		Kademlia::CSearchManager::GetWords(GetFileName().GetPrintable(), &wordlist);
 #endif
 }
 

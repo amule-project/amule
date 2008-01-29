@@ -31,7 +31,7 @@
 #include <wx/imaglist.h>
 
 #include <common/StringFunctions.h>
-#include "FileFunctions.h"
+#include <common/FileFunctions.h>
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
 
@@ -97,14 +97,14 @@ void CDirectoryTreeCtrl::Init()
 	
 
 #ifndef __WXMSW__
-	AddChildItem(root, CPath(wxT("/"), CPath::FromFS));
+	AddChildItem(root, CPath(wxT("/")));
 #else
 	for (char drive = 'C'; drive <= 'Z'; drive++) {
-		wxString driveStr = wxString::Format(wxT("%c:"),drive);
+		wxString driveStr = wxString::Format(wxT("%c:"), drive);
 		
 		// Don't change this for a CheckDirExists!
 		if (CheckDirExists(driveStr)) {
-			AddChildItem(root, CPath(driveStr, CPath::FromFS));
+			AddChildItem(root, CPath(driveStr));
 		}
 	}
 #endif
@@ -188,18 +188,16 @@ void CDirectoryTreeCtrl::AddChildItem(wxTreeItemId hBranch, const CPath& item)
 CPath CDirectoryTreeCtrl::GetFullPath(wxTreeItemId hItem)
 {
 	wxCHECK_MSG(hItem.IsOk(), CPath(), wxT("Invalid item in GetFullPath"));
-
-	CItemData* data = dynamic_cast<CItemData*>(GetItemData(hItem));
-	wxCHECK_MSG(data, CPath(), wxT("Missing data-item in GetFullPath"));
-
-	// Terminate recursion once we reach the root
-	hItem = GetItemParent(hItem);
-	if (hItem.IsOk() == false) {
-		return CPath();
-	}
 	
-	// More path-components left ...
-	return GetFullPath(hItem).JoinPaths(data->GetPathComponent());
+	CPath result;
+	for (; hItem.IsOk(); hItem = GetItemParent(hItem)) {
+		CItemData* data = dynamic_cast<CItemData*>(GetItemData(hItem));
+		wxCHECK_MSG(data, CPath(), wxT("Missing data-item in GetFullPath"));
+
+		result = data->GetPathComponent().JoinPaths(result);
+	}
+
+	return result;
 }
 
 
@@ -257,10 +255,10 @@ void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
 #ifndef __WXMSW__
 			// The root dir will get stripped away by the above.
 			// Not that it should be shared in the first place ...
-			m_lstShared.push_back(CPath(wxT("/"), CPath::FromFS));
+			m_lstShared.push_back(CPath(wxT("/")));
 #endif
 		} else {
-			m_lstShared.push_back(CPath(path, CPath::FromFS));
+			m_lstShared.push_back(CPath(path));
 		}
 	}
 	

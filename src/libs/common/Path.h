@@ -1,61 +1,56 @@
 #ifndef FILENAME_H
 #define FILENAME_H
 
+#include "../../Types.h"
 #include "Format.h"
 
 
 /**
- * Partially implemented class, to allow for transition to
- * use of CPath. Currently returns the passed path unchanged.
+ * This class wraps a path/filename, serving a purpose much
+ * like wxFileName. But in addition CPath serves to enable
+ * the handling of "broken" filenames, allowing these to be
+ * printed in a meaningful manner, while still allowing
+ * access to the actual files in the filesystem.
+ *
+ * This class is thread-safe, in that the class is read-only,
+ * and any function that returns wxStrings or CPath objects,
+ * ensure that an entirely new wxString object is created to
+ * circumvent the thread-unsafe reference counting of that
+ * class.
+ *
+ * This class, and its static functions should be used in
+ * preference of wxFileName, for the above reason, and so
+ * that cross-platform issues can be worked around in a
+ * single place.
  */
 class CPath : public CPrintable
 {
 public:
-	//! Two possible sources of filenames
-	enum Source {
-		//! Filenames that are derived from filesystem calls,
-		//! such as wxDir. Must not be mangled, as that would
-		//! cause problem when trying to access the files.
-		FromFS,
-		//! Filenames from the user, or other sources, that do
-		//! not refer to existing files. These can be prettyfied
-		//! before use.
-		FromUser
-	};
-
-	/**
-	 * Default constructor.
-	 *
-	 * Filename must be set before use.
-	 */
+	/** Default constructor. */
 	CPath();
 
-	/**
-	 * Constuctor.
-	 *
-	 * @param filename The partial or complete path of a file.
-	 * @param src The type of filename specified. See above.
-	 */
-	CPath(const wxString& filename, Source src);
+	/** Constuctor. */
+	explicit CPath(const wxString& path);
 
-	/**
-	 * Copy constructor. Creates a deep-copy of the passed object.
-	 */
+	/** Copy constructor. Creates a deep-copy of the passed object. */
 	CPath(const CPath& other);
+
+	/** Destructor. */
+	~CPath();
 	
 
-	/** Standard operators. */
-	// \{
+	/** Assignment operator. */
 	CPath& operator=(const CPath& other);
-	bool operator==(const CPath& other) const;
-	bool operator!=(const CPath& other) const;
+	/** Less-than operator. */
 	bool operator<(const CPath& other) const;
-	// \}
+	/** Note that only exact matches are considered equal, see IsSameDir. */
+	bool operator==(const CPath& other) const;
+	/** Note that only exact matches are considered equal, see IsSameDir. */
+	bool operator!=(const CPath& other) const;
 
 	
 	/** Returns true if the filename is valid, false otherwise. */
 	bool IsOk() const;
-
 	/** Returns true if the path exists and is a file, false otherwise. */
 	bool FileExists() const;
 	/** Returns true if the path exists and is a directory, false otherwise. */
@@ -66,20 +61,71 @@ public:
 	wxString GetRaw() const;
 	/** Returns the full path for use in the UI. */
 	wxString GetPrintable() const;
+	/** Returns the (raw) last extension, empty if none is found. */
+	wxString GetExt() const;
 
 	/** Returns the full path, exluding the filename. */
 	CPath GetPath() const;
 	/** Returns the full filename, excluding the path. */
 	CPath GetFullName() const;
+	
+	/** Returns the size of the specified file, or wxInvalidSize on failure. */
+	sint64 GetFileSize() const;
 
+	/**
+	 * Compares under the assumption that both objects are dirs, even if
+	 * one or the other lacks a terminal directory-seperator. However, an
+	 * empty CPath object will not be considered equal to a path to the root.
+	 */
+	bool IsSameDir(const CPath& other) const;
 
 	/** Returns a CPath created from joining the two objects. */
 	CPath JoinPaths(const CPath& other) const;
+	/** Returns a CPath with invalid chars removed, and replace spaces if specified. */
+	CPath Cleanup(bool keepSpaces = true, bool isFAT32 = false) const;
+	/** Returns a CPath with a postfix before the file-extension. Must be ASCII. */
+	CPath AddPostfix(const wxString& postfix) const;
+	
+	/** Returns a CPath object with the extension appended. Empty strings are ignored. */
+	CPath AppendExt(const wxString& ext) const;
+	/** Returns a CPath with the (last, if multiple) extension removed. */
+	CPath RemoveExt() const;
+	/** Returns a CPath object with all extensions removed. */
+	CPath RemoveAllExt() const;
+
+
 	/** Returns true if the the passed path makes up an prefix of this object. */
 	bool StartsWith(const CPath& other) const;
-
+	
 	/** @see cprintable::getprintablestring */
-	wxString GetPrintableString() const;	
+	wxString GetPrintableString() const;
+
+
+	/** 
+	 * Renames the file 'src' to the file 'dst', overwriting if specified. Note that
+	 * renaming cannot be done across volumes. For that CopyFile is required.
+	 */
+	static bool RenameFile(const CPath& src, const CPath& dst, bool overwrite = false);
+	/** Copies the file 'src' to the file 'dst', overwriting if specified. */
+	static bool CopyFile(const CPath& src, const CPath& dst, bool overwrite = false);
+
+	/** Makes a backup of a file, by copying the original file to 'src' + 'appendix' */
+	static bool BackupFile(const CPath& src, const wxString& appendix);
+	
+	/** Deletes the specified file, returning true on success. */
+	static bool RemoveFile(const CPath& file);
+	/** Deletes the specified directory, returning true on success. */
+	static bool RemoveDir(const CPath& file);
+	
+	/** Returns true if the path exists, and is a file. */
+	static bool FileExists(const wxString& file);
+	/** Returns true if the path exists, and is a directory. */
+	static bool DirExists(const wxString& path);
+
+	/** Returns the size of the specified file, or wxInvalidOffset on failure. */
+	static sint64 GetFileSize(const wxString& file);
+	/** Returns the modification time the specified file, or (time_t)-1 on failure. */
+	static time_t GetModificationTime(const CPath& file);
 
 private:
 	//! Contains the printable filename, for use in the UI.
@@ -87,7 +133,22 @@ private:
 	//! Contains the "raw" filename, for use in system-calls,
 	//! as well as in wxWidgets file functions.
 	wxString	m_filesystem;
+
+	// Is made a friend to avoid needless copying of strings.
+	friend int CmpAny(const CPath& ArgA, const CPath& ArgB);
 };
+
+
+/**
+ * Overloaded version of CmpAny for use with CPaths. As this is
+ * typically used in the UI, it uses the printable filename in
+ * order to get visually correct results.
+ */
+inline int CmpAny(const CPath& ArgA, const CPath& ArgB)
+{
+	return ArgA.m_printable.CmpNoCase(ArgB.m_printable);
+}
+
 
 
 #endif

@@ -50,7 +50,7 @@
 #include "Logger.h"
 #include <common/Format.h>
 #include "IPFilter.h"
-#include "FileFunctions.h"		// Needed for UnpackArchive
+#include <common/FileFunctions.h>	// Needed for UnpackArchive
 
 CServerList::CServerList()
 {
@@ -63,13 +63,10 @@ CServerList::CServerList()
 bool CServerList::Init()
 {
 	// Load Metfile
-	wxString strTempFilename;
-	strTempFilename = theApp->ConfigDir + wxT("server.met");
-	bool bRes = LoadServerMet(strTempFilename);
+	bool bRes = LoadServerMet(CPath(theApp->ConfigDir + wxT("server.met")));
 
 	// insert static servers from textfile
-	strTempFilename=  theApp->ConfigDir + wxT("staticservers.dat");
-	LoadStaticServers( strTempFilename );
+	LoadStaticServers(theApp->ConfigDir + wxT("staticservers.dat"));
 	
 	// Send the auto-update of server.met via HTTPThread requests
 	current_url_index = 0;
@@ -81,26 +78,26 @@ bool CServerList::Init()
 }
 
 
-bool CServerList::LoadServerMet(const wxString& strFile)
+bool CServerList::LoadServerMet(const CPath& path)
 {
-	AddLogLineM( false, CFormat( _("Loading server.met file: %s") ) % strFile );
+	AddLogLineM(false, CFormat(_("Loading server.met file: %s")) % path);
 	
 	bool merge = !m_servers.empty();
 	
-	if ( !wxFileExists(strFile) ) {
-		AddLogLineM( false, _("Server.met file not found!") );
+	if (!path.FileExists()) {
+		AddLogLineM(false, _("Server.met file not found!"));
 		return false;
 	}
 
 	// Try to unpack the file, might be an archive
 	const wxChar* mets[] = { wxT("server.met"), NULL };
 	// Try to unpack the file, might be an archive
-	if (UnpackArchive(strFile, mets).second != EFT_Met) {
-		AddLogLineM(true, CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % strFile);
+	if (UnpackArchive(path, mets).second != EFT_Met) {
+		AddLogLineM(true, CFormat(_("Failed to load server.met file '%s', unknown format encountered.")) % path);
 		return false;
 	}	
 
-	CFile servermet( strFile,CFile::read );
+	CFile servermet(path, CFile::read);
 	if ( !servermet.IsOpened() ){ 
 		AddLogLineM( false, _("Failed to open server.met!") );
 		return false;
@@ -441,7 +438,7 @@ CServerList::~CServerList()
 
 void CServerList::LoadStaticServers( const wxString& filename )
 {
-	if ( !wxFileName::FileExists( filename ) ) {
+	if ( !CPath::FileExists( filename ) ) {
 		return;
 	}
 	
@@ -624,7 +621,7 @@ CServer* CServerList::GetServerByIPUDP(uint32 nIP, uint16 nUDPPort, bool bObfusc
 
 bool CServerList::SaveServerMet()
 {
-	wxString newservermet = theApp->ConfigDir + wxT("server.met.new");
+	CPath newservermet = CPath(theApp->ConfigDir + wxT("server.met.new"));
 	
 	CFile servermet( newservermet, CFile::write );
 	if (!servermet.IsOpened()) {
@@ -749,18 +746,18 @@ bool CServerList::SaveServerMet()
 	}
 	
 	servermet.Close();
-	wxString curservermet = theApp->ConfigDir + wxT("server.met");
-	wxString oldservermet = theApp->ConfigDir + wxT("server_met.old");
+	const CPath curservermet = CPath(theApp->ConfigDir + wxT("server.met"));
+	const CPath oldservermet = CPath(theApp->ConfigDir + wxT("server_met.old"));
 	
-	if ( wxFileExists(oldservermet) ) {
-		wxRemoveFile(oldservermet);
+	if (oldservermet.FileExists()) {
+		CPath::RemoveFile(oldservermet);
 	}
 	
-	if ( wxFileExists(curservermet) ) {
-		wxRenameFile(curservermet, oldservermet);
+	if (curservermet.FileExists()) {
+		CPath::RenameFile(curservermet, oldservermet);
 	}
 	
-	wxRenameFile(newservermet, curservermet);
+	CPath::RenameFile(newservermet, curservermet);
 	
 	return true;
 }
@@ -791,15 +788,18 @@ void CServerList::UpdateServerMetFromURL(const wxString& strURL)
 	downloader->Run();
 }
 
+
 void CServerList::DownloadFinished(uint32 result) 
 {
 	if(result == 1) {
-		wxString strTempFilename(theApp->ConfigDir + wxT("server.met.download"));
+		const CPath tempFilename = CPath(theApp->ConfigDir + wxT("server.met.download"));
+
 		// curl succeeded. proceed with server.met loading
-		LoadServerMet(strTempFilename);
+		LoadServerMet(tempFilename);
 		SaveServerMet();
+
 		// So, file is loaded and merged, and also saved
-		wxRemoveFile(strTempFilename);
+		CPath::RemoveFile(tempFilename);
 		AddLogLineM(true, CFormat(
 			_("Finished to download the server list from %s")) % URLUpdate);
 	} else {
@@ -847,13 +847,15 @@ void CServerList::AutoUpdate()
 void CServerList::AutoDownloadFinished(uint32 result) 
 {
 	
-	if(result==1) {
-		wxString strTempFilename(theApp->ConfigDir + wxT("server_auto.met"));
+	if (result == 1) {
+		CPath tempFilename = CPath(theApp->ConfigDir + wxT("server_auto.met"));
+		
 		// curl succeeded. proceed with server.met loading
-		LoadServerMet(strTempFilename);
+		LoadServerMet(tempFilename);
 		SaveServerMet();
+		
 		// So, file is loaded and merged, and also saved
-		wxRemoveFile(strTempFilename);
+		CPath::RemoveFile(tempFilename);
 	} else {
 		AddLogLineM(true, CFormat(_("Failed to download the server list from %s") ) % URLUpdate);
 	}

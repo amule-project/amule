@@ -26,7 +26,9 @@
 #ifndef CFILE_H
 #define CFILE_H
 
+#include <common/Path.h>	// Needed for CPath
 #include "SafeFile.h"		// Needed for CFileDataIO
+
 #include <wx/file.h>		// Needed for constants
 
 
@@ -60,6 +62,7 @@ public:
 	 * To check if the file was successfully opened, a
 	 * call to IsOpened() is required.
 	 */
+	CFile(const CPath& path, OpenMode mode = read);
 	CFile(const wxString& path, OpenMode mode = read);
 
 	/**
@@ -82,16 +85,18 @@ public:
 	 * If an accessMode is not explicitly specified, the accessmode
 	 * specified via CPreferences::GetFilePermissions will be used.
 	 */
+	bool Open(const CPath& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 	bool Open(const wxString& path, OpenMode mode = read, int accessMode = wxS_DEFAULT);
 	
 	/**
-	 * Calling Create is requivilant of calling open with OpenMode 'write'.
+	 * Calling Create is equivilant of calling open with OpenMode 'write'.
 	 *
 	 * @param overwrite Specifies if the target file should be overwritten,
 	 *                  in case that it already exists.
 	 *
 	 * @see CFile::Open
 	 */
+	bool Create(const CPath& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
 	bool Create(const wxString& path, bool overwrite = false, int accessMode = wxS_DEFAULT);
 	
 	/**
@@ -153,7 +158,7 @@ public:
 	 * Calling this function on an closed file is
 	 * an illegal operation.
 	 */
-	const wxString& GetFilePath() const;
+	const CPath& GetFilePath() const;
 	
 
 	/**
@@ -180,7 +185,7 @@ private:
 	int m_fd;
 	
 	//! The full path to the current file.
-	wxString m_filePath;
+	CPath m_filePath;
 };
 
 

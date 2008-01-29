@@ -29,9 +29,7 @@
 
 #include "../../Types.h"		// Needed for uint16 and uint32
 
-#include <wx/filename.h>
-
-#include "ConvAmule.h"
+class CPath;
 
 
 // UTF8 types: No UTF8, BOM prefix, or Raw UTF8
@@ -78,8 +76,8 @@ enum EUtf8Str
 typedef const wxWX2MBbuf Unicode2CharBuf;
 typedef const wxMB2WXbuf Char2UnicodeBuf;
 
-inline Unicode2CharBuf unicode2char(const wxChar* x)	{ return aMuleConv.cWX2MB(x); }
-inline Char2UnicodeBuf char2unicode(const char* x)	{ return aMuleConv.cMB2WX(x); }
+inline Unicode2CharBuf unicode2char(const wxChar* x)	{ return wxConvLocal.cWX2MB(x); }
+inline Char2UnicodeBuf char2unicode(const char* x)	{ return wxConvLocal.cMB2WX(x); }
 
 inline Unicode2CharBuf unicode2UTF8(const wxChar* x)	{ return wxConvUTF8.cWX2MB(x); }
 inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x); }
@@ -87,8 +85,9 @@ inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x)
 inline const wxCharBuffer char2UTF8(const char *x)	{ return unicode2UTF8(char2unicode(x)); }
 inline const wxCharBuffer UTF82char(const char *x)	{ return unicode2char(UTF82unicode(x)); }
 
-inline Unicode2CharBuf unicode_2_broken(const wxChar* x){ return aMuleConvBrokenFileNames.cWX2MB(x); }
-inline Char2UnicodeBuf broken_2_unicode(const char* x) { return aMuleConvBrokenFileNames.cMB2WX(x); }
+inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxFNCONV(x); }
+inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFile.cMB2WC(x); }
+
 
 //
 // Replaces "&" with "&&" in 'in' for use with text-labels
@@ -180,19 +179,7 @@ inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
  * @param isFilePath If true, then the path will be truncated rather than the filename if possible.
  * @return The truncated filename.
  */
-wxString TruncateFilename(const wxString& filename, size_t length, bool isFilePath = false);
-
-/**
- * Removes invalid chars from the filename.
- *
- * @param filename the filename to clean.
- * @param keepSpace If false, spaces are replaced with underscores.
- * @param fat32 If true, chars invalid on fat32 are also replaced.
- *
- * Note that fat32 is always considered to be true on wxMSW.
- */ 
-wxString CleanupFilename(const wxString& filename, bool keepSpaces = true, bool fat32 = false);
-
+wxString TruncateFilename(const CPath& filename, size_t length, bool isFilePath = false);
 
 /**
  * Strips all path separators from the specified end of a path.

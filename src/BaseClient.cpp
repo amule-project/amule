@@ -1873,7 +1873,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 	wxString sRet;
 	sRet = (CFormat(_("NickName: %s ID: %u")) % GetUserName() % GetUserIDHybrid()) + wxT(" ");
 	if (m_reqfile) {
-		sRet += _("Requested:") + wxString(m_reqfile->GetFileName()) + wxT("\n");
+		sRet += CFormat(_("Requested: %s\n")) % m_reqfile->GetFileName();
 		sRet += CFormat(_("Filestats for this session: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAccepts() % m_reqfile->statistic.GetRequests() % CastItoXBytes(m_reqfile->statistic.GetTransferred());
 		sRet += CFormat(_("Filestats for all sessions: Accepted %d of %d requests, %s transferred\n")) % m_reqfile->statistic.GetAllTimeAccepts() % m_reqfile->statistic.GetAllTimeRequests() % CastItoXBytes(m_reqfile->statistic.GetAllTimeTransferred());
 	} else {
