@@ -534,10 +534,7 @@ bool CamuleApp::OnInit()
 		return false;
 	}
 	
-	if (!reset_config) {
-		// Check for old aMule configs, or for old lmule/xmule config if no aMule configs found.
-		CheckConfig();
-	} else {
+	if (reset_config) {
 		// Make a backup first.
 		wxRemoveFile(ConfigDir + wxT("amule.conf.backup"));
 		wxRenameFile(ConfigDir + wxT("amule.conf"), ConfigDir + wxT("amule.conf.backup"));
