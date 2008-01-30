@@ -297,6 +297,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Rewrote the cryptopp m4 stuff.
 		* Fixed some memory leaks related to the use of
 		  CTerminationProcess.
+		* Fixed the usage of CryptoPP::Base64Encoder when creating the
+		  key pair for ClientCreditsList. cryptopp semantics is to
+		  give the ownership, so do not create objects like this on
+		  the heap.
 
 	Radek:
 		* Patch to fix windows compilation.
