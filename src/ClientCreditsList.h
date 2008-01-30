@@ -38,7 +38,7 @@ public:
 	CClientCreditsList();
 	~CClientCreditsList();
 	
-			// return signature size, 0 = Failed | use sigkey param for debug only
+	// return signature size, 0 = Failed | use sigkey param for debug only
 	uint8	CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey = NULL);
 	bool	VerifyIdent(CClientCredits* pTarget, const byte* pachSignature, uint8 nInputSize, uint32 dwForIP, uint8 byChaIPKind);	
 
@@ -57,12 +57,12 @@ protected:
 #endif
 private:
 	typedef std::map<CMD4Hash, CClientCredits*> ClientMap;
-	ClientMap m_mapClients;
-	uint32			m_nLastSaved;
+	ClientMap	m_mapClients;
+	uint32		m_nLastSaved;
 	// A void* to avoid having to include the large CryptoPP.h file
 	void*		m_pSignkey;
-	byte			m_abyMyPublicKey[80];
-	uint8			m_nMyPublicKeyLen;
+	byte		m_abyMyPublicKey[80];
+	uint8		m_nMyPublicKeyLen;
 };
 
 #endif // CLIENTCREDITSLIST_H

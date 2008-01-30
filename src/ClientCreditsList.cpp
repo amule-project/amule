@@ -62,10 +62,7 @@ CClientCreditsList::~CClientCreditsList()
 		delete it->second;
 	}
 	m_mapClients.clear();
-	if (m_pSignkey){
-		delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
-		m_pSignkey = NULL;
-	}
+	delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
 }
 
 
@@ -74,7 +71,6 @@ void CClientCreditsList::LoadList()
 	CFile file;
 	CPath fileName = CPath(theApp->ConfigDir + CLIENTS_MET_FILENAME);
 
-	
 	if (!fileName.FileExists()) {
 		return;
 	}	
@@ -83,7 +79,8 @@ void CClientCreditsList::LoadList()
 		file.Open(fileName, CFile::read);
 	
 		if (file.ReadUInt8() != CREDITFILE_VERSION) {
-			AddDebugLogLineM( true, logCredits, wxT("Creditfile is out of date and will be replaced") );
+			AddDebugLogLineM( true, logCredits,
+				wxT("Creditfile is out of date and will be replaced") );
 			file.Close();
 			return;
 		}
@@ -96,10 +93,13 @@ void CClientCreditsList::LoadList()
 			// Ok, the backup exist, get the size
 			CFile hBakFile(bakFileName);
 			if ( hBakFile.GetLength() > file.GetLength()) {
-				// the size of the backup was larger then the org. file, something is wrong here, don't overwrite old backup..
+				// the size of the backup was larger then the
+				// org. file, something is wrong here, don't
+				// overwrite old backup..
 				bCreateBackup = FALSE;
 			}
-			// else: backup is smaller or the same size as org. file, proceed with copying of file
+			// else: backup is smaller or the same size as org.
+			// file, proceed with copying of file
 		}
 	
 		//else: the backup doesn't exist, create it
@@ -112,7 +112,8 @@ void CClientCreditsList::LoadList()
 			}
 			// reopen file
 			if (!file.Open(fileName, CFile::read)) {
-				AddDebugLogLineM( true, logCredits, wxT("Failed to load creditfile") );
+				AddDebugLogLineM( true, logCredits,
+					wxT("Failed to load creditfile") );
 				return;
 			}
 
@@ -150,7 +151,8 @@ void CClientCreditsList::LoadList()
 				}
 				m_mapClients.clear();
 				
-				AddDebugLogLineM( true, logCredits, wxT("WARNING: Corruptions found while reading Creditfile!") );
+				AddDebugLogLineM( true, logCredits,
+					wxT("WARNING: Corruptions found while reading Creditfile!") );
 				return;	
 			}
 		
@@ -164,7 +166,7 @@ void CClientCreditsList::LoadList()
 			m_mapClients[newcredits->GetKey()] = newcredits;
 		}
 
-		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted) );
+		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted));
 	
 		if (cDeleted) {
 			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
@@ -316,29 +318,35 @@ void CClientCreditsList::InitalizeCrypting()
  		}
 			
  		// load private key
- 		CryptoPP::FileSource filesource(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true,new CryptoPP::Base64Decoder);
- 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
+ 		CryptoPP::FileSource *filesource = new CryptoPP::FileSource(
+			filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME),
+			true, new CryptoPP::Base64Decoder);
+ 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(*filesource);
  		// calculate and store public key
-		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*((CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey));
-		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
- 		pubkey.DEREncode(asink);
- 		m_nMyPublicKeyLen = asink.TotalPutLength();
- 		asink.MessageEnd();
+		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(
+			*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
+		CryptoPP::ArraySink *asink = new CryptoPP::ArraySink(m_abyMyPublicKey, 80);
+ 		pubkey.DEREncode(*asink);
+ 		m_nMyPublicKeyLen = asink->TotalPutLength();
+ 		asink->MessageEnd();
 	} catch (const CryptoPP::Exception& e) {
-		delete (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
+		delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
 		m_pSignkey = NULL;
 		
-		AddDebugLogLineM(true, logCredits, wxString(wxT("Error while initializing encryption keys: ")) + char2unicode(e.what()));
+		AddDebugLogLineM(true, logCredits,
+			wxString(wxT("Error while initializing encryption keys: ")) +
+			char2unicode(e.what()));
  	}
 }
 
 
 uint8 CClientCreditsList::CreateSignature(CClientCredits* pTarget, byte* pachOutput, uint8 nMaxSize, uint32 ChallengeIP, uint8 byChaIPKind, void* sigkey)
 {	
-	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)sigkey;
+	CryptoPP::RSASSA_PKCS1v15_SHA_Signer* signer =
+		static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(sigkey);
 	// signer param is used for debug only
 	if (signer == NULL)
-		signer = (CryptoPP::RSASSA_PKCS1v15_SHA_Signer*)m_pSignkey;
+		signer = static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
 
 	// create a signature of the public key from pTarget
 	wxASSERT( pTarget );
@@ -449,7 +457,7 @@ bool CClientCreditsList::VerifyIdent(CClientCredits* pTarget, const byte* pachSi
 
 bool CClientCreditsList::CryptoAvailable() const
 {
-	return (m_nMyPublicKeyLen > 0 && m_pSignkey != 0);
+	return m_nMyPublicKeyLen > 0 && m_pSignkey != NULL;
 }
 
 
