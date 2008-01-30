@@ -102,8 +102,7 @@ void CDirectoryTreeCtrl::Init()
 	for (char drive = 'C'; drive <= 'Z'; drive++) {
 		wxString driveStr = wxString::Format(wxT("%c:"), drive);
 		
-		// Don't change this for a CheckDirExists!
-		if (CheckDirExists(driveStr)) {
+		if (CPath::DirExists(driveStr)) {
 			AddChildItem(root, CPath(driveStr));
 		}
 	}
