@@ -186,6 +186,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for some man pages have wrong name with
 		  --program-suffix.
 		* Temporary fix for tarball configure.in using SVNDATE.
+	
+	Nodsu:
+		* Patch to make amulecmd cancel/pause/resume work with many
+		  files and file names.
 
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may

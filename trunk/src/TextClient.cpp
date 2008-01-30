@@ -41,6 +41,8 @@
 
 #include <ec/cpp/ECSpecialTags.h>
 
+#include <wx/tokenzr.h>
+
 #include <common/Format.h>		// Needed for CFormat
 #include "OtherFunctions.h"
 #include "KnownFile.h"			// Needed for Priority Levels
@@ -298,57 +300,78 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_PAUSE:
 		case CMD_ID_CANCEL:
 		case CMD_ID_RESUME:
+		{
 			if ( args.IsEmpty() ) {
-				Show(_("This command requires an argument. Valid arguments: 'all' or a number.\n"));
+				Show(_("This command requires an argument. Valid arguments: 'all', filename, or a number.\n"));
 				return 0;
-			} else if ( args.Left(3) == wxT("all") ) {
+			} else {
+				wxStringTokenizer argsTokenizer(args);
+				wxString token;
+				CMD4Hash hash;
+
+				// Grab the entire dl queue right away
 				CECPacket request_all(EC_OP_GET_DLOAD_QUEUE, EC_DETAIL_CMD);
 				const CECPacket *reply_all = SendRecvMsg_v2(&request_all);
-				if (reply_all) {
-					switch(CmdId) {
-						case CMD_ID_PAUSE:
-							request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
-						case CMD_ID_CANCEL:
-							request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
-						case CMD_ID_RESUME:
-							request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
-						default: wxASSERT(0);
-					}
-					
-					for(int i = 0;i < reply_all->GetTagCount();i++) {
-						const CECTag *tag = reply_all->GetTagByIndex(i);
-						if (tag) {
-							request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
-						}
-					}
-					request_list.push_back(request);
-					delete reply_all;
-				}
-			} else {
-				CMD4Hash hash;
-				if (hash.Decode(args.Trim(false).Trim(true))) {
-					if (!hash.IsEmpty()) {
-						switch(CmdId) {
-							case CMD_ID_PAUSE:
-								request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
-							case CMD_ID_CANCEL:
-								request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
-							case CMD_ID_RESUME:
-								request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
-							default: wxASSERT(0);
-						}
-						request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
-						request_list.push_back(request);
-					} else {
-						Show(_("Not a valid number\n"));
-						return 0;
-					}
-				} else {
-						Show(_("Not a valid hash (length should be exactly 32 chars)\n"));
-						return 0;					
-				}
-			}
+
+				if (reply_all) { 
+                                        switch(CmdId) {
+                                                case CMD_ID_PAUSE:
+                                                        request = new CECPacket(EC_OP_PARTFILE_PAUSE); break;
+                                                case CMD_ID_CANCEL:
+                                                        request = new CECPacket(EC_OP_PARTFILE_DELETE); break;
+                                                case CMD_ID_RESUME:
+                                                        request = new CECPacket(EC_OP_PARTFILE_RESUME); break;
+                                                default: wxASSERT(0);
+                                        }
+
+					// We loop through all the arguments
+					while(argsTokenizer.HasMoreTokens()) {
+						token=argsTokenizer.GetNextToken();
+						
+						// If the user requested all, then we select all files and exit the loop
+						// since there is little point to add anything more to "everything"
+						if( token == wxT("all") ) {
+							for(int i = 0;i < reply_all->GetTagCount();i++) {
+	                                                	const CECTag *tag = reply_all->GetTagByIndex(i);
+	                                                	if (tag) {
+	                                                        	request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
+	                                                	}
+								break;
+							}
+	                                        } else if ( hash.Decode(token.Trim(false).Trim(true)) ) {
+							if ( !hash.IsEmpty() ) {
+								Show(_("Processing by hash: "+token+wxT("\n")));
+								request->AddTag(CECTag(EC_TAG_PARTFILE, hash));
+							}
+						} else {
+							 // Go through the dl queue and look at each filename
+							for(int i = 0; i < reply_all->GetTagCount(); i++) {
+								CEC_PartFile_Tag *tag = (CEC_PartFile_Tag *)reply_all->GetTagByIndex(i);
+								if (tag) {
+									wxString partmetname = tag->PartMetName();
+
+									// We check for filename, XXX.pat.met, XXX.part, XXX
+									if( tag->FileName() == token ||
+									partmetname == token ||
+									partmetname.Truncate(partmetname.Len()-4) == token ||
+									partmetname.Truncate(partmetname.Len()-5) == token) {
+										Show(_("Processing by filename: "+token+wxT("\n")));
+										request->AddTag(CECTag(EC_TAG_PARTFILE, tag->GetMD4Data()));
+									}	
+								}		
+							}	
+						} // End of filename check else	
+					} // End of argument token loop
+
+				request_list.push_back(request);
+
+				delete reply_all;
+
+				} // End of dl queue processing
+
+			} // end of command processing
 			break;
+		}
 
 		case CMD_ID_PRIORITY_LOW:
 		case CMD_ID_PRIORITY_NORMAL:
