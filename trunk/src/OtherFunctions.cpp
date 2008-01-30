@@ -957,7 +957,7 @@ EED2KFileType GetED2KFileTypeID(const CPath& fileName)
 		return ED2KFT_ANY;
 	}
 	
-	SED2KFileTypeMap::iterator it = ED2KFileTypesMap.find(ext);
+	SED2KFileTypeMap::iterator it = ED2KFileTypesMap.find(wxT(".") + ext);
 	if (it != ED2KFileTypesMap.end()) {
 		return it->second.GetType();
 	} else {
