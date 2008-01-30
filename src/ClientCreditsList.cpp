@@ -260,18 +260,26 @@ bool CClientCreditsList::CreateKeyPair()
 	try{
 		CryptoPP::AutoSeededX917RNG<CryptoPP::DES_EDE3> rng;
 		CryptoPP::InvertibleRSAFunction privkey;
-		privkey.Initialize(rng,RSAKEYSIZE);
+		privkey.Initialize(rng, RSAKEYSIZE);
 
 		// Nothing we can do against this filename2char :/
-		CryptoPP::Base64Encoder privkeysink(new CryptoPP::FileSink(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME)));
-		
-		privkey.DEREncode(privkeysink);
-		
-		privkeysink.MessageEnd();
+		wxCharBuffer filename = filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME);
+		CryptoPP::FileSink *fileSink = new CryptoPP::FileSink(filename);
+		CryptoPP::Base64Encoder *privkeysink = new CryptoPP::Base64Encoder(fileSink);
+		privkey.DEREncode(*privkeysink);
+		privkeysink->MessageEnd();
+
+		// Do not delete these pointers or it will blow in your face.
+		// cryptopp semantics is giving ownership of these objects.
+		//
+		// delete privkeysink;
+		// delete fileSink;
 
 		AddDebugLogLineM( true, logCredits, wxT("Created new RSA keypair"));
 	} catch(const CryptoPP::Exception& e) {
-		AddDebugLogLineM(true, logCredits, wxString(wxT("Failed to create new RSA keypair: ")) + char2unicode(e.what()));
+		AddDebugLogLineM(true, logCredits,
+			wxString(wxT("Failed to create new RSA keypair: ")) +
+			char2unicode(e.what()));
 		wxASSERT(false);
  		return false;
  	}
