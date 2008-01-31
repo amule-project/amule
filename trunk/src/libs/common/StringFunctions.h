@@ -85,7 +85,7 @@ inline Char2UnicodeBuf UTF82unicode(const char* x)	{ return wxConvUTF8.cMB2WX(x)
 inline const wxCharBuffer char2UTF8(const char *x)	{ return unicode2UTF8(char2unicode(x)); }
 inline const wxCharBuffer UTF82char(const char *x)	{ return unicode2char(UTF82unicode(x)); }
 
-inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxFNCONV(x); }
+inline Unicode2CharBuf filename2char(const wxChar* x)	{ return wxConvFile.cWC2MB(x); }
 inline Char2UnicodeBuf char2filename(const char* x)	{ return wxConvFile.cMB2WC(x); }
 
 

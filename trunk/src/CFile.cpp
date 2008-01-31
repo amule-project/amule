@@ -259,7 +259,7 @@ bool CFile::Open(const CPath& fileName, OpenMode mode, int accessMode)
 	
 
 	
-	Unicode2CharBuf tmpFileName = wxFNCONV(fileName.GetRaw());
+	Unicode2CharBuf tmpFileName = filename2char(fileName.GetRaw());
 	wxASSERT_MSG(tmpFileName, wxT("Convertion failed in CFile::Open"));
 
 	m_filePath = fileName;
