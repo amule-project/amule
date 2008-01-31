@@ -434,7 +434,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 		} else if (s_pfconverting->removeSource) {
 			ret = CPath::RenameFile(oldfile, newfilename);
 		} else {
-			ret = CPath::CopyFile(oldfile, newfilename, false);
+			ret = CPath::CloneFile(oldfile, newfilename, false);
 		}
 		if (!ret) {
 			file->Delete();
@@ -450,7 +450,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 	if (s_pfconverting->removeSource) {
 		CPath::RenameFile(folder.JoinPaths(partfile), newfilename);
 	} else {
-		CPath::CopyFile(folder.JoinPaths(partfile), newfilename, false);
+		CPath::CloneFile(folder.JoinPaths(partfile), newfilename, false);
 	}
 
 	file->m_hashlist.clear();

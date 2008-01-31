@@ -106,8 +106,12 @@ public:
 	 * renaming cannot be done across volumes. For that CopyFile is required.
 	 */
 	static bool RenameFile(const CPath& src, const CPath& dst, bool overwrite = false);
-	/** Copies the file 'src' to the file 'dst', overwriting if specified. */
-	static bool CopyFile(const CPath& src, const CPath& dst, bool overwrite = false);
+	/**
+	 * Copies the file 'src' to the file 'dst', overwriting if specified. 
+	 * The silly name is used to avoid conflicts with the #define CopyFile,
+	 * which is set on MSW.
+	 */
+	static bool CloneFile(const CPath& src, const CPath& dst, bool overwrite = false);
 
 	/** Makes a backup of a file, by copying the original file to 'src' + 'appendix' */
 	static bool BackupFile(const CPath& src, const wxString& appendix);

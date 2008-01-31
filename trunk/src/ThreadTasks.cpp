@@ -474,7 +474,7 @@ void CCompletionTask::Entry()
 	// Move will handle dirs on the same partition, otherwise copy is needed.
 	CPath partfilename = m_metPath.RemoveExt();
 	if (!CPath::RenameFile(partfilename, newName)) {
-		if (!CPath::CopyFile(partfilename, newName, true)) {
+		if (!CPath::CloneFile(partfilename, newName, true)) {
 			m_error = true;
 			return;
 		}
