@@ -10,9 +10,7 @@
 // using a different encoding than the current system-wide setting. If
 // this is not done, such filenames will fail during convertion to/from
 // multibyte (as in cWC2MB/cMB2WC).
-//
-// FIXME: Is this needed for non-wxGTK?
-#if !wxUSE_GUI
+#if !wxUSE_GUI && !defined(__WXMSW__)
 void* setFNConv()
 {
 	// This uses the same method as wxApp::Initialize under GTK2
@@ -158,7 +156,7 @@ CPath::CPath(const wxString& filename)
 		return;
 	}
 
-	wxCharBuffer fn = wxFNCONV(filename);
+	wxCharBuffer fn = filename2char(filename);
 	if (fn) {
 		// Filename is valid in the current locale. This means that
 		// it either originated from a (wx)system-call, or from a
