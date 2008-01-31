@@ -119,8 +119,6 @@ static CServerSocketHandler g_serverSocketHandler;
 // CServerSocket
 //------------------------------------------------------------------------------
 
-IMPLEMENT_DYNAMIC_CLASS(CServerSocket,CEMSocket)
-
 CServerSocket::CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData)
 :
 CEMSocket(ProxyData)

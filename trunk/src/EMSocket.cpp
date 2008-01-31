@@ -39,8 +39,6 @@
 
 const uint32 MAX_SIZE = 2000000;
 
-IMPLEMENT_DYNAMIC_CLASS(CEMSocket, CEncryptedStreamSocket)
-
 CEMSocket::CEMSocket(const CProxyData *ProxyData)
 	: CEncryptedStreamSocket(wxSOCKET_NOWAIT, ProxyData)
 {

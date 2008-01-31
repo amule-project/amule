@@ -118,8 +118,6 @@ static unsigned char dh768_p[]={
 #endif
 #define SOCKET_ERROR (-1)
 
-IMPLEMENT_DYNAMIC_CLASS(CEncryptedStreamSocket, CSocketClientProxy)
-
 CEncryptedStreamSocket::CEncryptedStreamSocket(wxSocketFlags flags, const CProxyData *proxyData) : CSocketClientProxy(flags, proxyData)
 {
 	m_StreamCryptState = thePrefs::IsClientCryptLayerSupported() ? ECS_UNKNOWN : ECS_NONE;
