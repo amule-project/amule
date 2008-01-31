@@ -455,7 +455,7 @@ wxString CPath::GetPrintableString() const
 }
 
 
-bool CPath::CopyFile(const CPath& src, const CPath& dst, bool overwrite)
+bool CPath::CloneFile(const CPath& src, const CPath& dst, bool overwrite)
 {
 	return ::wxCopyFile(src.GetRaw(), dst.GetRaw(), overwrite);
 }
@@ -479,7 +479,7 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 
 	CPath dst = CPath(src.GetRaw() + appendix);
 
-	if (CPath::CopyFile(src, dst, true)) {
+	if (CPath::CloneFile(src, dst, true)) {
 		// Try to ensure that the backup gets physically written 
 		wxFile backupFile;
 		if (backupFile.Open(dst.GetRaw())) {

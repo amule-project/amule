@@ -916,7 +916,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
 
-		CPath::CopyFile(m_fullname.AppendExt(PARTMET_BAK_EXT), m_fullname, true);
+		CPath::CloneFile(m_fullname.AppendExt(PARTMET_BAK_EXT), m_fullname, true);
 	} else if (metLength == 0) {
 		// Don't backup if it's 0 size but raise a warning!!!
 		theApp->ShowAlert( CFormat( _("'%s' is 0 size somehow - using %s file.") )
@@ -924,7 +924,7 @@ bool CPartFile::SavePartFile(bool Initial)
 			% PARTMET_BAK_EXT,
 			_("Message"), wxOK);
 				
-		CPath::CopyFile(m_fullname.AppendExt(PARTMET_BAK_EXT), m_fullname, true);
+		CPath::CloneFile(m_fullname.AppendExt(PARTMET_BAK_EXT), m_fullname, true);
 	} else {
 		// no error, just backup
 		CPath::BackupFile(m_fullname, PARTMET_BAK_EXT);
