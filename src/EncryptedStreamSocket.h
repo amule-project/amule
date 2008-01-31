@@ -87,7 +87,6 @@ class CRC4EncryptableBuffer;
 
 class CEncryptedStreamSocket : public CSocketClientProxy
 {
-	DECLARE_DYNAMIC_CLASS(CEncryptedStreamSocket)
 public:
 	CEncryptedStreamSocket(
 		wxSocketFlags flags = wxSOCKET_NONE,

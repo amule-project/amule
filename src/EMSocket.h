@@ -45,8 +45,6 @@ const sint32 PACKET_HEADER_SIZE	= 6;
 
 class CEMSocket : public CEncryptedStreamSocket, public ThrottledFileSocket
 {
-	DECLARE_DYNAMIC_CLASS(CEMSocket)
-	
 public:
 	CEMSocket(const CProxyData *ProxyData = NULL);
 	virtual ~CEMSocket();

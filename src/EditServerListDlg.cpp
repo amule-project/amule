@@ -35,7 +35,6 @@ BEGIN_EVENT_TABLE(EditServerListDlg, wxDialog)
     EVT_BUTTON(wxID_OK, EditServerListDlg::OnOK)
 END_EVENT_TABLE()
 
-IMPLEMENT_CLASS(EditServerListDlg, wxDialog)
 
 EditServerListDlg::EditServerListDlg(wxWindow *parent,
                                      const wxString& caption,

@@ -41,11 +41,9 @@ class CServer;
 
 class CServerSocket : public CEMSocket
 {
-	DECLARE_DYNAMIC_CLASS(CServerSocket)
 	friend class CServerConnect;
-	CServerSocket() {};
-	
 public:
+
 	CServerSocket(CServerConnect* in_serverconnect, const CProxyData *ProxyData = NULL);
 	virtual ~CServerSocket();
 

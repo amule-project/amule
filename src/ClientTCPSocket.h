@@ -44,7 +44,6 @@ class CTimerWnd;
 
 class CClientTCPSocket : public CEMSocket
 {
-	DECLARE_DYNAMIC_CLASS(CClientTCPSocket)
 public:
 	CClientTCPSocket(CUpDownClient* in_client = NULL, const CProxyData *ProxyData = NULL);	
 	virtual ~CClientTCPSocket();
