@@ -27,13 +27,13 @@
 
 #include <common/MenuIDs.h>
 
+#include "amule.h"		// Needed for theApp
 #include "DownloadQueue.h"	// Needed for CDownloadQueue
 #include "KnownFileList.h"	// Needed for CKnownFileList
 #include "PartFile.h"		// Needed for CPartFile and CKnownFile
 #include "SearchList.h"		// Needed for CSearchFile
 #include "SearchDlg.h"		// Needed for CSearchDlg
 #include "amuleDlg.h"		// Needed for CamuleDlg
-#include "amule.h"			// Needed for theApp
 #include "muuli_wdr.h"		// Needed for clientImages
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
