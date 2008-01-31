@@ -38,6 +38,7 @@
 #include <wx/imaglist.h>
 #include <wx/selstore.h>
 #include <wx/renderer.h>
+#include <wx/dcbuffer.h>
 
 #ifdef __WXMAC__
     #include <wx/mac/private.h>
@@ -609,6 +610,12 @@ public:
     void OnScroll( wxScrollWinEvent& event );
 
     void OnPaint( wxPaintEvent &event );
+    void OnErase( wxEraseEvent& event ) {
+        // This is needed to avoid garbage on empty lists.
+        if ( IsEmpty() ) {
+            event.Skip();
+        }
+    }
 
     void DrawImage( int index, wxDC *dc, int x, int y );
     void GetImageSize( int index, int &width, int &height ) const;
@@ -2232,6 +2239,7 @@ void wxListTextCtrlWrapper::OnKillFocus( wxFocusEvent &event )
 
 BEGIN_EVENT_TABLE(wxListMainWindow,wxScrolledWindow)
   EVT_PAINT          (wxListMainWindow::OnPaint)
+  EVT_ERASE_BACKGROUND (wxListMainWindow::OnErase)
   EVT_MOUSE_EVENTS   (wxListMainWindow::OnMouse)
   EVT_CHAR           (wxListMainWindow::OnChar)
   EVT_KEY_DOWN       (wxListMainWindow::OnKeyDown)
@@ -2707,10 +2715,9 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
     // Note: a wxPaintDC must be constructed even if no drawing is
     // done (a Windows requirement).
-    wxPaintDC dc( this );
+    wxBufferedPaintDC dc( this );
 
-    if ( IsEmpty() || m_freezeCount )
-        // nothing to draw or not the moment to draw it
+    if ( m_freezeCount )
         return;
 
     if ( m_dirty )
@@ -2718,6 +2725,14 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         return;
 
     PrepareDC( dc );
+
+    // We need to clear the DC manually, since we intercept BG-erase events.
+    dc.Clear();
+
+    // IsEmpty is checked now, after clearing, to avoid garbage on empty lists.
+    if ( IsEmpty() ) {
+        return;
+    }
 
     int dev_x, dev_y;
     CalcScrolledPosition( 0, 0, &dev_x, &dev_y );
