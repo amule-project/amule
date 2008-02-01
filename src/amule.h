@@ -34,7 +34,9 @@
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
 #ifndef __WXMSW__
+	#include <map>
 	#include <signal.h>
+	#include <wx/unix/execute.h>
 #endif // __WXMSW__
 
 
@@ -394,13 +396,19 @@ public:
 };
 
 
+typedef std::map<int, wxEndProcessData> EndProcessDataMap;
+
+
 class CDaemonAppTraits : public wxConsoleAppTraits
 {
 private:
 	CAmuledGSocketFuncTable *m_table;
-
 	wxMutex m_lock;
 	std::list<wxObject *> m_sched_delete;
+#ifndef __WXMSW__
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
+#endif
 
 public:
 	CDaemonAppTraits(CAmuledGSocketFuncTable *table);
@@ -412,8 +420,6 @@ public:
 
 #ifndef __WXMSW__
 	virtual int WaitForChild(wxExecuteData& execData);
-	struct sigaction m_oldSignalChildAction;
-	struct sigaction m_newSignalChildAction;
 #endif
 #ifdef __WXMAC__
 	virtual wxStandardPathsBase& GetStandardPaths();
@@ -430,6 +436,7 @@ class CamuleDaemonApp : public CamuleApp
 {
 private:
 	bool m_Exit;
+	CAmuledGSocketFuncTable *m_table;
 #ifndef __WXMSW__
 	struct sigaction m_oldSignalChildAction;
 	struct sigaction m_newSignalChildAction;
@@ -440,8 +447,6 @@ private:
 	int OnExit();
 
 	virtual int InitGui(bool geometry_enable, wxString &geometry_string);
-
-	CAmuledGSocketFuncTable *m_table;
 	
 public:
 	CamuleDaemonApp();

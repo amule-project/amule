@@ -307,6 +307,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  the heap.
 		* Fix for amuled creating zombies. wxProcess does not work
 		  with wxBase.
+		* wxProcess now receives OnTerminate() events in amuled.
 
 	Radek:
 		* Patch to fix windows compilation.
