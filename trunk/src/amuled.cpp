@@ -304,12 +304,19 @@ void CAmuledGSocketFuncTable::Disable_Events(GSocket *socket)
 	Uninstall_Callback(socket, GSOCK_OUTPUT);
 }
 
-CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table) : m_lock(wxMUTEX_RECURSIVE)
-{
-	m_table = table;
 
+CDaemonAppTraits::CDaemonAppTraits(CAmuledGSocketFuncTable *table)
+:
+wxConsoleAppTraits(),
+m_table(table),
+m_lock(wxMUTEX_RECURSIVE),
+m_sched_delete(),
+m_oldSignalChildAction(),
+m_newSignalChildAction()
+{
 	m_lock.Unlock();
 }
+
 
 void CDaemonAppTraits::ScheduleForDestroy(wxObject *object)
 {
@@ -345,47 +352,6 @@ void CDaemonAppTraits::DeletePending()
 }
 
 
-#ifndef __WXMSW__
-int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
-{
-	printf(
-	"*************************************\n"
-	"CDaemonAppTraits::WaitForChild called\n"
-	"pid: %d\n"
-	"*************************************\n"
-	, execData.pid);
-	if (execData.flags & wxEXEC_SYNC) {
-		printf(
-			"*************************************\n"
-			"wxEXEC_SYNC\n"
-			"*************************************\n");
-		int exitcode = 0;
-		if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
-			wxLogSysError(_("Waiting for subprocess termination failed"));
-		}	
-
-		return exitcode;
-	} else /** wxEXEC_ASYNC */ {
-		// Give the process a chance to start or forked child to exit
-		// 1 second is enough time to fail on "path not found"
-		wxSleep(1);
-		printf(
-			"*************************************\n"
-			"wxEXEC_ASYNC\n"
-			"*************************************\n");
-		int status = 0, result = 0; 
-		if ( (result = waitpid(execData.pid, &status, WNOHANG)) == -1) {
-			printf("ERROR: waitpid call failed\n");
-		} else if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status))) {
-			return 0;
-		}
-
-		return execData.pid;
-	}
-}
-#endif
-
-
 #ifdef __WXMAC__
 #include <wx/stdpaths.h> // Do_not_auto_remove (guess)
 static wxStandardPathsCF gs_stdPaths;
@@ -397,13 +363,13 @@ wxStandardPathsBase& CDaemonAppTraits::GetStandardPaths()
 
 
 CamuleDaemonApp::CamuleDaemonApp()
+:
+m_Exit(false),
+m_table(new CAmuledGSocketFuncTable())
 {
 	wxPendingEventsLocker = new wxCriticalSection;
-
-	m_table = new CAmuledGSocketFuncTable();
-	
-	m_Exit = false;
 }
+
 
 wxAppTraits *CamuleDaemonApp::CreateTraits()
 {
@@ -412,33 +378,85 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 
 
 #ifndef __WXMSW__
+
+
+static EndProcessDataMap endProcDataMap;
+
+
+int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
+{
+	if (execData.flags & wxEXEC_SYNC) {
+		int exitcode = 0;
+		if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
+			wxLogSysError(_("Waiting for subprocess termination failed"));
+		}	
+
+		return exitcode;
+	} else /** wxEXEC_ASYNC */ {
+		// Give the process a chance to start or forked child to exit
+		// 1 second is enough time to fail on "path not found"
+		wxSleep(1);
+		int status = 0;
+		int result = waitpid(execData.pid, &status, WNOHANG);
+		if (result == -1) {
+			printf("ERROR: waitpid call failed\n");
+		} else if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status))) {
+			return 0;
+		}
+		
+		// Add a WxEndProcessData entry to the map, so that we can
+		// support process termination
+		wxEndProcessData endProcData;
+		endProcData.pid = execData.pid;
+		endProcData.process = execData.process;
+		endProcData.tag = 0;
+		endProcDataMap[execData.pid] = endProcData;
+
+		return execData.pid;
+	}
+}
+
+
 void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*/)
 {
-	printf(
-	"*************************************\n"
-	"OnSignalChildHandler() called\n"
-	"pid: %d\n"
-	"*************************************\n"
-	, siginfo->si_pid);
+	// Build the log message
+	wxString msg;
+	msg = msg <<
+		wxT("OnSignalChildHandler() has been called for process with pid `") <<
+		siginfo->si_pid <<
+		wxT("'. ");
+	// Make sure we leave no zombies by calling waitpid()
 	int status = 0; 
 	int result = waitpid(siginfo->si_pid, &status, WNOHANG);
 	if (result == -1) {
-		printf("ERROR: waitpid call failed\n");
+		msg = msg << wxT("ERROR: waitpid call failed.");
 	} else if (WIFSIGNALED(status)) {
-		printf("Child was killed by a signal\n");
+		msg = msg << wxT("Child was killed by a signal.");
 	} else if (WIFEXITED(status)) {
-		printf("Child has terminated with status code %d\n",
-			WEXITSTATUS(status));
+		msg = msg <<
+			wxT("Child has terminated with status code `") <<
+			WEXITSTATUS(status) <<
+			wxT("'.");
 	}
-	AddDebugLogLineM(true, logGeneral, wxT("OnSignalChildHandler()"));
+	// Fetch the wxEndProcessData structure corresponding to this pid
+	EndProcessDataMap::iterator it = endProcDataMap.find(siginfo->si_pid);
+	wxEndProcessData endProcData = it->second;
+	// Remove that entry from the process map
+	endProcDataMap.erase(siginfo->si_pid);
+	// Save the exit code for the wxProcess object to read later
+	endProcData.exitcode = result != -1 && WIFEXITED(status) ?
+		WEXITSTATUS(status) : -1;
+	// Make things work as in wxGUI
+	wxHandleProcessTermination(&endProcData);
+
+	// Log our passage here
+	AddDebugLogLineM(false, logGeneral, msg);
 }
 #endif // __WXMSW__
 
 
 int CamuleDaemonApp::OnRun()
 {
-	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
-	
 	if (!thePrefs::AcceptExternalConnections()) {
 		wxString warning = _("ERROR: aMule daemon cannot be used when external connections are disabled. "
 			"To enable External Connections, use either a normal aMule, start amuled with the option --ec-config or set the key"
