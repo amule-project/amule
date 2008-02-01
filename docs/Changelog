@@ -181,6 +181,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* set the search string to the search text of currently
 		  selected tab.
 
+	morricone:
+		* Fix for wxwin.m4 not autodetecting wxBase.
+
 	mr_hyde:
 		* Patch to enable Kad search with amulecmd.
 		* Fix for some man pages have wrong name with

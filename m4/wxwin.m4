@@ -867,6 +867,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             WX_X11PORT=$(expr "$WX_SELECTEDCONFIG" : ".*x11.*")
             WX_MGLPORT=$(expr "$WX_SELECTEDCONFIG" : ".*mgl.*")
             WX_DFBPORT=$(expr "$WX_SELECTEDCONFIG" : ".*dfb.*")
+            WX_BASEPORT=$(expr "$WX_SELECTEDCONFIG" : ".*base.*")
 
             WX_PORT="unknown"
             if test "$WX_GTKPORT1" != "0"; then WX_PORT="gtk1"; fi
@@ -877,6 +878,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             if test "$WX_X11PORT" != "0"; then WX_PORT="x11"; fi
             if test "$WX_MGLPORT" != "0"; then WX_PORT="mgl"; fi
             if test "$WX_DFBPORT" != "0"; then WX_PORT="dfb"; fi
+            if test "$WX_BASEPORT" != "0"; then WX_PORT="base"; fi
 
             dnl check at least one of the WX_*PORT has been set !
 
