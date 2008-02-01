@@ -238,7 +238,7 @@ void CAmuledGSocketFuncTable::RunSelect()
 	m_in_set->FillSet(max_fd);
 	m_out_set->FillSet(max_fd);
 
-    struct timeval tv;
+	struct timeval tv;
 	tv.tv_sec = 0;
 	tv.tv_usec = 10000; // 10ms
 	
@@ -346,27 +346,40 @@ void CDaemonAppTraits::DeletePending()
 
 
 #ifndef __WXMSW__
-int CDaemonAppTraits::WaitForChild(wxExecuteData& execData)
+int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 {
-    if (execData.flags & wxEXEC_SYNC) {
-	    int exitcode = 0;
-    	if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
-        	wxLogSysError(_("Waiting for subprocess termination failed"));
-	    }	
+	printf(
+	"*************************************\n"
+	"CDaemonAppTraits::WaitForChild called\n"
+	"pid: %d\n"
+	"*************************************\n"
+	, execData.pid);
+	if (execData.flags & wxEXEC_SYNC) {
+		printf(
+			"*************************************\n"
+			"wxEXEC_SYNC\n"
+			"*************************************\n");
+		int exitcode = 0;
+		if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
+			wxLogSysError(_("Waiting for subprocess termination failed"));
+		}	
 
-    	return exitcode;
+		return exitcode;
 	} else /** wxEXEC_ASYNC */ {
 		// Give the process a chance to start or forked child to exit
 		// 1 second is enough time to fail on "path not found"
 		wxSleep(1);
-
+		printf(
+			"*************************************\n"
+			"wxEXEC_ASYNC\n"
+			"*************************************\n");
 		int status = 0, result = 0; 
 		if ( (result = waitpid(execData.pid, &status, WNOHANG)) == -1) {
 			printf("ERROR: waitpid call failed\n");
 		} else if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status))) {
 			return 0;
 		}
-		
+
 		return execData.pid;
 	}
 }
@@ -397,6 +410,31 @@ wxAppTraits *CamuleDaemonApp::CreateTraits()
 	return new CDaemonAppTraits(m_table);
 }
 
+
+#ifndef __WXMSW__
+void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*/)
+{
+	printf(
+	"*************************************\n"
+	"OnSignalChildHandler() called\n"
+	"pid: %d\n"
+	"*************************************\n"
+	, siginfo->si_pid);
+	int status = 0; 
+	int result = waitpid(siginfo->si_pid, &status, WNOHANG);
+	if (result == -1) {
+		printf("ERROR: waitpid call failed\n");
+	} else if (WIFSIGNALED(status)) {
+		printf("Child was killed by a signal\n");
+	} else if (WIFEXITED(status)) {
+		printf("Child has terminated with status code %d\n",
+			WEXITSTATUS(status));
+	}
+	AddDebugLogLineM(true, logGeneral, wxT("OnSignalChildHandler()"));
+}
+#endif // __WXMSW__
+
+
 int CamuleDaemonApp::OnRun()
 {
 	AddDebugLogLineM( true, logGeneral, wxT("CamuleDaemonApp::OnRun()"));
@@ -408,6 +446,7 @@ int CamuleDaemonApp::OnRun()
 		
 		AddLogLineM(true, warning);
 		printf("\n%s\n\n", (const char*)unicode2char(warning));
+		
 		return 0;
 	} else if (thePrefs::ECPassword().IsEmpty()) {
 		wxString warning = wxT("ERROR: A valid password is required to use "
@@ -419,8 +458,23 @@ int CamuleDaemonApp::OnRun()
 	
 		AddLogLineM(true, warning);
 		printf("\n%s\n\n", (const char*)unicode2char(warning));
+		
 		return 0;
 	}
+
+#ifndef __WXMSW__
+	// Process the return code of dead children so that we do not create 
+	// zombies. wxBase does not implement wxProcess callbacks, so no one
+	// actualy calls wxHandleProcessTermination() in console applications.
+	// We do our best here.
+	int ret = 0;
+	ret = sigaction(SIGCHLD, NULL, &m_oldSignalChildAction);
+	m_newSignalChildAction = m_oldSignalChildAction;
+	m_newSignalChildAction.sa_sigaction = OnSignalChildHandler;
+	m_newSignalChildAction.sa_flags |=  SA_SIGINFO;
+	m_newSignalChildAction.sa_flags &= ~SA_RESETHAND;
+	ret = sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
+#endif // __WXMSW__
 	
 	while ( !m_Exit ) {
 		m_table->RunSelect();
@@ -429,6 +483,9 @@ int CamuleDaemonApp::OnRun()
 	}
 	
 	ShutDown();
+#ifndef __WXMSW__
+	ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
+#endif // __WXMSW__
 
 	return 0;
 }

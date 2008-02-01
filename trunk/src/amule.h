@@ -33,6 +33,9 @@
 
 
 #include "Types.h"		// Needed for int32, uint16 and uint64
+#ifndef __WXMSW__
+	#include <signal.h>
+#endif // __WXMSW__
 
 
 class CAbstractFile;
@@ -409,16 +412,28 @@ public:
 
 #ifndef __WXMSW__
 	virtual int WaitForChild(wxExecuteData& execData);
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
 #endif
 #ifdef __WXMAC__
 	virtual wxStandardPathsBase& GetStandardPaths();
 #endif
 };
 
+
+#ifndef __WXMSW__
+	void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
+#endif // __WXMSW__
+
+
 class CamuleDaemonApp : public CamuleApp
 {
 private:
 	bool m_Exit;
+#ifndef __WXMSW__
+	struct sigaction m_oldSignalChildAction;
+	struct sigaction m_newSignalChildAction;
+#endif // __WXMSW__
 
 	bool OnInit();
 	int OnRun();
