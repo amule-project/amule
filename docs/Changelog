@@ -302,6 +302,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  key pair for ClientCreditsList. cryptopp semantics is to
 		  give the ownership, so do not create objects like this on
 		  the heap.
+		* Fix for amuled creating zombies. wxProcess does not work
+		  with wxBase.
 
 	Radek:
 		* Patch to fix windows compilation.
