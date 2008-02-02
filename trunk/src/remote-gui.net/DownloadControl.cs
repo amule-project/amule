@@ -133,13 +133,6 @@ namespace amule.net {
         DownloadQueueContainer m_item_container;
         amuleXferControlSettings m_settings = new amuleXferControlSettings();
 
-        int m_filename_idx;
-        int m_status_idx;
-        int m_size_idx;
-        int m_completed_idx;
-        int m_speed_idx;
-        int m_sources_idx;
-
         enum DOWNLOAD_CTRL_COL_ID {
             COL_FILENAME_ID = 0,
             COL_STATUS_ID,
@@ -153,7 +146,7 @@ namespace amule.net {
 
         private ContextMenuStrip m_ctx_menu = new ContextMenuStrip();
 
-        public event DownloadStatusListEventHandler OnCancelItem, OnPauseItem;
+        public event DownloadStatusListEventHandler OnCancelItem, OnPauseItem, OnResumeItem;
 
         void UpdateColumnIndexes()
         {
@@ -175,10 +168,12 @@ namespace amule.net {
         void SaveSettigs()
         {
             if ( m_settings.FilenameVisible ) {
-                m_settings.FilenameWidth = Columns[m_filename_idx].Width;
+                m_settings.FilenameWidth =
+                    Columns[m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_FILENAME_ID]].Width;
             }
             if ( m_settings.StatusVisible ) {
-                m_settings.StatusWidth = Columns[m_status_idx].Width;
+                m_settings.StatusWidth =
+                    Columns[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID].Width;
             }
             m_settings.Save();
         }
@@ -337,9 +332,12 @@ namespace amule.net {
             OnCancelItem();
         }
 
+        //
+        // "Resume" command in context menu
+        //
         void it_resume_Click(object sender, EventArgs e)
         {
-            throw new Exception("The method or operation is not implemented.");
+            OnResumeItem();
         }
 
         //
@@ -348,6 +346,15 @@ namespace amule.net {
         void it_pause_Click(object sender, EventArgs e)
         {
             OnPauseItem();
+        }
+
+        public void SelectedItemsToCommand(ecProto.ecPacket cmd)
+        {
+            foreach ( ListViewItem i in SelectedItems ) {
+                DownloadQueueItem it = i.Tag as DownloadQueueItem;
+                ecProto.ecTagMD5 tag = new ecProto.ecTagMD5(ECTagNames.EC_TAG_PARTFILE, it.ID);
+                cmd.AddSubtag(tag);
+            }
         }
 
         //
@@ -500,6 +507,12 @@ namespace amule.net {
             }
             if ( m_settings.SourcesVisible ) {
                 it.SubItems.Add(new ListViewItem.ListViewSubItem(it, i.Sources));
+            }
+
+            if ( m_settings.StatusVisible ) {
+                it.SubItems[m_column_index[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID]].ForeColor = Color.White;
+                Columns[(int)DOWNLOAD_CTRL_COL_ID.COL_STATUS_ID].TextAlign = HorizontalAlignment.Center;
+
             }
             it.Tag = i;
 

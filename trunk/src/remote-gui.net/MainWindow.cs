@@ -62,10 +62,6 @@ namespace amule.net
                 req = m_dload_info.ReQuery();
             } else if (current_ctrl == m_shared_list_ctrl) {
                 req = m_shared_info.ReQuery();
-                m_updateTimer.Stop();
-                if (req == null) {
-                    throw new Exception("m_shared_info.ReQuery()");
-                }
             }
 
             if ( req == null ) {
@@ -131,6 +127,7 @@ namespace amule.net
             }
 
             textLinktatus.Text = "aMule core on [" + amuleHost + ":" + amulePort + "]";
+            Text = "aMule remote control [" + amuleHost + ":" + amulePort + "]";
             Size = m_settings.MainWindowSize;
 
             m_amuleRemote.SetECHandler(new amuleMainECHanler(this));
@@ -141,8 +138,13 @@ namespace amule.net
             m_download_status_ctrl = new amuleDownloadStatusList();
             m_dload_info = new DownloadQueueContainer(m_download_status_ctrl);
             m_download_status_ctrl.ItemContainer = m_dload_info;
-            m_download_status_ctrl.OnCancelItem += new DownloadStatusListEventHandler(m_download_status_ctrl_OnCancelItem);
-            //m_dload_info.NewItemStatusLineLength = m_download_status_ctrl.Columns[1].Width;
+
+            m_download_status_ctrl.OnCancelItem +=
+                new DownloadStatusListEventHandler(m_download_status_ctrl_OnCancelItem);
+            m_download_status_ctrl.OnPauseItem +=
+                new DownloadStatusListEventHandler(m_download_status_ctrl_OnPauseItem);
+            m_download_status_ctrl.OnResumeItem +=
+                new DownloadStatusListEventHandler(m_download_status_ctrl_OnResumeItem);
 
             m_shared_list_ctrl = new amuleSharedFilesList();
             m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
@@ -160,15 +162,49 @@ namespace amule.net
             m_req_state = UpdateRequestState.MainInfo;
         }
 
+        void m_download_status_ctrl_OnResumeItem()
+        {
+            ecProto.ecPacket cmd = new ecProto.ecPacket(ECOpCodes.EC_OP_PARTFILE_RESUME);
+            m_download_status_ctrl.SelectedItemsToCommand(cmd);
+            m_amuleRemote.SendPacket(cmd);
+        }
+
+        void m_download_status_ctrl_OnPauseItem()
+        {
+            ecProto.ecPacket cmd = new ecProto.ecPacket(ECOpCodes.EC_OP_PARTFILE_PAUSE);
+            m_download_status_ctrl.SelectedItemsToCommand(cmd);
+            m_amuleRemote.SendPacket(cmd);
+        }
+
         void m_download_status_ctrl_OnCancelItem()
         {
-            throw new Exception("The method or operation is not implemented.");
+            string msg = "Following files will be cancelled:\n";
+            foreach ( ListViewItem i in m_download_status_ctrl.SelectedItems ) {
+                msg += i.Text + "\n";
+            }
+            if ( MessageBox.Show(msg, "Cancel files", MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question) == DialogResult.OK ) {
+                ecProto.ecPacket cmd = new ecProto.ecPacket(ECOpCodes.EC_OP_PARTFILE_DELETE);
+                m_download_status_ctrl.SelectedItemsToCommand(cmd);
+                m_amuleRemote.SendPacket(cmd);
+            }
         }
 
         //
         // Process reply for "stats"
         //
-        public void StatsReply(ecProto.ecPacket packet)
+        delegate void StatsReplyCallback(ecProto.ecPacket packet);
+        public void StatsReplyInvoke(ecProto.ecPacket packet)
+        {
+            if ( InvokeRequired ) {
+                StatsReplyCallback d = new StatsReplyCallback(StatsReply);
+                Invoke(d, packet);
+            } else {
+                StatsReply(packet);
+            }
+        }
+
+        void StatsReply(ecProto.ecPacket packet)
         {
             ecProto.ecTag t = null;
             t = packet.SubTag(ECTagNames.EC_TAG_STATS_DL_SPEED);
@@ -181,29 +217,26 @@ namespace amule.net
             ecProto.ecConnStateTag connState =
                 new ecProto.ecConnStateTag((ecProto.ecTagInt)packet.SubTag(ECTagNames.EC_TAG_CONNSTATE));
 
-            ecProto.ecTag server = connState.Server();
-            /*
-            toolStripXferDown.Text = ValueToPrefix(dl_speed) + "/s";
-            toolStripXferUp.Text = ValueToPrefix(ul_speed) + "/s";
+            textBoxDownSpeed.Text = "Down:" + ValueToPrefix(dl_speed) + "/s";
+            textBoxUpSpeed.Text = "Up:" + ValueToPrefix(ul_speed) + "/s";
             if ( connState.IsConnected() ) {
                 if (connState.IsConnectedED2K()) {
-                    toolStripStatusED2K.Text = "ED2K: connected";
-                    ecProto.ecTagString server_name = (ecProto.ecTagString)server.SubTag(ECTagNames.EC_TAG_SERVER_NAME);
-                    toolStripStatusServer.Text = server_name.StringValue();
+                    textLinktatus.Text = "ED2K: connected";
+                    //ecProto.ecTagString server_name = (ecProto.ecTagString)server.SubTag(ECTagNames.EC_TAG_SERVER_NAME);
+                    //toolStripStatusServer.Text = server_name.StringValue();
                 } else {
-                    toolStripStatusServer.Text = "";
+                    //toolStripStatusServer.Text = "";
                     if (connState.IsConnectingED2K() ) {
-                        toolStripStatusED2K.Text = "ED2K: connecting ...";
+                        textLinktatus.Text = "ED2K: connecting ...";
                     } else {
-                        toolStripStatusED2K.Text = "ED2K: disconnected";
+                        textLinktatus.Text = "ED2K: disconnected";
                     }
                 }
                 if (connState.IsConnectedKademlia()) {
-                    toolStripStatusKad.Text = "KAD: connected";
+                    //textLinktatus.Text = "KAD: connected";
                 }
                 
             }
-            */
         }
 
         public void DloadQueueReply(ecProto.ecPacket packet)
@@ -278,6 +311,20 @@ namespace amule.net
 
             m_settings.Save();
         }
+
+        public string ValueToPrefix(Int64 value)
+        {
+            if ( value < 1024 ) {
+                return string.Format("{0} bytes", value);
+            } else if ( value < 1048576 ) {
+                return string.Format("{0:f} Kb", ((float)value) / 1024);
+            } else if ( value < 1073741824 ) {
+                return string.Format("{0:f} Mb", ((float)value) / 1048576);
+            } else {
+                return string.Format("{0:f} Gb", ((float)value) / 1073741824);
+            }
+        }
+
     }
 
     [SettingsGroupNameAttribute("Application")]
@@ -319,7 +366,7 @@ namespace amule.net
             ECOpCodes op = packet.Opcode();
             switch(op) {
                 case ECOpCodes.EC_OP_STATS:
-                    m_owner.StatsReply(packet);
+                    m_owner.StatsReplyInvoke(packet);
                     break;
                 case ECOpCodes.EC_OP_DLOAD_QUEUE:
                     m_owner.DloadQueueReply(packet);
@@ -343,6 +390,8 @@ namespace amule.net
             Dock = DockStyle.Fill;
             View = View.Details;
             DoubleBuffered = true;
+            FullRowSelect = true;
+            MultiSelect = true;
         }
         
         public void LoadColumns(string [] columns, int [] width)

@@ -39,12 +39,16 @@ namespace amule.net
             this.buttonSearch = new System.Windows.Forms.Button();
             this.buttonXfer = new System.Windows.Forms.Button();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.textBoxDownSpeed = new System.Windows.Forms.TextBox();
+            this.textBoxUpSpeed = new System.Windows.Forms.TextBox();
             this.panelStatus.SuspendLayout();
             this.panelToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelStatus
             // 
+            this.panelStatus.Controls.Add(this.textBoxUpSpeed);
+            this.panelStatus.Controls.Add(this.textBoxDownSpeed);
             this.panelStatus.Controls.Add(this.textLinktatus);
             this.panelStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStatus.Location = new System.Drawing.Point(0, 362);
@@ -58,7 +62,7 @@ namespace amule.net
             this.textLinktatus.Location = new System.Drawing.Point(0, 0);
             this.textLinktatus.Name = "textLinktatus";
             this.textLinktatus.ReadOnly = true;
-            this.textLinktatus.Size = new System.Drawing.Size(160, 20);
+            this.textLinktatus.Size = new System.Drawing.Size(362, 20);
             this.textLinktatus.TabIndex = 0;
             // 
             // panelToolbar
@@ -161,6 +165,24 @@ namespace amule.net
             this.panelMain.Size = new System.Drawing.Size(678, 317);
             this.panelMain.TabIndex = 2;
             // 
+            // textBoxDownSpeed
+            // 
+            this.textBoxDownSpeed.Dock = System.Windows.Forms.DockStyle.Left;
+            this.textBoxDownSpeed.Location = new System.Drawing.Point(362, 0);
+            this.textBoxDownSpeed.Name = "textBoxDownSpeed";
+            this.textBoxDownSpeed.ReadOnly = true;
+            this.textBoxDownSpeed.Size = new System.Drawing.Size(90, 20);
+            this.textBoxDownSpeed.TabIndex = 1;
+            // 
+            // textBoxUpSpeed
+            // 
+            this.textBoxUpSpeed.Dock = System.Windows.Forms.DockStyle.Left;
+            this.textBoxUpSpeed.Location = new System.Drawing.Point(452, 0);
+            this.textBoxUpSpeed.Name = "textBoxUpSpeed";
+            this.textBoxUpSpeed.ReadOnly = true;
+            this.textBoxUpSpeed.Size = new System.Drawing.Size(90, 20);
+            this.textBoxUpSpeed.TabIndex = 2;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -193,6 +215,8 @@ namespace amule.net
         private System.Windows.Forms.Button buttonAddLink;
         private System.Windows.Forms.Button buttonPrefs;
         private System.Windows.Forms.Button buttonAbout;
+        private System.Windows.Forms.TextBox textBoxUpSpeed;
+        private System.Windows.Forms.TextBox textBoxDownSpeed;
 
     }
 }
