@@ -578,7 +578,7 @@ void ec_tag_2_php(const CECTag *cattag, PHP_2_EC_OPT_DEF *opts, PHP_VAR_NODE *ca
 			default: val = -1;
 		}
 		wxASSERT(val != -1);
-		printf("OPT_DEBUG: %s of size %d -> %d\n", def->php_name, def->opsize, val);
+		//printf("OPT_DEBUG: %s of size %d -> %d\n", def->php_name, def->opsize, val);
 		set_array_int_val(&catvar->value, def->php_name, val);
 	}
 }
