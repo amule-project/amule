@@ -387,6 +387,11 @@ namespace amule.net
             m_filesize = size;
         }
 
+        public ecProto.ecMD5 ID
+        {
+            get { return m_id; }
+        }
+
         public string ValueToPrefix(Int64 value)
         {
             if (value < 1024)
