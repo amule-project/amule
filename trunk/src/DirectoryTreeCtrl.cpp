@@ -34,6 +34,8 @@
 #include <common/FileFunctions.h>
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
+#include <algorithm>		// Needed for std::find
+
 
 BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
 	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY,	CDirectoryTreeCtrl::OnRButtonDown)
