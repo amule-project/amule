@@ -44,6 +44,7 @@ namespace amule.net
         amuleDownloadStatusList m_download_status_ctrl;
         amuleSharedFilesList m_shared_list_ctrl;
 
+        amuleSearchControl m_search_ctrl;
         amuleSettings m_settings = new amuleSettings();
 
         public MainWindow()
@@ -148,6 +149,8 @@ namespace amule.net
 
             m_shared_list_ctrl = new amuleSharedFilesList();
             m_shared_info = new SharedFileListContainer(m_shared_list_ctrl);
+
+            m_search_ctrl = new amuleSearchControl();
 
             m_updateTimer = new Timer();
             m_updateTimer.Tag = this;
@@ -270,7 +273,10 @@ namespace amule.net
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-
+            if ( panelMain.Controls[0] != m_search_ctrl ) {
+                panelMain.Controls.Clear();
+                panelMain.Controls.Add(m_search_ctrl);
+            }
         }
 
         private void buttonShared_Click(object sender, EventArgs e)
