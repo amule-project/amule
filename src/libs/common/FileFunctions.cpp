@@ -30,13 +30,14 @@
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
 #include <wx/thread.h>		// Needed for wxMutex
+#include <wx/log.h>		// Needed for wxSysErrorMsg
 
 #include <errno.h>
 #include <map>
 #ifdef __WXMAC__
 #include <zlib.h> // Do_not_auto_remove
 #endif
-
+#include <memory>		// Needed for std::auto_ptr
 
 #include "FileFunctions.h"
 #include "StringFunctions.h"
