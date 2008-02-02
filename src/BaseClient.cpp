@@ -2295,7 +2295,9 @@ uint8 CUpDownClient::GetSecureIdentState() {
 	return m_SecureIdentState;
 }
 
-bool CUpDownClient::SendMessage(const wxString& message) {
+
+bool CUpDownClient::SendMessage(const wxString& message)
+{
 	// Already connecting?
 	if (GetChatState() == MS_CONNECTING) {
 		// Queue all messages till we're able to send them (or discard them)
@@ -2310,7 +2312,7 @@ bool CUpDownClient::SendMessage(const wxString& message) {
 	}
 	if (IsConnected()) {
 		CMemFile data;
-		data.WriteString(message);
+		data.WriteString(message, GetUnicodeSupport());
 		CPacket* packet = new CPacket(data, OP_EDONKEYPROT, OP_MESSAGE);
 		theStats::AddUpOverheadOther(packet->GetPacketSize());
 		AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_MESSAGE to ") + GetFullIP());

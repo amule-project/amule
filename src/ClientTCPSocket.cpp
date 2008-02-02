@@ -451,7 +451,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 
 				// Since it's for somebody else to see, we need to send the prettified
 				// filename, rather than the (possibly) mangled actual filename.
-				data_out.WriteString(reqfile->GetFileName().GetPrintable());
+				data_out.WriteString(reqfile->GetFileName().GetPrintable(), m_client->GetUnicodeSupport());
 				
 				CPacket* packet = new CPacket(data_out, OP_EDONKEYPROT, OP_REQFILENAMEANSWER);
 				theStats::AddUpOverheadFileRequest(packet->GetPacketSize());
@@ -905,7 +905,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CMemFile tempfile(80);
 				tempfile.WriteUInt32(foldersToSend.size());
 				for (CStringList::iterator it = foldersToSend.begin(); it != foldersToSend.end(); ++it) {
-					tempfile.WriteString(*it);
+					tempfile.WriteString(*it, m_client->GetUnicodeSupport());
 				}
 
 				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);
@@ -959,7 +959,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				}
 
 				CMemFile tempfile(80);
-				tempfile.WriteString(strReqDir);
+				tempfile.WriteString(strReqDir, m_client->GetUnicodeSupport());
 				tempfile.WriteUInt32(list.size());
 				
 				while (!list.empty()) {
@@ -1000,7 +1000,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 						% strDir );
 			
 					CMemFile tempfile(80);
-					tempfile.WriteString(strDir);
+					tempfile.WriteString(strDir, m_client->GetUnicodeSupport());
 					CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDFILESDIR);
 					theStats::AddUpOverheadOther(replypacket->GetPacketSize());
 					AddDebugLogLineM( false, logLocalClient, wxT("Local Client: OP_ASKSHAREDFILESD to ") + m_client->GetFullIP() );
@@ -1164,7 +1164,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 						
 						// Since it's for somebody else to see, we need to send the prettified
 						// filename, rather than the (possibly) mangled actual filename
-						data_out.WriteString(reqfile->GetFileName().GetPrintable());
+						data_out.WriteString(reqfile->GetFileName().GetPrintable(), m_client->GetUnicodeSupport());
 						break;
 					}
 					case OP_AICHFILEHASHREQ: {
