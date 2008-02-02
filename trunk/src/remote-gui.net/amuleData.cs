@@ -574,7 +574,7 @@ namespace amule.net
             //
             int width = m_color_line.Length;
             for ( int i = 0; i < width; i++ ) {
-                m_color_line[i].Color = 0;
+                m_color_line[i].Color = 0x7f7f7f;
             }
             if ( m_filesize < width ) {
                 //
