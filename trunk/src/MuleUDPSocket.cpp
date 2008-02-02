@@ -160,7 +160,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	}
 	
 	if (error) {
-		OnReceiveError(error, addr);
+		OnReceiveError(lastError, addr);
 	} else if (length < 2) {
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received by "));
