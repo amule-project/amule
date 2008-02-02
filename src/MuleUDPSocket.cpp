@@ -163,7 +163,7 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		OnReceiveError(lastError, addr);
 	} else if (length < 2) {
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
-		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received by "));
+		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received"));
 	} else if (!StringIPtoUint32(addr.IPAddress())) {
 		// wxASSERT(0);
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n",
