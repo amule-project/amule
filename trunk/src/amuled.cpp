@@ -406,10 +406,10 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 		
 		// Add a WxEndProcessData entry to the map, so that we can
 		// support process termination
-		wxEndProcessData endProcData;
-		endProcData.pid = execData.pid;
-		endProcData.process = execData.process;
-		endProcData.tag = 0;
+		wxEndProcessData *endProcData = new wxEndProcessData();
+		endProcData->pid = execData.pid;
+		endProcData->process = execData.process;
+		endProcData->tag = 0;
 		endProcDataMap[execData.pid] = endProcData;
 
 		return execData.pid;
@@ -440,14 +440,18 @@ void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*
 	}
 	// Fetch the wxEndProcessData structure corresponding to this pid
 	EndProcessDataMap::iterator it = endProcDataMap.find(siginfo->si_pid);
-	wxEndProcessData endProcData = it->second;
-	// Remove that entry from the process map
+	wxEndProcessData *endProcData = it->second;
+	// Remove this entry from the process map
 	endProcDataMap.erase(siginfo->si_pid);
 	// Save the exit code for the wxProcess object to read later
-	endProcData.exitcode = result != -1 && WIFEXITED(status) ?
+	endProcData->exitcode = result != -1 && WIFEXITED(status) ?
 		WEXITSTATUS(status) : -1;
 	// Make things work as in wxGUI
-	wxHandleProcessTermination(&endProcData);
+	wxHandleProcessTermination(endProcData);
+
+	// wxHandleProcessTermination() will "delete endProcData;"
+	// So we do not delete it again, ok? Do not uncomment this line.
+	//delete endProcData;
 
 	// Log our passage here
 	AddDebugLogLineM(false, logGeneral, msg);

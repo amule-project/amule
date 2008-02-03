@@ -396,7 +396,7 @@ public:
 };
 
 
-typedef std::map<int, wxEndProcessData> EndProcessDataMap;
+typedef std::map<int, wxEndProcessData *> EndProcessDataMap;
 
 
 class CDaemonAppTraits : public wxConsoleAppTraits
