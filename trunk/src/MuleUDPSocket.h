@@ -85,20 +85,14 @@ public:
 	void Close();
 	
 	
-	/**
-	 * This function is called by aMule when the socket may send.
-	 */
-	virtual void	OnSend(int errorCode);
-
-	/**
-	 * This function is called by aMule when there are data to be received.
-	 */
-	virtual void	OnReceive(int errorCode);
-	
-	/**
-	 * This function is called by aMule when there is an error in the socket while receiving.
-	 */
+	/** This function is called by aMule when the socket may send. */
+	virtual void OnSend(int errorCode);
+	/** This function is called by aMule when there are data to be received. */
+	virtual void OnReceive(int errorCode);
+	/** This function is called by aMule when there is an error while receiving. */
 	virtual void OnReceiveError(int errorCode, const wxIPV4address& addr);
+	/** This function is called when the socket is lost (see comments in func.) */
+	virtual void OnDisconnected(int errorCode);
 
 	/**
 	 * Queues a packet for sending.

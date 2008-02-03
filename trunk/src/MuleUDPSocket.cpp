@@ -68,15 +68,14 @@ void CMuleUDPSocket::CreateSocket()
 	m_socket = new CEncryptedDatagramSocket(m_addr, wxSOCKET_NOWAIT, m_proxy);
 	m_socket->SetClientData(this);
 	m_socket->SetEventHandler(*theApp, m_id);
-	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG);
+	m_socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	m_socket->Notify(true);
 
 	if (!m_socket->Ok()) {
 		AddDebugLogLineM(true, logMuleUDP, wxT("Failed to create valid ") + m_name);
 		DestroySocket();
 	} else {
-		AddDebugLogLineM(true, logMuleUDP, 
-			wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
+		AddLogLineM(false, wxString(wxT("Created ")) << m_name << wxT(" at port ") << m_addr.Service());
 	}
 }
 
@@ -84,7 +83,7 @@ void CMuleUDPSocket::CreateSocket()
 void CMuleUDPSocket::DestroySocket()
 {
 	if (m_socket) {
-		AddDebugLogLineM(true, logMuleUDP, wxT("Shutting down ") + m_name);
+		AddDebugLogLineM(false, logMuleUDP, wxT("Shutting down ") + m_name);
 		m_socket->SetNotify(0);
 		m_socket->Notify(false);
 		m_socket->Close();
@@ -183,6 +182,22 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 void CMuleUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& WXUNUSED(addr))
 {
 	AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);	
+}
+
+
+void CMuleUDPSocket::OnDisconnected(int errorCode)
+{
+	/* Due to bugs in wxWidgets, UDP sockets will sometimes
+	 * be closed. This is caused by the fact that wx treats
+	 * zero-length datagrams as EOF, which is only the case
+	 * when dealing with streaming sockets. 
+	 *
+	 * This has been reported as patch #1885472:
+	 * http://sourceforge.net/tracker/index.php?func=detail&aid=1885472&group_id=9863&atid=309863
+	 */
+	AddDebugLogLineM(true, logMuleUDP, m_name + wxT("Socket died, recreating."));
+	DestroySocket();
+	CreateSocket();
 }
 
 
@@ -293,30 +308,18 @@ bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 	m_socket->SendTo(addr, buffer, length);
 	if (m_socket->Error()) {
 		wxSocketError error = m_socket->LastError();
-		switch (error) {
-		case wxSOCKET_WOULDBLOCK:
+		
+		if (error == wxSOCKET_WOULDBLOCK) {
 			// Socket is busy and can't send this data right now,
 			// so we just return not sent and set the wouldblock 
 			// flag so it gets resent when socket is ready.
 			m_busy = true;
-			break;
-			
-		case wxSOCKET_INVSOCK:
-			// Once in a while, wxDatagram sockets have a tendency
-			// to suddenly become invalid. In order to work around
-			// this problem, we simply create a replacement socket.
-			AddDebugLogLineM(true, logMuleUDP, wxT("Socket died. Recreating socket."));
-			DestroySocket();
-			CreateSocket();
-			break;
-							
-		default:
+		} else {
 			// An error which we can't handle happended, so we drop 
 			// the packet rather than risk entering an infinite loop.
 			printf("WARNING! %s discarded packet due to errors (%i) while sending.\n",
 				(const char*)unicode2char(m_name), error);
 			sent = true;
-			break;
 		}
 	} else {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet sent to ")) 
