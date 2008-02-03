@@ -2124,6 +2124,10 @@ void CamuleApp::UDPSocketHandler(wxSocketEvent& event)
 		case wxSOCKET_OUTPUT:
 			socket->OnSend(0);
 			break;
+		
+		case wxSOCKET_LOST:
+			socket->OnDisconnected(0);
+			break;
 
 		default:
 			wxASSERT(0);
