@@ -1293,6 +1293,12 @@ void CDownQueueRem::ProcessItemUpdate(CEC_PartFile_Tag *tag, CPartFile *file)
 		file->m_category = tag->FileCat();
 		
 		file->m_iDownPriority = tag->Prio();
+		if ( file->m_iDownPriority >= 10 ) {
+			file->m_iDownPriority-= 10;
+			file->m_bAutoDownPriority = true;
+		} else {
+			file->m_bAutoDownPriority = false;
+		}
 	}
 	file->percentcompleted = (100.0*file->GetCompletedSize()) / file->GetFileSize();
 	if ( file->m_iDownPriority >= 10 ) {
@@ -1412,6 +1418,7 @@ void CDownQueueRem::Prio(CPartFile *file, uint8 prio)
 	
 	CECTag hashtag(EC_TAG_PARTFILE, file->GetFileHash());
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO, prio));
+	req.AddTag(hashtag);
 	
 	m_conn->SendPacket(&req);
 }
@@ -1425,6 +1432,7 @@ void CDownQueueRem::AutoPrio(CPartFile *file, bool flag)
 	
 	hashtag.AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 		(uint8)(flag ? PR_AUTO : file->GetDownPriority())));
+	req.AddTag(hashtag);
 	
 	m_conn->SendPacket(&req);
 }
