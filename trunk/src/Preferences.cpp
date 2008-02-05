@@ -35,7 +35,6 @@
 #include <wx/stdpaths.h>
 #include <wx/stopwatch.h>
 #include <wx/tokenzr.h>
-#include <wx/textfile.h>		// Do_not_auto_remove (win32)
 
 #include "amule.h"
 #ifdef HAVE_CONFIG_H
@@ -46,6 +45,7 @@
 #include <common/MD5Sum.h>
 #include "Logger.h"
 #include <common/Format.h>		// Needed for CFormat
+#include <common/TextFile.h>		// Needed for CTextFile
 #include <common/ClientVersion.h>
 
 #include "UserEvents.h"
@@ -864,17 +864,11 @@ CPreferences::CPreferences()
 #ifndef CLIENT_GUI
 	LoadPreferences();
 	ReloadSharedFolders();
-	// serverlist adresses
-	wxTextFile slistfile(theApp->ConfigDir + wxT("addresses.dat"));
-	if (slistfile.Exists() && slistfile.Open()) {
-		for (size_t i = 0; i < slistfile.GetLineCount(); ++i) {
-			wxString line = slistfile.GetLine(i);
-			adresses_list.Add(line);
-			AddDebugLogLineM(false, logGeneral,
-				wxT("addresses.dat: Adding '") + line + wxT("'"));
 
-		}
-		slistfile.Close();
+	// serverlist adresses
+	CTextFile slistfile;
+	if (slistfile.Open(theApp->ConfigDir + wxT("addresses.dat"), CTextFile::read)) {
+		adresses_list = slistfile.ReadLines();
 	}
 
 	s_userhash[5] = 14;
@@ -1351,16 +1345,9 @@ void CPreferences::Save()
 	SavePreferences();
 
 	#ifndef CLIENT_GUI
-	wxString shareddir(theApp->ConfigDir + wxT("shareddir.dat"));
-
-	wxRemoveFile(shareddir);
-	wxTextFile sdirfile(shareddir);
-	if (sdirfile.Create()) {
-		for(unsigned int i = 0; i < shareddir_list.GetCount(); ++i) {
-			sdirfile.AddLine(shareddir_list[i]);
-		}
-		
-		sdirfile.Write();
+	CTextFile sdirfile;
+	if (sdirfile.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::write)) {
+		sdirfile.WriteLines(shareddir_list, wxConvUTF8);
 	}
 	#endif
 }
@@ -1670,24 +1657,17 @@ void CPreferences::SetPort(uint16 val) {
 	}
 }
 
-void CPreferences::ReloadSharedFolders() {
+
+void CPreferences::ReloadSharedFolders()
+{
 #ifndef CLIENT_GUI
-	wxTextFile sdirfile(theApp->ConfigDir + wxT("shareddir.dat"));
-	
-	shareddir_list.Clear();
-	
-	if( sdirfile.Exists() && sdirfile.Open() ) {
-		if (sdirfile.GetLineCount()) {
-			wxString line = sdirfile.GetFirstLine();
-			do {
-				shareddir_list.Add(line);
-				line = sdirfile.GetNextLine();
-			} while (!sdirfile.Eof());
-		}
-		sdirfile.Close();
+	CTextFile file;
+	if (file.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::read)) {
+		shareddir_list = file.ReadLines(txtReadDefault, wxConvUTF8);
 	}
 #endif
 }
+
 
 bool CPreferences::IsMessageFiltered(const wxString& message) { 
 	if (s_FilterAllMessages) { 

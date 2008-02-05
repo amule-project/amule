@@ -13,6 +13,7 @@ libmulecommon_a_SOURCES = \
 	MuleDebug.cpp \
 	StringFunctions.cpp \
 	FileFunctions.cpp \
+	TextFile.cpp \
 	Path.cpp
 	
 libmulecommon_a_CFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
@@ -24,6 +25,7 @@ noinst_HEADERS =  \
 		MuleDebug.h \
 		StringFunctions.h \
 		FileFunctions.h \
+		TextFile.h \
 		Path.h
 
 MAINTAINERCLEANFILES = Makefile.in

@@ -94,7 +94,6 @@ libmuleappcore_a_SOURCES = \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp \
-	TextFile.cpp \
 	ThreadScheduler.cpp
 
 libmuleappcore_a_CFLAGS = $(WXBASE_CFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
@@ -421,7 +420,6 @@ noinst_HEADERS = \
 		Tag.h \
 		TerminationProcess.h \
 		TextClient.h \
-		TextFile.h \
 		ThreadScheduler.h \
 		ThreadTasks.h \
 		Timer.h \

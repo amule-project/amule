@@ -27,7 +27,6 @@
 
 #include <common/MenuIDs.h>
 
-#include <wx/textfile.h>
 #include <wx/menu.h>
 #include <wx/stattext.h>
 #include <wx/msgdlg.h>
@@ -43,7 +42,8 @@
 #include "ServerConnect.h"	// Needed for CServerConnect
 #include "Server.h"		// Needed for CServer and SRV_PR_*
 #include "Logger.h"
-#include <common/Format.h>
+#include <common/Format.h>	// Needed for CFormat
+#include <common/TextFile.h>	// Needed for CTextFile
 
 
 #define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
@@ -336,46 +336,26 @@ void CServerListCtrl::HighlightServer( const CServer* server, bool highlight )
 //#warning Kry TODO: Dude, this gotta be moved to core
 bool CServerListCtrl::SetStaticServer( CServer* server, bool isStatic )
 {
-	wxString filename = theApp->ConfigDir + wxT("staticservers.dat");
-	wxTextFile file( filename );
-	
-	if ( !wxFileExists( filename ) )
-		file.Create();
+	server->SetIsStaticMember( isStatic );
+	RefreshServer( server );
 
-	if ( !file.Open() ) {
+	wxString filename = theApp->ConfigDir + wxT("staticservers.dat");
+
+	CTextFile file;
+	if (!file.Open(filename, CTextFile::write)) {
 		AddLogLineM( false, CFormat( _("Failed to open '%s'") ) % filename );
 		return false;
 	}
 
-	
-	if ( isStatic ) {
-		file.AddLine( server->GetAddress() + wxString::Format( wxT(":%u,%u," ), server->GetPort(), server->GetPreferences() ) + server->GetListName() );
-	} else {
-		wxString searchStr = server->GetAddress() + wxString::Format( wxT(":%u" ), server->GetPort() );
-	
-		for ( unsigned int i = 0; i < file.GetLineCount(); ) {
-			wxString line = file.GetLine( i );
+	for (int i = 0; i < GetItemCount(); ++i) {
+		server = reinterpret_cast<CServer*>(GetItemData(i));
 
-			// Removing name and priority
-			line = line.BeforeLast(wxT(',')).BeforeLast(wxT(','));
-
-			// Remove possible noise
-			line.Strip( wxString::both );
-
-			if ( line == searchStr ) {
-				file.RemoveLine( i );
-				continue;
-			}
-			
-			++i;
+		if (server->IsStaticMember()) {
+			file.WriteLine(CFormat(wxT("%s:%u,%u,%s"))
+				% server->GetAddress() % server->GetPort()
+				% server->GetPreferences() % server->GetListName());
 		}
 	}
-
-	server->SetIsStaticMember( isStatic );
-	RefreshServer( server );
-
-	file.Write();
-	file.Close();
 
 	return true;
 }

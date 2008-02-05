@@ -9,7 +9,7 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src
 LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest
+TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest TextFileTest
 check_PROGRAMS = $(TESTS)
 
 
@@ -49,3 +49,9 @@ FileDataIOTest_LDADD = $(LDADD) $(CRYPTOLIBS)
 PathTest_SOURCES = PathTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp
 PathTest_CXXFLAGS = $(AM_CXXFLAGS) 
 PathTest_LDADD = $(LDADD) $(CRYPTOLIBS)
+
+# Tests for the CPath class
+TextFileTest_SOURCES = TextFileTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/TextFile.cpp
+TextFileTest_CXXFLAGS = $(AM_CXXFLAGS) 
+TextFileTest_LDADD = $(LDADD) $(CRYPTOLIBS)
+

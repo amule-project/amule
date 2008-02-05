@@ -23,9 +23,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <wx/textfile.h>		// Needed for wxTextFile
 #include <wx/stdpaths.h>		// Needed for GetDataDir
-#include "TextFile.h"			// Needed for CTextFile
 
 #include "IPFilter.h"			// Interface declarations.
 #include "Preferences.h"		// Needed for thePrefs
@@ -36,6 +34,7 @@
 #include <common/Format.h>		// Needed for CFormat
 #include <common/StringFunctions.h>	// Needed for CSimpleTokenizer
 #include <common/FileFunctions.h>	// Needed for UnpackArchive
+#include <common/TextFile.h>		// Needed for CTextFile
 #include "ThreadScheduler.h"		// Needed for CThreadScheduler and CThreadTask
 #include "ClientList.h"			// Needed for CClientList
 #include "ServerList.h"			// Needed for CServerList
@@ -267,7 +266,9 @@ private:
 	 **/
 	int LoadFromFile(const wxString& file)
 	{
-		if (!CPath::FileExists(file) /* || TestDestroy() (see CIPFilter::Reload()) */) {
+		const CPath path = CPath(file);
+
+		if (!path.FileExists() /* || TestDestroy() (see CIPFilter::Reload()) */) {
 			return 0;
 		}
 
@@ -278,7 +279,7 @@ private:
 		};
 		
 		// Try to unpack the file, might be an archive
-		if (UnpackArchive(CPath(file), ipfilter_files).second != EFT_Text) {
+		if (UnpackArchive(path, ipfilter_files).second != EFT_Text) {
 			AddLogLineM(true, 
 				CFormat(_("Failed to load ipfilter.dat file '%s', unknown format encountered.")) % file);
 			return 0;
@@ -287,8 +288,8 @@ private:
 		int filtercount = 0;
 		int discardedCount = 0;
 		
-		CTextFile readFile(file);
-		if (readFile.IsOpened()) {
+		CTextFile readFile;
+		if (readFile.Open(path, CTextFile::read)) {
 			// Function pointer-type of the parse-functions we can use
 			typedef bool (CIPFilterTask::*ParseFunc)(const wxString&);
 
@@ -359,11 +360,10 @@ void CreateDummyFile(const wxString& filename, const wxString& text)
 {
 	// Create template files
 	if (!wxFileExists(filename)) {
-		wxTextFile file;
+		CTextFile file;
 
-		if (file.Create(filename)) {
-			file.AddLine(text);
-			file.Write();
+		if (file.Open(filename, CTextFile::write)) {
+			file.WriteLine(text);
 		}
 	}
 }
