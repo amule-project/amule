@@ -57,9 +57,9 @@ public:
 	bool DirExists() const;
 
 
-	/** Returns the full path for use in wx system-calls. */
+	/** Returns the contents of the object in a form suitable for use with wx system-calls. */
 	wxString GetRaw() const;
-	/** Returns the full path for use in the UI. */
+	/** Returns the contents of the object in a form suitable for use in the UI. */
 	wxString GetPrintable() const;
 	/** Returns the (raw) last extension, empty if none is found. */
 	wxString GetExt() const;
