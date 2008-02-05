@@ -1650,6 +1650,8 @@ void CamuleApp::ShutDown()
 		serverconnect->Disconnect();
 	}
 
+	ECServerHandler->KillAllSockets();
+
 #ifdef ENABLE_UPNP
 	if (thePrefs::GetUPnPEnabled()) {
 		if (m_upnp) {
