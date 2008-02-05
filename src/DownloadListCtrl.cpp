@@ -2228,28 +2228,44 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		wxMessageBox(_(
-			"Please set your prefered video player on preferences.\nMeanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
+			"Please set your prefered video player on preferences.\n"
+			"Meanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output decivce and needs a parameter, go figure...
-		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer");
+		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer '$file'");
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
-	// Need to use quotes in case filename contains spaces.
-	command += wxT(" '");
 
-	// FIXME: This is probably not going to work if the filenames are mangled ...
-	command += file->GetFullName().GetRaw();
+	// Check if we are (pre)viewing a completed file or not
 	if (file->GetStatus() != PS_COMPLETE) {
-		// Remove the .met
-		command = command.BeforeLast( wxT('.') );
+		// Remove the .met and see if out video player specifiation uses the magic string
+		wxString fileWithoutMet;
+		fileWithoutMet <<
+			thePrefs::GetTempDir() << wxT("/") <<
+			file->GetPartMetFileName().RemoveExt().GetRaw();
+		if (!command.Replace(wxT("$file"), fileWithoutMet)) {
+			// No magic string, so we just append the filename to the player command
+			// Need to use quotes in case filename contains spaces
+			command << wxT(" '") << fileWithoutMet << wxT("'");
+		}
+	} else {
+		// This is a complete file
+		// FIXME: This is probably not going to work if the filenames are mangled ...
+		wxString rawFileName = file->GetFullName().GetRaw();
+		if (!command.Replace(wxT("$file"), rawFileName)) {
+			// No magic string, so we just append the filename to the player command
+			// Need to use quotes in case filename contains spaces
+			command << wxT(" '") << rawFileName << wxT("'");
+		}
 	}
-	command += wxT("'");
 
 	// We can't use wxShell here, it blocks the app
 	CTerminationProcess *p = new CTerminationProcess(command);
-	if (!wxExecute(command, wxEXEC_ASYNC, p)) {
+	int ret = wxExecute(command, wxEXEC_ASYNC, p);
+	int ok = ret > 0;
+	if (!ok) {
 		delete p;
 		AddLogLineM( true, _("ERROR: Failed to execute external media-player!") );
 		AddLogLineM( false, CFormat( _("Command: %s") ) % command );
