@@ -58,21 +58,38 @@ class CECServerSocket : public CECMuleSocket
 {
 public:
 	CECServerSocket();
+	virtual ~CECServerSocket();
 
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
 	virtual void OnLost();
 
 private:
-	bool	m_authenticated;
+	bool m_authenticated;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
 	CObjTagMap		m_obj_tagmap;
 };
 
-CECServerSocket::CECServerSocket() : CECMuleSocket(true)
+
+CECServerSocket::CECServerSocket()
+:
+CECMuleSocket(true),
+m_authenticated(false),
+m_part_encoder(),
+m_shared_encoder(),
+m_obj_tagmap()
 {
-	m_authenticated = false;
+	wxASSERT(theApp->ECServerHandler);
+	theApp->ECServerHandler->AddSocket(this);
 }
+
+
+CECServerSocket::~CECServerSocket()
+{
+	wxASSERT(theApp->ECServerHandler);
+	theApp->ECServerHandler->RemoveSocket(this);
+}
+
 
 const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 {
@@ -88,10 +105,12 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 			m_authenticated = true;
 		}
 	} else {
-		reply = ExternalConn::ProcessRequest2(packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
+		reply = ExternalConn::ProcessRequest2(
+			packet, m_part_encoder, m_shared_encoder, m_obj_tagmap);
 	}
 	return reply;
 }
+
 
 void CECServerSocket::OnLost()
 {
@@ -151,9 +170,37 @@ ExternalConn::ExternalConn(amuleIPV4Address addr, wxString *msg)
 	}
 }
 
-ExternalConn::~ExternalConn() {
+
+ExternalConn::~ExternalConn()
+{
+	KillAllSockets();
 	delete m_ECServer;
 }
+
+
+void ExternalConn::AddSocket(CECServerSocket *s)
+{
+	wxASSERT(s);
+	socket_list.insert(s);
+}
+
+
+void ExternalConn::RemoveSocket(CECServerSocket *s)
+{
+	wxASSERT(s);
+	socket_list.erase(s);
+}
+
+
+void ExternalConn::KillAllSockets()
+{
+	SocketSet::iterator it = socket_list.begin();
+	for (; it != socket_list.end(); ++it) {
+		CECServerSocket *s = *it;
+		s->Destroy();
+	}
+}
+
 
 void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 {

@@ -201,21 +201,38 @@ class CObjTagMap {
 		}
 };
 
-class ExternalConn : public wxEvtHandler {
-	public:
-		ExternalConn(amuleIPV4Address addr, wxString *msg);
-		~ExternalConn();
-	
-		static CECPacket *ProcessRequest2(const CECPacket *request,
-			CPartFile_Encoder_Map &, CKnownFile_Encoder_Map &, CObjTagMap &);
-	
-		static CECPacket *Authenticate(const CECPacket *);
-		wxSocketServer *m_ECServer;
 
-	private:
-		// event handlers (these functions should _not_ be virtual)
-		void OnServerEvent(wxSocketEvent& event);
-		DECLARE_EVENT_TABLE()
+class CECServerSocket;
+
+
+class ExternalConn : public wxEvtHandler
+{
+private:
+	typedef std::set<CECServerSocket *> SocketSet;
+	SocketSet socket_list;
+
+public:
+	ExternalConn(amuleIPV4Address addr, wxString *msg);
+	~ExternalConn();
+	
+	wxSocketServer *m_ECServer;
+
+	static CECPacket *ProcessRequest2(
+		const CECPacket *request,
+		CPartFile_Encoder_Map &,
+		CKnownFile_Encoder_Map &,
+		CObjTagMap &);
+	
+	static CECPacket *Authenticate(const CECPacket *);
+
+	void AddSocket(CECServerSocket *s);
+	void RemoveSocket(CECServerSocket *s);
+	void KillAllSockets();
+
+private:
+	// event handlers (these functions should _not_ be virtual)
+	void OnServerEvent(wxSocketEvent& event);
+	DECLARE_EVENT_TABLE()
 };
 
 #endif // EXTERNALCONN_H
