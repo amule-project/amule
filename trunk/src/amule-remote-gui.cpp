@@ -205,6 +205,12 @@ void CamuleRemoteGuiApp::ShutDown(wxCloseEvent &WXUNUSED(evt))
 	// Stop the Core Timer
 	delete poll_timer;
 	poll_timer = NULL;
+
+	// Destroy the EC socket
+	m_connect->Destroy();
+	m_connect = NULL;
+
+	//
 	if (amuledlg) {
 		amuledlg->DlgShutDown();
 		amuledlg->Destroy();
