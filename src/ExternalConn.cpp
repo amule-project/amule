@@ -54,13 +54,15 @@
 
 //-------------------- CECServerSocket --------------------
 
-class CECServerSocket : public CECMuleSocket {
-      public:
+class CECServerSocket : public CECMuleSocket
+{
+public:
 	CECServerSocket();
 
 	virtual const CECPacket *OnPacketReceived(const CECPacket *packet);
-	virtual void	OnLost();
-      private:
+	virtual void OnLost();
+
+private:
 	bool	m_authenticated;
 	CPartFile_Encoder_Map	m_part_encoder;
 	CKnownFile_Encoder_Map	m_shared_encoder;
@@ -93,8 +95,8 @@ const CECPacket *CECServerSocket::OnPacketReceived(const CECPacket *packet)
 
 void CECServerSocket::OnLost()
 {
-		AddLogLineM(false,_("External connection closed."));
-		DestroySocket();
+	AddLogLineM(false,_("External connection closed."));
+	DestroySocket();
 }
 
 
