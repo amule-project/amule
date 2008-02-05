@@ -21,6 +21,7 @@
 
 #include <wx/wx.h>
 #include "testregistry.h"
+#include "test.h"
 #include <common/MuleDebug.h>
 
 using namespace muleunit;
@@ -36,6 +37,11 @@ class UnitTestApp : public wxAppConsole
 public:
 	int OnRun() {
 		return (TestRegistry::runAndPrint() ? 0 : 1);
+	}
+
+	void OnAssertFailure(const wxChar* file, int line,  const wxChar* func, const wxChar* cond, const wxChar* msg)
+	{
+		throw CTestFailureException(msg, file, line);
 	}
 
 	void OnUnhandledException() {

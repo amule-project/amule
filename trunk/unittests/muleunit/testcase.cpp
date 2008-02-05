@@ -77,8 +77,8 @@ bool TestCase::run()
 			wasSetup = true;
 		} catch (const CTestFailureException& e) {
 			failures = true;
-			Printf(wxT("\t\tFailure in setUp: \"%s\" line %ld in %s"),
-					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
+			Printf(wxT("\t\tFailure in setUp:\n"));
+			e.PrintBT();
 		}
 
 		// Only run the test if it was actually setup. Otherwise we
@@ -88,8 +88,8 @@ bool TestCase::run()
 				test->run();
 			} catch (const CTestFailureException& e) {
 				failures = true;
-				Printf(wxT("\t\tFailure running: \"%s\" line %ld in %s"),
-					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
+				Printf(wxT("\t\tFailure running:"));
+				e.PrintBT();
 			}
 		}
 		
@@ -97,8 +97,8 @@ bool TestCase::run()
 			test->tearDown();
 		} catch (const CTestFailureException& e) {
 			failures = true;
-			Printf(wxT("\t\tFailure in tearDown: \"%s\" line %ld in %s"),
-					 e.m_msg.c_str(), e.m_line, e.m_file.c_str());
+			Printf(wxT("\t\tFailure in tearDown:"));
+			e.PrintBT();
 		}
 	}
 
