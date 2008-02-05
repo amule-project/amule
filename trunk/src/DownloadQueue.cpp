@@ -151,7 +151,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 			
 			wxString msg;
 			if (result) {
-				msg << CFormat(wxT("WARNING: Duplicate partfile with hash '%s' found, skipping: "))
+				msg << CFormat(wxT("WARNING: Duplicate partfile with hash '%s' found, skipping: %s"))
 					% toadd->GetFileHash().Encode() % fileName;
 			} else {
 				// If result is false, then reading of both the primary and the backup .met failed
