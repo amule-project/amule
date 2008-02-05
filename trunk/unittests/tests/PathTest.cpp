@@ -41,10 +41,8 @@ wxString GetExpectedString(const wxString& src)
 
 		if (fn) {
 			encoding = UE_NonBroken;
-			wxPuts(wxT("NonBroken"));
 		} else {
 			encoding = UE_Broken;
-			wxPuts(wxT("Broken"));
 		}
 	}
 

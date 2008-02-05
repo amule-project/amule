@@ -27,6 +27,35 @@ static void* s_foo = setFNConv();
 #endif
 
 
+/** Returns the converter to use for non-utf8 filenames. */
+wxMBConv* GetDemangler()
+{
+	// We try to use the system locale, This ensures that
+	// demangling works for ISO8859-* and the like.
+	static wxMBConv* s_demangler = NULL;
+	if (s_demangler == NULL) {
+		wxFontEncoding enc = wxLocale::GetSystemEncoding();
+
+		switch (enc) {
+			// System is needed for ANSI encodings such
+			// as "POSIX" and "C".
+			case wxFONTENCODING_SYSTEM:
+			case wxFONTENCODING_UTF8:
+				// Fall back to ISO8859-1.
+				s_demangler = &wxConvISO8859_1;
+				break;
+
+			default:
+				// Use the system locale.
+				s_demangler = &wxConvLocal;
+		}
+	}
+
+	return s_demangler;
+}
+
+
+
 
 // Windows has case-insensitive paths, so we use a
 // case-insensitive cmp for that platform. TODO:
@@ -176,10 +205,11 @@ CPath::CPath(const wxString& filename)
 	// Try to unmangle the filename for printing.
 	m_printable = wxConvUTF8.cMB2WC(fn);
 	if (!m_printable) {
-		m_printable = wxConvISO8859_1.cMB2WC(fn);
+		m_printable = GetDemangler()->cMB2WC(fn);
 	}
 
-	wxASSERT(IsOk());
+	wxASSERT(m_filesystem.Length());
+	wxASSERT(m_printable.Length());
 }
 
 
