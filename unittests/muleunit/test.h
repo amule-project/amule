@@ -22,6 +22,8 @@
 #ifndef TEST_H
 #define TEST_H
 
+#include <exception>
+
 #include <wx/string.h>
 #include <list>
 
@@ -34,12 +36,19 @@
 namespace muleunit
 {
 
+class TestCase;
+class BTList;
+
+
+/** Returns the size of a static array. */
 template <typename T, size_t N>
 inline size_t ArraySize(T(&)[N])
 {
 	return N;
 }
 
+
+/** Printf for wide-char strings. */
 inline void Printf(const wxChar *pszFormat, ...)
 {
 	va_list argptr;
@@ -51,29 +60,54 @@ inline void Printf(const wxChar *pszFormat, ...)
 }
 
 
-
-class TestCase;
-	
-
 /** This exception is raised if an ASSERT fails. */
-struct CTestFailureException
+struct CTestFailureException : public std::exception
 {
-	CTestFailureException(const wxString& msg, const wxString& file, long lineNumber)
-		: m_msg(msg),
-		  m_file(file),
-		  m_line(lineNumber)
-	{}
+	/** Constructor, takes a snapshot of the current context, and adds the given information. */
+	CTestFailureException(const wxString& msg, const wxChar* file, long lineNumber);
 
-	wxString m_msg;
-	wxString m_file;
-	long m_line;
+	~CTestFailureException() throw();
+
+	/** Prints the context backtrace for the location where the exception was thrown. */
+	void PrintBT() const;
+private:
+	//! Pointer to struct containing a snapshot of the contexts
+	//! taken at the time the exception was created.
+	struct BTList* m_bt;
 };
 
 
-#define THROW_TEST_FAILURE(message) \
-	throw CTestFailureException(message, wxT(__FILE__), __LINE__)
+/** 
+ * This class is used to produce informative backtraces
+ *
+ * This is done by specifying a "context" for a given scope, using
+ * the CONTEXT macro, at which point a description is added to the
+ * current list of contexts. At destruction, when the scope is exited,
+ * the context is removed from the queue. 
+ *
+ * The resulting "backtrace" can then be printed by calling the
+ * PrintBT() function of an CTestFailureException.
+ */
+class CContext
+{
+public:
+	/** Adds a context with the specified information and description. */
+	CContext(const wxChar* file, int line, const wxString& desc);
 
-	
+	/** Removes the context addded by the constructor. */
+	~CContext();
+};
+
+
+//! Used to join the CContext instance name with the line-number.
+//! This is done to prevent shadowing.
+#define DO_CONTEXT(x, y, z) x y##z
+
+//! Specifies the context of the current scope.
+#define CONTEXT(x) CContext wxCONCAT(context,__LINE__)(wxT(__FILE__), __LINE__, x)
+
+
+
 /**
  * Test class containing all macros to do unit testing. 
  * A test object represents a test that will be executed. Once it has been
@@ -136,9 +170,8 @@ public:
 	 */
 	const wxString& getTestName() const;
 
-protected:
 	template <typename A, typename B>
-	void DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
+	static void DoAssertEquals(const wxString& file, unsigned line, const A& a, const B& b)
 	{
 		if (!(a == b)) {
 			wxString message = wxT("Expected '") + StringFrom(a) + 
@@ -147,7 +180,8 @@ protected:
 			throw CTestFailureException(message, file, line);
 		}
 	}
-	
+
+protected:
 	wxString m_testCaseName;
 	wxString m_testName;
 	TestCase* m_testCase;
@@ -174,6 +208,10 @@ inline wxString StringFrom(signed long long value)
 }
 
 
+#define THROW_TEST_FAILURE(message) \
+	throw CTestFailureException(message, wxT(__FILE__), __LINE__)
+
+
 /**
  * Asserts that a condition is true.
  * If the condition is not true, a failure is generated.
@@ -192,14 +230,14 @@ inline wxString StringFrom(signed long long value)
  * Same as ASSERT_TRUE, but without an explicit message.
  */
 #define ASSERT_TRUE(condition) \
-	ASSERT_TRUE_M(condition, wxT(#condition));
+	ASSERT_TRUE_M(condition, wxString(wxT("Not true: ")) + wxT(#condition));
 
 
 /**
  * Same as ASSERT_TRUE, but without an explicit message and condition must be false.
  */
 #define ASSERT_FALSE(condition) \
-	ASSERT_TRUE_M(!(condition), wxT(#condition));
+	ASSERT_TRUE_M(!(condition), wxString(wxT("Not false: ")) + wxT(#condition));
 
 
 /**
@@ -221,7 +259,7 @@ inline wxString StringFrom(signed long long value)
  * Same as ASSERT_EQUALS_M, but without an explicit message.
  */
 #define ASSERT_EQUALS(expected, actual) \
-	this->DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)
+	Test::DoAssertEquals(wxT(__FILE__), __LINE__, expected, actual)
 
 
 /**
