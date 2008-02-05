@@ -232,9 +232,9 @@ int CamuleApp::OnExit()
 
 	// Kill amuleweb if running
 	if (webserver_pid) {
-		printf("Killing amuleweb instance...\n");
+		printf("Killing amuleweb instance... ");
 		wxKillError rc;
-		wxKill(webserver_pid,wxSIGKILL, &rc);
+		wxKill(webserver_pid, wxSIGTERM, &rc);
 		printf("Killed!\n");
 	}
 
@@ -837,7 +837,8 @@ bool CamuleApp::OnInit()
 			wxT("'");
 		CTerminationProcess *p = new CTerminationProcess(cmd);
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
-		if (webserver_pid) {
+		bool webserver_ok = webserver_pid > 0;
+		if (webserver_ok) {
 			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
 		} else {
 			delete p;
