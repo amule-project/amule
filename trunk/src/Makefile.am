@@ -286,7 +286,7 @@ amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
 amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
 amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
-amulegui_LDADD =  $(gui_libs) $(common_libs) 
+amulegui_LDADD =  $(gui_libs) $(common_libs) $(WXBASE_LIBS)
 
 amuled_DEPENDENCIES = $(core_deps) $(common_deps)
 amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
