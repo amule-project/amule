@@ -27,6 +27,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -135,28 +136,117 @@ int utf8_mb_remain(char c)
 	return i;
 }
 
+
+void CQueuedData::Write(const void *data, size_t len)
+{
+	const size_t canWrite = std::min(GetRemLength(), len);
+	wxASSERT(len == canWrite);
+
+	memcpy(m_wr_ptr, data, canWrite);
+	m_wr_ptr += canWrite;
+}
+
+
+void CQueuedData::WriteAt(const void *data, size_t len, size_t offset)
+{
+	wxASSERT(len + offset <= m_data.size());
+	if (offset > m_data.size()) {
+		return;
+	} else if (offset + len > m_data.size()) {
+		len = m_data.size() - offset;
+	}
+
+	memcpy(&m_data[0] + offset, data, len);
+}
+
+
+void CQueuedData::Read(void *data, size_t len)
+{
+	const size_t canRead = std::min(GetUnreadDataLength(), len);
+	wxASSERT(len == canRead);
+
+	memcpy(data, m_rd_ptr, canRead);
+	m_rd_ptr += canRead;
+}
+
+
+void CQueuedData::WriteToSocket(CECSocket *sock)
+{
+	wxCHECK_RET(m_rd_ptr < m_wr_ptr,
+		wxT("Reading past written data in WriteToSocket"));
+	
+	sock->SocketWrite(m_rd_ptr, GetUnreadDataLength());
+	m_rd_ptr += sock->GetLastCount();
+}
+
+
+void CQueuedData::ReadFromSocket(CECSocket *sock, size_t len)
+{
+	const size_t canWrite = std::min(GetRemLength(), len);
+	wxASSERT(len == canWrite);
+
+	sock->SocketRead(m_wr_ptr, canWrite);
+	m_wr_ptr += sock->GetLastCount();
+}
+
+
 size_t CQueuedData::ReadFromSocketAll(CECSocket *sock, size_t len)
 {
-	size_t read_rem = len;
-	//
-	// We get here when socket is truly blocking
-	//
+	size_t read_rem = std::min(GetRemLength(), len);
+	wxASSERT(read_rem == len);
+
+	//  We get here when socket is truly blocking
 	do {
-		//
 		// Give socket a 10 sec chance to recv more data.
 		if ( !sock->WaitSocketRead(10, 0) ) {
 			break;
 		}
+
 		wxASSERT(m_wr_ptr + read_rem <= &m_data[0] + m_data.size());
 		sock->SocketRead(m_wr_ptr, read_rem);
 		m_wr_ptr += sock->GetLastCount();
 		read_rem -= sock->GetLastCount();
+
 		if (sock->SocketError() && !sock->WouldBlock()) {
 				break;
 		}
 	} while (read_rem);
+
 	return len - read_rem;
 }
+
+
+size_t CQueuedData::GetLength() const
+{
+	return m_data.size();
+}
+
+
+size_t CQueuedData::GetDataLength() const
+{
+	const size_t len = m_wr_ptr - &m_data[0];
+	wxCHECK_MSG(len <= m_data.size(), m_data.size(),
+		wxT("Write-pointer past end of buffer"));
+
+	return len;
+}
+
+
+size_t CQueuedData::GetRemLength() const
+{
+	return m_data.size() - GetDataLength();
+}
+
+
+size_t CQueuedData::GetUnreadDataLength() const
+{
+	wxCHECK_MSG(m_wr_ptr >= m_rd_ptr, 0,
+		wxT("Read position past write position."));
+
+	return m_wr_ptr - m_rd_ptr;
+}
+
+
 
 //
 // CECSocket API - User interface functions
