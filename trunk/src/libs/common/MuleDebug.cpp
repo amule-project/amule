@@ -56,6 +56,11 @@
  */
 void OnUnhandledException()
 {
+	// Revert to the original exception handler, to avoid
+	// infinate recursion, in case something goes wrong in
+	// this function.
+	std::set_terminate(std::abort);	
+
 #ifndef _MSC_VER
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
 	FILE* output = stderr;
