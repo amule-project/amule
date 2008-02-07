@@ -265,25 +265,9 @@ public:
 		m_rd_ptr = m_wr_ptr = &m_data[0];
 	}
 	
-	void Write(const void *data, size_t len)
-	{
-		wxASSERT(len <= m_data.size());
-		memcpy(m_wr_ptr, data, len);
-		m_wr_ptr += len;
-	}
-
-	void WriteAt(const void *data, size_t len, size_t off)
-	{
-		wxASSERT(off + len <= m_data.size());
-		memcpy(&m_data[0] + off, data, len);
-	}
-
-	void Read(void *data, size_t len)
-	{
-		wxASSERT(len <= GetUnreadDataLength());
-		memcpy(data, m_rd_ptr, len);
-		m_rd_ptr += len;
-	}
+	void Write(const void *data, size_t len);
+	void WriteAt(const void *data, size_t len, size_t off);
+	void Read(void *data, size_t len);
 
 	/*
 	 * Pass pointers to zlib. From now on, no Read() calls are allowed
@@ -294,28 +278,15 @@ public:
 		m_z.next_in = m_rd_ptr;
 	}
 	
-	void WriteToSocket(CECSocket *sock)
-	{
-		wxASSERT(m_rd_ptr < &m_data[0] + m_data.size());
-		wxASSERT(m_wr_ptr <= &m_data[0] + m_data.size());
-		sock->SocketWrite(m_rd_ptr, m_wr_ptr - m_rd_ptr);
-		m_rd_ptr += sock->GetLastCount();
-	}
-
-	void ReadFromSocket(CECSocket *sock, int len)
-	{
-		wxASSERT(m_wr_ptr + len <= &m_data[0] + m_data.size());
-		sock->SocketRead(m_wr_ptr, len);
-		m_wr_ptr += sock->GetLastCount();
-	}
+	void WriteToSocket(CECSocket *sock);
+	void ReadFromSocket(CECSocket *sock, size_t len);
 	
 	size_t ReadFromSocketAll(CECSocket *sock, size_t len);
 	
-	size_t GetLength()	{ return m_data.size(); }
-	size_t GetDataLength()	{ return m_wr_ptr - &m_data[0]; }
-	size_t GetRemLength()	{ return m_data.size() - GetDataLength(); }
-	size_t GetUnreadDataLength() { return m_wr_ptr - m_rd_ptr; }
-	
+	size_t GetLength() const;
+	size_t GetDataLength() const;
+	size_t GetRemLength() const;
+	size_t GetUnreadDataLength() const;
 };
 
 #endif // ECSOCKET_H
