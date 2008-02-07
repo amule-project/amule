@@ -37,7 +37,7 @@ wxString GetExpectedString(const wxString& src)
 	static UsesEncoding encoding = UE_Unknown;
 
 	if (encoding == UE_Unknown) {
-		wxCharBuffer fn = wxFNCONV(wxT("\u0627\u0644\u0639"));
+		wxCharBuffer fn = wxConvFile.cWC2MB(wxT("\u0627\u0644\u0639"));
 
 		if (fn) {
 			encoding = UE_NonBroken;
@@ -46,7 +46,7 @@ wxString GetExpectedString(const wxString& src)
 		}
 	}
 
-	if ((encoding == UE_Broken) && !wxFNCONV(src)) {
+	if ((encoding == UE_Broken) && !wxConvFile.cWC2MB(src)) {
 		// See CPath::CPath for rationale ...
 		wxCharBuffer fn = wxConvUTF8.cWC2MB(src);
 		return wxConvFile.cMB2WC(fn);
