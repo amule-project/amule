@@ -130,7 +130,7 @@ sint64 CMemFile::doRead(void* buffer, size_t count) const
 	if (m_position > m_fileSize) {
 		return 0;
 	} else if (m_position + count > m_fileSize) {
-		count -= (m_position + count) - m_fileSize;
+		count = m_fileSize - m_position;
 	}
 	
 	if (count) {
@@ -172,18 +172,14 @@ sint64 CMemFile::doSeek(sint64 offset) const
 	return m_position = offset;
 }
 
-void CMemFile::ResetData() {
-	wxASSERT(m_delete);
-	wxASSERT(!m_readonly);
-	if (m_buffer) {
-		free(m_buffer);
-		m_buffer		= NULL;
-	}
-	m_BufferSize	= 0;
-	m_fileSize		= 0;
-	m_growthRate	= m_growthRate;
-	m_position		= 0;
-	m_delete		= true;
-	m_readonly		= false;		
+
+void CMemFile::ResetData()
+{
+	wxCHECK_RET(!m_readonly, wxT("Trying to reset read-only buffer"));
+	
+	memset(m_buffer, 0, m_BufferSize);
+	m_fileSize	= 0;
+	m_position	= 0;
 }
+
 // File_checked_for_headers
