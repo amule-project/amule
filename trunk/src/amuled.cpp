@@ -45,6 +45,8 @@
 #include "ClientUDPSocket.h"		// Do_not_auto_remove (forward declaration not enough)
 #include "ListenSocket.h"		// Do_not_auto_remove (forward declaration not enough)
 
+
+#include <errno.h>
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h> // Do_not_auto_remove
 #endif
@@ -56,7 +58,6 @@
 
 	#include <wx/unix/execute.h>
 #endif
-
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)
 	//
@@ -419,39 +420,63 @@ int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 
 void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*/)
 {
+	// strerror_r() buffer
+	const int ERROR_BUFFER_LEN = 256;
+	char errorBuffer[ERROR_BUFFER_LEN];
 	// Build the log message
 	wxString msg;
-	msg = msg <<
-		wxT("OnSignalChildHandler() has been called for process with pid `") <<
+	msg << wxT("OnSignalChildHandler() has been called for child process with pid `") <<
 		siginfo->si_pid <<
 		wxT("'. ");
 	// Make sure we leave no zombies by calling waitpid()
 	int status = 0; 
 	int result = waitpid(siginfo->si_pid, &status, WNOHANG);
 	if (result == -1) {
-		msg = msg << wxT("ERROR: waitpid call failed.");
-	} else if (WIFSIGNALED(status)) {
-		msg = msg << wxT("Child was killed by a signal.");
+		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
+		msg << wxT("ERROR: waitpid call failed: ") <<
+			char2unicode(errorBuffer) <<
+			wxT(".");
 	} else if (WIFEXITED(status)) {
-		msg = msg <<
-			wxT("Child has terminated with status code `") <<
+		msg << wxT("Child has terminated with status code `") <<
 			WEXITSTATUS(status) <<
 			wxT("'.");
+	} else if (WIFSIGNALED(status)) {
+		msg << wxT("Child was killed by signal `") <<
+			WTERMSIG(status) <<
+			wxT("'.");
+		if (WCOREDUMP(status)) {
+			msg << wxT(" A core file has been dumped.");
+		}
+	} else if (WIFSTOPPED(status)) {
+		msg << wxT("Child has been stopped by signal `") <<
+			WSTOPSIG(status) <<
+			wxT("'.");
+	} else if (WIFCONTINUED(status)) {
+		msg << wxT("Child has received `SIGCONT' and has continued execution.");
+	} else {
+		msg << wxT("The program was not able to determine why the child has signaled.");
 	}
-	// Fetch the wxEndProcessData structure corresponding to this pid
-	EndProcessDataMap::iterator it = endProcDataMap.find(siginfo->si_pid);
-	wxEndProcessData *endProcData = it->second;
-	// Remove this entry from the process map
-	endProcDataMap.erase(siginfo->si_pid);
-	// Save the exit code for the wxProcess object to read later
-	endProcData->exitcode = result != -1 && WIFEXITED(status) ?
-		WEXITSTATUS(status) : -1;
-	// Make things work as in wxGUI
-	wxHandleProcessTermination(endProcData);
 
-	// wxHandleProcessTermination() will "delete endProcData;"
-	// So we do not delete it again, ok? Do not uncomment this line.
-	//delete endProcData;
+	if (WIFEXITED(status) || WIFSIGNALED(status)) {
+		// Fetch the wxEndProcessData structure corresponding to this pid
+		EndProcessDataMap::iterator it = endProcDataMap.find(siginfo->si_pid);
+		if (it != endProcDataMap.end()) {
+			wxEndProcessData *endProcData = it->second;
+			// Remove this entry from the process map
+			endProcDataMap.erase(siginfo->si_pid);
+			// Save the exit code for the wxProcess object to read later
+			endProcData->exitcode = result != -1 && WIFEXITED(status) ?
+				WEXITSTATUS(status) : -1;
+			// Make things work as in wxGUI
+			wxHandleProcessTermination(endProcData);
+
+			// wxHandleProcessTermination() will "delete endProcData;"
+			// So we do not delete it again, ok? Do not uncomment this line.
+			//delete endProcData;
+		} else {
+			msg << wxT(" Error: the child process pid is not on the pid map.");
+		}
+	}
 
 	// Log our passage here
 	AddDebugLogLineM(false, logGeneral, msg);
@@ -485,6 +510,10 @@ int CamuleDaemonApp::OnRun()
 	}
 
 #ifndef __WXMSW__
+	// strerror_r() buffer
+	const int ERROR_BUFFER_LEN = 256;
+	char errorBuffer[ERROR_BUFFER_LEN];
+
 	// Process the return code of dead children so that we do not create 
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
 	// actualy calls wxHandleProcessTermination() in console applications.
@@ -496,6 +525,14 @@ int CamuleDaemonApp::OnRun()
 	m_newSignalChildAction.sa_flags |=  SA_SIGINFO;
 	m_newSignalChildAction.sa_flags &= ~SA_RESETHAND;
 	ret = sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
+	if (ret == -1) {
+		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
+		wxString msg;
+		msg << wxT("CamuleDaemonApp::OnRun(): first sigaction() failed: ") <<
+			char2unicode(errorBuffer) <<
+			wxT(".");
+		AddLogLineM(true, msg);
+	}
 #endif // __WXMSW__
 	
 	while ( !m_Exit ) {
@@ -507,6 +544,14 @@ int CamuleDaemonApp::OnRun()
 	ShutDown();
 #ifndef __WXMSW__
 	ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
+	if (ret == -1) {
+		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
+		wxString msg;
+		msg << wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: ") <<
+			char2unicode(errorBuffer) <<
+			wxT(".");
+		AddLogLineM(true, msg);
+	}
 #endif // __WXMSW__
 
 	return 0;
@@ -519,9 +564,7 @@ bool CamuleDaemonApp::OnInit()
 		return false;
 	}
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
-	
 	core_timer->Start(300);
-	
 	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
 	glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir();
 	
@@ -530,7 +573,7 @@ bool CamuleDaemonApp::OnInit()
 
 int CamuleDaemonApp::InitGui(bool ,wxString &)
 {
-	#ifndef __WXMSW__
+#ifndef __WXMSW__
 	if ( !enable_daemon_fork ) {
 		return 0;
 	}
@@ -555,7 +598,7 @@ int CamuleDaemonApp::InitGui(bool ,wxString &)
 		setsid();
   	}
   	
-	#endif
+#endif
 	return 0;
 }
 
