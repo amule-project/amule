@@ -440,6 +440,7 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Remove partially copied files when a UTF8_CopyFile fails.
 		* Drop the file/directory permission settings, use umask
 		  instead.
+		* Added autoconf check for broken exception-handling.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
