@@ -375,6 +375,8 @@ AC_SUBST(GEOIP_INCLUDE)
 AC_SUBST(GEOIP_LIB)
 
 
+# Check if the compiler is broken, wrt. exceptions.
+CHECK_EXCEPTIONS
 
 # Check for wx
 WX_CONFIG_OPTIONS
@@ -445,7 +447,6 @@ AC_SUBST(CRYPTOLIBS)
 CHECK_BFD
 
 # Ok, we have all needed libs, now checking for other stuff
-
 CHECK_AUTOPOINT
 
 if test "$LEX" = "flex"; then

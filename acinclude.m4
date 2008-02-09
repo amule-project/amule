@@ -569,3 +569,39 @@ fi
 AC_SUBST(HAVE_FLEX_EXTENDED)
 
 ])
+
+
+dnl ----------------------------------------------------
+dnl CHECK_EXCEPTIONS
+dnl Checks for broken exception-handling. This is needed
+dnl because exception handling is broken for some archs/
+dnl compilers.
+dnl ----------------------------------------------------
+AC_DEFUN([CHECK_EXCEPTIONS],
+[
+AC_MSG_CHECKING([for exception-handling])
+
+except=no
+AC_LANG_PUSH([C++])
+AC_TRY_RUN([
+int main()
+{
+	try {
+		throw 1;
+	} catch (int) {
+		return 0;
+	}
+
+	return 1;
+}
+], except=yes, except=no)
+AC_LANG_POP(C++)
+
+AC_MSG_RESULT($except)
+
+if test "$except" = "no";
+then
+	AC_MSG_ERROR([Exception handling does not work. Broken compiler?])
+fi
+
+])
