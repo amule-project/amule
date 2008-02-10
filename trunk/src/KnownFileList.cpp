@@ -70,7 +70,8 @@ bool CKnownFileList::Init()
 	
 	CPath fullpath = CPath(theApp->ConfigDir + wxT("known.met"));
 	if (!fullpath.FileExists()) {
-		AddLogLineM(true, _("Warning: known.met does not exist."));
+		// This is perfectly normal. The file was probably either
+		// deleted, or this is the first time running aMule.
 		return false;
 	}
 

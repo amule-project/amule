@@ -452,8 +452,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  were the user-specified directories are inaccessible.
 		* Changed temp/incomming dir variables to "CPath"s, using the
 		  previously added Cfg_Path class.
-
-
+		* Fixed spurious warnings caused by not checking if certain 
+		  preference files existed before trying to read them. Also
+		  removed an unnessesary warning for when known.met doesn't 
+		  exist.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

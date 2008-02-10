@@ -99,9 +99,11 @@ void CPrefs::Init(const wxString& filename)
 
 void CPrefs::ReadFile()
 {
+	const CPath path = CPath(m_filename);
+
 	try {
 		CFile file;
-		if (file.Open(m_filename,CFile::read)) {
+		if (path.FileExists() && file.Open(path, CFile::read)) {
 			m_ip = file.ReadUInt32();
 			file.ReadUInt16();
 			m_clientID = file.ReadUInt128();

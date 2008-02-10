@@ -86,7 +86,7 @@ void CIndexed::ReadFile(void)
 		uint32 tagList = 0;
 
 		CFile load_file;
-		if(load_file.Open(m_loadfilename, CFile::read)) {
+		if(CPath::FileExists(m_loadfilename) && load_file.Open(m_loadfilename, CFile::read)) {
 			uint32 version = load_file.ReadUInt32();
 			if(version<2) {
 				/*time_t savetime =*/ load_file.ReadUInt32(); //  Savetime is unused now
@@ -104,8 +104,7 @@ void CIndexed::ReadFile(void)
 		}
 	
 		CFile k_file;
-		if (k_file.Open(m_kfilename, CFile::read)) {
-
+		if (CPath::FileExists(m_kfilename) && k_file.Open(m_kfilename, CFile::read)) {
 			uint32 version = k_file.ReadUInt32();
 			if( version < 2 ) {
 				time_t savetime = k_file.ReadUInt32();
@@ -185,8 +184,7 @@ void CIndexed::ReadFile(void)
 		}
 
 		CFile s_file;
-		if (s_file.Open(m_sfilename, CFile::read)) {
-
+		if (CPath::FileExists(m_sfilename) && s_file.Open(m_sfilename, CFile::read)) {
 			uint32 version = s_file.ReadUInt32();
 			if( version < 2 ) {
 				time_t savetime = s_file.ReadUInt32();
