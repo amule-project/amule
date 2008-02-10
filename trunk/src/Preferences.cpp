@@ -219,6 +219,7 @@ uint8	CPreferences::s_byCryptTCPPaddingLength;
 wxString CPreferences::s_Ed2kURL;
 wxString CPreferences::s_KadURL;
 
+
 /**
  * Template Cfg class for connecting with widgets.
  *
@@ -281,11 +282,7 @@ public:
 	}
 	
 	
-	/**
-	 * Sets the assosiated variable to the value of the widget.
-	 *
-	 * @return True on success, false otherwise.
-	 */
+	/** Updates the assosiated variable, returning true on success. */
 	virtual bool TransferFromWindow()
 	{
 		if ( m_widget ) {
@@ -305,11 +302,7 @@ public:
 		return false;
 	}
 	
-	/**
-	 * Sets the assosiated variable to the value of the widget.
-	 *
-	 * @return True on success, false otherwise.
-	 */
+	/** Updates the assosiated widget, returning true on success. */
 	virtual bool TransferToWindow()
 	{
 		if ( m_widget ) {
@@ -324,12 +317,7 @@ public:
 
 #endif
 
-	/**
-	 * Sets the default value.
-	 *
-	 * This can be used, when the default value is not known yet
-	 * when calling the constructor.
-	 */
+	/** Sets the default value. */
 	void	SetDefault(const TYPE& defaultVal)
 	{
 		m_default = defaultVal;
@@ -347,35 +335,23 @@ protected:
 };
 
 
-/**
- * Cfg class for wxStrings.
- */
+/** Cfg class for wxStrings. */
 class Cfg_Str : public Cfg_Tmpl<wxString>
 {
 public:
-	/**
-	 * Constructor.
-	 */
+	/** Constructor. */
 	Cfg_Str( const wxString& keyname, wxString& value, const wxString& defaultVal = wxEmptyString )
 	 : Cfg_Tmpl<wxString>( keyname, value, defaultVal )
 	{}
 
-	/**
-	 * Saves the string to specified wxConfig.
-	 *
-	 * @param cfg The wxConfig to save the variable to.
-	 */
+	/** Loads the string, using the specified default value. */
 	virtual void LoadFromFile(wxConfigBase* cfg)
 	{
 		cfg->Read( GetKey(), &m_value, m_default );
 	}
 
 	
-	/**
-	 * Loads the string to specified wxConfig using the specified default value.
-	 *
-	 * @param cfg The wxConfig to load the variable from.
-	 */
+	/** Saves the string to the specified wxConfig object. */
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
 		cfg->Write( GetKey(), m_value );
@@ -411,6 +387,59 @@ public:
 		return false;
 	}
 #endif
+};
+
+
+/** Cfg class for CPath. */
+class Cfg_Path : public Cfg_Str
+{
+public:
+	/** Constructor. */
+	Cfg_Path(const wxString& keyname, CPath& value, const wxString& defaultVal = wxEmptyString )
+	 : Cfg_Str(keyname, m_temp_path, defaultVal)
+	 , m_real_path(value)
+	{}
+
+	/** @see Cfg_Str::LoadFromFile. */
+	virtual void LoadFromFile(wxConfigBase* cfg)
+	{
+		Cfg_Str::LoadFromFile(cfg);
+
+		m_real_path = CPath(m_temp_path);
+	}
+
+	
+	/** @see Cfg_Str::SaveToFile. */
+	virtual void SaveToFile(wxConfigBase* cfg)
+	{
+		m_temp_path = m_real_path.GetRaw();
+
+		Cfg_Str::SaveToFile(cfg);
+	}
+
+
+	/** @see Cfg_Tmpl::TransferToWindow. */
+	virtual bool TransferToWindow()
+	{
+		m_temp_path = m_real_path.GetRaw();
+
+		return Cfg_Str::TransferToWindow();
+	}
+	
+	/** @see Cfg_Tmpl::TransferFromWindow. */
+	virtual bool TransferFromWindow()
+	{
+		if (Cfg_Str::TransferFromWindow()) {
+			m_real_path = CPath(m_temp_path);
+			return true;
+		}
+
+		return false;
+	}
+
+private:
+	wxString m_temp_path;
+	CPath&   m_real_path;
 };
 
 
