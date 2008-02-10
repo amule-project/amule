@@ -27,6 +27,7 @@
 #include "StringFunctions.h"
 
 #include <wx/file.h>
+#include <wx/utils.h>
 #include <wx/filename.h>
 
 
@@ -183,7 +184,7 @@ wxString DoAddPostfix(const wxString& src, const wxString& postfix)
 	return result;
 }
 
-
+/** Removes the last extension of a filename. */
 wxString DoRemoveExt(const wxString& path)
 {
 	// Using wxFilename which handles paths, etc.
@@ -191,6 +192,26 @@ wxString DoRemoveExt(const wxString& path)
 	tmp.ClearExt();
 
 	return tmp.GetFullPath();
+}
+
+
+/** Readies a path for use with wxAccess.. */
+wxString DoCleanPath(const wxString& path)
+{
+#ifdef __WXMSW__
+	// stat fails on windows if there are trailing path-separators.
+	wxString cleanPath = StripSeparators(m_filesystem, wxString::trailing);
+	
+	// Root paths must end with a separator (X:\ rather than X:).
+	// See comments in wxDirExists.
+	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
+		cleanPath += wxFileName::GetPathSeparator();
+	}
+
+	return cleanPath;
+#else
+	return path;
+#endif
 }
 
 
@@ -299,20 +320,44 @@ bool CPath::FileExists() const
 
 bool CPath::DirExists() const
 {
-#ifdef __WXMSW__
-	// stat fails on windows if there are trailing path-separators.
-	wxString cleanPath = StripSeparators(m_filesystem, wxString::trailing);
-	
-	// Root paths must end with a separator (X:\ rather than X:).
-	// See comments in wxDirExists.
-	if ((cleanPath.Length() == 2) && (cleanPath.Last() == wxT(':'))) {
-		cleanPath += wxFileName::GetPathSeparator();
+	return wxFileName::DirExists(DoCleanPath(m_filesystem));
+}
+
+
+bool CPath::IsDir(EAccess mode) const
+{
+	wxString path = DoCleanPath(m_filesystem);
+	if (!wxFileName::DirExists(path)) {
+		return false;
 	}
 	
-	return wxFileName::DirExists(cleanPath);
-#else
-	return wxFileName::DirExists(m_filesystem);
-#endif
+	if ((mode & writable) && wxIsWritable(path)) {
+		return false;
+	}
+
+	if ((mode & readable) && wxIsReadable(path)) {
+		return false;
+	}
+
+	return true;
+}
+
+
+bool CPath::IsFile(EAccess mode) const
+{
+	if (!wxFileName::FileExists(m_filesystem)) {
+		return false;
+	}
+	
+	if ((mode & writable) && wxIsWritable(m_filesystem)) {
+		return false;
+	}
+
+	if ((mode & readable) && wxIsReadable(m_filesystem)) {
+		return false;
+	}
+
+	return true;
 }
 
 
@@ -558,6 +603,12 @@ bool CPath::RemoveDir(const CPath& file)
 }
 
 
+bool CPath::MakeDir(const CPath& file)
+{
+	return ::wxMkdir(file.GetRaw());
+}
+
+
 bool CPath::FileExists(const wxString& file)
 {
 	return CPath(file).FileExists();
@@ -579,5 +630,16 @@ sint64 CPath::GetFileSize(const wxString& file)
 time_t CPath::GetModificationTime(const CPath& file)
 {
 	return ::wxFileModificationTime(file.GetRaw());
+}
+
+
+sint64 CPath::GetFreeSpace(const CPath& path)
+{
+	wxLongLong free;
+	if (::wxGetDiskSpace(path.GetRaw(), NULL, &free)) {
+		return free.GetValue();
+	}
+
+	return wxInvalidOffset;
 }
 

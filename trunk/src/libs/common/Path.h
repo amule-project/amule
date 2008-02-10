@@ -80,6 +80,23 @@ public:
 	/** Returns true if the path exists and is a directory, false otherwise. */
 	bool DirExists() const;
 
+	
+	enum EAccess {
+		//! Only check of the file or dir exists.
+		exists,
+		//! If set, checks if a file is readable, or if a dir can be accessed.
+		readable,
+		//! If set, checks if a file or directory can be written to,
+		writable,
+		//! Combination of the two checks above.
+		readwritable = readable | writable
+	};
+
+	/** Returns if if the path is a dir, and the checks were positive. */
+	bool IsDir(EAccess mode) const;
+	/** Returns if if the path is a dir, and the checks were positive. */
+	bool IsFile(EAccess mode) const;
+
 
 	/** Returns the contents of the object in a form suitable for use with wx system-calls. */
 	wxString GetRaw() const;
@@ -144,7 +161,9 @@ public:
 	static bool RemoveFile(const CPath& file);
 	/** Deletes the specified directory, returning true on success. */
 	static bool RemoveDir(const CPath& file);
-	
+	/** Creates the specified directory, returning true on success. */
+	static bool MakeDir(const CPath& file);
+
 	/** Returns true if the path exists, and is a file. */
 	static bool FileExists(const wxString& file);
 	/** Returns true if the path exists, and is a directory. */
@@ -154,6 +173,8 @@ public:
 	static sint64 GetFileSize(const wxString& file);
 	/** Returns the modification time the specified file, or (time_t)-1 on failure. */
 	static time_t GetModificationTime(const CPath& file);
+	/** Returns the free diskspace at the specified path, or wxInvalidOffset on failure. */
+	static sint64 GetFreeSpace(const CPath& path);
 
 private:
 	//! Contains the printable filename, for use in the UI.
