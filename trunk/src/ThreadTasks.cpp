@@ -436,12 +436,10 @@ void CCompletionTask::Entry()
 		//#warning Thread-safety needed
 #endif
 		
-		wxString path = theApp->glob_prefs->GetCategory(m_category)->incomingpath;
-		if (!CPath::DirExists(path)) {
-			path = thePrefs::GetIncomingDir();
+		targetPath = CPath(theApp->glob_prefs->GetCategory(m_category)->incomingpath);
+		if (!targetPath.DirExists()) {
+			targetPath = thePrefs::GetIncomingDir();
 		}
-
-		targetPath = CPath(path);
 	}
 	
 	// Check if the target directory is on a Fat32 FS, since that needs extra cleanups.

@@ -341,7 +341,7 @@ void CSharedFileList::FindSharedFiles()
 	std::list<wxString> sharedPaths;
 	
 	// Global incoming dir and all category incoming directories are automatically shared.
-	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir()));
+	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir().GetRaw()));
 	for (unsigned int i = 1;i < theApp->glob_prefs->GetCatCount(); ++i) {
 		sharedPaths.push_back(ReadyPath(theApp->glob_prefs->GetCatPath(i)));
 	}
@@ -408,7 +408,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString strDir)
 		return 0;
 	} else if (CheckDirectory(theApp->ConfigDir, strDir)) {
 		return 0;
-	} else if (CheckDirectory(thePrefs::GetTempDir(), strDir)) {
+	} else if (CheckDirectory(thePrefs::GetTempDir().GetRaw(), strDir)) {
 		return 0;
 	}
 

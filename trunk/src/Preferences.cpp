@@ -30,6 +30,8 @@
 #include <common/Constants.h>
 #include <common/DataFileVersion.h>
 
+#include <algorithm>
+
 #include <wx/config.h>
 #include <wx/dir.h>
 #include <wx/stdpaths.h>
@@ -91,8 +93,8 @@ bool		CPreferences::s_UPnPWebServerEnabled;
 uint16		CPreferences::s_UPnPTCPPort;
 bool		CPreferences::s_autoserverlist;
 bool		CPreferences::s_deadserver;
-wxString	CPreferences::s_incomingdir;
-wxString	CPreferences::s_tempdir;
+CPath		CPreferences::s_incomingdir;
+CPath		CPreferences::s_tempdir;
 bool		CPreferences::s_ICH;
 uint8		CPreferences::s_depth3D;
 bool		CPreferences::s_scorsystem;
@@ -191,8 +193,6 @@ bool		CPreferences::s_UseSkinFiles;
 bool		CPreferences::s_FastED2KLinksHandler;
 bool		CPreferences::s_ToolbarOrientation;
 bool		CPreferences::s_ShowPartFileNumber;
-int		CPreferences::s_perms_files;
-int		CPreferences::s_perms_dirs;
 bool		CPreferences::s_AICHTrustEveryHash;
 wxString 	CPreferences::s_CommentFilterString;
 bool		CPreferences::s_IPFilterAutoLoad;
@@ -1006,7 +1006,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Files
 	 **/
-	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Str(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
+	NewCfgItem(IDC_TEMPFILES,	(new Cfg_Path(  wxT("/eMule/TempDir"), 	s_tempdir, appdir + wxT("Temp") )));
 	
 	#if defined(__WXMAC__) || defined(__WINDOWS__)
 		wxString incpath = wxStandardPaths::Get().GetDocumentsDir();
@@ -1019,7 +1019,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	#else 
 		wxString incpath = appdir + wxT("Incoming");
 	#endif
-	NewCfgItem(IDC_INCFILES,	(new Cfg_Str(  wxT("/eMule/IncomingDir"), s_incomingdir, incpath )));
+	NewCfgItem(IDC_INCFILES,	(new Cfg_Path(  wxT("/eMule/IncomingDir"), s_incomingdir, incpath )));
 	
 	NewCfgItem(IDC_ICH,		(new Cfg_Bool( wxT("/eMule/ICH"), s_ICH, true )));
 	NewCfgItem(IDC_AICHTRUST,	(new Cfg_Bool( wxT("/eMule/AICHTrust"), s_AICHTrustEveryHash, false )));

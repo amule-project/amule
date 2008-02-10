@@ -94,7 +94,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	
 	// Set default category
 	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
-	theApp->glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir();
+	theApp->glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir().GetRaw();
 	
 	// Show default + userdefined categories
 	for ( uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); i++ ) {
