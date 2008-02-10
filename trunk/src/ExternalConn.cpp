@@ -194,10 +194,15 @@ void ExternalConn::RemoveSocket(CECServerSocket *s)
 
 void ExternalConn::KillAllSockets()
 {
+	AddDebugLogLineM(false, logGeneral,
+		CFormat(wxT("ExternalConn::KillAllSockets(): %d sockets to destroy.")) %
+			socket_list.size());
 	SocketSet::iterator it = socket_list.begin();
-	for (; it != socket_list.end(); ++it) {
-		CECServerSocket *s = *it;
+	while (it != socket_list.end()) {
+		CECServerSocket *s = *(it++);
+		s->Close();
 		s->Destroy();
+		delete s;
 	}
 }
 

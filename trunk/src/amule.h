@@ -429,6 +429,7 @@ public:
 
 #ifndef __WXMSW__
 	void OnSignalChildHandler(int signal, siginfo_t *siginfo, void *ucontext);
+	pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg);
 #endif // __WXMSW__
 
 
