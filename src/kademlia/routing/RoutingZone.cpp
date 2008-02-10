@@ -124,8 +124,7 @@ void CRoutingZone::ReadFile(void)
 	try {
 		uint32 numContacts = 0;
 		CFile file;
-		if (file.Open(m_filename, CFile::read)) {
-
+		if (CPath::FileExists(m_filename) && file.Open(m_filename, CFile::read)) {
 			numContacts = file.ReadUInt32();
 			for (uint32 i = 0; i < numContacts; i++) {
 				CUInt128 id = file.ReadUInt128();
