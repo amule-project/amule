@@ -536,8 +536,6 @@ public:
 	static uint8 GetCryptTCPPaddingLength() { return s_byCryptTCPPaddingLength; }
 	
 protected:
-	void	CreateUserHash();
-	void	SetStandartValues();
 	static	int32 GetRecommendedMaxConnections();
 
 	//! Temporary storage for statistic-colors.
