@@ -442,6 +442,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  instead.
 		* Added autoconf check for broken exception-handling.
 		* Added subclass of Cfg_Str for loading/saving paths.
+		* Added functions for checking permissions of dirs/files, and
+		  for retrieving the free space at a given location, to CPath.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
