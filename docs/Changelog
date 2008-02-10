@@ -444,6 +444,16 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Added subclass of Cfg_Str for loading/saving paths.
 		* Added functions for checking permissions of dirs/files, and
 		  for retrieving the free space at a given location, to CPath.
+		* Increased minimum free size needed before writing ".met"
+		  files from around 5KB to 100KB, as ".met" can easily be
+		  much larger than 5 KB in size.
+		* Improved checks for permissions of directories, and insured
+		  that the fallback directories are also checked in the case
+		  were the user-specified directories are inaccessible.
+		* Changed temp/incomming dir variables to "CPath"s, using the
+		  previously added Cfg_Path class.
+
+
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

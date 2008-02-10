@@ -411,7 +411,7 @@ void CDownloadQueue::Process()
 		}
 		// Check if any paused files can be resumed
 			
-		CheckDiskspace(CPath(thePrefs::GetTempDir()));
+		CheckDiskspace(thePrefs::GetTempDir());
 	}
 	
 	
@@ -1138,13 +1138,10 @@ void CDownloadQueue::CheckDiskspace( const CPath& path )
 		min = PARTSIZE;
 	}
 
-	// Get the current free disc-space
-	wxLongLong free = 0;
-	if ( !wxGetDiskSpace( path.GetRaw(), NULL, &free ) ) {
+	uint64 free = CPath::GetFreeSpace(path);
+	if (free == static_cast<uint64>(wxInvalidOffset)) {
 		return;
-	}
-
-	if (free < min) {
+	} else if (free < min) {
 		CUserEvents::ProcessEvent(
 			CUserEvents::OutOfDiskSpace,
 			wxT("Temporary partition"));

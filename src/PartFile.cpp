@@ -264,7 +264,7 @@ void CPartFile::CreatePartFile()
 	do { 
 		++i; 
 		m_partmetfilename = CPath(wxString::Format(wxT("%03i.part.met"), i));
-		m_fullname = CPath(thePrefs::GetTempDir()).JoinPaths(m_partmetfilename);
+		m_fullname = thePrefs::GetTempDir().JoinPaths(m_partmetfilename);
 	} while (m_fullname.FileExists());
 	
 	wxString strPartName = m_partmetfilename.RemoveExt().GetRaw();
@@ -289,7 +289,7 @@ void CPartFile::CreatePartFile()
 		SetPartFileStatus(PS_ERROR);
 	}
 
-	SetFilePath(CPath(thePrefs::GetTempDir()));
+	SetFilePath(thePrefs::GetTempDir());
 			
 	if (thePrefs::GetAllocFullPart()) {
 		//#warning Code for full file alloc - should be done on thread.
@@ -732,9 +732,9 @@ bool CPartFile::SavePartFile(bool Initial)
 			return false;
 	}
 	
-	/* Don't write anything to disk if less than 5000 bytes of free space is left. */
-	wxLongLong free = 0;
-	if (wxGetDiskSpace( GetFilePath().GetRaw(), NULL, &free) && free < 5000 ) {
+	/* Don't write anything to disk if less than 100 KB of free space is left. */
+	sint64 free = CPath::GetFreeSpace(GetFilePath());
+	if ((free != wxInvalidOffset) && (free < (100 * 1024))) {
 		return false;
 	}
 	
@@ -2544,9 +2544,9 @@ void CPartFile::ResumeFile()
 
 bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
 {
-	wxLongLong free = 0;
-	if ( !wxGetDiskSpace( GetFilePath().GetRaw(), NULL, &free ) ) {
-		// If wxGetDiskSpace() fails, then the path probably does not exist.
+	uint64 free = CPath::GetFreeSpace(GetFilePath());
+	if (free == static_cast<uint64>(wxInvalidOffset)) {
+		// If GetFreeSpace() fails, then the path probably does not exist.
 		return false;
 	}
 	

@@ -334,9 +334,9 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 			UpdateGUI(s_pfconverting);
 
-			wxLongLong freespace;
-			if (wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &freespace)) {
-				if (freespace < (maxindex * PARTSIZE)) {
+			sint64 freespace = CPath::GetFreeSpace(thePrefs::GetTempDir());
+			if (freespace != wxInvalidOffset) {
+				if (static_cast<uint64>(freespace) < maxindex * PARTSIZE) {
 					delete file;
 					delete [] ba;
 					return CONV_OUTOFDISKSPACE;
@@ -407,12 +407,11 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 		UpdateGUI(s_pfconverting);
 
-		wxLongLong freespace;
-		if (!wxGetDiskSpace(thePrefs::GetTempDir(), NULL, &freespace)) {
+		sint64 freespace = CPath::GetFreeSpace(thePrefs::GetTempDir());
+		if (freespace == wxInvalidOffset) {
 			delete file;
 			return CONV_IOERROR;
-		}
-		if (!s_pfconverting->removeSource && (freespace < s_pfconverting->spaceneeded)) {
+		} else if (!s_pfconverting->removeSource && (freespace < s_pfconverting->spaceneeded)) {
 			delete file;
 			return CONV_OUTOFDISKSPACE;
 		}
@@ -457,7 +456,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 	DeleteContents(file->m_gaplist);
 
-	if (!file->LoadPartFile(CPath(thePrefs::GetTempDir()), file->GetPartMetFileName(), false)) {
+	if (!file->LoadPartFile(thePrefs::GetTempDir(), file->GetPartMetFileName(), false)) {
 		//delete file;
 		file->Delete();
 		return CONV_BADFORMAT;

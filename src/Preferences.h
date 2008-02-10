@@ -30,6 +30,7 @@
 #include "Color.h"			// Needed for COLORREF
 
 #include <wx/arrstr.h>		// Needed for wxArrayString
+#include <common/Path.h>	// Needed for CPath
 
 #include <map>
 
@@ -201,10 +202,10 @@ public:
 	static void		SetUDPPort(uint16 val)		{ s_udpport = val; }
 	static bool		IsUDPDisabled()			{ return s_UDPDisable; }
 	static void		SetUDPDisable(bool val)		{ s_UDPDisable = val; }
-	static const wxString&	GetIncomingDir()		{ return s_incomingdir; }
-	static void		SetIncomingDir(const wxString& dir)	{ s_incomingdir = dir; }
-	static const wxString&	GetTempDir()			{ return s_tempdir; }
-	static void		SetTempDir(const wxString& dir)	{ s_tempdir = dir; }
+	static const CPath&	GetIncomingDir()		{ return s_incomingdir; }
+	static void		SetIncomingDir(const CPath& dir){ s_incomingdir = dir; }
+	static const CPath&	GetTempDir()			{ return s_tempdir; }
+	static void		SetTempDir(const CPath& dir)	{ s_tempdir = dir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
@@ -588,12 +589,10 @@ protected:
 	static bool	s_deadserver;
 
 ////////////// FILES
-	static wxString	s_incomingdir;
-	static wxString	s_tempdir;
+	static CPath	s_incomingdir;
+	static CPath	s_tempdir;
 	static bool	s_ICH;
 	static bool	s_AICHTrustEveryHash;
-	static int	s_perms_files;
-	static int	s_perms_dirs;
 
 ////////////// GUI
 	static uint8	s_depth3D;
