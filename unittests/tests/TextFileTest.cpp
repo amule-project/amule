@@ -2,6 +2,7 @@
 
 #include <muleunit/test.h>
 #include <common/TextFile.h>
+#include <common/Path.h>
 
 using namespace muleunit;
 
@@ -146,77 +147,98 @@ TEST(TextFile, ReadLines)
 }
 
 
-TEST(TextFile, WriteLines)
+class TextFileTest : public Test
 {
-	const wxChar* lines[] = {
-		wxT(" # comment"),
-		wxT("abc"),
-		wxT("# foo bar"),
-		wxT(" "),
-		wxT("def ghi "),
-		wxT(""),
-		wxT("# xyz"),
-		wxT(" xyz"),
-		wxT(" "),
-		wxT("")
-	};
-
+public:
+	TextFileTest()
+		: Test(wxT("TextFile"), wxT("WriteLines"))
 	{
-		CONTEXT(wxT("Writing lines manually"));
-			
-		CTextFile file;
-		ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
-
-		for (size_t i = 0; i < ArraySize(lines); ++i) {
-			CONTEXT(wxString::Format(wxT("Writing the %i'th line."), i));
-
-			ASSERT_TRUE(file.WriteLine(lines[i]));
-		}
 	}
 
+	virtual void setUp()
 	{
-		CONTEXT(wxT("Reading manually written lines"));
-
-		CTextFile file;
-		ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
-		ASSERT_FALSE(file.Eof());
-
-		for (size_t i = 0; i < ArraySize(lines); ++i) {
-			CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
-
-			ASSERT_EQUALS(lines[i], file.GetNextLine());
-		}
-		ASSERT_TRUE(file.Eof());
-	}
-
-	{
-		CONTEXT(wxT("Writing lines automatically"));
-			
-		CTextFile file;
-		ASSERT_FALSE(file.IsOpened());
-		ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
-		ASSERT_TRUE(file.WriteLines(wxArrayString(ArraySize(lines), lines)));
-		ASSERT_TRUE(file.IsOpened());
-	}
-
-	{
-		CONTEXT(wxT("Reading automatically written lines"));
-
-		CTextFile file;
-		ASSERT_FALSE(file.IsOpened());
-		ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
-		ASSERT_TRUE(file.IsOpened());
-		ASSERT_FALSE(file.Eof());
-
-		for (size_t i = 0; i < ArraySize(lines); ++i) {
-			CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
-
-			ASSERT_EQUALS(lines[i], file.GetNextLine());
+		const CPath path = CPath(wxT("testfile.txt"));
+		if (path.FileExists()) {
+			ASSERT_TRUE(CPath::RemoveFile(path));
 		}
 
-		ASSERT_TRUE(file.Eof());
 	}
 
-}
+	virtual void tearDown()
+	{
+		setUp();
+	}
 
+	virtual void run()
+	{
+		const wxChar* lines[] = {
+			wxT(" # comment"),
+			wxT("abc"),
+			wxT("# foo bar"),
+			wxT(" "),
+			wxT("def ghi "),
+			wxT(""),
+			wxT("# xyz"),
+			wxT(" xyz"),
+			wxT(" "),
+			wxT("")
+		};
+
+		{
+			CONTEXT(wxT("Writing lines manually"));
+				
+			CTextFile file;
+			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
+
+			for (size_t i = 0; i < ArraySize(lines); ++i) {
+				CONTEXT(wxString::Format(wxT("Writing the %i'th line."), i));
+
+				ASSERT_TRUE(file.WriteLine(lines[i]));
+			}
+		}
+
+		{
+			CONTEXT(wxT("Reading manually written lines"));
+
+			CTextFile file;
+			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
+			ASSERT_FALSE(file.Eof());
+
+			for (size_t i = 0; i < ArraySize(lines); ++i) {
+				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
+
+				ASSERT_EQUALS(lines[i], file.GetNextLine());
+			}
+			ASSERT_TRUE(file.Eof());
+		}
+
+		{
+			CONTEXT(wxT("Writing lines automatically"));
+				
+			CTextFile file;
+			ASSERT_FALSE(file.IsOpened());
+			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::write));
+			ASSERT_TRUE(file.WriteLines(wxArrayString(ArraySize(lines), lines)));
+			ASSERT_TRUE(file.IsOpened());
+		}
+
+		{
+			CONTEXT(wxT("Reading automatically written lines"));
+
+			CTextFile file;
+			ASSERT_FALSE(file.IsOpened());
+			ASSERT_TRUE(file.Open(wxT("testfile.txt"), CTextFile::read));
+			ASSERT_TRUE(file.IsOpened());
+			ASSERT_FALSE(file.Eof());
+
+			for (size_t i = 0; i < ArraySize(lines); ++i) {
+				CONTEXT(wxString::Format(wxT("Reading the %i'th line."), i));
+
+				ASSERT_EQUALS(lines[i], file.GetNextLine());
+			}
+
+			ASSERT_TRUE(file.Eof());
+		}
+	}
+} testInstance;
 
