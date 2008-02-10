@@ -185,7 +185,7 @@ void CMuleUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& WXUNUSED
 }
 
 
-void CMuleUDPSocket::OnDisconnected(int errorCode)
+void CMuleUDPSocket::OnDisconnected(int WXUNUSED(errorCode))
 {
 	/* Due to bugs in wxWidgets, UDP sockets will sometimes
 	 * be closed. This is caused by the fact that wx treats
