@@ -868,7 +868,6 @@ public:
 CPreferences::CPreferences()
 {
 	srand( wxGetLocalTimeMillis().GetLo() ); // we need random numbers sometimes
-	CreateUserHash();
 
 	// load preferences.dat or set standart values
 	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
@@ -881,14 +880,22 @@ CPreferences::CPreferences()
 			} catch (const CSafeIOException& e) {
 				AddDebugLogLineM(true, logGeneral,
 					wxT("Error while reading userhash: ") + e.what());
-				SetStandartValues();
 			}
-		} else {
-			SetStandartValues();
 		}
-	} else {
-		SetStandartValues();
 	}
+
+	if (s_userhash.IsEmpty()) {
+		for (int i = 0; i < 8; i++) {
+			RawPokeUInt16(s_userhash.GetHash() + (i * 2), rand());
+		}
+
+		Save();
+	}
+	
+	// Mark hash as an eMule-type hash
+	// See also CUpDownClient::GetHashType
+	s_userhash[5] = 14;
+	s_userhash[14] = 111;
 	
 #ifndef CLIENT_GUI
 	LoadPreferences();
@@ -898,12 +905,6 @@ CPreferences::CPreferences()
 	CTextFile slistfile;
 	if (slistfile.Open(theApp->ConfigDir + wxT("addresses.dat"), CTextFile::read)) {
 		adresses_list = slistfile.ReadLines();
-	}
-
-	s_userhash[5] = 14;
-	s_userhash[14] = 111;
-	if (s_userhash.IsEmpty()) {
-		CreateUserHash();
 	}
 #endif
 }
@@ -1346,13 +1347,6 @@ void CPreferences::CheckUlDlRatio()
 }
 
 
-void CPreferences::SetStandartValues()
-{
-	CreateUserHash();
-	Save();
-}
-
-
 void CPreferences::Save()
 {
 	wxString fullpath(theApp->ConfigDir + wxT("preferences.dat"));
@@ -1379,18 +1373,6 @@ void CPreferences::Save()
 		sdirfile.WriteLines(shareddir_list, wxConvUTF8);
 	}
 	#endif
-}
-
-
-void CPreferences::CreateUserHash()
-{
-	for (int i = 0;i != 8; i++) {
-		uint16	random = rand();
-		memcpy(s_userhash.GetHash()+(i*2),&random,2);
-	}
-	// mark as emule client. that will be need in later version
-	s_userhash[5] = 14;
-	s_userhash[14] = 111;
 }
 
 
