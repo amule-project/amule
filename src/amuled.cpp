@@ -386,78 +386,62 @@ static EndProcessDataMap endProcDataMap;
 
 int CDaemonAppTraits::WaitForChild(wxExecuteData &execData)
 {
-	if (execData.flags & wxEXEC_SYNC) {
-		int exitcode = 0;
-		if ( waitpid(execData.pid, &exitcode, 0) == -1 || !WIFEXITED(exitcode) ) {
-			wxLogSysError(_("Waiting for subprocess termination failed"));
-		}	
+	int status = 0;
+	pid_t result = 0;
+	// Build the log message
+	wxString msg;
+	msg << wxT("WaitForChild() has been called for child process with pid `") <<
+		execData.pid <<
+		wxT("'. ");
 
-		return exitcode;
-	} else /** wxEXEC_ASYNC */ {
+	if (execData.flags & wxEXEC_SYNC) {
+		result = AmuleWaitPid(execData.pid, &status, 0, &msg);
+		if (result == -1 || (!WIFEXITED(status) && !WIFSIGNALED(status))) {
+			msg << wxT(" Waiting for subprocess termination failed.");
+			AddDebugLogLineM(false, logGeneral, msg);			
+		}	
+	} else {
+		/** wxEXEC_ASYNC */
 		// Give the process a chance to start or forked child to exit
 		// 1 second is enough time to fail on "path not found"
 		wxSleep(1);
-		int status = 0;
-		int result = waitpid(execData.pid, &status, WNOHANG);
-		if (result == -1) {
-			printf("ERROR: waitpid call failed\n");
-		} else if (WIFSIGNALED(status) || (WIFEXITED(status) && WEXITSTATUS(status))) {
-			return 0;
-		}
-		
-		// Add a WxEndProcessData entry to the map, so that we can
-		// support process termination
-		wxEndProcessData *endProcData = new wxEndProcessData();
-		endProcData->pid = execData.pid;
-		endProcData->process = execData.process;
-		endProcData->tag = 0;
-		endProcDataMap[execData.pid] = endProcData;
+		result = AmuleWaitPid(execData.pid, &status, WNOHANG, &msg);
+		if (result == 0) {
+			// Add a WxEndProcessData entry to the map, so that we can
+			// support process termination
+			wxEndProcessData *endProcData = new wxEndProcessData();
+			endProcData->pid = execData.pid;
+			endProcData->process = execData.process;
+			endProcData->tag = 0;
+			endProcDataMap[execData.pid] = endProcData;
 
-		return execData.pid;
+			status = execData.pid;
+		} else {
+			// if result != 0, then either waitpid() failed (result == -1)
+			// and there is nothing we can do, or the child has changed 
+			// status, which means it is probably dead.
+			status = 0;
+		}
 	}
+
+	// Log our passage here
+	AddDebugLogLineM(false, logGeneral, msg);
+
+	return status;
 }
 
 
 void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*/)
 {
-	// strerror_r() buffer
-	const int ERROR_BUFFER_LEN = 256;
-	char errorBuffer[ERROR_BUFFER_LEN];
 	// Build the log message
 	wxString msg;
 	msg << wxT("OnSignalChildHandler() has been called for child process with pid `") <<
 		siginfo->si_pid <<
 		wxT("'. ");
 	// Make sure we leave no zombies by calling waitpid()
-	int status = 0; 
-	int result = waitpid(siginfo->si_pid, &status, WNOHANG);
-	if (result == -1) {
-		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		msg << wxT("ERROR: waitpid call failed: ") <<
-			char2unicode(errorBuffer) <<
-			wxT(".");
-	} else if (WIFEXITED(status)) {
-		msg << wxT("Child has terminated with status code `") <<
-			WEXITSTATUS(status) <<
-			wxT("'.");
-	} else if (WIFSIGNALED(status)) {
-		msg << wxT("Child was killed by signal `") <<
-			WTERMSIG(status) <<
-			wxT("'.");
-		if (WCOREDUMP(status)) {
-			msg << wxT(" A core file has been dumped.");
-		}
-	} else if (WIFSTOPPED(status)) {
-		msg << wxT("Child has been stopped by signal `") <<
-			WSTOPSIG(status) <<
-			wxT("'.");
-	} else if (WIFCONTINUED(status)) {
-		msg << wxT("Child has received `SIGCONT' and has continued execution.");
-	} else {
-		msg << wxT("The program was not able to determine why the child has signaled.");
-	}
-
-	if (WIFEXITED(status) || WIFSIGNALED(status)) {
+	int status = 0;
+	pid_t result = AmuleWaitPid(siginfo->si_pid, &status, WNOHANG, &msg);
+	if (result != 1 && result != 0 && (WIFEXITED(status) || WIFSIGNALED(status))) {
 		// Fetch the wxEndProcessData structure corresponding to this pid
 		EndProcessDataMap::iterator it = endProcDataMap.find(siginfo->si_pid);
 		if (it != endProcDataMap.end()) {
@@ -481,6 +465,55 @@ void OnSignalChildHandler(int /*signal*/, siginfo_t *siginfo, void * /*ucontext*
 	// Log our passage here
 	AddDebugLogLineM(false, logGeneral, msg);
 }
+
+
+pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
+{
+	// strerror_r() buffer
+	const int ERROR_BUFFER_LEN = 256;
+	char errorBuffer[ERROR_BUFFER_LEN];
+
+	*status = 0;
+	pid_t result = waitpid(pid, status, options);
+	if (result == -1) {
+		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
+		*msg << wxT("Error: waitpid() call failed: ") <<
+			char2unicode(errorBuffer) <<
+			wxT(".");
+	} else if (result == 0) {
+		if (options & WNOHANG)  {
+			*msg << wxT("The child is alive.");
+		} else {
+			*msg << wxT("Error: waitpid() call returned 0 but "
+				"WNOHANG was not specified in options.");
+		}
+	} else {
+		if (WIFEXITED(*status)) {
+			*msg << wxT("Child has terminated with status code `") <<
+				WEXITSTATUS(*status) <<
+				wxT("'.");
+		} else if (WIFSIGNALED(*status)) {
+			*msg << wxT("Child was killed by signal `") <<
+				WTERMSIG(*status) <<
+				wxT("'.");
+			if (WCOREDUMP(*status)) {
+				*msg << wxT(" A core file has been dumped.");
+			}
+		} else if (WIFSTOPPED(*status)) {
+			*msg << wxT("Child has been stopped by signal `") <<
+				WSTOPSIG(*status) <<
+				wxT("'.");
+		} else if (WIFCONTINUED(*status)) {
+			*msg << wxT("Child has received `SIGCONT' and has continued execution.");
+		} else {
+			*msg << wxT("The program was not able to determine why the child has signaled.");
+		}
+	}
+
+	return result;
+}
+
+
 #endif // __WXMSW__
 
 
@@ -513,6 +546,7 @@ int CamuleDaemonApp::OnRun()
 	// strerror_r() buffer
 	const int ERROR_BUFFER_LEN = 256;
 	char errorBuffer[ERROR_BUFFER_LEN];
+	wxString msg;
 
 	// Process the return code of dead children so that we do not create 
 	// zombies. wxBase does not implement wxProcess callbacks, so no one
@@ -527,11 +561,15 @@ int CamuleDaemonApp::OnRun()
 	ret = sigaction(SIGCHLD, &m_newSignalChildAction, NULL);
 	if (ret == -1) {
 		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		wxString msg;
-		msg << wxT("CamuleDaemonApp::OnRun(): first sigaction() failed: ") <<
+		msg << wxT("CamuleDaemonApp::OnRun(): "
+			"Installation of SIGCHLD callback with sigaction() failed: ") <<
 			char2unicode(errorBuffer) <<
 			wxT(".");
 		AddLogLineM(true, msg);
+	} else {
+		msg << wxT("CamuleDaemonApp::OnRun(): Installation of SIGCHLD "
+			"callback with sigaction() succeeded.");
+		AddDebugLogLineM(false, logGeneral, msg);
 	}
 #endif // __WXMSW__
 	
@@ -541,16 +579,22 @@ int CamuleDaemonApp::OnRun()
 		((CDaemonAppTraits *)GetTraits())->DeletePending();
 	}
 	
+	// ShutDown is beeing called twice. Once here and again in OnExit().
 	ShutDown();
+
 #ifndef __WXMSW__
+	msg.Empty();
 	ret = sigaction(SIGCHLD, &m_oldSignalChildAction, NULL);
 	if (ret == -1) {
 		strerror_r(errno, errorBuffer, ERROR_BUFFER_LEN);
-		wxString msg;
 		msg << wxT("CamuleDaemonApp::OnRun(): second sigaction() failed: ") <<
 			char2unicode(errorBuffer) <<
 			wxT(".");
 		AddLogLineM(true, msg);
+	} else {
+		msg << wxT("CamuleDaemonApp::OnRun(): Uninstallation of SIGCHLD "
+			"callback with sigaction() succeeded.");
+		AddDebugLogLineM(false, logGeneral, msg);
 	}
 #endif // __WXMSW__
 

@@ -232,7 +232,7 @@ int CamuleApp::OnExit()
 
 	// Kill amuleweb if running
 	if (webserver_pid) {
-		printf("Killing amuleweb instance... ");
+		printf("Killing amuleweb instance with pid `%ld' ... ", webserver_pid);
 		wxKillError rc;
 		wxKill(webserver_pid, wxSIGTERM, &rc);
 		printf("Killed!\n");
@@ -1613,6 +1613,9 @@ void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 
 void CamuleApp::ShutDown()
 {
+	// Log
+	AddDebugLogLineM(false, logGeneral, wxT("CamuleApp::ShutDown() has started."));
+
 	// Signal the hashing thread to terminate
 	m_app_state = APP_STATE_SHUTTINGDOWN;
 	
@@ -1664,6 +1667,9 @@ void CamuleApp::ShutDown()
 	CThreadScheduler::Terminate();
 	
 	theApp->uploadBandwidthThrottler->EndThread();
+
+	// Log
+	AddDebugLogLineM(false, logGeneral, wxT("CamuleApp::ShutDown() has ended."));
 }
 
 
