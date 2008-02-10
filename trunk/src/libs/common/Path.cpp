@@ -329,13 +329,9 @@ bool CPath::IsDir(EAccess mode) const
 	wxString path = DoCleanPath(m_filesystem);
 	if (!wxFileName::DirExists(path)) {
 		return false;
-	}
-	
-	if ((mode & writable) && wxIsWritable(path)) {
+	} else if ((mode & writable) && !wxIsWritable(path)) {
 		return false;
-	}
-
-	if ((mode & readable) && wxIsReadable(path)) {
+	} else if ((mode & readable) && !wxIsReadable(path)) {
 		return false;
 	}
 
@@ -347,13 +343,9 @@ bool CPath::IsFile(EAccess mode) const
 {
 	if (!wxFileName::FileExists(m_filesystem)) {
 		return false;
-	}
-	
-	if ((mode & writable) && wxIsWritable(m_filesystem)) {
+	} else if ((mode & writable) && !wxIsWritable(m_filesystem)) {
 		return false;
-	}
-
-	if ((mode & readable) && wxIsReadable(m_filesystem)) {
+	} else if ((mode & readable) && !wxIsReadable(m_filesystem)) {
 		return false;
 	}
 
