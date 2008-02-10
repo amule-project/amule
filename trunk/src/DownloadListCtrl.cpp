@@ -973,9 +973,8 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 		wxString view;
 		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-			view << _("Preview") << wxT(" [") <<
-				file->GetPartMetFileName().RemoveExt().GetPrintable() <<
-				wxT("]");
+			view << CFormat(wxT("%s [%s]")) % _("Preview")
+					% file->GetPartMetFileName().RemoveExt();
 		} else if ( file->GetStatus() == PS_COMPLETE ) {
 			view << _("&Open the file");
 		}
@@ -1249,7 +1248,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 		wxString filename;
 		if (thePrefs::ShowPartFileNumber()) {
 			if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
-				filename = CFormat(wxT("[%s] ")) % file->GetPartMetFileName().RemoveExt().RemoveExt();
+				filename = CFormat(wxT("[%s] ")) % file->GetPartMetFileName().RemoveAllExt();
 			}
 		}
 		filename += file->GetFileName().GetPrintable();
