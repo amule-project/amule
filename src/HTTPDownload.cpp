@@ -73,8 +73,7 @@ public:
 	}
 
 	~CHTTPDownloadDialog() {
-	 	m_thread->Delete();
-		delete m_thread;
+		StopThread();
 	}	
 
 	void UpdateGauge(int total, int current) {
@@ -101,12 +100,18 @@ public:
 	}
 
 private:
-	DECLARE_EVENT_TABLE()
+	void StopThread() {
+		if (m_thread) {
+		 	m_thread->Stop();
+			delete m_thread;
+			m_thread = NULL;
+		}
+	}
 
 	void OnBtnCancel(wxCommandEvent& WXUNUSED(evt)) {
 		printf("HTTP download cancelled\n");
 		Show(false);
-	 	m_thread->Delete();
+		StopThread();
 	}
 	
 	void OnProgress(CMuleInternalEvent& evt) {
@@ -118,9 +123,11 @@ private:
 		Destroy();
 	}
   
-	wxThread*		m_thread;
+	CMuleThread*	m_thread;
 	MuleGifCtrl* 	m_ani;
 	wxGaugeControl* m_progressbar;
+	
+	DECLARE_EVENT_TABLE()
 };
 
 
@@ -138,13 +145,13 @@ DEFINE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN)
 
 CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filename, HTTP_Download_File file_id, bool showDialog)
 #ifdef AMULE_DAEMON
-	: wxThread(wxTHREAD_DETACHED),
+	: CMuleThread(wxTHREAD_DETACHED),
 #else
-	: wxThread(showDialog ? wxTHREAD_JOINABLE : wxTHREAD_DETACHED),
+	: CMuleThread(showDialog ? wxTHREAD_JOINABLE : wxTHREAD_DETACHED),
 #endif
 	  m_url(url),
 	  m_tempfile(filename),
-	  m_result(1),
+	  m_result(-1),
 	  m_file_id(file_id),
 	  m_companion(NULL)
 {
@@ -158,11 +165,9 @@ CHTTPDownloadThread::CHTTPDownloadThread(const wxChar* url, const wxChar* filena
 }
 
 
-wxThread::ExitCode CHTTPDownloadThread::Entry()
+CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 {
 	if (TestDestroy()) { 
-		// Thread going down...
-		m_result = -1;
 		return NULL;
 	}
 	
@@ -224,12 +229,16 @@ wxThread::ExitCode CHTTPDownloadThread::Entry()
 				}
 			}
 		} while (current_read && !TestDestroy());
+
+		if (current_read == 0) {
+			// Download was succesful.
+			m_result = 1;
+		}
 	} catch (const wxString& error) {
 		if (wxFileExists(m_tempfile)) {
 			wxRemoveFile(m_tempfile);
 		}
 
-		m_result = -1;		
 		AddLogLineM(false, error);
 	}
 

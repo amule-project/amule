@@ -47,11 +47,11 @@ static bool s_terminated = false;
  *  - Managing the thread-object is difficult, since the only way to 
  *    destroy it is to create a new thread.
  */
-class CTaskThread : public wxThread
+class CTaskThread : public CMuleThread
 {
 public:
 	CTaskThread(CThreadScheduler* owner)
-		: wxThread(wxTHREAD_JOINABLE),
+		: CMuleThread(wxTHREAD_JOINABLE),
 		  m_owner(owner)
 	{
 	}
@@ -145,7 +145,7 @@ void CThreadScheduler::CreateSchedulerThread()
 	// A thread can only be run once, so the old one must be safely disposed of
 	if (m_thread) {
 		AddDebugLogLineM(false, logThreads, wxT("CreateSchedulerThread: Disposing of old thread."));
-		m_thread->Delete();
+		m_thread->Stop();
 		delete m_thread;
 	}
 	
@@ -168,7 +168,7 @@ void CThreadScheduler::CreateSchedulerThread()
 	}
 	
 	// Creation or running failed.
-	m_thread->Delete();
+	m_thread->Stop();
 	delete m_thread;
 	m_thread = NULL;
 }
@@ -201,7 +201,7 @@ CThreadScheduler::CThreadScheduler()
 CThreadScheduler::~CThreadScheduler()
 {
 	if (m_thread) {
-		m_thread->Delete();
+		m_thread->Stop();
 		delete m_thread;
 	}
 }

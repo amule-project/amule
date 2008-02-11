@@ -336,8 +336,8 @@ noinst_HEADERS = \
 		ClientCredits.h \
 		ClientCreditsList.h \
 		ClientDetailDialog.h \
-		ClientList.h \
 		ClientListCtrl.h \
+		ClientList.h \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
@@ -352,16 +352,16 @@ noinst_HEADERS = \
 		ED2KLink.h \
 		EditServerListDlg.h \
 		EMSocket.h \
-		EncryptedStreamSocket.cpp \
 		EncryptedDatagramSocket.cpp \
+		EncryptedStreamSocket.cpp \
 		ExternalConnector.h \
 		ExternalConn.h \
 		FileDetailDialog.h \
 		FileDetailListCtrl.h \
 		FileLock.h \
 		Friend.h \
-		FriendList.h \
 		FriendListCtrl.h \
+		FriendList.h \
 		GetTickCount.h \
 		GuiEvents.h \
 		HTTPDownload.h \
@@ -374,13 +374,15 @@ noinst_HEADERS = \
 		KnownFileList.h \
 		ListenSocket.h \
 		Logger.h \
-		MD4Hash.h \
 		MagnetURI.h \
+		MD4Hash.h \
 		MemFile.h \
+		MuleCollection.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \
 		MuleTextCtrl.h \
+		MuleThread.h \
 		MuleTrayIcon.h \
 		MuleUDPSocket.h \
 		muuli_wdr.h \
@@ -389,20 +391,21 @@ noinst_HEADERS = \
 		OtherFunctions.h \
 		OtherStructs.h \
 		Packet.h \
-		PartFile.h \
 		PartFileConvert.h \
+		PartFile.h \
 		Preferences.h \
 		PrefsUnifiedDlg.h \
 		Proxy.h \
+		RangeMap.h \
 		RC4Encrypt.h \
 		SafeFile.h \
 		ScopedPtr.h \
 		SearchDlg.h \
-		SearchListCtrl.h \
 		SearchFile.h \
+		SearchListCtrl.h \
 		SearchList.h \
-		Server.h \
 		ServerConnect.h \
+		Server.h \
 		ServerListCtrl.h \
 		ServerList.h \
 		ServerSocket.h \
@@ -414,8 +417,8 @@ noinst_HEADERS = \
 		SharedFilesCtrl.h \
 		SharedFilesWnd.h \
 		StateMachine.h \
-		Statistics.h \
 		StatisticsDlg.h \
+		Statistics.h \
 		StatTree.h \
 		Tag.h \
 		TerminationProcess.h \
@@ -429,8 +432,7 @@ noinst_HEADERS = \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
 		UPnP.h \
-		UserEvents.h \
-		MuleCollection.h
+		UserEvents.h
 
 MAINTAINERCLEANFILES = Makefile.in
 

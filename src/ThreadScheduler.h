@@ -27,12 +27,11 @@
 #ifndef THREADSCHEDULER_H
 #define THREADSCHEDULER_H
 
-#include <wx/thread.h>
-
 #include <deque>
 #include <map>
 
 #include "Types.h"
+#include "MuleThread.h"
 
 
 class CThreadTask;
@@ -125,7 +124,7 @@ private:
 	CTypeMap m_taskDescs;
 
 	//! The actual worker thread.
-	wxThread* m_thread;
+	CMuleThread* m_thread;
 	//! The currently running task, if any.
 	CThreadTask* m_currentTask;
 	
@@ -188,7 +187,7 @@ private:
 	ETaskPriority m_priority;
 
 	//! The owner (scheduler), used when calling TestDestroy.
-	wxThread* m_owner;
+	CMuleThread* m_owner;
 	//! Specifies if the specifc task should be aborted.
 	bool m_abort;
 	
