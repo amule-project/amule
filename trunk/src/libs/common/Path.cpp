@@ -236,6 +236,13 @@ CPath::CPath(const wxString& filename)
 		// it either originated from a (wx)system-call, or from a
 		// user with a properly setup system.
 		m_filesystem = DeepCopy(filename);
+
+		// FIXME: Is this actually needed for osx/msw?
+		// Try to unmangle the filename for printing.
+		m_printable = wxConvUTF8.cMB2WC(fn);
+		if (!m_printable) {
+			m_printable = GetDemangler()->cMB2WC(fn);
+		}
 	} else {
 		// It's not a valid filename in the current locale, so we'll
 		// have to do some magic. This ensures that the filename is
@@ -244,13 +251,9 @@ CPath::CPath(const wxString& filename)
 		// his system ...
 		fn = wxConvUTF8.cWC2MB(filename);
 		m_filesystem = wxConvFile.cMB2WC(fn);
-	}
 
-	// FIXME: Is this actually needed for osx/msw?
-	// Try to unmangle the filename for printing.
-	m_printable = wxConvUTF8.cMB2WC(fn);
-	if (!m_printable) {
-		m_printable = GetDemangler()->cMB2WC(fn);
+		// There's no need to try to unmangle the filename here.
+		m_printable = DeepCopy(filename);
 	}
 
 	wxASSERT(m_filesystem.Length());
@@ -542,25 +545,25 @@ bool CPath::StartsWith(const CPath& other) const
 
 wxString CPath::GetPrintableString() const
 {
-	return m_printable;
+	return DeepCopy(m_printable);
 }
 
 
 bool CPath::CloneFile(const CPath& src, const CPath& dst, bool overwrite)
 {
-	return ::wxCopyFile(src.GetRaw(), dst.GetRaw(), overwrite);
+	return ::wxCopyFile(src.m_filesystem, dst.m_filesystem, overwrite);
 }
 
 
 bool CPath::RemoveFile(const CPath& file)
 {
-	return ::wxRemoveFile(file.GetRaw());
+	return ::wxRemoveFile(file.m_filesystem);
 }
 
 
 bool CPath::RenameFile(const CPath& src, const CPath& dst, bool overwrite)
 {
-	return ::wxRenameFile(src.GetRaw(), dst.GetRaw(), overwrite);
+	return ::wxRenameFile(src.m_filesystem, dst.m_filesystem, overwrite);
 }
 
 
@@ -568,12 +571,12 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 {
 	wxASSERT(appendix.IsAscii());
 
-	CPath dst = CPath(src.GetRaw() + appendix);
+	CPath dst = CPath(src.m_filesystem + appendix);
 
 	if (CPath::CloneFile(src, dst, true)) {
 		// Try to ensure that the backup gets physically written 
 		wxFile backupFile;
-		if (backupFile.Open(dst.GetRaw())) {
+		if (backupFile.Open(dst.m_filesystem)) {
 			backupFile.Flush();
 		}
 
@@ -586,18 +589,13 @@ bool CPath::BackupFile(const CPath& src, const wxString& appendix)
 
 bool CPath::RemoveDir(const CPath& file)
 {
-#ifndef __VMS__
-	return ::wxRmdir(file.GetRaw());
-#else
-	//#warning wxRmdir does not work under VMS !
-	return false;
-#endif
+	return ::wxRmdir(file.m_filesystem);
 }
 
 
 bool CPath::MakeDir(const CPath& file)
 {
-	return ::wxMkdir(file.GetRaw());
+	return ::wxMkdir(file.m_filesystem);
 }
 
 
@@ -621,14 +619,14 @@ sint64 CPath::GetFileSize(const wxString& file)
 
 time_t CPath::GetModificationTime(const CPath& file)
 {
-	return ::wxFileModificationTime(file.GetRaw());
+	return ::wxFileModificationTime(file.m_filesystem);
 }
 
 
 sint64 CPath::GetFreeSpace(const CPath& path)
 {
 	wxLongLong free;
-	if (::wxGetDiskSpace(path.GetRaw(), NULL, &free)) {
+	if (::wxGetDiskSpace(path.m_filesystem, NULL, &free)) {
 		return free.GetValue();
 	}
 
