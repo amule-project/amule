@@ -24,15 +24,16 @@
 
 #include "Timer.h"		// Interface declaration
 #include "GetTickCount.h"	// Needed for GetTickCountFullRes
+#include "MuleThread.h"		// Needed for CMuleThread
 
 
 //////////////////////// Timer Thread ////////////////////
 
-class CTimerThread : public wxThread
+class CTimerThread : public CMuleThread
 {
 public:
 	CTimerThread()
-		: wxThread(wxTHREAD_JOINABLE)
+		: CMuleThread(wxTHREAD_JOINABLE)
 	{
 	}
 
@@ -125,7 +126,7 @@ bool CTimer::Start(int millisecs, bool oneShot)
 	}
 
 	// Something went wrong ...
-	m_thread->Delete();
+	m_thread->Stop();
 	delete m_thread;
 	m_thread = NULL;
 
@@ -137,8 +138,7 @@ void CTimer::Stop()
 {
 	if (m_thread) {
 		m_thread->m_sleepSemaphore.Post();
-		m_thread->Delete();
-		m_thread->Wait();
+		m_thread->Stop();
 		delete m_thread;
 		m_thread = NULL;
 	}

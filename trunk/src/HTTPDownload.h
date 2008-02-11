@@ -27,26 +27,26 @@
 #define HTTPDOWNLOAD_H
 
 #include "GuiEvents.h"	// Needed for HTTP_Download_File
-
+#include "MuleThread.h"	// Needed for CMuleThread
 
 class wxEvtHandler;
 class wxHTTP;
 class wxInputStream;
 
 
-class CHTTPDownloadThread : public wxThread
+class CHTTPDownloadThread : public CMuleThread
 {
 public:
 	/** Note: wxChar* is used to circument the thread-unsafe wxString reference counting. */
 	CHTTPDownloadThread(const wxChar* url, const wxChar* filename, HTTP_Download_File file_id, bool showDialog = true);
 
 private:
-	wxThread::ExitCode	Entry();
+	ExitCode		Entry();
 	virtual void 		OnExit();
 
-	wxString			m_url;
-	wxString			m_tempfile;
-	int					m_result;
+	wxString		m_url;
+	wxString		m_tempfile;
+	int			m_result;
 	HTTP_Download_File	m_file_id;
 	wxEvtHandler*		m_companion;
 
