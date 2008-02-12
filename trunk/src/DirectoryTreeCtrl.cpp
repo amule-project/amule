@@ -34,8 +34,6 @@
 #include <common/FileFunctions.h>
 #include "muuli_wdr.h"		// Needed for amuleSpecial
 
-#include <algorithm>		// Needed for std::find
-
 
 BEGIN_EVENT_TABLE(CDirectoryTreeCtrl, wxTreeCtrl)
 	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY,	CDirectoryTreeCtrl::OnRButtonDown)
@@ -226,43 +224,21 @@ bool CDirectoryTreeCtrl::HasSubdirectories(const CPath& folder)
 }
 
 
-void CDirectoryTreeCtrl::GetSharedDirectories(wxArrayString* list)
+void CDirectoryTreeCtrl::GetSharedDirectories(PathList* list)
 {
 	wxCHECK_RET(list, wxT("Invalid list in GetSharedDirectories"));
 	
-	PathList::iterator it = m_lstShared.begin();
-	for (; it != m_lstShared.end(); ++it) {
-		// TODO: 'list' should also contain CPaths.
-		list->Add(it->GetRaw());
-	}
+	list->insert(list->end(), m_lstShared.begin(), m_lstShared.end());
 }
 
 
-void CDirectoryTreeCtrl::SetSharedDirectories(wxArrayString* list)
+void CDirectoryTreeCtrl::SetSharedDirectories(PathList* list)
 {
-	m_lstShared.clear();
-
-	for (size_t i = 0; i < list->GetCount(); ++i) {
-		wxString path = list->Item(i);
-
-		if (!path) {
-			// FIXME: This probably shouldn't happen, but I don't
-			// think we current check for empty lines in sharedfiles.dat
-			continue;
-		}
-		
-		path = StripSeparators(path, wxString::trailing);
-		if (!path) {
-#ifndef __WXMSW__
-			// The root dir will get stripped away by the above.
-			// Not that it should be shared in the first place ...
-			m_lstShared.push_back(CPath(wxT("/")));
-#endif
-		} else {
-			m_lstShared.push_back(CPath(path));
-		}
-	}
+	wxCHECK_RET(list, wxT("Invalid list in SetSharedDirectories"));
 	
+	m_lstShared.clear();
+	m_lstShared.insert(m_lstShared.end(), list->begin(), list->end());
+
 	// Mark all shared root items (on windows this can be multiple
 	// drives, on unix there is only the root dir).
 	wxTreeItemIdValue cookie;
@@ -288,8 +264,8 @@ bool CDirectoryTreeCtrl::HasSharedSubdirectory(const CPath& path)
 {
 	PathList::iterator it = m_lstShared.begin();
 	for (; it != m_lstShared.end(); ++it) {
-		// != to avoid the case where 'path' itself is shared.
-		if (it->StartsWith(path) && (*it != path)) {
+		// IsSameDir to avoid the case where 'path' itself is shared.
+		if (it->StartsWith(path) && (!it->IsSameDir(path))) {
 			return true;
 		}
 	}
@@ -318,12 +294,14 @@ bool CDirectoryTreeCtrl::IsShared(const CPath& path)
 {
 	wxCHECK_MSG(path.IsOk(), false, wxT("Invalid path in IsShared"));
 
-	PathList::iterator it = std::find(
-		m_lstShared.begin(),
-		m_lstShared.end(),
-		path);
-	
-	return (it != m_lstShared.end());
+	PathList::iterator it = m_lstShared.begin();
+	for (; it != m_lstShared.end(); ++it) {
+		if (it->IsSameDir(path)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
@@ -343,7 +321,13 @@ void CDirectoryTreeCtrl::DelShare(const CPath& path)
 {
 	wxCHECK_RET(path.IsOk(), wxT("Invalid path in DelShare"));
 	
-	m_lstShared.remove(path);
+	PathList::iterator it = m_lstShared.begin();
+	for (; it != m_lstShared.end(); ++it ) {
+		if (it->IsSameDir(path)) {
+			m_lstShared.erase(it);
+			return;
+		}
+	}
 }
 
 

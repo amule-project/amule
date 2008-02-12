@@ -357,9 +357,10 @@ std::pair<bool, CPath> CheckMuleDirectory(const wxString& desc, const CPath& dir
 	if (directory.IsDir(CPath::readwritable)) {
 		return std::pair<bool, CPath>(true, directory);
 	} else if (directory.DirExists()) {
-		msg << wxT("Permissions on the ") << desc << wxT(" directory too strict!\n")
-		    << wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
-			<< wxT("permissions for the folder '") << directory.GetPrintable() << wxT("'");		
+		msg = CFormat(wxT("Permissions on the %s directory too strict!\n")
+			wxT("aMule cannot proceed. To fix this, you must set read/write/exec\n")
+			wxT("permissions for the folder '%s'"))
+				% desc % directory;
 	} else if (CPath::MakeDir(directory)) {
 		return std::pair<bool, CPath>(true, directory);
 	} else {
@@ -578,9 +579,7 @@ bool CamuleApp::OnInit()
 	// Make a backup of the log file
 	CPath logfileName = CPath(ConfigDir + wxT("logfile"));
 	if (logfileName.FileExists()) {
-		CPath logBackupName = CPath(ConfigDir + wxT("logfile.bak"));
-		
-		CPath::RenameFile(logfileName, logBackupName, true);
+		CPath::BackupFile(logfileName, wxT(".bak"));
 	}
 
 	// Open the log file

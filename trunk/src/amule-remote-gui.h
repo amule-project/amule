@@ -96,11 +96,10 @@ class CPreferencesRem : public CPreferences, public CECPacketHandlerBase {
 public:
 	CPreferencesRem(CRemoteConnect *);
 
-	Category_Struct *CreateCategory(wxString name, wxString path,
-		wxString comment, uint32 color, uint8 prio);
-
-	void UpdateCategory(uint8 cat, wxString name, wxString path,
-		wxString comment, uint32 color, uint8 prio);
+	Category_Struct *CreateCategory(const wxString& name, const CPath& path,
+						const wxString& comment, uint32 color, uint8 prio);
+	void UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
+						const wxString& comment, uint32 color, uint8 prio);
 
 	void RemoveCat(uint8 cat);
 	
@@ -548,7 +547,7 @@ public:
 	//
 	// Actions
 	//
-	void AddFilesFromDirectory(wxString);
+	void AddFilesFromDirectory(const CPath&);
 	void Reload(bool sendtoserver = true, bool firstload = false);
 	bool RenameFile(CKnownFile* file, const CPath& newName);
 

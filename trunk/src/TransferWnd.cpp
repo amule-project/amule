@@ -94,7 +94,7 @@ CTransferWnd::CTransferWnd( wxWindow* pParent )
 	
 	// Set default category
 	theApp->glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
-	theApp->glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir().GetRaw();
+	theApp->glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
 	
 	// Show default + userdefined categories
 	for ( uint32 i = 0; i < theApp->glob_prefs->GetCatCount(); i++ ) {
@@ -232,7 +232,7 @@ void CTransferWnd::OnAddCategory(wxCommandEvent& WXUNUSED(event))
 		Category_Struct* newcat =
 			theApp->glob_prefs->GetCategory(
 				theApp->glob_prefs->GetCatCount()-1);
-		theApp->sharedfiles->AddFilesFromDirectory(newcat->incomingpath);
+		theApp->sharedfiles->AddFilesFromDirectory(newcat->path);
 		theApp->sharedfiles->Reload();		
 	}
 }
@@ -270,7 +270,7 @@ void CTransferWnd::RemoveCategoryPage(int index)
 void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 {
 	Category_Struct* cat = theApp->glob_prefs->GetCategory(m_dlTab->GetSelection());
-	wxString oldpath = cat->incomingpath;
+	CPath oldpath = cat->path;
 	CCatDialog dialog( this, 
 	// Allow browse?
 #ifdef CLIENT_GUI	
@@ -281,8 +281,8 @@ void CTransferWnd::OnEditCategory( wxCommandEvent& WXUNUSED(event) )
 		, m_dlTab->GetSelection());
 	
 	if (dialog.ShowModal() == wxOK) {
-		if (oldpath != cat->incomingpath) {
-			theApp->sharedfiles->AddFilesFromDirectory(cat->incomingpath);
+		if (!oldpath.IsSameDir(cat->path)) {
+			theApp->sharedfiles->AddFilesFromDirectory(cat->path);
 			theApp->sharedfiles->Reload();			
 		}
 	}

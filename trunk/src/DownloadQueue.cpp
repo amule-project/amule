@@ -157,7 +157,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 				// If result is false, then reading of both the primary and the backup .met failed
 				AddLogLineM(false, 
 					_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
-				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName.GetPrintable();
+				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
 			
 			AddDebugLogLineM(true, logPartFile, msg);

@@ -30,8 +30,6 @@
 #include <common/Constants.h>
 #include <common/DataFileVersion.h>
 
-#include <algorithm>
-
 #include <wx/config.h>
 #include <wx/dir.h>
 #include <wx/stdpaths.h>
@@ -1370,7 +1368,10 @@ void CPreferences::Save()
 	#ifndef CLIENT_GUI
 	CTextFile sdirfile;
 	if (sdirfile.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::write)) {
-		sdirfile.WriteLines(shareddir_list, wxConvUTF8);
+		for (size_t i = 0; i < shareddir_list.size(); ++i) {
+			sdirfile.WriteLine(shareddir_list[i].GetRaw(), wxConvUTF8);
+		}
+
 	}
 	#endif
 }
@@ -1433,7 +1434,7 @@ void CPreferences::SaveCats()
 			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
 
 			cfg->Write( wxT("Title"),	m_CatList[i]->title );
-			cfg->Write( wxT("Incoming"),	m_CatList[i]->incomingpath );
+			cfg->Write( wxT("Incoming"),	m_CatList[i]->path.GetRaw() );
 			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
 			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
 			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
@@ -1469,28 +1470,24 @@ void CPreferences::LoadCats()
 		Category_Struct* newcat = new Category_Struct;
 
 		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
-		newcat->incomingpath = cfg->Read( wxT("Incoming"), wxEmptyString );
+		newcat->path  = CPath(cfg->Read(wxT("Incoming"), wxEmptyString));
 
 		// Some sainity checking
-		if ( newcat->title.IsEmpty() || newcat->incomingpath.IsEmpty() ) {
+		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
 			printf("Invalid category found, skipping\n");
 			
 			delete newcat;
 			continue;
 		}
 
-		newcat->incomingpath = MakeFoldername(newcat->incomingpath);
 		newcat->comment = cfg->Read( wxT("Comment"), wxEmptyString );
-
 		newcat->prio = cfg->Read( wxT("Priority"), 0l );
-
-		wxString color = cfg->Read( wxT("Color"), wxT("0") );
-		newcat->color = StrToULong(color);
+		newcat->color = StrToULong(cfg->Read(wxT("Color"), wxT("0")));
 
 		AddCat(newcat);
 		
-		if (!wxFileName::DirExists(newcat->incomingpath)) {
-			wxFileName::Mkdir( newcat->incomingpath );
+		if (!newcat->path.DirExists()) {
+			CPath::MakeDir(newcat->path);
 		}
 	}
 }
@@ -1536,11 +1533,11 @@ Category_Struct* CPreferences::GetCategory(size_t index)
 }
 
 
-const wxString&	CPreferences::GetCatPath(uint8 index)
+const CPath& CPreferences::GetCatPath(uint8 index)
 {
 	wxASSERT( index < m_CatList.size() );
 	
-	return m_CatList[index]->incomingpath;
+	return m_CatList[index]->path;
 }
 
 
@@ -1552,14 +1549,14 @@ uint32 CPreferences::GetCatColor(size_t index)
 }
 
 Category_Struct *CPreferences::CreateCategory(
-	wxString name,
-	wxString path,
-	wxString comment,
+	const wxString& name,
+	const CPath& path,
+	const wxString& comment,
 	uint32 color,
 	uint8 prio)
 {
 	Category_Struct *category = new Category_Struct();
-	category->incomingpath	= path;
+	category->path		= path;
 	category->title		= name;
 	category->comment	= comment;
 	category->color		= color;
@@ -1572,11 +1569,17 @@ Category_Struct *CPreferences::CreateCategory(
 	return category;
 }
 
-void CPreferences::UpdateCategory(uint8 cat, wxString name, wxString path, wxString comment, uint32 color, uint8 prio)
+void CPreferences::UpdateCategory(
+	uint8 cat, 
+	const wxString& name,
+	const CPath& path,
+	const wxString& comment,
+	uint32 color,
+	uint8 prio)
 {
 	Category_Struct *category = m_CatList[cat];
 
-	category->incomingpath	= path;
+	category->path			= path;
 	category->title			= name;
 	category->comment		= comment;
 	category->color			= color;
@@ -1656,7 +1659,9 @@ void CPreferences::SetIPFilterLevel(uint8 level)
 	}
 }
 
-void CPreferences::SetPort(uint16 val) { 
+
+void CPreferences::SetPort(uint16 val)
+{ 
 	// Warning: Check for +3, because server UDP is TCP+3
 	
 	if (val +3 > 65535) {
@@ -1672,15 +1677,22 @@ void CPreferences::SetPort(uint16 val) {
 void CPreferences::ReloadSharedFolders()
 {
 #ifndef CLIENT_GUI
+	shareddir_list.clear();
+
 	CTextFile file;
 	if (file.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::read)) {
-		shareddir_list = file.ReadLines(txtReadDefault, wxConvUTF8);
+		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
+
+		for (size_t i = 0; i < lines.size(); ++i) {
+			shareddir_list.push_back(CPath(lines[i]));
+		}
 	}
 #endif
 }
 
 
-bool CPreferences::IsMessageFiltered(const wxString& message) { 
+bool CPreferences::IsMessageFiltered(const wxString& message)
+{ 
 	if (s_FilterAllMessages) { 
 		return true;
 	} else {
@@ -1704,7 +1716,9 @@ bool CPreferences::IsMessageFiltered(const wxString& message) {
 	}
 }
 
-bool CPreferences::IsCommentFiltered(const wxString& comment) { 
+
+bool CPreferences::IsCommentFiltered(const wxString& comment)
+{ 
 	if (s_FilterComments) { 
 		wxStringTokenizer tokenizer( s_CommentFilterString, wxT(",") );
 		while (tokenizer.HasMoreTokens()) {
