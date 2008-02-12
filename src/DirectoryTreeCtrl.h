@@ -27,7 +27,7 @@
 #define DIRECTORYTREECTRL_H
 
 #include <wx/treectrl.h>
-#include <list>
+#include <vector>
 
 #include <common/Path.h>
 
@@ -35,13 +35,15 @@
 class CDirectoryTreeCtrl : public wxTreeCtrl
 {
 public:
+	typedef std::vector<CPath> PathList;
+	
 	CDirectoryTreeCtrl(wxWindow* parent, int id, const wxPoint& pos, wxSize siz, int flags);
 	virtual ~CDirectoryTreeCtrl();
 
 	// get all shared directories
-	void GetSharedDirectories(wxArrayString* list);
+	void GetSharedDirectories(PathList* list);
 	// set shared directories
-	void SetSharedDirectories(wxArrayString* list);
+	void SetSharedDirectories(PathList* list);
 	
 	// User made any changes to list?
 	bool HasChanged;
@@ -75,7 +77,6 @@ private:
 	void OnRButtonDown(wxTreeEvent& evt);
 	void OnItemActivated(wxTreeEvent& evt);
 
-	typedef std::list<CPath> PathList;
 	PathList m_lstShared;
 	
 	

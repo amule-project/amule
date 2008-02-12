@@ -871,41 +871,34 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 					% m_client->GetUserIDHybrid() );
 
 				// This list will contain all (unique) folders.
-				CStringList foldersToSend;
+				std::list<CPath> foldersToSend;
 			   
 				// The shared folders
-				unsigned folderCount = theApp->glob_prefs->shareddir_list.GetCount();
+				const unsigned folderCount = theApp->glob_prefs->shareddir_list.size();
 				for (unsigned i = 0; i < folderCount; ++i) {
 					foldersToSend.push_back(theApp->glob_prefs->shareddir_list[i]);
 				}
 				
 				// ... the categories folders ... (category 0 -> incoming)
 				for (unsigned i = 0; i < theApp->glob_prefs->GetCatCount(); ++i) {
-					foldersToSend.push_back(theApp->glob_prefs->GetCategory(i)->incomingpath);
+					foldersToSend.push_back(theApp->glob_prefs->GetCategory(i)->path);
 				}
 	
+				// ... and the Magic thing from the eDonkey Hybrids...
+				foldersToSend.push_back(CPath(OP_INCOMPLETE_SHARED_FILES));
+
 				// Strip duplicates
 				foldersToSend.sort();
 				foldersToSend.unique();
 				
-				// ... and the Magic thing from the eDonkey Hybrids...
-				bool bFoundFolder = false;
-				for (CStringList::iterator it = foldersToSend.begin(); it != foldersToSend.end(); ++it) {
-					if (it->CmpNoCase(OP_INCOMPLETE_SHARED_FILES) == 0) {
-						bFoundFolder = true;
-						break;
-					}
-				}
-				
-				if (!bFoundFolder) {
-					foldersToSend.push_back(wxString(OP_INCOMPLETE_SHARED_FILES));
-				}
-				
 				// Send packet.
 				CMemFile tempfile(80);
 				tempfile.WriteUInt32(foldersToSend.size());
-				for (CStringList::iterator it = foldersToSend.begin(); it != foldersToSend.end(); ++it) {
-					tempfile.WriteString(*it, m_client->GetUnicodeSupport());
+
+				std::list<CPath>::iterator it = foldersToSend.begin();
+				for (; it != foldersToSend.end(); ++it) {
+					// We need to send the 'raw' filename, so we can recognize it again.
+					tempfile.WriteString(it->GetRaw(), m_client->GetUnicodeSupport());
 				}
 
 				CPacket* replypacket = new CPacket(tempfile, OP_EDONKEYPROT, OP_ASKSHAREDDIRSANS);

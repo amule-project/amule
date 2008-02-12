@@ -298,16 +298,6 @@ CSharedFileList::~CSharedFileList()
 }
 
 
-wxString ReadyPath(const wxString& path)
-{
-	if (path.Last() != wxFileName::GetPathSeparator()) {
-		return path + wxFileName::GetPathSeparator();
-	}
-
-	return path;
-}
-
-
 void CSharedFileList::FindSharedFiles() 
 {
 	/* Abort loading if we are shutting down. */
@@ -338,33 +328,22 @@ void CSharedFileList::FindSharedFiles()
 	}
 	
 	// Create a list of all shared paths and weed out duplicates.
-	std::list<wxString> sharedPaths;
+	std::list<CPath> sharedPaths;
 	
 	// Global incoming dir and all category incoming directories are automatically shared.
-	sharedPaths.push_back(ReadyPath(thePrefs::GetIncomingDir().GetRaw()));
+	sharedPaths.push_back(thePrefs::GetIncomingDir());
 	for (unsigned int i = 1;i < theApp->glob_prefs->GetCatCount(); ++i) {
-		sharedPaths.push_back(ReadyPath(theApp->glob_prefs->GetCatPath(i)));
+		sharedPaths.push_back(theApp->glob_prefs->GetCatPath(i));
 	}
 
-	// Also remove bogus entries
-	for (size_t i = 0; i < theApp->glob_prefs->shareddir_list.GetCount(); ) {
-		const wxString& path = theApp->glob_prefs->shareddir_list.Item(i);
-		if (CPath::DirExists(path)) {
-			sharedPaths.push_back(ReadyPath(path));
-			++i;
-		} else {
-			wxString msg = CFormat( _("CSharedFileList::FindSharedFiles: Removing %s from shared directory list: directory not found.") ) % path;
-			AddLogLineM(true, msg);
-			printf("%s\n", (const char *)unicode2char(msg));
-			theApp->glob_prefs->shareddir_list.RemoveAt(i);
-		}
-	}
+	const thePrefs::PathList& shared = theApp->glob_prefs->shareddir_list;
+	sharedPaths.insert(sharedPaths.end(), shared.begin(), shared.end());
 
 	sharedPaths.sort();
 	sharedPaths.unique();
 
 	unsigned addedFiles = 0;
-	std::list<wxString>::iterator it = sharedPaths.begin();
+	std::list<CPath>::iterator it = sharedPaths.begin();
 	for (; it != sharedPaths.end(); ++it) {
 		addedFiles += AddFilesFromDirectory(*it);
 	}
@@ -385,9 +364,9 @@ void CSharedFileList::FindSharedFiles()
 
 
 // Checks if the dir a is the same as b. If they are, then logs the message and returns true.
-bool CheckDirectory(const wxString& a, const wxString& b)
+bool CheckDirectory(const wxString& a, const CPath& b)
 {
-	if (ReadyPath(a) == ReadyPath(b)) {
+	if (CPath(a).IsSameDir(b)) {
 		AddLogLineM(true, CFormat( _("ERROR! Attempted to share %s") ) % a);
 		
 		return true;
@@ -397,23 +376,25 @@ bool CheckDirectory(const wxString& a, const wxString& b)
 }
 		
 
-unsigned CSharedFileList::AddFilesFromDirectory(wxString strDir)
+unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 {
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
 	//  - The Temp folder
 	// The following dirs just result in a warning.
 	//  - The users home-dir
-	if (CheckDirectory(wxGetHomeDir(), strDir)) {
+	if (CheckDirectory(wxGetHomeDir(), directory)) {
 		return 0;
-	} else if (CheckDirectory(theApp->ConfigDir, strDir)) {
+	} else if (CheckDirectory(theApp->ConfigDir, directory)) {
 		return 0;
-	} else if (CheckDirectory(thePrefs::GetTempDir().GetRaw(), strDir)) {
+	} else if (CheckDirectory(thePrefs::GetTempDir().GetRaw(), directory)) {
 		return 0;
 	}
 
-	const CPath directory = CPath(strDir);
 	if (!directory.DirExists()) {
+		printf("Shared directory not found, skipping: %s\n",
+			(const char *)unicode2char(directory.GetPrintable()));
+		
 		return 0;
 	}
 	
@@ -480,7 +461,8 @@ unsigned CSharedFileList::AddFilesFromDirectory(wxString strDir)
 	}
 
 	if (addedFiles == 0) {
-		printf("No shareable files found in directory: %s\n", (const char *)unicode2char(strDir));
+		printf("No shareable files found in directory: %s\n",
+			(const char *)unicode2char(directory.GetPrintable()));
 	}
 
 	return addedFiles;

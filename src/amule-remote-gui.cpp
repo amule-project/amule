@@ -528,7 +528,7 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 			const CECTag *cat_tag = packet->GetTagByName(EC_TAG_PREFS_CATEGORIES)->GetTagByIndex(i);
 			Category_Struct *cat = new Category_Struct;
 			cat->title = cat_tag->GetTagByName(EC_TAG_CATEGORY_TITLE)->GetStringData();
-			cat->incomingpath = cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData();
+			cat->path = CPath(cat_tag->GetTagByName(EC_TAG_CATEGORY_PATH)->GetStringData());
 			cat->comment = cat_tag->GetTagByName(EC_TAG_CATEGORY_COMMENT)->GetStringData();
 			cat->color =  cat_tag->GetTagByName(EC_TAG_CATEGORY_COLOR)->GetInt();
 			cat->prio = cat_tag->GetTagByName(EC_TAG_CATEGORY_PRIO)->GetInt();
@@ -537,8 +537,6 @@ void CPreferencesRem::HandlePacket(const CECPacket *packet)
 	} else {
 		Category_Struct *cat = new Category_Struct;
 		cat->title = _("All");
-		cat->incomingpath = wxEmptyString;
-		cat->comment = wxEmptyString;
 		cat->color =  0;
 		cat->prio = PR_NORMAL;
 		theApp->glob_prefs->AddCat(cat);
@@ -572,19 +570,19 @@ void CPreferencesRem::SendToRemote()
 
 
 Category_Struct *CPreferencesRem::CreateCategory(
-	wxString name,
-	wxString path,
-	wxString comment,
+	const wxString& name,
+	const CPath& path,
+	const wxString& comment,
 	uint32 color,
 	uint8 prio)
 {
 	CECPacket req(EC_OP_CREATE_CATEGORY);
-	CEC_Category_Tag tag(0xffffffff, name, path, comment, color, prio);
+	CEC_Category_Tag tag(0xffffffff, name, path.GetRaw(), comment, color, prio);
 	req.AddTag(tag);
 	m_conn->SendPacket(&req);
 
 	Category_Struct *category = new Category_Struct();
-	category->incomingpath	= path;
+	category->path		= path;
 	category->title		= name;
 	category->comment	= comment;
 	category->color		= color;
@@ -596,16 +594,21 @@ Category_Struct *CPreferencesRem::CreateCategory(
 }
 
 
-void CPreferencesRem::UpdateCategory(uint8 cat, wxString name, wxString path,
-			wxString comment, uint32 color, uint8 prio)
+void CPreferencesRem::UpdateCategory(
+	uint8 cat,
+	const wxString& name,
+	const CPath& path,
+	const wxString& comment,
+	uint32 color,
+	uint8 prio)
 {
 	CECPacket req(EC_OP_UPDATE_CATEGORY);
-	CEC_Category_Tag tag(cat, name, path, comment, color, prio);
+	CEC_Category_Tag tag(cat, name, path.GetRaw(), comment, color, prio);
 	req.AddTag(tag);
 	m_conn->SendPacket(&req);
 
 	Category_Struct *category = m_CatList[cat];
-	category->incomingpath	= path;
+	category->path		= path;
 	category->title		= name;
 	category->comment	= comment;
 	category->color		= color;
@@ -862,11 +865,11 @@ void CSharedFilesRem::Reload(bool, bool)
 }
 
 
-void CSharedFilesRem::AddFilesFromDirectory(wxString path)
+void CSharedFilesRem::AddFilesFromDirectory(const CPath& path)
 {
 	CECPacket req(EC_OP_SHAREDFILES_ADD_DIRECTORY);
 
-	req.AddTag(CECTag(EC_TAG_PREFS_DIRECTORIES, path));
+	req.AddTag(CECTag(EC_TAG_PREFS_DIRECTORIES, path.GetRaw()));
 	
 	m_conn->SendPacket(&req);
 }

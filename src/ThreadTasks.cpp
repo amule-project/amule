@@ -436,7 +436,7 @@ void CCompletionTask::Entry()
 		//#warning Thread-safety needed
 #endif
 		
-		targetPath = CPath(theApp->glob_prefs->GetCategory(m_category)->incomingpath);
+		targetPath = theApp->glob_prefs->GetCategory(m_category)->path;
 		if (!targetPath.DirExists()) {
 			targetPath = thePrefs::GetIncomingDir();
 		}

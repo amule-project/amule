@@ -413,7 +413,7 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 		}
 	}
 
-	theApp->glob_prefs->shareddir_list.Clear();
+	theApp->glob_prefs->shareddir_list.clear();
 	m_ShareSelector->GetSharedDirectories(&theApp->glob_prefs->shareddir_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {

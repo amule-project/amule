@@ -76,7 +76,8 @@ wxDialog(parent, -1, _("Category"),
 	if (m_category) {
 		// Filling values by the specified category
 		CastChild(IDC_TITLE,	wxTextCtrl)->SetValue(m_category->title);
-		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue(m_category->incomingpath);
+		// We use the 'raw' filename, since the value is also passed to wxDirSelector
+		CastChild(IDC_INCOMING,	wxTextCtrl)->SetValue(m_category->path.GetRaw());
 		CastChild(IDC_COMMENT,	wxTextCtrl)->SetValue(m_category->comment);
 		CastChild(IDC_PRIOCOMBO,wxChoice)->SetSelection(m_category->prio);
 		
@@ -151,11 +152,10 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		return;
 	}
 	
-	wxString newpath =
-		MakeFoldername(CastChild(IDC_INCOMING, wxTextCtrl)->GetValue());
+	CPath newpath = CPath(CastChild(IDC_INCOMING, wxTextCtrl)->GetValue());
 	
 	// No empty dirs please 
-	if ( newpath.IsEmpty() ) {
+	if (!newpath.IsOk()) {
 		wxMessageBox(
 			_("You must specify a path for the category!"),
 			_("Info"), wxOK, this);
@@ -163,8 +163,8 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
 		return;
 	}
 
-	if (!::wxDirExists(newpath)) {
-		if (!wxMkdir(newpath)) {
+	if (!newpath.DirExists()) {
+		if (!CPath::MakeDir(newpath)) {
 			wxMessageBox(_("Failed to create incoming dir for category. Please specify a valid path!"),
 				_("Info"), wxOK, this);
 			return;
@@ -202,8 +202,6 @@ void CCatDialog::OnBnClickedOk(wxCommandEvent& WXUNUSED(evt))
         	
 		theApp->amuledlg->m_transferwnd->AddCategory(m_category);
 	} else {
-		wxString oldpath = m_category->incomingpath;
-
 		theApp->glob_prefs->UpdateCategory(index, newname, newpath, 
         	CastChild(IDC_COMMENT, wxTextCtrl)->GetValue(), m_color,
         	CastChild(IDC_PRIOCOMBO, wxChoice)->GetSelection());

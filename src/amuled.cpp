@@ -610,7 +610,7 @@ bool CamuleDaemonApp::OnInit()
 	core_timer = new CTimer(this,ID_CORE_TIMER_EVENT);
 	core_timer->Start(300);
 	glob_prefs->GetCategory(0)->title = GetCatTitle(thePrefs::GetAllcatType());
-	glob_prefs->GetCategory(0)->incomingpath = thePrefs::GetIncomingDir().GetRaw();
+	glob_prefs->GetCategory(0)->path = thePrefs::GetIncomingDir();
 	
 	return true;
 }

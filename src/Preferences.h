@@ -29,7 +29,7 @@
 #include "MD4Hash.h"			// Needed for CMD4Hash
 #include "Color.h"			// Needed for COLORREF
 
-#include <wx/arrstr.h>		// Needed for wxArrayString
+#include <wx/arrstr.h>			// Needed for wxArrayString
 #include <common/Path.h>	// Needed for CPath
 
 #include <map>
@@ -40,7 +40,6 @@ class CPreferences;
 class wxConfigBase;
 class wxWindow;
 
-#define DEFAULT_COL_SIZE 65535
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,
@@ -50,7 +49,7 @@ enum EViewSharedFilesAccess{
 
 struct Category_Struct
 {
-	wxString	incomingpath;
+	CPath		path;
 	wxString	title;
 	wxString	comment;
 	uint32		color;
@@ -330,7 +329,9 @@ public:
 	static void		SetMaxDownload(uint16 in);
 	static void		SetSlotAllocation(uint16 in) 	{ s_slotallocation = in; };
 
-	wxArrayString shareddir_list;
+	typedef std::vector<CPath> PathList;
+	PathList shareddir_list;
+	
 	wxArrayString adresses_list;
 
 	static bool	 	AutoConnectStaticOnly() 	{ return s_autoconnectstaticonly; }
@@ -352,10 +353,12 @@ public:
 	void			RemoveCat(size_t index);
 	uint32			GetCatCount();
 	Category_Struct* GetCategory(size_t index);
-	const wxString&	GetCatPath(uint8 index);
+	const CPath&	GetCatPath(uint8 index);
 	uint32			GetCatColor(size_t index);
-	Category_Struct *CreateCategory(wxString name, wxString path, wxString comment, uint32 color, uint8 prio);
-	void			UpdateCategory(uint8 cat, wxString name, wxString path, wxString comment, uint32 color, uint8 prio);
+	Category_Struct *CreateCategory(const wxString& name, const CPath& path,
+						const wxString& comment, uint32 color, uint8 prio);
+	void			UpdateCategory(uint8 cat, const wxString& name, const CPath& path,
+						const wxString& comment, uint32 color, uint8 prio);
 
 	static uint32		GetAllcatType() 		{ return s_allcatType; }
 	static void		SetAllcatType(uint32 in)	{ s_allcatType = in; }

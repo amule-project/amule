@@ -39,7 +39,7 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, EC_DETAIL_LEVEL detail_leve
 		case EC_DETAIL_INC_UPDATE:
 		case EC_DETAIL_WEB:
 		case EC_DETAIL_FULL:
-			AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->incomingpath));
+			AddTag(CECTag(EC_TAG_CATEGORY_PATH, cat->path.GetRaw()));
 			AddTag(CECTag(EC_TAG_CATEGORY_COMMENT, cat->comment));
 			AddTag(CECTag(EC_TAG_CATEGORY_COLOR, (uint32)cat->color));
 			AddTag(CECTag(EC_TAG_CATEGORY_PRIO, cat->prio));
@@ -60,12 +60,12 @@ CEC_Category_Tag::CEC_Category_Tag(uint32 cat_index, wxString name, wxString pat
 
 void CEC_Category_Tag::Apply()
 {
-	theApp->glob_prefs->UpdateCategory(GetInt(), Name(), Path(), Comment(), Color(), Prio());
+	theApp->glob_prefs->UpdateCategory(GetInt(), Name(), CPath(Path()), Comment(), Color(), Prio());
 }
 
 void CEC_Category_Tag::Create()
 {
-	theApp->glob_prefs->CreateCategory(Name(), Path(), Comment(), Color(), Prio());
+	theApp->glob_prefs->CreateCategory(Name(), CPath(Path()), Comment(), Color(), Prio());
 }
 
 CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_details, EC_DETAIL_LEVEL cat_details) : CECPacket(EC_OP_SET_PREFERENCES, pref_details)
