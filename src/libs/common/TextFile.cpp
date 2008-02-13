@@ -101,7 +101,7 @@ wxString CTextFile::GetNextLine(const wxMBConv& conv)
 	char buffer[TXTBUF_SIZE];
 
 	// Loop until EOF (fgets will then return NULL) or a newline is read.
-	while (fgets(buffer, 8192, m_file.fp())) {
+	while (fgets(buffer, TXTBUF_SIZE, m_file.fp())) {
 		// NB: The majority of the time spent by this function is
 		//     spent converting the multibyte string to wide-char.
 		line += conv.cMB2WC(buffer);
