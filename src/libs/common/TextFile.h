@@ -55,7 +55,7 @@ enum EReadTextFile
  * EOL-style handling.
  * 
  * Note that it is not possible to seek in a CTextFile, only sequential
- * reading or writing is possible. Also note that the maximum lenght of a
+ * reading or writing is possible. Also note that the maximum length of a
  * line is fixed (see CTextFile::GetNextLine), however this shouldn't be
  * a problem, given the uses of this class.
  */
@@ -74,7 +74,7 @@ public:
 	CTextFile();
 	/** Destructor. Closes the file if still open. */
 	~CTextFile();
-	
+
 	/** Opens the specified file, returning true on success. */
 	//\{
 	bool Open(const wxString& path, EOpenMode mode);
@@ -87,7 +87,7 @@ public:
 	bool		Eof() const;
 	/** Closes the file, returning true on success. */
 	bool		Close();
-	
+
 
 	/**
 	 * Returns the next line of a readable file.
