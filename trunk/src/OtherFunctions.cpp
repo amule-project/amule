@@ -29,7 +29,6 @@
 #include <tags/FileTags.h>
 
 #include <wx/utils.h>
-#include <wx/file.h>		// Needed for wxFile
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/log.h>		// Needed for wxLogNull
 
@@ -290,27 +289,6 @@ wxString GetFiletypeDesc(FileType type, bool translated)
 wxString GetFiletypeByName(const CPath& filename, bool translated)
 {
 	return GetFiletypeDesc(GetFiletype(filename), translated);
-}
-
-
-/** 
- * Return a boolean meaning whether the file has contents or not (doesn't
- * matter if it exists)
- *
- * @param filename The filename of the file to evaluate (as a wxString)
- *
- * @return Boolean value TRUE when it has no contents (file doesn't exists
- * or it's size is 0bytes). Any othe case, FALSE
- */
-bool IsEmptyFile(const wxString& filename)
-{
-	if (wxFile::Exists(filename)) {
-		wxFile file(filename);
-		if (file.IsOpened()) {
-			return ( file.Length() == 0 );
-		}
-	}
-	return true;
 }
 
 
