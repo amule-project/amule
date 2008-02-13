@@ -2240,7 +2240,8 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// Check if we are (pre)viewing a completed file or not
 	if (file->GetStatus() != PS_COMPLETE) {
 		// Remove the .met and see if out video player specifiation uses the magic string
-		wxString fileWithoutMet = file->GetFullName().RemoveExt().GetRaw();
+		wxString fileWithoutMet = thePrefs::GetTempDir().JoinPaths(
+			file->GetPartMetFileName().RemoveExt()).GetRaw();
 		if (!command.Replace(wxT("$file"), fileWithoutMet)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
