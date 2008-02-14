@@ -639,12 +639,12 @@ yes)
 	echo -n "Generating ${POSUB}/LINGUAS... "
 	Generate_Langs=`echo $SelectedLangs | sed -e 's/ .*//' -e 's/,/\\\\|/g'`
 	if test "$Generate_Langs" = "all"; then
-		cp ${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+		cp ${srcdir}/${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
 	else
-		grep $Generate_Langs ${POSUB}/LINGUAS.in > ${POSUB}/LINGUAS
+		grep $Generate_Langs ${srcdir}/${POSUB}/LINGUAS.in > ${POSUB}/LINGUAS
 	fi
 	if test `wc -l ${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
-		cp ${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+		cp ${srcdir}/${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
 	fi
 	AC_MSG_RESULT(Done)
 	;;
