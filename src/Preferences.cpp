@@ -185,7 +185,7 @@ bool		CPreferences::s_AllocFullChunk;
 uint16		CPreferences::s_Browser;
 wxString	CPreferences::s_CustomBrowser;
 bool		CPreferences::s_BrowserTab;
-wxString	CPreferences::s_OSDirectory;
+CPath		CPreferences::s_OSDirectory;
 wxString	CPreferences::s_Skin;
 bool		CPreferences::s_UseSkinFiles;
 bool		CPreferences::s_FastED2KLinksHandler;
@@ -403,14 +403,14 @@ public:
 	{
 		Cfg_Str::LoadFromFile(cfg);
 
-		m_real_path = CPath(m_temp_path);
+		m_real_path = CPath::FromUniv(m_temp_path);
 	}
 
 	
 	/** @see Cfg_Str::SaveToFile. */
 	virtual void SaveToFile(wxConfigBase* cfg)
 	{
-		m_temp_path = m_real_path.GetRaw();
+		m_temp_path = CPath::ToUniv(m_real_path);
 
 		Cfg_Str::SaveToFile(cfg);
 	}
@@ -1037,7 +1037,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	/**
 	 * Web Server
 	 */
-	NewCfgItem(IDC_OSDIR,		(new Cfg_Str(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir )));
+	NewCfgItem(IDC_OSDIR,		(new Cfg_Path(  wxT("/eMule/OSDirectory"), s_OSDirectory,	appdir )));
 	NewCfgItem(IDC_ONLINESIG,	(new Cfg_Bool( wxT("/eMule/OnlineSignature"), s_onlineSig, false )));
 	NewCfgItem(IDC_OSUPDATE,	(MkCfg_Int( wxT("/eMule/OnlineSignatureUpdate"), s_OSUpdate, 5 )));
 	NewCfgItem(IDC_ENABLE_WEB,	(new Cfg_Bool( wxT("/WebServer/Enabled"), s_bWebEnabled, false )));
@@ -1369,7 +1369,7 @@ void CPreferences::Save()
 	CTextFile sdirfile;
 	if (sdirfile.Open(theApp->ConfigDir + wxT("shareddir.dat"), CTextFile::write)) {
 		for (size_t i = 0; i < shareddir_list.size(); ++i) {
-			sdirfile.WriteLine(shareddir_list[i].GetRaw(), wxConvUTF8);
+			sdirfile.WriteLine(CPath::ToUniv(shareddir_list[i]), wxConvUTF8);
 		}
 
 	}
@@ -1434,7 +1434,7 @@ void CPreferences::SaveCats()
 			cfg->SetPath( wxString::Format(wxT("/Cat#%i"), i) );
 
 			cfg->Write( wxT("Title"),	m_CatList[i]->title );
-			cfg->Write( wxT("Incoming"),	m_CatList[i]->path.GetRaw() );
+			cfg->Write( wxT("Incoming"),	CPath::ToUniv(m_CatList[i]->path) );
 			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
 			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
 			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
@@ -1470,7 +1470,7 @@ void CPreferences::LoadCats()
 		Category_Struct* newcat = new Category_Struct;
 
 		newcat->title = cfg->Read( wxT("Title"), wxEmptyString );
-		newcat->path  = CPath(cfg->Read(wxT("Incoming"), wxEmptyString));
+		newcat->path  = CPath::FromUniv(cfg->Read(wxT("Incoming"), wxEmptyString));
 
 		// Some sainity checking
 		if ( newcat->title.IsEmpty() || !newcat->path.IsOk() ) {
@@ -1684,7 +1684,7 @@ void CPreferences::ReloadSharedFolders()
 		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 
 		for (size_t i = 0; i < lines.size(); ++i) {
-			shareddir_list.push_back(CPath(lines[i]));
+			shareddir_list.push_back(CPath::FromUniv(lines[i]));
 		}
 	}
 #endif

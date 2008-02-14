@@ -463,6 +463,11 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fixed warning about dirs without shareable files, in the
 		  case where there were sharable files, but they were all
 		  duplicates.
+		* Save directories (shared, incoming, etc) as well as the
+		  filenames of known files in an locale-independant manner,
+		  so that changes in locale does not affect our ability to
+		  find previously used files or directories. This will break
+		  backwards compatibility when using unicoded directory-names.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
