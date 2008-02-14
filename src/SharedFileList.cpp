@@ -403,7 +403,9 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 		 searchFor = CDirIterator::File;
 	}
 
+	unsigned knownFiles = 0;
 	unsigned addedFiles = 0;
+
 	CDirIterator SharedDir(directory); 
 
 	CPath fname = SharedDir.GetFirstFile(searchFor);
@@ -436,6 +438,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 
 		CKnownFile* toadd = filelist->FindKnownFile(fname, fdate, fsize);
 		if (toadd) {
+			knownFiles++;
 			if (AddFile(toadd)) {
 				AddDebugLogLineM(false, logKnownFiles,
 					CFormat(wxT("Added known file '%s' to shares"))
@@ -460,7 +463,7 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 		fname = SharedDir.GetNextFile();
 	}
 
-	if (addedFiles == 0) {
+	if ((addedFiles == 0) && (knownFiles == 0)) {
 		printf("No shareable files found in directory: %s\n",
 			(const char *)unicode2char(directory.GetPrintable()));
 	}
