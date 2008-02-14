@@ -620,7 +620,7 @@ bool CamuleApp::OnInit()
 	}
 
 	// Build the filenames for the two OS files
-	SetOSFiles(thePrefs::GetOSDir());
+	SetOSFiles(thePrefs::GetOSDir().GetRaw());
 
 	// Load localization settings
 	Localize_mule();

@@ -457,7 +457,7 @@ public:
 
 	static bool		ShowPartFileNumber()		{ return s_ShowPartFileNumber; }
 		
-	static const wxString&	GetOSDir()			{ return s_OSDirectory; }
+	static const CPath&	GetOSDir()			{ return s_OSDirectory; }
 	static uint16		GetOSUpdate()			{ return s_OSUpdate; }
 
 	static uint8		GetToolTipDelay()		{ return s_iToolDelayTime; }
@@ -719,7 +719,7 @@ protected:
 	static wxString	s_CustomBrowser;
 	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible
 	
-	static wxString	s_OSDirectory;
+	static CPath	s_OSDirectory;
 	static uint16	s_OSUpdate;
 	
 	static wxString	s_Skin;

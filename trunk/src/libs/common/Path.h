@@ -61,6 +61,20 @@ public:
 
 	/** Destructor. */
 	~CPath();
+
+
+	/**
+	 * Creates a path from one saved in the 'universial' format.
+	 *
+	 * These are to be used when the filenames/paths are saved to
+	 * the local machine, and ensure that locale-changes does not
+	 * affect our ability to find previously known files. This
+	 * should not be used when sending filenames to other clients
+	 * or (currently) the core/gui.
+	 **/
+	static CPath FromUniv(const wxString& path);
+	/** Creates an 'universial' path from the specifed CPath. */
+	static wxString ToUniv(const CPath& path);
 	
 
 	/** Assignment operator. */

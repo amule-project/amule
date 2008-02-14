@@ -514,7 +514,18 @@ bool CKnownFile::LoadTagsFromFile(const CFileDataIO* file)
 		CTag newtag(*file, true);
 		switch(newtag.GetNameID()){
 			case FT_FILENAME:
-				if (!GetFileName().IsOk()) {
+				if (GetFileName().IsOk()) {
+					// Unlike eMule, we actually prefer the second
+					// filename tag, since we use it to specify the
+					// 'universial' filename (see CPath::ToUniv).
+					CPath path = CPath::FromUniv(newtag.GetStr());
+
+					// May be invalid, if from older versions where
+					// unicoded filenames be saved as empty-strings.
+					if (path.IsOk()) {
+						SetFileName(path);
+					}
+				} else {
 					SetFileName(CPath(newtag.GetStr()));
 				}
 				break;
@@ -678,11 +689,16 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 
 	file->WriteUInt32(tagcount);
 	
+	// We still save the unicoded filename, for backwards
+	// compatibility with pre-2.2 and other clients.
 	CTagString nametag_unicode(FT_FILENAME, GetFileName().GetRaw());
 	// We write it with BOM to kep eMule compatibility
 	nametag_unicode.WriteTagToFile(file,utf8strOptBOM);	
 	
-	CTagString nametag(FT_FILENAME, GetFileName().GetRaw());
+	// The non-unicoded filename is written in an 'universial'
+	// format, which allows us to identify files, even if the 
+	// system locale changes.
+	CTagString nametag(FT_FILENAME, CPath::ToUniv(GetFileName()));
 	nametag.WriteTagToFile(file);
 	
 	CTagIntSized sizetag(FT_FILESIZE, GetFileSize(), IsLargeFile() ? 64 : 32);

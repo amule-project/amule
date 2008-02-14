@@ -274,6 +274,27 @@ CPath::~CPath()
 }
 
 
+CPath CPath::FromUniv(const wxString& path)
+{
+	wxCharBuffer fn = wxConvISO8859_1.cWC2MB(path);
+
+	return CPath(wxConvFile.cMB2WC(fn));
+
+}
+
+
+wxString CPath::ToUniv(const CPath& path)
+{
+	// The logic behind this is that by saving the filename
+	// as a raw bytestream (which is what ISO8859-1 amounts
+	// to), we can always recreate the on-disk filename, as
+	// if we had read it using wx functions.
+	wxCharBuffer fn = wxConvFile.cWC2MB(path.m_filesystem);
+
+	return wxConvISO8859_1.cMB2WC(fn);
+}
+
+
 CPath& CPath::operator=(const CPath& other)
 {
 	if (this != &other) {
