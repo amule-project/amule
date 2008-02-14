@@ -478,43 +478,29 @@ dnl check if bfd.h is on the system and usable
 dnl ----------------------------------------------------
 AC_DEFUN([CHECK_BFD],
 [
-
-AC_MSG_CHECKING([for bfd headers])
-AC_RUN_IFELSE([
+AC_MSG_CHECKING([for bfd])
+__LIBS=$LIBS
+LIBS="-lbfd -liberty $LIBS"
+AC_LINK_IFELSE([
 		AC_LANG_PROGRAM([[
 			#include <ansidecl.h>
 			#include <bfd.h>
-			#include <stdio.h>
 		]], [[
-			FILE *f=fopen("conftestval", "w");
-			if (!f) return 1;
-			fprintf(f, "%s", "yes");
-			fclose(f);
+			char *dummy = bfd_errmsg(bfd_get_error());
 		]])
 	], [
-		if test -f conftestval; then
-	        	result=`cat conftestval`
-		else
-			result=no
-		fi
-		AC_MSG_RESULT($result)
+		AC_MSG_RESULT([yes])
+		BFD_FLAGS="-DHAVE_BFD"
+		BFD_LIB="-lbfd -liberty"
 	], [
-		result=no
-		AC_MSG_RESULT($result)
-	], [
-		AC_MSG_RESULT([cross-compilation detected, checking only the header])
-		AC_CHECK_HEADER(bfd.h, [result=yes], [result=no])
+		AC_MSG_RESULT([no])
+		AC_MSG_WARN([
+	bfd.h not found or unusable, please install binutils development
+	package if you are a developer or want to help testing aMule])
 	])
-if test x$result = xyes; then
-	BFD_FLAGS="-DHAVE_BFD"
-	BFD_LIB="-lbfd -liberty"
-else
-	AC_MSG_NOTICE([WARNING: bfd.h not found, please install binutils development package if you are a developer or want to help testing aMule])
-fi
-
+LIBS=${__LIBS}
 AC_SUBST(BFD_FLAGS)
 AC_SUBST(BFD_LIB)
-
 ])
 
 dnl ----------------------------------------------------
