@@ -579,29 +579,30 @@ dnl compilers.
 dnl ----------------------------------------------------
 AC_DEFUN([CHECK_EXCEPTIONS],
 [
-AC_MSG_CHECKING([for exception-handling])
+	AC_MSG_CHECKING([for exception-handling])
 
-except=no
-AC_LANG_PUSH([C++])
-AC_TRY_RUN([
-int main()
-{
-	try {
-		throw 1;
-	} catch (int) {
-		return 0;
-	}
-
-	return 1;
-}
-], except=yes, except=no)
-AC_LANG_POP(C++)
-
-AC_MSG_RESULT($except)
-
-if test "$except" = "no";
-then
-	AC_MSG_ERROR([Exception handling does not work. Broken compiler?])
-fi
-
+	AC_LANG_PUSH(C++)
+	AC_RUN_IFELSE([
+		AC_LANG_PROGRAM([],
+		[[
+			try {
+				throw 1;
+			} catch (int) {
+				return 0;
+			}
+			return 1;
+		]])
+	], [
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+		AC_MSG_ERROR([Exception handling does not work. Broken compiler?])
+	], [
+		AC_MSG_RESULT([undeterminable])
+		AC_MSG_WARN([
+	Cross-compilation detected, so exception handling cannot be tested.
+	Note that broken exception handling in your compiler may lead to
+	unexpected crashes.])
+	])
+	AC_LANG_POP(C++)
 ])
