@@ -460,6 +460,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  terminate joinable threads without using Delete, a function
 		  that is only intended for use with detached threads.
 		* Fixed cancelled downloads being reported as succesful.
+		* Fixed warning about dirs without shareable files, in the
+		  case where there were sharable files, but they were all
+		  duplicates.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
