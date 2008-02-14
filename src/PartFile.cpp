@@ -733,7 +733,7 @@ bool CPartFile::SavePartFile(bool Initial)
 	}
 	
 	/* Don't write anything to disk if less than 100 KB of free space is left. */
-	sint64 free = CPath::GetFreeSpace(GetFilePath());
+	sint64 free = CPath::GetFreeSpaceAt(GetFilePath());
 	if ((free != wxInvalidOffset) && (free < (100 * 1024))) {
 		return false;
 	}
@@ -2544,9 +2544,9 @@ void CPartFile::ResumeFile()
 
 bool CPartFile::CheckFreeDiskSpace( uint32 neededSpace )
 {
-	uint64 free = CPath::GetFreeSpace(GetFilePath());
+	uint64 free = CPath::GetFreeSpaceAt(GetFilePath());
 	if (free == static_cast<uint64>(wxInvalidOffset)) {
-		// If GetFreeSpace() fails, then the path probably does not exist.
+		// If GetFreeSpaceAt() fails, then the path probably does not exist.
 		return false;
 	}
 	

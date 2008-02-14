@@ -188,7 +188,7 @@ public:
 	/** Returns the modification time the specified file, or (time_t)-1 on failure. */
 	static time_t GetModificationTime(const CPath& file);
 	/** Returns the free diskspace at the specified path, or wxInvalidOffset on failure. */
-	static sint64 GetFreeSpace(const CPath& path);
+	static sint64 GetFreeSpaceAt(const CPath& path);
 
 private:
 	//! Contains the printable filename, for use in the UI.

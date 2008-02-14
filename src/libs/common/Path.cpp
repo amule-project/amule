@@ -200,7 +200,7 @@ wxString DoCleanPath(const wxString& path)
 {
 #ifdef __WXMSW__
 	// stat fails on windows if there are trailing path-separators.
-	wxString cleanPath = StripSeparators(m_filesystem, wxString::trailing);
+	wxString cleanPath = StripSeparators(path, wxString::trailing);
 	
 	// Root paths must end with a separator (X:\ rather than X:).
 	// See comments in wxDirExists.
@@ -644,7 +644,7 @@ time_t CPath::GetModificationTime(const CPath& file)
 }
 
 
-sint64 CPath::GetFreeSpace(const CPath& path)
+sint64 CPath::GetFreeSpaceAt(const CPath& path)
 {
 	wxLongLong free;
 	if (::wxGetDiskSpace(path.m_filesystem, NULL, &free)) {
