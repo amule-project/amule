@@ -1138,7 +1138,7 @@ void CDownloadQueue::CheckDiskspace( const CPath& path )
 		min = PARTSIZE;
 	}
 
-	uint64 free = CPath::GetFreeSpace(path);
+	uint64 free = CPath::GetFreeSpaceAt(path);
 	if (free == static_cast<uint64>(wxInvalidOffset)) {
 		return;
 	} else if (free < min) {

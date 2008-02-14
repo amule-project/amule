@@ -334,7 +334,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 			UpdateGUI(s_pfconverting);
 
-			sint64 freespace = CPath::GetFreeSpace(thePrefs::GetTempDir());
+			sint64 freespace = CPath::GetFreeSpaceAt(thePrefs::GetTempDir());
 			if (freespace != wxInvalidOffset) {
 				if (static_cast<uint64>(freespace) < maxindex * PARTSIZE) {
 					delete file;
@@ -407,7 +407,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 
 		UpdateGUI(s_pfconverting);
 
-		sint64 freespace = CPath::GetFreeSpace(thePrefs::GetTempDir());
+		sint64 freespace = CPath::GetFreeSpaceAt(thePrefs::GetTempDir());
 		if (freespace == wxInvalidOffset) {
 			delete file;
 			return CONV_IOERROR;
