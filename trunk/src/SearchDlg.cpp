@@ -248,7 +248,19 @@ void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
 		if (SearchText.StartsWith(wxT("!"), &rest)) {
 		    SearchText = rest;
 		}
-		CastChild(IDC_SEARCHNAME, wxTextCtrl)->SetValue(SearchText);
+
+		// This check is needed because some wxWidgets (tested with
+		// 2.8.7) will return an empty string during the page-changed
+		// event resulting from the first page to being inserted. This
+		// has been reported as patch #1895161:
+		// http://sourceforge.net/tracker/index.php?func=detail&aid=1895161&group_id=9863&atid=309863
+		if (SearchText.Length()) {
+			CastChild(IDC_SEARCHNAME, wxTextCtrl)->SetValue(SearchText);
+
+		}
+		
+		// Select everything.
+		CastChild(IDC_SEARCHNAME, wxTextCtrl)->SetSelection(-1, -1);
 	}
 
 }
