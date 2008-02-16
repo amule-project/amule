@@ -468,6 +468,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  so that changes in locale does not affect our ability to
 		  find previously used files or directories. This will break
 		  backwards compatibility when using unicoded directory-names.
+		* Worked around the search-string being cleared when starting the
+		  first search, which was caused by bug in wxWidgets.
+		* When starting a search, the entire search string is selected.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
