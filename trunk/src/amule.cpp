@@ -1057,11 +1057,11 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 			}
 			
 		}
+		strURL << wxT("|/");
 	} else if (add_source) {
 		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
 	}
 
-	strURL << wxT("|/");
 	
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
 	return strURL;
