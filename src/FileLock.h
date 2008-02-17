@@ -41,9 +41,9 @@
  * on all filesystems (NFS) and thus locking is not
  * certain.
  *
- * Currently, this lock holds a exclusive lock on the 
+ * Currently, this lock holds an exclusive lock on the 
  * file in question. It is assumed that the file will
- * be read/written to by all users.
+ * be read/written by all users.
  * 
  */
 class CFileLock

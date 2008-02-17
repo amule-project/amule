@@ -563,8 +563,8 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
       else
         {
           // Set cancelled msg
-          m_e2kHashTextCtrl->SetValue(_("Canceled !"));
-          m_ed2kTextCtrl->SetValue(_("Canceled !"));
+          m_e2kHashTextCtrl->SetValue(_("Cancelled !"));
+          m_ed2kTextCtrl->SetValue(_("Cancelled !"));
         }
 
       // Deleting progress bar dialog

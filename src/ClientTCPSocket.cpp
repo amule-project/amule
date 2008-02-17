@@ -1475,7 +1475,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			theStats::AddDownOverheadSourceExchange(size);
 
 			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {
-				// Here comes a extended packet without finishing the hanshake.
+				// Here comes an extended packet without finishing the handshake.
 				// IMHO, we should disconnect the client.
 				throw wxString(wxT("Client send OP_REQUESTSOURCES before finishing handshake"));
 			}
@@ -1502,10 +1502,10 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 					// There are some clients which do not follow the correct protocol procedure of sending
 					// the sequence OP_REQUESTFILENAME, OP_SETREQFILEID, OP_REQUESTSOURCES. If those clients
 					// are doing this, they will not get the optimal set of sources which we could offer if
-					// the would follow the above noted protocol sequence. They better to it the right way
+					// they would follow the above noted protocol sequence. They better do it the right way
 					// or they will get just a random set of sources because we do not know their download
 					// part status which may get cleared with the call of 'SetUploadFileID'.
-					m_client->SetUploadFileID(file);					
+					m_client->SetUploadFileID(file);
 					
 					uint32 dwTimePassed = ::GetTickCount() - m_client->GetLastSrcReqTime() + CONNECTION_LATENCY;
 					bool bNeverAskedBefore = m_client->GetLastSrcReqTime() == 0;

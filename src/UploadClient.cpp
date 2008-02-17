@@ -899,12 +899,10 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 	}
 	
 	for (unsigned int i = 0; i < itemsof(auStartOffsets); i++) {
-		if ( CLogger::IsEnabled( logClient ) ) {
-			wxString msg = wxString::Format(_("Client requests %u"), i);
-			msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i]);
-			msg += wxT(" ") + GetFullIP();
-			AddLogLineM(false, msg);
-		}
+		AddDebugLogLineM(false, logClient,
+			wxString::Format(wxT("Client requests %u"), i)
+			+ wxT(" ") + wxString::Format(wxT("File block %u-%u (%d bytes):"), auStartOffsets[i], auEndOffsets[i], auEndOffsets[i] - auStartOffsets[i])
+			+ wxT(" ") + GetFullIP());
 		if (auEndOffsets[i] > auStartOffsets[i]) {
 			Requested_Block_Struct* reqblock = new Requested_Block_Struct;
 			reqblock->StartOffset = auStartOffsets[i];
@@ -913,10 +911,8 @@ void CUpDownClient::ProcessRequestPartsPacket(const byte* pachPacket, uint32 nSi
 			reqblock->transferred = 0;
 			AddReqBlock(reqblock);
 		} else {
-			if ( CLogger::IsEnabled( logClient ) ) {
-				if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
-					AddLogLineM(false, _("Client request is invalid!"));
-				}
+			if (auEndOffsets[i] != 0 || auStartOffsets[i] != 0) {
+				AddDebugLogLineM(false, logClient, wxT("Client request is invalid!"));
 			}
 		}
 	}	
@@ -934,22 +930,15 @@ void CUpDownClient::ProcessRequestPartsPacketv2(const CMemFile& data) {
 			reqblock->StartOffset = data.GetIntTagValue();
 			// We have to do +1, because the block matching uses that.
 			reqblock->EndOffset = data.GetIntTagValue() + 1;
-			if ((reqblock->StartOffset || reqblock->EndOffset) 
-				&& (reqblock->StartOffset > reqblock->EndOffset)) {
-						
-				if ( CLogger::IsEnabled( logClient ) ) {
-					AddLogLineM(false, wxString::Format(_("Client request is invalid! %i / %i"),reqblock->StartOffset, reqblock->EndOffset));
-				}
-				
+			if ((reqblock->StartOffset || reqblock->EndOffset) && (reqblock->StartOffset > reqblock->EndOffset)) {
+				AddDebugLogLineM(false, logClient, wxString::Format(wxT("Client request is invalid! %i / %i"),reqblock->StartOffset, reqblock->EndOffset));
 				throw wxString(wxT("Client request is invalid!"));
 			}
 			
-			if ( CLogger::IsEnabled( logClient ) ) {
-				wxString msg = wxString::Format(_("Client requests %u"), i);
-				msg += wxT(" ") + wxString::Format(_("File block %u-%u (%d bytes):"),reqblock->StartOffset, reqblock->EndOffset, reqblock->EndOffset - reqblock->StartOffset);
-				msg += wxT(" ") + GetFullIP();
-				AddLogLineM(false, msg);
-			}
+			AddDebugLogLineM(false, logClient,
+				wxString::Format(wxT("Client requests %u"), i)
+				+ wxT(" ") + wxString::Format(wxT("File block %u-%u (%d bytes):"),reqblock->StartOffset, reqblock->EndOffset, reqblock->EndOffset - reqblock->StartOffset)
+				+= wxT(" ") + GetFullIP());
 			
 			md4cpy(reqblock->FileID, reqfilehash.GetHash());
 			reqblock->transferred = 0;

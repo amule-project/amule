@@ -510,7 +510,7 @@ void CUploadingView::Initialize( CClientListCtrl* list )
 	list->InsertColumn( 8,	_("Obtained Parts"),  wxLIST_FORMAT_LEFT, 100 );
 	list->InsertColumn( 9,	_("Upload/Download"), wxLIST_FORMAT_LEFT, 100 );
 	list->InsertColumn( 10,	_("Remote Status"),   wxLIST_FORMAT_LEFT, 100 );			
-			
+
 	// Insert any existing items on the list
 	const CClientPtrList& uploading = theApp->uploadqueue->GetUploadingList();
 	CClientPtrList::const_iterator it = uploading.begin();
@@ -825,7 +825,7 @@ void CQueuedView::Initialize( CClientListCtrl* list )
 void CQueuedView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const wxRect& rect )
 {
 	wxString buffer;
-	
+
 	switch ( column ) {
 	// These 3 are the same for both lists
 	case 0:
@@ -1034,16 +1034,16 @@ void CClientsView::DrawCell( CUpDownClient* client, int column, wxDC* dc, const 
 
 	case 8:
 		buffer = client->HasObfuscatedConnectionBeenEstablished() ?
-			wxT("Yes") : wxT("No");
+			_("Yes") : _("No");
 		break;		
 
 	case 9:
 		buffer = client->GetUserName().IsEmpty() ?
 			wxT("?") :
-			(client->HasDisabledSharedFiles() ? wxT("Yes") : wxT("No"));
+			(client->HasDisabledSharedFiles() ? _("Yes") : _("No"));
 		break;		
 	}
-	
+
 	dc->DrawText( buffer, rect.x, rect.y + 3 );
 }
 

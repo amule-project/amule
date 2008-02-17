@@ -25,7 +25,7 @@
 //
 
 /* 
- SHA haset basically exists of 1 Tree for all Parts (9.28MB) + n Trees
+ SHA hashset basically exists of 1 Tree for all Parts (9.28MB) + n Trees
  for all blocks (180KB) while n is the number of Parts.
  This means it is NOT a complete hashtree, since the 9.28MB is a given level, in order
  to be able to create a hashset format similar to the MD4 one.
@@ -51,11 +51,11 @@ X(180KB)   X(180KB)  [...] X(140KB) | X(180KB) X(180KB) [...]	BlockHashs
                                     Border between first and second Part (9.28MB)
 
 HashsIdentifier:
-When sending hashs, they are send with a 16bit identifier which specifies its postion in the
+When sending hashes, they are sent with a 16bit identifier which specifies its position in the
 tree (so StartPosition + HashDataSize would lead to the same hash)
 The identifier basically describes the way from the top of the tree to the hash. a set bit (1)
 means follow the left branch, a 0 means follow the right. The highest bit which is set is seen as the start-
-postion (since the first node is always seend as left).
+position (since the first node is always seen as left).
 
 Example
 

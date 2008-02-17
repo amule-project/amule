@@ -39,7 +39,7 @@ class wxMouseEvent;
  *  - Copy
  *  - Paste
  *  - Clear
- *  - Selected All
+ *  - Select All
  *
  * Other than that, it acts exactly like an ordinary wxTextCtrl.
  */

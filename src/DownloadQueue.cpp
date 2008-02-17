@@ -1429,7 +1429,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 	
 	AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result sources (type %i)"),type));
 	
-	//Safty measure to make sure we are looking for these sources
+	//Safety measure to make sure we are looking for these sources
 	CPartFile* temp = GetFileByKadFileSearchID(searchID);
 	if( !temp ) {
 		AddDebugLogLineM(false, logKadSearch, wxT("This is not the file we're looking for..."));
