@@ -637,6 +637,7 @@ case "$USE_NLS" in
 
 yes)
 	echo -n "Generating ${POSUB}/LINGUAS... "
+	AS_IF([test ! -d ${POSUB}], [mkdir ${POSUB}])
 	Generate_Langs=`echo $SelectedLangs | sed -e 's/ .*//' -e 's/,/\\\\|/g'`
 	if test "$Generate_Langs" = "all"; then
 		cp ${srcdir}/${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
