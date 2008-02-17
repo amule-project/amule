@@ -478,6 +478,8 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Removed workarounds for old (and resolved) wxWidgets bugs.
 		* Fixed creation of ED2K links without sources, where an
 		  superflous "|/" would be appended to the end of the link.
+		* Fixed handling of spaces when creating ED2k links. These are
+		  now escaped.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

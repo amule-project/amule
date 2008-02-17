@@ -1011,7 +1011,7 @@ wxString CamuleApp::CreateMagnetLink(const CAbstractFile *f)
 {
 	CMagnetURI uri;
 
-	uri.AddField(wxT("dn"), f->GetFileName().Cleanup(true).GetPrintable());
+	uri.AddField(wxT("dn"), f->GetFileName().Cleanup(false).GetPrintable());
 	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2k:")) + f->GetFileHash().Encode().Lower());
 	uri.AddField(wxT("xl"), wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()));
 
@@ -1024,7 +1024,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 	wxASSERT(!(!add_source && (use_hostname || addcryptoptions)));
 	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
 	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|/"))
-		% f->GetFileName().Cleanup(true)
+		% f->GetFileName().Cleanup(false)
 		% f->GetFileSize() % f->GetFileHash().Encode();
 	
 	if (add_source && IsConnectedED2K() && !serverconnect->IsLowID() ) {

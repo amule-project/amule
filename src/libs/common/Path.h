@@ -136,7 +136,7 @@ public:
 
 	/** Returns a CPath created from joining the two objects. */
 	CPath JoinPaths(const CPath& other) const;
-	/** Returns a CPath with invalid chars removed, and replace spaces if specified. */
+	/** Returns a CPath with invalid chars removed, and spaces escaped if specified. */
 	CPath Cleanup(bool keepSpaces = true, bool isFAT32 = false) const;
 	/** Returns a CPath with a postfix before the file-extension. Must be ASCII. */
 	CPath AddPostfix(const wxString& postfix) const;

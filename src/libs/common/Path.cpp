@@ -52,36 +52,6 @@ static void* s_foo = setFNConv();
 #endif
 
 
-/** Returns the converter to use for non-utf8 filenames. */
-wxMBConv* GetDemangler()
-{
-	// We try to use the system locale, This ensures that
-	// demangling works for ISO8859-* and the like.
-	static wxMBConv* s_demangler = NULL;
-	if (s_demangler == NULL) {
-		wxFontEncoding enc = wxLocale::GetSystemEncoding();
-
-		switch (enc) {
-			// System is needed for ANSI encodings such
-			// as "POSIX" and "C".
-			case wxFONTENCODING_SYSTEM:
-			case wxFONTENCODING_UTF8:
-				// Fall back to ISO8859-1.
-				s_demangler = &wxConvISO8859_1;
-				break;
-
-			default:
-				// Use the system locale.
-				s_demangler = &wxConvLocal;
-		}
-	}
-
-	return s_demangler;
-}
-
-
-
-
 // Windows has case-insensitive paths, so we use a
 // case-insensitive cmp for that platform. TODO:
 // Perhaps it would be better to simply lowercase
@@ -104,6 +74,36 @@ inline wxString DeepCopy(const wxString& str)
 {
 	return wxString(str.c_str(), str.Length());
 }
+
+
+wxString Demangle(const wxCharBuffer& fn, const wxString& filename)
+{
+	wxString result = wxConvUTF8.cMB2WC(fn);
+
+	// FIXME: Is this actually needed for osx/msw?
+	if (!result) {
+		// We only try to further demangle if the current locale is
+		// UTF-8, C or POSIX. This is because in any other case, the
+		// current locale is probably the best choice for printing.
+		static wxFontEncoding enc = wxLocale::GetSystemEncoding();
+
+		switch (enc) {
+			// SYSTEM is needed for ANSI encodings such as
+			// "POSIX" and "C", which are only 7bit.
+			case wxFONTENCODING_SYSTEM:
+			case wxFONTENCODING_UTF8:
+				result = wxConvISO8859_1.cMB2WC(fn);
+				break;
+
+			default:
+				// Nothing to do, the filename is probably Ok.
+				result = DeepCopy(filename);
+		}
+	}
+
+	return result;
+}
+
 
 /** Splits a full path into its path and filename component. */
 inline void DoSplitPath(const wxString& strPath, wxString* path, wxString* name)
@@ -151,14 +151,12 @@ wxString DoCleanup(const wxString& filename, bool keepSpaces, bool isFAT32)
 				
 			default:
 				if ((c == wxT(' ')) && !keepSpaces) {
-					continue;
-				} else if (c < 32) {
+					result += wxT("%20");
+				} else if (c >= 32) {
 					// Many illegal for filenames in windows
 					// below the 32th char (which is space).
-					continue;
+					result += filename[i];
 				}
-
-				result += filename[i];
 		}
 	}
 
@@ -236,13 +234,7 @@ CPath::CPath(const wxString& filename)
 		// it either originated from a (wx)system-call, or from a
 		// user with a properly setup system.
 		m_filesystem = DeepCopy(filename);
-
-		// FIXME: Is this actually needed for osx/msw?
-		// Try to unmangle the filename for printing.
-		m_printable = wxConvUTF8.cMB2WC(fn);
-		if (!m_printable) {
-			m_printable = GetDemangler()->cMB2WC(fn);
-		}
+		m_printable  = Demangle(fn, filename);
 	} else {
 		// It's not a valid filename in the current locale, so we'll
 		// have to do some magic. This ensures that the filename is
