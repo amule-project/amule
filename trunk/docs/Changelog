@@ -471,6 +471,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Worked around the search-string being cleared when starting the
 		  first search, which was caused by bug in wxWidgets.
 		* When starting a search, the entire search string is selected.
+		* Fixed creation of ED2k-links with an AICH-hash, in case the
+		  file does not actually have a AICH-hash. Also disabled the
+		  option in the shared-files window when the file lacks an
+		  AICH hash.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
