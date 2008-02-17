@@ -1307,9 +1307,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			// DO NOT DRAW IT ALL THE TIME
 			uint32 dwTicks = GetTickCount();
 			
-			// It is marked static to avoid a memory-leak which occurs
-			// when GTK2 is used with wxWidgets versions before 2.6.2.
-			static wxMemoryDC cdcStatus;
+			wxMemoryDC cdcStatus;
 			
 			if ( item->dwUpdated < dwTicks || !item->status || iWidth != item->status->GetWidth() ) {
 				if ( item->status == NULL) {
@@ -1340,10 +1338,6 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 			}
 			
 			dc->Blit( rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
-
-			// Due to a bug in wxMemoryDC, we musn't set Null values for both bitmap and brush.
-			cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
-			cdcStatus.SelectObject(wxNullBitmap);
 		}
 		
 		if (thePrefs::ShowPercent()) {
@@ -1616,9 +1610,7 @@ void CDownloadListCtrl::DrawSourceItem(
 				if ( item->GetType() != A4AF_SOURCE ) {
 					uint32 dwTicks = GetTickCount();
 					
-					// It is marked static to avoid a memory-leak which occurs
-					// when GTK2 is used with wxWidgets versions before 2.6.2.
-					static wxMemoryDC cdcStatus;
+					wxMemoryDC cdcStatus;
 
 					if ( item->dwUpdated < dwTicks || !item->status || 
 							iWidth != item->status->GetWidth() ) {
@@ -1652,10 +1644,6 @@ void CDownloadListCtrl::DrawSourceItem(
 					}
 
 					dc->Blit(rect.GetX(), rect.GetY() + 1, iWidth, iHeight, &cdcStatus, 0, 0);
-					
-					// Due to a bug in wxMemoryDC, we musn't set Null values for both bitmap and brush.
-					cdcStatus.SetBrush( *wxTRANSPARENT_BRUSH );
-					cdcStatus.SelectObject(wxNullBitmap);
 				} else {
 					buffer = _("A4AF");
 					
