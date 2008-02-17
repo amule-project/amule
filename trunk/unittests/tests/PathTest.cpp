@@ -336,8 +336,8 @@ TEST(CPath, Cleanup)
 {
 	const CPath initial = CPath(wxT(" /a\"b*c* <d>?e|\\:f "));
 
-	ASSERT_EQUALS(initial.Cleanup(false, false), Norm(wxT("a\"b*c*<d>?e|\\:f")));
-	ASSERT_EQUALS(initial.Cleanup(false, true), Norm(wxT("abcdef")));
+	ASSERT_EQUALS(initial.Cleanup(false, false), Norm(wxT("\%20a\"b*c*\%20<d>?e|\\:f\%20")));
+	ASSERT_EQUALS(initial.Cleanup(false, true), Norm(wxT("\%20abc\%20def\%20")));
 	ASSERT_EQUALS(initial.Cleanup(true, false), Norm(wxT(" a\"b*c* <d>?e|\\:f ")));
 	ASSERT_EQUALS(initial.Cleanup(true, true), Norm(wxT(" abc def ")));
 }
