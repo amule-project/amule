@@ -433,7 +433,7 @@ msgstr "Renomeação de ficheiro"
 #: src/UploadQueue.cpp:512
 #, c-format
 msgid "Resuming uploads of file: %s"
-msgstr "A resumir saídas do ficheiro: %s"
+msgstr "A continuar saídas do ficheiro: %s"
 
 #: src/UploadQueue.cpp:521
 #, c-format
@@ -2970,7 +2970,7 @@ msgstr "&Pausar"
 
 #: src/DownloadListCtrl.cpp:895 src/TransferWnd.cpp:379
 msgid "&Resume"
-msgstr "&Resumir"
+msgstr "&Continuar"
 
 #: src/DownloadListCtrl.cpp:896
 msgid "C&lear completed"
@@ -3871,7 +3871,7 @@ msgstr "Pausar transferência."
 
 #: src/TextClient.cpp:919
 msgid "Resume download."
-msgstr "Resumir transferência."
+msgstr "Continuar transferência."
 
 #: src/TextClient.cpp:922
 msgid "Cancel download."
