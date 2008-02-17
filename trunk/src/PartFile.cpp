@@ -1139,7 +1139,7 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	else{
 		for (size_t i = 0; i < m_hashlist.size(); ++i){
 			// Kry - trel_ar's completed parts check on rehashing.
-			// Very nice feature, if a file is completed but .part.met don't belive it,
+			// Very nice feature, if a file is completed but .part.met don't believe it,
 			// update it.
 			
 			if (!( i < result->GetHashCount() && (result->GetPartHash(i) == GetPartHash(i)))){
@@ -2605,7 +2605,7 @@ CPacket *CPartFile::CreateSrcInfoPacket(const CUpDownClient* forClient, uint8 by
 		if (GetFileName().IsOk()) {
 			file2 = GetFileName().GetPrintable();
 		}
-		AddDebugLogLineM(false, logPartFile, wxT("File missmatch on source packet (P) Sending: ") + file1 + wxT("  From: ") + file2);
+		AddDebugLogLineM(false, logPartFile, wxT("File mismatch on source packet (P) Sending: ") + file1 + wxT("  From: ") + file2);
 		return NULL;
 	}
 

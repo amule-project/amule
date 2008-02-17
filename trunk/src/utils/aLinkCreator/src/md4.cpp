@@ -356,7 +356,7 @@ wxString MD4::calcMd4FromFile(const wxString &filename, MD4Hook hook)
             }
           else
             {
-              return (_("Canceled !"));
+              return (_("Cancelled !"));
             }
         }
       MD4Final(&hdc, ret);

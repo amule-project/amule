@@ -96,8 +96,8 @@ CServerListCtrl::CServerListCtrl( wxWindow *parent, wxWindowID winid, const wxPo
 	InsertColumn( COLUMN_SERVER_STATIC, _("Static"),		wxLIST_FORMAT_LEFT, 40);
 	InsertColumn( COLUMN_SERVER_VERSION, _("Version"),		wxLIST_FORMAT_LEFT, 80);
 	#ifdef __DEBUG__
-	InsertColumn( COLUMN_SERVER_TCPFLAGS, _("TCP Flags"),		wxLIST_FORMAT_LEFT, 80);
-	InsertColumn( COLUMN_SERVER_UDPFLAGS, _("UDP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_TCPFLAGS, wxT("TCP Flags"),		wxLIST_FORMAT_LEFT, 80);
+	InsertColumn( COLUMN_SERVER_UDPFLAGS, wxT("UDP Flags"),		wxLIST_FORMAT_LEFT, 80);
 	#endif
 	
 	
@@ -405,15 +405,15 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 		// The current server is selected, so we might display the reconnect option
 		if ( reinterpret_cast<wxUIntPtr>(server) == m_connected ) 
 			enable_reconnect = true;
-		
+
 		// We want to know which options should be enabled, either one or both
 		enable_static_on	|= !server->IsStaticMember();
 		enable_static_off	|=  server->IsStaticMember();
-		
+
 		index = GetNextItem( index, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
 	}
 
-	
+
 	wxMenu* serverMenu = new wxMenu(_("Server"));
 	wxMenu* serverPrioMenu = new wxMenu();
 	serverPrioMenu->Append( MP_PRIOLOW, _("Low") );

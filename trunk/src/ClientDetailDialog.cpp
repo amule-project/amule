@@ -100,9 +100,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	
 	// User ID
 	CastChild(ID_DID, wxStaticText)->SetLabel(
-		wxString::Format(wxT("%u (%s)"),
-			ENDIAN_NTOHL(m_client->GetIP()),
-			(m_client->HasLowID() ? _("LowID"):_("HighID"))));
+		CFormat(wxT("%u (%s)")) % ENDIAN_NTOHL(m_client->GetIP()) % (m_client->HasLowID() ? _("LowID") : _("HighID")));
 
 	// Client IP/Port
 	CastChild(ID_DIP, wxStaticText)->SetLabel(
@@ -189,7 +187,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	// Queue Score
 	if (m_client->GetUploadState() != US_NONE) {
 		CastChild(ID_DSCORE, wxStaticText)->SetLabel(
-			wxString::Format(wxT("%u (QR: %u)"),
+			wxString::Format(_("%u (QR: %u)"),
 				m_client->GetScore(
 					false, m_client->IsDownloading(), false),
 			theApp->uploadqueue->GetWaitingPosition(m_client)));		

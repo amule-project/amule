@@ -171,7 +171,7 @@ void CClientCreditsList::LoadList()
 			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
 		}
 	} catch (const CSafeIOException& e) {
-		AddDebugLogLineM(true, logCredits, wxT("IO erro while loading clients.met file: ") + e.what());
+		AddDebugLogLineM(true, logCredits, wxT("IO error while loading clients.met file: ") + e.what());
 	}
 }
 

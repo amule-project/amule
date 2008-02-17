@@ -1044,11 +1044,11 @@ WxCasFrame::MakeStatLine_2() const
 	                   + _( " is connected to " )
 			   + _( " Kad: " );
 	if(m_aMuleSig->GetKadState() == 2) {
-		newline += _( "ok");
+		newline += _( "ok" );
 	} else if (m_aMuleSig->GetKadState() == 1) {
-			newline += _( "firewalled");
+			newline += _( "firewalled" );
 		} else {
-		newline += _( "off");
+		newline += _( "off" );
 		}
 	return ( newline );
 	}
@@ -1056,19 +1056,21 @@ WxCasFrame::MakeStatLine_2() const
 	wxString newline = m_aMuleSig->GetUser ()
 	                   + _( " is on " )
 	                   + notTooLongName
-			   + _( " [" )
+			   + wxT( " [" )
 			   + m_aMuleSig->GetServerIP ()
-			   + _( ":" )
+			   + wxT( ":" )
 			   + m_aMuleSig->GetServerPort ()
-			   + _( "] with " )
+			   + wxT( "]" )
+			   + _( " with " )
 			   + m_aMuleSig->GetConnexionIDType ()
-			   + _( " | Kad: " );
+			   + wxT( " |" )
+			   + _( " Kad: " );
 	if(m_aMuleSig->GetKadState() == 2) {
-		newline += _( "ok");
+		newline += _( "ok" );
 	} else if (m_aMuleSig->GetKadState() == 1) {
-		newline += _( "firewalled");
+		newline += _( "firewalled" );
 	} else {
-		newline += _( "off");
+		newline += _( "off" );
 	}
 	return ( newline );
 	}
@@ -1103,7 +1105,7 @@ WxCasFrame::MakeStatLine_5() const
 	                   + m_aMuleSig->GetDLRate ()
 	                   + _( " kB/s, Upload: " )
 	                   + m_aMuleSig->GetULRate ()
-	                   + _( "kB/s" );
+	                   + _( " kB/s" );
 
 	return ( newline );
 }

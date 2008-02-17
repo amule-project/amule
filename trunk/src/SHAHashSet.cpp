@@ -40,10 +40,10 @@
 
 
 // for this version the limits are set very high, they might be lowered later
-// to make a hash trustworthy, at least 10 unique Ips (255.255.128.0) must have send it
-// and if we have received more than one hash  for the file, one hash has to be send by more than 95% of all unique IPs
-#define MINUNIQUEIPS_TOTRUST		10	// how many unique IPs most have send us a hash to make it trustworthy
-#define	MINPERCENTAGE_TOTRUST		92  // how many percentage of clients most have sent the same hash to make it trustworthy
+// to make a hash trustworthy, at least 10 unique Ips (255.255.128.0) must have sent it
+// and if we have received more than one hash  for the file, one hash has to be sent by more than 95% of all unique IPs
+#define MINUNIQUEIPS_TOTRUST		10	// how many unique IPs have to send us a hash to make it trustworthy
+#define	MINPERCENTAGE_TOTRUST		92  // how many percentage of clients have to send the same hash to make it trustworthy
 
 CAICHRequestedDataList CAICHHashSet::m_liRequestedData;
 

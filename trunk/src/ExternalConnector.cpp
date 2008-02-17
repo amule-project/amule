@@ -185,7 +185,7 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 				}
 			}
 			if (!m_parent) {
-				m_app.Show(_("\nAll commands are case insensitive.\nType 'help <command>' to get detailed info on <command>.\n"));
+				m_app.Show(CFormat(_("\nAll commands are case insensitive.\nType '%s <command>' to get detailed info on <command>.\n")) % wxT("help"));
 			}
 		}
 	}
@@ -217,6 +217,8 @@ void CaMuleExternalConnector::OnInitCommandSet()
 	m_commands.AddCommand(wxT("Quit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
 	m_commands.AddCommand(wxT("Exit"), CMD_ID_QUIT, wxTRANSLATE("Exits from the application."), wxEmptyString);
 	m_commands.AddCommand(wxT("Help"), CMD_ID_HELP, wxTRANSLATE("Show help."),
+			      /* TRANSLATORS:
+				 Do not translate the word 'help', it is a command to the program! */
 			      wxTRANSLATE("To get help on a command, type 'help <command>'.\nTo get the full command list type 'help'.\n"));
 }
 

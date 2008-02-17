@@ -368,7 +368,7 @@ bool CheckDirectory(const wxString& a, const CPath& b)
 {
 	if (CPath(a).IsSameDir(b)) {
 		AddLogLineM(true, CFormat( _("ERROR! Attempted to share %s") ) % a);
-		
+
 		return true;
 	}
 
@@ -381,7 +381,6 @@ unsigned CSharedFileList::AddFilesFromDirectory(const CPath& directory)
 	// Do not allow these folders to be shared:
 	//  - The .aMule folder
 	//  - The Temp folder
-	// The following dirs just result in a warning.
 	//  - The users home-dir
 	if (CheckDirectory(wxGetHomeDir(), directory)) {
 		return 0;
