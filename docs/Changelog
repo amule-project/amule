@@ -71,8 +71,12 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* wxCas compilation fixes for wxCVS
 		* Doxyfile doesn't need to be installed, it's unusable without the sources.
 		* Fixed #979: No win32 version information
-		
-		
+		* Updated listctrl code to 2.8.7
+		* Fixed a buffer overflow in TextFile.cpp
+		* Cross-compilation fixes.
+		* Some little optimizations on configure.
+		* Re-categorized a number of strings whether they need translation or not.
+
 	Hermit:
 		* Patch for amulecmd history which ensures that when the same command
 		  is repeated several times in a row it only gets recorded in the
@@ -311,6 +315,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for amuled creating zombies. wxProcess does not work
 		  with wxBase.
 		* wxProcess now receives OnTerminate() events in amuled.
+
+	pochu:
+		* Fix for subdirectory builds.
 
 	Radek:
 		* Patch to fix windows compilation.
