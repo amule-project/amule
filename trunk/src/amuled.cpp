@@ -503,8 +503,10 @@ pid_t AmuleWaitPid(pid_t pid, int *status, int options, wxString *msg)
 			*msg << wxT("Child has been stopped by signal `") <<
 				WSTOPSIG(*status) <<
 				wxT("'.");
+#ifdef WIFCONTINUED /* Only found in recent kernels. */
 		} else if (WIFCONTINUED(*status)) {
 			*msg << wxT("Child has received `SIGCONT' and has continued execution.");
+#endif
 		} else {
 			*msg << wxT("The program was not able to determine why the child has signaled.");
 		}
