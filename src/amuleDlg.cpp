@@ -623,7 +623,7 @@ void CamuleDlg::ShowConnectionState()
 	static ed2k_state LastED2KState = sED2KUnknown;
 	static kad_state LastKadState = sKadUnknown;
 	static wxImageList status_arrows(16,16,true,0);
-	static wxMemoryDC bitmap_dc;
+	wxMemoryDC bitmap_dc;
 	
 	theApp->downloadqueue->OnConnectionState(theApp->IsConnected());
 	
@@ -773,11 +773,7 @@ void CamuleDlg::ShowConnectionState()
 		}
 		
 		connLabel->GetParent()->Layout();
-		
-		bitmap_dc.SelectObject(wxNullBitmap);
-		
 		conn_bitmap->SetBitmap(conn_image);
-		
 	} else {
 		if (theApp->IsConnectedED2K()) {
 			connLabel->SetLabel(connected_server);
