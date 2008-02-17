@@ -637,15 +637,14 @@ case "$USE_NLS" in
 
 yes)
 	echo -n "Generating ${POSUB}/LINGUAS... "
-	AS_IF([test ! -d ${POSUB}], [mkdir ${POSUB}])
 	Generate_Langs=`echo $SelectedLangs | sed -e 's/ .*//' -e 's/,/\\\\|/g'`
 	if test "$Generate_Langs" = "all"; then
-		cp ${srcdir}/${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
 	else
-		grep $Generate_Langs ${srcdir}/${POSUB}/LINGUAS.in > ${POSUB}/LINGUAS
+		grep $Generate_Langs ${srcdir}/${POSUB}/LINGUAS.in > ${srcdir}/${POSUB}/LINGUAS
 	fi
-	if test `wc -l ${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
-		cp ${srcdir}/${POSUB}/LINGUAS.in ${POSUB}/LINGUAS
+	if test `wc -l ${srcdir}/${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
+		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
 	fi
 	AC_MSG_RESULT(Done)
 	;;
