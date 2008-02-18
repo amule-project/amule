@@ -353,6 +353,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Kad users/files also updated on the Kad Tab.
 		* Backed out a now obsolete change made in CommentDialogLst.cpp
 		  (comments are not related to remote filenames anymore).
+	
+	Tiziano Müller:
+		* Fixed compilation when --enable-geoip is used in conjunction
+		  with the ld-flag "--as-needed".
 
 	Trevino:
 		* Fix for "Both the Unknown client icon and the Unknown status
