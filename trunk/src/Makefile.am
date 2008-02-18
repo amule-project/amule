@@ -4,7 +4,7 @@ endif
 
 SUBDIRS = libs utils pixmaps kademlia skins $(OPT_WEB)
 
-EXTRA_DIST = Makengfile aMule.xpm
+EXTRA_DIST = aMule.xpm
 
 bin_PROGRAMS = 
 

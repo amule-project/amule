@@ -4,10 +4,7 @@ if COMPILE_NLS
 SUBDIRS += intl po
 endif
 
-EXTRA_DIST = ABOUT-NLS config.rpath mkinstalldirs \
-	config.h.in Compilation.flags.in acinclude.m4 \
-	amule.rc MakefileWIN32 configWIN32.h amule.msp \
-	amule.ico
+EXTRA_DIST = amule.rc amule.ico amule.png convert.ico
 
 dist_icon_DATA = 
 icondir = $(datadir)/pixmaps
