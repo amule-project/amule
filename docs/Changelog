@@ -487,6 +487,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  superflous "|/" would be appended to the end of the link.
 		* Fixed handling of spaces when creating ED2k links. These are
 		  now escaped.
+		* Fixed swapped notify-functions, which would cause clients to
+		  be left on the upload-queue ctrl, even if the underlying
+		  object was deleted.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
