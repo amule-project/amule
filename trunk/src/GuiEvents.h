@@ -425,8 +425,8 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 
 // queue list
 #define Notify_QlistAddClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlAddClient, ptr, vtQueued)
-#define Notify_QlistRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
-#define Notify_QlistRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
+#define Notify_QlistRefreshClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRefreshClient, ptr, vtQueued)
+#define Notify_QlistRemoveClient(ptr)			MuleNotify::DoNotify(&MuleNotify::ClientCtrlRemoveClient, ptr, vtQueued)
 
 // server
 #define Notify_ServerAdd(ptr)				MuleNotify::DoNotify(&MuleNotify::ServerAdd, ptr)
