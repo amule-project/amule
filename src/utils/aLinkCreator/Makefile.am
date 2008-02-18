@@ -1,6 +1,6 @@
 SUBDIRS = src docs
 
-EXTRA_DIST =  alcc.msp alc.msp alc.rc alc.ico alc.iss
+EXTRA_DIST =  alc.rc alc.ico
 
 if ALC
 dist_icon_DATA = alc.xpm
