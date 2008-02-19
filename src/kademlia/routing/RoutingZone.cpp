@@ -138,7 +138,7 @@ void CRoutingZone::ReadFile(void)
 					}
 				}
 			}
-			AddLogLineM( false, wxString::Format(_("Read %u Kad contacts"), numContacts));
+			AddLogLineM( false, wxString::Format(wxPLURAL("Read %u Kad contact", "Read %u Kad contacts", numContacts), numContacts));
 		}
 		if (numContacts == 0) {
 			AddDebugLogLineM( false, logKadRouting, wxT("Error while reading Kad contacts - 0 entries"));

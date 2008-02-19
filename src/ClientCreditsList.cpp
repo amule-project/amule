@@ -165,10 +165,10 @@ void CClientCreditsList::LoadList()
 			m_mapClients[newcredits->GetKey()] = newcredits;
 		}
 
-		AddLogLineM(false, wxString::Format(_("Creditfile loaded, %u clients are known"),count-cDeleted));
+		AddLogLineM(false, wxString::Format(wxPLURAL("Creditfile loaded, %u client is known", "Creditfile loaded, %u clients are known", count - cDeleted), count - cDeleted));
 	
 		if (cDeleted) {
-			AddLogLineM(false, wxString::Format(_(" - Credits expired for %u clients!"),cDeleted));
+			AddLogLineM(false, wxString::Format(wxPLURAL(" - Credits expired for %u client!", " - Credits expired for %u clients!", cDeleted), cDeleted));
 		}
 	} catch (const CSafeIOException& e) {
 		AddDebugLogLineM(true, logCredits, wxT("IO error while loading clients.met file: ") + e.what());

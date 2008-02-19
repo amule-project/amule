@@ -388,7 +388,7 @@ void CServerConnect::ConnectionFailed(CServerSocket* sender)
 			bool autoretry= !singleconnecting;
 			StopConnectionTry();
 			if ((thePrefs::Reconnect()) && (autoretry) && (!m_idRetryTimer.IsRunning())){ 
-				AddLogLineM(false, wxString::Format(_("Automatic connection to server will retry in %d seconds"), CS_RETRYCONNECTTIME)); 
+				AddLogLineM(false, wxString::Format(wxPLURAL("Automatic connection to server will retry in %d second", "Automatic connection to server will retry in %d seconds", CS_RETRYCONNECTTIME), CS_RETRYCONNECTTIME)); 
 				m_idRetryTimer.Start(1000*CS_RETRYCONNECTTIME);
 			}
 			break;

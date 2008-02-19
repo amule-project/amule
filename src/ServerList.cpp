@@ -165,9 +165,9 @@ bool CServerList::LoadServerMet(const CPath& path)
 		Notify_ServerThaw();
     
 		if (!merge) {
-			AddLogLineM(true, wxString::Format(_("%i servers in server.met found"),fservercount));
+			AddLogLineM(true, wxString::Format(wxPLURAL("%i server in server.met found", "%i servers in server.met found", fservercount), fservercount));
 		} else {
-			AddLogLineM(true, wxString::Format(_("%d servers added"), iAddCount));
+			AddLogLineM(true, wxString::Format(wxPLURAL("%d server added", "%d servers added", iAddCount), iAddCount));
 		}
 	} catch (const CInvalidPacket& err) {
 		AddLogLineM(true, wxT("Error: the file server.met is corrupted: ") + err.what());

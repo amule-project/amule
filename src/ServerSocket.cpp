@@ -531,7 +531,7 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				}
 				delete servers;
 				if (addcount) {
-					AddLogLineM(false, wxString::Format(_("Received %d new servers"), addcount));
+					AddLogLineM(false, wxString::Format(wxPLURAL("Received %d new server", "Received %d new servers", addcount), addcount));
 				}
 				theApp->serverlist->SaveServerMet();
 				AddLogLineM(false, _("Saving of server-list completed."));

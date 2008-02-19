@@ -1016,7 +1016,7 @@ void CPartFile::SaveSourceSeeds()
 		/* v2: Added to keep track of too old seeds */
 		file.WriteUInt32(wxDateTime::Now().GetTicks());
 		
-		AddLogLineM(false, CFormat( _("Saved %i sources seeds for partfile: %s (%s)") )
+		AddLogLineM(false, CFormat( wxPLURAL("Saved %i source seed for partfile: %s (%s)", "Saved %i source seeds for partfile: %s (%s)", n_sources) )
 			% n_sources
 			% m_fullname
 			% GetFileName());
@@ -1125,7 +1125,12 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 	if (GetED2KPartHashCount() == 0){
 		if (IsComplete(0, GetFileSize()-1)){
 			if (result->GetFileHash() != GetFileHash()){
-				AddLogLineM(false, CFormat( _("Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|") )
+				AddLogLineM(false,
+					CFormat(wxPLURAL(
+						"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|",
+						"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|",
+						0)
+					)
 					% 1
 					% 0
 					% GetFileName()
@@ -1148,7 +1153,12 @@ void CPartFile::PartFileHashFinished(CKnownFile* result)
 					if ( i < result->GetHashCount() )
 						wronghash = result->GetPartHash(i);
 			
-					AddLogLineM(false, CFormat( _("Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|") )
+					AddLogLineM(false,
+						CFormat(wxPLURAL(
+							"Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |%s|",
+							"Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash |%s|",
+							GetED2KPartHashCount())
+						)
 						% ( i + 1 )
 						% GetED2KPartHashCount()
 						% GetFileName()

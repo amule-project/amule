@@ -118,7 +118,7 @@ wxString CastItoXBytes( uint64 count )
 {
 
 	if (count < 1024)
-		return wxString::Format( wxT("%.0f "), (float)(uint32)count) + _("bytes") ;
+		return wxString::Format( wxT("%.0f "), (float)(uint32)count) + wxPLURAL("byte", "bytes", count) ;
 	else if (count < 1048576)
 		return wxString::Format( wxT("%.0f "), (float)(uint32)count/1024) + _("kB") ;
 	else if (count < 1073741824)
@@ -153,7 +153,7 @@ wxString CastItoIShort(uint64 count)
 wxString CastItoSpeed(uint32 bytes)
 {
 	if (bytes < 1024)
-		return wxString::Format(wxT("%u "), bytes) + _("bytes/sec");
+		return wxString::Format(wxT("%u "), bytes) + wxPLURAL("byte/sec", "bytes/sec", bytes);
 	else if (bytes < 1048576)
 		return wxString::Format(wxT("%.2f "), bytes / 1024.0) + _("kB/s");
 	else

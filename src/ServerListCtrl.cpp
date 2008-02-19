@@ -421,21 +421,33 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 	serverPrioMenu->Append( MP_PRIOHIGH, _("High") );
 	serverMenu->Append( MP_CONNECTTO, _("Connect to server") );
 	serverMenu->Append( 12345, _("Priority"), serverPrioMenu );
-	
+
 	serverMenu->AppendSeparator();
 
-	serverMenu->Append( MP_ADDTOSTATIC, _("Mark server(s) as static") );
-	serverMenu->Append( MP_REMOVEFROMSTATIC, _("Mark server(s) as non-static") );
-	
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_ADDTOSTATIC, _("Mark server as static") );
+		serverMenu->Append( MP_REMOVEFROMSTATIC, _("Mark server as non-static") );
+	} else {
+		serverMenu->Append( MP_ADDTOSTATIC, _("Mark servers as static") );
+		serverMenu->Append( MP_REMOVEFROMSTATIC, _("Mark servers as non-static") );
+	}
+
 	serverMenu->AppendSeparator();
-	
-	serverMenu->Append( MP_REMOVE, _("Remove server(s)") );
+
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_REMOVE, _("Remove server") );
+	} else {
+		serverMenu->Append( MP_REMOVE, _("Remove servers") );
+	}
 	serverMenu->Append( MP_REMOVEALL, _("Remove all servers") );
-	
-	serverMenu->AppendSeparator();
-	
-	serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k link(s) to clipboard") );
 
+	serverMenu->AppendSeparator();
+
+	if (GetSelectedItemCount() == 1) {
+		serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard") );
+	} else {
+		serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k links to clipboard") );
+	}
 
 	serverMenu->Enable( MP_REMOVEFROMSTATIC, 	enable_static_off );
 	serverMenu->Enable( MP_ADDTOSTATIC,			enable_static_on  );
@@ -553,7 +565,12 @@ void CServerListCtrl::OnRemoveServers( wxCommandEvent& event )
 		}
 	} else if ( event.GetId() == MP_REMOVE ) {
 		if ( GetSelectedItemCount() ) {
-			wxString question = _("Are you sure that you wish to delete the selected server(s)?");
+			wxString question;
+			if (GetSelectedItemCount() == 1) {
+				question = _("Are you sure that you wish to delete the selected server?");
+			} else {
+				question = _("Are you sure that you wish to delete the selected servers?");
+			}
 	
 			if ( wxMessageBox( question, _("Cancel"), wxICON_QUESTION | wxYES_NO, this) == wxYES ) {
 				RemoveAllServers(wxLIST_STATE_SELECTED);
