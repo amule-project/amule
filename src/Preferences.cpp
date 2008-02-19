@@ -1684,7 +1684,14 @@ void CPreferences::ReloadSharedFolders()
 		wxArrayString lines = file.ReadLines(txtReadDefault, wxConvUTF8);
 
 		for (size_t i = 0; i < lines.size(); ++i) {
-			shareddir_list.push_back(CPath::FromUniv(lines[i]));
+			CPath path = CPath::FromUniv(lines[i]);
+
+			if (path.DirExists()) {
+				shareddir_list.push_back(path);
+			} else {
+				printf("Dropping non-existing shared directory: %s\n",
+					(const char*)unicode2char(path.GetRaw()));
+			}
 		}
 	}
 #endif
