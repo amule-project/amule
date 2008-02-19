@@ -11,6 +11,7 @@ endif
 man_langs = de es eu fr hu
 
 EXTRA_DIST = \
+	alc.1 alcc.1 \
 	alc.de.1 alcc.de.1 \
 	alc.es.1 alcc.es.1 \
 	alc.eu.1 alcc.eu.1 \

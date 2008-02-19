@@ -747,7 +747,6 @@ AC_CONFIG_FILES([Makefile
 		 src/pixmaps/flags_xpm/Makefile
 		 src/libs/Makefile
 		 src/libs/ec/Makefile
-		 src/libs/ec/abstracts/Makefile
 		 src/libs/ec/cpp/Makefile
 		 src/libs/common/Makefile
 		 src/utils/Makefile

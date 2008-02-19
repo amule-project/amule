@@ -1,4 +1,4 @@
-DEFS = -DHAVE_CONFIG_H
+EXTRA_DIST = gen_ECVersion
 
 # Sources
 

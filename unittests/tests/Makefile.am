@@ -1,7 +1,7 @@
 # If any tests uses more than a cpp/h fileset, then 
 # make a seperate subfolder for it to reduce clutter.
 #SUBDIRS = 
-
+EXTRA_DIST =
 
 # Use this to be able to catch assertions as exceptions
 MUCXXFLAGS = -DMULEUNIT 
@@ -54,4 +54,4 @@ PathTest_LDADD = $(LDADD) $(CRYPTOLIBS)
 TextFileTest_SOURCES = TextFileTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/TextFile.cpp
 TextFileTest_CXXFLAGS = $(AM_CXXFLAGS) 
 TextFileTest_LDADD = $(LDADD) $(CRYPTOLIBS)
-
+EXTRA_DIST += TextFileTest_dos.txt TextFileTest_unix.txt

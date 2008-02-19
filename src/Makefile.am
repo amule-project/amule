@@ -4,7 +4,12 @@ endif
 
 SUBDIRS = libs utils pixmaps kademlia skins $(OPT_WEB)
 
-EXTRA_DIST = aMule.xpm
+EXTRA_DIST = \
+	aMule.xpm \
+	Parser.y \
+	Scanner.h.in \
+	Scanner.l \
+	muuli.wdr 
 
 bin_PROGRAMS = 
 
@@ -27,8 +32,6 @@ endif
 if AMULE_DAEMON
 bin_PROGRAMS += amuled
 endif
-
-DEFS = -DHAVE_CONFIG_H
 
 # Sources
 
@@ -324,6 +327,8 @@ amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec \
 
 noinst_HEADERS = \
 		AddFriend.h \
+		AsyncDNS.h \
+		amule-remote-gui.h \
 		amuleDlg.h \
 		amule.h \
 		amuleIPV4Address.h \
@@ -346,14 +351,16 @@ noinst_HEADERS = \
 		CommentDialogLst.h \
 		Constants.h \
 		CryptoPP_Inc.h \
+		DataToText.h \
+		DeadSourceList.h \
 		DirectoryTreeCtrl.h \
 		DownloadListCtrl.h \
 		DownloadQueue.h \
 		ED2KLink.h \
 		EditServerListDlg.h \
 		EMSocket.h \
-		EncryptedDatagramSocket.cpp \
-		EncryptedStreamSocket.cpp \
+		EncryptedDatagramSocket.h \
+		EncryptedStreamSocket.h \
 		ExternalConnector.h \
 		ExternalConn.h \
 		FileDetailDialog.h \
@@ -388,9 +395,12 @@ noinst_HEADERS = \
 		muuli_wdr.h \
 		NetworkFunctions.h \
 		OScopeCtrl.h \
+		Observable.h \
+		ObservableQueue.h \
 		OtherFunctions.h \
 		OtherStructs.h \
 		Packet.h \
+		Parser.hpp \
 		PartFileConvert.h \
 		PartFile.h \
 		Preferences.h \
@@ -398,9 +408,13 @@ noinst_HEADERS = \
 		Proxy.h \
 		RangeMap.h \
 		RC4Encrypt.h \
+		RLE.h \
+		RandomFunctions.h \
 		SafeFile.h \
+		Scanner.h \
 		ScopedPtr.h \
 		SearchDlg.h \
+		SearchExpr.h \
 		SearchFile.h \
 		SearchListCtrl.h \
 		SearchList.h \
@@ -425,6 +439,7 @@ noinst_HEADERS = \
 		TextClient.h \
 		ThreadScheduler.h \
 		ThreadTasks.h \
+		ThrottledSocket.h \
 		Timer.h \
 		TransferWnd.h \
 		Types.h \
@@ -432,7 +447,11 @@ noinst_HEADERS = \
 		UploadBandwidthThrottler.h \
 		UploadQueue.h \
 		UPnP.h \
-		UserEvents.h
+		UPnPCompatibility.h \
+		UserEvents.h \
+		extern/wxWidgets/listctrl.h \
+		extern/upnp/ixml.h \
+		extern/upnp/upnp.h
 
 MAINTAINERCLEANFILES = Makefile.in
 
@@ -511,3 +530,7 @@ ed2k-version.rc: $(top_builddir)/version.rc
 CLEANFILES = *-version.rc
 
 endif
+
+
+EXTRA__DIST__SUBDIRS = include remote-gui.net
+include $(top_srcdir)/automake/dist-hook.am
