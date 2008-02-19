@@ -172,8 +172,8 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 	if ( GetFileCount() == 0 ) {
 		AddLogLineM(false, _("No part files found"));
 	} else {
-		AddLogLineM(false, wxString::Format(_("Found %u part files"), GetFileCount()) );
-		
+		AddLogLineM(false, wxString::Format(wxPLURAL("Found %u part file", "Found %u part files", GetFileCount()), GetFileCount()) );
+
 		DoSortByPriority();
 		CheckDiskspace( path );
 	}

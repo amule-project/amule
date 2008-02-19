@@ -101,7 +101,7 @@ void CCommentDialogLst::UpdateList()
 	if (count == 0) {
 		info = _("No comments");
 	} else {
-		info = CFormat( _("%s comment(s)")) % CastItoIShort(count);
+		info = wxString::Format(wxPLURAL("%u comment", "%u comments", count), count);
 	}
 	
 	FindWindow(IDC_CMSTATUS)->SetLabel(info);

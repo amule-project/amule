@@ -327,10 +327,9 @@ private:
 		}
 
 		AddLogLineM(false,
-			CFormat(_("Loaded %u IP-ranges from '%s'. %u malformed lines were discarded."))
-			% filtercount
-			% file
-			% discardedCount
+			( CFormat(wxPLURAL("Loaded %u IP-range from '%s'.", "Loaded %u IP-ranges from '%s'.", filtercount)) % filtercount % file )
+			+ wxT(" ") +
+			( CFormat(wxPLURAL("%u malformed line was discarded.", "%u malformed lines were discarded.", discardedCount)) % discardedCount )
 		);
 
 		return filtercount;

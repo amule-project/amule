@@ -70,7 +70,7 @@ CIP2Country::CIP2Country()
 		}
 	}
 	
-	AddLogLineM(false, CFormat(_("Loaded %d flag bitmaps.")) % m_CountryDataMap.size());
+	AddLogLineM(false, CFormat(wxPLURAL("Loaded %d flag bitmap.", "Loaded %d flag bitmaps.", m_CountryDataMap.size())) % m_CountryDataMap.size());
 }
 
 
