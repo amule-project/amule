@@ -28,7 +28,6 @@ endif
 ACLOCAL_AMFLAGS = -I m4
 
 DISTCHECK_CONFIGURE_FLAGS = \
-	--with-crypto-prefix=/usr/local \
 	--enable-amulecmd \
 	--enable-webserver \
 	--enable-amule-daemon \
