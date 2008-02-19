@@ -5184,7 +5184,7 @@ msgstr "Añadir archivos para descargar en modo pausado"
 
 #: src/muuli_wdr.cpp:2094
 msgid "Add files to download with auto priority"
-msgstr "Añadir nuevos archivos compartidos con auto prioridad"
+msgstr "Añadir nuevas descargas con auto prioridad"
 
 #: src/muuli_wdr.cpp:2097
 msgid "Try to download first and last chunks first"
@@ -5192,7 +5192,7 @@ msgstr "Intentar descargar antes la primera y última parte"
 
 #: src/muuli_wdr.cpp:2101
 msgid "Add new shared files with auto priority"
-msgstr "Añadir nuevas descargas con auto prioridad"
+msgstr "Añadir nuevos archivos compartidos con auto prioridad"
 
 #: src/muuli_wdr.cpp:2104
 msgid "Try to transfer full chunks to all uploads"
