@@ -957,26 +957,26 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 		CPartFile* file = item->GetFile();
 		// then set state
-		bool fileReady =
-			(file->GetStatus() != PS_PAUSED) &&
-			(file->GetStatus() != PS_ERROR);
-		bool fileReady2 =
+		const bool canStop =
 			(file->GetStatus() != PS_ERROR) &&
-			(file->GetStatus() != PS_COMPLETE);
-		bool fileResumable =
+			(file->GetStatus() != PS_COMPLETE) &&
+			(file->IsStopped() != true);
+		const bool canPause =
+			(file->GetStatus() != PS_PAUSED) && canStop;
+		const bool fileResumable =
 			(file->GetStatus() == PS_PAUSED) ||
 			(file->GetStatus() == PS_ERROR) ||
 			(file->GetStatus() == PS_INSUFFICIENT);
 		
 		wxMenu* menu = m_menu;
 		menu->Enable( MP_CANCEL,	( file->GetStatus() != PS_COMPLETE ) );
-		menu->Enable( MP_PAUSE,		fileReady && fileReady2 );
-		menu->Enable( MP_STOP,		fileReady && fileReady2 );
+		menu->Enable( MP_PAUSE,		canPause );
+		menu->Enable( MP_STOP,		canStop );
 		menu->Enable( MP_RESUME, 	fileResumable );
 		menu->Enable( MP_CLEARCOMPLETED, m_completedFiles );
 
 		wxString view;
-		if (file->IsPartFile() && !(file->GetStatus() == PS_COMPLETE)) {
+		if (file->IsPartFile() && (file->GetStatus() != PS_COMPLETE)) {
 			view << CFormat(wxT("%s [%s]")) % _("Preview")
 					% file->GetPartMetFileName().RemoveExt();
 		} else if ( file->GetStatus() == PS_COMPLETE ) {
@@ -985,9 +985,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		menu->SetLabel(MP_VIEW, view);
 		menu->Enable(MP_VIEW, file->PreviewAvailable() );
 
-		menu->Enable( MP_SWAP_A4AF_TO_THIS_AUTO,	fileReady );
 		menu->Check(  MP_SWAP_A4AF_TO_THIS_AUTO, 	file->IsA4AFAuto() );
-		menu->Enable( MP_SWAP_A4AF_TO_ANY_OTHER, 	fileReady );
 
 		int priority = file->IsAutoDownPriority() ?
 			PR_AUTO : file->GetDownPriority();
@@ -997,8 +995,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		priomenu->Check( MP_PRIOLOW,	priority == PR_LOW );
 		priomenu->Check( MP_PRIOAUTO,	priority == PR_AUTO );
 
-		menu->Enable( MP_MENU_PRIO, fileReady2 );
-		menu->Enable( MP_MENU_EXTD, fileReady2 );
+		menu->Enable( MP_MENU_EXTD, canPause );
 	
 		PopupMenu(m_menu, evt.GetPoint());
 
