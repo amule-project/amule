@@ -2211,6 +2211,11 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
 
+#ifdef __WXMSW__
+#	define QUOTE	wxT("\"")
+#else
+#	define QUOTE	wxT("\'")
+#endif
 
 void CDownloadListCtrl::PreviewFile(CPartFile* file)
 {
@@ -2219,12 +2224,12 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		wxMessageBox(_(
-			"Please set your prefered video player on preferences.\n"
+			"Please set your preferred video player on preferences.\n"
 			"Meanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
-		// select video output decivce and needs a parameter, go figure...
-		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer '$file'");
+		// select video output device and needs a parameter, go figure...
+		command = wxT("xterm -T \"aMule Preview\" -iconic -e mplayer ") QUOTE wxT("$file") QUOTE;
 	} else {
 		command = thePrefs::GetVideoPlayer();
 	}
@@ -2237,7 +2242,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		if (!command.Replace(wxT("$file"), fileWithoutMet)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
-			command << wxT(" '") << fileWithoutMet << wxT("'");
+			command << wxT(" ") << QUOTE << fileWithoutMet << QUOTE;
 		}
 	} else {
 		// This is a complete file
@@ -2246,7 +2251,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 		if (!command.Replace(wxT("$file"), rawFileName)) {
 			// No magic string, so we just append the filename to the player command
 			// Need to use quotes in case filename contains spaces
-			command << wxT(" '") << rawFileName << wxT("'");
+			command << wxT(" ") << QUOTE << rawFileName << QUOTE;
 		}
 	}
 
