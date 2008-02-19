@@ -17,3 +17,7 @@ endif
 SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
 
 MAINTAINERCLEANFILES = Makefile.in
+
+EXTRA_DIST = mkFileSum.c
+EXTRA__DIST__SUBDIRS = amps scripts
+include $(top_srcdir)/automake/dist-hook.am

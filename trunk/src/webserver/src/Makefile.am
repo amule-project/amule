@@ -47,7 +47,10 @@ amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(ZLIB_LIBS) \
 noinst_HEADERS = \
 		 WebInterface.h \
 		 WebServer.h \
-		 WebSocket.h
+		 WebSocket.h \
+		 php_core_lib.h \
+		 php_parser.h \
+		 php_syntree.h
 
 # Resources
 
@@ -70,3 +73,8 @@ CLEANFILES = *-version.rc
 endif
 
 MAINTAINERCLEANFILES = Makefile.in
+
+EXTRA_DIST = \
+	missing-template.html \
+	php_lexer.l \
+	php_parser.y
