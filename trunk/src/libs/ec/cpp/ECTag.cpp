@@ -281,7 +281,7 @@ void CECTag::InitInt(uint64 data)
 				break;
 			default:
 				/* WTF?*/
-				assert(0);
+				EC_ASSERT(0);
 				free((void*)m_tagData);
 				m_error = 1;
 				return;
@@ -628,6 +628,58 @@ uint32 CECTag::GetTagLen(void) const
 	return length;
 }
 
+
+uint64_t CECTag::GetInt() const
+{ 
+	switch (m_dataType) {
+		case EC_TAGTYPE_UINT8:
+			return PeekUInt8(m_tagData);
+		case EC_TAGTYPE_UINT16:
+			return ENDIAN_NTOHS( RawPeekUInt16( m_tagData ) );
+		case EC_TAGTYPE_UINT32:
+			return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
+		case EC_TAGTYPE_UINT64:
+			return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
+		case EC_TAGTYPE_UNKNOWN:
+			// Empty tag - This is NOT an error.
+			return 0;
+		default:
+			EC_ASSERT(0);
+			return 0;
+	}
+}
+
+
+std::string CECTag::GetStringDataSTL() const
+{ 
+	if (m_dataType != EC_TAGTYPE_STRING) {
+		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
+		return std::string();
+	}
+
+	return std::string((const char*)m_tagData);
+}
+
+
+#ifdef USE_WX_EXTENSIONS
+wxString CECTag::GetStringData() const
+{ 
+	return UTF82unicode(GetStringDataSTL().c_str());
+}
+#endif
+
+
+CMD4Hash CECTag::GetMD4Data() const
+{ 
+	if (m_dataType != EC_TAGTYPE_HASH16) {
+		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
+		return CMD4Hash();
+	}
+
+	return CMD4Hash((const unsigned char *)m_tagData); 
+}
+
+
 /**
  * Returns an EC_IPv4_t class.
  *
@@ -637,14 +689,16 @@ uint32 CECTag::GetTagLen(void) const
  *
  * @see CECTag(ec_tagname_t, const EC_IPv4_t&)
  */
-EC_IPv4_t CECTag::GetIPv4Data(void) const
+EC_IPv4_t CECTag::GetIPv4Data() const
 {
-	EC_IPv4_t p;
+	EC_IPv4_t p(0, 0);
 	
-	wxASSERT(m_dataType == EC_TAGTYPE_IPV4);
-
-	RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
-	p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
+	if (m_dataType == EC_TAGTYPE_IPV4) {
+		RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
+		p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
+	} else {
+		EC_ASSERT(false);
+	}
 
 	return p;
 }
@@ -661,8 +715,8 @@ EC_IPv4_t CECTag::GetIPv4Data(void) const
  */
 double CECTag::GetDoubleData(void) const
 {
-	assert((m_dataType == EC_TAGTYPE_DOUBLE) || (m_dataType == EC_TAGTYPE_UNKNOWN));
-	if ( m_dataType == EC_TAGTYPE_UNKNOWN ) {
+	if (m_dataType != EC_TAGTYPE_DOUBLE) {
+		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
 		return 0;
 	}
 	
@@ -672,6 +726,7 @@ double CECTag::GetDoubleData(void) const
 	double_str >> data;
 	return data;
 }
+
 
 void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data) {
 	m_dataLen = strlen(data.c_str()) + 1;
