@@ -279,7 +279,12 @@ CECPacket *ExternalConn::Authenticate(const CECPacket *request)
 				} else if (passwd && passwd->GetMD4Data() == passh) {
 					response = new CECPacket(EC_OP_AUTH_OK);
 				} else {
-					AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
+					if (passwd) {
+						AddLogLineM(false, wxT("EC Auth failed: (") + passwd->GetMD4Data().Encode() + wxT(" != ") + passh.Encode() + wxT(")."));
+					} else {
+						AddLogLineM(false, wxT("EC Auth failed. Password tag missing."));					
+					}
+
 					response = new CECPacket(EC_OP_AUTH_FAIL);
 					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Authentication failed.")));
 				}
