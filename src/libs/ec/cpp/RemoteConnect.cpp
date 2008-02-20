@@ -40,7 +40,9 @@ CECLoginPacket::CECLoginPacket(const wxString &pass,
 
 	CMD4Hash passhash;
 	wxCHECK2(passhash.Decode(pass), /* Do nothing. */);
-	AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
+	// AddTag(CECTag(EC_TAG_PASSWD_HASH, passhash));
+	AddTag(CECTag(EC_TAG_PASSWD_HASH, (uint16)7913));
+	
 
 	#ifdef EC_VERSION_ID
 	CMD4Hash versionhash;

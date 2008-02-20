@@ -32,6 +32,10 @@
 #ifdef USE_WX_EXTENSIONS
 #include <wx/string.h> // Do_not_auto_remove
 #include <common/StringFunctions.h>
+
+#define EC_ASSERT(x)	wxASSERT(x)
+#else
+#define EC_ASSERT(x)	assert(x)
 #endif
 
 /* aMule/libcommon generic includes */
@@ -40,6 +44,7 @@
 /* EC specific includes */
 #include "ECCodes.h"		// Needed for EC types
 #include "ECTagTypes.h"	// Needed for TagTypes
+
 
 class CECSocket;
 
@@ -122,54 +127,31 @@ class CECTag {
 		
 		uint16_t		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { 
-			assert(m_dataType == EC_TAGTYPE_CUSTOM);
+			EC_ASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
 			return m_tagData; 
 		}
-		uint16_t		GetTagDataLen(void) const { return m_dataLen; }
-		uint32_t		GetTagLen(void) const;
-		ec_tagname_t	GetTagName(void) const { return m_tagName; }
+		uint16_t		GetTagDataLen() const { return m_dataLen; }
+		uint32_t		GetTagLen() const;
+		ec_tagname_t		GetTagName() const { return m_tagName; }
+		
 		// Retrieving special data types
-		uint64_t		GetInt(void) const { 
-			switch (m_dataType) {
-				case EC_TAGTYPE_UINT8:
-					return PeekUInt8(m_tagData);
-				case EC_TAGTYPE_UINT16:
-					return ENDIAN_NTOHS( RawPeekUInt16( m_tagData ) );
-				case EC_TAGTYPE_UINT32:
-					return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
-				case EC_TAGTYPE_UINT64:
-					return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
-				case EC_TAGTYPE_UNKNOWN:
-					// Empty tag - This is NOT an error.
-					return 0;
-				default:
-					assert(0);
-					return 0;
-			}
-		}
-		double		GetDoubleData(void) const;
-		std::string	GetStringDataSTL(void) const { 
-			assert((m_dataType == EC_TAGTYPE_STRING) || (m_dataType == EC_TAGTYPE_UNKNOWN));
-			return ((char*)m_tagData); 
-		}
+		uint64_t		GetInt() const;
+		double			GetDoubleData() const;
+		std::string		GetStringDataSTL() const;
 		
 		#ifdef USE_WX_EXTENSIONS
-		wxString GetStringData(void) const { 
-			return UTF82unicode(GetStringDataSTL().c_str());
-		}
+		wxString GetStringData() const;
 		#endif 
 		
-		EC_IPv4_t 	GetIPv4Data(void) const;
-		CMD4Hash	GetMD4Data(void) const { 
-			assert((m_dataType == EC_TAGTYPE_HASH16) || (m_dataType == EC_TAGTYPE_UNKNOWN)); 
-			return CMD4Hash((const unsigned char *)m_tagData); 
-		}
+		EC_IPv4_t 	GetIPv4Data() const;
+		CMD4Hash	GetMD4Data() const;
+
 		
 		void AssignIfExist(ec_tagname_t tagname, uint8_t &target)
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				assert((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
+				EC_ASSERT((tag->GetType() == EC_TAGTYPE_UINT8) || (m_dataType == EC_TAGTYPE_UNKNOWN));
 				target = tag->GetInt();
 			}
 		}
@@ -177,7 +159,7 @@ class CECTag {
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				assert(
+				EC_ASSERT(
 					(tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
 					|| (m_dataType == EC_TAGTYPE_UNKNOWN)
@@ -189,7 +171,7 @@ class CECTag {
 		{
 			CECTag *tag = GetTagByName(tagname);
 			if ( tag ) {
-				assert(
+				EC_ASSERT(
 					(tag->GetType() == EC_TAGTYPE_UINT32)
 					|| (tag->GetType() == EC_TAGTYPE_UINT16)
 					|| (tag->GetType() == EC_TAGTYPE_UINT8)
