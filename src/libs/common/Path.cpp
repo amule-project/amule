@@ -213,6 +213,32 @@ wxString DoCleanPath(const wxString& path)
 }
 
 
+/** Returns true if the two paths are equal. */
+bool IsSameAs(const wxString& a, const wxString& b)
+{
+	// Cache the current directory
+	const wxString cwd = wxGetCwd();
+
+	// We normalize everything, except env. variables, which
+	// can cause problems when the string is not encodable
+	// using wxConvLibc which wxWidgets uses for the purpose.
+	const int flags = (wxPATH_NORM_ALL | wxPATH_NORM_CASE) & ~wxPATH_NORM_ENV_VARS;
+
+	// Let wxFileName handle the tricky stuff involved in actually
+	// comparing two paths ... Currently, a path ending with a path-
+	// seperator will be unequal to the same path without a path-
+	// seperator, which is probably for the best, but can could
+	// lead to some unexpected behavior.
+	wxFileName fn1(a);
+	wxFileName fn2(b);
+	
+	fn1.Normalize(flags, cwd);
+	fn2.Normalize(flags, cwd);
+
+	return (fn1.GetFullPath() == fn2.GetFullPath());
+}
+
+
 ////////////////////////////////////////////////////////////
 // CPath implementation
 
@@ -300,12 +326,7 @@ CPath& CPath::operator=(const CPath& other)
 
 bool CPath::operator==(const CPath& other) const
 {
-	// Let wxFileName handle the tricky stuff involved in actually
-	// comparing two paths ... Currently, a path ending with a path-
-	// seperator will be unequal to the same path without a path-
-	// seperator, which is probably for the best, but can could
-	// lead to some unexpected behavior.
-	return wxFileName(m_filesystem).SameAs(other.m_filesystem);
+	return ::IsSameAs(m_filesystem, other.m_filesystem);
 }
 
 
@@ -438,9 +459,7 @@ bool CPath::IsSameDir(const CPath& other) const
 		b = StripSeparators(b, wxString::trailing);
 	}
 
-	// We use wxFileName::SameAs, as this function handles
-	// platform specific issues (case-sensitivity, etc).
-	return wxFileName(a).SameAs(b);
+	return ::IsSameAs(a, b);
 }
 
 
