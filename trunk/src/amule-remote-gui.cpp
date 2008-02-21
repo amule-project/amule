@@ -959,6 +959,7 @@ void CSharedFilesRem::ProcessItemUpdate(CEC_SharedFile_Tag *tag, CKnownFile *fil
 		file->statistic.alltimeaccepted = tag->GetAllAccepts();
 		file->statistic.transferred = tag->GetXferred();
 		file->statistic.alltimetransferred = tag->GetAllXferred();
+		file->m_iUpPriority = tag->Prio();
 	}
 	if (file->m_iUpPriority >= 10) {
 		file->m_iUpPriority -= 10;

@@ -498,6 +498,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  on the download queue. Among other things, it is now
 		  possible to stop a paused download, without having to
 		  restart it first (this closes bug #1078).
+		* -- TODO
+		* Fixed the setting priorities for shared files via the remote
+		  GUI (this closes bug #1267).
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
