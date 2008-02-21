@@ -212,7 +212,7 @@ bool CamuleGuiBase::CopyTextToClipboard(wxString strText)
 {
 	bool ClipBoardOpen = wxTheClipboard->Open();
 	if (ClipBoardOpen) {
-		wxTheClipboard->UsePrimarySelection(TRUE);
+		wxTheClipboard->UsePrimarySelection(false);
 		wxTheClipboard->SetData(new wxTextDataObject(strText));
 		wxTheClipboard->Close();
 	}

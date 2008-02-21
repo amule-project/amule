@@ -617,6 +617,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fixed clipping issues when columns are resized to very small
 		  width, causing the contents of one column to be drawn on top
 		  of the next column (this closes bug #1171).
+		* Fixed copying of text to the clipboard, which previously
+		  used the "primary" clipboard (middle-click) under X11. It
+		  now uses the default clipboard, which is what DEs typically
+		  use for Ctrl+C/V/X. This closes bug #1139.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
