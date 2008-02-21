@@ -630,7 +630,13 @@ uint32 CECTag::GetTagLen(void) const
 
 
 uint64_t CECTag::GetInt() const
-{ 
+{
+	if (m_tagData == NULL) {
+		// Empty tag - This is NOT an error.
+		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
+		return 0;
+	}
+
 	switch (m_dataType) {
 		case EC_TAGTYPE_UINT8:
 			return PeekUInt8(m_tagData);
@@ -640,9 +646,6 @@ uint64_t CECTag::GetInt() const
 			return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
 		case EC_TAGTYPE_UINT64:
 			return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
-		case EC_TAGTYPE_UNKNOWN:
-			// Empty tag - This is NOT an error.
-			return 0;
 		default:
 			EC_ASSERT(0);
 			return 0;
@@ -654,6 +657,9 @@ std::string CECTag::GetStringDataSTL() const
 { 
 	if (m_dataType != EC_TAGTYPE_STRING) {
 		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
+		return std::string();
+	} else if (m_tagData == NULL) {
+		EC_ASSERT(false);
 		return std::string();
 	}
 
@@ -676,6 +682,10 @@ CMD4Hash CECTag::GetMD4Data() const
 		return CMD4Hash();
 	}
 
+	EC_ASSERT(m_tagData != NULL);
+
+	// Doesn't matter if m_tagData is NULL in CMD4Hash(), 
+	// that'll just result in an empty hash.
 	return CMD4Hash((const unsigned char *)m_tagData); 
 }
 
@@ -693,11 +703,13 @@ EC_IPv4_t CECTag::GetIPv4Data() const
 {
 	EC_IPv4_t p(0, 0);
 	
-	if (m_dataType == EC_TAGTYPE_IPV4) {
+	if (m_tagData == NULL) {
+		EC_ASSERT(false);
+	} else if (m_dataType != EC_TAGTYPE_IPV4) {
+		EC_ASSERT(false);
+	} else {
 		RawPokeUInt32( p.m_ip, RawPeekUInt32( ((EC_IPv4_t *)m_tagData)->m_ip ) );
 		p.m_port = ENDIAN_NTOHS(((EC_IPv4_t *)m_tagData)->m_port);
-	} else {
-		EC_ASSERT(false);
 	}
 
 	return p;
@@ -718,6 +730,9 @@ double CECTag::GetDoubleData(void) const
 	if (m_dataType != EC_TAGTYPE_DOUBLE) {
 		EC_ASSERT(m_dataType == EC_TAGTYPE_UNKNOWN);
 		return 0;
+	} else if (m_tagData == NULL) {
+		EC_ASSERT(false);
+		return 0;
 	}
 	
 	std::istringstream double_str((const char*)m_tagData);
@@ -728,7 +743,8 @@ double CECTag::GetDoubleData(void) const
 }
 
 
-void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data) {
+void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
+{
 	m_dataLen = strlen(data.c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
