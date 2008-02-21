@@ -510,7 +510,7 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 	for ( int i = 0; i < GetColumnCount(); ++i ) {
 		const int columnWidth = GetColumnWidth(i);
 
-		if (columnWidth) {
+		if (columnWidth > 2*SPARE_PIXELS_HORZ) {
 			wxRect columnRect(
 				columnLeft + SPARE_PIXELS_HORZ, rect.y,
 				columnWidth - 2 * SPARE_PIXELS_HORZ, rect.height);
