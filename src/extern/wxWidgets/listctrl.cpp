@@ -1572,6 +1572,14 @@ void wxListLineData::DrawInReportMode( wxDC *dc,
         int xOld = x;
         x += width;
 
+	// Fix for a bug in wxWidgets.
+	// This has been reported as patch 1898914:
+	// http://sourceforge.net/tracker/index.php?func=detail&aid=1898914&group_id=9863&atid=309863
+	//
+        // Prevents the drawing of images into the
+        // next collumn, in case of small widths.
+        wxDCClipper clipper(*dc, xOld, rect.y, width - 8, rect.height);
+
         if ( item->HasImage() )
         {
             int ix, iy;

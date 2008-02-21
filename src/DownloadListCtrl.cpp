@@ -1153,7 +1153,7 @@ void CDownloadListCtrl::OnDrawItem(
 		wxListItem listitem;
 		GetColumn(i, listitem);
 
-		if ( listitem.GetWidth() > 0 ) {
+		if (listitem.GetWidth() > 2*iOffset) {
 			cur_rec.width = listitem.GetWidth() - 2*iOffset;
 
 			// Make a copy of the current rectangle so we can apply specific tweaks
@@ -1178,10 +1178,10 @@ void CDownloadListCtrl::OnDrawItem(
 			} else {
 				DrawSourceItem(dc, i, target_rec, content);
 			}
-
-			// Increment to the next column
-			cur_rec.x += listitem.GetWidth();
 		}
+		
+		// Increment to the next column
+		cur_rec.x += listitem.GetWidth();
 	}
 
 	// Draw tree last so it draws over selected and focus (looks better)
@@ -1234,8 +1234,7 @@ void CDownloadListCtrl::OnDrawItem(
 
 void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
 {
-	// force clipper (clip 2 px more than the rectangle from the right side)
-	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight() );
+	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight() );
 
 	const CPartFile* file = item->GetFile();
 
@@ -1444,8 +1443,7 @@ void CDownloadListCtrl::DrawFileItem( wxDC* dc, int nColumn, const wxRect& rect,
 void CDownloadListCtrl::DrawSourceItem(
 	wxDC* dc, int nColumn, const wxRect& rect, CtrlItem_Struct* item ) const
 {
-	// Force clipper (clip 2 px more than the rectangle from the right side)
-	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth() - 2, rect.GetHeight() );
+	wxDCClipper clipper( *dc, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight() );
 	wxString buffer;
 	
 	const CUpDownClient* client = item->GetSource();
