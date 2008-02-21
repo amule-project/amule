@@ -646,6 +646,9 @@ uint64_t CECTag::GetInt() const
 			return ENDIAN_NTOHL( RawPeekUInt32( m_tagData ) );
 		case EC_TAGTYPE_UINT64:
 			return ENDIAN_NTOHLL( RawPeekUInt64( m_tagData ) );
+		case EC_TAGTYPE_UNKNOWN:
+			// Empty tag - This is NOT an error.
+			return 0;
 		default:
 			EC_ASSERT(0);
 			return 0;
