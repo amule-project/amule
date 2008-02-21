@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-21 06:15+0100\n"
-"PO-Revision-Date: 2007-12-12 00:57+0100\n"
+"PO-Revision-Date: 2008-02-21 23:59+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -173,12 +173,12 @@ msgid "NickName: %s ID: %u"
 msgstr "Becenév: %s ID: %u"
 
 #: src/BaseClient.cpp:1876
-#, fuzzy, c-format
+#, c-format
 msgid "Requested: %s\n"
-msgstr "Lekérdezve:"
+msgstr "Kért: %s\n"
 
 #: src/BaseClient.cpp:1878
-#, fuzzy, c-format
+#, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
@@ -187,7 +187,7 @@ msgstr[0] ""
 "átmásolva\n"
 
 #: src/BaseClient.cpp:1881
-#, fuzzy, c-format
+#, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
@@ -241,14 +241,12 @@ msgid "Establish Friend Slot"
 msgstr "Társ Slot létesítése"
 
 #: src/FriendListCtrl.cpp:273
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friend?"
-msgstr "Tényleg törölni szeretnéd a kiválasztott baráto(ka)t?"
+msgstr "Tényleg törölni szeretnéd a kiválasztott barátot?"
 
 #: src/FriendListCtrl.cpp:275
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friends?"
-msgstr "Tényleg törölni szeretnéd a kiválasztott baráto(ka)t?"
+msgstr "Tényleg törölni szeretnéd a kiválasztott barátokat?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
@@ -456,7 +454,7 @@ msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: a keresési kulcsszó túl rövid"
 
 #: src/kademlia/routing/RoutingZone.cpp:141
-#, fuzzy, c-format
+#, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u Kad kapcsolat beolvasva"
@@ -894,9 +892,8 @@ msgid " is on "
 msgstr " csatlakozva ehhez "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1064
-#, fuzzy
 msgid " with "
-msgstr "] ezzel "
+msgstr " ezzel "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1082
 msgid "Total Download: "
@@ -920,9 +917,8 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, Feltöltés: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
-#, fuzzy
 msgid " kB/s"
-msgstr "kB/s"
+msgstr " kB/s"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1116
 msgid "Sharing: "
@@ -1020,7 +1016,6 @@ msgstr "%.2f TB"
 #: src/utils/aLinkCreator/src/md4.cpp:359
 #: src/utils/aLinkCreator/src/alcframe.cpp:566
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
-#, fuzzy
 msgid "Cancelled !"
 msgstr "Megszakítva !"
 
@@ -1365,7 +1360,7 @@ msgstr "Horvát"
 
 #: src/Preferences.cpp:637
 msgid "Czech"
-msgstr ""
+msgstr "Cseh"
 
 #: src/Preferences.cpp:638
 msgid "Danish"
@@ -1574,34 +1569,28 @@ msgid "Connect to server"
 msgstr "Kapcsolódás a kiszolgálóhoz"
 
 #: src/ServerListCtrl.cpp:428
-#, fuzzy
 msgid "Mark server as static"
-msgstr "Kiszolgáló(k) megjelölése állandóként"
+msgstr "Kiszolgáló megjelölése állandóként"
 
 #: src/ServerListCtrl.cpp:429
-#, fuzzy
 msgid "Mark server as non-static"
-msgstr "Kiszolgáló(k) megjelölése nem állandóként"
+msgstr "Kiszolgáló megjelölése nem állandóként"
 
 #: src/ServerListCtrl.cpp:431
-#, fuzzy
 msgid "Mark servers as static"
-msgstr "Kiszolgáló(k) megjelölése állandóként"
+msgstr "Kiszolgálók megjelölése állandóként"
 
 #: src/ServerListCtrl.cpp:432
-#, fuzzy
 msgid "Mark servers as non-static"
-msgstr "Kiszolgáló(k) megjelölése nem állandóként"
+msgstr "Kiszolgálók megjelölése nem állandóként"
 
 #: src/ServerListCtrl.cpp:438
-#, fuzzy
 msgid "Remove server"
-msgstr "Kiszolgáló(k) eltávolítása"
+msgstr "Kiszolgáló eltávolítása"
 
 #: src/ServerListCtrl.cpp:440
-#, fuzzy
 msgid "Remove servers"
-msgstr "Kiszolgáló(k) eltávolítása"
+msgstr "Kiszolgálók eltávolítása"
 
 #: src/ServerListCtrl.cpp:442
 msgid "Remove all servers"
@@ -1612,9 +1601,8 @@ msgid "Copy ED2k link to clipboard"
 msgstr "ED2k link másolása a vágólapra"
 
 #: src/ServerListCtrl.cpp:449
-#, fuzzy
 msgid "Copy ED2k links to clipboard"
-msgstr "ED2k link másolása a vágólapra"
+msgstr "ED2k linkek másolása a vágólapra"
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1625,14 +1613,12 @@ msgid "Are you sure that you wish to delete all servers?"
 msgstr "Biztos, hogy törlöd az összes kiszolgálót?"
 
 #: src/ServerListCtrl.cpp:570
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected server?"
-msgstr "Biztos, hogy törlöd a kiválasztott kiszolgáló(ka)t?"
+msgstr "Biztos, hogy törlöd a kiválasztott kiszolgálót?"
 
 #: src/ServerListCtrl.cpp:572
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected servers?"
-msgstr "Biztos, hogy törlöd a kiválasztott kiszolgáló(ka)t?"
+msgstr "Biztos, hogy törlöd a kiválasztott kiszolgálókat?"
 
 #: src/OScopeCtrl.cpp:288
 #, c-format
@@ -2072,13 +2058,13 @@ msgstr ""
 "Egy sorba csak egy URL."
 
 #: src/PrefsUnifiedDlg.cpp:939
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
-msgstr[0] "Frissítés késleltetése: %d mp"
+msgstr[0] "Frissítés késleltetése: %d másodperc"
 
 #: src/PrefsUnifiedDlg.cpp:946
-#, fuzzy, c-format
+#, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Grafikon átlagos ideje: %d perc"
@@ -2089,25 +2075,25 @@ msgid "Connections Graph Scale: %d"
 msgstr "Kapcsolatok grafikon-skálája: %d"
 
 #: src/PrefsUnifiedDlg.cpp:958
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
-msgstr[0] "Frissítés késleltetése: %d mp"
+msgstr[0] "Frissítés késleltetése: %d másodperc"
 
 #: src/PrefsUnifiedDlg.cpp:964
-#, fuzzy, c-format
+#, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Fájl buffer méret: %d bájt"
 
 #: src/PrefsUnifiedDlg.cpp:970
-#, fuzzy, c-format
+#, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Feltöltési várólista nagysága: %d kliens"
 
 #: src/PrefsUnifiedDlg.cpp:977
-#, fuzzy, c-format
+#, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Kiszolgáló kapcsolat frissítési gyakorisága: %d perc"
@@ -2952,14 +2938,12 @@ msgid "Last Reception"
 msgstr "Utoljára fogadott"
 
 #: src/DownloadListCtrl.cpp:578
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected file?"
-msgstr "Biztos, hogy törlöd ez(eke)t a fájl(oka)t?"
+msgstr "Biztos, hogy törlöd a kiválasztott fájlt?"
 
 #: src/DownloadListCtrl.cpp:580
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected files?"
-msgstr "Biztos, hogy törlöd ez(eke)t a fájl(oka)t?"
+msgstr "Biztos, hogy törlöd a kiválasztott fájlokat?"
 
 #: src/DownloadListCtrl.cpp:836 src/ClientListCtrl.cpp:358
 msgid "Send message to user"
@@ -3076,14 +3060,13 @@ msgid "Downloads (%i)"
 msgstr "Letöltések (%i)"
 
 #: src/DownloadListCtrl.cpp:2224
-#, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
 "Állítsd be a kedvenc videolejátszódat a beállításoknál.\n"
-"Addig is, az aMule az mplayert fogja megpróbálni használni, és minden "
+"Addig is, az aMule az mplayer-t fogja megpróbálni használni, és minden "
 "előnézetnél megkapod ezt a figyelmeztetést."
 
 #: src/DownloadListCtrl.cpp:2226
@@ -3091,9 +3074,9 @@ msgid "File preview"
 msgstr "Fájl előnézet"
 
 #: src/DownloadListCtrl.cpp:2262
-#, fuzzy, c-format
+#, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
-msgstr "HIBA: Külső média-lejátszó indítása sikertelen!"
+msgstr "HIBA: Külső média-lejátszó indítása sikertelen! Parancs: `%s'"
 
 #: src/PartFile.cpp:284
 msgid "ERROR: Failed to open partfile)"
@@ -3179,10 +3162,10 @@ msgid "Failed to save part.met.seeds file for %s"
 msgstr "A %s. part.met.seeds fájl mentése sikertelen"
 
 #: src/PartFile.cpp:1019
-#, fuzzy, c-format
+#, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
-msgstr[0] "A(z) %i forrás seeds fájl elmentve a részfájlnak: %s (%s)"
+msgstr[0] "%i forrás elmentve a részfájlnak: %s (%s)"
 
 #: src/PartFile.cpp:1047
 #, c-format
@@ -3200,7 +3183,7 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Hiba a részfájl forrás-fájljának olvasása közben (%s - %s): %s"
 
 #: src/PartFile.cpp:1130 src/PartFile.cpp:1158
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
@@ -3295,13 +3278,13 @@ msgid "Error while saving known.met file: %s"
 msgstr "Hiba a known.met fájl mentése közben: %s"
 
 #: src/SharedFileList.cpp:352
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "%i ismert megosztott fájlt találtam"
 
 #: src/SharedFileList.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "%i ismert és %i ismeretlen megosztott fájlt találtam"
@@ -3328,10 +3311,10 @@ msgid "No comments"
 msgstr "Nincs megjegyzés"
 
 #: src/CommentDialogLst.cpp:104
-#, fuzzy, c-format
+#, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
-msgstr[0] "%s megjegyzés"
+msgstr[0] "%u megjegyzés"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -3384,7 +3367,7 @@ msgid "%s (%s:%i) appears to be full."
 msgstr "A %s (%s:%i) úgy látszik megtelt."
 
 #: src/ServerConnect.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Automatikus kapcsolódás a kiszolgálóhoz %d másodperc múlva"
@@ -3418,7 +3401,7 @@ msgid "No part files found"
 msgstr "Nem található .part fájl"
 
 #: src/DownloadQueue.cpp:175
-#, fuzzy, c-format
+#, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "%u .part fájlt találtam"
@@ -3467,23 +3450,20 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Érvénytelen IP cím formátum. Így használd: xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:305
-#, fuzzy
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr ""
-"Ez a parancs argumentumot igényel. Érvényes argumentumok: 'all' vagy egy "
-"szám.\n"
+"Ez a parancs argumentumot igényel. Érvényes argumentumok: 'all', fájlnév "
+"vagy egy szám.\n"
 
 #: src/TextClient.cpp:343
-#, fuzzy
 msgid "Processing by hash: "
-msgstr "%u fájl számának feldolgozása: %s"
+msgstr ""
 
 #: src/TextClient.cpp:358
-#, fuzzy
 msgid "Processing by filename: "
-msgstr "%u fájl számának feldolgozása: %s"
+msgstr ""
 
 #: src/TextClient.cpp:381
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -3976,7 +3956,7 @@ msgid "Unknown server info received! - too short"
 msgstr "Ismeretlen kiszolgáló infó fogadva! - túl rövid"
 
 #: src/ServerSocket.cpp:534
-#, fuzzy, c-format
+#, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "%d új kiszolgáló fogadva"
@@ -4029,7 +4009,7 @@ msgstr ""
 "CIP2Country::CIP2Country(): Sikertelen az ország adatok beolvasása innen: "
 
 #: src/IP2Country.cpp:73
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
 msgstr[0] "%d zászló kép betöltve."
@@ -4213,7 +4193,6 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Lemezen: %s)"
 
 #: src/OtherFunctions.cpp:121
-#, fuzzy
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bájt"
@@ -4251,7 +4230,6 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:156
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "bájt/mp"
@@ -4343,16 +4321,16 @@ msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "ipfilter.dat fájl '%s' betöltése sikertelen, nem nyitható meg a fájl."
 
 #: src/IPFilter.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "%u IP-tartomány '%s'-ból betöltve. %u hibás sor lett eldobva."
+msgstr[0] "%u IP-tartomány '%s'-ból betöltve."
 
 #: src/IPFilter.cpp:332
-#, fuzzy, c-format
+#, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] "%u IP-tartomány '%s'-ból betöltve. %u hibás sor lett eldobva."
+msgstr[0] "%u hibás sor lett eldobva."
 
 #: src/StatisticsDlg.cpp:173
 #, c-format
@@ -6178,7 +6156,7 @@ msgid "Available commands:\n"
 msgstr "Elérhető parancsok:\n"
 
 #: src/ExternalConnector.cpp:188
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "All commands are case insensitive.\n"
@@ -6186,7 +6164,7 @@ msgid ""
 msgstr ""
 "\n"
 "Minden parancs érzéketlen a kis-/nagybetűkre.\n"
-"Ha részletes infót akarsz egy <parancs>-ról, add ki a 'help <parancs>' "
+"Ha részletes infót akarsz egy <parancs>-ról, add ki a '%s <parancs>' "
 "parancsot.\n"
 
 #: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
@@ -6334,13 +6312,13 @@ msgid "Print program version."
 msgstr "A program verziójának kiírása."
 
 #: src/ClientCreditsList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "Kredit fájl betöltve, %u kliens ismert"
 
 #: src/ClientCreditsList.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - %u kliens kreditérvényessége lejárt!"
@@ -6486,9 +6464,9 @@ msgid "Not Available"
 msgstr "Nem elérhető"
 
 #: src/ClientDetailDialog.cpp:190
-#, fuzzy, c-format
+#, c-format
 msgid "%u (QR: %u)"
-msgstr "QR: %u"
+msgstr "%u (QR: %u)"
 
 #: src/SearchDlg.cpp:491
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -6686,13 +6664,13 @@ msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr "server.met fájl sérült, érvénytelen verzió-tag: 0x%x, mérete %i"
 
 #: src/ServerList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i kiszolgálót találtam a server.met fájlban"
 
 #: src/ServerList.cpp:170
-#, fuzzy, c-format
+#, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d kiszolgáló hozzáadva"
