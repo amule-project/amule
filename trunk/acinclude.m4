@@ -609,7 +609,7 @@ dnl ---------------------------------------------------------------------------
 AC_DEFUN([GENERATE_MANS_TO_INSTALL],
 [
 	if test "$[]$1" == "yes"; then
-		if test "$Generate_Langs" = "all"; then
+		if test "$LINGUAS" = ""; then
 			$1_MANPAGES=`ls -1 ${srcdir}/$2.* | sed -e 's:.*/::g'`
 		else
 			$1_MANPAGES=`ls -1 ${srcdir}/$2.* | sed -e 's:.*/::g' | grep $Generate_Langs `
