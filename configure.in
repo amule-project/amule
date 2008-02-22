@@ -665,19 +665,9 @@ dnl
 dnl Denoiser
 dnl
 AC_MSG_CHECKING([denoising level])
-if test "$denoiselevel" = "yes"; then
-	denoiselevel=5
-fi
-if test "$denoiselevel" = "no"; then
-	denoiselevel=0
-fi
-if test $denoiselevel -gt 4; then
-	if test "${svndate:+set}" = "set"; then
-		denoiselevel=0
-	else
-		denoiselevel=4
-	fi
-fi
+AS_IF([test "$denoiselevel" = "yes"], [denoiselevel=5])dnl
+AS_IF([test "$denoiselevel" = "no"], [denoiselevel=0])dnl
+AS_IF([test $denoiselevel -gt 4], [AS_IF([test "${svndate:+set}" = "set"], [denoiselevel=0], [denoiselevel=4])])dnl
 AC_MSG_RESULT($denoiselevel)
 
 AC_CONFIG_COMMANDS(denoiser, [[	if test $level -gt 0; then
