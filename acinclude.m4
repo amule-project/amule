@@ -592,3 +592,32 @@ AC_DEFUN([CHECK_EXCEPTIONS],
 	])
 	AC_LANG_POP(C++)
 ])
+
+
+dnl ---------------------------------------------------------------------------
+dnl GENERATE_MANS_TO_INSTALL(TESTNAME, BASENAMEPATH)
+dnl
+dnl This function will generate the list of manpages to be installed.
+dnl
+dnl TESTNAME is the name of a variable that'll evaluate to yes if this
+dnl set of manpages need installing. The list of files will be returned in
+dnl the TESTNAME_MANPAGES variable.
+dnl
+dnl BASENAMEPATH is the path and basename of the manpages we test for, relative
+dnl to the package root (top_srcdir)
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([GENERATE_MANS_TO_INSTALL],
+[
+	if test "$[]$1" == "yes"; then
+		if test "$Generate_Langs" = "all"; then
+			$1_MANPAGES=`ls -1 ${srcdir}/$2.* | sed -e 's:.*/::g'`
+		else
+			$1_MANPAGES=`ls -1 ${srcdir}/$2.* | sed -e 's:.*/::g' | grep $Generate_Langs `
+			$1_MANPAGES="`basename $2.1` $[]$1_MANPAGES"
+		fi
+		$1_MANPAGES=`echo $[]$1_MANPAGES | tr -d '\n'`
+	else
+		$1_MANPAGES=
+	fi
+	AC_SUBST($1_MANPAGES)
+])

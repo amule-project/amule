@@ -125,7 +125,7 @@ AC_ARG_ENABLE(
 	[AS_HELP_STRING(
 		[--enable-amulecmd],
 		[compile aMule command line client])],
-	[BUILDAMULECMD=$enableval], [BUILDAMULECMD=no])
+	[AMULECMD=$enableval], [AMULECMD=no])
 
 AC_ARG_ENABLE(
 	[webserver],
@@ -547,10 +547,9 @@ esac
 #aMule options
 
 # Command line tools
-case "$BUILDAMULECMD" in
-yes)	BUILD_AMULECMD="yes"
-	;;
-*)	BUILD_AMULECMD="no"
+case "$AMULECMD" in
+yes)	;;
+*)	AMULECMD="no"
 	;;
 esac
 
@@ -646,36 +645,16 @@ yes)
 	if test `wc -l ${srcdir}/${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
 		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
 	fi
-	GENERATE_MANS_TO_INSTALL($AMULE_DAEMON, docs/man/amuled)
-	DAEMON_MANS=$manpages_retval
-	AC_SUBST(DAEMON_MANS)
-	GENERATE_MANS_TO_INSTALL($BUILDAMULECMD, docs/man/amulecmd)
-	AMULECMD_MANS=$manpages_retval
-	AC_SUBST(AMULECMD_MANS)
-	GENERATE_MANS_TO_INSTALL($WEB, docs/man/amuleweb)
-	WEB_MANS=$manpages_retval
-	AC_SUBST(WEB_MANS)
-	GENERATE_MANS_TO_INSTALL($AMULE_GUI, docs/man/amulegui)
-	AMULE_GUI_MANS=$manpages_retval
-	AC_SUBST(AMULE_GUI_MANS)
-	GENERATE_MANS_TO_INSTALL($CAS, src/utils/cas/docs/cas)
-	CAS_MANS=$manpages_retval
-	AC_SUBST(CAS_MANS)
-	GENERATE_MANS_TO_INSTALL($WXCAS, src/utils/wxCas/docs/wxcas)
-	WXCAS_MANS=$manpages_retval
-	AC_SUBST(WXCAS_MANS)
-	GENERATE_MANS_TO_INSTALL($ED2K, docs/man/ed2k)
-	ED2K_MANS=$manpages_retval
-	AC_SUBST(ED2K_MANS)
-	GENERATE_MANS_TO_INSTALL($ALC, src/utils/aLinkCreator/docs/alc)
-	ALC_MANS=$manpages_retval
-	AC_SUBST(ALC_MANS)
-	GENERATE_MANS_TO_INSTALL($ALCC, src/utils/aLinkCreator/docs/alcc)
-	ALCC_MANS=$manpages_retval
-	AC_SUBST(ALCC_MANS)
-	GENERATE_MANS_TO_INSTALL($MONOLITHIC, docs/man/amule)
-	MONOLITHIC_MANS=$manpages_retval
-	AC_SUBST(MONOLITHIC_MANS)
+	GENERATE_MANS_TO_INSTALL(AMULE_DAEMON, docs/man/amuled)
+	GENERATE_MANS_TO_INSTALL(AMULECMD, docs/man/amulecmd)
+	GENERATE_MANS_TO_INSTALL(WEB, docs/man/amuleweb)
+	GENERATE_MANS_TO_INSTALL(AMULE_GUI, docs/man/amulegui)
+	GENERATE_MANS_TO_INSTALL(CAS, src/utils/cas/docs/cas)
+	GENERATE_MANS_TO_INSTALL(WXCAS, src/utils/wxCas/docs/wxcas)
+	GENERATE_MANS_TO_INSTALL(ED2K, docs/man/ed2k)
+	GENERATE_MANS_TO_INSTALL(ALC, src/utils/aLinkCreator/docs/alc)
+	GENERATE_MANS_TO_INSTALL(ALCC, src/utils/aLinkCreator/docs/alcc)
+	GENERATE_MANS_TO_INSTALL(MONOLITHIC, docs/man/amule)
 	AC_MSG_RESULT(Done)
 	;;
 *)
@@ -721,7 +700,7 @@ AM_CONDITIONAL(ALC, test x$ALC = xyes)
 AM_CONDITIONAL(ALCC, test x$ALCC = xyes)
 AM_CONDITIONAL(AMULE_GUI, test x$AMULE_GUI = xyes)
 AM_CONDITIONAL(AMULE_DAEMON, test x$AMULE_DAEMON = xyes)
-AM_CONDITIONAL(COMPILE_CMD, test x$BUILD_AMULECMD = xyes)
+AM_CONDITIONAL(COMPILE_CMD, test x$AMULECMD = xyes)
 AM_CONDITIONAL(MONOLITHIC, test x$MONOLITHIC = xyes)
 AM_CONDITIONAL(ENABLE_UPNP, test x$ENABLE_UPNP = xyes -a x$SYS != xwin32)
 AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
@@ -734,7 +713,7 @@ AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 dnl
 dnl Check for readline library
 dnl
-if test x$BUILDAMULECMD = xyes -o x$WEB = xyes; then
+if test x$AMULECMD = xyes -o x$WEB = xyes; then
 	VL_LIB_READLINE
 fi
 
@@ -831,7 +810,7 @@ echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_S
 
 echo
 echo "  **** aMule TextClient ****"
-echo "  Should aMule Command Line Client be built?                 ${BUILD_AMULECMD:-no}"
+echo "  Should aMule Command Line Client be built?                 ${AMULECMD:-no}"
 echo
 echo "  **** aMule WebServer ****"
 echo "  Should aMule WebServer be built?                           ${WEB:-no}"
