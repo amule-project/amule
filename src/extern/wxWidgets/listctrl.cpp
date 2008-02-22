@@ -2721,6 +2721,18 @@ void wxListMainWindow::Thaw()
 
 void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 {
+    // wxBufferedPaintDC falls over in the case of dimensions that
+    // are zero, as cann happen when a splitter is moved so that 
+    // the entire window is hidden (e.g. on the transfers window).
+    //
+    // This has been reported as patch #1899643:
+    // http://sourceforge.net/tracker/index.php?func=detail&aid=1899643&group_id=9863&atid=309863
+    wxSize size = GetClientSize();
+    if ((size.x <= 0) || (size.y <= 0)) {
+	wxPaintDC dc(this);
+	return;
+    }
+
     // Note: a wxPaintDC must be constructed even if no drawing is
     // done (a Windows requirement).
     wxBufferedPaintDC dc( this );
