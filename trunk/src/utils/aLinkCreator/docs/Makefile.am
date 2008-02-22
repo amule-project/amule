@@ -1,46 +1,33 @@
-dist_man_MANS =
-
-if ALC
-dist_man_MANS += alc.1
-endif
-
-if ALCC
-dist_man_MANS += alcc.1
-endif
-
-man_langs = de es eu fr hu
-
-EXTRA_DIST = \
-	alc.1 alcc.1 \
-	alc.de.1 alcc.de.1 \
-	alc.es.1 alcc.es.1 \
-	alc.eu.1 alcc.eu.1 \
-	alcc.fr.1 \
-	alc.hu.1 alcc.hu.1
+dist_man_MANS = @ALC_MANS@ @ALCC_MANS@
 
 install-data-hook:
-	@for lang in $(man_langs); do \
-		echo " $(mkinstalldirs) $(DESTDIR)$(mandir)/$$lang/man1" ; \
-		$(mkinstalldirs) $(DESTDIR)$(mandir)/$$lang/man1 ; \
-		list='$(dist_man_MANS)' ; \
-		for file in $$list; do \
-			tmp=`echo $$file | sed -e "s/\.1/\.$$lang\.1/"` ; \
-			if test -f $(srcdir)/$$tmp; then name=$(srcdir)/$$tmp; \
-			else name=$$tmp; fi; \
-			inst=`echo $$file | sed -e "s/\.1//" -e '$(transform)'`.1 ; \
-			echo " $(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
-			$(INSTALL_DATA) $$name $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
-		done ; \
+	@for file in ${dist_man_MANS}; do \
+		lang=`echo $$file |  sed -e 's/^[^.]*\.//'`; \
+		if test $$lang == 1; then \
+			echo " $(mkinstalldirs) $(DESTDIR)$(mandir)/man1" ; \
+			$(mkinstalldirs) $(DESTDIR)$(mandir)/man1 ; \
+			echo " $(INSTALL_DATA) $$file $(DESTDIR)$(mandir)/man1/$$file" ; \
+			$(INSTALL_DATA) $$file $(DESTDIR)$(mandir)/man1/$$file ; \
+		else \
+			locale=`echo $$lang | sed -e 's/\..*//'` ; \
+			inst=`echo $$file | sed -e 's/\..*\././'`; \
+			echo " $(mkinstalldirs) $(DESTDIR)$(mandir)/$$locale/man1" ; \
+			$(mkinstalldirs) $(DESTDIR)$(mandir)/$$locale/man1 ; \
+			echo " $(INSTALL_DATA) $$file $(DESTDIR)$(mandir)/$$locale/man1/$$inst" ; \
+			$(INSTALL_DATA) $$file $(DESTDIR)$(mandir)/$$locale/man1/$$inst ; \
+		fi; \
 	done
 
 uninstall-hook:
-	@for lang in $(man_langs); do \
-		list='$(dist_man_MANS)' ; \
-		for file in $$list; do \
-			inst=`echo $$file | sed -e "s/\.1//" -e '$(transform)'`.1 ; \
-			echo " rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst" ; \
-			rm -f $(DESTDIR)$(mandir)/$$lang/man1/$$inst ; \
-		done ; \
+	@for file in ${dist_man_MANS}; do \
+		lang=`echo $$file |  sed -e 's/^[^.]*\.//'`; \
+		if test $$lang == 1; then \
+			rm -f $(DESTDIR)$(mandir)/man1/$$file ; \
+		else \
+			locale=`echo $$lang | sed -e 's/\..*//'` ; \
+			inst=`echo $$file | sed -e 's/\..*\././'`; \
+			rm -f $(DESTDIR)$(mandir)/$$locale/man1/$$inst ; \
+		fi; \
 	done
 
 MAINTAINERCLEANFILES = Makefile.in

@@ -646,6 +646,36 @@ yes)
 	if test `wc -l ${srcdir}/${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
 		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
 	fi
+	GENERATE_MANS_TO_INSTALL($AMULE_DAEMON, docs/man/amuled)
+	DAEMON_MANS=$manpages_retval
+	AC_SUBST(DAEMON_MANS)
+	GENERATE_MANS_TO_INSTALL($BUILDAMULECMD, docs/man/amulecmd)
+	AMULECMD_MANS=$manpages_retval
+	AC_SUBST(AMULECMD_MANS)
+	GENERATE_MANS_TO_INSTALL($WEB, docs/man/amuleweb)
+	WEB_MANS=$manpages_retval
+	AC_SUBST(WEB_MANS)
+	GENERATE_MANS_TO_INSTALL($AMULE_GUI, docs/man/amulegui)
+	AMULE_GUI_MANS=$manpages_retval
+	AC_SUBST(AMULE_GUI_MANS)
+	GENERATE_MANS_TO_INSTALL($CAS, src/utils/cas/docs/cas)
+	CAS_MANS=$manpages_retval
+	AC_SUBST(CAS_MANS)
+	GENERATE_MANS_TO_INSTALL($WXCAS, src/utils/wxCas/docs/wxcas)
+	WXCAS_MANS=$manpages_retval
+	AC_SUBST(WXCAS_MANS)
+	GENERATE_MANS_TO_INSTALL($ED2K, docs/man/ed2k)
+	ED2K_MANS=$manpages_retval
+	AC_SUBST(ED2K_MANS)
+	GENERATE_MANS_TO_INSTALL($ALC, src/utils/aLinkCreator/docs/alc)
+	ALC_MANS=$manpages_retval
+	AC_SUBST(ALC_MANS)
+	GENERATE_MANS_TO_INSTALL($ALCC, src/utils/aLinkCreator/docs/alcc)
+	ALCC_MANS=$manpages_retval
+	AC_SUBST(ALCC_MANS)
+	GENERATE_MANS_TO_INSTALL($MONOLITHIC, docs/man/amule)
+	MONOLITHIC_MANS=$manpages_retval
+	AC_SUBST(MONOLITHIC_MANS)
 	AC_MSG_RESULT(Done)
 	;;
 *)

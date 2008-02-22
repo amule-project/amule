@@ -12,6 +12,7 @@ EXTRA_DIST = build-tools.m4 \
 	     lib-ld.m4 \
 	     lib-link.m4 \
 	     lib-prefix.m4 \
+	     manpages.m4 \
 	     progtest.m4 \
 	     stdint_h.m4 \
 	     uintmax_t.m4 \
