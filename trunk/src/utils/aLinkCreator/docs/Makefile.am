@@ -1,5 +1,13 @@
 dist_man_MANS = @ALC_MANS@ @ALCC_MANS@
 
+EXTRA_DIST = \
+	alc.1 alcc.1 \
+	alc.de.1 alcc.de.1 \
+	alc.es.1 alcc.es.1 \
+	alc.eu.1 alcc.eu.1 \
+	alcc.fr.1 \
+	alc.hu.1 alcc.hu.1
+
 install-data-hook:
 	@for file in ${dist_man_MANS}; do \
 		lang=`echo $$file |  sed -e 's/^[^.]*\.//'`; \

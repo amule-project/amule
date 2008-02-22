@@ -1,5 +1,7 @@
 dist_man_MANS = @WXCAS_MANS@
 
+EXTRA_DIST = wxcas.1 wxcas.de.1 wxcas.es.1 wxcas.eu.1 wxcas.hu.1
+
 install-data-hook:
 	@for file in ${dist_man_MANS}; do \
 		lang=`echo $$file |  sed -e 's/^[^.]*\.//'`; \
