@@ -1,5 +1,7 @@
 dist_man_MANS = @CAS_MANS@
 
+EXTRA_DIST = cas.1 cas.de.1 cas.es.1 cas.eu.1 cas.hu.1
+
 install-data-hook:
 	@for file in ${dist_man_MANS}; do \
 		lang=`echo $$file |  sed -e 's/^[^.]*\.//'`; \
