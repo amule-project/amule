@@ -415,6 +415,11 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 				theApp->ShowConnectionState();
 
 				AddLogLineM(false, wxString::Format(_("New clientid is %u"),new_id));
+				if (::IsLowID(new_id)) {
+					AddLogLineM(true,  _("WARNING: You have received Low-ID!"));
+					AddLogLineM(false, _("\tMost likely this is because you're behind a firewall or router."));
+					AddLogLineM(false, _("\tFor more information, please refer to http://wiki.amule.org"));
+				}
 								
 				theApp->downloadqueue->ResetLocalServerRequests();
 				break;

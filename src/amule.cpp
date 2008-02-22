@@ -94,6 +94,8 @@
 		#include <wx/mac/corefoundation/cfstring.h>  // Do_not_auto_remove
 	#endif
 	#include <wx/msgdlg.h>
+
+	#include "amuleDlg.h"
 #endif
 
 
@@ -717,28 +719,21 @@ bool CamuleApp::OnInit()
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
 	ipfilter	= new CIPFilter();
+	uploadBandwidthThrottler = new UploadBandwidthThrottler();
+
+	// Creates all needed listening sockets
+	wxString msg;
+	if (!ReinitializeNetwork(&msg)) {
+		printf("\n%s\n", (const char *)unicode2char(msg));
+	}
 
 	// Create main dialog
 	InitGui(geometry_enabled, geom_string);
 	
-	uploadBandwidthThrottler = new UploadBandwidthThrottler();
-
+	// These must be initialized after the gui is loaded.
 	serverlist->Init();
-
-	// init downloadqueue
 	downloadqueue->LoadMetFiles(thePrefs::GetTempDir());
-
-	// Creates all needed listening sockets
-	wxString msg;
-	bool ok;
-	ok = ReinitializeNetwork(&msg);
-	if (!msg.IsEmpty()) {
-		printf("\n%s\n", (const char *)unicode2char(msg));
-	}
-
-	// reload shared files
 	sharedfiles->Reload();
-
 	
 	if (thePrefs::IPFilterAutoLoad()) {
 		ipfilter->Update(thePrefs::IPFilterURL());
@@ -766,7 +761,7 @@ bool CamuleApp::OnInit()
 				_("You don't have any server in the server list.\nDo you want aMule to download a new list now?")),
 			wxString(_("Server list download")),
 			wxYES_NO,
-			(wxWindow*)theApp->amuledlg))
+			static_cast<wxWindow*>(theApp->amuledlg)))
 #endif
 		{
 		// workaround amuled crash
@@ -2041,9 +2036,7 @@ void CamuleApp::ShowConnectionState()
 	Notify_ShowConnState(state);
 	
 	if (old_state != state) {
-				
 		// Get the changed value 
-		
 		int changed_flags = old_state ^ state;
 		
 		if (changed_flags & CONNECTED_ED2K) {
@@ -2088,9 +2081,12 @@ void CamuleApp::ShowConnectionState()
 		}
 		
 		old_state = state;
+	
+		theApp->downloadqueue->OnConnectionState(IsConnected());
 	}
 	
 	ShowUserCount();
+	Notify_ShowConnState(state);
 }
 
 

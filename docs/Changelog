@@ -622,6 +622,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  used the "primary" clipboard (middle-click) under X11. It
 		  now uses the default clipboard, which is what DEs typically
 		  use for Ctrl+C/V/X. This closes bug #1139.
+		* Improved the displaying of the connection status, and fixed
+		  problems where the status of only one of the active networks
+		  would be displayed. This closes bug #981.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
