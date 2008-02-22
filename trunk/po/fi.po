@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-21 06:15+0100\n"
+"POT-Creation-Date: 2008-02-22 06:15+0100\n"
 "PO-Revision-Date: 2008-01-05 13:40+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -15,39 +15,39 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:87 src/libs/ec/cpp/RemoteConnect.cpp:95
+#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
 msgstr "Salasana ei voi olla tyhjä."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:92
+#: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Virheellinen salasana, ei MD5-tarkiste!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Yhdistäminen ei onnistunut"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:195
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC Connection Failed. Empty reply."
 msgstr "Etäyhteysyritys epäonnistui. Vastaus oli tyhjä."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "ExternalConn: Access denied because: "
 msgstr "Etäyhteys: Pääsy evättiin: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:204
+#: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "ExternalConn: Access denied"
 msgstr "Etäyhteys: Pääsy evättiin"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr "Etäyhteys: Epäkelpo vastaus palvelimelta. Yhteys suljettu."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
 msgstr "Yhdistetty onnistuneesti kohteeseen aMule"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:215
+#: src/libs/ec/cpp/RemoteConnect.cpp:214
 msgid "Succeeded! Connection established."
 msgstr "Yhdistetty onnistuneesti."
 
@@ -134,8 +134,8 @@ msgstr "Jaettujen tiedostojen listaus käyttäjältä '%s' ei onnistunut"
 #: src/HTTPDownload.cpp:86 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1409
-#: src/DownloadListCtrl.cpp:1422 src/DownloadListCtrl.cpp:1433
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
+#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
 #: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -1240,7 +1240,7 @@ msgstr "Kysyy"
 msgid "Connecting via server"
 msgstr "Yhdistää serverin kautta"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1680
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "Jono täynnä"
@@ -3050,7 +3050,7 @@ msgstr "Lähetä viesti"
 msgid "Swap to this file"
 msgstr "Vaihda tähän tiedostoon"
 
-#: src/DownloadListCtrl.cpp:1297 src/DownloadListCtrl.cpp:1601
+#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
 #: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
 #: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
@@ -3058,29 +3058,29 @@ msgstr "Vaihda tähän tiedostoon"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1420 src/DownloadListCtrl.cpp:1431
+#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1649
+#: src/DownloadListCtrl.cpp:1647
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1699
+#: src/DownloadListCtrl.cpp:1697
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "Jonossa: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1711
 msgid "Asked for another file"
 msgstr "Kysyttiin toista tiedostoa"
 
-#: src/DownloadListCtrl.cpp:2036
+#: src/DownloadListCtrl.cpp:2034
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Lataukset (%i)"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2222
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3091,11 +3091,11 @@ msgstr ""
 "Siihen asti aMule yrittää käyttää mplayer:iä ja antaa tämän varoituksen "
 "jokaisella kerralla"
 
-#: src/DownloadListCtrl.cpp:2226
+#: src/DownloadListCtrl.cpp:2224
 msgid "File preview"
 msgstr "Tiedoston esikatselu"
 
-#: src/DownloadListCtrl.cpp:2262
+#: src/DownloadListCtrl.cpp:2260
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "Virhe: Ulkoista mediatoistinta ei voitu suorittaa!"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-21 06:15+0100\n"
+"POT-Creation-Date: 2008-02-22 06:15+0100\n"
 "PO-Revision-Date: 2007-09-03 00:17+0300\n"
 "Last-Translator: Dmitry <borzenkov@gmail.com>\n"
 "Language-Team: Русский\n"
@@ -23,39 +23,39 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:87 src/libs/ec/cpp/RemoteConnect.cpp:95
+#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
 msgstr "Вы должны указать не пустой пароль."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:92
+#: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Неверный пароль. Не MD5 хеш!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Подключение не удалось"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:195
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC Connection Failed. Empty reply."
 msgstr "ВС-соединение не удалось. Получен пустой ответ."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "ExternalConn: Access denied because: "
 msgstr "Внешнее подключение: Отказано в доступе: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:204
+#: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "ExternalConn: Access denied"
 msgstr "Внешнее соединение: отказано в доступе"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr "Внешнее соединение: недопустимый ответ сервера. Соединение закрыто."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
 msgstr "Успешное подключение к aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:215
+#: src/libs/ec/cpp/RemoteConnect.cpp:214
 msgid "Succeeded! Connection established."
 msgstr "Соединение установлено."
 
@@ -142,8 +142,8 @@ msgstr "Не удалось получить список доступных ф�
 #: src/HTTPDownload.cpp:86 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1409
-#: src/DownloadListCtrl.cpp:1422 src/DownloadListCtrl.cpp:1433
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
+#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
 #: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -1254,7 +1254,7 @@ msgstr "Запрос"
 msgid "Connecting via server"
 msgstr "Соединение через сервер"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1680
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "Очередь заполнена"
@@ -3058,7 +3058,7 @@ msgstr "Отправить сообщение"
 msgid "Swap to this file"
 msgstr "Переключить на этот файл"
 
-#: src/DownloadListCtrl.cpp:1297 src/DownloadListCtrl.cpp:1601
+#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
 #: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
 #: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
@@ -3066,29 +3066,29 @@ msgstr "Переключить на этот файл"
 msgid "kB/s"
 msgstr "кБ/сек"
 
-#: src/DownloadListCtrl.cpp:1420 src/DownloadListCtrl.cpp:1431
+#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1649
+#: src/DownloadListCtrl.cpp:1647
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1699
+#: src/DownloadListCtrl.cpp:1697
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1711
 msgid "Asked for another file"
 msgstr "Запрошен другой файл"
 
-#: src/DownloadListCtrl.cpp:2036
+#: src/DownloadListCtrl.cpp:2034
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Загрузки (%i)"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2222
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3099,11 +3099,11 @@ msgstr ""
 "Без этого aMule будет пытаться использовать 'mplayer' и вы будете получать "
 "данное предупреждение при каждой попытке предварительного просмотра"
 
-#: src/DownloadListCtrl.cpp:2226
+#: src/DownloadListCtrl.cpp:2224
 msgid "File preview"
 msgstr "Предварительный просмотр"
 
-#: src/DownloadListCtrl.cpp:2262
+#: src/DownloadListCtrl.cpp:2260
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "ОШИБКА: невозможно запустить видео-проигрыватель."

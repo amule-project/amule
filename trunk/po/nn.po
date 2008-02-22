@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-21 06:15+0100\n"
+"POT-Creation-Date: 2008-02-22 06:15+0100\n"
 "PO-Revision-Date: 2007-09-28 21:41+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -18,39 +18,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:87 src/libs/ec/cpp/RemoteConnect.cpp:95
+#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
 msgstr "Du må skrive inn eit passord som ikkje er tomt."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:92
+#: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Feil passord! Ikkje MD5 hash!"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Oppkoplingsfeil"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:195
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC Connection Failed. Empty reply."
 msgstr "EC Kopling feila. Tomt svar."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "ExternalConn: Access denied because: "
 msgstr "Ekstern kopling: Tilgang nekta fordi: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:204
+#: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "ExternalConn: Access denied"
 msgstr "Ekstern kopling: Tilgang nekta"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr "Ekstern kopling: Dårleg svar frå tenar. Koplinga er stengd."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
 msgstr "Vellukka! Kopling til aMule er oppretta "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:215
+#: src/libs/ec/cpp/RemoteConnect.cpp:214
 msgid "Succeeded! Connection established."
 msgstr "Vellukka! Kopling oppretta."
 
@@ -135,8 +135,8 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 #: src/HTTPDownload.cpp:86 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1409
-#: src/DownloadListCtrl.cpp:1422 src/DownloadListCtrl.cpp:1433
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
+#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
 #: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -1239,7 +1239,7 @@ msgstr "Spør"
 msgid "Connecting via server"
 msgstr "Koplar til gjennom tenar"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1680
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "Kø full"
@@ -3032,7 +3032,7 @@ msgstr "Send melding"
 msgid "Swap to this file"
 msgstr "Byt til denne fila"
 
-#: src/DownloadListCtrl.cpp:1297 src/DownloadListCtrl.cpp:1601
+#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
 #: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
 #: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
@@ -3040,29 +3040,29 @@ msgstr "Byt til denne fila"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1420 src/DownloadListCtrl.cpp:1431
+#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d·%H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1649
+#: src/DownloadListCtrl.cpp:1647
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1699
+#: src/DownloadListCtrl.cpp:1697
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR:·%u·(%i)"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1711
 msgid "Asked for another file"
 msgstr "Spurt etter anna fil (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2036
+#: src/DownloadListCtrl.cpp:2034
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Nedlastingar (%i)"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2222
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3073,11 +3073,11 @@ msgstr ""
 "I mellomtida vil aMul e freiste å nytte mplayer og du vil få denne åtvaringa "
 "ved kvar førehandssyning"
 
-#: src/DownloadListCtrl.cpp:2226
+#: src/DownloadListCtrl.cpp:2224
 msgid "File preview"
 msgstr "Førehandssyning"
 
-#: src/DownloadListCtrl.cpp:2262
+#: src/DownloadListCtrl.cpp:2260
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "FEIL: Greidde ikkje å køyre ekstern mediespelar!"
