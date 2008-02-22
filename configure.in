@@ -52,7 +52,7 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
-AS_IF([test x$SYS = xwin32], [AC_PROG_AWK])
+AC_PROG_AWK
 AS_IF([test "$cross_compiling" = yes], [AC_PROG_BUILD_CC], [BUILD_CC="$CC" ; BUILD_EXEEXT=$EXEEXT])
 AC_PROG_EGREP
 AC_PROG_MAKE_SET
@@ -239,10 +239,10 @@ AC_ARG_WITH(
 AC_ARG_WITH(
 	[language],
 	[AS_HELP_STRING([--with-language=<langs>],
-	[Specify a comma-separated list of Languages you want to have installed])
-AS_HELP_STRING([], [See po/LINGUAS.in for aviable languages])
+	[Specify a comma-separated list of languages you want to have installed])
+AS_HELP_STRING([], [See po/LINGUAS for available languages])
 	],
-	[SelectedLangs="$withval"], [SelectedLangs=all])
+	[LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
@@ -635,16 +635,8 @@ fi
 case "$USE_NLS" in
 
 yes)
-	echo -n "Generating ${POSUB}/LINGUAS... "
-	Generate_Langs=`echo $SelectedLangs | sed -e 's/ .*//' -e 's/,/\\\\|/g'`
-	if test "$Generate_Langs" = "all"; then
-		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
-	else
-		grep $Generate_Langs ${srcdir}/${POSUB}/LINGUAS.in > ${srcdir}/${POSUB}/LINGUAS
-	fi
-	if test `wc -l ${srcdir}/${POSUB}/LINGUAS | sed -e 's/ .*//'` = 0; then
-		cp ${srcdir}/${POSUB}/LINGUAS.in ${srcdir}/${POSUB}/LINGUAS
-	fi
+	AC_MSG_CHECKING([for requested languages])
+	Generate_Langs=`echo $LINGUAS | $AWK ['OFS="\\\\|" { for (i = 1; i <= NF; ++i) $i = "\\\\." $i; print }']`
 	GENERATE_MANS_TO_INSTALL(AMULE_DAEMON, docs/man/amuled)
 	GENERATE_MANS_TO_INSTALL(AMULECMD, docs/man/amulecmd)
 	GENERATE_MANS_TO_INSTALL(WEB, docs/man/amuleweb)
@@ -655,7 +647,7 @@ yes)
 	GENERATE_MANS_TO_INSTALL(ALC, src/utils/aLinkCreator/docs/alc)
 	GENERATE_MANS_TO_INSTALL(ALCC, src/utils/aLinkCreator/docs/alcc)
 	GENERATE_MANS_TO_INSTALL(MONOLITHIC, docs/man/amule)
-	AC_MSG_RESULT(Done)
+	AC_MSG_RESULT([${LINGUAS:-all}])
 	;;
 *)
 	HAVE_GETTEXT="no"
