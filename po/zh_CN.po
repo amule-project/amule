@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-21 06:15+0100\n"
+"POT-Creation-Date: 2008-02-22 06:15+0100\n"
 "PO-Revision-Date: 2007-12-21 23:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -16,39 +16,39 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:87 src/libs/ec/cpp/RemoteConnect.cpp:95
+#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
 msgstr "您必须输入密码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:92
+#: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
 msgstr "非法密码，不是合法的MD5校验码"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "连接失败"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:195
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC Connection Failed. Empty reply."
 msgstr "连接外部连接失败，回复为空"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "ExternalConn: Access denied because: "
 msgstr "外部连接：访问被拒绝，原因："
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:204
+#: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "ExternalConn: Access denied"
 msgstr "外部连接：请求被拒绝"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr "外部连接：服务器回复错误。已断开连接。"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
 msgstr "成功！连接成功建立"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:215
+#: src/libs/ec/cpp/RemoteConnect.cpp:214
 msgid "Succeeded! Connection established."
 msgstr "已成功连接。"
 
@@ -133,8 +133,8 @@ msgstr "无法获取用户 %s 的共享文件"
 #: src/HTTPDownload.cpp:86 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1409
-#: src/DownloadListCtrl.cpp:1422 src/DownloadListCtrl.cpp:1433
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
+#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
 #: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -1229,7 +1229,7 @@ msgstr "正在询问"
 msgid "Connecting via server"
 msgstr "通过服务器连接中"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1680
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "队列已满"
@@ -3017,7 +3017,7 @@ msgstr "发送消息"
 msgid "Swap to this file"
 msgstr "转移到这个文件"
 
-#: src/DownloadListCtrl.cpp:1297 src/DownloadListCtrl.cpp:1601
+#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
 #: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
 #: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
@@ -3025,29 +3025,29 @@ msgstr "转移到这个文件"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1420 src/DownloadListCtrl.cpp:1431
+#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1649
+#: src/DownloadListCtrl.cpp:1647
 msgid "A4AF"
 msgstr "已请求其它文件"
 
-#: src/DownloadListCtrl.cpp:1699
+#: src/DownloadListCtrl.cpp:1697
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "排队顺序：%u（%i）"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1711
 msgid "Asked for another file"
 msgstr "已要求其它文件 (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2036
+#: src/DownloadListCtrl.cpp:2034
 #, c-format
 msgid "Downloads (%i)"
 msgstr "下载（%i）"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2222
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3057,11 +3057,11 @@ msgstr ""
 "请在设置中设置您的视频播放器，\n"
 "同时 aMule 会尝试使用 mplayer，并在每次预览时你都会看到这个提示 "
 
-#: src/DownloadListCtrl.cpp:2226
+#: src/DownloadListCtrl.cpp:2224
 msgid "File preview"
 msgstr "文件预览"
 
-#: src/DownloadListCtrl.cpp:2262
+#: src/DownloadListCtrl.cpp:2260
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "错误：无法运行媒体播放器！"

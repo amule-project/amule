@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-21 06:15+0100\n"
+"POT-Creation-Date: 2008-02-22 06:15+0100\n"
 "PO-Revision-Date: 2008-01-07 20:50+0100\n"
 "Last-Translator: Youpla <youpla@youpla.com>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -20,39 +20,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:87 src/libs/ec/cpp/RemoteConnect.cpp:95
+#: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
 msgstr "Vous devez entrer un mot de passe non vide."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:92
+#: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
 msgstr "Mot de passe invalide, ce n'est pas un hash MD5 !"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:137
+#: src/libs/ec/cpp/RemoteConnect.cpp:136
 msgid "Connection failure"
 msgstr "Erreur de connexion"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:195
+#: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC Connection Failed. Empty reply."
 msgstr "Échec de la connexion EC. Réponse vide."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:201
+#: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "ExternalConn: Access denied because: "
 msgstr "ExternalConn : Accès interdit pour cause de: "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:204
+#: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "ExternalConn: Access denied"
 msgstr "ExternalConn : Accès interdit"
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:208
+#: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "ExternalConn: Bad reply from server. Connection closed."
 msgstr "ExternalConn: Mauvaise réponse du serveur. Connexion fermée."
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:212
+#: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
 msgstr "Succès ! Connexion établie à aMule "
 
-#: src/libs/ec/cpp/RemoteConnect.cpp:215
+#: src/libs/ec/cpp/RemoteConnect.cpp:214
 msgid "Succeeded! Connection established."
 msgstr "Succès ! Connexion établie."
 
@@ -142,8 +142,8 @@ msgstr "Échec de la réception des fichiers partagés de l'utilisateur '%s'"
 #: src/HTTPDownload.cpp:86 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1409
-#: src/DownloadListCtrl.cpp:1422 src/DownloadListCtrl.cpp:1433
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
+#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
 #: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -1266,7 +1266,7 @@ msgstr "Demande en cours"
 msgid "Connecting via server"
 msgstr "Connexion via le serveur"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1680
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "File d'attente pleine"
@@ -3101,7 +3101,7 @@ msgstr "Envoyer un message"
 msgid "Swap to this file"
 msgstr "Échanger vers ce fichier"
 
-#: src/DownloadListCtrl.cpp:1297 src/DownloadListCtrl.cpp:1601
+#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
 #: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
 #: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
@@ -3109,29 +3109,29 @@ msgstr "Échanger vers ce fichier"
 msgid "kB/s"
 msgstr "Ko/s"
 
-#: src/DownloadListCtrl.cpp:1420 src/DownloadListCtrl.cpp:1431
+#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1649
+#: src/DownloadListCtrl.cpp:1647
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1699
+#: src/DownloadListCtrl.cpp:1697
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR : %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1713
+#: src/DownloadListCtrl.cpp:1711
 msgid "Asked for another file"
 msgstr "Demander un autre fichier"
 
-#: src/DownloadListCtrl.cpp:2036
+#: src/DownloadListCtrl.cpp:2034
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Téléchargements (%i)"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2222
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3143,11 +3143,11 @@ msgstr ""
 "Pour le moment, aMule va essayer d'utiliser mplayer et vous aurez cet "
 "avertissement à chaque aperçu"
 
-#: src/DownloadListCtrl.cpp:2226
+#: src/DownloadListCtrl.cpp:2224
 msgid "File preview"
 msgstr "Aperçu"
 
-#: src/DownloadListCtrl.cpp:2262
+#: src/DownloadListCtrl.cpp:2260
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "Erreur : Échec de l'exécution du lecteur multimédia externe !"
