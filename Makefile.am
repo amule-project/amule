@@ -1,4 +1,4 @@
-SUBDIRS = m4 docs src unittests
+SUBDIRS = docs src unittests
 
 if COMPILE_NLS
 SUBDIRS += intl po
@@ -7,7 +7,7 @@ endif
 EXTRA_DIST = amule.rc amule.ico amule.png convert.ico \
 	README.Debian-Packages aMule-CVS.spec aMule.spec \
 	amule_build_install.sh autogen.sh \
-	po/LINGUAS.in po/l10n.xsl
+	po/l10n.xsl
 
 dist_icon_DATA = 
 icondir = $(datadir)/pixmaps
