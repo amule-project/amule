@@ -97,6 +97,20 @@ CContext::~CContext()
 	g_backtrace.pop_back();
 }
 
+extern unsigned s_disableAssertions;
+
+
+CAssertOff::CAssertOff()
+{
+	s_disableAssertions++;
+}
+
+CAssertOff::~CAssertOff()
+{
+	s_disableAssertions--;
+}
+
+
 
 Test::Test(const wxString& testCaseName, const wxString& testName)
 		: m_testCaseName(testCaseName),
