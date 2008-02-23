@@ -322,7 +322,7 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 			}
 		}
 		default: {
-			// Raw strings are saved as Latin-1
+			// Non UTF-8 strings are saved as Latin-1
 			wxCharBuffer s1 = wxConvISO8859_1.cWC2MB(str);
 			WriteStringCore(s1, utf8strNone, SizeLen);			
 		}
@@ -332,7 +332,7 @@ void CFileDataIO::WriteString(const wxString& str, EUtf8Str eEncode, uint8 SizeL
 
 void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen)
 {
-	unsigned int sLength = s ? strlen(s) : 0;
+	uint32 sLength = s ? strlen(s) : 0;
 	uint32 real_length = 0;
 	if (eEncode == utf8strOptBOM) {
 		real_length = sLength + 3; // For BOM header.
@@ -346,8 +346,21 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 			break;
 			
 		case sizeof(uint16):
-			// Can't be higher than a uint16
-			wxASSERT(real_length < (uint16)0xFFFF);
+			// We must not allow too long strings to be written,
+			// as this would allow for a buggy clients to "poison"
+			// us, by sending ISO8859-1 strings that expand to a
+			// greater than 16b length when converted as UTF-8.
+			if (real_length > 0xFFFF) {
+				wxFAIL_MSG(wxT("String is too long to be saved"));
+
+				real_length = std::min<uint32>(real_length, 0xFFFF);
+				if (eEncode == utf8strOptBOM) {
+					sLength = real_length - 3;
+				} else {
+					sLength = real_length;
+				}
+			}
+			
 			WriteUInt16(real_length);
 			break;
 			
