@@ -43,8 +43,8 @@ rm -rf intl/*
         echo autopoint honors dataroot variable, not patching.
     else 
 	echo autopoint does not honor dataroot variable, patching.
-        sed -i -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' po/Makefile.in.in
-        sed -i -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' intl/Makefile.in
+        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' po/Makefile.in.in > po/Makefile.in.in.tmp && mv -f po/Makefile.in.in.tmp po/Makefile.in.in
+        sed -e 's/^datadir *=\(.*\)/datarootdir = @datarootdir@\ndatadir = @datadir@/g' intl/Makefile.in > intl/Makefile.in.tmp && mv -f intl/Makefile.in.tmp intl/Makefile.in
     fi
 #    if [ -f Makefile -a -x config.status ]; then
 #        CONFIG_FILES=intl/Makefile CONFIG_HEADERS= /bin/sh ./config.status
@@ -72,4 +72,3 @@ popd > /dev/null
 
 echo "Running automake --foreign -a -c -f"
 automake --foreign -a -c -f
-
