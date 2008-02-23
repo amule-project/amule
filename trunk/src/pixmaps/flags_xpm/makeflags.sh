@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 
 # Create Makefile.am
 echo > Makefile.am
@@ -29,16 +29,16 @@ echo >> CountryFlags.h
 echo >> CountryFlags.h
 
 # "do" is a reserved word, we can't use it
-sed -i -e 's/do\[\]/do_\[\]/' do.xpm
+#sed -i -e 's/do\[\]/do_\[\]/' do.xpm
 
 # globally used names by wx
-sed -i -e 's/ht\[\]/ht_\[\]/' ht.xpm
-sed -i -e 's/it\[\]/it_\[\]/' it.xpm
-sed -i -e 's/sz\[\]/sz_\[\]/' sz.xpm
+#sed -i -e 's/ht\[\]/ht_\[\]/' ht.xpm
+#sed -i -e 's/it\[\]/it_\[\]/' it.xpm
+#sed -i -e 's/sz\[\]/sz_\[\]/' sz.xpm
 
 # Create the flag/Code vector
 echo 'static struct FlagXPMCode flagXPMCodeVector[] = {'>> CountryFlags.h
-ls *.xpm | xargs -I '{}' basename '{}' .xpm | \
+ls *.xpm | xargs -i basename '{}' .xpm | \
 	sed -e 's/[A-Za-z]*/\t{&, "&"},/' | \
 	sed -e 's/do/do_/1' |
 	sed -e 's/ht/ht_/1' |
