@@ -48,7 +48,7 @@
 #include <common/Format.h>
 #include <common/FileFunctions.h>
 #include "GuiEvents.h"		// Needed for Notify_*
-
+#include "SHAHashSet.h"		// Needed for CAICHHash
 
 
 #include "kademlia/kademlia/Kademlia.h"
@@ -1059,4 +1059,33 @@ bool CSharedFileList::RenameFile(CKnownFile* file, const CPath& newName)
 	
 	return false;
 }
+
+
+void CSharedFileList::CheckAICHHashes(const std::list<CAICHHash>& hashes)
+{
+	wxMutexLocker locker(list_mut);
+
+	// Now we check that all files which are in the sharedfilelist have a
+	// corresponding hash in our list. Those how don't are queued for hashing.
+	CKnownFileMap::iterator it = m_Files_map.begin();
+	for (; it != m_Files_map.end(); ++it) {
+		const CKnownFile* file = it->second;
+	
+		if (file->IsPartFile() == false) {
+			CAICHHashSet* hashset = file->GetAICHHashset();
+
+			if (hashset->GetStatus() == AICH_HASHSETCOMPLETE) {
+				if (std::find(hashes.begin(), hashes.end(), hashset->GetMasterHash()) != hashes.end()) {
+					continue;
+				}
+			}
+
+			hashset->SetStatus(AICH_ERROR);
+
+			CThreadScheduler::AddTask(new CHashingTask(file));
+		}
+	}
+
+}
+
 // File_checked_for_headers
