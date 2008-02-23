@@ -107,6 +107,16 @@ public:
 #define CONTEXT(x) CContext wxCONCAT(context,__LINE__)(wxT(__FILE__), __LINE__, x)
 
 
+/** 
+ * This class disables assertions while it is in scope.
+ */
+class CAssertOff
+{
+public:
+	CAssertOff();
+	~CAssertOff();
+};
+
 
 /**
  * Test class containing all macros to do unit testing. 

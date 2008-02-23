@@ -32,6 +32,9 @@ wxString GetFullMuleVersion()
 }
 
 
+unsigned s_disableAssertions = 0;
+
+
 class UnitTestApp : public wxAppConsole
 {
 public:
@@ -41,7 +44,20 @@ public:
 
 	void OnAssertFailure(const wxChar* file, int line,  const wxChar* func, const wxChar* cond, const wxChar* msg)
 	{
-		throw CTestFailureException(msg, file, line);
+		if (s_disableAssertions) {
+			return;
+		}
+
+		wxString desc;
+		if (cond && msg) {
+			desc << cond << wxT(" -- ") << msg;
+		} else if (cond) {
+			desc << wxT("Assertion: ") << cond;
+		} else {
+			desc << msg;
+		}
+
+		throw CTestFailureException(desc, file, line);
 	}
 
 	void OnUnhandledException() {
