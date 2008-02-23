@@ -88,25 +88,24 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
          fi
       fi
     fi
-  fi
 
-  if test x$gdlib_ver_ok = x ; then
-    if test x$GDLIB_VERSION = x; then
-      dnl no gdlib-config at all
-      AC_MSG_RESULT([no])
+    if test x$gdlib_ver_ok = x ; then
+      if test x$GDLIB_VERSION = x; then
+        dnl no gdlib-config at all
+        AC_MSG_RESULT([no])
+      else
+        AC_MSG_RESULT([no (version $GDLIB_VERSION is not new enough)])
+      fi
+      $3
     else
-      AC_MSG_RESULT([no (version $GDLIB_VERSION is not new enough)])
+      AC_MSG_RESULT([yes (version $GDLIB_VERSION)])
+      GDLIB_CFLAGS=`$GDLIB_CONFIG_WITH_ARGS --cflags`
+      GDLIB_LDFLAGS=`$GDLIB_CONFIG_WITH_ARGS --ldflags`
+      GDLIB_LIBS=`$GDLIB_CONFIG_WITH_ARGS --libs`
+      AC_CHECK_HEADER([gd.h],[$2],[$3])
     fi
-    GDLIB_CFLAGS=""
-    GDLIB_LDFLAGS=""
-    GDLIB_LIBS=""
-    $3
   else
-    AC_MSG_RESULT([yes (version $GDLIB_VERSION)])
-    GDLIB_CFLAGS=`$GDLIB_CONFIG_WITH_ARGS --cflags`
-    GDLIB_LDFLAGS=`$GDLIB_CONFIG_WITH_ARGS --ldflags`
-    GDLIB_LIBS=`$GDLIB_CONFIG_WITH_ARGS --libs`
-    AC_CHECK_HEADER([gd.h],[$2],[$3])
+    ifelse([$3],, :, [$3])
   fi
 
 AC_SUBST(GDLIB_CFLAGS)dnl
