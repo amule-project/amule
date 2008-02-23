@@ -531,7 +531,11 @@ public:
 		
 	
 		for (size_t str = 0; str < ArraySize(testData); ++str) {
+			CONTEXT(wxString(wxT("Testing string: '")) << testData[str].str << wxT("'"));
+
 			for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
+				CONTEXT(wxString::Format(wxT("Testing encoding: %i"), encodings[enc]));
+
 				const wxChar* curStr = testData[str].str;
 				size_t strLen = testData[str].lengths[(encodings[enc].id == utf8strNone) ? 0 : 1];
 				size_t headLen = encodings[enc].headLen;
@@ -569,6 +573,27 @@ public:
 				ASSERT_EQUALS(curStr, file->ReadString(encodings[enc].id, 4));
 				ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
 			}
+		}
+
+		CAssertOff silence;
+		for (size_t enc = 0; enc < ArraySize(encodings); ++enc) {
+			CONTEXT(wxString::Format(wxT("Testing encoding against poisoning: %i"), encodings[enc]));
+
+			//////////////////////////////////////////////
+			// Check if we guard against "poisoning".
+			ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+
+			const size_t rawLen = (((uint16)-1) * 3) / 4;
+			wxString badStr(wxT('\xfe'), rawLen);
+
+			// This will cause the string to be UTF-8 encoded,
+			// thereby exceeding the max length-field size (16b).
+			file->WriteString(badStr, encodings[enc].id, 2);
+			file->WriteUInt16(0x7913);
+
+			ASSERT_EQUALS(0u, file->Seek(0, wxFromStart));
+			file->ReadString(true, 2);
+			ASSERT_EQUALS(0x7913, file->ReadUInt16());
 		}
 	}
 };
