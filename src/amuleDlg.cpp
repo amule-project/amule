@@ -350,6 +350,9 @@ void CamuleDlg::UpdateTrayIcon(int percent)
 		
 void CamuleDlg::CreateSystray()
 {
+	wxCHECK_RET(m_wndTaskbarNotifier == NULL,
+		wxT("Systray already created"));
+
 	m_wndTaskbarNotifier = new CMuleTrayIcon();
 	// This will effectively show the Tray Icon.
 	UpdateTrayIcon(0);
@@ -779,6 +782,7 @@ void CamuleDlg::ShowTransferRate()
 		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
+	wxASSERT((bool)m_wndTaskbarNotifier == thePrefs::UseTrayIcon());
 	if (m_wndTaskbarNotifier) {
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
