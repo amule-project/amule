@@ -68,9 +68,9 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
     GDLIB_CONFIG_WITH_ARGS="$GDLIB_CONFIG_PATH $gdlib_config_args"
 
     GDLIB_VERSION=`$GDLIB_CONFIG_WITH_ARGS --version`
-    gdlib_config_major_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1/']`
-    gdlib_config_minor_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\2/']`
-    gdlib_config_micro_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\3/']`
+    gdlib_config_major_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\1/']`
+    gdlib_config_minor_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\2/']`
+    gdlib_config_micro_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\3/']`
 
     gdlib_ver_ok=""
     if test $gdlib_config_major_version -gt REQUIRED_VERSION_MAJOR; then

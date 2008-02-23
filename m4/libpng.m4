@@ -68,9 +68,9 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
     LIBPNG_CONFIG_WITH_ARGS="$LIBPNG_CONFIG_PATH $libpng_config_args"
 
     LIBPNG_VERSION=`$LIBPNG_CONFIG_WITH_ARGS --version`
-    libpng_config_major_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1/']`
-    libpng_config_minor_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\2/']`
-    libpng_config_micro_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\3/']`
+    libpng_config_major_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\1/']`
+    libpng_config_minor_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\2/']`
+    libpng_config_micro_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\3/']`
 
     libpng_ver_ok=""
     if test $libpng_config_major_version -gt REQUIRED_VERSION_MAJOR; then
