@@ -65,7 +65,6 @@ public:
 	 */
 	CHashingTask(const CPath& path, const CPath& filename, const CPartFile* part = NULL);
 	
-protected:
 	/**
 	 * Schedules a KnownFile to have a AICH hashset created, used by CAICHSyncTask.
 	 *
@@ -74,6 +73,7 @@ protected:
 	 **/
 	CHashingTask(const CKnownFile* toAICHHash);
 	
+protected:
 	//! Specifies which hashes should be calculated when the task is executed.
 	enum EHashes {
 		EH_AICH = 1,
@@ -109,8 +109,6 @@ protected:
 	EHashes m_toHash;
 	//! If a partfile or an AICH hashing, this pointer stores it for callbacks.
 	const CKnownFile* m_owner;
-
-	friend class CAICHSyncTask;
 };
 
 

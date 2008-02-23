@@ -309,35 +309,9 @@ void CAICHSyncTask::Entry()
 	
 	AddDebugLogLineM( false, logAICHThread, wxT("Masterhashes of known files have been loaded.") );
 
-#ifndef AMULE_DAEMON
-	// Since we will be modifying objects in the main thread, 
-	// we need to keep it from messing with the same objects.
-	wxMutexGuiLocker guiLock;
-#else
-	//#warning Thread-safety needed
-#endif
-	
 	// Now we check that all files which are in the sharedfilelist have a
 	// corresponding hash in our list. Those how don't are queued for hashing.
-	for (unsigned i = 0; i < theApp->sharedfiles->GetCount(); ++i) {
-		const CKnownFile* kfile = theApp->sharedfiles->GetFileByIndex(i);
-	
-		if (TestDestroy()) {
-			break;
-		} else if (kfile && !kfile->IsPartFile()) {
-			CAICHHashSet* hashset = kfile->GetAICHHashset();
-
-			if (hashset->GetStatus() == AICH_HASHSETCOMPLETE) {
-				if (std::find(hashlist.begin(), hashlist.end(), hashset->GetMasterHash()) != hashlist.end()) {
-					continue;
-				}
-			}
-
-			hashset->SetStatus(AICH_ERROR);
-
-			CThreadScheduler::AddTask(new CHashingTask(kfile));
-		}
-	}
+	theApp->sharedfiles->CheckAICHHashes(hashlist);
 }
 
 

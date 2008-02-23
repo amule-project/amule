@@ -41,6 +41,7 @@ class CServer;
 class CUpDownClient;
 class CPublishKeywordList;
 class CPath;
+class CAICHHash;
 
 
 typedef std::map<CMD4Hash,CKnownFile*> CKnownFileMap;
@@ -74,6 +75,12 @@ public:
 	void	RemoveKeywords(CKnownFile* pFile);	
 	// This is actually unused, but keep it here - will be needed later.
 	void	ClearKadSourcePublishInfo();
+
+	/** 
+ 	 * Checks for files which missing or wrong AICH hashes.
+ 	 * Those that are found are scheduled for ACIH hashing.
+ 	 */
+	void CheckAICHHashes(const std::list<CAICHHash>& hashes);
 	
 private:
 	bool	AddFile(CKnownFile* pFile);
