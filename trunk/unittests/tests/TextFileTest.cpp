@@ -47,7 +47,7 @@ void CompareReadLines(size_t count, const wxChar* expected[], EReadTextFile crit
 	for (size_t j = 0; j < ArraySize(g_filesDefault); ++j) {
 		CONTEXT(wxString(wxT("Checking file: ")) + g_filesDefault[j]);
 
-		ASSERT_TRUE(file.Open(g_filesDefault[j], CTextFile::read));
+		ASSERT_TRUE(file.Open(CPath(wxSTRINGIZE_T(SRCDIR)).JoinPaths(CPath(g_filesDefault[j])).GetRaw(), CTextFile::read));
 		
 		wxArrayString lines = file.ReadLines(criteria);
 		

@@ -4,8 +4,8 @@
 EXTRA_DIST =
 
 # Use this to be able to catch assertions as exceptions
-MUCXXFLAGS = -DMULEUNIT 
-AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WXBASE_CXXFLAGS) ${MUCXXFLAGS} 
+MUCXXFLAGS = -DMULEUNIT -DSRCDIR="$(srcdir)"
+AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WXBASE_CXXFLAGS) $(MUCXXFLAGS)
 LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
