@@ -189,7 +189,7 @@ MAKEFLAGS=-w -s
 	echo "Linking $(@F)"
 		b 4
 	}
-	/^\.po\.g*mo$/ {
+	/^\.po\.g\?mo$/ {
 		i\
 	echo "Generating translations for $(<F:.po=)"
 		b 4
@@ -202,6 +202,21 @@ MAKEFLAGS=-w -s
 	/\.$(OBJEXT)$/ {
 		i\
 	echo "Compiling $(<F)"
+		b 4
+	}
+	/^$(DOMAIN)\.pot-update$/ {
+		i\
+	echo "Updating translation catalog template"
+		b 4
+	}
+	/^$(POFILES)$/ {
+		i\
+	echo "Updating translation catalog for $(@F:.po=)"
+		b 4
+	}
+	/^\.nop\.po-update$/ {
+		i\
+	echo "Updating translation catalog for $(<F:.nop=)"
 		b 4
 	}
 	:4
@@ -292,6 +307,10 @@ MAKEFLAGS=-w -s
 #if level 4
 	# the above applies to msgfmt, but here it's enough to remove the '--statistics' flag
 	/$(GMSGFMT)/ s/--statistics//
+
+	# msgmerge needs a --silent flag
+	s/$(MSGMERGE)/\0 --silent/
+	s/$(MSGMERGE_UPDATE)/\0 --silent/
 #endif
 
 	# the following two ruleset must be the last two in this block and in this order!
@@ -305,6 +324,7 @@ MAKEFLAGS=-w -s
 			g
 			s/.*rm -f[^;]*$(DESTDIR)\([^;" ][^;" ]*\).*/	echo "Uninstalling \1"; \\/
 			P
+			g
 			s/[^\n]*//
 			x
 			s/\n.*//
@@ -322,6 +342,7 @@ MAKEFLAGS=-w -s
 			g
 			s/.*$(DESTDIR)\([^;" ][^;" ]*\).*/	echo "Installing \1"; \\/
 			P
+			g
 			s/[^\n]*//
 			x
 			s/\n.*//
