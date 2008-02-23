@@ -1058,8 +1058,7 @@ void CamuleDlg::SetMessagesTool()
 	int pos = m_wndToolbar->GetToolPos(ID_BUTTONMESSAGES);
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
 	
-	m_wndToolbar->Freeze();
-
+	wxWindowUpdateLocker freezer(m_wndToolbar);
 	wxToolBarToolBase* item = m_wndToolbar->RemoveTool(ID_BUTTONMESSAGES);
 	item->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));
 
@@ -1313,6 +1312,10 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 		_("About"), m_tblist.GetBitmap(11),
 		wxNullBitmap, wxITEM_NORMAL,
 		_("About/Help"));
+	
+	// Needed for non-GTK platforms, where the
+	// items don't get added immediatly.
+	wndToolbar->Realize();
 	
 	// Updates the "Connect" button, and so on.
 	ShowConnectionState();
