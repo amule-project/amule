@@ -625,6 +625,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Improved the displaying of the connection status, and fixed
 		  problems where the status of only one of the active networks
 		  would be displayed. This closes bug #981.
+		* Fixed percentage display of available parts in the
+		  file-details dialog, where the decimal portion of the value
+		  would always be zero. This resolves bug #1060.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

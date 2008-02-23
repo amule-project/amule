@@ -121,7 +121,7 @@ void CFileDetailDialog::UpdateData()
 	CastChild(IDC_SOURCECOUNT2,wxControl)->SetLabel(bufferS);
 	bufferS = wxString::Format(wxT("%i (%.1f%%)"),
 		m_file->GetAvailablePartCount(),
-		(float) ((m_file->GetAvailablePartCount()*100)/ m_file->GetPartCount()));
+		((m_file->GetAvailablePartCount() * 100.0f)/ m_file->GetPartCount()));
 	CastChild(IDC_PARTAVAILABLE,wxControl)->SetLabel(bufferS);
 	bufferS = CastSecondsToHM(m_file->GetDlActiveTime());
 	CastChild(IDC_DLACTIVETIME, wxControl)->SetLabel(bufferS);
