@@ -4,7 +4,6 @@ dnl
 dnl Add support for --with-zlib command-line parameter.
 dnl PREFIX may be a directory prefix where zlib is installed, e.g. /usr/local
 dnl or may be one of the following special keywords:
-dnl    peer - check zlib in peer directory (not supported, does anyone use it?)
 dnl    sys - use system zlib
 dnl ----------------------------------------------------
 AC_DEFUN([AC_OPTIONS_ZLIB],
@@ -21,23 +20,23 @@ AC_DEFUN([AC_OPTIONS_ZLIB],
 
 dnl ----------------------------------------------------
 dnl AC_CHECK_ZLIB([MIN_ZLIB_VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
-dnl check if zlib is on the system
+dnl check if zlib is on the system and is at least MIN_ZLIB_VERSION
 dnl ----------------------------------------------------
 AC_DEFUN([AC_CHECK_ZLIB],
-[
-ac_zver_max="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])"
-ac_zver_mid="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])"
-ac_zver_min="m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])"
+[AC_REQUIRE([AC_OPTIONS_ZLIB])dnl
+m4_define([ac_zver_max], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])])dnl
+m4_define([ac_zver_mid], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])])dnl
+m4_define([ac_zver_min], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])])dnl
 
-case "$ac_zlib" in
-no)
-	ifelse([$3], , :, [$3])
-	;;
-yes | sys)
-	;;
-*)
-	ac_zlib_prefix="$ac_zlib"
-esac
+	case "$ac_zlib" in
+	no)
+		ifelse([$3], , :, [$3])
+		;;
+	yes | sys)
+		;;
+	*)
+		ac_zlib_prefix="$ac_zlib"
+	esac
 
 	if test -n "$ac_zlib_prefix"; then
 		ac_tmp_CPPFLAGS="$CPPFLAGS"
@@ -52,23 +51,23 @@ esac
 		AC_LANG_PROGRAM([[
 			#include <zlib.h>
 			#include <stdio.h>
-		]], [[
+		]], [dnl Do not use double-quoting here!
 			char *zver = zlibVersion();
 			FILE *f=fopen("conftestval", "w");
 			if (!f) return 1;
 			fprintf(f, "%s",
-				zver[0] > '$ac_zver_max' ||
-				(zver[0] == '$ac_zver_max' &&
-				(zver[2] > '$ac_zver_mid' ||
-				(zver[2] == '$ac_zver_mid' &&
-				zver[4] >= '$ac_zver_min'))) ? "yes" : "no");
+				zver[[0]] > 'ac_zver_max' ||
+				(zver[[0]] == 'ac_zver_max' &&
+				(zver[[2]] > 'ac_zver_mid' ||
+				(zver[[2]] == 'ac_zver_mid' &&
+				zver[[4]] >= 'ac_zver_min'))) ? "yes" : "no");
 			fclose(f);
 			f=fopen("conftestver", "w");
 			if (f) {
 				fprintf(f, "%s", ZLIB_VERSION);
 				fclose(f);
 			}
-		]])
+		])
 	], [
 		if test -f conftestval; then
 	        	result=`cat conftestval`
@@ -83,10 +82,10 @@ esac
 				z_version=""
 			fi
 		fi
-		AC_MSG_RESULT($result$z_version)
+		AC_MSG_RESULT([$result$z_version])
 	], [
 		result=no
-		AC_MSG_RESULT($result)
+		AC_MSG_RESULT([$result])
 	], [
 		result=no
 		z_version=''
@@ -102,13 +101,13 @@ esac
 			ac_cross_zver_max="`echo $ZLIB_VERSION | cut -d. -f1`"
 			ac_cross_zver_mid="`echo $ZLIB_VERSION | cut -d. -f2`"
 			ac_cross_zver_min="`echo $ZLIB_VERSION | cut -d. -f3`"
-			if test "$ac_cross_zver_max" -gt "$ac_zver_max"; then
+			if test "$ac_cross_zver_max" -gt "ac_zver_max"; then
 				result=yes
-			elif test "$ac_cross_zver_max" -eq "$ac_zver_max"; then
-				if test "$ac_cross_zver_mid" -gt "$ac_zver_mid"; then
+			elif test "$ac_cross_zver_max" -eq "ac_zver_max"; then
+				if test "$ac_cross_zver_mid" -gt "ac_zver_mid"; then
 					result=yes
-				elif "$ac_cross_zver_mid" -eq "$ac_zver_mid"; then
-					if test "$ac_cross_zver_min" -ge "$ac_zver_min"; then
+				elif "$ac_cross_zver_mid" -eq "ac_zver_mid"; then
+					if test "$ac_cross_zver_min" -ge "ac_zver_min"; then
 						result=yes
 					fi
 				fi
@@ -117,9 +116,9 @@ esac
 				z_version=" (version $ZLIB_VERSION)"
 			fi
 		])
-		AC_MSG_RESULT($result$z_version)
+		AC_MSG_RESULT([$result$z_version])
 	])
-	if test x$result = xno; then
+	AS_IF([test x$result = xno], [
 		if test "${ac_tmp_CPPFLAGS+set}" = set; then
 			CPPFLAGS="$ac_tmp_CPPFLAGS"
 		fi
@@ -127,8 +126,10 @@ esac
 			LDFLAGS="$ac_tmp_LDFLAGS"
 		fi
 		LIBS="$ac_tmp_LIBS"
-		ifelse([$3], , :, [$3])
-	else
-		ifelse([$2], , :, [$2])
-	fi
+		$3
+	], [$2])
+
+m4_undefine([ac_zver_max])dnl
+m4_undefine([ac_zver_mid])dnl
+m4_undefine([ac_zver_min])dnl
 ])

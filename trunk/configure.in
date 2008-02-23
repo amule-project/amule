@@ -239,14 +239,12 @@ AC_ARG_WITH(
 AC_ARG_WITH(
 	[language],
 	[AS_HELP_STRING([--with-language=<langs>],
-	[Specify a comma-separated list of languages you want to have installed])
-AS_HELP_STRING([], [See po/LINGUAS for available languages])
-	],
+		[Specify a comma-separated list of languages you want to have installed. See po/LINGUAS for available languages])],
 	[LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
-# to avoid losing to much time
+# to avoid losing too much time
 
 # Sets gettext version.
 AM_GNU_GETTEXT_VERSION(0.11.5)
@@ -258,31 +256,24 @@ AC_CHECK_ZLIB([1.1.4], , [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
 if test x$CAS = xyes -o x$WEB = xyes; then
 # Check for gd
 AM_OPTIONS_GDLIBCONFIG
-
-AM_PATH_GDLIBCONFIG(2.0.0,GDLIBFOUND=1)
-
-case "$GDLIBFOUND" in
-1)	CAS_DEFS="-D__GD__"
-	GDLIB_LIBS="$GDLIB_LIBS -lgd"
-	;;
-*)AC_MSG_NOTICE([
+AM_PATH_GDLIBCONFIG([2.0.0],
+[
+	CAS_DEFS="-D__GD__"
+	GDLIB_LIBS="-lgd $GDLIB_LIBS"
+], [
+    AC_MSG_NOTICE([
 	WARNING: gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
 	Please check that gdlib-config is in your default path, check out
 	LD_LIBRARY_PATH or equivalent variable.
 	Or this might also be that your gdlib-config has other name.
 	Please try again with --with-gdlib-config=/usr/bin/gdlib-config
-        (replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
-        If you use compiled packages check if you have devel pack installed.
-        To download the latest version check http://www.boutell.com/gd
+	(replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
+	If you use compiled packages check if you have devel pack installed.
+	To download the latest version check http://www.boutell.com/gd
 	for sources.
-        ])
-	
+    ])
 	CAS_DEFS=""
-	GDLIB_LIBS=""
-	GDLIB_CFLAGS=""
-	GDLIB_LDFLAGS=""
-	;;
-esac
+])
 
 else
 	CAS_DEFS=""
@@ -297,24 +288,15 @@ AC_SUBST(CAS_DEFS)
 
 if test x$WEB = xyes; then
 # Check for libpng
-# This check _must_ occur *after* the check for gd
 AM_OPTIONS_LIBPNGCONFIG
-
-AM_PATH_LIBPNGCONFIG(1.2.0,LIBPNGFOUND=1)
-
-case "$LIBPNGFOUND" in
-1)	AMULEWEB_DEFS="-DWITH_LIBPNG"
-	;;
-*)AC_MSG_NOTICE([
+AM_PATH_LIBPNGCONFIG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"],
+[
+    AC_MSG_NOTICE([
 	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
-        ])
+    ])
 	AMULEWEB_DEFS=""
-	LIBPNG_LIBS=""
-	LIBPNG_CFLAGS=""
-	LIBPNG_CXXFLAGS=""
-	LIBPNG_LDFLAGS=""
-	;;
-esac
+])
+
 else
 	AMULEWEB_DEFS=""
 	LIBPNG_LIBS=""
@@ -338,25 +320,11 @@ AC_MSG_CHECKING([for File::Copy])
 
 # Check if we need the GUI
 AC_MSG_CHECKING([whether we need the GUI])
-if test x"$MONOLITHIC" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test x"$WXCAS" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test x"$ALC" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test x"$AMULE_GUI" = x"yes" ; then
-  need_gui="yes"
-fi
-
-if test "x${need_gui:+set}" != "xset" ; then
-  need_gui="no"
-fi
+AS_IF([test x$MONOLITHIC = xyes], [need_gui=yes])
+AS_IF([test x$WXCAS = xyes], [need_gui=yes])
+AS_IF([test x$ALC = xyes], [need_gui=yes])
+AS_IF([test x$AMULE_GUI = xyes], [need_gui=yes])
+AS_IF([test ${need_gui:+set} != xset], [need_gui=no])
 AC_MSG_RESULT($need_gui)
 
 
@@ -727,7 +695,6 @@ AC_CONFIG_FILES([Makefile
 		 docs/Makefile
 		 docs/man/Makefile
 		 intl/Makefile
-		 m4/Makefile
 		 src/Makefile
 		 src/kademlia/Makefile
 		 src/kademlia/utils/Makefile
