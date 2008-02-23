@@ -28,6 +28,7 @@ namespace amule.net {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonStartSearch = new System.Windows.Forms.Button();
+            this.comboBoxType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -35,11 +36,13 @@ namespace amule.net {
             // 
             this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.69027F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.30973F));
             this.tableLayoutPanel1.Controls.Add(this.textBoxSearch, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.buttonStartSearch, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.buttonStartSearch, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.comboBoxType, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -54,17 +57,30 @@ namespace amule.net {
             // 
             this.textBoxSearch.Location = new System.Drawing.Point(3, 3);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(196, 20);
+            this.textBoxSearch.Size = new System.Drawing.Size(153, 20);
             this.textBoxSearch.TabIndex = 2;
             // 
             // buttonStartSearch
             // 
-            this.buttonStartSearch.Location = new System.Drawing.Point(205, 3);
+            this.buttonStartSearch.Location = new System.Drawing.Point(256, 3);
             this.buttonStartSearch.Name = "buttonStartSearch";
             this.buttonStartSearch.Size = new System.Drawing.Size(60, 20);
             this.buttonStartSearch.TabIndex = 3;
             this.buttonStartSearch.Text = "Search";
             this.buttonStartSearch.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxType
+            // 
+            this.comboBoxType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxType.FormattingEnabled = true;
+            this.comboBoxType.Items.AddRange(new object[] {
+            "Local",
+            "Global",
+            "Kad"});
+            this.comboBoxType.Location = new System.Drawing.Point(162, 3);
+            this.comboBoxType.Name = "comboBoxType";
+            this.comboBoxType.Size = new System.Drawing.Size(70, 21);
+            this.comboBoxType.TabIndex = 4;
             // 
             // amuleSearchControl
             // 
@@ -85,5 +101,6 @@ namespace amule.net {
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox textBoxSearch;
         private System.Windows.Forms.Button buttonStartSearch;
+        private System.Windows.Forms.ComboBox comboBoxType;
     }
 }
