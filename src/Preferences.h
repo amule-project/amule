@@ -217,6 +217,7 @@ public:
 	static bool		DoMinToTray()			{ return s_mintotray; }
 	static void		SetMinToTray(bool val)		{ s_mintotray = val; }
 	static bool		UseTrayIcon()			{ return s_trayiconenabled; }
+	static void		SetUseTrayIcon(bool val)	{ s_trayiconenabled = val; }
 	static bool		DoAutoConnect()			{ return s_autoconnect; }
 	static void		SetAutoConnect(bool inautoconnect)
        					{s_autoconnect = inautoconnect; }
