@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-23 06:15+0100\n"
+"POT-Creation-Date: 2008-02-24 06:15+0100\n"
 "PO-Revision-Date: 2008-01-20 18:48+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -104,28 +104,28 @@ msgstr "Beginne, MD4-Prüfsumme zu berechnen für Datei %s"
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Beginne, AICH-Prüfsumme zu berechnen für Datei %s"
 
-#: src/ThreadTasks.cpp:374
+#: src/ThreadTasks.cpp:348
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Wandle alte AICH-Prüfsummensätze von '%s' um in 64b in '%s'."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:429
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "WARNUNG: Der Dateiname '%s' ist ungültig und wurde in '%s' umbenannt."
 
-#: src/ThreadTasks.cpp:468
+#: src/ThreadTasks.cpp:442
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "WARNUNG: Die Datei '%s' gibt es schon, neue Datei in '%s' umbenannt."
 
-#: src/ThreadTasks.cpp:481
+#: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "WARNUNG: Konnte original '%s' nach Erstellen des Backups nicht entfernen"
 
-#: src/ThreadTasks.cpp:493
+#: src/ThreadTasks.cpp:467
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "WARNUNG: Fehler beim Löschen von %s"
@@ -334,7 +334,7 @@ msgstr "Vollständige Quellen"
 msgid "Directory Path"
 msgstr "Verzeichnispfad"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1292 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1291 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "Freigaben"
@@ -622,7 +622,7 @@ msgstr "Lädt herunter..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1305
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1304
 #: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Einstellungen"
@@ -1821,84 +1821,84 @@ msgstr "aMule wirklich beenden?"
 msgid "Exit confirmation"
 msgstr "Beenden bestätigen"
 
-#: src/amuleDlg.cpp:1114
+#: src/amuleDlg.cpp:1113
 msgid "Could not determine the command for running the browser."
 msgstr "Konnte den Befehl zur Ausführung des Browsers nicht ermitteln."
 
-#: src/amuleDlg.cpp:1174
+#: src/amuleDlg.cpp:1173
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Verkleidungs(\"Skin\")-Verzeichnis '%s' existiert nicht"
 
-#: src/amuleDlg.cpp:1179
+#: src/amuleDlg.cpp:1178
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Warnung: Öffnen der Verkleidungsdatei '%s' zum Lesen nicht möglich"
 
-#: src/amuleDlg.cpp:1279 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1278 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Netzwerke"
 
-#: src/amuleDlg.cpp:1281 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1280 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Übersicht der verwendeten Netzwerke"
 
-#: src/amuleDlg.cpp:1284 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1283 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Suchen"
 
-#: src/amuleDlg.cpp:1286 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1285 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Dateisuche in den verbundenen Netzwerken"
 
-#: src/amuleDlg.cpp:1288 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1287 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Übertragungen"
 
-#: src/amuleDlg.cpp:1290 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Datentransfer - Zeigt Up- und Downloads, Warteschlangen usw."
 
-#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Übersicht der freigegebenen Dateien"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Nachrichten"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Nachrichten, Chat, Freundesliste"
 
-#: src/amuleDlg.cpp:1300 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1299 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: src/amuleDlg.cpp:1302 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Diverse Statistiken über Up- und Download, Verbindungen, Clients usw."
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Hier können die verschiedenen Einstellungen vorgenommen werden."
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Importiere"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "Das Importierwerkzeug für Part-Dateien"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Über"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Über/Hilfe - Hinweise zur Version usw."
 

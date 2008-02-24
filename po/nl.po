@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-23 06:15+0100\n"
+"POT-Creation-Date: 2008-02-24 06:15+0100\n"
 "PO-Revision-Date: 2007-10-16 00:19+0200\n"
 "Last-Translator: Oliver Heesakkers <dev2@heesakkers.info>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -99,31 +99,31 @@ msgstr "Begonnen met het maken van MD4 hash voor bestand: %s"
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Begonnen met het maken van AICH hash voor bestand: %s"
 
-#: src/ThreadTasks.cpp:374
+#: src/ThreadTasks.cpp:348
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Oude AICH hashsets in '%s' worden omgezet in 64b in '%s'."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:429
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "WAARSCHUWING: De bestandsnaam '%s' is ongeldig en is gewijzigd in '%s'."
 
-#: src/ThreadTasks.cpp:468
+#: src/ThreadTasks.cpp:442
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
 "WAARSCHUWING: Het bestand '%s' bestaat al, bestandsnaam van nieuw bestand "
 "gewijzigd in '%s'."
 
-#: src/ThreadTasks.cpp:481
+#: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
 
-#: src/ThreadTasks.cpp:493
+#: src/ThreadTasks.cpp:467
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "WAARSCHUWING: Kon %s niet verwijderen"
@@ -332,7 +332,7 @@ msgstr "Complete Bronnen"
 msgid "Directory Path"
 msgstr "Directory Pad"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1292 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1291 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "Gedeelde Bestanden"
@@ -618,7 +618,7 @@ msgstr "Downloaden..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1305
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1304
 #: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Voorkeuren"
@@ -1815,84 +1815,84 @@ msgstr "Wilt u aMule echt afsluiten?"
 msgid "Exit confirmation"
 msgstr "Afsluit bevestiging"
 
-#: src/amuleDlg.cpp:1114
+#: src/amuleDlg.cpp:1113
 msgid "Could not determine the command for running the browser."
 msgstr "Kon het commando om de browser te starten niet bepalen."
 
-#: src/amuleDlg.cpp:1174
+#: src/amuleDlg.cpp:1173
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Skindirectory '%s' bestaat niet"
 
-#: src/amuleDlg.cpp:1179
+#: src/amuleDlg.cpp:1178
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Waarschuwing: Kon skinbestand '%s' niet openen om te lezen"
 
-#: src/amuleDlg.cpp:1279 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1278 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Netwerken"
 
-#: src/amuleDlg.cpp:1281 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1280 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Netwerken Venster"
 
-#: src/amuleDlg.cpp:1284 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1283 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Zoeken"
 
-#: src/amuleDlg.cpp:1286 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1285 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Zoekvenster"
 
-#: src/amuleDlg.cpp:1288 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1287 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Overdrachten"
 
-#: src/amuleDlg.cpp:1290 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Bestands Overdrachten Venster"
 
-#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Gedeelde Bestanden Venster"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Berichten"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Berichten Venster"
 
-#: src/amuleDlg.cpp:1300 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1299 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Statistieken"
 
-#: src/amuleDlg.cpp:1302 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Statistieken Venster (Grafieken)"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Voorkeuren Instellingen Venster"
 
-#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Importeer"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "Het partbestand importeer programma"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Over"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Over/Help"
 
