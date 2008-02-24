@@ -726,6 +726,7 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			} else {
 				theApp->amuledlg->RemoveSystray();
 			}
+			thePrefs::SetUseTrayIcon(value);
 			break;
 		
 		case ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY:
