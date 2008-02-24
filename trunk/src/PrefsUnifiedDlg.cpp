@@ -81,7 +81,10 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_FILTERCOMMENTS,	PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_STARTNEXTFILE,		PrefsUnifiedDlg::OnCheckBoxChange)
 	EVT_CHECKBOX(IDC_ENABLETRAYICON,	PrefsUnifiedDlg::OnCheckBoxChange)
-	EVT_CHECKBOX(IDC_VERTTOOLBAR,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_VERTTOOLBAR,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_SUPPORT_PO,		PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENABLE_PO_OUTGOING,	PrefsUnifiedDlg::OnCheckBoxChange)
+	EVT_CHECKBOX(IDC_ENFORCE_PO_INCOMING,	PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
 	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
@@ -124,6 +127,28 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CLOSE(PrefsUnifiedDlg::OnClose)
 
 END_EVENT_TABLE()
+
+
+/**
+ * Creates an command-event for the given checkbox.
+ *
+ * This can be used enforce logical constraints by passing by
+ * sending a check-box event for each checkbox, when transfering
+ * to the UI. However, it should also be used for checkboxes that 
+ * have no side-effects other than enabling/disabling other
+ * widgets in the preferences dialogs.
+ */
+void SendCheckBoxEvent(wxWindow* parent, int id)
+{
+	wxCheckBox* widget = CastByID(id, parent, wxCheckBox);
+	wxCHECK_RET(widget, wxT("Invalid widget in CreateEvent"));
+
+	wxCommandEvent evt(wxEVT_COMMAND_CHECKBOX_CLICKED, id);
+	evt.SetInt(widget->IsChecked() ? 1 : 0);
+
+	parent->ProcessEvent(evt);
+}
+
 
 
 /**
@@ -381,9 +406,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	}
 
 	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
+	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());
 	
-	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());	
-	
+	// Protocol obfuscation
+	::SendCheckBoxEvent(this, IDC_SUPPORT_PO);
+	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);
+	::SendCheckBoxEvent(this, IDC_ENFORCE_PO_INCOMING);
+
 	// Set debugging toggles
 #ifdef __DEBUG__
 	int count = CLogger::GetDebugCategoryCount();
@@ -736,9 +765,20 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 			// Update the first tool (conn button)
 			theApp->amuledlg->ShowConnectionState();
 			break;
+	
+		case IDC_ENFORCE_PO_INCOMING:
+			FindWindow(IDC_ENABLE_PO_OUTGOING)->Enable(!value);
+			break;
+
+		case IDC_ENABLE_PO_OUTGOING:
+			FindWindow(IDC_SUPPORT_PO)->Enable(!value);
+			FindWindow(IDC_ENFORCE_PO_INCOMING)->Enable(value);
+			break;
+
 		case IDC_SUPPORT_PO:
 			FindWindow(IDC_ENABLE_PO_OUTGOING)->Enable(value);
-			FindWindow(IDC_ENFORCE_PO_INCOMING)->Enable(value);
+			break;
+		
 		default:
 			break;
 	}
