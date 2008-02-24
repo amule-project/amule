@@ -285,7 +285,8 @@ void CStatTreeItemSimple::AddECValues(CECTag *tag) const
 /* CStatTreeItemCounter */
 
 #ifndef AMULE_DAEMON
-wxString CStatTreeItemCounter::GetDisplayString() const
+template<typename _Tp>
+wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 {
 	wxString my_label = wxGetTranslation(m_label);
 	// This is needed for client names, for example
@@ -303,14 +304,15 @@ wxString CStatTreeItemCounter::GetDisplayString() const
 		wxString result = CFormat(wxT("%u")) % m_value;
 		if ((m_flags & stShowPercent) && m_parent) {
 			result.append(wxString::Format(wxT(" (%.2f%%)"),
-				((double)m_value / ((CStatTreeItemCounter*)m_parent)->m_value) * 100.0));
+				((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0));
 		}
 		return label % result;
 	}
 }
 #endif
 
-void CStatTreeItemCounter::AddECValues(CECTag *tag) const
+template<>
+void CStatTreeItemCounterTmpl<uint64_t>::AddECValues(CECTag *tag) const
 {
 	CECTag value(EC_TAG_STAT_NODE_VALUE, (uint64)m_value);
 	if (m_displaymode == dmBytes) {
@@ -319,7 +321,7 @@ void CStatTreeItemCounter::AddECValues(CECTag *tag) const
 		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_ISTRING));
 		if ((m_flags & stShowPercent) && m_parent) {
 			CECTag tmp(EC_TAG_STAT_NODE_VALUE,
-				((double)m_value / ((CStatTreeItemCounter*)m_parent)->m_value) * 100.0);
+				((double)m_value / ((CStatTreeItemCounterTmpl<uint64_t>*)m_parent)->m_value) * 100.0);
 			tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_DOUBLE));
 			value.AddTag(tmp);
 		}
@@ -327,37 +329,8 @@ void CStatTreeItemCounter::AddECValues(CECTag *tag) const
 	tag->AddTag(value);
 }
 
-
-#ifndef USE_64BIT_ARCH
-/* CStatTreeItemNativeCounter */
-
-#ifndef AMULE_DAEMON
-wxString CStatTreeItemNativeCounter::GetDisplayString() const
-{
-	wxString my_label = wxGetTranslation(m_label);
-	if (my_label == m_label) {
-		if (m_label.Right(4) == wxT(": %s")) {
-			my_label = wxGetTranslation(
-				m_label.Mid(0, m_label.Length() - 4)) +
-				wxString(wxT(": %s"));
-		}
-	}
-	CFormat label(my_label);
-	if (m_displaymode == dmBytes) {
-		return label % CastItoXBytes(m_value);
-	} else {
-		wxString result = CFormat(wxT("%u")) % m_value;
-		if ((m_flags & stShowPercent) && m_parent) {
-			result.append(wxString::Format(
-				wxT(" (%.2f%%)"),
-				((double)m_value / ((CStatTreeItemNativeCounter*)m_parent)->m_value) * 100.0));
-		}
-		return label % result;
-	}
-}
-#endif
-
-void CStatTreeItemNativeCounter::AddECValues(CECTag *tag) const
+template<>
+void CStatTreeItemCounterTmpl<uint32_t>::AddECValues(CECTag *tag) const
 {
 	CECTag value(EC_TAG_STAT_NODE_VALUE, (uint64)m_value);
 	if (m_displaymode == dmBytes) {
@@ -366,14 +339,13 @@ void CStatTreeItemNativeCounter::AddECValues(CECTag *tag) const
 		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_ISTRING));
 		if ((m_flags & stShowPercent) && m_parent) {
 			CECTag tmp(EC_TAG_STAT_NODE_VALUE,
-				((double)m_value / ((CStatTreeItemNativeCounter*)m_parent)->m_value) * 100.0);
+				((double)m_value / ((CStatTreeItemCounterTmpl<uint32_t>*)m_parent)->m_value) * 100.0);
 			tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_DOUBLE));
 			value.AddTag(tmp);
 		}
 	}
 	tag->AddTag(value);
 }
-#endif /* USE_64BIT_ARCH */
 
 
 /* CStatTreeItemUlDlCounter */
