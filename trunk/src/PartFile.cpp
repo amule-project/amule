@@ -1021,8 +1021,9 @@ void CPartFile::SaveSourceSeeds()
 			% m_fullname
 			% GetFileName());
 	} catch (const CIOFailureException& e) {
-		AddDebugLogLineM(true, logPartFile, CFormat( wxT("Error saving partfile's seeds file (%s - %s): %s") )
+		AddDebugLogLineM(true, logPartFile, CFormat( wxT("Error saving partfile's seeds file (%s): %s") )
 				% m_partmetfilename
+				% GetFileName()
 				% e.what() );
 		
 		n_sources = 0;
