@@ -298,6 +298,17 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		if (thePrefs::IsSecureIdentEnabled()) {
 			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_USE_SECIDENT));
 		}
+		
+		if (thePrefs::IsClientCryptLayerSupported()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_OBFUSCATION_SUPPORTED));
+		}
+		if (thePrefs::IsClientCryptLayerRequested()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_OBFUSCATION_REQUESTED));
+		}
+		if (thePrefs::IsClientCryptLayerRequired()) {
+			secPrefs.AddTag(CECEmptyTag(EC_TAG_SECURITY_OBFUSCATION_REQUIRED));
+		}
+
 		AddTag(secPrefs);
 	}
 
@@ -501,6 +512,10 @@ void CEC_Prefs_Packet::Apply()
 		}
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetFilterLanIPs, EC_TAG_IPFILTER_FILTER_LAN);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetSecureIdentEnabled, EC_TAG_SECURITY_USE_SECIDENT);
+
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetClientCryptLayerSupported, EC_TAG_SECURITY_OBFUSCATION_SUPPORTED);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetClientCryptLayerRequested, EC_TAG_SECURITY_OBFUSCATION_REQUESTED);
+		ApplyBoolean(use_tag, thisTab, thePrefs::SetClientCryptLayerRequired,  EC_TAG_SECURITY_OBFUSCATION_REQUIRED);
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_CORETWEAKS)) != NULL) {

@@ -633,6 +633,14 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fixed bug where the preferences dialog on the monolithic
 		  client would not be updated if the preferences had been
 		  changed via EC after the dialog had been first shown.
+		* Added support for protocol-obfuscation configuration via
+		  external connections.
+		* Fixed problem where obfuscation of out-going connections
+		  could be enabled even if obfuscation support was not,
+		  leading to clients being wrongly dropped in some cases.
+		* Fixed check-boxes in the preferences dialog for the various
+		  obfuscation options not being updated when one of the other
+		  obfuscation check-boxes were checked/unchecked.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

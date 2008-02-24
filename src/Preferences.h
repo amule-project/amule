@@ -529,16 +529,20 @@ public:
 	static void SetEd2kServersUrl(const wxString& url) { s_Ed2kURL = url; }
 	
 	// Crypt
-	static bool IsClientCryptLayerSupported() { return s_IsClientCryptLayerSupported; }
+	static bool		IsClientCryptLayerSupported()		{return s_IsClientCryptLayerSupported;}
 	static bool		IsClientCryptLayerRequested()		{return IsClientCryptLayerSupported() && s_bCryptLayerRequested;}	
-	static bool IsClientCryptLayerRequired() { return s_IsClientCryptLayerRequired; }
+	static bool		IsClientCryptLayerRequired()		{return IsClientCryptLayerRequested() && s_IsClientCryptLayerRequired;}
 	static bool		IsClientCryptLayerRequiredStrict()	{return false;} // not even incoming test connections will be answered
 	static bool		IsServerCryptLayerUDPEnabled()		{return IsClientCryptLayerSupported();}
 	static bool		IsServerCryptLayerTCPRequested()	{return IsClientCryptLayerRequested();}
-	static bool		IsServerCryptLayerTCPRequired()	{return IsClientCryptLayerRequired();}
-	static uint32	GetKadUDPKey()						{return s_dwKadUDPKey;}
-	static uint8 GetCryptTCPPaddingLength() { return s_byCryptTCPPaddingLength; }
+	static bool		IsServerCryptLayerTCPRequired()		{return IsClientCryptLayerRequired();}
+	static uint32		GetKadUDPKey()				{return s_dwKadUDPKey;}
+	static uint8		GetCryptTCPPaddingLength()		{return s_byCryptTCPPaddingLength;}
 	
+	static void		SetClientCryptLayerSupported(bool v)	{s_IsClientCryptLayerSupported = v;}
+	static void		SetClientCryptLayerRequested(bool v)	{s_bCryptLayerRequested = v; }
+	static void		SetClientCryptLayerRequired(bool v)	{s_IsClientCryptLayerRequired = v;}
+
 protected:
 	static	int32 GetRecommendedMaxConnections();
 
