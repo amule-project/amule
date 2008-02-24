@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-24 06:15+0100\n"
+"POT-Creation-Date: 2008-02-24 19:45+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -457,13 +457,6 @@ msgstr "파일의 올려주기를 정지합니다: %s"
 msgid "Kademlia: search keyword too short"
 msgstr "카뎀리아: 검색어가 너무 짧습니다."
 
-#: src/kademlia/routing/RoutingZone.cpp:141
-#, fuzzy, c-format
-msgid "Read %u Kad contact"
-msgid_plural "Read %u Kad contacts"
-msgstr[0] "%u개의 Kad 접속을 읽었음"
-msgstr[1] "%u개의 Kad 접속을 읽었음"
-
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
 msgstr "오류: TCP포트를 열수없습니다."
@@ -597,11 +590,11 @@ msgstr "각 요청의 PHP 페이지를 재컴파일함"
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
-#: src/StatTree.cpp:583 src/StatTree.cpp:598
+#: src/StatTree.cpp:555 src/StatTree.cpp:570
 msgid "Not available"
 msgstr "유효하지 않음"
 
-#: src/StatTree.cpp:634 src/StatTree.cpp:648
+#: src/StatTree.cpp:606 src/StatTree.cpp:620
 msgid "Never"
 msgstr "결코"
 
@@ -615,7 +608,7 @@ msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1304
-#: src/PrefsUnifiedDlg.cpp:171 src/muuli_wdr.cpp:4003
+#: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "환경설정"
 
@@ -1332,7 +1325,7 @@ msgstr "링크"
 msgid "Source Seeds"
 msgstr "자료 핵"
 
-#: src/Preferences.cpp:629 src/PrefsUnifiedDlg.cpp:217
+#: src/Preferences.cpp:629 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "기본 설정"
 
@@ -1503,7 +1496,7 @@ msgstr "핑"
 msgid "Users"
 msgstr "사용자"
 
-#: src/ServerListCtrl.cpp:93 src/PrefsUnifiedDlg.cpp:154
+#: src/ServerListCtrl.cpp:93 src/PrefsUnifiedDlg.cpp:179
 #: src/muuli_wdr.cpp:2071
 msgid "Files"
 msgstr "파일"
@@ -1565,7 +1558,7 @@ msgstr "'%s'을(를) 열지 못했습니다."
 msgid "Servers (%i)"
 msgstr "서버 (%i)"
 
-#: src/ServerListCtrl.cpp:417 src/PrefsUnifiedDlg.cpp:153
+#: src/ServerListCtrl.cpp:417 src/PrefsUnifiedDlg.cpp:178
 #: src/ServerWnd.cpp:180 src/ServerSocket.cpp:257 src/ServerSocket.cpp:272
 msgid "Server"
 msgstr "서버"
@@ -1712,8 +1705,8 @@ msgstr ""
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:488
-#: src/PrefsUnifiedDlg.cpp:583 src/PrefsUnifiedDlg.cpp:666 src/KadDlg.cpp:182
+#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:517
+#: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:182
 #: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:917
 #: src/PartFile.cpp:925
 msgid "Message"
@@ -1856,7 +1849,7 @@ msgstr "메시지"
 msgid "Messages Window"
 msgstr "메시지 창"
 
-#: src/amuleDlg.cpp:1299 src/PrefsUnifiedDlg.cpp:156 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1299 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
@@ -1886,60 +1879,60 @@ msgstr "정보"
 msgid "About/Help"
 msgstr "정보/도움"
 
-#: src/PrefsUnifiedDlg.cpp:147 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1386
+#: src/PrefsUnifiedDlg.cpp:172 src/muuli_wdr.cpp:575 src/muuli_wdr.cpp:1386
 #: src/muuli_wdr.cpp:3618
 msgid "General"
 msgstr "일반"
 
-#: src/PrefsUnifiedDlg.cpp:148 src/Statistics.cpp:682
+#: src/PrefsUnifiedDlg.cpp:173 src/Statistics.cpp:682
 msgid "Connection"
 msgstr "연결"
 
-#: src/PrefsUnifiedDlg.cpp:149 src/muuli_wdr.cpp:3613
+#: src/PrefsUnifiedDlg.cpp:174 src/muuli_wdr.cpp:3613
 msgid "Proxy"
 msgstr "프록시"
 
-#: src/PrefsUnifiedDlg.cpp:150
+#: src/PrefsUnifiedDlg.cpp:175
 msgid "Message Filter"
 msgstr "메시지 차단"
 
-#: src/PrefsUnifiedDlg.cpp:151
+#: src/PrefsUnifiedDlg.cpp:176
 msgid "Remote Controls"
 msgstr "원격 조정"
 
-#: src/PrefsUnifiedDlg.cpp:152 src/muuli_wdr.cpp:3478
+#: src/PrefsUnifiedDlg.cpp:177 src/muuli_wdr.cpp:3478
 msgid "Online Signature"
 msgstr "온라인 서명"
 
-#: src/PrefsUnifiedDlg.cpp:155 src/muuli_wdr.cpp:2165
+#: src/PrefsUnifiedDlg.cpp:180 src/muuli_wdr.cpp:2165
 msgid "Directories"
 msgstr "폴더"
 
-#: src/PrefsUnifiedDlg.cpp:157 src/muuli_wdr.cpp:3344
+#: src/PrefsUnifiedDlg.cpp:182 src/muuli_wdr.cpp:3344
 msgid "Security"
 msgstr "보안"
 
-#: src/PrefsUnifiedDlg.cpp:160
+#: src/PrefsUnifiedDlg.cpp:185
 msgid "Gui Tweaks"
 msgstr "GUI 조정"
 
-#: src/PrefsUnifiedDlg.cpp:161 src/muuli_wdr.cpp:2452
+#: src/PrefsUnifiedDlg.cpp:186 src/muuli_wdr.cpp:2452
 msgid "Core Tweaks"
 msgstr "코어 조정"
 
-#: src/PrefsUnifiedDlg.cpp:162 src/muuli_wdr.cpp:3962
+#: src/PrefsUnifiedDlg.cpp:187 src/muuli_wdr.cpp:3962
 msgid "Events"
 msgstr "사건들"
 
-#: src/PrefsUnifiedDlg.cpp:164 src/muuli_wdr.cpp:3795
+#: src/PrefsUnifiedDlg.cpp:189 src/muuli_wdr.cpp:3795
 msgid "Debugging"
 msgstr "디버깅"
 
-#: src/PrefsUnifiedDlg.cpp:218 src/muuli_wdr.cpp:1696
+#: src/PrefsUnifiedDlg.cpp:243 src/muuli_wdr.cpp:1696
 msgid "User Defined"
 msgstr "사용자 설정"
 
-#: src/PrefsUnifiedDlg.cpp:466
+#: src/PrefsUnifiedDlg.cpp:495
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -1947,15 +1940,15 @@ msgstr ""
 "변경사항을 활성화 하기위해 어뮬을 재시작해야 합니다:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:473
+#: src/PrefsUnifiedDlg.cpp:502
 msgid "- TCP port changed.\n"
 msgstr "- TCP 포트가 변경되었습니다.\n"
 
-#: src/PrefsUnifiedDlg.cpp:478
+#: src/PrefsUnifiedDlg.cpp:507
 msgid "- UDP port changed.\n"
 msgstr "- UDP 포트가 변경되었습니다.\n"
 
-#: src/PrefsUnifiedDlg.cpp:487
+#: src/PrefsUnifiedDlg.cpp:516
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "'Auto-update serverlist at startup' will be disabled."
@@ -1963,7 +1956,7 @@ msgstr ""
 "자동갱신 서버 목록이 비어있습니다.\n"
 "'시작시 서버목록 자동갱신'은 비활성화될 것입니다."
 
-#: src/PrefsUnifiedDlg.cpp:494
+#: src/PrefsUnifiedDlg.cpp:523
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -1971,19 +1964,19 @@ msgstr ""
 "외부연결이 횔성화되어 있지만, 암호를 설정하지 않았습니다.\n"
 "외부연결은 유효한 암호가 설정되기전까지 활성화되지 않습니다."
 
-#: src/PrefsUnifiedDlg.cpp:506
+#: src/PrefsUnifiedDlg.cpp:535
 msgid "- Language changed.\n"
 msgstr "- 언어가 변경되었습니다.\n"
 
-#: src/PrefsUnifiedDlg.cpp:511
+#: src/PrefsUnifiedDlg.cpp:540
 msgid "- Temp folder changed.\n"
 msgstr "- 임시 폴더가 변경되었습니다.\n"
 
-#: src/PrefsUnifiedDlg.cpp:536 src/muuli_wdr.cpp:112
+#: src/PrefsUnifiedDlg.cpp:565 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "올려주기: 0.0 | 내려받기: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:578
+#: src/PrefsUnifiedDlg.cpp:607
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -1991,7 +1984,7 @@ msgstr ""
 "ED2k와 Kad 네트워크 모두가 비활성화되어 있습니다.\n"
 "적어도 하나를 활성화 할때까지 연결할 수 없습니다."
 
-#: src/PrefsUnifiedDlg.cpp:582
+#: src/PrefsUnifiedDlg.cpp:611
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -1999,7 +1992,7 @@ msgstr ""
 "UDP 포트가 비활성화되어 있으면 Kad는 시작하지 않을 것입니다.\n"
 "UDP 포트를 활성화시키거나 Kad를 비활성화시키십시오."
 
-#: src/PrefsUnifiedDlg.cpp:587
+#: src/PrefsUnifiedDlg.cpp:616
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2009,11 +2002,11 @@ msgstr ""
 "지금 바로 어뮬을 재시작해야 합니다.\n"
 "만일 재시작하지 않는다면, 나쁜 일이 일어나도 불평하지 마십시오.\n"
 
-#: src/PrefsUnifiedDlg.cpp:587
+#: src/PrefsUnifiedDlg.cpp:616
 msgid "WARNING"
 msgstr "경고"
 
-#: src/PrefsUnifiedDlg.cpp:665
+#: src/PrefsUnifiedDlg.cpp:694
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2023,49 +2016,49 @@ msgstr ""
 "적어도 한개의 유효한 server.met파일을 가르키는 URL을 적으세요.\n"
 "URL을 입력하려면 채크박스 옆의 \"목록\"버튼을 클릭하세요."
 
-#: src/PrefsUnifiedDlg.cpp:794
+#: src/PrefsUnifiedDlg.cpp:835
 msgid "Temporary files"
 msgstr "임시 파일"
 
-#: src/PrefsUnifiedDlg.cpp:799
+#: src/PrefsUnifiedDlg.cpp:840
 msgid "Incoming files"
 msgstr "내려받은 파일"
 
-#: src/PrefsUnifiedDlg.cpp:804
+#: src/PrefsUnifiedDlg.cpp:845
 msgid "Online Signatures"
 msgstr "온라인 서명"
 
-#: src/PrefsUnifiedDlg.cpp:817
+#: src/PrefsUnifiedDlg.cpp:858
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "%s하기 위한 폴더를 선택하세요."
 
-#: src/PrefsUnifiedDlg.cpp:833
+#: src/PrefsUnifiedDlg.cpp:874
 msgid "Browse wav"
 msgstr "탐색 효과음"
 
-#: src/PrefsUnifiedDlg.cpp:834
+#: src/PrefsUnifiedDlg.cpp:875
 msgid "File wav (*.wav)|*.wav||"
 msgstr "웨이브 파일(*.wav)|*.wav||"
 
-#: src/PrefsUnifiedDlg.cpp:851
+#: src/PrefsUnifiedDlg.cpp:892
 msgid "Browse for videoplayer"
 msgstr "비디오재생을 위한 브라우즈"
 
-#: src/PrefsUnifiedDlg.cpp:855
+#: src/PrefsUnifiedDlg.cpp:896
 msgid "Select browser"
 msgstr "브라우저 선택"
 
-#: src/PrefsUnifiedDlg.cpp:861
+#: src/PrefsUnifiedDlg.cpp:902
 #, c-format
 msgid "Executable%s"
 msgstr "실행할수 있는 %s"
 
-#: src/PrefsUnifiedDlg.cpp:882
+#: src/PrefsUnifiedDlg.cpp:923
 msgid "Edit Serverlist"
 msgstr "서버 목록 편집"
 
-#: src/PrefsUnifiedDlg.cpp:883
+#: src/PrefsUnifiedDlg.cpp:924
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2073,79 +2066,79 @@ msgstr ""
 "server.met파일을 내려받을 URL을 추가하세요.\n"
 "각 행에 오직 하나의 URL을 넣으세요."
 
-#: src/PrefsUnifiedDlg.cpp:939
+#: src/PrefsUnifiedDlg.cpp:980
 #, fuzzy, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "갱신 지연: %d 초"
 msgstr[1] "갱신 지연: %d 초"
 
-#: src/PrefsUnifiedDlg.cpp:946
+#: src/PrefsUnifiedDlg.cpp:987
 #, fuzzy, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "평균 그래프 시간: %d 분"
 msgstr[1] "평균 그래프 시간: %d 분"
 
-#: src/PrefsUnifiedDlg.cpp:952
+#: src/PrefsUnifiedDlg.cpp:993
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "연결 그래프 크기: %d"
 
-#: src/PrefsUnifiedDlg.cpp:958
+#: src/PrefsUnifiedDlg.cpp:999
 #, fuzzy, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "갱신 지연: %d 초"
 msgstr[1] "갱신 지연: %d 초"
 
-#: src/PrefsUnifiedDlg.cpp:964
+#: src/PrefsUnifiedDlg.cpp:1005
 #, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "파일 버퍼 크기: %d 바이트"
 msgstr[1] "파일 버퍼 크기: %d 바이트"
 
-#: src/PrefsUnifiedDlg.cpp:970
+#: src/PrefsUnifiedDlg.cpp:1011
 #, fuzzy, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "올려주기 대기열 크기: %d 클라이언트"
 msgstr[1] "올려주기 대기열 크기: %d 클라이언트"
 
-#: src/PrefsUnifiedDlg.cpp:977
+#: src/PrefsUnifiedDlg.cpp:1018
 #, fuzzy, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "서버 연결 갱신 주기: %d 분"
 msgstr[1] "서버 연결 갱신 주기: %d 분"
 
-#: src/PrefsUnifiedDlg.cpp:979
+#: src/PrefsUnifiedDlg.cpp:1020
 msgid "Server connection refresh interval: Disabled"
 msgstr "서버 연결 갱신 주기: 비활성화"
 
-#: src/PrefsUnifiedDlg.cpp:1046
+#: src/PrefsUnifiedDlg.cpp:1087
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "`%s' 사건에 명령을 실행"
 
-#: src/PrefsUnifiedDlg.cpp:1049
+#: src/PrefsUnifiedDlg.cpp:1090
 msgid "Enable command execution on core"
 msgstr "코어에 명령 실행 활성화"
 
-#: src/PrefsUnifiedDlg.cpp:1057
+#: src/PrefsUnifiedDlg.cpp:1098
 msgid "Core command:"
 msgstr "코어 명령어:"
 
-#: src/PrefsUnifiedDlg.cpp:1066
+#: src/PrefsUnifiedDlg.cpp:1107
 msgid "Enable command execution on GUI"
 msgstr "GUI에 명령 실행 활성화"
 
-#: src/PrefsUnifiedDlg.cpp:1074
+#: src/PrefsUnifiedDlg.cpp:1115
 msgid "GUI command:"
 msgstr "GUI 명령어:"
 
-#: src/PrefsUnifiedDlg.cpp:1083
+#: src/PrefsUnifiedDlg.cpp:1124
 msgid "The following variables will be replaced:"
 msgstr "다음 변수들은 교체됩니다.:"
 
@@ -7038,6 +7031,12 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#, fuzzy
+#~ msgid "Read %u Kad contact"
+#~ msgid_plural "Read %u Kad contacts"
+#~ msgstr[0] "%u개의 Kad 접속을 읽었음"
+#~ msgstr[1] "%u개의 Kad 접속을 읽었음"
 
 #~ msgid "Disconnect from "
 #~ msgstr "다음으로부터 연결이 끊김 "
