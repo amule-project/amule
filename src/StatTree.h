@@ -36,32 +36,11 @@
  */
 
 
-#ifndef EC_REMOTE	// CLIENT_GUI
-
-// Try to determine sizeof(int)
-#if defined(__INT_MAX__) && defined(__LONG_MAX__)
-	#if __INT_MAX__ != __LONG_MAX__
-		#define USE_64BIT_ARCH
-	#endif
+#ifndef EC_REMOTE	// i.e. not CLIENT_GUI
+#	define VIRTUAL virtual
 #else
-	// #include <bits/wordsize.h> would be enough, but we shouldn't depend on
-	// non-standard includes. However, we still do it :)
-#ifndef _MSC_VER
-	#include <stdint.h>
+#	define VIRTUAL
 #endif
-	#ifdef __WORDSIZE
-		#if __WORDSIZE == 64
-			#define USE_64BIT_ARCH
-		#endif
-	#endif
-#endif
-// If we cannot determine wordsize, assume that we use 32bit arch.
-
-#define VIRTUAL virtual
-
-#else
-#define VIRTUAL
-#endif /* !EC_REMOTE / EC_REMOTE */
 
 
 #include <list>			// Needed for std::list
@@ -464,14 +443,15 @@ protected:
 
 
 /**
- * Counter-type tree item.
+ * Counter-type tree item template.
  *
  * Able to show percentage compared to parent, hide itself
  * when value is zero, and nice functions for changing the value.
  * stShowPercent and stHideIfZero flags take effect only on
  * this node.
  */
-class CStatTreeItemCounter : public CStatTreeItemBase
+template<typename _Tp>
+class CStatTreeItemCounterTmpl : public CStatTreeItemBase
 {
 public:
 	/**
@@ -479,7 +459,7 @@ public:
 	 *
 	 * @see CStatTreeItemBase::CStatTreeItemBase
 	 */
-	CStatTreeItemCounter(
+	CStatTreeItemCounterTmpl(
 		const wxString &label,
 		unsigned flags = stNone)
 	:
@@ -490,22 +470,22 @@ public:
 	/**
 	 * Retrieve counter value.
 	 */
-	uint64_t GetValue() const { return m_value; }
+	_Tp GetValue() const { return m_value; }
 
 	/**
 	 * Retrieve counter value.
 	 */
-	operator uint64_t() const { return m_value; }
+	operator _Tp() const { return m_value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void SetValue(uint64_t value) { m_value = value; }
+	void SetValue(_Tp value) { m_value = value; }
 
 	/**
 	 * Set counter to given value.
 	 */
-	void operator=(uint64_t value) { m_value = value; }
+	void operator=(_Tp value) { m_value = value; }
 
 	/**
 	 * Increase value by 1.
@@ -520,12 +500,12 @@ public:
 	/**
 	 * Increase value by given amount.
 	 */
-	void operator+=(uint64_t value) { m_value += value; }
+	void operator+=(_Tp value) { m_value += value; }
 
 	/**
 	 * Decrease value by given amount.
 	 */
-	void operator-=(uint64_t value) { m_value -= value; }
+	void operator-=(_Tp value) { m_value -= value; }
 
 	/**
 	 * Sets the desired display mode of value.
@@ -558,118 +538,19 @@ protected:
 	virtual	void AddECValues(CECTag *tag) const;
 
 	//! Actual value of the counter.
-	uint64_t m_value;
+	_Tp m_value;
 
 	//! Display mode of the value.
 	enum EDisplayMode m_displaymode;
 };
 
-// For speed reasons, we define a 32bit counter for 32bit archs.
-#ifndef USE_64BIT_ARCH
-/**
- * Counter-type tree item, with native-sized value.
- *
- * On 32bit arcs it's defined as a separate class, on
- * 64bit archs it is typedef'd to CStatTreeItemCounter.
- *
- * @see CStatTreeItemCounter
- */
-class CStatTreeItemNativeCounter : public CStatTreeItemBase
-{
-public:
+// Evil hack to find the type to be used in CStatTreeItemNativeCounter
+template<typename _Tp1, typename _Tp2> struct get_native_type { typedef uint32_t type; };
+template<typename _Tp> struct get_native_type<_Tp, _Tp> { typedef uint64_t type; };
 
-	/**
-	 * Constructor.
-	 *
-	 * @see CStatTreeItemCounter::CStatTreeItemCounter
-	 */
-	CStatTreeItemNativeCounter(
-		const wxString &label,
-		unsigned flags = stNone)
-	:
-	CStatTreeItemBase(label, flags),
-	m_value(0),
-	m_displaymode(dmDefault) {}
+typedef CStatTreeItemCounterTmpl<uint64_t>	CStatTreeItemCounter;
+typedef CStatTreeItemCounterTmpl<get_native_type<uint64_t, unsigned long>::type>	CStatTreeItemNativeCounter;
 
-	/**
-	 * Retrieve counter value.
-	 */
-	uint32_t GetValue() const { return m_value; }
-
-	/**
-	 * Retrieve counter value.
-	 */
-	operator uint32_t() const { return m_value; }
-
-	/**
-	 * Set counter to given value.
-	 */
-	void SetValue(uint32_t value) { m_value = value; }
-
-	/**
-	 * Set counter to given value.
-	 */
-	void operator=(uint32_t value) { m_value = value; }
-
-	/**
-	 * Increase value by 1.
-	 */
-	void operator++() { ++m_value; }
-
-	/**
-	 * Decrease value by 1.
-	 */
-	void operator--() { --m_value; }
-
-	/**
-	 * Increase value by given amount.
-	 */
-	void operator+=(uint32_t value) { m_value += value; }
-
-	/**
-	 * Decrease value by given amount.
-	 */
-	void operator-=(uint32_t value) { m_value -= value; }
-
-	/**
-	 * Sets the desired display mode of value.
-	 */
-	void SetDisplayMode(enum EDisplayMode mode) { m_displaymode = mode; }
-
-#ifndef AMULE_DAEMON
-	/**
-	 * @see CStatTreeItemCounter::GetDisplayString()
-	 */
-	virtual	wxString GetDisplayString() const;
-#endif
-
-	/**
-	 * @see CStatTreeItemCounter::IsVisible()
-	 */
-	virtual	bool IsVisible() const
-	{
-		return (m_flags & stHideIfZero) ? (m_value != 0) : true;
-	}
-
-protected:
-	/**
-	 * Add values to EC tag being generated.
-	 *
-	 * @param tag The tag to which values should be added.
-	 *
-	 * @see CStatTreeItemBase::AddECValues
-	 */
-	virtual	void AddECValues(CECTag *tag) const;
-
-	//! Actual value of the counter.
-	uint32_t m_value;
-
-	//! Display mode of the value.
-	enum EDisplayMode m_displaymode;
-};
-#else // using 64bit arch
-	typedef CStatTreeItemCounter CStatTreeItemNativeCounter;
-#endif /* USE_64BIT_ARCH */
 
 /**
  * A counter, which does not display its value :P
