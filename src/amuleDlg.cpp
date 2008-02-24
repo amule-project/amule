@@ -465,9 +465,9 @@ void CamuleDlg::OnPrefButton(wxCommandEvent& WXUNUSED(ev))
 	if (m_is_safe_state) {
 		if (m_prefsDialog == NULL) {
 			m_prefsDialog = new PrefsUnifiedDlg(this);
-			m_prefsDialog->TransferToWindow();
 		}
 		
+		m_prefsDialog->TransferToWindow();
 		m_prefsDialog->Show(true);
 		m_prefsDialog->Raise();
 	}
