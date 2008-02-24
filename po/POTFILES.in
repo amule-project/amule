@@ -8,7 +8,6 @@ src/FriendListCtrl.cpp
 src/SharedFilesCtrl.cpp
 src/UploadQueue.cpp
 src/kademlia/kademlia/SearchManager.cpp
-src/kademlia/routing/RoutingZone.cpp
 src/ListenSocket.cpp
 src/webserver/src/WebServer.cpp
 src/webserver/src/WebInterface.cpp
