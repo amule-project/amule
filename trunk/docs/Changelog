@@ -630,6 +630,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  would always be zero. This resolves bug #1060.
 		* Improved thread-safety of the AICH-sync thread on amuled,
 		  and prevented the possibility of deadlocks in a few cases.
+		* Fixed bug where the preferences dialog on the monolithic
+		  client would not be updated if the preferences had been
+		  changed via EC after the dialog had been first shown.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
