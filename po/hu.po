@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-02-25 03:31+0100\n"
-"PO-Revision-Date: 2008-02-21 23:59+0100\n"
+"PO-Revision-Date: 2008-02-25 22:50+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1649,46 +1649,52 @@ msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
+" 'Minden-platform' p2p ügyfél az eMule alapján \n"
+"\n"
 
 #: src/amuleDlg.cpp:447
 msgid " Website: http://www.amule.org \n"
-msgstr ""
+msgstr " Honlap: http://www.amule.org \n"
 
 #: src/amuleDlg.cpp:448
 msgid " Forum: http://forum.amule.org \n"
-msgstr ""
+msgstr " Fórum: http://forum.amule.org \n"
 
 #: src/amuleDlg.cpp:449
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
+" GYIK: http://wiki.amule.org\n"
+"\n"
 
 #: src/amuleDlg.cpp:450
 msgid " Contact: admin@amule.org (administrative issues) \n"
-msgstr ""
+msgstr " Kapcsolat: admin@amule.org (adminisztratív ügyek) \n"
 
 #: src/amuleDlg.cpp:451
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
+" Copyright (C) 2003-2008 aMule Team \n"
+"\n"
 
 #: src/amuleDlg.cpp:452
 msgid " Part of aMule is based on \n"
-msgstr ""
+msgstr " Az aMule részben a következőn alapul: \n"
 
 #: src/amuleDlg.cpp:453
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
-msgstr ""
+msgstr "Kademlia: Egyenrangú útvonal-megállapítás a XOR metrika alapján.\n"
 
 #: src/amuleDlg.cpp:454
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
-msgstr ""
+msgstr " Copyright (C) 2002 Petar Maymounkov\n"
 
 #: src/amuleDlg.cpp:455
 msgid " http://kademlia.scs.cs.nyu.edu\n"
-msgstr ""
+msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:517
 #: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:182
@@ -1702,37 +1708,30 @@ msgid "Status text"
 msgstr "Állapot"
 
 #: src/amuleDlg.cpp:666
-#, fuzzy
 msgid "ED2K: Connecting"
-msgstr "Kapcsolódás"
+msgstr "ED2K: Kapcsolódás"
 
 #: src/amuleDlg.cpp:670
-#, fuzzy
 msgid "ED2K: Disconnected"
-msgstr "Leválasztva"
+msgstr "ED2K: Leválasztva"
 
 #: src/amuleDlg.cpp:676
-#, fuzzy
 msgid "Kad: Firewalled"
-msgstr "Tűzfal mögött"
+msgstr "Kad: Tűzfal mögött"
 
 #: src/amuleDlg.cpp:680
-#, fuzzy
 msgid "Kad: Connected"
-msgstr "Csatlakozva"
+msgstr "Kad: Csatlakozva"
 
 #: src/amuleDlg.cpp:685
-#, fuzzy
 msgid "Kad: Connecting"
-msgstr "Kapcsolódás"
+msgstr "Kad: Kapcsolódás"
 
 #: src/amuleDlg.cpp:689
-#, fuzzy
 msgid "Kad: Off"
-msgstr " Kad: "
+msgstr "Kad: Nincs kapcsolat"
 
 #: src/amuleDlg.cpp:718
-#, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "Aktuális kapcsolódási kísérletek leállítása"
 
@@ -1741,9 +1740,8 @@ msgid "Disconnect"
 msgstr "Szétkapcsolás"
 
 #: src/amuleDlg.cpp:722
-#, fuzzy
 msgid "Disconnect from the currently connected networks"
-msgstr "Leválaszt a hálózatról."
+msgstr "Leválaszt az éppen kapcsolódott hálózatokról."
 
 #: src/amuleDlg.cpp:725 src/muuli_wdr.cpp:3276 src/muuli_wdr.cpp:3767
 #: src/muuli_wdr.cpp:3993 src/MuleTrayIcon.cpp:542
@@ -1751,9 +1749,8 @@ msgid "Connect"
 msgstr "Kapcsolatfelvétel"
 
 #: src/amuleDlg.cpp:726
-#, fuzzy
 msgid "Connect to the currently enabled networks"
-msgstr "Kapcsolódás a hálózathoz."
+msgstr "Kapcsolódás a pillanatnyilag engedélyezett hálózatokhoz."
 
 #: src/amuleDlg.cpp:769
 #, c-format
@@ -2813,11 +2810,11 @@ msgstr "A távoli felületről még nem lehet a server.met állományt frissíte
 
 #: src/Logger.cpp:267
 msgid "Error: "
-msgstr ""
+msgstr "Hiba: "
 
 #: src/Logger.cpp:267
 msgid "Warning: "
-msgstr ""
+msgstr "Figyelem: "
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
