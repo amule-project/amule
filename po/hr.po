@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-24 19:45+0100\n"
+"POT-Creation-Date: 2008-02-25 03:31+0100\n"
 "PO-Revision-Date: 2004-04-08 00:30+0100\n"
 "Last-Translator: Tea Lorenzmeier <tea1@gmx.net>\n"
 "Language-Team: www.aMule.org <forum@aMule.org>\n"
@@ -51,34 +51,34 @@ msgstr ""
 msgid "Succeeded! Connection established."
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3829
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3830
 msgid "Hashing"
 msgstr "Hashing"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3833
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3834
 msgid "Completing"
 msgstr "Zavrsavanje"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3836
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3837
 msgid "Complete"
 msgstr "Zavrseno"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3839
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3840
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:752
 msgid "Paused"
 msgstr "Pausirano"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3842
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3843
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:751
 msgid "Erroneous"
 msgstr "Sa greskom"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3849
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:750
 msgid "Downloading"
 msgstr "Downloading"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3851
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3852
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:749
 msgid "Waiting"
 msgstr "Cekanje"
@@ -134,7 +134,7 @@ msgstr ""
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2608 src/PartFile.cpp:2614 src/KnownFile.cpp:885
+#: src/PartFile.cpp:2609 src/PartFile.cpp:2615 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
@@ -3099,22 +3099,22 @@ msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
 msgstr[1] "Spaseni %i seeds izvora za poceti fajl: %s (%s)"
 
-#: src/PartFile.cpp:1047
+#: src/PartFile.cpp:1048
 #, c-format
 msgid "Partfile %s (%s) has no seeds file"
 msgstr "Poceti fajl %s (%s) nema seesd fajlova"
 
-#: src/PartFile.cpp:1056
+#: src/PartFile.cpp:1057
 #, c-format
 msgid "Partfile %s (%s) has a void seeds file"
 msgstr ""
 
-#: src/PartFile.cpp:1112
+#: src/PartFile.cpp:1113
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr ""
 
-#: src/PartFile.cpp:1130 src/PartFile.cpp:1158
+#: src/PartFile.cpp:1131 src/PartFile.cpp:1159
 #, fuzzy, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
@@ -3129,37 +3129,37 @@ msgstr[1] ""
 "Nadjen koruptan dio (%i) u %i pocetom fajlu %s - FileResultHash |%s| "
 "FileHash |%s|"
 
-#: src/PartFile.cpp:1175
+#: src/PartFile.cpp:1176
 #, c-format
 msgid "Found completed part (%i) in %s"
 msgstr ""
 
-#: src/PartFile.cpp:1212
+#: src/PartFile.cpp:1213
 #, c-format
 msgid "Finished rehashing %s"
 msgstr "Zavrseno rehashing %s"
 
-#: src/PartFile.cpp:2229
+#: src/PartFile.cpp:2230
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Neocekivana fajl greska prilikom zavrsavanja %s. Fajl pauziran"
 
-#: src/PartFile.cpp:2255
+#: src/PartFile.cpp:2256
 #, c-format
 msgid "Finished downloading: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2312
+#: src/PartFile.cpp:2313
 #, c-format
 msgid "Deleting file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:2373
+#: src/PartFile.cpp:2374
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
-#: src/PartFile.cpp:2378
+#: src/PartFile.cpp:2379
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3168,26 +3168,26 @@ msgstr ""
 "Upozorenje: Nemoguce hashovanje gotovog dijela - hashset nedovrsen (%s). Ovo "
 "ne smije da se desi"
 
-#: src/PartFile.cpp:3058
+#: src/PartFile.cpp:3059
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3143
+#: src/PartFile.cpp:3144
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3186
+#: src/PartFile.cpp:3187
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3845
+#: src/PartFile.cpp:3846
 msgid "Insufficient Diskspace"
 msgstr ""
 
-#: src/PartFile.cpp:3856 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
+#: src/PartFile.cpp:3857 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
 msgid "Stopped"
 msgstr "Stopirano"
 
