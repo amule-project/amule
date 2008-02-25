@@ -282,7 +282,7 @@ void CStatTreeItemSimple::AddECValues(CECTag *tag) const
 }
 
 
-/* CStatTreeItemCounter */
+/* CStatTreeItemCounterTmpl */
 
 #ifndef AMULE_DAEMON
 template<typename _Tp>
@@ -311,8 +311,8 @@ wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 }
 #endif
 
-template<>
-void CStatTreeItemCounterTmpl<uint64_t>::AddECValues(CECTag *tag) const
+template<typename _Tp>
+void CStatTreeItemCounterTmpl<_Tp>::AddECValues(CECTag *tag) const
 {
 	CECTag value(EC_TAG_STAT_NODE_VALUE, (uint64)m_value);
 	if (m_displaymode == dmBytes) {
@@ -321,32 +321,13 @@ void CStatTreeItemCounterTmpl<uint64_t>::AddECValues(CECTag *tag) const
 		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_ISTRING));
 		if ((m_flags & stShowPercent) && m_parent) {
 			CECTag tmp(EC_TAG_STAT_NODE_VALUE,
-				((double)m_value / ((CStatTreeItemCounterTmpl<uint64_t>*)m_parent)->m_value) * 100.0);
+				((double)m_value / ((CStatTreeItemCounterTmpl<_Tp>*)m_parent)->m_value) * 100.0);
 			tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_DOUBLE));
 			value.AddTag(tmp);
 		}
 	}
 	tag->AddTag(value);
 }
-
-template<>
-void CStatTreeItemCounterTmpl<uint32_t>::AddECValues(CECTag *tag) const
-{
-	CECTag value(EC_TAG_STAT_NODE_VALUE, (uint64)m_value);
-	if (m_displaymode == dmBytes) {
-		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_BYTES));
-	} else {
-		value.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_ISTRING));
-		if ((m_flags & stShowPercent) && m_parent) {
-			CECTag tmp(EC_TAG_STAT_NODE_VALUE,
-				((double)m_value / ((CStatTreeItemCounterTmpl<uint32_t>*)m_parent)->m_value) * 100.0);
-			tmp.AddTag(CECTag(EC_TAG_STAT_VALUE_TYPE, (uint8)EC_VALUE_DOUBLE));
-			value.AddTag(tmp);
-		}
-	}
-	tag->AddTag(value);
-}
-
 
 /* CStatTreeItemUlDlCounter */
 
