@@ -224,7 +224,7 @@ void CSearchDlg::OnSearchClosing(wxNotebookEvent& evt)
 }
 
 
-void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& evt)
+void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 {
 	int selection = m_notebook->GetSelection();
 
@@ -513,18 +513,6 @@ void CSearchDlg::StartNewSearch()
 					% params.typeText
 			);
 			break;
-		}
-		
-		if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxT("Any")) {
-			if (CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() != wxGetTranslation(params.typeText)) {
-				printf("Translation problem: %s(%d):\n\t'%s'\n\t'%s'\n\t'%s'\n", __FILE__, __LINE__,
-					(const char *)unicode2char(CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection()),
-					(const char *)unicode2char(wxGetTranslation(params.typeText)),
-					(const char *)unicode2char(params.typeText));
-			}
-			wxASSERT(/* Translation problem */
-				CastChild( IDC_TypeSearch, wxChoice )->GetStringSelection() ==
-				wxGetTranslation(params.typeText));
 		}
 	}
 
