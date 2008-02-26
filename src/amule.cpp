@@ -719,7 +719,6 @@ bool CamuleApp::OnInit()
 	downloadqueue	= new CDownloadQueue();
 	uploadqueue	= new CUploadQueue();
 	ipfilter	= new CIPFilter();
-	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 
 	// Creates all needed listening sockets
 	wxString msg;
@@ -727,8 +726,13 @@ bool CamuleApp::OnInit()
 		printf("\n%s\n", (const char *)unicode2char(msg));
 	}
 
-	// Create main dialog
+	// Create main dialog, or fork to background (daemon).
 	InitGui(geometry_enabled, geom_string);
+	
+	// Has to be created after the call to InitGui, as fork 
+	// (when using posix threads) only replicates the mainthread,
+	// and the UBT constructor creates a thread.
+	uploadBandwidthThrottler = new UploadBandwidthThrottler();
 	
 	// These must be initialized after the gui is loaded.
 	serverlist->Init();
