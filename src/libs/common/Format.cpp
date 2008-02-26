@@ -25,36 +25,29 @@
 #include "Format.h"
 
 
-/**
- * Returns true if the char is a format-type.
- */
-bool isTypeChar( wxChar c )
+//! Known type-modifiers. 
+enum Modifiers
 {
-	switch ( c ) {
-		case wxT('s'):		// String of characters
-		case wxT('u'):		// Unsigned decimal integer
-		case wxT('i'):		// Signed decimal integer
-		case wxT('d'):		// Signed decimal integer
-		case wxT('x'):		// Unsigned hexadecimal integer
-		case wxT('c'):		// Character
-		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
-		case wxT('f'):		// Decimal floating point
-		case wxT('F'):		// Decimal floating point
-		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
-		case wxT('o'):		// Unsigned octal
-		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
-		case wxT('g'):		// Use shorter %e or %f
-		case wxT('G'):		// Use shorter %E or %f
-		case wxT('p'):		// Not supported, still needs to be caught though
-		case wxT('n'):		// Not supported, still needs to be caught though
-			return true;
-	}
-
-	return false;
-}
+	//! No modifier field.
+	modNone,
+	//! Argument is interpreted as short int (integer types).
+	modShort,
+	//! Argument is interpreted as long int (interger types).
+	modLong,
+	//! Two 'long' modifieres, arguments is interpreted as long long (integer types).
+	modLongLong,
+	//! Argument is interpreted as long double (floating point types). Not supported.
+	modLongDouble
+};
 
 
-CFormat::Modifiers CFormat::getModifier( const wxString& str )
+/**
+ * Extracts modifiers from the argument.
+ *
+ * Note that this function will possibly return wrong results
+ * for malformed format strings.
+ */
+Modifiers getModifier(const wxString& str)
 {
 	switch ( (wxChar)str[str.Len() - 2]) {
 		case wxT('h'):		// short int (integer types).
@@ -73,137 +66,248 @@ CFormat::Modifiers CFormat::getModifier( const wxString& str )
 }
 
 
-CFormat::CFormat( const wxChar* str )
+/** Returns true if the char is a format-type. */
+bool isTypeChar(wxChar c)
 {
-	m_index = 0;
-	m_indexEnd = 0;
-	SetString( str );
+	switch (c) {
+		case wxT('s'):		// String of characters
+		case wxT('u'):		// Unsigned decimal integer
+		case wxT('i'):		// Signed decimal integer
+		case wxT('d'):		// Signed decimal integer
+		case wxT('c'):		// Character
+		case wxT('f'):		// Decimal floating point
+		case wxT('F'):		// Decimal floating point
+		case wxT('x'):		// Unsigned hexadecimal integer
+		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
+		case wxT('o'):		// Unsigned octal
+		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
+		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
+		case wxT('g'):		// Use shorter %e or %f
+		case wxT('G'):		// Use shorter %E or %f
+		case wxT('p'):		// Not supported, still needs to be caught though
+		case wxT('n'):		// Not supported, still needs to be caught though
+			return true;
+	}
+
+	return false;
+}
+
+/** Returns true if the char is a valid flag. */
+bool isFlagChar(wxChar c)
+{
+	switch (c) {
+		case wxT('+'):		// Include sign for integers
+		case wxT('-'):		// Left-align output
+		case wxT('#'):		// Alternate form, varies
+		case wxT(' '):		// Pad with spaces
+		case wxT('0'):		// Pad with zeros
+			return true;
+	}
+
+	return false;
+}
+
+/** Returns true if the char is an integer (for width + precision). */
+bool isIntChar(wxChar c)
+{
+	return ((c >= wxT('0')) && (c <= wxT('9')));
 }
 
 
-void CFormat::SetString( const wxChar* str )
+/** Returns true if the cahr is a valid length modifier. */
+bool isLengthChar(wxChar c)
 {
-	m_format = str;
-	ResetString();
+	switch (c) {
+		case wxT('h'):		// Short ('hh') and char ('h')
+		case wxT('l'):		// Long ('l') and long long ('ll')
+		case wxT('L'):		// Double long
+		case wxT('z'):		// size_t
+		case wxT('j'):		// intmax_t
+		case wxT('t'):		// ptrdiff_t
+			return true;
+	}
 
-	// Initialize to the first format-string.
-	if (!m_format.IsEmpty()) {
-		SetCurrentField( wxEmptyString );
+	// Catches widths, precisons and zero-padding
+	return (c >= wxT('0')) && (c <= wxT('9'));
+}
+
+
+CFormat::CFormat(const wxChar* str)
+{
+	m_fieldStart = 0;
+	m_fieldLength = 0;
+	m_skipCount = 0;
+	m_format = str;
+
+	if (m_format.Length()) {
+		SetCurrentField(wxEmptyString);
 	}
 }
 
+
 bool CFormat::IsReady() const
 {
-	return (m_index == m_format.Len());
+	return (m_fieldStart == m_format.Length());
 }
 
 
-const wxString& CFormat::GetString() const
+wxString CFormat::GetString() const
 {
-	MULE_VALIDATE_STATE(IsReady(), wxT("Called GetString() before all values were passed: ") + m_format);
-	
-	return m_result;
+	if (IsReady()) {
+		return m_result;
+	} else {
+		wxFAIL_MSG(wxT("Called GetString() before all values were passed: ") + m_format);
+
+		// Return as much as possible ...
+		return m_result + m_format.Mid(m_fieldStart);
+	}
 }
 
 
-void CFormat::ResetString()
+void CFormat::SetCurrentField(const wxString& value)
 {
-	m_index = 0;
-	m_indexEnd = 0;
-	m_result.Clear();
-	m_result.Alloc( m_format.Len() * 2 );	
+	wxCHECK_RET(m_fieldStart < m_format.Length(),
+		wxT("Setting field in already completed string: ") + m_format);
+
+	if (value.Length()) {
+		m_result += value;
+	}
+
+	enum {
+		PosNone = 0,
+		PosStart,
+		PosFlags,
+		PosWidth,
+		PosPrecision,
+		PosLength,
+		PosEnd
+	} pos = PosNone;
+
+	// Format strings are expected to follow the folllowing structure:
+	// 	%[Flags][Width][.Precision][Length]<Type>
+	for (unsigned i = m_fieldStart + m_fieldLength; i < m_format.Length(); ++i) {
+		const wxChar c = m_format[i];
+
+		if (pos >= PosStart) {
+			m_fieldLength++;
+
+			if ((pos <= PosFlags) && isFlagChar(c)) {
+				pos = PosFlags;
+			} else if ((pos <= PosWidth) && isIntChar(c)) {
+				pos = PosWidth;
+			} else if ((pos < PosPrecision) && (c == wxT('.'))) {
+				pos = PosPrecision;
+			} else if ((pos == PosPrecision) && isIntChar(c)) {
+				// Nothing to do ...
+			} else if ((pos < PosLength) && isLengthChar(c)) {
+				pos = PosLength;
+			} else if ((pos == PosLength) && isLengthChar(c) && (c == m_format[i - 1])) {
+				// Nothing to do ...
+			} else if ((pos <= PosLength) && isTypeChar(c)) {
+				pos = PosEnd;
+				break;
+			} else if ((pos <= PosLength) && (c == wxT('%'))) {
+				// Append the %*% to the result
+				m_result += wxT("%");
+				
+				pos = PosNone;
+			} else {
+				// Field is broken ...
+				break;
+			}
+		} else if (c == wxT('%')) {
+			const unsigned offset = m_fieldStart + m_fieldLength;
+			// If there was anything before this, then prepend it.
+			if (offset < i) {
+				m_result += m_format.Mid(offset, i - offset);
+			}
+
+			// Starting a new format string
+			pos = PosStart;
+			m_fieldStart = i;
+			m_fieldLength = 1;
+		} else {
+			// Normal text, nothing to do ...
+		}
+	}
+
+	if (pos == PosNone) {
+		// No fields left
+		m_result += m_format.Mid(m_fieldStart + m_fieldLength);
+		
+		m_fieldStart = m_fieldLength = m_format.Length();
+	} else if (pos != PosEnd) {
+		// A partial field was found ...
+		wxFAIL_MSG(wxT("Invalid field in format string: ") + m_format);
+		wxASSERT_MSG(m_fieldStart + m_fieldLength <= m_format.Length(),
+			wxT("Invalid field-start/length in format string: ") + m_format);
+
+		// Prepend the parsed part of the format-string
+		m_result += m_format.Mid(m_fieldStart, m_fieldLength);
+
+		// Return an empty string the next time GetCurrentField is called
+		m_skipCount++;
+
+		// Anything left to do?
+		if (!IsReady()) {
+			// Find the next format string
+			SetCurrentField(wxEmptyString);
+		}
+	}
 }
 
 
 wxString CFormat::GetCurrentField()
 {
-	MULE_VALIDATE_STATE(m_index < m_format.Len(), wxT("Value passed to already completed string: ") + m_format);
+	wxCHECK_MSG(m_fieldStart < m_format.Length(), wxEmptyString,
+		wxT("Passing argument to already completed string: ") + m_format);
+	wxASSERT_MSG(m_fieldStart + m_fieldLength <= m_format.Length(),
+		wxT("Invalid field-start/length in format string: ") + m_format);
 
-	m_indexEnd = m_index + 1;
-	for (; m_indexEnd < m_format.Len(); m_indexEnd++) {
-		wxChar c = m_format.GetChar(m_indexEnd);
+	if (m_skipCount) {
+		// The current field was invalid, so we skip it.
+		m_skipCount--;
 
-		MULE_VALIDATE_STATE(c != wxT('*'), wxT("'*' precision not supported: ") + m_format);
-		
-		if (isTypeChar(c)) {
-			break;
-		}
-	}
-	
-	MULE_VALIDATE_STATE(m_indexEnd < m_format.Len(), wxT("Invalid format string, unknown type: ") + m_format);
-
-	m_indexEnd++;
-
-	// Extract the field
-	return m_format.Mid(m_index, m_indexEnd - m_index);
-}
-
-
-CFormat& CFormat::SetCurrentField(const wxString& str)
-{
-	m_result += str;
-	
-	size_t length = m_format.Length();
-	
-	MULE_ASSERT_MSG(m_index != length, wxT("Invalid operation: SetCurrentField on completed string: ") + m_format);
-	MULE_ASSERT(m_index <= m_indexEnd);
-	
-	// Locate the next format-string
-	const wxChar* start = (const wxChar*)m_format.c_str() + m_indexEnd;
-	const wxChar* end = (const wxChar*)m_format.c_str() + length;
-	const wxChar* ptr = start;
-
-	for ( ; ptr < end; ++ptr ) {
-		if ( *ptr == wxT('%') ) {
-			MULE_VALIDATE_STATE(ptr + 1 < end, wxT("Incomplete format-string found: ") + m_format);
-			
-			if ( *(ptr + 1) != wxT('%') ) {
-				break;
-			} else {
-				m_result.Append( start, ptr - start + 1 );
-				start = ptr + 2;
-				++ptr;
-			}
-		}
-	}
-		
-	if ( ptr > start ) {
-		m_result.Append( start, ptr - start );
+		return wxEmptyString;
 	}
 
-	m_index = ptr - m_format.c_str();
-
-	return *this;
+	return m_format.Mid(m_fieldStart, m_fieldLength);
 }
 
 
 wxString CFormat::GetIntegerField(const wxChar* fieldType)
 {
-	wxString field = GetCurrentField();
-	wxChar type = field.Last();
+	const wxString field = GetCurrentField();
+	if (field.IsEmpty()) {
+		// Invalid or missing field ...
+		return field;
+	}
 
-	// Drop type and modifier
-	while (isalpha(field.Last())) {
-		field.RemoveLast();
+	// Drop type and length
+	wxString newField = field;
+	while (isalpha(newField.Last())) {
+		newField.RemoveLast();
 	}
 	
 	// Set the correct integer type
-	field += fieldType;
+	newField += fieldType;
 
-	switch (type) {
+	switch (field.Last()) {
 		case wxT('o'):		// Unsigned octal
 		case wxT('x'):		// Unsigned hexadecimal integer
 		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)
 			// Override the default type
-			field.Last() = type;
+			newField.Last() = field.Last();
 		
 		case wxT('d'):		// Signed decimal integer
 		case wxT('i'):		// Signed decimal integer
 		case wxT('u'):		// Unsigned decimal integer
-			return field;
+			return newField;
 		
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Integer value passed to non-integer format string: ") + m_format);
+			wxFAIL_MSG(wxT("Integer value passed to non-integer format string: ") + m_format);
+			SetCurrentField(field);
+			return wxEmptyString;
 	}
 }
 
@@ -211,7 +315,10 @@ wxString CFormat::GetIntegerField(const wxChar* fieldType)
 CFormat& CFormat::operator%(double value)
 {
 	wxString field = GetCurrentField();
-	
+	if (field.IsEmpty()) {
+		return *this;
+	}
+
 	switch ( (wxChar)field.Last() ) {
 		case wxT('e'):		// Scientific notation (mantise/exponent) using e character
 		case wxT('E'):		// Scientific notation (mantise/exponent) using E character
@@ -219,32 +326,70 @@ CFormat& CFormat::operator%(double value)
 		case wxT('F'):		// Decimal floating point
 		case wxT('g'):		// Use shorter %e or %f
 		case wxT('G'):		// Use shorter %E or %f
-			MULE_VALIDATE_PARAMS(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format: ") + m_format);
+			wxASSERT_MSG(getModifier(field) == modNone, wxT("Invalid modifier specified for floating-point format: ") + m_format);
 			
-			return SetCurrentField(wxString::Format(field, value));
+			SetCurrentField(wxString::Format(field, value));
+			break;
 		
 		default:
-			MULE_VALIDATE_PARAMS(false, wxT("Floating-point value passed to non-float format string: ") + m_format);
+			wxFAIL_MSG(wxT("Floating-point value passed to non-float format string: ") + m_format);
+			SetCurrentField(field);
 	}
+
+	return *this;
 }
 
 
 CFormat& CFormat::operator%(wxChar value)
 {
 	wxString field = GetCurrentField();
-	MULE_VALIDATE_PARAMS(field.Last() == wxT('c'), wxT("Char value passed to non-char format string: ") + m_format);
 	
-	return SetCurrentField(wxString::Format(field, value));
+	if (field.IsEmpty()) {
+		// We've already asserted in GetCurrentField.
+	} else if (field.Last() != wxT('c')) {
+		wxFAIL_MSG(wxT("Char value passed to non-char format string: ") + m_format);
+		SetCurrentField(field);
+	} else {
+		SetCurrentField(wxString::Format(field, value));
+	}
+
+	return *this;
+}
+
+
+CFormat& CFormat::operator%(signed long long value)
+{
+	wxString field = GetIntegerField(wxLongLongFmtSpec  wxT("i"));
+	if (!field.IsEmpty()) {
+		SetCurrentField(wxString::Format(field, value));
+	}
+
+	return *this;
+}
+
+
+CFormat& CFormat::operator%(unsigned long long value)
+{
+	wxString field = GetIntegerField(wxLongLongFmtSpec  wxT("u"));
+	if (!field.IsEmpty()) {
+		SetCurrentField(wxString::Format(field, value));
+	}
+
+	return *this;
 }
 
 
 CFormat& CFormat::operator%(const wxString& val)
 {
 	wxString field = GetCurrentField();
-	MULE_VALIDATE_PARAMS(field.Last() == wxT('s'), wxT("String value passed to non-string format string:") + m_format);
 	
-	// Check if a max-length is specified
-	if (field.GetChar(1) == wxT('.')) {
+	if (field.IsEmpty()) {
+		// We've already asserted in GetCurrentField
+	} else if (field.Last() != wxT('s')) {
+		wxFAIL_MSG(wxT("String value passed to non-string format string:") + m_format);
+		SetCurrentField(field);
+	} else if (field.GetChar(1) == wxT('.')) {
+		// A max-length is specified
 		wxString size = field.Mid( 2, field.Len() - 3 );
 		long lSize = 0;
 
@@ -252,13 +397,15 @@ CFormat& CFormat::operator%(const wxString& val)
 		if ((size.IsEmpty() || size.ToLong(&lSize)) && (lSize >= 0)) {
 			SetCurrentField(val.Left(lSize));
 		} else {
-			MULE_VALIDATE_STATE(false, wxT("Invalid value found in 'precision' field: ") + m_format);
+			wxFAIL_MSG(wxT("Invalid value found in 'precision' field: ") + m_format);
+			SetCurrentField(field);
 		}
 	} else if (field.GetChar(1) == wxT('s')) {
 		// No limit on size, just set the string
 		SetCurrentField(val);
 	} else {
-		MULE_VALIDATE_STATE(false, wxT("Malformed string format field: ") + m_format);
+		SetCurrentField(field);
+		wxFAIL_MSG(wxT("Malformed string format field: ") + m_format);
 	}
 
 	return *this;

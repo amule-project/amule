@@ -70,10 +70,25 @@ struct CTestFailureException : public std::exception
 
 	/** Prints the context backtrace for the location where the exception was thrown. */
 	void PrintBT() const;
+
+	virtual const char* what () const throw ();
 private:
 	//! Pointer to struct containing a snapshot of the contexts
 	//! taken at the time the exception was created.
 	struct BTList* m_bt;
+
+	//! The message passed in the constructor.
+	std::string m_message;
+};
+
+/** This exception is raised if an wxASSERT fails. */
+struct CAssertFailureException : public CTestFailureException
+{
+public:
+	CAssertFailureException(const wxString& msg, const wxChar* file, long lineNumber)
+		: CTestFailureException(msg, file, lineNumber)
+	{
+	}
 };
 
 
@@ -292,7 +307,11 @@ inline wxString StringFrom(signed long long value)
 	try { \
 		{ call; }\
 		THROW_TEST_FAILURE(message); \
-	} catch (const type&) {}
+	} catch (const type&) { \
+	} catch (const std::exception& e) { \
+		THROW_TEST_FAILURE(wxString::FromAscii(e.what())); \
+	}
+	
 
 
 /**

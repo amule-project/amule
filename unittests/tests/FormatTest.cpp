@@ -67,7 +67,10 @@ TEST(Format, ConstructorAndGetString)
 		// Simple string with one format field
 		CFormat fmt4(wxT("a %i c"));
 		ASSERT_FALSE(fmt4.IsReady());
-		ASSERT_RAISES(CInvalidStateEx, fmt4.GetString());
+		ASSERT_RAISES(CAssertFailureException, fmt4.GetString());
+
+		CAssertOff null;
+		ASSERT_EQUALS(wxT("a %i c"), fmt4.GetString());
 	}
 }
 
@@ -79,19 +82,22 @@ TEST(Format, SetStringAndGetString)
 	ASSERT_EQUALS(wxT(""), format.GetString());
 
 	// Empty string should be valid
-	format.SetString(wxT(""));
+	format = CFormat(wxT(""));
 	ASSERT_TRUE(format.IsReady());
 	ASSERT_EQUALS(wxT(""), format.GetString());
 
 	// Simple string with no format fields
-	format.SetString(wxT("a b c"));
+	format = CFormat(wxT("a b c"));
 	ASSERT_TRUE(format.IsReady());
 	ASSERT_EQUALS(wxT("a b c"), format.GetString());
 
 	// Simple string with one format field
-	format.SetString(wxT("a %i c"));
+	format = CFormat(wxT("a %i c"));
 	ASSERT_FALSE(format.IsReady());
-	ASSERT_RAISES(CInvalidStateEx, format.GetString());
+	ASSERT_RAISES(CAssertFailureException, format.GetString());
+
+	CAssertOff null;
+	ASSERT_EQUALS(wxT("a %i c"), format.GetString());
 }
 
 
@@ -236,22 +242,6 @@ TEST(Format, InjectNULLString)
 }
 
 
-TEST(Format, ResetString)
-{
-	CFormat fmt(wxT("- %d -"));
-	fmt % 1;
-
-	ASSERT_TRUE(fmt.IsReady());
-	ASSERT_EQUALS(wxT("- 1 -"), fmt.GetString());
-
-	fmt.ResetString();
-	ASSERT_FALSE(fmt.IsReady());
-	fmt % 2;
-	
-	ASSERT_EQUALS(wxT("- 2 -"), fmt.GetString());
-}
-
-
 TEST(Format, MultipleFields)
 {
 	{
@@ -313,18 +303,39 @@ TEST(Format, EscapedPercentageSign)
 
 TEST(Format, MalformedFields)
 {
-	// Incomplete format string
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%")));
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %")));
+	{
+		// Incomplete format string
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%")));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT(" -- %")));
 
-	// Non-existing type
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%q")) % 1);
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %q")) % 1.0f );
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT(" -- %q -- ")) % wxT("1"));
+		// Non-existing type
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%q")) % 1);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT(" -- %q")) % 1.0f );
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT(" -- %q -- ")) % wxT("1"));
 
-	// Invalid string length
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%.qs")) % wxT(""));
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%.-10s")) % wxT(""));
+		// Invalid string length
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%.qs")) % wxT(""));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%.-10s")) % wxT(""));
+	}
+
+	{
+		CAssertOff null;
+		
+		ASSERT_EQUALS(wxT("%"), CFormat(wxT("%")));
+		ASSERT_EQUALS(wxT(" -- %"), CFormat(wxT(" -- %")));
+
+		// Non-existing type
+		ASSERT_EQUALS(wxT("%q"), CFormat(wxT("%q")) % 1);
+		ASSERT_EQUALS(wxT(" -- %q"), CFormat(wxT(" -- %q")) % 1.0f );
+		ASSERT_EQUALS(wxT(" -- %q -- "), CFormat(wxT(" -- %q -- ")) % wxT("1"));
+
+		// Invalid string length
+		ASSERT_EQUALS(wxT("%.qs"), CFormat(wxT("%.qs")) % wxT(""));
+		ASSERT_EQUALS(wxT("%.-10s"), CFormat(wxT("%.-10s")) % wxT(""));
+
+		// Wrong and right arguments 
+		ASSERT_EQUALS(wxT("%s -- 17"), CFormat(wxT("%s -- %i")) % 1 % 17);
+	}	
 }
 
 
@@ -332,12 +343,22 @@ TEST(Format, NotReady)
 {
 	CFormat fmt(wxT("-- %s - %d"));
 	ASSERT_FALSE(fmt.IsReady());
-	ASSERT_RAISES(CInvalidStateEx, fmt.GetString());
+	ASSERT_RAISES(CAssertFailureException, fmt.GetString());
+
+	{
+		CAssertOff null;
+		ASSERT_EQUALS(wxT("-- %s - %d"), fmt);
+	}
 
 	fmt % wxT("foo");
 
 	ASSERT_FALSE(fmt.IsReady());
-	ASSERT_RAISES(CInvalidStateEx, fmt.GetString());
+	ASSERT_RAISES(CAssertFailureException, fmt.GetString());
+
+	{
+		CAssertOff null;
+		ASSERT_EQUALS(wxT("-- foo - %d"), fmt);
+	}
 
 	fmt % 42;
 
@@ -348,29 +369,47 @@ TEST(Format, NotReady)
 
 TEST(Format, WrongTypes)
 {
-	// Entirely wrong types:
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % 1);
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % 1.0f);
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%s")) % wxT('1'));
-	
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % 1);
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % wxT('1'));
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%f")) % wxT("1"));
+	{
+		// Entirely wrong types:
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%s")) % 1);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%s")) % 1.0f);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%s")) % wxT('1'));
+		
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%f")) % 1);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%f")) % wxT('1'));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%f")) % wxT("1"));
 
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % 1.0f);
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%d")) % wxT("1"));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%d")) % 1.0f);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%d")) % wxT("1"));
+	}
 
-	
-	// Type may not contain a valid value for the format:
+	{
+		CAssertOff null;
+
+		ASSERT_EQUALS(wxT("-- %s -- 42 --"), CFormat(wxT("-- %s -- %u --")) % 1 % 42);
+		ASSERT_EQUALS(wxT("-- %f -- 42 --"), CFormat(wxT("-- %f -- %u --")) % 1 % 42);
+		ASSERT_EQUALS(wxT("-- %d -- 42 --"), CFormat(wxT("-- %d -- %u --")) % 1.0f % 42);
+	}
 }
 
 
 TEST(Format, NotSupported)
 {
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%*d")) % 1);
-	ASSERT_RAISES(CInvalidStateEx, CFormat(wxT("%*s")) % wxT(""));
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%p")) % wxT(""));
-	ASSERT_RAISES(CInvalidParamsEx, CFormat(wxT("%n")) % wxT(""));
+	{
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%*d")) % 1);
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%*s")) % wxT(""));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%p")) % wxT(""));
+		ASSERT_RAISES(CAssertFailureException, CFormat(wxT("%n")) % wxT(""));
+	}
+
+	{		
+		CAssertOff null;
+
+		ASSERT_EQUALS(wxT("%*d"), CFormat(wxT("%*d")) % 1);
+		ASSERT_EQUALS(wxT("%*s"), CFormat(wxT("%*s")) % wxT(""));
+		ASSERT_EQUALS(wxT("%p"), CFormat(wxT("%p")) % wxT(""));
+		ASSERT_EQUALS(wxT("%n"), CFormat(wxT("%n")) % wxT(""));
+	}
 }
 
 
@@ -382,10 +421,15 @@ TEST(Format, Overfeeding)
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 		
-	ASSERT_RAISES(CInvalidStateEx, fmt % 1);
-	ASSERT_RAISES(CInvalidStateEx, fmt % 1.0f);
-	ASSERT_RAISES(CInvalidStateEx, fmt % wxT("1"));
+	ASSERT_RAISES(CAssertFailureException, fmt % 1);
+	ASSERT_TRUE(fmt.IsReady());
+	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 
+	ASSERT_RAISES(CAssertFailureException, fmt % 1.0f);
+	ASSERT_TRUE(fmt.IsReady());
+	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
+
+	ASSERT_RAISES(CAssertFailureException, fmt % wxT("1"));
 	ASSERT_TRUE(fmt.IsReady());
 	ASSERT_EQUALS(wxT("1 - 2"), fmt.GetString());
 }

@@ -57,7 +57,7 @@ public:
 			desc << msg;
 		}
 
-		throw CTestFailureException(desc, file, line);
+		throw CAssertFailureException(desc, file, line);
 	}
 
 	void OnUnhandledException() {
