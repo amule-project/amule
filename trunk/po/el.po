@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2007-12-20 04:19-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -601,11 +601,11 @@ msgstr "Μετάγλωτιση των σελίδων PHP σε κάθε αίτη�
 msgid "aMule Web Server"
 msgstr ""
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr ""
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr ""
 
@@ -2843,7 +2843,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr ""
 
@@ -6401,7 +6401,7 @@ msgstr ""
 "Το ελάχιστο μέγεθος πρέπει να είναι μικρότερο από το μέγιστο. Το μέγιστο "
 "μέγεθος θα αγνοηθεί."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Προειδοποίηση ψαξίματος"
 

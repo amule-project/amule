@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule-eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2007-04-30 13:13+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <librezale@librezale.org>\n"
@@ -597,11 +597,11 @@ msgstr "PHP orrialdeak eskakizun bakoitzean birkonpilatu"
 msgid "aMule Web Server"
 msgstr "aMule Web-a Zerbitzaria"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Ez dago erabilgarri"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Inoiz ere ez"
 
@@ -2892,7 +2892,7 @@ msgstr "Deskargatu"
 msgid "Category"
 msgstr "Kategoria"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Nagusia"
 
@@ -6560,7 +6560,7 @@ msgstr ""
 "Gutxienezko tamaina gehienezkoa baino txikiagoa izan behar da. Gehienezkoa "
 "alde batetara utziko da."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Bilaketa oharra"
 

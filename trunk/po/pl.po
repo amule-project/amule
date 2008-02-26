@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-01-19 18:26+0100\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -594,11 +594,11 @@ msgstr "Przekompiluj strony PHP przy każdym żądaniu"
 msgid "aMule Web Server"
 msgstr "Serwer WWW aMule"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Niedostępny"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Nigdy"
 
@@ -2887,7 +2887,7 @@ msgstr "Pobieranie"
 msgid "Category"
 msgstr "Kategoria"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Główne"
 
@@ -6570,7 +6570,7 @@ msgstr "QR: %u"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min. rozmiar musi być mniejszy od maks. Zignorowano maks. rozmiar."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Ostrzeżenie wyszukiwania"
 

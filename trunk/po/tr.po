@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-01-10 09:30+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team:  <tr@li.org>\n"
@@ -589,11 +589,11 @@ msgstr "Her istemde PHP sayfalarını yeniden oluştur"
 msgid "aMule Web Server"
 msgstr "aMule Web  Sunucusu"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Devredışı"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Hiç"
 
@@ -2868,7 +2868,7 @@ msgstr "İndir(me)"
 msgid "Category"
 msgstr "Kategori"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Ana"
 
@@ -6546,7 +6546,7 @@ msgstr ""
 "En küçük boyut, en büyük boyuttan küçük olmalıdır. En büyük boyut gözardı "
 "ediliyor."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Arama uyarısı."
 
