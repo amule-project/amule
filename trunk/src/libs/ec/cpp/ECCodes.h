@@ -308,6 +308,7 @@ enum ECTagNames {
 			EC_TAG_STATTREE_NODE                      = 0x1B06,
 			EC_TAG_STAT_NODE_VALUE                    = 0x1B07,
 			EC_TAG_STAT_VALUE_TYPE                    = 0x1B08,
+			EC_TAG_STATTREE_NODEID                    = 0x1B09,
 		EC_TAG_PREFS_SECURITY                     = 0x1C00,
 			EC_TAG_SECURITY_CAN_SEE_SHARES            = 0x1C01,
 			EC_TAG_IPFILTER_CLIENTS                   = 0x1C02,

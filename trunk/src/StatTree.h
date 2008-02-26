@@ -106,6 +106,8 @@ typedef std::list<CStatTreeItemBase*>::iterator	StatTreeItemIterator;
 
 class CECTag;
 
+uint32_t NewStatTreeItemId();
+
 
 /**
  * Base tree item class
@@ -122,7 +124,8 @@ public:
 	 * @param flags Flags to use.
 	 */
 	CStatTreeItemBase(const wxString &label, unsigned flags = stNone)
-		: m_label(label), m_parent(NULL), m_flags(flags), m_id(0)
+		: m_label(label), m_parent(NULL), m_flags(flags), m_id(0),
+		m_uniqueid(NewStatTreeItemId())
 		{}
 #else
 	/**
@@ -130,8 +133,8 @@ public:
 	 *
 	 * @param label	Visible text for the item.
 	 */
-	CStatTreeItemBase(const wxString &label)
-		: m_label(label)
+	CStatTreeItemBase(const wxString &label, uint32_t uniqueid)
+		: m_label(label), m_uniqueid(uniqueid)
 		{}
 
 	/**
@@ -259,6 +262,11 @@ public:
 	 * core tree while updating the GUI tree.
 	 */
 	wxMutex& GetLock() { return m_lock; }
+
+	/**
+	 * Returns the unique ID of this node.
+	 */
+	uint32_t GetUniqueId() const { return m_uniqueid; }
 #endif /* !AMULE_DAEMON */
 
 	/**
@@ -313,6 +321,9 @@ private:
 	// (needed for the stCapChildren flag)
 	uint32_t m_visible_counter;
 #endif
+
+	//! Unique ID of this node.
+	uint32_t m_uniqueid;
 
 	//! Children of this node.
 	std::list<CStatTreeItemBase*>	m_children;
