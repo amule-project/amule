@@ -28,6 +28,10 @@
 
 #include <wx/panel.h>		// Needed for wxPanel
 
+#include <set>			// Needed for std::set
+
+typedef std::set<uint32_t>	NodeIdSet;
+
 
 class COScopeCtrl;
 class CStatistics;
@@ -53,7 +57,8 @@ public:
 	void ResetAveragingTime();
 	void ShowStatistics(bool init = false);
 	void SetARange(bool SetDownload, int maxValue);
-	void FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& StatsGUITree);
+	void FillTree(CStatTreeItemBase* statssubtree, wxTreeItemId& StatsGUITree, const NodeIdSet& expandednodes);
+	void GetExpandedNodes(NodeIdSet& nodeset, const wxTreeItemId& root);
 	void Init();
 	void InitTree();
 	void InitGraphs();

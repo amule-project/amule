@@ -933,7 +933,7 @@ m_conn(conn)
 	s_start_time = GetTickCount64();
 
 	// Init Tree
-	s_statTree = new CStatTreeItemBase(_("Statistics"));
+	s_statTree = new CStatTreeItemBase(_("Statistics"), 0);
 
 	// Clear stat data container
 	for (int i = 0; i < sdTotalItems; ++i) {

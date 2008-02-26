@@ -45,11 +45,22 @@
 	#include <ec/cpp/ECSpecialTags.h>	// Needed for CEC_StatTree_Node_Tag
 #endif
 
+
+#ifndef EC_REMOTE
+uint32_t NewStatTreeItemId()
+{
+	static uint32_t lastid = 0;
+
+	return ++lastid;
+}
+#endif
+
 /* CStatTreeItemBase */
 
 #ifdef EC_REMOTE
 CStatTreeItemBase::CStatTreeItemBase(const CECTag *tag)
 	: m_label(((CEC_StatTree_Node_Tag*)tag)->GetDisplayString())
+	  , m_uniqueid(tag->GetTagByNameSafe(EC_TAG_STATTREE_NODEID)->GetInt())
 {
 	wxASSERT(tag->GetTagName() == EC_TAG_STATTREE_NODE);
 
@@ -191,6 +202,7 @@ CECTag *CStatTreeItemBase::CreateECTag(uint32_t max_children)
 	if (IsVisible()) {
 		wxMutexLocker lock(m_lock);
 		CECTag *tag = new CECTag(EC_TAG_STATTREE_NODE, m_label);
+		tag->AddTag(CECTag(EC_TAG_STATTREE_NODEID, m_uniqueid));
 		AddECValues(tag);
 		m_visible_counter = max_children - 1;
 		for (std::list<CStatTreeItemBase*>::const_iterator it = m_children.begin();
