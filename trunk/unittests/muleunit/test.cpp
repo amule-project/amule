@@ -58,7 +58,8 @@ namespace muleunit {
 
 
 CTestFailureException::CTestFailureException(const wxString& msg, const wxChar* file, long lineNumber)
-	: m_bt(new BTList(g_backtrace))
+	: m_message(msg.ToAscii())
+	, m_bt(new BTList(g_backtrace))
 {
 	m_bt->snapshot.push_back(BTEntry(file, lineNumber, msg));
 }
@@ -83,6 +84,12 @@ void CTestFailureException::PrintBT() const
 			it->line,
 			it->msg.c_str());
 	}
+}
+
+
+const char* CTestFailureException::what () const throw ()
+{
+	return m_message.c_str();
 }
 
 
