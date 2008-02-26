@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-01-06 15:03+0100\n"
 "Last-Translator: mad_soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -603,11 +603,11 @@ msgstr "Recompila páginas PHP para otra solicitud"
 msgid "aMule Web Server"
 msgstr "Servidor web aMule"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "No disponible"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Nunca"
 
@@ -2889,7 +2889,7 @@ msgstr "Descarga"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Principal"
 
@@ -6587,7 +6587,7 @@ msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "El tamaño mínimo debe ser menor al tamaño máximo. Tamaño máximo ignorado."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Alerta de búsqueda"
 

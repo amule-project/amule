@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-01-17 11:42+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
@@ -603,11 +603,11 @@ msgstr "Ricompila pagine PHP ad ogni richiesta"
 msgid "aMule Web Server"
 msgstr "aMule Web Server"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Non disponibile"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Mai"
 
@@ -2905,7 +2905,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Categoria"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Principale"
 
@@ -6619,7 +6619,7 @@ msgstr "QR: %u"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min size deve essere piu' piccola di max size. Ignoro max size."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Search warning"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-02-24 19:39+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -589,11 +589,11 @@ msgstr "Loo PHP lehed iga päringu puhul uuesti"
 msgid "aMule Web Server"
 msgstr "aMule WebServer"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Info puudub"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Mitte kunagi"
 
@@ -2848,7 +2848,7 @@ msgstr "Tõmba"
 msgid "Category"
 msgstr "Kategooria"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Peamine"
 
@@ -6498,7 +6498,7 @@ msgstr "%u (JK: %u)"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Min suurus peab olema väiksem kui max suurus. Ignoreerin Max suurust."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Otsingu hoiatus"
 

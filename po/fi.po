@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-02-24 13:33+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -580,11 +580,11 @@ msgstr "Uudelleenkoosta PHP-sivut joka pyynnöllä"
 msgid "aMule Web Server"
 msgstr "aMule Web-Palvelin"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Ei saatavissa"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Ei koskaan"
 
@@ -2845,7 +2845,7 @@ msgstr "Lataa"
 msgid "Category"
 msgstr "Luokittelu"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Kaikki"
 
@@ -6515,7 +6515,7 @@ msgstr ""
 "Vähimmäiskoon pitää olla pienempi kuin enimmäiskoon. Enimmäiskokoa ei "
 "huomioida."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Hakuvaroitus"
 

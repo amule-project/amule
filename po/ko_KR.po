@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -590,11 +590,11 @@ msgstr "각 요청의 PHP 페이지를 재컴파일함"
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "유효하지 않음"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "결코"
 
@@ -2855,7 +2855,7 @@ msgstr "내려받기"
 msgid "Category"
 msgstr "분류"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "주"
 
@@ -6486,7 +6486,7 @@ msgstr "QR: %u"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "최소 크기가 최대 크기보다 작아야 합니다. 최대 크기는 무시됩니다.."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "검색 경고"
 

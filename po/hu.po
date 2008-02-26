@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-02-25 22:50+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -586,11 +586,11 @@ msgstr "PHP oldalak újrafordítása minden kérésnél"
 msgid "aMule Web Server"
 msgstr "aMule Web kiszolgáló"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Nem elérhető"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Soha"
 
@@ -2852,7 +2852,7 @@ msgstr "Letöltés"
 msgid "Category"
 msgstr "Kategória"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Alap"
 
@@ -6488,7 +6488,7 @@ msgstr ""
 "A minimum méretnek kisebbnek kell lennie a maximum méretnél. Maximum méret "
 "figyelmen kívül hagyva."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Keresési figyelmeztetés"
 

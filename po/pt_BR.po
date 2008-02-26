@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-25 03:31+0100\n"
+"POT-Creation-Date: 2008-02-26 03:30+0100\n"
 "PO-Revision-Date: 2008-02-08 22:00-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@uol.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM (see header for more)\n"
@@ -594,11 +594,11 @@ msgstr "Recompilar páginas PHP a cada solicitação"
 msgid "aMule Web Server"
 msgstr "Servidor Web do aMule"
 
-#: src/StatTree.cpp:555 src/StatTree.cpp:570
+#: src/StatTree.cpp:536 src/StatTree.cpp:551
 msgid "Not available"
 msgstr "Não disponível"
 
-#: src/StatTree.cpp:606 src/StatTree.cpp:620
+#: src/StatTree.cpp:587 src/StatTree.cpp:601
 msgid "Never"
 msgstr "Nunca"
 
@@ -2872,7 +2872,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Categoria"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:611
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
 msgid "Main"
 msgstr "Principal"
 
@@ -6542,7 +6542,7 @@ msgstr "QR: %u"
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "Tamanho min deve ser menor que tamanho max. Tamanho max ignorado"
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:551
+#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
 msgid "Search warning"
 msgstr "Alerta da busca"
 
