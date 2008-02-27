@@ -205,6 +205,7 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		if (thePrefs::IsManualHighPrio()) {
 			srv_prefs.AddTag(CECEmptyTag(EC_TAG_SERVERS_MANUAL_HIGH_PRIO));
 		}
+		srv_prefs.AddTag(CECTag(EC_TAG_SERVERS_UPDATE_URL, thePrefs::GetEd2kServersUrl()));
 		AddTag(srv_prefs);
 	}
 
@@ -322,6 +323,12 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_UL_QUEUE, thePrefs::GetQueueSize()));
 		cwPrefs.AddTag(CECTag(EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT, thePrefs::GetServerKeepAliveTimeout()));
 		AddTag(cwPrefs);
+	}
+
+	if (selection & EC_PREFS_KADEMLIA) {
+		CECEmptyTag kadPrefs(EC_TAG_PREFS_KADEMLIA);
+		kadPrefs.AddTag(CECTag(EC_TAG_KADEMLIA_UPDATE_URL, thePrefs::GetKadNodesUrl()));
+		AddTag(kadPrefs);
 	}
 }
 
@@ -453,6 +460,9 @@ void CEC_Prefs_Packet::Apply()
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetSafeServerConnectEnabled, EC_TAG_SERVERS_SAFE_SERVER_CONNECT);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetAutoConnectStaticOnly, EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY);
 		ApplyBoolean(use_tag, thisTab, thePrefs::SetManualHighPrio, EC_TAG_SERVERS_MANUAL_HIGH_PRIO);
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_SERVERS_UPDATE_URL)) != NULL) {
+			thePrefs::SetEd2kServersUrl(oneTag->GetStringData());
+		}		
 	}
 
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_FILES)) != NULL) {
@@ -534,6 +544,12 @@ void CEC_Prefs_Packet::Apply()
 		}
 	}
 	
+	if ((thisTab = GetTagByName(EC_TAG_PREFS_KADEMLIA)) != NULL) {
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_KADEMLIA_UPDATE_URL)) != NULL) {
+			thePrefs::SetKadNodesUrl(oneTag->GetStringData());
+		}
+	}
+
 	theApp->glob_prefs->Save();
 }
 // File_checked_for_headers

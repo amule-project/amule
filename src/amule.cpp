@@ -2174,9 +2174,6 @@ void CamuleApp::UpdateNotesDat(const wxString& url)
 {
 	wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
 		
-	// Save it
-	thePrefs::SetKadNodesUrl(url);
-		
 	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, HTTP_NodesDat);
 	downloader->Create();
 	downloader->Run();
