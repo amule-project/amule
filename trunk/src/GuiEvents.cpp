@@ -18,6 +18,7 @@
 #	include "ClientListCtrl.h"
 #	include "SharedFilesCtrl.h"
 #	include "DownloadListCtrl.h"
+#	include "muuli_wdr.h"
 #endif
 
 #ifdef AMULE_DAEMON
@@ -86,6 +87,22 @@ namespace MuleNotify
 		}
 #endif
 	}
+
+
+	void NodesURLChanged(wxString NOT_ON_DAEMON(url))
+	{
+#ifndef AMULE_DAEMON
+		CastByID(IDC_NODESLISTURL, NULL, wxTextCtrl)->SetValue(url);
+#endif
+	}
+
+	void ServersURLChanged(wxString NOT_ON_DAEMON(url))
+	{
+#ifndef AMULE_DAEMON
+		CastByID(IDC_SERVERLISTURL, NULL, wxTextCtrl)->SetValue(url);
+#endif
+	}
+
 
 #ifdef CLIENT_GUI
 	

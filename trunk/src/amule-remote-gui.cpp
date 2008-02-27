@@ -477,9 +477,8 @@ void CamuleRemoteGuiApp::BootstrapKad(uint32 ip, uint16 port)
 
 void CamuleRemoteGuiApp::UpdateNotesDat(const wxString& url)
 {
-	// FIXME: The value in the serverwnd does not get saved.
 	CECPacket req(EC_OP_KAD_UPDATE_FROM_URL);
-	req.AddTag(CECTag(EC_TAG_KADEMLIA_URL_LIST, url));
+	req.AddTag(CECTag(EC_TAG_KADEMLIA_UPDATE_URL, url));
 	
 	m_connect->SendPacket(&req);
 }
@@ -532,7 +531,8 @@ CPreferencesRem::CPreferencesRem(CRemoteConnect *conn)
 		EC_PREFS_SRCDROP |
 		EC_PREFS_SECURITY |
 		EC_PREFS_CORETWEAKS |
-		EC_PREFS_REMOTECONTROLS;
+		EC_PREFS_REMOTECONTROLS |
+		EC_PREFS_KADEMLIA;
 	m_exchange_recv_selected_prefs =
 		m_exchange_send_selected_prefs |
 		EC_PREFS_CATEGORIES;
@@ -760,9 +760,8 @@ void CServerListRem::HandlePacket(const CECPacket *packet)
 
 void CServerListRem::UpdateServerMetFromURL(wxString url)
 {
-	// FIXME: The value in the serverwnd does not get saved.
 	CECPacket req(EC_OP_SERVER_UPDATE_FROM_URL);
-	req.AddTag(CECTag(EC_TAG_SERVERS_URL_LIST, url));
+	req.AddTag(CECTag(EC_TAG_SERVERS_UPDATE_URL, url));
 	
 	m_conn->SendPacket(&req);
 }

@@ -643,8 +643,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		  obfuscation check-boxes were checked/unchecked.
 		* Added the ability to update the nodes.dat file via the
 		  remote gui, as well as bootstrapping from a specific IP.
-		  However, as with the server.met file, the new url is only
-		  saved in the core, but is not transmitted to the remote UI.
+		* The server.met and the nodes.dat urls are now saved when
+		  changed in the remote UI, and are read from the core when
+		  starting the remote gui.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

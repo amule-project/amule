@@ -197,6 +197,7 @@ void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO, this) == wxYES ) {
 		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
 
+		thePrefs::SetKadNodesUrl(strURL);
 		theApp->UpdateNotesDat(strURL);
 	}
 }

@@ -125,7 +125,10 @@ namespace MuleNotify
 	void CategoryUpdate(uint32 cat);
 	void CategoryDelete(uint32 cat);
 
-	
+	void NodesURLChanged(wxString url);
+	void ServersURLChanged(wxString url);
+
+
 	//
 	// GUI -> core notification
 	//
@@ -464,6 +467,11 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 #define Notify_CategoryUpdate(cat)			MuleNotify::DoNotify(&MuleNotify::CategoryUpdate, cat)
 #define Notify_CategoryDelete(cat)			MuleNotify::DoNotify(&MuleNotify::CategoryDelete, cat)
 
+// server.met/nodes.dat default urls
+#define Notify_NodesURLChanged(url)			MuleNotify::DoNotify(&MuleNotify::NodesURLChanged, url)
+#define Notify_ServersURLChanged(url)			MuleNotify::DoNotify(&MuleNotify::ServersURLChanged, url)
+
+
 //
 // GUI -> core notification
 //
@@ -492,7 +500,6 @@ typedef void (wxEvtHandler::*MuleNotifyEventFunction)(CMuleGUIEvent&);
 // download queue
 #define CoreNotify_Download_Set_Cat_Prio(cat, pri)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Prio, cat, pri)
 #define CoreNotify_Download_Set_Cat_Status(cat, st)	MuleNotify::DoNotify(&MuleNotify::Download_Set_Cat_Status, cat, st)
-
 
 #endif // __GUIEVENTS_H__
 

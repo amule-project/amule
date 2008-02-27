@@ -1210,10 +1210,17 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				}
 			}
 			break;
-		case EC_OP_SERVER_UPDATE_FROM_URL:
-			theApp->serverlist->UpdateServerMetFromURL(request->GetTagByIndexSafe(0)->GetStringData());
+		case EC_OP_SERVER_UPDATE_FROM_URL: {
+			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+
+			// Save the new url, and update the UI (if not amuled).
+			Notify_ServersURLChanged(url);
+			thePrefs::SetEd2kServersUrl(url);
+
+			theApp->serverlist->UpdateServerMetFromURL(url);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+		}
 		//
 		// IPFilter
 		//
@@ -1372,10 +1379,17 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			theApp->StopKad();
 			response = new CECPacket(EC_OP_NOOP);
 			break;
-		case EC_OP_KAD_UPDATE_FROM_URL:
-			theApp->UpdateNotesDat(request->GetTagByIndexSafe(0)->GetStringData());
+		case EC_OP_KAD_UPDATE_FROM_URL: {
+			wxString url = request->GetTagByIndexSafe(0)->GetStringData();
+
+			// Save the new url, and update the UI (if not amuled).
+			Notify_NodesURLChanged(url);
+			thePrefs::SetKadNodesUrl(url);
+
+			theApp->UpdateNotesDat(url);
 			response = new CECPacket(EC_OP_NOOP);
 			break;
+		}
 		case EC_OP_KAD_BOOTSTRAP_FROM_IP:
 			theApp->BootstrapKad(request->GetTagByIndexSafe(0)->GetInt(),
 			                     request->GetTagByIndexSafe(1)->GetInt());

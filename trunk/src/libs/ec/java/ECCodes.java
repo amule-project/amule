@@ -268,6 +268,7 @@ public final static short 		EC_TAG_SERVERS_SMART_ID_CHECK             = 0x1708;
 public final static short 		EC_TAG_SERVERS_SAFE_SERVER_CONNECT        = 0x1709;
 public final static short 		EC_TAG_SERVERS_AUTOCONN_STATIC_ONLY       = 0x170A;
 public final static short 		EC_TAG_SERVERS_MANUAL_HIGH_PRIO           = 0x170B;
+public final static short 		EC_TAG_SERVERS_UPDATE_URL                 = 0x170C;
 public final static short 	EC_TAG_PREFS_FILES                        = 0x1800;
 public final static short 		EC_TAG_FILES_ICH_ENABLED                  = 0x1801;
 public final static short 		EC_TAG_FILES_AICH_TRUST                   = 0x1802;
@@ -320,7 +321,7 @@ public final static short 		EC_TAG_CORETW_FILEBUFFER                  = 0x1D03;
 public final static short 		EC_TAG_CORETW_UL_QUEUE                    = 0x1D04;
 public final static short 		EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT       = 0x1D05;
 public final static short 	EC_TAG_PREFS_KADEMLIA                     = 0x1E00;
-public final static short 		EC_TAG_KADEMLIA_URL_LIST                  = 0x1E01;
+public final static short 		EC_TAG_KADEMLIA_UPDATE_URL                = 0x1E01;
 
 public final static byte EC_DETAIL_CMD           = 0x00;
 public final static byte EC_DETAIL_WEB           = 0x01;
@@ -355,5 +356,6 @@ public final static int EC_PREFS_DIRECTORIES    = 0x00000200;
 public final static int EC_PREFS_STATISTICS     = 0x00000400;
 public final static int EC_PREFS_SECURITY       = 0x00000800;
 public final static int EC_PREFS_CORETWEAKS     = 0x00001000;
+public final static int EC_PREFS_KADEMLIA       = 0x00002000;
 
 }
