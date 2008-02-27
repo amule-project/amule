@@ -100,6 +100,7 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
       LIBPNG_CXXFLAGS=""
       LIBPNG_LDFLAGS=""
       LIBPNG_LIBS=""
+      LIBPNG_VERSION=""
       $3
     else
       LIBPNG_LIBS=`$LIBPNG_CONFIG_WITH_ARGS --libs`
