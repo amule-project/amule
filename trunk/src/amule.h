@@ -220,6 +220,12 @@ public:
 	void StartKad();
 	void StopKad();
 
+	/** Bootstraps kad from the specified IP (must be in hostorder). */
+	void BootstrapKad(uint32 ip, uint16 port);
+	/** Updates the nodes.dat file from the specified url. */
+	void UpdateNotesDat(const wxString& str);
+
+
 	void DisconnectED2K();
 	
 	bool CryptoAvailable() const;

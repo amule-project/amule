@@ -152,8 +152,6 @@ void CKadDlg::OnFieldsChange(wxCommandEvent& WXUNUSED(evt))
 void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 {
 	if (FindWindowById(ID_NODECONNECT)->IsEnabled()) {
-		//#warning TODO EC
-		#ifndef CLIENT_GUI
 		// Ip is reversed since StringIPtoUint32 returns anti-host and kad expects host order
 		uint32 ip = StringIPtoUint32(
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP4 ))->GetValue() +
@@ -163,24 +161,17 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP2 ))->GetValue() +
 					wxT(".") + 
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
-		
+
 		if (ip == 0) {
 			wxMessageBox(_("Invalid ip to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 		} else {
 			unsigned long port;
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
-				if ( !Kademlia::CKademlia::IsRunning() ) {
-					Kademlia::CKademlia::Start();
-					theApp->ShowConnectionState();
-				}
-				Kademlia::CKademlia::Bootstrap(ip, port);				
+				theApp->BootstrapKad(ip, port);
 			} else {
 				wxMessageBox(_("Invalid port to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
 			}
 		}
-		#else
-			wxMessageBox(_("You can't bootstrap an specific ip from remote GUI yet."), _("Message"), wxOK | wxICON_INFORMATION, this);
-		#endif		
 	} else {
 		wxMessageBox(_("Please fill all fields required"), _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
@@ -201,27 +192,12 @@ void CKadDlg::OnBnClickedDisconnectKad(wxCommandEvent& WXUNUSED(evt))
 
 void CKadDlg::OnBnClickedUpdateNodeList(wxCommandEvent& WXUNUSED(evt))
 {
-	//#warning TODO EC
-	#ifndef CLIENT_GUI
 	if ( wxMessageBox( wxString(_("Are you sure you want to download a new nodes.dat file?\n")) +
 						_("Doing so will remove your current nodes and restart Kademlia connection.")
 					, _("Continue?"), wxICON_EXCLAMATION | wxYES_NO, this) == wxYES ) {
 		wxString strURL = ((wxTextCtrl*)FindWindowById( IDC_NODESLISTURL ))->GetValue();
-		if (strURL.Find(wxT("://")) == -1) {
-			AddLogLineM(true, _("Invalid URL"));
-			return;
-		}
-		wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
-		
-		// Save it
-		thePrefs::SetKadNodesUrl(strURL);
-		
-		CHTTPDownloadThread *downloader = new CHTTPDownloadThread(strURL,strTempFilename, HTTP_NodesDat);
-		downloader->Create();
-		downloader->Run();
+
+		theApp->UpdateNotesDat(strURL);
 	}
-	#else
-	wxMessageBox(_("You can't update server.met from remote GUI yet."), _("Message"), wxOK | wxICON_INFORMATION, this);
-	#endif		
 }
 // File_checked_for_headers

@@ -120,7 +120,9 @@ enum ECOpCodes {
 	EC_OP_KAD_STOP                      = 0x49,
 	EC_OP_CONNECT                       = 0x4A,
 	EC_OP_DISCONNECT                    = 0x4B,
-	EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C
+	EC_OP_GET_DLOAD_QUEUE_DETAIL        = 0x4C,
+	EC_OP_KAD_UPDATE_FROM_URL           = 0x4D,
+	EC_OP_KAD_BOOTSTRAP_FROM_IP         = 0x4E
 };
 
 enum ECTagNames {
@@ -132,6 +134,8 @@ enum ECTagNames {
 	EC_TAG_CONNSTATE                          = 0x0005,
 	EC_TAG_ED2K_ID                            = 0x0006,
 	EC_TAG_LOG_TO_STATUS                      = 0x0007,
+	EC_TAG_BOOTSTRAP_IP                       = 0x0008,
+	EC_TAG_BOOTSTRAP_PORT                     = 0x0008,
 	EC_TAG_CLIENT_NAME                        = 0x0100,
 		EC_TAG_CLIENT_VERSION                     = 0x0101,
 		EC_TAG_CLIENT_MOD                         = 0x0102,
@@ -326,7 +330,9 @@ enum ECTagNames {
 			EC_TAG_CORETW_VERBOSE                     = 0x1D02,
 			EC_TAG_CORETW_FILEBUFFER                  = 0x1D03,
 			EC_TAG_CORETW_UL_QUEUE                    = 0x1D04,
-			EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT       = 0x1D05
+			EC_TAG_CORETW_SRV_KEEPALIVE_TIMEOUT       = 0x1D05,
+		EC_TAG_PREFS_KADEMLIA                     = 0x1E00,
+			EC_TAG_KADEMLIA_URL_LIST                  = 0x1E01
 };
 
 enum EC_DETAIL_LEVEL {
