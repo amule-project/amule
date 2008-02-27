@@ -646,6 +646,10 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* The server.met and the nodes.dat urls are now saved when
 		  changed in the remote UI, and are read from the core when
 		  starting the remote gui.
+		* Allow for the creation of ED2k-links on the remote gui. This
+		  resolves bug #893, #567 and #584.
+		* Fixed checks preventing the creation of source-links when
+		  only using Kademlia.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

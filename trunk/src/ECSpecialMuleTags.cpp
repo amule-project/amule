@@ -84,7 +84,8 @@ CEC_Prefs_Packet::CEC_Prefs_Packet(uint32 selection, EC_DETAIL_LEVEL pref_detail
 	if (selection & EC_PREFS_GENERAL) {
 		CECEmptyTag user_prefs(EC_TAG_PREFS_GENERAL);
 		user_prefs.AddTag(CECTag(EC_TAG_USER_NICK, thePrefs::GetUserNick()));
-		user_prefs.AddTag(CECTag(EC_TAG_USER_USERHASH, thePrefs::GetUserHash()));
+		user_prefs.AddTag(CECTag(EC_TAG_USER_HASH, thePrefs::GetUserHash()));
+		user_prefs.AddTag(CECTag(EC_TAG_USER_HOST, thePrefs::GetYourHostname()));
 		AddTag(user_prefs);
 	}
 
@@ -365,6 +366,12 @@ void CEC_Prefs_Packet::Apply()
 	if ((thisTab = GetTagByName(EC_TAG_PREFS_GENERAL)) != NULL) {
 		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_NICK)) != NULL) {
 			thePrefs::SetUserNick(oneTag->GetStringData());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HASH)) != NULL) {
+			thePrefs::SetUserHash(oneTag->GetMD4Data());
+		}
+		if ((oneTag = thisTab->GetTagByName(EC_TAG_USER_HOST)) != NULL) {
+			thePrefs::SetYourHostname(oneTag->GetStringData());
 		}
 	}
 

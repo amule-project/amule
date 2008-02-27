@@ -206,6 +206,7 @@ public:
 	static const CPath&	GetTempDir()			{ return s_tempdir; }
 	static void		SetTempDir(const CPath& dir)	{ s_tempdir = dir; }
 	static const CMD4Hash&	GetUserHash()			{ return s_userhash; }
+	static void		SetUserHash(const CMD4Hash& h)	{ s_userhash = h; }
 	static uint16		GetMaxUpload()			{ return s_maxupload; }
 	static uint16		GetSlotAllocation()		{ return s_slotallocation; }
 	static bool		IsICHEnabled()			{ return s_ICH; }
@@ -325,6 +326,7 @@ public:
 	static void		SetMinFreeDiskSpace(uint32 val)	{ s_uMinFreeDiskSpace = val; }
 
 	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
+	static void		SetYourHostname(const wxString& s)	{ s_yourHostname = s; }
 
 	static void		SetMaxUpload(uint16 in);
 	static void		SetMaxDownload(uint16 in);

@@ -729,6 +729,7 @@ public:
 	void SetOSFiles(wxString ) { /* onlinesig is created on remote side */ }
 
 	bool IsConnected() const { return IsConnectedED2K() || IsConnectedKad(); }
+	bool IsFirewalled() const;
 	bool IsConnectedED2K() const;
 	bool IsConnectedKad() const 
 	{ 
@@ -758,6 +759,7 @@ public:
 	void ShowUserCount();
 	
 	uint8 m_ConnState;
+	uint32 m_clientID;
 
 	wxLocale	m_locale;
 

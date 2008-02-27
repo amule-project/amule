@@ -64,7 +64,8 @@ using std::auto_ptr;
 #include "SharedFilesWnd.h"		// Needed for CSharedFilesWnd
 #include "TransferWnd.h"		// Needed for CTransferWnd
 #include "updownclient.h"
-#include "ServerListCtrl.h"
+#include "ServerListCtrl.h"		// Needed for CServerListCtrl
+#include "MagnetURI.h"			// Needed for CMagnetURI
 
 
 CEConnectDlg::CEConnectDlg()
@@ -336,6 +337,7 @@ void CamuleRemoteGuiApp::Startup() {
 	dialog->Destroy();
 	
 	m_ConnState = 0;
+	m_clientID  = 0;
 
 	serverconnect = new CServerConnectRem(m_connect);
 	m_statistics = new CStatistics(*m_connect);
@@ -424,22 +426,79 @@ wxString CamuleRemoteGuiApp::GetServerLog(bool)
 }
 
 
-//
-// Remote gui can't create links by itself. Pass request or retrieve from container ?
-//
-wxString CamuleRemoteGuiApp::CreateMagnetLink(const CAbstractFile *)
+wxString CamuleRemoteGuiApp::CreateMagnetLink(const CAbstractFile* f)
 {
-	return wxEmptyString;
+	// TODO: Remove duplicate code (also in amule.cpp) ... 
+	CMagnetURI uri;
+
+	uri.AddField(wxT("dn"), f->GetFileName().Cleanup(false).GetPrintable());
+	uri.AddField(wxT("xt"), wxString(wxT("urn:ed2k:")) + f->GetFileHash().Encode().Lower());
+	uri.AddField(wxT("xl"), wxString::Format(wxT("%") wxLongLongFmtSpec wxT("u"), f->GetFileSize()));
+
+	return uri.GetLink();
 }
 
-wxString CamuleRemoteGuiApp::CreateED2kLink(CAbstractFile const*, bool, bool, bool)
+wxString CamuleRemoteGuiApp::CreateED2kLink(const CAbstractFile* f, bool add_source, bool use_hostname, bool addcryptoptions)
 {
-	return wxEmptyString;
+	// TODO: Avoid duplicate code (also in amule.cpp) ... 
+	wxASSERT(!(!add_source && (use_hostname || addcryptoptions)));
+	// Construct URL like this: ed2k://|file|<filename>|<size>|<hash>|/
+	wxString strURL = CFormat(wxT("ed2k://|file|%s|%i|%s|/"))
+		% f->GetFileName().Cleanup(false)
+		% f->GetFileSize() % f->GetFileHash().Encode();
+	
+	if (add_source && IsConnected() && !IsFirewalled()) {
+		// Create the first part of the URL
+		strURL << wxT("|sources,");
+
+		if (use_hostname) {
+			strURL << thePrefs::GetYourHostname();
+		} else {
+			uint32 clientID = GetID();
+			strURL << (uint8) clientID << wxT(".") <<
+			(uint8)(clientID >> 8) << wxT(".") <<
+			(uint8)(clientID >> 16) << wxT(".") <<
+			(uint8)(clientID >> 24);
+		}
+		
+ 		strURL << wxT(":") <<
+			thePrefs::GetPort();
+		
+		if (addcryptoptions) {
+			const uint8 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
+			const uint8 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
+			const uint8 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;
+			const uint8 byCryptOptions = (uRequiresCryptLayer << 2) | (uRequestsCryptLayer << 1) | (uSupportsCryptLayer << 0) | (uSupportsCryptLayer ? 0x80 : 0x00);
+			
+			strURL << wxT(":") << byCryptOptions;
+			
+			if (byCryptOptions & 0x80) {
+				strURL << wxT(":") << thePrefs::GetUserHash().Encode();
+			}
+			
+		}
+		strURL << wxT("|/");
+	} else if (add_source) {
+		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
+	}
+
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
+	return strURL;
 }
 
-wxString CamuleRemoteGuiApp::CreateED2kAICHLink(CKnownFile const *)
+
+wxString CamuleRemoteGuiApp::CreateED2kAICHLink(const CKnownFile* f)
 {
-	return wxEmptyString;
+	// TODO: Avoid duplicate code (also in amule.cpp) ... 
+	// Create the first part of the URL
+	wxString strURL = CreateED2kLink(f);
+	// Append the AICH info
+	if (f->HasProperAICHHashSet()) {
+	     	strURL << wxT("|h=") << f->GetAICHMasterHash() << wxT("|/");
+	}	
+
+	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|h=<AICH master hash>|/"
+	return strURL;
 }
 
 
@@ -447,6 +506,16 @@ bool CamuleRemoteGuiApp::AddServer(CServer *, bool)
 {
 	// #warning TODO: Add remote command
 	return true;
+}
+
+
+bool CamuleRemoteGuiApp::IsFirewalled() const
+{
+	if (IsConnectedED2K() && !serverconnect->IsLowID()) {
+		return false;
+	}
+
+	return IsFirewalledKad();
 }
 
 
@@ -491,8 +560,15 @@ void CamuleRemoteGuiApp::DisconnectED2K() {
 }
 
 
-uint32 CamuleRemoteGuiApp::GetED2KID() const {
+uint32 CamuleRemoteGuiApp::GetED2KID() const
+{
 	return serverconnect ? serverconnect->GetClientID() : 0;
+}
+
+
+uint32 CamuleRemoteGuiApp::GetID() const
+{
+	return m_clientID;
 }
 
 
@@ -702,6 +778,7 @@ void CServerConnectRem::HandlePacket(const CECPacket *packet)
 	theApp->m_ConnState = 0;
 	CServer *server;
 	m_ID = tag->GetEd2kId();
+	theApp->m_clientID = tag->GetClientId();
 	
 	if (tag->IsConnectedED2K()) {
 		CECTag *srvtag = tag->GetTagByName(EC_TAG_SERVER);
