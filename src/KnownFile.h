@@ -193,17 +193,9 @@ friend class CHashingTask;
 public:
 	CKnownFile();
 	explicit CKnownFile(const CSearchFile &searchFile);
-#ifdef CLIENT_GUI
-	CKnownFile(CEC_SharedFile_Tag *);
-	friend class CSharedFilesRem;
-#endif
 
 	virtual ~CKnownFile();
 
-	#ifndef CLIENT_GUI	
-	virtual void SetFileName(const CPath& filename);
-	#endif
-		
 	void SetFilePath(const CPath& filePath);
 	const CPath& GetFilePath() const { return m_filePath; }
 	
@@ -286,9 +278,13 @@ public:
 	SourceSet m_ClientUploadList;
 	ArrayOfUInts16 m_AvailPartFrequency;
 	
-	// aich
-	CAICHHashSet* GetAICHHashset() const	{ return m_pAICHHashSet; }
-	void SetAICHHashset(CAICHHashSet* val)	{ m_pAICHHashSet = val; }
+	/** 
+ 	 * Returns a base-16 encoding of the master hash, or
+ 	 * an empty string if no such hash exists.
+ 	 */
+	wxString GetAICHMasterHash() const;
+	/** Returns true if the AICH-Hashset is valid, and verified or complete. */
+	bool HasProperAICHHashSet() const;
 
 	/**
 	 * Updates the requency of uploading parts from with the data the client provides.
@@ -307,13 +303,31 @@ public:
 	void	ClearPriority();
 	
 	time_t	m_lastDateChanged;
+
+
+#ifdef CLIENT_GUI
+	CKnownFile(CEC_SharedFile_Tag *);
+	friend class CSharedFilesRem;
+
 protected:
+	//! The AICH master-hash, if it is known.
+	wxString	m_AICHMasterHash;
+#else
+	virtual void SetFileName(const CPath& filename);
+
+	// AICH
+	CAICHHashSet* GetAICHHashset() const		{ return m_pAICHHashSet; }
+	void SetAICHHashset(CAICHHashSet* val)		{ m_pAICHHashSet = val; }
+	
+protected:
+	CAICHHashSet*	m_pAICHHashSet;
+#endif
+
 	bool	LoadTagsFromFile(const CFileDataIO* file);
 	bool	LoadDateFromFile(const CFileDataIO* file);
 	void	LoadComment();//comment
 	ArrayOfCMD4Hash m_hashlist;
 	CPath	m_filePath;	
-	CAICHHashSet*	m_pAICHHashSet;
 
 	static void CreateHashFromFile(CFileDataIO* file, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);
 	static void CreateHashFromInput(const byte* input, uint32 Length, CMD4Hash* Output, CAICHHashTree* pShaHashOut);

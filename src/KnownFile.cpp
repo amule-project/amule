@@ -315,7 +315,10 @@ void CKnownFile::Init()
 	m_lastDateChanged = 0;
 
 	statistic.fileParent = this;
+
+#ifndef CLIENT_GUI
 	m_pAICHHashSet = new CAICHHashSet(this);
+#endif
 }
 
 
@@ -337,11 +340,12 @@ CKnownFile::CKnownFile(CEC_SharedFile_Tag *tag)
 	} else {
 		m_bAutoUpPriority = false;
 	}
+
+	m_AICHMasterHash = tag->GetAICHHash();
 }
 
 CKnownFile::~CKnownFile()
 {
-	delete m_pAICHHashSet;
 }
 
 #else // ! CLIENT_GUI
@@ -657,9 +661,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	//tags
 	const int iFixedTags = 8;
 	uint32 tagcount = iFixedTags;
-	if (	m_pAICHHashSet->HasValidMasterHash() &&
-		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
-			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {	
+	if (HasProperAICHHashSet()) {	
 		tagcount++;
 	}
 	// Float meta tags are currently not written. All older eMule versions < 0.28a have 
@@ -725,9 +727,7 @@ bool CKnownFile::WriteToFile(CFileDataIO* file)
 	priotag.WriteTagToFile(file);
 
 	//AICH Filehash
-	if (	m_pAICHHashSet->HasValidMasterHash() && 
-		(	m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
-			m_pAICHHashSet->GetStatus() == AICH_VERIFIED)) {
+	if (HasProperAICHHashSet()) {
 		CTagString aichtag(FT_AICH_HASH, m_pAICHHashSet->GetMasterHash().GetString());
 		aichtag.WriteTagToFile(file);
 	}
@@ -1328,4 +1328,31 @@ void CKnownFile::LoadComment()
 	#endif
 	
 }
+
+
+wxString CKnownFile::GetAICHMasterHash() const
+{
+#ifdef CLIENT_GUI
+	return m_AICHMasterHash;
+#else
+	if (HasProperAICHHashSet()) {
+		return m_pAICHHashSet->GetMasterHash().GetString();
+	}
+
+	return wxEmptyString;
+#endif
+}
+
+
+bool CKnownFile::HasProperAICHHashSet() const
+{
+#ifdef CLIENT_GUI
+	return m_AICHMasterHash.Length();
+#else
+	return m_pAICHHashSet->HasValidMasterHash() &&
+		(m_pAICHHashSet->GetStatus() == AICH_HASHSETCOMPLETE ||
+		 m_pAICHHashSet->GetStatus() == AICH_VERIFIED);
+#endif
+}
+
 // File_checked_for_headers

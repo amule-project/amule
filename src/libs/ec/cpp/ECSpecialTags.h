@@ -175,6 +175,7 @@ class CEC_ConnState_Tag : public CECTag {
  		CEC_ConnState_Tag(EC_DETAIL_LEVEL);
 
 		uint32	GetEd2kId()		{ return GetTagByNameSafe(EC_TAG_ED2K_ID)->GetInt(); }
+		uint32	GetClientId()		{ return GetTagByNameSafe(EC_TAG_CLIENT_ID)->GetInt(); }
  		bool	HasLowID()		{ return GetEd2kId() < HIGHEST_LOWID_ED2K_KAD; }
  		bool	IsConnected()		const { return IsConnectedED2K() || IsConnectedKademlia(); }
  		bool	IsConnectedED2K()	const { return (GetInt() & 0x01); }
@@ -272,6 +273,8 @@ class CEC_SharedFile_Tag : public CECTag {
 
  		uint64		GetXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED)->GetInt(); }
  		uint64		GetAllXferred()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_XFERRED_ALL)->GetInt(); }
+
+		wxString	GetAICHHash()	{ return GetTagByNameSafe(EC_TAG_KNOWNFILE_AICH_MASTERHASH)->GetStringData(); }
  		
  		void SetPrio(uint8 &val) { AssignIfExist(EC_TAG_PARTFILE_PRIO, val); }
  		

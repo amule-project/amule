@@ -118,6 +118,8 @@ CEC_ConnState_Tag::CEC_ConnState_Tag(EC_DETAIL_LEVEL detail_level) : CECTag(EC_T
 		}
 		AddTag(CECTag(EC_TAG_ED2K_ID, theApp->GetED2KID()));
 	}
+
+	AddTag(CECTag(EC_TAG_CLIENT_ID, theApp->GetID()));	
 }
 
 CEC_PartFile_Tag::CEC_PartFile_Tag(CPartFile *file, CValueMap &valuemap)
@@ -255,6 +257,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, CValueMap &valuem
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_ACCEPT_COUNT_ALL, file->statistic.GetAllTimeAccepts(), this);
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred(), this);
 	valuemap.CreateTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred(), this);
+	valuemap.CreateTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash(), this);
 	
 	valuemap.CreateTag(EC_TAG_PARTFILE_PRIO,
 		(uint64)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority()), this);
@@ -275,6 +278,7 @@ CEC_SharedFile_Tag::CEC_SharedFile_Tag(const CKnownFile *file, EC_DETAIL_LEVEL d
 
 	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED, file->statistic.GetTransferred()));
 	AddTag(CECTag(EC_TAG_KNOWNFILE_XFERRED_ALL, file->statistic.GetAllTimeTransferred()));
+	AddTag(CECTag(EC_TAG_KNOWNFILE_AICH_MASTERHASH, file->GetAICHMasterHash()));
 	
 	AddTag(CECTag(EC_TAG_PARTFILE_PRIO,
 		(uint8)(file->IsAutoUpPriority() ? file->GetUpPriority() + 10 : file->GetUpPriority())));

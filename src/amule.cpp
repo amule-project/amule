@@ -1026,14 +1026,13 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 		% f->GetFileName().Cleanup(false)
 		% f->GetFileSize() % f->GetFileHash().Encode();
 	
-	if (add_source && IsConnectedED2K() && !serverconnect->IsLowID() ) {
-		
-		uint32 clientID = GetID();
+	if (add_source && IsConnected() && !IsFirewalled()) {
 		// Create the first part of the URL
-		strURL<< wxT("|sources,");
+		strURL << wxT("|sources,");
 		if (use_hostname) {
 			strURL << thePrefs::GetYourHostname();
 		} else {
+			uint32 clientID = GetID();
 			strURL << (uint8) clientID << wxT(".") <<
 			(uint8)(clientID >> 8) << wxT(".") <<
 			(uint8)(clientID >> 16) << wxT(".") <<
@@ -1054,14 +1053,12 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 			if (byCryptOptions & 0x80) {
 				strURL << wxT(":") << thePrefs::GetUserHash().Encode();
 			}
-			
 		}
 		strURL << wxT("|/");
 	} else if (add_source) {
 		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
 	}
 
-	
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
 	return strURL;
 }
@@ -1072,13 +1069,8 @@ wxString CamuleApp::CreateED2kAICHLink(const CKnownFile* f)
 	// Create the first part of the URL
 	wxString strURL = CreateED2kLink(f);
 	// Append the AICH info
-	if (f->GetAICHHashset()->HasValidMasterHash() && 
-		(
-	      f->GetAICHHashset()->GetStatus() == AICH_VERIFIED || 
-		 f->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE
-	     )) {
-		strURL << wxT("|h=") << f->GetAICHHashset()->GetMasterHash().GetString();
-		strURL << wxT("|/");
+	if (f->HasProperAICHHashSet()) {
+	     	strURL << wxT("|h=") << f->GetAICHMasterHash() << wxT("|/");
 	}	
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|h=<AICH master hash>|/"

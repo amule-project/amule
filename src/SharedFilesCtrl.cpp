@@ -167,9 +167,7 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
 		m_menu->Append(MP_WS,_("Copy feedback to clipboard"));
 		
-		m_menu->Enable(MP_GETAICHED2KLINK, file->GetAICHHashset()->HasValidMasterHash() &&
-							(file->GetAICHHashset()->GetStatus() == AICH_VERIFIED ||
-							 file->GetAICHHashset()->GetStatus() == AICH_HASHSETCOMPLETE));
+		m_menu->Enable(MP_GETAICHED2KLINK, file->HasProperAICHHashSet());
 		m_menu->Enable(MP_GETHOSTNAMESOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_GETHOSTNAMECRYPTSOURCEED2KLINK, !thePrefs::GetYourHostname().IsEmpty());
 		m_menu->Enable(MP_RENAME, file->IsPartFile());

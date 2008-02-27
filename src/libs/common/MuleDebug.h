@@ -131,7 +131,6 @@ struct CInvalidPacket : public CMuleException
 #define MULE_CHECK_THROW(cond, cls, msg) \
 	_MULE_THROW((cond), cls, (msg))
 
-
 #define MULE_VALIDATE_STATE(cond, msg) \
 	MULE_CHECK_THROW((cond), CInvalidStateEx, (msg))
 
