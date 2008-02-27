@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-26 03:30+0100\n"
+"POT-Creation-Date: 2008-02-27 03:30+0100\n"
 "PO-Revision-Date: 2007-12-20 04:19-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -432,7 +432,7 @@ msgstr "Αντιγραφή των συμβουλων στην πρόχειρη �
 msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:308 src/KadDlg.cpp:168 src/KadDlg.cpp:178
+#: src/SharedFilesCtrl.cpp:308 src/KadDlg.cpp:166 src/KadDlg.cpp:172
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "Προειδοποίηση"
@@ -601,11 +601,11 @@ msgstr "Μετάγλωτιση των σελίδων PHP σε κάθε αίτη�
 msgid "aMule Web Server"
 msgstr ""
 
-#: src/StatTree.cpp:536 src/StatTree.cpp:551
+#: src/StatTree.cpp:548 src/StatTree.cpp:563
 msgid "Not available"
 msgstr ""
 
-#: src/StatTree.cpp:587 src/StatTree.cpp:601
+#: src/StatTree.cpp:599 src/StatTree.cpp:613
 msgid "Never"
 msgstr ""
 
@@ -1232,7 +1232,7 @@ msgid "Auto [Hi]"
 msgstr ""
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:516 src/ClientListCtrl.cpp:650
-#: src/amule.cpp:778
+#: src/amule.cpp:782
 msgid "Connecting"
 msgstr ""
 
@@ -1534,7 +1534,7 @@ msgstr ""
 
 #: src/ServerListCtrl.cpp:144 src/muuli_wdr.cpp:3122 src/CatDialog.cpp:142
 #: src/CatDialog.cpp:152 src/CatDialog.cpp:160 src/ServerList.cpp:341
-#: src/amule.cpp:704 src/amule.cpp:1313
+#: src/amule.cpp:704 src/amule.cpp:1317
 msgid "Info"
 msgstr "Πληροφορίες"
 
@@ -1717,9 +1717,8 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:517
-#: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:182
-#: src/KadDlg.cpp:185 src/KadDlg.cpp:224 src/PartFile.cpp:917
-#: src/PartFile.cpp:925
+#: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:176
+#: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr ""
 
@@ -2281,40 +2280,40 @@ msgstr ""
 msgid "Unable to rename file."
 msgstr ""
 
-#: src/ExternalConn.cpp:1383
+#: src/ExternalConn.cpp:1406
 msgid "Already connected to ED2K."
 msgstr ""
 
-#: src/ExternalConn.cpp:1386
+#: src/ExternalConn.cpp:1409
 msgid "Connecting to ED2K..."
 msgstr ""
 
-#: src/ExternalConn.cpp:1394
+#: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:1397
+#: src/ExternalConn.cpp:1420
 msgid "Connecting to Kad..."
 msgstr ""
 
-#: src/ExternalConn.cpp:1402
+#: src/ExternalConn.cpp:1425
 msgid "All networks are disabled."
 msgstr ""
 
-#: src/ExternalConn.cpp:1410
+#: src/ExternalConn.cpp:1433
 msgid "Disconnected from ED2K."
 msgstr ""
 
-#: src/ExternalConn.cpp:1414
+#: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
 msgstr ""
 
-#: src/ExternalConn.cpp:1422
+#: src/ExternalConn.cpp:1445
 #, c-format
 msgid "ExternalConn: invalid opcode received: %#x"
 msgstr ""
 
-#: src/ExternalConn.cpp:1425
+#: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
 msgstr ""
 
@@ -2762,41 +2761,29 @@ msgstr ""
 msgid "Nodes (%u)"
 msgstr ""
 
-#: src/KadDlg.cpp:168
+#: src/KadDlg.cpp:166
 msgid "Invalid ip to bootstrap"
 msgstr ""
 
-#: src/KadDlg.cpp:178
+#: src/KadDlg.cpp:172
 msgid "Invalid port to bootstrap"
 msgstr ""
 
-#: src/KadDlg.cpp:182
-msgid "You can't bootstrap an specific ip from remote GUI yet."
-msgstr ""
-
-#: src/KadDlg.cpp:185
+#: src/KadDlg.cpp:176
 msgid "Please fill all fields required"
 msgstr ""
 
-#: src/KadDlg.cpp:206
+#: src/KadDlg.cpp:195
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr ""
 
-#: src/KadDlg.cpp:207
+#: src/KadDlg.cpp:196
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 
-#: src/KadDlg.cpp:208
+#: src/KadDlg.cpp:197
 msgid "Continue?"
-msgstr ""
-
-#: src/KadDlg.cpp:211 src/ServerList.cpp:781
-msgid "Invalid URL"
-msgstr ""
-
-#: src/KadDlg.cpp:224
-msgid "You can't update server.met from remote GUI yet."
 msgstr ""
 
 #: src/Logger.cpp:267
@@ -2868,21 +2855,21 @@ msgid "Connection failed "
 msgstr ""
 
 #: src/amule-remote-gui.cpp:288 src/OtherFunctions.cpp:131
-#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:829
-#: src/amule.cpp:950 src/amule.cpp:1324
+#: src/OtherFunctions.cpp:149 src/OtherFunctions.cpp:203 src/amule.cpp:833
+#: src/amule.cpp:954 src/amule.cpp:1328
 msgid "Error"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:482 src/amule.cpp:1986
+#: src/amule-remote-gui.cpp:501 src/amule.cpp:1990
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Χρήστες: E: %s K: %s | Αρχεία E: %s K: %s"
 
-#: src/amule-remote-gui.cpp:539 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:559 src/TransferWnd.cpp:341
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:777
+#: src/amule-remote-gui.cpp:796
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
@@ -3019,8 +3006,8 @@ msgid "Swap to this file"
 msgstr ""
 
 #: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
-#: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:84
-#: src/StatisticsDlg.cpp:86 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
+#: src/OtherFunctions.cpp:158 src/StatisticsDlg.cpp:100
+#: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1762 src/muuli_wdr.cpp:1775
 #: src/muuli_wdr.cpp:1788 src/muuli_wdr.cpp:1806 src/muuli_wdr.cpp:1819
 #: src/ClientListCtrl.cpp:632 src/ClientListCtrl.cpp:700
 msgid "kB/s"
@@ -3501,11 +3488,11 @@ msgstr ""
 msgid "Connected to %s %s %s"
 msgstr ""
 
-#: src/TextClient.cpp:694 src/amule.cpp:2051
+#: src/TextClient.cpp:694 src/amule.cpp:2055
 msgid "with LowID"
 msgstr ""
 
-#: src/TextClient.cpp:694 src/amule.cpp:2051
+#: src/TextClient.cpp:694 src/amule.cpp:2055
 msgid "with HighID"
 msgstr ""
 
@@ -4295,7 +4282,7 @@ msgid_plural "%u malformed lines were discarded."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/StatisticsDlg.cpp:173
+#: src/StatisticsDlg.cpp:189
 #, c-format
 msgid "Active connections (1:%u)"
 msgstr ""
@@ -6642,6 +6629,10 @@ msgstr ""
 msgid "Failed to save server.met!"
 msgstr "Αποτυχία σβησίματος του server.met!"
 
+#: src/ServerList.cpp:781
+msgid "Invalid URL"
+msgstr ""
+
 #: src/ServerList.cpp:804
 #, c-format
 msgid "Finished to download the server list from %s"
@@ -6698,7 +6689,7 @@ msgstr ""
 "Οι τοπικές ρυθμίσεις άλλαξαν στις προεπιλεγμένες του συστήματος λόγο μιας "
 "αλλαγής παραμέτρων. Sorry!"
 
-#: src/amule.cpp:761
+#: src/amule.cpp:765
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -6706,33 +6697,33 @@ msgstr ""
 "Δεν υπάρχουν εξυπηρετητές στην λίστα.\n"
 "Θέλετε το aMule να κατεβάσει μία νέα λίστα τώρα;"
 
-#: src/amule.cpp:762
+#: src/amule.cpp:766
 msgid "Server list download"
 msgstr "Κατέβασμα της λίστας εξυπηρετητών"
 
-#: src/amule.cpp:821
+#: src/amule.cpp:825
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "O διακομιστής τρέχει στην pid %d"
 
-#: src/amule.cpp:825
+#: src/amule.cpp:829
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
-#: src/amule.cpp:915
+#: src/amule.cpp:919
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr ""
 
-#: src/amule.cpp:942
+#: src/amule.cpp:946
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr ""
 
-#: src/amule.cpp:948
+#: src/amule.cpp:952
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6742,63 +6733,63 @@ msgid ""
 "Check your network to make sure the port is open for output and input."
 msgstr ""
 
-#: src/amule.cpp:1057
+#: src/amule.cpp:1061
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
 
-#: src/amule.cpp:1107
+#: src/amule.cpp:1111
 msgid "Failed to create OnlineSig File"
 msgstr ""
 
-#: src/amule.cpp:1115
+#: src/amule.cpp:1119
 msgid "Failed to create aMule OnlineSig File"
 msgstr ""
 
-#: src/amule.cpp:1283
+#: src/amule.cpp:1287
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
 msgstr ""
 
-#: src/amule.cpp:1292
+#: src/amule.cpp:1296
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Αυτή είναι η πρώτη φορά που τρέχετε το aMule %s"
 
-#: src/amule.cpp:1294
+#: src/amule.cpp:1298
 msgid "This version is a testing version, updated daily, and\n"
 msgstr ""
 
-#: src/amule.cpp:1295
+#: src/amule.cpp:1299
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr ""
 
-#: src/amule.cpp:1296
+#: src/amule.cpp:1300
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 
-#: src/amule.cpp:1300
+#: src/amule.cpp:1304
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr ""
 
-#: src/amule.cpp:1301
+#: src/amule.cpp:1305
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
 "connections.\n"
 msgstr ""
 
-#: src/amule.cpp:1302
+#: src/amule.cpp:1306
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
 
-#: src/amule.cpp:1303
+#: src/amule.cpp:1307
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -6813,22 +6804,22 @@ msgstr ""
 "Είναι σημαντικό να εκκαθαρίσετε κάθε πλαστό εξυπηρετητή από τη λίστα σας "
 "ώστε το aMule να δουλεύει σωστά."
 
-#: src/amule.cpp:1308
+#: src/amule.cpp:1312
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr ""
 "Περισσότερες πληροφορίες, υποστήριξη και νέες εκδόσεις μπορούνα βρεθούν στην "
 "ιστοσελίδα μας,\n"
 
-#: src/amule.cpp:1309
+#: src/amule.cpp:1313
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "στο www.aMule.org, ή στο κανάλι #aMule του IRC στο irc.freenode.net.\n"
 
-#: src/amule.cpp:1311
+#: src/amule.cpp:1315
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr ""
 "Παρακαλούμε αναφέρετε σφάλματα του προγράμματος στο http://forum.amule.org"
 
-#: src/amule.cpp:1324
+#: src/amule.cpp:1328
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6838,97 +6829,97 @@ msgstr ""
 "Οι ηλεκτρονικές υπογραφές θα ΑΠΕΝΕΡΓΟΠΟΙΗΘΟΥΝ μέχρι να το φτιάξετε στις "
 "προτιμήσεις."
 
-#: src/amule.cpp:1737
+#: src/amule.cpp:1741
 msgid "ERROR: can't open logfile"
 msgstr "ΣΦΑΛΜΑ: το αρχείο καταγραφής δεν μπορεί να ανοίξει"
 
-#: src/amule.cpp:1741
+#: src/amule.cpp:1745
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: το αρχείο καταγραφών είναι άδειο. Κάτι δεν πάει καλά."
 
-#: src/amule.cpp:1760
+#: src/amule.cpp:1764
 msgid "Log has been reset"
 msgstr "Το αρχείο καταγραφών επαναφέρθηκε στην αρχική κατάσταση"
 
-#: src/amule.cpp:1788
+#: src/amule.cpp:1792
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Μύνημα Εξυπηρετητή: %s"
 
-#: src/amule.cpp:1826
+#: src/amule.cpp:1830
 msgid "Failed to download the nodes list."
 msgstr "Αποτυχία κατεβάσματος της λίστας κόμβων."
 
-#: src/amule.cpp:1839
+#: src/amule.cpp:1843
 msgid "Failed to open the downloaded version check file"
 msgstr "Αποτυχία ανοίγματος του κατεβασμένου αρχείου ελέγχου έκδοσης"
 
-#: src/amule.cpp:1842 src/amule.cpp:1852 src/amule.cpp:1858
+#: src/amule.cpp:1846 src/amule.cpp:1856 src/amule.cpp:1862
 msgid "Corrupted version check file"
 msgstr "Φθαρμένο αρχείο ελέγχου έκδοσης"
 
-#: src/amule.cpp:1868
+#: src/amule.cpp:1872
 msgid "You are using an outdated version of aMule!"
 msgstr "Χρησιμοποιείται μία ξεπερασμένη έκδοση του aMule!"
 
-#: src/amule.cpp:1869
+#: src/amule.cpp:1873
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "Η παρούσα έκδοση του aMule είναι %i.%i.%i και η τελευταία %li.%li.%li"
 
-#: src/amule.cpp:1870
+#: src/amule.cpp:1874
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "Η τελευταία έκδοση μπορεί να βρεθεί στο http://www.amule.org"
 
-#: src/amule.cpp:1873
+#: src/amule.cpp:1877
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
 "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η έκδοση του aMuled είναι ξεπερασμένη: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1877
+#: src/amule.cpp:1881
 msgid "Your copy of aMule is up to date."
 msgstr "Αυτό το αντίγραφο του aMule είναι σύγχρονο. "
 
-#: src/amule.cpp:1884
+#: src/amule.cpp:1888
 msgid "Failed to download the version check file"
 msgstr "Αποτυχία κατεβάσματος του αρχείου ελέγχου έκδοσης"
 
-#: src/amule.cpp:2053
+#: src/amule.cpp:2057
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Συνδεση με το %s %s"
 
-#: src/amule.cpp:2056
+#: src/amule.cpp:2060
 #, c-format
 msgid "Connecting to %s"
 msgstr "Διαδικασία σύνδεσης με %s"
 
-#: src/amule.cpp:2058
+#: src/amule.cpp:2062
 msgid "Disconnected from ED2K"
 msgstr "Αποσυνδεση από το ED2K"
 
-#: src/amule.cpp:2065
+#: src/amule.cpp:2069
 msgid "Kad started."
 msgstr "Το Kad ξεκίνησε."
 
-#: src/amule.cpp:2067
+#: src/amule.cpp:2071
 msgid "Kad stopped."
 msgstr "Το Kad είναι σταματημένο."
 
-#: src/amule.cpp:2074
+#: src/amule.cpp:2078
 msgid "Connected to Kad (ok)"
 msgstr "Συνδεδεμένο στο Kad (ΟΚ)"
 
-#: src/amule.cpp:2076
+#: src/amule.cpp:2080
 msgid "Connected to Kad (firewalled)"
 msgstr "Συνδεδεμένο στο Kad (με προστατευτικό τοίχο)"
 
-#: src/amule.cpp:2079
+#: src/amule.cpp:2083
 msgid "Disconnected from Kad"
 msgstr "Αποσυνδεδεμένο από το Kad"
 
-#: src/amule.cpp:2142
+#: src/amule.cpp:2146
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -6936,7 +6927,7 @@ msgstr ""
 "Το δίκτυο Kad δεν μπορεί να χρησιμοποιηθεί αν η θύρα UDP είναι "
 "απενεργοποιημένη στις προτιμήσεις. Δεν έγινε εκκίνηση."
 
-#: src/amule.cpp:2145
+#: src/amule.cpp:2149
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 "Το δίκτυο Kad είναι απενεργοποιημένο από τις προτιμήσεις. Δεν έγινε σύνδεση."
