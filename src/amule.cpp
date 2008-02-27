@@ -2158,6 +2158,31 @@ void CamuleApp::StopKad()
 	}
 }
 
+
+void CamuleApp::BootstrapKad(uint32 ip, uint16 port)
+{
+	if (!Kademlia::CKademlia::IsRunning()) {
+		Kademlia::CKademlia::Start();
+		theApp->ShowConnectionState();
+	}
+	
+	Kademlia::CKademlia::Bootstrap(ip, port);
+}
+
+
+void CamuleApp::UpdateNotesDat(const wxString& url)
+{
+	wxString strTempFilename(theApp->ConfigDir + wxT("nodes.dat.download"));
+		
+	// Save it
+	thePrefs::SetKadNodesUrl(url);
+		
+	CHTTPDownloadThread *downloader = new CHTTPDownloadThread(url, strTempFilename, HTTP_NodesDat);
+	downloader->Create();
+	downloader->Run();
+}
+
+
 void CamuleApp::DisconnectED2K()
 {
 	// Stop Kad if it's running

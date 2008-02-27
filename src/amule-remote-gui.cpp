@@ -465,6 +465,26 @@ void CamuleRemoteGuiApp::StopKad() {
 }
 
 
+void CamuleRemoteGuiApp::BootstrapKad(uint32 ip, uint16 port)
+{
+	CECPacket req(EC_OP_KAD_BOOTSTRAP_FROM_IP);
+	req.AddTag(CECTag(EC_TAG_BOOTSTRAP_IP, ip));
+	req.AddTag(CECTag(EC_TAG_BOOTSTRAP_PORT, port));
+	
+	m_connect->SendPacket(&req);
+}
+
+
+void CamuleRemoteGuiApp::UpdateNotesDat(const wxString& url)
+{
+	// FIXME: The value in the serverwnd does not get saved.
+	CECPacket req(EC_OP_KAD_UPDATE_FROM_URL);
+	req.AddTag(CECTag(EC_TAG_KADEMLIA_URL_LIST, url));
+	
+	m_connect->SendPacket(&req);
+}
+
+
 void CamuleRemoteGuiApp::DisconnectED2K() {
 	if (IsConnectedED2K()) {
 		m_connect->DisconnectED2K();

@@ -1371,7 +1371,16 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_KAD_STOP:
 			theApp->StopKad();
 			response = new CECPacket(EC_OP_NOOP);
-			break;			
+			break;
+		case EC_OP_KAD_UPDATE_FROM_URL:
+			theApp->UpdateNotesDat(request->GetTagByIndexSafe(0)->GetStringData());
+			response = new CECPacket(EC_OP_NOOP);
+			break;
+		case EC_OP_KAD_BOOTSTRAP_FROM_IP:
+			theApp->BootstrapKad(request->GetTagByIndexSafe(0)->GetInt(),
+			                     request->GetTagByIndexSafe(1)->GetInt());
+			response = new CECPacket(EC_OP_NOOP);
+			break;
 
 		//
 		// Networks
