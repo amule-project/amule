@@ -1,6 +1,6 @@
-Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then we lied about the date." version
+Version 2.2.1 - ???
 ----------
-2007-08-19
+2008-03-??
 
 	Bas Zoetekouw:
 		* Patch for debian bug #350396: "amule depletes entropy pool".
@@ -315,6 +315,9 @@ Version 2.2.0 - The "We only delayed it to release on our 4th birthday. And then
 		* Fix for amuled creating zombies. wxProcess does not work
 		  with wxBase.
 		* wxProcess now receives OnTerminate() events in amuled.
+		* Created a specialized termination process object for
+		  amuleweb, so that amule does not kill the web daemon if it
+		  has already died. This fixes a segfault upon exit.
 
 	pochu:
 		* Fix for subdirectory builds.
