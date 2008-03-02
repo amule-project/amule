@@ -102,9 +102,9 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
       AC_MSG_RESULT([yes (version $GDLIB_VERSION)])
       AC_CHECK_HEADER([gd.h],[$2],[$3])
       if test $ac_cv_header_gd_h = yes; then
-        GDLIB_CFLAGS=`$GDLIB_CONFIG_WITH_ARGS --cflags`
-        GDLIB_LDFLAGS=`$GDLIB_CONFIG_WITH_ARGS --ldflags`
-        GDLIB_LIBS=`$GDLIB_CONFIG_WITH_ARGS --libs`
+        GDLIB_CFLAGS="`$GDLIB_CONFIG_WITH_ARGS --cflags` $GDLIB_CFLAGS"
+        GDLIB_LDFLAGS="`$GDLIB_CONFIG_WITH_ARGS --ldflags` $GDLIB_LDFLAGS"
+        GDLIB_LIBS="`$GDLIB_CONFIG_WITH_ARGS --libs` $GDLIB_LIBS"
       else
         GDLIB_VERSION=
       fi

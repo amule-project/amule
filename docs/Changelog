@@ -30,6 +30,9 @@ Version 2.2.1 - ???
 	DLH:
 		* amulegui.xpm icon.
 
+	EastWind:
+		* Patch to prevent overwriting of GDLIB_LIBS
+
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
 		* Patch for autoconf >= 2.60.
