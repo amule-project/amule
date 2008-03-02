@@ -230,6 +230,7 @@ common_sources = \
 	StatTree.cpp \
 	SHAHashSet.cpp \
 	TerminationProcess.cpp \
+	TerminationProcessAmuleweb.cpp \
 	UserEvents.cpp \
 	$(remote_common_sources)
 
@@ -436,6 +437,7 @@ noinst_HEADERS = \
 		StatTree.h \
 		Tag.h \
 		TerminationProcess.h \
+		TerminationProcessAmuleweb.h \
 		TextClient.h \
 		ThreadScheduler.h \
 		ThreadTasks.h \

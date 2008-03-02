@@ -1,8 +1,8 @@
 //
 // This file is part of the aMule Project.
 //
-// Copyright (c) 2006-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
-// Copyright (c) 2006-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+// Copyright (c) 2008-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
+// Copyright (c) 2008-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 //
 // Any parts of this program derived from the xMule, lMule or eMule project,
 // or contributed by third-party developers are copyrighted by their
@@ -24,25 +24,23 @@
 //
 
 
-#ifndef TERMINATIONPROCESS
-#define TERMINATIONPROCESS
+#include "TerminationProcessAmuleweb.h"
 
 
-#include <wx/process.h>
-
-
-// This is the handler for process termination events.
-// Used on some calls to wxExecute().
-class CTerminationProcess : public wxProcess
+CTerminationProcessAmuleweb::CTerminationProcessAmuleweb(const wxString &cmd, long *webserver_pid)
+:
+CTerminationProcess(cmd),
+m_webserver_pid(webserver_pid)
 {
-public:
-	CTerminationProcess(const wxString &cmd);
-	virtual void OnTerminate(int pid, int status);
-
-private:
-	wxString m_cmd;
-};
+}
 
 
-#endif // TERMINATIONPROCESS
+void CTerminationProcessAmuleweb::OnTerminate(int pid, int status)
+{
+	// Tell the application that the webserver is no longer running
+	*m_webserver_pid = 0;
+
+	// Normal termination processing here
+	CTerminationProcess::OnTerminate(pid, status);
+}
 

@@ -73,7 +73,7 @@
 #include "ServerConnect.h"              // Needed for CServerConnect
 #include "ServerUDPSocket.h"		// Needed for CServerUDPSocket
 #include "Statistics.h"			// Needed for CStatistics
-#include "TerminationProcess.h"		// Needed for CTerminationProcess
+#include "TerminationProcessAmuleweb.h"	// Needed for CTerminationProcessAmuleweb
 #include "ThreadTasks.h"
 #include "updownclient.h"		// Needed for CUpDownClient
 #include "UploadQueue.h"		// Needed for CUploadQueue
@@ -818,7 +818,7 @@ bool CamuleApp::OnInit()
 			wxT("' '--amule-config-file=") +
 			aMuleConfigFile +
 			wxT("'");
-		CTerminationProcess *p = new CTerminationProcess(cmd);
+		CTerminationProcessAmuleweb *p = new CTerminationProcessAmuleweb(cmd, &webserver_pid);
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		bool webserver_ok = webserver_pid > 0;
 		if (webserver_ok) {
