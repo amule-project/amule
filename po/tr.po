@@ -3144,7 +3144,6 @@ msgid_plural ""
 msgstr[0] ""
 "Bozuk parça (%d) %d parçadosyası %s içinde bulundu -Dosya sonuç adreslemesi |%s| Dosya adreslemesi |"
 "%s|"
-
 #: src/PartFile.cpp:1176
 #, c-format
 msgid "Found completed part (%i) in %s"
