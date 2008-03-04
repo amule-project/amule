@@ -652,14 +652,11 @@ protected:
 	static bool	s_bshowoverhead;
 	static bool	s_bDAP;
 	static bool	s_bUAP;
-	static bool	s_bDisableKnownClientList;
-	static bool	s_bDisableQueueList;
 
 	static bool	s_ShowRatesOnTitle;
 
 	static wxString	s_VideoPlayer;
 	static bool	s_moviePreviewBackup;
-	static bool	s_indicateratings;
 	static bool	s_showAllNotCats;
 	
 	static bool	s_msgonlyfriends;
@@ -668,7 +665,6 @@ protected:
 	static uint8	s_iFileBufferSize;
 	static uint8	s_iQueueSize;
 
-	static uint16	s_maxmsgsessions;
 	static wxString	s_datetimeformat;
 	
 	static bool	s_ToolbarOrientation;
