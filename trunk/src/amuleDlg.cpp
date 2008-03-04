@@ -705,30 +705,55 @@ void CamuleDlg::ShowConnectionState()
 
 	////////////////////////////////////////////////////////////	
 	// Update the connect/disconnect/cancel button.
-	// 	
-	const bool isConnected = theApp->IsConnected();
-	const bool isConnecting = theApp->serverconnect->IsConnecting() ||
-					(theApp->IsKadRunning() &&
-					 !theApp->IsConnectedKad());
+	//
+	enum EConnState {
+		ECS_Unknown,
+		ECS_Connected,
+		ECS_Connecting,
+		ECS_Disconnected
+	};
 
-	m_wndToolbar->Freeze();
-	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
-	if (isConnecting) {
-		toolbarTool->SetLabel(_("Cancel"));
-		toolbarTool->SetShortHelp(_("Stop the current connection attempts"));
-		toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(2));
-	} else if (isConnected) {
-		toolbarTool->SetLabel(_("Disconnect"));
-		toolbarTool->SetShortHelp(_("Disconnect from the currently connected networks"));
-		toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(1));
+	static EConnState s_oldState = ECS_Unknown;
+	EConnState currentState = ECS_Disconnected;
+
+	if (theApp->serverconnect->IsConnecting() ||
+			(theApp->IsKadRunning() && !theApp->IsConnectedKad())) {
+		currentState = ECS_Connecting;
+	} else if (theApp->IsConnected()) {
+		currentState = ECS_Connected;
 	} else {
-		toolbarTool->SetLabel(_("Connect"));
-		toolbarTool->SetShortHelp(_("Connect to the currently enabled networks"));
-		toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(0));
+		currentState = ECS_Disconnected;
 	}
-	m_wndToolbar->InsertTool(0, toolbarTool);
-	m_wndToolbar->Realize();
-	m_wndToolbar->Thaw();
+
+	if (currentState != s_oldState) {
+		m_wndToolbar->Freeze();
+		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
+
+		switch (currentState) {
+			case ECS_Connecting:
+				toolbarTool->SetLabel(_("Cancel"));
+				toolbarTool->SetShortHelp(_("Stop the current connection attempts"));
+				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(2));
+				break;
+
+			case ECS_Connected:
+				toolbarTool->SetLabel(_("Disconnect"));
+				toolbarTool->SetShortHelp(_("Disconnect from the currently connected networks"));
+				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(1));
+				break;
+
+			default:
+				toolbarTool->SetLabel(_("Connect"));
+				toolbarTool->SetShortHelp(_("Connect to the currently enabled networks"));
+				toolbarTool->SetNormalBitmap(m_tblist.GetBitmap(0));
+		}
+
+		m_wndToolbar->InsertTool(0, toolbarTool);
+		m_wndToolbar->Realize();
+		m_wndToolbar->Thaw();
+
+		s_oldState = currentState;
+	}
 
 
 	////////////////////////////////////////////////////////////	
