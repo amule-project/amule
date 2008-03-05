@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-02-28 03:31+0100\n"
+"POT-Creation-Date: 2008-03-05 03:31+0100\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -258,7 +258,7 @@ msgstr "Ar tikrai pašalinti pažymėtus draugus?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:717
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:734
 #: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:896
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1011 src/muuli_wdr.cpp:1077 src/muuli_wdr.cpp:2796
@@ -332,7 +332,7 @@ msgstr "Pilni šaltiniai"
 msgid "Directory Path"
 msgstr "Kelias"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1291 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1316 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "Dalinami failai"
@@ -613,7 +613,7 @@ msgstr "Atsiunčiama..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1304
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1329
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Parinktys"
@@ -1331,150 +1331,150 @@ msgstr "Nuoroda"
 msgid "Source Seeds"
 msgstr "Pilni šaltiniai"
 
-#: src/Preferences.cpp:629 src/PrefsUnifiedDlg.cpp:242
+#: src/Preferences.cpp:625 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "Numatyta"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:626
 msgid "Arabic"
 msgstr "Arabic"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:627
 msgid "Basque"
 msgstr "Basque"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:628
 msgid "Bulgarian"
 msgstr "Bulgarian"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:629
 msgid "Catalan"
 msgstr "Catalan"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:630
 msgid "Chinese (Simplified)"
 msgstr "Chinese (Simplified)"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:631
 msgid "Chinese (Traditional)"
 msgstr "Chinese (Traditional)"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:632
 msgid "Croatian"
 msgstr "Croatian"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:633
 msgid "Czech"
 msgstr ""
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:634
 msgid "Danish"
 msgstr "Danish"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:635
 msgid "Dutch"
 msgstr "Dutch"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:636
 msgid "English (U.K.)"
 msgstr "English (U.K.)"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:639
 msgid "Estonian"
 msgstr "Estonian"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:640
 msgid "Finnish"
 msgstr "Finnish"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:641
 msgid "French"
 msgstr "French"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:642
 msgid "Galician"
 msgstr "Galician"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:643
 msgid "German"
 msgstr "German"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:644
 msgid "Greek"
 msgstr ""
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:645
 msgid "Hungarian"
 msgstr "Hungarian"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:646
 msgid "Italian"
 msgstr "Italian"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:647
 msgid "Italian (Swiss)"
 msgstr "Italian (Swiss)"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:648
 msgid "Japanese"
 msgstr ""
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:649
 msgid "Korean"
 msgstr "Korean"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:650
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:651
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:652
 msgid "Polish"
 msgstr "Polish"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:653
 msgid "Portuguese"
 msgstr "Portuguese"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:654
 msgid "Portuguese (Brazilian)"
 msgstr "Portuguese (Brazilian)"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:655
 msgid "Russian"
 msgstr "Russian"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:656
 msgid "Slovenian"
 msgstr "Slovenian"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:657
 msgid "Spanish"
 msgstr "Spanish"
 
-#: src/Preferences.cpp:662
+#: src/Preferences.cpp:658
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:665
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "Turkish"
 
-#: src/Preferences.cpp:1616 src/Preferences.cpp:1630 src/Preferences.cpp:1637
+#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
 msgid "Unable to determine selected browser!"
 msgstr "Nurodytos naršyklės rasti nepavyko!"
 
-#: src/Preferences.cpp:1668
+#: src/Preferences.cpp:1660
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP prievadas negali būti didesnis nei 65532, nes serverio UDP prievadas yra "
 "TCP+3"
 
-#: src/Preferences.cpp:1669
+#: src/Preferences.cpp:1661
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Bus naudojamas numatytas prievadas (%d)"
@@ -1755,136 +1755,136 @@ msgstr "Jungiamasi"
 msgid "Kad: Off"
 msgstr " Kad: "
 
-#: src/amuleDlg.cpp:718
+#: src/amuleDlg.cpp:735
 #, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "Nutraukti bandymus prisijungti"
 
-#: src/amuleDlg.cpp:721 src/muuli_wdr.cpp:3060 src/MuleTrayIcon.cpp:539
+#: src/amuleDlg.cpp:740 src/muuli_wdr.cpp:3060 src/MuleTrayIcon.cpp:539
 msgid "Disconnect"
 msgstr "Atsijungti"
 
-#: src/amuleDlg.cpp:722
+#: src/amuleDlg.cpp:741
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "Atsijungti nuo tinklo."
 
-#: src/amuleDlg.cpp:725 src/muuli_wdr.cpp:3276 src/muuli_wdr.cpp:3767
+#: src/amuleDlg.cpp:746 src/muuli_wdr.cpp:3276 src/muuli_wdr.cpp:3767
 #: src/muuli_wdr.cpp:3993 src/MuleTrayIcon.cpp:542
 msgid "Connect"
 msgstr "Prisijungti"
 
-#: src/amuleDlg.cpp:726
+#: src/amuleDlg.cpp:747
 #, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "Prisijungti prie tinklo."
 
-#: src/amuleDlg.cpp:769
+#: src/amuleDlg.cpp:794
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "Išs.: %.1f(%.1f) | Ats.: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:771
+#: src/amuleDlg.cpp:796
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "Išs.: %.1f | Ats.: %.1f"
 
-#: src/amuleDlg.cpp:793
+#: src/amuleDlg.cpp:818
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | prisijungta)"
 
-#: src/amuleDlg.cpp:795
+#: src/amuleDlg.cpp:820
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | neprisijungta)"
 
-#: src/amuleDlg.cpp:826
+#: src/amuleDlg.cpp:851
 msgid "Do you really want to exit aMule?"
 msgstr "Ar tikrai norite baigti darbą su aMule?"
 
-#: src/amuleDlg.cpp:827
+#: src/amuleDlg.cpp:852
 msgid "Exit confirmation"
 msgstr "Baigimo patvirtinimas"
 
-#: src/amuleDlg.cpp:1113
+#: src/amuleDlg.cpp:1138
 msgid "Could not determine the command for running the browser."
 msgstr "Nepavyko suprasti naršyklės paleidimo komandos."
 
-#: src/amuleDlg.cpp:1173
+#: src/amuleDlg.cpp:1198
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Išvaizdos failų aplankas %s neegzistuoja"
 
-#: src/amuleDlg.cpp:1178
+#: src/amuleDlg.cpp:1203
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Dėmesio: nepavyko atverti išvaizdos failo %s skaitymui"
 
-#: src/amuleDlg.cpp:1278 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Tinklas"
 
-#: src/amuleDlg.cpp:1280 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Tinklo langas"
 
-#: src/amuleDlg.cpp:1283 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Paieška"
 
-#: src/amuleDlg.cpp:1285 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Paieškos langas"
 
-#: src/amuleDlg.cpp:1287 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Siuntimas"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Failų siuntimo langas"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Dalinamų failų langas"
 
-#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Žinutės"
 
-#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Žinučių langas"
 
-#: src/amuleDlg.cpp:1299 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1324 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Statistikos grafikų langas"
 
-#: src/amuleDlg.cpp:1306 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Parinkčių langas"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Įkelti"
 
-#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "Dalinai atsiųstų failų įkėlimo langas"
 
-#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Apie"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Apie/pagalba"
 
