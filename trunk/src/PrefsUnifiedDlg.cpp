@@ -1069,25 +1069,22 @@ void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 void PrefsUnifiedDlg::OnUserEventSelected(wxListEvent& event)
 {
 	for (unsigned int i = 0; i < CUserEvents::GetCount(); ++i) {
-		CastChild(USEREVENTS_FIRST_ID + i * USEREVENTS_IDS_PER_EVENT, wxPanel)->Hide();
+		IDC_PREFS_EVENTS_PAGE->Hide(i + 2);
 	}
 
-	CastChild(event.GetData(), wxPanel)->Show();
+	IDC_PREFS_EVENTS_PAGE->Show((event.GetData() - USEREVENTS_FIRST_ID) / USEREVENTS_IDS_PER_EVENT + 2, true);
 
-	Layout();
+	IDC_PREFS_EVENTS_PAGE->Layout();
 
 	event.Skip();
 }
 
 void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxWindow* parent)
 {
-	wxPanel *item0 = new wxPanel(parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT);
-
-	wxBoxSizer *item1 = new wxBoxSizer(wxVERTICAL);
-	wxStaticBox *item8 = new wxStaticBox( item0, -1, CFormat(_("Execute command on `%s' event")) % wxGetTranslation(CUserEvents::GetDisplayName(static_cast<enum CUserEvents::EventType>(idx))) );
+	wxStaticBox *item8 = new wxStaticBox( parent, -1, CFormat(_("Execute command on `%s' event")) % wxGetTranslation(CUserEvents::GetDisplayName(static_cast<enum CUserEvents::EventType>(idx))) );
 	wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
 
-	wxCheckBox *item9 = new wxCheckBox( item0, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 1, _("Enable command execution on core"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxCheckBox *item9 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 1, _("Enable command execution on core"), wxDefaultPosition, wxDefaultSize, 0 );
 	item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
 	wxFlexGridSizer *item10 = new wxFlexGridSizer( 3, 0, 0 );
@@ -1095,16 +1092,16 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 
 	item10->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
 
-	wxStaticText *item11 = new wxStaticText( item0, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *item11 = new wxStaticText( parent, -1, _("Core command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item10->Add( item11, 0, wxALIGN_CENTER|wxALL, 5 );
 
-	wxTextCtrl *item12 = new wxTextCtrl( item0, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item12 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 2, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
 	item12->Enable(CUserEvents::IsCoreCommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
 	item10->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 	item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-	wxCheckBox *item14 = new wxCheckBox( item0, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 3, _("Enable command execution on GUI"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxCheckBox *item14 = new wxCheckBox( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 3, _("Enable command execution on GUI"), wxDefaultPosition, wxDefaultSize, 0 );
 	item7->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
 	wxFlexGridSizer *item15 = new wxFlexGridSizer( 3, 0, 0 );
@@ -1112,25 +1109,21 @@ void PrefsUnifiedDlg::CreateEventPanels(const int idx, const wxString& vars, wxW
 
 	item15->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
 
-	wxStaticText *item16 = new wxStaticText( item0, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *item16 = new wxStaticText( parent, -1, _("GUI command:"), wxDefaultPosition, wxDefaultSize, 0 );
 	item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
 
-	wxTextCtrl *item17 = new wxTextCtrl( item0, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	wxTextCtrl *item17 = new wxTextCtrl( parent, USEREVENTS_FIRST_ID + idx * USEREVENTS_IDS_PER_EVENT + 4, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
 	item17->Enable(CUserEvents::IsGUICommandEnabled(static_cast<enum CUserEvents::EventType>(idx)));
 	item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
 	item7->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-	wxStaticText *item13 = new wxStaticText( item0, -1, _("The following variables will be replaced:") + vars, wxDefaultPosition, wxDefaultSize, 0 );
+	wxStaticText *item13 = new wxStaticText( parent, -1, _("The following variables will be replaced:") + vars, wxDefaultPosition, wxDefaultSize, 0 );
 	item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-	item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	IDC_PREFS_EVENTS_PAGE->Add(item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-	item0->SetSizer(item1);
-	item1->SetSizeHints(item0);
-
-	IDC_PREFS_EVENTS_PAGE->Add(item0, 0, wxGROW | wxEXPAND);
-
-	item0->Hide();
+	IDC_PREFS_EVENTS_PAGE->Layout();
+	IDC_PREFS_EVENTS_PAGE->Hide(idx + 2);
 }
 // File_checked_for_headers
