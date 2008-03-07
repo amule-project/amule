@@ -263,6 +263,16 @@ wxDialog(parent, -1, _("Preferences"),
 			}
 			list->SetColumnWidth(0, wxLIST_AUTOSIZE);
 		}
+#ifdef __DEBUG__
+		else if (pages[i].m_function == PreferencesDebug) {
+			int count = CLogger::GetDebugCategoryCount();
+			wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
+
+			for ( int i = 0; i < count; i++ ) {
+				list->Append( CLogger::GetDebugCategory( i ).GetName() );
+			}
+		}
+#endif
 
 		// Align and resize the page
 		Fit();
@@ -413,16 +423,13 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);
 	::SendCheckBoxEvent(this, IDC_ENFORCE_PO_INCOMING);
 
-	// Set debugging toggles
 #ifdef __DEBUG__
+	// Set debugging toggles
 	int count = CLogger::GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
 	for ( int i = 0; i < count; i++ ) {
-		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
-		
-		list->Append( cat.GetName() );
-		list->Check( i, cat.IsEnabled() );
+		list->Check( i, CLogger::GetDebugCategory( i ).IsEnabled() );
 	}
 #endif
 	
@@ -454,15 +461,13 @@ bool PrefsUnifiedDlg::TransferFromWindow()
 		theApp->amuledlg->m_kademliawnd->SetGraphColors();
 	}
 
-	// Get debugging toggles
 #ifdef __DEBUG__
+	// Get debugging toggles
 	int count = CLogger::GetDebugCategoryCount();
 	wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
 	for ( int i = 0; i < count; i++ ) {
-		const CDebugCategory& cat = CLogger::GetDebugCategory( i );
-		
-		CLogger::SetEnabled( cat.GetType(), list->IsChecked( i ) );
+		CLogger::SetEnabled( CLogger::GetDebugCategory( i ).GetType(), list->IsChecked( i ) );
 	}
 #endif
 
