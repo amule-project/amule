@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-05 03:31+0100\n"
+"POT-Creation-Date: 2008-03-08 03:31+0100\n"
 "PO-Revision-Date: 2008-02-28 15:04+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -1694,8 +1694,8 @@ msgstr ""
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:517
-#: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:176
+#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:522
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "Bericht"
@@ -1911,7 +1911,7 @@ msgstr "Debugging"
 msgid "User Defined"
 msgstr "Handmatig Gekozen"
 
-#: src/PrefsUnifiedDlg.cpp:495
+#: src/PrefsUnifiedDlg.cpp:500
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -1919,15 +1919,15 @@ msgstr ""
 "aMule moet opnieuw gestart worden om deze veranderingen toe te passen:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:502
+#: src/PrefsUnifiedDlg.cpp:507
 msgid "- TCP port changed.\n"
 msgstr "- TCP poort veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:507
+#: src/PrefsUnifiedDlg.cpp:512
 msgid "- UDP port changed.\n"
 msgstr "- UDP poort veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:516
+#: src/PrefsUnifiedDlg.cpp:521
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "'Auto-update serverlist at startup' will be disabled."
@@ -1935,7 +1935,7 @@ msgstr ""
 "Uw Auto-update servers lijst is leeg.\n"
 "'Auto-update serverlijst bij het opstarten' zal worden uitgeschakeld."
 
-#: src/PrefsUnifiedDlg.cpp:523
+#: src/PrefsUnifiedDlg.cpp:528
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -1944,19 +1944,19 @@ msgstr ""
 "Externe verbindingen kunnen niet ingeschakeld worden tenzij een geldig "
 "wachtwoord is ingesteld."
 
-#: src/PrefsUnifiedDlg.cpp:535
+#: src/PrefsUnifiedDlg.cpp:540
 msgid "- Language changed.\n"
 msgstr "- Taal veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:540
+#: src/PrefsUnifiedDlg.cpp:545
 msgid "- Temp folder changed.\n"
 msgstr "- Temp directory veranderd.\n"
 
-#: src/PrefsUnifiedDlg.cpp:565 src/muuli_wdr.cpp:112
+#: src/PrefsUnifiedDlg.cpp:570 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Up: 0.0 | Down: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:607
+#: src/PrefsUnifiedDlg.cpp:612
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -1964,7 +1964,7 @@ msgstr ""
 "Zowel het ED2K als het Kad netwerk zijn uitgeschakeld.\n"
 "U kun niet verbinden tot u minimaal een netwerk inschakelt."
 
-#: src/PrefsUnifiedDlg.cpp:611
+#: src/PrefsUnifiedDlg.cpp:616
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -1972,7 +1972,7 @@ msgstr ""
 "Kad zal niet starten als uw UDP poort is uitgeschakeld.\n"
 "Schakel de UDP poort in of schakel Kad uit."
 
-#: src/PrefsUnifiedDlg.cpp:616
+#: src/PrefsUnifiedDlg.cpp:621
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -1982,11 +1982,11 @@ msgstr ""
 "U MOET aMule nu opnieuw starten.\n"
 "Als u dat niet doet moet u niet klagen als er iets misgaat.\n"
 
-#: src/PrefsUnifiedDlg.cpp:616
+#: src/PrefsUnifiedDlg.cpp:621
 msgid "WARNING"
 msgstr "WAARSCHUWING"
 
-#: src/PrefsUnifiedDlg.cpp:694
+#: src/PrefsUnifiedDlg.cpp:699
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -1996,49 +1996,49 @@ msgstr ""
 "Vul a.u.b. minimaal een URL naar een geldig server.met bestand in.\n"
 "Klik op de knop \"Lijst\" hiernaast om een URL in te voeren."
 
-#: src/PrefsUnifiedDlg.cpp:835
+#: src/PrefsUnifiedDlg.cpp:840
 msgid "Temporary files"
 msgstr "Tijdelijke bestanden"
 
-#: src/PrefsUnifiedDlg.cpp:840
+#: src/PrefsUnifiedDlg.cpp:845
 msgid "Incoming files"
 msgstr "Binnenkomende bestanden"
 
-#: src/PrefsUnifiedDlg.cpp:845
+#: src/PrefsUnifiedDlg.cpp:850
 msgid "Online Signatures"
 msgstr "Online Handtekeningen"
 
-#: src/PrefsUnifiedDlg.cpp:858
+#: src/PrefsUnifiedDlg.cpp:863
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Kies een directory voor %s"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:879
 msgid "Browse wav"
 msgstr "Blader wav"
 
-#: src/PrefsUnifiedDlg.cpp:875
+#: src/PrefsUnifiedDlg.cpp:880
 msgid "File wav (*.wav)|*.wav||"
 msgstr "Bestand wav (*.wav)|*.wav||"
 
-#: src/PrefsUnifiedDlg.cpp:892
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Browse for videoplayer"
 msgstr "Blader naar videospeler"
 
-#: src/PrefsUnifiedDlg.cpp:896
+#: src/PrefsUnifiedDlg.cpp:901
 msgid "Select browser"
 msgstr "Selecteer browser"
 
-#: src/PrefsUnifiedDlg.cpp:902
+#: src/PrefsUnifiedDlg.cpp:907
 #, c-format
 msgid "Executable%s"
 msgstr "Uitvoerbare%s"
 
-#: src/PrefsUnifiedDlg.cpp:923
+#: src/PrefsUnifiedDlg.cpp:928
 msgid "Edit Serverlist"
 msgstr "Serverlijst bewerken"
 
-#: src/PrefsUnifiedDlg.cpp:924
+#: src/PrefsUnifiedDlg.cpp:929
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2046,79 +2046,79 @@ msgstr ""
 "Voeg hier URL's toe om server.met bestanden te downloaden.\n"
 "Slechts een url per regel."
 
-#: src/PrefsUnifiedDlg.cpp:980
+#: src/PrefsUnifiedDlg.cpp:985
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:987
+#: src/PrefsUnifiedDlg.cpp:992
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:993
+#: src/PrefsUnifiedDlg.cpp:998
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Verbindingen Grafiek Schaal: %d"
 
-#: src/PrefsUnifiedDlg.cpp:999
+#: src/PrefsUnifiedDlg.cpp:1004
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1005
+#: src/PrefsUnifiedDlg.cpp:1010
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1016
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1018
+#: src/PrefsUnifiedDlg.cpp:1023
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/PrefsUnifiedDlg.cpp:1020
+#: src/PrefsUnifiedDlg.cpp:1025
 msgid "Server connection refresh interval: Disabled"
 msgstr "Server verbinding verversingstijd: Uitgeschakeld"
 
-#: src/PrefsUnifiedDlg.cpp:1087
+#: src/PrefsUnifiedDlg.cpp:1089
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Voer commando uit bij gebeurtenis `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1090
+#: src/PrefsUnifiedDlg.cpp:1092
 msgid "Enable command execution on core"
 msgstr "Schakel uitvoeren van commando's in kern in"
 
-#: src/PrefsUnifiedDlg.cpp:1098
+#: src/PrefsUnifiedDlg.cpp:1100
 msgid "Core command:"
 msgstr "Kern commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1107
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on GUI"
 msgstr "Schakel uitvoeren van commando's in GUI in"
 
-#: src/PrefsUnifiedDlg.cpp:1115
+#: src/PrefsUnifiedDlg.cpp:1117
 msgid "GUI command:"
 msgstr "GUI commando:"
 
-#: src/PrefsUnifiedDlg.cpp:1124
+#: src/PrefsUnifiedDlg.cpp:1126
 msgid "The following variables will be replaced:"
 msgstr "De volgende variabelen worden vervangen:"
 
