@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-05 03:31+0100\n"
+"POT-Creation-Date: 2008-03-08 03:31+0100\n"
 "PO-Revision-Date: 2007-11-08 12:11+0000\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -1711,8 +1711,8 @@ msgstr ""
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:517
-#: src/PrefsUnifiedDlg.cpp:612 src/PrefsUnifiedDlg.cpp:695 src/KadDlg.cpp:176
+#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:522
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "Mensagem"
@@ -1937,7 +1937,7 @@ msgstr "Depuração"
 msgid "User Defined"
 msgstr "Personalizado"
 
-#: src/PrefsUnifiedDlg.cpp:495
+#: src/PrefsUnifiedDlg.cpp:500
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -1945,15 +1945,15 @@ msgstr ""
 "aMule tem de ser reinicializado para activar estas mudanças:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:502
+#: src/PrefsUnifiedDlg.cpp:507
 msgid "- TCP port changed.\n"
 msgstr "- Porta TCP foi mudada.\n"
 
-#: src/PrefsUnifiedDlg.cpp:507
+#: src/PrefsUnifiedDlg.cpp:512
 msgid "- UDP port changed.\n"
 msgstr "- Porta UDP for mudada.\n"
 
-#: src/PrefsUnifiedDlg.cpp:516
+#: src/PrefsUnifiedDlg.cpp:521
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "'Auto-update serverlist at startup' will be disabled."
@@ -1961,7 +1961,7 @@ msgstr ""
 "A sua lista de servidores com actualização automática está vazia.\n"
 "Actualização automática de servidores no arranque será desactivada."
 
-#: src/PrefsUnifiedDlg.cpp:523
+#: src/PrefsUnifiedDlg.cpp:528
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -1970,19 +1970,19 @@ msgstr ""
 "Conexões externas não podem ser activadas a menos que uma senha válida seja "
 "especificada"
 
-#: src/PrefsUnifiedDlg.cpp:535
+#: src/PrefsUnifiedDlg.cpp:540
 msgid "- Language changed.\n"
 msgstr "- A lingua foi mudada.\n"
 
-#: src/PrefsUnifiedDlg.cpp:540
+#: src/PrefsUnifiedDlg.cpp:545
 msgid "- Temp folder changed.\n"
 msgstr "- Diretório provisorio foi mudado.\n"
 
-#: src/PrefsUnifiedDlg.cpp:565 src/muuli_wdr.cpp:112
+#: src/PrefsUnifiedDlg.cpp:570 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Saída: 0.0 | Entrada: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:607
+#: src/PrefsUnifiedDlg.cpp:612
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -1990,7 +1990,7 @@ msgstr ""
 "ED2K e Kad estão desactivados.\n"
 "Não vai conseguir uma ligação até activar pelo menos um deles."
 
-#: src/PrefsUnifiedDlg.cpp:611
+#: src/PrefsUnifiedDlg.cpp:616
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -1998,7 +1998,7 @@ msgstr ""
 "Kad nao vai funcionar se a porta UDP estiver deactivada.\n"
 "Active a porta UDP ou deactive Kad."
 
-#: src/PrefsUnifiedDlg.cpp:616
+#: src/PrefsUnifiedDlg.cpp:621
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2008,11 +2008,11 @@ msgstr ""
 "DEVE reinicializar aMule agora.\n"
 "Se não o fizer, não se queixe se más coisas acontecerem.\n"
 
-#: src/PrefsUnifiedDlg.cpp:616
+#: src/PrefsUnifiedDlg.cpp:621
 msgid "WARNING"
 msgstr "AVISO"
 
-#: src/PrefsUnifiedDlg.cpp:694
+#: src/PrefsUnifiedDlg.cpp:699
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2023,49 +2023,49 @@ msgstr ""
 "'server.met' válido.\n"
 "Clique no botão \"Lista\" para inserir uma localização."
 
-#: src/PrefsUnifiedDlg.cpp:835
+#: src/PrefsUnifiedDlg.cpp:840
 msgid "Temporary files"
 msgstr "Ficheiros temporários"
 
-#: src/PrefsUnifiedDlg.cpp:840
+#: src/PrefsUnifiedDlg.cpp:845
 msgid "Incoming files"
 msgstr "Ficheiros a entrar"
 
-#: src/PrefsUnifiedDlg.cpp:845
+#: src/PrefsUnifiedDlg.cpp:850
 msgid "Online Signatures"
 msgstr "Assinaturas  em-linha"
 
-#: src/PrefsUnifiedDlg.cpp:858
+#: src/PrefsUnifiedDlg.cpp:863
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Seleccione uma pasta para %s"
 
-#: src/PrefsUnifiedDlg.cpp:874
+#: src/PrefsUnifiedDlg.cpp:879
 msgid "Browse wav"
 msgstr "Procurar WAV"
 
-#: src/PrefsUnifiedDlg.cpp:875
+#: src/PrefsUnifiedDlg.cpp:880
 msgid "File wav (*.wav)|*.wav||"
 msgstr "Ficheiro WAV (*.wav)|*.wav||"
 
-#: src/PrefsUnifiedDlg.cpp:892
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Browse for videoplayer"
 msgstr "Procurar leitor de vídeo"
 
-#: src/PrefsUnifiedDlg.cpp:896
+#: src/PrefsUnifiedDlg.cpp:901
 msgid "Select browser"
 msgstr "Seleccionar Navegador"
 
-#: src/PrefsUnifiedDlg.cpp:902
+#: src/PrefsUnifiedDlg.cpp:907
 #, c-format
 msgid "Executable%s"
 msgstr "Executável%s"
 
-#: src/PrefsUnifiedDlg.cpp:923
+#: src/PrefsUnifiedDlg.cpp:928
 msgid "Edit Serverlist"
 msgstr "Editar a lista de servidores"
 
-#: src/PrefsUnifiedDlg.cpp:924
+#: src/PrefsUnifiedDlg.cpp:929
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2073,79 +2073,79 @@ msgstr ""
 "Adicione localizações para obter ficheiros 'server.met'\n"
 "Apenas uma localização por linha."
 
-#: src/PrefsUnifiedDlg.cpp:980
+#: src/PrefsUnifiedDlg.cpp:985
 #, fuzzy, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Intervalo de actualização: %d segundos"
 msgstr[1] "Intervalo de actualização: %d segundos"
 
-#: src/PrefsUnifiedDlg.cpp:987
+#: src/PrefsUnifiedDlg.cpp:992
 #, fuzzy, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Tempo para o gráfico de média: %d minutos"
 msgstr[1] "Tempo para o gráfico de média: %d minutos"
 
-#: src/PrefsUnifiedDlg.cpp:993
+#: src/PrefsUnifiedDlg.cpp:998
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Escala do gráfico de conexões: %d"
 
-#: src/PrefsUnifiedDlg.cpp:999
+#: src/PrefsUnifiedDlg.cpp:1004
 #, fuzzy, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Intervalo de actualização: %d segundos"
 msgstr[1] "Intervalo de actualização: %d segundos"
 
-#: src/PrefsUnifiedDlg.cpp:1005
+#: src/PrefsUnifiedDlg.cpp:1010
 #, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Tamanho de memória temporária de ficheiros: %d B"
 msgstr[1] "Tamanho de memória temporária de ficheiros: %d B"
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1016
 #, fuzzy, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "Tamanho da fila de espera de saída: %d clientes"
 msgstr[1] "Tamanho da fila de espera de saída: %d clientes"
 
-#: src/PrefsUnifiedDlg.cpp:1018
+#: src/PrefsUnifiedDlg.cpp:1023
 #, fuzzy, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Intervalo de refrescamento de conexão ao servidor: %d minutos"
 msgstr[1] "Intervalo de refrescamento de conexão ao servidor: %d minutos"
 
-#: src/PrefsUnifiedDlg.cpp:1020
+#: src/PrefsUnifiedDlg.cpp:1025
 msgid "Server connection refresh interval: Disabled"
 msgstr "Interval de refrescamento de conexão ao servidor: desactivado"
 
-#: src/PrefsUnifiedDlg.cpp:1087
+#: src/PrefsUnifiedDlg.cpp:1089
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Execute o programa quando ocorrer o evento `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1090
+#: src/PrefsUnifiedDlg.cpp:1092
 msgid "Enable command execution on core"
 msgstr "Active execução de commandos no núcleo"
 
-#: src/PrefsUnifiedDlg.cpp:1098
+#: src/PrefsUnifiedDlg.cpp:1100
 msgid "Core command:"
 msgstr "Commando núcleo:"
 
-#: src/PrefsUnifiedDlg.cpp:1107
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on GUI"
 msgstr "Active execução de commando na interface grafica"
 
-#: src/PrefsUnifiedDlg.cpp:1115
+#: src/PrefsUnifiedDlg.cpp:1117
 msgid "GUI command:"
 msgstr "Commando da interface grafica:"
 
-#: src/PrefsUnifiedDlg.cpp:1124
+#: src/PrefsUnifiedDlg.cpp:1126
 msgid "The following variables will be replaced:"
 msgstr "As variaveis seguintes vão ser substituidas:"
 
