@@ -240,7 +240,7 @@ AC_ARG_WITH(
 	[language],
 	[AS_HELP_STRING([--with-language=<langs>],
 		[Specify a comma-separated list of languages you want to have installed. See po/LINGUAS for available languages])],
-	[LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])
+	[AS_IF([test "$withval" = "all"], [LINGUAS='%UNSET%'], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
