@@ -30,12 +30,6 @@ general_pkgs = "amule-common"\
 	"amule-theme-chicane"\
 	"amule-xas"
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-
 # First, get the targets from commandline
 flags = ${MAKECMDGOALS}
 
@@ -51,7 +45,7 @@ ifeq ("binary", "$(findstring binary, $(flags))")
 	ALCC = --enable-alcc
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
-	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	LANGFLAG = --with-language=all
 
 else ifeq ("clean", "$(findstring clean, $(flags))")
@@ -64,7 +58,7 @@ else ifeq ("clean", "$(findstring clean, $(flags))")
 	ALCC = --enable-alcc
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
-	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	LANGFLAG = --with-language=all
 
 else ifeq ("build", "$(findstring build, $(flags))")
@@ -77,7 +71,7 @@ else ifeq ("build", "$(findstring build, $(flags))")
 	ALCC = --enable-alcc
 	ALC = --enable-alc
 	AMULECMD = --enable-amulecmd
-	DEBUGGING = --enable-debug --disable-optimise --disable-profile
+	DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	LANGFLAG = --with-language=all
 
 else
@@ -268,9 +262,9 @@ else
 
 	#And at Last, find out if we compile a debug-package or not.
 	ifeq ("dbg", "$(findstring dbg, $(flags))")
-		DEBUGGING = --enable-debug --disable-optimise --disable-profile
+		DEBUGGING = --enable-debug --disable-optimize --disable-profile
 	else
-		DEBUGGING = --disable-debug --enable-optimize --enable-profile 
+		DEBUGGING = --disable-debug --enable-optimize --disable-profile 
 	endif
 endif
 
