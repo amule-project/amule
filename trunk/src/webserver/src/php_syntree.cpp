@@ -881,7 +881,7 @@ void cast_value_dnum(PHP_VALUE_NODE *val)
 		case PHP_VAL_FLOAT: val->int_val = (int)val->float_val; break;
 		case PHP_VAL_STRING: {
 			char *str = val->str_val;
-			val->int_val = atoi(val->str_val);
+			val->int_val = atoll(val->str_val);
 			free(str);
 			break;
 		}

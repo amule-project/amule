@@ -359,8 +359,8 @@ void php_native_server_cmd(PHP_VALUE_NODE *)
 		return;
 	}
 	cast_value_dnum(&si->var->value);
-	int ip = si->var->value.int_val;
-	
+	uint32_t ip = si->var->value.int_val;
+
 	si = get_scope_item(g_current_scope, "__param_1");
 	if ( !si ) {
 		php_report_error(PHP_ERROR, "Missing argument 2: $server_port");
