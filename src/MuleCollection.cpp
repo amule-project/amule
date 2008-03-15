@@ -357,9 +357,14 @@ bool CMuleCollection::OpenText(const std::string &File)
 	if (!infile.is_open()) {
 		return false;
 	}
-  	
-  	while (getline(infile, line)) {
-		if(AddLink(line)) {
+	
+	while (getline(infile, line)) {
+// Strip \r to avoid a problem with \r\n line ending on Unix
+		int last = line.size()-1;
+		if ((1 > last) && ('\r' == line.at(last))) {
+			line.erase(last);
+		}
+		if (AddLink(line)) {
 			numLinks++;
 		}
 	}
