@@ -1147,9 +1147,8 @@ void InitLocale(wxLocale& locale, int language)
 	
 	if (language != wxLANGUAGE_CUSTOM) {
 
-#if defined(__WXMAC__)
-		wxStandardPathsBase &spb(wxStandardPaths::Get());
-		locale.AddCatalogLookupPathPrefix(JoinPaths(spb.GetDataDir(), wxT("locale")));
+#if defined(__WXMAC__) || defined(__WXMSW__)
+		locale.AddCatalogLookupPathPrefix(JoinPaths(wxStandardPaths::Get().GetDataDir(), wxT("locale")));
 #endif
 		locale.AddCatalog(wxT(PACKAGE));
 
