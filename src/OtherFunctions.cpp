@@ -1217,24 +1217,4 @@ CMD4Hash password;
 return password.Encode();
 }
 
-#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
-
-bool IsLocaleAvailable(int id)
-{
-	// This supresses error-messages about invalid locales.
-	wxLogNull	logTarget;
-	wxLocale 	locale_to_check;
-
-	if (id == wxLANGUAGE_DEFAULT || id == theApp->m_locale.GetLanguage())
-		return true;
-
-	InitLocale(locale_to_check, id);
-	if (locale_to_check.IsOk()) {
-		return locale_to_check.IsLoaded(wxT(PACKAGE));
-	} else {
-		return false;
-	}
-}
-
-#endif /* !AMULE_DEAMON && (!EC_REMOTE || CLIENT_GUI) */
 // File_checked_for_headers
