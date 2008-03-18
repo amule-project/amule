@@ -623,6 +623,7 @@ typedef struct {
  */
 static LangInfo aMuleLanguages[] = {
 	{ wxLANGUAGE_DEFAULT,				true,	wxTRANSLATE("System default") },
+	{ wxLANGUAGE_ALBANIAN,				true,	wxTRANSLATE("Albanian") },
 	{ wxLANGUAGE_ARABIC,				true,	wxTRANSLATE("Arabic") },
 	{ wxLANGUAGE_BASQUE,				true,	wxTRANSLATE("Basque") },
 	{ wxLANGUAGE_BULGARIAN,				true,	wxTRANSLATE("Bulgarian") },
