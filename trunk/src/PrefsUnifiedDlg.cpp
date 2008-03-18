@@ -268,8 +268,8 @@ wxDialog(parent, -1, _("Preferences"),
 			int count = CLogger::GetDebugCategoryCount();
 			wxCheckListBox* list = CastChild( ID_DEBUGCATS, wxCheckListBox );
 
-			for ( int i = 0; i < count; i++ ) {
-				list->Append( CLogger::GetDebugCategory( i ).GetName() );
+			for ( int j = 0; j < count; j++ ) {
+				list->Append( CLogger::GetDebugCategory( j ).GetName() );
 			}
 		}
 #endif
