@@ -1328,7 +1328,7 @@ msgstr "Padrão do sistema"
 
 #: src/Preferences.cpp:627
 msgid "Albanian"
-msgstr ""
+msgstr "Albanês"
 
 #: src/Preferences.cpp:628
 msgid "Arabic"
