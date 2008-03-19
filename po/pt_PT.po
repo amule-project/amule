@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-08 03:31+0100\n"
+"POT-Creation-Date: 2008-03-19 03:31+0100\n"
 "PO-Revision-Date: 2007-11-08 12:11+0000\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -1329,51 +1329,55 @@ msgstr "Ligação"
 msgid "Source Seeds"
 msgstr "Sementes de Fontes"
 
-#: src/Preferences.cpp:625 src/PrefsUnifiedDlg.cpp:242
+#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "Predefinido do sistema"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
+msgid "Albanian"
+msgstr ""
+
+#: src/Preferences.cpp:628
 msgid "Arabic"
 msgstr "Árabe"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Basque"
 msgstr "Basco"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Catalan"
 msgstr "Catalão"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Chinese (Simplified)"
 msgstr "Chinês (simplificado)"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Chinese (Traditional)"
 msgstr "Chinês (tradicional)"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Croatian"
 msgstr "Croata"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Czech"
 msgstr ""
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Danish"
 msgstr "Dinamarquês"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Dutch"
 msgstr "Holandês"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "English (U.K.)"
 msgstr "Inglês"
 
@@ -1457,22 +1461,22 @@ msgstr "Espanhol"
 msgid "Swedish"
 msgstr "Sueco"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:659
 msgid "Turkish"
 msgstr "Turco"
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1610 src/Preferences.cpp:1624 src/Preferences.cpp:1631
 msgid "Unable to determine selected browser!"
 msgstr "Não é possível determinar o navegador seleccionado!"
 
-#: src/Preferences.cpp:1660
+#: src/Preferences.cpp:1662
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "O porto TCP não pode ser superior a 65532 devido ao socket UDP do servidor "
 "ser TCP+3"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1663
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "O porto predefinido será usado (%d)"

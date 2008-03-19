@@ -10,10 +10,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: alb\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-08 03:31+0100\n"
+"POT-Creation-Date: 2008-03-19 03:31+0100\n"
 "PO-Revision-Date: 2008-03-18 01:22+0100\n"
 "Last-Translator: Fation <dj_barthezz@linuxmail.org>\n"
-"Language-Team: albanian <fation_1983@hotmail.it  lushnja_corps@hotmail.com >\n"
+"Language-Team: albanian <fation_1983@hotmail.it  lushnja_corps@hotmail.com "
+">\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -110,7 +111,8 @@ msgstr "Duke kembyer hashsetet e vjetra AICH ne '%s' 64b ne '%s'."
 #: src/ThreadTasks.cpp:429
 #, fuzzy, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "KUJDES: Emri i failit '%s' eshte i gabuar dhe eshte riemertuar ne '%s'."
+msgstr ""
+"KUJDES: Emri i failit '%s' eshte i gabuar dhe eshte riemertuar ne '%s'."
 
 #: src/ThreadTasks.cpp:442
 #, c-format
@@ -120,7 +122,8 @@ msgstr "KUJDES: Faili '%s' ekziston,faili i ri i riemertuar ne '%s'."
 #: src/ThreadTasks.cpp:455
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr "KUJDES: Nuk mund te zhvendosesh origjinalin '%s' mbas krijimit te backup-it"
+msgstr ""
+"KUJDES: Nuk mund te zhvendosesh origjinalin '%s' mbas krijimit te backup-it"
 
 #: src/ThreadTasks.cpp:467
 #, c-format
@@ -179,16 +182,26 @@ msgstr "Kerkuar: %s\n"
 #: src/BaseClient.cpp:1878
 #, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Statistikat e failit per kete sesion:Pranohet %d e %d te kerkuara, %s te transferuara\n"
-msgstr[1] "Statistikat e failit per kete sesion:Pranohet %d e %d te kerkuara, %s te transferuara\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Statistikat e failit per kete sesion:Pranohet %d e %d te kerkuara, %s te "
+"transferuara\n"
+msgstr[1] ""
+"Statistikat e failit per kete sesion:Pranohet %d e %d te kerkuara, %s te "
+"transferuara\n"
 
 #: src/BaseClient.cpp:1881
 #, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Statistikat e failit per te gjithe sesionet: Pranohet %d e %d te kerkesave, %s te transferuara\n"
-msgstr[1] "Statistikat e failit per te gjithe sesionet: Pranohet %d e %d te kerkesave, %s te transferuara\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Statistikat e failit per te gjithe sesionet: Pranohet %d e %d te kerkesave, %"
+"s te transferuara\n"
+msgstr[1] ""
+"Statistikat e failit per te gjithe sesionet: Pranohet %d e %d te kerkesave, %"
+"s te transferuara\n"
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -257,7 +270,9 @@ msgstr "Fshij"
 msgid ""
 "You are not allowed to set more than one friendslot.\n"
 " Only one slot was assigned."
-msgstr "Ju nuk lejoheni qe te vendosni me shume se nje slot per shoket.\n Vetem nje slot i vetem u vendos."
+msgstr ""
+"Ju nuk lejoheni qe te vendosni me shume se nje slot per shoket.\n"
+" Vetem nje slot i vetem u vendos."
 
 #: src/FriendListCtrl.cpp:359
 msgid "Multiple selection"
@@ -407,7 +422,8 @@ msgstr "Kopjo feedback ne shenimet"
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "Ju keni nevoje per nje ID te larte per te krijuar nje sourcelink te vlefshem"
+msgstr ""
+"Ju keni nevoje per nje ID te larte per te krijuar nje sourcelink te vlefshem"
 
 #: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
 #: src/amule.cpp:664
@@ -456,15 +472,11 @@ msgstr "Kerkesa deshtoi me kete gabim: %s."
 
 #: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
-msgstr ""
-"Kerkesa deshtoi me nje gabim te panjohur."
-" "
+msgstr "Kerkesa deshtoi me nje gabim te panjohur. "
 
 #: src/webserver/src/WebServer.cpp:1691
 msgid "Index file not found: "
-msgstr ""
-"Indeksi i failit nuk u gjet: "
-" "
+msgstr "Indeksi i failit nuk u gjet:  "
 
 #: src/webserver/src/WebServer.cpp:1711
 msgid "Can't create web socket thread\n"
@@ -630,7 +642,8 @@ msgstr "Prodho nje imazh te statistikave ne c'do rifreskim ngjarje"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr "Futni ketu direktorine se ku deshironi te prodhoni nje imazh te statistikave"
+msgstr ""
+"Futni ketu direktorine se ku deshironi te prodhoni nje imazh te statistikave"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
@@ -650,7 +663,9 @@ msgstr "Futni ketu URL e serverit tuaj FTP"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "Futni ketu direktorine e serverit FTP ne te cilen doni te kopjoni imazhin tuaj te statistikave"
+msgstr ""
+"Futni ketu direktorine e serverit FTP ne te cilen doni te kopjoni imazhin "
+"tuaj te statistikave"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -775,7 +790,9 @@ msgstr "Statistikat Online te aMule"
 msgid ""
 "There was a problem printing.\n"
 "Perhaps your current printer is not set correctly?"
-msgstr "Kishte nje problem duke printuar.\n Mos valle printeri juaj nuk eshte instaluar ne menyre korrekte?"
+msgstr ""
+"Kishte nje problem duke printuar.\n"
+" Mos valle printeri juaj nuk eshte instaluar ne menyre korrekte?"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:384
 msgid "Printing"
@@ -783,14 +800,16 @@ msgstr "Duke printuar"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:402
 #, fuzzy
-msgid "wxCas, aMule OnLine Signature Statistics\n"
+msgid ""
+"wxCas, aMule OnLine Signature Statistics\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
 "Based on CAS by Pedro de Oliveira <falso@rdk.homeip.net>\n"
 "\n"
 "Distributed under GPL"
-msgstr "wxCas, Statistikat e Firmes Online te aMule\n"
+msgstr ""
+"wxCas, Statistikat e Firmes Online te aMule\n"
 "\n"
 "(c) 2004 The Polish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1012,7 +1031,9 @@ msgstr "I paafte per te hapur %s"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr "Faili %s eshte shume i madh per rrjetin eDonkey: maksimumi i lejuar eshte 4 GB."
+msgstr ""
+"Faili %s eshte shume i madh per rrjetin eDonkey: maksimumi i lejuar eshte 4 "
+"GB."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
@@ -1034,7 +1055,9 @@ msgstr "Futni ketu failin per te llogaritur linkun e Ed2k"
 msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr "Futni ketu URL qe doni te shtoni ne linkun Ed2k: Shto/ne fund derisa aLinkCreator ta shtoje ne fund te emrit te failit"
+msgstr ""
+"Futni ketu URL qe doni te shtoni ne linkun Ed2k: Shto/ne fund derisa "
+"aLinkCreator ta shtoje ne fund te emrit te failit"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1073
 #: src/muuli_wdr.cpp:3053
@@ -1058,7 +1081,9 @@ msgstr "Krijo lidhje me pjeset-hash"
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
-msgstr "Ndihmo te shperndash sa me shpejte failet e reja dhe te vyera, ne kembim te nje lidhjeje me te gjate"
+msgstr ""
+"Ndihmo te shperndash sa me shpejte failet e reja dhe te vyera, ne kembim te "
+"nje lidhjeje me te gjate"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
@@ -1307,51 +1332,55 @@ msgstr "Link"
 msgid "Source Seeds"
 msgstr "Burime te shpetuara"
 
-#: src/Preferences.cpp:625 src/PrefsUnifiedDlg.cpp:242
+#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "E vendosur nga sistemi"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
+msgid "Albanian"
+msgstr ""
+
+#: src/Preferences.cpp:628
 msgid "Arabic"
 msgstr "Arabe"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Basque"
 msgstr "Baske"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Bulgarian"
 msgstr "Bullgare"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Catalan"
 msgstr "Katallanase"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Chinese (Simplified)"
 msgstr "Kineze (E thjeshtesuar)"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Chinese (Traditional)"
 msgstr "KIneze (Tradicionale)"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Croatian"
 msgstr "Kroate"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Czech"
 msgstr "Ceke"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Danish"
 msgstr "Daneze"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Dutch"
 msgstr "Holandeze"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "English (U.K.)"
 msgstr "Anglisht (G.B.)"
 
@@ -1435,19 +1464,22 @@ msgstr "Spanjolle"
 msgid "Swedish"
 msgstr "Suedeze"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:659
 msgid "Turkish"
 msgstr "Turqisht"
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1610 src/Preferences.cpp:1624 src/Preferences.cpp:1631
 msgid "Unable to determine selected browser!"
 msgstr "E pamundur te percaktoj shfletuesin e zgjedhur!"
 
-#: src/Preferences.cpp:1660
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr "Porta TCP nuk mund te jene me te medha se 65532  sepse socket i UDP eshte fiksuar ne TCP+3"
+#: src/Preferences.cpp:1662
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr ""
+"Porta TCP nuk mund te jene me te medha se 65532  sepse socket i UDP eshte "
+"fiksuar ne TCP+3"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1663
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Do te perdoret porta e vendosur (%d)"
@@ -1497,7 +1529,9 @@ msgstr "Versioni"
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
-msgstr "Ju jeni lidhur tek nje serveri qe po perpiqeni te fshini. Ju lutem mbylleni lidhjen ne fillim. Serveri NUK u fshi."
+msgstr ""
+"Ju jeni lidhur tek nje serveri qe po perpiqeni te fshini. Ju lutem mbylleni "
+"lidhjen ne fillim. Serveri NUK u fshi."
 
 #: src/ServerListCtrl.cpp:144 src/muuli_wdr.cpp:3122 src/CatDialog.cpp:142
 #: src/CatDialog.cpp:152 src/CatDialog.cpp:160 src/ServerList.cpp:341
@@ -1591,7 +1625,8 @@ msgstr "Jeni te sigurte qe deshironi te fshini te gjithe serverat?"
 
 #: src/ServerListCtrl.cpp:570
 msgid "Are you sure that you wish to delete the selected server?"
-msgstr "Jeni te sigurte qe deshironi te fshini te gjithe serverin e perzgjedhur?"
+msgstr ""
+"Jeni te sigurte qe deshironi te fshini te gjithe serverin e perzgjedhur?"
 
 #: src/ServerListCtrl.cpp:572
 msgid "Are you sure that you wish to delete the selected servers?"
@@ -1614,7 +1649,9 @@ msgstr "Duke punuar ne %s"
 
 #: src/amuleDlg.cpp:223
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "Vizitoni http://www.amule.org per te kontrolluar nqs eshte ne dispozicion nje version i ri."
+msgstr ""
+"Vizitoni http://www.amule.org per te kontrolluar nqs eshte ne dispozicion "
+"nje version i ri."
 
 #: src/amuleDlg.cpp:246
 msgid "Fatal Error: Failed to create Timer"
@@ -2669,7 +2706,8 @@ msgstr ""
 
 #: src/ClientTCPSocket.cpp:934
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 
 #: src/ClientTCPSocket.cpp:971
@@ -2729,7 +2767,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr ""
 
 #: src/KadDlg.cpp:196
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 
 #: src/KadDlg.cpp:197
@@ -4069,7 +4108,8 @@ msgid ""
 msgstr ""
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 
 #: src/PartFileConvert.cpp:702
@@ -4252,7 +4292,8 @@ msgid "Commit"
 msgstr ""
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
 
 #: src/muuli_wdr.cpp:85
@@ -5657,7 +5698,8 @@ msgid "Filter clients"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3392
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 
 #: src/muuli_wdr.cpp:3395
@@ -5665,7 +5707,8 @@ msgid "Filter servers"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3397
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 
 #: src/muuli_wdr.cpp:3404
@@ -5753,7 +5796,8 @@ msgid "Online Signature Directory:"
 msgstr ""
 
 #: src/muuli_wdr.cpp:3510
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr ""
 
 #: src/muuli_wdr.cpp:3539 src/muuli_wdr.cpp:3578 src/muuli_wdr.cpp:3800
@@ -5933,7 +5977,8 @@ msgid "You must specify a path for the category!"
 msgstr ""
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 
 #: src/ExternalConnector.cpp:144
@@ -6787,4 +6832,3 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
-

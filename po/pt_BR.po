@@ -7,12 +7,11 @@
 # felipe augusto <flipeicl@gmail.com>, 2007,
 # Israel Rodrigo Faria <israel.faria@gmail.com>, 2007.
 # Fabio Jr. Beneditto <kamikazenh@uol.com.br>, 2008.
-
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-08 03:31+0100\n"
+"POT-Creation-Date: 2008-03-19 03:31+0100\n"
 "PO-Revision-Date: 2008-02-08 22:00-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@uol.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM (see header for more)\n"
@@ -183,8 +182,7 @@ msgstr "Solicitado: %s\n"
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-"Estatísticas dessa sessão: Aceito %d de %d pedido, %s transferido\n"
+msgstr[0] "Estatísticas dessa sessão: Aceito %d de %d pedido, %s transferido\n"
 msgstr[1] ""
 "Estatísticas dessa sessão: Aceitos %d de %d pedidos, %s transferidos\n"
 
@@ -1324,51 +1322,55 @@ msgstr "Link"
 msgid "Source Seeds"
 msgstr "Fontes de arquivo"
 
-#: src/Preferences.cpp:625 src/PrefsUnifiedDlg.cpp:242
+#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "Padrão do sistema"
 
-#: src/Preferences.cpp:626
+#: src/Preferences.cpp:627
+msgid "Albanian"
+msgstr ""
+
+#: src/Preferences.cpp:628
 msgid "Arabic"
 msgstr "Árabe"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Basque"
 msgstr "Basco"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Bulgarian"
 msgstr "Búlgaro"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Catalan"
 msgstr "Catalão"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Chinese (Simplified)"
 msgstr "Chinês (Simplificado)"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Chinese (Traditional)"
 msgstr "Chinês (Tradicional)"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Croatian"
 msgstr "Croácia"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Czech"
 msgstr "Tcheco"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Danish"
 msgstr "Dinamarquês"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Dutch"
 msgstr "Holandês"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "English (U.K.)"
 msgstr "Inglês (UK)"
 
@@ -1452,20 +1454,20 @@ msgstr "Espanhol"
 msgid "Swedish"
 msgstr "Suécia"
 
-#: src/Preferences.cpp:661
+#: src/Preferences.cpp:659
 msgid "Turkish"
 msgstr "Turquia"
 
-#: src/Preferences.cpp:1608 src/Preferences.cpp:1622 src/Preferences.cpp:1629
+#: src/Preferences.cpp:1610 src/Preferences.cpp:1624 src/Preferences.cpp:1631
 msgid "Unable to determine selected browser!"
 msgstr "Impossível determinar browser selecionado!"
 
-#: src/Preferences.cpp:1660
+#: src/Preferences.cpp:1662
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Porta TCP nao pode ser maior do que 65532, pois a UDP escuta em TCP+3"
 
-#: src/Preferences.cpp:1661
+#: src/Preferences.cpp:1663
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Porta padrão será utilizada (%d)"
@@ -3216,8 +3218,8 @@ msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"Impossível calcular hash da parte baixada - informação do hash incompleta (%s). "
-"Isso nunca deveria ter acontecido..."
+"Impossível calcular hash da parte baixada - informação do hash incompleta (%"
+"s). Isso nunca deveria ter acontecido..."
 
 #: src/PartFile.cpp:3059
 #, c-format
@@ -3444,8 +3446,9 @@ msgstr "Formato do IP inválido. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "Esse comando requer um parâmetro. Válidos: 'all', NomeDeArquivo, ou "
-"um número.\n"
+msgstr ""
+"Esse comando requer um parâmetro. Válidos: 'all', NomeDeArquivo, ou um "
+"número.\n"
 
 #: src/TextClient.cpp:343
 msgid "Processing by hash: "
@@ -3694,9 +3697,12 @@ msgid ""
 "The magnet link must contain the ed2k hash and file length.\n"
 msgstr ""
 "Um link ed2k a ser adicionado pode ser:\n"
-"*) um link de arquivo (ed2k://|file|...), que será adicionado à fila de download,\n"
-"*) uma link de servidor (ed2k://|server|...), que será adicionado à lista de servidores,\n"
-"*) ou um link de serverlist, neste caso todos servidores serão adicionados na\n"
+"*) um link de arquivo (ed2k://|file|...), que será adicionado à fila de "
+"download,\n"
+"*) uma link de servidor (ed2k://|server|...), que será adicionado à lista de "
+"servidores,\n"
+"*) ou um link de serverlist, neste caso todos servidores serão adicionados "
+"na\n"
 "   lista de servidores.\n"
 "\n"
 "Links Magnet devem conter o hash ed2k e o tamanho do arquivo.\n"
@@ -6904,8 +6910,8 @@ msgid ""
 "* Disabled updating the server list from other server and clients.\n"
 msgstr ""
 "\n"
-"* Desabilitar a atualização da lista de servidores através de outros servidores "
-"e clientes.\n"
+"* Desabilitar a atualização da lista de servidores através de outros "
+"servidores e clientes.\n"
 
 #: src/amule.cpp:1299
 msgid ""
