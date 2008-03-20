@@ -1945,7 +1945,7 @@ void CNoTemplateWebServer::ProcessURL(ThreadData Data)
 	 * Since template has not been found, I suspect that installation is broken. Falling back
 	 * into hardcoded page as last resort.
 	 */
-	char *httpOut = ""
+	const char *httpOut = ""
 	"<html>"
 		"<head>"
 			"<title>aMuleWeb error page</title>"

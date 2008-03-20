@@ -268,7 +268,7 @@ PHP_SYN_NODE *make_foreach_loop_syn_node(PHP_EXP_NODE *elems,
 	return syn_node;
 }
 
-PHP_SYN_NODE *make_func_decl_syn_node(char *name, PHP_EXP_NODE *param_list)
+PHP_SYN_NODE *make_func_decl_syn_node(const char *name, PHP_EXP_NODE *param_list)
 {
 	PHP_SYN_NODE *syn_node = new PHP_SYN_NODE;
 	memset(syn_node, 0, sizeof(PHP_SYN_NODE));
@@ -365,7 +365,7 @@ PHP_VAR_NODE *make_array_var()
 /*
  * Called from lexer when ${IDENT} is recognized
  */
-PHP_EXP_NODE *get_var_node(char *name)
+PHP_EXP_NODE *get_var_node(const char *name)
 {
 	PHP_EXP_NODE *node = make_zero_exp_node();
 	node->op = PHP_OP_VAR;
@@ -1036,7 +1036,7 @@ void php_add_native_func(PHP_BLTIN_FUNC_DEF *def)
 	add_func_2_scope(g_global_scope, decl_node);
 }
 
-void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr)
+void php_add_native_class(const char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr)
 {
 	if ( get_scope_item_type(g_global_scope, name) != PHP_SCOPE_NONE ) {
 		//
@@ -1948,7 +1948,7 @@ int php_execute(PHP_SYN_NODE *node, PHP_VALUE_NODE *result)
 //
 // call it when something gone wrong
 //
-void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
+void php_report_error(PHP_MSG_TYPE err_type, const char *msg, ...)
 {
 	//
 	// hope my error message will never be that big.
@@ -1959,7 +1959,7 @@ void php_report_error(PHP_MSG_TYPE err_type, char *msg, ...)
 	// leak here and create stack overrun exploit. Be warned.
 	//
 	char msgbuf[1024];
-	char *type_msg = 0;
+	const char *type_msg = 0;
 	switch(err_type) {
 		case PHP_MESAGE:
 			type_msg = "PHP:";

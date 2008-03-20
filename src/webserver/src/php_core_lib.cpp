@@ -509,7 +509,7 @@ void php_get_amule_categories(PHP_VALUE_NODE *result)
 #ifndef PHP_STANDALONE_EN
 
 typedef struct {
-	char *php_name;
+	const char *php_name;
 	ECTagNames tagname;
 	int opsize;
 } PHP_2_EC_OPT_DEF;
@@ -992,7 +992,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 #ifndef PHP_STANDALONE_EN
 
 template <class C, class T>
-void amule_obj_array_create(char *class_name, PHP_VALUE_NODE *result)
+void amule_obj_array_create(const char *class_name, PHP_VALUE_NODE *result)
 {
 	if ( !result ) {
 		return;
@@ -1866,7 +1866,7 @@ void CWriteStrBuffer::CopyAll(char *dst_buffer)
 	*(curr_ptr + rem_size) = 0;
 }
 
-void load_session_vars(char *target, std::map<std::string, std::string> &varmap)
+void load_session_vars(const char *target, std::map<std::string, std::string> &varmap)
 {
 	PHP_EXP_NODE *sess_vars_exp_node = get_var_node(target);
 	PHP_VAR_NODE *sess_vars = sess_vars_exp_node->var_si_node->var;

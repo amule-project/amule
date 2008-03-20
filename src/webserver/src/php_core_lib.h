@@ -94,7 +94,7 @@ class CPhpFilter {
 
 void php_init_core_lib();
 
-void load_session_vars(char *target, std::map<std::string, std::string> &varmap);
+void load_session_vars(const char *target, std::map<std::string, std::string> &varmap);
 void save_session_vars(std::map<std::string, std::string> &varmap);
 
 #endif //_PHP_CORE_LIB_H_
