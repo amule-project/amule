@@ -59,7 +59,7 @@ typedef struct PHP_VALUE_NODE {
         void *ptr_val;
         struct {
         	void *inst_ptr;
-        	char *class_name;
+        	const char *class_name;
         } obj_val;
     };
 } PHP_VALUE_NODE;
@@ -317,7 +317,7 @@ struct PHP_SYN_NODE {
 #define PHP_MAX_FUNC_PARAM	 16
 
 typedef struct PHP_BLTIN_FUNC_DEF {
-	char *name;
+	const char *name;
 	int param_count;
 	PHP_NATIVE_FUNC_PTR func;
 } PHP_BLTIN_FUNC_DEF;
@@ -418,7 +418,7 @@ extern "C" {
 		
 	PHP_SYN_NODE *make_class_decl_syn_node();
 	
-	PHP_SYN_NODE *make_func_decl_syn_node(char *name, PHP_EXP_NODE *param_list);
+	PHP_SYN_NODE *make_func_decl_syn_node(const char *name, PHP_EXP_NODE *param_list);
 	
 	PHP_SYN_NODE *make_switch_syn_node(PHP_EXP_NODE *cond, PHP_EXP_NODE *case_list);
 
@@ -429,7 +429,7 @@ extern "C" {
 		char *class_name, int byref);
 	
 	PHP_VAR_NODE *make_var_node();
-	PHP_EXP_NODE *get_var_node(char *name);
+	PHP_EXP_NODE *get_var_node(const char *name);
 	// C can't call "delete"
 	void free_var_node(PHP_VAR_NODE *v);
 	
@@ -489,18 +489,18 @@ extern "C" {
 		PHP_VALUE_NODE *op1, PHP_VALUE_NODE *op2, PHP_VALUE_NODE *result);
 
 	void php_add_native_func(PHP_BLTIN_FUNC_DEF *def);
-	void php_add_native_class(char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr);
+	void php_add_native_class(const char *name, PHP_NATIVE_PROP_GET_FUNC_PTR prop_get_native_ptr);
 
 	//
 	// left = VAR(func_name), right=ARRAY(args)
 	void php_run_func_call(PHP_EXP_NODE *node, PHP_VALUE_NODE *result);
 
 #if defined(__GNUC__)
-	void php_report_error(PHP_MSG_TYPE mtype, char *msg, ...)  __attribute__ ((__format__ (__printf__, 2, 3)));
+	void php_report_error(PHP_MSG_TYPE mtype, const char *msg, ...)  __attribute__ ((__format__ (__printf__, 2, 3)));
 #else
-	void php_report_error(PHP_MSG_TYPE mtype, char *msg, ...);
+	void php_report_error(PHP_MSG_TYPE mtype, const char *msg, ...);
 #endif
-	
+
 /*
  * Debugging
  */
