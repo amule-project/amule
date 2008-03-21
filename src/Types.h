@@ -157,6 +157,7 @@ static const wxString EmptyString = wxEmptyString;
 			R_OK = 4    //          read
 		};
 	#endif // W_OK
+	#include <wx/msw/winundef.h>	// Do_not_auto_remove
 #else 
 	typedef struct sRECT {
 	  uint32 left;
