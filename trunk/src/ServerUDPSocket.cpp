@@ -60,14 +60,13 @@ CServerUDPSocket::CServerUDPSocket(amuleIPV4Address &address, const CProxyData *
 }
 
 
-void CServerUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length)
+void CServerUDPSocket::OnPacketReceived(uint32 serverip, uint16 serverport, byte* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
 	size_t nPayLoadLen = length;
 	byte* pBuffer = buffer;
-	uint32 serverip = StringIPtoUint32(addr.IPAddress());
-	CServer* pServer = theApp->serverlist->GetServerByIPUDP(serverip, addr.Service(), true);
+	CServer* pServer = theApp->serverlist->GetServerByIPUDP(serverip, serverport, true);
 	if (pServer && thePrefs::IsServerCryptLayerUDPEnabled() &&
 		((pServer->GetServerKeyUDP() != 0 && pServer->SupportsObfuscationUDP()) || (pServer->GetCryptPingReplyPending() && pServer->GetChallenge() != 0)))
 	{
@@ -93,7 +92,7 @@ void CServerUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer,
 	
 	if (protocol == OP_EDONKEYPROT) {
 		CMemFile data(pBuffer + 2, nPayLoadLen - 2);
-		ProcessPacket(data, opcode, addr.IPAddress(), addr.Service());
+		ProcessPacket(data, opcode, serverip, serverport);
 	} else {
 		AddDebugLogLineM( false, logServerUDP,
 			wxString::Format( wxT("Received invalid packet, protocol (0x%x) and opcode (0x%x)"), protocol, opcode ));
@@ -103,14 +102,15 @@ void CServerUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer,
 }
 
 
-void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxString& host, uint16 port)
+void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, uint16 port)
 {
-	CServer* update = theApp->serverlist->GetServerByIPUDP(StringIPtoUint32(host), port, true);
+	CServer* update = theApp->serverlist->GetServerByIPUDP(ip, port, true);
 	unsigned size = packet.GetLength();
 	
 	theStats::AddDownOverheadOther(size);
 	AddDebugLogLineM( false, logServerUDP,
-					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)")) % host % port % opcode );
+					CFormat( wxT("Received UDP server packet from %s:%u, opcode (0x%x)")) % 
+							Uint32toStringIP(ip) % port % opcode );
 	
 	try {
 		// Imported: OP_GLOBSEARCHRES, OP_GLOBFOUNDSOURCES & OP_GLOBSERVSTATRES
@@ -122,7 +122,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				// process all search result packets
 
 				do{
-					theApp->searchlist->ProcessUDPSearchAnswer(packet, true, StringIPtoUint32(host), port - 4);
+					theApp->searchlist->ProcessUDPSearchAnswer(packet, true, ip, port - 4);
 					
 					if (packet.GetPosition() + 2 < size) {
 						// An additional packet?
@@ -148,7 +148,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 				do {
 					CMD4Hash fileid = packet.ReadHash();
 					if (CPartFile* file = theApp->downloadqueue->GetFileByID(fileid)) {
-						file->AddSources(packet, StringIPtoUint32(host), port-4, SF_REMOTE_SERVER, false);
+						file->AddSources(packet, ip, port-4, SF_REMOTE_SERVER, false);
 					} else {
 						AddDebugLogLineM( true, logServerUDP, wxT("Sources received for unknown file") );
 						// skip sources for that file
@@ -174,7 +174,7 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
  			case OP_GLOBSERVSTATRES:{
 				// Reviewed with 0.47c
 				if (!update) {
-					throw wxString(wxT("Unknown server on a OP_GLOBSERVSTATRES packet (") + host + wxString::Format(wxT(":%d)"), port-4));
+					throw wxString(wxT("Unknown server on a OP_GLOBSERVSTATRES packet (") + Uint32toStringIP(ip) + wxString::Format(wxT(":%d)"), port-4));
 				}
 				if( size < 12) {
 					throw(wxString(wxString::Format(wxT("Invalid OP_GLOBSERVSTATRES packet (size=%u)"),size)));
@@ -336,12 +336,12 @@ void CServerUDPSocket::ProcessPacket(CMemFile& packet, uint8 opcode, const wxStr
 	
 }
 
-void CServerUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& addr)
+void CServerUDPSocket::OnReceiveError(int errorCode, uint32 ip, uint16 port)
 {
-	CMuleUDPSocket::OnReceiveError(errorCode, addr);
+	CMuleUDPSocket::OnReceiveError(errorCode, ip, port);
 	
 	// If we are not currently pinging this server, increase the failure counter
-	CServer* pServer = theApp->serverlist->GetServerByIPUDP(StringIPtoUint32(addr.IPAddress()), addr.Service(), true);
+	CServer* pServer = theApp->serverlist->GetServerByIPUDP(ip, port, true);
 	if (pServer && !pServer->GetCryptPingReplyPending() && GetTickCount() - pServer->GetLastPinged() >= SEC2MS(30)) {
 		pServer->AddFailedCount();
 		Notify_ServerRefresh(pServer);

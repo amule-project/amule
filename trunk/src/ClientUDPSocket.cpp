@@ -72,14 +72,12 @@ void CClientUDPSocket::OnReceive(int errorCode)
 }
 
 
-void CClientUDPSocket::OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length)
+void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length)
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
 	uint8 protocol	= buffer[0];
 	uint8 opcode	= buffer[1];
-	uint32 ip		= StringIPtoUint32(addr.IPAddress());
-	uint16 port		= addr.Service();
 	
 	try {
 		switch (protocol) {
