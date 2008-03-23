@@ -285,7 +285,7 @@ fi
 
 AC_SUBST(CAS_DEFS)
 
-
+AS_IF([test x$WEB = xyes], [AC_CHECK_REGEX(, [WEB=disabled])])
 if test x$WEB = xyes; then
 # Check for libpng
 AM_OPTIONS_LIBPNGCONFIG
@@ -784,6 +784,11 @@ AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTO_PP_VERSION_STRING} (${CRYPTO_PP_STYLE})"
+if test x${WEB:-no} != xno; then
+AS_IF([test $regex_found = no], [regex_found="Not detected"],
+[AS_IF([test x$REGEX_LIB = x], [regex_found=system], [regex_found="standalone (in $REGEX_LIB)"])])
+echo "                                       regex                 $regex_found"
+fi
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"
 fi
@@ -791,6 +796,13 @@ if test x$GDLIB_VERSION != xnot_needed; then
 echo "                                       libgd                 ${GDLIB_VERSION:-Not detected}"
 fi
 echo "                                       zlib                  ${ZLIB_VERSION:-Not detected}"
+if test x$WEB = xdisabled; then
+echo ""
+echo ""
+echo "WARNING! amuleweb has been disabled because configure could not find"
+echo "a POSIX compliant regex library."
+echo ""
+fi
 if test x"$LIBPNG_VERSION" = x""; then
 echo ""
 echo ""

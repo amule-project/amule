@@ -230,3 +230,43 @@ AC_DEFUN([GENERATE_MANS_TO_INSTALL],
 	fi
 	AC_SUBST($1_MANPAGES)
 ])
+
+
+dnl ---------------------------------------------------------------------------
+dnl AC_CHECK_REGEX([ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl
+dnl This function will test the existance of a POSIX compliant regex library.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([AC_CHECK_REGEX],
+[
+	AC_MSG_CHECKING([for a POSIX compliant regex library])
+	regex_found=no
+	for lib in '' -lgnurx -lregex; do
+		saved_LIBS="$LIBS"
+		LIBS="$lib $LIBS"
+		AC_LINK_IFELSE([
+			AC_LANG_PROGRAM([[
+				#include <regex.h>
+			]], [[
+				regex_t preg;
+				regcomp(&preg, "", REG_EXTENDED);
+				regmatch_t *pmatch;
+				regexec(&preg, "", 0, pmatch, 0);
+				regfree(&preg);
+			]])
+		], [
+			LIBS="$saved_LIBS"
+			regex_found=yes
+			break;
+		], [
+			LIBS="$saved_LIBS"
+		])
+	done
+	AC_MSG_RESULT([$regex_found])
+	AS_IF([test $regex_found = yes],
+	[
+		REGEX_LIB=$lib
+		$1
+	], [$2])
+	AC_SUBST([REGEX_LIB])
+])
