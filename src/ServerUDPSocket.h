@@ -41,11 +41,11 @@ public:
 
 	void	SendPacket(CPacket* packet, CServer* host, bool delPacket, bool rawpacket, uint16 port_offset);
 	void	OnHostnameResolved(uint32 ip);
-	virtual void OnReceiveError(int errorCode, const wxIPV4address& addr);
+	virtual void OnReceiveError(int errorCode, uint32 ip, uint16 port);
 
 private:
-	void	OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length);
-	void	ProcessPacket(CMemFile& packet, uint8 opcode, const wxString& host, uint16 port);
+	void	OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length);
+	void	ProcessPacket(CMemFile& packet, uint8 opcode, uint32 ip, uint16 port);
 	void	SendQueue();
 
 	struct ServerUDPPacket {

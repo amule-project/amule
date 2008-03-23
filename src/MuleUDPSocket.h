@@ -90,7 +90,7 @@ public:
 	/** This function is called by aMule when there are data to be received. */
 	virtual void OnReceive(int errorCode);
 	/** This function is called by aMule when there is an error while receiving. */
-	virtual void OnReceiveError(int errorCode, const wxIPV4address& addr);
+	virtual void OnReceiveError(int errorCode, uint32 ip, uint16 port);
 	/** This function is called when the socket is lost (see comments in func.) */
 	virtual void OnDisconnected(int errorCode);
 
@@ -126,7 +126,7 @@ protected:
 	 * @param buffer The data that has been received.
 	 * @param length The length of the data buffer.
 	 */
-	virtual void OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length) = 0;
+	virtual void OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length) = 0;
 
 	
 	/** See ThrottledControlSocket::SendControlData */

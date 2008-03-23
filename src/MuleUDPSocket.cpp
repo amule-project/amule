@@ -158,28 +158,30 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 		lastError = m_socket->LastError();
 	}
 	
+	const uint32 ip = StringIPtoUint32(addr.IPAddress());
+	const uint16 port = addr.Service();
 	if (error) {
-		OnReceiveError(lastError, addr);
+		OnReceiveError(lastError, ip, port);
 	} else if (length < 2) {
 		// 2 bytes (protocol and opcode) is the smallets possible packet.
 		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Invalid Packet received"));
-	} else if (!StringIPtoUint32(addr.IPAddress())) {
+	} else if (!ip) {
 		// wxASSERT(0);
 		printf("Unknown ip receiving on UDP packet! Ignoring: '%s'\n",
 			(const char*)unicode2char(addr.IPAddress()));
-	} else if (!addr.Service()) {
+	} else if (!port) {
 		// wxASSERT(0);
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
 	} else {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet received (")) 
-			<< addr.IPAddress() << wxT(":") << addr.Service() << wxT("): ")
+			<< addr.IPAddress() << wxT(":") << port << wxT("): ")
 			<< length << wxT("b"));
-		OnPacketReceived(addr, (byte*)buffer, length);
+		OnPacketReceived(ip, port, (byte*)buffer, length);
 	}
 }
 
 
-void CMuleUDPSocket::OnReceiveError(int errorCode, const wxIPV4address& WXUNUSED(addr))
+void CMuleUDPSocket::OnReceiveError(int errorCode, uint32 WXUNUSED(ip), uint16 WXUNUSED(port))
 {
 	AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Error while reading: ")) << errorCode);	
 }

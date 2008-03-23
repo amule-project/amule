@@ -37,7 +37,7 @@ protected:
 	void	OnReceive(int errorCode);
 	
 private:
-	void	OnPacketReceived(const wxIPV4address& addr, byte* buffer, size_t length);
+	void	OnPacketReceived(uint32 ip, uint16 port, byte* buffer, size_t length);
 	void	ProcessPacket(byte* packet, int16 size, int8 opcode, uint32 host, uint16 port);
 };
 
