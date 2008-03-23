@@ -413,17 +413,7 @@ void CaMuleExternalConnector::ConnectAndRun(const wxString &ProgName, const wxSt
 			if (m_ECClient->IsSocketConnected()) {
 				ShowGreet();
 				Pre_Shell();
-				if (m_KeepQuiet) {
-					while(true) {
-						#ifndef __WXMSW__
-						pause();
-						#else
-						wxSleep(10);
-						#endif
-					}
-				} else {
-					TextShell(ProgName);
-				}
+				TextShell(ProgName);
 				Post_Shell();
 				Show(CFormat(_("\nOk, exiting %s...\n")) % ProgName);
 			}
