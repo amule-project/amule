@@ -9,12 +9,13 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-19 03:31+0100\n"
-"PO-Revision-Date: 2007-12-21 23:00+0800\n"
+"PO-Revision-Date: 2008-03-23 03:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -169,12 +170,12 @@ msgid "NickName: %s ID: %u"
 msgstr "昵稱: %s ID: %u"
 
 #: src/BaseClient.cpp:1876
-#, fuzzy, c-format
+#, c-format
 msgid "Requested: %s\n"
-msgstr "請求:"
+msgstr "已請求：%s\n"
 
 #: src/BaseClient.cpp:1878
-#, fuzzy, c-format
+#, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
@@ -182,7 +183,7 @@ msgstr[0] "本次執行檔案統計: 接受了 %d/%d 個請求，已傳送 %s\n"
 msgstr[1] "本次執行檔案統計: 接受了 %d/%d 個請求，已傳送 %s\n"
 
 #: src/BaseClient.cpp:1881
-#, fuzzy, c-format
+#, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
@@ -230,18 +231,15 @@ msgstr "發訊息 (&M)"
 msgid "View Files"
 msgstr "顯示檔案"
 
-# fuzzy
 #: src/FriendListCtrl.cpp:240
 msgid "Establish Friend Slot"
 msgstr "建立好友條"
 
 #: src/FriendListCtrl.cpp:273
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friend?"
 msgstr "確定刪除選中的好友嗎？"
 
 #: src/FriendListCtrl.cpp:275
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected friends?"
 msgstr "確定刪除選中的好友嗎？"
 
@@ -881,9 +879,8 @@ msgid " is on "
 msgstr " 是在 "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1064
-#, fuzzy
 msgid " with "
-msgstr "] 和 "
+msgstr " 和 "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1082
 msgid "Total Download: "
@@ -907,7 +904,6 @@ msgid " kB/s, Upload: "
 msgstr " kB/s, 上傳："
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1108
-#, fuzzy
 msgid " kB/s"
 msgstr "kB/s"
 
@@ -1006,7 +1002,6 @@ msgstr "%.2f TB"
 #: src/utils/aLinkCreator/src/md4.cpp:359
 #: src/utils/aLinkCreator/src/alcframe.cpp:566
 #: src/utils/aLinkCreator/src/alcframe.cpp:567
-#, fuzzy
 msgid "Cancelled !"
 msgstr "已取消！"
 
@@ -1319,7 +1314,7 @@ msgstr "系統預設"
 
 #: src/Preferences.cpp:627
 msgid "Albanian"
-msgstr ""
+msgstr "阿爾巴尼亞語"
 
 #: src/Preferences.cpp:628
 msgid "Arabic"
@@ -1351,7 +1346,7 @@ msgstr "克羅的亞語"
 
 #: src/Preferences.cpp:635
 msgid "Czech"
-msgstr ""
+msgstr "捷克語"
 
 #: src/Preferences.cpp:636
 msgid "Danish"
@@ -1558,22 +1553,18 @@ msgid "Connect to server"
 msgstr "連接到服務器"
 
 #: src/ServerListCtrl.cpp:428
-#, fuzzy
 msgid "Mark server as static"
 msgstr "標記服務器爲靜態"
 
 #: src/ServerListCtrl.cpp:429
-#, fuzzy
 msgid "Mark server as non-static"
 msgstr "標記服務器爲非靜態"
 
 #: src/ServerListCtrl.cpp:431
-#, fuzzy
 msgid "Mark servers as static"
 msgstr "標記服務器爲靜態"
 
 #: src/ServerListCtrl.cpp:432
-#, fuzzy
 msgid "Mark servers as non-static"
 msgstr "標記服務器爲非靜態"
 
@@ -1582,7 +1573,6 @@ msgid "Remove server"
 msgstr "移除伺服器"
 
 #: src/ServerListCtrl.cpp:440
-#, fuzzy
 msgid "Remove servers"
 msgstr "移除伺服器"
 
@@ -1595,7 +1585,6 @@ msgid "Copy ED2k link to clipboard"
 msgstr "拷貝 ED2K 連結到剪貼簿"
 
 #: src/ServerListCtrl.cpp:449
-#, fuzzy
 msgid "Copy ED2k links to clipboard"
 msgstr "拷貝 ED2K 連結到剪貼簿"
 
@@ -1608,12 +1597,10 @@ msgid "Are you sure that you wish to delete all servers?"
 msgstr "您確定要刪除所有服務器嗎？"
 
 #: src/ServerListCtrl.cpp:570
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected server?"
 msgstr "您確定要刪除已選的服務器嗎？"
 
 #: src/ServerListCtrl.cpp:572
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "您確定要刪除已選的服務器嗎？"
 
@@ -1707,37 +1694,30 @@ msgid "Status text"
 msgstr "狀態"
 
 #: src/amuleDlg.cpp:666
-#, fuzzy
 msgid "ED2K: Connecting"
-msgstr "正在連線"
+msgstr "ED2K：正在連線"
 
 #: src/amuleDlg.cpp:670
-#, fuzzy
 msgid "ED2K: Disconnected"
-msgstr "連線已斷"
+msgstr "ED2K：連線已斷"
 
 #: src/amuleDlg.cpp:676
-#, fuzzy
 msgid "Kad: Firewalled"
-msgstr "有防火牆"
+msgstr "Kad：有防火牆"
 
 #: src/amuleDlg.cpp:680
-#, fuzzy
 msgid "Kad: Connected"
-msgstr "已建立連線"
+msgstr "Kad：已建立連線"
 
 #: src/amuleDlg.cpp:685
-#, fuzzy
 msgid "Kad: Connecting"
-msgstr "正在連線"
+msgstr "Kad：正在連線"
 
 #: src/amuleDlg.cpp:689
-#, fuzzy
 msgid "Kad: Off"
-msgstr "Kad："
+msgstr "Kad：停止"
 
 #: src/amuleDlg.cpp:735
-#, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "終止連線嘗試"
 
@@ -1746,7 +1726,6 @@ msgid "Disconnect"
 msgstr "中斷連線"
 
 #: src/amuleDlg.cpp:741
-#, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "斷開網絡。"
 
@@ -1756,7 +1735,6 @@ msgid "Connect"
 msgstr "連線"
 
 #: src/amuleDlg.cpp:747
-#, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "連接至網絡。"
 
@@ -2021,15 +1999,13 @@ msgstr "在線簽名"
 msgid "Choose a folder for %s"
 msgstr "爲%s選擇文件夾"
 
-# fuzzy
 #: src/PrefsUnifiedDlg.cpp:879
 msgid "Browse wav"
 msgstr "瀏覽 wav 檔案"
 
-# fuzzy
 #: src/PrefsUnifiedDlg.cpp:880
 msgid "File wav (*.wav)|*.wav||"
-msgstr "檔案 wav (*.wav)|*.wav||"
+msgstr " wav 檔案(*.wav)|*.wav||"
 
 #: src/PrefsUnifiedDlg.cpp:897
 msgid "Browse for videoplayer"
@@ -2057,14 +2033,14 @@ msgstr ""
 "每行只限一個網址."
 
 #: src/PrefsUnifiedDlg.cpp:985
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "刷新時間 : %d 秒"
 msgstr[1] "刷新時間 : %d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:992
-#, fuzzy, c-format
+#, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "平均值圖表顯示時間: %d 分鍾"
@@ -2076,28 +2052,28 @@ msgid "Connections Graph Scale: %d"
 msgstr "網絡連接圖表縮放: %d"
 
 #: src/PrefsUnifiedDlg.cpp:1004
-#, fuzzy, c-format
+#, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "刷新時間 : %d 秒"
 msgstr[1] "刷新時間 : %d 秒"
 
 #: src/PrefsUnifiedDlg.cpp:1010
-#, fuzzy, c-format
+#, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "文件緩沖區大小: %d bytes"
 msgstr[1] "文件緩沖區大小: %d bytes"
 
 #: src/PrefsUnifiedDlg.cpp:1016
-#, fuzzy, c-format
+#, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
 msgstr[0] "上傳隊列長度: %d 個用戶"
 msgstr[1] "上傳隊列長度: %d 個用戶"
 
 #: src/PrefsUnifiedDlg.cpp:1023
-#, fuzzy, c-format
+#, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "服務器連接刷新周期: %d 分鍾"
@@ -2180,7 +2156,7 @@ msgstr ""
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
-msgstr ""
+msgstr "為了盡可能避免程序崩潰，您不能從任意的SVN版本連接到發行版本！"
 
 #: src/ExternalConn.cpp:289
 msgid "Authentication failed."
@@ -2621,7 +2597,6 @@ msgstr "用戶總數：%llu"
 msgid "Total Files: %llu"
 msgstr "文件總數：%llu"
 
-# fuzzy
 #: src/Statistics.cpp:718
 #, c-format
 msgid "Server Occupation: %.2f%%"
@@ -2917,14 +2892,12 @@ msgid "Last Reception"
 msgstr "最後一次下載"
 
 #: src/DownloadListCtrl.cpp:578
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected file?"
-msgstr "您確定要取消下載並刪除這些文件嗎？"
+msgstr "您確定要刪除這些文件嗎？"
 
 #: src/DownloadListCtrl.cpp:580
-#, fuzzy
 msgid "Are you sure that you wish to delete the selected files?"
-msgstr "您確定要取消下載並刪除這些文件嗎？"
+msgstr "您確定要刪除這些文件嗎？"
 
 #: src/DownloadListCtrl.cpp:836 src/ClientListCtrl.cpp:358
 msgid "Send message to user"
@@ -3041,7 +3014,6 @@ msgid "Downloads (%i)"
 msgstr "下載 (%i)"
 
 #: src/DownloadListCtrl.cpp:2222
-#, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3055,15 +3027,14 @@ msgid "File preview"
 msgstr "文件預覽"
 
 #: src/DownloadListCtrl.cpp:2260
-#, fuzzy, c-format
+#, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
-msgstr "錯誤: 無法運行媒體播放器!"
+msgstr "錯誤：無法運行媒體播放器！命令：`%s'"
 
 #: src/PartFile.cpp:284
 msgid "ERROR: Failed to open partfile)"
 msgstr "錯誤: 無法打開 part 文件)"
 
-# fuzzy
 #: src/PartFile.cpp:288
 msgid "ERROR: Failed to create partfile)"
 msgstr "錯誤: 無法建立 part 檔案"
@@ -3127,7 +3098,7 @@ msgstr "part 文件存盤時發生錯誤: %s (%s => %s)"
 #: src/PartFile.cpp:914
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
-msgstr ""
+msgstr "無法獲取%s的大小 - 正在使用%s文件。"
 
 #: src/PartFile.cpp:922
 #, c-format
@@ -3140,11 +3111,11 @@ msgid "Failed to save part.met.seeds file for %s"
 msgstr "%s 的 part.met.seeds 檔案存檔失敗"
 
 #: src/PartFile.cpp:1019
-#, fuzzy, c-format
+#, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
-msgstr[0] "儲存了 %i 個源給 part 檔案 %s (%s) 的 "
-msgstr[1] "儲存了 %i 個源給 part 檔案 %s (%s) 的 "
+msgstr[0] "儲存了 %i 個源給 part 檔案 %s (%s)"
+msgstr[1] "儲存了 %i 個源給 part 檔案 %s (%s)"
 
 #: src/PartFile.cpp:1048
 #, c-format
@@ -3162,7 +3133,7 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "讀取part文件的種子文件出錯（%s - %s）：%s"
 
 #: src/PartFile.cpp:1131 src/PartFile.cpp:1159
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
@@ -3253,14 +3224,14 @@ msgid "Error while saving known.met file: %s"
 msgstr "保存known.met文件時發生錯誤：%s"
 
 #: src/SharedFileList.cpp:352
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "發現 %i 已知分享的檔案"
 msgstr[1] "發現 %i 已知分享的檔案"
 
 #: src/SharedFileList.cpp:358
-#, fuzzy, c-format
+#, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "發現 %i 已知分享的檔案, %i 不名"
@@ -3288,11 +3259,11 @@ msgid "No comments"
 msgstr "沒有註釋"
 
 #: src/CommentDialogLst.cpp:104
-#, fuzzy, c-format
+#, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
-msgstr[0] "%s 注釋"
-msgstr[1] "%s 注釋"
+msgstr[0] "%u 注釋"
+msgstr[1] "%u 注釋"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -3342,7 +3313,7 @@ msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) 可能已沒有空位"
 
 #: src/ServerConnect.cpp:391
-#, fuzzy, c-format
+#, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "伺服器自動連線會在 %d 秒后重新嘗試"
@@ -3357,7 +3328,6 @@ msgstr "連線已斷"
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "連接失敗 %s (%s:%i)"
 
-# fuzzy
 #: src/ServerConnect.cpp:460
 msgid "Error: Socket invalid at timeoutcheck"
 msgstr "錯誤: 接口無效"
@@ -3371,14 +3341,14 @@ msgstr "連接超時 %s (%s:%i)"
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr ""
+msgstr "錯誤：載入備份文件失敗！請到http://forum.amule.org搜索.part和.met文件的恢復方法。"
 
 #: src/DownloadQueue.cpp:173
 msgid "No part files found"
 msgstr "沒有找到 part 檔案"
 
 #: src/DownloadQueue.cpp:175
-#, fuzzy, c-format
+#, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "發現 %u 個 part 文件"
@@ -3428,19 +3398,16 @@ msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "無效IP地址格式。請使用 xxx.xxx.xxx.xxx:xxxx\n"
 
 #: src/TextClient.cpp:305
-#, fuzzy
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "此命令需要一個參數，合法參數為：'all'或一個數字。\n"
+msgstr "此命令需要一個參數，合法參數為：'all'、文件名或一個數字。\n"
 
 #: src/TextClient.cpp:343
-#, fuzzy
 msgid "Processing by hash: "
 msgstr "正在處理文件號 %u: %s"
 
 #: src/TextClient.cpp:358
-#, fuzzy
 msgid "Processing by filename: "
 msgstr "正在處理文件號 %u: %s"
 
@@ -3952,7 +3919,7 @@ msgid "Unknown server info received! - too short"
 msgstr "收到未知服務器信息 ! - 長度過短"
 
 #: src/ServerSocket.cpp:539
-#, fuzzy, c-format
+#, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "收到 %d 個新伺服器"
@@ -4005,7 +3972,7 @@ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country()：載入國家數據失敗"
 
 #: src/IP2Country.cpp:73
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
 msgstr[0] "%d個國旗圖片已載入。"
@@ -4186,7 +4153,6 @@ msgid "%s (Disk: %s)"
 msgstr "%s (磁盤：%s)"
 
 #: src/OtherFunctions.cpp:121
-#, fuzzy
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "字節"
@@ -4225,7 +4191,6 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:156
-#, fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "字節/秒"
@@ -4318,18 +4283,18 @@ msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "載入 ipfilter.dat 文件 '%s' 失敗，無法打開文件。"
 
 #: src/IPFilter.cpp:330
-#, fuzzy, c-format
+#, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
-msgstr[0] "載入 %u 個IP段自 %s，丟棄了 %u 行錯誤數據。"
-msgstr[1] "載入 %u 個IP段自 %s，丟棄了 %u 行錯誤數據。"
+msgstr[0] "載入 %u 個IP段自 %s。"
+msgstr[1] "載入 %u 個IP段自 %s。"
 
 #: src/IPFilter.cpp:332
-#, fuzzy, c-format
+#, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
-msgstr[0] "載入 %u 個IP段自 %s，丟棄了 %u 行錯誤數據。"
-msgstr[1] "載入 %u 個IP段自 %s，丟棄了 %u 行錯誤數據。"
+msgstr[0] "丟棄了 %u 行錯誤數據。"
+msgstr[1] "丟棄了 %u 行錯誤數據。"
 
 #: src/StatisticsDlg.cpp:189
 #, c-format
@@ -4585,12 +4550,10 @@ msgstr "已發現源 :"
 msgid "Transferring Sources :"
 msgstr "正在傳輸的源 :"
 
-# fuzzy
 #: src/muuli_wdr.cpp:685
 msgid "Filepart-Count :"
 msgstr "檔案部分數 :"
 
-# fuzzy
 #: src/muuli_wdr.cpp:696
 msgid "Available :"
 msgstr "可用 :"
@@ -5008,7 +4971,7 @@ msgstr "連線容量"
 msgid ""
 "Note: These values are\n"
 "only used for statistics."
-msgstr ""
+msgstr "提示：此值只用於統計用途。\n "
 
 #: src/muuli_wdr.cpp:1835
 msgid "Standard client TCP Port:"
@@ -5639,7 +5602,6 @@ msgstr ":"
 msgid "Enter the port of the server here."
 msgstr "請輸入服務器端口"
 
-# fuzzy
 #: src/muuli_wdr.cpp:3054
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "手動加入新伺服器 (添入左側空格) ..."
@@ -6107,7 +6069,7 @@ msgid "Available commands:\n"
 msgstr "可用命令：\n"
 
 #: src/ExternalConnector.cpp:188
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "All commands are case insensitive.\n"
@@ -6115,7 +6077,7 @@ msgid ""
 msgstr ""
 "\n"
 "全部命令都不區分大小寫。\n"
-"輸入 'help <命令>' 獲取在 <命令> 中的詳細信息。\n"
+"輸入 '%s <命令>' 獲取在 <命令> 中的詳細信息。\n"
 
 #: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
 msgid "Exits from the application."
@@ -6264,14 +6226,14 @@ msgid "Print program version."
 msgstr "打印程序版本。"
 
 #: src/ClientCreditsList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "積分檔案已載入，%u個已知使用者"
 msgstr[1] "積分檔案已載入，%u個已知使用者"
 
 #: src/ClientCreditsList.cpp:171
-#, fuzzy, c-format
+#, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - %u 個用戶的積分已過期"
@@ -6400,7 +6362,6 @@ msgstr "使用者訊息"
 msgid "%.1f kB/s"
 msgstr "%.1f kB/s"
 
-# fuzzy
 #: src/ClientDetailDialog.cpp:168
 msgid "Not Supported"
 msgstr "不被支援"
@@ -6417,15 +6378,14 @@ msgstr "壞蛋"
 msgid "Verified - OK"
 msgstr "驗證已通過"
 
-# fuzzy
 #: src/ClientDetailDialog.cpp:184
 msgid "Not Available"
 msgstr "不在"
 
 #: src/ClientDetailDialog.cpp:190
-#, fuzzy, c-format
+#, c-format
 msgid "%u (QR: %u)"
-msgstr "QR: %u"
+msgstr "%u (隊列：%u)"
 
 #: src/SearchDlg.cpp:491
 msgid "Min size must be smaller than max size. Max size ignored."
@@ -6621,14 +6581,14 @@ msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
 msgstr "Server.met 文件損壞，發現錯誤的版本標記：0x%x, 大小 %i"
 
 #: src/ServerList.cpp:168
-#, fuzzy, c-format
+#, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "server.met 中有 %i 個伺服器"
 msgstr[1] "server.met 中有 %i 個伺服器"
 
 #: src/ServerList.cpp:170
-#, fuzzy, c-format
+#, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d 新增添的伺服器"
@@ -6747,7 +6707,7 @@ msgstr ""
 #: src/amule.cpp:919
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
-msgstr ""
+msgstr "無法綁定端口到指定的地址：%s"
 
 #: src/amule.cpp:946
 #, c-format
