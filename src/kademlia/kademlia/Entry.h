@@ -41,6 +41,7 @@ there client on the eMule forum..
 
 
 #include "../utils/UInt128.h"
+#include <time.h>
 
 ////////////////////////////////////////
 namespace Kademlia {

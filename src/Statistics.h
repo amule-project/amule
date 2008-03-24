@@ -27,9 +27,8 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
-#include "GetTickCount.h"	// Needed for GetTickCount64()
 #include "StatTree.h"		// Needed for CStatTreeItem* classes
-
+#include "GetTickCount.h"	// Needed for GetTickCount64()
 
 #include <deque>		// Needed for std::deque
 

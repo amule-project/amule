@@ -45,6 +45,8 @@ there client on the eMule forum..
 
 class CMemFile;
 
+static const wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:;\\/");
+
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
