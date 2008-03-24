@@ -50,8 +50,6 @@ there client on the eMule forum..
 
 #include <wx/tokenzr.h>
 
-const wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:;\\/");
-
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////

@@ -63,8 +63,6 @@ there client on the eMule forum..
 
 #define THIS_DEBUG_IS_JUST_FOR_KRY_DONT_TOUCH_IT_KTHX 0
 
-extern wxChar* InvKadKeywordChars;
-
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////

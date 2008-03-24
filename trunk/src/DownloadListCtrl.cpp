@@ -2219,8 +2219,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		wxMessageBox(_(
-			"Please set your preferred video player on preferences.\n"
-			"Meanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
+			"Please set your preferred video player on preferences.\nMeanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output device and needs a parameter, go figure...
