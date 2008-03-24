@@ -265,11 +265,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	Show(true);
 	// Must we start minimized?
 	if (thePrefs::GetStartMinimized()) { 
-		if (thePrefs::UseTrayIcon() && thePrefs::DoMinToTray()) {
-			Hide_aMule();
-		} else {
-			Iconize(true);
-		}
+		DoIconize(true);
 	}
 
 	// Set shortcut keys
@@ -890,10 +886,12 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	wxString section = wxT("/Razor_Preferences/");
 
 	// Get window size and position
-	int x1 = config->Read(section + wxT("MAIN_X_POS"), -1l);
-	int y1 = config->Read(section + wxT("MAIN_Y_POS"), -1l);
-	int x2 = config->Read(section + wxT("MAIN_X_SIZE"), 0l);
-	int y2 = config->Read(section + wxT("MAIN_Y_SIZE"), 0l);
+	int x1 = config->Read(section + wxT("MAIN_X_POS"), 01);
+	int y1 = config->Read(section + wxT("MAIN_Y_POS"), 01);
+	int x2 = config->Read(section + wxT("MAIN_X_SIZE"), -1);
+	int y2 = config->Read(section + wxT("MAIN_Y_SIZE"), -1);
+
+	int maximized = config->Read(section + wxT("Maximized"), 01);
 
 	// Kry - Random usable pos for m_srv_split_pos
 	m_srv_split_pos = config->Read(section + wxT("SRV_SPLITTER_POS"), 463l);
@@ -902,7 +900,7 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 			SetSize(x2, y2);
 		} else {
 #ifndef __WXGTK__
-			// Probably first run. Only works for gtk2
+			// Probably first run.
 			Maximize();
 #endif
 		}
@@ -913,6 +911,10 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 		if(x1 != -1 && y1 != -1) {
 			Move(x1, y1);
 		}
+	}
+
+	if (!override_size && !override_pos && maximized) {
+		Maximize();
 	}
 
 	return true;
@@ -943,6 +945,7 @@ bool CamuleDlg::SaveGUIPrefs()
 	config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
 	config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
 	config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
+	config->Write(section+wxT("Maximized"), (long) (IsMaximized() ? 1 : 0));
 
 	// Saving sash position of splitter in server window
 	config->Write(section+wxT("SRV_SPLITTER_POS"), (long) m_srv_split_pos);
@@ -955,62 +958,42 @@ bool CamuleDlg::SaveGUIPrefs()
 }
 
 
-void CamuleDlg::Hide_aMule(bool iconize)
+void CamuleDlg::DoIconize(bool iconize) 
 {
-	if (IsShown() && ((m_last_iconizing + 2000) < GetTickCount())) { // 1 secs for sanity
-		m_last_iconizing = GetTickCount();
-
-		if (m_prefsDialog && m_prefsDialog->IsShown()) {
-			m_prefsVisible = true;
-			m_prefsDialog->Iconize(true);;
-			m_prefsDialog->Show(false);
+	// Evil Hack: check if the mouse is inside the window
+#ifndef __WINDOWS__
+	if (GetScreenRect().Contains(wxGetMousePosition()))
+#endif
+	{
+		if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
+			if (iconize) {
+				// Skip() will do it.
+				//Iconize(true);
+				if (SafeState()) {
+					Show(false);
+				}
+			} else {
+				Show(true);
+				Raise();
+			}
 		} else {
-			m_prefsVisible = false;
-		}
-		
-		if (iconize) {
-			Iconize(true);
-		}
-		
-		Show(false);
-	}
-
-}
-
-
-void CamuleDlg::Show_aMule(bool uniconize)
-{
-	if (!IsShown() && ((m_last_iconizing + 1000) < GetTickCount())) { // 1 secs for sanity
-		m_last_iconizing = GetTickCount();
-	
-		if (m_prefsDialog && m_prefsVisible) {
-			m_prefsDialog->Show(true);
-			m_prefsDialog->Raise();
-		}
-		
-		if (uniconize) {
-			Show(true);
-			Raise();
+			// Will be done by Skip();
+			//Iconize(iconize);
 		}
 	}
 }
-
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-		if (evt.Iconized()) {
-			Hide_aMule(false);
-		} else {
-			if (SafeState()) {
-				Show_aMule(true);
-			} else {
-				Show_aMule(false);
-			}
+	if (m_prefsDialog && m_prefsDialog->IsShown()) {
+		// Veto.
+	} else {
+		if (m_wndTaskbarNotifier) {
+			DoIconize(evt.Iconized());
 		}
-	}	
+		evt.Skip();
+	}
 }
-
 
 void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 {
