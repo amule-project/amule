@@ -1352,19 +1352,35 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	Freeze();
 	// Create ToolBar from the one designed by wxDesigner (BigBob)
 	wxToolBar *current = GetToolBar();
+
+	wxASSERT(current == m_wndToolbar);
+
 	if (current) {
-		current->Destroy();
-		SetToolBar(NULL); // Remove old one if present
+		bool oldorientation = (current->GetWindowStyle() & wxTB_VERTICAL);
+		if (oldorientation != orientation) {
+			current->Destroy();
+			SetToolBar(NULL); // Remove old one if present
+			m_wndToolbar = NULL;
+		} else {
+			current->ClearTools();
+		}
 	}
-	m_wndToolbar = CreateToolBar(
-		(orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
-		wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
-		wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
-	m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
+
+	if (!m_wndToolbar) {
+		m_wndToolbar = CreateToolBar(
+			(orientation ? wxTB_VERTICAL : wxTB_HORIZONTAL) |
+			wxNO_BORDER | wxTB_TEXT | wxTB_3DBUTTONS |
+			wxTB_FLAT | wxCLIP_CHILDREN | wxTB_NODIVIDER);
+
+
+			m_wndToolbar->SetToolBitmapSize(wxSize(32, 32));
+	}
+
 	Apply_Toolbar_Skin(m_wndToolbar);		
-#ifdef CLIENT_GUI
-	m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
-#endif
+	#ifdef CLIENT_GUI
+		m_wndToolbar->DeleteTool(ID_BUTTONIMPORT);
+	#endif
+
 	Thaw();
 }
 
