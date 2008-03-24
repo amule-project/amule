@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-19 03:31+0100\n"
+"POT-Creation-Date: 2008-03-24 03:31+0100\n"
 "PO-Revision-Date: 2008-03-23 03:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -3343,7 +3343,9 @@ msgstr "连接超时 %s（%s：%i）"
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr "错误：载入备份文件失败！请到http://forum.amule.org搜索.part和.met文件的恢复方法。"
+msgstr ""
+"错误：载入备份文件失败！请到http://forum.amule.org搜索.part和.met文件的恢复方"
+"法。"
 
 #: src/DownloadQueue.cpp:173
 msgid "No part files found"
@@ -4973,7 +4975,9 @@ msgstr "连接带宽"
 msgid ""
 "Note: These values are\n"
 "only used for statistics."
-msgstr "提示：此值只用于统计用途。\n "
+msgstr ""
+"提示：此值只用于统计用途。\n"
+" "
 
 #: src/muuli_wdr.cpp:1835
 msgid "Standard client TCP Port:"
@@ -6161,7 +6165,7 @@ msgstr ""
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "连接失败，无法连接到指定的计算机\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:418
 #, c-format
 msgid ""
 "\n"
@@ -6170,7 +6174,7 @@ msgstr ""
 "\n"
 "完成，正在退出 %s...\n"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:423
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6183,47 +6187,47 @@ msgstr ""
 "或在命令行设置一个，或者在询问时输入。\n"
 "\n"
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:430
 msgid "Show this help text."
 msgstr "显示帮助信息。"
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:433
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "aMule正在运行的主机。(缺省：localhost)"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:436
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule 的外部连接端口。（缺省：4712）"
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:439
 msgid "External Connection password."
 msgstr "外部连接密码。"
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:442
 msgid "Read configuration from file."
 msgstr "从文件读取设置。"
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:445
 msgid "Do not print any output to stdout."
 msgstr "不打印任何信息到控制台。"
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:448
 msgid "Be verbose - show also debug messages."
 msgstr "详细显示调试信息。"
 
-#: src/ExternalConnector.cpp:461
+#: src/ExternalConnector.cpp:451
 msgid "Sets program locale (language)."
 msgstr "设置程序地区(语言)。"
 
-#: src/ExternalConnector.cpp:464
+#: src/ExternalConnector.cpp:454
 msgid "Write command line options to config file."
 msgstr "把命令行参数写入设置文件。"
 
-#: src/ExternalConnector.cpp:467
+#: src/ExternalConnector.cpp:457
 msgid "Creates config file based on aMule's config file."
 msgstr "基于aMule的设置文件建立新设置文件。"
 
-#: src/ExternalConnector.cpp:470
+#: src/ExternalConnector.cpp:460
 msgid "Print program version."
 msgstr "打印程序版本。"
 

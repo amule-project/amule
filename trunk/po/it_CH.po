@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-19 03:31+0100\n"
+"POT-Creation-Date: 2008-03-24 03:31+0100\n"
 "PO-Revision-Date: 2008-03-15 02:10+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
@@ -6342,7 +6342,7 @@ msgstr ""
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Connessione fallita. Impossibile connettersi all'host specificato\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:418
 #, c-format
 msgid ""
 "\n"
@@ -6351,7 +6351,7 @@ msgstr ""
 "\n"
 "Ok, uscita in corso da %s...\n"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:423
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6365,47 +6365,47 @@ msgstr ""
 "\n"
 "Sto uscendo...\n"
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:430
 msgid "Show this help text."
 msgstr "Mostra questo suggerimento"
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:433
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host su cui aMule e' in esecuzione (default: localhost)"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:436
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Porta di aMule per le connessioni esterne (default: 4712)"
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:439
 msgid "External Connection password."
 msgstr "Password connessioni esterne"
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:442
 msgid "Read configuration from file."
 msgstr "Leggi la configurazione da file"
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:445
 msgid "Do not print any output to stdout."
 msgstr "Non stampare output sullo stdout"
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:448
 msgid "Be verbose - show also debug messages."
 msgstr "Verboso - mostra anche i messaggi di debug"
 
-#: src/ExternalConnector.cpp:461
+#: src/ExternalConnector.cpp:451
 msgid "Sets program locale (language)."
 msgstr "Imposta la localizzazione (lingua) del programma"
 
-#: src/ExternalConnector.cpp:464
+#: src/ExternalConnector.cpp:454
 msgid "Write command line options to config file."
 msgstr "Salva le opzioni linea di comando nel file di configurazione"
 
-#: src/ExternalConnector.cpp:467
+#: src/ExternalConnector.cpp:457
 msgid "Creates config file based on aMule's config file."
 msgstr "Crea un file di configurazione basato su quello di aMule"
 
-#: src/ExternalConnector.cpp:470
+#: src/ExternalConnector.cpp:460
 msgid "Print program version."
 msgstr "Mostra la versione del programma"
 
