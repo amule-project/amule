@@ -886,8 +886,8 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	wxString section = wxT("/Razor_Preferences/");
 
 	// Get window size and position
-	int x1 = config->Read(section + wxT("MAIN_X_POS"), 01);
-	int y1 = config->Read(section + wxT("MAIN_Y_POS"), 01);
+	int x1 = config->Read(section + wxT("MAIN_X_POS"), -1);
+	int y1 = config->Read(section + wxT("MAIN_Y_POS"), -1);
 	int x2 = config->Read(section + wxT("MAIN_X_SIZE"), -1);
 	int y2 = config->Read(section + wxT("MAIN_Y_SIZE"), -1);
 
@@ -907,9 +907,14 @@ bool CamuleDlg::LoadGUIPrefs(bool override_pos, bool override_size)
 	}
 
 	if (!override_pos) {
-		// If x1 and y1 != 0 Redefine location
+		// If x1 and y1 != -1 Redefine location
 		if(x1 != -1 && y1 != -1) {
-			Move(x1, y1);
+			wxRect display = wxGetClientDisplayRect();
+			if (x1 <= display.GetRightTop().x && y1 <= display.GetRightBottom().y) {
+				Move(x1, y1);
+			} else {
+				// It's offscreen... so let's not.
+			}
 		}
 	}
 
@@ -943,8 +948,10 @@ bool CamuleDlg::SaveGUIPrefs()
 	// Saving window size and position
 	config->Write(section+wxT("MAIN_X_POS"), (long) x1);
 	config->Write(section+wxT("MAIN_Y_POS"), (long) y1);
+
 	config->Write(section+wxT("MAIN_X_SIZE"), (long) x2);
 	config->Write(section+wxT("MAIN_Y_SIZE"), (long) y2);
+
 	config->Write(section+wxT("Maximized"), (long) (IsMaximized() ? 1 : 0));
 
 	// Saving sash position of splitter in server window
