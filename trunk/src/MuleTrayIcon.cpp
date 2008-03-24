@@ -167,7 +167,9 @@ void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event))
 
 void CMuleTrayIcon::Close(wxCommandEvent& WXUNUSED(event))
 {
-	theApp->amuledlg->Close();
+	if (theApp->amuledlg->IsEnabled()) {
+		theApp->amuledlg->Close();
+	}
 }
 
 
@@ -560,9 +562,11 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {
-	if ( theApp->amuledlg->IsShown() ) {
+	if ( !theApp->amuledlg->IsIconized() ) {
 		theApp->amuledlg->Iconize(true);
-		theApp->amuledlg->Show(false);
+		if (thePrefs::DoMinToTray()) {
+			theApp->amuledlg->Show(false);
+		}
 	} else {
 		theApp->amuledlg->Iconize(false);
 		theApp->amuledlg->Show(true);

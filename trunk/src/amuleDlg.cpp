@@ -851,6 +851,9 @@ void CamuleDlg::OnClose(wxCloseEvent& evt)
 		}
 	}
 	
+	Enable(false);
+	Show(false);
+
 	theApp->ShutDown(evt);
 }
 
