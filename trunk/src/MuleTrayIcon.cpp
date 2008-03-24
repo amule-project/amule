@@ -76,7 +76,7 @@ enum {
 /****************************************************/
 
 BEGIN_EVENT_TABLE(CMuleTrayIcon, wxTaskBarIcon)
-	EVT_TASKBAR_LEFT_DOWN(CMuleTrayIcon::SwitchShow)
+	EVT_TASKBAR_LEFT_DCLICK(CMuleTrayIcon::SwitchShow)
 	EVT_MENU( TRAY_MENU_EXIT, CMuleTrayIcon::Close)
 	EVT_MENU( TRAY_MENU_CONNECT, CMuleTrayIcon::ServerConnection)
 	EVT_MENU( TRAY_MENU_DISCONNECT, CMuleTrayIcon::ServerConnection)
@@ -560,6 +560,13 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {
-	theApp->amuledlg->DoIconize(theApp->amuledlg->IsShown());
+	if ( theApp->amuledlg->IsShown() ) {
+		theApp->amuledlg->Iconize(true);
+		theApp->amuledlg->Show(false);
+	} else {
+		theApp->amuledlg->Iconize(false);
+		theApp->amuledlg->Show(true);
+		theApp->amuledlg->Raise();
+	}
 }
 // File_checked_for_headers
