@@ -150,9 +150,8 @@ public:
 	void OnClose(wxCloseEvent& evt);
 	void OnBnConnect(wxCommandEvent& evt);
 
-	void Hide_aMule(bool iconize = true);
-	void Show_aMule(bool uniconize = true);
-	
+	void DoIconize(bool iconize);
+
 	bool SafeState()	{ return m_is_safe_state; }
 
 	void LaunchUrl(const wxString &url);

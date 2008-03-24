@@ -161,11 +161,7 @@ void CMuleTrayIcon::ServerConnection(wxCommandEvent& WXUNUSED(event))
 
 void CMuleTrayIcon::ShowHide(wxCommandEvent& WXUNUSED(event))
 {
-	if (theApp->amuledlg->IsShown()) {
-		theApp->amuledlg->Hide_aMule();
-	} else {
-		theApp->amuledlg->Show_aMule();
-	}
+	theApp->amuledlg->DoIconize(theApp->amuledlg->IsShown());
 }
 
 
@@ -562,11 +558,8 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	return traymenu;
 }		
 
-void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&) {
-	if ( theApp->amuledlg->IsShown() ) {		
-		theApp->amuledlg->Hide_aMule();
-	} else {
-		theApp->amuledlg->Show_aMule();
-	}
+void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
+{
+	theApp->amuledlg->DoIconize(theApp->amuledlg->IsShown());
 }
 // File_checked_for_headers

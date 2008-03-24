@@ -506,7 +506,7 @@ namespace MuleNotify
 	void ShowGUI()
 	{
 #ifndef AMULE_DAEMON
-		theApp->amuledlg->Show_aMule(true);
+		theApp->amuledlg->Iconize(false);
 #endif
 	}
 	
