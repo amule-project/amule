@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-24 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 03:31+0100\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -143,7 +143,7 @@ msgstr "ユーザ '%s' から共有ファイルを回収出来ませんでした
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
 #: src/ClientDetailDialog.cpp:84 src/ClientDetailDialog.cpp:119
-#: src/ClientDetailDialog.cpp:120 src/MuleTrayIcon.cpp:408
+#: src/ClientDetailDialog.cpp:120 src/MuleTrayIcon.cpp:406
 msgid "Unknown"
 msgstr "不明です"
 
@@ -248,7 +248,7 @@ msgstr "確認：選択された友達を削除しますか？"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:734
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:730
 #: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:896
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:867 src/muuli_wdr.cpp:937
 #: src/muuli_wdr.cpp:1011 src/muuli_wdr.cpp:1077 src/muuli_wdr.cpp:2796
@@ -320,7 +320,7 @@ msgstr "完成したソース"
 msgid "Directory Path"
 msgstr "ディレクトリパース"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1316 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "共有ファイル"
@@ -446,7 +446,7 @@ msgstr "ファイル %s のアップロードを再開します"
 msgid "Suspending upload of file: %s"
 msgstr "ファイル %s のアップロードを一時停止します"
 
-#: src/kademlia/kademlia/SearchManager.cpp:134
+#: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: 検索キーワードが短過ぎます"
 
@@ -584,11 +584,11 @@ msgstr "各リクエストでPHPページを再コンパイルする"
 msgid "aMule Web Server"
 msgstr "aMuleウェッブサーバ"
 
-#: src/StatTree.cpp:548 src/StatTree.cpp:563
+#: src/StatTree.cpp:555 src/StatTree.cpp:570
 msgid "Not available"
 msgstr "利用不可能"
 
-#: src/StatTree.cpp:599 src/StatTree.cpp:613
+#: src/StatTree.cpp:606 src/StatTree.cpp:620
 msgid "Never"
 msgstr "記憶ありません"
 
@@ -601,7 +601,7 @@ msgstr "ダウンロード中…"
 msgid "( %s / %s )"
 msgstr "（ %s / %s）"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1329
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "個人設定"
@@ -975,7 +975,7 @@ msgid "LowID"
 msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:385 src/MuleTrayIcon.cpp:399 src/MuleTrayIcon.cpp:400
+#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "接続されていません"
 
@@ -1095,7 +1095,7 @@ msgstr "保存する"
 msgid "Copy to clipboard"
 msgstr "クリップボードへコピーする"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:560
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:558
 msgid "Exit"
 msgstr "終了"
 
@@ -1215,7 +1215,7 @@ msgstr "オート [No]"
 msgid "Auto [Hi]"
 msgstr "オート [Hi]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:516 src/ClientListCtrl.cpp:650
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:512 src/ClientListCtrl.cpp:650
 #: src/amule.cpp:782
 msgid "Connecting"
 msgstr "接続中"
@@ -1319,153 +1319,153 @@ msgstr "リンク"
 msgid "Source Seeds"
 msgstr "ソーヅシード"
 
-#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:242
+#: src/Preferences.cpp:627 src/PrefsUnifiedDlg.cpp:242
 msgid "System default"
 msgstr "システムデファオルト"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:628
 msgid "Albanian"
 msgstr ""
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:629
 msgid "Arabic"
 msgstr "アラブ語"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:630
 msgid "Basque"
 msgstr "バスク語"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:631
 msgid "Bulgarian"
 msgstr "ブルガリア語"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:632
 msgid "Catalan"
 msgstr "カタロニア語"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:633
 msgid "Chinese (Simplified)"
 msgstr "中国語（簡体字）"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:634
 msgid "Chinese (Traditional)"
 msgstr "中国語（繁体字）"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:635
 msgid "Croatian"
 msgstr "クロアチア語"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:636
 msgid "Czech"
 msgstr "チェコ語"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:637
 msgid "Danish"
 msgstr "デンマーク語"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:638
 msgid "Dutch"
 msgstr "オランダ語"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:639
 msgid "English (U.K.)"
 msgstr "英語（イギリス）"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:640
 msgid "Estonian"
 msgstr "エストニア語"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:641
 msgid "Finnish"
 msgstr "フィンランド語"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:642
 msgid "French"
 msgstr "フランス語"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:643
 msgid "Galician"
 msgstr "ガリシア語"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:644
 msgid "German"
 msgstr "ドイツ語"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:645
 msgid "Greek"
 msgstr "ギリシア語"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:646
 msgid "Hungarian"
 msgstr "ハンガリー語"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:647
 msgid "Italian"
 msgstr "イタリア語"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Italian (Swiss)"
 msgstr "イタリア語（スイス）"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Japanese"
 msgstr "日本語"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Korean"
 msgstr "韓国語"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Lithuanian"
 msgstr "リトアニア語"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Norwegian (Nynorsk)"
 msgstr "ルウェー語"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Polish"
 msgstr "ポーランド語"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Portuguese"
 msgstr "ポルトガル語"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Portuguese (Brazilian)"
 msgstr "ポルトガル語（ブラジル）"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Russian"
 msgstr "ロシア語"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Slovenian"
 msgstr "スロベニア語"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Spanish"
 msgstr "スペイン語"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Swedish"
 msgstr "スウェーデン語"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Turkish"
 msgstr "トルコ語"
 
-#: src/Preferences.cpp:1610 src/Preferences.cpp:1624 src/Preferences.cpp:1631
+#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
 msgid "Unable to determine selected browser!"
 msgstr "選択されたブラウザが見付かりません！"
 
-#: src/Preferences.cpp:1662
+#: src/Preferences.cpp:1663
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "サーバのUDPソケトがTCP+3であるためTCPポートを65532以上には設定出来ません"
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "デフォルトポートを使用します (%d)"
@@ -1649,15 +1649,15 @@ msgstr "http://www.amule.orgを訪れて、新しいバージョンチェック�
 msgid "Fatal Error: Failed to create Timer"
 msgstr "致命的なエラー：タイマを生成出来ませんでした"
 
-#: src/amuleDlg.cpp:438
+#: src/amuleDlg.cpp:434
 msgid "aMule remote control "
 msgstr "aMuleリモート制御"
 
-#: src/amuleDlg.cpp:444
+#: src/amuleDlg.cpp:440
 msgid "Snapshot:"
 msgstr "スナップショット："
 
-#: src/amuleDlg.cpp:446
+#: src/amuleDlg.cpp:442
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
@@ -1665,15 +1665,15 @@ msgstr ""
 " eMuleに基づいた'全プラットフォーム'P2Pクライアントです\n"
 "\n"
 
-#: src/amuleDlg.cpp:447
+#: src/amuleDlg.cpp:443
 msgid " Website: http://www.amule.org \n"
 msgstr " ウェッブ・サイト：http://www.amule.org \n"
 
-#: src/amuleDlg.cpp:448
+#: src/amuleDlg.cpp:444
 msgid " Forum: http://forum.amule.org \n"
 msgstr " フォーラム：http://forum.amule.org \n"
 
-#: src/amuleDlg.cpp:449
+#: src/amuleDlg.cpp:445
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
@@ -1681,11 +1681,11 @@ msgstr ""
 " よくある質問：http://wiki.amule.org \n"
 "\n"
 
-#: src/amuleDlg.cpp:450
+#: src/amuleDlg.cpp:446
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr " 問い合わせ：admin@amule.org（事務的関係） \n"
 
-#: src/amuleDlg.cpp:451
+#: src/amuleDlg.cpp:447
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
@@ -1693,192 +1693,192 @@ msgstr ""
 "  著作権2003-2008、aMuleのチーム\n"
 "\n"
 
-#: src/amuleDlg.cpp:452
+#: src/amuleDlg.cpp:448
 msgid " Part of aMule is based on \n"
 msgstr "aMuleのある部分は\n"
 
-#: src/amuleDlg.cpp:453
+#: src/amuleDlg.cpp:449
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr "Kademliaにもと基づいています：XORトリックに基づいたP2Pルーティング。\n"
 
-#: src/amuleDlg.cpp:454
+#: src/amuleDlg.cpp:450
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr " 著作権2002、Petar Maymounkov\n"
 
-#: src/amuleDlg.cpp:455
+#: src/amuleDlg.cpp:451
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:458 src/PrefsUnifiedDlg.cpp:522
+#: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
 #: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "メッセージ"
 
-#: src/amuleDlg.cpp:545
+#: src/amuleDlg.cpp:541
 msgid "Status text"
 msgstr "ステータステキスト"
 
-#: src/amuleDlg.cpp:666
+#: src/amuleDlg.cpp:662
 #, fuzzy
 msgid "ED2K: Connecting"
 msgstr "接続中"
 
-#: src/amuleDlg.cpp:670
+#: src/amuleDlg.cpp:666
 #, fuzzy
 msgid "ED2K: Disconnected"
 msgstr "切断"
 
-#: src/amuleDlg.cpp:676
+#: src/amuleDlg.cpp:672
 #, fuzzy
 msgid "Kad: Firewalled"
 msgstr "ファイアワォールされています"
 
-#: src/amuleDlg.cpp:680
+#: src/amuleDlg.cpp:676
 #, fuzzy
 msgid "Kad: Connected"
 msgstr "接続"
 
-#: src/amuleDlg.cpp:685
+#: src/amuleDlg.cpp:681
 #, fuzzy
 msgid "Kad: Connecting"
 msgstr "接続中"
 
-#: src/amuleDlg.cpp:689
+#: src/amuleDlg.cpp:685
 #, fuzzy
 msgid "Kad: Off"
 msgstr " Kas: "
 
-#: src/amuleDlg.cpp:735
+#: src/amuleDlg.cpp:731
 #, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "現在のコネクション試みを中止する"
 
-#: src/amuleDlg.cpp:740 src/muuli_wdr.cpp:3060 src/MuleTrayIcon.cpp:539
+#: src/amuleDlg.cpp:736 src/muuli_wdr.cpp:3060 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "切断する"
 
-#: src/amuleDlg.cpp:741
+#: src/amuleDlg.cpp:737
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "ネットワークから切断します。"
 
-#: src/amuleDlg.cpp:746 src/muuli_wdr.cpp:3276 src/muuli_wdr.cpp:3767
-#: src/muuli_wdr.cpp:3993 src/MuleTrayIcon.cpp:542
+#: src/amuleDlg.cpp:742 src/muuli_wdr.cpp:3276 src/muuli_wdr.cpp:3767
+#: src/muuli_wdr.cpp:3993 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "接続する"
 
-#: src/amuleDlg.cpp:747
+#: src/amuleDlg.cpp:743
 #, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "ネットワークへ接続します。"
 
-#: src/amuleDlg.cpp:794
+#: src/amuleDlg.cpp:790
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "アップ： %.1f(%.1f) | ダウン： %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:796
+#: src/amuleDlg.cpp:792
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "アップ： %.1f | ダウン： %.1f"
 
-#: src/amuleDlg.cpp:818
+#: src/amuleDlg.cpp:814
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "aMule (%s | 接続しています)"
 
-#: src/amuleDlg.cpp:820
+#: src/amuleDlg.cpp:816
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "aMule (%s | 切断しています)"
 
-#: src/amuleDlg.cpp:851
+#: src/amuleDlg.cpp:847
 msgid "Do you really want to exit aMule?"
 msgstr "確認：本当にaMuleを終了しますか？"
 
-#: src/amuleDlg.cpp:852
+#: src/amuleDlg.cpp:848
 msgid "Exit confirmation"
 msgstr "終了の確認"
 
-#: src/amuleDlg.cpp:1138
+#: src/amuleDlg.cpp:1131
 msgid "Could not determine the command for running the browser."
 msgstr "ブラウザを起動させるコマンドを見付けられませんでした。"
 
-#: src/amuleDlg.cpp:1198
+#: src/amuleDlg.cpp:1191
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "スキンディレクトリー '%s' は存在しません"
 
-#: src/amuleDlg.cpp:1203
+#: src/amuleDlg.cpp:1196
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "注意： スキンファイル '%s' を読むために開けませんでした"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "ネットワーク"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "ネットワークウィンドウ"
 
-#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "検索"
 
-#: src/amuleDlg.cpp:1310 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "検索ウィンドウ"
 
-#: src/amuleDlg.cpp:1312 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "転送"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "ファイル転送ウィンドウ"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "共通ファイルウィンドウ"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "メッセージ"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "メッセージウィンドウ"
 
-#: src/amuleDlg.cpp:1324 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "統計"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "統計グラフウィインドウ"
 
-#: src/amuleDlg.cpp:1331 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "個人設定ウィンドウ"
 
-#: src/amuleDlg.cpp:1333 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "インポート"
 
-#: src/amuleDlg.cpp:1335 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "パートファイルインポータツール"
 
-#: src/amuleDlg.cpp:1337 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "について"
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "について／ヘルプ"
 
@@ -2426,7 +2426,7 @@ msgstr "平均のファイル数："
 msgid "Not running"
 msgstr "走っていません"
 
-#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:449
+#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:447
 #, c-format
 msgid "Uptime: %s"
 msgstr "アップタイム： %s"
@@ -3080,11 +3080,11 @@ msgstr ""
 "その間、aMuleはmplayerを使用しようとしながら、プレビュー毎にこの注意が 表示さ"
 "れます"
 
-#: src/DownloadListCtrl.cpp:2224
+#: src/DownloadListCtrl.cpp:2223
 msgid "File preview"
 msgstr "ファイル・プレビュー"
 
-#: src/DownloadListCtrl.cpp:2260
+#: src/DownloadListCtrl.cpp:2259
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "エラー：外部メディア・プレイヤーは実行出来ませんでした！"
@@ -6547,136 +6547,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "検索の注意"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:494
-#: src/MuleTrayIcon.cpp:515
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:492
+#: src/MuleTrayIcon.cpp:513
 msgid "Unlimited"
 msgstr "無制限"
 
-#: src/MuleTrayIcon.cpp:332
+#: src/MuleTrayIcon.cpp:330
 msgid "aMule Tray Menu"
 msgstr "aMuleのトレイ・メニュー"
 
-#: src/MuleTrayIcon.cpp:338
+#: src/MuleTrayIcon.cpp:336
 msgid "Speed Limits:"
 msgstr "速度制限："
 
-#: src/MuleTrayIcon.cpp:343
+#: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
 msgstr "UL：無制限"
 
-#: src/MuleTrayIcon.cpp:346
+#: src/MuleTrayIcon.cpp:344
 #, c-format
 msgid "UL: %u"
 msgstr "UL：%u"
 
-#: src/MuleTrayIcon.cpp:353
+#: src/MuleTrayIcon.cpp:351
 msgid "DL: None"
 msgstr "DL：無制限"
 
-#: src/MuleTrayIcon.cpp:356
+#: src/MuleTrayIcon.cpp:354
 #, c-format
 msgid "DL: %u"
 msgstr "DL：%u"
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:358
 #, c-format
 msgid "Download Speed: %.1f"
 msgstr "ダウンロード速度：%.1f"
 
-#: src/MuleTrayIcon.cpp:362
+#: src/MuleTrayIcon.cpp:360
 #, c-format
 msgid "Upload Speed: %.1f"
 msgstr "アップロード速度：%.1f"
 
-#: src/MuleTrayIcon.cpp:368
+#: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
 msgstr "クライアント情報"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:370
 #, c-format
 msgid "Nickname: %s"
 msgstr "あだ名：%s"
 
-#: src/MuleTrayIcon.cpp:372
+#: src/MuleTrayIcon.cpp:370
 msgid "No Nickname Selected!"
 msgstr "あだ名が選択されていません！"
 
-#: src/MuleTrayIcon.cpp:379
+#: src/MuleTrayIcon.cpp:377
 msgid "ClientID: "
 msgstr "クライアントID："
 
-#: src/MuleTrayIcon.cpp:392
+#: src/MuleTrayIcon.cpp:390
 msgid "ServerName: "
 msgstr "サーバ名："
 
-#: src/MuleTrayIcon.cpp:393
+#: src/MuleTrayIcon.cpp:391
 msgid "ServerIP: "
 msgstr "サーバIP："
 
-#: src/MuleTrayIcon.cpp:408
+#: src/MuleTrayIcon.cpp:406
 #, c-format
 msgid "IP: %s"
 msgstr "IP：%s"
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:415
 #, c-format
 msgid "TCP Port: %d"
 msgstr "TCPポート：%d"
 
-#: src/MuleTrayIcon.cpp:419
+#: src/MuleTrayIcon.cpp:417
 msgid "TCP Port: Not Ready"
 msgstr "TCPポート：用意出来ていません"
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:426
 #, c-format
 msgid "UDP Port: %d"
 msgstr "UDPポート：%d"
 
-#: src/MuleTrayIcon.cpp:430
+#: src/MuleTrayIcon.cpp:428
 msgid "UDP Port: Not Ready"
 msgstr "UDPポート：用意出来ていません"
 
-#: src/MuleTrayIcon.cpp:439
+#: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
 msgstr "オンライン証明：有効です"
 
-#: src/MuleTrayIcon.cpp:442
+#: src/MuleTrayIcon.cpp:440
 msgid "Online Signature: Disabled"
 msgstr "オンライン証明：無効です"
 
-#: src/MuleTrayIcon.cpp:455
+#: src/MuleTrayIcon.cpp:453
 #, c-format
 msgid "Shared Files: %d"
 msgstr "共通ファイル：%d"
 
-#: src/MuleTrayIcon.cpp:461
+#: src/MuleTrayIcon.cpp:459
 #, c-format
 msgid "Queued Clients: %d"
 msgstr "並べているクライアント：%d"
 
-#: src/MuleTrayIcon.cpp:468
+#: src/MuleTrayIcon.cpp:466
 #, c-format
 msgid "Total DL: %s"
 msgstr "DLの合計：%s"
 
-#: src/MuleTrayIcon.cpp:475
+#: src/MuleTrayIcon.cpp:473
 #, c-format
 msgid "Total UL: %s"
 msgstr "ULの合計：%s"
 
-#: src/MuleTrayIcon.cpp:486
+#: src/MuleTrayIcon.cpp:484
 msgid "Upload Limit"
 msgstr "アップロードの制限"
 
-#: src/MuleTrayIcon.cpp:490
+#: src/MuleTrayIcon.cpp:488
 msgid "Download Limit"
 msgstr "ダウンロードの制限"
 
-#: src/MuleTrayIcon.cpp:550
+#: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
 msgstr "aMuleを隠す"
 
-#: src/MuleTrayIcon.cpp:553
+#: src/MuleTrayIcon.cpp:551
 msgid "Show aMule"
 msgstr "aMuleを表示する"
 
