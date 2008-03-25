@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 21:03+0100\n"
 "PO-Revision-Date: 2008-02-24 19:39+0200\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -274,6 +274,50 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Vali mitu"
 
+#: src/UserEvents.h:60
+msgid "Download completed"
+msgstr ""
+
+#: src/UserEvents.h:63 src/UserEvents.h:103
+msgid "The full path to the file."
+msgstr ""
+
+#: src/UserEvents.h:67
+msgid "The name of the file without path component."
+msgstr ""
+
+#: src/UserEvents.h:71
+msgid "The ed2k hash of the file."
+msgstr ""
+
+#: src/UserEvents.h:75
+msgid "The size of the file in bytes."
+msgstr ""
+
+#: src/UserEvents.h:79
+msgid "Cumulative download activity time."
+msgstr ""
+
+#: src/UserEvents.h:84
+msgid "New chat session started"
+msgstr ""
+
+#: src/UserEvents.h:87
+msgid "Message sender."
+msgstr ""
+
+#: src/UserEvents.h:92
+msgid "Out of space"
+msgstr ""
+
+#: src/UserEvents.h:95
+msgid "Disk partition."
+msgstr ""
+
+#: src/UserEvents.h:100
+msgid "Error on completion"
+msgstr ""
+
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
@@ -452,9 +496,20 @@ msgstr "Taastan faili '%s' saatmise"
 msgid "Suspending upload of file: %s"
 msgstr "Peatan faili '%s' saatmise"
 
+#: src/TextClient.h:60
+msgid "aMule text client"
+msgstr ""
+
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: otsingu võtmesõna on liiga lühike"
+
+#: src/kademlia/routing/RoutingZone.cpp:141
+#, c-format
+msgid "Read %u Kad contact"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "Loetud %u Kad kontakti"
+msgstr[1] "Loetud %u Kad kontakti"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -7061,8 +7116,3 @@ msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
 #~ msgid "You can't update server.met from remote GUI yet."
 #~ msgstr ""
 #~ "Sa ei saa uuendada server.met faili eemalolevast graafilisest töökohast."
-
-#~ msgid "Read %u Kad contact"
-#~ msgid_plural "Read %u Kad contacts"
-#~ msgstr[0] "Loetud %u Kad kontakti"
-#~ msgstr[1] "Loetud %u Kad kontakti"
