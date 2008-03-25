@@ -5,9 +5,12 @@ src/libs/ec/cpp/ECSocket.cpp
 src/ThreadTasks.cpp
 src/BaseClient.cpp
 src/FriendListCtrl.cpp
+src/UserEvents.h
 src/SharedFilesCtrl.cpp
 src/UploadQueue.cpp
+src/TextClient.h
 src/kademlia/kademlia/SearchManager.cpp
+src/kademlia/routing/RoutingZone.cpp
 src/ListenSocket.cpp
 src/webserver/src/WebServer.cpp
 src/webserver/src/WebInterface.cpp
@@ -23,6 +26,7 @@ src/utils/aLinkCreator/src/ed2khash.cpp
 src/utils/aLinkCreator/src/alcframe.cpp
 src/utils/aLinkCreator/src/alcc.cpp
 src/utils/aLinkCreator/src/alc.cpp
+src/utils/aLinkCreator/src/bithelp.h
 src/DataToText.cpp
 src/Preferences.cpp
 src/ServerListCtrl.cpp
@@ -36,6 +40,7 @@ src/ServerWnd.cpp
 src/Statistics.cpp
 src/MuleTextCtrl.cpp
 src/SearchList.cpp
+src/ClientCredits.h
 src/ClientTCPSocket.cpp
 src/KadDlg.cpp
 src/Server.cpp
@@ -67,6 +72,7 @@ src/CatDialog.cpp
 src/ExternalConnector.cpp
 src/ClientCreditsList.cpp
 src/amuled.cpp
+src/OtherStructs.h
 src/ClientListCtrl.cpp
 src/ClientDetailDialog.cpp
 src/SearchDlg.cpp
