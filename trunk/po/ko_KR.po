@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 21:03+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -275,6 +275,50 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "다중 선택"
 
+#: src/UserEvents.h:60
+msgid "Download completed"
+msgstr ""
+
+#: src/UserEvents.h:63 src/UserEvents.h:103
+msgid "The full path to the file."
+msgstr ""
+
+#: src/UserEvents.h:67
+msgid "The name of the file without path component."
+msgstr ""
+
+#: src/UserEvents.h:71
+msgid "The ed2k hash of the file."
+msgstr ""
+
+#: src/UserEvents.h:75
+msgid "The size of the file in bytes."
+msgstr ""
+
+#: src/UserEvents.h:79
+msgid "Cumulative download activity time."
+msgstr ""
+
+#: src/UserEvents.h:84
+msgid "New chat session started"
+msgstr ""
+
+#: src/UserEvents.h:87
+msgid "Message sender."
+msgstr ""
+
+#: src/UserEvents.h:92
+msgid "Out of space"
+msgstr ""
+
+#: src/UserEvents.h:95
+msgid "Disk partition."
+msgstr ""
+
+#: src/UserEvents.h:100
+msgid "Error on completion"
+msgstr ""
+
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
@@ -453,9 +497,20 @@ msgstr "파일의 올려주기를 재시작합니다: %s"
 msgid "Suspending upload of file: %s"
 msgstr "파일의 올려주기를 정지합니다: %s"
 
+#: src/TextClient.h:60
+msgid "aMule text client"
+msgstr ""
+
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "카뎀리아: 검색어가 너무 짧습니다."
+
+#: src/kademlia/routing/RoutingZone.cpp:141
+#, fuzzy, c-format
+msgid "Read %u Kad contact"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "%u개의 Kad 접속을 읽었음"
+msgstr[1] "%u개의 Kad 접속을 읽었음"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -7032,12 +7087,6 @@ msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
 
 #~ msgid "You can't update server.met from remote GUI yet."
 #~ msgstr "아직 원격 GUI로부터 server.met를 갱신할수 없습니다."
-
-#, fuzzy
-#~ msgid "Read %u Kad contact"
-#~ msgid_plural "Read %u Kad contacts"
-#~ msgstr[0] "%u개의 Kad 접속을 읽었음"
-#~ msgstr[1] "%u개의 Kad 접속을 읽었음"
 
 #~ msgid "Disconnect from "
 #~ msgstr "다음으로부터 연결이 끊김 "

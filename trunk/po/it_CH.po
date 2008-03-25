@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 21:03+0100\n"
 "PO-Revision-Date: 2008-03-15 02:10+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
@@ -286,6 +286,50 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "Selezione multipla"
 
+#: src/UserEvents.h:60
+msgid "Download completed"
+msgstr ""
+
+#: src/UserEvents.h:63 src/UserEvents.h:103
+msgid "The full path to the file."
+msgstr ""
+
+#: src/UserEvents.h:67
+msgid "The name of the file without path component."
+msgstr ""
+
+#: src/UserEvents.h:71
+msgid "The ed2k hash of the file."
+msgstr ""
+
+#: src/UserEvents.h:75
+msgid "The size of the file in bytes."
+msgstr ""
+
+#: src/UserEvents.h:79
+msgid "Cumulative download activity time."
+msgstr ""
+
+#: src/UserEvents.h:84
+msgid "New chat session started"
+msgstr ""
+
+#: src/UserEvents.h:87
+msgid "Message sender."
+msgstr ""
+
+#: src/UserEvents.h:92
+msgid "Out of space"
+msgstr ""
+
+#: src/UserEvents.h:95
+msgid "Disk partition."
+msgstr ""
+
+#: src/UserEvents.h:100
+msgid "Error on completion"
+msgstr ""
+
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
@@ -464,9 +508,20 @@ msgstr "Ripristino upload del file: %s"
 msgid "Suspending upload of file: %s"
 msgstr "Sospensione upload del file: %s"
 
+#: src/TextClient.h:60
+msgid "aMule text client"
+msgstr ""
+
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: chiave di ricerca troppo corta"
+
+#: src/kademlia/routing/RoutingZone.cpp:141
+#, fuzzy, c-format
+msgid "Read %u Kad contact"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "Letti %u contatti Kad"
+msgstr[1] "Letti %u contatti Kad"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -7144,12 +7199,6 @@ msgstr ""
 
 #~ msgid "You can't update server.met from remote GUI yet."
 #~ msgstr "Non puoi ancora aggiornare il file server.met falla GUI remota."
-
-#, fuzzy
-#~ msgid "Read %u Kad contact"
-#~ msgid_plural "Read %u Kad contacts"
-#~ msgstr[0] "Letti %u contatti Kad"
-#~ msgstr[1] "Letti %u contatti Kad"
 
 #~ msgid "Disconnect from "
 #~ msgstr "Disconnetti da "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 21:03+0100\n"
 "PO-Revision-Date: 2007-10-13 18:09+0200\n"
 "Last-Translator: Alex Thomsen Leth <alexl@stofanet.dk>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -264,6 +264,50 @@ msgstr ""
 msgid "Multiple selection"
 msgstr ""
 
+#: src/UserEvents.h:60
+msgid "Download completed"
+msgstr ""
+
+#: src/UserEvents.h:63 src/UserEvents.h:103
+msgid "The full path to the file."
+msgstr ""
+
+#: src/UserEvents.h:67
+msgid "The name of the file without path component."
+msgstr ""
+
+#: src/UserEvents.h:71
+msgid "The ed2k hash of the file."
+msgstr ""
+
+#: src/UserEvents.h:75
+msgid "The size of the file in bytes."
+msgstr ""
+
+#: src/UserEvents.h:79
+msgid "Cumulative download activity time."
+msgstr ""
+
+#: src/UserEvents.h:84
+msgid "New chat session started"
+msgstr ""
+
+#: src/UserEvents.h:87
+msgid "Message sender."
+msgstr ""
+
+#: src/UserEvents.h:92
+msgid "Out of space"
+msgstr ""
+
+#: src/UserEvents.h:95
+msgid "Disk partition."
+msgstr ""
+
+#: src/UserEvents.h:100
+msgid "Error on completion"
+msgstr ""
+
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
@@ -448,9 +492,20 @@ msgstr "Genoptager uploads af fil: %s"
 msgid "Suspending upload of file: %s"
 msgstr "Suspender upload af fil: %s"
 
+#: src/TextClient.h:60
+msgid "aMule text client"
+msgstr ""
+
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: søgeord er for kort"
+
+#: src/kademlia/routing/RoutingZone.cpp:141
+#, fuzzy, c-format
+msgid "Read %u Kad contact"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "Læs %u Kad kontakter"
+msgstr[1] "Læs %u Kad kontakter"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -6828,12 +6883,6 @@ msgstr "Fejl ved åbning af venneliste fil 'emfriends.met' ved læsning!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Fejl ved åbing af venneliste fil 'emfriends.met' ved skrivning!"
-
-#, fuzzy
-#~ msgid "Read %u Kad contact"
-#~ msgid_plural "Read %u Kad contacts"
-#~ msgstr[0] "Læs %u Kad kontakter"
-#~ msgstr[1] "Læs %u Kad kontakter"
 
 #~ msgid " ["
 #~ msgstr " ["

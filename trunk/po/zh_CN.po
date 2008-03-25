@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 03:31+0100\n"
+"POT-Creation-Date: 2008-03-25 21:03+0100\n"
 "PO-Revision-Date: 2008-03-23 03:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -265,6 +265,50 @@ msgstr ""
 msgid "Multiple selection"
 msgstr "多选"
 
+#: src/UserEvents.h:60
+msgid "Download completed"
+msgstr ""
+
+#: src/UserEvents.h:63 src/UserEvents.h:103
+msgid "The full path to the file."
+msgstr ""
+
+#: src/UserEvents.h:67
+msgid "The name of the file without path component."
+msgstr ""
+
+#: src/UserEvents.h:71
+msgid "The ed2k hash of the file."
+msgstr ""
+
+#: src/UserEvents.h:75
+msgid "The size of the file in bytes."
+msgstr ""
+
+#: src/UserEvents.h:79
+msgid "Cumulative download activity time."
+msgstr ""
+
+#: src/UserEvents.h:84
+msgid "New chat session started"
+msgstr ""
+
+#: src/UserEvents.h:87
+msgid "Message sender."
+msgstr ""
+
+#: src/UserEvents.h:92
+msgid "Out of space"
+msgstr ""
+
+#: src/UserEvents.h:95
+msgid "Disk partition."
+msgstr ""
+
+#: src/UserEvents.h:100
+msgid "Error on completion"
+msgstr ""
+
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
 #: src/FileDetailListCtrl.cpp:43
@@ -443,9 +487,20 @@ msgstr "继续上传此文件：%s"
 msgid "Suspending upload of file: %s"
 msgstr "暂停上传此文件：%s"
 
+#: src/TextClient.h:60
+msgid "aMule text client"
+msgstr "aMule 文本客户端"
+
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
 msgstr "Kad：搜索关键词太短"
+
+#: src/kademlia/routing/RoutingZone.cpp:141
+#, fuzzy, c-format
+msgid "Read %u Kad contact"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "读取 %u 个 Kad 联系人"
+msgstr[1] "读取 %u 个 Kad 联系人"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -6937,12 +6992,6 @@ msgstr "无法写入好友列表文件 'emfriends.met'!"
 #~ msgid "You can't update server.met from remote GUI yet."
 #~ msgstr "不能从远程GUI更新 server.met。"
 
-#, fuzzy
-#~ msgid "Read %u Kad contact"
-#~ msgid_plural "Read %u Kad contacts"
-#~ msgstr[0] "读取 %u 个 Kad 联系人"
-#~ msgstr[1] "读取 %u 个 Kad 联系人"
-
 #~ msgid "Disconnect from "
 #~ msgstr "断开连接从"
 
@@ -8193,9 +8242,6 @@ msgstr "无法写入好友列表文件 'emfriends.met'!"
 #~ "\n"
 #~ "----------------------------> 列表完毕 "
 #~ "<----------------------------------\n"
-
-#~ msgid "aMule text client"
-#~ msgstr "aMule 文本客户端"
 
 #~ msgid "Failed to open shared file (%s), rechecking list of shared files."
 #~ msgstr "无法打开共享文件(%s)，正在重新检查共享文件名单。"
