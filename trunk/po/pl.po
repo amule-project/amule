@@ -12,18 +12,18 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-25 21:03+0100\n"
-"PO-Revision-Date: 2008-03-26 08:54+0100\n"
+"PO-Revision-Date: 2008-03-26 19:07+0100\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 :n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
-msgstr ""
+msgstr "Musisz określić hasło."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:91
 msgid "Invalid password, not a MD5 hash!"
@@ -179,16 +179,15 @@ msgid "Requested: %s\n"
 msgstr "Zażądano:  %s\n"
 
 #: src/BaseClient.cpp:1878
-#,fuzzy , c-format
+#, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "Statystyki plików tej sesji: Zaakceptowano %d z %d żądania, %s przesłano\n"
 msgstr[1] "Statystyki plików tej sesji: Zaakceptowano %d z %d żądań, %s przesłano\n"
 msgstr[2] "Statystyki plików tej sesji: Zaakceptowano %d z %d żądań, %s przesłano\n"
 
-
 #: src/BaseClient.cpp:1881
-#, fuzzy, c-format
+#, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
@@ -507,11 +506,11 @@ msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: wyszukiwana fraza jest za krótka"
 
 #: src/kademlia/routing/RoutingZone.cpp:141
-#,fuzzy , c-format
+#, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Wczytaj %u kontakt Kad"
-msgstr[1] "Wczytaj %u kontaktów Kad"
+msgstr[1] "Wczytaj %u kontakty Kad"
 msgstr[2] "Wczytaj %u kontaktów Kad"
 
 #: src/ListenSocket.cpp:68
@@ -2114,19 +2113,19 @@ msgstr ""
 "Tylko jeden URL w każdej linii."
 
 #: src/PrefsUnifiedDlg.cpp:985
-#,fuzzy , c-format
+#, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
 msgstr[0] "Opóźnienie odświeżania: %d sekunda"
-msgstr[1] "Opóźnienie odświeżania: %d sekund"
+msgstr[1] "Opóźnienie odświeżania: %d sekundy"
 msgstr[2] "Opóźnienie odświeżania: %d sekund"
 
 #: src/PrefsUnifiedDlg.cpp:992
-#,fuzzy , c-format
+#, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
 msgstr[0] "Czas dla przeciętnego wykresu: %d minuta"
-msgstr[1] "Czas dla przeciętnego wykresu: %d minut"
+msgstr[1] "Czas dla przeciętnego wykresu: %d minuty"
 msgstr[2] "Czas dla przeciętnego wykresu: %d minut"
 
 #: src/PrefsUnifiedDlg.cpp:998
@@ -2135,35 +2134,35 @@ msgid "Connections Graph Scale: %d"
 msgstr "Skala wykresu połączeń: %d"
 
 #: src/PrefsUnifiedDlg.cpp:1004
-#,fuzzy , c-format
+#, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
 msgstr[0] "Opóźnienie odświeżania: %d sekunda"
-msgstr[1] "Opóźnienie odświeżania: %d sekund"
+msgstr[1] "Opóźnienie odświeżania: %d sekundy"
 msgstr[2] "Opóźnienie odświeżania: %d sekund"
 
 #: src/PrefsUnifiedDlg.cpp:1010
-#,fuzzy , c-format
+#, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
 msgstr[0] "Rozmiar bufora pliku: %d bajt"
-msgstr[1] "Rozmiar bufora pliku: %d bajtów"
+msgstr[1] "Rozmiar bufora pliku: %d bajty"
 msgstr[2] "Rozmiar bufora pliku: %d bajtów"
 
 #: src/PrefsUnifiedDlg.cpp:1016
-#,fuzzy , c-format
+#, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
-msgstr[0] "Rozmiar kolejki wysyłania %d klient"
-msgstr[1] "Rozmiar kolejki wysyłania %d klientów"
-msgstr[2] "Rozmiar kolejki wysyłania %d klientów"
+msgstr[0] "Rozmiar kolejki wysyłania: %d klient"
+msgstr[1] "Rozmiar kolejki wysyłania: %d klientów"
+msgstr[2] "Rozmiar kolejki wysyłania: %d klientów"
 
 #: src/PrefsUnifiedDlg.cpp:1023
-#,fuzzy , c-format
+#, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
 msgstr[0] "Odświeżanie połączeń do serwera co: %d minutę"
-msgstr[1] "Odświeżanie połączeń do serwera co: %d minut"
+msgstr[1] "Odświeżanie połączeń do serwera co: %d minuty"
 msgstr[2] "Odświeżanie połączeń do serwera co: %d minut"
 
 #: src/PrefsUnifiedDlg.cpp:1025
@@ -3212,11 +3211,11 @@ msgid "Failed to save part.met.seeds file for %s"
 msgstr "Nie udało się zapisać pliku part.met.seeds dla %s"
 
 #: src/PartFile.cpp:1019
-#,fuzzy , c-format
+#, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
 msgid_plural "Saved %i source seeds for partfile: %s (%s)"
 msgstr[0] "Zapisano %i zarodek źródeł dla pliku części: %s (%s)"
-msgstr[1] "Zapisano %i zarodków źródeł dla pliku części: %s (%s)"
+msgstr[1] "Zapisano %i zarodki źródeł dla pliku części: %s (%s)"
 msgstr[2] "Zapisano %i zarodków źródeł dla pliku części: %s (%s)"
 
 #: src/PartFile.cpp:1048
@@ -3235,7 +3234,7 @@ msgid "Error reading partfile's seeds file (%s - %s): %s"
 msgstr "Błąd podczas odczytu pliku źródeł plików części  (%s - %s): %s"
 
 #: src/PartFile.cpp:1131 src/PartFile.cpp:1159
-#,fuzzy , c-format
+#, c-format
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
@@ -3335,19 +3334,19 @@ msgid "Error while saving known.met file: %s"
 msgstr "Błąd podczas zapisywania pliku known.met: %s"
 
 #: src/SharedFileList.cpp:352
-#,fuzzy , c-format
+#, c-format
 msgid "Found %i known shared file"
 msgid_plural "Found %i known shared files"
 msgstr[0] "Znaleziono %i znany udostępniony plik"
-msgstr[1] "Znaleziono %i znanych udostępnionych plików"
+msgstr[1] "Znaleziono %i znane udostępnionych plików"
 msgstr[2] "Znaleziono %i znanych udostępnionych plików"
 
 #: src/SharedFileList.cpp:358
-#,fuzzy , c-format
+#, c-format
 msgid "Found %i known shared file, %i unknown"
 msgid_plural "Found %i known shared files, %i unknown"
 msgstr[0] "Znaleziono %i znany udostępniony plik, %i nieznanych"
-msgstr[1] "Znaleziono %i znanych udostępnionych plików, %i nieznanych"
+msgstr[1] "Znaleziono %i znane udostępnionych plików, %i nieznanych"
 msgstr[2] "Znaleziono %i znanych udostępnionych plików, %i nieznanych"
 
 #: src/SharedFileList.cpp:367
@@ -3372,12 +3371,12 @@ msgid "No comments"
 msgstr "Bez komentarza"
 
 #: src/CommentDialogLst.cpp:104
-#,fuzzy , c-format
+#, c-format
 msgid "%u comment"
 msgid_plural "%u comments"
 msgstr[0] "%u komentarz"
 msgstr[1] "%u komentarze"
-msgstr[2] "%u komentarze"
+msgstr[2] "%u komentarzy"
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -3429,11 +3428,11 @@ msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) wygląda na pełny."
 
 #: src/ServerConnect.cpp:391
-#,fuzzy , c-format
+#, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Automatyczne łączenie do serwera nastąpi za %d sekundę"
-msgstr[1] "Automatyczne łączenie do serwera nastąpi za %d sekund"
+msgstr[1] "Automatyczne łączenie do serwera nastąpi za %d sekundy"
 msgstr[2] "Automatyczne łączenie do serwera nastąpi za %d sekund"
 
 #: src/ServerConnect.cpp:411
@@ -3467,11 +3466,11 @@ msgid "No part files found"
 msgstr "Nie znaleziono plików z częściami"
 
 #: src/DownloadQueue.cpp:175
-#,fuzzy , c-format
+#, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Znaleziono %u plik części"
-msgstr[1] "Znaleziono %u plików części"
+msgstr[1] "Znaleziono %u pliki części"
 msgstr[2] "Znaleziono %u plików części"
 
 #: src/DownloadQueue.cpp:315
@@ -4057,11 +4056,11 @@ msgid "Unknown server info received! - too short"
 msgstr "Otrzymane info nieznanego serwera! - za krótkie"
 
 #: src/ServerSocket.cpp:539
-#,fuzzy , c-format
+#, c-format
 msgid "Received %d new server"
 msgid_plural "Received %d new servers"
 msgstr[0] "Otrzymano %d nowy serwer"
-msgstr[1] "Otrzymano %d nowych serwerów"
+msgstr[1] "Otrzymano %d nowe serwerów"
 msgstr[2] "Otrzymano %d nowych serwerów"
 
 #: src/ServerSocket.cpp:542
@@ -4111,11 +4110,11 @@ msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): Nie udało się załadować danych kraju z "
 
 #: src/IP2Country.cpp:73
-#,fuzzy , c-format
+#, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
 msgstr[0] "Załadowano %d bitmapę flag."
-msgstr[1] "Załadowano %d bitmap flag."
+msgstr[1] "Załadowano %d bitmapy flag."
 msgstr[2] "Załadowano %d bitmap flag."
 
 #: src/TransferWnd.cpp:194
@@ -4294,12 +4293,11 @@ msgid "%s (Disk: %s)"
 msgstr "%s (Dysk: %s)"
 
 #: src/OtherFunctions.cpp:121
-#,fuzzy
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bajt"
 msgstr[1] "bajty"
-msgstr[2] "bajty"
+msgstr[2] "bajtów"
 
 #: src/OtherFunctions.cpp:123
 msgid "kB"
@@ -4334,11 +4332,10 @@ msgid "T"
 msgstr "T"
 
 #: src/OtherFunctions.cpp:156
-#,fuzzy
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "bajt/sek"
-msgstr[1] "bajtów/sek"
+msgstr[1] "bajty/sek"
 msgstr[2] "bajtów/sek"
 
 #: src/OtherFunctions.cpp:160
@@ -4428,19 +4425,19 @@ msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "Ładowanie pliku ipfilter.dat nieudane '%s', nie można otworzyć pliku."
 
 #: src/IPFilter.cpp:330
-#,fuzzy , c-format
+#, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
 msgstr[0] "Załadowano %u zakres IP z '%s'."
-msgstr[1] "Załadowano %u zakresów IP z '%s'."
+msgstr[1] "Załadowano %u zakresy IP z '%s'."
 msgstr[2] "Załadowano %u zakresów IP z '%s'."
 
 #: src/IPFilter.cpp:332
-#,fuzzy , c-format
+#, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
 msgstr[0] "%u niepoprawna linia została odrzucona."
-msgstr[1] "%u niepoprawnych linii zostało odrzuconych."
+msgstr[1] "%u niepoprawne linie zostały odrzucone."
 msgstr[2] "%u niepoprawnych linii zostało odrzuconych."
 
 #: src/StatisticsDlg.cpp:189
@@ -6419,7 +6416,7 @@ msgid "Print program version."
 msgstr "Drukuj wersję programu."
 
 #: src/ClientCreditsList.cpp:168
-#,fuzzy , c-format
+#, c-format
 msgid "Creditfile loaded, %u client is known"
 msgid_plural "Creditfile loaded, %u clients are known"
 msgstr[0] "Plik kredytów załadowany, %u klient jest znany"
@@ -6427,7 +6424,7 @@ msgstr[1] "Plik kredytów załadowany, %u klientów jest znanych"
 msgstr[2] "Plik kredytów załadowany, %u klientów jest znanych"
 
 #: src/ClientCreditsList.cpp:171
-#,fuzzy , c-format
+#, c-format
 msgid " - Credits expired for %u client!"
 msgid_plural " - Credits expired for %u clients!"
 msgstr[0] " - Kredyty wygasły dla %u klienta!"
@@ -6779,19 +6776,19 @@ msgstr ""
 "rozmiar %i"
 
 #: src/ServerList.cpp:168
-#,fuzzy , c-format
+#, c-format
 msgid "%i server in server.met found"
 msgid_plural "%i servers in server.met found"
 msgstr[0] "%i serwer znaleziono w server.met"
-msgstr[1] "%i serwerów znaleziono w server.met"
-msgstr[2] "%i serwerów znaleziono w server.met"
+msgstr[1] "%i serwery znaleziono w server.met"
+msgstr[2] "%i serwery znaleziono w server.met"
 
 #: src/ServerList.cpp:170
-#,fuzzy , c-format
+#, c-format
 msgid "%d server added"
 msgid_plural "%d servers added"
 msgstr[0] "%d serwer dodany"
-msgstr[1] "%d serwerów dodanych"
+msgstr[1] "%d serwery dodane"
 msgstr[2] "%d serwerów dodanych"
 
 #: src/ServerList.cpp:191
