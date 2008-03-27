@@ -81,6 +81,7 @@ namespace amule.net
             if ( packet.Opcode() == ECOpCodes.EC_OP_AUTH_OK ) {
                 Console.WriteLine("amuleLogicHandler : Authenticated OK");
                 m_auth_result = true;
+                m_owner.m_packet_op_Done.Set();
             } else {
                 Console.WriteLine("amuleLogicHandler : Authentication failed. Core reply was {0}", packet.Opcode());
             }
@@ -95,7 +96,7 @@ namespace amule.net
     class amuleRemote {
         amuleECHandler m_handler = null;
 
-        static ManualResetEvent m_socket_op_Done = new ManualResetEvent(false);
+        public ManualResetEvent m_packet_op_Done = new ManualResetEvent(false);
 
         // Record the IPs in the state object for later use.
         static void GetHostEntryCallback(IAsyncResult ar)
@@ -106,7 +107,6 @@ namespace amule.net
             } catch (SocketException e) {
                 ioContext.errorMsg = e.Message;
             }
-            m_socket_op_Done.Set();
         }
 
         Socket m_s;
@@ -122,8 +122,6 @@ namespace amule.net
                 Console.WriteLine("Socket connected to {0}",
                     state.sock.RemoteEndPoint.ToString());
 
-                // Signal that the connection has been made.
-                m_socket_op_Done.Set();
             } catch (Exception e) {
                 state.errorMsg = e.Message;
             }
@@ -150,7 +148,6 @@ namespace amule.net
                 // remote side closed connection. 
                 // indicate error to caller
                 o.m_rx_byte_count = -1;
-                m_socket_op_Done.Set();
                 return;
             }
             o.m_rx_remaining_count -= bytesRead;
@@ -183,11 +180,14 @@ namespace amule.net
                     //
                     if ( o.m_handler != null ) {
                         o.m_rx_mem_stream.Seek(0, SeekOrigin.Begin);
-                        Console.WriteLine("Packet received - call handler\n");
+                        Console.WriteLine("Packet received - call handler");
                         ecProto.ecPacket p = new ecProto.ecPacket(o.m_sock_reader);
+                        //m_packet_op_Done.Set();
                         o.m_handler.HandlePacket(p);
+                        Console.WriteLine("Handler done");
                     }
-                    m_socket_op_Done.Set();
+                    Console.WriteLine("Signalling event");
+                    //m_packet_op_Done.Set();
                     //
                     // Keep waiting for more packets
                     //
@@ -207,23 +207,19 @@ namespace amule.net
             amuleRemote o = (amuleRemote)ar.AsyncState;
             Console.WriteLine("TxCallback signalled, calling EndWrite");
             o.m_s.EndSend(ar);
-            m_socket_op_Done.Set();
         }
 
-        public bool SendPacket(ecProto.ecPacket packet)
+        public IAsyncResult SendPacket(ecProto.ecPacket packet)
         {
             m_tx_mem_stream.Seek(0, SeekOrigin.Begin);
             packet.Write(m_sock_writer);
 
-            m_socket_op_Done.Reset();
-            m_s.BeginSend(m_tx_buffer, 0, packet.PacketSize(),
+            return m_s.BeginSend(m_tx_buffer, 0, packet.PacketSize(),
                 SocketFlags.None, new AsyncCallback(TxCallback), this);
-
-            return true;
         }
+
         public void StartReceive()
         {
-            m_socket_op_Done.Reset();
             // reply packet is supposed to have at least 8 bytes
             m_rx_remaining_count = 8;
             m_rx_byte_count = 0;
@@ -235,13 +231,13 @@ namespace amule.net
         public bool ConnectToCore(string host, int port, string pass, ref string error)
         {
             try {
-                m_socket_op_Done.Reset();
+                IAsyncResult async_result;
+
                 ResolveState resolveContext = new ResolveState();
-                Dns.BeginGetHostEntry(host,
+                async_result = Dns.BeginGetHostEntry(host,
                     new AsyncCallback(GetHostEntryCallback), resolveContext);
 
-                // Wait here until the resolve completes (the callback calls .Set())
-                m_socket_op_Done.WaitOne();
+                async_result.AsyncWaitHandle.WaitOne();
                 if ( resolveContext.IPs == null ) {
                     error = resolveContext.errorMsg;
                     return false;
@@ -251,10 +247,9 @@ namespace amule.net
                 IPEndPoint remoteEP = new IPEndPoint(resolveContext.IPs.AddressList[0], port);
                 m_s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                m_socket_op_Done.Reset();
                 ConnectState connectContext = new ConnectState(m_s);
-                m_s.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), connectContext);
-                if ( !m_socket_op_Done.WaitOne(1000,true) ) {
+                async_result = m_s.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), connectContext);
+                if ( !async_result.AsyncWaitHandle.WaitOne(10000, true) ) {
                     error = "Timeout during connection. Possible firewall";
                     return false;
                 }
@@ -270,18 +265,18 @@ namespace amule.net
                 m_sock_reader = new BinaryReader(m_rx_mem_stream);
 
                 ecProto.ecLoginPacket p = new ecProto.ecLoginPacket("amule.net", "0.0.1", pass);
-                SendPacket(p);
+                async_result = SendPacket(p);
 
-                if (!m_socket_op_Done.WaitOne(1000, true)) {
+                if (!async_result.AsyncWaitHandle.WaitOne()) {
                     // Was unable to send login request for 1sec. Line must be really slow
                     return false;
                 }
 
                 m_handler = new amuleLogicHandler(this);
                 StartReceive();
-
+                Console.WriteLine("Waiting for auth done");
                 // FIXME: must be able to cancel this read.
-                m_socket_op_Done.WaitOne();
+                m_packet_op_Done.WaitOne();
                 if ( m_rx_byte_count == -1 ) {
                     // remote side terminated connection
                     Console.WriteLine("Connection terminated on remote side");
