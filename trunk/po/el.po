@@ -2758,18 +2758,18 @@ msgstr ""
 "Απορρίφθηκε"
 
 #: src/ClientTCPSocket.cpp:934
-#, c-format
+#,fuzzy ,c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
-"Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο -> "
+"Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο %s -> "
 "Έγινε δεκτό"
 
 #: src/ClientTCPSocket.cpp:971
-#, c-format
+#,fuzzy , c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
-"Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο -> "
+"Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο %s -> "
 "Απορρίφθηκε"
 
 #: src/ClientTCPSocket.cpp:990
