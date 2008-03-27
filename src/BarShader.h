@@ -27,7 +27,6 @@
 #define BARSHADER_H
 
 #include "Types.h"	// Needed for uint16 and uint32
-#include "RangeMap.h"	// Needed for CRangeMap
 
 
 class wxRect;
@@ -66,12 +65,9 @@ public:
 	 * @param width The new width. 
 	 *
 	 * Setting this sets the width the bar which is used when it
-	 * is drawn. The BarShader automatically fits the intire span-
-	 * structure inside this area.
+	 * is drawn and resets the pixel buffer to the fill color.
 	 */
-	void SetWidth(int width) {
-		m_Width = width;
-	}
+	void SetWidth(int width);
 
 	/**
 	 * Sets the height of the drawn bar.
@@ -90,52 +86,13 @@ public:
 	 */
 	void Set3dDepth( int depth );
 
-	
-	/**
-	 * Returns the current width of the bar.
-	 *
-	 * @return The width of the bar.
-	 */
-	int GetWidth() const {
-		return m_Width;
-	}
-
-	/**
-	 * Returns the current height of the bar.
-	 *
-	 * @return The height of the bar.
-	 */
-	int GetHeight() const {
-		return m_Height;
-	}
-
-	/**
-	 * Returns the current 3D-depth of the bar.
-	 *
-	 * @return The 3D-depth of the bar.
-	 */
-	int Get3dDepth() const {
-		return m_used3dlevel;
-	}
-	
-	
-	/**
-	 * Removes all spans from the bar.
-	 *
-	 * Calling this function deletes all current spans and fills the
-	 * bar with a black span from 0 to filesize.
-	 */
-	void Reset();
-
 	/**
 	 * Sets a new filesize.
 	 *
 	 * @param fileSize The new filesize.
 	 *
 	 * Calling this function sets a new filesize, which is the virtual 
-	 * length of the bar. This function does not change any spans already
-	 * present and therefore, they might end up pointing past current
-	 * filesize if the size if smaller than before.
+	 * length of the bar. This function must be called before any filling.
 	 */
 	void SetFileSize(uint64 fileSize);
 
@@ -151,7 +108,7 @@ public:
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
-	void FillRange(uint64 start, uint64 end, const uint32 color);
+	void FillRange(uint64 start, uint64 end, uint32 color);
 
 	/**
 	 * Fill the entire bar with a span of the specified color.
@@ -189,6 +146,11 @@ private:
 	 */
 	void FillRect(wxDC* dc, const wxRect& rectSpan, uint32 color, bool bFlat);
 
+	/**
+	 * Blend in a single pixel
+	 */
+	void BlendPixel(uint32 index, uint32 color, double covered);
+
 	//! The width of the drawn bar
 	int    m_Width;
 	//! The height of the drawn bar
@@ -200,11 +162,8 @@ private:
 	//! The current 3d level 
 	uint16 m_used3dlevel;
 
-	
-	//! SpanList is defined as a CRangeMap with uint32s as range-data
-	typedef CRangeMap<uint32> SpanList;
-	//! The list of spans. This list is kept sorted.
-	SpanList m_spanlist;
+	// color for each pixel across the width is stored here
+	std::vector<uint32> m_Content;
 };
 
 #endif

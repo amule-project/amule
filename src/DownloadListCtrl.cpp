@@ -2065,7 +2065,6 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	s_ChunkBar.SetHeight(rect.height);
 	s_ChunkBar.SetWidth(rect.width); 
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
-	s_ChunkBar.Fill( crHave );
 	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
 
 
@@ -2079,11 +2078,17 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	// Part availability ( of missing parts )
 	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
 	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
+	uint64 lastGapEnd = 0;
 	for (; it != gaplist.end(); ++it) {
 		Gap_Struct* gap = *it;
 
 		// Start position
 		uint32 start = ( gap->start / PARTSIZE );
+		// fill the Have-Part (between this gap and the last)
+		if (gap->start) {
+		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  crHave);
+		}
+		lastGapEnd = gap->end;
 		// End position
 		uint32 end   = ( gap->end / PARTSIZE ) + 1;
 
@@ -2107,21 +2112,35 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			}
 			
 			uint64 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
-			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) );
+			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) - 1 );
 		
 			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
 		}
 	}
+	// fill the last Have-Part (between this gap and the last)
+	s_ChunkBar.FillRange(lastGapEnd + 1, file->GetFileSize() - 1,  crHave);
 	
 	
 	// Pending parts
 	const CPartFile::CReqBlockPtrList& requestedblocks_list = file->GetRequestedBlockList();
 	CPartFile::CReqBlockPtrList::const_iterator it2 = requestedblocks_list.begin();
+	// adjacing pending parts must be joined to avoid bright lines between them
+	uint64 lastStartOffset = 0;
+	uint64 lastEndOffset = 0;
+	COLORREF color = file->IsStopped() ? DarkenColour( crPending, 2 ) : crPending;
 	for (; it2 != requestedblocks_list.end(); ++it2) {
-		COLORREF color = ( file->IsStopped() ? DarkenColour( crPending, 2 ) : crPending );
 		
-		s_ChunkBar.FillRange( (*it2)->StartOffset, (*it2)->EndOffset, color );
+		if ((*it2)->StartOffset > lastEndOffset + 1) { 
+			// not adjacing, draw last block
+			s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
+			lastStartOffset = (*it2)->StartOffset;
+			lastEndOffset   = (*it2)->EndOffset;
+		} else {
+			// adjacing, grow block
+			lastEndOffset   = (*it2)->EndOffset;
+		}
 	}
+	s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
 
 
 	// Draw the progress-bar
@@ -2154,9 +2173,9 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 {
 	static CBarShader s_StatusBar(16);
 
-	uint32 crBoth		= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
+	uint32 crBoth			= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
 	uint32 crNeither		= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
-	uint32 crClientOnly	= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
+	uint32 crClientOnly		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
 	uint32 crPending		= ( bFlat ? RGB( 255, 208,   0 ) : RGB( 255, 208,   0 ) );
 	uint32 crNextPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 255, 100 ) );
 
@@ -2165,7 +2184,6 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 	s_StatusBar.SetFileSize( reqfile->GetFileSize() );
 	s_StatusBar.SetHeight(rect.height);
 	s_StatusBar.SetWidth(rect.width);
-	s_StatusBar.Fill(crNeither);
 	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
 
 	// Barry - was only showing one part from client, even when reserved bits from 2 parts
@@ -2173,9 +2191,9 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 
 	const BitVector& partStatus = source->GetPartStatus();
 
+	uint64 uEnd = 0;
 	for ( uint64 i = 0; i < partStatus.size(); i++ ) {
 		if ( partStatus[i]) {
-			uint64 uEnd;
 			if (PARTSIZE*(i+1u) > reqfile->GetFileSize()) {
 				uEnd = reqfile->GetFileSize();
 			} else {
@@ -2202,6 +2220,8 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 			s_StatusBar.FillRange( PARTSIZE*i, uEnd, color );
 		}
 	}
+	// fill the rest (if partStatus is empty)
+	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, crNeither);
 
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }
