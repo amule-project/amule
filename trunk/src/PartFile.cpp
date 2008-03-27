@@ -1235,14 +1235,16 @@ void CPartFile::AddGap(uint64 start, uint64 end)
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (cur_gap->start >= start && cur_gap->start <= end) {
-			// a part of this gap is in the new gap - extend limit and delete
+		} else if (cur_gap->start >= start && cur_gap->start <= end + 1) {
+			// head of this gap is in the new gap, or this gap is
+			// directly behind the new gap - extend limit and delete
 			end = cur_gap->end;
 			m_gaplist.erase(it2);
 			delete cur_gap;
 			continue;
-		} else if (cur_gap->end <= end && cur_gap->end >= start) {
-			// a part of this gap is in the new gap - extend limit and delete
+		} else if (cur_gap->end <= end && cur_gap->end >= start - 1) {
+			// tail of this gap is in the new gap, or this gap is
+			// directly before the new gap - extend limit and delete
 			start = cur_gap->start;
 			m_gaplist.erase(it2);
 			delete cur_gap;
@@ -1250,13 +1252,18 @@ void CPartFile::AddGap(uint64 start, uint64 end)
 		} else if (start >= cur_gap->start && end <= cur_gap->end){
 			// new gap is already inside this gap - return
 			return;
+		// now all cases of overlap are ruled out
+		} else if (cur_gap->start > start) {
+			// this gap is the first behind the new gap -> insert before it
+			it = it2;
+			break;
 		}
 	}
 	
 	Gap_Struct* new_gap = new Gap_Struct;
 	new_gap->start = start;
 	new_gap->end = end;
-	m_gaplist.push_back(new_gap);
+	m_gaplist.insert(it, new_gap);
 	UpdateDisplayedInfo();
 }
 

@@ -39,9 +39,9 @@ CBarShader::CBarShader(uint32 height, uint32 width)
   m_Height( height ),
   m_FileSize( 1 ),
   m_Modifiers( NULL ),
-  m_used3dlevel( DEFAULT_DEPTH )
+  m_used3dlevel( DEFAULT_DEPTH ),
+  m_Content(width, 0)
 {
-	Fill( 0 );
 }
 
 
@@ -53,17 +53,9 @@ CBarShader::~CBarShader()
 }
 
 
-void CBarShader::Reset()
-{
-	m_spanlist.clear();
-	Fill(0);
-}
-
-
 void CBarShader::SetFileSize(uint64 fileSize)
 {
 	m_FileSize = fileSize;
-	Reset();
 }
 
 
@@ -78,6 +70,14 @@ void CBarShader::SetHeight( int height )
 			m_Modifiers = NULL;
 		}
 	}
+}
+
+
+void CBarShader::SetWidth(int width)
+{
+	m_Width = width;
+	m_Content.clear();
+	m_Content.resize(m_Width, 0);
 }
 
 
@@ -119,27 +119,63 @@ void CBarShader::BuildModifiers()
 }
 
 
-void CBarShader::FillRange(uint64 start, uint64 end, const uint32 color)
+void CBarShader::FillRange(uint64 start, uint64 end, uint32 color)
 {
-	// Sanity check
-	wxASSERT( start <= end );
-
-	if ( start >= m_FileSize ) {
+	if (start >= end || start >= m_FileSize) {
 		return;
 	}
 	
-	if ( end >= m_FileSize ) {
+	if (end >= m_FileSize) {
 		end = m_FileSize - 1;
 	}
 
-	m_spanlist.insert( start, end, color );
+	uint32 firstPixel = start * m_Width / m_FileSize;
+	uint32 lastPixel  = end   * m_Width / m_FileSize;
+	double f_Width = m_Width;
+	// calculate how much of this pixels is to be covered with the fill
+	double firstCovered = firstPixel + 1 - start * f_Width / m_FileSize;
+	double lastCovered  = end * f_Width / m_FileSize - lastPixel;
+	// all inside one pixel ?
+	if (firstPixel == lastPixel) {
+		BlendPixel(firstPixel, color, firstCovered + lastCovered - 1.0);
+	} else {
+		BlendPixel(firstPixel, color, firstCovered);
+		BlendPixel(lastPixel, color, lastCovered);
+		// fill pixels between (if any)
+		for (uint32 i = firstPixel + 1; i < lastPixel; i++) {
+			m_Content[i] = color;
+		}
+	}
+}
+
+
+// This function is responsible for drawing ranges that are too small
+// to fill a single pixel. To overcome this problem, we gather the
+// sum of ranges until we have enough to draw a single pixel. The
+// color of this pixel will be the sum of the colors of the ranges
+// within the single pixel, each weighted after its relative size.
+void CBarShader::BlendPixel(uint32 index, uint32 color, double covered)
+{
+	uint32 oldcolor = m_Content[index];
+	// Colors are added up, so the bar must be initialized black (zero) for blending to work.
+	// So after blending in 10 * the same color with covered == 0.1, the pixel will
+	// have the color.
+	// Blending in black will thus have no effect.
+	// This works as long each part of the virtual bar is overwritten just once (or left black).
+	int Red   = (int) (GetRValue(oldcolor) + GetRValue(color) * covered + 0.5);
+	int Green = (int) (GetGValue(oldcolor) + GetGValue(color) * covered + 0.5);
+	int Blue  = (int) (GetBValue(oldcolor) + GetBValue(color) * covered + 0.5);
+	Red   = Red   > 255 ? 255 : Red  ;
+	Green = Green > 255 ? 255 : Green;
+	Blue  = Blue  > 255 ? 255 : Blue ;
+	m_Content[index] = RGB(Red, Green, Blue);
 }
 
 
 void CBarShader::Fill(uint32 color)
 {
-	m_spanlist.clear();
-	m_spanlist.insert( 0, m_FileSize - 1, color );
+	m_Content.clear();
+	m_Content.resize(m_Width, color);
 }
 
 
@@ -147,12 +183,6 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 {
 	wxASSERT( dc );
 
-	// Check if there's anything to do ...
-	if ( m_spanlist.empty() ) {
-		return;
-	}
-
-	
 	// Do we need to rebuild the modifiers?
 	if ( !bFlat && !m_Modifiers ) {
 		BuildModifiers();
@@ -163,87 +193,25 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.y = iTop;
 	rectSpan.height = m_Height;
 	rectSpan.width = 0;
+	uint32 lastcolor = 0xffffffff; // invalid value
 	
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
-	// This modifier is multipled with sizes to allow for better handling of small ranges
-	const uint64 MOD = 1000;
-	// This is the number of bits each pixel should contain.
-	const uint64 bitsPerPixel = (m_FileSize * MOD) / (uint64)m_Width;
-	
-	// The initial values for partial pixel drawing
-	uint64 curPixel = 0;
-	uint64 curRed = 0;
-	uint64 curGreen = 0;
-	uint64 curBlue = 0;
-
-	// Initialize to the first range
-	SpanList::iterator it = m_spanlist.begin();
-	uint64 size = (uint64)( it.keyEnd() - it.keyStart() + 1 ) * MOD;
-	uint32 color = *it++;
-
-	// Loop until everything has been drawn	
-	while ( size || curPixel ) {
-		if ( !size && it != m_spanlist.end() ) {
-			// Fetch the next range and increment the iterator
-			size = (uint64)( it.keyEnd() - it.keyStart() + 1 ) * MOD;
-			color = *it++;
-		} else if ( curPixel || size < bitsPerPixel ) {
-			// This block is responsible for drawing ranges that are too small
-			// to fill a single pixel. To overcome this problem, we gather the
-			// sum of ranges until we have enough to draw a single pixel. The
-			// color of this pixel will be the sum of the colors of the ranges
-			// within the single pixel, each weighted after its relative size.
-			
-			// See how much we can take from the current range
-			uint64 curDiff = std::min( size, bitsPerPixel - curPixel );
-		
-			// Increment the current size of the partial pixel
-			curPixel += curDiff;
-			
-			// Add the color of the current range times the ammount of the current
-			// range that was added to the partial pixel. The result will be divided
-			// by the length of the partial pixel to get the average.
-			curRed   += curDiff * GetRValue( color );
-			curGreen += curDiff * GetGValue( color );
-			curBlue  += curDiff * GetBValue( color );
-
-			// If we have a complete pixel, or if we have run out of usable ranges,
-			// then draw the partial pixel. Note that size is modified below this
-			// check, so that it only triggers when size was 0 to begin with.
-			if ( curPixel == bitsPerPixel || !size ) {
-				// Draw a single line containing the average of the smaller parts
-				uint32 col = RGB( (uint32)(curRed / curPixel),
-				                  (uint32)(curGreen / curPixel),
-				                  (uint32)(curBlue / curPixel) );
-
-				// Reset the partial-pixel
-				curPixel = curRed = curGreen = curBlue = 0;
-
-				// Increment the position on the device-context
-				rectSpan.x    += rectSpan.width;
-				rectSpan.width = 1;
-
-				// Draw the line
-				FillRect(dc, rectSpan, col, bFlat);
-			}
-			
-			// Decrement size
-			size     -= curDiff;
+	// draw each pixel, draw same colored pixels together
+	for (int x = 0; x < m_Width; x++) {
+		uint32 color = m_Content[x];
+		if (color == lastcolor) {
+			rectSpan.width++;
 		} else {
-			// We are dealing with a range that is large enough to draw by itself.
-			// We will draw as many complete pixels as we can, and allow the rest
-			// to be absorbed by the partial pixel.
-			rectSpan.x    += rectSpan.width;
-			rectSpan.width = size / bitsPerPixel;
-			
-			// Unused size will be used by the partial-pixel drawing code.
-			size = size % bitsPerPixel; 
-
-			// Draw the range
-			FillRect(dc, rectSpan, color, bFlat);
+			if (rectSpan.width) {
+				FillRect(dc, rectSpan, lastcolor, bFlat);
+				rectSpan.x += rectSpan.width;
+			}
+			rectSpan.width = 1;
+			lastcolor = color;
 		}
 	}
+	FillRect(dc, rectSpan, lastcolor, bFlat);
 }
 
 
