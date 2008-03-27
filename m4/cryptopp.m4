@@ -38,7 +38,7 @@ dnl 	Flags to be added to LDFLAGS
 dnl
 dnl Worth notice:
 dnl - crypto_pp_include_i
-dnl 	The string that goes in -I or -isystem on CXXFLAGS
+dnl 	The string that goes in -I on CXXFLAGS
 dnl - crypto_pp_header_path
 dnl 	The file we use to discover the version of cryptopp
 dnl
@@ -135,7 +135,7 @@ AC_MSG_RESULT([$result])
 #
 # FLAGS
 #
-CRYPTO_PP_CXXFLAGS="-isystem $crypto_pp_include_i -D$CRYPTO_PP_DEFINE"
+CRYPTO_PP_CXXFLAGS="-I$crypto_pp_include_i -D$CRYPTO_PP_DEFINE"
 CRYPTO_PP_LDFLAGS="-L$CRYPTO_PP_LIB"
 AH_TEMPLATE([CRYPTOPP_INCLUDE_PREFIX], [Define this to the include prefix of crypto++])
 AC_DEFINE_UNQUOTED([CRYPTOPP_INCLUDE_PREFIX], $CRYPTO_PP_INCLUDE_PREFIX)
