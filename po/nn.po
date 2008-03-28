@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 21:03+0100\n"
+"POT-Creation-Date: 2008-03-28 03:30+0100\n"
 "PO-Revision-Date: 2007-11-30 18:25+0100\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -54,34 +54,34 @@ msgstr "Vellukka! Kopling til aMule er oppretta "
 msgid "Succeeded! Connection established."
 msgstr "Vellukka! Kopling oppretta."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3830
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "Hashar"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3834
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "Ferdigstiller"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "Ferdig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:752
 msgid "Paused"
 msgstr "Pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:751
 msgid "Erroneous"
 msgstr "Feilaktig"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:750
 msgid "Downloading"
 msgstr "Lastar ned"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:749
 msgid "Waiting"
 msgstr "Ventar"
@@ -137,7 +137,7 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2609 src/PartFile.cpp:2615 src/KnownFile.cpp:885
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
@@ -3082,18 +3082,18 @@ msgstr "Spurt etter anna fil (A4AF)"
 msgid "Downloads (%i)"
 msgstr "Nedlastingar (%i)"
 
-#: src/DownloadListCtrl.cpp:2222
+#: src/DownloadListCtrl.cpp:2242
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
 "on every preview"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2223
+#: src/DownloadListCtrl.cpp:2243
 msgid "File preview"
 msgstr "Førehandssyning"
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2279
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr ""
@@ -3222,29 +3222,29 @@ msgstr "Fann ferdig del (%i)·i·%s"
 msgid "Finished rehashing %s"
 msgstr "Ferdig med omhashing av %s"
 
-#: src/PartFile.cpp:2230
+#: src/PartFile.cpp:2237
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Uventa feil under ferdigstilling av %s. Fila er sett på pause"
 
-#: src/PartFile.cpp:2256
+#: src/PartFile.cpp:2263
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Ferdig med å laste ned: %s"
 
-#: src/PartFile.cpp:2313
+#: src/PartFile.cpp:2320
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Slettar fila: %s"
 
-#: src/PartFile.cpp:2374
+#: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Åtvaring: Ikkje i stand til å hashe nedlasta del - hashsett ikkje "
 "fullstendig for '%s'"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2386
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3253,26 +3253,26 @@ msgstr ""
 "Feil: Ikkje i stand til å hashe nedlasta del - hashsett ikkje fullstendig (%"
 "s). Dette burde aldri skje"
 
-#: src/PartFile.cpp:3059
+#: src/PartFile.cpp:3066
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "ÅTVARING: Ikkje nok ledig diskplass! Set fila %s på pause"
 
-#: src/PartFile.cpp:3144
+#: src/PartFile.cpp:3151
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Nedlasta del %i er korrupt i fila: %s"
 
-#: src/PartFile.cpp:3187
+#: src/PartFile.cpp:3194
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Attskapte korrupt del %i·for·%s·->·Lagra bytes:·%s"
 
-#: src/PartFile.cpp:3846
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr "Ikkje nok diskplass"
 
-#: src/PartFile.cpp:3857 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
 msgid "Stopped"
 msgstr "Stogga"
 

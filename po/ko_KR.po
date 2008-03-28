@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 21:03+0100\n"
+"POT-Creation-Date: 2008-03-28 03:30+0100\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -55,34 +55,34 @@ msgstr "성공! 어뮬에 연결 되었습니다 "
 msgid "Succeeded! Connection established."
 msgstr "성공! 연결이 되었습니다."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3830
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "해시중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3834
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "완료중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "완료"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:752
 msgid "Paused"
 msgstr "중지됨"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:751
 msgid "Erroneous"
 msgstr "오류투성이"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:750
 msgid "Downloading"
 msgstr "받는중"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:749
 msgid "Waiting"
 msgstr "대기중"
@@ -138,7 +138,7 @@ msgstr "사용자 %s로부터 공유파일을 찾지 못했습니다."
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2609 src/PartFile.cpp:2615 src/KnownFile.cpp:885
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
@@ -3110,7 +3110,7 @@ msgstr "다른 파일을 요청"
 msgid "Downloads (%i)"
 msgstr "내려받기 (%i)"
 
-#: src/DownloadListCtrl.cpp:2222
+#: src/DownloadListCtrl.cpp:2242
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3121,11 +3121,11 @@ msgstr ""
 "그 동안 어뮬에서 미리보기를 할때마다 mplayer를 사용하도록 시도하며 미리보기"
 "할 때마다 이 경고를 받을 것입니다."
 
-#: src/DownloadListCtrl.cpp:2223
+#: src/DownloadListCtrl.cpp:2243
 msgid "File preview"
 msgstr "미리보기"
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2279
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "오류: 외부 재생기를 실행하지 못했습니다."
@@ -3257,27 +3257,27 @@ msgstr "완료된 부분(%i)이 발견되었습니다.  (%s에 있는)"
 msgid "Finished rehashing %s"
 msgstr "%s의 재해시가 완료되었습니다."
 
-#: src/PartFile.cpp:2230
+#: src/PartFile.cpp:2237
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
 
-#: src/PartFile.cpp:2256
+#: src/PartFile.cpp:2263
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "내려받기 완료: %s"
 
-#: src/PartFile.cpp:2313
+#: src/PartFile.cpp:2320
 #, c-format
 msgid "Deleting file: %s"
 msgstr "파일 삭제: %s"
 
-#: src/PartFile.cpp:2374
+#: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr "경고: 내려받은 부분의 해시가 불가능합니다. - %s의 해시설정 비완료"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2386
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3286,26 +3286,26 @@ msgstr ""
 "오류: 내려받은 부분의 해시가 불가능합니다. - 해시설정 비완료 (%s). 발생되어서"
 "는 안됩니다."
 
-#: src/PartFile.cpp:3059
+#: src/PartFile.cpp:3066
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "경고: 충분한 디스크공간이 없습니다! 파일 정지: %s"
 
-#: src/PartFile.cpp:3144
+#: src/PartFile.cpp:3151
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "%i 부분 내려받기는 파일이 손상되었습니다: %s"
 
-#: src/PartFile.cpp:3187
+#: src/PartFile.cpp:3194
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: 손상된 부분 %i를 복구했습니다. (%s의) -> 저장된 바이트: %s"
 
-#: src/PartFile.cpp:3846
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr "불충분한 디스크공간"
 
-#: src/PartFile.cpp:3857 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
 msgid "Stopped"
 msgstr "멈춤"
 

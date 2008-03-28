@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-25 21:03+0100\n"
+"POT-Creation-Date: 2008-03-28 03:30+0100\n"
 "PO-Revision-Date: 2008-03-05 15:54+0200\n"
 "Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -62,34 +62,34 @@ msgstr "Успешное подключение к aMule "
 msgid "Succeeded! Connection established."
 msgstr "Соединение установлено."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3830
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
 msgid "Hashing"
 msgstr "Хешируется"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3834
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
 msgid "Completing"
 msgstr "Завершается"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
 msgid "Complete"
 msgstr "Завершён"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:752
 msgid "Paused"
 msgstr "Приостановлен"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3843
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:751
 msgid "Erroneous"
 msgstr "Ошибочный"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:750
 msgid "Downloading"
 msgstr "Загружается"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3852
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:749
 msgid "Waiting"
 msgstr "Ожидает"
@@ -147,7 +147,7 @@ msgstr "Не удалось получить список доступных ф�
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2609 src/PartFile.cpp:2615 src/KnownFile.cpp:885
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
 #: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
@@ -3130,7 +3130,7 @@ msgstr "Запрошен другой файл"
 msgid "Downloads (%i)"
 msgstr "Загрузки (%i)"
 
-#: src/DownloadListCtrl.cpp:2222
+#: src/DownloadListCtrl.cpp:2242
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3140,11 +3140,11 @@ msgstr ""
 "Без этого aMule будет пытаться использовать 'mplayer' и вы будете получать "
 "данное предупреждение при каждой попытке предварительного просмотра"
 
-#: src/DownloadListCtrl.cpp:2223
+#: src/DownloadListCtrl.cpp:2243
 msgid "File preview"
 msgstr "Предварительный просмотр"
 
-#: src/DownloadListCtrl.cpp:2259
+#: src/DownloadListCtrl.cpp:2279
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "ОШИБКА: невозможно запустить видео-проигрыватель."
@@ -3283,29 +3283,29 @@ msgstr "Найдена завершённая часть (%i) в %s"
 msgid "Finished rehashing %s"
 msgstr "Завершено повторное хеширование %s"
 
-#: src/PartFile.cpp:2230
+#: src/PartFile.cpp:2237
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Неожиданная ошибка во время завершения %s. Пауза"
 
-#: src/PartFile.cpp:2256
+#: src/PartFile.cpp:2263
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Загрузка завершена: %s"
 
-#: src/PartFile.cpp:2313
+#: src/PartFile.cpp:2320
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Удаление файла: %s"
 
-#: src/PartFile.cpp:2374
+#: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Предупреждение: Невозможно хешировать загруженную часть - неполная "
 "контрольная сумма для '%s'"
 
-#: src/PartFile.cpp:2379
+#: src/PartFile.cpp:2386
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3314,28 +3314,28 @@ msgstr ""
 "Ошибка: Невозможно хешировать загруженную часть - контрольная сумма неполная "
 "(%s). Так быть не должно."
 
-#: src/PartFile.cpp:3059
+#: src/PartFile.cpp:3066
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: не достаточно свободного места на диске. Файл приостановлен: "
 "%s"
 
-#: src/PartFile.cpp:3144
+#: src/PartFile.cpp:3151
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Загруженная часть %i повреждена: %s"
 
-#: src/PartFile.cpp:3187
+#: src/PartFile.cpp:3194
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Восстановлена повреждённая часть %i для %s -> Выигрыш: %s Б"
 
-#: src/PartFile.cpp:3846
+#: src/PartFile.cpp:3853
 msgid "Insufficient Diskspace"
 msgstr "Недостаточно места на диске"
 
-#: src/PartFile.cpp:3857 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
+#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:753
 msgid "Stopped"
 msgstr "Остановлен"
 
