@@ -273,47 +273,47 @@ msgstr "Seleção múltipla"
 
 #: src/UserEvents.h:60
 msgid "Download completed"
-msgstr ""
+msgstr "Download concluído"
 
 #: src/UserEvents.h:63 src/UserEvents.h:103
 msgid "The full path to the file."
-msgstr ""
+msgstr "Caminho completo do arquivo."
 
 #: src/UserEvents.h:67
 msgid "The name of the file without path component."
-msgstr ""
+msgstr "Nome do arquivo sem seu caminho completo."
 
 #: src/UserEvents.h:71
 msgid "The ed2k hash of the file."
-msgstr ""
+msgstr "Hash ed2k do arquivo."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
-msgstr ""
+msgstr "Tamanho do arquivo em bytes."
 
 #: src/UserEvents.h:79
 msgid "Cumulative download activity time."
-msgstr ""
+msgstr "Tempo acumulado de download ativo."
 
 #: src/UserEvents.h:84
 msgid "New chat session started"
-msgstr ""
+msgstr "Nova sessão de chat iniciada"
 
 #: src/UserEvents.h:87
 msgid "Message sender."
-msgstr ""
+msgstr "Remetente da mensagem."
 
 #: src/UserEvents.h:92
 msgid "Out of space"
-msgstr ""
+msgstr "Sem espaço"
 
 #: src/UserEvents.h:95
 msgid "Disk partition."
-msgstr ""
+msgstr "Partição do disco"
 
 #: src/UserEvents.h:100
 msgid "Error on completion"
-msgstr ""
+msgstr "Erro ao concluir"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
@@ -499,7 +499,7 @@ msgstr "Suspendendo uploads para o arquivo: %s"
 
 #: src/TextClient.h:60
 msgid "aMule text client"
-msgstr ""
+msgstr "Cliente em modo texto do aMule"
 
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
