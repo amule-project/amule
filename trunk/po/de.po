@@ -1463,7 +1463,7 @@ msgstr "Griechisch"
 
 #: src/Preferences.cpp:646
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebräisch"
 
 #: src/Preferences.cpp:647
 msgid "Hungarian"
