@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-28 03:30+0100\n"
+"POT-Creation-Date: 2008-03-29 03:30+0100\n"
 "PO-Revision-Date: 2008-03-27 00:27+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -1462,77 +1462,81 @@ msgid "Greek"
 msgstr "Griego"
 
 #: src/Preferences.cpp:646
+msgid "Hebrew"
+msgstr ""
+
+#: src/Preferences.cpp:647
 msgid "Hungarian"
 msgstr "Húngaro"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Italian (Swiss)"
 msgstr "Italiano (Suizo)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Japanese"
 msgstr "Japones"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Korean"
 msgstr "Coreano"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Norwegian (Nynorsk)"
 msgstr "Noruego"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Polish"
 msgstr "Polaco"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Portuguese"
 msgstr "Portugués"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Portuguese (Brazilian)"
 msgstr "Portugués (Brasileño)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "Ruso"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "Esloveno"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "Español"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "Sueco"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "Turco"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
 msgid "Unable to determine selected browser!"
 msgstr "¡Imposible determinar el navegador seleccionado!"
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Puerto TCP no puede ser mas alto de 65532 debido a que el socket del "
 "servidor UDP es TCP+3"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Puerto por defecto que será usado (%d)"

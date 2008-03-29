@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-28 03:30+0100\n"
+"POT-Creation-Date: 2008-03-29 03:30+0100\n"
 "PO-Revision-Date: 2008-02-25 22:50+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -1450,76 +1450,80 @@ msgid "Greek"
 msgstr "Görög"
 
 #: src/Preferences.cpp:646
+msgid "Hebrew"
+msgstr ""
+
+#: src/Preferences.cpp:647
 msgid "Hungarian"
 msgstr "Magyar"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Italian"
 msgstr "Olasz"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Italian (Swiss)"
 msgstr "Olasz (Svájci)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Japanese"
 msgstr "Japán"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Korean"
 msgstr "Koreai"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Lithuanian"
 msgstr "Litván"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvég (Nynorsk)"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Polish"
 msgstr "Lengyel"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Portuguese"
 msgstr "Portugál"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazíliai)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "Orosz"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "Szlovén"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "Spanyol"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "Svéd"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "Török"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
 msgid "Unable to determine selected browser!"
 msgstr "Nem tudom meghatározni a kiválasztott böngészőt!"
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "A TCP port nem lehet magasabb 65532-nél, mert a kiszolgáló UDP port = TCP+3"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Alapértelmezett port lesz használva (%d)"

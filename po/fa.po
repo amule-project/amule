@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule SVN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-28 03:30+0100\n"
+"POT-Creation-Date: 2008-03-29 03:30+0100\n"
 "PO-Revision-Date: 2008-02-07 09:12+0100\n"
 "Last-Translator:  <kc1860@gmail.com>\n"
 "Language-Team: Persian\n"
@@ -1419,75 +1419,79 @@ msgid "Greek"
 msgstr ""
 
 #: src/Preferences.cpp:646
-msgid "Hungarian"
+msgid "Hebrew"
 msgstr ""
 
 #: src/Preferences.cpp:647
-msgid "Italian"
+msgid "Hungarian"
 msgstr ""
 
 #: src/Preferences.cpp:648
-msgid "Italian (Swiss)"
+msgid "Italian"
 msgstr ""
 
 #: src/Preferences.cpp:649
-msgid "Japanese"
+msgid "Italian (Swiss)"
 msgstr ""
 
 #: src/Preferences.cpp:650
-msgid "Korean"
+msgid "Japanese"
 msgstr ""
 
 #: src/Preferences.cpp:651
-msgid "Lithuanian"
+msgid "Korean"
 msgstr ""
 
 #: src/Preferences.cpp:652
-msgid "Norwegian (Nynorsk)"
+msgid "Lithuanian"
 msgstr ""
 
 #: src/Preferences.cpp:653
-msgid "Polish"
+msgid "Norwegian (Nynorsk)"
 msgstr ""
 
 #: src/Preferences.cpp:654
-msgid "Portuguese"
+msgid "Polish"
 msgstr ""
 
 #: src/Preferences.cpp:655
-msgid "Portuguese (Brazilian)"
+msgid "Portuguese"
 msgstr ""
 
 #: src/Preferences.cpp:656
-msgid "Russian"
+msgid "Portuguese (Brazilian)"
 msgstr ""
 
 #: src/Preferences.cpp:657
-msgid "Slovenian"
+msgid "Russian"
 msgstr ""
 
 #: src/Preferences.cpp:658
-msgid "Spanish"
+msgid "Slovenian"
 msgstr ""
 
 #: src/Preferences.cpp:659
-msgid "Swedish"
+msgid "Spanish"
 msgstr ""
 
 #: src/Preferences.cpp:660
+msgid "Swedish"
+msgstr ""
+
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr ""
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
 msgid "Unable to determine selected browser!"
 msgstr ""
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr ""

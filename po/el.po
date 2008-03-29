@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-28 03:30+0100\n"
+"POT-Creation-Date: 2008-03-29 03:30+0100\n"
 "PO-Revision-Date: 2007-12-20 20:59-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -1453,77 +1453,81 @@ msgid "Greek"
 msgstr "Ελληνικά"
 
 #: src/Preferences.cpp:646
+msgid "Hebrew"
+msgstr ""
+
+#: src/Preferences.cpp:647
 msgid "Hungarian"
 msgstr "Ουγκαρέζικα"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Italian"
 msgstr "Ιταλικά"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Italian (Swiss)"
 msgstr "Ιταλικά (Ελβετίας)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Japanese"
 msgstr "Γιαπωνέζικα"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Korean"
 msgstr "Κορεάτικα"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Lithuanian"
 msgstr "Λιθουανιά"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Norwegian (Nynorsk)"
 msgstr "Νορβηγικά"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Polish"
 msgstr "Πολωνέζικα"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Portuguese"
 msgstr "Πορτογαλλικά"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Portuguese (Brazilian)"
 msgstr "Πορτογαλικά (Βραζιλίας)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "Ρωσικά"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "Σλοβένικα"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "Ισπανικά"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "Σουηδικά"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "Τούρκικα"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
 msgid "Unable to determine selected browser!"
 msgstr "Ο τύπος του πλοηγού δεν μπορεί να προσδιοριστεί"
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Η θύρα TCP δεν μπορεί να είναι μεγαλύτερη από 65532, διότι η θύρα UDP του "
 "διακομιστή είναι TCP+3"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Θα χρησιμοποιηθεί η στάνταρ θύρα (%d)"
