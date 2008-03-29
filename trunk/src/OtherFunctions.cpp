@@ -58,10 +58,6 @@
 	#include <wx/utils.h>
 #endif	
 
-#if !defined(AMULE_DAEMON) && (!defined(EC_REMOTE) || defined(CLIENT_GUI))
-#include "amule.h"		// Needed for theApp
-#endif
-
 
 wxString GetMuleVersion()
 {
