@@ -21,7 +21,7 @@ Version 2.2.1 - ???
 
 	Coronas:
 		* Patch to show kad status in amuleweb (Bug 1103)
-		* typo in src/webserver/default/shared.php.
+		* typo in src/webserver/default/shared.php
 
 	drkirkby:
 		* Test for gcc before including gcc specific flags on the
@@ -359,6 +359,7 @@ Version 2.2.1 - ???
 		* Kad users/files also updated on the Kad Tab.
 		* Backed out a now obsolete change made in CommentDialogLst.cpp
 		  (comments are not related to remote filenames anymore).
+		* Fix for crash on receiving zero-sized UDP packet
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction
@@ -409,15 +410,51 @@ Version 2.2.1 - ???
 		* Fix libUPnP unloading.
 		* Fix building with external CryptoPP
 		* Ship skins with tarball
+		* Convert skins shipped with aMule to new format
 		* Display file size in human readable format in FileDetailDialog
+		* Make SVN compile again
+		* Some skin code improvements
 		* Added upload feedback
-		* Added option to enable EC and set pass in A[amuled]
+		* Added option to enable EC and set pass in amuled
+		* bugfix for ec-config option
 		* Removed GetLocaleDir()
 		* Zipped skin format
 		* Fix utf8 problem with file names
 		* Fixed toolbar display with skins when blinking on incoming message
 		* Fix #1114, missing break statement, thanks to mr_hyde
 		* Add option to filter file comments
+		* Allow compilation against wxBase
+		* Remove Source Dropping
+		* Allow usage of local config dir
+		* Display log message in bold when using local config dir
+		* Extend range for slot allocation, change default value
+		* Change Kb to KB
+		* Suppress skin directory error
+		* Add Upload feedback
+		* Fixed GetFeedback
+		* Correct some spelling mistakes
+		* Always use SecIdent
+		* Re-Add option to disable SUI
+		* Fix sharing files with extended characters
+		* Fix utf8 problem with file names
+		* Mark cancelled/removed files grey in search
+		* fix search colors implementation
+		* Add maintainercleanfiles for make distclean
+		* Fix comment icon order and use unitary width for display
+		* Fix rating display in SearchListCtrl
+		* Fix permission check on Vista
+		* Fix compilation with mingw
+		* Check for and use SVNDATE in tarballs
+		* Move include up to allow compilation on mingw
+		* Fix compilation with mingw32
+		* Fix compilation on Mac
+		* Fix compilation in ClientListCtrl.cpp
+		* Fix linking on Windows/mingw32
+		* Fix linking of amulegui for Windows
+		* Fix problems with collections using CRLF line endings on *nix
+		* Fix compilation for gcc 4.3
+		* Dirty compilation fix for gcc 4.3
+
 
 	Xaignar:
 		* Renaming the SearchList typedef to CSearchResultList
@@ -671,7 +708,8 @@ Version 2.2.1 - ???
 		  the forum.
 		* Mark James (http://www.famfamfam.com) for providing the
 		  flags icons and mischamajskij for his unknown icon
-		* deloun and mischamajskij for their work on aMule skins
+		* deloun and mischamajskij for their work on aMule skins and
+		icons for aMule
 		* Bun Bun, for being there to tell me I'm not stupid.
 
 --------------------------------------------------------------------------------
