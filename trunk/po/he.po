@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the amule package.
 # <kpeace1@gmail.com>, 2008.
 #  <kpeace1@gmail.com>, 2008.
-# 
-# 
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-28 03:30+0100\n"
+"POT-Creation-Date: 2008-03-29 03:30+0100\n"
 "PO-Revision-Date: 2008-03-29 00:34+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -178,16 +178,18 @@ msgstr "בוּקַש: %s\n"
 #: src/BaseClient.cpp:1878
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr "סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s הועברו\n"
-"סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s הועברו\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr "סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s הועברו\n"
-"סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s הועברו\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -495,9 +497,11 @@ msgid "Kademlia: search keyword too short"
 msgstr "קאדימליה: מילת חיפוש קצרה מדי"
 
 #: src/kademlia/routing/RoutingZone.cpp:141
-#, c-format
+#, fuzzy, c-format
 msgid "Read %u Kad contact"
-msgstr "קרא %u יוצרי קשר ל קאד"
+msgid_plural "Read %u Kad contacts"
+msgstr[0] "קרא %u יוצרי קשר ל קאד"
+msgstr[1] "קרא %u יוצרי קשר ל קאד"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -843,8 +847,7 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"סטטיסטיקות חתימות מקוונת של אימיול - wxCasn"
-"\n"
+"סטטיסטיקות חתימות מקוונת של אימיול - wxCasn\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
 "מבוסס על CAS שנותר על ידי Pedro·de·Oliveira·<falso@rdk.homeip.net>\n"
@@ -1088,8 +1091,8 @@ msgid ""
 "Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"הנס פה את את הקובץ שלגביו אתה רוצה לחשב את קישור ה Ed2k: הוסף / בסוף כדי לאפשר "
-"ל aLinkCreator לשרשר את שם הקובץ הנוכחי"
+"הנס פה את את הקובץ שלגביו אתה רוצה לחשב את קישור ה Ed2k: הוסף / בסוף כדי "
+"לאפשר ל aLinkCreator לשרשר את שם הקובץ הנוכחי"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1073
 #: src/muuli_wdr.cpp:3053
@@ -1113,8 +1116,7 @@ msgstr "צור קישור עם חלקי הגיבובים"
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
-msgstr ""
-"עזור להפיץ קבצים חדשים ונדירים יותר מהר, במחיר קידור יותר גדול"
+msgstr "עזור להפיץ קבצים חדשים ונדירים יותר מהר, במחיר קידור יותר גדול"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
@@ -1440,76 +1442,81 @@ msgid "Greek"
 msgstr "יוונית"
 
 #: src/Preferences.cpp:646
+msgid "Hebrew"
+msgstr ""
+
+#: src/Preferences.cpp:647
 msgid "Hungarian"
 msgstr "הונגרית"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:648
 msgid "Italian"
 msgstr "איטלקית"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:649
 msgid "Italian (Swiss)"
 msgstr "איטלקית (שוויצרית)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:650
 msgid "Japanese"
 msgstr "יפנית"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:651
 msgid "Korean"
 msgstr "קוראינית"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:652
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:653
 msgid "Norwegian (Nynorsk)"
 msgstr "נורבגית (Nynorsk)"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:654
 msgid "Polish"
 msgstr "פונלית"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:655
 msgid "Portuguese"
 msgstr "פורטגזית"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:656
 msgid "Portuguese (Brazilian)"
 msgstr "פורטגזית (ברזילאית)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:657
 msgid "Russian"
 msgstr "רוסית"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:658
 msgid "Slovenian"
 msgstr "סלובקית"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:659
 msgid "Spanish"
 msgstr "ספרדית"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:660
 msgid "Swedish"
 msgstr "שוודית"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:661
 msgid "Turkish"
 msgstr "טורקית"
 
-#: src/Preferences.cpp:1611 src/Preferences.cpp:1625 src/Preferences.cpp:1632
+#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
 msgid "Unable to determine selected browser!"
 msgstr "לא ניתן לזהות את הדפדפן הנבחר!"
 
-#: src/Preferences.cpp:1663
+#: src/Preferences.cpp:1664
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
-"מבואת ה TCP אינה יכולה להיות גבוהה יותר מ 65532 מאחר שמבואת ה UDP של השרת היא מבואת ה TCP +3"
+"מבואת ה TCP אינה יכולה להיות גבוהה יותר מ 65532 מאחר שמבואת ה UDP של השרת "
+"היא מבואת ה TCP +3"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1665
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "נשתמש במבואה שבברירת מחדך (%d)"
@@ -1559,9 +1566,7 @@ msgstr "גירסא"
 msgid ""
 "You are connected to a server you are trying to delete. Please disconnect "
 "first. The server was NOT deleted."
-msgstr ""
-"אתה מחובר לשרת אותו אתה מנסה למחוק. בבקשה קודם"
-"תתנתק. השרת לא נמחק!"
+msgstr "אתה מחובר לשרת אותו אתה מנסה למחוק. בבקשה קודםתתנתק. השרת לא נמחק!"
 
 #: src/ServerListCtrl.cpp:144 src/muuli_wdr.cpp:3122 src/CatDialog.cpp:142
 #: src/CatDialog.cpp:152 src/CatDialog.cpp:160 src/ServerList.cpp:341
@@ -1712,7 +1717,8 @@ msgstr " פורום: http://forum.amule.org \n"
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
-msgstr " שאלות נפוצות: http://wiki.amule.org \n"
+msgstr ""
+" שאלות נפוצות: http://wiki.amule.org \n"
 "\n"
 
 #: src/amuleDlg.cpp:446
@@ -2016,7 +2022,8 @@ msgstr ""
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
-msgstr "קאד לא יתחיל אם מבואת ה UDB מנוטרלת.\n"
+msgstr ""
+"קאד לא יתחיל אם מבואת ה UDB מנוטרלת.\n"
 "תאפשר את מבואת ה UDP או שתנטרל את קאד."
 
 #: src/PrefsUnifiedDlg.cpp:621
@@ -2094,14 +2101,18 @@ msgstr ""
 "רק כתובת אחת בכל שורה."
 
 #: src/PrefsUnifiedDlg.cpp:985
-#, c-format
+#, fuzzy, c-format
 msgid "Update delay: %d second"
-msgstr "השהיית עדון: %d שניות"
+msgid_plural "Update delay: %d seconds"
+msgstr[0] "השהיית עדון: %d שניות"
+msgstr[1] "השהיית עדון: %d שניות"
 
 #: src/PrefsUnifiedDlg.cpp:992
-#, c-format
+#, fuzzy, c-format
 msgid "Time for average graph: %d minute"
-msgstr "זמן עבור גרף הממוצע: %d דקות"
+msgid_plural "Time for average graph: %d minutes"
+msgstr[0] "זמן עבור גרף הממוצע: %d דקות"
+msgstr[1] "זמן עבור גרף הממוצע: %d דקות"
 
 #: src/PrefsUnifiedDlg.cpp:998
 #, c-format
@@ -2109,24 +2120,32 @@ msgid "Connections Graph Scale: %d"
 msgstr "סקאלאת גרף החיבורים: %d"
 
 #: src/PrefsUnifiedDlg.cpp:1004
-#, c-format
+#, fuzzy, c-format
 msgid "Update delay : %d second"
-msgstr "השהיית עדכון: %d שניות"
+msgid_plural "Update delay : %d seconds"
+msgstr[0] "השהיית עדכון: %d שניות"
+msgstr[1] "השהיית עדכון: %d שניות"
 
 #: src/PrefsUnifiedDlg.cpp:1010
-#, c-format
+#, fuzzy, c-format
 msgid "File Buffer Size: %d byte"
-msgstr "גודל זיכרון זמני לקובץ: %d בתים"
+msgid_plural "File Buffer Size: %d bytes"
+msgstr[0] "גודל זיכרון זמני לקובץ: %d בתים"
+msgstr[1] "גודל זיכרון זמני לקובץ: %d בתים"
 
 #: src/PrefsUnifiedDlg.cpp:1016
-#, c-format
+#, fuzzy, c-format
 msgid "Upload Queue Size: %d client"
-msgstr "גודל תור ההאלעות: %d לקוחות"
+msgid_plural "Upload Queue Size: %d clients"
+msgstr[0] "גודל תור ההאלעות: %d לקוחות"
+msgstr[1] "גודל תור ההאלעות: %d לקוחות"
 
 #: src/PrefsUnifiedDlg.cpp:1023
-#, c-format
+#, fuzzy, c-format
 msgid "Server connection refresh interval: %d minute"
-msgstr "רענון חיבור לשרת כל: %d דקות"
+msgid_plural "Server connection refresh interval: %d minutes"
+msgstr[0] "רענון חיבור לשרת כל: %d דקות"
+msgstr[1] "רענון חיבור לשרת כל: %d דקות"
 
 #: src/PrefsUnifiedDlg.cpp:1025
 msgid "Server connection refresh interval: Disabled"
@@ -2199,16 +2218,16 @@ msgid ""
 "Incorrect EC version ID, there might be binary incompatibility. Use core and "
 "remote from same snapshot."
 msgstr ""
-"גירסת EC לא נכונה, יתכן ויש אי התאמה בינארית. השתמש בליבה "
-"ובלקוח חיצוני מאותו תצלום (גירסה)."
+"גירסת EC לא נכונה, יתכן ויש אי התאמה בינארית. השתמש בליבה ובלקוח חיצוני "
+"מאותו תצלום (גירסה)."
 
 #: src/ExternalConn.cpp:268
 msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"אתה לא להתחבר לגרסה ששוחררה מSVN (כלי לניהול גרסאות תוכנה) ! "
-"*נאנח* ייתכן והתרסקות של התוכנה נמנעה"
+"אתה לא להתחבר לגרסה ששוחררה מSVN (כלי לניהול גרסאות תוכנה) ! *נאנח* ייתכן "
+"והתרסקות של התוכנה נמנעה"
 
 #: src/ExternalConn.cpp:289
 msgid "Authentication failed."
@@ -3163,7 +3182,9 @@ msgstr ""
 #: src/PartFile.cpp:1019
 #, c-format
 msgid "Saved %i source seed for partfile: %s (%s)"
-msgstr ""
+msgid_plural "Saved %i source seeds for partfile: %s (%s)"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/PartFile.cpp:1048
 #, c-format
@@ -3185,9 +3206,11 @@ msgstr ""
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/PartFile.cpp:1176
 #, c-format
@@ -3270,12 +3293,16 @@ msgstr ""
 #: src/SharedFileList.cpp:352
 #, c-format
 msgid "Found %i known shared file"
-msgstr ""
+msgid_plural "Found %i known shared files"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/SharedFileList.cpp:358
 #, c-format
 msgid "Found %i known shared file, %i unknown"
-msgstr ""
+msgid_plural "Found %i known shared files, %i unknown"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/SharedFileList.cpp:367
 #, c-format
@@ -3301,7 +3328,9 @@ msgstr ""
 #: src/CommentDialogLst.cpp:104
 #, c-format
 msgid "%u comment"
-msgstr ""
+msgid_plural "%u comments"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ServerConnect.cpp:69
 msgid ""
@@ -3353,7 +3382,9 @@ msgstr ""
 #: src/ServerConnect.cpp:391
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
-msgstr ""
+msgid_plural "Automatic connection to server will retry in %d seconds"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ServerConnect.cpp:411
 msgid "Connection lost"
@@ -3386,7 +3417,9 @@ msgstr ""
 #: src/DownloadQueue.cpp:175
 #, c-format
 msgid "Found %u part file"
-msgstr ""
+msgid_plural "Found %u part files"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/DownloadQueue.cpp:315
 #, c-format
@@ -3921,7 +3954,9 @@ msgstr ""
 #: src/ServerSocket.cpp:539
 #, c-format
 msgid "Received %d new server"
-msgstr ""
+msgid_plural "Received %d new servers"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ServerSocket.cpp:542
 msgid "Saving of server-list completed."
@@ -3972,7 +4007,9 @@ msgstr ""
 #: src/IP2Country.cpp:73
 #, c-format
 msgid "Loaded %d flag bitmap."
-msgstr ""
+msgid_plural "Loaded %d flag bitmaps."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
@@ -4150,7 +4187,9 @@ msgstr ""
 
 #: src/OtherFunctions.cpp:121
 msgid "byte"
-msgstr ""
+msgid_plural "bytes"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/OtherFunctions.cpp:123
 msgid "kB"
@@ -4186,7 +4225,9 @@ msgstr ""
 
 #: src/OtherFunctions.cpp:156
 msgid "byte/sec"
-msgstr ""
+msgid_plural "bytes/sec"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/OtherFunctions.cpp:160
 msgid "MB/s"
@@ -4277,12 +4318,16 @@ msgstr ""
 #: src/IPFilter.cpp:330
 #, c-format
 msgid "Loaded %u IP-range from '%s'."
-msgstr ""
+msgid_plural "Loaded %u IP-ranges from '%s'."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/IPFilter.cpp:332
 #, c-format
 msgid "%u malformed line was discarded."
-msgstr ""
+msgid_plural "%u malformed lines were discarded."
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/StatisticsDlg.cpp:189
 #, c-format
@@ -6178,12 +6223,16 @@ msgstr ""
 #: src/ClientCreditsList.cpp:168
 #, c-format
 msgid "Creditfile loaded, %u client is known"
-msgstr ""
+msgid_plural "Creditfile loaded, %u clients are known"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ClientCreditsList.cpp:171
 #, c-format
 msgid " - Credits expired for %u client!"
-msgstr ""
+msgid_plural " - Credits expired for %u clients!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ClientCreditsList.cpp:315
 msgid "No 'cryptkey.dat' file found, creating."
@@ -6526,12 +6575,16 @@ msgstr ""
 #: src/ServerList.cpp:168
 #, c-format
 msgid "%i server in server.met found"
-msgstr ""
+msgid_plural "%i servers in server.met found"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ServerList.cpp:170
 #, c-format
 msgid "%d server added"
-msgstr ""
+msgid_plural "%d servers added"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ServerList.cpp:191
 #, c-format
@@ -6840,3 +6893,19 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "הפתיחה של הקובץ 'emfriends.met' לכתיבה נכשלה!"
 
+#~ msgid ""
+#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s הועברו\n"
+#~ "סטטיסטיקות קבצים עבור ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s "
+#~ "הועברו\n"
+
+#~ msgid ""
+#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך בקשה %d , %s "
+#~ "הועברו\n"
+#~ "סטטיסטיקות קבצים עבור כל ההפעלה הנוכחית: התקבלו %d מתוך  %d בקשות, %s "
+#~ "הועברו\n"
