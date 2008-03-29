@@ -322,10 +322,8 @@ wxString CStatTreeItemCounterTmpl<_Tp>::GetDisplayString() const
 	}
 }
 
-#ifdef _MSVC_VER
 template wxString CStatTreeItemCounter::GetDisplayString() const;
 template wxString CStatTreeItemNativeCounter::GetDisplayString() const;
-#endif
 
 #endif
 
@@ -347,10 +345,8 @@ void CStatTreeItemCounterTmpl<_Tp>::AddECValues(CECTag *tag) const
 	tag->AddTag(value);
 }
 
-#ifdef _MSVC_VER
 template void CStatTreeItemCounter::AddECValues(CECTag *tag) const;
 template void CStatTreeItemNativeCounter::AddECValues(CECTag *tag) const;
-#endif
 
 /* CStatTreeItemUlDlCounter */
 

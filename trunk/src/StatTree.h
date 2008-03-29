@@ -555,12 +555,8 @@ protected:
 	enum EDisplayMode m_displaymode;
 };
 
-// Evil hack to find the type to be used in CStatTreeItemNativeCounter
-template<typename _Tp1, typename _Tp2> struct get_native_type { typedef uint32_t type; };
-template<typename _Tp> struct get_native_type<_Tp, _Tp> { typedef uint64_t type; };
-
 typedef CStatTreeItemCounterTmpl<uint64_t>	CStatTreeItemCounter;
-typedef CStatTreeItemCounterTmpl<get_native_type<uint64_t, unsigned long>::type>	CStatTreeItemNativeCounter;
+typedef CStatTreeItemCounterTmpl<uint32_t>	CStatTreeItemNativeCounter;
 
 
 /**
