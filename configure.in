@@ -413,6 +413,8 @@ AC_SUBST(CRYPTOLIBS)
 
 # Check for bfd.h (to have proper backtraces without using wxExecute)
 CHECK_BFD
+CHECK_EXECINFO
+CHECK_CXXABI
 
 # Ok, we have all needed libs, now checking for other stuff
 CHECK_AUTOPOINT

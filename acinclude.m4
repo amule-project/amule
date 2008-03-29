@@ -270,3 +270,57 @@ AC_DEFUN([AC_CHECK_REGEX],
 	], [$2])
 	AC_SUBST([REGEX_LIB])
 ])
+
+
+dnl ---------------------------------------------------------------------------
+dnl CHECK_CXXABI
+dnl
+dnl This function will test the header <cxxabi.h> and __cxxabiv1::__cxa_demangle()
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([CHECK_CXXABI],
+[
+	AC_LANG_PUSH([C++])
+	AC_MSG_CHECKING([for <cxxabi.h> and __cxa_demangle()])
+	AC_LINK_IFELSE([
+		AC_LANG_PROGRAM([[
+			#include <cxxabi.h>
+		]], [[
+			int status;
+			char * demangled = abi::__cxa_demangle("", 0, 0, &status);
+			std::type_info *ti = abi::__cxa_current_exception_type();
+		]])
+	], [
+		AH_TEMPLATE([HAVE_CXXABI], [Define to 1 if you have the <cxxabi.h> header which declares abi::__cxa_demangle()])
+		AC_DEFINE([HAVE_CXXABI])
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+	])
+	AC_LANG_POP()
+])
+
+
+dnl ---------------------------------------------------------------------------
+dnl CHECK_EXECINFO
+dnl
+dnl This function will test the header <execinfo.h> and backtrace()
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([CHECK_EXECINFO],
+[
+	AC_MSG_CHECKING([for <execinfo.h> and backtrace()])
+	AC_LINK_IFELSE([
+		AC_LANG_PROGRAM([[
+			#include <execinfo.h>
+		]], [[
+			void *bt[1];
+			int n = backtrace(&bt, 1);
+			const char **bt_syms = backtrace_symbols(bt, n);
+		]])
+	], [
+		AH_TEMPLATE([HAVE_EXECINFO], [Define to 1 if you have the <execinfo.h> header which declares backtrace()])
+		AC_DEFINE([HAVE_EXECINFO])
+		AC_MSG_RESULT([yes])
+	], [
+		AC_MSG_RESULT([no])
+	])
+])
