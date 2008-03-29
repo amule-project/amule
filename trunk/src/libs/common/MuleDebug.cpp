@@ -24,6 +24,7 @@
 //
 
 #include <csignal>				// Needed for raise()
+#include <cstdlib>				// Needed for abort()
 
 #include "MuleDebug.h"			// Interface declaration
 #include "StringFunctions.h"	// Needed for unicode2char

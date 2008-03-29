@@ -50,8 +50,8 @@ bool stdStringIsEqualCI(const std::string &s1, const std::string &s2)
 {
 	std::string ns1(s1);
 	std::string ns2(s2);
-	transform(ns1.begin(), ns1.end(), ns1.begin(), tolower);
-	transform(ns2.begin(), ns2.end(), ns2.begin(), tolower);
+	std::transform(ns1.begin(), ns1.end(), ns1.begin(), tolower);
+	std::transform(ns2.begin(), ns2.end(), ns2.begin(), tolower);
 	return ns1 == ns2;
 }
 
@@ -1451,7 +1451,7 @@ upnpDiscovery:
 		}
 		std::string devType = dab_event->DeviceType;
 		// Check for an InternetGatewayDevice and removes it from the list
-		transform(devType.begin(), devType.end(), devType.begin(), tolower);
+		std::transform(devType.begin(), devType.end(), devType.begin(), tolower);
 		if (stdStringIsEqualCI(devType, upnpCP->m_upnpLib.UPNP_DEVICE_IGW)) {
 			upnpCP->RemoveRootDevice(dab_event->DeviceId);
 		}

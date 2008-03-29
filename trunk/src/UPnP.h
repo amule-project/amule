@@ -32,7 +32,7 @@
 #include <map>
 #include <string>
 #include <sstream>
-
+#include <memory>
 
 #include "UPnPCompatibility.h"
 
