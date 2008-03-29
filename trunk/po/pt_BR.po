@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-29 03:30+0100\n"
-"PO-Revision-Date: 2008-02-08 22:00-0300\n"
+"PO-Revision-Date: 2008-03-29 00:05-0300\n"
 "Last-Translator: Fabio Jr. Beneditto <kamikazenh@uol.com.br>\n"
 "Language-Team: Brazilian Portuguese aMule TeaM (see header for more)\n"
 "MIME-Version: 1.0\n"
@@ -1455,7 +1455,7 @@ msgstr "Grego"
 
 #: src/Preferences.cpp:646
 msgid "Hebrew"
-msgstr ""
+msgstr "Hebreu"
 
 #: src/Preferences.cpp:647
 msgid "Hungarian"
