@@ -23,18 +23,21 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
-#include <csignal>				// Needed for raise()
-#include <cstdlib>				// Needed for abort()
+#include <cstdlib>			// Needed for std::abort()
 
-#include "MuleDebug.h"			// Interface declaration
-#include "StringFunctions.h"	// Needed for unicode2char
-
-#ifdef __LINUX__
-	#include <execinfo.h>
+#ifdef HAVE_CONFIG_H
+#	include "config.h"		// Needed for HAVE_CXXABI and HAVE_EXECINFO
 #endif
 
-#ifndef _MSC_VER
-	#include <cxxabi.h>
+#include "MuleDebug.h"			// Interface declaration
+#include "StringFunctions.h"		// Needed for unicode2char
+
+#ifdef HAVE_EXECINFO
+#	include <execinfo.h>
+#endif
+
+#ifdef HAVE_CXXABI
+#	include <cxxabi.h>
 #endif
 
 #include <wx/thread.h> // Do_not_auto_remove (Old wx < 2.7)
@@ -62,7 +65,7 @@ void OnUnhandledException()
 	// this function.
 	std::set_terminate(std::abort);	
 
-#ifndef _MSC_VER
+#ifdef HAVE_CXXABI
 	std::type_info *t = __cxxabiv1::__cxa_current_exception_type();
 	FILE* output = stderr;
 #else 
@@ -72,7 +75,7 @@ void OnUnhandledException()
 	if (t) {
 		int status = -1;
 		char *dem = 0;
-#ifndef _MSC_VER
+#ifdef HAVE_CXXABI
 		// Note that "name" is the mangled name.
 		char const *name = t->name();
 
@@ -97,7 +100,7 @@ void OnUnhandledException()
 
 		fprintf(output, "\tbacktrace:\n%s\n", (const char*)unicode2char(get_backtrace(1)));
 	}
-	raise(SIGABRT);
+	std::abort();
 }
 
 
@@ -279,6 +282,7 @@ void get_file_line_info(bfd *abfd, asection *section, void* _address)
 
 wxString demangle(const wxString& function)
 {
+#ifdef HAVE_CXXABI
 	wxString result;
 	
 	if (function.Mid(0,2) == wxT("_Z")) {
@@ -295,12 +299,16 @@ wxString demangle(const wxString& function)
 	}
 	
 	return result;
+#else
+	return wxEmptyString;
+#endif
 }
 
 
 // Print a stack backtrace if available
 wxString get_backtrace(unsigned n)
 {
+#ifdef HAVE_EXECINFO
 	// (stkn) create backtrace
 	void *bt_array[100];	// 100 should be enough ?!?
 	char **bt_strings;
@@ -446,6 +454,10 @@ wxString get_backtrace(unsigned n)
 	}
 
 	return trace;
+#else /* !HAVE_EXECINFO */
+	fprintf(stderr, "--== cannot generate backtrace ==--\n\n");
+	return wxEmptyString;
+#endif /* HAVE_EXECINFO */
 }
 
 #else	/* !__LINUX__ */

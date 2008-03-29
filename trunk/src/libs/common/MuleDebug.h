@@ -26,7 +26,6 @@
 #ifndef MULEDEBUG_H
 #define MULEDEBUG_H
 
-#include <wx/defs.h>
 #include <wx/string.h>
 
 /**
