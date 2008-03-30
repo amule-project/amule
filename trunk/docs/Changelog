@@ -631,13 +631,14 @@ Version 2.2.1 - ???
 		* Fixed warning about dirs without shareable files, in the
 		  case where there were sharable files, but they were all
 		  duplicates.
-		* Save directories (shared, incoming, etc) as well as the
-		  filenames of known files in an locale-independant manner,
-		  so that changes in locale does not affect our ability to
-		  find previously used files or directories. This will break
-		  backwards compatibility when using unicoded directory-names.
-		* Worked around the search-string being cleared when starting the
-		  first search, which was caused by bug in wxWidgets.
+		* Added support for saving directories (shared, incoming, etc)
+		  as well as the filenames of known files in an
+		  locale-independant manner, so that changes in locale does
+		  not affect our ability to find previously used files or
+		  directories. This will break backwards compatibility when
+		  using unicoded directory-names.
+		* Fixed the search-string being cleared when starting the
+		  first search.
 		* When starting a search, the entire search string is selected.
 		* Fixed creation of ED2k-links with an AICH-hash, in case the
 		  file does not actually have a AICH-hash. Also disabled the
@@ -646,53 +647,51 @@ Version 2.2.1 - ???
 		* Removed workarounds for old (and resolved) wxWidgets bugs.
 		* Fixed creation of ED2K links without sources, where an
 		  superflous "|/" would be appended to the end of the link.
-		* Fixed handling of spaces when creating ED2k links. These are
-		  now escaped.
-		* Fixed swapped notify-functions, which would cause clients to
-		  be left on the upload-queue ctrl, even if the underlying
-		  object was deleted.
+		* Fixed handling of spaces when creating ED2k links.
+		* Fixed swapped notify-functions, which caused deleted
+		  client-objects to be left on the upload-queue on the GUI.
 		* Improved enabling/disabling of items on the right-click menu
 		  on the download queue. Among other things, it is now
 		  possible to stop a paused download, without having to
-		  restart it first (this closes bug #1078).
-		* -- TODO
-		* Fixed the setting priorities for shared files via the remote
-		  GUI (this closes bug #1267).
+		  restart it first. This closes bug #1078.
+		* Fixed the setting of priorities for shared files via the
+		  remote GUI. This resolves bug #1267.
 		* Fixed clipping issues when columns are resized to very small
 		  width, causing the contents of one column to be drawn on top
-		  of the next column (this closes bug #1171).
+		  of the next column. This closes bug #1171.
 		* Fixed copying of text to the clipboard, which previously
 		  used the "primary" clipboard (middle-click) under X11. It
 		  now uses the default clipboard, which is what DEs typically
-		  use for Ctrl+C/V/X. This closes bug #1139.
+		  use for Ctrl+C/V/X. This resolves bug #1139.
 		* Improved the displaying of the connection status, and fixed
 		  problems where the status of only one of the active networks
-		  would be displayed. This closes bug #981.
+		  would be displayed. This resolves bug #981.
 		* Fixed percentage display of available parts in the
 		  file-details dialog, where the decimal portion of the value
 		  would always be zero. This resolves bug #1060.
 		* Improved thread-safety of the AICH-sync thread on amuled,
 		  and prevented the possibility of deadlocks in a few cases.
 		* Fixed bug where the preferences dialog on the monolithic
-		  client would not be updated if the preferences had been
+		  client would not be updated, if the preferences had been
 		  changed via EC after the dialog had been first shown.
 		* Added support for protocol-obfuscation configuration via
-		  external connections.
+		  the EC protocol.
 		* Fixed problem where obfuscation of out-going connections
 		  could be enabled even if obfuscation support was not,
-		  leading to clients being wrongly dropped in some cases.
+		  leading to clients being wrongly dropped.
 		* Fixed check-boxes in the preferences dialog for the various
-		  obfuscation options not being updated when one of the other
+		  obfuscation options not being updated, when one of the other
 		  obfuscation check-boxes were checked/unchecked.
-		* Added the ability to update the nodes.dat file via the
-		  remote gui, as well as bootstrapping from a specific IP.
-		* The server.met and the nodes.dat urls are now saved when
-		  changed in the remote UI, and are read from the core when
-		  starting the remote gui.
-		* Allow for the creation of ED2k-links on the remote gui. This
-		  resolves bug #893, #567 and #584.
-		* Fixed checks preventing the creation of source-links when
-		  only using Kademlia.
+		* Added the ability to update the nodes.dat file, and
+		  bootstrap from specific IPs,  when using the remote GUI.
+		* Added saving/loading of the previous URLs for the server.met
+		  and the nodes.dat files, when using the remote GUI. 
+		* Allow for the creation of ED2k-links on the remote gui.
+		  This resolves bug #893, #567 and #584.
+		* Fixed link-creation for kad-only clients.
+		* Fixed drawing of the grid for statistics-graphs on wxMAC.
+		* Reduced needless offscreen drawing of statistics-graphs.
+		* Fixed possibility of misordered points on statistics-graphs.
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.

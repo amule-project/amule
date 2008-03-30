@@ -44,7 +44,7 @@ public:
 	void Init();
 	void SetUpdatePeriod(int step);
 	void SetGraphColors();
-	void UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update);
+	void UpdateGraph(const GraphUpdateInfo& update);
 		
 private:
 	COScopeCtrl* m_kad_scope;

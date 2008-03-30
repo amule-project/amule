@@ -52,7 +52,7 @@ public:
 	CStatisticsDlg(wxWindow* pParent, CStatistics* stats);
 	~CStatisticsDlg();
 
-	void UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update);
+	void UpdateStatGraphs(const uint32 peakconnections, const GraphUpdateInfo& update);
 	void SetUpdatePeriod(int step);
 	void ResetAveragingTime();
 	void ShowStatistics(bool init = false);
