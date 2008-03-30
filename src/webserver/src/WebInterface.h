@@ -66,6 +66,7 @@ public:
 
 public:
 	virtual void Post_Shell();
+	void TextShell(const wxString &prompt);
 	
 private:
 	virtual bool	OnInit();
