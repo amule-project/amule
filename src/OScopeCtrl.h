@@ -33,6 +33,7 @@
 #include <wx/control.h>		// Needed for wxControl
 #include <wx/timer.h>		// Needed for wxTimer
 #include <wx/pen.h>
+#include <wx/bitmap.h>
 
 #include "Color.h"		// Needed for COLORREF and RGB
 #include "Statistics.h"		// Needed for StatsGraphType
@@ -49,19 +50,16 @@ class COScopeCtrl : public wxControl
 	friend class CStatisticsDlg;
 		
 public:
-	COScopeCtrl(int NTrends, int nDecimals, StatsGraphType type, wxWindow* parent=NULL);
+	COScopeCtrl(int NTrends, int nDecimals, StatsGraphType type, wxWindow* parent = NULL);
 	~COScopeCtrl();
 
 	void SetRange(float dLower, float dUpper, unsigned iTrend = 0);
 	void SetRanges(float dLower, float dUpper);
-	void SetXUnits(const wxString& string,
-		const wxString& XMin = wxEmptyString, const wxString& XMax = wxEmptyString);
 	void SetYUnits(const wxString& string,
 		const wxString& YMin = wxEmptyString, const wxString& YMax = wxEmptyString);
 	void SetBackgroundColor(COLORREF color);
 	void SetGridColor(COLORREF color);
 	void SetPlotColor(COLORREF color, unsigned iTrend = 0);
-	COLORREF GetPlotColor(unsigned iTrend = 0)  {return pdsTrends[iTrend].crPlot;}
 	float GetUpperLimit()		{ return pdsTrends[0].fUpperLimit; }
 	void Reset(double sNewPeriod);
 	void Stop();
@@ -69,10 +67,6 @@ public:
 	void RecreateGrid();
 	void AppendPoints(double sTimestamp, const std::vector<float *> &apf);
 	void DelayPoints()		{ nDelayedPoints++; }
-	unsigned GetPlotHeightPixels()	{ return nPlotHeight; }
-	unsigned GetPlotWidthPoints()	{ return nPlotWidth/nShiftPixels; }
-	wxBitmap* GetBitmapPlot()	{ return bmapPlot; }
-	wxBitmap* GetBitmapGrid()	{ return bmapGrid; }
 
 	StatsGraphType graph_type;
 	
@@ -83,10 +77,10 @@ public:
 	unsigned nShiftPixels;         // amount to shift with each new point 
 	unsigned nYDecimals;
 
-	wxString strXUnits, strXMin, strXMax;
+	wxString strXUnits;
 	wxString strYUnits, strYMin, strYMax;
-	COLORREF crBackground;
-	COLORREF crGrid;      
+	wxColour m_bgColour;
+	wxColour m_gridColour;
 
 	typedef struct PlotDataStruct {
 		COLORREF crPlot;	       // data plot color  
@@ -103,28 +97,16 @@ protected:
 	DECLARE_EVENT_TABLE()
 	PlotData_t *pdsTrends;
 
-	int nClientHeight;
-	int nClientWidth;
-	int nPlotHeight;
-	int nPlotWidth;
+	wxRect	m_rectClient;
+	wxRect	m_rectPlot;
+	wxBrush	brushBack;
+	wxBitmap m_bmapGrid;
+	wxBitmap m_bmapPlot;
 
-	RECT  rectClient;
-	RECT  rectPlot;
-	wxBrush brushBack;
-
-	wxMemoryDC* dcGrid;
-	wxMemoryDC* dcPlot;
-	wxMemoryDC* memDC;
-	wxBitmap* memBitmap;
-	wxBitmap* bmapOldGrid;
-	wxBitmap* bmapOldPlot;
-	wxBitmap* bmapGrid;
-	wxBitmap* bmapPlot;
 	void InvalidateGraph()	{ InvalidateCtrl(true, false); }
 	void InvalidateGrid()	{ InvalidateCtrl(false, true); }
 
 private:
-	int oldwidth, oldheight;
 	bool bRecreateGrid, bRecreateGraph, bStopped;
 	int nDelayedPoints;
 	double sLastTimestamp;
@@ -138,7 +120,6 @@ private:
 	void DrawPoints(const std::vector<float *> &apf, unsigned cntPoints);
 	unsigned GetPlotY(float fPlot, PlotData_t* ppds);
 	void InvalidateCtrl(bool bInvalidateGraph = true, bool bInvalidateGrid = true);
-	void DoBlit();
 };
 
 #endif // OSCOPECTRL_H

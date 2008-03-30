@@ -33,6 +33,7 @@
 #include "Preferences.h"
 #include "StatisticsDlg.h"
 #include "ColorFrameCtrl.h"
+#include "amuleDlg.h"
 
 
 #ifndef CLIENT_GUI
@@ -104,7 +105,7 @@ void CKadDlg::SetGraphColors()
 }
 
 
-void CKadDlg::UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update)
+void CKadDlg::UpdateGraph(const GraphUpdateInfo& update)
 {	
 	std::vector<float *> v(3);
 	v[0] = const_cast<float *>(&update.kadnodes[0]);
@@ -113,7 +114,7 @@ void CKadDlg::UpdateGraph(bool bStatsVisible, const GraphUpdateInfo& update)
 	const std::vector<float *> &apfKad(v);
 	unsigned nodeCount = static_cast<unsigned>(update.kadnodes[2]);
 	
-	if (!bStatsVisible) {
+	if (!IsShownOnScreen()) {
 		m_kad_scope->DelayPoints();
 	} else {
 		// Check the current node-count to see if we should increase the graph height

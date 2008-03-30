@@ -155,7 +155,7 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	}
 }
 
-void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconnections, const GraphUpdateInfo& update)
+void CStatisticsDlg::UpdateStatGraphs(const uint32 peakconnections, const GraphUpdateInfo& update)
 {
 	
 	std::vector<float *> v1(3);
@@ -174,7 +174,7 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 	v3[2] = const_cast<float *>(&update.connections[2]);
 	const std::vector<float *> &apfConn(v3);
 	
-	if (!bStatsVisible) {
+	if (!IsShownOnScreen()) {
 		pscopeDL->DelayPoints();
 		pscopeUL->DelayPoints();
 		pscopeConn->DelayPoints();
@@ -191,8 +191,10 @@ void CStatisticsDlg::UpdateStatGraphs(bool bStatsVisible, const uint32 peakconne
 		
 		pscopeConn->SetRange(0.0, (float)nScale*pscopeConn->GetUpperLimit(), 1);
 	}
-	if (!bStatsVisible)
+	
+	if (!IsShownOnScreen()) {
 		return;
+	}
 	
 	pscopeDL->AppendPoints(update.timestamp, apfDown);
 	pscopeUL->AppendPoints(update.timestamp, apfUp);

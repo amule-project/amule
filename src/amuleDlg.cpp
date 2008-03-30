@@ -1018,8 +1018,6 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		return;
 	}
 
-	bool bStatsVisible = (!IsIconized() && StatisticsWindowActive());
-	
 #ifndef CLIENT_GUI
 	static uint32 msPrevGraph;
 	int msGraphUpdate = thePrefs::GetTrafficOMeterInterval() * 1000;
@@ -1029,8 +1027,8 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 		
 		GraphUpdateInfo update = theApp->m_statistics->GetPointsForUpdate();
 		
-		m_statisticswnd->UpdateStatGraphs(bStatsVisible, theStats::GetPeakConnections(), update);
-		m_kademliawnd->UpdateGraph(!IsIconized() && (m_activewnd == m_serverwnd), update);
+		m_statisticswnd->UpdateStatGraphs(theStats::GetPeakConnections(), update);
+		m_kademliawnd->UpdateGraph(update);
 	}
 #else
 	//#warning TODO: CORE/GUI -- EC needed
@@ -1038,7 +1036,7 @@ void CamuleDlg::OnGUITimer(wxTimerEvent& WXUNUSED(evt))
 	
 	int sStatsUpdate = thePrefs::GetStatsInterval();
 	if ((sStatsUpdate > 0) && ((int)(msCur - msPrevStats) > sStatsUpdate*1000)) {
-		if (bStatsVisible) {
+		if (m_statisticswnd->IsShownOnScreen()) {
 			msPrevStats = msCur;
 			m_statisticswnd->ShowStatistics();
 		}
