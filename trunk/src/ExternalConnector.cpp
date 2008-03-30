@@ -301,7 +301,6 @@ bool CaMuleExternalConnector::Parse_Command(const wxString& buffer)
 
 void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, size_t buffer_size)
 {
-	if( !m_KeepQuiet ) {
 #ifdef HAVE_LIBREADLINE
 		char *text = readline(unicode2char(prompt + wxT("$ ")));
 		if (text && *text && 
@@ -328,7 +327,6 @@ void CaMuleExternalConnector::GetCommand(const wxString &prompt, char* buffer, s
 		} else {
 			strncpy(buffer, "quit", buffer_size);
 		}
-	}
 }
 
 void CaMuleExternalConnector::TextShell(const wxString &prompt)
