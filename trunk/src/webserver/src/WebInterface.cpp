@@ -92,6 +92,17 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 	return false;
 }
 
+void CamulewebApp::TextShell(const wxString &prompt)
+{
+	while(true) {
+#ifndef __WXMSW__
+		pause();
+#else
+		wxSleep(10);
+#endif
+	}
+}
+
 bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templateDir)
 {
 	wxString dir;
