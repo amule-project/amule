@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 03:31+0200\n"
+"POT-Creation-Date: 2008-03-31 03:30+0200\n"
 "PO-Revision-Date: 2008-02-24 13:33+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -363,7 +363,7 @@ msgstr "Täysiä kopioita"
 msgid "Directory Path"
 msgstr "Kansiopolku"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "Jaetut tiedostot"
@@ -455,7 +455,7 @@ msgstr "Kopioi palaute leikepöydälle"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Tarvitset HighID:een luodaksesi voimassa olevan lähdelinkin"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
+#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "Varoitus"
@@ -579,59 +579,59 @@ msgstr "Uloskirjautumista pyydetty\n"
 msgid "Processing request [redirected]: "
 msgstr "Käsittelee pyyntöä [uudelleenohjattu]: "
 
-#: src/webserver/src/WebInterface.cpp:182
+#: src/webserver/src/WebInterface.cpp:193
 msgid "Loads template <str>"
 msgstr "Lataa mallin <str>"
 
-#: src/webserver/src/WebInterface.cpp:186
+#: src/webserver/src/WebInterface.cpp:197
 msgid "Webserver HTTP port"
 msgstr "Web-palvelimen HTTP-portti"
 
-#: src/webserver/src/WebInterface.cpp:190
+#: src/webserver/src/WebInterface.cpp:201
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Käytä UPnP-porttiohjausta web-palvelimen portissa"
 
-#: src/webserver/src/WebInterface.cpp:194
+#: src/webserver/src/WebInterface.cpp:205
 msgid "UPnP port"
 msgstr "UPnP-portti"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:209
 msgid "Use gzip compression"
 msgstr "Käytä gzip-pakkausta"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:217
 msgid "Full access password for webserver"
 msgstr "Täyden käyttöoikeuden salasana web-palvelimelle"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:221
 msgid "Guest password for webserver"
 msgstr "Vieraan salasana web-palvelimelle"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:225
 msgid "Allow guest access"
 msgstr "Salli vieraskäyttö"
 
-#: src/webserver/src/WebInterface.cpp:218
+#: src/webserver/src/WebInterface.cpp:229
 msgid "Deny guest access"
 msgstr "Estä vieraskäyttö"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:233
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Hae/tallenna web-palvelimen asetukset etä-aMulesta/een"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:237
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMulen konfiguraatiotiedoston polku. ÄLÄ KÄYTÄ SUORAAN!"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:245
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Poista PHP-tulkki käytöstä (vanhentunut)"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:253
 msgid "Recompile PHP pages on each request"
 msgstr "Uudelleenkoosta PHP-sivut joka pyynnöllä"
 
-#: src/webserver/src/WebInterface.cpp:340
+#: src/webserver/src/WebInterface.cpp:351
 msgid "aMule Web Server"
 msgstr "aMule Web-Palvelin"
 
@@ -652,7 +652,7 @@ msgstr "Ladataan..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Asetukset"
@@ -1670,7 +1670,7 @@ msgstr ""
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr ""
 
-#: src/OScopeCtrl.cpp:288
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Poissa käytöstä [%s]"
@@ -1756,7 +1756,7 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
-#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:177
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "Viesti"
@@ -1838,84 +1838,84 @@ msgstr "Haluatko varmasti sulkea aMulen?"
 msgid "Exit confirmation"
 msgstr "Lopettamisen varmistus"
 
-#: src/amuleDlg.cpp:1131
+#: src/amuleDlg.cpp:1129
 msgid "Could not determine the command for running the browser."
 msgstr "Ei voitu päätellä komentoa selaimen suorittamiseksi."
 
-#: src/amuleDlg.cpp:1191
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Teemakansiota '%s' ei ole olemassa"
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1194
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Varoitus: Ei voida avata tiedostoa '%s' luettavaksi"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Verkot"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Verkkoikkuna"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Haut"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Hakujen ikkuna"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Siirrot"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Siirrettävien tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Jaettujen tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Viestit"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Viestien ikkuna"
 
-#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Tilastokuvaajien ikkuna"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Asetuksien säätöikkuna"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Tuonti"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "Osatiedostojen tuontityökalu"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Tietoja"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Tietoja/Ohje"
 
@@ -2819,35 +2819,35 @@ msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
 "Käyttäjä %s (%u) on estänyt jaettujen kansioiden/tiedostojen listaamisen."
 
-#: src/KadDlg.cpp:131
+#: src/KadDlg.cpp:132
 #, c-format
 msgid "Nodes (%u)"
 msgstr "Yhteyspisteitä (%u)"
 
-#: src/KadDlg.cpp:166
+#: src/KadDlg.cpp:167
 msgid "Invalid ip to bootstrap"
 msgstr "IP ei kelpaa yhdistämisavuksi"
 
-#: src/KadDlg.cpp:172
+#: src/KadDlg.cpp:173
 msgid "Invalid port to bootstrap"
 msgstr "Portti ei kelpaa yhdistämisavuksi"
 
-#: src/KadDlg.cpp:176
+#: src/KadDlg.cpp:177
 msgid "Please fill all fields required"
 msgstr "Ole hyvä ja täytä kaikki vaaditut kentät"
 
-#: src/KadDlg.cpp:195
+#: src/KadDlg.cpp:196
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Oletko varma että haluat ladata uuden nodes.dat-tiedoston?\n"
 
-#: src/KadDlg.cpp:196
+#: src/KadDlg.cpp:197
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Tämä toiminto korvaa kaikki tunnetut yhteyspisteet ja uudelleenyhdistää "
 "Kademlian."
 
-#: src/KadDlg.cpp:197
+#: src/KadDlg.cpp:198
 msgid "Continue?"
 msgstr "Jatketaanko?"
 
@@ -6314,17 +6314,17 @@ msgstr "Komento on puutteellinen."
 msgid "Type '%s' to get more help.\n"
 msgstr "Kirjoita '%s' saadaksesi lisää ohjeita.\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:362
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Tämä on %s %s %s\n"
 
-#: src/ExternalConnector.cpp:366
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Tämä on %s %s\n"
 
-#: src/ExternalConnector.cpp:397
+#: src/ExternalConnector.cpp:395
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6332,11 +6332,11 @@ msgstr ""
 "\n"
 "Luon asiakasta...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Yhteysyritys epäonnistui. Annettuun isäntään ei saatu yhteyttä\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:416
 #, c-format
 msgid ""
 "\n"
@@ -6345,7 +6345,7 @@ msgstr ""
 "\n"
 "Ok, suljen %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:421
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6359,47 +6359,47 @@ msgstr ""
 "\n"
 "Suljen...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:428
 msgid "Show this help text."
 msgstr "Näytä tämä ohje."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:431
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Isäntäkone jossa aMule on käynnissä. (oletus: localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:434
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMulen portti etäyhteydelle. (oletus: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:437
 msgid "External Connection password."
 msgstr "Etäyhteyden salasana."
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:440
 msgid "Read configuration from file."
 msgstr "Lue asetukset tiedostosta."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:443
 msgid "Do not print any output to stdout."
 msgstr "Älä tulosta mitään stdout:iin."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:446
 msgid "Be verbose - show also debug messages."
 msgstr "Ole monisanainen - näytä myös virheenetsintäviestit."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:449
 msgid "Sets program locale (language)."
 msgstr "Asettaa ohjelman maa-asetukset (kielen)."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:452
 msgid "Write command line options to config file."
 msgstr "Kirjoita komentoriviparametrit asetustiedostoon."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:455
 msgid "Creates config file based on aMule's config file."
 msgstr "Luo asetustiedoston perustuen aMulen asetustiedostoon."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:458
 msgid "Print program version."
 msgstr "Näyttää ohjelman version."
 

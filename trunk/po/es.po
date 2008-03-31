@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 03:31+0200\n"
+"POT-Creation-Date: 2008-03-31 03:30+0200\n"
 "PO-Revision-Date: 2008-03-27 00:27+0100\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -380,7 +380,7 @@ msgstr "Fuentes completas"
 msgid "Directory Path"
 msgstr "Directorio"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "Compartidos"
@@ -474,7 +474,7 @@ msgstr "Copiar respuesta al portapapeles"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Necesitas IDAlta para crear un enlace fuente válido"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
+#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "Alerta"
@@ -600,59 +600,59 @@ msgstr "Desconexión solicitada\n"
 msgid "Processing request [redirected]: "
 msgstr "Procesando solicitud [redirigida]:"
 
-#: src/webserver/src/WebInterface.cpp:182
+#: src/webserver/src/WebInterface.cpp:193
 msgid "Loads template <str>"
 msgstr "Carga la plantilla <str>"
 
-#: src/webserver/src/WebInterface.cpp:186
+#: src/webserver/src/WebInterface.cpp:197
 msgid "Webserver HTTP port"
 msgstr "Servidor Web, puerto HTTP "
 
-#: src/webserver/src/WebInterface.cpp:190
+#: src/webserver/src/WebInterface.cpp:201
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Utiliza UPnP port forwarding en el puerto del servidor web"
 
-#: src/webserver/src/WebInterface.cpp:194
+#: src/webserver/src/WebInterface.cpp:205
 msgid "UPnP port"
 msgstr "Puerto UPnP"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:209
 msgid "Use gzip compression"
 msgstr "Usar compresión gzip"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:217
 msgid "Full access password for webserver"
 msgstr "Contraseña de acceso completo para el servidor web"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:221
 msgid "Guest password for webserver"
 msgstr "Contraseña de invitado para el servidor web"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:225
 msgid "Allow guest access"
 msgstr "Permitir acceso a invitado"
 
-#: src/webserver/src/WebInterface.cpp:218
+#: src/webserver/src/WebInterface.cpp:229
 msgid "Deny guest access"
 msgstr "Denegar acceso a invitado"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:233
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Carga/Salva opciones del servidor web desde/a aMule remoto"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:237
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Ruta al archivo config de aMule. ¡NO USAR DIRECTAMENTE!"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:245
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Deshabilitar interprete PHP (desuso)"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:253
 msgid "Recompile PHP pages on each request"
 msgstr "Recompila páginas PHP para otra solicitud"
 
-#: src/webserver/src/WebInterface.cpp:340
+#: src/webserver/src/WebInterface.cpp:351
 msgid "aMule Web Server"
 msgstr "Servidor web aMule"
 
@@ -673,7 +673,7 @@ msgstr "Descargando..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Opciones"
@@ -1688,7 +1688,7 @@ msgstr "Estás seguro que deseas borrar el servidor seleccionado"
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Estás seguro que deseas borrar los servidores seleccionados"
 
-#: src/OScopeCtrl.cpp:288
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Deshabilitado [%s]"
@@ -1772,7 +1772,7 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
-#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:177
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "Mensaje"
@@ -1854,84 +1854,84 @@ msgstr "¿Realmente deseas cerrar aMule?"
 msgid "Exit confirmation"
 msgstr "Confirmación de salida"
 
-#: src/amuleDlg.cpp:1131
+#: src/amuleDlg.cpp:1129
 msgid "Could not determine the command for running the browser."
 msgstr "Imposible encontrar el comando para iniciar el navegador."
 
-#: src/amuleDlg.cpp:1191
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "El directorio de tema '%s' no existe"
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1194
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Aviso: Imposible abrir el fichero de tema '%s' para lectura"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Redes"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Ventana de redes"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Buscar"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Ventana de búsquedas"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Tráfico"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Ventana de transferencias de archivos"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Ventana de archivos compartidos"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Mensajes"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Ventana de mensajes"
 
-#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Estadísticas"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Ventana de gráficos de estadísticas"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Ventana de opciones"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Importar"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "La herramienta para importar archivos part"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Acerca de"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Acerca de/Ayuda"
 
@@ -2840,34 +2840,34 @@ msgstr ""
 "Usuario %s (%u) denegó el acceso a la lista de directorios/archivos "
 "compartidos"
 
-#: src/KadDlg.cpp:131
+#: src/KadDlg.cpp:132
 #, c-format
 msgid "Nodes (%u)"
 msgstr "Nodos (%u)"
 
-#: src/KadDlg.cpp:166
+#: src/KadDlg.cpp:167
 msgid "Invalid ip to bootstrap"
 msgstr "IP no válida para conectar"
 
-#: src/KadDlg.cpp:172
+#: src/KadDlg.cpp:173
 msgid "Invalid port to bootstrap"
 msgstr "Puerto no válido para conectar"
 
-#: src/KadDlg.cpp:176
+#: src/KadDlg.cpp:177
 msgid "Please fill all fields required"
 msgstr "Por favor rellena todos los campos requeridos"
 
-#: src/KadDlg.cpp:195
+#: src/KadDlg.cpp:196
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "¿Estás seguro que quieres descargar un nuevo nodes.dat?\n"
 
-#: src/KadDlg.cpp:196
+#: src/KadDlg.cpp:197
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Si lo haces borrarás tus nodos actuales y reiniciarás la conexión Kademlia."
 
-#: src/KadDlg.cpp:197
+#: src/KadDlg.cpp:198
 msgid "Continue?"
 msgstr "¿Continuar?"
 
@@ -6351,17 +6351,17 @@ msgstr "Esto es un comando incompleto."
 msgid "Type '%s' to get more help.\n"
 msgstr "Teclea '%s' para obtener mas ayuda.\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:362
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Esto es %s %s %s\n"
 
-#: src/ExternalConnector.cpp:366
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Esto es %s %s\n"
 
-#: src/ExternalConnector.cpp:397
+#: src/ExternalConnector.cpp:395
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6369,11 +6369,11 @@ msgstr ""
 "\n"
 "Creando cliente...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Conexión fallida. Imposible conectar al host especificado\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:416
 #, c-format
 msgid ""
 "\n"
@@ -6382,7 +6382,7 @@ msgstr ""
 "\n"
 "Ok, saliendo %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:421
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6396,49 +6396,49 @@ msgstr ""
 "\n"
 "Saliendo...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:428
 msgid "Show this help text."
 msgstr "Mostrar esta ayuda."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:431
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host donde se está ejecutando aMule. (por defecto: localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:434
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Puerto de conexión externa de aMule. (por defecto: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:437
 msgid "External Connection password."
 msgstr "Contraseña de conexiones externas"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:440
 msgid "Read configuration from file."
 msgstr "Leer configuración desde el archivo."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:443
 msgid "Do not print any output to stdout."
 msgstr "No muestres ninguna salida."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:446
 msgid "Be verbose - show also debug messages."
 msgstr "Modo Extendido - muestra también los mensajes de depuración"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:449
 msgid "Sets program locale (language)."
 msgstr "Selecciona el idioma del programa."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:452
 msgid "Write command line options to config file."
 msgstr "Escribe opciones de la línea de comando al archivo de configuración."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:455
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 "Crear archivo de configuración basado en el archivo de configuración de "
 "aMule."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:458
 msgid "Print program version."
 msgstr "Imprime versión del programa."
 

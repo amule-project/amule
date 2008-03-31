@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 03:31+0200\n"
+"POT-Creation-Date: 2008-03-31 03:30+0200\n"
 "PO-Revision-Date: 2008-03-20 23:07+0100\n"
 "Last-Translator: Fation <dj_barthezz@linuxmail.org>\n"
 "Language-Team: albanian <fation_1983@hotmail.it  lushnja_corps@hotmail.com "
@@ -377,7 +377,7 @@ msgstr "Burime te kompletuara"
 msgid "Directory Path"
 msgstr "Direktoria Path"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "File te ndara"
@@ -470,7 +470,7 @@ msgid "You need a HighID to create a valid sourcelink"
 msgstr ""
 "Ju keni nevoje per nje ID te larte per te krijuar nje sourcelink te vlefshem"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
+#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "Kujdes"
@@ -594,59 +594,59 @@ msgstr "Dalja e kerkuar\n"
 msgid "Processing request [redirected]: "
 msgstr "Perpunimi i kerkeses [e ridrejtuar]: "
 
-#: src/webserver/src/WebInterface.cpp:182
+#: src/webserver/src/WebInterface.cpp:193
 msgid "Loads template <str>"
 msgstr "Duke ngarkuar modelin <str>"
 
-#: src/webserver/src/WebInterface.cpp:186
+#: src/webserver/src/WebInterface.cpp:197
 msgid "Webserver HTTP port"
 msgstr "Porta HTTP e webserver-it"
 
-#: src/webserver/src/WebInterface.cpp:190
+#: src/webserver/src/WebInterface.cpp:201
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Perdor porten forwarding UPnp ne porten e webserver-it"
 
-#: src/webserver/src/WebInterface.cpp:194
+#: src/webserver/src/WebInterface.cpp:205
 msgid "UPnP port"
 msgstr "Porta UPnP"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:209
 msgid "Use gzip compression"
 msgstr "Perdor kompresimin gzip "
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:217
 msgid "Full access password for webserver"
 msgstr "Fjalekalim per hyrjen e plote ne webserver"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:221
 msgid "Guest password for webserver"
 msgstr "Fjalekalimi guest per webserver"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:225
 msgid "Allow guest access"
 msgstr "Lejo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:218
+#: src/webserver/src/WebInterface.cpp:229
 msgid "Deny guest access"
 msgstr "Ndalo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:233
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Ngarko/shpeto rregullimet e webserverit nga/tek remote i aMule"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:237
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Rruga per konfigurimin e failit te aMule. MOS E PERDORNI DIREKT!"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:245
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "C'aktivizo interpretuesin e PHP (nuk aprovohet)"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:253
 msgid "Recompile PHP pages on each request"
 msgstr "Rimbush faqet PHP ne c'do kerkese"
 
-#: src/webserver/src/WebInterface.cpp:340
+#: src/webserver/src/WebInterface.cpp:351
 msgid "aMule Web Server"
 msgstr "Web Server i aMule"
 
@@ -667,7 +667,7 @@ msgstr "Duke shkarkuar..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "Preferencat"
@@ -1691,7 +1691,7 @@ msgstr ""
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "Jeni te sigurte qe deshironi te fshini serverat e zgjedhur?"
 
-#: src/OScopeCtrl.cpp:288
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "Jo aktive [%s]"
@@ -1777,7 +1777,7 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http:/kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
-#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:177
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "Mesazh"
@@ -1859,84 +1859,84 @@ msgstr "Vertet deshironi qe te dilni nga aMule?"
 msgid "Exit confirmation"
 msgstr "Konfirmimi i daljes"
 
-#: src/amuleDlg.cpp:1131
+#: src/amuleDlg.cpp:1129
 msgid "Could not determine the command for running the browser."
 msgstr "Nuk eshte e mundur qe te gjej komanden per te filluar shfletuesin."
 
-#: src/amuleDlg.cpp:1191
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Direktoria e skin '%s' nuk ekziston"
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1194
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "Kujdes: E pamundur te lexohet skin nga faili '%s'"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "Rrjetet"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "Dritaret e rrjeteve"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "Kerkimet"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "Dritaret e kerkimeve"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "Transferimet"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "Dritarja e transferimeve te faileve"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "Dritarja e faileve te ndara"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "Mesazhe"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "Dritarja e mesazheve"
 
-#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "Statistikat"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "Dritarja e grafikut te statistikave"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "Dritarja e rregullimeve te preferencave"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "Importimi"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "Veglat per importimin e pjeseve te faileve"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "Rreth"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "Rreth/Ndihme"
 
@@ -2842,35 +2842,35 @@ msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
 "Perdoruesi %s (%u) nuk lejoi hyrjen ne listen e kartelave/faileve te ndara"
 
-#: src/KadDlg.cpp:131
+#: src/KadDlg.cpp:132
 #, c-format
 msgid "Nodes (%u)"
 msgstr "Nyjet (%u)"
 
-#: src/KadDlg.cpp:166
+#: src/KadDlg.cpp:167
 msgid "Invalid ip to bootstrap"
 msgstr "IP i pavlefshem per bootstrap"
 
-#: src/KadDlg.cpp:172
+#: src/KadDlg.cpp:173
 msgid "Invalid port to bootstrap"
 msgstr "Porte e pavlefshme per bootstrap"
 
-#: src/KadDlg.cpp:176
+#: src/KadDlg.cpp:177
 msgid "Please fill all fields required"
 msgstr "Ju lutem plotesoni te gjitha fushat e kerkuara"
 
-#: src/KadDlg.cpp:195
+#: src/KadDlg.cpp:196
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Jeni te sigurte qe deshironi te shkarkoni nje fail te ri nodes.dat?\n"
 
-#: src/KadDlg.cpp:196
+#: src/KadDlg.cpp:197
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Duke bere keshtu te gjitha nyjet aktuale do te hiqen dhe do te rifillohet "
 "lidhja ne Kademlia."
 
-#: src/KadDlg.cpp:197
+#: src/KadDlg.cpp:198
 msgid "Continue?"
 msgstr "Te vazhdoj?"
 
@@ -6373,17 +6373,17 @@ msgstr "Kjo eshte nje komande jo komplete."
 msgid "Type '%s' to get more help.\n"
 msgstr "Shtyp '%s' per te marre me shume ndihme.\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:362
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Ky eshte %s %s %s\n"
 
-#: src/ExternalConnector.cpp:366
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Ky eshte %s %s\n"
 
-#: src/ExternalConnector.cpp:397
+#: src/ExternalConnector.cpp:395
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6391,11 +6391,11 @@ msgstr ""
 "\n"
 "Duke krijuar klientin...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Lidhja Deshtoi.E pamundur te lidhem ne ate host\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:416
 #, c-format
 msgid ""
 "\n"
@@ -6404,7 +6404,7 @@ msgstr ""
 "\n"
 "Ne rregull, duke dalur %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:421
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6417,49 +6417,49 @@ msgstr ""
 "ose ne nje linje-komande, ose futni nje kur kerkohet.\n"
 "Duke dalur.\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:428
 msgid "Show this help text."
 msgstr "Trego kete tekstin ndihmues."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:431
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host ne te cilin aMule vepron. (default: localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:434
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Porta e aMule per Lidhjet e Jashtme. (default: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:437
 msgid "External Connection password."
 msgstr "Fjalekalimi per Lidhjet e Jashtme."
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:440
 msgid "Read configuration from file."
 msgstr "Lexo rregullimin nga faili."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:443
 msgid "Do not print any output to stdout."
 msgstr "Mos printo asnje output tek stdout"
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:446
 msgid "Be verbose - show also debug messages."
 msgstr "Behu fjaleshume - trego dhe mesazhet e Debug-ut."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:449
 msgid "Sets program locale (language)."
 msgstr "Vendos Locale-n e programit (gjuha)"
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:452
 msgid "Write command line options to config file."
 msgstr ""
 "Shkruaj opsionet e lenjes se komandave tek faili i konfigurimeve"
 "(rregullimeve)"
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:455
 msgid "Creates config file based on aMule's config file."
 msgstr "Krijo nje fail per konfigurimin te bazuar ne ate te aMule-s."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:458
 msgid "Print program version."
 msgstr "Printo versioni ne programit."
 

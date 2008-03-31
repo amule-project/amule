@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 03:31+0200\n"
+"POT-Creation-Date: 2008-03-31 03:30+0200\n"
 "PO-Revision-Date: 2008-03-23 03:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -363,7 +363,7 @@ msgstr "完整源"
 msgid "Directory Path"
 msgstr "所在目录"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "共享文件"
@@ -455,7 +455,7 @@ msgstr "复制反馈信息到剪贴板"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高 ID 来产生源链接"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
+#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "警告"
@@ -579,59 +579,59 @@ msgstr "已请求注销\n"
 msgid "Processing request [redirected]: "
 msgstr "正在处理请求 [已重定向]："
 
-#: src/webserver/src/WebInterface.cpp:182
+#: src/webserver/src/WebInterface.cpp:193
 msgid "Loads template <str>"
 msgstr "载入模板 <str>"
 
-#: src/webserver/src/WebInterface.cpp:186
+#: src/webserver/src/WebInterface.cpp:197
 msgid "Webserver HTTP port"
 msgstr "HTTP服务器端口"
 
-#: src/webserver/src/WebInterface.cpp:190
+#: src/webserver/src/WebInterface.cpp:201
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "在 Web 服务器端口使用 UPnP端口转发"
 
-#: src/webserver/src/WebInterface.cpp:194
+#: src/webserver/src/WebInterface.cpp:205
 msgid "UPnP port"
 msgstr "UPnP 端口"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:209
 msgid "Use gzip compression"
 msgstr "使用 gzip 压缩"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:217
 msgid "Full access password for webserver"
 msgstr "Web 服务器最高访问权密码"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:221
 msgid "Guest password for webserver"
 msgstr "服务器访客密码"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:225
 msgid "Allow guest access"
 msgstr "允许访客访问"
 
-#: src/webserver/src/WebInterface.cpp:218
+#: src/webserver/src/WebInterface.cpp:229
 msgid "Deny guest access"
 msgstr "拒绝访客访问"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:233
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "载入/保存 Web 服务器设置 自/至 远程 aMule"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:237
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMule 设置文件路径。不要直接使用！"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:245
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "禁用 PHP 解释器（已废弃）"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:253
 msgid "Recompile PHP pages on each request"
 msgstr "为每个请求重编译 PHP 页面"
 
-#: src/webserver/src/WebInterface.cpp:340
+#: src/webserver/src/WebInterface.cpp:351
 msgid "aMule Web Server"
 msgstr "aMule Web 服务器"
 
@@ -652,7 +652,7 @@ msgstr "正在下载..."
 msgid "( %s / %s )"
 msgstr "（%s / %s）"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "设置"
@@ -1663,7 +1663,7 @@ msgstr "您确定要删除已选的服务器吗？"
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "您确定要删除已选的服务器吗？"
 
-#: src/OScopeCtrl.cpp:288
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "已禁用 [%s]"
@@ -1745,7 +1745,7 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
-#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:177
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "消息"
@@ -1827,84 +1827,84 @@ msgstr "您确定要关闭 aMule 吗？"
 msgid "Exit confirmation"
 msgstr "退出确认"
 
-#: src/amuleDlg.cpp:1131
+#: src/amuleDlg.cpp:1129
 msgid "Could not determine the command for running the browser."
 msgstr "无法确定运行浏览器的命令"
 
-#: src/amuleDlg.cpp:1191
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "皮肤目录 %s 不存在"
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1194
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "警告：无法打开皮肤文件 %s"
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "网络"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "网络窗口"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "搜索"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "搜索窗口"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "传输文件"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "文件传送窗口"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "共享文件窗口"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "消息"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "消息窗口"
 
-#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "统计"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "统计图窗口"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "设置窗口"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "导入"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "part 文件导入工具"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "关于"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "关于/帮助"
 
@@ -2795,33 +2795,33 @@ msgstr "用户%s（%u）发送了未经请求的共享文件列表"
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "用户 %s（%u）拒绝了目录/文件列表的访问"
 
-#: src/KadDlg.cpp:131
+#: src/KadDlg.cpp:132
 #, c-format
 msgid "Nodes (%u)"
 msgstr "节点（%u）"
 
-#: src/KadDlg.cpp:166
+#: src/KadDlg.cpp:167
 msgid "Invalid ip to bootstrap"
 msgstr "无效 IP"
 
-#: src/KadDlg.cpp:172
+#: src/KadDlg.cpp:173
 msgid "Invalid port to bootstrap"
 msgstr "无效端口"
 
-#: src/KadDlg.cpp:176
+#: src/KadDlg.cpp:177
 msgid "Please fill all fields required"
 msgstr "请填写所有必要信息"
 
-#: src/KadDlg.cpp:195
+#: src/KadDlg.cpp:196
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "确定要下载新的 node.dat 文件吗？\n"
 
-#: src/KadDlg.cpp:196
+#: src/KadDlg.cpp:197
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "这样将删除您当前节点并重启Kad连接。"
 
-#: src/KadDlg.cpp:197
+#: src/KadDlg.cpp:198
 msgid "Continue?"
 msgstr "继续？"
 
@@ -6202,17 +6202,17 @@ msgstr "此命令不完整。"
 msgid "Type '%s' to get more help.\n"
 msgstr "输入 '%s' 显示更多帮助信息。\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:362
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "这是 %s %s %s\n"
 
-#: src/ExternalConnector.cpp:366
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s\n"
 msgstr "这是 %s %s\n"
 
-#: src/ExternalConnector.cpp:397
+#: src/ExternalConnector.cpp:395
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6220,11 +6220,11 @@ msgstr ""
 "\n"
 "正在建立用户...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "连接失败，无法连接到指定的计算机\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:416
 #, c-format
 msgid ""
 "\n"
@@ -6233,7 +6233,7 @@ msgstr ""
 "\n"
 "完成，正在退出 %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:421
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6246,47 +6246,47 @@ msgstr ""
 "或在命令行设置一个，或者在询问时输入。\n"
 "\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:428
 msgid "Show this help text."
 msgstr "显示帮助信息。"
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:431
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "aMule正在运行的主机。(缺省：localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:434
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule 的外部连接端口。（缺省：4712）"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:437
 msgid "External Connection password."
 msgstr "外部连接密码。"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:440
 msgid "Read configuration from file."
 msgstr "从文件读取设置。"
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:443
 msgid "Do not print any output to stdout."
 msgstr "不打印任何信息到控制台。"
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:446
 msgid "Be verbose - show also debug messages."
 msgstr "详细显示调试信息。"
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:449
 msgid "Sets program locale (language)."
 msgstr "设置程序地区(语言)。"
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:452
 msgid "Write command line options to config file."
 msgstr "把命令行参数写入设置文件。"
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:455
 msgid "Creates config file based on aMule's config file."
 msgstr "基于aMule的设置文件建立新设置文件。"
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:458
 msgid "Print program version."
 msgstr "打印程序版本。"
 

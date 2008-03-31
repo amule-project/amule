@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-30 03:31+0200\n"
+"POT-Creation-Date: 2008-03-31 03:30+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -373,7 +373,7 @@ msgstr "완료된 자료"
 msgid "Directory Path"
 msgstr "폴더 경로"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1309 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1307 src/Statistics.cpp:721
 #: src/muuli_wdr.cpp:1102 src/muuli_wdr.cpp:3999
 msgid "Shared Files"
 msgstr "공유 파일"
@@ -465,7 +465,7 @@ msgstr "반응을 클립보드에 복사"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:166 src/KadDlg.cpp:172
+#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:664
 msgid "Warning"
 msgstr "경고"
@@ -589,59 +589,59 @@ msgstr "로그아웃이 요청됨\n"
 msgid "Processing request [redirected]: "
 msgstr "요청 처리중[redirected]: "
 
-#: src/webserver/src/WebInterface.cpp:182
+#: src/webserver/src/WebInterface.cpp:193
 msgid "Loads template <str>"
 msgstr "템플릿<str>을 읽음"
 
-#: src/webserver/src/WebInterface.cpp:186
+#: src/webserver/src/WebInterface.cpp:197
 msgid "Webserver HTTP port"
 msgstr "웹서버 HTTP 포트"
 
-#: src/webserver/src/WebInterface.cpp:190
+#: src/webserver/src/WebInterface.cpp:201
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "웹서버 포트에 UPnP 포트포워딩을 사용"
 
-#: src/webserver/src/WebInterface.cpp:194
+#: src/webserver/src/WebInterface.cpp:205
 msgid "UPnP port"
 msgstr "UPnP 포트"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:209
 msgid "Use gzip compression"
 msgstr "gzip 압축 사용"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:217
 msgid "Full access password for webserver"
 msgstr "웹서버 전체접근 암호"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:221
 msgid "Guest password for webserver"
 msgstr "웹서버 손님 암호"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:225
 msgid "Allow guest access"
 msgstr "손님 접근 허가"
 
-#: src/webserver/src/WebInterface.cpp:218
+#: src/webserver/src/WebInterface.cpp:229
 msgid "Deny guest access"
 msgstr "손님 접근 금지"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:233
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "원격 어뮬로부터 웹서버 설정을 불러오거나 저장합니다."
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:237
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "어뮬 설정 파일 경로. DO NOT USE DIRECTLY!"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:245
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "PHP 해석자를 (권장되지 않는) 사용않함"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:253
 msgid "Recompile PHP pages on each request"
 msgstr "각 요청의 PHP 페이지를 재컴파일함"
 
-#: src/webserver/src/WebInterface.cpp:340
+#: src/webserver/src/WebInterface.cpp:351
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
@@ -662,7 +662,7 @@ msgstr "내려받기중..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1322
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1320
 #: src/PrefsUnifiedDlg.cpp:196 src/muuli_wdr.cpp:4003
 msgid "Preferences"
 msgstr "환경설정"
@@ -1691,7 +1691,7 @@ msgstr "선택된 서버를 삭제하시겠습니까?"
 msgid "Are you sure that you wish to delete the selected servers?"
 msgstr "선택된 서버를 삭제하시겠습니까?"
 
-#: src/OScopeCtrl.cpp:288
+#: src/OScopeCtrl.cpp:242
 #, c-format
 msgid "Disabled [%s]"
 msgstr "비활성화 [%s]"
@@ -1769,7 +1769,7 @@ msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
 #: src/amuleDlg.cpp:454 src/PrefsUnifiedDlg.cpp:522
-#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:176
+#: src/PrefsUnifiedDlg.cpp:617 src/PrefsUnifiedDlg.cpp:700 src/KadDlg.cpp:177
 #: src/PartFile.cpp:917 src/PartFile.cpp:925
 msgid "Message"
 msgstr "메시지"
@@ -1860,84 +1860,84 @@ msgstr "어뮬을 종료하시겠습니까?"
 msgid "Exit confirmation"
 msgstr "종료 확인"
 
-#: src/amuleDlg.cpp:1131
+#: src/amuleDlg.cpp:1129
 msgid "Could not determine the command for running the browser."
 msgstr "기본 브라우저가 선택되지 않았습니다."
 
-#: src/amuleDlg.cpp:1191
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "외형 폴더 '%s'가 없습니다."
 
-#: src/amuleDlg.cpp:1196
+#: src/amuleDlg.cpp:1194
 #, c-format
 msgid "Warning: Unable to open skin file '%s' for read"
 msgstr "경고: 외형 파일 '%s'(을)를 읽을 수 없습니다."
 
-#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1294 src/muuli_wdr.cpp:1916 src/muuli_wdr.cpp:3995
 msgid "Networks"
 msgstr "통신망"
 
-#: src/amuleDlg.cpp:1298 src/muuli_wdr.cpp:3995
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3995
 msgid "Networks Window"
 msgstr "통신망 창"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1299 src/muuli_wdr.cpp:3997
 msgid "Searches"
 msgstr "검색"
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3997
+#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:3997
 msgid "Searches Window"
 msgstr "검색 창"
 
-#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:3998
 msgid "Transfers"
 msgstr "전송"
 
-#: src/amuleDlg.cpp:1307 src/muuli_wdr.cpp:3998
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:3998
 msgid "Files Transfers Window"
 msgstr "파일 전송 창"
 
-#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:3999
+#: src/amuleDlg.cpp:1309 src/muuli_wdr.cpp:3999
 msgid "Shared Files Window"
 msgstr "공유 파일 창"
 
-#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
+#: src/amuleDlg.cpp:1311 src/muuli_wdr.cpp:527 src/muuli_wdr.cpp:3534
 #: src/muuli_wdr.cpp:4000
 msgid "Messages"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:1315 src/muuli_wdr.cpp:4000
+#: src/amuleDlg.cpp:1313 src/muuli_wdr.cpp:4000
 msgid "Messages Window"
 msgstr "메시지 창"
 
-#: src/amuleDlg.cpp:1317 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
+#: src/amuleDlg.cpp:1315 src/PrefsUnifiedDlg.cpp:181 src/Statistics.cpp:637
 #: src/Statistics.cpp:936 src/muuli_wdr.cpp:1116 src/muuli_wdr.cpp:2245
 #: src/muuli_wdr.cpp:4001
 msgid "Statistics"
 msgstr "통계"
 
-#: src/amuleDlg.cpp:1319 src/muuli_wdr.cpp:4001
+#: src/amuleDlg.cpp:1317 src/muuli_wdr.cpp:4001
 msgid "Statistics Graph Window"
 msgstr "통계 그래프 창"
 
-#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4003
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:4003
 msgid "Preferences Settings Window"
 msgstr "환경 설정 창"
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:4004
 msgid "Import"
 msgstr "가져오기"
 
-#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4004
+#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:4004
 msgid "The partfile importer tool"
 msgstr "부분파일 가져오기 도구"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:4005
 msgid "About"
 msgstr "정보"
 
-#: src/amuleDlg.cpp:1332 src/muuli_wdr.cpp:4005
+#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:4005
 msgid "About/Help"
 msgstr "정보/도움"
 
@@ -2831,33 +2831,33 @@ msgstr "사용자 %s (%u)는 공유파일 목록을 원하지않습니다."
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "사용자 %s (%u)는 공유파일이나 공유폴더 목록에 접근하는것을 거부합니다."
 
-#: src/KadDlg.cpp:131
+#: src/KadDlg.cpp:132
 #, c-format
 msgid "Nodes (%u)"
 msgstr "노드 (%u)"
 
-#: src/KadDlg.cpp:166
+#: src/KadDlg.cpp:167
 msgid "Invalid ip to bootstrap"
 msgstr "초기적재에 유효하지 않은 IP"
 
-#: src/KadDlg.cpp:172
+#: src/KadDlg.cpp:173
 msgid "Invalid port to bootstrap"
 msgstr "초기적재에 유효하지 않은 포트"
 
-#: src/KadDlg.cpp:176
+#: src/KadDlg.cpp:177
 msgid "Please fill all fields required"
 msgstr "모든 항목을 채워주세요."
 
-#: src/KadDlg.cpp:195
+#: src/KadDlg.cpp:196
 msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "새로운 nodes.dat파일을 내려받으시겠습니까?\n"
 
-#: src/KadDlg.cpp:196
+#: src/KadDlg.cpp:197
 msgid ""
 "Doing so will remove your current nodes and restart Kademlia connection."
 msgstr "현재노드는 제거되고 카뎀리아 연결이 다시 시작됩니다."
 
-#: src/KadDlg.cpp:197
+#: src/KadDlg.cpp:198
 msgid "Continue?"
 msgstr "계속할까요?"
 
@@ -6289,17 +6289,17 @@ msgstr "불완전한 명령입니다."
 msgid "Type '%s' to get more help.\n"
 msgstr "더 많은 도움말을 위해서는 '%s'를 입력하세요.\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:362
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "이것은 %s %s %s\n"
 
-#: src/ExternalConnector.cpp:366
+#: src/ExternalConnector.cpp:364
 #, c-format
 msgid "This is %s %s\n"
 msgstr "이것은 %s %s\n"
 
-#: src/ExternalConnector.cpp:397
+#: src/ExternalConnector.cpp:395
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6307,11 +6307,11 @@ msgstr ""
 "\n"
 "클라이언트 생성중...\n"
 
-#: src/ExternalConnector.cpp:407
+#: src/ExternalConnector.cpp:405
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "연결 실패. 특정 호스트에 연결할 수 없습니다\n"
 
-#: src/ExternalConnector.cpp:418
+#: src/ExternalConnector.cpp:416
 #, c-format
 msgid ""
 "\n"
@@ -6320,7 +6320,7 @@ msgstr ""
 "\n"
 "좋아, 나가는중 %s...\n"
 
-#: src/ExternalConnector.cpp:423
+#: src/ExternalConnector.cpp:421
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6334,47 +6334,47 @@ msgstr ""
 "\n"
 "종료중...\n"
 
-#: src/ExternalConnector.cpp:430
+#: src/ExternalConnector.cpp:428
 msgid "Show this help text."
 msgstr "이 도움말을 보여줍니다."
 
-#: src/ExternalConnector.cpp:433
+#: src/ExternalConnector.cpp:431
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "어뮬이 실행중인 호스트. (기본: localhost)"
 
-#: src/ExternalConnector.cpp:436
+#: src/ExternalConnector.cpp:434
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "외부연결을 위한 어뮬 포트. (기본: 4712)"
 
-#: src/ExternalConnector.cpp:439
+#: src/ExternalConnector.cpp:437
 msgid "External Connection password."
 msgstr "외부연결 암호"
 
-#: src/ExternalConnector.cpp:442
+#: src/ExternalConnector.cpp:440
 msgid "Read configuration from file."
 msgstr "파일로부터 환경설정을 읽습니다."
 
-#: src/ExternalConnector.cpp:445
+#: src/ExternalConnector.cpp:443
 msgid "Do not print any output to stdout."
 msgstr "표준출력으로는 어떤 출력도 하지 않습니다."
 
-#: src/ExternalConnector.cpp:448
+#: src/ExternalConnector.cpp:446
 msgid "Be verbose - show also debug messages."
 msgstr "상세하게 - 디버그 메시지도 보여줍니다."
 
-#: src/ExternalConnector.cpp:451
+#: src/ExternalConnector.cpp:449
 msgid "Sets program locale (language)."
 msgstr "프로그램 지역정보 (로케일, 언어)를 설정합니다."
 
-#: src/ExternalConnector.cpp:454
+#: src/ExternalConnector.cpp:452
 msgid "Write command line options to config file."
 msgstr "명령줄 설정을 환경설정 파일에 기록합니다."
 
-#: src/ExternalConnector.cpp:457
+#: src/ExternalConnector.cpp:455
 msgid "Creates config file based on aMule's config file."
 msgstr "어뮬의 설정 파일에 기초하여 설정 파일을 생성합니다."
 
-#: src/ExternalConnector.cpp:460
+#: src/ExternalConnector.cpp:458
 msgid "Print program version."
 msgstr "프로그램 버전을 출력합니다."
 
