@@ -695,6 +695,7 @@ Version 2.2.1 - ???
 
 	xor:
 		* Fix for crash on amuled when starting up kademlia.
+		* Fix for crash when creating backing bitmaps for graphs.
 
 	ycjhi:
 		* fix for OSX aMule-CVS-20071115 fails in loading libixml and
@@ -708,7 +709,7 @@ Version 2.2.1 - ???
 		* Mark James (http://www.famfamfam.com) for providing the
 		  flags icons and mischamajskij for his unknown icon
 		* deloun and mischamajskij for their work on aMule skins and
-		icons for aMule
+		  icons for aMule
 		* Bun Bun, for being there to tell me I'm not stupid.
 
 --------------------------------------------------------------------------------

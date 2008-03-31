@@ -346,8 +346,8 @@ void COScopeCtrl::OnSize(wxSizeEvent& WXUNUSED(evt))
 	// InvalidateCtrl to be based on the y axis scaling
 	m_rectPlot.SetLeft(20); 
 	m_rectPlot.SetTop(10);
-	m_rectPlot.SetRight(std::max<unsigned>(m_rectPlot.GetLeft() + 1, m_rectClient.GetRight() - 40));
-	m_rectPlot.SetBottom(std::max<unsigned>(m_rectPlot.GetTop() + 1, m_rectClient.GetBottom() - 25));
+	m_rectPlot.SetRight(std::max<int>(m_rectPlot.GetLeft() + 1, m_rectClient.GetRight() - 40));
+	m_rectPlot.SetBottom(std::max<int>(m_rectPlot.GetTop() + 1, m_rectClient.GetBottom() - 25));
 	
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned iTrend=0; iTrend<nTrends; ++iTrend, ++ppds) {
