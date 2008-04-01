@@ -235,7 +235,7 @@ private:
 //  wxListLineData (internal)
 //-----------------------------------------------------------------------------
 
-WX_DECLARE_EXPORTED_LIST(wxListItemData, wxListItemDataList);
+WX_DECLARE_LIST(wxListItemData, wxListItemDataList);
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(wxListItemDataList)
 
@@ -367,7 +367,7 @@ private:
                            int width);
 };
 
-WX_DECLARE_EXPORTED_OBJARRAY(wxListLineData, wxListLineDataArray);
+WX_DECLARE_OBJARRAY(wxListLineData, wxListLineDataArray);
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(wxListLineDataArray)
 
@@ -480,7 +480,7 @@ private:
 //  wxListMainWindow (internal)
 //-----------------------------------------------------------------------------
 
-WX_DECLARE_EXPORTED_LIST(wxListHeaderData, wxListHeaderDataList);
+WX_DECLARE_LIST(wxListHeaderData, wxListHeaderDataList);
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(wxListHeaderDataList)
 

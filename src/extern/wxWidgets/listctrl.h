@@ -32,20 +32,20 @@ namespace MuleExtern {
 // constants
 // ----------------------------------------------------------------------------
 
-extern WXDLLEXPORT_DATA(const wxChar) wxListCtrlNameStr[];
+extern const wxChar wxListCtrlNameStr[];
 
 //-----------------------------------------------------------------------------
 // internal classes
 //-----------------------------------------------------------------------------
 
-class WXDLLEXPORT wxListHeaderWindow;
-class WXDLLEXPORT wxListMainWindow;
+class wxListHeaderWindow;
+class wxListMainWindow;
 
 //-----------------------------------------------------------------------------
 // wxListCtrl
 //-----------------------------------------------------------------------------
 
-class WXDLLEXPORT wxGenericListCtrl: public wxControl
+class wxGenericListCtrl: public wxControl
 {
 public:
 
@@ -254,7 +254,7 @@ protected:
     virtual wxListItemAttr *OnGetItemAttr(long item) const;
 
     // it calls our OnGetXXX() functions
-    friend class WXDLLEXPORT wxListMainWindow;
+    friend class wxListMainWindow;
 
 private:
     // create the header window
@@ -276,7 +276,7 @@ private:
  * the run-time information.
  */
 
-class WXDLLEXPORT wxListCtrl: public wxGenericListCtrl
+class wxListCtrl: public wxGenericListCtrl
 {
 public:
     wxListCtrl() {}
