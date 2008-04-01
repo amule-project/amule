@@ -454,6 +454,7 @@ Version 2.2.1 - ???
 		* Fix problems with collections using CRLF line endings on *nix
 		* Fix compilation for gcc 4.3
 		* Dirty compilation fix for gcc 4.3
+		* Fix compilation on OpenBSD (and probably other Unix)
 
 
 	Xaignar:

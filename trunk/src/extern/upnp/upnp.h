@@ -38,6 +38,7 @@
 #include "ixml.h"
 
 #ifndef __WIN32__
+#include <sys/types.h>
 #include <netinet/in.h>
 #else
 #include <winsock.h>
