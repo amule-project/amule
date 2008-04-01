@@ -353,15 +353,14 @@ bool CMuleCollection::OpenText(const std::string &File)
 	std::string line;
 	std::ifstream infile;
 	
-	infile.open(File.c_str(), std::ifstream::in);
+	infile.open(File.c_str(), std::ifstream::in|std::ifstream::binary);
 	if (!infile.is_open()) {
 		return false;
 	}
 	
-	while (getline(infile, line)) {
-// Strip \r to avoid a problem with \r\n line ending on Unix
+	while (getline(infile, line, (char)10 /* LF */)) {
 		int last = line.size()-1;
-		if ((1 > last) && ('\r' == line.at(last))) {
+		if ((1 < last) && ((char)13 /* CR */ == line.at(last))) {
 			line.erase(last);
 		}
 		if (AddLink(line)) {

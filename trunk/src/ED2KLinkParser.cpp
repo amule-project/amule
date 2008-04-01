@@ -25,7 +25,7 @@
 
 const int versionMajor		= 1;
 const int versionMinor		= 4;
-const int versionRevision	= 0;
+const int versionRevision	= 1;
 
 #include <cstdlib>
 #include <sstream>
@@ -284,7 +284,7 @@ void writeLink( const string& uri, const string& config_dir )
 
 	file << uri << std::endl;
 
-	std::cout << "Link succesfully queued." << std::endl;
+	std::cout << "Link successfully queued." << std::endl;
 }
 
 
