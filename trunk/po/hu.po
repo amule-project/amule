@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-03-31 03:30+0200\n"
-"PO-Revision-Date: 2008-02-25 22:50+0100\n"
+"PO-Revision-Date: 2008-03-31 21:56+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -272,47 +272,47 @@ msgstr "Többszörös kiválasztás"
 
 #: src/UserEvents.h:60
 msgid "Download completed"
-msgstr ""
+msgstr "Letöltés befejezve"
 
 #: src/UserEvents.h:63 src/UserEvents.h:103
 msgid "The full path to the file."
-msgstr ""
+msgstr "A fájl teljes elérési útja."
 
 #: src/UserEvents.h:67
 msgid "The name of the file without path component."
-msgstr ""
+msgstr "A fájlnév könyvtár komponens nélkül."
 
 #: src/UserEvents.h:71
 msgid "The ed2k hash of the file."
-msgstr ""
+msgstr "A fájl ed2k hash-e."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
-msgstr ""
+msgstr "Fájlméret bájtokban."
 
 #: src/UserEvents.h:79
 msgid "Cumulative download activity time."
-msgstr ""
+msgstr "Összegzett letöltési aktivitás idő."
 
 #: src/UserEvents.h:84
 msgid "New chat session started"
-msgstr ""
+msgstr "Új beszélgetés kezdődött"
 
 #: src/UserEvents.h:87
 msgid "Message sender."
-msgstr ""
+msgstr "Üzenetküldő."
 
 #: src/UserEvents.h:92
 msgid "Out of space"
-msgstr ""
+msgstr "Helyhiány"
 
 #: src/UserEvents.h:95
 msgid "Disk partition."
-msgstr ""
+msgstr "Lemez partíció."
 
 #: src/UserEvents.h:100
 msgid "Error on completion"
-msgstr ""
+msgstr "Hiba a befejezésnél"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
@@ -1379,7 +1379,7 @@ msgstr "Alapértelmezett"
 
 #: src/Preferences.cpp:628
 msgid "Albanian"
-msgstr ""
+msgstr "Albán"
 
 #: src/Preferences.cpp:629
 msgid "Arabic"
@@ -1451,7 +1451,7 @@ msgstr "Görög"
 
 #: src/Preferences.cpp:646
 msgid "Hebrew"
-msgstr ""
+msgstr "Héber"
 
 #: src/Preferences.cpp:647
 msgid "Hungarian"
@@ -2162,19 +2162,19 @@ msgstr "Parancs végrehajtása a(z) '%s' eseménynél"
 
 #: src/PrefsUnifiedDlg.cpp:1092
 msgid "Enable command execution on core"
-msgstr ""
+msgstr "Parancs futtatása a magon"
 
 #: src/PrefsUnifiedDlg.cpp:1100
 msgid "Core command:"
-msgstr ""
+msgstr "Mag parancs:"
 
 #: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on GUI"
-msgstr ""
+msgstr "Parancs futtatása a grafikus felületen"
 
 #: src/PrefsUnifiedDlg.cpp:1117
 msgid "GUI command:"
-msgstr ""
+msgstr "GUI parancs:"
 
 #: src/PrefsUnifiedDlg.cpp:1126
 msgid "The following variables will be replaced:"
@@ -2230,6 +2230,8 @@ msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
+"Nem kapcsolódhatsz egy kiadott változathoz akármilyen SVN változattal! "
+"*sóhaj* lehetséges összeomlás megelőzve"
 
 #: src/ExternalConn.cpp:289
 msgid "Authentication failed."
@@ -3198,7 +3200,7 @@ msgstr "HIBA a fájlrész mentésénél: %s (%s ==> %s)"
 #: src/PartFile.cpp:914
 #, c-format
 msgid "Could not retrieve length of '%s' - using %s file."
-msgstr ""
+msgstr "Nem tudom megállapítani a '%s' hosszát - a %s fájlt használom."
 
 #: src/PartFile.cpp:922
 #, c-format
@@ -3449,6 +3451,8 @@ msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
+"Hiba: A biztonsági másolatot nem lehet betölteni. Keressen a http://forum."
+"amule.org oldalon .part.met helyreállítási megoldásokat."
 
 #: src/DownloadQueue.cpp:173
 msgid "No part files found"
@@ -3513,11 +3517,11 @@ msgstr ""
 
 #: src/TextClient.cpp:343
 msgid "Processing by hash: "
-msgstr ""
+msgstr "Feldolgozás hash alapján: "
 
 #: src/TextClient.cpp:358
 msgid "Processing by filename: "
-msgstr ""
+msgstr "Feldolgozás fájlnév alapján: "
 
 #: src/TextClient.cpp:381
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
@@ -3669,6 +3673,14 @@ msgid ""
 "Example: 'statistics 5' will show only the top 5 versions for each client "
 "type.\n"
 msgstr ""
+"Opcionálisan egy szám a 0-255 intervallumban megadható paraméterként ennek "
+"a\n"
+"parancsnak, ami megmondja, hány elemet jelenítsen meg az ügyfél verzók "
+"közül.\n"
+"Nullát megadva vagy elhagyva a paramétert, a jelentése \"bármennyit\".\n"
+"\n"
+"Példa: 'statistics 5' csak a leggyakoribb 5 verziót mutatja minden ügyfél\n"
+"típusból.\n"
 
 #: src/TextClient.cpp:849
 msgid "Shutdown aMule."
@@ -3708,6 +3720,12 @@ msgid ""
 "that server only. The IP must be a dotted decimal IPv4 address,\n"
 "or a resolvable DNS name."
 msgstr ""
+"Kapcsolódás minden hálózathoz, ami engedélyezve van a beállításokban.\n"
+"Opcionálisan megadható egy kiszolgáló cím IP:Port formában, ekkor csak ahhoz "
+"a\n"
+"kiszolgálóhoz kapcsolódik. Az IP-nek egy egy hagyományos IPv4 címnek, vagy "
+"egy\n"
+"érvényes DNS névnek kell lennie."
 
 #: src/TextClient.cpp:863
 msgid "Connect to ED2K only."
@@ -3748,6 +3766,16 @@ msgid ""
 "\n"
 "The magnet link must contain the ed2k hash and file length.\n"
 msgstr ""
+"A hozzáadandó ed2k hivatkozás lehet:\n"
+"*) egy fájl hivatkozás (ed2k://|file|...), ami a letöltési listához adódik,\n"
+"*) egy kiszolgáló hivatkozás (ed2k://|server|...), ami a kiszolgáló "
+"listához\n"
+"   adódik,\n"
+"*) vagy egy kiszolgáló-lista hivatkozás, ekkor minden kiszolgáló a listáról "
+"a\n"
+"   kiszolgáló-listához adódik.\n"
+"\n"
+"A magnet hivatkozásnak tartalmaznia kell az ed2k hash-t és a fájl hosszát.\n"
 
 #: src/TextClient.cpp:880
 msgid "Set a preference value."
@@ -4007,7 +4035,7 @@ msgstr "Az új ügyfélazonosító %u"
 
 #: src/ServerSocket.cpp:419
 msgid "WARNING: You have received Low-ID!"
-msgstr ""
+msgstr "FIGYELEM: Alacsony azonosítót (LowID) kaptál!"
 
 #: src/ServerSocket.cpp:420
 msgid "\tMost likely this is because you're behind a firewall or router."
@@ -4993,13 +5021,15 @@ msgstr "Ez engedélyezi/tiltja a tálca ikont."
 
 #: src/muuli_wdr.cpp:1665
 msgid "Minimize to Tray Icon"
-msgstr ""
+msgstr "Minimalizálás a rendszer tálcára"
 
 #: src/muuli_wdr.cpp:1666
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
 msgstr ""
+"Engedélyezve az aMule a rendszer tálcára fogja magát minimalizálni a tálca "
+"helyett."
 
 #: src/muuli_wdr.cpp:1671
 msgid "Tooltip Delay Time in secs"
@@ -5090,6 +5120,8 @@ msgid ""
 "Note: These values are\n"
 "only used for statistics."
 msgstr ""
+"Ezeket az értékeket csak\n"
+"a statisztikához használom."
 
 #: src/muuli_wdr.cpp:1835
 msgid "Standard client TCP Port:"
@@ -6337,6 +6369,11 @@ msgid ""
 "\n"
 "Exiting...\n"
 msgstr ""
+"Jelszó nélkül nem lehet csatlakozni.\n"
+"Meg kell adnia egy jelszót vagy a konfig fájlban,\n"
+"vagy a parancssorban, vagy beírni amikor kérem.\n"
+"\n"
+"Kilépés...\n"
 
 #: src/ExternalConnector.cpp:428
 msgid "Show this help text."
@@ -6405,6 +6442,11 @@ msgid ""
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
+"HIBA: az aMule démon nem használható, ha a külső kapcsolatok le vannak "
+"tiltva. A Külső Kapcsolatok engedélyezéséhez használd a normál aMule-t, vagy "
+"indítsd az amuled-t a --ec-config opcióval, vagy állítsd az "
+"\"AcceptExternalConnections\" kulcs értékét 1-re a ~/.aMule/amule.conf "
+"fájlban."
 
 #: src/amuled.cpp:681
 #, c-format
@@ -6876,7 +6918,7 @@ msgstr ""
 #: src/amule.cpp:919
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
-msgstr ""
+msgstr "Nem tudom a portokat a megadott címhez (%s) rendelni."
 
 #: src/amule.cpp:946
 #, c-format
