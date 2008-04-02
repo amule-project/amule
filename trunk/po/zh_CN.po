@@ -2,14 +2,14 @@
 # Copyright (C) YEAR Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # Chen Nan, 2004.
-# xiaoqiao <29551030@qq.com>, 2007.
+# xiaoqiao <29551030@qq.com>, 2007, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 03:30+0200\n"
-"PO-Revision-Date: 2008-03-23 03:00+0800\n"
+"POT-Creation-Date: 2008-04-02 17:00+0200\n"
+"PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -267,47 +267,47 @@ msgstr "多选"
 
 #: src/UserEvents.h:60
 msgid "Download completed"
-msgstr ""
+msgstr "下载已完成"
 
 #: src/UserEvents.h:63 src/UserEvents.h:103
 msgid "The full path to the file."
-msgstr ""
+msgstr "文件的完整路径。"
 
 #: src/UserEvents.h:67
 msgid "The name of the file without path component."
-msgstr ""
+msgstr "不包含路径部分的文件名。"
 
 #: src/UserEvents.h:71
 msgid "The ed2k hash of the file."
-msgstr ""
+msgstr "文件的ed2k校验码。"
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
-msgstr ""
+msgstr "文件大小（字节）。"
 
 #: src/UserEvents.h:79
 msgid "Cumulative download activity time."
-msgstr ""
+msgstr "累计下载活动时间。"
 
 #: src/UserEvents.h:84
 msgid "New chat session started"
-msgstr ""
+msgstr "新的聊天对话已启动"
 
 #: src/UserEvents.h:87
 msgid "Message sender."
-msgstr ""
+msgstr "消息发送者。"
 
 #: src/UserEvents.h:92
 msgid "Out of space"
-msgstr ""
+msgstr "磁盘空间不足"
 
 #: src/UserEvents.h:95
 msgid "Disk partition."
-msgstr ""
+msgstr "磁盘分区。"
 
 #: src/UserEvents.h:100
 msgid "Error on completion"
-msgstr ""
+msgstr "最后阶段出错"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
@@ -496,7 +496,7 @@ msgid "Kademlia: search keyword too short"
 msgstr "Kad：搜索关键词太短"
 
 #: src/kademlia/routing/RoutingZone.cpp:141
-#, fuzzy, c-format
+#, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "读取 %u 个 Kad 联系人"
@@ -1441,7 +1441,7 @@ msgstr "希腊语"
 
 #: src/Preferences.cpp:646
 msgid "Hebrew"
-msgstr ""
+msgstr "希伯来语"
 
 #: src/Preferences.cpp:647
 msgid "Hungarian"
@@ -3074,7 +3074,7 @@ msgstr "已要求其它文件 (A4AF)"
 msgid "Downloads (%i)"
 msgstr "下载（%i）"
 
-#: src/DownloadListCtrl.cpp:2242
+#: src/DownloadListCtrl.cpp:2239
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3083,11 +3083,11 @@ msgstr ""
 "请在设置中设置您喜欢用的视频播放器，\n"
 "同时，aMule 会尝试使用 mplayer，并在每次预览时你都会看到这个提示"
 
-#: src/DownloadListCtrl.cpp:2243
+#: src/DownloadListCtrl.cpp:2240
 msgid "File preview"
 msgstr "文件预览"
 
-#: src/DownloadListCtrl.cpp:2279
+#: src/DownloadListCtrl.cpp:2276
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "错误：无法运行媒体播放器！命令为：%s"
