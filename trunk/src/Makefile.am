@@ -93,6 +93,7 @@ libmuleappcore_a_SOURCES = \
 	DeadSourceList.cpp \
 	Scanner.cpp \
 	Parser.cpp \
+	PlatformSpecific.cpp \
 	kademlia/utils/LittleEndian.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
@@ -404,6 +405,7 @@ noinst_HEADERS = \
 		Parser.hpp \
 		PartFileConvert.h \
 		PartFile.h \
+		PlatformSpecific.h \
 		Preferences.h \
 		PrefsUnifiedDlg.h \
 		Proxy.h \
