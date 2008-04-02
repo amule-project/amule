@@ -359,7 +359,8 @@ Version 2.2.1 - ???
 		* Kad users/files also updated on the Kad Tab.
 		* Backed out a now obsolete change made in CommentDialogLst.cpp
 		  (comments are not related to remote filenames anymore).
-		* Fix for crash on receiving zero-sized UDP packet
+		* Fix for crash on receiving zero-sized UDP packet.
+		* Sparse partfiles on Windows.
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction

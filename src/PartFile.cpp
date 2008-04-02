@@ -62,6 +62,7 @@
 #include "ThreadTasks.h"	// Needed for CHashingTask/CCompletionTask
 #include "GuiEvents.h"		// Needed for Notify_*
 #include "DataToText.h"		// Needed for OriginToText()
+#include "PlatformSpecific.h"	// Needed for CreateSparseFile()
 
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Search.h"
@@ -277,8 +278,7 @@ void CPartFile::CreatePartFile()
 	m_gaplist.push_back(gap);
 	
 	CPath partPath = m_fullname.RemoveExt();
-	if (m_hpartfile.Create(partPath, true)) {
-		m_hpartfile.Close();
+	if (PlatformSpecific::CreateSparseFile(partPath, GetFileSize())) {
 
 		if(!m_hpartfile.Open(partPath, CFile::read_write)) {
 			AddLogLineM(false,_("ERROR: Failed to open partfile)"));
