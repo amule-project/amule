@@ -360,6 +360,7 @@ Version 2.2.1 - ???
 		* Backed out a now obsolete change made in CommentDialogLst.cpp
 		  (comments are not related to remote filenames anymore).
 		* Fix for crash on receiving zero-sized UDP packet.
+		* New BarShader code.
 		* Sparse partfiles on Windows.
 
 	Tiziano Müller:

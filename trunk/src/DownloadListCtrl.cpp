@@ -2193,32 +2193,29 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 
 	uint64 uEnd = 0;
 	for ( uint64 i = 0; i < partStatus.size(); i++ ) {
-		if ( partStatus[i]) {
-			if (PARTSIZE*(i+1u) > reqfile->GetFileSize()) {
-				uEnd = reqfile->GetFileSize();
-			} else {
-				uEnd = PARTSIZE*(i+1u);
-			}
-			
-			uint32 color = 0;
-			if ( reqfile->IsComplete(PARTSIZE*i,PARTSIZE*(i+1)-1)) {
-				color = crBoth;
-			} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
-					source->GetLastBlockOffset() < uEnd &&
-					source->GetLastBlockOffset() >= PARTSIZE*i) {
-				color = crPending;
-			} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-				color = crNextPending;
-			} else {
-				color = crClientOnly;
-			}
+		uint64 uStart = PARTSIZE * i;
+		uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
 
-			if ( source->GetRequestFile()->IsStopped() ) {
-				color = DarkenColour( color, 2 );
-			}
-
-			s_StatusBar.FillRange( PARTSIZE*i, uEnd, color );
+		uint32 color = 0;
+		if (!partStatus[i]) {
+			color = crNeither;
+		} else if ( reqfile->IsComplete(uStart, uEnd)) {
+			color = crBoth;
+		} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
+				source->GetLastBlockOffset() <= uEnd &&
+				source->GetLastBlockOffset() >= uStart) {
+			color = crPending;
+		} else if (gettingParts.GetChar((uint16)i) == 'Y') {
+			color = crNextPending;
+		} else {
+			color = crClientOnly;
 		}
+
+		if ( source->GetRequestFile()->IsStopped() ) {
+			color = DarkenColour( color, 2 );
+		}
+
+		s_StatusBar.FillRange(uStart, uEnd, color);
 	}
 	// fill the rest (if partStatus is empty)
 	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, crNeither);
