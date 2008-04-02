@@ -60,7 +60,6 @@ Version 2.2.1 - ???
 		* Added support for magnet ed2k links.
 		* Improve cross compilation
 		* Fixed segmentation fault in amuled
-		* Proper restoration of startup locale after checking available locales
 		* Don't allow sources coming from .seeds to be cleaned up for a while
 		  after startup
 		* Improve accuracy for ticks
@@ -79,6 +78,27 @@ Version 2.2.1 - ???
 		* Cross-compilation fixes.
 		* Some little optimizations on configure.
 		* Re-categorized a number of strings whether they need translation or not.
+		* Added plurals support.
+		* Removed a number of unused leftover files from the repositiory.
+		* Various fixes for wxMSW builds.
+		* Made 'make dist' work.
+		* Fixed 'make check' for subdirectory builds.
+		* Fixed manpages install/uninstall script to handle correctly
+		  subdirectory builds and respect the --program-transform-* switches.
+		* Fixed a minor bug in the denoiser script.
+		* Fixed several portability issues in scripts.
+		* Fixed keeping the preferences in sync with tray icon existance.
+		* Removed a check that wasn't ever valid.
+		* Fixed #651: Wrong expansion in statistics.
+		* Fixed #1082: Events in preferences have layout problems.
+		* Fixed debug categories being added multiple times to the checklistbox.
+		* Fixed translations on MSW.
+		* Languages are not sorted anymore, but displayed in their own name.
+		* Fixed a number of gcc4 warnings.
+		* Fixed amuleweb compilation on MSW.
+		* Added checks for a POSIX compliant regex library.
+		* Fixed #1289: amule fails to build on non glibc systems (e.g. uclibc)
+		* Hungarian translation.
 
 	Hermit:
 		* Patch for amulecmd history which ensures that when the same command
