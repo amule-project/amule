@@ -51,7 +51,7 @@ CContact::~CContact()
 	theStats::RemoveKadNode();
 }
 
-CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, const CUInt128 &target)
+CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, uint8 version, const CUInt128 &target)
 :
 m_clientID(clientID),
 m_distance(target),
@@ -62,13 +62,12 @@ m_type(3),
 m_lastTypeSet(time(NULL)),
 m_expires(0),
 m_created(time(NULL)),
-m_inUse(0)
+m_inUse(0),
+m_uVersion(version)
 {
 	m_distance.XOR(clientID);
 	wxASSERT(udpPort);
 	theStats::AddKadNode();
-	//#warning Kry KAD2 - Update the version on code.
-	m_uVersion = 1;
 }
 
 const wxString CContact::GetClientIDString(void) const
