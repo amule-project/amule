@@ -87,8 +87,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_CHECKBOX(IDC_ENFORCE_PO_INCOMING,	PrefsUnifiedDlg::OnCheckBoxChange)
 
 	EVT_BUTTON(ID_PREFS_OK_TOP,		PrefsUnifiedDlg::OnOk)
-	EVT_BUTTON(ID_OK,			PrefsUnifiedDlg::OnOk)
-
 	EVT_BUTTON(ID_PREFS_CANCEL_TOP,		PrefsUnifiedDlg::OnCancel)
 
 	// Browse buttons
