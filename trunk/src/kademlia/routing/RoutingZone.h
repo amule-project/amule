@@ -72,7 +72,7 @@ public:
 	bool OnBigTimer(void);
 	void OnSmallTimer(void);
 
-	bool Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+	bool Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version);
 	void Remove(const CUInt128 &id);
 	void SetAlive(uint32 ip, uint16 port);
 
@@ -106,7 +106,7 @@ private:
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
 	void Init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
 
-	bool AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type);
+	bool AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version);
 
 	/**
 	 * Zone pair is an array of two. Either both entries are null, which

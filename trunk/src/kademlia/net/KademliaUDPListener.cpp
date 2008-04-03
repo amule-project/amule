@@ -209,6 +209,7 @@ void CKademliaUDPListener::ProcessPacket(const byte* data, uint32 lenData, uint3
 	}
 }
 
+// Used only for Kad1.0
 void CKademliaUDPListener::AddContact( const byte *data, uint32 lenData, uint32 ip, uint16 port, uint16 tport)
 {
 	CMemFile bio((byte*)data, lenData);
@@ -220,7 +221,7 @@ void CKademliaUDPListener::AddContact( const byte *data, uint32 lenData, uint32 
 	} else {
 		tport = bio.ReadUInt16();
 	}
-	byte type = bio.ReadUInt8();
+	bio.ReadUInt8();
 	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
 	// Look for existing client
 	CContact *contact = CKademlia::GetRoutingZone()->GetContact(id);
@@ -231,11 +232,13 @@ void CKademliaUDPListener::AddContact( const byte *data, uint32 lenData, uint32 
 	} else {
 		if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
 			// Ignore stated ip and port, use the address the packet came from
-			CKademlia::GetRoutingZone()->Add(id, ip, port, tport, type);
+			CKademlia::GetRoutingZone()->Add(id, ip, port, tport, 0);
 		}
 	}
 }
+//#warning Kad2.0
 
+// Used only for Kad1.0
 void CKademliaUDPListener::AddContacts( const byte *data, uint32 lenData, uint16 numContacts)
 {
 	CMemFile bio((byte*)data, lenData );
@@ -246,13 +249,14 @@ void CKademliaUDPListener::AddContacts( const byte *data, uint32 lenData, uint16
 		ip = wxUINT32_SWAP_ALWAYS(ip);
 		uint16 port = bio.ReadUInt16();
 		uint16 tport = bio.ReadUInt16();
-		byte type = bio.ReadUInt8();
+		bio.ReadUInt8();
 		//AddDebugLogLineM(false, logKadMain, wxT("Adding contact(s) with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
 		if (IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),port)) {
-			routingZone->Add(id, ip, port, tport, type);
+			routingZone->Add(id, ip, port, tport, 0);
 		}
 	}
 }
+//#warning Kad2.0
 
 //KADEMLIA_BOOTSTRAP_REQ
 void CKademliaUDPListener::ProcessBootstrapRequest (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
@@ -425,6 +429,7 @@ void CKademliaUDPListener::ProcessKademliaRequest (const byte *packetData, uint3
 }
 
 //KADEMLIA_RES
+// Used in Kad1.0 only
 void CKademliaUDPListener::ProcessKademliaResponse (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
@@ -462,10 +467,10 @@ void CKademliaUDPListener::ProcessKademliaResponse (const byte *packetData, uint
 		uint32 contactIP = bio.ReadUInt32();
 		uint16 contactPort = bio.ReadUInt16();
 		uint16 tport = bio.ReadUInt16();
-		byte type = bio.ReadUInt8();
+		bio.ReadUInt8();
 		if(::IsGoodIPPort(wxUINT32_SWAP_ALWAYS(contactIP),contactPort)) {
-			routingZone->Add(id, contactIP, contactPort, tport, type);
-			results->push_back(new CContact(id, contactIP, contactPort, tport, target));
+			routingZone->Add(id, contactIP, contactPort, tport, 0);
+			results->push_back(new CContact(id, contactIP, contactPort, tport, 0, target));
 		}
 	}
 
@@ -1020,6 +1025,7 @@ void CKademliaUDPListener::ProcessPublishNotesResponse (const byte *packetData, 
 }
 
 //KADEMLIA_FIREWALLED_REQ
+// Used by Kad1.0 and Kad2.0
 void CKademliaUDPListener::ProcessFirewalledRequest (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
@@ -1031,7 +1037,7 @@ void CKademliaUDPListener::ProcessFirewalledRequest (const byte *packetData, uin
 	uint16 tcpport = bio.ReadUInt16();
 
 	CUInt128 zero((uint32)0);
-	CContact contact(zero, ip, port, tcpport, zero);
+	CContact contact(zero, ip, port, tcpport, 0, zero);
 	theApp->clientlist->RequestTCP(&contact);
 
 	// Send response
@@ -1078,6 +1084,7 @@ void CKademliaUDPListener::ProcessFirewalledResponse2 (const byte *WXUNUSED(pack
 }
 
 //KADEMLIA_FINDBUDDY_REQ
+// Used by Kad1.0 and Kad2.0
 void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
@@ -1086,7 +1093,10 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 	}
 
 	if( CKademlia::GetPrefs()->GetFirewalled() ) {
-		//We are firewalled but somehow we still got this packet.. Don't send a response..
+		// We are firewalled but somehow we still got this packet.. Don't send a response..
+		return;
+	} else if (theApp->clientlist->GetBuddyStatus() == Connected) {
+		// we already have a buddy
 		return;
 	}
 
@@ -1096,7 +1106,7 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 	uint16 tcpport = bio.ReadUInt16();
 
 	CUInt128 zero((uint32)0);
-	CContact contact(userID, ip, port, tcpport, zero);
+	CContact contact(userID, ip, port, tcpport, 0, zero);
 	theApp->clientlist->IncomingBuddy(&contact, &BuddyID);
 
 	CMemFile packetdata(34);
@@ -1109,6 +1119,7 @@ void CKademliaUDPListener::ProcessFindBuddyRequest (const byte *packetData, uint
 }
 
 //KADEMLIA_FINDBUDDY_RES
+// Used by Kad1.0 and Kad2.0
 void CKademliaUDPListener::ProcessFindBuddyResponse (const byte *packetData, uint32 lenPacket, uint32 ip, uint16 port)
 {
 	// Verify packet is expected size
@@ -1120,14 +1131,14 @@ void CKademliaUDPListener::ProcessFindBuddyResponse (const byte *packetData, uin
 	CMemFile bio(packetData, lenPacket);
 	CUInt128 check = bio.ReadUInt128();
 	check.XOR(CUInt128(true));
-	if( CKademlia::GetPrefs()->GetKadID().CompareTo(check)) {
+	if (CKademlia::GetPrefs()->GetKadID().CompareTo(check)) {
 		return;
 	}
 	CUInt128 userID = bio.ReadUInt128();
 	uint16 tcpport = bio.ReadUInt16();
 
 	CUInt128 zero((uint32)0);
-	CContact contact(userID, ip, port, tcpport, zero);
+	CContact contact(userID, ip, port, tcpport, 0, zero);
 	theApp->clientlist->RequestBuddy(&contact);
 }
 

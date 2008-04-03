@@ -125,16 +125,32 @@ void CRoutingZone::ReadFile(void)
 		uint32 numContacts = 0;
 		CFile file;
 		if (CPath::FileExists(m_filename) && file.Open(m_filename, CFile::read)) {
+			// Get how many contacts in the saved list.
+			// NOTE: Older clients put the number of contacts here...
+			//       Newer clients always have 0 here to prevent older clients from reading it.
 			numContacts = file.ReadUInt32();
+			uint32 fileVersion = 0;
+			if (numContacts == 0) {
+				fileVersion = file.ReadUInt32();
+				if (fileVersion == 1) {
+					numContacts = file.ReadUInt32();
+				}
+			}
 			for (uint32 i = 0; i < numContacts; i++) {
 				CUInt128 id = file.ReadUInt128();
 				uint32 ip = file.ReadUInt32();
 				uint16 udpPort = file.ReadUInt16();
 				uint16 tcpPort = file.ReadUInt16();
-				byte type = file.ReadUInt8();
+				uint8 contactVersion = 0;
+				byte type = 0;
+				if (fileVersion == 1) {
+					contactVersion = file.ReadUInt8();
+				} else {
+					type = file.ReadUInt8();
+				}
 				if(IsGoodIPPort(wxUINT32_SWAP_ALWAYS(ip),udpPort)) {
 					if( type < 4) {
-						Add(id, ip, udpPort, tcpPort, type);
+						Add(id, ip, udpPort, tcpPort, contactVersion);
 					}
 				}
 			}
@@ -157,6 +173,10 @@ void CRoutingZone::WriteFile(void)
 		if (file.Open(m_filename, CFile::write)) {
 			ContactList contacts;
 			GetBootstrapContacts(&contacts, 200);
+			// Start file with 0 to prevent older clients from reading it.
+			file.WriteUInt32(0);
+			// Now tag it with a version which happens to be 1.
+			file.WriteUInt32(1);
 			file.WriteUInt32((uint32)std::min((int)contacts.size(), CONTACT_FILE_LIMIT));
 			ContactList::const_iterator it;
 			for (it = contacts.begin(); it != contacts.end(); ++it) {
@@ -166,7 +186,7 @@ void CRoutingZone::WriteFile(void)
 				file.WriteUInt32(c->GetIPAddress());
 				file.WriteUInt16(c->GetUDPPort());
 				file.WriteUInt16(c->GetTCPPort());
-				file.WriteUInt8(c->GetType());
+				file.WriteUInt8(c->GetVersion());
 				if (count == CONTACT_FILE_LIMIT) {
 					break;
 				}
@@ -191,7 +211,7 @@ bool CRoutingZone::CanSplit(void) const
 	return false;
 }
 
-bool CRoutingZone::Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type)
+bool CRoutingZone::Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version)
 {
 	
 	//AddDebugLogLineM(false, logKadMain, wxT("Adding a contact (routing) with ip ") + Uint32_16toStringIP_Port(wxUINT32_SWAP_ALWAYS(ip),port));
@@ -203,16 +223,16 @@ bool CRoutingZone::Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport,
 	CUInt128 distance(me);
 	distance.XOR(id);
 
-	return AddByDistance(distance,id,ip,port,tport,type);
+	return AddByDistance(distance,id,ip,port,tport,version);
 }
 
-bool CRoutingZone::AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, byte type) {
+bool CRoutingZone::AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version) {
 
 	bool retVal = false;
 	CContact *c = NULL;
 
 	if (!IsLeaf()) {
-		retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, type);
+		retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, version);
 	} else {
 		c = m_bin->GetContact(id);
 		if (c != NULL) {
@@ -221,14 +241,14 @@ bool CRoutingZone::AddByDistance(const CUInt128 &distance, const CUInt128 &id, u
 			c->SetTCPPort(tport);
 			retVal = true;
 		} else if (m_bin->GetRemaining() > 0) {
-			c = new CContact(id, ip, port, tport);
+			c = new CContact(id, ip, port, tport, version);
 			retVal = m_bin->Add(c,false);
 		} else if (CanSplit()) {
 			Split();
-			retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, type);
+			retVal = m_subZones[distance.GetBitNumber(m_level)]->AddByDistance(distance, id, ip, port, tport, version);
 		}/* else {
 			Merge();
-			c = new CContact(id, ip, port, tport);
+			c = new CContact(id, ip, port, tport, version);
 			retVal = m_bin->Add(c,false);
 		}*/
 

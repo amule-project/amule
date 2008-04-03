@@ -51,7 +51,7 @@ class CContact
 public:
 	~CContact();
 	CContact(const CUInt128 &clientID,
-		uint32 ip, uint16 udpPort, uint16 tcpPort,
+		uint32 ip, uint16 udpPort, uint16 tcpPort, uint8 version,
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
 	const CUInt128& GetClientID(void) const { return m_clientID; };
@@ -72,7 +72,7 @@ public:
 	void SetUDPPort(uint16 port);
 
 	byte GetType(void) const;
-	
+
 	void UpdateType();
 	void CheckingType();
 	
