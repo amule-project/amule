@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 03:30+0200\n"
+"POT-Creation-Date: 2008-04-03 03:30+0200\n"
 "PO-Revision-Date: 2008-03-30 23:34+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -3086,7 +3086,7 @@ msgstr "התקבלה בקשה עבור קובץ אחר"
 msgid "Downloads (%i)"
 msgstr "הורדות (%i)"
 
-#: src/DownloadListCtrl.cpp:2242
+#: src/DownloadListCtrl.cpp:2239
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3096,11 +3096,11 @@ msgstr ""
 "בינתיים אימיול ינסה להשתמש עם mplayer ואתה תקבל את ההודעה הזאת בכל פעם שתצפה "
 "בתקדימון"
 
-#: src/DownloadListCtrl.cpp:2243
+#: src/DownloadListCtrl.cpp:2240
 msgid "File preview"
 msgstr "תקדימון לקובץ"
 
-#: src/DownloadListCtrl.cpp:2279
+#: src/DownloadListCtrl.cpp:2276
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "שגיאה: הרצת נגן הסרטים נכשלה! הפקודה: '%s'"

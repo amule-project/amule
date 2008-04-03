@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 03:30+0200\n"
+"POT-Creation-Date: 2008-04-03 03:30+0200\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -3142,7 +3142,7 @@ msgstr "Atsiunčiamas kitas failas"
 msgid "Downloads (%i)"
 msgstr "Atsiuntimai (%i)"
 
-#: src/DownloadListCtrl.cpp:2242
+#: src/DownloadListCtrl.cpp:2239
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3152,11 +3152,11 @@ msgstr ""
 "Nurodykite parinktyse pageidaujamą vi parinktysedeo grotuvą.\n"
 "Tuo tarpu aMule bandys naudoti mplayer grotuvą ir kaskart rodys šį pranešimą."
 
-#: src/DownloadListCtrl.cpp:2243
+#: src/DownloadListCtrl.cpp:2240
 msgid "File preview"
 msgstr "Failo peržiūra"
 
-#: src/DownloadListCtrl.cpp:2279
+#: src/DownloadListCtrl.cpp:2276
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "KLAIDA: Nepavyko paleisti išorinio vaizdo grotuvo!"
