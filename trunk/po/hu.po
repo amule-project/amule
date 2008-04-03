@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 03:30+0200\n"
+"POT-Creation-Date: 2008-04-03 03:30+0200\n"
 "PO-Revision-Date: 2008-03-31 21:56+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -3110,7 +3110,7 @@ msgstr "Másik fájl kérve"
 msgid "Downloads (%i)"
 msgstr "Letöltések (%i)"
 
-#: src/DownloadListCtrl.cpp:2242
+#: src/DownloadListCtrl.cpp:2239
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3120,11 +3120,11 @@ msgstr ""
 "Addig is, az aMule az mplayer-t fogja megpróbálni használni, és minden "
 "előnézetnél megkapod ezt a figyelmeztetést."
 
-#: src/DownloadListCtrl.cpp:2243
+#: src/DownloadListCtrl.cpp:2240
 msgid "File preview"
 msgstr "Fájl előnézet"
 
-#: src/DownloadListCtrl.cpp:2279
+#: src/DownloadListCtrl.cpp:2276
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "HIBA: Külső média-lejátszó indítása sikertelen! Parancs: `%s'"

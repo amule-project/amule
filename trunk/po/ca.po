@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-31 03:30+0200\n"
+"POT-Creation-Date: 2008-04-03 03:30+0200\n"
 "PO-Revision-Date: 2007-12-14 00:06+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -3156,7 +3156,7 @@ msgstr "S'ha preguntat per un altre fitxer"
 msgid "Downloads (%i)"
 msgstr "Baixades (%i)"
 
-#: src/DownloadListCtrl.cpp:2242
+#: src/DownloadListCtrl.cpp:2239
 #, fuzzy
 msgid ""
 "Please set your preferred video player on preferences.\n"
@@ -3167,11 +3167,11 @@ msgstr ""
 "Mentrestant, l'aMule intentarà usar l'mplayer i rebreu aquest avís a cada "
 "previsualització"
 
-#: src/DownloadListCtrl.cpp:2243
+#: src/DownloadListCtrl.cpp:2240
 msgid "File preview"
 msgstr "Previsualització"
 
-#: src/DownloadListCtrl.cpp:2279
+#: src/DownloadListCtrl.cpp:2276
 #, fuzzy, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "ERROR: No s'ha pogut executar un reproductor multimèdia extern!"
