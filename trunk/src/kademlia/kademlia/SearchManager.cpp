@@ -258,7 +258,7 @@ void CSearchManager::GetWords(const wxString& str, WordList *words)
 {
 	int len = 0;
 	wxString current_word;
-	wxStringTokenizer tkz(str, InvKadKeywordChars);
+	wxStringTokenizer tkz(str, GetInvalidKeywordChars());
 	while (tkz.HasMoreTokens()) {
 		current_word = tkz.GetNextToken();
 		

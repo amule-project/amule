@@ -559,7 +559,7 @@ SSearchTerm* CKademliaUDPListener::CreateSearchExpressionTree(CMemFile& bio, int
 		pSearchTerm->astr = new wxArrayString;
 
 		// pre-tokenize the string term
-		wxStringTokenizer token(str,InvKadKeywordChars,wxTOKEN_DEFAULT );
+		wxStringTokenizer token(str, CSearchManager::GetInvalidKeywordChars(),wxTOKEN_DEFAULT );
 		while (token.HasMoreTokens()) {
 			wxString strTok(token.GetNextToken());
 			if (!strTok.IsEmpty()) {

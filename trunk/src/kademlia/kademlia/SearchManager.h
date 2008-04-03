@@ -45,8 +45,6 @@ there client on the eMule forum..
 
 class CMemFile;
 
-static const wxChar* InvKadKeywordChars = wxT(" ()[]{}<>,._-!?:;\\/");
-
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
@@ -99,6 +97,9 @@ public:
 	static bool IsNodeSearch(const CUInt128 &target);
 
 	static bool AlreadySearchingFor(const CUInt128 &target);
+
+	static const wxChar* GetInvalidKeywordChars() { return wxT(" ()[]{}<>,._-!?:;\\/"); }
+
 private:
 
 	static void FindNode(const CUInt128 &id);
