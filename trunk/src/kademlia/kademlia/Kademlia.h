@@ -78,7 +78,7 @@ public:
 	static bool					IsFirewalled(void);
 	static void					RecheckFirewalled(void);
 	static uint32				GetKademliaUsers(void);
-	static size_t				GetKademliaFiles(void);
+	static uint32				GetKademliaFiles(void);
 	static uint32				GetTotalStoreKey(void);
 	static uint32				GetTotalStoreSrc(void);
 	static uint32				GetTotalStoreNotes(void);
