@@ -132,10 +132,10 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 		fileName = files[i].GetFullName();
 		
 		CPartFile* toadd = new CPartFile();
-		bool result = toadd->LoadPartFile(path, fileName);
+		bool result = (toadd->LoadPartFile(path, fileName) != 0);
 		if (!result) {
 			// Try from backup
-			result = toadd->LoadPartFile(path, fileName, true);
+			result = (toadd->LoadPartFile(path, fileName, true) != 0);
 		}
 		
 		if (result && !IsFileExisting(toadd->GetFileHash())) {
@@ -230,7 +230,7 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	CPartFile* newfile = NULL;
 	try {
 		newfile = new CPartFile(toadd);
-	} catch (const CInvalidPacket& e) {
+	} catch (const CInvalidPacket& WXUNUSED(e)) {
 		AddDebugLogLineM(true, logDownloadQueue, wxT("Search-result contained invalid tags, could not add"));
 	}
 	

@@ -344,7 +344,7 @@ void CUpDownClient::ProcessFileInfo(const CMemFile* data, const CPartFile* file)
 		throw wxString(wxT("ERROR: Wrong file ID (ProcessFileInfo; m_reqfile!=file)"));
 	}	
 
-	m_clientFilename = data->ReadString(GetUnicodeSupport());
+	m_clientFilename = data->ReadString((GetUnicodeSupport() != utf8strNone));
 			
 	// 26-Jul-2003: removed requesting the file status for files <= PARTSIZE for better compatibility with ed2k protocol (eDonkeyHybrid).
 	// if the remote client answers the OP_REQUESTFILENAME with OP_REQFILENAMEANSWER the file is shared by the remote client. if we
@@ -507,7 +507,7 @@ bool CUpDownClient::AddRequestForAnotherFile(CPartFile* file)
 
 bool CUpDownClient::DeleteFileRequest(CPartFile* file)
 {
-	return m_A4AF_list.erase( file );
+	return (m_A4AF_list.erase( file ) > 0);
 }
 
 void CUpDownClient::DeleteAllFileRequests()

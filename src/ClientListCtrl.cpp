@@ -242,7 +242,7 @@ void CClientListCtrl::OnRightClick(wxMouseEvent& event)
 			CUpDownClient *client = reinterpret_cast<CUpDownClient *>(GetItemData( index ));
 
 			banned = client->IsBanned();
-			validIP = client->GetIP();
+			validIP = (client->GetIP() != 0);
 			isfriend = client->IsFriend();
 			hasdisabledsharedfiles = client->HasDisabledSharedFiles();
 		}

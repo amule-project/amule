@@ -803,7 +803,7 @@ void CamuleDlg::ShowTransferRate()
 		SetTitle(theApp->m_FrameTitle + UpDownSpeed);
 	}
 
-	wxASSERT((bool)m_wndTaskbarNotifier == thePrefs::UseTrayIcon());
+	wxASSERT((m_wndTaskbarNotifier != NULL) == thePrefs::UseTrayIcon());
 	if (m_wndTaskbarNotifier) {
 		// set trayicon-icon
 		int percentDown = (int)ceil((kBpsDown*100) / thePrefs::GetMaxGraphDownloadRate());
@@ -1347,7 +1347,7 @@ void CamuleDlg::Create_Toolbar(bool orientation)
 	wxASSERT(current == m_wndToolbar);
 
 	if (current) {
-		bool oldorientation = (current->GetWindowStyle() & wxTB_VERTICAL);
+		bool oldorientation = ((current->GetWindowStyle() & wxTB_VERTICAL) == wxTB_VERTICAL);
 		if (oldorientation != orientation) {
 			current->Destroy();
 			SetToolBar(NULL); // Remove old one if present

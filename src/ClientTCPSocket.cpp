@@ -791,7 +791,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			CMemFile message_file(buffer, size);
 
-			wxString message = message_file.ReadString(m_client->GetUnicodeSupport());
+			wxString message = message_file.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
 			if (IsMessageFiltered(message, m_client)) {
 				AddLogLineM( true, CFormat(_("Message filtered from '%s' (IP:%s)")) % m_client->GetUserName() % m_client->GetFullIP());
 			} else {
@@ -929,7 +929,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			}
 			CMemFile data(buffer, size);
 										
-			wxString strReqDir = data.ReadString(m_client->GetUnicodeSupport());
+			wxString strReqDir = data.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
 			if (thePrefs::CanSeeShares()==vsfaEverybody || (thePrefs::CanSeeShares()==vsfaFriends && m_client->IsFriend())) {
 				AddLogLineM( true, CFormat(_("User %s (%u) requested your sharedfiles-list for directory %s -> accepted")) % m_client->GetUserName() % m_client->GetUserIDHybrid() % strReqDir);
 				wxASSERT( data.GetPosition() == data.GetLength() );
@@ -986,7 +986,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 				CMemFile data(buffer, size);
 				uint32 uDirs = data.ReadUInt32();
 				for (uint32 i = 0; i < uDirs; i++){
-					wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
+					wxString strDir = data.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
 					AddLogLineM( true, CFormat( _("User %s (%u) shares directory %s") )
 						% m_client->GetUserName()
 						% m_client->GetUserIDHybrid()
@@ -1014,7 +1014,7 @@ bool CClientTCPSocket::ProcessPacket(const byte* buffer, uint32 size, uint8 opco
 			
 			theStats::AddDownOverheadOther(size);
 			CMemFile data(buffer, size);
-			wxString strDir = data.ReadString(m_client->GetUnicodeSupport());
+			wxString strDir = data.ReadString((m_client->GetUnicodeSupport() != utf8strNone));
 
 			if (m_client->GetFileListRequested() > 0){
 				AddLogLineM( true, CFormat( _("User %s (%u) sent sharedfiles-list for directory %s") )

@@ -185,7 +185,7 @@ void CFriendListCtrl::LoadList()
 	#ifndef CLIENT_GUI
 	for(FriendList::iterator it = theApp->friendlist->m_FriendList.begin(); it != theApp->friendlist->m_FriendList.end(); ++it) {
 		CFriend* core_friend = *it;
-		AddFriend(core_friend->GetUserHash(), core_friend->GetName(), core_friend->GetIP(), core_friend->GetPort(), core_friend->GetLinkedClient(), core_friend->HasFriendSlot(), false);
+		AddFriend(core_friend->GetUserHash(), core_friend->GetName(), core_friend->GetIP(), core_friend->GetPort(), (core_friend->GetLinkedClient() != NULL), core_friend->HasFriendSlot(), false);
 	}
 	#endif
 	
@@ -214,7 +214,7 @@ CDlgFriend* CFriendListCtrl::FindFriend(const CMD4Hash& userhash, uint32 dwIP, u
 
 bool CFriendListCtrl::IsAlreadyFriend( uint32 dwLastUsedIP, uint32 nLastUsedPort )
 {
-	return FindFriend( CMD4Hash(), dwLastUsedIP, nLastUsedPort );
+	return (FindFriend( CMD4Hash(), dwLastUsedIP, nLastUsedPort ) != NULL);
 }
 
 void CFriendListCtrl::OnRightClick(wxMouseEvent& event)

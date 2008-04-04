@@ -433,7 +433,7 @@ int CSearchListCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 
 	// Modifies the result, 1 for ascending, -1 for decending
 	int modifier = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	bool alternate = (sortData & CMuleListCtrl::SORT_ALT);
+	bool alternate = (sortData & CMuleListCtrl::SORT_ALT) != 0;
 
 	// Decide if which should files we should sort by.
 	wxUIntPtr parent1 = reinterpret_cast<wxUIntPtr>(file1->GetParent());
@@ -577,7 +577,7 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
 
 		// These should only be enabled for single-selections
-		bool enable = GetSelectedItemCount();
+		bool enable = (GetSelectedItemCount() == 1);
 		menu.Enable(MP_GETED2KLINK, enable);
 		menu.Enable(MP_MENU_CATS, (theApp->glob_prefs->GetCatCount() > 1));
 

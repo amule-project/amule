@@ -319,7 +319,7 @@ void CUpDownClient::CreateNextBlockPackage()
 		AddDebugLogLineM(false, logClient, wxT("Client '") + GetUserName() + wxT("' caused error while creating packet (") + error + wxT(") - disconnecting client"));
 	} catch (const CIOFailureException& error) {
 		AddDebugLogLineM(true, logClient, wxT("IO failure while reading requested file: ") + error.what());
-	} catch (const CEOFException& error) {
+	} catch (const CEOFException& WXUNUSED(error)) {
 		AddDebugLogLineM(true, logClient, GetClientFullInfo() + wxT(" requested file-data at an invalid position - disconnecting"));
 	}
 	

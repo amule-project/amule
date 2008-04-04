@@ -172,7 +172,7 @@ bool CProxyStateMachine::Start(const wxIPaddress &peerAddress, wxSocketClient *p
 	try {
 		const wxIPV4address &peer = dynamic_cast<const wxIPV4address &>(peerAddress);
 		m_peerAddress = new amuleIPV4Address(peer);
-	} catch (const std::bad_cast& e) {
+	} catch (const std::bad_cast& WXUNUSED(e)) {
 		// Should process other types of wxIPAddres before quitting
 		AddDebugLogLineM(false, logProxy, wxT("(1)bad_cast exception!"));
 		wxASSERT(false);
@@ -1374,7 +1374,7 @@ wxDatagramSocket &CDatagramSocketProxy::RecvFrom(
 					amuleIPV4Address &a = dynamic_cast<amuleIPV4Address &>(addr);
 					a.Hostname( PeekUInt32( m_proxyTCPSocket.GetBuffer()+4 ) );
 					a.Service( ENDIAN_NTOHS( RawPeekUInt16( m_proxyTCPSocket.GetBuffer()+8) ) );
-				} catch (const std::bad_cast& e) {
+				} catch (const std::bad_cast& WXUNUSED(e)) {
 					AddDebugLogLineM(false, logProxy,
 						wxT("(2)bad_cast exception!"));
 					wxASSERT(false);

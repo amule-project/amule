@@ -1012,7 +1012,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		// Only enable the Swap option for A4AF sources
 		m_menu->Enable(MP_CHANGE2FILE, (item->GetType() == A4AF_SOURCE));
 		// We need a valid IP if we are to message the client
-		m_menu->Enable(MP_SENDMESSAGE, client->GetIP());
+		m_menu->Enable(MP_SENDMESSAGE, (client->GetIP() != 0));
 		
 		m_menu->Enable(MP_SHOWLIST, !client->HasDisabledSharedFiles());
 		

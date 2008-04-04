@@ -94,7 +94,7 @@ public:
 	uint32	GetFailedCount() const		{return failedcount;} 
 	void	SetID(uint32 newip);
 	const wxString &GetDynIP() const	{return dynip;}
-	bool	HasDynIP() const		{return dynip.Length();}
+	bool	HasDynIP() const		{return !dynip.IsEmpty() ;}
 	void	SetDynIP(const wxString& newdynip);
 	
 	uint32	GetLastPingedTime() const				{return lastpingedtime;}
@@ -143,13 +143,13 @@ public:
 
 	uint32	GetServerKeyUDPIP() const				{return m_dwIPServerKeyUDP;}
 	
-	bool	GetUnicodeSupport() const				{return GetTCPFlags() & SRV_TCPFLG_UNICODE;}
-	bool	GetRelatedSearchSupport() const			{return GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH;}
-	bool	SupportsLargeFilesTCP() const			{return GetTCPFlags() & SRV_TCPFLG_LARGEFILES;}
-	bool	SupportsLargeFilesUDP() const			{return GetUDPFlags() & SRV_UDPFLG_LARGEFILES;}	
-	bool	SupportsObfuscationUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION)!=0;}
-	bool	SupportsObfuscationTCP() const			{return GetObfuscationPortTCP() != 0 && ((GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION)!=0 || (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION)!=0);}
-	bool	SupportsGetSourcesObfuscation() const	{return (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION)!=0;} // mapped to TCPFLAG_TCPOBFU
+	bool	GetUnicodeSupport() const				{return (GetTCPFlags() & SRV_TCPFLG_UNICODE) != 0;}
+	bool	GetRelatedSearchSupport() const			{return (GetTCPFlags() & SRV_TCPFLG_RELATEDSEARCH) != 0;}
+	bool	SupportsLargeFilesTCP() const			{return (GetTCPFlags() & SRV_TCPFLG_LARGEFILES) != 0;}
+	bool	SupportsLargeFilesUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_LARGEFILES) != 0;}	
+	bool	SupportsObfuscationUDP() const			{return (GetUDPFlags() & SRV_UDPFLG_UDPOBFUSCATION) != 0;}
+	bool	SupportsObfuscationTCP() const			{return (GetObfuscationPortTCP() != 0) && (((GetUDPFlags() & SRV_UDPFLG_TCPOBFUSCATION) != 0) || ((GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) != 0));}
+	bool	SupportsGetSourcesObfuscation() const	{return (GetTCPFlags() & SRV_TCPFLG_TCPOBFUSCATION) != 0;} // mapped to TCPFLAG_TCPOBFU
 	
 	const wxString& GetAuxPortsList() const	{return m_auxPorts;}
 	void	SetAuxPortsList(const wxString& val)	{m_auxPorts = val;}
@@ -183,7 +183,7 @@ private:
 	uint32		m_uDescReqChallenge;
 	uint8		lastdescpingedcout;
 	TagPtrList		m_taglist;
-	uint8		staticservermember;
+	bool		staticservermember;
 	wxString	m_strVersion;
 	uint32		m_uTCPFlags;
 	uint32		m_uUDPFlags;
