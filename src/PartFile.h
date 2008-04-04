@@ -153,9 +153,9 @@ public:
 	size_t	GetSourceCount() const		{ return m_SrcList.size(); }
 	size_t	GetSrcA4AFCount() const		{ return m_A4AFsrclist.size(); }
 #else
-	size_t m_source_count, m_a4af_source_count;
-	size_t	GetSourceCount() const		{ return m_source_count; }
-	size_t	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
+	uint16	m_source_count, m_a4af_source_count;
+	uint16	GetSourceCount() const		{ return m_source_count; }
+	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
