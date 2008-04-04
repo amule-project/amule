@@ -78,7 +78,7 @@ wxString TruncateFilename(const CPath& filename, size_t length, bool isFilePath)
 			path.Clear();
 		} else {
 			// Minus 6 for "[...]" + separator
-			int pathlen = length - file.Length() - 6;
+			int pathlen = (int)(length - file.Length() - 6);
 			
 			if ( pathlen > 0 ) {
 				path = wxT("[...]") + path.Right( pathlen );

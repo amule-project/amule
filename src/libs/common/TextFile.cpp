@@ -132,8 +132,8 @@ wxString CTextFile::GetNextLine(const wxMBConv& conv)
 
 bool CTextFile::WriteLine(const wxString& line, const wxMBConv& conv)
 {
-	wxCHECK_MSG(m_file.IsOpened(), wxEmptyString, wxT("Trying to read from closed file."));
-	wxCHECK_MSG((m_mode == write), wxEmptyString, wxT("Trying to read from non-readable file."));
+	wxCHECK_MSG(m_file.IsOpened(), false, wxT("Trying to read from closed file."));
+	wxCHECK_MSG((m_mode == write), false, wxT("Trying to read from non-readable file."));
 
 	// Ensures that use of newlines/carriage-returns matches the OS
 	wxString result = wxTextBuffer::Translate(line);
