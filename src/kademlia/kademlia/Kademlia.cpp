@@ -258,10 +258,10 @@ uint32 CKademlia::GetKademliaUsers(void)
 	return 0;
 }
 
-size_t CKademlia::GetKademliaFiles(void)
+uint32 CKademlia::GetKademliaFiles(void)
 {
 	if( instance && instance->m_prefs ) {
-		return instance->m_prefs->GetKademliaFiles();
+		return (uint32)instance->m_prefs->GetKademliaFiles();
 	}
 	return 0;
 }

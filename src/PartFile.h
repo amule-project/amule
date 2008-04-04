@@ -150,8 +150,8 @@ public:
 	double	GetPercentCompleted() const	{ return percentcompleted; }
 
 #ifndef CLIENT_GUI
-	size_t	GetSourceCount() const		{ return m_SrcList.size(); }
-	size_t	GetSrcA4AFCount() const		{ return m_A4AFsrclist.size(); }
+	uint16	GetSourceCount() const		{ return (uint16)m_SrcList.size(); }
+	uint16	GetSrcA4AFCount() const		{ return (uint16)m_A4AFsrclist.size(); }
 #else
 	uint16	m_source_count, m_a4af_source_count;
 	uint16	GetSourceCount() const		{ return m_source_count; }
