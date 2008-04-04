@@ -307,7 +307,7 @@ CECTag::CECTag(ec_tagname_t name, double data) : m_tagName(name), m_dynamic(true
 {
 	std::ostringstream double_str;
 	double_str << data;
-	m_dataLen = strlen(double_str.str().c_str()) + 1;
+	m_dataLen = (ec_taglen_t)strlen(double_str.str().c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
 		memcpy((void *)m_tagData, double_str.str().c_str(), m_dataLen);
@@ -560,7 +560,8 @@ bool CECTag::ReadChildren(CECSocket& socket)
 
 bool CECTag::WriteChildren(CECSocket& socket) const
 {
-    uint16 tmp = m_tagList.size();
+	wxASSERT(m_tagList.size() < 0xFFFF);
+    uint16 tmp = (uint16)m_tagList.size();
 	if (!socket.WriteNumber(&tmp, sizeof(tmp))) return false;
 	if (!m_tagList.empty()) {
 		for (TagList::size_type i=0; i<m_tagList.size(); i++) {
@@ -748,7 +749,7 @@ double CECTag::GetDoubleData(void) const
 
 void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
 {
-	m_dataLen = strlen(data.c_str()) + 1;
+	m_dataLen = (ec_taglen_t)strlen(data.c_str()) + 1;
 	m_tagData = malloc(m_dataLen);
 	if (m_tagData != NULL) {
 		memcpy((void *)m_tagData, data.c_str(), m_dataLen);
@@ -772,7 +773,7 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
  */
 
 /*!
- * \fn CECTag *CECTag::GetTagByIndex(unsigned int index) const
+ * \fn CECTag *CECTag::GetTagByIndex(size_t index) const
  *
  * \brief Finds the indexth child tag.
  *
@@ -782,7 +783,7 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
  */
 
 /*!
- * \fn CECTag *CECTag::GetTagByIndexSafe(unsigned int index) const
+ * \fn CECTag *CECTag::GetTagByIndexSafe(size_t index) const
  *
  * \brief Finds the indexth child tag.
  *
@@ -792,7 +793,7 @@ void CECTag::ConstructStringTag(ec_tagname_t /*name*/, const std::string& data)
  */
 
 /*!
- * \fn uint16 CECTag::GetTagCount(void) const
+ * \fn size_t CECTag::GetTagCount(void) const
  *
  * \brief Returns the number of child tags.
  *

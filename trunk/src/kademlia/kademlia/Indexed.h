@@ -121,8 +121,7 @@ public:
 	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
 	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
 	bool AddLoad(const CUInt128& keyID, uint32 time);
-	uint32 GetIndexedCount() {return m_Keyword_map.size();}
-	uint32 GetFileKeyCount() {return m_Keyword_map.size();}
+	size_t GetFileKeyCount() {return m_Keyword_map.size();}
 	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32 ip, uint16 port);
 	void SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port);
 	void SendValidNoteResult(const CUInt128& keyID, const CUInt128& CheckID, uint32 ip, uint16 port);

@@ -47,7 +47,7 @@ public:
 	
  	int InternalGetLastError();
  
-	uint32_t InternalLastCount() { return wxSocketClient::LastCount(); };
+	size_t InternalLastCount() { return wxSocketClient::LastCount(); };
 	bool InternalWaitOnConnect(long secs = -1, long msecs = 0) { return wxSocketClient::WaitOnConnect(secs,msecs); };
 	bool InternalWaitForWrite(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForRead(secs,msecs); };
 	bool InternalWaitForRead(long secs = -1, long msecs = 0) { return wxSocketClient::WaitForWrite(secs,msecs); };
@@ -55,8 +55,8 @@ public:
 	bool InternalError() { return wxSocketClient::Error(); }
 	void InternalClose() { wxSocketClient::Close(); }
 	
-	void InternalRead(void* ptr, uint32_t len) { wxSocketClient::Read(ptr, len); };
-	void InternalWrite(const void* ptr, uint32_t len) { wxSocketClient::Write(ptr, len); };
+	void InternalRead(void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Read(ptr, (wxUint32)len); };
+	void InternalWrite(const void* ptr, size_t len) { wxASSERT(len < 0xFFFFFFFF); wxSocketClient::Write(ptr, (wxUint32)len); };
 	
 	bool InternalIsConnected() { return wxSocketClient::IsConnected(); }
 	void InternalDestroy() { wxSocketClient::Destroy(); }
