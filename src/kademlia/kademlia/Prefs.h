@@ -95,7 +95,7 @@ public:
 	uint32	GetKademliaUsers() const			{return m_kademliaUsers;}
 	void	SetKademliaUsers(uint32 val)		{m_kademliaUsers = val;}
 
-	uint32	GetKademliaFiles() const			{return m_kademliaFiles;}
+	size_t	GetKademliaFiles() const			{return m_kademliaFiles;}
 	void	SetKademliaFiles();
 
 	bool	GetPublish() const					{return m_Publish;}
@@ -115,7 +115,7 @@ private:
 	uint32		m_recheckip;
 	uint32		m_firewalled;
 	uint32		m_kademliaUsers;
-	uint32		m_kademliaFiles;
+	size_t		m_kademliaFiles;
 	uint8		m_totalFile;
 	uint8		m_totalStoreSrc;
 	uint8		m_totalStoreKey;
