@@ -57,8 +57,8 @@ public:
 	short	GetFilePriorityByID(const CMD4Hash& filehash);
 	const CKnownFile* GetFileByIndex(unsigned int index) const;
 	void	CreateOfferedFilePacket(CKnownFile* cur_file, CMemFile* files, CServer* pServer, CUpDownClient* pClient);
-	uint32	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
-	uint32  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	size_t	GetCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
+	size_t  GetFileCount()	{ wxMutexLocker lock(list_mut); return m_Files_map.size(); }
 	void	CopyFileList(std::vector<CKnownFile*>& out_list);
 	void	UpdateItem(CKnownFile* toupdate);
 	unsigned	AddFilesFromDirectory(const CPath& directory);

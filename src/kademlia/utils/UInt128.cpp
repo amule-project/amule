@@ -51,7 +51,6 @@ static char THIS_FILE[]=__FILE__;
 
 ////////////////////////////////////////
 using namespace Kademlia;
-using namespace CryptoPP;
 ////////////////////////////////////////
 
 CUInt128::CUInt128()
@@ -131,7 +130,7 @@ CUInt128& CUInt128::SetValueBE(const byte *valueBE)
 
 CUInt128& CUInt128::SetValueRandom(void)
 {
-	AutoSeededRandomPool rng;
+	CryptoPP::AutoSeededRandomPool rng;
 	byte randomBytes[16];
 	rng.GenerateBlock(randomBytes, 16);
 	SetValueBE( randomBytes );

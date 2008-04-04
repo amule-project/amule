@@ -207,8 +207,8 @@ void CPrefs::SetKademliaFiles()
 	//There is no real way to know how many files are in the Kad network..
 	//So we first try to see how many files per user are in the ED2K network..
 	//If that fails, we use a set value based on previous tests..
-	uint32 nServerAverage = theApp->serverlist->GetAvgFile();
-	uint32 nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
+	size_t nServerAverage = theApp->serverlist->GetAvgFile();
+	size_t nKadAverage = Kademlia::CKademlia::GetIndexed()->GetFileKeyCount();
 
 #ifdef __DEBUG__
 	wxString method;

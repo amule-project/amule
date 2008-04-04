@@ -30,24 +30,21 @@
 #include "MD4Hash.h"
 #include <common/StringFunctions.h>
 #include "NetworkFunctions.h"
+#include "OtherStructs.h"
 
 #include <map>
 
 
 typedef std::vector<bool> BitVector;
 
-
 class CPartFile;
 class CClientTCPSocket;
 class CClientCredits;
 class CPacket;
 class CFriend;
-class Requested_Block_Struct;
 class CKnownFile;
-class Pending_Block_Struct;
 class CMemFile;
 class CMemFile;
-class Requested_File_Struct;
 class CAICHHash;
 
 
@@ -214,7 +211,7 @@ public:
 	uint32		GetVersion() const		{ return m_nClientVersion;}
 	uint8		GetMuleVersion() const		{ return m_byEmuleVersion;}
 	bool		ExtProtocolAvailable() const	{ return m_bEmuleProtocol;}
-	bool		IsEmuleClient()	const		{ return m_byEmuleVersion;}
+	bool		IsEmuleClient()	const		{ return (m_byEmuleVersion > 0);}
 	bool		IsBanned() const;
 	const wxString&	GetClientFilename() const	{ return m_clientFilename; }
 	uint16		GetUDPPort() const		{ return m_nUDPPort; }
@@ -360,7 +357,7 @@ public:
 						// or the socket might be not able to send
 	void		SetLastUpRequest()		{ m_dwLastUpRequest = ::GetTickCount(); }
 	uint32		GetLastUpRequest() const 	{ return m_dwLastUpRequest; }
-	uint16		GetUpPartCount() const 		{ return m_upPartStatus.size(); }
+	size_t		GetUpPartCount() const 		{ return m_upPartStatus.size(); }
 
 
 	//download

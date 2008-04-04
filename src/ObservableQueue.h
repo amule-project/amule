@@ -215,7 +215,7 @@ public:
 	/**
 	 * Overloaded notification function.
 	 */
-	void ReceiveNotification( const ObservableType*, const EventType& e );
+	virtual void ReceiveNotification( const ObservableType*, const EventType& e );
 
 	
 	/**
