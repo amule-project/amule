@@ -150,12 +150,12 @@ public:
 	double	GetPercentCompleted() const	{ return percentcompleted; }
 
 #ifndef CLIENT_GUI
-	uint16	GetSourceCount() const		{ return m_SrcList.size(); }
-	uint16	GetSrcA4AFCount() const		{ return m_A4AFsrclist.size(); }
+	size_t	GetSourceCount() const		{ return m_SrcList.size(); }
+	size_t	GetSrcA4AFCount() const		{ return m_A4AFsrclist.size(); }
 #else
-	uint16 m_source_count, m_a4af_source_count;
-	uint16	GetSourceCount() const		{ return m_source_count; }
-	uint16	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
+	size_t m_source_count, m_a4af_source_count;
+	size_t	GetSourceCount() const		{ return m_source_count; }
+	size_t	GetSrcA4AFCount() const		{ return m_a4af_source_count; }
 #endif
 	uint16	GetTransferingSrcCount() const	{ return transferingsrc; }
 	uint16  GetNotCurrentSourcesCount()	const	{ return m_notCurrentSources; };
@@ -399,7 +399,7 @@ public:
 	void SetLocalSrcRequestQueued(bool value) 	{ m_localSrcReqQueued = value; }
 
 	void AddA4AFSource(CUpDownClient* src)		{ m_A4AFsrclist.insert(src); }
-	bool RemoveA4AFSource(CUpDownClient* src)	{ return m_A4AFsrclist.erase(src); }
+	bool RemoveA4AFSource(CUpDownClient* src)	{ return (m_A4AFsrclist.erase(src) > 0); }
 
 	uint32 GetLastSearchTime() const			{ return m_lastsearchtime; }
 	void SetLastSearchTime(uint32 time)			{ m_lastsearchtime = time; }

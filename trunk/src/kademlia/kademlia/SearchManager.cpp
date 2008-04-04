@@ -251,12 +251,12 @@ void CSearchManager::FindNodeComplete(const CUInt128 &id)
 
 bool CSearchManager::AlreadySearchingFor(const CUInt128 &target)
 {
-	return m_searches.count(target);
+	return m_searches.count(target) > 0;
 }
 
 void CSearchManager::GetWords(const wxString& str, WordList *words)
 {
-	int len = 0;
+	size_t len = 0;
 	wxString current_word;
 	wxStringTokenizer tkz(str, GetInvalidKeywordChars());
 	while (tkz.HasMoreTokens()) {

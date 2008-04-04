@@ -48,7 +48,7 @@ public:
 	void		ServerStats();
 	void		ResetServerPos()	{m_serverpos = m_servers.begin();}
 	CServer*	GetNextServer(bool bOnlyObfuscated = false);
-	uint32		GetServerCount()	{return m_servers.size();}
+	size_t		GetServerCount()	{return m_servers.size();}
 	CServer*	GetServerByAddress(const wxString& address, uint16 port) const;
 	CServer*	GetServerByIP(uint32 nIP) const;
 	CServer*	GetServerByIPTCP(uint32 nIP, uint16 nPort) const;
