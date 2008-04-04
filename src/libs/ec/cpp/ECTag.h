@@ -114,18 +114,18 @@ class CECTag {
 
 		CECTag&		operator=(const CECTag& rhs);
 		bool		AddTag(const CECTag& tag);
-		const CECTag*	GetTagByIndex(unsigned int index) const
+		const CECTag*	GetTagByIndex(size_t index) const
 			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-		CECTag*		GetTagByIndex(unsigned int index)
+		CECTag*		GetTagByIndex(size_t index)
 			{ return ((index >= m_tagList.size()) ? NULL : &m_tagList[index]); }
-		const CECTag*	GetTagByIndexSafe(unsigned int index) const
+		const CECTag*	GetTagByIndexSafe(size_t index) const
 			{ const CECTag* result = GetTagByIndex(index); return result ? result : &s_theNullTag; }
 		
 		const CECTag*	GetTagByName(ec_tagname_t name) const;
 		CECTag*			GetTagByName(ec_tagname_t name);
 		const CECTag*	GetTagByNameSafe(ec_tagname_t name) const;
 		
-		uint16_t		GetTagCount(void) const { return m_tagList.size(); }
+		size_t		GetTagCount(void) const { return m_tagList.size(); }
 		const void *	GetTagData(void) const { 
 			EC_ASSERT(m_dataType == EC_TAGTYPE_CUSTOM);
 			return m_tagData; 

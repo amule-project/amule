@@ -595,7 +595,7 @@ bool CECSocket::ReadBuffer(void *buffer, size_t len)
 			// buffered by now
 			return false;
 		}
-		m_z.avail_out = len;
+		m_z.avail_out = (uInt)len;
 		m_z.next_out = (Bytef*)buffer;
 		int zerror = inflate(&m_z, Z_SYNC_FLUSH);
 		if ((zerror != Z_OK) && (zerror != Z_STREAM_END)) {
@@ -618,7 +618,7 @@ bool CECSocket::WriteBuffer(const void *buffer, size_t len)
 			unsigned int remain_in = EC_SOCKET_BUFFER_SIZE - m_z.avail_in;
 			if ( remain_in >= len ) {
 				memcpy(m_z.next_in+m_z.avail_in, rd_ptr, len);
-				m_z.avail_in += len;
+				m_z.avail_in += (uInt)len;
 				len = 0;
 			} else {
 				memcpy(m_z.next_in+m_z.avail_in, rd_ptr, remain_in);
@@ -722,9 +722,11 @@ void CECSocket::WritePacket(const CECPacket *packet)
 	FlushBuffers();
 
 	// now calculate actual size of data
-	packet_len = m_curr_tx_data->GetDataLength();
+	wxASSERT(m_curr_tx_data->GetDataLength() < 0xFFFFFFFF);
+	packet_len = (uint32_t)m_curr_tx_data->GetDataLength();
 	for(std::deque<CQueuedData*>::iterator i = m_output_queue.begin(); i != m_output_queue.end(); i++) {
-		packet_len += (*i)->GetDataLength();
+		wxASSERT(( packet_len + m_curr_tx_data->GetDataLength()) < 0xFFFFFFFF);
+		packet_len += (uint32_t)(*i)->GetDataLength();
 	}
 	// 4 flags and 4 length are not counted
 	packet_len -= 8;

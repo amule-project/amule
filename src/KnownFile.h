@@ -161,8 +161,7 @@ public:
 	virtual int8	GetFileRating() 		const { return m_iRating; }	
 	
 	bool	HasComment() const		{ return m_hasComment; }
-	bool	HasRating() const		{ return m_iUserRating; }
-	bool	HasBadRating() const		{ return (m_iUserRating == 1); }
+	bool	HasRating() const		{ return (m_iUserRating != 0); }
 	int8	UserRating() const 		{ return m_iUserRating; }
 	void	UpdateFileRatingCommentAvail();
 
@@ -208,7 +207,7 @@ public:
 	virtual void SetFileSize(uint64 nFileSize);
 
 	// local available part hashs
-	uint16	GetHashCount() const	{return m_hashlist.size();}
+	size_t	GetHashCount() const	{return m_hashlist.size();}
 	const CMD4Hash&	GetPartHash(uint16 part) const;
 
 	// nr. of part hashs according the file size wrt ED2K protocol
@@ -226,7 +225,7 @@ public:
 	bool	IsAutoUpPriority() const		{return m_bAutoUpPriority;}
 	void	SetAutoUpPriority(bool flag)	{m_bAutoUpPriority = flag;}
 	void	UpdateAutoUpPriority();
-	uint32	GetQueuedCount() const {return m_ClientUploadList.size();}
+	size_t	GetQueuedCount() const {return m_ClientUploadList.size();}
 
 	bool	LoadHashsetFromFile(const CFileDataIO* file, bool checkhash);
 	void	AddUploadingClient(CUpDownClient* client);

@@ -196,11 +196,11 @@ public:
 	bool WouldBlock() { return InternalGetLastError() == EC_ERROR_WOULDBLOCK; } 
 	bool GotError() { return InternalGetLastError() != EC_ERROR_NOERROR; } 
 
-	void SocketRead(void* ptr, uint32_t len) { InternalRead(ptr,len); }
-	void SocketWrite(const void* ptr, uint32_t len) { InternalWrite(ptr,len); }
+	void SocketRead(void* ptr, size_t len) { InternalRead(ptr,len); }
+	void SocketWrite(const void* ptr, size_t len) { InternalWrite(ptr,len); }
 	bool SocketError() { return InternalError() && GotError(); }
 
-	uint32_t GetLastCount() { return InternalLastCount(); }
+	size_t GetLastCount() { return InternalLastCount(); }
 	bool WaitSocketConnect(long secs = -1, long msecs = 0) { return InternalWaitOnConnect(secs,msecs); }
 	bool WaitSocketWrite(long secs = -1, long msecs = 0) { return InternalWaitForWrite(secs,msecs); }
 	bool WaitSocketRead(long secs = -1, long msecs = 0) { return InternalWaitForRead(secs,msecs); }	
@@ -229,7 +229,7 @@ public:
  	/* virtuals */
 		virtual bool InternalConnect(uint32_t ip, uint16_t port, bool wait) = 0;
 	
-		virtual uint32_t InternalLastCount() = 0;
+		virtual size_t InternalLastCount() = 0;
 		virtual bool InternalWaitOnConnect(long secs = -1, long msecs = 0) = 0;
 		virtual bool InternalWaitForWrite(long secs = -1, long msecs = 0) = 0;
 		virtual bool InternalWaitForRead(long secs = -1, long msecs = 0) = 0;
@@ -238,8 +238,8 @@ public:
 	
 		virtual void InternalClose() = 0;
 		virtual bool InternalError() = 0;
-		virtual void InternalRead(void* ptr, uint32_t len) = 0;
-		virtual void InternalWrite(const void* ptr, uint32_t len) = 0;
+		virtual void InternalRead(void* ptr, size_t len) = 0;
+		virtual void InternalWrite(const void* ptr, size_t len) = 0;
 		
 		virtual bool InternalIsConnected() = 0;
 		virtual void InternalDestroy() = 0;
@@ -274,7 +274,7 @@ public:
 	 */
 	void ToZlib(z_stream &m_z)
 	{
-		m_z.avail_in = GetUnreadDataLength();
+		m_z.avail_in = (uInt)GetUnreadDataLength();
 		m_z.next_in = m_rd_ptr;
 	}
 	

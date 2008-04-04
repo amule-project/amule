@@ -48,12 +48,12 @@ class CECPacket : protected CECEmptyTag {
 			}
 		}
 		
-		CECTag::AddTag;
-		CECTag::GetTagByIndex;
-		CECTag::GetTagByIndexSafe;
-		CECTag::GetTagByName;
-		CECTag::GetTagByNameSafe;
-		CECTag::GetTagCount;
+		using CECTag::AddTag;
+		using CECTag::GetTagByIndex;
+		using CECTag::GetTagByIndexSafe;
+		using CECTag::GetTagByName;
+		using CECTag::GetTagByNameSafe;
+		using CECTag::GetTagCount;
 
 		ec_opcode_t	GetOpCode(void) const { return m_opCode; }
 		uint32_t		GetPacketLength(void) const { return CECTag::GetTagLen(); }
