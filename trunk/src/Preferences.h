@@ -30,11 +30,11 @@
 #include "Color.h"			// Needed for COLORREF
 
 #include <wx/arrstr.h>			// Needed for wxArrayString
-#include <common/Path.h>	// Needed for CPath
 
 #include <map>
 
 #include "Proxy.h"
+#include "OtherStructs.h"
 
 class CPreferences;
 class wxConfigBase;
@@ -46,16 +46,6 @@ enum EViewSharedFilesAccess{
 	vsfaFriends = 1,
 	vsfaNobody = 2
 };
-
-struct Category_Struct
-{
-	CPath		path;
-	wxString	title;
-	wxString	comment;
-	uint32		color;
-	uint8		prio;
-};
-
 
 /**
  * Base-class for automatically loading and saving of preferences.

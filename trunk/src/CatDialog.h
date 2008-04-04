@@ -28,9 +28,8 @@
 
 #include <wx/dialog.h>		// Needed for wxDialog
 #include "Types.h"		// Needed for uint32
+#include "OtherStructs.h"
 
-
-class Category_Struct;
 class wxStaticBitmap;
 class wxBitmap;
 class wxColour;

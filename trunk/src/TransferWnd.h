@@ -28,9 +28,8 @@
 
 #include <wx/panel.h>	// Needed for wxPanel
 #include "Types.h"		// Needed for uint32
+#include "OtherStructs.h"
 
-
-class Category_Struct;
 class CClientListCtrl;
 class CDownloadListCtrl;
 class CMuleNotebook;
