@@ -239,7 +239,7 @@ void CSearchDlg::OnSearchPageChanged(wxNotebookEvent& WXUNUSED(evt))
 	if ( selection != -1 ) {
 		CSearchListCtrl *ctrl = dynamic_cast<CSearchListCtrl*>(m_notebook->GetPage(selection));
 
-		bool enable = ctrl->GetSelectedItemCount();
+		bool enable = (ctrl->GetSelectedItemCount() > 0);
 		FindWindow(IDC_SDOWNLOAD)->Enable( enable );
 
 		// set IDC_SEARCHNAME control to search text of currently selected tab

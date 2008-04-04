@@ -53,7 +53,7 @@
 
 void CServerConnect::TryAnotherConnectionrequest()
 {
-	if ( connectionattemps.size() < (( thePrefs::IsSafeServerConnectEnabled()) ? 1 : 2) ) {
+	if ( connectionattemps.size() < (unsigned)(( thePrefs::IsSafeServerConnectEnabled()) ? 1 : 2) ) {
 	
 		CServer*  next_server = used_list->GetNextServer(m_bTryObfuscated);
 

@@ -553,7 +553,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 	CECPacket *response = NULL;
 
 	// request can contain multiple files.
-	for (int i = 0; i < request->GetTagCount(); ++i) {
+	for (unsigned int i = 0; i < request->GetTagCount(); ++i) {
 		const CECTag *hashtag = request->GetTagByIndex(i);
 
 		wxASSERT(hashtag->GetTagName() == EC_TAG_PARTFILE);
@@ -754,7 +754,7 @@ CECPacket *Get_EC_Response_Search_Results(CObjTagMap &tagmap)
 CECPacket *Get_EC_Response_Search_Results_Download(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_STRINGS);
-	for (int i = 0;i < request->GetTagCount();i++) {
+	for (unsigned int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		uint8 category = tag->GetTagByIndexSafe(0)->GetInt();
@@ -820,7 +820,7 @@ CECPacket *Get_EC_Response_Search(const CECPacket *request)
 CECPacket *Get_EC_Response_Set_SharedFile_Prio(const CECPacket *request)
 {
 	CECPacket *response = new CECPacket(EC_OP_NOOP);
-	for (int i = 0;i < request->GetTagCount();i++) {
+	for (unsigned int i = 0;i < request->GetTagCount();i++) {
 		const CECTag *tag = request->GetTagByIndex(i);
 		CMD4Hash hash = tag->GetMD4Data();
 		uint8 prio = tag->GetTagByIndexSafe(0)->GetInt();
@@ -1071,7 +1071,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			}
 			break;
 		case EC_OP_ADD_LINK: 
-			for(int i = 0; i < request->GetTagCount();i++) {
+			for(unsigned int i = 0; i < request->GetTagCount();i++) {
 				const CECTag *tag = request->GetTagByIndex(i);
 				wxString link = tag->GetStringData();
 				int category = tag->GetTagByIndexSafe(0)->GetInt();

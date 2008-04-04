@@ -155,7 +155,7 @@ class CEC_Server_Tag : public CECTag {
  		wxString ServerDesc() { return GetTagByNameSafe(EC_TAG_SERVER_DESC)->GetStringData(); }
 
  		uint8 GetPrio() { return GetTagByNameSafe(EC_TAG_SERVER_PRIO)->GetInt(); }
- 		uint8 GetStatic() { return GetTagByNameSafe(EC_TAG_SERVER_STATIC)->GetInt(); }
+ 		bool GetStatic() { return (GetTagByNameSafe(EC_TAG_SERVER_STATIC)->GetInt() == 1); }
 
  		uint32 GetPing() { return GetTagByNameSafe(EC_TAG_SERVER_PING)->GetInt(); }
  		uint8 GetFailed() { return GetTagByNameSafe(EC_TAG_SERVER_FAILED)->GetInt(); }

@@ -353,7 +353,7 @@ int CSharedFilesCtrl::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	CKnownFile* file2 = (CKnownFile*)item2;
 
 	int mod = (sortData & CMuleListCtrl::SORT_DES) ? -1 : 1;
-	bool altSorting = (sortData & CMuleListCtrl::SORT_ALT);
+	bool altSorting = (sortData & CMuleListCtrl::SORT_ALT) > 0;
 
 	switch (sortData & CMuleListCtrl::COLUMN_MASK) {
 		// Sort by filename.

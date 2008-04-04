@@ -175,7 +175,7 @@ bool UploadBandwidthThrottler::RemoveFromStandardList(ThrottledFileSocket* socke
  */
 bool UploadBandwidthThrottler::RemoveFromStandardListNoLock(ThrottledFileSocket* socket)
 {
-	return EraseFirstValue( m_StandardOrder_list, socket );
+	return (EraseFirstValue( m_StandardOrder_list, socket ) > 0);
 }
 
 

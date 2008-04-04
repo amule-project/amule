@@ -296,7 +296,7 @@ void CPartFile::CreatePartFile()
 	}
 	
 	
-	m_hashsetneeded = GetED2KPartHashCount();
+	m_hashsetneeded = (GetED2KPartHashCount() > 0);
 	
 	SavePartFile(true);
 	SetActive(theApp->IsConnected());
@@ -439,7 +439,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 						break;
 					}
 					case FT_STATUS: {
-						m_paused = newtag.GetInt();
+						m_paused = (newtag.GetInt() == 1);
 						m_stopped = m_paused;
 						break;
 					}
@@ -592,7 +592,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			% m_partmetfilename
 			% e.what() );
 		return false;
-	} catch (const CEOFException& e) {
+	} catch (const CEOFException& WXUNUSED(e)) {
 		AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
 			% m_partmetfilename
 			% GetFileName() );

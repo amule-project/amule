@@ -150,7 +150,7 @@ void CServer::Init() {
 	lastpinged = 0;
 	lastpingedtime = 0;
 	m_dwRealLastPingedTime = 0;
-	staticservermember=0;
+	staticservermember=false;
 	maxusers=0;
 	m_uTCPFlags = 0;
 	m_uUDPFlags = 0;

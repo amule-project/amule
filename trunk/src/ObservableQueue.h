@@ -410,7 +410,7 @@ size_t CQueueObserver<ValueType>::GetRemaining() const
 template <typename ValueType>
 bool CQueueObserver<ValueType>::IsActive() const
 {
-	return m_owner;
+	return (m_owner != NULL);
 }
 
 

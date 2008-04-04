@@ -74,7 +74,7 @@ CEC_Server_Tag::CEC_Server_Tag(const CServer *server, EC_DETAIL_LEVEL detail_lev
 			if ((tmpShort = (uint8)server->GetFailedCount()) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_FAILED, tmpShort));
 			}
-			if ((tmpShort = (uint8)server->IsStaticMember()) != 0) {
+			if ((tmpShort = (server->IsStaticMember() ? 1 : 0)) != 0) {
 				AddTag(CECTag(EC_TAG_SERVER_STATIC, tmpShort));
 			}
 			if (!(tmpStr = server->GetVersion()).IsEmpty()) {

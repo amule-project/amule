@@ -470,7 +470,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 
 	const CMemFile packet(in_packet, size);
 	uint32 results = packet.ReadUInt32();
-	bool unicoded = sender->GetUnicodeSupport();
+	bool unicoded = (sender->GetUnicodeSupport() != utf8strNone);
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
 		if (sender){
@@ -489,7 +489,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 		uint8 ucMore = packet.ReadUInt8();
 		if (ucMore == 0x00 || ucMore == 0x01){
 			if (moreResultsAvailable) {
-				*moreResultsAvailable = (bool)ucMore;
+				*moreResultsAvailable = (ucMore == 1);
 			}
 		}
 	}
