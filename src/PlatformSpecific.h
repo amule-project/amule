@@ -26,8 +26,7 @@
 #define PLATFORMSPECIFIC_H
 
 #include <common/Path.h>
-#include <stdint.h>
-
+#include "Types.h"
 
 namespace PlatformSpecific {
 

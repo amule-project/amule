@@ -27,6 +27,7 @@
 #define SERVER_H
 
 #include "Tag.h"
+#include "OtherStructs.h"
 
 #include <protocol/ed2k/Client2Server/TCP.h> 
 #include <protocol/ed2k/Client2Server/UDP.h> 
@@ -35,7 +36,6 @@
 #include <ec/cpp/ECSpecialTags.h>
 #endif
 
-class ServerMet_Struct;
 class CFileDataIO;
 
 // Server priority

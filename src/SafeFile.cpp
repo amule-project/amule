@@ -29,10 +29,9 @@
 #include "ScopedPtr.h"				// Needed for CScopedPtr and CScopedArray
 
 
-
 #define CHECK_BOM(size, x) ((size >= 3)  && (x[0] == (char)0xEF) && (x[1] == (char)0xBB) && (x[2] == (char)0xBF))
 
-const char BOMHeader[3] = {0xEF, 0xBB, 0xBF};
+const char BOMHeader[3] = { '\xEF', '\xBB', '\xBF'};
 
 
 CSafeIOException::CSafeIOException(const wxString& type, const wxString& desc)

@@ -26,6 +26,7 @@
 #ifndef OTHERSTRUCTS_H
 #define OTHERSTRUCTS_H
 
+#include <common/Path.h>
 
 // Defined in <zlib.h>
 struct z_stream_s;
@@ -143,6 +144,16 @@ struct Chunk {
 #else
 __attribute__((__packed__));
 #endif
+
+struct Category_Struct
+{
+	CPath		path;
+	wxString	title;
+	wxString	comment;
+	uint32		color;
+	uint8		prio;
+};
+
 
 #endif // OTHERSTRUCTS_H
 // File_checked_for_headers
