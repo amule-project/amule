@@ -110,7 +110,7 @@ inline wxString MakeFoldername(wxString path) {
 // Duplicates a string
 inline char* nstrdup(const char* src)
 {
-	int len = (src ? strlen(src) : 0) + 1;
+	size_t len = (src ? strlen(src) : 0) + 1;
 	char *res = new char[len];
 	if ( src ) strcpy(res, src);
 	res[len-1] = 0;
@@ -141,9 +141,9 @@ inline unsigned long long StrToULongLong( const wxString& str ) {
 #endif
 }
 
-inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
+inline size_t GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 {
-	unsigned int RealLen = 0;
+	size_t RealLen = 0;
 	switch (eEncode) {
 		case utf8strOptBOM:
 			RealLen = 3;
@@ -163,6 +163,7 @@ inline unsigned int GetRawSize(const wxString& rstr, EUtf8Str eEncode)
 			}
 		}
 	}
+
 	return RealLen;
 }
 

@@ -165,11 +165,11 @@ private:
 	wxString	GetIntegerField(const wxChar* fieldType);
 
 	//! Index to the current format field.
-	unsigned 	m_fieldStart;
+	size_t 	m_fieldStart;
 	//! Length of the current format field.
-	unsigned	m_fieldLength;
+	size_t	m_fieldLength;
 	//! The number of fields to skip in GetCurrentField
-	unsigned	m_skipCount;
+	size_t	m_skipCount;
 
 	//! The format-string fed to the parser.
 	wxString	m_format;

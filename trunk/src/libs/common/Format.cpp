@@ -185,7 +185,7 @@ void CFormat::SetCurrentField(const wxString& value)
 
 	// Format strings are expected to follow the folllowing structure:
 	// 	%[Flags][Width][.Precision][Length]<Type>
-	for (unsigned i = m_fieldStart + m_fieldLength; i < m_format.Length(); ++i) {
+	for (size_t i = m_fieldStart + m_fieldLength; i < m_format.Length(); ++i) {
 		const wxChar c = m_format[i];
 
 		if (pos >= PosStart) {
@@ -216,7 +216,7 @@ void CFormat::SetCurrentField(const wxString& value)
 				break;
 			}
 		} else if (c == wxT('%')) {
-			const unsigned offset = m_fieldStart + m_fieldLength;
+			const size_t offset = m_fieldStart + m_fieldLength;
 			// If there was anything before this, then prepend it.
 			if (offset < i) {
 				m_result += m_format.Mid(offset, i - offset);

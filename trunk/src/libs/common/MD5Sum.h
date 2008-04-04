@@ -31,10 +31,10 @@ class MD5Sum {
 public:
 	MD5Sum();
 	MD5Sum(const wxString& sSource);
-	MD5Sum(const uint8* buffer, int len);
+	MD5Sum(const uint8* buffer, size_t len);
 	
 	wxString Calculate(const wxString& sSource);
-	wxString Calculate(const uint8* buffer, int len);
+	wxString Calculate(const uint8* buffer, size_t len);
 
 	wxString GetHash();
 	const uint8* GetRawHash() const { return m_rawhash; }
