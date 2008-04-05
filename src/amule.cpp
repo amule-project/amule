@@ -35,7 +35,8 @@
 
 #ifdef HAVE_CONFIG_H
 	#include "config.h"		// Needed for HAVE_GETRLIMIT, HAVE_SETRLIMIT,
-					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H and VERSION
+					//   HAVE_SYS_RESOURCE_H, HAVE_SYS_STATVFS_H, VERSION
+					//   and ENABLE_NLS
 #endif
 
 #include <common/ClientVersion.h>
@@ -624,8 +625,10 @@ bool CamuleApp::OnInit()
 	// Build the filenames for the two OS files
 	SetOSFiles(thePrefs::GetOSDir().GetRaw());
 
+#ifdef ENABLE_NLS
 	// Load localization settings
 	Localize_mule();
+#endif
 
 	// Configure EC for amuled when invoked with ec-config
 	if (ec_config) {
