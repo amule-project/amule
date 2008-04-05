@@ -224,6 +224,8 @@ Version 2.2.1 - ???
 		* Patch to create the magic string $file in previews. This
 		  string is replaced with the file name in the command line,
 		  in case it exists.
+		* Patch to prevent amule compiled with --disable-nls from
+		  crashing.
 
 	nvinay:
 		* Trivial issue with memset found using google codesearch which may
