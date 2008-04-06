@@ -92,8 +92,9 @@ m4_define([ac_zver_min], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)],
 		AC_LINK_IFELSE([
 			AC_LANG_PROGRAM([[
 				#include <zlib.h>
+				#include <stdio.h>
 			]], [[
-				const char zver[] = "\nZLIB_VERSION_START" ZLIB_VERSION "ZLIB_VERSION_END\n";
+				printf("\nZLIB_VERSION_START" ZLIB_VERSION "ZLIB_VERSION_END\n\n");
 				zlibVersion();
 			]])
 		], [
