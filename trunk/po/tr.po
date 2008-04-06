@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-04 03:30+0200\n"
+"POT-Creation-Date: 2008-04-06 03:30+0200\n"
 "PO-Revision-Date: 2008-03-26 10:47+0200\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -461,7 +461,7 @@ msgstr ""
 "Geçerli bir kaynak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
 
 #: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:664
+#: src/amule.cpp:667
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -1269,7 +1269,7 @@ msgid "Auto [Hi]"
 msgstr "Oto (Yük)"
 
 #: src/DataToText.cpp:59 src/amuleDlg.cpp:512 src/ClientListCtrl.cpp:650
-#: src/amule.cpp:782
+#: src/amule.cpp:785
 msgid "Connecting"
 msgstr "Bağlanıyor"
 
@@ -1577,8 +1577,8 @@ msgstr ""
 "kesiniz. Sunucu SİLİNMEDİ."
 
 #: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:142 src/CatDialog.cpp:152
-#: src/CatDialog.cpp:160 src/ServerList.cpp:341 src/amule.cpp:704
-#: src/amule.cpp:1309
+#: src/CatDialog.cpp:160 src/ServerList.cpp:341 src/amule.cpp:707
+#: src/amule.cpp:1312
 msgid "Info"
 msgstr "Bilgi"
 
@@ -2903,12 +2903,12 @@ msgid "Connection failed "
 msgstr "Bağlantı başarısız "
 
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:127
-#: src/OtherFunctions.cpp:145 src/OtherFunctions.cpp:199 src/amule.cpp:833
-#: src/amule.cpp:954 src/amule.cpp:1320
+#: src/OtherFunctions.cpp:145 src/OtherFunctions.cpp:199 src/amule.cpp:836
+#: src/amule.cpp:957 src/amule.cpp:1323
 msgid "Error"
 msgstr "Hata"
 
-#: src/amule-remote-gui.cpp:482 src/amule.cpp:1059
+#: src/amule-remote-gui.cpp:482 src/amule.cpp:1062
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
@@ -2916,7 +2916,7 @@ msgstr ""
 "UYARI: Kendinizi bir ed'k bağlantısına kaynak olarak ekleyebilirsiniz; ancak "
 "DüşükID alırsınız."
 
-#: src/amule-remote-gui.cpp:577 src/amule.cpp:1982
+#: src/amule-remote-gui.cpp:577 src/amule.cpp:1985
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Kullanıcı: E: %s K: %s | Dosya E: %s K: %s"
@@ -3547,11 +3547,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Bağlandı: %s %s %s"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2047
+#: src/TextClient.cpp:694 src/amule.cpp:2050
 msgid "with LowID"
 msgstr "DüşükID ile"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2047
+#: src/TextClient.cpp:694 src/amule.cpp:2050
 msgid "with HighID"
 msgstr "YüksekID ile"
 
@@ -6729,7 +6729,7 @@ msgstr ""
 msgid "Failed to execute command `%s' on `%s' event."
 msgstr "%s komutunun %s olayında çalıştırılması başarısız oldu."
 
-#: src/amule.cpp:702
+#: src/amule.cpp:705
 msgid ""
 "Your locale has been changed to System Default due to a configuration "
 "change. Sorry."
@@ -6737,7 +6737,7 @@ msgstr ""
 "Bir yapılandırma değişikliği nedeniyle dil ayarınız 'Sistem Varsayılanı'na "
 "çevrildi.Üzgünüm. Valla..."
 
-#: src/amule.cpp:765
+#: src/amule.cpp:768
 msgid ""
 "You don't have any server in the server list.\n"
 "Do you want aMule to download a new list now?"
@@ -6745,16 +6745,16 @@ msgstr ""
 "Sunucu listesinde mevcut bir sunucu yok.\n"
 "aMule'nin yeni bir liste indirmesini ister misiniz?"
 
-#: src/amule.cpp:766
+#: src/amule.cpp:769
 msgid "Server list download"
 msgstr "Sunucu listesi indirme"
 
-#: src/amule.cpp:825
+#: src/amule.cpp:828
 #, c-format
 msgid "webserver running on pid %d"
 msgstr "web sunucusu pid %d üzerinde çalışıyor."
 
-#: src/amule.cpp:829
+#: src/amule.cpp:832
 msgid ""
 "You requested to run webserver from startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule webserver, or compile "
@@ -6764,17 +6764,17 @@ msgstr ""
 "çalıştırılamıyor. Lütfen ya web sunucusu içeren aMule paketini yükleyin ya "
 "da aMule'yi --enable-webserver kullanarak derleyip kurun."
 
-#: src/amule.cpp:919
+#: src/amule.cpp:922
 #, c-format
 msgid "Could not bind ports to the specified address: %s"
 msgstr "Belirtilen şu adrese protlar bağlanamıyor: %s"
 
-#: src/amule.cpp:946
+#: src/amule.cpp:949
 #, c-format
 msgid "Port %u is not available. You will be LOWID\n"
 msgstr "Port. %u kullanılamıyor. DÜŞÜKID alacaksınız.\n"
 
-#: src/amule.cpp:952
+#: src/amule.cpp:955
 #, c-format
 msgid ""
 "Port %u is not available!\n"
@@ -6790,15 +6790,15 @@ msgstr ""
 "Ağ ayarlarınızı kontrol ederek portun giriş ve çıkışlar için açık olup "
 "olmadığını kontrol ediniz."
 
-#: src/amule.cpp:1103
+#: src/amule.cpp:1106
 msgid "Failed to create OnlineSig File"
 msgstr "Çevrim içi İmza dosyası oluşturma başarısız."
 
-#: src/amule.cpp:1111
+#: src/amule.cpp:1114
 msgid "Failed to create aMule OnlineSig File"
 msgstr "aMule Çevrim içi İmza dosyası oluşturma başarısız."
 
-#: src/amule.cpp:1279
+#: src/amule.cpp:1282
 msgid ""
 "The selected locale seems not to be installed on your box. (Note: I'll try "
 "to set it anyway)"
@@ -6806,32 +6806,32 @@ msgstr ""
 "Seçilen yerelleştirme görünüşe göre bilgisayarınızda yüklü değil. (Not: Bunu "
 "yine de yapmaya çalışacağım)"
 
-#: src/amule.cpp:1288
+#: src/amule.cpp:1291
 #, c-format
 msgid "This is the first time you run aMule %s"
 msgstr "Hoş geldiniz! aMule %s sürümünü ilk kez kullanıyorsunuz."
 
-#: src/amule.cpp:1290
+#: src/amule.cpp:1293
 msgid "This version is a testing version, updated daily, and\n"
 msgstr "Bu sürüm bir deneme sürümü, her gün güncellenir ve\n"
 
-#: src/amule.cpp:1291
+#: src/amule.cpp:1294
 msgid "we give no warranty it won't break anything, burn your house,\n"
 msgstr "bir şeyleri bozmayacağını veya evinizi yakmayacağını \n"
 
-#: src/amule.cpp:1292
+#: src/amule.cpp:1295
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
 msgstr ""
 "yahut da köpeğinizi öldürmeyeceğini garanti edemeyiz. Fakat bir *sorun* "
 "yaratmayacağını da umuyoruz.\n"
 
-#: src/amule.cpp:1296
+#: src/amule.cpp:1299
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
 msgstr "Aşağıdaki seçenekler güvenlik sebebiyle bu sürümde değiştirilmiştir:\n"
 
-#: src/amule.cpp:1297
+#: src/amule.cpp:1300
 msgid ""
 "\n"
 "* Enabled Protocol Obfuscation support for incoming and outgoing "
@@ -6841,7 +6841,7 @@ msgstr ""
 "* Gelen ve giden bağlantılar için Protokol Gizleme \n"
 "etkinleştirildi.\n"
 
-#: src/amule.cpp:1298
+#: src/amule.cpp:1301
 msgid ""
 "\n"
 "* Disabled updating the server list from other server and clients.\n"
@@ -6850,7 +6850,7 @@ msgstr ""
 "* Sunucu listesinin diğer sunucular ve kullanıcılardan güncellenmesi devre "
 "dışı bırakıldı.\n"
 
-#: src/amule.cpp:1299
+#: src/amule.cpp:1302
 msgid ""
 "\n"
 "For more information on the reason for this changes, seach\n"
@@ -6865,19 +6865,19 @@ msgstr ""
 "aMule'nin düzgün çalışabilmesi için sunucu listenizdeki sahte sunucuları "
 "temizlemeniz çok önemlidir."
 
-#: src/amule.cpp:1304
+#: src/amule.cpp:1307
 msgid "More information, support and new releases can found at our homepage,\n"
 msgstr "Daha fazla bilgi, destek ve yeni sürümler ana sayfamızda bulunabilir\n"
 
-#: src/amule.cpp:1305
+#: src/amule.cpp:1308
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
 msgstr "www.aMule.org veya IRC Kanalımız: #aMule at irc.freenode.net.\n"
 
-#: src/amule.cpp:1307
+#: src/amule.cpp:1310
 msgid "Feel free to report any bugs to http://forum.amule.org"
 msgstr "Her türlü hatayı bize bildirmekten çekinmeyin http://forum.amule.org"
 
-#: src/amule.cpp:1320
+#: src/amule.cpp:1323
 msgid ""
 "The folder for Online Signature files you specified is INVALID!\n"
 " OnlineSignature will be DISABLED until you fix it on preferences."
@@ -6885,96 +6885,96 @@ msgstr ""
 "Belirlediğiniz Çevrim içi İmza dosyaları dizini GEÇERSİZ!\n"
 " Çevrim içi İmza, ayarlarınızda düzeltene kadar DEVREDIŞI bırakıldı."
 
-#: src/amule.cpp:1733
+#: src/amule.cpp:1736
 msgid "ERROR: can't open logfile"
 msgstr "HATA: Kayıt dosyası açılamıyor."
 
-#: src/amule.cpp:1737
+#: src/amule.cpp:1740
 msgid "WARNING: logfile is empty. Something is wrong."
 msgstr "UYARI: Kayıt dosyası boş, bir şeyler yanlış."
 
-#: src/amule.cpp:1756
+#: src/amule.cpp:1759
 msgid "Log has been reset"
 msgstr "Kayıt silindi."
 
-#: src/amule.cpp:1784
+#: src/amule.cpp:1787
 #, c-format
 msgid "ServerMessage: %s"
 msgstr "Sunucu İletisi: %s"
 
-#: src/amule.cpp:1822
+#: src/amule.cpp:1825
 msgid "Failed to download the nodes list."
 msgstr "Nod listesini indirme başarısız."
 
-#: src/amule.cpp:1835
+#: src/amule.cpp:1838
 msgid "Failed to open the downloaded version check file"
 msgstr "İndirilen sürüm kontrol dosyasını açma başarısız oldu."
 
-#: src/amule.cpp:1838 src/amule.cpp:1848 src/amule.cpp:1854
+#: src/amule.cpp:1841 src/amule.cpp:1851 src/amule.cpp:1857
 msgid "Corrupted version check file"
 msgstr "Bozuk sürüm kontrol dosyası"
 
-#: src/amule.cpp:1864
+#: src/amule.cpp:1867
 msgid "You are using an outdated version of aMule!"
 msgstr "aMule'nin eski bir sürümünü kullanıyorsunuz!"
 
-#: src/amule.cpp:1865
+#: src/amule.cpp:1868
 #, c-format
 msgid "Your aMule version is %i.%i.%i and the latest version is %li.%li.%li"
 msgstr "aMule sürümünüz %i.%i.%i ve en güncel sürüm %li.%li.%li"
 
-#: src/amule.cpp:1866
+#: src/amule.cpp:1869
 msgid "The latest version can always be found at http://www.amule.org"
 msgstr "En güncel sürüm her zaman http://www.amule.org adresinde bulunabilir."
 
-#: src/amule.cpp:1869
+#: src/amule.cpp:1872
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr "UYARI: aMuled sürümünüz eski: %i.%i.%i < %li.%li.%li"
 
-#: src/amule.cpp:1873
+#: src/amule.cpp:1876
 msgid "Your copy of aMule is up to date."
 msgstr "aMule sürümünüz güncel."
 
-#: src/amule.cpp:1880
+#: src/amule.cpp:1883
 msgid "Failed to download the version check file"
 msgstr "Sürüm kontrol dosyasını indirme başarısız oldu."
 
-#: src/amule.cpp:2049
+#: src/amule.cpp:2052
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Bağlandı: %s %s"
 
-#: src/amule.cpp:2052
+#: src/amule.cpp:2055
 #, c-format
 msgid "Connecting to %s"
 msgstr "Bağlanıyor: %s"
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:2057
 msgid "Disconnected from ED2K"
 msgstr "ED2K bağlantısı kesildi"
 
-#: src/amule.cpp:2061
+#: src/amule.cpp:2064
 msgid "Kad started."
 msgstr "Kademlia başladı."
 
-#: src/amule.cpp:2063
+#: src/amule.cpp:2066
 msgid "Kad stopped."
 msgstr "Kademlia durdu."
 
-#: src/amule.cpp:2070
+#: src/amule.cpp:2073
 msgid "Connected to Kad (ok)"
 msgstr "Kademila ağına bağlanıldı (tamam)"
 
-#: src/amule.cpp:2072
+#: src/amule.cpp:2075
 msgid "Connected to Kad (firewalled)"
 msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
 
-#: src/amule.cpp:2075
+#: src/amule.cpp:2078
 msgid "Disconnected from Kad"
 msgstr "Kademlia bağlantısı kesildi."
 
-#: src/amule.cpp:2138
+#: src/amule.cpp:2141
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -6982,7 +6982,7 @@ msgstr ""
 "UDP portu ayarlarda devre dışı bırakılmışsa Kad ağı kullanılamaz. "
 "Başlatılmıyor."
 
-#: src/amule.cpp:2141
+#: src/amule.cpp:2144
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad. ağı ayarlarda devre dışı bırakılmış, bağlanılmıyor."
 
