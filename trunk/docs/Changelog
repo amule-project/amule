@@ -384,6 +384,7 @@ Version 2.2.1 - ???
 		* Fix for crash on receiving zero-sized UDP packet.
 		* New BarShader code.
 		* Sparse partfiles on Windows.
+		* Fix for zlib detection with an optimizing compiler on configure.
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction
