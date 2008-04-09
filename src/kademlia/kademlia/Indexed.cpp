@@ -519,6 +519,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		m_Keyword_map[currKeyHash->keyID] = currKeyHash;
 		load = 1;
 		m_totalIndexKeyword++;
+		return true;
 	} else {
 		currKeyHash = itKeyHash->second; 
 		size_t indexTotal = currKeyHash->m_Source_map.size();
@@ -545,17 +546,19 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			}
 			load = (uint8_t)((indexTotal*100)/KADEMLIAMAXINDEX);
 			currSource->entryList.push_front(entry);
+			return true;
 		} else {
 			currSource = new Source;
 			currSource->sourceID.SetValue(sourceID);
 			currSource->entryList.push_front(entry);
 			currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 			m_totalIndexKeyword++;
-			load = (uint8_t)((indexTotal*100)/KADEMLIAMAXINDEX);
+			load = (indexTotal*100)/KADEMLIAMAXINDEX;
+			return true;
 		}
 	}
 	
-	return true;
+	return false;
 }
 
 
@@ -581,6 +584,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		m_Sources_map[currSrcHash->keyID] =  currSrcHash;
 		m_totalIndexSource++;
 		load = 1;
+		return true;
 	} else {
 		currSrcHash = itSrcHash->second;
 		size_t size = currSrcHash->m_Source_map.size();
@@ -596,13 +600,15 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 					currSource->entryList.pop_front();
 					delete currName;
 					currSource->entryList.push_front(entry);
-					load = (uint8_t)((size*100)/KADEMLIAMAXSOUCEPERFILE);
+					load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
+					return true;
 				}
 			} else {
 				//This should never happen!
 				currSource->entryList.push_front(entry);
 				wxASSERT(0);
-				load = (uint8_t)((size*100)/KADEMLIAMAXSOUCEPERFILE);
+				load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
+				return true;
 			}
 		}
 		if( size > KADEMLIAMAXSOUCEPERFILE ) {
@@ -617,17 +623,19 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			load = 100;
+			return true;
 		} else {
 			Source* currSource = new Source;
 			currSource->sourceID.SetValue(sourceID);
 			currSource->entryList.push_front(entry);
 			currSrcHash->m_Source_map.push_front(currSource);
 			m_totalIndexSource++;
-			load = (uint8_t)((size*100)/KADEMLIAMAXSOUCEPERFILE);
+			load = (size*100)/KADEMLIAMAXSOUCEPERFILE;
+			return true;
 		}
 	}
 	
-	return true;
+	return false;
 }
 
 bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load)
@@ -650,6 +658,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 		currNoteHash->m_Source_map.push_front(currNote);
 		m_Notes_map[currNoteHash->keyID] = currNoteHash;
 		load = 1;
+		return true;
 	} else {
 		currNoteHash = itNoteHash->second;
 		size_t size = currNoteHash->m_Source_map.size();
@@ -665,13 +674,15 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 					currNote->entryList.pop_front();
 					delete currName;
 					currNote->entryList.push_front(entry);
-					load = (uint8_t)((size*100)/KADEMLIAMAXNOTESPERFILE);
+					load = (size*100)/KADEMLIAMAXNOTESPERFILE;
+					return true;
 				}
 			} else {
 				//This should never happen!
 				currNote->entryList.push_front(entry);
 				wxASSERT(0);
-				load = (uint8_t)((size*100)/KADEMLIAMAXNOTESPERFILE);
+				load = (size*100)/KADEMLIAMAXNOTESPERFILE;
+				return true;
 			}
 		}
 		if( size > KADEMLIAMAXNOTESPERFILE ) {
@@ -686,16 +697,18 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
 			load = 100;
+			return true;
 		} else {
 			Source* currNote = new Source;
 			currNote->sourceID.SetValue(sourceID);
 			currNote->entryList.push_front(entry);
 			currNoteHash->m_Source_map.push_front(currNote);
-			load = (uint8_t)((size*100)/KADEMLIAMAXNOTESPERFILE);
+			load = (size*100)/KADEMLIAMAXNOTESPERFILE;
+			return true;
 		}
 	}
 	
-	return true;
+	return false;
 }
 
 bool CIndexed::AddLoad(const CUInt128& keyID, uint32 timet)
