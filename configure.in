@@ -693,11 +693,6 @@ AC_CONFIG_FILES([Makefile
 		 docs/man/Makefile
 		 intl/Makefile
 		 src/Makefile
-		 src/kademlia/Makefile
-		 src/kademlia/utils/Makefile
-		 src/kademlia/kademlia/Makefile
-		 src/kademlia/routing/Makefile
-		 src/kademlia/net/Makefile
 		 src/pixmaps/Makefile
 		 src/pixmaps/flags_xpm/Makefile
 		 src/libs/Makefile

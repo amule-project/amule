@@ -2,7 +2,7 @@ if WEB
 OPT_WEB = webserver
 endif
 
-SUBDIRS = libs utils pixmaps kademlia skins $(OPT_WEB)
+SUBDIRS = libs utils pixmaps skins $(OPT_WEB)
 
 EXTRA_DIST = \
 	aMule.xpm \
@@ -536,5 +536,5 @@ CLEANFILES = *-version.rc
 endif
 
 
-EXTRA__DIST__SUBDIRS = include remote-gui.net
+EXTRA__DIST__SUBDIRS = include kademlia remote-gui.net
 include $(top_srcdir)/automake/dist-hook.am
