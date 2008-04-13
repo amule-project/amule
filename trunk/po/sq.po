@@ -11,15 +11,13 @@ msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-06 03:30+0200\n"
-"PO-Revision-Date: 2008-03-20 23:07+0100\n"
+"PO-Revision-Date: 2008-04-12 07:44+0200\n"
 "Last-Translator: Fation <dj_barthezz@linuxmail.org>\n"
-"Language-Team: albanian <fation_1983@hotmail.it  lushnja_corps@hotmail.com "
-">\n"
+"Language-Team: albanian <fation_1983@hotmail.it  lushnja_corps@hotmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -183,24 +181,20 @@ msgstr "Kerkuar: %s\n"
 #: src/BaseClient.cpp:1878
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
+msgstr ""
 "Statistikat e failit per kete sesion:Pranohen %d nga %d e kerkuar, %s te "
 "transferuara\n"
-msgstr[1] ""
 "Statistikat e failit per kete sesion:Pranohen %d nga %d te kerkuara, %s te "
 "transferuara\n"
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
+msgstr ""
 "Statistikat e failit per te gjithe sesionet: Pranohet %d nga %d e kerkeses, %"
 "s te transferuara\n"
-msgstr[1] ""
 "Statistikat e failit per te gjithe sesionet: Pranohen %d nga %d te "
 "kerkesave, %s te transferuara\n"
 
@@ -281,47 +275,48 @@ msgstr "Perzgjedhje e shumte"
 
 #: src/UserEvents.h:60
 msgid "Download completed"
-msgstr ""
+msgstr "Shkarkimi Perfundoi"
 
 #: src/UserEvents.h:63 src/UserEvents.h:103
 msgid "The full path to the file."
-msgstr ""
+msgstr "Path-i i plote per tek faili"
+""
 
 #: src/UserEvents.h:67
 msgid "The name of the file without path component."
-msgstr ""
+msgstr "Emri i failit pa perberesit e Path-it."
 
 #: src/UserEvents.h:71
 msgid "The ed2k hash of the file."
-msgstr ""
+msgstr "Hash-i ed2k i failit"
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
-msgstr ""
+msgstr "Madhesia e failit ne bytes."
 
 #: src/UserEvents.h:79
 msgid "Cumulative download activity time."
-msgstr ""
+msgstr "KOha permbledhese e shkarkimeve."
 
 #: src/UserEvents.h:84
 msgid "New chat session started"
-msgstr ""
+msgstr "Sesion i ri chati filloi"
 
 #: src/UserEvents.h:87
 msgid "Message sender."
-msgstr ""
+msgstr "Derguesi i mesazheve."
 
 #: src/UserEvents.h:92
 msgid "Out of space"
-msgstr ""
+msgstr "Jashte nga hapesira"
 
 #: src/UserEvents.h:95
 msgid "Disk partition."
-msgstr ""
+msgstr "Particioni i diskut."
 
 #: src/UserEvents.h:100
 msgid "Error on completion"
-msgstr ""
+msgstr "Gabim ne perfundim"
 
 #: src/SharedFilesCtrl.cpp:102 src/SearchListCtrl.cpp:87
 #: src/DownloadListCtrl.cpp:189 src/CommentDialogLst.cpp:56
@@ -504,7 +499,7 @@ msgstr "Duke pezulluar ngarkimin e failit: %s"
 
 #: src/TextClient.h:60
 msgid "aMule text client"
-msgstr ""
+msgstr "Teksti i klientit aMule"
 
 #: src/kademlia/kademlia/SearchManager.cpp:132
 msgid "Kademlia: search keyword too short"
@@ -514,8 +509,8 @@ msgstr "Kademlia: fjala qe u kerkua eshte shume e shkurter"
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Po lexoj %u kontakt Kad"
+msgstr[1] "Po lexoj %u kontakte Kad"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -1465,7 +1460,8 @@ msgstr "Greqisht"
 
 #: src/Preferences.cpp:646
 msgid "Hebrew"
-msgstr ""
+msgstr "Cifut"
+""
 
 #: src/Preferences.cpp:647
 msgid "Hungarian"
@@ -3246,13 +3242,11 @@ msgstr "Gabim ne leximin e failit seeds tek partfile-t (%s - %s): %s"
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
-msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr[0] ""
+msgstr ""
 "U gjend nje pjese e prishur (%d) ne %d partfile %s - FileResultHash |%s| "
 "Filehash |%s|"
-msgstr[1] ""
 "U gjend nje pjese e prishur (%d) ne %d parts file %s - FileResultHash |%s| "
 "FileHash |%s|"
 
@@ -5147,7 +5141,9 @@ msgstr "Kapaciteti i Linjes"
 msgid ""
 "Note: These values are\n"
 " only used for statistics."
-msgstr ""
+msgstr "Shenim: Keto vlera jane\n"
+" vetem per statistika"
+""
 
 #: src/muuli_wdr.cpp:1811
 msgid "Standard client TCP Port:"
