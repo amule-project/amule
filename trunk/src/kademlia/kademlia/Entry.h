@@ -97,7 +97,7 @@ public:
 	CUInt128 m_uKeyID;
 	CUInt128 m_uSourceID;
 	wxString m_sFileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32_t m_uSize;
+	uint64_t m_uSize;
 	TagPtrList m_lTagList;
 	time_t m_tLifeTime;
 	bool m_bSource;
