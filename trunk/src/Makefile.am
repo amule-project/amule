@@ -94,7 +94,6 @@ libmuleappcore_a_SOURCES = \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
-	kademlia/utils/LittleEndian.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp \

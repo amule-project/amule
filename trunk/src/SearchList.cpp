@@ -187,7 +187,7 @@ public:
 		m_data->WriteString(pszMetaTagID);	// meta tag ID
 	}
 
-	void WriteMetaDataSearchParam(uint8 uMetaTagID, uint8 uOperator, uint32 uValue, bool WXUNUSED(bEd2k))
+	void WriteMetaDataSearchParam(uint8 uMetaTagID, uint8 uOperator, uint32 uValue)
 	{
 		m_data->WriteUInt8(3);				// numeric parameter type
 		m_data->WriteUInt32(uValue);		// numeric value
@@ -196,60 +196,12 @@ public:
 		m_data->WriteUInt8(uMetaTagID);		// meta tag ID name
 	}
 
-	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, uint8 uOperator, uint32 uValue, bool WXUNUSED(bEd2k))
+	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, uint8 uOperator, uint32 uValue)
 	{
 		m_data->WriteUInt8(3);				// numeric parameter type
 		m_data->WriteUInt32(uValue);		// numeric value
 		m_data->WriteUInt8(uOperator);		// comparison operator
 		m_data->WriteString(pszMetaTagID);	// meta tag ID
-	}
-
-	void WriteOldMinMetaDataSearchParam(uint8 uMetaTagID, uint32 uValue, bool bEd2k)
-	{
-		uint8 uOperator;
-		if (bEd2k){
-			uOperator = ED2K_SEARCH_OP_GREATER;
-			uValue -= 1;
-		} else {
-			uOperator = KAD_SEARCH_OP_GREATER_EQUAL;
-		}
-		WriteMetaDataSearchParam(uMetaTagID, uOperator, uValue, bEd2k);
-	}
-
-	void WriteOldMinMetaDataSearchParam(const wxString& pszMetaTagID, uint32 uValue, bool bEd2k)
-	{
-		uint8 uOperator;
-		if (bEd2k){
-			uOperator = ED2K_SEARCH_OP_GREATER;
-			uValue -= 1;
-		} else {
-			uOperator = KAD_SEARCH_OP_GREATER_EQUAL;
-		}
-		WriteMetaDataSearchParam(pszMetaTagID, uOperator, uValue, bEd2k);
-	}
-
-	void WriteOldMaxMetaDataSearchParam(const wxString& pszMetaTagID, uint32 uValue, bool bEd2k)
-	{
-		uint8 uOperator;
-		if (bEd2k){
-			uOperator = ED2K_SEARCH_OP_LESS;
-			uValue += 1;
-		} else {
-			uOperator = KAD_SEARCH_OP_LESS_EQUAL;
-		}
-		WriteMetaDataSearchParam(pszMetaTagID, uOperator, uValue, bEd2k);
-	}
-
-	void WriteOldMaxMetaDataSearchParam(uint8 uMetaTagID, uint32 uValue, bool bEd2k)
-	{
-		uint8 uOperator;
-		if (bEd2k){
-			uOperator = ED2K_SEARCH_OP_LESS;
-			uValue += 1;
-		} else {
-			uOperator = KAD_SEARCH_OP_LESS_EQUAL;
-		}
-		WriteMetaDataSearchParam(uMetaTagID, uOperator, uValue, bEd2k);
 	}
 
 protected:
@@ -348,10 +300,10 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 				Kademlia::CSearchManager::StopSearch(0xffffffff, false);
 			}
 		
-			// Kad search takes ownership of data and searchstring will get tokenized there
+			// searchstring will get tokenized there
 			// The tab must be created with the Kad search ID, so seardhID is updated.
 			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(
-										 params.searchString, data.release(), *searchID);
+										 params.searchString, data->GetLength(), data->GetRawBuffer());
 
 			*searchID = search->GetSearchID();
 		} catch (const wxString& what) {
@@ -651,8 +603,6 @@ void CSearchList::StopGlobalSearch()
 
 CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type)
 {
-	const bool kad = (type == KadSearch);
-	
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
 	if ( !params.typeText.IsEmpty() )	++parametercount;
@@ -757,21 +707,21 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, params.minSize, !kad);
+			target.WriteMetaDataSearchParam(FT_FILESIZE, ED2K_SEARCH_OP_GREATER, params.minSize);
 		}
 
 		if (params.maxSize > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, params.maxSize, !kad);
+			target.WriteMetaDataSearchParam(FT_FILESIZE, ED2K_SEARCH_OP_LESS, params.maxSize);
 		}
 		
 		if (params.availability > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, params.availability, !kad);
+			target.WriteMetaDataSearchParam(FT_SOURCES, ED2K_SEARCH_OP_GREATER, params.availability);
 		}
 
 		if (!params.extension.IsEmpty()){
@@ -787,49 +737,49 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(FT_COMPLETE_SOURCES, complete, !kad);
+			target.WriteMetaDataSearchParam(FT_COMPLETE_SOURCES, ED2K_SEARCH_OP_GREATER, complete);
 		}
 
 		if (minBitrate > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, minBitrate, !kad);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, ED2K_SEARCH_OP_GREATER, minBitrate);
 		}
 
 		if (minLength > 0){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, minLength, !kad);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, ED2K_SEARCH_OP_GREATER, minLength);
 		}
 
 		if (!codec.IsEmpty()){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
 		}
 
 		if (!title.IsEmpty()){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
 		}
 
 		if (!album.IsEmpty()){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
 		}
 
 		if (!artist.IsEmpty()){
 			if (++iParameterCount < parametercount) {
 				target.WriteBooleanAND();
 			}
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
 		}
 		#endif // 0
 		
@@ -934,15 +884,15 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 		}
 
 		if (params.minSize > 0) {
-			target.WriteOldMinMetaDataSearchParam(FT_FILESIZE, params.minSize, !kad);
+			target.WriteMetaDataSearchParam(FT_FILESIZE, ED2K_SEARCH_OP_GREATER, params.minSize);
 		}
 
 		if (params.maxSize > 0) {
-			target.WriteOldMaxMetaDataSearchParam(FT_FILESIZE, params.maxSize, !kad);
+			target.WriteMetaDataSearchParam(FT_FILESIZE, ED2K_SEARCH_OP_LESS, params.maxSize);
 		}
 
 		if (params.availability > 0) {
-			target.WriteOldMinMetaDataSearchParam(FT_SOURCES, params.availability, !kad);
+			target.WriteMetaDataSearchParam(FT_SOURCES, ED2K_SEARCH_OP_GREATER, params.availability);
 		}
 
 		if (!params.extension.IsEmpty()) {
@@ -952,31 +902,31 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 		//#warning TODO - third and last warning of the same series.
 		#if 0
 		if (complete > 0) {
-			target.WriteOldMinMetaDataSearchParam(FT_COMPLETE_SOURCES, pParams->uComplete, !kad);
+			target.WriteMetaDataSearchParam(FT_COMPLETE_SOURCES, ED2K_SEARCH_OP_GREATER, pParams->uComplete);
 		}
 
 		if (minBitrate > 0) {
-			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, minBitrate, !kad);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_BITRATE : FT_ED2K_MEDIA_BITRATE, ED2K_SEARCH_OP_GREATER, minBitrate);
 		}
 		
 		if (minLength > 0) {
-			target.WriteOldMinMetaDataSearchParam(kad ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, minLength, bEd2k);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_LENGTH : FT_ED2K_MEDIA_LENGTH, ED2K_SEARCH_OP_GREATER, minLength);
 		}
 		
 		if (!codec.IsEmpty()) {
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_CODEC : FT_ED2K_MEDIA_CODEC, codec);
 		}
 		
 		if (!title.IsEmpty()) {
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_TITLE : FT_ED2K_MEDIA_TITLE, title);
 		}
 		
 		if (!album.IsEmpty()) {
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_ALBUM : FT_ED2K_MEDIA_ALBUM, album);
 		}
 		
 		if (!artist.IsEmpty()) {
-			target.WriteMetaDataSearchParam(kad ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
+			target.WriteMetaDataSearchParam(type == KadSearch ? TAG_MEDIA_ARTIST : FT_ED2K_MEDIA_ARTIST, artist);
 		}
 		
 		#endif // 0

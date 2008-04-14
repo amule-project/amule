@@ -252,8 +252,7 @@ void CAbstractFile::AddNote(Kademlia::CEntry *pEntry)
 	CKadEntryPtrList::iterator it = m_kadNotes.begin();
 	for (; it != m_kadNotes.end(); ++it) {
 		Kademlia::CEntry* entry = *it;
-		if(entry->m_iIP == pEntry->m_iIP ||
-		   !entry->m_iSourceID.CompareTo(pEntry->m_iSourceID)) {
+		if(entry->m_uIP == pEntry->m_uIP || entry->m_uSourceID == pEntry->m_uSourceID) {
 			delete pEntry;
 			return;
 		}

@@ -853,7 +853,7 @@ CECPacket *Get_EC_Response_Kad_Connect(const CECPacket *request)
 		if ( addrtag ) {
 			uint32 ip = addrtag->GetIPv4Data().IP();
 			uint16 port = addrtag->GetIPv4Data().m_port;
-			Kademlia::CKademlia::Bootstrap(ip, port);
+			Kademlia::CKademlia::Bootstrap(ip, port, true);
 		}
 	} else {
 		response = new CECPacket(EC_OP_FAILED);

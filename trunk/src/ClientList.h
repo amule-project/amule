@@ -339,10 +339,9 @@ public:
 	void RemoveFromKadList(CUpDownClient* torem);
 	void AddToKadList(CUpDownClient* toadd);
 
-	// We lack the kad firewall check
-//	//#warning ALSO FIX THIS, NOW!!!
-	bool IsKadFirewallCheckIP(uint32 /*ip*/) { return false; }
-	
+	void AddKadFirewallRequest(uint32 ip);
+	bool IsKadFirewallCheckIP(uint32 ip) const;
+
 private:
 	/**
 	 * Helperfunction which finds a client matching the specified client.
@@ -411,6 +410,13 @@ private:
 	std::set<CUpDownClient*>	m_KadSources;
 	CUpDownClient* m_pBuddy;
 	uint8 m_nBuddyStatus;
+
+	typedef struct {
+		uint32 ip;
+		uint32 inserted;
+	} IpAndTicks;
+	typedef std::list<IpAndTicks>	KadFirewallCheckList;
+	KadFirewallCheckList		m_firewallCheckRequests;
 };
 
 #endif

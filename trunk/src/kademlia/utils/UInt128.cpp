@@ -1,6 +1,7 @@
 //
 // This file is part of the aMule Project.
 //
+// Copyright (c) 2008 Dévai Tamás (GonoszTopi) ( gonosztopi@amule.org )
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
 // Copyright (c) 2004-2008 aMule Team ( admin@amule.org / http://www.amule.org )
 // Copyright (c) 2003 Barry Dunne (http://www.emule-project.net)
@@ -42,84 +43,33 @@ there client on the eMule forum..
 #include "../../CryptoPP_Inc.h"
 #include "../../ArchSpecific.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 
 ////////////////////////////////////////
 using namespace Kademlia;
 ////////////////////////////////////////
 
-CUInt128::CUInt128()
-{
-	SetValue((uint32)0);
-}
-
-CUInt128::CUInt128(bool fill)
-{
-	if( fill )
-	{
-		// Endian safe (-1 = 0xFFFF)
-		m_data[0] = (uint32)-1;
-		m_data[1] = (uint32)-1;
-		m_data[2] = (uint32)-1;
-		m_data[3] = (uint32)-1;
-	}
-	else
-		SetValue((uint32)0);
-}
-
-CUInt128::CUInt128(uint32 value)
-{
-	SetValue(value);
-}
-
-CUInt128::CUInt128(const byte *valueBE)
-{
-	SetValueBE(valueBE);
-}
-
-CUInt128::CUInt128(const CUInt128 &value, uint32 numBits)
+CUInt128::CUInt128(const CUInt128 &value, uint32_t numBits) throw()
 {
 	// Copy the whole uint32s
-	uint32 numULONGs = numBits / 32;
-	for (uint32 i=0; i<numULONGs; ++i)
+	uint32_t numULONGs = numBits / 32;
+	for (uint32_t i = 0; i < numULONGs; ++i) {
 		m_data[i] = value.m_data[i];
+	}
 
 	// Copy the remaining bits
-	for (uint32 i=(32*numULONGs); i<numBits; ++i)
+	for (uint32_t i = (32 * numULONGs); i < numBits; ++i) {
 		SetBitNumber(i, value.GetBitNumber(i));
+	}
 
 	// Pad with random bytes (Not seeding based on time to allow multiple different ones to be created in quick succession)
-	for (uint32 i=numBits; i<128; ++i)
-		SetBitNumber(i, (rand()%2));
+	for (uint32_t i = numBits; i < 128; ++i) {
+		SetBitNumber(i, (rand() % 2));
+	}
 }
-
-CUInt128& CUInt128::SetValue(const CUInt128 &value)
-{
-	m_data[0] = value.m_data[0];
-	m_data[1] = value.m_data[1];
-	m_data[2] = value.m_data[2];
-	m_data[3] = value.m_data[3];
-	return *this;
-}
-
-CUInt128& CUInt128::SetValue(uint32 value)
-{
-	m_data[0] = 0;
-	m_data[1] = 0;
-	m_data[2] = 0;
-	m_data[3] = value;
-	return *this;
-}
-
 
 #define SWAP_ULONG_LE(x) wxUINT32_SWAP_ON_LE(x) 
 
-CUInt128& CUInt128::SetValueBE(const byte *valueBE)
+CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
 {
 	m_data[0] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+0));
 	m_data[1] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+4));
@@ -128,55 +78,22 @@ CUInt128& CUInt128::SetValueBE(const byte *valueBE)
 	return *this;
 }
 
-CUInt128& CUInt128::SetValueRandom(void)
+CUInt128& CUInt128::SetValueRandom()
 {
 	CryptoPP::AutoSeededRandomPool rng;
-	byte randomBytes[16];
+	uint8_t randomBytes[16];
 	rng.GenerateBlock(randomBytes, 16);
-	SetValueBE( randomBytes );
+	SetValueBE(randomBytes);
 	return *this;
 }
 
-uint32 CUInt128::GetBitNumber(uint32 bit) const
-{
-	if (bit > 127)
-		return 0;
-	int ulongNum = bit / 32;
-	
-	int shift = 31 - (bit % 32);
-	return ((m_data[ulongNum] >> shift) & 1);
-}
-
-CUInt128& CUInt128::SetBitNumber(uint32 bit, uint32 value) 
-{
-	int ulongNum = bit / 32;
-	int shift = 31 - (bit % 32);
-	m_data[ulongNum] |= (1 << shift);
-	if (value == 0)
-		m_data[ulongNum] ^= (1 << shift);
-	return *this;
-}
-
-CUInt128& CUInt128::XOR(const CUInt128 &value)
-{
-	for (int i=0; i<4; ++i)
-		m_data[i] ^= value.m_data[i];
-	return *this;
-}
-
-CUInt128& CUInt128::XORBE(const byte *valueBE)
-{
-	CUInt128 temp(valueBE);
-	return XOR(temp);
-}
-
-wxString CUInt128::ToHexString(void) const
+wxString CUInt128::ToHexString() const
 {
 	wxString str;
-	for (int i=0; i<4; ++i)
-	{
+
+	for (int i = 0; i < 4; ++i)
 		str.Append(wxString::Format(wxT("%08X"), m_data[i]));
-	}
+
 	return str;
 }
 
@@ -184,8 +101,7 @@ wxString CUInt128::ToBinaryString(bool trim) const
 {
 	wxString str;
 	int b;
-	for (int i=0; i<128; ++i)
-	{
+	for (int i = 0; i < 128; ++i) {
 		b = GetBitNumber(i);
 		if ((!trim) || (b != 0)) {
 			str.Append(wxString::Format(wxT("%d"), b));
@@ -198,7 +114,7 @@ wxString CUInt128::ToBinaryString(bool trim) const
 	return str;
 }
 
-void CUInt128::ToByteArray(byte *b) const
+void CUInt128::ToByteArray(uint8_t *b) const throw()
 {
 	RawPokeUInt32(b+0, SWAP_ULONG_LE(m_data[0]));
 	RawPokeUInt32(b+4, SWAP_ULONG_LE(m_data[1]));
@@ -206,10 +122,9 @@ void CUInt128::ToByteArray(byte *b) const
 	RawPokeUInt32(b+12,SWAP_ULONG_LE(m_data[3]));
 }
 
-int CUInt128::CompareTo(const CUInt128 &other) const
+int CUInt128::CompareTo(const CUInt128 &other) const throw()
 {
-	for (int i=0; i<4; ++i) 
-	{
+	for (int i = 0; i < 4; ++i) {
 	    if (m_data[i] < other.m_data[i])
 			return -1;
 	    if (m_data[i] > other.m_data[i])
@@ -218,7 +133,7 @@ int CUInt128::CompareTo(const CUInt128 &other) const
 	return 0;
 }
 
-int CUInt128::CompareTo(uint32 value) const
+int CUInt128::CompareTo(uint32_t value) const throw()
 {
 	if ((m_data[0] > 0) || (m_data[1] > 0) || (m_data[2] > 0) || (m_data[3] > value))
 		return 1;
@@ -227,75 +142,56 @@ int CUInt128::CompareTo(uint32 value) const
 	return 0;
 }
 
-CUInt128& CUInt128::Add(const CUInt128 &value)
+CUInt128& CUInt128::Add(const CUInt128 &value) throw()
 {
-	if (value == 0)
-		return *this;
-	int64 sum = 0;
-	for (int i=3; i>=0; i--)
-	{
+	if (value.IsZero()) return *this;
+
+	int64_t sum = 0;
+	for (int i = 3; i >= 0; i--) {
 		sum += m_data[i];
 		sum += value.m_data[i];
-		m_data[i] = (uint32)sum;
-		sum = sum >> 32;
+		m_data[i] = (uint32_t)sum;
+		sum >>= 32;
 	}
 	return *this;
 }
 
-CUInt128& CUInt128::Add(uint32 value)
+CUInt128& CUInt128::Subtract(const CUInt128 &value) throw()
 {
-	if (value == 0)
-		return *this;
-	CUInt128 temp(value);
-	Add(temp);
-	return *this;
-}
+	if (value.IsZero()) return *this;
 
-CUInt128& CUInt128::Subtract(const CUInt128 &value)
-{
-	if (value == 0)
-		return *this;
-	int64 sum = 0;
-	for (int i=3; i>=0; i--)
-	{
+	int64_t sum = 0;
+	for (int i = 3; i >= 0; i--) {
 		sum += m_data[i];
 		sum -= value.m_data[i];
-		m_data[i] = (uint32)sum;
-		sum = sum >> 32;
+		m_data[i] = (uint32_t)sum;
+		sum >>= 32;
 	}
 	return *this;
 }
 
-CUInt128& CUInt128::Subtract(uint32 value)
+CUInt128& CUInt128::ShiftLeft(unsigned bits) throw()
 {
-	if (value == 0)
+	if ((bits == 0) || IsZero())
 		return *this;
-	CUInt128 temp(value);
-	Subtract(temp);
-	return *this;
-}
 
-CUInt128& CUInt128::ShiftLeft(uint32 bits)
-{
-    if ((bits == 0) || (CompareTo(0) == 0))
-        return *this;
-	if (bits > 127)
-	{
-		SetValue((uint32)0);
+	if (bits > 127) {
+		SetValue((uint32_t)0);
 		return *this;
 	}
 
-	uint32 result[] = {0,0,0,0};
+	uint32_t result[] = {0,0,0,0};
 	int indexShift = (int)bits / 32;
-	int64 shifted = 0;
-	for (int i=3; i>=indexShift; i--)
+	int64_t shifted = 0;
+	for (int i = 3; i >= indexShift; i--)
 	{
-		shifted += ((int64)m_data[i]) << (bits % 32);
-		result[i-indexShift] = (uint32)shifted;
+		shifted += ((int64_t)m_data[i]) << (bits % 32);
+		result[i-indexShift] = (uint32_t)shifted;
 		shifted = shifted >> 32;
 	}
-	for (int i=0; i<4; ++i)
+	for (int i = 0; i < 4; ++i)
 		m_data[i] = result[i];
+
 	return *this;
 }
 // File_checked_for_headers

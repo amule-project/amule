@@ -596,7 +596,7 @@ void CClientList::Process()
 			case KS_CONNECTED_FWCHECK:
 				//We successfully connected to the client.
 				//We now send a ack to let them know.
-				Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK, wxUINT32_SWAP_ALWAYS(cur_client->GetIP()), cur_client->GetKadPort());
+				Kademlia::CKademlia::GetUDPListener()->SendNullPacket(KADEMLIA_FIREWALLED_ACK_RES, wxUINT32_SWAP_ALWAYS(cur_client->GetIP()), cur_client->GetKadPort());
 				//We are done with this client. Set Kad status to KS_NONE and it will be removed in the next cycle.
 				cur_client->SetKadState(KS_NONE);
 				break;
@@ -959,15 +959,7 @@ void CClientList::CleanUpClientList()
 			if ((pCurClient->GetUploadState() == US_NONE || pCurClient->GetUploadState() == US_BANNED && !pCurClient->IsBanned())
 				&& pCurClient->GetDownloadState() == DS_NONE
 				&& pCurClient->GetChatState() == MS_NONE
-				&& (
-					(pCurClient->GetKadState() == KS_NONE)
-					|| (
-						(pCurClient->GetKadState() == KS_INCOMING_BUDDY)
-						&&
-						// We didn't receive the promised buddy on 10 min
-						((::GetTickCount() - pCurClient->GetCreationTime()) > KADEMLIABUDDYTIMEOUT)
-					   )
-				   )
+				&& pCurClient->GetKadState() == KS_NONE
 				&& pCurClient->GetSocket() == NULL)
 			{
 				cDeleted++;
@@ -991,8 +983,8 @@ void CClientList::CleanUpClientList()
 				}
 				if (!(pCurClient->GetKadState() == KS_NONE)) {
 					AddDebugLogLineM(false, logProxy, 
-						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s time left: %i"))
-							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP() % (pCurClient->GetCreationTime()+KADEMLIABUDDYTIMEOUT-::GetTickCount()));
+						CFormat(wxT("Debug: Not deleted client %x with kad state: %i ip: %s"))
+							% (long int)pCurClient % pCurClient->GetKadState() % pCurClient->GetFullIP());
 				}
 				if (!(pCurClient->GetSocket() == NULL)) {
 					AddDebugLogLineM(false, logProxy, 
@@ -1005,5 +997,30 @@ void CClientList::CleanUpClientList()
 		}
 		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Cleaned ClientList, removed %i not used known clients"), cDeleted));
 	}
+}
+
+void CClientList::AddKadFirewallRequest(uint32 ip)
+{
+	uint32 ticks = ::GetTickCount();
+	IpAndTicks add = { ip, ticks };
+	m_firewallCheckRequests.push_front(add);
+	while (!m_firewallCheckRequests.empty()) {
+		if (ticks - m_firewallCheckRequests.back().inserted > SEC2MS(180)) {
+			m_firewallCheckRequests.pop_back();
+		} else {
+			break;
+		}
+	}
+}
+
+bool CClientList::IsKadFirewallCheckIP(uint32 ip) const
+{
+	uint32 ticks = ::GetTickCount();
+	for (KadFirewallCheckList::const_iterator it = m_firewallCheckRequests.begin(); it != m_firewallCheckRequests.end(); ++it) {
+		if (it->ip == ip && ticks - it->inserted < SEC2MS(180)) {
+			return true;
+		}
+	}
+	return false;
 }
 // File_checked_for_headers
