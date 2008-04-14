@@ -26,4 +26,6 @@
 #ifndef KAD2CONSTANTS_H
 #define KAD2CONSTANTS_H
 
+#define KADEMLIA_VERSION	0x05	/* 0.48a */
+
 #endif // KAD2CONSTANTS_H

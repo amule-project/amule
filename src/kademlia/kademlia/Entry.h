@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -52,26 +52,25 @@ class CEntry
 public:
 	CEntry()
 	{
-		m_iIP = 0;
-		m_iTCPport = 0;
-		m_iUDPport = 0;
-		m_iSize = 0;
+		m_uIP = 0;
+		m_uTCPport = 0;
+		m_uUDPport = 0;
+		m_uSize = 0;
 		m_tLifeTime = time(NULL);
 		m_bSource = false;
 	}
+
 	~CEntry()
 	{
-		TagPtrList::const_iterator it;
-		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
+		for (TagPtrList::iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			delete *it;
 		}
 	}
 	
-	uint32 GetIntTagValue(const wxString& tagname) const
+	uint32_t GetIntTagValue(const wxString& tagname) const
 	{
-		TagPtrList::const_iterator it;
 		CTag* tag;
-		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
+		for (TagPtrList::const_iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			tag = *it;
 			if ((tag->GetName() == tagname) && tag->IsInt()) {
 				return tag->GetInt();
@@ -82,9 +81,8 @@ public:
 
 	wxString GetStrTagValue(const wxString& tagname) const
 	{
-		TagPtrList::const_iterator it;
 		CTag* tag;
-		for (it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
+		for (TagPtrList::const_iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
 			tag = *it;
 			if ((tag->GetName() == tagname) && tag->IsStr()) {
 				return tag->GetStr();
@@ -93,13 +91,13 @@ public:
 		return wxEmptyString;
 	}	
 	
-	uint32 m_iIP;
-	uint16 m_iTCPport;
-	uint16 m_iUDPport;
-	CUInt128 m_iKeyID;
-	CUInt128 m_iSourceID;
+	uint32_t m_uIP;
+	uint16_t m_uTCPport;
+	uint16_t m_uUDPport;
+	CUInt128 m_uKeyID;
+	CUInt128 m_uSourceID;
 	wxString m_sFileName; // NOTE: this always holds the string in LOWERCASE!!!
-	uint32	m_iSize;
+	uint32_t m_uSize;
 	TagPtrList m_lTagList;
 	time_t m_tLifeTime;
 	bool m_bSource;

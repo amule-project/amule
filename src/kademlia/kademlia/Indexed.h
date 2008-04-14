@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -73,7 +73,7 @@ struct SrcHash
 struct Load
 {
 	Kademlia::CUInt128 keyID;
-	uint32 time;
+	uint32_t time;
 };
 
 struct SSearchTerm
@@ -84,7 +84,7 @@ struct SSearchTerm
 	enum ESearchTermType {
 		AND,
 		OR,
-		NAND,
+		NOT,
 		String,
 		MetaTag,
 		OpGreaterEqual,
@@ -117,17 +117,19 @@ public:
 	CIndexed();
 	~CIndexed();
 
-	bool AddKeyword(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
-	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
-	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8& load);
-	bool AddLoad(const CUInt128& keyID, uint32 time);
-	size_t GetFileKeyCount() {return m_Keyword_map.size();}
-	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32 ip, uint16 port);
-	void SendValidSourceResult(const CUInt128& keyID, uint32 ip, uint16 port);
-	void SendValidNoteResult(const CUInt128& keyID, const CUInt128& CheckID, uint32 ip, uint16 port);
+	bool AddKeyword(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
+	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
+	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
+	bool AddLoad(const CUInt128& keyID, uint32_t time);
+	size_t GetFileKeyCount() const throw() { return m_Keyword_map.size(); }
+	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition);
+	void SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize);
+	void SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize);
 	bool SendStoreRequest(const CUInt128& keyID);
-	uint32 m_totalIndexSource;
-	uint32 m_totalIndexKeyword;
+	uint32_t m_totalIndexSource;
+	uint32_t m_totalIndexKeyword;
+	uint32_t m_totalIndexNotes;
+	uint32_t m_totalIndexLoad;
 
 private:
 	time_t m_lastClean;
@@ -138,8 +140,8 @@ private:
 	static wxString m_sfilename;
 	static wxString m_kfilename;
 	static wxString m_loadfilename;
-	void ReadFile(void);
-	void Clean(void);
+	void ReadFile();
+	void Clean();
 };
 
 } // End namespace

@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -39,7 +39,6 @@ there client on the eMule forum..
 #ifndef __CONTACT_H__
 #define __CONTACT_H__
 
-#include "../kademlia/Prefs.h"
 #include "../kademlia/Kademlia.h"
 
 ////////////////////////////////////////
@@ -48,72 +47,70 @@ namespace Kademlia {
 
 class CContact
 {
+	//friend class CRoutingZone;
+	//friend class CRoutingBin;
 public:
 	~CContact();
 	CContact(const CUInt128 &clientID,
-		uint32 ip, uint16 udpPort, uint16 tcpPort, uint8 version,
+		uint32_t ip, uint16_t udpPort, uint16_t tcpPort, uint8_t version,
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
-	const CUInt128& GetClientID(void) const { return m_clientID; };
-	void SetClientID(const CUInt128 &clientID);
+	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
+	void SetClientID(const CUInt128& clientID) throw();
 
-	const wxString GetClientIDString(void) const;
+	const wxString GetClientIDString() const		{ return m_clientID.ToHexString(); }
 
-	const CUInt128& GetDistance(void) const { return m_distance; }
-	const wxString GetDistanceString(void) const;
+	const CUInt128& GetDistance() const throw()		{ return m_distance; }
+	const wxString GetDistanceString() const		{ return m_distance.ToBinaryString(); }
 
-	uint32 GetIPAddress(void) const;
-	void SetIPAddress(uint32 ip);
+	uint32_t GetIPAddress() const throw()			{ return m_ip; }
+	void	 SetIPAddress(uint32_t ip) throw()		{ m_ip = ip; }
 
-	uint16 GetTCPPort(void) const;
-	void SetTCPPort(uint16 port);
+	uint16_t GetTCPPort() const throw()			{ return m_tcpPort; }
+	void	 SetTCPPort(uint16_t port) throw()		{ m_tcpPort = port; }
 
-	uint16 GetUDPPort(void) const;
-	void SetUDPPort(uint16 port);
+	uint16_t GetUDPPort() const throw()			{ return m_udpPort; }
+	void	 SetUDPPort(uint16_t port) throw()		{ m_udpPort = port; }
 
-	byte GetType(void) const;
+	uint8_t	 GetType() const throw()			{ return m_type; }
 
-	void UpdateType();
-	void CheckingType();
-	
-	bool InUse(void) {return (m_inUse>0); }
-	void IncUse(void) {m_inUse++;}
-	void DecUse(void) 
-	{
-		if (m_inUse) {
-			m_inUse--;
-		} else {
-			wxASSERT(0);
-		}
-	}
+	void	 UpdateType() throw();
+	void	 CheckingType() throw();
 
-	const time_t GetCreatedTime() const {return m_created;}
+	bool	 InUse() const throw()				{ return m_inUse > 0; }
+	void	 IncUse() throw()				{ m_inUse++; }
+	void	 DecUse() throw()				{ if (m_inUse) m_inUse--; else wxFAIL; }
 
-	void SetExpireTime(time_t value) { m_expires = value; };	
-	const time_t GetExpireTime() const {return m_expires;}
+	time_t	 GetCreatedTime() const throw()			{ return m_created; }
 
-	const time_t GetLastTypeSet() const {return m_lastTypeSet;}	
+	void	 SetExpireTime(time_t value) throw()		{ m_expires = value; };	
+	time_t	 GetExpireTime() const throw()			{ return m_expires; }
 
-	uint8 GetVersion() const { return m_uVersion; }
-	
+	time_t	 GetLastTypeSet() const throw()			{ return m_lastTypeSet; }	
+
+	uint8_t	 GetVersion() const throw()			{ return m_version; }
+	void	 SetVersion(uint8_t value) throw()		{ m_version = value; }
+
+	bool	 CheckIfKad2() throw()				{ return m_checkKad2 ? m_checkKad2 = false, true : false; }
+
 private:
 	CUInt128	m_clientID;
 	CUInt128	m_distance;
-	uint32		m_ip;
-	uint16		m_tcpPort;
-	uint16		m_udpPort;
-	byte		m_type;
+	uint32_t	m_ip;
+	uint16_t	m_tcpPort;
+	uint16_t	m_udpPort;
+	uint8_t		m_type;
 	time_t		m_lastTypeSet;
 	time_t		m_expires;
 	time_t		m_created;
-	uint32		m_inUse;
+	uint32_t	m_inUse;
 	
 	// Kad version
-	uint8 m_uVersion;
+	uint8_t		m_version;
+	bool		m_checkKad2;
 };
 
 } // End namespace
 
 #endif // __CONTACT_H__
-
 // File_checked_for_headers

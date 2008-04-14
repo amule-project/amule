@@ -27,35 +27,35 @@
 #define KADC2CUDP_H
 
 enum KademliaV1OPcodes {
-	KADEMLIA_BOOTSTRAP_REQ 	= 0x00,	// <PEER (sender) [25]>
-	KADEMLIA_BOOTSTRAP_RES	= 0x08,	// <CNT [2]> <PEER [25]>*(CNT)
+	KADEMLIA_BOOTSTRAP_REQ		= 0x00,	// <PEER (sender) [25]>
+	KADEMLIA_BOOTSTRAP_RES		= 0x08,	// <CNT [2]> <PEER [25]>*(CNT)
 
-	KADEMLIA_HELLO_REQ	 	= 0x10,	// <PEER (sender) [25]>
-	KADEMLIA_HELLO_RES     	= 0x18,	// <PEER (receiver) [25]>
+	KADEMLIA_HELLO_REQ		= 0x10,	// <PEER (sender) [25]>
+	KADEMLIA_HELLO_RES		= 0x18,	// <PEER (receiver) [25]>
 
-	KADEMLIA_REQ		   	= 0x20,	// <TYPE [1]> <HASH (target) [16]> <HASH (receiver) 16>
+	KADEMLIA_REQ			= 0x20,	// <TYPE [1]> <HASH (target) [16]> <HASH (receiver) 16>
 	KADEMLIA_RES			= 0x28,	// <HASH (target) [16]> <CNT> <PEER [25]>*(CNT)
 
 	KADEMLIA_SEARCH_REQ		= 0x30,	// <HASH (key) [16]> <ext 0/1 [1]> <SEARCH_TREE>[ext]
 	// UNUSED				= 0x31,	// Old Opcode, don't use.
-	KADEMLIA_SRC_NOTES_REQ	= 0x32,	// <HASH (key) [16]>
+	KADEMLIA_SEARCH_NOTES_REQ	= 0x32,	// <HASH (key) [16]>
 	KADEMLIA_SEARCH_RES		= 0x38,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
 	// UNUSED				= 0x39,	// Old Opcode, don't use.
-	KADEMLIA_SRC_NOTES_RES	= 0x3A,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	KADEMLIA_SEARCH_NOTES_RES	= 0x3A,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (answer) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
 
-	KADEMLIA_PUBLISH_REQ	= 0x40,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	KADEMLIA_PUBLISH_REQ		= 0x40,	// <HASH (key) [16]> <CNT1 [2]> (<HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
 	// UNUSED				= 0x41,	// Old Opcode, don't use.
-	KADEMLIA_PUB_NOTES_REQ	= 0x42,	// <HASH (key) [16]> <HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
-	KADEMLIA_PUBLISH_RES	= 0x48,	// <HASH (key) [16]>
+	KADEMLIA_PUBLISH_NOTES_REQ	= 0x42,	// <HASH (key) [16]> <HASH (target) [16]> <CNT2 [2]> <META>*(CNT2))*(CNT1)
+	KADEMLIA_PUBLISH_RES		= 0x48,	// <HASH (key) [16]>
 	// UNUSED				= 0x49,	// Old Opcode, don't use.
-	KADEMLIA_PUB_NOTES_RES	= 0x4A,	// <HASH (key) [16]>
+	KADEMLIA_PUBLISH_NOTES_RES	= 0x4A,	// <HASH (key) [16]>
 
-	KADEMLIA_FIREWALLED_REQ	= 0x50,	// <TCPPORT (sender) [2]>
-	KADEMLIA_FINDBUDDY_REQ	= 0x51,	// <TCPPORT (sender) [2]>
-	KADEMLIA_CALLBACK_REQ	= 0x52,	// <TCPPORT (sender) [2]>
-	KADEMLIA_FIREWALLED_RES	= 0x58,	// <IP (sender) [4]>
-	KADEMLIA_FIREWALLED_ACK	= 0x59,	// (null)
-	KADEMLIA_FINDBUDDY_RES	= 0x5A	// <TCPPORT (sender) [2]>
+	KADEMLIA_FIREWALLED_REQ		= 0x50,	// <TCPPORT (sender) [2]>
+	KADEMLIA_FINDBUDDY_REQ		= 0x51,	// <TCPPORT (sender) [2]>
+	KADEMLIA_CALLBACK_REQ		= 0x52,	// <TCPPORT (sender) [2]>
+	KADEMLIA_FIREWALLED_RES		= 0x58,	// <IP (sender) [4]>
+	KADEMLIA_FIREWALLED_ACK_RES	= 0x59,	// (null)
+	KADEMLIA_FINDBUDDY_RES		= 0x5A	// <TCPPORT (sender) [2]>
 };
 
 #endif // KADC2CUDP_H

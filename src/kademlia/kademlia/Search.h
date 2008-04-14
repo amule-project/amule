@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -42,7 +42,6 @@ there client on the eMule forum..
 #include "SearchManager.h"
 
 class CKnownFile;
-class CMemFile;
 class CTag;
 
 ////////////////////////////////////////
@@ -56,28 +55,29 @@ class CSearch
 	friend class CSearchManager;
 
 public:
-	uint32 GetSearchID() const {return m_searchID;}
-	uint32 GetSearchTypes() const {return m_type;}
-	void SetSearchTypes( uint32 val ) {m_type = val;}
-	void SetTargetID( CUInt128 val ) {m_target = val;}
+	uint32_t GetSearchID() const throw()		{ return m_searchID; }
+	void	 SetSearchID(uint32_t id) throw()	{ m_searchID = id; }
+	uint32_t GetSearchTypes() const throw()		{ return m_type; }
+	void	 SetSearchTypes(uint32_t val) throw()	{ m_type = val; }
+	void	 SetTargetID(const CUInt128& val) throw() { m_target = val; }
+	CUInt128 GetTarget() const throw()		{ return m_target; }
 
-	uint32 GetKadPacketSent() const {return m_kadPacketSent;}
-	uint32 GetRequestAnswer() const {return m_totalRequestAnswers;}
-	void StorePacket();
+	uint32_t GetAnswers() const throw()		{ return m_fileIDs.size() ? m_answers / ((m_fileIDs.size() + 49) / 50) : m_answers; }
+	uint32_t GetRequestAnswer() const throw()	{ return m_totalRequestAnswers; }
+	void	 StorePacket();
 
-	CUInt128 m_keywordPublish; //Need to make this private...
-	const wxString& GetFileName(void) const { return m_fileName; }
-	void SetFileName(const wxString& fileName) { m_fileName = fileName; }
-	CUInt128 GetTarget(void) const {return m_target;}
-	void AddFileID(const CUInt128& id);
-	void PreparePacketForTags( CMemFile* packet, CKnownFile* file );
-	bool Stoping(void) const {return m_stoping;}
-	uint32 GetNodeLoad() const;
-	uint32 GetNodeLoadResonse() const {return m_totalLoadResponses;}
-	uint32 GetNodeLoadTotal() const {return m_totalLoad;}
-	void UpdateNodeLoad( uint8 load ){ m_totalLoad += load; m_totalLoadResponses++; }
-	uint32 GetAnswers() const;
-	
+	const wxString& GetFileName(void) const throw()	{ return m_fileName; }
+	void SetFileName(const wxString& fileName) throw() { m_fileName = fileName; }
+
+	void	 AddFileID(const CUInt128& id)		{ m_fileIDs.push_back(id); }
+	void	 PreparePacketForTags(CMemFile* packet, CKnownFile* file);
+	bool	 Stopping() const throw()		{ return m_stopping; }
+	uint32_t GetNodeLoad() const throw()		{ return m_totalLoadResponses == 0 ? 0 : m_totalLoad / m_totalLoadResponses; }
+	uint32_t GetNodeLoadResonse() const throw()	{ return m_totalLoadResponses; }
+	uint32_t GetNodeLoadTotal() const throw()	{ return m_totalLoad; }
+	void	 UpdateNodeLoad(uint8_t load) throw()	{ m_totalLoad += load; m_totalLoadResponses++; }
+	void	 SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData);
+
 	enum
 	{
 		NODE,
@@ -96,32 +96,33 @@ public:
 	~CSearch();
 
 private:
-	void Go(void);
+	void Go();
 	void ProcessResponse(uint32 fromIP, uint16 fromPort, ContactList *results);
-	void ProcessResult(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void ProcessResultFile(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void ProcessResultKeyword(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void ProcessResultNotes(uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	void JumpStart(void);
-	void SendFindValue(const CUInt128 &check, uint32 ip, uint16 port);
-	void PrepareToStop(void);
+	void ProcessResult(const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultFile(const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultKeyword(const CUInt128 &answer, TagPtrList *info);
+	void ProcessResultNotes(const CUInt128 &answer, TagPtrList *info);
+	void JumpStart();
+	void SendFindValue(CContact *contact);
+	void PrepareToStop() throw();
 
-	bool		m_stoping;
+	bool		m_stopping;
 	time_t		m_created;
-	uint32		m_type;
-	uint32		m_uAnswers;
-	uint32		m_totalRequestAnswers;
-	uint32		m_kadPacketSent; //Used for gui reasons.. May not be needed later..
-	uint32		m_totalLoad;
-	uint32		m_totalLoadResponses;
-	uint32		m_lastResponse;
+	uint32_t	m_type;
+	uint32_t	m_answers;
+	uint32_t	m_totalRequestAnswers;
+	uint32_t	m_totalLoad;
+	uint32_t	m_totalLoadResponses;
+	uint32_t	m_lastResponse;
 
-	uint32		m_searchID;
+	uint32_t	m_searchID;
 	CUInt128	m_target;
-	CMemFile*	m_searchTerms;
+	uint32_t	m_searchTermsDataSize;
+	uint8_t *	m_searchTermsData;
 	WordList	m_words;
-	wxString		m_fileName;
+	wxString	m_fileName;
 	UIntList	m_fileIDs;
+//	CUInt128	m_keywordPublish; //Need to make this private...
 
 	ContactMap	m_possible;
 	ContactMap	m_tried;

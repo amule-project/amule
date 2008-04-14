@@ -1240,7 +1240,7 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 			}
 
 			if( m_client->GetKadPort() ) {
-				Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(m_client->GetIP()), m_client->GetKadPort());
+				Kademlia::CKademlia::Bootstrap(wxUINT32_SWAP_ALWAYS(m_client->GetIP()), m_client->GetKadPort(), m_client->GetKadVersion() > 1);
 			}
 
  			if (!m_client->CheckHandshakeFinished(OP_EMULEPROT, opcode)) {

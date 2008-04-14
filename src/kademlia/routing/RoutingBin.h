@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -41,13 +41,13 @@ there client on the eMule forum..
 
 #include "Maps.h"
 #include "../../Types.h"
+#include "../kademlia/Defines.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
 class CUInt128;
-class CRoutingZone;
 class CContact;
 
 class CRoutingBin
@@ -60,20 +60,22 @@ public:
 
 private:
 
-	CRoutingBin();
-	bool Add(CContact *contact, bool check = true);
-	void SetAlive(uint32 ip, uint16 port);
-	void SetTCPPort(uint32 ip, uint16 port, uint16 tcpPort);
-	void Remove(CContact *contact);
-	CContact *GetContact(const CUInt128 &id);
-	CContact *GetOldest(void);
+	CRoutingBin()
+		: m_dontDeleteContacts(false)
+	{}
 
-	uint32 GetSize() const;
-	uint32 GetRemaining(void) const;
-	void GetEntries(ContactList *result, bool emptyFirst = true);
+	bool AddContact(CContact *contact);
+	void SetAlive(CContact *contact);
+	void SetTCPPort(uint32_t ip, uint16_t port, uint16_t tcpPort);
+	void RemoveContact(CContact *contact)		{ m_entries.remove(contact); }
+	CContact *GetContact(const CUInt128 &id) const throw();
+	CContact *GetOldest() const throw()		{ return m_entries.size() ? m_entries.front() : NULL; }
 
-	void GetClosestTo(uint32 maxType, const CUInt128 &target, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool 
-setInUse = false);
+	uint32_t GetSize() const throw()		{ return m_entries.size(); }
+	uint32_t GetRemaining() const throw()		{ return K - m_entries.size(); }
+	void GetEntries(ContactList *result, bool emptyFirst = true) const;
+
+	void GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
 
 	// Debug purposes.
 //	void dumpContents(void);

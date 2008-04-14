@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -60,11 +60,11 @@ class CRoutingZone;
 typedef std::list<wxString> WordList;
 typedef std::map<CUInt128, CSearch*> SearchMap;
 
-#define SEARCH_IMAGE	"-image"
-#define SEARCH_AUDIO	"-audio"
-#define SEARCH_VIDEO	"-video"
-#define SEARCH_DOC		"-doc"
-#define SEARCH_PRO		"-pro"
+// #define SEARCH_IMAGE	"-image"
+// #define SEARCH_AUDIO	"-audio"
+// #define SEARCH_VIDEO	"-video"
+// #define SEARCH_DOC		"-doc"
+// #define SEARCH_PRO		"-pro"
 
 class CSearchManager
 {
@@ -73,42 +73,40 @@ class CSearchManager
 
 public:
 
-	static void StopSearch(uint32 searchID, bool delayDelete);
-	static void StopAllSearches(void);
+	static bool IsSearching(uint32_t searchID) throw();
+	static void StopSearch(uint32_t searchID, bool delayDelete);
+	static void StopAllSearches();
 
 	// Search for a particular file
 	// Will return unique search id, returns zero if already searching for this file.
-	static CSearch* PrepareLookup(uint32 type, bool start, const CUInt128 &id);
+	static CSearch* PrepareLookup(uint32_t type, bool start, const CUInt128& id);
 
 	// Will return unique search id, returns zero if already searching for this keyword.
-	static CSearch* PrepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet, uint32 searchid);
+	//	static CSearch* PrepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet, uint32 searchid);
+	static CSearch* PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData);
 
-	static bool StartSearch(CSearch* pSearch);
-	static void DeleteSearch(CSearch* pSearch);
+	static bool StartSearch(CSearch* search);
 
-	static void ProcessResponse(const CUInt128 &target, uint32 fromIP, uint16 fromPort, ContactList *results);
-	static void ProcessResult(const CUInt128 &target, uint32 fromIP, uint16 fromPort, const CUInt128 &answer, TagPtrList *info);
-	static void ProcessPublishResult(const CUInt128 &target, const uint8 load, const bool loadResponse);
+	static void ProcessResponse(const CUInt128& target, uint32_t fromIP, uint16_t fromPort, ContactList *results);
+	static void ProcessResult(const CUInt128& target, const CUInt128& answer, TagPtrList *info);
+	static void ProcessPublishResult(const CUInt128& target, const uint8_t load, const bool loadResponse);
 
 	static void GetWords(const wxString& str, WordList *words);
 
-	static void UpdateStats(void);
+	static void UpdateStats() throw();
 
-	static bool IsNodeSearch(const CUInt128 &target);
-
-	static bool AlreadySearchingFor(const CUInt128 &target);
+	static bool AlreadySearchingFor(const CUInt128& target) throw() { return m_searches.count(target) > 0; }
 
 	static const wxChar* GetInvalidKeywordChars() { return wxT(" ()[]{}<>,._-!?:;\\/"); }
 
 private:
 
-	static void FindNode(const CUInt128 &id);
-	static void FindNodeComplete(const CUInt128 &id);
+	static void FindNode(const CUInt128& id, bool complete);
 
-	static uint32 m_nextID;
+	static void JumpStart();
+
+	static uint32_t  m_nextID;
 	static SearchMap m_searches;
-
-	static void JumpStart(void);
 };
 
 } // End namespace

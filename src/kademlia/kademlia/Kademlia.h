@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -41,55 +41,54 @@ there client on the eMule forum..
 
 #include <map>
 #include "../utils/UInt128.h"
+#include "Prefs.h"
+#include "../net/KademliaUDPListener.h"
+#include <common/Macros.h>
 
-class CSharedFileList;
-struct Status;
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
-class CPrefs;
 class CRoutingZone;
-class CKademliaUDPListener;
-class CKademliaError;
-class CSearch;
-class CContact;
 class CIndexed;
-class CEntry;
 
 typedef std::map<CRoutingZone*, CRoutingZone*> EventMap;
-
-#define KADEMLIA_VERSION 0.1
 
 class CKademlia
 {
 public:
-	static void Start(void);
+	static void Start() 		{ Start(new CPrefs); }
 	static void Start(CPrefs *prefs);
 	static void Stop();
  
-	static CPrefs				*GetPrefs(void);
-	static CRoutingZone			*GetRoutingZone(void);
-	static CKademliaUDPListener	*GetUDPListener(void);
-	static CIndexed				*GetIndexed(void);
-	static bool					IsRunning(void) {return m_running;}
-	static bool					IsConnected(void);
-	static bool					IsFirewalled(void);
-	static void					RecheckFirewalled(void);
-	static uint32				GetKademliaUsers(void);
-	static uint32				GetKademliaFiles(void);
-	static uint32				GetTotalStoreKey(void);
-	static uint32				GetTotalStoreSrc(void);
-	static uint32				GetTotalStoreNotes(void);
-	static uint32				GetTotalFile(void);
-	static bool					GetPublish(void);
-	static uint32				GetIPAddress(void);
-	static void					Bootstrap(uint32 ip, uint16 port);
-	static void					ProcessPacket(const byte* data, uint32 lenData, uint32 ip, uint16 port);
+	static CPrefs *			GetPrefs() throw()		{ wxCHECK(instance && instance->m_prefs, NULL); return instance->m_prefs; }
+	static CRoutingZone *		GetRoutingZone() throw()	{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
+	static CKademliaUDPListener *	GetUDPListener() throw()	{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
+	static CIndexed *		GetIndexed() throw()		{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
+	static bool			IsRunning() throw()		{ return m_running; }
+	static bool			IsConnected() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->HasHadContact() : false; }
+	static bool			IsFirewalled() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetFirewalled() : true; }
+	static void			RecheckFirewalled();
+	static uint32_t			GetKademliaUsers() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaUsers() : 0; }
+	static uint32_t			GetKademliaFiles() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetKademliaFiles() : 0; }
+	static uint32_t			GetTotalStoreKey() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreKey() : 0; }
+	static uint32_t			GetTotalStoreSrc() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreSrc() : 0; }
+	static uint32_t			GetTotalStoreNotes() throw()	{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalStoreNotes() : 0; }
+	static uint32_t			GetTotalFile() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetTotalFile() : 0; }
+	static bool			GetPublish() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetPublish() : false; }
+	static uint32_t			GetIPAddress() throw()		{ return instance && instance->m_prefs ? instance->m_prefs->GetIPAddress() : 0; }
+	static void Bootstrap(uint32_t ip, uint16_t port, bool kad2)
+	{
+		if (instance && instance->m_udpListener && !IsConnected() && time(NULL) - m_bootstrap > MIN2S(1) ) {
+			instance->m_udpListener->Bootstrap(ip, port, kad2);
+		}
+	}
 
-	static void AddEvent(CRoutingZone *zone);
-	static void RemoveEvent(CRoutingZone *zone);
+	static void ProcessPacket(const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port);
+
+	static void AddEvent(CRoutingZone *zone) throw()		{ m_events[zone] = zone; }
+	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
 
 private:
@@ -104,12 +103,13 @@ private:
 	static time_t	m_statusUpdate;
 	static time_t	m_bigTimer;
 	static time_t	m_bootstrap;
-	static bool		m_running;
+	static time_t	m_consolidate;
+	static bool	m_running;
 
-	CPrefs					*m_prefs;
-	CRoutingZone			*m_routingZone;
-	CKademliaUDPListener	*m_udpListener;
-	CIndexed				*m_indexed;
+	CPrefs *		m_prefs;
+	CRoutingZone *		m_routingZone;
+	CKademliaUDPListener *	m_udpListener;
+	CIndexed *		m_indexed;
 };
 
 } // End namespace

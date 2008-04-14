@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __PREFS_H__
 
 #include "../utils/UInt128.h"
+#include <protocol/kad/Constants.h>
 #include <time.h>
 
 ////////////////////////////////////////
@@ -52,57 +53,59 @@ public:
 	CPrefs();
 	~CPrefs();
 
-	void	SetKadID(const CUInt128 &id)		{m_clientID = id;}
-	const CUInt128& GetKadID() const					{return m_clientID;}
+	void	SetKadID(const CUInt128 &id) throw()		{ m_clientID = id; }
+	const CUInt128&	GetKadID() const throw()		{ return m_clientID; }
 
-	void	SetClientHash(const CUInt128 &id)	{m_clientHash = id;}
-	const CUInt128& GetClientHash() const				{return m_clientHash;}
+	void	SetClientHash(const CUInt128 &id) throw()	{ m_clientHash = id; }
+	const CUInt128& GetClientHash() const throw()		{ return m_clientHash; }
 
-	uint32	GetIPAddress() const				{return m_ip;}
-	void	SetIPAddress(uint32 val);
+	uint32_t GetIPAddress() const throw()			{ return m_ip; }
+	void	SetIPAddress(uint32_t val) throw();
 
-	bool	GetRecheckIP() const				{return (m_recheckip<4);}
-	void	SetRecheckIP()						{m_recheckip = 0; SetFirewalled();}
-	void	IncRecheckIP()						{m_recheckip++;}
+	bool	GetRecheckIP() const throw()			{ return (m_recheckip < KADEMLIAFIREWALLCHECKS); }
+	void	SetRecheckIP()					{ m_recheckip = 0; SetFirewalled(); }
+	void	IncRecheckIP() throw()				{ m_recheckip++; }
 
-	bool	HasHadContact() const;
-	void	SetLastContact()					{m_lastContact = time(NULL);}
-	bool	HasLostConnection() const;
-	uint32	GetLastContact() const				{return m_lastContact;}
+	bool	HasHadContact() const throw();
+	void	SetLastContact() throw()			{ m_lastContact = time(NULL); }
+	bool	HasLostConnection() const throw();
+	uint32_t GetLastContact() const throw()			{ return m_lastContact; }
 
-	bool	GetFirewalled() const;
+	bool	GetFirewalled() const throw();
 	void	SetFirewalled();
 	void	IncFirewalled();
 
-	uint8	GetTotalFile() const				{return m_totalFile;}
-	void	SetTotalFile(uint8 val)				{m_totalFile = val;}
+	uint8_t	GetTotalFile() const throw()			{ return m_totalFile; }
+	void	SetTotalFile(uint8_t val) throw()		{ m_totalFile = val; }
 
-	uint8	GetTotalStoreSrc() const			{return m_totalStoreSrc;}
-	void	SetTotalStoreSrc(uint8 val)			{m_totalStoreSrc = val;}
+	uint8_t	GetTotalStoreSrc() const throw()		{ return m_totalStoreSrc; }
+	void	SetTotalStoreSrc(uint8_t val) throw()		{ m_totalStoreSrc = val; }
 
-	uint8	GetTotalStoreKey() const			{return m_totalStoreKey;}
-	void	SetTotalStoreKey(uint8 val)			{m_totalStoreKey = val;}
+	uint8_t	GetTotalStoreKey() const throw()		{ return m_totalStoreKey; }
+	void	SetTotalStoreKey(uint8_t val) throw()		{ m_totalStoreKey = val; }
 
-	uint8	GetTotalSource() const				{return m_totalSource;}
-	void	SetTotalSource(uint8 val)			{m_totalSource = val;}
+	uint8_t	GetTotalSource() const throw()			{ return m_totalSource; }
+	void	SetTotalSource(uint8_t val) throw()		{ m_totalSource = val; }
 
-	uint8	GetTotalNotes() const				{return m_totalNotes;}
-	void	SetTotalNotes(uint8 val)			{m_totalNotes = val;}
+	uint8_t	GetTotalNotes() const throw()			{ return m_totalNotes; }
+	void	SetTotalNotes(uint8_t val) throw()		{ m_totalNotes = val; }
 
-	uint8	GetTotalStoreNotes() const			{return m_totalStoreNotes;}
-	void	SetTotalStoreNotes(uint8 val)		{m_totalStoreNotes = val;}
+	uint8_t	GetTotalStoreNotes() const throw()		{ return m_totalStoreNotes; }
+	void	SetTotalStoreNotes(uint8_t val) throw()		{ m_totalStoreNotes = val; }
 
-	uint32	GetKademliaUsers() const			{return m_kademliaUsers;}
-	void	SetKademliaUsers(uint32 val)		{m_kademliaUsers = val;}
+	uint32_t GetKademliaUsers() const throw()		{ return m_kademliaUsers; }
+	void	SetKademliaUsers(uint32_t val) throw()		{ m_kademliaUsers = val; }
 
-	size_t	GetKademliaFiles() const			{return m_kademliaFiles;}
+	uint32_t GetKademliaFiles() const throw()		{ return m_kademliaFiles; }
 	void	SetKademliaFiles();
 
-	bool	GetPublish() const					{return m_Publish;}
-	void	SetPublish(bool val)				{m_Publish = val;}
+	bool	GetPublish() const throw()			{ return m_Publish; }
+	void	SetPublish(bool val) throw()			{ m_Publish = val; }
 
-	bool	GetFindBuddy();
-	void	SetFindBuddy(bool val = true)		{m_findBuddy = val;}
+	bool	GetFindBuddy() throw()				{ return m_findBuddy ? m_findBuddy = false, true : false; }
+	void	SetFindBuddy(bool val = true) throw()		{ m_findBuddy = val; }
+
+	uint16_t GetUDPVerifyKey(uint32_t ip) const throw();
 
 private:
 	wxString	m_filename;
@@ -110,25 +113,25 @@ private:
 	time_t		m_lastContact;
 	CUInt128	m_clientID;
 	CUInt128	m_clientHash;
-	uint32		m_ip;
-	uint32		m_ipLast;
-	uint32		m_recheckip;
-	uint32		m_firewalled;
-	uint32		m_kademliaUsers;
-	size_t		m_kademliaFiles;
-	uint8		m_totalFile;
-	uint8		m_totalStoreSrc;
-	uint8		m_totalStoreKey;
-	uint8		m_totalSource;
-	uint8		m_totalNotes;
-	uint8		m_totalStoreNotes;
+	uint32_t	m_ip;
+	uint32_t	m_ipLast;
+	uint32_t	m_recheckip;
+	uint32_t	m_firewalled;
+	uint32_t	m_kademliaUsers;
+	uint32_t	m_kademliaFiles;
+	uint8_t		m_totalFile;
+	uint8_t		m_totalStoreSrc;
+	uint8_t		m_totalStoreKey;
+	uint8_t		m_totalSource;
+	uint8_t		m_totalNotes;
+	uint8_t		m_totalStoreNotes;
 	bool		m_Publish;
 	bool		m_findBuddy;
 	bool		m_lastFirewallState;
 
 	void Init(const wxString& filename);
-	void Reset();
-	void SetDefaults();
+	//	void Reset();
+	//	void SetDefaults();
 	void ReadFile();
 	void WriteFile();
 };

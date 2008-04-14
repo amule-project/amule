@@ -1,4 +1,4 @@
-//
+//								-*- C++ -*-
 // This file is part of the aMule Project.
 //
 // Copyright (c) 2004-2008 Angel Vidal (Kry) ( kry@amule.org )
@@ -47,7 +47,6 @@ namespace Kademlia {
 ////////////////////////////////////////
 
 class CRoutingBin;
-//class CPing;
 class CContact;
 
 /**
@@ -61,52 +60,68 @@ class CContact;
  */
 class CRoutingZone
 {
-	//friend CRoutingZone;
 public:
 
 	CRoutingZone();
 	~CRoutingZone();
 
-	time_t m_nextBigTimer;
-	time_t m_nextSmallTimer;
-	bool OnBigTimer(void);
-	void OnSmallTimer(void);
+	bool	 OnBigTimer() const;
+	void	 OnSmallTimer();
+	uint32_t Consolidate();
 
-	bool Add(const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version);
-	void Remove(const CUInt128 &id);
-	void SetAlive(uint32 ip, uint16 port);
+	bool	 Add(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, bool update);
+	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, bool update);
+	bool	 Add(CContact *contact, bool update);
 
-	CContact *GetContact(const CUInt128 &id) const;
-	uint32 GetNumContacts(void) const;
+	CContact *GetContact(const CUInt128& id) const throw();
+	uint32_t GetNumContacts() const throw();
 
 	// Returns a list of all contacts in all leafs of this zone.
-	void GetAllEntries(ContactList *result, bool emptyFirst = true);
+	void	 GetAllEntries(ContactList *result, bool emptyFirst = true) const;
 
 	// Returns the *maxRequired* tokens that are closest to the target within this zone's subtree.
-	void GetClosestTo(uint32 maxType, const CUInt128 &target, const CUInt128 &distance, uint32 maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
-	
+	void	 GetClosestTo(uint32_t maxType, const CUInt128& target, const CUInt128& distance, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
+
 	// Ideally: Returns all contacts that are in buckets of common range between us and the asker.
 	// In practice: returns the contacts from the top (2^{logBase+1}) buckets.
-	uint32 GetBootstrapContacts(ContactList *results, uint32 maxRequired);
+	uint32_t GetBootstrapContacts(ContactList *results, uint32_t maxRequired) const;
 
-	/** Debugging. */
-//	void dumpContents(LPCTSTR prefix = NULL) const;
-//	void selfTest(void);
+	uint32_t EstimateCount() const throw();
 
-//	uint64 getApproximateNodeCount(uint32 ourLevel) const;
+	time_t	 m_nextBigTimer;
+	time_t	 m_nextSmallTimer;
 
-	bool IsDirty() const { return dirty; }
-
-	uint32 EstimateCount();
-	
-	void Merge(void);
-	
 private:
 
-	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
-	void Init(CRoutingZone *super_zone, int level, const CUInt128 &zone_index);
+	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128& zone_index) { Init(super_zone, level, zone_index); }
+	void Init(CRoutingZone *super_zone, int level, const CUInt128& zone_index);
 
-	bool AddByDistance(const CUInt128 &distance, const CUInt128 &id, uint32 ip, uint16 port, uint16 tport, uint8 version);
+	void ReadFile();
+	void WriteFile();
+
+	bool IsLeaf() const throw() { return m_bin != NULL; }
+	bool CanSplit() const throw();
+
+	// Returns all contacts from this zone tree that are no deeper than *depth* from the current zone.
+	void TopDepth(int depth, ContactList *result, bool emptyFirst = true) const;
+
+	// Returns the maximum depth of the tree as the number of edges of the longest path to a leaf.
+	uint32_t GetMaxDepth() const throw();
+
+	void RandomBin(ContactList *result, bool emptyFirst = true) const;
+
+	void Split();
+
+	void StartTimer();
+	void StopTimer();
+
+	void RandomLookup() const;
+
+	/**
+	 * Generates a new TokenBin for this zone. Used when the current zone is becoming a leaf zone.
+	 * Must be deleted by caller
+	 */
+	CRoutingZone *GenSubZone(unsigned side);
 
 	/**
 	 * Zone pair is an array of two. Either both entries are null, which
@@ -120,26 +135,12 @@ private:
 	static wxString m_filename;
 	static CUInt128 me;
 
-	void ReadFile(void);
-	void WriteFile(void);
-
-	bool IsLeaf(void) const;
-	bool CanSplit(void) const;
-
-	// Returns all contacts from this zone tree that are no deeper than *depth* from the current zone.
-	void TopDepth(int depth, ContactList *result, bool emptyFirst = true);
-
-	// Returns the maximum depth of the tree as the number of edges of the longest path to a leaf.
-	uint32 GetMaxDepth(void) const;
-
-	void RandomBin(ContactList *result, bool emptyFirst = true);
-
 	/**
 	 * The level indicates what size chunk of the address space
 	 * this zone is representing. Level 0 is the whole space,
 	 * level 1 is 1/2 of the space, level 2 is 1/4, etc.
 	 */
-	uint32 m_level;
+	uint32_t m_level;
 
 	/**
 	 * This is the distance in number of zones from the zone at this level
@@ -149,21 +150,6 @@ private:
 
 	/** List of contacts, if this zone is a leaf zone. */
 	CRoutingBin *m_bin;
-	
-	/**
-	 * Generates a new TokenBin for this zone. Used when the current zone is becoming a leaf zone.
-	 * Must be deleted by caller
-	 */
-	CRoutingZone *GenSubZone(int side);
-
-	void Split(void);
-
-	void StartTimer(void);
-	void StopTimer(void);
-
-	void RandomLookup(void);
-	
-	bool dirty;
 };
 
 } // End namespace

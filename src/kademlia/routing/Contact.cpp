@@ -52,107 +52,61 @@ CContact::~CContact()
 }
 
 CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, uint8 version, const CUInt128 &target)
-:
-m_clientID(clientID),
-m_distance(target),
-m_ip(ip),
-m_tcpPort(tcpPort),
-m_udpPort(udpPort),
-m_type(3),
-m_lastTypeSet(time(NULL)),
-m_expires(0),
-m_created(time(NULL)),
-m_inUse(0),
-m_uVersion(version)
+	: m_clientID(clientID),
+	  m_distance(target ^ clientID),
+	  m_ip(ip),
+	  m_tcpPort(tcpPort),
+	  m_udpPort(udpPort),
+	  m_type(3),
+	  m_lastTypeSet(time(NULL)),
+	  m_expires(0),
+	  m_created(m_lastTypeSet),
+	  m_inUse(0),
+	  m_version(version),
+	  m_checkKad2(true)
 {
-	m_distance.XOR(clientID);
 	wxASSERT(udpPort);
 	theStats::AddKadNode();
 }
 
-const wxString CContact::GetClientIDString(void) const
-{
-	return m_clientID.ToHexString();
-}
-
 #ifndef CLIENT_GUI
-void CContact::SetClientID(const CUInt128 &clientID)
+void CContact::SetClientID(const CUInt128 &clientID) throw()
 {
 	m_clientID = clientID;
-	m_distance = CKademlia::GetPrefs()->GetKadID();
-	m_distance.XOR(clientID);
+	m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID;
 }
 #endif
 
-const wxString CContact::GetDistanceString(void) const
+void CContact::CheckingType() throw()
 {
-	return m_distance.ToBinaryString();
-}
+	time_t now = time(NULL);
 
-uint32 CContact::GetIPAddress(void) const
-{
-	return m_ip;
-}
-
-void CContact::SetIPAddress(uint32 ip)
-{
-	m_ip = ip;
-}
-
-uint16 CContact::GetTCPPort(void) const
-{
-	return m_tcpPort;
-}
-
-void CContact::SetTCPPort(uint16 port)
-{
-	m_tcpPort = port;
-}
-
-uint16 CContact::GetUDPPort(void) const
-{
-	return m_udpPort;
-}
-
-void CContact::SetUDPPort(uint16 port)
-{
-	wxASSERT(port);
-	m_udpPort = port;
-}
-
-byte CContact::GetType(void) const
-{
-	return m_type;
-}
-
-void CContact::CheckingType()
-{
-	if(time(NULL) - m_lastTypeSet < 10 || m_type == 4) {
+	if(now - m_lastTypeSet < 10 || m_type == 4) {
 		return;
 	}
 
-	m_lastTypeSet = time(NULL);
+	m_lastTypeSet = now;
 
-	m_expires = time(NULL) + MIN2S(2);
+	m_expires = now + MIN2S(2);
 	m_type++;
-
 }
 
-void CContact::UpdateType()
+void CContact::UpdateType() throw()
 {
-	uint32 hours = (time(NULL)-m_created)/HR2S(1);
-	switch(hours) {
+	time_t now = time(NULL);
+	uint32_t hours = (now - m_created) / HR2S(1);
+	switch (hours) {
 		case 0:
 			m_type = 2;
-			m_expires = time(NULL) + HR2S(1);
+			m_expires = now + HR2S(1);
 			break;
 		case 1:
 			m_type = 1;
-			m_expires = time(NULL) + (int)HR2S(1.5);
+			m_expires = now + MIN2S(90); //HR2S(1.5)
 			break;
 		default:
 			m_type = 0;
-			m_expires = time(NULL) + HR2S(2);
+			m_expires = now + HR2S(2);
 	}
 }
 // File_checked_for_headers
