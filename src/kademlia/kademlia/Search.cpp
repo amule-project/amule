@@ -351,7 +351,7 @@ void CSearch::StorePacket()
 	// What kind of search are we doing?
 	switch (m_type) {
 		case FILE: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: File"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: File"));
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
 			if (from->GetVersion() >= 3) {
@@ -378,7 +378,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case KEYWORD: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Keyword"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Keyword"));
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
 			if (from->GetVersion() >= 3) {
@@ -409,7 +409,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case NOTES: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Notes"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Notes"));
 			// Write complete packet.
 			CMemFile searchTerms;
 			searchTerms.WriteUInt128(m_target);
@@ -436,7 +436,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STOREFILE: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreFile"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreFile"));
 			// Try to store ourselves as a source to a Node.
 			// As a safeguard, check to see if we already stored to the max nodes.
 			if (m_answers > SEARCHSTOREFILE_TOTAL) {
@@ -516,7 +516,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STOREKEYWORD: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreKeyword"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreKeyword"));
 			// Try to store keywords to a Node.
 			// As a safeguard, check to see if we already stored to the max nodes.
 			if (m_answers > SEARCHSTOREKEYWORD_TOTAL) {
@@ -572,7 +572,7 @@ void CSearch::StorePacket()
 			break;
 		}
 		case STORENOTES: {
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: StoreNotes"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: StoreNotes"));
 			// Find file we are storing info about.
 			uint8_t fileid[16];
 			m_target.ToByteArray(fileid);
@@ -619,7 +619,7 @@ void CSearch::StorePacket()
 		}
 		case FINDBUDDY:
 		{
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindBuddy"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: FindBuddy"));
 			// Send a buddy request as we are firewalled.
 			// As a safeguard, check to see if we already requested the max nodes.
 			if (m_answers > SEARCHFINDBUDDY_TOTAL) {
@@ -642,7 +642,7 @@ void CSearch::StorePacket()
 		}
 		case FINDSOURCE:
 		{
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: FindSource"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: FindSource"));
 			// Try to find if this is a buddy to someone we want to contact.
 			// As a safeguard, check to see if we already requested the max nodes.
 			if (m_answers > SEARCHFINDSOURCE_TOTAL) {
@@ -667,10 +667,10 @@ void CSearch::StorePacket()
 			break;
 		}
 		case NODECOMPLETE:
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: NodeComplete"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: NodeComplete"));
 			break;
 		case NODE:
-			AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node"));
+			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: Node"));
 			break;
 		default:
 			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Search result type: Unknown (%i)"),m_type));
