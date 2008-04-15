@@ -88,7 +88,7 @@ public:
 	/** Bit at level 0 being most significant. */
 	unsigned GetBitNumber(unsigned bit) const throw()
 	{
-		return bit <= 127 ? m_data[bit / 32] >> 31 - bit % 32 & 1 : 0;
+		return bit <= 127 ? (m_data[bit / 32] >> (31 - (bit % 32))) & 1 : 0;
 	}
 
 	int CompareTo(const CUInt128& other) const throw();
@@ -131,9 +131,9 @@ public:
 		wxASSERT(bit <= 127);
 
 		if (value)
-			m_data[bit / 32] |= 1 << 31 - bit % 32;
+			m_data[bit / 32] |= 1 << (31 - (bit % 32));
 		else
-			m_data[bit / 32] &= ~(1 << 31 - bit % 32);
+			m_data[bit / 32] &= ~(1 << (31 - (bit % 32)));
 
 		return *this;
 	}
