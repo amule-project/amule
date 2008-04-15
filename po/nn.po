@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-14 03:30+0200\n"
+"POT-Creation-Date: 2008-04-15 03:30+0200\n"
 "PO-Revision-Date: 2007-11-30 18:25+0100\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team: Norwegian/Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -137,8 +137,8 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
-#: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
+#: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -492,14 +492,21 @@ msgstr "Mellombels stogge opplastingar av fila: %s"
 msgid "aMule text client"
 msgstr ""
 
-#: src/kademlia/kademlia/SearchManager.cpp:132
+#: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: for kort søkjeord"
 
-#: src/kademlia/routing/RoutingZone.cpp:157
+#: src/kademlia/routing/RoutingZone.cpp:172
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/kademlia/routing/RoutingZone.cpp:211
+#, c-format
+msgid "Wrote %d Kad contact"
+msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2710,15 +2717,15 @@ msgstr "Lim inn"
 msgid "Select All"
 msgstr "Vél alle"
 
-#: src/SearchList.cpp:313
+#: src/SearchList.cpp:265
 msgid "Kad search can't be done if Kad is not running"
 msgstr "Du kan ikkje søkje på Kad dersom Kad ikkje køyrer"
 
-#: src/SearchList.cpp:315
+#: src/SearchList.cpp:267
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "Du kan ikkje søkje på ED2k dersom du ikkje er tilkopla ED2k"
 
-#: src/SearchList.cpp:359
+#: src/SearchList.cpp:311
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Uventa feil oppstod under søk på Kad: "
 

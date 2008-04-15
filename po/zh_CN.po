@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-14 03:30+0200\n"
+"POT-Creation-Date: 2008-04-15 03:30+0200\n"
 "PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -136,8 +136,8 @@ msgstr "无法获取用户 %s 的共享文件"
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
-#: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
+#: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -491,16 +491,23 @@ msgstr "暂停上传此文件：%s"
 msgid "aMule text client"
 msgstr "aMule 文本客户端"
 
-#: src/kademlia/kademlia/SearchManager.cpp:132
+#: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kad：搜索关键词太短"
 
-#: src/kademlia/routing/RoutingZone.cpp:157
+#: src/kademlia/routing/RoutingZone.cpp:172
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "读取 %u 个 Kad 联系人"
 msgstr[1] "读取 %u 个 Kad 联系人"
+
+#: src/kademlia/routing/RoutingZone.cpp:211
+#, c-format
+msgid "Wrote %d Kad contact"
+msgid_plural "Wrote %d Kad contacts"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -2703,15 +2710,15 @@ msgstr "粘贴"
 msgid "Select All"
 msgstr "选择全部"
 
-#: src/SearchList.cpp:313
+#: src/SearchList.cpp:265
 msgid "Kad search can't be done if Kad is not running"
 msgstr "Kad 搜索不能使用，因为 Kad 没有连接"
 
-#: src/SearchList.cpp:315
+#: src/SearchList.cpp:267
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "ED2K 搜索不能使用，因为 ED2K 没有连接"
 
-#: src/SearchList.cpp:359
+#: src/SearchList.cpp:311
 msgid "Unexpected error while attempting Kad search: "
 msgstr "尝试 Kad 搜索时出现不可预料的错误："
 
