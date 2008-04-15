@@ -13,6 +13,8 @@ using namespace muleunit;
 #define MIN(x) std::numeric_limits<x>::min()
 #define MAX(x) std::numeric_limits<x>::max()
 
+// Needs reentrant wxOnAssert, which is missing in pre-2.8.8.
+#if wxCHECK_VERSION(2, 8, 8)
 
 DECLARE(Format)
 	// Less is valid for the string type, so we need a cut
@@ -482,3 +484,5 @@ TEST(Format, Printable)
 		ASSERT_EQUALS(wxT("-10"), fmt.GetString());
 	}
 }
+
+#endif
