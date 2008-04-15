@@ -564,7 +564,7 @@ CECPacket *Get_EC_Response_PartFile_Cmd(const CECPacket *request)
 		if ( !pfile ) {
 			AddLogLineM(false,CFormat(_("Remote PartFile command failed: FileHash not found: %s")) % hash.Encode());
 			response = new CECPacket(EC_OP_FAILED);
-			response->AddTag(CECTag(EC_TAG_STRING, CFormat(wxTRANSLATE("FileHash not found: %s")) % hash.Encode()));
+			response->AddTag(CECTag(EC_TAG_STRING, CFormat(wxString(wxTRANSLATE("FileHash not found: %s"))) % hash.Encode()));
 			//return response;
 			break;
 		}
@@ -675,7 +675,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 		if ( !srv ) {
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING,
-						CFormat(wxTRANSLATE("server not found: %s")) % srv_tag->GetIPv4Data().StringIP()));
+						CFormat(wxString(wxTRANSLATE("server not found: %s"))) % srv_tag->GetIPv4Data().StringIP()));
 			return response;
 		}
 	}

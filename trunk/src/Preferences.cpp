@@ -1433,7 +1433,7 @@ void CPreferences::SaveCats()
 			cfg->Write( wxT("Incoming"),	CPath::ToUniv(m_CatList[i]->path) );
 			cfg->Write( wxT("Comment"),	m_CatList[i]->comment );
 			cfg->Write( wxT("Color"),	wxString::Format(wxT("%u"), m_CatList[i]->color) );
-			cfg->Write( wxT("Priority"),	m_CatList[i]->prio );
+			cfg->Write( wxT("Priority"),	(int)m_CatList[i]->prio );
 		}
 		
 		cfg->Flush();

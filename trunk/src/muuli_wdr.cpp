@@ -14,6 +14,7 @@
     #pragma hdrstop
 #endif
 
+#define wxADJUST_MINSIZE 0
 // Include private header
 #include "muuli_wdr.h"
 

@@ -415,7 +415,9 @@ bool CamuleApp::OnInit()
 #endif
 
 	// This can't be on constructor or wx2.4.2 doesn't set it.	
+	#if !wxCHECK_VERSION(2, 9, 0)
 	SetVendorName(wxT("TikuWarez"));
+	#endif
 	SetAppName(wxT("aMule"));
 	
 	wxString FullMuleVersion = GetFullMuleVersion();
