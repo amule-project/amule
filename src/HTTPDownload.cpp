@@ -42,12 +42,7 @@
 #include "muuli_wdr.h"		// Needed for ID_CANCEL: Let it here or will fail on win32
 #include "MuleGifCtrl.h"
 
-#ifdef __WXMSW__
-typedef wxGauge95 wxGaugeControl;
-#else
 typedef wxGauge wxGaugeControl;
-#endif
-
 
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_HTTP_PROGRESS, wxANY_ID)
 DECLARE_LOCAL_EVENT_TYPE(wxEVT_HTTP_SHUTDOWN, wxANY_ID)

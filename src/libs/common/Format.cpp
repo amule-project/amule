@@ -292,7 +292,7 @@ wxString CFormat::GetIntegerField(const wxChar* fieldType)
 	// Set the correct integer type
 	newField += fieldType;
 
-	switch (field.Last()) {
+	switch ((wxChar)field.Last()) {
 		case wxT('o'):		// Unsigned octal
 		case wxT('x'):		// Unsigned hexadecimal integer
 		case wxT('X'):		// Unsigned hexadecimal integer (capital letters)

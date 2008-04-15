@@ -108,6 +108,7 @@ class CECTag {
 		CECTag(ec_tagname_t name, const CMD4Hash& data);
 		#ifdef USE_WX_EXTENSIONS
 		CECTag(ec_tagname_t name, const wxString& data);
+		CECTag(ec_tagname_t name, const char* data) { ConstructStringTag(name, data); }
 		#endif
 		CECTag(const CECTag& tag);
 		~CECTag(void);

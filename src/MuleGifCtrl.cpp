@@ -116,8 +116,11 @@ void MuleGifCtrl::Start()
 	if (m_decoder && m_decoder->IsAnimation()) {
 		m_timer.Stop();
 		m_decoder->GoLastFrame();
-		
+#if wxCHECK_VERSION(2, 9, 0)
+		wxTimerEvent evt(m_timer);
+#else
 		wxTimerEvent evt;
+#endif
 		OnTimer(evt);
 	}
 }

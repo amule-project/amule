@@ -1097,7 +1097,7 @@ void CKnownFile::SetFileRating(int8 iNewRating)
 		SetLastPublishTimeKadNotes(0);	
 		wxString strCfgPath = wxT("/") + m_abyFileHash.Encode() + wxT("/");
 		wxConfigBase* cfg = wxConfigBase::Get();
-		cfg->Write( strCfgPath + wxT("Rate"), iNewRating);
+		cfg->Write( strCfgPath + wxT("Rate"), (int)iNewRating);
 		m_iRating = iNewRating; 
 
 		SourceSet::iterator it = m_ClientUploadList.begin();

@@ -239,7 +239,7 @@ void CKademlia::Process()
 	}
 }
 
-#warning TODO: check callers (try block not included in eMule)
+//#warning TODO: check callers (try block not included in eMule)
 void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t port)
 {
 	try {
