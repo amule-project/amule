@@ -625,14 +625,6 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	// Must write parametercount - 1 parameter headers
 	CMemFilePtr data(new CMemFile(100));
 
-	if (type == KadSearch) {
-		// We need to make some room for the keyword hash
-		data->WriteUInt128(CUInt128());
-		// and the search type (0/1 if there is ed2k data or not)		
-		// There will obviously be... at least the search string.
-		data->WriteUInt8(0);
-	}
-
 	_astrParserErrors.Empty();	
 	_SearchExpr.m_aExpr.Empty();
 	

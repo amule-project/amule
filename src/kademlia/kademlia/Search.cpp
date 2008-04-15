@@ -851,6 +851,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 				wxASSERT(tag->IsInt());
 				size = tag->GetInt();
 			}
+			bFileSize = true;
 		} else if (tag->GetName() == TAG_FILETYPE) {
 			type = tag->GetStr();
 		} else if (tag->GetName() == TAG_FILEFORMAT) {
@@ -880,6 +881,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 
 	// If we don't have a valid filename and filesize, drop this keyword.
 	if (!bFileName || !bFileSize) {
+		AddDebugLogLineM(false, logKadSearch, wxString(wxT("No ")) + (!bFileName ? wxT("filename") : wxT("filesize")) + wxT(" on search result, ignoring"));	
 		return;
 	}
 
