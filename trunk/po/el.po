@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-14 03:30+0200\n"
+"POT-Creation-Date: 2008-04-15 03:30+0200\n"
 "PO-Revision-Date: 2007-12-20 20:59-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -139,8 +139,8 @@ msgstr "Αποτυχία λήψης των κοινών αρχείων του χ
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:883
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
 #: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
-#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:885
-#: src/KnownFile.cpp:891 src/FileDetailDialog.cpp:130
+#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
+#: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
 #: src/ClientListCtrl.cpp:702 src/ClientListCtrl.cpp:841
 #: src/ClientDetailDialog.cpp:82 src/ClientDetailDialog.cpp:83
@@ -498,14 +498,21 @@ msgstr "Αναστολή ανεβάσματος του αρχείου: %s"
 msgid "aMule text client"
 msgstr ""
 
-#: src/kademlia/kademlia/SearchManager.cpp:132
+#: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: Η λέξη κλειδί αναζήτησης είναι πολυ μικρούλα"
 
-#: src/kademlia/routing/RoutingZone.cpp:157
+#: src/kademlia/routing/RoutingZone.cpp:172
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/kademlia/routing/RoutingZone.cpp:211
+#, c-format
+msgid "Wrote %d Kad contact"
+msgid_plural "Wrote %d Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -2703,16 +2710,16 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: src/SearchList.cpp:313
+#: src/SearchList.cpp:265
 msgid "Kad search can't be done if Kad is not running"
 msgstr ""
 
-#: src/SearchList.cpp:315
+#: src/SearchList.cpp:267
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr ""
 "Δεν μπορεί να γίνει αναζήτηση στο ED2K αν το ED2K δεν είναι συνδεδεμένο"
 
-#: src/SearchList.cpp:359
+#: src/SearchList.cpp:311
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Άγνωστο σφάλμα όταν έγινε απόπειρα αναζήτησης στο Kad:"
 
