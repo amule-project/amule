@@ -159,7 +159,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8* pbyBufIn, int nBufLen
 		if (bKad){
 			if (Kademlia::CKademlia::GetPrefs()) {
 				uint8 achKeyData[18];
-				memcpy(achKeyData, Kademlia::CKademlia::GetPrefs()->GetKadID().GetData(), 16);
+				Kademlia::CKademlia::GetPrefs()->GetKadID().ToByteArray((uint8_t *)&achKeyData);
 				memcpy(achKeyData + 16, pbyBufIn + 1, 2); // random key part sent from remote client
 				md5.Calculate(achKeyData, sizeof(achKeyData));
 			}

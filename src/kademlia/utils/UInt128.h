@@ -48,20 +48,21 @@ namespace Kademlia {
 
 class CUInt128
 {
+	friend bool operator==(uint32_t, const CUInt128&);
 public:
 	CUInt128(const CUInt128& value) throw()
 	{
 		SetValue(value);
 	}
 
-	explicit CUInt128(bool fill) throw()
+	explicit CUInt128(bool fill = false) throw()
 	{
 		m_data[0] = m_data[1] = m_data[2] = m_data[3] = (fill ? (uint32_t)-1 : 0);
 	}
 
-	explicit CUInt128(uint32_t value = 0) throw()
+	explicit CUInt128(uint32_t value) throw()
 	{
-		SetValue((uint32_t)value);
+		SetValue(value);
 	}
 
 	explicit CUInt128(const uint8_t *valueBE) throw()
@@ -75,16 +76,6 @@ public:
 	 */
 	CUInt128(const CUInt128& value, uint32_t numBits) throw();
 
-	const uint8_t* GetData() const throw()
-	{
-		return (const uint8_t*)m_data;
-	}
-
-	uint8_t* GetDataPtr() throw()
-	{
-		return (uint8_t*)m_data;
-	}
-
 	/** Bit at level 0 being most significant. */
 	unsigned GetBitNumber(unsigned bit) const throw()
 	{
@@ -94,7 +85,7 @@ public:
 	int CompareTo(const CUInt128& other) const throw();
 	int CompareTo(uint32_t value) const throw();
 
-	wxString ToHexString(void) const;
+	wxString ToHexString() const;
 	wxString ToBinaryString(bool trim = false) const;
 	void ToByteArray(uint8_t *b) const throw();
 
@@ -103,6 +94,13 @@ public:
 		wxASSERT(val < 4);
 
 		return m_data[val];
+	}
+
+	void Set32BitChunk(unsigned chunk, uint32_t value) throw()
+	{
+		wxASSERT(chunk < 4);
+
+		m_data[chunk] = value;
 	}
 
 	CUInt128& SetValue(const CUInt128& value) throw()
@@ -123,9 +121,9 @@ public:
 
 	CUInt128& SetValueBE(const uint8_t *valueBE) throw();
 
-	CUInt128& SetValueRandom(void);
-//	CUInt128& SetValueGUID(void);
+	CUInt128& SetValueRandom();
 
+	/** Bit at level 0 being most significant. */
 	CUInt128& SetBitNumber(unsigned bit, unsigned value) throw()
 	{
 		wxASSERT(bit <= 127);
@@ -204,6 +202,11 @@ private:
 
 	uint32_t m_data[4];
 };
+
+inline bool operator==(uint32_t x, const CUInt128& y)
+{
+	return y.operator==(x);
+}
 
 } // End namespace
 
