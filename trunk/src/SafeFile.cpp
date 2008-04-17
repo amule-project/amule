@@ -158,13 +158,15 @@ uint64 CFileDataIO::ReadUInt64() const
 }
 
 
+// UInt128 values are stored a little weird way...
+// Four little-endian 32-bit numbers, stored in
+// big-endian order
 CUInt128 CFileDataIO::ReadUInt128() const
 {
 	CUInt128 value;
-	uint32* data = (uint32*)value.GetDataPtr();
-	for (int i = 0; i < (128/32); i++) {
+	for (int i = 0; i < 4; i++) {
 		// Four 32bits chunks
-		data[i] = ReadUInt32();
+		value.Set32BitChunk(i, ReadUInt32());
 	}
 
 	return value;
@@ -281,9 +283,12 @@ void CFileDataIO::WriteUInt64(uint64 value)
 }
 
 
+// UInt128 values are stored a little weird way...
+// Four little-endian 32-bit numbers, stored in
+// big-endian order
 void CFileDataIO::WriteUInt128(const Kademlia::CUInt128& value)
 {
-	for (int i = 0; i < (128/32); i++) {
+	for (int i = 0; i < 4; i++) {
 		// Four 32bits chunks
 		WriteUInt32(value.Get32BitChunk(i));
 	}
