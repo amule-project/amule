@@ -51,7 +51,6 @@ dist_webserver_DATA = \
 	stats_0.png \
 	stats_1.png \
 	stats.php \
-	stats_tree_old.php \
 	stats_tree.php \
 	style.css \
 	tab_bottom_left.png \
