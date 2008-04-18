@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-16 03:31+0200\n"
-"PO-Revision-Date: 2008-03-31 21:56+0100\n"
+"PO-Revision-Date: 2008-04-18 02:18+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -511,7 +511,7 @@ msgstr[0] "%u Kad kapcsolat beolvasva"
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
-msgstr[0] ""
+msgstr[0] "%d Kad kapcsolat kiírva"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
