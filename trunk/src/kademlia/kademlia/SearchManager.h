@@ -52,19 +52,8 @@ namespace Kademlia {
 class CSearch;
 class CRoutingZone;
 
-// If type is unknown it will be an empty string
-// If there are any properties about the file to report, there will follow LPCSTR key/value pairs.
-//typedef void (CALLBACK *SEARCH_KEYWORD_CALLBACK)(uint32 searchID, CUInt128 fileID, wxString name, uint32 size, wxString type, uint16 numProperties, ...);
-//typedef void (CALLBACK *SEARCH_ID_CALLBACK)(uint32 searchID, CUInt128 contactID, uint8 type, uint32 ip, uint16 tcp, uint16 udp, uint32 serverip, uint16 port);
-
 typedef std::list<wxString> WordList;
 typedef std::map<CUInt128, CSearch*> SearchMap;
-
-// #define SEARCH_IMAGE	"-image"
-// #define SEARCH_AUDIO	"-audio"
-// #define SEARCH_VIDEO	"-video"
-// #define SEARCH_DOC		"-doc"
-// #define SEARCH_PRO		"-pro"
 
 class CSearchManager
 {
@@ -82,8 +71,7 @@ public:
 	static CSearch* PrepareLookup(uint32_t type, bool start, const CUInt128& id);
 
 	// Will return unique search id, returns zero if already searching for this keyword.
-	//	static CSearch* PrepareFindKeywords(const wxString& keyword, CMemFile* ed2k_packet, uint32 searchid);
-	static CSearch* PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData);
+	static CSearch* PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData, uint32_t searchid);
 
 	static bool StartSearch(CSearch* search);
 

@@ -888,7 +888,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 									DebugSend(Kad2SearchRes, ip, port);
 									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
 								} else {
-									DebugSend(KadSearcRes, ip, port);
+									DebugSend(KadSearchRes, ip, port);
 									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port);
 								}
 								packetdata.Reset();

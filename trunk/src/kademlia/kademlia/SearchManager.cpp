@@ -111,7 +111,7 @@ bool CSearchManager::StartSearch(CSearch* search)
 	return true;
 }
 
-CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData)
+CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t searchTermsDataSize, const uint8_t *searchTermsData, uint32_t searchid)
 {
 	// Create a keyword search object.
 	CSearch *s = new CSearch;
@@ -140,7 +140,8 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		s->SetSearchTermData(searchTermsDataSize, searchTermsData);
 		// Inc our searchID
-		s->SetSearchID(++m_nextID);
+		// If called from external client use predefined search id
+		s->SetSearchID((searchid & 0xffffff00) == 0xffffff00 ? searchid : ++m_nextID);
 		// Insert search into map
 		m_searches[s->GetTarget()] = s;
 		// Start search
