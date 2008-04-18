@@ -41,6 +41,7 @@ Version 2.2.1 - ???
 		* Added amulegui desktop icon (with Vollstrecker).
 		* Patch for fixing aMule spec file in Fedora and Mandriva.
 		* Test for perl File::Copy in configure.
+		* Fix for building with _FORTIFY_SOURCE.
 
 	Gnucco:
 		* Workaround for string serialization bug.
