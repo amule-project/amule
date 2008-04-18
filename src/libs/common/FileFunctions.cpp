@@ -287,7 +287,7 @@ FSCheckResult DoCheckFileSystem(const CPath& path)
 	wxString fullName = JoinPaths(path.GetRaw(), wxT(":"));
 
 	// Try to open the file, without overwriting existing files.
-	int fd = open(fullName.fn_str(), O_WRONLY | O_CREAT | O_EXCL, 0600);
+	int fd = open(fullName.fn_str(), O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd != -1) {
 		// Success, the file-system cant be FAT32
 		close(fd);
