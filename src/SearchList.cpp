@@ -303,7 +303,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 			// searchstring will get tokenized there
 			// The tab must be created with the Kad search ID, so seardhID is updated.
 			Kademlia::CSearch* search = Kademlia::CSearchManager::PrepareFindKeywords(
-										 params.searchString, data->GetLength(), data->GetRawBuffer());
+										 params.searchString, data->GetLength(), data->GetRawBuffer(), *searchID);
 
 			*searchID = search->GetSearchID();
 		} catch (const wxString& what) {
