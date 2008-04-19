@@ -612,6 +612,10 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 			 _("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 	
+	if (CfgChanged(IDC_NETWORKKAD) || CfgChanged(IDC_NETWORKED2K)) {
+		theApp->amuledlg->DoNetworkRearrange();
+	}
+	
 	if (restart_needed) {
 		wxMessageBox(restart_needed_msg + _("\nYou MUST restart aMule now.\nIf you do not restart now, don't complain if anything bad happens.\n"), _("WARNING"),wxICON_EXCLAMATION,this);
 	}

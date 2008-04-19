@@ -136,6 +136,8 @@ public:
 
 	void	StartNewSearch();
 	
+	void FixSearchTypes();
+	
 private:
 	// Event handlers
 	void		OnFieldChanged(wxEvent& evt);
@@ -163,6 +165,8 @@ private:
 	wxGauge*	m_progressbar;
 
 	CMuleNotebook*	m_notebook;
+
+	wxArrayString m_searchchoices;
 
 	DECLARE_EVENT_TABLE()
 };

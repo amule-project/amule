@@ -737,11 +737,6 @@ void CStatistics::UpdateStatsTree()
 
 	s_avgConnections->SetValue(theApp->listensocket->GetAverageConnections());
 
-#if 0
-	(*cli13) = wxString::Format(_("LowID: %u (%.2f%% Total %.2f%% Known)"),#lowid , (#total>0)?((double)100*#lowid/#total):0, (double)100*#knownLowID/#known);
-	(*cli14) = wxString::Format(_("SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"), #secOn , ((#eMule+#aMule)>0)?((double)100*#secOn / (#eMule+#aMule)):0, #secOff, ((#eMule+#aMule)>0)?((double)100*#secOff /(#eMule+#aMule) ):0);
-#endif
-
 	// get serverstats
 	// TODO: make these realtime, too
 	uint32 servfail;

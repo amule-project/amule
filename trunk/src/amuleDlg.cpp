@@ -247,10 +247,10 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		exit(1);
 	}
 
-	// Set Serverlist as active window
+	// Set transfers as active window
 	Create_Toolbar(thePrefs::VerticalToolbar());
-	SetActiveDialog(DT_NETWORKS_WND, m_serverwnd);
-	m_wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true );
+	SetActiveDialog(DT_TRANSFER_WND, m_transferwnd);
+	m_wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true );
 
 	m_is_safe_state = true;
 
@@ -275,6 +275,24 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	
 	SetAcceleratorTable(wxAcceleratorTable(itemsof(entries), entries));	
 	ShowED2KLinksHandler( thePrefs::GetFED2KLH() );
+	
+	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
+	wxNotebook* networks_notebook = CastChild( ID_NETNOTEBOOK, wxNotebook);
+	
+	wxASSERT(logs_notebook->GetPageCount() == 4);
+	wxASSERT(networks_notebook->GetPageCount() == 2);
+	
+	for (int i = 0; i < logs_notebook->GetPageCount(); ++i) {
+		m_logpages[i].page = logs_notebook->GetPage(i);
+		m_logpages[i].name = logs_notebook->GetPageText(i);
+	}
+
+	for (int i = 0; i < networks_notebook->GetPageCount(); ++i) {
+		m_networkpages[i].page = networks_notebook->GetPage(i);
+		m_networkpages[i].name = networks_notebook->GetPageText(i);
+	}
+	
+	DoNetworkRearrange();
 }
 
 
@@ -364,7 +382,7 @@ void CamuleDlg::RemoveSystray()
 
 void CamuleDlg::OnToolBarButton(wxCommandEvent& ev)
 {
-	static int lastbutton = ID_BUTTONNETWORKS;
+	static int lastbutton = ID_BUTTONTRANSFER;
 
 	// Kry - just if the GUI is ready for it
 	if ( m_is_safe_state ) {
@@ -1290,7 +1308,6 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 		_("Networks"), m_tblist.GetBitmap(3),
 		wxNullBitmap, wxITEM_CHECK,
 		_("Networks Window"));
-	wndToolbar->ToggleTool(ID_BUTTONNETWORKS, true);
 	wndToolbar->AddTool(ID_BUTTONSEARCH,
 		_("Searches"), m_tblist.GetBitmap(5),
 		wxNullBitmap, wxITEM_CHECK,
@@ -1325,6 +1342,8 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 		wxNullBitmap, wxITEM_NORMAL,
 		_("About/Help"));
 	
+	wndToolbar->ToggleTool(ID_BUTTONTRANSFER, true);
+
 	// Needed for non-GTK platforms, where the
 	// items don't get added immediatly.
 	wndToolbar->Realize();
@@ -1412,6 +1431,83 @@ void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 void CamuleDlg::DoNetworkRearrange()
 {
 	
+	wxWindowUpdateLocker freezer(this);
+	
+	wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONNETWORKS);
+
+	wxNotebook* logs_notebook = CastChild( ID_SRVLOG_NOTEBOOK, wxNotebook);
+	wxNotebook* networks_notebook = CastChild( ID_NETNOTEBOOK, wxNotebook);
+	
+	while (logs_notebook->GetPageCount() > 1) {
+		logs_notebook->RemovePage(logs_notebook->GetPageCount() - 1);
+	}
+	
+	while (networks_notebook->GetPageCount() > 0) {
+		networks_notebook->RemovePage(networks_notebook->GetPageCount() - 1);
+	}
+
+	if (thePrefs::GetNetworkED2K()) {
+		logs_notebook->AddPage(m_logpages[1].page, m_logpages[1].name);
+		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
+	}
+	
+	m_logpages[1].page->Show(thePrefs::GetNetworkED2K());
+	m_logpages[2].page->Show(thePrefs::GetNetworkED2K());
+	
+	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
+	
+	if (thePrefs::GetNetworkKademlia()) {
+		logs_notebook->AddPage(m_logpages[3].page, m_logpages[3].name);
+	}
+	
+	m_logpages[3].page->Show(thePrefs::GetNetworkKademlia());
+	
+	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());		
+
+	networks_notebook->Show(thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia());
+	
+	wxWindow* replacement = NULL;
+	
+	m_networknotebooksizer->Clear();
+	
+	if (thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia()) {
+		toolbarTool->SetLabel(_("Networks"));
+		
+		m_networkpages[0].page->Reparent(networks_notebook);
+		m_networkpages[1].page->Reparent(networks_notebook);
+		
+		networks_notebook->AddPage(m_networkpages[0].page, m_networkpages[0].name);		
+		networks_notebook->AddPage(m_networkpages[1].page, m_networkpages[1].name);
+
+		replacement = networks_notebook;
+
+	} else if (thePrefs::GetNetworkED2K()) {
+		toolbarTool->SetLabel(_("ed2k network"));
+		replacement = m_networkpages[0].page;
+		m_networkpages[1].page->Reparent(m_networknotebooksizer->GetContainingWindow());
+	} else if (thePrefs::GetNetworkKademlia()) {
+		toolbarTool->SetLabel(_("Kad network"));
+		m_networkpages[0].page->Reparent(m_networknotebooksizer->GetContainingWindow());
+		replacement = m_networkpages[1].page;
+	} else {
+		// No networks.
+		toolbarTool->SetLabel(_("No network"));
+	}
+	
+	if (replacement) {
+		replacement->Reparent(m_networknotebooksizer->GetContainingWindow());
+		m_networknotebooksizer->Add( replacement, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+		m_networknotebooksizer->Layout();
+	} 
+	
+	m_wndToolbar->InsertTool(2, toolbarTool);
+	
+	m_wndToolbar->EnableTool(ID_BUTTONNETWORKS, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
+	m_wndToolbar->EnableTool(ID_BUTTONCONNECT, (thePrefs::GetNetworkED2K() || thePrefs::GetNetworkKademlia()));
+	
+	m_wndToolbar->Realize();
+	
+	m_searchwnd->FixSearchTypes();
 }
 
 // File_checked_for_headers
