@@ -210,6 +210,8 @@ protected:
 	void OnMainGUISizeChange(wxSizeEvent& evt);
 	void OnExit(wxCommandEvent& evt);
 
+	void DoNetworkRearrange();
+
 private:
 	//! Specifies if the prefs-dialog was shown before minimizing.
 	bool m_prefsVisible;
