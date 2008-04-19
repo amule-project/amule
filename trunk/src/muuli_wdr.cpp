@@ -2165,11 +2165,7 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item14 = new wxStaticText( parent, -1, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item12->Add( item14, 0, wxALIGN_CENTER, 5 );
 
-    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE
-#ifdef __WXMSW__
-| wxTR_HIDE_ROOT
-#endif
-);
+    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100), wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT );
     wxASSERT( item15 );
     item12->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
