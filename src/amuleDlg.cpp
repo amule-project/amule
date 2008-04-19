@@ -722,7 +722,8 @@ void CamuleDlg::ShowConnectionState()
 	}
 
 	if (currentState != s_oldState) {
-		m_wndToolbar->Freeze();
+		wxWindowUpdateLocker freezer(m_wndToolbar);
+		
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
 
 		switch (currentState) {
@@ -746,7 +747,6 @@ void CamuleDlg::ShowConnectionState()
 
 		m_wndToolbar->InsertTool(0, toolbarTool);
 		m_wndToolbar->Realize();
-		m_wndToolbar->Thaw();
 
 		s_oldState = currentState;
 	}
@@ -1075,11 +1075,7 @@ void CamuleDlg::SetMessagesTool()
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
 	
 	wxWindowUpdateLocker freezer(m_wndToolbar);
-	wxToolBarToolBase* item = m_wndToolbar->RemoveTool(ID_BUTTONMESSAGES);
-	item->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));
-
-	m_wndToolbar->InsertTool(pos, item);
-	m_wndToolbar->Realize();
+	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
 }
 
 
@@ -1411,6 +1407,11 @@ void CamuleDlg::OnKeyPressed(wxKeyEvent& event)
 void CamuleDlg::OnExit(wxCommandEvent& WXUNUSED(evt))
 {
 	Close();
+}
+
+void CamuleDlg::DoNetworkRearrange()
+{
+	
 }
 
 // File_checked_for_headers
