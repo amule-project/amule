@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2008-02-28 15:04+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -1363,7 +1363,7 @@ msgid "Remote Server"
 msgstr "Server op Afstand"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -2894,7 +2894,7 @@ msgstr "Download"
 msgid "Category"
 msgstr "Categorie"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr "Standaard"
 
@@ -4507,7 +4507,7 @@ msgstr "Zoeken"
 msgid "Name:"
 msgstr "Naam:"
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr "Lokaal"
 
@@ -6475,12 +6475,12 @@ msgstr "Niet Beschikbaar"
 msgid "%u (QR: %u)"
 msgstr ""
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "Min grootte moet kleiner zijn dan max grootte. Max grootte wordt genegeerd."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr "Zoekwaarschuwing"
 

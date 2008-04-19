@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -1350,7 +1350,7 @@ msgid "Remote Server"
 msgstr "遠程服務器"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -2865,7 +2865,7 @@ msgstr "下載"
 msgid "Category"
 msgstr "分類"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr "主要"
 
@@ -4442,7 +4442,7 @@ msgstr "尋找"
 msgid "Name:"
 msgstr "名字："
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr "本地"
 
@@ -6363,11 +6363,11 @@ msgstr "不在"
 msgid "%u (QR: %u)"
 msgstr "%u (隊列：%u)"
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "最小值必須小于最大值，最大值已被忽略。"
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr "搜索警告"
 

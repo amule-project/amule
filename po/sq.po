@@ -11,14 +11,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2008-04-18 13:09+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail>\n"
 "Language-Team: Albanian <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -182,22 +182,18 @@ msgstr "Kerkuar: %s\n"
 #: src/BaseClient.cpp:1878
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Statistikat e faileve per kete sesion: Pranohen %d nga %d kerkesa, %s te "
-"transferuara\n"
-"Statistikat e faileve per kete sesion: Pranohen %d nga %d kerkesat, %s te "
-"transferuara\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Statistikat e faileve per te gjithe sesionet: Pranohet %d nga %d kerkesa, %s "
-"te transferuara\n"
-"Statistikat e faileve per te gjithe sesionet: Pranohen %d nga %d kerkesat, %"
-"s te transferuara\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -517,7 +513,6 @@ msgstr[1] "Po lexoj %u kontakte Kad"
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
 msgstr[0] "U shkruajt %d kontakt Kadi"
-""
 msgstr[1] "U shkruajten %d kontakte Kadi"
 
 #: src/ListenSocket.cpp:68
@@ -1370,7 +1365,7 @@ msgid "Remote Server"
 msgstr "Server i larget"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -2912,7 +2907,7 @@ msgstr "Shkarkime"
 msgid "Category"
 msgstr "Kategori"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr "Kryesore"
 
@@ -3249,13 +3244,11 @@ msgstr "Gabim ne leximin e failit seeds tek partfile-t (%s - %s): %s"
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
-"U gjend nje pjese e prishur (%d) ne %d te pjeses se failit %s - Rezultati "
-"Hash i Failit |%s| Hash i Failit |%s|"
-"U gjend nje pjese e prishur (%d) ne %d pjeset e failit %s - Rezultati Hash i "
-"Failit |%s| Hash i Failit |%s|"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/PartFile.cpp:1176
 #, c-format
@@ -4554,7 +4547,7 @@ msgstr "Kerko"
 msgid "Name:"
 msgstr "Emri:"
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr "Lokale"
 
@@ -6530,13 +6523,13 @@ msgstr "Nuk eshte aktive"
 msgid "%u (QR: %u)"
 msgstr "%u (QR: %u)"
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "Masa minimale duhet te jete me e vogel se masa maksimale.Po injoroj Masen "
 "Maksimale.."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr "PoParalajmerim per kerkim"
 
@@ -7101,3 +7094,29 @@ msgstr ""
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Deshtoi te hapi listen e shokeve 'emfriends.met' per ta shkruar!"
 
+#~ msgid ""
+#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Statistikat e faileve per kete sesion: Pranohen %d nga %d kerkesa, %s te "
+#~ "transferuara\n"
+#~ "Statistikat e faileve per kete sesion: Pranohen %d nga %d kerkesat, %s te "
+#~ "transferuara\n"
+
+#~ msgid ""
+#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Statistikat e faileve per te gjithe sesionet: Pranohet %d nga %d kerkesa, "
+#~ "%s te transferuara\n"
+#~ "Statistikat e faileve per te gjithe sesionet: Pranohen %d nga %d "
+#~ "kerkesat, %s te transferuara\n"
+
+#~ msgid ""
+#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
+#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
+#~ "FileResultHash |%s| FileHash |%s|"
+#~ msgstr ""
+#~ "U gjend nje pjese e prishur (%d) ne %d te pjeses se failit %s - Rezultati "
+#~ "Hash i Failit |%s| Hash i Failit |%s|U gjend nje pjese e prishur (%d) ne %"
+#~ "d pjeset e failit %s - Rezultati Hash i Failit |%s| Hash i Failit |%s|"
