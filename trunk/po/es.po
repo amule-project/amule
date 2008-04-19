@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new_es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2008-04-04 00:19+0200\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
@@ -1371,7 +1371,7 @@ msgid "Remote Server"
 msgstr "Servidor remoto"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -2912,7 +2912,7 @@ msgstr "Descarga"
 msgid "Category"
 msgstr "Categoría"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr "Principal"
 
@@ -4537,7 +4537,7 @@ msgstr "Buscar"
 msgid "Name:"
 msgstr "Nombre: "
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr "Local"
 
@@ -6514,12 +6514,12 @@ msgstr "No disponible"
 msgid "%u (QR: %u)"
 msgstr "%u (QR: %u)"
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 "El tamaño mínimo debe ser menor al tamaño máximo. Tamaño máximo ignorado."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr "Alerta de búsqueda"
 

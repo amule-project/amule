@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -1343,7 +1343,7 @@ msgid "Remote Server"
 msgstr ""
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr ""
 
@@ -2852,7 +2852,7 @@ msgstr "Изтегляне"
 msgid "Category"
 msgstr "Категория"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr ""
 
@@ -4396,7 +4396,7 @@ msgstr "Търсене"
 msgid "Name:"
 msgstr ""
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr ""
 
@@ -6279,11 +6279,11 @@ msgstr ""
 msgid "%u (QR: %u)"
 msgstr ""
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr ""
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr ""
 

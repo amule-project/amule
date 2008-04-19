@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-16 03:31+0200\n"
+"POT-Creation-Date: 2008-04-19 03:31+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -1367,7 +1367,7 @@ msgid "Remote Server"
 msgstr "원격 서버"
 
 #: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:194
-#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:108
+#: src/muuli_wdr.cpp:3740 src/SearchDlg.cpp:107
 msgid "Kad"
 msgstr "Kad"
 
@@ -2903,7 +2903,7 @@ msgstr "내려받기"
 msgid "Category"
 msgstr "분류"
 
-#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:599
+#: src/SearchListCtrl.cpp:556 src/SearchDlg.cpp:598
 msgid "Main"
 msgstr "주"
 
@@ -4507,7 +4507,7 @@ msgstr "검색"
 msgid "Name:"
 msgstr "이름:"
 
-#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:107
+#: src/muuli_wdr.cpp:192 src/SearchDlg.cpp:106
 msgid "Local"
 msgstr "지역"
 
@@ -6452,11 +6452,11 @@ msgstr "불가능"
 msgid "%u (QR: %u)"
 msgstr "QR: %u"
 
-#: src/SearchDlg.cpp:491
+#: src/SearchDlg.cpp:490
 msgid "Min size must be smaller than max size. Max size ignored."
 msgstr "최소 크기가 최대 크기보다 작아야 합니다. 최대 크기는 무시됩니다.."
 
-#: src/SearchDlg.cpp:492 src/SearchDlg.cpp:539
+#: src/SearchDlg.cpp:491 src/SearchDlg.cpp:538
 msgid "Search warning"
 msgstr "검색 경고"
 
