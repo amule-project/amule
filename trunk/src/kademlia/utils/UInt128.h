@@ -48,7 +48,6 @@ namespace Kademlia {
 
 class CUInt128
 {
-	friend bool operator==(uint32_t, const CUInt128&);
 public:
 	CUInt128(const CUInt128& value) throw()
 	{
@@ -203,10 +202,15 @@ private:
 	uint32_t m_data[4];
 };
 
-inline bool operator==(uint32_t x, const CUInt128& y)
-{
-	return y.operator==(x);
-}
+inline bool operator==(uint32_t x, const CUInt128& y) throw() { return y.operator==(x); }
+inline bool operator!=(uint32_t x, const CUInt128& y) throw() { return y.operator!=(x); }
+inline bool operator<(uint32_t x, const CUInt128& y) throw() { return y.operator>(x); }
+inline bool operator>(uint32_t x, const CUInt128& y) throw() { return y.operator<(x); }
+inline bool operator<=(uint32_t x, const CUInt128& y) throw() { return y.operator>=(x); }
+inline bool operator>=(uint32_t x, const CUInt128& y) throw() { return y.operator<=(x); }
+inline CUInt128 operator+(uint32_t x, const CUInt128& y) throw() { return y.operator+(x); }
+inline CUInt128 operator-(uint32_t x, const CUInt128& y) throw() { return CUInt128(x).Subtract(y); }
+inline CUInt128 operator^(uint32_t x, const CUInt128& y) throw() { return y.operator^(x); }
 
 } // End namespace
 

@@ -331,13 +331,14 @@ inline wxString StringFrom(signed long long value)
  * @param testCaseName TestCase name where the test belongs to. Should be
  * the same name of DECLARE, SETUP and TEARDOWN.
  * @param testName Unique test name.
+ * @param testDisplayName This will be displayed when running the test.
  */
-#define TEST(testCaseName, testName)                                           \
+#define TEST_M(testCaseName, testName, testDisplayName)                        \
     class testCaseName##testName##Test : public testCaseName##Declare##Test    \
     {                                                                          \
     public:                                                                    \
         testCaseName##testName##Test()                                         \
-            : testCaseName##Declare##Test(wxT(#testCaseName), wxT(#testName))  \
+            : testCaseName##Declare##Test(wxT(#testCaseName), testDisplayName) \
         {                                                                      \
         }                                                                      \
                                                                                \
@@ -345,6 +346,18 @@ inline wxString StringFrom(signed long long value)
     } testCaseName##testName##Instance;                                        \
                                                                                \
     void testCaseName##testName##Test::run()
+
+/**
+ * Define a test in a TestCase using test fixtures.
+ * User should put his test code between brackets after using this macro.
+ *
+ * This macro should only be used if test fixtures were declared earlier in
+ * this order: DECLARE, SETUP, TEARDOWN.
+ * @param testCaseName TestCase name where the test belongs to. Should be
+ * the same name of DECLARE, SETUP and TEARDOWN.
+ * @param testName Unique test name.
+ */
+#define TEST(testCaseName, testName)	TEST_M(testCaseName, testName, wxT(#testName))
 
 /**
  * Location to declare variables and objets.
