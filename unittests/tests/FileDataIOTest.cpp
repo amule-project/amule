@@ -247,12 +247,12 @@ struct RWInterface<CUInt128>
 {
 	static CUInt128 genValue(size_t j) {
 		CUInt128 value;
-		uint32* data = (uint32*)value.GetDataPtr();
-		for (size_t y = 0; y < 4; y++) {
-			data[y] = (j + 3 + y * 4) & 0xff;
-			data[y] = (data[y] << 8) | (j + 2 + y * 4) & 0xff;
-			data[y] = (data[y] << 8) | (j + 1 + y * 4) & 0xff;
-			data[y] = (data[y] << 8) | (j + 0 + y * 4) & 0xff;
+		for (size_t y = 0; y < 16; y += 4) {
+			value.Set32BitChunk(y >> 2,
+					    ((j + y    ) & 0xff)       |
+					    ((j + y + 1) & 0xff) << 8  |
+					    ((j + y + 2) & 0xff) << 16 |
+					    ((j + y + 3) & 0xff) << 24);
 		}
 
 		return value;

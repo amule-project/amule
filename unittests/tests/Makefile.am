@@ -9,9 +9,14 @@ AM_CXXFLAGS = -I$(srcdir) -I$(srcdir)/.. -I$(top_srcdir)/src -I$(top_srcdir)/src
 LDADD = $(WXBASE_LIBS) ../muleunit/libmuleunit.a
 
 MAINTAINERCLEANFILES = Makefile.in
-TESTS = RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest TextFileTest
+TESTS = CUInt128Test RangeMapTest FormatTest StringFunctionsTest NetworkFunctionsTest FileDataIOTest PathTest TextFileTest
 check_PROGRAMS = $(TESTS)
 
+
+# Tests for the CUInt128 class
+CUInt128Test_SOURCES = CUInt128Test.cpp $(top_srcdir)/src/kademlia/utils/UInt128.cpp
+CUInt128Test_CXXFLAGS = $(AM_CXXFLAGS)
+CUInt128Test_LDADD = $(LDADD) $(CRYPTOLIBS)
 
 # Tests for the CRangeMap class
 RangeMapTest_SOURCES = RangeMapTest.cpp
@@ -50,7 +55,7 @@ PathTest_SOURCES = PathTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_src
 PathTest_CXXFLAGS = $(AM_CXXFLAGS) 
 PathTest_LDADD = $(LDADD) $(CRYPTOLIBS)
 
-# Tests for the CPath class
+# Tests for the CTextFile class
 TextFileTest_SOURCES = TextFileTest.cpp $(top_srcdir)/src/libs/common/Path.cpp $(top_srcdir)/src/libs/common/StringFunctions.cpp $(top_srcdir)/src/libs/common/TextFile.cpp
 TextFileTest_CXXFLAGS = $(AM_CXXFLAGS) 
 TextFileTest_LDADD = $(LDADD) $(CRYPTOLIBS)
