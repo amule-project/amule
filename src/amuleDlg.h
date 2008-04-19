@@ -54,6 +54,10 @@ class PrefsUnifiedDlg;
 
 class CMuleTrayIcon;		
 
+struct PageType {
+	wxWindow* page;
+	wxString name;
+};
 
 #define MP_RESTORE	4001
 #define MP_CONNECT	4002
@@ -177,6 +181,8 @@ public:
 	void SetMessageBlink(bool state) { m_BlinkMessages = state; }
 	void Create_Toolbar(bool orientation);
 	
+	void DoNetworkRearrange();
+	
 #ifdef ENABLE_IP2COUNTRY	
 	CIP2Country*		m_IP2Country;
 #endif	
@@ -210,8 +216,6 @@ protected:
 	void OnMainGUISizeChange(wxSizeEvent& evt);
 	void OnExit(wxCommandEvent& evt);
 
-	void DoNetworkRearrange();
-
 private:
 	//! Specifies if the prefs-dialog was shown before minimizing.
 	bool m_prefsVisible;
@@ -231,9 +235,10 @@ private:
 	wxZipEntry *entry;
 	ZipCatalog cat;
 
-	bool LoadGUIPrefs(
-		bool override_pos,
-		bool override_size); 
+	PageType m_logpages[4];
+	PageType m_networkpages[2];
+
+	bool LoadGUIPrefs(bool override_pos, bool override_size); 
 	bool SaveGUIPrefs();
 
 	void UpdateTrayIcon(int percent);
@@ -241,10 +246,7 @@ private:
 	void Apply_Clients_Skin();
 	void Apply_Toolbar_Skin(wxToolBar *wndToolbar);
 	bool Check_and_Init_Skin();
-	void Add_Skin_Icon(
-		const wxString &iconName,
-		const wxBitmap &stdIcon,
-		bool useSkins);
+	void Add_Skin_Icon(const wxString &iconName, const wxBitmap &stdIcon, bool useSkins);
 	void ToogleED2KLinksHandler();
 	void SetMessagesTool();
 	void OnKeyPressed(wxKeyEvent& evt);

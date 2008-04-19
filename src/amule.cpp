@@ -2179,7 +2179,7 @@ void CamuleApp::UpdateNotesDat(const wxString& url)
 
 void CamuleApp::DisconnectED2K()
 {
-	// Stop Kad if it's running
+	// Stop ED2K if it's running
 	if (IsConnectedED2K()) {
 		serverconnect->Disconnect();
 	}

@@ -436,6 +436,7 @@ wxSizer *convertDlg( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TR
 const int ID_KADINFO = 10314;
 wxSizer *Kad_Info( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
+extern wxSizer *m_networknotebooksizer;
 const int ID_NETNOTEBOOK = 10315;
 wxSizer *NetDialog( wxWindow *parent, bool call_fit = TRUE, bool set_sizer = TRUE );
 
