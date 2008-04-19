@@ -34,8 +34,9 @@
 #define CRYPT_CIP_LOCALCLIENT	20
 #define CRYPT_CIP_NONECLIENT	30
 
-struct CreditStruct
+class CreditStruct
 {
+public:
 	CreditStruct();
 	
 	CMD4Hash	key;
