@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-20 03:31+0200\n"
-"PO-Revision-Date: 2008-03-29 18:40+0200\n"
+"PO-Revision-Date: 2008-04-19 20:23+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -515,8 +515,8 @@ msgstr[1] "Loetud %u Kad kontakti"
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Salvestatud %d Kad kontakt"
+msgstr[1] "Salvestatud %d Kad kontakti"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -1934,15 +1934,15 @@ msgstr "Info/Appi"
 
 #: src/amuleDlg.cpp:1485
 msgid "ed2k network"
-msgstr ""
+msgstr "ed2k võrk"
 
 #: src/amuleDlg.cpp:1489
 msgid "Kad network"
-msgstr ""
+msgstr "Kad võrk"
 
 #: src/amuleDlg.cpp:1494
 msgid "No network"
-msgstr ""
+msgstr "Võrk puudub"
 
 #: src/PrefsUnifiedDlg.cpp:169 src/muuli_wdr.cpp:566 src/muuli_wdr.cpp:1373
 #: src/muuli_wdr.cpp:3451
@@ -5091,6 +5091,8 @@ msgid ""
 "Note: These values are\n"
 " only used for statistics."
 msgstr ""
+"Märkus: Neid väärtusi\n"
+" kasutatkse ainult statistikas."
 
 #: src/muuli_wdr.cpp:1813
 msgid "Standard client TCP Port:"
@@ -7025,90 +7027,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
-#~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
-#~ msgstr "LowID: %u (%.2f%% Kokku %.2f%% Tuntuid)"
-
-#~ msgid "SecIdent On/Off: %u (%.2f%%) : %u (%.2f%%)"
-#~ msgstr "SecIdent sees/väljas: %u (%.2f%%) : %u (%.2f%%)"
-
-#~ msgid "Browse wav"
-#~ msgstr "Näita wav"
-
-#~ msgid "File wav (*.wav)|*.wav||"
-#~ msgstr "Fail wav (*.wav)|*.wav||"
-
-#~ msgid "No comment(s)"
-#~ msgstr "Kommentaarid puuduvad"
-
-#~ msgid ""
-#~ "Note: These values are\n"
-#~ "only used for statistics."
-#~ msgstr ""
-#~ "Märkus: Neid väärtusi kasutatakse\n"
-#~ "ainult statistikas."
-
-#~ msgid "Notifications"
-#~ msgstr "Hoiatused"
-
-#~ msgid "Messages popup"
-#~ msgstr "Teated"
-
-#~ msgid "Use sound"
-#~ msgstr "Kasuta heli"
-
-#~ msgid "Pop out when :"
-#~ msgstr "Karga esile kui :"
-
-#~ msgid "New entry on log"
-#~ msgstr "Uus logikirje"
-
-#~ msgid "Starts a new chat session"
-#~ msgstr "Alustab uue vestlusseansi"
-
-#~ msgid "A new chat message is received"
-#~ msgstr "Saabus uus vestluse teade"
-
-#~ msgid "A download is added or finished"
-#~ msgstr "Lõpetasid või lisasid tõmbamise"
-
-#~ msgid "New aMule version detected"
-#~ msgstr "Hoi, leidsin uuema aMule versiooni"
-
-#~ msgid "Urgent OOD, serverconnection lost"
-#~ msgstr "Edasilükkamatu OOD, serveriühendus kadus"
-
-#~ msgid "Notify by Mail"
-#~ msgstr "Informeeri Maili teel"
-
-#~ msgid "Send an Email when transfer complete."
-#~ msgstr "Saada saatmise/vastuvõtmise lõppemisel email."
-
-#~ msgid "SMTP server :"
-#~ msgstr "SMTP Server :"
-
-#~ msgid "Email Address :"
-#~ msgstr "Email aadress :"
-
-#~ msgid ":"
-#~ msgstr ":"
-
-#~ msgid ""
-#~ "The selected locale seems not to be installed on your box\n"
-#~ "You must generate it to use this language.\n"
-#~ "A good start on linux systems is the file /etc/locale.gen and the package "
-#~ "'locales'\n"
-#~ "Good luck!\n"
-#~ "(Note: I'll try to set it anyway)"
-#~ msgstr ""
-#~ "Tundub et valitud keelelokaat pole sinu karpi installeritud.\n"
-#~ "Pead selle looma, et saaksid kasutada seda keelt.\n"
-#~ "Hea koht alustamiseks on fail /etc/locale.gen ja pakk 'locales'\n"
-#~ "Edu!\n"
-#~ "(Märkus: Ma proovin seda seada sellest hoolimata)"
-
-#~ msgid "Never show this again"
-#~ msgstr "Ära seda enam näita"
-
-#~ msgid "Enable/Disable"
-#~ msgstr "Kasuta/Ära kasuta"
