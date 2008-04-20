@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-20 03:31+0200\n"
-"PO-Revision-Date: 2008-04-18 02:18+0100\n"
+"PO-Revision-Date: 2008-04-20 08:40+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1931,15 +1931,15 @@ msgstr "Névjegy/Súgó"
 
 #: src/amuleDlg.cpp:1485
 msgid "ed2k network"
-msgstr ""
+msgstr "ed2k hálózat"
 
 #: src/amuleDlg.cpp:1489
 msgid "Kad network"
-msgstr ""
+msgstr "Kad hálózat"
 
 #: src/amuleDlg.cpp:1494
 msgid "No network"
-msgstr ""
+msgstr "Nincs hálózat"
 
 #: src/PrefsUnifiedDlg.cpp:169 src/muuli_wdr.cpp:566 src/muuli_wdr.cpp:1373
 #: src/muuli_wdr.cpp:3451
