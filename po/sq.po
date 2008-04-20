@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-04-20 03:31+0200\n"
-"PO-Revision-Date: 2008-04-20 13:19+0200\n"
+"PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail.com>\n"
 "Language-Team: Shqip <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -182,15 +182,19 @@ msgstr "Kerkuar: %s\n"
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Statistikat e failit per kete sesion: U pranua %d nga %d kerkesa, %s te transferuara\n"
+msgstr[1] "Statistikat e failit per kete sesion: U pranuan %d nga %d kerkesat, %s te transferuara\n"
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Statistikat e failit per te gjitha sesionet: U pranua %d nga %d kerkesa, %s te transferuar\n"
-msgstr[1] "Statistikat e faileve per te gjitha sesionet: U pranua %d nga %d kerkesat, %s te transferuara\n"
+msgstr[0] ""
+"Statistikat e failit per te gjitha sesionet: U pranua %d nga %d kerkesa, %s "
+"te transferuar\n"
+msgstr[1] ""
+"Statistikat e faileve per te gjitha sesionet: U pranua %d nga %d kerkesat, %"
+"s te transferuara\n"
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -1938,7 +1942,7 @@ msgstr "Rrjeti ed2k"
 
 #: src/amuleDlg.cpp:1489
 msgid "Kad network"
-msgstr ""
+msgstr "Rrjeti Kad"
 
 #: src/amuleDlg.cpp:1494
 msgid "No network"
@@ -3234,8 +3238,12 @@ msgid ""
 msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr[0] "U gjend pjese e prishur (%d) ne %d pjesen e failit %s - Rezultati Hash i Failit |%s| Hash i Failit |%s|"
-msgstr[1] "U gjend pjese e prishur (%d) ne %d pjeset e failit %s - Rezultati Hash i Failit !%s| Hash i Failit |%s|"
+msgstr[0] ""
+"U gjend pjese e prishur (%d) ne %d pjesen e failit %s - Rezultati Hash i "
+"Failit |%s| Hash i Failit |%s|"
+msgstr[1] ""
+"U gjend pjese e prishur (%d) ne %d pjeset e failit %s - Rezultati Hash i "
+"Failit !%s| Hash i Failit |%s|"
 
 #: src/PartFile.cpp:1176
 #, c-format
