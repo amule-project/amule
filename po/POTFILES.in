@@ -40,7 +40,6 @@ src/ServerWnd.cpp
 src/Statistics.cpp
 src/MuleTextCtrl.cpp
 src/SearchList.cpp
-src/ClientCredits.h
 src/ClientTCPSocket.cpp
 src/KadDlg.cpp
 src/Server.cpp
