@@ -182,16 +182,21 @@ msgstr "Solicitado: %s\n"
 #: src/BaseClient.cpp:1878
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] "Estatísticas dessa sessão: Aceito %d de %d pedido, %s transferido\n"
-msgstr[1] "Estatísticas dessa sessão: Aceitos %d de %d pedidos, %s transferidos\n"
+msgstr[1] ""
+"Estatísticas dessa sessão: Aceitos %d de %d pedidos, %s transferidos\n"
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Estatísticas de todas as sessões: Aceito %d de %d pedido, %s transferido\n"
-msgstr[1] "Estatísticas de todas as sessões: Aceitos %d de %d pedidos, %s transferidos\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Estatísticas de todas as sessões: Aceito %d de %d pedido, %s transferido\n"
+msgstr[1] ""
+"Estatísticas de todas as sessões: Aceitos %d de %d pedidos, %s transferidos\n"
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -1526,7 +1531,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Impossível determinar browser selecionado!"
 
 #: src/Preferences.cpp:1664
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "Porta TCP não pode ser maior do que 65532, pois a UDP escuta em TCP+3"
 
 #: src/Preferences.cpp:1665
@@ -2768,16 +2774,19 @@ msgstr "Usuário %s (%u) pediu sua lista de shares -> Negado"
 #: src/ClientTCPSocket.cpp:869
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "O usuário %s (%u) solicitou sua lista de pastas compartilhadas -> Aceito"
+msgstr ""
+"O usuário %s (%u) solicitou sua lista de pastas compartilhadas -> Aceito"
 
 #: src/ClientTCPSocket.cpp:909
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr "O usuário %s (%u) solicitou sua lista de pastas compartilhadas -> Negado"
+msgstr ""
+"O usuário %s (%u) solicitou sua lista de pastas compartilhadas -> Negado"
 
 #: src/ClientTCPSocket.cpp:934
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr "Usuário %s (%u) solicitou sua lista de shares na pasta %s -> Aceito"
 
 #: src/ClientTCPSocket.cpp:971
@@ -2837,7 +2846,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Deseja baixar uma nova versão do arquivo nodes.dat?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Fazendo isso, seus nodes atuais serão removidos e a conexão Kademlia será "
 "reiniciada."
@@ -3155,7 +3165,8 @@ msgstr "Tentando recuperar info do arquivo..."
 
 #: src/PartFile.cpp:614
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr "Recuperando arquivo sem nome - tentarei recuperá-lo como RecoveredFile.dat"
+msgstr ""
+"Recuperando arquivo sem nome - tentarei recuperá-lo como RecoveredFile.dat"
 
 #: src/PartFile.cpp:619
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -3260,7 +3271,8 @@ msgstr "Apagando arquivo: %s"
 #: src/PartFile.cpp:2381
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "Aviso: Impossível fazer hash de parte baixada - hash incompleto para '%s'"
+msgstr ""
+"Aviso: Impossível fazer hash de parte baixada - hash incompleto para '%s'"
 
 #: src/PartFile.cpp:2386
 #, c-format
@@ -3274,7 +3286,8 @@ msgstr ""
 #: src/PartFile.cpp:3066
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
-msgstr "AVISO: Não há espaço em disco suficiente! Colocando arquivo %s em pausa"
+msgstr ""
+"AVISO: Não há espaço em disco suficiente! Colocando arquivo %s em pausa"
 
 #: src/PartFile.cpp:3151
 #, c-format
@@ -3386,7 +3399,8 @@ msgstr "Conexão estabelecida em: %s"
 
 #: src/ServerConnect.cpp:345
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Erro Fatal durante tentativa de conexão. Talvez seu link Internet tenha caído"
+msgstr ""
+"Erro Fatal durante tentativa de conexão. Talvez seu link Internet tenha caído"
 
 #: src/ServerConnect.cpp:349
 #, c-format
@@ -3953,7 +3967,8 @@ msgstr "Exibir as listas de Up/Down"
 
 #: src/TextClient.cpp:956
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Exibe listas de Down/Up, lista de servidores ou lista de compartilhados.\n"
+msgstr ""
+"Exibe listas de Down/Up, lista de servidores ou lista de compartilhados.\n"
 
 #: src/TextClient.cpp:957
 msgid "Show upload queue."
@@ -4014,7 +4029,8 @@ msgstr "AVISO: você recebeu uma ID baixa (LowID)!"
 
 #: src/ServerSocket.cpp:420
 msgid "\tMost likely this is because you're behind a firewall or router."
-msgstr "\tGeralmente isso acontece quando você está atrás de um firewall/router."
+msgstr ""
+"\tGeralmente isso acontece quando você está atrás de um firewall/router."
 
 #: src/ServerSocket.cpp:421
 msgid "\tFor more information, please refer to http://wiki.amule.org"
@@ -4243,7 +4259,8 @@ msgstr ""
 "serão incluídos)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Deseja excluir os temporários dos que foram importados com sucesso?"
 
 #: src/PartFileConvert.cpp:702
@@ -4426,7 +4443,8 @@ msgid "Commit"
 msgstr "Adicionar"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr "Clique aqui para adicionar o link ed2k para a fila de espera."
 
 #: src/muuli_wdr.cpp:85
@@ -4457,7 +4475,8 @@ msgstr "Usuários: 0"
 msgid ""
 "Users connected to the current server and an estimate of the total number of "
 "users."
-msgstr "Usuários conectados a esse servidor e número estimado do total de usuários."
+msgstr ""
+"Usuários conectados a esse servidor e número estimado do total de usuários."
 
 #: src/muuli_wdr.cpp:113
 msgid ""
@@ -4740,7 +4759,8 @@ msgstr "Qualidade do arquivo"
 
 #: src/muuli_wdr.cpp:917
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr "Escolha uma classe ou avise os demais usuários se o arquivo é inválido..."
+msgstr ""
+"Escolha uma classe ou avise os demais usuários se o arquivo é inválido..."
 
 #: src/muuli_wdr.cpp:961
 msgid "Refresh"
@@ -5060,7 +5080,8 @@ msgstr "Abrir em nova aba se possível"
 
 #: src/muuli_wdr.cpp:1697
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr "Abrir a webpage em nova aba quando possível, ao invés de uma nova janela"
+msgstr ""
+"Abrir a webpage em nova aba quando possível, ao invés de uma nova janela"
 
 #: src/muuli_wdr.cpp:1728
 msgid "Bandwith Limits"
@@ -5472,7 +5493,8 @@ msgstr "Auto-organizar arquivos na fila de espera (ALTO uso de CPU)"
 
 #: src/muuli_wdr.cpp:2458
 msgid "aMule will sort the columns in your download list automatically"
-msgstr "O aMule vai organizar automaticamente as colunas da lista de downloads."
+msgstr ""
+"O aMule vai organizar automaticamente as colunas da lista de downloads."
 
 #: src/muuli_wdr.cpp:2463
 msgid "Misc Gui Tweaks"
@@ -5791,7 +5813,8 @@ msgid "Filter clients"
 msgstr "Filtrar clientes"
 
 #: src/muuli_wdr.cpp:3227
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Habilitar filtragem de IPs de clientes definidos no arquivo ~/.aMule/"
 "ipfilter.dat."
@@ -5801,7 +5824,8 @@ msgid "Filter servers"
 msgstr "Filtrar servidores"
 
 #: src/muuli_wdr.cpp:3232
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Habilitar filtragem de IPs de servidores definidos no arquivo ~/.aMule/"
 "ipfilter.dat."
@@ -5878,7 +5902,8 @@ msgstr "Ativar Assinatura Online"
 msgid ""
 "Enables the writing of the OS file, which can be used by external apps to "
 "create signatures and the like."
-msgstr "Habilita a gravação do arquivo, que pode ser usado por programas externos."
+msgstr ""
+"Habilita a gravação do arquivo, que pode ser usado por programas externos."
 
 #: src/muuli_wdr.cpp:3328
 msgid "Update Frequency (Secs):"
@@ -5893,8 +5918,10 @@ msgid "Online Signature Directory:"
 msgstr "Diretório da Assinatura Online:"
 
 #: src/muuli_wdr.cpp:3347
-msgid "Click here to select the directory containing the the Online Signature files."
-msgstr "Clique aqui para definir pasta contendo os arquivos da Assinatura Online"
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
+msgstr ""
+"Clique aqui para definir pasta contendo os arquivos da Assinatura Online"
 
 #: src/muuli_wdr.cpp:3376 src/muuli_wdr.cpp:3415 src/muuli_wdr.cpp:3617
 msgid "Disable/Enable"
@@ -5926,7 +5953,8 @@ msgstr "Filtrar mensagens contendo (use ',' como separador):"
 
 #: src/muuli_wdr.cpp:3398 src/muuli_wdr.cpp:3422
 msgid "add here the words amule should filter and block messages including it"
-msgstr "adicione aqui as palavras que o amule deve filtrar e bloquear nas mensagens"
+msgstr ""
+"adicione aqui as palavras que o amule deve filtrar e bloquear nas mensagens"
 
 #: src/muuli_wdr.cpp:3410
 msgid "Comments"
@@ -6073,8 +6101,10 @@ msgid "You must specify a path for the category!"
 msgstr "Você precisa definir um caminho para a categoria!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
-msgstr "Falha ao definir pasta para a categoria. Favor informar um caminho válido!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
+msgstr ""
+"Falha ao definir pasta para a categoria. Favor informar um caminho válido!"
 
 #: src/ExternalConnector.cpp:144
 #, c-format
@@ -6667,7 +6697,8 @@ msgstr "Servidor não adicionado: o IP de [%s:%d] está filtrado ou é inválido
 #: src/ServerList.cpp:227
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr "Servidor não adicionado: Servidor com esse IP:Porta [%s:%d] já na lista."
+msgstr ""
+"Servidor não adicionado: Servidor com esse IP:Porta [%s:%d] já na lista."
 
 #: src/ServerList.cpp:246
 #, c-format
@@ -6827,13 +6858,15 @@ msgstr "não daremos garantia se ela quebrar algo, queimar sua casa,\n"
 
 #: src/amule.cpp:1297
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr "ou matar seu cachorro. Mas ela *deve* ser segura para uso mesmo assim.\n"
+msgstr ""
+"ou matar seu cachorro. Mas ela *deve* ser segura para uso mesmo assim.\n"
 
 #: src/amule.cpp:1301
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr "As seguintes opções foram mudadas nesta versão por razões de segurança:\n"
+msgstr ""
+"As seguintes opções foram mudadas nesta versão por razões de segurança:\n"
 
 #: src/amule.cpp:1302
 msgid ""
@@ -6870,11 +6903,13 @@ msgstr ""
 
 #: src/amule.cpp:1309
 msgid "More information, support and new releases can found at our homepage,\n"
-msgstr "Maiores informações, suporte e novas versões podem ser encontradas em nossa\n"
+msgstr ""
+"Maiores informações, suporte e novas versões podem ser encontradas em nossa\n"
 
 #: src/amule.cpp:1310
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "homepage www.aMule.org ou em nosso canal de irc #aMule na irc.freenode.net.\n"
+msgstr ""
+"homepage www.aMule.org ou em nosso canal de irc #aMule na irc.freenode.net.\n"
 
 #: src/amule.cpp:1312
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -6933,7 +6968,8 @@ msgstr "A mais recente versão pode ser obtida em http://www.amule.org"
 #: src/amule.cpp:1874
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
-msgstr "CUIDADO: Sua versão do aMuled esta ultrapassada: %i.%i.%i < %li.%li.%li"
+msgstr ""
+"CUIDADO: Sua versão do aMuled esta ultrapassada: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:1878
 msgid "Your copy of aMule is up to date."
@@ -6996,4 +7032,3 @@ msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para leitura!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Falha ao abrir a lista de amigos 'emfriends.met' para escrita!"
-
