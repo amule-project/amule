@@ -901,6 +901,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 						}
 					} else {
 						itSource = currKeyHash->m_Source_map.end();
+						--itSource;
 						break;
 					}
 				}
