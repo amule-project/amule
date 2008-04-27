@@ -19,7 +19,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -182,22 +182,18 @@ msgstr "Angefordert: %s\n"
 #: src/BaseClient.cpp:1878
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Dateistatistik für diese Sitzung: %d von %d Anfrage akzeptiert, %s "
-"übertragen\n"
-"Dateistatistik für diese Sitzung: %d von %d Anfragen akzeptiert, %s "
-"übertragen\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1881
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+msgid_plural ""
 "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr ""
-"Dateistatistik für alle Sitzungen: %d von %d Anfrage akzeptiert, %s "
-"übertragen\n"
-"Dateistatistik für alle Sitzungen: %d von %d Anfragen akzeptiert, %s "
-"übertragen\n"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/BaseClient.cpp:1884
 msgid "Requested unknown file"
@@ -3263,13 +3259,11 @@ msgstr "Fehler beim Lesen der Partfile-Einstiegsquellendatei (%s - %s): %s"
 msgid ""
 "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| FileHash |"
 "%s|"
+msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr ""
-"Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - FileResultHash |%s| "
-"FileHash |%s|"
-"Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - FileResultHash |%s| "
-"FileHash |%s|"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/PartFile.cpp:1176
 #, c-format
@@ -3457,8 +3451,10 @@ msgstr "%s (%s:%i) scheint voll zu sein."
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] "Automatische Verbindungsherstellung zum Server wird in %d Sekunde wiederholt"
-msgstr[1] "Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
+msgstr[0] ""
+"Automatische Verbindungsherstellung zum Server wird in %d Sekunde wiederholt"
+msgstr[1] ""
+"Automatische Verbindungsherstellung zum Server wird in %d Sekunden wiederholt"
 
 #: src/ServerConnect.cpp:411
 msgid "Connection lost"
@@ -7115,6 +7111,33 @@ msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht lesen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Konnte Freundes-Liste 'emfriends.dat' nicht schreiben!"
+
+#~ msgid ""
+#~ "Filestats for this session: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Dateistatistik für diese Sitzung: %d von %d Anfrage akzeptiert, %s "
+#~ "übertragen\n"
+#~ "Dateistatistik für diese Sitzung: %d von %d Anfragen akzeptiert, %s "
+#~ "übertragen\n"
+
+#~ msgid ""
+#~ "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
+#~ "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+#~ msgstr ""
+#~ "Dateistatistik für alle Sitzungen: %d von %d Anfrage akzeptiert, %s "
+#~ "übertragen\n"
+#~ "Dateistatistik für alle Sitzungen: %d von %d Anfragen akzeptiert, %s "
+#~ "übertragen\n"
+
+#~ msgid ""
+#~ "Found corrupted part (%d) in %d part file %s - FileResultHash |%s| "
+#~ "FileHash |%s|Found corrupted part (%d) in %d parts file %s - "
+#~ "FileResultHash |%s| FileHash |%s|"
+#~ msgstr ""
+#~ "Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - FileResultHash |%s| "
+#~ "FileHash |%s|Fehlerhaften Teil (%d) in %d Part-Datei %s gefunden - "
+#~ "FileResultHash |%s| FileHash |%s|"
 
 #~ msgid "LowID: %u (%.2f%% Total %.2f%% Known)"
 #~ msgstr "LowID: %u (%.2f%% Gesamt %.2f%% Bekannt)"
