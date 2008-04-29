@@ -164,7 +164,7 @@ public:
 	
 	uint64	GetNeededSpace();
 	
-	wxString GetFeedback();
+	virtual wxString GetFeedback() const;
 	
 	wxString getPartfileStatus() const; //<<--9/21/02
 	sint32	getTimeRemaining() const; //<<--9/21/02

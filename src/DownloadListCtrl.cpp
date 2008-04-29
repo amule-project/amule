@@ -722,10 +722,16 @@ void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 {
 	wxString feed;
 	ItemList files = ::GetSelectedItems(this, itFILES);
+
 	for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
-		CPartFile* file = (*it)->GetFile();
-		feed += file->GetFeedback();
+		if (feed.IsEmpty()) {
+			feed = CFormat(wxT("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % GetFullMuleVersion();
+		} else {
+			feed += wxT("\n");
+		}
+		feed += (*it)->GetFile()->GetFeedback();
 	}
+
 	if (!feed.IsEmpty()) {
 		theApp->CopyTextToClipboard(feed);
 	}
