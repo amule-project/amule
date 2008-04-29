@@ -303,6 +303,8 @@ public:
 	
 	time_t	m_lastDateChanged;
 
+	virtual wxString GetFeedback() const;
+
 
 #ifdef CLIENT_GUI
 	CKnownFile(CEC_SharedFile_Tag *);

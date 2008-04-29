@@ -3895,11 +3895,10 @@ int CPartFile::getPartfileStatusRang() const
 } 
 
 
-wxString CPartFile::GetFeedback()
+wxString CPartFile::GetFeedback() const
 {
 	wxString retval
-		= CFormat(wxT("Feedback from: %s (%s)\n")) % thePrefs::GetUserNick() % GetFullMuleVersion()
-		+ CFormat(wxT("File name: %s\n")) % GetFileName()
+		= CFormat(wxT("File name: %s\n")) % GetFileName()
 		+ CFormat(wxT("File size: %s\n")) % CastItoXBytes(GetFileSize());
 
 	if (GetStatus() == PS_COMPLETE) {
@@ -3911,7 +3910,7 @@ wxString CPartFile::GetFeedback()
 			+ CFormat(wxT("Accepted: %d (%d)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
 			+ CFormat(wxT("Sources: %u\n")) % GetSourceCount();
 	}
-	
+
 	return retval + wxString::Format(wxT("Complete Sources: %u\n"), m_nCompleteSourcesCount);
 }
 
