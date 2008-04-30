@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-20 03:31+0200\n"
+"POT-Creation-Date: 2008-04-30 03:31+0200\n"
 "PO-Revision-Date: 2008-04-19 20:23+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -137,8 +137,8 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1408
-#: src/DownloadListCtrl.cpp:1421 src/DownloadListCtrl.cpp:1432
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1414
+#: src/DownloadListCtrl.cpp:1427 src/DownloadListCtrl.cpp:1438
 #: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:671 src/ClientListCtrl.cpp:694
@@ -218,7 +218,7 @@ msgstr "Kasutajanimi"
 msgid "Friends"
 msgstr "Sõbrad"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1006
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1012
 #: src/ClientListCtrl.cpp:251
 msgid "Show &Details"
 msgstr "Näita &detaile"
@@ -235,7 +235,7 @@ msgstr "Eemalda sõber"
 msgid "Send &Message"
 msgstr "Saada sõnu&m"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1008
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1014
 #: src/ClientListCtrl.cpp:253
 msgid "View Files"
 msgstr "Vaata faile"
@@ -255,7 +255,7 @@ msgstr "Oled kindel et tahad valitud sõbra(d) kustutada? "
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:749
-#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:896
+#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:926
 #: src/muuli_wdr.cpp:1000 src/muuli_wdr.cpp:1066 src/muuli_wdr.cpp:2663
 #: src/muuli_wdr.cpp:2765 src/muuli_wdr.cpp:3588
@@ -335,7 +335,7 @@ msgstr "Tüüp"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:895
+#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:901
 msgid "Priority"
 msgstr "Prioriteet"
 
@@ -383,19 +383,19 @@ msgstr "Väga madal"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:890 src/muuli_wdr.cpp:2727
+#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2727
 msgid "Low"
 msgstr "Madal"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:891 src/muuli_wdr.cpp:2728
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2728
 msgid "Normal"
 msgstr "Keskmine"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:892 src/muuli_wdr.cpp:2729
+#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2729
 msgid "High"
 msgstr "Kõrge"
 
@@ -407,7 +407,7 @@ msgstr "Väga Kõrge"
 msgid "Release"
 msgstr "Versioon"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:893
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:899
 #: src/muuli_wdr.cpp:2730
 msgid "Auto"
 msgstr "Auto"
@@ -432,7 +432,7 @@ msgstr "Lisa failid ülekantavate failide loetellu"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Kopeeri magnet &URI lõikepuhvrisse"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:937
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
 msgid "Copy ED2k &link to clipboard"
 msgstr "Kopeeri ED2k &link lõikepuhvrisse"
 
@@ -456,7 +456,7 @@ msgstr "Kopeeri ED2k link lõikepuhvrisse (Hostinimi)(Koos Krüpto seadetega)"
 msgid "Copy ED2k link to clipboard (&AICH info)"
 msgstr "Kopeeri ED2k link lõikepuhvrisse (&AICH info)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:939
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "Kopeeri tagasiside lõikepuhvrisse"
 
@@ -478,11 +478,11 @@ msgstr "Jagatud failid (%i)"
 msgid "[PartFile]"
 msgstr "[FailiOsa]"
 
-#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1065
+#: src/SharedFilesCtrl.cpp:689 src/DownloadListCtrl.cpp:1071
 msgid "Enter new name for this file:"
 msgstr "Sisesta selle faili uus nimi:"
 
-#: src/SharedFilesCtrl.cpp:690 src/DownloadListCtrl.cpp:1066
+#: src/SharedFilesCtrl.cpp:690 src/DownloadListCtrl.cpp:1072
 msgid "File rename"
 msgstr "Faili ümbernimetamine"
 
@@ -1292,7 +1292,7 @@ msgstr "Pärin"
 msgid "Connecting via server"
 msgstr "Ühendun serveri kaudu"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1678
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1684
 #: src/ClientListCtrl.cpp:689
 msgid "Queue Full"
 msgstr "Järjekord täis"
@@ -2549,7 +2549,7 @@ msgstr "Kokku ebaõnnestunud saatmisi: %s"
 msgid "Average upload time: %s"
 msgstr "Keskmine saatmise aeg: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:887 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Tõmbamised"
 
@@ -2893,7 +2893,7 @@ msgstr "Fail"
 msgid "Download"
 msgstr "Tõmba"
 
-#: src/SearchListCtrl.cpp:555 src/DownloadListCtrl.cpp:944
+#: src/SearchListCtrl.cpp:555 src/DownloadListCtrl.cpp:950
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategooria"
@@ -2991,91 +2991,91 @@ msgstr "Oled kindel et tahad valitud faili kustutada?"
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Oled kindel et tahad valitud failid kustutada?"
 
-#: src/DownloadListCtrl.cpp:836 src/ClientListCtrl.cpp:358
+#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:358
 msgid "Send message to user"
 msgstr "Saada kasutajale teade"
 
-#: src/DownloadListCtrl.cpp:837 src/ClientListCtrl.cpp:358
+#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:358
 msgid "Message to send:"
 msgstr "Saadetav teade:"
 
-#: src/DownloadListCtrl.cpp:897 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Seis"
 
-#: src/DownloadListCtrl.cpp:898 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Paus"
 
-#: src/DownloadListCtrl.cpp:899 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Taasta"
 
-#: src/DownloadListCtrl.cpp:900
+#: src/DownloadListCtrl.cpp:906
 msgid "C&lear completed"
 msgstr "Va&lmis"
 
-#: src/DownloadListCtrl.cpp:906
+#: src/DownloadListCtrl.cpp:912
 msgid "Swap every A4AF to this file now"
 msgstr "Tõsta (A4AF) allikad selle faili külge"
 
-#: src/DownloadListCtrl.cpp:908
+#: src/DownloadListCtrl.cpp:914
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Tõsta automaatselt kõik (A4AF) allikad selle faili külge"
 
-#: src/DownloadListCtrl.cpp:913
+#: src/DownloadListCtrl.cpp:919
 msgid "Swap every A4AF to any other file now"
 msgstr "Tõsta (A4AF) allikad teiste failide külge"
 
-#: src/DownloadListCtrl.cpp:916
+#: src/DownloadListCtrl.cpp:922
 msgid "Extended Options"
 msgstr "Laiendatud valikud"
 
-#: src/DownloadListCtrl.cpp:927 src/DownloadListCtrl.cpp:980
+#: src/DownloadListCtrl.cpp:933 src/DownloadListCtrl.cpp:986
 msgid "Preview"
 msgstr "Eelvaade"
 
-#: src/DownloadListCtrl.cpp:928
+#: src/DownloadListCtrl.cpp:934
 msgid "Show file &details"
 msgstr "Näita &detaile"
 
-#: src/DownloadListCtrl.cpp:930 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:936 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "Näita kõiki kommentaare"
 
-#: src/DownloadListCtrl.cpp:935
+#: src/DownloadListCtrl.cpp:941
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopeeri magnet URI lõikepuhvrisse"
 
-#: src/DownloadListCtrl.cpp:948
+#: src/DownloadListCtrl.cpp:954
 msgid "unassign"
 msgstr "määramata"
 
-#: src/DownloadListCtrl.cpp:955
+#: src/DownloadListCtrl.cpp:961
 msgid "Assign to category"
 msgstr "Määra kategooria"
 
-#: src/DownloadListCtrl.cpp:983
+#: src/DownloadListCtrl.cpp:989
 msgid "&Open the file"
 msgstr "Ava Fail"
 
-#: src/DownloadListCtrl.cpp:1007 src/ClientListCtrl.cpp:252
+#: src/DownloadListCtrl.cpp:1013 src/ClientListCtrl.cpp:252
 msgid "Remove from friends"
 msgstr "Eemalda sõpradest"
 
-#: src/DownloadListCtrl.cpp:1007 src/ClientListCtrl.cpp:252
+#: src/DownloadListCtrl.cpp:1013 src/ClientListCtrl.cpp:252
 msgid "Add to Friends"
 msgstr "Lisa sõprade nimistusse"
 
-#: src/DownloadListCtrl.cpp:1009 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1015 src/ClientListCtrl.cpp:254
 msgid "Send message"
 msgstr "Saada teade"
 
-#: src/DownloadListCtrl.cpp:1010
+#: src/DownloadListCtrl.cpp:1016
 msgid "Swap to this file"
 msgstr "Tõsta selle faili külge"
 
-#: src/DownloadListCtrl.cpp:1296 src/DownloadListCtrl.cpp:1599
+#: src/DownloadListCtrl.cpp:1302 src/DownloadListCtrl.cpp:1605
 #: src/OtherFunctions.cpp:154 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1739 src/muuli_wdr.cpp:1752
 #: src/muuli_wdr.cpp:1765 src/muuli_wdr.cpp:1783 src/muuli_wdr.cpp:1796
@@ -3083,29 +3083,29 @@ msgstr "Tõsta selle faili külge"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1419 src/DownloadListCtrl.cpp:1430
+#: src/DownloadListCtrl.cpp:1425 src/DownloadListCtrl.cpp:1436
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%H:%M:%S %d/%m/%y"
 
-#: src/DownloadListCtrl.cpp:1647
+#: src/DownloadListCtrl.cpp:1653
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1697
+#: src/DownloadListCtrl.cpp:1703
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "JK: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1711
+#: src/DownloadListCtrl.cpp:1717
 msgid "Asked for another file"
 msgstr "Küsitud teist faili"
 
-#: src/DownloadListCtrl.cpp:2034
+#: src/DownloadListCtrl.cpp:2040
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Tõmbamised (%i)"
 
-#: src/DownloadListCtrl.cpp:2239
+#: src/DownloadListCtrl.cpp:2245
 msgid ""
 "Please set your preferred video player on preferences.\n"
 "Meanwhile, aMule will attempt to use mplayer and you will get this warning "
@@ -3115,11 +3115,11 @@ msgstr ""
 "Senikaua proovib aMule kasutada mpalyer'it ja sa saad selle hoiatuse igal "
 "eelvaatuse katsel"
 
-#: src/DownloadListCtrl.cpp:2240
+#: src/DownloadListCtrl.cpp:2246
 msgid "File preview"
 msgstr "Faili eelvaade"
 
-#: src/DownloadListCtrl.cpp:2276
+#: src/DownloadListCtrl.cpp:2282
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "VIGA: Ei suutnud käivitada välist meediamängijat! Käsk: `%s'"
