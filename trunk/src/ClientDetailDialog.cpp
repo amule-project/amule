@@ -31,6 +31,7 @@
 #include "Server.h"		// Needed for CServer
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "muuli_wdr.h"		// Needed for ID_CLOSEWND
+#include "Preferences.h"	// Needed for thePrefs
 
 // CClientDetailDialog dialog
 
@@ -119,7 +120,31 @@ bool CClientDetailDialog::OnInitDialog() {
 		CastChild(ID_DSIP, wxStaticText)->SetLabel(_("Unknown"));
 		CastChild(ID_DSNAME, wxStaticText)->SetLabel(_("Unknown"));
 	}
-	
+
+	// Obfuscation
+	wxString buffer;
+	if (thePrefs::IsClientCryptLayerSupported()) {
+		if (m_client->SupportsCryptLayer()) {
+			if ((m_client->RequestsCryptLayer() || thePrefs::IsClientCryptLayerRequested()) && m_client->HasObfuscatedConnectionBeenEstablished()) {
+				buffer = _("Enabled");
+			} else {
+				buffer = _("Supported");
+			}
+		} else {
+			buffer = _("Not supported");
+		}
+	} else {
+		buffer = _("Disabled");
+	}
+	CastChild(IDT_OBFUSCATION, wxStaticText)->SetLabel(buffer);
+
+	// Kad
+	if (m_client->GetKadPort()) {
+		CastChild(IDT_KAD, wxStaticText)->SetLabel(_("Connected"));
+	} else {
+		CastChild(IDT_KAD, wxStaticText)->SetLabel(_("Disconnected"));
+	}
+
 	// File Name
 	const CKnownFile* file = m_client->GetUploadFile();
 	if (file) {
@@ -165,7 +190,7 @@ bool CClientDetailDialog::OnInitDialog() {
 	if (theApp->CryptoAvailable()) {
 		if (m_client->SUINotSupported()) {
 			CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
-				_("Not Supported"));
+				_("Not supported"));
 		} else if (m_client->SUIFailed()) {
 			CastChild(IDC_CDIDENT, wxStaticText)->SetLabel(
 				_("Failed"));
