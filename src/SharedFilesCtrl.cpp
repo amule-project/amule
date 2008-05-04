@@ -669,8 +669,8 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 	for ( unsigned int i = 0; i < list.size(); ++i ) {
 		COLORREF color = list[i] ? (RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255))
 								 : RGB(255, 0, 0);
-		uint64 start = PARTSIZE * i;
-		       end   = PARTSIZE * (i + 1);
+		uint64 start = PARTSIZE * static_cast<uint64>(i);
+		       end   = PARTSIZE * static_cast<uint64>(i + 1);
 		s_ChunkBar.FillRange(start, end, color);
 	}
 	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, RGB(255, 0, 0));
