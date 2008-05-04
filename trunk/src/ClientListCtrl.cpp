@@ -771,7 +771,7 @@ int CUploadingView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect& rect1 )
 {
 	wxRect rect = rect1;
-	rect.y		+= 2;
+	rect.y		+= 1;
 	rect.height	-= 2;
 
 	wxPen   old_pen   = dc->GetPen();
