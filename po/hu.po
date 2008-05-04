@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-04 03:30+0200\n"
-"PO-Revision-Date: 2008-04-20 08:40+0100\n"
+"PO-Revision-Date: 2008-05-04 02:52+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2437,7 +2437,7 @@ msgstr "Állapot:"
 
 #: src/ServerWnd.cpp:215 src/ClientDetailDialog.cpp:145
 msgid "Disconnected"
-msgstr "Leválasztva"
+msgstr "Szétkapcsolva"
 
 #: src/ServerWnd.cpp:218
 msgid "Connection State:"
@@ -4905,11 +4905,11 @@ msgstr "Kiszolgáló neve:"
 
 #: src/muuli_wdr.cpp:1454
 msgid "Obfuscation:"
-msgstr ""
+msgstr "Zavarás:"
 
 #: src/muuli_wdr.cpp:1463
 msgid "Kad:"
-msgstr ""
+msgstr "Kad:"
 
 #: src/muuli_wdr.cpp:1474
 msgid "Transfers to client"
@@ -6475,19 +6475,19 @@ msgstr "Kliens részletei"
 
 #: src/ClientDetailDialog.cpp:129
 msgid "Enabled"
-msgstr ""
+msgstr "Engedélyezve"
 
 #: src/ClientDetailDialog.cpp:131
 msgid "Supported"
-msgstr ""
+msgstr "Támogatott"
 
 #: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:193
 msgid "Not supported"
-msgstr ""
+msgstr "Nem támogatott"
 
 #: src/ClientDetailDialog.cpp:137
 msgid "Disabled"
-msgstr ""
+msgstr "Letiltva"
 
 #: src/ClientDetailDialog.cpp:168 src/ClientDetailDialog.cpp:173
 #, c-format
