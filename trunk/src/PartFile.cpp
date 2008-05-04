@@ -3897,21 +3897,12 @@ int CPartFile::getPartfileStatusRang() const
 
 wxString CPartFile::GetFeedback() const
 {
-	wxString retval
-		= CFormat(wxT("File name: %s\n")) % GetFileName()
-		+ CFormat(wxT("File size: %s\n")) % CastItoXBytes(GetFileSize());
-
-	if (GetStatus() == PS_COMPLETE) {
-		retval += wxT("Downloaded: Complete\n");
-	} else {
-		retval += CFormat(wxT("Downloaded: %s (%.2f%%)\n")) % CastItoXBytes(GetCompletedSize()) % GetPercentCompleted()
-			+ CFormat(wxT("Transferred: %s (%s)\n")) % CastItoXBytes(statistic.GetTransferred()) % CastItoXBytes(statistic.GetAllTimeTransferred())
-			+ CFormat(wxT("Requested: %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
-			+ CFormat(wxT("Accepted: %d (%d)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-			+ CFormat(wxT("Sources: %u\n")) % GetSourceCount();
+	wxString retval = CKnownFile::GetFeedback();
+	if (GetStatus() != PS_COMPLETE) {
+		retval += wxString(_("Downloaded")) + wxT(": ") + CastItoXBytes(GetCompletedSize()) + wxString::Format(wxT(" (%.2f%%)\n"), GetPercentCompleted())
+			+ _("Sources") + CFormat(wxT(": %u\n")) % GetSourceCount();
 	}
-
-	return retval + wxString::Format(wxT("Complete Sources: %u\n"), m_nCompleteSourcesCount);
+	return retval + _("Status") + wxT(": ") + getPartfileStatus() + wxT("\n");
 }
 
 

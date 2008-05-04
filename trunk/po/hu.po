@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
-"PO-Revision-Date: 2008-05-04 02:52+0100\n"
+"POT-Creation-Date: 2008-05-05 01:01+0200\n"
+"PO-Revision-Date: 2008-05-05 01:07+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -362,7 +362,7 @@ msgstr "Megszerzett részek"
 
 #: src/SharedFilesCtrl.cpp:112
 msgid "Complete Sources"
-msgstr "Komplett források száma"
+msgstr "Teljes források"
 
 #: src/SharedFilesCtrl.cpp:113
 msgid "Directory Path"
@@ -456,6 +456,15 @@ msgstr "ED2k link másolása a vágólapra (&AICH infó)"
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "Visszajelzés másolása a vágólapra"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
+"Visszajelzés %s-től (%s):\n"
+"\n"
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2884,7 +2893,7 @@ msgid "The specified userhash is not valid!"
 msgstr "A megadott felhasználói azonosító (userhash) érvénytelen!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Források"
 
@@ -2972,7 +2981,8 @@ msgstr "Sebesség"
 msgid "Progress"
 msgstr "Folyamatjelző"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Állapot"
 
@@ -3308,6 +3318,10 @@ msgstr "Elégtelen lemezterület"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "Megállítva"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr "Letöltve"
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4174,6 +4188,34 @@ msgstr "Kategória szerkesztése"
 msgid "Remove category"
 msgstr "Kategória törlése"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "Fájl név"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr "Fájl méret"
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr "Megosztási arány"
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr "Feltöltve"
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr "Kért"
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr "Elfogadott"
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr "Teljes források"
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4244,10 +4286,6 @@ msgstr "Letöltés alatt"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "Ismeretlen vagy rossz ideiglenes-fájl formátum."
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "Fájl név"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"
@@ -4469,8 +4507,8 @@ msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
 msgstr ""
-"Itt kerülnek megjelenítésre az események. A kiszolgáló-fülön lévő napló a "
-"komplett eseménylistának felel meg."
+"Itt kerülnek megjelenítésre az események. A teljes eseménylistáért nézd meg "
+"a naplót a kiszolgáló-fülön."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -7389,10 +7427,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Sources: %u"
 #~ msgstr "Források:"
-
-#, fuzzy
-#~ msgid "Feedback from: %s"
-#~ msgstr "Visszajelzés ettől:"
 
 #, fuzzy
 #~ msgid "Client: aMule %s"

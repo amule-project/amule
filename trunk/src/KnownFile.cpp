@@ -1356,12 +1356,12 @@ bool CKnownFile::HasProperAICHHashSet() const
 
 wxString CKnownFile::GetFeedback() const
 {
-	return	  CFormat(wxT("File name: %s\n")) % GetFileName()
-		+ CFormat(wxT("File size: %s\n")) % CastItoXBytes(GetFileSize())
-		+ CFormat(wxT("Share ratio: %.2f%%\n")) % (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0)
-		+ CFormat(wxT("Transferred: %s (%s)\n")) % CastItoXBytes(statistic.GetTransferred()) % CastItoXBytes(statistic.GetAllTimeTransferred())
-		+ CFormat(wxT("Requested: %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
-		+ CFormat(wxT("Accepted: %d (%d)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
-		+ CFormat(wxT("Complete Sources: %u\n")) % m_nCompleteSourcesCount;
+	return	  wxString(_("File name")) + wxT(": ") + GetFileName().GetPrintable() + wxT("\n")
+		+ _("File size") + wxT(": ") + CastItoXBytes(GetFileSize()) + wxT("\n")
+		+ _("Share ratio") + wxString::Format(wxT(": %.2f%%\n"), (((double)statistic.GetAllTimeTransferred() / (double)GetFileSize()) * 100.0))
+		+ _("Uploaded") + wxT(": ") + CastItoXBytes(statistic.GetTransferred()) + wxT(" (") + CastItoXBytes(statistic.GetAllTimeTransferred()) + wxT(")\n")
+		+ _("Requested") + CFormat(wxT(": %u (%u)\n")) % statistic.GetRequests() % statistic.GetAllTimeRequests()
+		+ _("Accepted") + CFormat(wxT(": %u (%u)\n")) % statistic.GetAccepts() % statistic.GetAllTimeAccepts()
+		+ _("Complete sources") + CFormat(wxT(": %u\n")) % m_nCompleteSourcesCount;
 }
 // File_checked_for_headers

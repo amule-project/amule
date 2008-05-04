@@ -187,7 +187,7 @@ void CSharedFilesCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 	long index = GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	while (index != -1) {
 		if (feed.IsEmpty()) {
-			feed = CFormat(wxT("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % GetFullMuleVersion();
+			feed = CFormat(_("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % GetFullMuleVersion();
 		} else {
 			feed += wxT("\n");
 		}

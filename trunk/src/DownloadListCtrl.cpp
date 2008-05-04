@@ -725,7 +725,7 @@ void CDownloadListCtrl::OnGetFeedback(wxCommandEvent& WXUNUSED(event))
 
 	for (ItemList::iterator it = files.begin(); it != files.end(); ++it) {
 		if (feed.IsEmpty()) {
-			feed = CFormat(wxT("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % GetFullMuleVersion();
+			feed = CFormat(_("Feedback from: %s (%s)\n\n")) % thePrefs::GetUserNick() % GetFullMuleVersion();
 		} else {
 			feed += wxT("\n");
 		}
