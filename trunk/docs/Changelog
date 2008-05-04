@@ -387,6 +387,7 @@ Version 2.2.1 - ???
 		* New BarShader code.
 		* Sparse partfiles on Windows.
 		* Fix for zlib detection with an optimizing compiler on configure.
+		* Made all part-status bars look the same.
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction

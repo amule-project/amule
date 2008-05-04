@@ -649,21 +649,42 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 	const ArrayOfUInts16& list = file->IsPartFile() ?
 		((CPartFile*)file)->m_SrcpartFrequency :
 		file->m_AvailPartFrequency;
+	wxPen   old_pen   = dc->GetPen();
+	wxBrush old_brush = dc->GetBrush();
+	bool bFlat = thePrefs::UseFlatBar();
+
+	wxRect barRect = rect;
+	if (!bFlat) { // round bar has a black border, the bar itself is 1 pixel less on each border
+		barRect.x ++;
+		barRect.y ++;
+		barRect.height -= 2;
+		barRect.width -= 2;
+	}
 	static CBarShader s_ChunkBar;
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
-	s_ChunkBar.SetHeight( rect.GetHeight() );
-	s_ChunkBar.SetWidth( rect.GetWidth() );
+	s_ChunkBar.SetHeight( barRect.GetHeight() );
+	s_ChunkBar.SetWidth( barRect.GetWidth() );
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	uint64 end = 0;
 	for ( unsigned int i = 0; i < list.size(); ++i ) {
 		COLORREF color = list[i] ? (RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255))
 								 : RGB(255, 0, 0);
-		uint64 start = PARTSIZE * static_cast<uint64>(i);
-		       end   = PARTSIZE * static_cast<uint64>(i + 1);
+		uint64 start = PARTSIZE * i;
+		       end   = PARTSIZE * (i + 1);
 		s_ChunkBar.FillRange(start, end, color);
 	}
 	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, RGB(255, 0, 0));
-   	s_ChunkBar.Draw(dc, rect.GetLeft(), rect.GetTop(), CPreferences::UseFlatBar() ); 
+	s_ChunkBar.Draw(dc, barRect.x, barRect.y, bFlat); 
+
+	if (!bFlat) {
+		// Draw black border
+		dc->SetPen( *wxBLACK_PEN );
+		dc->SetBrush( *wxTRANSPARENT_BRUSH );
+		dc->DrawRectangle(rect);
+	}
+
+	dc->SetPen( old_pen );
+	dc->SetBrush( old_brush );
 }
 
 void CSharedFilesCtrl::OnGetRazorStats( wxCommandEvent& WXUNUSED(event) )
