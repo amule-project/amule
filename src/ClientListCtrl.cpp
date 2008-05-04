@@ -30,6 +30,7 @@
 
 #include "amule.h"
 #include "amuleDlg.h"
+#include "BarShader.h"		// Needed for CBarShader
 #include "ChatWnd.h"
 #include "ClientDetailDialog.h"
 #include "ClientList.h"
@@ -39,6 +40,7 @@
 	#include "IP2Country.h"	// Needed for IP2Country
 #endif
 #include "KnownFile.h"
+#include "Preferences.h"
 #include "updownclient.h"
 #include "UploadQueue.h"
 
@@ -774,22 +776,46 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 
 	wxPen   old_pen   = dc->GetPen();
 	wxBrush old_brush = dc->GetBrush();
+	bool bFlat = thePrefs::UseFlatBar();
 
-	dc->SetPen(*wxTRANSPARENT_PEN);
-	dc->SetBrush( wxBrush( wxColour(220,220,220), wxSOLID ) );
-	
-	dc->DrawRectangle( rect );
-	dc->SetBrush(*wxBLACK_BRUSH);
+	wxRect barRect = rect;
+	if (!bFlat) { // round bar has a black border, the bar itself is 1 pixel less on each border
+		barRect.x ++;
+		barRect.y ++;
+		barRect.height -= 2;
+		barRect.width -= 2;
+	}
+	static CBarShader s_StatusBar(16);
+
+	uint32 crUnavailable	= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
+	uint32 crAvailable		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
 
 	uint32 partCount = client->GetUpPartCount();
 
-	float blockpixel = (float)(rect.width)/((float)(PARTSIZE*partCount)/1024);
-	for ( uint32 i = 0; i < partCount; i++ ) {
-		if ( client->IsUpPartAvailable( i ) ) { 
-			int right = rect.x + (uint32)(((float)PARTSIZE*i/1024)*blockpixel);
-			int left  = rect.x + (uint32)((float)((float)PARTSIZE*(i+1)/1024)*blockpixel);
-			dc->DrawRectangle( (int)left, rect.y, right - left, rect.height );					
-		}
+	// Seems the partfile in the client object is not necessarily valid when bar is drawn for the first time.
+	// Keep it simple and make all parts same size.
+	s_StatusBar.SetFileSize(partCount * PARTSIZE);
+	s_StatusBar.SetHeight(barRect.height);
+	s_StatusBar.SetWidth(barRect.width);
+	s_StatusBar.Set3dDepth( thePrefs::Get3DDepth() );
+
+	uint64 uEnd = 0;
+	for ( uint64 i = 0; i < partCount; i++ ) {
+		uint64 uStart = PARTSIZE * i;
+		uEnd = uStart + PARTSIZE - 1;
+
+		uint32 color = client->IsUpPartAvailable(i) ? crAvailable : crUnavailable;
+		s_StatusBar.FillRange(uStart, uEnd, color);
+	}
+	// fill the rest (if partStatus is empty)
+	s_StatusBar.FillRange(uEnd + 1, partCount * PARTSIZE - 1, crUnavailable);
+	s_StatusBar.Draw(dc, barRect.x, barRect.y, bFlat);
+
+	if (!bFlat) {
+		// Draw black border
+		dc->SetPen( *wxBLACK_PEN );
+		dc->SetBrush( *wxTRANSPARENT_BRUSH );
+		dc->DrawRectangle(rect);
 	}
 
 	dc->SetPen( old_pen );
