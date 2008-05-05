@@ -3236,6 +3236,9 @@ void CPartFile::UpdateFileRatingCommentAvail()
 		CUpDownClient* cur_src = *it;
 		
 		if (!cur_src->GetFileComment().IsEmpty()) {
+			if (thePrefs::IsCommentFiltered(cur_src->GetFileComment())) {
+				continue;
+			}
 			m_hasComment = true;
 		}
 

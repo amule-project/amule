@@ -210,6 +210,9 @@ Version 2.2.1 - ???
 		* set the search string to the search text of currently
 		  selected tab.
 
+	magicamule:
+		* filtered off comments still affect rating
+
 	morricone:
 		* Fix for wxwin.m4 not autodetecting wxBase.
 
