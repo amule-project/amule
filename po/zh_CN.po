@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
+"POT-Creation-Date: 2008-05-05 03:30+0200\n"
 "PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -450,6 +450,13 @@ msgstr "复制 ED2K 链接到剪贴板（&AICH 信息）"
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "复制反馈信息到剪贴板"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2851,7 +2858,7 @@ msgid "The specified userhash is not valid!"
 msgstr "该用户编码无效"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "源"
 
@@ -2937,7 +2944,8 @@ msgstr "速度"
 msgid "Progress"
 msgstr "进度"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "状态"
 
@@ -3266,6 +3274,10 @@ msgstr "硬盘空间不足"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "已停止"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr ""
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4105,6 +4117,34 @@ msgstr "编辑分类"
 msgid "Remove category"
 msgstr "删除分类"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "文件名"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr ""
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr ""
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr ""
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr ""
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr ""
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr ""
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4175,10 +4215,6 @@ msgstr "已经在下载"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "未知或错误的临时文件格式。"
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "文件名"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"

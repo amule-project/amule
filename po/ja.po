@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
+"POT-Creation-Date: 2008-05-05 03:30+0200\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -453,6 +453,13 @@ msgstr "ED2kリンクをクリップボードにコピーする（&AICH イン�
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "フィードバックをクリップボードにコピーする"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2900,7 +2907,7 @@ msgid "The specified userhash is not valid!"
 msgstr "指定されたユーザハッシュは不正です！"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "ソース数"
 
@@ -2987,7 +2994,8 @@ msgstr "スピード"
 msgid "Progress"
 msgstr "進歩"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "ステータス"
 
@@ -3326,6 +3334,10 @@ msgstr "不十分なディスク・スペース"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "中止されています"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr ""
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4182,6 +4194,34 @@ msgstr "カテゴリーを編集します"
 msgid "Remove category"
 msgstr "カテゴリーを消除します"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "ファイル名"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr ""
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr ""
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr ""
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr ""
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr ""
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr ""
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4253,10 +4293,6 @@ msgstr "すでにダウンロード中です"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "不明な、または不利なtempfileフォーマット。"
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "ファイル名"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"

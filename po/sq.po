@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
+"POT-Creation-Date: 2008-05-05 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -465,6 +465,13 @@ msgstr "Kopjo linkun ED2k ne shenime (&AICH informacion)"
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "Kopjo feedback ne shenimet"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2901,7 +2908,7 @@ msgid "The specified userhash is not valid!"
 msgstr "Userhash-i i specifikuar nuk eshte i vlefshem!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Burime"
 
@@ -2989,7 +2996,8 @@ msgstr "Shpejtesia"
 msgid "Progress"
 msgstr "Avancimi"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Gjendja"
 
@@ -3334,6 +3342,10 @@ msgstr "Nuk ka hapesire te mjaftueshme ne Disk"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "E ndalur"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr ""
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4203,6 +4215,34 @@ msgstr "Redakto kategorine"
 msgid "Remove category"
 msgstr "Zhvendos kategorine"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "Emri i failit"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr ""
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr ""
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr ""
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr ""
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr ""
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr ""
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4274,10 +4314,6 @@ msgstr "Jam duke e shkarkuar"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "Formati i failit temp i panjohur ose i gabuar."
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "Emri i failit"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"

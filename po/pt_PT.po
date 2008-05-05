@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
+"POT-Creation-Date: 2008-05-05 03:30+0200\n"
 "PO-Revision-Date: 2008-04-15 02:00+0100\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -455,6 +455,13 @@ msgstr "Copiar ligação ED2k para área de transferência (informação &AICH)"
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "Copiar a resposta para a área de transferência"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2888,7 +2895,7 @@ msgid "The specified userhash is not valid!"
 msgstr "A chave de utilizador especificada não é válida!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fontes"
 
@@ -2976,7 +2983,8 @@ msgstr "Velocidade"
 msgid "Progress"
 msgstr "Progresso"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Estado"
 
@@ -3313,6 +3321,10 @@ msgstr "Espaço no disco insuficiente"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "Parado"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr ""
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4176,6 +4188,34 @@ msgstr "Editar categoria"
 msgid "Remove category"
 msgstr "Remover categoria"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "Nome de ficheiro"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr ""
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr ""
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr ""
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr ""
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr ""
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr ""
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4246,10 +4286,6 @@ msgstr "Já a transferir"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "Formato de ficheiro temporário desconhecido ou mau"
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "Nome de ficheiro"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"

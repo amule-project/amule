@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-04 03:30+0200\n"
+"POT-Creation-Date: 2008-05-05 03:30+0200\n"
 "PO-Revision-Date: 2008-02-24 13:33+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -450,6 +450,13 @@ msgstr "Kopioi Ed2k-linkki leikepöydälle (&AICH-tiedot)"
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
 msgstr "Kopioi palaute leikepöydälle"
+
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#, c-format
+msgid ""
+"Feedback from: %s (%s)\n"
+"\n"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -2877,7 +2884,7 @@ msgid "The specified userhash is not valid!"
 msgstr "Annettu käyttäjätarkiste ei ole kelvollinen!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Lähteet"
 
@@ -2964,7 +2971,8 @@ msgstr "Nopeus"
 msgid "Progress"
 msgstr "Edistyminen"
 
-#: src/DownloadListCtrl.cpp:197 src/ClientListCtrl.cpp:511
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Tila"
 
@@ -3296,6 +3304,10 @@ msgstr "Riittämätön Levytila"
 #: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "Pysäytetty"
+
+#: src/PartFile.cpp:3902
+msgid "Downloaded"
+msgstr ""
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -4158,6 +4170,34 @@ msgstr "Muokkaa luokkaa"
 msgid "Remove category"
 msgstr "Poista luokka"
 
+#: src/KnownFile.cpp:1359 src/PartFileConvert.cpp:628
+msgid "File name"
+msgstr "Tiedoston nimi"
+
+#: src/KnownFile.cpp:1360
+msgid "File size"
+msgstr ""
+
+#: src/KnownFile.cpp:1361
+msgid "Share ratio"
+msgstr ""
+
+#: src/KnownFile.cpp:1362
+msgid "Uploaded"
+msgstr ""
+
+#: src/KnownFile.cpp:1363
+msgid "Requested"
+msgstr ""
+
+#: src/KnownFile.cpp:1364
+msgid "Accepted"
+msgstr ""
+
+#: src/KnownFile.cpp:1365
+msgid "Complete sources"
+msgstr ""
+
 #: src/PartFileConvert.cpp:236
 #, c-format
 msgid "Importing %s: %s"
@@ -4228,10 +4268,6 @@ msgstr "Lataus on jo käynnissä"
 #: src/PartFileConvert.cpp:619
 msgid "Unknown or bad tempfile format."
 msgstr "Tuntematon tai käyttökelvoton väliaikaistiedostomuoto."
-
-#: src/PartFileConvert.cpp:628
-msgid "File name"
-msgstr "Tiedoston nimi"
 
 #: src/PartFileConvert.cpp:629
 msgid "State"
