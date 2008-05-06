@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-05 03:30+0200\n"
+"POT-Creation-Date: 2008-05-06 03:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,34 +53,34 @@ msgstr ""
 msgid "Succeeded! Connection established."
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3837
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
 msgid "Hashing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3841
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
 msgid "Completing"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
 msgid "Complete"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:748
 msgid "Paused"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:747
 msgid "Erroneous"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3857
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:746
 msgid "Downloading"
 msgstr ""
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3859
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:745
 msgid "Waiting"
 msgstr ""
@@ -2817,7 +2817,7 @@ msgid "The specified userhash is not valid!"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/PartFile.cpp:3903 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3906 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr ""
 
@@ -2903,7 +2903,7 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3905
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3908
 #: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr ""
@@ -3222,15 +3222,15 @@ msgstr ""
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr ""
 
-#: src/PartFile.cpp:3853
+#: src/PartFile.cpp:3856
 msgid "Insufficient Diskspace"
 msgstr ""
 
-#: src/PartFile.cpp:3864 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
+#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr ""
 
-#: src/PartFile.cpp:3902
+#: src/PartFile.cpp:3905
 msgid "Downloaded"
 msgstr ""
 
