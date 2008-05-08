@@ -563,11 +563,11 @@ void CKeyEntry::ReadPublishTrackingDataFromFile(CFileDataIO* data)
 		m_publishingIPs->push_back(toAdd);
 	}
 	ReCalculateTrustValue();
-#ifdef __DEBUG__
-	if (GetTrustValue() < 1.0) {
-		AddDebugLogLineM(false, logKadEntryTracking, wxString::Format(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file "), nameCount, ipCount, GetTrustValue()) + m_uSourceID.ToHexString());
-	}
-#endif
+// #ifdef __DEBUG__
+// 	if (GetTrustValue() < 1.0) {
+// 		AddDebugLogLineM(false, logKadEntryTracking, wxString::Format(wxT("Loaded %u different names, %u different publishIPs (trustvalue = %.2f) for file "), nameCount, ipCount, GetTrustValue()) + m_uSourceID.ToHexString());
+// 	}
+// #endif
 }
 
 void CKeyEntry::DirtyDeletePublishData()
