@@ -57,7 +57,8 @@
 						// associated file (supported
 						// by eserver 16.46+) statistic
 
-#define	FT_ATTRANSFERRED			0x50	// <uint32>
+#define	FT_PUBLISHINFO			0x33	// <uint32>
+#define	FT_ATTRANSFERRED		0x50	// <uint32>
 #define	FT_ATREQUESTED			0x51	// <uint32>
 #define	FT_ATACCEPTED			0x52	// <uint32>
 #define	FT_CATEGORY			0x53	// <uint32>
@@ -98,6 +99,7 @@
 #define	TAG_PERMISSIONS			wxT("\x16")
 #define	TAG_QTIME			wxT("\x16")
 #define	TAG_PARTS			wxT("\x17")
+#define	TAG_PUBLISHINFO			wxT("\x33")	// <uint32>
 #define	TAG_MEDIA_ARTIST		wxT("\xD0")	// <string>
 #define	TAG_MEDIA_ALBUM			wxT("\xD1")	// <string>
 #define	TAG_MEDIA_TITLE			wxT("\xD2")	// <string>
