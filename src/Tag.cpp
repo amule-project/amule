@@ -68,6 +68,10 @@ CTag::CTag(const CTag& rTag)
 		m_nSize = rTag.GetBlobSize();
 		m_pData = new unsigned char[rTag.GetBlobSize()];
 		memcpy(m_pData, rTag.GetBlob(), rTag.GetBlobSize());
+	} else if (rTag.IsBsob()) {
+		m_nSize = rTag.GetBsobSize();
+		m_pData = new unsigned char[rTag.GetBsobSize()];
+		memcpy(m_pData, rTag.GetBsob(), rTag.GetBsobSize());
 	} else {
 		wxASSERT(0);
 		m_uVal = 0;
@@ -219,6 +223,12 @@ CTag &CTag::operator=(const CTag &rhs)
 			delete [] m_pData;
 			m_pData = p;
 			memcpy(m_pData, rhs.GetBlob(), rhs.GetBlobSize());
+		} else if (rhs.IsBsob()) {
+			m_nSize = rhs.GetBsobSize();
+			unsigned char *p = new unsigned char[rhs.GetBsobSize()];
+			delete [] m_pData;
+			m_pData = p;
+			memcpy(m_pData, rhs.GetBsob(), rhs.GetBsobSize());
 		} else {
 			wxASSERT(0);
 			m_uVal = 0;
