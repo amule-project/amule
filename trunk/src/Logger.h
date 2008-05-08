@@ -97,8 +97,14 @@ enum DebugType
 	logMuleUDP,
 	//! Warnings/Errors related to the thread-scheduler.
 	logThreads,
-	//! Warnings/Errors related to the Universal Plug and Play subsistem.
-	logUPnP
+	//! Warnings/Errors related to the Universal Plug and Play subsystem.
+	logUPnP,
+	//! Warnings/Errors related to the UDP Firewall Tester
+	logKadUdpFwTester,
+	//! Warnings/Errors related to Kad packet tracking.
+	logKadPacketTracking,
+	//! Warnings/Errors related to Kad entry tracking.
+	logKadEntryTracking
 	// IMPORTANT NOTE: when you add values to this enum, update the g_debugcats
 	// array in Logger.cpp!
 };

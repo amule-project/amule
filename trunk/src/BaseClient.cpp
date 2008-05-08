@@ -31,6 +31,9 @@
 #include <protocol/ed2k/Client2Client/TCP.h>
 #include <protocol/ed2k/ClientSoftware.h>
 #include <protocol/kad/Client2Client/UDP.h>
+#include <protocol/kad2/Constants.h>
+#include <protocol/kad2/Client2Client/TCP.h>
+#include <protocol/kad2/Client2Client/UDP.h>
 
 #include <common/ClientVersion.h>
 
@@ -68,6 +71,8 @@
 #include "kademlia/kademlia/Kademlia.h"
 #include "kademlia/kademlia/Prefs.h"
 #include "kademlia/kademlia/Search.h"
+#include "kademlia/kademlia/UDPFirewallTester.h"
+#include "kademlia/routing/RoutingZone.h"
 
 
 //#define __PACKET_DEBUG__
@@ -261,8 +266,10 @@ void CUpDownClient::Init()
 	m_fRequestsCryptLayer = 0;
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
-	m_fSupportsSourceEx2 = 0;	
-	
+	m_fSupportsSourceEx2 = 0;
+	m_fDirectUDPCallback = 0;
+	m_dwDirectCallbackTimeout = 0;
+
 	m_hasbeenobfuscatinglately = false;
 }
 
@@ -355,7 +362,8 @@ void CUpDownClient::ClearHelloProperties()
 	m_fRequestsCryptLayer = 0;
 	m_fSupportsCryptLayer = 0;
 	m_fRequiresCryptLayer = 0;
-	m_fSupportsSourceEx2 = 0;	
+	m_fSupportsSourceEx2 = 0;
+	m_fDirectUDPCallback = 0;
 }
 
 bool CUpDownClient::ProcessHelloPacket(const byte* pachPacket, uint32 nSize)
@@ -487,7 +495,7 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 				//  4 Source Exchange
 				//  4 Ext. Requests
 				//  4 Comments
-				//	 1 PeerChache supported
+				//	 1 PeerCache supported
 				//	 1 No 'View Shared Files' supported
 				//	 1 MultiPacket
 				//  1 Preview
@@ -522,28 +530,47 @@ bool CUpDownClient::ProcessHelloTypePacket(const CMemFile& data)
 			}
 
 			case CT_EMULE_MISCOPTIONS2:
-				//	22 Reserved
-				m_fSupportsSourceEx2	= (temptag.GetInt() >>  10) & 0x01;
+				//  19 Reserved
+				//   1 Direct UDP Callback supported and available
+				//   1 Supports ChatCaptchas
+				//   1 Supports SourceExachnge2 Packets, ignores SX1 Packet Version
+				//   1 Requires CryptLayer
+				//   1 Requests CryptLayer
+				//   1 Supports CryptLayer
+				//   1 Reserved (ModBit)
+				//   1 Ext Multipacket (Hash+Size instead of Hash)
+				//   1 Large Files (includes support for 64bit tags)
+				//   4 Kad Version - will go up to version 15 only (may need to add another field at some point in the future)
+				m_fDirectUDPCallback	= (temptag.GetInt() >> 12) & 0x01;
+				// 1 captcha support
+				m_fSupportsSourceEx2	= (temptag.GetInt() >> 10) & 0x01;
 				m_fRequiresCryptLayer	= (temptag.GetInt() >>  9) & 0x01;
 				m_fRequestsCryptLayer	= (temptag.GetInt() >>  8) & 0x01;
 				m_fSupportsCryptLayer	= (temptag.GetInt() >>  7) & 0x01;
 				// reserved 1
-				m_fExtMultiPacket		= (temptag.GetInt() >>  5) & 0x01;
+				m_fExtMultiPacket	= (temptag.GetInt() >>  5) & 0x01;
 				m_fSupportsLargeFiles   = (temptag.GetInt() >>  4) & 0x01;
-				m_byKadVersion			= (temptag.GetInt() >>  0) & 0x0f;
+				m_byKadVersion		= (temptag.GetInt() >>  0) & 0x0f;
 				dwEmuleTags |= 8;
-			
+
 				m_fRequestsCryptLayer &= m_fSupportsCryptLayer;
 				m_fRequiresCryptLayer &= m_fRequestsCryptLayer;
 			
 				#ifdef __PACKET_DEBUG__
 				printf("Hello type packet processing with eMule Misc Options 2:\n");
-				printf("  KadVersion = %u\n" , m_byKadVersion );
+				printf("	m_fDirectUDPCallback	= %i\n", m_fDirectUDPCallback);
+				printf("	m_fSupportsSourceEx2	= %i\n", m_fSupportsSourceEx2);
+				printf("	m_fRequiresCryptLayer	= %i\n", m_fRequiresCryptLayer);
+				printf("	m_fRequestsCryptLayer	= %i\n", m_fRequestsCryptLayer);
+				printf("	m_fSupportsCryptLayer	= %i\n", m_fSupportsCryptLayer);
+				printf("	m_fExtMultiPacket	= %i\n", m_fExtMultiPacket);
+				printf("	m_fSupportsLargeFiles	= %i\n", m_fSupportsLargeFiles);
+				printf("	KadVersion		= %u\n", m_byKadVersion);
 				printf("That's all.\n");
 				#endif			
 				break;
-				
-			// Special tag fo Compat. Clients Misc options.
+
+			// Special tag for Compat. Clients Misc options.
 			case CT_EMULECOMPAT_OPTIONS:
 				//  1 Operative System Info
 				//	1 Value-based-type int tags (experimental!)
@@ -992,13 +1019,14 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	uint32 kadUDPPort = 0;
 
 	if(Kademlia::CKademlia::IsConnected()) {
-		kadUDPPort = thePrefs::GetEffectiveUDPPort();
+		if (Kademlia::CKademlia::GetPrefs()->GetExternalKadPort() != 0 && Kademlia::CKademlia::GetPrefs()->GetUseExternKadPort() && Kademlia::CUDPFirewallTester::IsVerified()) {
+			kadUDPPort = Kademlia::CKademlia::GetPrefs()->GetExternalKadPort();
+		} else {
+			kadUDPPort = Kademlia::CKademlia::GetPrefs()->GetInternKadPort();
+		}
 	}
 
-	CTagVarInt tagUdpPorts(CT_EMULE_UDPPORTS,
-				(kadUDPPort									<< 16) |
-				((uint32)thePrefs::GetEffectiveUDPPort()	     ),
-				GetVBTTags() ? 0 : 32);
+	CTagVarInt tagUdpPorts(CT_EMULE_UDPPORTS, (kadUDPPort << 16) | ((uint32)thePrefs::GetEffectiveUDPPort()), GetVBTTags() ? 0 : 32);
 	tagUdpPorts.WriteTagToFile(data);
 
 	if( theApp->clientlist->GetBuddy() && theApp->IsFirewalled() ) {
@@ -1022,29 +1050,29 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 
 
 	// eMule Misc. Options #1
-	const uint32 uUdpVer				= 4;
-	const uint32 uDataCompVer			= 1;
+	const uint32 uUdpVer			= 4;
+	const uint32 uDataCompVer		= 1;
 	const uint32 uSupportSecIdent		= theApp->CryptoAvailable() ? 3 : 0;
-	const uint32 uSourceExchangeVer	= 3; 
+	const uint32 uSourceExchangeVer		= 3; 
 	const uint32 uExtendedRequestsVer	= 2;
-	const uint32 uAcceptCommentVer	= 1;
-	const uint32 uNoViewSharedFiles	= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
-	const uint32 uMultiPacket			= 1;
+	const uint32 uAcceptCommentVer		= 1;
+	const uint32 uNoViewSharedFiles		= (thePrefs::CanSeeShares() == vsfaNobody) ? 1 : 0; // for backward compatibility this has to be a 'negative' flag
+	const uint32 uMultiPacket		= 1;
 	const uint32 uSupportPreview		= 0; // No network preview at all.
 	const uint32 uPeerCache			= 0; // No peercache for aMule, baby
 	const uint32 uUnicodeSupport		= 1; 
-	const uint32 nAICHVer				= 1; // AICH is ENABLED right now.
+	const uint32 nAICHVer			= 1; // AICH is ENABLED right now.
 
 	CTagVarInt tagMisOptions(CT_EMULE_MISCOPTIONS1,
-				(nAICHVer				<< ((4*7)+1)) |
+				(nAICHVer			<< ((4*7)+1)) |
 				(uUnicodeSupport		<< 4*7) |
-				(uUdpVer				<< 4*6) |
+				(uUdpVer			<< 4*6) |
 				(uDataCompVer			<< 4*5) |
 				(uSupportSecIdent		<< 4*4) |
 				(uSourceExchangeVer		<< 4*3) |
-				(uExtendedRequestsVer	<< 4*2) |
+				(uExtendedRequestsVer		<< 4*2) |
 				(uAcceptCommentVer		<< 4*1) |
-				(uPeerCache				<< 1*3) |
+				(uPeerCache			<< 1*3) |
 				(uNoViewSharedFiles		<< 1*2) |
 				(uMultiPacket			<< 1*1) |
 				(uSupportPreview		<< 1*0) 
@@ -1052,24 +1080,30 @@ void CUpDownClient::SendHelloTypePacket(CMemFile* data)
 	tagMisOptions.WriteTagToFile(data);
 
 	// eMule Misc. Options #2
-	const uint32 uKadVersion			= 1;
-	const uint32 uSupportLargeFiles	= 1;
+	const uint32 uKadVersion		= KADEMLIA_VERSION;
+	const uint32 uSupportLargeFiles		= 1;
 	const uint32 uExtMultiPacket		= 1;
 	const uint32 uReserved			= 0; // mod bit
 	const uint32 uSupportsCryptLayer	= thePrefs::IsClientCryptLayerSupported() ? 1 : 0;
 	const uint32 uRequestsCryptLayer	= thePrefs::IsClientCryptLayerRequested() ? 1 : 0;
 	const uint32 uRequiresCryptLayer	= thePrefs::IsClientCryptLayerRequired() ? 1 : 0;	
-	const uint32 uSupportsSourceEx2	= 1;					
+	const uint32 uSupportsSourceEx2		= 1;					
+	// direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
+	const uint32 uDirectUDPCallback		= (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()
+						   && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified()) ? 1 : 0;
+
 	CTagVarInt tagMisOptions2(CT_EMULE_MISCOPTIONS2, 
 //				(RESERVED				     )
-				(uSupportsSourceEx2		<< 10) |
+				(uDirectUDPCallback	<< 12) |
+// 				(uSupportsCaptcha	<< 11) |	// No captcha support in aMule
+				(uSupportsSourceEx2	<< 10) |
 				(uRequiresCryptLayer	<<  9) |
 				(uRequestsCryptLayer	<<  8) |
 				(uSupportsCryptLayer	<<  7) |
-				(uReserved				<<  6) |
-				(uExtMultiPacket		<<  5) |
-				(uSupportLargeFiles		<<  4) |
-				(uKadVersion			<<  0) 
+				(uReserved		<<  6) |
+				(uExtMultiPacket	<<  5) |
+				(uSupportLargeFiles	<<  4) |
+				(uKadVersion		<<  0) 
 				, GetVBTTags() ? 0 : 32	);
 	tagMisOptions2.WriteTagToFile(data);
 
@@ -1174,10 +1208,23 @@ void CUpDownClient::ClearDownloadBlockRequests()
 }
 
 
-bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket){
+bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
+{
+	//wxASSERT(theApp->clientlist->IsValidClient(this));
 
-	// Kad reviewed
-	
+	// was this a direct callback?
+	if (m_dwDirectCallbackTimeout != 0) {
+		theApp->clientlist->RemoveDirectCallback(this);
+		m_dwDirectCallbackTimeout = 0;
+		AddDebugLogLineM(false, logClient, wxT("Direct callback failed to client ") + GetUserHash().Encode());
+	}
+
+	if (GetKadState() == KS_QUEUED_FWCHECK_UDP) {
+		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, wxUINT32_SWAP_ALWAYS(GetConnectIP()), 0); // inform the tester that this test was cancelled
+	} else if (GetKadState() == KS_FWCHECK_UDP) {
+		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, false, wxUINT32_SWAP_ALWAYS(GetConnectIP()), 0); // inform the tester that this test has failed
+	}
+
 	//If this is a KAD client object, just delete it!
 	SetKadState(KS_NONE);
 	
@@ -1337,11 +1384,13 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 			return true;
 		}
 	}
-	
-	if( GetKadState() == KS_QUEUED_FWCHECK ) {
+
+	if (GetKadState() == KS_QUEUED_FWCHECK) {
 		SetKadState(KS_CONNECTING_FWCHECK);
+	} else if (GetKadState() == KS_QUEUED_FWCHECK_UDP) {
+		SetKadState(KS_FWCHECK_UDP);
 	}
-	
+
 	if ( HasLowID() ) {
 		if (!theApp->DoCallback(this)) {
 			//We cannot do a callback!
@@ -1364,7 +1413,8 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 		//If ANYTHING changes with the "if(!theApp->DoCallback(this))" above that will let you fall through 
 		//with the condition that the source is firewalled and we are firewalled, we must
 		//recheck it before the this check..
-		if( HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp->serverconnect->IsLocalServer(GetServerIP(), GetServerPort())) {
+		if (HasValidBuddyID() && !GetBuddyIP() && !GetBuddyPort() && !theApp->serverconnect->IsLocalServer(GetServerIP(), GetServerPort())
+		    && !(SupportsDirectUDPCallback() && thePrefs::GetEffectiveUDPPort() != 0)) {
 			//This is a Kad firewalled source that we want to do a special callback because it has no buddyIP or buddyPort.
 			if( Kademlia::CKademlia::IsConnected() ) {
 				//We are connect to Kad
@@ -1388,7 +1438,27 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	}	
 	
 	
-	if (HasLowID()) {
+	if (HasLowID() && SupportsDirectUDPCallback() && thePrefs::GetEffectiveUDPPort() != 0 && GetConnectIP() != 0) { // LOWID with DirectCallback
+		// a direct callback is possible - since no other parties are involved and only one additional packet overhead 
+		// is used we basically handle it like a normal connection try, no restrictions apply
+		// we already check above with !theApp->DoCallback(this) if any callback is possible at all
+		m_dwDirectCallbackTimeout = ::GetTickCount() + SEC2MS(45);
+		theApp->clientlist->AddDirectCallbackClient(this);
+		// TODO LOGREMOVE
+		AddDebugLogLineM(false, logClient, wxString::Format(wxT("Direct Callback on port %u to client "), GetKadPort()) + GetUserHash().Encode());
+
+		CMemFile data;
+		data.WriteUInt16(thePrefs::GetPort()); // needs to know our port
+		data.WriteHash(thePrefs::GetUserHash()); // and userhash
+		// our connection settings
+		data.WriteUInt8(Kademlia::CPrefs::GetMyConnectOptions(true, true));
+// 		// LOGTODO
+// 		if (thePrefs.GetDebugClientUDPLevel() > 0)
+// 			DebugSend("OP_DIRECTCALLBACKREQ", this);
+		CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_DIRECTCALLBACKREQ);
+		theStats::AddUpOverheadOther(packet->GetPacketSize());
+		theApp->clientudp->SendPacket(packet, GetConnectIP(), GetKadPort(), ShouldReceiveCryptUDPPackets(), GetUserHash().GetHash(), false, 0);
+	} else if (HasLowID()) { // LOWID
 		if (GetDownloadState() == DS_CONNECTING) {
 			SetDownloadState(DS_WAITCALLBACK);
 		}
@@ -1467,7 +1537,7 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 				}
 			}	
 		}
-	} else {
+	} else { // HIGHID
 		if (!Connect()) {
 			return false;
 		}
@@ -1525,6 +1595,14 @@ void CUpDownClient::ConnectionEstablished()
 		SendPublicIPRequest();
 	}
 	
+	// was this a direct callback?
+	if (m_dwDirectCallbackTimeout != 0){
+		theApp->clientlist->RemoveDirectCallback(this);
+		m_dwDirectCallbackTimeout = 0;
+		// TODO LOGREMOVE
+		AddDebugLogLineM(false, logClient, wxT("Direct Callback succeeded, connection established to ") + GetUserHash().Encode());
+	}
+
 	switch (GetKadState()) {
 		case KS_CONNECTING_FWCHECK:
 			SetKadState(KS_CONNECTED_FWCHECK);
@@ -1532,6 +1610,9 @@ void CUpDownClient::ConnectionEstablished()
 		case KS_CONNECTING_BUDDY:
 		case KS_INCOMING_BUDDY:
 			SetKadState(KS_CONNECTED_BUDDY);
+			break;
+		case KS_FWCHECK_UDP:
+			SendFirewallCheckUDPRequest();
 			break;
 		default:
 			break;
@@ -1892,7 +1973,7 @@ wxString CUpDownClient::GetUploadFileInfo()
 bool CUpDownClient::SafeSendPacket(CPacket* packet)
 {
 	if (IsConnected()) {
-		SendPacket(packet);
+		SendPacket(packet, true);
 		return true;
 	} else {
 		m_WaitingPackets_list.push_back(packet);
@@ -2437,4 +2518,76 @@ bool CUpDownClient::ShouldReceiveCryptUDPPackets() const {
 		&& HasValidHash() && (thePrefs::IsClientCryptLayerRequested() || RequestsCryptLayer()) );
 }
 
+void CUpDownClient::SendFirewallCheckUDPRequest()
+{
+	wxASSERT(GetKadState() == KS_FWCHECK_UDP);
+
+	if (!Kademlia::CKademlia::IsRunning()) {
+		SetKadState(KS_NONE);
+		return;
+	} else if (GetUploadState() != US_NONE || GetDownloadState() != DS_NONE || GetChatState() != MS_NONE || GetKadVersion() <= 5 || GetKadPort() == 0) {
+		Kademlia::CUDPFirewallTester::SetUDPFWCheckResult(false, true, wxUINT32_SWAP_ALWAYS(GetIP()), 0); // inform the tester that this test was cancelled
+		SetKadState(KS_NONE);
+		return;
+	}
+
+	wxASSERT(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort() != 0);
+	CMemFile data;
+	data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetInternKadPort());
+	data.WriteUInt16(Kademlia::CKademlia::GetPrefs()->GetExternalKadPort());
+	data.WriteUInt32(Kademlia::CKademlia::GetPrefs()->GetUDPVerifyKey(GetConnectIP()));
+	CPacket* packet = new CPacket(data, OP_EMULEPROT, OP_FWCHECKUDPREQ);
+	theStats::AddUpOverheadKad(packet->GetPacketSize());
+	SafeSendPacket(packet);
+}
+
+void CUpDownClient::ProcessFirewallCheckUDPRequest(CMemFile* data)
+{
+	if (!Kademlia::CKademlia::IsRunning() || Kademlia::CKademlia::GetUDPListener() == NULL) {
+		//DebugLogWarning(_T("Ignored Kad Firewallrequest UDP because Kad is not running (%s)"), DbgGetClientInfo());
+		return;
+	}
+
+	// first search if we know this IP already, if so the result might be biased and we need tell the requester 
+	bool errorAlreadyKnown = false;
+	if (GetUploadState() != US_NONE || GetDownloadState() != DS_NONE || GetChatState() != MS_NONE) {
+		errorAlreadyKnown = true;
+	} else if (Kademlia::CKademlia::GetRoutingZone()->GetContact(wxUINT32_SWAP_ALWAYS(GetConnectIP()), 0, false) != NULL) {
+		errorAlreadyKnown = true;
+	}
+
+	uint16_t remoteInternPort = data->ReadUInt16();
+	uint16_t remoteExternPort = data->ReadUInt16();
+	uint32_t senderKey = data->ReadUInt32();
+	if (remoteInternPort == 0) {
+		//DebugLogError(_T("UDP Firewallcheck requested with Intern Port == 0 (%s)"), DbgGetClientInfo());
+		return;
+	}
+// 	if (senderKey == 0)
+// 		DebugLogWarning(_T("UDP Firewallcheck requested with SenderKey == 0 (%s)"), DbgGetClientInfo());
+	
+	CMemFile testPacket1;
+	testPacket1.WriteUInt8(errorAlreadyKnown ? 1 : 0);
+	testPacket1.WriteUInt16(remoteInternPort);
+	DebugSend(Kad2FirewallUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteInternPort);
+	Kademlia::CKademlia::GetUDPListener()->SendPacket(testPacket1, KADEMLIA2_FIREWALLUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteInternPort, Kademlia::CKadUDPKey(senderKey, theApp->GetPublicIP(false)), NULL);
+
+	// if the client has a router with PAT (and therefore a different extern port than intern), test this port too
+	if (remoteExternPort != 0 && remoteExternPort != remoteInternPort) {
+		CMemFile testPacket2;
+		testPacket2.WriteUInt8(errorAlreadyKnown ? 1 : 0);
+		testPacket2.WriteUInt16(remoteExternPort);
+		DebugSend(Kad2FirewalledUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort);
+		Kademlia::CKademlia::GetUDPListener()->SendPacket(testPacket1, KADEMLIA2_FIREWALLUDP, wxUINT32_SWAP_ALWAYS(GetConnectIP()), remoteExternPort, Kademlia::CKadUDPKey(senderKey, theApp->GetPublicIP(false)), NULL);
+	}
+	//DebugLog(_T("Answered UDP Firewallcheck request (%s)"), DbgGetClientInfo());
+}
+
+void CUpDownClient::SetConnectOptions(uint8_t options, bool encryption, bool callback)
+{
+	SetCryptLayerSupport((options & 0x01) != 0 && encryption);
+	SetCryptLayerRequest((options & 0x02) != 0 && encryption);
+	SetCryptLayerRequires((options & 0x04) != 0 && encryption);
+	SetDirectUDPCallbackSupport((options & 0x08) != 0 && callback);
+}
 // File_checked_for_headers

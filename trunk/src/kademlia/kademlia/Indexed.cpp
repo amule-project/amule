@@ -49,6 +49,7 @@ there client on the eMule forum..
 
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
+#include "../utils/KadUDPKey.h"
 #include "../../CFile.h"
 #include "../../MemFile.h"
 #include "../../amule.h"
@@ -104,7 +105,7 @@ void CIndexed::ReadFile()
 		CFile k_file;
 		if (CPath::FileExists(m_kfilename) && k_file.Open(m_kfilename, CFile::read)) {
 			uint32_t version = k_file.ReadUInt32();
-			if (version < 3) {
+			if (version < 4) {
 				time_t savetime = k_file.ReadUInt32();
 				if (savetime > time(NULL)) {
 					CUInt128 id = k_file.ReadUInt128();
@@ -117,55 +118,52 @@ void CIndexed::ReadFile()
 								CUInt128 sourceID = k_file.ReadUInt128();
 								uint32_t numName = k_file.ReadUInt32();
 								while (numName) {
-									Kademlia::CEntry* toaddN = new Kademlia::CEntry();
-									toaddN->m_bSource = false;
-									toaddN->m_tLifeTime = k_file.ReadUInt32();
+									Kademlia::CKeyEntry* toAdd = new Kademlia::CKeyEntry();
+									toAdd->m_uKeyID = keyID;
+									toAdd->m_uSourceID = sourceID;
+									toAdd->m_bSource = false;
+									toAdd->m_tLifeTime = k_file.ReadUInt32();
+									if (version >= 3) {
+										toAdd->ReadPublishTrackingDataFromFile(&k_file);
+									}
 									uint32_t tagList = k_file.ReadUInt8();
 									while (tagList) {
 										CTag* tag = k_file.ReadTag();
 										if (tag) {
 											if (!tag->GetName().Cmp(TAG_FILENAME)) {
-												toaddN->m_sFileName = tag->GetStr();
-												// Make lowercase, the search code expects lower case strings!
-												toaddN->m_sFileName.MakeLower(); 
-												// NOTE: always add the 'name' tag, even if it's stored separately in 'fileName'. the tag is still needed for answering search request
-												toaddN->m_lTagList.push_back(tag);
+												if (toAdd->GetCommonFileName().IsEmpty()) {
+													toAdd->SetFileName(tag->GetStr());
+												}
+												delete tag;
 											} else if (!tag->GetName().Cmp(TAG_FILESIZE)) {
 												if (tag->IsBsob() && (tag->GetBsobSize() == 8)) {
 													// We've previously wrongly saved BSOB uint64s to key_index.dat,
 													// so we'll have to handle those here as well. Too bad ...
-													toaddN->m_uSize = PeekUInt64(tag->GetBsob());
-													// Don't save as a BSOB tag again ...
-													delete tag;
-													tag = new CTagVarInt(TAG_FILESIZE, toaddN->m_uSize);
+													toAdd->m_uSize = PeekUInt64(tag->GetBsob());
 												} else {
-													toaddN->m_uSize = tag->GetInt();
+													toAdd->m_uSize = tag->GetInt();
 												}
-
-												// NOTE: always add the 'size' tag, even if it's stored separately in 'size'. the tag is still needed for answering search request
-												toaddN->m_lTagList.push_back(tag);
+												delete tag;
 											} else if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
-												toaddN->m_uIP = tag->GetInt();
-												toaddN->m_lTagList.push_back(tag);
+												toAdd->m_uIP = tag->GetInt();
+												toAdd->AddTag(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-												toaddN->m_uTCPport = tag->GetInt();
-												toaddN->m_lTagList.push_back(tag);
+												toAdd->m_uTCPport = tag->GetInt();
+												toAdd->AddTag(tag);
 											} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
-												toaddN->m_uUDPport = tag->GetInt();
-												toaddN->m_lTagList.push_back(tag);
+												toAdd->m_uUDPport = tag->GetInt();
+												toAdd->AddTag(tag);
 											} else {
-												toaddN->m_lTagList.push_back(tag);
+												toAdd->AddTag(tag);
 											}
 										}
 										tagList--;
 									}
-									toaddN->m_uKeyID.SetValue(keyID);
-									toaddN->m_uSourceID.SetValue(sourceID);
 									uint8_t load;
-									if (AddKeyword(keyID, sourceID, toaddN, load)) {
+									if (AddKeyword(keyID, sourceID, toAdd, load)) {
 										totalKeyword++;
 									} else {
-										delete toaddN;
+										delete toAdd;
 									}
 									numName--;
 								}
@@ -186,7 +184,6 @@ void CIndexed::ReadFile()
 				time_t savetime = s_file.ReadUInt32();
 				if (savetime > time(NULL)) {
 					uint32_t numKeys = s_file.ReadUInt32();
-					CUInt128 id;
 					while (numKeys) {
 						CUInt128 keyID = s_file.ReadUInt128();
 						uint32_t numSource = s_file.ReadUInt32();
@@ -194,35 +191,35 @@ void CIndexed::ReadFile()
 							CUInt128 sourceID = s_file.ReadUInt128();
 							uint32_t numName = s_file.ReadUInt32();
 							while (numName) {
-								Kademlia::CEntry* toaddN = new Kademlia::CEntry();
-								toaddN->m_bSource = true;
-								toaddN->m_tLifeTime = s_file.ReadUInt32();
+								Kademlia::CEntry* toAdd = new Kademlia::CEntry();
+								toAdd->m_bSource = true;
+								toAdd->m_tLifeTime = s_file.ReadUInt32();
 								uint32_t tagList = s_file.ReadUInt8();
 								while (tagList) {
 									CTag* tag = s_file.ReadTag();
 									if (tag) {
 										if (!tag->GetName().Cmp(TAG_SOURCEIP)) {
-											toaddN->m_uIP = tag->GetInt();
-											toaddN->m_lTagList.push_back(tag);
+											toAdd->m_uIP = tag->GetInt();
+											toAdd->AddTag(tag);
 										} else if (!tag->GetName().Cmp(TAG_SOURCEPORT)) {
-											toaddN->m_uTCPport = tag->GetInt();
-											toaddN->m_lTagList.push_back(tag);
+											toAdd->m_uTCPport = tag->GetInt();
+											toAdd->AddTag(tag);
 										} else if (!tag->GetName().Cmp(TAG_SOURCEUPORT)) {
-											toaddN->m_uUDPport = tag->GetInt();
-											toaddN->m_lTagList.push_back(tag);
+											toAdd->m_uUDPport = tag->GetInt();
+											toAdd->AddTag(tag);
 										} else {
-											toaddN->m_lTagList.push_back(tag);
+											toAdd->AddTag(tag);
 										}
 									}
 									tagList--;
 								}
-								toaddN->m_uKeyID.SetValue(keyID);
-								toaddN->m_uSourceID.SetValue(sourceID);
+								toAdd->m_uKeyID.SetValue(keyID);
+								toAdd->m_uSourceID.SetValue(sourceID);
 								uint8_t load;
-								if (AddSources(keyID, sourceID, toaddN, load)) {
+								if (AddSources(keyID, sourceID, toAdd, load)) {
 									totalSource++;
 								} else {
-									delete toaddN;
+									delete toAdd;
 								}
 								numName--;
 							}
@@ -300,7 +297,7 @@ CIndexed::~CIndexed()
 					for (CKadEntryPtrList::iterator itEntry = SrcEntryList.begin(); itEntry != SrcEntryList.end(); ++itEntry) {
 						Kademlia::CEntry* currName = *itEntry;
 						s_file.WriteUInt32(currName->m_tLifeTime);
-						s_file.WriteTagPtrList(currName->m_lTagList);
+						currName->WriteTagList(&s_file);
 						delete currName;
 						s_total++;
 					}
@@ -313,7 +310,7 @@ CIndexed::~CIndexed()
 
 		CFile k_file;
 		if (k_file.Open(m_kfilename, CFile::write)) {
-			k_file.WriteUInt32(2); // version
+			k_file.WriteUInt32(3); // version
 			k_file.WriteUInt32(now + KADEMLIAREPUBLISHTIMEK);
 			k_file.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
 
@@ -337,14 +334,18 @@ CIndexed::~CIndexed()
 					k_file.WriteUInt32((uint32_t)SrcEntryList.size());
 
 					for (CKadEntryPtrList::iterator itEntry = SrcEntryList.begin(); itEntry != SrcEntryList.end(); ++itEntry) {
-						Kademlia::CEntry* currName = *itEntry;
+						Kademlia::CKeyEntry* currName = static_cast<Kademlia::CKeyEntry*>(*itEntry);
+						wxASSERT(currName->IsKeyEntry());
 						k_file.WriteUInt32(currName->m_tLifeTime);
-						k_file.WriteTagPtrList(currName->m_lTagList);
+						currName->WritePublishTrackingDataToFile(&k_file);
+						currName->WriteTagList(&k_file);
+						currName->DirtyDeletePublishData();
 						delete currName;
 						k_total++;
 					}
 					delete currSource;
 				}
+				CKeyEntry::ResetGlobalTrackingMap();
 				delete currKeyHash;
 			}
 			k_file.Close();
@@ -401,14 +402,19 @@ void CIndexed::Clean()
 			while (itEntry != currSource->entryList.end()) {
 				k_Total++;
 
-				Kademlia::CEntry* currName = *itEntry;
+				Kademlia::CKeyEntry* currName = static_cast<Kademlia::CKeyEntry*>(*itEntry);
+				wxASSERT(currName->IsKeyEntry());
 				if (!currName->m_bSource && currName->m_tLifeTime < tNow) {
 					k_Removed++;
 					itEntry = currSource->entryList.erase(itEntry);
 					delete currName;
+					continue;
+				} else if (currName->m_bSource) {
+					wxFAIL;
 				} else {
-					++itEntry;
+					currName->CleanUpTrackedPublishers();	// intern cleanup
 				}
+				++itEntry;
 			}
 
 			if (currSource->entryList.empty()) {
@@ -460,25 +466,26 @@ void CIndexed::Clean()
 		}
 	}
 
-	// GonoszTopi - I'm not sure about this. They'll contain the wrong number.
-	m_totalIndexSource = s_Total;
-	m_totalIndexKeyword = k_Total;
+	m_totalIndexSource = s_Total - s_Removed;
+	m_totalIndexKeyword = k_Total - k_Removed;
 	AddDebugLogLineM( false, logKadIndex, wxString::Format(wxT("Removed %u keyword out of %u and %u source out of %u"),  k_Removed, k_Total, s_Removed, s_Total));
 	m_lastClean = tNow + MIN2S(30);
 }
 
-bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load)
+bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CKeyEntry* entry, uint8_t& load)
 {
 	if (!entry) {
 		return false;
 	}
+
+	wxCHECK(entry->IsKeyEntry(), false);
 
 	if (m_totalIndexKeyword > KADEMLIAMAXENTRIES) {
 		load = 100;
 		return false;
 	}
 
-	if (entry->m_uSize == 0 || entry->m_sFileName.IsEmpty() || entry->m_lTagList.size() == 0 || entry->m_tLifeTime < time(NULL)) {
+	if (entry->m_uSize == 0 || entry->GetCommonFileName().IsEmpty() || entry->GetTagCount() == 0 || entry->m_tLifeTime < time(NULL)) {
 		return false;
 	}
 
@@ -487,6 +494,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 	if (itKeyHash == m_Keyword_map.end()) {
 		Source* currSource = new Source;
 		currSource->sourceID.SetValue(sourceID);
+		entry->MergeIPsAndFilenames(NULL); // IpTracking init
 		currSource->entryList.push_front(entry);
 		currKeyHash = new KeyHash;
 		currKeyHash->keyID.SetValue(keyID);
@@ -514,10 +522,27 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 					//while this index is full, popular files will be the only thing you index.
 					return false;
 				}
-				delete currSource->entryList.front();
-				currSource->entryList.pop_front();
+				// also check for size match
+				CKeyEntry *oldEntry = NULL;
+				for (CKadEntryPtrList::iterator itEntry = currSource->entryList.begin(); itEntry != currSource->entryList.end(); ++itEntry) {
+					CKeyEntry *currEntry = static_cast<Kademlia::CKeyEntry*>(*itEntry);
+					wxASSERT(currEntry->IsKeyEntry());
+					if (currEntry->m_uSize == entry->m_uSize) {
+						oldEntry = currEntry;
+						currSource->entryList.erase(itEntry);
+						break;
+					}
+				}
+				entry->MergeIPsAndFilenames(oldEntry);	// oldEntry can be NULL, that's ok and we still need to do this call in this case
+				if (oldEntry == NULL) {
+					m_totalIndexKeyword++;
+					AddDebugLogLineM(false, logKadIndex, wxT("Multiple sizes published for file ") + entry->m_uSourceID.ToHexString());
+				}
+				delete oldEntry;
+				oldEntry = NULL;
 			} else {
 				m_totalIndexKeyword++;
+				entry->MergeIPsAndFilenames(NULL); // IpTracking init
 			}
 			load = (uint8_t)((indexTotal * 100) / KADEMLIAMAXINDEX);
 			currSource->entryList.push_front(entry);
@@ -525,6 +550,7 @@ bool CIndexed::AddKeyword(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		} else {
 			currSource = new Source;
 			currSource->sourceID.SetValue(sourceID);
+			entry->MergeIPsAndFilenames(NULL); // IpTracking init
 			currSource->entryList.push_front(entry);
 			currKeyHash->m_Source_map[currSource->sourceID] = currSource;
 			m_totalIndexKeyword++;
@@ -541,7 +567,7 @@ bool CIndexed::AddSources(const CUInt128& keyID, const CUInt128& sourceID, Kadem
 		return false;
 	}
 
-	if( entry->m_uIP == 0 || entry->m_uTCPport == 0 || entry->m_uUDPport == 0 || entry->m_lTagList.size() == 0 || entry->m_tLifeTime < time(NULL)) {
+	if( entry->m_uIP == 0 || entry->m_uTCPport == 0 || entry->m_uUDPport == 0 || entry->GetTagCount() == 0 || entry->m_tLifeTime < time(NULL)) {
 		return false;
 	}
 		
@@ -616,7 +642,7 @@ bool CIndexed::AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademli
 		return false;
 	}
 
-	if (entry->m_uIP == 0 || entry->m_lTagList.size() == 0) {
+	if (entry->m_uIP == 0 || entry->GetTagCount() == 0) {
 		return false;
 	}
 
@@ -706,156 +732,7 @@ bool CIndexed::AddLoad(const CUInt128& keyID, uint32_t timet)
 	return true;
 }
 
-bool SearchTermsMatch(const SSearchTerm* pSearchTerm, const Kademlia::CEntry* item)
-{
-	// boolean operators
-	if (pSearchTerm->type == SSearchTerm::AND) {
-		return SearchTermsMatch(pSearchTerm->left, item) && SearchTermsMatch(pSearchTerm->right, item);
-	}
-	if (pSearchTerm->type == SSearchTerm::OR) {
-		return SearchTermsMatch(pSearchTerm->left, item) || SearchTermsMatch(pSearchTerm->right, item);
-	}
-	if (pSearchTerm->type == SSearchTerm::NOT) {
-		return SearchTermsMatch(pSearchTerm->left, item) && !SearchTermsMatch(pSearchTerm->right, item);
-	}
-	// word which is to be searched in the file name (and in additional meta data as done by some ed2k servers???)
-	if (pSearchTerm->type == SSearchTerm::String) {
-		size_t iStrSearchTerms = pSearchTerm->astr->GetCount();
-		if (iStrSearchTerms == 0) {
-			return false;
-		}
-		// if there are more than one search strings specified (e.g. "aaa bbb ccc") the entire string is handled
-		// like "aaa AND bbb AND ccc". search all strings from the string search term in the tokenized list of
-		// the file name. all strings of string search term have to be found (AND)
-		for (size_t iSearchTerm = 0; iSearchTerm < iStrSearchTerms; iSearchTerm++) {
-			// this will not give the same results as when tokenizing the filename string, but it is 20 times faster.
-			if (item->m_sFileName.Find((*(pSearchTerm->astr))[iSearchTerm]) == -1) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	if (pSearchTerm->type == SSearchTerm::MetaTag) {
-		if (pSearchTerm->tag->GetType() == 2) { // meta tags with string values
-			if (pSearchTerm->tag->GetName().Cmp(TAG_FILEFORMAT) == 0) {
-				// Special handling for TAG_FILEFORMAT which is already part of the filename
-				// and thus does not need to get published nor stored explicitly.
-				int iExt = item->m_sFileName.Find(wxT('.'), true);
-				if (iExt != wxNOT_FOUND) {
-					return item->m_sFileName.Mid(iExt + 1).CmpNoCase(pSearchTerm->tag->GetStr()) == 0;
-				}
-			} else {
-				for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-					const CTag* tag = *it;
-					if (tag->IsStr() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-						return tag->GetStr().CmpNoCase(pSearchTerm->tag->GetStr()) == 0;
-					}
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpGreaterEqual) { 
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() >= pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() >= pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpLessEqual) {
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() <= pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() <= pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpGreater) {
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() > pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() > pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpLess) {
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() < pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); ++it) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() < pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpEqual) {
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() == pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() == pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	} else if (pSearchTerm->type == SSearchTerm::OpNotEqual) {
-		if (pSearchTerm->tag->IsInt()) { // meta tags with integer values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
-				const CTag* tag = *it;
-				if (tag->IsInt() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetInt() != pSearchTerm->tag->GetInt();
-				}
-			}
-		} else if (pSearchTerm->tag->IsFloat()) { // meta tags with float values
-			for (TagPtrList::const_iterator it = item->m_lTagList.begin(); it != item->m_lTagList.end(); it++) {
-				const CTag* tag = *it;
-				if (tag->IsFloat() && pSearchTerm->tag->GetName().Cmp(tag->GetName()) == 0) {
-					return tag->GetFloat() != pSearchTerm->tag->GetFloat();
-				}
-			}
-		}
-	}
-
-	return false;
-}
-
-void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition)
+void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition, const CKadUDPKey& senderKey)
 {
 	KeyHash* currKeyHash = NULL;
 	KeyHashMap::iterator itKeyHash = m_Keyword_map.find(keyID);
@@ -867,46 +744,75 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		}
 		packetdata.WriteUInt128(keyID);
 		packetdata.WriteUInt16(50);
-		uint16_t maxResults = 300;
+		const uint16_t maxResults = 300;
 		int count = 0 - startPosition;
 
-		for (CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin(); itSource != currKeyHash->m_Source_map.end(); ++itSource) {
-			Source* currSource =  itSource->second;
+		// we do 2 loops: In the first one we ignore all results which have a trustvalue below 1
+		// in the second one we then also consider those. That way we make sure our 300 max results are not full
+		// of spam entries. We could also sort by trustvalue, but we would risk to only send popular files this way
+		// on very hot keywords
+		bool onlyTrusted = true;
+		uint32_t dbgResultsTrusted = 0;
+		uint32_t dbgResultsUntrusted = 0;
 
-			for (CKadEntryPtrList::iterator itEntry = currSource->entryList.begin(); itEntry != currSource->entryList.end(); ++itEntry) {
-				Kademlia::CEntry* currName = *itEntry;
-				if (!pSearchTerms || SearchTermsMatch(pSearchTerms, currName)) {
-					if (count < 0) {
-						count++;
-					} else if ((uint16_t)count < maxResults) {
-						if (!oldClient || currName->m_uSize <= OLD_MAX_FILE_SIZE) {
+		do {
+			for (CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin(); itSource != currKeyHash->m_Source_map.end(); ++itSource) {
+				Source* currSource =  itSource->second;
+
+				for (CKadEntryPtrList::iterator itEntry = currSource->entryList.begin(); itEntry != currSource->entryList.end(); ++itEntry) {
+					Kademlia::CKeyEntry* currName = static_cast<Kademlia::CKeyEntry*>(*itEntry);
+					wxASSERT(currName->IsKeyEntry());
+					if ((onlyTrusted ^ (currName->GetTrustValue() < 1.0)) && (!pSearchTerms || currName->SearchTermsMatch(pSearchTerms))) {
+						if (count < 0) {
 							count++;
-							packetdata.WriteUInt128(currName->m_uSourceID);
-							packetdata.WriteTagPtrList(currName->m_lTagList);
-							if (count % 50 == 0) {
-								if (kad2) {
-									DebugSend(Kad2SearchRes, ip, port);
-									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+						} else if ((uint16_t)count < maxResults) {
+							if (!oldClient || currName->m_uSize <= OLD_MAX_FILE_SIZE) {
+								count++;
+								if (onlyTrusted) {
+									dbgResultsTrusted++;
 								} else {
-									DebugSend(KadSearchRes, ip, port);
-									CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port);
+									dbgResultsUntrusted++;
 								}
-								packetdata.Reset();
+								packetdata.WriteUInt128(currName->m_uSourceID);
 								if (kad2) {
-									packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
+									currName->WriteTagListWithPublishInfo(&packetdata);
+								} else {
+									currName->WriteTagList(&packetdata);
 								}
-								packetdata.WriteUInt128(keyID);
-								packetdata.WriteUInt16(50);
+								if (count % 50 == 0) {
+									if (kad2) {
+										DebugSend(Kad2SearchRes, ip, port);
+										CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
+									} else {
+										DebugSend(KadSearchRes, ip, port);
+										CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
+									}
+									packetdata.Reset();
+									if (kad2) {
+										packetdata.WriteUInt128(Kademlia::CKademlia::GetPrefs()->GetKadID());
+									}
+									packetdata.WriteUInt128(keyID);
+									packetdata.WriteUInt16(50);
+								}
 							}
+						} else {
+							itSource = currKeyHash->m_Source_map.end();
+							--itSource;
+							break;
 						}
-					} else {
-						itSource = currKeyHash->m_Source_map.end();
-						--itSource;
-						break;
 					}
 				}
 			}
-		}
+
+			if (onlyTrusted && count < (int)maxResults) {
+				onlyTrusted = false;
+			} else {
+				break;
+			}
+		} while (!onlyTrusted);
+
+		// LOGTODO: Remove log
+		AddDebugLogLineM(false, logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;
@@ -915,12 +821,12 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 					packetdata.Seek(16 + 16);
 					packetdata.WriteUInt16(countLeft);
 					DebugSend(Kad2SearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 				} else {
 					packetdata.Seek(16);
 					packetdata.WriteUInt16(countLeft);
 					DebugSend(KadSearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port);
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
 				}
 			}
 		}
@@ -928,7 +834,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 	Clean();
 }
 
-void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize)
+void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
 	SrcHash* currSrcHash = NULL;
 	SrcHashMap::iterator itSrcHash = m_Sources_map.find(keyID);
@@ -952,15 +858,15 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 				} else if (count < maxResults) {
 					if (!fileSize || !currName->m_uSize || currName->m_uSize == fileSize) {
 						packetdata.WriteUInt128(currName->m_uSourceID);
-						packetdata.WriteTagPtrList(currName->m_lTagList);
+						currName->WriteTagList(&packetdata);
 						count++;
 						if (count % 50 == 0) {
 							if (kad2) {
 								DebugSend(Kad2SearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 							} else {
 								DebugSend(KadSearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port);
+								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
 							}
 							packetdata.Reset();
 							if (kad2) {
@@ -983,12 +889,12 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 					packetdata.Seek(16 + 16);
 					packetdata.WriteUInt16(countLeft);
 					DebugSend(Kad2SearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 				} else {
 					packetdata.Seek(16);
 					packetdata.WriteUInt16(countLeft);
 					DebugSend(KadSearchRes, ip, port);
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port);
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_RES, ip, port, senderKey, NULL);
 				}
 			}
 		}
@@ -996,7 +902,7 @@ void CIndexed::SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_
 	Clean();
 }
 
-void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize)
+void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize, const CKadUDPKey& senderKey)
 {
 	SrcHash* currNoteHash = NULL;
 	SrcHashMap::iterator itNote = m_Notes_map.find(keyID);
@@ -1018,15 +924,15 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 				if (count < maxResults) {
 					if (!fileSize || !currName->m_uSize || fileSize == currName->m_uSize) {
 						packetdata.WriteUInt128(currName->m_uSourceID);
-						packetdata.WriteTagPtrList(currName->m_lTagList);
+						currName->WriteTagList(&packetdata);
 						count++;
 						if (count % 50 == 0) {
 							if (kad2) {
 								DebugSend(Kad2SearchRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 							} else {
 								DebugSend(KadSearchNotesRes, ip, port);
-								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port);
+								CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port, senderKey, NULL);
 							}
 							packetdata.Reset();
 							if (kad2) {
@@ -1048,12 +954,12 @@ void CIndexed::SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t 
 				packetdata.Seek(16 + 16);
 				packetdata.WriteUInt16(countLeft);
 				DebugSend(Kad2SearchRes, ip, port);
-				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port);
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_SEARCH_RES, ip, port, senderKey, NULL);
 			} else {
 				packetdata.Seek(16);
 				packetdata.WriteUInt16(countLeft);
 				DebugSend(KadSearchNotesRes, ip, port);
-				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port);
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_SEARCH_NOTES_RES, ip, port, senderKey, NULL);
 			}
 		}
 	}

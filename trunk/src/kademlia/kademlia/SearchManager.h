@@ -51,6 +51,7 @@ namespace Kademlia {
 
 class CSearch;
 class CRoutingZone;
+class CKadClientSearcher;
 
 typedef std::list<wxString> WordList;
 typedef std::map<CUInt128, CSearch*> SearchMap;
@@ -87,9 +88,16 @@ public:
 
 	static const wxChar* GetInvalidKeywordChars() { return wxT(" ()[]{}<>,._-!?:;\\/"); }
 
+	static void CancelNodeFWCheckUDPSearch();
+	static bool FindNodeFWCheckUDP();
+	static bool IsFWCheckUDPSearch(const CUInt128& target);
+	static void SetNextSearchID(uint32_t nextID) throw()	{ m_nextID = nextID; }
+
 private:
 
 	static void FindNode(const CUInt128& id, bool complete);
+	static bool FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester);
+	static void CancelNodeSpecial(CKadClientSearcher *requester);
 
 	static void JumpStart();
 

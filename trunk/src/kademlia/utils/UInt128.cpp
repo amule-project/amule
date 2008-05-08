@@ -67,14 +67,12 @@ CUInt128::CUInt128(const CUInt128 &value, uint32_t numBits) throw()
 	}
 }
 
-#define SWAP_ULONG_LE(x) wxUINT32_SWAP_ON_LE(x) 
-
 CUInt128& CUInt128::SetValueBE(const uint8_t *valueBE) throw()
 {
-	m_data[0] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+0));
-	m_data[1] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+4));
-	m_data[2] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+8));
-	m_data[3] = SWAP_ULONG_LE(RawPeekUInt32(valueBE+12));
+	m_data[0] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+0));
+	m_data[1] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+4));
+	m_data[2] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+8));
+	m_data[3] = wxUINT32_SWAP_ON_LE(RawPeekUInt32(valueBE+12));
 	return *this;
 }
 
@@ -116,10 +114,22 @@ wxString CUInt128::ToBinaryString(bool trim) const
 
 void CUInt128::ToByteArray(uint8_t *b) const throw()
 {
-	RawPokeUInt32(b+0, SWAP_ULONG_LE(m_data[0]));
-	RawPokeUInt32(b+4, SWAP_ULONG_LE(m_data[1]));
-	RawPokeUInt32(b+8, SWAP_ULONG_LE(m_data[2]));
-	RawPokeUInt32(b+12,SWAP_ULONG_LE(m_data[3]));
+	wxASSERT(b != NULL);
+
+	RawPokeUInt32(b,      wxUINT32_SWAP_ON_LE(m_data[0]));
+	RawPokeUInt32(b + 4,  wxUINT32_SWAP_ON_LE(m_data[1]));
+	RawPokeUInt32(b + 8,  wxUINT32_SWAP_ON_LE(m_data[2]));
+	RawPokeUInt32(b + 12, wxUINT32_SWAP_ON_LE(m_data[3]));
+}
+
+void CUInt128::StoreCryptValue(uint8_t *buf) const throw()
+{
+	wxASSERT(buf != NULL);
+
+	RawPokeUInt32(buf,      wxUINT32_SWAP_ON_BE(m_data[0]));
+	RawPokeUInt32(buf + 4,  wxUINT32_SWAP_ON_BE(m_data[1]));
+	RawPokeUInt32(buf + 8,  wxUINT32_SWAP_ON_BE(m_data[2]));
+	RawPokeUInt32(buf + 12, wxUINT32_SWAP_ON_BE(m_data[3]));
 }
 
 int CUInt128::CompareTo(const CUInt128 &other) const throw()

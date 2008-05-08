@@ -52,6 +52,8 @@ namespace Kademlia {
 
 class CRoutingZone;
 class CIndexed;
+class CKadUDPKey;
+class CKadClientSearcher;
 
 typedef std::map<CRoutingZone*, CRoutingZone*> EventMap;
 
@@ -85,11 +87,14 @@ public:
 		}
 	}
 
-	static void ProcessPacket(const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port);
+	static void ProcessPacket(const uint8_t* data, uint32_t lenData, uint32_t ip, uint16_t port, bool validReceiverKey, const CKadUDPKey& senderKey);
 
 	static void AddEvent(CRoutingZone *zone) throw()		{ m_events[zone] = zone; }
 	static void RemoveEvent(CRoutingZone *zone)			{ m_events.erase(zone); }
 	static void Process();
+	static bool FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort);
+	static bool FindIPByNodeID(CKadClientSearcher& requester, const uint8_t *nodeID);
+	static void CancelClientSearch(CKadClientSearcher& fromRequester);
 
 private:
 	CKademlia() {}

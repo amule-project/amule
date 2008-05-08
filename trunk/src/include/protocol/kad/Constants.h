@@ -26,6 +26,8 @@
 #ifndef KADCONSTANTS_H
 #define KADCONSTANTS_H
 
+#include <common/Macros.h>
+
 // MOD Note: Do not change this part - Merkur
 
 #define	KADEMLIAASKTIME			SEC2MS(1)	//1 second

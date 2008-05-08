@@ -51,7 +51,7 @@ CContact::~CContact()
 	theStats::RemoveKadNode();
 }
 
-CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 tcpPort, uint8 version, const CUInt128 &target)
+CContact::CContact(const CUInt128 &clientID, uint32_t ip, uint16_t udpPort, uint16_t tcpPort, uint8_t version, const CKadUDPKey& key, bool ipVerified, const CUInt128 &target)
 	: m_clientID(clientID),
 	  m_distance(target ^ clientID),
 	  m_ip(ip),
@@ -63,19 +63,31 @@ CContact::CContact(const CUInt128 &clientID, uint32 ip, uint16 udpPort, uint16 t
 	  m_created(m_lastTypeSet),
 	  m_inUse(0),
 	  m_version(version),
-	  m_checkKad2(true)
+	  m_checkKad2(true),
+	  m_ipVerified(ipVerified),
+	  m_udpKey(key)
 {
 	wxASSERT(udpPort);
 	theStats::AddKadNode();
 }
 
-#ifndef CLIENT_GUI
-void CContact::SetClientID(const CUInt128 &clientID) throw()
+void CContact::Copy(const CContact& from) throw()
 {
-	m_clientID = clientID;
-	m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID;
+	m_clientID = from.m_clientID;
+	m_distance = from.m_distance;
+	m_ip = from.m_ip;
+	m_tcpPort = from.m_tcpPort;
+	m_udpPort = from.m_udpPort;
+	m_inUse = from.m_inUse;
+	m_lastTypeSet = from.m_lastTypeSet;
+	m_expires = from.m_expires;
+	m_created = from.m_created;
+	m_type = from.m_type;
+	m_version = from.m_version;
+	m_checkKad2 = from.m_checkKad2;
+	m_ipVerified = from.m_ipVerified;
+	m_udpKey = from.m_udpKey;
 }
-#endif
 
 void CContact::CheckingType() throw()
 {
@@ -108,5 +120,19 @@ void CContact::UpdateType() throw()
 			m_type = 0;
 			m_expires = now + HR2S(2);
 	}
+}
+
+time_t CContact::GetLastSeen() const throw()
+{
+	// calculating back from expire time, so we don't need an additional field.
+	// might result in wrong values if doing CheckingType() for example, so don't use for important timing stuff
+	if (m_expires != 0) {
+		switch (m_type) {
+			case 2: return m_expires - HR2S(1);
+			case 1: return m_expires - MIN2S(90) /*(unsigned)HR2S(1.5)*/;
+			case 0: return m_expires - HR2S(2);
+		}
+	}
+	return 0;
 }
 // File_checked_for_headers

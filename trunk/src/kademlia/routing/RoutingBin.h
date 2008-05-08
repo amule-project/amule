@@ -42,46 +42,49 @@ there client on the eMule forum..
 #include "Maps.h"
 #include "../../Types.h"
 #include "../kademlia/Defines.h"
+#include "Contact.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
 ////////////////////////////////////////
 
 class CUInt128;
-class CContact;
 
 class CRoutingBin
 {
-	friend class CRoutingZone;
-
 public:
-
-	~CRoutingBin();
-
-private:
-
 	CRoutingBin()
 		: m_dontDeleteContacts(false)
 	{}
+	~CRoutingBin();
 
 	bool AddContact(CContact *contact);
 	void SetAlive(CContact *contact);
 	void SetTCPPort(uint32_t ip, uint16_t port, uint16_t tcpPort);
-	void RemoveContact(CContact *contact)		{ m_entries.remove(contact); }
+	void RemoveContact(CContact *contact, bool noTrackingAdjust = false)	{ if (!noTrackingAdjust) AdjustGlobalTracking(contact->GetIPAddress(), false); m_entries.remove(contact); }
 	CContact *GetContact(const CUInt128 &id) const throw();
+	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
 	CContact *GetOldest() const throw()		{ return m_entries.size() ? m_entries.front() : NULL; }
 
 	uint32_t GetSize() const throw()		{ return m_entries.size(); }
 	uint32_t GetRemaining() const throw()		{ return K - m_entries.size(); }
 	void GetEntries(ContactList *result, bool emptyFirst = true) const;
-
 	void GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
-
-	// Debug purposes.
-//	void dumpContents(void);
+	bool ChangeContactIPAddress(CContact *contact, uint32_t newIP);
+	void PushToBottom(CContact *contact); // puts an existing contact from X to the end of the list
 
 	bool m_dontDeleteContacts;
+
+protected:
+	static void AdjustGlobalTracking(uint32_t ip, bool increase);
+
+private:
 	ContactList m_entries;
+
+	typedef std::map<uint32_t, uint32_t>	GlobalTrackingMap;
+
+	static GlobalTrackingMap	s_globalContactIPs;
+	static GlobalTrackingMap	s_globalContactSubnets;
 };
 
 } // End namespace

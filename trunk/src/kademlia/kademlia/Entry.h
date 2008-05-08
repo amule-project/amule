@@ -41,7 +41,13 @@ there client on the eMule forum..
 
 
 #include "../utils/UInt128.h"
+#include "../../Tag.h"
 #include <time.h>
+#include <list>
+#include <map>
+
+struct SSearchTerm;
+class CFileDataIO;
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -49,6 +55,12 @@ namespace Kademlia {
 
 class CEntry
 {
+protected:
+	struct sFileNameEntry {
+		wxString m_filename;
+		uint32_t m_popularityIndex;
+	};
+
 public:
 	CEntry()
 	{
@@ -60,47 +72,74 @@ public:
 		m_bSource = false;
 	}
 
-	~CEntry()
-	{
-		for (TagPtrList::iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
-			delete *it;
-		}
-	}
+	virtual		~CEntry();
+	virtual CEntry*	Copy() const;
+	virtual bool	IsKeyEntry() const throw()	{ return false; }
 	
-	uint32_t GetIntTagValue(const wxString& tagname) const
-	{
-		CTag* tag;
-		for (TagPtrList::const_iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
-			tag = *it;
-			if ((tag->GetName() == tagname) && tag->IsInt()) {
-				return tag->GetInt();
-			}
-		}
-		return 0;
-	}
+	uint64_t GetIntTagValue(const wxString& tagname, bool includeVirtualTags = true) const;
+	bool	 GetIntTagValue(const wxString& tagname, uint64_t& value, bool includeVirtualTags = true) const;
+	wxString GetStrTagValue(const wxString& tagname) const;
 
-	wxString GetStrTagValue(const wxString& tagname) const
-	{
-		CTag* tag;
-		for (TagPtrList::const_iterator it = m_lTagList.begin(); it != m_lTagList.end(); ++it) {
-			tag = *it;
-			if ((tag->GetName() == tagname) && tag->IsStr()) {
-				return tag->GetStr();
-			}
-		}
-		return wxEmptyString;
-	}	
-	
+	void	 AddTag(CTag *tag)			{ m_taglist.push_back(tag); }
+	uint32_t GetTagCount() const			{ return m_taglist.size() + ((m_uSize != 0) ? 1 : 0) + (GetCommonFileName().IsEmpty() ? 0 : 1); }
+	void	 WriteTagList(CFileDataIO* data)	{ WriteTagListInc(data, 0); }
+
+	wxString GetCommonFileNameLowerCase() const	{ return GetCommonFileName().MakeLower(); }
+	wxString GetCommonFileName() const;
+	void	 SetFileName(const wxString& name);
+
 	uint32_t m_uIP;
 	uint16_t m_uTCPport;
 	uint16_t m_uUDPport;
 	CUInt128 m_uKeyID;
 	CUInt128 m_uSourceID;
-	wxString m_sFileName; // NOTE: this always holds the string in LOWERCASE!!!
 	uint64_t m_uSize;
-	TagPtrList m_lTagList;
 	time_t m_tLifeTime;
 	bool m_bSource;
+
+protected:
+	void	WriteTagListInc(CFileDataIO *data, uint32_t increaseTagNumber = 0);
+	typedef std::list<sFileNameEntry>	FileNameList;
+	FileNameList	m_filenames;
+	TagPtrList	m_taglist;
+};
+
+class CKeyEntry : public CEntry
+{
+      protected:
+	struct sPublishingIP {
+		uint32_t m_ip;
+		time_t	 m_lastPublish;
+	};
+
+      public:
+	CKeyEntry();
+	virtual ~CKeyEntry();
+
+	virtual CEntry*	Copy() const			{ return CEntry::Copy(); }
+	virtual bool	IsKeyEntry() const throw()	{ return true; }
+
+	bool	SearchTermsMatch(const SSearchTerm *searchTerm) const;
+	void	MergeIPsAndFilenames(CKeyEntry* fromEntry);
+	void	CleanUpTrackedPublishers();
+	double	GetTrustValue();
+	void	WritePublishTrackingDataToFile(CFileDataIO *data);
+	void	ReadPublishTrackingDataFromFile(CFileDataIO *data);
+	void	DirtyDeletePublishData();
+	void	WriteTagListWithPublishInfo(CFileDataIO *data);
+	static void	ResetGlobalTrackingMap()	{ s_globalPublishIPs.clear(); }
+
+      protected:
+	void	ReCalculateTrustValue();
+	static void	AdjustGlobalPublishTracking(uint32_t ip, bool increase, const wxString& dbgReason);
+
+	typedef std::list<sPublishingIP>	PublishingIPList;
+	typedef std::map<uint32_t, uint32_t>	GlobalPublishIPMap;
+
+	uint32_t m_lastTrustValueCalc;
+	double	 m_trustValue;
+	PublishingIPList *		m_publishingIPs;
+	static GlobalPublishIPMap	s_globalPublishIPs;	// tracks count of publishings for each 255.255.255.0/24 subnet
 };
 
 }

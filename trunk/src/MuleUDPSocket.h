@@ -108,7 +108,7 @@ public:
 	 *
 	 * Note that CMuleUDPSocket takes ownership of the packet.
 	 */
-	void	SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint16 nReceiverVerifyKey);
+	void	SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint32 nReceiverVerifyKey);
 
 
 	/**
@@ -136,12 +136,12 @@ private:
 	/**
 	 * Sends a packet to the specified address.
 	 *
-	 * @param The data to be sent.
+	 * @param buffer The data to be sent.
 	 * @param length the length of the data buffer.
 	 * @param ip The target ip address.
 	 * @param port The target port.
 	 */
-	bool	SendTo(char* buffer, uint32 length, uint32 ip, uint16 port);
+	bool	SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint16_t port);
 
 
 	/**
@@ -189,7 +189,7 @@ private:
 		//! Is it a kad packet?
 		bool	bKad;
 		// The verification key for RC4 encryption.
-		uint16 nReceiverVerifyKey;
+		uint32 nReceiverVerifyKey;
 		// Client hash or kad ID.
 		uint8 pachTargetClientHashORKadID[16];		
 	} ;

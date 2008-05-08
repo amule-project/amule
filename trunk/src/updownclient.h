@@ -44,7 +44,6 @@ class CPacket;
 class CFriend;
 class CKnownFile;
 class CMemFile;
-class CMemFile;
 class CAICHHash;
 
 
@@ -120,9 +119,8 @@ enum EKadState{
 	KS_INCOMING_BUDDY,
 	KS_CONNECTING_BUDDY,
 	KS_CONNECTED_BUDDY,
-	KS_NONE_LOWID,
-	KS_WAITCALLBACK_LOWID,
-	KS_QUEUE_LOWID
+	KS_QUEUED_FWCHECK_UDP,
+	KS_FWCHECK_UDP
 };
 
 //! Used to keep track of the state of the client
@@ -198,7 +196,8 @@ public:
 	uint32		GetConnectIP() const		{ return m_nConnectIP; }
 	uint32		GetUserIDHybrid() const		{ return m_nUserIDHybrid; }
 	void		SetUserIDHybrid(uint32 val);
-	uint32		GetUserPort() const		{ return m_nUserPort; }
+	uint16_t	GetUserPort() const		{ return m_nUserPort; }
+	void		SetUserPort(uint16_t port)	{ m_nUserPort = port; }
 	uint32		GetTransferredDown() const	{ return m_nTransferredDown; }
 	uint32		GetServerIP() const		{ return m_dwServerIP; }
 	void		SetServerIP(uint32 nIP)		{ m_dwServerIP = nIP; }
@@ -542,6 +541,7 @@ public:
 	EKadState	GetKadState() const		{ return m_nKadState; }
 	void		SetKadState(EKadState nNewS)	{ m_nKadState = nNewS; }
 	uint8		GetKadVersion()			{ return m_byKadVersion; }
+	void		ProcessFirewallCheckUDPRequest(CMemFile *data);
 	// Kad added by me
 	bool			SendBuddyPing();
 	
@@ -614,18 +614,22 @@ public:
 	void		SetConnectionReason(const wxString& reason) { connection_reason = reason; }
 	#endif
 
-	// Encryption / Obfuscation
-	bool			SupportsCryptLayer() const						{ return m_fSupportsCryptLayer; }
-	bool			RequestsCryptLayer() const						{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
-	bool			RequiresCryptLayer() const						{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
-	bool			HasObfuscatedConnectionBeenEstablished() const { return m_hasbeenobfuscatinglately; }	
-	
-	void			SetCryptLayerSupport(bool bVal)				{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
-	void			SetCryptLayerRequest(bool bVal)				{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
-	void			SetCryptLayerRequires(bool bVal)				{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
-	bool			ShouldReceiveCryptUDPPackets() const;
+	// Encryption / Obfuscation / ConnectOptions
+	bool		SupportsCryptLayer() const			{ return m_fSupportsCryptLayer; }
+	bool		RequestsCryptLayer() const			{ return SupportsCryptLayer() && m_fRequestsCryptLayer; }
+	bool		RequiresCryptLayer() const			{ return RequestsCryptLayer() && m_fRequiresCryptLayer; }
+	bool		SupportsDirectUDPCallback() const		{ return m_fDirectUDPCallback != 0 && HasValidHash() && GetKadPort() != 0; }
+	uint32_t	GetDirectCallbackTimeout() const		{ return m_dwDirectCallbackTimeout; }
+	bool		HasObfuscatedConnectionBeenEstablished() const	{ return m_hasbeenobfuscatinglately; }
 
-	bool			HasDisabledSharedFiles() const { return m_fNoViewSharedFiles; }
+	void		SetCryptLayerSupport(bool bVal)			{ m_fSupportsCryptLayer = bVal ? 1 : 0; }
+	void		SetCryptLayerRequest(bool bVal)			{ m_fRequestsCryptLayer = bVal ? 1 : 0; }
+	void		SetCryptLayerRequires(bool bVal)		{ m_fRequiresCryptLayer = bVal ? 1 : 0; }
+	void		SetDirectUDPCallbackSupport(bool bVal)		{ m_fDirectUDPCallback = bVal ? 1 : 0; }
+	void		SetConnectOptions(uint8_t options, bool encryption = true, bool callback = true); // shortcut, sets crypt, callback, etc from the tagvalue we receive
+	bool		ShouldReceiveCryptUDPPackets() const;
+
+	bool		HasDisabledSharedFiles() const { return m_fNoViewSharedFiles; }
 	
 private:
 	
@@ -684,12 +688,13 @@ private:
 	void		Init();
 	bool		ProcessHelloTypePacket(const CMemFile& data);
 	void		SendHelloTypePacket(CMemFile* data);
+	void		SendFirewallCheckUDPRequest();
 	void		ClearHelloProperties(); // eMule 0.42
 	uint32		m_dwUserIP;
 	uint32		m_nConnectIP;		// holds the supposed IP or (after we had a connection) the real IP
 	uint32		m_dwServerIP;
 	uint32		m_nUserIDHybrid;
-	int16		m_nUserPort;
+	uint16_t	m_nUserPort;
 	int16		m_nServerPort;
 	uint32		m_nClientVersion;
 	uint32		m_cSendblock;
@@ -783,6 +788,7 @@ private:
 	uint8 		m_byChatstate;
 	wxString	m_strComment;
 	int8		m_iRating;
+
 	unsigned int
 		m_fHashsetRequesting : 1, // we have sent a hashset request to this client
 		m_fNoViewSharedFiles : 1, // client has disabled the 'View Shared Files' feature, 
@@ -793,17 +799,18 @@ private:
 		m_fSharedDirectories : 1, // client supports OP_ASKSHAREDIRS opcodes
 		m_fSupportsAICH      : 3,
 		m_fAICHRequested     : 1,
-		m_fSupportsLargeFiles : 1,
+		m_fSupportsLargeFiles: 1,
 		m_fSentOutOfPartReqs : 1,
-		m_fExtMultiPacket : 1,
+		m_fExtMultiPacket    : 1,
 		m_fRequestsCryptLayer: 1,
-	    m_fSupportsCryptLayer: 1,
+		m_fSupportsCryptLayer: 1,
 		m_fRequiresCryptLayer: 1,
-		m_fSupportsSourceEx2 : 1;
-		
+		m_fSupportsSourceEx2 : 1,
+		m_fDirectUDPCallback : 1;
+
 	unsigned int
 		m_fOsInfoSupport : 1,
-		m_fValueBasedTypeTags : 1;		
+		m_fValueBasedTypeTags : 1;
 
 	/* Razor 1a - Modif by MikaelB */
 
@@ -828,6 +835,7 @@ private:
 
 	uint8		m_byKadVersion;
 	uint32		m_dwLastBuddyPingPongTime;
+	uint32_t	m_dwDirectCallbackTimeout;
 
 	//! This keeps track of aggressive requests for files. 
 	uint16		m_Aggressiveness;

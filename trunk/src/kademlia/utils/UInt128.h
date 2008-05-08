@@ -122,6 +122,17 @@ public:
 
 	CUInt128& SetValueRandom();
 
+	/**
+	 * Stores value used by the crypt functions.
+	 *
+	 * Since eMule started to use the value as-is (four little-endian 32-bit integers in big-endian order),
+	 * we have to reproduce that same representation on every platform.
+	 *
+	 * @param buf Buffer to hold the value. Must be large enough to hold the data (16 bytes at least),
+	 *	and must not be NULL.
+	 */
+	void StoreCryptValue(uint8_t *buf) const throw();
+
 	/** Bit at level 0 being most significant. */
 	CUInt128& SetBitNumber(unsigned bit, unsigned value) throw()
 	{

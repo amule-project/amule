@@ -38,12 +38,11 @@ there client on the eMule forum..
 
 #include "Prefs.h"
 
-#include <common/Macros.h>
 #include <common/MD5Sum.h>
 
-#include "../kademlia/Kademlia.h"
-#include "../kademlia/Indexed.h"
-#include "../../Preferences.h"
+#include "Kademlia.h"
+#include "Indexed.h"
+#include "UDPFirewallTester.h"
 #include "../../amule.h"
 #include "../../CFile.h"
 #include "../../ServerList.h"
@@ -88,6 +87,8 @@ void CPrefs::Init(const wxString& filename)
 	m_kademliaFiles	= 0;
 	m_filename = filename;
 	m_lastFirewallState = true;
+	m_externKadPort = 0;
+	m_useExternKadPort = true;
 	ReadFile();
 }
 
@@ -144,22 +145,6 @@ void CPrefs::SetIPAddress(uint32_t val) throw()
 	}
 }
 
-
-bool CPrefs::HasLostConnection() const throw()
-{
-	if (m_lastContact) {
-		return !((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY);
-	}
-	return false;
-}
-
-bool CPrefs::HasHadContact() const throw()
-{
-	if (m_lastContact) {
-		return ((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY);
-	}
-	return false;
-}
 
 bool CPrefs::GetFirewalled() const throw()
 {
@@ -225,10 +210,27 @@ void CPrefs::SetKademliaFiles()
 	m_kademliaFiles = nKadAverage * m_kademliaUsers;
 }
 
-uint16_t CPrefs::GetUDPVerifyKey(uint32_t ip) const throw()
+uint8_t CPrefs::GetMyConnectOptions(bool encryption, bool callback)
 {
-	uint64_t buffer = (uint64_t)thePrefs::GetKadUDPKey() << 32 | ip;
+       // Connect options Tag
+       // 4 Reserved (!)
+       // 1 Direct Callback
+       // 1 CryptLayer Required
+       // 1 CryptLayer Requested
+       // 1 CryptLayer Supported
+
+       // direct callback is only possible if connected to kad, tcp firewalled and verified UDP open (for example on a full cone NAT)
+
+       return    (callback && theApp->IsFirewalled() && CKademlia::IsRunning() && !CUDPFirewallTester::IsFirewalledUDP(true) && CUDPFirewallTester::IsVerified()) ? 0x08 : 0
+	       | (thePrefs::IsClientCryptLayerRequired() && encryption) ? 0x04 : 0
+	       | (thePrefs::IsClientCryptLayerRequested() && encryption) ? 0x02 : 0
+	       | (thePrefs::IsClientCryptLayerSupported() && encryption) ? 0x01 : 0;
+}
+
+uint32_t CPrefs::GetUDPVerifyKey(uint32_t targetIP) throw()
+{
+	uint64_t buffer = (uint64_t)thePrefs::GetKadUDPKey() << 32 | targetIP;
 	MD5Sum md5((const uint8_t *)&buffer, 8);
-	return (uint16_t)(PeekUInt32(md5.GetRawHash()) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFE + 1;
+	return (uint32_t)(PeekUInt32(md5.GetRawHash()) ^ PeekUInt32(md5.GetRawHash() + 4) ^ PeekUInt32(md5.GetRawHash() + 8) ^ PeekUInt32(md5.GetRawHash() + 12)) % 0xFFFFFFFE + 1;
 }
 // File_checked_for_headers

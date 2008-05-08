@@ -94,6 +94,7 @@ libmuleappcore_a_SOURCES = \
 	Scanner.cpp \
 	Parser.cpp \
 	PlatformSpecific.cpp \
+	kademlia/kademlia/Entry.cpp \
 	kademlia/kademlia/SearchManager.cpp \
 	kademlia/routing/RoutingBin.cpp \
 	StateMachine.cpp \
@@ -166,13 +167,15 @@ core_sources = \
 	UploadBandwidthThrottler.cpp \
 	UploadClient.cpp \
 	UploadQueue.cpp \
-	kademlia/kademlia/Kademlia.cpp \
-	kademlia/kademlia/Search.cpp \
 	kademlia/kademlia/Indexed.cpp \
-	kademlia/net/KademliaUDPListener.cpp \
+	kademlia/kademlia/Kademlia.cpp \
 	kademlia/kademlia/Prefs.cpp \
-	kademlia/routing/RoutingZone.cpp \
-	kademlia/routing/Contact.cpp 
+	kademlia/kademlia/Search.cpp \
+	kademlia/kademlia/UDPFirewallTester.cpp \
+	kademlia/net/KademliaUDPListener.cpp \
+	kademlia/net/PacketTracking.cpp \
+	kademlia/routing/Contact.cpp \
+	kademlia/routing/RoutingZone.cpp
 
 if ENABLE_UPNP
 core_sources += \

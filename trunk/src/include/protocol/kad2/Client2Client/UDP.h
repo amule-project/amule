@@ -26,7 +26,11 @@
 #ifndef KAD2C2CUDP_H
 #define KAD2C2CUDP_H
 
-enum KademliaV2OPCodes {
+enum Ed2kUDPOpcodesForKademliaV2 {
+	OP_DIRECTCALLBACKREQ		= 0x95	// <TCPPort 2><Userhash 16><ConnectionOptions 1>
+};
+
+enum Kademlia2Opcodes {
 	KADEMLIA2_BOOTSTRAP_REQ		= 0x01,
 	KADEMLIA2_BOOTSTRAP_RES		= 0x09,
 	KADEMLIA2_HELLO_REQ		= 0x11,
@@ -41,8 +45,10 @@ enum KademliaV2OPCodes {
 	KADEMLIA2_PUBLISH_SOURCE_REQ	= 0x44,
 	KADEMLIA2_PUBLISH_NOTES_REQ	= 0x45,
 	KADEMLIA2_PUBLISH_RES		= 0x4B,
+	KADEMLIA_FIREWALLED2_REQ	= 0x53,	// <TCPPORT (sender) [2]><userhash><connectoptions 1>
 	KADEMLIA2_PING			= 0x60,	// (null)
-	KADEMLIA2_PONG			= 0x61	// (null)
+	KADEMLIA2_PONG			= 0x61,	// (null)
+	KADEMLIA2_FIREWALLUDP		= 0x62	// <errorcode [1]><UDPPort_Used [2]>
 };
 
 #endif // KAD2C2CUDP_H

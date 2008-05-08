@@ -217,6 +217,16 @@ void CSearchManager::FindNode(const CUInt128& id, bool complete)
 	StartSearch(s);
 }
 
+bool CSearchManager::IsFWCheckUDPSearch(const CUInt128& target)
+{
+	// Check if this target is in the search map.
+	SearchMap::const_iterator it = m_searches.find(target);
+	if (it != m_searches.end()) {
+		return (it->second->GetSearchTypes() == CSearch::NODEFWCHECKUDP);
+	}
+	return false;
+}
+
 void CSearchManager::GetWords(const wxString& str, WordList *words)
 {
 	size_t len = 0;
@@ -306,7 +316,9 @@ void CSearchManager::JumpStart()
 				}
 				break;
 			}
-			case CSearch::NODE: {
+			case CSearch::NODE:
+			case CSearch::NODESPECIAL:
+			case CSearch::NODEFWCHECKUDP: {
 				if (current_it->second->m_created + SEARCHNODE_LIFETIME < now) {
 					delete current_it->second;
 					m_searches.erase(current_it);
@@ -473,7 +485,7 @@ void CSearchManager::ProcessResponse(const CUInt128& target, uint32_t fromIP, ui
 		AddDebugLogLineM(false, logKadSearch,
 			wxT("Search either never existed or receiving late results (CSearchManager::ProcessResponse)"));
 		for (ContactList::const_iterator it2 = results->begin(); it2 != results->end(); ++it2) {
-			delete (*it2);
+			delete *it2;
 		}
 		delete results;
 		return;
@@ -501,6 +513,51 @@ void CSearchManager::ProcessResult(const CUInt128& target, const CUInt128& answe
 		delete info;
 	} else {
 		s->ProcessResult(answer, info);
+	}
+}
+
+bool CSearchManager::FindNodeSpecial(const CUInt128& id, CKadClientSearcher *requester)
+{
+	// Do a node lookup.
+	AddDebugLogLineM(false, logKadSearch, wxT("Starting NODESPECIAL Kad Search for ") + id.ToHexString());
+	CSearch *search = new CSearch;
+	search->SetSearchTypes(CSearch::NODESPECIAL);
+	search->SetTargetID(id);
+	search->SetNodeSpecialSearchRequester(requester);
+	return StartSearch(search);
+}
+
+bool CSearchManager::FindNodeFWCheckUDP()
+{
+	CancelNodeFWCheckUDPSearch();
+	CUInt128 id;
+	id.SetValueRandom();
+	AddDebugLogLineM(false, logKadSearch, wxT("Starting NODEFWCHECKUDP Kad Search"));
+	CSearch *search = new CSearch;
+	search->SetSearchTypes(CSearch::NODEFWCHECKUDP);
+	search->SetTargetID(id);
+	return StartSearch(search);
+}
+
+void CSearchManager::CancelNodeSpecial(CKadClientSearcher* requester)
+{
+	// Stop a specific nodespecialsearch
+	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+		if (it->second->GetNodeSpecialSearchRequester() == requester) {
+			it->second->SetNodeSpecialSearchRequester(NULL);
+			it->second->PrepareToStop();
+			return;
+		}
+	}
+}
+
+void CSearchManager::CancelNodeFWCheckUDPSearch()
+{
+	// Stop node searches done for udp firewallcheck
+	for (SearchMap::iterator it = m_searches.begin(); it != m_searches.end(); ++it) {
+		if (it->second->GetSearchTypes() == CSearch::NODEFWCHECKUDP) {
+			it->second->PrepareToStop();
+		}
 	}
 }
 // File_checked_for_headers

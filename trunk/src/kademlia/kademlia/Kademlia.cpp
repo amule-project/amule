@@ -42,7 +42,10 @@ there client on the eMule forum..
 
 #include "Defines.h"
 #include "Indexed.h"
+#include "UDPFirewallTester.h"
 #include "../routing/RoutingZone.h"
+#include "../utils/KadUDPKey.h"
+#include "../utils/KadClientSearcher.h"
 #include "../../amule.h"
 #include "../../Logger.h"
 
@@ -121,6 +124,9 @@ void CKademlia::Stop()
 
 	// Mark Kad as being in the stop state to make sure nothing else is used.
 	m_running = false;
+
+	// Reset Firewallstate
+	CUDPFirewallTester::Reset();
 
 	// Remove all active searches.
 	CSearchManager::StopAllSearches();
@@ -237,14 +243,17 @@ void CKademlia::Process()
 			theApp->ShowUserCount();
 		}
 	}
+
+	if (GetUDPListener() != NULL) {
+		GetUDPListener()->ExpireClientSearch();	// function does only one compare in most cases, so no real need for a timer
+	}
 }
 
-//#warning TODO: check callers (try block not included in eMule)
-void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t port)
+void CKademlia::ProcessPacket(const uint8_t *data, uint32_t lenData, uint32_t ip, uint16_t port, bool validReceiverKey, const CKadUDPKey& senderKey)
 {
 	try {
 		if( instance && instance->m_udpListener ) {
-			instance->m_udpListener->ProcessPacket( data, lenData, ip, port);
+			instance->m_udpListener->ProcessPacket(data, lenData, ip, port, validReceiverKey, senderKey);
 		}
 	} catch (const wxString& error) {
 		AddDebugLogLineM(false, logKadMain, wxT("Exception on Kad processPacket: ") + error);
@@ -263,10 +272,52 @@ void CKademlia::RecheckFirewalled()
 		// to recheck it's IP which in turns rechecks firewall.
 		instance->m_prefs->SetFindBuddy(false);
 		instance->m_prefs->SetRecheckIP();
+		// also UDP check
+		CUDPFirewallTester::ReCheckFirewallUDP(false);
 		// Always set next buddy check 5 mins after a firewall check.
 		m_nextFindBuddy = MIN2S(5) + m_nextFirewallCheck;
 		m_nextFirewallCheck = HR2S(1) + time(NULL);
 	}
+}
+
+bool CKademlia::FindNodeIDByIP(CKadClientSearcher& requester, uint32_t ip, uint16_t tcpPort, uint16_t udpPort)
+{
+	wxCHECK(IsRunning() && instance && GetUDPListener() && GetRoutingZone(), false);
+
+	// first search our known contacts if we can deliver a result without asking, otherwise forward the request
+	CContact* contact;
+	if ((contact = GetRoutingZone()->GetContact(wxUINT32_SWAP_ALWAYS(ip), tcpPort, true)) != NULL) {
+		uint8_t nodeID[16];
+		contact->GetClientID().ToByteArray(nodeID);
+		requester.KadSearchNodeIDByIPResult(KCSR_SUCCEEDED, nodeID);
+		return true;
+	} else {
+		return GetUDPListener()->FindNodeIDByIP(&requester, wxUINT32_SWAP_ALWAYS(ip), tcpPort, udpPort);
+	}
+}
+
+bool CKademlia::FindIPByNodeID(CKadClientSearcher& requester, const uint8_t* nodeID)
+{
+	wxCHECK(IsRunning() && instance && GetUDPListener(), false);
+
+	// first search our known contacts if we can deliver a result without asking, otherwise forward the request
+	CContact* contact;
+	if ((contact = GetRoutingZone()->GetContact(CUInt128(nodeID))) != NULL) {
+		// make sure that this entry is not too old, otherwise just do a search to be sure
+		if (contact->GetLastSeen() != 0 && time(NULL) - contact->GetLastSeen() < 1800) {
+			requester.KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(contact->GetIPAddress()), contact->GetTCPPort());
+			return true;
+		}
+	}
+	return CSearchManager::FindNodeSpecial(CUInt128(nodeID), &requester);
+}
+
+void CKademlia::CancelClientSearch(CKadClientSearcher& fromRequester)
+{
+	wxCHECK_RET(instance && GetUDPListener(), wxT("Something is really bad"));
+
+	GetUDPListener()->ExpireClientSearch(&fromRequester);
+	CSearchManager::CancelNodeSpecial(&fromRequester);
 }
 
 // Global function.
