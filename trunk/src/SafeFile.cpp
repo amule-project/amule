@@ -190,7 +190,7 @@ float CFileDataIO::ReadFloat() const
 }
 
 
-unsigned char* CFileDataIO::ReadBsob(uint8* puSize)
+unsigned char* CFileDataIO::ReadBsob(uint8* puSize) const
 {
 	MULE_VALIDATE_PARAMS(puSize, wxT("NULL pointer argument in ReadBsob"));
 
@@ -389,7 +389,7 @@ void CFileDataIO::WriteStringCore(const char *s, EUtf8Str eEncode, uint8 SizeLen
 }
 
 
-CTag *CFileDataIO::ReadTag(bool bOptACP)
+CTag *CFileDataIO::ReadTag(bool bOptACP) const
 {
 	CTag *retVal = NULL;
 	wxString name;
@@ -476,7 +476,7 @@ CTag *CFileDataIO::ReadTag(bool bOptACP)
 }
 
 
-void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP)
+void CFileDataIO::ReadTagPtrList(TagPtrList* taglist, bool bOptACP) const
 {
 	MULE_VALIDATE_PARAMS(taglist, wxT("NULL pointer argument in ReadTagPtrList"));
 
@@ -521,7 +521,6 @@ void CFileDataIO::WriteTag(const CTag& tag)
 				WriteFloat(tag.GetFloat());
 				break;
 			case TAGTYPE_BSOB:
-				// Used for uint128 on Kad now
 				WriteBsob(tag.GetBsob(), tag.GetBsobSize());
 				break;
 			case TAGTYPE_UINT16:
