@@ -128,14 +128,14 @@ public:
 	 * @see CSafeFileIO::Read
 	 */
 	//@{
-	virtual uint8			ReadUInt8() const;
-	virtual uint16			ReadUInt16() const;
-	virtual uint32			ReadUInt32() const;
-	virtual uint64			ReadUInt64() const;
-	virtual CUInt128		ReadUInt128() const;
-	virtual CMD4Hash		ReadHash() const;
-	virtual float			ReadFloat() const;
-	virtual unsigned char*	ReadBsob(uint8* size);	
+	virtual uint8		ReadUInt8() const;
+	virtual uint16		ReadUInt16() const;
+	virtual uint32		ReadUInt32() const;
+	virtual uint64		ReadUInt64() const;
+	virtual CUInt128	ReadUInt128() const;
+	virtual CMD4Hash	ReadHash() const;
+	virtual float		ReadFloat() const;
+	virtual unsigned char*	ReadBsob(uint8* size) const;
 	//@}
 
 	/**
@@ -199,8 +199,8 @@ public:
 
 /* Warning: Special Kad functions, needs documentation */
 
-	CTag*		ReadTag(bool bOptACP = false);
-	void		ReadTagPtrList(TagPtrList* taglist, bool bOptACP = false);
+	CTag*		ReadTag(bool bOptACP = false) const;
+	void		ReadTagPtrList(TagPtrList* taglist, bool bOptACP = false) const;
 
 	void		WriteTag(const CTag& tag);
 	void		WriteTagPtrList(const TagPtrList& tagList);
