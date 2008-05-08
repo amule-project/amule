@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __PREFS_H__
 
 #include "../utils/UInt128.h"
+#include "../../Preferences.h"
 #include <protocol/kad/Constants.h>
 #include <time.h>
 
@@ -60,15 +61,15 @@ public:
 	const CUInt128& GetClientHash() const throw()		{ return m_clientHash; }
 
 	uint32_t GetIPAddress() const throw()			{ return m_ip; }
-	void	SetIPAddress(uint32_t val) throw();
+	void	 SetIPAddress(uint32_t val) throw();
 
 	bool	GetRecheckIP() const throw()			{ return (m_recheckip < KADEMLIAFIREWALLCHECKS); }
 	void	SetRecheckIP()					{ m_recheckip = 0; SetFirewalled(); }
 	void	IncRecheckIP() throw()				{ m_recheckip++; }
 
-	bool	HasHadContact() const throw();
+	bool	HasHadContact() const throw()			{ return m_lastContact ? ((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
 	void	SetLastContact() throw()			{ m_lastContact = time(NULL); }
-	bool	HasLostConnection() const throw();
+	bool	HasLostConnection() const throw()		{ return m_lastContact ? !((time(NULL) - m_lastContact) < KADEMLIADISCONNECTDELAY) : false; }
 	uint32_t GetLastContact() const throw()			{ return m_lastContact; }
 
 	bool	GetFirewalled() const throw();
@@ -94,10 +95,10 @@ public:
 	void	SetTotalStoreNotes(uint8_t val) throw()		{ m_totalStoreNotes = val; }
 
 	uint32_t GetKademliaUsers() const throw()		{ return m_kademliaUsers; }
-	void	SetKademliaUsers(uint32_t val) throw()		{ m_kademliaUsers = val; }
+	void	 SetKademliaUsers(uint32_t val) throw()		{ m_kademliaUsers = val; }
 
 	uint32_t GetKademliaFiles() const throw()		{ return m_kademliaFiles; }
-	void	SetKademliaFiles();
+	void	 SetKademliaFiles();
 
 	bool	GetPublish() const throw()			{ return m_Publish; }
 	void	SetPublish(bool val) throw()			{ m_Publish = val; }
@@ -105,7 +106,15 @@ public:
 	bool	GetFindBuddy() throw()				{ return m_findBuddy ? m_findBuddy = false, true : false; }
 	void	SetFindBuddy(bool val = true) throw()		{ m_findBuddy = val; }
 
-	uint16_t GetUDPVerifyKey(uint32_t ip) const throw();
+	bool	GetUseExternKadPort() const throw()		{ return m_useExternKadPort; }
+	void	SetUseExternKadPort(bool val) throw()		{ m_useExternKadPort = val; }
+
+	uint16_t GetExternalKadPort() const throw()		{ return m_externKadPort; }
+	uint16_t GetInternKadPort() const throw()		{ return thePrefs::GetUDPPort(); }
+	void	 SetExternKadPort(uint16_t port) throw()	{ m_externKadPort = port; }
+
+	static uint8_t	GetMyConnectOptions(bool encryption = true, bool callback = true);
+	static uint32_t GetUDPVerifyKey(uint32_t targetIP) throw();
 
 private:
 	wxString	m_filename;
@@ -128,6 +137,8 @@ private:
 	bool		m_Publish;
 	bool		m_findBuddy;
 	bool		m_lastFirewallState;
+	bool		m_useExternKadPort;
+	uint16_t	m_externKadPort;
 
 	void Init(const wxString& filename);
 	//	void Reset();

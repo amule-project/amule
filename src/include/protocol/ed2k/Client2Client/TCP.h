@@ -96,7 +96,9 @@ enum ED2KExtendedClientTCP {
 	OP_COMPRESSEDPART_I64		= 0xA1,	// <HASH 16><von 8><size 4><Data len:size>
 	OP_SENDINGPART_I64			= 0xA2,	// <HASH 16><start 8><end 8><Data len:(end-start)>
 	OP_REQUESTPARTS_I64			= 0xA3,	// <HASH 16><start[3] 8*3><end[3] 8*3>
-	OP_MULTIPACKET_EXT			= 0xA4	
+	OP_MULTIPACKET_EXT			= 0xA4,	
+//	OP_CHATCAPTCHAREQ			= 0xA5,	// Unused on aMule - no Captcha
+//	OP_CHATCAPTCHARES			= 0xA6,	// Unused on aMule - no Captcha
 };
 
 #endif // ED2KC2CTCP_H

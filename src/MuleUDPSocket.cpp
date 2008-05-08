@@ -39,6 +39,9 @@
 #include "UploadBandwidthThrottler.h"
 #include "EncryptedDatagramSocket.h"
 #include "OtherFunctions.h"
+#include "kademlia/kademlia/Prefs.h"
+#include "ClientList.h"
+
 
 CMuleUDPSocket::CMuleUDPSocket(const wxString& name, int id, const amuleIPV4Address& address, const CProxyData* ProxyData)
 :
@@ -172,6 +175,8 @@ void CMuleUDPSocket::OnReceive(int errorCode)
 	} else if (!port) {
 		// wxASSERT(0);
 		printf("Unknown port receiving an UDP packet! Ignoring\n");
+	} else if (theApp->clientlist->IsBannedClient(ip)) {
+		AddDebugLogLineM(false, logMuleUDP, m_name + wxT(": Dropped packet from banned IP ") + addr.IPAddress());
 	} else {
 		AddDebugLogLineM(false, logMuleUDP, (m_name + wxT(": Packet received (")) 
 			<< addr.IPAddress() << wxT(":") << port << wxT("): ")
@@ -203,7 +208,7 @@ void CMuleUDPSocket::OnDisconnected(int WXUNUSED(errorCode))
 }
 
 
-void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint16 nReceiverVerifyKey)
+void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bEncrypt, const uint8* pachTargetClientHashORKadID, bool bKad, uint32 nReceiverVerifyKey)
 {
 	wxCHECK_RET(packet, wxT("Invalid packet."));
 	/*wxCHECK_RET(port, wxT("Invalid port."));
@@ -232,10 +237,10 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bE
 	newpending.port = port;
 	newpending.packet = packet;
 	newpending.time = GetTickCount();
- 	newpending.bEncrypt = bEncrypt && pachTargetClientHashORKadID != NULL;
+ 	newpending.bEncrypt = bEncrypt && (pachTargetClientHashORKadID != NULL || (bKad && nReceiverVerifyKey != 0));
 	newpending.bKad = bKad;
 	newpending.nReceiverVerifyKey = nReceiverVerifyKey;   
-	if (newpending.bEncrypt) {
+	if (newpending.bEncrypt && pachTargetClientHashORKadID != NULL) {
 		md4cpy(newpending.pachTargetClientHashORKadID, pachTargetClientHashORKadID);
 	} else {
 		md4clr(newpending.pachTargetClientHashORKadID);
@@ -245,7 +250,7 @@ void CMuleUDPSocket::SendPacket(CPacket* packet, uint32 IP, uint16 port, bool bE
 		wxMutexLocker lock(m_mutex);		
 		m_queue.push_back(newpending);
 	}
-	
+
 	theApp->uploadBandwidthThrottler->QueueForSendingControlPacket(this);
 }
 
@@ -266,16 +271,23 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 		UDPPack item = m_queue.front();
 		CPacket* packet = item.packet;
 		if (GetTickCount() - item.time < UDPMAXQUEUETIME) {
-			std::vector<char> sendbuffer(packet->GetPacketSize() + 2);
-			STLCopy_n(packet->GetUDPHeader(), 2, sendbuffer.begin());
-			STLCopy_n(packet->GetDataBuffer(), packet->GetPacketSize(), sendbuffer.begin() + 2);
-			
-			if (SendTo(&(sendbuffer[0]), packet->GetPacketSize() + 2, item.IP, item.port)) {
-				sentBytes += packet->GetPacketSize() + 2;
+			uint32_t len = packet->GetPacketSize() + 2;
+			uint8_t *sendbuffer = new uint8_t [len];
+			memcpy(sendbuffer, packet->GetUDPHeader(), 2);
+			memcpy(sendbuffer + 2, packet->GetDataBuffer(), packet->GetPacketSize());
+
+			if (item.bEncrypt && (theApp->GetPublicIP() > 0 || item.bKad)) {
+				len = CEncryptedDatagramSocket::EncryptSendClient(&sendbuffer, len, item.pachTargetClientHashORKadID, item.bKad, item.nReceiverVerifyKey, (item.bKad ? Kademlia::CPrefs::GetUDPVerifyKey(item.IP) : 0));
+			}
+
+			if (SendTo(sendbuffer, len, item.IP, item.port)) {
+				sentBytes += len;
 				m_queue.pop_front();
 				delete packet;
+				delete [] sendbuffer;
 			} else {
 				// TODO: Needs better error handling, see SentTo
+				delete [] sendbuffer;
 				break;
 			}
 		} else {
@@ -292,9 +304,9 @@ SocketSentBytes CMuleUDPSocket::SendControlData(uint32 maxNumberOfBytesToSend, u
 }
 
 
-bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
+bool CMuleUDPSocket::SendTo(uint8_t *buffer, uint32_t length, uint32_t ip, uint16_t port)
 {
-	// Just pretend that we sent the packet in order to avoid infinete loops.
+	// Just pretend that we sent the packet in order to avoid infinite loops.
 	if (!(m_socket && m_socket->Ok())) {
 		return true;
 	}
@@ -304,7 +316,7 @@ bool CMuleUDPSocket::SendTo(char* buffer, uint32 length, uint32 ip, uint16 port)
 	addr.Service(port);
 
 	// We better clear this flag here, status might have been changed
-	// between the U.B.T. adition and the real sending happening later
+	// between the U.B.T. addition and the real sending happening later
 	m_busy = false; 
 	bool sent = false;
 	m_socket->SendTo(addr, buffer, length);

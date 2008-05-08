@@ -324,23 +324,33 @@ public:
 	 */
 	 void	SetChatState(uint64 client_id, uint8 state);
 
-	/*
-	 * Avoids unwanted clients to be forever in the client list
-	 */
-	void CleanUpClientList();
-
 	uint8	GetBuddyStatus() const {return m_nBuddyStatus;}
 	// This must be used on CreateKadSourceLink and if we ever add the columns
 	// on shared files control.
 	CUpDownClient* GetBuddy() const { return m_pBuddy; }
-	void RequestTCP(Kademlia::CContact* contact);
-	void RequestBuddy(Kademlia::CContact* contact);
+	void RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions);
+	void RequestBuddy(Kademlia::CContact* contact, uint8_t connectOptions);
 	void IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID );
 	void RemoveFromKadList(CUpDownClient* torem);
 	void AddToKadList(CUpDownClient* toadd);
+	bool DoRequestFirewallCheckUDP(const Kademlia::CContact& contact);
 
 	void AddKadFirewallRequest(uint32 ip);
 	bool IsKadFirewallCheckIP(uint32 ip) const;
+
+	// Direct Callback list
+	void	AddDirectCallbackClient(CUpDownClient *toAdd);
+	void	RemoveDirectCallback(CUpDownClient *toRemove) { m_currentDirectCallbacks.remove(toRemove); }
+	void	AddTrackCallbackRequests(uint32_t ip);
+	bool	AllowCallbackRequest(uint32_t ip) const;
+
+protected:
+	/*
+	 * Avoids unwanted clients to be forever in the client list
+	 */
+	void	CleanUpClientList();
+
+	void	ProcessDirectCallbackList();
 
 private:
 	/**
@@ -355,6 +365,17 @@ private:
 	CUpDownClient* FindMatchingClient( CUpDownClient* client );
 	
 	
+	/**
+	 * Check if we already know this IP.
+	 *
+	 * This function is used to determine if the given IP address
+	 * is already known.
+	 *
+	 * @param ip The IP address to check.
+	 */
+	bool IsIPAlreadyKnown(uint32_t ip);
+
+
 	/**
 	 * Helperfunction which removes the client from the IP-list.
 	 */
@@ -415,8 +436,12 @@ private:
 		uint32 ip;
 		uint32 inserted;
 	} IpAndTicks;
-	typedef std::list<IpAndTicks>	KadFirewallCheckList;
-	KadFirewallCheckList		m_firewallCheckRequests;
+	typedef std::list<IpAndTicks>	IpAndTicksList;
+	IpAndTicksList			m_firewallCheckRequests;
+
+	typedef std::list<CUpDownClient *>	DirectCallbackList;
+	DirectCallbackList		m_currentDirectCallbacks;
+	IpAndTicksList			m_directCallbackRequests;
 };
 
 #endif

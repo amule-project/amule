@@ -29,6 +29,7 @@
 #include <protocol/Protocols.h>
 #include <protocol/ed2k/Client2Client/TCP.h> // Sometimes we reply with TCP packets.
 #include <protocol/ed2k/Client2Client/UDP.h>
+#include <protocol/kad2/Client2Client/UDP.h>
 #include <common/EventIDs.h>
 #include <common/Format.h>	// Needed for CFormat
 
@@ -46,7 +47,9 @@
 #include "MemFile.h"			// Needed for CMemFile
 #include "Logger.h"
 #include "kademlia/kademlia/Kademlia.h"
+#include "kademlia/utils/KadUDPKey.h"
 #include "zlib.h"
+#include "EncryptedDatagramSocket.h"
 
 //
 // CClientUDPSocket -- Extended eMule UDP socket
@@ -76,44 +79,59 @@ void CClientUDPSocket::OnPacketReceived(uint32 ip, uint16 port, byte* buffer, si
 {
 	wxCHECK_RET(length >= 2, wxT("Invalid packet."));
 	
-	uint8 protocol	= buffer[0];
-	uint8 opcode	= buffer[1];
-	
-	try {
-		switch (protocol) {
-			case OP_EMULEPROT:
-				ProcessPacket(buffer + 2,length - 2, opcode, ip, port);
-				break;
-				
-			case OP_KADEMLIAHEADER:
-				theStats::AddDownOverheadKad(length);
-				Kademlia::CKademlia::ProcessPacket(buffer, length, wxUINT32_SWAP_ALWAYS(ip), port);
-				break;
-				
-			case OP_KADEMLIAPACKEDPROT: {
-				theStats::AddDownOverheadKad(length);
-				uint32 nNewSize = length*10+300; // Should be enough...
-				std::vector<byte> unpack(nNewSize);
-				uLongf unpackedsize = nNewSize-2;
-				uint16 result = uncompress(&(unpack[2]), &unpackedsize, buffer + 2, length-2);
-				if (result == Z_OK) {
-					unpack[0] = OP_KADEMLIAHEADER;
-					unpack[1] = opcode;
-					Kademlia::CKademlia::ProcessPacket(&(unpack[0]), unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port);
-				} else {
-					AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
-				}
-				break;
+	uint8_t *decryptedBuffer;
+	uint32_t receiverVerifyKey;
+	uint32_t senderVerifyKey;
+	int packetLen = CEncryptedDatagramSocket::DecryptReceivedClient(buffer, length, &decryptedBuffer, ip, &receiverVerifyKey, &senderVerifyKey);
+
+	uint8_t protocol = decryptedBuffer[0];
+	uint8_t opcode	 = decryptedBuffer[1];
+
+	if (packetLen >= 1) {
+		try {
+			switch (protocol) {
+				case OP_EMULEPROT:
+					ProcessPacket(decryptedBuffer + 2, packetLen - 2, opcode, ip, port);
+					break;
+
+				case OP_KADEMLIAHEADER:
+					theStats::AddDownOverheadKad(length);
+					if (packetLen >= 2) {
+						Kademlia::CKademlia::ProcessPacket(decryptedBuffer, packetLen, wxUINT32_SWAP_ALWAYS(ip), port, (Kademlia::CPrefs::GetUDPVerifyKey(ip) == receiverVerifyKey), Kademlia::CKadUDPKey(senderVerifyKey, theApp->GetPublicIP(false)));
+					} else {
+						throw wxString(wxT("Kad packet too short"));
+					}
+					break;
+
+				case OP_KADEMLIAPACKEDPROT:
+					theStats::AddDownOverheadKad(length);
+					if (packetLen >= 2) {
+						uint32_t newSize = packetLen * 10 + 300; // Should be enough...
+						std::vector<uint8_t> unpack(newSize);
+						uLongf unpackedsize = newSize - 2;
+						uint16_t result = uncompress(&(unpack[2]), &unpackedsize, decryptedBuffer + 2, packetLen - 2);
+						if (result == Z_OK) {
+							unpack[0] = OP_KADEMLIAHEADER;
+							unpack[1] = opcode;
+							Kademlia::CKademlia::ProcessPacket(&(unpack[0]), unpackedsize + 2, wxUINT32_SWAP_ALWAYS(ip), port, (Kademlia::CPrefs::GetUDPVerifyKey(ip) == receiverVerifyKey), Kademlia::CKadUDPKey(senderVerifyKey, theApp->GetPublicIP(false)));
+						} else {
+							AddDebugLogLineM(false, logClientKadUDP, wxT("Failed to uncompress Kademlia packet"));
+						}
+					} else {
+						throw wxString(wxT("Kad packet (compressed) too short"));
+					}
+					break;
+
+				default:
+					AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"), protocol));
 			}
-			default:
-				AddDebugLogLineM(false, logClientUDP, wxString::Format(wxT("Unknown opcode on received packet: 0x%x"), protocol));
+		} catch (const wxString& e) {
+			AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
+		} catch (const CInvalidPacket& e) {
+			AddDebugLogLineM(false, logClientUDP, wxT("Invalid UDP packet encountered: ") + e.what());
+		} catch (const CEOFException& e) {
+			AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
 		}
-	} catch (const wxString& e) {
-		AddDebugLogLineM(false, logClientUDP, wxT("Error while parsing UDP packet: ") + e);
-	} catch (const CInvalidPacket& e) {
-		AddDebugLogLineM(false, logClientUDP, wxT("Invalid UDP packet encountered: ") + e.what());
-	} catch (const CEOFException& e) {
-		AddDebugLogLineM(false, logClientUDP, wxT("Malformed packet encountered while parsing UDP packet: ") + e.what());
 	}
 }
 
@@ -255,7 +273,46 @@ void CClientUDPSocket::ProcessPacket(byte* packet, int16 size, int8 opcode, uint
 			}
 			break;
 		}
-		
+		case OP_DIRECTCALLBACKREQ:
+		{
+			AddDebugLogLineM( false, logClientUDP, wxT("Client UDP socket: OP_DIRECTCALLBACKREQ") );
+			theStats::AddDownOverheadOther(size);
+			if (!theApp->clientlist->AllowCallbackRequest(host)) {
+				AddDebugLogLineM(false, logClientUDP, wxT("Ignored DirectCallback Request because this IP (") + Uint32toStringIP(host) + wxT(") has sent too many request within a short time"));
+				break;
+			}
+			// do we accept callbackrequests at all?
+			if (Kademlia::CKademlia::IsRunning() && Kademlia::CKademlia::IsFirewalled()) {
+				theApp->clientlist->AddTrackCallbackRequests(host);
+				CMemFile data(packet, size);
+				uint16_t remoteTCPPort = data.ReadUInt16();
+				CMD4Hash userHash(data.ReadHash());
+				uint8_t connectOptions = data.ReadUInt8();
+				CUpDownClient* requester = NULL;
+				CClientList::SourceList clients = theApp->clientlist->GetClientsByHash(userHash);
+				for (CClientList::SourceList::iterator it = clients.begin(); it != clients.end(); ++it) {
+					if ((host == 0 || (*it)->GetIP() == host) && (remoteTCPPort == 0 || (*it)->GetUserPort() == remoteTCPPort)) {
+						requester = *it;
+						break;
+					}
+				}
+				if (requester == NULL) {
+					requester = new CUpDownClient(remoteTCPPort, host, 0, 0, NULL, true, true);
+					requester->SetUserHash(CMD4Hash(userHash));
+					theApp->clientlist->AddClient(requester);
+				}
+				requester->SetConnectOptions(connectOptions, true, false);
+				requester->SetDirectUDPCallbackSupport(false);
+				requester->SetIP(host);
+				requester->SetUserPort(remoteTCPPort);
+				//TODO LOGREMOVE
+				//AddDebugLogLineM(false, logClientUDP, wxT("Accepting incoming DirectCallbackRequest from ") + requester->DbgGetClientInfo());
+				requester->TryToConnect();
+			} else {
+				AddDebugLogLineM(false, logClientUDP, wxT("Ignored DirectCallback Request because we do not accept DirectCall backs at all (") + Uint32toStringIP(host) + wxT(")"));
+			}
+			break;
+		}
 		default:
 			theStats::AddDownOverheadOther(size);				
 	}

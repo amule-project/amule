@@ -110,6 +110,8 @@ typedef std::map<Kademlia::CUInt128,Load*> LoadMap;
 namespace Kademlia {
 ////////////////////////////////////////
 
+class CKadUDPKey;
+
 class CIndexed
 {
 
@@ -117,14 +119,14 @@ public:
 	CIndexed();
 	~CIndexed();
 
-	bool AddKeyword(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
+	bool AddKeyword(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CKeyEntry* entry, uint8_t& load);
 	bool AddSources(const CUInt128& keyWordID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
 	bool AddNotes(const CUInt128& keyID, const CUInt128& sourceID, Kademlia::CEntry* entry, uint8_t& load);
 	bool AddLoad(const CUInt128& keyID, uint32_t time);
 	size_t GetFileKeyCount() const throw() { return m_Keyword_map.size(); }
-	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition);
-	void SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize);
-	void SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize);
+	void SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* pSearchTerms, uint32_t ip, uint16_t port, bool oldClient, bool kad2, uint16_t startPosition, const CKadUDPKey& senderKey);
+	void SendValidSourceResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint16_t startPosition, uint64_t fileSize, const CKadUDPKey& senderKey);
+	void SendValidNoteResult(const CUInt128& keyID, uint32_t ip, uint16_t port, bool kad2, uint64_t fileSize, const CKadUDPKey& senderKey);
 	bool SendStoreRequest(const CUInt128& keyID);
 	uint32_t m_totalIndexSource;
 	uint32_t m_totalIndexKeyword;

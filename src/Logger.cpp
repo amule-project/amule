@@ -98,6 +98,9 @@ CDebugCategory g_debugcats[] = {
 	CDebugCategory( logMuleUDP,		wxT("MuleUDPSocket" ) ),
 	CDebugCategory( logThreads,		wxT("ThreadScheduler" ) ),
 	CDebugCategory( logUPnP,		wxT("Universal Plug and Play" ) ),
+	CDebugCategory( logKadUdpFwTester,	wxT("Kademlia UDP Firewall Tester") ),
+	CDebugCategory( logKadPacketTracking,	wxT("Kademlia Packet Tracking") ),
+	CDebugCategory( logKadEntryTracking,	wxT("Kademlia Entry Tracking") )
 };
 
 

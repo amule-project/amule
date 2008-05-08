@@ -112,5 +112,15 @@ inline bool IsLowID(uint32 id) {
 	return (id < HIGHEST_LOWID_ED2K_KAD);
 }
 
+/**
+ * Checks for LAN IPs.
+ *
+ * @param ip The IP-address to check.
+ * @return True if it was a LAN IP, false otherwise.
+ *
+ * @note IP must be in anti-host order.
+ */
+bool IsLanIP(uint32_t ip) throw();
+
 #endif // NETWORK_FUNCTIONS_H
 // File_checked_for_headers

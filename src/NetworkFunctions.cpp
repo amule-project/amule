@@ -138,14 +138,14 @@ struct filter_st {
 	uint32 mask;
 };
 
-const int number_of_ranges = sizeof(ranges) / sizeof(IPRange);
+const unsigned int number_of_ranges = sizeof(ranges) / sizeof(IPRange);
 static filter_st filters[number_of_ranges];
 
 
 // This function is used to initialize the IP filter
 bool SetupFilter()
 {
-	for (int i = 0; i < number_of_ranges; ++i) {
+	for (unsigned int i = 0; i < number_of_ranges; ++i) {
 		filters[i].addr = StringIPtoUint32( ranges[i].addr );
 		filters[i].mask = ~wxUINT32_SWAP_ALWAYS((1 << (32 - ranges[i].mask)) - 1);
 	}
@@ -160,7 +160,7 @@ static bool filterSetup = SetupFilter();
 
 bool IsGoodIP(uint32 IP, bool filterLAN)
 {
-	for (int i = 0; i < number_of_ranges; ++i) {
+	for (unsigned int i = 0; i < number_of_ranges; ++i) {
 		if (((IP ^ filters[i].addr) & filters[i].mask) == 0) {
 			if ( filterLAN || !ranges[i].isLAN ) {
 				return false;
@@ -169,5 +169,15 @@ bool IsGoodIP(uint32 IP, bool filterLAN)
 	}
 
 	return true;
+}
+
+bool IsLanIP(uint32_t ip) throw()
+{
+	for (unsigned int i = 0; i < number_of_ranges; i++) {
+		if (((ip ^ filters[i].addr) & filters[i].mask) == 0) {
+			return ranges[i].isLAN;
+		}
+	}
+	return false;
 }
 // File_checked_for_headers

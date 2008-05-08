@@ -48,7 +48,7 @@ class CTag;
 namespace Kademlia {
 ////////////////////////////////////////
 
-void deleteTagPtrListEntries(TagPtrList* taglist);
+class CKadClientSearcher;
 
 class CSearch
 {
@@ -64,22 +64,25 @@ public:
 
 	uint32_t GetAnswers() const throw()		{ return m_fileIDs.size() ? m_answers / ((m_fileIDs.size() + 49) / 50) : m_answers; }
 	uint32_t GetRequestAnswer() const throw()	{ return m_totalRequestAnswers; }
-	void	 StorePacket();
 
-	const wxString& GetFileName(void) const throw()	{ return m_fileName; }
-	void SetFileName(const wxString& fileName) throw() { m_fileName = fileName; }
+	const wxString&	GetFileName(void) const throw()			{ return m_fileName; }
+	void		SetFileName(const wxString& fileName) throw()	{ m_fileName = fileName; }
 
 	void	 AddFileID(const CUInt128& id)		{ m_fileIDs.push_back(id); }
 	void	 PreparePacketForTags(CMemFile* packet, CKnownFile* file);
 	bool	 Stopping() const throw()		{ return m_stopping; }
+
 	uint32_t GetNodeLoad() const throw()		{ return m_totalLoadResponses == 0 ? 0 : m_totalLoad / m_totalLoadResponses; }
-	uint32_t GetNodeLoadResonse() const throw()	{ return m_totalLoadResponses; }
+	uint32_t GetNodeLoadResponse() const throw()	{ return m_totalLoadResponses; }
 	uint32_t GetNodeLoadTotal() const throw()	{ return m_totalLoad; }
 	void	 UpdateNodeLoad(uint8_t load) throw()	{ m_totalLoad += load; m_totalLoadResponses++; }
+
 	void	 SetSearchTermData(uint32_t searchTermsDataSize, const uint8_t *searchTermsData);
 
-	enum
-	{
+	CKadClientSearcher *	GetNodeSpecialSearchRequester() const throw()				{ return m_nodeSpecialSearchRequester; }
+	void			SetNodeSpecialSearchRequester(CKadClientSearcher *requester) throw()	{ m_nodeSpecialSearchRequester = requester; }
+
+	enum {
 		NODE,
 		NODECOMPLETE,
 		FILE,
@@ -89,7 +92,9 @@ public:
 		STOREKEYWORD,
 		STORENOTES,
 		FINDBUDDY,
-		FINDSOURCE
+		FINDSOURCE,
+		NODESPECIAL,	// nodesearch request from requester "outside" of kad to find the IP of a given NodeID
+		NODEFWCHECKUDP	// find new unknown IPs for a UDP firewallcheck
 	};
 
 	CSearch();
@@ -105,6 +110,7 @@ private:
 	void JumpStart();
 	void SendFindValue(CContact *contact);
 	void PrepareToStop() throw();
+	void StorePacket();
 
 	bool		m_stopping;
 	time_t		m_created;
@@ -122,7 +128,7 @@ private:
 	WordList	m_words;
 	wxString	m_fileName;
 	UIntList	m_fileIDs;
-//	CUInt128	m_keywordPublish; //Need to make this private...
+	CKadClientSearcher *m_nodeSpecialSearchRequester; // used to callback result for NODESPECIAL searches
 
 	ContactMap	m_possible;
 	ContactMap	m_tried;

@@ -48,6 +48,7 @@ namespace Kademlia {
 
 class CRoutingBin;
 class CContact;
+class CKadUDPKey;
 
 /**
  * The *Zone* is just a node in a binary tree of *Zone*s.
@@ -69,11 +70,14 @@ public:
 	void	 OnSmallTimer();
 	uint32_t Consolidate();
 
-	bool	 Add(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, bool update);
-	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, bool update);
+	bool	 Add(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool ipVerified, bool update);
+	bool	 AddUnfiltered(const CUInt128 &id, uint32_t ip, uint16_t port, uint16_t tport, uint8_t version, const CKadUDPKey& key, bool ipVerified, bool update);
 	bool	 Add(CContact *contact, bool update);
 
+	void	 ReadFile(const wxString& specialNodesdat = wxEmptyString);
+
 	CContact *GetContact(const CUInt128& id) const throw();
+	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
 	uint32_t GetNumContacts() const throw();
 
 	// Returns a list of all contacts in all leafs of this zone.
@@ -96,7 +100,6 @@ private:
 	CRoutingZone(CRoutingZone *super_zone, int level, const CUInt128& zone_index) { Init(super_zone, level, zone_index); }
 	void Init(CRoutingZone *super_zone, int level, const CUInt128& zone_index);
 
-	void ReadFile();
 	void WriteFile();
 
 	bool IsLeaf() const throw() { return m_bin != NULL; }

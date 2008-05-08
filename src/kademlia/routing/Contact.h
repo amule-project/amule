@@ -40,6 +40,7 @@ there client on the eMule forum..
 #define __CONTACT_H__
 
 #include "../kademlia/Kademlia.h"
+#include "../utils/KadUDPKey.h"
 
 ////////////////////////////////////////
 namespace Kademlia {
@@ -47,16 +48,17 @@ namespace Kademlia {
 
 class CContact
 {
-	//friend class CRoutingZone;
-	//friend class CRoutingBin;
 public:
 	~CContact();
 	CContact(const CUInt128 &clientID,
 		uint32_t ip, uint16_t udpPort, uint16_t tcpPort, uint8_t version,
+		const CKadUDPKey& kadKey, bool ipVerified,
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
+	CContact& operator=(const CContact& k1) throw()		{ Copy(k1); return *this; }
+
 	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
-	void SetClientID(const CUInt128& clientID) throw();
+	void SetClientID(const CUInt128& clientID) throw()	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }
 
 	const wxString GetClientIDString() const		{ return m_clientID.ToHexString(); }
 
@@ -64,7 +66,7 @@ public:
 	const wxString GetDistanceString() const		{ return m_distance.ToBinaryString(); }
 
 	uint32_t GetIPAddress() const throw()			{ return m_ip; }
-	void	 SetIPAddress(uint32_t ip) throw()		{ m_ip = ip; }
+	void	 SetIPAddress(uint32_t ip) throw()		{ if (m_ip != ip) { SetIPVerified(false); m_ip = ip; } }
 
 	uint16_t GetTCPPort() const throw()			{ return m_tcpPort; }
 	void	 SetTCPPort(uint16_t port) throw()		{ m_tcpPort = port; }
@@ -86,14 +88,24 @@ public:
 	void	 SetExpireTime(time_t value) throw()		{ m_expires = value; };	
 	time_t	 GetExpireTime() const throw()			{ return m_expires; }
 
-	time_t	 GetLastTypeSet() const throw()			{ return m_lastTypeSet; }	
+	time_t	 GetLastTypeSet() const throw()			{ return m_lastTypeSet; }
+
+	time_t	 GetLastSeen() const throw();
 
 	uint8_t	 GetVersion() const throw()			{ return m_version; }
 	void	 SetVersion(uint8_t value) throw()		{ m_version = value; }
 
 	bool	 CheckIfKad2() throw()				{ return m_checkKad2 ? m_checkKad2 = false, true : false; }
 
+	const CKadUDPKey& GetUDPKey() const throw()		{ return m_udpKey; }
+	void	 SetUDPKey(const CKadUDPKey& key) throw()	{ m_udpKey = key; }
+
+	bool	 IsIPVerified() const throw()			{ return m_ipVerified; }
+	void	 SetIPVerified(bool ipVerified) throw()		{ m_ipVerified = ipVerified; }
+
 private:
+	void	 Copy(const CContact& from) throw();
+
 	CUInt128	m_clientID;
 	CUInt128	m_distance;
 	uint32_t	m_ip;
@@ -104,10 +116,10 @@ private:
 	time_t		m_expires;
 	time_t		m_created;
 	uint32_t	m_inUse;
-	
-	// Kad version
 	uint8_t		m_version;
 	bool		m_checkKad2;
+	bool		m_ipVerified;
+	CKadUDPKey	m_udpKey;
 };
 
 } // End namespace

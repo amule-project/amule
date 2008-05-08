@@ -36,8 +36,6 @@ Any mod that changes anything within the Kademlia side will not be allowed to ad
 there client on the eMule forum..
 */
 
-
-
 #include "Search.h"
 
 #include <protocol/Protocols.h>
@@ -47,9 +45,11 @@ there client on the eMule forum..
 #include <tags/FileTags.h>
 
 #include "Defines.h"
+#include "UDPFirewallTester.h"
 #include "../routing/RoutingZone.h"
 #include "../routing/Contact.h"
 #include "../net/KademliaUDPListener.h"
+#include "../utils/KadClientSearcher.h"
 #include "../../amule.h"
 #include "../../SharedFileList.h"
 #include "../../DownloadQueue.h"
@@ -79,10 +79,16 @@ CSearch::CSearch()
 	m_lastResponse = m_created;
 	m_searchTermsData = NULL;
 	m_searchTermsDataSize = 0;
+	m_nodeSpecialSearchRequester = NULL;
 }
 
 CSearch::~CSearch()
 {
+	if (m_nodeSpecialSearchRequester != NULL) {
+		// inform requester that our search failed
+		m_nodeSpecialSearchRequester->KadSearchIPByNodeIDResult(KCSR_NOTFOUND, 0, 0);
+	}
+
 	// Check if a source search is currently being done.
 	CPartFile* temp = theApp->downloadqueue->GetFileByKadFileSearchID(GetSearchID());
 
@@ -167,6 +173,8 @@ void CSearch::PrepareToStop() throw()
 	switch (m_type) {
 		case NODE:
 		case NODECOMPLETE:
+		case NODESPECIAL:
+		case NODEFWCHECKUDP:
 			baseTime = SEARCHNODE_LIFETIME;
 			break;
 		case FILE:
@@ -255,6 +263,12 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 		m_delete.push_back(*response);
 	}
 
+	if (m_type == NODEFWCHECKUDP) {
+		m_answers++;
+		delete results;
+		return;
+	}
+
 	// Not interested in responses for FIND_NODE, will be added to contacts by udp listener
 	if (m_type == NODE) {
 		AddDebugLogLineM(false, logKadSearch, wxT("Node type search result, discarding."));
@@ -323,8 +337,8 @@ void CSearch::ProcessResponse(uint32_t fromIP, uint16_t fromPort, ContactList *r
 			}
 
 			// Complete node search, just increment the counter.
-			if (m_type == NODECOMPLETE) {
-				AddDebugLogLineM(false, logKadSearch, wxT("Search result type: Node complete"));
+			if (m_type == NODECOMPLETE || m_type == NODESPECIAL) {
+				AddDebugLogLineM(false, logKadSearch, wxString(wxT("Search result type: Node")) + (m_type == NODECOMPLETE ? wxT("Complete") : wxT("Special")));
 				m_answers++;
 			}
 			break;
@@ -364,7 +378,13 @@ void CSearch::StorePacket()
 					searchTerms.WriteUInt16(0);
 					searchTerms.WriteUInt64(file->GetFileSize());
 					DebugSend(Kad2SearchSourceReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_SOURCE_REQ, from->GetIPAddress(), from->GetUDPPort());
+					if (from->GetVersion() >= 6) {
+						CUInt128 clientID = from->GetClientID();
+						CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_SOURCE_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+					} else {
+						CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_SOURCE_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+						wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
+					}
 				} else {
 					PrepareToStop();
 					break;
@@ -372,7 +392,7 @@ void CSearch::StorePacket()
 			} else {
 				searchTerms.WriteUInt8(1);
 				DebugSendF(wxT("KadSearchReq(File)"), from->GetIPAddress(), from->GetUDPPort());
-				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_REQ, from->GetIPAddress(), from->GetUDPPort());
+				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 			}
 			m_totalRequestAnswers++;
 			break;
@@ -391,7 +411,6 @@ void CSearch::StorePacket()
 					searchTerms.Write(m_searchTermsData, m_searchTermsDataSize);
 				}
 				DebugSend(Kad2SearchKeyReq, from->GetIPAddress(), from->GetUDPPort());
-				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort());
 			} else {
 				if (m_searchTermsDataSize == 0) {
 					searchTerms.WriteUInt8(0);
@@ -403,7 +422,15 @@ void CSearch::StorePacket()
 					searchTerms.Write(m_searchTermsData, m_searchTermsDataSize);
 				}
 				DebugSendF(wxT("KadSearchReq(Keyword)"), from->GetIPAddress(), from->GetUDPPort());
-				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_REQ, from->GetIPAddress(), from->GetUDPPort());
+			}
+			if (from->GetVersion() >= 6) {
+				CUInt128 clientID = from->GetClientID();
+				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+			} else if (from->GetVersion() >= 3) {
+				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+				wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
+			} else {
+				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 			}
 			m_totalRequestAnswers++;
 			break;
@@ -422,7 +449,13 @@ void CSearch::StorePacket()
 					// Start position range (0x0 to 0x7FFF)
 					searchTerms.WriteUInt64(file->GetFileSize());
 					DebugSend(Kad2SearchNotesReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort());
+					if (from->GetVersion() >= 6) {
+						CUInt128 clientID = from->GetClientID();
+						CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+					} else {
+						CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA2_SEARCH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+						wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
+					}
 				} else {
 					PrepareToStop();
 					break;
@@ -430,7 +463,7 @@ void CSearch::StorePacket()
 			} else {
 				searchTerms.WriteUInt128(CKademlia::GetPrefs()->GetKadID());
 				DebugSend(KadSearchNotesReq, from->GetIPAddress(), from->GetUDPPort());
-				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort());
+				CKademlia::GetUDPListener()->SendPacket(searchTerms, KADEMLIA_SEARCH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 			}
 			m_totalRequestAnswers++;
 			break;
@@ -462,10 +495,23 @@ void CSearch::StorePacket()
 				//3 Firewalled Kad Source.
 				//4 >4GB file HighID Source.
 				//5 >4GB file Firewalled Kad source.
-				
+				//6 Firewalled source with Direct Callback (supports >4GB)
+
+				bool directCallback = false;
 				if (theApp->IsFirewalled()) {
-					// We are firewalled, make sure we have a buddy.
-					if (theApp->clientlist->GetBuddy()) {
+					directCallback = (Kademlia::CKademlia::IsRunning() && !Kademlia::CUDPFirewallTester::IsFirewalledUDP(true) && Kademlia::CUDPFirewallTester::IsVerified());
+					if (directCallback) {
+						// firewalled, but direct udp callback is possible so no need for buddies
+						// We are not firewalled..
+						taglist.push_back(new CTagVarInt(TAG_SOURCETYPE, 6));
+						taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
+						if (!CKademlia::GetPrefs()->GetUseExternKadPort()) {
+							taglist.push_back(new CTagInt16(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
+						}
+						if (from->GetVersion() >= 2) {
+							taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
+						}
+					} else if (theApp->clientlist->GetBuddy()) {	// We are firewalled, make sure we have a buddy.
 						// We send the ID to our buddy so they can do a callback.
 						CUInt128 buddyID(true);
 						buddyID ^= CKademlia::GetPrefs()->GetKadID();
@@ -476,6 +522,9 @@ void CSearch::StorePacket()
 						buddyID.ToByteArray(hashBytes);
 						taglist.push_back(new CTagString(TAG_BUDDYHASH, CMD4Hash(hashBytes).Encode()));
 						taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
+						if (!CKademlia::GetPrefs()->GetUseExternKadPort()) {
+							taglist.push_back(new CTagInt16(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
+						}
 						if (from->GetVersion() >= 2) {
 							taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
 						}
@@ -488,20 +537,15 @@ void CSearch::StorePacket()
 					// We're not firewalled..
 					taglist.push_back(new CTagInt8(TAG_SOURCETYPE, file->IsLargeFile() ? 4 : 1));
 					taglist.push_back(new CTagVarInt(TAG_SOURCEPORT, thePrefs::GetPort()));
+					if (!CKademlia::GetPrefs()->GetUseExternKadPort()) {
+						taglist.push_back(new CTagInt16(TAG_SOURCEUPORT, CKademlia::GetPrefs()->GetInternKadPort()));
+					}
 					if (from->GetVersion() >= 2) {
 						taglist.push_back(new CTagVarInt(TAG_FILESIZE, file->GetFileSize()));
 					}
 				}
 
-				// Encryption options Tag
-				// 5 Reserved (!)
-				// 1 CryptLayer Required
-				// 1 CryptLayer Requested
-				// 1 CryptLayer Supported
-				taglist.push_back(new CTagInt8(TAG_ENCRYPTION,
-							       (thePrefs::IsClientCryptLayerRequired() ? 0x04 : 0)
-							       | (thePrefs::IsClientCryptLayerRequested() ? 0x02 : 0)
-							       | (thePrefs::IsClientCryptLayerSupported() ? 0x01 : 0)));
+				taglist.push_back(new CTagInt8(TAG_ENCRYPTION, CPrefs::GetMyConnectOptions(true, true)));
 
 				// Send packet
 				CKademlia::GetUDPListener()->SendPublishSourcePacket(*from, m_target, id, taglist);
@@ -560,12 +604,17 @@ void CSearch::StorePacket()
 				packetdata.Seek(current_pos);
 
 				// Send packet
-				if (from->GetVersion() >= 2) {
+				if (from->GetVersion() >= 6) {
 					DebugSend(Kad2PublishKeyReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort());
+					CUInt128 clientID = from->GetClientID();
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+				} else if (from->GetVersion() >= 2) {
+					DebugSend(Kad2PublishKeyReq, from->GetIPAddress(), from->GetUDPPort());
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_KEY_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+					wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
 				} else {
 					DebugSend(KadPublishReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort());
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 				}
 			}
 			m_totalRequestAnswers++;
@@ -600,12 +649,17 @@ void CSearch::StorePacket()
 				packetdata.WriteTagPtrList(taglist);
 
 				// Send packet
-				if (from->GetVersion() >= 2) {
+				if (from->GetVersion() >= 6) {
 					DebugSend(Kad2PublishNotesReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort());
+					CUInt128 clientID = from->GetClientID();
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+				} else if (from->GetVersion() >= 2) {
+					DebugSend(Kad2PublishNotesReq, from->GetIPAddress(), from->GetUDPPort());
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+					wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
 				} else {
 					DebugSend(KadPublishNotesReq, from->GetIPAddress(), from->GetUDPPort());
-					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort());
+					CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_PUBLISH_NOTES_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
 				}
 				m_totalRequestAnswers++;
 				// Delete all tags.
@@ -636,7 +690,13 @@ void CSearch::StorePacket()
 			packetdata.WriteUInt16(thePrefs::GetPort());
 
 			DebugSend(KadFindBuddyReq, from->GetIPAddress(), from->GetUDPPort());
-			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_FINDBUDDY_REQ, from->GetIPAddress(), from->GetUDPPort());
+			if (from->GetVersion() >= 6) {
+				CUInt128 clientID = from->GetClientID();
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_FINDBUDDY_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+			} else {
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_FINDBUDDY_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+				wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
+			}
 			m_answers++;
 			break;
 		}
@@ -662,10 +722,26 @@ void CSearch::StorePacket()
 			packetdata.WriteUInt16(thePrefs::GetPort());
 			// Send packet
 			DebugSend(KadCallbackReq, from->GetIPAddress(), from->GetUDPPort());
-			CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA_CALLBACK_REQ, from->GetIPAddress(), from->GetUDPPort());
+			if (from->GetVersion() >= 6) {
+				CUInt128 clientID = from->GetClientID();
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_CALLBACK_REQ, from->GetIPAddress(), from->GetUDPPort(), from->GetUDPKey(), &clientID);
+			} else {
+				CKademlia::GetUDPListener()->SendPacket( packetdata, KADEMLIA_CALLBACK_REQ, from->GetIPAddress(), from->GetUDPPort(), 0, NULL);
+				wxASSERT(from->GetUDPKey() == CKadUDPKey(0));
+			}
 			m_answers++;
 			break;
 		}
+		case NODESPECIAL: {
+			// we are looking for the IP of a given NodeID, so we just check if we 0 distance and if so, report the
+			// tip to the requester
+			if (fromDistance == 0) {
+				m_nodeSpecialSearchRequester-> KadSearchIPByNodeIDResult(KCSR_SUCCEEDED, wxUINT32_SWAP_ALWAYS(from->GetIPAddress()), from->GetTCPPort());
+				m_nodeSpecialSearchRequester = NULL;
+				PrepareToStop();
+			}
+			break;
+		 }
 		case NODECOMPLETE:
 			AddDebugLogLineM(false, logKadSearch, wxT("Search request type: NodeComplete"));
 			break;
@@ -748,6 +824,7 @@ void CSearch::ProcessResultFile(const CUInt128& answer, TagPtrList *info)
 		case 3:
 		case 4:
 		case 5:
+		case 6:
 			m_answers++;
 			theApp->downloadqueue->KademliaSearchFile(m_searchID, &answer, &buddy, type, ip, tcp, udp, serverip, serverport, byCryptOptions);
 			break;
@@ -778,14 +855,14 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 			entry->m_uTCPport = tag->GetInt();
 			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_FILENAME)) {
-			entry->m_sFileName = tag->GetStr();
+			entry->SetFileName(tag->GetStr());
 			delete tag;
 		} else if (!tag->GetName().Cmp(TAG_DESCRIPTION)) {
 			wxString strComment(tag->GetStr());
 			bFilterComment = thePrefs::IsMessageFiltered(strComment);
-			entry->m_lTagList.push_front(tag);
+			entry->AddTag(tag);
 		} else if (!tag->GetName().Cmp(TAG_FILERATING)) {
-			entry->m_lTagList.push_front(tag);
+			entry->AddTag(tag);
 		} else {
 			delete tag;
 		}
@@ -797,7 +874,7 @@ void CSearch::ProcessResultNotes(const CUInt128& answer, TagPtrList *info)
 		return;
 	}
 
-	byte fileid[16];
+	uint8_t fileid[16];
 	m_target.ToByteArray(fileid);
 	const CMD4Hash fileHash(fileid);
 
@@ -834,6 +911,7 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	wxString codec;
 	uint32_t bitrate = 0;
 	uint32_t availability = 0;
+	uint32_t publishInfo = 0;
 	// Flag that is set if we want this keyword
 	bool bFileName = false;
 	bool bFileSize = false;
@@ -874,6 +952,14 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 			if( availability > 65500 ) {
 				availability = 0;
 			}
+		} else if (tag->GetName() == TAG_PUBLISHINFO) {
+			publishInfo = (uint32_t)tag->GetInt();
+#ifdef __DEBUG__
+			uint32_t differentNames = (publishInfo & 0xFF000000) >> 24;
+			uint32_t publishersKnown = (publishInfo & 0x00FF0000) >> 16;
+			uint32_t trustValue = publishInfo & 0x0000FFFF;
+			AddDebugLogLineM(false, logKadSearch, wxString::Format(wxT("Received PublishInfo Tag: %u different names, %u publishers, %.2f trustvalue"), differentNames, publishersKnown, (double)trustValue/ 100.0));
+#endif
 		}
 		delete tag;
 	}
@@ -910,6 +996,9 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	if (availability) {
 		taglist.push_back(new CTagVarInt(TAG_SOURCES, availability));
 	}
+	if (publishInfo) {
+		taglist.push_back(new CTagVarInt(TAG_PUBLISHINFO, publishInfo));
+	}
 
 	m_answers++;
 	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
@@ -934,6 +1023,8 @@ void CSearch::SendFindValue(CContact *contact)
 		switch(m_type){
 			case NODE:
 			case NODECOMPLETE:
+			case NODESPECIAL:
+			case NODEFWCHECKUDP:
 				packetdata.WriteUInt8(KADEMLIA_FIND_NODE);
 				break;
 			case FILE:
@@ -957,7 +1048,13 @@ void CSearch::SendFindValue(CContact *contact)
 		// Add the ID of the contact we're contacting for sanity checks on the other end.
 		packetdata.WriteUInt128(contact->GetClientID());
 		if (contact->GetVersion() >= 2) {
-			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_REQ, contact->GetIPAddress(), contact->GetUDPPort());
+			if (contact->GetVersion() >= 6) {
+				CUInt128 clientID = contact->GetClientID();
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_REQ, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &clientID);
+			} else {
+				CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA2_REQ, contact->GetIPAddress(), contact->GetUDPPort(), 0, NULL);
+				wxASSERT(contact->GetUDPKey() == CKadUDPKey(0));
+			}
 #ifdef __DEBUG__
 			switch (m_type) {
 				case NODE:
@@ -965,6 +1062,12 @@ void CSearch::SendFindValue(CContact *contact)
 					break;
 				case NODECOMPLETE:
 					DebugSendF(wxT("Kad2Req(NodeComplete)"), contact->GetIPAddress(), contact->GetUDPPort());
+					break;
+				case NODESPECIAL:
+					DebugSendF(wxT("Kad2Req(NodeSpecial)"), contact->GetIPAddress(), contact->GetUDPPort());
+					break;
+				case NODEFWCHECKUDP:
+					DebugSendF(wxT("Kad2Req(NodeFWCheckUDP)"), contact->GetIPAddress(), contact->GetUDPPort());
 					break;
 				case FILE:
 					DebugSendF(wxT("Kad2Req(File)"), contact->GetIPAddress(), contact->GetUDPPort());
@@ -990,7 +1093,7 @@ void CSearch::SendFindValue(CContact *contact)
 			}
 #endif
 		} else {
-			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_REQ, contact->GetIPAddress(), contact->GetUDPPort());
+			CKademlia::GetUDPListener()->SendPacket(packetdata, KADEMLIA_REQ, contact->GetIPAddress(), contact->GetUDPPort(), 0, NULL);
 #ifdef __DEBUG__
 			switch (m_type) {
 				case NODE:
@@ -998,6 +1101,12 @@ void CSearch::SendFindValue(CContact *contact)
 					break;
 				case NODECOMPLETE:
 					DebugSendF(wxT("KadReq(NodeComplete)"), contact->GetIPAddress(), contact->GetUDPPort());
+					break;
+				case NODESPECIAL:
+					DebugSendF(wxT("KadReq(NodeSpecial)"), contact->GetIPAddress(), contact->GetUDPPort());
+					break;
+				case NODEFWCHECKUDP:
+					DebugSendF(wxT("KadReq(NodeFWCheckUDP)"), contact->GetIPAddress(), contact->GetUDPPort());
 					break;
 				case FILE:
 					DebugSendF(wxT("KadReq(File)"), contact->GetIPAddress(), contact->GetUDPPort());
@@ -1043,6 +1152,7 @@ void CSearch::PreparePacketForTags(CMemFile *bio, CKnownFile *file)
 			// Name, Size
 			taglist.push_back(new CTagString(TAG_FILENAME, file->GetFileName().GetPrintable()));
 			if (file->IsLargeFile()) {
+				// TODO: As soon as we drop Kad1 support, we should switch to Int64 tags (we could do now already for kad2 nodes only but no advantage in that)
 				uint8_t size64[sizeof(uint64_t)];
 				PokeUInt64(size64, file->GetFileSize());
 				taglist.push_back(new CTagBsob(TAG_FILESIZE, size64, sizeof(uint64_t)));	

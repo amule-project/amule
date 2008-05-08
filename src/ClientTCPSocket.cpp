@@ -29,6 +29,7 @@
 #include <protocol/ed2k/Client2Client/TCP.h>
 #include <protocol/ed2k/Client2Client/UDP.h> // Sometimes we reply with UDP packets.
 #include <protocol/ed2k/ClientSoftware.h>
+#include <protocol/kad2/Client2Client/TCP.h>
 #include <common/EventIDs.h>
 
 #include "Preferences.h"	// Needed for thePrefs
@@ -158,18 +159,22 @@ CClientTCPSocket::~CClientTCPSocket()
 	}
 }
 
-bool CClientTCPSocket::InitNetworkData() {
+bool CClientTCPSocket::InitNetworkData()
+{
 	wxASSERT(!m_remoteip);
 	wxASSERT(!m_client);
 	amuleIPV4Address addr;
 	GetPeer(addr);
 	m_remoteip = StringIPtoUint32(addr.IPAddress());
-	
+
 	MULE_CHECK(m_remoteip, false);
-	
+
 	if (theApp->ipfilter->IsFiltered(m_remoteip)) {
 		AddDebugLogLineM(false, logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Filtered IP)"));
-		return false;	
+		return false;
+	} else if (theApp->clientlist->IsBannedClient(m_remoteip)) {
+		AddDebugLogLineM(false, logClient, wxT("Denied connection from ") + addr.IPAddress() + wxT("(Banned IP)"));
+		return false;
 	} else {
 		AddDebugLogLineM(false, logClient, wxT("Accepted connection from ") + addr.IPAddress());
 		return true;
@@ -1811,6 +1816,24 @@ bool CClientTCPSocket::ProcessExtPacket(const byte* buffer, uint32 size, uint8 o
 				} else {
 					AddDebugLogLineM(false, logRemoteClient, CFormat(wxT("OP_REASKCALLBACKTCP Packet received - multiple clients with the same IP but different UDP port found. Possible UDP Portmapping problem, enforcing TCP connection. IP: %s, Port: %u")) % Uint32toStringIP(destip) % destport);
 				}
+			}
+			break;
+		}
+		case OP_FWCHECKUDPREQ: { // Support required for Kadversion >= 6
+			AddDebugLogLineM(false, logRemoteClient, wxT("Remote Client: OP_FWCHECKUDPREQ from ") + m_client->GetFullIP());
+			theStats::AddDownOverheadOther(size);
+			CMemFile data_in(buffer, size);
+			m_client->ProcessFirewallCheckUDPRequest(&data_in);
+			break;
+		}
+		case OP_KAD_FWTCPCHECK_ACK: { // Support required for Kadversion >= 7
+			AddDebugLogLineM(false, logRemoteClient, wxT("Remote Client: OP_KAD_FWTCPCHECK_ACK from ") + m_client->GetFullIP());
+			if (theApp->clientlist->IsKadFirewallCheckIP(m_client->GetIP())) {
+				if (Kademlia::CKademlia::IsRunning()) {
+					Kademlia::CKademlia::GetPrefs()->IncFirewalled();
+				}
+			} else {
+				AddDebugLogLineM(false, logListenSocket, wxT("Received unrequested OP_KAD_FWTCPCHECK_ACK packet from ") + m_client->GetFullIP());
 			}
 			break;
 		}
