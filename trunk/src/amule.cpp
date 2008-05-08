@@ -1983,10 +1983,21 @@ void CamuleApp::ShowUserCount() {
 	
 	theApp->serverlist->GetUserFileStatus( totaluser, totalfile );
 	
-	wxString buffer = 
-		CFormat(_("Users: E: %s K: %s | Files E: %s K: %s")) % CastItoIShort(totaluser) % 
-		CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
+	wxString buffer;
 	
+	static const wxString s_singlenetstatusformat = _("Users: %s | Files: %s");
+	static const wxString s_bothnetstatusformat = _("Users: E: %s K: %s | Files: E: %s K: %s");
+	
+	if (thePrefs::GetNetworkED2K() && thePrefs::GetNetworkKademlia()) {
+		buffer = CFormat(s_bothnetstatusformat) % CastItoIShort(totaluser) % CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()) % CastItoIShort(totalfile) % CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
+	} else if (thePrefs::GetNetworkED2K()) {
+		buffer = CFormat(s_singlenetstatusformat) % CastItoIShort(totaluser) % CastItoIShort(totalfile);
+	} else if (thePrefs::GetNetworkKademlia()) {
+		buffer = CFormat(s_singlenetstatusformat) % CastItoIShort(Kademlia::CKademlia::GetKademliaUsers()) % CastItoIShort(Kademlia::CKademlia::GetKademliaFiles());
+	} else {
+		buffer = _("No networks selected");
+	}
+
 	Notify_ShowUserCount(buffer);
 }
 
