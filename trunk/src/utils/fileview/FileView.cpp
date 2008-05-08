@@ -74,15 +74,15 @@ IMPLEMENT_APP(CFileView);
 
 void CFileView::OnInitCmdLine(wxCmdLineParser& parser)
 {
-	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Show help"), wxCMD_LINE_PARAM_OPTIONAL);
-	parser.AddSwitch(wxT("v"), wxT("version"), wxT("Show program version"), wxCMD_LINE_OPTION_HELP);
+	parser.AddSwitch(wxT("h"), wxT("help"), wxT("Show help"), wxCMD_LINE_OPTION_HELP);
+	parser.AddSwitch(wxT("v"), wxT("version"), wxT("Show program version"), wxCMD_LINE_PARAM_OPTIONAL);
 	parser.AddParam(wxT("input file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE);
 }
 
 bool CFileView::OnCmdLineParsed(wxCmdLineParser& parser)
 {
 	if (parser.Found(wxT("version"))) {
-		DoPrint(wxString::Format(wxT("FileView version %u.%u.%u\nCopyright (c) 2008 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO));
+		DoPrint(wxString::Format(wxT("MuleFileView version %u.%u.%u\nCopyright (c) 2008 aMule Team\n"), VERSION_MAJOR, VERSION_MINOR, VERSION_MICRO));
 		return false;
 	} else {
 		for (size_t n = 0; n < parser.GetParamCount(); n++) {

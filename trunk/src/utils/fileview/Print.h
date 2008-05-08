@@ -76,14 +76,14 @@ template<> void Print<CTag>(const CTag& tag);
 
 // Some formatting functions
 
-inline wxString Uint32toStringIP(uint32 ip)
+inline wxString Uint32toStringIP(uint32_t ip)
 {
-	return wxString::Format(wxT("%u.%u.%u.%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24));	
+	return wxString::Format(wxT("%u.%u.%u.%u"), (uint8_t)ip, (uint8_t)(ip>>8), (uint8_t)(ip>>16), (uint8_t)(ip>>24));	
 }
 
-inline wxString Uint32_16toStringIP_Port(uint32 ip, uint16 port)
+inline wxString Uint32_16toStringIP_Port(uint32_t ip, uint16_t port)
 {
-	return wxString::Format(wxT("%u.%u.%u.%u:%u"),(uint8)ip,(uint8)(ip>>8),(uint8)(ip>>16),(uint8)(ip>>24),port);	
+	return wxString::Format(wxT("%u.%u.%u.%u:%u"), (uint8_t)ip, (uint8_t)(ip>>8), (uint8_t)(ip>>16), (uint8_t)(ip>>24), port);	
 }
 
 #endif /* FILEVIEW_PRINT_H */
