@@ -29,6 +29,7 @@
 
 #include <map>
 #include <list>
+#include "../../Types.h"
 
 namespace Kademlia
 {
