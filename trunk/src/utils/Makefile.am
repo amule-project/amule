@@ -14,7 +14,8 @@ if ALCC
   OPT_ALC = aLinkCreator
 endif
 
-SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC) fileview
+SUBDIRS = xas $(OPT_CAS) $(OPT_WXCAS) $(OPT_ALC)
+DIST_SUBDIRS = fileview
 
 MAINTAINERCLEANFILES = Makefile.in
 
