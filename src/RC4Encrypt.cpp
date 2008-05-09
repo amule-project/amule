@@ -152,7 +152,7 @@ void CRC4EncryptableBuffer::ResetData()
 	CMemFile::ResetData();
 }
 
-void CRC4EncryptableBuffer::Reset()
+void CRC4EncryptableBuffer::FullReset()
 {
 	ResetData();
 	m_hasKey = false;

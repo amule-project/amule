@@ -168,7 +168,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 	bool kadRecvKeyUsed = false;
 	bool kad = false;
 	do {
-		receivebuffer.Reset();
+		receivebuffer.FullReset();
 		tries--;
 		MD5Sum md5;
 

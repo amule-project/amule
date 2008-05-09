@@ -81,7 +81,7 @@ public:
 	void ResetData();
 
 	// Resets everything, as if the object has just been created.
-	void Reset();
+	void FullReset();
 
 private:
 	bool m_encrypted;
