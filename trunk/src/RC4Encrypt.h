@@ -80,6 +80,9 @@ public:
 	// Also clears the encryption flag	
 	void ResetData();
 
+	// Resets everything, as if the object has just been created.
+	void Reset();
+
 private:
 	bool m_encrypted;
 	bool m_hasKey;

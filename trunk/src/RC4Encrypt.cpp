@@ -148,6 +148,13 @@ void CRC4EncryptableBuffer::RC4CreateKey(const uint8* pachKeyData, uint32 nLen, 
 void CRC4EncryptableBuffer::ResetData()
 {
 	m_encrypted = false;
-	// Should we clear the keys?
+	// Not touching the keys.
 	CMemFile::ResetData();
+}
+
+void CRC4EncryptableBuffer::Reset()
+{
+	ResetData();
+	m_hasKey = false;
+	memset(&m_key, 0, sizeof(RC4_Key_Struct));
 }
