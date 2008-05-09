@@ -209,7 +209,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 		receivebuffer.RC4Crypt(bufIn + 3, (uint8_t*)&value, sizeof(value));
 		ENDIAN_SWAP_I_32(value);
 
-		currentTry = ++currentTry % 3;
+		currentTry = (currentTry + 1) % 3;
 	} while (value != MAGICVALUE_UDP_SYNC_CLIENT && tries > 0); // try to decrypt as ed2k as well as kad packet if needed (max 3 rounds)
 
 	if (value == MAGICVALUE_UDP_SYNC_CLIENT) {
