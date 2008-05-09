@@ -140,6 +140,9 @@ public:
 	void SetClientPort(uint16 port);
 	//@}
 	
+	void	 SetKadPublishInfo(uint32_t val) throw()	{ m_kadPublishInfo = val; }
+	uint32_t GetKadPublishInfo() const throw()		{ return m_kadPublishInfo; }
+
 private:
 	//! CSearchFile is not assignable.
 	CSearchFile& operator=(const CSearchFile& other);
@@ -173,6 +176,9 @@ private:
 	uint16			m_clientPort;
 	wxString		m_directory;
 	//@}
+
+	//! Kademlia publish information.
+	uint32_t		m_kadPublishInfo;
 
 	friend class CPartFile;
 	friend class CSearchListRem;

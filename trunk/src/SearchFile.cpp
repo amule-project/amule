@@ -38,7 +38,8 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 	  m_sourceCount(0),
 	  m_completeSourceCount(0),
 	  m_kademlia(kademlia),
-	  m_directory(directory)	
+	  m_directory(directory),
+	  m_kadPublishInfo(0)
 {
 	m_abyFileHash = data.ReadHash();
 	m_clientID = data.ReadUInt32();
@@ -62,7 +63,7 @@ CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID,
 				SetFileSize(tag.GetInt());
 				break;
 			case FT_FILESIZE_HI:
-				SetFileSize( (((uint64)tag.GetInt()) << 32) + GetFileSize());
+				SetFileSize((((uint64)tag.GetInt()) << 32) + GetFileSize());
 				break;				
 			case FT_FILERATING:
 				m_iUserRating = (tag.GetInt() & 0xF) / 3;
@@ -94,7 +95,8 @@ CSearchFile::CSearchFile(const CSearchFile& other)
 	  m_kademlia(other.m_kademlia),
 	  m_clientID(other.m_clientID),
 	  m_clientPort(other.m_clientPort),
-	  m_directory(other.m_directory)
+	  m_directory(other.m_directory),
+	  m_kadPublishInfo(other.m_kadPublishInfo)
 {
 	for (size_t i = 0; i < other.m_children.size(); ++i) {
 		m_children.push_back(new CSearchFile(*other.m_children.at(i)));

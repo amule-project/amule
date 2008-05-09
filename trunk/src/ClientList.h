@@ -328,9 +328,9 @@ public:
 	// This must be used on CreateKadSourceLink and if we ever add the columns
 	// on shared files control.
 	CUpDownClient* GetBuddy() const { return m_pBuddy; }
-	void RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions);
+	bool RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions);
 	void RequestBuddy(Kademlia::CContact* contact, uint8_t connectOptions);
-	void IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID );
+	bool IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID);
 	void RemoveFromKadList(CUpDownClient* torem);
 	void AddToKadList(CUpDownClient* toadd);
 	bool DoRequestFirewallCheckUDP(const Kademlia::CContact& contact);
