@@ -27,6 +27,7 @@
 #include "RC4Encrypt.h"
 #include <common/MD5Sum.h>
 
+
 #include <stdexcept>
 
 CRC4EncryptableBuffer::CRC4EncryptableBuffer() : m_encrypted(false), m_hasKey(false), m_key()
@@ -54,13 +55,7 @@ void CRC4EncryptableBuffer::Append(const uint8* buffer, int n)
 void CRC4EncryptableBuffer::Encrypt()
 {
 	wxASSERT(!m_encrypted);
-	// This is not optimal. At all.
-	int n = GetLength();
-	std::vector<byte> orig_buffer(n);
-	memcpy(&(orig_buffer[0]), GetRawBuffer(), n);
-	RC4Crypt(&(orig_buffer[0]), GetRawBuffer(), n);
-	//DumpMem(orig_buffer, n, wxT("Orig buffer: "));
-	//DumpMem(GetRawBuffer() ,n, wxT("Encrypted buffer: "));
+	RC4Crypt(GetRawBuffer(), GetRawBuffer(), GetLength());
 	m_encrypted = true;
 }
 
