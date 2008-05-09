@@ -198,7 +198,7 @@ void CKademlia::Process()
 		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
 		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
 		if (contact != NULL) {
-			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + Uint32toStringIP(contact->GetIPAddress()));
+			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + Uint32toStringIP(wxUINT32_SWAP_ALWAYS(contact->GetIPAddress())));
 			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
 			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
 		} else {
