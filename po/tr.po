@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-06 03:30+0200\n"
+"POT-Creation-Date: 2008-05-09 03:31+0200\n"
 "PO-Revision-Date: 2008-04-23 14:32+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Türkçe <tr@li.org>\n"
@@ -126,12 +126,12 @@ msgstr "UYARI: Yedekleme oluşturulduktan sonra özgün '%s' çıkartılamıyor"
 msgid "WARNING: Failed to delete %s"
 msgstr "UYARI: %s dosyası silinemiyor"
 
-#: src/BaseClient.cpp:1258
+#: src/BaseClient.cpp:1305
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
 
-#: src/BaseClient.cpp:1635 src/BaseClient.cpp:2157 src/BaseClient.cpp:2429
+#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -147,35 +147,35 @@ msgstr "'%s' kullanıcısının paylaşılmış dosyalarını alma başarısız"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
-#: src/BaseClient.cpp:1652
+#: src/BaseClient.cpp:1733
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Sahte eMule sürümü %#x)"
 
-#: src/BaseClient.cpp:1663
+#: src/BaseClient.cpp:1744
 msgid " (Fake eMule)"
 msgstr "(Sahte eMule)"
 
-#: src/BaseClient.cpp:1665
+#: src/BaseClient.cpp:1746
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Sahte eMule)"
 
-#: src/BaseClient.cpp:1704
+#: src/BaseClient.cpp:1785
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (eMule s.0.%u üzerine kurulu)"
 
-#: src/BaseClient.cpp:1874
+#: src/BaseClient.cpp:1955
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Rumuz: %s ID: %u"
 
-#: src/BaseClient.cpp:1876
+#: src/BaseClient.cpp:1957
 #, c-format
 msgid "Requested: %s\n"
 msgstr "İstek: %s\n"
 
-#: src/BaseClient.cpp:1878
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -185,7 +185,7 @@ msgstr[0] ""
 msgstr[1] ""
 "Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
 
-#: src/BaseClient.cpp:1881
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -197,11 +197,11 @@ msgstr[1] ""
 "Tüm oturumlar için dosya durumu: Kabul edilen istek %d si %d nin, %s "
 "aktarıldı\n"
 
-#: src/BaseClient.cpp:1884
+#: src/BaseClient.cpp:1965
 msgid "Requested unknown file"
 msgstr "Bilinmeyen dosya istendi"
 
-#: src/BaseClient.cpp:2156
+#: src/BaseClient.cpp:2237
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "%s Kullanıcısı IP:Port %s:%d üzerinde ve %s %s %s kullanıyor"
@@ -512,14 +512,14 @@ msgstr "aMule metin aracı"
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: Arama sözcüğü çok kısa"
 
-#: src/kademlia/routing/RoutingZone.cpp:172
+#: src/kademlia/routing/RoutingZone.cpp:187
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "%u adet Kademlia bağlantısı okundu"
 msgstr[1] "%u adet Kademlia bağlantısı okundu"
 
-#: src/kademlia/routing/RoutingZone.cpp:211
+#: src/kademlia/routing/RoutingZone.cpp:228
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2756,37 +2756,37 @@ msgstr "ED2k bağlı değilse, ED2K araması yapılamaz."
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kad. araması sırasında beklenilmeyen hata oluştu."
 
-#: src/ClientTCPSocket.cpp:796
+#: src/ClientTCPSocket.cpp:801
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "'%s' kullanıcısından gelen ileti engellendi. (IP: %s)"
 
-#: src/ClientTCPSocket.cpp:798
+#: src/ClientTCPSocket.cpp:803
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "'%s' kullanıcısından yeni ileti geldi (IP: %s)"
 
-#: src/ClientTCPSocket.cpp:816
+#: src/ClientTCPSocket.cpp:821
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Kabul edildi"
 
-#: src/ClientTCPSocket.cpp:837
+#: src/ClientTCPSocket.cpp:842
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "Kullanıcı %s (%u), paylaşılmış dosya listenizi istedi. -> Reddedildi"
 
-#: src/ClientTCPSocket.cpp:869
+#: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Kabul edildi"
 
-#: src/ClientTCPSocket.cpp:909
+#: src/ClientTCPSocket.cpp:914
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedildi"
 
-#: src/ClientTCPSocket.cpp:934
+#: src/ClientTCPSocket.cpp:939
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -2794,39 +2794,39 @@ msgstr ""
 "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
 "kabul edildi"
 
-#: src/ClientTCPSocket.cpp:971
+#: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
 "reddedildi."
 
-#: src/ClientTCPSocket.cpp:990
+#: src/ClientTCPSocket.cpp:995
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "Kullanıcı %s (%u), %s dizinini paylaşıyor"
 
-#: src/ClientTCPSocket.cpp:1005
+#: src/ClientTCPSocket.cpp:1010
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
 
-#: src/ClientTCPSocket.cpp:1020
+#: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "Kullanıcı %s (%u) %s dizini için paylaşılmış dosya listesini gönderdi"
 
-#: src/ClientTCPSocket.cpp:1027
+#: src/ClientTCPSocket.cpp:1032
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "Kullanıcı %s (%u) paylaşılmış dosya listesini göndermeyi tamamladı"
 
-#: src/ClientTCPSocket.cpp:1032
+#: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "Kullanıcı %s (%u) istenmeyen paylaşılmış dosya listesi gönderdi"
 
-#: src/ClientTCPSocket.cpp:1044
+#: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr "Kullanıcı %s (%u)nın paylaşılmış dizin/dosyalara erişimi  reddedildi."
@@ -2863,11 +2863,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Devam mı?"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Error: "
 msgstr "Hata: "
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Warning: "
 msgstr "Uyarı: "
 
@@ -2945,7 +2945,7 @@ msgstr ""
 "UYARI: Kendinizi bir ed'k bağlantısına kaynak olarak ekleyebilirsiniz; ancak "
 "DüşükID alırsınız."
 
-#: src/amule-remote-gui.cpp:577 src/amule.cpp:1987
+#: src/amule-remote-gui.cpp:577
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Kullanıcı: E: %s K: %s | Dosya E: %s K: %s"
@@ -3590,11 +3590,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Bağlandı: %s %s %s"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with LowID"
 msgstr "DüşükID ile"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with HighID"
 msgstr "YüksekID ile"
 
@@ -7040,41 +7040,55 @@ msgstr "aMule sürümünüz güncel."
 msgid "Failed to download the version check file"
 msgstr "Sürüm kontrol dosyasını indirme başarısız oldu."
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:1988
+#, c-format
+msgid "Users: %s | Files: %s"
+msgstr ""
+
+#: src/amule.cpp:1989
+#, c-format
+msgid "Users: E: %s K: %s | Files: E: %s K: %s"
+msgstr ""
+
+#: src/amule.cpp:1998
+msgid "No networks selected"
+msgstr ""
+
+#: src/amule.cpp:2065
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Bağlandı: %s %s"
 
-#: src/amule.cpp:2057
+#: src/amule.cpp:2068
 #, c-format
 msgid "Connecting to %s"
 msgstr "Bağlanıyor: %s"
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2070
 msgid "Disconnected from ED2K"
 msgstr "ED2K bağlantısı kesildi"
 
-#: src/amule.cpp:2066
+#: src/amule.cpp:2077
 msgid "Kad started."
 msgstr "Kademlia başladı."
 
-#: src/amule.cpp:2068
+#: src/amule.cpp:2079
 msgid "Kad stopped."
 msgstr "Kademlia durdu."
 
-#: src/amule.cpp:2075
+#: src/amule.cpp:2086
 msgid "Connected to Kad (ok)"
 msgstr "Kademila ağına bağlanıldı (tamam)"
 
-#: src/amule.cpp:2077
+#: src/amule.cpp:2088
 msgid "Connected to Kad (firewalled)"
 msgstr "Kademlia ağına bağlanıldı. (Güvenlik duvarı)"
 
-#: src/amule.cpp:2080
+#: src/amule.cpp:2091
 msgid "Disconnected from Kad"
 msgstr "Kademlia bağlantısı kesildi."
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2154
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7082,7 +7096,7 @@ msgstr ""
 "UDP portu ayarlarda devre dışı bırakılmışsa Kad ağı kullanılamaz. "
 "Başlatılmıyor."
 
-#: src/amule.cpp:2146
+#: src/amule.cpp:2157
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad. ağı ayarlarda devre dışı bırakılmış, bağlanılmıyor."
 

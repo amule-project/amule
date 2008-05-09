@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-06 03:30+0200\n"
+"POT-Creation-Date: 2008-05-09 03:31+0200\n"
 "PO-Revision-Date: 2007-12-20 20:59-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -128,12 +128,12 @@ msgstr ""
 msgid "WARNING: Failed to delete %s"
 msgstr "Ειδοποίηση: Απέτυχα να σβήσω το %s"
 
-#: src/BaseClient.cpp:1258
+#: src/BaseClient.cpp:1305
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Αποτυχία λήψης των κοινών αρχείων του χρήστη '%s'"
 
-#: src/BaseClient.cpp:1635 src/BaseClient.cpp:2157 src/BaseClient.cpp:2429
+#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -149,35 +149,35 @@ msgstr "Αποτυχία λήψης των κοινών αρχείων του χ
 msgid "Unknown"
 msgstr "Αγνωστο"
 
-#: src/BaseClient.cpp:1652
+#: src/BaseClient.cpp:1733
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr "(Πλασματική έκδοση eMule %#x)"
 
-#: src/BaseClient.cpp:1663
+#: src/BaseClient.cpp:1744
 msgid " (Fake eMule)"
 msgstr "(Πλασματικό eMule)"
 
-#: src/BaseClient.cpp:1665
+#: src/BaseClient.cpp:1746
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Πλασματικό eMule)"
 
-#: src/BaseClient.cpp:1704
+#: src/BaseClient.cpp:1785
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (βασισμένο στο eMule v0.%u)"
 
-#: src/BaseClient.cpp:1874
+#: src/BaseClient.cpp:1955
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Παρατσούκλι: %s Ταυτότητα: %u"
 
-#: src/BaseClient.cpp:1876
+#: src/BaseClient.cpp:1957
 #, c-format
 msgid "Requested: %s\n"
 msgstr ""
 
-#: src/BaseClient.cpp:1878
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -185,7 +185,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/BaseClient.cpp:1881
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -193,11 +193,11 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/BaseClient.cpp:1884
+#: src/BaseClient.cpp:1965
 msgid "Requested unknown file"
 msgstr "Αναζητήθηκε άγνωστο αρχείο"
 
-#: src/BaseClient.cpp:2156
+#: src/BaseClient.cpp:2237
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Πελάτης %s στην θύρα IP %s:%d ο οποίος χρησιμοποιεί %s %s %s"
@@ -509,14 +509,14 @@ msgstr ""
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: Η λέξη κλειδί αναζήτησης είναι πολυ μικρούλα"
 
-#: src/kademlia/routing/RoutingZone.cpp:172
+#: src/kademlia/routing/RoutingZone.cpp:187
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/kademlia/routing/RoutingZone.cpp:211
+#: src/kademlia/routing/RoutingZone.cpp:228
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2733,43 +2733,43 @@ msgstr ""
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Άγνωστο σφάλμα όταν έγινε απόπειρα αναζήτησης στο Kad:"
 
-#: src/ClientTCPSocket.cpp:796
+#: src/ClientTCPSocket.cpp:801
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "Φιλτραρίστηκε το μύνημα από τον '%s' (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:798
+#: src/ClientTCPSocket.cpp:803
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "Καινούριο μύνημα από τον '%s' (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:816
+#: src/ClientTCPSocket.cpp:821
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία -> Έγινε δεκτό"
 
-#: src/ClientTCPSocket.cpp:837
+#: src/ClientTCPSocket.cpp:842
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία -> Απορρίφθηκε"
 
-#: src/ClientTCPSocket.cpp:869
+#: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τους κοινόχρηστους καταλόγους -> Έγινε "
 "δεκτό"
 
-#: src/ClientTCPSocket.cpp:909
+#: src/ClientTCPSocket.cpp:914
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τους κοινόχρηστους καταλόγους -> "
 "Απορρίφθηκε"
 
-#: src/ClientTCPSocket.cpp:934
+#: src/ClientTCPSocket.cpp:939
 #, fuzzy, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -2777,40 +2777,40 @@ msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο %s -"
 "> Έγινε δεκτό"
 
-#: src/ClientTCPSocket.cpp:971
+#: src/ClientTCPSocket.cpp:976
 #, fuzzy, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "Ο χρήστης %s (%u) ζήτησε τη λίστα με τα κοινόχρηστα αρχεία για κατάλογο %s -"
 "> Απορρίφθηκε"
 
-#: src/ClientTCPSocket.cpp:990
+#: src/ClientTCPSocket.cpp:995
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "Ο χρήστης %s (%u) μοιράζεται τον κατάλογο %s"
 
-#: src/ClientTCPSocket.cpp:1005
+#: src/ClientTCPSocket.cpp:1010
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Ο χρήστης %s (%u) έστειλε κοινόχρηστους καταλόγους χωρίς να ζητηθούν."
 
-#: src/ClientTCPSocket.cpp:1020
+#: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr "Ο χρήσης %s (%u) έστειλε λίστα κοινόχρηστων αρχείων για κατάλογο %s"
 
-#: src/ClientTCPSocket.cpp:1027
+#: src/ClientTCPSocket.cpp:1032
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr ""
 "Ο χρήστης %s (%u) τελείωσε την αποστολή της λίστας κοινόχρηστων αρχείων"
 
-#: src/ClientTCPSocket.cpp:1032
+#: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr "Ο χρήστης %s (%u) έστειλε αχρείαστη λίστα κοινόχρηστων αρχείων"
 
-#: src/ClientTCPSocket.cpp:1044
+#: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -2846,11 +2846,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Συνέχιση;"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Error: "
 msgstr "Σφάλμα:"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Warning: "
 msgstr "Προειδοποίηση:"
 
@@ -2926,7 +2926,7 @@ msgid ""
 "lowid."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:577 src/amule.cpp:1987
+#: src/amule-remote-gui.cpp:577
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Χρήστες: E: %s K: %s | Αρχεία E: %s K: %s"
@@ -3552,11 +3552,11 @@ msgstr ""
 msgid "Connected to %s %s %s"
 msgstr ""
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with LowID"
 msgstr ""
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with HighID"
 msgstr ""
 
@@ -6927,41 +6927,55 @@ msgstr "Αυτό το αντίγραφο του aMule είναι σύγχρον�
 msgid "Failed to download the version check file"
 msgstr "Αποτυχία κατεβάσματος του αρχείου ελέγχου έκδοσης"
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:1988
+#, c-format
+msgid "Users: %s | Files: %s"
+msgstr ""
+
+#: src/amule.cpp:1989
+#, c-format
+msgid "Users: E: %s K: %s | Files: E: %s K: %s"
+msgstr ""
+
+#: src/amule.cpp:1998
+msgid "No networks selected"
+msgstr ""
+
+#: src/amule.cpp:2065
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Συνδεση με το %s %s"
 
-#: src/amule.cpp:2057
+#: src/amule.cpp:2068
 #, c-format
 msgid "Connecting to %s"
 msgstr "Διαδικασία σύνδεσης με %s"
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2070
 msgid "Disconnected from ED2K"
 msgstr "Αποσυνδεση από το ED2K"
 
-#: src/amule.cpp:2066
+#: src/amule.cpp:2077
 msgid "Kad started."
 msgstr "Το Kad ξεκίνησε."
 
-#: src/amule.cpp:2068
+#: src/amule.cpp:2079
 msgid "Kad stopped."
 msgstr "Το Kad είναι σταματημένο."
 
-#: src/amule.cpp:2075
+#: src/amule.cpp:2086
 msgid "Connected to Kad (ok)"
 msgstr "Συνδεδεμένο στο Kad (ΟΚ)"
 
-#: src/amule.cpp:2077
+#: src/amule.cpp:2088
 msgid "Connected to Kad (firewalled)"
 msgstr "Συνδεδεμένο στο Kad (με προστατευτικό τοίχο)"
 
-#: src/amule.cpp:2080
+#: src/amule.cpp:2091
 msgid "Disconnected from Kad"
 msgstr "Αποσυνδεδεμένο από το Kad"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2154
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -6969,7 +6983,7 @@ msgstr ""
 "Το δίκτυο Kad δεν μπορεί να χρησιμοποιηθεί αν η θύρα UDP είναι "
 "απενεργοποιημένη στις προτιμήσεις. Δεν έγινε εκκίνηση."
 
-#: src/amule.cpp:2146
+#: src/amule.cpp:2157
 msgid "Kad network disabled on preferences, not connecting."
 msgstr ""
 "Το δίκτυο Kad είναι απενεργοποιημένο από τις προτιμήσεις. Δεν έγινε σύνδεση."

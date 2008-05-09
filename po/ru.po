@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-06 03:30+0200\n"
+"POT-Creation-Date: 2008-05-09 03:31+0200\n"
 "PO-Revision-Date: 2008-03-05 15:54+0200\n"
 "Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -136,12 +136,12 @@ msgstr ""
 msgid "WARNING: Failed to delete %s"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: не удалось удалить %s"
 
-#: src/BaseClient.cpp:1258
+#: src/BaseClient.cpp:1305
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Не удалось получить список доступных файлов от '%s'"
 
-#: src/BaseClient.cpp:1635 src/BaseClient.cpp:2157 src/BaseClient.cpp:2429
+#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -157,35 +157,35 @@ msgstr "Не удалось получить список доступных ф�
 msgid "Unknown"
 msgstr "Неизвестны"
 
-#: src/BaseClient.cpp:1652
+#: src/BaseClient.cpp:1733
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Поддельная версия eMule %#x)"
 
-#: src/BaseClient.cpp:1663
+#: src/BaseClient.cpp:1744
 msgid " (Fake eMule)"
 msgstr " (имитация eMule)"
 
-#: src/BaseClient.cpp:1665
+#: src/BaseClient.cpp:1746
 msgid "xMule (Fake eMule)"
 msgstr "xMule (имитация eMule)"
 
-#: src/BaseClient.cpp:1704
+#: src/BaseClient.cpp:1785
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (на основе eMule v0.%u)"
 
-#: src/BaseClient.cpp:1874
+#: src/BaseClient.cpp:1955
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Псевдоним: %s ID: %u"
 
-#: src/BaseClient.cpp:1876
+#: src/BaseClient.cpp:1957
 #, fuzzy, c-format
 msgid "Requested: %s\n"
 msgstr "Запросы: %s\n"
 
-#: src/BaseClient.cpp:1878
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -197,7 +197,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для текущего сеанса: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1881
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -209,11 +209,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Статистика для всех сеансов: принято %d из %d запросов, %s передано\n"
 
-#: src/BaseClient.cpp:1884
+#: src/BaseClient.cpp:1965
 msgid "Requested unknown file"
 msgstr "Запрошен неизвестный файл"
 
-#: src/BaseClient.cpp:2156
+#: src/BaseClient.cpp:2237
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Клиент %s на IP:порт %s:%d используя %s %s %s"
@@ -525,14 +525,14 @@ msgstr ""
 msgid "Kademlia: search keyword too short"
 msgstr "Kad: слово запроса лишком коротоко"
 
-#: src/kademlia/routing/RoutingZone.cpp:172
+#: src/kademlia/routing/RoutingZone.cpp:187
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Считано %u контактов Kad"
 msgstr[1] "Считано %u контактов Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:211
+#: src/kademlia/routing/RoutingZone.cpp:228
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2783,37 +2783,37 @@ msgstr "Неворзможно осуществить поиск через ED2K
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Ошибка при поиске через Kad: "
 
-#: src/ClientTCPSocket.cpp:796
+#: src/ClientTCPSocket.cpp:801
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "Отфильтрованное сообщение от '%s' (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:798
+#: src/ClientTCPSocket.cpp:803
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "Новое сообщение от '%s' (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:816
+#: src/ClientTCPSocket.cpp:821
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr "Пользователь %s (%u) запросил список публикуемых файлов -> Принято"
 
-#: src/ClientTCPSocket.cpp:837
+#: src/ClientTCPSocket.cpp:842
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr "Пользователь %s (%u) запросил список публикуемых файлов -> Отказано"
 
-#: src/ClientTCPSocket.cpp:869
+#: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr "Пользователь %s (%u) запросил список публикуемых папок -> Принято"
 
-#: src/ClientTCPSocket.cpp:909
+#: src/ClientTCPSocket.cpp:914
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr "Пользователь %s (%u) запросил список публикуемых папок -> Отказано"
 
-#: src/ClientTCPSocket.cpp:934
+#: src/ClientTCPSocket.cpp:939
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -2821,41 +2821,41 @@ msgstr ""
 "Пользователь %s (%u) запросил список публикуемых каталогов из каталога %s -> "
 "Принято"
 
-#: src/ClientTCPSocket.cpp:971
+#: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "Пользователь %s (%u) запросил список публикуемых каталогов из каталога %s -> "
 "Отказано"
 
-#: src/ClientTCPSocket.cpp:990
+#: src/ClientTCPSocket.cpp:995
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "Пользователь %s (%u) сделал доступной каталог %s"
 
-#: src/ClientTCPSocket.cpp:1005
+#: src/ClientTCPSocket.cpp:1010
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr "Пользователь %s (%u) отправил незапрошенный список публикуемых папок."
 
-#: src/ClientTCPSocket.cpp:1020
+#: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr ""
 "Пользователь %s (%u) отправил список публикуемых каталогов из каталога %s"
 
-#: src/ClientTCPSocket.cpp:1027
+#: src/ClientTCPSocket.cpp:1032
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr "Пользователь %s (%u) закончил передачу списка публикуемых файлов."
 
-#: src/ClientTCPSocket.cpp:1032
+#: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr ""
 "Пользователь %s (%u) отправил список публикуемых файлов, который не нужен."
 
-#: src/ClientTCPSocket.cpp:1044
+#: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -2891,11 +2891,11 @@ msgstr "Это удалит используемые в данный момен�
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Error: "
 msgstr "Ошибка: "
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Warning: "
 msgstr "Предупреждение: "
 
@@ -2974,7 +2974,7 @@ msgstr ""
 "Предупреждение: Вы не можете добавить себя как источник для ed2k ссылки под "
 "низким ID."
 
-#: src/amule-remote-gui.cpp:577 src/amule.cpp:1987
+#: src/amule-remote-gui.cpp:577
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Пользователей: E: %s K: %s | Файлов E: %s K: %s"
@@ -3636,11 +3636,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "Подключен с %s %s %s"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with LowID"
 msgstr "LowID"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with HighID"
 msgstr "HighID"
 
@@ -7110,45 +7110,59 @@ msgstr "Ваша копия aMule актуальна."
 msgid "Failed to download the version check file"
 msgstr "Ошибка при загрузке файла контроля версии"
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:1988
+#, c-format
+msgid "Users: %s | Files: %s"
+msgstr ""
+
+#: src/amule.cpp:1989
+#, c-format
+msgid "Users: E: %s K: %s | Files: E: %s K: %s"
+msgstr ""
+
+#: src/amule.cpp:1998
+msgid "No networks selected"
+msgstr ""
+
+#: src/amule.cpp:2065
 #, c-format
 msgid "Connected to %s %s"
 msgstr "Соединён с %s %s"
 
-#: src/amule.cpp:2057
+#: src/amule.cpp:2068
 #, c-format
 msgid "Connecting to %s"
 msgstr "Подключение к %s"
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2070
 msgid "Disconnected from ED2K"
 msgstr "Отключен от ED2K"
 
 # Kad как сеть, или служба - поэтому в женском роде
 # да, согласен
-#: src/amule.cpp:2066
+#: src/amule.cpp:2077
 msgid "Kad started."
 msgstr "Kad запущена."
 
 # Kad как сеть, или служба - поэтому в женском роде
 # согласен
-#: src/amule.cpp:2068
+#: src/amule.cpp:2079
 msgid "Kad stopped."
 msgstr "Kad остановлена."
 
-#: src/amule.cpp:2075
+#: src/amule.cpp:2086
 msgid "Connected to Kad (ok)"
 msgstr "Подключен к Kad (норм.)"
 
-#: src/amule.cpp:2077
+#: src/amule.cpp:2088
 msgid "Connected to Kad (firewalled)"
 msgstr "Подключен к Kad (за брандмауэром)"
 
-#: src/amule.cpp:2080
+#: src/amule.cpp:2091
 msgid "Disconnected from Kad"
 msgstr "Отключился от Kad"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2154
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7156,7 +7170,7 @@ msgstr ""
 "Сеть Kad не может быть использована если порт UDP выключен в настройках. "
 "Отменяю запуск."
 
-#: src/amule.cpp:2146
+#: src/amule.cpp:2157
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Сеть Kad выключена в настройках. Отменяю соединение."
 

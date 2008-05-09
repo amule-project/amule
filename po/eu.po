@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-06 03:30+0200\n"
+"POT-Creation-Date: 2008-05-09 03:31+0200\n"
 "PO-Revision-Date: 2008-03-30 18:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -130,12 +130,12 @@ msgstr "KONTUZ: Ezin da jatorrizko '%s' ezabatu basbeskopia sortu ondoren"
 msgid "WARNING: Failed to delete %s"
 msgstr "KONTUZ: Huts %s ezabatzerakoan"
 
-#: src/BaseClient.cpp:1258
+#: src/BaseClient.cpp:1305
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 
-#: src/BaseClient.cpp:1635 src/BaseClient.cpp:2157 src/BaseClient.cpp:2429
+#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -151,35 +151,35 @@ msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/BaseClient.cpp:1652
+#: src/BaseClient.cpp:1733
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (Gezurrezko eMule bertsioa %#x)"
 
-#: src/BaseClient.cpp:1663
+#: src/BaseClient.cpp:1744
 msgid " (Fake eMule)"
 msgstr " (Gezurrezko eMule)"
 
-#: src/BaseClient.cpp:1665
+#: src/BaseClient.cpp:1746
 msgid "xMule (Fake eMule)"
 msgstr "xMule (Gezurrezko eMule)"
 
-#: src/BaseClient.cpp:1704
+#: src/BaseClient.cpp:1785
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (eMule v0.%u-tan oinarriturik)"
 
-#: src/BaseClient.cpp:1874
+#: src/BaseClient.cpp:1955
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Ezizena: %s ID-a: %u"
 
-#: src/BaseClient.cpp:1876
+#: src/BaseClient.cpp:1957
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Eskaerak: %s\n"
 
-#: src/BaseClient.cpp:1878
+#: src/BaseClient.cpp:1959
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -191,7 +191,7 @@ msgstr[1] ""
 "Fitxategi estatistikak saio honentzat. Onarturik %d - %d eskakizunetik, %s "
 "transferiturik\n"
 
-#: src/BaseClient.cpp:1881
+#: src/BaseClient.cpp:1962
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -203,11 +203,11 @@ msgstr[1] ""
 "Fitxategi estatistikak saio guztientzat. Onarturik %d  %d eskakizunetik, %s "
 "transferiturik\n"
 
-#: src/BaseClient.cpp:1884
+#: src/BaseClient.cpp:1965
 msgid "Requested unknown file"
 msgstr "Fitxategi ezezaguna eskaturik"
 
-#: src/BaseClient.cpp:2156
+#: src/BaseClient.cpp:2237
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "%s bezeroa %s:%d IP:Atakan %s %s %s erabiliaz"
@@ -515,14 +515,14 @@ msgstr "aMule testu bezeroa"
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: bilaketa gako laburregia"
 
-#: src/kademlia/routing/RoutingZone.cpp:172
+#: src/kademlia/routing/RoutingZone.cpp:187
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Irakurri Kad kontaktu %u "
 msgstr[1] "Irakurri %u Kad kontaktu"
 
-#: src/kademlia/routing/RoutingZone.cpp:211
+#: src/kademlia/routing/RoutingZone.cpp:228
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
@@ -2767,45 +2767,45 @@ msgstr "Ezin da ED2K bilaketarik egin ED2K ez badago konektaturik"
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Espero gabeko errorea Kad bilaketa egitean: "
 
-#: src/ClientTCPSocket.cpp:796
+#: src/ClientTCPSocket.cpp:801
 #, c-format
 msgid "Message filtered from '%s' (IP:%s)"
 msgstr "'%s'-ren mezu bat iragazi da (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:798
+#: src/ClientTCPSocket.cpp:803
 #, c-format
 msgid "New message from '%s' (IP:%s)"
 msgstr "'%s'-ren mezu berria (IP:%s)"
 
-#: src/ClientTCPSocket.cpp:816
+#: src/ClientTCPSocket.cpp:821
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
 msgstr ""
 "%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> "
 "Onartua"
 
-#: src/ClientTCPSocket.cpp:837
+#: src/ClientTCPSocket.cpp:842
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Denied"
 msgstr ""
 "%s (%u) erabiltzaileak zure partekatutako fitxategi zerrenda eskatu du -> "
 "Ukatua"
 
-#: src/ClientTCPSocket.cpp:869
+#: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
 msgstr ""
 "%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> "
 "Onarturik"
 
-#: src/ClientTCPSocket.cpp:909
+#: src/ClientTCPSocket.cpp:914
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
 msgstr ""
 "%s (%u) erabiltzaileak zure partekatutako direktorioen zerrenda eskatu du -> "
 "Ukaturik"
 
-#: src/ClientTCPSocket.cpp:934
+#: src/ClientTCPSocket.cpp:939
 #, c-format
 msgid ""
 "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
@@ -2813,45 +2813,45 @@ msgstr ""
 "%s (%u) erabiltzaileak %s direktorioaren partekatutako fitxategi zerrenda "
 "eskatu du -> Onarturik"
 
-#: src/ClientTCPSocket.cpp:971
+#: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
 msgstr ""
 "%s (%u) erabiltzaileak %s direktorioaren partekatutako fitxategi zerrenda "
 "eskatu du -> Ukatua"
 
-#: src/ClientTCPSocket.cpp:990
+#: src/ClientTCPSocket.cpp:995
 #, c-format
 msgid "User %s (%u) shares directory %s"
 msgstr "%s (%u) erabiltzailearen %s partekatutako direktorioa"
 
-#: src/ClientTCPSocket.cpp:1005
+#: src/ClientTCPSocket.cpp:1010
 #, c-format
 msgid "User %s (%u) sent unrequested shared dirs."
 msgstr ""
 "%s (%u) erabiltzailea eskatugabeko partekatutako direktorioak bidali ditu."
 
-#: src/ClientTCPSocket.cpp:1020
+#: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
 msgstr ""
 "%s (%u) erabiltzaileak %s direktorioko partekatutako fitxategi zerrenda "
 "bidali du"
 
-#: src/ClientTCPSocket.cpp:1027
+#: src/ClientTCPSocket.cpp:1032
 #, c-format
 msgid "User %s (%u) finished sending sharedfiles-list"
 msgstr ""
 "%s (%u) erabiltzaileak partekatutako fitxategi zerrenda bidaltzeaz bukatu du"
 
-#: src/ClientTCPSocket.cpp:1032
+#: src/ClientTCPSocket.cpp:1037
 #, c-format
 msgid "User %s (%u) sent unwanted sharedfiles-list"
 msgstr ""
 "%s (%u) erabiltzaileak eskatu gabeko partekatutako fitxategi zerrenda bidali "
 "du"
 
-#: src/ClientTCPSocket.cpp:1044
+#: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
 msgstr ""
@@ -2890,11 +2890,11 @@ msgstr ""
 msgid "Continue?"
 msgstr "Jarraitu?"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Error: "
 msgstr "Errorea:"
 
-#: src/Logger.cpp:267
+#: src/Logger.cpp:270
 msgid "Warning: "
 msgstr "Oharra:"
 
@@ -2972,7 +2972,7 @@ msgstr ""
 "ABISUA: Ezin duzu zure burua ed2k lotura jatorri bezala ezarri id-baxua "
 "duzun bitartean."
 
-#: src/amule-remote-gui.cpp:577 src/amule.cpp:1987
+#: src/amule-remote-gui.cpp:577
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr "Erabiltzaileak: E: %s K: %s | Fitxategiak E: %s K: %s"
@@ -3632,11 +3632,11 @@ msgstr "ED2K"
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s-ra konektaturik"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with LowID"
 msgstr "IDBaxuarekin"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2052
+#: src/TextClient.cpp:694 src/amule.cpp:2063
 msgid "with HighID"
 msgstr "IDAltuarekin"
 
@@ -7101,41 +7101,55 @@ msgstr "Zure aMule kopia zaharkiturik dago."
 msgid "Failed to download the version check file"
 msgstr "Huts bertsio arakatze fitxategia deskargatzerakoan"
 
-#: src/amule.cpp:2054
+#: src/amule.cpp:1988
+#, c-format
+msgid "Users: %s | Files: %s"
+msgstr ""
+
+#: src/amule.cpp:1989
+#, c-format
+msgid "Users: E: %s K: %s | Files: E: %s K: %s"
+msgstr ""
+
+#: src/amule.cpp:1998
+msgid "No networks selected"
+msgstr ""
+
+#: src/amule.cpp:2065
 #, c-format
 msgid "Connected to %s %s"
 msgstr "%s %s-ra konektaturik"
 
-#: src/amule.cpp:2057
+#: src/amule.cpp:2068
 #, c-format
 msgid "Connecting to %s"
 msgstr "%s-ra konektatzen"
 
-#: src/amule.cpp:2059
+#: src/amule.cpp:2070
 msgid "Disconnected from ED2K"
 msgstr "ED2K-tik Deskonektatuta"
 
-#: src/amule.cpp:2066
+#: src/amule.cpp:2077
 msgid "Kad started."
 msgstr "Kad abiarazirik."
 
-#: src/amule.cpp:2068
+#: src/amule.cpp:2079
 msgid "Kad stopped."
 msgstr "Kad gelditurik."
 
-#: src/amule.cpp:2075
+#: src/amule.cpp:2086
 msgid "Connected to Kad (ok)"
 msgstr "Kad-era Konektatuta (ondo)"
 
-#: src/amule.cpp:2077
+#: src/amule.cpp:2088
 msgid "Connected to Kad (firewalled)"
 msgstr "Kad-era Konektatuta (suebakirik)"
 
-#: src/amule.cpp:2080
+#: src/amule.cpp:2091
 msgid "Disconnected from Kad"
 msgstr "Kad-etik deskonektatua"
 
-#: src/amule.cpp:2143
+#: src/amule.cpp:2154
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
@@ -7143,7 +7157,7 @@ msgstr ""
 "Kad sarea ezin da erabili hobespenetan UDP ataka ezgaiturik badago, ez da "
 "abiaraziko."
 
-#: src/amule.cpp:2146
+#: src/amule.cpp:2157
 msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad sarea hobespenetan ezgaiturik, ez da konektatuko."
 
