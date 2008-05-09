@@ -120,7 +120,8 @@ enum EKadState{
 	KS_CONNECTING_BUDDY,
 	KS_CONNECTED_BUDDY,
 	KS_QUEUED_FWCHECK_UDP,
-	KS_FWCHECK_UDP
+	KS_FWCHECK_UDP,
+	KS_CONNECTING_FWCHECK_UDP
 };
 
 //! Used to keep track of the state of the client

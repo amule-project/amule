@@ -608,6 +608,7 @@ void CClientList::Process()
 				break;
 
 			case KS_FWCHECK_UDP:
+			case KS_CONNECTING_FWCHECK_UDP:
 				// We want a UDP firewallcheck from this client and are just waiting to get connected to send the request
 				break;
 
@@ -711,7 +712,11 @@ void CClientList::Process()
 		if(Kademlia::CKademlia::IsFirewalled() && Kademlia::CUDPFirewallTester::IsFirewalledUDP(true)) {
 			// TODO: Kad buddies won't work with RequireCrypt, so it is disabled for now, but should (and will)
 			// be fixed in later version
+			// Update: buddy connections themselves support obfuscation properly since eMule 0.49a and aMule SVN 2008-05-09
+			// (this makes it work fine if our buddy uses require crypt), however callback requests don't support it yet so we
+			// wouldn't be able to answer callback requests with RequireCrypt, protocolchange intended for eMule 0.49b
 			if(m_nBuddyStatus == Disconnected && Kademlia::CKademlia::GetPrefs()->GetFindBuddy() && !thePrefs::IsClientCryptLayerRequired()) {
+				AddDebugLogLineM(false, logKadMain, wxT("Starting BuddySearch"));
 				//We are a firewalled client with no buddy. We have also waited a set time
 				//to try to avoid a false firewalled status.. So lets look for a buddy..
 				if (!Kademlia::CSearchManager::PrepareLookup(Kademlia::CSearch::FINDBUDDY, true, Kademlia::CUInt128(true).XOR(Kademlia::CKademlia::GetPrefs()->GetKadID()))) {
@@ -861,12 +866,12 @@ void CClientList::SetChatState(uint64 client_id, uint8 state) {
 
 /* Kad stuff */
 
-void CClientList::RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions)
+bool CClientList::RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions)
 {
 	uint32_t nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	// don't connect ourself
 	if (theApp->GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
-		return;
+		return false;
 	}
 
 	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
@@ -874,6 +879,8 @@ void CClientList::RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions
 	if (!pNewClient) {
 		//#warning Do we actually have to check friendstate here?
 		pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true);
+	} else if (pNewClient->GetKadState() != KS_NONE) {
+		return false; // already busy with this client in some way (probably buddy stuff), don't mess with it
 	}
 
 	//Add client to the lists to be processed.
@@ -888,6 +895,7 @@ void CClientList::RequestTCP(Kademlia::CContact* contact, uint8_t connectOptions
 	AddToKadList(pNewClient); // This was a direct adding, but I like to check duplicates
 	//This method checks if this is a dup already.
 	AddClient(pNewClient);
+	return true;
 }
 
 void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8_t connectOptions)
@@ -901,6 +909,11 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8_t connectOptio
 	CUpDownClient* pNewClient = FindClientByIP(nContactIP, contact->GetTCPPort());
 	if (!pNewClient) {
 		pNewClient = new CUpDownClient(contact->GetTCPPort(), contact->GetIPAddress(), 0, 0, NULL, false, true );
+	} else if (pNewClient->GetKadState() != KS_NONE) {
+		return; // already busy with this client in some way (probably fw stuff), don't mess with it
+	} else if (IsKadFirewallCheckIP(nContactIP)) { // doing a kad firewall check with this IP, abort
+		AddDebugLogLineM(false, logKadMain, wxT("Kad TCP firewallcheck / Buddy request collision for IP ") + Uint32toStringIP(nContactIP));
+		return;
 	}
 
 	//Add client to the lists to be processed.
@@ -915,18 +928,20 @@ void CClientList::RequestBuddy(Kademlia::CContact* contact, uint8_t connectOptio
 	AddClient(pNewClient);
 }
 
-void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID )
+bool CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128* buddyID)
 {
-	uint32 nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
+	uint32_t nContactIP = wxUINT32_SWAP_ALWAYS(contact->GetIPAddress());
 	//If aMule already knows this client, abort this.. It could cause conflicts.
 	//Although the odds of this happening is very small, it could still happen.
 	if (FindClientByIP(nContactIP, contact->GetTCPPort())) {
-		return;
+		return false;
+	} else if (IsKadFirewallCheckIP(nContactIP)) { // doing a kad firewall check with this IP, abort
+		AddDebugLogLineM(false, logKadMain, wxT("Kad TCP firewallcheck / Buddy request collision for IP ") + Uint32toStringIP(nContactIP));
+		return false;
 	}
 
-	// Don't connect ourself
 	if (theApp->GetPublicIP() == nContactIP && thePrefs::GetPort() == contact->GetTCPPort()) {
-		return;
+		return false; // don't connect ourself
 	}
 
 	//Add client to the lists to be processed.
@@ -940,6 +955,7 @@ void CClientList::IncomingBuddy(Kademlia::CContact* contact, Kademlia::CUInt128*
 	pNewClient->SetBuddyID(ID);
 	AddToKadList(pNewClient);
 	AddClient(pNewClient);
+	return true;
 }
 
 void CClientList::RemoveFromKadList(CUpDownClient* torem)

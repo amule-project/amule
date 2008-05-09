@@ -48,6 +48,8 @@ there client on the eMule forum..
 #include "../utils/KadClientSearcher.h"
 #include "../../amule.h"
 #include "../../Logger.h"
+#include <protocol/kad2/Client2Client/UDP.h>
+
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -63,6 +65,7 @@ time_t		CKademlia::m_nextFirewallCheck;
 time_t		CKademlia::m_nextFindBuddy;
 time_t		CKademlia::m_bootstrap;
 time_t		CKademlia::m_consolidate;
+time_t		CKademlia::m_externPortLookup;
 bool		CKademlia::m_running = false;
 
 
@@ -98,6 +101,8 @@ void CKademlia::Start(CPrefs *prefs)
 	m_nextFindBuddy = time(NULL) + (MIN2S(5));
 	// Init contact consolidate timer;
 	m_consolidate = time(NULL) + (MIN2S(45));
+	// Look up our extern port
+	m_externPortLookup = time(NULL);
 	// Init bootstrap time.
 	m_bootstrap = 0;
 	// Init our random seed.
@@ -186,7 +191,20 @@ void CKademlia::Process()
 
 	if (m_nextFindBuddy <= now) {
 		instance->m_prefs->SetFindBuddy();
-		m_nextFindBuddy = MIN2S(5) + m_nextFirewallCheck;
+		m_nextFindBuddy = MIN2S(20) + now;
+	}
+
+	if (m_externPortLookup <= now && CUDPFirewallTester::IsFWCheckUDPRunning() && GetPrefs()->GetExternalKadPort() == 0) {
+		// If our UDP firewallcheck is running and we don't know our external port, we send a request every 15 seconds
+		CContact *contact = GetRoutingZone()->GetRandomContact(3, 6);
+		if (contact != NULL) {
+			AddDebugLogLineM(false, logKadMain, wxT("Requesting our external port from ") + Uint32toStringIP(contact->GetIPAddress()));
+			DebugSend(Kad2Ping, contact->GetIPAddress(), contact->GetUDPPort());
+			GetUDPListener()->SendNullPacket(KADEMLIA2_PING, contact->GetIPAddress(), contact->GetUDPPort(), contact->GetUDPKey(), &contact->GetClientID());
+		} else {
+			AddDebugLogLineM(false, logKadMain, wxT("No valid client for requesting external port available"));
+		}
+		m_externPortLookup = 15 + now;
 	}
 
 	for (EventMap::const_iterator it = m_events.begin(); it != m_events.end(); ++it) {
@@ -274,9 +292,10 @@ void CKademlia::RecheckFirewalled()
 		instance->m_prefs->SetRecheckIP();
 		// also UDP check
 		CUDPFirewallTester::ReCheckFirewallUDP(false);
-		// Always set next buddy check 5 mins after a firewall check.
-		m_nextFindBuddy = MIN2S(5) + m_nextFirewallCheck;
-		m_nextFirewallCheck = HR2S(1) + time(NULL);
+		time_t now = time(NULL);
+		// Delay the next buddy search to at least 5 minutes after our firewallcheck so we are sure to be still firewalled
+		m_nextFindBuddy = (m_nextFindBuddy < MIN2S(5) + now) ? MIN2S(5) + now : m_nextFindBuddy;
+		m_nextFirewallCheck = HR2S(1) + now;
 	}
 }
 

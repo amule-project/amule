@@ -1803,7 +1803,9 @@ void CKademliaUDPListener::ProcessFirewalledRequest(const uint8_t *packetData, u
 
 	CUInt128 zero;
 	CContact contact(zero, ip, port, tcpport, 0, 0, false, zero);
-	theApp->clientlist->RequestTCP(&contact, 0);
+	if (!theApp->clientlist->RequestTCP(&contact, 0)) {
+		return; // cancelled for some reason, don't send a response
+	}
 
 	// Send response
 	CMemFile packetdata(4);
@@ -1826,7 +1828,9 @@ void CKademliaUDPListener::ProcessFirewalled2Request(const uint8_t *packetData, 
 
 	CUInt128 zero;
 	CContact contact(userID, ip, port, tcpPort, 0, 0, false, zero);
-	theApp->clientlist->RequestTCP(&contact, connectOptions);
+	if (!theApp->clientlist->RequestTCP(&contact, connectOptions)) {
+		return; // cancelled for some reason, don't send a response
+	}
 
 	// Send response
 	CMemFile packetdata(4);
@@ -1877,7 +1881,7 @@ void CKademliaUDPListener::ProcessFindBuddyRequest(const uint8_t *packetData, ui
 	// Verify packet is expected size
 	CHECK_PACKET_MIN_SIZE(34);
 
-	if (CKademlia::GetPrefs()->GetFirewalled() || CUDPFirewallTester::IsFirewalledUDP(true)) {
+	if (CKademlia::GetPrefs()->GetFirewalled() || CUDPFirewallTester::IsFirewalledUDP(true) || !CUDPFirewallTester::IsVerified()) {
 		// We are firewalled but somehow we still got this packet.. Don't send a response..
 		return;
 	} else if (theApp->clientlist->GetBuddyStatus() == Connected) {
@@ -1892,13 +1896,17 @@ void CKademliaUDPListener::ProcessFindBuddyRequest(const uint8_t *packetData, ui
 
 	CUInt128 zero;
 	CContact contact(userID, ip, port, tcpport, 0, 0, false, zero);
-	theApp->clientlist->IncomingBuddy(&contact, &BuddyID);
+	if (!theApp->clientlist->IncomingBuddy(&contact, &BuddyID)) {
+		return; // cancelled for some reason, don't send a response
+	}
 
 	CMemFile packetdata(34);
 	packetdata.WriteUInt128(BuddyID);
 	packetdata.WriteUInt128(CKademlia::GetPrefs()->GetClientHash());
 	packetdata.WriteUInt16(thePrefs::GetPort());
-	packetdata.WriteUInt8(CPrefs::GetMyConnectOptions(true, false)); // new since 0.49a, old mules will ignore it  (hopefully ;) )
+	if (!senderKey.IsEmpty()) { // remove check for later versions
+		packetdata.WriteUInt8(CPrefs::GetMyConnectOptions(true, false)); // new since 0.49a, old mules will ignore it  (hopefully ;) )
+	}
 
 	DebugSend(KadFindBuddyRes, ip, port);
 	SendPacket(packetdata, KADEMLIA_FINDBUDDY_RES, ip, port, senderKey, NULL);
@@ -1979,6 +1987,10 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 	CHECK_TRACKED_PACKET(KADEMLIA2_PING);
 
 	if (CKademlia::GetPrefs()->GetExternalKadPort() == 0) {
+		// the reported port doesn't always have to be our true external port, esp. if we used our intern port
+		// and communicated recently with the client some routers might remember this and assign the intern port as source
+		// but this shouldn't be a problem because we prefer intern ports anyway.
+		// might have to be reviewed in later versions when more data is available
 		CKademlia::GetPrefs()->SetExternKadPort(PeekUInt16(packetData));
 		AddDebugLogLineM(false, logKadMain, wxString::Format(wxT("Set external Kad Port to %u"), CKademlia::GetPrefs()->GetExternalKadPort()));
 
@@ -1986,6 +1998,7 @@ void CKademliaUDPListener::Process2Pong(const uint8_t *packetData, uint32_t lenP
 			CUDPFirewallTester::QueryNextClient();
 		}
 	}
+	theApp->ShowConnectionState();
 }
 
 // KADEMLIA2_FIREWALLUDP

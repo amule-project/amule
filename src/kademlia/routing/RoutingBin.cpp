@@ -39,7 +39,7 @@ there client on the eMule forum..
 #include "RoutingBin.h"
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
-
+#include "../../RandomFunctions.h"
 
 ////////////////////////////////////////
 using namespace Kademlia;
@@ -332,4 +332,29 @@ void CRoutingBin::PushToBottom(CContact *contact)
 
 	RemoveContact(contact, true);
 	m_entries.push_back(contact);
+}
+
+CContact *CRoutingBin::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw()
+{
+	if (m_entries.empty()) {
+		return NULL;
+	}
+
+	// Find contact
+	CContact *lastFit = NULL;
+	uint32_t randomStartPos = GetRandomUint16() % m_entries.size();
+	uint32_t index = 0;
+
+	for (ContactList::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it) {
+		if ((*it)->GetType() <= maxType && (*it)->GetVersion() >= minKadVersion) {
+			if (index >= randomStartPos) {
+				return *it;
+			} else {
+				lastFit = *it;
+			}
+		}
+		index++;
+	}
+
+	return lastFit;
 }

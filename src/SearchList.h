@@ -154,13 +154,14 @@ public:
 	 * Adds a result in the form of a kad search-keyword to the specified result-list.
 	 *
 	 * @param searchID The search to which this result belongs.
-	 * @param pfileID The hash of the result-file.
+	 * @param fileID The hash of the result-file.
 	 * @param name The filename of the result.
 	 * @param size The filesize of the result.
 	 * @param type The filetype of the result (TODO: Not used?)
-	 * @param taglist List of additional tags assosiated with the search-result.
+	 * @param kadPublishInfo The kademlia publish information of the result.
+	 * @param taglist List of additional tags associated with the search-result.
 	 */
-	void	KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* pfileID, const wxString& name, uint64 size, const wxString& type, const TagPtrList& taglist);
+	void	KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt128 *fileID, const wxString& name, uint64_t size, const wxString& type, uint32_t kadPublishInfo, const TagPtrList& taglist);
 	
 	
 private:

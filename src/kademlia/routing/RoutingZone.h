@@ -78,6 +78,7 @@ public:
 
 	CContact *GetContact(const CUInt128& id) const throw();
 	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
+	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw();
 	uint32_t GetNumContacts() const throw();
 
 	// Returns a list of all contacts in all leafs of this zone.

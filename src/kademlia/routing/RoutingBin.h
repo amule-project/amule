@@ -58,20 +58,21 @@ public:
 	{}
 	~CRoutingBin();
 
-	bool AddContact(CContact *contact);
-	void SetAlive(CContact *contact);
-	void SetTCPPort(uint32_t ip, uint16_t port, uint16_t tcpPort);
-	void RemoveContact(CContact *contact, bool noTrackingAdjust = false)	{ if (!noTrackingAdjust) AdjustGlobalTracking(contact->GetIPAddress(), false); m_entries.remove(contact); }
+	bool	  AddContact(CContact *contact);
+	void	  SetAlive(CContact *contact);
+	void	  SetTCPPort(uint32_t ip, uint16_t port, uint16_t tcpPort);
+	void	  RemoveContact(CContact *contact, bool noTrackingAdjust = false)	{ if (!noTrackingAdjust) AdjustGlobalTracking(contact->GetIPAddress(), false); m_entries.remove(contact); }
 	CContact *GetContact(const CUInt128 &id) const throw();
 	CContact *GetContact(uint32_t ip, uint16_t port, bool tcpPort) const throw();
 	CContact *GetOldest() const throw()		{ return m_entries.size() ? m_entries.front() : NULL; }
 
-	uint32_t GetSize() const throw()		{ return m_entries.size(); }
-	uint32_t GetRemaining() const throw()		{ return K - m_entries.size(); }
-	void GetEntries(ContactList *result, bool emptyFirst = true) const;
-	void GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
-	bool ChangeContactIPAddress(CContact *contact, uint32_t newIP);
-	void PushToBottom(CContact *contact); // puts an existing contact from X to the end of the list
+	uint32_t  GetSize() const throw()		{ return m_entries.size(); }
+	uint32_t  GetRemaining() const throw()		{ return K - m_entries.size(); }
+	void	  GetEntries(ContactList *result, bool emptyFirst = true) const;
+	void	  GetClosestTo(uint32_t maxType, const CUInt128 &target, uint32_t maxRequired, ContactMap *result, bool emptyFirst = true, bool setInUse = false) const;
+	bool	  ChangeContactIPAddress(CContact *contact, uint32_t newIP);
+	void	  PushToBottom(CContact *contact); // puts an existing contact from X to the end of the list
+	CContact *GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw();
 
 	bool m_dontDeleteContacts;
 

@@ -64,7 +64,7 @@ public:
 	static void Start(CPrefs *prefs);
 	static void Stop();
  
-	static CPrefs *			GetPrefs() throw()		{ wxCHECK(instance && instance->m_prefs, NULL); return instance->m_prefs; }
+	static CPrefs *			GetPrefs() throw()		{ if (instance == NULL || instance->m_prefs == NULL) return NULL; else return instance->m_prefs; }
 	static CRoutingZone *		GetRoutingZone() throw()	{ wxCHECK(instance && instance->m_routingZone, NULL); return instance->m_routingZone; }
 	static CKademliaUDPListener *	GetUDPListener() throw()	{ wxCHECK(instance && instance->m_udpListener, NULL); return instance->m_udpListener; }
 	static CIndexed *		GetIndexed() throw()		{ wxCHECK(instance && instance->m_indexed, NULL); return instance->m_indexed; }
@@ -109,6 +109,7 @@ private:
 	static time_t	m_bigTimer;
 	static time_t	m_bootstrap;
 	static time_t	m_consolidate;
+	static time_t	m_externPortLookup;
 	static bool	m_running;
 
 	CPrefs *		m_prefs;

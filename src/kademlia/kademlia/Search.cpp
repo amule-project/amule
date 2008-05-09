@@ -953,6 +953,8 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 				availability = 0;
 			}
 		} else if (tag->GetName() == TAG_PUBLISHINFO) {
+			// we don't keep this as tag, but as a member property of the searchfile, as we only need its informations
+			// in the search list and don't want to carry the tag over when downloading the file (and maybe even wrongly publishing it)
 			publishInfo = (uint32_t)tag->GetInt();
 #ifdef __DEBUG__
 			uint32_t differentNames = (publishInfo & 0xFF000000) >> 24;
@@ -996,12 +998,9 @@ void CSearch::ProcessResultKeyword(const CUInt128& answer, TagPtrList *info)
 	if (availability) {
 		taglist.push_back(new CTagVarInt(TAG_SOURCES, availability));
 	}
-	if (publishInfo) {
-		taglist.push_back(new CTagVarInt(TAG_PUBLISHINFO, publishInfo));
-	}
 
 	m_answers++;
-	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, taglist);
+	theApp->searchlist->KademliaSearchKeyword(m_searchID, &answer, name, size, type, publishInfo, taglist);
 
 	// Free tags memory
 	for (TagPtrList::iterator it = taglist.begin(); it != taglist.end(); ++it) {

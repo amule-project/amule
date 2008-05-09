@@ -553,7 +553,7 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	// New unique result, simply add and display.
 	results.push_back(toadd);
 	Notify_Search_Add_Result(toadd);
-	
+
 	return true;
 }
 
@@ -929,8 +929,8 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 }
 
 
-void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt128* fileID, 
-	const wxString&  name, uint64 size, const wxString& type, const TagPtrList& taglist)
+void CSearchList::KademliaSearchKeyword(uint32_t searchID, const Kademlia::CUInt128 *fileID,
+	const wxString& name, uint64_t size, const wxString& type, uint32_t kadPublishInfo, const TagPtrList& taglist)
 {
 	EUtf8Str eStrEncode = utf8strRaw;
 
@@ -938,10 +938,10 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 	byte fileid[16];
 	fileID->ToByteArray(fileid);
 	temp.WriteHash(CMD4Hash(fileid));
-	
+
 	temp.WriteUInt32(0);	// client IP
 	temp.WriteUInt16(0);	// client port
-	
+
 	// write tag list
 	unsigned int uFilePosTagCount = temp.GetPosition();
 	uint32 tagcount = 0;
@@ -967,13 +967,16 @@ void CSearchList::KademliaSearchKeyword(uint32 searchID, const Kademlia::CUInt12
 		(*it)->WriteTagToFile(&temp,eStrEncode);
 		tagcount++;
 	}
-	
+
 	temp.Seek(uFilePosTagCount, wxFromStart);
 	temp.WriteUInt32(tagcount);
-	
+
 	temp.Seek(0, wxFromStart);
-	
-	AddToList(new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true));
+
+	CSearchFile *tempFile = new CSearchFile(temp, (eStrEncode == utf8strRaw), searchID, 0, 0, wxEmptyString, true);
+	tempFile->SetKadPublishInfo(kadPublishInfo);
+
+	AddToList(tempFile);
 }
 
 // File_checked_for_headers

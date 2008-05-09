@@ -62,6 +62,7 @@ there client on the eMule forum..
 #include "../../Logger.h"
 #include "../../NetworkFunctions.h"
 #include "../../IPFilter.h"
+#include "../../RandomFunctions.h"
 
 #include <cmath>
 
@@ -316,6 +317,17 @@ CContact *CRoutingZone::GetContact(uint32_t ip, uint16_t port, bool tcpPort) con
 	} else {
 		CContact *contact = m_subZones[0]->GetContact(ip, port, tcpPort);
 		return (contact != NULL) ? contact : m_subZones[1]->GetContact(ip, port, tcpPort);
+	}
+}
+
+CContact *CRoutingZone::GetRandomContact(uint32_t maxType, uint32_t minKadVersion) const throw()
+{
+	if (IsLeaf()) {
+		return m_bin->GetRandomContact(maxType, minKadVersion);
+	} else {
+		unsigned zone = GetRandomUint16() & 1 /* GetRandomUint16() % 2 */;
+		CContact *contact = m_subZones[zone]->GetRandomContact(maxType, minKadVersion);
+		return (contact != NULL) ? contact : m_subZones[1 - zone]->GetRandomContact(maxType, minKadVersion);
 	}
 }
 
