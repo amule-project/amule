@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-09 03:31+0200\n"
+"POT-Creation-Date: 2008-05-10 03:31+0200\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -128,12 +128,12 @@ msgstr "Dėmesio: sukūrus atsarginę kopiją nepavyko pašalinti pradinio failo
 msgid "WARNING: Failed to delete %s"
 msgstr "Dėmesio: nepavyko pašalinti %s"
 
-#: src/BaseClient.cpp:1305
+#: src/BaseClient.cpp:1307
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Nepavyko gauti dalinamų failų iš vartotojo „%s“"
 
-#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
+#: src/BaseClient.cpp:1717 src/BaseClient.cpp:2239 src/BaseClient.cpp:2511
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -149,35 +149,35 @@ msgstr "Nepavyko gauti dalinamų failų iš vartotojo „%s“"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: src/BaseClient.cpp:1733
+#: src/BaseClient.cpp:1734
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (neteisinga eMule versija %#x)"
 
-#: src/BaseClient.cpp:1744
+#: src/BaseClient.cpp:1745
 msgid " (Fake eMule)"
 msgstr " (neteisinga eMule)"
 
-#: src/BaseClient.cpp:1746
+#: src/BaseClient.cpp:1747
 msgid "xMule (Fake eMule)"
 msgstr "xMule (neteisinga eMule)"
 
-#: src/BaseClient.cpp:1785
+#: src/BaseClient.cpp:1786
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (paremta eMule v0.%u)"
 
-#: src/BaseClient.cpp:1955
+#: src/BaseClient.cpp:1956
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Slapyvardis: %s ID: %u"
 
-#: src/BaseClient.cpp:1957
+#: src/BaseClient.cpp:1958
 #, fuzzy, c-format
 msgid "Requested: %s\n"
 msgstr "Paprašė:"
 
-#: src/BaseClient.cpp:1959
+#: src/BaseClient.cpp:1960
 #, fuzzy, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -189,7 +189,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Šio seanso failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
 
-#: src/BaseClient.cpp:1962
+#: src/BaseClient.cpp:1963
 #, fuzzy, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -201,11 +201,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Visų seansų failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 msgid "Requested unknown file"
 msgstr "Paprašė nežinomo failo"
 
-#: src/BaseClient.cpp:2237
+#: src/BaseClient.cpp:2238
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Naudotojas %s IP:prievadas %s:%d naudoja %s %s %s"
@@ -518,7 +518,7 @@ msgstr ""
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: ieškomas žodis pernelyg trumpas"
 
-#: src/kademlia/routing/RoutingZone.cpp:187
+#: src/kademlia/routing/RoutingZone.cpp:188
 #, fuzzy, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
@@ -526,7 +526,7 @@ msgstr[0] "Perskaityti %u Kad kontaktus"
 msgstr[1] "Perskaityti %u Kad kontaktus"
 msgstr[2] "Perskaityti %u Kad kontaktus"
 
-#: src/kademlia/routing/RoutingZone.cpp:228
+#: src/kademlia/routing/RoutingZone.cpp:229
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"

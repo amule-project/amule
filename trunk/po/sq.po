@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-09 03:31+0200\n"
+"POT-Creation-Date: 2008-05-10 03:31+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -132,12 +132,12 @@ msgstr ""
 msgid "WARNING: Failed to delete %s"
 msgstr "KUJDES: Deshtoi ne fshirjen %s"
 
-#: src/BaseClient.cpp:1305
+#: src/BaseClient.cpp:1307
 #, c-format
 msgid "Failed to retrieve shared files from user '%s'"
 msgstr "Deshtoi te rimarri failet e ndara nga perdoruesi '%s'"
 
-#: src/BaseClient.cpp:1716 src/BaseClient.cpp:2238 src/BaseClient.cpp:2510
+#: src/BaseClient.cpp:1717 src/BaseClient.cpp:2239 src/BaseClient.cpp:2511
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
@@ -153,35 +153,35 @@ msgstr "Deshtoi te rimarri failet e ndara nga perdoruesi '%s'"
 msgid "Unknown"
 msgstr "E panjohur"
 
-#: src/BaseClient.cpp:1733
+#: src/BaseClient.cpp:1734
 #, c-format
 msgid " (Fake eMule version %#x)"
 msgstr " (eMule e falsifikuar versioni %#x)"
 
-#: src/BaseClient.cpp:1744
+#: src/BaseClient.cpp:1745
 msgid " (Fake eMule)"
 msgstr "(eMule e falsifikuar)"
 
-#: src/BaseClient.cpp:1746
+#: src/BaseClient.cpp:1747
 msgid "xMule (Fake eMule)"
 msgstr "xMule (eMule e falsifikuar)"
 
-#: src/BaseClient.cpp:1785
+#: src/BaseClient.cpp:1786
 #, c-format
 msgid "1.x (based on eMule v0.%u)"
 msgstr "1.x (e bazuar ne eMule v0 %u)"
 
-#: src/BaseClient.cpp:1955
+#: src/BaseClient.cpp:1956
 #, c-format
 msgid "NickName: %s ID: %u"
 msgstr "Emri: %s ID: %u"
 
-#: src/BaseClient.cpp:1957
+#: src/BaseClient.cpp:1958
 #, c-format
 msgid "Requested: %s\n"
 msgstr "Kerkuar: %s\n"
 
-#: src/BaseClient.cpp:1959
+#: src/BaseClient.cpp:1960
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -193,7 +193,7 @@ msgstr[1] ""
 "Statistikat e failit per kete sesion: U pranuan %d nga %d kerkesat, %s te "
 "transferuara\n"
 
-#: src/BaseClient.cpp:1962
+#: src/BaseClient.cpp:1963
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
 msgid_plural ""
@@ -205,11 +205,11 @@ msgstr[1] ""
 "Statistikat e faileve per te gjitha sesionet: U pranua %d nga %d kerkesat, %"
 "s te transferuara\n"
 
-#: src/BaseClient.cpp:1965
+#: src/BaseClient.cpp:1966
 msgid "Requested unknown file"
 msgstr "Po kerkoni nje faili te panjohur"
 
-#: src/BaseClient.cpp:2237
+#: src/BaseClient.cpp:2238
 #, c-format
 msgid "Client %s on IP:Port %s:%d using %s %s %s"
 msgstr "Klienti %s ne porten IP: %s:%d po perdor %s %s %s"
@@ -518,14 +518,14 @@ msgstr "Teksti i klientit aMule"
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: fjala qe u kerkua eshte shume e shkurter"
 
-#: src/kademlia/routing/RoutingZone.cpp:187
+#: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
 msgstr[0] "Po lexoj %u kontakt Kad"
 msgstr[1] "Po lexoj %u kontakte Kad"
 
-#: src/kademlia/routing/RoutingZone.cpp:228
+#: src/kademlia/routing/RoutingZone.cpp:229
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
