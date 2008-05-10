@@ -1501,6 +1501,27 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 			ctemp->SetBuddyPort(serverport);
 			break;
 		}
+		case 6: {
+			// firewalled source which supports direct udp callback
+			// if we are firewalled ourself, the source is useless to us
+			if (theApp->IsFirewalled()) {
+				break;
+			}
+
+			if ((byCryptOptions & 0x08) == 0){
+				AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Received Kad source type 6 (direct callback) which has the direct callback flag not set (%s)")) % Uint32toStringIP(ED2KID));
+				break;
+			}
+			
+			ctemp = new CUpDownClient(tcp, 1, 0, 0, temp, false, true);
+			ctemp->SetSourceFrom(SF_KADEMLIA);
+			ctemp->SetKadPort(udp);
+			ctemp->SetIP(ED2KID); // need to set the Ip address, which cannot be used for TCP but for UDP
+			byte cID[16];
+			pcontactID->ToByteArray(cID);
+			ctemp->SetUserHash(CMD4Hash(cID));
+			pbuddyID->ToByteArray(cID);
+		}
 	}
 
 	if (ctemp) {
@@ -1509,7 +1530,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 		ctemp->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
 		ctemp->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
 
-		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ip, ctemp->GetUserPort()) % type);
+		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ED2KID, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
 	}
 }
