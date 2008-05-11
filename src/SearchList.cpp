@@ -27,6 +27,7 @@
 
 #include <protocol/Protocols.h>
 #include <protocol/kad/Constants.h>
+#include <tags/ClientTags.h>
 #include <tags/FileTags.h>
 
 #include "updownclient.h"	// Needed for CUpDownClient
@@ -134,10 +135,13 @@ void ParsedSearchExpression(const CSearchExpr* pexpr)
 class CSearchExprTarget
 {
 public:
-	CSearchExprTarget(CMemFile* pData, EUtf8Str eStrEncode)
+	CSearchExprTarget(CMemFile* pData, EUtf8Str eStrEncode, bool supports64bit, bool& using64bit)
+		: m_data(pData),
+		  m_eStrEncode(eStrEncode),
+		  m_supports64bit(supports64bit),
+		  m_using64bit(using64bit)
 	{
-		m_data = pData;
-		m_eStrEncode = eStrEncode;
+		m_using64bit = false;
 	}
 
 	void WriteBooleanAND()
@@ -187,19 +191,39 @@ public:
 		m_data->WriteString(pszMetaTagID);	// meta tag ID
 	}
 
-	void WriteMetaDataSearchParam(uint8 uMetaTagID, uint8 uOperator, uint32 uValue)
+	void WriteMetaDataSearchParam(uint8_t uMetaTagID, uint8_t uOperator, uint64_t value)
 	{
-		m_data->WriteUInt8(3);				// numeric parameter type
-		m_data->WriteUInt32(uValue);		// numeric value
+		bool largeValue = value > wxULL(0xFFFFFFFF);
+		if (largeValue && m_supports64bit) {
+			m_using64bit = true;
+			m_data->WriteUInt8(8);		// numeric parameter type (int64)
+			m_data->WriteUInt64(value);	// numeric value
+		} else {
+			if (largeValue) {
+				value = 0xFFFFFFFFu;
+			}
+			m_data->WriteUInt8(3);		// numeric parameter type (int32)
+			m_data->WriteUInt32(value);	// numeric value
+		}
 		m_data->WriteUInt8(uOperator);		// comparison operator
 		m_data->WriteUInt16(sizeof(uint8));	// meta tag ID length
 		m_data->WriteUInt8(uMetaTagID);		// meta tag ID name
 	}
 
-	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, uint8 uOperator, uint32 uValue)
+	void WriteMetaDataSearchParam(const wxString& pszMetaTagID, uint8_t uOperator, uint64_t value)
 	{
-		m_data->WriteUInt8(3);				// numeric parameter type
-		m_data->WriteUInt32(uValue);		// numeric value
+		bool largeValue = value > wxULL(0xFFFFFFFF);
+		if (largeValue && m_supports64bit) {
+			m_using64bit = true;
+			m_data->WriteUInt8(8);		// numeric parameter type (int64)
+			m_data->WriteUInt64(value);	// numeric value
+		} else {
+			if (largeValue) {
+				value = 0xFFFFFFFFu;
+			}
+			m_data->WriteUInt8(3);		// numeric parameter type (int32)
+			m_data->WriteUInt32(value);	// numeric value
+		}
 		m_data->WriteUInt8(uOperator);		// comparison operator
 		m_data->WriteString(pszMetaTagID);	// meta tag ID
 	}
@@ -207,6 +231,8 @@ public:
 protected:
 	CMemFile* m_data;
 	EUtf8Str m_eStrEncode;
+	bool m_supports64bit;
+	bool& m_using64bit;
 };
 
 
@@ -225,7 +251,8 @@ CSearchList::CSearchList()
 	  m_searchType(LocalSearch),
 	  m_searchInProgress(false),
 	  m_currentSearch(-1),
-	  m_searchPacket(NULL)
+	  m_searchPacket(NULL),
+	  m_64bitSearchPacket(false)
 {
 }
 
@@ -279,8 +306,11 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 		m_resultType.Clear();
 	}
 
-	// This MemFile is automatically free'd, except for kad searches.	
-	CMemFilePtr data = CreateSearchData(params, type);
+	bool supports64bit = type == KadSearch ? true : theApp->serverconnect->GetCurrentServer() != NULL && (theApp->serverconnect->GetCurrentServer()->GetTCPFlags() & SRV_TCPFLG_LARGEFILES);
+	bool packetUsing64bit;
+
+	// This MemFile is automatically free'd
+	CMemFilePtr data = CreateSearchData(params, type, supports64bit, packetUsing64bit);
 	
 	if (data.get() == NULL) {
 		wxASSERT(_astrParserErrors.Count());
@@ -322,9 +352,8 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 
 		if (type == GlobalSearch) {
 			m_searchPacket = searchPacket;
-			
-			// The OPCode must be changed since global searches are UDP requests
-			m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ);
+			m_64bitSearchPacket = packetUsing64bit;
+			m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ); // will be changed later when actually sending the packet!!
 		}
 	}
 
@@ -363,7 +392,7 @@ uint32 CSearchList::GetSearchProgress() const
 					/ theApp->serverlist->GetServerCount();
 
 		case KadSearch:
-			// We cannot meassure the progress of Kad searches.
+			// We cannot measure the progress of Kad searches.
 			return 0;
 		
 		default:
@@ -395,9 +424,38 @@ void CSearchList::OnGlobalSearchTimer(CTimerEvent& WXUNUSED(evt))
 				// We've already requested from the local server.
 				continue;
 			} else {
-				theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
-				theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
-				CoreNotify_Search_Update_Progress(GetSearchProgress());					
+				if (server->SupportsLargeFilesUDP() && (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES)) {
+					CMemFile data(50);
+					uint32_t tagCount = 1;
+					data.WriteUInt32(tagCount);
+					CTagVarInt flags(CT_SERVER_UDPSEARCH_FLAGS, SRVCAP_UDP_NEWTAGS_LARGEFILES);
+					flags.WriteNewEd2kTag(&data);
+					CPacket *extSearchPacket = new CPacket(OP_GLOBSEARCHREQ3, m_searchPacket->GetPacketSize() + (uint32_t)data.GetLength(), OP_EDONKEYPROT);
+					extSearchPacket->CopyToDataBuffer(0, data.GetRawBuffer(), data.GetLength());
+					extSearchPacket->CopyToDataBuffer(data.GetLength(), m_searchPacket->GetDataBuffer(), m_searchPacket->GetPacketSize());
+					theStats::AddUpOverheadServer(extSearchPacket->GetPacketSize());
+					theApp->serverconnect->SendUDPPacket(extSearchPacket, server, true);
+					AddDebugLogLineM(false, logServerUDP, wxT("Sending OP_GLOBSEARCHREQ3 to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+				} else if (server->GetUDPFlags() & SRV_UDPFLG_EXT_GETFILES) {
+					if (!m_64bitSearchPacket || server->SupportsLargeFilesUDP()) {
+						m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ2);
+						AddDebugLogLineM(false, logServerUDP, wxT("Sending OP_GLOBSEARCHREQ2 to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+						theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
+						theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
+					} else {
+						AddDebugLogLineM(false, logServerUDP, wxT("Skipped UDP search on server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + wxT(": No large file support"));
+					}
+				} else {
+					if (!m_64bitSearchPacket || server->SupportsLargeFilesUDP()) {
+						m_searchPacket->SetOpCode(OP_GLOBSEARCHREQ);
+						AddDebugLogLineM(false, logServerUDP, wxT("Sending OP_GLOBSEARCHREQ to server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()));
+						theStats::AddUpOverheadServer(m_searchPacket->GetPacketSize());
+						theApp->serverconnect->SendUDPPacket(m_searchPacket, server, false);
+					} else {
+						AddDebugLogLineM(false, logServerUDP, wxT("Skipped UDP search on server ") + Uint32_16toStringIP_Port(server->GetIP(), server->GetPort()) + wxT(": No large file support"));
+					}
+				}
+				CoreNotify_Search_Update_Progress(GetSearchProgress());
 				return;
 			}
 		}
@@ -601,7 +659,7 @@ void CSearchList::StopGlobalSearch()
 }
 
 
-CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type)
+CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit)
 {
 	// Count the number of used parameters
 	unsigned int parametercount = 0;
@@ -610,7 +668,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	if ( params.maxSize > 0 )			++parametercount;
 	if ( params.availability > 0 )		++parametercount;
 	if ( !params.extension.IsEmpty() )	++parametercount;
-	
+
 	wxString typeText = params.typeText;
 	if (typeText == ED2KFTSTR_ARCHIVE){
 		// eDonkeyHybrid 0.48 uses type "Pro" for archives files
@@ -665,7 +723,7 @@ CSearchList::CMemFilePtr CSearchList::CreateSearchData(const CSearchParams& para
 	#endif
 	
 	/* Leave the unicode comment there, please... */
-	CSearchExprTarget target(data.get(), true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone);
+	CSearchExprTarget target(data.get(), true /*I assume everyone is unicoded */ ? utf8strRaw : utf8strNone, supports64bit, packetUsing64bit);
 
 	unsigned int iParameterCount = 0;
 	if (_SearchExpr.m_aExpr.GetCount() <= 1) {

@@ -517,10 +517,10 @@ void CSearchDlg::StartNewSearch()
 		uint32 sizemax = GetTypeSize( (uint8) CastChild( IDC_SEARCHMAXSIZE, wxChoice )->GetSelection() );
 
 		// Parameter Minimum Size
-		params.minSize = CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue() * sizemin;
+		params.minSize = (uint64_t)(CastChild( IDC_SPINSEARCHMIN, wxSpinCtrl )->GetValue()) * (uint64_t)sizemin;
 
 		// Parameter Maximum Size
-		params.maxSize = CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue() * sizemax;
+		params.maxSize = (uint64_t)(CastChild( IDC_SPINSEARCHMAX, wxSpinCtrl )->GetValue()) * (uint64_t)sizemax;
 
 		if ((params.maxSize < params.minSize) && (params.maxSize)) {
 			wxMessageDialog dlg(this,
