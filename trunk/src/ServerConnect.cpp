@@ -174,16 +174,6 @@ void CServerConnect::StopConnectionTry()
 	}
 }
 
-#define CAPABLE_ZLIB				0x01
-#define CAPABLE_IP_IN_LOGIN_FRAME	0x02
-#define CAPABLE_AUXPORT				0x04
-#define CAPABLE_NEWTAGS				0x08
-#define CAPABLE_UNICODE				0x10
-#define CAPABLE_LARGEFILES			0x100
-#define SRVCAP_SUPPORTCRYPT     0x0200
-#define SRVCAP_REQUESTCRYPT     0x0400
-#define SRVCAP_REQUIRECRYPT     0x0800
-
 void CServerConnect::ConnectionEstablished(CServerSocket* sender)
 {
 	if (connecting == false)

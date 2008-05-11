@@ -69,11 +69,11 @@ public:
 		//! The filename extension. May be empty.
 		wxString extension;
 		//! The smallest filesize in bytes to accept, zero for any.
-		uint32 minSize;
+		uint64_t minSize;
 		//! The largest filesize in bytes to accept, zero for any.
-		uint32 maxSize;
+		uint64_t maxSize;
 		//! The minumum available (source-count), zero for any.
-		uint32 availability;
+		uint32_t availability;
 	};
 
 	/** Constructor. */	
@@ -184,7 +184,7 @@ private:
 	typedef std::auto_ptr<CMemFile> CMemFilePtr;
 
 	/** Create a basic search-packet for the given search-type. */ 	
-	CMemFilePtr CreateSearchData(const CSearchParams& params, SearchType type);
+	CMemFilePtr CreateSearchData(const CSearchParams& params, SearchType type, bool supports64bit, bool& packetUsing64bit);
 	
 	
 	//! Timer used for global search intervals.
@@ -201,6 +201,9 @@ private:
 	
 	//! The current packet used for searches.
 	CPacket*	m_searchPacket;
+
+	//! Does the current search packet contain 64bit values?
+	bool		m_64bitSearchPacket;
 
 	//! Queue of servers to ask when doing global searches.
 	//! TODO: Replace with 'cookie' system.
