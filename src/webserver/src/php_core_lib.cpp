@@ -38,6 +38,10 @@
 
 #include <wx/datetime.h>
 
+#ifdef HAVE_GETTEXT
+#include <libintl.h>
+#endif
+
 /*
  * Built-in php functions. Those are both library and core internals.
  * 
@@ -246,7 +250,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'substr'");
 		return;
 	}
-	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "start");
+	PHP_SCOPE_ITEM *si_start = get_scope_item(g_current_scope, "__param_1");
 	PHP_VALUE_NODE *start = &si_start->var->value;
 	if ( si_start ) {
 		cast_value_dnum(start);
@@ -255,7 +259,7 @@ void php_native_substr(PHP_VALUE_NODE * /*result*/)
 		return;
 	}
 	// 3-rd is optional
-	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "end");
+	PHP_SCOPE_ITEM *si_end = get_scope_item(g_current_scope, "__param_2");
 	PHP_VALUE_NODE end = { PHP_VAL_INT, { 0 } };
 	if ( si_end ) {
 		end = si_end->var->value;
@@ -350,6 +354,44 @@ void php_native_split(PHP_VALUE_NODE *result)
 	regfree(&preg);
 }
 
+#ifdef HAVE_GETTEXT
+
+void php_native_gettext(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
+	PHP_VALUE_NODE *str = &si_str->var->value;
+	if ( si_str ) {
+		cast_value_str(str);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'gettext'");
+		return;
+	}
+	if ( result ) {
+		cast_value_dnum(result);
+		result->type = PHP_VAL_STRING;
+		result->str_val = gettext(str->str_val);
+	}
+}
+
+void php_native_gettext_noop(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_str = get_scope_item(g_current_scope, "__param_0");
+	PHP_VALUE_NODE *str = &si_str->var->value;
+	if ( si_str ) {
+		cast_value_str(str);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'gettext_noop'");
+		return;
+	}
+	if ( result ) {
+		cast_value_dnum(result);
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup(str->str_val);
+	}
+}
+
+#endif
+
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"var_dump", 
@@ -378,6 +420,20 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		3,
 		php_native_split,
 	},
+#ifdef HAVE_GETTEXT
+	{
+		"_",
+		1, php_native_gettext,
+	},
+	{
+		"gettext",
+		1, php_native_gettext,
+	},
+	{
+		"gettext_nop",
+		1, php_native_gettext,
+	},
+#endif
 	{ 0, 0, 0, },
 };
 
