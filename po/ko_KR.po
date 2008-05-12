@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-10 03:31+0200\n"
+"POT-Creation-Date: 2008-05-12 03:30+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -2756,15 +2756,15 @@ msgstr "붙이기"
 msgid "Select All"
 msgstr "모두 선택"
 
-#: src/SearchList.cpp:265
+#: src/SearchList.cpp:292
 msgid "Kad search can't be done if Kad is not running"
 msgstr "Kad를 실행 중이 아니면 Kad 검색을 할 수 없습니다."
 
-#: src/SearchList.cpp:267
+#: src/SearchList.cpp:294
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "ED2k가 연결되어 있지 않으면 ED2k 검색을 할 수 없습니다."
 
-#: src/SearchList.cpp:311
+#: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kad 검색 시도 중에 예기치 못한 에러: "
 
@@ -3405,57 +3405,57 @@ msgstr "ED2k 통신망이 환경설정에서 비활성화되어 있으므로 연
 msgid "No valid servers to connect in serverlist found"
 msgstr "발견된 서버 목록에서 연결할수 있는 유효한 서버가 없습니다."
 
-#: src/ServerConnect.cpp:197
+#: src/ServerConnect.cpp:187
 #, c-format
 msgid "Connected to %s (%s:%i)"
 msgstr "%s (%s:%i)에 연결되었습니다."
 
-#: src/ServerConnect.cpp:273
+#: src/ServerConnect.cpp:263
 #, c-format
 msgid "Connection established on: %s"
 msgstr "다음에 연결이 되었습니다: %s"
 
-#: src/ServerConnect.cpp:345
+#: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
 "연결하는 동안 치명적 오류가 발생하였습니다. 인터넷 연결이 끊긴것 같습니다."
 
-#: src/ServerConnect.cpp:349
+#: src/ServerConnect.cpp:339
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
 msgstr "%s(%s:%i)에 연결이 끊김."
 
-#: src/ServerConnect.cpp:359
+#: src/ServerConnect.cpp:349
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
 msgstr "%s(%s:%i)가 죽은것 같습니다."
 
-#: src/ServerConnect.cpp:372
+#: src/ServerConnect.cpp:362
 #, c-format
 msgid "%s (%s:%i) appears to be full."
 msgstr "%s(%s:%i)가 가득찬것 같습니다."
 
-#: src/ServerConnect.cpp:391
+#: src/ServerConnect.cpp:381
 #, fuzzy, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "%d 초후에 서버로 자동 접속을 재시도"
 msgstr[1] "%d 초후에 서버로 자동 접속을 재시도"
 
-#: src/ServerConnect.cpp:411
+#: src/ServerConnect.cpp:401
 msgid "Connection lost"
 msgstr "연결 끊김"
 
-#: src/ServerConnect.cpp:418
+#: src/ServerConnect.cpp:408
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "%s(%s:%i)에 연결하지 못했습니다."
 
-#: src/ServerConnect.cpp:460
+#: src/ServerConnect.cpp:450
 msgid "Error: Socket invalid at timeoutcheck"
 msgstr "오류: 시간초과 검사에 유효하지 않은 소켓"
 
-#: src/ServerConnect.cpp:470
+#: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "%s(%s:%i)에 접속을 시도하는데 시간이 지났습니다."
