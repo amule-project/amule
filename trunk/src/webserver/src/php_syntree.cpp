@@ -1062,6 +1062,7 @@ void php_engine_init()
 	
 	// here built-in functions/objects/vars are loaded
 	php_init_core_lib();
+	php_init_amule_lib();
 }
 
 void php_exp_tree_free(PHP_EXP_NODE *tree)
