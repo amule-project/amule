@@ -11,6 +11,7 @@ amuleweb_SOURCES =  \
 	php_parser.c \
 	php_lexer.c \
 	php_syntree.cpp \
+	php_amule_lib.cpp \
 	php_core_lib.cpp
 
 if ENABLE_UPNP

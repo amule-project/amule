@@ -93,6 +93,7 @@ class CPhpFilter {
 #endif // __cplusplus
 
 void php_init_core_lib();
+void php_init_amule_lib();
 
 void load_session_vars(const char *target, std::map<std::string, std::string> &varmap);
 void save_session_vars(std::map<std::string, std::string> &varmap);
