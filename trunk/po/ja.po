@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-10 03:31+0200\n"
+"POT-Creation-Date: 2008-05-12 03:30+0200\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -2754,15 +2754,15 @@ msgstr "ペースト"
 msgid "Select All"
 msgstr "全ての選択"
 
-#: src/SearchList.cpp:265
+#: src/SearchList.cpp:292
 msgid "Kad search can't be done if Kad is not running"
 msgstr "Kadが走っていない中にはKadの検索は出来ません"
 
-#: src/SearchList.cpp:267
+#: src/SearchList.cpp:294
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "Ed2kに接続されていない中にはEd2kの検索は出来ません"
 
-#: src/SearchList.cpp:311
+#: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Kadを検索する間に不明なエラーが発生しました： "
 
@@ -3416,57 +3416,57 @@ msgstr "ED2Kネットワークは個人設定に無効されて、接続はし�
 msgid "No valid servers to connect in serverlist found"
 msgstr "サーバ・リストに接続出来るために正当なサーバは見付かりません"
 
-#: src/ServerConnect.cpp:197
+#: src/ServerConnect.cpp:187
 #, c-format
 msgid "Connected to %s (%s:%i)"
 msgstr "%s（%s：%i）に接続しています"
 
-#: src/ServerConnect.cpp:273
+#: src/ServerConnect.cpp:263
 #, c-format
 msgid "Connection established on: %s"
 msgstr " %s にコネクションを確立しました"
 
-#: src/ServerConnect.cpp:345
+#: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
 "接続中に致命的なエラーが発生しました。インターネット・コネクションがダウンの"
 "恐れがあります。"
 
-#: src/ServerConnect.cpp:349
+#: src/ServerConnect.cpp:339
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
 msgstr "%s（%s：%i）のコネクションを失いました"
 
-#: src/ServerConnect.cpp:359
+#: src/ServerConnect.cpp:349
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
 msgstr "%s（%s：%i）は死んでいるそうです。"
 
-#: src/ServerConnect.cpp:372
+#: src/ServerConnect.cpp:362
 #, c-format
 msgid "%s (%s:%i) appears to be full."
 msgstr "%s（%s：%i）は一杯だそうです。"
 
-#: src/ServerConnect.cpp:391
+#: src/ServerConnect.cpp:381
 #, fuzzy, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "サーバへの自動的な接続で、後%d秒で再試しします"
 
-#: src/ServerConnect.cpp:411
+#: src/ServerConnect.cpp:401
 msgid "Connection lost"
 msgstr "接続を失いました"
 
-#: src/ServerConnect.cpp:418
+#: src/ServerConnect.cpp:408
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "%s（%s：%i）の接続に失敗しました。"
 
-#: src/ServerConnect.cpp:460
+#: src/ServerConnect.cpp:450
 msgid "Error: Socket invalid at timeoutcheck"
 msgstr "エラー：timeoutcheckの時ソケットは不正でした"
 
-#: src/ServerConnect.cpp:470
+#: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "%s（%s：%i）の接続の試しがタイム・アウトました。"

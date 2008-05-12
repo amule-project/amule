@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-10 03:31+0200\n"
+"POT-Creation-Date: 2008-05-12 03:30+0200\n"
 "PO-Revision-Date: 2007-12-14 00:06+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -2786,15 +2786,15 @@ msgstr "Enganxa"
 msgid "Select All"
 msgstr "Selecciona-ho tot"
 
-#: src/SearchList.cpp:265
+#: src/SearchList.cpp:292
 msgid "Kad search can't be done if Kad is not running"
 msgstr "No es pot fer una cerca Kad si la xarxa Kad no està engegada"
 
-#: src/SearchList.cpp:267
+#: src/SearchList.cpp:294
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "No es pot fer una cerca ED2K si la xarxa ED2K no està connectada"
 
-#: src/SearchList.cpp:311
+#: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Error inesperat mentre s'intentava fer una cerca Kad: "
 
@@ -3457,57 +3457,57 @@ msgstr "La xarxa ED2K és inhabilitada a les preferències, no es connectarà."
 msgid "No valid servers to connect in serverlist found"
 msgstr "No s'ha trobat cap servidor vàlid a la llista de servidors"
 
-#: src/ServerConnect.cpp:197
+#: src/ServerConnect.cpp:187
 #, c-format
 msgid "Connected to %s (%s:%i)"
 msgstr "Connectat a %s (%s:%i)"
 
-#: src/ServerConnect.cpp:273
+#: src/ServerConnect.cpp:263
 #, c-format
 msgid "Connection established on: %s"
 msgstr "Connexió establerta amb: %s"
 
-#: src/ServerConnect.cpp:345
+#: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
 "Error fatal en intentar connectar. La connexió a Internet pot haver caigut"
 
-#: src/ServerConnect.cpp:349
+#: src/ServerConnect.cpp:339
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
 msgstr "S'ha perdut la connexió a %s (%s:%i)"
 
-#: src/ServerConnect.cpp:359
+#: src/ServerConnect.cpp:349
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
 msgstr "%s (%s:%i) sembla estar mort."
 
-#: src/ServerConnect.cpp:372
+#: src/ServerConnect.cpp:362
 #, c-format
 msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) sembla estar ple."
 
-#: src/ServerConnect.cpp:391
+#: src/ServerConnect.cpp:381
 #, fuzzy, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
 msgstr[0] "Es reintentarà la connexió al servidor d'ací %d segons"
 msgstr[1] "Es reintentarà la connexió al servidor d'ací %d segons"
 
-#: src/ServerConnect.cpp:411
+#: src/ServerConnect.cpp:401
 msgid "Connection lost"
 msgstr "S'ha perdut la connexió"
 
-#: src/ServerConnect.cpp:418
+#: src/ServerConnect.cpp:408
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "No s'ha pogut connectar a %s (%s:%i)."
 
-#: src/ServerConnect.cpp:460
+#: src/ServerConnect.cpp:450
 msgid "Error: Socket invalid at timeoutcheck"
 msgstr "Error: Sòcol invàlid en la comprovació de temps"
 
-#: src/ServerConnect.cpp:470
+#: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "L'intent de connexió a %s (%s:%i) ha excedit el temps."

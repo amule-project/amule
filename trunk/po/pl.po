@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-10 03:31+0200\n"
+"POT-Creation-Date: 2008-05-12 03:30+0200\n"
 "PO-Revision-Date: 2008-05-03 13:50+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -2765,15 +2765,15 @@ msgstr "Wklej"
 msgid "Select All"
 msgstr "Zaznacz wszystko"
 
-#: src/SearchList.cpp:265
+#: src/SearchList.cpp:292
 msgid "Kad search can't be done if Kad is not running"
 msgstr "Nie można wykonać wyszukiwania Kad, jeśli Kad nie jest włączony"
 
-#: src/SearchList.cpp:267
+#: src/SearchList.cpp:294
 msgid "ED2K search can't be done if ED2K is not connected"
 msgstr "Nie można wykonać wyszukiwania ED2K, jeśli ED2K nie jest połączony"
 
-#: src/SearchList.cpp:311
+#: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
 msgstr "Nieoczekiwany błąd podczas próby wyszukiwania Kad: "
 
@@ -3435,37 +3435,37 @@ msgstr "Sieć ED2K wyłączona w preferencjach, nie łączę."
 msgid "No valid servers to connect in serverlist found"
 msgstr "Nie ma poprawnych serwerów na liście"
 
-#: src/ServerConnect.cpp:197
+#: src/ServerConnect.cpp:187
 #, c-format
 msgid "Connected to %s (%s:%i)"
 msgstr "Połączony z %s (%s:%i)"
 
-#: src/ServerConnect.cpp:273
+#: src/ServerConnect.cpp:263
 #, c-format
 msgid "Connection established on: %s"
 msgstr "Nawiązano połączenie z: %s"
 
-#: src/ServerConnect.cpp:345
+#: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
 msgstr ""
 "Błąd krytyczny podczas próby łączenia. Może nie ma połączenia do internetu"
 
-#: src/ServerConnect.cpp:349
+#: src/ServerConnect.cpp:339
 #, c-format
 msgid "Lost connection to %s (%s:%i)"
 msgstr "Utracono połączenie z %s (%s:%i)"
 
-#: src/ServerConnect.cpp:359
+#: src/ServerConnect.cpp:349
 #, c-format
 msgid "%s (%s:%i) appears to be dead."
 msgstr "%s (%s:%i) wygląda na wyłączony."
 
-#: src/ServerConnect.cpp:372
+#: src/ServerConnect.cpp:362
 #, c-format
 msgid "%s (%s:%i) appears to be full."
 msgstr "%s (%s:%i) wygląda na pełny."
 
-#: src/ServerConnect.cpp:391
+#: src/ServerConnect.cpp:381
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
@@ -3473,20 +3473,20 @@ msgstr[0] "Automatyczne łączenie do serwera nastąpi za %d sekundę"
 msgstr[1] "Automatyczne łączenie do serwera nastąpi za %d sekundy"
 msgstr[2] "Automatyczne łączenie do serwera nastąpi za %d sekund"
 
-#: src/ServerConnect.cpp:411
+#: src/ServerConnect.cpp:401
 msgid "Connection lost"
 msgstr "Utracono połączenie"
 
-#: src/ServerConnect.cpp:418
+#: src/ServerConnect.cpp:408
 #, c-format
 msgid "Connecting to %s (%s:%i) failed."
 msgstr "Łączenie z %s (%s:%i) nieudane."
 
-#: src/ServerConnect.cpp:460
+#: src/ServerConnect.cpp:450
 msgid "Error: Socket invalid at timeoutcheck"
 msgstr "Błąd: Socket nieprawidłowy przy sprawdzaniu timeout-a"
 
-#: src/ServerConnect.cpp:470
+#: src/ServerConnect.cpp:460
 #, c-format
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Próba połączenia z %s (%s:%i) przedawniła się."
