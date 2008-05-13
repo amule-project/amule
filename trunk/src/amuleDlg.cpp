@@ -504,6 +504,10 @@ CamuleDlg::~CamuleDlg()
 	SaveGUIPrefs();
 
 	theApp->amuledlg = NULL;
+
+#ifdef ENABLE_IP2COUNTRY
+	delete m_IP2Country;
+#endif
 	
 	printf("aMule dialog destroyed\n");
 }

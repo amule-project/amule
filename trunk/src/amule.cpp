@@ -211,6 +211,9 @@ CamuleApp::~CamuleApp()
 	// wxWidgets log-events are saved in it as well.
 	delete applog;
 	applog = NULL;
+
+	free(strFullMuleVersion);
+	free(strOSDescription);
 }
 
 int CamuleApp::OnExit()
