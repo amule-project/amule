@@ -172,6 +172,7 @@ void CSearchFile::AddChild(CSearchFile* file)
 			// The first child will always be the first result we received.
 			AddDebugLogLineM(false, logSearch, CFormat(wxT("Created initial child for result '%s'")) % GetFileName());
 			m_children.push_back(new CSearchFile(*this));
+			m_children.back()->m_parent = this;
 		}
 	}
 

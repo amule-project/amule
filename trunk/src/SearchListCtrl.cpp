@@ -169,7 +169,7 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 		CSearchFile* parent = toshow->GetParent();
 
 		if (newid > 0) {
-			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);			
+			CSearchFile* before = (CSearchFile*)GetItemData(newid - 1);
 			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) || (before == parent));
@@ -239,13 +239,20 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 	if (index != -1) {
 		// Update the filename, which may be changed in case of multiple variants.
 		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
-		
+
 		wxString temp = wxString::Format( wxT("%d (%d)"), toupdate->GetSourceCount(), toupdate->GetCompleteSourceCount());
+#ifdef __DEBUG__
+		if (toupdate->GetKadPublishInfo() == 0) {
+			temp += wxT(" | -");
+		} else {
+			temp += wxString::Format(wxT(" | N:%u, P:%u, T:%0.2f"), (toupdate->GetKadPublishInfo() & 0xFF000000) >> 24, (toupdate->GetKadPublishInfo() & 0x00FF0000) >> 16, (toupdate->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
+		}
+#endif
 		SetItem(index, ID_SEARCH_COL_SOURCES, temp);
-		
+
 		UpdateItemColor(index);
-		
-		// Deletions of items causes rather large ammount of flicker, so to
+
+		// Deletions of items causes rather large amount of flicker, so to
 		// avoid this, we resort the list to ensure correct ordering.
 		if (!IsItemSorted(index)) {
 			SortList();
@@ -884,7 +891,7 @@ void CSearchListCtrl::OnDrawItem(
 		CSearchFile* parent = file->GetParent();
 
 		if (item > 0) {
-			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);			
+			CSearchFile* before = (CSearchFile*)GetItemData(item - 1);
 			wxASSERT(before);
 			if (parent) {
 				wxASSERT((before->GetParent() == parent) || (before == parent));
