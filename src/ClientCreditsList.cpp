@@ -317,17 +317,14 @@ void CClientCreditsList::InitalizeCrypting()
  		}
 			
  		// load private key
- 		CryptoPP::FileSource *filesource = new CryptoPP::FileSource(
-			filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME),
-			true, new CryptoPP::Base64Decoder);
- 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(*filesource);
+ 		CryptoPP::FileSource filesource(filename2char(theApp->ConfigDir + CRYPTKEY_FILENAME), true, new CryptoPP::Base64Decoder);
+ 		m_pSignkey = new CryptoPP::RSASSA_PKCS1v15_SHA_Signer(filesource);
  		// calculate and store public key
-		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(
-			*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
-		CryptoPP::ArraySink *asink = new CryptoPP::ArraySink(m_abyMyPublicKey, 80);
- 		pubkey.DEREncode(*asink);
- 		m_nMyPublicKeyLen = asink->TotalPutLength();
- 		asink->MessageEnd();
+		CryptoPP::RSASSA_PKCS1v15_SHA_Verifier pubkey(*static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey));
+		CryptoPP::ArraySink asink(m_abyMyPublicKey, 80);
+ 		pubkey.DEREncode(asink);
+ 		m_nMyPublicKeyLen = asink.TotalPutLength();
+ 		asink.MessageEnd();
 	} catch (const CryptoPP::Exception& e) {
 		delete static_cast<CryptoPP::RSASSA_PKCS1v15_SHA_Signer *>(m_pSignkey);
 		m_pSignkey = NULL;
