@@ -28,8 +28,12 @@
 #include <include/common/EventIDs.h>
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H
+	#include "config.h"		// Needed for HAVE_SYS_RESOURCE_H, HAVE_STRERROR_R and STRERROR_R_CHAR_P
 #endif
+
+// Prefer the POSIX interface to strerror_r()
+#define _XOPEN_SOURCE	600
+#include <string.h>			// Do_not_auto_remove
 
 #include <wx/utils.h>
 
@@ -57,6 +61,53 @@
 	#endif
 
 	#include <wx/unix/execute.h>
+#endif
+
+#ifndef HAVE_STRERROR_R
+
+// Replacement strerror_r() function for systems that don't have any.
+// Note that this replacement function is NOT thread-safe!
+static int rpl_strerror_r(int errnum, char *buf, size_t buflen)
+{
+	char *tmp = strerror(errnum);
+	if (tmp == NULL) {
+		errno = EINVAL;
+		return -1;
+	} else {
+		strncpy(buf, tmp, buflen - 1);
+		buf[buflen - 1] = '\0';
+		if (strlen(tmp) >= buflen) {
+			errno = ERANGE;
+			return -1;
+		}
+	}
+	return 0;
+}
+
+#	define strerror_r(errnum, buf, buflen)	rpl_strerror_r(errnum, buf, buflen)
+#else
+#	ifdef STRERROR_R_CHAR_P
+
+// Replacement strerror_r() function for systems that return a char*.
+static int rpl_strerror_r(int errnum, char *buf, size_t buflen)
+{
+	char *tmp = strerror_r(errnum, buf, buflen);
+	if (tmp == NULL) {
+		errno = EINVAL;
+		return -1;
+	} else if (tmp != buf) {
+		strncpy(buf, tmp, buflen - 1);
+		buf[buflen - 1] = '\0';
+		if (strlen(tmp) >= buflen) {
+			errno = ERANGE;
+			return -1;
+		}
+	}
+	return 0;
+}
+
+#		define strerror_r(errnum, buf, buflen)	rpl_strerror_r(errnum, buf, buflen)
+#	endif
 #endif
 
 BEGIN_EVENT_TABLE(CamuleDaemonApp, wxAppConsole)

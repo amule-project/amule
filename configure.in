@@ -499,6 +499,11 @@ dnl autoscan has missed these ones. Maybe because it's win32 stuff?
 dnl
 AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
 
+tmp_CFLAGS="$CFLAGS"
+CFLAGS="-D_XOPEN_SOURCE=600 $CFLAGS"
+AC_FUNC_STRERROR_R
+CFLAGS="$tmp_CFLAGS"
+
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
 
