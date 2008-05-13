@@ -430,8 +430,8 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		1, php_native_gettext,
 	},
 	{
-		"gettext_nop",
-		1, php_native_gettext,
+		"gettext_noop",
+		1, php_native_gettext_noop,
 	},
 #endif
 	{ 0, 0, 0, },
