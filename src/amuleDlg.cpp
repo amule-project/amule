@@ -1454,17 +1454,12 @@ void CamuleDlg::DoNetworkRearrange()
 		logs_notebook->AddPage(m_logpages[1].page, m_logpages[1].name);
 		logs_notebook->AddPage(m_logpages[2].page, m_logpages[2].name);
 	}
-	
-	m_logpages[1].page->Show(thePrefs::GetNetworkED2K());
-	m_logpages[2].page->Show(thePrefs::GetNetworkED2K());
-	
+		
 	m_networkpages[0].page->Show(thePrefs::GetNetworkED2K());
 	
 	if (thePrefs::GetNetworkKademlia()) {
 		logs_notebook->AddPage(m_logpages[3].page, m_logpages[3].name);
 	}
-	
-	m_logpages[3].page->Show(thePrefs::GetNetworkKademlia());
 	
 	m_networkpages[1].page->Show(thePrefs::GetNetworkKademlia());		
 
