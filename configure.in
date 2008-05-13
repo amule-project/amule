@@ -602,9 +602,7 @@ if test x$SYS != xwin32; then
 	fi
 fi
 
-case "$USE_NLS" in
-
-yes)
+if test "$USE_NLS" = "yes" ; then
 	AC_MSG_CHECKING([for requested languages])
 	Generate_Langs=`echo $LINGUAS | $AWK ['OFS="\\\\|" { for (i = 1; i <= NF; ++i) $i = "\\\\." $i; print }']`
 	GENERATE_MANS_TO_INSTALL(AMULE_DAEMON, docs/man/amuled)
@@ -618,10 +616,7 @@ yes)
 	GENERATE_MANS_TO_INSTALL(ALCC, src/utils/aLinkCreator/docs/alcc)
 	GENERATE_MANS_TO_INSTALL(MONOLITHIC, docs/man/amule)
 	AC_MSG_RESULT([${LINGUAS:-all}])
-	;;
-*)
-	HAVE_GETTEXT="no"
-esac
+fi
 
 dnl
 dnl Denoiser
@@ -659,7 +654,7 @@ AM_CONDITIONAL(ENABLE_IP2COUNTRY, test x$ENABLE_IP2COUNTRY = xyes)
 AM_CONDITIONAL(SYS_WIN32, test x$SYS = xwin32)
 AM_CONDITIONAL(NEED_RC, test x$SYS = xwin32 -a "$RC" != ":")
 AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
-AM_CONDITIONAL(COMPILE_NLS, test x$HAVE_GETTEXT = xyes)
+AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 
 dnl
@@ -745,7 +740,7 @@ echo "  aMule enabled options:"
 echo 
 echo "  **** aMule Core ****" 
 echo "  Prefix where aMule should be installed?                    ${prefix:-none}"
-echo "  Should aMule be compiled with i18n support?                ${HAVE_GETTEXT:-no}"
+echo "  Should aMule be compiled with i18n support?                ${USE_NLS:-no}"
 echo "  Should aMule be compiled in debug mode?                    ${USE_DEBUG:-no}"
 echo "  Should aMule be compiled with profiling?                   ${USE_PROFILE:-no}"
 echo "  Should aMule be compiled with optimizations?               ${USE_OPTIMIZE:-no}"
