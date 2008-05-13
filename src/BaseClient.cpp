@@ -1216,6 +1216,7 @@ bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 	if (m_dwDirectCallbackTimeout != 0) {
 		theApp->clientlist->RemoveDirectCallback(this);
 		m_dwDirectCallbackTimeout = 0;
+		theApp->clientlist->AddDeadSource(this);
 		AddDebugLogLineM(false, logClient, wxT("Direct callback failed to client ") + GetUserHash().Encode());
 	}
 
