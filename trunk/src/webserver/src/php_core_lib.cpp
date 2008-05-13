@@ -38,7 +38,7 @@
 
 #include <wx/datetime.h>
 
-#ifdef HAVE_GETTEXT
+#ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
 
@@ -354,7 +354,7 @@ void php_native_split(PHP_VALUE_NODE *result)
 	regfree(&preg);
 }
 
-#ifdef HAVE_GETTEXT
+#ifdef ENABLE_NLS
 
 void php_native_gettext(PHP_VALUE_NODE *result)
 {
@@ -420,7 +420,7 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 		3,
 		php_native_split,
 	},
-#ifdef HAVE_GETTEXT
+#ifdef ENABLE_NLS
 	{
 		"_",
 		1, php_native_gettext,
