@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-12 03:30+0200\n"
-"PO-Revision-Date: 2008-05-05 01:07+0100\n"
+"PO-Revision-Date: 2008-05-13 02:04+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -7065,16 +7065,16 @@ msgstr "Verzió-ellenőrzés fájl letöltése sikertelen."
 #: src/amule.cpp:1988
 #, c-format
 msgid "Users: %s | Files: %s"
-msgstr ""
+msgstr "Felhasználók: %s | Fájlok: %s"
 
 #: src/amule.cpp:1989
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
-msgstr ""
+msgstr "Felhasználók: E: %s K: %s | Fájlok: E: %s K: %s"
 
 #: src/amule.cpp:1998
 msgid "No networks selected"
-msgstr ""
+msgstr "Nincs hálózat kiválasztva"
 
 #: src/amule.cpp:2065
 #, c-format
