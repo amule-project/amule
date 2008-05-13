@@ -254,6 +254,16 @@ TEST(CUInt128, SetValueBE)
 	ASSERT_EQUALS(a, b);
 }
 
+TEST(CUInt128, StoreCryptValue)
+{
+	uint8_t ref[16] = { 0x3, 0x2, 0x1, 0x0, 0x7, 0x6, 0x5, 0x4, 0xb, 0xa, 0x9, 0x8, 0xf, 0xe, 0xd, 0xc };
+	uint8_t tmp[16];
+	CUInt128 test((uint8_t *)&TestData::sequence);
+
+	test.StoreCryptValue((uint8_t *)&tmp);
+	ASSERT_EQUALS(CUInt128((uint8_t *)&ref), CUInt128((uint8_t *)&tmp));
+}
+
 TEST(CUInt128, ShiftLeft)
 {
 	CUInt128 test((uint8_t *)&TestData::one);
