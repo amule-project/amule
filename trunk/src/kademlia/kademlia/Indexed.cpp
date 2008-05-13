@@ -752,8 +752,8 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		// of spam entries. We could also sort by trustvalue, but we would risk to only send popular files this way
 		// on very hot keywords
 		bool onlyTrusted = true;
-		uint32_t dbgResultsTrusted = 0;
-		uint32_t dbgResultsUntrusted = 0;
+		//uint32_t dbgResultsTrusted = 0;
+		//uint32_t dbgResultsUntrusted = 0;
 
 		do {
 			for (CSourceKeyMap::iterator itSource = currKeyHash->m_Source_map.begin(); itSource != currKeyHash->m_Source_map.end(); ++itSource) {
@@ -768,11 +768,11 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 						} else if ((uint16_t)count < maxResults) {
 							if (!oldClient || currName->m_uSize <= OLD_MAX_FILE_SIZE) {
 								count++;
-								if (onlyTrusted) {
-									dbgResultsTrusted++;
-								} else {
-									dbgResultsUntrusted++;
-								}
+								//if (onlyTrusted) {
+								//	dbgResultsTrusted++;
+								//} else {
+								//	dbgResultsUntrusted++;
+								//}
 								packetdata.WriteUInt128(currName->m_uSourceID);
 								if (kad2) {
 									currName->WriteTagListWithPublishInfo(&packetdata);
@@ -812,7 +812,7 @@ void CIndexed::SendValidKeywordResult(const CUInt128& keyID, const SSearchTerm* 
 		} while (!onlyTrusted);
 
 		// LOGTODO: Remove log
-		AddDebugLogLineM(false, logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
+		//AddDebugLogLineM(false, logKadIndex, wxString::Format(wxT("Kad keyword search result request: Sent %u trusted and %u untrusted results"), dbgResultsTrusted, dbgResultsUntrusted));
 
 		if (count > 0) {
 			uint16_t countLeft = (uint16_t)count % 50;

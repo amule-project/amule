@@ -96,6 +96,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 				// intern ports and change the setting.
 				CKademlia::GetPrefs()->SetUseExternKadPort(false);
 				AddDebugLogLineM(false, logKadUdpFwTester, wxString::Format(wxT("Corrected UDP firewall result: Using open internal (%u) instead of open external port"), incomingPort));
+				theApp->ShowConnectionState();
 				return;
 			} else if (it->answered) {
 				// we already received an answer. This may happen since all tests contain of two answer packets,
