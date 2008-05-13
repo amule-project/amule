@@ -718,7 +718,7 @@ public:
 
 			InitLocale(locale_to_check, aMuleLanguages[i].id);
 			if (locale_to_check.IsOk() && locale_to_check.IsLoaded(wxT(PACKAGE))) {
-				aMuleLanguages[i].displayname = wxGetTranslation(aMuleLanguages[i].name);
+				aMuleLanguages[i].displayname = wxString(wxGetTranslation(aMuleLanguages[i].name)) + wxT(" [") + aMuleLanguages[i].name + wxT("]");
 			} else {
 				aMuleLanguages[i].available = false;
 			}
