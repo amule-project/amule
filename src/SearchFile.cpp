@@ -30,6 +30,7 @@
 #include "MemFile.h"			// Needed for CMemFile
 #include "Preferences.h"		// Needed for thePrefs
 #include "GuiEvents.h"
+#include "Logger.h"
 
 CSearchFile::CSearchFile(const CMemFile& data, bool optUTF8, wxUIntPtr searchID, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort), const wxString& directory, bool kademlia)
 	: m_parent(NULL),
@@ -112,14 +113,40 @@ CSearchFile::~CSearchFile()
 }
 
 
-void CSearchFile::AddSources(uint32 count, uint32 count_complete)
+void CSearchFile::MergeResults(const CSearchFile& other)
 {
+	// Sources
 	if (m_kademlia) {
-		m_sourceCount = std::max(m_sourceCount, count);
-		m_completeSourceCount = std::max(m_completeSourceCount, count_complete);
+		m_sourceCount = std::max(m_sourceCount, other.m_sourceCount);
+		m_completeSourceCount = std::max(m_completeSourceCount, other.m_completeSourceCount);
 	} else {
-		m_sourceCount += count;
-		m_completeSourceCount += count_complete;
+		m_sourceCount += other.m_sourceCount;
+		m_completeSourceCount += other.m_completeSourceCount;
+	}
+
+	// Publish info
+	if (m_kadPublishInfo == 0) {
+		if (other.m_kadPublishInfo != 0) {
+			m_kadPublishInfo = other.m_kadPublishInfo;
+		}
+	} else {
+		if (other.m_kadPublishInfo != 0) {
+			m_kadPublishInfo =
+				std::max(m_kadPublishInfo & 0xFF000000, other.m_kadPublishInfo & 0xFF000000) |
+				std::max(m_kadPublishInfo & 0x00FF0000, other.m_kadPublishInfo & 0x00FF0000) |
+				(((m_kadPublishInfo & 0x0000FFFF) + (other.m_kadPublishInfo & 0x0000FFFF)) >> 1);
+		}
+	}
+
+	// Rating
+	if (m_iUserRating != 0) {
+		if (other.m_iUserRating != 0) {
+			m_iUserRating = (m_iUserRating + other.m_iUserRating) / 2;
+		}
+	} else {
+		if (other.m_iUserRating != 0) {
+			m_iUserRating = other.m_iUserRating;
+		}
 	}
 }
 
@@ -133,16 +160,29 @@ void CSearchFile::AddChild(CSearchFile* file)
 	wxCHECK_RET(GetFileHash() == file->GetFileHash(), wxT("Mismatching child/parent hashes"));
 	wxCHECK_RET(GetFileSize() == file->GetFileSize(), wxT("Mismatching child/parent sizes"));
 	
+	// If no children exists, then we add the current item.
+	if (GetChildren().empty()) {
+		// Merging duplicate names instead of adding a new one
+		if (file->GetFileName() == GetFileName()) {
+			AddDebugLogLineM( false, logSearch, CFormat(wxT("Merged results for '%s'")) % GetFileName());
+			MergeResults(*file);
+			delete file;
+			return;
+		} else {
+			// The first child will always be the first result we received.
+			AddDebugLogLineM(false, logSearch, CFormat(wxT("Created initial child for result '%s'")) % GetFileName());
+			m_children.push_back(new CSearchFile(*this));
+		}
+	}
+
 	file->m_parent = this;
 
-	// TODO: Doesn't handle results with same name but diff. rating.
 	for (size_t i = 0; i < m_children.size(); ++i) {
 		CSearchFile* other = m_children.at(i);
-		
+		// Merge duplicate filenames
 		if (other->GetFileName() == file->GetFileName()) {
-			other->AddSources(file->GetSourceCount(), file->GetCompleteSourceCount());
+			other->MergeResults(*file);
 			UpdateParent();
-			Notify_Search_Update_Sources(other);
 			delete file;
 			return;
 		}
@@ -161,29 +201,63 @@ void CSearchFile::AddChild(CSearchFile* file)
 void CSearchFile::UpdateParent()
 {
 	wxCHECK_RET(!m_parent, wxT("UpdateParent called on child item"));
-	
-	size_t ratingCount = 0, ratingTotal = 0;
-	size_t max = 0, index = 0;
-	for (size_t i = 0; i < m_children.size(); ++i) {
-		const CSearchFile* child = m_children.at(index);
-		
+
+	uint32_t sourceCount = 0;		// ed2k: sum of all sources, kad: the max sources found
+	uint32_t completeSourceCount = 0;	// ed2k: sum of all sources, kad: the max sources found
+	uint32_t differentNames = 0;		// max known different names
+	uint32_t publishersKnown = 0;		// max publishers known
+	uint32_t trustValue = 0;		// average trust value
+	unsigned publishInfoTags = 0;
+	unsigned ratingCount = 0;
+	unsigned ratingTotal = 0;
+	CSearchResultList::const_iterator best = m_children.begin();
+	for (CSearchResultList::const_iterator it = m_children.begin(); it != m_children.end(); ++it) {
+		const CSearchFile* child = *it;
+
 		// Locate the most common name
-		if (child->GetSourceCount() > max) {
-			max = child->GetSourceCount();
-			index = i;
+		if (child->GetSourceCount() > (*best)->GetSourceCount()) {
+			best = it;
 		}
 
-		// Create sum of ratings so that the parent contains the avg.
+		// Sources
+		if (m_kademlia) {
+			sourceCount = std::max(sourceCount, child->m_sourceCount);
+			completeSourceCount = std::max(completeSourceCount, child->m_completeSourceCount);
+		} else {
+			sourceCount += child->m_sourceCount;
+			completeSourceCount += child->m_completeSourceCount;
+		}
+
+		// Publish info
+		if (child->GetKadPublishInfo() != 0) {
+			differentNames = std::max(differentNames, (child->GetKadPublishInfo() & 0xFF000000) >> 24);
+			publishersKnown = std::max(publishersKnown, (child->GetKadPublishInfo() & 0x00FF0000) >> 16);
+			trustValue += child->GetKadPublishInfo() & 0x0000FFFF;
+			publishInfoTags++;
+		}
+
+		// Rating
 		if (child->HasRating()) {
-			ratingCount += 1;
+			ratingCount++;
 			ratingTotal += child->UserRating();
 		}
 	}
 
-	if (ratingCount) {
-		m_iUserRating = (ratingTotal / ratingCount);
+	m_sourceCount = sourceCount;
+	m_completeSourceCount = completeSourceCount;
+
+	if (publishInfoTags > 0) {
+		m_kadPublishInfo = ((differentNames & 0x000000FF) << 24) | ((publishersKnown & 0x000000FF) << 16) | ((trustValue / publishInfoTags) & 0x0000FFFF);
+	} else {
+		m_kadPublishInfo = 0;
 	}
 
-	SetFileName(m_children.at(index)->GetFileName());
+	if (ratingCount > 0) {
+		m_iUserRating = ratingTotal / ratingCount;
+	} else {
+		m_iUserRating = 0;
+	}
+
+	SetFileName((*best)->GetFileName());
 }
 // File_checked_for_headers

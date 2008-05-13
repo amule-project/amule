@@ -197,6 +197,13 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 
 	// Source count
 	wxString temp = wxString::Format( wxT("%d (%d)"), toshow->GetSourceCount(), toshow->GetCompleteSourceCount() );
+#ifdef __DEBUG__
+	if (toshow->GetKadPublishInfo() == 0) {
+		temp += wxT(" | -");
+	} else {
+		temp += wxString::Format(wxT(" | N:%u, P:%u, T:%0.2f"), (toshow->GetKadPublishInfo() & 0xFF000000) >> 24, (toshow->GetKadPublishInfo() & 0x00FF0000) >> 16, (toshow->GetKadPublishInfo() & 0x0000FFFF) / 100.0);
+	}
+#endif
 	SetItem( newid, ID_SEARCH_COL_SOURCES, temp );
 
 	// File-type
