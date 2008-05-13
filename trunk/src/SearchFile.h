@@ -90,14 +90,14 @@ public:
 
 	
 	/**
-	 * Adds the given sources to the file.
+	 * Merges the two results into one.
 	 *
-	 * @param count Total source count.
-	 * @param count_complete Number of sources that have the complete file.
+	 * Merges the other result into this one, updating
+	 * various informations.
 	 *
-	 * Note that for Kademlia results, only the largest value is used.
+	 * @param other The file to be merged into this.
 	 */
-	void AddSources(uint32 count, uint32 count_complete);
+	void MergeResults(const CSearchFile& other);
 
 	/** Returns the total number of sources. */
 	uint32 GetSourceCount() const;
@@ -125,7 +125,7 @@ public:
 	 *
 	 * Note that a file can either be a parent _or_
 	 * a child, but not both. Also note that it is 
-	 * only legal to add children whoose filesize and
+	 * only legal to add children whose filesize and
 	 * filehash matches the parent's. AddChild takes
 	 * ownership of the file.
 	 */

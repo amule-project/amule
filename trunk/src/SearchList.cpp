@@ -558,48 +558,11 @@ bool CSearchList::AddToList(CSearchFile* toadd, bool clientResponse)
 	for (size_t i = 0; i < results.size(); ++i) {
 		CSearchFile* item = results.at(i);
 		
-		if ((toadd->GetFileHash() == item->GetFileHash())
-			&& (toadd->GetFileSize() == item->GetFileSize())) {
-			
-			AddDebugLogLineM(false, logSearch, 
-				CFormat(wxT("Received duplicate results for '%s' : %s"))
-					% item->GetFileName() % item->GetFileHash().Encode());
-				
-			// If no children exists, then we add the current item. The
-			// "parent" item will show the most common filename and the 
-			// sum of sources for all variants.
-			if (item->GetChildren().empty()) {
-				if (toadd->GetFileName() == item->GetFileName()) {
-					AddDebugLogLineM( false, logSearch, 
-						CFormat(wxT("Merged results for '%s'")) 
-							% item->GetFileName());
-					
-					// Merge duplicate items rather than creating a child item
-					item->AddSources(toadd->GetSourceCount(), toadd->GetCompleteSourceCount());
-					Notify_Search_Update_Sources(item);
-					delete toadd;
-					return true;
-				} else {
-					AddDebugLogLineM(false, logSearch, 
-						CFormat(wxT("Created initial child for result '%s'")) 
-							% item->GetFileName());
-				
-					// The first child will always be the first result we received.
-					item->AddChild(new CSearchFile(*item));
-				}
-			}
-
-			AddDebugLogLineM( false, logSearch,
-				CFormat(wxT("Adding child '%s' to result '%s'"))
-					% toadd->GetFileName() % item->GetFileName());
-			
-			// Parent item includes sum of all sources for this file
-			item->AddSources(toadd->GetSourceCount(), toadd->GetCompleteSourceCount());
+		if ((toadd->GetFileHash() == item->GetFileHash()) && (toadd->GetFileSize() == item->GetFileSize())) {
+			AddDebugLogLineM(false, logSearch, CFormat(wxT("Received duplicate results for '%s' : %s")) % item->GetFileName() % item->GetFileHash().Encode());
 			// Add the child, possibly updating the parents filename.
-			item->AddChild(toadd);			
-			
+			item->AddChild(toadd);
 			Notify_Search_Update_Sources(item);
-			
 			return true;
 		}
 	}
