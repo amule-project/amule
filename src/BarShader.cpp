@@ -125,12 +125,20 @@ void CBarShader::FillRange(uint64 start, uint64 end, uint32 color)
 		return;
 	}
 	
-	if (end >= m_FileSize) {
-		end = m_FileSize - 1;
+	// precision for small files: end must be increased by one 
+	// think of each byte as a visible block, then start points to
+	// the beginning of its block, but end points to the END of its block
+	end++;
+	
+	if (end > m_FileSize) {
+		end = m_FileSize;
 	}
 
 	uint32 firstPixel = start * m_Width / m_FileSize;
 	uint32 lastPixel  = end   * m_Width / m_FileSize;
+	if (lastPixel == m_Width) {
+		lastPixel--;
+	}
 	double f_Width = m_Width;
 	// calculate how much of this pixels is to be covered with the fill
 	double firstCovered = firstPixel + 1 - start * f_Width / m_FileSize;
