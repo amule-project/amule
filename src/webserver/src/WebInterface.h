@@ -67,10 +67,14 @@ public:
 public:
 	virtual void Post_Shell();
 	void TextShell(const wxString &prompt);
-	
+
+	virtual wxString SetLocale(const wxString& language);
+
 private:
 	virtual bool	OnInit();
 	virtual int 	OnRun();
+
+	bool	m_localTemplate;
 };
 
 #endif // WEBINTERFACE_H

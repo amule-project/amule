@@ -363,13 +363,13 @@ void php_native_gettext(PHP_VALUE_NODE *result)
 	if ( si_str ) {
 		cast_value_str(str);
 	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'gettext'");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'gettext'");
 		return;
 	}
 	if ( result ) {
 		cast_value_dnum(result);
 		result->type = PHP_VAL_STRING;
-		result->str_val = gettext(str->str_val);
+		result->str_val = strdup(gettext(str->str_val));
 	}
 }
 
@@ -380,7 +380,7 @@ void php_native_gettext_noop(PHP_VALUE_NODE *result)
 	if ( si_str ) {
 		cast_value_str(str);
 	} else {
-		php_report_error(PHP_ERROR, "Invalid or missing argument 'str' for 'gettext_noop'");
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'gettext_noop'");
 		return;
 	}
 	if ( result ) {
@@ -390,6 +390,38 @@ void php_native_gettext_noop(PHP_VALUE_NODE *result)
 	}
 }
 
+void php_native_ngettext(PHP_VALUE_NODE *result)
+{
+	PHP_SCOPE_ITEM *si_msgid = get_scope_item(g_current_scope, "__param_0");
+	PHP_VALUE_NODE *msgid = &si_msgid->var->value;
+	if ( si_msgid ) {
+		cast_value_str(msgid);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid' for 'ngettext'");
+		return;
+	}
+	PHP_SCOPE_ITEM *si_msgid_plural = get_scope_item(g_current_scope, "__param_1");
+	PHP_VALUE_NODE *msgid_plural = &si_msgid_plural->var->value;
+	if ( si_msgid_plural ) {
+		cast_value_str(msgid_plural);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'msgid_plural' for 'ngettext'");
+		return;
+	}
+	PHP_SCOPE_ITEM *si_count = get_scope_item(g_current_scope, "__param_2");
+	PHP_VALUE_NODE *count = &si_count->var->value;
+	if ( si_count ) {
+		cast_value_dnum(count);
+	} else {
+		php_report_error(PHP_ERROR, "Invalid or missing argument 'count' for 'ngettext'");
+		return;
+	}
+	if ( result ) {
+		cast_value_dnum(result);
+		result->type = PHP_VAL_STRING;
+		result->str_val = strdup(ngettext(msgid->str_val, msgid_plural->str_val, count->int_val));
+	}
+}
 #endif
 
 PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
@@ -432,6 +464,10 @@ PHP_BLTIN_FUNC_DEF core_lib_funcs[] = {
 	{
 		"gettext_noop",
 		1, php_native_gettext_noop,
+	},
+	{
+		"ngettext",
+		3, php_native_ngettext,
 	},
 #endif
 	{ 0, 0, 0, },
