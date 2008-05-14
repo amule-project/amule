@@ -87,7 +87,7 @@ void CUDPFirewallTester::SetUDPFWCheckResult(bool succeeded, bool testCancelled,
 	bool requested = false;
 	for (UsedClientList::iterator it = m_usedTestClients.begin(); it != m_usedTestClients.end(); ++it) {
 		if (it->contact.GetIPAddress() == fromIP) {
-			if (!IsFWCheckUDPRunning() && !m_firewalledUDP && m_isFWVerifiedUDP && m_lastSucceededTime > SEC2MS(10) > ::GetTickCount()
+			if (!IsFWCheckUDPRunning() && !m_firewalledUDP && m_isFWVerifiedUDP && m_lastSucceededTime + SEC2MS(10) > ::GetTickCount()
 			    && incomingPort == CKademlia::GetPrefs()->GetInternKadPort() && CKademlia::GetPrefs()->GetUseExternKadPort()) {
 				// our test finished already in the last 10 seconds with being open because we received a proper result packet before
 				// however we now receive another answer packet on our incoming port (which is not unusal as both resultpackets are sent
