@@ -29,9 +29,7 @@
 #endif
 
 #include <common/ClientVersion.h>
-
 #include <common/Format.h>		// Needed for CFormat
-
 #include <wx/tokenzr.h>		// For wxStringTokenizer
 
 // For readline
@@ -62,7 +60,6 @@
 
 
 #include <ec/cpp/ECFileConfig.h>	// Needed for CECFileConfig
-
 #include <common/MD5Sum.h>
 
 //-------------------------------------------------------------------
@@ -195,21 +192,23 @@ void CCommandTree::PrintHelpFor(const wxString& command) const
 //-------------------------------------------------------------------
 
 CaMuleExternalConnector::CaMuleExternalConnector()
-	: m_commands(*this)
+	: m_configFile(NULL),
+	  m_port(-1),
+	  m_KeepQuiet(false),
+	  m_Verbose(false),
+	  m_commands(*this),
+	  m_ECClient(NULL),
+	  m_InputLine(NULL),
+	  m_NeedsConfigSave(false),
+	  m_locale(NULL)
 {
-	m_ECClient = NULL;
-	m_KeepQuiet = false;
-	m_InputLine = NULL;
-	m_port = -1;
-	m_NeedsConfigSave = false;
-	m_Verbose = false;
-	m_configFile = NULL;
 	SetAppName(wxT("aMule"));
 }
 
 CaMuleExternalConnector::~CaMuleExternalConnector()
 {
 	delete m_configFile;
+	delete m_locale;
 }
 
 void CaMuleExternalConnector::OnInitCommandSet()
@@ -578,10 +577,23 @@ bool CaMuleExternalConnector::OnInit()
 	bool retval = wxApp::OnInit();
 	OnInitCommandSet();
 	InitCustomLanguages();
-	InitLocale(m_locale, StrLang2wx(m_language));
+	SetLocale(m_language);
 	return retval;
 }
 
+wxString CaMuleExternalConnector::SetLocale(const wxString& language)
+{
+	if (!language.IsEmpty()) {
+		m_language = language;
+		if (m_locale) {
+			delete m_locale;
+		}
+		m_locale = new wxLocale;
+		InitLocale(*m_locale, StrLang2wx(language));
+	}
+
+	return m_locale == NULL ? wxString() : m_locale->GetCanonicalName();
+}
 
 #if !wxUSE_GUI && defined(__WXMAC__)
 

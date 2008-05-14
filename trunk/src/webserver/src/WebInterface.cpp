@@ -25,7 +25,7 @@
 //
 
 #ifdef HAVE_CONFIG_H
-	#include "config.h"	// For VERSION
+	#include "config.h"	// For VERSION and ENABLE_NLS
 #endif
 
 
@@ -43,6 +43,9 @@
 
 #include "WebServer.h"
 
+#ifdef ENABLE_NLS
+#	include <libintl.h>
+#endif
 
 //-------------------------------------------------------------------
 IMPLEMENT_APP(CamulewebApp)
@@ -106,6 +109,7 @@ void CamulewebApp::TextShell(const wxString &prompt)
 bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templateDir)
 {
 	wxString dir;
+	m_localTemplate = false;
 
 	DebugShow(wxT("looking for template: ") + templateName + wxT("\n"));
 
@@ -156,6 +160,7 @@ bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templa
 	dir = GetConfigDir() + wxT("webserver");
 	if (CheckDirForTemplate(dir, templateName)) {
 		templateDir = dir;
+		m_localTemplate = true;
 		return true;
 	}
 	dir = wxT(WEBSERVERDIR);
@@ -407,5 +412,93 @@ void CamulewebApp::SaveConfigFile()
 		m_configFile->WriteHash(wxT("/Webserver/AdminPassword"), m_AdminPass);
 		m_configFile->WriteHash(wxT("/Webserver/GuestPassword"), m_GuestPass);
 	}
+}
+
+#ifdef ENABLE_NLS
+static inline bool CheckDirForMessageCatalog(const wxString& dir, const wxString& lang, const wxString& domain)
+{
+	return wxFileName::FileExists(JoinPaths(dir, JoinPaths(lang, JoinPaths(wxT("LC_MESSAGES"), domain + wxT(".mo")))));
+}
+
+static inline bool DirHasMessageCatalog(const wxString& dir, const wxString& lang, const wxString& domain)
+{
+	if (!CheckDirForMessageCatalog(dir, lang, domain)) {
+		wxString lingua = lang.BeforeFirst(wxT('.')).BeforeFirst(wxT('@'));
+		if (lingua == lang || !CheckDirForMessageCatalog(dir, lingua, domain)) {
+			wxString lng = lingua.BeforeFirst(wxT('_'));
+			wxString ctry = lingua.AfterFirst(wxT('_'));
+			if (ctry.IsEmpty()) {
+				ctry = lng.Upper();
+				return CheckDirForMessageCatalog(dir, lng + wxT("_") + ctry, domain);
+			} else if (ctry == lng.Upper()) {
+				return CheckDirForMessageCatalog(dir, lng, domain);
+			} else {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+#endif
+
+wxString CamulewebApp::SetLocale(const wxString& language)
+{
+	wxString lang = CaMuleExternalConnector::SetLocale(language); // will call setlocale() for us
+
+	// SetLocale() may indeed return an empty string, when no locale has been selected yet and
+	// no locale change was requested, or, in the worst case, if the last locale change didn't succeed.
+	if (!lang.IsEmpty()) {
+		DebugShow(wxT("*** Language set to: ") + lang + wxT(" ***\n"));
+
+#ifdef ENABLE_NLS
+		wxString domain = wxT("amuleweb-") + m_TemplateName;
+
+		Unicode2CharBuf domainBuf = unicode2char(domain);
+		const char *c_domain = (const char *)domainBuf;
+
+		// Try to find a message catalog
+		// First look in ~/.aMule/webserver/<template>, but only if a local template was used
+		wxString dir;
+		if (m_localTemplate) {
+			dir = JoinPaths(JoinPaths(JoinPaths(GetConfigDir(), wxT("webserver")), m_TemplateName), wxT("locale"));
+			DebugShow(wxT("looking for message catalogs in ") + dir + wxT("... "));
+		}
+		if (!m_localTemplate || !DirHasMessageCatalog(dir, lang, domain)) {
+			if (m_localTemplate) {
+				DebugShow(wxT("no\n"));
+			}
+#if defined __WXMAC__  || defined __WXMSW__
+			// on Mac, the bundle may be tried, too
+			dir = wxStandardPaths::Get().GetDataDir();
+#elif defined(__UNIX__)
+			dir = JoinPaths(static_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetInstallPrefix(), JoinPaths(wxT("share"), wxT("locale")));
+#endif
+			DebugShow(wxT("looking for message catalogs in ") + dir + wxT("... "));
+			if (!DirHasMessageCatalog(dir, lang, domain)) {
+				DebugShow(wxT("no\n"));
+				dir = wxEmptyString;
+			} else {
+				DebugShow(wxT("yes\n"));
+			}
+		} else {
+			DebugShow(wxT("yes\n"));
+		}
+
+		// If we found something, then use it otherwise it may still be present at the system default location
+		if (!dir.IsEmpty()) {
+			Unicode2CharBuf buffer = unicode2char(dir);
+			const char *c_dir = (const char *)buffer;
+			bindtextdomain(c_domain, c_dir);
+		}
+
+		// We need to have the returned messages in UTF-8
+		bind_textdomain_codeset(c_domain, "UTF-8");
+
+		// And finally select the message catalog
+		textdomain(c_domain);
+#endif /* ENABLE_NLS */
+	}
+
+	return lang;
 }
 // File_checked_for_headers

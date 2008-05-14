@@ -149,6 +149,10 @@ public:
 	wxString	m_configFileName;
 
 protected:
+	// Set current locale, if language is not empty.
+	// returns canonical name of set (current) locale
+	virtual wxString SetLocale(const wxString& language);
+
 	long	 	m_port;
 	wxString 	m_host;
 	CMD4Hash	m_password;
@@ -167,7 +171,7 @@ private:
 	char *		m_InputLine;
 	bool		m_NeedsConfigSave;
 	wxString	m_language;
-	wxLocale	m_locale;
+	wxLocale *	m_locale;
 };
 
 #endif // __EXTERNALCONNECTOR_H__
