@@ -38,17 +38,23 @@ class CUPnPPortMapping;
 class CWebServer;
 
 
-class CWebSocket {
+class CWebSocket : public wxSocketClient {
 	public:
-		void OnReceived(char* pData, uint32 dwDataSize);
-		void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
+		CWebSocket(CWebServerBase *parent);
+		
+        void OnError();
+        void OnLost();
+
+        void OnInput();
+        void OnOutput();
+
+        void OnRequestReceived(char* pHeader, char* pData, uint32 dwDataLen);
 
 		void SendContent(const char* szStdResponse, const void* pContent, uint32 dwContentSize);
 		void SendData(const void* pData, uint32 dwDataSize);
 		void SendHttpHeaders(const char * szType, bool use_gzip, uint32 content_len, int session_id);
 		
 		CWebServerBase *m_pParent;
-		wxSocketBase *m_hSocket;
 	
 		class CChunk {
 			public:
@@ -63,51 +69,14 @@ class CWebSocket {
 		CChunk *m_pHead; // tails of what has to be sent
 		CChunk *m_pTail;
 		
+		bool m_IsGet, m_IsPost;
 		char *m_Cookie;
 		char *m_pBuf;
 		uint32 m_dwBufSize;
 		uint32 m_dwRecv;
 		uint32 m_dwHttpHeaderLen;
 		uint32 m_dwHttpContentLen;
-		bool m_bValid;
-		bool m_bCanRecv;
-		bool m_bCanSend;
 };
-
-
-class CWCThread : public wxThread { //WC stands for web client socket. not for WC :)
-	public:
-		CWCThread(CWebServerBase *ws, wxSocketBase *sock);
-		~CWCThread();
-	
-		//thread execution starts here
-		virtual void *Entry();
-	
-	private:
-		CWebSocket stWebSocket;
-};
-
-
-class CWSThread : public wxThread {
-	public:
-		CWSThread(CWebServerBase *webserver);
-		~CWSThread();
-
-		//thread execution starts here
-		virtual void *Entry();
-	
-	private:
-		wxSocketServer *m_WSSocket;
-		CWebServerBase *ws;
-		long m_wsport;
-		bool m_upnpEnabled;
-		int m_upnpTCPPort;
-#ifdef ENABLE_UPNP
-		CUPnPControlPoint *m_upnp;
-		std::vector<CUPnPPortMapping> m_upnpMappings;
-#endif
-};
-
 
 #endif //WEBSERVER_H
 // File_checked_for_headers

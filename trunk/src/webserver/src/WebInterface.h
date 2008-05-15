@@ -29,13 +29,16 @@
 
 #include "ExternalConnector.h"
 
-
 class CamulewebApp
 :
 public CaMuleExternalConnector
 {
+    class CWebserverGSocketFuncTable *m_table;
 	class CWebServerBase *m_webserver;
+
 public:
+	CamulewebApp();
+	
 	const wxString GetGreetingTitle();
 	void Pre_Shell();
 	void LoadConfigFile();
@@ -51,7 +54,6 @@ public:
 	// class data
 	wxString m_TemplateName;
 	wxString m_TemplateDir;
-	wxString m_TemplateFileName;
 	bool	m_UseGzip;
 	CMD4Hash m_AdminPass, m_GuestPass;
 	bool	m_AllowGuest;
@@ -66,10 +68,15 @@ public:
 
 public:
 	virtual void Post_Shell();
+
+	wxAppTraits *CreateTraits();
+
 	void TextShell(const wxString &prompt);
 
 	virtual wxString SetLocale(const wxString& language);
 
+	DECLARE_EVENT_TABLE();
+	
 private:
 	virtual bool	OnInit();
 	virtual int 	OnRun();

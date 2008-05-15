@@ -43,13 +43,308 @@
 
 #include "WebServer.h"
 
+#include <wx/apptrait.h>
+#include <wx/socket.h>
+
 #ifdef ENABLE_NLS
 #	include <libintl.h>
 #endif
 
+
+/*
+ * Socket handling in wxBase (same as amuled)
+ * 
+ */
+class CSocketSet {
+		int m_count;
+		int m_fds[FD_SETSIZE], m_fd_idx[FD_SETSIZE];
+		GSocket *m_gsocks[FD_SETSIZE];
+		
+		fd_set m_set;
+    public:
+        CSocketSet();
+        void AddSocket(GSocket *);
+        void RemoveSocket(GSocket *);
+        void FillSet(int &max_fd);
+        
+        void Detected(void (GSocket::*func)());
+        
+        fd_set *Set() { return &m_set; }
+};
+
+CSocketSet::CSocketSet()
+{
+    m_count = 0;
+    for(int i = 0; i < FD_SETSIZE; i++) {
+        m_fds[i] = 0;
+        m_fd_idx[i] = 0xffff;
+        m_gsocks[i] = 0;
+    }
+}
+
+void CSocketSet::AddSocket(GSocket *socket)
+{
+    wxASSERT(socket);
+    
+    int fd = socket->m_fd;
+
+    if ( fd == -1 ) {
+        return;
+    }
+
+    wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+    
+    if ( m_gsocks[fd] ) {
+        return;
+    }
+    m_fds[m_count] = fd;
+    m_fd_idx[fd] = m_count;
+    m_gsocks[fd] = socket;
+    m_count++;
+}
+
+void CSocketSet::RemoveSocket(GSocket *socket)
+{
+    wxASSERT(socket);
+    
+    int fd = socket->m_fd;
+
+    if ( fd == -1 ) {
+        return;
+    }
+    
+    wxASSERT( (fd > 2) && (fd < FD_SETSIZE) );
+    
+    int i = m_fd_idx[fd];
+    if ( i == 0xffff ) {
+        return;
+    }
+    wxASSERT(m_fds[i] == fd);
+    m_fds[i] = m_fds[m_count-1];
+    m_gsocks[fd] = 0;
+    m_fds[m_count-1] = 0;
+    m_fd_idx[fd] = 0xffff;
+    m_fd_idx[m_fds[i]] = i;
+    m_count--;
+}
+
+void CSocketSet::FillSet(int &max_fd)
+{
+    FD_ZERO(&m_set);
+
+    for(int i = 0; i < m_count; i++) {
+	    FD_SET(m_fds[i], &m_set);
+	    if ( m_fds[i] > max_fd ) {
+	        max_fd = m_fds[i];
+	    }
+    }
+}
+
+void CSocketSet::Detected(void (GSocket::*func)())
+{
+    for (int i = 0; i < m_count; i++) {
+        int fd = m_fds[i];
+        if ( FD_ISSET(fd, &m_set) ) {
+            GSocket *socket = m_gsocks[fd];
+            (*socket.*func)();
+        }
+    }
+}
+
+class CWebserverGSocketFuncTable : public GSocketGUIFunctionsTable
+{
+	private:
+        CSocketSet *m_in_set, *m_out_set;
+
+        wxMutex m_lock;
+	public:
+	    CWebserverGSocketFuncTable();
+	
+	    void AddSocket(GSocket *socket, GSocketEvent event);
+	    void RemoveSocket(GSocket *socket, GSocketEvent event);
+	    void RunSelect();
+	
+	    virtual bool OnInit();
+	    virtual void OnExit();
+	    virtual bool CanUseEventLoop();
+	    virtual bool Init_Socket(GSocket *socket);
+	    virtual void Destroy_Socket(GSocket *socket);
+	    virtual void Install_Callback(GSocket *socket, GSocketEvent event);
+	    virtual void Uninstall_Callback(GSocket *socket, GSocketEvent event);
+	    virtual void Enable_Events(GSocket *socket);
+	    virtual void Disable_Events(GSocket *socket);
+};
+
+CWebserverGSocketFuncTable::CWebserverGSocketFuncTable() : m_lock(wxMUTEX_RECURSIVE)
+{
+    m_in_set = new CSocketSet;
+    m_out_set = new CSocketSet;
+    
+    m_lock.Unlock();
+}
+
+void CWebserverGSocketFuncTable::AddSocket(GSocket *socket, GSocketEvent event)
+{
+    wxMutexLocker lock(m_lock);
+
+    if ( event == GSOCK_INPUT ) {
+        m_in_set->AddSocket(socket);
+    } else {
+        m_out_set->AddSocket(socket);
+    }
+}
+
+void CWebserverGSocketFuncTable::RemoveSocket(GSocket *socket, GSocketEvent event)
+{
+    wxMutexLocker lock(m_lock);
+
+    if ( event == GSOCK_INPUT ) {
+        m_in_set->RemoveSocket(socket);
+    } else {
+        m_out_set->RemoveSocket(socket);
+    }
+}
+
+void CWebserverGSocketFuncTable::RunSelect()
+{
+    wxMutexLocker lock(m_lock);
+
+    int max_fd = -1;
+    m_in_set->FillSet(max_fd);
+    m_out_set->FillSet(max_fd);
+
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 10000; // 10ms
+    
+    int result = select(max_fd + 1, m_in_set->Set(), m_out_set->Set(), 0, &tv);
+    if ( result > 0 ) {
+        m_in_set->Detected(&GSocket::Detected_Read);
+        m_out_set->Detected(&GSocket::Detected_Write);
+    }
+    
+}
+
+bool CWebserverGSocketFuncTable::OnInit()
+{
+    return true;
+}
+
+void CWebserverGSocketFuncTable::OnExit()
+{
+}
+
+bool CWebserverGSocketFuncTable::CanUseEventLoop()
+{
+    return false;
+}
+
+bool CWebserverGSocketFuncTable::Init_Socket(GSocket *)
+{
+    return true;
+}
+
+void CWebserverGSocketFuncTable::Destroy_Socket(GSocket *)
+{
+}
+
+void CWebserverGSocketFuncTable::Install_Callback(GSocket *sock, GSocketEvent e)
+{
+    AddSocket(sock, e);
+}
+
+void CWebserverGSocketFuncTable::Uninstall_Callback(GSocket *sock, GSocketEvent e)
+{
+    RemoveSocket(sock, e);
+}
+
+void CWebserverGSocketFuncTable::Enable_Events(GSocket *socket)
+{
+    Install_Callback(socket, GSOCK_INPUT);
+    Install_Callback(socket, GSOCK_OUTPUT);
+}
+
+void CWebserverGSocketFuncTable::Disable_Events(GSocket *socket)
+{
+    Uninstall_Callback(socket, GSOCK_INPUT);
+    Uninstall_Callback(socket, GSOCK_OUTPUT);
+}
+
+class CWebserverAppTraits : public wxConsoleAppTraits
+{
+	private:
+	    CWebserverGSocketFuncTable *m_table;
+	    wxMutex m_lock;
+	    std::list<wxObject *> m_sched_delete;
+	public:
+	    CWebserverAppTraits(CWebserverGSocketFuncTable *table);
+	    virtual GSocketGUIFunctionsTable* GetSocketGUIFunctionsTable();
+	    virtual void ScheduleForDestroy(wxObject *object);
+	    virtual void RemoveFromPendingDelete(wxObject *object);
+	
+	    void DeletePending();
+};
+
+CWebserverAppTraits::CWebserverAppTraits(CWebserverGSocketFuncTable *table)
+: wxConsoleAppTraits(), m_table(table),m_lock(wxMUTEX_RECURSIVE), m_sched_delete()
+{
+    m_lock.Unlock();
+}
+
+GSocketGUIFunctionsTable *CWebserverAppTraits::GetSocketGUIFunctionsTable()
+{
+    return m_table;
+}
+
+void CWebserverAppTraits::ScheduleForDestroy(wxObject *object)
+{
+        wxMutexLocker lock(m_lock);
+
+        m_sched_delete.push_back(object);
+}
+
+void CWebserverAppTraits::RemoveFromPendingDelete(wxObject *object)
+{
+    wxMutexLocker lock(m_lock);
+
+    for(std::list<wxObject *>::iterator i = m_sched_delete.begin();
+    i != m_sched_delete.end(); i++) {
+        if ( *i == object ) {
+                m_sched_delete.erase(i);
+                return;
+        }
+    }
+}
+
+void CWebserverAppTraits::DeletePending()
+{
+    wxMutexLocker lock(m_lock);
+
+    while ( !m_sched_delete.empty() ) {
+        std::list<wxObject *>::iterator i = m_sched_delete.begin();
+        wxObject *object = *i;
+        delete object;
+    }
+}
+
+
+
 //-------------------------------------------------------------------
 IMPLEMENT_APP(CamulewebApp)
 //-------------------------------------------------------------------
+
+BEGIN_EVENT_TABLE(CamulewebApp, CaMuleExternalConnector)
+END_EVENT_TABLE()
+
+CamulewebApp::CamulewebApp() : m_table(new CWebserverGSocketFuncTable)
+{
+	wxPendingEventsLocker = new wxCriticalSection;
+}
+
+wxAppTraits *CamulewebApp::CreateTraits()
+{
+	return new CWebserverAppTraits(m_table);
+}
 
 void CamulewebApp::Post_Shell() {
 	m_webserver->StopServer();
@@ -95,16 +390,6 @@ bool CamulewebApp::CheckDirForTemplate(wxString& dir, const wxString& tmpl)
 	return false;
 }
 
-void CamulewebApp::TextShell(const wxString &prompt)
-{
-	while(true) {
-#ifndef __WXMSW__
-		pause();
-#else
-		wxSleep(10);
-#endif
-	}
-}
 
 bool CamulewebApp::GetTemplateDir(const wxString& templateName, wxString& templateDir)
 {
@@ -279,7 +564,6 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, "FATAL ERROR: Cannot find template: %s\n", (const char *)unicode2char(m_TemplateName));
 			return true;
 		}
-		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));
 		m_Verbose = false;
 		m_KeepQuiet = true;
 		m_LoadSettingsFromAmule = true;
@@ -301,8 +585,6 @@ bool CamulewebApp::OnCmdLineParsed(wxCmdLineParser& parser)
 			fprintf(stderr, "FATAL ERROR: Cannot find template: %s\n", (const char *)unicode2char(m_TemplateName));
 			return true;
 		}
-		m_TemplateFileName = JoinPaths(m_TemplateDir, wxT("aMule.tmpl"));
-		DebugShow(wxT("*** Using template: ") + m_TemplateFileName + wxT("\n"));
 
 		long port;
 		if (parser.Found(wxT("server-port"), &port)) {
@@ -366,6 +648,15 @@ void CamulewebApp::Pre_Shell() {
 	m_webserver->StartServer();
 }
 
+void CamulewebApp::TextShell(const wxString &)
+{
+	while ( true ) {
+		m_table->RunSelect();
+		ProcessPendingEvents();
+		((CWebserverAppTraits *)GetTraits())->DeletePending();
+	}
+}
+
 void CamulewebApp::LoadAmuleConfig(CECFileConfig& cfg)
 {
 	CaMuleExternalConnector::LoadAmuleConfig(cfg);
@@ -395,6 +686,7 @@ void CamulewebApp::LoadConfigFile()
 		m_configFile->Read(wxT("/Webserver/AllowGuest"), &m_AllowGuest, false);
 		m_configFile->ReadHash(wxT("/Webserver/AdminPassword"), &m_AdminPass);
 		m_configFile->ReadHash(wxT("/Webserver/GuestPassword"), &m_GuestPass);
+		m_PageRefresh = m_configFile->Read(wxT("/Webserver/PageRefreshTime"), 120l);
 	}
 }
 
