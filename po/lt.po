@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt.new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-14 03:30+0200\n"
+"POT-Creation-Date: 2008-05-15 03:31+0200\n"
 "PO-Revision-Date: 2007-09-01 16:53+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -611,59 +611,59 @@ msgstr "Prašoma atsijungti\n"
 msgid "Processing request [redirected]: "
 msgstr "Apdorojamas prašymas [persiųstas]: "
 
-#: src/webserver/src/WebInterface.cpp:193
+#: src/webserver/src/WebInterface.cpp:198
 msgid "Loads template <str>"
 msgstr "Įkelti šabloną <str>"
 
-#: src/webserver/src/WebInterface.cpp:197
+#: src/webserver/src/WebInterface.cpp:202
 msgid "Webserver HTTP port"
 msgstr "www serverio HTTP prievadas"
 
-#: src/webserver/src/WebInterface.cpp:201
+#: src/webserver/src/WebInterface.cpp:206
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Naudoti UPnP prievadų perdavimo interneto serverio prievadą"
 
-#: src/webserver/src/WebInterface.cpp:205
+#: src/webserver/src/WebInterface.cpp:210
 msgid "UPnP port"
 msgstr "UPnP prievadas"
 
-#: src/webserver/src/WebInterface.cpp:209
+#: src/webserver/src/WebInterface.cpp:214
 msgid "Use gzip compression"
 msgstr "Naudoti gzip pakavimą"
 
-#: src/webserver/src/WebInterface.cpp:217
+#: src/webserver/src/WebInterface.cpp:222
 msgid "Full access password for webserver"
 msgstr "Pilnos prieigos prie www serverio slaptažodis"
 
-#: src/webserver/src/WebInterface.cpp:221
+#: src/webserver/src/WebInterface.cpp:226
 msgid "Guest password for webserver"
 msgstr "Svečio prieigos prie www serverio slaptažodis"
 
-#: src/webserver/src/WebInterface.cpp:225
+#: src/webserver/src/WebInterface.cpp:230
 msgid "Allow guest access"
 msgstr "Įjungti svečio prieigą"
 
-#: src/webserver/src/WebInterface.cpp:229
+#: src/webserver/src/WebInterface.cpp:234
 msgid "Deny guest access"
 msgstr "Išjungti svečio prieigą"
 
-#: src/webserver/src/WebInterface.cpp:233
+#: src/webserver/src/WebInterface.cpp:238
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Įkelti/įrašyti www serverio parinktis iš/į nutolusio aMule"
 
-#: src/webserver/src/WebInterface.cpp:237
+#: src/webserver/src/WebInterface.cpp:242
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMule parinkčių failas. NENAUDOKITE TIESIOGIAI!"
 
-#: src/webserver/src/WebInterface.cpp:245
+#: src/webserver/src/WebInterface.cpp:250
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Išjungti PHP interpretatorių (pasenusi)"
 
-#: src/webserver/src/WebInterface.cpp:253
+#: src/webserver/src/WebInterface.cpp:258
 msgid "Recompile PHP pages on each request"
 msgstr "Kiekvieną kartą perkompiliuoti PHP puslapius"
 
-#: src/webserver/src/WebInterface.cpp:351
+#: src/webserver/src/WebInterface.cpp:356
 msgid "aMule Web Server"
 msgstr "aMule www serveris"
 
@@ -6216,17 +6216,17 @@ msgstr ""
 "Nepavyko sukurti atsiunčiamų failų aplanko šiai kategorijai. Nurodykite "
 "teisingą kelią!"
 
-#: src/ExternalConnector.cpp:144
+#: src/ExternalConnector.cpp:141
 #, c-format
 msgid "Unknown extension '%s' for the '%s' command.\n"
 msgstr "Nežinomas plėtinys %s (komandai %s).\n"
 
-#: src/ExternalConnector.cpp:146
+#: src/ExternalConnector.cpp:143
 #, c-format
 msgid "Unknown command '%s'.\n"
 msgstr "Nežinoma komanda %s.\n"
 
-#: src/ExternalConnector.cpp:158
+#: src/ExternalConnector.cpp:155
 msgid ""
 "\n"
 "This command cannot have an argument.\n"
@@ -6234,7 +6234,7 @@ msgstr ""
 "\n"
 "Ši komanda neturi kintamųjų.\n"
 
-#: src/ExternalConnector.cpp:160
+#: src/ExternalConnector.cpp:157
 msgid ""
 "\n"
 "This command must have an argument.\n"
@@ -6242,7 +6242,7 @@ msgstr ""
 "\n"
 "Šiai komandai reikia kintamojo.\n"
 
-#: src/ExternalConnector.cpp:163
+#: src/ExternalConnector.cpp:160
 msgid ""
 "\n"
 "This command is incomplete, you must use one of the extensions below.\n"
@@ -6250,7 +6250,7 @@ msgstr ""
 "\n"
 "Ši komanda nebaigta, naudokite vieną iš plėtinių žemiau.\n"
 
-#: src/ExternalConnector.cpp:169
+#: src/ExternalConnector.cpp:166
 msgid ""
 "\n"
 "Available extensions:\n"
@@ -6258,11 +6258,11 @@ msgstr ""
 "\n"
 "Galimi plėtiniai:\n"
 
-#: src/ExternalConnector.cpp:171
+#: src/ExternalConnector.cpp:168
 msgid "Available commands:\n"
 msgstr "Galimos komandos:\n"
 
-#: src/ExternalConnector.cpp:188
+#: src/ExternalConnector.cpp:185
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -6273,17 +6273,17 @@ msgstr ""
 "Visoms komandoms svarbu raidžių dydis.\n"
 "Įrašę „help <komanda>“ gausite išsamią informaciją apie <komandą>.\n"
 
-#: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
 msgid "Exits from the application."
 msgstr "Baigti programos darbą."
 
-#: src/ExternalConnector.cpp:219
+#: src/ExternalConnector.cpp:218
 msgid "Show help."
 msgstr "Rodyti pagalbą."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:222
+#: src/ExternalConnector.cpp:221
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6291,7 +6291,7 @@ msgstr ""
 "Įrašę „help <komanda>“ gausite išsamią informaciją apie <komandą>.\n"
 "Įrašę „help“ gausite pilną komandų sąrašą.\n"
 
-#: src/ExternalConnector.cpp:243
+#: src/ExternalConnector.cpp:242
 #, c-format
 msgid ""
 "\n"
@@ -6302,48 +6302,48 @@ msgstr ""
 "Įrašę „%s“ gausite komandų sąrašą\n"
 "\n"
 
-#: src/ExternalConnector.cpp:273
+#: src/ExternalConnector.cpp:272
 msgid "Syntax error!"
 msgstr "Sintaksės klaida!"
 
-#: src/ExternalConnector.cpp:276
+#: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Apdorojant komandą įvyko klaida! To neturėjo niekada atsitikti! Prašome "
 "pranešti apie klaidą\n"
 
-#: src/ExternalConnector.cpp:279
+#: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
 msgstr "Ši komanda negali turėti parametrų."
 
-#: src/ExternalConnector.cpp:282
+#: src/ExternalConnector.cpp:281
 msgid "This command must have a parameter."
 msgstr "Ši komanda privalo turėti parametrą."
 
-#: src/ExternalConnector.cpp:285
+#: src/ExternalConnector.cpp:284
 msgid "Invalid argument."
 msgstr "Klaidingas kintamasis."
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:287
 msgid "This is an incomplete command."
 msgstr "Komanda neužbaigta."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:296
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Įrašę „%s“ gausite išsamesnę pagalbą.\n"
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:361
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Tai %s %s %s\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:363
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Tai %s %s\n"
 
-#: src/ExternalConnector.cpp:395
+#: src/ExternalConnector.cpp:394
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6351,11 +6351,11 @@ msgstr ""
 "\n"
 "Kuriamas klientas...\n"
 
-#: src/ExternalConnector.cpp:405
+#: src/ExternalConnector.cpp:404
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Nepavyko užmegzti ryšio. Prie nurodyto mazgo prisijungti nepavyko\n"
 
-#: src/ExternalConnector.cpp:416
+#: src/ExternalConnector.cpp:415
 #, c-format
 msgid ""
 "\n"
@@ -6364,7 +6364,7 @@ msgstr ""
 "\n"
 "Darbas baigiamas %s...\n"
 
-#: src/ExternalConnector.cpp:421
+#: src/ExternalConnector.cpp:420
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6378,47 +6378,47 @@ msgstr ""
 "\n"
 "Darbas baigiamas...\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:427
 msgid "Show this help text."
 msgstr "Rodyti šį pagalbos tekstą."
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:430
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Mazgas, kuriame paleista aMule. Numatyta: localhost"
 
-#: src/ExternalConnector.cpp:434
+#: src/ExternalConnector.cpp:433
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "aMule išorinių ryšių prievadas. Numatyta: 4712"
 
-#: src/ExternalConnector.cpp:437
+#: src/ExternalConnector.cpp:436
 msgid "External Connection password."
 msgstr "Išorinių ryšių slaptažodis."
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:439
 msgid "Read configuration from file."
 msgstr "Nuskaityti parinktis iš failo."
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:442
 msgid "Do not print any output to stdout."
 msgstr "Nepateikti išvesties į stdout įrenginį."
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:445
 msgid "Be verbose - show also debug messages."
 msgstr "Rodyti išsamius pranešimus, negi klaidų taisymo pranešimus."
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:448
 msgid "Sets program locale (language)."
 msgstr "Nurodyti programos kalbą."
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:451
 msgid "Write command line options to config file."
 msgstr "Komandų eilutės parinktis įrašyti į parinkčių failą."
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:454
 msgid "Creates config file based on aMule's config file."
 msgstr "Sukurti parinkčių failą pagal aMule parinkčių failą."
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:457
 msgid "Print program version."
 msgstr "Atspausdinti programos versiją."
 

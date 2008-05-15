@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-14 03:30+0200\n"
+"POT-Creation-Date: 2008-05-15 03:31+0200\n"
 "PO-Revision-Date: 2007-12-20 20:59-0600\n"
 "Last-Translator: Dimitrios Galanakis <dgalanak@yahoo.com>\n"
 "Language-Team: Greek\n"
@@ -600,59 +600,59 @@ msgstr "Ζητήθηκε αποσύνδεση\n"
 msgid "Processing request [redirected]: "
 msgstr "Επεξεργασία αιτήματος [ανακατεύθυνση]"
 
-#: src/webserver/src/WebInterface.cpp:193
+#: src/webserver/src/WebInterface.cpp:198
 msgid "Loads template <str>"
 msgstr "Φόρτωση προτύπου <str>"
 
-#: src/webserver/src/WebInterface.cpp:197
+#: src/webserver/src/WebInterface.cpp:202
 msgid "Webserver HTTP port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:201
+#: src/webserver/src/WebInterface.cpp:206
 msgid "Use UPnP port forwarding on webserver port"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:205
+#: src/webserver/src/WebInterface.cpp:210
 msgid "UPnP port"
 msgstr "Θύρα UPnP "
 
-#: src/webserver/src/WebInterface.cpp:209
+#: src/webserver/src/WebInterface.cpp:214
 msgid "Use gzip compression"
 msgstr " Χρήση συμπίεσης τύπου gzip"
 
-#: src/webserver/src/WebInterface.cpp:217
+#: src/webserver/src/WebInterface.cpp:222
 msgid "Full access password for webserver"
 msgstr "Κωδικός πλήρους πρόσβασης για τον διακομιστή δικτύου"
 
-#: src/webserver/src/WebInterface.cpp:221
+#: src/webserver/src/WebInterface.cpp:226
 msgid "Guest password for webserver"
 msgstr "Κωδικός επισκέπτη για τον διακομιστή δικτύου"
 
-#: src/webserver/src/WebInterface.cpp:225
+#: src/webserver/src/WebInterface.cpp:230
 msgid "Allow guest access"
 msgstr "Να επιτρέπεται η πρόσβαση σε επισκέπτες"
 
-#: src/webserver/src/WebInterface.cpp:229
+#: src/webserver/src/WebInterface.cpp:234
 msgid "Deny guest access"
 msgstr "Να απαγορεύεται η πρόσβαση σε επισκέπτες"
 
-#: src/webserver/src/WebInterface.cpp:233
+#: src/webserver/src/WebInterface.cpp:238
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr ""
 
-#: src/webserver/src/WebInterface.cpp:237
+#: src/webserver/src/WebInterface.cpp:242
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Η διαδρομή στα αρχεία ρυθμίσεων του aMule. ΜΗΝ ΑΛΛΑΖΕΤΕ ΑΠΕΥΘΕΙΑΣ"
 
-#: src/webserver/src/WebInterface.cpp:245
+#: src/webserver/src/WebInterface.cpp:250
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Απενεργοποίηση του διερμηνέα PHP"
 
-#: src/webserver/src/WebInterface.cpp:253
+#: src/webserver/src/WebInterface.cpp:258
 msgid "Recompile PHP pages on each request"
 msgstr "Μετάγλωτιση των σελίδων PHP σε κάθε αίτηση"
 
-#: src/webserver/src/WebInterface.cpp:351
+#: src/webserver/src/WebInterface.cpp:356
 msgid "aMule Web Server"
 msgstr ""
 
@@ -6062,45 +6062,45 @@ msgid ""
 "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 
-#: src/ExternalConnector.cpp:144
+#: src/ExternalConnector.cpp:141
 #, c-format
 msgid "Unknown extension '%s' for the '%s' command.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:146
+#: src/ExternalConnector.cpp:143
 #, c-format
 msgid "Unknown command '%s'.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:158
+#: src/ExternalConnector.cpp:155
 msgid ""
 "\n"
 "This command cannot have an argument.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:160
+#: src/ExternalConnector.cpp:157
 msgid ""
 "\n"
 "This command must have an argument.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:163
+#: src/ExternalConnector.cpp:160
 msgid ""
 "\n"
 "This command is incomplete, you must use one of the extensions below.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:169
+#: src/ExternalConnector.cpp:166
 msgid ""
 "\n"
 "Available extensions:\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:171
+#: src/ExternalConnector.cpp:168
 msgid "Available commands:\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:188
+#: src/ExternalConnector.cpp:185
 #, c-format
 msgid ""
 "\n"
@@ -6108,23 +6108,23 @@ msgid ""
 "Type '%s <command>' to get detailed info on <command>.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
 msgid "Exits from the application."
 msgstr ""
 
-#: src/ExternalConnector.cpp:219
+#: src/ExternalConnector.cpp:218
 msgid "Show help."
 msgstr ""
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:222
+#: src/ExternalConnector.cpp:221
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:243
+#: src/ExternalConnector.cpp:242
 #, c-format
 msgid ""
 "\n"
@@ -6132,48 +6132,48 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/ExternalConnector.cpp:273
+#: src/ExternalConnector.cpp:272
 msgid "Syntax error!"
 msgstr "Συντακτικό λάθος!"
 
-#: src/ExternalConnector.cpp:276
+#: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Σφάλμα κατά την επεξεργασία της εντολής - δεν έπρεπε να συμβέι ποτέ! "
 "Παρακαλείστε να αναφέρετε σφάλμα προγράμματος\n"
 
-#: src/ExternalConnector.cpp:279
+#: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
 msgstr "Αυτή η εντολή δεν πρέπει να έχει παραμέτρους."
 
-#: src/ExternalConnector.cpp:282
+#: src/ExternalConnector.cpp:281
 msgid "This command must have a parameter."
 msgstr "Αυτή η εντολή πρέπει να έχει παράμετρο."
 
-#: src/ExternalConnector.cpp:285
+#: src/ExternalConnector.cpp:284
 msgid "Invalid argument."
 msgstr "Άκυρο όρισμα."
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:287
 msgid "This is an incomplete command."
 msgstr "Αυτή είναι ημιτελής εντολή."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:296
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Για περισσότερη βοήθεια, γράψτε '%s'.\n"
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:361
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Αυτό είναι %s %s %s\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:363
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Αυτό είναι %s %s\n"
 
-#: src/ExternalConnector.cpp:395
+#: src/ExternalConnector.cpp:394
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6181,12 +6181,12 @@ msgstr ""
 "\n"
 " Δημιουργία πελάτη...\n"
 
-#: src/ExternalConnector.cpp:405
+#: src/ExternalConnector.cpp:404
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr ""
 "Η σύνδεση απέτυχε. Αποτυχία σύνδεσης με τον προσδιορισμένο υπολογιστή\n"
 
-#: src/ExternalConnector.cpp:416
+#: src/ExternalConnector.cpp:415
 #, c-format
 msgid ""
 "\n"
@@ -6195,7 +6195,7 @@ msgstr ""
 "\n"
 "Όλα μια χαρά, έξοδος %s...\n"
 
-#: src/ExternalConnector.cpp:421
+#: src/ExternalConnector.cpp:420
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6208,49 +6208,49 @@ msgstr ""
 "είτε στην γραμμή εντολών είτε προσδιορίζοντας κάποιο όταν ζητηθεί.\n"
 "Έξοδος...\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:427
 msgid "Show this help text."
 msgstr "Δείξε αυτό το αρχείο βοήθειας."
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:430
 msgid "Host where aMule is running. (default: localhost)"
 msgstr ""
 "Υπολογιστής όπου το aMule τρέχει (προεπιλεγμένος: ο τοπικός υπολογίστής)"
 
-#: src/ExternalConnector.cpp:434
+#: src/ExternalConnector.cpp:433
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Η Θύρα του aMule για Εξωτερική σύνδεση. (προεπιλεγμένη: 4712)"
 
-#: src/ExternalConnector.cpp:437
+#: src/ExternalConnector.cpp:436
 msgid "External Connection password."
 msgstr "Κωδικός εξωτερικής σύνδεσης"
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:439
 msgid "Read configuration from file."
 msgstr "Διάβασε το αρχείο διευθετήσεων"
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:442
 msgid "Do not print any output to stdout."
 msgstr "Μην στέλνεις μηνήματα στην stdout."
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:445
 msgid "Be verbose - show also debug messages."
 msgstr "Να είσαι αναλυτικός - δείξε και να μηνήματα αποσφαλμάτωσης"
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:448
 msgid "Sets program locale (language)."
 msgstr "Θέσε τις τοπικές ρυθμίσεις"
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:451
 msgid "Write command line options to config file."
 msgstr "Εγγραφή των παραμέτρων της γραμμής εντολών σε αρχείο."
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:454
 msgid "Creates config file based on aMule's config file."
 msgstr ""
 "Δημιουργεί ένα αρχείο παραμέτρων βασισμένο στο αρχείο παραμέτρων του aMule."
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:457
 msgid "Print program version."
 msgstr "Τύπωσε την έκδοση του προγράμματος."
 

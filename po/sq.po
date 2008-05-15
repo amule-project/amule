@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-14 03:30+0200\n"
+"POT-Creation-Date: 2008-05-15 03:31+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -609,59 +609,59 @@ msgstr "Dalja e kerkuar\n"
 msgid "Processing request [redirected]: "
 msgstr "Perpunimi i kerkeses [e ridrejtuar]: "
 
-#: src/webserver/src/WebInterface.cpp:193
+#: src/webserver/src/WebInterface.cpp:198
 msgid "Loads template <str>"
 msgstr "Duke ngarkuar modelin <str>"
 
-#: src/webserver/src/WebInterface.cpp:197
+#: src/webserver/src/WebInterface.cpp:202
 msgid "Webserver HTTP port"
 msgstr "Porta HTTP e webserver-it"
 
-#: src/webserver/src/WebInterface.cpp:201
+#: src/webserver/src/WebInterface.cpp:206
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Perdor porten forwarding UPnp ne porten e webserver-it"
 
-#: src/webserver/src/WebInterface.cpp:205
+#: src/webserver/src/WebInterface.cpp:210
 msgid "UPnP port"
 msgstr "Porta UPnP"
 
-#: src/webserver/src/WebInterface.cpp:209
+#: src/webserver/src/WebInterface.cpp:214
 msgid "Use gzip compression"
 msgstr "Perdor kompresimin gzip "
 
-#: src/webserver/src/WebInterface.cpp:217
+#: src/webserver/src/WebInterface.cpp:222
 msgid "Full access password for webserver"
 msgstr "Fjalekalim per hyrjen e plote ne webserver"
 
-#: src/webserver/src/WebInterface.cpp:221
+#: src/webserver/src/WebInterface.cpp:226
 msgid "Guest password for webserver"
 msgstr "Fjalekalimi guest per webserver"
 
-#: src/webserver/src/WebInterface.cpp:225
+#: src/webserver/src/WebInterface.cpp:230
 msgid "Allow guest access"
 msgstr "Lejo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:229
+#: src/webserver/src/WebInterface.cpp:234
 msgid "Deny guest access"
 msgstr "Ndalo hyrjen e guest-ve"
 
-#: src/webserver/src/WebInterface.cpp:233
+#: src/webserver/src/WebInterface.cpp:238
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Ngarko/shpeto rregullimet e webserverit nga/tek remote i aMule"
 
-#: src/webserver/src/WebInterface.cpp:237
+#: src/webserver/src/WebInterface.cpp:242
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "Rruga per konfigurimin e failit te aMule. MOS E PERDORNI DIREKT!"
 
-#: src/webserver/src/WebInterface.cpp:245
+#: src/webserver/src/WebInterface.cpp:250
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "C'aktivizo interpretuesin e PHP (nuk aprovohet)"
 
-#: src/webserver/src/WebInterface.cpp:253
+#: src/webserver/src/WebInterface.cpp:258
 msgid "Recompile PHP pages on each request"
 msgstr "Rimbush faqet PHP ne c'do kerkese"
 
-#: src/webserver/src/WebInterface.cpp:351
+#: src/webserver/src/WebInterface.cpp:356
 msgid "aMule Web Server"
 msgstr "Web Server i aMule"
 
@@ -6214,17 +6214,17 @@ msgstr ""
 "E pamundur te krijoje nje kartele per failet ne hyrje per kete kategori.Ju "
 "lutem specifikoni nje rruge te vlefshme!"
 
-#: src/ExternalConnector.cpp:144
+#: src/ExternalConnector.cpp:141
 #, c-format
 msgid "Unknown extension '%s' for the '%s' command.\n"
 msgstr "Shtim i panjohur '%s' per komanden '%s'.\n"
 
-#: src/ExternalConnector.cpp:146
+#: src/ExternalConnector.cpp:143
 #, c-format
 msgid "Unknown command '%s'.\n"
 msgstr "KOmande e panjohur '%s'.\n"
 
-#: src/ExternalConnector.cpp:158
+#: src/ExternalConnector.cpp:155
 msgid ""
 "\n"
 "This command cannot have an argument.\n"
@@ -6232,7 +6232,7 @@ msgstr ""
 "\n"
 "Kjo komande nuk mund te kete nje argument.\n"
 
-#: src/ExternalConnector.cpp:160
+#: src/ExternalConnector.cpp:157
 msgid ""
 "\n"
 "This command must have an argument.\n"
@@ -6240,7 +6240,7 @@ msgstr ""
 "\n"
 "Kjo komande duhet te kete nje argument.\n"
 
-#: src/ExternalConnector.cpp:163
+#: src/ExternalConnector.cpp:160
 msgid ""
 "\n"
 "This command is incomplete, you must use one of the extensions below.\n"
@@ -6249,7 +6249,7 @@ msgstr ""
 "Kjo komande nuk eshte komplete, ju duhet te perdorni nje nga shtimet me "
 "poshte.\n"
 
-#: src/ExternalConnector.cpp:169
+#: src/ExternalConnector.cpp:166
 msgid ""
 "\n"
 "Available extensions:\n"
@@ -6257,11 +6257,11 @@ msgstr ""
 "\n"
 "Shtime ne dispozicion:\n"
 
-#: src/ExternalConnector.cpp:171
+#: src/ExternalConnector.cpp:168
 msgid "Available commands:\n"
 msgstr "Komanda ne dispozicion:\n"
 
-#: src/ExternalConnector.cpp:188
+#: src/ExternalConnector.cpp:185
 #, c-format
 msgid ""
 "\n"
@@ -6272,17 +6272,17 @@ msgstr ""
 "Te gjitha komandat mund te shkruhen me shkronja te medha ose te vogla.\n"
 "Shtyp '%s <command>' per te marre informacion te detajuar ne <command>.\n"
 
-#: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
 msgid "Exits from the application."
 msgstr "Del nga aplikimi."
 
-#: src/ExternalConnector.cpp:219
+#: src/ExternalConnector.cpp:218
 msgid "Show help."
 msgstr "Trego ndihme."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:222
+#: src/ExternalConnector.cpp:221
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6290,7 +6290,7 @@ msgstr ""
 "Per te marre ndihme per nje komande shtyp help <command> .\n"
 "Per te marre listen e plote te komandave shtyp help .\n"
 
-#: src/ExternalConnector.cpp:243
+#: src/ExternalConnector.cpp:242
 #, c-format
 msgid ""
 "\n"
@@ -6301,48 +6301,48 @@ msgstr ""
 "Perdor '%s' per listen e komandave\n"
 "\n"
 
-#: src/ExternalConnector.cpp:273
+#: src/ExternalConnector.cpp:272
 msgid "Syntax error!"
 msgstr "Gabim Sintakse!"
 
-#: src/ExternalConnector.cpp:276
+#: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "Gabim ne punimin e komandes - nuk duhet qe te ndodhi me! Raportoni Bug-un ju "
 "lutem\n"
 
-#: src/ExternalConnector.cpp:279
+#: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
 msgstr "Kjo komande nuk duhet te kete parametra."
 
-#: src/ExternalConnector.cpp:282
+#: src/ExternalConnector.cpp:281
 msgid "This command must have a parameter."
 msgstr "Kjo komande duhet te kete nje parameter."
 
-#: src/ExternalConnector.cpp:285
+#: src/ExternalConnector.cpp:284
 msgid "Invalid argument."
 msgstr "Argument i pavlere."
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:287
 msgid "This is an incomplete command."
 msgstr "Kjo eshte nje komande jo komplete."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:296
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Shtyp '%s' per te marre me shume ndihme.\n"
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:361
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "Ky eshte %s %s %s\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:363
 #, c-format
 msgid "This is %s %s\n"
 msgstr "Ky eshte %s %s\n"
 
-#: src/ExternalConnector.cpp:395
+#: src/ExternalConnector.cpp:394
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6350,11 +6350,11 @@ msgstr ""
 "\n"
 "Duke krijuar klientin...\n"
 
-#: src/ExternalConnector.cpp:405
+#: src/ExternalConnector.cpp:404
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr "Lidhja Deshtoi.E pamundur te lidhem ne ate host\n"
 
-#: src/ExternalConnector.cpp:416
+#: src/ExternalConnector.cpp:415
 #, c-format
 msgid ""
 "\n"
@@ -6363,7 +6363,7 @@ msgstr ""
 "\n"
 "Ne rregull, duke dalur %s...\n"
 
-#: src/ExternalConnector.cpp:421
+#: src/ExternalConnector.cpp:420
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6376,49 +6376,49 @@ msgstr ""
 "ose ne nje linje-komande, ose futni nje kur kerkohet.\n"
 "Duke dalur.\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:427
 msgid "Show this help text."
 msgstr "Trego kete tekstin ndihmues."
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:430
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Host ne te cilin aMule vepron. (default: localhost)"
 
-#: src/ExternalConnector.cpp:434
+#: src/ExternalConnector.cpp:433
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Porta e aMule per Lidhjet e Jashtme. (default: 4712)"
 
-#: src/ExternalConnector.cpp:437
+#: src/ExternalConnector.cpp:436
 msgid "External Connection password."
 msgstr "Fjalekalimi per Lidhjet e Jashtme."
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:439
 msgid "Read configuration from file."
 msgstr "Lexo rregullimin nga faili."
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:442
 msgid "Do not print any output to stdout."
 msgstr "Mos printo asnje output tek stdout"
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:445
 msgid "Be verbose - show also debug messages."
 msgstr "Behu fjaleshume - trego dhe mesazhet e Debug-ut."
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:448
 msgid "Sets program locale (language)."
 msgstr "Vendos Locale-n e programit (gjuha)"
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:451
 msgid "Write command line options to config file."
 msgstr ""
 "Shkruaj opsionet e lenjes se komandave tek faili i konfigurimeve"
 "(rregullimeve)"
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:454
 msgid "Creates config file based on aMule's config file."
 msgstr "Krijo nje fail per konfigurimin te bazuar ne ate te aMule-s."
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:457
 msgid "Print program version."
 msgstr "Printo versioni ne programit."
 

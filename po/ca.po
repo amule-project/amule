@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-14 03:30+0200\n"
+"POT-Creation-Date: 2008-05-15 03:31+0200\n"
 "PO-Revision-Date: 2007-12-14 00:06+0100\n"
 "Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
@@ -615,60 +615,60 @@ msgstr "Eixida sol·licitada\n"
 msgid "Processing request [redirected]: "
 msgstr "S'està processant la petició [redirigit]: "
 
-#: src/webserver/src/WebInterface.cpp:193
+#: src/webserver/src/WebInterface.cpp:198
 msgid "Loads template <str>"
 msgstr "Carrega la plantilla <str>"
 
-#: src/webserver/src/WebInterface.cpp:197
+#: src/webserver/src/WebInterface.cpp:202
 msgid "Webserver HTTP port"
 msgstr "Port HTTP del servidor web"
 
-#: src/webserver/src/WebInterface.cpp:201
+#: src/webserver/src/WebInterface.cpp:206
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Utilitza l'encaminament UPnP al port del servidor web"
 
-#: src/webserver/src/WebInterface.cpp:205
+#: src/webserver/src/WebInterface.cpp:210
 msgid "UPnP port"
 msgstr "Port UPnP"
 
-#: src/webserver/src/WebInterface.cpp:209
+#: src/webserver/src/WebInterface.cpp:214
 msgid "Use gzip compression"
 msgstr "Usa la compressió gzip"
 
-#: src/webserver/src/WebInterface.cpp:217
+#: src/webserver/src/WebInterface.cpp:222
 msgid "Full access password for webserver"
 msgstr "Contrasenya d'accés complet per al servidor web"
 
-#: src/webserver/src/WebInterface.cpp:221
+#: src/webserver/src/WebInterface.cpp:226
 msgid "Guest password for webserver"
 msgstr "Contrasenya de convidat per al servidor web"
 
-#: src/webserver/src/WebInterface.cpp:225
+#: src/webserver/src/WebInterface.cpp:230
 msgid "Allow guest access"
 msgstr "Permetre l'accés de convidats"
 
-#: src/webserver/src/WebInterface.cpp:229
+#: src/webserver/src/WebInterface.cpp:234
 msgid "Deny guest access"
 msgstr "Denega l'accés de convidats"
 
-#: src/webserver/src/WebInterface.cpp:233
+#: src/webserver/src/WebInterface.cpp:238
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "Obre/desa els paràmetres del servidor web des de l'aMule remot"
 
-#: src/webserver/src/WebInterface.cpp:237
+#: src/webserver/src/WebInterface.cpp:242
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr ""
 "Directori del fitxer de configuració de l'aMule. NO L'USEU DIRECTAMENT!"
 
-#: src/webserver/src/WebInterface.cpp:245
+#: src/webserver/src/WebInterface.cpp:250
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Inhabilita el intèrpret PHP (obsolet)"
 
-#: src/webserver/src/WebInterface.cpp:253
+#: src/webserver/src/WebInterface.cpp:258
 msgid "Recompile PHP pages on each request"
 msgstr "Recompila les pàgines PHP a cada petició"
 
-#: src/webserver/src/WebInterface.cpp:351
+#: src/webserver/src/WebInterface.cpp:356
 msgid "aMule Web Server"
 msgstr "Servidor web de l'aMule"
 
@@ -6246,17 +6246,17 @@ msgstr ""
 "No s'ha pogut crear el carpeta d'entrada per a la categoria. Per favor, "
 "especifiqueu un directori vàlid!"
 
-#: src/ExternalConnector.cpp:144
+#: src/ExternalConnector.cpp:141
 #, c-format
 msgid "Unknown extension '%s' for the '%s' command.\n"
 msgstr "Extensió '%s' desconeguda per a l'ordre '%s'.\n"
 
-#: src/ExternalConnector.cpp:146
+#: src/ExternalConnector.cpp:143
 #, c-format
 msgid "Unknown command '%s'.\n"
 msgstr "Ordre '%s' desconeguda.\n"
 
-#: src/ExternalConnector.cpp:158
+#: src/ExternalConnector.cpp:155
 msgid ""
 "\n"
 "This command cannot have an argument.\n"
@@ -6264,7 +6264,7 @@ msgstr ""
 "\n"
 "Aquesta ordre no pot tenir un argument.\n"
 
-#: src/ExternalConnector.cpp:160
+#: src/ExternalConnector.cpp:157
 msgid ""
 "\n"
 "This command must have an argument.\n"
@@ -6272,7 +6272,7 @@ msgstr ""
 "\n"
 "Aquesta ordre ha de tenir un argument.\n"
 
-#: src/ExternalConnector.cpp:163
+#: src/ExternalConnector.cpp:160
 msgid ""
 "\n"
 "This command is incomplete, you must use one of the extensions below.\n"
@@ -6280,7 +6280,7 @@ msgstr ""
 "\n"
 "Aquesta ordre és incompleta, heu d'usar una de les extensions de sota.\n"
 
-#: src/ExternalConnector.cpp:169
+#: src/ExternalConnector.cpp:166
 msgid ""
 "\n"
 "Available extensions:\n"
@@ -6288,11 +6288,11 @@ msgstr ""
 "\n"
 "Extensions disponibles:\n"
 
-#: src/ExternalConnector.cpp:171
+#: src/ExternalConnector.cpp:168
 msgid "Available commands:\n"
 msgstr "Ordres disponibles:\n"
 
-#: src/ExternalConnector.cpp:188
+#: src/ExternalConnector.cpp:185
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -6303,17 +6303,17 @@ msgstr ""
 "Les majúscules no influeixen a les ordres.\n"
 "Escriviu 'help <ordre>' per a aconseguir informació sobre l' <ordre>.\n"
 
-#: src/ExternalConnector.cpp:217 src/ExternalConnector.cpp:218
+#: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
 msgid "Exits from the application."
 msgstr "Surt de l'aplicació."
 
-#: src/ExternalConnector.cpp:219
+#: src/ExternalConnector.cpp:218
 msgid "Show help."
 msgstr "Mostra l'ajuda."
 
 #. TRANSLATORS:
 #. Do not translate the word 'help', it is a command to the program!
-#: src/ExternalConnector.cpp:222
+#: src/ExternalConnector.cpp:221
 msgid ""
 "To get help on a command, type 'help <command>'.\n"
 "To get the full command list type 'help'.\n"
@@ -6321,7 +6321,7 @@ msgstr ""
 "Per a aconseguir ajuda sobre una ordre, escriviu 'help <ordre>'.\n"
 "Per a veure la llista completa d'ordres escriviu 'help'.\n"
 
-#: src/ExternalConnector.cpp:243
+#: src/ExternalConnector.cpp:242
 #, c-format
 msgid ""
 "\n"
@@ -6332,48 +6332,48 @@ msgstr ""
 "Useu '%s' per a la llista d'ordres\n"
 "\n"
 
-#: src/ExternalConnector.cpp:273
+#: src/ExternalConnector.cpp:272
 msgid "Syntax error!"
 msgstr "Error de sintaxi!"
 
-#: src/ExternalConnector.cpp:276
+#: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
 msgstr ""
 "S'ha produït un error processant una ordre - açò no hauria de passar mai! "
 "Informeu de l'error, per favor\n"
 
-#: src/ExternalConnector.cpp:279
+#: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
 msgstr "Aquesta ordre no hauria de tenir cap paràmetre."
 
-#: src/ExternalConnector.cpp:282
+#: src/ExternalConnector.cpp:281
 msgid "This command must have a parameter."
 msgstr "Aquesta ordre ha de tenir un paràmetre."
 
-#: src/ExternalConnector.cpp:285
+#: src/ExternalConnector.cpp:284
 msgid "Invalid argument."
 msgstr "Argument invàlid."
 
-#: src/ExternalConnector.cpp:288
+#: src/ExternalConnector.cpp:287
 msgid "This is an incomplete command."
 msgstr "Aquesta ordre és incompleta."
 
-#: src/ExternalConnector.cpp:297
+#: src/ExternalConnector.cpp:296
 #, c-format
 msgid "Type '%s' to get more help.\n"
 msgstr "Escriviu '%s' per a aconseguir més ajuda.\n"
 
-#: src/ExternalConnector.cpp:362
+#: src/ExternalConnector.cpp:361
 #, c-format
 msgid "This is %s %s %s\n"
 msgstr "%s·%s·%s\n"
 
-#: src/ExternalConnector.cpp:364
+#: src/ExternalConnector.cpp:363
 #, c-format
 msgid "This is %s %s\n"
 msgstr "%s %s\n"
 
-#: src/ExternalConnector.cpp:395
+#: src/ExternalConnector.cpp:394
 msgid ""
 "\n"
 "Creating client...\n"
@@ -6381,13 +6381,13 @@ msgstr ""
 "\n"
 "S'està creant el client...\n"
 
-#: src/ExternalConnector.cpp:405
+#: src/ExternalConnector.cpp:404
 msgid "Connection Failed. Unable to connect to the specified host\n"
 msgstr ""
 "La connexió ha fallat. Ha estat impossible connectar amb l'ordinador "
 "especificat\n"
 
-#: src/ExternalConnector.cpp:416
+#: src/ExternalConnector.cpp:415
 #, c-format
 msgid ""
 "\n"
@@ -6396,7 +6396,7 @@ msgstr ""
 "\n"
 "D'acord, eixint %s ...\n"
 
-#: src/ExternalConnector.cpp:421
+#: src/ExternalConnector.cpp:420
 msgid ""
 "Cannot connect with an empty password.\n"
 "You must specify a password either in config file\n"
@@ -6410,47 +6410,47 @@ msgstr ""
 "\n"
 "Eixint...\n"
 
-#: src/ExternalConnector.cpp:428
+#: src/ExternalConnector.cpp:427
 msgid "Show this help text."
 msgstr "Mostra aquest text d'ajuda."
 
-#: src/ExternalConnector.cpp:431
+#: src/ExternalConnector.cpp:430
 msgid "Host where aMule is running. (default: localhost)"
 msgstr "Ordinador on està executant-se l'aMule. (per defecte: localhost)"
 
-#: src/ExternalConnector.cpp:434
+#: src/ExternalConnector.cpp:433
 msgid "aMule's port for External Connection. (default: 4712)"
 msgstr "Port de l'aMule per a connexions externes. (per defecte: 4712)"
 
-#: src/ExternalConnector.cpp:437
+#: src/ExternalConnector.cpp:436
 msgid "External Connection password."
 msgstr "Contrasenya per a les connexions externes."
 
-#: src/ExternalConnector.cpp:440
+#: src/ExternalConnector.cpp:439
 msgid "Read configuration from file."
 msgstr "Llegeix la configuració des del fitxer."
 
-#: src/ExternalConnector.cpp:443
+#: src/ExternalConnector.cpp:442
 msgid "Do not print any output to stdout."
 msgstr "No mostra res per la sortida estàndard."
 
-#: src/ExternalConnector.cpp:446
+#: src/ExternalConnector.cpp:445
 msgid "Be verbose - show also debug messages."
 msgstr "Detallat - mostra també els missatges de depuració."
 
-#: src/ExternalConnector.cpp:449
+#: src/ExternalConnector.cpp:448
 msgid "Sets program locale (language)."
 msgstr "Estableix la localització del programa (idioma)."
 
-#: src/ExternalConnector.cpp:452
+#: src/ExternalConnector.cpp:451
 msgid "Write command line options to config file."
 msgstr "Escriu al fitxer de configuració les opcions de la línia d'ordres."
 
-#: src/ExternalConnector.cpp:455
+#: src/ExternalConnector.cpp:454
 msgid "Creates config file based on aMule's config file."
 msgstr "Crea un fitxer de configuració basat en el de l'aMule."
 
-#: src/ExternalConnector.cpp:458
+#: src/ExternalConnector.cpp:457
 msgid "Print program version."
 msgstr "Mostra la versió del programa."
 
