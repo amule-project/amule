@@ -213,6 +213,11 @@ void CParsedUrl::ConvertParams(std::map<std::string, std::string> &dst)
 	}
 }
 
+BEGIN_EVENT_TABLE(CWebServerBase, wxEvtHandler)
+	EVT_SOCKET(ID_WEBLISTENSOCKET_EVENT, CWebServerBase::OnWebSocketServerEvent)
+	EVT_SOCKET(ID_WEBCLIENTSOCKET_ENENT, CWebServerBase::OnWebSocketEvent)
+END_EVENT_TABLE()
+
 CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir) :
 	m_ServersInfo(webApp), m_SharedFileInfo(webApp), m_DownloadFileInfo(webApp, &m_ImageLib),
 	m_UploadsInfo(webApp), m_SearchInfo(webApp), m_Stats(500, webApp),
@@ -232,6 +237,10 @@ CWebServerBase::CWebServerBase(CamulewebApp *webApp, const wxString& templateDir
 	m_ImageLib.AddImage(new CDynStatisticImage(200, false, m_Stats.KadCount()),
 		wxT("/amule_stats_kad.png"));
 #endif
+	
+	m_upnpEnabled = webInterface->m_UPnPWebServerEnabled;
+	m_upnpTCPPort = webInterface->m_UPnPTCPPort;
+
 }
 
 //sends output to web interface
@@ -279,6 +288,84 @@ long CWebServerBase::GetWSPrefs(void)
 	delete reply;
 
 	return wsport;
+}
+
+void CWebServerBase::StartServer()
+{
+#ifdef ENABLE_UPNP
+	if (m_upnpEnabled) {
+		m_upnpMappings.resize(1);
+		m_upnpMappings[0] = CUPnPPortMapping(
+			webInterface->m_WebserverPort,
+			"TCP",
+			true,
+			"aMule TCP Webserver Socket");
+		m_upnp = new CUPnPControlPoint(m_upnpTCPPort);
+		m_upnp->AddPortMappings(m_upnpMappings);
+	}
+#endif
+
+	wxIPV4address addr;
+	addr.AnyAddress();
+	addr.Service(webInterface->m_WebserverPort);
+	
+	m_webserver_socket = new wxSocketServer(addr, wxSOCKET_REUSEADDR);
+	m_webserver_socket->SetEventHandler(*this, ID_WEBLISTENSOCKET_EVENT);
+	m_webserver_socket->SetNotify(wxSOCKET_CONNECTION_FLAG);
+	m_webserver_socket->Notify(true);
+	if (!m_webserver_socket->Ok()) {
+		delete m_webserver_socket;
+		m_webserver_socket = 0;
+	}
+
+}
+
+void CWebServerBase::StopServer()
+{
+	if ( m_webserver_socket ) {
+		delete m_webserver_socket;
+	}
+#ifdef ENABLE_UPNP
+	if (m_upnpEnabled) {
+		m_upnp->DeletePortMappings(m_upnpMappings);
+		delete m_upnp;
+	}
+#endif
+}
+
+void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
+{
+	CWebSocket *client = new CWebSocket(this);
+	
+    if ( m_webserver_socket->AcceptWith(*client, false) ) {
+    	webInterface->Show(_("web client connection accepted\n"));
+    } else {
+    	delete client;
+    	webInterface->Show(_("Error: can not accept web client connection\n"));
+    }
+}
+
+void CWebServerBase::OnWebSocketEvent(wxSocketEvent& event)
+{
+	CWebSocket *socket = dynamic_cast<CWebSocket *>(event.GetSocket());
+    wxCHECK_RET(socket, wxT("Socket event with a NULL socket!"));
+    switch(event.GetSocketEvent()) {
+    case wxSOCKET_LOST:
+        socket->OnLost();
+        break;
+    case wxSOCKET_INPUT:
+        socket->OnInput();
+        break;
+    case wxSOCKET_OUTPUT:
+        socket->OnOutput();
+        break;
+    case wxSOCKET_CONNECTION:
+        break;
+    default:
+        wxFAIL;
+        break;
+    }
+
 }
 
 void CScriptWebServer::ProcessImgFileReq(ThreadData Data)
@@ -1695,32 +1782,6 @@ CScriptWebServer::CScriptWebServer(CamulewebApp *webApp, const wxString& templat
 
 CScriptWebServer::~CScriptWebServer()
 {
-}
-
-
-void CScriptWebServer::StartServer()
-{
-	if (!webInterface->m_LoadSettingsFromAmule) {
-		if (webInterface->m_configFile) {
-			webInterface->m_PageRefresh = webInterface->m_configFile->Read(wxT("/Webserver/PageRefreshTime"), 120l);
-		}
-	}
-
-	wsThread = new CWSThread(this);
-	if ( wsThread->Create() != wxTHREAD_NO_ERROR ) {
-		webInterface->Show(_("Can't create web socket thread\n"));
-	} else {
-		//...and run it
-		wsThread->Run();
- 
-		webInterface->Show(_("Web Server: Started\n"));
-	}
-}
-
-void CScriptWebServer::StopServer()
-{
-	wsThread->Delete();
-	wsThread->Wait();
 }
 
 char *CScriptWebServer::GetErrorPage(const char *message, long &size)

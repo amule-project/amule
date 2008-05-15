@@ -36,6 +36,7 @@
 #include "RLE.h"
 #include "OtherStructs.h"
 
+#include "UPnP.h"
 
 #include <wx/datetime.h>  // For DownloadFile::wxtLastSeenComplete
 
@@ -675,12 +676,22 @@ struct ThreadData {
 	CWebSocket	*pSocket;
 };
 
-/*
- * In transition period I want both versions of amuleweb available: CPP and PHP
- */
-class CWebServerBase {
+enum {
+    // Socket handlers
+    ID_WEBLISTENSOCKET_EVENT = wxID_HIGHEST+123,  // random safe ID
+    ID_WEBCLIENTSOCKET_ENENT,
+};
+
+#ifdef ENABLE_UPNP
+class CUPnPControlPoint;
+class CUPnPPortMapping;
+#endif
+
+class CWebServerBase : public wxEvtHandler {
 	protected:
-		CWSThread *wsThread;
+		//CWSThread *wsThread;
+		wxSocketServer *m_webserver_socket;
+		
 		wxMutex m_mutexChildren;
 
 		ServersInfo m_ServersInfo;
@@ -699,18 +710,27 @@ class CWebServerBase {
 		int GzipCompress(Bytef *dest, uLongf *destLen,
 			const Bytef *source, uLong sourceLen, int level);
 			
-	friend class CWebSocket;
-	friend class CWSThread;		// to access the wsThread member
-	friend class CPhPLibContext;
+		friend class CWebSocket;
+		friend class CPhPLibContext;
 	
+		bool m_upnpEnabled;
+		int m_upnpTCPPort;
+#ifdef ENABLE_UPNP
+		CUPnPControlPoint *m_upnp;
+		std::vector<CUPnPPortMapping> m_upnpMappings;
+#endif
+
+		void OnWebSocketServerEvent(wxSocketEvent& event);
+		void OnWebSocketEvent(wxSocketEvent& event);
+		DECLARE_EVENT_TABLE();
 	public:
 		CWebServerBase(CamulewebApp *webApp, const wxString& templateDir);
 		virtual ~CWebServerBase() { }
 
 		void Send_Discard_V2_Request(CECPacket *request);
 
-		virtual void StartServer() = 0;
-		virtual void StopServer() = 0;
+		void StartServer();
+		void StopServer();
 
 		void Print(const wxString &s);
 
@@ -775,8 +795,6 @@ class CScriptWebServer : public CWebServerBase {
 		CScriptWebServer(CamulewebApp *webApp, const wxString& templateDir);
 		~CScriptWebServer();
 
-		virtual void StartServer();
-		virtual void StopServer();
 };
 
 class CNoTemplateWebServer : public CScriptWebServer {
