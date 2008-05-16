@@ -28,11 +28,14 @@
 	#include "config.h"		// Needed for VERSION
 #endif
 
+#include <common/ClientVersion.h>
+
+#include "TextClient.h"
+
 #ifndef __WXMSW__
 	#include <unistd.h> // Do_not_auto_remove
 #endif
 
-#include "TextClient.h"
 
 //-------------------------------------------------------------------
 
@@ -248,7 +251,7 @@ int CamulecmdApp::ProcessCommand(int CmdId)
 		case CMD_ID_SET_IPFILTER_CLIENTS_OFF:
 		case CMD_ID_SET_IPFILTER_SERVERS_OFF:
 			{
-				if (CmdId == CMD_ID_SET_IPFILTER_CLIENTS_ON | CmdId == CMD_ID_SET_IPFILTER_CLIENTS_OFF) {
+				if (CmdId == CMD_ID_SET_IPFILTER_CLIENTS_ON || CmdId == CMD_ID_SET_IPFILTER_CLIENTS_OFF) {
 					CmdId = CMD_ID_GET_IPFILTER_STATE_CLIENTS;
 				} else if (CmdId == CMD_ID_SET_IPFILTER_SERVERS_ON || CmdId == CMD_ID_SET_IPFILTER_SERVERS_OFF) {
 					CmdId = CMD_ID_GET_IPFILTER_STATE_SERVERS;
@@ -840,26 +843,17 @@ void CamulecmdApp::OnInitCommandSet()
 			      wxTRANSLATE("Show connection status, current up/download speeds, etc.\n"), CMD_PARAM_NEVER);
 
 	m_commands.AddCommand(wxT("Statistics"), CMD_ID_STATTREE, wxTRANSLATE("Show full statistics tree."),
-			      wxTRANSLATE("Optionally, a number in the range 0-255 can be passed as an argument to this\n"
-					  "command, which tells how many entries of the client version subtrees should be\n"
-					  "shown. Passing 0 or omitting it means 'unlimited'.\n"
-					  "\n"
-					  "Example: 'statistics 5' will show only the top 5 versions for each client type.\n"));
+			      wxTRANSLATE("Optionally, a number in the range 0-255 can be passed as an argument to this\ncommand, which tells how many entries of the client version subtrees should be\nshown. Passing 0 or omitting it means 'unlimited'.\n\nExample: 'statistics 5' will show only the top 5 versions for each client type.\n"));
 
 	m_commands.AddCommand(wxT("Shutdown"), CMD_ID_SHUTDOWN, wxTRANSLATE("Shutdown aMule."),
-			      wxTRANSLATE("Shutdown the remote running core (amule/amuled).\n"
-					  "This will also shut down the text client, since it is unusable without a\n"
-					  "running core.\n"), CMD_PARAM_NEVER);
+			      wxTRANSLATE("Shutdown the remote running core (amule/amuled).\nThis will also shut down the text client, since it is unusable without a\nrunning core.\n"), CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand(wxT("Reload"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Reloads the given object."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Shared"), CMD_ID_RELOAD_SHARED, wxTRANSLATE("Reloads shared files list."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("IPFilter"), CMD_ID_RELOAD_IPFILTER, wxTRANSLATE("Reloads IP Filter table from file."), wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand(wxT("Connect"), CMD_ID_CONNECT, wxTRANSLATE("Connect to the network."),
-				    wxTRANSLATE("This will connect to all networks that are enabled in Preferences.\n"
-						"You may also optionally specify a server address in IP:Port form, to connect to\n"
-						"that server only. The IP must be a dotted decimal IPv4 address,\n"
-						"or a resolvable DNS name."), CMD_PARAM_OPTIONAL);
+				    wxTRANSLATE("This will connect to all networks that are enabled in Preferences.\nYou may also optionally specify a server address in IP:Port form, to connect to\nthat server only. The IP must be a dotted decimal IPv4 address,\nor a resolvable DNS name."), CMD_PARAM_OPTIONAL);
 	tmp->AddCommand(wxT("ED2K"), CMD_ID_CONNECT_ED2K, wxTRANSLATE("Connect to ED2K only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Kad"), CMD_ID_CONNECT_KAD, wxTRANSLATE("Connect to Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
@@ -869,13 +863,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("Kad"), CMD_ID_DISCONNECT_KAD, wxTRANSLATE("Disconnect from Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
  	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Adds an ed2k or magnet link to core."),
-			      wxTRANSLATE("The ed2k link to be added can be:\n"
-					  "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
-					  "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
-					  "*) or a serverlist link, in which case all servers in the list will be added to the\n"
-					  "   server list.\n"
-					  "\n"
-					  "The magnet link must contain the ed2k hash and file length.\n"), CMD_PARAM_ALWAYS);
+			      wxTRANSLATE("The ed2k link to be added can be:\n*) a file link (ed2k://|file|...), it will be added to the download queue,\n*) a server link (ed2k://|server|...), it will be added to the server list,\n*) or a serverlist link, in which case all servers in the list will be added to the\n   server list.\n\nThe magnet link must contain the ed2k hash and file length.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);
@@ -890,8 +878,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp3->AddCommand(wxT("On"), CMD_ID_SET_IPFILTER_SERVERS_ON, wxTRANSLATE("Turn IP filtering on for servers."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp3->AddCommand(wxT("Off"), CMD_ID_SET_IPFILTER_SERVERS_OFF, wxTRANSLATE("Turn IP filtering off for servers."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp2->AddCommand(wxT("Level"), CMD_ID_SET_IPFILTER_LEVEL, wxTRANSLATE("Select IP filtering level."),
-			 wxTRANSLATE("Valid filtering levels are in the range 0-255, and it's default (initial)\n"
-				     "value is 127.\n"), CMD_PARAM_ALWAYS);
+			 wxTRANSLATE("Valid filtering levels are in the range 0-255, and it's default (initial)\nvalue is 127.\n"), CMD_PARAM_ALWAYS);
 
 	tmp2 = tmp->AddCommand(wxT("BwLimit"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set bandwidth limits."),
 			       wxTRANSLATE("The value given to these commands has to be in kilobytes/sec.\n"), CMD_PARAM_NEVER);
@@ -912,11 +899,7 @@ void CamulecmdApp::OnInitCommandSet()
 	tmp->AddCommand(wxT("BwLimits"), CMD_ID_GET_BWLIMITS, wxTRANSLATE("Get bandwidth limits."), wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand(wxT("Search"), CMD_ID_SEARCH, wxTRANSLATE("Makes a search."),
-			      wxTRANSLATE("A search type has to be specified by giving the type:\n"
-					  "    GLOBAL\n"
-					  "    LOCAL\n"
-					  "    KAD\n"
-					  "Example: 'search kad file' will execute a kad search for \"file\".\n"), CMD_PARAM_ALWAYS);
+			      wxTRANSLATE("A search type has to be specified by giving the type:\n    GLOBAL\n    LOCAL\n    KAD\nExample: 'search kad file' will execute a kad search for \"file\".\n"), CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("global"), CMD_ID_SEARCH_GLOBAL, wxTRANSLATE("Executes a global search."), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("local"), CMD_ID_SEARCH_LOCAL, wxTRANSLATE("Executes a local search"), wxEmptyString, CMD_PARAM_ALWAYS);
 	tmp->AddCommand(wxT("kad"), CMD_ID_SEARCH_KAD, wxTRANSLATE("Executes a kad search"), wxEmptyString, CMD_PARAM_ALWAYS);
@@ -928,8 +911,7 @@ void CamulecmdApp::OnInitCommandSet()
 			      wxTRANSLATE("Shows the progress of a search.\n"), CMD_PARAM_NEVER);
 
 	m_commands.AddCommand(wxT("Download"), CMD_ID_DOWNLOAD, wxTRANSLATE("Start downloading a file"),
-			      wxTRANSLATE("The number of a file from the last search has to be given.\n"
-					  "Example: 'download 12' will start to download the file with the number 12 of the previous search.\n"), CMD_PARAM_ALWAYS);
+			      wxTRANSLATE("The number of a file from the last search has to be given.\nExample: 'download 12' will start to download the file with the number 12 of the previous search.\n"), CMD_PARAM_ALWAYS);
 
 
 	//
@@ -968,8 +950,7 @@ void CamulecmdApp::OnInitCommandSet()
 
 #define DEPRECATED(OLDCMD, ID, NEWCMD, PARAM) \
 	m_commands.AddCommand(wxT(OLDCMD), CMD_ID_##ID | CMD_DEPRECATED, CFormat(wxTRANSLATE("Deprecated command, now '%s'.")) % wxT(NEWCMD), \
-			      CFormat(wxTRANSLATE("This is a deprecated command, and may be removed in the future.\n" \
-					  "Use '%s' instead.\n")) % wxT(NEWCMD), CMD_PARAM_##PARAM)
+			      CFormat(wxTRANSLATE("This is a deprecated command, and may be removed in the future.\nUse '%s' instead.\n")) % wxT(NEWCMD), CMD_PARAM_##PARAM)
 
 	DEPRECATED("Stats", STATUS, "Status", NEVER);
 	DEPRECATED("SetIPFilter", SET_IPFILTER, "Set IPFilter", OPTIONAL);
