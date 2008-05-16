@@ -60,10 +60,13 @@ public:
 		throw CAssertFailureException(desc, file, line);
 	}
 
+#ifndef __WXMSW__
 	void OnUnhandledException() {
 		::OnUnhandledException();
 	}
+#endif
+
 };
 
 
-IMPLEMENT_APP(UnitTestApp);
+IMPLEMENT_APP_CONSOLE(UnitTestApp);
