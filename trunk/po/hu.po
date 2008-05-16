@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-15 03:31+0200\n"
+"POT-Creation-Date: 2008-05-16 03:31+0200\n"
 "PO-Revision-Date: 2008-05-13 02:04+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -526,132 +526,132 @@ msgstr[0] "%d Kad kapcsolat kiírva"
 msgid "Error: Could not listen to TCP port."
 msgstr "Hiba: A TCP portot nem lehet figyelni."
 
-#: src/webserver/src/WebServer.cpp:327
+#: src/webserver/src/WebServer.cpp:341
+msgid "web client connection accepted\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:344
+msgid "Error: can not accept web client connection\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:414
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "A kérés sikertelen volt a következő hibával: %s."
 
-#: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
 msgstr "Kérés ismeretlen hibával sikertelen."
 
-#: src/webserver/src/WebServer.cpp:1691
+#: src/webserver/src/WebServer.cpp:1778
 msgid "Index file not found: "
 msgstr "Index fájl nem található: "
 
-#: src/webserver/src/WebServer.cpp:1711
-msgid "Can't create web socket thread\n"
-msgstr "Nem lehet web kapcsolódási szálat létesíteni\n"
-
-#: src/webserver/src/WebServer.cpp:1716
-msgid "Web Server: Started\n"
-msgstr "Web kiszolgáló: elindítva\n"
-
-#: src/webserver/src/WebServer.cpp:1794
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Session expired - requesting login\n"
 msgstr "Munkafolyamat időtúllépés - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1799
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Session ok, logged in\n"
 msgstr "Munkamenet rendben, bejelentkezve\n"
 
-#: src/webserver/src/WebServer.cpp:1801
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Session ok, not logged in\n"
 msgstr "Munkamenet rendben, nincs bejelentkezve\n"
 
-#: src/webserver/src/WebServer.cpp:1806
+#: src/webserver/src/WebServer.cpp:1867
 msgid "No session opened - will request login\n"
 msgstr "Nincs munkafolyamat megnyitva - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Session created - requesting login\n"
 msgstr "Munkafolyamat létrehozva - bejelentkezés kérése\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Processing request [original]: "
 msgstr "Kérés feldolgozása [eredeti]: "
 
-#: src/webserver/src/WebServer.cpp:1848
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Checking password\n"
 msgstr "Jelszó ellenőrzése \n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1914
 msgid "Password hash invalid\n"
 msgstr "Jelszó hash érvénytelen\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1929
 msgid "Password ok\n"
 msgstr "Jelszó rendben\n"
 
-#: src/webserver/src/WebServer.cpp:1870
+#: src/webserver/src/WebServer.cpp:1931
 msgid "Password bad\n"
 msgstr "Hibás jelszó\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1934
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Nem adtál meg jelszót. Üres jelszó nem megengedett.\n"
 
-#: src/webserver/src/WebServer.cpp:1881
+#: src/webserver/src/WebServer.cpp:1942
 msgid "Logout requested\n"
 msgstr "Kijelentkezés\n"
 
-#: src/webserver/src/WebServer.cpp:1886
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Processing request [redirected]: "
 msgstr "Kérés feldolgozása [átirányított]: "
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
 msgstr "Betölti a(z) <str> sablont"
 
-#: src/webserver/src/WebInterface.cpp:202
+#: src/webserver/src/WebInterface.cpp:487
 msgid "Webserver HTTP port"
 msgstr "Webkiszolgáló HTTP port"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Használjon UPnP port továbbítást a webkiszolgáló portján"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
 msgstr "UPnP port"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:499
 msgid "Use gzip compression"
 msgstr "Gzip tömörítés használata"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for webserver"
 msgstr "Teljes jogú jelszó a webkiszolgálóhoz"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for webserver"
 msgstr "Vendég jelszó a webkiszolgálóhoz"
 
-#: src/webserver/src/WebInterface.cpp:230
+#: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
 msgstr "Vendég felhasználó engedélyezése"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:519
 msgid "Deny guest access"
 msgstr "vendég felhasználó tiltása"
 
-#: src/webserver/src/WebInterface.cpp:238
+#: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "A webkiszolgáló beállításait az aMule-től tölti/oda tárolja."
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMule konfig fájl útvonala. NE HASZNÁLD!"
 
-#: src/webserver/src/WebInterface.cpp:250
+#: src/webserver/src/WebInterface.cpp:535
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "PHP feldolgozó letiltása (nem ajánlott)"
 
-#: src/webserver/src/WebInterface.cpp:258
+#: src/webserver/src/WebInterface.cpp:543
 msgid "Recompile PHP pages on each request"
 msgstr "PHP oldalak újrafordítása minden kérésnél"
 
-#: src/webserver/src/WebInterface.cpp:356
+#: src/webserver/src/WebInterface.cpp:638
 msgid "aMule Web Server"
 msgstr "aMule Web kiszolgáló"
 
@@ -7133,6 +7133,12 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Barátok listáját tartalmazó 'emfriends.met' fájl íráshoz történő megnyitása "
 "sikertelen!"
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "Nem lehet web kapcsolódási szálat létesíteni\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "Web kiszolgáló: elindítva\n"
 
 #~ msgid "Not Supported"
 #~ msgstr "Nem támogatott"

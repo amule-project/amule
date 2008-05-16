@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-15 03:31+0200\n"
+"POT-Creation-Date: 2008-05-16 03:31+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -530,132 +530,132 @@ msgstr[1] ""
 msgid "Error: Could not listen to TCP port."
 msgstr "오류: TCP포트를 열수없습니다."
 
-#: src/webserver/src/WebServer.cpp:327
+#: src/webserver/src/WebServer.cpp:341
+msgid "web client connection accepted\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:344
+msgid "Error: can not accept web client connection\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:414
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "다음과 같은 오류로 요청 실패함: %s."
 
-#: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
 msgstr "알 수 없는 오류로 요청이 실패함."
 
-#: src/webserver/src/WebServer.cpp:1691
+#: src/webserver/src/WebServer.cpp:1778
 msgid "Index file not found: "
 msgstr "인덱스 파일을 찾을 수 없음:"
 
-#: src/webserver/src/WebServer.cpp:1711
-msgid "Can't create web socket thread\n"
-msgstr "웹 소켓 스레드를 생성할수 없음\n"
-
-#: src/webserver/src/WebServer.cpp:1716
-msgid "Web Server: Started\n"
-msgstr "웹 서버: 시작함\n"
-
-#: src/webserver/src/WebServer.cpp:1794
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Session expired - requesting login\n"
 msgstr "세션이 만료됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1799
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Session ok, logged in\n"
 msgstr "세션 확인, 로그인 됨\n"
 
-#: src/webserver/src/WebServer.cpp:1801
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Session ok, not logged in\n"
 msgstr "세션 확인, 로그인 안됨\n"
 
-#: src/webserver/src/WebServer.cpp:1806
+#: src/webserver/src/WebServer.cpp:1867
 msgid "No session opened - will request login\n"
 msgstr "열린 세션 없음 - 로그인을 요청할 것임\n"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Session created - requesting login\n"
 msgstr "세션이 생성됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Processing request [original]: "
 msgstr "요청 처리중 [원본]: "
 
-#: src/webserver/src/WebServer.cpp:1848
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Checking password\n"
 msgstr "암호를 검사중\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1914
 msgid "Password hash invalid\n"
 msgstr "암호 해시가 유효하지 않음\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1929
 msgid "Password ok\n"
 msgstr "암호 맞음\n"
 
-#: src/webserver/src/WebServer.cpp:1870
+#: src/webserver/src/WebServer.cpp:1931
 msgid "Password bad\n"
 msgstr "암호 틀림\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1934
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "암호를 입력하지 않았습니다. 빈암호는 사용할수 없습니다.\n"
 
-#: src/webserver/src/WebServer.cpp:1881
+#: src/webserver/src/WebServer.cpp:1942
 msgid "Logout requested\n"
 msgstr "로그아웃이 요청됨\n"
 
-#: src/webserver/src/WebServer.cpp:1886
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Processing request [redirected]: "
 msgstr "요청 처리중[redirected]: "
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
 msgstr "템플릿<str>을 읽음"
 
-#: src/webserver/src/WebInterface.cpp:202
+#: src/webserver/src/WebInterface.cpp:487
 msgid "Webserver HTTP port"
 msgstr "웹서버 HTTP 포트"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "웹서버 포트에 UPnP 포트포워딩을 사용"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
 msgstr "UPnP 포트"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:499
 msgid "Use gzip compression"
 msgstr "gzip 압축 사용"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for webserver"
 msgstr "웹서버 전체접근 암호"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for webserver"
 msgstr "웹서버 손님 암호"
 
-#: src/webserver/src/WebInterface.cpp:230
+#: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
 msgstr "손님 접근 허가"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:519
 msgid "Deny guest access"
 msgstr "손님 접근 금지"
 
-#: src/webserver/src/WebInterface.cpp:238
+#: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "원격 어뮬로부터 웹서버 설정을 불러오거나 저장합니다."
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "어뮬 설정 파일 경로. DO NOT USE DIRECTLY!"
 
-#: src/webserver/src/WebInterface.cpp:250
+#: src/webserver/src/WebInterface.cpp:535
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "PHP 해석자를 (권장되지 않는) 사용않함"
 
-#: src/webserver/src/WebInterface.cpp:258
+#: src/webserver/src/WebInterface.cpp:543
 msgid "Recompile PHP pages on each request"
 msgstr "각 요청의 PHP 페이지를 재컴파일함"
 
-#: src/webserver/src/WebInterface.cpp:356
+#: src/webserver/src/WebInterface.cpp:638
 msgid "aMule Web Server"
 msgstr "어뮬 웹 서버"
 
@@ -7071,6 +7071,12 @@ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "웹 소켓 스레드를 생성할수 없음\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "웹 서버: 시작함\n"
 
 #~ msgid "Not Supported"
 #~ msgstr "지원하지 않음"

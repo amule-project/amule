@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-15 01:01+0200\n"
+"POT-Creation-Date: 2008-05-16 03:31+0200\n"
 "PO-Revision-Date: 2008-05-15 01:21+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -103,7 +103,8 @@ msgstr "%s dosyası için AICH adreslemesi oluşturulmaya başlanıyor."
 #: src/ThreadTasks.cpp:348
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
+msgstr ""
+"'%s' içindeki eski AICH adresleme setleri '%s' içindeki 64 b'ye çevriliyor."
 
 #: src/ThreadTasks.cpp:429
 #, c-format
@@ -177,14 +178,18 @@ msgstr "İstek: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
-msgstr[1] "Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
+msgstr[1] ""
+"Bu oturum için dosya durumu: Kabul edilen istek %d si %d nin, %s aktarıldı\n"
 
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Tüm oturumlar için dosya durumu: Kabul edilen istek %d si %d nin, %s "
 "aktarıldı\n"
@@ -435,7 +440,8 @@ msgstr "Ed2k bağlantısını panoya kopyalayın (&Kaynak)"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Ed2k bağlantısını panoya kopyala.(Kaynak) (Şifreleme seçeneğiyle &birlikte)"
+msgstr ""
+"Ed2k bağlantısını panoya kopyala.(Kaynak) (Şifreleme seçeneğiyle &birlikte)"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy ED2k link to clipboard (&Hostname)"
@@ -443,7 +449,9 @@ msgstr "Ed2k bağlantısını panoya kopyala (&Makine adı)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Ed2k bağlantısını panoya kopyala (Makine adı)(Şifreleme &seçeneğiyle birlikte)"
+msgstr ""
+"Ed2k bağlantısını panoya kopyala (Makine adı)(Şifreleme &seçeneğiyle "
+"birlikte)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy ED2k link to clipboard (&AICH info)"
@@ -464,7 +472,8 @@ msgstr ""
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
-msgstr "Geçerli bir kaynak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
+msgstr ""
+"Geçerli bir kaynak bağlantısı oluşturmak için YüksekID almanız gerekiyor"
 
 #: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
 #: src/amule.cpp:672
@@ -524,132 +533,132 @@ msgstr[1] "%d adet Kad bağlantısı yazıldı"
 msgid "Error: Could not listen to TCP port."
 msgstr "Hata: TCP portu dinlenilemiyor."
 
-#: src/webserver/src/WebServer.cpp:327
+#: src/webserver/src/WebServer.cpp:341
+msgid "web client connection accepted\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:344
+msgid "Error: can not accept web client connection\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:414
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "İstem şu hatayla başarısız oldu: %s."
 
-#: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
 msgstr "İstem bilinmeyen bir hatayla başarısız oldu."
 
-#: src/webserver/src/WebServer.cpp:1691
+#: src/webserver/src/WebServer.cpp:1778
 msgid "Index file not found: "
 msgstr "İndeks dosyası bulunamadı: "
 
-#: src/webserver/src/WebServer.cpp:1711
-msgid "Can't create web socket thread\n"
-msgstr "Web soketi oluşturulamıyor.\n"
-
-#: src/webserver/src/WebServer.cpp:1716
-msgid "Web Server: Started\n"
-msgstr "Web Sunucusu: Başladı\n"
-
-#: src/webserver/src/WebServer.cpp:1794
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Session expired - requesting login\n"
 msgstr "Oturum sona erdi - giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1799
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Session ok, logged in\n"
 msgstr "Oturum tamam, giriş yapıldı.\n"
 
-#: src/webserver/src/WebServer.cpp:1801
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Session ok, not logged in\n"
 msgstr "Oturum tamam, giriş yapılmadı.\n"
 
-#: src/webserver/src/WebServer.cpp:1806
+#: src/webserver/src/WebServer.cpp:1867
 msgid "No session opened - will request login\n"
 msgstr "Hiç oturum açılmadı -  giriş gerekecek\n"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Session created - requesting login\n"
 msgstr "Oturum oluşturuldu.-  giriş gerekiyor\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Processing request [original]: "
 msgstr "İstem işleniyor [özgün]: "
 
-#: src/webserver/src/WebServer.cpp:1848
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Checking password\n"
 msgstr "Şifre kontrol ediliyor\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1914
 msgid "Password hash invalid\n"
 msgstr "Şifre adreslemesi geçersiz.\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1929
 msgid "Password ok\n"
 msgstr "Şifre kabul edildi.\n"
 
-#: src/webserver/src/WebServer.cpp:1870
+#: src/webserver/src/WebServer.cpp:1931
 msgid "Password bad\n"
 msgstr "Şifre kötü.\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1934
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Herhangi bir şifre girmediniz. Boş şifre kullanılamaz.\n"
 
-#: src/webserver/src/WebServer.cpp:1881
+#: src/webserver/src/WebServer.cpp:1942
 msgid "Logout requested\n"
 msgstr "Çıkış istendi.\n"
 
-#: src/webserver/src/WebServer.cpp:1886
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Processing request [redirected]: "
 msgstr "İstem işleniyor [yönlendirilmiş]: "
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
 msgstr "Şablonu yükler <str>"
 
-#: src/webserver/src/WebInterface.cpp:202
+#: src/webserver/src/WebInterface.cpp:487
 msgid "Webserver HTTP port"
 msgstr "Web Sunucusu HTTP portu"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Web Sunucusu portuna yönlendirmek için UPnP portunu kullanınız"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
 msgstr "UPnP portu"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:499
 msgid "Use gzip compression"
 msgstr "Gzip sıkıştırması kullan"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for webserver"
 msgstr "Web Sunucusu için tam giriş şifresi"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for webserver"
 msgstr "Web Sunucusu için konuk şifresi"
 
-#: src/webserver/src/WebInterface.cpp:230
+#: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
 msgstr "Konuk girişine izin ver"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:519
 msgid "Deny guest access"
 msgstr "Konuk girişini reddet"
 
-#: src/webserver/src/WebInterface.cpp:238
+#: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "web sunucusu ayarlarını aMule'ye/aMule'den Kaydet/Yükle"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMule yapılandırma yolu: DOĞRUDAN KULLANMAYINIZ!"
 
-#: src/webserver/src/WebInterface.cpp:250
+#: src/webserver/src/WebInterface.cpp:535
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "PHP yorumcusunu devreden çıkar. (onaylanmamış)"
 
-#: src/webserver/src/WebInterface.cpp:258
+#: src/webserver/src/WebInterface.cpp:543
 msgid "Recompile PHP pages on each request"
 msgstr "Her istemde PHP sayfalarını yeniden oluştur"
 
-#: src/webserver/src/WebInterface.cpp:356
+#: src/webserver/src/WebInterface.cpp:638
 msgid "aMule Web Server"
 msgstr "aMule Web  Sunucusu"
 
@@ -1531,8 +1540,10 @@ msgid "Unable to determine selected browser!"
 msgstr "Seçili tarayıcı tanımlanamıyor!"
 
 #: src/Preferences.cpp:1664
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr "TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr ""
+"TCP portu numarası, UDP soketi TCP+3 olduğundan 65532' den yüksek olamaz"
 
 #: src/Preferences.cpp:1665
 #, c-format
@@ -2393,7 +2404,8 @@ msgstr "Geçersiz opcode (yanlış protokol sürümü mü?)"
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr "(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
+msgstr ""
+"(%s) dosyasını açma başarısız. Paylaşılan dosya listesinden çıkartılıyor."
 
 #: src/UploadClient.cpp:714
 #, c-format
@@ -2779,7 +2791,8 @@ msgstr "Kullanıcı %s (%u), paylaşılmış dizin listenizi istedi. -> Reddedil
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Kullanıcı %s (%u), %s dizini için paylaşılmış dosya listenizi istedi. -> "
 "kabul edildi"
@@ -2843,7 +2856,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Yeni bir nodes.dat dosyası indirmek istediğinizden emin misiniz?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Bunu yapmanız şu anki nodları silecek ve Kademlia bağlantısını baştan "
 "başlatacaktır."
@@ -3159,7 +3173,8 @@ msgstr "Dosya bilgisi kurtarılmaya çalışılıyor..."
 
 #: src/PartFile.cpp:614
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr "İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
+msgstr ""
+"İsimsiz dosya kurtarılmaya çalışılıyor-RecoveredFile.dat olarak kaydedilecek."
 
 #: src/PartFile.cpp:619
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -3249,7 +3264,8 @@ msgstr "%s dosyasının yeniden adreslenmesi bitti"
 #: src/PartFile.cpp:2237
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
-msgstr "%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
+msgstr ""
+"%s dosyası tamamlanırken beklenmeyen bir hata oluştu. Dosya duraklatıldı"
 
 #: src/PartFile.cpp:2263
 #, c-format
@@ -3374,7 +3390,8 @@ msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr "Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
+msgstr ""
+"Listelenen sunucuların hiç birine bağlanılamadı. Başka bir geçiş yapılıyor."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "ED2K network disabled on preferences, not connecting."
@@ -3396,7 +3413,8 @@ msgstr "%s sunucusuna bağlanıldı"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
+msgstr ""
+"Önemli Hata: Bağlantı sağlanamıyor. İnternet bağlantınız kopmuş olabilir."
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -3518,7 +3536,8 @@ msgstr "Dosya adı ile işleniyor: "
 
 #: src/TextClient.cpp:381
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adreslemesi.\n"
+msgstr ""
+"Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adreslemesi.\n"
 
 #: src/TextClient.cpp:407
 msgid "Not a valid number\n"
@@ -4280,8 +4299,10 @@ msgstr ""
 "taranacaktır.)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
-msgstr "İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
+msgstr ""
+"İçe aktarımı başarılı olan kaynak dosyalarının silinmesini ister misiniz?"
 
 #: src/PartFileConvert.cpp:702
 msgid "Remove sources?"
@@ -4419,7 +4440,8 @@ msgstr "IP süzgeçleri 'ipfilter.dat' ve 'ipfilter_static.dat' yükleniyor."
 #: src/IPFilter.cpp:284
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr "ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
+msgstr ""
+"ipfilter.dat dosyasını '%s' yükleme başarısız. bilinmeyen format algılandı."
 
 #: src/IPFilter.cpp:325
 #, c-format
@@ -4463,7 +4485,8 @@ msgid "Commit"
 msgstr "Onayla"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
 "ED2k bağlantısı ekleyerek aktarım sıranızı kontrol etmek için buraya "
 "tıklayınız."
@@ -4779,7 +4802,8 @@ msgstr "Dosya Kalitesi"
 
 #: src/muuli_wdr.cpp:917
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr "Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
+msgstr ""
+"Dosya puanlaması seçiniz veya geçersiz ise diğer kullanıcıları uyarınız."
 
 #: src/muuli_wdr.cpp:961
 msgid "Refresh"
@@ -5515,7 +5539,8 @@ msgstr "Sütun Sıralama"
 
 #: src/muuli_wdr.cpp:2472
 msgid "Auto-sort files in the download queue (high CPU)"
-msgstr "Aktarım sırasındaki dosyaları, otomatikman sırala (Yüksek işlemci yükü)"
+msgstr ""
+"Aktarım sırasındaki dosyaları, otomatikman sırala (Yüksek işlemci yükü)"
 
 #: src/muuli_wdr.cpp:2474
 msgid "aMule will sort the columns in your download list automatically"
@@ -5838,7 +5863,8 @@ msgid "Filter clients"
 msgstr "Kullanıcıları Süz"
 
 #: src/muuli_wdr.cpp:3243
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.dat dosyasında tanımlanan kullanıcı IP'lerini süzmeyi "
 "etkinleştir."
@@ -5848,7 +5874,8 @@ msgid "Filter servers"
 msgstr "Sunucuları süz"
 
 #: src/muuli_wdr.cpp:3248
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "~/.aMule/ipfilter.dat dosyasında tanımlanan sunucu IP'lerini süzmeyi "
 "etkinleştir."
@@ -5913,7 +5940,8 @@ msgstr "Kullanıcı"
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr "Bu seçeneği aktifleştirmeniz önerilir. SUI aktif değilse, kredi alamazsınız."
+msgstr ""
+"Bu seçeneği aktifleştirmeniz önerilir. SUI aktif değilse, kredi alamazsınız."
 
 #: src/muuli_wdr.cpp:3337
 msgid "Enable Online-Signature"
@@ -5933,14 +5961,16 @@ msgstr "Güncelleme Sıklığı (Sn.):"
 
 #: src/muuli_wdr.cpp:3348
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "Çevrim içi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
+msgstr ""
+"Çevrim içi İmza güncellemeleri için (saniye bazında) sıklığı değiştirir."
 
 #: src/muuli_wdr.cpp:3356
 msgid "Online Signature Directory:"
 msgstr "Çevrim içi İmza Dizini:"
 
 #: src/muuli_wdr.cpp:3363
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Çevrim içi İmza dosyalarını içeren dizini seçiniz."
 
 #: src/muuli_wdr.cpp:3392 src/muuli_wdr.cpp:3431 src/muuli_wdr.cpp:3633
@@ -5973,7 +6003,8 @@ msgstr "Şu içerikteki iletileri süz (ayraç olarak ','  kullanınız.):"
 
 #: src/muuli_wdr.cpp:3414 src/muuli_wdr.cpp:3438
 msgid "add here the words amule should filter and block messages including it"
-msgstr "Buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
+msgstr ""
+"Buraya ekleyeceğiniz sözcükleri içeren iletiler aMule tarafından engellenir."
 
 #: src/muuli_wdr.cpp:3426
 msgid "Comments"
@@ -6120,7 +6151,8 @@ msgid "You must specify a path for the category!"
 msgstr "Kategori için bir yol girmelisiniz!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Kategori için gelen dizini oluşturma başarısız. Lütfen geçerli bir yol "
 "giriniz!"
@@ -6217,7 +6249,8 @@ msgstr "Syntax hatası!"
 
 #: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr "Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
+msgstr ""
+"Komut çalıştırmada hata.- Bu hiç olmamalıydı! Lütfen hatayı bildiriniz.\n"
 
 #: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
@@ -6323,7 +6356,8 @@ msgstr "Komut satırı seçeneklerini yapılandırma dosyasına yaz."
 
 #: src/ExternalConnector.cpp:454
 msgid "Creates config file based on aMule's config file."
-msgstr "aMule' nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
+msgstr ""
+"aMule' nin yapılandırma dosyasını temel alan yapılandırma dosyası oluşturur."
 
 #: src/ExternalConnector.cpp:457
 msgid "Print program version."
@@ -6782,7 +6816,8 @@ msgstr ""
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
-msgstr "address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
+msgstr ""
+"address.dat üzerinde, geçerli bir server.met güncelleme adresi bulunamadı."
 
 #: src/ServerList.cpp:936
 msgid ""
@@ -7076,6 +7111,11 @@ msgstr "Okuma için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Yazım için arkadaş listesi dosyası 'emfriends.met'açılamıyor."
 
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "Web soketi oluşturulamıyor.\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "Web Sunucusu: Başladı\n"
+
 #~ msgid "Not Supported"
 #~ msgstr "Desteklenmiyor."
-

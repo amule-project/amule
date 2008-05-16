@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-15 03:31+0200\n"
+"POT-Creation-Date: 2008-05-16 03:31+0200\n"
 "PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -520,132 +520,132 @@ msgstr[1] ""
 msgid "Error: Could not listen to TCP port."
 msgstr "错误：无法监听TCP端口。"
 
-#: src/webserver/src/WebServer.cpp:327
+#: src/webserver/src/WebServer.cpp:341
+msgid "web client connection accepted\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:344
+msgid "Error: can not accept web client connection\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:414
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "请求失败，错误为：%s"
 
-#: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
 msgstr "请求失败，错误未知。"
 
-#: src/webserver/src/WebServer.cpp:1691
+#: src/webserver/src/WebServer.cpp:1778
 msgid "Index file not found: "
 msgstr "索引文件未找到："
 
-#: src/webserver/src/WebServer.cpp:1711
-msgid "Can't create web socket thread\n"
-msgstr "无法创建 Web 端口进程\n"
-
-#: src/webserver/src/WebServer.cpp:1716
-msgid "Web Server: Started\n"
-msgstr "Web 服务器：已启动\n"
-
-#: src/webserver/src/WebServer.cpp:1794
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Session expired - requesting login\n"
 msgstr "会话过期 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1799
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Session ok, logged in\n"
 msgstr "会话正常，已登录\n"
 
-#: src/webserver/src/WebServer.cpp:1801
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Session ok, not logged in\n"
 msgstr "会话正常，未登录\n"
 
-#: src/webserver/src/WebServer.cpp:1806
+#: src/webserver/src/WebServer.cpp:1867
 msgid "No session opened - will request login\n"
 msgstr "没有会话已打开 - 将请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Session created - requesting login\n"
 msgstr "会话已创建 - 正在请求登录\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Processing request [original]: "
 msgstr "正在处理请求 [原始]："
 
-#: src/webserver/src/WebServer.cpp:1848
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Checking password\n"
 msgstr "检查密码\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1914
 msgid "Password hash invalid\n"
 msgstr "密码校验值错误\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1929
 msgid "Password ok\n"
 msgstr "密码正确\n"
 
-#: src/webserver/src/WebServer.cpp:1870
+#: src/webserver/src/WebServer.cpp:1931
 msgid "Password bad\n"
 msgstr "密码错误\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1934
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "您没有输入密码，不允许空密码。\n"
 
-#: src/webserver/src/WebServer.cpp:1881
+#: src/webserver/src/WebServer.cpp:1942
 msgid "Logout requested\n"
 msgstr "已请求注销\n"
 
-#: src/webserver/src/WebServer.cpp:1886
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Processing request [redirected]: "
 msgstr "正在处理请求 [已重定向]："
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
 msgstr "载入模板 <str>"
 
-#: src/webserver/src/WebInterface.cpp:202
+#: src/webserver/src/WebInterface.cpp:487
 msgid "Webserver HTTP port"
 msgstr "HTTP服务器端口"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "在 Web 服务器端口使用 UPnP端口转发"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
 msgstr "UPnP 端口"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:499
 msgid "Use gzip compression"
 msgstr "使用 gzip 压缩"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for webserver"
 msgstr "Web 服务器最高访问权密码"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for webserver"
 msgstr "服务器访客密码"
 
-#: src/webserver/src/WebInterface.cpp:230
+#: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
 msgstr "允许访客访问"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:519
 msgid "Deny guest access"
 msgstr "拒绝访客访问"
 
-#: src/webserver/src/WebInterface.cpp:238
+#: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr "载入/保存 Web 服务器设置 自/至 远程 aMule"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr "aMule 设置文件路径。不要直接使用！"
 
-#: src/webserver/src/WebInterface.cpp:250
+#: src/webserver/src/WebInterface.cpp:535
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "禁用 PHP 解释器（已废弃）"
 
-#: src/webserver/src/WebInterface.cpp:258
+#: src/webserver/src/WebInterface.cpp:543
 msgid "Recompile PHP pages on each request"
 msgstr "为每个请求重编译 PHP 页面"
 
-#: src/webserver/src/WebInterface.cpp:356
+#: src/webserver/src/WebInterface.cpp:638
 msgid "aMule Web Server"
 msgstr "aMule Web 服务器"
 
@@ -6976,6 +6976,12 @@ msgstr "无法打开好友列表文件 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "无法写入好友列表文件 'emfriends.met'!"
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "无法创建 Web 端口进程\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "Web 服务器：已启动\n"
 
 #~ msgid "Not Supported"
 #~ msgstr "不被支持"

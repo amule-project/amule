@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-15 03:31+0200\n"
+"POT-Creation-Date: 2008-05-16 03:31+0200\n"
 "PO-Revision-Date: 2008-05-10 11:21+0100\n"
 "Last-Translator: Youpla <youpla@youpla.com>\n"
 "Language-Team: Français <fr@li.org>\n"
@@ -542,137 +542,137 @@ msgstr[1] "%d contacts Kad écrits"
 msgid "Error: Could not listen to TCP port."
 msgstr "Erreur: Écoute sur le port TCP impossible."
 
-#: src/webserver/src/WebServer.cpp:327
+#: src/webserver/src/WebServer.cpp:341
+msgid "web client connection accepted\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:344
+msgid "Error: can not accept web client connection\n"
+msgstr ""
+
+#: src/webserver/src/WebServer.cpp:414
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "La requête a échouée avec le message d'erreur suivant. %s."
 
-#: src/webserver/src/WebServer.cpp:330 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
 msgid "Request failed with an unknown error."
 msgstr "La requête a échouée avec une erreur inconnue."
 
-#: src/webserver/src/WebServer.cpp:1691
+#: src/webserver/src/WebServer.cpp:1778
 msgid "Index file not found: "
 msgstr "Fichier d'index non trouvé"
 
-#: src/webserver/src/WebServer.cpp:1711
-msgid "Can't create web socket thread\n"
-msgstr "Impossible de créer un thread pour la socket Web\n"
-
-#: src/webserver/src/WebServer.cpp:1716
-msgid "Web Server: Started\n"
-msgstr "Serveur Web : démarré\n"
-
-#: src/webserver/src/WebServer.cpp:1794
+#: src/webserver/src/WebServer.cpp:1855
 msgid "Session expired - requesting login\n"
 msgstr "La session a expirée - demande de l'identifiant\n"
 
-#: src/webserver/src/WebServer.cpp:1799
+#: src/webserver/src/WebServer.cpp:1860
 msgid "Session ok, logged in\n"
 msgstr "Session correcte, identifié\n"
 
 # verifier les trucs rapport au webserver
-#: src/webserver/src/WebServer.cpp:1801
+#: src/webserver/src/WebServer.cpp:1862
 msgid "Session ok, not logged in\n"
 msgstr "Session correcte, non identifié\n"
 
-#: src/webserver/src/WebServer.cpp:1806
+#: src/webserver/src/WebServer.cpp:1867
 msgid "No session opened - will request login\n"
 msgstr "Pas de session ouverte - l'identifiant va être demandé\n"
 
-#: src/webserver/src/WebServer.cpp:1815
+#: src/webserver/src/WebServer.cpp:1876
 msgid "Session created - requesting login\n"
 msgstr "Session crée - demande de l'identifiant\n"
 
-#: src/webserver/src/WebServer.cpp:1832
+#: src/webserver/src/WebServer.cpp:1893
 msgid "Processing request [original]: "
 msgstr "Requête en cours [originale] : "
 
-#: src/webserver/src/WebServer.cpp:1848
+#: src/webserver/src/WebServer.cpp:1909
 msgid "Checking password\n"
 msgstr "Vérification du mot de passe\n"
 
-#: src/webserver/src/WebServer.cpp:1853
+#: src/webserver/src/WebServer.cpp:1914
 msgid "Password hash invalid\n"
 msgstr "Hash du mot de passe invalide\n"
 
-#: src/webserver/src/WebServer.cpp:1868
+#: src/webserver/src/WebServer.cpp:1929
 msgid "Password ok\n"
 msgstr "Mot de passe correct\n"
 
-#: src/webserver/src/WebServer.cpp:1870
+#: src/webserver/src/WebServer.cpp:1931
 msgid "Password bad\n"
 msgstr "Mauvais mot de passe\n"
 
-#: src/webserver/src/WebServer.cpp:1873
+#: src/webserver/src/WebServer.cpp:1934
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "Vous n'avez pas entré de mot de passe. Les mots de passe vides ne sont pas "
 "autorisés.\n"
 
-#: src/webserver/src/WebServer.cpp:1881
+#: src/webserver/src/WebServer.cpp:1942
 msgid "Logout requested\n"
 msgstr "Déconnexion demandée\n"
 
-#: src/webserver/src/WebServer.cpp:1886
+#: src/webserver/src/WebServer.cpp:1947
 msgid "Processing request [redirected]: "
 msgstr "Requête en cours [redirigée] :"
 
-#: src/webserver/src/WebInterface.cpp:198
+#: src/webserver/src/WebInterface.cpp:483
 msgid "Loads template <str>"
 msgstr "Charge le template <str>"
 
-#: src/webserver/src/WebInterface.cpp:202
+#: src/webserver/src/WebInterface.cpp:487
 msgid "Webserver HTTP port"
 msgstr "Port HTTP du serveur web"
 
-#: src/webserver/src/WebInterface.cpp:206
+#: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on webserver port"
 msgstr "Utiliser l'UPnP pour la redirection de port du serveur web"
 
-#: src/webserver/src/WebInterface.cpp:210
+#: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
 msgstr "Port UPnP"
 
-#: src/webserver/src/WebInterface.cpp:214
+#: src/webserver/src/WebInterface.cpp:499
 msgid "Use gzip compression"
 msgstr "Utiliser la compression gzip"
 
-#: src/webserver/src/WebInterface.cpp:222
+#: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for webserver"
 msgstr "Mot de passe pour l'accès total au serveur web"
 
-#: src/webserver/src/WebInterface.cpp:226
+#: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for webserver"
 msgstr "Mot de passe invité pour le serveur web"
 
-#: src/webserver/src/WebInterface.cpp:230
+#: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
 msgstr "Autoriser l'accès invité"
 
-#: src/webserver/src/WebInterface.cpp:234
+#: src/webserver/src/WebInterface.cpp:519
 msgid "Deny guest access"
 msgstr "Interdire l'accès invité"
 
-#: src/webserver/src/WebInterface.cpp:238
+#: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save webserver settings from/to remote aMule"
 msgstr ""
 "Charger/sauver la configuration du serveur web depuis/vers l'aMule distant"
 
-#: src/webserver/src/WebInterface.cpp:242
+#: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
 msgstr ""
 "Chemin du fichier de configuration d'aMule. NE PAS UTILISER DIRECTEMENT!"
 
-#: src/webserver/src/WebInterface.cpp:250
+#: src/webserver/src/WebInterface.cpp:535
 msgid "Disable PHP interpreter (deprecated)"
 msgstr "Desactiver l'interpréteur PHP (déprécié)"
 
-#: src/webserver/src/WebInterface.cpp:258
+#: src/webserver/src/WebInterface.cpp:543
 msgid "Recompile PHP pages on each request"
 msgstr "Recompiler les pages PHP à chaque requête"
 
-#: src/webserver/src/WebInterface.cpp:356
+#: src/webserver/src/WebInterface.cpp:638
 msgid "aMule Web Server"
 msgstr "Serveur Web d'aMule"
 
@@ -7239,6 +7239,12 @@ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr ""
 "Échec de l'ouverture du fichier de liste d'amis 'emfriends.met' pour "
 "l'écriture!"
+
+#~ msgid "Can't create web socket thread\n"
+#~ msgstr "Impossible de créer un thread pour la socket Web\n"
+
+#~ msgid "Web Server: Started\n"
+#~ msgstr "Serveur Web : démarré\n"
 
 #~ msgid "Not Supported"
 #~ msgstr "Non supporté"
