@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-16 03:31+0200\n"
+"POT-Creation-Date: 2008-05-17 03:31+0200\n"
 "PO-Revision-Date: 2007-11-18 11:27+0100\n"
 "Last-Translator:  <aikishugyo@gmail.com>\n"
 "Language-Team: Japanese\n"
@@ -534,7 +534,7 @@ msgstr ""
 msgid "Request failed with the following error: %s."
 msgstr "次のエラーで要求が失敗しました： %s。"
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "要求が不明なエラーで失敗しました。"
 
@@ -930,12 +930,12 @@ msgid " Kad: "
 msgstr " Kas: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:708
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
 msgid "ok"
 msgstr "ok"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:706
+#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "ファイアウォールされています"
 
@@ -1365,7 +1365,7 @@ msgstr "ローカルサーバ"
 msgid "Remote Server"
 msgstr "リモートサーバ"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:193
+#: src/DataToText.cpp:128 src/TextClient.cpp:704 src/muuli_wdr.cpp:193
 #: src/muuli_wdr.cpp:3766 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kad"
@@ -2436,7 +2436,7 @@ msgstr "サーバは追加しませんでした：不正なサーバ・ポート
 msgid "ED2K Status:"
 msgstr "Ed2kのステータス："
 
-#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:704
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "接続"
@@ -2497,7 +2497,7 @@ msgstr "平均のユーザ数："
 msgid "Average Files:"
 msgstr "平均のファイル数："
 
-#: src/ServerWnd.cpp:253 src/TextClient.cpp:715
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "走っていません"
 
@@ -3524,106 +3524,106 @@ msgstr "リンクの不明なプロトコル：%s"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "不正なED2Kリンク！エラー：%s"
 
-#: src/TextClient.cpp:130
+#: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
 msgstr "<str>を実行してから終了する。"
 
-#: src/TextClient.cpp:197
+#: src/TextClient.cpp:200
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "不正なIPフォーマット。xx.xxx.xxx.xxx:xxxxを使用ください\n"
 
-#: src/TextClient.cpp:305
+#: src/TextClient.cpp:308
 #, fuzzy
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr "このコマンドには引数が要ります。有効な引数：'all'、または数字。\n"
 
-#: src/TextClient.cpp:343
+#: src/TextClient.cpp:346
 #, fuzzy
 msgid "Processing by hash: "
 msgstr "ファイル %u: %s 番を処理中です"
 
-#: src/TextClient.cpp:358
+#: src/TextClient.cpp:361
 #, fuzzy
 msgid "Processing by filename: "
 msgstr "ファイル %u: %s 番を処理中です"
 
-#: src/TextClient.cpp:381
+#: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr "このコマンドには引数が要ります。有効な引数：ファイル・ハッシュ。\n"
 
-#: src/TextClient.cpp:407
+#: src/TextClient.cpp:410
 msgid "Not a valid number\n"
 msgstr "正当な数字ではありません\n"
 
-#: src/TextClient.cpp:411
+#: src/TextClient.cpp:414
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "正当なハッシュではありません（長さは丁度32半角文字あるべきです）\n"
 
-#: src/TextClient.cpp:627
+#: src/TextClient.cpp:630
 msgid "Operation was successful."
 msgstr "オペレーションは成功に終了しました。"
 
-#: src/TextClient.cpp:633
+#: src/TextClient.cpp:636
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "リクエストは次のエラーで失敗しました：%s"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:652
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "クライアントのIPフィルターリングは%sです。\n"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "OFF"
 msgstr "オッフ"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "ON"
 msgstr "オン"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:658
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "サーバのIPフィルターリングは%sです。\n"
 
-#: src/TextClient.cpp:660
+#: src/TextClient.cpp:663
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "現在のIPフィルター段階は%dです。\n"
 
-#: src/TextClient.cpp:668
+#: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "バン幅制限：アップ：毎秒%uキロバイト、ダウン：毎秒%uキロバイト。\n"
 
-#: src/TextClient.cpp:686 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
+#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/TextClient.cpp:691
+#: src/TextClient.cpp:694
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "%s %s %sに接続されています"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with LowID"
 msgstr "LowIDを持っています"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with HighID"
 msgstr "HighIDを持っています"
 
-#: src/TextClient.cpp:697
+#: src/TextClient.cpp:700
 msgid "Now connecting"
 msgstr "只今接続中です"
 
-#: src/TextClient.cpp:699 src/TextClient.cpp:712
+#: src/TextClient.cpp:702 src/TextClient.cpp:715
 msgid "Not connected"
 msgstr "切断しています"
 
-#: src/TextClient.cpp:721
+#: src/TextClient.cpp:724
 #, c-format
 msgid ""
 "\n"
@@ -3632,7 +3632,7 @@ msgstr ""
 "\n"
 "ダウンロード数：\t%s"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:727
 #, c-format
 msgid ""
 "\n"
@@ -3641,7 +3641,7 @@ msgstr ""
 "\n"
 "アップロード数：\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:730
 #, c-format
 msgid ""
 "\n"
@@ -3650,7 +3650,7 @@ msgstr ""
 "\n"
 "列に入っているクライアント数：\t%d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:733
 #, c-format
 msgid ""
 "\n"
@@ -3659,34 +3659,34 @@ msgstr ""
 "\n"
 "合計ソース数：\t%d\n"
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:810
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "検索結果数：%i\n"
 
-#: src/TextClient.cpp:820
+#: src/TextClient.cpp:823
 msgid "TODO - show progress of a search"
 msgstr "まだ実現されていない：検索結果の進歩を表示する"
 
-#: src/TextClient.cpp:826
+#: src/TextClient.cpp:829
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "サーバから不明な返事が届きまして、OpCodeは%#xです。"
 
-#: src/TextClient.cpp:839
+#: src/TextClient.cpp:842
 msgid "Show short status information."
 msgstr "短縮に状態情報を表示する"
 
-#: src/TextClient.cpp:840
+#: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr ""
 "コネクション状態、現在のアップロード／ダウンロードスピード等を表示する。\n"
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:845
 msgid "Show full statistics tree."
 msgstr "詳細な統計木を表示する。"
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:846
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3705,11 +3705,11 @@ msgstr ""
 "例： 'statistics 5'は各クライアントの一番上の５つのバージョンしか表示しませ"
 "ん。\n"
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:848
 msgid "Shutdown aMule."
 msgstr "aMuleを終了します。"
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:849
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -3720,23 +3720,23 @@ msgstr ""
 "れば\n"
 "使えないからです。\n"
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:851
 msgid "Reloads the given object."
 msgstr "指示されたオブジェクトを再ロードします。"
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:852
 msgid "Reloads shared files list."
 msgstr "指示された共通ファイル・リストを再ロードします。"
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:853
 msgid "Reloads IP Filter table from file."
 msgstr "指示されたIPフィルター・テーブルをファイルから再ロードします。"
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:855
 msgid "Connect to the network."
 msgstr "ネットワークへ接続します。"
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:856
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3750,35 +3750,35 @@ msgstr ""
 "形で指示出来ます。IPアドレスはIPv4形のドット10進数字、或いは解決出来る\n"
 "DNS名として指示しなければなりません。"
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:857
 msgid "Connect to ED2K only."
 msgstr "ED2Kのみに接続します。"
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:858
 msgid "Connect to Kad only."
 msgstr "Kadのみに接続します。"
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:860
 msgid "Disconnect from the network."
 msgstr "ネットワークから切断します。"
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:861
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "これで現在に接続している全てのネットワークから切断します。\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:862
 msgid "Disconnect from ED2K only."
 msgstr "ED2Kのみから切断します。"
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Kadのみから切断します。"
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:865
 msgid "Adds an ed2k or magnet link to core."
 msgstr "コアにED2K、またはマグネット・リンクを追加します。"
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:866
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3799,51 +3799,51 @@ msgstr ""
 "\n"
 "マグネット・リンクはED2kハッシュとファイル長さを含めなければなりません。\n"
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:868
 msgid "Set a preference value."
 msgstr "個人設定の値を設定してください。"
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:871
 msgid "Set IPFilter preferences."
 msgstr "IPFilterの個人設定を設定してください。"
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:872
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "クライアントとサーバの両方のIPフィルターリングをオンします。"
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "クライアントとサーバの両方のIPフィルターリングをオッフします。"
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:874
 msgid "Enable/Disable IP filtering for clients."
 msgstr "クライアントのフィルターリングを有効／無効します。"
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:875
 msgid "Turn IP filtering on for clients."
 msgstr "クライアントのフィルターリングをオンします。"
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering off for clients."
 msgstr "クライアントのフィルターリングをオッフします。"
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:877
 msgid "Enable/Disable IP filtering for servers."
 msgstr "サーバのフィルターリングを有効／無効します。"
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:878
 msgid "Turn IP filtering on for servers."
 msgstr "サーバのフィルターリングをオンします。"
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering off for servers."
 msgstr "サーバのフィルターリングをオッフします。"
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:880
 msgid "Select IP filtering level."
 msgstr "IPフィルターリング段階を選択してください。"
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:881
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -3851,55 +3851,55 @@ msgstr ""
 "有効なフィルターリング段階は0〜255の間で、\n"
 "デフォルト値は127です。\n"
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:883
 msgid "Set bandwidth limits."
 msgstr "バンド幅の制限を設定します。"
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "このコマンドの引数の値は毎秒のキロバイトです。\n"
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
 msgstr "アップロード・バンド幅の制限を設定します。"
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:887
 msgid "Set download bandwidth limit."
 msgstr "ダウンロード・バンド幅の制限を設定します。"
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:890
 msgid "Get and display a preference value."
 msgstr "個人設定の値を取ってきて、表示します。"
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:893
 msgid "Get IPFilter preferences."
 msgstr "IPFilterの個人設定の値を取ってきます。"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:894
 msgid "Get IPFilter state for both clients and servers."
 msgstr "クライアントとサーバの両方のIPFilter状況を取ってきます。"
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for clients only."
 msgstr "クライアントのみのIPFilter状況を取ってきます。"
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for servers only."
 msgstr "サーバのみのIPFilter状況を取ってきます。"
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:897
 msgid "Get IPFilter level."
 msgstr "IPFilter段階を取ってきます。"
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:899
 msgid "Get bandwidth limits."
 msgstr "バンド幅の制限の値を取ってきます。"
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:901
 msgid "Makes a search."
 msgstr "検索を実行します。"
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:902
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3913,39 +3913,39 @@ msgstr ""
 "    KAD\n"
 "例：'search kad file'はkadで\"file\"を検索します。\n"
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:903
 msgid "Executes a global search."
 msgstr "グローバル検索（GLOBAL）を実行します。"
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:904
 msgid "Executes a local search"
 msgstr "ローカル検索（LOCAL）を実行します"
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:905
 msgid "Executes a kad search"
 msgstr "Kadを検索します"
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:907
 msgid "Shows the results of the last search."
 msgstr "最後の検索の結果を表示します。"
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:908
 msgid "Returns the results of the previous search.\n"
 msgstr "以前の検索の結果を回答します。\n"
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:910
 msgid "Shows the progress of a search."
 msgstr "検索の進歩を表示します。"
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search.\n"
 msgstr "検索の進歩を表示します。\n"
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:913
 msgid "Start downloading a file"
 msgstr "ファイルのダウンロードを開始します"
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:914
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -3955,80 +3955,80 @@ msgstr ""
 "例： 'download 12'は以前の検索結果で12として指定されたファイルのダウンロード"
 "を開始します。\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:921
 msgid "Pause download."
 msgstr "ダウンロードをポーズします。"
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:924
 msgid "Resume download."
 msgstr "ダウンロードを再開します。"
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:927
 msgid "Cancel download."
 msgstr "ダウンロードをキャンセルします。"
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:930
 msgid "Set download priority."
 msgstr "ダウンロードのプライオリティーを設定します。"
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:931
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr ""
 "ダウンロードのプライオリティーを低い（Low）、普通（Normal）、高い（High）、ま"
 "たはオート（Auto）に設定します。\n"
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:932
 msgid "Set priority to low."
 msgstr "プライオリティーを低いに設定します。"
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:933
 msgid "Set priority to normal."
 msgstr "プライオリティーを普通に設定します。"
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:934
 msgid "Set priority to high."
 msgstr "プライオリティーを高いに設定します。"
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:935
 msgid "Set priority to auto."
 msgstr "プライオリティーをオートに設定します。"
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:937
 msgid "Show queues/lists."
 msgstr "列／リストを表示します。"
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "アップロード／ダウンロード列、サーバ・リスト、または共通リストを表示しま"
 "す。\n"
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:939
 msgid "Show upload queue."
 msgstr "アップロード列を表示します。"
 
-#: src/TextClient.cpp:958
+#: src/TextClient.cpp:940
 msgid "Show download queue."
 msgstr "ダウンロード列を表示します。"
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:941
 msgid "Show log."
 msgstr "ログを表示します。"
 
-#: src/TextClient.cpp:960
+#: src/TextClient.cpp:942
 msgid "Show servers list."
 msgstr "サーバ・リストを表示します。"
 
-#: src/TextClient.cpp:963
+#: src/TextClient.cpp:945
 msgid "Reset log."
 msgstr "ログを再初期化します。"
 
-#: src/TextClient.cpp:970
+#: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, now '%s'."
 msgstr "廃止予定のコマンドで、現在は'%s'です。"
 
-#: src/TextClient.cpp:971
+#: src/TextClient.cpp:953
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"

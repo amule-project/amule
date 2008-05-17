@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-16 03:31+0200\n"
+"POT-Creation-Date: 2008-05-17 03:31+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -543,7 +543,7 @@ msgstr ""
 msgid "Request failed with the following error: %s."
 msgstr "다음과 같은 오류로 요청 실패함: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "알 수 없는 오류로 요청이 실패함."
 
@@ -939,12 +939,12 @@ msgid " Kad: "
 msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:708
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
 msgid "ok"
 msgstr "확인"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:706
+#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "방화벽됨"
 
@@ -1373,7 +1373,7 @@ msgstr "지역 서버"
 msgid "Remote Server"
 msgstr "원격 서버"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:193
+#: src/DataToText.cpp:128 src/TextClient.cpp:704 src/muuli_wdr.cpp:193
 #: src/muuli_wdr.cpp:3766 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kad"
@@ -2438,7 +2438,7 @@ msgstr "서버 추가되지 않음: 유효하지 않는 서버 포트가 지정�
 msgid "ED2K Status:"
 msgstr "ED2k 상태:"
 
-#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:704
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "연결됨"
@@ -2499,7 +2499,7 @@ msgstr "평균 사용자:"
 msgid "Average Files:"
 msgstr "평균 파일:"
 
-#: src/ServerWnd.cpp:253 src/TextClient.cpp:715
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "동작되지 않음"
 
@@ -3512,106 +3512,106 @@ msgstr "링크의 알려지지 않은 프로토콜: %s"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "유효하지 않은 ED2k링크! 오류: %s"
 
-#: src/TextClient.cpp:130
+#: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
 msgstr "<str>을 실행하고 종료합니다."
 
-#: src/TextClient.cpp:197
+#: src/TextClient.cpp:200
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "유효하지 않은 IP 형식. xxx.xxx.xxx.xxx:xxxx를 사용하세요.\n"
 
-#: src/TextClient.cpp:305
+#: src/TextClient.cpp:308
 #, fuzzy
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
 msgstr "이 명령은 인수를 필요로합니다. 유효한 인수: 'all' 또는 숫자\n"
 
-#: src/TextClient.cpp:343
+#: src/TextClient.cpp:346
 #, fuzzy
 msgid "Processing by hash: "
 msgstr "파일숫자 %u 처리: %s"
 
-#: src/TextClient.cpp:358
+#: src/TextClient.cpp:361
 #, fuzzy
 msgid "Processing by filename: "
 msgstr "파일숫자 %u 처리: %s"
 
-#: src/TextClient.cpp:381
+#: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 
-#: src/TextClient.cpp:407
+#: src/TextClient.cpp:410
 msgid "Not a valid number\n"
 msgstr "유효한 숫자가 아님\n"
 
-#: src/TextClient.cpp:411
+#: src/TextClient.cpp:414
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "유효한 해시가 아님 (길이는 정확히 32자여야 함)\n"
 
-#: src/TextClient.cpp:627
+#: src/TextClient.cpp:630
 msgid "Operation was successful."
 msgstr "동작이 성공했습니다."
 
-#: src/TextClient.cpp:633
+#: src/TextClient.cpp:636
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "다음과 같은 오류로 요청이 실패: %s"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:652
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "클라이언트에 대한 IP 차단 %s.\n"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "OFF"
 msgstr "끔"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "ON"
 msgstr "켬"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:658
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "서버에 대한 IP 차단 %s.\n"
 
-#: src/TextClient.cpp:660
+#: src/TextClient.cpp:663
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "현재 IP 차단 수준은 %d입니다.\n"
 
-#: src/TextClient.cpp:668
+#: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "대역폭 제한: 올려주기: %u kB/초, 내려받기: %u kB/초\n"
 
-#: src/TextClient.cpp:686 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
+#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
 msgid "ED2K"
 msgstr "ED2k"
 
-#: src/TextClient.cpp:691
+#: src/TextClient.cpp:694
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "%s %s %s에 연결됨"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with LowID"
 msgstr "낮은아이디로"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with HighID"
 msgstr "높은아이디로"
 
-#: src/TextClient.cpp:697
+#: src/TextClient.cpp:700
 msgid "Now connecting"
 msgstr "지금 연결중"
 
-#: src/TextClient.cpp:699 src/TextClient.cpp:712
+#: src/TextClient.cpp:702 src/TextClient.cpp:715
 msgid "Not connected"
 msgstr "연결 안됨"
 
-#: src/TextClient.cpp:721
+#: src/TextClient.cpp:724
 #, c-format
 msgid ""
 "\n"
@@ -3620,7 +3620,7 @@ msgstr ""
 "\n"
 "내려받기:\t%s"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:727
 #, c-format
 msgid ""
 "\n"
@@ -3629,7 +3629,7 @@ msgstr ""
 "\n"
 "올려주기:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:730
 #, c-format
 msgid ""
 "\n"
@@ -3638,7 +3638,7 @@ msgstr ""
 "\n"
 "대기열의 클라이언트:/t %d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:733
 #, c-format
 msgid ""
 "\n"
@@ -3647,33 +3647,33 @@ msgstr ""
 "\n"
 "전체 자료:\t% d\n"
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:810
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "검색된 결과 갯수: %i\n"
 
-#: src/TextClient.cpp:820
+#: src/TextClient.cpp:823
 msgid "TODO - show progress of a search"
 msgstr "TODO - 검색의 진행을 보여줌"
 
-#: src/TextClient.cpp:826
+#: src/TextClient.cpp:829
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "서버로부터 알수없는 반응을 수신했습니다. 실행코드 =  %#x"
 
-#: src/TextClient.cpp:839
+#: src/TextClient.cpp:842
 msgid "Show short status information."
 msgstr "간단한 상태 정보를 보여줍니다."
 
-#: src/TextClient.cpp:840
+#: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "연결 상태를 보여줌, 현재 올려주기/내려받기 속도, 기타.\n"
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:845
 msgid "Show full statistics tree."
 msgstr "전체 통계 구조도를 보여줍니다."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:846
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3689,11 +3689,11 @@ msgstr ""
 "0이나 생략은 '무제한'을 뜻합니다..\n"
 "예: 'statistics 5'는 각 클라이언트 종류의 상위 5가지 버전만 보여줍니다.\n"
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:848
 msgid "Shutdown aMule."
 msgstr "어뮬 종료."
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:849
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -3703,23 +3703,23 @@ msgstr ""
 "동작하는 코어없이는 불안정하기 때문에,\n"
 "문자기반 클라이언트도 종료될것입니다.\n"
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:851
 msgid "Reloads the given object."
 msgstr "주어진 대상을 다시 읽어들입니다."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:852
 msgid "Reloads shared files list."
 msgstr "공유된 파일 목록을 다시 읽어들입니다."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:853
 msgid "Reloads IP Filter table from file."
 msgstr "파일로부터 IP 차단 테이블을 다시 읽어들입니다."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:855
 msgid "Connect to the network."
 msgstr "통신망에 연결합니다."
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:856
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3732,35 +3732,35 @@ msgstr ""
 "IP는 점과 십진수의 IPv4 주소이거나, 해석 할 수 있는 DNS이름 이어야 합니다.\n"
 " "
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:857
 msgid "Connect to ED2K only."
 msgstr "ED2k에만 연결합니다."
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:858
 msgid "Connect to Kad only."
 msgstr "Kad에만 연결합니다."
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:860
 msgid "Disconnect from the network."
 msgstr "통신망으로부터 연결을 끊습니다."
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:861
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "현재 연결되어있는 모든 통신망으로부터 연결을 끊습니다.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:862
 msgid "Disconnect from ED2K only."
 msgstr "ED2k에서만 연결을 끊습니다."
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Kad에서만 연결을 끊습니다."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:865
 msgid "Adds an ed2k or magnet link to core."
 msgstr "ed2k 또는 magnet 링크를 코어에 추가합니다."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:866
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3778,51 +3778,51 @@ msgstr ""
 "\n"
 "magnet 링크는 ed2k 해시와 파일 길이를 포함해야 합니다.\n"
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:868
 msgid "Set a preference value."
 msgstr "설정값을 정합니다."
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:871
 msgid "Set IPFilter preferences."
 msgstr "IP 차단 설정을 합니다."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:872
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "클라이언트와 서버에 IP 차단을 사용합니다."
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "클라이언트와 서버에 IP 차단을 사용하지 않습니다."
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:874
 msgid "Enable/Disable IP filtering for clients."
 msgstr "클라이언트에 IP 차단을 활성/비활성화 합니다."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:875
 msgid "Turn IP filtering on for clients."
 msgstr "클라이언트에 IP 차단을 사용합니다."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering off for clients."
 msgstr "클라이언트에 IP 차단을 사용하지 않습니다."
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:877
 msgid "Enable/Disable IP filtering for servers."
 msgstr "서버에 IP 차단을 활성화/비활성화 합니다."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:878
 msgid "Turn IP filtering on for servers."
 msgstr "서버에 IP 차단을 사용합니다."
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering off for servers."
 msgstr "서버에 IP 차단을 사용하지 않습니다."
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:880
 msgid "Select IP filtering level."
 msgstr "IP 차단 수준을 선택합니다."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:881
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -3830,55 +3830,55 @@ msgstr ""
 "유효한 차단 수준은 0-255범위여야 하고, 기본(초기)값은\n"
 "127입니다.\n"
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:883
 msgid "Set bandwidth limits."
 msgstr "대역폭 제한 설정합니다."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "이 명령에 주어지는 값은 킬로바이트/초 이어야 합니다..\n"
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
 msgstr "올려주기 대역폭 제한 설정합니다."
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:887
 msgid "Set download bandwidth limit."
 msgstr "내려받기 대역폭 제한 설정합니다."
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:890
 msgid "Get and display a preference value."
 msgstr "설정값 가져와 보여줍니다."
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:893
 msgid "Get IPFilter preferences."
 msgstr "IP 차단 설정을 가져옵니다."
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:894
 msgid "Get IPFilter state for both clients and servers."
 msgstr "서버와 클라이언트에서 IP 차단 상태를 가져옵니다."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for clients only."
 msgstr "클라이언트에서만 IP 차단 상태를 가져옵니다."
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for servers only."
 msgstr "서버에서만 IP 차단 상태를 가져옵니다."
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:897
 msgid "Get IPFilter level."
 msgstr "IP 차단 수준을 가져옵니다."
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:899
 msgid "Get bandwidth limits."
 msgstr "대역폭 제한 가져옵니다."
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:901
 msgid "Makes a search."
 msgstr "검색을 합니다."
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:902
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3892,39 +3892,39 @@ msgstr ""
 "    KAD\n"
 "예: 'search kad file'은 \"file\"에대해 kad 검색을 실행합니다.\n"
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:903
 msgid "Executes a global search."
 msgstr "광역 검색을 수행합니다."
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:904
 msgid "Executes a local search"
 msgstr "지역 검색을 수행합니다."
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:905
 msgid "Executes a kad search"
 msgstr "Kad 검색을 수행합니다."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:907
 msgid "Shows the results of the last search."
 msgstr "마지막 검색의 결과를 보여줍니다."
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:908
 msgid "Returns the results of the previous search.\n"
 msgstr "이전 검색의 결과로 돌아갑니다.\n"
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:910
 msgid "Shows the progress of a search."
 msgstr ""
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search.\n"
 msgstr ""
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:913
 msgid "Start downloading a file"
 msgstr "파일의 내려받기를 시작"
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:914
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -3934,76 +3934,76 @@ msgstr ""
 "예: 'download 12' 는 이전 검색에서 12번 번호를 가진 파일의 내려받기를 시작합"
 "니다.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:921
 msgid "Pause download."
 msgstr "내려받기를 정지합니다."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:924
 msgid "Resume download."
 msgstr "내려받기를 재시작합니다."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:927
 msgid "Cancel download."
 msgstr "내려받기를 취소합니다."
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:930
 msgid "Set download priority."
 msgstr "내려받기의 우선순위를 설정합니다."
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:931
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "내려받기의 우선순위를 낮음, 보통, 높음 또는 자동으로 설정합니다.\n"
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:932
 msgid "Set priority to low."
 msgstr "우선순위를 낮음으로 설정합니다."
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:933
 msgid "Set priority to normal."
 msgstr "우선순위를 보통으로 설정합니다."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:934
 msgid "Set priority to high."
 msgstr "우선순위를 높음으로 설정합니다."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:935
 msgid "Set priority to auto."
 msgstr "우선순위를 자동으로 설정합니다."
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:937
 msgid "Show queues/lists."
 msgstr "대기열/목록 보여줍니다."
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr "올려주기/내려받기 대기열, 서버 목록이나 공유된 파일 목록 보여줍니다.\n"
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:939
 msgid "Show upload queue."
 msgstr "올려주기 대기열을 보여줍니다."
 
-#: src/TextClient.cpp:958
+#: src/TextClient.cpp:940
 msgid "Show download queue."
 msgstr "내려받기 대기열을 보여줍니다."
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:941
 msgid "Show log."
 msgstr "로그를 보여줍니다."
 
-#: src/TextClient.cpp:960
+#: src/TextClient.cpp:942
 msgid "Show servers list."
 msgstr "서버 목록 보여줍니다."
 
-#: src/TextClient.cpp:963
+#: src/TextClient.cpp:945
 msgid "Reset log."
 msgstr "로그를 초기화합니다."
 
-#: src/TextClient.cpp:970
+#: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, now '%s'."
 msgstr ""
 
-#: src/TextClient.cpp:971
+#: src/TextClient.cpp:953
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"

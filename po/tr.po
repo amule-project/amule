@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-16 03:31+0200\n"
+"POT-Creation-Date: 2008-05-17 03:31+0200\n"
 "PO-Revision-Date: 2008-05-15 01:21+0300\n"
 "Last-Translator: Atilla ÖNTAŞ <atilla_ontas@hotmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -546,7 +546,7 @@ msgstr ""
 msgid "Request failed with the following error: %s."
 msgstr "İstem şu hatayla başarısız oldu: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "İstem bilinmeyen bir hatayla başarısız oldu."
 
@@ -943,12 +943,12 @@ msgid " Kad: "
 msgstr "Kad:"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:708
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
 msgid "ok"
 msgstr "tamam"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:706
+#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "güvenlik duvarı"
 
@@ -1374,7 +1374,7 @@ msgstr "Sunucu"
 msgid "Remote Server"
 msgstr "Uzak Sunucu"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:193
+#: src/DataToText.cpp:128 src/TextClient.cpp:704 src/muuli_wdr.cpp:193
 #: src/muuli_wdr.cpp:3766 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kademlia"
@@ -2429,7 +2429,7 @@ msgstr "Sunucu eklenmedi: Geçersiz sunucu portu girildi."
 msgid "ED2K Status:"
 msgstr "ED2K Durumu:"
 
-#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:704
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Bağlandı"
@@ -2490,7 +2490,7 @@ msgstr "Kullanıcı Ortalaması:"
 msgid "Average Files:"
 msgstr "Dosya Ortalaması:"
 
-#: src/ServerWnd.cpp:253 src/TextClient.cpp:715
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "Çalışmıyor"
 
@@ -3510,15 +3510,15 @@ msgstr "Bağlantı için bilinmeyen protokol: %s"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Geçersiz ed2k bağlantısı! Hata: %s"
 
-#: src/TextClient.cpp:130
+#: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
 msgstr " <str> çalıştır ve çık."
 
-#: src/TextClient.cpp:197
+#: src/TextClient.cpp:200
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Geçersiz IP biçimi. xxx.xxx.xxx.xxx:xxxx kullanınız.\n"
 
-#: src/TextClient.cpp:305
+#: src/TextClient.cpp:308
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
@@ -3526,90 +3526,90 @@ msgstr ""
 "Bu komut bir argüman gerektiriyor. Geçerli argümanlar: 'all', dosya adı veya "
 "birsayı.\n"
 
-#: src/TextClient.cpp:343
+#: src/TextClient.cpp:346
 msgid "Processing by hash: "
 msgstr "Hash ile işleniyor: "
 
-#: src/TextClient.cpp:358
+#: src/TextClient.cpp:361
 msgid "Processing by filename: "
 msgstr "Dosya adı ile işleniyor: "
 
-#: src/TextClient.cpp:381
+#: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Bu komut bir argüman gerektirir. Geçerli argümanlar: bir dosya adreslemesi.\n"
 
-#: src/TextClient.cpp:407
+#: src/TextClient.cpp:410
 msgid "Not a valid number\n"
 msgstr "Geçerli bir sayı değil\n"
 
-#: src/TextClient.cpp:411
+#: src/TextClient.cpp:414
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Geçerli bir adresleme değil (uzunluğu tam olarak 32 karakter olmalı)\n"
 
-#: src/TextClient.cpp:627
+#: src/TextClient.cpp:630
 msgid "Operation was successful."
 msgstr "İşlem başarılı."
 
-#: src/TextClient.cpp:633
+#: src/TextClient.cpp:636
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "İstek şu hata ile başarısız oldu: %s"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:652
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Kullanıcılar için IP Süzgeci %s.\n"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "OFF"
 msgstr "KAPALI"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "ON"
 msgstr "AÇIK"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:658
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Sunucular için IP süzgeci %s.\n"
 
-#: src/TextClient.cpp:660
+#: src/TextClient.cpp:663
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "Şu anki IP Süzgeç seviyesi %d.\n"
 
-#: src/TextClient.cpp:668
+#: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Bağlantı Sınırları: Gön.: %u kB/s, İND.: %u kB/s.\n"
 
-#: src/TextClient.cpp:686 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
+#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/TextClient.cpp:691
+#: src/TextClient.cpp:694
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Bağlandı: %s %s %s"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with LowID"
 msgstr "DüşükID ile"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with HighID"
 msgstr "YüksekID ile"
 
-#: src/TextClient.cpp:697
+#: src/TextClient.cpp:700
 msgid "Now connecting"
 msgstr "Şimdi bağlanıyor"
 
-#: src/TextClient.cpp:699 src/TextClient.cpp:712
+#: src/TextClient.cpp:702 src/TextClient.cpp:715
 msgid "Not connected"
 msgstr "Bağlı değil"
 
-#: src/TextClient.cpp:721
+#: src/TextClient.cpp:724
 #, c-format
 msgid ""
 "\n"
@@ -3618,7 +3618,7 @@ msgstr ""
 "\n"
 "Aktarım:\t%s"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:727
 #, c-format
 msgid ""
 "\n"
@@ -3627,7 +3627,7 @@ msgstr ""
 "\n"
 "Gönderim:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:730
 #, c-format
 msgid ""
 "\n"
@@ -3636,7 +3636,7 @@ msgstr ""
 "\n"
 "Sıradaki Kullanıcılar:\t%d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:733
 #, c-format
 msgid ""
 "\n"
@@ -3645,33 +3645,33 @@ msgstr ""
 "\n"
 "Toplam Kaynak:\t%d\n"
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:810
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Arama sonuçları sayısı:%i\n"
 
-#: src/TextClient.cpp:820
+#: src/TextClient.cpp:823
 msgid "TODO - show progress of a search"
 msgstr "YAPILACAK - bir aramanın gidişatını göstermek."
 
-#: src/TextClient.cpp:826
+#: src/TextClient.cpp:829
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Sunucudan bilinmeyen bir cevap alındı.: OpCode = %#x."
 
-#: src/TextClient.cpp:839
+#: src/TextClient.cpp:842
 msgid "Show short status information."
 msgstr "Kısa durum bilgisi göster."
 
-#: src/TextClient.cpp:840
+#: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "Bağlantı durumunu, o anki gönderim/aktarım hızını v.b. göster.\n"
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:845
 msgid "Show full statistics tree."
 msgstr "Tüm istatistik ağacını göster."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:846
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3691,11 +3691,11 @@ msgstr ""
 "Örnek: 'istatistik 5 sadece her yazılım türünün en üstteki 5 sürümünü "
 "gösterecektir.\n"
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:848
 msgid "Shutdown aMule."
 msgstr "aMule'yi kapat."
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:849
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -3705,23 +3705,23 @@ msgstr ""
 "Bu, aynı zamanda komut satırı yazılımını da kapatacaktır ki,\n"
 "çalışan bir çekirdek yoktur.\n"
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:851
 msgid "Reloads the given object."
 msgstr "Verilen nesne yeniden yükleniyor."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:852
 msgid "Reloads shared files list."
 msgstr "Paylaşılmış dosya listesini yeniden yükler."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:853
 msgid "Reloads IP Filter table from file."
 msgstr "Dosyadan IP süzgeci tablosunu yeniden yükler."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:855
 msgid "Connect to the network."
 msgstr "Ağa bağlan."
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:856
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3734,35 +3734,35 @@ msgstr ""
 "IP onluk IPv4 adresi biçiminde veya çözümlenebilir\n"
 "bir DNS adı olmalıdır."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:857
 msgid "Connect to ED2K only."
 msgstr "Sadece ED2K'ya bağlan."
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:858
 msgid "Connect to Kad only."
 msgstr "Sadece Kad'a bağlan"
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:860
 msgid "Disconnect from the network."
 msgstr "Ağ bağlantısını kes."
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:861
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Bu, şu anda bağlı olduğunuz tüm ağlarla bağlantıyı kesecektir.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:862
 msgid "Disconnect from ED2K only."
 msgstr "Sadece ED2K'dan bağlantıyı kes."
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Sadece Kad'dan bağlantıyı kes."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:865
 msgid "Adds an ed2k or magnet link to core."
 msgstr "Çekirdeğe bir ed2k veya magnet bağlantısı ekler."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:866
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3783,51 +3783,51 @@ msgstr ""
 "\n"
 "Magnet bağlantı ed2k adreslemesi ve dosya uzunluğunu içermelidir.\n"
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:868
 msgid "Set a preference value."
 msgstr "Bir ayar değeri girin."
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:871
 msgid "Set IPFilter preferences."
 msgstr "IP Süzgeci ayarları girin"
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:872
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "IP süzgecini hem kullanıcılar hem de sunucular için aç."
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "IP süzgecini hem kullanıcılar hem de sunucular için  kapat."
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:874
 msgid "Enable/Disable IP filtering for clients."
 msgstr "IP süzgecini kullanıcılar için Aç/Kapat."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:875
 msgid "Turn IP filtering on for clients."
 msgstr "IP süzgecini kullanıcılar için aç."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering off for clients."
 msgstr "IP süzgecini kullanıcılar için kapat."
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:877
 msgid "Enable/Disable IP filtering for servers."
 msgstr "IP süzgecini sunucular için Aç/Kapa"
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:878
 msgid "Turn IP filtering on for servers."
 msgstr "IP süzgecini sunucular için aç."
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering off for servers."
 msgstr "IP süzgecini sunucular için kapat."
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:880
 msgid "Select IP filtering level."
 msgstr "IP süzme seviyesini seçiniz."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:881
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -3835,55 +3835,55 @@ msgstr ""
 "Geçerli süzme seviyeleri 0-255 aralığındadır.Ön tanımlı\n"
 "değer 127'dir.\n"
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:883
 msgid "Set bandwidth limits."
 msgstr "Bağlantı sınırlarını girin."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "Bu komutlar için girdiler kilobayt/saniye cinsinden olmalıdır.\n"
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
 msgstr "Gönderme sınırını girin."
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:887
 msgid "Set download bandwidth limit."
 msgstr "İndirme sınırını girin."
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:890
 msgid "Get and display a preference value."
 msgstr "Bir ayar değerini al ve göster"
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:893
 msgid "Get IPFilter preferences."
 msgstr "IP Süzgeci ayarlarını al"
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:894
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Hem kullanıcılar hem de sunucular için IP süzgeci durumunu al."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for clients only."
 msgstr "Sadece kullanıcılar için IP süzgeci durumunu al."
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for servers only."
 msgstr "Sadece sunucular için IP süzgeci durumunu al."
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:897
 msgid "Get IPFilter level."
 msgstr "IP Süzgeç seviyesini al."
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:899
 msgid "Get bandwidth limits."
 msgstr "Bağlantı sınırlarını al."
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:901
 msgid "Makes a search."
 msgstr "Arama yapar."
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:902
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3897,39 +3897,39 @@ msgstr ""
 "    KAD\n"
 "Örnek:'kad dosyası ara' dosya için bir kad araması \"gerçekleştirir\".\n"
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:903
 msgid "Executes a global search."
 msgstr "Genel arama yapar."
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:904
 msgid "Executes a local search"
 msgstr "Sunucuda arama yapar."
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:905
 msgid "Executes a kad search"
 msgstr "Kad. araması yapar."
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:907
 msgid "Shows the results of the last search."
 msgstr "Son arama sonuçlarını gösterir."
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:908
 msgid "Returns the results of the previous search.\n"
 msgstr "Önceki aramanın sonuçlarına döner.\n"
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:910
 msgid "Shows the progress of a search."
 msgstr "Bir aramanın işleyişini göster"
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search.\n"
 msgstr "Bir aramanın işleyişini gösterir.\n"
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:913
 msgid "Start downloading a file"
 msgstr "Dosyayı indirmeye başla."
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:914
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -3939,78 +3939,78 @@ msgstr ""
 "Örnek: '12 İndir' bir önceki aramadaki 12 numaralı dosyayı indirmeye "
 "başlayacaktır.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:921
 msgid "Pause download."
 msgstr "Aktarımı duraklat"
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:924
 msgid "Resume download."
 msgstr "Aktarıma devam et"
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:927
 msgid "Cancel download."
 msgstr "Aktarım İptal."
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:930
 msgid "Set download priority."
 msgstr "İndirme önceliği ayarla"
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:931
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Bir aktarımın önceliğini Düşük, Normal, Yüksek veya OTO. ayarla.\n"
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:932
 msgid "Set priority to low."
 msgstr "Önceliği Düşük ayarla."
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:933
 msgid "Set priority to normal."
 msgstr "Önceliği Normal ayarla."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:934
 msgid "Set priority to high."
 msgstr "Önceliği Yüksek ayarla."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:935
 msgid "Set priority to auto."
 msgstr "Önceliği Otomatik ayarla."
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:937
 msgid "Show queues/lists."
 msgstr "Sıra/liste göster."
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Gönderme/indirme sırasını,sunucu listesini veya paylaşılmış dosya listesini "
 "gösterir.\n"
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:939
 msgid "Show upload queue."
 msgstr "Gönderim sırasını göster."
 
-#: src/TextClient.cpp:958
+#: src/TextClient.cpp:940
 msgid "Show download queue."
 msgstr "İndirme sırasını göster."
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:941
 msgid "Show log."
 msgstr "Kayıtları göster."
 
-#: src/TextClient.cpp:960
+#: src/TextClient.cpp:942
 msgid "Show servers list."
 msgstr "Sunucu listesini göster."
 
-#: src/TextClient.cpp:963
+#: src/TextClient.cpp:945
 msgid "Reset log."
 msgstr "Kaydı (Log) Sıfırla."
 
-#: src/TextClient.cpp:970
+#: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, now '%s'."
 msgstr "Onaylanmayan komut, şimdi '%s'."
 
-#: src/TextClient.cpp:971
+#: src/TextClient.cpp:953
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"

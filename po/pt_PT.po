@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-16 03:31+0200\n"
+"POT-Creation-Date: 2008-05-17 03:31+0200\n"
 "PO-Revision-Date: 2008-04-15 02:00+0100\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -538,7 +538,7 @@ msgstr ""
 msgid "Request failed with the following error: %s."
 msgstr "O pedido falhou com o seguinte erro: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:623
+#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "O pedido falhou com um erro desconhecido."
 
@@ -936,12 +936,12 @@ msgid " Kad: "
 msgstr " Kad: "
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1047
-#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:708
+#: src/utils/wxCas/src/wxcasframe.cpp:1069 src/TextClient.cpp:711
 msgid "ok"
 msgstr "ok"
 
 #: src/utils/wxCas/src/wxcasframe.cpp:1049
-#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:706
+#: src/utils/wxCas/src/wxcasframe.cpp:1071 src/TextClient.cpp:709
 msgid "firewalled"
 msgstr "protegido"
 
@@ -1368,7 +1368,7 @@ msgstr "Servidor Local"
 msgid "Remote Server"
 msgstr "Servidor Remoto"
 
-#: src/DataToText.cpp:128 src/TextClient.cpp:701 src/muuli_wdr.cpp:193
+#: src/DataToText.cpp:128 src/TextClient.cpp:704 src/muuli_wdr.cpp:193
 #: src/muuli_wdr.cpp:3766 src/SearchDlg.cpp:109
 msgid "Kad"
 msgstr "Kad"
@@ -2428,7 +2428,7 @@ msgstr "Servidor não adicionado: Porto de servidor especificado inválido."
 msgid "ED2K Status:"
 msgstr "Estado eD2k"
 
-#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:704
+#: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
 msgid "Connected"
 msgstr "Conectado"
@@ -2489,7 +2489,7 @@ msgstr "Média de Utilizadores"
 msgid "Average Files:"
 msgstr "Média de Ficheiros"
 
-#: src/ServerWnd.cpp:253 src/TextClient.cpp:715
+#: src/ServerWnd.cpp:253 src/TextClient.cpp:718
 msgid "Not running"
 msgstr "Parado"
 
@@ -3515,15 +3515,15 @@ msgstr "Protocolo do link desconhecido: %s"
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Ligação ed2k inválida!: Erro: %s"
 
-#: src/TextClient.cpp:130
+#: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
 msgstr "Executar <exp> e sair."
 
-#: src/TextClient.cpp:197
+#: src/TextClient.cpp:200
 msgid "Invalid IP format. Use xxx.xxx.xxx.xxx:xxxx\n"
 msgstr "Formato de IP inválido. Use xxx.xxx.xxx.xxx:xxxx\n"
 
-#: src/TextClient.cpp:305
+#: src/TextClient.cpp:308
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
@@ -3531,91 +3531,91 @@ msgstr ""
 "Este comando requere um argumento. Argumentos válidos: 'all', nome de "
 "ficheiro, ou um número.\n"
 
-#: src/TextClient.cpp:343
+#: src/TextClient.cpp:346
 msgid "Processing by hash: "
 msgstr "A processar porchave: "
 
-#: src/TextClient.cpp:358
+#: src/TextClient.cpp:361
 msgid "Processing by filename: "
 msgstr "A processar por ficheiro: "
 
-#: src/TextClient.cpp:381
+#: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
 msgstr ""
 "Este comando necessita de um argumento. Argumentos válidos: uma chave de "
 "ficheiro.\n"
 
-#: src/TextClient.cpp:407
+#: src/TextClient.cpp:410
 msgid "Not a valid number\n"
 msgstr "Número inválido\n"
 
-#: src/TextClient.cpp:411
+#: src/TextClient.cpp:414
 msgid "Not a valid hash (length should be exactly 32 chars)\n"
 msgstr "Não é uma chave válida (o comprimento deveria ser de 32 caracteres)\n"
 
-#: src/TextClient.cpp:627
+#: src/TextClient.cpp:630
 msgid "Operation was successful."
 msgstr "Operação com sucesso."
 
-#: src/TextClient.cpp:633
+#: src/TextClient.cpp:636
 #, c-format
 msgid "Request failed with the following error: %s"
 msgstr "Falha no pedido com o seguinte erro: %s"
 
-#: src/TextClient.cpp:649
+#: src/TextClient.cpp:652
 #, c-format
 msgid "IP filtering for clients is %s.\n"
 msgstr "Filtro de IP para clientes esta %s.\n"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "OFF"
 msgstr "desactivado"
 
-#: src/TextClient.cpp:650 src/TextClient.cpp:656
+#: src/TextClient.cpp:653 src/TextClient.cpp:659
 msgid "ON"
 msgstr "activado"
 
-#: src/TextClient.cpp:655
+#: src/TextClient.cpp:658
 #, c-format
 msgid "IP filtering for servers is %s.\n"
 msgstr "Filtro para servidores esta %s.\n"
 
-#: src/TextClient.cpp:660
+#: src/TextClient.cpp:663
 #, c-format
 msgid "Current IPFilter Level is %d.\n"
 msgstr "O nível corrente do filtro de IPs é %d.\n"
 
-#: src/TextClient.cpp:668
+#: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
 msgstr "Limites de largura de banda: Saída: %u kB/s, Entrada: %u kB/s.\n"
 
-#: src/TextClient.cpp:686 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
+#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1914 src/muuli_wdr.cpp:3761
 msgid "ED2K"
 msgstr "ED2K"
 
-#: src/TextClient.cpp:691
+#: src/TextClient.cpp:694
 #, c-format
 msgid "Connected to %s %s %s"
 msgstr "Conectado a %s %s %s"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with LowID"
 msgstr "com baixa identidade"
 
-#: src/TextClient.cpp:694 src/amule.cpp:2066
+#: src/TextClient.cpp:697 src/amule.cpp:2066
 msgid "with HighID"
 msgstr "com alta identidade'"
 
-#: src/TextClient.cpp:697
+#: src/TextClient.cpp:700
 msgid "Now connecting"
 msgstr "A conectar"
 
-#: src/TextClient.cpp:699 src/TextClient.cpp:712
+#: src/TextClient.cpp:702 src/TextClient.cpp:715
 msgid "Not connected"
 msgstr "Não conectado"
 
-#: src/TextClient.cpp:721
+#: src/TextClient.cpp:724
 #, c-format
 msgid ""
 "\n"
@@ -3624,7 +3624,7 @@ msgstr ""
 "\n"
 "Entrada:\t%s"
 
-#: src/TextClient.cpp:724
+#: src/TextClient.cpp:727
 #, c-format
 msgid ""
 "\n"
@@ -3633,7 +3633,7 @@ msgstr ""
 "\n"
 "Saída:\t%s"
 
-#: src/TextClient.cpp:727
+#: src/TextClient.cpp:730
 #, c-format
 msgid ""
 "\n"
@@ -3642,7 +3642,7 @@ msgstr ""
 "\n"
 "Clientes na fila de espera:\t%d\n"
 
-#: src/TextClient.cpp:730
+#: src/TextClient.cpp:733
 #, c-format
 msgid ""
 "\n"
@@ -3651,33 +3651,33 @@ msgstr ""
 "\n"
 "Total de fontes:\t%d\n"
 
-#: src/TextClient.cpp:807
+#: src/TextClient.cpp:810
 #, c-format
 msgid "Number of search results: %i\n"
 msgstr "Numero de resultados: %i\n"
 
-#: src/TextClient.cpp:820
+#: src/TextClient.cpp:823
 msgid "TODO - show progress of a search"
 msgstr "A fazer - mostrar o progresso duma busca"
 
-#: src/TextClient.cpp:826
+#: src/TextClient.cpp:829
 #, c-format
 msgid "Received an unknown reply from the server, OpCode = %#x."
 msgstr "Recebida resposta desconhecida do servidor, instrução %#x."
 
-#: src/TextClient.cpp:839
+#: src/TextClient.cpp:842
 msgid "Show short status information."
 msgstr "Exibir informação curta de estado."
 
-#: src/TextClient.cpp:840
+#: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
 msgstr "Exibir estado da conexão, velocidade de transferência actual, etc.\n"
 
-#: src/TextClient.cpp:842
+#: src/TextClient.cpp:845
 msgid "Show full statistics tree."
 msgstr "Exibir a árvore de estatísticas completa."
 
-#: src/TextClient.cpp:843
+#: src/TextClient.cpp:846
 msgid ""
 "Optionally, a number in the range 0-255 can be passed as an argument to "
 "this\n"
@@ -3697,11 +3697,11 @@ msgstr ""
 "Exemplo: 'statistics 5' exibirá apenas as 5 versões de topo para cada tipo "
 "de cliente.\n"
 
-#: src/TextClient.cpp:849
+#: src/TextClient.cpp:848
 msgid "Shutdown aMule."
 msgstr "Terminar o aMule."
 
-#: src/TextClient.cpp:850
+#: src/TextClient.cpp:849
 msgid ""
 "Shutdown the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
@@ -3711,23 +3711,23 @@ msgstr ""
 "O cliente em texto também será desligado, uma vez que é inútil sem um\n"
 "núcleo em execução.\n"
 
-#: src/TextClient.cpp:854
+#: src/TextClient.cpp:851
 msgid "Reloads the given object."
 msgstr "Recarrega o objecto dado."
 
-#: src/TextClient.cpp:855
+#: src/TextClient.cpp:852
 msgid "Reloads shared files list."
 msgstr "Recarrega a lista de ficheiros partilhados."
 
-#: src/TextClient.cpp:856
+#: src/TextClient.cpp:853
 msgid "Reloads IP Filter table from file."
 msgstr "Recarrega a tabela de filtros de IP a partir do ficheiro."
 
-#: src/TextClient.cpp:858
+#: src/TextClient.cpp:855
 msgid "Connect to the network."
 msgstr "Conectar à rede."
 
-#: src/TextClient.cpp:859
+#: src/TextClient.cpp:856
 msgid ""
 "This will connect to all networks that are enabled in Preferences.\n"
 "You may also optionally specify a server address in IP:Port form, to connect "
@@ -3741,35 +3741,35 @@ msgstr ""
 "conectar apenas a esse servidor. O endereço IP deve ser na forma IPv4 ou um\n"
 "nome resolúvel por DNS."
 
-#: src/TextClient.cpp:863
+#: src/TextClient.cpp:857
 msgid "Connect to ED2K only."
 msgstr "Conectar apenas a ED2K."
 
-#: src/TextClient.cpp:864
+#: src/TextClient.cpp:858
 msgid "Connect to Kad only."
 msgstr "Conectar apenas a Kad"
 
-#: src/TextClient.cpp:866
+#: src/TextClient.cpp:860
 msgid "Disconnect from the network."
 msgstr "Desconectar da rede."
 
-#: src/TextClient.cpp:867
+#: src/TextClient.cpp:861
 msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Isto desconectará de todas as redes actualmente ligadas.\n"
 
-#: src/TextClient.cpp:868
+#: src/TextClient.cpp:862
 msgid "Disconnect from ED2K only."
 msgstr "Desconectar apenas de ED2K."
 
-#: src/TextClient.cpp:869
+#: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Desconectar apenas de Kad."
 
-#: src/TextClient.cpp:871
+#: src/TextClient.cpp:865
 msgid "Adds an ed2k or magnet link to core."
 msgstr "Adiciona um link ed2k ou ímã para o nucleo."
 
-#: src/TextClient.cpp:872
+#: src/TextClient.cpp:866
 msgid ""
 "The ed2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
@@ -3789,51 +3789,51 @@ msgstr ""
 "serão adicionados a lista dos servidores \n"
 "O ímã tem de conter a chave ed2k e o tamanho do ficheiro.\n"
 
-#: src/TextClient.cpp:880
+#: src/TextClient.cpp:868
 msgid "Set a preference value."
 msgstr "Definir um valor de preferência."
 
-#: src/TextClient.cpp:883
+#: src/TextClient.cpp:871
 msgid "Set IPFilter preferences."
 msgstr "Definir preferências de filtros de IP."
 
-#: src/TextClient.cpp:884
+#: src/TextClient.cpp:872
 msgid "Turn IP filtering on for both clients and servers."
 msgstr "Activar o filtro do IP para servidores e clientes."
 
-#: src/TextClient.cpp:885
+#: src/TextClient.cpp:873
 msgid "Turn IP filtering off for both clients and servers."
 msgstr "Desactivar o filtro de IPs para clientes e servidores."
 
-#: src/TextClient.cpp:886
+#: src/TextClient.cpp:874
 msgid "Enable/Disable IP filtering for clients."
 msgstr "Activar/Desactivar filtro de IPs para clientes."
 
-#: src/TextClient.cpp:887
+#: src/TextClient.cpp:875
 msgid "Turn IP filtering on for clients."
 msgstr "Activar filtro de IPs para clientes."
 
-#: src/TextClient.cpp:888
+#: src/TextClient.cpp:876
 msgid "Turn IP filtering off for clients."
 msgstr "Desactivar filtro de IPs para clientes."
 
-#: src/TextClient.cpp:889
+#: src/TextClient.cpp:877
 msgid "Enable/Disable IP filtering for servers."
 msgstr "Activar/Desactivar filtor de IPs para servidores."
 
-#: src/TextClient.cpp:890
+#: src/TextClient.cpp:878
 msgid "Turn IP filtering on for servers."
 msgstr "Activar filtro de IPs para servidores."
 
-#: src/TextClient.cpp:891
+#: src/TextClient.cpp:879
 msgid "Turn IP filtering off for servers."
 msgstr "Desactivar filtro de IPs para servidores."
 
-#: src/TextClient.cpp:892
+#: src/TextClient.cpp:880
 msgid "Select IP filtering level."
 msgstr "Seleccionar nível de filtragem de IP."
 
-#: src/TextClient.cpp:893
+#: src/TextClient.cpp:881
 msgid ""
 "Valid filtering levels are in the range 0-255, and it's default (initial)\n"
 "value is 127.\n"
@@ -3841,55 +3841,55 @@ msgstr ""
 "Níveis de filtragem válidos pertencem ao intervalo 0-255 e o valor padrão\n"
 "(inicial) é 127.\n"
 
-#: src/TextClient.cpp:896
+#: src/TextClient.cpp:883
 msgid "Set bandwidth limits."
 msgstr "Definir limites de largura de banda."
 
-#: src/TextClient.cpp:897
+#: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
 msgstr "O valor dado aos comandos deve ser em kilobytes/s.\n"
 
-#: src/TextClient.cpp:898
+#: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
 msgstr "Definir limite de largura de banda de saída."
 
-#: src/TextClient.cpp:900
+#: src/TextClient.cpp:887
 msgid "Set download bandwidth limit."
 msgstr "Definir limite de largura de banda de entrada."
 
-#: src/TextClient.cpp:903
+#: src/TextClient.cpp:890
 msgid "Get and display a preference value."
 msgstr "Obter e exibir um valor de preferência."
 
-#: src/TextClient.cpp:906
+#: src/TextClient.cpp:893
 msgid "Get IPFilter preferences."
 msgstr "Obter preferências de filtragem de IP."
 
-#: src/TextClient.cpp:907
+#: src/TextClient.cpp:894
 msgid "Get IPFilter state for both clients and servers."
 msgstr "Obter estado do filtro de IPs para clientes e servidores."
 
-#: src/TextClient.cpp:908
+#: src/TextClient.cpp:895
 msgid "Get IPFilter state for clients only."
 msgstr "Obter estado do filtro de IPs para clientes."
 
-#: src/TextClient.cpp:909
+#: src/TextClient.cpp:896
 msgid "Get IPFilter state for servers only."
 msgstr "Obter estado do filtro de IPs para servidores."
 
-#: src/TextClient.cpp:910
+#: src/TextClient.cpp:897
 msgid "Get IPFilter level."
 msgstr "Obter nível de filtragem de IP."
 
-#: src/TextClient.cpp:912
+#: src/TextClient.cpp:899
 msgid "Get bandwidth limits."
 msgstr "Obter limites de largura de banda."
 
-#: src/TextClient.cpp:914
+#: src/TextClient.cpp:901
 msgid "Makes a search."
 msgstr "Faz um busca."
 
-#: src/TextClient.cpp:915
+#: src/TextClient.cpp:902
 msgid ""
 "A search type has to be specified by giving the type:\n"
 "    GLOBAL\n"
@@ -3903,39 +3903,39 @@ msgstr ""
 "    KAD\n"
 "Exemplo:'search kad file' fara uma busca para \"file\" \n"
 
-#: src/TextClient.cpp:920
+#: src/TextClient.cpp:903
 msgid "Executes a global search."
 msgstr "Faz uma busca global."
 
-#: src/TextClient.cpp:921
+#: src/TextClient.cpp:904
 msgid "Executes a local search"
 msgstr "Faz uma busca local"
 
-#: src/TextClient.cpp:922
+#: src/TextClient.cpp:905
 msgid "Executes a kad search"
 msgstr "Faz uma busca no Kad"
 
-#: src/TextClient.cpp:924
+#: src/TextClient.cpp:907
 msgid "Shows the results of the last search."
 msgstr "Mostra os resultados da ultima busca."
 
-#: src/TextClient.cpp:925
+#: src/TextClient.cpp:908
 msgid "Returns the results of the previous search.\n"
 msgstr "Mostra os resultados da busca anterior.\n"
 
-#: src/TextClient.cpp:927
+#: src/TextClient.cpp:910
 msgid "Shows the progress of a search."
 msgstr "Apresenta o progresso da procura."
 
-#: src/TextClient.cpp:928
+#: src/TextClient.cpp:911
 msgid "Shows the progress of a search.\n"
 msgstr "Apresenta o progresso de uma procura.\n"
 
-#: src/TextClient.cpp:930
+#: src/TextClient.cpp:913
 msgid "Start downloading a file"
 msgstr "Inicio do descarregamento dum ficheiro"
 
-#: src/TextClient.cpp:931
+#: src/TextClient.cpp:914
 msgid ""
 "The number of a file from the last search has to be given.\n"
 "Example: 'download 12' will start to download the file with the number 12 of "
@@ -3945,78 +3945,78 @@ msgstr ""
 "Exemplo: 'download 12' iniciará o download do ficheiro com o número 12 da "
 "última pesquisa.\n"
 
-#: src/TextClient.cpp:939
+#: src/TextClient.cpp:921
 msgid "Pause download."
 msgstr "Pausar transferência."
 
-#: src/TextClient.cpp:942
+#: src/TextClient.cpp:924
 msgid "Resume download."
 msgstr "Continuar transferência."
 
-#: src/TextClient.cpp:945
+#: src/TextClient.cpp:927
 msgid "Cancel download."
 msgstr "Cancelar transferência."
 
-#: src/TextClient.cpp:948
+#: src/TextClient.cpp:930
 msgid "Set download priority."
 msgstr "Estabelecer a prioridade."
 
-#: src/TextClient.cpp:949
+#: src/TextClient.cpp:931
 msgid "Set priority of a download to Low, Normal, High or Auto.\n"
 msgstr "Estabelecer a prioridade para Baixo, Normal, Alto ou Auto.\n"
 
-#: src/TextClient.cpp:950
+#: src/TextClient.cpp:932
 msgid "Set priority to low."
 msgstr "Estabelecer a prioridade para Baixo."
 
-#: src/TextClient.cpp:951
+#: src/TextClient.cpp:933
 msgid "Set priority to normal."
 msgstr "Estabelecer a prioridade para normal."
 
-#: src/TextClient.cpp:952
+#: src/TextClient.cpp:934
 msgid "Set priority to high."
 msgstr "Estabelecer a prioridade para alto."
 
-#: src/TextClient.cpp:953
+#: src/TextClient.cpp:935
 msgid "Set priority to auto."
 msgstr "Estabelecer a prioridade para auto."
 
-#: src/TextClient.cpp:955
+#: src/TextClient.cpp:937
 msgid "Show queues/lists."
 msgstr "Mostrar filas/listas."
 
-#: src/TextClient.cpp:956
+#: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
 msgstr ""
 "Exibe as filas de entrada/saída, listas de servidores ou ficheiros "
 "partilhados.\n"
 
-#: src/TextClient.cpp:957
+#: src/TextClient.cpp:939
 msgid "Show upload queue."
 msgstr "Mostrar fila de saída."
 
-#: src/TextClient.cpp:958
+#: src/TextClient.cpp:940
 msgid "Show download queue."
 msgstr "Mostrar fila de entrada."
 
-#: src/TextClient.cpp:959
+#: src/TextClient.cpp:941
 msgid "Show log."
 msgstr "Mostrar o registro."
 
-#: src/TextClient.cpp:960
+#: src/TextClient.cpp:942
 msgid "Show servers list."
 msgstr "Mostrar lista de servidores."
 
-#: src/TextClient.cpp:963
+#: src/TextClient.cpp:945
 msgid "Reset log."
 msgstr "Apagar o registro."
 
-#: src/TextClient.cpp:970
+#: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, now '%s'."
 msgstr "Comando depreciado, agora '%s'."
 
-#: src/TextClient.cpp:971
+#: src/TextClient.cpp:953
 #, c-format
 msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
