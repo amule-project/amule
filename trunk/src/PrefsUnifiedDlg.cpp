@@ -322,6 +322,9 @@ wxDialog(parent, -1, _("Preferences"),
 	#ifdef __WXMSW__
 		FindWindow(IDC_VERTTOOLBAR)->Enable(false);
 	#endif
+
+	// Position the dialog.
+	Center();
 }
 
 
