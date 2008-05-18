@@ -417,7 +417,12 @@ CHECK_EXECINFO
 CHECK_CXXABI
 
 # Ok, we have all needed libs, now checking for other stuff
-CHECK_AUTOPOINT
+AM_GNU_GETTEXT([no-libtool], [need-ngettext])
+AS_IF([test $USE_INCLUDED_LIBINTL = yes], [INCINTL=-I\${top_builddir}/intl])
+AC_SUBST(INCINTL)
+
+AS_IF([test x$USE_NLS = xyes], [CHECK_AUTOPOINT([], [USE_NLS=no])])
+AS_IF([test x$USE_NLS = xno -a x${enable_nls-yes} = xyes], [AC_MSG_WARN([You need to install GNU gettext/gettext-tools to compile aMule with i18n support.])])
 
 if test "$LEX" = "flex"; then
 	CHECK_FLEX_EXTENDED
@@ -454,7 +459,6 @@ AC_CHECK_TYPES([ptrdiff_t])
 
 # Checks for library functions.
 AC_FUNC_CLOSEDIR_VOID
-AM_GNU_GETTEXT
 AC_FUNC_GETMNTENT
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_FORK
@@ -782,6 +786,11 @@ if test x${WEB:-no} != xno; then
 AS_IF([test $regex_found = no], [regex_found="Not detected"],
 [AS_IF([test x$REGEX_LIB = x], [regex_found=system], [regex_found="standalone (in $REGEX_LIB)"])])
 echo "                                       regex                 $regex_found"
+fi
+if test ${enable_nls-yes} = yes; then
+AS_IF([test x$USE_NLS = xno], [libintl_found="Not detected"],
+[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], [libintl_found="included"], [libintl_found="system"])])
+echo "                                       libintl               $libintl_found"
 fi
 if test x$LIBPNG_VERSION != xnot_needed; then
 echo "                                       libpng                ${LIBPNG_VERSION:-Not detected}"

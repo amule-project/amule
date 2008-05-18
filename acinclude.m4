@@ -112,8 +112,8 @@ AC_SUBST(BFD_LIB)
 
 
 dnl ----------------------------------------------------
-dnl CHECK_AUTOPOINT
-dnl check if autopoint is installed and fail if not
+dnl CHECK_AUTOPOINT([ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl check if autopoint is installed
 dnl ----------------------------------------------------
 AC_DEFUN([CHECK_AUTOPOINT],
 [
@@ -127,13 +127,9 @@ else
 	result="no"
 fi
 
-HAVE_GETTEXT=$result
-
 AC_MSG_RESULT($result ($autopoint_version))
-if test x$result = xno; then
-	AC_MSG_NOTICE([You need to install GNU gettext/gettext-tools to compile aMule with i18n support])
-fi
-AC_SUBST(HAVE_GETTEXT)
+
+AS_IF([test $result = yes], [$1], [$2])
 ])
 
 
