@@ -890,8 +890,7 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, 
-        _("For a film you can say its length, its story, language ...\n"
-          "and if it's a fake, you can tell that to other users of aMule."),
+        _("For a film you can say its length, its story, language ...\nand if it's a fake, you can tell that to other users of aMule."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -988,7 +987,7 @@ wxSizer *downloadDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     wxStaticText *item2 = new wxStaticText( parent, -1, _("Downloading, please wait ..."), wxDefaultPosition, wxDefaultSize, 0 );
     item0->Add( item2, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxGauge *item3 = new wxGauge( parent, ID_HTTPDOWNLOADPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), wxGA_SMOOTH|wxGA_PROGRESSBAR );
+    wxGauge *item3 = new wxGauge( parent, ID_HTTPDOWNLOADPROGRESS, 100, wxDefaultPosition, wxSize(-1,10), wxGA_SMOOTH );
     item0->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     wxStaticText *item4 = new wxStaticText( parent, IDC_DOWNLOADSIZE, _("Unknown size"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
@@ -1815,8 +1814,7 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item19->Add( item26, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item29 = new wxStaticText( parent, -1, 
-        _("Note: These values are\n"
-          " only used for statistics."),
+        _("Note: These values are\n only used for statistics."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -2342,12 +2340,7 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item4->Add( item5, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, 
-        _("Do not change these setting unless you know\n"
-          "what you are doing, otherwise you can easily\n"
-          "make things worse for yourself.\n"
-          "\n"
-          "aMule will run fine without adjusting any of\n"
-          "these settings."),
+        _("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item6->SetForegroundColour( *wxRED );
     item4->Add( item6, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
@@ -2617,8 +2610,7 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     item32->AddGrowableCol( 1 );
 
     wxStaticText *item33 = new wxStaticText( parent, -1, 
-        _("IP of the listening interface\n"
-          "(empty for any)"),
+        _("IP of the listening interface\n(empty for any)"),
         wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item32->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -3132,8 +3124,7 @@ item9->SetName(wxT("kadScope"));
     item20->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item37 = new wxButton( parent, ID_KNOWNNODECONNECT, 
-        _("Bootstrap from \n"
-          "known clients"),
+        _("Bootstrap from \nknown clients"),
         wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
