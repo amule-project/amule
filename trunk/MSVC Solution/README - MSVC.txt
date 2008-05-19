@@ -28,6 +28,11 @@ I hope this is simple enough to get you started.
 
 If wxWidgets fails to compile, please read http://wiki.wxwidgets.org/Microsoft_Visual_CPP_Guide
 
+There is a (sometimes) common problem with the cryptopp and zlib projects in the release build, if some projects fail to link
+and give you a warning about redefined symbols, go to the properties on the cryptopp project, configuration "release" and change
+the "Configuration Properties"->"C/C++"->"Code generation"->"Runtime library" from "Mutithreaded (/MT)" to "Multithreaded DLL (/MD)".
+Do the same with zlib.
+
 If aMule fails to compile, here are some guidelines/patches to the most common problems:
 
 [*] If Scanner.cpp fails to compile, apply this change around line 1545:
