@@ -1710,7 +1710,7 @@ bool CPartFile::CanAddSource(uint32 userid, uint16 port, uint32 serverip, uint16
 	return true;
 }
 
-void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned /*origin*/, bool bWithObfuscationAndHash)
+void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport, unsigned origin, bool bWithObfuscationAndHash)
 {
 	uint8 count = sources.ReadUInt8();
 	uint8 debug_lowiddropped = 0;
@@ -1762,7 +1762,8 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 		if(thePrefs::GetMaxSourcePerFile() > GetSourceCount()) {
 			++debug_possiblesources;
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
-			
+
+			newsource->SetSourceFrom((ESourceFrom)origin);
 			newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
 			newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
 			newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
