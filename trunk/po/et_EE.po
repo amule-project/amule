@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-19 03:30+0200\n"
-"PO-Revision-Date: 2008-05-09 19:17+0300\n"
+"POT-Creation-Date: 2008-05-21 10:34+0300\n"
+"PO-Revision-Date: 2008-05-16 10:19+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -533,11 +533,11 @@ msgstr "VIGA: Ei suuda kuulata TCP porti."
 
 #: src/webserver/src/WebServer.cpp:341
 msgid "web client connection accepted\n"
-msgstr ""
+msgstr "web kliendi ühenus lubatud\n"
 
 #: src/webserver/src/WebServer.cpp:344
 msgid "Error: can not accept web client connection\n"
-msgstr ""
+msgstr "VIGA: ei luba web kliendil ühenduda\n"
 
 #: src/webserver/src/WebServer.cpp:414
 #, c-format
@@ -7100,9 +7100,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
-#~ msgid "Can't create web socket thread\n"
-#~ msgstr "Ei suuda luua web socketi lõime\n"
-
-#~ msgid "Web Server: Started\n"
-#~ msgstr "WEB server: Starditud\n"
