@@ -392,7 +392,7 @@ public:
 		m_server_reply = reply;
 	}
 	wxEvent *Clone(void) const		{ return new wxECSocketEvent(*this); }
-	long GetResult() const			{ return m_value; }
+	bool GetResult() const			{ return m_value; }
 	const wxString& GetServerReply() const	{ return m_server_reply; }
 private:
 	bool m_value;
