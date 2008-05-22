@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_CH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-19 03:30+0200\n"
+"POT-Creation-Date: 2008-05-22 03:31+0200\n"
 "PO-Revision-Date: 2008-05-18 01:59+0100\n"
 "Last-Translator: Luca Pagliero <luca@lucapagliero.it>\n"
 "Language-Team: Italian_CH\n"
@@ -62,34 +62,34 @@ msgstr "Fatto! Connessione stabilita con aMule "
 msgid "Succeeded! Connection established."
 msgstr "Fatto! Connessione stabilita"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3841
 msgid "Hashing"
 msgstr "Hashing in corso"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3845
 msgid "Completing"
 msgstr "In completamento"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3848
 msgid "Complete"
 msgstr "Completo"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3851
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:748
 msgid "Paused"
 msgstr "In pausa"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:747
 msgid "Erroneous"
 msgstr "Errato"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3861
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:746
 msgid "Downloading"
 msgstr "Download in corso"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3863
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:745
 msgid "Waiting"
 msgstr "In attesa"
@@ -149,7 +149,7 @@ msgstr "Impossibile ricevere i file condivisi dall'utente '%s'"
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1414
 #: src/DownloadListCtrl.cpp:1427 src/DownloadListCtrl.cpp:1438
-#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
+#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
@@ -2922,7 +2922,7 @@ msgid "The specified userhash is not valid!"
 msgstr "L'hash utente specificato non e' valido!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/PartFile.cpp:3906 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3907 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Fonti"
 
@@ -3010,7 +3010,7 @@ msgstr "Velocita'"
 msgid "Progress"
 msgstr "Avanzamento"
 
-#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3908
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3909
 #: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Stato"
@@ -3299,31 +3299,31 @@ msgstr "Trovata parte completata (%i) in %s"
 msgid "Finished rehashing %s"
 msgstr "Nuovo hashing completato %s"
 
-#: src/PartFile.cpp:2237
+#: src/PartFile.cpp:2238
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr ""
 "Si e' verificato un errore inaspettato nel completamento del file %s. File "
 "in pausa"
 
-#: src/PartFile.cpp:2263
+#: src/PartFile.cpp:2264
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Download completato: %s"
 
-#: src/PartFile.cpp:2320
+#: src/PartFile.cpp:2321
 #, c-format
 msgid "Deleting file: %s"
 msgstr "Cancellazione file: %s"
 
-#: src/PartFile.cpp:2381
+#: src/PartFile.cpp:2382
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "ATTENZIONE: impossibile fare l'hash della parte scaricata - hashet "
 "incompleto per '%s'"
 
-#: src/PartFile.cpp:2386
+#: src/PartFile.cpp:2387
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3332,32 +3332,32 @@ msgstr ""
 "ERRORE: impossibile calcolare l'hash del file part scaricato - hashset "
 "incompleto (%s). Cio' non dovrebbe mai accadere"
 
-#: src/PartFile.cpp:3066
+#: src/PartFile.cpp:3067
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr ""
 "ATTENZIONE: non c'e' abbastanza spazio libero su disco! Metto in pausa il "
 "file: %s"
 
-#: src/PartFile.cpp:3151
+#: src/PartFile.cpp:3152
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "La parte di file scaricata %i e' corrotta in: %s"
 
-#: src/PartFile.cpp:3194
+#: src/PartFile.cpp:3195
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: recuperata parte corrotta %i in %s -> risparmiati byte: %s"
 
-#: src/PartFile.cpp:3856
+#: src/PartFile.cpp:3857
 msgid "Insufficient Diskspace"
 msgstr "Spazio su disco insufficiente"
 
-#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
+#: src/PartFile.cpp:3868 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "Fermo"
 
-#: src/PartFile.cpp:3905
+#: src/PartFile.cpp:3906
 msgid "Downloaded"
 msgstr "Scaricato"
 
