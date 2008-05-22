@@ -46,6 +46,7 @@
 #include <list>			// Needed for std::list
 #include <wx/string.h>		// Needed for wxString
 #include <wx/thread.h>		// Needed for wxMutex
+#include "Types.h" 
 
 #ifndef EC_REMOTE
 

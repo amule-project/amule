@@ -362,10 +362,7 @@ void CamuleRemoteGuiApp::Startup() {
 		wxT("Displays the current version number."));
 	cmdline.AddSwitch(wxT("h"), wxT("help"),
 		wxT("Displays this information."));
-	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT(
-		"Sets the geometry of the app.\n"
-		"\t\t\t<str> uses the same format as standard X11 apps:\n"
-		"\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
+	cmdline.AddOption(wxT("geometry"), wxEmptyString, wxT("Sets the geometry of the app.\n\t\t\t<str> uses the same format as standard X11 apps:\n\t\t\t[=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]"));
 	cmdline.Parse();
 	
 	bool geometry_enabled = false;
