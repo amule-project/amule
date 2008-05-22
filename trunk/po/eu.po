@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-19 03:30+0200\n"
+"POT-Creation-Date: 2008-05-22 03:31+0200\n"
 "PO-Revision-Date: 2008-03-30 18:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -56,34 +56,34 @@ msgstr "Lortua! Amulera konexioa sortua "
 msgid "Succeeded! Connection established."
 msgstr "Lortua! Konexioa sortua."
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3840
+#: src/libs/ec/cpp/ECSpecialTags.cpp:39 src/PartFile.cpp:3841
 msgid "Hashing"
 msgstr "Aztertzen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3844
+#: src/libs/ec/cpp/ECSpecialTags.cpp:43 src/PartFile.cpp:3845
 msgid "Completing"
 msgstr "Osotzen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3847
+#: src/libs/ec/cpp/ECSpecialTags.cpp:45 src/PartFile.cpp:3848
 msgid "Complete"
 msgstr "Amaitua"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3850
+#: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3851
 #: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:748
 msgid "Paused"
 msgstr "Geraturik"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3853
+#: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3854
 #: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:747
 msgid "Erroneous"
 msgstr "Akatsduna"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3860
+#: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3861
 #: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:746
 msgid "Downloading"
 msgstr "Deskargatzen"
 
-#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3862
+#: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3863
 #: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:745
 msgid "Waiting"
 msgstr "Zain"
@@ -141,7 +141,7 @@ msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1414
 #: src/DownloadListCtrl.cpp:1427 src/DownloadListCtrl.cpp:1438
-#: src/PartFile.cpp:2616 src/PartFile.cpp:2622 src/KnownFile.cpp:884
+#: src/PartFile.cpp:2617 src/PartFile.cpp:2623 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
@@ -2915,7 +2915,7 @@ msgid "The specified userhash is not valid!"
 msgstr "Emandako erabiltzaile egiaztapena ez da baliozkoa!"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
-#: src/PartFile.cpp:3906 src/FileDetailListCtrl.cpp:44
+#: src/PartFile.cpp:3907 src/FileDetailListCtrl.cpp:44
 msgid "Sources"
 msgstr "Jatorriak"
 
@@ -3003,7 +3003,7 @@ msgstr "Abiadura"
 msgid "Progress"
 msgstr "Egoera"
 
-#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3908
+#: src/DownloadListCtrl.cpp:197 src/PartFile.cpp:3909
 #: src/ClientListCtrl.cpp:511
 msgid "Status"
 msgstr "Egoera"
@@ -3293,28 +3293,28 @@ msgstr "Bukatutako (%i) zatia aurkiturik %s-n"
 msgid "Finished rehashing %s"
 msgstr "Amaitutako berrazterketa: %s"
 
-#: src/PartFile.cpp:2237
+#: src/PartFile.cpp:2238
 #, c-format
 msgid "Unexpected file error while completing %s. File paused"
 msgstr "Espero ez zen errorea %s osatzerakoan. Fitxategia gelditurik"
 
-#: src/PartFile.cpp:2263
+#: src/PartFile.cpp:2264
 #, c-format
 msgid "Finished downloading: %s"
 msgstr "Deskarga amaiturik: %s"
 
-#: src/PartFile.cpp:2320
+#: src/PartFile.cpp:2321
 #, c-format
 msgid "Deleting file: %s"
 msgstr "fitxategia ezabatzen:%s"
 
-#: src/PartFile.cpp:2381
+#: src/PartFile.cpp:2382
 #, c-format
 msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 "Kontuz: Ezin da deskargaturiko zatia egiaztatu - '%s' egiaztapen osatugabea"
 
-#: src/PartFile.cpp:2386
+#: src/PartFile.cpp:2387
 #, c-format
 msgid ""
 "Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
@@ -3324,30 +3324,30 @@ msgstr ""
 "osorik (%s). Hau ez zen\n"
 "inoiz gertatu beharko"
 
-#: src/PartFile.cpp:3066
+#: src/PartFile.cpp:3067
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
 msgstr "KONTUZ: Diskoa leku askieza! Fitxategia gelditzen: %s"
 
-#: src/PartFile.cpp:3151
+#: src/PartFile.cpp:3152
 #, c-format
 msgid "Downloaded part %i is corrupt in file: %s"
 msgstr "Deskargaturiko %i zatia hondaturik dago fitxategi honetan: %s"
 
-#: src/PartFile.cpp:3194
+#: src/PartFile.cpp:3195
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
 msgstr "ICH: Hondaturiko %i zatia (%s) konpondurik -> Gordetako byte-ak: %s"
 
-#: src/PartFile.cpp:3856
+#: src/PartFile.cpp:3857
 msgid "Insufficient Diskspace"
 msgstr "Disko leku askieza"
 
-#: src/PartFile.cpp:3867 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
+#: src/PartFile.cpp:3868 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
 msgid "Stopped"
 msgstr "Gelditua"
 
-#: src/PartFile.cpp:3905
+#: src/PartFile.cpp:3906
 msgid "Downloaded"
 msgstr ""
 
