@@ -1053,7 +1053,7 @@ msgstr "Ingen Forbindelse"
 #: src/utils/wxCas/src/onlinesig.cpp:339
 #, c-format
 msgid "%.0f B"
-msgstr "%.Af B"
+msgstr "%.0f B"
 
 #: src/utils/wxCas/src/onlinesig.cpp:342
 #, c-format
