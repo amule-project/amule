@@ -1764,9 +1764,8 @@ void CPartFile::AddSources(CMemFile& sources,uint32 serverip, uint16 serverport,
 			CUpDownClient* newsource = new CUpDownClient(port,userid,serverip,serverport,this, true, true);
 
 			newsource->SetSourceFrom((ESourceFrom)origin);
-			newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
-			newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
-			newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+			newsource->SetConnectOptions(byCryptOptions, true, false);
+
 			if ((byCryptOptions & 0x80) != 0) {
 				newsource->SetUserHash(achUserHash);
 			}
@@ -2894,9 +2893,7 @@ void CPartFile::AddClientSources(CMemFile* sources, unsigned nSourceFrom, uint8 
 			}
 			
 			if (uPacketSXVersion >= 4) {
-				newsource->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
-				newsource->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
-				newsource->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+				newsource->SetConnectOptions(byCryptOptions, true, false);
 			}
 
 			newsource->SetSourceFrom((ESourceFrom)nSourceFrom);

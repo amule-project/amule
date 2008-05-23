@@ -567,15 +567,11 @@ bool CServerSocket::ProcessPacket(const byte* packet, uint32 size, int8 opcode)
 							client->SetCryptLayerSupport(false);
 							client->SetCryptLayerRequires(false);
 						} else {
-							client->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
-							client->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
-							client->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+							client->SetConnectOptions(byCryptOptions, true, false);
 						}
 					} else if (size >= 23) {
 						client->SetUserHash(achUserHash);
-						client->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
-						client->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
-						client->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+						client->SetConnectOptions(byCryptOptions, true, false);
 					}
 					
 					if (client) {
