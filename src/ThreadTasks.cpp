@@ -561,20 +561,24 @@ void CAllocateFileTask::Entry()
 		// If everything else fails, use slow-and-dirty method of allocating the file: write the whole file with zeroes.
 #  define BLOCK_SIZE	1048576		/* Write 1 MB blocks */
 		void *zero = calloc(1, BLOCK_SIZE);
-		try {
-			uint64_t size = m_file->GetFileSize();
-			for (; size >= BLOCK_SIZE; size -= BLOCK_SIZE) {
-				file.Write(zero, BLOCK_SIZE);
+		if (zero != NULL) {
+			try {
+				uint64_t size = m_file->GetFileSize();
+				for (; size >= BLOCK_SIZE; size -= BLOCK_SIZE) {
+					file.Write(zero, BLOCK_SIZE);
+				}
+				if (size > 0) {
+					file.Write(zero, size);
+				}
+				file.Close();
+				m_result = 0;
+			} catch (const CSafeIOException&) {
+				m_result = errno;
 			}
-			if (size > 0) {
-				file.Write(zero, size);
-			}
-			file.Close();
-			m_result = 0;
-		} catch (const CSafeIOException&) {
-			m_result = errno;
+			free(zero);
+		} else {
+			m_result = ENOMEM;
 		}
-		free(zero);
 	}
 
 #endif
