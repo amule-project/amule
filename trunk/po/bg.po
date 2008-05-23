@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-22 03:31+0200\n"
+"POT-Creation-Date: 2008-05-23 03:31+0200\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -2892,22 +2892,22 @@ msgstr ""
 msgid "Error"
 msgstr "Грешка"
 
-#: src/amule-remote-gui.cpp:482 src/amule.cpp:1067
+#: src/amule-remote-gui.cpp:479 src/amule.cpp:1067
 msgid ""
 "WARNING: You can't add yourself as a source for a ed2k link while being "
 "lowid."
 msgstr ""
 
-#: src/amule-remote-gui.cpp:577
+#: src/amule-remote-gui.cpp:574
 #, c-format
 msgid "Users: E: %s K: %s | Files E: %s K: %s"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:635 src/TransferWnd.cpp:341
+#: src/amule-remote-gui.cpp:632 src/TransferWnd.cpp:341
 msgid "All"
 msgstr ""
 
-#: src/amule-remote-gui.cpp:873
+#: src/amule-remote-gui.cpp:870
 #, c-format
 msgid "Total Users: %s | Total Files: %s"
 msgstr ""
