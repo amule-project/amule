@@ -737,6 +737,16 @@ bool CamuleApp::OnInit()
 	// Create main dialog, or fork to background (daemon).
 	InitGui(geometry_enabled, geom_string);
 	
+#if !defined(__WXMAC__) && defined(AMULE_DAEMON)
+	// Need to refresh wxSingleInstanceChecker after the daemon fork() !
+	if (enable_daemon_fork) {
+        	//#warning TODO: fix wxSingleInstanceChecker for amuled on Mac (wx link problems)
+	        delete m_singleInstance;
+	        m_singleInstance = new wxSingleInstanceChecker(wxT("muleLock"), ConfigDir);
+		// No need to check IsAnotherRunning() - we've done it before.
+	}
+#endif
+
 	// Has to be created after the call to InitGui, as fork 
 	// (when using posix threads) only replicates the mainthread,
 	// and the UBT constructor creates a thread.
