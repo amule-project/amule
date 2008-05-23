@@ -77,6 +77,7 @@ class wxSingleInstanceChecker;
 class CHashingEvent;
 class CMuleInternalEvent;
 class CCompletionEvent;
+class CAllocFinishedEvent;
 class wxExecuteData;
 class CLoggingEvent;
 
@@ -267,6 +268,7 @@ protected:
 	void OnFinishedHashing(CHashingEvent& evt);
 	void OnFinishedAICHHashing(CHashingEvent& evt);
 	void OnFinishedCompletion(CCompletionEvent& evt);
+	void OnFinishedAllocation(CAllocFinishedEvent& evt);
 	void OnFinishedHTTPDownload(CMuleInternalEvent& evt);
 	void OnHashingShutdown(CMuleInternalEvent&);
 	void OnNotifyEvent(CMuleGUIEvent& evt);

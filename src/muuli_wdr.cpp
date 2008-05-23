@@ -2120,10 +2120,14 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
     item23->SetToolTip( _("Enter here the min disk space desired.") );
     item21->Add( item23, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticText *item24 = new wxStaticText( parent, -1, _("Mb"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxStaticText *item24 = new wxStaticText( parent, -1, _("MB"), wxDefaultPosition, wxDefaultSize, 0 );
     item21->Add( item24, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
     item18->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+
+    wxCheckBox *item25 = new wxCheckBox( parent, IDC_ALLOCFULLFILE, _("Preallocate disk space for new files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->SetToolTip( _("For new files preallocates disk space for the whole file, thus reduces fragmentation") );
+    item18->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 10 );
 
     item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 

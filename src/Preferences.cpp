@@ -175,10 +175,9 @@ bool		CPreferences::s_IPFilterServers;
 bool		CPreferences::s_UseSrcSeeds;
 bool		CPreferences::s_ProgBar;
 bool		CPreferences::s_Percent;
-bool           CPreferences::s_SecIdent;
+bool		CPreferences::s_SecIdent;
 bool		CPreferences::s_ExtractMetaData;
-bool		CPreferences::s_AllocFullPart;
-bool		CPreferences::s_AllocFullChunk;
+bool		CPreferences::s_allocFullFile;
 uint16		CPreferences::s_Browser;
 wxString	CPreferences::s_CustomBrowser;
 bool		CPreferences::s_BrowserTab;
@@ -1033,6 +1032,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	NewCfgItem(IDC_FILEBUFFERSIZE,	(MkCfg_Int( wxT("/eMule/FileBufferSizePref"), s_iFileBufferSize, 16 )));
 	NewCfgItem(IDC_DAP,		(new Cfg_Bool( wxT("/eMule/DAPPref"), s_bDAP, true )));
 	NewCfgItem(IDC_UAP,		(new Cfg_Bool( wxT("/eMule/UAPPref"), s_bUAP, true )));
+	NewCfgItem(IDC_ALLOCFULLFILE,	(new Cfg_Bool( wxT("/eMule/AllocateFullFile"), s_allocFullFile, false )));
 
 	/**
 	 * Web Server

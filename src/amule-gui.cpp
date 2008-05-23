@@ -86,6 +86,9 @@ BEGIN_EVENT_TABLE(CamuleGuiApp, wxApp)
 
 	// HTTPDownload finished
 	EVT_MULE_INTERNAL(wxEVT_CORE_FINISHED_HTTP_DOWNLOAD, -1, CamuleGuiApp::OnFinishedHTTPDownload)
+
+	// Disk space preallocation finished
+	EVT_MULE_ALLOC_FINISHED(CamuleGuiApp::OnFinishedAllocation)
 END_EVENT_TABLE()
 
 
