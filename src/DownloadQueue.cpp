@@ -1526,9 +1526,7 @@ void CDownloadQueue::KademliaSearchFile(uint32 searchID, const Kademlia::CUInt12
 
 	if (ctemp) {
 		// add encryption settings
-		ctemp->SetCryptLayerSupport((byCryptOptions & 0x01) != 0);
-		ctemp->SetCryptLayerRequest((byCryptOptions & 0x02) != 0);
-		ctemp->SetCryptLayerRequires((byCryptOptions & 0x04) != 0);
+		ctemp->SetConnectOptions(byCryptOptions);
 
 		AddDebugLogLineM(false, logKadSearch, CFormat(wxT("Happily adding a source (%s) type %d")) % Uint32_16toStringIP_Port(ED2KID, ctemp->GetUserPort()) % type);
 		CheckAndAddSource(temp, ctemp);
