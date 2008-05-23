@@ -33,7 +33,10 @@
 #include "common/Format.h"
 #include "Logger.h"
 #include <winbase.h>
-#include <WinIoCtl.h>
+#include <winioctl.h>
+#ifndef FSCTL_SET_ZERO_DATA
+#	define FSCTL_SET_ZERO_DATA	CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 50, METHOD_BUFFERED, FILE_WRITE_DATA)
+#endif
 
 // Create a message from a Windows error code
 static wxString SystemError()
