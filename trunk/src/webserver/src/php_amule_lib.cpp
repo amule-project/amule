@@ -345,7 +345,6 @@ PHP_2_EC_OPT_DEF g_file_opt_defs[] = {
 	{ "resume_same_cat", EC_TAG_FILES_RESUME_SAME_CAT, 0},
 	{ "save_sources", EC_TAG_FILES_SAVE_SOURCES, 0},
 	{ "extract_metadata", EC_TAG_FILES_EXTRACT_METADATA, 0},
-	{ "alloc_full_chunks", EC_TAG_FILES_ALLOC_FULL_CHUNKS, 0},
 	{ "alloc_full", EC_TAG_FILES_ALLOC_FULL_SIZE, 0},
 	{ "check_free_space", EC_TAG_FILES_CHECK_FREE_SPACE, 0},
 	{ "min_free_space", EC_TAG_FILES_MIN_FREE_SPACE, 4},

@@ -30,6 +30,7 @@
 #include "amule.h"			// Interface declarations.
 
 #include <csignal>
+#include <cstring>
 #include <wx/process.h>
 #include <wx/sstream.h>	
 
@@ -1606,6 +1607,27 @@ void CamuleApp::OnFinishedCompletion(CCompletionEvent& evt)
 	CUserEvents::ProcessEvent(CUserEvents::DownloadCompleted, completed);
 }
 
+void CamuleApp::OnFinishedAllocation(CAllocFinishedEvent& evt)
+{
+	CPartFile *file = evt.GetFile();
+	wxCHECK_RET(file, wxT("Allocation finished event sent for unspecified file"));
+	wxASSERT_MSG(downloadqueue->IsPartFile(file), wxT("CAllocFinishedEvent for unknown partfile"));
+
+	file->SetPartFileStatus(PS_EMPTY);
+
+	if (evt.Succeeded()) {
+		if (evt.IsPaused()) {
+			file->StopFile();
+		} else {
+			file->ResumeFile();
+		}
+	} else {
+		AddLogLineM(false, CFormat(_("Disk space preallocation for file '%s' failed: %s")) % file->GetFileName() % wxString(UTF82unicode(std::strerror(evt.GetResult()))));
+		file->StopFile();
+	}
+
+	file->AllocationFinished();
+};
 
 void CamuleApp::OnNotifyEvent(CMuleGUIEvent& evt)
 {

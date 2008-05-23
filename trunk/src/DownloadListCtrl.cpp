@@ -963,19 +963,28 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 
 		CPartFile* file = item->GetFile();
 		// then set state
-		const bool canStop =
-			(file->GetStatus() != PS_ERROR) &&
-			(file->GetStatus() != PS_COMPLETE) &&
-			(file->IsStopped() != true);
-		const bool canPause =
-			(file->GetStatus() != PS_PAUSED) && canStop;
-		const bool fileResumable =
-			(file->GetStatus() == PS_PAUSED) ||
-			(file->GetStatus() == PS_ERROR) ||
-			(file->GetStatus() == PS_INSUFFICIENT);
-		
+		bool canStop;
+		bool canPause;
+		bool canCancel;
+		bool fileResumable;
+		if (file->GetStatus(true) != PS_ALLOCATING) {
+			const uint8_t fileStatus = file->GetStatus();
+			canStop =
+				(fileStatus != PS_ERROR) &&
+				(fileStatus != PS_COMPLETE) &&
+				(file->IsStopped() != true);
+			canPause = (file->GetStatus() != PS_PAUSED) && canStop;
+			fileResumable =
+				(fileStatus == PS_PAUSED) ||
+				(fileStatus == PS_ERROR) ||
+				(fileStatus == PS_INSUFFICIENT);
+			canCancel = fileStatus != PS_COMPLETE;
+		} else {
+			canStop = canPause = canCancel = fileResumable = false;
+		}
+
 		wxMenu* menu = m_menu;
-		menu->Enable( MP_CANCEL,	( file->GetStatus() != PS_COMPLETE ) );
+		menu->Enable( MP_CANCEL,	canCancel );
 		menu->Enable( MP_PAUSE,		canPause );
 		menu->Enable( MP_STOP,		canStop );
 		menu->Enable( MP_RESUME, 	fileResumable );

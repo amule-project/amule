@@ -483,6 +483,115 @@ void CCompletionTask::OnExit()
 
 
 
+////////////////////////////////////////////////////////////
+// CAllocateFileTask
+
+#ifdef HAVE_FALLOCATE
+#	include <linux/falloc.h>
+#elif defined HAVE_SYS_FALLOCATE
+#	include <sys/syscall.h>
+#	include <sys/types.h>
+#	include <unistd.h>
+#elif defined HAVE_POSIX_FALLOCATE
+#	define _XOPEN_SOURCE 600
+#	include <stdlib.h>
+#	ifdef HAVE_FCNTL_H
+#		include <fcntl.h>
+#	endif
+#endif
+#include <stdlib.h>
+#include <errno.h>
+
+CAllocateFileTask::CAllocateFileTask(CPartFile *file, bool pause)
+	// GetPrintable is used to improve the readability of the log.
+	: CThreadTask(wxT("Allocating"), file->GetFullName().RemoveExt().GetPrintable(), ETP_High),
+	  m_file(file), m_pause(pause), m_result(ENOSYS)
+{
+	wxASSERT(file != NULL);
+}
+
+void CAllocateFileTask::Entry()
+{
+	if (m_file->GetFileSize() == 0) {
+		m_result = 0;
+		return;
+	}
+
+	uint64_t minFree = thePrefs::IsCheckDiskspaceEnabled() ? thePrefs::GetMinFreeDiskSpace() : 0;
+	int64_t freeSpace = CPath::GetFreeSpaceAt(thePrefs::GetTempDir());
+
+	// Don't even try to allocate, if there's no space to complete the operation.
+	if (freeSpace != wxInvalidOffset) {
+		if ((uint64_t)freeSpace < m_file->GetFileSize() + minFree) {
+			m_result = ENOSPC;
+			return;
+		}
+	}
+
+	CFile file;
+	file.Open(m_file->GetFullName().RemoveExt(), CFile::read_write);
+
+#ifdef __WXMSW__
+	try {
+		// File is already created as non-sparse, so we only need to set the length.
+		// This will fail to allocate the file e.g. under wine on linux/ext3,
+		// but works with NTFS and FAT32.
+		file.Seek(m_file->GetFileSize() - 1, wxFromStart);
+		file.WriteUInt8(0);
+		file.Close();
+		m_result = 0;
+	} catch (const CSafeIOException&) {
+		m_result = errno;
+	}
+#else
+	// Use kernel level routines if possible
+#  ifdef HAVE_FALLOCATE
+	m_result = fallocate(file.fd(), 0, 0, m_file->GetFileSize());
+#  elif defined HAVE_SYS_FALLOCATE
+	m_result = syscall(SYS_fallocate, file.fd(), 0, (loff_t)0, (loff_t)m_file->GetFileSize());
+	if (m_result == -1) {
+		m_result = errno;
+	}
+#  elif defined HAVE_POSIX_FALLOCATE
+	// otherwise use glibc implementation, if available
+	m_result = posix_fallocate(file.fd(), 0, m_file->GetFileSize());
+#  endif
+
+	if (m_result != 0 && m_result != ENOSPC) {
+		// If everything else fails, use slow-and-dirty method of allocating the file: write the whole file with zeroes.
+#  define BLOCK_SIZE	1048576		/* Write 1 MB blocks */
+		void *zero = calloc(1, BLOCK_SIZE);
+		try {
+			uint64_t size = m_file->GetFileSize();
+			for (; size >= BLOCK_SIZE; size -= BLOCK_SIZE) {
+				file.Write(zero, BLOCK_SIZE);
+			}
+			if (size > 0) {
+				file.Write(zero, size);
+			}
+			file.Close();
+			m_result = 0;
+		} catch (const CSafeIOException&) {
+			m_result = errno;
+		}
+		free(zero);
+	}
+
+#endif
+	if (file.IsOpened()) {
+		file.Close();
+	}
+}
+
+void CAllocateFileTask::OnExit()
+{
+	// Notify the app that the preallocation has finished for this file.
+	CAllocFinishedEvent evt(m_file, m_pause, m_result);
+
+	wxPostEvent(wxTheApp, evt);
+}
+
+
 
 ////////////////////////////////////////////////////////////
 // CHashingEvent
@@ -554,6 +663,17 @@ const CPartFile* CCompletionEvent::GetOwner() const
 const CPath& CCompletionEvent::GetFullPath() const
 {
 	return m_fullPath;
+}
+
+
+////////////////////////////////////////////////////////////
+// CAllocFinishedEvent
+
+DEFINE_LOCAL_EVENT_TYPE(MULE_EVT_ALLOC_FINISHED)
+
+wxEvent *CAllocFinishedEvent::Clone() const
+{
+	return new CAllocFinishedEvent(m_file, m_pause, m_result);
 }
 
 // File_checked_for_headers

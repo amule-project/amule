@@ -168,6 +168,33 @@ protected:
 };
 
 
+/**
+ * This task preallocates space for a newly created partfile.
+ */
+class CAllocateFileTask : public CThreadTask
+{
+      public:
+	/** Creates a thread that will allocate disk space for the full file. */
+	CAllocateFileTask(CPartFile *file, bool pause);
+
+      protected:
+	/** See CThreadTask::Entry */
+	virtual void Entry();
+
+	/** See CThreadTask::OnExit */
+	virtual void OnExit();
+
+      private:
+	//! The partfile for which this task allocates space.
+	CPartFile *	m_file;
+
+	//! Should this download start paused?
+	bool		m_pause;
+
+	//! Result of the preallocation.
+	long		m_result;
+};
+
 
 /**
  * This event is used to signal the completion of a hashing event.
@@ -231,6 +258,45 @@ private:
 };
 
 
+/**
+ * This event is sent when preallocation of a new partfile is finished.
+ */
+DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_ALLOC_FINISHED, -1);
+class CAllocFinishedEvent : public wxEvent
+{
+      public:
+	/** Constructor, see getter function for description of parameters. */
+	CAllocFinishedEvent(CPartFile *file, bool pause, long result)
+		: wxEvent(-1, MULE_EVT_ALLOC_FINISHED),
+		  m_file(file), m_pause(pause), m_result(result)
+	{}
+
+	/** @see wxEvent::Clone */
+	virtual wxEvent *Clone() const;
+
+	/** Returns the partfile for which preallocation was requested. */
+	CPartFile *GetFile() const throw()	{ return m_file; }
+
+	/** Returns whether the partfile should start paused. */
+	bool	IsPaused() const throw()	{ return m_pause; }
+
+	/** Returns the result of preallocation: true on success, false otherwise. */
+	bool	Succeeded() const throw()	{ return m_result == 0; }
+
+	/** Returns the result of the preallocation. */
+	long	GetResult() const throw()	{ return m_result; }
+
+      private:
+	//! The partfile for which preallocation was requested.
+	CPartFile *	m_file;
+
+	//! Should the download start paused?
+	bool		m_pause;
+
+	//! Result of preallocation
+	long		m_result;
+};
+
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_HASHING, -1)
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_AICH_HASHING, -1)
 DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED, -1)
@@ -238,6 +304,7 @@ DECLARE_LOCAL_EVENT_TYPE(MULE_EVT_FILE_COMPLETED, -1)
 	
 typedef void (wxEvtHandler::*MuleHashingEventFunction)(CHashingEvent&);
 typedef void (wxEvtHandler::*MuleCompletionEventFunction)(CCompletionEvent&);
+typedef void (wxEvtHandler::*MuleAllocFinishedEventFunction)(CAllocFinishedEvent&);
 
 //! Event-handler for completed hashings of new shared files and partfiles.
 #define EVT_MULE_HASHING(func) \
@@ -257,6 +324,12 @@ typedef void (wxEvtHandler::*MuleCompletionEventFunction)(CCompletionEvent&);
 	(wxObjectEventFunction) (wxEventFunction) \
 	wxStaticCastEvent(MuleCompletionEventFunction, &func), (wxObject*) NULL),
 
-	
+//! Event-handler for partfile preallocation finished events.
+#define EVT_MULE_ALLOC_FINISHED(func) \
+	DECLARE_EVENT_TABLE_ENTRY(MULE_EVT_ALLOC_FINISHED, -1, -1, \
+	(wxObjectEventFunction) (wxEventFunction) \
+	wxStaticCastEvent(MuleAllocFinishedEventFunction, &func), (wxObject*) NULL),
+
+
 #endif // TASKS_H
 // File_checked_for_headers

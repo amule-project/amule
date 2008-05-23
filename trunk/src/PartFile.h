@@ -297,6 +297,7 @@ public:
 
 	const FileRatingList &GetRatingAndComments();
 
+	void	AllocationFinished();
 private:
 	//! A local list of sources that are invalid for this file.
 #ifndef CLIENT_GUI

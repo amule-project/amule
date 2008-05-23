@@ -508,6 +508,9 @@ AC_SUBST(INCINTL)
 AS_IF([test x$USE_NLS = xyes], [CHECK_AUTOPOINT([], [USE_NLS=no])])
 AS_IF([test x$USE_NLS = xno -a x${enable_nls-yes} = xyes], [AC_MSG_WARN([You need to install GNU gettext/gettext-tools to compile aMule with i18n support.])])
 
+# Look for a way to preallocate disk space for files.
+CHECK_FALLOCATE
+
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
