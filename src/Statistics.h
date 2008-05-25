@@ -251,6 +251,7 @@ class CStatistics {
 	static	void	AddUpOverheadSourceExchange(uint32 size){ (*s_sourceXchgUpOverhead) += size; (*s_upOverheadRate) += size; }
 	static	void	AddUpOverheadServer(uint32 size)	{ (*s_serverUpOverhead) += size; (*s_upOverheadRate) += size; }
 	static	void	AddUpOverheadKad(uint32 size)		{ (*s_kadUpOverhead) += size; (*s_upOverheadRate) += size; }
+	static	void	AddUpOverheadCrypt(uint32_t size)	{ (*s_cryptUpOverhead) += size; }
 	static	void	AddUpOverheadOther(uint32 size)		{ (*s_totalUpOverhead) += size; (*s_upOverheadRate) += size; }
 	static	double	GetUpOverheadRate()			{ return s_upOverheadRate->GetRate(); }
 	static	void	AddSuccessfulUpload()			{ ++(*s_totalSuccUploads); }
@@ -270,6 +271,7 @@ class CStatistics {
 	static	void	AddDownOverheadSourceExchange(uint32 size){ (*s_sourceXchgDownOverhead) += size; (*s_downOverheadRate) += size; }
 	static	void	AddDownOverheadServer(uint32 size)	{ (*s_serverDownOverhead) += size; (*s_downOverheadRate) += size; }
 	static	void	AddDownOverheadKad(uint32 size)		{ (*s_kadDownOverhead) += size; (*s_downOverheadRate) += size; }
+	static	void	AddDownOverheadCrypt(uint32_t size)	{ (*s_cryptDownOverhead) += size; }
 	static	void	AddDownOverheadOther(uint32 size)	{ (*s_totalDownOverhead) += size; (*s_downOverheadRate) += size; }
 	static	double	GetDownOverheadRate()			{ return s_downOverheadRate->GetRate(); }
 	static	void	AddFoundSource()			{ ++(*s_foundSources); }
@@ -410,6 +412,7 @@ class CStatistics {
 	static	CStatTreeItemPackets*		s_sourceXchgUpOverhead;
 	static	CStatTreeItemPackets*		s_serverUpOverhead;
 	static	CStatTreeItemPackets*		s_kadUpOverhead;
+	static	CStatTreeItemCounter*		s_cryptUpOverhead;
 	static	CStatTreeItemNativeCounter*	s_activeUploads;
 	static	CStatTreeItemNativeCounter*	s_waitingUploads;
 	static	CStatTreeItemCounter*		s_totalSuccUploads;
@@ -423,6 +426,7 @@ class CStatistics {
 	static	CStatTreeItemPackets*		s_sourceXchgDownOverhead;
 	static	CStatTreeItemPackets*		s_serverDownOverhead;
 	static	CStatTreeItemPackets*		s_kadDownOverhead;
+	static	CStatTreeItemCounter*		s_cryptDownOverhead;
 	static	CStatTreeItemNativeCounter*	s_foundSources;
 	static	CStatTreeItemNativeCounter*	s_activeDownloads;
 

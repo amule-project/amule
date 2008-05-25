@@ -160,6 +160,7 @@ CStatTreeItemPackets*		CStatistics::s_fileReqUpOverhead;
 CStatTreeItemPackets*		CStatistics::s_sourceXchgUpOverhead;
 CStatTreeItemPackets*		CStatistics::s_serverUpOverhead;
 CStatTreeItemPackets*		CStatistics::s_kadUpOverhead;
+CStatTreeItemCounter*		CStatistics::s_cryptUpOverhead;
 CStatTreeItemNativeCounter*	CStatistics::s_activeUploads;
 CStatTreeItemNativeCounter*	CStatistics::s_waitingUploads;
 CStatTreeItemCounter*		CStatistics::s_totalSuccUploads;
@@ -173,6 +174,7 @@ CStatTreeItemPackets*		CStatistics::s_fileReqDownOverhead;
 CStatTreeItemPackets*		CStatistics::s_sourceXchgDownOverhead;
 CStatTreeItemPackets*		CStatistics::s_serverDownOverhead;
 CStatTreeItemPackets*		CStatistics::s_kadDownOverhead;
+CStatTreeItemCounter*		CStatistics::s_cryptDownOverhead;
 CStatTreeItemNativeCounter*	CStatistics::s_foundSources;
 CStatTreeItemNativeCounter*	CStatistics::s_activeDownloads;
 
@@ -655,6 +657,8 @@ void CStatistics::InitStatsTree()
 	s_totalUpOverhead->AddPacketCounter(s_serverUpOverhead);
 	s_kadUpOverhead = (CStatTreeItemPackets*)tmpRoot2->AddChild(new CStatTreeItemPackets(wxTRANSLATE("Kad Overhead (Packets): %s")));
 	s_totalUpOverhead->AddPacketCounter(s_kadUpOverhead);
+	s_cryptUpOverhead = (CStatTreeItemCounter*)tmpRoot2->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Crypt overhead (UDP): %s")));
+	s_cryptUpOverhead->SetDisplayMode(dmBytes);
 	s_activeUploads = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Active Uploads: %s")));
 	s_waitingUploads = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Waiting Uploads: %s")));
 	s_totalSuccUploads = (CStatTreeItemCounter*)tmpRoot2->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Total successful upload sessions: %s")));
@@ -674,6 +678,8 @@ void CStatistics::InitStatsTree()
 	s_totalDownOverhead->AddPacketCounter(s_serverDownOverhead);
 	s_kadDownOverhead = (CStatTreeItemPackets*)tmpRoot2->AddChild(new CStatTreeItemPackets(wxTRANSLATE("Kad Overhead (Packets): %s")));
 	s_totalDownOverhead->AddPacketCounter(s_kadDownOverhead);
+	s_cryptDownOverhead = (CStatTreeItemCounter*)tmpRoot2->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Crypt overhead (UDP): %s")));
+	s_cryptDownOverhead->SetDisplayMode(dmBytes);
 	s_foundSources = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Found Sources: %s"), stSortChildren | stSortByValue));
 	s_activeDownloads = (CStatTreeItemNativeCounter*)tmpRoot2->AddChild(new CStatTreeItemNativeCounter(wxTRANSLATE("Active Downloads (chunks): %s")));
 
