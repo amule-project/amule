@@ -98,6 +98,7 @@
 #include "./kademlia/kademlia/Prefs.h"
 #include "./kademlia/kademlia/Kademlia.h"
 #include "RandomFunctions.h"
+#include "Statistics.h"
 
 #include <protocol/Protocols.h>
 #include <common/MD5Sum.h>
@@ -253,7 +254,7 @@ int CEncryptedDatagramSocket::DecryptReceivedClient(uint8_t *bufIn, int bufLen, 
 		*bufOut = bufIn + (bufLen - result);
 
 		receivebuffer.RC4Crypt((uint8_t*)*bufOut, (uint8_t*)*bufOut, result);
-		//theStats::AddDownDataOverheadCrypt(bufLen - result);
+		theStats::AddDownOverheadCrypt(bufLen - result);
 		return result; // done
 	} else {
 		//DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from clientIP: %s"), ipstr(dwIP));
@@ -369,7 +370,7 @@ int CEncryptedDatagramSocket::EncryptSendClient(uint8_t **buf, int bufLen, const
 	delete [] *buf;
 	*buf = cryptedBuffer;
 
-	//theStats::AddUpDataOverheadCrypt(cryptedLen - bufLen);
+	theStats::AddUpOverheadCrypt(cryptedLen - bufLen);
 	return cryptedLen;
 }
 
@@ -424,7 +425,7 @@ int CEncryptedDatagramSocket::DecryptReceivedServer(
 		*ppbyBufOut = pbyBufIn + (nBufLen - nResult);
 		receivebuffer.RC4Crypt((uint8*)*ppbyBufOut, (uint8*)*ppbyBufOut, nResult);
 		
-		//theStats.AddDownDataOverheadCrypt(nBufLen - nResult);
+		theStats::AddDownOverheadCrypt(nBufLen - nResult);
 		return nResult; // done
 	} else {
 		//DebugLogWarning(_T("Obfuscated packet expected but magicvalue mismatch on UDP packet from ServerIP: %s"), ipstr(dbgIP));
@@ -483,6 +484,6 @@ int CEncryptedDatagramSocket::EncryptSendServer(uint8** ppbyBuf, int nBufLen, ui
 	delete[] *ppbyBuf;
 	*ppbyBuf = pachCryptedBuffer;
 
-	//theStats.AddUpDataOverheadCrypt(nCryptedLen - nBufLen);
+	theStats::AddUpOverheadCrypt(nCryptedLen - nBufLen);
 	return nCryptedLen;
 }
