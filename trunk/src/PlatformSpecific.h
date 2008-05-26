@@ -28,6 +28,7 @@
 #include <common/Path.h>
 #include "Types.h"
 
+
 namespace PlatformSpecific {
 
 /**
@@ -41,6 +42,17 @@ namespace PlatformSpecific {
  */
 bool CreateSparseFile(const CPath& name, uint64_t size);
 
-}; 
+/**
+ * Returns the max number of connections the current OS can handle.
+ *
+ * Currently anything but windows will return the default value (-1);
+ */
+#ifdef __WXMSW__
+int GetMaxConnections();
+#else
+inline int GetMaxConnections() { return -1; }
+#endif
+
+}; /* namespace PlatformSpecific */
 
 #endif /* PLATFORMSPECIFIC_H */
