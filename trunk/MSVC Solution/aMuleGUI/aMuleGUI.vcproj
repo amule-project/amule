@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\PlatformSpecific.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\Preferences.cpp"
 				>
 			</File>
