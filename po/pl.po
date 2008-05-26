@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-24 03:31+0200\n"
+"POT-Creation-Date: 2008-05-26 03:31+0200\n"
 "PO-Revision-Date: 2008-05-03 13:50+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -139,7 +139,7 @@ msgstr "Nieudane pobieranie udostępnionych plików od użytkownika '%s'"
 #: src/BaseClient.cpp:1718 src/BaseClient.cpp:2240 src/BaseClient.cpp:2512
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
+#: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -380,7 +380,7 @@ msgstr "Pełne źródła"
 msgid "Directory Path"
 msgstr "Ścieżka katalogu"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
 #: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "Udostępnione pliki"
@@ -1347,7 +1347,7 @@ msgstr "Połączenie przez Kad"
 msgid "Too many Kad connections"
 msgstr "Zbyt dużo połączeń Kad"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:838
 msgid "Banned"
 msgstr "Zbanowany"
@@ -1594,7 +1594,7 @@ msgstr "Nieudane"
 msgid "Static"
 msgstr "Stałe"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:865
+#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Wersja"
 
@@ -1923,8 +1923,8 @@ msgstr "Wiadomości"
 msgid "Messages Window"
 msgstr "Okno wiadomości"
 
-#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:637
-#: src/Statistics.cpp:931 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
+#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
 #: src/muuli_wdr.cpp:3825
 msgid "Statistics"
 msgstr "Statystyki"
@@ -1970,7 +1970,7 @@ msgstr "Brak sieci"
 msgid "General"
 msgstr "Ogólne"
 
-#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:682
+#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:688
 msgid "Connection"
 msgstr "Połączenie"
 
@@ -2512,240 +2512,245 @@ msgstr "Średnio plików:"
 msgid "Not running"
 msgstr "Nie uruchomiony"
 
-#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
 #, c-format
 msgid "Uptime: %s"
 msgstr "Uptime: %s"
 
-#: src/Statistics.cpp:644 src/muuli_wdr.cpp:643
+#: src/Statistics.cpp:646 src/muuli_wdr.cpp:643
 msgid "Transfer"
 msgstr "Transfer"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
+#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
 msgid "Uploads"
 msgstr "Wysyłanie"
 
-#: src/Statistics.cpp:647
+#: src/Statistics.cpp:649
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "Wysłane dane (Sesja (Razem)): %s"
 
-#: src/Statistics.cpp:649 src/Statistics.cpp:668
+#: src/Statistics.cpp:651 src/Statistics.cpp:672
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "Łączny narzut  (Pakiety): %s"
 
-#: src/Statistics.cpp:650 src/Statistics.cpp:669
+#: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "Narzut żądań pliku (Pakiety): %s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:671
+#: src/Statistics.cpp:654 src/Statistics.cpp:675
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "Narzut wymiany źródeł (Pakiety): %s"
 
-#: src/Statistics.cpp:654 src/Statistics.cpp:673
+#: src/Statistics.cpp:656 src/Statistics.cpp:677
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "Narzut serwera (Pakiety): %s"
 
-#: src/Statistics.cpp:656 src/Statistics.cpp:675
+#: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Narzut Kad (Pakiety): %s"
 
-#: src/Statistics.cpp:658
+#: src/Statistics.cpp:660 src/Statistics.cpp:681
+#, c-format
+msgid "Crypt overhead (UDP): %s"
+msgstr ""
+
+#: src/Statistics.cpp:662
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "Aktywne wysyłanie: %s"
 
-#: src/Statistics.cpp:659
+#: src/Statistics.cpp:663
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "Oczekujące wysyłanie: %s"
 
-#: src/Statistics.cpp:660
+#: src/Statistics.cpp:664
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "Całkowita ilość udanych sesji wysyłania: %s"
 
-#: src/Statistics.cpp:661
+#: src/Statistics.cpp:665
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "Całkowita ilość nieudanych sesji wysyłania: %s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:667
 #, c-format
 msgid "Average upload time: %s"
 msgstr "Średni czas wysyłania: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Pobieranie"
 
-#: src/Statistics.cpp:666
+#: src/Statistics.cpp:670
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "Pobrane dane (Sesja (Razem)): %s"
 
-#: src/Statistics.cpp:677
+#: src/Statistics.cpp:683
 #, c-format
 msgid "Found Sources: %s"
 msgstr "Znaleziono źródła: %s"
 
-#: src/Statistics.cpp:678
+#: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "Aktywne pobieranie (części): %s"
 
-#: src/Statistics.cpp:680
+#: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "Stosunek UL:DL sesji (Razem): %s"
 
-#: src/Statistics.cpp:683
+#: src/Statistics.cpp:689
 #, c-format
 msgid "Average Downloadrate (Session): %s"
 msgstr "Przeciętna prędkość pobierania (sesja): %s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:690
 #, c-format
 msgid "Average Uploadrate (Session): %s"
 msgstr "Przeciętna prędkość wysyłania (sesja): %s"
 
-#: src/Statistics.cpp:685
+#: src/Statistics.cpp:691
 #, c-format
 msgid "Max Downloadrate (Session): %s"
 msgstr "Maks. prędkość pobierania (sesja): %s"
 
-#: src/Statistics.cpp:686
+#: src/Statistics.cpp:692
 #, c-format
 msgid "Max Uploadrate (Session): %s"
 msgstr "Maks. prędkość wysyłania (sesja): %s"
 
-#: src/Statistics.cpp:687
+#: src/Statistics.cpp:693
 #, c-format
 msgid "Reconnects: %i"
 msgstr "Ponowne łączenia: %i"
 
-#: src/Statistics.cpp:688
+#: src/Statistics.cpp:694
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "Czas od pierwszego transferu: %s"
 
-#: src/Statistics.cpp:689
+#: src/Statistics.cpp:695
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "Podłączony do serwera od: %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:696
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "Aktywne połączenia (szacunkowo): %i"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:697
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "Osiągnięto maks. limit połączeń: %s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:698
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "Średnio połączeń (szacunkowo): %g"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:700
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "Szczytowe połączenia (szacunkowo): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
 msgid "Clients"
 msgstr "Klienci"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:709
 msgid "Filtered"
 msgstr "Filtrowane"
 
-#: src/Statistics.cpp:705
+#: src/Statistics.cpp:711
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "Razem: %i Znanych: %i"
 
-#: src/Statistics.cpp:708 src/muuli_wdr.cpp:1978
+#: src/Statistics.cpp:714 src/muuli_wdr.cpp:1978
 msgid "Servers"
 msgstr "Serwery"
 
-#: src/Statistics.cpp:709
+#: src/Statistics.cpp:715
 #, c-format
 msgid "Working Servers: %i"
 msgstr "Działające serwery:  %i"
 
-#: src/Statistics.cpp:710
+#: src/Statistics.cpp:716
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "Niedziałające serwery: %i"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:717
 #, c-format
 msgid "Total: %s"
 msgstr "W sumie: %s"
 
-#: src/Statistics.cpp:712
+#: src/Statistics.cpp:718
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "Usunięte serwery: %s"
 
-#: src/Statistics.cpp:713
+#: src/Statistics.cpp:719
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "Przefiltrowane serwery: %s"
 
-#: src/Statistics.cpp:714
+#: src/Statistics.cpp:720
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "Użytkowników na działających serwerach: %llu"
 
-#: src/Statistics.cpp:715
+#: src/Statistics.cpp:721
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "Plików na działających serwerach:  %llu"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:722
 #, c-format
 msgid "Total Users: %llu"
 msgstr "W sumie użytkowników: %llu"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:723
 #, c-format
 msgid "Total Files: %llu"
 msgstr "W sumie plików: %llu"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:724
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "Zajętość serwera: %.2f%%"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:728
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "Liczba udostępnianych plików: %s"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:729
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "Łączny rozmiar udostępnianych plików: %s"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:731
 #, c-format
 msgid "Average filesize: %s"
 msgstr "Średni rozmiar pliku: %s"
 
-#: src/Statistics.cpp:866
+#: src/Statistics.cpp:872
 msgid "Operating System"
 msgstr "System operacyjny"
 
-#: src/Statistics.cpp:891
+#: src/Statistics.cpp:897
 msgid "Not Received"
 msgstr "Nie otrzymano"
 

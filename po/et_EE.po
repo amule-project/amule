@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-25 10:56+0300\n"
+"POT-Creation-Date: 2008-05-26 03:31+0200\n"
 "PO-Revision-Date: 2008-05-25 11:02+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
@@ -115,7 +115,8 @@ msgstr "HOIATUS: Fail ninega '%s' on vigane ja nimetatati ringi '%s'."
 #: src/ThreadTasks.cpp:442
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
-msgstr "HOIATUS: Sama nimega fail '%s' on olemas, uus fail nimetatati ringi '%s'."
+msgstr ""
+"HOIATUS: Sama nimega fail '%s' on olemas, uus fail nimetatati ringi '%s'."
 
 #: src/ThreadTasks.cpp:455
 #, c-format
@@ -135,7 +136,7 @@ msgstr "Ei suuda tõmmata kasutaja '%s' jagatud faili"
 #: src/BaseClient.cpp:1718 src/BaseClient.cpp:2240 src/BaseClient.cpp:2512
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
+#: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -179,14 +180,18 @@ msgstr "Küsitud: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
-msgstr[1] "Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
+msgstr[1] ""
+"Selle seansi failistatistika: Aksepteeritud %d/%d päringust, %s siirdatud\n"
 
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Kõikide seansside failistatistika: Aksepteeritud %d/%d päringust, %s "
 "siirdatud\n"
@@ -367,7 +372,7 @@ msgstr "Täielikke allikaid"
 msgid "Directory Path"
 msgstr "Kataloogi asukoht"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
 #: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "Jagatud failid"
@@ -1136,7 +1141,8 @@ msgstr "Loo link osa-kontrollsummadega"
 msgid ""
 "Help to spread new and rare files faster, at the cost of an increased link "
 "size"
-msgstr "Aita suurenenud lingi hinnaga uusi ja haruldasi faile kiiremini levitada."
+msgstr ""
+"Aita suurenenud lingi hinnaga uusi ja haruldasi faile kiiremini levitada."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:192
 msgid "MD4 File Hash"
@@ -1254,7 +1260,8 @@ msgstr "Töötlen faili number %u: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "Soovisid osade kontrollsummasid (Kasutatakse ainult failidel mis on > 9.5 MB)"
+msgstr ""
+"Soovisid osade kontrollsummasid (Kasutatakse ainult failidel mis on > 9.5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "Please wait... "
@@ -1331,7 +1338,7 @@ msgstr "Ühendun Kad kaudu"
 msgid "Too many Kad connections"
 msgstr "Liiga palju Kad ühendusi"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:838
 msgid "Banned"
 msgstr "Blokeeritud"
@@ -1530,7 +1537,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Ei suuda tuvastada valitud lehitsejat (browser)!"
 
 #: src/Preferences.cpp:1664
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP port ei saa olla suuerm kui 65532, sest serveri UDP soket on TCP+3"
 
 #: src/Preferences.cpp:1665
@@ -1575,7 +1583,7 @@ msgstr "Nurjunud"
 msgid "Static"
 msgstr "Staatiline"
 
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:865
+#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
 msgid "Version"
 msgstr "Versioon"
 
@@ -1903,8 +1911,8 @@ msgstr "Teated"
 msgid "Messages Window"
 msgstr "Teadete Aken"
 
-#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:637
-#: src/Statistics.cpp:931 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
+#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
 #: src/muuli_wdr.cpp:3825
 msgid "Statistics"
 msgstr "Statistika"
@@ -1950,7 +1958,7 @@ msgstr "Võrk puudub"
 msgid "General"
 msgstr "Üldine"
 
-#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:682
+#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:688
 msgid "Connection"
 msgstr "Ühendus"
 
@@ -2482,240 +2490,245 @@ msgstr "Keskmiselt faile:"
 msgid "Not running"
 msgstr "Ei tööta"
 
-#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
 #, c-format
 msgid "Uptime: %s"
 msgstr "Elus juba: %s"
 
-#: src/Statistics.cpp:644 src/muuli_wdr.cpp:643
+#: src/Statistics.cpp:646 src/muuli_wdr.cpp:643
 msgid "Transfer"
 msgstr "Liiklus"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
+#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
 msgid "Uploads"
 msgstr "Saatmised"
 
-#: src/Statistics.cpp:647
+#: src/Statistics.cpp:649
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "Saadetud andmeid (Seansil (Kokku)): %s"
 
-#: src/Statistics.cpp:649 src/Statistics.cpp:668
+#: src/Statistics.cpp:651 src/Statistics.cpp:672
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "Raisatud Kokku (pakette): %s"
 
-#: src/Statistics.cpp:650 src/Statistics.cpp:669
+#: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "Raisatud faili päringuid (pakette): %s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:671
+#: src/Statistics.cpp:654 src/Statistics.cpp:675
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "Raisatud allikavahetusi (pakette): %s"
 
-#: src/Statistics.cpp:654 src/Statistics.cpp:673
+#: src/Statistics.cpp:656 src/Statistics.cpp:677
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "Raisatud Servereid (pakette): %s"
 
-#: src/Statistics.cpp:656 src/Statistics.cpp:675
+#: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Raisatud Kad (pakette): %s"
 
-#: src/Statistics.cpp:658
+#: src/Statistics.cpp:660 src/Statistics.cpp:681
+#, c-format
+msgid "Crypt overhead (UDP): %s"
+msgstr ""
+
+#: src/Statistics.cpp:662
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "Aktiivsed saatmised: %s"
 
-#: src/Statistics.cpp:659
+#: src/Statistics.cpp:663
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "Ootel saatmised: %s"
 
-#: src/Statistics.cpp:660
+#: src/Statistics.cpp:664
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "Kokku õnnestunud saatmisi: %s"
 
-#: src/Statistics.cpp:661
+#: src/Statistics.cpp:665
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "Kokku ebaõnnestunud saatmisi: %s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:667
 #, c-format
 msgid "Average upload time: %s"
 msgstr "Keskmine saatmise aeg: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Tõmbamised"
 
-#: src/Statistics.cpp:666
+#: src/Statistics.cpp:670
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "Tõmmatud Andmed (Seansil (Kokku)): %s"
 
-#: src/Statistics.cpp:677
+#: src/Statistics.cpp:683
 #, c-format
 msgid "Found Sources: %s"
 msgstr "Leitud allikaid: %s"
 
-#: src/Statistics.cpp:678
+#: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "Aktiivsed tõmbamised (tükid): %s"
 
-#: src/Statistics.cpp:680
+#: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "Seanss ÜL:AL suhe (Kokku): %s"
 
-#: src/Statistics.cpp:683
+#: src/Statistics.cpp:689
 #, c-format
 msgid "Average Downloadrate (Session): %s"
 msgstr "Keskmine tõmbamise kiirus (Seansil): %s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:690
 #, c-format
 msgid "Average Uploadrate (Session): %s"
 msgstr "Keskmine saatmise kiirus (Seansil): %s"
 
-#: src/Statistics.cpp:685
+#: src/Statistics.cpp:691
 #, c-format
 msgid "Max Downloadrate (Session): %s"
 msgstr "Maksimaalne tõmbamise kiirus (Seansil): %s"
 
-#: src/Statistics.cpp:686
+#: src/Statistics.cpp:692
 #, c-format
 msgid "Max Uploadrate (Session): %s"
 msgstr "Maksimaalne saatmise kiirus (Seansil): %s"
 
-#: src/Statistics.cpp:687
+#: src/Statistics.cpp:693
 #, c-format
 msgid "Reconnects: %i"
 msgstr "Ühenduse taastumised: %i"
 
-#: src/Statistics.cpp:688
+#: src/Statistics.cpp:694
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "Aeg alates esimesest saatmisest: %s"
 
-#: src/Statistics.cpp:689
+#: src/Statistics.cpp:695
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "Ühendatud serveriga alates: %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:696
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "Aktiivseid ühendusi (hinnang): %i"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:697
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "Saavutati maksimaalne arv ühendusi: %s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:698
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "Keskmiselt ühendusi (hinnang): %g"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:700
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "Suurim ühenduste arv (hinnang): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
 msgid "Clients"
 msgstr "Kliendid"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:709
 msgid "Filtered"
 msgstr "Filtreeritud"
 
-#: src/Statistics.cpp:705
+#: src/Statistics.cpp:711
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "Kokku: %i Tuntuid: %i"
 
-#: src/Statistics.cpp:708 src/muuli_wdr.cpp:1978
+#: src/Statistics.cpp:714 src/muuli_wdr.cpp:1978
 msgid "Servers"
 msgstr "Serverid"
 
-#: src/Statistics.cpp:709
+#: src/Statistics.cpp:715
 #, c-format
 msgid "Working Servers: %i"
 msgstr "Töötavad serverid: %i"
 
-#: src/Statistics.cpp:710
+#: src/Statistics.cpp:716
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "Ebaõnnestunud serverid: %i"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:717
 #, c-format
 msgid "Total: %s"
 msgstr "Kokku: %s"
 
-#: src/Statistics.cpp:712
+#: src/Statistics.cpp:718
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "Kustutatud serverid: %s"
 
-#: src/Statistics.cpp:713
+#: src/Statistics.cpp:719
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "Filtreeritud serverid: %s"
 
-#: src/Statistics.cpp:714
+#: src/Statistics.cpp:720
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "Kasutajaid töötavail servereil: %llu"
 
-#: src/Statistics.cpp:715
+#: src/Statistics.cpp:721
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "Faile töötavail servereil: %llu"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:722
 #, c-format
 msgid "Total Users: %llu"
 msgstr "Kokku kasutajaid: %llu"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:723
 #, c-format
 msgid "Total Files: %llu"
 msgstr "Kokku faile: %llu"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:724
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "Serveri hõivatus: %.2f%%"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:728
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "Jagatud failide arv: %s"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:729
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "Jagatud failide suurus kokku: %s"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:731
 #, c-format
 msgid "Average filesize: %s"
 msgstr "Keskmine faili suurus: %s"
 
-#: src/Statistics.cpp:866
+#: src/Statistics.cpp:872
 msgid "Operating System"
 msgstr "Operatsioonisüsteem"
 
-#: src/Statistics.cpp:891
+#: src/Statistics.cpp:897
 msgid "Not Received"
 msgstr "Pole vastu võetud"
 
@@ -2760,7 +2773,8 @@ msgstr "'%s' (IP:%s) saatis uue teate"
 #: src/ClientTCPSocket.cpp:821
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list -> Accepted"
-msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
 #: src/ClientTCPSocket.cpp:842
 #, c-format
@@ -2770,7 +2784,8 @@ msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 #: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Kinnitasid"
 
 #: src/ClientTCPSocket.cpp:914
 #, c-format
@@ -2779,7 +2794,8 @@ msgstr "Kasutaja %s (%u) küsis sinu jagatud kataloogide nimekirja -> Keeldusid"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> "
 "Kinnitasid"
@@ -2787,7 +2803,8 @@ msgstr ""
 #: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr "Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> keeldusid"
+msgstr ""
+"Kasutaja %s (%u) küsis sinu jagatudfailde loetelu kataloogile %s -> keeldusid"
 
 #: src/ClientTCPSocket.cpp:995
 #, c-format
@@ -2817,7 +2834,8 @@ msgstr "Kasutaja %s (%u) saatis soovimatu jagatud failide nimekirja"
 #: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Kasutaja %s (%u) keelas ligipääsu jagatud kataloogide/failide nimekirjale"
+msgstr ""
+"Kasutaja %s (%u) keelas ligipääsu jagatud kataloogide/failide nimekirjale"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2841,8 +2859,10 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Oled kindel et tahad tõmmata uut nodes.dat faili?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
-msgstr "Nii tehes eemaldad oma olemasolevad sõlmed ja taaskäivitad Kademlia ühenduse."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
+msgstr ""
+"Nii tehes eemaldad oma olemasolevad sõlmed ja taaskäivitad Kademlia ühenduse."
 
 #: src/KadDlg.cpp:198
 msgid "Continue?"
@@ -3312,7 +3332,8 @@ msgstr "HOIATUS: known.met ei saa avada."
 
 #: src/KnownFileList.cpp:86
 msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr "HOIATUS: Tuttavate failde loetelu on riknenud, sisaldades riknenud päist."
+msgstr ""
+"HOIATUS: Tuttavate failde loetelu on riknenud, sisaldades riknenud päist."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3506,7 +3527,8 @@ msgstr "Vigane IP formaat. Kasuta xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "See käsk vajab muutujat. Sobivad muutujad on: 'all', failinimi või number.\n"
+msgstr ""
+"See käsk vajab muutujat. Sobivad muutujad on: 'all', failinimi või number.\n"
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
@@ -3819,7 +3841,8 @@ msgstr "Määra ribalaiuse piirang."
 
 #: src/TextClient.cpp:884
 msgid "The value given to these commands has to be in kilobytes/sec.\n"
-msgstr "Väärtus, mis nendele käskudele antakse, peab olema kilobaiti/sekundis.\n"
+msgstr ""
+"Väärtus, mis nendele käskudele antakse, peab olema kilobaiti/sekundis.\n"
 
 #: src/TextClient.cpp:885
 msgid "Set upload bandwidth limit."
@@ -3958,7 +3981,8 @@ msgstr "Näita järjekorda/nimekirja."
 
 #: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Näitab saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
+msgstr ""
+"Näitab saatmise/tõmbamise järjekorda, serveri jagatud failide loetelu.\n"
 
 #: src/TextClient.cpp:939
 msgid "Show upload queue."
@@ -4091,7 +4115,8 @@ msgstr[1] "Laetud %d riigilipu pilti."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "Oled kindel et tahad katkestada ja kustutada kõik selle kategooria failid?"
+msgstr ""
+"Oled kindel et tahad katkestada ja kustutada kõik selle kategooria failid?"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
@@ -4272,7 +4297,8 @@ msgstr ""
 "siia)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Kas soovid õnnestunult imporditud tõmmatud failide allikad kustutada?"
 
 #: src/PartFileConvert.cpp:702
@@ -4458,7 +4484,8 @@ msgid "Commit"
 msgstr "Jõusta"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr "Klikka siia, et lisada ed2k link tekstiväljalt tõmbamise järjekorda."
 
 #: src/muuli_wdr.cpp:85
@@ -4473,7 +4500,8 @@ msgstr "Laadimine..."
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
-msgstr "Siin näidatakse sündmusi. Kogu sündmuste loetelu on logis Serverid lehel."
+msgstr ""
+"Siin näidatakse sündmusi. Kogu sündmuste loetelu on logis Serverid lehel."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -5029,7 +5057,8 @@ msgstr "Vähenda Ribale ikooniks"
 msgid ""
 "Enabling this will make aMule minimize to the System Tray, rather than the "
 "taskbar."
-msgstr "Valituna vähendab aMule ennast pigem Süsteemiribale, kui tööriistaribale."
+msgstr ""
+"Valituna vähendab aMule ennast pigem Süsteemiribale, kui tööriistaribale."
 
 #: src/muuli_wdr.cpp:1663
 msgid "Tooltip Delay Time in secs"
@@ -5137,7 +5166,8 @@ msgstr "Laiendatud kliendi UDP Port:"
 
 #: src/muuli_wdr.cpp:1840
 msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr "Seda UDP porti kasutatkse laiendatud omadustega ED2K ja Kad võrgu puhul"
+msgstr ""
+"Seda UDP porti kasutatkse laiendatud omadustega ED2K ja Kad võrgu puhul"
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5313,7 +5343,9 @@ msgstr "Eralda kettaruum uute failide jaoks"
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr "Eraldab uuet failide jaoks vajamineva kettaruumi, seeläbi väheneb faili fragmenteerumine"
+msgstr ""
+"Eraldab uuet failide jaoks vajamineva kettaruumi, seeläbi väheneb faili "
+"fragmenteerumine"
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming Directory :"
@@ -5836,7 +5868,8 @@ msgid "Filter clients"
 msgstr "Filtreeri kliente"
 
 #: src/muuli_wdr.cpp:3238
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Rakenda klientide IP filtreerimine failis ~/.aMule/ipfilter.dat defineeritud "
 "aadressidele."
@@ -5846,7 +5879,8 @@ msgid "Filter servers"
 msgstr "Filtreeri servereid"
 
 #: src/muuli_wdr.cpp:3243
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Rakenda serverite IP filtreerimine failis ~/.aMule/ipfilter.dat defineeritud "
 "aadressidele."
@@ -5940,7 +5974,8 @@ msgid "Online Signature Directory:"
 msgstr "Online Allkirja asukoha kataloog:"
 
 #: src/muuli_wdr.cpp:3358
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Siin saad valida kataloogi kus asub sinu Online Allkirja fail."
 
 #: src/muuli_wdr.cpp:3387 src/muuli_wdr.cpp:3426 src/muuli_wdr.cpp:3628
@@ -6122,8 +6157,10 @@ msgid "You must specify a path for the category!"
 msgstr "Sa pead kategooria jaoks asukoha defineerima!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
-msgstr "Ei suutnud luua kategooria sisendkataloogi. Palun defineeri kehtiv asukoht!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
+msgstr ""
+"Ei suutnud luua kategooria sisendkataloogi. Palun defineeri kehtiv asukoht!"
 
 #: src/ExternalConnector.cpp:141
 #, c-format
@@ -6688,7 +6725,8 @@ msgstr "Server.met faili ei leitud."
 #: src/ServerList.cpp:96
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr "server.met faili '%s' laadimine ebaõnnestus, arusaamatu formaat sattus ette."
+msgstr ""
+"server.met faili '%s' laadimine ebaõnnestus, arusaamatu formaat sattus ette."
 
 #: src/ServerList.cpp:102
 msgid "Failed to open server.met!"
@@ -6697,7 +6735,8 @@ msgstr "Ei saanud avada server.met faili!"
 #: src/ServerList.cpp:113
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr "Server.met fail on riknenud, leidsin vigase versiooni sildi: 0x%x, suurus %i"
+msgstr ""
+"Server.met fail on riknenud, leidsin vigase versiooni sildi: 0x%x, suurus %i"
 
 #: src/ServerList.cpp:168
 #, c-format
@@ -6788,7 +6827,8 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "Kohalik server on IPFiltri poolt väljafiltreeritud, ühendud teise serveriga!"
+msgstr ""
+"Kohalik server on IPFiltri poolt väljafiltreeritud, ühendud teise serveriga!"
 
 #: src/UserEvents.cpp:132
 #, c-format
@@ -6883,7 +6923,8 @@ msgstr "See on testversioon, mida igapäevaselt uuendatakse ja\n"
 
 #: src/amule.cpp:1310
 msgid "we give no warranty it won't break anything, burn your house,\n"
-msgstr "me ei anna mingit garantiid, et see ei lõhu midagi, ei süüta sinu elamist\n"
+msgstr ""
+"me ei anna mingit garantiid, et see ei lõhu midagi, ei süüta sinu elamist\n"
 
 #: src/amule.cpp:1311
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
@@ -6895,7 +6936,8 @@ msgstr ""
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr "Selles versioonis on turvalisusest johtuvalt muudetud järgmisi seadeid:\n"
+msgstr ""
+"Selles versioonis on turvalisusest johtuvalt muudetud järgmisi seadeid:\n"
 
 #: src/amule.cpp:1316
 msgid ""
@@ -7068,7 +7110,8 @@ msgstr "Ühendus Kad võrguga katkestatud"
 msgid ""
 "Kad network cannot be used if UDP port is disabled on preferences, not "
 "starting."
-msgstr "Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
+msgstr ""
+"Kad võrku ei saa kasutada kui seadetes on UDP port väljalülitatud, ei ühendu."
 
 #: src/amule.cpp:2192
 msgid "Kad network disabled on preferences, not connecting."
@@ -7081,4 +7124,3 @@ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
-
