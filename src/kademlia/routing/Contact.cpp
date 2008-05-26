@@ -71,23 +71,9 @@ CContact::CContact(const CUInt128 &clientID, uint32_t ip, uint16_t udpPort, uint
 	theStats::AddKadNode();
 }
 
-void CContact::Copy(const CContact& from) throw()
+CContact::CContact(const CContact& k1)
 {
-	m_clientID = from.m_clientID;
-	m_distance = from.m_distance;
-	m_ip = from.m_ip;
-	m_tcpPort = from.m_tcpPort;
-	m_udpPort = from.m_udpPort;
-	m_inUse = from.m_inUse;
-	m_lastTypeSet = from.m_lastTypeSet;
-	m_expires = from.m_expires;
-	m_created = from.m_created;
-	m_type = from.m_type;
-	m_version = from.m_version;
-	m_checkKad2 = from.m_checkKad2;
-	m_ipVerified = from.m_ipVerified;
-	m_udpKey = from.m_udpKey;
-
+	*this = k1;
 	theStats::AddKadNode();
 }
 

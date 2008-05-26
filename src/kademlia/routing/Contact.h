@@ -55,7 +55,7 @@ public:
 		const CKadUDPKey& kadKey, bool ipVerified,
 		const CUInt128 &target = CKademlia::GetPrefs()->GetKadID());
 
-	CContact& operator=(const CContact& k1) throw()		{ Copy(k1); return *this; }
+	CContact(const CContact& k1);
 
 	const CUInt128& GetClientID() const throw()		{ return m_clientID; }
 	void SetClientID(const CUInt128& clientID) throw()	{ m_clientID = clientID; m_distance = CKademlia::GetPrefs()->GetKadID() ^ clientID; }
@@ -104,8 +104,6 @@ public:
 	void	 SetIPVerified(bool ipVerified) throw()		{ m_ipVerified = ipVerified; }
 
 private:
-	void	 Copy(const CContact& from) throw();
-
 	CUInt128	m_clientID;
 	CUInt128	m_distance;
 	uint32_t	m_ip;
