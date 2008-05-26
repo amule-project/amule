@@ -28,13 +28,8 @@
 
 #include <tags/FileTags.h>
 
-#include <wx/utils.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/log.h>		// Needed for wxLogNull
-
-#ifdef __WXMSW__
-	#include <wx/msw/registry.h> // Do_not_auto_remove
-#endif
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"		// Needed for a number of defines
@@ -288,44 +283,7 @@ wxString GetFiletypeByName(const CPath& filename, bool translated)
 }
 
 
-// Get the max number of connections that the OS supports, or -1 for default
-int GetMaxConnections()
-{
-	int maxconn = -1;
-#ifdef __WXMSW__
-	// Try to get the max connection value in the registry
-	wxRegKey key( wxT("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections") );
-	wxString value;
-	if ( key.Exists() ) {
-		value = key.QueryDefaultValue();
-	}
-	if ( !value.IsEmpty() && value.IsNumber() ) {
-		long mc;
-		value.ToLong(&mc);
-		maxconn = (int)mc;
-	} else {
-		switch (wxGetOsVersion()) {
-		case wxOS_WINDOWS_9X:
-			// This includes all Win9x versions
-			maxconn = 50;
-			break;
-		case wxOS_WINDOWS_NT:
-			// This includes NT based windows
-			maxconn = 500;
-			break;
-		default:
-			// Anything else. Let aMule decide...
-			break;
-		}
-	}
-#else
-	// Any other OS can just use the default number of connections
-#endif
-	return maxconn;
-}
-
-
-// Return the text assosiated with a rating of a file
+// Return the text associated with a rating of a file
 wxString GetRateString(uint16 rate)
 {
 	switch ( rate ) {

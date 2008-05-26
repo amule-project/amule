@@ -109,3 +109,43 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t WXUNUSED(siz
 }
 
 #endif
+
+#ifdef __WXMSW__
+#include <wx/msw/registry.h>
+#include <wx/utils.h>
+
+// Get the max number of connections that the OS supports, or -1 for default
+int PlatformSpecific::GetMaxConnections()
+{
+	int maxconn = -1;
+	// Try to get the max connection value in the registry
+	wxRegKey key( wxT("HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\VxD\\MSTCP\\MaxConnections") );
+	wxString value;
+	if ( key.Exists() ) {
+		value = key.QueryDefaultValue();
+	}
+	if ( !value.IsEmpty() && value.IsNumber() ) {
+		long mc;
+		value.ToLong(&mc);
+		maxconn = (int)mc;
+	} else {
+		switch (wxGetOsVersion()) {
+		case wxOS_WINDOWS_9X:
+			// This includes all Win9x versions
+			maxconn = 50;
+			break;
+		case wxOS_WINDOWS_NT:
+			// This includes NT based windows
+			maxconn = 500;
+			break;
+		default:
+			// Anything else. Let aMule decide...
+			break;
+		}
+	}
+
+	return maxconn;
+}
+#endif
+
+

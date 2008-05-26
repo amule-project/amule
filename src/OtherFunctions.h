@@ -261,10 +261,7 @@ wxString GetFiletypeDesc(FileType type, bool translated = true);
 wxString GetFiletypeByName(const CPath& filename, bool translated = true);
 
 
-// Returns the max number of connections the current OS can handle.
-// Currently anything but windows will return the default value (-1);
-int GetMaxConnections();
-// Returns the name assosiated with a category value.
+// Returns the name associated with a category value.
 wxString GetCatTitle(int catid);
 
 /* Other */
