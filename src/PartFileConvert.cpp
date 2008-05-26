@@ -633,7 +633,7 @@ CConvertListCtrl::CConvertListCtrl(wxWindow* parent, wxWindowID winid, const wxP
 
 #ifndef __WXMSW__
 /* XPM */
-static char * convert_xpm[] = {
+static const char * convert_xpm[] = {
 "16 16 9 1",
 " 	c None",
 ".	c #B20000",
