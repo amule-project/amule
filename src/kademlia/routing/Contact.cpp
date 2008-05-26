@@ -87,6 +87,8 @@ void CContact::Copy(const CContact& from) throw()
 	m_checkKad2 = from.m_checkKad2;
 	m_ipVerified = from.m_ipVerified;
 	m_udpKey = from.m_udpKey;
+
+	theStats::AddKadNode();
 }
 
 void CContact::CheckingType() throw()
