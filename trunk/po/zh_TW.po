@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-24 03:31+0200\n"
+"POT-Creation-Date: 2008-05-26 03:31+0200\n"
 "PO-Revision-Date: 2008-04-02 23:15+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -133,7 +133,7 @@ msgstr "無法獲取用戶 '%s' 的共享文件"
 #: src/BaseClient.cpp:1718 src/BaseClient.cpp:2240 src/BaseClient.cpp:2512
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
-#: src/ExternalConn.cpp:251 src/Statistics.cpp:697 src/Statistics.cpp:878
+#: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
@@ -363,7 +363,7 @@ msgstr "完整源"
 msgid "Directory Path"
 msgstr "所在目錄"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:721
+#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
 #: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "分享的檔案"
@@ -1323,7 +1323,7 @@ msgstr "正在用 Kad 連接"
 msgid "Too many Kad connections"
 msgstr "Kad 連接過多"
 
-#: src/DataToText.cpp:71 src/Statistics.cpp:704 src/TransferWnd.cpp:309
+#: src/DataToText.cpp:71 src/Statistics.cpp:710 src/TransferWnd.cpp:309
 #: src/ClientListCtrl.cpp:838
 msgid "Banned"
 msgstr "封殺"
@@ -1569,7 +1569,7 @@ msgid "Static"
 msgstr "靜態"
 
 #
-#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:865
+#: src/ServerListCtrl.cpp:97 src/Statistics.cpp:871
 msgid "Version"
 msgstr "版本"
 
@@ -1891,8 +1891,8 @@ msgstr "訊息"
 msgid "Messages Window"
 msgstr "訊息視窗"
 
-#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:637
-#: src/Statistics.cpp:931 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
+#: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
 #: src/muuli_wdr.cpp:3825
 msgid "Statistics"
 msgstr "統計"
@@ -1938,7 +1938,7 @@ msgstr ""
 msgid "General"
 msgstr "一般"
 
-#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:682
+#: src/PrefsUnifiedDlg.cpp:170 src/Statistics.cpp:688
 msgid "Connection"
 msgstr "連線"
 
@@ -2465,240 +2465,245 @@ msgstr "平均文件："
 msgid "Not running"
 msgstr "沒有運行"
 
-#: src/Statistics.cpp:642 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
 #, c-format
 msgid "Uptime: %s"
 msgstr "執行時間: %s"
 
-#: src/Statistics.cpp:644 src/muuli_wdr.cpp:643
+#: src/Statistics.cpp:646 src/muuli_wdr.cpp:643
 msgid "Transfer"
 msgstr "傳輸"
 
-#: src/Statistics.cpp:646 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
+#: src/Statistics.cpp:648 src/TransferWnd.cpp:445 src/muuli_wdr.cpp:463
 msgid "Uploads"
 msgstr "上傳"
 
-#: src/Statistics.cpp:647
+#: src/Statistics.cpp:649
 #, c-format
 msgid "Uploaded Data (Session (Total)): %s"
 msgstr "本次上傳（全部）： %s"
 
-#: src/Statistics.cpp:649 src/Statistics.cpp:668
+#: src/Statistics.cpp:651 src/Statistics.cpp:672
 #, c-format
 msgid "Total Overhead (Packets): %s"
 msgstr "總開銷 （數據包）： %s"
 
-#: src/Statistics.cpp:650 src/Statistics.cpp:669
+#: src/Statistics.cpp:652 src/Statistics.cpp:673
 #, c-format
 msgid "File Request Overhead (Packets): %s"
 msgstr "文件請求開銷（數據包）： %s"
 
-#: src/Statistics.cpp:652 src/Statistics.cpp:671
+#: src/Statistics.cpp:654 src/Statistics.cpp:675
 #, c-format
 msgid "Source Exchange Overhead (Packets): %s"
 msgstr "源交換開銷（數據包）： %s"
 
-#: src/Statistics.cpp:654 src/Statistics.cpp:673
+#: src/Statistics.cpp:656 src/Statistics.cpp:677
 #, c-format
 msgid "Server Overhead (Packets): %s"
 msgstr "服務器開銷（數據包）： %s"
 
-#: src/Statistics.cpp:656 src/Statistics.cpp:675
+#: src/Statistics.cpp:658 src/Statistics.cpp:679
 #, c-format
 msgid "Kad Overhead (Packets): %s"
 msgstr "Kad 開銷（數據包）：%s"
 
-#: src/Statistics.cpp:658
+#: src/Statistics.cpp:660 src/Statistics.cpp:681
+#, c-format
+msgid "Crypt overhead (UDP): %s"
+msgstr ""
+
+#: src/Statistics.cpp:662
 #, c-format
 msgid "Active Uploads: %s"
 msgstr "活動上傳：%s"
 
-#: src/Statistics.cpp:659
+#: src/Statistics.cpp:663
 #, c-format
 msgid "Waiting Uploads: %s"
 msgstr "等待上傳：%s"
 
-#: src/Statistics.cpp:660
+#: src/Statistics.cpp:664
 #, c-format
 msgid "Total successful upload sessions: %s"
 msgstr "成功上傳會話總數：%s"
 
-#: src/Statistics.cpp:661
+#: src/Statistics.cpp:665
 #, c-format
 msgid "Total failed upload sessions: %s"
 msgstr "失敗上傳會話總數：%s"
 
-#: src/Statistics.cpp:663
+#: src/Statistics.cpp:667
 #, c-format
 msgid "Average upload time: %s"
 msgstr "平均上傳時間: %s"
 
-#: src/Statistics.cpp:665 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "下載"
 
-#: src/Statistics.cpp:666
+#: src/Statistics.cpp:670
 #, c-format
 msgid "Downloaded Data (Session (Total)): %s"
 msgstr "本次下載（總共）： %s"
 
-#: src/Statistics.cpp:677
+#: src/Statistics.cpp:683
 #, c-format
 msgid "Found Sources: %s"
 msgstr "發現的源：%s"
 
-#: src/Statistics.cpp:678
+#: src/Statistics.cpp:684
 #, c-format
 msgid "Active Downloads (chunks): %s"
 msgstr "活動下載（塊數）：%s"
 
-#: src/Statistics.cpp:680
+#: src/Statistics.cpp:686
 #, c-format
 msgid "Session UL:DL Ratio (Total): %s"
 msgstr "本次上傳下載比率：%s"
 
-#: src/Statistics.cpp:683
+#: src/Statistics.cpp:689
 #, c-format
 msgid "Average Downloadrate (Session): %s"
 msgstr "平均下載速度(本次運行)：%s"
 
-#: src/Statistics.cpp:684
+#: src/Statistics.cpp:690
 #, c-format
 msgid "Average Uploadrate (Session): %s"
 msgstr "平均上傳速度(本次運行)：%s"
 
-#: src/Statistics.cpp:685
+#: src/Statistics.cpp:691
 #, c-format
 msgid "Max Downloadrate (Session): %s"
 msgstr "最大下載速度(本次運行)：%s"
 
-#: src/Statistics.cpp:686
+#: src/Statistics.cpp:692
 #, c-format
 msgid "Max Uploadrate (Session): %s"
 msgstr "最大上傳速度(本次運行)：%s"
 
-#: src/Statistics.cpp:687
+#: src/Statistics.cpp:693
 #, c-format
 msgid "Reconnects: %i"
 msgstr "再連線: %i"
 
-#: src/Statistics.cpp:688
+#: src/Statistics.cpp:694
 #, c-format
 msgid "Time Since First Transfer: %s"
 msgstr "首次傳輸到現在時間: %s"
 
-#: src/Statistics.cpp:689
+#: src/Statistics.cpp:695
 #, c-format
 msgid "Connected To Server Since: %s"
 msgstr "與伺服器連線時間: %s"
 
-#: src/Statistics.cpp:690
+#: src/Statistics.cpp:696
 #, c-format
 msgid "Active Connections (estimate): %i"
 msgstr "活躍連接 (估計值): %i"
 
-#: src/Statistics.cpp:691
+#: src/Statistics.cpp:697
 #, c-format
 msgid "Max Connection Limit Reached: %s"
 msgstr "達到最大連接數：%s"
 
-#: src/Statistics.cpp:692
+#: src/Statistics.cpp:698
 #, c-format
 msgid "Average Connections (estimate): %g"
 msgstr "平均連接數(估計)：%g"
 
-#: src/Statistics.cpp:694
+#: src/Statistics.cpp:700
 #, c-format
 msgid "Peak Connections (estimate): %i"
 msgstr "最高連接 (估計值): %i"
 
-#: src/Statistics.cpp:696 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
+#: src/Statistics.cpp:702 src/TransferWnd.cpp:453 src/ClientListCtrl.cpp:252
 msgid "Clients"
 msgstr "客戶"
 
-#: src/Statistics.cpp:703
+#: src/Statistics.cpp:709
 msgid "Filtered"
 msgstr "被過濾"
 
-#: src/Statistics.cpp:705
+#: src/Statistics.cpp:711
 #, c-format
 msgid "Total: %i Known: %i"
 msgstr "總數: %i 已知: %i"
 
-#: src/Statistics.cpp:708 src/muuli_wdr.cpp:1978
+#: src/Statistics.cpp:714 src/muuli_wdr.cpp:1978
 msgid "Servers"
 msgstr "伺服器"
 
-#: src/Statistics.cpp:709
+#: src/Statistics.cpp:715
 #, c-format
 msgid "Working Servers: %i"
 msgstr "有效服務器：%i"
 
-#: src/Statistics.cpp:710
+#: src/Statistics.cpp:716
 #, c-format
 msgid "Failed Servers: %i"
 msgstr "無效服務器：%i"
 
-#: src/Statistics.cpp:711
+#: src/Statistics.cpp:717
 #, c-format
 msgid "Total: %s"
 msgstr "總共：%s"
 
-#: src/Statistics.cpp:712
+#: src/Statistics.cpp:718
 #, c-format
 msgid "Deleted Servers: %s"
 msgstr "已刪除服務器：%s"
 
-#: src/Statistics.cpp:713
+#: src/Statistics.cpp:719
 #, c-format
 msgid "Filtered Servers: %s"
 msgstr "被過濾的服務器：%s"
 
-#: src/Statistics.cpp:714
+#: src/Statistics.cpp:720
 #, c-format
 msgid "Users on Working Servers: %llu"
 msgstr "有效服務器中的用戶數： %llu"
 
-#: src/Statistics.cpp:715
+#: src/Statistics.cpp:721
 #, c-format
 msgid "Files on Working Servers: %llu"
 msgstr "有效服務器中的文件數： %llu"
 
-#: src/Statistics.cpp:716
+#: src/Statistics.cpp:722
 #, c-format
 msgid "Total Users: %llu"
 msgstr "用戶總數：%llu"
 
-#: src/Statistics.cpp:717
+#: src/Statistics.cpp:723
 #, c-format
 msgid "Total Files: %llu"
 msgstr "文件總數：%llu"
 
-#: src/Statistics.cpp:718
+#: src/Statistics.cpp:724
 #, c-format
 msgid "Server Occupation: %.2f%%"
 msgstr "伺服器占用率: %.2f%%"
 
-#: src/Statistics.cpp:722
+#: src/Statistics.cpp:728
 #, c-format
 msgid "Number of Shared Files: %s"
 msgstr "共享文件數：%s"
 
-#: src/Statistics.cpp:723
+#: src/Statistics.cpp:729
 #, c-format
 msgid "Total size of Shared Files: %s"
 msgstr "分享的檔案總和: %s"
 
-#: src/Statistics.cpp:725
+#: src/Statistics.cpp:731
 #, c-format
 msgid "Average filesize: %s"
 msgstr "平均檔案大小: %s"
 
-#: src/Statistics.cpp:866
+#: src/Statistics.cpp:872
 msgid "Operating System"
 msgstr "操作系統"
 
-#: src/Statistics.cpp:891
+#: src/Statistics.cpp:897
 msgid "Not Received"
 msgstr "沒有收到"
 
