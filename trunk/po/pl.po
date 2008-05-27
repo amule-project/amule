@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-26 03:31+0200\n"
+"POT-Creation-Date: 2008-05-27 03:30+0200\n"
 "PO-Revision-Date: 2008-05-03 13:50+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -71,22 +71,22 @@ msgid "Complete"
 msgstr "Ukończono"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:47 src/PartFile.cpp:3855
-#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:748
+#: src/TransferWnd.cpp:351 src/OtherFunctions.cpp:706
 msgid "Paused"
 msgstr "Wstrzymano"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:49 src/PartFile.cpp:3858
-#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:747
+#: src/TransferWnd.cpp:350 src/OtherFunctions.cpp:705
 msgid "Erroneous"
 msgstr "Błędne"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:52 src/PartFile.cpp:3865
-#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:746
+#: src/TransferWnd.cpp:349 src/OtherFunctions.cpp:704
 msgid "Downloading"
 msgstr "Pobieranie"
 
 #: src/libs/ec/cpp/ECSpecialTags.cpp:54 src/PartFile.cpp:3867
-#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:745
+#: src/TransferWnd.cpp:348 src/OtherFunctions.cpp:703
 msgid "Waiting"
 msgstr "Czeka"
 
@@ -1788,8 +1788,8 @@ msgstr " Copyright (C) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:472 src/PrefsUnifiedDlg.cpp:520
-#: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:472 src/PrefsUnifiedDlg.cpp:532
+#: src/PrefsUnifiedDlg.cpp:627 src/PrefsUnifiedDlg.cpp:714 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Wiadomość"
@@ -2018,7 +2018,7 @@ msgstr "Debugowanie"
 msgid "User Defined"
 msgstr "Użytkownika"
 
-#: src/PrefsUnifiedDlg.cpp:498
+#: src/PrefsUnifiedDlg.cpp:510
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -2026,15 +2026,15 @@ msgstr ""
 "aMule musi zostać zrestartowany przed wprowadzeniem tych zmian:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:505
+#: src/PrefsUnifiedDlg.cpp:517
 msgid "- TCP port changed.\n"
 msgstr "- Zmieniono port TCP.\n"
 
-#: src/PrefsUnifiedDlg.cpp:510
+#: src/PrefsUnifiedDlg.cpp:522
 msgid "- UDP port changed.\n"
 msgstr "- Zmieniono port UDP.\n"
 
-#: src/PrefsUnifiedDlg.cpp:519
+#: src/PrefsUnifiedDlg.cpp:531
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "'Auto-update serverlist at startup' will be disabled."
@@ -2042,7 +2042,7 @@ msgstr ""
 "Twoja lista automatycznych aktualizacji serwerów jest pusta.\n"
 "Aktualizowanie listy serwerów podczas uruchamiania zostanie wyłączone."
 
-#: src/PrefsUnifiedDlg.cpp:526
+#: src/PrefsUnifiedDlg.cpp:538
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2051,19 +2051,19 @@ msgstr ""
 "Połączenia zewnętrzne nie mogą być włączone dopóki nie zostanie podane "
 "poprawne hasło."
 
-#: src/PrefsUnifiedDlg.cpp:538
+#: src/PrefsUnifiedDlg.cpp:550
 msgid "- Language changed.\n"
 msgstr "- Zmieniono język.\n"
 
-#: src/PrefsUnifiedDlg.cpp:543
+#: src/PrefsUnifiedDlg.cpp:555
 msgid "- Temp folder changed.\n"
 msgstr "- Zmieniono folder tymczasowy.\n"
 
-#: src/PrefsUnifiedDlg.cpp:568 src/muuli_wdr.cpp:112
+#: src/PrefsUnifiedDlg.cpp:580 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Wysł: 0.0 | Pobr: 0.0"
 
-#: src/PrefsUnifiedDlg.cpp:610
+#: src/PrefsUnifiedDlg.cpp:622
 msgid ""
 "Both ED2K and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -2072,7 +2072,7 @@ msgstr ""
 "Nie będzie możliwe połączenie, dopóki nie włączysz przynajmniej jednej z "
 "nich."
 
-#: src/PrefsUnifiedDlg.cpp:614
+#: src/PrefsUnifiedDlg.cpp:626
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2080,7 +2080,7 @@ msgstr ""
 "Kad nie uruchomi się, jeśli twój port UDP jest wyłączony.\n"
 "Włącz port UDP lub wyłącz Kad."
 
-#: src/PrefsUnifiedDlg.cpp:623
+#: src/PrefsUnifiedDlg.cpp:635
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2090,11 +2090,11 @@ msgstr ""
 "Musisz zrestartować teraz aMule.\n"
 "Jeśli nie zrestartujesz go teraz, nie narzekaj, jeśli stanie się coś złego.\n"
 
-#: src/PrefsUnifiedDlg.cpp:623
+#: src/PrefsUnifiedDlg.cpp:635
 msgid "WARNING"
 msgstr "UWAGA"
 
-#: src/PrefsUnifiedDlg.cpp:701
+#: src/PrefsUnifiedDlg.cpp:713
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2104,41 +2104,41 @@ msgstr ""
 "Proszę wpisać co najmniej jeden URL wskazujący poprawny plik server.met.\n"
 " Kliknij na przycisku \"Lista\", aby wpisać URL."
 
-#: src/PrefsUnifiedDlg.cpp:842
+#: src/PrefsUnifiedDlg.cpp:854
 msgid "Temporary files"
 msgstr "Pliki tymczasowe"
 
-#: src/PrefsUnifiedDlg.cpp:847
+#: src/PrefsUnifiedDlg.cpp:859
 msgid "Incoming files"
 msgstr "Pliki przychodzące"
 
-#: src/PrefsUnifiedDlg.cpp:852
+#: src/PrefsUnifiedDlg.cpp:864
 msgid "Online Signatures"
 msgstr "Sygnatury Online"
 
-#: src/PrefsUnifiedDlg.cpp:865
+#: src/PrefsUnifiedDlg.cpp:877
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Wybierz folder na %s"
 
-#: src/PrefsUnifiedDlg.cpp:885
+#: src/PrefsUnifiedDlg.cpp:897
 msgid "Browse for videoplayer"
 msgstr "Szukaj odtwarzacza filmów"
 
-#: src/PrefsUnifiedDlg.cpp:889
+#: src/PrefsUnifiedDlg.cpp:901
 msgid "Select browser"
 msgstr "Wybierz przeglądarkę"
 
-#: src/PrefsUnifiedDlg.cpp:895
+#: src/PrefsUnifiedDlg.cpp:907
 #, c-format
 msgid "Executable%s"
 msgstr "Program%s"
 
-#: src/PrefsUnifiedDlg.cpp:916
+#: src/PrefsUnifiedDlg.cpp:928
 msgid "Edit Serverlist"
 msgstr "Lista serwerów"
 
-#: src/PrefsUnifiedDlg.cpp:917
+#: src/PrefsUnifiedDlg.cpp:929
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2146,7 +2146,7 @@ msgstr ""
 "Dodaj jeden URL w każdej linii.\n"
 "Tylko jeden URL w każdej linii."
 
-#: src/PrefsUnifiedDlg.cpp:973
+#: src/PrefsUnifiedDlg.cpp:985
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
@@ -2154,7 +2154,7 @@ msgstr[0] "Opóźnienie odświeżania: %d sekunda"
 msgstr[1] "Opóźnienie odświeżania: %d sekundy"
 msgstr[2] "Opóźnienie odświeżania: %d sekund"
 
-#: src/PrefsUnifiedDlg.cpp:980
+#: src/PrefsUnifiedDlg.cpp:992
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
@@ -2162,12 +2162,12 @@ msgstr[0] "Czas dla przeciętnego wykresu: %d minuta"
 msgstr[1] "Czas dla przeciętnego wykresu: %d minuty"
 msgstr[2] "Czas dla przeciętnego wykresu: %d minut"
 
-#: src/PrefsUnifiedDlg.cpp:986
+#: src/PrefsUnifiedDlg.cpp:998
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Skala wykresu połączeń: %d"
 
-#: src/PrefsUnifiedDlg.cpp:992
+#: src/PrefsUnifiedDlg.cpp:1004
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
@@ -2175,7 +2175,7 @@ msgstr[0] "Opóźnienie odświeżania: %d sekunda"
 msgstr[1] "Opóźnienie odświeżania: %d sekundy"
 msgstr[2] "Opóźnienie odświeżania: %d sekund"
 
-#: src/PrefsUnifiedDlg.cpp:998
+#: src/PrefsUnifiedDlg.cpp:1010
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
@@ -2183,7 +2183,7 @@ msgstr[0] "Rozmiar bufora pliku: %d bajt"
 msgstr[1] "Rozmiar bufora pliku: %d bajty"
 msgstr[2] "Rozmiar bufora pliku: %d bajtów"
 
-#: src/PrefsUnifiedDlg.cpp:1004
+#: src/PrefsUnifiedDlg.cpp:1016
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
@@ -2191,7 +2191,7 @@ msgstr[0] "Rozmiar kolejki wysyłania: %d klient"
 msgstr[1] "Rozmiar kolejki wysyłania: %d klientów"
 msgstr[2] "Rozmiar kolejki wysyłania: %d klientów"
 
-#: src/PrefsUnifiedDlg.cpp:1011
+#: src/PrefsUnifiedDlg.cpp:1023
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
@@ -2199,32 +2199,32 @@ msgstr[0] "Odświeżanie połączeń do serwera co: %d minutę"
 msgstr[1] "Odświeżanie połączeń do serwera co: %d minuty"
 msgstr[2] "Odświeżanie połączeń do serwera co: %d minut"
 
-#: src/PrefsUnifiedDlg.cpp:1013
+#: src/PrefsUnifiedDlg.cpp:1025
 msgid "Server connection refresh interval: Disabled"
 msgstr "Odświeżanie połączeń do serwera co: Wyłączone"
 
-#: src/PrefsUnifiedDlg.cpp:1077
+#: src/PrefsUnifiedDlg.cpp:1089
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Wykonaj komendę przy wydarzeniu `%s'"
 
-#: src/PrefsUnifiedDlg.cpp:1080
+#: src/PrefsUnifiedDlg.cpp:1092
 msgid "Enable command execution on core"
 msgstr "Włącz wykonanie komendy w rdzeniu"
 
-#: src/PrefsUnifiedDlg.cpp:1088
+#: src/PrefsUnifiedDlg.cpp:1100
 msgid "Core command:"
 msgstr "Komenda rdzenia:"
 
-#: src/PrefsUnifiedDlg.cpp:1097
+#: src/PrefsUnifiedDlg.cpp:1109
 msgid "Enable command execution on GUI"
 msgstr "Włącz wykonanie komendy w GUI"
 
-#: src/PrefsUnifiedDlg.cpp:1105
+#: src/PrefsUnifiedDlg.cpp:1117
 msgid "GUI command:"
 msgstr "Komenda GUI:"
 
-#: src/PrefsUnifiedDlg.cpp:1114
+#: src/PrefsUnifiedDlg.cpp:1126
 msgid "The following variables will be replaced:"
 msgstr "Następujące zmienne zostaną zastąpione:"
 
@@ -2963,8 +2963,8 @@ msgstr "Podłączony do zdalnego amule"
 msgid "Connection failed "
 msgstr "Nieudane połączenie "
 
-#: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:127
-#: src/OtherFunctions.cpp:145 src/OtherFunctions.cpp:199 src/amule.cpp:852
+#: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
+#: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
 msgid "Error"
 msgstr "Błąd"
@@ -2995,7 +2995,7 @@ msgid "Transferred"
 msgstr "Przesłano"
 
 #: src/DownloadListCtrl.cpp:192 src/TransferWnd.cpp:347
-#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:744
+#: src/PartFileConvert.cpp:611 src/OtherFunctions.cpp:702
 msgid "Completed"
 msgstr "Zakończono"
 
@@ -3117,7 +3117,7 @@ msgid "Swap to this file"
 msgstr "Zamień na ten plik"
 
 #: src/DownloadListCtrl.cpp:1311 src/DownloadListCtrl.cpp:1614
-#: src/OtherFunctions.cpp:154 src/StatisticsDlg.cpp:100
+#: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1754 src/muuli_wdr.cpp:1767
 #: src/muuli_wdr.cpp:1780 src/muuli_wdr.cpp:1798 src/muuli_wdr.cpp:1811
 #: src/ClientListCtrl.cpp:634 src/ClientListCtrl.cpp:702
@@ -3349,7 +3349,7 @@ msgstr ""
 msgid "Insufficient Diskspace"
 msgstr "Niewystarczająca ilość wolnego miejsca na dysku"
 
-#: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:749
+#: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
 msgstr "Zatrzymany"
 
@@ -4179,38 +4179,38 @@ msgstr "Wymagane potwierdzenie"
 msgid "All others"
 msgstr "Wszystkie inne"
 
-#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:743
+#: src/TransferWnd.cpp:346 src/OtherFunctions.cpp:701
 msgid "Incomplete"
 msgstr "Niekompletne"
 
-#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:756
+#: src/TransferWnd.cpp:353 src/OtherFunctions.cpp:714
 msgid "Active"
 msgstr "Aktywny"
 
-#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:750
+#: src/TransferWnd.cpp:357 src/OtherFunctions.cpp:708
 msgid "Video"
 msgstr "Film"
 
-#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:233
-#: src/OtherFunctions.cpp:751 src/muuli_wdr.cpp:226
+#: src/TransferWnd.cpp:358 src/OtherFunctions.cpp:228
+#: src/OtherFunctions.cpp:709 src/muuli_wdr.cpp:226
 msgid "Audio"
 msgstr "Audio"
 
-#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:752
+#: src/TransferWnd.cpp:359 src/OtherFunctions.cpp:710
 msgid "Archive"
 msgstr "Archiwum"
 
-#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:247
-#: src/OtherFunctions.cpp:753 src/muuli_wdr.cpp:227
+#: src/TransferWnd.cpp:360 src/OtherFunctions.cpp:242
+#: src/OtherFunctions.cpp:711 src/muuli_wdr.cpp:227
 msgid "CD-Images"
 msgstr "Obrazy CD"
 
-#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:254
-#: src/OtherFunctions.cpp:754 src/muuli_wdr.cpp:228
+#: src/TransferWnd.cpp:361 src/OtherFunctions.cpp:249
+#: src/OtherFunctions.cpp:712 src/muuli_wdr.cpp:228
 msgid "Pictures"
 msgstr "Obrazki"
 
-#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:755
+#: src/TransferWnd.cpp:362 src/OtherFunctions.cpp:713
 msgid "Text"
 msgstr "Tekst"
 
@@ -4368,122 +4368,122 @@ msgstr "Czekam..."
 msgid "%s (Disk: %s)"
 msgstr "%s (Dysk: %s)"
 
-#: src/OtherFunctions.cpp:117
+#: src/OtherFunctions.cpp:112
 msgid "byte"
 msgid_plural "bytes"
 msgstr[0] "bajt"
 msgstr[1] "bajty"
 msgstr[2] "bajtów"
 
-#: src/OtherFunctions.cpp:119
+#: src/OtherFunctions.cpp:114
 msgid "kB"
 msgstr "kB"
 
-#: src/OtherFunctions.cpp:121 src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290
+#: src/OtherFunctions.cpp:116 src/muuli_wdr.cpp:267 src/muuli_wdr.cpp:290
 #: src/muuli_wdr.cpp:2123
 msgid "MB"
 msgstr "MB"
 
-#: src/OtherFunctions.cpp:123 src/muuli_wdr.cpp:268 src/muuli_wdr.cpp:291
+#: src/OtherFunctions.cpp:118 src/muuli_wdr.cpp:268 src/muuli_wdr.cpp:291
 msgid "GB"
 msgstr "GB"
 
-#: src/OtherFunctions.cpp:125
+#: src/OtherFunctions.cpp:120
 msgid "TB"
 msgstr "TB"
 
-#: src/OtherFunctions.cpp:137
+#: src/OtherFunctions.cpp:132
 msgid "k"
 msgstr "k"
 
-#: src/OtherFunctions.cpp:139
+#: src/OtherFunctions.cpp:134
 msgid "M"
 msgstr "M"
 
-#: src/OtherFunctions.cpp:141
+#: src/OtherFunctions.cpp:136
 msgid "G"
 msgstr "G"
 
-#: src/OtherFunctions.cpp:143
+#: src/OtherFunctions.cpp:138
 msgid "T"
 msgstr "T"
 
-#: src/OtherFunctions.cpp:152
+#: src/OtherFunctions.cpp:147
 msgid "byte/sec"
 msgid_plural "bytes/sec"
 msgstr[0] "bajt/sek"
 msgstr[1] "bajty/sek"
 msgstr[2] "bajtów/sek"
 
-#: src/OtherFunctions.cpp:156
+#: src/OtherFunctions.cpp:151
 msgid "MB/s"
 msgstr "MB/s"
 
-#: src/OtherFunctions.cpp:167 src/OtherFunctions.cpp:171
+#: src/OtherFunctions.cpp:162 src/OtherFunctions.cpp:166
 msgid "secs"
 msgstr "sek"
 
-#: src/OtherFunctions.cpp:179
+#: src/OtherFunctions.cpp:174
 msgid "mins"
 msgstr "min"
 
-#: src/OtherFunctions.cpp:186 src/OtherFunctions.cpp:196
+#: src/OtherFunctions.cpp:181 src/OtherFunctions.cpp:191
 msgid "hours"
 msgstr "godzin"
 
-#: src/OtherFunctions.cpp:194
+#: src/OtherFunctions.cpp:189
 msgid "Days"
 msgstr "Dni"
 
-#: src/OtherFunctions.cpp:226 src/muuli_wdr.cpp:231
+#: src/OtherFunctions.cpp:221 src/muuli_wdr.cpp:231
 msgid "Videos"
 msgstr "Filmy"
 
-#: src/OtherFunctions.cpp:240 src/muuli_wdr.cpp:225
+#: src/OtherFunctions.cpp:235 src/muuli_wdr.cpp:225
 msgid "Archives"
 msgstr "Archiwa"
 
-#: src/OtherFunctions.cpp:261 src/muuli_wdr.cpp:230
+#: src/OtherFunctions.cpp:256 src/muuli_wdr.cpp:230
 msgid "Texts"
 msgstr "Teksty"
 
-#: src/OtherFunctions.cpp:268 src/muuli_wdr.cpp:229
+#: src/OtherFunctions.cpp:263 src/muuli_wdr.cpp:229
 msgid "Programs"
 msgstr "Programy"
 
-#: src/OtherFunctions.cpp:275 src/muuli_wdr.cpp:224
+#: src/OtherFunctions.cpp:270 src/muuli_wdr.cpp:224
 msgid "Any"
 msgstr "Dowolny"
 
-#: src/OtherFunctions.cpp:332 src/OtherFunctions.cpp:338 src/muuli_wdr.cpp:906
+#: src/OtherFunctions.cpp:290 src/OtherFunctions.cpp:296 src/muuli_wdr.cpp:906
 msgid "Not rated"
 msgstr "Nieoceniony"
 
-#: src/OtherFunctions.cpp:333 src/muuli_wdr.cpp:907
+#: src/OtherFunctions.cpp:291 src/muuli_wdr.cpp:907
 msgid "Invalid / Corrupt / Fake"
 msgstr "Nieprawidłowy / Uszkodzony / Fałszywy"
 
-#: src/OtherFunctions.cpp:334 src/muuli_wdr.cpp:908
+#: src/OtherFunctions.cpp:292 src/muuli_wdr.cpp:908
 msgid "Poor"
 msgstr "Marny"
 
-#: src/OtherFunctions.cpp:335 src/muuli_wdr.cpp:909
+#: src/OtherFunctions.cpp:293 src/muuli_wdr.cpp:909
 msgid "Fair"
 msgstr "W miarę"
 
-#: src/OtherFunctions.cpp:336 src/muuli_wdr.cpp:910
+#: src/OtherFunctions.cpp:294 src/muuli_wdr.cpp:910
 msgid "Good"
 msgstr "Dobry"
 
-#: src/OtherFunctions.cpp:337 src/muuli_wdr.cpp:911
+#: src/OtherFunctions.cpp:295 src/muuli_wdr.cpp:911
 msgid "Excellent"
 msgstr "Znakomity"
 
-#: src/OtherFunctions.cpp:741
+#: src/OtherFunctions.cpp:699
 msgid "all"
 msgstr "wszystkie"
 
-#: src/OtherFunctions.cpp:742
+#: src/OtherFunctions.cpp:700
 msgid "all others"
 msgstr "wszystkie inne"
 
