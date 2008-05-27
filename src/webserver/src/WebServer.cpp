@@ -249,46 +249,6 @@ void CWebServerBase::Print(const wxString &s)
 	webInterface->Show(s);
 }
 
-//returns web server listening port
-long CWebServerBase::GetWSPrefs(void)
-{
-	CECPacket req(EC_OP_GET_PREFERENCES);
-	req.AddTag(CECTag(EC_TAG_SELECT_PREFS, (uint32)EC_PREFS_REMOTECONTROLS));
-	const CECPacket *reply = webInterface->SendRecvMsg_v2(&req);
-	if (!reply) {
-		return -1;
-	}
-	// we have selected only the webserver preferences
-	const CECTag *wsprefs = reply->GetTagByIndexSafe(0);
-	const CECTag *tag = wsprefs->GetTagByName(EC_TAG_WEBSERVER_PORT);
-	long int wsport = tag ? (long int)tag->GetInt() : -1;
-
-	if (webInterface->m_LoadSettingsFromAmule) {
-		webInterface->m_AdminPass = wsprefs->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
-
-		const CECTag *webserverGuest = wsprefs->GetTagByName(EC_TAG_WEBSERVER_GUEST);
-		if (webserverGuest) {
-			webInterface->m_AllowGuest = true;
-			webInterface->m_GuestPass = webserverGuest->GetTagByNameSafe(EC_TAG_PASSWD_HASH)->GetMD4Data();
-		} else {
-			webInterface->m_AllowGuest = false;
-		}
-
-		// we only need to check the presence of this tag
-		webInterface->m_UseGzip = wsprefs->GetTagByName(EC_TAG_WEBSERVER_USEGZIP) != NULL;
-	
-		const CECTag *webserverRefresh = wsprefs->GetTagByName(EC_TAG_WEBSERVER_REFRESH);
-		if (webserverRefresh) {
-			webInterface->m_PageRefresh = webserverRefresh->GetInt();
-		} else {
-			webInterface->m_PageRefresh = 120;
-		}
-	}
-
-	delete reply;
-
-	return wsport;
-}
 
 void CWebServerBase::StartServer()
 {
