@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 03:30+0200\n"
+"POT-Creation-Date: 2008-05-28 03:31+0200\n"
 "PO-Revision-Date: 2008-05-03 13:50+0200\n"
 "Last-Translator: Mateusz Butowski\n"
 "Language-Team:  <pl@li.org>\n"
@@ -539,76 +539,76 @@ msgstr[2] "Zapisano %d kontaktów Kad"
 msgid "Error: Could not listen to TCP port."
 msgstr "Błąd: nie mogę nasłuchiwać na porcie TCP."
 
-#: src/webserver/src/WebServer.cpp:341
+#: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:344
+#: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:414
+#: src/webserver/src/WebServer.cpp:374
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Żądanie nie powiodło się z powodu błędu: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Żądanie nie powiodło się z powodu nieznanego błędu."
 
-#: src/webserver/src/WebServer.cpp:1778
+#: src/webserver/src/WebServer.cpp:1738
 msgid "Index file not found: "
 msgstr "Nie znaleziono pliku indeksu: "
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Session expired - requesting login\n"
 msgstr "Sesja wygasła - żądanie loginu\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session ok, logged in\n"
 msgstr "Sesja ok, zalogowano\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1822
 msgid "Session ok, not logged in\n"
 msgstr "Sesja ok, nie zalogowano\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1827
 msgid "No session opened - will request login\n"
 msgstr "Nie otwarto sesji - zażądam loginu\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1836
 msgid "Session created - requesting login\n"
 msgstr "Utworzono sesję - żądam loginu\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1853
 msgid "Processing request [original]: "
 msgstr "Przetwarzam żądanie (oryginalne): "
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Checking password\n"
 msgstr "Sprawdzam hasło\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Password hash invalid\n"
 msgstr "Nieprawidłowy skrót hasła\n"
 
-#: src/webserver/src/WebServer.cpp:1929
+#: src/webserver/src/WebServer.cpp:1889
 msgid "Password ok\n"
 msgstr "Hasło ok\n"
 
-#: src/webserver/src/WebServer.cpp:1931
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password bad\n"
 msgstr "Złe hasło\n"
 
-#: src/webserver/src/WebServer.cpp:1934
+#: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Nie wprowadziłeś hasła. Puste hasło nie jest dozwolone.\n"
 
-#: src/webserver/src/WebServer.cpp:1942
+#: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
 msgstr "Zażądano wylogowania\n"
 
-#: src/webserver/src/WebServer.cpp:1947
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
 msgstr "Przetwarzam żądanie (przekierowane): "
 
