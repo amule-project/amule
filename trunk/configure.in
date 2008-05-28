@@ -324,7 +324,7 @@ AS_IF([test x$MONOLITHIC = xyes], [need_gui=yes])
 AS_IF([test x$WXCAS = xyes], [need_gui=yes])
 AS_IF([test x$ALC = xyes], [need_gui=yes])
 AS_IF([test x$AMULE_GUI = xyes], [need_gui=yes])
-AS_IF([test ${need_gui:+set} != xset], [need_gui=no])
+AS_IF([test x${need_gui:+set} != xset], [need_gui=no])
 AC_MSG_RESULT($need_gui)
 
 
