@@ -28,6 +28,7 @@
 
 #include <tags/FileTags.h>
 
+#include <wx/utils.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/log.h>		// Needed for wxLogNull
 

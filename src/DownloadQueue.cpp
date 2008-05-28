@@ -58,6 +58,7 @@
 #include "UserEvents.h"
 #include "MagnetURI.h"		// Needed for CMagnetED2KConverter
 #include "ScopedPtr.h"		// Needed for CScopedPtr
+#include "PlatformSpecific.h"	// Needed for CanFSHandleLargeFiles
 
 #include "kademlia/kademlia/Kademlia.h"
 
@@ -226,7 +227,16 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 		return;
 	}
 
-	
+	if (toadd->GetFileSize() > OLD_MAX_FILE_SIZE) {
+		if (!PlatformSpecific::CanFSHandleLargeFiles(thePrefs::GetTempDir())) {
+			AddLogLineM(true, _("Filesystem for Temp directory cannot handle large files."));
+			return;
+		} else if (!PlatformSpecific::CanFSHandleLargeFiles(theApp->glob_prefs->GetCatPath(category))) {
+			AddLogLineM(true, _("Filesystem for Incoming directory cannot handle large files."));
+			return;
+		}
+	}
+
 	CPartFile* newfile = NULL;
 	try {
 		newfile = new CPartFile(toadd);
@@ -1360,6 +1370,16 @@ bool CDownloadQueue::AddED2KLink( const CED2KFileLink* link, int category )
 			return false;
 		}
 	} else {
+		if (link->GetSize() > OLD_MAX_FILE_SIZE) {
+			if (!PlatformSpecific::CanFSHandleLargeFiles(thePrefs::GetTempDir())) {
+				AddLogLineM(true, _("Filesystem for Temp directory cannot handle large files."));
+				return false;
+			} else if (!PlatformSpecific::CanFSHandleLargeFiles(theApp->glob_prefs->GetCatPath(category))) {
+				AddLogLineM(true, _("Filesystem for Incoming directory cannot handle large files."));
+				return false;
+			}
+		}
+
 		file = new CPartFile(link);
 	
 		if (file->GetStatus() == PS_ERROR) {

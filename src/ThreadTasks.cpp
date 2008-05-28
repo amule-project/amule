@@ -31,12 +31,11 @@
 #include "PartFile.h"			// Needed for CPartFile
 #include "Logger.h"			// Needed for Add(Debug)LogLineM
 #include <common/Format.h>		// Needed for CFormat
-#include <common/FileFunctions.h>	// Needed for CheckFileExists
 #include "amule.h"			// Needed for theApp
 #include "KnownFileList.h"		// Needed for theApp->knownfiles
 #include "Preferences.h"		// Needed for thePrefs
 #include "ScopedPtr.h"			// Needed for CScopedPtr and CScopedArray
-
+#include "PlatformSpecific.h"		// Needed for CanFSHandleSpecialChars
 
 
 //! This hash represents the value for an empty MD4 hashing
@@ -416,9 +415,7 @@ void CCompletionTask::Entry()
 		}
 	}
 	
-	// Check if the target directory is on a Fat32 FS, since that needs extra cleanups.
-	bool isFat32 = (CheckFileSystem(targetPath) == FS_IsFAT32);
-	CPath dstName = m_filename.Cleanup(true, isFat32);
+	CPath dstName = m_filename.Cleanup(true, PlatformSpecific::CanFSHandleSpecialChars(targetPath));
 
 	// Avoid empty filenames ...
 	if (!dstName.IsOk()) {

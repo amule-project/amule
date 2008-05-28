@@ -29,11 +29,8 @@
 #include <wx/wfstream.h>	// wxFileInputStream
 #include <wx/zipstrm.h>		// Needed for wxZipInputStream
 #include <wx/zstream.h>		// Needed for wxZlibInputStream
-#include <wx/thread.h>		// Needed for wxMutex
 #include <wx/log.h>		// Needed for wxSysErrorMsg
 
-#include <errno.h>
-#include <map>
 #ifdef __WXMAC__
 #include <zlib.h> // Do_not_auto_remove
 #endif
@@ -270,68 +267,4 @@ UnpackResult UnpackArchive(const CPath& path, const wxChar* files[])
 			return UnpackResult(false, type);
 	}
 }
-
-
-#ifdef __WXMSW__
-
-FSCheckResult CheckFileSystem(const CPath& WXUNUSED(path)) 
-{
-	return FS_IsFAT32;
-}
-
-#else
-
-FSCheckResult DoCheckFileSystem(const CPath& path)
-{
-	// This is an invalid filename on FAT32/NTFS
-	wxString fullName = JoinPaths(path.GetRaw(), wxT(":"));
-
-	// Try to open the file, without overwriting existing files.
-	int fd = open(fullName.fn_str(), O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
-	if (fd != -1) {
-		// Success, the file-system cant be FAT32
-		close(fd);
-		unlink(fullName.fn_str());
-		
-		return FS_NotFAT32;
-	}
-
-	switch (errno) {
-		case EINVAL:
-			// File-name was invalid, file-system is FAT32
-			return FS_IsFAT32;
-			
-		case EEXIST:
-			// File already exists, file-system cant be FAT32
-			return FS_NotFAT32;
-
-		default:
-			// Something else failed, couldn't check
-			return FS_Failed;
-	}
-}
-
-
-typedef std::map<CPath, FSCheckResult> CPathCache;
-
-//! Lock used to ensure the integrity of the cache.
-static wxMutex		s_lock;
-//! Cache of results from checking various paths.
-static CPathCache	s_cache;
-
-
-FSCheckResult CheckFileSystem(const CPath& path) 
-{
-	wxCHECK_MSG(path.IsOk(), FS_Failed, wxT("Invalid path in CheckFileSystem!"));
-
-	wxMutexLocker locker(s_lock);
-	CPathCache::iterator it = s_cache.find(path);
-	if (it != s_cache.end()) {
-		return it->second;
-	}
-
-	return s_cache[path] = DoCheckFileSystem(path);
-}
-
-#endif
 // File_checked_for_headers
