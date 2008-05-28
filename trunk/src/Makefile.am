@@ -249,6 +249,10 @@ gui_deps = libmuleappgui.a
 remote_common_deps = libs/common/libmulecommon.a libs/ec/cpp/libec.a
 common_deps = libmuleappcommon.a $(remote_common_deps)
 
+if SYS_WIN32
+core_libs += -lshlwapi
+endif
+
 #
 # Flags
 #

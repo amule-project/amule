@@ -31,6 +31,7 @@
 
 namespace PlatformSpecific {
 
+
 /**
  * Create sparse file.
  *
@@ -42,6 +43,7 @@ namespace PlatformSpecific {
  */
 bool CreateSparseFile(const CPath& name, uint64_t size);
 
+ 
 /**
  * Returns the max number of connections the current OS can handle.
  *
@@ -52,6 +54,69 @@ int GetMaxConnections();
 #else
 inline int GetMaxConnections() { return -1; }
 #endif
+
+ 
+/**
+ * File system types returned by GetFilesystemType
+ */
+enum EFSType {
+	fsFAT,		//! vfat, FAT32, etc
+	fsNTFS,		//! NTFS
+	fsEXT,		//! ext, ext2, ext3
+	fsOther		//! Unknown, other
+};
+ 
+/**
+ * Find out the filesystem type of the given path.
+ *
+ * @param path The path for which the filesystem type should be checked.
+ * @return The filesystem type of the given path.
+ *
+ * This function returns fsOther on unknown or network file systems (because the
+ * real filesystem type cannot be determined).
+ */
+EFSType GetFilesystemType(const CPath& path);
+
+ 
+/**
+ * Checks if the filesystem can handle special chars.
+ *
+ * @param path The path for which the file system should be checked.
+ * @return true if the underlying filesystem can handle special chars.
+ *
+ * This function checks if the file system of the given path can handle
+ * special chars e.g. ':' in file names. This function will always return
+ * false on MSW, since Windows cannot handle those characters on any file system.
+ */
+#ifdef __WXMSW__
+inline bool CanFSHandleSpecialChars(const CPath& WXUNUSED(path)) { return false; }
+#else
+// Other filesystem types may be added
+inline bool CanFSHandleSpecialChars(const CPath& path) { return GetFilesystemType(path) == fsEXT; }
+#endif
+
+
+/**
+ * Check if the filesystem can handle large files.
+ *
+ * @param path The path for which the filesystem should be checked.
+ * @return true if the underlying filesystem can handle large files.
+ *
+ * This function checks if the file system of the given path can handle
+ * large files (>4GB).
+ */
+inline bool CanFSHandleLargeFiles(const CPath& path)
+{
+	switch (GetFilesystemType(path)) {
+		case fsNTFS:
+		case fsEXT:
+			// Other filesystem types may be added
+			return true;
+		default:
+			return false;
+	}
+}
+
 
 }; /* namespace PlatformSpecific */
 

@@ -28,14 +28,19 @@
 
 #include "PlatformSpecific.h"
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
+
 // NTFS Sparse Files (only for MSW)
 #ifdef __WXMSW__
 #include "common/Format.h"
 #include "Logger.h"
 #include <winbase.h>
-#include <winioctl.h>
-#ifndef FSCTL_SET_ZERO_DATA
-#	define FSCTL_SET_ZERO_DATA	CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 50, METHOD_BUFFERED, FILE_WRITE_DATA)
+#ifdef __MINGW32__
+#	include <ddk/ntifs.h>
+#else
+#	include <winioctl.h>
 #endif
 
 // Create a message from a Windows error code
@@ -100,7 +105,7 @@ bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t size)
 }
 
 #else  // non Windows systems don't need all this
-#	include "CFile.h"
+#include "CFile.h"
 
 bool PlatformSpecific::CreateSparseFile(const CPath& name, uint64_t WXUNUSED(size))
 {
@@ -149,3 +154,111 @@ int PlatformSpecific::GetMaxConnections()
 #endif
 
 
+#ifdef __WXMSW__
+#include <winbase.h>
+#include <shlwapi.h>
+
+static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
+{
+	LPWSTR volume = path.GetRaw().wchar_str();
+	bool result = PathStripToRootW(volume);
+	if (!result) {
+		return PlatformSpecific::fsOther;
+	}
+	PathAddBackslashW(volume);
+
+	DWORD maximumComponentLength = 0;
+	DWORD filesystemFlags = 0;
+	WCHAR filesystemNameBuffer[128];
+	if (!GetVolumeInformationW(volume, NULL, 0, NULL, &maximumComponentLength, &filesystemFlags, filesystemNameBuffer, 128)) {
+		return PlatformSpecific::fsOther;
+	}
+	if (wxStrnicmp(filesystemNameBuffer, wxT("FAT"), 3) == 0) {
+		return PlatformSpecific::fsFAT;
+	} else if (wxStrcmp(filesystemNameBuffer, wxT("NTFS")) == 0) {
+		return PlatformSpecific::fsNTFS;
+	}
+	return PlatformSpecific::fsOther;
+};
+
+#elif defined(HAVE_GETMNTENT)
+#include <stdio.h>
+#include <string.h>
+#include <mntent.h>
+#ifndef _PATH_MOUNTED
+#	define _PATH_MOUNTED	"/etc/mtab"
+#endif
+#include <common/StringFunctions.h>
+
+static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
+{
+	struct mntent *entry = NULL;
+	PlatformSpecific::EFSType retval = PlatformSpecific::fsOther;
+	FILE *mnttab = fopen(_PATH_MOUNTED, "r");
+	unsigned bestPrefixLen = 0;
+
+	if (mnttab == NULL) {
+		return PlatformSpecific::fsOther;
+	}
+
+	while ((entry = getmntent(mnttab)) != NULL) {
+		if (entry->mnt_dir) {
+			wxString dir = char2unicode(entry->mnt_dir);
+			if (dir == path.GetRaw().Mid(0, dir.Length())) {
+				if (dir.Length() >= bestPrefixLen) {
+					if (entry->mnt_type == NULL) {
+						break;
+					} else if (!strcmp(entry->mnt_type, "ntfs")) {
+						retval = PlatformSpecific::fsNTFS;
+					} else if (!strcmp(entry->mnt_type, "msdos") ||
+						   !strcmp(entry->mnt_type, "umsdos") ||
+						   !strcmp(entry->mnt_type, "vfat") ||
+						   !strncmp(entry->mnt_type, "fat", 3)) {
+						retval = PlatformSpecific::fsFAT;
+					} else if (!strncmp(entry->mnt_type, "ext", 3)) {
+						retval = PlatformSpecific::fsEXT;
+					} /* Add more filesystem types here */
+					else if (dir.Length() > bestPrefixLen) {
+						retval = PlatformSpecific::fsOther;
+					}
+					bestPrefixLen = dir.Length();
+				}
+			}
+		}
+	}
+	fclose(mnttab);
+	return retval;
+}
+
+#else
+
+// No way to determine filesystem type, all restrictions apply.
+static inline PlatformSpecific::EFSType doGetFilesystemType(const CPath& WXUNUSED(path))
+{
+	return PlatformSpecific::fsOther;
+}
+
+#endif
+
+#include <map>
+#include <wx/thread.h>
+
+PlatformSpecific::EFSType PlatformSpecific::GetFilesystemType(const CPath& path)
+{
+	typedef std::map<wxString, EFSType>	FSMap;
+	// Caching previous results, to speed up further checks.
+	static FSMap	s_fscache;
+	// Lock used to ensure the integrity of the cache.
+	static wxMutex	s_lock;
+
+	wxCHECK_MSG(path.IsOk(), fsOther, wxT("Invalid path in GetFilesystemType()"));
+
+	wxMutexLocker locker(s_lock);
+
+	FSMap::iterator it = s_fscache.find(path.GetRaw());
+	if (it != s_fscache.end()) {
+		return it->second;
+	}
+
+	return s_fscache[path.GetRaw()] = doGetFilesystemType(path);
+}
