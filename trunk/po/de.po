@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 03:30+0200\n"
+"POT-Creation-Date: 2008-05-28 03:31+0200\n"
 "PO-Revision-Date: 2008-05-20 17:02+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -536,76 +536,76 @@ msgstr[1] "%d Kad-Kontakte geschrieben."
 msgid "Error: Could not listen to TCP port."
 msgstr "Fehler: Kann nicht auf TCP-Port lauschen."
 
-#: src/webserver/src/WebServer.cpp:341
+#: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr "Webclient-Verbindung akzeptiert.\n"
 
-#: src/webserver/src/WebServer.cpp:344
+#: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
 msgstr "Fehler: Kann Webclient-Verbindung nicht akzeptieren.\n"
 
-#: src/webserver/src/WebServer.cpp:414
+#: src/webserver/src/WebServer.cpp:374
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Anfrage mit folgendem Fehler gescheitert: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Anfrage ist mit unbekanntem Fehler gescheitert."
 
-#: src/webserver/src/WebServer.cpp:1778
+#: src/webserver/src/WebServer.cpp:1738
 msgid "Index file not found: "
 msgstr "Index-Datei nicht gefunden: "
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Session expired - requesting login\n"
 msgstr "Sitzung abgelaufen - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session ok, logged in\n"
 msgstr "Sitzung ok, angemeldet\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1822
 msgid "Session ok, not logged in\n"
 msgstr "Sitzung ok, nicht angemeldet\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1827
 msgid "No session opened - will request login\n"
 msgstr "Keine Sitzung geöffnet - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1836
 msgid "Session created - requesting login\n"
 msgstr "Sitzung eröffnet - fordere Anmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1853
 msgid "Processing request [original]: "
 msgstr "Anfrage verarbeiten [original]: "
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Checking password\n"
 msgstr "Prüfe Passwort\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Password hash invalid\n"
 msgstr "Passwort-Prüfsumme ungültig\n"
 
-#: src/webserver/src/WebServer.cpp:1929
+#: src/webserver/src/WebServer.cpp:1889
 msgid "Password ok\n"
 msgstr "Passwort ok\n"
 
-#: src/webserver/src/WebServer.cpp:1931
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password bad\n"
 msgstr "Falsches Passwort\n"
 
-#: src/webserver/src/WebServer.cpp:1934
+#: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Du hast kein Passwort angegeben. Leeres Passwort ist nicht erlaubt.\n"
 
-#: src/webserver/src/WebServer.cpp:1942
+#: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
 msgstr "Fordere Abmeldung\n"
 
-#: src/webserver/src/WebServer.cpp:1947
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
 msgstr "Anfrage verarbeiten [umgeleitet]: "
 

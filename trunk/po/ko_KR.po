@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 03:30+0200\n"
+"POT-Creation-Date: 2008-05-28 03:31+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -530,76 +530,76 @@ msgstr[1] ""
 msgid "Error: Could not listen to TCP port."
 msgstr "오류: TCP포트를 열수없습니다."
 
-#: src/webserver/src/WebServer.cpp:341
+#: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:344
+#: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:414
+#: src/webserver/src/WebServer.cpp:374
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "다음과 같은 오류로 요청 실패함: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "알 수 없는 오류로 요청이 실패함."
 
-#: src/webserver/src/WebServer.cpp:1778
+#: src/webserver/src/WebServer.cpp:1738
 msgid "Index file not found: "
 msgstr "인덱스 파일을 찾을 수 없음:"
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Session expired - requesting login\n"
 msgstr "세션이 만료됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session ok, logged in\n"
 msgstr "세션 확인, 로그인 됨\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1822
 msgid "Session ok, not logged in\n"
 msgstr "세션 확인, 로그인 안됨\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1827
 msgid "No session opened - will request login\n"
 msgstr "열린 세션 없음 - 로그인을 요청할 것임\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1836
 msgid "Session created - requesting login\n"
 msgstr "세션이 생성됨 - 로그인 요청중\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1853
 msgid "Processing request [original]: "
 msgstr "요청 처리중 [원본]: "
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Checking password\n"
 msgstr "암호를 검사중\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Password hash invalid\n"
 msgstr "암호 해시가 유효하지 않음\n"
 
-#: src/webserver/src/WebServer.cpp:1929
+#: src/webserver/src/WebServer.cpp:1889
 msgid "Password ok\n"
 msgstr "암호 맞음\n"
 
-#: src/webserver/src/WebServer.cpp:1931
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password bad\n"
 msgstr "암호 틀림\n"
 
-#: src/webserver/src/WebServer.cpp:1934
+#: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "암호를 입력하지 않았습니다. 빈암호는 사용할수 없습니다.\n"
 
-#: src/webserver/src/WebServer.cpp:1942
+#: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
 msgstr "로그아웃이 요청됨\n"
 
-#: src/webserver/src/WebServer.cpp:1947
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
 msgstr "요청 처리중[redirected]: "
 

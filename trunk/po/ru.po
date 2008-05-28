@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 03:30+0200\n"
+"POT-Creation-Date: 2008-05-28 03:31+0200\n"
 "PO-Revision-Date: 2008-03-05 15:54+0200\n"
 "Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -544,77 +544,77 @@ msgstr[2] ""
 msgid "Error: Could not listen to TCP port."
 msgstr "Ошибка: не удалось открыть TCP порт."
 
-#: src/webserver/src/WebServer.cpp:341
+#: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:344
+#: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:414
+#: src/webserver/src/WebServer.cpp:374
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Запрос не удался из-за следующей ошибки: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Запрос не удался - неизвестная ошибка."
 
-#: src/webserver/src/WebServer.cpp:1778
+#: src/webserver/src/WebServer.cpp:1738
 msgid "Index file not found: "
 msgstr "Индексный файл не найден:"
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Session expired - requesting login\n"
 msgstr "Сессия просрочена - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session ok, logged in\n"
 msgstr "Сессия в порядке, авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1822
 msgid "Session ok, not logged in\n"
 msgstr "Сессия в порядке, не авторизован\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1827
 msgid "No session opened - will request login\n"
 msgstr "Нет открытых сессий - буду запрашивать логин\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1836
 msgid "Session created - requesting login\n"
 msgstr "Сессия открыта - запрашиваю логин\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1853
 msgid "Processing request [original]: "
 msgstr "Обрабатываю запрос [исходный]:"
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Checking password\n"
 msgstr "Проверяю пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Password hash invalid\n"
 msgstr "Хеш пароля неверен\n"
 
-#: src/webserver/src/WebServer.cpp:1929
+#: src/webserver/src/WebServer.cpp:1889
 msgid "Password ok\n"
 msgstr "Пароль верен\n"
 
-#: src/webserver/src/WebServer.cpp:1931
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password bad\n"
 msgstr "Неверный пароль\n"
 
-#: src/webserver/src/WebServer.cpp:1934
+#: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr "Вы не ввели пароль. Пустой пароль недопустим.\n"
 
 # в eMule - так и пишут: логин/логаут, но мне не нравится
-#: src/webserver/src/WebServer.cpp:1942
+#: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
 msgstr "Запрошено отсоединение:\n"
 
-#: src/webserver/src/WebServer.cpp:1947
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
 msgstr "Обрабатываю запрос [перенаправленный]:"
 

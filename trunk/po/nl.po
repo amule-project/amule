@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule CVS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-27 03:30+0200\n"
+"POT-Creation-Date: 2008-05-28 03:31+0200\n"
 "PO-Revision-Date: 2008-02-28 15:04+0100\n"
 "Last-Translator: Frank van der Loo <frank_l@linuxmail.org>\n"
 "Language-Team: aMule Team <deltahf@datahighways.de>\n"
@@ -524,77 +524,77 @@ msgstr[1] ""
 msgid "Error: Could not listen to TCP port."
 msgstr "Fout: Kan niet luisteren op TCP poort."
 
-#: src/webserver/src/WebServer.cpp:341
+#: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:344
+#: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
 msgstr ""
 
-#: src/webserver/src/WebServer.cpp:414
+#: src/webserver/src/WebServer.cpp:374
 #, c-format
 msgid "Request failed with the following error: %s."
 msgstr "Aanvraag mislukt met de volgende fout: %s."
 
-#: src/webserver/src/WebServer.cpp:417 src/TextClient.cpp:626
+#: src/webserver/src/WebServer.cpp:377 src/TextClient.cpp:626
 msgid "Request failed with an unknown error."
 msgstr "Aanvraag mislukt met een onbekende fout."
 
-#: src/webserver/src/WebServer.cpp:1778
+#: src/webserver/src/WebServer.cpp:1738
 msgid "Index file not found: "
 msgstr "Indexbestand niet gevonden: "
 
-#: src/webserver/src/WebServer.cpp:1855
+#: src/webserver/src/WebServer.cpp:1815
 msgid "Session expired - requesting login\n"
 msgstr "Sessie verlopen - login wordt aangevraagd\n"
 
-#: src/webserver/src/WebServer.cpp:1860
+#: src/webserver/src/WebServer.cpp:1820
 msgid "Session ok, logged in\n"
 msgstr "Sessie ok, ingelogd\n"
 
-#: src/webserver/src/WebServer.cpp:1862
+#: src/webserver/src/WebServer.cpp:1822
 msgid "Session ok, not logged in\n"
 msgstr "Sessie ok, niet ingelogd\n"
 
-#: src/webserver/src/WebServer.cpp:1867
+#: src/webserver/src/WebServer.cpp:1827
 msgid "No session opened - will request login\n"
 msgstr "Geen sessie geopend - login wordt aangevraad\n"
 
-#: src/webserver/src/WebServer.cpp:1876
+#: src/webserver/src/WebServer.cpp:1836
 msgid "Session created - requesting login\n"
 msgstr "Sessie aangemaakt - login wordt aangevraagd\n"
 
-#: src/webserver/src/WebServer.cpp:1893
+#: src/webserver/src/WebServer.cpp:1853
 msgid "Processing request [original]: "
 msgstr "Aanvraag wordt verwerkt [origineel]: "
 
-#: src/webserver/src/WebServer.cpp:1909
+#: src/webserver/src/WebServer.cpp:1869
 msgid "Checking password\n"
 msgstr "Controleren van wachtwoord\n"
 
-#: src/webserver/src/WebServer.cpp:1914
+#: src/webserver/src/WebServer.cpp:1874
 msgid "Password hash invalid\n"
 msgstr "Wachtwoordhash ongeldig\n"
 
-#: src/webserver/src/WebServer.cpp:1929
+#: src/webserver/src/WebServer.cpp:1889
 msgid "Password ok\n"
 msgstr "Wachtwoord ok\n"
 
-#: src/webserver/src/WebServer.cpp:1931
+#: src/webserver/src/WebServer.cpp:1891
 msgid "Password bad\n"
 msgstr "Wachtwoord fout\n"
 
-#: src/webserver/src/WebServer.cpp:1934
+#: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
 msgstr ""
 "U heeft geen wachtwoord ingevoerd. Een leeg wachtwoord is niet toegestaan.\n"
 
-#: src/webserver/src/WebServer.cpp:1942
+#: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
 msgstr "Loguit aangevraagd\n"
 
-#: src/webserver/src/WebServer.cpp:1947
+#: src/webserver/src/WebServer.cpp:1907
 msgid "Processing request [redirected]: "
 msgstr "Aanvraag wordt verwerkt [omgeleid]: "
 
