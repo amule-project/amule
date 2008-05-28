@@ -28,7 +28,6 @@
 
 #include <tags/FileTags.h>
 
-#include <wx/utils.h>
 #include <wx/filename.h>	// Needed for wxFileName
 #include <wx/log.h>		// Needed for wxLogNull
 
@@ -1026,28 +1025,6 @@ void DumpMem_DW(const uint32 *ptr, int count)
 		if ( (i % 4) == 3) printf("\n");
 	}
 	printf("\n");
-}
-
-
-void MilliSleep(uint32 msecs)
-{
-	#ifdef __WXBASE__
-		#ifdef __WXMSW__
-			if (msecs) {
-				wxSleep(msecs);
-			}
-		#else
-			struct timespec waittime;
-				waittime.tv_sec = 0;
-				waittime.tv_nsec = msecs * 1000 /*micro*/* 1000 /*nano*/;
-			struct timespec remtime;
-			while ((nanosleep(&waittime,&remtime)==-1) && (errno == EINTR)) {
-				memcpy(&waittime,&remtime,sizeof(struct timespec));
-			}
-		#endif
-	#else
-		wxMilliSleep(msecs);
-	#endif
 }
 
 
