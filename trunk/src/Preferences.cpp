@@ -57,7 +57,9 @@
 #endif
 
 #include "RandomFunctions.h"
+#ifndef CLIENT_GUI
 #include "PlatformSpecific.h"		// Needed for PlatformSpecific::GetMaxConnections()
+#endif
 
 #define DEFAULT_TCP_PORT 4662
 #define DEFAULT_UDP_PORT 4672
@@ -1386,6 +1388,7 @@ CPreferences::~CPreferences()
 
 int32 CPreferences::GetRecommendedMaxConnections()
 {
+#ifndef CLIENT_GUI
 	int iRealMax = PlatformSpecific::GetMaxConnections();
 	if(iRealMax == -1 || iRealMax > 520) {
 		return 500;
@@ -1397,6 +1400,9 @@ int32 CPreferences::GetRecommendedMaxConnections()
 		return iRealMax - 10;
 	}
 	return iRealMax - 20;
+#else
+	return 500;
+#endif
 }
 
 
