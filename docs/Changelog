@@ -33,6 +33,9 @@ Version 2.2.1 - ???
 	EastWind:
 		* Patch to prevent overwriting of GDLIB_LIBS
 
+	Gaznevada:
+		* IRIX compatibility patches
+
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.
 		* Patch for autoconf >= 2.60.
