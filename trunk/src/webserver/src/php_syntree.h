@@ -35,6 +35,14 @@
 #endif
 #include <inttypes.h>
 
+#if !defined PRIu64
+# ifdef _ABI64
+#  define PRIu64 "lu"
+# else
+#  define PRIu64 "llu"
+# endif
+#endif
+
 typedef enum PHP_VALUE_TYPE {
 	/* simple values */
 	PHP_VAL_NONE, PHP_VAL_INT, PHP_VAL_FLOAT, PHP_VAL_STRING, PHP_VAL_BOOL,

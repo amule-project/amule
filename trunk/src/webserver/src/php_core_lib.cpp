@@ -62,7 +62,7 @@ void php_var_dump(PHP_VALUE_NODE *node, int ident, int ref)
 		case PHP_VAL_BOOL: printf("bool(%s)\n", node->int_val ? "true" : "false"); break;
 		case PHP_VAL_INT: printf("int(%"PRIu64")\n", node->int_val); break;
 		case PHP_VAL_FLOAT: printf("float(%f)\n", node->float_val); break;
-		case PHP_VAL_STRING: printf("string(%zd) \"%s\"\n", strlen(node->str_val), node->str_val); break;
+		case PHP_VAL_STRING: printf("string(%d) \"%s\"\n", strlen(node->str_val), node->str_val); break;
 		case PHP_VAL_OBJECT: printf("Object(%s)\n", node->obj_val.class_name); break;
 		case PHP_VAL_ARRAY: {
 			int arr_size = array_get_size(node);
