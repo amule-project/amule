@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-28 03:31+0200\n"
+"POT-Creation-Date: 2008-05-29 03:30+0200\n"
 "PO-Revision-Date: 2008-05-19 09:20+0200\n"
 "Last-Translator: rik <rik_kornellatyahoo.com>\n"
 "Language-Team:  <it@li.org>\n"
@@ -97,45 +97,45 @@ msgstr "Download in corso"
 msgid "Waiting"
 msgstr "In attesa"
 
-#: src/ThreadTasks.cpp:131
+#: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Creo gli hash MD4 e AICH del file %s"
 
-#: src/ThreadTasks.cpp:135
+#: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Creazione dell'hash MD4 per il file %s"
 
-#: src/ThreadTasks.cpp:139
+#: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Creazione dell'hash AICH per il file %s"
 
-#: src/ThreadTasks.cpp:348
+#: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Conversione dei vecchi hashset AICH in '%s' a 64b: '%s'."
 
-#: src/ThreadTasks.cpp:429
+#: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr ""
 "ATTENZIONE: '%s' non è un nome di file valido ed è stato rinominato in '%s'."
 
-#: src/ThreadTasks.cpp:442
+#: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr ""
 "ATTENZIONE: il file '%s' esiste già, il nuovo file sarà rinominato in '%s'."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:452
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "ATTENZIONE: impossibile rimuovere l'originale '%s' dopo aver creato il backup"
 
-#: src/ThreadTasks.cpp:467
+#: src/ThreadTasks.cpp:464
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "ATTENZIONE: impossibile eliminare %s"
@@ -1408,158 +1408,158 @@ msgstr "Collegamento"
 msgid "Source Seeds"
 msgstr "Fonti salvate"
 
-#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:237
+#: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "Predefinita di sistema"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Albanian"
 msgstr "Albanese"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Arabic"
 msgstr "Arabo"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Basque"
 msgstr "Basco"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Bulgarian"
 msgstr "Bulgaro"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Catalan"
 msgstr "Catalano"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Chinese (Simplified)"
 msgstr "Cinese (semplificato)"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Chinese (Traditional)"
 msgstr "Cinese (tradizionale)"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Croatian"
 msgstr "Croato"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Czech"
 msgstr "Ceco"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "Danish"
 msgstr "Danese"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:639
 msgid "Dutch"
 msgstr "Olandese"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:640
 msgid "English (U.K.)"
 msgstr "Inglese (U.K.)"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:641
 msgid "Estonian"
 msgstr "Estone"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:642
 msgid "Finnish"
 msgstr "Finlandese"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:643
 msgid "French"
 msgstr "Francese"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:644
 msgid "Galician"
 msgstr "Galiziano"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:645
 msgid "German"
 msgstr "Tedesco"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:646
 msgid "Greek"
 msgstr "Greco"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:647
 msgid "Hebrew"
 msgstr "Ebraico"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:648
 msgid "Hungarian"
 msgstr "Ungherese"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:649
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:650
 msgid "Italian (Swiss)"
 msgstr "Italiano (Svizzera)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:651
 msgid "Japanese"
 msgstr "Giapponese"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:652
 msgid "Korean"
 msgstr "Coreano"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:653
 msgid "Lithuanian"
 msgstr "Lituano"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:654
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvegese (Nynorsk)"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:655
 msgid "Polish"
 msgstr "Polacco"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:656
 msgid "Portuguese"
 msgstr "Portoghese"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:657
 msgid "Portuguese (Brazilian)"
 msgstr "Portoghese (brasiliano)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:658
 msgid "Russian"
 msgstr "Russo"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "Slovenian"
 msgstr "Sloveno"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Spanish"
 msgstr "Spagnolo"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Swedish"
 msgstr "Svedese"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Turco"
 
-#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "Impossibile determinare il browser selezionato!"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1670
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "La porta TCP non può essere superiore a 65532 perché il socket UDP è fissato "
 "a TCP+3"
 
-#: src/Preferences.cpp:1665
+#: src/Preferences.cpp:1671
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Sarà usata la porta di predefinita (%d)"
@@ -3513,7 +3513,7 @@ msgstr "ERRORE: socket invalido in sede di controllo di timeout"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Connessione a %s (%s:%i) non riuscita per time-out."
 
-#: src/DownloadQueue.cpp:159
+#: src/DownloadQueue.cpp:160
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
@@ -3521,48 +3521,56 @@ msgstr ""
 "Errore: Impossibile caricare il file di backup. Cerca su http://forum.amule."
 "org come recuperare i file .part.met."
 
-#: src/DownloadQueue.cpp:173
+#: src/DownloadQueue.cpp:174
 msgid "No part files found"
 msgstr "Non è stato trovato alcun file incompleto"
 
-#: src/DownloadQueue.cpp:175
+#: src/DownloadQueue.cpp:176
 #, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Trovato %u file parziale"
 msgstr[1] "Trovati %u file parziali"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+msgid "Filesystem for Temp directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+msgid "Filesystem for Incoming directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:327
 #, c-format
 msgid "Downloading %s"
 msgstr "Download di %s"
 
-#: src/DownloadQueue.cpp:325
+#: src/DownloadQueue.cpp:335
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Stai già cercando di scaricare il file '%s'"
 
-#: src/DownloadQueue.cpp:337
+#: src/DownloadQueue.cpp:347
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Hai già il file '%s'"
 
-#: src/DownloadQueue.cpp:342
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Stai già cercando di scaricare il file '%s'"
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "Non riesco a convertire il collegamento magnet in ed2k: %s"
 
-#: src/DownloadQueue.cpp:1307
+#: src/DownloadQueue.cpp:1317
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Protocollo del link %s sconosciuto"
 
-#: src/DownloadQueue.cpp:1328
+#: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Link ed2k non valido! Errore: %s"

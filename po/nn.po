@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-28 13:01+0200\n"
+"POT-Creation-Date: 2008-05-29 03:30+0200\n"
 "PO-Revision-Date: 2008-05-28 21:38+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -89,42 +89,42 @@ msgstr "Lastar ned"
 msgid "Waiting"
 msgstr "Ventar"
 
-#: src/ThreadTasks.cpp:131
+#: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Opprettar MD4 og AICH hash for fila: %s"
 
-#: src/ThreadTasks.cpp:135
+#: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Opprettar MD4 hash for fila: %s"
 
-#: src/ThreadTasks.cpp:139
+#: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Opprettar AICH hash for fila: %s"
 
-#: src/ThreadTasks.cpp:348
+#: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Konverterer gamle AICH hashsett i '%s'·til·64b·i·'%s'."
 
-#: src/ThreadTasks.cpp:429
+#: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "ÅTVARING: Filnamnet '%s' er feil og har vorte omdøypt til '%s'."
 
-#: src/ThreadTasks.cpp:442
+#: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "ÅTVARING: Fila '%s' finst allereie; ny fil omdøypt til '%s'."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:452
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr "ÅTVARING: Kunne ikkje fjerne den opphavelege '%s' etter tryggleikskopi"
 
-#: src/ThreadTasks.cpp:467
+#: src/ThreadTasks.cpp:464
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "ÅTVARING: Greidde ikkje å slette %s"
@@ -181,16 +181,24 @@ msgstr "Etterspurt: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Filstatistikk for denne økta: Godkjende %d av %d etterspurnad, %s overført\n"
-msgstr[1] "Filstatistikk for denne økta: Godkjende %d av %d etterspurnader, %s overført\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Filstatistikk for denne økta: Godkjende %d av %d etterspurnad, %s overført\n"
+msgstr[1] ""
+"Filstatistikk for denne økta: Godkjende %d av %d etterspurnader, %s "
+"overført\n"
 
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Filstatistikk for alle økter: Godkjende %d av %d etterspurnad, %s overført\n"
-msgstr[1] "Filstatistikk for alle økter: Godkjende %d av %d etterspurnader, %s overført\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Filstatistikk for alle økter: Godkjende %d av %d etterspurnad, %s overført\n"
+msgstr[1] ""
+"Filstatistikk for alle økter: Godkjende %d av %d etterspurnader, %s "
+"overført\n"
 
 #: src/BaseClient.cpp:1967
 msgid "Requested unknown file"
@@ -1530,8 +1538,10 @@ msgid "Unable to determine selected browser!"
 msgstr "Ikkje i stand til å fastslå valt vevlesar!"
 
 #: src/Preferences.cpp:1670
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
-msgstr "TCP port kan ikkje vere høgare enn 65532 fordi tenaren si UDPkopling er TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgstr ""
+"TCP port kan ikkje vere høgare enn 65532 fordi tenaren si UDPkopling er TCP+3"
 
 #: src/Preferences.cpp:1671
 #, c-format
@@ -1702,7 +1712,8 @@ msgstr "Køyrer på %s"
 
 #: src/amuleDlg.cpp:223
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "Vitje http://www.amule.org for å sjekke om ei ny utgåve er tilgjengeleg."
+msgstr ""
+"Vitje http://www.amule.org for å sjekke om ei ny utgåve er tilgjengeleg."
 
 #: src/amuleDlg.cpp:246
 msgid "Fatal Error: Failed to create Timer"
@@ -2780,13 +2791,16 @@ msgstr "Brukar·%s (%u)·etterspurte·lista·di·over·delte·katalogar·->·Nekta"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
-msgstr "Brukar %s·(%u) etterspurte lista over delte filer for katalogen %s·-> godteke"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgstr ""
+"Brukar %s·(%u) etterspurte lista over delte filer for katalogen %s·-> godteke"
 
 #: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr "Brukar·%s (%u)·etterspurte·lista·over·delte·filer·for·katalogen·%s ->·nekta"
+msgstr ""
+"Brukar·%s (%u)·etterspurte·lista·over·delte·filer·for·katalogen·%s ->·nekta"
 
 #: src/ClientTCPSocket.cpp:995
 #, c-format
@@ -2840,8 +2854,10 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Er du viss på at du vil laste ned ei ny nodes.dat fil?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
-msgstr "Å gjere dette vil fjerne dine novérande noder og starte Kademlia på nytt."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
+msgstr ""
+"Å gjere dette vil fjerne dine novérande noder og starte Kademlia på nytt."
 
 #: src/KadDlg.cpp:198
 msgid "Continue?"
@@ -3106,7 +3122,8 @@ msgid ""
 "on every preview"
 msgstr ""
 "Set inn ein videospelar i innstillingar.\n"
-"I mellomtida vil aMule freiste å bruke mplayer og du får denne åtvaringa ved kvar førehandssyning"
+"I mellomtida vil aMule freiste å bruke mplayer og du får denne åtvaringa ved "
+"kvar førehandssyning"
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3224,8 +3241,11 @@ msgid ""
 msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
-msgstr[0] "Fann korrupt del (%d) i %d delfil %s - Filresultathash |%s| Filhash | %s"
-msgstr[1] "Fann korrupt del (%d) i %d deler i fila %s - Filresultathash |%s| Filhash |%s|"
+msgstr[0] ""
+"Fann korrupt del (%d) i %d delfil %s - Filresultathash |%s| Filhash | %s"
+msgstr[1] ""
+"Fann korrupt del (%d) i %d deler i fila %s - Filresultathash |%s| Filhash |%"
+"s|"
 
 #: src/PartFile.cpp:1181
 #, c-format
@@ -3374,7 +3394,8 @@ msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr "Greidde ikkje å kople til alle tenarane i lista. Freistar ein gong til."
+msgstr ""
+"Greidde ikkje å kople til alle tenarane i lista. Freistar ein gong til."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "ED2K network disabled on preferences, not connecting."
@@ -3438,54 +3459,64 @@ msgstr "Feil: Ugyldig kontakt ved tidsutsjekking"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Tilkoplingsfreisting til %s·(%s:%i)·gjekk over tida."
 
-#: src/DownloadQueue.cpp:159
+#: src/DownloadQueue.cpp:160
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr "Feil: Greidde ikkje å laste lagra fil. Søk http://forum.amule.org for å hente fram att part.met filer."
+msgstr ""
+"Feil: Greidde ikkje å laste lagra fil. Søk http://forum.amule.org for å "
+"hente fram att part.met filer."
 
-#: src/DownloadQueue.cpp:173
+#: src/DownloadQueue.cpp:174
 msgid "No part files found"
 msgstr "Ingen delfiler funne"
 
-#: src/DownloadQueue.cpp:175
+#: src/DownloadQueue.cpp:176
 #, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "Fann %u delfil"
 msgstr[1] "Fann %u delfiler"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+msgid "Filesystem for Temp directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+msgid "Filesystem for Incoming directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:327
 #, c-format
 msgid "Downloading %s"
 msgstr "Lastar ned %s"
 
-#: src/DownloadQueue.cpp:325
+#: src/DownloadQueue.cpp:335
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Du freistar allereie nedlasting av fila '%s'"
 
-#: src/DownloadQueue.cpp:337
+#: src/DownloadQueue.cpp:347
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Du har allereie fila: '%s'"
 
-#: src/DownloadQueue.cpp:342
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Du freistar allereie nedlasting av fila %s"
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "Kan ikkje konvertere magnet lenkje til ED2k: %s"
 
-#: src/DownloadQueue.cpp:1307
+#: src/DownloadQueue.cpp:1317
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Ukjend lenkjeprotokoll for: %s"
 
-#: src/DownloadQueue.cpp:1328
+#: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Ugangbar ED2k lenkje! Feil: %s"
@@ -3502,7 +3533,9 @@ msgstr "Ugangbart IP-format. Bruk xxx.xxx.xxx.xxx:xxxx\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "Denne kommandoen krever eit argument. Gangbare argument: 'alle', filnamn, eller eit tal.\n"
+msgstr ""
+"Denne kommandoen krever eit argument. Gangbare argument: 'alle', filnamn, "
+"eller eit tal.\n"
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
@@ -3514,7 +3547,8 @@ msgstr "Handsamar etter filnamn"
 
 #: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "Denne kommandoen krever eit argument: Gangbare argument: ein filhash.\n"
+msgstr ""
+"Denne kommandoen krever eit argument: Gangbare argument: ein filhash.\n"
 
 #: src/TextClient.cpp:410
 msgid "Not a valid number\n"
@@ -3957,7 +3991,8 @@ msgstr "Syne køer/lister."
 
 #: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Syner opplastings-/nedlastingskøa, tenarlista eller lista over delte filer.\n"
+msgstr ""
+"Syner opplastings-/nedlastingskøa, tenarlista eller lista over delte filer.\n"
 
 #: src/TextClient.cpp:939
 msgid "Show upload queue."
@@ -3990,7 +4025,8 @@ msgid ""
 "This is a deprecated command, and may be removed in the future.\n"
 "Use '%s' instead.\n"
 msgstr ""
-"Dette er ein forelda kommando som ikkje lenger er tilrådd, og kan verte fjerna i framtida.\n"
+"Dette er ein forelda kommando som ikkje lenger er tilrådd, og kan verte "
+"fjerna i framtida.\n"
 "Bruk '%s' i staden\n"
 
 #: src/ServerSocket.cpp:176
@@ -4090,7 +4126,8 @@ msgstr[1] "Lasta %d flagg bitmaps."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "Er du viss på at du vil avbryte og slette alle filene i denne kategorien?"
+msgstr ""
+"Er du viss på at du vil avbryte og slette alle filene i denne kategorien?"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
@@ -4271,7 +4308,8 @@ msgstr ""
 "(underkatalogar vil verte inkluderte)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Vil du slette kjeldefilene til vellukka importerte nedlastingar?"
 
 #: src/PartFileConvert.cpp:702
@@ -4416,7 +4454,8 @@ msgstr "Greidde ikkje å laste inn ipfilter.dat fila '%s' - ukjend filformat."
 #: src/IPFilter.cpp:325
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
-msgstr "Greidde ikkje å laste inn ipfilter.dat fila '%s' - greidde ikkje å opne fila."
+msgstr ""
+"Greidde ikkje å laste inn ipfilter.dat fila '%s' - greidde ikkje å opne fila."
 
 #: src/IPFilter.cpp:330
 #, c-format
@@ -4455,7 +4494,8 @@ msgid "Commit"
 msgstr "Iverksetje"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the ed2k link in the text control to your download queue."
+msgid ""
+"Click here to add the ed2k link in the text control to your download queue."
 msgstr ""
 "Klikk her for å leggje til ED2k lenkja i tekstkontrollen til nedlastingskøa "
 "di."
@@ -4472,7 +4512,8 @@ msgstr "Lastar ..."
 msgid ""
 "Events are displayed here. For a complete list of events, refer to the log "
 "in the Servers-tab."
-msgstr "Hendingar visast her. Sjå i loggen under Tenarar for å sjå alle hendingane."
+msgstr ""
+"Hendingar visast her. Sjå i loggen under Tenarar for å sjå alle hendingane."
 
 #: src/muuli_wdr.cpp:97
 msgid "Number of users on the server you are connected to ..."
@@ -4771,7 +4812,8 @@ msgstr "Filkvalitet"
 
 #: src/muuli_wdr.cpp:916
 msgid "Choose the file rating or advice users if the file is invalid ..."
-msgstr "Vél filverdi eller gje melding til andre brukarar dersom fila er falsk ..."
+msgstr ""
+"Vél filverdi eller gje melding til andre brukarar dersom fila er falsk ..."
 
 #: src/muuli_wdr.cpp:960
 msgid "Refresh"
@@ -4995,7 +5037,8 @@ msgstr "Sjå etter ny utgåve ved oppstart"
 
 #: src/muuli_wdr.cpp:1641
 msgid "Enabling this will make aMule check for new version at startup"
-msgstr "Aktivering av denne vil få aMule til å sjå etter ei ny utgåve ved oppstart."
+msgstr ""
+"Aktivering av denne vil få aMule til å sjå etter ei ny utgåve ved oppstart."
 
 #: src/muuli_wdr.cpp:1644
 msgid "Start minimized"
@@ -5019,7 +5062,8 @@ msgstr "Aktivér trauikon"
 
 #: src/muuli_wdr.cpp:1654
 msgid "This Enables/Disables the system tray (or taskbar) icon."
-msgstr "Dette aktiverer/deaktiverer ikonet i systemtrauet (eller oppgåvelinja)."
+msgstr ""
+"Dette aktiverer/deaktiverer ikonet i systemtrauet (eller oppgåvelinja)."
 
 #: src/muuli_wdr.cpp:1657
 msgid "Minimize to Tray Icon"
@@ -5723,7 +5767,8 @@ msgstr "Kad-info"
 
 #: src/muuli_wdr.cpp:3012
 msgid "Click on this button to update the nodes list from URL ..."
-msgstr "Klikk på denne knappen for å oppdatere nodelista frå internettadresse ..."
+msgstr ""
+"Klikk på denne knappen for å oppdatere nodelista frå internettadresse ..."
 
 #: src/muuli_wdr.cpp:3016
 msgid "Nodes (0)"
@@ -5838,7 +5883,8 @@ msgid "Filter clients"
 msgstr "Filtrér klientar"
 
 #: src/muuli_wdr.cpp:3238
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "Aktivér IP-filterring av klientar i fila ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3241
@@ -5846,7 +5892,8 @@ msgid "Filter servers"
 msgstr "Filtrér tenarar"
 
 #: src/muuli_wdr.cpp:3243
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr "Aktivér filtrering av tenarar i fila ~/.aMule/ipfilter.dat."
 
 #: src/muuli_wdr.cpp:3250
@@ -5909,7 +5956,9 @@ msgstr "Sikker brukaridentifikasjon (SUI)"
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr "Det er tilrådd å aktivere denne funksjonen. Du vil ikkje få kredittar dersom SUI ikkje er aktivert."
+msgstr ""
+"Det er tilrådd å aktivere denne funksjonen. Du vil ikkje få kredittar dersom "
+"SUI ikkje er aktivert."
 
 #: src/muuli_wdr.cpp:3332
 msgid "Enable Online-Signature"
@@ -5936,7 +5985,8 @@ msgid "Online Signature Directory:"
 msgstr "Nettsignaturkatalog:"
 
 #: src/muuli_wdr.cpp:3358
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Klikk her for å velje katalogen med nettsignaturfilene."
 
 #: src/muuli_wdr.cpp:3387 src/muuli_wdr.cpp:3426 src/muuli_wdr.cpp:3628
@@ -6116,7 +6166,8 @@ msgid "You must specify a path for the category!"
 msgstr "Du mp skrive inn ein sti for kategorien!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Greidde ikkje å skape innkomande katalog for kategorien. Vér god å skrive "
 "inn ein gangbar sti!"
@@ -6174,7 +6225,8 @@ msgid ""
 "All commands are case insensitive.\n"
 "Type '%s <command>' to get detailed info on <command>.\n"
 msgstr ""
-"\n Alle kommandoar kan utførast med store og små bokstavar.\n"
+"\n"
+" Alle kommandoar kan utførast med store og små bokstavar.\n"
 "Skriv '%s <kommando>'for meir opplysningar om <kommando>.\n"
 
 #: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
@@ -6212,7 +6264,8 @@ msgstr "Syntaksfeil!"
 
 #: src/ExternalConnector.cpp:275
 msgid "Error processing command - should never happen! Report bug, please\n"
-msgstr "Handsamingsfeil av kommando - burde aldri skje! Vér god å rapportere feilen\n"
+msgstr ""
+"Handsamingsfeil av kommando - burde aldri skje! Vér god å rapportere feilen\n"
 
 #: src/ExternalConnector.cpp:278
 msgid "This command should not have any parameters."
@@ -6255,7 +6308,8 @@ msgstr ""
 
 #: src/ExternalConnector.cpp:404
 msgid "Connection Failed. Unable to connect to the specified host\n"
-msgstr "Greidde ikkje å opprette kopling. Ikkje i stand til å kople til verten\n"
+msgstr ""
+"Greidde ikkje å opprette kopling. Ikkje i stand til å kople til verten\n"
 
 #: src/ExternalConnector.cpp:415
 #, c-format
@@ -6690,7 +6744,8 @@ msgstr "Greidde ikkje å opne server.met!"
 #: src/ServerList.cpp:113
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr "Server.met fila er korrupt, ugangbar merkelapp på utgåve: 0x%x,·storleik·%i"
+msgstr ""
+"Server.met fila er korrupt, ugangbar merkelapp på utgåve: 0x%x,·storleik·%i"
 
 #: src/ServerList.cpp:168
 #, c-format
@@ -6730,7 +6785,8 @@ msgstr "Tenar lagd til: Tenar på [%s:%d] som nyttar namnet '%s'."
 msgid ""
 "You are connected to the server you are trying to delete. please disconnect "
 "first."
-msgstr "Du er tilkopla tenaren du freistar å slette. Vér god å kople frå først."
+msgstr ""
+"Du er tilkopla tenaren du freistar å slette. Vér god å kople frå først."
 
 #: src/ServerList.cpp:628
 msgid "Failed to save server.met!"
@@ -6928,7 +6984,8 @@ msgstr ""
 
 #: src/amule.cpp:1324
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "på www.aMule.org, eller på IRC-kanalen vår #aMule·på·irc.freenode.net.\n"
+msgstr ""
+"på www.aMule.org, eller på IRC-kanalen vår #aMule·på·irc.freenode.net.\n"
 
 #: src/amule.cpp:1326
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -7069,4 +7126,3 @@ msgstr "Klarte ikkje å lese kameratlistefila 'emfriends.met'!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friendlist file 'emfriends.met' for writing!"
 msgstr "Klarte·ikkje·å·skrive til·kameratlistefila·'emfriends.met'!"
-
