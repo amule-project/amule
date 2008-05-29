@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule_2007-08-29\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-28 03:31+0200\n"
+"POT-Creation-Date: 2008-05-29 03:30+0200\n"
 "PO-Revision-Date: 2008-03-05 15:54+0200\n"
 "Last-Translator: Nick Shaforostoff <shaforostoff@kde.ru>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -94,44 +94,44 @@ msgstr "Загружается"
 msgid "Waiting"
 msgstr "Ожидает"
 
-#: src/ThreadTasks.cpp:131
+#: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "Начинаю создавать MD4 и AICH хеши для файла: %s"
 
-#: src/ThreadTasks.cpp:135
+#: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "Начинаю создавать MD4-хеш для файла: %s"
 
-#: src/ThreadTasks.cpp:139
+#: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "Начинаю создавать AICH-хеш для файла: %s"
 
-#: src/ThreadTasks.cpp:348
+#: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "Конвертирую старые AICH хеши из '%s' в 64b в '%s'"
 
-#: src/ThreadTasks.cpp:429
+#: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Имя файла '%s' - неверно и было изменено на '%s'."
 
-#: src/ThreadTasks.cpp:442
+#: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Файл '%s' уже существует. Новый файл назван '%s'."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:452
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: не удалось удалить оригинал '%s' после создания резервной "
 "копии."
 
-#: src/ThreadTasks.cpp:467
+#: src/ThreadTasks.cpp:464
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: не удалось удалить %s"
@@ -1410,156 +1410,156 @@ msgstr "Ссылка"
 msgid "Source Seeds"
 msgstr ""
 
-#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:237
+#: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "Системный"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Albanian"
 msgstr ""
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Arabic"
 msgstr "Арабский"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Basque"
 msgstr "Баскский"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Bulgarian"
 msgstr "Болгарский"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Catalan"
 msgstr "Каталонский"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Chinese (Simplified)"
 msgstr "Китайский (упрощенный)"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Chinese (Traditional)"
 msgstr "Китайский (традиционный)"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Croatian"
 msgstr "Хорватский"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Czech"
 msgstr ""
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "Danish"
 msgstr "Датский"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:639
 msgid "Dutch"
 msgstr "Голландский"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:640
 msgid "English (U.K.)"
 msgstr "Английский (Великобритания)"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:641
 msgid "Estonian"
 msgstr "Эстонский"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:642
 msgid "Finnish"
 msgstr "Финский"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:643
 msgid "French"
 msgstr "Французский"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:644
 msgid "Galician"
 msgstr "Гальский"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:645
 msgid "German"
 msgstr "Немецкий"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:646
 msgid "Greek"
 msgstr ""
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:647
 msgid "Hebrew"
 msgstr ""
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:648
 msgid "Hungarian"
 msgstr "Венгерский"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:649
 msgid "Italian"
 msgstr "Итальянский"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:650
 msgid "Italian (Swiss)"
 msgstr "Итальянский (Швеция)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:651
 msgid "Japanese"
 msgstr ""
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:652
 msgid "Korean"
 msgstr "Корейский"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:653
 msgid "Lithuanian"
 msgstr ""
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:654
 msgid "Norwegian (Nynorsk)"
 msgstr ""
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:655
 msgid "Polish"
 msgstr "Польский"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:656
 msgid "Portuguese"
 msgstr "Португальский"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:657
 msgid "Portuguese (Brazilian)"
 msgstr "Португальский (Бразилия)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:658
 msgid "Russian"
 msgstr "Русский"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "Slovenian"
 msgstr "Словакский"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Spanish"
 msgstr "Испанский"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Swedish"
 msgstr ""
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Турецкий"
 
-#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "Не удалось найти выбранный броузер!"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1670
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr "TCP порт не может быть выше 65532, так как UDP сокет - TCP+3"
 
-#: src/Preferences.cpp:1665
+#: src/Preferences.cpp:1671
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Используется пот по умолчанию (%d)"
@@ -3509,17 +3509,17 @@ msgstr "Ошибка: неверный сокет по истечении вре
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Время ожидания соединения с %s (%s:%i) вышло."
 
-#: src/DownloadQueue.cpp:159
+#: src/DownloadQueue.cpp:160
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
 
-#: src/DownloadQueue.cpp:173
+#: src/DownloadQueue.cpp:174
 msgid "No part files found"
 msgstr "Частично загруженных файлов не найдено"
 
-#: src/DownloadQueue.cpp:175
+#: src/DownloadQueue.cpp:176
 #, fuzzy, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
@@ -3527,37 +3527,45 @@ msgstr[0] "Найдено %u частей файлов"
 msgstr[1] "Найдено %u частей файлов"
 msgstr[2] "Найдено %u частей файлов"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+msgid "Filesystem for Temp directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+msgid "Filesystem for Incoming directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:327
 #, c-format
 msgid "Downloading %s"
 msgstr "Приём %s"
 
-#: src/DownloadQueue.cpp:325
+#: src/DownloadQueue.cpp:335
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Вы уже загружаете файл '%s'"
 
-#: src/DownloadQueue.cpp:337
+#: src/DownloadQueue.cpp:347
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "У вас уже есть файл '%s'"
 
-#: src/DownloadQueue.cpp:342
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Вы уже пытаетесь загрузить файл %s"
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "Не могу конвертировать magnet-ссылку в ed2k-ссылку: %s"
 
-#: src/DownloadQueue.cpp:1307
+#: src/DownloadQueue.cpp:1317
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Неизвестный протокол ссылки: %s"
 
-#: src/DownloadQueue.cpp:1328
+#: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Неправильная ed2k-ссылка. Ошибка: %s"

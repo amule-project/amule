@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-28 03:31+0200\n"
+"POT-Creation-Date: 2008-05-29 03:30+0200\n"
 "PO-Revision-Date: 2008-05-13 02:04+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -86,44 +86,44 @@ msgstr "Letöltés alatt"
 msgid "Waiting"
 msgstr "Várakozik"
 
-#: src/ThreadTasks.cpp:131
+#: src/ThreadTasks.cpp:130
 #, c-format
 msgid "Starting to create MD4 and AICH hash for file: %s"
 msgstr "MD4 és AICH hash létrehozása a(z) '%s' fájlhoz."
 
-#: src/ThreadTasks.cpp:135
+#: src/ThreadTasks.cpp:134
 #, c-format
 msgid "Starting to create MD4 hash for file: %s"
 msgstr "MD4 hash létrehozása a(z) '%s' fájlhoz."
 
-#: src/ThreadTasks.cpp:139
+#: src/ThreadTasks.cpp:138
 #, c-format
 msgid "Starting to create AICH hash for file: %s"
 msgstr "AICH hash létrehozása a(z) '%s' fájlhoz."
 
-#: src/ThreadTasks.cpp:348
+#: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
 msgstr "A régi AICH hashkészlet konvertálása 64b-re '%s'-ből '%s'-be."
 
-#: src/ThreadTasks.cpp:429
+#: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
 msgstr "FIGYELEM: A fájlnév '%s' érvénytelen és '%s'-re lett átnevezve."
 
-#: src/ThreadTasks.cpp:442
+#: src/ThreadTasks.cpp:439
 #, c-format
 msgid "WARNING: The file '%s' already exists, new file renamed to '%s'."
 msgstr "FIGYELEM: A fájl '%s' már létezik, az új fájl '%s'-re lett nevezve."
 
-#: src/ThreadTasks.cpp:455
+#: src/ThreadTasks.cpp:452
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
 msgstr ""
 "FIGYELMEZTETÉS: nem lehetett a(z) '%s' eredeti fájlt törölni a biztonsági "
 "másolat létrehozása után"
 
-#: src/ThreadTasks.cpp:467
+#: src/ThreadTasks.cpp:464
 #, c-format
 msgid "WARNING: Failed to delete %s"
 msgstr "FIGYELMEZTETÉS: %s fájl törlése sikertelen"
@@ -1388,157 +1388,157 @@ msgstr "Hivatkozás"
 msgid "Source Seeds"
 msgstr "Mentett források"
 
-#: src/Preferences.cpp:626 src/PrefsUnifiedDlg.cpp:237
+#: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "Alapértelmezett"
 
-#: src/Preferences.cpp:627
+#: src/Preferences.cpp:629
 msgid "Albanian"
 msgstr "Albán"
 
-#: src/Preferences.cpp:628
+#: src/Preferences.cpp:630
 msgid "Arabic"
 msgstr "Arab"
 
-#: src/Preferences.cpp:629
+#: src/Preferences.cpp:631
 msgid "Basque"
 msgstr "Baszk"
 
-#: src/Preferences.cpp:630
+#: src/Preferences.cpp:632
 msgid "Bulgarian"
 msgstr "Bolgár"
 
-#: src/Preferences.cpp:631
+#: src/Preferences.cpp:633
 msgid "Catalan"
 msgstr "Katalán"
 
-#: src/Preferences.cpp:632
+#: src/Preferences.cpp:634
 msgid "Chinese (Simplified)"
 msgstr "Kínai (egyszerűsített)"
 
-#: src/Preferences.cpp:633
+#: src/Preferences.cpp:635
 msgid "Chinese (Traditional)"
 msgstr "Kínai (hagyományos)"
 
-#: src/Preferences.cpp:634
+#: src/Preferences.cpp:636
 msgid "Croatian"
 msgstr "Horvát"
 
-#: src/Preferences.cpp:635
+#: src/Preferences.cpp:637
 msgid "Czech"
 msgstr "Cseh"
 
-#: src/Preferences.cpp:636
+#: src/Preferences.cpp:638
 msgid "Danish"
 msgstr "Dán"
 
-#: src/Preferences.cpp:637
+#: src/Preferences.cpp:639
 msgid "Dutch"
 msgstr "Holland"
 
-#: src/Preferences.cpp:638
+#: src/Preferences.cpp:640
 msgid "English (U.K.)"
 msgstr "Angol (Egyesült Királyság)"
 
-#: src/Preferences.cpp:639
+#: src/Preferences.cpp:641
 msgid "Estonian"
 msgstr "Észt"
 
-#: src/Preferences.cpp:640
+#: src/Preferences.cpp:642
 msgid "Finnish"
 msgstr "Finn"
 
-#: src/Preferences.cpp:641
+#: src/Preferences.cpp:643
 msgid "French"
 msgstr "Francia"
 
-#: src/Preferences.cpp:642
+#: src/Preferences.cpp:644
 msgid "Galician"
 msgstr "Gall"
 
-#: src/Preferences.cpp:643
+#: src/Preferences.cpp:645
 msgid "German"
 msgstr "Német"
 
-#: src/Preferences.cpp:644
+#: src/Preferences.cpp:646
 msgid "Greek"
 msgstr "Görög"
 
-#: src/Preferences.cpp:645
+#: src/Preferences.cpp:647
 msgid "Hebrew"
 msgstr "Héber"
 
-#: src/Preferences.cpp:646
+#: src/Preferences.cpp:648
 msgid "Hungarian"
 msgstr "Magyar"
 
-#: src/Preferences.cpp:647
+#: src/Preferences.cpp:649
 msgid "Italian"
 msgstr "Olasz"
 
-#: src/Preferences.cpp:648
+#: src/Preferences.cpp:650
 msgid "Italian (Swiss)"
 msgstr "Olasz (Svájci)"
 
-#: src/Preferences.cpp:649
+#: src/Preferences.cpp:651
 msgid "Japanese"
 msgstr "Japán"
 
-#: src/Preferences.cpp:650
+#: src/Preferences.cpp:652
 msgid "Korean"
 msgstr "Koreai"
 
-#: src/Preferences.cpp:651
+#: src/Preferences.cpp:653
 msgid "Lithuanian"
 msgstr "Litván"
 
-#: src/Preferences.cpp:652
+#: src/Preferences.cpp:654
 msgid "Norwegian (Nynorsk)"
 msgstr "Norvég (Nynorsk)"
 
-#: src/Preferences.cpp:653
+#: src/Preferences.cpp:655
 msgid "Polish"
 msgstr "Lengyel"
 
-#: src/Preferences.cpp:654
+#: src/Preferences.cpp:656
 msgid "Portuguese"
 msgstr "Portugál"
 
-#: src/Preferences.cpp:655
+#: src/Preferences.cpp:657
 msgid "Portuguese (Brazilian)"
 msgstr "Portugál (Brazíliai)"
 
-#: src/Preferences.cpp:656
+#: src/Preferences.cpp:658
 msgid "Russian"
 msgstr "Orosz"
 
-#: src/Preferences.cpp:657
+#: src/Preferences.cpp:659
 msgid "Slovenian"
 msgstr "Szlovén"
 
-#: src/Preferences.cpp:658
+#: src/Preferences.cpp:660
 msgid "Spanish"
 msgstr "Spanyol"
 
-#: src/Preferences.cpp:659
+#: src/Preferences.cpp:661
 msgid "Swedish"
 msgstr "Svéd"
 
-#: src/Preferences.cpp:660
+#: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Török"
 
-#: src/Preferences.cpp:1612 src/Preferences.cpp:1626 src/Preferences.cpp:1633
+#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
 msgid "Unable to determine selected browser!"
 msgstr "Nem tudom meghatározni a kiválasztott böngészőt!"
 
-#: src/Preferences.cpp:1664
+#: src/Preferences.cpp:1670
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "A TCP port nem lehet magasabb 65532-nél, mert a kiszolgáló UDP port = TCP+3"
 
-#: src/Preferences.cpp:1665
+#: src/Preferences.cpp:1671
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Alapértelmezett port lesz használva (%d)"
@@ -3470,7 +3470,7 @@ msgstr "Hiba: Érvénytelen socket időtúllépési ellenőrzésnél"
 msgid "Connection attempt to %s (%s:%i) timed out."
 msgstr "Kapcsolódási kísérlet %s-hez (%s:%i): időtúllépés."
 
-#: src/DownloadQueue.cpp:159
+#: src/DownloadQueue.cpp:160
 msgid ""
 "Error: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
@@ -3478,47 +3478,55 @@ msgstr ""
 "Hiba: A biztonsági másolatot nem lehet betölteni. Keressen a http://forum."
 "amule.org oldalon .part.met helyreállítási megoldásokat."
 
-#: src/DownloadQueue.cpp:173
+#: src/DownloadQueue.cpp:174
 msgid "No part files found"
 msgstr "Nem található .part fájl"
 
-#: src/DownloadQueue.cpp:175
+#: src/DownloadQueue.cpp:176
 #, c-format
 msgid "Found %u part file"
 msgid_plural "Found %u part files"
 msgstr[0] "%u .part fájlt találtam"
 
-#: src/DownloadQueue.cpp:317
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+msgid "Filesystem for Temp directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+msgid "Filesystem for Incoming directory cannot handle large files."
+msgstr ""
+
+#: src/DownloadQueue.cpp:327
 #, c-format
 msgid "Downloading %s"
 msgstr "Letöltés %s"
 
-#: src/DownloadQueue.cpp:325
+#: src/DownloadQueue.cpp:335
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Már megkísérelted a(z) '%s' fájlt letölteni"
 
-#: src/DownloadQueue.cpp:337
+#: src/DownloadQueue.cpp:347
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Már megvan ez a fájl: '%s'"
 
-#: src/DownloadQueue.cpp:342
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Már próbálod letölteni a(z) '%s' fájlt."
 
-#: src/DownloadQueue.cpp:1299
+#: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to ed2k: %s"
 msgstr "A következő magnet hivatkozást nem tudom ed2k-ra konvertálni: %s"
 
-#: src/DownloadQueue.cpp:1307
+#: src/DownloadQueue.cpp:1317
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "A következő hivatkozás protokollja ismeretlen: %s"
 
-#: src/DownloadQueue.cpp:1328
+#: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid ed2k link! Error: %s"
 msgstr "Érvénytelen ed2k hivatkozás! Hiba: %s"
