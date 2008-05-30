@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-29 03:30+0200\n"
-"PO-Revision-Date: 2008-04-02 23:15+0800\n"
+"PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
 "MIME-Version: 1.0\n"
@@ -456,7 +456,7 @@ msgstr "复制反馈信息到剪贴板"
 msgid ""
 "Feedback from: %s (%s)\n"
 "\n"
-msgstr ""
+msgstr "来自%s(%s)的反馈\n"
 
 #: src/SharedFilesCtrl.cpp:306
 msgid "You need a HighID to create a valid sourcelink"
@@ -513,8 +513,8 @@ msgstr[1] "读取 %u 个 Kad 联系人"
 #, c-format
 msgid "Wrote %d Kad contact"
 msgid_plural "Wrote %d Kad contacts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "已写入%d个Kad联系人"
+msgstr[1] "已写入%d个Kad联系人"
 
 #: src/ListenSocket.cpp:68
 msgid "Error: Could not listen to TCP port."
@@ -522,11 +522,11 @@ msgstr "错误：无法监听TCP端口。"
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
-msgstr ""
+msgstr "网页客户端连接已被接受\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
-msgstr ""
+msgstr "错误：无法接受网页客户端连接\n"
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -1925,15 +1925,15 @@ msgstr "关于/帮助"
 
 #: src/amuleDlg.cpp:1484
 msgid "ed2k network"
-msgstr ""
+msgstr "ed2k 网络"
 
 #: src/amuleDlg.cpp:1488
 msgid "Kad network"
-msgstr ""
+msgstr "Kad 网络"
 
 #: src/amuleDlg.cpp:1493
 msgid "No network"
-msgstr ""
+msgstr "无网络"
 
 #: src/PrefsUnifiedDlg.cpp:169 src/muuli_wdr.cpp:566 src/muuli_wdr.cpp:1372
 #: src/muuli_wdr.cpp:3462
@@ -2513,7 +2513,7 @@ msgstr "Kad 开销（数据包）：%s"
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr ""
+msgstr "加密开销(UDP)：%s"
 
 #: src/Statistics.cpp:662
 #, c-format
@@ -3270,7 +3270,7 @@ msgstr "ICH：修复了损坏的数据段 %i（%s），挽救数据（字节）�
 
 #: src/PartFile.cpp:3845
 msgid "Allocating"
-msgstr ""
+msgstr "正在分配"
 
 #: src/PartFile.cpp:3861
 msgid "Insufficient Diskspace"
@@ -3282,12 +3282,12 @@ msgstr "已停止"
 
 #: src/PartFile.cpp:3910
 msgid "Downloaded"
-msgstr ""
+msgstr "已下载"
 
 #: src/PartFile.cpp:4143
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr ""
+msgstr "错误：打开part文件'%s'失败"
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -3442,11 +3442,11 @@ msgstr[1] "发现 %u 个 part 文件"
 
 #: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
 msgid "Filesystem for Temp directory cannot handle large files."
-msgstr ""
+msgstr "存放零时文件分区的文件系统不支持大文件。"
 
 #: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr ""
+msgstr "存放下载文件分区的文件系统不支持大文件。"
 
 #: src/DownloadQueue.cpp:327
 #, c-format
@@ -4141,27 +4141,27 @@ msgstr "文件名"
 
 #: src/KnownFile.cpp:1360
 msgid "File size"
-msgstr ""
+msgstr "文件大小"
 
 #: src/KnownFile.cpp:1361
 msgid "Share ratio"
-msgstr ""
+msgstr "共享率"
 
 #: src/KnownFile.cpp:1362
 msgid "Uploaded"
-msgstr ""
+msgstr "已上传"
 
 #: src/KnownFile.cpp:1363
 msgid "Requested"
-msgstr ""
+msgstr "已请求"
 
 #: src/KnownFile.cpp:1364
 msgid "Accepted"
-msgstr ""
+msgstr "已接受"
 
 #: src/KnownFile.cpp:1365
 msgid "Complete sources"
-msgstr ""
+msgstr "完成的源"
 
 #: src/PartFileConvert.cpp:236
 #, c-format
@@ -4880,11 +4880,11 @@ msgstr "服务器名称："
 
 #: src/muuli_wdr.cpp:1453
 msgid "Obfuscation:"
-msgstr ""
+msgstr "迷惑："
 
 #: src/muuli_wdr.cpp:1462
 msgid "Kad:"
-msgstr ""
+msgstr "Kad："
 
 #: src/muuli_wdr.cpp:1473
 msgid "Transfers to client"
@@ -5281,13 +5281,13 @@ msgstr "请输入最低硬盘空间。"
 
 #: src/muuli_wdr.cpp:2128
 msgid "Preallocate disk space for new files"
-msgstr ""
+msgstr "为新文件预分配磁盘空间"
 
 #: src/muuli_wdr.cpp:2129
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr ""
+msgstr "为新文件分配全部所需的磁盘空间，这样可以减少碎片"
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming Directory :"
@@ -6410,19 +6410,19 @@ msgstr "用户信息"
 
 #: src/ClientDetailDialog.cpp:129
 msgid "Enabled"
-msgstr ""
+msgstr "已启用"
 
 #: src/ClientDetailDialog.cpp:131
 msgid "Supported"
-msgstr ""
+msgstr "已支持"
 
 #: src/ClientDetailDialog.cpp:134 src/ClientDetailDialog.cpp:193
 msgid "Not supported"
-msgstr ""
+msgstr "不支持"
 
 #: src/ClientDetailDialog.cpp:137
 msgid "Disabled"
-msgstr ""
+msgstr "已禁用"
 
 #: src/ClientDetailDialog.cpp:168 src/ClientDetailDialog.cpp:173
 #, c-format
@@ -6884,7 +6884,7 @@ msgstr ""
 #: src/amule.cpp:1625
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
-msgstr ""
+msgstr "为文件'%s'预分配磁盘空间失败：%s"
 
 #: src/amule.cpp:1773
 msgid "ERROR: can't open logfile"
@@ -6944,16 +6944,16 @@ msgstr "下载版本检查文件失败"
 #: src/amule.cpp:2023
 #, c-format
 msgid "Users: %s | Files: %s"
-msgstr ""
+msgstr "用户：%s | 文件：%s"
 
 #: src/amule.cpp:2024
 #, c-format
 msgid "Users: E: %s K: %s | Files: E: %s K: %s"
-msgstr ""
+msgstr "用户：E：%s K:%s | 文件：E：%s K：%s"
 
 #: src/amule.cpp:2033
 msgid "No networks selected"
-msgstr ""
+msgstr "没有选择网络"
 
 #: src/amule.cpp:2100
 #, c-format
