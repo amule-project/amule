@@ -6233,8 +6233,8 @@ msgid ""
 "Type '%s <command>' to get detailed info on <command>.\n"
 msgstr ""
 "\n"
-"すべてのコマンドは大文字と小文字を区別します。\n"
-"'help %s <コマンド>'を入力することで<コマンド>の詳細の情報が表示されます。\n"
+"すべてのコマンドは大文字と小文字を区別しません。\n"
+"'%s <コマンド>'を入力すると<コマンド>の詳細情報が表示されます。\n"
 
 #: src/ExternalConnector.cpp:216 src/ExternalConnector.cpp:217
 msgid "Exits from the application."
