@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-29 03:30+0200\n"
-"PO-Revision-Date: 2008-05-25 11:02+0300\n"
+"POT-Creation-Date: 2008-05-31 16:33+0300\n"
+"PO-Revision-Date: 2008-05-31 16:31+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2536,7 +2536,7 @@ msgstr "Raisatud Kad (pakette): %s"
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr ""
+msgstr "Krüpteerimise ulatus (UDP): %s"
 
 #: src/Statistics.cpp:662
 #, c-format
@@ -3482,11 +3482,12 @@ msgstr[1] "Leidsin %u part(osalist) faili."
 
 #: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
 msgid "Filesystem for Temp directory cannot handle large files."
-msgstr ""
+msgstr "Temp kataloogi failisüsteem ei suuda suuri faile käidelda."
 
 #: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
+"Sisenevate failide kataloogi failisüsteem ei suuda suuri faile käidelda."
 
 #: src/DownloadQueue.cpp:327
 #, c-format
