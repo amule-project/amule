@@ -149,12 +149,12 @@ void CFileDetailDialog::UpdateData()
 void CFileDetailDialog::FillSourcenameList()
 {
 	CFileDetailListCtrl* pmyListCtrl; 
-	int itempos; 
+	int itempos;
+	int inserted = 0; 
 	pmyListCtrl = CastChild(IDC_LISTCTRLFILENAMES, CFileDetailListCtrl ); 
 
 	// reset
 	for (int i=0;i<pmyListCtrl->GetItemCount();i++){
-		pmyListCtrl->SetItem(i, 1, wxT("0"));	
 		SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(i));
 		item->count = 0;
 	}
@@ -167,7 +167,6 @@ void CFileDetailDialog::FillSourcenameList()
 		itempos = pmyListCtrl->FindItem(-1,cur_src.name);
 		if (itempos == -1) {
 			int itemid = pmyListCtrl->InsertItem(0, cur_src.name);
-			pmyListCtrl->SetItem(0, 1, wxString::Format(wxT("%li"), cur_src.count)); 
 			SourcenameItem *item = new SourcenameItem(cur_src.name, cur_src.count);
 			pmyListCtrl->SetItemPtrData(0, reinterpret_cast<wxUIntPtr>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
@@ -175,10 +174,10 @@ void CFileDetailDialog::FillSourcenameList()
 			tmpitem.m_itemId = itemid;
 			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
+			inserted++;
 		} else { 
 			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
 			item->count = cur_src.count;
-			pmyListCtrl->SetItem(itempos, 1, wxString::Format(wxT("%li"), cur_src.count));
 		} 
 	}
 #else // CLIENT_GUI
@@ -194,7 +193,6 @@ void CFileDetailDialog::FillSourcenameList()
 		itempos = pmyListCtrl->FindItem(-1,cur_src.GetClientFilename());
 		if (itempos == -1) { 
 			int itemid = pmyListCtrl->InsertItem(0, cur_src.GetClientFilename()); 
-			pmyListCtrl->SetItem(0, 1, wxT("1")); 
 			SourcenameItem *item = new SourcenameItem(cur_src.GetClientFilename(), 1);
 			pmyListCtrl->SetItemPtrData(0, reinterpret_cast<wxUIntPtr>(item));
 			// background.. argh -- PA: was in old version - do we still need this?
@@ -202,27 +200,30 @@ void CFileDetailDialog::FillSourcenameList()
 			tmpitem.m_itemId=itemid;
 			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
+			inserted++;
 		} else { 
 			SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(itempos));
 			item->count++;
-			pmyListCtrl->SetItem(itempos, 1, wxString::Format(wxT("%li"), item->count)); 
 		} 
 	}
 #endif // CLIENT_GUI
 
-	pmyListCtrl->SortList();
-
-	// remove 0'er
+	// remove 0'er and update counts
 	for (int i = 0; i < pmyListCtrl->GetItemCount(); ++i) {
 		SourcenameItem *item = reinterpret_cast<SourcenameItem *>(pmyListCtrl->GetItemData(i));
 		if (item->count == 0) {
 			delete item;
 			pmyListCtrl->DeleteItem(i);
 			i--;  // PA: one step back is enough, no need to go back to 0
+		} else {
+			pmyListCtrl->SetItem(i, 1, wxString::Format(wxT("%li"), item->count));
 		}
 	}
 
-	Layout();
+	if (inserted) {
+		pmyListCtrl->SortList();
+	}
+	// no need to call Layout() here, it's called in UpdateData()
 }
 
 

@@ -375,25 +375,24 @@ Version 2.2.1 - ???
 
 	Stu Redman:
 		* Fix for Transferred / Completed not updated in remote GUI.
-		* Fix for PARTSIZE not beeing 64 bits. Enums are always 32
+		* Fix for PARTSIZE not being 64 bits. Enums are always 32
 		  bits, even if we use a 64 bit constant to initialize it.
 		* ratings/comment marks are now shown in the main transfer
-		  window (the little colored !! on the left).
+		  window of the remote-gui (the little colored !! on the left).
 		* comments are now updated when comment packets arrive (not
 		  only when the show comment dialog is open).
 		* remote names are now updated once on startup. So there is no
 		  more 3s lag until the names are shown when the dialog is
 		  opened for the first time.
 		* ED2K/Kad User/Filecount is now shown in the remote-gui status
-		  bar.
-		* Kad users/files also updated on the Kad Tab.
-		* Backed out a now obsolete change made in CommentDialogLst.cpp
-		  (comments are not related to remote filenames anymore).
+		  bar and on the Kad Tab.
 		* Fix for crash on receiving zero-sized UDP packet.
 		* New BarShader code.
 		* Sparse partfiles on Windows.
 		* Fix for zlib detection with an optimizing compiler on configure.
 		* Made all part-status bars look the same.
+		* File names in file detail dialog can be scrolled without
+		  messing up the list control
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction
