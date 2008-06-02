@@ -1,3 +1,5 @@
+AM_LDFLAGS = $(MULELDFLAGS)
+
 bin_PROGRAMS =
 
 if ALC
@@ -22,8 +24,8 @@ noinst_HEADERS = alc.h \
 		md4.h \
 		bithelp.h
 
-alc_CFLAGS = $(WX_CFLAGS)
-alc_CXXFLAGS = $(WX_CXXFLAGS)
+alc_CPPFLAGS = $(MULECPPFLAGS) $(WX_CPPFLAGS)
+alc_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 alc_LDADD = $(WX_LIBS)
 
 
@@ -31,8 +33,8 @@ alcc_SOURCES = alcc.cpp \
 		ed2khash.cpp \
 		md4.cpp
 
-alcc_CFLAGS = $(WXBASE_CFLAGS)
-alcc_CXXFLAGS = $(WXBASE_CXXFLAGS)
+alcc_CPPFLAGS = $(MULECPPFLAGS) $(WXBASE_CPPFLAGS)
+alcc_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 alcc_LDADD = $(WXBASE_LIBS)
 
 # Resources
@@ -42,7 +44,7 @@ if NEED_RC
 SUFFIXES = .rc
 
 .rc.$(OBJEXT):
-	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+	$(RC) $(MULERCFLAGS) -I$(top_srcdir) $(RCFLAGS) -O COFF -i "$<" -o "$@"
 
 nodist_alcc_SOURCES = alcc-version.rc
 alc_LDADD += alcrc.$(OBJEXT)
@@ -53,7 +55,7 @@ alcrc.$(OBJEXT): $(srcdir)/../alc.rc alc-version.rc
 		abs_builddir=`pwd` ; \
 		abs_top_srcdir=`cd $(top_srcdir) ; pwd` ; \
 		cd $(<D) ; \
-		$(RC) $(RCFLAGS) -I$${abs_top_srcdir} -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -o "$${abs_builddir}/$@" ; \
+		$(RC) $(MULERCFLAGS) -I$${abs_top_srcdir} $(RCFLAGS) -O COFF -o "$${abs_builddir}/$@" ; \
 	)
 
 alc-version.rc: $(top_builddir)/version.rc

@@ -28,20 +28,19 @@ php_lexer.c: php_lexer.l
 
 amuleweb_DEPENDENCIES = ../../libs/common/libmulecommon.a ../../libs/ec/cpp/libec.a
 amuleweb_CPPFLAGS = -I../.. -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include \
-	$(AMULEWEB_DEFS) $(BFD_FLAGS) \
-	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" \
-	-DECSOCKET_USE_EVENTS=0 $(INCINTL)
-amuleweb_CFLAGS = $(WXBASE_CFLAGS) $(LIBPNG_CFLAGS)
-amuleweb_CXXFLAGS = $(WXBASE_CXXFLAGS) $(LIBPNG_CXXFLAGS)
+	$(MULECPPFLAGS) $(AMULEWEB_DEFS) $(BFD_CPPFLAGS) $(WXBASE_CPPFLAGS) \
+	-DEC_REMOTE -DWEBSERVERDIR="\"$(pkgdatadir)/webserver\"" -DECSOCKET_USE_EVENTS=0 \
+	$(INCINTL) $(ZLIB_CPPFLAGS)
+amuleweb_CFLAGS = $(MULECFLAGS) $(WX_CFLAGS_ONLY) $(LIBPNG_CFLAGS)
+amuleweb_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY) $(LIBPNG_CFLAGS)
 
 if ENABLE_UPNP
-amuleweb_CFLAGS += -DENABLE_UPNP
-amuleweb_CXXFLAGS += -DENABLE_UPNP
+amuleweb_CPPFLAGS += -DENABLE_UPNP
 endif
 
-amuleweb_LDFLAGS = $(LIBPNG_LDFLAGS) -L../../libs/common -L../../libs/ec/cpp
+amuleweb_LDFLAGS = $(MULELDFLAGS) -L../../libs/common -L../../libs/ec/cpp $(LIBPNG_LDFLAGS) $(ZLIB_LDFLAGS)
 amuleweb_LDADD = -lec -lmulecommon $(WXBASE_LIBS) $(ZLIB_LIBS) \
-	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIB) $(REGEX_LIB) $(LIBINTL)
+	$(READLINE_LIBS) $(LIBPNG_LIBS) $(RESOLV_LIB) $(BFD_LIBS) $(REGEX_LIBS) $(LIBINTL)
 
 noinst_HEADERS = \
 		 WebInterface.h \
@@ -58,7 +57,7 @@ if NEED_RC
 SUFFIXES = .rc
 
 .rc.$(OBJEXT):
-	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+	$(RC) $(MULERCFLAGS) -I$(top_srcdir) $(RCFLAGS) -O COFF -i "$<" -o "$@"
 
 nodist_amuleweb_SOURCES = amuleweb-version.rc
 
