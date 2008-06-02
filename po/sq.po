@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-29 03:30+0200\n"
+"POT-Creation-Date: 2008-06-02 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -1542,18 +1542,18 @@ msgstr "Suedeze"
 msgid "Turkish"
 msgstr "Turqisht"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
 msgid "Unable to determine selected browser!"
 msgstr "E pamundur te percaktoj shfletuesin e zgjedhur!"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1671
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Porta TCP nuk mund te jene me te medha se 65532  sepse socket i UDP eshte "
 "fiksuar ne TCP+3"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Do te perdoret porta e vendosur (%d)"
