@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-29 03:30+0200\n"
+"POT-Creation-Date: 2008-06-02 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -1519,18 +1519,18 @@ msgstr "שוודית"
 msgid "Turkish"
 msgstr "טורקית"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
 msgid "Unable to determine selected browser!"
 msgstr "לא ניתן לזהות את הדפדפן הנבחר!"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1671
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "מבואת ה TCP אינה יכולה להיות גבוהה יותר מ 65532 מאחר שמבואת ה UDP של השרת "
 "היא מבואת ה TCP +3"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "נשתמש במבואה שבברירת מחדך (%d)"

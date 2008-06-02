@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-29 03:30+0200\n"
+"POT-Creation-Date: 2008-06-02 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 01:09+0900\n"
 "Last-Translator: \n"
 "Language-Team: Japanese\n"
@@ -1521,17 +1521,17 @@ msgstr "スウェーデン語"
 msgid "Turkish"
 msgstr "トルコ語"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
 msgid "Unable to determine selected browser!"
 msgstr "選択されたブラウザが見付かりません！"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1671
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "サーバのUDPソケトがTCP+3であるためTCPポートを65532以上には設定できません"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "デフォルトポートを使用します (%d)"

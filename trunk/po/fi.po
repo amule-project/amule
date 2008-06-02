@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-29 03:30+0200\n"
+"POT-Creation-Date: 2008-06-02 03:30+0200\n"
 "PO-Revision-Date: 2008-02-24 13:33+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -1521,18 +1521,18 @@ msgstr "Ruotsi"
 msgid "Turkish"
 msgstr "Turkki"
 
-#: src/Preferences.cpp:1618 src/Preferences.cpp:1632 src/Preferences.cpp:1639
+#: src/Preferences.cpp:1619 src/Preferences.cpp:1633 src/Preferences.cpp:1640
 msgid "Unable to determine selected browser!"
 msgstr "Ei voitu tunnistaa valittua selainta!"
 
-#: src/Preferences.cpp:1670
+#: src/Preferences.cpp:1671
 msgid ""
 "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP-portti ei voi olla korkeampi kuin 65532 koska serverin käyttämä UDP "
 "socket on TCP+3"
 
-#: src/Preferences.cpp:1671
+#: src/Preferences.cpp:1672
 #, c-format
 msgid "Default port will be used (%d)"
 msgstr "Käytetään oletusporttia (%d)"
