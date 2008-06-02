@@ -1,8 +1,13 @@
-if WEB
-OPT_WEB = webserver
-endif
+AM_CPPFLAGS = $(MULECPPFLAGS)
+AM_CFLAGS = $(MULECFLAGS)
+AM_CXXFLAGS = $(MULECXXFLAGS)
+AM_LDFLAGS = $(MULELDFLAGS)
 
-SUBDIRS = libs utils pixmaps skins $(OPT_WEB)
+SUBDIRS = libs utils pixmaps skins
+
+if WEB
+SUBDIRS += webserver
+endif
 
 EXTRA_DIST = \
 	aMule.xpm \
@@ -35,26 +40,14 @@ endif
 
 # Sources
 
-noinst_LIBRARIES = 
-
 if MONOLITHIC
-noinst_LIBRARIES += libmuleappcore.a	
-else 
+noinst_LIBRARIES = libmuleappcore.a libmuleappgui.a libmuleappcommon.a
+else
 if AMULE_DAEMON
-noinst_LIBRARIES += libmuleappcore.a
-endif
-endif
-
-if MONOLITHIC
-noinst_LIBRARIES += libmuleappgui.a
-noinst_LIBRARIES += libmuleappcommon.a
+noinst_LIBRARIES = libmuleappcore.a libmuleappcommon.a
 else
 if AMULE_GUI
-noinst_LIBRARIES += libmuleappgui.a
-noinst_LIBRARIES += libmuleappcommon.a
-else
-if AMULE_DAEMON
-noinst_LIBRARIES += libmuleappcommon.a
+noinst_LIBRARIES = libmuleappgui.a libmuleappcommon.a
 endif
 endif
 endif
@@ -78,11 +71,9 @@ libmuleappcommon_a_SOURCES = \
 	RandomFunctions.cpp \
 	kademlia/utils/UInt128.cpp
 
-libmuleappcommon_a_CFLAGS = $(WXBASE_CFLAGS) -I$(srcdir)/libs -I$(srcdir)/include 
-libmuleappcommon_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcommon_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 if ENABLE_UPNP
-libmuleappcommon_a_CFLAGS += -DENABLE_UPNP=1
-libmuleappcommon_a_CXXFLAGS += -DENABLE_UPNP=1
+libmuleappcommon_a_CPPFLAGS += -DENABLE_UPNP=1
 endif
 
 
@@ -100,11 +91,9 @@ libmuleappcore_a_SOURCES = \
 	StateMachine.cpp \
 	ThreadScheduler.cpp
 
-libmuleappcore_a_CFLAGS = $(WXBASE_CFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
-libmuleappcore_a_CXXFLAGS = $(WXBASE_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappcore_a_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 if ENABLE_UPNP
-libmuleappcore_a_CFLAGS += -DENABLE_UPNP=1
-libmuleappcore_a_CXXFLAGS += -DENABLE_UPNP=1
+libmuleappcore_a_CPPFLAGS += -DENABLE_UPNP=1
 endif
 
 
@@ -127,11 +116,9 @@ libmuleappgui_a_SOURCES = \
 	MuleCollection.cpp \
 	muuli_wdr.cpp 
 
-libmuleappgui_a_CFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
-libmuleappgui_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
+libmuleappgui_a_CPPFLAGS = $(AM_CPPFLAGS) $(WX_CPPFLAGS) -I$(srcdir)/libs -I$(srcdir)/include
 if ENABLE_UPNP
-libmuleappgui_a_CFLAGS += -DENABLE_UPNP=1
-libmuleappgui_a_CXXFLAGS += -DENABLE_UPNP=1
+libmuleappgui_a_CPPFLAGS += -DENABLE_UPNP=1
 endif
 
 core_sources = \
@@ -241,8 +228,8 @@ common_sources = \
 
 core_libs = -L. -lmuleappcore
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
-remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIB)
-common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOLIBS)
+remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIBS)
+common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
 
 core_deps = libmuleappcore.a
 gui_deps = libmuleappgui.a
@@ -256,17 +243,17 @@ endif
 #
 # Flags
 #
-core_flags = 
+core_flags =
 if ENABLE_UPNP
 core_flags += -DENABLE_UPNP=1
 endif
 
-gui_flags = $(WX_CXXFLAGS) $(XRCFLAGS)
+gui_flags = $(WX_CPPFLAGS)
 if ENABLE_IP2COUNTRY
 gui_flags += -DENABLE_IP2COUNTRY=1
 endif
 
-common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include
+common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 
 # --------- Apps ---------
 
@@ -290,18 +277,18 @@ amuled_SOURCES = \
 	$(common_sources)
 
 amule_DEPENDENCIES = $(common_deps) $(core_deps) $(gui_deps)
-amule_CFLAGS = $(core_flags) $(gui_flags) $(common_flags)
-amule_CXXFLAGS = $(core_flags) $(gui_flags) $(common_flags)
+amule_CPPFLAGS = $(AM_CPPFLAGS) $(core_flags) $(gui_flags) $(common_flags)
+amule_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CPPFLAGS_ONLY)
 amule_LDADD = $(common_libs) $(core_libs) $(gui_libs)
 
 amulegui_DEPENDENCIES = $(common_deps) $(gui_deps)
-amulegui_CFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
-amulegui_CXXFLAGS = $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
-amulegui_LDADD =  $(gui_libs) $(common_libs) $(WXBASE_LIBS)
+amulegui_CPPFLAGS = $(AM_CPPFLAGS) $(gui_flags) $(common_flags) -DCLIENT_GUI -DEC_REMOTE
+amulegui_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
+amulegui_LDADD = $(gui_libs) $(common_libs) $(WXBASE_LIBS)
 
 amuled_DEPENDENCIES = $(core_deps) $(common_deps)
-amuled_CFLAGS = $(WXBASE_CFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
-amuled_CXXFLAGS = $(WXBASE_CXXFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
+amuled_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(core_flags) $(common_flags) -DAMULE_DAEMON 
+amuled_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 amuled_LDADD = $(common_libs) $(core_libs) $(WXBASE_LIBS)
 
 ed2k_SOURCES = \
@@ -309,7 +296,7 @@ ed2k_SOURCES = \
 	MagnetURI.cpp \
 	MuleCollection.cpp	
 
-ed2k_CPPFLAGS = -DUSE_STD_STRING
+ed2k_CPPFLAGS = $(AM_CPPFLAGS) -DUSE_STD_STRING
 
 # on Win32
 if SYS_WIN32
@@ -317,7 +304,7 @@ ed2k_LDADD = -lshlwapi
 endif
 # on Mac
 if NEED_CORESERVICES
-ed2k_LDFLAGS = -framework CoreServices
+ed2k_LDFLAGS = $(AM_LDFLAGS) -framework CoreServices
 endif
 
 amulecmd_SOURCES = \
@@ -326,12 +313,12 @@ amulecmd_SOURCES = \
 	$(remote_common_sources)
 
 amulecmd_DEPENDENCIES = $(remote_common_deps)
-amulecmd_CFLAGS = $(WXBASE_CFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
-amulecmd_CXXFLAGS = $(WXBASE_CXXFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
+amulecmd_CPPFLAGS = $(AM_CPPFLAGS) $(WXBASE_CPPFLAGS) $(common_flags) -DEC_REMOTE -DECSOCKET_USE_EVENTS=0
+amulecmd_CXXFLAGS = $(AM_CXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 #amulecmd_LDADD = $(WXBASE_LIBS) $(READLINE_LIBS) $(remote_common_libs)
 amulecmd_LDADD = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec \
-	$(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LIBS) \
-	$(RESOLV_LIB) $(BFD_LIB)
+	$(WXBASE_LIBS) $(READLINE_LIBS) $(ZLIB_LDFLAGS) $(ZLIB_LIBS) \
+	$(RESOLV_LIB) $(BFD_LIBS)
 
 noinst_HEADERS = \
 		AddFriend.h \
@@ -484,7 +471,7 @@ if NEED_RC
 SUFFIXES = .rc
 
 .rc.$(OBJEXT):
-	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+	$(RC) $(MULERCFLAGS) -I$(top_srcdir) $(RCFLAGS) -O COFF -i "$<" -o "$@"
 
 nodist_amuled_SOURCES = amuled-version.rc
 nodist_amulecmd_SOURCES = amulecmd-version.rc
@@ -500,7 +487,7 @@ amulerc.$(OBJEXT): $(srcdir)/../amule.rc amule-version.rc
 		abs_builddir=`pwd` ; \
 		abs_top_srcdir=`cd $(top_srcdir) ; pwd` ; \
 		cd $(<D) ; \
-		$(RC) $(RCFLAGS) -I$${abs_top_srcdir} -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -o "$${abs_builddir}/$@" ; \
+		$(RC) $(MULERCFLAGS) -I$${abs_top_srcdir} $(RCFLAGS) -O COFF -o "$${abs_builddir}/$@" ; \
 	)
 
 amuleguirc.$(OBJEXT): $(srcdir)/../amule.rc amulegui-version.rc
@@ -509,7 +496,7 @@ amuleguirc.$(OBJEXT): $(srcdir)/../amule.rc amulegui-version.rc
 		abs_builddir=`pwd` ; \
 		abs_top_srcdir=`cd $(top_srcdir) ; pwd` ; \
 		cd $(<D) ; \
-		$(RC) $(RCFLAGS) -I$${abs_top_srcdir} -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -o "$${abs_builddir}/$@" ; \
+		$(RC) $(MULERCFLAGS) -I$${abs_top_srcdir} $(RCFLAGS) -O COFF -o "$${abs_builddir}/$@" ; \
 	)
 
 amule-version.rc: $(top_builddir)/version.rc

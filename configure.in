@@ -1,59 +1,53 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
+#
+# This file is part of the aMule Project.
+#
+# Copyright (c) 2003-2008 aMule Team ( admin@amule.org / http://www.amule.org )
+#
+# Any parts of this program derived from the xMule, lMule or eMule project,
+# or contributed by third-party developers are copyrighted by their
+# respective authors.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+#
 
 AC_INIT([aMule],[SVN],[admin@amule.org])
-AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR([src/amule.cpp])
-AM_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 
-# Removing -fomit since it causes problems with CryptoPP
-CFLAGS="`echo $CFLAGS | sed "s/-fomit-frame-pointer//g"`"
-CXXFLAGS="`echo $CXXFLAGS | sed "s/-fomit-frame-pointer//g"`"
+dnl Check host system.
+MULE_CHECK_SYSTEM
 
-# System detection, need AC_CANONICAL_HOST
-case "${host_os}" in
-"")
-	SYS=unknown
-	;;
-darwin*)
-	SYS=darwin
-	CFLAGS="${CFLAGS} -no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
-	LDFLAGS="$LDFLAGS -bind_at_load"
-	touch src/Scanner.cpp
-	;;
-openbsd*) 
-	SYS=openbsd
-	LIBS="$LIBS -L/usr/local/lib"
-	X11LIBS="-lX11 -L/usr/X11R6/lib"
-	CXXFLAGS=" $CXXFLAGS -D__OPENBSD__"
-	if test "$DEBUG_FLAGS" != ""; then
-		DEBUG_FLAGS="-Wall -g -fno-inline -D__DEBUG__"
-	fi
-	;;
-*cygwin* | *mingw32*)
-	SYS=win32
-	CFLAGS="$CFLAGS -DNOMINMAX"
-	CXXFLAGS="$CXXFLAGS -DNOMINMAX"
-	;;
-solaris*)
-	RESOLV_LIB="-lresolv -lnsl"
-	X11LIBS="-lX11"
-	LIBS="$LIBS -lrt"
-esac
-
-AC_SUBST(RESOLV_LIB)
-AC_SUBST(X11LIBS)
-
-# Checks for programs.
+dnl Checks for programs.
+dnl Workaround for these checks may alter CFLAGS and CXXFLAGS, especially if they were empty
+MULE_BACKUP([CFLAGS])
+MULE_BACKUP([CXXFLAGS])
+MULE_BACKUP([BUILD_CFLAGS])
 AC_PROG_CXX
 AC_PROG_CXXCPP
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_AWK
 AS_IF([test "$cross_compiling" = yes], [AC_PROG_BUILD_CC], [BUILD_CC="$CC" ; BUILD_EXEEXT=$EXEEXT])
+MULE_RESTORE([CFLAGS])
+MULE_RESTORE([CXXFLAGS])
+MULE_RESTORE([BUILD_CFLAGS])
+AC_PROG_AWK
 AC_PROG_EGREP
 AC_PROG_MAKE_SET
 AC_PROG_LEX
@@ -61,51 +55,16 @@ AC_PROG_INSTALL
 AC_PROG_RANLIB
 AC_PROG_YACC
 
-# Find the right ranlib, even when cross-compiling
-# And for some other tools for cross compilation
+dnl Find the right ranlib, even when cross-compiling
+dnl And for some other tools for cross compilation
 AC_CHECK_TOOL(RANLIB, ranlib)
 AC_CHECK_TOOL(STRIP, strip)
 AC_CHECK_TOOL(AR, ar)
 AC_CHECK_TOOL(LD, ld)
 
-#
-# Add args to configure
-#
-AC_ARG_ENABLE(
-	[ccache],
-	[AS_HELP_STRING(
-		[--enable-ccache],
-		[enable ccache support for fast recompilation])],
-	[ccache=$enableval], [ccache=no])
-
-AC_ARG_ENABLE(
-	[debug],
-	[AS_HELP_STRING(
-		[--disable-debug],
-		[disable additional debugging output])],
-	[USE_DEBUG=$enableval], [USE_DEBUG=yes])
-
-AC_ARG_ENABLE(
-	[optimize],
-	[AS_HELP_STRING(
-		[--enable-optimize],
-		[enable code optimizing])],
-	[USE_OPTIMIZE=$enableval], [USE_OPTIMIZE=no])
-
-AC_ARG_ENABLE(
-	[profile],
-	[AS_HELP_STRING(
-		[--enable-profile],
-		[enable code profiling])],
-	[USE_PROFILE=$enableval], [USE_PROFILE=no])
-
-AC_ARG_ENABLE(
-	[static],
-	[AS_HELP_STRING(
-		[--enable-static],
-		[produce a statically linked executable])],
-	[USE_DEBUG_STATIC=$enableval], [USE_DEBUG_STATIC=no])
-
+dnl
+dnl Add args to configure
+dnl
 AC_ARG_ENABLE(
 	[monolithic],
 	[AS_HELP_STRING(
@@ -201,68 +160,45 @@ AC_ARG_WITH(
 	[geoip-headers],
 	AS_HELP_STRING([--with-geoip-headers=DIR],
 		[GeoIP include files location]),
-	[GEOIP_INCLUDE="-I$withval"])
+	[GEOIP_CPPFLAGS="-I$withval"])
 
 AC_ARG_WITH(
 	[geoip-lib],
 	AS_HELP_STRING([--with-geoip-lib=DIR],
 		[GeoIP library location]),
-	[GEOIP_LIB="-L$withval $GEOIP_LIB"])
+	[GEOIP_LDFLAGS="-L$withval"])
 
 AC_ARG_WITH(
 	[geoip-static],
 	AS_HELP_STRING([--with-geoip-static],
 		[Explicitly link GeoIP statically (default=no)]),
-	[if test "$withval" != "no"; then
-		GEOIP_LIB="-Wl,-Bstatic $GEOIP_LIB -Wl,-Bdynamic"
-	fi])
+	[AS_IF([test "$withval" != "no"], [GEOIP_LIBS="-Wl,-Bstatic $GEOIP_LIBS -Wl,-Bdynamic"])])
 
-AC_ARG_WITH(
-	[denoise-level],
-	[AS_HELP_STRING(
-		[--with-denoise-level=<level>],
-		[Specifies denoising level (0-4):])
-AS_HELP_STRING([], [0 - Do nothing])
-AS_HELP_STRING([], [4 - Suppress all normal output])
-AS_HELP_STRING([], [(for more information see src/utils/scripts/denoiser.rules)])
-	],
-	[denoiselevel="$withval"], [denoiselevel=yes])
-
-dnl Default is yes, because they're most likely compatible.
-dnl However, this is only used when cross-compiling.
+# Default is yes, because they're most likely compatible.
+# However, this is only used when cross-compiling.
 AC_ARG_WITH(
 	[gnu-malloc],
 	[AS_HELP_STRING([--without-gnu-malloc],
 		[Don't assume that we use GNU libc compatible malloc/realloc when cross-compiling])],
 	[gnumalloc=$withval], [gnumalloc=yes])
 
-AC_ARG_WITH(
-	[language],
-	[AS_HELP_STRING([--with-language=<langs>],
-		[Specify a comma-separated list of languages you want to have installed. See po/LINGUAS for available languages])],
-	[AS_IF([test "$withval" = "all"], [LINGUAS='%UNSET%'], [LINGUAS="`echo $withval | sed -e 's/,/ /g'`"])])
 
 # Checking for libs before all other stuff to break
 # configure as soon as possible in case of a missing one
 # to avoid losing too much time
 
-# Sets gettext version.
-AM_GNU_GETTEXT_VERSION(0.11.5)
-
 # Check for zlib
-AC_OPTIONS_ZLIB
-AC_CHECK_ZLIB([1.1.4], , [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
+MULE_CHECK_ZLIB([1.1.4],, [AC_MSG_ERROR([zlib >= 1.1.4 is required for aMule])])
 
-if test x$CAS = xyes -o x$WEB = xyes; then
-# Check for gd
-AM_OPTIONS_GDLIBCONFIG
-AM_PATH_GDLIBCONFIG([2.0.0],
-[
-	CAS_DEFS="-D__GD__"
-	GDLIB_LIBS="-lgd $GDLIB_LIBS"
-], [
-    AC_MSG_NOTICE([
-	WARNING: gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
+AS_IF([test x$CAS = xyes], [
+	# Check for gd
+	MULE_CHECK_GDLIB([2.0.0], [
+		CAS_DEFS="-D__GD__"
+		MULE_PREPEND([GDLIB_LIBS], [-lgd])
+	], [CAS_DEFS=])
+	AS_IF([test -z "$CAS_DEFS"], [
+		AC_MSG_WARN([
+	gd-lib >= 2.0.0, or a functional gd.h (from gd-devel) not found.
 	Please check that gdlib-config is in your default path, check out
 	LD_LIBRARY_PATH or equivalent variable.
 	Or this might also be that your gdlib-config has other name.
@@ -270,52 +206,22 @@ AM_PATH_GDLIBCONFIG([2.0.0],
 	(replace /usr/bin/gdlib-config with a valid path to your gdlib-config).
 	If you use compiled packages check if you have devel pack installed.
 	To download the latest version check http://www.boutell.com/gd
-	for sources.
-    ])
-	CAS_DEFS=""
-])
+	for sources.])
+	])
+], [GDLIB_VERSION="not_needed"])
+AC_SUBST([CAS_DEFS])dnl
 
-else
-	CAS_DEFS=""
-	GDLIB_LIBS=""
-	GDLIB_CFLAGS=""
-	GDLIB_LDFLAGS=""
-	GDLIB_VERSION="not_needed"
-fi
 
-AC_SUBST(CAS_DEFS)
-
-AS_IF([test x$WEB = xyes], [AC_CHECK_REGEX(, [WEB=disabled])])
-if test x$WEB = xyes; then
-# Check for libpng
-AM_OPTIONS_LIBPNGCONFIG
-AM_PATH_LIBPNGCONFIG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"],
-[
-    AC_MSG_NOTICE([
-	WARNING: libpng-devel >= 1.2.0 is needed for amuleweb
-    ])
-	AMULEWEB_DEFS=""
-])
-
-else
-	AMULEWEB_DEFS=""
-	LIBPNG_LIBS=""
-	LIBPNG_CFLAGS=""
-	LIBPNG_CXXFLAGS=""
-	LIBPNG_LDFLAGS=""
-	LIBPNG_VERSION="not_needed"
-fi
-
-AC_SUBST(AMULEWEB_DEFS)
+AS_IF([test x$WEB = xyes], [MULE_CHECK_REGEX(, [WEB=disabled])])
+AS_IF([test x$WEB = xyes], 
+	[MULE_CHECK_LIBPNG([1.2.0], [AMULEWEB_DEFS="-DWITH_LIBPNG"], [AC_MSG_WARN([libpng-devel >= 1.2.0 is needed for amuleweb])])], 
+	[LIBPNG_VERSION="not_needed"])
+AC_SUBST([AMULEWEB_DEFS])dnl
 
 
 # Check for perl File::Copy
 AC_MSG_CHECKING([for File::Copy])
-   if perl -e "require File::Copy" 2>/dev/null; then
-       AC_MSG_RESULT([ok])
-   else
-       AC_MSG_ERROR([File::Copy perl module is required])
-   fi
+AS_IF([perl -e "require File::Copy" 2>/dev/null], [AC_MSG_RESULT([ok])], [AC_MSG_ERROR([File::Copy perl module is required])])
 
 
 # Check if we need the GUI
@@ -329,29 +235,27 @@ AC_MSG_RESULT($need_gui)
 
 
 # Check for GeoIP (required for IP2Country capability)
-if test x"$ENABLE_IP2COUNTRY" = x"yes" ; then
-	GEOIP_LIB="-lGeoIP"
-	CXXFLAGS="$CXXFLAGS $GEOIP_INCLUDE"
-	LIBS="$LIBS"
-	AC_CHECK_HEADER(GeoIP.h,,
+AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
+	GEOIP_LIBS="-lGeoIP"
+	MULE_BACKUP([CPPFLAGS])
+	MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
+	AC_CHECK_HEADER([GeoIP.h],,
 		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP header files were not found])])
-	AC_CHECK_LIB(GeoIP, GeoIP_open,
-		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)
-		LIBS="$GEOIP_LIB $LIBS"],
+	AC_CHECK_LIB([GeoIP], [GeoIP_open],
+		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)]
 		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP libraries were not found])])
-fi
-AC_SUBST(GEOIP_INCLUDE)
-AC_SUBST(GEOIP_LIB)
+	MULE_RESTORE([CPPFLAGS])
+])
+AC_SUBST([GEOIP_CPPFLAGS])dnl
+AC_SUBST([GEOIP_LDFLAGS])dnl
+AC_SUBST([GEOIP_LIBS])dnl
 
-
-# Check if the compiler is broken, wrt. exceptions.
-CHECK_EXCEPTIONS
 
 # Check for wx
 WX_CONFIG_OPTIONS
 WX_STANDARD_OPTIONS([toolkit,wxshared,wxdebug,wxversion])
 # Force using a static wxWidgets library if the executable is to be linked statically.
-AS_IF([test "$USE_DEBUG_STATIC" = "yes"], [WX_SHARED=0])
+AS_IF([test ${enable_static:-no} = yes], [WX_SHARED=0])
 # Force using a unicode build of the library
 WX_UNICODE=1
 DEBUG=$WX_DEBUG
@@ -368,61 +272,52 @@ if test "$wxWin" != 1; then
 	])
 fi
 WX_DETECT_STANDARD_OPTION_VALUES
-AM_WXCONFIG_LARGEFILE
+
+# We also need wxBase
+WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
+WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
+WXBASE_CPPFLAGS="$WX_CPPFLAGS -DwxUSE_GUI=0"
+AC_SUBST([WXBASE_LIBS])
+AC_SUBST([WXBASE_CPPFLAGS])
 
 dnl Get flags for windres
-if test x$SYS = xwin32; then
+AC_ARG_VAR([RC], [Resource Compiler])dnl
+AC_ARG_VAR([RCFLAGS], [Resource Compiler Flags])dnl
+AS_IF([test ${SYS:-unknown} = win32],
+[
 	AC_CHECK_TOOL([RC], [windres], [:])
-	AC_ARG_VAR([RC], [Win32 Resource Compiler])
-	RCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
-else
-	RCFLAGS=""
-fi
-AC_SUBST(RCFLAGS)
+	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
+])
 
 # Check for Crypto++
-AM_OPTIONS_CRYPTO
+MULE_CHECK_CRYPTOPP([5.1], [
+	# Check for CryptoPP >= 5.5
+	AS_IF([test $CRYPTOPP_VERSION_NUMBER -ge "5005000"], [MULE_APPEND([CRYPTOPP_CPPFLAGS], [-D__WEAK_CRYPTO__])])
+], [
+	AC_MSG_ERROR([
+	Could not find crypto++ header file "$cryptopp_file_with_version".
+	Please try again with --with-crypto-prefix=/my_crypto_prefix
+	(replace /my_crypto_prefix with a valid path to your crypto++
+	installation directory).])
+])
 
-CHECK_CRYPTO(5.1)
+dnl Checks requiring C++
+AC_LANG_PUSH([C++])
+MULE_CHECK_GLIBCXX
+MULE_CHECK_WX_SUPPORTS_LARGEFILE
 
-CXXFLAGS="$CXXFLAGS $CRYPTO_PP_CXXFLAGS"
-LDFLAGS="$LDFLAGS $CRYPTO_PP_LDFLAGS"
-CRYPTOLIBS="-l$CRYPTO_PP_LIB_NAME"
+# Check if the compiler is broken, wrt. exceptions.
+MULE_CHECK_EXCEPTIONS
 
-case "$CRYPTO_PP_STYLE" in
-	gentoo_debian | installed | sources)
-		;;
-	*) AC_MSG_ERROR([
-          WARNING: crypto++ >= $min_crypto_version is not found.
-          Please check that cryptopp-headers are in your default include path,
-	  check out LD_LIBRARY_PATH or equivalent variable.
-          Or this might also be that your cryptopp is installed on other path.
-          Please try again with --with-crypto-prefix=/my_crypto_prefix
-          (replace /my_crypto_prefix with a valid path to your crypto directory).
-          To download the latest version check http://www.cryptopp.com for sources.
-	  ])
-		;;
-esac
-
-# Check for CryptoPP >= 5.5
-if test $CRYPTO_PP_VERSION_NUMBER -ge "5005000"; then
-	CXXFLAGS="$CXXFLAGS -D__WEAK_CRYPTO__"
-fi
-
-
-AC_SUBST(CRYPTOLIBS)
+MULE_CHECK_CXXABI
+AC_LANG_POP([C++])
 
 # Check for bfd.h (to have proper backtraces without using wxExecute)
-CHECK_BFD
-CHECK_EXECINFO
-CHECK_CXXABI
+MULE_CHECK_BFD
+MULE_CHECK_EXECINFO
 
 # Ok, we have all needed libs, now checking for other stuff
-if test "$LEX" = "flex"; then
-	CHECK_FLEX_EXTENDED
-else
-	HAVE_FLEX_EXTENDED=no
-fi
+AS_IF([test "$LEX" = "flex"], [MULE_CHECK_FLEX_EXTENDED], [HAVE_FLEX_EXTENDED=no])
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
@@ -456,10 +351,10 @@ AC_FUNC_CLOSEDIR_VOID
 AC_FUNC_GETMNTENT
 AC_PROG_GCC_TRADITIONAL
 AC_FUNC_FORK
-if test x$SYS != xwin32; then
-AC_FUNC_LSTAT
-AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
-fi
+AS_IF([test x$SYS != xwin32],
+[AC_FUNC_LSTAT
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK]
+)
 AC_FUNC_MEMCMP
 AC_FUNC_MMAP
 AC_FUNC_SELECT_ARGTYPES
@@ -477,107 +372,52 @@ dnl AC_FUNC_STAT
 dnl AC_FUNC_STRTOD
 dnl AC_FUNC_SETVBUF_REVERSED
 dnl Anyways, do we actually USE them?
-if test $cross_compiling = yes -a $gnumalloc = yes ; then
+AS_IF([test $cross_compiling = yes -a $gnumalloc = yes], [
 	AC_MSG_WARN([
     configure cannot check whether malloc() and realloc() are GNU libc
     compatible. You have to be ABSOLUTELY sure that they are, otherwise
     run configure with the --without-gnu-malloc switch.])
 	ac_cv_func_malloc_0_nonnull=yes
 	ac_cv_func_realloc_0_nonnull=yes
-fi
+])
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getmntent getmntinfo getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset munmap nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
+AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftruncate getcwd gethostbyaddr gethostbyname gethostname getpass gettimeofday inet_ntoa localeconv memmove mempcpy memset munmap nl_langinfo pow select setlocale socket sqrt stpcpy strcasecmp strchr strcspn strdup strerror strncasecmp strstr strtoul])
 #-------------------------------------------------------------------------------
 # End of autoscan stuff
 #-------------------------------------------------------------------------------
 
 dnl
-dnl autoscan has missed these ones. Maybe because it's win32 stuff?
+dnl autoscan has missed these ones.
 dnl
 AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
 
-tmp_CFLAGS="$CFLAGS"
-CFLAGS="-D_XOPEN_SOURCE=600 $CFLAGS"
+MULE_BACKUP([CPPFLAGS])
+MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
 AC_FUNC_STRERROR_R
-CFLAGS="$tmp_CFLAGS"
-
-AM_GNU_GETTEXT([no-libtool], [need-ngettext])
-AS_IF([test $USE_INCLUDED_LIBINTL = yes], [INCINTL=-I\${top_builddir}/intl])
-AC_SUBST(INCINTL)
-
-AS_IF([test x$USE_NLS = xyes], [CHECK_AUTOPOINT([], [USE_NLS=no])])
-AS_IF([test x$USE_NLS = xno -a x${enable_nls-yes} = xyes], [AC_MSG_WARN([You need to install GNU gettext/gettext-tools to compile aMule with i18n support.])])
+MULE_RESTORE([CPPFLAGS])
 
 # Look for a way to preallocate disk space for files.
-CHECK_FALLOCATE
+MULE_CHECK_FALLOCATE
 
+# Checking Native Language Support
+dnl Sets gettext version.
+dnl AM_GNU_GETTEXT_VERSION *must not* be moved away from configure.in!
+AM_GNU_GETTEXT_VERSION(0.11.5)
+MULE_CHECK_NLS
 
 # Flush standard test results for speeding cache
 AC_CACHE_SAVE
 
 # Other tests
-
-case "$USE_DEBUG" in
-yes)	DEBUG_FLAGS="-g -D__DEBUG__ -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC"
-	AS_IF([test x$GCC = xyes], [DEBUG_FLAGS="$DEBUG_FLAGS -W -Wall -Wshadow -Wundef -ggdb -fno-inline -fmessage-length=0"])
-	AS_IF([test x$SYS = xwin32], [RCFLAGS="$RCFLAGS -D__DEBUG__"])
-    ;;
-*)	DEBUG_FLAGS=""
-	AS_IF([test x$GCC = xyes], [DEBUG_FLAGS="$DEBUG_FLAGS -W -Wall -Wshadow -Wundef"])
-    ;;
-esac
-
-#aMule options
-
-# Command line tools
-case "$AMULECMD" in
-yes)	;;
-*)	AMULECMD="no"
-	;;
-esac
-
-# For proper compilation flags
-
-WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs adv,core,net`
-
-WXBASE_LIBS=`$WX_CONFIG_WITH_ARGS --libs net`
-WXBASE_CXXFLAGS="$WX_CXXFLAGS -DwxUSE_GUI=0"
-WXBASE_CFLAGS="$WX_CFLAGS -DwxUSE_GUI=0"
-
-AC_SUBST(WXBASE_LIBS)
-AC_SUBST(WXBASE_CFLAGS)
-AC_SUBST(WXBASE_CXXFLAGS)
-
-case "$USE_OPTIMIZE" in
-yes)	OPTIMIZE_FLAGS="-O2"
-	;;
-*)	OPTIMIZE_FLAGS=""
-	;;
-esac
-
-# Profiling
-case "$USE_PROFILE" in
-yes)	PROFILE_FLAGS="-pg"
-	;;
-*)	PROFILE_FLAGS=""
-	;;
-esac
-
-AC_MSG_CHECKING([if the applications should be statically linked])
-case "$USE_DEBUG_STATIC" in
-yes)	LDFLAGS="$LDFLAGS -static"
-	;;
-esac
-AC_MSG_RESULT($USE_DEBUG_STATIC)
+# aMule options
+MULE_COMPILATION_FLAGS
 
 # autoconf >= 2.60 already defines ${docdir}, but we always need it.
 AC_MSG_CHECKING([for docdir])
-if test x"$docdir" = x; then
-	docdir="$datadir"/doc/"$PACKAGE_NAME"-"$PACKAGE_VERSION"
-	AC_SUBST(docdir)
-fi
-AC_MSG_RESULT($docdir)
+AS_IF([test -z "$docdir"], [docdir="${datadir}/doc/${PACKAGE_NAME}-${PACKAGE_VERSION}"])
+AC_SUBST([docdir])dnl
+AC_MSG_RESULT([$docdir])
 
 # Try to set the SVN checkout-date
 AC_MSG_CHECKING([for SVNDATE])
@@ -589,64 +429,14 @@ then
 	svndate="rev. `svnversion $srcdir | sed -e 's/[[0-9]][[0-9]]*:\(.*\)/\1/' -e 's/\([[0-9]][[0-9]]*\).*/\1/'`"
 fi
 AC_MSG_RESULT(${svndate:-None required})
-test "$svndate" && AC_DEFINE_UNQUOTED(SVNDATE, "$svndate", [The checkout date or svn revision number.])
-test x$SYS = xwin32 && test "$svndate" && RCFLAGS="$RCFLAGS -D__PRERELEASE__"
-SVNDATE="$svndate"
-AC_SUBST(SVNDATE)
+AS_IF([test -n "$svndate"], [
+	    AC_DEFINE_UNQUOTED([SVNDATE], ["$svndate"], [The checkout date or svn revision number.])
+	    MULE_ADDFLAG([RC], [-D__PRERELEASE__])
+])
+AC_SUBST([SVNDATE], [$svndate])dnl
 
-XRCFLAGS="-Isrc"
-CXXFLAGS="$CXXFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS -DUSE_WX_EXTENSIONS"
-CFLAGS="$CFLAGS $DEBUG_FLAGS $OPTIMIZE_FLAGS $PROFILE_FLAGS -DUSE_WX_EXTENSIONS"
-
-LDFLAGS="$LDFLAGS $PROFILE_FLAGS"
-dnl -lpthread is needed by Debian but FreeBSD < 5 doesnt support it
-if test x$SYS != xwin32; then
-	AC_MSG_CHECKING([if this is a FreeBSD 4 or earlier system])
-	if test x"`uname -s`" = xFreeBSD && test 0`uname -r | cut -c 1` -lt 5; then
-		LDFLAGS="$LDFLAGS -pthread"
-		AC_MSG_RESULT(yes)
-	else
-		LDFLAGS="$LDFLAGS -lpthread"
-		AC_MSG_RESULT(no)
-	fi
-fi
-
-if test "$USE_NLS" = "yes" ; then
-	AC_MSG_CHECKING([for requested languages])
-	Generate_Langs=`echo $LINGUAS | $AWK ['OFS="\\\\|" { for (i = 1; i <= NF; ++i) $i = "\\\\." $i; print }']`
-	GENERATE_MANS_TO_INSTALL(AMULE_DAEMON, docs/man/amuled)
-	GENERATE_MANS_TO_INSTALL(AMULECMD, docs/man/amulecmd)
-	GENERATE_MANS_TO_INSTALL(WEB, docs/man/amuleweb)
-	GENERATE_MANS_TO_INSTALL(AMULE_GUI, docs/man/amulegui)
-	GENERATE_MANS_TO_INSTALL(CAS, src/utils/cas/docs/cas)
-	GENERATE_MANS_TO_INSTALL(WXCAS, src/utils/wxCas/docs/wxcas)
-	GENERATE_MANS_TO_INSTALL(ED2K, docs/man/ed2k)
-	GENERATE_MANS_TO_INSTALL(ALC, src/utils/aLinkCreator/docs/alc)
-	GENERATE_MANS_TO_INSTALL(ALCC, src/utils/aLinkCreator/docs/alcc)
-	GENERATE_MANS_TO_INSTALL(MONOLITHIC, docs/man/amule)
-	AC_MSG_RESULT([${LINGUAS:-all}])
-fi
-
-dnl
-dnl Denoiser
-dnl
-AC_MSG_CHECKING([denoising level])
-AS_IF([test "$denoiselevel" = "yes"], [denoiselevel=5])dnl
-AS_IF([test "$denoiselevel" = "no"], [denoiselevel=0])dnl
-AS_IF([test $denoiselevel -gt 4], [AS_IF([test "${svndate:+set}" = "set"], [denoiselevel=0], [denoiselevel=4])])dnl
-AC_MSG_RESULT($denoiselevel)
-
-AC_CONFIG_COMMANDS(denoiser, [[	if test $level -gt 0; then
-		if test ! -d src/utils/scripts; then mkdir -p src/utils/scripts; fi
-		sed -e "1{x;s/.*/1/;x;};/^[ 	]*\$/d;/^#if /{/level.*$level/{x;s/^/1/;x;b0;};x;s/^/0/;x;:0;d;};/^#else/{x;/^1/{s/1/0/;b1;};s/0/1/;:1;x;d;};/^#endif/{x;s/.//;x;d;};/^[ 	]*#/d;x;/^1/{x;b;};x;d" \
-			$srcdir/src/utils/scripts/denoiser.rules > src/utils/scripts/denoiser.sed
-		for i in `find . -name 'Makefile' -print`; do
-			if test -n "`head -n 1 $i | grep '^#'`"; then
-				sed -f src/utils/scripts/denoiser.sed $i > $i.tmp && mv $i.tmp $i
-			fi
-		done
-	fi]], [level=$denoiselevel])
-
+dnl Set up the denoiser
+MULE_DENOISER
 
 AM_CONDITIONAL(WEB, test x$WEB = xyes)
 AM_CONDITIONAL(ED2K, test x$ED2K = xyes)
@@ -666,33 +456,14 @@ AM_CONDITIONAL(NEED_CORESERVICES, test x$SYS = xdarwin)
 AM_CONDITIONAL(COMPILE_NLS, test x$USE_NLS = xyes)
 AM_CONDITIONAL(GENERATE_FLEX_HEADER, test x$HAVE_FLEX_EXTENDED = xyes)
 
-dnl
-dnl Check for readline library
-dnl
+# Check for readline library
 if test x$AMULECMD = xyes -o x$WEB = xyes; then
 	VL_LIB_READLINE
 fi
 
 # DO NOT MOVE UP... THERE'S A REASON TO BE HERE!!
 
-AM_OPTIONS_CCACHE_PFX
-
-AC_MSG_CHECKING([whether ccache support should be added])
-AC_MSG_RESULT($ccache)
-AC_SUBST(ccache)
-
-case "$ccache" in
-
-yes)
-	CHECK_CCACHE
-	if [[ $CCACHE = 0 ]]; then
-		GCC="$ccache_prefix/ccache $GCC"
-		CC="$ccache_prefix/ccache $CC"
-		GXX="$ccache_prefix/ccache $GXX"
-		CXX="$ccache_prefix/ccache $CXX"
-		BUILD_CC="$ccache_prefix/ccache $BUILD_CC"
-	fi
-esac
+MULE_CHECK_CCACHE
 
 dnl
 dnl Generate the Makefiles
@@ -758,7 +529,7 @@ echo "  Should aMule be compiled with IP2country support?          ${ENABLE_IP2C
 echo "  Should aMule monolithic application be built?              ${MONOLITHIC:-yes}"
 echo "  Should aMule daemon version be built?                      ${AMULE_DAEMON:-no}"
 echo "  Should aMule remote gui be built? (EXPERIMENTAL)           ${AMULE_GUI:-no}"
-echo "  Crypto++ library/headers style?                            ${CRYPTO_PP_STYLE:-not found}"
+echo "  Crypto++ library/headers style?                            ${CRYPTOPP_STYLE:-not found}"
 
 echo
 echo "  **** aMule TextClient ****"
@@ -786,15 +557,21 @@ wxinfo="$WX_PORT"
 AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
-echo "                                       crypto++              ${CRYPTO_PP_VERSION_STRING} (${CRYPTO_PP_STYLE})"
+echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
 if test x${WEB:-no} != xno; then
-AS_IF([test $regex_found = no], [regex_found="Not detected"],
-[AS_IF([test x$REGEX_LIB = x], [regex_found=system], [regex_found="standalone (in $REGEX_LIB)"])])
+AS_IF([test $regex_found = no], 
+	[regex_found="Not detected"],
+	[AS_IF([test -z "$REGEX_LIB"], 
+		[regex_found=system], 
+		[regex_found="standalone (in $REGEX_LIB)"])])
 echo "                                       regex                 $regex_found"
 fi
-if test ${enable_nls-yes} = yes; then
-AS_IF([test x$USE_NLS = xno], [libintl_found="Not detected"],
-[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], [libintl_found="included"], [libintl_found="system"])])
+if test ${enable_nls:-yes} = yes; then
+AS_IF([test x$USE_NLS = xno],
+	[libintl_found="Not detected"],
+	[AS_IF([test x$USE_INCLUDED_LIBINTL = xyes], 
+		[libintl_found="included"], 
+		[libintl_found="system"])])
 echo "                                       libintl               $libintl_found"
 fi
 if test x$LIBPNG_VERSION != xnot_needed; then
@@ -811,7 +588,7 @@ echo "WARNING! amuleweb has been disabled because configure could not find"
 echo "a POSIX compliant regex library."
 echo ""
 fi
-if test x"$LIBPNG_VERSION" = x""; then
+if test -z "$LIBPNG_VERSION"; then
 echo ""
 echo ""
 echo " WARNING! libpng >= 1.2.0 not found."

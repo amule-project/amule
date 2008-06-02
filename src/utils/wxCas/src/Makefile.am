@@ -1,3 +1,7 @@
+AM_CPPFLAGS = $(MULECPPFLAGS) $(WX_CPPFLAGS)
+AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
+AM_LDFLAGS = $(MULELDFLAGS)
+
 bin_PROGRAMS = wxcas
 
 wxcas_SOURCES = onlinesig.cpp \
@@ -18,8 +22,7 @@ noinst_HEADERS = onlinesig.h \
 		wxcascte.h \
 		wxcaspix.h
 
-wxcas_CFLAGS = $(WX_CFLAGS)
-wxcas_CXXFLAGS = $(WX_CXXFLAGS)
+
 wxcas_LDADD = $(WX_LIBS)
 
 # Resources
@@ -36,7 +39,7 @@ wxcasrc.$(OBJEXT): $(srcdir)/../wxcas.rc wxcas-version.rc
 		abs_builddir=`pwd` ; \
 		abs_top_srcdir=`cd $(top_srcdir) ; pwd` ; \
 		cd $(<D) ; \
-		$(RC) $(RCFLAGS) -I$${abs_top_srcdir} -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -o "$${abs_builddir}/$@" ; \
+		$(RC) $(MULERCFLAGS) -I$${abs_top_srcdir} $(RCFLAGS) -O COFF -o "$${abs_builddir}/$@" ; \
 	)
 
 wxcas-version.rc: $(top_builddir)/version.rc

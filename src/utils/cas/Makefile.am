@@ -21,11 +21,13 @@ noinst_HEADERS = configfile.h \
 	      lines.h \
 	      version.h
 
-cas_CFLAGS= $(GDLIB_CFLAGS) $(CAS_DEFS)
-cas_LDADD= $(GDLIB_LDFLAGS) $(GDLIB_LIBS) 
+cas_CPPFLAGS = $(MULECPPFLAGS) $(CAS_DEFS) $(GDLIB_CPPFLAGS)
+cas_CFLAGS = $(MULECFLAGS) $(GDLIB_CFLAGS)
+cas_LDFLAGS = $(MULELDFLAGS) $(GDLIB_LDFLAGS)
+cas_LDADD= $(GDLIB_LIBS) 
 
 if NEED_CORESERVICES
-cas_LDFLAGS = -framework CoreServices
+cas_LDFLAGS += -framework CoreServices
 endif
 
 # Resources
@@ -35,7 +37,7 @@ if NEED_RC
 SUFFIXES = .rc
 
 .rc.$(OBJEXT):
-	$(RC) $(RCFLAGS) -I$(top_srcdir) -D__WIN95__ -D__WIN32__ -D__GNUWIN32__ -O COFF -i "$<" -o "$@"
+	$(RC) $(MULERCFLAGS) -I$(top_srcdir) $(RCFLAGS) -O COFF -i "$<" -o "$@"
 
 nodist_cas_SOURCES = cas-version.rc
 

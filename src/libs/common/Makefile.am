@@ -1,4 +1,5 @@
-DEFS = -DHAVE_CONFIG_H
+AM_CPPFLAGS = $(MULECPPFLAGS) $(BFD_CPPFLAGS) $(WX_CPPFLAGS)
+AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
 
 # Sources
 
@@ -15,9 +16,6 @@ libmulecommon_a_SOURCES = \
 	FileFunctions.cpp \
 	TextFile.cpp \
 	Path.cpp
-	
-libmulecommon_a_CFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
-libmulecommon_a_CXXFLAGS = $(WX_CXXFLAGS) $(BFD_FLAGS) 
 
 noinst_HEADERS =  \
 		Format.h \

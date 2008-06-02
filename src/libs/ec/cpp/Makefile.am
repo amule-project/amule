@@ -1,3 +1,6 @@
+AM_CPPFLAGS = $(MULECPPFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WX_CPPFLAGS) $(ZLIB_CPPFLAGS)
+AM_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
+
 EXTRA_DIST = gen_ECVersion
 
 # Sources
@@ -12,11 +15,6 @@ libec_a_SOURCES = \
 	ECMuleSocket.cpp \
 	RemoteConnect.cpp \
 	ECSpecialTags.cpp
-
-libec_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include
-libec_a_CXXFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include
-
-libec_noevt_a_CFLAGS = $(WX_CXXFLAGS) -I$(top_srcdir)/src -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include -DECSOCKET_USE_EVENTS=0
 
 noinst_HEADERS =  \
 		ECTag.h \

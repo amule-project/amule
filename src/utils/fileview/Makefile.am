@@ -12,7 +12,7 @@ mulefileview_SOURCES = \
 	Print.cpp
 
 mulefileview_DEPENDENCIES = ../../libs/common/libmulecommon.a
-mulefileview_CPPFLAGS = -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include
-mulefileview_CXXFLAGS = $(WXBASE_CXXFLAGS)
-mulefileview_LDFLAGS = -L../../libs/common
-mulefileview_LDADD = -lmulecommon $(WXBASE_LIBS) $(CRYPTOLIBS)
+mulefileview_CPPFLAGS = $(MULECPPFLAGS) -I$(top_srcdir)/src/libs -I$(top_srcdir)/src/include $(WXBASE_CPPFLAGS) $(CRYPTOPP_CPPFLAGS)
+mulefileview_CXXFLAGS = $(MULECXXFLAGS) $(WX_CFLAGS_ONLY) $(WX_CXXFLAGS_ONLY)
+mulefileview_LDFLAGS = $(MULELDFLAGS) -L../../libs/common $(CRYPTOPP_LDFLAGS)
+mulefileview_LDADD = -lmulecommon $(WXBASE_LIBS) $(CRYPTOPP_LIBS)
