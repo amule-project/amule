@@ -242,7 +242,7 @@ AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
 	AC_CHECK_HEADER([GeoIP.h],,
 		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP header files were not found])])
 	AC_CHECK_LIB([GeoIP], [GeoIP_open],
-		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)]
+		[AC_DEFINE(SUPPORT_GEOIP, 1, Define if you want GeoIP support.)],
 		[AC_MSG_ERROR([--enable-geoip passed to configure, but the GeoIP libraries were not found])])
 	MULE_RESTORE([CPPFLAGS])
 ])
