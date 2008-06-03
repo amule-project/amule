@@ -23,7 +23,7 @@
 #
 
 dnl ----------------------------------------------------
-dnl MULE_CHECK_ZLIB([MIN_ZLIB_VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl MULE_CHECK_ZLIB([MIN_ZLIB_VERSION = 1.1.4], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 dnl
 dnl check if zlib is on the system and is at least MIN_ZLIB_VERSION
 dnl
@@ -39,9 +39,10 @@ dnl	 ZLIB_LIBS
 dnl ----------------------------------------------------
 AC_DEFUN([MULE_CHECK_ZLIB],
 [dnl
-m4_define([zver_max], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])])dnl
-m4_define([zver_mid], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])])dnl
-m4_define([zver_min], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])])dnl
+m4_define([MIN_ZLIB_VERSION], [m4_ifval([$1], [$1], [1.1.4])])dnl
+m4_define([zver_max], [m4_bregexp(MIN_ZLIB_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])])dnl
+m4_define([zver_mid], [m4_bregexp(MIN_ZLIB_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])])dnl
+m4_define([zver_min], [m4_bregexp(MIN_ZLIB_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])])dnl
 
 	AC_ARG_WITH([zlib], AS_HELP_STRING([--with-zlib=PREFIX], [use zlib in PREFIX]))
 
@@ -123,17 +124,12 @@ m4_define([zver_min], [m4_bregexp([$1], [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\
 			cross_zver_max="`echo $ZLIB_VERSION | cut -d. -f1`"
 			cross_zver_mid="`echo $ZLIB_VERSION | cut -d. -f2`"
 			cross_zver_min="`echo $ZLIB_VERSION | cut -d. -f3`"
-			if test "$cross_zver_max" -gt "zver_max"; then
-				result=yes
-			elif test "$cross_zver_max" -eq "zver_max"; then
-				if test "$cross_zver_mid" -gt "zver_mid"; then
-					result=yes
-				elif "$cross_zver_mid" -eq "zver_mid"; then
-					if test "$cross_zver_min" -ge "zver_min"; then
-						result=yes
-					fi
-				fi
-			fi
+			MULE_IF([test "$cross_zver_max" -gt "zver_max"], [result=yes],
+				[test "$cross_zver_max" -eq "zver_max"], [
+					MULE_IF([test "$cross_zver_mid" -gt "zver_mid"], [result=yes],
+						[test "$cross_zver_mid" -eq "zver_mid"],
+							[MULE_IF([test "$cross_zver_min" -ge "zver_min"], [result=yes])])
+				])
 			AS_IF([test ${result:-no} = yes], [z_version=" (version $ZLIB_VERSION)"])
 		])
 		AC_MSG_RESULT([$result$z_version])
@@ -156,4 +152,5 @@ AC_SUBST([ZLIB_LIBS])dnl
 m4_undefine([zver_max])dnl
 m4_undefine([zver_mid])dnl
 m4_undefine([zver_min])dnl
+m4_undefine([MIN_ZLIB_VERSION])dnl
 ])

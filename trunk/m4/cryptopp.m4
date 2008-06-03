@@ -23,7 +23,7 @@
 #
 
 dnl --------------------------------------------------------------------------
-dnl MULE_CHECK_CRYPTOPP([VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl MULE_CHECK_CRYPTOPP([VERSION = 5.1], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 dnl
 dnl Check for cryptopp library
 dnl --------------------------------------------------------------------------
@@ -60,7 +60,7 @@ dnl 	The file we use to discover the version of cryptopp
 dnl
 AC_DEFUN([MULE_CHECK_CRYPTOPP],
 [dnl
-m4_define([MIN_CRYPTO_VERSION], [ifelse([$1],, [5.1], [$1])])dnl
+m4_define([MIN_CRYPTO_VERSION], [m4_ifval([$1], [$1], [5.1])])dnl
 
 	AC_ARG_WITH([crypto-prefix],
 		[AS_HELP_STRING([--with-crypto-prefix=PREFIX], [prefix where crypto++ is installed])])
@@ -79,21 +79,21 @@ m4_define([MIN_CRYPTO_VERSION], [ifelse([$1],, [5.1], [$1])])dnl
 		AS_IF([test -z "$CRYPTOPP_PREFIX"], [continue])
 
 		# Find the Cryptopp header
-		if test -f $CRYPTOPP_PREFIX/$cryptopp_file_with_version; then
+		MULE_IF([test -f $CRYPTOPP_PREFIX/$cryptopp_file_with_version], [
 			CRYPTOPP_STYLE="sources"
 			CRYPTOPP_LIB_NAME="cryptopp"
 			cryptopp_includedir=
 			CRYPTOPP_INCLUDE_PREFIX="$CRYPTOPP_PREFIX"
 			cryptopp_libdir=
 			break
-		elif test -f $CRYPTOPP_PREFIX/include/cryptopp/$cryptopp_file_with_version; then
+		], [test -f $CRYPTOPP_PREFIX/include/cryptopp/$cryptopp_file_with_version], [
 			CRYPTOPP_STYLE="installed"
 			CRYPTOPP_LIB_NAME="cryptopp"
 			cryptopp_includedir="$CRYPTOPP_PREFIX/include"
 			CRYPTOPP_INCLUDE_PREFIX="$CRYPTOPP_LIB_NAME"
 			cryptopp_libdir="$CRYPTOPP_PREFIX/lib"
 			break
-		elif test -f $CRYPTOPP_PREFIX/include/crypto++/$cryptopp_file_with_version; then
+		], [test -f $CRYPTOPP_PREFIX/include/crypto++/$cryptopp_file_with_version], [
 			# Debian uses libcrypto++5.1 - it's not my fault, please soda patch the package
 			CRYPTOPP_STYLE="gentoo_debian"
 			CRYPTOPP_LIB_NAME="crypto++"
@@ -101,7 +101,7 @@ m4_define([MIN_CRYPTO_VERSION], [ifelse([$1],, [5.1], [$1])])dnl
 			CRYPTOPP_INCLUDE_PREFIX="$CRYPTOPP_LIB_NAME"
 			cryptopp_libdir="$CRYPTOPP_PREFIX/lib"
 			break
-		fi
+		])
 	done
 
 	AS_IF([test $CRYPTOPP_STYLE = "unknown"], [result=no], [
@@ -126,12 +126,13 @@ m4_define([MIN_CRYPTO_VERSION], [ifelse([$1],, [5.1], [$1])])dnl
 			AC_DEFINE_UNQUOTED([CRYPTOPP_INCLUDE_PREFIX], $CRYPTOPP_INCLUDE_PREFIX)
 		], [
 			result=no
-			resultstr=" (version $CRYPTOPP_VERSION_STRING is not new enough)"])
+			resultstr=" (version $CRYPTOPP_VERSION_STRING is not new enough)"
+		])
 	])
 
 	AC_MSG_RESULT([$result$resultstr])
 
-	ifelse([$2$3],,, [AS_IF([test ${result:-no} = yes], [$2], [$3])])
+	m4_ifval([$2$3], [AS_IF([test ${result:-no} = yes], [$2], [$3])])
 
 dnl Exported symbols
 AC_SUBST([CRYPTOPP_CPPFLAGS])dnl

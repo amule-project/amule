@@ -23,7 +23,7 @@
 #
 
 dnl ---------------------------------------------------------------------------
-dnl MULE_CHECK_LIBPNG([VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl MULE_CHECK_LIBPNG([VERSION = 1.2.0], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 dnl
 dnl adds support for --with-libpng-prefix and --with-libpng-config
 dnl command line options
@@ -35,7 +35,7 @@ dnl in this case the macro won't even waste time on tests for its existence.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_LIBPNG],
 [dnl
-m4_define([REQUIRED_VERSION], [ifelse([$1],, [1.2.0], [$1])])dnl
+m4_define([REQUIRED_VERSION], [m4_ifval([$1], [$1], [1.2.0])])dnl
 m4_define([REQUIRED_VERSION_MAJOR], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])])dnl
 m4_define([REQUIRED_VERSION_MINOR], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])])dnl
 m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])])dnl
@@ -70,22 +70,13 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 		libpng_config_minor_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\2/']`
 		libpng_config_micro_version=`echo $LIBPNG_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\3/']`
 
-		libpng_ver_ok=""
-		if test $libpng_config_major_version -gt REQUIRED_VERSION_MAJOR; then
-			libpng_ver_ok=yes
-		else
-			if test $libpng_config_major_version -eq REQUIRED_VERSION_MAJOR; then
-				if test $libpng_config_minor_version -gt REQUIRED_VERSION_MINOR; then
-					libpng_ver_ok=yes
-				else
-					if test $libpng_config_minor_version -eq REQUIRED_VERSION_MINOR; then
-						if test $libpng_config_micro_version -ge REQUIRED_VERSION_MICRO; then
-							libpng_ver_ok=yes
-						fi
-					fi
-				fi
-			fi
-		fi
+		libpng_ver_ok=
+		MULE_IF([test $libpng_config_major_version -gt REQUIRED_VERSION_MAJOR], [libpng_ver_ok=yes],
+			[test $libpng_config_major_version -eq REQUIRED_VERSION_MAJOR], [
+				MULE_IF([test $libpng_config_minor_version -gt REQUIRED_VERSION_MINOR], [libpng_ver_ok=yes],
+					[test $libpng_config_minor_version -eq REQUIRED_VERSION_MINOR],
+						[MULE_IF([test $libpng_config_micro_version -ge REQUIRED_VERSION_MICRO], [libpng_ver_ok=yes])])
+			])
 
 		AS_IF([test -z "$libpng_ver_ok"], [
 			AS_IF([test -z "$LIBPNG_VERSION"], [AC_MSG_RESULT([no])], [
@@ -152,7 +143,7 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 		MULE_RESTORE([LIBS])
 	])
 
-	ifelse([$2$3],,, [AS_IF([test -n "$LIBPNG_VERSION"], [$2], [$3])])
+	AS_IF([test -n "$LIBPNG_VERSION"], [$2], [$3])
 
 AC_SUBST([LIBPNG_CFLAGS])dnl
 AC_SUBST([LIBPNG_LDFLAGS])dnl
