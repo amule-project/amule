@@ -250,7 +250,8 @@ endif
 
 gui_flags = $(WX_CPPFLAGS)
 if ENABLE_IP2COUNTRY
-gui_flags += -DENABLE_IP2COUNTRY=1
+gui_flags += $(GEOIP_CPPFLAGS) -DENABLE_IP2COUNTRY=1
+gui_libs += $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 endif
 
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
