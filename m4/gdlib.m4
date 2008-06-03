@@ -23,7 +23,7 @@
 #
 
 dnl ---------------------------------------------------------------------------
-dnl MULE_CHECK_GDLIB([VERSION], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
+dnl MULE_CHECK_GDLIB([VERSION = 2.0.0], [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND])
 dnl
 dnl adds support for --with-gdlib-prefix and --with-gdlib-config
 dnl command line options
@@ -35,7 +35,7 @@ dnl in this case the macro won't even waste time on tests for its existence.
 dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_GDLIB],
 [dnl
-m4_define([REQUIRED_VERSION], [ifelse([$1],, [2.0.0], [$1])])dnl
+m4_define([REQUIRED_VERSION], [m4_ifval([$1], [$1], [2.0.0])])dnl
 m4_define([REQUIRED_VERSION_MAJOR], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\1])])dnl
 m4_define([REQUIRED_VERSION_MINOR], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\2])])dnl
 m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\([0-9]+\)\.\([0-9]+\)], [\3])])dnl
@@ -70,21 +70,12 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 		gdlib_config_micro_version=`echo $GDLIB_VERSION | sed ['s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\).*/\3/']`
 
 		gdlib_ver_ok=
-		if test $gdlib_config_major_version -gt REQUIRED_VERSION_MAJOR; then
-			gdlib_ver_ok=yes
-		else
-			if test $gdlib_config_major_version -eq REQUIRED_VERSION_MAJOR; then
-				if test $gdlib_config_minor_version -gt REQUIRED_VERSION_MINOR; then
-					gdlib_ver_ok=yes
-				else
-					if test $gdlib_config_minor_version -eq REQUIRED_VERSION_MINOR; then
-						if test $gdlib_config_micro_version -ge REQUIRED_VERSION_MICRO; then
-							gdlib_ver_ok=yes
-						fi
-					fi
-				fi
-			fi
-		fi
+		MULE_IF([test $gdlib_config_major_version -gt REQUIRED_VERSION_MAJOR], [gdlib_ver_ok=yes],
+			[test $gdlib_config_major_version -eq REQUIRED_VERSION_MAJOR], [
+				MULE_IF([test $gdlib_config_minor_version -gt REQUIRED_VERSION_MINOR], [gdlib_ver_ok=yes],
+					[test $gdlib_config_minor_version -eq REQUIRED_VERSION_MINOR],
+						[MULE_IF([test $gdlib_config_micro_version -ge REQUIRED_VERSION_MICRO], [gdlib_ver_ok=yes])])
+			])
 
 		AS_IF([test -z "$gdlib_ver_ok"], [
 			AS_IF([test -z "$GDLIB_VERSION"], [AC_MSG_RESULT([no])], [
@@ -101,7 +92,7 @@ m4_define([REQUIRED_VERSION_MICRO], [m4_bregexp(REQUIRED_VERSION, [\([0-9]+\)\.\
 		])
 	])
 
-	ifelse([$2$3],,, [AS_IF([test -n "$GDLIB_VERSION"], [$2], [$3])])
+	AS_IF([test -n "$GDLIB_VERSION"], [$2], [$3])
 
 AC_SUBST([GDLIB_CFLAGS])dnl
 AC_SUBST([GDLIB_LDFLAGS])dnl

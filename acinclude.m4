@@ -50,6 +50,20 @@ AC_DEFUN([MULE_BACKUP], [mule_backup_$1="$$1"])
 dnl MULE_RESTORE(VAR)
 AC_DEFUN([MULE_RESTORE], [$1="$mule_backup_$1"])
 
+dnl Helper macro for MULE_IF
+m4_define([__mule_if_helper],
+[m4_if( [$#], 0,,
+	[$#], 1, [m4_ifvaln([$1], [m4_n([else])  $1])],
+	[m4_n([elif $1; then])  m4_ifvaln([$2], [$2], :)])dnl
+m4_if(m4_eval([$# > 2]), 1, [$0(m4_shiftn(2, $@))])])
+
+dnl MULE_IF(CONDITION, [IF-TRUE] [, ELIF-CONDITION, [IF-TRUE]]... [, ELSE-BRANCH])
+m4_define([MULE_IF],
+[m4_if( [$#], 0,,
+	[$#], 1,,
+	[m4_n([if $1; then])  m4_ifval([$2],[$2], :)
+m4_if(m4_eval([$# > 2]), 1, [__mule_if_helper(m4_shiftn(2, $@))])m4_n([fi])])])
+
 dnl ---------------------------------------------------------------------------
 dnl MULE_CHECK_SYSTEM
 dnl
@@ -59,8 +73,6 @@ dnl ---------------------------------------------------------------------------
 AC_DEFUN([MULE_CHECK_SYSTEM],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 
-	MULE_BACKUP([CPPFLAGS])
-	MULE_BACKUP([CPPFLAGS])
 	case "${host_os}" in
 	"")
 		SYS=unknown
