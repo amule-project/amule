@@ -74,9 +74,6 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 
 	case "${host_os}" in
-	"")
-		SYS=unknown
-		;;
 	darwin*)
 		SYS=darwin
 		MULECPPFLAGS="-no-cpp-precomp -D_INTL_REDIRECT_MACROS -DNOPCH";
@@ -94,9 +91,22 @@ AC_DEFUN([MULE_CHECK_SYSTEM],
 		MULECPPFLAGS="-DNOMINMAX"
 		;;
 	solaris*)
+		SYS=solaris
 		RESOLV_LIB="-lresolv -lnsl"
 		X11LIBS="-lX11"
 		LIBS="$LIBS -lrt"
+		;;
+	*netbsd*)
+		SYS=netbsd
+		# Now this is against autoconf recommendation that configure should not modify CPPFLAGS and LDFLAGS
+		# However, these values in NetBSD are required even to run the tests, and this is the easiest way to do it.
+		# Still, we prepend them, instead of adding, so the user may override them.
+		MULE_PREPEND([CPPFLAGS], [-I/usr/pkg/include])
+		MULE_PREPEND([LDFLAGS], [-R/usr/pkg/lib -L/usr/pkg/lib])
+		;;
+	*)
+		SYS=unknown
+		;;
 	esac
 
 	# -lpthread is needed by Debian but FreeBSD < 5 doesn't support it
