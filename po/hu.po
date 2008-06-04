@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-02 03:30+0200\n"
-"PO-Revision-Date: 2008-05-13 02:04+0100\n"
+"PO-Revision-Date: 2008-06-05 00:02+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -528,11 +528,11 @@ msgstr "Hiba: A TCP portot nem lehet figyelni."
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
-msgstr ""
+msgstr "web ügyfél kapcsolat elfogadva\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "Error: can not accept web client connection\n"
-msgstr ""
+msgstr "Hiba: nem tudom fogadni a web ügyfél kapcsolatot\n"
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -2530,7 +2530,7 @@ msgstr "Kad többletterhelés (csomagok): %s"
 #: src/Statistics.cpp:660 src/Statistics.cpp:681
 #, c-format
 msgid "Crypt overhead (UDP): %s"
-msgstr ""
+msgstr "Titkosítás többletterhelés (UDP): %s"
 
 #: src/Statistics.cpp:662
 #, c-format
@@ -3314,7 +3314,7 @@ msgstr "ICH: %i. sérült rész helyreállítva a '%s'-hez -> megmentett bájtok
 
 #: src/PartFile.cpp:3845
 msgid "Allocating"
-msgstr ""
+msgstr "Helyfoglalás"
 
 #: src/PartFile.cpp:3861
 msgid "Insufficient Diskspace"
@@ -3331,7 +3331,7 @@ msgstr "Letöltve"
 #: src/PartFile.cpp:4143
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr ""
+msgstr "HIBA: A(z) '%s' részfájl megnyitása sikertelen."
 
 #: src/KnownFileList.cpp:79
 msgid "Warning: known.met cannot be opened."
@@ -3491,10 +3491,13 @@ msgstr[0] "%u .part fájlt találtam"
 #: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
+"Az ideiglenes fájlok könyvtárának fájlrendszere nem tudja kezelni a nagy "
+"fájlokat."
 
 #: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
+"A bejövő fájlok könyvtárának fájlrendszere nem tudja kezelni a nagy fájlokat."
 
 #: src/DownloadQueue.cpp:327
 #, c-format
@@ -5143,7 +5146,7 @@ msgstr "Válaszd ki a böngésződet"
 
 #: src/muuli_wdr.cpp:1697
 msgid "Custom Browser:"
-msgstr "Böngésző beállítása:"
+msgstr "Egyéni böngésző:"
 
 #: src/muuli_wdr.cpp:1701
 msgid ""
@@ -5159,7 +5162,7 @@ msgstr "Megnyitás új fülön, ha lehetséges"
 
 #: src/muuli_wdr.cpp:1712
 msgid "Open the web page in a new tab instead of in a new window when possible"
-msgstr "Weboldal megnyitása új ablakban, ha lehetséges"
+msgstr "Weboldal megnyitása új fülön új ablak helyett, ha lehetséges"
 
 #: src/muuli_wdr.cpp:1743
 msgid "Bandwith Limits"
@@ -5292,7 +5295,7 @@ msgstr "Prioritási rendszer használata"
 
 #: src/muuli_wdr.cpp:2019
 msgid "Use smart LowID check on connect"
-msgstr "Intelligens LowID ellenőrző használata kapcsolódáskor"
+msgstr "Intelligens LowID ellenőrzés használata kapcsolódáskor"
 
 #: src/muuli_wdr.cpp:2023
 msgid "Safe connect"
@@ -5358,7 +5361,7 @@ msgstr "Szabad lemezterület ellenőrzése"
 #: src/muuli_wdr.cpp:2109
 msgid "Select this if you want aMule to check your Disk Space"
 msgstr ""
-"Jelöld be, ha szeretnéd, hogy az aMule ellenőrízze a szabad lemezterületedet"
+"Jelöld be, ha szeretnéd, hogy az aMule ellenőrizze a szabad lemezterületedet"
 
 #: src/muuli_wdr.cpp:2116
 msgid "Min Disk Space:"
@@ -5370,13 +5373,15 @@ msgstr "Add meg a kívánt min. szabad lemezterületet."
 
 #: src/muuli_wdr.cpp:2128
 msgid "Preallocate disk space for new files"
-msgstr ""
+msgstr "Lemezterület helyfogalalás az új fájloknak"
 
 #: src/muuli_wdr.cpp:2129
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
 msgstr ""
+"Az új fájlok számára előre lefoglalja a lemezterületet, így csökkentve a "
+"töredezettséget"
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming Directory :"
@@ -7035,7 +7040,7 @@ msgstr ""
 #: src/amule.cpp:1625
 #, c-format
 msgid "Disk space preallocation for file '%s' failed: %s"
-msgstr ""
+msgstr "Lemezterület helyfoglalás a '%s' fájl számára sikertelen: %s"
 
 #: src/amule.cpp:1773
 msgid "ERROR: can't open logfile"
