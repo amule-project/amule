@@ -104,6 +104,23 @@ Version 2.2.1 - ???
 		* Fixed #1289: amule fails to build on non glibc systems (e.g. uclibc)
 		* Hungarian translation.
 		* Allow generating feedback from shared files.
+		* Ported Kademlia2.0 Protocol Version 7.
+		* Fixed 'bad file descriptor' error on Mac.
+		* Unittest for the Kademlia::CUInt128 class.
+		* Added kademlia and obfuscation status to the client details.
+		* Fix for bars positioned 1 pixel too low.
+		* Added a small debug utility to display contents of mule files (kad only yet).
+		* Fix for #1184; fixed both ed2k and kad searches for >4GB files.
+		* Proper detection and usage (if possible) of strerror_r()
+		* Added English names to the language selector - for the curious ones.
+		* Fixed some memory leaks.
+		* Got rid of the deprecated HAVE_GETTEXT macros.
+		* Added gettext support to amuleweb.
+		* Added preferences option 'Allocate full size'.
+		* Added crypt overhead to statistics, UDP only for now.
+		* Added checks to prevent downloading large files to file systems not supporting them.
+		* Added check for NetBSD systems.
+		* Heavy rewrite of autoconf/automake stuff.
 
 	Hermit:
 		* Patch for amulecmd history which ensures that when the same command
