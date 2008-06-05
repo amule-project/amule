@@ -237,6 +237,7 @@ AC_MSG_RESULT($need_gui)
 # Check for GeoIP (required for IP2Country capability)
 AS_IF([test ${ENABLE_IP2COUNTRY:-no} = yes], [
 	GEOIP_LIBS="-lGeoIP"
+	MULE_APPEND([GEOIP_CPPFLAGS], [-DENABLE_IP2COUNTRY=1])
 	MULE_BACKUP([CPPFLAGS])
 	MULE_APPEND([CPPFLAGS], [$GEOIP_CPPFLAGS])
 	AC_CHECK_HEADER([GeoIP.h],,

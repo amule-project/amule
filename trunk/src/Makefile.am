@@ -227,7 +227,7 @@ common_sources = \
 # Libs
 
 core_libs = -L. -lmuleappcore
-gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS)
+gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIBS)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
 
@@ -248,12 +248,7 @@ if ENABLE_UPNP
 core_flags += -DENABLE_UPNP=1
 endif
 
-gui_flags = $(WX_CPPFLAGS)
-if ENABLE_IP2COUNTRY
-gui_flags += $(GEOIP_CPPFLAGS) -DENABLE_IP2COUNTRY=1
-gui_libs += $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
-endif
-
+gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
 common_flags = -I$(srcdir)/libs -Ilibs -I$(srcdir)/include $(CRYPTOPP_CPPFLAGS)
 
 # --------- Apps ---------
