@@ -39,15 +39,15 @@ bin_PROGRAMS += amuled
 endif
 
 # Sources
-
+noinst_LIBRARIES =
 if MONOLITHIC
-noinst_LIBRARIES = libmuleappcore.a libmuleappgui.a libmuleappcommon.a
+noinst_LIBRARIES += libmuleappcore.a libmuleappgui.a libmuleappcommon.a
 else
 if AMULE_DAEMON
-noinst_LIBRARIES = libmuleappcore.a libmuleappcommon.a
+noinst_LIBRARIES += libmuleappcore.a libmuleappcommon.a
 else
 if AMULE_GUI
-noinst_LIBRARIES = libmuleappgui.a libmuleappcommon.a
+noinst_LIBRARIES += libmuleappgui.a libmuleappcommon.a
 endif
 endif
 endif
