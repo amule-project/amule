@@ -43,7 +43,7 @@ namespace PlatformSpecific {
  */
 bool CreateSparseFile(const CPath& name, uint64_t size);
 
- 
+
 /**
  * Returns the max number of connections the current OS can handle.
  *
@@ -55,17 +55,19 @@ int GetMaxConnections();
 inline int GetMaxConnections() { return -1; }
 #endif
 
- 
+
 /**
  * File system types returned by GetFilesystemType
  */
 enum EFSType {
-	fsFAT,		//! vfat, FAT32, etc
-	fsNTFS,		//! NTFS
-	fsEXT,		//! ext, ext2, ext3
+	fsFAT,		//! File Allocation Table
+	fsNTFS,		//! New Technology File System
+	fsHFS,		//! Hierarchical File System
+	fsHPFS,		//! High Performace File System
+	fsMINIX,	//! Minix file system
 	fsOther		//! Unknown, other
 };
- 
+
 /**
  * Find out the filesystem type of the given path.
  *
@@ -77,7 +79,7 @@ enum EFSType {
  */
 EFSType GetFilesystemType(const CPath& path);
 
- 
+
 /**
  * Checks if the filesystem can handle special chars.
  *
@@ -87,12 +89,23 @@ EFSType GetFilesystemType(const CPath& path);
  * This function checks if the file system of the given path can handle
  * special chars e.g. ':' in file names. This function will always return
  * false on MSW, since Windows cannot handle those characters on any file system.
+ *
+ * Based on http://en.wikipedia.org/wiki/Comparison_of_file_systems
  */
 #ifdef __WXMSW__
 inline bool CanFSHandleSpecialChars(const CPath& WXUNUSED(path)) { return false; }
 #else
 // Other filesystem types may be added
-inline bool CanFSHandleSpecialChars(const CPath& path) { return GetFilesystemType(path) == fsEXT; }
+inline bool CanFSHandleSpecialChars(const CPath& path)
+{
+	switch (GetFilesystemType(path)) {
+		case fsFAT:
+		case fsHFS:
+			return false;
+		default:
+			return true;
+	}
+}
 #endif
 
 
@@ -104,16 +117,19 @@ inline bool CanFSHandleSpecialChars(const CPath& path) { return GetFilesystemTyp
  *
  * This function checks if the file system of the given path can handle
  * large files (>4GB).
+ *
+ * Based on http://en.wikipedia.org/wiki/Comparison_of_file_systems
  */
 inline bool CanFSHandleLargeFiles(const CPath& path)
 {
 	switch (GetFilesystemType(path)) {
-		case fsNTFS:
-		case fsEXT:
-			// Other filesystem types may be added
-			return true;
-		default:
+		case fsFAT:
+		case fsHFS:
+		case fsHPFS:
+		case fsMINIX:
 			return false;
+		default:
+			return true;
 	}
 }
 

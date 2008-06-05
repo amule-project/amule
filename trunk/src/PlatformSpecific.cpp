@@ -215,8 +215,12 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 						   !strcmp(entry->mnt_type, "vfat") ||
 						   !strncmp(entry->mnt_type, "fat", 3)) {
 						retval = PlatformSpecific::fsFAT;
-					} else if (!strncmp(entry->mnt_type, "ext", 3)) {
-						retval = PlatformSpecific::fsEXT;
+					} else if (!strcmp(entry->mnt_type, "hfs")) {
+						retval = PlatformSpecific::fsHFS;
+					} else if (!strcmp(entry->mnt_type, "hpfs")) {
+						retval = PlatformSpecific::fsHPFS;
+					} else if (!strcmp(entry->mnt_type, "minix")) {
+						retval = PlatformSpecific::fsMINIX;
 					} /* Add more filesystem types here */
 					else if (dir.Length() > bestPrefixLen) {
 						retval = PlatformSpecific::fsOther;
