@@ -77,13 +77,15 @@ Version 2.2.1 - ???
 		* Drop path component from logged file names.
 		* Fix for perl v5.8.8
 		* wxCas compilation fixes for wxCVS
-		* Doxyfile doesn't need to be installed, it's unusable without the sources.
+		* Doxyfile doesn't need to be installed, it's unusable without the
+		  sources.
 		* Fixed #979: No win32 version information
 		* Updated listctrl code to 2.8.7
 		* Fixed a buffer overflow in TextFile.cpp
 		* Cross-compilation fixes.
 		* Some little optimizations on configure.
-		* Re-categorized a number of strings whether they need translation or not.
+		* Re-categorized a number of strings whether they need translation or
+		  not.
 		* Added plurals support.
 		* Removed a number of unused leftover files from the repositiory.
 		* Various fixes for wxMSW builds.
@@ -111,7 +113,8 @@ Version 2.2.1 - ???
 		* Unittest for the Kademlia::CUInt128 class.
 		* Added kademlia and obfuscation status to the client details.
 		* Fix for bars positioned 1 pixel too low.
-		* Added a small debug utility to display contents of mule files (kad only yet).
+		* Added a small debug utility to display contents of mule files (kad
+		  only yet).
 		* Fix for #1184; fixed both ed2k and kad searches for >4GB files.
 		* Proper detection and usage (if possible) of strerror_r()
 		* Added English names to the language selector - for the curious ones.
@@ -120,7 +123,8 @@ Version 2.2.1 - ???
 		* Added gettext support to amuleweb.
 		* Added preferences option 'Allocate full size'.
 		* Added crypt overhead to statistics, UDP only for now.
-		* Added checks to prevent downloading large files to file systems not supporting them.
+		* Added checks to prevent downloading large files to file systems not
+		  supporting them.
 		* Added check for NetBSD systems.
 		* Heavy rewrite of autoconf/automake stuff.
 
@@ -144,14 +148,15 @@ Version 2.2.1 - ???
 	Kry:
 		* Protocol Obfuscation (enabled by default)
 		* Large file support (>4GB)
-		* Disabled auto-update of servers from clients and other servers by default.
+		* Disabled auto-update of servers from clients and other servers by
+		  default.
 		* Fixed a bug while getting sources for large files (>4GB)
 		* Fixed mldonkey_importer to work with mldonkey >= 2.7.6
 		* Improve exception handling
-		* Added a column on client view that shows if the user has reported having 
-		  disabled shared files.
-		* Disable the "Show files" option in context menu if the user has reported 
+		* Added a column on client view that shows if the user has reported
 		  having disabled shared files.
+		* Disable the "Show files" option in context menu if the user has
+		  reported having disabled shared files.
 		* Add generic CTag classes support for Kad data types
 		* Remove kad IO classes
 		* Safety on memfiles created from packets
@@ -159,7 +164,8 @@ Version 2.2.1 - ???
 		* Fixed Unittest
 		* Update audio and video types
 		* Update EC to use the equivalent of VBT tags
-		* Fix ID sending on hello packet to use the hybrid ID instead of plain ed2k id
+		* Fix ID sending on hello packet to use the hybrid ID instead of plain
+		  ed2k id
 		* Fix a bug on sending info to other clients on file list request
 		* Upgrade lex generated code
 		* Add the --reset-config flag
@@ -169,11 +175,12 @@ Version 2.2.1 - ???
 		* Swap bytes for int types in EC code
 		* Lower reask times
 		* Fix Memleak in ECSocket
-		* Extend amulecmd with 'show log' and 'reset' command, originally by quinox, bug #856
+		* Extend amulecmd with 'show log' and 'reset' command, originally by
+		  quinox, bug #856
 		* Usage of HOSTCC for compile-time executions
 		* Created translation status scripts
-		* Move server packets to the back of the UDP queue if the server is still
-		  resolving a dynamic host
+		* Move server packets to the back of the UDP queue if the server is
+		  still resolving a dynamic host
 		* Script to wikify changelog
 		* Separate ECTag from ECPacket
 		* Fix crash on startup
@@ -205,12 +212,38 @@ Version 2.2.1 - ???
 		* Remember kad and ed2k urls and restore them on restart.
 		* Force conversion to be ISO8859 for tag names, obvious from the network
 		  standards. This also fixes Kad.
-		* Changed the inheritance for the UDP sockets to include the encrypted layer
+		* Changed the inheritance for the UDP sockets to include the encrypted
+		  layer
 		* Fix for MuleGifDecoder issue
 		* Windows fixes
 		* Added OnO patch for Toolbar display.
 		* Fixed validation of preferences items for wxWidgets 2.8.4
 		* Fixed cryptopp version recognition on Mac.
+		* Finish Protocol Obfuscation including GUI
+		* Fix base for emsocket
+		* Disable bison generation on Mac
+		* Endian fixes
+		* Fix compilation on wxCocoa
+		* Make obfuscated state persistant
+		* Change preferences order, add debug info
+		* Fix getsources with large files
+		* Add message on triggering new version
+		* Fix spelling
+		* Fix Windows compilation
+		* Remove backups before moving logfile
+		* Fix compilation
+		* Fix for connecting to servers if encryption is required
+		* Fix memleaks
+		* Use proper base class
+		* Remove unmaintained translations
+		* Honour data root settings to remove warning
+		* Make code compatible to MSVC
+		* Fix to avoid losing packets
+		* Avoid multi line strings in GUI to allow MSVC compilation
+		* Fix wxIPV4address usage where amuleIPV4 is unnecessary
+		* Change CVS string to SVN
+		* Adjust MuleDebug
+		* Fix file types due to overloads of EC
 
 	lfroen:
 		* Fix partcount not being set in remote gui
@@ -234,6 +267,38 @@ Version 2.2.1 - ???
 
 	magicamule:
 		* filtered off comments still affect rating
+
+	malapraxis:
+		* Fix MSVC compilation errors
+		* Don't use wxFile flush on Windows
+		* Toolbar fixes to fix assert on Windows
+		* Use better defaults fpr preferences
+		* simplified minimize/raise code, remember maxmimized status between
+		  sessions
+		* Make sure starting points are inside screen and sanity fixes
+		* Fixes to view/restore, original function doesn't skip
+		* Final fixes to iconize()
+		* Fix for broken native counter
+		* Change data types to clear warnings at /W4 on MSVC
+		* Cleared MD5_ functions to use standard memset/memcpy
+		* Cleared types, added asserts for debug, remove unused functions
+		* more warnings cleared and more asserts
+		* /W2 fixes on main project
+		* Fix compilation of amuleGUI
+		* Enable compilation with wx 2.9
+		* Fix Kad1.0 and Kad2.0 search types
+		* Enable dynamic GUI reordering when networks are disabled
+		* cannot pack non-POD structure
+		* Change structure with constructor to class
+		* small MSVC fixes, major speedup and adjustment for networks
+		* don't use ++ to modify a var value if you assign to same var
+		* speedup as copying is unnecessary
+		* further fixes for VS
+		* fix notebook logs/info tabs display
+		* better macro use
+		* add MSVC solution and readme
+		* fixed bug on socket event GetResult(), MSVC fixes on files
+		* fixed direct callback for type 6 sources
 
 	morricone:
 		* Fix for wxwin.m4 not autodetecting wxBase.
@@ -316,9 +381,12 @@ Version 2.2.1 - ???
 		* CheckFileExists() now uses wxFile::Exists().
 		* GetLastModificationTime() now uses wxFileModificationTime().
 		* GetFileSize() now uses wxFile::Length().
-		* UTF8_CopyFile() now uses wxCopyFile(). Later reverted for locale fixes.
-		* UTF8_RemoveFile() now uses wxRemoveFile(). Later reverted for locale fixes.
-		* UTF8_MoveFile() now uses wxRenameFile(). Later reverted for locale fixes.
+		* UTF8_CopyFile() now uses wxCopyFile(). Later reverted for locale
+		  fixes.
+		* UTF8_RemoveFile() now uses wxRemoveFile(). Later reverted for locale
+		  fixes.
+		* UTF8_MoveFile() now uses wxRenameFile(). Later reverted for locale
+		  fixes.
 		* theApp is now a global pointer, so that we can access the
 		  global application object from within a core file.
 		* Partial fix for the COLORREF compilation problem on Windows.
@@ -335,7 +403,8 @@ Version 2.2.1 - ???
 		  fails, then it tries ISO-8859-1.
 		* New directory based skin support, reworked Trevino's patch.
 		* Fixed amuleweb crashes due to bug in ECSocket.cpp
-		* Code to refresh port mappings in the event of a temporary router failure
+		* Code to refresh port mappings in the event of a temporary router
+		  failure
 		* Code to deal with previously unhandled UPnP events.
 		* Fixed remote-gui segfault in UpdateStatsTree()
 		* syscall_check is no longer a macro
@@ -412,6 +481,7 @@ Version 2.2.1 - ???
 		* Made all part-status bars look the same.
 		* File names in file detail dialog can be scrolled without
 		  messing up the list control
+		* Fix for copy constructor
 
 	Tiziano Müller:
 		* Fixed compilation when --enable-geoip is used in conjunction
@@ -764,6 +834,7 @@ Version 2.2.1 - ???
 		  flags icons and mischamajskij for his unknown icon
 		* deloun and mischamajskij for their work on aMule skins and
 		  icons for aMule
+		* Dimitrios Galanakis for his work on language improvements
 		* Bun Bun, for being there to tell me I'm not stupid.
 
 --------------------------------------------------------------------------------
