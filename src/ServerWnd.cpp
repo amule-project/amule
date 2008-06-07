@@ -159,7 +159,7 @@ void CServerWnd::UpdateED2KInfo()
 	wxListCtrl* ED2KInfoList = CastChild( ID_ED2KINFO, wxListCtrl );
 	
 	ED2KInfoList->DeleteAllItems();
-	ED2KInfoList->InsertItem(0, _("ED2K Status:"));
+	ED2KInfoList->InsertItem(0, _("eD2k Status:"));
 
 	if (theApp->IsConnectedED2K()) {
 		ED2KInfoList->SetItem(0, 1, _("Connected"));

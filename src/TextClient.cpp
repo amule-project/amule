@@ -668,7 +668,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 				const CECTag *connMaxUL = tab->GetTagByName(EC_TAG_CONN_MAX_UL);
 				const CECTag *connMaxDL = tab->GetTagByName(EC_TAG_CONN_MAX_DL);
 				if (connMaxUL && connMaxDL) {
-					s << wxString::Format(_("Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"),
+					s << wxString::Format(_("Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"),
 						(uint16)connMaxUL->GetInt(),
 						(uint16)connMaxDL->GetInt());
 				}
@@ -686,7 +686,7 @@ void CamulecmdApp::Process_Answer_v2(const CECPacket *response)
 		case EC_OP_STATS: {
 			CEC_ConnState_Tag *connState = (CEC_ConnState_Tag*)response->GetTagByName(EC_TAG_CONNSTATE);
 			if (connState) {
-				s << _("ED2K") << wxT(": ");
+				s << _("eD2k") << wxT(": ");
 				if (connState->IsConnectedED2K()) {
 					CECTag *server = connState->GetTagByName(EC_TAG_SERVER);
 					CECTag *serverName = server ? server->GetTagByName(EC_TAG_SERVER_NAME) : NULL;
@@ -845,8 +845,8 @@ void CamulecmdApp::OnInitCommandSet()
 	m_commands.AddCommand(wxT("Statistics"), CMD_ID_STATTREE, wxTRANSLATE("Show full statistics tree."),
 			      wxTRANSLATE("Optionally, a number in the range 0-255 can be passed as an argument to this\ncommand, which tells how many entries of the client version subtrees should be\nshown. Passing 0 or omitting it means 'unlimited'.\n\nExample: 'statistics 5' will show only the top 5 versions for each client type.\n"));
 
-	m_commands.AddCommand(wxT("Shutdown"), CMD_ID_SHUTDOWN, wxTRANSLATE("Shutdown aMule."),
-			      wxTRANSLATE("Shutdown the remote running core (amule/amuled).\nThis will also shut down the text client, since it is unusable without a\nrunning core.\n"), CMD_PARAM_NEVER);
+	m_commands.AddCommand(wxT("Shutdown"), CMD_ID_SHUTDOWN, wxTRANSLATE("Shut down aMule."),
+			      wxTRANSLATE("Shut down the remote running core (amule/amuled).\nThis will also shut down the text client, since it is unusable without a\nrunning core.\n"), CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand(wxT("Reload"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Reloads the given object."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Shared"), CMD_ID_RELOAD_SHARED, wxTRANSLATE("Reloads shared files list."), wxEmptyString, CMD_PARAM_NEVER);
@@ -854,16 +854,16 @@ void CamulecmdApp::OnInitCommandSet()
 
 	tmp = m_commands.AddCommand(wxT("Connect"), CMD_ID_CONNECT, wxTRANSLATE("Connect to the network."),
 				    wxTRANSLATE("This will connect to all networks that are enabled in Preferences.\nYou may also optionally specify a server address in IP:Port form, to connect to\nthat server only. The IP must be a dotted decimal IPv4 address,\nor a resolvable DNS name."), CMD_PARAM_OPTIONAL);
-	tmp->AddCommand(wxT("ED2K"), CMD_ID_CONNECT_ED2K, wxTRANSLATE("Connect to ED2K only."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp->AddCommand(wxT("ED2K"), CMD_ID_CONNECT_ED2K, wxTRANSLATE("Connect to eD2k only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Kad"), CMD_ID_CONNECT_KAD, wxTRANSLATE("Connect to Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
 	tmp = m_commands.AddCommand(wxT("Disconnect"), CMD_ID_DISCONNECT, wxTRANSLATE("Disconnect from the network."),
 				    wxTRANSLATE("This will disconnect from all networks that are currently connected.\n"), CMD_PARAM_NEVER);
-	tmp->AddCommand(wxT("ED2K"), CMD_ID_DISCONNECT_ED2K, wxTRANSLATE("Disconnect from ED2K only."), wxEmptyString, CMD_PARAM_NEVER);
+	tmp->AddCommand(wxT("ED2K"), CMD_ID_DISCONNECT_ED2K, wxTRANSLATE("Disconnect from eD2k only."), wxEmptyString, CMD_PARAM_NEVER);
 	tmp->AddCommand(wxT("Kad"), CMD_ID_DISCONNECT_KAD, wxTRANSLATE("Disconnect from Kad only."), wxEmptyString, CMD_PARAM_NEVER);
 
- 	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Adds an ed2k or magnet link to core."),
-			      wxTRANSLATE("The ed2k link to be added can be:\n*) a file link (ed2k://|file|...), it will be added to the download queue,\n*) a server link (ed2k://|server|...), it will be added to the server list,\n*) or a serverlist link, in which case all servers in the list will be added to the\n   server list.\n\nThe magnet link must contain the ed2k hash and file length.\n"), CMD_PARAM_ALWAYS);
+ 	m_commands.AddCommand(wxT("Add"), CMD_ID_ADDLINK, wxTRANSLATE("Adds an eD2k or magnet link to core."),
+			      wxTRANSLATE("The eD2k link to be added can be:\n*) a file link (ed2k://|file|...), it will be added to the download queue,\n*) a server link (ed2k://|server|...), it will be added to the server list,\n*) or a serverlist link, in which case all servers in the list will be added to the\n   server list.\n\nThe magnet link must contain the eD2k hash and file length.\n"), CMD_PARAM_ALWAYS);
 
 	tmp = m_commands.AddCommand(wxT("Set"), CMD_ERR_INCOMPLETE, wxTRANSLATE("Set a preference value."),
 				    wxEmptyString, CMD_PARAM_NEVER);
@@ -949,7 +949,7 @@ void CamulecmdApp::OnInitCommandSet()
 	//
 
 #define DEPRECATED(OLDCMD, ID, NEWCMD, PARAM) \
-	m_commands.AddCommand(wxT(OLDCMD), CMD_ID_##ID | CMD_DEPRECATED, CFormat(wxTRANSLATE("Deprecated command, now '%s'.")) % wxT(NEWCMD), \
+	m_commands.AddCommand(wxT(OLDCMD), CMD_ID_##ID | CMD_DEPRECATED, CFormat(wxTRANSLATE("Deprecated command, use '%s' instead.")) % wxT(NEWCMD), \
 			      CFormat(wxTRANSLATE("This is a deprecated command, and may be removed in the future.\nUse '%s' instead.\n")) % wxT(NEWCMD), CMD_PARAM_##PARAM)
 
 	DEPRECATED("Stats", STATUS, "Status", NEVER);

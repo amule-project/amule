@@ -301,7 +301,7 @@ void CWebServerBase::OnWebSocketServerEvent(wxSocketEvent& WXUNUSED(event))
     	webInterface->Show(_("web client connection accepted\n"));
     } else {
     	delete client;
-    	webInterface->Show(_("Error: can not accept web client connection\n"));
+    	webInterface->Show(_("ERROR: can not accept web client connection\n"));
     }
 }
 

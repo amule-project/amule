@@ -124,13 +124,13 @@ AlcFrame::AlcFrame (const wxString & title):
                                         wxDefaultPosition, wxSize(300,-1));
   m_inputFileTextCtrl->
   SetToolTip (_
-              ("Enter here the file you want to compute the Ed2k link"));
+              ("Enter here the file you want to compute the eD2k link"));
 
   m_inputAddTextCtrl = new wxTextCtrl (m_mainPanel,-1,wxEmptyString,
                                        wxDefaultPosition, wxSize(300,-1));
   m_inputAddTextCtrl->
   SetToolTip (_
-              ("Enter here the URL you want to add to the Ed2k link: Add / at the end to let aLinkCreator append the current file name"));
+              ("Enter here the URL you want to add to the eD2k link: Add / at the end to let aLinkCreator append the current file name"));
 
   // List box
   m_inputUrlListBox = new wxListBox(m_mainPanel, -1, wxDefaultPosition,
@@ -201,7 +201,7 @@ AlcFrame::AlcFrame (const wxString & title):
 #endif
 
   // Hash Vertical Box Sizer
-  m_e2kHashSBox = new wxStaticBox (m_mainPanel, -1, _("Ed2k File Hash"));
+  m_e2kHashSBox = new wxStaticBox (m_mainPanel, -1, _("eD2k File Hash"));
   m_e2kHashSBoxSizer = new wxStaticBoxSizer (m_e2kHashSBox, wxHORIZONTAL);
 
   // Hash results
@@ -212,7 +212,7 @@ AlcFrame::AlcFrame (const wxString & title):
   m_mainPanelVBox->Add( m_e2kHashSBoxSizer, 0, wxALL | wxGROW, 10 );
 
   // Ed2k Vertical Box Sizer
-  m_ed2kSBox = new wxStaticBox (m_mainPanel, -1, _("Ed2k link"));
+  m_ed2kSBox = new wxStaticBox (m_mainPanel, -1, _("eD2k link"));
   m_ed2kSBoxSizer = new wxStaticBoxSizer (m_ed2kSBox, wxVERTICAL);
 
   // Ed2k results
@@ -257,13 +257,13 @@ AlcFrame::AlcFrame (const wxString & title):
   m_toolbar->SetMargins (2, 2);
 
   m_toolbar->AddTool (ID_BAR_OPEN, wxT("Open"), m_toolBarBitmaps[0],
-                      _("Open a file to compute its ed2k link"));
+                      _("Open a file to compute its eD2k link"));
 
   m_toolbar->AddTool (ID_BAR_COPY, wxT("Copy"), m_toolBarBitmaps[1],
-                      _("Copy computed ed2k link to clipboard"));
+                      _("Copy computed eD2k link to clipboard"));
 
   m_toolbar->AddTool (ID_BAR_SAVEAS, wxT("Save as"), m_toolBarBitmaps[2],
-                      _("Save computed ed2k link to file"));
+                      _("Save computed eD2k link to file"));
 
   m_toolbar->AddSeparator ();
 
@@ -361,7 +361,7 @@ AlcFrame::SetFileToHash()
 	wxString browseroot = wxFileName::GetHomeDir();
 #endif
   const wxString & filename =
-    wxFileSelector (_("Select the file you want to compute the ed2k link"),
+    wxFileSelector (_("Select the file you want to compute the eD2k link"),
                     browseroot, wxEmptyString, wxEmptyString, wxT("*.*"),
                     wxFD_OPEN | wxFD_FILE_MUST_EXIST, this);
 
@@ -431,7 +431,7 @@ AlcFrame::SaveEd2kLinkToFile()
   if (!link.IsEmpty())
     {
       const wxString & filename =
-        wxFileSelector (_("Select the file to your computed ed2k link"),
+        wxFileSelector (_("Select the file to your computed eD2k link"),
                         wxFileName::GetHomeDir(),wxT("my_ed2k_link"),
                         wxT("txt"), wxT("*.txt"), wxFD_SAVE, this);
 
@@ -463,7 +463,7 @@ void
 AlcFrame::OnBarAbout (wxCommandEvent & WXUNUSED(event))
 {
   wxMessageBox (_
-                ("aLinkCreator, the aMule ed2k link creator\n\n(c) 2004 ThePolish <thepolish@vipmail.ru>\n\nPixmaps from http://www.everaldo.com and http://www.icomania.com\nand http://jimmac.musichall.cz/ikony.php3\n\nDistributed under GPL"),
+                ("aLinkCreator, the aMule eD2k link creator\n\n(c) 2004 ThePolish <thepolish@vipmail.ru>\n\nPixmaps from http://www.everaldo.com and http://www.icomania.com\nand http://jimmac.musichall.cz/ikony.php3\n\nDistributed under GPL"),
                 _("About aLinkCreator"), wxOK | wxCENTRE | wxICON_INFORMATION);
 }
 
@@ -528,7 +528,7 @@ void AlcFrame::OnStartButton (wxCommandEvent & WXUNUSED(event))
 #endif
 
       // Create ED2K progress bar dialog
-      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing ED2K Hashes..."),
+      m_progressBar=new wxProgressDialog  (wxT("aLinkCreator is working for you"), wxT("Computing eD2k Hashes..."),
                                            100, this, wxPD_AUTO_HIDE | wxPD_CAN_ABORT | wxPD_REMAINING_TIME);
 
       // Compute ed2k Hash

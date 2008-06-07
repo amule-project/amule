@@ -940,7 +940,7 @@ void CDownloadListCtrl::OnMouseRightClick(wxListEvent& evt)
 		m_menu->Append(MP_GETMAGNETLINK,
 			_("Copy magnet URI to clipboard"));
 		m_menu->Append(MP_GETED2KLINK,
-			_("Copy ED2k &link to clipboard"));
+			_("Copy eD2k &link to clipboard"));
 		m_menu->Append(MP_WS,
 			_("Copy feedback to clipboard"));
 		//-----------------------------------------------------
@@ -2251,7 +2251,7 @@ void CDownloadListCtrl::PreviewFile(CPartFile* file)
 	// And please, do a warning also :P
 	if (thePrefs::GetVideoPlayer().IsEmpty()) {
 		wxMessageBox(_(
-			"Please set your preferred video player on preferences.\nMeanwhile, aMule will attempt to use mplayer and you will get this warning on every preview"),
+			"To prevent this warning to show up in every preview,\nset your preferred video player in preferences (default is mplayer)."),
 			_("File preview"), wxOK, this);
 		// Since newer versions for some reason mplayer does not automatically
 		// select video output device and needs a parameter, go figure...

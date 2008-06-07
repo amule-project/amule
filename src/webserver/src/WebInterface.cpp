@@ -484,11 +484,11 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 		
 	amuleweb_parser.AddOption(wxT("s"), wxT("server-port"), 
-		_("Webserver HTTP port"),
+		_("Web server HTTP port"),
 		wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("u"), wxT("enable-upnp"), 
-		_("Use UPnP port forwarding on webserver port"),
+		_("Use UPnP port forwarding on web server port"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 	
 	amuleweb_parser.AddSwitch(wxT("U"), wxT("upnp-port"), 
@@ -504,11 +504,11 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxCMD_LINE_PARAM_OPTIONAL);
 	
 	amuleweb_parser.AddOption(wxT("A"), wxT("admin-pass"), 
-		_("Full access password for webserver"), 
+		_("Full access password for web server"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddOption(wxT("G"), wxT("guest-pass"), 
-		_("Guest password for webserver"), 
+		_("Guest password for web server"), 
 		wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("a"), wxT("allow-guest"), 
@@ -520,7 +520,7 @@ void CamulewebApp::OnInitCmdLine(wxCmdLineParser& amuleweb_parser)
 		wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddSwitch(wxT("L"), wxT("load-settings"), 
-		_("Load/save webserver settings from/to remote aMule"),
+		_("Load/save web server settings from/to remote aMule"),
 		wxCMD_LINE_PARAM_OPTIONAL);
 
 	amuleweb_parser.AddOption(wxEmptyString, wxT("amule-config-file"),

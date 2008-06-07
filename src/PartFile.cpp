@@ -331,13 +331,13 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 	try {
 		CFile metFile(curMetFilename, CFile::read);
 		if (!metFile.IsOpened()) {
-			AddLogLineM(false, CFormat( _("Error: Failed to open part.met file: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: Failed to open part.met file: %s ==> %s") )
 				% curMetFilename
 				% GetFileName() );
 
 			return false;
 		} else if (metFile.GetLength() == 0) {
-			AddLogLineM(false, CFormat( _("Error: part.met file is 0 size: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: part.met file is 0 size: %s ==> %s") )
 				% m_partmetfilename
 				% GetFileName() );
 			
@@ -348,7 +348,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 		if (version != PARTFILE_VERSION && version != PARTFILE_SPLITTEDVERSION && version != PARTFILE_VERSION_LARGEFILE){
 			metFile.Close();
 			//if (version == 83) return ImportShareazaTempFile(...)
-			AddLogLineM(false, CFormat( _("Error: Invalid part.met fileversion: %s ==> %s") )
+			AddLogLineM(false, CFormat( _("ERROR: Invalid part.met fileversion: %s ==> %s") )
 				% m_partmetfilename 
 				% GetFileName() );
 			return false;
@@ -598,7 +598,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			% e.what() );
 		return false;
 	} catch (const CEOFException& WXUNUSED(e)) {
-		AddLogLineM(true, CFormat( _("Error: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
+		AddLogLineM(true, CFormat( _("ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file.") )
 			% m_partmetfilename
 			% GetFileName() );
 		AddLogLineM(true, _("Trying to recover file info..."));
@@ -705,7 +705,7 @@ uint8 CPartFile::LoadPartFile(const CPath& in_directory, const CPath& filename, 
 			// It's pointless to rehash an empty file, since the case
 			// where a user has zero'd a file is handled above ...
 			if (m_hpartfile.GetLength()) {
-				AddLogLineM(false, CFormat( _("Warning: %s might be corrupted (%i)") )
+				AddLogLineM(false, CFormat( _("WARNING: %s might be corrupted (%i)") )
 					% partFilePath
 					% (m_lastDateChanged - file_date) );
 				// rehash
@@ -2239,7 +2239,7 @@ void CPartFile::CompleteFileEnded(bool errorOccured, const CPath& newname)
 	if (errorOccured) {
 		m_paused = true;
 		SetPartFileStatus(PS_ERROR);
-		AddLogLineM(true, CFormat( _("Unexpected file error while completing %s. File paused") )% GetFileName() );
+		AddLogLineM(true, CFormat( _("Unexpected error while completing %s. File paused") )% GetFileName() );
 	} else {
 		m_fullname = newname;
 
@@ -2383,12 +2383,12 @@ bool CPartFile::HashSinglePart(uint16 partnumber)
 {
 	if ((GetHashCount() <= partnumber) && (GetPartCount() > 1)) {
 		AddLogLineM(true,
-			CFormat( _("Warning: Unable to hash downloaded part - hashset incomplete for '%s'") )
+			CFormat( _("WARNING: Unable to hash downloaded part - hashset incomplete for '%s'") )
 				% GetFileName() );
 		m_hashsetneeded = true;
 		return true;
 	} else if ((GetHashCount() <= partnumber) && GetPartCount() != 1) {
-		AddLogLineM(true, CFormat( _("Error: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
+		AddLogLineM(true, CFormat( _("ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should never happen")) % GetFileName() );
 		m_hashsetneeded = true;
 		return true;		
 	} else {
@@ -3858,7 +3858,7 @@ wxString CPartFile::getPartfileStatus() const
 				mybuffer=_("Erroneous");
 				break;
 			case PS_INSUFFICIENT:
-				mybuffer = _("Insufficient Diskspace");
+				mybuffer = _("Insufficient disk space");
 				break;
 			default:
 				if (GetTransferingSrcCount()>0) {

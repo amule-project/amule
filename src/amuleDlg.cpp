@@ -243,7 +243,7 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 	// Create the GUI timer
 	gui_timer=new wxTimer(this,ID_GUI_TIMER_EVENT);
 	if (!gui_timer) {
-		AddLogLine(false, _("Fatal Error: Failed to create Timer"));
+		AddLogLine(false, _("FATAL ERROR: Failed to create Timer"));
 		exit(1);
 	}
 
@@ -672,7 +672,7 @@ void CamuleDlg::ShowConnectionState()
 	if (theApp->IsConnectedED2K()) {
 		CServer* server = theApp->serverconnect->GetCurrentServer();
 		if (server) {
-			msgED2K = CFormat(wxT("ED2K: %s")) % server->GetListName();
+			msgED2K = CFormat(wxT("eD2k: %s")) % server->GetListName();
 		}
 
 		if (theApp->serverconnect->IsLowID()) {
@@ -681,11 +681,11 @@ void CamuleDlg::ShowConnectionState()
 			ed2kState = ED2KHighID;
 		}
 	} else if (theApp->serverconnect->IsConnecting()) {
-		msgED2K = _("ED2K: Connecting");
+		msgED2K = _("eD2k: Connecting");
 
 		ed2kState = ED2KConnecting;
 	} else if (thePrefs::GetNetworkED2K()) {
-		msgED2K = _("ED2K: Disconnected");
+		msgED2K = _("eD2k: Disconnected");
 	}
 
 	wxString msgKad;
@@ -1209,7 +1209,7 @@ bool CamuleDlg::Check_and_Init_Skin()
 		ret = false;
 	} else if (!m_skinFileName.IsFileReadable()) {
 		AddLogLineM(true, CFormat(
-			_("Warning: Unable to open skin file '%s' for read")) %
+			_("WARNING: Unable to open skin file '%s' for read")) %
 			skinFileName);
 		ret = false;
 	}
@@ -1311,32 +1311,32 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->AddTool(ID_BUTTONNETWORKS,
 		_("Networks"), m_tblist.GetBitmap(3),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Networks Window"));
+		_("Networks window"));
 	wndToolbar->AddTool(ID_BUTTONSEARCH,
 		_("Searches"), m_tblist.GetBitmap(5),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Searches Window"));
+		_("Searches window"));
 	wndToolbar->AddTool(ID_BUTTONTRANSFER,
 		_("Transfers"), m_tblist.GetBitmap(4),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Files Transfers Window"));
+		_("Files transfers window"));
 	wndToolbar->AddTool(ID_BUTTONSHARED,
-		_("Shared Files"), m_tblist.GetBitmap(6),
+		_("Shared files"), m_tblist.GetBitmap(6),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Shared Files Window"));
+		_("Shared files window"));
 	wndToolbar->AddTool(ID_BUTTONMESSAGES,
 		_("Messages"), m_tblist.GetBitmap(7),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Messages Window"));
+		_("Messages window"));
 	wndToolbar->AddTool(ID_BUTTONSTATISTICS,
 		_("Statistics"), m_tblist.GetBitmap(8),
 		wxNullBitmap, wxITEM_CHECK,
-		_("Statistics Graph Window"));
+		_("Statistics graph window"));
 	wndToolbar->AddSeparator();
 	wndToolbar->AddTool(ID_BUTTONNEWPREFERENCES,
 		_("Preferences"), m_tblist.GetBitmap(9),
 		wxNullBitmap, wxITEM_NORMAL,
-		_("Preferences Settings Window"));
+		_("Preferences settings window"));
 	wndToolbar->AddTool(ID_BUTTONIMPORT,
 		_("Import"), m_tblist.GetBitmap(10),
 		wxNullBitmap, wxITEM_NORMAL,
@@ -1481,7 +1481,7 @@ void CamuleDlg::DoNetworkRearrange()
 		replacement = networks_notebook;
 
 	} else if (thePrefs::GetNetworkED2K()) {
-		toolbarTool->SetLabel(_("ed2k network"));
+		toolbarTool->SetLabel(_("eD2k network"));
 		replacement = m_networkpages[0].page;
 		m_networkpages[1].page->Reparent(m_networknotebooksizer->GetContainingWindow());
 	} else if (thePrefs::GetNetworkKademlia()) {

@@ -85,7 +85,7 @@ void CServerConnect::TryAnotherConnectionrequest()
 void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 {
 	if (!thePrefs::GetNetworkED2K()){
-		AddLogLineM(true,_("ED2K network disabled on preferences, not connecting."));
+		AddLogLineM(true,_("eD2k network disabled on preferences, not connecting."));
 		return;
 	}
 
@@ -108,7 +108,7 @@ void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 		}
 		if (!anystatic) {
 			connecting = false;
-			AddLogLineM(true,_("No valid servers to connect in serverlist found"));
+			AddLogLineM(true,_("No valid servers to which to connect found in server list"));
 			return;
 		}
 	}
@@ -121,7 +121,7 @@ void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 
 	if (used_list->GetServerCount()==0 ) {
 		connecting = false;
-		AddLogLineM(true,_("No valid servers to connect in serverlist found"));
+		AddLogLineM(true,_("No valid servers to which to connect found in server list"));
 		return;
 	}
 	
@@ -134,7 +134,7 @@ void CServerConnect::ConnectToAnyServer(bool prioSort, bool bNoCrypt)
 void CServerConnect::ConnectToServer(CServer* server, bool multiconnect, bool bNoCrypt)
 {	
 	if (!thePrefs::GetNetworkED2K()){
-		AddLogLineM(true,_("ED2K network disabled on preferences, not connecting."));
+		AddLogLineM(true,_("eD2k network disabled on preferences, not connecting."));
 		return;
 	}
 	
@@ -447,7 +447,7 @@ void CServerConnect::CheckForTimeout()
 	ServerSocketMap::iterator it = connectionattemps.begin();
 	while ( it != connectionattemps.end() ){
 		if ( !it->second ) {
-			AddLogLineM(false, _("Error: Socket invalid at timeoutcheck"));
+			AddLogLineM(false, _("ERROR: Socket invalid at timeout check"));
 			connectionattemps.erase( it );
 			return;
 		}

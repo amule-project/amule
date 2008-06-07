@@ -191,20 +191,20 @@ bool CRemoteConnect::ConnectionEstablished(const CECPacket *reply) {
 	bool result = false;
 	
 	if (!reply) {
-		m_server_reply = _("EC Connection Failed. Empty reply.");
+		m_server_reply = _("EC connection failed. Empty reply.");
 		CloseSocket();
 	} else {
 		if (reply->GetOpCode() == EC_OP_AUTH_FAIL) {
 			const CECTag *reason = reply->GetTagByName(EC_TAG_STRING);
 			if (reason != NULL) {
-				m_server_reply = wxString(_("ExternalConn: Access denied because: ")) +
+				m_server_reply = wxString(_("External Connection: Access denied because: ")) +
 					wxGetTranslation(reason->GetStringData());
 			} else {
-				m_server_reply = _("ExternalConn: Access denied");
+				m_server_reply = _("External Connection: Access denied");
 			}
 			CloseSocket();
 		} else if (reply->GetOpCode() != EC_OP_AUTH_OK) {
-			m_server_reply = _("ExternalConn: Bad reply from server. Connection closed.");
+			m_server_reply = _("External Connection: Bad reply from server. Connection closed.");
 			CloseSocket();
 		} else {
 			if (reply->GetTagByName(EC_TAG_SERVER_VERSION)) {

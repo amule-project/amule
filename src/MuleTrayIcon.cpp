@@ -333,7 +333,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	wxString label = MOD_VERSION_LONG;
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
-	label = wxString(_("Speed Limits:")) + wxT(" ");
+	label = wxString(_("Speed limits:")) + wxT(" ");
 
 	// Check for upload limits
 	unsigned int max_upload = thePrefs::GetMaxUpload();
@@ -355,9 +355,9 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	}
 
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Download Speed: %.1f"), theStats::GetDownloadRate() / 1024.0);
+	label = wxString::Format(_("Download speed: %.1f"), theStats::GetDownloadRate() / 1024.0);
 	traymenu->Append(TRAY_MENU_INFO, label);
-	label = wxString::Format(_("Upload Speed: %.1f"), theStats::GetUploadRate() / 1024.0);
+	label = wxString::Format(_("Upload speed: %.1f"), theStats::GetUploadRate() / 1024.0);
 	traymenu->Append(TRAY_MENU_INFO, label);
 	traymenu->AppendSeparator();
 
@@ -380,7 +380,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 			unsigned long id = theApp->GetED2KID();
 			temp += wxString::Format(wxT("%lu"), id);
 		} else {
-			temp += _("Not Connected");
+			temp += _("Not connected");
 		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
@@ -394,7 +394,7 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 			temp_name += theApp->serverconnect->GetCurrentServer()->GetListName();
 			temp_ip   += theApp->serverconnect->GetCurrentServer()->GetFullIP();
 		} else {
-			temp_name += _("Not Connected");
+			temp_name += _("Not connected");
 			temp_ip   += _("Not Connected");
 		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp_name);
@@ -412,9 +412,9 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp;
 		if (thePrefs::GetPort()) {
-			temp = CFormat(_("TCP Port: %d")) % thePrefs::GetPort();
+			temp = CFormat(_("TCP port: %d")) % thePrefs::GetPort();
 		} else {
-			temp=_("TCP Port: Not Ready");
+			temp=_("TCP port: Not ready");
 		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
@@ -423,9 +423,9 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	{
 		wxString temp;
 		if (thePrefs::GetEffectiveUDPPort()) {
-			temp = CFormat(_("UDP Port: %d")) % thePrefs::GetEffectiveUDPPort();
+			temp = CFormat(_("UDP port: %d")) % thePrefs::GetEffectiveUDPPort();
 		} else {
-			temp=_("UDP Port: Not Ready");
+			temp=_("UDP port: Not ready");
 		}
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
@@ -450,13 +450,13 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 	// Number of shared files
 	{
-		wxString temp = CFormat(_("Shared Files: %d")) % theStats::GetSharedFileCount();
+		wxString temp = CFormat(_("Shared files: %d")) % theStats::GetSharedFileCount();
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 
 	// Number of queued clients
 	{
-		wxString temp = CFormat(_("Queued Clients: %d")) % theStats::GetWaitingUserCount();
+		wxString temp = CFormat(_("Queued clients: %d")) % theStats::GetWaitingUserCount();
 		ClientInfoMenu->Append(TRAY_MENU_CLIENTINFO_ITEM,temp);
 	}
 	
@@ -481,11 +481,11 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 	
 	// Upload Speed sub-menu
 	wxMenu* UploadSpeedMenu = new wxMenu();
-	UploadSpeedMenu->SetTitle(_("Upload Limit"));
+	UploadSpeedMenu->SetTitle(_("Upload limit"));
 	
 	// Download Speed sub-menu
 	wxMenu* DownloadSpeedMenu = new wxMenu();
-	DownloadSpeedMenu->SetTitle(_("Download Limit"));
+	DownloadSpeedMenu->SetTitle(_("Download limit"));
 	
 	// Upload Speed sub-menu
 	{

@@ -291,7 +291,7 @@ wxString CSearchList::StartNewSearch(uint32* searchID, SearchType type, const CS
 	if ((type == KadSearch) && !Kademlia::CKademlia::IsRunning()) {
 		return _("Kad search can't be done if Kad is not running");
 	} else if ((type != KadSearch) && !theApp->IsConnectedED2K()) {
-		return _("ED2K search can't be done if ED2K is not connected");
+		return _("eD2k search can't be done if eD2k is not connected");
 	}
 	
 	if (params.typeText != ED2KFTSTR_PROGRAM) {

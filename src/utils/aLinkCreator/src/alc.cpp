@@ -52,7 +52,7 @@ bool alc::OnInit ()
   m_locale.AddCatalog(wxT(PACKAGE));
 #endif
 
-  m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule ed2k link creator"));
+  m_alcFrame = new AlcFrame (_("aLinkCreator, the aMule eD2k link creator"));
   m_alcFrame->Show (true);
   SetTopWindow (m_alcFrame);
   return true;

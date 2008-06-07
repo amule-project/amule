@@ -528,7 +528,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 	if ((CPath::GetFileSize(theApp->ConfigDir + wxT("addresses.dat")) == 0) && 
 		CastChild(IDC_AUTOSERVER, wxCheckBox)->IsChecked() ) {
 		thePrefs::UnsetAutoServerStart();
-		wxMessageBox(wxString::wxString( _("Your Auto-update servers list is in blank.\n'Auto-update serverlist at startup' will be disabled.")),
+		wxMessageBox(wxString::wxString( _("Your Auto-update server list is empty.\n'Auto-update server list at startup will be disabled.")),
 			_("Message"), wxOK | wxICON_INFORMATION, this);
 	}
 
@@ -619,7 +619,7 @@ void PrefsUnifiedDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 
 	if (!thePrefs::GetNetworkED2K() && !thePrefs::GetNetworkKademlia()) {
 		wxMessageBox(wxString::wxString(
-			_("Both ED2K and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them.")));
+			_("Both eD2k and Kad network are disabled.\nYou won't be able to connect until you enable at least one of them.")));
 	}	
 	
 	if (thePrefs::GetNetworkKademlia() && thePrefs::IsUDPDisabled()) {
@@ -925,7 +925,7 @@ void PrefsUnifiedDlg::OnButtonEditAddr(wxCommandEvent& WXUNUSED(evt))
 {
 	wxString fullpath( theApp->ConfigDir + wxT("addresses.dat") );
 
-	EditServerListDlg* test = new EditServerListDlg(this, _("Edit Serverlist"),
+	EditServerListDlg* test = new EditServerListDlg(this, _("Edit server list"),
 		_("Add here URL's to download server.met files.\nOnly one url on each line."),
 		fullpath );
 
