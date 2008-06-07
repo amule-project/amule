@@ -218,7 +218,7 @@ void ExternalConn::OnServerEvent(wxSocketEvent& WXUNUSED(event))
 		AddLogLineM(false, _("New external connection accepted"));
 	} else {
 		delete sock;
-		AddLogLineM(false, _("Error: couldn't accept a new external connection"));
+		AddLogLineM(false, _("ERROR: couldn't accept a new external connection"));
 	}
 	
 }
@@ -705,7 +705,7 @@ CECPacket *Get_EC_Response_Server(const CECPacket *request)
 				}
 			} else {
 				response = new CECPacket(EC_OP_FAILED);
-				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("ED2K is disabled in preferences.")));
+				response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("eD2k is disabled in preferences.")));
 			}
 			break;
 	}
@@ -1055,7 +1055,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 		case EC_OP_SHUTDOWN:
 			if (!theApp->IsOnShutDown()) {
 				response = new CECPacket(EC_OP_NOOP);
-				AddLogLineM(true, _("ExternalConn: shutdown requested"));
+				AddLogLineM(true, _("External Connection: shutdown requested"));
 #ifndef AMULE_DAEMON
 				{
 					wxCloseEvent evt;
@@ -1403,10 +1403,10 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			if (thePrefs::GetNetworkED2K()) {
 				response = new CECPacket(EC_OP_STRINGS);
 				if (theApp->IsConnectedED2K()) {
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to ED2K.")));
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Already connected to eD2k.")));
 				} else {
 					theApp->serverconnect->ConnectToAnyServer();
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to ED2K...")));
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Connecting to eD2k...")));
 				}
 			}
 			if (thePrefs::GetNetworkKademlia()) {
@@ -1430,7 +1430,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 				response = new CECPacket(EC_OP_STRINGS);
 				if (theApp->IsConnectedED2K()) {
 					theApp->serverconnect->Disconnect();
-					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from ED2K.")));
+					response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Disconnected from eD2k.")));
 				}
 				if (theApp->IsConnectedKad()) {
 					theApp->StopKad();
@@ -1442,7 +1442,7 @@ CECPacket *ExternalConn::ProcessRequest2(const CECPacket *request,
 			break;
 
 		default:
-			AddLogLineM(false, wxString::Format(_("ExternalConn: invalid opcode received: %#x"), request->GetOpCode()));
+			AddLogLineM(false, wxString::Format(_("External Connection: invalid opcode received: %#x"), request->GetOpCode()));
 			wxFAIL;
 			response = new CECPacket(EC_OP_FAILED);
 			response->AddTag(CECTag(EC_TAG_STRING, wxTRANSLATE("Invalid opcode (wrong protocol version?)")));

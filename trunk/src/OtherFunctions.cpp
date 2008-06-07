@@ -119,7 +119,7 @@ wxString CastItoXBytes( uint64 count )
 	else
 		return wxString::Format( wxT("%.3f "), (float)count/1099511627776LL) + _("TB") ;
 
-	return _("Error");
+	return _("ERROR");
 }
 
 
@@ -137,7 +137,7 @@ wxString CastItoIShort(uint64 count)
 	else if (count < 1000000000000000LL)
 		return wxString::Format(wxT("%.2f"),(float)count/1000000000000LL) + _("T");
 
-	return _("Error");
+	return _("ERROR");
 }
 
 
@@ -191,7 +191,7 @@ wxString CastSecondsToHM(uint64 count, uint16 msecs)
 			(count % 3600)/60) + _("hours");
 	}
 		
-	return _("Error");
+	return _("ERROR");
 }
 
 

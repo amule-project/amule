@@ -670,7 +670,7 @@ bool CamuleApp::OnInit()
 			wxT("and you are advised to run aMule as an normal\n")
 			wxT("user instead.");
 		
-		ShowAlert(msg, _("Warning"), wxCENTRE | wxOK | wxICON_ERROR);
+		ShowAlert(msg, _("WARNING"), wxCENTRE | wxOK | wxICON_ERROR);
 	
 		fprintf(stderr, "\n--------------------------------------------------\n");
 		fprintf(stderr, "%s", (const char*)unicode2UTF8(msg));
@@ -841,15 +841,15 @@ bool CamuleApp::OnInit()
 		webserver_pid = wxExecute(cmd, wxEXEC_ASYNC, p);
 		bool webserver_ok = webserver_pid > 0;
 		if (webserver_ok) {
-			AddLogLineM(true, CFormat(_("webserver running on pid %d")) % webserver_pid);
+			AddLogLineM(true, CFormat(_("web server running on pid %d")) % webserver_pid);
 		} else {
 			delete p;
 			ShowAlert(_(
-				"You requested to run webserver from startup, "
+				"You requested to run web server on startup, "
 				"but the amuleweb binary cannot be run. "
-				"Please install the package containing aMule webserver, "
+				"Please install the package containing aMule web server, "
 				"or compile aMule using --enable-webserver and run make install"),
-				_("Error"), wxOK | wxICON_ERROR);
+				_("ERROR"), wxOK | wxICON_ERROR);
 		}
 	}
 #endif /* ! __WXMSW__ */
@@ -970,7 +970,7 @@ bool CamuleApp::ReinitializeNetwork(wxString* msg)
 		err = CFormat(
 			_("Port %u is not available!\n\nThis means that you will be LOWID.\n\nCheck your network to make sure the port is open for output and input.")) % 
 			(unsigned int)(thePrefs::GetPort());
-		ShowAlert(err, _("Error"), wxOK | wxICON_ERROR);
+		ShowAlert(err, _("ERROR"), wxOK | wxICON_ERROR);
 	}
 
 	// Create the UDP socket.
@@ -1075,7 +1075,7 @@ wxString CamuleApp::CreateED2kLink(const CAbstractFile *f, bool add_source, bool
 		}
 		strURL << wxT("|/");
 	} else if (add_source) {
-		AddLogLineM(true, _("WARNING: You can't add yourself as a source for a ed2k link while being lowid."));
+		AddLogLineM(true, _("WARNING: You can't add yourself as a source for an eD2k link while having a lowid."));
 	}
 
 	// Result is "ed2k://|file|<filename>|<size>|<hash>|/|sources,[(<ip>|<hostname>):<port>[:cryptoptions[:hash]]]|/"
@@ -1336,7 +1336,7 @@ void CamuleApp::SetOSFiles(const wxString new_path)
 			m_emulesig_path = JoinPaths(new_path, wxT("onlinesig.dat"));
 			m_amulesig_path = JoinPaths(new_path, wxT("amulesig.dat"));
 		} else {
-			ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("Error"), wxOK | wxICON_ERROR);
+			ShowAlert(_("The folder for Online Signature files you specified is INVALID!\n OnlineSignature will be DISABLED until you fix it on preferences."), _("ERROR"), wxOK | wxICON_ERROR);
 			m_emulesig_path.Clear();
 			m_amulesig_path.Clear();
 		}
@@ -2102,7 +2102,7 @@ void CamuleApp::ShowConnectionState()
 				if ( theApp->serverconnect->IsConnecting() ) {
 					AddLogLine(CFormat(_("Connecting to %s")) % connected_server);
 				} else {
-					AddLogLine(_("Disconnected from ED2K"));
+					AddLogLine(_("Disconnected from eD2k"));
 				}
 			}
 		}

@@ -76,14 +76,14 @@ bool CKnownFileList::Init()
 	}
 
 	if (!file.Open(fullpath)) {
-		AddLogLineM(true, _("Warning: known.met cannot be opened."));
+		AddLogLineM(true, _("WARNING: known.met cannot be opened."));
 		return false;
 	}
 	
 	try {
 		uint8 version = file.ReadUInt8();
 		if ((version != MET_HEADER) && (version != MET_HEADER_WITH_LARGEFILES)) {
-			AddLogLineM(true, _("Warning: Knownfile list corrupted, contains invalid header."));
+			AddLogLineM(true, _("WARNING: Knownfile list corrupted, contains invalid header."));
 			return false;
 		}
 		

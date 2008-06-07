@@ -814,7 +814,7 @@ void CServerList::AutoUpdate()
 	uint8 url_count = theApp->glob_prefs->adresses_list.GetCount();
 	
 	if (!url_count) {
-		AddLogLineM(true, _("No serverlist address entry in 'addresses.dat' found. Please paste a valid serverlist address into this file in order to auto-update your serverlist"));
+		AddLogLineM(true, _("No server list address entry in 'addresses.dat' found. Please paste a valid server list address into this file in order to auto-update your server list"));
 		return;
 	}
 	// Do current URL. Callback function will take care of the others.
@@ -836,7 +836,7 @@ void CServerList::AutoUpdate()
 			return;
 		} else {
 			AddLogLineM(true, CFormat(
-				_("Warning, invalid URL specified for auto-updating of servers: %s") ) % URI);
+				_("WARNING: invalid URL specified for auto-updating of servers: %s") ) % URI);
 		}
 		current_url_index++;
 	}

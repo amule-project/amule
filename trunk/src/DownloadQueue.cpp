@@ -157,7 +157,7 @@ void CDownloadQueue::LoadMetFiles(const CPath& path)
 			} else {
 				// If result is false, then reading of both the primary and the backup .met failed
 				AddLogLineM(false, 
-					_("Error: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
+					_("ERROR: Failed to load backup file. Search http://forum.amule.org for .part.met recovery solutions."));
 				msg << CFormat(wxT("ERROR: Failed to load PartFile '%s'")) % fileName;
 			}
 			
@@ -1306,7 +1306,7 @@ bool CDownloadQueue::AddLink( const wxString& link, int category )
 	if (link.compare(0, 7, wxT("magnet:")) == 0) {
 		uri = CMagnetED2KConverter(link);
 		if (uri.empty()) {
-			AddLogLineM(true, CFormat(_("Cannot convert magnet link to ed2k: %s")) % link);
+			AddLogLineM(true, CFormat(_("Cannot convert magnet link to eD2k: %s")) % link);
 			return false;
 		}
 	}
@@ -1335,7 +1335,7 @@ bool CDownloadQueue::AddED2KLink( const wxString& link, int category )
 
 		return AddED2KLink( uri.get(), category );
 	} catch ( const wxString& err ) {
-		AddLogLineM( true, CFormat( _("Invalid ed2k link! Error: %s")) % err);
+		AddLogLineM( true, CFormat( _("Invalid eD2k link! ERROR: %s")) % err);
 	}
 	
 	return false;

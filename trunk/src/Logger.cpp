@@ -267,7 +267,7 @@ void CLoggerTarget::DoLogString(const wxChar* msg, time_t)
 	wxString str(msg);
 	
 	// This is much simpler than manually handling all wx log-types.
-	bool critical = str.StartsWith(_("Error: ")) || str.StartsWith(_("Warning: "));
+	bool critical = str.StartsWith(_("ERROR: ")) || str.StartsWith(_("WARNING: "));
 
 	CLogger::AddLogLine(__TFILE__, __LINE__, critical, str);
 }

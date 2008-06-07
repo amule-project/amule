@@ -686,10 +686,10 @@ void CStatistics::InitStatsTree()
 	tmpRoot1->AddChild(new CStatTreeItemRatio(wxTRANSLATE("Session UL:DL Ratio (Total): %s"), s_sessionUpload, s_sessionDownload), 3);
 
 	tmpRoot1 = s_statTree->AddChild(new CStatTreeItemBase(wxTRANSLATE("Connection")));
-	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average Downloadrate (Session): %s"), s_sessionDownload, s_uptime));
-	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average Uploadrate (Session): %s"), s_sessionUpload, s_uptime));
-	s_downloadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max Downloadrate (Session): %s"), true, 30000));
-	s_uploadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max Uploadrate (Session): %s"), true, 30000));
+	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average download rate (Session): %s"), s_sessionDownload, s_uptime));
+	tmpRoot1->AddChild(new CStatTreeItemAverageSpeed(wxTRANSLATE("Average upload rate (Session): %s"), s_sessionUpload, s_uptime));
+	s_downloadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max download rate (Session): %s"), true, 30000));
+	s_uploadrate = (CStatTreeItemRateCounter*)tmpRoot1->AddChild(new CStatTreeItemRateCounter(wxTRANSLATE("Max upload rate (Session): %s"), true, 30000));
 	s_reconnects = (CStatTreeItemReconnects*)tmpRoot1->AddChild(new CStatTreeItemReconnects(wxTRANSLATE("Reconnects: %i")));
 	s_sinceFirstTransfer = (CStatTreeItemTimer*)tmpRoot1->AddChild(new CStatTreeItemTimer(wxTRANSLATE("Time Since First Transfer: %s"), stHideIfZero));
 	s_sinceConnected = (CStatTreeItemTimer*)tmpRoot1->AddChild(new CStatTreeItemTimer(wxTRANSLATE("Connected To Server Since: %s")));
@@ -728,7 +728,7 @@ void CStatistics::InitStatsTree()
 	s_numberOfShared = (CStatTreeItemCounter*)tmpRoot1->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Number of Shared Files: %s")));
 	s_sizeOfShare = (CStatTreeItemCounter*)tmpRoot1->AddChild(new CStatTreeItemCounter(wxTRANSLATE("Total size of Shared Files: %s")));
 	s_sizeOfShare->SetDisplayMode(dmBytes);
-	tmpRoot1->AddChild(new CStatTreeItemAverage(wxTRANSLATE("Average filesize: %s"), s_sizeOfShare, s_numberOfShared, dmBytes));
+	tmpRoot1->AddChild(new CStatTreeItemAverage(wxTRANSLATE("Average file size: %s"), s_sizeOfShare, s_numberOfShared, dmBytes));
 }
 
 

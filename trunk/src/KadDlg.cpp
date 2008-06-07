@@ -164,13 +164,13 @@ void CKadDlg::OnBnClickedBootstrapClient(wxCommandEvent& WXUNUSED(evt))
 					((wxTextCtrl*)FindWindowById( ID_NODE_IP1 ))->GetValue() );
 
 		if (ip == 0) {
-			wxMessageBox(_("Invalid ip to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
+			wxMessageBox(_("Invalid ip to bootstrap"), _("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 		} else {
 			unsigned long port;
 			if (((wxTextCtrl*)FindWindowById( ID_NODE_PORT ))->GetValue().ToULong(&port)) {
 				theApp->BootstrapKad(ip, port);
 			} else {
-				wxMessageBox(_("Invalid port to bootstrap"), _("Warning"), wxOK | wxICON_EXCLAMATION, this);
+				wxMessageBox(_("Invalid port to bootstrap"), _("WARNING"), wxOK | wxICON_EXCLAMATION, this);
 			}
 		}
 	} else {

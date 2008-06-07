@@ -444,9 +444,9 @@ void CServerListCtrl::OnItemRightClicked(wxListEvent& event)
 	serverMenu->AppendSeparator();
 
 	if (GetSelectedItemCount() == 1) {
-		serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k link to clipboard") );
+		serverMenu->Append( MP_GETED2KLINK, _("Copy eD2k link to clipboard") );
 	} else {
-		serverMenu->Append( MP_GETED2KLINK, _("Copy ED2k links to clipboard") );
+		serverMenu->Append( MP_GETED2KLINK, _("Copy eD2k links to clipboard") );
 	}
 
 	serverMenu->Enable( MP_REMOVEFROMSTATIC, 	enable_static_off );

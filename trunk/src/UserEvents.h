@@ -68,7 +68,7 @@ const int USEREVENTS_FIRST_ID	=	11500;	/* Some safe GUI ID to start from */
 			((CPartFile*)object)->GetFileName().GetRaw() ) \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("HASH"), \
-			wxTRANSLATE("The ed2k hash of the file."), \
+			wxTRANSLATE("The eD2k hash of the file."), \
 			((CPartFile*)object)->GetFileHash().Encode() ) \
 		USEREVENTS_REPLACE_VAR( \
 			wxT("SIZE"), \

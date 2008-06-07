@@ -579,7 +579,7 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.Append(MP_RAZORSTATS, _("Get Razorback 2's stats for this file"));
 		menu.AppendSeparator();
 */
-		menu.Append(MP_SEARCHRELATED, _("Search related files (ED2k, local server)"));
+		menu.Append(MP_SEARCHRELATED, _("Search related files (eD2k, local server)"));
 		menu.AppendSeparator();
 
 //#warning Uncomment this here to test the MP_MARK_AS_KNOWN feature. Beware! You are on your own here, this might break "known.met"
@@ -588,7 +588,7 @@ void CSearchListCtrl::OnRightClick(wxListEvent& event)
 		menu.AppendSeparator();
 #endif
 
-		menu.Append(MP_GETED2KLINK, _("Copy ED2k link to clipboard"));
+		menu.Append(MP_GETED2KLINK, _("Copy eD2k link to clipboard"));
 
 		// These should only be enabled for single-selections
 		bool enable = (GetSelectedItemCount() == 1);

@@ -610,10 +610,10 @@ wxString CPartFileConvert::GetReturncodeText(int ret)
 	switch (ret) {
 		case CONV_OK			: return _("Completed");
 		case CONV_INPROGRESS		: return _("In progress");
-		case CONV_OUTOFDISKSPACE	: return _("Error: Out of diskspace");
-		case CONV_PARTMETNOTFOUND	: return _("Error: Partmet not found");
-		case CONV_IOERROR		: return _("Error: IO error!");
-		case CONV_FAILED		: return _("Error: Failed!");
+		case CONV_OUTOFDISKSPACE	: return _("ERROR: Out of diskspace");
+		case CONV_PARTMETNOTFOUND	: return _("ERROR: Partmet not found");
+		case CONV_IOERROR		: return _("ERROR: IO error!");
+		case CONV_FAILED		: return _("ERROR: Failed!");
 		case CONV_QUEUE			: return _("Queued");
 		case CONV_ALREADYEXISTS		: return _("Already downloading");
 		case CONV_BADFORMAT		: return _("Unknown or bad tempfile format.");

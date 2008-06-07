@@ -159,12 +159,12 @@ void CSharedFilesCtrl::OnRightClick(wxListEvent& event)
 			m_menu->AppendSeparator();
 		}
 		m_menu->Append(MP_GETMAGNETLINK,_("Copy magnet &URI to clipboard"));
-		m_menu->Append(MP_GETED2KLINK,_("Copy ED2k &link to clipboard"));
-		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy ED2k link to clipboard (&Source)"));
-		m_menu->Append(MP_GETCRYPTSOURCEDED2KLINK,_("Copy ED2k link to clipboard (Source) (&With Crypt options)"));
-		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy ED2k link to clipboard (&Hostname)"));
-		m_menu->Append(MP_GETHOSTNAMECRYPTSOURCEED2KLINK,_("Copy ED2k link to clipboard (Hostname) (With &Crypt options)"));		
-		m_menu->Append(MP_GETAICHED2KLINK,_("Copy ED2k link to clipboard (&AICH info)"));
+		m_menu->Append(MP_GETED2KLINK,_("Copy eD2k &link to clipboard"));
+		m_menu->Append(MP_GETSOURCEED2KLINK,_("Copy eD2k link to clipboard (&Source)"));
+		m_menu->Append(MP_GETCRYPTSOURCEDED2KLINK,_("Copy eD2k link to clipboard (Source) (&With Crypt options)"));
+		m_menu->Append(MP_GETHOSTNAMESOURCEED2KLINK,_("Copy eD2k link to clipboard (&Hostname)"));
+		m_menu->Append(MP_GETHOSTNAMECRYPTSOURCEED2KLINK,_("Copy eD2k link to clipboard (Hostname) (With &Crypt options)"));		
+		m_menu->Append(MP_GETAICHED2KLINK,_("Copy eD2k link to clipboard (&AICH info)"));
 		m_menu->Append(MP_WS,_("Copy feedback to clipboard"));
 		
 		m_menu->Enable(MP_GETAICHED2KLINK, file->HasProperAICHHashSet());
@@ -303,7 +303,7 @@ void CSharedFilesCtrl::OnCreateURI( wxCommandEvent& event )
 
 	if ( event.GetId() == MP_GETSOURCEED2KLINK || event.GetId() == MP_GETCRYPTSOURCEDED2KLINK) {
 		if ( !theApp->IsConnectedED2K() || theApp->serverconnect->IsLowID() ) {
-			wxMessageBox(_("You need a HighID to create a valid sourcelink"), _("Warning"), wxOK | wxICON_ERROR, this);
+			wxMessageBox(_("You need a HighID to create a valid sourcelink"), _("WARNING"), wxOK | wxICON_ERROR, this);
 
 			return;
 		}

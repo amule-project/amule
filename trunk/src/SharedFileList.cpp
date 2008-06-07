@@ -364,7 +364,7 @@ void CSharedFileList::FindSharedFiles()
 bool CheckDirectory(const wxString& a, const CPath& b)
 {
 	if (CPath(a).IsSameDir(b)) {
-		AddLogLineM(true, CFormat( _("ERROR! Attempted to share %s") ) % a);
+		AddLogLineM(true, CFormat( _("ERROR: Attempted to share %s") ) % a);
 
 		return true;
 	}
