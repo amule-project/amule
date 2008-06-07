@@ -35,6 +35,8 @@ Version 2.2.1 - ???
 
 	Gaznevada:
 		* IRIX compatibility patches
+		* amuleweb php IRIX patches
+		* Make 64-bit architecture check independant of _ABI64
 
 	Gerd78:
 		* Added autostart-xas to rpm .spec files.

@@ -36,7 +36,8 @@
 #include <inttypes.h>
 
 #if !defined PRIu64
-# ifdef _ABI64
+# if defined(__alpha__) || defined(__ia64__) || defined(__ppc64__) || defined(__x86_64__) \
+ || defined(__mips64__) || defined(__hppa64__) || defined(__sparc64__)
 #  define PRIu64 "lu"
 # else
 #  define PRIu64 "llu"
