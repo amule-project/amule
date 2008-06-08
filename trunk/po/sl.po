@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 03:30+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2007-08-30 22:58+0200\n"
 "Last-Translator: Aljoša Vidmar <agapetos.typhonis@gmail.com>\n"
 "Language-Team: Slovenščina <sl@li.org>\n"
@@ -30,20 +30,20 @@ msgid "Connection failure"
 msgstr "Napaka med povezovanjem"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
-msgid "EC Connection Failed. Empty reply."
-msgstr "EC povezava ni uspela. Prazen odgovor."
+msgid "EC connection failed. Empty reply."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
-msgid "ExternalConn: Access denied because: "
-msgstr "ExternalConn: Dostop zavrnjen zaradi: "
+msgid "External Connection: Access denied because: "
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
-msgid "ExternalConn: Access denied"
-msgstr "ExternalConn: Dostop zavrnjen"
+msgid "External Connection: Access denied"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
-msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "ExternalConn: Slab odgovor strežnika. Povezava prekinjena."
+msgid "External Connection: Bad reply from server. Connection closed."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -288,7 +288,7 @@ msgid "The name of the file without path component."
 msgstr ""
 
 #: src/UserEvents.h:71
-msgid "The ed2k hash of the file."
+msgid "The eD2k hash of the file."
 msgstr ""
 
 #: src/UserEvents.h:75
@@ -373,8 +373,8 @@ msgstr "Celotni viri"
 msgid "Directory Path"
 msgstr "Pot imenika"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
-#: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
+#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1090
+#: src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "Deljene datoteke"
 
@@ -434,29 +434,28 @@ msgid "Copy magnet &URI to clipboard"
 msgstr "Kopiraj magnet &URI v odložišče"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
-msgid "Copy ED2k &link to clipboard"
-msgstr "Kopiraj pove&zavo ED2k v odložišče"
+msgid "Copy eD2k &link to clipboard"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:163
-msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "Kopiraj povezavo ED2k v odložišče (&Vir)"
+msgid "Copy eD2k link to clipboard (&Source)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:164
-msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Kopiraj povezavo ED2k v odložišče (Vir) (s &kripto nastavitvami)"
+msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:165
-msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr "Kopiraj povezavo ED2k v odložišče (&Ime gostitelja)"
+msgid "Copy eD2k link to clipboard (&Hostname)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:166
-msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
 msgstr ""
-"Kopiraj povezavo ED2k v odložišče (Ime gostitelja) (s k&ripto nastavitvami)"
 
 #: src/SharedFilesCtrl.cpp:167
-msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr "Kopiraj povezavo ED2k v odložišče (&AICH info)"
+msgid "Copy eD2k link to clipboard (&AICH info)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -473,10 +472,10 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Potrebujete visok ID, da ustvarite povezavo z virom"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:673
-msgid "Warning"
-msgstr "Opozorilo"
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/KadDlg.cpp:173 src/amule.cpp:673
+msgid "WARNING"
+msgstr "OPOZORILO"
 
 #: src/SharedFilesCtrl.cpp:451
 #, c-format
@@ -528,15 +527,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
-msgid "Error: Could not listen to TCP port."
-msgstr "Napaka: Ni mogoče poslušati vrat TCP."
+msgid "ERROR: Could not listen to TCP port."
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:304
-msgid "Error: can not accept web client connection\n"
+msgid "ERROR: can not accept web client connection\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:374
@@ -609,12 +608,12 @@ msgid "Loads template <str>"
 msgstr "Naloži predlogo <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
-msgid "Webserver HTTP port"
-msgstr "Vrata HTTP spletnega strežnika"
+msgid "Web server HTTP port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:491
-msgid "Use UPnP port forwarding on webserver port"
-msgstr "Uporabi preusmerjanje vrat UPnP za vrata spletnega strežnika"
+msgid "Use UPnP port forwarding on web server port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -625,12 +624,12 @@ msgid "Use gzip compression"
 msgstr "Uporabi kompresijo gzip"
 
 #: src/webserver/src/WebInterface.cpp:507
-msgid "Full access password for webserver"
-msgstr "Geslo s polnim dostopom za spletni strežnik"
+msgid "Full access password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:511
-msgid "Guest password for webserver"
-msgstr "Geslo gosta za spletni strežnik"
+msgid "Guest password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -641,8 +640,8 @@ msgid "Deny guest access"
 msgstr "Zavrni dostop gostom"
 
 #: src/webserver/src/WebInterface.cpp:523
-msgid "Load/save webserver settings from/to remote aMule"
-msgstr "Naloži/shrani nastavitve spletnega strežnika iz/v oddaljeno aMule"
+msgid "Load/save web server settings from/to remote aMule"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1054,7 +1053,7 @@ msgid "LowID"
 msgstr "Nizek ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "Ni povezave"
 
@@ -1114,16 +1113,14 @@ msgid "Add Optional URLs for this file"
 msgstr "Dodaj URL-je za to datoteko (neobvezno)"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
-msgid "Enter here the file you want to compute the Ed2k link"
-msgstr "Tu vnesite datoteko za katero želite izračunati Ed2k povezavo"
+msgid "Enter here the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
-"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"Tu vnesite URL, ki ga želite dodati Ed2k povezavi : Dodajte / na koncu, da "
-"bo aLinkCreator samodejno dodal trenutno ime datoteke"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1156,12 +1153,12 @@ msgid "MD4 File Hash"
 msgstr "Hash MD4 datoteke"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
-msgid "Ed2k File Hash"
-msgstr "Hash datoteke Ed2k"
+msgid "eD2k File Hash"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
-msgid "Ed2k link"
-msgstr "Povezava Ed2k"
+msgid "eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1180,16 +1177,16 @@ msgid "Exit"
 msgstr "Izhod"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
-msgid "Open a file to compute its ed2k link"
-msgstr "Odpri datoteko za izračun njene povezave ed2k"
+msgid "Open a file to compute its eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
-msgid "Copy computed ed2k link to clipboard"
-msgstr "Kopiraj izračunano povezavo ed2k v odložišče"
+msgid "Copy computed eD2k link to clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
-msgid "Save computed ed2k link to file"
-msgstr "Shrani izračunano povezavo ed2k v datoteko"
+msgid "Save computed eD2k link to file"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1197,16 +1194,16 @@ msgid "About aLinkCreator"
 msgstr "O aLinkCreator"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
-msgid "Select the file you want to compute the ed2k link"
-msgstr "Izberite datoteko za katero želite izračunati povezavo ed2k"
+msgid "Select the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
 msgstr "Zaenkrat ni nič za skopirati !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
-msgid "Select the file to your computed ed2k link"
-msgstr "Izberite datoteko k izračunani povezavi ed2k"
+msgid "Select the file to your computed eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1223,7 +1220,7 @@ msgstr "Zaenkrat ni nič za shraniti !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:466
 msgid ""
-"aLinkCreator, the aMule ed2k link creator\n"
+"aLinkCreator, the aMule eD2k link creator\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1232,14 +1229,6 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, aMule izdelovalec povezav ed2k\n"
-"\n"
-"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-"\n"
-"Ikone iz http://www.everaldo.com in http://www.icomania.com\n"
-"in http://jimmac.musichall.cz/ikony.php3\n"
-"\n"
-"Na voljo pod licenco GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1279,8 +1268,8 @@ msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> Datoteka ne obstaja !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
-msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr "aLinkCreator, aMule izdelovalec povezav ed2k"
+msgid "aLinkCreator, the aMule eD2k link creator"
+msgstr ""
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1682,13 +1671,12 @@ msgid "Remove all servers"
 msgstr "Odstrani vse strežnike"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
-msgid "Copy ED2k link to clipboard"
-msgstr "Kopiraj povezavo ED2k v odložišče"
+msgid "Copy eD2k link to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:449
-#, fuzzy
-msgid "Copy ED2k links to clipboard"
-msgstr "Kopiraj povezavo ED2k v odložišče"
+msgid "Copy eD2k links to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1729,8 +1717,8 @@ msgstr ""
 "Obiščite http://www.amule.org da preverite, če je na voljo nova različica."
 
 #: src/amuleDlg.cpp:246
-msgid "Fatal Error: Failed to create Timer"
-msgstr "Usodna napaka: ni bilo mogoče ustvariti Merilnika časa"
+msgid "FATAL ERROR: Failed to create Timer"
+msgstr ""
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1797,14 +1785,12 @@ msgid "Status text"
 msgstr "Besedilo stanja"
 
 #: src/amuleDlg.cpp:684
-#, fuzzy
-msgid "ED2K: Connecting"
-msgstr "Povezovanje"
+msgid "eD2k: Connecting"
+msgstr ""
 
 #: src/amuleDlg.cpp:688
-#, fuzzy
-msgid "ED2K: Disconnected"
-msgstr "Ni povezave"
+msgid "eD2k: Disconnected"
+msgstr ""
 
 #: src/amuleDlg.cpp:694
 #, fuzzy
@@ -1889,46 +1875,50 @@ msgstr "Imenik za preobleke '%s' ne obstaja"
 
 #: src/amuleDlg.cpp:1212
 #, c-format
-msgid "Warning: Unable to open skin file '%s' for read"
-msgstr "Opozorilo: Ni mogoče odpreti datoteke za preobleko '%s'"
+msgid "WARNING: Unable to open skin file '%s' for read"
+msgstr ""
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
 msgid "Networks"
 msgstr "Omrežja"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3819
-msgid "Networks Window"
-msgstr "Okno z omrežji"
+#: src/amuleDlg.cpp:1314
+msgid "Networks window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
 msgstr "Iskanje"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3820
-msgid "Searches Window"
-msgstr "Okno iskalnika"
+#: src/amuleDlg.cpp:1318
+msgid "Searches window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
 msgstr "Prenosi"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3821
-msgid "Files Transfers Window"
-msgstr "Okno s prenosi datotek"
+#: src/amuleDlg.cpp:1322
+msgid "Files transfers window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3823
-msgid "Shared Files Window"
-msgstr "Okno z deljenimi datotekami"
+#: src/amuleDlg.cpp:1324
+msgid "Shared files"
+msgstr ""
+
+#: src/amuleDlg.cpp:1326
+msgid "Shared files window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
 msgid "Messages"
 msgstr "Sporočila"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3824
-msgid "Messages Window"
-msgstr "Okno s sporočili"
+#: src/amuleDlg.cpp:1330
+msgid "Messages window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1936,13 +1926,13 @@ msgstr "Okno s sporočili"
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3825
-msgid "Statistics Graph Window"
-msgstr "Okno s statističnimi grafi"
+#: src/amuleDlg.cpp:1334
+msgid "Statistics graph window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3827
-msgid "Preferences Settings Window"
-msgstr "Okno z nastavitvami"
+#: src/amuleDlg.cpp:1339
+msgid "Preferences settings window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1961,7 +1951,7 @@ msgid "About/Help"
 msgstr "O programu/Pomoč"
 
 #: src/amuleDlg.cpp:1484
-msgid "ed2k network"
+msgid "eD2k network"
 msgstr ""
 
 #: src/amuleDlg.cpp:1488
@@ -2043,11 +2033,9 @@ msgstr "- Vrata UDP so spremenjena.\n"
 
 #: src/PrefsUnifiedDlg.cpp:531
 msgid ""
-"Your Auto-update servers list is in blank.\n"
-"'Auto-update serverlist at startup' will be disabled."
+"Your Auto-update server list is empty.\n"
+"'Auto-update server list at startup will be disabled."
 msgstr ""
-"Seznam za samodejno posodabljanje strežnikov je prazen.\n"
-"'Samodejna posodobitev seznama strežnikov ob zagonu bo izklopljena."
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2072,11 +2060,9 @@ msgstr "Gor: 0.0 | Dol: 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:622
 msgid ""
-"Both ED2K and Kad network are disabled.\n"
+"Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"Omrežji ED2k in Kad sta onemogočeni.\n"
-"Ne boste se morali povezati, dokler ne omogočite vsaj enega."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2095,10 +2081,6 @@ msgstr ""
 "\n"
 "aMule morate NUJNO ponovno zagnati.\n"
 "Če tega ne storite zdaj, se ne pritožujte, če se zgodi kaj slabega.\n"
-
-#: src/PrefsUnifiedDlg.cpp:635
-msgid "WARNING"
-msgstr "OPOZORILO"
 
 #: src/PrefsUnifiedDlg.cpp:713
 msgid ""
@@ -2141,8 +2123,8 @@ msgid "Executable%s"
 msgstr "Izvedljiva datoteka %s"
 
 #: src/PrefsUnifiedDlg.cpp:928
-msgid "Edit Serverlist"
-msgstr "Uredi seznam strežnikov"
+msgid "Edit server list"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2249,8 +2231,8 @@ msgid "New external connection accepted"
 msgstr "Nova zunanja povezava sprejeta"
 
 #: src/ExternalConn.cpp:221
-msgid "Error: couldn't accept a new external connection"
-msgstr "Napaka: ni bilo mogoče sprejeti nove zunanje povezave"
+msgid "ERROR: couldn't accept a new external connection"
+msgstr ""
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2329,8 +2311,8 @@ msgid "need to define server to be removed"
 msgstr "morate navesti strežnik za odstranitev"
 
 #: src/ExternalConn.cpp:708
-msgid "ED2K is disabled in preferences."
-msgstr "ED2K je izklopljen v nastavitvah."
+msgid "eD2k is disabled in preferences."
+msgstr ""
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2353,8 +2335,8 @@ msgid "Your client is not configured for this detail level."
 msgstr "Vaš odjemalec ni nastavljen za to stopnjo podrobnosti."
 
 #: src/ExternalConn.cpp:1058
-msgid "ExternalConn: shutdown requested"
-msgstr "ExternalConn: zahteva za ustavitev"
+msgid "External Connection: shutdown requested"
+msgstr ""
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2382,12 +2364,12 @@ msgid "Unable to rename file."
 msgstr "Ni mogoče preimenovati datoteke."
 
 #: src/ExternalConn.cpp:1406
-msgid "Already connected to ED2K."
-msgstr "Povezava z ED2K že obstaja."
+msgid "Already connected to eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1409
-msgid "Connecting to ED2K..."
-msgstr "Povezovanje z ED2K..."
+msgid "Connecting to eD2k..."
+msgstr ""
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2402,8 +2384,8 @@ msgid "All networks are disabled."
 msgstr "Vsa omrežja so onemogočena."
 
 #: src/ExternalConn.cpp:1433
-msgid "Disconnected from ED2K."
-msgstr "Povezava z ED2K prekinjena."
+msgid "Disconnected from eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2411,8 +2393,8 @@ msgstr "Povezava s Kad prekinjena."
 
 #: src/ExternalConn.cpp:1445
 #, c-format
-msgid "ExternalConn: invalid opcode received: %#x"
-msgstr "ExternalConn: sprejet neveljaven 'opcode': %#x"
+msgid "External Connection: invalid opcode received: %#x"
+msgstr ""
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2444,8 +2426,8 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Strežnik ni bil dodan: navedena so neveljavna vrata strežnika."
 
 #: src/ServerWnd.cpp:162
-msgid "ED2K Status:"
-msgstr "Stanje ED2K:"
+msgid "eD2k Status:"
+msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2611,23 +2593,23 @@ msgstr "Razmerje med prenosi gor:dol to sejo (skupno): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
-msgid "Average Downloadrate (Session): %s"
-msgstr "Povprečen prenos dol (seja): %s"
+msgid "Average download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:690
 #, c-format
-msgid "Average Uploadrate (Session): %s"
-msgstr "Povprečen prenos gor (seja): %s"
+msgid "Average upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:691
 #, c-format
-msgid "Max Downloadrate (Session): %s"
-msgstr "Največji prenos dol (seja): %s"
+msgid "Max download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:692
 #, c-format
-msgid "Max Uploadrate (Session): %s"
-msgstr "Največji prenos gor (seja): %s"
+msgid "Max upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2743,8 +2725,8 @@ msgstr "Celotna velikost deljenih datotek: %s"
 
 #: src/Statistics.cpp:731
 #, c-format
-msgid "Average filesize: %s"
-msgstr "Povprečna velikost datoteke: %s"
+msgid "Average file size: %s"
+msgstr ""
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2775,8 +2757,8 @@ msgid "Kad search can't be done if Kad is not running"
 msgstr "Iskanje preko Kad ni mogoče, če Kad ne teče"
 
 #: src/SearchList.cpp:294
-msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "Iskanje preko ED2K ni mogoče, če ED2K ni povezan"
+msgid "eD2k search can't be done if eD2k is not connected"
+msgstr ""
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2891,12 +2873,12 @@ msgid "Continue?"
 msgstr "Nadaljuj?"
 
 #: src/Logger.cpp:270
-msgid "Error: "
-msgstr "Napaka: "
+msgid "ERROR: "
+msgstr ""
 
 #: src/Logger.cpp:270
-msgid "Warning: "
-msgstr "Opozorilo: "
+msgid "WARNING: "
+msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2943,8 +2925,8 @@ msgid "Download in category"
 msgstr "Prenesi v kategorijo"
 
 #: src/SearchListCtrl.cpp:582
-msgid "Search related files (ED2k, local server)"
-msgstr "Išči sorodne datoteke (ED2K, krajevni strežnik)"
+msgid "Search related files (eD2k, local server)"
+msgstr ""
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2961,15 +2943,14 @@ msgstr "Povezovanje ni uspelo "
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
-msgid "Error"
-msgstr "Napaka"
+msgid "ERROR"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
-"WARNING: You can't add yourself as a source for a ed2k link while being "
+"WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
-"OPOZORILO: Ne morete dodati sebe kot vir za ed2k povezave, če imate nizek ID."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3144,15 +3125,10 @@ msgid "Downloads (%i)"
 msgstr "Prenosi dol (%i)"
 
 #: src/DownloadListCtrl.cpp:2254
-#, fuzzy
 msgid ""
-"Please set your preferred video player on preferences.\n"
-"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
-"on every preview"
+"To prevent this warning to show up in every preview,\n"
+"set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Prosimo, nastavite predvajalnik v nastavitvah.\n"
-"Medtem bo aMule poskusil uporabiti MPlayer. To opozorilo boste dobili ob "
-"vsakem predogledu."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3174,25 +3150,23 @@ msgstr "Poskus nalaganja varnostne kopije met datoteke iz %s"
 
 #: src/PartFile.cpp:334
 #, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "Napaka: Ni bilo mogoče odpreti part.met datoteke: %s ==> %s"
+msgid "ERROR: Failed to open part.met file: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:340
 #, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "Napaka: Velikost part.met datoteke je 0: %s ==> %s"
+msgid "ERROR: part.met file is 0 size: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:351
 #, c-format
-msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "Napaka: Neveljavna različica part.met datoteke: %s ==> %s"
+msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
-msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
-"Napaka: %s (%s) je pokvarjen (napačen 'tagcount'), ni mogoče naložiti "
-"datoteke."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3219,8 +3193,8 @@ msgstr "Ni bilo mogoče odpreti %s (%s)"
 
 #: src/PartFile.cpp:708
 #, c-format
-msgid "Warning: %s might be corrupted (%i)"
-msgstr "Opozorilo: možno, da je %s pokvarjen (%i)"
+msgid "WARNING: %s might be corrupted (%i)"
+msgstr ""
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3291,8 +3265,8 @@ msgstr "Končano ponovno ustvarjanje hasha za %s"
 
 #: src/PartFile.cpp:2242
 #, c-format
-msgid "Unexpected file error while completing %s. File paused"
-msgstr "Nepričakovana datotečna napaka med končevanjem %s. Datoteka na premoru"
+msgid "Unexpected error while completing %s. File paused"
+msgstr ""
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3306,19 +3280,15 @@ msgstr "Brisanje datoteke: %s"
 
 #: src/PartFile.cpp:2386
 #, c-format
-msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
-"Opozorilo: Ni mogoče ustvariti hasha za prenesen del - hashset nepopoln za '%"
-"s'"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
-"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"Napaka: Ni mogoče ustvariti hasha za prenesen del, hashset nepopoln (%s). To "
-"se ne bi smelo zgoditi"
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3340,8 +3310,8 @@ msgid "Allocating"
 msgstr ""
 
 #: src/PartFile.cpp:3861
-msgid "Insufficient Diskspace"
-msgstr "Ni dovolj prostora na disku"
+msgid "Insufficient disk space"
+msgstr ""
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3357,13 +3327,12 @@ msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
 
 #: src/KnownFileList.cpp:79
-msgid "Warning: known.met cannot be opened."
-msgstr "Opozorilo: known.met ni mogoče odpreti."
+msgid "WARNING: known.met cannot be opened."
+msgstr ""
 
 #: src/KnownFileList.cpp:86
-msgid "Warning: Knownfile list corrupted, contains invalid header."
+msgid "WARNING: Knownfile list corrupted, contains invalid header."
 msgstr ""
-"Opozorilo: Seznam znanih datotek je pokvarjen, vsebuje neveljavno glavo."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3391,8 +3360,8 @@ msgstr[1] "Najdenih %i znanih deljenih datotek, %i neznanih"
 
 #: src/SharedFileList.cpp:367
 #, c-format
-msgid "ERROR! Attempted to share %s"
-msgstr "NAPAKA! Poskus deljenja %s"
+msgid "ERROR: Attempted to share %s"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3432,14 +3401,12 @@ msgstr ""
 "Ponoven poskus."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
-msgid "ED2K network disabled on preferences, not connecting."
-msgstr "Omrežje ED2K onemogočeno v nastavitvah, ni povezave."
+msgid "eD2k network disabled on preferences, not connecting."
+msgstr ""
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
-msgid "No valid servers to connect in serverlist found"
+msgid "No valid servers to which to connect found in server list"
 msgstr ""
-"Na seznamu strežnikov ni veljavnih strežnikov s katerimi bi se lahko "
-"povezali."
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3490,8 +3457,8 @@ msgid "Connecting to %s (%s:%i) failed."
 msgstr "Povezovanje z %s (%s:%i) ni uspelo."
 
 #: src/ServerConnect.cpp:450
-msgid "Error: Socket invalid at timeoutcheck"
-msgstr "Napaka: Vtičnica ni bila veljavna ob preverjanju časovne omejitve"
+msgid "ERROR: Socket invalid at timeout check"
+msgstr ""
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3500,7 +3467,7 @@ msgstr "Poskus povezovanja z %s (%s:%i) je potekel."
 
 #: src/DownloadQueue.cpp:160
 msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
 
@@ -3545,8 +3512,8 @@ msgstr "Datoteko %s že poskušate prenesti."
 
 #: src/DownloadQueue.cpp:1309
 #, c-format
-msgid "Cannot convert magnet link to ed2k: %s"
-msgstr "Ni mogoče pretvoriti povezave magnet v povezavo ed2k: %s"
+msgid "Cannot convert magnet link to eD2k: %s"
+msgstr ""
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3555,8 +3522,8 @@ msgstr "Neznan protokol povezave: %s"
 
 #: src/DownloadQueue.cpp:1338
 #, c-format
-msgid "Invalid ed2k link! Error: %s"
-msgstr "Neveljavna povezava ed2k! Napaka: %s"
+msgid "Invalid eD2k link! ERROR: %s"
+msgstr ""
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3629,12 +3596,12 @@ msgstr "Trenutna stopnja IP Filtra je %d.\n"
 
 #: src/TextClient.cpp:671
 #, c-format
-msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "Omejitve prenosa: Gor: %u kB/s, Dol: %u kB/s.\n"
+msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr ""
 
-#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
-msgid "ED2K"
-msgstr "ED2K"
+#: src/TextClient.cpp:689
+msgid "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3653,7 +3620,8 @@ msgstr "z Visokim ID-jem"
 msgid "Now connecting"
 msgstr "Povezovanje"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
+#: src/MuleTrayIcon.cpp:397
 msgid "Not connected"
 msgstr "Ni povezave"
 
@@ -3739,18 +3707,15 @@ msgstr ""
 "odjemalca.\n"
 
 #: src/TextClient.cpp:848
-msgid "Shutdown aMule."
-msgstr "Zaustavi aMule."
+msgid "Shut down aMule."
+msgstr ""
 
 #: src/TextClient.cpp:849
 msgid ""
-"Shutdown the remote running core (amule/amuled).\n"
+"Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
-"Zaustavi oddaljeno jedro v teku (amule/amuled).\n"
-"To bo zaustavilo tudi tekstovni odjemalec, saj je brez oddaljenega\n"
-"jedra v teku neuporaben.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3783,8 +3748,8 @@ msgstr ""
 "decimalen naslov IPv4 ali razrešljivo ime DNS."
 
 #: src/TextClient.cpp:857
-msgid "Connect to ED2K only."
-msgstr "Poveži se samo z ED2K."
+msgid "Connect to eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3799,37 +3764,28 @@ msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "To bo prekinilo povezavo z vsemi omrežji s katerimi ste povezani.\n"
 
 #: src/TextClient.cpp:862
-msgid "Disconnect from ED2K only."
-msgstr "Prekini samo povezavo ED2K."
+msgid "Disconnect from eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Prekini samo povezavo Kad."
 
 #: src/TextClient.cpp:865
-msgid "Adds an ed2k or magnet link to core."
-msgstr "Dodaj povezavo magnet ali povezavo ed2k v jedro."
+msgid "Adds an eD2k or magnet link to core."
+msgstr ""
 
 #: src/TextClient.cpp:866
 msgid ""
-"The ed2k link to be added can be:\n"
+"The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 "*) or a serverlist link, in which case all servers in the list will be added "
 "to the\n"
 "   server list.\n"
 "\n"
-"The magnet link must contain the ed2k hash and file length.\n"
+"The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
-"Dodana povezava ed2k je lahko:\n"
-"*) datotečna povezava (ed2k://|datoteka|...), ki bo dodana na seznam "
-"prenosov\n"
-"*) strežniška povezava (ed2k://|strežnik|...), ki bo dodana na seznam "
-"strežnikov\n"
-"*) povezava do seznama strežnikov, vsi strežniki bodo dodani na seznam "
-"strežnikov\n"
-"\n"
-"Povezava magnet mora vsebovati hash ed2k in velikost datoteke.\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -4055,7 +4011,7 @@ msgstr "Ponastavi dnevnik."
 
 #: src/TextClient.cpp:952
 #, c-format
-msgid "Deprecated command, now '%s'."
+msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
 #: src/TextClient.cpp:953
@@ -4071,13 +4027,13 @@ msgstr "theApp->serverlist->GetServerByAddress() returned NULL"
 
 #: src/ServerSocket.cpp:259
 #, c-format
-msgid "Error: %s (%s) - %s"
-msgstr "Napaka: %s (%s) - %s"
+msgid "ERROR: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:274
 #, c-format
-msgid "Warning: %s (%s) - %s"
-msgstr "Opozorilo: %s (%s) - %s"
+msgid "WARNING: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4298,20 +4254,20 @@ msgid "In progress"
 msgstr "Poteka"
 
 #: src/PartFileConvert.cpp:613
-msgid "Error: Out of diskspace"
-msgstr "Napaka: Ni dovolj prostora na disku"
+msgid "ERROR: Out of diskspace"
+msgstr ""
 
 #: src/PartFileConvert.cpp:614
-msgid "Error: Partmet not found"
-msgstr "Napaka: Ni mogoče najti delne datoteke"
+msgid "ERROR: Partmet not found"
+msgstr ""
 
 #: src/PartFileConvert.cpp:615
-msgid "Error: IO error!"
-msgstr "Napaka: Vhodno/izhodna napaka!"
+msgid "ERROR: IO error!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:616
-msgid "Error: Failed!"
-msgstr "Napaka: Ni uspelo!"
+msgid "ERROR: Failed!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4527,8 +4483,8 @@ msgid "%.2f%% done"
 msgstr "%.2f%% končano"
 
 #: src/muuli_wdr.cpp:69
-msgid "ED2K Link: "
-msgstr "Povezava ED2K: "
+msgid "eD2k Link: "
+msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4536,8 +4492,8 @@ msgstr "Izvrši"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
-msgstr "Kliknite tukaj, da dodate povezavo ed2k na seznam prenosov."
+"Click here to add the eD2k link in the text control to your download queue."
+msgstr ""
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4676,8 +4632,8 @@ msgid "More"
 msgstr "Več"
 
 #: src/muuli_wdr.cpp:352
-msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr "Poizvedi za več rezultatov na ED2K. Podpora za Kad še ne obstaja."
+msgid "Searches for more results on eD2k. Not supported for Kad yet."
+msgstr ""
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -4702,10 +4658,6 @@ msgstr "Prikaže čakalno vrsto prenosov gor"
 #: src/muuli_wdr.cpp:469
 msgid "Clients on queue :"
 msgstr "Uporabnikov v vrsti :"
-
-#: src/muuli_wdr.cpp:472
-msgid "0"
-msgstr "0"
 
 #: src/muuli_wdr.cpp:536
 msgid "Send"
@@ -5188,8 +5140,8 @@ msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr "Če je mogoče, odpre stran v novem zavihku namesto v novem oknu."
 
 #: src/muuli_wdr.cpp:1743
-msgid "Bandwith Limits"
-msgstr "Omejitve povezave"
+msgid "Bandwith limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5216,17 +5168,16 @@ msgid "Standard client TCP Port:"
 msgstr "Vrata TCP standardnega odjemalca:"
 
 #: src/muuli_wdr.cpp:1831
-msgid "This is the standard ED2K port and cannot be disabled."
-msgstr "To so standardna vrata ED2K in jih ni mogoče onemogočiti."
+msgid "This is the standard eD2k port and cannot be disabled."
+msgstr ""
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
 msgstr "Vrata UDP razširjenega odjemalca:"
 
 #: src/muuli_wdr.cpp:1840
-msgid "This UDP port is used for extended Ed2K requests and Kad network"
+msgid "This UDP port is used for extended ed2k requests and Kad network"
 msgstr ""
-"Ta vrata UDP se uporabljajo za razširjene zahteve ED2K in za omrežje Kad."
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5245,16 +5196,20 @@ msgid "Max Sources per File"
 msgstr "Maks. število virov na datoteko"
 
 #: src/muuli_wdr.cpp:1873
-msgid "Hard Limit"
-msgstr "Zgornja meja"
+msgid "Hard limit"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1883
-msgid "Connection Limits"
-msgstr "Omejitve povezave"
+msgid "Connection limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
 msgstr "Največ povezav"
+
+#: src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
+msgid "ED2K"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1919
 msgid "Kademlia"
@@ -5297,20 +5252,20 @@ msgid "retries"
 msgstr "poskusih"
 
 #: src/muuli_wdr.cpp:2001
-msgid "Auto-update serverlist at startup"
-msgstr "Samodejno posodobi seznam strežnikov ob zagonu"
+msgid "Auto-update server list at startup"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
 msgstr "Seznam"
 
 #: src/muuli_wdr.cpp:2009
-msgid "Update serverlist when connecting to a server"
-msgstr "Posodobi seznam strežnikov ob povezavi s strežnikom"
+msgid "Update server list when connecting to a server"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2012
-msgid "Update serverlist when a client connect"
-msgstr "Posodobi seznam strežnikov ob povezavi z odjemalcem"
+msgid "Update server list when a client connects"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5373,21 +5328,20 @@ msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "Shrani 10 virov pri redkih datotekah (< 20 virov)"
 
 #: src/muuli_wdr.cpp:2105
-msgid "Disk Space"
-msgstr "Prostor na disku"
+msgid "Disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2108
-msgid "Check Disk Space"
-msgstr "Preveri prostor na disku"
+msgid "Check disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2109
-msgid "Select this if you want aMule to check your Disk Space"
+msgid "Select this if you want aMule to check your disk space"
 msgstr ""
-"Vklopite to, če želite, da aMule preverja ali je na disku dovolj prostora"
 
 #: src/muuli_wdr.cpp:2116
-msgid "Min Disk Space:"
-msgstr "Min. prostora na disku: "
+msgid "Min disk space:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5404,16 +5358,16 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2158
-msgid "Incoming Directory :"
-msgstr "Imenik prihajajočih datotek :"
+msgid "Incoming"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2169
-msgid "Temporary Directory :"
-msgstr "Imenik začasnih datotek :"
+msgid "Temporary"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2180
-msgid "Shared Directories"
-msgstr "Deljeni imeniki"
+msgid "Shared"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5428,8 +5382,8 @@ msgid "Video Player"
 msgstr "Video predvajalnik"
 
 #: src/muuli_wdr.cpp:2209
-msgid "Create Backup to preview"
-msgstr "Ustvari varnostno kopijo za predogled"
+msgid "Create Backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5612,8 +5566,8 @@ msgid "Misc Gui Tweaks"
 msgstr "Razne prilagoditve vmesnika"
 
 #: src/muuli_wdr.cpp:2479
-msgid "Show Fast ED2K Links Handler"
-msgstr "Prikaži Hiter upravljalec povezav ED2K"
+msgid "Show Fast eD2k Links Handler"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5636,24 +5590,24 @@ msgid "Remote Control"
 msgstr "Oddaljeno upravljanje"
 
 #: src/muuli_wdr.cpp:2523
-msgid "Webserver Parameters"
-msgstr "Parametri spletnega strežnika"
+msgid "Web server parameters"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
 msgstr "Zaženi amuleweb ob zagonu"
 
 #: src/muuli_wdr.cpp:2531
-msgid "Webserver port"
-msgstr "Vrata spletnega strežnika"
+msgid "Web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2539
-msgid "Enable UPnP port forwarding on the Webserver port"
-msgstr "Vklopi preusmerjanje vrat UPnP za vrata spletnega strežnika"
+msgid "Enable UPnP port forwarding on the web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2544
-msgid "Webserver UPnP TCP port"
-msgstr "Vrata UPnP TCP spletnega strežnika"
+msgid "Web server UPnP TCP port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5768,8 +5722,8 @@ msgid "Click on this button to update the servers list from URL ..."
 msgstr "Kliknite tukaj za posodobitev seznama strežnikov iz URL-ja ..."
 
 #: src/muuli_wdr.cpp:2899
-msgid "Serverlist"
-msgstr "Seznam strežnikov"
+msgid "Server list"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5780,8 +5734,8 @@ msgstr ""
 "seznam strežnikov."
 
 #: src/muuli_wdr.cpp:2911
-msgid "Manual Server Add : Name"
-msgstr "Ročno dodajanje strežnika : Ime"
+msgid "Add server manually: Name"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5799,7 +5753,7 @@ msgstr "Tukaj vnesite vrata strežnika."
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "Ročno dodaj strežnik (najprej izpolnite vsa polja) ..."
 
-#: src/muuli_wdr.cpp:2979 src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:2979
 msgid "ED2K Info"
 msgstr "Info. o ED2K"
 
@@ -5855,6 +5809,10 @@ msgstr ""
 msgid "Disconnect Kad"
 msgstr "Prekini Kad"
 
+#: src/muuli_wdr.cpp:3163
+msgid "eD2k Info"
+msgstr ""
+
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
 msgstr "Maskiranje protokola"
@@ -5904,8 +5862,8 @@ msgid "Everybody"
 msgstr "Vsi"
 
 #: src/muuli_wdr.cpp:3221
-msgid "No One"
-msgstr "Nihče"
+msgid "No one"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6192,6 +6150,34 @@ msgstr "Vrste dogodkov"
 #: src/muuli_wdr.cpp:3817
 msgid "Connect to any server and/or Kad"
 msgstr "Poveži se s katerimkoli strežnikom in/ali s Kad"
+
+#: src/muuli_wdr.cpp:3819
+msgid "Networks Window"
+msgstr "Okno z omrežji"
+
+#: src/muuli_wdr.cpp:3820
+msgid "Searches Window"
+msgstr "Okno iskalnika"
+
+#: src/muuli_wdr.cpp:3821
+msgid "Files Transfers Window"
+msgstr "Okno s prenosi datotek"
+
+#: src/muuli_wdr.cpp:3823
+msgid "Shared Files Window"
+msgstr "Okno z deljenimi datotekami"
+
+#: src/muuli_wdr.cpp:3824
+msgid "Messages Window"
+msgstr "Okno s sporočili"
+
+#: src/muuli_wdr.cpp:3825
+msgid "Statistics Graph Window"
+msgstr "Okno s statističnimi grafi"
+
+#: src/muuli_wdr.cpp:3827
+msgid "Preferences Settings Window"
+msgstr "Okno z nastavitvami"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
@@ -6620,8 +6606,8 @@ msgid "aMule Tray Menu"
 msgstr "aMule meni sistemske vrstice"
 
 #: src/MuleTrayIcon.cpp:336
-msgid "Speed Limits:"
-msgstr "Omejitve hitrosti:"
+msgid "Speed limits:"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6643,13 +6629,13 @@ msgstr "Dol: %u"
 
 #: src/MuleTrayIcon.cpp:358
 #, c-format
-msgid "Download Speed: %.1f"
-msgstr "Prenos dol: %.1f"
+msgid "Download speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
-msgid "Upload Speed: %.1f"
-msgstr "Prenos gor: %.1f"
+msgid "Upload speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6683,21 +6669,21 @@ msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:415
 #, c-format
-msgid "TCP Port: %d"
-msgstr "Vrata TCP: %d"
+msgid "TCP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:417
-msgid "TCP Port: Not Ready"
-msgstr "Vrata TCP: Niso pripravljena"
+msgid "TCP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
-msgid "UDP Port: %d"
-msgstr "Vrata UDP: %d"
+msgid "UDP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:428
-msgid "UDP Port: Not Ready"
-msgstr "Vrata UDP: Niso pripravljena"
+msgid "UDP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6709,13 +6695,13 @@ msgstr "Spletni podpis: Onemogočen"
 
 #: src/MuleTrayIcon.cpp:453
 #, c-format
-msgid "Shared Files: %d"
-msgstr "Deljenih datotek: %d"
+msgid "Shared files: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
-msgid "Queued Clients: %d"
-msgstr "Odjemalcev v vrsti: %d"
+msgid "Queued clients: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6728,12 +6714,12 @@ msgid "Total UL: %s"
 msgstr "Skupno gor: %s"
 
 #: src/MuleTrayIcon.cpp:484
-msgid "Upload Limit"
-msgstr "Omejitev gor"
+msgid "Upload limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:488
-msgid "Download Limit"
-msgstr "Omejitev dol"
+msgid "Download limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6860,12 +6846,9 @@ msgstr "Ni bilo mogoče prenesti seznama strežnikov iz %s"
 
 #: src/ServerList.cpp:817
 msgid ""
-"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
-"serverlist address into this file in order to auto-update your serverlist"
+"No server list address entry in 'addresses.dat' found. Please paste a valid "
+"server list address into this file in order to auto-update your server list"
 msgstr ""
-"V addresses.dat ni naslova do seznama strežnikov. Prosim, prilepite veljaven "
-"naslov do seznama strežnikov v to datoteko, da bo možna samodejna "
-"posodobitev seznama."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6874,10 +6857,8 @@ msgstr ""
 
 #: src/ServerList.cpp:839
 #, c-format
-msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
-"Opozorilo: naveden je neveljaven URL za samodejno posodabljanje strežnikov: %"
-"s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6918,19 +6899,15 @@ msgstr "Prenos seznama strežnikov"
 
 #: src/amule.cpp:844
 #, c-format
-msgid "webserver running on pid %d"
-msgstr "Spletni strežnik uporablja pid %d"
+msgid "web server running on pid %d"
+msgstr ""
 
 #: src/amule.cpp:848
 msgid ""
-"You requested to run webserver from startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule webserver, or compile "
+"You requested to run web server on startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
-"Zahtevali ste vklop Spletnega strežnika ob zagonu, vendar binarnega programa "
-"amuleweb ni mogoče zagnati. Prosim, namestite paket, ki vsebuje aMule "
-"Spletni strežnik ali pa prevedite aMule z --enable-webserver in zaženite "
-"make install"
 
 #: src/amule.cpp:938
 #, c-format
@@ -7140,8 +7117,8 @@ msgid "Connecting to %s"
 msgstr "Povezovanje z %s"
 
 #: src/amule.cpp:2105
-msgid "Disconnected from ED2K"
-msgstr "Povezava z ED2K prekinjena"
+msgid "Disconnected from eD2k"
+msgstr ""
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7176,13 +7153,514 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Omrežje Kad je onemogočeno v nastavitvah. Ni povezave."
 
 #: src/FriendList.cpp:120
-msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-msgstr "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
+msgid "Failed to open friend list file 'emfriends.met' for reading!"
+msgstr ""
 
 #: src/FriendList.cpp:146
-msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
-"Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "EC povezava ni uspela. Prazen odgovor."
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "ExternalConn: Dostop zavrnjen zaradi: "
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "ExternalConn: Dostop zavrnjen"
+
+#~ msgid "ExternalConn: Bad reply from server. Connection closed."
+#~ msgstr "ExternalConn: Slab odgovor strežnika. Povezava prekinjena."
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "Kopiraj pove&zavo ED2k v odložišče"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče (&Vir)"
+
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče (Vir) (s &kripto nastavitvami)"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče (&Ime gostitelja)"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr ""
+#~ "Kopiraj povezavo ED2k v odložišče (Ime gostitelja) (s k&ripto "
+#~ "nastavitvami)"
+
+#~ msgid "Copy ED2k link to clipboard (&AICH info)"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče (&AICH info)"
+
+#~ msgid "Warning"
+#~ msgstr "Opozorilo"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "Napaka: Ni mogoče poslušati vrat TCP."
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "Vrata HTTP spletnega strežnika"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "Uporabi preusmerjanje vrat UPnP za vrata spletnega strežnika"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "Geslo s polnim dostopom za spletni strežnik"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "Geslo gosta za spletni strežnik"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "Naloži/shrani nastavitve spletnega strežnika iz/v oddaljeno aMule"
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "Tu vnesite datoteko za katero želite izračunati Ed2k povezavo"
+
+#~ msgid ""
+#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
+#~ "let aLinkCreator append the current file name"
+#~ msgstr ""
+#~ "Tu vnesite URL, ki ga želite dodati Ed2k povezavi : Dodajte / na koncu, "
+#~ "da bo aLinkCreator samodejno dodal trenutno ime datoteke"
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "Hash datoteke Ed2k"
+
+#~ msgid "Ed2k link"
+#~ msgstr "Povezava Ed2k"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "Odpri datoteko za izračun njene povezave ed2k"
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "Kopiraj izračunano povezavo ed2k v odložišče"
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "Shrani izračunano povezavo ed2k v datoteko"
+
+#~ msgid "Select the file you want to compute the ed2k link"
+#~ msgstr "Izberite datoteko za katero želite izračunati povezavo ed2k"
+
+#~ msgid "Select the file to your computed ed2k link"
+#~ msgstr "Izberite datoteko k izračunani povezavi ed2k"
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, aMule izdelovalec povezav ed2k\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Ikone iz http://www.everaldo.com in http://www.icomania.com\n"
+#~ "in http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Na voljo pod licenco GPL"
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, aMule izdelovalec povezav ed2k"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče"
+
+#, fuzzy
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "Kopiraj povezavo ED2k v odložišče"
+
+#~ msgid "Fatal Error: Failed to create Timer"
+#~ msgstr "Usodna napaka: ni bilo mogoče ustvariti Merilnika časa"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "Povezovanje"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "Ni povezave"
+
+#~ msgid "Warning: Unable to open skin file '%s' for read"
+#~ msgstr "Opozorilo: Ni mogoče odpreti datoteke za preobleko '%s'"
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "Seznam za samodejno posodabljanje strežnikov je prazen.\n"
+#~ "'Samodejna posodobitev seznama strežnikov ob zagonu bo izklopljena."
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "Omrežji ED2k in Kad sta onemogočeni.\n"
+#~ "Ne boste se morali povezati, dokler ne omogočite vsaj enega."
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "Uredi seznam strežnikov"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "Napaka: ni bilo mogoče sprejeti nove zunanje povezave"
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2K je izklopljen v nastavitvah."
+
+#~ msgid "ExternalConn: shutdown requested"
+#~ msgstr "ExternalConn: zahteva za ustavitev"
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "Povezava z ED2K že obstaja."
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "Povezovanje z ED2K..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "Povezava z ED2K prekinjena."
+
+#~ msgid "ExternalConn: invalid opcode received: %#x"
+#~ msgstr "ExternalConn: sprejet neveljaven 'opcode': %#x"
+
+#~ msgid "ED2K Status:"
+#~ msgstr "Stanje ED2K:"
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "Povprečen prenos dol (seja): %s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "Povprečen prenos gor (seja): %s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "Največji prenos dol (seja): %s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "Največji prenos gor (seja): %s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "Povprečna velikost datoteke: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "Iskanje preko ED2K ni mogoče, če ED2K ni povezan"
+
+#~ msgid "Error: "
+#~ msgstr "Napaka: "
+
+#~ msgid "Warning: "
+#~ msgstr "Opozorilo: "
+
+#~ msgid "Search related files (ED2k, local server)"
+#~ msgstr "Išči sorodne datoteke (ED2K, krajevni strežnik)"
+
+#~ msgid "Error"
+#~ msgstr "Napaka"
+
+#~ msgid ""
+#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
+#~ "lowid."
+#~ msgstr ""
+#~ "OPOZORILO: Ne morete dodati sebe kot vir za ed2k povezave, če imate nizek "
+#~ "ID."
+
+#, fuzzy
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "Prosimo, nastavite predvajalnik v nastavitvah.\n"
+#~ "Medtem bo aMule poskusil uporabiti MPlayer. To opozorilo boste dobili ob "
+#~ "vsakem predogledu."
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "Napaka: Ni bilo mogoče odpreti part.met datoteke: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "Napaka: Velikost part.met datoteke je 0: %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "Napaka: Neveljavna različica part.met datoteke: %s ==> %s"
+
+#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+#~ msgstr ""
+#~ "Napaka: %s (%s) je pokvarjen (napačen 'tagcount'), ni mogoče naložiti "
+#~ "datoteke."
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "Opozorilo: možno, da je %s pokvarjen (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr ""
+#~ "Nepričakovana datotečna napaka med končevanjem %s. Datoteka na premoru"
+
+#~ msgid ""
+#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+#~ msgstr ""
+#~ "Opozorilo: Ni mogoče ustvariti hasha za prenesen del - hashset nepopoln "
+#~ "za '%s'"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr ""
+#~ "Napaka: Ni mogoče ustvariti hasha za prenesen del, hashset nepopoln (%s). "
+#~ "To se ne bi smelo zgoditi"
+
+#~ msgid "Insufficient Diskspace"
+#~ msgstr "Ni dovolj prostora na disku"
+
+#~ msgid "Warning: known.met cannot be opened."
+#~ msgstr "Opozorilo: known.met ni mogoče odpreti."
+
+#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
+#~ msgstr ""
+#~ "Opozorilo: Seznam znanih datotek je pokvarjen, vsebuje neveljavno glavo."
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "NAPAKA! Poskus deljenja %s"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "Omrežje ED2K onemogočeno v nastavitvah, ni povezave."
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr ""
+#~ "Na seznamu strežnikov ni veljavnih strežnikov s katerimi bi se lahko "
+#~ "povezali."
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "Napaka: Vtičnica ni bila veljavna ob preverjanju časovne omejitve"
+
+#~ msgid "Cannot convert magnet link to ed2k: %s"
+#~ msgstr "Ni mogoče pretvoriti povezave magnet v povezavo ed2k: %s"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "Neveljavna povezava ed2k! Napaka: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "Omejitve prenosa: Gor: %u kB/s, Dol: %u kB/s.\n"
+
+#~ msgid "Shutdown aMule."
+#~ msgstr "Zaustavi aMule."
+
+#~ msgid ""
+#~ "Shutdown the remote running core (amule/amuled).\n"
+#~ "This will also shut down the text client, since it is unusable without a\n"
+#~ "running core.\n"
+#~ msgstr ""
+#~ "Zaustavi oddaljeno jedro v teku (amule/amuled).\n"
+#~ "To bo zaustavilo tudi tekstovni odjemalec, saj je brez oddaljenega\n"
+#~ "jedra v teku neuporaben.\n"
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "Poveži se samo z ED2K."
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "Prekini samo povezavo ED2K."
+
+#~ msgid "Adds an ed2k or magnet link to core."
+#~ msgstr "Dodaj povezavo magnet ali povezavo ed2k v jedro."
+
+#~ msgid ""
+#~ "The ed2k link to be added can be:\n"
+#~ "*) a file link (ed2k://|file|...), it will be added to the download "
+#~ "queue,\n"
+#~ "*) a server link (ed2k://|server|...), it will be added to the server "
+#~ "list,\n"
+#~ "*) or a serverlist link, in which case all servers in the list will be "
+#~ "added to the\n"
+#~ "   server list.\n"
+#~ "\n"
+#~ "The magnet link must contain the ed2k hash and file length.\n"
+#~ msgstr ""
+#~ "Dodana povezava ed2k je lahko:\n"
+#~ "*) datotečna povezava (ed2k://|datoteka|...), ki bo dodana na seznam "
+#~ "prenosov\n"
+#~ "*) strežniška povezava (ed2k://|strežnik|...), ki bo dodana na seznam "
+#~ "strežnikov\n"
+#~ "*) povezava do seznama strežnikov, vsi strežniki bodo dodani na seznam "
+#~ "strežnikov\n"
+#~ "\n"
+#~ "Povezava magnet mora vsebovati hash ed2k in velikost datoteke.\n"
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "Napaka: %s (%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "Opozorilo: %s (%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "Napaka: Ni dovolj prostora na disku"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "Napaka: Ni mogoče najti delne datoteke"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "Napaka: Vhodno/izhodna napaka!"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "Napaka: Ni uspelo!"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "Povezava ED2K: "
+
+#~ msgid ""
+#~ "Click here to add the ed2k link in the text control to your download "
+#~ "queue."
+#~ msgstr "Kliknite tukaj, da dodate povezavo ed2k na seznam prenosov."
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "Poizvedi za več rezultatov na ED2K. Podpora za Kad še ne obstaja."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "Omejitve povezave"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "To so standardna vrata ED2K in jih ni mogoče onemogočiti."
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr ""
+#~ "Ta vrata UDP se uporabljajo za razširjene zahteve ED2K in za omrežje Kad."
+
+#~ msgid "Hard Limit"
+#~ msgstr "Zgornja meja"
+
+#~ msgid "Connection Limits"
+#~ msgstr "Omejitve povezave"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "Samodejno posodobi seznam strežnikov ob zagonu"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "Posodobi seznam strežnikov ob povezavi s strežnikom"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "Posodobi seznam strežnikov ob povezavi z odjemalcem"
+
+#~ msgid "Disk Space"
+#~ msgstr "Prostor na disku"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "Preveri prostor na disku"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr ""
+#~ "Vklopite to, če želite, da aMule preverja ali je na disku dovolj prostora"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "Min. prostora na disku: "
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "Imenik prihajajočih datotek :"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "Imenik začasnih datotek :"
+
+#~ msgid "Shared Directories"
+#~ msgstr "Deljeni imeniki"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "Ustvari varnostno kopijo za predogled"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "Prikaži Hiter upravljalec povezav ED2K"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "Parametri spletnega strežnika"
+
+#~ msgid "Webserver port"
+#~ msgstr "Vrata spletnega strežnika"
+
+#~ msgid "Enable UPnP port forwarding on the Webserver port"
+#~ msgstr "Vklopi preusmerjanje vrat UPnP za vrata spletnega strežnika"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "Vrata UPnP TCP spletnega strežnika"
+
+#~ msgid "Serverlist"
+#~ msgstr "Seznam strežnikov"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "Ročno dodajanje strežnika : Ime"
+
+#~ msgid "No One"
+#~ msgstr "Nihče"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "Omejitve hitrosti:"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "Prenos dol: %.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "Prenos gor: %.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "Vrata TCP: %d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "Vrata TCP: Niso pripravljena"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "Vrata UDP: %d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "Vrata UDP: Niso pripravljena"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "Deljenih datotek: %d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "Odjemalcev v vrsti: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "Omejitev gor"
+
+#~ msgid "Download Limit"
+#~ msgstr "Omejitev dol"
+
+#~ msgid ""
+#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
+#~ "valid serverlist address into this file in order to auto-update your "
+#~ "serverlist"
+#~ msgstr ""
+#~ "V addresses.dat ni naslova do seznama strežnikov. Prosim, prilepite "
+#~ "veljaven naslov do seznama strežnikov v to datoteko, da bo možna "
+#~ "samodejna posodobitev seznama."
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr ""
+#~ "Opozorilo: naveden je neveljaven URL za samodejno posodabljanje "
+#~ "strežnikov: %s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "Spletni strežnik uporablja pid %d"
+
+#~ msgid ""
+#~ "You requested to run webserver from startup, but the amuleweb binary "
+#~ "cannot be run. Please install the package containing aMule webserver, or "
+#~ "compile aMule using --enable-webserver and run make install"
+#~ msgstr ""
+#~ "Zahtevali ste vklop Spletnega strežnika ob zagonu, vendar binarnega "
+#~ "programa amuleweb ni mogoče zagnati. Prosim, namestite paket, ki vsebuje "
+#~ "aMule Spletni strežnik ali pa prevedite aMule z --enable-webserver in "
+#~ "zaženite make install"
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "Povezava z ED2K prekinjena"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr ""
+#~ "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za branje!"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr ""
+#~ "Ni bilo mogoče odpreti datoteke prijateljev 'emfriends.met' za pisanje!"
 
 #~ msgid "ERROR: Failed to open partfile)"
 #~ msgstr "NAPAKA: Delne datoteke ni bilo mogoče odpreti)"

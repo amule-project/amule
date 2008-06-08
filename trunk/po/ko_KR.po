@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 03:30+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -32,20 +32,20 @@ msgid "Connection failure"
 msgstr "연결 실패"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
-msgid "EC Connection Failed. Empty reply."
-msgstr "외부연결 실패. 응답없음."
+msgid "EC connection failed. Empty reply."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
-msgid "ExternalConn: Access denied because: "
-msgstr "외부연결: 다음 이유로 연결이 거부됨: "
+msgid "External Connection: Access denied because: "
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
-msgid "ExternalConn: Access denied"
-msgstr "외부연결: 접근이 거부됨"
+msgid "External Connection: Access denied"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
-msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "외부연결: 서버 응답 불량. 연결이 끊겼습니다."
+msgid "External Connection: Bad reply from server. Connection closed."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -288,7 +288,7 @@ msgid "The name of the file without path component."
 msgstr ""
 
 #: src/UserEvents.h:71
-msgid "The ed2k hash of the file."
+msgid "The eD2k hash of the file."
 msgstr ""
 
 #: src/UserEvents.h:75
@@ -373,8 +373,8 @@ msgstr "완료된 자료"
 msgid "Directory Path"
 msgstr "폴더 경로"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
-#: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
+#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1090
+#: src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "공유 파일"
 
@@ -434,28 +434,28 @@ msgid "Copy magnet &URI to clipboard"
 msgstr "magnet URI를 클립보드로 복사(&U)"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
-msgid "Copy ED2k &link to clipboard"
-msgstr "ED2k 링크를 클립보드로 복사(&l)"
+msgid "Copy eD2k &link to clipboard"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:163
-msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "ED2k 링크를 클립보드에 복사(&Source)"
+msgid "Copy eD2k link to clipboard (&Source)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:164
-msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "ED2k 링크를 클립보드로 복사 (Source) (&With Crypt options)"
+msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:165
-msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr "ED2k 링크를 클립보드로 복사 (&Hostname)"
+msgid "Copy eD2k link to clipboard (&Hostname)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:166
-msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "ED2k 링크를 클립보드로 복사 (Hostname) (With &Crypt options)"
+msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:167
-msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr "ED2k 링크를 클립보드에 복사(&AICH info)"
+msgid "Copy eD2k link to clipboard (&AICH info)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -472,9 +472,9 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "유효한 자료 링크를 만들기 위해서 높은아이디가 필요합니다."
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:673
-msgid "Warning"
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/KadDlg.cpp:173 src/amule.cpp:673
+msgid "WARNING"
 msgstr "경고"
 
 #: src/SharedFilesCtrl.cpp:451
@@ -527,15 +527,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
-msgid "Error: Could not listen to TCP port."
-msgstr "오류: TCP포트를 열수없습니다."
+msgid "ERROR: Could not listen to TCP port."
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:304
-msgid "Error: can not accept web client connection\n"
+msgid "ERROR: can not accept web client connection\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:374
@@ -608,12 +608,12 @@ msgid "Loads template <str>"
 msgstr "템플릿<str>을 읽음"
 
 #: src/webserver/src/WebInterface.cpp:487
-msgid "Webserver HTTP port"
-msgstr "웹서버 HTTP 포트"
+msgid "Web server HTTP port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:491
-msgid "Use UPnP port forwarding on webserver port"
-msgstr "웹서버 포트에 UPnP 포트포워딩을 사용"
+msgid "Use UPnP port forwarding on web server port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -624,12 +624,12 @@ msgid "Use gzip compression"
 msgstr "gzip 압축 사용"
 
 #: src/webserver/src/WebInterface.cpp:507
-msgid "Full access password for webserver"
-msgstr "웹서버 전체접근 암호"
+msgid "Full access password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:511
-msgid "Guest password for webserver"
-msgstr "웹서버 손님 암호"
+msgid "Guest password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -640,8 +640,8 @@ msgid "Deny guest access"
 msgstr "손님 접근 금지"
 
 #: src/webserver/src/WebInterface.cpp:523
-msgid "Load/save webserver settings from/to remote aMule"
-msgstr "원격 어뮬로부터 웹서버 설정을 불러오거나 저장합니다."
+msgid "Load/save web server settings from/to remote aMule"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1051,7 +1051,7 @@ msgid "LowID"
 msgstr "낮은아이디"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "아직 연결되지 않았습니다."
 
@@ -1110,16 +1110,14 @@ msgid "Add Optional URLs for this file"
 msgstr "이 파일의 추가주소를 더합니다."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
-msgid "Enter here the file you want to compute the Ed2k link"
-msgstr "ED2k 링크를 계산하기 원하는 파일을 이곳에 입력하세요."
+msgid "Enter here the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
-"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"ED2k 링크를 추가하기 원하는 주소를 이곳에 입력하세요: aLinkCreator가 현재 파"
-"일 이름을 덧붙이게 하려면 끝에 '/'를 추가하세요."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1152,12 +1150,12 @@ msgid "MD4 File Hash"
 msgstr "md4 파일 해시"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
-msgid "Ed2k File Hash"
-msgstr "ED2k 파일 해시"
+msgid "eD2k File Hash"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
-msgid "Ed2k link"
-msgstr "ED2k 링크"
+msgid "eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1176,16 +1174,16 @@ msgid "Exit"
 msgstr "종료"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
-msgid "Open a file to compute its ed2k link"
-msgstr "ED2k 링크를 계산하기 위한 파일을 엽니다."
+msgid "Open a file to compute its eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
-msgid "Copy computed ed2k link to clipboard"
-msgstr "계산된 ED2k 링크를 클립보드에 복사합니다."
+msgid "Copy computed eD2k link to clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
-msgid "Save computed ed2k link to file"
-msgstr "계산된 ED2k 링크를 파일로 저장합니다."
+msgid "Save computed eD2k link to file"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1193,16 +1191,16 @@ msgid "About aLinkCreator"
 msgstr "aLinkCreator에 대하여"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
-msgid "Select the file you want to compute the ed2k link"
-msgstr "ED2k 링크를 계산하기 원하는 파일을 선택하세요."
+msgid "Select the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
 msgstr "지금 복사할것은 아무것도 없습니다!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
-msgid "Select the file to your computed ed2k link"
-msgstr "계산된 ED2k 링크파일을 선택하세요."
+msgid "Select the file to your computed eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1219,7 +1217,7 @@ msgstr "지금 저장한것은 없습니다!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:466
 msgid ""
-"aLinkCreator, the aMule ed2k link creator\n"
+"aLinkCreator, the aMule eD2k link creator\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1228,14 +1226,6 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, 어뮬 ED2k 링크 생성자\n"
-"\n"
-"(c) 2004 더폴리시 <thepolish@vipmail.ru>\n"
-"\n"
-"http://jimmac.musichall.cz/ikony.php3 과\n"
-"http://www.everaldo.com 과 http://www.icomania.com 으로부터 아이콘\n"
-"\n"
-"GPL로 배포합니다."
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1275,8 +1265,8 @@ msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> 존재하는 파일이 없음!\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
-msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr "aLinkCreator, 어뮬 ED2k 링크 생성자"
+msgid "aLinkCreator, the aMule eD2k link creator"
+msgstr ""
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1679,13 +1669,12 @@ msgid "Remove all servers"
 msgstr "모든 서버를 삭제"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
-msgid "Copy ED2k link to clipboard"
-msgstr "클립보드에 ED2k링크를 복사"
+msgid "Copy eD2k link to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:449
-#, fuzzy
-msgid "Copy ED2k links to clipboard"
-msgstr "클립보드에 ED2k링크를 복사"
+msgid "Copy eD2k links to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1725,8 +1714,8 @@ msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "http://www.amule.org에 방문하셔서 새로운버젼이 있는지 확인하십시오."
 
 #: src/amuleDlg.cpp:246
-msgid "Fatal Error: Failed to create Timer"
-msgstr "치명적 오류: 타이머 생성 실패"
+msgid "FATAL ERROR: Failed to create Timer"
+msgstr ""
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1793,14 +1782,12 @@ msgid "Status text"
 msgstr "상태 문장"
 
 #: src/amuleDlg.cpp:684
-#, fuzzy
-msgid "ED2K: Connecting"
-msgstr "연결중"
+msgid "eD2k: Connecting"
+msgstr ""
 
 #: src/amuleDlg.cpp:688
-#, fuzzy
-msgid "ED2K: Disconnected"
-msgstr "연결이 끊김"
+msgid "eD2k: Disconnected"
+msgstr ""
 
 #: src/amuleDlg.cpp:694
 #, fuzzy
@@ -1885,46 +1872,50 @@ msgstr "외형 폴더 '%s'가 없습니다."
 
 #: src/amuleDlg.cpp:1212
 #, c-format
-msgid "Warning: Unable to open skin file '%s' for read"
-msgstr "경고: 외형 파일 '%s'(을)를 읽을 수 없습니다."
+msgid "WARNING: Unable to open skin file '%s' for read"
+msgstr ""
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
 msgid "Networks"
 msgstr "통신망"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3819
-msgid "Networks Window"
-msgstr "통신망 창"
+#: src/amuleDlg.cpp:1314
+msgid "Networks window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
 msgstr "검색"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3820
-msgid "Searches Window"
-msgstr "검색 창"
+#: src/amuleDlg.cpp:1318
+msgid "Searches window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
 msgstr "전송"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3821
-msgid "Files Transfers Window"
-msgstr "파일 전송 창"
+#: src/amuleDlg.cpp:1322
+msgid "Files transfers window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3823
-msgid "Shared Files Window"
-msgstr "공유 파일 창"
+#: src/amuleDlg.cpp:1324
+msgid "Shared files"
+msgstr ""
+
+#: src/amuleDlg.cpp:1326
+msgid "Shared files window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
 msgid "Messages"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3824
-msgid "Messages Window"
-msgstr "메시지 창"
+#: src/amuleDlg.cpp:1330
+msgid "Messages window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1932,13 +1923,13 @@ msgstr "메시지 창"
 msgid "Statistics"
 msgstr "통계"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3825
-msgid "Statistics Graph Window"
-msgstr "통계 그래프 창"
+#: src/amuleDlg.cpp:1334
+msgid "Statistics graph window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3827
-msgid "Preferences Settings Window"
-msgstr "환경 설정 창"
+#: src/amuleDlg.cpp:1339
+msgid "Preferences settings window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1957,7 +1948,7 @@ msgid "About/Help"
 msgstr "정보/도움"
 
 #: src/amuleDlg.cpp:1484
-msgid "ed2k network"
+msgid "eD2k network"
 msgstr ""
 
 #: src/amuleDlg.cpp:1488
@@ -2039,11 +2030,9 @@ msgstr "- UDP 포트가 변경되었습니다.\n"
 
 #: src/PrefsUnifiedDlg.cpp:531
 msgid ""
-"Your Auto-update servers list is in blank.\n"
-"'Auto-update serverlist at startup' will be disabled."
+"Your Auto-update server list is empty.\n"
+"'Auto-update server list at startup will be disabled."
 msgstr ""
-"자동갱신 서버 목록이 비어있습니다.\n"
-"'시작시 서버목록 자동갱신'은 비활성화될 것입니다."
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2067,11 +2056,9 @@ msgstr "올려주기: 0.0 | 내려받기: 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:622
 msgid ""
-"Both ED2K and Kad network are disabled.\n"
+"Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"ED2k와 Kad 네트워크 모두가 비활성화되어 있습니다.\n"
-"적어도 하나를 활성화 할때까지 연결할 수 없습니다."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2090,10 +2077,6 @@ msgstr ""
 "\n"
 "지금 바로 어뮬을 재시작해야 합니다.\n"
 "만일 재시작하지 않는다면, 나쁜 일이 일어나도 불평하지 마십시오.\n"
-
-#: src/PrefsUnifiedDlg.cpp:635
-msgid "WARNING"
-msgstr "경고"
 
 #: src/PrefsUnifiedDlg.cpp:713
 msgid ""
@@ -2136,8 +2119,8 @@ msgid "Executable%s"
 msgstr "실행할수 있는 %s"
 
 #: src/PrefsUnifiedDlg.cpp:928
-msgid "Edit Serverlist"
-msgstr "서버 목록 편집"
+msgid "Edit server list"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2244,8 +2227,8 @@ msgid "New external connection accepted"
 msgstr "새로운 외부연결이 승인되었습니다."
 
 #: src/ExternalConn.cpp:221
-msgid "Error: couldn't accept a new external connection"
-msgstr "오류: 외부연결이 승인되지않았습니다."
+msgid "ERROR: couldn't accept a new external connection"
+msgstr ""
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2322,8 +2305,8 @@ msgid "need to define server to be removed"
 msgstr "제거할 서버의 정의가 필요합니다."
 
 #: src/ExternalConn.cpp:708
-msgid "ED2K is disabled in preferences."
-msgstr "ED2k가 환경설정에서 비활성화되어 있습니다."
+msgid "eD2k is disabled in preferences."
+msgstr ""
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2346,8 +2329,8 @@ msgid "Your client is not configured for this detail level."
 msgstr "클라이언트는 세부 수준이 구성되지 않았습니다."
 
 #: src/ExternalConn.cpp:1058
-msgid "ExternalConn: shutdown requested"
-msgstr "외부연결: 종료가 요청됨"
+msgid "External Connection: shutdown requested"
+msgstr ""
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2375,12 +2358,12 @@ msgid "Unable to rename file."
 msgstr "파일이름을 변경할 수 없습니다."
 
 #: src/ExternalConn.cpp:1406
-msgid "Already connected to ED2K."
-msgstr "이미 ED2k에 연결되었습니다."
+msgid "Already connected to eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1409
-msgid "Connecting to ED2K..."
-msgstr "ED2k에 연결중..."
+msgid "Connecting to eD2k..."
+msgstr ""
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2395,8 +2378,8 @@ msgid "All networks are disabled."
 msgstr "모든 통신망을 사용할수 없습니다."
 
 #: src/ExternalConn.cpp:1433
-msgid "Disconnected from ED2K."
-msgstr "ED2k로부터 연결이 끊겼습니다."
+msgid "Disconnected from eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2404,8 +2387,8 @@ msgstr "Kad로부터 연결이 끊겼습니다."
 
 #: src/ExternalConn.cpp:1445
 #, c-format
-msgid "ExternalConn: invalid opcode received: %#x"
-msgstr "외부연결: 유효하지 않은 실행코드를 받았음: %#x"
+msgid "External Connection: invalid opcode received: %#x"
+msgstr ""
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2435,8 +2418,8 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "서버 추가되지 않음: 유효하지 않는 서버 포트가 지정되었습니다."
 
 #: src/ServerWnd.cpp:162
-msgid "ED2K Status:"
-msgstr "ED2k 상태:"
+msgid "eD2k Status:"
+msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2602,23 +2585,23 @@ msgstr "세션 올려주기:내려받기 비율 (전체): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
-msgid "Average Downloadrate (Session): %s"
-msgstr "평균 내려받기율 (세션): %s"
+msgid "Average download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:690
 #, c-format
-msgid "Average Uploadrate (Session): %s"
-msgstr "평균 올려주기율 (세션): %s"
+msgid "Average upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:691
 #, c-format
-msgid "Max Downloadrate (Session): %s"
-msgstr "최대 내려받기율 (세션): %s"
+msgid "Max download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:692
 #, c-format
-msgid "Max Uploadrate (Session): %s"
-msgstr "최대 올려주기율 (세션): %s"
+msgid "Max upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2734,8 +2717,8 @@ msgstr "공유파일의 전체 크기: %s"
 
 #: src/Statistics.cpp:731
 #, c-format
-msgid "Average filesize: %s"
-msgstr "평균 파일 크기: %s"
+msgid "Average file size: %s"
+msgstr ""
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2766,8 +2749,8 @@ msgid "Kad search can't be done if Kad is not running"
 msgstr "Kad를 실행 중이 아니면 Kad 검색을 할 수 없습니다."
 
 #: src/SearchList.cpp:294
-msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "ED2k가 연결되어 있지 않으면 ED2k 검색을 할 수 없습니다."
+msgid "eD2k search can't be done if eD2k is not connected"
+msgstr ""
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2875,12 +2858,12 @@ msgid "Continue?"
 msgstr "계속할까요?"
 
 #: src/Logger.cpp:270
-msgid "Error: "
-msgstr "오류: "
+msgid "ERROR: "
+msgstr ""
 
 #: src/Logger.cpp:270
-msgid "Warning: "
-msgstr "경고: "
+msgid "WARNING: "
+msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2927,8 +2910,8 @@ msgid "Download in category"
 msgstr "분류내 내려받기"
 
 #: src/SearchListCtrl.cpp:582
-msgid "Search related files (ED2k, local server)"
-msgstr "관련 파일 검색 (ED2k, 지역서버)"
+msgid "Search related files (eD2k, local server)"
+msgstr ""
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2945,16 +2928,14 @@ msgstr "연결 실패"
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
-msgid "Error"
-msgstr "오류"
+msgid "ERROR"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
-"WARNING: You can't add yourself as a source for a ed2k link while being "
+"WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
-"경고: 낮은아이디를 가지고 있는 동안에는 스스로를 ed2k 링크에 자료로 추가할 "
-"수 없습니다."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3129,15 +3110,10 @@ msgid "Downloads (%i)"
 msgstr "내려받기 (%i)"
 
 #: src/DownloadListCtrl.cpp:2254
-#, fuzzy
 msgid ""
-"Please set your preferred video player on preferences.\n"
-"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
-"on every preview"
+"To prevent this warning to show up in every preview,\n"
+"set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"환경설정에서 비디오 재생 프로그램을 선택하세요.\n"
-"그 동안 어뮬에서 미리보기를 할때마다 mplayer를 사용하도록 시도하며 미리보기"
-"할 때마다 이 경고를 받을 것입니다."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3159,24 +3135,23 @@ msgstr "%s로부터 met파일의 백업을 읽을려고 합니다."
 
 #: src/PartFile.cpp:334
 #, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "오류: part.met 파일을 열지 못했습니다: %s ==> %s"
+msgid "ERROR: Failed to open part.met file: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:340
 #, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
+msgid "ERROR: part.met file is 0 size: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:351
 #, c-format
-msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "오류: 유효하지 않은 part.met 파일버젼: %s ==> %s"
+msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
-msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
-"오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3201,8 +3176,8 @@ msgstr "%s(%s)을 열지 못했습니다."
 
 #: src/PartFile.cpp:708
 #, c-format
-msgid "Warning: %s might be corrupted (%i)"
-msgstr "경고: %s는 손상되었습니다. (%i)"
+msgid "WARNING: %s might be corrupted (%i)"
+msgstr ""
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3273,8 +3248,8 @@ msgstr "%s의 재해시가 완료되었습니다."
 
 #: src/PartFile.cpp:2242
 #, c-format
-msgid "Unexpected file error while completing %s. File paused"
-msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
+msgid "Unexpected error while completing %s. File paused"
+msgstr ""
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3288,17 +3263,15 @@ msgstr "파일 삭제: %s"
 
 #: src/PartFile.cpp:2386
 #, c-format
-msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "경고: 내려받은 부분의 해시가 불가능합니다. - %s의 해시설정 비완료"
+msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgstr ""
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
-"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"오류: 내려받은 부분의 해시가 불가능합니다. - 해시설정 비완료 (%s). 발생되어서"
-"는 안됩니다."
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3320,8 +3293,8 @@ msgid "Allocating"
 msgstr ""
 
 #: src/PartFile.cpp:3861
-msgid "Insufficient Diskspace"
-msgstr "불충분한 디스크공간"
+msgid "Insufficient disk space"
+msgstr ""
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3337,13 +3310,12 @@ msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
 
 #: src/KnownFileList.cpp:79
-msgid "Warning: known.met cannot be opened."
-msgstr "경고: known.met을 열 수 없습니다."
+msgid "WARNING: known.met cannot be opened."
+msgstr ""
 
 #: src/KnownFileList.cpp:86
-msgid "Warning: Knownfile list corrupted, contains invalid header."
+msgid "WARNING: Knownfile list corrupted, contains invalid header."
 msgstr ""
-"경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고 있습니다."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3371,8 +3343,8 @@ msgstr[1] "알려진 공유 파일 %i개, 알수없는 %i개를 찾았음 "
 
 #: src/SharedFileList.cpp:367
 #, c-format
-msgid "ERROR! Attempted to share %s"
-msgstr "오류! %s 공유를 시도"
+msgid "ERROR: Attempted to share %s"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3408,12 +3380,12 @@ msgid "Failed to connect to all servers listed. Making another pass."
 msgstr "모든 서버 목록에 접속하지 못했습니다. 다른 서버를 만드세요."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
-msgid "ED2K network disabled on preferences, not connecting."
-msgstr "ED2k 통신망이 환경설정에서 비활성화되어 있으므로 연결하지 않습니다."
+msgid "eD2k network disabled on preferences, not connecting."
+msgstr ""
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
-msgid "No valid servers to connect in serverlist found"
-msgstr "발견된 서버 목록에서 연결할수 있는 유효한 서버가 없습니다."
+msgid "No valid servers to which to connect found in server list"
+msgstr ""
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3462,8 +3434,8 @@ msgid "Connecting to %s (%s:%i) failed."
 msgstr "%s(%s:%i)에 연결하지 못했습니다."
 
 #: src/ServerConnect.cpp:450
-msgid "Error: Socket invalid at timeoutcheck"
-msgstr "오류: 시간초과 검사에 유효하지 않은 소켓"
+msgid "ERROR: Socket invalid at timeout check"
+msgstr ""
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3472,7 +3444,7 @@ msgstr "%s(%s:%i)에 접속을 시도하는데 시간이 지났습니다."
 
 #: src/DownloadQueue.cpp:160
 msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
 
@@ -3517,8 +3489,8 @@ msgstr "이미 %s 파일을 내려받으려고 하고있음"
 
 #: src/DownloadQueue.cpp:1309
 #, c-format
-msgid "Cannot convert magnet link to ed2k: %s"
-msgstr "magnet 링크를 ed2k로 변환할 수 없음: %s"
+msgid "Cannot convert magnet link to eD2k: %s"
+msgstr ""
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3527,8 +3499,8 @@ msgstr "링크의 알려지지 않은 프로토콜: %s"
 
 #: src/DownloadQueue.cpp:1338
 #, c-format
-msgid "Invalid ed2k link! Error: %s"
-msgstr "유효하지 않은 ED2k링크! 오류: %s"
+msgid "Invalid eD2k link! ERROR: %s"
+msgstr ""
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3601,12 +3573,12 @@ msgstr "현재 IP 차단 수준은 %d입니다.\n"
 
 #: src/TextClient.cpp:671
 #, c-format
-msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "대역폭 제한: 올려주기: %u kB/초, 내려받기: %u kB/초\n"
+msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr ""
 
-#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
-msgid "ED2K"
-msgstr "ED2k"
+#: src/TextClient.cpp:689
+msgid "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3625,7 +3597,8 @@ msgstr "높은아이디로"
 msgid "Now connecting"
 msgstr "지금 연결중"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
+#: src/MuleTrayIcon.cpp:397
 msgid "Not connected"
 msgstr "연결 안됨"
 
@@ -3708,18 +3681,15 @@ msgstr ""
 "예: 'statistics 5'는 각 클라이언트 종류의 상위 5가지 버전만 보여줍니다.\n"
 
 #: src/TextClient.cpp:848
-msgid "Shutdown aMule."
-msgstr "어뮬 종료."
+msgid "Shut down aMule."
+msgstr ""
 
 #: src/TextClient.cpp:849
 msgid ""
-"Shutdown the remote running core (amule/amuled).\n"
+"Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
-"원격으로 동작하는 코어(어뮬)를 종료합니다.\n"
-"동작하는 코어없이는 불안정하기 때문에,\n"
-"문자기반 클라이언트도 종료될것입니다.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3751,8 +3721,8 @@ msgstr ""
 " "
 
 #: src/TextClient.cpp:857
-msgid "Connect to ED2K only."
-msgstr "ED2k에만 연결합니다."
+msgid "Connect to eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3767,34 +3737,28 @@ msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "현재 연결되어있는 모든 통신망으로부터 연결을 끊습니다.\n"
 
 #: src/TextClient.cpp:862
-msgid "Disconnect from ED2K only."
-msgstr "ED2k에서만 연결을 끊습니다."
+msgid "Disconnect from eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Kad에서만 연결을 끊습니다."
 
 #: src/TextClient.cpp:865
-msgid "Adds an ed2k or magnet link to core."
-msgstr "ed2k 또는 magnet 링크를 코어에 추가합니다."
+msgid "Adds an eD2k or magnet link to core."
+msgstr ""
 
 #: src/TextClient.cpp:866
 msgid ""
-"The ed2k link to be added can be:\n"
+"The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 "*) or a serverlist link, in which case all servers in the list will be added "
 "to the\n"
 "   server list.\n"
 "\n"
-"The magnet link must contain the ed2k hash and file length.\n"
+"The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
-"다음의 ed2k 링크가 추가될 수 있습니다.:\n"
-"*) 파일 링크 (ed2k://|file|...), 내려받기 대기열에 추가되고,\n"
-"*) 서버 링크 (ed2k://|server|...), 서버목록에 추가되고,\n"
-"*) 서버목록 링크, 목록에 포함된 모든 서버들이 서버목록에 추가됩니다.\n"
-"\n"
-"magnet 링크는 ed2k 해시와 파일 길이를 포함해야 합니다.\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -4018,7 +3982,7 @@ msgstr "로그를 초기화합니다."
 
 #: src/TextClient.cpp:952
 #, c-format
-msgid "Deprecated command, now '%s'."
+msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
 #: src/TextClient.cpp:953
@@ -4034,13 +3998,13 @@ msgstr "theApp->serverlist->GetServerByAddress()이 NULL값을 반환했습니�
 
 #: src/ServerSocket.cpp:259
 #, c-format
-msgid "Error: %s (%s) - %s"
-msgstr "오류: %s(%s) - %s"
+msgid "ERROR: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:274
 #, c-format
-msgid "Warning: %s (%s) - %s"
-msgstr "경고: %s(%s) - %s"
+msgid "WARNING: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4258,20 +4222,20 @@ msgid "In progress"
 msgstr "진행중"
 
 #: src/PartFileConvert.cpp:613
-msgid "Error: Out of diskspace"
-msgstr "에러: 디스크 공간 부족"
+msgid "ERROR: Out of diskspace"
+msgstr ""
 
 #: src/PartFileConvert.cpp:614
-msgid "Error: Partmet not found"
-msgstr "오류: Partmet을 찾을 수 없음"
+msgid "ERROR: Partmet not found"
+msgstr ""
 
 #: src/PartFileConvert.cpp:615
-msgid "Error: IO error!"
-msgstr "오류: 입출력 오류!"
+msgid "ERROR: IO error!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:616
-msgid "Error: Failed!"
-msgstr "오류: 실패함!"
+msgid "ERROR: Failed!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4487,8 +4451,8 @@ msgid "%.2f%% done"
 msgstr "%.2f%% 완료"
 
 #: src/muuli_wdr.cpp:69
-msgid "ED2K Link: "
-msgstr "ED2K 링크: "
+msgid "eD2k Link: "
+msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4496,9 +4460,8 @@ msgstr "확정"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
+"Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
-"문장 컨트롤내의 ed2k 링크를 내려받기 대기열에 추가하려면 여기를 클릭하세요."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4634,8 +4597,8 @@ msgid "More"
 msgstr "추가"
 
 #: src/muuli_wdr.cpp:352
-msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr "ED2K에서 더 많은 결과를 찾습니다. Kad는 아직 지원되지 않습니다."
+msgid "Searches for more results on eD2k. Not supported for Kad yet."
+msgstr ""
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -4660,10 +4623,6 @@ msgstr "올려주기 / 올려주기 대기열 보이기"
 #: src/muuli_wdr.cpp:469
 msgid "Clients on queue :"
 msgstr "대기열속의 클라이언트 :"
-
-#: src/muuli_wdr.cpp:472
-msgid "0"
-msgstr "0"
 
 #: src/muuli_wdr.cpp:536
 msgid "Send"
@@ -5142,8 +5101,8 @@ msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr "가능하면 새로운 창을 여는것 대신 새로운 탭을 생성합니다."
 
 #: src/muuli_wdr.cpp:1743
-msgid "Bandwith Limits"
-msgstr "대역폭 제한"
+msgid "Bandwith limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5170,16 +5129,16 @@ msgid "Standard client TCP Port:"
 msgstr "표준 클라이언트 TCP 포트:"
 
 #: src/muuli_wdr.cpp:1831
-msgid "This is the standard ED2K port and cannot be disabled."
-msgstr "이것은 표준 ED2k 포트이며 비활성화 할수 없습니다."
+msgid "This is the standard eD2k port and cannot be disabled."
+msgstr ""
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
 msgstr "확장된 클라이언트 UDP 포트:"
 
 #: src/muuli_wdr.cpp:1840
-msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr "이 UDP 포트는 확장된 Ed2k 요청과 Kad 통신망에 사용됩니다."
+msgid "This UDP port is used for extended ed2k requests and Kad network"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5198,16 +5157,20 @@ msgid "Max Sources per File"
 msgstr "파일당 최대자료수"
 
 #: src/muuli_wdr.cpp:1873
-msgid "Hard Limit"
-msgstr "강한 제한"
+msgid "Hard limit"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1883
-msgid "Connection Limits"
-msgstr "연결 제한"
+msgid "Connection limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
 msgstr "최대 연결"
+
+#: src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
+msgid "ED2K"
+msgstr "ED2k"
 
 #: src/muuli_wdr.cpp:1919
 msgid "Kademlia"
@@ -5250,20 +5213,20 @@ msgid "retries"
 msgstr "재시도"
 
 #: src/muuli_wdr.cpp:2001
-msgid "Auto-update serverlist at startup"
-msgstr "시작시 서버 목록을 자동갱신"
+msgid "Auto-update server list at startup"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
 msgstr "목록"
 
 #: src/muuli_wdr.cpp:2009
-msgid "Update serverlist when connecting to a server"
-msgstr "서버에 연결할때 서버 목록을 갱신"
+msgid "Update server list when connecting to a server"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2012
-msgid "Update serverlist when a client connect"
-msgstr "클라이언트가 연결할때 서버 목록을 갱신"
+msgid "Update server list when a client connects"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5326,20 +5289,20 @@ msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "희귀한 파일인 경우 10개의 자료 저장 (<20 자료)"
 
 #: src/muuli_wdr.cpp:2105
-msgid "Disk Space"
-msgstr "디스크 공간"
+msgid "Disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2108
-msgid "Check Disk Space"
-msgstr "디스크 공간검사"
+msgid "Check disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2109
-msgid "Select this if you want aMule to check your Disk Space"
-msgstr "어뮬이 디스크공간을 검사하도록 함"
+msgid "Select this if you want aMule to check your disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2116
-msgid "Min Disk Space:"
-msgstr "최소 디스크 공간:"
+msgid "Min disk space:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5356,16 +5319,16 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2158
-msgid "Incoming Directory :"
-msgstr "내려받는 폴더 :"
+msgid "Incoming"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2169
-msgid "Temporary Directory :"
-msgstr "임시 폴더 :"
+msgid "Temporary"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2180
-msgid "Shared Directories"
-msgstr "공유 폴더"
+msgid "Shared"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5380,8 +5343,8 @@ msgid "Video Player"
 msgstr "비디오 재생기"
 
 #: src/muuli_wdr.cpp:2209
-msgid "Create Backup to preview"
-msgstr "미리보기를 위해 백업파일을 만듦"
+msgid "Create Backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5564,8 +5527,8 @@ msgid "Misc Gui Tweaks"
 msgstr "기타 GUI 조정"
 
 #: src/muuli_wdr.cpp:2479
-msgid "Show Fast ED2K Links Handler"
-msgstr "빠른 ED2k링크 처리기를 보여줌"
+msgid "Show Fast eD2k Links Handler"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5588,24 +5551,24 @@ msgid "Remote Control"
 msgstr "원격 조정"
 
 #: src/muuli_wdr.cpp:2523
-msgid "Webserver Parameters"
-msgstr "웹서버 설정"
+msgid "Web server parameters"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
 msgstr "시작시 어뮬웹 구동"
 
 #: src/muuli_wdr.cpp:2531
-msgid "Webserver port"
-msgstr "웹서버 포트"
+msgid "Web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2539
-msgid "Enable UPnP port forwarding on the Webserver port"
-msgstr "웹서버 포트로 UPnP 포트포워딩 활성화"
+msgid "Enable UPnP port forwarding on the web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2544
-msgid "Webserver UPnP TCP port"
-msgstr "웹서버 UPnP TCP 포트"
+msgid "Web server UPnP TCP port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5720,8 +5683,8 @@ msgid "Click on this button to update the servers list from URL ..."
 msgstr "URL로부터 서버 목록을 갱신하려면 이 버튼을 클릭..."
 
 #: src/muuli_wdr.cpp:2899
-msgid "Serverlist"
-msgstr "서버 목록"
+msgid "Server list"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5732,8 +5695,8 @@ msgstr ""
 "고 왼쪽편의 버튼을 누르세요."
 
 #: src/muuli_wdr.cpp:2911
-msgid "Manual Server Add : Name"
-msgstr "수동 서버추가 : 이름"
+msgid "Add server manually: Name"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5751,7 +5714,7 @@ msgstr "서버의 포트를 이곳에 입력하세요."
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "서버 수동 추가 (미리 왼쪽 부분을 채울 것) ..."
 
-#: src/muuli_wdr.cpp:2979 src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:2979
 msgid "ED2K Info"
 msgstr "ED2k 정보"
 
@@ -5807,6 +5770,10 @@ msgstr ""
 msgid "Disconnect Kad"
 msgstr "Kad 끊김"
 
+#: src/muuli_wdr.cpp:3163
+msgid "eD2k Info"
+msgstr ""
+
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
 msgstr "프로토콜 난독화"
@@ -5856,8 +5823,8 @@ msgid "Everybody"
 msgstr "모두"
 
 #: src/muuli_wdr.cpp:3221
-msgid "No One"
-msgstr "아무도"
+msgid "No one"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6137,6 +6104,34 @@ msgstr "사건 종류"
 #: src/muuli_wdr.cpp:3817
 msgid "Connect to any server and/or Kad"
 msgstr "서버 혹은 Kad에 연결"
+
+#: src/muuli_wdr.cpp:3819
+msgid "Networks Window"
+msgstr "통신망 창"
+
+#: src/muuli_wdr.cpp:3820
+msgid "Searches Window"
+msgstr "검색 창"
+
+#: src/muuli_wdr.cpp:3821
+msgid "Files Transfers Window"
+msgstr "파일 전송 창"
+
+#: src/muuli_wdr.cpp:3823
+msgid "Shared Files Window"
+msgstr "공유 파일 창"
+
+#: src/muuli_wdr.cpp:3824
+msgid "Messages Window"
+msgstr "메시지 창"
+
+#: src/muuli_wdr.cpp:3825
+msgid "Statistics Graph Window"
+msgstr "통계 그래프 창"
+
+#: src/muuli_wdr.cpp:3827
+msgid "Preferences Settings Window"
+msgstr "환경 설정 창"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
@@ -6555,8 +6550,8 @@ msgid "aMule Tray Menu"
 msgstr "어뮬 트레이 메뉴"
 
 #: src/MuleTrayIcon.cpp:336
-msgid "Speed Limits:"
-msgstr "속도 제한:"
+msgid "Speed limits:"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6578,13 +6573,13 @@ msgstr "내려받기: %u"
 
 #: src/MuleTrayIcon.cpp:358
 #, c-format
-msgid "Download Speed: %.1f"
-msgstr "내려받기 속도: %.1f"
+msgid "Download speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
-msgid "Upload Speed: %.1f"
-msgstr "올려주기 속도: %.1f"
+msgid "Upload speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6618,21 +6613,21 @@ msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:415
 #, c-format
-msgid "TCP Port: %d"
-msgstr "TCP 포트: %d"
+msgid "TCP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:417
-msgid "TCP Port: Not Ready"
-msgstr "TCP 포트: 준비되지 않음"
+msgid "TCP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
-msgid "UDP Port: %d"
-msgstr "UDP 포트: %d"
+msgid "UDP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:428
-msgid "UDP Port: Not Ready"
-msgstr "UDP 포트: 준비되지 않음"
+msgid "UDP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6644,13 +6639,13 @@ msgstr "온라인 서명: 비활성화"
 
 #: src/MuleTrayIcon.cpp:453
 #, c-format
-msgid "Shared Files: %d"
-msgstr "공유된 파일: %d"
+msgid "Shared files: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
-msgid "Queued Clients: %d"
-msgstr "대기열에 있는 클라이언트: %d"
+msgid "Queued clients: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6663,12 +6658,12 @@ msgid "Total UL: %s"
 msgstr "전체 올려주기: %s"
 
 #: src/MuleTrayIcon.cpp:484
-msgid "Upload Limit"
-msgstr "올려주기 제한"
+msgid "Upload limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:488
-msgid "Download Limit"
-msgstr "내려받기 제한"
+msgid "Download limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6791,11 +6786,9 @@ msgstr "%s로부터 서버 목록를 내려받지 못함"
 
 #: src/ServerList.cpp:817
 msgid ""
-"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
-"serverlist address into this file in order to auto-update your serverlist"
+"No server list address entry in 'addresses.dat' found. Please paste a valid "
+"server list address into this file in order to auto-update your server list"
 msgstr ""
-"'addresses.dat'에 서버 목록 주소 항목이 없습니다. 서버 목록을 자동갱신하려면 "
-"유효한 서버 목록 주소를 이 파일에 붙여넣어 주세요."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6804,8 +6797,8 @@ msgstr ""
 
 #: src/ServerList.cpp:839
 #, c-format
-msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-msgstr "경고, 서버의 자동 갱신을 위한 URL이 유효하지 않음: %s"
+msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
+msgstr ""
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6844,18 +6837,15 @@ msgstr "서버 목록 내려받기"
 
 #: src/amule.cpp:844
 #, c-format
-msgid "webserver running on pid %d"
-msgstr "웝서버가 PID %d로 작동중"
+msgid "web server running on pid %d"
+msgstr ""
 
 #: src/amule.cpp:848
 msgid ""
-"You requested to run webserver from startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule webserver, or compile "
+"You requested to run web server on startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
-"시작과 동시에 웹서버 구동을 요청했으나, amuleweb 파일을 실행할 수 없습니다. "
-"어뮬 웹서버를 포함한 꾸러미를 설치하거나 , --enable-webserver 옵션 이용하여 "
-"어뮬을 컴파일 후 make install을 실행하세요."
 
 #: src/amule.cpp:938
 #, c-format
@@ -7059,8 +7049,8 @@ msgid "Connecting to %s"
 msgstr "%s에 연결중"
 
 #: src/amule.cpp:2105
-msgid "Disconnected from ED2K"
-msgstr "ED2k로부터 연결이 끊김"
+msgid "Disconnected from eD2k"
+msgstr ""
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7095,12 +7085,497 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 네트워크가 환경설정에서 비활성되어, 연결하지 않습니다."
 
 #: src/FriendList.cpp:120
-msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
+msgid "Failed to open friend list file 'emfriends.met' for reading!"
+msgstr ""
 
 #: src/FriendList.cpp:146
-msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
+msgid "Failed to open friend list file 'emfriends.met' for writing!"
+msgstr ""
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "외부연결 실패. 응답없음."
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "외부연결: 다음 이유로 연결이 거부됨: "
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "외부연결: 접근이 거부됨"
+
+#~ msgid "ExternalConn: Bad reply from server. Connection closed."
+#~ msgstr "외부연결: 서버 응답 불량. 연결이 끊겼습니다."
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "ED2k 링크를 클립보드로 복사(&l)"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "ED2k 링크를 클립보드에 복사(&Source)"
+
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (Source) (&With Crypt options)"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (&Hostname)"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "ED2k 링크를 클립보드로 복사 (Hostname) (With &Crypt options)"
+
+#~ msgid "Copy ED2k link to clipboard (&AICH info)"
+#~ msgstr "ED2k 링크를 클립보드에 복사(&AICH info)"
+
+#~ msgid "Warning"
+#~ msgstr "경고"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "오류: TCP포트를 열수없습니다."
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "웹서버 HTTP 포트"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "웹서버 포트에 UPnP 포트포워딩을 사용"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "웹서버 전체접근 암호"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "웹서버 손님 암호"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "원격 어뮬로부터 웹서버 설정을 불러오거나 저장합니다."
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 원하는 파일을 이곳에 입력하세요."
+
+#~ msgid ""
+#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
+#~ "let aLinkCreator append the current file name"
+#~ msgstr ""
+#~ "ED2k 링크를 추가하기 원하는 주소를 이곳에 입력하세요: aLinkCreator가 현재 "
+#~ "파일 이름을 덧붙이게 하려면 끝에 '/'를 추가하세요."
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "ED2k 파일 해시"
+
+#~ msgid "Ed2k link"
+#~ msgstr "ED2k 링크"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 위한 파일을 엽니다."
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "계산된 ED2k 링크를 클립보드에 복사합니다."
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "계산된 ED2k 링크를 파일로 저장합니다."
+
+#~ msgid "Select the file you want to compute the ed2k link"
+#~ msgstr "ED2k 링크를 계산하기 원하는 파일을 선택하세요."
+
+#~ msgid "Select the file to your computed ed2k link"
+#~ msgstr "계산된 ED2k 링크파일을 선택하세요."
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, 어뮬 ED2k 링크 생성자\n"
+#~ "\n"
+#~ "(c) 2004 더폴리시 <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "http://jimmac.musichall.cz/ikony.php3 과\n"
+#~ "http://www.everaldo.com 과 http://www.icomania.com 으로부터 아이콘\n"
+#~ "\n"
+#~ "GPL로 배포합니다."
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, 어뮬 ED2k 링크 생성자"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "클립보드에 ED2k링크를 복사"
+
+#, fuzzy
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "클립보드에 ED2k링크를 복사"
+
+#~ msgid "Fatal Error: Failed to create Timer"
+#~ msgstr "치명적 오류: 타이머 생성 실패"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "연결중"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "연결이 끊김"
+
+#~ msgid "Warning: Unable to open skin file '%s' for read"
+#~ msgstr "경고: 외형 파일 '%s'(을)를 읽을 수 없습니다."
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "자동갱신 서버 목록이 비어있습니다.\n"
+#~ "'시작시 서버목록 자동갱신'은 비활성화될 것입니다."
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "ED2k와 Kad 네트워크 모두가 비활성화되어 있습니다.\n"
+#~ "적어도 하나를 활성화 할때까지 연결할 수 없습니다."
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "서버 목록 편집"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "오류: 외부연결이 승인되지않았습니다."
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2k가 환경설정에서 비활성화되어 있습니다."
+
+#~ msgid "ExternalConn: shutdown requested"
+#~ msgstr "외부연결: 종료가 요청됨"
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "이미 ED2k에 연결되었습니다."
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "ED2k에 연결중..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "ED2k로부터 연결이 끊겼습니다."
+
+#~ msgid "ExternalConn: invalid opcode received: %#x"
+#~ msgstr "외부연결: 유효하지 않은 실행코드를 받았음: %#x"
+
+#~ msgid "ED2K Status:"
+#~ msgstr "ED2k 상태:"
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "평균 내려받기율 (세션): %s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "평균 올려주기율 (세션): %s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "최대 내려받기율 (세션): %s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "최대 올려주기율 (세션): %s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "평균 파일 크기: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "ED2k가 연결되어 있지 않으면 ED2k 검색을 할 수 없습니다."
+
+#~ msgid "Error: "
+#~ msgstr "오류: "
+
+#~ msgid "Warning: "
+#~ msgstr "경고: "
+
+#~ msgid "Search related files (ED2k, local server)"
+#~ msgstr "관련 파일 검색 (ED2k, 지역서버)"
+
+#~ msgid "Error"
+#~ msgstr "오류"
+
+#~ msgid ""
+#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
+#~ "lowid."
+#~ msgstr ""
+#~ "경고: 낮은아이디를 가지고 있는 동안에는 스스로를 ed2k 링크에 자료로 추가"
+#~ "할 수 없습니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "환경설정에서 비디오 재생 프로그램을 선택하세요.\n"
+#~ "그 동안 어뮬에서 미리보기를 할때마다 mplayer를 사용하도록 시도하며 미리보"
+#~ "기할 때마다 이 경고를 받을 것입니다."
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "오류: part.met 파일을 열지 못했습니다: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "오류: part.met파일은 크기가 0입니다: %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "오류: 유효하지 않은 part.met 파일버젼: %s ==> %s"
+
+#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+#~ msgstr ""
+#~ "오류: %s(%s)은 손상되었습니다. (잘못된 꼬리계수), 파일을 읽을수 없습니다."
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "경고: %s는 손상되었습니다. (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr "%s가 완료되는중 예상되지 않은 파일오류가 발생하였습니다. 파일 중지"
+
+#~ msgid ""
+#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+#~ msgstr "경고: 내려받은 부분의 해시가 불가능합니다. - %s의 해시설정 비완료"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr ""
+#~ "오류: 내려받은 부분의 해시가 불가능합니다. - 해시설정 비완료 (%s). 발생되"
+#~ "어서는 안됩니다."
+
+#~ msgid "Insufficient Diskspace"
+#~ msgstr "불충분한 디스크공간"
+
+#~ msgid "Warning: known.met cannot be opened."
+#~ msgstr "경고: known.met을 열 수 없습니다."
+
+#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
+#~ msgstr ""
+#~ "경고: 알려진파일 목록이 손상됨, 유효하지 않는 머리말을 포함하고 있습니다."
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "오류! %s 공유를 시도"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "ED2k 통신망이 환경설정에서 비활성화되어 있으므로 연결하지 않습니다."
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "발견된 서버 목록에서 연결할수 있는 유효한 서버가 없습니다."
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "오류: 시간초과 검사에 유효하지 않은 소켓"
+
+#~ msgid "Cannot convert magnet link to ed2k: %s"
+#~ msgstr "magnet 링크를 ed2k로 변환할 수 없음: %s"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "유효하지 않은 ED2k링크! 오류: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "대역폭 제한: 올려주기: %u kB/초, 내려받기: %u kB/초\n"
+
+#~ msgid "Shutdown aMule."
+#~ msgstr "어뮬 종료."
+
+#~ msgid ""
+#~ "Shutdown the remote running core (amule/amuled).\n"
+#~ "This will also shut down the text client, since it is unusable without a\n"
+#~ "running core.\n"
+#~ msgstr ""
+#~ "원격으로 동작하는 코어(어뮬)를 종료합니다.\n"
+#~ "동작하는 코어없이는 불안정하기 때문에,\n"
+#~ "문자기반 클라이언트도 종료될것입니다.\n"
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "ED2k에만 연결합니다."
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "ED2k에서만 연결을 끊습니다."
+
+#~ msgid "Adds an ed2k or magnet link to core."
+#~ msgstr "ed2k 또는 magnet 링크를 코어에 추가합니다."
+
+#~ msgid ""
+#~ "The ed2k link to be added can be:\n"
+#~ "*) a file link (ed2k://|file|...), it will be added to the download "
+#~ "queue,\n"
+#~ "*) a server link (ed2k://|server|...), it will be added to the server "
+#~ "list,\n"
+#~ "*) or a serverlist link, in which case all servers in the list will be "
+#~ "added to the\n"
+#~ "   server list.\n"
+#~ "\n"
+#~ "The magnet link must contain the ed2k hash and file length.\n"
+#~ msgstr ""
+#~ "다음의 ed2k 링크가 추가될 수 있습니다.:\n"
+#~ "*) 파일 링크 (ed2k://|file|...), 내려받기 대기열에 추가되고,\n"
+#~ "*) 서버 링크 (ed2k://|server|...), 서버목록에 추가되고,\n"
+#~ "*) 서버목록 링크, 목록에 포함된 모든 서버들이 서버목록에 추가됩니다.\n"
+#~ "\n"
+#~ "magnet 링크는 ed2k 해시와 파일 길이를 포함해야 합니다.\n"
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "오류: %s(%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "경고: %s(%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "에러: 디스크 공간 부족"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "오류: Partmet을 찾을 수 없음"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "오류: 입출력 오류!"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "오류: 실패함!"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "ED2K 링크: "
+
+#~ msgid ""
+#~ "Click here to add the ed2k link in the text control to your download "
+#~ "queue."
+#~ msgstr ""
+#~ "문장 컨트롤내의 ed2k 링크를 내려받기 대기열에 추가하려면 여기를 클릭하세"
+#~ "요."
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "ED2K에서 더 많은 결과를 찾습니다. Kad는 아직 지원되지 않습니다."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "대역폭 제한"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "이것은 표준 ED2k 포트이며 비활성화 할수 없습니다."
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr "이 UDP 포트는 확장된 Ed2k 요청과 Kad 통신망에 사용됩니다."
+
+#~ msgid "Hard Limit"
+#~ msgstr "강한 제한"
+
+#~ msgid "Connection Limits"
+#~ msgstr "연결 제한"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "시작시 서버 목록을 자동갱신"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "서버에 연결할때 서버 목록을 갱신"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "클라이언트가 연결할때 서버 목록을 갱신"
+
+#~ msgid "Disk Space"
+#~ msgstr "디스크 공간"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "디스크 공간검사"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr "어뮬이 디스크공간을 검사하도록 함"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "최소 디스크 공간:"
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "내려받는 폴더 :"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "임시 폴더 :"
+
+#~ msgid "Shared Directories"
+#~ msgstr "공유 폴더"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "미리보기를 위해 백업파일을 만듦"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "빠른 ED2k링크 처리기를 보여줌"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "웹서버 설정"
+
+#~ msgid "Webserver port"
+#~ msgstr "웹서버 포트"
+
+#~ msgid "Enable UPnP port forwarding on the Webserver port"
+#~ msgstr "웹서버 포트로 UPnP 포트포워딩 활성화"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "웹서버 UPnP TCP 포트"
+
+#~ msgid "Serverlist"
+#~ msgstr "서버 목록"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "수동 서버추가 : 이름"
+
+#~ msgid "No One"
+#~ msgstr "아무도"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "속도 제한:"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "내려받기 속도: %.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "올려주기 속도: %.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "TCP 포트: %d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP 포트: 준비되지 않음"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "UDP 포트: %d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP 포트: 준비되지 않음"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "공유된 파일: %d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "대기열에 있는 클라이언트: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "올려주기 제한"
+
+#~ msgid "Download Limit"
+#~ msgstr "내려받기 제한"
+
+#~ msgid ""
+#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
+#~ "valid serverlist address into this file in order to auto-update your "
+#~ "serverlist"
+#~ msgstr ""
+#~ "'addresses.dat'에 서버 목록 주소 항목이 없습니다. 서버 목록을 자동갱신하려"
+#~ "면 유효한 서버 목록 주소를 이 파일에 붙여넣어 주세요."
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr "경고, 서버의 자동 갱신을 위한 URL이 유효하지 않음: %s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "웝서버가 PID %d로 작동중"
+
+#~ msgid ""
+#~ "You requested to run webserver from startup, but the amuleweb binary "
+#~ "cannot be run. Please install the package containing aMule webserver, or "
+#~ "compile aMule using --enable-webserver and run make install"
+#~ msgstr ""
+#~ "시작과 동시에 웹서버 구동을 요청했으나, amuleweb 파일을 실행할 수 없습니"
+#~ "다. 어뮬 웹서버를 포함한 꾸러미를 설치하거나 , --enable-webserver 옵션 이"
+#~ "용하여 어뮬을 컴파일 후 make install을 실행하세요."
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "ED2k로부터 연결이 끊김"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "'emfriends.met'파일을 읽기 위해 열지 못했습니다."
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "'emfriends.met'파일을 기록하기 위해 열지 못했습니다."
 
 #~ msgid "ERROR: Failed to open partfile)"
 #~ msgstr "오류: 부분파일을 열지 못했습니다.)"

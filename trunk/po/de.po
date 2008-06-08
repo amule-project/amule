@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-07 22:01+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2008-05-30 01:43+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -452,7 +452,8 @@ msgstr "eD2k-Link in Zwischenablage kopieren (&Hostname)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopiere eD2k-Verweis in Zwischenablage (Hostname) (With &Crypt options)"
+msgstr ""
+"Kopiere eD2k-Verweis in Zwischenablage (Hostname) (With &Crypt options)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -3441,8 +3442,7 @@ msgstr ""
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr ""
-"eD2k-Netzwerk ist in den Einstellungen deaktiviert - verbinde nicht."
+msgstr "eD2k-Netzwerk ist in den Einstellungen deaktiviert - verbinde nicht."
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
 msgid "No valid servers to which to connect found in server list"

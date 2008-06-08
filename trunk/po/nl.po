@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-07 22:01+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -113,7 +113,8 @@ msgstr "Oude AICH hashsets in '%s' worden omgezet in 64b in '%s'."
 #: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "WAARSCHUWING: De bestandsnaam '%s' is ongeldig en is gewijzigd in '%s'."
+msgstr ""
+"WAARSCHUWING: De bestandsnaam '%s' is ongeldig en is gewijzigd in '%s'."
 
 #: src/ThreadTasks.cpp:439
 #, c-format
@@ -125,7 +126,8 @@ msgstr ""
 #: src/ThreadTasks.cpp:452
 #, c-format
 msgid "WARNING: Could not remove original '%s' after creating backup"
-msgstr "WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
+msgstr ""
+"WAARSCHUWING: Kon origineel '%s' niet verwijderen na het maken van backup"
 
 #: src/ThreadTasks.cpp:464
 #, c-format
@@ -184,7 +186,8 @@ msgstr "Aangevraagd: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Bestandsstatistieken voor deze sessie: Geaccepteerd %d van %d aanvraag, %s "
 "overgebracht\n"
@@ -195,7 +198,8 @@ msgstr[1] ""
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Bestandsstatistieken voor alle sessies: Geaccepteerd %d van %d aanvraag, %s "
 "overgebracht\n"
@@ -601,7 +605,8 @@ msgstr "Wachtwoord fout\n"
 
 #: src/webserver/src/WebServer.cpp:1894
 msgid "You did not enter any password. Blank password is not allowed.\n"
-msgstr "U heeft geen wachtwoord ingevoerd. Een leeg wachtwoord is niet toegestaan.\n"
+msgstr ""
+"U heeft geen wachtwoord ingevoerd. Een leeg wachtwoord is niet toegestaan.\n"
 
 #: src/webserver/src/WebServer.cpp:1902
 msgid "Logout requested\n"
@@ -715,7 +720,8 @@ msgstr "Genereer een status figuur bij elke verversing"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr "Voer hier de directory in waar u het statistieken figuur wilt laten genereren"
+msgstr ""
+"Voer hier de directory in waar u het statistieken figuur wilt laten genereren"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
@@ -735,7 +741,8 @@ msgstr "Voer hier de URL in van uw FTP server"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:200
 msgid "Enter here the directory where putting your stat image on FTP server"
-msgstr "Voer hier de directory in waar uw status figuur op de FTP server moet komen"
+msgstr ""
+"Voer hier de directory in waar uw status figuur op de FTP server moet komen"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:206
 msgid "User"
@@ -1123,7 +1130,9 @@ msgstr "Voer hier het bestand in waarvan u de eD2k link wilt laten berekenen"
 msgid ""
 "Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr "Voer hier de URL in die u wilt toevoegen aan de eD2k link: Voeg / toe aan het eind om aLinkCreator de huidige bestandsnaam toe te laten voegen"
+msgstr ""
+"Voer hier de URL in die u wilt toevoegen aan de eD2k link: Voeg / toe aan "
+"het eind om aLinkCreator de huidige bestandsnaam toe te laten voegen"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1267,7 +1276,8 @@ msgstr "Bestand nummer %u wordt verwerkt: %s"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:70
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
-msgstr "U heeft om deel hashes gevraagd (Alleen gebruikt voor bestanden > 9,5 MB)"
+msgstr ""
+"U heeft om deel hashes gevraagd (Alleen gebruikt voor bestanden > 9,5 MB)"
 
 #: src/utils/aLinkCreator/src/alcc.cpp:74
 msgid "Please wait... "
@@ -1543,7 +1553,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Kon geselecteerde browser niet bepalen!"
 
 #: src/Preferences.cpp:1671
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP poort kan niet hoger zijn dan 65532 omdat de server UDP poort de TCP "
 "poort + 3 is"
@@ -1717,7 +1728,8 @@ msgstr "Draaiend op %s"
 
 #: src/amuleDlg.cpp:223
 msgid "Visit http://www.amule.org to check if a new version is available."
-msgstr "Bezoek http://www.amule.org om te zien of een nieuwe versie beschikbaar is."
+msgstr ""
+"Bezoek http://www.amule.org om te zien of een nieuwe versie beschikbaar is."
 
 #: src/amuleDlg.cpp:246
 msgid "FATAL ERROR: Failed to create Timer"
@@ -2292,7 +2304,8 @@ msgstr "Toegang verleend."
 #: src/ExternalConn.cpp:565
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "PartBestands commando op afstand mislukt: BestandsHash niet gevonden: %s"
+msgstr ""
+"PartBestands commando op afstand mislukt: BestandsHash niet gevonden: %s"
 
 #: src/ExternalConn.cpp:567
 #, c-format
@@ -2802,7 +2815,8 @@ msgstr "Gebruiker %s (%u) vroeg uw gedeeldedirectories-lijst op -> Geweigerd"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Gebruiker %s (%u) vroeg uw gedeeldebestanden-lijst van directory %s op -> "
 "geaccepteerd"
@@ -2842,7 +2856,8 @@ msgstr "Gebruiker %s (%u) stuurde ongewild gedeeldebestanden-lijst"
 #: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Gebruiker %s (%u) weigerde toegang tot gedeelde directories/bestanden lijst"
+msgstr ""
+"Gebruiker %s (%u) weigerde toegang tot gedeelde directories/bestanden lijst"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2866,7 +2881,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Weet u zeker dat u een nieuw nodes.dat bestand wilt downloaden?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Dat zal uw huidige nodes verwijderen en de Kademlia verbinding opnieuw "
 "starten."
@@ -2953,7 +2969,9 @@ msgstr "FOUT"
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
-msgstr "WAARSCHUWING: U kunt uzelf niet toevoegen als bron voor een eD2k link terwijl u een laag id hebt."
+msgstr ""
+"WAARSCHUWING: U kunt uzelf niet toevoegen als bron voor een eD2k link "
+"terwijl u een laag id hebt."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3131,7 +3149,8 @@ msgid ""
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 "Om deze waarschuwing te voorkomen bij elk voorbeeld\n"
-"dient u uw video afspeelprogramma in te stellen bij voorkeuren (standaard is mplayer)."
+"dient u uw video afspeelprogramma in te stellen bij voorkeuren (standaard is "
+"mplayer)."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3169,7 +3188,8 @@ msgstr "FOUT: Ongeldige part.met bestandsversie: %s ==> %s"
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "FOUT: %s (%s) is beschadigd (verkeerde tagcount), kan bestand niet laden."
+msgstr ""
+"FOUT: %s (%s) is beschadigd (verkeerde tagcount), kan bestand niet laden."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3183,7 +3203,8 @@ msgstr ""
 
 #: src/PartFile.cpp:624
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr "Alle beschikbare bestands info hersteld :D - Poging om het te gebruiken..."
+msgstr ""
+"Alle beschikbare bestands info hersteld :D - Poging om het te gebruiken..."
 
 #: src/PartFile.cpp:626
 msgid "Unable to recover file info :("
@@ -3284,19 +3305,23 @@ msgstr "Verwijderen van bestand: %s"
 #: src/PartFile.cpp:2386
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "WAARSCHUWING: Kan gedownload deel niet hashen - incomplete hashset voor '%s'"
+msgstr ""
+"WAARSCHUWING: Kan gedownload deel niet hashen - incomplete hashset voor '%s'"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "FOUT: Kan gedownload deel niet hashen - hashset incompleet (%s). Dit zou nooit mogen gebeuren"
+msgstr ""
+"FOUT: Kan gedownload deel niet hashen - hashset incompleet (%s). Dit zou "
+"nooit mogen gebeuren"
 
 #: src/PartFile.cpp:3069
 #, c-format
 msgid "WARNING: Not enough free disk-space! Pausing file: %s"
-msgstr "WAARSCHUWING: Niet voldoende vrije schijfruimte! Pauzeren van bestand: %s"
+msgstr ""
+"WAARSCHUWING: Niet voldoende vrije schijfruimte! Pauzeren van bestand: %s"
 
 #: src/PartFile.cpp:3154
 #, c-format
@@ -3421,7 +3446,8 @@ msgstr "Verbinding gemaakt met: %s"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Fatale Fout bij het proberen te verbinden. Internet verbinding kan uit zijn"
+msgstr ""
+"Fatale Fout bij het proberen te verbinden. Internet verbinding kan uit zijn"
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -3442,8 +3468,10 @@ msgstr "%s (%s:%i) lijkt vol te zijn."
 #, c-format
 msgid "Automatic connection to server will retry in %d second"
 msgid_plural "Automatic connection to server will retry in %d seconds"
-msgstr[0] "Automatische verbinding naar server zal in %d seconde opnieuw proberen"
-msgstr[1] "Automatische verbinding naar server zal in %d seconden opnieuw proberen"
+msgstr[0] ""
+"Automatische verbinding naar server zal in %d seconde opnieuw proberen"
+msgstr[1] ""
+"Automatische verbinding naar server zal in %d seconden opnieuw proberen"
 
 #: src/ServerConnect.cpp:401
 msgid "Connection lost"
@@ -3467,7 +3495,9 @@ msgstr "Poging tot verbinden met %s (%s:%i) gaf time out."
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr "FOUT: Laden van backupbestand misukt. Zoek op http://forum.amule.org naar .part.met hersteloplossingen."
+msgstr ""
+"FOUT: Laden van backupbestand misukt. Zoek op http://forum.amule.org naar ."
+"part.met hersteloplossingen."
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3487,7 +3517,8 @@ msgstr "Bestandssysteem voor Temp directory kan grote bestanden niet verwerken"
 # Translate 'Incoming directory'?
 #: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr "Bestandssysteem voor Incoming directory kan grote bestanden niet verwerken."
+msgstr ""
+"Bestandssysteem voor Incoming directory kan grote bestanden niet verwerken."
 
 #: src/DownloadQueue.cpp:327
 #, c-format
@@ -3765,7 +3796,8 @@ msgstr "Verbreek verbinding met het netwerk."
 
 #: src/TextClient.cpp:861
 msgid "This will disconnect from all networks that are currently connected.\n"
-msgstr "Dit verbreekt de verbinding met alle netwerken waarmee nu verbinding is.\n"
+msgstr ""
+"Dit verbreekt de verbinding met alle netwerken waarmee nu verbinding is.\n"
 
 #: src/TextClient.cpp:862
 msgid "Disconnect from eD2k only."
@@ -3791,9 +3823,12 @@ msgid ""
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 "De toe te voegen eD2k link kan zijn:\n"
-"*) een bestandslink (ed2k://|file|...), het wordt toegevoegd aan de download wachtrij,\n"
-"*) een serverlink (ed2k://|server|...), het wordt toegevoegd aan de serverlijst,\n"
-"*) of een serverlijst-link, in dat geval worden alle servers in de lijst toegevoegd aan de\n"
+"*) een bestandslink (ed2k://|file|...), het wordt toegevoegd aan de download "
+"wachtrij,\n"
+"*) een serverlink (ed2k://|server|...), het wordt toegevoegd aan de "
+"serverlijst,\n"
+"*) of een serverlijst-link, in dat geval worden alle servers in de lijst "
+"toegevoegd aan de\n"
 "   serverlijst.\n"
 "\n"
 "De magnet-link moet de eD2k hash en bestandsgrootte bevatten.\n"
@@ -3997,7 +4032,8 @@ msgstr "Toon wachtrij/lijsten."
 
 #: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Toont upload/download wachtrij, server lijst of gedeelde bestanden lijst.\n"
+msgstr ""
+"Toont upload/download wachtrij, server lijst of gedeelde bestanden lijst.\n"
 
 #: src/TextClient.cpp:939
 msgid "Show upload queue."
@@ -4313,7 +4349,8 @@ msgstr ""
 "(onderliggende mappen worden meegenomen)"
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 "Wilt u dat de bron bestanden van succesvol ge?mporteerde bestanden "
 "verwijderd worden?"
@@ -4499,8 +4536,11 @@ msgid "Commit"
 msgstr "Uitvoeren"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the eD2k link in the text control to your download queue."
-msgstr "Klik hier om de eD2k link in de text control toe te voegen aan uw download wachtrij."
+msgid ""
+"Click here to add the eD2k link in the text control to your download queue."
+msgstr ""
+"Klik hier om de eD2k link in de text control toe te voegen aan uw download "
+"wachtrij."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4796,7 +4836,8 @@ msgstr "Ok"
 
 #: src/muuli_wdr.cpp:879
 msgid "Comment/Rate file (Text will be visible to all users)"
-msgstr "Geef bestand commentaar/waardering (Tekst zichtbaar voor alle gebruikers)"
+msgstr ""
+"Geef bestand commentaar/waardering (Tekst zichtbaar voor alle gebruikers)"
 
 #: src/muuli_wdr.cpp:893
 msgid ""
@@ -5186,7 +5227,9 @@ msgstr "Uitgebreide client UDP Poort:"
 
 #: src/muuli_wdr.cpp:1840
 msgid "This UDP port is used for extended ed2k requests and Kad network"
-msgstr "Deze UDP poort wordt gebruikt voor uitgebreide ed2k aanvragen en het Kad netwerk"
+msgstr ""
+"Deze UDP poort wordt gebruikt voor uitgebreide ed2k aanvragen en het Kad "
+"netwerk"
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5364,7 +5407,8 @@ msgstr "Wijst schijfruimte toe voor nieuwe bestanden"
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr "Wijst schijfruimte toe voor nieuwe bestanden, beperkt hierdoor fragmentatie"
+msgstr ""
+"Wijst schijfruimte toe voor nieuwe bestanden, beperkt hierdoor fragmentatie"
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming"
@@ -5891,16 +5935,20 @@ msgid "Filter clients"
 msgstr "Filter clients"
 
 #: src/muuli_wdr.cpp:3238
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Schakel filteren van de client IPs in het bestand ~/.aMule/ipfilter.dat in."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Schakel filteren van de client IPs in het bestand ~/.aMule/ipfilter.dat in."
 
 #: src/muuli_wdr.cpp:3241
 msgid "Filter servers"
 msgstr "Filter servers"
 
 #: src/muuli_wdr.cpp:3243
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Schakel filteren van de server IPs in het bestand ~/.aMule/ipfilter.dat in."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Schakel filteren van de server IPs in het bestand ~/.aMule/ipfilter.dat in."
 
 #: src/muuli_wdr.cpp:3250
 msgid "Reload List"
@@ -5986,14 +6034,16 @@ msgstr "Update Frequentie (Seconden):"
 
 #: src/muuli_wdr.cpp:3343
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr "Verander de frequentie (in seconden) van de Online Handtekening updates."
+msgstr ""
+"Verander de frequentie (in seconden) van de Online Handtekening updates."
 
 #: src/muuli_wdr.cpp:3351
 msgid "Online Signature Directory:"
 msgstr "Online Handtekening Directory:"
 
 #: src/muuli_wdr.cpp:3358
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "Klik hier om de directory te selecteren die de Online Handtekening bestanden "
 "bevat."
@@ -6207,7 +6257,8 @@ msgid "You must specify a path for the category!"
 msgstr "U moet een pad opgeven voor de categorie!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "Kon binnenkomende dir niet aanmaken voor categorie. Geef a.u.b. een geldig "
 "pad op!"
@@ -6598,7 +6649,8 @@ msgstr "%u (QR: %u)"
 
 #: src/SearchDlg.cpp:527
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr "Min grootte moet kleiner zijn dan max grootte. Max grootte wordt genegeerd."
+msgstr ""
+"Min grootte moet kleiner zijn dan max grootte. Max grootte wordt genegeerd."
 
 #: src/SearchDlg.cpp:528 src/SearchDlg.cpp:587
 msgid "Search warning"
@@ -6818,7 +6870,8 @@ msgstr "Server niet toegevoegd: Het IP van [%s:%d] is gefilterd of ongeldig."
 #: src/ServerList.cpp:227
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr "Server niet toegevoegd: Server met IP:Poort [%s:%d] al gevonden in lijst."
+msgstr ""
+"Server niet toegevoegd: Server met IP:Poort [%s:%d] al gevonden in lijst."
 
 #: src/ServerList.cpp:246
 #, c-format
@@ -6855,7 +6908,9 @@ msgstr "Kon serverlijst niet downloaden van %s"
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
-msgstr "Geen serverlijstadres gevonden in 'addresses.dat'. Plaats een geldig serverlijstadres in dit bestand om uw serverlijst automatisch te updaten"
+msgstr ""
+"Geen serverlijstadres gevonden in 'addresses.dat'. Plaats een geldig "
+"serverlijstadres in dit bestand om uw serverlijst automatisch te updaten"
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6865,7 +6920,8 @@ msgstr "Begin downloaden serverlijst van %s"
 #: src/ServerList.cpp:839
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr "WAARSCHUWING: ongeldige URL opgegeven voor het auto-updaten van servers: %s"
+msgstr ""
+"WAARSCHUWING: ongeldige URL opgegeven voor het auto-updaten van servers: %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6914,7 +6970,10 @@ msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
-msgstr "U heeft ingesteld om de webserver te starten bij het opstarten, maar amuleweb kan niet gestart worden. Installeer a.u.b. het pakket met de aMule webserver, of compileer aMule met --enable-webserver en draai make install."
+msgstr ""
+"U heeft ingesteld om de webserver te starten bij het opstarten, maar "
+"amuleweb kan niet gestart worden. Installeer a.u.b. het pakket met de aMule "
+"webserver, of compileer aMule met --enable-webserver en draai make install."
 
 #: src/amule.cpp:938
 #, c-format
@@ -6973,7 +7032,8 @@ msgstr "we geven geen garantie dat het niks sloopt, uw huis verbrandt,\n"
 
 #: src/amule.cpp:1311
 msgid "or kill your dog. But it *should* be safe to use anyway.\n"
-msgstr "of uw hond doodt. Maar het *zou* veilig moeten zijn om het te gebruiken.\n"
+msgstr ""
+"of uw hond doodt. Maar het *zou* veilig moeten zijn om het te gebruiken.\n"
 
 #: src/amule.cpp:1315
 msgid ""
@@ -7165,4 +7225,3 @@ msgstr "Kon vriendenlijst-bestand 'emfriends.met' niet lezen!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Kon niet schrijven naar vriendenlijst-bestand 'emfriends.met'!"
-

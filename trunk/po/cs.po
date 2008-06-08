@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 03:30+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 20:20+0100\n"
 "Last-Translator: David Watzke <david@watzke.cz>\n"
 "Language-Team: cs <cs@li.org>\n"
@@ -31,20 +31,20 @@ msgid "Connection failure"
 msgstr "Chyba při připojování"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
-msgid "EC Connection Failed. Empty reply."
-msgstr "Připojování selhalo. Nulová odpověď."
+msgid "EC connection failed. Empty reply."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
-msgid "ExternalConn: Access denied because: "
-msgstr "Přístup odepřen, protože: "
+msgid "External Connection: Access denied because: "
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
-msgid "ExternalConn: Access denied"
-msgstr "Přístup odepřen"
+msgid "External Connection: Access denied"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
-msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "Špatná odpověď od serveru. Spojení uzavřeno."
+msgid "External Connection: Bad reply from server. Connection closed."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -288,7 +288,7 @@ msgid "The name of the file without path component."
 msgstr ""
 
 #: src/UserEvents.h:71
-msgid "The ed2k hash of the file."
+msgid "The eD2k hash of the file."
 msgstr ""
 
 #: src/UserEvents.h:75
@@ -373,8 +373,8 @@ msgstr "Kompletní zdroje"
 msgid "Directory Path"
 msgstr "Cesta"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
-#: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
+#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1090
+#: src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "Sdílené soubory"
 
@@ -434,30 +434,28 @@ msgid "Copy magnet &URI to clipboard"
 msgstr "Zkopírovat magnet URI do schránky"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
-msgid "Copy ED2k &link to clipboard"
-msgstr "Zkopírovat eD2k do &schránky"
+msgid "Copy eD2k &link to clipboard"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:163
-msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
+msgid "Copy eD2k link to clipboard (&Source)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:164
-#, fuzzy
-msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
+msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:165
-msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr "Zkopírovat ED2K odkaz do schránky (&hostname)"
+msgid "Copy eD2k link to clipboard (&Hostname)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:166
-#, fuzzy
-msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Zkopírovat ED2K odkaz do s&chránky (hostname)"
+msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:167
-msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr "Zkopírovat ED2K odkaz do schránky (AICH info)"
+msgid "Copy eD2k link to clipboard (&AICH info)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -474,10 +472,10 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "K vytvoření platného odkazu potřebujete HighID"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:673
-msgid "Warning"
-msgstr "Varování"
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/KadDlg.cpp:173 src/amule.cpp:673
+msgid "WARNING"
+msgstr "VAROVÁNÍ"
 
 #: src/SharedFilesCtrl.cpp:451
 #, c-format
@@ -529,15 +527,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
-msgid "Error: Could not listen to TCP port."
-msgstr "Chyba: Nelze naslouchat na TCP portu."
+msgid "ERROR: Could not listen to TCP port."
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:304
-msgid "Error: can not accept web client connection\n"
+msgid "ERROR: can not accept web client connection\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:374
@@ -610,11 +608,11 @@ msgid "Loads template <str>"
 msgstr "Načte šablonu <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
-msgid "Webserver HTTP port"
-msgstr "HTTP port webserveru"
+msgid "Web server HTTP port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:491
-msgid "Use UPnP port forwarding on webserver port"
+msgid "Use UPnP port forwarding on web server port"
 msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:495
@@ -626,12 +624,12 @@ msgid "Use gzip compression"
 msgstr "Použít gzip kompresi"
 
 #: src/webserver/src/WebInterface.cpp:507
-msgid "Full access password for webserver"
-msgstr "Přístupové heslo k webserveru"
+msgid "Full access password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:511
-msgid "Guest password for webserver"
-msgstr "Heslo pro hosta na webserveru"
+msgid "Guest password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -642,8 +640,8 @@ msgid "Deny guest access"
 msgstr "Zakázat přístup hostům"
 
 #: src/webserver/src/WebInterface.cpp:523
-msgid "Load/save webserver settings from/to remote aMule"
-msgstr "Načítat/ukládat nastavení webserveru z/do vzdálené aMule"
+msgid "Load/save web server settings from/to remote aMule"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1053,7 +1051,7 @@ msgid "LowID"
 msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "Nepřipojen"
 
@@ -1112,12 +1110,12 @@ msgid "Add Optional URLs for this file"
 msgstr "Přidat volitelné URL pro tento soubor"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
-msgid "Enter here the file you want to compute the Ed2k link"
-msgstr "Zadejte soubor, kterému chcete vygenerovat Ed2k odkaz"
+msgid "Enter here the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
-"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
 
@@ -1152,12 +1150,12 @@ msgid "MD4 File Hash"
 msgstr "MD4 hash souboru"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
-msgid "Ed2k File Hash"
-msgstr "ED2K hash souboru"
+msgid "eD2k File Hash"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
-msgid "Ed2k link"
-msgstr "ED2K odkaz"
+msgid "eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1176,16 +1174,16 @@ msgid "Exit"
 msgstr "Ukončit"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
-msgid "Open a file to compute its ed2k link"
-msgstr "Otevřít soubor pro výpočet jeho ed2k odkazu"
+msgid "Open a file to compute its eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
-msgid "Copy computed ed2k link to clipboard"
-msgstr "Zkopírovat vygenerovaný ed2k odkaz do schránky"
+msgid "Copy computed eD2k link to clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
-msgid "Save computed ed2k link to file"
-msgstr "Uložit vygenerovaný ed2k odkaz do souboru"
+msgid "Save computed eD2k link to file"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1193,7 +1191,7 @@ msgid "About aLinkCreator"
 msgstr "O aLinkCreatoru"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
-msgid "Select the file you want to compute the ed2k link"
+msgid "Select the file you want to compute the eD2k link"
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
@@ -1201,7 +1199,7 @@ msgid "Nothing to copy for now !"
 msgstr "Zatím není co zkopírovat!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
-msgid "Select the file to your computed ed2k link"
+msgid "Select the file to your computed eD2k link"
 msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
@@ -1219,7 +1217,7 @@ msgstr "Zatím není co ukládat!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:466
 msgid ""
-"aLinkCreator, the aMule ed2k link creator\n"
+"aLinkCreator, the aMule eD2k link creator\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1228,13 +1226,6 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, vytvářeč ED2K odkazů\n"
-"\n"
-"(c) 2004 ThePolish\n"
-"Obrázky z http://www.everaldo.com/, http://www.icomania.com/\n"
-"a http://jimmac.musichall.cz/ikony.php3\n"
-"\n"
-"Distribuován pod GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1274,8 +1265,8 @@ msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> Neexistující soubor !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
-msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr "aLinkCreator, vytvářeč ED2K odkazů"
+msgid "aLinkCreator, the aMule eD2k link creator"
+msgstr ""
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1677,13 +1668,12 @@ msgid "Remove all servers"
 msgstr "Odstranit všechny servery"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
-msgid "Copy ED2k link to clipboard"
-msgstr "Zkopírovat ED2k odkaz do schránky"
+msgid "Copy eD2k link to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:449
-#, fuzzy
-msgid "Copy ED2k links to clipboard"
-msgstr "Zkopírovat ED2k odkaz do schránky"
+msgid "Copy eD2k links to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1725,8 +1715,8 @@ msgstr ""
 "verze."
 
 #: src/amuleDlg.cpp:246
-msgid "Fatal Error: Failed to create Timer"
-msgstr "Kritická chyba: Selhalo vytváření časovače"
+msgid "FATAL ERROR: Failed to create Timer"
+msgstr ""
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1793,14 +1783,12 @@ msgid "Status text"
 msgstr ""
 
 #: src/amuleDlg.cpp:684
-#, fuzzy
-msgid "ED2K: Connecting"
-msgstr "Připojuji"
+msgid "eD2k: Connecting"
+msgstr ""
 
 #: src/amuleDlg.cpp:688
-#, fuzzy
-msgid "ED2K: Disconnected"
-msgstr "Odpojeno"
+msgid "eD2k: Disconnected"
+msgstr ""
 
 #: src/amuleDlg.cpp:694
 #, fuzzy
@@ -1884,47 +1872,51 @@ msgid "Skin directory '%s' does not exist"
 msgstr "Adresář se skiny '%s' neexistuje"
 
 #: src/amuleDlg.cpp:1212
-#, fuzzy, c-format
-msgid "Warning: Unable to open skin file '%s' for read"
-msgstr "Nemohu otevřít soubor se skinem %s pro čtení"
+#, c-format
+msgid "WARNING: Unable to open skin file '%s' for read"
+msgstr ""
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
 msgid "Networks"
 msgstr "Sítě"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3819
-msgid "Networks Window"
-msgstr "Okno sítí"
+#: src/amuleDlg.cpp:1314
+msgid "Networks window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
 msgstr "Vyhledávání"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3820
-msgid "Searches Window"
-msgstr "Vyhledávací okno"
+#: src/amuleDlg.cpp:1318
+msgid "Searches window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
 msgstr "Přenosy"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3821
-msgid "Files Transfers Window"
-msgstr "Okno s přenosy"
+#: src/amuleDlg.cpp:1322
+msgid "Files transfers window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3823
-msgid "Shared Files Window"
-msgstr "Okno se sdílenými soubory"
+#: src/amuleDlg.cpp:1324
+msgid "Shared files"
+msgstr ""
+
+#: src/amuleDlg.cpp:1326
+msgid "Shared files window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
 msgid "Messages"
 msgstr "Zprávy"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3824
-msgid "Messages Window"
-msgstr "Okno zpráv"
+#: src/amuleDlg.cpp:1330
+msgid "Messages window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1932,13 +1924,13 @@ msgstr "Okno zpráv"
 msgid "Statistics"
 msgstr "Statistiky"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3825
-msgid "Statistics Graph Window"
-msgstr "Okno se statistikami"
+#: src/amuleDlg.cpp:1334
+msgid "Statistics graph window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3827
-msgid "Preferences Settings Window"
-msgstr "Okno s nastavením"
+#: src/amuleDlg.cpp:1339
+msgid "Preferences settings window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1957,7 +1949,7 @@ msgid "About/Help"
 msgstr "O programu/Nápověda"
 
 #: src/amuleDlg.cpp:1484
-msgid "ed2k network"
+msgid "eD2k network"
 msgstr ""
 
 #: src/amuleDlg.cpp:1488
@@ -2039,11 +2031,9 @@ msgstr "- UDP port změněn.\n"
 
 #: src/PrefsUnifiedDlg.cpp:531
 msgid ""
-"Your Auto-update servers list is in blank.\n"
-"'Auto-update serverlist at startup' will be disabled."
+"Your Auto-update server list is empty.\n"
+"'Auto-update server list at startup will be disabled."
 msgstr ""
-"Váš seznam serverů pro automatickou obnovu je prázdný.\n"
-"Aktualizace seznamu serverů po spuštění bude zakázána."
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2065,11 +2055,9 @@ msgstr "Up: 0.0 | Down: 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:622
 msgid ""
-"Both ED2K and Kad network are disabled.\n"
+"Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"Sítě ED2K i Kademlia jsou zakázány.\n"
-"Nebudete se moci připojit, dokud nepovolíte alespoň jednu z nich."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2088,10 +2076,6 @@ msgstr ""
 "\n"
 "Nyní MUSÍTE restartovat aMule.\n"
 "Pokud to neuděláte, tak si pak nestěžujte, když se přihodí něco špatného.\n"
-
-#: src/PrefsUnifiedDlg.cpp:635
-msgid "WARNING"
-msgstr "VAROVÁNÍ"
 
 #: src/PrefsUnifiedDlg.cpp:713
 msgid ""
@@ -2131,8 +2115,8 @@ msgid "Executable%s"
 msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:928
-msgid "Edit Serverlist"
-msgstr "Upravit seznam serverů"
+msgid "Edit server list"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2239,8 +2223,8 @@ msgid "New external connection accepted"
 msgstr "Nové externí připojení přijato"
 
 #: src/ExternalConn.cpp:221
-msgid "Error: couldn't accept a new external connection"
-msgstr "Chyba: nemohu přijmout nové externí připojení"
+msgid "ERROR: couldn't accept a new external connection"
+msgstr ""
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2315,8 +2299,8 @@ msgid "need to define server to be removed"
 msgstr ""
 
 #: src/ExternalConn.cpp:708
-msgid "ED2K is disabled in preferences."
-msgstr "ED2K je zakázaný v nastavení."
+msgid "eD2k is disabled in preferences."
+msgstr ""
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2339,7 +2323,7 @@ msgid "Your client is not configured for this detail level."
 msgstr "Vás klient není nakonfigurován pro tuto úroveň detailů."
 
 #: src/ExternalConn.cpp:1058
-msgid "ExternalConn: shutdown requested"
+msgid "External Connection: shutdown requested"
 msgstr ""
 
 #: src/ExternalConn.cpp:1070
@@ -2368,12 +2352,12 @@ msgid "Unable to rename file."
 msgstr "Nelze přejmenovat soubor."
 
 #: src/ExternalConn.cpp:1406
-msgid "Already connected to ED2K."
-msgstr "Již jste připojen k ED2K."
+msgid "Already connected to eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1409
-msgid "Connecting to ED2K..."
-msgstr "Připojuji se k ED2K..."
+msgid "Connecting to eD2k..."
+msgstr ""
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2388,8 +2372,8 @@ msgid "All networks are disabled."
 msgstr "Všechny sítě jsou zakázány."
 
 #: src/ExternalConn.cpp:1433
-msgid "Disconnected from ED2K."
-msgstr "Odpojen od ED2K."
+msgid "Disconnected from eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2397,7 +2381,7 @@ msgstr "Odpojen od Kademlia."
 
 #: src/ExternalConn.cpp:1445
 #, c-format
-msgid "ExternalConn: invalid opcode received: %#x"
+msgid "External Connection: invalid opcode received: %#x"
 msgstr ""
 
 #: src/ExternalConn.cpp:1448
@@ -2428,8 +2412,8 @@ msgid "Server not added: Invalid server-port specified."
 msgstr ""
 
 #: src/ServerWnd.cpp:162
-msgid "ED2K Status:"
-msgstr "Stav ED2K:"
+msgid "eD2k Status:"
+msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2595,23 +2579,23 @@ msgstr "UL:DL poměr sezení (celkem): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
-msgid "Average Downloadrate (Session): %s"
-msgstr "Průměrná rychlost stahování (sezení): %s"
+msgid "Average download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:690
 #, c-format
-msgid "Average Uploadrate (Session): %s"
-msgstr "Průměrná rychlost odesílání (sezení): %s"
+msgid "Average upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:691
 #, c-format
-msgid "Max Downloadrate (Session): %s"
-msgstr "Maximální rychl. stahování (sezení): %s"
+msgid "Max download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:692
 #, c-format
-msgid "Max Uploadrate (Session): %s"
-msgstr "Maximální rychl. odesílání (sezení): %s"
+msgid "Max upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2727,8 +2711,8 @@ msgstr "Celková velikost sdílených souborů: %s"
 
 #: src/Statistics.cpp:731
 #, c-format
-msgid "Average filesize: %s"
-msgstr "Průměrná velikost souborů: %s"
+msgid "Average file size: %s"
+msgstr ""
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2759,8 +2743,8 @@ msgid "Kad search can't be done if Kad is not running"
 msgstr "Nemohu vyhledávat přes Kad, když není spuštěn"
 
 #: src/SearchList.cpp:294
-msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "Nemohu vyhledávat přes ED2K, když neběží"
+msgid "eD2k search can't be done if eD2k is not connected"
+msgstr ""
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2872,12 +2856,12 @@ msgid "Continue?"
 msgstr "Pokračovat?"
 
 #: src/Logger.cpp:270
-msgid "Error: "
-msgstr "Chyba: "
+msgid "ERROR: "
+msgstr ""
 
 #: src/Logger.cpp:270
-msgid "Warning: "
-msgstr "Varování: "
+msgid "WARNING: "
+msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2924,7 +2908,7 @@ msgid "Download in category"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:582
-msgid "Search related files (ED2k, local server)"
+msgid "Search related files (eD2k, local server)"
 msgstr ""
 
 #: src/SearchListCtrl.cpp:587
@@ -2942,12 +2926,12 @@ msgstr "Připojení selhalo"
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
-msgid "Error"
-msgstr "Chyba"
+msgid "ERROR"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
-"WARNING: You can't add yourself as a source for a ed2k link while being "
+"WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
 
@@ -3124,14 +3108,10 @@ msgid "Downloads (%i)"
 msgstr "Stahování (%i)"
 
 #: src/DownloadListCtrl.cpp:2254
-#, fuzzy
 msgid ""
-"Please set your preferred video player on preferences.\n"
-"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
-"on every preview"
+"To prevent this warning to show up in every preview,\n"
+"set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Zvolte si prosím v nastavení preferovaný video přehrávač.\n"
-"Mezitím se aMule pokusí použít mplayer a vždy zobrazí toto varování."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3153,23 +3133,23 @@ msgstr "Zkouší se načíst záloha .met souboru z %s"
 
 #: src/PartFile.cpp:334
 #, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "Chyba: Nelze otevřít soubor part.met: %s ==> %s"
+msgid "ERROR: Failed to open part.met file: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:340
 #, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "Chyba: Soubor part.met má nulovou velikost: %s ==> %s"
+msgid "ERROR: part.met file is 0 size: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:351
 #, c-format
-msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "Chyba: Neplatná verze souboru part.met: %s ==> %s"
+msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
-msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "Chyba: %s (%s) je porušený (špatný \"tagcount\"), nelze načíst soubor."
+msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgstr ""
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3195,8 +3175,8 @@ msgstr "Nelze otevřít %s (%s)"
 
 #: src/PartFile.cpp:708
 #, c-format
-msgid "Warning: %s might be corrupted (%i)"
-msgstr "Varování: %s může být porušen (%i)"
+msgid "WARNING: %s might be corrupted (%i)"
+msgstr ""
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3263,8 +3243,8 @@ msgstr "Dokončeno přehashování %s"
 
 #: src/PartFile.cpp:2242
 #, c-format
-msgid "Unexpected file error while completing %s. File paused"
-msgstr "Neočekávaná chyba souboru při dokončování %s. Pozastaveno"
+msgid "Unexpected error while completing %s. File paused"
+msgstr ""
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3278,13 +3258,13 @@ msgstr "Mazání souboru: %s"
 
 #: src/PartFile.cpp:2386
 #, c-format
-msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
-"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
 
@@ -3308,7 +3288,7 @@ msgid "Allocating"
 msgstr ""
 
 #: src/PartFile.cpp:3861
-msgid "Insufficient Diskspace"
+msgid "Insufficient disk space"
 msgstr ""
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
@@ -3325,12 +3305,12 @@ msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
 
 #: src/KnownFileList.cpp:79
-msgid "Warning: known.met cannot be opened."
-msgstr "Varování: soubor known.met nelze otevřít."
+msgid "WARNING: known.met cannot be opened."
+msgstr ""
 
 #: src/KnownFileList.cpp:86
-msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr "Varování: Soubor known.met je porušen, obsahuje neplatnou hlavičku."
+msgid "WARNING: Knownfile list corrupted, contains invalid header."
+msgstr ""
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3358,8 +3338,8 @@ msgstr[1] "Nalezeno %i známých a %i neznámých sdílených souborů"
 
 #: src/SharedFileList.cpp:367
 #, c-format
-msgid "ERROR! Attempted to share %s"
-msgstr "CHYBA! Pokus o sdílení %s"
+msgid "ERROR: Attempted to share %s"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3396,12 +3376,12 @@ msgid "Failed to connect to all servers listed. Making another pass."
 msgstr "Selhalo připojení ke všem vybraným serverům. Zkouším znovu."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
-msgid "ED2K network disabled on preferences, not connecting."
-msgstr "Síť ED2K je zakázána v nastavení, nepřipojuji se."
+msgid "eD2k network disabled on preferences, not connecting."
+msgstr ""
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
-msgid "No valid servers to connect in serverlist found"
-msgstr "V seznamu nejsou žádné platné servery"
+msgid "No valid servers to which to connect found in server list"
+msgstr ""
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3451,7 +3431,7 @@ msgid "Connecting to %s (%s:%i) failed."
 msgstr "Připojování k %s (%s:%i) selhalo."
 
 #: src/ServerConnect.cpp:450
-msgid "Error: Socket invalid at timeoutcheck"
+msgid "ERROR: Socket invalid at timeout check"
 msgstr ""
 
 #: src/ServerConnect.cpp:460
@@ -3461,7 +3441,7 @@ msgstr "Pokusu o připojení k %s (%s:%i) vypršel čas."
 
 #: src/DownloadQueue.cpp:160
 msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
 
@@ -3506,7 +3486,7 @@ msgstr "Soubor %s se již pokoušíte stáhnout"
 
 #: src/DownloadQueue.cpp:1309
 #, c-format
-msgid "Cannot convert magnet link to ed2k: %s"
+msgid "Cannot convert magnet link to eD2k: %s"
 msgstr ""
 
 #: src/DownloadQueue.cpp:1317
@@ -3516,8 +3496,8 @@ msgstr ""
 
 #: src/DownloadQueue.cpp:1338
 #, c-format
-msgid "Invalid ed2k link! Error: %s"
-msgstr "Neplatný ed2k odkaz! Chyba: %s"
+msgid "Invalid eD2k link! ERROR: %s"
+msgstr ""
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3589,12 +3569,12 @@ msgstr ""
 
 #: src/TextClient.cpp:671
 #, c-format
-msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "Omezení šířky pásma: Od: %u kB/s, St: %u kB/s.\n"
+msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr ""
 
-#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
-msgid "ED2K"
-msgstr "ED2K"
+#: src/TextClient.cpp:689
+msgid "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3613,7 +3593,8 @@ msgstr "s HighID"
 msgid "Now connecting"
 msgstr "Připojování"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
+#: src/MuleTrayIcon.cpp:397
 msgid "Not connected"
 msgstr "Nepřipojen"
 
@@ -3692,12 +3673,12 @@ msgid ""
 msgstr ""
 
 #: src/TextClient.cpp:848
-msgid "Shutdown aMule."
-msgstr "Ukončit aMule."
+msgid "Shut down aMule."
+msgstr ""
 
 #: src/TextClient.cpp:849
 msgid ""
-"Shutdown the remote running core (amule/amuled).\n"
+"Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
@@ -3728,8 +3709,8 @@ msgid ""
 msgstr ""
 
 #: src/TextClient.cpp:857
-msgid "Connect to ED2K only."
-msgstr "Připojit se pouze k ED2K."
+msgid "Connect to eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3744,27 +3725,27 @@ msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr ""
 
 #: src/TextClient.cpp:862
-msgid "Disconnect from ED2K only."
-msgstr "Odpojit se pouze od ED2K."
+msgid "Disconnect from eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Odpojit se pouze od Kademlia."
 
 #: src/TextClient.cpp:865
-msgid "Adds an ed2k or magnet link to core."
-msgstr "Přidá ed2k nebo magnet URI do jádra."
+msgid "Adds an eD2k or magnet link to core."
+msgstr ""
 
 #: src/TextClient.cpp:866
 msgid ""
-"The ed2k link to be added can be:\n"
+"The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 "*) or a serverlist link, in which case all servers in the list will be added "
 "to the\n"
 "   server list.\n"
 "\n"
-"The magnet link must contain the ed2k hash and file length.\n"
+"The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
 
 #: src/TextClient.cpp:868
@@ -3981,7 +3962,7 @@ msgstr "Vyčistit log."
 
 #: src/TextClient.cpp:952
 #, c-format
-msgid "Deprecated command, now '%s'."
+msgid "Deprecated command, use '%s' instead."
 msgstr ""
 
 #: src/TextClient.cpp:953
@@ -3997,13 +3978,13 @@ msgstr "theApp->serverlist->GetServerByAddress() vrátila NULL"
 
 #: src/ServerSocket.cpp:259
 #, c-format
-msgid "Error: %s (%s) - %s"
-msgstr "Chyba: %s (%s) - %s"
+msgid "ERROR: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:274
 #, c-format
-msgid "Warning: %s (%s) - %s"
-msgstr "Varování: %s (%s) - %s"
+msgid "WARNING: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4222,20 +4203,20 @@ msgid "In progress"
 msgstr "Probíhá"
 
 #: src/PartFileConvert.cpp:613
-msgid "Error: Out of diskspace"
-msgstr "Error: Došlo místo na disku"
+msgid "ERROR: Out of diskspace"
+msgstr ""
 
 #: src/PartFileConvert.cpp:614
-msgid "Error: Partmet not found"
-msgstr "Chyba: part.met soubor nenalezen"
+msgid "ERROR: Partmet not found"
+msgstr ""
 
 #: src/PartFileConvert.cpp:615
-msgid "Error: IO error!"
-msgstr "Chyba: I/O chyba!"
+msgid "ERROR: IO error!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:616
-msgid "Error: Failed!"
-msgstr "Chyba: Selhání!"
+msgid "ERROR: Failed!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4449,8 +4430,8 @@ msgid "%.2f%% done"
 msgstr "%.2f%% dokončeno"
 
 #: src/muuli_wdr.cpp:69
-msgid "ED2K Link: "
-msgstr "ED2K odkaz: "
+msgid "eD2k Link: "
+msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4458,7 +4439,7 @@ msgstr "Přidat"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
+"Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
 
 #: src/muuli_wdr.cpp:85
@@ -4588,8 +4569,8 @@ msgid "More"
 msgstr "Více"
 
 #: src/muuli_wdr.cpp:352
-msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr "Vyhledává více výsledků na ED2K. Zatím nepodporováno na Kadu."
+msgid "Searches for more results on eD2k. Not supported for Kad yet."
+msgstr ""
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -4614,10 +4595,6 @@ msgstr ""
 #: src/muuli_wdr.cpp:469
 msgid "Clients on queue :"
 msgstr "Klienti ve frontě"
-
-#: src/muuli_wdr.cpp:472
-msgid "0"
-msgstr "0"
 
 #: src/muuli_wdr.cpp:536
 msgid "Send"
@@ -5094,8 +5071,8 @@ msgstr ""
 "možné"
 
 #: src/muuli_wdr.cpp:1743
-msgid "Bandwith Limits"
-msgstr "Limity šířky pásma"
+msgid "Bandwith limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5122,16 +5099,16 @@ msgid "Standard client TCP Port:"
 msgstr "Standardní TCP port klienta:"
 
 #: src/muuli_wdr.cpp:1831
-msgid "This is the standard ED2K port and cannot be disabled."
-msgstr "Toto je standardní port ED2K a nelze jej zakázat."
+msgid "This is the standard eD2k port and cannot be disabled."
+msgstr ""
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
 msgstr "Rozšířující UDP port klienta:"
 
 #: src/muuli_wdr.cpp:1840
-msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr "Tento UDP port je použit pro rozšiřující ED2K požadavky a pro síť Kad"
+msgid "This UDP port is used for extended ed2k requests and Kad network"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5150,16 +5127,20 @@ msgid "Max Sources per File"
 msgstr "Maximum zdrojů na soubor"
 
 #: src/muuli_wdr.cpp:1873
-msgid "Hard Limit"
-msgstr "Tvrdý limit"
+msgid "Hard limit"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1883
-msgid "Connection Limits"
-msgstr "Limity připojení"
+msgid "Connection limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
 msgstr "Maximum připojení"
+
+#: src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
+msgid "ED2K"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1919
 msgid "Kademlia"
@@ -5202,19 +5183,19 @@ msgid "retries"
 msgstr "pokusech"
 
 #: src/muuli_wdr.cpp:2001
-msgid "Auto-update serverlist at startup"
-msgstr "Po spuštění aktualizovat seznam serverů"
+msgid "Auto-update server list at startup"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
 msgstr "Seznam"
 
 #: src/muuli_wdr.cpp:2009
-msgid "Update serverlist when connecting to a server"
+msgid "Update server list when connecting to a server"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2012
-msgid "Update serverlist when a client connect"
+msgid "Update server list when a client connects"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2015
@@ -5278,20 +5259,20 @@ msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2105
-msgid "Disk Space"
-msgstr "Místo na disku"
+msgid "Disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2108
-msgid "Check Disk Space"
-msgstr "Zkontrolovat místo na disku"
+msgid "Check disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2109
-msgid "Select this if you want aMule to check your Disk Space"
-msgstr "Zvolte, pokud chcete, aby aMule zkontrolovala místo na disku"
+msgid "Select this if you want aMule to check your disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2116
-msgid "Min Disk Space:"
-msgstr "Minimální místo na disku"
+msgid "Min disk space:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5308,16 +5289,16 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2158
-msgid "Incoming Directory :"
-msgstr "Příchozí adresář:"
+msgid "Incoming"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2169
-msgid "Temporary Directory :"
-msgstr "Dočasný adresář:"
+msgid "Temporary"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2180
-msgid "Shared Directories"
-msgstr "Sdílené adresáře"
+msgid "Shared"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5332,8 +5313,8 @@ msgid "Video Player"
 msgstr "Video přehrávač"
 
 #: src/muuli_wdr.cpp:2209
-msgid "Create Backup to preview"
-msgstr "Vytvořit zálohu pro náhled"
+msgid "Create Backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5516,8 +5497,8 @@ msgid "Misc Gui Tweaks"
 msgstr "Různé vychytávky GUI"
 
 #: src/muuli_wdr.cpp:2479
-msgid "Show Fast ED2K Links Handler"
-msgstr "Zobrazit rychlý obsluhovač ED2K odkazů"
+msgid "Show Fast eD2k Links Handler"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5540,24 +5521,24 @@ msgid "Remote Control"
 msgstr "Ovládání na dálku"
 
 #: src/muuli_wdr.cpp:2523
-msgid "Webserver Parameters"
-msgstr "Parametry webserveru"
+msgid "Web server parameters"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
 msgstr "Spustit amuleweb po spuštění"
 
 #: src/muuli_wdr.cpp:2531
-msgid "Webserver port"
-msgstr "Port webserveru"
+msgid "Web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2539
-msgid "Enable UPnP port forwarding on the Webserver port"
+msgid "Enable UPnP port forwarding on the web server port"
 msgstr ""
 
 #: src/muuli_wdr.cpp:2544
-msgid "Webserver UPnP TCP port"
-msgstr "UPnP TCP port webserveru"
+msgid "Web server UPnP TCP port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5670,8 +5651,8 @@ msgid "Click on this button to update the servers list from URL ..."
 msgstr ""
 
 #: src/muuli_wdr.cpp:2899
-msgid "Serverlist"
-msgstr "Seznam serverů"
+msgid "Server list"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5680,8 +5661,8 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2911
-msgid "Manual Server Add : Name"
-msgstr "Ruční přidání serveru : Název"
+msgid "Add server manually: Name"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5699,7 +5680,7 @@ msgstr "Zadejte port serveru."
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr ""
 
-#: src/muuli_wdr.cpp:2979 src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:2979
 msgid "ED2K Info"
 msgstr "ED2K Info"
 
@@ -5753,6 +5734,10 @@ msgstr ""
 msgid "Disconnect Kad"
 msgstr "Odpojit Kad"
 
+#: src/muuli_wdr.cpp:3163
+msgid "eD2k Info"
+msgstr ""
+
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
 msgstr ""
@@ -5796,8 +5781,8 @@ msgid "Everybody"
 msgstr "Všichni"
 
 #: src/muuli_wdr.cpp:3221
-msgid "No One"
-msgstr "Nikdo"
+msgid "No one"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6074,6 +6059,34 @@ msgstr "Typy událostí"
 #: src/muuli_wdr.cpp:3817
 msgid "Connect to any server and/or Kad"
 msgstr "Připojit k nějakému serveru a/nebo Kadu"
+
+#: src/muuli_wdr.cpp:3819
+msgid "Networks Window"
+msgstr "Okno sítí"
+
+#: src/muuli_wdr.cpp:3820
+msgid "Searches Window"
+msgstr "Vyhledávací okno"
+
+#: src/muuli_wdr.cpp:3821
+msgid "Files Transfers Window"
+msgstr "Okno s přenosy"
+
+#: src/muuli_wdr.cpp:3823
+msgid "Shared Files Window"
+msgstr "Okno se sdílenými soubory"
+
+#: src/muuli_wdr.cpp:3824
+msgid "Messages Window"
+msgstr "Okno zpráv"
+
+#: src/muuli_wdr.cpp:3825
+msgid "Statistics Graph Window"
+msgstr "Okno se statistikami"
+
+#: src/muuli_wdr.cpp:3827
+msgid "Preferences Settings Window"
+msgstr "Okno s nastavením"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
@@ -6477,8 +6490,8 @@ msgid "aMule Tray Menu"
 msgstr "Tray menu aMule"
 
 #: src/MuleTrayIcon.cpp:336
-msgid "Speed Limits:"
-msgstr "Rychlostní omezení:"
+msgid "Speed limits:"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6500,13 +6513,13 @@ msgstr "DL: %u"
 
 #: src/MuleTrayIcon.cpp:358
 #, c-format
-msgid "Download Speed: %.1f"
-msgstr "Rychlost stahování: %.1f"
+msgid "Download speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
-msgid "Upload Speed: %.1f"
-msgstr "Rychlost odesílání: %.1f"
+msgid "Upload speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6540,21 +6553,21 @@ msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:415
 #, c-format
-msgid "TCP Port: %d"
-msgstr "TCP port: %d"
+msgid "TCP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:417
-msgid "TCP Port: Not Ready"
-msgstr "TCP port: Nepřipraven"
+msgid "TCP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
-msgid "UDP Port: %d"
-msgstr "UDP port: %d"
+msgid "UDP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:428
-msgid "UDP Port: Not Ready"
-msgstr "UDP port: Nepřipraven"
+msgid "UDP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6566,13 +6579,13 @@ msgstr "Online podpis: Zakázán"
 
 #: src/MuleTrayIcon.cpp:453
 #, c-format
-msgid "Shared Files: %d"
-msgstr "Sdílené soubory: %d"
+msgid "Shared files: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
-msgid "Queued Clients: %d"
-msgstr "Klientů ve frontě: %d"
+msgid "Queued clients: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6585,12 +6598,12 @@ msgid "Total UL: %s"
 msgstr "Celkem UL: %s"
 
 #: src/MuleTrayIcon.cpp:484
-msgid "Upload Limit"
-msgstr "Limit odesílání"
+msgid "Upload limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:488
-msgid "Download Limit"
-msgstr "Limit stahování"
+msgid "Download limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6716,8 +6729,8 @@ msgstr "Stahování seznamu serverů z %s selhalo"
 
 #: src/ServerList.cpp:817
 msgid ""
-"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
-"serverlist address into this file in order to auto-update your serverlist"
+"No server list address entry in 'addresses.dat' found. Please paste a valid "
+"server list address into this file in order to auto-update your server list"
 msgstr ""
 
 #: src/ServerList.cpp:830
@@ -6727,9 +6740,8 @@ msgstr ""
 
 #: src/ServerList.cpp:839
 #, c-format
-msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
-"Varování: byla zadána neplatná URL pro automatickou aktualizaci serverů: %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6765,13 +6777,13 @@ msgstr ""
 
 #: src/amule.cpp:844
 #, c-format
-msgid "webserver running on pid %d"
-msgstr "webový server běží s PID %d"
+msgid "web server running on pid %d"
+msgstr ""
 
 #: src/amule.cpp:848
 msgid ""
-"You requested to run webserver from startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule webserver, or compile "
+"You requested to run web server on startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
 
@@ -6966,8 +6978,8 @@ msgid "Connecting to %s"
 msgstr "Připojování k %s"
 
 #: src/amule.cpp:2105
-msgid "Disconnected from ED2K"
-msgstr "Odpojen od ED2K"
+msgid "Disconnected from eD2k"
+msgstr ""
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7000,12 +7012,387 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Síť Kad je zakázána v nastavení, nepřipojuji se."
 
 #: src/FriendList.cpp:120
-msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-msgstr "Nelze otevřít soubor 'emfriends.met' pro čtení!"
+msgid "Failed to open friend list file 'emfriends.met' for reading!"
+msgstr ""
 
 #: src/FriendList.cpp:146
-msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "Nelze otevřít soubor 'emfriends.met' pro zápis!"
+msgid "Failed to open friend list file 'emfriends.met' for writing!"
+msgstr ""
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "Připojování selhalo. Nulová odpověď."
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "Přístup odepřen, protože: "
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "Přístup odepřen"
+
+#~ msgid "ExternalConn: Bad reply from server. Connection closed."
+#~ msgstr "Špatná odpověď od serveru. Spojení uzavřeno."
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "Zkopírovat eD2k do &schránky"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "Zkopírovat ED2K odkaz do schránky (&zdroj)"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "Zkopírovat ED2K odkaz do schránky (&hostname)"
+
+#, fuzzy
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "Zkopírovat ED2K odkaz do s&chránky (hostname)"
+
+#~ msgid "Copy ED2k link to clipboard (&AICH info)"
+#~ msgstr "Zkopírovat ED2K odkaz do schránky (AICH info)"
+
+#~ msgid "Warning"
+#~ msgstr "Varování"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "Chyba: Nelze naslouchat na TCP portu."
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "HTTP port webserveru"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "Přístupové heslo k webserveru"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "Heslo pro hosta na webserveru"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "Načítat/ukládat nastavení webserveru z/do vzdálené aMule"
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "Zadejte soubor, kterému chcete vygenerovat Ed2k odkaz"
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "ED2K hash souboru"
+
+#~ msgid "Ed2k link"
+#~ msgstr "ED2K odkaz"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "Otevřít soubor pro výpočet jeho ed2k odkazu"
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "Zkopírovat vygenerovaný ed2k odkaz do schránky"
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "Uložit vygenerovaný ed2k odkaz do souboru"
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, vytvářeč ED2K odkazů\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish\n"
+#~ "Obrázky z http://www.everaldo.com/, http://www.icomania.com/\n"
+#~ "a http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distribuován pod GPL"
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, vytvářeč ED2K odkazů"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "Zkopírovat ED2k odkaz do schránky"
+
+#, fuzzy
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "Zkopírovat ED2k odkaz do schránky"
+
+#~ msgid "Fatal Error: Failed to create Timer"
+#~ msgstr "Kritická chyba: Selhalo vytváření časovače"
+
+#, fuzzy
+#~ msgid "ED2K: Connecting"
+#~ msgstr "Připojuji"
+
+#, fuzzy
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "Odpojeno"
+
+#, fuzzy
+#~ msgid "Warning: Unable to open skin file '%s' for read"
+#~ msgstr "Nemohu otevřít soubor se skinem %s pro čtení"
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "Váš seznam serverů pro automatickou obnovu je prázdný.\n"
+#~ "Aktualizace seznamu serverů po spuštění bude zakázána."
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "Sítě ED2K i Kademlia jsou zakázány.\n"
+#~ "Nebudete se moci připojit, dokud nepovolíte alespoň jednu z nich."
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "Upravit seznam serverů"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "Chyba: nemohu přijmout nové externí připojení"
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2K je zakázaný v nastavení."
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "Již jste připojen k ED2K."
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "Připojuji se k ED2K..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "Odpojen od ED2K."
+
+#~ msgid "ED2K Status:"
+#~ msgstr "Stav ED2K:"
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "Průměrná rychlost stahování (sezení): %s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "Průměrná rychlost odesílání (sezení): %s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "Maximální rychl. stahování (sezení): %s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "Maximální rychl. odesílání (sezení): %s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "Průměrná velikost souborů: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "Nemohu vyhledávat přes ED2K, když neběží"
+
+#~ msgid "Error: "
+#~ msgstr "Chyba: "
+
+#~ msgid "Warning: "
+#~ msgstr "Varování: "
+
+#~ msgid "Error"
+#~ msgstr "Chyba"
+
+#, fuzzy
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "Zvolte si prosím v nastavení preferovaný video přehrávač.\n"
+#~ "Mezitím se aMule pokusí použít mplayer a vždy zobrazí toto varování."
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "Chyba: Nelze otevřít soubor part.met: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "Chyba: Soubor part.met má nulovou velikost: %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "Chyba: Neplatná verze souboru part.met: %s ==> %s"
+
+#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+#~ msgstr ""
+#~ "Chyba: %s (%s) je porušený (špatný \"tagcount\"), nelze načíst soubor."
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "Varování: %s může být porušen (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr "Neočekávaná chyba souboru při dokončování %s. Pozastaveno"
+
+#~ msgid "Warning: known.met cannot be opened."
+#~ msgstr "Varování: soubor known.met nelze otevřít."
+
+#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
+#~ msgstr "Varování: Soubor known.met je porušen, obsahuje neplatnou hlavičku."
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "CHYBA! Pokus o sdílení %s"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "Síť ED2K je zakázána v nastavení, nepřipojuji se."
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "V seznamu nejsou žádné platné servery"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "Neplatný ed2k odkaz! Chyba: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "Omezení šířky pásma: Od: %u kB/s, St: %u kB/s.\n"
+
+#~ msgid "Shutdown aMule."
+#~ msgstr "Ukončit aMule."
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "Připojit se pouze k ED2K."
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "Odpojit se pouze od ED2K."
+
+#~ msgid "Adds an ed2k or magnet link to core."
+#~ msgstr "Přidá ed2k nebo magnet URI do jádra."
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "Chyba: %s (%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "Varování: %s (%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "Error: Došlo místo na disku"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "Chyba: part.met soubor nenalezen"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "Chyba: I/O chyba!"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "Chyba: Selhání!"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "ED2K odkaz: "
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "Vyhledává více výsledků na ED2K. Zatím nepodporováno na Kadu."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "Limity šířky pásma"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "Toto je standardní port ED2K a nelze jej zakázat."
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr ""
+#~ "Tento UDP port je použit pro rozšiřující ED2K požadavky a pro síť Kad"
+
+#~ msgid "Hard Limit"
+#~ msgstr "Tvrdý limit"
+
+#~ msgid "Connection Limits"
+#~ msgstr "Limity připojení"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "Po spuštění aktualizovat seznam serverů"
+
+#~ msgid "Disk Space"
+#~ msgstr "Místo na disku"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "Zkontrolovat místo na disku"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr "Zvolte, pokud chcete, aby aMule zkontrolovala místo na disku"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "Minimální místo na disku"
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "Příchozí adresář:"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "Dočasný adresář:"
+
+#~ msgid "Shared Directories"
+#~ msgstr "Sdílené adresáře"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "Vytvořit zálohu pro náhled"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "Zobrazit rychlý obsluhovač ED2K odkazů"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "Parametry webserveru"
+
+#~ msgid "Webserver port"
+#~ msgstr "Port webserveru"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "UPnP TCP port webserveru"
+
+#~ msgid "Serverlist"
+#~ msgstr "Seznam serverů"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "Ruční přidání serveru : Název"
+
+#~ msgid "No One"
+#~ msgstr "Nikdo"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "Rychlostní omezení:"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "Rychlost stahování: %.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "Rychlost odesílání: %.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "TCP port: %d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP port: Nepřipraven"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "UDP port: %d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP port: Nepřipraven"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "Sdílené soubory: %d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "Klientů ve frontě: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "Limit odesílání"
+
+#~ msgid "Download Limit"
+#~ msgstr "Limit stahování"
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr ""
+#~ "Varování: byla zadána neplatná URL pro automatickou aktualizaci serverů: %"
+#~ "s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "webový server běží s PID %d"
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "Odpojen od ED2K"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "Nelze otevřít soubor 'emfriends.met' pro čtení!"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "Nelze otevřít soubor 'emfriends.met' pro zápis!"
 
 #~ msgid "ERROR: Failed to open partfile)"
 #~ msgstr "CHYBA: Částečný soubor nelze otevřít)"

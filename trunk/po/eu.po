@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 03:30+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2008-03-30 18:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -33,20 +33,20 @@ msgid "Connection failure"
 msgstr "Konexio hutsa"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
-msgid "EC Connection Failed. Empty reply."
-msgstr "EC Konexioa huts egin du. Erantzun hutsa."
+msgid "EC connection failed. Empty reply."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
-msgid "ExternalConn: Access denied because: "
-msgstr "KanpoKon: Sarrera honegatik ukatua: "
+msgid "External Connection: Access denied because: "
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
-msgid "ExternalConn: Access denied"
-msgstr "KanpoKon: Sarrera ukaturik"
+msgid "External Connection: Access denied"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
-msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "KanpoKon: Zerbitzariaren okerreko erantzuna. Konexioa itxirik."
+msgid "External Connection: Bad reply from server. Connection closed."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -291,8 +291,8 @@ msgid "The name of the file without path component."
 msgstr "Fitxategiaren izena biderik gabe."
 
 #: src/UserEvents.h:71
-msgid "The ed2k hash of the file."
-msgstr "Fitxategiaren ed2k egiaztapena."
+msgid "The eD2k hash of the file."
+msgstr ""
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -376,8 +376,8 @@ msgstr "Jatorri Osoak"
 msgid "Directory Path"
 msgstr "Karpeta Bidea"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
-#: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
+#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1090
+#: src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "Partekatutako Fitxategiak"
 
@@ -437,28 +437,28 @@ msgid "Copy magnet &URI to clipboard"
 msgstr "Kopiat&URI magnetikoa arbelera"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
-msgid "Copy ED2k &link to clipboard"
-msgstr "Kopiatu ED2k &lotura arbelera"
+msgid "Copy eD2k &link to clipboard"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:163
-msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "Kopiatu ED2k lotura arbelara (&Jatorria)"
+msgid "Copy eD2k link to clipboard (&Source)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:164
-msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "Kopiatu ED2k lotura arbelara (Jatorria) (Kriptogra&fia aukerekin)"
+msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:165
-msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr "Kopiatu ED2k esteka arbelara (&Ostalari-izena)"
+msgid "Copy eD2k link to clipboard (&Hostname)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:166
-msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopiatu ED2k esteka arbelara (Ostalari-izena) (&Kripto aukerekin)."
+msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:167
-msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr "Kopiatu ED2k esteka arbelara (&AICH argb)"
+msgid "Copy eD2k link to clipboard (&AICH info)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -475,10 +475,10 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "ID altua behar duzu baliozko jatorri lotura bat sortzeko"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:673
-msgid "Warning"
-msgstr "Oharra"
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/KadDlg.cpp:173 src/amule.cpp:673
+msgid "WARNING"
+msgstr "OHARRA"
 
 #: src/SharedFilesCtrl.cpp:451
 #, c-format
@@ -530,15 +530,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: src/ListenSocket.cpp:68
-msgid "Error: Could not listen to TCP port."
-msgstr "Errorea: Ezin dira TCP atakak entzun."
+msgid "ERROR: Could not listen to TCP port."
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:304
-msgid "Error: can not accept web client connection\n"
+msgid "ERROR: can not accept web client connection\n"
 msgstr ""
 
 #: src/webserver/src/WebServer.cpp:374
@@ -611,12 +611,12 @@ msgid "Loads template <str>"
 msgstr "<str> txantiloia kargatzen du"
 
 #: src/webserver/src/WebInterface.cpp:487
-msgid "Webserver HTTP port"
-msgstr "Web zerbitzari HTTP ataka"
+msgid "Web server HTTP port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:491
-msgid "Use UPnP port forwarding on webserver port"
-msgstr "UPnP ataka berbideraketa erabili web zerbitzari atakan"
+msgid "Use UPnP port forwarding on web server port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -627,12 +627,12 @@ msgid "Use gzip compression"
 msgstr "Erabili gzip konpresioa"
 
 #: src/webserver/src/WebInterface.cpp:507
-msgid "Full access password for webserver"
-msgstr "Web zerbitzariaren baimen guztiko pasahitza"
+msgid "Full access password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:511
-msgid "Guest password for webserver"
-msgstr "Web zerbitzariaren gonbidatu pasahitza"
+msgid "Guest password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -643,10 +643,8 @@ msgid "Deny guest access"
 msgstr "Gonbidatu sarrera ezgaitu"
 
 #: src/webserver/src/WebInterface.cpp:523
-msgid "Load/save webserver settings from/to remote aMule"
+msgid "Load/save web server settings from/to remote aMule"
 msgstr ""
-"Kargatu/gorde web zerbitzari ezarpenak urruneko aMule zerbitzaritik/"
-"zerbitzarira"
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1055,7 +1053,7 @@ msgid "LowID"
 msgstr "IDBaxua"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "Konektatu gabe"
 
@@ -1113,16 +1111,14 @@ msgid "Add Optional URLs for this file"
 msgstr "Gehitu Aukerako URL gehiago fitxategi honentzat"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
-msgid "Enter here the file you want to compute the Ed2k link"
-msgstr "Sar hemen ed2k lotura konputatu nahi duzun fitxategia"
+msgid "Enter here the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
-"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
-"Sar Ed2k loturara gehitu nahi duzun URL-a: Gehitu / bukaeran aLinkCreator-ri "
-"uneko fitxategi izena gehitzeko"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1155,12 +1151,12 @@ msgid "MD4 File Hash"
 msgstr "MD4 Fitxategi Egiaztapena"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
-msgid "Ed2k File Hash"
-msgstr "Ed2k Fitxategi egiaztapena"
+msgid "eD2k File Hash"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
-msgid "Ed2k link"
-msgstr "Ed2k lotura"
+msgid "eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1179,16 +1175,16 @@ msgid "Exit"
 msgstr "Irten"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
-msgid "Open a file to compute its ed2k link"
-msgstr "ed2k lotura konputatzeko fitxategi bat ireki"
+msgid "Open a file to compute its eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
-msgid "Copy computed ed2k link to clipboard"
-msgstr "Konputaturiko ed2k lotura arbelara kopiatu"
+msgid "Copy computed eD2k link to clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
-msgid "Save computed ed2k link to file"
-msgstr "Konputaturiko ed2k lotura fitxategi batetan gorde"
+msgid "Save computed eD2k link to file"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1196,16 +1192,16 @@ msgid "About aLinkCreator"
 msgstr "ALinkCreator-ri buruz"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
-msgid "Select the file you want to compute the ed2k link"
-msgstr "Ed2k lotura konputatu nahi duzun fitxategia aukeratu"
+msgid "Select the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
 msgstr "Kopiatzeko ezer ez oraingoz!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
-msgid "Select the file to your computed ed2k link"
-msgstr "Ed2k lotura konputatzeko fitxategia aukeratu"
+msgid "Select the file to your computed eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1222,7 +1218,7 @@ msgstr "Gordetzeko ezer ez oraingoz!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:466
 msgid ""
-"aLinkCreator, the aMule ed2k link creator\n"
+"aLinkCreator, the aMule eD2k link creator\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1231,14 +1227,6 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, aMule ed2k lotura sortzailea\n"
-"\n"
-"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-"\n"
-"Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-"and http://jimmac.musichall.cz/ikony.php3\n"
-"\n"
-"GPL lizentziapean banaturik"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1280,8 +1268,8 @@ msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> Fitxategia ez dago !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
-msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr "aLinkCreator, aMule ed2k lotura sortzailea"
+msgid "aLinkCreator, the aMule eD2k link creator"
+msgstr ""
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1677,12 +1665,12 @@ msgid "Remove all servers"
 msgstr "Kendu zerbitzari guztiak"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
-msgid "Copy ED2k link to clipboard"
-msgstr "Kopiatu ED2k lotura arbelera"
+msgid "Copy eD2k link to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:449
-msgid "Copy ED2k links to clipboard"
-msgstr "Kopiatu ED2k loturak arbelera"
+msgid "Copy eD2k links to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1722,8 +1710,8 @@ msgstr ""
 "jakiteko."
 
 #: src/amuleDlg.cpp:246
-msgid "Fatal Error: Failed to create Timer"
-msgstr "Errore konponezina. Akats ordutegia sortzerakoan"
+msgid "FATAL ERROR: Failed to create Timer"
+msgstr ""
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1796,12 +1784,12 @@ msgid "Status text"
 msgstr "Egoera testua"
 
 #: src/amuleDlg.cpp:684
-msgid "ED2K: Connecting"
-msgstr "ED2K: Konektatzen"
+msgid "eD2k: Connecting"
+msgstr ""
 
 #: src/amuleDlg.cpp:688
-msgid "ED2K: Disconnected"
-msgstr "ED2K: Deskonektatuta"
+msgid "eD2k: Disconnected"
+msgstr ""
 
 #: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
@@ -1879,46 +1867,50 @@ msgstr "Ez dago '%s' itxura direktorioa"
 
 #: src/amuleDlg.cpp:1212
 #, c-format
-msgid "Warning: Unable to open skin file '%s' for read"
-msgstr "Abisua: Ezin da '%s' itxura fitxategia irakurketarako ireki"
+msgid "WARNING: Unable to open skin file '%s' for read"
+msgstr ""
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
 msgid "Networks"
 msgstr "Sareak"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3819
-msgid "Networks Window"
-msgstr "Sare Leihoa"
+#: src/amuleDlg.cpp:1314
+msgid "Networks window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
 msgstr "Bilaketak"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3820
-msgid "Searches Window"
-msgstr "Bilaketa leihoa"
+#: src/amuleDlg.cpp:1318
+msgid "Searches window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
 msgstr "Transferentziak"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3821
-msgid "Files Transfers Window"
-msgstr "Fitxategi Transferentzia leihoa"
+#: src/amuleDlg.cpp:1322
+msgid "Files transfers window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3823
-msgid "Shared Files Window"
-msgstr "Partekatutako fitxategi leihoa"
+#: src/amuleDlg.cpp:1324
+msgid "Shared files"
+msgstr ""
+
+#: src/amuleDlg.cpp:1326
+msgid "Shared files window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
 msgid "Messages"
 msgstr "Mezuak"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3824
-msgid "Messages Window"
-msgstr "Mezu leihoa"
+#: src/amuleDlg.cpp:1330
+msgid "Messages window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1926,13 +1918,13 @@ msgstr "Mezu leihoa"
 msgid "Statistics"
 msgstr "Estatistikak"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3825
-msgid "Statistics Graph Window"
-msgstr "Estatistika grafiko leihoa"
+#: src/amuleDlg.cpp:1334
+msgid "Statistics graph window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3827
-msgid "Preferences Settings Window"
-msgstr "Hobespen Ezarpen Leihoa"
+#: src/amuleDlg.cpp:1339
+msgid "Preferences settings window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1951,7 +1943,7 @@ msgid "About/Help"
 msgstr "Honi Buruz/Laguntza"
 
 #: src/amuleDlg.cpp:1484
-msgid "ed2k network"
+msgid "eD2k network"
 msgstr ""
 
 #: src/amuleDlg.cpp:1488
@@ -2033,11 +2025,9 @@ msgstr "- UDP - ataka aldaturik.\n"
 
 #: src/PrefsUnifiedDlg.cpp:531
 msgid ""
-"Your Auto-update servers list is in blank.\n"
-"'Auto-update serverlist at startup' will be disabled."
+"Your Auto-update server list is empty.\n"
+"'Auto-update server list at startup will be disabled."
 msgstr ""
-"Zure zerbitzari auto-eguneraketa zerrenda hutsik dago.\n"
-"'Abiaraztean zerbitzari zerrenda auto-eguneraketa' ezgaituko da"
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2061,11 +2051,9 @@ msgstr "Gora: 0.0 | Behera: 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:622
 msgid ""
-"Both ED2K and Kad network are disabled.\n"
+"Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"Bai ED2K bai Kad sareak ezgaiturik daude,\n"
-"Ez zara konektatzeko gai izango behintzat bietako bat gaitu arte."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2084,10 +2072,6 @@ msgstr ""
 "\n"
 "aMule orain berrabiarazi BEHAR duzu.\n"
 "Orain ez berrabiaraziaz gero ez kexatu ezer txarra gertatzen bada.\n"
-
-#: src/PrefsUnifiedDlg.cpp:635
-msgid "WARNING"
-msgstr "OHARRA"
 
 #: src/PrefsUnifiedDlg.cpp:713
 msgid ""
@@ -2130,8 +2114,8 @@ msgid "Executable%s"
 msgstr "Abiarazgarria%s"
 
 #: src/PrefsUnifiedDlg.cpp:928
-msgid "Edit Serverlist"
-msgstr "Editatu zerbitzari zerrenda"
+msgid "Edit server list"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2238,8 +2222,8 @@ msgid "New external connection accepted"
 msgstr "Kanpo konexio berri bat onartu da"
 
 #: src/ExternalConn.cpp:221
-msgid "Error: couldn't accept a new external connection"
-msgstr "Errorea: ezin da kanpo konexio berririk onartu"
+msgid "ERROR: couldn't accept a new external connection"
+msgstr ""
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2320,8 +2304,8 @@ msgid "need to define server to be removed"
 msgstr "ezabatzeko zerbitzaria ezarri behar da"
 
 #: src/ExternalConn.cpp:708
-msgid "ED2K is disabled in preferences."
-msgstr "ED2K hobespenetan ezgaiturik dago."
+msgid "eD2k is disabled in preferences."
+msgstr ""
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2344,8 +2328,8 @@ msgid "Your client is not configured for this detail level."
 msgstr "Zure bezeroa ez dago xehetasun maila honetarako konfiguraturik."
 
 #: src/ExternalConn.cpp:1058
-msgid "ExternalConn: shutdown requested"
-msgstr "KanpoKonexioa: itzaltzeko eskaera eginik"
+msgid "External Connection: shutdown requested"
+msgstr ""
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2373,12 +2357,12 @@ msgid "Unable to rename file."
 msgstr "Ezinda fitxategia berrizendatu."
 
 #: src/ExternalConn.cpp:1406
-msgid "Already connected to ED2K."
-msgstr "Dagoeneko ED2K-ra konektaturik."
+msgid "Already connected to eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1409
-msgid "Connecting to ED2K..."
-msgstr "ED2K-ra konektatzen..."
+msgid "Connecting to eD2k..."
+msgstr ""
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2393,8 +2377,8 @@ msgid "All networks are disabled."
 msgstr "Sare guztiak ezgaiturik daude."
 
 #: src/ExternalConn.cpp:1433
-msgid "Disconnected from ED2K."
-msgstr "ED2k-tik deskonektaturik."
+msgid "Disconnected from eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2402,8 +2386,8 @@ msgstr "Kad-etik deskonektaturik."
 
 #: src/ExternalConn.cpp:1445
 #, c-format
-msgid "ExternalConn: invalid opcode received: %#x"
-msgstr "KanpoKonexioa: opcode baliogabea jasoa: %#x"
+msgid "External Connection: invalid opcode received: %#x"
+msgstr ""
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2434,8 +2418,8 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "Zerbitzaria ez da gehitu: Baliogabeko zerbitzari-ataka ezarririk."
 
 #: src/ServerWnd.cpp:162
-msgid "ED2K Status:"
-msgstr "ED2k Egoera:"
+msgid "eD2k Status:"
+msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2601,23 +2585,23 @@ msgstr "Saio IG/DE Abiadura (Guztira): %s"
 
 #: src/Statistics.cpp:689
 #, c-format
-msgid "Average Downloadrate (Session): %s"
-msgstr "Batez besteko deskarga (Saioa): %s"
+msgid "Average download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:690
 #, c-format
-msgid "Average Uploadrate (Session): %s"
-msgstr "Batez besteko igoera (Saioa): %s"
+msgid "Average upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:691
 #, c-format
-msgid "Max Downloadrate (Session): %s"
-msgstr "Gehienezko deskarga abiadura (Saioa): %s"
+msgid "Max download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:692
 #, c-format
-msgid "Max Uploadrate (Session): %s"
-msgstr "Gehienezko igoera abiadura (Saioa): %s"
+msgid "Max upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2733,8 +2717,8 @@ msgstr "Guztira Partekatutako Fitxategi tamaina: %s"
 
 #: src/Statistics.cpp:731
 #, c-format
-msgid "Average filesize: %s"
-msgstr "Batez besteko fitxategi tamaina: %s"
+msgid "Average file size: %s"
+msgstr ""
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2765,8 +2749,8 @@ msgid "Kad search can't be done if Kad is not running"
 msgstr "Ezin da Kad bilaketarik egin Kad ez badago abiarazirik "
 
 #: src/SearchList.cpp:294
-msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "Ezin da ED2K bilaketarik egin ED2K ez badago konektaturik"
+msgid "eD2k search can't be done if eD2k is not connected"
+msgstr ""
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2896,12 +2880,12 @@ msgid "Continue?"
 msgstr "Jarraitu?"
 
 #: src/Logger.cpp:270
-msgid "Error: "
-msgstr "Errorea:"
+msgid "ERROR: "
+msgstr ""
 
 #: src/Logger.cpp:270
-msgid "Warning: "
-msgstr "Oharra:"
+msgid "WARNING: "
+msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2948,8 +2932,8 @@ msgid "Download in category"
 msgstr "Kategori honetan deskargatu: "
 
 #: src/SearchListCtrl.cpp:582
-msgid "Search related files (ED2k, local server)"
-msgstr "Zerikusia duten fitxategiak bilatu (ED2k, zerbitzari lokala)"
+msgid "Search related files (eD2k, local server)"
+msgstr ""
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2966,16 +2950,14 @@ msgstr "Konexioak huts egin du"
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
-msgid "Error"
-msgstr "Errorea"
+msgid "ERROR"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
-"WARNING: You can't add yourself as a source for a ed2k link while being "
+"WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
-"ABISUA: Ezin duzu zure burua ed2k lotura jatorri bezala ezarri id-baxua "
-"duzun bitartean."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3149,13 +3131,9 @@ msgstr "Deskargak (%i)"
 
 #: src/DownloadListCtrl.cpp:2254
 msgid ""
-"Please set your preferred video player on preferences.\n"
-"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
-"on every preview"
+"To prevent this warning to show up in every preview,\n"
+"set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"Mesedez ezarri zure bideo erreproduktore lehenetsia ezarpenetan.\n"
-"Bestela, aMule mplayer erabiltzen saiatu eta aurreikuspen bakoitzean mezu "
-"hau bistaraziko da"
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3177,25 +3155,23 @@ msgstr "met-file fitxategiaren basbeskopia %s-tik kargatzen saiatzen"
 
 #: src/PartFile.cpp:334
 #, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "Errorea: huts part.met fitxategia irekitzerakoan: %s ==> %s"
+msgid "ERROR: Failed to open part.met file: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:340
 #, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "Errorea: part.met fitxategia hutsik dago: %s ==> %s"
+msgid "ERROR: part.met file is 0 size: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:351
 #, c-format
-msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "Errorea: part.met fitxategi bertsio baliogabea: %s ==> %s"
+msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
-msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
 msgstr ""
-"Errorea: %s (%s) hondaturik dago (marka kopuru okerra) ezin da fitxategia "
-"kargatu."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3224,8 +3200,8 @@ msgstr "Huts egin du irekitzerakoan: %s (%s)"
 
 #: src/PartFile.cpp:708
 #, c-format
-msgid "Warning: %s might be corrupted (%i)"
-msgstr "Abisua: %s hondaturik egon liteke (%i)"
+msgid "WARNING: %s might be corrupted (%i)"
+msgstr ""
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3296,8 +3272,8 @@ msgstr "Amaitutako berrazterketa: %s"
 
 #: src/PartFile.cpp:2242
 #, c-format
-msgid "Unexpected file error while completing %s. File paused"
-msgstr "Espero ez zen errorea %s osatzerakoan. Fitxategia gelditurik"
+msgid "Unexpected error while completing %s. File paused"
+msgstr ""
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3311,19 +3287,15 @@ msgstr "fitxategia ezabatzen:%s"
 
 #: src/PartFile.cpp:2386
 #, c-format
-msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
-"Kontuz: Ezin da deskargaturiko zatia egiaztatu - '%s' egiaztapen osatugabea"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
-"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
-"Errorea: Ezin da deskargatutako zatia aztertu - azterketa burua ez dago "
-"osorik (%s). Hau ez zen\n"
-"inoiz gertatu beharko"
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3345,8 +3317,8 @@ msgid "Allocating"
 msgstr ""
 
 #: src/PartFile.cpp:3861
-msgid "Insufficient Diskspace"
-msgstr "Disko leku askieza"
+msgid "Insufficient disk space"
+msgstr ""
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3362,13 +3334,12 @@ msgid "ERROR: Failed to open partfile '%s'"
 msgstr ""
 
 #: src/KnownFileList.cpp:79
-msgid "Warning: known.met cannot be opened."
-msgstr "Oharra: known.met ezin da ireki."
+msgid "WARNING: known.met cannot be opened."
+msgstr ""
 
 #: src/KnownFileList.cpp:86
-msgid "Warning: Knownfile list corrupted, contains invalid header."
+msgid "WARNING: Knownfile list corrupted, contains invalid header."
 msgstr ""
-"Abisua: Ezagututako fitxategi zerrenda hondaturik dago, buru baliogabea."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3396,8 +3367,8 @@ msgstr[1] "%i ezagututako partekatutako eta %i ezezagun aurkiturik"
 
 #: src/SharedFileList.cpp:367
 #, c-format
-msgid "ERROR! Attempted to share %s"
-msgstr "ERROREA! %s partekatzen saiatzen"
+msgid "ERROR: Attempted to share %s"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3437,12 +3408,12 @@ msgstr ""
 "hasiko nahiz."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
-msgid "ED2K network disabled on preferences, not connecting."
-msgstr "ED2K sarea ezgaiturik dago hobespenetan, ez da konektatuko."
+msgid "eD2k network disabled on preferences, not connecting."
+msgstr ""
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
-msgid "No valid servers to connect in serverlist found"
-msgstr "Ez da konektatzeko baliozko zerbitzaririk aurkitu zerbitzari zerrendan"
+msgid "No valid servers to which to connect found in server list"
+msgstr ""
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3494,8 +3465,8 @@ msgid "Connecting to %s (%s:%i) failed."
 msgstr "Huts %s (%s:%i) -ra konektatzerakoan."
 
 #: src/ServerConnect.cpp:450
-msgid "Error: Socket invalid at timeoutcheck"
-msgstr "Errorea: Socket baliogabea denboraz kanpo arakatzean"
+msgid "ERROR: Socket invalid at timeout check"
+msgstr ""
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3504,11 +3475,9 @@ msgstr "%s (%s:%i) -ra konexio saiakera denboraz kanpo geratu da."
 
 #: src/DownloadQueue.cpp:160
 msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
-"Errorea: Huts basbeskopia fitxategia irekitzean. Bilatu http://forum.amule."
-"org-en part.met berreskuraketa konponbideetarako."
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3551,8 +3520,8 @@ msgstr "Dagoeneko %s fitxategia deskargatzen ari zara"
 
 #: src/DownloadQueue.cpp:1309
 #, c-format
-msgid "Cannot convert magnet link to ed2k: %s"
-msgstr "Ezin da lotura magnetikoa ed2k lotura bihurtu: %s"
+msgid "Cannot convert magnet link to eD2k: %s"
+msgstr ""
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3561,8 +3530,8 @@ msgstr "Lotura protokolo ezezaguna: %s"
 
 #: src/DownloadQueue.cpp:1338
 #, c-format
-msgid "Invalid ed2k link! Error: %s"
-msgstr "ed2k lotura baliogabea! Errorea: %s"
+msgid "Invalid eD2k link! ERROR: %s"
+msgstr ""
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3638,12 +3607,12 @@ msgstr "Uneko IPiragazki maila %d da.\n"
 
 #: src/TextClient.cpp:671
 #, c-format
-msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "Konexio Mugak: Gora: %u kB/s, Behera: %u kB/s.\n"
+msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr ""
 
-#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
-msgid "ED2K"
-msgstr "ED2K"
+#: src/TextClient.cpp:689
+msgid "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3662,7 +3631,8 @@ msgstr "IDAltuarekin"
 msgid "Now connecting"
 msgstr "Ez konektatzen"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
+#: src/MuleTrayIcon.cpp:397
 msgid "Not connected"
 msgstr "konektatu gabe"
 
@@ -3749,18 +3719,15 @@ msgstr ""
 "ikusiriko dira.\n"
 
 #: src/TextClient.cpp:848
-msgid "Shutdown aMule."
-msgstr "aMule Itzali."
+msgid "Shut down aMule."
+msgstr ""
 
 #: src/TextClient.cpp:849
 msgid ""
-"Shutdown the remote running core (amule/amuled).\n"
+"Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
-"Urruneko abiaraziriko muina itxi (amule/amuled).\n"
-"Honek testu bezeroa ere itxiko du, ezin bait da abiaraziriko muin bat\n"
-"gabe erabili.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3794,8 +3761,8 @@ msgstr ""
 "bat izan behar da edo ebatzi daitekeen izen bat."
 
 #: src/TextClient.cpp:857
-msgid "Connect to ED2K only."
-msgstr "ED2K sarera bakarrik konektatu."
+msgid "Connect to eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3810,38 +3777,28 @@ msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "Honek konektaturik zauden sare guztietatik deskonektatuko zaitu.\n"
 
 #: src/TextClient.cpp:862
-msgid "Disconnect from ED2K only."
-msgstr "ED2K saretik bakarrik deskonektatu."
+msgid "Disconnect from eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "Kad saretik bakarrik deskonektatu."
 
 #: src/TextClient.cpp:865
-msgid "Adds an ed2k or magnet link to core."
-msgstr "Ed2k edo lotura magnetiko bat gehitu muinera."
+msgid "Adds an eD2k or magnet link to core."
+msgstr ""
 
 #: src/TextClient.cpp:866
 msgid ""
-"The ed2k link to be added can be:\n"
+"The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 "*) or a serverlist link, in which case all servers in the list will be added "
 "to the\n"
 "   server list.\n"
 "\n"
-"The magnet link must contain the ed2k hash and file length.\n"
+"The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
-"Gehitzeko ed2k lotura aukerak:\n"
-"*) fitxategi lotura bat (ed2k://|file|...), berau deskarga hilarara gehituko "
-"da,\n"
-"*) zerbitzari lotura bat (ed2k://|server|...), berau zerbitzari zerrendara "
-"gehituko da,\n"
-"*) edo zerbitzari-zerenda lotura, kasu honetan zerrendako zerbitzari "
-"guztiak\n"
-"   zerbitzari-zerrendara gehitukodira.\n"
-"\n"
-"Lotura magnetikoak ed2k egiaztapena eta fitxategi tamaina eduki behar ditu.\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -4069,8 +4026,8 @@ msgstr "Erregistroa garbitu."
 
 #: src/TextClient.cpp:952
 #, c-format
-msgid "Deprecated command, now '%s'."
-msgstr "Zaharkitutako komandoa, orain '%s' erabili."
+msgid "Deprecated command, use '%s' instead."
+msgstr ""
 
 #: src/TextClient.cpp:953
 #, c-format
@@ -4087,13 +4044,13 @@ msgstr "theApp->serverlist->GetServerByAddress() NULL itzuli du"
 
 #: src/ServerSocket.cpp:259
 #, c-format
-msgid "Error: %s (%s) - %s"
-msgstr "Errorea: %s (%s) - %s"
+msgid "ERROR: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:274
 #, c-format
-msgid "Warning: %s (%s) - %s"
-msgstr "Kontuz: %s (%s) - %s"
+msgid "WARNING: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4314,20 +4271,20 @@ msgid "In progress"
 msgstr "Martxan"
 
 #: src/PartFileConvert.cpp:613
-msgid "Error: Out of diskspace"
-msgstr "Errorea. Disko leku gabe"
+msgid "ERROR: Out of diskspace"
+msgstr ""
 
 #: src/PartFileConvert.cpp:614
-msgid "Error: Partmet not found"
-msgstr "Errorea: Partmet ez da aurkitu"
+msgid "ERROR: Partmet not found"
+msgstr ""
 
 #: src/PartFileConvert.cpp:615
-msgid "Error: IO error!"
-msgstr "Errorea: IO errorea!"
+msgid "ERROR: IO error!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:616
-msgid "Error: Failed!"
-msgstr "Errorea Huts egin du!"
+msgid "ERROR: Failed!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4543,8 +4500,8 @@ msgid "%.2f%% done"
 msgstr "%.2f%% egina"
 
 #: src/muuli_wdr.cpp:69
-msgid "ED2K Link: "
-msgstr "ED2K Lotura: "
+msgid "eD2k Link: "
+msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4552,10 +4509,8 @@ msgstr "Burutu"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
+"Click here to add the eD2k link in the text control to your download queue."
 msgstr ""
-"Klikatu hemen testu kontrolean dagoen ed2k lotura deskarga hilarara "
-"gehitzeko."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4693,8 +4648,8 @@ msgid "More"
 msgstr "Gehiago"
 
 #: src/muuli_wdr.cpp:352
-msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr "ED2K emaitza gehiago bilatu. Ez da onartzen Kad-ekin oraindik."
+msgid "Searches for more results on eD2k. Not supported for Kad yet."
+msgstr ""
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -4719,10 +4674,6 @@ msgstr "Bistaratu Igoera  hilara"
 #: src/muuli_wdr.cpp:469
 msgid "Clients on queue :"
 msgstr "Bezeroak ilaran:"
-
-#: src/muuli_wdr.cpp:472
-msgid "0"
-msgstr "0"
 
 #: src/muuli_wdr.cpp:536
 msgid "Send"
@@ -5204,8 +5155,8 @@ msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr "Ireki web orria fitxa berrian leiho berrian ordez aukera dagoenenean"
 
 #: src/muuli_wdr.cpp:1743
-msgid "Bandwith Limits"
-msgstr "Konexio gaitasunak"
+msgid "Bandwith limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5230,17 +5181,16 @@ msgid "Standard client TCP Port:"
 msgstr "Bezero TCP ataka estandarra:"
 
 #: src/muuli_wdr.cpp:1831
-msgid "This is the standard ED2K port and cannot be disabled."
-msgstr "Hau ED2K ataka estandarra da eta ezin da ezgaitu."
+msgid "This is the standard eD2k port and cannot be disabled."
+msgstr ""
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
 msgstr "Hedaturiko bezero UDP ataka:"
 
 #: src/muuli_wdr.cpp:1840
-msgid "This UDP port is used for extended Ed2K requests and Kad network"
+msgid "This UDP port is used for extended ed2k requests and Kad network"
 msgstr ""
-"UDP ataka hau Ed2k hedaturiko eskaera eta Kad sarearentzat erabiliko da."
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5259,16 +5209,20 @@ msgid "Max Sources per File"
 msgstr "Fitxategiko jatorri muga"
 
 #: src/muuli_wdr.cpp:1873
-msgid "Hard Limit"
-msgstr "Muga gogorra"
+msgid "Hard limit"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1883
-msgid "Connection Limits"
-msgstr "Konexio mugak"
+msgid "Connection limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
 msgstr "Gehienezko konexioak"
+
+#: src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
+msgid "ED2K"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1919
 msgid "Kademlia"
@@ -5311,20 +5265,20 @@ msgid "retries"
 msgstr "saiakerak"
 
 #: src/muuli_wdr.cpp:2001
-msgid "Auto-update serverlist at startup"
-msgstr "Eguneratu zerbitzari zerrenda abiaraztean"
+msgid "Auto-update server list at startup"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
 msgstr "Zerrenda"
 
 #: src/muuli_wdr.cpp:2009
-msgid "Update serverlist when connecting to a server"
-msgstr "Eguneratu  zerbitzari zerrenda zerbitzari batetara konektatzean"
+msgid "Update server list when connecting to a server"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2012
-msgid "Update serverlist when a client connect"
-msgstr "Eguneratu  zerbitzari zerrenda bezero bat konektatzerakoan"
+msgid "Update server list when a client connects"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5387,20 +5341,20 @@ msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "10 jatorri gorde fitxategi arraroentzat (< 20 jatorri)"
 
 #: src/muuli_wdr.cpp:2105
-msgid "Disk Space"
-msgstr "Disko Tokia"
+msgid "Disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2108
-msgid "Check Disk Space"
-msgstr "Arakatu Disko Tokia"
+msgid "Check disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2109
-msgid "Select this if you want aMule to check your Disk Space"
-msgstr "Aukeratu hau zuk Amule-k disko tokia araztea nahi baduzu"
+msgid "Select this if you want aMule to check your disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2116
-msgid "Min Disk Space:"
-msgstr "Gutxienezko Disko Lekua:"
+msgid "Min disk space:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5417,16 +5371,16 @@ msgid ""
 msgstr ""
 
 #: src/muuli_wdr.cpp:2158
-msgid "Incoming Directory :"
-msgstr "Deskarga direktorioa:"
+msgid "Incoming"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2169
-msgid "Temporary Directory :"
-msgstr "Aldi baterakoa Direktorioa:"
+msgid "Temporary"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2180
-msgid "Shared Directories"
-msgstr "Partekatutako direktorioak"
+msgid "Shared"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5442,8 +5396,8 @@ msgid "Video Player"
 msgstr "Bideo-erreproduzitzailea"
 
 #: src/muuli_wdr.cpp:2209
-msgid "Create Backup to preview"
-msgstr "Sortu Babeskopia  aurreikusteko"
+msgid "Create Backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5626,8 +5580,8 @@ msgid "Misc Gui Tweaks"
 msgstr "Beste Interfaze Aldagaiak"
 
 #: src/muuli_wdr.cpp:2479
-msgid "Show Fast ED2K Links Handler"
-msgstr "Erakutsi ED2K lastermarka kudeatzaile azkarra"
+msgid "Show Fast eD2k Links Handler"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5650,24 +5604,24 @@ msgid "Remote Control"
 msgstr "Urruneko kontrola"
 
 #: src/muuli_wdr.cpp:2523
-msgid "Webserver Parameters"
-msgstr "Web zerbitzari ezarpenak"
+msgid "Web server parameters"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
 msgstr "Abiaraztean amuleweb abiarazi"
 
 #: src/muuli_wdr.cpp:2531
-msgid "Webserver port"
-msgstr "Web zerbitzari ataka"
+msgid "Web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2539
-msgid "Enable UPnP port forwarding on the Webserver port"
-msgstr "UPnP ataka berbideraketa gaitu Web zerbitzari atakan"
+msgid "Enable UPnP port forwarding on the web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2544
-msgid "Webserver UPnP TCP port"
-msgstr "Web zerbitzari UPnP TCP ataka"
+msgid "Web server UPnP TCP port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5783,8 +5737,8 @@ msgid "Click on this button to update the servers list from URL ..."
 msgstr "Klik egin botoi honetan zerbitzari zerrenda URL-tik eguneratzeko ....."
 
 #: src/muuli_wdr.cpp:2899
-msgid "Serverlist"
-msgstr "Zerbitzari Zerrenda"
+msgid "Server list"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5795,8 +5749,8 @@ msgstr ""
 "sakatu zerbitzari ezagunen zerrenda eguneratzeko"
 
 #: src/muuli_wdr.cpp:2911
-msgid "Manual Server Add : Name"
-msgstr "Zerbitzaria eskuz gehitu: Izena"
+msgid "Add server manually: Name"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5814,7 +5768,7 @@ msgstr "Idatzi zerbitzariaren ataka hemen."
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "Gehitu zerbitzari bat eskuz (sar datuak ezkerrean lehenik) ..."
 
-#: src/muuli_wdr.cpp:2979 src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:2979
 msgid "ED2K Info"
 msgstr "Argb"
 
@@ -5870,6 +5824,10 @@ msgstr ""
 msgid "Disconnect Kad"
 msgstr "Kad Deskonektatu"
 
+#: src/muuli_wdr.cpp:3163
+msgid "eD2k Info"
+msgstr ""
+
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
 msgstr "Protokolo nahastea"
@@ -5919,8 +5877,8 @@ msgid "Everybody"
 msgstr "Edozeini"
 
 #: src/muuli_wdr.cpp:3221
-msgid "No One"
-msgstr "Inori"
+msgid "No one"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6207,6 +6165,34 @@ msgstr "Gertaera motak"
 #: src/muuli_wdr.cpp:3817
 msgid "Connect to any server and/or Kad"
 msgstr "Konektatu edozein zerbitzari eta/edo Kad"
+
+#: src/muuli_wdr.cpp:3819
+msgid "Networks Window"
+msgstr "Sare Leihoa"
+
+#: src/muuli_wdr.cpp:3820
+msgid "Searches Window"
+msgstr "Bilaketa leihoa"
+
+#: src/muuli_wdr.cpp:3821
+msgid "Files Transfers Window"
+msgstr "Fitxategi Transferentzia leihoa"
+
+#: src/muuli_wdr.cpp:3823
+msgid "Shared Files Window"
+msgstr "Partekatutako fitxategi leihoa"
+
+#: src/muuli_wdr.cpp:3824
+msgid "Messages Window"
+msgstr "Mezu leihoa"
+
+#: src/muuli_wdr.cpp:3825
+msgid "Statistics Graph Window"
+msgstr "Estatistika grafiko leihoa"
+
+#: src/muuli_wdr.cpp:3827
+msgid "Preferences Settings Window"
+msgstr "Hobespen Ezarpen Leihoa"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
@@ -6634,8 +6620,8 @@ msgid "aMule Tray Menu"
 msgstr "aMule tresna-barra Menua"
 
 #: src/MuleTrayIcon.cpp:336
-msgid "Speed Limits:"
-msgstr "Abiadura Mugak:"
+msgid "Speed limits:"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6657,13 +6643,13 @@ msgstr "DE: %u"
 
 #: src/MuleTrayIcon.cpp:358
 #, c-format
-msgid "Download Speed: %.1f"
-msgstr "Deskargatu Abiadura: %.1f"
+msgid "Download speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
-msgid "Upload Speed: %.1f"
-msgstr "Igo Abiadura: %.1f"
+msgid "Upload speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6697,21 +6683,21 @@ msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:415
 #, c-format
-msgid "TCP Port: %d"
-msgstr "TCP Ataka: %d"
+msgid "TCP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:417
-msgid "TCP Port: Not Ready"
-msgstr "TCP Ataka: Ez dago prest"
+msgid "TCP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
-msgid "UDP Port: %d"
-msgstr "UDP Ataka: %d"
+msgid "UDP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:428
-msgid "UDP Port: Not Ready"
-msgstr "UDP Ataka: Ez dago prest"
+msgid "UDP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6723,13 +6709,13 @@ msgstr "Linean Sinadura: Ezgaitua"
 
 #: src/MuleTrayIcon.cpp:453
 #, c-format
-msgid "Shared Files: %d"
-msgstr "Partekatutako Fitxategiak: %d"
+msgid "Shared files: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
-msgid "Queued Clients: %d"
-msgstr "Hilarako Bezeroak: %d"
+msgid "Queued clients: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6742,12 +6728,12 @@ msgid "Total UL: %s"
 msgstr "IG Guztira: %s"
 
 #: src/MuleTrayIcon.cpp:484
-msgid "Upload Limit"
-msgstr "Igoera muga"
+msgid "Upload limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:488
-msgid "Download Limit"
-msgstr "Deskarga muga"
+msgid "Download limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6878,12 +6864,9 @@ msgstr "Huts zerbitzari zerrenda %s-tik deskargatzerakoan"
 
 #: src/ServerList.cpp:817
 msgid ""
-"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
-"serverlist address into this file in order to auto-update your serverlist"
+"No server list address entry in 'addresses.dat' found. Please paste a valid "
+"server list address into this file in order to auto-update your server list"
 msgstr ""
-"'addresses.dat' fitxategian ez da zerbitzari zerrenda helbiderik aurkitu. "
-"Mesedez itsatsi baliozko zerbitzari zerrenda helbide bat fitxategian "
-"zerbitzari zerenda auto-eguneratzeko"
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6892,8 +6875,8 @@ msgstr "Hasi zerbitzari zerrenda %s-tik deskargatzen"
 
 #: src/ServerList.cpp:839
 #, c-format
-msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-msgstr "Abisua, Baliogabeko URL bat ezarria zerbitzariak eguneratzeko: %s"
+msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
+msgstr ""
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6936,18 +6919,15 @@ msgstr "Zerbitzari zerrenda deskargatu"
 
 #: src/amule.cpp:844
 #, c-format
-msgid "webserver running on pid %d"
-msgstr "webzerbitzari abiarazia %d pid-arekin"
+msgid "web server running on pid %d"
+msgstr ""
 
 #: src/amule.cpp:848
 msgid ""
-"You requested to run webserver from startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule webserver, or compile "
+"You requested to run web server on startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
-"Webzerbitzaria abiaraztean exekutatzea eskatu duzu, baina amuleweb bitarra "
-"ezin da abiarazi. Mesedez aMule web zerbitzaria duen paketea instalatu edo -"
-"enable-webserver erabiliaz aMule konpilatu eta make install abiarazi"
 
 #: src/amule.cpp:938
 #, c-format
@@ -7156,8 +7136,8 @@ msgid "Connecting to %s"
 msgstr "%s-ra konektatzen"
 
 #: src/amule.cpp:2105
-msgid "Disconnected from ED2K"
-msgstr "ED2K-tik Deskonektatuta"
+msgid "Disconnected from eD2k"
+msgstr ""
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7192,12 +7172,521 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad sarea hobespenetan ezgaiturik, ez da konektatuko."
 
 #: src/FriendList.cpp:120
-msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
+msgid "Failed to open friend list file 'emfriends.met' for reading!"
+msgstr ""
 
 #: src/FriendList.cpp:146
-msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
+msgid "Failed to open friend list file 'emfriends.met' for writing!"
+msgstr ""
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "EC Konexioa huts egin du. Erantzun hutsa."
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "KanpoKon: Sarrera honegatik ukatua: "
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "KanpoKon: Sarrera ukaturik"
+
+#~ msgid "ExternalConn: Bad reply from server. Connection closed."
+#~ msgstr "KanpoKon: Zerbitzariaren okerreko erantzuna. Konexioa itxirik."
+
+#~ msgid "The ed2k hash of the file."
+#~ msgstr "Fitxategiaren ed2k egiaztapena."
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "Kopiatu ED2k &lotura arbelera"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "Kopiatu ED2k lotura arbelara (&Jatorria)"
+
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "Kopiatu ED2k lotura arbelara (Jatorria) (Kriptogra&fia aukerekin)"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "Kopiatu ED2k esteka arbelara (&Ostalari-izena)"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "Kopiatu ED2k esteka arbelara (Ostalari-izena) (&Kripto aukerekin)."
+
+#~ msgid "Copy ED2k link to clipboard (&AICH info)"
+#~ msgstr "Kopiatu ED2k esteka arbelara (&AICH argb)"
+
+#~ msgid "Warning"
+#~ msgstr "Oharra"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "Errorea: Ezin dira TCP atakak entzun."
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "Web zerbitzari HTTP ataka"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "UPnP ataka berbideraketa erabili web zerbitzari atakan"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "Web zerbitzariaren baimen guztiko pasahitza"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "Web zerbitzariaren gonbidatu pasahitza"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr ""
+#~ "Kargatu/gorde web zerbitzari ezarpenak urruneko aMule zerbitzaritik/"
+#~ "zerbitzarira"
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "Sar hemen ed2k lotura konputatu nahi duzun fitxategia"
+
+#~ msgid ""
+#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
+#~ "let aLinkCreator append the current file name"
+#~ msgstr ""
+#~ "Sar Ed2k loturara gehitu nahi duzun URL-a: Gehitu / bukaeran aLinkCreator-"
+#~ "ri uneko fitxategi izena gehitzeko"
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "Ed2k Fitxategi egiaztapena"
+
+#~ msgid "Ed2k link"
+#~ msgstr "Ed2k lotura"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "ed2k lotura konputatzeko fitxategi bat ireki"
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "Konputaturiko ed2k lotura arbelara kopiatu"
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "Konputaturiko ed2k lotura fitxategi batetan gorde"
+
+#~ msgid "Select the file you want to compute the ed2k link"
+#~ msgstr "Ed2k lotura konputatu nahi duzun fitxategia aukeratu"
+
+#~ msgid "Select the file to your computed ed2k link"
+#~ msgstr "Ed2k lotura konputatzeko fitxategia aukeratu"
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, aMule ed2k lotura sortzailea\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "GPL lizentziapean banaturik"
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, aMule ed2k lotura sortzailea"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "Kopiatu ED2k lotura arbelera"
+
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "Kopiatu ED2k loturak arbelera"
+
+#~ msgid "Fatal Error: Failed to create Timer"
+#~ msgstr "Errore konponezina. Akats ordutegia sortzerakoan"
+
+#~ msgid "ED2K: Connecting"
+#~ msgstr "ED2K: Konektatzen"
+
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "ED2K: Deskonektatuta"
+
+#~ msgid "Warning: Unable to open skin file '%s' for read"
+#~ msgstr "Abisua: Ezin da '%s' itxura fitxategia irakurketarako ireki"
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "Zure zerbitzari auto-eguneraketa zerrenda hutsik dago.\n"
+#~ "'Abiaraztean zerbitzari zerrenda auto-eguneraketa' ezgaituko da"
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "Bai ED2K bai Kad sareak ezgaiturik daude,\n"
+#~ "Ez zara konektatzeko gai izango behintzat bietako bat gaitu arte."
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "Editatu zerbitzari zerrenda"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "Errorea: ezin da kanpo konexio berririk onartu"
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2K hobespenetan ezgaiturik dago."
+
+#~ msgid "ExternalConn: shutdown requested"
+#~ msgstr "KanpoKonexioa: itzaltzeko eskaera eginik"
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "Dagoeneko ED2K-ra konektaturik."
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "ED2K-ra konektatzen..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "ED2k-tik deskonektaturik."
+
+#~ msgid "ExternalConn: invalid opcode received: %#x"
+#~ msgstr "KanpoKonexioa: opcode baliogabea jasoa: %#x"
+
+#~ msgid "ED2K Status:"
+#~ msgstr "ED2k Egoera:"
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "Batez besteko deskarga (Saioa): %s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "Batez besteko igoera (Saioa): %s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "Gehienezko deskarga abiadura (Saioa): %s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "Gehienezko igoera abiadura (Saioa): %s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "Batez besteko fitxategi tamaina: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "Ezin da ED2K bilaketarik egin ED2K ez badago konektaturik"
+
+#~ msgid "Error: "
+#~ msgstr "Errorea:"
+
+#~ msgid "Warning: "
+#~ msgstr "Oharra:"
+
+#~ msgid "Search related files (ED2k, local server)"
+#~ msgstr "Zerikusia duten fitxategiak bilatu (ED2k, zerbitzari lokala)"
+
+#~ msgid "Error"
+#~ msgstr "Errorea"
+
+#~ msgid ""
+#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
+#~ "lowid."
+#~ msgstr ""
+#~ "ABISUA: Ezin duzu zure burua ed2k lotura jatorri bezala ezarri id-baxua "
+#~ "duzun bitartean."
+
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "Mesedez ezarri zure bideo erreproduktore lehenetsia ezarpenetan.\n"
+#~ "Bestela, aMule mplayer erabiltzen saiatu eta aurreikuspen bakoitzean mezu "
+#~ "hau bistaraziko da"
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "Errorea: huts part.met fitxategia irekitzerakoan: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "Errorea: part.met fitxategia hutsik dago: %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "Errorea: part.met fitxategi bertsio baliogabea: %s ==> %s"
+
+#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+#~ msgstr ""
+#~ "Errorea: %s (%s) hondaturik dago (marka kopuru okerra) ezin da fitxategia "
+#~ "kargatu."
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "Abisua: %s hondaturik egon liteke (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr "Espero ez zen errorea %s osatzerakoan. Fitxategia gelditurik"
+
+#~ msgid ""
+#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+#~ msgstr ""
+#~ "Kontuz: Ezin da deskargaturiko zatia egiaztatu - '%s' egiaztapen "
+#~ "osatugabea"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr ""
+#~ "Errorea: Ezin da deskargatutako zatia aztertu - azterketa burua ez dago "
+#~ "osorik (%s). Hau ez zen\n"
+#~ "inoiz gertatu beharko"
+
+#~ msgid "Insufficient Diskspace"
+#~ msgstr "Disko leku askieza"
+
+#~ msgid "Warning: known.met cannot be opened."
+#~ msgstr "Oharra: known.met ezin da ireki."
+
+#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
+#~ msgstr ""
+#~ "Abisua: Ezagututako fitxategi zerrenda hondaturik dago, buru baliogabea."
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "ERROREA! %s partekatzen saiatzen"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "ED2K sarea ezgaiturik dago hobespenetan, ez da konektatuko."
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr ""
+#~ "Ez da konektatzeko baliozko zerbitzaririk aurkitu zerbitzari zerrendan"
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "Errorea: Socket baliogabea denboraz kanpo arakatzean"
+
+#~ msgid ""
+#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
+#~ "part.met recovery solutions."
+#~ msgstr ""
+#~ "Errorea: Huts basbeskopia fitxategia irekitzean. Bilatu http://forum."
+#~ "amule.org-en part.met berreskuraketa konponbideetarako."
+
+#~ msgid "Cannot convert magnet link to ed2k: %s"
+#~ msgstr "Ezin da lotura magnetikoa ed2k lotura bihurtu: %s"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "ed2k lotura baliogabea! Errorea: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "Konexio Mugak: Gora: %u kB/s, Behera: %u kB/s.\n"
+
+#~ msgid "Shutdown aMule."
+#~ msgstr "aMule Itzali."
+
+#~ msgid ""
+#~ "Shutdown the remote running core (amule/amuled).\n"
+#~ "This will also shut down the text client, since it is unusable without a\n"
+#~ "running core.\n"
+#~ msgstr ""
+#~ "Urruneko abiaraziriko muina itxi (amule/amuled).\n"
+#~ "Honek testu bezeroa ere itxiko du, ezin bait da abiaraziriko muin bat\n"
+#~ "gabe erabili.\n"
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "ED2K sarera bakarrik konektatu."
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "ED2K saretik bakarrik deskonektatu."
+
+#~ msgid "Adds an ed2k or magnet link to core."
+#~ msgstr "Ed2k edo lotura magnetiko bat gehitu muinera."
+
+#~ msgid ""
+#~ "The ed2k link to be added can be:\n"
+#~ "*) a file link (ed2k://|file|...), it will be added to the download "
+#~ "queue,\n"
+#~ "*) a server link (ed2k://|server|...), it will be added to the server "
+#~ "list,\n"
+#~ "*) or a serverlist link, in which case all servers in the list will be "
+#~ "added to the\n"
+#~ "   server list.\n"
+#~ "\n"
+#~ "The magnet link must contain the ed2k hash and file length.\n"
+#~ msgstr ""
+#~ "Gehitzeko ed2k lotura aukerak:\n"
+#~ "*) fitxategi lotura bat (ed2k://|file|...), berau deskarga hilarara "
+#~ "gehituko da,\n"
+#~ "*) zerbitzari lotura bat (ed2k://|server|...), berau zerbitzari "
+#~ "zerrendara gehituko da,\n"
+#~ "*) edo zerbitzari-zerenda lotura, kasu honetan zerrendako zerbitzari "
+#~ "guztiak\n"
+#~ "   zerbitzari-zerrendara gehitukodira.\n"
+#~ "\n"
+#~ "Lotura magnetikoak ed2k egiaztapena eta fitxategi tamaina eduki behar "
+#~ "ditu.\n"
+
+#~ msgid "Deprecated command, now '%s'."
+#~ msgstr "Zaharkitutako komandoa, orain '%s' erabili."
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "Errorea: %s (%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "Kontuz: %s (%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "Errorea. Disko leku gabe"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "Errorea: Partmet ez da aurkitu"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "Errorea: IO errorea!"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "Errorea Huts egin du!"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "ED2K Lotura: "
+
+#~ msgid ""
+#~ "Click here to add the ed2k link in the text control to your download "
+#~ "queue."
+#~ msgstr ""
+#~ "Klikatu hemen testu kontrolean dagoen ed2k lotura deskarga hilarara "
+#~ "gehitzeko."
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "ED2K emaitza gehiago bilatu. Ez da onartzen Kad-ekin oraindik."
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "Konexio gaitasunak"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "Hau ED2K ataka estandarra da eta ezin da ezgaitu."
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr ""
+#~ "UDP ataka hau Ed2k hedaturiko eskaera eta Kad sarearentzat erabiliko da."
+
+#~ msgid "Hard Limit"
+#~ msgstr "Muga gogorra"
+
+#~ msgid "Connection Limits"
+#~ msgstr "Konexio mugak"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "Eguneratu zerbitzari zerrenda abiaraztean"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "Eguneratu  zerbitzari zerrenda zerbitzari batetara konektatzean"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "Eguneratu  zerbitzari zerrenda bezero bat konektatzerakoan"
+
+#~ msgid "Disk Space"
+#~ msgstr "Disko Tokia"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "Arakatu Disko Tokia"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr "Aukeratu hau zuk Amule-k disko tokia araztea nahi baduzu"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "Gutxienezko Disko Lekua:"
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "Deskarga direktorioa:"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "Aldi baterakoa Direktorioa:"
+
+#~ msgid "Shared Directories"
+#~ msgstr "Partekatutako direktorioak"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "Sortu Babeskopia  aurreikusteko"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "Erakutsi ED2K lastermarka kudeatzaile azkarra"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "Web zerbitzari ezarpenak"
+
+#~ msgid "Webserver port"
+#~ msgstr "Web zerbitzari ataka"
+
+#~ msgid "Enable UPnP port forwarding on the Webserver port"
+#~ msgstr "UPnP ataka berbideraketa gaitu Web zerbitzari atakan"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "Web zerbitzari UPnP TCP ataka"
+
+#~ msgid "Serverlist"
+#~ msgstr "Zerbitzari Zerrenda"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "Zerbitzaria eskuz gehitu: Izena"
+
+#~ msgid "No One"
+#~ msgstr "Inori"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "Abiadura Mugak:"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "Deskargatu Abiadura: %.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "Igo Abiadura: %.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "TCP Ataka: %d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP Ataka: Ez dago prest"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "UDP Ataka: %d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP Ataka: Ez dago prest"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "Partekatutako Fitxategiak: %d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "Hilarako Bezeroak: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "Igoera muga"
+
+#~ msgid "Download Limit"
+#~ msgstr "Deskarga muga"
+
+#~ msgid ""
+#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
+#~ "valid serverlist address into this file in order to auto-update your "
+#~ "serverlist"
+#~ msgstr ""
+#~ "'addresses.dat' fitxategian ez da zerbitzari zerrenda helbiderik aurkitu. "
+#~ "Mesedez itsatsi baliozko zerbitzari zerrenda helbide bat fitxategian "
+#~ "zerbitzari zerenda auto-eguneratzeko"
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr "Abisua, Baliogabeko URL bat ezarria zerbitzariak eguneratzeko: %s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "webzerbitzari abiarazia %d pid-arekin"
+
+#~ msgid ""
+#~ "You requested to run webserver from startup, but the amuleweb binary "
+#~ "cannot be run. Please install the package containing aMule webserver, or "
+#~ "compile aMule using --enable-webserver and run make install"
+#~ msgstr ""
+#~ "Webzerbitzaria abiaraztean exekutatzea eskatu duzu, baina amuleweb "
+#~ "bitarra ezin da abiarazi. Mesedez aMule web zerbitzaria duen paketea "
+#~ "instalatu edo -enable-webserver erabiliaz aMule konpilatu eta make "
+#~ "install abiarazi"
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "ED2K-tik Deskonektatuta"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "Huts 'emfriends.met' lagun fitxategia irakurtzeko irekitzerakoan!"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "Huts 'emfriends.met' lagun fitxategia idazteko irekitzerakoan!"
 
 #~ msgid "ERROR: Failed to open partfile)"
 #~ msgstr "ERROREA: Huts zati fitxategia irekitzerakoan)"
