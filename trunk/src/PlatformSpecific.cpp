@@ -160,9 +160,9 @@ int PlatformSpecific::GetMaxConnections()
 
 static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 {
-	LPWSTR volume = path.GetRaw().wchar_str();
-	bool result = PathStripToRootW(volume);
-	if (!result) {
+	wxWritableWCharBuffer pathRaw(path.GetRaw());
+	LPWSTR volume = pathRaw;
+	if (!PathStripToRootW(volume)) {
 		return PlatformSpecific::fsOther;
 	}
 	PathAddBackslashW(volume);
