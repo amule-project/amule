@@ -416,18 +416,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(IDC_MSGWORD)->Enable(CastChild(IDC_MSGFILTER_WORD, wxCheckBox)->IsChecked());
 	FindWindow(IDC_COMMENTWORD)->Enable(CastChild(IDC_FILTERCOMMENTS, wxCheckBox)->IsChecked());
 
-	// Disable Upnp controls if libraries could not be loaded
-#ifdef ENABLE_UPNP
-		if (!theApp->m_upnp) {
-			FindWindow(IDC_UPNP_ENABLED)->Enable(false);
-			FindWindow(IDC_UPNPTCPPORT)->Enable(false);
-			FindWindow(IDC_UPNP_WEBSERVER_ENABLED)->Enable(false);
-			FindWindow(IDC_WEBUPNPTCPPORT)->Enable(false);
-			FindWindow(IDC_UPNP_EC_ENABLED)->Enable(false);
-			
-		}
-#endif
-
 	// Protocol obfuscation
 	::SendCheckBoxEvent(this, IDC_SUPPORT_PO);
 	::SendCheckBoxEvent(this, IDC_ENABLE_PO_OUTGOING);
