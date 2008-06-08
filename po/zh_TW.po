@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-02 03:30+0200\n"
+"POT-Creation-Date: 2008-06-08 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -30,20 +30,20 @@ msgid "Connection failure"
 msgstr "連接失敗"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
-msgid "EC Connection Failed. Empty reply."
-msgstr "連接外部連接失敗，回複爲空"
+msgid "EC connection failed. Empty reply."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
-msgid "ExternalConn: Access denied because: "
-msgstr "外部連接：訪問被拒絕，原因："
+msgid "External Connection: Access denied because: "
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
-msgid "ExternalConn: Access denied"
-msgstr "外部連接：請求被拒絕"
+msgid "External Connection: Access denied"
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
-msgid "ExternalConn: Bad reply from server. Connection closed."
-msgstr "外部連接：服務器回複錯誤。已斷開連接。"
+msgid "External Connection: Bad reply from server. Connection closed."
+msgstr ""
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -278,8 +278,8 @@ msgid "The name of the file without path component."
 msgstr "不包含路徑部分的文件名。"
 
 #: src/UserEvents.h:71
-msgid "The ed2k hash of the file."
-msgstr "文件的ed2k校驗碼。"
+msgid "The eD2k hash of the file."
+msgstr ""
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -363,8 +363,8 @@ msgstr "完整源"
 msgid "Directory Path"
 msgstr "所在目錄"
 
-#: src/SharedFilesCtrl.cpp:130 src/amuleDlg.cpp:1324 src/Statistics.cpp:727
-#: src/muuli_wdr.cpp:1090 src/muuli_wdr.cpp:3823
+#: src/SharedFilesCtrl.cpp:130 src/Statistics.cpp:727 src/muuli_wdr.cpp:1090
+#: src/muuli_wdr.cpp:3823
 msgid "Shared Files"
 msgstr "分享的檔案"
 
@@ -424,28 +424,28 @@ msgid "Copy magnet &URI to clipboard"
 msgstr "複制 magnet 地址到剪貼板（&U）"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
-msgid "Copy ED2k &link to clipboard"
-msgstr "拷貝 ED2k 連線到剪貼簿 (&l)"
+msgid "Copy eD2k &link to clipboard"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:163
-msgid "Copy ED2k link to clipboard (&Source)"
-msgstr "拷貝 ED2K 連結到剪貼簿 (源)"
+msgid "Copy eD2k link to clipboard (&Source)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:164
-msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-msgstr "複制 ED2K 鏈接到剪貼板 (源) (使用加密選項(&W))"
+msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:165
-msgid "Copy ED2k link to clipboard (&Hostname)"
-msgstr "複制 ED2K 鏈接到剪貼板(主機名(&H))"
+msgid "Copy eD2k link to clipboard (&Hostname)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:166
-msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "複制 ED2K 鏈接到剪貼板(主機名) (使用加密選項(&C))"
+msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:167
-msgid "Copy ED2k link to clipboard (&AICH info)"
-msgstr "複制 ED2K 鏈接到剪貼板(&AICH 信息)"
+msgid "Copy eD2k link to clipboard (&AICH info)"
+msgstr ""
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -462,9 +462,9 @@ msgstr "來自%s(%s)的反饋\n"
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "你需要高ID來產生源連結"
 
-#: src/SharedFilesCtrl.cpp:306 src/KadDlg.cpp:167 src/KadDlg.cpp:173
-#: src/amule.cpp:673
-msgid "Warning"
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/KadDlg.cpp:173 src/amule.cpp:673
+msgid "WARNING"
 msgstr "警告"
 
 #: src/SharedFilesCtrl.cpp:451
@@ -517,16 +517,16 @@ msgstr[0] "已寫入%d個Kad聯繫人"
 msgstr[1] "已寫入%d個Kad聯繫人"
 
 #: src/ListenSocket.cpp:68
-msgid "Error: Could not listen to TCP port."
-msgstr "錯誤：無法監聽TCP端口。"
+msgid "ERROR: Could not listen to TCP port."
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
 msgstr "網頁客戶端連接已被接受\n"
 
 #: src/webserver/src/WebServer.cpp:304
-msgid "Error: can not accept web client connection\n"
-msgstr "錯誤：無法接受網頁客戶端連接\n"
+msgid "ERROR: can not accept web client connection\n"
+msgstr ""
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -598,12 +598,12 @@ msgid "Loads template <str>"
 msgstr "載入模板 <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
-msgid "Webserver HTTP port"
-msgstr "Web 服務器端口"
+msgid "Web server HTTP port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:491
-msgid "Use UPnP port forwarding on webserver port"
-msgstr "在 Web 服務器端口使用 UPnP端口轉發"
+msgid "Use UPnP port forwarding on web server port"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -614,12 +614,12 @@ msgid "Use gzip compression"
 msgstr "使用 gzip 壓縮"
 
 #: src/webserver/src/WebInterface.cpp:507
-msgid "Full access password for webserver"
-msgstr "Web 服務器最高訪問權密碼"
+msgid "Full access password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:511
-msgid "Guest password for webserver"
-msgstr "服務器訪客密碼"
+msgid "Guest password for web server"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -630,8 +630,8 @@ msgid "Deny guest access"
 msgstr "拒絕訪客訪問"
 
 #: src/webserver/src/WebInterface.cpp:523
-msgid "Load/save webserver settings from/to remote aMule"
-msgstr "載入/保存 Web 服務器設置 自/至 遠程 aMule"
+msgid "Load/save web server settings from/to remote aMule"
+msgstr ""
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1039,7 +1039,7 @@ msgid "LowID"
 msgstr "低ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:383 src/MuleTrayIcon.cpp:397 src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:398
 msgid "Not Connected"
 msgstr "未連線"
 
@@ -1097,14 +1097,14 @@ msgid "Add Optional URLs for this file"
 msgstr "添加附加URL到該文件"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
-msgid "Enter here the file you want to compute the Ed2k link"
-msgstr "輸入需要産生ED2K鏈接的文件"
+msgid "Enter here the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
-"Enter here the URL you want to add to the Ed2k link: Add / at the end to let "
+"Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr "在這裏輸入添加到ED2K鏈接的URL。在結尾加'/'以便添加後綴文件名"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1135,12 +1135,12 @@ msgid "MD4 File Hash"
 msgstr "MD4 文件校檢碼"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
-msgid "Ed2k File Hash"
-msgstr "ED2K 文件校檢碼"
+msgid "eD2k File Hash"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
-msgid "Ed2k link"
-msgstr "ED2k 鏈接"
+msgid "eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1159,16 +1159,16 @@ msgid "Exit"
 msgstr "離開"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
-msgid "Open a file to compute its ed2k link"
-msgstr "打開文件以計算它的ED2K鏈接"
+msgid "Open a file to compute its eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
-msgid "Copy computed ed2k link to clipboard"
-msgstr "拷貝ED2K鏈接到剪貼板"
+msgid "Copy computed eD2k link to clipboard"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
-msgid "Save computed ed2k link to file"
-msgstr "保存ED2K鏈接到文件"
+msgid "Save computed eD2k link to file"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1176,16 +1176,16 @@ msgid "About aLinkCreator"
 msgstr "關于 aLinkCreator"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
-msgid "Select the file you want to compute the ed2k link"
-msgstr "選擇要産生ED2K鏈接的文件"
+msgid "Select the file you want to compute the eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
 msgstr "暫時沒有東西可拷貝！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
-msgid "Select the file to your computed ed2k link"
-msgstr "請選擇要計算ED2K鏈接的文件"
+msgid "Select the file to your computed eD2k link"
+msgstr ""
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1202,7 +1202,7 @@ msgstr "暫時沒有東西可保存！"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:466
 msgid ""
-"aLinkCreator, the aMule ed2k link creator\n"
+"aLinkCreator, the aMule eD2k link creator\n"
 "\n"
 "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
 "\n"
@@ -1211,14 +1211,6 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
-"aLinkCreator, 用于創建 ed2k 鏈接\n"
-"\n"
-"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-"\n"
-"Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-"and http://jimmac.musichall.cz/ikony.php3\n"
-"\n"
-"基于 GPL 協議發布"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1258,8 +1250,8 @@ msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> 文件不存在！\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
-msgid "aLinkCreator, the aMule ed2k link creator"
-msgstr "aLinkCreator, aMule ED2K 鏈接生成器"
+msgid "aLinkCreator, the aMule eD2k link creator"
+msgstr ""
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1654,12 +1646,12 @@ msgid "Remove all servers"
 msgstr "移除所有伺服器"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
-msgid "Copy ED2k link to clipboard"
-msgstr "拷貝 ED2K 連結到剪貼簿"
+msgid "Copy eD2k link to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:449
-msgid "Copy ED2k links to clipboard"
-msgstr "拷貝 ED2K 連結到剪貼簿"
+msgid "Copy eD2k links to clipboard"
+msgstr ""
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1697,8 +1689,8 @@ msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "請訪問 http://www.amule.org 以下載最新版本"
 
 #: src/amuleDlg.cpp:246
-msgid "Fatal Error: Failed to create Timer"
-msgstr "嚴重錯誤: 無法建立計時器"
+msgid "FATAL ERROR: Failed to create Timer"
+msgstr ""
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1767,12 +1759,12 @@ msgid "Status text"
 msgstr "狀態"
 
 #: src/amuleDlg.cpp:684
-msgid "ED2K: Connecting"
-msgstr "ED2K：正在連線"
+msgid "eD2k: Connecting"
+msgstr ""
 
 #: src/amuleDlg.cpp:688
-msgid "ED2K: Disconnected"
-msgstr "ED2K：連線已斷"
+msgid "eD2k: Disconnected"
+msgstr ""
 
 #: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
@@ -1850,46 +1842,50 @@ msgstr "皮膚目錄 '%s' 不存在"
 
 #: src/amuleDlg.cpp:1212
 #, c-format
-msgid "Warning: Unable to open skin file '%s' for read"
-msgstr "警告：無法打開皮膚文件 '%s'"
+msgid "WARNING: Unable to open skin file '%s' for read"
+msgstr ""
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
 msgid "Networks"
 msgstr "網絡"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3819
-msgid "Networks Window"
-msgstr "網絡窗口"
+#: src/amuleDlg.cpp:1314
+msgid "Networks window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
 msgstr "搜尋"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3820
-msgid "Searches Window"
-msgstr "搜尋視窗"
+#: src/amuleDlg.cpp:1318
+msgid "Searches window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
 msgstr "傳輸檔案"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3821
-msgid "Files Transfers Window"
-msgstr "檔案傳送視窗"
+#: src/amuleDlg.cpp:1322
+msgid "Files transfers window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1326 src/muuli_wdr.cpp:3823
-msgid "Shared Files Window"
-msgstr "分享的檔案視窗"
+#: src/amuleDlg.cpp:1324
+msgid "Shared files"
+msgstr ""
+
+#: src/amuleDlg.cpp:1326
+msgid "Shared files window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
 msgid "Messages"
 msgstr "訊息"
 
-#: src/amuleDlg.cpp:1330 src/muuli_wdr.cpp:3824
-msgid "Messages Window"
-msgstr "訊息視窗"
+#: src/amuleDlg.cpp:1330
+msgid "Messages window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1897,13 +1893,13 @@ msgstr "訊息視窗"
 msgid "Statistics"
 msgstr "統計"
 
-#: src/amuleDlg.cpp:1334 src/muuli_wdr.cpp:3825
-msgid "Statistics Graph Window"
-msgstr "統計圖像視窗"
+#: src/amuleDlg.cpp:1334
+msgid "Statistics graph window"
+msgstr ""
 
-#: src/amuleDlg.cpp:1339 src/muuli_wdr.cpp:3827
-msgid "Preferences Settings Window"
-msgstr "設定視窗"
+#: src/amuleDlg.cpp:1339
+msgid "Preferences settings window"
+msgstr ""
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1922,8 +1918,8 @@ msgid "About/Help"
 msgstr "關于/幫助"
 
 #: src/amuleDlg.cpp:1484
-msgid "ed2k network"
-msgstr "ed2k 網絡"
+msgid "eD2k network"
+msgstr ""
 
 #: src/amuleDlg.cpp:1488
 msgid "Kad network"
@@ -2002,11 +1998,9 @@ msgstr "- UDP 端口已更改。\n"
 
 #: src/PrefsUnifiedDlg.cpp:531
 msgid ""
-"Your Auto-update servers list is in blank.\n"
-"'Auto-update serverlist at startup' will be disabled."
+"Your Auto-update server list is empty.\n"
+"'Auto-update server list at startup will be disabled."
 msgstr ""
-"自動更新服務器列表空白。\n"
-"自動更新服務器已被禁用。"
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2030,11 +2024,9 @@ msgstr "上傳: 0.0 | 下載: 0.0"
 
 #: src/PrefsUnifiedDlg.cpp:622
 msgid ""
-"Both ED2K and Kad network are disabled.\n"
+"Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
-"ED2K 和 Kad 網絡都已被禁用，\n"
-"你至少必須啓用其中的一項才能連接。"
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2053,10 +2045,6 @@ msgstr ""
 "\n"
 "你必須現在重啓aMule，\n"
 "如果現在不重啓的話，出現任何問題可別怪別人。\n"
-
-#: src/PrefsUnifiedDlg.cpp:635
-msgid "WARNING"
-msgstr "警告"
 
 #: src/PrefsUnifiedDlg.cpp:713
 msgid ""
@@ -2099,8 +2087,8 @@ msgid "Executable%s"
 msgstr "可執行%s"
 
 #: src/PrefsUnifiedDlg.cpp:928
-msgid "Edit Serverlist"
-msgstr "編輯伺服器清單"
+msgid "Edit server list"
+msgstr ""
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2207,8 +2195,8 @@ msgid "New external connection accepted"
 msgstr "接受了新的外部連接"
 
 #: src/ExternalConn.cpp:221
-msgid "Error: couldn't accept a new external connection"
-msgstr "錯誤: 無法接受外來連接"
+msgid "ERROR: couldn't accept a new external connection"
+msgstr ""
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2284,8 +2272,8 @@ msgid "need to define server to be removed"
 msgstr "必須定義需刪除的服務器"
 
 #: src/ExternalConn.cpp:708
-msgid "ED2K is disabled in preferences."
-msgstr "ED2K 在設置中被禁用了。"
+msgid "eD2k is disabled in preferences."
+msgstr ""
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2308,8 +2296,8 @@ msgid "Your client is not configured for this detail level."
 msgstr "你的客戶端沒有爲詳細級別進行配置。"
 
 #: src/ExternalConn.cpp:1058
-msgid "ExternalConn: shutdown requested"
-msgstr "外部連接：收到關機請求"
+msgid "External Connection: shutdown requested"
+msgstr ""
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2337,12 +2325,12 @@ msgid "Unable to rename file."
 msgstr "無法重命名文件。"
 
 #: src/ExternalConn.cpp:1406
-msgid "Already connected to ED2K."
-msgstr "已連接至 ED2K。"
+msgid "Already connected to eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1409
-msgid "Connecting to ED2K..."
-msgstr "正在連接至 ED2K..."
+msgid "Connecting to eD2k..."
+msgstr ""
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2357,8 +2345,8 @@ msgid "All networks are disabled."
 msgstr "全部網絡都被禁用了。"
 
 #: src/ExternalConn.cpp:1433
-msgid "Disconnected from ED2K."
-msgstr "斷開 ED2K。"
+msgid "Disconnected from eD2k."
+msgstr ""
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2366,8 +2354,8 @@ msgstr "斷開 Kad。"
 
 #: src/ExternalConn.cpp:1445
 #, c-format
-msgid "ExternalConn: invalid opcode received: %#x"
-msgstr "外部連接：收到錯誤的操作碼：%#x"
+msgid "External Connection: invalid opcode received: %#x"
+msgstr ""
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2397,8 +2385,8 @@ msgid "Server not added: Invalid server-port specified."
 msgstr "沒有添加服務器： 服務器端口無效"
 
 #: src/ServerWnd.cpp:162
-msgid "ED2K Status:"
-msgstr "ED2K 狀態："
+msgid "eD2k Status:"
+msgstr ""
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2564,23 +2552,23 @@ msgstr "本次上傳下載比率：%s"
 
 #: src/Statistics.cpp:689
 #, c-format
-msgid "Average Downloadrate (Session): %s"
-msgstr "平均下載速度(本次運行)：%s"
+msgid "Average download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:690
 #, c-format
-msgid "Average Uploadrate (Session): %s"
-msgstr "平均上傳速度(本次運行)：%s"
+msgid "Average upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:691
 #, c-format
-msgid "Max Downloadrate (Session): %s"
-msgstr "最大下載速度(本次運行)：%s"
+msgid "Max download rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:692
 #, c-format
-msgid "Max Uploadrate (Session): %s"
-msgstr "最大上傳速度(本次運行)：%s"
+msgid "Max upload rate (Session): %s"
+msgstr ""
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2696,8 +2684,8 @@ msgstr "分享的檔案總和: %s"
 
 #: src/Statistics.cpp:731
 #, c-format
-msgid "Average filesize: %s"
-msgstr "平均檔案大小: %s"
+msgid "Average file size: %s"
+msgstr ""
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2728,8 +2716,8 @@ msgid "Kad search can't be done if Kad is not running"
 msgstr "Kad 搜索不能使用，因爲 Kad 沒有連接"
 
 #: src/SearchList.cpp:294
-msgid "ED2K search can't be done if ED2K is not connected"
-msgstr "ED2k 搜索不能使用，因爲 ED2K 沒有連接"
+msgid "eD2k search can't be done if eD2k is not connected"
+msgstr ""
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2837,12 +2825,12 @@ msgid "Continue?"
 msgstr "繼續？"
 
 #: src/Logger.cpp:270
-msgid "Error: "
-msgstr "錯誤："
+msgid "ERROR: "
+msgstr ""
 
 #: src/Logger.cpp:270
-msgid "Warning: "
-msgstr "警告："
+msgid "WARNING: "
+msgstr ""
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2889,8 +2877,8 @@ msgid "Download in category"
 msgstr "下載分類"
 
 #: src/SearchListCtrl.cpp:582
-msgid "Search related files (ED2k, local server)"
-msgstr "搜索相關文件（ED2K，本地服務器）"
+msgid "Search related files (eD2k, local server)"
+msgstr ""
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2907,14 +2895,14 @@ msgstr "連接失敗"
 #: src/amule-remote-gui.cpp:289 src/OtherFunctions.cpp:122
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
-msgid "Error"
-msgstr "錯誤"
+msgid "ERROR"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
-"WARNING: You can't add yourself as a source for a ed2k link while being "
+"WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
-msgstr "警告：在低ID的情況下，你不能添加你自己作爲 ed2k 鏈接的源"
+msgstr ""
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3088,12 +3076,9 @@ msgstr "下載 (%i)"
 
 #: src/DownloadListCtrl.cpp:2254
 msgid ""
-"Please set your preferred video player on preferences.\n"
-"Meanwhile, aMule will attempt to use mplayer and you will get this warning "
-"on every preview"
+"To prevent this warning to show up in every preview,\n"
+"set your preferred video player in preferences (default is mplayer)."
 msgstr ""
-"請設置您的動畫播放器。\n"
-"aMule會嘗試使用mplayer。這個提示會在每次預覽時出現 "
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3115,23 +3100,23 @@ msgstr "嘗試使用met-file備份文件 %s"
 
 #: src/PartFile.cpp:334
 #, c-format
-msgid "Error: Failed to open part.met file: %s ==> %s"
-msgstr "錯誤: 無法打開 part.met 文件: %s ==> %s"
+msgid "ERROR: Failed to open part.met file: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:340
 #, c-format
-msgid "Error: part.met file is 0 size: %s ==> %s"
-msgstr "錯誤: part.met 文件長度爲0 : %s ==> %s"
+msgid "ERROR: part.met file is 0 size: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:351
 #, c-format
-msgid "Error: Invalid part.met fileversion: %s ==> %s"
-msgstr "錯誤: 無效 part.met 文件版本: %s ==> %s"
+msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
+msgstr ""
 
 #: src/PartFile.cpp:601
 #, c-format
-msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "錯誤: 文件 %s (%s) 已損壞(標簽數不對)，無法讀取文件"
+msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
+msgstr ""
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3156,8 +3141,8 @@ msgstr "無法讀取 %s (%s)"
 
 #: src/PartFile.cpp:708
 #, c-format
-msgid "Warning: %s might be corrupted (%i)"
-msgstr "警告: %s 可能已損壞 (%i)"
+msgid "WARNING: %s might be corrupted (%i)"
+msgstr ""
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3226,8 +3211,8 @@ msgstr "完成了檢驗碼生成 %s"
 
 #: src/PartFile.cpp:2242
 #, c-format
-msgid "Unexpected file error while completing %s. File paused"
-msgstr "在完成檔案 %s 時遇到意外性檔案錯誤. 檔案已暫停"
+msgid "Unexpected error while completing %s. File paused"
+msgstr ""
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3241,15 +3226,15 @@ msgstr "刪除文件: %s "
 
 #: src/PartFile.cpp:2386
 #, c-format
-msgid "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "警告: 無法爲已下載的數據段計算校檢碼 - 校檢碼集殘缺 '%s'"
+msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
+msgstr ""
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
-"Error: Unable to hash downloaded part - hashset incomplete (%s). This should "
+"ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "警告: 無法生成檢驗碼 - 檢驗碼殘缺 (%s). 正常情況下這是不應該發生的"
+msgstr ""
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3271,8 +3256,8 @@ msgid "Allocating"
 msgstr "正在分配"
 
 #: src/PartFile.cpp:3861
-msgid "Insufficient Diskspace"
-msgstr "硬盤空間不足"
+msgid "Insufficient disk space"
+msgstr ""
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3288,12 +3273,12 @@ msgid "ERROR: Failed to open partfile '%s'"
 msgstr "錯誤：打開part文件'%s'失敗"
 
 #: src/KnownFileList.cpp:79
-msgid "Warning: known.met cannot be opened."
-msgstr "警告：know.net文件無法打開。"
+msgid "WARNING: known.met cannot be opened."
+msgstr ""
 
 #: src/KnownFileList.cpp:86
-msgid "Warning: Knownfile list corrupted, contains invalid header."
-msgstr "警告：已知文件列表已損壞，文件頭無效"
+msgid "WARNING: Knownfile list corrupted, contains invalid header."
+msgstr ""
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3321,8 +3306,8 @@ msgstr[1] "發現 %i 已知分享的檔案, %i 不名"
 
 #: src/SharedFileList.cpp:367
 #, c-format
-msgid "ERROR! Attempted to share %s"
-msgstr "錯誤！試圖共享 %s"
+msgid "ERROR: Attempted to share %s"
+msgstr ""
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3358,12 +3343,12 @@ msgid "Failed to connect to all servers listed. Making another pass."
 msgstr "無法連線清單中的所有伺服器. 開始新的一輪嘗試."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
-msgid "ED2K network disabled on preferences, not connecting."
-msgstr "ED2K網絡在設置被禁用，沒有連接。"
+msgid "eD2k network disabled on preferences, not connecting."
+msgstr ""
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
-msgid "No valid servers to connect in serverlist found"
-msgstr "伺服器清單中沒有有效伺服器可供連線"
+msgid "No valid servers to which to connect found in server list"
+msgstr ""
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3411,8 +3396,8 @@ msgid "Connecting to %s (%s:%i) failed."
 msgstr "連接失敗 %s (%s:%i)"
 
 #: src/ServerConnect.cpp:450
-msgid "Error: Socket invalid at timeoutcheck"
-msgstr "錯誤: 接口無效"
+msgid "ERROR: Socket invalid at timeout check"
+msgstr ""
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3421,11 +3406,9 @@ msgstr "連接超時 %s (%s:%i)"
 
 #: src/DownloadQueue.cpp:160
 msgid ""
-"Error: Failed to load backup file. Search http://forum.amule.org for .part."
+"ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
-"錯誤：載入備份文件失敗！請到http://forum.amule.org搜索.part和.met文件的恢復方"
-"法。"
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3468,8 +3451,8 @@ msgstr "您已經在下載檔案 %s"
 
 #: src/DownloadQueue.cpp:1309
 #, c-format
-msgid "Cannot convert magnet link to ed2k: %s"
-msgstr "無法轉換magnet連接至ed2k：%s"
+msgid "Cannot convert magnet link to eD2k: %s"
+msgstr ""
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3478,8 +3461,8 @@ msgstr "未知連接協議：%s"
 
 #: src/DownloadQueue.cpp:1338
 #, c-format
-msgid "Invalid ed2k link! Error: %s"
-msgstr "無效 ed2k 鏈接! 錯誤: %s"
+msgid "Invalid eD2k link! ERROR: %s"
+msgstr ""
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3549,12 +3532,12 @@ msgstr "當前IP過濾級別時 %d.\n"
 
 #: src/TextClient.cpp:671
 #, c-format
-msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr "帶寬限制：上傳: %u kB/s, 下載: %u kB/s.\n"
+msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
+msgstr ""
 
-#: src/TextClient.cpp:689 src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
-msgid "ED2K"
-msgstr "ED2K"
+#: src/TextClient.cpp:689
+msgid "eD2k"
+msgstr ""
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3573,7 +3556,8 @@ msgstr "有高ID"
 msgid "Now connecting"
 msgstr "正在連接"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
+#: src/MuleTrayIcon.cpp:397
 msgid "Not connected"
 msgstr "未連接"
 
@@ -3656,17 +3640,15 @@ msgstr ""
 "示例： 'statistics 5' 將顯示每個客戶端軟件的5個版本。\n"
 
 #: src/TextClient.cpp:848
-msgid "Shutdown aMule."
-msgstr "關閉aMule。"
+msgid "Shut down aMule."
+msgstr ""
 
 #: src/TextClient.cpp:849
 msgid ""
-"Shutdown the remote running core (amule/amuled).\n"
+"Shut down the remote running core (amule/amuled).\n"
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
-"關閉遠程運行核心程序（amule/amuled）。\n"
-"這也將關閉文本客戶端，直至沒有一個在運行的核心可用。\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3698,8 +3680,8 @@ msgstr ""
 "或者是可以解析的DNS名稱。"
 
 #: src/TextClient.cpp:857
-msgid "Connect to ED2K only."
-msgstr "只連接ED2K。"
+msgid "Connect to eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3714,35 +3696,28 @@ msgid "This will disconnect from all networks that are currently connected.\n"
 msgstr "這將斷開當前已連接的全部網絡。\n"
 
 #: src/TextClient.cpp:862
-msgid "Disconnect from ED2K only."
-msgstr "只斷開ED2K連接。"
+msgid "Disconnect from eD2k only."
+msgstr ""
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
 msgstr "只斷開Kad連接。"
 
 #: src/TextClient.cpp:865
-msgid "Adds an ed2k or magnet link to core."
-msgstr "添加一個ed2k或magnet連接至核心。"
+msgid "Adds an eD2k or magnet link to core."
+msgstr ""
 
 #: src/TextClient.cpp:866
 msgid ""
-"The ed2k link to be added can be:\n"
+"The eD2k link to be added can be:\n"
 "*) a file link (ed2k://|file|...), it will be added to the download queue,\n"
 "*) a server link (ed2k://|server|...), it will be added to the server list,\n"
 "*) or a serverlist link, in which case all servers in the list will be added "
 "to the\n"
 "   server list.\n"
 "\n"
-"The magnet link must contain the ed2k hash and file length.\n"
+"The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
-"添加的 ed2k 鏈接可以是：\n"
-"*) 文件鏈接（ed2k://|file|..），將添加至下載隊列，\n"
-"*) 服務器鏈接（ed2k://|server|...），將添加至服務器列表，\n"
-"*) 或服務器列表鏈接，這種情況將添加此列表中的所有服務器至服務器列表。\n"
-"\n"
-"\n"
-"magnet 鏈接必須包含 ed2k 校驗碼和文件大小。\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -3965,8 +3940,8 @@ msgstr "重設日志。"
 
 #: src/TextClient.cpp:952
 #, c-format
-msgid "Deprecated command, now '%s'."
-msgstr "已廢棄的命令，現用'%s'。"
+msgid "Deprecated command, use '%s' instead."
+msgstr ""
 
 #: src/TextClient.cpp:953
 #, c-format
@@ -3981,13 +3956,13 @@ msgstr "theApp->serverlist->GetServerByAddress() 返回了  NULL"
 
 #: src/ServerSocket.cpp:259
 #, c-format
-msgid "Error: %s (%s) - %s"
-msgstr "錯誤: %s (%s) - %s"
+msgid "ERROR: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:274
 #, c-format
-msgid "Warning: %s (%s) - %s"
-msgstr "警告：%s (%s) - %s"
+msgid "WARNING: %s (%s) - %s"
+msgstr ""
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4205,20 +4180,20 @@ msgid "In progress"
 msgstr "正在處理"
 
 #: src/PartFileConvert.cpp:613
-msgid "Error: Out of diskspace"
-msgstr "錯誤：磁盤空間不足"
+msgid "ERROR: Out of diskspace"
+msgstr ""
 
 #: src/PartFileConvert.cpp:614
-msgid "Error: Partmet not found"
-msgstr "錯誤：partmet文件未找到"
+msgid "ERROR: Partmet not found"
+msgstr ""
 
 #: src/PartFileConvert.cpp:615
-msgid "Error: IO error!"
-msgstr "錯誤：IO錯誤！"
+msgid "ERROR: IO error!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:616
-msgid "Error: Failed!"
-msgstr "錯誤：失敗！"
+msgid "ERROR: Failed!"
+msgstr ""
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4428,8 +4403,8 @@ msgid "%.2f%% done"
 msgstr "%.2f%% 已完成"
 
 #: src/muuli_wdr.cpp:69
-msgid "ED2K Link: "
-msgstr "ED2K 鏈接："
+msgid "eD2k Link: "
+msgstr ""
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4437,8 +4412,8 @@ msgstr "確定"
 
 #: src/muuli_wdr.cpp:77
 msgid ""
-"Click here to add the ed2k link in the text control to your download queue."
-msgstr "請點擊這裏把輸入的ED2K鏈接加入下載隊列。"
+"Click here to add the eD2k link in the text control to your download queue."
+msgstr ""
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4569,8 +4544,8 @@ msgid "More"
 msgstr "其他"
 
 #: src/muuli_wdr.cpp:352
-msgid "Searches for more results on ED2K. Not supported for Kad yet."
-msgstr "在 ED2K 上搜索更多結果，咱不支持 Kad"
+msgid "Searches for more results on eD2k. Not supported for Kad yet."
+msgstr ""
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -4595,10 +4570,6 @@ msgstr "顯示上傳/隊列"
 #: src/muuli_wdr.cpp:469
 msgid "Clients on queue :"
 msgstr "等候長度 :"
-
-#: src/muuli_wdr.cpp:472
-msgid "0"
-msgstr "0"
 
 #: src/muuli_wdr.cpp:536
 msgid "Send"
@@ -5074,8 +5045,8 @@ msgid "Open the web page in a new tab instead of in a new window when possible"
 msgstr "如果可能的話在新的分頁中打開而不是新的窗口"
 
 #: src/muuli_wdr.cpp:1743
-msgid "Bandwith Limits"
-msgstr "頻寬限制"
+msgid "Bandwith limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5102,16 +5073,16 @@ msgid "Standard client TCP Port:"
 msgstr "標准客戶端 TCP 端口"
 
 #: src/muuli_wdr.cpp:1831
-msgid "This is the standard ED2K port and cannot be disabled."
-msgstr "這是標准 ED2K 端口，不能被禁用"
+msgid "This is the standard eD2k port and cannot be disabled."
+msgstr ""
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
 msgstr "擴展客戶端 UDP 端口"
 
 #: src/muuli_wdr.cpp:1840
-msgid "This UDP port is used for extended Ed2K requests and Kad network"
-msgstr "此 UDP 端口用于擴展的 Ed2k 請求和 Kad 網絡"
+msgid "This UDP port is used for extended ed2k requests and Kad network"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5130,16 +5101,20 @@ msgid "Max Sources per File"
 msgstr "單個檔案最大源數"
 
 #: src/muuli_wdr.cpp:1873
-msgid "Hard Limit"
-msgstr "絕對上限"
+msgid "Hard limit"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1883
-msgid "Connection Limits"
-msgstr "連線限制"
+msgid "Connection limits"
+msgstr ""
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
 msgstr "最大連線數"
+
+#: src/muuli_wdr.cpp:1912 src/muuli_wdr.cpp:3756
+msgid "ED2K"
+msgstr "ED2K"
 
 #: src/muuli_wdr.cpp:1919
 msgid "Kademlia"
@@ -5182,20 +5157,20 @@ msgid "retries"
 msgstr "次連線失敗"
 
 #: src/muuli_wdr.cpp:2001
-msgid "Auto-update serverlist at startup"
-msgstr "啟動后自動更新伺服器清單"
+msgid "Auto-update server list at startup"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
 msgstr "清單"
 
 #: src/muuli_wdr.cpp:2009
-msgid "Update serverlist when connecting to a server"
-msgstr "與伺服器連線時更新伺服器清單"
+msgid "Update server list when connecting to a server"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2012
-msgid "Update serverlist when a client connect"
-msgstr "與其它使用者連線時更新伺服器清單"
+msgid "Update server list when a client connects"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5258,20 +5233,20 @@ msgid "Save 10 sources on rare files (< 20 sources)"
 msgstr "保存稀有文件（少于20個源）的10個源"
 
 #: src/muuli_wdr.cpp:2105
-msgid "Disk Space"
-msgstr "硬碟空間"
+msgid "Disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2108
-msgid "Check Disk Space"
-msgstr "檢查硬碟空間"
+msgid "Check disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2109
-msgid "Select this if you want aMule to check your Disk Space"
-msgstr "這個選項使aMule檢查硬碟空間"
+msgid "Select this if you want aMule to check your disk space"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2116
-msgid "Min Disk Space:"
-msgstr "最低磁盤空間："
+msgid "Min disk space:"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5288,16 +5263,16 @@ msgid ""
 msgstr "為新文件分配全部所需的磁盤空間，這樣可以減少碎片"
 
 #: src/muuli_wdr.cpp:2158
-msgid "Incoming Directory :"
-msgstr "接收資料夾 :"
+msgid "Incoming"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2169
-msgid "Temporary Directory :"
-msgstr "暫時檔案夾"
+msgid "Temporary"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2180
-msgid "Shared Directories"
-msgstr "共享的資料夾"
+msgid "Shared"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5312,8 +5287,8 @@ msgid "Video Player"
 msgstr "影片播放器"
 
 #: src/muuli_wdr.cpp:2209
-msgid "Create Backup to preview"
-msgstr "預覽前備份檔案"
+msgid "Create Backup for preview"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5493,8 +5468,8 @@ msgid "Misc Gui Tweaks"
 msgstr "使用者界面特殊設定"
 
 #: src/muuli_wdr.cpp:2479
-msgid "Show Fast ED2K Links Handler"
-msgstr "顯示快捷 ED2K 連結處理"
+msgid "Show Fast eD2k Links Handler"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5517,24 +5492,24 @@ msgid "Remote Control"
 msgstr "遠程控制"
 
 #: src/muuli_wdr.cpp:2523
-msgid "Webserver Parameters"
-msgstr "Web 伺服器參數"
+msgid "Web server parameters"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
 msgstr "開啓時運行 Web 服務器"
 
 #: src/muuli_wdr.cpp:2531
-msgid "Webserver port"
-msgstr "Web 伺服器連接埠"
+msgid "Web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2539
-msgid "Enable UPnP port forwarding on the Webserver port"
-msgstr "在 Web 服務器端口上啓動 UPnP 端口轉發"
+msgid "Enable UPnP port forwarding on the web server port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2544
-msgid "Webserver UPnP TCP port"
-msgstr "Web 服務器 UPnP TCP 端口"
+msgid "Web server UPnP TCP port"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5647,7 +5622,7 @@ msgid "Click on this button to update the servers list from URL ..."
 msgstr "按此按鈕從該網址更新伺服器清單 ..."
 
 #: src/muuli_wdr.cpp:2899
-msgid "Serverlist"
+msgid "Server list"
 msgstr "伺服器清單"
 
 #: src/muuli_wdr.cpp:2904
@@ -5657,8 +5632,8 @@ msgid ""
 msgstr "輸入server.met文件的URL然後按這個按鈕更新服務器列表。"
 
 #: src/muuli_wdr.cpp:2911
-msgid "Manual Server Add : Name"
-msgstr "加入伺服器: 名稱"
+msgid "Add server manually: Name"
+msgstr ""
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5676,7 +5651,7 @@ msgstr "請輸入服務器端口"
 msgid "Add manually a server (fill fields to the left before) ..."
 msgstr "手動加入新伺服器 (添入左側空格) ..."
 
-#: src/muuli_wdr.cpp:2979 src/muuli_wdr.cpp:3163
+#: src/muuli_wdr.cpp:2979
 msgid "ED2K Info"
 msgstr "ED2K 信息"
 
@@ -5728,6 +5703,10 @@ msgstr "從已知客戶端啓動"
 msgid "Disconnect Kad"
 msgstr "斷開 Kad"
 
+#: src/muuli_wdr.cpp:3163
+msgid "eD2k Info"
+msgstr ""
+
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
 msgstr "模糊協議"
@@ -5772,8 +5751,8 @@ msgid "Everybody"
 msgstr "任何人都可以"
 
 #: src/muuli_wdr.cpp:3221
-msgid "No One"
-msgstr "任何人都不可以"
+msgid "No one"
+msgstr ""
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6049,6 +6028,34 @@ msgstr "事件類型"
 #: src/muuli_wdr.cpp:3817
 msgid "Connect to any server and/or Kad"
 msgstr "連接至任何服務器 和/或 Kad"
+
+#: src/muuli_wdr.cpp:3819
+msgid "Networks Window"
+msgstr "網絡窗口"
+
+#: src/muuli_wdr.cpp:3820
+msgid "Searches Window"
+msgstr "搜尋視窗"
+
+#: src/muuli_wdr.cpp:3821
+msgid "Files Transfers Window"
+msgstr "檔案傳送視窗"
+
+#: src/muuli_wdr.cpp:3823
+msgid "Shared Files Window"
+msgstr "分享的檔案視窗"
+
+#: src/muuli_wdr.cpp:3824
+msgid "Messages Window"
+msgstr "訊息視窗"
+
+#: src/muuli_wdr.cpp:3825
+msgid "Statistics Graph Window"
+msgstr "統計圖像視窗"
+
+#: src/muuli_wdr.cpp:3827
+msgid "Preferences Settings Window"
+msgstr "設定視窗"
 
 #: src/CatDialog.cpp:87
 msgid "New Category"
@@ -6466,8 +6473,8 @@ msgid "aMule Tray Menu"
 msgstr "aMule 狀態列 選單"
 
 #: src/MuleTrayIcon.cpp:336
-msgid "Speed Limits:"
-msgstr "速度限制"
+msgid "Speed limits:"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6489,13 +6496,13 @@ msgstr "下載: %u"
 
 #: src/MuleTrayIcon.cpp:358
 #, c-format
-msgid "Download Speed: %.1f"
-msgstr "下載速度：%.1f"
+msgid "Download speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
-msgid "Upload Speed: %.1f"
-msgstr "上傳速度：%.1f"
+msgid "Upload speed: %.1f"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6529,21 +6536,21 @@ msgstr "IP: %s"
 
 #: src/MuleTrayIcon.cpp:415
 #, c-format
-msgid "TCP Port: %d"
-msgstr "TCP 端口：%d"
+msgid "TCP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:417
-msgid "TCP Port: Not Ready"
-msgstr "TCP 連接埠︰未就緒"
+msgid "TCP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
-msgid "UDP Port: %d"
-msgstr "UDP 端口：%d"
+msgid "UDP port: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:428
-msgid "UDP Port: Not Ready"
-msgstr "UDP 連接埠︰未就緒"
+msgid "UDP port: Not ready"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6555,13 +6562,13 @@ msgstr "線上簽名: 停用"
 
 #: src/MuleTrayIcon.cpp:453
 #, c-format
-msgid "Shared Files: %d"
-msgstr "已共享的文件：%d"
+msgid "Shared files: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
-msgid "Queued Clients: %d"
-msgstr "隊列中用戶: %d"
+msgid "Queued clients: %d"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6574,12 +6581,12 @@ msgid "Total UL: %s"
 msgstr "總上傳: %s"
 
 #: src/MuleTrayIcon.cpp:484
-msgid "Upload Limit"
-msgstr "上傳限制"
+msgid "Upload limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:488
-msgid "Download Limit"
-msgstr "下載限制"
+msgid "Download limit"
+msgstr ""
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6701,11 +6708,9 @@ msgstr "無法從 %s 下載服務器列表"
 
 #: src/ServerList.cpp:817
 msgid ""
-"No serverlist address entry in 'addresses.dat' found. Please paste a valid "
-"serverlist address into this file in order to auto-update your serverlist"
+"No server list address entry in 'addresses.dat' found. Please paste a valid "
+"server list address into this file in order to auto-update your server list"
 msgstr ""
-"'addresses.dat' 檔案內沒有伺服器清單位址. 請貼上一個有效伺服器清單位址到該文"
-"件以自動更新伺服器清單."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6714,8 +6719,8 @@ msgstr "正在開始從%s下載服務器列表"
 
 #: src/ServerList.cpp:839
 #, c-format
-msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-msgstr "警告，該自動更新URL無效：%s"
+msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
+msgstr ""
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6752,18 +6757,15 @@ msgstr "服務器列表已下載"
 
 #: src/amule.cpp:844
 #, c-format
-msgid "webserver running on pid %d"
-msgstr "Web 服務器正在運行，pid 是 %d"
+msgid "web server running on pid %d"
+msgstr ""
 
 #: src/amule.cpp:848
 msgid ""
-"You requested to run webserver from startup, but the amuleweb binary cannot "
-"be run. Please install the package containing aMule webserver, or compile "
+"You requested to run web server on startup, but the amuleweb binary cannot "
+"be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
-"您要求啓動時運行 Web 服務器，但 amuleweb 程序無法運行。請先安裝包含 aMule "
-"Web 服務器的 aMule 版本，或者使用 --enable-webserver選項編譯 aMule，然後運行 "
-"make install進行安裝"
 
 #: src/amule.cpp:938
 #, c-format
@@ -6964,8 +6966,8 @@ msgid "Connecting to %s"
 msgstr "正在連接到 %s"
 
 #: src/amule.cpp:2105
-msgid "Disconnected from ED2K"
-msgstr "已斷開 ED2K"
+msgid "Disconnected from eD2k"
+msgstr ""
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -6998,12 +7000,501 @@ msgid "Kad network disabled on preferences, not connecting."
 msgstr "Kad 網絡在設置中被禁用了，沒有連接。"
 
 #: src/FriendList.cpp:120
-msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-msgstr "無法打開好友列表文件 'emfriends.met'!"
+msgid "Failed to open friend list file 'emfriends.met' for reading!"
+msgstr ""
 
 #: src/FriendList.cpp:146
-msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-msgstr "無法寫入好友列表文件 'emfriends.met'!"
+msgid "Failed to open friend list file 'emfriends.met' for writing!"
+msgstr ""
+
+#~ msgid "EC Connection Failed. Empty reply."
+#~ msgstr "連接外部連接失敗，回複爲空"
+
+#~ msgid "ExternalConn: Access denied because: "
+#~ msgstr "外部連接：訪問被拒絕，原因："
+
+#~ msgid "ExternalConn: Access denied"
+#~ msgstr "外部連接：請求被拒絕"
+
+#~ msgid "ExternalConn: Bad reply from server. Connection closed."
+#~ msgstr "外部連接：服務器回複錯誤。已斷開連接。"
+
+#~ msgid "The ed2k hash of the file."
+#~ msgstr "文件的ed2k校驗碼。"
+
+#~ msgid "Copy ED2k &link to clipboard"
+#~ msgstr "拷貝 ED2k 連線到剪貼簿 (&l)"
+
+#~ msgid "Copy ED2k link to clipboard (&Source)"
+#~ msgstr "拷貝 ED2K 連結到剪貼簿 (源)"
+
+#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
+#~ msgstr "複制 ED2K 鏈接到剪貼板 (源) (使用加密選項(&W))"
+
+#~ msgid "Copy ED2k link to clipboard (&Hostname)"
+#~ msgstr "複制 ED2K 鏈接到剪貼板(主機名(&H))"
+
+#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
+#~ msgstr "複制 ED2K 鏈接到剪貼板(主機名) (使用加密選項(&C))"
+
+#~ msgid "Copy ED2k link to clipboard (&AICH info)"
+#~ msgstr "複制 ED2K 鏈接到剪貼板(&AICH 信息)"
+
+#~ msgid "Warning"
+#~ msgstr "警告"
+
+#~ msgid "Error: Could not listen to TCP port."
+#~ msgstr "錯誤：無法監聽TCP端口。"
+
+#~ msgid "Error: can not accept web client connection\n"
+#~ msgstr "錯誤：無法接受網頁客戶端連接\n"
+
+#~ msgid "Webserver HTTP port"
+#~ msgstr "Web 服務器端口"
+
+#~ msgid "Use UPnP port forwarding on webserver port"
+#~ msgstr "在 Web 服務器端口使用 UPnP端口轉發"
+
+#~ msgid "Full access password for webserver"
+#~ msgstr "Web 服務器最高訪問權密碼"
+
+#~ msgid "Guest password for webserver"
+#~ msgstr "服務器訪客密碼"
+
+#~ msgid "Load/save webserver settings from/to remote aMule"
+#~ msgstr "載入/保存 Web 服務器設置 自/至 遠程 aMule"
+
+#~ msgid "Enter here the file you want to compute the Ed2k link"
+#~ msgstr "輸入需要産生ED2K鏈接的文件"
+
+#~ msgid ""
+#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
+#~ "let aLinkCreator append the current file name"
+#~ msgstr "在這裏輸入添加到ED2K鏈接的URL。在結尾加'/'以便添加後綴文件名"
+
+#~ msgid "Ed2k File Hash"
+#~ msgstr "ED2K 文件校檢碼"
+
+#~ msgid "Ed2k link"
+#~ msgstr "ED2k 鏈接"
+
+#~ msgid "Open a file to compute its ed2k link"
+#~ msgstr "打開文件以計算它的ED2K鏈接"
+
+#~ msgid "Copy computed ed2k link to clipboard"
+#~ msgstr "拷貝ED2K鏈接到剪貼板"
+
+#~ msgid "Save computed ed2k link to file"
+#~ msgstr "保存ED2K鏈接到文件"
+
+#~ msgid "Select the file you want to compute the ed2k link"
+#~ msgstr "選擇要産生ED2K鏈接的文件"
+
+#~ msgid "Select the file to your computed ed2k link"
+#~ msgstr "請選擇要計算ED2K鏈接的文件"
+
+#~ msgid ""
+#~ "aLinkCreator, the aMule ed2k link creator\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "Distributed under GPL"
+#~ msgstr ""
+#~ "aLinkCreator, 用于創建 ed2k 鏈接\n"
+#~ "\n"
+#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+#~ "\n"
+#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
+#~ "and http://jimmac.musichall.cz/ikony.php3\n"
+#~ "\n"
+#~ "基于 GPL 協議發布"
+
+#~ msgid "aLinkCreator, the aMule ed2k link creator"
+#~ msgstr "aLinkCreator, aMule ED2K 鏈接生成器"
+
+#~ msgid "Copy ED2k link to clipboard"
+#~ msgstr "拷貝 ED2K 連結到剪貼簿"
+
+#~ msgid "Copy ED2k links to clipboard"
+#~ msgstr "拷貝 ED2K 連結到剪貼簿"
+
+#~ msgid "Fatal Error: Failed to create Timer"
+#~ msgstr "嚴重錯誤: 無法建立計時器"
+
+#~ msgid "ED2K: Connecting"
+#~ msgstr "ED2K：正在連線"
+
+#~ msgid "ED2K: Disconnected"
+#~ msgstr "ED2K：連線已斷"
+
+#~ msgid "Warning: Unable to open skin file '%s' for read"
+#~ msgstr "警告：無法打開皮膚文件 '%s'"
+
+#~ msgid "ed2k network"
+#~ msgstr "ed2k 網絡"
+
+#~ msgid ""
+#~ "Your Auto-update servers list is in blank.\n"
+#~ "'Auto-update serverlist at startup' will be disabled."
+#~ msgstr ""
+#~ "自動更新服務器列表空白。\n"
+#~ "自動更新服務器已被禁用。"
+
+#~ msgid ""
+#~ "Both ED2K and Kad network are disabled.\n"
+#~ "You won't be able to connect until you enable at least one of them."
+#~ msgstr ""
+#~ "ED2K 和 Kad 網絡都已被禁用，\n"
+#~ "你至少必須啓用其中的一項才能連接。"
+
+#~ msgid "Edit Serverlist"
+#~ msgstr "編輯伺服器清單"
+
+#~ msgid "Error: couldn't accept a new external connection"
+#~ msgstr "錯誤: 無法接受外來連接"
+
+#~ msgid "ED2K is disabled in preferences."
+#~ msgstr "ED2K 在設置中被禁用了。"
+
+#~ msgid "ExternalConn: shutdown requested"
+#~ msgstr "外部連接：收到關機請求"
+
+#~ msgid "Already connected to ED2K."
+#~ msgstr "已連接至 ED2K。"
+
+#~ msgid "Connecting to ED2K..."
+#~ msgstr "正在連接至 ED2K..."
+
+#~ msgid "Disconnected from ED2K."
+#~ msgstr "斷開 ED2K。"
+
+#~ msgid "ExternalConn: invalid opcode received: %#x"
+#~ msgstr "外部連接：收到錯誤的操作碼：%#x"
+
+#~ msgid "ED2K Status:"
+#~ msgstr "ED2K 狀態："
+
+#~ msgid "Average Downloadrate (Session): %s"
+#~ msgstr "平均下載速度(本次運行)：%s"
+
+#~ msgid "Average Uploadrate (Session): %s"
+#~ msgstr "平均上傳速度(本次運行)：%s"
+
+#~ msgid "Max Downloadrate (Session): %s"
+#~ msgstr "最大下載速度(本次運行)：%s"
+
+#~ msgid "Max Uploadrate (Session): %s"
+#~ msgstr "最大上傳速度(本次運行)：%s"
+
+#~ msgid "Average filesize: %s"
+#~ msgstr "平均檔案大小: %s"
+
+#~ msgid "ED2K search can't be done if ED2K is not connected"
+#~ msgstr "ED2k 搜索不能使用，因爲 ED2K 沒有連接"
+
+#~ msgid "Error: "
+#~ msgstr "錯誤："
+
+#~ msgid "Warning: "
+#~ msgstr "警告："
+
+#~ msgid "Search related files (ED2k, local server)"
+#~ msgstr "搜索相關文件（ED2K，本地服務器）"
+
+#~ msgid "Error"
+#~ msgstr "錯誤"
+
+#~ msgid ""
+#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
+#~ "lowid."
+#~ msgstr "警告：在低ID的情況下，你不能添加你自己作爲 ed2k 鏈接的源"
+
+#~ msgid ""
+#~ "Please set your preferred video player on preferences.\n"
+#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
+#~ "warning on every preview"
+#~ msgstr ""
+#~ "請設置您的動畫播放器。\n"
+#~ "aMule會嘗試使用mplayer。這個提示會在每次預覽時出現 "
+
+#~ msgid "Error: Failed to open part.met file: %s ==> %s"
+#~ msgstr "錯誤: 無法打開 part.met 文件: %s ==> %s"
+
+#~ msgid "Error: part.met file is 0 size: %s ==> %s"
+#~ msgstr "錯誤: part.met 文件長度爲0 : %s ==> %s"
+
+#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
+#~ msgstr "錯誤: 無效 part.met 文件版本: %s ==> %s"
+
+#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
+#~ msgstr "錯誤: 文件 %s (%s) 已損壞(標簽數不對)，無法讀取文件"
+
+#~ msgid "Warning: %s might be corrupted (%i)"
+#~ msgstr "警告: %s 可能已損壞 (%i)"
+
+#~ msgid "Unexpected file error while completing %s. File paused"
+#~ msgstr "在完成檔案 %s 時遇到意外性檔案錯誤. 檔案已暫停"
+
+#~ msgid ""
+#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
+#~ msgstr "警告: 無法爲已下載的數據段計算校檢碼 - 校檢碼集殘缺 '%s'"
+
+#~ msgid ""
+#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
+#~ "should never happen"
+#~ msgstr "警告: 無法生成檢驗碼 - 檢驗碼殘缺 (%s). 正常情況下這是不應該發生的"
+
+#~ msgid "Insufficient Diskspace"
+#~ msgstr "硬盤空間不足"
+
+#~ msgid "Warning: known.met cannot be opened."
+#~ msgstr "警告：know.net文件無法打開。"
+
+#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
+#~ msgstr "警告：已知文件列表已損壞，文件頭無效"
+
+#~ msgid "ERROR! Attempted to share %s"
+#~ msgstr "錯誤！試圖共享 %s"
+
+#~ msgid "ED2K network disabled on preferences, not connecting."
+#~ msgstr "ED2K網絡在設置被禁用，沒有連接。"
+
+#~ msgid "No valid servers to connect in serverlist found"
+#~ msgstr "伺服器清單中沒有有效伺服器可供連線"
+
+#~ msgid "Error: Socket invalid at timeoutcheck"
+#~ msgstr "錯誤: 接口無效"
+
+#~ msgid ""
+#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
+#~ "part.met recovery solutions."
+#~ msgstr ""
+#~ "錯誤：載入備份文件失敗！請到http://forum.amule.org搜索.part和.met文件的恢"
+#~ "復方法。"
+
+#~ msgid "Cannot convert magnet link to ed2k: %s"
+#~ msgstr "無法轉換magnet連接至ed2k：%s"
+
+#~ msgid "Invalid ed2k link! Error: %s"
+#~ msgstr "無效 ed2k 鏈接! 錯誤: %s"
+
+#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
+#~ msgstr "帶寬限制：上傳: %u kB/s, 下載: %u kB/s.\n"
+
+#~ msgid "Shutdown aMule."
+#~ msgstr "關閉aMule。"
+
+#~ msgid ""
+#~ "Shutdown the remote running core (amule/amuled).\n"
+#~ "This will also shut down the text client, since it is unusable without a\n"
+#~ "running core.\n"
+#~ msgstr ""
+#~ "關閉遠程運行核心程序（amule/amuled）。\n"
+#~ "這也將關閉文本客戶端，直至沒有一個在運行的核心可用。\n"
+
+#~ msgid "Connect to ED2K only."
+#~ msgstr "只連接ED2K。"
+
+#~ msgid "Disconnect from ED2K only."
+#~ msgstr "只斷開ED2K連接。"
+
+#~ msgid "Adds an ed2k or magnet link to core."
+#~ msgstr "添加一個ed2k或magnet連接至核心。"
+
+#~ msgid ""
+#~ "The ed2k link to be added can be:\n"
+#~ "*) a file link (ed2k://|file|...), it will be added to the download "
+#~ "queue,\n"
+#~ "*) a server link (ed2k://|server|...), it will be added to the server "
+#~ "list,\n"
+#~ "*) or a serverlist link, in which case all servers in the list will be "
+#~ "added to the\n"
+#~ "   server list.\n"
+#~ "\n"
+#~ "The magnet link must contain the ed2k hash and file length.\n"
+#~ msgstr ""
+#~ "添加的 ed2k 鏈接可以是：\n"
+#~ "*) 文件鏈接（ed2k://|file|..），將添加至下載隊列，\n"
+#~ "*) 服務器鏈接（ed2k://|server|...），將添加至服務器列表，\n"
+#~ "*) 或服務器列表鏈接，這種情況將添加此列表中的所有服務器至服務器列表。\n"
+#~ "\n"
+#~ "\n"
+#~ "magnet 鏈接必須包含 ed2k 校驗碼和文件大小。\n"
+
+#~ msgid "Deprecated command, now '%s'."
+#~ msgstr "已廢棄的命令，現用'%s'。"
+
+#~ msgid "Error: %s (%s) - %s"
+#~ msgstr "錯誤: %s (%s) - %s"
+
+#~ msgid "Warning: %s (%s) - %s"
+#~ msgstr "警告：%s (%s) - %s"
+
+#~ msgid "Error: Out of diskspace"
+#~ msgstr "錯誤：磁盤空間不足"
+
+#~ msgid "Error: Partmet not found"
+#~ msgstr "錯誤：partmet文件未找到"
+
+#~ msgid "Error: IO error!"
+#~ msgstr "錯誤：IO錯誤！"
+
+#~ msgid "Error: Failed!"
+#~ msgstr "錯誤：失敗！"
+
+#~ msgid "ED2K Link: "
+#~ msgstr "ED2K 鏈接："
+
+#~ msgid ""
+#~ "Click here to add the ed2k link in the text control to your download "
+#~ "queue."
+#~ msgstr "請點擊這裏把輸入的ED2K鏈接加入下載隊列。"
+
+#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
+#~ msgstr "在 ED2K 上搜索更多結果，咱不支持 Kad"
+
+#~ msgid "0"
+#~ msgstr "0"
+
+#~ msgid "Bandwith Limits"
+#~ msgstr "頻寬限制"
+
+#~ msgid "This is the standard ED2K port and cannot be disabled."
+#~ msgstr "這是標准 ED2K 端口，不能被禁用"
+
+#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
+#~ msgstr "此 UDP 端口用于擴展的 Ed2k 請求和 Kad 網絡"
+
+#~ msgid "Hard Limit"
+#~ msgstr "絕對上限"
+
+#~ msgid "Connection Limits"
+#~ msgstr "連線限制"
+
+#~ msgid "Auto-update serverlist at startup"
+#~ msgstr "啟動后自動更新伺服器清單"
+
+#~ msgid "Update serverlist when connecting to a server"
+#~ msgstr "與伺服器連線時更新伺服器清單"
+
+#~ msgid "Update serverlist when a client connect"
+#~ msgstr "與其它使用者連線時更新伺服器清單"
+
+#~ msgid "Disk Space"
+#~ msgstr "硬碟空間"
+
+#~ msgid "Check Disk Space"
+#~ msgstr "檢查硬碟空間"
+
+#~ msgid "Select this if you want aMule to check your Disk Space"
+#~ msgstr "這個選項使aMule檢查硬碟空間"
+
+#~ msgid "Min Disk Space:"
+#~ msgstr "最低磁盤空間："
+
+#~ msgid "Incoming Directory :"
+#~ msgstr "接收資料夾 :"
+
+#~ msgid "Temporary Directory :"
+#~ msgstr "暫時檔案夾"
+
+#~ msgid "Shared Directories"
+#~ msgstr "共享的資料夾"
+
+#~ msgid "Create Backup to preview"
+#~ msgstr "預覽前備份檔案"
+
+#~ msgid "Show Fast ED2K Links Handler"
+#~ msgstr "顯示快捷 ED2K 連結處理"
+
+#~ msgid "Webserver Parameters"
+#~ msgstr "Web 伺服器參數"
+
+#~ msgid "Webserver port"
+#~ msgstr "Web 伺服器連接埠"
+
+#~ msgid "Enable UPnP port forwarding on the Webserver port"
+#~ msgstr "在 Web 服務器端口上啓動 UPnP 端口轉發"
+
+#~ msgid "Webserver UPnP TCP port"
+#~ msgstr "Web 服務器 UPnP TCP 端口"
+
+#~ msgid "Serverlist"
+#~ msgstr "伺服器清單"
+
+#~ msgid "Manual Server Add : Name"
+#~ msgstr "加入伺服器: 名稱"
+
+#~ msgid "No One"
+#~ msgstr "任何人都不可以"
+
+#~ msgid "Speed Limits:"
+#~ msgstr "速度限制"
+
+#~ msgid "Download Speed: %.1f"
+#~ msgstr "下載速度：%.1f"
+
+#~ msgid "Upload Speed: %.1f"
+#~ msgstr "上傳速度：%.1f"
+
+#~ msgid "TCP Port: %d"
+#~ msgstr "TCP 端口：%d"
+
+#~ msgid "TCP Port: Not Ready"
+#~ msgstr "TCP 連接埠︰未就緒"
+
+#~ msgid "UDP Port: %d"
+#~ msgstr "UDP 端口：%d"
+
+#~ msgid "UDP Port: Not Ready"
+#~ msgstr "UDP 連接埠︰未就緒"
+
+#~ msgid "Shared Files: %d"
+#~ msgstr "已共享的文件：%d"
+
+#~ msgid "Queued Clients: %d"
+#~ msgstr "隊列中用戶: %d"
+
+#~ msgid "Upload Limit"
+#~ msgstr "上傳限制"
+
+#~ msgid "Download Limit"
+#~ msgstr "下載限制"
+
+#~ msgid ""
+#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
+#~ "valid serverlist address into this file in order to auto-update your "
+#~ "serverlist"
+#~ msgstr ""
+#~ "'addresses.dat' 檔案內沒有伺服器清單位址. 請貼上一個有效伺服器清單位址到該"
+#~ "文件以自動更新伺服器清單."
+
+#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
+#~ msgstr "警告，該自動更新URL無效：%s"
+
+#~ msgid "webserver running on pid %d"
+#~ msgstr "Web 服務器正在運行，pid 是 %d"
+
+#~ msgid ""
+#~ "You requested to run webserver from startup, but the amuleweb binary "
+#~ "cannot be run. Please install the package containing aMule webserver, or "
+#~ "compile aMule using --enable-webserver and run make install"
+#~ msgstr ""
+#~ "您要求啓動時運行 Web 服務器，但 amuleweb 程序無法運行。請先安裝包含 aMule "
+#~ "Web 服務器的 aMule 版本，或者使用 --enable-webserver選項編譯 aMule，然後運"
+#~ "行 make install進行安裝"
+
+#~ msgid "Disconnected from ED2K"
+#~ msgstr "已斷開 ED2K"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
+#~ msgstr "無法打開好友列表文件 'emfriends.met'!"
+
+#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
+#~ msgstr "無法寫入好友列表文件 'emfriends.met'!"
 
 #~ msgid "ERROR: Failed to open partfile)"
 #~ msgstr "錯誤: 無法打開 part 文件)"
@@ -8615,9 +9106,6 @@ msgstr "無法寫入好友列表文件 'emfriends.met'!"
 
 #~ msgid "Web Control Panel"
 #~ msgstr "網絡伺服器控制板"
-
-#~ msgid "Server list"
-#~ msgstr "伺服器清單"
 
 #~ msgid "ED2K Link(s)"
 #~ msgstr "ED2K連結"
