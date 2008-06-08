@@ -1,4 +1,4 @@
-# translation of es.po to Spanish
+# translation of new_es1.po to Spanish
 # Copyright (C) 2004 aMule Team
 # This file is distributed under the terms of the GNU General Public
 # License
@@ -6,14 +6,14 @@
 # FIRST AUTHOR <aquatroll@ADDRESS>, 2004.
 # Mad-Soft <mad.soft@gmail.com>, 2004, 2005, 2006, 2007, 2008.
 # Ignacio Casal Quinteiro <icq@cvs.gnome.org>, 2007.
-# Carlos Diaz <cskyline@gmail.com>, 2007.
+# Carlos Diaz <cskyline@gmail.com>, 2007, 2008.
 # Festor Wailon Dacoba <festor90@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
+"Project-Id-Version: new_es1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-08 03:30+0200\n"
-"PO-Revision-Date: 2008-06-05 00:17+0200\n"
+"POT-Creation-Date: 2008-06-07 22:01+0200\n"
+"PO-Revision-Date: 2008-06-08 04:42+0200\n"
 "Last-Translator: Mad-Soft <mad.soft@gmail.com>\n"
 "Language-Team: Spanish <mad.soft@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -38,19 +38,19 @@ msgstr "Error de conexión"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC connection failed. Empty reply."
-msgstr ""
+msgstr "La conexión EC ha fallado, Respuesta vacía."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "External Connection: Access denied because: "
-msgstr ""
+msgstr "Conexión externa: Acceso denegado, razón:"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "External Connection: Access denied"
-msgstr ""
+msgstr "Conexión externa: Acceso denegado"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "External Connection: Bad reply from server. Connection closed."
-msgstr ""
+msgstr "Conexión externa: Respuesta del servidor incorrecta. Conexión cerrada."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -115,8 +115,7 @@ msgstr "Convirtiendo antiguos hashsets AICH en  '%s' a 64b en '%s'."
 #: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr ""
-"ALERTA: El nombre de archivo '%s' es incorrecto y será renombrado a '%s'."
+msgstr "ALERTA: El nombre de archivo '%s' es incorrecto y será renombrado a '%s'."
 
 #: src/ThreadTasks.cpp:439
 #, c-format
@@ -185,8 +184,7 @@ msgstr "Solicitado: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Estadísticas de archivo para esta sesión: %d Aceptada de %d petición, %s "
 "transferida\n"
@@ -197,8 +195,7 @@ msgstr[1] ""
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural ""
-"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
 msgstr[0] ""
 "Estadísticas de archivo para todas las sesiones: %d Aceptada de %d petición, "
 "%s transferida\n"
@@ -295,7 +292,7 @@ msgstr "El nombre del archivo sin la ruta."
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr ""
+msgstr "El hash eD2k del archivo."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -441,27 +438,27 @@ msgstr "Copiar &URL magnético al portapapeles"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
 msgid "Copy eD2k &link to clipboard"
-msgstr ""
+msgstr "Copiar el en&lace eD2k al portapapeles."
 
 #: src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k link to clipboard (&Source)"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles (&Fuente)"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles (Fuente) (&Con opciones de encriptación)"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k link to clipboard (&Hostname)"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles (&Nombre del host)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles (Nombre del host) (&Con opciones de encriptación)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles (Información &AICH)"
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -524,8 +521,8 @@ msgstr "Kademlia: palabra de búsqueda demasiado corta"
 #, c-format
 msgid "Read %u Kad contact"
 msgid_plural "Read %u Kad contacts"
-msgstr[0] "Leido %u contacto Kad"
-msgstr[1] "Leidos %u contactos Kad"
+msgstr[0] "Leído %u contacto Kad"
+msgstr[1] "Leídos %u contactos Kad"
 
 #: src/kademlia/routing/RoutingZone.cpp:229
 #, c-format
@@ -536,7 +533,7 @@ msgstr[1] "Escritos %d contactos Kad"
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
-msgstr ""
+msgstr "ERROR: No se puede escuchar en el puerto TCP."
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
@@ -544,7 +541,7 @@ msgstr "conexión aceptada del cliente web\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "ERROR: can not accept web client connection\n"
-msgstr ""
+msgstr "ERROR: no se puede aceptar la conexión del cliente web\n"
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -619,11 +616,11 @@ msgstr "Carga la plantilla <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
 msgid "Web server HTTP port"
-msgstr ""
+msgstr "Puerto HTTP del servidor web"
 
 #: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on web server port"
-msgstr ""
+msgstr "Usar forwarding de puertos UPnP en el puerto del servidor web"
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -635,11 +632,11 @@ msgstr "Usar compresión gzip"
 
 #: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for web server"
-msgstr ""
+msgstr "Contraseña de acceso total para el servidor web"
 
 #: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for web server"
-msgstr ""
+msgstr "Contraseña de invitado para servidor web"
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -651,7 +648,7 @@ msgstr "Denegar acceso a invitado"
 
 #: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save web server settings from/to remote aMule"
-msgstr ""
+msgstr "Cargar/guardar la configuración del servidor web desde/a aMule remoto"
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -717,8 +714,7 @@ msgstr "Generar un archivo de estadísticas siempre que se actualice"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:139
 msgid "Enter here the directory where you want to generate the statistic image"
-msgstr ""
-"Introduce el directorio donde tu quieres generar la imagen de estadísticas"
+msgstr "Introduce el directorio donde tu quieres generar la imagen de estadísticas"
 
 #: src/utils/wxCas/src/wxcasprefs.cpp:166
 msgid "Upload periodicaly your stat image to FTP server"
@@ -1098,8 +1094,7 @@ msgstr "Imposible abrir %s"
 #: src/utils/aLinkCreator/src/ed2khash.cpp:87
 #, c-format
 msgid "The file %s is to big for the Donkey: maximum allowed is 4 GB."
-msgstr ""
-"El archivo %s es demasiado grande para el Donkey: el máximo permitido es 4 GB"
+msgstr "El archivo %s es demasiado grande para el Donkey: el máximo permitido es 4 GB"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:104
 msgid "Input parameters"
@@ -1115,13 +1110,13 @@ msgstr "Añadir URLs opcionales para este archivo"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the eD2k link"
-msgstr ""
+msgstr "Introduce aquí el archivo del que quieras calcular el enlace eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr ""
+msgstr "Introduce aquí la URL que quieres añadir al enlace eD2k: Añade / al final para permitir a aLinkCreator agregar el nombre del archivo actual"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1155,11 +1150,11 @@ msgstr "Hash de archivo MD4"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
 msgid "eD2k File Hash"
-msgstr ""
+msgstr "Hash del archivo eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
 msgid "eD2k link"
-msgstr ""
+msgstr "Enlace eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1179,15 +1174,15 @@ msgstr "Salir"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
-msgstr ""
+msgstr "Abrir un archivo para calcular su enlace eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
-msgstr ""
+msgstr "Copiar el enlace eD2k calculado al portapapeles"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
-msgstr ""
+msgstr "Guardar el enlace eD2k calculado en un archivo"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1196,7 +1191,7 @@ msgstr "Acerca de aLinkCreator"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
-msgstr ""
+msgstr "Selecciona el archivo del que quieras calcular el enlace eD2k"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1204,7 +1199,7 @@ msgstr "¡Nada para copiar ahora!"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
 msgid "Select the file to your computed eD2k link"
-msgstr ""
+msgstr "Selecciona el fichero para el enlace eD2k calculado"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1230,6 +1225,14 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aLinkCreator, el creador de enlaces eD2k de aMule\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Imágenes desde http://www.everaldo.com y http://www.icomania.com\n"
+"y http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Distribuido bajo la licencia GPL"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1270,7 +1273,7 @@ msgstr "%s --->¡ No existe el archivo !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
 msgid "aLinkCreator, the aMule eD2k link creator"
-msgstr ""
+msgstr "aLinkCreator, el creador de enlaces eD2k para aMule"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1482,7 +1485,7 @@ msgstr "Italiano (Suizo)"
 
 #: src/Preferences.cpp:651
 msgid "Japanese"
-msgstr "Japones"
+msgstr "Japonés"
 
 #: src/Preferences.cpp:652
 msgid "Korean"
@@ -1533,8 +1536,7 @@ msgid "Unable to determine selected browser!"
 msgstr "¡Imposible determinar el navegador seleccionado!"
 
 #: src/Preferences.cpp:1671
-msgid ""
-"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "Puerto TCP no puede ser mas alto de 65532 debido a que el socket del "
 "servidor UDP es TCP+3"
@@ -1669,11 +1671,11 @@ msgstr "Eliminar todos los servidores"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
 msgid "Copy eD2k link to clipboard"
-msgstr ""
+msgstr "Copiar el enlace eD2k al portapapeles"
 
 #: src/ServerListCtrl.cpp:449
 msgid "Copy eD2k links to clipboard"
-msgstr ""
+msgstr "Copiar los enlaces eD2k al portapapeles"
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1714,7 +1716,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:246
 msgid "FATAL ERROR: Failed to create Timer"
-msgstr ""
+msgstr "ERROR GRAVE: No se ha podido crear el temporizador"
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1786,11 +1788,11 @@ msgstr "Estado del texto"
 
 #: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
-msgstr ""
+msgstr "eD2k: Conectando"
 
 #: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
-msgstr ""
+msgstr "eD2k: Desconectado"
 
 #: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
@@ -1869,7 +1871,7 @@ msgstr "El directorio de tema '%s' no existe"
 #: src/amuleDlg.cpp:1212
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
-msgstr ""
+msgstr "ATENCIÓN: No se puede abrir el archivo de pieles '%s' para lectura"
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
@@ -1878,7 +1880,7 @@ msgstr "Redes"
 
 #: src/amuleDlg.cpp:1314
 msgid "Networks window"
-msgstr ""
+msgstr "Ventana de redes"
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
@@ -1886,7 +1888,7 @@ msgstr "Buscar"
 
 #: src/amuleDlg.cpp:1318
 msgid "Searches window"
-msgstr ""
+msgstr "Ventana de búsquedas"
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
@@ -1894,15 +1896,15 @@ msgstr "Tráfico"
 
 #: src/amuleDlg.cpp:1322
 msgid "Files transfers window"
-msgstr ""
+msgstr "Ventana de transferencia de archivos"
 
 #: src/amuleDlg.cpp:1324
 msgid "Shared files"
-msgstr ""
+msgstr "Archivos compartidos"
 
 #: src/amuleDlg.cpp:1326
 msgid "Shared files window"
-msgstr ""
+msgstr "Ventana de archivos compartidos"
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
@@ -1911,7 +1913,7 @@ msgstr "Mensajes"
 
 #: src/amuleDlg.cpp:1330
 msgid "Messages window"
-msgstr ""
+msgstr "Ventana de mensajes"
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1921,11 +1923,11 @@ msgstr "Estadísticas"
 
 #: src/amuleDlg.cpp:1334
 msgid "Statistics graph window"
-msgstr ""
+msgstr "Ventana de los gráficas de las estadísticas"
 
 #: src/amuleDlg.cpp:1339
 msgid "Preferences settings window"
-msgstr ""
+msgstr "Ventana de las configuraciones de la preferencias"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1945,7 +1947,7 @@ msgstr "Acerca de/Ayuda"
 
 #: src/amuleDlg.cpp:1484
 msgid "eD2k network"
-msgstr ""
+msgstr "Red eD2k"
 
 #: src/amuleDlg.cpp:1488
 msgid "Kad network"
@@ -2029,6 +2031,8 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
 msgstr ""
+"Tu lista auto-actualizable de servidores esta vacía.\n"
+"La lista de servidores auto-actualizable al inicio será desactivada."
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2057,6 +2061,8 @@ msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
+"eD2k y Kad están desactivados.\n"
+"No podrás conectarte hasta que actives al menos uno de ellos."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2118,7 +2124,7 @@ msgstr "Ejecutable%s"
 
 #: src/PrefsUnifiedDlg.cpp:928
 msgid "Edit server list"
-msgstr ""
+msgstr "Editar la lista de servidores"
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2226,12 +2232,11 @@ msgstr "Nueva conexión externa, aceptada"
 
 #: src/ExternalConn.cpp:221
 msgid "ERROR: couldn't accept a new external connection"
-msgstr ""
+msgstr "ERROR: no se ha podido aceptar una nueva conexión externa"
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
-msgstr ""
-"¡Conexión externa rechazada debido a contraseña en blanco en las opciones!"
+msgstr "¡Conexión externa rechazada debido a contraseña en blanco en las opciones!"
 
 #: src/ExternalConn.cpp:250
 #, c-format
@@ -2281,8 +2286,7 @@ msgstr "Acceso concedido."
 #: src/ExternalConn.cpp:565
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr ""
-"Error en comando remoto del archivo Part: Hash de archivo no encontrado: %s"
+msgstr "Error en comando remoto del archivo Part: Hash de archivo no encontrado: %s"
 
 #: src/ExternalConn.cpp:567
 #, c-format
@@ -2308,7 +2312,7 @@ msgstr "necesitas definir un servidor para borrarlo"
 
 #: src/ExternalConn.cpp:708
 msgid "eD2k is disabled in preferences."
-msgstr ""
+msgstr "eD2k está deshabilitado en las preferencias."
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2332,7 +2336,7 @@ msgstr "Tu cliente no está configurado para este nivel de detalle."
 
 #: src/ExternalConn.cpp:1058
 msgid "External Connection: shutdown requested"
-msgstr ""
+msgstr "Conexión externa: apagado solicitado"
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2361,11 +2365,11 @@ msgstr "Imposible renombrar archivo."
 
 #: src/ExternalConn.cpp:1406
 msgid "Already connected to eD2k."
-msgstr ""
+msgstr "Ya estás conectado a eD2k."
 
 #: src/ExternalConn.cpp:1409
 msgid "Connecting to eD2k..."
-msgstr ""
+msgstr "Conectado a eD2k..."
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2381,7 +2385,7 @@ msgstr "Todas las redes están deshabilitadas."
 
 #: src/ExternalConn.cpp:1433
 msgid "Disconnected from eD2k."
-msgstr ""
+msgstr "Desconectado de eD2k."
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2390,7 +2394,7 @@ msgstr "Desconectado de Kad"
 #: src/ExternalConn.cpp:1445
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
-msgstr ""
+msgstr "Conexión externa: recibido código de operación inválido: %#x"
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2421,7 +2425,7 @@ msgstr "Servidor no añadido: Servidor-puerto especificado no válido."
 
 #: src/ServerWnd.cpp:162
 msgid "eD2k Status:"
-msgstr ""
+msgstr "Status de eD2k:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2588,22 +2592,22 @@ msgstr "Índice SU:DE Sesión (Total): %s"
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Average download rate (Session): %s"
-msgstr ""
+msgstr "Velocidad media de descarga (Sesión): %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Average upload rate (Session): %s"
-msgstr ""
+msgstr "Velocidad media de subida (Sesión): %s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Max download rate (Session): %s"
-msgstr ""
+msgstr "Velocidad máxima de descarga (Sesión): %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Max upload rate (Session): %s"
-msgstr ""
+msgstr "Velocidad máxima de subida (Sesión): %s"
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2720,7 +2724,7 @@ msgstr "Tamaño total de archivos compartidos: %s"
 #: src/Statistics.cpp:731
 #, c-format
 msgid "Average file size: %s"
-msgstr ""
+msgstr "Tamaño medio de archivo: %s"
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2752,7 +2756,7 @@ msgstr "No se buscará en Kad si no está conectado a Kad"
 
 #: src/SearchList.cpp:294
 msgid "eD2k search can't be done if eD2k is not connected"
-msgstr ""
+msgstr "No se puede realizar una búsqueda en eD2k si no se está conectado a eD2k"
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2781,19 +2785,16 @@ msgstr "Usuario %s (%u) solicitó tu lista de archivos compartidos -> Denegada"
 #: src/ClientTCPSocket.cpp:874
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Accepted"
-msgstr ""
-"Usuario %s (%u) ha solicitado tu lista de directorios compartidos -> Aceptada"
+msgstr "Usuario %s (%u) ha solicitado tu lista de directorios compartidos -> Aceptada"
 
 #: src/ClientTCPSocket.cpp:914
 #, c-format
 msgid "User %s (%u) requested your shareddirectories-list -> Denied"
-msgstr ""
-"Usuario %s (%u) ha solicitado tu lista de directorios compartidos -> Denegada"
+msgstr "Usuario %s (%u) ha solicitado tu lista de directorios compartidos -> Denegada"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid ""
-"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
 msgstr ""
 "Usuario %s (%u) solicitó tu lista de archivos compartidos del directorio %s -"
 "> aceptada"
@@ -2818,8 +2819,7 @@ msgstr "Usuario %s (%u) enviado directorios compartidos no solicitados."
 #: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr ""
-"Usuario %s (%u) enviada la lista de archivos compartidos por directorio %s"
+msgstr "Usuario %s (%u) enviada la lista de archivos compartidos por directorio %s"
 
 #: src/ClientTCPSocket.cpp:1032
 #, c-format
@@ -2860,10 +2860,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "¿Estás seguro que quieres descargar un nuevo nodes.dat?\n"
 
 #: src/KadDlg.cpp:197
-msgid ""
-"Doing so will remove your current nodes and restart Kademlia connection."
-msgstr ""
-"Si lo haces borrarás tus nodos actuales y reiniciarás la conexión Kademlia."
+msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgstr "Si lo haces borrarás tus nodos actuales y reiniciarás la conexión Kademlia."
 
 #: src/KadDlg.cpp:198
 msgid "Continue?"
@@ -2871,11 +2869,11 @@ msgstr "¿Continuar?"
 
 #: src/Logger.cpp:270
 msgid "ERROR: "
-msgstr ""
+msgstr "ERROR:"
 
 #: src/Logger.cpp:270
 msgid "WARNING: "
-msgstr ""
+msgstr "ADVERTENCIA:"
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2923,7 +2921,7 @@ msgstr "Descargar en la categoría"
 
 #: src/SearchListCtrl.cpp:582
 msgid "Search related files (eD2k, local server)"
-msgstr ""
+msgstr "Buscar archivos relacionados (eD2k, búsqueda local)"
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2941,13 +2939,13 @@ msgstr "Conexión fallida"
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
 msgid "ERROR"
-msgstr ""
+msgstr "ERROR"
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
-msgstr ""
+msgstr "ADVERTENCIA: No puedes añadirte a ti mismo como una fuente para un enlace eD2k teniendo ID baja."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3124,6 +3122,8 @@ msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
+"Para prevenir la aparición de esta advertencia en cada vista previa,\n"
+"establece tu reproductor de vídeos en las preferencias (mplayer por defecto)."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3132,8 +3132,7 @@ msgstr "Previsualizar"
 #: src/DownloadListCtrl.cpp:2291
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
-msgstr ""
-"ERROR:¡Fallo al ejecutar un reproductor de medios externo! Command: `%s'"
+msgstr "ERROR:¡Fallo al ejecutar un reproductor de medios externo! Comando: `%s'"
 
 #: src/PartFile.cpp:290
 msgid "ERROR: Failed to create partfile)"
@@ -3147,22 +3146,22 @@ msgstr "Intentando cargar copia de seguridad del archivo met desde %s"
 #: src/PartFile.cpp:334
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
-msgstr ""
+msgstr "ERROR: No se ha podido abrir el archivo part.met: %s ===> %s"
 
 #: src/PartFile.cpp:340
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
-msgstr ""
+msgstr "ERROR: el archivo part.met tiene tamaño 0: %s ===> %s"
 
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
-msgstr ""
+msgstr "ERROR: Archivo part.met inválido: ERROR: versión: %s ===> %s"
 
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
+msgstr "ERROR: %s (%s) está corrupto (cuenta de etiquetas errónea), no se ha cargar el archivo."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3174,8 +3173,7 @@ msgstr "Recuperando archivo sin nombre - lo recuperaré como RecoveredFile.dat"
 
 #: src/PartFile.cpp:624
 msgid "Recovered all available file info :D - Trying to use it..."
-msgstr ""
-"Recuperada toda la info disponible del archivo :D - Intentando usarla..."
+msgstr "Recuperada toda la info disponible del archivo :D - Intentando usarla..."
 
 #: src/PartFile.cpp:626
 msgid "Unable to recover file info :("
@@ -3189,7 +3187,7 @@ msgstr "Error al abrir %s (%s)"
 #: src/PartFile.cpp:708
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
-msgstr ""
+msgstr "ADVERTENCIA: %s puede estar corrupto (%i)"
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3261,7 +3259,7 @@ msgstr "Recodificación terminada %s"
 #: src/PartFile.cpp:2242
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
-msgstr ""
+msgstr "Error inesperado mientras se completaba %s. Archivo pausado"
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3276,14 +3274,14 @@ msgstr "Borrando archivo: %s"
 #: src/PartFile.cpp:2386
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr ""
+msgstr "ADVERTENCIA: No se puede crear el hash de la parte descargada, set de hashes incompleto para '%s'"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr ""
+msgstr "ERROR: No se puede crear el hash de la parte descargada, set de hashes incompleto para (%s). Esto no debería pasar nunca"
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3306,7 +3304,7 @@ msgstr "Asignando"
 
 #: src/PartFile.cpp:3861
 msgid "Insufficient disk space"
-msgstr ""
+msgstr "Espacio en disco insuficiente"
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3323,11 +3321,11 @@ msgstr "ERROR: Fallo al abrir archivo part '%s'"
 
 #: src/KnownFileList.cpp:79
 msgid "WARNING: known.met cannot be opened."
-msgstr ""
+msgstr "ADVERTENCIA: no se puede abrir known.met."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Knownfile list corrupted, contains invalid header."
-msgstr ""
+msgstr "ADVERTENCIA: lista de conocidos (knownfile) corrupta, la cabecera es incorrecta."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3356,7 +3354,7 @@ msgstr[1] "Encontrado %i archivos compartidos, %i desconocidos"
 #: src/SharedFileList.cpp:367
 #, c-format
 msgid "ERROR: Attempted to share %s"
-msgstr ""
+msgstr "ERROR: Intentando compartir %s"
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3395,11 +3393,11 @@ msgstr "Error al conectar a todos los servidores."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr ""
+msgstr "Protocolo eD2k deshabilitado en las preferencias, no se conecta."
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
 msgid "No valid servers to which to connect found in server list"
-msgstr ""
+msgstr "No se han encontrado servidores válidos para conectar en la lista de servidores"
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3413,8 +3411,7 @@ msgstr "Conexión establecida en: %s"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr ""
-"Error fatal conectando. La conexión a Internet podría estar desactivada"
+msgstr "Error fatal conectando. La conexión a Internet podría estar desactivada"
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -3449,7 +3446,7 @@ msgstr "Conectando con %s (%s:%i) fallido"
 
 #: src/ServerConnect.cpp:450
 msgid "ERROR: Socket invalid at timeout check"
-msgstr ""
+msgstr "ERROR: Socket inválido al comprobar el timeout"
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3460,7 +3457,7 @@ msgstr "Intento de conexión con %s (%s:%i) tiempo agotado."
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr ""
+msgstr "ERROR: No se ha podido cargar el archivo de copia de seguridad. Busca en http://forum.amule.org para encontrar soluciones de recuperación de archivos part.met."
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3508,7 +3505,7 @@ msgstr "Ya estás descargando el archivo %s"
 #: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
-msgstr ""
+msgstr "No se puede convertir el enlace magnet a eD2k: %s"
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3518,7 +3515,7 @@ msgstr "Protocolo desconocido del enlace: %s"
 #: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
-msgstr ""
+msgstr "Enlace eD2k inválido! ERROR: %s"
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3546,8 +3543,7 @@ msgstr "Procesando por nombre de archivo: "
 
 #: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr ""
-"Este comando requiere un argumento. Argumentos válidos: un hash de archivo.\n"
+msgstr "Este comando requiere un argumento. Argumentos válidos: un hash de archivo.\n"
 
 #: src/TextClient.cpp:410
 msgid "Not a valid number\n"
@@ -3592,11 +3588,11 @@ msgstr "El nivel de filtrado de IP actual es %d.\n"
 #: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr ""
+msgstr "Límites del ancho de banda: Subida: %u kB/s, Bajada: %u kB/s\n"
 
 #: src/TextClient.cpp:689
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3704,7 +3700,7 @@ msgstr ""
 
 #: src/TextClient.cpp:848
 msgid "Shut down aMule."
-msgstr ""
+msgstr "Terminar aMule."
 
 #: src/TextClient.cpp:849
 msgid ""
@@ -3712,6 +3708,9 @@ msgid ""
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
+"Terminar el núcleo remoto (amule/amuled) en funcionamiento.\n"
+"Esto terminará también el cliente modo texto, ya que no se puede\n"
+"usar sin un núcleo en funcionamiento.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3745,7 +3744,7 @@ msgstr ""
 
 #: src/TextClient.cpp:857
 msgid "Connect to eD2k only."
-msgstr ""
+msgstr "Conectar solo a eD2k."
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3763,7 +3762,7 @@ msgstr ""
 
 #: src/TextClient.cpp:862
 msgid "Disconnect from eD2k only."
-msgstr ""
+msgstr "Desconectar de eD2k solo."
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
@@ -3771,7 +3770,7 @@ msgstr "Desconectar solamente Kad"
 
 #: src/TextClient.cpp:865
 msgid "Adds an eD2k or magnet link to core."
-msgstr ""
+msgstr "Añade un enlace eD2k o magnet al núcleo."
 
 #: src/TextClient.cpp:866
 msgid ""
@@ -3784,6 +3783,12 @@ msgid ""
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
+"En enlace eD2k a añadir puede ser:\n"
+"*) un enlace a un archivo (ed2k://|file|...),será añadido a la cola de descargas,\n"
+"*) un enlace a un servidor (ed2k://|server|...), será añadido a la lista de servidores,\n"
+"*) o un enlace a una lista de servidores, en tal caso, todos los servidores en  la lista\n"
+"serán añadidos a la lista de servidores.\n"
+"\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -4010,7 +4015,7 @@ msgstr "Limpiar registro."
 #: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, use '%s' instead."
-msgstr ""
+msgstr "Comando deprecado, usa %s."
 
 #: src/TextClient.cpp:953
 #, c-format
@@ -4028,12 +4033,12 @@ msgstr "theApp->serverlist->GetServerByAddress() devolvió NULL"
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "ERROR: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:274
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "ADVERTENCIA: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4254,19 +4259,19 @@ msgstr "En progreso"
 
 #: src/PartFileConvert.cpp:613
 msgid "ERROR: Out of diskspace"
-msgstr ""
+msgstr "ERROR: No queda espacio en disco"
 
 #: src/PartFileConvert.cpp:614
 msgid "ERROR: Partmet not found"
-msgstr ""
+msgstr "ERROR: Partmet no encontrado"
 
 #: src/PartFileConvert.cpp:615
 msgid "ERROR: IO error!"
-msgstr ""
+msgstr "ERROR: Error de entrada/salida!"
 
 #: src/PartFileConvert.cpp:616
 msgid "ERROR: Failed!"
-msgstr ""
+msgstr "ERROR: No se ha podido realizar la acción!"
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4301,8 +4306,7 @@ msgstr ""
 "(subdirectorios serán incluidos)"
 
 #: src/PartFileConvert.cpp:701
-msgid ""
-"Do you want the source files of succesfully imported downloads be deleted?"
+msgid "Do you want the source files of succesfully imported downloads be deleted?"
 msgstr ""
 "¿Quieres que los archivos fuente de una descarga importada "
 "satisfactoriamente sean borrados?"
@@ -4481,16 +4485,15 @@ msgstr "%.2f%% terminado."
 
 #: src/muuli_wdr.cpp:69
 msgid "eD2k Link: "
-msgstr ""
+msgstr "Enlace eD2k:"
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
 msgstr "Enviar"
 
 #: src/muuli_wdr.cpp:77
-msgid ""
-"Click here to add the eD2k link in the text control to your download queue."
-msgstr ""
+msgid "Click here to add the eD2k link in the text control to your download queue."
+msgstr "Haz Click aquí para añadir el enlace eD2k de la entrada de texto de control a la cola de descargas."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4630,7 +4633,7 @@ msgstr "Mas"
 
 #: src/muuli_wdr.cpp:352
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
-msgstr ""
+msgstr "Busca más resultados en en eD2k. No soportado por Kad aún."
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -5145,7 +5148,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:1743
 msgid "Bandwith limits"
-msgstr ""
+msgstr "Límites del ancho de banda"
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5173,7 +5176,7 @@ msgstr "Puerto TCP estándar:"
 
 #: src/muuli_wdr.cpp:1831
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr ""
+msgstr "Este es el puerto eD2k estándar y no puede ser deshabilitado"
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
@@ -5181,7 +5184,7 @@ msgstr "Puerto UDP estándar:"
 
 #: src/muuli_wdr.cpp:1840
 msgid "This UDP port is used for extended ed2k requests and Kad network"
-msgstr ""
+msgstr "Este puerto UDP se usa para peticiones extendidas de las redes ed2k y Kad"
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5201,11 +5204,11 @@ msgstr "Max. fuentes/archivo"
 
 #: src/muuli_wdr.cpp:1873
 msgid "Hard limit"
-msgstr ""
+msgstr "Límite superior"
 
 #: src/muuli_wdr.cpp:1883
 msgid "Connection limits"
-msgstr ""
+msgstr "Límites de conexión"
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
@@ -5257,7 +5260,7 @@ msgstr "reintentos"
 
 #: src/muuli_wdr.cpp:2001
 msgid "Auto-update server list at startup"
-msgstr ""
+msgstr "Auto-actualizar la lista de servidores al inicio"
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
@@ -5265,11 +5268,11 @@ msgstr "Lista"
 
 #: src/muuli_wdr.cpp:2009
 msgid "Update server list when connecting to a server"
-msgstr ""
+msgstr "Actualizar la lista de servidores al conectar a un servidor"
 
 #: src/muuli_wdr.cpp:2012
 msgid "Update server list when a client connects"
-msgstr ""
+msgstr "Actualizar la lista de servidores cuando un cliente se conecta"
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5333,19 +5336,19 @@ msgstr "Guardar 10 fuentes en archivos raros (< 20 fuentes)"
 
 #: src/muuli_wdr.cpp:2105
 msgid "Disk space"
-msgstr ""
+msgstr "Espacio en disco"
 
 #: src/muuli_wdr.cpp:2108
 msgid "Check disk space"
-msgstr ""
+msgstr "Comprobar espacio en disco"
 
 #: src/muuli_wdr.cpp:2109
 msgid "Select this if you want aMule to check your disk space"
-msgstr ""
+msgstr "Selecciona esta opción si quieres que aMule compruebe el espacio en disco"
 
 #: src/muuli_wdr.cpp:2116
 msgid "Min disk space:"
-msgstr ""
+msgstr "Espacio mínimo en disco:"
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5365,15 +5368,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming"
-msgstr ""
+msgstr "Incoming"
 
 #: src/muuli_wdr.cpp:2169
 msgid "Temporary"
-msgstr ""
+msgstr "Temporal"
 
 #: src/muuli_wdr.cpp:2180
 msgid "Shared"
-msgstr ""
+msgstr "Compartido"
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5389,7 +5392,7 @@ msgstr "Reproductor de vídeo"
 
 #: src/muuli_wdr.cpp:2209
 msgid "Create Backup for preview"
-msgstr ""
+msgstr "Crear un copia para la previsualización"
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5573,7 +5576,7 @@ msgstr "Varios Tweaks Gui"
 
 #: src/muuli_wdr.cpp:2479
 msgid "Show Fast eD2k Links Handler"
-msgstr ""
+msgstr "Mostrar el gestor rápido de enlaces eD2k"
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5597,7 +5600,7 @@ msgstr "Control Remoto"
 
 #: src/muuli_wdr.cpp:2523
 msgid "Web server parameters"
-msgstr ""
+msgstr "Parámetros del servidor web"
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
@@ -5605,15 +5608,15 @@ msgstr "Iniciar servidor web al inicio"
 
 #: src/muuli_wdr.cpp:2531
 msgid "Web server port"
-msgstr ""
+msgstr "Puertos del servidor web"
 
 #: src/muuli_wdr.cpp:2539
 msgid "Enable UPnP port forwarding on the web server port"
-msgstr ""
+msgstr "Habilitar el forwarding de puertos UPnP en el puerto del servidor web"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Web server UPnP TCP port"
-msgstr ""
+msgstr "Puerto del UPnP del servidor web"
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5725,12 +5728,11 @@ msgstr "Registro"
 
 #: src/muuli_wdr.cpp:2895
 msgid "Click on this button to update the servers list from URL ..."
-msgstr ""
-"Click en este botón para actualizar la lista de servidores desde una URL ..."
+msgstr "Click en este botón para actualizar la lista de servidores desde una URL ..."
 
 #: src/muuli_wdr.cpp:2899
 msgid "Server list"
-msgstr ""
+msgstr "Lista de servidores"
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5742,7 +5744,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2911
 msgid "Add server manually: Name"
-msgstr ""
+msgstr "Añadir servidor manualmente: Nombre"
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5818,7 +5820,7 @@ msgstr "Desconectar Kad"
 
 #: src/muuli_wdr.cpp:3163
 msgid "eD2k Info"
-msgstr ""
+msgstr "Información eD2k"
 
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
@@ -5870,7 +5872,7 @@ msgstr "Todos"
 
 #: src/muuli_wdr.cpp:3221
 msgid "No one"
-msgstr ""
+msgstr "Ninguno"
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -5878,8 +5880,7 @@ msgstr "Quien puede ver los archivos compartidos:"
 
 #: src/muuli_wdr.cpp:3224
 msgid "Select who can request to view a list of your shared files."
-msgstr ""
-"Selecciona quien puede solicitar ver nuestra lista de archivos compartidos."
+msgstr "Selecciona quien puede solicitar ver nuestra lista de archivos compartidos."
 
 #: src/muuli_wdr.cpp:3229
 msgid "IP-Filtering"
@@ -5890,8 +5891,7 @@ msgid "Filter clients"
 msgstr "Filtro clientes"
 
 #: src/muuli_wdr.cpp:3238
-msgid ""
-"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Habilitar filtrado de IPs de clientes definido en el archivo ~/.aMule/"
 "ipfilter.dat"
@@ -5901,8 +5901,7 @@ msgid "Filter servers"
 msgstr "Filtro servidores"
 
 #: src/muuli_wdr.cpp:3243
-msgid ""
-"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
 msgstr ""
 "Habilitar filtrado de IPs de servidores definido en el archivo ~/.aMule/"
 "ipfilter.dat"
@@ -5989,16 +5988,14 @@ msgstr "Frecuencia de actualización (segs):"
 
 #: src/muuli_wdr.cpp:3343
 msgid "Change the frequency (in seconds) of Online Signature updates."
-msgstr ""
-"Cambiar la frecuencia (en segundos) de la actualización de la firma-online"
+msgstr "Cambiar la frecuencia (en segundos) de la actualización de la firma-online"
 
 #: src/muuli_wdr.cpp:3351
 msgid "Online Signature Directory:"
 msgstr "Directorio de Firma Online:"
 
 #: src/muuli_wdr.cpp:3358
-msgid ""
-"Click here to select the directory containing the the Online Signature files."
+msgid "Click here to select the directory containing the the Online Signature files."
 msgstr ""
 "Click aquí para seleccionar el directorio que contienen los archivos de "
 "firmas-online."
@@ -6033,8 +6030,7 @@ msgstr "Filtrar mensajes que contienen (usa ',' como separador):"
 
 #: src/muuli_wdr.cpp:3409 src/muuli_wdr.cpp:3433
 msgid "add here the words amule should filter and block messages including it"
-msgstr ""
-"añade aquí las palabras que amule debe filtrar y bloquear mensajes incluidos"
+msgstr "añade aquí las palabras que amule debe filtrar y bloquear mensajes incluidos"
 
 #: src/muuli_wdr.cpp:3421
 msgid "Comments"
@@ -6209,8 +6205,7 @@ msgid "You must specify a path for the category!"
 msgstr "¡Debes especificar una ruta para la categoría!"
 
 #: src/CatDialog.cpp:159
-msgid ""
-"Failed to create incoming dir for category. Please specify a valid path!"
+msgid "Failed to create incoming dir for category. Please specify a valid path!"
 msgstr ""
 "¡Error al crear el directorio entrante de la categoría. Por favor "
 "especifique una ruta correcta!"
@@ -6600,8 +6595,7 @@ msgstr "%u (QR: %u)"
 
 #: src/SearchDlg.cpp:527
 msgid "Min size must be smaller than max size. Max size ignored."
-msgstr ""
-"El tamaño mínimo debe ser menor al tamaño máximo. Tamaño máximo ignorado."
+msgstr "El tamaño mínimo debe ser menor al tamaño máximo. Tamaño máximo ignorado."
 
 #: src/SearchDlg.cpp:528 src/SearchDlg.cpp:587
 msgid "Search warning"
@@ -6618,7 +6612,7 @@ msgstr "Menú aMule"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Speed limits:"
-msgstr ""
+msgstr "Límites de velocidad"
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6641,12 +6635,12 @@ msgstr "DE: %u"
 #: src/MuleTrayIcon.cpp:358
 #, c-format
 msgid "Download speed: %.1f"
-msgstr ""
+msgstr "Velocidad de descarga: %.1f"
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
 msgid "Upload speed: %.1f"
-msgstr ""
+msgstr "Velocidad de subida: %.1f"
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6681,20 +6675,20 @@ msgstr "IP: %s"
 #: src/MuleTrayIcon.cpp:415
 #, c-format
 msgid "TCP port: %d"
-msgstr ""
+msgstr "Puerto TCP: %d"
 
 #: src/MuleTrayIcon.cpp:417
 msgid "TCP port: Not ready"
-msgstr ""
+msgstr "Puerto TCP: No está listo"
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
 msgid "UDP port: %d"
-msgstr ""
+msgstr "Puerto UDP: %d"
 
 #: src/MuleTrayIcon.cpp:428
 msgid "UDP port: Not ready"
-msgstr ""
+msgstr "Puerto UDP: No está listo"
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6707,12 +6701,12 @@ msgstr "Firma Online: Desactivada"
 #: src/MuleTrayIcon.cpp:453
 #, c-format
 msgid "Shared files: %d"
-msgstr ""
+msgstr "Archivos compartidos: %d"
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
 msgid "Queued clients: %d"
-msgstr ""
+msgstr "Clientes en cola: %d"
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6726,11 +6720,11 @@ msgstr "Total SU: %s"
 
 #: src/MuleTrayIcon.cpp:484
 msgid "Upload limit"
-msgstr ""
+msgstr "Límite de subida"
 
 #: src/MuleTrayIcon.cpp:488
 msgid "Download limit"
-msgstr ""
+msgstr "Límite de descarga"
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6781,8 +6775,7 @@ msgstr "¡Archivo server.met no encontrado!"
 #: src/ServerList.cpp:96
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr ""
-"Error al cargar el archivo server.met '%s', encontrado formato desconocido."
+msgstr "Error al cargar el archivo server.met '%s', encontrado formato desconocido."
 
 #: src/ServerList.cpp:102
 msgid "Failed to open server.met!"
@@ -6791,8 +6784,7 @@ msgstr "¡Error al abrir server.met!"
 #: src/ServerList.cpp:113
 #, c-format
 msgid "Server.met file corrupt, found invalid versiontag: 0x%x, size %i"
-msgstr ""
-"Archivo server.met corrupto, encontrada versión no válida: 0x%x, tamaño %i"
+msgstr "Archivo server.met corrupto, encontrada versión no válida: 0x%x, tamaño %i"
 
 #: src/ServerList.cpp:168
 #, c-format
@@ -6821,8 +6813,7 @@ msgstr "Servidor no añadido: La IP de [%s:%d] está filtrada o no es válida."
 #: src/ServerList.cpp:227
 #, c-format
 msgid "Server not added: Server with matching IP:Port [%s:%d] found in list."
-msgstr ""
-"Servidor no añadido: Servidor IP:Puerto [%s:%d] encontrado en la lista."
+msgstr "Servidor no añadido: Servidor IP:Puerto [%s:%d] encontrado en la lista."
 
 #: src/ServerList.cpp:246
 #, c-format
@@ -6859,7 +6850,7 @@ msgstr "Error al descargar la lista de servidores desde %s"
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
-msgstr ""
+msgstr "No se ha encontrado una entrada de dirección en 'addresses.dat'. Por favor, pega un lista de servidores válida en este archivo para poder actualizar de forma automática la lista de servidores."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6869,7 +6860,7 @@ msgstr "Descargando lista de servidores de %s"
 #: src/ServerList.cpp:839
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr ""
+msgstr "ADVERTENCIA: especificada una URL inválida para la actualización automática de servidores : %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6911,14 +6902,14 @@ msgstr "Descarga lista de servidores"
 #: src/amule.cpp:844
 #, c-format
 msgid "web server running on pid %d"
-msgstr ""
+msgstr "servidor web corriendo con pid: %d"
 
 #: src/amule.cpp:848
 msgid ""
 "You requested to run web server on startup, but the amuleweb binary cannot "
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
-msgstr ""
+msgstr "Has solicitado ejecutar el servidor web al inicio pero no se ha podido correr el binario de amuleweb. Por favor instala el paquete que contanga el servidor web de aMule o compila aMule usando --enable-webserver y ejecuta make install"
 
 #: src/amule.cpp:938
 #, c-format
@@ -6983,8 +6974,7 @@ msgstr "o mata a tu perro. Pero *debería* ser seguro de todas formas. \n"
 msgid ""
 "The following options have been changed in this release for security "
 "reasons:\n"
-msgstr ""
-"Las siguientes opciones cambiaron en esta versión por razones de seguridad:\n"
+msgstr "Las siguientes opciones cambiaron en esta versión por razones de seguridad:\n"
 
 #: src/amule.cpp:1316
 msgid ""
@@ -7027,8 +7017,7 @@ msgstr ""
 
 #: src/amule.cpp:1324
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr ""
-"en www.aMule.org, o en nuestro canal de IRC #aMule en irc.freenode.net. \n"
+msgstr "en www.aMule.org, o en nuestro canal de IRC #aMule en irc.freenode.net. \n"
 
 #: src/amule.cpp:1326
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -7128,7 +7117,7 @@ msgstr "Conectando a %s"
 
 #: src/amule.cpp:2105
 msgid "Disconnected from eD2k"
-msgstr ""
+msgstr "Desconectado de eD2k"
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7164,526 +7153,9 @@ msgstr "Red Kad deshabilitada en opciones, no conectará."
 
 #: src/FriendList.cpp:120
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr ""
+msgstr "¡ No se ha podido abrir el archivo de amigos 'emfriends.met' para su lectura !"
 
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr ""
+msgstr "¡ No se ha podido abrir el archivo de amigos 'emfriends.met' para su escritura !"
 
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "EC Conexión fallida. Respuesta vacía."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "Conexión Externa: Acceso denegado porque: "
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "Conexión Externa: Acceso denegado"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr ""
-#~ "Conexión Externa: Mala respuesta desde el servidor. Conexión cerrada."
-
-#~ msgid "The ed2k hash of the file."
-#~ msgstr "El hash ed2k del archivo."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Copiar &enlace ED2K al portapapeles"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "Copiar enlace ED2K al portapapeles (&Fuente)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr ""
-#~ "Copiar enlace ED2k al portapapeles (Fuente) (&Con opciones de cifrado)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "Copiar enlace ED2k al portapapeles (Nombre del &host)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr ""
-#~ "Copiar enlace ED2k al portapapeles (Nombre del host) (Con opciones de "
-#~ "&cifrado)"
-
-#~ msgid "Copy ED2k link to clipboard (&AICH info)"
-#~ msgstr "Copiar enlace ED2K al portapapeles (&AICH info)"
-
-#~ msgid "Warning"
-#~ msgstr "Alerta"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Error: No podía escuchar el puerto TCP."
-
-#~ msgid "Error: can not accept web client connection\n"
-#~ msgstr "Error: imposible aceptar conexión del cliente web\n"
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "Servidor Web, puerto HTTP "
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "Utiliza UPnP port forwarding en el puerto del servidor web"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Contraseña de acceso completo para el servidor web"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Contraseña de invitado para el servidor web"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "Carga/Salva opciones del servidor web desde/a aMule remoto"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "Introduce aquí el archivo del que quieras crear el enlace Ed2k"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr ""
-#~ "Introduce aquí la URL que quieras añadir al enlace Ed2k: Añade / al "
-#~ "final, para dejar a aLinkCreator continuar con el actual nombre de archivo"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "Hash de archivo ED2K"
-
-#~ msgid "Ed2k link"
-#~ msgstr "Enlace ED2K"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "Abre un archivo para crear un enlace ed2k"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "Copiar enlace ed2k creado al porta papeles"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "Guardar un enlace ed2k creado a un archivo"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "Selecciona el archivo del cual quieres crear un enlace ed2k"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "Selecciona el archivo al enlace ed2k creado"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, el creador de enlaces ed2k de aMule\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps de http://www.everaldo.com y http://www.icomania.com\n"
-#~ "y http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distribuido bajo GPL"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, el creador de enlaces ed2k de aMule"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Copiar enlace ED2K al portapapeles"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Copiar enlaces ED2K al portapapeles"
-
-#~ msgid "Fatal Error: Failed to create Timer"
-#~ msgstr "Error Fatal: Error al crear el Reloj"
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K: Conectando"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K: Desconectado"
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "Aviso: Imposible abrir el fichero de tema '%s' para lectura"
-
-#~ msgid "ed2k network"
-#~ msgstr "red ed2k"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "Tu auto-actualización de lista de servidores está en blanco.\n"
-#~ "'Auto-actualizar lista de servidores al inicio' será deshabilitado"
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "Las redes ED2K y Kad están deshabilitadas.\n"
-#~ "No podrás conectarte a menos que habilites alguna de ellas."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Editar lista de servidores"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "Error: imposible aceptar una nueva conexión externa"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K está deshabilitado en las opciones."
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "Conexión Externa:  cierre solicitado"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Ya estás conectado a ED2K"
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "Conectando a ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "Desconectado de ED2K"
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "Conexión Externa: opcode recibido no válido: %#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "Estado ED2K:"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "Velocidad media descarga (Sesión): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "Velocidad media subida (Sesión): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "Descarga máxima (Sesión): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "Subida máxima (Sesión): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Tamaño medio de archivos compartidos: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "No se buscará en ED2K si no está conectado a ED2K"
-
-#~ msgid "Error: "
-#~ msgstr "Error: "
-
-#~ msgid "Warning: "
-#~ msgstr "Alerta: "
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "Buscar archivos similares (ED2k, servidor local)"
-
-#~ msgid "Error"
-#~ msgstr "Error"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "AVISO: No puede añadirse a si mismo como una fuente para un enlace ed2k "
-#~ "teniendo id baja."
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "Por favor, selecciona tu reproductor de vídeo preferido en las opciones.\n"
-#~ "Mientras tanto, aMule intentará usar mplayer y seguirás viendo esta "
-#~ "alerta en todas las previsualizaciones"
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "Error: Error al abrir archivo part.met: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "Error: el tamaño del archivo part.met es 0: %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "Error: ¡Versión no válida del archivo part.met! %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr ""
-#~ "Error: %s (%s) está corrupto (numero de marcador incorrecto), imposible "
-#~ "cargar el archivo."
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "Alerta: %s podría estar corrupto (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Error inesperado al completar %s. Archivo pausado"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr ""
-#~ "Alerta: Imposible codificar parte descargada - hashset incompleto '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "Error: Imposible codificar parte descargada - hashset incompleto (%s). "
-#~ "Esto nunca debería pasar"
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "Espacio en disco insuficiente"
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "Alerta: known.met no puede ser abierto."
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr ""
-#~ "Alerta: Lista del archivo known corrupta, contiene una cabecera no válida."
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "¡ERROR! No se debe compartir %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "Red ED2K deshabilitada en opciones, no conectará."
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "No hay servidores válidos en la lista de servidores"
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "Error: socket no válido al comprobar el timeout"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions."
-#~ msgstr ""
-#~ "Error: Fallo al cargar la copia de seguridad. Busca en http://forum.amule."
-#~ "org soluciones para recuperar archivos .part.met "
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "No se puede convertir el enlace a ed2k: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Error, enlace ed2k no válido: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "Límites de ancho de banda: Su: %u kB/s, Desc: %u kB/s.\n"
-
-#~ msgid "Shutdown aMule."
-#~ msgstr "Cerrar aMule"
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "Cerrar el núcleo remoto en ejecución (amule/amuled).\n"
-#~ "Esto también cerrará el cliente de texto, esto no hará nada sino hay\n"
-#~ "un núcleo en ejecución.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Conectar solamente a ED2K "
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Desconectar solamente ED2K"
-
-#~ msgid "Adds an ed2k or magnet link to core."
-#~ msgstr "Añade un ed2k o un enlace magnético al núcleo."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "El enlace ed2k a añadir puede ser.\n"
-#~ "*) un enlace de archivo (ed2k://|file|...), será añadido en la cola de "
-#~ "descargas,\n"
-#~ "*) un enlace de servidor (ed2k://|server|...), será añadido a la lista de "
-#~ "servidores,\n"
-#~ "*) o un enlace de lista de servidores, en el que todos los servidores en "
-#~ "la lista serán\n"
-#~ "   añadidos a la lista de servidores.\n"
-#~ "\n"
-#~ "Un enlace magnético debe contener el hash ed2k y la longitud del "
-#~ "archivo.\n"
-
-#~ msgid "Deprecated command, now '%s'."
-#~ msgstr "Comando en desuso, ahora '%s'."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "Error: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "Alerta: %s (%s) - %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "Error: Disco lleno"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "Error: Partmet no encontrado"
-
-#~ msgid "Error: IO error!"
-#~ msgstr "Error: ¡Error E/S!"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "Error: ¡Falló!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "Enlace ED2K: "
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr "'Click' aquí para añadir un enlace ed2k en tu cola de descargas."
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "Búsquedas para mas resultados  en ED2K. No soportado ahora en Kad."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Límites"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "Este es el puerto estándar ED2K y no puede ser deshabilitado."
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr ""
-#~ "Este puerto UDP es usado para extender las peticiones ED2K y red Kad."
-
-#~ msgid "Hard Limit"
-#~ msgstr "Límite Máximo"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Límites de conexión"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Auto-actualizar lista de servidores al iniciar"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "Actualizar lista de servidores al conectar a un servidor"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "Actualizar lista de servidores al conectar un cliente"
-
-#~ msgid "Disk Space"
-#~ msgstr "Espacio en disco"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "Comprobar espacio en disco"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr "Selecciona esto si quieres que aMule compruebe tu espacio en disco"
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "Min espacio de disco:"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Directorio Entrante :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Directorio Temporal :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Directorios compartidos"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "Crear copia de seguridad para previsualizar"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Mostrar gestión rápida de enlaces ED2k"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "Parámetros del servidor web"
-
-#~ msgid "Webserver port"
-#~ msgstr "Puerto del servidor web"
-
-#~ msgid "Enable UPnP port forwarding on the Webserver port"
-#~ msgstr "Habilitar UPnP port forwarding en el puerto del servidor web"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "Puerto UPnP TCP de servidor web"
-
-#~ msgid "Serverlist"
-#~ msgstr "Lista de servidores"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Añadir servidor manual : Nombre"
-
-#~ msgid "No One"
-#~ msgstr "Nadie"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "Limites de velocidad:"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "Velocidad de Descarga: %.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "Velocidad de Subida: %.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "Puerto TCP: %d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "Puerto TCP: No está listo"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "Puerto UDP: %d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "Puerto UDP: No está listo"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Archivos Compartidos: %d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "Clientes en cola: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Límite subida"
-
-#~ msgid "Download Limit"
-#~ msgstr "Límite descarga"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "No hay lista de direcciones de servidores en 'addresses.dat'. Pon una "
-#~ "dirección válida en este archivo, antes de actualizar automáticamente tu "
-#~ "lista de servidores"
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Alerta, URL especificada para auto-actualización de servidores, no "
-#~ "válida: %s"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "servidor web ejecutándose con pid %d"
-
-#~ msgid ""
-#~ "You requested to run webserver from startup, but the amuleweb binary "
-#~ "cannot be run. Please install the package containing aMule webserver, or "
-#~ "compile aMule using --enable-webserver and run make install"
-#~ msgstr ""
-#~ "Has solicitado iniciar el servidor web en el inicio, pero su binario no "
-#~ "se puede ejecutar.\n"
-#~ "Por favor instala el paquete que contiene el servidor web, o compila "
-#~ "aMule usando --enable-webserver y ejecuta make install."
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "Desconectado de ED2K"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr ""
-#~ "¡Error al abrir el archivo lista de amigos 'emfriends.met' para la "
-#~ "lectura!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr ""
-#~ "¡Error al abrir el archivo lista de amigos 'emfriends.met' para la "
-#~ "escritura!"
