@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-08 03:30+0200\n"
-"PO-Revision-Date: 2008-05-31 16:31+0300\n"
+"POT-Creation-Date: 2008-06-08 10:13+0300\n"
+"PO-Revision-Date: 2008-06-08 10:13+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,19 +33,19 @@ msgstr "Ühenduse viga"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC connection failed. Empty reply."
-msgstr ""
+msgstr "EC ühendus ebaõnnestus. Tühi vastus."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "External Connection: Access denied because: "
-msgstr ""
+msgstr "Väline Ühendus: Ligipääs keelatud sest: "
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "External Connection: Access denied"
-msgstr ""
+msgstr "Väline Ühendus: Ligipääs keelatud"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "External Connection: Bad reply from server. Connection closed."
-msgstr ""
+msgstr "Väline Ühendus: Serveri vastus vigane. Ühendus suletud."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -288,7 +288,7 @@ msgstr "Faili nimi ilma raja osata."
 
 #: src/UserEvents.h:71
 msgid "The eD2k hash of the file."
-msgstr ""
+msgstr "Faili eD2k räsi."
 
 #: src/UserEvents.h:75
 msgid "The size of the file in bytes."
@@ -434,27 +434,27 @@ msgstr "Kopeeri magnet &URI lõikepuhvrisse"
 
 #: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
 msgid "Copy eD2k &link to clipboard"
-msgstr ""
+msgstr "Kopeeri eD2k &link lõikepuhvrisse"
 
 #: src/SharedFilesCtrl.cpp:163
 msgid "Copy eD2k link to clipboard (&Source)"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse (Allika&s)"
 
 #: src/SharedFilesCtrl.cpp:164
 msgid "Copy eD2k link to clipboard (Source) (&With Crypt options)"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse (Allikas)(&Koos Krüpto seadetega)"
 
 #: src/SharedFilesCtrl.cpp:165
 msgid "Copy eD2k link to clipboard (&Hostname)"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse (&Hostinimi)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse (Hostinimi)(Koos &Krüpto seadetega)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse (&AICH info)"
 
 #: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
 msgid "Copy feedback to clipboard"
@@ -529,7 +529,7 @@ msgstr[1] "Salvestatud %d Kad kontakti"
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
-msgstr ""
+msgstr "VIGA: Ei suuda kuulata TCP porti."
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
@@ -537,7 +537,7 @@ msgstr "web kliendi ühenus lubatud\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "ERROR: can not accept web client connection\n"
-msgstr ""
+msgstr "VIGA: ei luba web kliendil ühenduda\n"
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -610,11 +610,11 @@ msgstr "Laeb malli <str>"
 
 #: src/webserver/src/WebInterface.cpp:487
 msgid "Web server HTTP port"
-msgstr ""
+msgstr "WEB serveri HTTP port"
 
 #: src/webserver/src/WebInterface.cpp:491
 msgid "Use UPnP port forwarding on web server port"
-msgstr ""
+msgstr "Kasuta UPnP pordisuunamist webserveri portide suunamiseks"
 
 #: src/webserver/src/WebInterface.cpp:495
 msgid "UPnP port"
@@ -626,11 +626,11 @@ msgstr "Kasuta gzip pakkimist"
 
 #: src/webserver/src/WebInterface.cpp:507
 msgid "Full access password for web server"
-msgstr ""
+msgstr "Webserveri täieliku ligipääsu parool"
 
 #: src/webserver/src/WebInterface.cpp:511
 msgid "Guest password for web server"
-msgstr ""
+msgstr "Webserveri külalise (guest) parool"
 
 #: src/webserver/src/WebInterface.cpp:515
 msgid "Allow guest access"
@@ -642,7 +642,7 @@ msgstr "Keela külalise (guest) ligipääs"
 
 #: src/webserver/src/WebInterface.cpp:523
 msgid "Load/save web server settings from/to remote aMule"
-msgstr ""
+msgstr "Lae/salvesta webserveri parameetrid eemal-asuvast/asuvasse aMule"
 
 #: src/webserver/src/WebInterface.cpp:527
 msgid "aMule config file path. DO NOT USE DIRECTLY!"
@@ -1109,13 +1109,15 @@ msgstr "Lisa selle faili alternatiivsed URL'id"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:127
 msgid "Enter here the file you want to compute the eD2k link"
-msgstr ""
+msgstr "Sisesta siia fail, millele soovid luua eD2k linki"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:133
 msgid ""
 "Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
 msgstr ""
+"Sisesta siia see URL mida soovid eD2k lingile lisada: Lisa / lõppu, et "
+"aLinkCreator lisaks sellele faili nime"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1148,11 +1150,11 @@ msgstr "MD4 Faili kontrollsumma"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:204
 msgid "eD2k File Hash"
-msgstr ""
+msgstr "eD2k Faili kontrollsumma"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:215
 msgid "eD2k link"
-msgstr ""
+msgstr "eD2k link"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:228 src/muuli_wdr.cpp:344
 msgid "Start"
@@ -1172,15 +1174,15 @@ msgstr "Välju"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:260
 msgid "Open a file to compute its eD2k link"
-msgstr ""
+msgstr "Ava fail tema eD2k lingi loomiseks"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:263
 msgid "Copy computed eD2k link to clipboard"
-msgstr ""
+msgstr "Kopeeri arvutatud eD2k link lõikepuhvrisse"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:266
 msgid "Save computed eD2k link to file"
-msgstr ""
+msgstr "Salvesta arvutatud eD2k link faili"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:271
 #: src/utils/aLinkCreator/src/alcframe.cpp:467
@@ -1189,7 +1191,7 @@ msgstr "aLinkCreator'ist"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:364
 msgid "Select the file you want to compute the eD2k link"
-msgstr ""
+msgstr "Vali fail, mille eD2k linki soovid arvutada"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:407
 msgid "Nothing to copy for now !"
@@ -1197,7 +1199,7 @@ msgstr "Praeguseks hetkeks pole midagi kopeerida !"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:434
 msgid "Select the file to your computed eD2k link"
-msgstr ""
+msgstr "Vali fail mille eD2k lingi arvutasid"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:445
 msgid "Unable to open "
@@ -1223,6 +1225,14 @@ msgid ""
 "\n"
 "Distributed under GPL"
 msgstr ""
+"aLinkCreator, aMule eD2k lingilooja\n"
+"\n"
+"(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
+"\n"
+"Pildid pärinevad http://www.everaldo.com ja http://www.icomania.com\n"
+"ja http://jimmac.musichall.cz/ikony.php3\n"
+"\n"
+"Jaotatakse GPL litsentsi järgselt"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:511
 #: src/utils/aLinkCreator/src/alcframe.cpp:512
@@ -1264,7 +1274,7 @@ msgstr "%s ---> Faili pole olemas !\n"
 
 #: src/utils/aLinkCreator/src/alc.cpp:55
 msgid "aLinkCreator, the aMule eD2k link creator"
-msgstr ""
+msgstr "aLinkCreator, aMule eD2k lingilooja"
 
 #: src/DataToText.cpp:35
 msgid "Auto [Lo]"
@@ -1661,11 +1671,11 @@ msgstr "Eemalda kõik serverid"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
 msgid "Copy eD2k link to clipboard"
-msgstr ""
+msgstr "Kopeeri eD2k link lõikepuhvrisse"
 
 #: src/ServerListCtrl.cpp:449
 msgid "Copy eD2k links to clipboard"
-msgstr ""
+msgstr "Kopeeri eD2k lingid lõikepuhvrisse"
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1704,7 +1714,7 @@ msgstr "Külasta http://www.amule.org ja vaata ehk on uuem versioon saadaval."
 
 #: src/amuleDlg.cpp:246
 msgid "FATAL ERROR: Failed to create Timer"
-msgstr ""
+msgstr "Fataalne VIGA: Ei suutnud luua stopperit."
 
 #: src/amuleDlg.cpp:452
 msgid "aMule remote control "
@@ -1778,11 +1788,11 @@ msgstr "Oleku tekst"
 
 #: src/amuleDlg.cpp:684
 msgid "eD2k: Connecting"
-msgstr ""
+msgstr "eD2k: Ühendun"
 
 #: src/amuleDlg.cpp:688
 msgid "eD2k: Disconnected"
-msgstr ""
+msgstr "eD2k: Lahutatud"
 
 #: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
@@ -1861,7 +1871,7 @@ msgstr "Rüüde kataloogi  '%s' ei eksiteeri"
 #: src/amuleDlg.cpp:1212
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
-msgstr ""
+msgstr "HOIATUS: Ei suuda rüüfaili '%s' lugemiseks avada"
 
 #: src/amuleDlg.cpp:1312 src/amuleDlg.cpp:1473 src/muuli_wdr.cpp:1900
 #: src/muuli_wdr.cpp:3819
@@ -1870,7 +1880,7 @@ msgstr "Võrgud"
 
 #: src/amuleDlg.cpp:1314
 msgid "Networks window"
-msgstr ""
+msgstr "Võrgud"
 
 #: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3820
 msgid "Searches"
@@ -1878,7 +1888,7 @@ msgstr "Otsingud"
 
 #: src/amuleDlg.cpp:1318
 msgid "Searches window"
-msgstr ""
+msgstr "Otsingu aken"
 
 #: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3821
 msgid "Transfers"
@@ -1886,15 +1896,15 @@ msgstr "Liiklus"
 
 #: src/amuleDlg.cpp:1322
 msgid "Files transfers window"
-msgstr ""
+msgstr "Failide siirdamise aken"
 
 #: src/amuleDlg.cpp:1324
 msgid "Shared files"
-msgstr ""
+msgstr "Jagatud failid"
 
 #: src/amuleDlg.cpp:1326
 msgid "Shared files window"
-msgstr ""
+msgstr "Jagatud failide aken"
 
 #: src/amuleDlg.cpp:1328 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3382
 #: src/muuli_wdr.cpp:3824
@@ -1903,7 +1913,7 @@ msgstr "Teated"
 
 #: src/amuleDlg.cpp:1330
 msgid "Messages window"
-msgstr ""
+msgstr "Teadete aken"
 
 #: src/amuleDlg.cpp:1332 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2233
@@ -1913,11 +1923,11 @@ msgstr "Statistika"
 
 #: src/amuleDlg.cpp:1334
 msgid "Statistics graph window"
-msgstr ""
+msgstr "Statistiliste graafikute aken"
 
 #: src/amuleDlg.cpp:1339
 msgid "Preferences settings window"
-msgstr ""
+msgstr "Seadete aken"
 
 #: src/amuleDlg.cpp:1341 src/muuli_wdr.cpp:3828
 msgid "Import"
@@ -1937,7 +1947,7 @@ msgstr "Info/Appi"
 
 #: src/amuleDlg.cpp:1484
 msgid "eD2k network"
-msgstr ""
+msgstr "eD2k võrk"
 
 #: src/amuleDlg.cpp:1488
 msgid "Kad network"
@@ -2021,6 +2031,8 @@ msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
 msgstr ""
+"Sinu automaane serverinimekirja värskendamise loetelu on tühi.\n"
+"'Käivitamisel ei uuendata automaatselt serverinimekirja"
 
 #: src/PrefsUnifiedDlg.cpp:538
 msgid ""
@@ -2047,6 +2059,8 @@ msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
 msgstr ""
+"Mõlemad, nii eD2k kui ka Kad võrgud on mitteaktiivsed.\n"
+"Sa ei saa ühenduda enne, kui vähemalt üks neist on aktiivne."
 
 #: src/PrefsUnifiedDlg.cpp:626
 msgid ""
@@ -2108,7 +2122,7 @@ msgstr "Käivitusprogramm%s"
 
 #: src/PrefsUnifiedDlg.cpp:928
 msgid "Edit server list"
-msgstr ""
+msgstr "Muuda serverite nimekirja"
 
 #: src/PrefsUnifiedDlg.cpp:929
 msgid ""
@@ -2216,7 +2230,7 @@ msgstr "Kinnitati uus väline ühendus"
 
 #: src/ExternalConn.cpp:221
 msgid "ERROR: couldn't accept a new external connection"
-msgstr ""
+msgstr "VIGA: Ei suutnud uut välist ühendust aksepteerida"
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
@@ -2296,7 +2310,7 @@ msgstr "eemaldatav server on vaja määrata"
 
 #: src/ExternalConn.cpp:708
 msgid "eD2k is disabled in preferences."
-msgstr ""
+msgstr "eD2k on seadetes väljalülitatud."
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2320,7 +2334,7 @@ msgstr "Sinu klient pole seadistatud sellise detailsuse astme jaoks."
 
 #: src/ExternalConn.cpp:1058
 msgid "External Connection: shutdown requested"
-msgstr ""
+msgstr "Väline Ühendus: nõutakse seiskamist"
 
 #: src/ExternalConn.cpp:1070
 msgid "Already shutting down."
@@ -2349,11 +2363,11 @@ msgstr "Ei suuda faili ringinimetada."
 
 #: src/ExternalConn.cpp:1406
 msgid "Already connected to eD2k."
-msgstr ""
+msgstr "Juba ühendatud eD2k võrku."
 
 #: src/ExternalConn.cpp:1409
 msgid "Connecting to eD2k..."
-msgstr ""
+msgstr "Ühendun eD2k..."
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2369,7 +2383,7 @@ msgstr "Kõik võrgud on väljalülitatud."
 
 #: src/ExternalConn.cpp:1433
 msgid "Disconnected from eD2k."
-msgstr ""
+msgstr "eD2k ühendus katkestatud."
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2378,7 +2392,7 @@ msgstr "Kad ühendus katkestatud."
 #: src/ExternalConn.cpp:1445
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
-msgstr ""
+msgstr "Väline Ühendus: sain vigase opkoodi: %#x"
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2409,7 +2423,7 @@ msgstr "Serverit ei lisatud: Defineerisid vigase pordi."
 
 #: src/ServerWnd.cpp:162
 msgid "eD2k Status:"
-msgstr ""
+msgstr "eD2k Olek:"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2576,22 +2590,22 @@ msgstr "Seanss ÜL:AL suhe (Kokku): %s"
 #: src/Statistics.cpp:689
 #, c-format
 msgid "Average download rate (Session): %s"
-msgstr ""
+msgstr "Keskmine tõmbamise kiirus (Sessioon): %s"
 
 #: src/Statistics.cpp:690
 #, c-format
 msgid "Average upload rate (Session): %s"
-msgstr ""
+msgstr "Keskmine saatmise kiirus (Sessioon): %s"
 
 #: src/Statistics.cpp:691
 #, c-format
 msgid "Max download rate (Session): %s"
-msgstr ""
+msgstr "Maksimaalne tõmbamise kiirus (Sessioon): %s"
 
 #: src/Statistics.cpp:692
 #, c-format
 msgid "Max upload rate (Session): %s"
-msgstr ""
+msgstr "Maksimaalne saatmise kiirus (Sessioon): %s"
 
 #: src/Statistics.cpp:693
 #, c-format
@@ -2708,7 +2722,7 @@ msgstr "Jagatud failide suurus kokku: %s"
 #: src/Statistics.cpp:731
 #, c-format
 msgid "Average file size: %s"
-msgstr ""
+msgstr "Keskmine faili suurus: %s"
 
 #: src/Statistics.cpp:872
 msgid "Operating System"
@@ -2740,7 +2754,7 @@ msgstr "Kad otsing pole võimalik kui Kad ei tööta"
 
 #: src/SearchList.cpp:294
 msgid "eD2k search can't be done if eD2k is not connected"
-msgstr ""
+msgstr "eD2k otsing pole võimalik kui eD2k pole ühendatud"
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2856,11 +2870,11 @@ msgstr "Kas jätkata?"
 
 #: src/Logger.cpp:270
 msgid "ERROR: "
-msgstr ""
+msgstr "VIGA: "
 
 #: src/Logger.cpp:270
 msgid "WARNING: "
-msgstr ""
+msgstr "HOIATUS: "
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2908,7 +2922,7 @@ msgstr "Tõmba kataloogi"
 
 #: src/SearchListCtrl.cpp:582
 msgid "Search related files (eD2k, local server)"
-msgstr ""
+msgstr "Otsi seotud faile (eD2k, kohalik server)"
 
 #: src/SearchListCtrl.cpp:587
 msgid "Mark as known file"
@@ -2926,13 +2940,15 @@ msgstr "Ühendus ebaõnnestus "
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1339
 msgid "ERROR"
-msgstr ""
+msgstr "VIGA"
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
 msgstr ""
+"HOIATUS: Sa ei saa ennast eD2k lingi jaoks allikana lisada ajal kui omad "
+"lowid'd."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3109,6 +3125,8 @@ msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
+"Et seda viga eelvaatuse ajal rohkem mitte näitdata \n"
+"määra oma seadetes eelistatud video mängija (vaikimisi mplayer)."
 
 #: src/DownloadListCtrl.cpp:2255
 msgid "File preview"
@@ -3131,22 +3149,22 @@ msgstr "Proovin laadida met-faili tagavarakoopiat aadressilt %s"
 #: src/PartFile.cpp:334
 #, c-format
 msgid "ERROR: Failed to open part.met file: %s ==> %s"
-msgstr ""
+msgstr "VIGA: Ei suuda avada part.met faili: %s ==> %s"
 
 #: src/PartFile.cpp:340
 #, c-format
 msgid "ERROR: part.met file is 0 size: %s ==> %s"
-msgstr ""
+msgstr "VIGA: part.met faili on 0 suurusega: %s ==> %s"
 
 #: src/PartFile.cpp:351
 #, c-format
 msgid "ERROR: Invalid part.met fileversion: %s ==> %s"
-msgstr ""
+msgstr "VIGA: Vigane versioon failist part.met : %s ==> %s"
 
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr ""
+msgstr "VIGA: %s (%s) on vigane (vale märgiseloendur), ei suuda faili laadida."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3172,7 +3190,7 @@ msgstr "Ei suuda avada: %s (%s)"
 #: src/PartFile.cpp:708
 #, c-format
 msgid "WARNING: %s might be corrupted (%i)"
-msgstr ""
+msgstr "HOIATUS: %s võib olla riknenud (%i)"
 
 #: src/PartFile.cpp:891 src/PartFile.cpp:896
 #, c-format
@@ -3244,7 +3262,7 @@ msgstr "'%s' faili kontrollsumma arvutamine lõpetatud"
 #: src/PartFile.cpp:2242
 #, c-format
 msgid "Unexpected error while completing %s. File paused"
-msgstr ""
+msgstr "Ootamatu viga %s lõpetamisel. Fail pausitud"
 
 #: src/PartFile.cpp:2268
 #, c-format
@@ -3260,6 +3278,8 @@ msgstr "Kustutan faili: %s"
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
 msgstr ""
+"HOIATUS: Ei suuda tõmmatud osale arvutada kontrollsummat - kontrollsumma on "
+"mittetäielik '%s'"
 
 #: src/PartFile.cpp:2391
 #, c-format
@@ -3267,6 +3287,8 @@ msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
 msgstr ""
+"VIGA: ei suuda tõmmatud osale arvutada kontrollsummat- kontrollsumma on "
+"mittetäielik(%s). Seda ei tohiks kunagi juhtuda."
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3289,7 +3311,7 @@ msgstr "Eraldamine"
 
 #: src/PartFile.cpp:3861
 msgid "Insufficient disk space"
-msgstr ""
+msgstr "Ebapiisav kettaruum"
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3306,11 +3328,12 @@ msgstr "VIGA: Osafaili '%s' avamine ebaõnnestus"
 
 #: src/KnownFileList.cpp:79
 msgid "WARNING: known.met cannot be opened."
-msgstr ""
+msgstr "HOIATUS: known.met faili ei saa avada."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Knownfile list corrupted, contains invalid header."
 msgstr ""
+"HOIATUS: Tuttavate failde loetelu on riknenud, sisaldab riknenud päist."
 
 #: src/KnownFileList.cpp:112
 #, c-format
@@ -3339,7 +3362,7 @@ msgstr[1] "Leitud %i tuntud ja jagatud faili, %i tundmatut."
 #: src/SharedFileList.cpp:367
 #, c-format
 msgid "ERROR: Attempted to share %s"
-msgstr ""
+msgstr "VIGA: Katse jagada %s"
 
 #: src/CommentDialogLst.cpp:47 src/CommentDialog.cpp:34
 msgid "File Comments"
@@ -3378,11 +3401,11 @@ msgstr "Serveritega ühenduse loomine ebaõnnestus. Lähen uuele katsele."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "eD2k network disabled on preferences, not connecting."
-msgstr ""
+msgstr "eD2k on seadetes väljalülitatud, ei ühendu"
 
 #: src/ServerConnect.cpp:111 src/ServerConnect.cpp:124
 msgid "No valid servers to which to connect found in server list"
-msgstr ""
+msgstr "Serverite loetelus pole ühendumiseks sobivat kehtivat serverit"
 
 #: src/ServerConnect.cpp:187
 #, c-format
@@ -3431,7 +3454,7 @@ msgstr "Ühendumine %s (%s:%i) ebaõnnestus."
 
 #: src/ServerConnect.cpp:450
 msgid "ERROR: Socket invalid at timeout check"
-msgstr ""
+msgstr "VIGA: Vigane socket aegumise kontrollil"
 
 #: src/ServerConnect.cpp:460
 #, c-format
@@ -3443,6 +3466,8 @@ msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
 msgstr ""
+"VIGA: Ei suutnud laadida tagavarafaili. Vaata aadressilt http://forum.amule."
+"org, kas leiad juhiseid .part. met faili taastamiseks"
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3487,7 +3512,7 @@ msgstr "Sa juba proovid '%s' faili tõmmata"
 #: src/DownloadQueue.cpp:1309
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
-msgstr ""
+msgstr "Ei suuda muuta magnet linki eD2k lingiks: %s"
 
 #: src/DownloadQueue.cpp:1317
 #, c-format
@@ -3497,7 +3522,7 @@ msgstr "Lingi %s protokoll on tundmatu"
 #: src/DownloadQueue.cpp:1338
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
-msgstr ""
+msgstr "Vigane eD2k link! VIGA: %s"
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3569,11 +3594,11 @@ msgstr "Kehtiv IPFilter Tase on %d.\n"
 #: src/TextClient.cpp:671
 #, c-format
 msgid "Bandwidth limits: Up: %u kB/s, Down: %u kB/s.\n"
-msgstr ""
+msgstr "Ribalaiuse piirangud: Üles :%u kB/s, Alla: %u kB/s.\n"
 
 #: src/TextClient.cpp:689
 msgid "eD2k"
-msgstr ""
+msgstr "eD2k"
 
 #: src/TextClient.cpp:694
 #, c-format
@@ -3681,7 +3706,7 @@ msgstr ""
 
 #: src/TextClient.cpp:848
 msgid "Shut down aMule."
-msgstr ""
+msgstr "Seiska aMule"
 
 #: src/TextClient.cpp:849
 msgid ""
@@ -3689,10 +3714,12 @@ msgid ""
 "This will also shut down the text client, since it is unusable without a\n"
 "running core.\n"
 msgstr ""
+"Seiska eemalasuv töötav tuum (amule/amuled).\n"
+"Seiskab ka tekstikliendi, kuna see on kasutu ilma töötava tuumata.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
-msgstr "Taaslaeb määratud objekti."
+msgstr ".Taaslaeb määratud objekti."
 
 #: src/TextClient.cpp:852
 msgid "Reloads shared files list."
@@ -3720,7 +3747,7 @@ msgstr ""
 
 #: src/TextClient.cpp:857
 msgid "Connect to eD2k only."
-msgstr ""
+msgstr "Ühendu ainult eD2k võrku."
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3736,7 +3763,7 @@ msgstr "Lõpetad ühenduse kõigi, hetkel ühenduses olevate võrkudega.\n"
 
 #: src/TextClient.cpp:862
 msgid "Disconnect from eD2k only."
-msgstr ""
+msgstr "Lõpeta ühendus ainult eD2k võrguga."
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
@@ -3744,7 +3771,7 @@ msgstr "Lõpeta ühendus ainult Kad võrguga."
 
 #: src/TextClient.cpp:865
 msgid "Adds an eD2k or magnet link to core."
-msgstr ""
+msgstr "Lisab tuumale eD2k või magnet lingi."
 
 #: src/TextClient.cpp:866
 msgid ""
@@ -3757,6 +3784,13 @@ msgid ""
 "\n"
 "The magnet link must contain the eD2k hash and file length.\n"
 msgstr ""
+"Lisatav eD2k link saab olla:\n"
+"*) link failile (ed2k://|file|...), lisatakse tõmbamise järjekorda,\n"
+"*) link serverile (ed2k://|server|...), lisatakse serverite loetellu,\n"
+"*) või link serverite loetelule, sellisel juhul lisatakse kõik loetelus "
+"olevad\n"
+"   serverid serverite nimekirja.\n"
+"Magnet link peab sisaldama eD2k kontrollsummat ja faili pikkust.\n"
 
 #: src/TextClient.cpp:868
 msgid "Set a preference value."
@@ -3982,7 +4016,7 @@ msgstr "Tühjenda logi."
 #: src/TextClient.cpp:952
 #, c-format
 msgid "Deprecated command, use '%s' instead."
-msgstr ""
+msgstr "Aegnud käsk, kasuta selle asemel '%s'."
 
 #: src/TextClient.cpp:953
 #, c-format
@@ -4000,12 +4034,12 @@ msgstr "theApp->serverlist->GetServerByAddress() tagastas NULL"
 #: src/ServerSocket.cpp:259
 #, c-format
 msgid "ERROR: %s (%s) - %s"
-msgstr ""
+msgstr "VIGA: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:274
 #, c-format
 msgid "WARNING: %s (%s) - %s"
-msgstr ""
+msgstr "HOIATUS: %s (%s) - %s"
 
 #: src/ServerSocket.cpp:417
 #, c-format
@@ -4225,19 +4259,19 @@ msgstr "Edenemine"
 
 #: src/PartFileConvert.cpp:613
 msgid "ERROR: Out of diskspace"
-msgstr ""
+msgstr "VIGA: Kettaruum otsas"
 
 #: src/PartFileConvert.cpp:614
 msgid "ERROR: Partmet not found"
-msgstr ""
+msgstr "VIGA: Osamet faili ei leitud."
 
 #: src/PartFileConvert.cpp:615
 msgid "ERROR: IO error!"
-msgstr ""
+msgstr "VIGA: IO viga!"
 
 #: src/PartFileConvert.cpp:616
 msgid "ERROR: Failed!"
-msgstr ""
+msgstr "VIGA: Ebaõnnestus!"
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -4452,7 +4486,7 @@ msgstr "%.2f%% tehtud"
 
 #: src/muuli_wdr.cpp:69
 msgid "eD2k Link: "
-msgstr ""
+msgstr "eD2k Link: "
 
 #: src/muuli_wdr.cpp:76
 msgid "Commit"
@@ -4461,7 +4495,7 @@ msgstr "Jõusta"
 #: src/muuli_wdr.cpp:77
 msgid ""
 "Click here to add the eD2k link in the text control to your download queue."
-msgstr ""
+msgstr "Klikka siia, et lisada eD2k link tekstiväljalt tõmbamise järjekorda."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4598,7 +4632,7 @@ msgstr "Rohkem"
 
 #: src/muuli_wdr.cpp:352
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
-msgstr ""
+msgstr "Rohkemate eD2k tulemuste otsimine. Pole veel Kad poolt toetatud."
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -5101,7 +5135,7 @@ msgstr "Ava, kui võimalik, webileht uuel lehel selle asemel et avada uus aken"
 
 #: src/muuli_wdr.cpp:1743
 msgid "Bandwith limits"
-msgstr ""
+msgstr "Ribalaiuse piirid"
 
 #: src/muuli_wdr.cpp:1759 src/muuli_wdr.cpp:1803
 msgid "Upload"
@@ -5129,7 +5163,7 @@ msgstr "Standard kliendi TCP Port:"
 
 #: src/muuli_wdr.cpp:1831
 msgid "This is the standard eD2k port and cannot be disabled."
-msgstr ""
+msgstr "See on eD2k standard port ja seda ei saa välja lülitada."
 
 #: src/muuli_wdr.cpp:1836
 msgid "Extended client UDP Port:"
@@ -5138,6 +5172,7 @@ msgstr "Laiendatud kliendi UDP Port:"
 #: src/muuli_wdr.cpp:1840
 msgid "This UDP port is used for extended ed2k requests and Kad network"
 msgstr ""
+"Seda UDP porti kasutatkse laiendatud omadustega eD2k ja Kad võrgu puhul"
 
 #: src/muuli_wdr.cpp:1843
 msgid "disable"
@@ -5157,11 +5192,11 @@ msgstr "Maksimaalseid allikaid Faili kohta"
 
 #: src/muuli_wdr.cpp:1873
 msgid "Hard limit"
-msgstr ""
+msgstr "Maksimaalselt"
 
 #: src/muuli_wdr.cpp:1883
 msgid "Connection limits"
-msgstr ""
+msgstr "Ühenduse piirangud"
 
 #: src/muuli_wdr.cpp:1888
 msgid "Max Connections"
@@ -5213,7 +5248,7 @@ msgstr "katset"
 
 #: src/muuli_wdr.cpp:2001
 msgid "Auto-update server list at startup"
-msgstr ""
+msgstr "Käivitamisel värskenda automaatselt serverite nimekirja"
 
 #: src/muuli_wdr.cpp:2004
 msgid "List"
@@ -5221,11 +5256,11 @@ msgstr "Loetelu"
 
 #: src/muuli_wdr.cpp:2009
 msgid "Update server list when connecting to a server"
-msgstr ""
+msgstr "Värskenda serverite nimekirja serveriga ühendumisel"
 
 #: src/muuli_wdr.cpp:2012
 msgid "Update server list when a client connects"
-msgstr ""
+msgstr "Värskenda serverite nimekirja kliendi ühendumisel"
 
 #: src/muuli_wdr.cpp:2015
 msgid "Use priority system"
@@ -5291,19 +5326,19 @@ msgstr "Salvesta haruldaste failide 10 allikat (< 20 allikat)"
 
 #: src/muuli_wdr.cpp:2105
 msgid "Disk space"
-msgstr ""
+msgstr "Kettaruum"
 
 #: src/muuli_wdr.cpp:2108
 msgid "Check disk space"
-msgstr ""
+msgstr "Kontrolli kettaruumi"
 
 #: src/muuli_wdr.cpp:2109
 msgid "Select this if you want aMule to check your disk space"
-msgstr ""
+msgstr "Vali see kui soovid et aMule sinu kettaruumi kontrolliks"
 
 #: src/muuli_wdr.cpp:2116
 msgid "Min disk space:"
-msgstr ""
+msgstr "Min Kettaruum:"
 
 #: src/muuli_wdr.cpp:2120
 msgid "Enter here the min disk space desired."
@@ -5323,15 +5358,15 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming"
-msgstr ""
+msgstr "Sisenev"
 
 #: src/muuli_wdr.cpp:2169
 msgid "Temporary"
-msgstr ""
+msgstr "Ajutine"
 
 #: src/muuli_wdr.cpp:2180
 msgid "Shared"
-msgstr ""
+msgstr "Jagatud"
 
 #: src/muuli_wdr.cpp:2183
 msgid "(Right click on folder icon for recursive share)"
@@ -5347,7 +5382,7 @@ msgstr "Video mängija"
 
 #: src/muuli_wdr.cpp:2209
 msgid "Create Backup for preview"
-msgstr ""
+msgstr "Loo eelvaateks koopia"
 
 #: src/muuli_wdr.cpp:2238
 msgid "Graphs"
@@ -5531,7 +5566,7 @@ msgstr "Muud GUI seaded"
 
 #: src/muuli_wdr.cpp:2479
 msgid "Show Fast eD2k Links Handler"
-msgstr ""
+msgstr "Näita kiiret eD2k lingi käsitlejat"
 
 #: src/muuli_wdr.cpp:2483
 msgid "Show extended info on categories tabs"
@@ -5555,7 +5590,7 @@ msgstr "Kaugjuhtimine"
 
 #: src/muuli_wdr.cpp:2523
 msgid "Web server parameters"
-msgstr ""
+msgstr "Web serveri seaded"
 
 #: src/muuli_wdr.cpp:2526
 msgid "Run amuleweb on startup"
@@ -5563,15 +5598,15 @@ msgstr "Käivita amuleweb (WEBserver) koos aMulega"
 
 #: src/muuli_wdr.cpp:2531
 msgid "Web server port"
-msgstr ""
+msgstr "Web serveri port"
 
 #: src/muuli_wdr.cpp:2539
 msgid "Enable UPnP port forwarding on the web server port"
-msgstr ""
+msgstr "Luba UPnP pordisuunamist webservri portide jaoks"
 
 #: src/muuli_wdr.cpp:2544
 msgid "Web server UPnP TCP port"
-msgstr ""
+msgstr "Webserveri UPnP TCP port"
 
 #: src/muuli_wdr.cpp:2554
 msgid "Page Refresh Time (in secs)"
@@ -5687,7 +5722,7 @@ msgstr "Sellele nupule klikates värskendad serverite loetelu URL ilt ..."
 
 #: src/muuli_wdr.cpp:2899
 msgid "Server list"
-msgstr ""
+msgstr "Serverite nimekiri"
 
 #: src/muuli_wdr.cpp:2904
 msgid ""
@@ -5699,7 +5734,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2911
 msgid "Add server manually: Name"
-msgstr ""
+msgstr "Lisa server käsitsi: Nimi"
 
 #: src/muuli_wdr.cpp:2915
 msgid "Enter the name of the new server here"
@@ -5775,7 +5810,7 @@ msgstr "Lõpeta Kad ühendus"
 
 #: src/muuli_wdr.cpp:3163
 msgid "eD2k Info"
-msgstr ""
+msgstr "eD2k Info"
 
 #: src/muuli_wdr.cpp:3195
 msgid "Protocol Obfuscation"
@@ -5827,7 +5862,7 @@ msgstr "Igaüks"
 
 #: src/muuli_wdr.cpp:3221
 msgid "No one"
-msgstr ""
+msgstr "Mitte keegi"
 
 #: src/muuli_wdr.cpp:3223
 msgid "Who can see shared files:"
@@ -6568,7 +6603,7 @@ msgstr "aMule Riba Menüü"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Speed limits:"
-msgstr ""
+msgstr "Kiiruse piirangud:"
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6591,12 +6626,12 @@ msgstr "AL: %u"
 #: src/MuleTrayIcon.cpp:358
 #, c-format
 msgid "Download speed: %.1f"
-msgstr ""
+msgstr "Tõmbamise kiirus: %.1f"
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
 msgid "Upload speed: %.1f"
-msgstr ""
+msgstr "Saatmise kiirus: %.1f"
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6631,20 +6666,20 @@ msgstr "IP: %s"
 #: src/MuleTrayIcon.cpp:415
 #, c-format
 msgid "TCP port: %d"
-msgstr ""
+msgstr "TCP port: %d"
 
 #: src/MuleTrayIcon.cpp:417
 msgid "TCP port: Not ready"
-msgstr ""
+msgstr "TCP port: Pole valmis"
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
 msgid "UDP port: %d"
-msgstr ""
+msgstr "UDP port: %d"
 
 #: src/MuleTrayIcon.cpp:428
 msgid "UDP port: Not ready"
-msgstr ""
+msgstr "UDP port: Pole valmis"
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6657,12 +6692,12 @@ msgstr "Online Allkiri: Keelatud"
 #: src/MuleTrayIcon.cpp:453
 #, c-format
 msgid "Shared files: %d"
-msgstr ""
+msgstr "Jagatud failid: %d"
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
 msgid "Queued clients: %d"
-msgstr ""
+msgstr "Kliente sabas: %d"
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6676,11 +6711,11 @@ msgstr "Kokku ÜL: %s"
 
 #: src/MuleTrayIcon.cpp:484
 msgid "Upload limit"
-msgstr ""
+msgstr "Saatmise limiit"
 
 #: src/MuleTrayIcon.cpp:488
 msgid "Download limit"
-msgstr ""
+msgstr "Tõmbamise limiit"
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -6809,6 +6844,9 @@ msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
 msgstr ""
+"'addresses.dat' failis puudub serverite nimekirja asukoha kirje. Palun lisa "
+"kehtiv serveri nimekirja asukoha aadress sellesse faili, vastasel juhul "
+"nimekirja automaatset värskendamist ei toimu."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6819,6 +6857,8 @@ msgstr "Tõmba serverite nimekiri aadressilt %s"
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
 msgstr ""
+"HOIATUS: vigane URL on määratud serverinimekirja automaatseks "
+"värskendamiseks: %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6861,7 +6901,7 @@ msgstr "Serverite nimekiri tõmmatud"
 #: src/amule.cpp:844
 #, c-format
 msgid "web server running on pid %d"
-msgstr ""
+msgstr "web server töötab protsessi id'ga %d"
 
 #: src/amule.cpp:848
 msgid ""
@@ -6869,6 +6909,10 @@ msgid ""
 "be run. Please install the package containing aMule web server, or compile "
 "aMule using --enable-webserver and run make install"
 msgstr ""
+"Soovisid et web server käivitataks käivitumisel, kuid amuleweb programm pole "
+"võimeline käivituma. Palun paigalada versioon mis sisaldab aMule web "
+"serverit või kompileeri aMule kasutades võtit --enable-webserver ja seejärel "
+"make install"
 
 #: src/amule.cpp:938
 #, c-format
@@ -7083,7 +7127,7 @@ msgstr "Ühendun %s"
 
 #: src/amule.cpp:2105
 msgid "Disconnected from eD2k"
-msgstr ""
+msgstr "eD2k ühendus katkestatud."
 
 #: src/amule.cpp:2112
 msgid "Kad started."
@@ -7118,512 +7162,8 @@ msgstr "Kad on seadetes väljalülitatud, ei ühenda."
 
 #: src/FriendList.cpp:120
 msgid "Failed to open friend list file 'emfriends.met' for reading!"
-msgstr ""
+msgstr "Sõprade faili 'emfriends.met' avamine lugemiseks ebaõnnestus!"
 
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
-msgstr ""
-
-#~ msgid "EC Connection Failed. Empty reply."
-#~ msgstr "EC Ühendus ebaõnnestus. Tühi vastus."
-
-#~ msgid "ExternalConn: Access denied because: "
-#~ msgstr "Väline ühendus: Ligipääs keelatud sest: "
-
-#~ msgid "ExternalConn: Access denied"
-#~ msgstr "Väline ühendus: Ligipääs Keelatud!"
-
-#~ msgid "ExternalConn: Bad reply from server. Connection closed."
-#~ msgstr "Väline ühendus: serveripoolne paha vastus. Ühendus suletud."
-
-#~ msgid "The ed2k hash of the file."
-#~ msgstr "Faili ed2k räsi."
-
-#~ msgid "Copy ED2k &link to clipboard"
-#~ msgstr "Kopeeri ED2k &link lõikepuhvrisse"
-
-#~ msgid "Copy ED2k link to clipboard (&Source)"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse (Allika&s)"
-
-#~ msgid "Copy ED2k link to clipboard (Source) (&With Crypt options)"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse (Allikas)(&Koos Krüpto seadetega)"
-
-#~ msgid "Copy ED2k link to clipboard (&Hostname)"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse (&Hostinimi)"
-
-#~ msgid "Copy ED2k link to clipboard (Hostname) (With &Crypt options)"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse (Hostinimi)(Koos Krüpto seadetega)"
-
-#~ msgid "Copy ED2k link to clipboard (&AICH info)"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse (&AICH info)"
-
-#~ msgid "Warning"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "VIGA: Ei suuda kuulata TCP porti."
-
-#~ msgid "Error: can not accept web client connection\n"
-#~ msgstr "VIGA: ei luba web kliendil ühenduda\n"
-
-#~ msgid "Webserver HTTP port"
-#~ msgstr "Webserveri HTTP port"
-
-#~ msgid "Use UPnP port forwarding on webserver port"
-#~ msgstr "Kasuta webserveri pordis UPnP pordisuunamist"
-
-#~ msgid "Full access password for webserver"
-#~ msgstr "Täieõigusliku web serveri ligipääsu parool"
-
-#~ msgid "Guest password for webserver"
-#~ msgstr "Külalise (guest) parool webserverile"
-
-#~ msgid "Load/save webserver settings from/to remote aMule"
-#~ msgstr "Lae/salvesta webserveri seaded eemal(asuvasse/asuvast) aMule'st"
-
-#~ msgid "Enter here the file you want to compute the Ed2k link"
-#~ msgstr "Sisesta siia fail, millele soovid luua Ed2k linki"
-
-#~ msgid ""
-#~ "Enter here the URL you want to add to the Ed2k link: Add / at the end to "
-#~ "let aLinkCreator append the current file name"
-#~ msgstr ""
-#~ "Sisesta siia see URL mida soovid ed2k lingile lisada: Lisa / lõppu, et "
-#~ "aLinkCreator lisaks sellele faili nime"
-
-#~ msgid "Ed2k File Hash"
-#~ msgstr "Ed2k Faili kontrollsumma"
-
-#~ msgid "Ed2k link"
-#~ msgstr "Ed2k link"
-
-#~ msgid "Open a file to compute its ed2k link"
-#~ msgstr "Ava fail tema ed2k lingi loomiseks"
-
-#~ msgid "Copy computed ed2k link to clipboard"
-#~ msgstr "Kopeeri arvutatud ed2k link lõikepuhvrisse"
-
-#~ msgid "Save computed ed2k link to file"
-#~ msgstr "Salvesta arvutatud ed2k link faili"
-
-#~ msgid "Select the file you want to compute the ed2k link"
-#~ msgstr "Vali fail, millele soovid arvutada ed2k linki"
-
-#~ msgid "Select the file to your computed ed2k link"
-#~ msgstr "Vali fail millele arvutasid ed2k lingi"
-
-#~ msgid ""
-#~ "aLinkCreator, the aMule ed2k link creator\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pixmaps from http://www.everaldo.com and http://www.icomania.com\n"
-#~ "and http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Distributed under GPL"
-#~ msgstr ""
-#~ "aLinkCreator, aMule ed2k lingilooja\n"
-#~ "\n"
-#~ "(c) 2004 ThePolish <thepolish@vipmail.ru>\n"
-#~ "\n"
-#~ "Pildid pärinevad http://www.everaldo.com ja http://www.icomania.com\n"
-#~ "ja http://jimmac.musichall.cz/ikony.php3\n"
-#~ "\n"
-#~ "Jaotatakse GPL litsentsi järgselt"
-
-#~ msgid "aLinkCreator, the aMule ed2k link creator"
-#~ msgstr "aLinkCreator, aMule ed2k lingilooja"
-
-#~ msgid "Copy ED2k link to clipboard"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse"
-
-#~ msgid "Copy ED2k links to clipboard"
-#~ msgstr "Kopeeri ED2k link lõikepuhvrisse"
-
-#~ msgid "Fatal Error: Failed to create Timer"
-#~ msgstr "Fataalne VIGA: Ei suutnud luua stopperit."
-
-#~ msgid "ED2K: Connecting"
-#~ msgstr "ED2K: Ühendun"
-
-#~ msgid "ED2K: Disconnected"
-#~ msgstr "ED2K: Pole ühendust"
-
-#~ msgid "Warning: Unable to open skin file '%s' for read"
-#~ msgstr "Hoiatus: Ei suuda rüüfaili '%s' lugemiseks avada"
-
-#~ msgid "ed2k network"
-#~ msgstr "ed2k võrk"
-
-#~ msgid ""
-#~ "Your Auto-update servers list is in blank.\n"
-#~ "'Auto-update serverlist at startup' will be disabled."
-#~ msgstr ""
-#~ "Serverite automaatse värskendamise loetelu on tühi.\n"
-#~ "Ei kasuta 'Serverite automaatne värskendamine käivitamisel'."
-
-#~ msgid ""
-#~ "Both ED2K and Kad network are disabled.\n"
-#~ "You won't be able to connect until you enable at least one of them."
-#~ msgstr ""
-#~ "Mõlemad , nii ED2K kui ka Kad võrgud on mitteaktiivsed.\n"
-#~ "Sa ei saa ühenduda enne, kui vähemalt üks neist on aktiivne."
-
-#~ msgid "Edit Serverlist"
-#~ msgstr "Serverite nimekiri"
-
-#~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "VIGA: Ei suutnud uut välist ühendust aksepteerida"
-
-#~ msgid "ED2K is disabled in preferences."
-#~ msgstr "ED2K on seadetes väljalülitatud."
-
-#~ msgid "ExternalConn: shutdown requested"
-#~ msgstr "Väline ühendus: nõuti seiskamist"
-
-#~ msgid "Already connected to ED2K."
-#~ msgstr "Juba ühendatud ED2K võrku."
-
-#~ msgid "Connecting to ED2K..."
-#~ msgstr "Ühendun ED2K..."
-
-#~ msgid "Disconnected from ED2K."
-#~ msgstr "ED2K ühendus katkestatud."
-
-#~ msgid "ExternalConn: invalid opcode received: %#x"
-#~ msgstr "Väline ühendus: saabus vigane opcode: %#x"
-
-#~ msgid "ED2K Status:"
-#~ msgstr "ED2K Olek:"
-
-#~ msgid "Average Downloadrate (Session): %s"
-#~ msgstr "Keskmine tõmbamise kiirus (Seansil): %s"
-
-#~ msgid "Average Uploadrate (Session): %s"
-#~ msgstr "Keskmine saatmise kiirus (Seansil): %s"
-
-#~ msgid "Max Downloadrate (Session): %s"
-#~ msgstr "Maksimaalne tõmbamise kiirus (Seansil): %s"
-
-#~ msgid "Max Uploadrate (Session): %s"
-#~ msgstr "Maksimaalne saatmise kiirus (Seansil): %s"
-
-#~ msgid "Average filesize: %s"
-#~ msgstr "Keskmine faili suurus: %s"
-
-#~ msgid "ED2K search can't be done if ED2K is not connected"
-#~ msgstr "ED2K otsing pole võimalik kui ED2K ei tööta"
-
-#~ msgid "Error: "
-#~ msgstr "Viga: "
-
-#~ msgid "Warning: "
-#~ msgstr "Hoiatus: "
-
-#~ msgid "Search related files (ED2k, local server)"
-#~ msgstr "Otsi seotud faile (ED2k, kohalik server)"
-
-#~ msgid "Error"
-#~ msgstr "Viga"
-
-#~ msgid ""
-#~ "WARNING: You can't add yourself as a source for a ed2k link while being "
-#~ "lowid."
-#~ msgstr ""
-#~ "HOIATUS: Sa ei saa lisada ennast allikana ed2k linki, omades ise "
-#~ "sealjuures lowid."
-
-#~ msgid ""
-#~ "Please set your preferred video player on preferences.\n"
-#~ "Meanwhile, aMule will attempt to use mplayer and you will get this "
-#~ "warning on every preview"
-#~ msgstr ""
-#~ "Palun määra seadetes oma eelistatud videopleier.\n"
-#~ "Senikaua proovib aMule kasutada mpalyer'it ja sa saad selle hoiatuse igal "
-#~ "eelvaatuse katsel"
-
-#~ msgid "Error: Failed to open part.met file: %s ==> %s"
-#~ msgstr "VIGA: Ei suuda avada part.met faili: %s ==> %s"
-
-#~ msgid "Error: part.met file is 0 size: %s ==> %s"
-#~ msgstr "VIGA: part.met faili suurus on 0 : %s ==> %s"
-
-#~ msgid "Error: Invalid part.met fileversion: %s ==> %s"
-#~ msgstr "VIGA: Vigane versioon failist part.met : %s ==> %s"
-
-#~ msgid "Error: %s (%s) is corrupt (wrong tagcount), unable to load file."
-#~ msgstr ""
-#~ "VIGA: %s (%s) on vigane (vale märgiseloendur), ei suuda faili laadida."
-
-#~ msgid "Warning: %s might be corrupted (%i)"
-#~ msgstr "HOIATUS: %s võib olla riknenud (%i)"
-
-#~ msgid "Unexpected file error while completing %s. File paused"
-#~ msgstr "Ootamatu failiviga %s lõpetamise ajal. Fail pausitud"
-
-#~ msgid ""
-#~ "Warning: Unable to hash downloaded part - hashset incomplete for '%s'"
-#~ msgstr "HOIATUS: Ei suuda luua hash'i - hashset mittetäielik '%s'"
-
-#~ msgid ""
-#~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
-#~ "should never happen"
-#~ msgstr ""
-#~ "VIGA: ei suuda tõmmatud osale arvutada kontrollsummat- kontrollsumma on "
-#~ "mittetäielik(%s). Seda ei tohiks kunagi juhtuda."
-
-#~ msgid "Insufficient Diskspace"
-#~ msgstr "Kettaruumi ei jätku"
-
-#~ msgid "Warning: known.met cannot be opened."
-#~ msgstr "HOIATUS: known.met ei saa avada."
-
-#~ msgid "Warning: Knownfile list corrupted, contains invalid header."
-#~ msgstr ""
-#~ "HOIATUS: Tuttavate failde loetelu on riknenud, sisaldades riknenud päist."
-
-#~ msgid "ERROR! Attempted to share %s"
-#~ msgstr "VIGA! Proovisid jagada %s"
-
-#~ msgid "ED2K network disabled on preferences, not connecting."
-#~ msgstr "ED2K on seadetes väljalülitatud, ei ühendu"
-
-#~ msgid "No valid servers to connect in serverlist found"
-#~ msgstr "Serverite nimekirjas pole ühtegi ühendumiseks sobivat serverit!"
-
-#~ msgid "Error: Socket invalid at timeoutcheck"
-#~ msgstr "VIGA: Vigane socket aegumise kontrollil"
-
-#~ msgid ""
-#~ "Error: Failed to load backup file. Search http://forum.amule.org for ."
-#~ "part.met recovery solutions."
-#~ msgstr ""
-#~ "VIGA: Ei suutnud laadida tagavarafaili. Vaata aadressilt http://forum."
-#~ "amule.org, kas leiad juhiseid .part faili taastamiseks"
-
-#~ msgid "Cannot convert magnet link to ed2k: %s"
-#~ msgstr "Ei suuda muuta magnet linki ed2k lingiks: %s"
-
-#~ msgid "Invalid ed2k link! Error: %s"
-#~ msgstr "Vigane ed2k link! Viga: %s"
-
-#~ msgid "Bandwidth Limits: Up: %u kB/s, Down: %u kB/s.\n"
-#~ msgstr "Ribalaiuse piirangud: ÜLes :%u kB/s, Alla: %u kB/s.\n"
-
-#~ msgid "Shutdown aMule."
-#~ msgstr "Seiska aMule"
-
-#~ msgid ""
-#~ "Shutdown the remote running core (amule/amuled).\n"
-#~ "This will also shut down the text client, since it is unusable without a\n"
-#~ "running core.\n"
-#~ msgstr ""
-#~ "Eemaloleva (amule/amuled) tuuma seiskamine.\n"
-#~ "Samas seiskab see ka tekstikliendi, sest see on kasutu ilma töötava "
-#~ "tuumata.\n"
-
-#~ msgid "Connect to ED2K only."
-#~ msgstr "Ühendu ainult ED2K võrku."
-
-#~ msgid "Disconnect from ED2K only."
-#~ msgstr "Lõpeta ühendus ainult ED2K võrguga."
-
-#~ msgid "Adds an ed2k or magnet link to core."
-#~ msgstr "Lisab tuumale ed2k või magnet lingi."
-
-#~ msgid ""
-#~ "The ed2k link to be added can be:\n"
-#~ "*) a file link (ed2k://|file|...), it will be added to the download "
-#~ "queue,\n"
-#~ "*) a server link (ed2k://|server|...), it will be added to the server "
-#~ "list,\n"
-#~ "*) or a serverlist link, in which case all servers in the list will be "
-#~ "added to the\n"
-#~ "   server list.\n"
-#~ "\n"
-#~ "The magnet link must contain the ed2k hash and file length.\n"
-#~ msgstr ""
-#~ "Lisatav ed2k link saab olla:\n"
-#~ "*) link failile (ed2k://|file|...), lisatakse tõmbamise järjekorda,\n"
-#~ "*) link serverile (ed2k://|server|...), lisatakse serverite loetellu,\n"
-#~ "*) või link serverite loetelule, sellisel juhul lisatakse kõik loetelus "
-#~ "olevad\n"
-#~ "   serverid serverite nimekirja.\n"
-#~ "Magnet link peab sisaldama ed2k räsi ja faili pikkuse infot.\n"
-
-#~ msgid "Deprecated command, now '%s'."
-#~ msgstr "Vananenud käsk, nüüd on '%s'."
-
-#~ msgid "Error: %s (%s) - %s"
-#~ msgstr "VIGA: %s (%s) - %s"
-
-#~ msgid "Warning: %s (%s) - %s"
-#~ msgstr "HOIATUS: %s (%s) - %s"
-
-#~ msgid "Error: Out of diskspace"
-#~ msgstr "VIGA: Kettaruum otsas"
-
-#~ msgid "Error: Partmet not found"
-#~ msgstr "VIGA: Osamet faili ei leitud."
-
-#~ msgid "Error: IO error!"
-#~ msgstr "VIGA: IO viga"
-
-#~ msgid "Error: Failed!"
-#~ msgstr "VIGA: Ebaõnnestus!"
-
-#~ msgid "ED2K Link: "
-#~ msgstr "ED2K  Link: "
-
-#~ msgid ""
-#~ "Click here to add the ed2k link in the text control to your download "
-#~ "queue."
-#~ msgstr ""
-#~ "Klikka siia, et lisada ed2k link tekstiväljalt tõmbamise järjekorda."
-
-#~ msgid "Searches for more results on ED2K. Not supported for Kad yet."
-#~ msgstr "Rohkemate ED2k tulemuste otsimine. Pole veel Kad poolt toetatud."
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Bandwith Limits"
-#~ msgstr "Ribalaiuse piirid"
-
-#~ msgid "This is the standard ED2K port and cannot be disabled."
-#~ msgstr "See on ED2K standard port ja seda ei saa välja lülitada."
-
-#~ msgid "This UDP port is used for extended Ed2K requests and Kad network"
-#~ msgstr ""
-#~ "Seda UDP porti kasutatkse laiendatud omadustega ED2K ja Kad võrgu puhul"
-
-#~ msgid "Hard Limit"
-#~ msgstr "Maksimaalselt"
-
-#~ msgid "Connection Limits"
-#~ msgstr "Ühenduse piirangud"
-
-#~ msgid "Auto-update serverlist at startup"
-#~ msgstr "Serverinimekirja automaatne uuendamine käivitumisel"
-
-#~ msgid "Update serverlist when connecting to a server"
-#~ msgstr "Serverinimekirja värskendamine serveriga ühendumisel"
-
-#~ msgid "Update serverlist when a client connect"
-#~ msgstr "Serverinimekirja värskendamine kliendiga ühendumisel"
-
-#~ msgid "Disk Space"
-#~ msgstr "Kettaruum"
-
-#~ msgid "Check Disk Space"
-#~ msgstr "Kontrolli kettaruumi"
-
-#~ msgid "Select this if you want aMule to check your Disk Space"
-#~ msgstr "Vali see kui soovid et aMule sinu kettaruumi kontrolliks"
-
-#~ msgid "Min Disk Space:"
-#~ msgstr "Min Kettaruum:"
-
-#~ msgid "Incoming Directory :"
-#~ msgstr "Tõmmatud failide kataloog :"
-
-#~ msgid "Temporary Directory :"
-#~ msgstr "Ajutiste failide kataloog :"
-
-#~ msgid "Shared Directories"
-#~ msgstr "Jagatud Kataloogid"
-
-#~ msgid "Create Backup to preview"
-#~ msgstr "Loo eeelvaateks koopia"
-
-#~ msgid "Show Fast ED2K Links Handler"
-#~ msgstr "Näita kiiret ED2K lingi käsitlejat"
-
-#~ msgid "Webserver Parameters"
-#~ msgstr "WEBserveri parameetrid"
-
-#~ msgid "Webserver port"
-#~ msgstr "WEBserveri port"
-
-#~ msgid "Enable UPnP port forwarding on the Webserver port"
-#~ msgstr "Luba UPnP pordisuunamist Webserveri portide suunamiseks"
-
-#~ msgid "Webserver UPnP TCP port"
-#~ msgstr "Webserveri UPnP TCP port"
-
-#~ msgid "Serverlist"
-#~ msgstr "Serverite nimekiri"
-
-#~ msgid "Manual Server Add : Name"
-#~ msgstr "Serveri käsitsi lisamine : Nimi"
-
-#~ msgid "No One"
-#~ msgstr "Mitte keegi"
-
-#~ msgid "Speed Limits:"
-#~ msgstr "Kiiruse piirangud:"
-
-#~ msgid "Download Speed: %.1f"
-#~ msgstr "Tõmbamise kiirus: %.1f"
-
-#~ msgid "Upload Speed: %.1f"
-#~ msgstr "Saatmise kiirus: %.1f"
-
-#~ msgid "TCP Port: %d"
-#~ msgstr "TCP Port %d"
-
-#~ msgid "TCP Port: Not Ready"
-#~ msgstr "TCP Port: Pole valmis"
-
-#~ msgid "UDP Port: %d"
-#~ msgstr "UDP Port %d"
-
-#~ msgid "UDP Port: Not Ready"
-#~ msgstr "UDP Port: Pole valmis"
-
-#~ msgid "Shared Files: %d"
-#~ msgstr "Jagatud failid: %d"
-
-#~ msgid "Queued Clients: %d"
-#~ msgstr "Kliente sabas: %d"
-
-#~ msgid "Upload Limit"
-#~ msgstr "Saatmise limiit"
-
-#~ msgid "Download Limit"
-#~ msgstr "Tõmbamise limiit"
-
-#~ msgid ""
-#~ "No serverlist address entry in 'addresses.dat' found. Please paste a "
-#~ "valid serverlist address into this file in order to auto-update your "
-#~ "serverlist"
-#~ msgstr ""
-#~ "Failist 'addresses.dat' ei leitud serverite loetelu aadressi. Palun "
-#~ "kopeeri kehtiv serverite loetelu aadress sellesse faili, muidu ei saa "
-#~ "serverite loetelu automaatselt uuendada"
-
-#~ msgid "Warning, invalid URL specified for auto-updating of servers: %s"
-#~ msgstr ""
-#~ "Hoiatus: serverite nimekirja automaatse värskendamise URL %s on vigane"
-
-#~ msgid "webserver running on pid %d"
-#~ msgstr "webserver töötab, pid %d"
-
-#~ msgid ""
-#~ "You requested to run webserver from startup, but the amuleweb binary "
-#~ "cannot be run. Please install the package containing aMule webserver, or "
-#~ "compile aMule using --enable-webserver and run make install"
-#~ msgstr ""
-#~ "Soovisid et käivitamisel starditaks ka webserver, kuid amuleweb "
-#~ "binaarkoodi ei saa käivitada. Palun installeeri pakk mis sisaldab aMule "
-#~ "web serverit või kompileeri aMule kasutades võtit --enable-webserver ja "
-#~ "peale seda käivita 'make install'"
-
-#~ msgid "Disconnected from ED2K"
-#~ msgstr "ED2K ühendus katkestatud"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for reading!"
-#~ msgstr "Sõbralisti faili 'emfriends.met' lugemiseks avamine ebaõnnestus!"
-
-#~ msgid "Failed to open friendlist file 'emfriends.met' for writing!"
-#~ msgstr "Sõbralisti faili 'emfriends.met' kirjutamiseks avamine ebaõnnestus!"
+msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
