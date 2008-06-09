@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-07 22:01+0200\n"
+"POT-Creation-Date: 2008-06-09 03:30+0200\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:86 src/libs/ec/cpp/RemoteConnect.cpp:94
 msgid "You must specify a non-empty password."
@@ -103,12 +104,14 @@ msgstr "Pradedama kurti klaidų taisymo maišos reikšmė failui: %s"
 #: src/ThreadTasks.cpp:347
 #, c-format
 msgid "Converting old AICH hashsets in '%s' to 64b in '%s'."
-msgstr "Senos klaidų taisymo maišos reikšmės keičiamos „%s“ keičiamos 64b „%s“."
+msgstr ""
+"Senos klaidų taisymo maišos reikšmės keičiamos „%s“ keičiamos 64b „%s“."
 
 #: src/ThreadTasks.cpp:426
 #, c-format
 msgid "WARNING: The filename '%s' is invalid and has been renamed to '%s'."
-msgstr "Dėmesio: failo pavadinimas %s yra klaidingas, todėl buvo pakeistas į %s."
+msgstr ""
+"Dėmesio: failo pavadinimas %s yra klaidingas, todėl buvo pakeistas į %s."
 
 #: src/ThreadTasks.cpp:439
 #, c-format
@@ -177,18 +180,26 @@ msgstr "Paprašė: %s\n"
 #: src/BaseClient.cpp:1961
 #, c-format
 msgid "Filestats for this session: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for this session: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Šio seanso failų statistika: priimta %d iš %d prašymo, %s persiųsta\n"
-msgstr[1] "Šio seanso failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
-msgstr[2] "Šio seanso failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
+msgid_plural ""
+"Filestats for this session: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Šio seanso failų statistika: priimta %d iš %d prašymo, %s persiųsta\n"
+msgstr[1] ""
+"Šio seanso failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
+msgstr[2] ""
+"Šio seanso failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
 
 #: src/BaseClient.cpp:1964
 #, c-format
 msgid "Filestats for all sessions: Accepted %d of %d request, %s transferred\n"
-msgid_plural "Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
-msgstr[0] "Visų seansų failų statistika: priimta %d iš %d prašymo, %s persiųsta\n"
-msgstr[1] "Visų seansų failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
-msgstr[2] "Visų seansų failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
+msgid_plural ""
+"Filestats for all sessions: Accepted %d of %d requests, %s transferred\n"
+msgstr[0] ""
+"Visų seansų failų statistika: priimta %d iš %d prašymo, %s persiųsta\n"
+msgstr[1] ""
+"Visų seansų failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
+msgstr[2] ""
+"Visų seansų failų statistika: priimta %d iš %d prašymų, %s persiųsta\n"
 
 #: src/BaseClient.cpp:1967
 msgid "Requested unknown file"
@@ -441,7 +452,9 @@ msgstr "Kopijuoti eD2k nuorodą į talpyklę (&kompiuterio pavadinimą)"
 
 #: src/SharedFilesCtrl.cpp:166
 msgid "Copy eD2k link to clipboard (Hostname) (With &Crypt options)"
-msgstr "Kopijuoti eD2k nuorodą į talpyklę (kompiuterio pavadinimą su šif&ravimo parinktimis)"
+msgstr ""
+"Kopijuoti eD2k nuorodą į talpyklę (kompiuterio pavadinimą su šif&ravimo "
+"parinktimis)"
 
 #: src/SharedFilesCtrl.cpp:167
 msgid "Copy eD2k link to clipboard (&AICH info)"
@@ -464,7 +477,7 @@ msgstr ""
 msgid "You need a HighID to create a valid sourcelink"
 msgstr "Norėdami sukurti šaltinio nuorodą, privalote turėti aukštą ID"
 
-#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:635 src/KadDlg.cpp:167
+#: src/SharedFilesCtrl.cpp:306 src/PrefsUnifiedDlg.cpp:623 src/KadDlg.cpp:167
 #: src/KadDlg.cpp:173 src/amule.cpp:673
 msgid "WARNING"
 msgstr "DĖMESIO"
@@ -1108,7 +1121,9 @@ msgstr "Įrašykite failą, kuriam kursite eD2k nuorodą"
 msgid ""
 "Enter here the URL you want to add to the eD2k link: Add / at the end to let "
 "aLinkCreator append the current file name"
-msgstr "Įrašykite URL, kurį pridėsite prie eD2k nuorodos. Gale pridėjus „/“ aLinkCreator pridės dabartinio failo pavadinimą"
+msgstr ""
+"Įrašykite URL, kurį pridėsite prie eD2k nuorodos. Gale pridėjus „/“ "
+"aLinkCreator pridės dabartinio failo pavadinimą"
 
 #: src/utils/aLinkCreator/src/alcframe.cpp:144 src/muuli_wdr.cpp:1061
 #: src/muuli_wdr.cpp:2932
@@ -1528,7 +1543,8 @@ msgid "Unable to determine selected browser!"
 msgstr "Nurodytos naršyklės rasti nepavyko!"
 
 #: src/Preferences.cpp:1671
-msgid "TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
+msgid ""
+"TCP port can't be higher than 65532 due to server UDP socket being TCP+3"
 msgstr ""
 "TCP prievadas negali būti didesnis nei 65532, nes serverio UDP prievadas yra "
 "TCP+3"
@@ -1585,7 +1601,8 @@ msgid ""
 "first. The server was NOT deleted."
 msgstr ""
 "Prie serverio, kurį norite pašalinti, esate šiuo metu prisijungę. Norėdami "
-"pašalinti serverį, iš pradžių turite atsijungti. Serveris kol kas nepašalintas."
+"pašalinti serverį, iš pradžių turite atsijungti. Serveris kol kas "
+"nepašalintas."
 
 #: src/ServerListCtrl.cpp:144 src/CatDialog.cpp:142 src/CatDialog.cpp:152
 #: src/CatDialog.cpp:160 src/ServerList.cpp:341 src/amule.cpp:713
@@ -1770,8 +1787,8 @@ msgstr " Autorinės teisės (C) 2002 Petar Maymounkov\n"
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr " http://kademlia.scs.cs.nyu.edu\n"
 
-#: src/amuleDlg.cpp:472 src/PrefsUnifiedDlg.cpp:532
-#: src/PrefsUnifiedDlg.cpp:627 src/PrefsUnifiedDlg.cpp:714 src/KadDlg.cpp:177
+#: src/amuleDlg.cpp:472 src/PrefsUnifiedDlg.cpp:520
+#: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "Žinutė"
@@ -2004,7 +2021,7 @@ msgstr "Taisymas"
 msgid "User Defined"
 msgstr "Nurodyta naudotojo"
 
-#: src/PrefsUnifiedDlg.cpp:510
+#: src/PrefsUnifiedDlg.cpp:498
 msgid ""
 "aMule must be restarted to enable these changes:\n"
 "\n"
@@ -2012,15 +2029,15 @@ msgstr ""
 "Kad įsigaliotų šie pakeitimai, aMule reikia paleisti iš naujo:\n"
 "\n"
 
-#: src/PrefsUnifiedDlg.cpp:517
+#: src/PrefsUnifiedDlg.cpp:505
 msgid "- TCP port changed.\n"
 msgstr "– pakeistas TCP prievadas.\n"
 
-#: src/PrefsUnifiedDlg.cpp:522
+#: src/PrefsUnifiedDlg.cpp:510
 msgid "- UDP port changed.\n"
 msgstr "– pakeistas UDP prievadas.\n"
 
-#: src/PrefsUnifiedDlg.cpp:531
+#: src/PrefsUnifiedDlg.cpp:519
 msgid ""
 "Your Auto-update server list is empty.\n"
 "'Auto-update server list at startup will be disabled."
@@ -2028,7 +2045,7 @@ msgstr ""
 "Automatiškai atnaujinamų servaerių sąrašas tuščias.\n"
 "Parinktis „Automatiškai atnaujinti serverių sąrašą“ bus sišjungta."
 
-#: src/PrefsUnifiedDlg.cpp:538
+#: src/PrefsUnifiedDlg.cpp:526
 msgid ""
 "You have enabled external connections but have not specified a password.\n"
 "External connections cannot be enabled unless a valid password is specified."
@@ -2036,19 +2053,19 @@ msgstr ""
 "Įjungėte išorinius ryšius, bet parinktyse nenurodėte slaptažodžio.\n"
 "Kol nenurodysite slaptažodžio, išoriniai ryšiai nebus įjungti."
 
-#: src/PrefsUnifiedDlg.cpp:550
+#: src/PrefsUnifiedDlg.cpp:538
 msgid "- Language changed.\n"
 msgstr "– kalba pakeista.\n"
 
-#: src/PrefsUnifiedDlg.cpp:555
+#: src/PrefsUnifiedDlg.cpp:543
 msgid "- Temp folder changed.\n"
 msgstr "– laikinų failų aplankas pakeistas.\n"
 
-#: src/PrefsUnifiedDlg.cpp:580 src/muuli_wdr.cpp:112
+#: src/PrefsUnifiedDlg.cpp:568 src/muuli_wdr.cpp:112
 msgid "Up: 0.0 | Down: 0.0"
 msgstr "Išs.: 0,0 | Ats.: 0,0"
 
-#: src/PrefsUnifiedDlg.cpp:622
+#: src/PrefsUnifiedDlg.cpp:610
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
@@ -2056,7 +2073,7 @@ msgstr ""
 "Tiek eD2k, tiek Kademlia tinklai yra išjungti.\n"
 "Norėdami prisijungti įjunkite bent vieną iš šių tinklų."
 
-#: src/PrefsUnifiedDlg.cpp:626
+#: src/PrefsUnifiedDlg.cpp:614
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
 "Enable UDP port or disable Kad."
@@ -2064,7 +2081,7 @@ msgstr ""
 "Nepavyks prisijungti prie Kademlia tinklo, nes išjungtas UDP prievadas.\n"
 "Arba įjunkite UDP prievadą, arba išjunkite Kademlia tinklą."
 
-#: src/PrefsUnifiedDlg.cpp:635
+#: src/PrefsUnifiedDlg.cpp:623
 msgid ""
 "\n"
 "You MUST restart aMule now.\n"
@@ -2074,7 +2091,7 @@ msgstr ""
 "Būtina paleisti aMule iš naujo.\n"
 "Jei dabar pat neperleisite aMule, nesiskųskite jei kas nors bus ne taip.\n"
 
-#: src/PrefsUnifiedDlg.cpp:713
+#: src/PrefsUnifiedDlg.cpp:701
 msgid ""
 "Your Auto-update servers list is in blank.\n"
 "Please fill in at least one URL to point to a valid server.met file.\n"
@@ -2084,41 +2101,41 @@ msgstr ""
 "Įrašykite bent vieną server.met failo URL.\n"
 "Norėdami įrašyti URL, paspauskite mygtuką „Sąrašas“."
 
-#: src/PrefsUnifiedDlg.cpp:854
+#: src/PrefsUnifiedDlg.cpp:842
 msgid "Temporary files"
 msgstr "Laikini failai"
 
-#: src/PrefsUnifiedDlg.cpp:859
+#: src/PrefsUnifiedDlg.cpp:847
 msgid "Incoming files"
 msgstr "Atsiųsti failai"
 
-#: src/PrefsUnifiedDlg.cpp:864
+#: src/PrefsUnifiedDlg.cpp:852
 msgid "Online Signatures"
 msgstr "Keičiami parašai"
 
-#: src/PrefsUnifiedDlg.cpp:877
+#: src/PrefsUnifiedDlg.cpp:865
 #, c-format
 msgid "Choose a folder for %s"
 msgstr "Parinkite aplanką %s"
 
-#: src/PrefsUnifiedDlg.cpp:897
+#: src/PrefsUnifiedDlg.cpp:885
 msgid "Browse for videoplayer"
 msgstr "Parinkite video grotuvą"
 
-#: src/PrefsUnifiedDlg.cpp:901
+#: src/PrefsUnifiedDlg.cpp:889
 msgid "Select browser"
 msgstr "Parinkite naršyklę"
 
-#: src/PrefsUnifiedDlg.cpp:907
+#: src/PrefsUnifiedDlg.cpp:895
 #, c-format
 msgid "Executable%s"
 msgstr "Vykdomas failas %s"
 
-#: src/PrefsUnifiedDlg.cpp:928
+#: src/PrefsUnifiedDlg.cpp:916
 msgid "Edit server list"
 msgstr "Keisti serverių sąrašą"
 
-#: src/PrefsUnifiedDlg.cpp:929
+#: src/PrefsUnifiedDlg.cpp:917
 msgid ""
 "Add here URL's to download server.met files.\n"
 "Only one url on each line."
@@ -2126,7 +2143,7 @@ msgstr ""
 "Įrašykite server.met failų URL.\n"
 "Vieną URL vienoje eilutėje."
 
-#: src/PrefsUnifiedDlg.cpp:985
+#: src/PrefsUnifiedDlg.cpp:973
 #, c-format
 msgid "Update delay: %d second"
 msgid_plural "Update delay: %d seconds"
@@ -2134,7 +2151,7 @@ msgstr[0] "Atnaujinimo intervalas: %d s"
 msgstr[1] "Atnaujinimo intervalas: %d s"
 msgstr[2] "Atnaujinimo intervalas: %d s"
 
-#: src/PrefsUnifiedDlg.cpp:992
+#: src/PrefsUnifiedDlg.cpp:980
 #, c-format
 msgid "Time for average graph: %d minute"
 msgid_plural "Time for average graph: %d minutes"
@@ -2142,12 +2159,12 @@ msgstr[0] "Vidurkių grafiko trukmė: %d min."
 msgstr[1] "Vidurkių grafiko trukmė: %d min."
 msgstr[2] "Vidurkių grafiko trukmė: %d min."
 
-#: src/PrefsUnifiedDlg.cpp:998
+#: src/PrefsUnifiedDlg.cpp:986
 #, c-format
 msgid "Connections Graph Scale: %d"
 msgstr "Ryšių grafiko mastelis: %d"
 
-#: src/PrefsUnifiedDlg.cpp:1004
+#: src/PrefsUnifiedDlg.cpp:992
 #, c-format
 msgid "Update delay : %d second"
 msgid_plural "Update delay : %d seconds"
@@ -2155,7 +2172,7 @@ msgstr[0] "Atnaujinimo intervalas: %d s"
 msgstr[1] "Atnaujinimo intervalas: %d s"
 msgstr[2] "Atnaujinimo intervalas: %d s"
 
-#: src/PrefsUnifiedDlg.cpp:1010
+#: src/PrefsUnifiedDlg.cpp:998
 #, c-format
 msgid "File Buffer Size: %d byte"
 msgid_plural "File Buffer Size: %d bytes"
@@ -2163,7 +2180,7 @@ msgstr[0] "Failų buferio dydis: %d baitas"
 msgstr[1] "Failų buferio dydis: %d baitai"
 msgstr[2] "Failų buferio dydis: %d baitų"
 
-#: src/PrefsUnifiedDlg.cpp:1016
+#: src/PrefsUnifiedDlg.cpp:1004
 #, c-format
 msgid "Upload Queue Size: %d client"
 msgid_plural "Upload Queue Size: %d clients"
@@ -2171,7 +2188,7 @@ msgstr[0] "Išsiuntimo eilės dydis: %d klientas"
 msgstr[1] "Išsiuntimo eilės dydis: %d klientai"
 msgstr[2] "Išsiuntimo eilės dydis: %d klientų"
 
-#: src/PrefsUnifiedDlg.cpp:1023
+#: src/PrefsUnifiedDlg.cpp:1011
 #, c-format
 msgid "Server connection refresh interval: %d minute"
 msgid_plural "Server connection refresh interval: %d minutes"
@@ -2179,32 +2196,32 @@ msgstr[0] "Serverio ryšio atnaujinimo intervalas: %d min."
 msgstr[1] "Serverio ryšio atnaujinimo intervalas: %d min."
 msgstr[2] "Serverio ryšio atnaujinimo intervalas: %d min."
 
-#: src/PrefsUnifiedDlg.cpp:1025
+#: src/PrefsUnifiedDlg.cpp:1013
 msgid "Server connection refresh interval: Disabled"
 msgstr "Serverio ryšio atnaujinimo intervalas: išjungta"
 
-#: src/PrefsUnifiedDlg.cpp:1089
+#: src/PrefsUnifiedDlg.cpp:1077
 #, c-format
 msgid "Execute command on `%s' event"
 msgstr "Įvykus „%s“ įvykiui įvykdyti komandą"
 
-#: src/PrefsUnifiedDlg.cpp:1092
+#: src/PrefsUnifiedDlg.cpp:1080
 msgid "Enable command execution on core"
 msgstr "Įjungti komandos vykdymą branduolyje"
 
-#: src/PrefsUnifiedDlg.cpp:1100
+#: src/PrefsUnifiedDlg.cpp:1088
 msgid "Core command:"
 msgstr "Branduolio komanda:"
 
-#: src/PrefsUnifiedDlg.cpp:1109
+#: src/PrefsUnifiedDlg.cpp:1097
 msgid "Enable command execution on GUI"
 msgstr "Įjungti komandos vykdymą grafinėje aplinkoje"
 
-#: src/PrefsUnifiedDlg.cpp:1117
+#: src/PrefsUnifiedDlg.cpp:1105
 msgid "GUI command:"
 msgstr "Grafinės aplinkos komanda:"
 
-#: src/PrefsUnifiedDlg.cpp:1126
+#: src/PrefsUnifiedDlg.cpp:1114
 msgid "The following variables will be replaced:"
 msgstr "Šie kintamieji bus pakeisti:"
 
@@ -2234,7 +2251,8 @@ msgstr "KLAIDA: nepavyko priimti išorinio ryšio"
 
 #: src/ExternalConn.cpp:240
 msgid "External connection refused due to empty password in preferences!"
-msgstr "Išorinis ryšys nepriimtas, nes parinktyse nurodytas tuščias slaptažodis!"
+msgstr ""
+"Išorinis ryšys nepriimtas, nes parinktyse nurodytas tuščias slaptažodis!"
 
 #: src/ExternalConn.cpp:250
 #, c-format
@@ -2259,8 +2277,8 @@ msgid ""
 "You cannot connect to a release version from an arbitrary SVN version! "
 "*sigh* possible crash prevented"
 msgstr ""
-"Nepavyks prie galutinės leidimo versijos prisijungti iš SVN versijos! "
-"Ech, buvo išvengta galimo programos lūžimo"
+"Nepavyks prie galutinės leidimo versijos prisijungti iš SVN versijos! Ech, "
+"buvo išvengta galimo programos lūžimo"
 
 #: src/ExternalConn.cpp:289
 msgid "Authentication failed."
@@ -2285,7 +2303,8 @@ msgstr "Prieiga suteikta."
 #: src/ExternalConn.cpp:565
 #, c-format
 msgid "Remote PartFile command failed: FileHash not found: %s"
-msgstr "Nutolusio dalinio failo komanda nepavyko. Failo maišos funkcija nerasta: %s"
+msgstr ""
+"Nutolusio dalinio failo komanda nepavyko. Failo maišos funkcija nerasta: %s"
 
 #: src/ExternalConn.cpp:567
 #, c-format
@@ -2402,7 +2421,8 @@ msgstr "Klaidingas opcode (bloga protokolo versija?)"
 #: src/UploadClient.cpp:269
 #, c-format
 msgid "Failed to open file (%s), removing from list of shared files."
-msgstr "Nepavyko atverti failo %s, jis bus pašalintas iš dalinamų failų sąrašo."
+msgstr ""
+"Nepavyko atverti failo %s, jis bus pašalintas iš dalinamų failų sąrašo."
 
 #: src/UploadClient.cpp:714
 #, c-format
@@ -2412,7 +2432,8 @@ msgstr "Gautas prašymas nežinomo failo maišos f-jai: %s"
 #: src/TerminationProcess.cpp:48
 #, c-format
 msgid "Command `%s' with pid `%d' has finished with status code `%d'."
-msgstr "Komanda „%s“, kurios pid „%d“, baigė darbą pranešdama būsenos kodą „%d“."
+msgstr ""
+"Komanda „%s“, kurios pid „%d“, baigė darbą pranešdama būsenos kodą „%d“."
 
 #: src/ServerWnd.cpp:104
 msgid "Server not added: No IP or hostname specified."
@@ -2793,13 +2814,16 @@ msgstr "Naudotojas %s (%u) paprašė dalinamų aplankų sąrašo –> atmesta"
 
 #: src/ClientTCPSocket.cpp:939
 #, c-format
-msgid "User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
-msgstr "Naudotojas %s (%u) paprašė dalinamų failų iš aplanko %s sąrašo –> suteikta"
+msgid ""
+"User %s (%u) requested your sharedfiles-list for directory %s -> accepted"
+msgstr ""
+"Naudotojas %s (%u) paprašė dalinamų failų iš aplanko %s sąrašo –> suteikta"
 
 #: src/ClientTCPSocket.cpp:976
 #, c-format
 msgid "User %s (%u) requested your sharedfiles-list for directory %s -> denied"
-msgstr "Naudotojas %s (%u) paprašė dalinamų failų iš aplanko %s sąrašo –> atmesta"
+msgstr ""
+"Naudotojas %s (%u) paprašė dalinamų failų iš aplanko %s sąrašo –> atmesta"
 
 #: src/ClientTCPSocket.cpp:995
 #, c-format
@@ -2814,7 +2838,8 @@ msgstr "Naudotojas %s (%u) atsiuntė neprašytus dalinamų failų aplankus"
 #: src/ClientTCPSocket.cpp:1025
 #, c-format
 msgid "User %s (%u) sent sharedfiles-list for directory %s"
-msgstr "Naudotojas %s (%u) atsiuntė neprašytą dalinamų failų sąrašą aplankui %s"
+msgstr ""
+"Naudotojas %s (%u) atsiuntė neprašytą dalinamų failų sąrašą aplankui %s"
 
 #: src/ClientTCPSocket.cpp:1032
 #, c-format
@@ -2829,7 +2854,8 @@ msgstr "Naudotojas %s (%u) atsiuntė neprašytą dalinamų failų sąrašą"
 #: src/ClientTCPSocket.cpp:1049
 #, c-format
 msgid "User %s (%u) denied access to shared directories/files list"
-msgstr "Naudotojas %s (%u) nesuteikė prieigos prie dalinamų aplankų/failų sąrašo"
+msgstr ""
+"Naudotojas %s (%u) nesuteikė prieigos prie dalinamų aplankų/failų sąrašo"
 
 #: src/KadDlg.cpp:132
 #, c-format
@@ -2853,7 +2879,8 @@ msgid "Are you sure you want to download a new nodes.dat file?\n"
 msgstr "Ar tikrai norite atsisiųsti naują nodes.dat failą?\n"
 
 #: src/KadDlg.cpp:197
-msgid "Doing so will remove your current nodes and restart Kademlia connection."
+msgid ""
+"Doing so will remove your current nodes and restart Kademlia connection."
 msgstr ""
 "Atsiuntus naują node.dat failą bus pašalinti dabartiniai mazgai ir bus iš "
 "naujo prisijungta prie Kademlia tinklo."
@@ -2940,7 +2967,9 @@ msgstr "KLAIDA"
 msgid ""
 "WARNING: You can't add yourself as a source for an eD2k link while having a "
 "lowid."
-msgstr "DĖMESIO: jei jūsų ID yra žemas, negalite įdėti savęs prie eD2k nuorodos šaltinių."
+msgstr ""
+"DĖMESIO: jei jūsų ID yra žemas, negalite įdėti savęs prie eD2k nuorodos "
+"šaltinių."
 
 #: src/amule-remote-gui.cpp:574
 #, c-format
@@ -3156,7 +3185,9 @@ msgstr "KLAIDA: neteisinga part.met failo versija: %s ==> %s"
 #: src/PartFile.cpp:601
 #, c-format
 msgid "ERROR: %s (%s) is corrupt (wrong tagcount), unable to load file."
-msgstr "KLAIDA: %s (%s) yra sugadintas (blogas žymių skaičius), failo įkelti nepavyks."
+msgstr ""
+"KLAIDA: %s (%s) yra sugadintas (blogas žymių skaičius), failo įkelti "
+"nepavyks."
 
 #: src/PartFile.cpp:604
 msgid "Trying to recover file info..."
@@ -3164,7 +3195,9 @@ msgstr "Bandoma atstatyti failo informaciją..."
 
 #: src/PartFile.cpp:619
 msgid "Recovering no-named file - will try to recover it as RecoveredFile.dat"
-msgstr "Atstatomas failas be pavadinimo. Atstačius jis bus pavadintas RecoveredFile.dat"
+msgstr ""
+"Atstatomas failas be pavadinimo. Atstačius jis bus pavadintas RecoveredFile."
+"dat"
 
 #: src/PartFile.cpp:624
 msgid "Recovered all available file info :D - Trying to use it..."
@@ -3225,7 +3258,8 @@ msgstr "Dalių failo %s (%s) platinančių šaltinių failas yra tuščias"
 #: src/PartFile.cpp:1118
 #, c-format
 msgid "Error reading partfile's seeds file (%s - %s): %s"
-msgstr "Nuskaitant dalių failo platinančių šaltinių failą įvyko klaida (%s – %s): %s"
+msgstr ""
+"Nuskaitant dalių failo platinančių šaltinių failą įvyko klaida (%s – %s): %s"
 
 #: src/PartFile.cpp:1136 src/PartFile.cpp:1164
 #, c-format
@@ -3236,8 +3270,8 @@ msgid_plural ""
 "Found corrupted part (%d) in %d parts file %s - FileResultHash |%s| FileHash "
 "|%s|"
 msgstr[0] ""
-"Aptikta klaidinga dalis (%d) %d dalies faile %s – failo rezultatų maišos f-ja "
-"|%s| failo maišos f-ja |%s|"
+"Aptikta klaidinga dalis (%d) %d dalies faile %s – failo rezultatų maišos f-"
+"ja |%s| failo maišos f-ja |%s|"
 msgstr[1] ""
 "Aptikta klaidinga dalis (%d) %d dalių faile %s – failo rezultatų maišos f-ja "
 "|%s| failo maišos f-ja |%s|"
@@ -3273,14 +3307,18 @@ msgstr "Šalinamas failas: %s"
 #: src/PartFile.cpp:2386
 #, c-format
 msgid "WARNING: Unable to hash downloaded part - hashset incomplete for '%s'"
-msgstr "DĖMESIO: atsiųstai daliai nepavyko apskaičiuoti maišos funkcijos – %s maišos reikšmės nebaigtos"
+msgstr ""
+"DĖMESIO: atsiųstai daliai nepavyko apskaičiuoti maišos funkcijos – %s maišos "
+"reikšmės nebaigtos"
 
 #: src/PartFile.cpp:2391
 #, c-format
 msgid ""
 "ERROR: Unable to hash downloaded part - hashset incomplete (%s). This should "
 "never happen"
-msgstr "DĖMESIO: atsiųstai daliai nepavyko apskaičiuoti maišos funkcijos – %s maišos reikšmės nebaigtos. Tokių dalykų neturi būti"
+msgstr ""
+"DĖMESIO: atsiųstai daliai nepavyko apskaičiuoti maišos funkcijos – %s maišos "
+"reikšmės nebaigtos. Tokių dalykų neturi būti"
 
 #: src/PartFile.cpp:3069
 #, c-format
@@ -3295,7 +3333,8 @@ msgstr "Atsiųsta sugadinta %i dalis: %s"
 #: src/PartFile.cpp:3197
 #, c-format
 msgid "ICH: Recovered corrupted part %i for %s -> Saved bytes: %s"
-msgstr "Klaidų taisymo įrankis: atstatyta sugadinta dalis %i %s –> išgelbėta %s baitų"
+msgstr ""
+"Klaidų taisymo įrankis: atstatyta sugadinta dalis %i %s –> išgelbėta %s baitų"
 
 #: src/PartFile.cpp:3845
 msgid "Allocating"
@@ -3391,7 +3430,8 @@ msgstr ""
 
 #: src/ServerConnect.cpp:74
 msgid "Failed to connect to all servers listed. Making another pass."
-msgstr "Nepavyko prisijungti nei prie vieno iš serverių sąraše. Bandoma dar kartą."
+msgstr ""
+"Nepavyko prisijungti nei prie vieno iš serverių sąraše. Bandoma dar kartą."
 
 #: src/ServerConnect.cpp:88 src/ServerConnect.cpp:137
 msgid "eD2k network disabled on preferences, not connecting."
@@ -3413,7 +3453,8 @@ msgstr "Prisijungta: %s"
 
 #: src/ServerConnect.cpp:335
 msgid "Fatal Error while trying to connect. Internet connection might be down"
-msgstr "Bandant prisijungti įvyko kritinė klaida. Gali būti, kad nėra interneto ryšio"
+msgstr ""
+"Bandant prisijungti įvyko kritinė klaida. Gali būti, kad nėra interneto ryšio"
 
 #: src/ServerConnect.cpp:339
 #, c-format
@@ -3460,7 +3501,9 @@ msgstr "Baigėsi bandymo susijungti laikas %s (%s:%i)."
 msgid ""
 "ERROR: Failed to load backup file. Search http://forum.amule.org for .part."
 "met recovery solutions."
-msgstr "KLAIDA: nepavyko įkelti atsarginės kopijos failo. Paieškokite http://forum.amule.org .part.met atstatymo būdų."
+msgstr ""
+"KLAIDA: nepavyko įkelti atsarginės kopijos failo. Paieškokite http://forum."
+"amule.org .part.met atstatymo būdų."
 
 #: src/DownloadQueue.cpp:174
 msgid "No part files found"
@@ -3480,7 +3523,8 @@ msgstr "Laikino aplanko failų sistema nemoka dirbti su dideliais failais."
 
 #: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
 msgid "Filesystem for Incoming directory cannot handle large files."
-msgstr "Atsiųstų failų aplanko failų sistema nemoka dirbti su dideliais failais."
+msgstr ""
+"Atsiųstų failų aplanko failų sistema nemoka dirbti su dideliais failais."
 
 #: src/DownloadQueue.cpp:327
 #, c-format
@@ -3529,7 +3573,9 @@ msgstr "Neteisingas IP formatas. Naudokite xxx.xxx.xxx.xxx:xxxx formą\n"
 msgid ""
 "This command requires an argument. Valid arguments: 'all', filename, or a "
 "number.\n"
-msgstr "Šiai komandai reikia kintamojo. Tinkami kintamieji: „all“ (viskas), failo pavadinimas arba skaičius.\n"
+msgstr ""
+"Šiai komandai reikia kintamojo. Tinkami kintamieji: „all“ (viskas), failo "
+"pavadinimas arba skaičius.\n"
 
 #: src/TextClient.cpp:346
 msgid "Processing by hash: "
@@ -3541,7 +3587,9 @@ msgstr "Apdorojama pagal failo pavadinimą: "
 
 #: src/TextClient.cpp:384
 msgid "This command requires an argument. Valid arguments: a file hash.\n"
-msgstr "Šiai komandai reikia kintamojo. Tinkami kintamieji: failo maišos f-jos reikšmė.\n"
+msgstr ""
+"Šiai komandai reikia kintamojo. Tinkami kintamieji: failo maišos f-jos "
+"reikšmė.\n"
 
 #: src/TextClient.cpp:410
 msgid "Not a valid number\n"
@@ -3670,7 +3718,8 @@ msgstr "Rodyti trumpą būklės informaciją."
 
 #: src/TextClient.cpp:843
 msgid "Show connection status, current up/download speeds, etc.\n"
-msgstr "Rodyti ryšio būklę, dabartinę išsiuntimo ir atsiuntimo spartą ir pan.\n"
+msgstr ""
+"Rodyti ryšio būklę, dabartinę išsiuntimo ir atsiuntimo spartą ir pan.\n"
 
 #: src/TextClient.cpp:845
 msgid "Show full statistics tree."
@@ -3706,7 +3755,8 @@ msgid ""
 "running core.\n"
 msgstr ""
 "Išjungti nutolusį programos branduolį (amule/amuled).\n"
-"Tekstinis klientas taipogi bus išjungtas, nes be branduolio jis neturi jokios prasmės.\n"
+"Tekstinis klientas taipogi bus išjungtas, nes be branduolio jis neturi "
+"jokios prasmės.\n"
 
 #: src/TextClient.cpp:851
 msgid "Reloads the given object."
@@ -3782,7 +3832,8 @@ msgstr ""
 "Pridedama eD2k nuoroda gali būti:\n"
 "*) failo nuoroda (ed2k://|file|...); ji bus įdėta į atsiuntimų eilę;\n"
 "*) serverio nuoroda (ed2k://|server|...); ji bus įdėta į serverių sąrašą;\n"
-"*) serverių sąrašo nuoroda; šiuo atveju visi nuorodos sąrašo serveriai bus įdėti į serverių sąrašą.\n"
+"*) serverių sąrašo nuoroda; šiuo atveju visi nuorodos sąrašo serveriai bus "
+"įdėti į serverių sąrašą.\n"
 "\n"
 "Magneto nuorodoje turi būti eD2k maišos f-jos reikšmė ir failo dydis.\n"
 
@@ -3984,7 +4035,8 @@ msgstr "Rodyti eiles/sąrašus."
 
 #: src/TextClient.cpp:938
 msgid "Shows upload/download queue, server list or shared files list.\n"
-msgstr "Rodyti išsiuntimo/atsiuntimo eilę, serverių sąrašą arba dalinamus failus.\n"
+msgstr ""
+"Rodyti išsiuntimo/atsiuntimo eilę, serverių sąrašą arba dalinamus failus.\n"
 
 #: src/TextClient.cpp:939
 msgid "Show upload queue."
@@ -4049,7 +4101,8 @@ msgstr "\tLabiausiai tikėtina, kad esate už ugniasienės ar maršrutizatoriaus
 
 #: src/ServerSocket.cpp:421
 msgid "\tFor more information, please refer to http://wiki.amule.org"
-msgstr "\tNorėdami sužinoti daugiau informacijos apsilankykite http://wiki.amule.org"
+msgstr ""
+"\tNorėdami sužinoti daugiau informacijos apsilankykite http://wiki.amule.org"
 
 #: src/ServerSocket.cpp:478
 msgid "Unknown server info received! - too short"
@@ -4119,7 +4172,8 @@ msgstr[2] "Įkelta %d vėliavėlių paveiksliukų."
 
 #: src/TransferWnd.cpp:194
 msgid "Are you sure you wish to cancel and delete all files in this category?"
-msgstr "Ar tikrai norite atšaukti ir pašalinti visus failus šioje kategorijoje?"
+msgstr ""
+"Ar tikrai norite atšaukti ir pašalinti visus failus šioje kategorijoje?"
 
 #: src/TransferWnd.cpp:194
 msgid "Confirmation Required"
@@ -4300,7 +4354,8 @@ msgstr ""
 "irgi apieškoti."
 
 #: src/PartFileConvert.cpp:701
-msgid "Do you want the source files of succesfully imported downloads be deleted?"
+msgid ""
+"Do you want the source files of succesfully imported downloads be deleted?"
 msgstr "Ar norite, kad sėmingai įkeltų failų pradiniai failai būtų pašalinti?"
 
 #: src/PartFileConvert.cpp:702
@@ -4442,7 +4497,8 @@ msgstr "Įkeliami IP filtrai ipfilter.dat ir ipfilter_static.dat."
 #: src/IPFilter.cpp:284
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
-msgstr "Nepavyko įkelti ipfilter.dat failo „%s“, nepavyko suprasti failo formato."
+msgstr ""
+"Nepavyko įkelti ipfilter.dat failo „%s“, nepavyko suprasti failo formato."
 
 #: src/IPFilter.cpp:325
 #, c-format
@@ -4488,8 +4544,10 @@ msgid "Commit"
 msgstr "Vykdyti"
 
 #: src/muuli_wdr.cpp:77
-msgid "Click here to add the eD2k link in the text control to your download queue."
-msgstr "Paspauskite norėdami įdėti eD2k nuorodą į teksto valdymą atsiuntimų eilėje."
+msgid ""
+"Click here to add the eD2k link in the text control to your download queue."
+msgstr ""
+"Paspauskite norėdami įdėti eD2k nuorodą į teksto valdymą atsiuntimų eilėje."
 
 #: src/muuli_wdr.cpp:85
 msgid "Pop-up status text"
@@ -4627,7 +4685,8 @@ msgstr "Daugiau"
 
 #: src/muuli_wdr.cpp:352
 msgid "Searches for more results on eD2k. Not supported for Kad yet."
-msgstr "Ieškos daugiau rezultatų eD2k tinkle. Kademlia tinkle kol kas neveikia."
+msgstr ""
+"Ieškos daugiau rezultatų eD2k tinkle. Kademlia tinkle kol kas neveikia."
 
 #: src/muuli_wdr.cpp:359
 msgid "Stop"
@@ -5073,7 +5132,8 @@ msgstr "Uždelsti prieš parodant patarimą (sekundėmis)"
 
 #: src/muuli_wdr.cpp:1664 src/muuli_wdr.cpp:1668
 msgid "The delay before showing tool-tips."
-msgstr "Kiek sekundžių uždelsti prieš parodant patarimą užvedus pelę ant objekto."
+msgstr ""
+"Kiek sekundžių uždelsti prieš parodant patarimą užvedus pelę ant objekto."
 
 #: src/muuli_wdr.cpp:1675
 msgid "Browser Selection"
@@ -5291,7 +5351,9 @@ msgstr "Įjungti klaidų tikrinimo įrankį"
 
 #: src/muuli_wdr.cpp:2067
 msgid "AICH trusts every hash (not recomended)"
-msgstr "Klaidų tikrinimo įrankis pasitiki visomis maišos funkcijomis (nerekomenduojama)"
+msgstr ""
+"Klaidų tikrinimo įrankis pasitiki visomis maišos funkcijomis "
+"(nerekomenduojama)"
 
 #: src/muuli_wdr.cpp:2075
 msgid "Add files to download in pause mode"
@@ -5353,7 +5415,9 @@ msgstr "Naujiems failams paskirti vietą diske"
 msgid ""
 "For new files preallocates disk space for the whole file, thus reduces "
 "fragmentation"
-msgstr "Naujiems failams iš anksto paskirti vietą diske visam failui. Taip bus sumažinta fragmentacija"
+msgstr ""
+"Naujiems failams iš anksto paskirti vietą diske visam failui. Taip bus "
+"sumažinta fragmentacija"
 
 #: src/muuli_wdr.cpp:2158
 msgid "Incoming"
@@ -5881,16 +5945,20 @@ msgid "Filter clients"
 msgstr "Filtruoti klientus"
 
 #: src/muuli_wdr.cpp:3238
-msgid "Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Įjungti klientų IP adresų filtravimą, aprašytą ~/.aMule/ipfilter.dat faile."
+msgid ""
+"Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Įjungti klientų IP adresų filtravimą, aprašytą ~/.aMule/ipfilter.dat faile."
 
 #: src/muuli_wdr.cpp:3241
 msgid "Filter servers"
 msgstr "Filtruoti serverius"
 
 #: src/muuli_wdr.cpp:3243
-msgid "Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
-msgstr "Įjungti serverių IP adresų filtravimą, aprašytą ~/.aMule/ipfilter.dat faile."
+msgid ""
+"Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat."
+msgstr ""
+"Įjungti serverių IP adresų filtravimą, aprašytą ~/.aMule/ipfilter.dat faile."
 
 #: src/muuli_wdr.cpp:3250
 msgid "Reload List"
@@ -5940,7 +6008,8 @@ msgstr "Jei įjungtas, naudoti ipfilter.dat failą visoje sistemoje"
 msgid ""
 "If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter "
 "file."
-msgstr "Jei nėra vietinio ipilter.dat failo, naudoti ipfilter.dat visoje sistemoje."
+msgstr ""
+"Jei nėra vietinio ipilter.dat failo, naudoti ipfilter.dat visoje sistemoje."
 
 #: src/muuli_wdr.cpp:3298
 msgid "Use Secure User Identification"
@@ -5950,7 +6019,8 @@ msgstr "Naudoti saugų kliento atpažinimą"
 msgid ""
 "It is recommended to enable this option. You will not receive credits if SUI "
 "is not enabled."
-msgstr "Rekomenduojama įjungti šią parinktį. Jei išjungsite, negausite kreditų."
+msgstr ""
+"Rekomenduojama įjungti šią parinktį. Jei išjungsite, negausite kreditų."
 
 #: src/muuli_wdr.cpp:3332
 msgid "Enable Online-Signature"
@@ -5977,7 +6047,8 @@ msgid "Online Signature Directory:"
 msgstr "Keičiamo parašo aplankas:"
 
 #: src/muuli_wdr.cpp:3358
-msgid "Click here to select the directory containing the the Online Signature files."
+msgid ""
+"Click here to select the directory containing the the Online Signature files."
 msgstr "Nurodykite aplanką, kuriame yra keičiamo parašo failas."
 
 #: src/muuli_wdr.cpp:3387 src/muuli_wdr.cpp:3426 src/muuli_wdr.cpp:3628
@@ -6010,7 +6081,8 @@ msgstr "Filtruoti žinutes turinčias tekstą („,“ naudokite kaip skirtuką)
 
 #: src/muuli_wdr.cpp:3409 src/muuli_wdr.cpp:3433
 msgid "add here the words amule should filter and block messages including it"
-msgstr "Įrašykite žodžius, kurių aMule ieškos žinutės tekste ir filtruos žinutę"
+msgstr ""
+"Įrašykite žodžius, kurių aMule ieškos žinutės tekste ir filtruos žinutę"
 
 #: src/muuli_wdr.cpp:3421
 msgid "Comments"
@@ -6185,8 +6257,11 @@ msgid "You must specify a path for the category!"
 msgstr "Nurodykite kategorijos kelią!"
 
 #: src/CatDialog.cpp:159
-msgid "Failed to create incoming dir for category. Please specify a valid path!"
-msgstr "Nepavyko sukurti atsiųstų failų aplanko šiai kategorijai. Nurodykite teisingą kelią!"
+msgid ""
+"Failed to create incoming dir for category. Please specify a valid path!"
+msgstr ""
+"Nepavyko sukurti atsiųstų failų aplanko šiai kategorijai. Nurodykite "
+"teisingą kelią!"
 
 #: src/ExternalConnector.cpp:141
 #, c-format
@@ -6755,7 +6830,8 @@ msgstr "Nepavyko aptikti server.met failo!"
 #: src/ServerList.cpp:96
 #, c-format
 msgid "Failed to load server.met file '%s', unknown format encountered."
-msgstr "Nepavyko įkelti server.met failo %s, aptikto failo formatas nesuprantamas."
+msgstr ""
+"Nepavyko įkelti server.met failo %s, aptikto failo formatas nesuprantamas."
 
 #: src/ServerList.cpp:102
 msgid "Failed to open server.met!"
@@ -6834,7 +6910,9 @@ msgstr "Nepavyko iš %s atsiųsti serverių sąrašo"
 msgid ""
 "No server list address entry in 'addresses.dat' found. Please paste a valid "
 "server list address into this file in order to auto-update your server list"
-msgstr "Faile „addresses.dat“ nerasta serverių sąrašo įrašų. Norėdami automatiškai atnaujinti sąrašą į šį failą įkelkite teisingą serverių sąrašo adresą."
+msgstr ""
+"Faile „addresses.dat“ nerasta serverių sąrašo įrašų. Norėdami automatiškai "
+"atnaujinti sąrašą į šį failą įkelkite teisingą serverių sąrašo adresą."
 
 #: src/ServerList.cpp:830
 #, c-format
@@ -6844,7 +6922,9 @@ msgstr "Atsiųsti serverių sąrašą iš %s"
 #: src/ServerList.cpp:839
 #, c-format
 msgid "WARNING: invalid URL specified for auto-updating of servers: %s"
-msgstr "DĖMESIO: automatiškam serverių sąrašo atnaujinimui pateiktas neteisingas URL: %s"
+msgstr ""
+"DĖMESIO: automatiškam serverių sąrašo atnaujinimui pateiktas neteisingas "
+"URL: %s"
 
 #: src/ServerList.cpp:843
 msgid "No valid server.met auto-download url on addresses.dat"
@@ -6856,7 +6936,8 @@ msgstr ""
 msgid ""
 "Local server is filtered by the IPFilters, reconnecting to a different "
 "server!"
-msgstr "Vietinis serveris filtruojamas IP filtro, jungiamasi prie kito serverio!"
+msgstr ""
+"Vietinis serveris filtruojamas IP filtro, jungiamasi prie kito serverio!"
 
 #: src/UserEvents.cpp:132
 #, c-format
@@ -6896,7 +6977,8 @@ msgid ""
 msgstr ""
 "Nurodėte paleidus programą paleisti žiniatinklio serverį, bet amuleweb "
 "programos nepavyko paleisti. Įdiekite aMule žiniatinklio programos paketą "
-"arba sukompiliuokite aMule su --enable-webserver parinktimi ir paleiskite „make install“."
+"arba sukompiliuokite aMule su --enable-webserver parinktimi ir paleiskite "
+"„make install“."
 
 #: src/amule.cpp:938
 #, c-format
@@ -6998,11 +7080,13 @@ msgstr ""
 
 #: src/amule.cpp:1323
 msgid "More information, support and new releases can found at our homepage,\n"
-msgstr "Daugiau informacijos, pagalbos ir naujausias galutines versijas rasite mūsų\n"
+msgstr ""
+"Daugiau informacijos, pagalbos ir naujausias galutines versijas rasite mūsų\n"
 
 #: src/amule.cpp:1324
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "svetainėje www.aMule.org arba IRC kanale #aMule serveryje irc.freenode.net.\n"
+msgstr ""
+"svetainėje www.aMule.org arba IRC kanale #aMule serveryje irc.freenode.net.\n"
 
 #: src/amule.cpp:1326
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -7143,4 +7227,3 @@ msgstr "Nepavyko atverti draugų sąrašo failo „emfriends.met“ skaitymui!"
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "Nepavyko atverti draugų sąrašo failo „emfriends.met“ rašymui!"
-
