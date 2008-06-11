@@ -1,11 +1,11 @@
-# Czech aMule 2.2.0 translation
+# Czech aMule 2.2.1 translation
 # Copyright (C) 2007 Free Software Foundation, Inc.
 # This file is distributed under the same license as the PACKAGE package.
 # David Watzke <david@watzke.cz>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: aMule 2.2.0\n"
+"Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-09 03:30+0200\n"
 "PO-Revision-Date: 2007-09-03 20:20+0100\n"
