@@ -51,10 +51,41 @@
 #include <wx/intl.h>
 #include <wx/image.h>
 
+#ifdef __WXMAC__
+	#include <CoreFoundation/CFBundle.h>
+	#include <wx/mac/corefoundation/cfstring.h>
+#endif
 
 CIP2Country::CIP2Country()
 {
-	m_geoip = GeoIP_new(GEOIP_STANDARD);
+	m_geoip = NULL;
+
+#ifdef __WXMAC__
+	// For the Mac GUI application, look for GeoIP database in the bundle
+	CFURLRef GeoIPDBUrl = CFBundleCopyResourceURL(
+		CFBundleGetMainBundle(),
+		CFSTR("GeoIP"), CFSTR("dat"), CFSTR("GeoIP")
+		);
+	if (GeoIPDBUrl) {
+		CFURLRef absoluteURL =
+			CFURLCopyAbsoluteURL(GeoIPDBUrl);
+		CFRelease(GeoIPDBUrl);
+		if (absoluteURL) {
+			CFStringRef pathString =
+				CFURLCopyFileSystemPath(
+					absoluteURL,
+					kCFURLPOSIXPathStyle);
+			CFRelease(absoluteURL);
+			wxString GeoIPDB = wxMacCFStringHolder(pathString).
+				AsString(wxLocale::GetSystemEncoding());
+
+			m_geoip = GeoIP_open(unicode2char(GeoIPDB),
+					GEOIP_STANDARD);
+		}
+	}
+#endif
+	if (m_geoip == NULL)
+		m_geoip = GeoIP_new(GEOIP_STANDARD);
 		
 	// Load data from xpm files
 	for (int i = 0; i < FLAGS_XPM_SIZE; ++i) {
@@ -82,6 +113,13 @@ CIP2Country::~CIP2Country()
 
 const CountryData& CIP2Country::GetCountryData(const wxString &ip)
 {
+	// Should prevent the crash if the GeoIP database does not exists
+	if (m_geoip == NULL) {
+		CountryDataMap::iterator it = m_CountryDataMap.find(wxString(wxT("unknown")));
+		it->second.Name = wxT("?");
+		return it->second;	
+	}
+	
 	const wxString CCode = wxString(char2unicode(GeoIP_country_code_by_addr(m_geoip, unicode2char(ip)))).MakeLower();
 	
 	CountryDataMap::iterator it = m_CountryDataMap.find(CCode);
