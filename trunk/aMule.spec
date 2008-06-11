@@ -77,7 +77,7 @@ the first multi-platform edonkey network client.
 * Wed Jun 16 2004 Ariano Bertacca <ariano@hirnriss.net>
 - added tool package.
 
-* Sat May 22.2.14 Ariano Bertacca <ariano@hirnriss.net>
+* Sat May 22 2004 Ariano Bertacca <ariano@hirnriss.net>
 - added webserver package.
 
 * Sun Mar 28 2004 Ariano Bertacca <ariano@hirnriss.net>
