@@ -158,7 +158,7 @@ static const wxString EmptyString = wxEmptyString;
 		};
 	#endif // W_OK
 	#include <wx/msw/winundef.h>	// Do_not_auto_remove
-#else 
+#elif !defined(_MSC_VER)
 	typedef struct sRECT {
 	  uint32 left;
 	  uint32 top;

@@ -58,8 +58,59 @@ public:
 	 */
 	CFileLock(const std::string& file)
 #if defined(__WIN32__) || defined(_MSC_VER)
-	{
+		: m_ok(false)
+   	{
+		hd = CreateFileA((file + "_lock").c_str(),
+			GENERIC_READ | GENERIC_WRITE, 
+			0,       // share - not shareable
+			NULL,    // security - not inheritable
+			CREATE_ALWAYS,
+			FILE_ATTRIBUTE_ARCHIVE, 
+			NULL);
+		if (hd != INVALID_HANDLE_VALUE) {
+			m_ok = SetLock(true);
+		}
 	}
+
+	/** Releases the lock, if any is held. */
+	~CFileLock() {
+		if (m_ok) {
+			SetLock(false);
+		}
+
+		if (hd != INVALID_HANDLE_VALUE) {
+			CloseHandle(hd);
+		}
+	}
+		
+private:
+	//! Not copyable.
+	CFileLock(const CFileLock&);
+	//! Not assignable.
+	CFileLock& operator=(const CFileLock&);
+	
+	/** Locks or unlocks the lock-file, returning true on success. */
+	bool SetLock(bool doLock) {
+		// lock/unlock first byte in the file
+		OVERLAPPED ov;
+		ov.Offset = ov.OffsetHigh = 0;
+		BOOL ret;
+		if (doLock) {
+			// http://msdn.microsoft.com/en-us/library/ms891385.aspx
+			ret = LockFileEx(hd, LOCKFILE_EXCLUSIVE_LOCK, 0, 1, 0, &ov);
+		} else {
+			// http://msdn.microsoft.com/en-us/library/ms892364.aspx
+			ret = UnlockFileEx(hd, 0, 1, 0, &ov);
+		}
+		return ret != 0;
+	}
+	
+	
+	//! Desriptor of the file being locked.
+	HANDLE hd; 
+
+	//! Specifies if the file-lock was aquired.
+	bool m_ok;
 #else
 		: m_fd(-1),
 		  m_ok(false)
