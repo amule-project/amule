@@ -128,6 +128,10 @@ Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" versio
 		* Added check for NetBSD systems.
 		* Heavy rewrite of autoconf/automake stuff.
 
+	gtoso:
+		* Fix for GeoIP crashing if the default GeoIP.dat file cannot be found.
+		* Patch to find GeoIP.dat in the application bundle.
+
 	Hermit:
 		* Patch for amulecmd history which ensures that when the same command
 		  is repeated several times in a row it only gets recorded in the
@@ -245,6 +249,7 @@ Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" versio
 		* Adjust MuleDebug
 		* Fix file types due to overloads of EC
 		* Moved browser preferences to "Browser/" section on config file.
+
 	lfroen:
 		* Fix partcount not being set in remote gui
 		* Use only one EC library with amuleweb
