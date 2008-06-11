@@ -1112,11 +1112,11 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 	wxString cmd;
 
 	cmd = thePrefs::GetBrowser();
-	if ( !cmd.IsEmpty() ) {
-		wxString tmp = url;
-		// Pipes cause problems, so escape them
-		tmp.Replace( wxT("|"), wxT("%7C") );
+	wxString tmp = url;
+	// Pipes cause problems, so escape them
+	tmp.Replace( wxT("|"), wxT("%7C") );
 
+	if ( !cmd.IsEmpty() ) {
 		if (!cmd.Replace(wxT("%s"), tmp)) {
 			// No %s found, just append the url
 			cmd += wxT(" ") + tmp;
@@ -1129,34 +1129,9 @@ void CamuleDlg::LaunchUrl( const wxString& url )
 		} else {
 			delete p;
 		}
-#ifdef __WXMSW__
 	} else {
-		wxFileType* ft =
-			wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("html"));
-		if (!ft) {
-			wxLogError(wxT("Impossible to determine the file type for extension html. Please edit your MIME types."));
-			return;
-		}
-
-		bool ok = ft->GetOpenCommand(
-			&cmd, wxFileType::MessageParameters(url, wxT("")));
-		delete ft;
-
-		if (!ok) {
-			wxMessageBox(
-				_("Could not determine the command for running the browser."),
-				wxT("Browsing problem"), wxOK|wxICON_EXCLAMATION, this);
-			return;
-		}
-
-		wxPuts(wxT("Launch Command: ") + cmd);
-		CTerminationProcess *p = new CTerminationProcess(cmd);
-		if (wxExecute(cmd, wxEXEC_ASYNC, p)) {
-			return;
-		} else {
-			delete p;
-		}
-#endif // __WXMSW__
+		wxLaunchDefaultBrowser(tmp);
+		return;
 	}
 	// Unable to execute browser. But this error message doesn't make sense,
 	// cosidering that you _can't_ set the browser executable path... =/

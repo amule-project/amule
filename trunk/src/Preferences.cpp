@@ -1620,7 +1620,7 @@ wxString CPreferences::GetBrowser()
 		}
 	else
 		switch ( s_Browser ) {
-			case 0: cmd = wxT("konqueror '%s'"); break;
+			case 0: cmd = wxEmptyString; break;
 			case 1: cmd = wxT("sh -c 'mozilla %s'"); break;
 			case 2: cmd = wxT("firefox '%s'"); break;
 			case 3:	cmd = wxT("MozillaFirebird '%s'"); break;
@@ -1634,7 +1634,7 @@ wxString CPreferences::GetBrowser()
 		}
 #else
 	switch ( s_Browser ) {
-		case 0: cmd = wxT(""); break;
+		case 0: cmd = wxEmptyString; break;
 		case 1: cmd = s_CustomBrowser; break;
 		default:
 			AddLogLineM( true, _("Unable to determine selected browser!") );
