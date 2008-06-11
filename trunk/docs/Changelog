@@ -244,7 +244,7 @@ Version 2.2.1 - ???
 		* Change CVS string to SVN
 		* Adjust MuleDebug
 		* Fix file types due to overloads of EC
-
+		* Moved browser preferences to "Browser/" section on config file.
 	lfroen:
 		* Fix partcount not being set in remote gui
 		* Use only one EC library with amuleweb
@@ -268,37 +268,41 @@ Version 2.2.1 - ???
 	magicamule:
 		* filtered off comments still affect rating
 
-	malapraxis:
+	MalaPraxis:
+		* Fixed some cases where the full IP of a new client would be shown 
+		  incorrectly.
+		* Added a "System Default" option to browser selection that uses
+		  wxWidget's capabilities.
 		* Fix MSVC compilation errors
 		* Don't use wxFile flush on Windows
 		* Toolbar fixes to fix assert on Windows
-		* Use better defaults fpr preferences
-		* simplified minimize/raise code, remember maxmimized status between
-		  sessions
+		* Use better defaults for preferences
+		* Simplified minimize/raise code, remember maxmimized status between
+		  sessions.
 		* Make sure starting points are inside screen and sanity fixes
 		* Fixes to view/restore, original function doesn't skip
-		* Final fixes to iconize()
-		* Fix for broken native counter
+		* Final fixes to Iconize()
+		* Fix for broken native counter.
 		* Change data types to clear warnings at /W4 on MSVC
 		* Cleared MD5_ functions to use standard memset/memcpy
 		* Cleared types, added asserts for debug, remove unused functions
-		* more warnings cleared and more asserts
-		* /W2 fixes on main project
-		* Fix compilation of amuleGUI
+		* More warnings cleared and more asserts
+		* /W2 fixes on main MSVC project
+		* Fix compilation of aMuleGUI
 		* Enable compilation with wx 2.9
 		* Fix Kad1.0 and Kad2.0 search types
 		* Enable dynamic GUI reordering when networks are disabled
-		* cannot pack non-POD structure
-		* Change structure with constructor to class
-		* small MSVC fixes, major speedup and adjustment for networks
-		* don't use ++ to modify a var value if you assign to same var
-		* speedup as copying is unnecessary
-		* further fixes for VS
-		* fix notebook logs/info tabs display
-		* better macro use
-		* add MSVC solution and readme
-		* fixed bug on socket event GetResult(), MSVC fixes on files
-		* fixed direct callback for type 6 sources
+		* Disable packing of non-POD structures
+		* Change structures with constructors to classes
+		* Small MSVC fixes, major speedup and adjustment for networks
+		* Don't use ++ to modify a var value if you assign to same var
+		* Speedup for some classes as copying is unnecessary
+		* Further fixes for VS
+		* Fix notebook logs/info tabs display
+		* Better macro use
+		* Add MSVC solution and readme
+		* Fixed bug on socket event GetResult(), MSVC fixes on files
+		* Fixed direct callback for type 6 sources for Kad2.0
 
 	morricone:
 		* Fix for wxwin.m4 not autodetecting wxBase.
