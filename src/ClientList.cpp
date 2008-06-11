@@ -1110,7 +1110,9 @@ void CClientList::ProcessDirectCallbackList()
 			// TODO LOGREMOVE
 			//DebugLog(_T("DirectCallback timed out (%s)"), pCurClient->DbgGetClientInfo());
 			m_currentDirectCallbacks.erase(it2);
-			curClient->Disconnected(wxT("Direct Callback Timeout"));
+			if (curClient->Disconnected(wxT("Direct Callback Timeout"))) {
+				delete curClient;
+			}
 		}
 	}
 }
