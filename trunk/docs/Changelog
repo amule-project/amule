@@ -1,6 +1,6 @@
-Version 2.2.1 - ???
+Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
 ----------
-2008-05-??
+2008-06-11
 
 	Bas Zoetekouw:
 		* Patch for debian bug #350396: "amule depletes entropy pool".
