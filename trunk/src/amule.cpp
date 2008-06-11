@@ -1315,8 +1315,8 @@ void CamuleApp::Trigger_New_version(wxString new_version)
 		info += _("The following options have been changed in this release for security reasons:\n");
 		info += _("\n* Enabled Protocol Obfuscation support for incoming and outgoing connections.\n");
 		info += _("\n* Disabled updating the server list from other server and clients.\n");
-		info += _("\nFor more information on the reason for this changes, seach\nthe aMule wiki at http://wiki.amule.org for \"fake servers\" info.\nIt's important that you clear any fake server from your server list for aMule to work properly.");
-		info += _("Additionally, the browser settings have been reset to the system default. Please configure your browser options again if needed."); 
+		info += _("\nFor more information on the reason for this changes, seach\nthe aMule wiki at http://wiki.amule.org for \"fake servers\" info.\nIt's important that you clear any fake server from your server list for aMule to work properly.\n\n");
+		info += _("Additionally, the browser settings have been reset to the system default. Please configure your browser options again if needed.\n"); 
 	}
 	
 	// General info
