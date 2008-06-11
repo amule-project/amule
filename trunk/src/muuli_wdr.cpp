@@ -1677,6 +1677,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 
     wxString strs23[] = 
     {
+        _("System Default"), 
         _("Konqueror"), 
         _("Mozilla"), 
         _("Firefox"), 
@@ -1687,7 +1688,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
         _("Epiphany"), 
         _("User Defined")
     };
-    wxChoice *item23 = new wxChoice( parent, IDC_BROWSER, wxDefaultPosition, wxSize(100,-1), 9, strs23, 0 );
+    wxChoice *item23 = new wxChoice( parent, IDC_BROWSER, wxDefaultPosition, wxSize(100,-1), 10, strs23, 0 );
     item23->SetToolTip( _("Select your browser here") );
     item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
