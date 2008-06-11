@@ -1111,7 +1111,7 @@ void CClientList::ProcessDirectCallbackList()
 			//DebugLog(_T("DirectCallback timed out (%s)"), pCurClient->DbgGetClientInfo());
 			m_currentDirectCallbacks.erase(it2);
 			if (curClient->Disconnected(wxT("Direct Callback Timeout"))) {
-				delete curClient;
+				curClient->Safe_Delete();
 			}
 		}
 	}

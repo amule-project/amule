@@ -1442,6 +1442,10 @@ bool CUpDownClient::TryToConnect(bool bIgnoreMaxCon)
 	
 	
 	if (HasLowID() && SupportsDirectUDPCallback() && thePrefs::GetEffectiveUDPPort() != 0 && GetConnectIP() != 0) { // LOWID with DirectCallback
+		if (m_dwDirectCallbackTimeout != 0) {
+			AddDebugLogLineM(false, logClient, wxT("ERROR: Trying Direct UDP Callback while already trying to connect to client ") + GetUserHash().Encode());
+			return true;	// We're already trying a direct connection to this client
+		}
 		// a direct callback is possible - since no other parties are involved and only one additional packet overhead 
 		// is used we basically handle it like a normal connection try, no restrictions apply
 		// we already check above with !theApp->DoCallback(this) if any callback is possible at all
