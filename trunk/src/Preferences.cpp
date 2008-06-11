@@ -929,7 +929,7 @@ void CPreferences::BuildItemList( const wxString& appdir )
 #endif
 
 	/**
-	 * Misc
+	 * Browser options
 	 **/
 	#ifdef __WXMAC__
 		int			browser = 9; // this is a "magic number" and will break if
@@ -941,9 +941,14 @@ void CPreferences::BuildItemList( const wxString& appdir )
 		wxString	customBrowser; // left empty
 	#endif
 
-	NewCfgItem(IDC_BROWSER,		(MkCfg_Int( wxT("/FakeCheck/Browser"), s_Browser, browser )));
-	NewCfgItem(IDC_BROWSERTABS,	(new Cfg_Bool( wxT("/FakeCheck/BrowserTab"), s_BrowserTab, true )));
-	NewCfgItem(IDC_BROWSERSELF,	(new Cfg_Str(  wxT("/FakeCheck/CustomBrowser"), s_CustomBrowser, customBrowser )));
+	NewCfgItem(IDC_BROWSER,		(MkCfg_Int( wxT("/Browser/DefaultBrowser"), s_Browser, browser )));
+	NewCfgItem(IDC_BROWSERTABS,	(new Cfg_Bool( wxT("/Browser/OpenPageInTab"), s_BrowserTab, true )));
+	NewCfgItem(IDC_BROWSERSELF,	(new Cfg_Str(  wxT("/Browser/CustomBrowserString"), s_CustomBrowser, customBrowser )));
+
+
+	/**
+	 * Misc
+	 **/
 	NewCfgItem(IDC_QUEUESIZE,	(MkCfg_Int( wxT("/eMule/QueueSizePref"), s_iQueueSize, 50 )));
 
 
