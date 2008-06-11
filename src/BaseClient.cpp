@@ -1211,13 +1211,13 @@ void CUpDownClient::ClearDownloadBlockRequests()
 bool CUpDownClient::Disconnected(const wxString& strReason, bool bFromSocket)
 {
 	//wxASSERT(theApp->clientlist->IsValidClient(this));
-
+	
 	// was this a direct callback?
 	if (m_dwDirectCallbackTimeout != 0) {
 		theApp->clientlist->RemoveDirectCallback(this);
 		m_dwDirectCallbackTimeout = 0;
 		theApp->clientlist->AddDeadSource(this);
-		AddDebugLogLineM(false, logClient, wxT("Direct callback failed to client ") + GetUserHash().Encode());
+		AddDebugLogLineM(false, logClient, wxT("Direct callback failed to client ") + GetUserHash().Encode() + wxT(" on ip ") + GetFullIP());
 	}
 
 	if (GetKadState() == KS_QUEUED_FWCHECK_UDP || GetKadState() == KS_CONNECTING_FWCHECK_UDP) {
@@ -2348,6 +2348,8 @@ void CUpDownClient::SetIP( uint32 val )
 	m_dwUserIP = val;
 
 	m_nConnectIP = val;
+	
+	m_FullUserIP = Uint32toStringIP(val);
 }
 
 
