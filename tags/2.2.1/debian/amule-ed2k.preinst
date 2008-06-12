@@ -1,0 +1,18 @@
+#! /bin/sh
+
+set +e # yada yada
+
+DIVERSIONS=`env LC_ALL=C /usr/sbin/dpkg-divert --list | grep -E 'by amule((-ed2k)|(-utils))?$'`
+
+if [ -n "$DIVERSIONS" ]; then
+    echo "$DIVERSIONS" | while read diversion of FILE to DIVERTED by PACKAGE; do
+        dpkg-divert --package "$PACKAGE" --remove "$FILE"
+    done
+
+    for f in /usr/bin/ed2k* /usr/share/man/man1/ed2k*.1.gz; do
+        echo "Deleting $f"
+        rm -f "$f"
+    done
+fi
+
+#DEBHELPER#
