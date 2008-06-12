@@ -27,7 +27,7 @@ JOBS=4
 #
 # This function uses three parameters:
 #    $1 - an input parameter specifying a mask for the distribution, 
-#         e.g., 'aMule-CVS-*'
+#         e.g., 'aMule-CVS-*' for cvs tarballs or 'aMule-*' for distro tarballs.
 #    $2 - an output parameter with the name of the variable that will
 #         receive the full file name of the tar archive
 #    $3 - an output parameter with the name of the variable that will
@@ -89,7 +89,7 @@ function init_package_versions {
     lookup_distro 'cryptopp*'  CRYPTOPP_FILENAME CRYPTOPP_DISTRO
     lookup_distro 'libupnp-*' LIBUPNP_FILENAME LIBUPNP_DISTRO
     lookup_distro 'wxWidgets-*.*.*.tar.*' WXWIDGETS_FILENAME WXWIDGETS_DISTRO
-    lookup_distro 'aMule-CVS-*' AMULE_FILENAME AMULE_DISTRO
+    lookup_distro 'aMule-*' AMULE_FILENAME AMULE_DISTRO
 
     echo
     echo "Software packacge versions:"

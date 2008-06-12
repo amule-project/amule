@@ -448,6 +448,8 @@ Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" versio
 		* Created a specialized termination process object for
 		  amuleweb, so that amule does not kill the web daemon if it
 		  has already died. This fixes a segfault upon exit.
+		* Changed the amule_build_install.sh script to work with
+		  distro tarballs for release.
 
 	pochu:
 		* Fix for subdirectory builds.
