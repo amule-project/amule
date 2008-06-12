@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-11 23:00+0200\n"
-"PO-Revision-Date: 2008-06-11 22:12+0100\n"
-"Last-Translator: Carles Escrig i Royo <royo@aditel.org>\n"
+"POT-Creation-Date: 2008-06-12 03:30+0200\n"
+"PO-Revision-Date: 2008-06-12 12:08+0100\n"
+"Last-Translator: Carles Escrig i Royo <simkin@ono.com>\n"
 "Language-Team: Catalan\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -340,7 +340,7 @@ msgstr "Temps d'activitat de baixada acumulat."
 
 #: src/UserEvents.h:84
 msgid "New chat session started"
-msgstr "Iniciada nova sessió de xat"
+msgstr "Inici d'una nova sessió de xat"
 
 #: src/UserEvents.h:87
 msgid "Message sender."
@@ -1913,7 +1913,7 @@ msgstr "eD2k: S'està desconnectant"
 
 #: src/amuleDlg.cpp:694
 msgid "Kad: Firewalled"
-msgstr "Kad: bloquejat per un tallafocs"
+msgstr "Kad: Bloquejat"
 
 #: src/amuleDlg.cpp:698
 msgid "Kad: Connected"
@@ -2022,7 +2022,7 @@ msgstr "Finestra de transferència de fitxers"
 
 #: src/amuleDlg.cpp:1299
 msgid "Shared files"
-msgstr "Fitxers compartits"
+msgstr "Compartits"
 
 #: src/amuleDlg.cpp:1301
 msgid "Shared files window"
@@ -2602,7 +2602,7 @@ msgstr "Estat de la connexió:"
 
 #: src/ServerWnd.cpp:219
 msgid "Firewalled"
-msgstr "Rere tallafocs"
+msgstr "Bloquejat per un tallafocs"
 
 #: src/ServerWnd.cpp:219
 #: src/muuli_wdr.cpp:2671
@@ -2777,7 +2777,7 @@ msgstr "Temps des de la primera transferència: %s"
 #: src/Statistics.cpp:695
 #, c-format
 msgid "Connected To Server Since: %s"
-msgstr "Connectat al servidor des de: %s"
+msgstr "Connectat al servidor des de fa: %s"
 
 #: src/Statistics.cpp:696
 #, c-format
@@ -4281,11 +4281,11 @@ msgstr "S'està connectant a %s (%s - %s:%i) %s"
 msgid "Could not solve dns for server %s: Unable to connect!"
 msgstr "No es pot resoldre el dns per al servidor %s: Ha estat impossible connectar!"
 
-#: src/IP2Country.cpp:68
+#: src/IP2Country.cpp:99
 msgid "CIP2Country::CIP2Country(): Failed to load country data from "
 msgstr "CIP2Country::CIP2Country(): No s'han pogut carregar les dades del país des de"
 
-#: src/IP2Country.cpp:73
+#: src/IP2Country.cpp:104
 #, c-format
 msgid "Loaded %d flag bitmap."
 msgid_plural "Loaded %d flag bitmaps."
@@ -4719,7 +4719,7 @@ msgstr "La mitjana de pujada i baixada actuals. Si està habilitat, el valor ent
 
 #: src/muuli_wdr.cpp:121
 msgid "Displays the connected status and active transfers. Red arrows signifies that you are currently not connected, yellow arrows signify that you have low ID (firewalled) and green arrows signify that you have high ID (The optimal connection type)."
-msgstr "Mostra l'estat de la connexió i les transferències actives. El roig vol dir que no esteu connectat actualment, el groc que teniu ID baixa (rere tallafocs) i el verd que teniu ID alta (El tipus de connexió òptim)."
+msgstr "Mostra l'estat de la connexió i les transferències actives. El roig vol dir que no esteu connectat actualment, el groc que teniu ID baixa (bloquejat per un tallafocs) i el verd que teniu ID alta (el tipus de connexió òptim)."
 
 #: src/muuli_wdr.cpp:125
 msgid "Not Connected ..."
@@ -7145,13 +7145,18 @@ msgid ""
 "It's important that you clear any fake server from your server list for aMule to work properly."
 msgstr ""
 "\n"
-"Per a més informació sobre els motius d'aquests canvis, cerqueu\n"
-"informació sobre \"fake servers\" al wiki de l'aMule http://wiki.amule.org.\n"
+"Per a més informació sobre els motius d'aquests canvis, cerqueu informació sobre \"fake servers\" al wiki de l'aMule http://wiki.amule.org.\n"
 "És important que esborreu qualsevol servidor fals de la llista per a que tot funcioni correctament."
 
 #: src/amule.cpp:1319
-msgid "Additionally, the browser settings have been reset to the system default. Please configure your browser options again if needed."
-msgstr "A més a més, s'han reiniciat les preferències del navegador als valors per defecte del sistema. Per favor configureu-les de nou si és necessari."
+msgid ""
+"\n"
+"\n"
+"Additionally, the browser settings have been reset to the system default. Please configure your browser options again if needed.\n"
+msgstr ""
+"\n"
+"\n"
+"A més a més, s'han reiniciat les preferències del navegador als valors per defecte del sistema. Per favor configureu-les de nou si és necessari.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7159,7 +7164,7 @@ msgstr "Podeu trobar més informació, ajuda i noves versions a la nostra pàgin
 
 #: src/amule.cpp:1325
 msgid "at www.aMule.org, or in our IRC channel #aMule at irc.freenode.net.\n"
-msgstr "a www.aMule.org, o al nostre canal IRC #aMule de irc.freenode.net.\n"
+msgstr "www.aMule.org, o al nostre canal IRC #aMule de irc.freenode.net.\n"
 
 #: src/amule.cpp:1327
 msgid "Feel free to report any bugs to http://forum.amule.org"
@@ -7299,6 +7304,12 @@ msgstr "No s'ha pogut obrir el fitxer amb la llista d'amics 'emfriends.met' per 
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr "No s'ha pogut obrir el fitxer amb la llista d'amics 'emfriends.met' per a escriptura!"
 
+#~ msgid ""
+#~ "Additionally, the browser settings have been reset to the system default. "
+#~ "Please configure your browser options again if needed."
+#~ msgstr ""
+#~ "A més a més, s'han reiniciat les preferències del navegador als valors "
+#~ "per defecte del sistema. Per favor configureu-les de nou si és necessari."
 #~ msgid "Could not determine the command for running the browser."
 #~ msgstr "No s'ha pogut determinar l'ordre per a executar el navegador."
 #~ msgid "EC Connection Failed. Empty reply."
