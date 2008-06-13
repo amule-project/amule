@@ -71,17 +71,17 @@ int alcc::OnRun ()
                 }
             }
 
-          wxLogMessage(_("Please wait... "));
-
           if (hash.SetED2KHashFromFile(m_filesToHash[i], NULL))
             {
-              wxLogMessage(wxT("%s ---> %s\n"),m_filesToHash[i].c_str(),
-                           hash.GetED2KLink(m_flagPartHashes).c_str());
+                wxLogMessage(wxT("%s"), hash.GetED2KLink(m_flagPartHashes).c_str());
             }
         }
       else
         {
-          wxLogMessage(_("%s ---> Non existant file !\n"),m_filesToHash[i].c_str());
+            if (m_flagVerbose)
+                {
+                    wxLogMessage(_("%s ---> Non existant file !\n"),m_filesToHash[i].c_str());
+                }
         }
     }
   return 0;
