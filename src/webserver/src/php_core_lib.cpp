@@ -23,13 +23,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
+#ifdef HAVE_CONFIG_H
+#	include "config.h"
+#endif
 
 #include <string> // Do_not_auto_remove (g++-4.0.1)
 
-#include <sys/types.h>
+#ifdef HAVE_SYS_TYPES_H
+#	include <sys/types.h>
+#endif
 #include <regex.h>
 
-#include "config.h"
 #include "WebServer.h"
 #include <ec/cpp/ECSpecialTags.h>
 
