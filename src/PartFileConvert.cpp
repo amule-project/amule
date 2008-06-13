@@ -306,7 +306,7 @@ int CPartFileConvert::performConvertToeMule(const CPath& fileName)
 			unsigned maxindex = 0;
 			unsigned partfilecount = 0;
 			CPath filePath = finder.GetFirstFile(CDirIterator::File, filepartindex + wxT(".*.part"));
-			while (!filePath.IsOk()) {
+			while (filePath.IsOk()) {
 				long l;
 				++partfilecount;
 				filePath.GetFullName().RemoveExt().GetExt().ToLong(&l);
