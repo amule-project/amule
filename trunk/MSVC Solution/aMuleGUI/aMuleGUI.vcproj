@@ -55,6 +55,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -130,6 +131,7 @@
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\..\..\wxWidgets\include&quot;"
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
@@ -729,6 +731,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\resource1.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\RLE.h"
 				>
 			</File>
@@ -846,6 +852,14 @@
 			</File>
 			<File
 				RelativePath="..\..\src\UserEvents.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			>
+			<File
+				RelativePath="..\..\amule.rc"
 				>
 			</File>
 		</Filter>
