@@ -36,6 +36,7 @@
 #include <wx/tokenzr.h>
 #include <wx/wfstream.h>
 #include <wx/zipstrm.h>
+#include <wx/sysopt.h>
 #include <wx/wupdlock.h>	// Needed for wxWindowUpdateLocker
 
 #include <common/EventIDs.h>
@@ -198,6 +199,10 @@ m_clientSkinNames(CLIENT_SKIN_SIZE)
 		AddLogLineM( true, wxT("Error! Unable to load Preferences") );
 		return;
 	}
+
+#ifdef __WXMSW__
+	wxSystemOptions::SetOption(wxT("msw.remap"), 0);
+#endif
 
 	SetIcon(wxICON(aMule));
 
