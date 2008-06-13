@@ -200,7 +200,8 @@ CMuleThread::ExitCode CHTTPDownloadThread::Entry()
 		
 		// Here is our read buffer
 		// <ken> Still, I'm sure 4092 is probably a better size.
-		const unsigned MAX_HTTP_READ = 4092;
+		// MP: Most people can download at least at 32kb/s from http...
+		const unsigned MAX_HTTP_READ = 32768;
 		
 		char buffer[MAX_HTTP_READ];
 		int current_read = 0;
@@ -274,7 +275,7 @@ wxInputStream* CHTTPDownloadThread::GetInputStream(wxHTTP** url_handler, const w
 	
 	if (!location.StartsWith(wxT("http://"))) {
 		// This is not a http url
-		throw wxString(wxT("Invalid URL for server.met download or http redirection (did you forget 'http://' ?)"));
+		throw wxString(wxT("Invalid URL for http download or http redirection (did you forget 'http://' ?)"));
 	}
 	
 	// Get the host
