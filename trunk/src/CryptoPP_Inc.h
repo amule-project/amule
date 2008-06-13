@@ -35,6 +35,8 @@
 	#define CRYPTOPP_INCLUDE_PREFIX	cryptopp
 #endif
 
+#define noinline	noinline
+
 #define CRYPTO_HEADER(hdr)	<CRYPTOPP_INCLUDE_PREFIX/hdr>
 
 #include CRYPTO_HEADER(config.h)
