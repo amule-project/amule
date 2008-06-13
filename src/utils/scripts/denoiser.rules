@@ -96,7 +96,7 @@ MAKEFLAGS=-w -s
 # rewrite compiler flags
 #if level 4
 /=/ {
-	/^[^=]*CFLAGS/ b 8
+	/^[^=]*[^R]CFLAGS/ b 8
 	/^[^=]*CPPFLAGS/ b 8
 	/^[^=]*CXXFLAGS/ b 8
 	b 9
@@ -109,13 +109,14 @@ MAKEFLAGS=-w -s
 	# delete all -W flags
 	/ -W/ s/ -W[^ ]*//g
 
-	# insert -w flag, if it isn't already in the flags
-	/ -w/! s/=/= -w/
-
 	# restore -Wl, -Wa, and -Wp, flags
 	s/ -%l,/ -Wl,/g
 	s/ -%a,/ -Wa,/g
 	s/ -%p,/ -Wp,/g
+
+	# insert -w flag into MULECFLAGS and MULECXXFLAGS if it isn't already in
+	/^MULEC\(XX\)\?FLAGS/! b 9
+	/ -w/! s/=/= -w/
 	:9
 }
 #endif
