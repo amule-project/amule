@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko_KR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-12 03:30+0200\n"
+"POT-Creation-Date: 2008-06-14 03:30+0200\n"
 "PO-Revision-Date: 2007-09-12 16:04+0900\n"
 "Last-Translator: Hyunju Kang <rexington@gmail.com>\n"
 "Language-Team: Korean <hoenny@daum.net>\n"
@@ -255,7 +255,7 @@ msgstr "선택한 친구들을 삭제하시겠습니까?"
 
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
-#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:753
+#: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
 #: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2676
@@ -676,7 +676,7 @@ msgstr "내려받기중..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1312
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1317
 #: src/PrefsUnifiedDlg.cpp:191 src/muuli_wdr.cpp:3828
 msgid "Preferences"
 msgstr "환경설정"
@@ -1255,11 +1255,7 @@ msgstr "파일숫자 %u 처리: %s"
 msgid "You have asked for part hashes (Only used for files > 9.5 MB)"
 msgstr "부분 해시를 요청했습니다. (오직 파일크기가 9.5 MB 보다 클때 사용)"
 
-#: src/utils/aLinkCreator/src/alcc.cpp:74
-msgid "Please wait... "
-msgstr "잠시 기다리세요..."
-
-#: src/utils/aLinkCreator/src/alcc.cpp:84
+#: src/utils/aLinkCreator/src/alcc.cpp:83
 #, c-format
 msgid "%s ---> Non existant file !\n"
 msgstr "%s ---> 존재하는 파일이 없음!\n"
@@ -1280,7 +1276,7 @@ msgstr "자동[아님]"
 msgid "Auto [Hi]"
 msgstr "자동[높음]"
 
-#: src/DataToText.cpp:59 src/amuleDlg.cpp:534 src/ClientListCtrl.cpp:652
+#: src/DataToText.cpp:59 src/amuleDlg.cpp:539 src/ClientListCtrl.cpp:652
 #: src/amule.cpp:801
 msgid "Connecting"
 msgstr "연결중"
@@ -1699,259 +1695,259 @@ msgstr "선택된 서버를 삭제하시겠습니까?"
 msgid "Disabled [%s]"
 msgstr "비활성화 [%s]"
 
-#: src/amuleDlg.cpp:219
+#: src/amuleDlg.cpp:224
 #, c-format
 msgid "This is aMule %s based on eMule."
 msgstr "이 어뮬 %s는 이뮬 기반으로 되어있습니다."
 
-#: src/amuleDlg.cpp:221
+#: src/amuleDlg.cpp:226
 #, c-format
 msgid "Running on %s"
 msgstr "%s에 동작중"
 
-#: src/amuleDlg.cpp:223
+#: src/amuleDlg.cpp:228
 msgid "Visit http://www.amule.org to check if a new version is available."
 msgstr "http://www.amule.org에 방문하셔서 새로운버젼이 있는지 확인하십시오."
 
-#: src/amuleDlg.cpp:246
+#: src/amuleDlg.cpp:251
 msgid "FATAL ERROR: Failed to create Timer"
 msgstr ""
 
-#: src/amuleDlg.cpp:452
+#: src/amuleDlg.cpp:457
 msgid "aMule remote control "
 msgstr "어뮬 원격제어"
 
-#: src/amuleDlg.cpp:458
+#: src/amuleDlg.cpp:463
 msgid "Snapshot:"
 msgstr "스냅삿"
 
-#: src/amuleDlg.cpp:460
+#: src/amuleDlg.cpp:465
 msgid ""
 " 'All-Platform' p2p client based on eMule \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:461
+#: src/amuleDlg.cpp:466
 msgid " Website: http://www.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:462
+#: src/amuleDlg.cpp:467
 msgid " Forum: http://forum.amule.org \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:463
+#: src/amuleDlg.cpp:468
 msgid ""
 " FAQ: http://wiki.amule.org \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:464
+#: src/amuleDlg.cpp:469
 msgid " Contact: admin@amule.org (administrative issues) \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:465
+#: src/amuleDlg.cpp:470
 msgid ""
 " Copyright (C) 2003-2008 aMule Team \n"
 "\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:466
+#: src/amuleDlg.cpp:471
 msgid " Part of aMule is based on \n"
 msgstr ""
 
-#: src/amuleDlg.cpp:467
+#: src/amuleDlg.cpp:472
 msgid "Kademlia: Peer-to-peer routing based on the XOR metric.\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:468
+#: src/amuleDlg.cpp:473
 msgid " Copyright (C) 2002 Petar Maymounkov\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:469
+#: src/amuleDlg.cpp:474
 msgid " http://kademlia.scs.cs.nyu.edu\n"
 msgstr ""
 
-#: src/amuleDlg.cpp:472 src/PrefsUnifiedDlg.cpp:520
+#: src/amuleDlg.cpp:477 src/PrefsUnifiedDlg.cpp:520
 #: src/PrefsUnifiedDlg.cpp:615 src/PrefsUnifiedDlg.cpp:702 src/KadDlg.cpp:177
 #: src/PartFile.cpp:922 src/PartFile.cpp:930
 msgid "Message"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:563
+#: src/amuleDlg.cpp:568
 msgid "Status text"
 msgstr "상태 문장"
 
-#: src/amuleDlg.cpp:684
+#: src/amuleDlg.cpp:689
 msgid "eD2k: Connecting"
 msgstr ""
 
-#: src/amuleDlg.cpp:688
+#: src/amuleDlg.cpp:693
 msgid "eD2k: Disconnected"
 msgstr ""
 
-#: src/amuleDlg.cpp:694
+#: src/amuleDlg.cpp:699
 #, fuzzy
 msgid "Kad: Firewalled"
 msgstr "방화벽"
 
-#: src/amuleDlg.cpp:698
+#: src/amuleDlg.cpp:703
 #, fuzzy
 msgid "Kad: Connected"
 msgstr "연결됨"
 
-#: src/amuleDlg.cpp:703
+#: src/amuleDlg.cpp:708
 #, fuzzy
 msgid "Kad: Connecting"
 msgstr "연결중"
 
-#: src/amuleDlg.cpp:707
+#: src/amuleDlg.cpp:712
 #, fuzzy
 msgid "Kad: Off"
 msgstr " Kad: "
 
-#: src/amuleDlg.cpp:754
+#: src/amuleDlg.cpp:759
 #, fuzzy
 msgid "Stop the current connection attempts"
 msgstr "현재 연결시도를 멈춤"
 
-#: src/amuleDlg.cpp:759 src/muuli_wdr.cpp:2940 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2940 src/MuleTrayIcon.cpp:537
 msgid "Disconnect"
 msgstr "연결 끊기"
 
-#: src/amuleDlg.cpp:760
+#: src/amuleDlg.cpp:765
 #, fuzzy
 msgid "Disconnect from the currently connected networks"
 msgstr "통신망으로부터 연결을 끊습니다."
 
-#: src/amuleDlg.cpp:765 src/muuli_wdr.cpp:3123 src/muuli_wdr.cpp:3596
+#: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:3123 src/muuli_wdr.cpp:3596
 #: src/muuli_wdr.cpp:3818 src/MuleTrayIcon.cpp:540
 msgid "Connect"
 msgstr "연결"
 
-#: src/amuleDlg.cpp:766
+#: src/amuleDlg.cpp:771
 #, fuzzy
 msgid "Connect to the currently enabled networks"
 msgstr "통신망에 연결합니다."
 
-#: src/amuleDlg.cpp:812
+#: src/amuleDlg.cpp:817
 #, c-format
 msgid "Up: %.1f(%.1f) | Down: %.1f(%.1f)"
 msgstr "올려주기: %.1f(%.1f) | 내려받기: %.1f(%.1f)"
 
-#: src/amuleDlg.cpp:814
+#: src/amuleDlg.cpp:819
 #, c-format
 msgid "Up: %.1f | Down: %.1f"
 msgstr "올려주기: %.1f | 내려받기: %.1f"
 
-#: src/amuleDlg.cpp:836
+#: src/amuleDlg.cpp:841
 #, c-format
 msgid "aMule (%s | Connected)"
 msgstr "어뮬 (%s | 연결됨)"
 
-#: src/amuleDlg.cpp:838
+#: src/amuleDlg.cpp:843
 #, c-format
 msgid "aMule (%s | Disconnected)"
 msgstr "어뮬 (%s | 끊김)"
 
-#: src/amuleDlg.cpp:869
+#: src/amuleDlg.cpp:874
 msgid "Do you really want to exit aMule?"
 msgstr "어뮬을 종료하시겠습니까?"
 
-#: src/amuleDlg.cpp:870
+#: src/amuleDlg.cpp:875
 msgid "Exit confirmation"
 msgstr "종료 확인"
 
-#: src/amuleDlg.cpp:1182
+#: src/amuleDlg.cpp:1187
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "외형 폴더 '%s'가 없습니다."
 
-#: src/amuleDlg.cpp:1187
+#: src/amuleDlg.cpp:1192
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr ""
 
-#: src/amuleDlg.cpp:1287 src/amuleDlg.cpp:1448 src/muuli_wdr.cpp:1901
+#: src/amuleDlg.cpp:1292 src/amuleDlg.cpp:1453 src/muuli_wdr.cpp:1901
 #: src/muuli_wdr.cpp:3820
 msgid "Networks"
 msgstr "통신망"
 
-#: src/amuleDlg.cpp:1289
+#: src/amuleDlg.cpp:1294
 msgid "Networks window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1291 src/muuli_wdr.cpp:3821
+#: src/amuleDlg.cpp:1296 src/muuli_wdr.cpp:3821
 msgid "Searches"
 msgstr "검색"
 
-#: src/amuleDlg.cpp:1293
+#: src/amuleDlg.cpp:1298
 msgid "Searches window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1295 src/muuli_wdr.cpp:3822
+#: src/amuleDlg.cpp:1300 src/muuli_wdr.cpp:3822
 msgid "Transfers"
 msgstr "전송"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1302
 msgid "Files transfers window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1304
 msgid "Shared files"
 msgstr ""
 
-#: src/amuleDlg.cpp:1301
+#: src/amuleDlg.cpp:1306
 msgid "Shared files window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1303 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3383
+#: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3383
 #: src/muuli_wdr.cpp:3825
 msgid "Messages"
 msgstr "메시지"
 
-#: src/amuleDlg.cpp:1305
+#: src/amuleDlg.cpp:1310
 msgid "Messages window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1307 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2234
 #: src/muuli_wdr.cpp:3826
 msgid "Statistics"
 msgstr "통계"
 
-#: src/amuleDlg.cpp:1309
+#: src/amuleDlg.cpp:1314
 msgid "Statistics graph window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1314
+#: src/amuleDlg.cpp:1319
 msgid "Preferences settings window"
 msgstr ""
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3829
+#: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3829
 msgid "Import"
 msgstr "가져오기"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3829
+#: src/amuleDlg.cpp:1323 src/muuli_wdr.cpp:3829
 msgid "The partfile importer tool"
 msgstr "부분파일 가져오기 도구"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3830
+#: src/amuleDlg.cpp:1325 src/muuli_wdr.cpp:3830
 msgid "About"
 msgstr "정보"
 
-#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3830
+#: src/amuleDlg.cpp:1327 src/muuli_wdr.cpp:3830
 msgid "About/Help"
 msgstr "정보/도움"
 
-#: src/amuleDlg.cpp:1459
+#: src/amuleDlg.cpp:1464
 msgid "eD2k network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1463
+#: src/amuleDlg.cpp:1468
 msgid "Kad network"
 msgstr ""
 
-#: src/amuleDlg.cpp:1468
+#: src/amuleDlg.cpp:1473
 msgid "No network"
 msgstr ""
 
@@ -4404,17 +4400,17 @@ msgstr "다른 모두"
 msgid "Loading IP-filters 'ipfilter.dat' and 'ipfilter_static.dat'."
 msgstr "'ipfilter.dat' 와 'ipfilter_static.dat'의 IP 차단을 읽어옵니다."
 
-#: src/IPFilter.cpp:284
+#: src/IPFilter.cpp:285
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', unknown format encountered."
 msgstr "ipfilter.dat 파일 '%s'을 읽지 못했습니다. 알 수 없는 형식입니다."
 
-#: src/IPFilter.cpp:325
+#: src/IPFilter.cpp:326
 #, c-format
 msgid "Failed to load ipfilter.dat file '%s', could not open file."
 msgstr "ipfilter.dat 파일 '%s'을 읽지 못했습니다, 파일을 열 수 없습니다."
 
-#: src/IPFilter.cpp:330
+#: src/IPFilter.cpp:331
 #, fuzzy, c-format
 msgid "Loaded %u IP-range from '%s'."
 msgid_plural "Loaded %u IP-ranges from '%s'."
@@ -4423,7 +4419,7 @@ msgstr[0] ""
 msgstr[1] ""
 "%u 개의 IP 범위를 '%s'로부터 읽었습니다. %u 개의 잘못된 줄은 무시했습니다."
 
-#: src/IPFilter.cpp:332
+#: src/IPFilter.cpp:333
 #, fuzzy, c-format
 msgid "%u malformed line was discarded."
 msgid_plural "%u malformed lines were discarded."
@@ -7099,6 +7095,9 @@ msgstr ""
 #: src/FriendList.cpp:146
 msgid "Failed to open friend list file 'emfriends.met' for writing!"
 msgstr ""
+
+#~ msgid "Please wait... "
+#~ msgstr "잠시 기다리세요..."
 
 #~ msgid "Could not determine the command for running the browser."
 #~ msgstr "기본 브라우저가 선택되지 않았습니다."
