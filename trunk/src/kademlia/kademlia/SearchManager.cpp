@@ -135,7 +135,7 @@ CSearch* CSearchManager::PrepareFindKeywords(const wxString& keyword, uint32_t s
 
 		// Verify that we are not already searching for this target.
 		if (AlreadySearchingFor(s->m_target)) {
-			throw wxT("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
+			throw _("Kademlia: Search keyword is already on search list: ") + wstrKeyword;
 		}
 
 		s->SetSearchTermData(searchTermsDataSize, searchTermsData);
