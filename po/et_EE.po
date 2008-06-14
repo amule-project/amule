@@ -1,3 +1,4 @@
+# translation of et_EE.po to
 # translation of aMule to Estonian
 # aMule i18n resource file.
 # Copyright (C) 2006 aMule Team
@@ -9,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
-"PO-Revision-Date: 2008-06-08 10:13+0300\n"
+"POT-Creation-Date: 2008-06-14 17:38+0300\n"
+"PO-Revision-Date: 2008-06-12 17:13+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -5071,7 +5072,7 @@ msgstr "Lehitseja valik"
 
 #: src/muuli_wdr.cpp:1680
 msgid "System Default"
-msgstr ""
+msgstr "Süsteemi vaikeväärtus"
 
 #: src/muuli_wdr.cpp:1681
 msgid "Konqueror"
@@ -7018,6 +7019,10 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"Lisaks sellele taastati ka lehitseja vaikeväärtused. Palun määra vajadusel "
+"lehitsejale uued väärtused.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
@@ -7174,6 +7179,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
 
 #~ msgid "Please wait... "
 #~ msgstr "Palun oota..."
-
-#~ msgid "Could not determine the command for running the browser."
-#~ msgstr "Ei suuda tuvastada lehitseja käivitamiseks vajalikku käsku."
