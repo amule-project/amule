@@ -391,7 +391,7 @@ AC_CHECK_FUNCS([__argz_count __argz_next __argz_stringify endpwent floor ftrunca
 dnl
 dnl autoscan has missed these ones.
 dnl
-AC_CHECK_FUNCS([mkdir getrlimit setrlimit])
+AC_CHECK_FUNCS([mkdir getrlimit setrlimit getopt_long])
 
 MULE_BACKUP([CPPFLAGS])
 MULE_APPEND([CPPFLAGS], [-D_XOPEN_SOURCE=600])
