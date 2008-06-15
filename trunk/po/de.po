@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
+"POT-Creation-Date: 2008-06-15 03:30+0200\n"
 "PO-Revision-Date: 2008-05-30 01:43+0100\n"
 "Last-Translator: Johannes Krampf <wuischke@amule.org>\n"
 "Language-Team:  <de@li.org>\n"
@@ -517,6 +517,10 @@ msgstr "aMule Textclient"
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: Suchbegriff zu kurz"
+
+#: src/kademlia/kademlia/SearchManager.cpp:138
+msgid "Kademlia: Search keyword is already on search list: "
+msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format

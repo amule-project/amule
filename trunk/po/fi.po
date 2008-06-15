@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
+"POT-Creation-Date: 2008-06-15 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 18:58+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -511,6 +511,10 @@ msgstr "aMule tekstiasiakas"
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: hakusana on liian lyhyt"
+
+#: src/kademlia/kademlia/SearchManager.cpp:138
+msgid "Kademlia: Search keyword is already on search list: "
+msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format

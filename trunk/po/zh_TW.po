@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
+"POT-Creation-Date: 2008-06-15 03:30+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -501,6 +501,10 @@ msgstr "aMule 文本客戶端"
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kad：搜索關鍵詞太短"
+
+#: src/kademlia/kademlia/SearchManager.cpp:138
+msgid "Kademlia: Search keyword is already on search list: "
+msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format

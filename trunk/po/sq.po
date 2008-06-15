@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
+"POT-Creation-Date: 2008-06-15 03:30+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -517,6 +517,10 @@ msgstr "Teksti i klientit aMule"
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
 msgstr "Kademlia: fjala qe u kerkua eshte shume e shkurter"
+
+#: src/kademlia/kademlia/SearchManager.cpp:138
+msgid "Kademlia: Search keyword is already on search list: "
+msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-14 03:30+0200\n"
+"POT-Creation-Date: 2008-06-15 03:30+0200\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -508,6 +508,10 @@ msgstr ""
 
 #: src/kademlia/kademlia/SearchManager.cpp:125
 msgid "Kademlia: search keyword too short"
+msgstr ""
+
+#: src/kademlia/kademlia/SearchManager.cpp:138
+msgid "Kademlia: Search keyword is already on search list: "
 msgstr ""
 
 #: src/kademlia/routing/RoutingZone.cpp:188
