@@ -21,7 +21,7 @@ noinst_HEADERS = configfile.h \
 	      lines.h \
 	      version.h
 
-cas_CPPFLAGS = $(MULECPPFLAGS) $(CAS_DEFS) $(GDLIB_CPPFLAGS)
+cas_CPPFLAGS = $(MULECPPFLAGS) $(CAS_DEFS)
 cas_CFLAGS = $(MULECFLAGS) $(GDLIB_CFLAGS)
 cas_LDFLAGS = $(MULELDFLAGS) $(GDLIB_LDFLAGS)
 cas_LDADD= $(GDLIB_LIBS) 
