@@ -552,7 +552,7 @@ echo "  Should aMule GUI Statistics (wxCas) be built?              ${WXCAS:-no}"
 
 echo
 echo "  **** General Libraries and Tools ****"
-echo "  Should ccache support be enabled?                          ${ccache:-no}"
+echo "  Should ccache support be enabled?                          ${enable_ccache:-no}"
 echo "  Libraries aMule will use to build:"
 wxinfo="$WX_PORT"
 AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
