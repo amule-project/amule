@@ -27,8 +27,7 @@ general_pkgs = "amule-common"\
 	"amule-skin-xfce"\
 	"amule-theme-default"\
 	"amule-theme-php-default"\
-	"amule-theme-chicane"\
-	"amule-xas"
+	"amule-theme-chicane"
 
 # First, get the targets from commandline
 flags = ${MAKECMDGOALS}
@@ -122,6 +121,10 @@ else
 
 	ifneq ("ed2k", "$(findstring ed2k, $(flags))")
 		ED2K = --disable-ed2k
+	endif
+
+	ifneq ("xas", "$(findstring ed2k, $(flags))")
+		XAS = --disable-xas
 	endif
 
 	#Now find out if a Metapackage should be build
@@ -307,11 +310,8 @@ config.status: configure
 		--prefix=/usr\
 		--mandir=\$${prefix}/share/man\
 		--infodir=\$${prefix}/share/info\
-		--enable-systray\
 		--with-ccache\
-		--enable-utf8-systray\
 		--enable-geoip\
-		--disable-embedded-crypto\
 		${AMULECMD}\
 		${DEBUGGING}\
 		${WEBSERVER}\
@@ -323,13 +323,15 @@ config.status: configure
 		${DAEMON}\
 		${AMULE}\
 		${ED2K}\
-		$(LANGFLAG)
+		$(LANGFLAG)\
+		$(XAS)
 
 
 #And here is the well known clean target
 clean:
 	dh_testdir
 	dh_testroot
+	dh_clean
 	rm -f alc
 	rm -f alc-dbg
 	rm -f alcc
@@ -413,6 +415,7 @@ clean:
 	rm -f webserver-dbg
 	rm -f wxcas
 	rm -f wxcas-dbg
+	rm -f xas
 
 	[ ! -f Makefile ] || $(MAKE) distclean
 
@@ -487,6 +490,14 @@ amule-ed2k-stage1: amule-common
 
 amule-ed2k-stage2: pkg=amule-ed2k
 amule-ed2k-stage2: amule-ed2k-stage1
+	${stage2}
+
+amule-xas-stage1: pkg=amule-xas
+amule-xas-stage1: amule-common
+	${stage1}
+
+amule-xas-stage2: pkg=amule-xas
+amule-xas-stage2: amule-xas-stage1
 	${stage2}
 
 amule-cas-stage1: pkg=amule-cas
@@ -638,6 +649,9 @@ alcc: amule-alcc-stage2
 
 amulecmd: amule-cmd-stage2
 	touch amulecmd
+
+xas: amule-xas-stage2
+	touch xas
 
 ed2k-dbg: amule-ed2k-dbg
 	touch ed2k-dbg

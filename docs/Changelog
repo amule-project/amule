@@ -5,6 +5,9 @@ Version ?.?.? - Whatever comes next.
 	bomj:
 		* Patch for alcc to improve usability
 
+	Vollstrecker:
+		* Made possible to deactivate xas
+
 --------------------------------------------------------------------------------
 
 Version 2.2.1 - The "Excuse me, have you seen my 2.2.0 release anywhere?" version.
