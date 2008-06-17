@@ -196,7 +196,13 @@ void CSearchListCtrl::AddResult(CSearchFile* toshow)
 	SetItem(newid, ID_SEARCH_COL_SIZE, CastItoXBytes( toshow->GetFileSize() ) );
 
 	// Source count
-	wxString temp = wxString::Format( wxT("%d (%d)"), toshow->GetSourceCount(), toshow->GetCompleteSourceCount() );
+	wxString temp = wxString::Format(wxT("%d"), toshow->GetSourceCount());
+	if (toshow->GetCompleteSourceCount()) {
+		temp += wxString::Format(wxT(" (%d)"), toshow->GetCompleteSourceCount());
+	}
+	if (toshow->GetClientsCount()) {
+		temp += wxString::Format(wxT(" [%d]"), toshow->GetClientsCount());
+	}
 #ifdef __DEBUG__
 	if (toshow->GetKadPublishInfo() == 0) {
 		temp += wxT(" | -");
@@ -240,7 +246,13 @@ void CSearchListCtrl::UpdateResult(CSearchFile* toupdate)
 		// Update the filename, which may be changed in case of multiple variants.
 		SetItem(index, ID_SEARCH_COL_NAME, toupdate->GetFileName().GetPrintable());
 
-		wxString temp = wxString::Format( wxT("%d (%d)"), toupdate->GetSourceCount(), toupdate->GetCompleteSourceCount());
+		wxString temp = wxString::Format(wxT("%d"), toupdate->GetSourceCount());
+		if (toupdate->GetCompleteSourceCount()) {
+			temp += wxString::Format(wxT(" (%d)"), toupdate->GetCompleteSourceCount());
+		}
+		if (toupdate->GetClientsCount()) {
+			temp += wxString::Format(wxT(" [%d]"), toupdate->GetClientsCount());
+		}
 #ifdef __DEBUG__
 		if (toupdate->GetKadPublishInfo() == 0) {
 			temp += wxT(" | -");

@@ -79,8 +79,8 @@ public:
 		const CMemFile& data,
 		bool optUTF8,
 		wxUIntPtr searchID,
-		uint32 serverIP = 0,
-		uint16 serverPort = 0,
+		uint32_t serverIP = 0,
+		uint16_t serverPort = 0,
 		const wxString& directory = wxEmptyString,
 		bool kademlia = false);
 
@@ -131,15 +131,34 @@ public:
 	 */
 	void		AddChild(CSearchFile* file);
 
-	
-	//@{
-	//! TODO: Currently not used.
-	uint32 	GetClientID() const;
-	void SetClientID(uint32 clientID);
-	uint16 GetClientPort() const;
-	void SetClientPort(uint16 port);
-	//@}
-	
+	struct ClientStruct {
+		ClientStruct()
+			: m_ip(0), m_port(0), m_serverIP(0), m_serverPort(0)
+		{}
+
+		ClientStruct(uint32_t ip, uint16_t port, uint32_t serverIP, uint16_t serverPort)
+			: m_ip(ip), m_port(port), m_serverIP(serverIP), m_serverPort(serverPort)
+		{}
+
+		uint32_t m_ip;
+		uint16_t m_port;
+		uint32_t m_serverIP;
+		uint32_t m_serverPort;
+	};
+
+	void	 AddClient(const ClientStruct& client);
+	const std::list<ClientStruct>& GetClients() const	{ return m_clients; }
+
+	uint32_t GetClientID() const throw()			{ return m_clientID; }
+	void	 SetClientID(uint32_t clientID) throw()		{ m_clientID = clientID; }
+	uint16_t GetClientPort() const throw()			{ return m_clientPort; }
+	void	 SetClientPort(uint16_t port) throw()		{ m_clientPort = port; }
+	uint32_t GetClientServerIP() const throw()		{ return m_clientServerIP; }
+	void	 SetClientServerIP(uint32_t serverIP) throw()	{ m_clientServerIP = serverIP; }
+	uint16_t GetClientServerPort() const throw()		{ return m_clientServerPort; }
+	void	 SetClientServerPort(uint16_t port) throw()	{ m_clientServerPort = port; }
+	int	 GetClientsCount() const			{ return ((GetClientID() && GetClientPort()) ? 1 : 0) + m_clients.size(); }
+
 	void	 SetKadPublishInfo(uint32_t val) throw()	{ m_kadPublishInfo = val; }
 	uint32_t GetKadPublishInfo() const throw()		{ return m_kadPublishInfo; }
 
@@ -172,10 +191,14 @@ private:
 
 	//@{
 	//! TODO: Currently not used.
-	uint32			m_clientID;
-	uint16			m_clientPort;
 	wxString		m_directory;
 	//@}
+
+	std::list<ClientStruct>	m_clients;
+	uint32_t		m_clientID;
+	uint16_t		m_clientPort;
+	uint32_t		m_clientServerIP;
+	uint16_t		m_clientServerPort;
 
 	//! Kademlia publish information.
 	uint32_t		m_kadPublishInfo;
@@ -242,29 +265,6 @@ inline bool CSearchFile::HasChildren() const
 	return !m_children.empty();
 }
 
-
-inline uint32 CSearchFile::GetClientID() const
-{
-	return m_clientID;
-}
-
-
-inline void CSearchFile::SetClientID(uint32 clientID)
-{
-	m_clientID = clientID;
-}
-
-
-inline uint16 CSearchFile::GetClientPort() const
-{
-	return m_clientPort;
-}
-
-
-inline void CSearchFile::SetClientPort(uint16 port)
-{
-	m_clientPort = port;
-}
 
 #endif // SEARCHLIST_H
 // File_checked_for_headers

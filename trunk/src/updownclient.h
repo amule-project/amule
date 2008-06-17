@@ -93,7 +93,8 @@ enum ESourceFrom {
 	SF_SOURCE_EXCHANGE,
 	SF_PASSIVE,
 	SF_LINK,
-	SF_SOURCE_SEEDS
+	SF_SOURCE_SEEDS,
+	SF_SEARCH_RESULT
 };
 
 enum ESecureIdentState{

@@ -220,7 +220,7 @@ void CDownloadQueue::LoadSourceSeeds()
 	}
 }
 
-//#warning We must add the sources, review CSearchFile constructor.
+
 void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 {
 	if ( IsFileExisting(toadd->GetFileHash()) ) {
@@ -246,6 +246,23 @@ void CDownloadQueue::AddSearchToDownload(CSearchFile* toadd, uint8 category)
 	
 	if ( newfile && newfile->GetStatus() != PS_ERROR ) {
 		AddDownload( newfile, thePrefs::AddNewFilesPaused(), category );
+		// Add any possible sources
+		if (toadd->GetClientID() && toadd->GetClientPort()) {
+			CMemFile sources(1+4+2);
+			sources.WriteUInt8(1);
+			sources.WriteUInt32(toadd->GetClientID());
+			sources.WriteUInt16(toadd->GetClientPort());
+			sources.Reset();
+			newfile->AddSources(sources, toadd->GetClientServerIP(), toadd->GetClientServerPort(), SF_SEARCH_RESULT, false);
+		}
+		for (std::list<CSearchFile::ClientStruct>::const_iterator it = toadd->GetClients().begin(); it != toadd->GetClients().end(); ++it) {
+			CMemFile sources(1+4+2);
+			sources.WriteUInt8(1);
+			sources.WriteUInt32(it->m_ip);
+			sources.WriteUInt16(it->m_port);
+			sources.Reset();
+			newfile->AddSources(sources, it->m_serverIP, it->m_serverPort, SF_SEARCH_RESULT, false);
+		}
 	} else {
 		delete newfile;
 	}

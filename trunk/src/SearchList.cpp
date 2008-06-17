@@ -483,7 +483,7 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 	bool unicoded = (sender->GetUnicodeSupport() != utf8strNone);
 	for (unsigned int i = 0; i != results; ++i){			
 		CSearchFile* toadd = new CSearchFile(packet, unicoded, searchID, 0, 0, directory);
-		if (sender){
+		if (sender) {
 			toadd->SetClientID(sender->GetUserIDHybrid());
 			toadd->SetClientPort(sender->GetUserPort());
 		}
@@ -506,20 +506,20 @@ void CSearchList::ProcessSharedFileList(const byte* in_packet, uint32 size,
 }
 
 
-void CSearchList::ProcessSearchAnswer(const byte* in_packet, uint32 size, bool optUTF8, uint32 WXUNUSED(serverIP), uint16 WXUNUSED(serverPort))
+void CSearchList::ProcessSearchAnswer(const uint8_t* in_packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort)
 {
-	CMemFile packet(in_packet,size);
+	CMemFile packet(in_packet, size);
 
-	uint32 results = packet.ReadUInt32();
-	for (unsigned int i = 0; i != results; ++i) {
-		AddToList(new CSearchFile(packet, optUTF8, m_currentSearch));
+	uint32_t results = packet.ReadUInt32();
+	for (; results > 0; --results) {
+		AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
 	}
 }
 
 
-void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, uint32 serverIP, uint16 serverPort)
+void CSearchList::ProcessUDPSearchAnswer(const CMemFile& packet, bool optUTF8, uint32_t serverIP, uint16_t serverPort)
 {
-	AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort));
+	AddToList(new CSearchFile(packet, optUTF8, m_currentSearch, serverIP, serverPort), false);
 }
 
 
