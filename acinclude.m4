@@ -294,6 +294,7 @@ AC_DEFUN([MULE_CHECK_CCACHE],
 			CXX="$with_ccache_prefix/ccache $CXX"
 			BUILD_CC="$with_ccache_prefix/ccache $BUILD_CC"
 		], [
+			enable_ccache=no
 			AC_MSG_RESULT([no])
 		])
 	])
