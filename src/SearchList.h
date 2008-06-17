@@ -137,7 +137,7 @@ public:
 	 * @param serverIP The IP of the server sending the results.
 	 * @param serverPort The Port of the server sending the results.
 	 */
-	void	ProcessSearchAnswer(const byte* packet, uint32 size, bool optUTF8, uint32 serverIP, uint16 serverPort);
+	void	ProcessSearchAnswer(const uint8_t* packet, uint32_t size, bool optUTF8, uint32_t serverIP, uint16_t serverPort);
 	
 	/**
 	 * Processes a search-result sent via UDP. Only one result is read from the packet.
