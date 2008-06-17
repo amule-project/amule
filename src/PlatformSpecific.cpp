@@ -181,7 +181,7 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 	return PlatformSpecific::fsOther;
 };
 
-#elif defined(HAVE_GETMNTENT)
+#elif defined(HAVE_GETMNTENT) && defined(HAVE_MNTENT_H)
 #include <stdio.h>
 #include <string.h>
 #include <mntent.h>
@@ -234,9 +234,54 @@ static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
 	return retval;
 }
 
+#elif defined(HAVE_GETMNTENT) && defined(HAVE_SYS_MNTENT_H) && defined(HAVE_SYS_MNTTAB_H)
+#include <stdio.h>
+#include <string.h>
+#include <sys/mntent.h>
+#include <sys/mnttab.h>
+#ifndef MNTTAB
+#	define MNTTAB	"/etc/mnttab"
+#endif
+#include <common/StringFunctions.h>
+
+static PlatformSpecific::EFSType doGetFilesystemType(const CPath& path)
+{
+	struct mnttab *entry = NULL;
+	PlatformSpecific::EFSType retval = PlatformSpecific::fsOther;
+	FILE *mnttab = fopen(MNTTAB, "r");
+	unsigned bestPrefixLen = 0;
+
+	if (mnttab == NULL) {
+		return PlatformSpecific::fsOther;
+	}
+
+	while (getmntent(mnttab, entry) == 0) {
+		if (entry->mnt_mountp) {
+			wxString dir = char2unicode(entry->mnt_mountp);
+			if (dir == path.GetRaw().Mid(0, dir.Length())) {
+				if (dir.Length() >= bestPrefixLen) {
+					if (entry->mnt_fstype == NULL) {
+						break;
+					} else if (!strcmp(entry->mnt_fstype, MNTTYPE_PCFS)) {
+						retval = PlatformSpecific::fsFAT;
+					} else if (hasmntopt(entry, MNTOPT_NOLARGEFILES)) {
+						// MINIX is a file system that can handle special chars but has no large files.
+						retval = PlatformSpecific::fsMINIX;
+					} else if (dir.Length() > bestPrefixLen) {
+						retval = PlatformSpecific::fsOther;
+					}
+					bestPrefixLen = dir.Length();
+				}
+			}
+		}
+	}
+	fclose(mnttab);
+	return retval;
+}
+
 #else
 
-// No way to determine filesystem type, all restrictions apply.
+// No way to determine filesystem type, no restrictions apply.
 static inline PlatformSpecific::EFSType doGetFilesystemType(const CPath& WXUNUSED(path))
 {
 	return PlatformSpecific::fsOther;
