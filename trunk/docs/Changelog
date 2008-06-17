@@ -1,9 +1,30 @@
-Version ?.?.? - Whatever comes next.
+Version 2.2.2 - Whatever comes next.
 ----------
-????-??-??
+2008-??-??
 
 	bomj:
 		* Patch for alcc to improve usability
+
+	Gaznevada:
+		* implement getopt_long in cas for systems which lack it
+
+	GonoszTopi:
+		* Fixing denoiser
+		* include <sys/types.h> before <regex.h> as by POSIX
+		* Fix noinline in crypto for some systems
+		* Fix display of ccache option
+		* Add sources from search results for new downloads
+		* Use output of gdlib-config for gd.h detection
+		* Solaris mntent fix
+
+	MalaPraxis:
+		* Remap colours on Windows
+		* Add resources
+		* Fix wrong usage of CPath::IsOk which caused an infinite loop on Import
+		* Fix wxTempFile usage for compressed IPFilter files
+
+	Stu Redman:
+		* scanner fix for MSVC compilation
 
 	Vollstrecker:
 		* Made possible to deactivate xas
