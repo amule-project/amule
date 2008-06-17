@@ -123,7 +123,7 @@ else
 		ED2K = --disable-ed2k
 	endif
 
-	ifneq ("xas", "$(findstring ed2k, $(flags))")
+	ifneq ("xas", "$(findstring xas, $(flags))")
 		XAS = --disable-xas
 	endif
 
