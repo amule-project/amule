@@ -15,6 +15,7 @@ daemon			Builds the daemonized version of aMule
 alcc			Builds the ed2k-link-creation utility of aMule
 alc			Builds the graphical version of alcc
 amulecmd		Builds the commandline-client for controlling aMule
+xas			Enables the creation of the xas package
 amule-dbg		Creates the debugging symbols for the amule binary
 ed2k-dbg		Creates the debugging symbols for the ed2k binary
 cas-dbg			Creates the debugging symbols for the cas binary
@@ -42,6 +43,9 @@ i18n-<lang>		Builds the coresponding i18n-packge. Lang has to be one of ar, bg, 
 If one of the -dbg targets is choosen, the corresponding binary will be built, too. In this case,
 debugging is enabled, profiling and optimising are disabled. Is no -dbg target choosen, debugging
 is disabled, profiling and optimising are enabled.
+
+If you choose to just build a few packages, you have to explicit activate ed2k or xas if 
+you want to get the pkg's
 
 The targets can be given in any order and combination
 

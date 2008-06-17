@@ -1,3 +1,13 @@
+amule (2.1.3+CVS20080609) testing; urgency=low
+
+  * Added dh_clean to clean-target
+  * Made separate build of xas package possible
+  * Removed --enable-systray from configure options
+  * Removed --enable-utf8-systray from configure options
+  * Removed --disable-embedded-crypto from configure options
+
+ -- Vollstrecker <amule@vollstreckernet.de>  Mon, 09 Jun 2008  15:29:01 +0200
+
 amule (2.1.3+CVS20080121) testing; urgency=low
 
   * Added binutils-dev to Build-Deps
