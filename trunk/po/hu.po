@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-06-18 03:30+0200\n"
-"PO-Revision-Date: 2008-06-10 22:49+0100\n"
+"PO-Revision-Date: 2008-06-18 19:27+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -512,7 +512,7 @@ msgstr "Kademlia: a keresési kulcsszó túl rövid"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr ""
+msgstr "Kademlia: A keresési kulcsszó már a keresési listán: "
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format
@@ -1392,7 +1392,7 @@ msgstr "Mentett források"
 
 #: src/DataToText.cpp:133
 msgid "Search Result"
-msgstr ""
+msgstr "Keresés eredménye"
 
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
@@ -5107,7 +5107,7 @@ msgstr "Böngésző kiválasztása"
 
 #: src/muuli_wdr.cpp:1680
 msgid "System Default"
-msgstr ""
+msgstr "Rendszer alapértelmezett"
 
 #: src/muuli_wdr.cpp:1681
 msgid "Konqueror"
@@ -7057,6 +7057,11 @@ msgid ""
 "Additionally, the browser settings have been reset to the system default. "
 "Please configure your browser options again if needed.\n"
 msgstr ""
+"\n"
+"\n"
+"Ezenkívül a böngésző beállítások is vissza lettek állítva a rendszer "
+"alapértelmezett böngészőre. Kérlek állítsd be újra a böngésző "
+"beállításaidat, ha szükséges.\n"
 
 #: src/amule.cpp:1324
 msgid "More information, support and new releases can found at our homepage,\n"
