@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-15 03:30+0200\n"
+"POT-Creation-Date: 2008-06-18 03:30+0200\n"
 "PO-Revision-Date: 2008-06-08 23:30+0800\n"
 "Last-Translator: 小桥 <29551030@qq.com>\n"
 "Language-Team: 小桥 <29551030@qq.com>\n"
@@ -132,7 +132,7 @@ msgstr "无法获取用户%s的共享文件"
 
 #: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
-#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
+#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
@@ -1377,6 +1377,10 @@ msgstr "链接"
 msgid "Source Seeds"
 msgstr "资源种子"
 
+#: src/DataToText.cpp:133
+msgid "Search Result"
+msgstr ""
+
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "系统默认"
@@ -1653,7 +1657,7 @@ msgstr "删除服务器"
 msgid "Remove all servers"
 msgstr "删除所有服务器"
 
-#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
+#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
 msgid "Copy eD2k link to clipboard"
 msgstr "复制eD2k链接至剪贴板"
 
@@ -2862,34 +2866,34 @@ msgstr "该用户编码无效"
 msgid "Sources"
 msgstr "源"
 
-#: src/SearchListCtrl.cpp:566 src/ClientListCtrl.cpp:505
+#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:505
 #: src/ClientListCtrl.cpp:830
 msgid "File"
 msgstr "文件"
 
-#: src/SearchListCtrl.cpp:567 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
+#: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
 #: src/muuli_wdr.cpp:1791
 msgid "Download"
 msgstr "下载"
 
-#: src/SearchListCtrl.cpp:569 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "分类"
 
-#: src/SearchListCtrl.cpp:570 src/SearchDlg.cpp:647
+#: src/SearchListCtrl.cpp:582 src/SearchDlg.cpp:647
 msgid "Main"
 msgstr "主要"
 
-#: src/SearchListCtrl.cpp:576
+#: src/SearchListCtrl.cpp:588
 msgid "Download in category"
 msgstr "下载分类"
 
-#: src/SearchListCtrl.cpp:582
+#: src/SearchListCtrl.cpp:594
 msgid "Search related files (eD2k, local server)"
 msgstr "搜索相关文件（eD2k，本地服务器）"
 
-#: src/SearchListCtrl.cpp:587
+#: src/SearchListCtrl.cpp:599
 msgid "Mark as known file"
 msgstr "标记为已知文件"
 
@@ -3435,45 +3439,45 @@ msgid_plural "Found %u part files"
 msgstr[0] "发现 %u 个 part 文件"
 msgstr[1] "发现 %u 个 part 文件"
 
-#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1392
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "存放零时文件分区的文件系统不支持大文件。"
 
-#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1395
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr "存放下载文件分区的文件系统不支持大文件。"
 
-#: src/DownloadQueue.cpp:327
+#: src/DownloadQueue.cpp:344
 #, c-format
 msgid "Downloading %s"
 msgstr "正在下载 %s"
 
-#: src/DownloadQueue.cpp:335
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "您已经在下载文件 '%s'"
 
-#: src/DownloadQueue.cpp:347
+#: src/DownloadQueue.cpp:364
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "您已下载了文件 '%s'"
 
-#: src/DownloadQueue.cpp:352
+#: src/DownloadQueue.cpp:369
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "您已经尝试下载文件 %s"
 
-#: src/DownloadQueue.cpp:1309
+#: src/DownloadQueue.cpp:1326
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "无法转换magnet链接为eD2k：%s"
 
-#: src/DownloadQueue.cpp:1317
+#: src/DownloadQueue.cpp:1334
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "未知链接协议：%s"
 
-#: src/DownloadQueue.cpp:1338
+#: src/DownloadQueue.cpp:1355
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "非法eD2k链接！错误信息：%s"

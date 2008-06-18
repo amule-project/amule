@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-15 03:30+0200\n"
+"POT-Creation-Date: 2008-06-18 03:30+0200\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -135,7 +135,7 @@ msgstr "Nepavyko gauti dalinamų failų iš vartotojo „%s“"
 
 #: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
-#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
+#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
@@ -1398,6 +1398,10 @@ msgstr "Nuoroda"
 msgid "Source Seeds"
 msgstr "Pilni šaltiniai"
 
+#: src/DataToText.cpp:133
+msgid "Search Result"
+msgstr ""
+
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "Numatyta"
@@ -1678,7 +1682,7 @@ msgstr "Pašalinti serverius"
 msgid "Remove all servers"
 msgstr "Pašalinti visus serverius"
 
-#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
+#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
 msgid "Copy eD2k link to clipboard"
 msgstr "Kopijuoti eD2k nuorodą į talpyklę"
 
@@ -2914,34 +2918,34 @@ msgstr "Nurodyta naudotojo maišos f-ja klaidinga!"
 msgid "Sources"
 msgstr "Šaltiniai"
 
-#: src/SearchListCtrl.cpp:566 src/ClientListCtrl.cpp:505
+#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:505
 #: src/ClientListCtrl.cpp:830
 msgid "File"
 msgstr "Failas"
 
-#: src/SearchListCtrl.cpp:567 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
+#: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
 #: src/muuli_wdr.cpp:1791
 msgid "Download"
 msgstr "Atsiųsti"
 
-#: src/SearchListCtrl.cpp:569 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategorija"
 
-#: src/SearchListCtrl.cpp:570 src/SearchDlg.cpp:647
+#: src/SearchListCtrl.cpp:582 src/SearchDlg.cpp:647
 msgid "Main"
 msgstr "Pagrindinė"
 
-#: src/SearchListCtrl.cpp:576
+#: src/SearchListCtrl.cpp:588
 msgid "Download in category"
 msgstr "Atsiunčiamą failą įdėti į kategoriją"
 
-#: src/SearchListCtrl.cpp:582
+#: src/SearchListCtrl.cpp:594
 msgid "Search related files (eD2k, local server)"
 msgstr "Ieškoti panašių failų (eD2k, vietiniame serveryje)"
 
-#: src/SearchListCtrl.cpp:587
+#: src/SearchListCtrl.cpp:599
 msgid "Mark as known file"
 msgstr "Pažymėti failą kaip jau žinomą"
 
@@ -3513,46 +3517,46 @@ msgstr[0] "Rastas %u dalių failas"
 msgstr[1] "Rasti %u dalių failai"
 msgstr[2] "Rasta %u dalių failų"
 
-#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1392
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr "Laikino aplanko failų sistema nemoka dirbti su dideliais failais."
 
-#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1395
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 "Atsiųstų failų aplanko failų sistema nemoka dirbti su dideliais failais."
 
-#: src/DownloadQueue.cpp:327
+#: src/DownloadQueue.cpp:344
 #, c-format
 msgid "Downloading %s"
 msgstr "Atsiunčiama %s"
 
-#: src/DownloadQueue.cpp:335
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr "Failas %s jau yra atsiunčiamų failų sąraše"
 
-#: src/DownloadQueue.cpp:347
+#: src/DownloadQueue.cpp:364
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Failas %s jau buvo atsiųstas"
 
-#: src/DownloadQueue.cpp:352
+#: src/DownloadQueue.cpp:369
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr "Failas %s jau yra atsiunčiamų failų sąraše"
 
-#: src/DownloadQueue.cpp:1309
+#: src/DownloadQueue.cpp:1326
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr "Nepavyko konvertuoti magnet nuorodos į eD2k: %s"
 
-#: src/DownloadQueue.cpp:1317
+#: src/DownloadQueue.cpp:1334
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr "Nežinomas protokolas arba nuoroda: %s"
 
-#: src/DownloadQueue.cpp:1338
+#: src/DownloadQueue.cpp:1355
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr "Klaidinga eD2k nuoroda! KLAIDA: %s"

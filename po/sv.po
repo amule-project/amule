@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-15 03:30+0200\n"
+"POT-Creation-Date: 2008-06-18 03:30+0200\n"
 "PO-Revision-Date: 2007-03-12 22:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -130,7 +130,7 @@ msgstr ""
 
 #: src/BaseClient.cpp:1722 src/BaseClient.cpp:2244 src/BaseClient.cpp:2518
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
-#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:134
+#: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
 #: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
 #: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
@@ -1361,6 +1361,10 @@ msgstr "Länk"
 msgid "Source Seeds"
 msgstr ""
 
+#: src/DataToText.cpp:133
+msgid "Search Result"
+msgstr ""
+
 #: src/Preferences.cpp:628 src/PrefsUnifiedDlg.cpp:237
 msgid "System default"
 msgstr "Systemets standard"
@@ -1638,7 +1642,7 @@ msgstr "Ta bort servrar"
 msgid "Remove all servers"
 msgstr "Ta bort alla servrar"
 
-#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:591
+#: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
 msgid "Copy eD2k link to clipboard"
 msgstr ""
 
@@ -2840,34 +2844,34 @@ msgstr "Angiven userhash är inte giltig!"
 msgid "Sources"
 msgstr "Källor"
 
-#: src/SearchListCtrl.cpp:566 src/ClientListCtrl.cpp:505
+#: src/SearchListCtrl.cpp:578 src/ClientListCtrl.cpp:505
 #: src/ClientListCtrl.cpp:830
 msgid "File"
 msgstr "Fil"
 
-#: src/SearchListCtrl.cpp:567 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
+#: src/SearchListCtrl.cpp:579 src/muuli_wdr.cpp:366 src/muuli_wdr.cpp:1747
 #: src/muuli_wdr.cpp:1791
 msgid "Download"
 msgstr "Hämta"
 
-#: src/SearchListCtrl.cpp:569 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategori"
 
-#: src/SearchListCtrl.cpp:570 src/SearchDlg.cpp:647
+#: src/SearchListCtrl.cpp:582 src/SearchDlg.cpp:647
 msgid "Main"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:576
+#: src/SearchListCtrl.cpp:588
 msgid "Download in category"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:582
+#: src/SearchListCtrl.cpp:594
 msgid "Search related files (eD2k, local server)"
 msgstr ""
 
-#: src/SearchListCtrl.cpp:587
+#: src/SearchListCtrl.cpp:599
 msgid "Mark as known file"
 msgstr ""
 
@@ -3410,45 +3414,45 @@ msgid_plural "Found %u part files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1375
+#: src/DownloadQueue.cpp:232 src/DownloadQueue.cpp:1392
 msgid "Filesystem for Temp directory cannot handle large files."
 msgstr ""
 
-#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1378
+#: src/DownloadQueue.cpp:235 src/DownloadQueue.cpp:1395
 msgid "Filesystem for Incoming directory cannot handle large files."
 msgstr ""
 
-#: src/DownloadQueue.cpp:327
+#: src/DownloadQueue.cpp:344
 #, c-format
 msgid "Downloading %s"
 msgstr "Hämtar %s"
 
-#: src/DownloadQueue.cpp:335
+#: src/DownloadQueue.cpp:352
 #, c-format
 msgid "You are already trying to download the file '%s'"
 msgstr ""
 
-#: src/DownloadQueue.cpp:347
+#: src/DownloadQueue.cpp:364
 #, c-format
 msgid "You already have the file '%s'"
 msgstr "Du har redan filen \"%s\""
 
-#: src/DownloadQueue.cpp:352
+#: src/DownloadQueue.cpp:369
 #, c-format
 msgid "You are already trying to download the file %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1309
+#: src/DownloadQueue.cpp:1326
 #, c-format
 msgid "Cannot convert magnet link to eD2k: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1317
+#: src/DownloadQueue.cpp:1334
 #, c-format
 msgid "Unknown protocol of link: %s"
 msgstr ""
 
-#: src/DownloadQueue.cpp:1338
+#: src/DownloadQueue.cpp:1355
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
 msgstr ""
