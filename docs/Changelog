@@ -25,6 +25,7 @@ Version 2.2.2 - Whatever comes next.
 
 	Stu Redman:
 		* scanner fix for MSVC compilation
+		* Sort DownloadListCtrl on startup
 
 	Vollstrecker:
 		* Made possible to deactivate xas

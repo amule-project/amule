@@ -231,6 +231,7 @@ void CDownloadListCtrl::AddFile( CPartFile* file )
 		// Check if the new file is visible in the current category
 		if ( file->CheckShowItemInGivenCat( m_category ) ) {
 			ShowFile( file, true );
+			SortList();
 		}
 	}
 }
