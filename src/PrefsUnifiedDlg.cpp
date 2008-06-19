@@ -1055,7 +1055,7 @@ void PrefsUnifiedDlg::OnTCPClientPortChange(wxSpinEvent& WXUNUSED(event))
 {
 	int port = CastChild(IDC_PORT, wxSpinCtrl)->GetValue();
 	wxString txt;
-	txt << wxT("UDP port for extended server requests (TCP+3):") << port + 3;
+	txt << _("UDP port for extended server requests (TCP+3):") << port + 3;
 	CastChild(ID_TEXT_CLIENT_UDP_PORT, wxStaticText)->SetLabel(txt);
 }
 
