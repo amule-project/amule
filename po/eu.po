@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-18 03:30+0200\n"
+"POT-Creation-Date: 2008-06-20 03:30+0200\n"
 "PO-Revision-Date: 2008-03-30 18:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -139,8 +139,8 @@ msgstr "Huts '%s' erabiltzailearen partekatutako fitxategiak jasotzerakoan"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
-#: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1424
+#: src/DownloadListCtrl.cpp:1437 src/DownloadListCtrl.cpp:1448
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
@@ -222,7 +222,7 @@ msgstr "Erabiltzaile izena"
 msgid "Friends"
 msgstr "Lagunak"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1021
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1022
 #: src/ClientListCtrl.cpp:253
 msgid "Show &Details"
 msgstr "Erakutsi &Xehetasunak"
@@ -239,7 +239,7 @@ msgstr "Ezabatu laguna"
 msgid "Send &Message"
 msgstr "Bidali &Mezua"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1023
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1024
 #: src/ClientListCtrl.cpp:255
 msgid "View Files"
 msgstr "Ikusi Fitxategiak"
@@ -259,7 +259,7 @@ msgstr "Ziur zaude hautatako lagunak ezabatu nahi dituzula?"
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
+#: src/DownloadListCtrl.cpp:583 src/DownloadListCtrl.cpp:903
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2676
 #: src/muuli_wdr.cpp:2778 src/muuli_wdr.cpp:3600
@@ -339,7 +339,7 @@ msgstr "Mota"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:901
+#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:902
 msgid "Priority"
 msgstr "Lehentasuna"
 
@@ -387,19 +387,19 @@ msgstr "Oso txikia"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2740
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2740
 msgid "Low"
 msgstr "Baxua"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2741
+#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2741
 msgid "Normal"
 msgstr "Normala"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2742
+#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2742
 msgid "High"
 msgstr "Altua"
 
@@ -411,7 +411,7 @@ msgstr "Oso Altua"
 msgid "Release"
 msgstr "Bertsioa"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:899
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:900
 #: src/muuli_wdr.cpp:2743
 msgid "Auto"
 msgstr "Auto"
@@ -436,7 +436,7 @@ msgstr "Gehitu fitxategiak bildumara zerrenda bidaltzeko"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Kopiat&URI magnetikoa arbelera"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:944
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
@@ -460,11 +460,11 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:946
 msgid "Copy feedback to clipboard"
 msgstr "Kopiatu berrelikadura arbelera"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:729
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -489,11 +489,11 @@ msgstr "Partekatutako fitxategiak (%i)"
 msgid "[PartFile]"
 msgstr "[ZatiFitxategia]"
 
-#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1080
+#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1081
 msgid "Enter new name for this file:"
 msgstr "Sar izen berri bat fitxategi honentzat:"
 
-#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1081
+#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1082
 msgid "File rename"
 msgstr "Fitxategia berrizendatu"
 
@@ -1296,7 +1296,7 @@ msgstr "Eskatzen"
 msgid "Connecting via server"
 msgstr "Konektatu zerbitzaria bidez"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:691
 msgid "Queue Full"
 msgstr "Ilara Osoa"
@@ -2176,6 +2176,10 @@ msgstr[1] "Zerbitzari konexio berritze maiztasuna: %d minutu"
 msgid "Server connection refresh interval: Disabled"
 msgstr "Zerbitzarira konexio berritze maiztasuna: Ezgaiturik"
 
+#: src/PrefsUnifiedDlg.cpp:1058
+msgid "UDP port for extended server requests (TCP+3):"
+msgstr ""
+
 #: src/PrefsUnifiedDlg.cpp:1077
 #, c-format
 msgid "Execute command on `%s' event"
@@ -2559,7 +2563,7 @@ msgstr "Guztira oker igotako saioak: %s"
 msgid "Average upload time: %s"
 msgstr "Batez besteko igoera denbora: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Deskargak"
 
@@ -2918,7 +2922,7 @@ msgstr "Fitxategia"
 msgid "Download"
 msgstr "Deskargatu"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:951
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategoria"
@@ -3007,99 +3011,99 @@ msgstr "Azkenez Osoa Ikusirik"
 msgid "Last Reception"
 msgstr "Azkenez jasoa"
 
-#: src/DownloadListCtrl.cpp:578
+#: src/DownloadListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "Ziur zaude aukeratutako fitxategia ezabatu nahi duzula?"
 
-#: src/DownloadListCtrl.cpp:580
+#: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Ziur zaude aukeratutako fitxategia ezabatu nahi duzula?"
 
-#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
 msgid "Send message to user"
 msgstr "Bidali mezua erabiltzaileari"
 
-#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:844 src/ClientListCtrl.cpp:360
 msgid "Message to send:"
 msgstr "Bidali behar de mezua:"
 
-#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&Gelditu"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausa"
 
-#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Berrekin"
 
-#: src/DownloadListCtrl.cpp:906
+#: src/DownloadListCtrl.cpp:907
 msgid "C&lear completed"
 msgstr "G&arbitu bukaturikoak"
 
-#: src/DownloadListCtrl.cpp:912
+#: src/DownloadListCtrl.cpp:913
 msgid "Swap every A4AF to this file now"
 msgstr "Jaitsi fitxategi honen A4AF guztiak orain"
 
-#: src/DownloadListCtrl.cpp:914
+#: src/DownloadListCtrl.cpp:915
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Jaitsi fitxategi honen A4AF guztiak (Auto)"
 
-#: src/DownloadListCtrl.cpp:919
+#: src/DownloadListCtrl.cpp:920
 msgid "Swap every A4AF to any other file now"
 msgstr "Jaitsi fitxategi guztien a4af guztiak orain"
 
-#: src/DownloadListCtrl.cpp:922
+#: src/DownloadListCtrl.cpp:923
 msgid "Extended Options"
 msgstr "Hedatutako Aukerak"
 
-#: src/DownloadListCtrl.cpp:933 src/DownloadListCtrl.cpp:995
+#: src/DownloadListCtrl.cpp:934 src/DownloadListCtrl.cpp:996
 msgid "Preview"
 msgstr "Aurrebista"
 
-#: src/DownloadListCtrl.cpp:934
+#: src/DownloadListCtrl.cpp:935
 msgid "Show file &details"
 msgstr "Erakutsi &xehetasunak"
 
-#: src/DownloadListCtrl.cpp:936 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:937 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "Erakutsi iruzkin guztiak"
 
-#: src/DownloadListCtrl.cpp:941
+#: src/DownloadListCtrl.cpp:942
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopiatu URI magnetikoa arbelera"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:955
 msgid "unassign"
 msgstr "ezarri gabea"
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:962
 msgid "Assign to category"
 msgstr "Ezarri kategoria bat"
 
-#: src/DownloadListCtrl.cpp:998
+#: src/DownloadListCtrl.cpp:999
 msgid "&Open the file"
 msgstr "&Ireki fitxategia"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Remove from friends"
 msgstr "Lagunetatik kendu"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Add to Friends"
 msgstr "Gehitu lagun zerrendara"
 
-#: src/DownloadListCtrl.cpp:1024 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Send message"
 msgstr "Mezua bidali"
 
-#: src/DownloadListCtrl.cpp:1025
+#: src/DownloadListCtrl.cpp:1026
 msgid "Swap to this file"
 msgstr "Swap fitxategi honentzat"
 
-#: src/DownloadListCtrl.cpp:1311 src/DownloadListCtrl.cpp:1614
+#: src/DownloadListCtrl.cpp:1312 src/DownloadListCtrl.cpp:1615
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1755 src/muuli_wdr.cpp:1768
 #: src/muuli_wdr.cpp:1781 src/muuli_wdr.cpp:1799 src/muuli_wdr.cpp:1812
@@ -3107,39 +3111,39 @@ msgstr "Swap fitxategi honentzat"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1434 src/DownloadListCtrl.cpp:1445
+#: src/DownloadListCtrl.cpp:1435 src/DownloadListCtrl.cpp:1446
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "Beste fitxategi batez galdeturik"
 
-#: src/DownloadListCtrl.cpp:2049
+#: src/DownloadListCtrl.cpp:2050
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Deskargak (%i)"
 
-#: src/DownloadListCtrl.cpp:2254
+#: src/DownloadListCtrl.cpp:2255
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2255
+#: src/DownloadListCtrl.cpp:2256
 msgid "File preview"
 msgstr "Fitxategi Aurreikuspena"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "ERROREA: Huts  kanpo bideo erreproduktorea abiaraztean! Komandoa: `%s'"

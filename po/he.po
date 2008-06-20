@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-18 03:30+0200\n"
+"POT-Creation-Date: 2008-06-20 03:30+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -135,8 +135,8 @@ msgstr "הניסיון לקבל את רשימת הקבצים המשותפים מ
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
-#: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1424
+#: src/DownloadListCtrl.cpp:1437 src/DownloadListCtrl.cpp:1448
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
@@ -210,7 +210,7 @@ msgstr "שם משתמש"
 msgid "Friends"
 msgstr "חברים"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1021
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1022
 #: src/ClientListCtrl.cpp:253
 msgid "Show &Details"
 msgstr "הצג &פרטים"
@@ -227,7 +227,7 @@ msgstr "הסר חבר"
 msgid "Send &Message"
 msgstr "שלך &הודעה"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1023
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1024
 #: src/ClientListCtrl.cpp:255
 msgid "View Files"
 msgstr "הצג קבצים"
@@ -247,7 +247,7 @@ msgstr "האם אתה בטוח שאתה רוצה להסיר את החברים ש
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
+#: src/DownloadListCtrl.cpp:583 src/DownloadListCtrl.cpp:903
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2676
 #: src/muuli_wdr.cpp:2778 src/muuli_wdr.cpp:3600
@@ -327,7 +327,7 @@ msgstr "סוג/טיפוס"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:901
+#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:902
 msgid "Priority"
 msgstr "עדיפות"
 
@@ -375,19 +375,19 @@ msgstr "מאוד נמוך"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2740
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2740
 msgid "Low"
 msgstr "נמוך"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2741
+#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2741
 msgid "Normal"
 msgstr "רגיל"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2742
+#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2742
 msgid "High"
 msgstr "גבוה"
 
@@ -399,7 +399,7 @@ msgstr "מאוד גבוה"
 msgid "Release"
 msgstr "שחרור"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:899
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:900
 #: src/muuli_wdr.cpp:2743
 msgid "Auto"
 msgstr "אוטמטי"
@@ -424,7 +424,7 @@ msgstr "הוסף קבצים שבאסופה לרשימת המשלוח"
 msgid "Copy magnet &URI to clipboard"
 msgstr "העתק מגנט &URI ללוח"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:944
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
@@ -448,11 +448,11 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:946
 msgid "Copy feedback to clipboard"
 msgstr "העתק משוב ללוח"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:729
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -477,11 +477,11 @@ msgstr "קבצים משותפים (%i)"
 msgid "[PartFile]"
 msgstr "[קובץ-חלקים]"
 
-#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1080
+#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1081
 msgid "Enter new name for this file:"
 msgstr "הכנס שם חדש עבור קובץ זה"
 
-#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1081
+#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1082
 msgid "File rename"
 msgstr "שינוי שם לקובץ"
 
@@ -1278,7 +1278,7 @@ msgstr "מבקש"
 msgid "Connecting via server"
 msgstr "מתחבר דרך השרת"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:691
 msgid "Queue Full"
 msgstr "התור מלא"
@@ -2156,6 +2156,10 @@ msgstr[1] "רענון חיבור לשרת כל: %d דקות"
 msgid "Server connection refresh interval: Disabled"
 msgstr "רענון חיבור לשרת: מנוטרל"
 
+#: src/PrefsUnifiedDlg.cpp:1058
+msgid "UDP port for extended server requests (TCP+3):"
+msgstr ""
+
 #: src/PrefsUnifiedDlg.cpp:1077
 #, c-format
 msgid "Execute command on `%s' event"
@@ -2536,7 +2540,7 @@ msgstr "סכות כולל של העלאות שנשכשלו: %s"
 msgid "Average upload time: %s"
 msgstr "זמן האלעה ממוצע: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "הורדות"
 
@@ -2873,7 +2877,7 @@ msgstr "קובץ"
 msgid "Download"
 msgstr "הורדה"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:951
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "קטיגוריה"
@@ -2962,99 +2966,99 @@ msgstr "פעם אחרונה שנראה שלם"
 msgid "Last Reception"
 msgstr "פעם אחרונה שנתקבל"
 
-#: src/DownloadListCtrl.cpp:578
+#: src/DownloadListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "האם אתה בטוח שברצונך למחוק את הקובץ שנבחר?"
 
-#: src/DownloadListCtrl.cpp:580
+#: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "האם אתה בטוח שברצונל ךמחוק את הקבצים שנבחרו?"
 
-#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
 msgid "Send message to user"
 msgstr "שלח הודעה למשתמש"
 
-#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:844 src/ClientListCtrl.cpp:360
 msgid "Message to send:"
 msgstr "הודה שתשלח:"
 
-#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "&עצור"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&השהה"
 
-#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&המשך"
 
-#: src/DownloadListCtrl.cpp:906
+#: src/DownloadListCtrl.cpp:907
 msgid "C&lear completed"
 msgstr "נ&קה מה שהסתיים"
 
-#: src/DownloadListCtrl.cpp:912
+#: src/DownloadListCtrl.cpp:913
 msgid "Swap every A4AF to this file now"
 msgstr "החלף כל A4AF לקובץ הזה עכשיו"
 
-#: src/DownloadListCtrl.cpp:914
+#: src/DownloadListCtrl.cpp:915
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "החלף כל A4AF לקובץ הזה (אוטומטי)"
 
-#: src/DownloadListCtrl.cpp:919
+#: src/DownloadListCtrl.cpp:920
 msgid "Swap every A4AF to any other file now"
 msgstr "החלף את כל ה A4AF לכל קובץ אחר, עכשיו"
 
-#: src/DownloadListCtrl.cpp:922
+#: src/DownloadListCtrl.cpp:923
 msgid "Extended Options"
 msgstr "אפשרויות מורחבות"
 
-#: src/DownloadListCtrl.cpp:933 src/DownloadListCtrl.cpp:995
+#: src/DownloadListCtrl.cpp:934 src/DownloadListCtrl.cpp:996
 msgid "Preview"
 msgstr "תקדימון"
 
-#: src/DownloadListCtrl.cpp:934
+#: src/DownloadListCtrl.cpp:935
 msgid "Show file &details"
 msgstr "הראה &פרטי קבצים"
 
-#: src/DownloadListCtrl.cpp:936 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:937 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "הראה את כל ההערות"
 
-#: src/DownloadListCtrl.cpp:941
+#: src/DownloadListCtrl.cpp:942
 msgid "Copy magnet URI to clipboard"
 msgstr "העתק מגנט URI ללוח"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:955
 msgid "unassign"
 msgstr "לא מיוחס"
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:962
 msgid "Assign to category"
 msgstr "ייחס לקטיגוריה"
 
-#: src/DownloadListCtrl.cpp:998
+#: src/DownloadListCtrl.cpp:999
 msgid "&Open the file"
 msgstr "&תפתח את הקובץ"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Remove from friends"
 msgstr "הסר מחברים"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Add to Friends"
 msgstr "הוסף לחברים"
 
-#: src/DownloadListCtrl.cpp:1024 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Send message"
 msgstr "שלך הודעה"
 
-#: src/DownloadListCtrl.cpp:1025
+#: src/DownloadListCtrl.cpp:1026
 msgid "Swap to this file"
 msgstr "החלף לקובץ זה"
 
-#: src/DownloadListCtrl.cpp:1311 src/DownloadListCtrl.cpp:1614
+#: src/DownloadListCtrl.cpp:1312 src/DownloadListCtrl.cpp:1615
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1755 src/muuli_wdr.cpp:1768
 #: src/muuli_wdr.cpp:1781 src/muuli_wdr.cpp:1799 src/muuli_wdr.cpp:1812
@@ -3062,39 +3066,39 @@ msgstr "החלף לקובץ זה"
 msgid "kB/s"
 msgstr "ק\"ב/ש"
 
-#: src/DownloadListCtrl.cpp:1434 src/DownloadListCtrl.cpp:1445
+#: src/DownloadListCtrl.cpp:1435 src/DownloadListCtrl.cpp:1446
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d·%H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR:·%u·(%i)"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "התקבלה בקשה עבור קובץ אחר"
 
-#: src/DownloadListCtrl.cpp:2049
+#: src/DownloadListCtrl.cpp:2050
 #, c-format
 msgid "Downloads (%i)"
 msgstr "הורדות (%i)"
 
-#: src/DownloadListCtrl.cpp:2254
+#: src/DownloadListCtrl.cpp:2255
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2255
+#: src/DownloadListCtrl.cpp:2256
 msgid "File preview"
 msgstr "תקדימון לקובץ"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "שגיאה: הרצת נגן הסרטים נכשלה! הפקודה: '%s'"
