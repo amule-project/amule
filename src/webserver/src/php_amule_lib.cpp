@@ -893,12 +893,12 @@ void amule_upload_file_prop_get(void *ptr, char *prop_name, PHP_VALUE_NODE *resu
 	if ( strcmp(prop_name, "name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
-		// uploading file we don't share ?! We must be out of sync with core
+		// uploading file we don't share ?! We are either out of sync with core or a shared file has been removed while uploading it
 		if ( !sharedfile ) {
 			SharedFile::GetContainerInstance()->ReQuery();
 			sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
 		}
-		result->str_val = strdup((const char *)unicode2UTF8(sharedfile->sFileName));
+		result->str_val = strdup(sharedfile ? (const char *)unicode2UTF8(sharedfile->sFileName) : "???");
 	} else if ( strcmp(prop_name, "short_name") == 0 ) {
 		result->type = PHP_VAL_STRING;
 		SharedFile *sharedfile = SharedFile::GetContainerInstance()->GetByID(obj->nHash);
