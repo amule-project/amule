@@ -12,7 +12,7 @@ The heart of aMule's documentation is the aMule Wiki, which you can find at http
 
 If you run into any problems you can drop by at the aMule forum (http://forum.amule.org). A lot of questions have already been answered there, so it is always a good idea to start by searching the forum for your particular problem. If you don't find an answer to your problem you can post your problem on the forum and we will do our best to help you out.
 
-The forum and particularly the Mac subsection of the forum (http://forum.amule.org/board.php?boardid=49) are also good places to look for usage tips and to learn about recent aMule developments (especially look at the sticky threads).
+The forum and particularly the Mac subsection of the forum (http://forum.amule.org/index.php?board=49.0) are also good places to look for usage tips and to learn about recent aMule developments (especially look at the sticky threads).
 
 
 Right-clicking & pop-up menus on the Mac:
@@ -35,7 +35,7 @@ There are basically four ways to download files with aMule:
 
 (2) Copy ed2k-links from a web page into the "ED2K-Link Handler" field at the bottom of the search window of aMule and press the commit button. If the ed2k-link is longer than that text field is wide you need to make the aMule window wider until the link fits completely into the field (you can make the aMule window wider than your screen if necessary). We are working on eliminating this issue.
 
-(3) Import ed2k-links directly from your browser into aMule. See http://forum.amule.org/thread.php?threadid=5679 for more details.
+(3) Import ed2k-links directly from your browser into aMule. See http://forum.amule.org/index.php?topic=5679.msg30209#msg30209 for more details.
 
 (4) Use a text editor (e.g. TextEdit) to paste ed2k-links into a "ED2Links" file inside "~/Library/Application Support/aMule/" and aMule will automatically import the links.
 
@@ -52,4 +52,4 @@ For example:
 
 Getting up-to-date snapshot builds of aMule:
 --------------------------------------------
-If you are interested in running aMule versions with the latest bleeding edge features or if you want to help us test the most recent changes to the aMule code-base you download up-to-date snapshot builds of aMule. More information can be found at: http://forum.amule.org/thread.php?threadid=5051
+If you are interested in running aMule versions with the latest bleeding edge features or if you want to help us test the most recent changes to the aMule code-base you download up-to-date snapshot builds of aMule. More information can be found at: http://forum.amule.org/index.php?board=49.0
