@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-18 03:30+0200\n"
+"POT-Creation-Date: 2008-06-20 03:30+0200\n"
 "PO-Revision-Date: 2008-06-10 23:09+0200\n"
 "Last-Translator: Hallvor Brunstad <Hallvor_1976@yahoo.com>\n"
 "Language-Team:  <i18n-nn@lister.ping.uio.no>\n"
@@ -138,8 +138,8 @@ msgstr "Greidde ikkje å hente delte filer frå brukar '%s'"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
-#: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1424
+#: src/DownloadListCtrl.cpp:1437 src/DownloadListCtrl.cpp:1448
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
@@ -219,7 +219,7 @@ msgstr "Brukarnamn"
 msgid "Friends"
 msgstr "Vener"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1021
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1022
 #: src/ClientListCtrl.cpp:253
 msgid "Show &Details"
 msgstr "Syn &detaljar"
@@ -236,7 +236,7 @@ msgstr "Ta bort ven"
 msgid "Send &Message"
 msgstr "Send &melding"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1023
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1024
 #: src/ClientListCtrl.cpp:255
 msgid "View Files"
 msgstr "Sjå filer"
@@ -256,7 +256,7 @@ msgstr "Er du viss på at du vil slette dei valde venene?"
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
+#: src/DownloadListCtrl.cpp:583 src/DownloadListCtrl.cpp:903
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2676
 #: src/muuli_wdr.cpp:2778 src/muuli_wdr.cpp:3600
@@ -336,7 +336,7 @@ msgstr "Sort"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:901
+#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:902
 msgid "Priority"
 msgstr "Prioritet"
 
@@ -384,19 +384,19 @@ msgstr "Svært låg"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2740
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2740
 msgid "Low"
 msgstr "Låg"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2741
+#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2741
 msgid "Normal"
 msgstr "Vanleg"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2742
+#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2742
 msgid "High"
 msgstr "Høg"
 
@@ -408,7 +408,7 @@ msgstr "Svært høg"
 msgid "Release"
 msgstr "Offentleggjering"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:899
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:900
 #: src/muuli_wdr.cpp:2743
 msgid "Auto"
 msgstr "Automatisk"
@@ -433,7 +433,7 @@ msgstr "Legg filer frå samlinga til overføringslista"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Kopiér magnet &URI til utklippstavla"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:944
 msgid "Copy eD2k &link to clipboard"
 msgstr "Kopier eD2k &lenka til utklippstavla"
 
@@ -457,11 +457,11 @@ msgstr "Kopier eD2k lenkje til utklippstavla (Vertsnamn) (Med &krypteringsval)"
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr "Kopier eD2k lenkje til utklippstavla (&AICH info)"
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:946
 msgid "Copy feedback to clipboard"
 msgstr "Kopiér tilbakemelding til utklippstavla"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:729
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -488,11 +488,11 @@ msgstr "Delte filer (%i)"
 msgid "[PartFile]"
 msgstr "[Delfil]"
 
-#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1080
+#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1081
 msgid "Enter new name for this file:"
 msgstr "Skriv nytt namn på denne fila:"
 
-#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1081
+#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1082
 msgid "File rename"
 msgstr "Døyp om fil"
 
@@ -1302,7 +1302,7 @@ msgstr "Spør"
 msgid "Connecting via server"
 msgstr "Koplar til gjennom tenar"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:691
 msgid "Queue Full"
 msgstr "Kø full"
@@ -2182,6 +2182,10 @@ msgstr[1] "Oppfriskingsinterval på tenarkoplingar: %d minutt"
 msgid "Server connection refresh interval: Disabled"
 msgstr "Oppfriskingsintervall for tenarkopling: Deaktivert"
 
+#: src/PrefsUnifiedDlg.cpp:1058
+msgid "UDP port for extended server requests (TCP+3):"
+msgstr ""
+
 #: src/PrefsUnifiedDlg.cpp:1077
 #, c-format
 msgid "Execute command on `%s' event"
@@ -2562,7 +2566,7 @@ msgstr "Tal på samtlege mislukka opplastingar: %s"
 msgid "Average upload time: %s"
 msgstr "Gjennomsnittleg opplastingstid: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Nedlastingar"
 
@@ -2902,7 +2906,7 @@ msgstr "Fil"
 msgid "Download"
 msgstr "Nedlasting"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:951
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Kategori"
@@ -2993,99 +2997,99 @@ msgstr "Sist sett komplett"
 msgid "Last Reception"
 msgstr "Sist motteke"
 
-#: src/DownloadListCtrl.cpp:578
+#: src/DownloadListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "Er du viss på at du vil slette den valde fila?"
 
-#: src/DownloadListCtrl.cpp:580
+#: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Er du viss på at du vil slette dei valte filene?"
 
-#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
 msgid "Send message to user"
 msgstr "Send melding til brukar"
 
-#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:844 src/ClientListCtrl.cpp:360
 msgid "Message to send:"
 msgstr "Melding å sende:"
 
-#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "%Stopp"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pause"
 
-#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Hald fram"
 
-#: src/DownloadListCtrl.cpp:906
+#: src/DownloadListCtrl.cpp:907
 msgid "C&lear completed"
 msgstr "&Ta bort ferdige"
 
-#: src/DownloadListCtrl.cpp:912
+#: src/DownloadListCtrl.cpp:913
 msgid "Swap every A4AF to this file now"
 msgstr "Byt alle A4AF til denne fila no"
 
-#: src/DownloadListCtrl.cpp:914
+#: src/DownloadListCtrl.cpp:915
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Byt alle A4AF til denne fila (auto)"
 
-#: src/DownloadListCtrl.cpp:919
+#: src/DownloadListCtrl.cpp:920
 msgid "Swap every A4AF to any other file now"
 msgstr "Byt alle A4AF til anna fil no"
 
-#: src/DownloadListCtrl.cpp:922
+#: src/DownloadListCtrl.cpp:923
 msgid "Extended Options"
 msgstr "Utvida innstillingar"
 
-#: src/DownloadListCtrl.cpp:933 src/DownloadListCtrl.cpp:995
+#: src/DownloadListCtrl.cpp:934 src/DownloadListCtrl.cpp:996
 msgid "Preview"
 msgstr "Førehandssyning"
 
-#: src/DownloadListCtrl.cpp:934
+#: src/DownloadListCtrl.cpp:935
 msgid "Show file &details"
 msgstr "Syn fil&detaljar"
 
-#: src/DownloadListCtrl.cpp:936 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:937 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "Syn alle kommentarar"
 
-#: src/DownloadListCtrl.cpp:941
+#: src/DownloadListCtrl.cpp:942
 msgid "Copy magnet URI to clipboard"
 msgstr "Kopiér magnet URI til utklippstavla"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:955
 msgid "unassign"
 msgstr "ortildele"
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:962
 msgid "Assign to category"
 msgstr "Vel kategori"
 
-#: src/DownloadListCtrl.cpp:998
+#: src/DownloadListCtrl.cpp:999
 msgid "&Open the file"
 msgstr "&Opne fila"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Remove from friends"
 msgstr "Fjerne frå kameratar"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Add to Friends"
 msgstr "Legg til kameratar"
 
-#: src/DownloadListCtrl.cpp:1024 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Send message"
 msgstr "Send melding"
 
-#: src/DownloadListCtrl.cpp:1025
+#: src/DownloadListCtrl.cpp:1026
 msgid "Swap to this file"
 msgstr "Byt til denne fila"
 
-#: src/DownloadListCtrl.cpp:1311 src/DownloadListCtrl.cpp:1614
+#: src/DownloadListCtrl.cpp:1312 src/DownloadListCtrl.cpp:1615
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1755 src/muuli_wdr.cpp:1768
 #: src/muuli_wdr.cpp:1781 src/muuli_wdr.cpp:1799 src/muuli_wdr.cpp:1812
@@ -3093,29 +3097,29 @@ msgstr "Byt til denne fila"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1434 src/DownloadListCtrl.cpp:1445
+#: src/DownloadListCtrl.cpp:1435 src/DownloadListCtrl.cpp:1446
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d·%H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR:·%u·(%i)"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "Spurt etter anna fil (A4AF)"
 
-#: src/DownloadListCtrl.cpp:2049
+#: src/DownloadListCtrl.cpp:2050
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Nedlastingar (%i)"
 
-#: src/DownloadListCtrl.cpp:2254
+#: src/DownloadListCtrl.cpp:2255
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
@@ -3123,11 +3127,11 @@ msgstr ""
 "Vel ein videospelar i innstillingar for å hindre at denne åtvaringa kjem opp "
 "ved kvar førehandssyning (mplayer er standard)"
 
-#: src/DownloadListCtrl.cpp:2255
+#: src/DownloadListCtrl.cpp:2256
 msgid "File preview"
 msgstr "Førehandssyning"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "FEIL: Greidde ikkje å starte ekstern mediespelar! Kommando: '%s'"

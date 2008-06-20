@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-18 03:30+0200\n"
+"POT-Creation-Date: 2008-06-20 03:30+0200\n"
 "PO-Revision-Date: 2008-04-15 02:00+0100\n"
 "Last-Translator: Miguel Almeida <miguel@almeida.at>\n"
 "Language-Team: Portuguese <pt@li.org>\n"
@@ -139,8 +139,8 @@ msgstr "Erro ão receber ficheiros partilhados do utilizador '%s'"
 #: src/HTTPDownload.cpp:81 src/DataToText.cpp:52 src/DataToText.cpp:68
 #: src/DataToText.cpp:78 src/DataToText.cpp:114 src/DataToText.cpp:135
 #: src/ExternalConn.cpp:251 src/Statistics.cpp:703 src/Statistics.cpp:884
-#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1423
-#: src/DownloadListCtrl.cpp:1436 src/DownloadListCtrl.cpp:1447
+#: src/Server.cpp:160 src/Server.cpp:235 src/DownloadListCtrl.cpp:1424
+#: src/DownloadListCtrl.cpp:1437 src/DownloadListCtrl.cpp:1448
 #: src/PartFile.cpp:2621 src/PartFile.cpp:2627 src/KnownFile.cpp:884
 #: src/KnownFile.cpp:890 src/FileDetailDialog.cpp:130
 #: src/ClientListCtrl.cpp:673 src/ClientListCtrl.cpp:696
@@ -214,7 +214,7 @@ msgstr "Nome do utilizador"
 msgid "Friends"
 msgstr "Amigos"
 
-#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1021
+#: src/FriendListCtrl.cpp:230 src/DownloadListCtrl.cpp:1022
 #: src/ClientListCtrl.cpp:253
 msgid "Show &Details"
 msgstr "Exibir &detalhes"
@@ -231,7 +231,7 @@ msgstr "Remover amigo"
 msgid "Send &Message"
 msgstr "Enviar &mensagem"
 
-#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1023
+#: src/FriendListCtrl.cpp:239 src/DownloadListCtrl.cpp:1024
 #: src/ClientListCtrl.cpp:255
 msgid "View Files"
 msgstr "Exibir ficheiros"
@@ -251,7 +251,7 @@ msgstr "Tem a certeza que deseja remover os amigos seleccionados?"
 #: src/FriendListCtrl.cpp:278 src/utils/wxCas/src/wxcasprefs.cpp:298
 #: src/ServerListCtrl.cpp:149 src/ServerListCtrl.cpp:556
 #: src/ServerListCtrl.cpp:575 src/amuleDlg.cpp:758
-#: src/DownloadListCtrl.cpp:582 src/DownloadListCtrl.cpp:902
+#: src/DownloadListCtrl.cpp:583 src/DownloadListCtrl.cpp:903
 #: src/TransferWnd.cpp:376 src/muuli_wdr.cpp:855 src/muuli_wdr.cpp:925
 #: src/muuli_wdr.cpp:999 src/muuli_wdr.cpp:1065 src/muuli_wdr.cpp:2676
 #: src/muuli_wdr.cpp:2778 src/muuli_wdr.cpp:3600
@@ -331,7 +331,7 @@ msgstr "Tipo"
 
 #: src/SharedFilesCtrl.cpp:105 src/SharedFilesCtrl.cpp:140
 #: src/ServerListCtrl.cpp:94 src/ServerListCtrl.cpp:423
-#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:901
+#: src/DownloadListCtrl.cpp:196 src/DownloadListCtrl.cpp:902
 msgid "Priority"
 msgstr "Prioridade"
 
@@ -379,19 +379,19 @@ msgstr "Muito baixa"
 
 #: src/SharedFilesCtrl.cpp:133 src/DataToText.cpp:42
 #: src/ServerListCtrl.cpp:230 src/ServerListCtrl.cpp:419
-#: src/DownloadListCtrl.cpp:896 src/muuli_wdr.cpp:2740
+#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2740
 msgid "Low"
 msgstr "Baixa"
 
 #: src/SharedFilesCtrl.cpp:134 src/DataToText.cpp:43
 #: src/ServerListCtrl.cpp:231 src/ServerListCtrl.cpp:420
-#: src/DownloadListCtrl.cpp:897 src/muuli_wdr.cpp:2741
+#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2741
 msgid "Normal"
 msgstr "Normal"
 
 #: src/SharedFilesCtrl.cpp:135 src/DataToText.cpp:44
 #: src/ServerListCtrl.cpp:232 src/ServerListCtrl.cpp:421
-#: src/DownloadListCtrl.cpp:898 src/muuli_wdr.cpp:2742
+#: src/DownloadListCtrl.cpp:899 src/muuli_wdr.cpp:2742
 msgid "High"
 msgstr "Alta"
 
@@ -403,7 +403,7 @@ msgstr "Muito Alta"
 msgid "Release"
 msgstr "Lançamento"
 
-#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:899
+#: src/SharedFilesCtrl.cpp:138 src/DownloadListCtrl.cpp:900
 #: src/muuli_wdr.cpp:2743
 msgid "Auto"
 msgstr "Automática"
@@ -428,7 +428,7 @@ msgstr "Adicionar ficheiros na coleção a lista de transferências"
 msgid "Copy magnet &URI to clipboard"
 msgstr "Copiar ímã &URI"
 
-#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:943
+#: src/SharedFilesCtrl.cpp:162 src/DownloadListCtrl.cpp:944
 msgid "Copy eD2k &link to clipboard"
 msgstr ""
 
@@ -452,11 +452,11 @@ msgstr ""
 msgid "Copy eD2k link to clipboard (&AICH info)"
 msgstr ""
 
-#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:945
+#: src/SharedFilesCtrl.cpp:168 src/DownloadListCtrl.cpp:946
 msgid "Copy feedback to clipboard"
 msgstr "Copiar a resposta para a área de transferência"
 
-#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:728
+#: src/SharedFilesCtrl.cpp:190 src/DownloadListCtrl.cpp:729
 #, c-format
 msgid ""
 "Feedback from: %s (%s)\n"
@@ -481,11 +481,11 @@ msgstr "Ficheiros partilhados (%i)"
 msgid "[PartFile]"
 msgstr "[FicheiroDeParte]"
 
-#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1080
+#: src/SharedFilesCtrl.cpp:710 src/DownloadListCtrl.cpp:1081
 msgid "Enter new name for this file:"
 msgstr "Insira o novo nome para este ficheiro:"
 
-#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1081
+#: src/SharedFilesCtrl.cpp:711 src/DownloadListCtrl.cpp:1082
 msgid "File rename"
 msgstr "Renomeação de ficheiro"
 
@@ -1288,7 +1288,7 @@ msgstr "A pedir"
 msgid "Connecting via server"
 msgstr "A conectar via servidor"
 
-#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1693
+#: src/DataToText.cpp:62 src/DownloadListCtrl.cpp:1694
 #: src/ClientListCtrl.cpp:691
 msgid "Queue Full"
 msgstr "Lista de espera cheia"
@@ -2169,6 +2169,10 @@ msgstr[1] "Intervalo de refrescamento de conexão ao servidor: %d minutos"
 msgid "Server connection refresh interval: Disabled"
 msgstr "Interval de refrescamento de conexão ao servidor: desactivado"
 
+#: src/PrefsUnifiedDlg.cpp:1058
+msgid "UDP port for extended server requests (TCP+3):"
+msgstr ""
+
 #: src/PrefsUnifiedDlg.cpp:1077
 #, c-format
 msgid "Execute command on `%s' event"
@@ -2552,7 +2556,7 @@ msgstr "Total de sessões de saída falhadas: %s"
 msgid "Average upload time: %s"
 msgstr "Tempo médio de envio: %s"
 
-#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:893 src/muuli_wdr.cpp:419
+#: src/Statistics.cpp:669 src/DownloadListCtrl.cpp:894 src/muuli_wdr.cpp:419
 msgid "Downloads"
 msgstr "Entradas"
 
@@ -2900,7 +2904,7 @@ msgstr "Ficheiro"
 msgid "Download"
 msgstr "Transferir"
 
-#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:950
+#: src/SearchListCtrl.cpp:581 src/DownloadListCtrl.cpp:951
 #: src/TransferWnd.cpp:336 src/muuli_wdr.cpp:239 src/CatDialog.cpp:60
 msgid "Category"
 msgstr "Categoria"
@@ -2989,99 +2993,99 @@ msgstr "Visto completo pela última vez"
 msgid "Last Reception"
 msgstr "Útima recepção"
 
-#: src/DownloadListCtrl.cpp:578
+#: src/DownloadListCtrl.cpp:579
 msgid "Are you sure that you wish to delete the selected file?"
 msgstr "Tem a certeza que deseja eliminar o ficheiro seleccionado?"
 
-#: src/DownloadListCtrl.cpp:580
+#: src/DownloadListCtrl.cpp:581
 msgid "Are you sure that you wish to delete the selected files?"
 msgstr "Tem a certeza que deseja eliminar os ficheiros seleccionados?"
 
-#: src/DownloadListCtrl.cpp:842 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
 msgid "Send message to user"
 msgstr "Enviar uma mensagem ao utilizador"
 
-#: src/DownloadListCtrl.cpp:843 src/ClientListCtrl.cpp:360
+#: src/DownloadListCtrl.cpp:844 src/ClientListCtrl.cpp:360
 msgid "Message to send:"
 msgstr "Mensagem a enviar:"
 
-#: src/DownloadListCtrl.cpp:903 src/TransferWnd.cpp:377
+#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:377
 msgid "&Stop"
 msgstr "P&arar"
 
-#: src/DownloadListCtrl.cpp:904 src/TransferWnd.cpp:378
+#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:378
 msgid "&Pause"
 msgstr "&Pausar"
 
-#: src/DownloadListCtrl.cpp:905 src/TransferWnd.cpp:379
+#: src/DownloadListCtrl.cpp:906 src/TransferWnd.cpp:379
 msgid "&Resume"
 msgstr "&Continuar"
 
-#: src/DownloadListCtrl.cpp:906
+#: src/DownloadListCtrl.cpp:907
 msgid "C&lear completed"
 msgstr "&Limpar terminados"
 
-#: src/DownloadListCtrl.cpp:912
+#: src/DownloadListCtrl.cpp:913
 msgid "Swap every A4AF to this file now"
 msgstr "Trocar cada A4AF para este ficheiro"
 
-#: src/DownloadListCtrl.cpp:914
+#: src/DownloadListCtrl.cpp:915
 msgid "Swap every A4AF to this file (Auto)"
 msgstr "Trocar cada A4AF para este ficheiro (automático)"
 
-#: src/DownloadListCtrl.cpp:919
+#: src/DownloadListCtrl.cpp:920
 msgid "Swap every A4AF to any other file now"
 msgstr "Trocar cada A4AF para outro ficheiro"
 
-#: src/DownloadListCtrl.cpp:922
+#: src/DownloadListCtrl.cpp:923
 msgid "Extended Options"
 msgstr "Opções extendidas"
 
-#: src/DownloadListCtrl.cpp:933 src/DownloadListCtrl.cpp:995
+#: src/DownloadListCtrl.cpp:934 src/DownloadListCtrl.cpp:996
 msgid "Preview"
 msgstr "Previsualizar"
 
-#: src/DownloadListCtrl.cpp:934
+#: src/DownloadListCtrl.cpp:935
 msgid "Show file &details"
 msgstr "Exibir os &detalhes do ficheiro"
 
-#: src/DownloadListCtrl.cpp:936 src/muuli_wdr.cpp:826
+#: src/DownloadListCtrl.cpp:937 src/muuli_wdr.cpp:826
 msgid "Show all comments"
 msgstr "Exibir todos os comentários"
 
-#: src/DownloadListCtrl.cpp:941
+#: src/DownloadListCtrl.cpp:942
 msgid "Copy magnet URI to clipboard"
 msgstr "Copiar ímã"
 
-#: src/DownloadListCtrl.cpp:954
+#: src/DownloadListCtrl.cpp:955
 msgid "unassign"
 msgstr "destituir"
 
-#: src/DownloadListCtrl.cpp:961
+#: src/DownloadListCtrl.cpp:962
 msgid "Assign to category"
 msgstr "Atribuir à categoria"
 
-#: src/DownloadListCtrl.cpp:998
+#: src/DownloadListCtrl.cpp:999
 msgid "&Open the file"
 msgstr "&Abrir o ficheiro"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Remove from friends"
 msgstr "Tirar da lista dos amigos"
 
-#: src/DownloadListCtrl.cpp:1022 src/ClientListCtrl.cpp:254
+#: src/DownloadListCtrl.cpp:1023 src/ClientListCtrl.cpp:254
 msgid "Add to Friends"
 msgstr "Adicionar à lista de amigos"
 
-#: src/DownloadListCtrl.cpp:1024 src/ClientListCtrl.cpp:256
+#: src/DownloadListCtrl.cpp:1025 src/ClientListCtrl.cpp:256
 msgid "Send message"
 msgstr "Enviar mensagem"
 
-#: src/DownloadListCtrl.cpp:1025
+#: src/DownloadListCtrl.cpp:1026
 msgid "Swap to this file"
 msgstr "Mudar para este ficheiro"
 
-#: src/DownloadListCtrl.cpp:1311 src/DownloadListCtrl.cpp:1614
+#: src/DownloadListCtrl.cpp:1312 src/DownloadListCtrl.cpp:1615
 #: src/OtherFunctions.cpp:149 src/StatisticsDlg.cpp:100
 #: src/StatisticsDlg.cpp:102 src/muuli_wdr.cpp:1755 src/muuli_wdr.cpp:1768
 #: src/muuli_wdr.cpp:1781 src/muuli_wdr.cpp:1799 src/muuli_wdr.cpp:1812
@@ -3089,39 +3093,39 @@ msgstr "Mudar para este ficheiro"
 msgid "kB/s"
 msgstr "kB/s"
 
-#: src/DownloadListCtrl.cpp:1434 src/DownloadListCtrl.cpp:1445
+#: src/DownloadListCtrl.cpp:1435 src/DownloadListCtrl.cpp:1446
 msgid "%y/%m/%d %H:%M:%S"
 msgstr "%y/%m/%d %H:%M:%S"
 
-#: src/DownloadListCtrl.cpp:1662
+#: src/DownloadListCtrl.cpp:1663
 msgid "A4AF"
 msgstr "A4AF"
 
-#: src/DownloadListCtrl.cpp:1712
+#: src/DownloadListCtrl.cpp:1713
 #, c-format
 msgid "QR: %u (%i)"
 msgstr "QR: %u (%i)"
 
-#: src/DownloadListCtrl.cpp:1726
+#: src/DownloadListCtrl.cpp:1727
 msgid "Asked for another file"
 msgstr "A pedir outro ficheiro"
 
-#: src/DownloadListCtrl.cpp:2049
+#: src/DownloadListCtrl.cpp:2050
 #, c-format
 msgid "Downloads (%i)"
 msgstr "Entradas (%i)"
 
-#: src/DownloadListCtrl.cpp:2254
+#: src/DownloadListCtrl.cpp:2255
 msgid ""
 "To prevent this warning to show up in every preview,\n"
 "set your preferred video player in preferences (default is mplayer)."
 msgstr ""
 
-#: src/DownloadListCtrl.cpp:2255
+#: src/DownloadListCtrl.cpp:2256
 msgid "File preview"
 msgstr "Previsualização do ficheiro"
 
-#: src/DownloadListCtrl.cpp:2291
+#: src/DownloadListCtrl.cpp:2292
 #, c-format
 msgid "ERROR: Failed to execute external media-player! Command: `%s'"
 msgstr "ERRO: Erro na execução do leitor multimédia externo! Comando: '%s'"
