@@ -1105,13 +1105,6 @@ void CamuleDlg::SetMessagesTool()
 	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
 }
 
-
-/*
-	Try to launch the specified url:
-	 - Windows: Default or custom browser will be used.
-	 - Mac: Currently not implemented
-	 - Anything else: Try a number of hardcoded browsers. Should be made configurable...
-*/
 void CamuleDlg::LaunchUrl( const wxString& url )
 {
 	wxString cmd;

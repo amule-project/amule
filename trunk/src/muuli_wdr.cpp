@@ -890,7 +890,8 @@ wxSizer *commentDlg( wxWindow *parent, bool call_fit, bool set_sizer )
     item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, 
-        _("For a film you can say its length, its story, language ...\nand if it's a fake, you can tell that to other users of aMule."),
+        _("For a film you can say its length, its story, language ...\n"
+          "and if it's a fake, you can tell that to other users of aMule."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item1->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -1616,7 +1617,7 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Nick") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
-    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the Linux Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the multi-platform Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
     item7->SetToolTip( _("This is the name that other users will see when connecting to you.") );
     item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -1675,43 +1676,21 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
     wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Browser Selection") );
     wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
-    wxString strs23[] = 
-    {
-        _("System Default"), 
-        _("Konqueror"), 
-        _("Mozilla"), 
-        _("Firefox"), 
-        _("Firebird"), 
-        _("Opera"), 
-        _("Netscape"), 
-        _("Galeon"), 
-        _("Epiphany"), 
-        _("User Defined")
-    };
-    wxChoice *item23 = new wxChoice( parent, IDC_BROWSER, wxDefaultPosition, wxSize(100,-1), 10, strs23, 0 );
-    item23->SetToolTip( _("Select your browser here") );
+    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
+
+    CMuleTextCtrl *item24 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item24->SetToolTip( _("Enter your browser name here. Leave this field empty to use the system default browser.") );
+    item23->Add( item24, 1, wxGROW, 5 );
+
+    wxButton *item25 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item25, 0, wxGROW, 5 );
+
     item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item24 = new wxFlexGridSizer( 3, 0, 0 );
-    item24->AddGrowableCol( 1 );
-
-    wxStaticText *item25 = new wxStaticText( parent, -1, _("Custom Browser:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    CMuleTextCtrl *item26 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item26->SetToolTip( _("Enter your browser name here. To use the custom browser, select the Custom menu-item from the dropdown-menu above.") );
-    item26->Enable( false );
-    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxButton *item27 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5 );
-
-    item21->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->SetValue( TRUE );
-    item28->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item21->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->SetValue( TRUE );
+    item26->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item21->Add( item26, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
@@ -1815,7 +1794,8 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
     item19->Add( item26, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item29 = new wxStaticText( parent, -1, 
-        _("Note: These values are\n only used for statistics."),
+        _("Note: These values are\n"
+          " only used for statistics."),
         wxDefaultPosition, wxDefaultSize, 0 );
     item19->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
 
@@ -2184,7 +2164,11 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
     wxStaticText *item14 = new wxStaticText( parent, -1, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item12->Add( item14, 0, wxALIGN_CENTER, 5 );
 
-    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE|wxTR_HIDE_ROOT );
+    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE
+#ifdef __WXMSW__
+| wxTR_HIDE_ROOT
+#endif
+);
     wxASSERT( item15 );
     item12->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
@@ -2345,7 +2329,12 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item4->Add( item5, 0, wxALIGN_CENTER, 5 );
 
     wxStaticText *item6 = new wxStaticText( parent, -1, 
-        _("Do not change these setting unless you know\nwhat you are doing, otherwise you can easily\nmake things worse for yourself.\n\naMule will run fine without adjusting any of\nthese settings."),
+        _("Do not change these setting unless you know\n"
+          "what you are doing, otherwise you can easily\n"
+          "make things worse for yourself.\n"
+          "\n"
+          "aMule will run fine without adjusting any of\n"
+          "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
     item6->SetForegroundColour( *wxRED );
     item4->Add( item6, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
@@ -2615,7 +2604,8 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
     item32->AddGrowableCol( 1 );
 
     wxStaticText *item33 = new wxStaticText( parent, -1, 
-        _("IP of the listening interface\n(empty for any)"),
+        _("IP of the listening interface\n"
+          "(empty for any)"),
         wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
     item32->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
@@ -3129,7 +3119,8 @@ item9->SetName(wxT("kadScope"));
     item20->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 5 );
 
     wxButton *item37 = new wxButton( parent, ID_KNOWNNODECONNECT, 
-        _("Bootstrap from \nknown clients"),
+        _("Bootstrap from \n"
+          "known clients"),
         wxDefaultPosition, wxDefaultSize, 0 );
     item20->Add( item37, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 

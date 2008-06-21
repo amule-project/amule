@@ -705,7 +705,6 @@ protected:
 	
 	static bool	s_allocFullFile;
 	
-	static uint16	s_Browser;
 	static wxString	s_CustomBrowser;
 	static bool	s_BrowserTab;     // Jacobo221 - Open in tabs if possible
 	

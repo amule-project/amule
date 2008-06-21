@@ -104,7 +104,6 @@ BEGIN_EVENT_TABLE(PrefsUnifiedDlg,wxDialog)
 	EVT_BUTTON(IDC_COLOR_BUTTON,		PrefsUnifiedDlg::OnButtonColorChange)
 	EVT_BUTTON(IDC_IPFILTERUPDATE,		PrefsUnifiedDlg::OnButtonIPFilterUpdate)
 	EVT_CHOICE(IDC_COLORSELECTOR,		PrefsUnifiedDlg::OnColorCategorySelected)
-	EVT_CHOICE(IDC_BROWSER,			PrefsUnifiedDlg::OnBrowserChange)
 	EVT_LIST_ITEM_SELECTED(ID_PREFSLISTCTRL,PrefsUnifiedDlg::OnPrefsPageChange)
 
 	EVT_INIT_DIALOG(PrefsUnifiedDlg::OnInitDialog)
@@ -232,10 +231,6 @@ wxDialog(parent, -1, _("Preferences"),
 			// This must be done now or pages won't Fit();
 			#ifdef __WXMSW__ 
 				CastChild(IDC_BROWSERTABS, wxCheckBox)->Enable(false);
-				wxChoice *browserCheck = CastChild(IDC_BROWSER, wxChoice);
-				browserCheck->Clear();
-				browserCheck->Append(_("System default"));
-				browserCheck->Append(_("User Defined"));
 			#endif /* __WXMSW__ */
 		} else if (pages[i].m_function == PreferencesEventsTab) {
 
@@ -377,14 +372,6 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	FindWindow(ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY)->Enable(false);
 	
 	// Enable/Disable some controls
-	bool customBrowser =
-		CastChild(IDC_BROWSER, wxChoice)->GetSelection() ==
-		(int)CastChild(IDC_BROWSER, wxChoice)->GetCount() - 1;
-	FindWindow( IDC_BROWSERSELF )->Enable( customBrowser );
-	FindWindow( IDC_SELBROWSER )->Enable( customBrowser );
-	#ifndef __WXMSW__
-		FindWindow( IDC_BROWSERTABS )->Enable( !customBrowser );
-	#endif
 	FindWindow( IDC_MINDISKSPACE )->Enable( thePrefs::IsCheckDiskspaceEnabled() );
 	FindWindow( IDC_SKIN )->Enable( thePrefs::UseSkins() );
 	FindWindow( IDC_OSDIR )->Enable( thePrefs::IsOnlineSignatureEnabled() );
@@ -808,26 +795,6 @@ void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 {
 	m_buttonColor->SetBackgroundColour(
 		WxColourFromCr( thePrefs::s_colors[ m_choiceColor->GetSelection() ] ) );
-}
-
-
-void PrefsUnifiedDlg::OnBrowserChange( wxCommandEvent& evt )
-{
-	wxTextCtrl* textctrl = CastChild( IDC_BROWSERSELF, wxTextCtrl );
-	wxButton* btn = CastChild( IDC_SELBROWSER, wxButton );
-	bool enable =
-		evt.GetSelection() ==
-		(int)CastChild( IDC_BROWSER, wxChoice )->GetCount() - 1;
-
-	if (textctrl) {
-		textctrl->Enable( enable );
-	}
-	if (btn) {
-		btn->Enable( enable );
-	}
-#ifndef __WXMSW__
-	FindWindow( IDC_BROWSERTABS )->Enable( !enable );
-#endif
 }
 
 

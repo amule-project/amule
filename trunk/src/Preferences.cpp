@@ -180,7 +180,6 @@ bool		CPreferences::s_Percent;
 bool		CPreferences::s_SecIdent;
 bool		CPreferences::s_ExtractMetaData;
 bool		CPreferences::s_allocFullFile;
-uint16		CPreferences::s_Browser;
 wxString	CPreferences::s_CustomBrowser;
 bool		CPreferences::s_BrowserTab;
 CPath		CPreferences::s_OSDirectory;
@@ -932,16 +931,11 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	 * Browser options
 	 **/
 	#ifdef __WXMAC__
-		int			browser = 9; // this is a "magic number" and will break if
-								 // more browser choices are added in the interface,
-								 // but there isn't a symbolic name defined
 		wxString	customBrowser = wxT("/usr/bin/open");
 	#else 
-		int			browser = 0;
 		wxString	customBrowser; // left empty
 	#endif
 
-	NewCfgItem(IDC_BROWSER,		(MkCfg_Int( wxT("/Browser/DefaultBrowser"), s_Browser, browser )));
 	NewCfgItem(IDC_BROWSERTABS,	(new Cfg_Bool( wxT("/Browser/OpenPageInTab"), s_BrowserTab, true )));
 	NewCfgItem(IDC_BROWSERSELF,	(new Cfg_Str(  wxT("/Browser/CustomBrowserString"), s_CustomBrowser, customBrowser )));
 
@@ -1596,57 +1590,28 @@ void CPreferences::UpdateCategory(
 	SaveCats();
 }
 
-// Jacobo221 - Several issues on the browsers:
-// netscape is named Netscape on some systems
-// MozillaFirebird is named mozilla-firebird and also firebird on some systems
-// Niether Galeon tabs nor epiphany tabs have been tested
-// Konqueror alternatives is (Open on current window, fails if no konq already open):
-//	dcop `dcop konqueror-* | head -n1` konqueror-mainwindow#1 openURL '%s'
-// IMPORTANT: if you add cases to the switches and change the number which
-//			  corresponds to s_CustomBrowser, you must change the default
-//			  set for the Mac in BuildItemList, above.
+
 wxString CPreferences::GetBrowser()
 {
-	wxString cmd;
+	wxString cmd(s_CustomBrowser);
 #ifndef __WXMSW__
-	if( s_BrowserTab )
-		switch ( s_Browser ) {
-			case 0: cmd = wxEmptyString; break;
-			case 1: cmd = wxT("kfmclient exec '%s'"); break;
-			case 2: cmd = wxT("sh -c \"if ! mozilla -remote 'openURL(%s, new-tab)'; then mozilla '%s'; fi\""); break;
-			case 3: cmd = wxT("sh -c \"if ! firefox -remote 'openURL(%s, new-tab)'; then firefox '%s'; fi\""); break;
-			case 4: cmd = wxT("sh -c \"if ! MozillaFirebird -remote 'openURL(%s, new-tab)'; then MozillaFirebird '%s'; fi\""); break;
-			case 5: cmd = wxT("opera --newpage '%s'"); break;
-			case 6: cmd = wxT("sh -c \"if ! netscape -remote 'openURLs(%s,new-tab)'; then netscape '%s'; fi\""); break;
-			case 7: cmd = wxT("galeon -n '%s'"); break;
-			case 8: cmd = wxT("epiphany -n '%s'"); break;
-			case 9: cmd = s_CustomBrowser; break;
-			default:
-				AddLogLineM( true, _("Unable to determine selected browser!") );
+	if( s_BrowserTab ) {
+		// This is certainly not the best way to do it, but I'm lazy
+		if ((wxT("mozilla") == cmd.Right(7)) || (wxT("firefox") == cmd.Right(7))
+			|| (wxT("MozillaFirebird") == cmd.Right(15))) {
+			cmd += wxT(" -remote 'openURL(%s, new-tab)'");
 		}
-	else
-		switch ( s_Browser ) {
-			case 0: cmd = wxEmptyString; break;
-			case 1: cmd = wxT("konqueror '%s'"); break;
-			case 2: cmd = wxT("sh -c 'mozilla %s'"); break;
-			case 3: cmd = wxT("firefox '%s'"); break;
-			case 4:	cmd = wxT("MozillaFirebird '%s'"); break;
-			case 5:	cmd = wxT("opera '%s'"); break;
-			case 6: cmd = wxT("netscape '%s'"); break;
-			case 7: cmd = wxT("galeon '%s'"); break;
-			case 8: cmd = wxT("epiphany '%s'"); break;
-			case 9: cmd = s_CustomBrowser; break;
-			default:
-				AddLogLineM( true, _("Unable to determine selected browser!") );
+		if ((wxT("galeon") == cmd.Right(6)) || (wxT("epiphany") == cmd.Right(8))) {
+			cmd += wxT(" -n '%s'");
 		}
-#else
-	switch ( s_Browser ) {
-		case 0: cmd = wxEmptyString; break;
-		case 1: cmd = s_CustomBrowser; break;
-		default:
-			AddLogLineM( true, _("Unable to determine selected browser!") );
+		if (wxT("opera") == cmd.Right(5)) {
+			cmd += wxT(" --newpage '%s'");
+		}
+		if (wxT("netscape") == cmd.Right(8)) {
+			cmd += wxT(" -remote 'openURLs(%s,new-tab)'");
+		}
 	}
-#endif /* !__WXMSW__ / __WXMSW__ */
+#endif /* !__WXMSW__ */
 	return cmd;
 }
 
