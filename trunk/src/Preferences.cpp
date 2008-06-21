@@ -811,7 +811,7 @@ public:
 			do
 			{
 				if (skins == true) {
-					Filename = wxT("User:") + Filename;
+					Filename = _("User:") + Filename;
 				}
 				skinSelector->Append(Filename);
 			}
@@ -836,7 +836,7 @@ public:
 			do
 			{
 				if (skins == true) {
-					Filename = wxT("System:") +  Filename;
+					Filename = _("System:") +  Filename;
 				}
 				// avoid duplicates for webserver templates
 				if (skinSelector->FindString(Filename) == wxNOT_FOUND) {
@@ -847,7 +847,7 @@ public:
 		}			
 
 		if ( skinSelector->GetCount() == 0 ) {
-			skinSelector->Append(wxT("no options available"));	
+			skinSelector->Append(_("no options available"));	
 		}
 
 		int id = skinSelector->FindString(m_value);
