@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: source_strings\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 03:30+0200\n"
+"POT-Creation-Date: 2008-06-21 03:31+0200\n"
 "PO-Revision-Date: 2004-02-07 21:55+0200\n"
 "Last-Translator: Boyan Ivanov <boyan17@bulgaria.com>\n"
 "Language-Team: Bulgarian <dict@linux.zonebg.com>\n"
@@ -1512,6 +1512,18 @@ msgstr ""
 
 #: src/Preferences.cpp:662
 msgid "Turkish"
+msgstr ""
+
+#: src/Preferences.cpp:814
+msgid "User:"
+msgstr ""
+
+#: src/Preferences.cpp:839
+msgid "System:"
+msgstr ""
+
+#: src/Preferences.cpp:850
+msgid "no options available"
 msgstr ""
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647

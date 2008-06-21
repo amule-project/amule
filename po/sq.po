@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sq\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 03:30+0200\n"
+"POT-Creation-Date: 2008-06-21 03:31+0200\n"
 "PO-Revision-Date: 2008-04-20 20:41+0200\n"
 "Last-Translator: Fation  <dj_barthezz@linuxmail.org lushnja_corps@hotmail."
 "com>\n"
@@ -1535,6 +1535,18 @@ msgstr "Suedeze"
 #: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Turqisht"
+
+#: src/Preferences.cpp:814
+msgid "User:"
+msgstr ""
+
+#: src/Preferences.cpp:839
+msgid "System:"
+msgstr ""
+
+#: src/Preferences.cpp:850
+msgid "no options available"
+msgstr ""
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647
 msgid "Unable to determine selected browser!"

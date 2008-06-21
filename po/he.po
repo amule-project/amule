@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: amule 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 03:30+0200\n"
+"POT-Creation-Date: 2008-06-21 03:31+0200\n"
 "PO-Revision-Date: 2008-04-11 00:21+0300\n"
 "Last-Translator: Peace Kramer <kpeace1@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -1512,6 +1512,18 @@ msgstr "שוודית"
 #: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "טורקית"
+
+#: src/Preferences.cpp:814
+msgid "User:"
+msgstr ""
+
+#: src/Preferences.cpp:839
+msgid "System:"
+msgstr ""
+
+#: src/Preferences.cpp:850
+msgid "no options available"
+msgstr ""
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647
 msgid "Unable to determine selected browser!"

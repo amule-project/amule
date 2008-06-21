@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule 2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 03:30+0200\n"
+"POT-Creation-Date: 2008-06-21 03:31+0200\n"
 "PO-Revision-Date: 2008-05-31 00:00+0800\n"
 "Last-Translator: 小橋 <29551030@qq.com>\n"
 "Language-Team: Chinese <29551030@qq.com>\n"
@@ -1512,6 +1512,18 @@ msgstr "瑞典語"
 #: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "土耳其語"
+
+#: src/Preferences.cpp:814
+msgid "User:"
+msgstr ""
+
+#: src/Preferences.cpp:839
+msgid "System:"
+msgstr ""
+
+#: src/Preferences.cpp:850
+msgid "no options available"
+msgstr ""
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647
 msgid "Unable to determine selected browser!"
