@@ -118,7 +118,7 @@ public:
 	void ResetLog(int id);
 	
 	void ShowUserCount(const wxString& info = wxEmptyString);
-	void ShowConnectionState();
+	void ShowConnectionState(bool skinChanged = false);
 	void ShowTransferRate();
 	
 	bool StatisticsWindowActive()

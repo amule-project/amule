@@ -646,7 +646,7 @@ void CamuleDlg::AddServerMessageLine(wxString& message)
 }
 
 
-void CamuleDlg::ShowConnectionState()
+void CamuleDlg::ShowConnectionState(bool skinChanged)
 {
 	static wxImageList status_arrows(16,16,true,0);
 	if (!status_arrows.GetImageCount()) {
@@ -748,7 +748,7 @@ void CamuleDlg::ShowConnectionState()
 		currentState = ECS_Disconnected;
 	}
 
-	if (currentState != s_oldState) {
+	if ( (true == skinChanged) || (currentState != s_oldState) ) {
 		wxWindowUpdateLocker freezer(m_wndToolbar);
 		
 		wxToolBarToolBase* toolbarTool = m_wndToolbar->RemoveTool(ID_BUTTONCONNECT);
@@ -1333,7 +1333,7 @@ void CamuleDlg::Apply_Toolbar_Skin(wxToolBar *wndToolbar)
 	wndToolbar->Realize();
 	
 	// Updates the "Connect" button, and so on.
-	ShowConnectionState();
+	ShowConnectionState(true);
 }
 
 
