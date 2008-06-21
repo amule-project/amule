@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-20 03:30+0200\n"
+"POT-Creation-Date: 2008-06-21 03:31+0200\n"
 "PO-Revision-Date: 2008-06-07 22:20+0200\n"
 "Last-Translator: Frank van der Loo <f.vanderloo@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -1551,6 +1551,18 @@ msgstr "Zweeds"
 #: src/Preferences.cpp:662
 msgid "Turkish"
 msgstr "Turks"
+
+#: src/Preferences.cpp:814
+msgid "User:"
+msgstr ""
+
+#: src/Preferences.cpp:839
+msgid "System:"
+msgstr ""
+
+#: src/Preferences.cpp:850
+msgid "no options available"
+msgstr ""
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647
 msgid "Unable to determine selected browser!"
