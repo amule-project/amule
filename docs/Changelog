@@ -16,6 +16,8 @@ Version 2.2.2 - Whatever comes next.
 		* Add sources from search results for new downloads
 		* Use output of gdlib-config for gd.h detection
 		* Solaris mntent fix
+		* Fix NULL pointer dereference
+		* Fix for configure not using --with-geo-ip value in library check
 
 	MalaPraxis:
 		* Remap colours on Windows
@@ -29,6 +31,9 @@ Version 2.2.2 - Whatever comes next.
 
 	Vollstrecker:
 		* Made possible to deactivate xas
+
+	Wuischke:
+		* Show connection status in toolbar when changing skin, thanks to greek
 
 --------------------------------------------------------------------------------
 
