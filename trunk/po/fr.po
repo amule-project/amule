@@ -36,19 +36,19 @@ msgstr "Erreur de connexion"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:194
 msgid "EC connection failed. Empty reply."
-msgstr ""
+msgstr "La connexion EC a écoué. Réponse vide."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:200
 msgid "External Connection: Access denied because: "
-msgstr ""
+msgstr "Connexion externe : Cause de l'accès refusé"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:203
 msgid "External Connection: Access denied"
-msgstr ""
+msgstr "Connexion externe : Accès refusé"
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:207
 msgid "External Connection: Bad reply from server. Connection closed."
-msgstr ""
+msgstr "Connexion externe : Mauvaise réponse depuis le serveur. Fermeture de la connexion."
 
 #: src/libs/ec/cpp/RemoteConnect.cpp:211
 msgid "Succeeded! Connection established to aMule "
@@ -524,7 +524,7 @@ msgstr "Kademlia: le mot recherché est trop court"
 
 #: src/kademlia/kademlia/SearchManager.cpp:138
 msgid "Kademlia: Search keyword is already on search list: "
-msgstr ""
+msgstr "Kademlia : le mot-clé de la recherche est toujours dans la liste de recherche :"
 
 #: src/kademlia/routing/RoutingZone.cpp:188
 #, c-format
@@ -542,7 +542,7 @@ msgstr[1] "%d contacts Kad écrits"
 
 #: src/ListenSocket.cpp:68
 msgid "ERROR: Could not listen to TCP port."
-msgstr ""
+msgstr "ERREUR : Le port TCP n'a pas pu être écouté."
 
 #: src/webserver/src/WebServer.cpp:301
 msgid "web client connection accepted\n"
@@ -550,7 +550,7 @@ msgstr "connexion du client web acceptée\n"
 
 #: src/webserver/src/WebServer.cpp:304
 msgid "ERROR: can not accept web client connection\n"
-msgstr ""
+msgstr "ERREUR : la connexion du client web ne peut pas être accepté\n"
 
 #: src/webserver/src/WebServer.cpp:374
 #, c-format
@@ -1548,15 +1548,15 @@ msgstr "Turque"
 
 #: src/Preferences.cpp:814
 msgid "User:"
-msgstr ""
+msgstr "Utilisateur"
 
 #: src/Preferences.cpp:839
 msgid "System:"
-msgstr ""
+msgstr "Système"
 
 #: src/Preferences.cpp:850
 msgid "no options available"
-msgstr ""
+msgstr "pas d'option disponible"
 
 #: src/Preferences.cpp:1625 src/Preferences.cpp:1640 src/Preferences.cpp:1647
 msgid "Unable to determine selected browser!"
@@ -1699,11 +1699,11 @@ msgstr "Supprimer tous les serveurs"
 
 #: src/ServerListCtrl.cpp:447 src/SearchListCtrl.cpp:603
 msgid "Copy eD2k link to clipboard"
-msgstr ""
+msgstr "Copier le lien eD2k dans le presse-papier"
 
 #: src/ServerListCtrl.cpp:449
 msgid "Copy eD2k links to clipboard"
-msgstr ""
+msgstr "Copier les liens eD2k dans le presse-papier"
 
 #: src/ServerListCtrl.cpp:457
 msgid "Reconnect to server"
@@ -1818,11 +1818,11 @@ msgstr "Texte de statut"
 
 #: src/amuleDlg.cpp:689
 msgid "eD2k: Connecting"
-msgstr ""
+msgstr "eD2k : Connexion en cours"
 
 #: src/amuleDlg.cpp:693
 msgid "eD2k: Disconnected"
-msgstr ""
+msgstr "eD2k : Déconnecté"
 
 #: src/amuleDlg.cpp:699
 msgid "Kad: Firewalled"
@@ -1922,15 +1922,15 @@ msgstr "Transferts"
 
 #: src/amuleDlg.cpp:1302
 msgid "Files transfers window"
-msgstr ""
+msgstr "Fenêtre de transferts de fichiers"
 
 #: src/amuleDlg.cpp:1304
 msgid "Shared files"
-msgstr ""
+msgstr "Fichiers partagés"
 
 #: src/amuleDlg.cpp:1306
 msgid "Shared files window"
-msgstr ""
+msgstr "Fenêtre des fichiers partagés"
 
 #: src/amuleDlg.cpp:1308 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3383
 #: src/muuli_wdr.cpp:3825
@@ -1939,7 +1939,7 @@ msgstr "Messages"
 
 #: src/amuleDlg.cpp:1310
 msgid "Messages window"
-msgstr ""
+msgstr "Fenêtre des messages"
 
 #: src/amuleDlg.cpp:1312 src/PrefsUnifiedDlg.cpp:178 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:2234
@@ -1953,7 +1953,7 @@ msgstr ""
 
 #: src/amuleDlg.cpp:1319
 msgid "Preferences settings window"
-msgstr ""
+msgstr "Fenêtre des paramètres des préférences"
 
 #: src/amuleDlg.cpp:1321 src/muuli_wdr.cpp:3829
 msgid "Import"
@@ -1973,7 +1973,7 @@ msgstr "À propos/Aide"
 
 #: src/amuleDlg.cpp:1464
 msgid "eD2k network"
-msgstr ""
+msgstr "Réseau eD2k"
 
 #: src/amuleDlg.cpp:1468
 msgid "Kad network"
@@ -2084,8 +2084,8 @@ msgstr "E : 0.0 | R : 0.0"
 msgid ""
 "Both eD2k and Kad network are disabled.\n"
 "You won't be able to connect until you enable at least one of them."
-msgstr ""
-
+msgstr "Les réseaux eD2k et Kad sont désactivés"
+"Vous ne pourrez pas vous connecter tant que vous n'activerez pas au moins un des deux"
 #: src/PrefsUnifiedDlg.cpp:614
 msgid ""
 "Kad will not start if your UDP port is disabled.\n"
@@ -2148,7 +2148,7 @@ msgstr "Exécutable%s"
 
 #: src/PrefsUnifiedDlg.cpp:916
 msgid "Edit server list"
-msgstr ""
+msgstr "Editer la liste des serveurs"
 
 #: src/PrefsUnifiedDlg.cpp:917
 msgid ""
@@ -2345,7 +2345,7 @@ msgstr "il faut définir le serveur à supprimer"
 
 #: src/ExternalConn.cpp:708
 msgid "eD2k is disabled in preferences."
-msgstr ""
+msgstr "eD2k est désactivé dans les préférences"
 
 #: src/ExternalConn.cpp:804
 msgid "Search in progress. Refetch results in a moment!"
@@ -2398,11 +2398,11 @@ msgstr "Impossible de renommer le fichier."
 
 #: src/ExternalConn.cpp:1406
 msgid "Already connected to eD2k."
-msgstr ""
+msgstr "Dèja connecté à eD2k."
 
 #: src/ExternalConn.cpp:1409
 msgid "Connecting to eD2k..."
-msgstr ""
+msgstr "Connexion à eD2k..."
 
 #: src/ExternalConn.cpp:1417
 msgid "Already connected to Kad."
@@ -2418,7 +2418,7 @@ msgstr "Tout les réseaux sont désactivés."
 
 #: src/ExternalConn.cpp:1433
 msgid "Disconnected from eD2k."
-msgstr ""
+msgstr "Déconnecté de eD2k."
 
 #: src/ExternalConn.cpp:1437
 msgid "Disconnected from Kad."
@@ -2427,7 +2427,7 @@ msgstr "Déconnecté de Kad."
 #: src/ExternalConn.cpp:1445
 #, c-format
 msgid "External Connection: invalid opcode received: %#x"
-msgstr ""
+msgstr "Connection externe : opcode reçu invalide : %#x"
 
 #: src/ExternalConn.cpp:1448
 msgid "Invalid opcode (wrong protocol version?)"
@@ -2460,7 +2460,7 @@ msgstr "Serveur non ajouté: Port serveur invalide."
 
 #: src/ServerWnd.cpp:162
 msgid "eD2k Status:"
-msgstr ""
+msgstr "Statut eD2k"
 
 #: src/ServerWnd.cpp:165 src/ServerWnd.cpp:215 src/TextClient.cpp:707
 #: src/ClientListCtrl.cpp:1003 src/ClientDetailDialog.cpp:143
@@ -2792,7 +2792,7 @@ msgstr "Une recherche Kad ne peut pas être faite si Kad n'est pas lancé"
 
 #: src/SearchList.cpp:294
 msgid "eD2k search can't be done if eD2k is not connected"
-msgstr ""
+msgstr "La recherche eD2k ne peut être établie si eD2k n'est pas connecté"
 
 #: src/SearchList.cpp:341
 msgid "Unexpected error while attempting Kad search: "
@@ -2918,11 +2918,11 @@ msgstr "Continuer ?"
 
 #: src/Logger.cpp:270
 msgid "ERROR: "
-msgstr ""
+msgstr "ERREUR : "
 
 #: src/Logger.cpp:270
 msgid "WARNING: "
-msgstr ""
+msgstr "AVERTISSEMENT : "
 
 #: src/AddFriend.cpp:45
 msgid "Add a Friend"
@@ -2930,7 +2930,7 @@ msgstr "Ajouter un ami"
 
 #: src/AddFriend.cpp:61
 msgid "You have to enter a valid IP and port!"
-msgstr "Vous devez entrer une adresse IP valide et un port!"
+msgstr "Vous devez entrer une adresse IP valide et un port !"
 
 #: src/AddFriend.cpp:61 src/AddFriend.cpp:67
 msgid "Information"
@@ -2938,7 +2938,7 @@ msgstr "Information"
 
 #: src/AddFriend.cpp:67
 msgid "The specified userhash is not valid!"
-msgstr "Le Hash utilisateur spécifié est invalide!"
+msgstr "Le Hash utilisateur spécifié est invalide !"
 
 #: src/SearchListCtrl.cpp:89 src/DownloadListCtrl.cpp:195
 #: src/PartFile.cpp:3911 src/FileDetailListCtrl.cpp:44
@@ -2988,7 +2988,7 @@ msgstr "La connexion a échouée "
 #: src/OtherFunctions.cpp:140 src/OtherFunctions.cpp:194 src/amule.cpp:852
 #: src/amule.cpp:973 src/amule.cpp:1340
 msgid "ERROR"
-msgstr ""
+msgstr "ERREUR"
 
 #: src/amule-remote-gui.cpp:479 src/amule.cpp:1078
 msgid ""
@@ -3358,7 +3358,7 @@ msgstr "En procés de réserve"
 
 #: src/PartFile.cpp:3861
 msgid "Insufficient disk space"
-msgstr ""
+msgstr "Espace disque insuffisant"
 
 #: src/PartFile.cpp:3872 src/TransferWnd.cpp:352 src/OtherFunctions.cpp:707
 msgid "Stopped"
@@ -3371,11 +3371,11 @@ msgstr "Téléchargé"
 #: src/PartFile.cpp:4143
 #, c-format
 msgid "ERROR: Failed to open partfile '%s'"
-msgstr "Erreur: Impossible d'ouvrir fichier .part: '%s'"
+msgstr "ERREUR : Impossible d'ouvrir fichier .part: '%s'"
 
 #: src/KnownFileList.cpp:79
 msgid "WARNING: known.met cannot be opened."
-msgstr ""
+msgstr "AVERTISSEMENT : known.met n'a pas pu être ouvert."
 
 #: src/KnownFileList.cpp:86
 msgid "WARNING: Knownfile list corrupted, contains invalid header."
@@ -3573,7 +3573,7 @@ msgstr "Protocole de lien inconnu: %s"
 #: src/DownloadQueue.cpp:1355
 #, c-format
 msgid "Invalid eD2k link! ERROR: %s"
-msgstr ""
+msgstr "Lien eD2k invalide ! ERREUR : %s"
 
 #: src/TextClient.cpp:133
 msgid "Execute <str> and exit."
@@ -3804,7 +3804,7 @@ msgstr ""
 
 #: src/TextClient.cpp:857
 msgid "Connect to eD2k only."
-msgstr ""
+msgstr "Se connecter à eD2k uniquement."
 
 #: src/TextClient.cpp:858
 msgid "Connect to Kad only."
@@ -3822,7 +3822,7 @@ msgstr ""
 
 #: src/TextClient.cpp:862
 msgid "Disconnect from eD2k only."
-msgstr ""
+msgstr "Se déconnecter de eD2k uniquement."
 
 #: src/TextClient.cpp:863
 msgid "Disconnect from Kad only."
@@ -4335,11 +4335,11 @@ msgstr ""
 
 #: src/PartFileConvert.cpp:615
 msgid "ERROR: IO error!"
-msgstr ""
+msgstr "ERREUR : Erreur E/S"
 
 #: src/PartFileConvert.cpp:616
 msgid "ERROR: Failed!"
-msgstr ""
+msgstr "ERREUR : Echec !"
 
 #: src/PartFileConvert.cpp:617
 msgid "Queued"
@@ -5335,7 +5335,7 @@ msgstr "essais"
 
 #: src/muuli_wdr.cpp:2002
 msgid "Auto-update server list at startup"
-msgstr ""
+msgstr "Mise à jour automatique de la liste des serveurs au démarrage"
 
 #: src/muuli_wdr.cpp:2005
 msgid "List"
@@ -5343,11 +5343,11 @@ msgstr "Liste"
 
 #: src/muuli_wdr.cpp:2010
 msgid "Update server list when connecting to a server"
-msgstr ""
+msgstr "Mise à jour de la liste des serveurs dès la connexion à un serveur"
 
 #: src/muuli_wdr.cpp:2013
 msgid "Update server list when a client connects"
-msgstr ""
+msgstr "Mise à jour de la liste des serveurs dès la connexion d'un client"
 
 #: src/muuli_wdr.cpp:2016
 msgid "Use priority system"
@@ -5411,11 +5411,11 @@ msgstr "Sauver 10 sources pour les fichiers rares (< 20 sources)"
 
 #: src/muuli_wdr.cpp:2106
 msgid "Disk space"
-msgstr ""
+msgstr "Espace disque"
 
 #: src/muuli_wdr.cpp:2109
 msgid "Check disk space"
-msgstr ""
+msgstr "Vérifier l'espace disque"
 
 #: src/muuli_wdr.cpp:2110
 msgid "Select this if you want aMule to check your disk space"
@@ -5423,7 +5423,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2117
 msgid "Min disk space:"
-msgstr ""
+msgstr "Espace disque minimum :"
 
 #: src/muuli_wdr.cpp:2121
 msgid "Enter here the min disk space desired."
@@ -5813,7 +5813,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2900
 msgid "Server list"
-msgstr ""
+msgstr "Liste des serveurs"
 
 #: src/muuli_wdr.cpp:2905
 msgid ""
@@ -5825,7 +5825,7 @@ msgstr ""
 
 #: src/muuli_wdr.cpp:2912
 msgid "Add server manually: Name"
-msgstr ""
+msgstr "Ajouter un serveur manuellement : Nom"
 
 #: src/muuli_wdr.cpp:2916
 msgid "Enter the name of the new server here"
@@ -5902,7 +5902,7 @@ msgstr "Déconnecter Kad"
 
 #: src/muuli_wdr.cpp:3164
 msgid "eD2k Info"
-msgstr ""
+msgstr "Info eD2k"
 
 #: src/muuli_wdr.cpp:3196
 msgid "Protocol Obfuscation"
@@ -6533,7 +6533,7 @@ msgid ""
 "the option --ec-config or set the key\"AcceptExternalConnections\" to 1 in "
 "the file ~/.aMule/amule.conf"
 msgstr ""
-"ERREUR: le daemon aMule ne peut être utilisé quand les connexions externes "
+"ERREUR : le daemon aMule ne peut être utilisé quand les connexions externes "
 "dont désactivées. Pour activer les Connexions Externes, utilisez soit un "
 "aMule normal, démarrez amuled avec l'option --ec-config ou passez la clé "
 "\"AcceptExternalConnections\" à 1 dans le fichier ~/.aMule/amule.conf"
@@ -6704,7 +6704,7 @@ msgstr "Menu aMule"
 
 #: src/MuleTrayIcon.cpp:336
 msgid "Speed limits:"
-msgstr ""
+msgstr "Limites des vitesses"
 
 #: src/MuleTrayIcon.cpp:341
 msgid "UL: None"
@@ -6727,12 +6727,12 @@ msgstr "Réception : %u"
 #: src/MuleTrayIcon.cpp:358
 #, c-format
 msgid "Download speed: %.1f"
-msgstr ""
+msgstr "Vitesse de téléchargement : %.1f"
 
 #: src/MuleTrayIcon.cpp:360
 #, c-format
 msgid "Upload speed: %.1f"
-msgstr ""
+msgstr "Vitesse d'émission : %.1f"
 
 #: src/MuleTrayIcon.cpp:366
 msgid "Client Information"
@@ -6767,20 +6767,20 @@ msgstr "IP : %s"
 #: src/MuleTrayIcon.cpp:415
 #, c-format
 msgid "TCP port: %d"
-msgstr ""
+msgstr "Port TCP : %d"
 
 #: src/MuleTrayIcon.cpp:417
 msgid "TCP port: Not ready"
-msgstr ""
+msgstr "Port TCP : Non prêt"
 
 #: src/MuleTrayIcon.cpp:426
 #, c-format
 msgid "UDP port: %d"
-msgstr ""
+msgstr "Port UDP : %d"
 
 #: src/MuleTrayIcon.cpp:428
 msgid "UDP port: Not ready"
-msgstr ""
+msgstr "Port UDP : Non prêt"
 
 #: src/MuleTrayIcon.cpp:437
 msgid "Online Signature: Enabled"
@@ -6793,12 +6793,12 @@ msgstr "Online Signature : désactivée"
 #: src/MuleTrayIcon.cpp:453
 #, c-format
 msgid "Shared files: %d"
-msgstr ""
+msgstr "Fichiers partagés :%d"
 
 #: src/MuleTrayIcon.cpp:459
 #, c-format
 msgid "Queued clients: %d"
-msgstr ""
+msgstr "Clients en attente : %d"
 
 #: src/MuleTrayIcon.cpp:466
 #, c-format
@@ -6812,11 +6812,11 @@ msgstr "Émis au total : %s"
 
 #: src/MuleTrayIcon.cpp:484
 msgid "Upload limit"
-msgstr ""
+msgstr "Limite d'émission"
 
 #: src/MuleTrayIcon.cpp:488
 msgid "Download limit"
-msgstr ""
+msgstr "Limite de téléchargement"
 
 #: src/MuleTrayIcon.cpp:548
 msgid "Hide aMule"
@@ -7150,11 +7150,11 @@ msgstr "Erreur lors de la réserve d'espace pour le fichier '%s' : %s"
 
 #: src/amule.cpp:1774
 msgid "ERROR: can't open logfile"
-msgstr "ERREUR: impossible d'ouvrir le fichier journal"
+msgstr "ERREUR : impossible d'ouvrir le fichier journal"
 
 #: src/amule.cpp:1778
 msgid "WARNING: logfile is empty. Something is wrong."
-msgstr "ATTENTION: le fichier journal est vide. Quelque chose ne va pas."
+msgstr "ATTENTION : le fichier journal est vide. Quelque chose ne va pas."
 
 #: src/amule.cpp:1797
 msgid "Log has been reset"
@@ -7196,7 +7196,7 @@ msgstr ""
 #, c-format
 msgid "WARNING: Your aMuled version is outdated: %i.%i.%i < %li.%li.%li"
 msgstr ""
-"ATTENTION: votre version d'aMuled n'est pas à jour: %i.%i.%i < %li.%li.%li"
+"ATTENTION : votre version d'aMuled n'est pas à jour: %i.%i.%i < %li.%li.%li"
 
 #: src/amule.cpp:1914
 msgid "Your copy of aMule is up to date."
@@ -7232,7 +7232,7 @@ msgstr "Connexion à %s"
 
 #: src/amule.cpp:2106
 msgid "Disconnected from eD2k"
-msgstr ""
+msgstr "Déconnecté de eD2k"
 
 #: src/amule.cpp:2113
 msgid "Kad started."
@@ -7321,7 +7321,7 @@ msgstr ""
 #~ msgstr "Attention"
 
 #~ msgid "Error: Could not listen to TCP port."
-#~ msgstr "Erreur: Écoute sur le port TCP impossible."
+#~ msgstr "ERREUR : Écoute sur le port TCP impossible."
 
 #~ msgid "Error: can not accept web client connection\n"
 #~ msgstr "Erreur : impossible d'accepter la connexion du client web\n"
@@ -7434,7 +7434,7 @@ msgstr ""
 #~ msgstr "Éditer la liste des serveurs"
 
 #~ msgid "Error: couldn't accept a new external connection"
-#~ msgstr "ERREUR: impossible d'accepter une nouvelle connexion externe"
+#~ msgstr "ERREUR : impossible d'accepter une nouvelle connexion externe"
 
 #~ msgid "ED2K is disabled in preferences."
 #~ msgstr "ED2K est desactivé dans les préférences."
@@ -7537,7 +7537,7 @@ msgstr ""
 #~ "Error: Unable to hash downloaded part - hashset incomplete (%s). This "
 #~ "should never happen"
 #~ msgstr ""
-#~ "Erreur: Impossible de hacher la partie téléchargée - hashset incomplet (%"
+#~ "ERREUR : Impossible de hacher la partie téléchargée - hashset incomplet (%"
 #~ "s). Ceci ne devrait jamais arriver"
 
 #~ msgid "Insufficient Diskspace"
