@@ -997,38 +997,38 @@ bool CamuleDlg::SaveGUIPrefs()
 
 void CamuleDlg::DoIconize(bool iconize) 
 {
-	// Evil Hack: check if the mouse is inside the window
-#ifndef __WINDOWS__
-	if (GetScreenRect().Contains(wxGetMousePosition()))
-#endif
-	{
-		if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
-			if (iconize) {
-				// Skip() will do it.
-				//Iconize(true);
-				if (SafeState()) {
-					Show(false);
-				}
-			} else {
-				Show(true);
-				Raise();
+	if (m_wndTaskbarNotifier && thePrefs::DoMinToTray()) {
+		if (iconize) {
+			// Skip() will do it.
+			//Iconize(true);
+			if (SafeState()) {
+				Show(false);
 			}
 		} else {
-			// Will be done by Skip();
-			//Iconize(iconize);
+			Show(true);
+			Raise();
 		}
+	} else {
+		// Will be done by Skip();
+		//Iconize(iconize);
 	}
 }
 
 void CamuleDlg::OnMinimize(wxIconizeEvent& evt)
 {
-	if (m_prefsDialog && m_prefsDialog->IsShown()) {
-		// Veto.
-	} else {
-		if (m_wndTaskbarNotifier) {
-			DoIconize(evt.Iconized());
+// Evil Hack: check if the mouse is inside the window
+#ifndef __WINDOWS__
+	if (GetScreenRect().Contains(wxGetMousePosition()))
+#endif
+	{
+		if (m_prefsDialog && m_prefsDialog->IsShown()) {
+			// Veto.
+		} else {
+			if (m_wndTaskbarNotifier) {
+				DoIconize(evt.Iconized());
+			}
+			evt.Skip();
 		}
-		evt.Skip();
 	}
 }
 
