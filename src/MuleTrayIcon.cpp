@@ -562,15 +562,6 @@ wxMenu* CMuleTrayIcon::CreatePopupMenu()
 
 void CMuleTrayIcon::SwitchShow(wxTaskBarIconEvent&)
 {
-	if ( !theApp->amuledlg->IsIconized() ) {
-		theApp->amuledlg->Iconize(true);
-		if (thePrefs::DoMinToTray()) {
-			theApp->amuledlg->Show(false);
-		}
-	} else {
-		theApp->amuledlg->Iconize(false);
-		theApp->amuledlg->Show(true);
-		theApp->amuledlg->Raise();
-	}
+	theApp->amuledlg->DoIconize(theApp->amuledlg->IsShown());
 }
 // File_checked_for_headers
