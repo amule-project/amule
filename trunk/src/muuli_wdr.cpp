@@ -1602,97 +1602,87 @@ wxSizer *PreferencesGeneralTab( wxWindow *parent, bool call_fit, bool set_sizer 
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxGridSizer *item1 = new wxGridSizer( 2, 0, 0 );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 13 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Nick") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("General Settings"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    CMuleTextCtrl *item4 = new CMuleTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the multi-platform Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
+    item4->SetToolTip( _("This is the name that other users will see when connecting to you.") );
+    item2->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxGridSizer *item4 = new wxGridSizer( 2, 0, 0 );
-
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Nick") );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Language") );
     wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
-    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_NICK, _("http://www.aMule.org - the multi-platform Mule"), wxDefaultPosition, wxSize(90,-1), 0 );
-    item7->SetToolTip( _("This is the name that other users will see when connecting to you.") );
+    wxString *strs7 = (wxString*) NULL;
+    wxChoice *item7 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 0, strs7, 0 );
+    item7->SetToolTip( _("This specifies the language used on controls.") );
     item5->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Language") );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Misc Options") );
     wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
 
-    wxString *strs10 = (wxString*) NULL;
-    wxChoice *item10 = new wxChoice( parent, IDC_LANGUAGE, wxDefaultPosition, wxSize(100,30), 0, strs10, 0 );
-    item10->SetToolTip( _("This specifies the language used on controls.") );
-    item8->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_NEWVERSION, _("Check for new version at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetToolTip( _("Enabling this will make aMule check for new version at startup") );
+    item8->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item4->Add( item8, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetToolTip( _("Enabling this makes aMule minimize itself upon start.") );
+    item8->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetValue( TRUE );
+    item12->SetToolTip( _("Makes aMule promt before exiting.") );
+    item8->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item12 = new wxStaticBox( parent, -1, _("Misc Options") );
-    wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
+    item8->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_NEWVERSION, _("Check for new version at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetToolTip( _("Enabling this will make aMule check for new version at startup") );
-    item11->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
+    item8->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_STARTMIN, _("Start minimized"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->SetToolTip( _("Enabling this makes aMule minimize itself upon start.") );
-    item11->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item15 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_EXIT, _("Prompt on exit"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetValue( TRUE );
-    item15->SetToolTip( _("Makes aMule promt before exiting.") );
-    item11->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, -1, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->SetToolTip( _("The delay before showing tool-tips.") );
+    item15->Add( item16, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_ENABLETRAYICON, _("Enable Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetToolTip( _("This Enables/Disables the system tray (or taskbar) icon.") );
-    item11->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
+    item17->SetToolTip( _("The delay before showing tool-tips.") );
+    item15->Add( item17, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_MINTRAY, _("Minimize to Tray Icon"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetToolTip( _("Enabling this will make aMule minimize to the System Tray, rather than the taskbar.") );
-    item11->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item8->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
+    item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item19 = new wxStaticText( parent, -1, _("Tooltip Delay Time in secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->SetToolTip( _("The delay before showing tool-tips.") );
-    item18->Add( item19, 1, wxALIGN_CENTER|wxLEFT, 5 );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Browser Selection") );
+    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
 
-    wxSpinCtrl *item20 = new wxSpinCtrl( parent, IDC_TOOLTIPDELAY, wxT("1"), wxDefaultPosition, wxSize(40,-1), 0, 0, 30, 1 );
-    item20->SetToolTip( _("The delay before showing tool-tips.") );
-    item18->Add( item20, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
 
-    item11->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item21->SetToolTip( _("Enter your browser name here. Leave this field empty to use the system default browser.") );
+    item20->Add( item21, 1, wxGROW, 5 );
 
-    item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxButton *item22 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->Add( item22, 0, wxGROW, 5 );
 
-    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Browser Selection") );
-    wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
+    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->SetValue( TRUE );
+    item23->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
+    item18->Add( item23, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    CMuleTextCtrl *item24 = new CMuleTextCtrl( parent, IDC_BROWSERSELF, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item24->SetToolTip( _("Enter your browser name here. Leave this field empty to use the system default browser.") );
-    item23->Add( item24, 1, wxGROW, 5 );
-
-    wxButton *item25 = new wxButton( parent, IDC_SELBROWSER, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item23->Add( item25, 0, wxGROW, 5 );
-
-    item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item26 = new wxCheckBox( parent, IDC_BROWSERTABS, _("Open in new tab if possible"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->SetValue( TRUE );
-    item26->SetToolTip( _("Open the web page in a new tab instead of in a new window when possible") );
-    item21->Add( item26, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -1708,210 +1698,200 @@ wxSizer *PreferencesConnectionTab( wxWindow *parent, bool call_fit, bool set_siz
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxGridSizer *item1 = new wxGridSizer( 2, 0, 5 );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 14 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticBox *item3 = new wxStaticBox( parent, -1, _("Bandwith limits") );
+    wxStaticBoxSizer *item2 = new wxStaticBoxSizer( item3, wxVERTICAL );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item4 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item5 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxGridSizer *item4 = new wxGridSizer( 2, 0, 5 );
+    wxSpinCtrl *item6 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
+    item5->Add( item6, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Bandwith limits") );
-    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
+    wxStaticText *item7 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item7 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item5, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item8 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_MAXDOWN, wxT("0"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 0 );
-    item8->Add( item9, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item9 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item10 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("10"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 10 );
+    item9->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item8, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item9, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item12 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item12 = new wxStaticText( parent, -1, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_MAXUP, wxT("10"), wxDefaultPosition, wxSize(100,-1), 0, 0, 19375, 10 );
-    item12->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item14 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item14 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("4"), wxDefaultPosition, wxSize(100,-1), 0, 1, 100, 4 );
+    item13->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item12, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, -1, _("Slot Allocation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item2->Add( item13, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
+    item1->Add( item2, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
 
-    wxSpinCtrl *item17 = new wxSpinCtrl( parent, IDC_SLOTALLOC, wxT("4"), wxDefaultPosition, wxSize(100,-1), 0, 1, 100, 4 );
-    item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Line Capacities") );
+    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
 
-    wxStaticText *item18 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item5->Add( item16, 0, wxALIGN_CENTER, 5 );
+    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
 
-    item4->Add( item5, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
+    wxSpinCtrl *item20 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    item19->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item20 = new wxStaticBox( parent, -1, _("Line Capacities") );
-    wxStaticBoxSizer *item19 = new wxStaticBoxSizer( item20, wxVERTICAL );
+    wxStaticText *item21 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item19->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item21 = new wxStaticText( parent, -1, _("Download"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item21, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item16->Add( item19, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item22 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item22 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item22, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item23 = new wxSpinCtrl( parent, IDC_DOWNLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
-    item22->Add( item23, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item23 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item24 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item22->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxSpinCtrl *item24 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
+    item23->Add( item24, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item19->Add( item22, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item25 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item25 = new wxStaticText( parent, -1, _("Upload"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item16->Add( item23, 0, wxALIGN_CENTER, 5 );
 
-    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxSpinCtrl *item27 = new wxSpinCtrl( parent, IDC_UPLOAD_CAP, wxT("3"), wxDefaultPosition, wxSize(100,-1), 0, 3, 19375, 3 );
-    item26->Add( item27, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item28 = new wxStaticText( parent, -1, _("kB/s"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item28, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    item19->Add( item26, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item29 = new wxStaticText( parent, -1, 
+    wxStaticText *item26 = new wxStaticText( parent, -1, 
         _("Note: These values are\n"
           " only used for statistics."),
         wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item29, 0, wxALIGN_CENTER|wxALL, 5 );
+    item16->Add( item26, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item4->Add( item19, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
+    item1->Add( item16, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
 
-    item0->Add( item4, 0, wxGROW|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALL, 5 );
 
-    wxGridSizer *item30 = new wxGridSizer( 2, 0, 5 );
+    wxGridSizer *item27 = new wxGridSizer( 2, 0, 5 );
 
-    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Standard client TCP Port:") );
-    wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxVERTICAL );
+    wxStaticBox *item29 = new wxStaticBox( parent, -1, _("Standard client TCP Port:") );
+    wxStaticBoxSizer *item28 = new wxStaticBoxSizer( item29, wxVERTICAL );
 
-    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65531, 4662 );
-    item33->SetToolTip( _("This is the standard eD2k port and cannot be disabled.") );
-    item31->Add( item33, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item30 = new wxSpinCtrl( parent, IDC_PORT, wxT("4662"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65531, 4662 );
+    item30->SetToolTip( _("This is the standard eD2k port and cannot be disabled.") );
+    item28->Add( item30, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item30->Add( item31, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    item27->Add( item28, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticBox *item35 = new wxStaticBox( parent, -1, _("Extended client UDP Port:") );
-    wxStaticBoxSizer *item34 = new wxStaticBoxSizer( item35, wxHORIZONTAL );
+    wxStaticBox *item32 = new wxStaticBox( parent, -1, _("Extended client UDP Port:") );
+    wxStaticBoxSizer *item31 = new wxStaticBoxSizer( item32, wxHORIZONTAL );
 
-    wxSpinCtrl *item36 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
-    item36->SetToolTip( _("This UDP port is used for extended ed2k requests and Kad network") );
-    item34->Add( item36, 0, wxALIGN_CENTER, 5 );
+    wxSpinCtrl *item33 = new wxSpinCtrl( parent, IDC_UDPPORT, wxT("4672"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 4672 );
+    item33->SetToolTip( _("This UDP port is used for extended ed2k requests and Kad network") );
+    item31->Add( item33, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item37 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->Add( item37, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item34 = new wxCheckBox( parent, IDC_UDPDISABLE, _("disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item31->Add( item34, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item30->Add( item34, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    item27->Add( item31, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
-    item0->Add( item30, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item0->Add( item27, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item39 = new wxStaticBox( parent, -1, _("Bind Address") );
+    wxStaticBox *item36 = new wxStaticBox( parent, -1, _("Bind Address") );
+    wxStaticBoxSizer *item35 = new wxStaticBoxSizer( item36, wxVERTICAL );
+
+    wxTextCtrl *item37 = new wxTextCtrl( parent, IDC_ADDRESS, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item35->Add( item37, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+    item0->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+
+    wxStaticBox *item39 = new wxStaticBox( parent, -1, wxT("") );
     wxStaticBoxSizer *item38 = new wxStaticBoxSizer( item39, wxVERTICAL );
 
-    wxTextCtrl *item40 = new wxTextCtrl( parent, IDC_ADDRESS, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item38->Add( item40, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxStaticText *item40 = new wxStaticText( parent, ID_TEXT_CLIENT_UDP_PORT, _("UDP port for extended server requests (TCP+3): 4665"), wxDefaultPosition, wxDefaultSize, 0 );
+    item38->Add( item40, 0, wxALIGN_CENTER, 5 );
 
     item0->Add( item38, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item42 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item41 = new wxStaticBoxSizer( item42, wxVERTICAL );
+    wxGridSizer *item41 = new wxGridSizer( 2, 0, 5 );
 
-    wxStaticText *item43 = new wxStaticText( parent, ID_TEXT_CLIENT_UDP_PORT, _("UDP port for extended server requests (TCP+3): 4665"), wxDefaultPosition, wxDefaultSize, 0 );
-    item41->Add( item43, 0, wxALIGN_CENTER, 5 );
+    wxStaticBox *item43 = new wxStaticBox( parent, -1, _("Max Sources per File") );
+    wxStaticBoxSizer *item42 = new wxStaticBoxSizer( item43, wxVERTICAL );
 
-    item0->Add( item41, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxSpinCtrl *item44 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
+    item42->Add( item44, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxGridSizer *item44 = new wxGridSizer( 2, 0, 5 );
+    item41->Add( item42, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item46 = new wxStaticBox( parent, -1, _("Max Sources per File") );
+    wxStaticBox *item46 = new wxStaticBox( parent, -1, _("Connection limits") );
     wxStaticBoxSizer *item45 = new wxStaticBoxSizer( item46, wxVERTICAL );
 
-    wxSpinCtrl *item47 = new wxSpinCtrl( parent, IDC_MAXSOURCEPERFILE, wxT("300"), wxDefaultPosition, wxSize(100,-1), 0, 40, 5000, 300 );
+    wxSpinCtrl *item47 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 5, 7500, 500 );
     item45->Add( item47, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    item44->Add( item45, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item41->Add( item45, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item49 = new wxStaticBox( parent, -1, _("Connection limits") );
-    wxStaticBoxSizer *item48 = new wxStaticBoxSizer( item49, wxVERTICAL );
+    item0->Add( item41, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxSpinCtrl *item50 = new wxSpinCtrl( parent, IDC_MAXCON, wxT("500"), wxDefaultPosition, wxSize(100,-1), 0, 5, 7500, 500 );
-    item48->Add( item50, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxStaticBox *item49 = new wxStaticBox( parent, -1, _("Universal Plug and Play") );
+    wxStaticBoxSizer *item48 = new wxStaticBoxSizer( item49, wxHORIZONTAL );
 
-    item44->Add( item48, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item50 = new wxCheckBox( parent, IDC_UPNP_ENABLED, _("Enable UPnP"), wxDefaultPosition, wxDefaultSize, 0 );
+    item48->Add( item50, 0, wxALIGN_CENTER, 5 );
 
-    item0->Add( item44, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    item48->Add( 20, 20, 1, wxALIGN_CENTER, 5 );
 
-    wxStaticBox *item52 = new wxStaticBox( parent, -1, _("Universal Plug and Play") );
-    wxStaticBoxSizer *item51 = new wxStaticBoxSizer( item52, wxHORIZONTAL );
+    wxStaticText *item51 = new wxStaticText( parent, -1, _("UPnP TCP Port:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item48->Add( item51, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item53 = new wxCheckBox( parent, IDC_UPNP_ENABLED, _("Enable UPnP"), wxDefaultPosition, wxDefaultSize, 0 );
-    item51->Add( item53, 0, wxALIGN_CENTER, 5 );
+    wxSpinCtrl *item52 = new wxSpinCtrl( parent, IDC_UPNPTCPPORT, wxT("50000"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 50000 );
+    item48->Add( item52, 0, wxALIGN_CENTER, 5 );
 
-    item51->Add( 20, 20, 1, wxALIGN_CENTER, 5 );
+    item0->Add( item48, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticText *item54 = new wxStaticText( parent, -1, _("UPnP TCP Port:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item51->Add( item54, 0, wxALIGN_CENTER, 5 );
+    wxBoxSizer *item53 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item55 = new wxSpinCtrl( parent, IDC_UPNPTCPPORT, wxT("50000"), wxDefaultPosition, wxSize(100,-1), 0, 0, 65535, 50000 );
-    item51->Add( item55, 0, wxALIGN_CENTER, 5 );
+    wxStaticBox *item55 = new wxStaticBox( parent, -1, _("Networks") );
+    wxStaticBoxSizer *item54 = new wxStaticBoxSizer( item55, wxVERTICAL );
 
-    item0->Add( item51, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxCheckBox *item56 = new wxCheckBox( parent, IDC_NETWORKKAD, _("Kademlia"), wxDefaultPosition, wxDefaultSize, 0 );
+    item56->SetValue( TRUE );
+    item54->Add( item56, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxBoxSizer *item56 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item57 = new wxCheckBox( parent, IDC_NETWORKED2K, _("ED2K"), wxDefaultPosition, wxDefaultSize, 0 );
+    item57->SetValue( TRUE );
+    item54->Add( item57, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxStaticBox *item58 = new wxStaticBox( parent, -1, _("Networks") );
-    wxStaticBoxSizer *item57 = new wxStaticBoxSizer( item58, wxVERTICAL );
+    item53->Add( item54, 1, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxCheckBox *item59 = new wxCheckBox( parent, IDC_NETWORKKAD, _("Kademlia"), wxDefaultPosition, wxDefaultSize, 0 );
-    item59->SetValue( TRUE );
-    item57->Add( item59, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxStaticBox *item59 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item58 = new wxStaticBoxSizer( item59, wxVERTICAL );
 
-    wxCheckBox *item60 = new wxCheckBox( parent, IDC_NETWORKED2K, _("ED2K"), wxDefaultPosition, wxDefaultSize, 0 );
-    item60->SetValue( TRUE );
-    item57->Add( item60, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxCheckBox *item60 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item58->Add( item60, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    item56->Add( item57, 1, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
+    wxCheckBox *item61 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
+    item61->SetValue( TRUE );
+    item58->Add( item61, 0, wxALIGN_CENTER_VERTICAL, 10 );
 
-    wxStaticBox *item62 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item61 = new wxStaticBoxSizer( item62, wxVERTICAL );
+    wxCheckBox *item62 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
+    item62->SetValue( TRUE );
+    item58->Add( item62, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item63 = new wxCheckBox( parent, IDC_AUTOCONNECT, _("Autoconnect on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item61->Add( item63, 0, wxALIGN_CENTER_VERTICAL, 10 );
+    item53->Add( item58, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
 
-    wxCheckBox *item64 = new wxCheckBox( parent, IDC_RECONN, _("Reconnect on loss"), wxDefaultPosition, wxDefaultSize, 0 );
-    item64->SetValue( TRUE );
-    item61->Add( item64, 0, wxALIGN_CENTER_VERTICAL, 10 );
-
-    wxCheckBox *item65 = new wxCheckBox( parent, IDC_SHOWOVERHEAD, _("Show overhead bandwith"), wxDefaultPosition, wxDefaultSize, 0 );
-    item65->SetValue( TRUE );
-    item61->Add( item65, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    item56->Add( item61, 0, wxGROW|wxLEFT|wxRIGHT|wxBOTTOM, 5 );
-
-    item0->Add( item56, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item53, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -1927,68 +1907,58 @@ wxSizer *PreferencesServerTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Server Options") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 15 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item3 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Servers"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item4, 0, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 0 );
+    wxSpinCtrl *item5 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(40,-1), 0, 1, 10, 2 );
+    item3->Add( item5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Server Options") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxStaticText *item6 = new wxStaticText( parent, -1, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    wxBoxSizer *item6 = new wxBoxSizer( wxHORIZONTAL );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_REMOVEDEAD, _("Remove dead server after"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item7, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item8 = new wxSpinCtrl( parent, IDC_SERVERRETRIES, wxT("2"), wxDefaultPosition, wxSize(40,-1), 0, 1, 10, 2 );
-    item6->Add( item8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_AUTOSERVER, _("Auto-update server list at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item9 = new wxStaticText( parent, -1, _("retries"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    wxButton *item9 = new wxButton( parent, IDC_EDITADR, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
+    item7->Add( item9, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item10 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update server list when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_AUTOSERVER, _("Auto-update server list at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update server list when a client connects"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxButton *item12 = new wxButton( parent, IDC_EDITADR, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
-    item10->Add( item12, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->SetValue( TRUE );
+    item1->Add( item12, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item4->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetValue( TRUE );
+    item1->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_UPDATESERVERCONNECT, _("Update server list when connecting to a server"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetValue( TRUE );
+    item1->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_UPDATESERVERCLIENT, _("Update server list when a client connects"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_SCORE, _("Use priority system"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetValue( TRUE );
-    item4->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SMARTIDCHECK, _("Use smart LowID check on connect"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
     item16->SetValue( TRUE );
-    item4->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SAFESERVERCONNECT, _("Safe connect"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetValue( TRUE );
-    item4->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_AUTOCONNECTSTATICONLY, _("Autoconnect to servers in static list only"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_MANUALSERVERHIGHPRIO, _("Set manually added servers to High Priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->SetValue( TRUE );
-    item4->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item4, 0, wxGROW|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2004,89 +1974,79 @@ wxSizer *PreferencesFilesTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 16 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_ICH, _("I.C.H. active"), wxDefaultPosition, wxSize(160,-1), 0 );
+    item3->SetValue( TRUE );
+    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_AICHTRUST, _("AICH trusts every hash (not recomended)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Intelligent Corruption Handling") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxVERTICAL );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ICH, _("I.C.H. active"), wxDefaultPosition, wxSize(160,-1), 0 );
-    item6->SetValue( TRUE );
-    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item7 = new wxCheckBox( parent, IDC_ADDNEWFILESPAUSED, _("Add files to download in pause mode"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_AICHTRUST, _("AICH trusts every hash (not recomended)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_DAP, _("Add files to download with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item8, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_PREVIEWPRIO, _("Try to download first and last chunks first"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->SetValue( TRUE );
+    item5->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxVERTICAL );
+    wxCheckBox *item10 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_ADDNEWFILESPAUSED, _("Add files to download in pause mode"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item11 = new wxCheckBox( parent, IDC_FULLCHUNKTRANS, _("Try to transfer full chunks to all uploads"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->SetValue( TRUE );
+    item5->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_DAP, _("Add files to download with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_PREVIEWPRIO, _("Try to download first and last chunks first"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item12 = new wxCheckBox( parent, IDC_STARTNEXTFILE, _("Start next paused file when a file completed"), wxDefaultPosition, wxDefaultSize, 0 );
     item12->SetValue( TRUE );
-    item8->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item5->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item13 = new wxCheckBox( parent, IDC_UAP, _("Add new shared files with auto priority"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_STARTNEXTFILE_SAME, _("From the same category"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
 
-    wxCheckBox *item14 = new wxCheckBox( parent, IDC_FULLCHUNKTRANS, _("Try to transfer full chunks to all uploads"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 10 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
     item14->SetValue( TRUE );
-    item8->Add( item14, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item5->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    wxCheckBox *item15 = new wxCheckBox( parent, IDC_STARTNEXTFILE, _("Start next paused file when a file completed"), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->SetValue( TRUE );
-    item8->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_STARTNEXTFILE_SAME, _("From the same category"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 20 );
+    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Disk space") );
+    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_SRCSEEDS, _("Save 10 sources on rare files (< 20 sources)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetValue( TRUE );
-    item8->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxCheckBox *item17 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check disk space"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->SetToolTip( _("Select this if you want aMule to check your disk space") );
+    item15->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Disk space") );
-    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
+    item18->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
 
-    wxCheckBox *item20 = new wxCheckBox( parent, IDC_CHECKDISKSPACE, _("Check disk space"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->SetToolTip( _("Select this if you want aMule to check your disk space") );
+    wxStaticText *item19 = new wxStaticText( parent, -1, _("Min disk space:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item19, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+
+    wxSpinCtrl *item20 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(100,-1), 0, 1, 1000000, 1 );
+    item20->SetToolTip( _("Enter here the min disk space desired.") );
     item18->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxBoxSizer *item21 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item21 = new wxStaticText( parent, -1, _("MB"), wxDefaultPosition, wxDefaultSize, 0 );
+    item18->Add( item21, 0, wxALIGN_CENTER|wxLEFT, 5 );
 
-    item21->Add( 20, 20, 0, wxALIGN_CENTER|wxALL, 0 );
+    item15->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticText *item22 = new wxStaticText( parent, -1, _("Min disk space:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item22, 0, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxCheckBox *item22 = new wxCheckBox( parent, IDC_ALLOCFULLFILE, _("Preallocate disk space for new files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item22->SetToolTip( _("For new files preallocates disk space for the whole file, thus reduces fragmentation") );
+    item15->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 10 );
 
-    wxSpinCtrl *item23 = new wxSpinCtrl( parent, IDC_MINDISKSPACE, wxT("1"), wxDefaultPosition, wxSize(100,-1), 0, 1, 1000000, 1 );
-    item23->SetToolTip( _("Enter here the min disk space desired.") );
-    item21->Add( item23, 0, wxALIGN_CENTER_VERTICAL, 0 );
-
-    wxStaticText *item24 = new wxStaticText( parent, -1, _("MB"), wxDefaultPosition, wxDefaultSize, 0 );
-    item21->Add( item24, 0, wxALIGN_CENTER|wxLEFT, 5 );
-
-    item18->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
-
-    wxCheckBox *item25 = new wxCheckBox( parent, IDC_ALLOCFULLFILE, _("Preallocate disk space for new files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item25->SetToolTip( _("For new files preallocates disk space for the whole file, thus reduces fragmentation") );
-    item18->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 10 );
-
-    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2102,75 +2062,65 @@ wxSizer *PreferencesDirectoriesTab( wxWindow *parent, bool call_fit, bool set_si
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Incoming") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxHORIZONTAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 17 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    CMuleTextCtrl *item3 = new CMuleTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Directories"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxButton *item4 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Incoming") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxHORIZONTAL );
+    wxStaticBox *item6 = new wxStaticBox( parent, -1, _("Temporary") );
+    wxStaticBoxSizer *item5 = new wxStaticBoxSizer( item6, wxHORIZONTAL );
 
-    CMuleTextCtrl *item6 = new CMuleTextCtrl( parent, IDC_INCFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item4->Add( item6, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    CMuleTextCtrl *item7 = new CMuleTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxButton *item7 = new wxButton( parent, IDC_SELINCDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxButton *item8 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item8, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item9 = new wxStaticBox( parent, -1, _("Temporary") );
-    wxStaticBoxSizer *item8 = new wxStaticBoxSizer( item9, wxHORIZONTAL );
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("Shared") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
 
-    CMuleTextCtrl *item10 = new CMuleTextCtrl( parent, IDC_TEMPFILES, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item8->Add( item10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxStaticText *item11 = new wxStaticText( parent, -1, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+    item9->Add( item11, 0, wxALIGN_CENTER, 5 );
 
-    wxButton *item11 = new wxButton( parent, IDC_SELTEMPDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item11, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-    item0->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Shared") );
-    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
-
-    wxStaticText *item14 = new wxStaticText( parent, -1, _("(Right click on folder icon for recursive share)"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-    item12->Add( item14, 0, wxALIGN_CENTER, 5 );
-
-    CDirectoryTreeCtrl *item15 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE
+    CDirectoryTreeCtrl *item12 = new CDirectoryTreeCtrl(parent, IDC_SHARESELECTOR,wxPoint(0,0),  wxSize(100, 100),wxSUNKEN_BORDER|wxTR_DEFAULT_STYLE
 #ifdef __WXMSW__
 | wxTR_HIDE_ROOT
 #endif
 );
-    wxASSERT( item15 );
-    item12->Add( item15, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxASSERT( item12 );
+    item9->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_SHAREHIDDENFILES, _("Share hidden files"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetValue( TRUE );
-    item12->Add( item16, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_SHAREHIDDENFILES, _("Share hidden files"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetValue( TRUE );
+    item9->Add( item13, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Video Player") );
-    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
+    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Video Player") );
+    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
 
-    wxBoxSizer *item19 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item16 = new wxBoxSizer( wxHORIZONTAL );
 
-    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, wxT("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
-    item19->Add( item20, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    CMuleTextCtrl *item17 = new CMuleTextCtrl( parent, IDC_VIDEOPLAYER, wxT("mplayer -idx"), wxDefaultPosition, wxSize(80,-1), 0 );
+    item16->Add( item17, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxButton *item21 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxButton *item18 = new wxButton( parent, IDC_BROWSEV, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxCheckBox *item22 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup for preview"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item22, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item19 = new wxCheckBox( parent, IDC_VIDEOBACKUP, _("Create Backup for preview"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item19, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2186,43 +2136,33 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Graphs") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 10 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item3 = new wxStaticText( parent, IDC_SLIDERINFO, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Statistics"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSlider *item4 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    wxStaticText *item5 = new wxStaticText( parent, IDC_SLIDERINFO3, _("Time for average graph: 100 mins"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Graphs") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxSlider *item6 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item1->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item6 = new wxStaticText( parent, IDC_SLIDERINFO, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item7 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSlider *item7 = new wxSlider( parent, IDC_SLIDER, 5, 0, 120, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item8 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item8 = new wxStaticText( parent, IDC_SLIDERINFO3, _("Time for average graph: 100 mins"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, -1, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSlider *item9 = new wxSlider( parent, IDC_SLIDER3, 100, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item4->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item10 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item10 = new wxStaticText( parent, IDC_SLIDERINFO4, _("Connections Graph Scale: 100 "), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
-
-    wxSlider *item11 = new wxSlider( parent, IDC_SLIDER4, 100, 2, 200, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item4->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticText *item12 = new wxStaticText( parent, -1, _("Select Statistics Colors"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
-
-    wxBoxSizer *item13 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxString strs14[] = 
+    wxString strs11[] = 
     {
         _("Background"), 
         _("Grid"), 
@@ -2240,36 +2180,36 @@ wxSizer *PreferencesStatisticsTab( wxWindow *parent, bool call_fit, bool set_siz
         _("Kad-nodes running"), 
         _("Kad-nodes session")
     };
-    wxChoice *item14 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 15, strs14, 0 );
-    item13->Add( item14, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
+    wxChoice *item11 = new wxChoice( parent, IDC_COLORSELECTOR, wxDefaultPosition, wxDefaultSize, 15, strs11, 0 );
+    item10->Add( item11, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxRIGHT, 5 );
 
-    wxButton *item15 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->Add( item15, 0, wxGROW|wxLEFT, 5 );
+    wxButton *item12 = new wxButton( parent, IDC_COLOR_BUTTON, _("Select"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->Add( item12, 0, wxGROW|wxLEFT, 5 );
 
-    item4->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item17 = new wxStaticBox( parent, -1, _("Statistics Tree") );
-    wxStaticBoxSizer *item16 = new wxStaticBoxSizer( item17, wxVERTICAL );
+    wxStaticBox *item14 = new wxStaticBox( parent, -1, _("Statistics Tree") );
+    wxStaticBoxSizer *item13 = new wxStaticBoxSizer( item14, wxVERTICAL );
 
-    wxStaticText *item18 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, IDC_SLIDERINFO2, _("Update delay : 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSlider *item19 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item16->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item16 = new wxSlider( parent, IDC_SLIDER2, 5, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item13->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item20 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item17 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item21 = new wxStaticText( parent, -1, _("Number of Client Versions shown (0=unlimited)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item20->Add( item21, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticText *item18 = new wxStaticText( parent, -1, _("Number of Client Versions shown (0=unlimited)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item17->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxSpinCtrl *item22 = new wxSpinCtrl( parent, IDC_CLIENTVERSIONS, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
-    item20->Add( item22, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxSpinCtrl *item19 = new wxSpinCtrl( parent, IDC_CLIENTVERSIONS, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
+    item17->Add( item19, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item16->Add( item20, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item13->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2287,24 +2227,14 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
     item0->AddGrowableCol( 0 );
     item0->AddGrowableRow( 1 );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item1 = new wxBoxSizer( wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 12 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item2 = new wxStaticText( parent, -1, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
+    item2->SetForegroundColour( *wxRED );
+    item2->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
+    item1->Add( item2, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Core Tweaks"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxBoxSizer *item4 = new wxBoxSizer( wxVERTICAL );
-
-    wxStaticText *item5 = new wxStaticText( parent, -1, _("!!! WARNING !!!"), wxDefaultPosition, wxDefaultSize, 0 );
-    item5->SetForegroundColour( *wxRED );
-    item5->SetFont( wxFont( 24, wxROMAN, wxNORMAL, wxNORMAL ) );
-    item4->Add( item5, 0, wxALIGN_CENTER, 5 );
-
-    wxStaticText *item6 = new wxStaticText( parent, -1, 
+    wxStaticText *item3 = new wxStaticText( parent, -1, 
         _("Do not change these setting unless you know\n"
           "what you are doing, otherwise you can easily\n"
           "make things worse for yourself.\n"
@@ -2312,39 +2242,39 @@ wxSizer *PreferencesaMuleTweaksTab( wxWindow *parent, bool call_fit, bool set_si
           "aMule will run fine without adjusting any of\n"
           "these settings."),
         wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-    item6->SetForegroundColour( *wxRED );
-    item4->Add( item6, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+    item3->SetForegroundColour( *wxRED );
+    item1->Add( item3, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    item0->Add( item4, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item1, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Advanced Settings") );
-    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Advanced Settings") );
+    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
-    wxStaticText *item9 = new wxStaticText( parent, -1, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item6 = new wxStaticText( parent, -1, _("Max new connections / 5 secs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
-    item7->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item7 = new wxSpinCtrl( parent, IDC_MAXCON5SEC, wxT("20"), wxDefaultPosition, wxSize(100,-1), 0, 5, 500, 20 );
+    item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item11 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item8 = new wxStaticText( parent, IDC_FILEBUFFERSIZE_STATIC, _("File Buffer Size: 240000 bytes"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSlider *item12 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item9 = new wxSlider( parent, IDC_FILEBUFFERSIZE, 16, 1, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item4->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item10 = new wxStaticText( parent, IDC_QUEUESIZE_STATIC, _("Upload Queue Size: 5000 clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSlider *item14 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item11 = new wxSlider( parent, IDC_QUEUESIZE, 15, 5, 100, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item4->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, IDC_SERVERKEEPALIVE_LABEL, _("Server connection refresh interval: Disable"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxTOP, 5 );
 
-    wxSlider *item16 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
-    item7->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSlider *item13 = new wxSlider( parent, IDC_SERVERKEEPALIVE, 0, 0, 30, wxDefaultPosition, wxSize(100,-1), wxSL_HORIZONTAL );
+    item4->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    item0->Add( item7, 0, wxGROW|wxALL, 5 );
+    item0->Add( item4, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2360,107 +2290,97 @@ wxSizer *PreferencesGuiTweaksTab( wxWindow *parent, bool call_fit, bool set_size
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 19 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->SetValue( TRUE );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("GUI Tweaks"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->SetValue( TRUE );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxFlexGridSizer *item5 = new wxFlexGridSizer( 2, 0, 0 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Download Queue Files Progress") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxStaticText *item6 = new wxStaticText( parent, -1, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->Add( item6, 1, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_PERCENT, _("Show percentage"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetValue( TRUE );
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxBoxSizer *item7 = new wxBoxSizer( wxVERTICAL );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_PROGBAR, _("Show progressbar "), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetValue( TRUE );
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+    wxSlider *item8 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
+    item7->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxFlexGridSizer *item8 = new wxFlexGridSizer( 2, 0, 0 );
+    wxGridSizer *item9 = new wxGridSizer( 1, 0, 0, 0 );
 
-    wxStaticText *item9 = new wxStaticText( parent, -1, _("Progressbar Style"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->Add( item9, 1, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item10 = new wxStaticText( parent, -1, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxBoxSizer *item10 = new wxBoxSizer( wxVERTICAL );
+    wxStaticText *item11 = new wxStaticText( parent, -1, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxSlider *item11 = new wxSlider( parent, IDC_3DDEPTH, 5, 0, 5, wxDefaultPosition, wxSize(200,-1), wxSL_HORIZONTAL );
-    item10->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item7->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxGridSizer *item12 = new wxGridSizer( 1, 0, 0, 0 );
+    item5->Add( item7, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    wxStaticText *item13 = new wxStaticText( parent, -1, _("Flat"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    item1->Add( item5, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item14 = new wxStaticText( parent, -1, _("Round"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item14, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item10->Add( item12, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("Skin Support") );
+    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
 
-    item8->Add( item10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 5 );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_USESKINFILES, _("Enable skin support "), wxDefaultPosition, wxDefaultSize, 0 );
+    item12->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item4->Add( item8, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item15 = new wxBoxSizer( wxHORIZONTAL );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item16 = new wxStaticText( parent, -1, _("Skin:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item16 = new wxStaticBox( parent, -1, _("Skin Support") );
-    wxStaticBoxSizer *item15 = new wxStaticBoxSizer( item16, wxVERTICAL );
-
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_USESKINFILES, _("Enable skin support "), wxDefaultPosition, wxDefaultSize, 0 );
-    item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxBoxSizer *item18 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticText *item19 = new wxStaticText( parent, -1, _("Skin:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->Add( item19, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    wxString strs20[] = 
+    wxString strs17[] = 
     {
         _("- no skins available -")
     };
-    wxChoice *item20 = new wxChoice( parent, IDC_SKIN, wxDefaultPosition, wxSize(200,-1), 1, strs20, 0 );
-    item18->Add( item20, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxChoice *item17 = new wxChoice( parent, IDC_SKIN, wxDefaultPosition, wxSize(200,-1), 1, strs17, 0 );
+    item15->Add( item17, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    item15->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+    item12->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
 
-    item0->Add( item15, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Column Sorting") );
+    wxStaticBox *item19 = new wxStaticBox( parent, -1, _("Column Sorting") );
+    wxStaticBoxSizer *item18 = new wxStaticBoxSizer( item19, wxVERTICAL );
+
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files in the download queue (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item20->SetValue( TRUE );
+    item20->SetToolTip( _("aMule will sort the columns in your download list automatically") );
+    item18->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    item0->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item22 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
     wxStaticBoxSizer *item21 = new wxStaticBoxSizer( item22, wxVERTICAL );
 
-    wxCheckBox *item23 = new wxCheckBox( parent, IDC_AUTOSORT, _("Auto-sort files in the download queue (high CPU)"), wxDefaultPosition, wxDefaultSize, 0 );
+    wxCheckBox *item23 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast eD2k Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
     item23->SetValue( TRUE );
-    item23->SetToolTip( _("aMule will sort the columns in your download list automatically") );
-    item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item21->Add( item23, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+
+    wxCheckBox *item24 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->SetValue( TRUE );
+    item21->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
+
+    wxCheckBox *item25 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->SetValue( TRUE );
+    item21->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+
+    wxCheckBox *item27 = new wxCheckBox( parent, IDC_SHOWPARTFILENUMBER, _("Show part file number before file name"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     item0->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item25 = new wxStaticBox( parent, -1, _("Misc Gui Tweaks") );
-    wxStaticBoxSizer *item24 = new wxStaticBoxSizer( item25, wxVERTICAL );
-
-    wxCheckBox *item26 = new wxCheckBox( parent, IDC_FED2KLH, _("Show Fast eD2k Links Handler"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->SetValue( TRUE );
-    item24->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
-
-    wxCheckBox *item27 = new wxCheckBox( parent, IDC_EXTCATINFO, _("Show extended info on categories tabs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->SetValue( TRUE );
-    item24->Add( item27, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 0 );
-
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_SHOWRATEONTITLE, _("Show transfer rates on title"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->SetValue( TRUE );
-    item24->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_VERTTOOLBAR, _("Vertical toolbar orientation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_SHOWPARTFILENUMBER, _("Show part file number before file name"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    item0->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -2476,135 +2396,125 @@ wxSizer *PreferencesRemoteControlsTab( wxWindow *parent, bool call_fit, bool set
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Web server parameters") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 11 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Run amuleweb on startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Remote Control"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, -1, _("Web server port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item5, 1, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Web server parameters") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxSpinCtrl *item6 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item4->Add( item6, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ENABLE_WEB, _("Run amuleweb on startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item7 = new wxCheckBox( parent, IDC_UPNP_WEBSERVER_ENABLED, _("Enable UPnP port forwarding on the web server port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item8 = new wxStaticText( parent, -1, _("Web server port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item8, 1, wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item8 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_WEB_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item7->Add( item9, 0, wxALIGN_CENTER, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, -1, _("Web server UPnP TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->Add( item9, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxSpinCtrl *item10 = new wxSpinCtrl( parent, IDC_WEBUPNPTCPPORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item8->Add( item10, 0, wxALIGN_CENTER, 5 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_UPNP_WEBSERVER_ENABLED, _("Enable UPnP port forwarding on the web server port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item10, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
     wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item12 = new wxStaticText( parent, -1, _("Web server UPnP TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->Add( item12, 1, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticText *item12 = new wxStaticText( parent, -1, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item12, 1, wxALIGN_CENTER, 5 );
 
-    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_WEBUPNPTCPPORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    wxSpinCtrl *item13 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
     item11->Add( item13, 0, wxALIGN_CENTER, 5 );
 
-    item4->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item1->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetValue( TRUE );
+    item1->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item15 = new wxStaticText( parent, -1, _("Page Refresh Time (in secs)"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item15, 1, wxALIGN_CENTER, 5 );
+    wxCheckBox *item15 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetValue( TRUE );
+    item1->Add( item15, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxSpinCtrl *item16 = new wxSpinCtrl( parent, IDC_WEB_REFRESH_TIMEOUT, wxT("120"), wxDefaultPosition, wxSize(100,-1), 0, 120, 600, 120 );
-    item14->Add( item16, 0, wxALIGN_CENTER, 5 );
+    wxFlexGridSizer *item16 = new wxFlexGridSizer( 2, 0, 0 );
+    item16->AddGrowableCol( 1 );
 
-    item4->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item17 = new wxStaticText( parent, -1, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_WEB_GZIP, _("Enable Gzip compression"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetValue( TRUE );
-    item4->Add( item17, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    CMuleTextCtrl *item18 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item16->Add( item18, 1, wxGROW|wxALIGN_RIGHT, 5 );
 
-    wxCheckBox *item18 = new wxCheckBox( parent, IDC_ENABLE_WEB_LOW, _("Enable Low rights User"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetValue( TRUE );
-    item4->Add( item18, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item19 = new wxStaticText( parent, -1, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    wxFlexGridSizer *item19 = new wxFlexGridSizer( 2, 0, 0 );
-    item19->AddGrowableCol( 1 );
+    CMuleTextCtrl *item20 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item16->Add( item20, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item20 = new wxStaticText( parent, -1, _("Full rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticText *item21 = new wxStaticText( parent, -1, _("Web template"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item21, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item21 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item19->Add( item21, 1, wxGROW|wxALIGN_RIGHT, 5 );
+    wxString *strs22 = (wxString*) NULL;
+    wxChoice *item22 = new wxChoice( parent, IDC_WEBTEMPLATE, wxDefaultPosition, wxSize(200,-1), 0, strs22, 0 );
+    item16->Add( item22, 0, wxALIGN_CENTER, 5 );
 
-    wxStaticText *item22 = new wxStaticText( parent, -1, _("Low rights password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    item1->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    CMuleTextCtrl *item23 = new CMuleTextCtrl( parent, IDC_WEB_PASSWD_LOW, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item19->Add( item23, 1, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALL, 5 );
 
-    wxStaticText *item24 = new wxStaticText( parent, -1, _("Web template"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxRIGHT, 5 );
+    wxStaticBox *item24 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
+    wxStaticBoxSizer *item23 = new wxStaticBoxSizer( item24, wxVERTICAL );
 
-    wxString *strs25 = (wxString*) NULL;
-    wxChoice *item25 = new wxChoice( parent, IDC_WEBTEMPLATE, wxDefaultPosition, wxSize(200,-1), 0, strs25, 0 );
-    item19->Add( item25, 0, wxALIGN_CENTER, 5 );
+    wxCheckBox *item25 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item25, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    item4->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    wxBoxSizer *item26 = new wxBoxSizer( wxHORIZONTAL );
 
-    item0->Add( item4, 0, wxGROW|wxALL, 5 );
+    wxStaticText *item27 = new wxStaticText( parent, -1, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->Add( item27, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
 
-    wxStaticBox *item27 = new wxStaticBox( parent, -1, _("External Connection Parameters") );
-    wxStaticBoxSizer *item26 = new wxStaticBoxSizer( item27, wxVERTICAL );
+    CMuleTextCtrl *item28 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+    item26->Add( item28, 1, wxALIGN_CENTER|wxLEFT, 5 );
 
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_EXT_CONN_ACCEPT, _("Accept external connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item28, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item23->Add( item26, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item29 = new wxBoxSizer( wxHORIZONTAL );
+    wxFlexGridSizer *item29 = new wxFlexGridSizer( 2, 0, 0 );
+    item29->AddGrowableCol( 0 );
+    item29->AddGrowableCol( 1 );
 
-    wxStaticText *item30 = new wxStaticText( parent, -1, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->Add( item30, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    CMuleTextCtrl *item31 = new CMuleTextCtrl( parent, IDC_EXT_CONN_PASSWD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-    item29->Add( item31, 1, wxALIGN_CENTER|wxLEFT, 5 );
-
-    item26->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxFlexGridSizer *item32 = new wxFlexGridSizer( 2, 0, 0 );
-    item32->AddGrowableCol( 0 );
-    item32->AddGrowableCol( 1 );
-
-    wxStaticText *item33 = new wxStaticText( parent, -1, 
+    wxStaticText *item30 = new wxStaticText( parent, -1, 
         _("IP of the listening interface\n"
           "(empty for any)"),
         wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-    item32->Add( item33, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+    item29->Add( item30, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
 
-    CMuleTextCtrl *item34 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item34->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
-    item32->Add( item34, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    CMuleTextCtrl *item31 = new CMuleTextCtrl( parent, IDC_EXT_CONN_IP, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item31->SetToolTip( _("Enter here a valid ip in the a.b.c.d format for the listening EC interface. An empty field or 0.0.0.0 will mean any interface.") );
+    item29->Add( item31, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item26->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
+    item23->Add( item29, 0, wxGROW|wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item35 = new wxBoxSizer( wxHORIZONTAL );
+    wxBoxSizer *item32 = new wxBoxSizer( wxHORIZONTAL );
 
-    wxStaticText *item36 = new wxStaticText( parent, -1, _("TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item35->Add( item36, 1, wxALIGN_CENTER|wxRIGHT, 5 );
+    wxStaticText *item33 = new wxStaticText( parent, -1, _("TCP port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item32->Add( item33, 1, wxALIGN_CENTER|wxRIGHT, 5 );
 
-    wxSpinCtrl *item37 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
-    item35->Add( item37, 0, wxALIGN_CENTER, 5 );
+    wxSpinCtrl *item34 = new wxSpinCtrl( parent, IDC_EXT_CONN_TCP_PORT, wxT("10000"), wxDefaultPosition, wxSize(100,-1), 0, 1025, 65535, 10000 );
+    item32->Add( item34, 0, wxALIGN_CENTER, 5 );
 
-    item26->Add( item35, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item23->Add( item32, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item38 = new wxCheckBox( parent, IDC_UPNP_EC_ENABLED, _("Enable UPnP port forwarding on the EC port"), wxDefaultPosition, wxDefaultSize, 0 );
-    item26->Add( item38, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxCheckBox *item35 = new wxCheckBox( parent, IDC_UPNP_EC_ENABLED, _("Enable UPnP port forwarding on the EC port"), wxDefaultPosition, wxDefaultSize, 0 );
+    item23->Add( item35, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    item0->Add( item26, 0, wxGROW|wxALL, 5 );
+    item0->Add( item23, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3150,125 +3060,115 @@ wxSizer *PreferencesSecurityTab( wxWindow *parent, bool call_fit, bool set_sizer
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Protocol Obfuscation") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 22 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_SUPPORT_PO, _("Support Protocol Obfuscation"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->SetValue( TRUE );
+    item3->SetToolTip( _("This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients.") );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Security"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item4 = new wxCheckBox( parent, IDC_ENABLE_PO_OUTGOING, _("Use obfuscation for outgoing connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->SetValue( TRUE );
+    item4->SetToolTip( _("This option makes aMule use Protocol Obfuscation when connecting other clients/servers.") );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item5 = new wxCheckBox( parent, IDC_ENFORCE_PO_INCOMING, _("Accept only obfuscated connections"), wxDefaultPosition, wxDefaultSize, 0 );
+    item5->SetToolTip( _("This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated") );
+    item1->Add( item5, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Protocol Obfuscation") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_SUPPORT_PO, _("Support Protocol Obfuscation"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetValue( TRUE );
-    item6->SetToolTip( _("This option enabled Protocol Obfuscation, and makes aMule accept obfuscated connections from other clients.") );
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+    wxStaticBox *item7 = new wxStaticBox( parent, -1, _("File Options") );
+    wxStaticBoxSizer *item6 = new wxStaticBoxSizer( item7, wxVERTICAL );
 
-    wxCheckBox *item7 = new wxCheckBox( parent, IDC_ENABLE_PO_OUTGOING, _("Use obfuscation for outgoing connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetValue( TRUE );
-    item7->SetToolTip( _("This option makes aMule use Protocol Obfuscation when connecting other clients/servers.") );
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
-
-    wxCheckBox *item8 = new wxCheckBox( parent, IDC_ENFORCE_PO_INCOMING, _("Accept only obfuscated connections"), wxDefaultPosition, wxDefaultSize, 0 );
-    item8->SetToolTip( _("This option makes aMule only accept obfuscated connections. You will have less sources, but all your traffic will be obfuscated") );
-    item4->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
-
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("File Options") );
-    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
-
-    wxString strs11[] = 
+    wxString strs8[] = 
     {
         _("Everybody"), 
         _("Friends"), 
         _("No one")
     };
-    wxRadioBox *item11 = new wxRadioBox( parent, IDC_SEESHARES, _("Who can see shared files:"), wxDefaultPosition, wxDefaultSize, 3, strs11, 1, wxRA_SPECIFY_COLS );
-    item11->SetToolTip( _("Select who can request to view a list of your shared files.") );
-    item9->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxRadioBox *item8 = new wxRadioBox( parent, IDC_SEESHARES, _("Who can see shared files:"), wxDefaultPosition, wxDefaultSize, 3, strs8, 1, wxRA_SPECIFY_COLS );
+    item8->SetToolTip( _("Select who can request to view a list of your shared files.") );
+    item6->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item0->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxStaticBox *item10 = new wxStaticBox( parent, -1, _("IP-Filtering") );
+    wxStaticBoxSizer *item9 = new wxStaticBoxSizer( item10, wxVERTICAL );
+
+    wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxBoxSizer *item12 = new wxBoxSizer( wxVERTICAL );
+
+    wxCheckBox *item13 = new wxCheckBox( parent, IDC_IPFCLIENTS, _("Filter clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetValue( TRUE );
+    item13->SetToolTip( _("Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat.") );
+    item12->Add( item13, 0, wxGROW|wxALL, 0 );
+
+    wxCheckBox *item14 = new wxCheckBox( parent, IDC_IPFSERVERS, _("Filter servers"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->SetValue( TRUE );
+    item14->SetToolTip( _("Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat.") );
+    item12->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
+
+    item11->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item11->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
+
+    wxButton *item15 = new wxButton( parent, IDC_IPFRELOAD, _("Reload List"), wxDefaultPosition, wxDefaultSize, 0 );
+    item15->SetToolTip( _("Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat") );
+    item11->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item9->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxFlexGridSizer *item16 = new wxFlexGridSizer( 3, 0, 0 );
+    item16->AddGrowableCol( 1 );
+
+    wxStaticText *item17 = new wxStaticText( parent, -1, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item17, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
+
+    wxTextCtrl *item18 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item16->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
+
+    wxButton *item19 = new wxButton( parent, IDC_IPFILTERUPDATE, _("Update now"), wxDefaultPosition, wxDefaultSize, 0 );
+    item16->Add( item19, 0, wxALIGN_CENTER|wxLEFT, 5 );
+
+    item9->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    wxCheckBox *item20 = new wxCheckBox( parent, IDC_AUTOIPFILTER, _("Auto-update ipfilter at startup"), wxDefaultPosition, wxDefaultSize, 0 );
+    item9->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxBoxSizer *item21 = new wxBoxSizer( wxHORIZONTAL );
+
+    wxStaticText *item22 = new wxStaticText( parent, -1, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item21->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+
+    item21->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+
+    wxSpinCtrl *item23 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
+    item21->Add( item23, 0, wxALIGN_CENTER|wxALL, 5 );
+
+    item9->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
+
+    wxCheckBox *item24 = new wxCheckBox( parent, IDC_FILTERLAN, _("Always filter LAN IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item24->SetValue( TRUE );
+    item9->Add( item24, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxCheckBox *item25 = new wxCheckBox( parent, IDC_PARANOID, _("Paranoid handling of non-matching IPs"), wxDefaultPosition, wxDefaultSize, 0 );
+    item25->SetValue( TRUE );
+    item25->SetToolTip( _("Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution.") );
+    item9->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxCheckBox *item26 = new wxCheckBox( parent, IDC_IPFILTERSYS, _("Use system-wide ipfilter.dat if available"), wxDefaultPosition, wxDefaultSize, 0 );
+    item26->SetToolTip( _("If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter file.") );
+    item9->Add( item26, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
+
+    wxCheckBox *item27 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure User Identification"), wxDefaultPosition, wxDefaultSize, 0 );
+    item27->SetValue( TRUE );
+    item27->SetToolTip( _("It is recommended to enable this option. You will not receive credits if SUI is not enabled.") );
+    item9->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
 
     item0->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item13 = new wxStaticBox( parent, -1, _("IP-Filtering") );
-    wxStaticBoxSizer *item12 = new wxStaticBoxSizer( item13, wxVERTICAL );
-
-    wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxBoxSizer *item15 = new wxBoxSizer( wxVERTICAL );
-
-    wxCheckBox *item16 = new wxCheckBox( parent, IDC_IPFCLIENTS, _("Filter clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetValue( TRUE );
-    item16->SetToolTip( _("Enable filtering of the client IPs defined in the file ~/.aMule/ipfilter.dat.") );
-    item15->Add( item16, 0, wxGROW|wxALL, 0 );
-
-    wxCheckBox *item17 = new wxCheckBox( parent, IDC_IPFSERVERS, _("Filter servers"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->SetValue( TRUE );
-    item17->SetToolTip( _("Enable filtering of the server IPs defined in the file ~/.aMule/ipfilter.dat.") );
-    item15->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 0 );
-
-    item14->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item14->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL, 0 );
-
-    wxButton *item18 = new wxButton( parent, IDC_IPFRELOAD, _("Reload List"), wxDefaultPosition, wxDefaultSize, 0 );
-    item18->SetToolTip( _("Reload the list of IPs to filter from the file ~/.aMule/ipfilter.dat") );
-    item14->Add( item18, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item12->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxFlexGridSizer *item19 = new wxFlexGridSizer( 3, 0, 0 );
-    item19->AddGrowableCol( 1 );
-
-    wxStaticText *item20 = new wxStaticText( parent, -1, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item20, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT, 5 );
-
-    wxTextCtrl *item21 = new wxTextCtrl( parent, IDC_IPFILTERURL, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item19->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5 );
-
-    wxButton *item22 = new wxButton( parent, IDC_IPFILTERUPDATE, _("Update now"), wxDefaultPosition, wxDefaultSize, 0 );
-    item19->Add( item22, 0, wxALIGN_CENTER|wxLEFT, 5 );
-
-    item12->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxCheckBox *item23 = new wxCheckBox( parent, IDC_AUTOIPFILTER, _("Auto-update ipfilter at startup"), wxDefaultPosition, wxDefaultSize, 0 );
-    item12->Add( item23, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxBoxSizer *item24 = new wxBoxSizer( wxHORIZONTAL );
-
-    wxStaticText *item25 = new wxStaticText( parent, -1, _("Filtering Level:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item24->Add( item25, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item24->Add( 10, 10, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    wxSpinCtrl *item26 = new wxSpinCtrl( parent, ID_IPFILTERLEVEL, wxT("0"), wxDefaultPosition, wxDefaultSize, 0, 0, 255, 0 );
-    item24->Add( item26, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item12->Add( item24, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0 );
-
-    wxCheckBox *item27 = new wxCheckBox( parent, IDC_FILTERLAN, _("Always filter LAN IPs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item27->SetValue( TRUE );
-    item12->Add( item27, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxCheckBox *item28 = new wxCheckBox( parent, IDC_PARANOID, _("Paranoid handling of non-matching IPs"), wxDefaultPosition, wxDefaultSize, 0 );
-    item28->SetValue( TRUE );
-    item28->SetToolTip( _("Rejects packet if the client ip is different from the ip where the packet is received from. Use with caution.") );
-    item12->Add( item28, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxCheckBox *item29 = new wxCheckBox( parent, IDC_IPFILTERSYS, _("Use system-wide ipfilter.dat if available"), wxDefaultPosition, wxDefaultSize, 0 );
-    item29->SetToolTip( _("If there's no local ipfilter.dat found, allow usage of a systemwide ipfilter file.") );
-    item12->Add( item29, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    wxCheckBox *item30 = new wxCheckBox( parent, IDC_SECIDENT, _("Use Secure User Identification"), wxDefaultPosition, wxDefaultSize, 0 );
-    item30->SetValue( TRUE );
-    item30->SetToolTip( _("It is recommended to enable this option. You will not receive credits if SUI is not enabled.") );
-    item12->Add( item30, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 5 );
-
-    item0->Add( item12, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3284,49 +3184,39 @@ wxSizer *PreferencesOnlineSigTab( wxWindow *parent, bool call_fit, bool set_size
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, wxT("") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 21 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->SetValue( TRUE );
+    item3->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Online Signature"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxBoxSizer *item4 = new wxBoxSizer( wxHORIZONTAL );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxStaticText *item5 = new wxStaticText( parent, -1, _("Update Frequency (Secs):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item5, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, wxT("") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxSpinCtrl *item6 = new wxSpinCtrl( parent, IDC_OSUPDATE, wxT("5"), wxDefaultPosition, wxSize(60,-1), 0, 0, 600, 5 );
+    item6->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
+    item6->Enable( false );
+    item4->Add( item6, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_ONLINESIG, _("Enable Online-Signature"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->SetValue( TRUE );
-    item6->SetToolTip( _("Enables the writing of the OS file, which can be used by external apps to create signatures and the like.") );
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item1->Add( item4, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxBoxSizer *item7 = new wxBoxSizer( wxHORIZONTAL );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item8 = new wxStaticText( parent, -1, _("Update Frequency (Secs):"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item8, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
+    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxHORIZONTAL );
 
-    wxSpinCtrl *item9 = new wxSpinCtrl( parent, IDC_OSUPDATE, wxT("5"), wxDefaultPosition, wxSize(60,-1), 0, 0, 600, 5 );
-    item9->SetToolTip( _("Change the frequency (in seconds) of Online Signature updates.") );
-    item9->Enable( false );
-    item7->Add( item9, 0, wxALIGN_CENTER|wxALL, 5 );
+    CMuleTextCtrl *item9 = new CMuleTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item7->Add( item9, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxButton *item10 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
+    item10->SetToolTip( _("Click here to select the directory containing the the Online Signature files.") );
+    item7->Add( item10, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item11 = new wxStaticBox( parent, -1, _("Online Signature Directory:") );
-    wxStaticBoxSizer *item10 = new wxStaticBoxSizer( item11, wxHORIZONTAL );
-
-    CMuleTextCtrl *item12 = new CMuleTextCtrl( parent, IDC_OSDIR, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item10->Add( item12, 1, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    wxButton *item13 = new wxButton( parent, IDC_SELOSDIR, _("Browse"), wxDefaultPosition, wxDefaultSize, 0 );
-    item13->SetToolTip( _("Click here to select the directory containing the the Online Signature files.") );
-    item10->Add( item13, 0, wxGROW|wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
-
-    item0->Add( item10, 0, wxGROW|wxALL, 5 );
+    item0->Add( item7, 0, wxGROW|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3342,66 +3232,56 @@ wxSizer *PreferencesMessagesTab( wxWindow *parent, bool call_fit, bool set_sizer
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 23 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, IDC_MSGFILTER, _("Filter incoming messages (except current chat):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Messages"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Filtering Options:") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, IDC_MSGFILTER, _("Filter incoming messages (except current chat):"), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item6 = new wxCheckBox( parent, IDC_MSGFILTER_ALL, _("Filter all messages"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Filtering Options:") );
-    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
+    wxCheckBox *item7 = new wxCheckBox( parent, IDC_MSGFILTER_NONFRIENDS, _("Filter messages from people not on your friend list"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxCheckBox *item9 = new wxCheckBox( parent, IDC_MSGFILTER_ALL, _("Filter all messages"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
+    wxCheckBox *item8 = new wxCheckBox( parent, IDC_MSGFILTER_NONSECURE, _("Filter messages from unknown clients"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxCheckBox *item10 = new wxCheckBox( parent, IDC_MSGFILTER_NONFRIENDS, _("Filter messages from people not on your friend list"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
+    wxCheckBox *item9 = new wxCheckBox( parent, IDC_MSGFILTER_WORD, _("Filter messages containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
 
-    wxCheckBox *item11 = new wxCheckBox( parent, IDC_MSGFILTER_NONSECURE, _("Filter messages from unknown clients"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item11, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
+    wxTextCtrl *item10 = new wxTextCtrl( parent, IDC_MSGWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item10->SetToolTip( _("add here the words amule should filter and block messages including it") );
+    item4->Add( item10, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
 
-    wxCheckBox *item12 = new wxCheckBox( parent, IDC_MSGFILTER_WORD, _("Filter messages containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxLEFT, 25 );
+    item1->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item13 = new wxTextCtrl( parent, IDC_MSGWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item13->SetToolTip( _("add here the words amule should filter and block messages including it") );
-    item7->Add( item13, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item4->Add( item7, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxBoxSizer *item11 = new wxBoxSizer( wxHORIZONTAL );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticBitmap *item12 = new wxStaticBitmap( parent, -1, amuleSpecial( 23 ), wxDefaultPosition, wxDefaultSize );
+    item11->Add( item12, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxBoxSizer *item14 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticText *item13 = new wxStaticText( parent, -1, _("Comments"), wxDefaultPosition, wxDefaultSize, 0 );
+    item11->Add( item13, 0, wxALIGN_CENTER|wxALL, 5 );
 
-    wxStaticBitmap *item15 = new wxStaticBitmap( parent, -1, amuleSpecial( 23 ), wxDefaultPosition, wxDefaultSize );
-    item14->Add( item15, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item11, 0, wxALIGN_CENTER_VERTICAL, 5 );
 
-    wxStaticText *item16 = new wxStaticText( parent, -1, _("Comments"), wxDefaultPosition, wxDefaultSize, 0 );
-    item14->Add( item16, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
 
-    item0->Add( item14, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    wxCheckBox *item16 = new wxCheckBox( parent, IDC_FILTERCOMMENTS, _("Filter comments containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item18 = new wxStaticBox( parent, -1, _("Disable/Enable") );
-    wxStaticBoxSizer *item17 = new wxStaticBoxSizer( item18, wxVERTICAL );
+    wxTextCtrl *item17 = new wxTextCtrl( parent, IDC_COMMENTWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item17->SetToolTip( _("add here the words amule should filter and block messages including it") );
+    item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
 
-    wxCheckBox *item19 = new wxCheckBox( parent, IDC_FILTERCOMMENTS, _("Filter comments containing (use ',' as separator):"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxTextCtrl *item20 = new wxTextCtrl( parent, IDC_COMMENTWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item20->SetToolTip( _("add here the words amule should filter and block messages including it") );
-    item17->Add( item20, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT, 50 );
-
-    item0->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3417,90 +3297,80 @@ wxSizer *PreferencesProxyTab( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("General") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 24 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxFlexGridSizer *item3 = new wxFlexGridSizer( 2, 0, 0 );
+    item3->AddGrowableCol( 1 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item4 = new wxCheckBox( parent, ID_PROXY_ENABLE_PROXY, _("Enable Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
+    item4->SetToolTip( _("Enable/disable proxy support") );
+    item3->Add( item4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
+    item3->Add( 20, 20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("General") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
+    wxStaticText *item5 = new wxStaticText( parent, -1, _("Proxy type:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item6 = new wxFlexGridSizer( 2, 0, 0 );
-    item6->AddGrowableCol( 1 );
-
-    wxCheckBox *item7 = new wxCheckBox( parent, ID_PROXY_ENABLE_PROXY, _("Enable Proxy"), wxDefaultPosition, wxDefaultSize, 0 );
-    item7->SetToolTip( _("Enable/disable proxy support") );
-    item6->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item6->Add( 20, 20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticText *item8 = new wxStaticText( parent, -1, _("Proxy type:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxString strs9[] = 
+    wxString strs6[] = 
     {
         _("SOCKS5"), 
         _("SOCKS4"), 
         _("HTTP"), 
         _("SOCKS4a")
     };
-    wxChoice *item9 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 4, strs9, 0 );
-    item9->SetToolTip( _("The type of proxy you are connecting to") );
-    item6->Add( item9, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxChoice *item6 = new wxChoice( parent, ID_PROXY_TYPE, wxDefaultPosition, wxSize(100,-1), 4, strs6, 0 );
+    item6->SetToolTip( _("The type of proxy you are connecting to") );
+    item3->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item10 = new wxStaticText( parent, -1, _("Proxy host:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item7 = new wxStaticText( parent, -1, _("Proxy host:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item11 = new wxTextCtrl( parent, ID_PROXY_NAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
-    item11->SetToolTip( _("The proxy host name") );
-    item6->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item8 = new wxTextCtrl( parent, ID_PROXY_NAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+    item8->SetToolTip( _("The proxy host name") );
+    item3->Add( item8, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item12 = new wxStaticText( parent, -1, _("Proxy port:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item6->Add( item12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item9 = new wxStaticText( parent, -1, _("Proxy port:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item3->Add( item9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item13 = new wxTextCtrl( parent, ID_PROXY_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item13->SetToolTip( _("The proxy port") );
-    item6->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item10 = new wxTextCtrl( parent, ID_PROXY_PORT, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item10->SetToolTip( _("The proxy port") );
+    item3->Add( item10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item4->Add( item6, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item1->Add( item3, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticBox *item15 = new wxStaticBox( parent, -1, _("Authentication") );
-    wxStaticBoxSizer *item14 = new wxStaticBoxSizer( item15, wxVERTICAL );
+    wxStaticBox *item12 = new wxStaticBox( parent, -1, _("Authentication") );
+    wxStaticBoxSizer *item11 = new wxStaticBoxSizer( item12, wxVERTICAL );
 
-    wxCheckBox *item16 = new wxCheckBox( parent, ID_PROXY_ENABLE_PASSWORD, _("Enable authentication"), wxDefaultPosition, wxDefaultSize, 0 );
-    item16->SetToolTip( _("Enable/disable username/password authentication") );
-    item14->Add( item16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item13 = new wxCheckBox( parent, ID_PROXY_ENABLE_PASSWORD, _("Enable authentication"), wxDefaultPosition, wxDefaultSize, 0 );
+    item13->SetToolTip( _("Enable/disable username/password authentication") );
+    item11->Add( item13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxFlexGridSizer *item17 = new wxFlexGridSizer( 2, 0, 0 );
-    item17->AddGrowableCol( 1 );
+    wxFlexGridSizer *item14 = new wxFlexGridSizer( 2, 0, 0 );
+    item14->AddGrowableCol( 1 );
 
-    wxStaticText *item18 = new wxStaticText( parent, -1, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item15 = new wxStaticText( parent, -1, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item19 = new wxTextCtrl( parent, ID_PROXY_USER, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
-    item19->SetToolTip( _("The username to use to connect to the proxy") );
-    item17->Add( item19, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item16 = new wxTextCtrl( parent, ID_PROXY_USER, wxT(""), wxDefaultPosition, wxSize(80,-1), 0 );
+    item16->SetToolTip( _("The username to use to connect to the proxy") );
+    item14->Add( item16, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item20 = new wxStaticText( parent, -1, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-    item17->Add( item20, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxStaticText *item17 = new wxStaticText( parent, -1, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
+    item14->Add( item17, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxTextCtrl *item21 = new wxTextCtrl( parent, ID_PROXY_PASSWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
-    item21->SetToolTip( _("The password to use to connect to the proxy") );
-    item17->Add( item21, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxTextCtrl *item18 = new wxTextCtrl( parent, ID_PROXY_PASSWORD, wxT(""), wxDefaultPosition, wxSize(80,-1), wxTE_PASSWORD );
+    item18->SetToolTip( _("The password to use to connect to the proxy") );
+    item14->Add( item18, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item14->Add( item17, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item11->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item14, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item11, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxCheckBox *item22 = new wxCheckBox( parent, ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY, _("Automatic server connect without proxy"), wxDefaultPosition, wxSize(350,-1), 0 );
-    item0->Add( item22, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxCheckBox *item19 = new wxCheckBox( parent, ID_PROXY_AUTO_SERVER_CONNECT_WITHOUT_PROXY, _("Automatic server connect without proxy"), wxDefaultPosition, wxSize(350,-1), 0 );
+    item0->Add( item19, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3583,32 +3453,22 @@ wxSizer *PreferencesDebug( wxWindow *parent, bool call_fit, bool set_sizer )
 {
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 25 ), wxDefaultPosition, wxDefaultSize );
-    item1->Add( item2, 0, wxALIGN_CENTER|wxALL, 5 );
+    wxCheckBox *item3 = new wxCheckBox( parent, ID_VERBOSEDEBUG, _("Enable Verbose Debug-Logging."), wxDefaultPosition, wxDefaultSize, 0 );
+    item1->Add( item3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Debugging"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Disable/Enable") );
+    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Message Categories:") );
     wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
 
-    wxCheckBox *item6 = new wxCheckBox( parent, ID_VERBOSEDEBUG, _("Enable Verbose Debug-Logging."), wxDefaultPosition, wxDefaultSize, 0 );
-    item4->Add( item6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxWindow *item6 = new wxCheckListBox( parent, ID_DEBUGCATS );
+    wxASSERT( item6 );
+    item4->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    wxStaticBox *item8 = new wxStaticBox( parent, -1, _("Message Categories:") );
-    wxStaticBoxSizer *item7 = new wxStaticBoxSizer( item8, wxVERTICAL );
-
-    wxWindow *item9 = new wxCheckListBox( parent, ID_DEBUGCATS );
-    wxASSERT( item9 );
-    item7->Add( item9, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item7, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item4, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
@@ -3746,23 +3606,13 @@ wxSizer *PreferencesEventsTab( wxWindow *parent, bool call_fit, bool set_sizer )
     wxBoxSizer *item0 = new wxBoxSizer( wxVERTICAL );
     IDC_PREFS_EVENTS_PAGE = item0;
 
-    wxBoxSizer *item1 = new wxBoxSizer( wxHORIZONTAL );
+    wxStaticBox *item2 = new wxStaticBox( parent, -1, _("Event types") );
+    wxStaticBoxSizer *item1 = new wxStaticBoxSizer( item2, wxVERTICAL );
 
-    wxStaticBitmap *item2 = new wxStaticBitmap( parent, -1, amuleSpecial( 5 ), wxDefaultPosition, wxSize(16,16) );
-    item1->Add( item2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    wxListCtrl *item3 = new wxListCtrl( parent, IDC_EVENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
+    item1->Add( item3, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
-    wxStaticText *item3 = new wxStaticText( parent, -1, _("Events"), wxDefaultPosition, wxDefaultSize, 0 );
-    item1->Add( item3, 0, wxALIGN_CENTER|wxALL, 5 );
-
-    item0->Add( item1, 0, wxALIGN_CENTER_VERTICAL, 5 );
-
-    wxStaticBox *item5 = new wxStaticBox( parent, -1, _("Event types") );
-    wxStaticBoxSizer *item4 = new wxStaticBoxSizer( item5, wxVERTICAL );
-
-    wxListCtrl *item6 = new wxListCtrl( parent, IDC_EVENTLIST, wxDefaultPosition, wxSize(160,120), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL|wxSUNKEN_BORDER );
-    item4->Add( item6, 1, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
-
-    item0->Add( item4, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+    item0->Add( item1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
 
     if (set_sizer)
     {
