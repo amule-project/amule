@@ -310,10 +310,11 @@ public:
 	static void		SetSafeServerConnectEnabled(bool val) { s_safeServerConnect = val; }
 	static bool		IsMoviePreviewBackup()		{ return s_moviePreviewBackup; }
 	
-	static bool		IsCheckDiskspaceEnabled()	{ return s_checkDiskspace; }
+	static bool		IsCheckDiskspaceEnabled()			{ return s_checkDiskspace; }
 	static void		SetCheckDiskspaceEnabled(bool val)	{ s_checkDiskspace = val; }
-	static uint32		GetMinFreeDiskSpace()		{ return s_uMinFreeDiskSpace; }
-	static void		SetMinFreeDiskSpace(uint32 val)	{ s_uMinFreeDiskSpace = val; }
+	static uint32	GetMinFreeDiskSpaceMB()				{ return s_uMinFreeDiskSpace; }
+	static uint64	GetMinFreeDiskSpace()				{ return s_uMinFreeDiskSpace * 1048576ull; }
+	static void		SetMinFreeDiskSpaceMB(uint32 val)	{ s_uMinFreeDiskSpace = val; }
 
 	static const wxString&	GetYourHostname() 		{ return s_yourHostname; }
 	static void		SetYourHostname(const wxString& s)	{ s_yourHostname = s; }

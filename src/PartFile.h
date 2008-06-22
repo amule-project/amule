@@ -318,7 +318,7 @@ private:
 	void	CreatePartFile();
 	void	Init();
 
-	bool	CheckFreeDiskSpace( uint32 neededSpace = 0 );
+	bool	CheckFreeDiskSpace( uint64 neededSpace = 0 );
 	
 	bool	IsCorruptedPart(uint16 partnumber);
 	
