@@ -75,9 +75,11 @@ void CBarShader::SetHeight( int height )
 
 void CBarShader::SetWidth(int width)
 {
-	m_Width = width;
-	m_Content.clear();
-	m_Content.resize(m_Width, 0);
+	if (width > 0) {
+		m_Width = width;
+		m_Content.clear();
+		m_Content.resize(m_Width, 0);
+	}
 }
 
 
