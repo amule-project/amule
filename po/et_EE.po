@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et_EE\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-23 03:30+0200\n"
-"PO-Revision-Date: 2008-06-20 21:00+0300\n"
+"POT-Creation-Date: 2008-06-23 09:55+0300\n"
+"PO-Revision-Date: 2008-06-22 10:03+0300\n"
 "Last-Translator: Hans <herringfish@hot.ee>\n"
 "Language-Team:  <et@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1538,15 +1538,15 @@ msgstr "Türgi"
 
 #: src/Preferences.cpp:813
 msgid "User:"
-msgstr ""
+msgstr "Kasutaja:"
 
 #: src/Preferences.cpp:838
 msgid "System:"
-msgstr ""
+msgstr "Süsteem:"
 
 #: src/Preferences.cpp:849
 msgid "no options available"
-msgstr ""
+msgstr "valikud puuduvad"
 
 #: src/Preferences.cpp:1643
 msgid ""
@@ -5005,7 +5005,7 @@ msgstr "Nimi"
 
 #: src/muuli_wdr.cpp:1609
 msgid "http://www.aMule.org - the multi-platform Mule"
-msgstr ""
+msgstr "http://www.aMule.org - mitme platvormi Muul"
 
 #: src/muuli_wdr.cpp:1610
 msgid "This is the name that other users will see when connecting to you."
@@ -5083,6 +5083,8 @@ msgid ""
 "Enter your browser name here. Leave this field empty to use the system "
 "default browser."
 msgstr ""
+"Sisesta siia lehitsejaprogrammi nimi. Jättes välja tühjaks, kasutab süsteem "
+"vaikimisi määratud lehitsejat."
 
 #: src/muuli_wdr.cpp:1679
 msgid "Open in new tab if possible"
@@ -7137,52 +7139,3 @@ msgstr "Sõprade faili 'emfriends.met' avamine kirjutamiseks ebaõnnestus!"
 
 #~ msgid "Remote Control"
 #~ msgstr "Kaugjuhtimine"
-
-#~ msgid "Unable to determine selected browser!"
-#~ msgstr "Ei suuda tuvastada valitud lehitsejat (browser)!"
-
-#~ msgid "User Defined"
-#~ msgstr "Kasutaja defineeritud"
-
-#~ msgid "http://www.aMule.org - the Linux Mule"
-#~ msgstr "http://www.aMule.org - Linuxi Muul"
-
-#~ msgid "System Default"
-#~ msgstr "Süsteemi vaikeväärtus"
-
-#~ msgid "Konqueror"
-#~ msgstr "Konqueror"
-
-#~ msgid "Mozilla"
-#~ msgstr "Mozilla"
-
-#~ msgid "Firefox"
-#~ msgstr "Firefox"
-
-#~ msgid "Firebird"
-#~ msgstr "Firebird"
-
-#~ msgid "Opera"
-#~ msgstr "Opera"
-
-#~ msgid "Netscape"
-#~ msgstr "Netscape"
-
-#~ msgid "Galeon"
-#~ msgstr "Galeon"
-
-#~ msgid "Epiphany"
-#~ msgstr "Epiphany"
-
-#~ msgid "Select your browser here"
-#~ msgstr "Vali siin oma lehitseja"
-
-#~ msgid "Custom Browser:"
-#~ msgstr "Isemääratud lehitseja:"
-
-#~ msgid ""
-#~ "Enter your browser name here. To use the custom browser, select the "
-#~ "Custom menu-item from the dropdown-menu above."
-#~ msgstr ""
-#~ "Sisesta siia oma lemmiklehitseja asukoht. Isemääratud leemiklehitseja "
-#~ "kasutamiseks vali Custom allolevast rippmenüüst."
