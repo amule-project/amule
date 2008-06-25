@@ -36,9 +36,7 @@
 #ifndef __WXMSW__
 	#include <map>
 	#include <signal.h>
-	#ifndef __WXMAC__
-		#include <wx/unix/execute.h>
-	#endif
+	#include <wx/unix/execute.h>
 #endif // __WXMSW__
 
 
