@@ -1102,7 +1102,11 @@ void CamuleDlg::SetMessagesTool()
 	wxASSERT(pos == 6); // so we don't miss a change on wx2.4
 	
 	wxWindowUpdateLocker freezer(m_wndToolbar);
+#ifdef __WXCOCOA__
+	m_wndToolbar->FindById(ID_BUTTONMESSAGES)->SetNormalBitmap(m_tblist.GetBitmap(m_CurrentBlinkBitmap));	
+#else
 	m_wndToolbar->SetToolNormalBitmap(ID_BUTTONMESSAGES, m_tblist.GetBitmap(m_CurrentBlinkBitmap));
+#endif
 }
 
 void CamuleDlg::LaunchUrl( const wxString& url )

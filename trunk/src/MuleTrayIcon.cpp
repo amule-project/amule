@@ -317,7 +317,10 @@ void CMuleTrayIcon::UpdateTray()
 #endif
 
 	// Icon update and Tip update
-	if (IsOk()) {
+#ifndef __WXCOCOA__
+	if (IsOk()) 
+#endif
+	{
 		SetIcon(CurrentIcon, CurrentTip);
 	}	
 }
