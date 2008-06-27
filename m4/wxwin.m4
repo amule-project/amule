@@ -602,9 +602,9 @@ AC_DEFUN([WX_STANDARD_OPTIONS],
                             "$TOOLKIT" != "msw" -a "$TOOLKIT" != "motif" -a \
                             "$TOOLKIT" != "x11" -a "$TOOLKIT" != "mac" -a \
                             "$TOOLKIT" != "mgl" -a "$TOOLKIT" != "dfb" -a \
-                            "$TOOLKIT" != "base" ; then
+                            "$TOOLKIT" != "base" -a "$TOOLKIT" != "cocoa"; then
                         AC_MSG_ERROR([
-    Unrecognized option value (allowed values: auto, gtk1, gtk2, msw, motif, x11, mac, mgl, dfb, base)
+    Unrecognized option value (allowed values: auto, gtk1, gtk2, msw, motif, x11, mac, mgl, dfb, base, cocoa)
                         ])
                     fi
 
@@ -868,6 +868,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             WX_MGLPORT=$(expr "$WX_SELECTEDCONFIG" : ".*mgl.*")
             WX_DFBPORT=$(expr "$WX_SELECTEDCONFIG" : ".*dfb.*")
             WX_BASEPORT=$(expr "$WX_SELECTEDCONFIG" : ".*base.*")
+            WX_COCOAPORT=$(expr "$WX_SELECTEDCONFIG" : ".*cocoa.*")
 
             WX_PORT="unknown"
             if test "$WX_GTKPORT1" != "0"; then WX_PORT="gtk1"; fi
@@ -879,6 +880,7 @@ AC_DEFUN([WX_DETECT_STANDARD_OPTION_VALUES],
             if test "$WX_MGLPORT" != "0"; then WX_PORT="mgl"; fi
             if test "$WX_DFBPORT" != "0"; then WX_PORT="dfb"; fi
             if test "$WX_BASEPORT" != "0"; then WX_PORT="base"; fi
+            if test "$WX_COCOAPORT" != "0"; then WX_PORT="cocoa"; fi
 
             dnl check at least one of the WX_*PORT has been set !
 
