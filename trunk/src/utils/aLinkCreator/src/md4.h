@@ -7,7 +7,7 @@
 ///
 /// Copyright (C) 2004 by ThePolish
 ///
-/// Copyright (C) 2004 by Phoenix
+/// Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
 ///
 /// Copyright (C) 2004 by Madcat
 ///
