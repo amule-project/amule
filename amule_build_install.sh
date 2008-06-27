@@ -2,7 +2,7 @@
 
 
 #
-# Copyright (c) 2004-2008 by Marcelo Roberto Jimenez, phoenix@amule.org
+# Copyright (c) 2004-2008 Marcelo Roberto Jimenez ( phoenix@amule.org )
 #
 # All rights reserved. This script is provided under the terms of the GPL.
 #
