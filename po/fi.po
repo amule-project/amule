@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-23 03:30+0200\n"
+"POT-Creation-Date: 2008-06-28 03:30+0200\n"
 "PO-Revision-Date: 2008-06-12 18:58+0200\n"
 "Last-Translator: Tapio Rantala <tapio.rantala@iki.fi>\n"
 "Language-Team: aMule Team <http://www.amule.org>\n"
@@ -144,7 +144,7 @@ msgstr "Jaettujen tiedostojen listaus käyttäjältä '%s' ei onnistunut"
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
-#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:406
+#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:409
 msgid "Unknown"
 msgstr "Tuntematon"
 
@@ -680,7 +680,7 @@ msgstr "Ladataan..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1314
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3632
 msgid "Preferences"
 msgstr "Asetukset"
@@ -1053,7 +1053,7 @@ msgid "LowID"
 msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:401
 msgid "Not Connected"
 msgstr "Ei yhdistetty"
 
@@ -1172,7 +1172,7 @@ msgstr "Tallenna"
 msgid "Copy to clipboard"
 msgstr "Kopioi leikepöydälle"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:558
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:561
 msgid "Exit"
 msgstr "Sulje"
 
@@ -1828,7 +1828,7 @@ msgstr "Kad: Pois päältä"
 msgid "Stop the current connection attempts"
 msgstr "Pysäytä nykyiset yhteysyritykset"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:540
 msgid "Disconnect"
 msgstr "Katkaise yhteys"
 
@@ -1837,7 +1837,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "Katkaise yhteys yhdistettyihin verkkoihin"
 
 #: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3420
-#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:540
+#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:543
 msgid "Connect"
 msgstr "Yhdistä"
 
@@ -1873,95 +1873,95 @@ msgstr "Haluatko varmasti sulkea aMulen?"
 msgid "Exit confirmation"
 msgstr "Lopettamisen varmistus"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1184
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Teemakansiota '%s' ei ole olemassa"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "VAROITUS: Ei voida avata teematiedostoa '%s' luettavaksi"
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1863
+#: src/amuleDlg.cpp:1289 src/amuleDlg.cpp:1450 src/muuli_wdr.cpp:1863
 #: src/muuli_wdr.cpp:3624
 msgid "Networks"
 msgstr "Verkot"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1291
 msgid "Networks window"
 msgstr "Verkkoikkuna"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3625
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3625
 msgid "Searches"
 msgstr "Haut"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1295
 msgid "Searches window"
 msgstr "Hakujen ikkuna"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3626
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:3626
 msgid "Transfers"
 msgstr "Siirrot"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1299
 msgid "Files transfers window"
 msgstr "Siirrettävien tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1301
 msgid "Shared files"
 msgstr "Jaetut tiedostot"
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1303
 msgid "Shared files window"
 msgstr "Jaettujen tiedostojen ikkuna"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
 msgid "Messages"
 msgstr "Viestit"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1307
 msgid "Messages window"
 msgstr "Viestien ikkuna"
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1309 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:3630
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1311
 msgid "Statistics graph window"
 msgstr "Tilastokuvaajien ikkuna"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1316
 msgid "Preferences settings window"
 msgstr "Asetuksien säätöikkuna"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3633
 msgid "Import"
 msgstr "Tuonti"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3633
 msgid "The partfile importer tool"
 msgstr "Osatiedostojen tuontityökalu"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3634
 msgid "About"
 msgstr "Tietoja"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3634
 msgid "About/Help"
 msgstr "Tietoja/Ohje"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1461
 msgid "eD2k network"
 msgstr "eD2k-verkko"
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1465
 msgid "Kad network"
 msgstr "Kad-verkko"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1470
 msgid "No network"
 msgstr "Ei verkkoa"
 
@@ -2502,7 +2502,7 @@ msgstr "Keskimäärin tiedostoja:"
 msgid "Not running"
 msgstr "Ei käynnissä"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Uptime: %s"
 msgstr "Päälläoloaika: %s"
@@ -3635,8 +3635,8 @@ msgstr "HighID:llä"
 msgid "Now connecting"
 msgstr "Yhdistän"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
-#: src/MuleTrayIcon.cpp:397
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:386
+#: src/MuleTrayIcon.cpp:400
 msgid "Not connected"
 msgstr "Ei yhdistetty"
 
@@ -6570,136 +6570,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "Hakuvaroitus"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:492
-#: src/MuleTrayIcon.cpp:513
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:495
+#: src/MuleTrayIcon.cpp:516
 msgid "Unlimited"
 msgstr "Rajoittamaton"
 
-#: src/MuleTrayIcon.cpp:330
+#: src/MuleTrayIcon.cpp:333
 msgid "aMule Tray Menu"
 msgstr "aMulen palkkivalikko"
 
-#: src/MuleTrayIcon.cpp:336
+#: src/MuleTrayIcon.cpp:339
 msgid "Speed limits:"
 msgstr "Nopeusrajoitukset:"
 
-#: src/MuleTrayIcon.cpp:341
+#: src/MuleTrayIcon.cpp:344
 msgid "UL: None"
 msgstr "Ylös: Ei ole"
 
-#: src/MuleTrayIcon.cpp:344
+#: src/MuleTrayIcon.cpp:347
 #, c-format
 msgid "UL: %u"
 msgstr "Ylös: %u"
 
-#: src/MuleTrayIcon.cpp:351
+#: src/MuleTrayIcon.cpp:354
 msgid "DL: None"
 msgstr "Alas: Ei ole"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:357
 #, c-format
 msgid "DL: %u"
 msgstr "Alas: %u"
 
-#: src/MuleTrayIcon.cpp:358
+#: src/MuleTrayIcon.cpp:361
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Latausnopeus: %.1f"
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:363
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Lähetysnopeus: %.1f"
 
-#: src/MuleTrayIcon.cpp:366
+#: src/MuleTrayIcon.cpp:369
 msgid "Client Information"
 msgstr "Asiakkaan tiedot"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 #, c-format
 msgid "Nickname: %s"
 msgstr "Nimimerkki: %s"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 msgid "No Nickname Selected!"
 msgstr "Nimimerkkiä ei ole valittu!"
 
-#: src/MuleTrayIcon.cpp:377
+#: src/MuleTrayIcon.cpp:380
 msgid "ClientID: "
 msgstr "Asiakastunnus: "
 
-#: src/MuleTrayIcon.cpp:390
+#: src/MuleTrayIcon.cpp:393
 msgid "ServerName: "
 msgstr "Palvelinnimi: "
 
-#: src/MuleTrayIcon.cpp:391
+#: src/MuleTrayIcon.cpp:394
 msgid "ServerIP: "
 msgstr "Palvelin-IP: "
 
-#: src/MuleTrayIcon.cpp:406
+#: src/MuleTrayIcon.cpp:409
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:415
+#: src/MuleTrayIcon.cpp:418
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP-portti: %d"
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:420
 msgid "TCP port: Not ready"
 msgstr "TCP-portti: Ei valmis"
 
-#: src/MuleTrayIcon.cpp:426
+#: src/MuleTrayIcon.cpp:429
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP-portti: %d"
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:431
 msgid "UDP port: Not ready"
 msgstr "UPD-portti: Ei valmis"
 
-#: src/MuleTrayIcon.cpp:437
+#: src/MuleTrayIcon.cpp:440
 msgid "Online Signature: Enabled"
 msgstr "Online-Signeeraus: Käytössä"
 
-#: src/MuleTrayIcon.cpp:440
+#: src/MuleTrayIcon.cpp:443
 msgid "Online Signature: Disabled"
 msgstr "Online-Signeeraus: Pois päältä"
 
-#: src/MuleTrayIcon.cpp:453
+#: src/MuleTrayIcon.cpp:456
 #, c-format
 msgid "Shared files: %d"
 msgstr "Jaettuja tiedostoja: %d"
 
-#: src/MuleTrayIcon.cpp:459
+#: src/MuleTrayIcon.cpp:462
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Asiakkaita jonossa: %d"
 
-#: src/MuleTrayIcon.cpp:466
+#: src/MuleTrayIcon.cpp:469
 #, c-format
 msgid "Total DL: %s"
 msgstr "Yht alas: %s"
 
-#: src/MuleTrayIcon.cpp:473
+#: src/MuleTrayIcon.cpp:476
 #, c-format
 msgid "Total UL: %s"
 msgstr "Yht ylös: %s"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:487
 msgid "Upload limit"
 msgstr "Lähetysraja"
 
-#: src/MuleTrayIcon.cpp:488
+#: src/MuleTrayIcon.cpp:491
 msgid "Download limit"
 msgstr "Latausraja"
 
-#: src/MuleTrayIcon.cpp:548
+#: src/MuleTrayIcon.cpp:551
 msgid "Hide aMule"
 msgstr "Piilota aMule"
 
-#: src/MuleTrayIcon.cpp:551
+#: src/MuleTrayIcon.cpp:554
 msgid "Show aMule"
 msgstr "Näytä aMule"
 

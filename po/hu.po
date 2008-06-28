@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: aMule\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-23 03:30+0200\n"
+"POT-Creation-Date: 2008-06-28 03:30+0200\n"
 "PO-Revision-Date: 2008-06-18 19:27+0100\n"
 "Last-Translator: Dévai Tamás <devait@vnet.hu>\n"
 "Language-Team:  <LL@li.org>\n"
@@ -145,7 +145,7 @@ msgstr "Megosztott fájlok lehozatala sikertelen a(z) '%s' felhasználótól"
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
-#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:406
+#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:409
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -677,7 +677,7 @@ msgstr "Letöltés..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1314
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3632
 msgid "Preferences"
 msgstr "Beállítások"
@@ -1051,7 +1051,7 @@ msgid "LowID"
 msgstr "LowID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:401
 msgid "Not Connected"
 msgstr "Nincs kapcsolódva"
 
@@ -1171,7 +1171,7 @@ msgstr "Ment"
 msgid "Copy to clipboard"
 msgstr "Másolás a vágólapra"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:558
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:561
 msgid "Exit"
 msgstr "Kilépés"
 
@@ -1824,7 +1824,7 @@ msgstr "Kad: Nincs kapcsolat"
 msgid "Stop the current connection attempts"
 msgstr "Aktuális kapcsolódási kísérletek leállítása"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:540
 msgid "Disconnect"
 msgstr "Szétkapcsolás"
 
@@ -1833,7 +1833,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "Leválaszt az éppen kapcsolódott hálózatokról."
 
 #: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3420
-#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:540
+#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:543
 msgid "Connect"
 msgstr "Kapcsolatfelvétel"
 
@@ -1869,95 +1869,95 @@ msgstr "Biztos, hogy ki akarsz lépni az aMule-ból?"
 msgid "Exit confirmation"
 msgstr "Kilépés megerősítése"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1184
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "A(z) '%s' felület könyvtár nem létezik"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "FIGYELEM: Nem tudom a(z) '%s' felület fáljt megnyitni olvasásra"
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1863
+#: src/amuleDlg.cpp:1289 src/amuleDlg.cpp:1450 src/muuli_wdr.cpp:1863
 #: src/muuli_wdr.cpp:3624
 msgid "Networks"
 msgstr "Hálózatok"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1291
 msgid "Networks window"
 msgstr "Hálózatok ablak"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3625
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3625
 msgid "Searches"
 msgstr "Keresések"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1295
 msgid "Searches window"
 msgstr "Keresések ablak"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3626
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:3626
 msgid "Transfers"
 msgstr "Átvitelek"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1299
 msgid "Files transfers window"
 msgstr "Fájl átvitelek ablak"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1301
 msgid "Shared files"
 msgstr "Megosztott fájlok"
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1303
 msgid "Shared files window"
 msgstr "Megosztott fájlok ablak"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
 msgid "Messages"
 msgstr "Üzenetek"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1307
 msgid "Messages window"
 msgstr "Üzenetek ablak"
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1309 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:3630
 msgid "Statistics"
 msgstr "Statisztikák"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1311
 msgid "Statistics graph window"
 msgstr "Statisztika grafikon ablak"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1316
 msgid "Preferences settings window"
 msgstr "Beállítások ablak"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3633
 msgid "Import"
 msgstr "Importálás"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3633
 msgid "The partfile importer tool"
 msgstr "A részfájl importáló eszköz"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3634
 msgid "About"
 msgstr "Névjegy"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3634
 msgid "About/Help"
 msgstr "Névjegy/Súgó"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1461
 msgid "eD2k network"
 msgstr "eD2k hálózat"
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1465
 msgid "Kad network"
 msgstr "Kad hálózat"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1470
 msgid "No network"
 msgstr "Nincs hálózat"
 
@@ -2491,7 +2491,7 @@ msgstr "Átlagos fájlszám:"
 msgid "Not running"
 msgstr "nem fut"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Uptime: %s"
 msgstr "Aktivitási idő: %s"
@@ -3635,8 +3635,8 @@ msgstr "HighID-val"
 msgid "Now connecting"
 msgstr "Kapcsolódás folyamatban"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
-#: src/MuleTrayIcon.cpp:397
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:386
+#: src/MuleTrayIcon.cpp:400
 msgid "Not connected"
 msgstr "Nincs kapcsolódva"
 
@@ -6569,136 +6569,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "Keresési figyelmeztetés"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:492
-#: src/MuleTrayIcon.cpp:513
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:495
+#: src/MuleTrayIcon.cpp:516
 msgid "Unlimited"
 msgstr "Korlátlan"
 
-#: src/MuleTrayIcon.cpp:330
+#: src/MuleTrayIcon.cpp:333
 msgid "aMule Tray Menu"
 msgstr "aMule Tálca menü"
 
-#: src/MuleTrayIcon.cpp:336
+#: src/MuleTrayIcon.cpp:339
 msgid "Speed limits:"
 msgstr "Sebesség korlátok:"
 
-#: src/MuleTrayIcon.cpp:341
+#: src/MuleTrayIcon.cpp:344
 msgid "UL: None"
 msgstr "Fel: nincs"
 
-#: src/MuleTrayIcon.cpp:344
+#: src/MuleTrayIcon.cpp:347
 #, c-format
 msgid "UL: %u"
 msgstr "Fel: %u"
 
-#: src/MuleTrayIcon.cpp:351
+#: src/MuleTrayIcon.cpp:354
 msgid "DL: None"
 msgstr "Le: nincs"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:357
 #, c-format
 msgid "DL: %u"
 msgstr "Le: %u"
 
-#: src/MuleTrayIcon.cpp:358
+#: src/MuleTrayIcon.cpp:361
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Letöltési sebesség: %.1f"
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:363
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Feltöltési sebesség: %.1f"
 
-#: src/MuleTrayIcon.cpp:366
+#: src/MuleTrayIcon.cpp:369
 msgid "Client Information"
 msgstr "Kliens információk"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 #, c-format
 msgid "Nickname: %s"
 msgstr "Becenév: %s"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 msgid "No Nickname Selected!"
 msgstr "Nem lett Becenév kiválasztva!"
 
-#: src/MuleTrayIcon.cpp:377
+#: src/MuleTrayIcon.cpp:380
 msgid "ClientID: "
 msgstr "KliensID: "
 
-#: src/MuleTrayIcon.cpp:390
+#: src/MuleTrayIcon.cpp:393
 msgid "ServerName: "
 msgstr "Kiszolgáló Név: "
 
-#: src/MuleTrayIcon.cpp:391
+#: src/MuleTrayIcon.cpp:394
 msgid "ServerIP: "
 msgstr "Kiszolgáló IP: "
 
-#: src/MuleTrayIcon.cpp:406
+#: src/MuleTrayIcon.cpp:409
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:415
+#: src/MuleTrayIcon.cpp:418
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP port: %d"
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:420
 msgid "TCP port: Not ready"
 msgstr "TCP port: Nem áll készen"
 
-#: src/MuleTrayIcon.cpp:426
+#: src/MuleTrayIcon.cpp:429
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP port: %d"
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:431
 msgid "UDP port: Not ready"
 msgstr "UDP port: Nem áll készen"
 
-#: src/MuleTrayIcon.cpp:437
+#: src/MuleTrayIcon.cpp:440
 msgid "Online Signature: Enabled"
 msgstr "Online Aláírás: Engedélyezve"
 
-#: src/MuleTrayIcon.cpp:440
+#: src/MuleTrayIcon.cpp:443
 msgid "Online Signature: Disabled"
 msgstr "Online Aláírás: Letiltva"
 
-#: src/MuleTrayIcon.cpp:453
+#: src/MuleTrayIcon.cpp:456
 #, c-format
 msgid "Shared files: %d"
 msgstr "Megosztott fájlok: %d"
 
-#: src/MuleTrayIcon.cpp:459
+#: src/MuleTrayIcon.cpp:462
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Várólistás ügyfelek: %d"
 
-#: src/MuleTrayIcon.cpp:466
+#: src/MuleTrayIcon.cpp:469
 #, c-format
 msgid "Total DL: %s"
 msgstr "Összes letöltés: %s"
 
-#: src/MuleTrayIcon.cpp:473
+#: src/MuleTrayIcon.cpp:476
 #, c-format
 msgid "Total UL: %s"
 msgstr "Összes feltöltés: %s"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:487
 msgid "Upload limit"
 msgstr "Feltöltési korlát"
 
-#: src/MuleTrayIcon.cpp:488
+#: src/MuleTrayIcon.cpp:491
 msgid "Download limit"
 msgstr "Letöltési korlát"
 
-#: src/MuleTrayIcon.cpp:548
+#: src/MuleTrayIcon.cpp:551
 msgid "Hide aMule"
 msgstr "aMule elrejtése"
 
-#: src/MuleTrayIcon.cpp:551
+#: src/MuleTrayIcon.cpp:554
 msgid "Show aMule"
 msgstr "aMule megjelenítése"
 
