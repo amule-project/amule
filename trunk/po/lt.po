@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-23 03:30+0200\n"
+"POT-Creation-Date: 2008-06-28 03:30+0200\n"
 "PO-Revision-Date: 2008-06-08 10:44+0100\n"
 "Last-Translator: Dovydas Sankauskas <laisve@gmail.com>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -145,7 +145,7 @@ msgstr "Nepavyko gauti dalinamų failų iš vartotojo „%s“"
 #: src/ClientListCtrl.cpp:704 src/ClientListCtrl.cpp:867
 #: src/ClientDetailDialog.cpp:83 src/ClientDetailDialog.cpp:84
 #: src/ClientDetailDialog.cpp:85 src/ClientDetailDialog.cpp:120
-#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:406
+#: src/ClientDetailDialog.cpp:121 src/MuleTrayIcon.cpp:409
 msgid "Unknown"
 msgstr "Nežinoma"
 
@@ -687,7 +687,7 @@ msgstr "Atsiunčiama..."
 msgid "( %s / %s )"
 msgstr "( %s / %s )"
 
-#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1310
+#: src/utils/wxCas/src/wxcasprefs.cpp:50 src/amuleDlg.cpp:1314
 #: src/PrefsUnifiedDlg.cpp:190 src/muuli_wdr.cpp:3632
 msgid "Preferences"
 msgstr "Parinktys"
@@ -1060,7 +1060,7 @@ msgid "LowID"
 msgstr "Žemas ID"
 
 #: src/utils/wxCas/src/onlinesig.cpp:272 src/ServerWnd.cpp:189
-#: src/MuleTrayIcon.cpp:398
+#: src/MuleTrayIcon.cpp:401
 msgid "Not Connected"
 msgstr "Neprisijungta"
 
@@ -1177,7 +1177,7 @@ msgstr "Įrašyti"
 msgid "Copy to clipboard"
 msgstr "Kopijuoti į talpyklę"
 
-#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:558
+#: src/utils/aLinkCreator/src/alcframe.cpp:234 src/MuleTrayIcon.cpp:561
 msgid "Exit"
 msgstr "Baigti"
 
@@ -1836,7 +1836,7 @@ msgstr "Kad: išjungta"
 msgid "Stop the current connection attempts"
 msgstr "Nutraukti bandymus prisijungti"
 
-#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:537
+#: src/amuleDlg.cpp:764 src/muuli_wdr.cpp:2804 src/MuleTrayIcon.cpp:540
 msgid "Disconnect"
 msgstr "Atsijungti"
 
@@ -1845,7 +1845,7 @@ msgid "Disconnect from the currently connected networks"
 msgstr "Atsijungti nuo pasirinktų tinklų"
 
 #: src/amuleDlg.cpp:770 src/muuli_wdr.cpp:2987 src/muuli_wdr.cpp:3420
-#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:540
+#: src/muuli_wdr.cpp:3622 src/MuleTrayIcon.cpp:543
 msgid "Connect"
 msgstr "Prisijungti"
 
@@ -1881,95 +1881,95 @@ msgstr "Ar tikrai norite baigti darbą su aMule?"
 msgid "Exit confirmation"
 msgstr "Baigimo patvirtinimas"
 
-#: src/amuleDlg.cpp:1180
+#: src/amuleDlg.cpp:1184
 #, c-format
 msgid "Skin directory '%s' does not exist"
 msgstr "Išvaizdos failų aplankas %s neegzistuoja"
 
-#: src/amuleDlg.cpp:1185
+#: src/amuleDlg.cpp:1189
 #, c-format
 msgid "WARNING: Unable to open skin file '%s' for read"
 msgstr "DĖMESIO: nepavyko atverti temos failo „%s“ skaitymui"
 
-#: src/amuleDlg.cpp:1285 src/amuleDlg.cpp:1446 src/muuli_wdr.cpp:1863
+#: src/amuleDlg.cpp:1289 src/amuleDlg.cpp:1450 src/muuli_wdr.cpp:1863
 #: src/muuli_wdr.cpp:3624
 msgid "Networks"
 msgstr "Tinklas"
 
-#: src/amuleDlg.cpp:1287
+#: src/amuleDlg.cpp:1291
 msgid "Networks window"
 msgstr "Tinklo langas"
 
-#: src/amuleDlg.cpp:1289 src/muuli_wdr.cpp:3625
+#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3625
 msgid "Searches"
 msgstr "Paieška"
 
-#: src/amuleDlg.cpp:1291
+#: src/amuleDlg.cpp:1295
 msgid "Searches window"
 msgstr "Paieškos langas"
 
-#: src/amuleDlg.cpp:1293 src/muuli_wdr.cpp:3626
+#: src/amuleDlg.cpp:1297 src/muuli_wdr.cpp:3626
 msgid "Transfers"
 msgstr "Siuntimas"
 
-#: src/amuleDlg.cpp:1295
+#: src/amuleDlg.cpp:1299
 msgid "Files transfers window"
 msgstr "Failų siuntimo langas"
 
-#: src/amuleDlg.cpp:1297
+#: src/amuleDlg.cpp:1301
 msgid "Shared files"
 msgstr "Dalinami failai"
 
-#: src/amuleDlg.cpp:1299
+#: src/amuleDlg.cpp:1303
 msgid "Shared files window"
 msgstr "Dalinamų failų langas"
 
-#: src/amuleDlg.cpp:1301 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
+#: src/amuleDlg.cpp:1305 src/muuli_wdr.cpp:521 src/muuli_wdr.cpp:3629
 msgid "Messages"
 msgstr "Žinutės"
 
-#: src/amuleDlg.cpp:1303
+#: src/amuleDlg.cpp:1307
 msgid "Messages window"
 msgstr "Žinučių langas"
 
-#: src/amuleDlg.cpp:1305 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
+#: src/amuleDlg.cpp:1309 src/PrefsUnifiedDlg.cpp:177 src/Statistics.cpp:639
 #: src/Statistics.cpp:937 src/muuli_wdr.cpp:1104 src/muuli_wdr.cpp:3630
 msgid "Statistics"
 msgstr "Statistika"
 
-#: src/amuleDlg.cpp:1307
+#: src/amuleDlg.cpp:1311
 msgid "Statistics graph window"
 msgstr "Statistikos grafikų langas"
 
-#: src/amuleDlg.cpp:1312
+#: src/amuleDlg.cpp:1316
 msgid "Preferences settings window"
 msgstr "Parinkčių langas"
 
-#: src/amuleDlg.cpp:1314 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3633
 msgid "Import"
 msgstr "Įkelti"
 
-#: src/amuleDlg.cpp:1316 src/muuli_wdr.cpp:3633
+#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3633
 msgid "The partfile importer tool"
 msgstr "Dalinai atsiųstų failų įkėlimo įrankis"
 
-#: src/amuleDlg.cpp:1318 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1322 src/muuli_wdr.cpp:3634
 msgid "About"
 msgstr "Apie"
 
-#: src/amuleDlg.cpp:1320 src/muuli_wdr.cpp:3634
+#: src/amuleDlg.cpp:1324 src/muuli_wdr.cpp:3634
 msgid "About/Help"
 msgstr "Apie/pagalba"
 
-#: src/amuleDlg.cpp:1457
+#: src/amuleDlg.cpp:1461
 msgid "eD2k network"
 msgstr "eD2k tinklas"
 
-#: src/amuleDlg.cpp:1461
+#: src/amuleDlg.cpp:1465
 msgid "Kad network"
 msgstr "Kad tinklas"
 
-#: src/amuleDlg.cpp:1466
+#: src/amuleDlg.cpp:1470
 msgid "No network"
 msgstr "Jokio tinklo"
 
@@ -2517,7 +2517,7 @@ msgstr "Failų vidurkis:"
 msgid "Not running"
 msgstr "Nepaleista"
 
-#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:447
+#: src/Statistics.cpp:644 src/MuleTrayIcon.cpp:450
 #, c-format
 msgid "Uptime: %s"
 msgstr "Seanso trukmė: %s"
@@ -3662,8 +3662,8 @@ msgstr "aukštas ID"
 msgid "Now connecting"
 msgstr "Jungiamasi"
 
-#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:383
-#: src/MuleTrayIcon.cpp:397
+#: src/TextClient.cpp:702 src/TextClient.cpp:715 src/MuleTrayIcon.cpp:386
+#: src/MuleTrayIcon.cpp:400
 msgid "Not connected"
 msgstr "Neprisijungta"
 
@@ -6599,136 +6599,136 @@ msgstr ""
 msgid "Search warning"
 msgstr "Dėmesio"
 
-#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:492
-#: src/MuleTrayIcon.cpp:513
+#: src/MuleTrayIcon.cpp:121 src/MuleTrayIcon.cpp:142 src/MuleTrayIcon.cpp:495
+#: src/MuleTrayIcon.cpp:516
 msgid "Unlimited"
 msgstr "Neribojama"
 
-#: src/MuleTrayIcon.cpp:330
+#: src/MuleTrayIcon.cpp:333
 msgid "aMule Tray Menu"
 msgstr "aMule dėklo meniu"
 
-#: src/MuleTrayIcon.cpp:336
+#: src/MuleTrayIcon.cpp:339
 msgid "Speed limits:"
 msgstr "Spartos apribojimai:"
 
-#: src/MuleTrayIcon.cpp:341
+#: src/MuleTrayIcon.cpp:344
 msgid "UL: None"
 msgstr "Išs.: jokių"
 
-#: src/MuleTrayIcon.cpp:344
+#: src/MuleTrayIcon.cpp:347
 #, c-format
 msgid "UL: %u"
 msgstr "Išs.: %u"
 
-#: src/MuleTrayIcon.cpp:351
+#: src/MuleTrayIcon.cpp:354
 msgid "DL: None"
 msgstr "Ats.: jokių"
 
-#: src/MuleTrayIcon.cpp:354
+#: src/MuleTrayIcon.cpp:357
 #, c-format
 msgid "DL: %u"
 msgstr "Ats.: %u"
 
-#: src/MuleTrayIcon.cpp:358
+#: src/MuleTrayIcon.cpp:361
 #, c-format
 msgid "Download speed: %.1f"
 msgstr "Atsiuntimo sparta: %.1f"
 
-#: src/MuleTrayIcon.cpp:360
+#: src/MuleTrayIcon.cpp:363
 #, c-format
 msgid "Upload speed: %.1f"
 msgstr "Išsiuntimo sparta: %.1f"
 
-#: src/MuleTrayIcon.cpp:366
+#: src/MuleTrayIcon.cpp:369
 msgid "Client Information"
 msgstr "Kliento informacija"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 #, c-format
 msgid "Nickname: %s"
 msgstr "Slapyvardis: %s"
 
-#: src/MuleTrayIcon.cpp:370
+#: src/MuleTrayIcon.cpp:373
 msgid "No Nickname Selected!"
 msgstr "Slapyvardis nenurodytas!"
 
-#: src/MuleTrayIcon.cpp:377
+#: src/MuleTrayIcon.cpp:380
 msgid "ClientID: "
 msgstr "Kliento ID: "
 
-#: src/MuleTrayIcon.cpp:390
+#: src/MuleTrayIcon.cpp:393
 msgid "ServerName: "
 msgstr "Serverio pavadinimas: "
 
-#: src/MuleTrayIcon.cpp:391
+#: src/MuleTrayIcon.cpp:394
 msgid "ServerIP: "
 msgstr "Serverio IP: "
 
-#: src/MuleTrayIcon.cpp:406
+#: src/MuleTrayIcon.cpp:409
 #, c-format
 msgid "IP: %s"
 msgstr "IP: %s"
 
-#: src/MuleTrayIcon.cpp:415
+#: src/MuleTrayIcon.cpp:418
 #, c-format
 msgid "TCP port: %d"
 msgstr "TCP prievadas: %d"
 
-#: src/MuleTrayIcon.cpp:417
+#: src/MuleTrayIcon.cpp:420
 msgid "TCP port: Not ready"
 msgstr "TCP prievadas: neparuošta"
 
-#: src/MuleTrayIcon.cpp:426
+#: src/MuleTrayIcon.cpp:429
 #, c-format
 msgid "UDP port: %d"
 msgstr "UDP prievadas: %d"
 
-#: src/MuleTrayIcon.cpp:428
+#: src/MuleTrayIcon.cpp:431
 msgid "UDP port: Not ready"
 msgstr "UDP prievadas: neparuošta"
 
-#: src/MuleTrayIcon.cpp:437
+#: src/MuleTrayIcon.cpp:440
 msgid "Online Signature: Enabled"
 msgstr "Keičiamas parašas: įjungta"
 
-#: src/MuleTrayIcon.cpp:440
+#: src/MuleTrayIcon.cpp:443
 msgid "Online Signature: Disabled"
 msgstr "Keičiamas parašas: išjungta"
 
-#: src/MuleTrayIcon.cpp:453
+#: src/MuleTrayIcon.cpp:456
 #, c-format
 msgid "Shared files: %d"
 msgstr "Dalinami failai: %d"
 
-#: src/MuleTrayIcon.cpp:459
+#: src/MuleTrayIcon.cpp:462
 #, c-format
 msgid "Queued clients: %d"
 msgstr "Klientai eilėje: %d"
 
-#: src/MuleTrayIcon.cpp:466
+#: src/MuleTrayIcon.cpp:469
 #, c-format
 msgid "Total DL: %s"
 msgstr "Iš viso atsiųsta: %s"
 
-#: src/MuleTrayIcon.cpp:473
+#: src/MuleTrayIcon.cpp:476
 #, c-format
 msgid "Total UL: %s"
 msgstr "Iš viso išsiųsta: %s"
 
-#: src/MuleTrayIcon.cpp:484
+#: src/MuleTrayIcon.cpp:487
 msgid "Upload limit"
 msgstr "Išsiuntimo apribojimas"
 
-#: src/MuleTrayIcon.cpp:488
+#: src/MuleTrayIcon.cpp:491
 msgid "Download limit"
 msgstr "Atsiuntimo apribojimas"
 
-#: src/MuleTrayIcon.cpp:548
+#: src/MuleTrayIcon.cpp:551
 msgid "Hide aMule"
 msgstr "Slėpti aMule"
 
-#: src/MuleTrayIcon.cpp:551
+#: src/MuleTrayIcon.cpp:554
 msgid "Show aMule"
 msgstr "Rodyti aMule"
 
