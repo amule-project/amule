@@ -462,34 +462,14 @@ void CSharedFilesCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const
 	wxASSERT( file );
 
 	if ( highlighted ) {
-		wxColour newcol;
-		wxBrush hilBrush;
-
-		if (GetFocus()) {
-			newcol = SYSCOLOR(wxSYS_COLOUR_HIGHLIGHT);
-			newcol = wxColour(G_BLEND(newcol.Red(),125),
-			                  G_BLEND(newcol.Green(),125),
-			                  G_BLEND(newcol.Blue(),125));
-			hilBrush = wxBrush(newcol, wxSOLID);
-			dc->SetBackground(hilBrush);
-		} else {
-			newcol = SYSCOLOR(wxSYS_COLOUR_BTNSHADOW);
-			newcol = wxColour(G_BLEND(newcol.Red(),125),
-			                  G_BLEND(newcol.Green(),125),
-			                  G_BLEND(newcol.Blue(),125));
-			hilBrush = wxBrush(newcol, wxSOLID);
-			dc->SetBackground(hilBrush);
-		}
-		
-		dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
-
-		newcol = wxColour( G_BLEND(newcol.Red(), 65),
-		                   G_BLEND(newcol.Green(), 65),
-		                   G_BLEND(newcol.Blue(), 65) );
-		dc->SetPen(wxPen(newcol,1,wxSOLID));
+		CMuleColour newcol(GetFocus() ? wxSYS_COLOUR_HIGHLIGHT : wxSYS_COLOUR_BTNSHADOW);	
+		dc->SetBackground(*(wxTheBrushList->FindOrCreateBrush(newcol.Blend(125), wxSOLID)));
+		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+		// The second blending goes over the first one.
+		dc->SetPen(*(wxThePenList->FindOrCreatePen(newcol.Blend(65), 1, wxSOLID)));
 	} else {
-		dc->SetBackground( wxBrush(SYSCOLOR(wxSYS_COLOUR_LISTBOX), wxSOLID) );
-		dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT));
+		dc->SetBackground( *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_LISTBOX), wxSOLID) ));
+		dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_WINDOWTEXT));
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
 	
@@ -667,13 +647,11 @@ void CSharedFilesCtrl::DrawAvailabilityBar(CKnownFile* file, wxDC* dc, const wxR
 	s_ChunkBar.Set3dDepth( CPreferences::Get3DDepth() );
 	uint64 end = 0;
 	for ( unsigned int i = 0; i < list.size(); ++i ) {
-		COLORREF color = list[i] ? (RGB(0, (210-(22*( list[i] - 1 ) ) < 0) ? 0 : 210-(22*( list[i] - 1 ) ), 255))
-								 : RGB(255, 0, 0);
 		uint64 start = PARTSIZE * static_cast<uint64>(i);
-		       end   = PARTSIZE * static_cast<uint64>(i + 1);
-		s_ChunkBar.FillRange(start, end, color);
+		end   = PARTSIZE * static_cast<uint64>(i + 1);
+		s_ChunkBar.FillRange(start, end, CMuleColour(list[i] ? 0 : 255, list[i] ? ((210-(22*( list[i] - 1 ) ) < 0) ? 0 : (210-(22*( list[i] - 1 ) ))) : 0, list[i] ? 255 : 0));
 	}
-	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, RGB(255, 0, 0));
+	s_ChunkBar.FillRange(end + 1, file->GetFileSize() - 1, CMuleColour(255, 0, 0));
 	s_ChunkBar.Draw(dc, barRect.x, barRect.y, bFlat); 
 
 	if (!bFlat) {

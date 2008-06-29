@@ -30,10 +30,6 @@
 
 #include "NetworkFunctions.h"	// Needed for StringIPtoUint32
 
-
-// This is fscking hard to maintain. wxWidgets 2.5.2 has changed internal
-// ipaddress structs.
-// prevent fscking dns queries
 class amuleIPV4Address : public wxIPV4address
 {
 public:
@@ -43,7 +39,6 @@ public:
 	virtual bool Hostname(const wxString& name) {
 		// Some people are sometimes fools.
 		if (name.IsEmpty()) {
-//			wxASSERT(0);
 			return false;
 		}
 		
@@ -53,7 +48,6 @@ public:
 	virtual bool Hostname(uint32 ip) {
 		// Some people are sometimes fools.
 		if (!ip) {
-//			wxASSERT(0);
 			return false;
 		}
 		

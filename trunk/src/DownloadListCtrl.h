@@ -27,6 +27,7 @@
 #define DOWNLOADLISTCTRL_H
 
 #include <map>				// Needed for std::multimap
+#include <wx/brush.h>
 
 #include "Types.h"			// Needed for uint8
 #include "Constants.h"		// Needed for DownloadItemType
@@ -275,10 +276,10 @@ private:
 	
 	//! Pointer to the current menu object, used to avoid multiple menus.
 	wxMenu*		m_menu;
-	//! Pointer to a cached brush object.
-	wxBrush*	m_hilightBrush;
-	//! Pointer to a cached brush object.
-	wxBrush*	m_hilightUnfocusBrush;
+	//! Cached brush object.
+	wxBrush	m_hilightBrush;
+	//! Cached brush object.
+	wxBrush	m_hilightUnfocusBrush;
 	
 	
 	//! The currently displayed category

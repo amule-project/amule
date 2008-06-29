@@ -37,7 +37,7 @@
 #include "muuli_wdr.h"		// Needed for clientImages
 #include "Preferences.h"	// Needed for thePrefs
 #include "GuiEvents.h"		// Needed for CoreNotify_Search_Add_Download
-
+#include "MuleColour.h"
 
 BEGIN_EVENT_TABLE(CSearchListCtrl, CMuleListCtrl)
 	EVT_LIST_ITEM_RIGHT_CLICK(-1, CSearchListCtrl::OnRightClick)
@@ -281,7 +281,7 @@ void CSearchListCtrl::UpdateItemColor( long index )
 	item.SetMask( wxLIST_MASK_STATE|wxLIST_MASK_TEXT|wxLIST_MASK_IMAGE|wxLIST_MASK_DATA|wxLIST_MASK_WIDTH|wxLIST_MASK_FORMAT );
 
 	if ( GetItem(item) ) {
-		wxColour newcol = SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT);
+		CMuleColour newcol(wxSYS_COLOUR_WINDOWTEXT);
 
 		CSearchFile* file = (CSearchFile*)GetItemData(index);
 		CKnownFile* sameFile = theApp->downloadqueue->GetFileByID(file->GetFileHash());
@@ -754,7 +754,7 @@ void CSearchListCtrl::DownloadSelected(int category)
 
 const wxBrush& GetBrush(wxSystemColour index)
 {
-	return *wxTheBrushList->FindOrCreateBrush(SYSCOLOR(index));
+	return *wxTheBrushList->FindOrCreateBrush(CMuleColour(index));
 }
 
 
@@ -767,19 +767,19 @@ void CSearchListCtrl::OnDrawItem(
 	if (highlighted) {
 		if (GetFocus()) {
 			dc->SetBackground(GetBrush(wxSYS_COLOUR_HIGHLIGHT));
-			dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
 			dc->SetBackground(GetBrush(wxSYS_COLOUR_BTNSHADOW));
-			dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {
 		dc->SetBackground(GetBrush(wxSYS_COLOUR_LISTBOX));
-		dc->SetTextForeground(SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT));
+		dc->SetTextForeground(CMuleColour(wxSYS_COLOUR_WINDOWTEXT));
 	}
 
 	// Define the border of the drawn area
 	if ( highlighted ) {
-		dc->SetPen(wxPen(BLEND(dc->GetBackground().GetColour(), 65)));
+		dc->SetPen(*(wxThePenList->FindOrCreatePen(CMuleColour(dc->GetBackground().GetColour()).Blend(65), 1, wxSOLID)));
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 		dc->SetTextForeground(GetItemTextColour(item));
@@ -885,7 +885,7 @@ void CSearchListCtrl::OnDrawItem(
 				// Draw empty circle
 				dc->SetBrush(*wxTRANSPARENT_BRUSH);
 			} else {
-				dc->SetBrush(GetItemTextColour(item));
+				dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(GetItemTextColour(item))));
 			}
 
 			dc->DrawCircle( treeCenter, middle, 3 );

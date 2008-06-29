@@ -27,11 +27,10 @@
 #define BARSHADER_H
 
 #include "Types.h"	// Needed for uint16 and uint32
-
+#include "MuleColour.h"
 
 class wxRect;
 class wxDC;
-
 
 /**
  * The barshader class is responsible for drawing the chunk-based progress bars used in aMule.
@@ -101,21 +100,21 @@ public:
 	 *
 	 * @param start The starting position of the new span.
 	 * @param end The ending position of the new span. Must be larger than start.
-	 * @param color The color of the new span.
+	 * @param colour The colour of the new span.
 	 *
 	 * Calling this function fill the specified range with the specified color.
 	 * Any spans completly or partially covered by the new span are either
 	 * removed or resized. If the value of end is larger than the current
 	 * filesize, the filesize is increased to the value of end.
 	 */
-	void FillRange(uint64 start, uint64 end, uint32 color);
+	void FillRange(uint64 start, uint64 end, const CMuleColour& colour);
 
 	/**
 	 * Fill the entire bar with a span of the specified color.
 	 *
-	 * @param color The color of the new span.
+	 * @param colour The colour of the new span.
 	 */
-	void Fill(uint32 color);
+	void Fill(const CMuleColour& colour);
 
 	/**
 	 * Draws the bar on the specifed wxDC.
@@ -144,12 +143,7 @@ private:
 	 * @param color The color of the rectangle.
 	 * @param bFlat If this is true, a simple rectangle will be drawn, otherwise the modifers will be applyed to achive a 3D effect.
 	 */
-	void FillRect(wxDC* dc, const wxRect& rectSpan, uint32 color, bool bFlat);
-
-	/**
-	 * Blend in a single pixel
-	 */
-	void BlendPixel(uint32 index, uint32 color, double covered);
+	void FillRect(wxDC* dc, const wxRect& rectSpan, const CMuleColour& colour, bool bFlat);
 
 	//! The width of the drawn bar
 	int    m_Width;
@@ -163,7 +157,7 @@ private:
 	uint16 m_used3dlevel;
 
 	// color for each pixel across the width is stored here
-	std::vector<uint32> m_Content;
+	std::vector<CMuleColour> m_Content;
 };
 
 #endif

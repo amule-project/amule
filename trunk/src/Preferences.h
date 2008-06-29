@@ -27,7 +27,6 @@
 #define PREFERENCES_H
 
 #include "MD4Hash.h"			// Needed for CMD4Hash
-#include "Color.h"			// Needed for COLORREF
 
 #include <wx/arrstr.h>			// Needed for wxArrayString
 
@@ -39,7 +38,6 @@
 class CPreferences;
 class wxConfigBase;
 class wxWindow;
-
 
 enum EViewSharedFilesAccess{
 	vsfaEverybody = 0,
@@ -538,9 +536,9 @@ protected:
 	static	int32 GetRecommendedMaxConnections();
 
 	//! Temporary storage for statistic-colors.
-	static COLORREF	s_colors[cntStatColors];
+	static unsigned long	s_colors[cntStatColors];
 	//! Reference for checking if the colors has changed.
-	static COLORREF	s_colors_ref[cntStatColors];
+	static unsigned long	s_colors_ref[cntStatColors];
 	 
 	typedef std::vector<Cfg_Base*>			CFGList;
 	typedef std::map<int, Cfg_Base*>		CFGMap;

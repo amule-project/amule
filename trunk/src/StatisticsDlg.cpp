@@ -51,9 +51,9 @@ class CTreeItemData : public wxTreeItemData
 
 // CStatisticsDlg panel
 
-COLORREF CStatisticsDlg::getColors(unsigned num)
+const wxColour& CStatisticsDlg::getColors(unsigned num)
 {
-	wxCHECK(num < 15, RGB(0, 0, 0));
+	wxCHECK(num < 15, *wxBLACK);
 	
 	return acrStat[num];
 }
@@ -108,15 +108,13 @@ void CStatisticsDlg::InitGraphs()
 
 
 // this array is now used to store the current color settings and to define the defaults
-COLORREF CStatisticsDlg::acrStat[cntStatColors] =
+wxColour CStatisticsDlg::acrStat[cntStatColors] =
 	{ 
-		RGB(0,0,64),		RGB(192,192,255),	RGB(128, 255, 128),	RGB(0, 210, 0),
-		RGB(0, 128, 0),		RGB(255, 128, 128),	RGB(200, 0, 0),		RGB(140, 0, 0),
-	  	RGB(150, 150, 255),	RGB(192, 0, 192),	RGB(255, 255, 128),	RGB(0, 0, 0), 
-	  	RGB(128, 255, 128),	RGB(0, 210, 0),		RGB(0, 128, 0)
+		wxColour(0,0,64), wxColour(192,192,255), wxColour(128, 255, 128), wxColour(0, 210, 0),
+		wxColour(0, 128, 0), wxColour(255, 128, 128), wxColour(200, 0, 0), wxColour(140, 0, 0),
+	  	wxColour(150, 150, 255), wxColour(192, 0, 192), wxColour(255, 255, 128), wxColour(0, 0, 0), 
+	  	wxColour(128, 255, 128), wxColour(0, 210, 0), wxColour(0, 128, 0)
 	};
-
-
 
 void CStatisticsDlg::ApplyStatsColor(int index)
 {
@@ -124,18 +122,20 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 	static int aRes[] = { 0,0, IDC_C0,IDC_C0_3,IDC_C0_2,  IDC_C1,IDC_C1_3,IDC_C1_2,  IDC_S0,IDC_S3,IDC_S1 };
 	static COScopeCtrl** apscope[] = { NULL, NULL, &pscopeDL,&pscopeDL,&pscopeDL, &pscopeUL,&pscopeUL,&pscopeUL, &pscopeConn,&pscopeConn,&pscopeConn };
 
-	COLORREF cr = acrStat[index];  
+	const wxColour& cr = acrStat[index];  
 
 	int iRes = aRes[index];
 	int iTrend = aTrend[index];
 	COScopeCtrl** ppscope = apscope[index];
 	CColorFrameCtrl* ctrl;
 	switch (index) {
-		case 0:	pscopeDL->SetBackgroundColor(cr);
+		case 0:	
+				pscopeDL->SetBackgroundColor(cr);
 				pscopeUL->SetBackgroundColor(cr);
 				pscopeConn->SetBackgroundColor(cr);
 				break;
-		case 1:	pscopeDL->SetGridColor(cr);
+		case 1:	
+				pscopeDL->SetGridColor(cr);
 				pscopeUL->SetGridColor(cr);
 				pscopeConn->SetGridColor(cr);
 				break;
@@ -143,12 +143,11 @@ void CStatisticsDlg::ApplyStatsColor(int index)
 		case 5:  case 6:  case 7:	
 		case 8:  case 9:  case 10:
 				(*ppscope)->SetPlotColor(cr, iTrend);
-				if ((ctrl= CastChild(iRes, CColorFrameCtrl)) == NULL) {
-					printf("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n",iRes);
-					exit(1);
+				if ((ctrl = CastChild(iRes, CColorFrameCtrl)) == NULL) {
+					throw wxString::Format(wxT("CStatisticsDlg::ApplyStatsColor: control missing (%d)\n"),iRes);
 				}
-				ctrl->SetBackgroundColor(cr);
-				ctrl->SetFrameColor((COLORREF)RGB(0,0,0));
+				ctrl->SetBackgroundBrushColour(cr);
+				ctrl->SetFrameBrushColour(*wxBLACK);
 				break;
 		default:
 				break; // ignore unknown index, like SysTray speedbar color

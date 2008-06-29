@@ -24,15 +24,12 @@
 //
 
 #include <wx/dc.h>
-#include "Color.h"		// Needed for RGB
-
 #include "BarShader.h"		// Interface declarations.
 
 const double Pi = 3.14159265358979323846264338328;
 
 #define HALF(X) (((X) + 1) / 2)
 #define DEFAULT_DEPTH 10
-
 
 CBarShader::CBarShader(uint32 height, uint32 width)
 : m_Width( width ),
@@ -77,8 +74,7 @@ void CBarShader::SetWidth(int width)
 {
 	if (width > 0) {
 		m_Width = width;
-		m_Content.clear();
-		m_Content.resize(m_Width, 0);
+		Fill(CMuleColour(0,0,0));
 	}
 }
 
@@ -121,7 +117,7 @@ void CBarShader::BuildModifiers()
 }
 
 
-void CBarShader::FillRange(uint64 start, uint64 end, uint32 color)
+void CBarShader::FillRange(uint64 start, uint64 end, const CMuleColour& colour)
 {
 	if (start >= end || start >= m_FileSize) {
 		return;
@@ -141,51 +137,29 @@ void CBarShader::FillRange(uint64 start, uint64 end, uint32 color)
 	if (lastPixel == m_Width) {
 		lastPixel--;
 	}
+	
 	double f_Width = m_Width;
 	// calculate how much of this pixels is to be covered with the fill
 	double firstCovered = firstPixel + 1 - start * f_Width / m_FileSize;
 	double lastCovered  = end * f_Width / m_FileSize - lastPixel;
 	// all inside one pixel ?
 	if (firstPixel == lastPixel) {
-		BlendPixel(firstPixel, color, firstCovered + lastCovered - 1.0);
+		m_Content[firstPixel].BlendWith(colour, firstCovered + lastCovered - 1.0);
 	} else {
-		BlendPixel(firstPixel, color, firstCovered);
-		BlendPixel(lastPixel, color, lastCovered);
+		m_Content[firstPixel].BlendWith(colour, firstCovered);
+		m_Content[lastPixel].BlendWith(colour, lastCovered);
 		// fill pixels between (if any)
 		for (uint32 i = firstPixel + 1; i < lastPixel; i++) {
-			m_Content[i] = color;
+			m_Content[i] = colour;
 		}
 	}
 }
 
 
-// This function is responsible for drawing ranges that are too small
-// to fill a single pixel. To overcome this problem, we gather the
-// sum of ranges until we have enough to draw a single pixel. The
-// color of this pixel will be the sum of the colors of the ranges
-// within the single pixel, each weighted after its relative size.
-void CBarShader::BlendPixel(uint32 index, uint32 color, double covered)
-{
-	uint32 oldcolor = m_Content[index];
-	// Colors are added up, so the bar must be initialized black (zero) for blending to work.
-	// So after blending in 10 * the same color with covered == 0.1, the pixel will
-	// have the color.
-	// Blending in black will thus have no effect.
-	// This works as long each part of the virtual bar is overwritten just once (or left black).
-	int Red   = (int) (GetRValue(oldcolor) + GetRValue(color) * covered + 0.5);
-	int Green = (int) (GetGValue(oldcolor) + GetGValue(color) * covered + 0.5);
-	int Blue  = (int) (GetBValue(oldcolor) + GetBValue(color) * covered + 0.5);
-	Red   = Red   > 255 ? 255 : Red  ;
-	Green = Green > 255 ? 255 : Green;
-	Blue  = Blue  > 255 ? 255 : Blue ;
-	m_Content[index] = RGB(Red, Green, Blue);
-}
-
-
-void CBarShader::Fill(uint32 color)
+void CBarShader::Fill(const CMuleColour& colour)
 {
 	m_Content.clear();
-	m_Content.resize(m_Width, color);
+	m_Content.resize(m_Width, colour);
 }
 
 
@@ -203,35 +177,38 @@ void CBarShader::Draw( wxDC* dc, int iLeft, int iTop, bool bFlat )
 	rectSpan.y = iTop;
 	rectSpan.height = m_Height;
 	rectSpan.width = 0;
-	uint32 lastcolor = 0xffffffff; // invalid value
+	
+	// CMuleColour could be used for everything here, but I don't use it for speedup reasons.
+	
+	CMuleColour lastcolour;
 	
 	dc->SetPen(*wxTRANSPARENT_PEN);
 
 	// draw each pixel, draw same colored pixels together
 	for (int x = 0; x < m_Width; x++) {
-		uint32 color = m_Content[x];
-		if (color == lastcolor) {
+		const CMuleColour& colour = m_Content[x];
+		if (x && colour.IsSameAs(lastcolour)) {
 			rectSpan.width++;
 		} else {
 			if (rectSpan.width) {
-				FillRect(dc, rectSpan, lastcolor, bFlat);
+				FillRect(dc, rectSpan, lastcolour, bFlat);
 				rectSpan.x += rectSpan.width;
 			}
 			rectSpan.width = 1;
-			lastcolor = color;
+			lastcolour = colour;
 		}
 	}
-	FillRect(dc, rectSpan, lastcolor, bFlat);
+	
+	FillRect(dc, rectSpan, lastcolour, bFlat);
 }
 
 
-void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, uint32 color, bool bFlat)
+void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, const CMuleColour& colour, bool bFlat)
 {
 	wxASSERT( dc );
 
-	if( bFlat || !color ) {
-		wxBrush brush( WxColourFromCr(color), wxSOLID );
-		dc->SetBrush( brush );
+	if( bFlat || colour.IsBlack() ) {
+		dc->SetBrush( *(wxTheBrushList->FindOrCreateBrush(colour, wxSOLID) ));
 		dc->DrawRectangle( rectSpan );
 	} else {
 		int x1 = rectSpan.x;
@@ -241,12 +218,7 @@ void CBarShader::FillRect(wxDC *dc, const wxRect& rectSpan, uint32 color, bool b
 		
 		int Max = HALF(m_Height);
 		for (int i = 0; i < Max; i++) {
-			int cRed   = std::min( 255, (int)(GetRValue(color) * m_Modifiers[i] + .5f) );
-			int cGreen = std::min( 255, (int)(GetGValue(color) * m_Modifiers[i] + .5f) );
-			int cBlue  = std::min( 255, (int)(GetBValue(color) * m_Modifiers[i] + .5f) );
-				
-			wxPen pen( wxColour( cRed, cGreen, cBlue ), 1, wxSOLID );
-			dc->SetPen( pen );
+			dc->SetPen( *(wxThePenList->FindOrCreatePen(CMuleColour(0, 0, 0).BlendWith(colour, m_Modifiers[i]), 1, wxSOLID)) );
 
 			// Draw top row
 			dc->DrawLine( x1, y1 + i, x2, y1 + i );

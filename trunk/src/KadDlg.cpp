@@ -34,7 +34,7 @@
 #include "StatisticsDlg.h"
 #include "ColorFrameCtrl.h"
 #include "amuleDlg.h"
-
+#include "MuleColour.h"
 
 #ifndef CLIENT_GUI
 #include "kademlia/kademlia/Kademlia.h"
@@ -99,8 +99,8 @@ void CKadDlg::SetGraphColors()
 		m_kad_scope->SetPlotColor(CStatisticsDlg::getColors(12 + i), aTrend[i]);
 		
 		CColorFrameCtrl* ctrl = CastChild(aRes[i], CColorFrameCtrl);
-		ctrl->SetBackgroundColor(CStatisticsDlg::getColors(12 + i));
-		ctrl->SetFrameColor((COLORREF)RGB(0,0,0));	
+		ctrl->SetBackgroundBrushColour(CMuleColour(CStatisticsDlg::getColors(12 + i)));
+		ctrl->SetFrameBrushColour(*wxBLACK);
 	}
 }
 

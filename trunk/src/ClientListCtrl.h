@@ -28,7 +28,7 @@
 
 #include "MuleListCtrl.h"		// Needed for CMuleListCtrl
 #include "Constants.h"			// Needed for ViewType
-
+#include <wx/brush.h>
 
 class CUpDownClient;
 
@@ -193,11 +193,11 @@ private:
 	//! A pointer to the displayed menu, used to ensure that only one menu is displayed at a time.
 	wxMenu*		m_menu;
 
-	//! A pointer to one of the two most used brushes, cached for performance reasons.
-	wxBrush*	m_hilightBrush;
+	//! One of the two most used brushes, cached for performance reasons.
+	wxBrush	m_hilightBrush;
 	
-	//! A pointer to one of the two most used brushes, cached for performance reasons.
-	wxBrush*	m_hilightUnfocusBrush;
+	//! One of the two most used brushes, cached for performance reasons.
+	wxBrush	m_hilightUnfocusBrush;
 	
 
 	DECLARE_EVENT_TABLE()

@@ -337,7 +337,6 @@ noinst_HEADERS = \
 		ClientTCPSocket.h \
 		ClientUDPSocket.h \
 		ColorFrameCtrl.h \
-		Color.h \
 		CommentDialog.h \
 		CommentDialogLst.h \
 		Constants.h \
@@ -376,6 +375,7 @@ noinst_HEADERS = \
 		MD4Hash.h \
 		MemFile.h \
 		MuleCollection.h \
+		MuleColour.h \
 		MuleGifCtrl.h \
 		MuleListCtrl.h \
 		MuleNotebook.h \

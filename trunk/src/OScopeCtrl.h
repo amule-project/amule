@@ -34,8 +34,8 @@
 #include <wx/timer.h>		// Needed for wxTimer
 #include <wx/pen.h>
 #include <wx/bitmap.h>
+#include <wx/colour.h>
 
-#include "Color.h"		// Needed for COLORREF and RGB
 #include "Statistics.h"		// Needed for StatsGraphType
 
 class wxMemoryDC;
@@ -57,9 +57,9 @@ public:
 	void SetRanges(float dLower, float dUpper);
 	void SetYUnits(const wxString& string,
 		const wxString& YMin = wxEmptyString, const wxString& YMax = wxEmptyString);
-	void SetBackgroundColor(COLORREF color);
-	void SetGridColor(COLORREF color);
-	void SetPlotColor(COLORREF color, unsigned iTrend = 0);
+	void SetBackgroundColor(const wxColour& color);
+	void SetGridColor(const wxColour& color);
+	void SetPlotColor(const wxColour& color, unsigned iTrend = 0);
 	float GetUpperLimit()		{ return pdsTrends[0].fUpperLimit; }
 	void Reset(double sNewPeriod);
 	void Stop();
@@ -83,7 +83,7 @@ public:
 	wxColour m_gridColour;
 
 	typedef struct PlotDataStruct {
-		COLORREF crPlot;	       // data plot color  
+		wxColour crPlot;	       // data plot color  
 		wxPen  penPlot;
 		unsigned yPrev;
 		float fPrev;

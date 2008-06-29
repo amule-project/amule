@@ -30,8 +30,8 @@
 #include <wx/control.h>		// Needed for wxControl
 
 #include "Types.h"		// Needed for RECT
-#include "Color.h"		// Needed for COLORREF
 
+class wxColour;
 
 /////////////////////////////////////////////////////////////////////////////
 // CColorFrameCtrl window
@@ -40,15 +40,10 @@ class CColorFrameCtrl : public wxControl {
 
 public:
 	CColorFrameCtrl( wxWindow* parent, int id,int wid,int hei );
-
-	void SetFrameColor(COLORREF color);
-	void SetBackgroundColor(COLORREF color);
-
-	COLORREF m_crBackColor;        // background color
-	COLORREF m_crFrameColor;       // frame color
-
 	virtual ~CColorFrameCtrl();
 
+	void SetFrameBrushColour(const wxColour& colour);
+	void SetBackgroundBrushColour(const wxColour& colour);
 protected:
 
 	void OnPaint(wxPaintEvent& evt);

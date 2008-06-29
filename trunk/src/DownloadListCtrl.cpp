@@ -180,11 +180,9 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 	m_menu = NULL;
 
-	wxColour colour = BLEND( SYSCOLOR( wxSYS_COLOUR_HIGHLIGHT ), 125 );
-	m_hilightBrush  = new wxBrush( colour, wxSOLID );
-	
-	colour = BLEND( SYSCOLOR( wxSYS_COLOUR_BTNSHADOW), 125 );
-	m_hilightUnfocusBrush = new wxBrush( colour, wxSOLID );
+	m_hilightBrush  = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125), wxSOLID ));
+
+	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush(CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
 
 	InsertColumn( 0,  _("File Name"),		wxLIST_FORMAT_LEFT, 260 );
 	InsertColumn( 1,  _("Size"),			wxLIST_FORMAT_LEFT,  60 );
@@ -212,8 +210,6 @@ CDownloadListCtrl::~CDownloadListCtrl()
 		delete m_ListItems.begin()->second;
 		m_ListItems.erase( m_ListItems.begin() );
 	}
-	delete m_hilightBrush;
-	delete m_hilightUnfocusBrush;
 }
 
 
@@ -1108,10 +1104,10 @@ void CDownloadListCtrl::OnDrawItem(
 	// Define text-color and background
 	if ((content->GetType() == FILE_TYPE) && (highlighted)) {
 		if (GetFocus()) {
-			dc->SetBackground(*m_hilightBrush);
+			dc->SetBackground(m_hilightBrush);
 			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		} else {
-			dc->SetBackground(*m_hilightUnfocusBrush);
+			dc->SetBackground(m_hilightUnfocusBrush);
 			dc->SetTextForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	} else {
@@ -1123,19 +1119,14 @@ void CDownloadListCtrl::OnDrawItem(
 
 	// Define the border of the drawn area
 	if ( highlighted ) {
-		wxColour old;
+		CMuleColour colour;
 		if ( ( content->GetType() == FILE_TYPE ) && !GetFocus() ) {
-			old = m_hilightUnfocusBrush->GetColour();
+			colour = m_hilightUnfocusBrush.GetColour();
 		} else {
-			old = m_hilightBrush->GetColour();
+			colour = m_hilightBrush.GetColour();
 		}
 
-		wxColor newcol(
-			((int)old.Red() * 65) / 100,
-			((int)old.Green() * 65) / 100,
-			((int)old.Blue() * 65) / 100);
-
-		dc->SetPen( wxPen(newcol, 1, wxSOLID) );
+		dc->SetPen( *(wxThePenList->FindOrCreatePen(colour.Blend(65), 1, wxSOLID) ));
 	} else {
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
@@ -1151,7 +1142,7 @@ void CDownloadListCtrl::OnDrawItem(
 		CPartFile *file = content->GetFile();
 		if ( file->GetCategory() ) {
 			dc->SetTextForeground(
-				WxColourFromCr(theApp->glob_prefs->GetCatColor(file->GetCategory())) );
+				CMuleColour(theApp->glob_prefs->GetCatColor(file->GetCategory())) );
 		}
 	}
 
@@ -2066,35 +2057,39 @@ bool CDownloadListCtrl::ShowItemInCurrentCat(
 		(newsel > 0 && newsel == file->GetCategory());
 }
 
+static const CMuleColour crHave(104, 104, 104);
+static const CMuleColour crFlatHave(0, 0, 0);
 
+static const CMuleColour crPending(255, 208, 0);
+static const CMuleColour crFlatPending(255, 255, 100);
+
+static const CMuleColour crProgress(0, 224, 0);
+static const CMuleColour crFlatProgress(0, 150, 0);
+
+static const CMuleColour crMissing(255, 0, 0);
 
 void CDownloadListCtrl::DrawFileStatusBar(
 	const CPartFile* file, wxDC* dc, const wxRect& rect, bool bFlat ) const
 {
 	static CBarShader s_ChunkBar(16);
 	
-	COLORREF crHave		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
-	COLORREF crPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 208,   0 ) );
-	COLORREF crProgress	= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 224,   0 ) );
-	COLORREF crMissing	= RGB(255, 0, 0);
-
 	s_ChunkBar.SetHeight(rect.height);
 	s_ChunkBar.SetWidth(rect.width); 
 	s_ChunkBar.SetFileSize( file->GetFileSize() );
 	s_ChunkBar.Set3dDepth( thePrefs::Get3DDepth() );
 
-
 	if ( file->GetStatus() == PS_COMPLETE || file->GetStatus() == PS_COMPLETING ) {
-		s_ChunkBar.Fill( crProgress );
+		s_ChunkBar.Fill( bFlat ? crFlatProgress : crProgress );
 		s_ChunkBar.Draw(dc, rect.x, rect.y, bFlat); 
 		return;
 	}
-
 	
 	// Part availability ( of missing parts )
 	const CPartFile::CGapPtrList& gaplist = file->GetGapList();
 	CPartFile::CGapPtrList::const_iterator it = gaplist.begin();
 	uint64 lastGapEnd = 0;
+	CMuleColour colour(crMissing);
+	
 	for (; it != gaplist.end(); ++it) {
 		Gap_Struct* gap = *it;
 
@@ -2102,7 +2097,7 @@ void CDownloadListCtrl::DrawFileStatusBar(
 		uint32 start = ( gap->start / PARTSIZE );
 		// fill the Have-Part (between this gap and the last)
 		if (gap->start) {
-		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  crHave);
+		  s_ChunkBar.FillRange(lastGapEnd + 1, gap->start - 1,  bFlat ? crFlatHave : crHave);
 		}
 		lastGapEnd = gap->end;
 		// End position
@@ -2115,27 +2110,24 @@ void CDownloadListCtrl::DrawFileStatusBar(
 
 		// Place each gap, one PART at a time
 		for ( uint64 i = start; i < end; ++i ) {
-			COLORREF color;
 			if ( i < file->m_SrcpartFrequency.size() && file->m_SrcpartFrequency[i]) {
 				int blue = 210 - ( 22 * ( file->m_SrcpartFrequency[i] - 1 ) );
-				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
-			} else {
-				color = crMissing;
-			}	
+				colour.Set(0, ( blue < 0 ? 0 : blue ), 255 );
+			} 
 
 			if ( file->IsStopped() ) {
-				color = DarkenColour( color, 2 );
+				colour.Blend(50);
 			}
 			
 			uint64 gap_begin = ( i == start   ? gap->start : PARTSIZE * i );
 			uint64 gap_end   = ( i == end - 1 ? gap->end   : PARTSIZE * ( i + 1 ) - 1 );
 		
-			s_ChunkBar.FillRange( gap_begin, gap_end,  color);
+			s_ChunkBar.FillRange( gap_begin, gap_end,  colour);
 		}
 	}
-	// fill the last Have-Part (between this gap and the last)
-	s_ChunkBar.FillRange(lastGapEnd + 1, file->GetFileSize() - 1,  crHave);
 	
+	// fill the last Have-Part (between this gap and the last)
+	s_ChunkBar.FillRange(lastGapEnd + 1, file->GetFileSize() - 1,  bFlat ? crFlatHave : crHave);
 	
 	// Pending parts
 	const CPartFile::CReqBlockPtrList& requestedblocks_list = file->GetRequestedBlockList();
@@ -2143,12 +2135,18 @@ void CDownloadListCtrl::DrawFileStatusBar(
 	// adjacing pending parts must be joined to avoid bright lines between them
 	uint64 lastStartOffset = 0;
 	uint64 lastEndOffset = 0;
-	COLORREF color = file->IsStopped() ? DarkenColour( crPending, 2 ) : crPending;
+	
+	colour = bFlat ? crFlatPending : crPending;
+	
+	if ( file->IsStopped() ) {
+		colour.Blend(50);
+	}
+
 	for (; it2 != requestedblocks_list.end(); ++it2) {
 		
 		if ((*it2)->StartOffset > lastEndOffset + 1) { 
 			// not adjacing, draw last block
-			s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
+			s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, colour);
 			lastStartOffset = (*it2)->StartOffset;
 			lastEndOffset   = (*it2)->EndOffset;
 		} else {
@@ -2156,7 +2154,8 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			lastEndOffset   = (*it2)->EndOffset;
 		}
 	}
-	s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, color);
+	
+	s_ChunkBar.FillRange(lastStartOffset, lastEndOffset, colour);
 
 
 	// Draw the progress-bar
@@ -2168,32 +2167,35 @@ void CDownloadListCtrl::DrawFileStatusBar(
 			file->GetCompletedSize() );
 
 	if ( bFlat ) {
-		dc->SetBrush( wxBrush( crProgress, wxSOLID ) );
+		dc->SetBrush( *(wxTheBrushList->FindOrCreateBrush(crFlatProgress , wxSOLID ) ));
 		
 		dc->DrawRectangle( rect.x, rect.y, width, 3 );
 	} else {
 		// Draw the two black lines for 3d-effect
-		dc->SetPen( wxPen( wxColour( 0, 0, 0 ), 1, wxSOLID ) );
+		dc->SetPen( *wxBLACK_PEN );
 		dc->DrawLine( rect.x, rect.y + 0, rect.x + width, rect.y + 0 );
 		dc->DrawLine( rect.x, rect.y + 2, rect.x + width, rect.y + 2 );
 		
 		// Draw the green line
-		dc->SetPen( wxPen( crProgress, 1, wxSOLID ) );
+		dc->SetPen( *(wxThePenList->FindOrCreatePen( crProgress , 1, wxSOLID ) ));
 		dc->DrawLine( rect.x, rect.y + 1, rect.x + width, rect.y + 1 );
 	}
 }
 
+static const CMuleColour crBoth(0, 192, 0);
+static const CMuleColour crFlatBoth(0, 150, 0);
+
+static const CMuleColour crNeither(240, 240, 240);
+static const CMuleColour crFlatNeither(224, 224, 224);
+
+#define crClientOnly crHave
+#define crFlatClientOnly crFlatHave
+#define crNextPending crFlatPending
 
 void CDownloadListCtrl::DrawSourceStatusBar(
 	const CUpDownClient* source, wxDC* dc, const wxRect& rect, bool bFlat) const
 {
 	static CBarShader s_StatusBar(16);
-
-	uint32 crBoth			= ( bFlat ? RGB(   0, 150,   0 ) : RGB(   0, 192,   0 ) );
-	uint32 crNeither		= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
-	uint32 crClientOnly		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
-	uint32 crPending		= ( bFlat ? RGB( 255, 208,   0 ) : RGB( 255, 208,   0 ) );
-	uint32 crNextPending	= ( bFlat ? RGB( 255, 255, 100 ) : RGB( 255, 255, 100 ) );
 
 	CPartFile* reqfile = source->GetRequestFile();
 
@@ -2212,29 +2214,29 @@ void CDownloadListCtrl::DrawSourceStatusBar(
 		uint64 uStart = PARTSIZE * i;
 		uEnd = wxMin(reqfile->GetFileSize(), uStart + PARTSIZE) - 1;
 
-		uint32 color = 0;
+		CMuleColour colour;
 		if (!partStatus[i]) {
-			color = crNeither;
+			colour = bFlat ? crFlatNeither : crNeither;
 		} else if ( reqfile->IsComplete(uStart, uEnd)) {
-			color = crBoth;
+			colour = bFlat ? crFlatBoth : crBoth;
 		} else if (	source->GetDownloadState() == DS_DOWNLOADING &&
 				source->GetLastBlockOffset() <= uEnd &&
 				source->GetLastBlockOffset() >= uStart) {
-			color = crPending;
+			colour = crPending;
 		} else if (gettingParts.GetChar((uint16)i) == 'Y') {
-			color = crNextPending;
+			colour = crNextPending;
 		} else {
-			color = crClientOnly;
+			colour = bFlat ? crFlatClientOnly : crClientOnly;
 		}
 
 		if ( source->GetRequestFile()->IsStopped() ) {
-			color = DarkenColour( color, 2 );
+			colour.Blend(50);
 		}
 
-		s_StatusBar.FillRange(uStart, uEnd, color);
+		s_StatusBar.FillRange(uStart, uEnd, colour);
 	}
 	// fill the rest (if partStatus is empty)
-	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, crNeither);
+	s_StatusBar.FillRange(uEnd + 1, reqfile->GetFileSize() - 1, bFlat ? crFlatNeither : crNeither);
 
 	s_StatusBar.Draw(dc, rect.x, rect.y, bFlat);
 }

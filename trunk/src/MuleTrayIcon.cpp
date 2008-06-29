@@ -263,9 +263,7 @@ void CMuleTrayIcon::SetTrayIcon(int Icon, uint32 percent)
 		int Bar_xSize = 4; 
 		int Bar_xPos = CurrentIcon.GetWidth() - 5; 
 		
-		wxColour col= WxColourFromCr( CStatisticsDlg::getColors(11) );
-		wxBrush	brush(col);
-		IconWithSpeed.SetBrush(brush);
+		IconWithSpeed.SetBrush(*(wxTheBrushList->FindOrCreateBrush(CStatisticsDlg::getColors(11))));
 		IconWithSpeed.SetPen(*wxTRANSPARENT_PEN);
 		
 		IconWithSpeed.DrawRectangle(Bar_xPos + 1, Bar_ySize - NewSize, Bar_xSize -2 , NewSize);
