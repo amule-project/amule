@@ -34,10 +34,10 @@
 #include "CommentDialogLst.h"	// Needed for CCommentDialogLst
 #include "updownclient.h"	// Needed for CUpDownClient
 #include "PartFile.h"		// Needed for CPartFile
-#include "Color.h"		// Needed for SYSCOLOR
 #include "amule.h"		// Needed for theApp
 #include "SharedFileList.h"	// Needed for CSharedFileList
 #include "OtherFunctions.h"
+#include "MuleColour.h"
 
 #define ID_MY_TIMER 1652
 
@@ -172,7 +172,7 @@ void CFileDetailDialog::FillSourcenameList()
 			// background.. argh -- PA: was in old version - do we still need this?
 			wxListItem tmpitem;
 			tmpitem.m_itemId = itemid;
-			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
+			tmpitem.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
 			inserted++;
 		} else { 
@@ -198,7 +198,7 @@ void CFileDetailDialog::FillSourcenameList()
 			// background.. argh -- PA: was in old version - do we still need this?
 			wxListItem tmpitem;
 			tmpitem.m_itemId=itemid;
-			tmpitem.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
+			tmpitem.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 			pmyListCtrl->SetItem(tmpitem);
 			inserted++;
 		} else { 

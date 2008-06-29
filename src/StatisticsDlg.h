@@ -27,11 +27,11 @@
 #define STATISTICSDLG_H
 
 #include <wx/panel.h>		// Needed for wxPanel
+#include <wx/colour.h>
 
 #include <set>			// Needed for std::set
 
 typedef std::set<uint32_t>	NodeIdSet;
-
 
 class COScopeCtrl;
 class CStatistics;
@@ -63,12 +63,12 @@ public:
 	void InitTree();
 	void InitGraphs();
 	void ApplyStatsColor(int index);
-	static COLORREF getColors(unsigned num);	
+	static const wxColour& getColors(unsigned num);	
 	COScopeCtrl* GetDLScope() { return pscopeDL; };
 	COScopeCtrl* GetConnScope() { return pscopeConn; };
 
 protected:
-	static COLORREF	acrStat[15];
+	static wxColour acrStat[15];
 	COScopeCtrl* pscopeDL,*pscopeUL,*pscopeConn;
 	wxTreeCtrl* stattree;
 	CStatistics* m_stats;

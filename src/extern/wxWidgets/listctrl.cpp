@@ -725,7 +725,7 @@ public:
     wxCoord GetLineY(size_t line) const;
 
     // get the brush to use for the item highlighting
-    wxBrush *GetHighlightBrush() const
+    const wxBrush& GetHighlightBrush() const
     {
         return m_hasFocus ? m_highlightBrush : m_highlightUnfocusedBrush;
     }
@@ -842,8 +842,8 @@ private:
            m_lineTo;
 
     // the brushes to use for item highlighting when we do/don't have focus
-    wxBrush *m_highlightBrush,
-            *m_highlightUnfocusedBrush;
+    wxBrush m_highlightBrush,
+            m_highlightUnfocusedBrush;
 
     // if this is > 0, the control is frozen and doesn't redraw itself
     size_t m_freezeCount;
@@ -1443,9 +1443,9 @@ bool wxListLineData::SetAttributes(wxDC *dc,
     if ( highlighted || hasBgCol )
     {
         if ( highlighted )
-            dc->SetBrush( *m_owner->GetHighlightBrush() );
+            dc->SetBrush( m_owner->GetHighlightBrush() );
         else
-            dc->SetBrush(wxBrush(attr->GetBackgroundColour(), wxSOLID));
+            dc->SetBrush(*(wxTheBrushList->FindOrCreateBrush(attr->GetBackgroundColour(), wxSOLID)));
 
         dc->SetPen( *wxTRANSPARENT_PEN );
 
@@ -1923,7 +1923,7 @@ void wxListHeaderWindow::DrawCurrent()
 
     wxScreenDC dc;
     dc.SetLogicalFunction( wxINVERT );
-    dc.SetPen( wxPen( *wxBLACK, 2, wxSOLID ) );
+    dc.SetPen( *(wxThePenList->FindOrCreatePen(*wxBLACK, 2, wxSOLID ) ));
     dc.SetBrush( *wxTRANSPARENT_BRUSH );
 
     AdjustDC(dc);
@@ -2293,9 +2293,6 @@ void wxListMainWindow::Init()
 wxListMainWindow::wxListMainWindow()
 {
     Init();
-
-    m_highlightBrush =
-    m_highlightUnfocusedBrush = (wxBrush *) NULL;
 }
 
 wxListMainWindow::wxListMainWindow( wxWindow *parent,
@@ -2309,23 +2306,21 @@ wxListMainWindow::wxListMainWindow( wxWindow *parent,
 {
     Init();
 
-    m_highlightBrush = new wxBrush
-                         (
+    m_highlightBrush = *(wxTheBrushList->FindOrCreateBrush(
                             wxSystemSettings::GetColour
                             (
                                 wxSYS_COLOUR_HIGHLIGHT
                             ),
                             wxSOLID
-                         );
+                         ));
 
-    m_highlightUnfocusedBrush = new wxBrush
-                              (
+    m_highlightUnfocusedBrush = *(wxTheBrushList->FindOrCreateBrush(
                                  wxSystemSettings::GetColour
                                  (
                                      wxSYS_COLOUR_BTNSHADOW
                                  ),
                                  wxSOLID
-                              );
+                              ));
 
     SetScrollbars( 0, 0, 0, 0, 0, 0 );
 
@@ -2342,8 +2337,6 @@ wxListMainWindow::~wxListMainWindow()
     WX_CLEAR_LIST(wxListHeaderDataList, m_columns);
     WX_CLEAR_ARRAY(m_aColWidths);
 
-    delete m_highlightBrush;
-    delete m_highlightUnfocusedBrush;
     delete m_renameTimer;
 }
 
@@ -2810,7 +2803,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
 
         if ( HasFlag(wxLC_HRULES) )
         {
-            wxPen pen(GetRuleColour(), 1, wxSOLID);
+            wxPen pen = *(wxThePenList->FindOrCreatePen(GetRuleColour(), 1, wxSOLID));
             wxSize clientSize = GetClientSize();
 
             size_t i = visibleFrom;
@@ -2836,7 +2829,7 @@ void wxListMainWindow::OnPaint( wxPaintEvent &WXUNUSED(event) )
         // Draw vertical rules if required
         if ( HasFlag(wxLC_VRULES) && !IsEmpty() )
         {
-            wxPen pen(GetRuleColour(), 1, wxSOLID);
+            wxPen pen = *(wxThePenList->FindOrCreatePen(GetRuleColour(), 1, wxSOLID));
             wxRect firstItemRect, lastItemRect;
 
             GetItemRect(visibleFrom, firstItemRect);

@@ -34,7 +34,6 @@
 #include "ChatWnd.h"
 #include "ClientDetailDialog.h"
 #include "ClientList.h"
-#include "Color.h"
 #include "DataToText.h"
 #ifdef ENABLE_IP2COUNTRY
 	#include "IP2Country.h"	// Needed for IP2Country
@@ -157,13 +156,10 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 	m_viewType = vtNone;
 	
 	m_menu = NULL;
-	
-	wxColour col = SYSCOLOR( wxSYS_COLOUR_HIGHLIGHT );
-	m_hilightBrush = new wxBrush( BLEND( col, 125), wxSOLID );
 
-	col = SYSCOLOR( wxSYS_COLOUR_BTNSHADOW );
-	m_hilightUnfocusBrush = new wxBrush( BLEND( col, 125), wxSOLID );
+	m_hilightBrush  = *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_HIGHLIGHT).Blend(125), wxSOLID ));
 
+	m_hilightUnfocusBrush = *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_BTNSHADOW).Blend(125), wxSOLID ));
 
 	// We show the uploading-list initially
 	SetListView( vtUploading );
@@ -172,8 +168,7 @@ CMuleListCtrl( parent, winid, pos, size, style | wxLC_OWNERDRAW, validator, name
 
 CClientListCtrl::~CClientListCtrl()
 {
-	delete m_hilightBrush;
-	delete m_hilightUnfocusBrush;
+
 }
 
 
@@ -392,7 +387,7 @@ void CClientListCtrl::InsertClient( CUpDownClient* client, ViewType view )
 
 	wxListItem myitem;
 	myitem.SetId( index );
-	myitem.SetBackgroundColour( SYSCOLOR(wxSYS_COLOUR_LISTBOX) );
+	myitem.SetBackgroundColour( CMuleColour(wxSYS_COLOUR_LISTBOX) );
 	
 	SetItem(myitem);
 
@@ -449,18 +444,18 @@ void CClientListCtrl::OnDrawItem( int item, wxDC* dc, const wxRect& rect, const 
 	
 	if ( highlighted ) {
 		if ( GetFocus() ) {
-			dc->SetBackground(*m_hilightBrush);
-			dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT) );
+			dc->SetBackground(m_hilightBrush);
+			dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT) );
 		} else {
-			dc->SetBackground(*m_hilightUnfocusBrush);
-			dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_HIGHLIGHTTEXT));
+			dc->SetBackground(m_hilightUnfocusBrush);
+			dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		}
 	
-		wxColour colour = GetFocus() ? m_hilightBrush->GetColour() : m_hilightUnfocusBrush->GetColour();
-		dc->SetPen( wxPen( BLEND(colour, 65), 1, wxSOLID) );
+		CMuleColour colour = GetFocus() ? m_hilightBrush.GetColour() : m_hilightUnfocusBrush.GetColour();
+		dc->SetPen( *(wxThePenList->FindOrCreatePen( colour.Blend(65), 1, wxSOLID) ));
 	} else {
-		dc->SetBackground( wxBrush( SYSCOLOR(wxSYS_COLOUR_LISTBOX), wxSOLID ) );
-		dc->SetTextForeground( SYSCOLOR(wxSYS_COLOUR_WINDOWTEXT) );
+		dc->SetBackground( *(wxTheBrushList->FindOrCreateBrush( CMuleColour(wxSYS_COLOUR_LISTBOX), wxSOLID ) ));
+		dc->SetTextForeground( CMuleColour(wxSYS_COLOUR_WINDOWTEXT) );
 		dc->SetPen(*wxTRANSPARENT_PEN);
 	}
 	
@@ -767,6 +762,11 @@ int CUploadingView::SortProc(wxUIntPtr item1, wxUIntPtr item2, long sortData)
 	}
 }
 
+static const CMuleColour crUnavailable(240, 240, 240);
+static const CMuleColour crFlatUnavailable(224, 224, 224);
+
+static const CMuleColour crAvailable(104, 104, 104);
+static const CMuleColour crFlatAvailable(0, 0, 0);
 
 void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRect& rect1 )
 {
@@ -787,9 +787,6 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 	}
 	static CBarShader s_StatusBar(16);
 
-	uint32 crUnavailable	= ( bFlat ? RGB( 224, 224, 224 ) : RGB( 240, 240, 240 ) );
-	uint32 crAvailable		= ( bFlat ? RGB(   0,   0,   0 ) : RGB( 104, 104, 104 ) );
-
 	uint32 partCount = client->GetUpPartCount();
 
 	// Seems the partfile in the client object is not necessarily valid when bar is drawn for the first time.
@@ -804,11 +801,10 @@ void CUploadingView::DrawStatusBar( CUpDownClient* client, wxDC* dc, const wxRec
 		uint64 uStart = PARTSIZE * i;
 		uEnd = uStart + PARTSIZE - 1;
 
-		uint32 color = client->IsUpPartAvailable(i) ? crAvailable : crUnavailable;
-		s_StatusBar.FillRange(uStart, uEnd, color);
+		s_StatusBar.FillRange(uStart, uEnd, client->IsUpPartAvailable(i) ? (bFlat ? crFlatAvailable : crAvailable) : (bFlat ? crFlatUnavailable : crUnavailable));
 	}
 	// fill the rest (if partStatus is empty)
-	s_StatusBar.FillRange(uEnd + 1, partCount * PARTSIZE - 1, crUnavailable);
+	s_StatusBar.FillRange(uEnd + 1, partCount * PARTSIZE - 1, bFlat ? crFlatUnavailable : crUnavailable);
 	s_StatusBar.Draw(dc, barRect.x, barRect.y, bFlat);
 
 	if (!bFlat) {

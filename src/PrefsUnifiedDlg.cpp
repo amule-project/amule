@@ -33,7 +33,7 @@
 
 #include "amule.h"				// Needed for theApp
 #include "amuleDlg.h"
-#include "Color.h"
+#include "MuleColour.h"
 #include "EditServerListDlg.h"
 #include "SharedFileList.h"		// Needed for CSharedFileList
 #include "StatisticsDlg.h"		// Needed for graph parameters, colors
@@ -350,8 +350,8 @@ bool PrefsUnifiedDlg::TransferToWindow()
 	m_ShareSelector->SetSharedDirectories(&theApp->glob_prefs->shareddir_list);
 
 	for ( int i = 0; i < cntStatColors; i++ ) {
-		thePrefs::s_colors[i] = CStatisticsDlg::acrStat[i];
-		thePrefs::s_colors_ref[i] = CStatisticsDlg::acrStat[i];
+		thePrefs::s_colors[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
+		thePrefs::s_colors_ref[i] = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
 	}
 	
 	// Connection tab
@@ -782,19 +782,18 @@ void PrefsUnifiedDlg::OnCheckBoxChange(wxCommandEvent& event)
 void PrefsUnifiedDlg::OnButtonColorChange(wxCommandEvent& WXUNUSED(event))
 {
 	int index = m_choiceColor->GetSelection();
-	wxColour col = WxColourFromCr( thePrefs::s_colors[index] );
+	CMuleColour col(thePrefs::s_colors[index]);
 	col = wxGetColourFromUser( this, col );
 	if ( col.Ok() ) {
 		m_buttonColor->SetBackgroundColour( col );
-		thePrefs::s_colors[index] = CrFromWxColour(col);
+		thePrefs::s_colors[index] = col.GetULong();
 	}
 }
 
 
 void PrefsUnifiedDlg::OnColorCategorySelected(wxCommandEvent& WXUNUSED(evt))
 {
-	m_buttonColor->SetBackgroundColour(
-		WxColourFromCr( thePrefs::s_colors[ m_choiceColor->GetSelection() ] ) );
+	m_buttonColor->SetBackgroundColour(CMuleColour(thePrefs::s_colors[ m_choiceColor->GetSelection() ] ) );
 }
 
 

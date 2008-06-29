@@ -29,11 +29,10 @@
 #include <wx/dialog.h>		// Needed for wxDialog
 #include "Types.h"		// Needed for uint32
 #include "OtherStructs.h"
+#include "MuleColour.h"
 
 class wxStaticBitmap;
 class wxBitmap;
-class wxColour;
-
 
 /**
  * This dialog takes of displaying either existing or new categories, so that
@@ -71,16 +70,13 @@ private:
 	/**
 	 * Helper function for making the color-preview.
 	 *
-	 * @param colour The color with which to fill the bitmap.
-	 *
 	 * This function creates a single-color 16x16 image, using the
-	 * specified colour.
+	 * m_colour member variable.
 	 */
-	wxBitmap MakeBitmap( wxColour colour );
-
+	wxBitmap MakeBitmap();
 
 	//! Variable used to store the user-selected color.
-	uint32			m_color;
+	CMuleColour			m_colour;
 
 	//! Pointer to category to be edited or NULL if we are adding a new category.
 	Category_Struct*	m_category;

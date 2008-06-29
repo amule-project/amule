@@ -46,7 +46,7 @@
 #include <common/TextFile.h>	// Needed for CTextFile
 
 
-#define SYSCOLOR(x) (wxSystemSettings::GetColour(x))
+#define CMuleColour(x) (wxSystemSettings::GetColour(x))
 
 
 BEGIN_EVENT_TABLE(CServerListCtrl,CMuleListCtrl)
@@ -181,7 +181,7 @@ void CServerListCtrl::RefreshServer( CServer* server )
 	
 		wxListItem item;
 		item.SetId( itemnr );
-		item.SetBackgroundColour(SYSCOLOR(wxSYS_COLOUR_LISTBOX));
+		item.SetBackgroundColour(CMuleColour(wxSYS_COLOUR_LISTBOX));
 		SetItem( item );
 	}
 	

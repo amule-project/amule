@@ -54,6 +54,7 @@
 #include <wx/valgen.h>
 #include "muuli_wdr.h"
 #include "StatisticsDlg.h"
+#include "MuleColour.h"
 #endif
 
 #include "RandomFunctions.h"
@@ -65,8 +66,8 @@
 #define DEFAULT_UDP_PORT 4672
 
 // Static variables
-COLORREF		CPreferences::s_colors[cntStatColors];
-COLORREF		CPreferences::s_colors_ref[cntStatColors];
+unsigned long		CPreferences::s_colors[cntStatColors];
+unsigned long		CPreferences::s_colors_ref[cntStatColors];
 
 CPreferences::CFGMap	CPreferences::s_CfgList;
 CPreferences::CFGList	CPreferences::s_MiscList;
@@ -1181,8 +1182,8 @@ void CPreferences::BuildItemList( const wxString& appdir )
 	// Colors have been moved from global prefs to CStatisticsDlg
 	for ( int i = 0; i < cntStatColors; i++ ) {  
 		wxString str = wxString::Format(wxT("/eMule/StatColor%i"),i);
-		
-		s_MiscList.push_back( MkCfg_Int( str, CStatisticsDlg::acrStat[i], CStatisticsDlg::acrStat[i] ) );
+		uint32_t statcolour = CMuleColour(CStatisticsDlg::acrStat[i]).GetULong();
+		s_MiscList.push_back( MkCfg_Int( str, statcolour, statcolour ) );
 	}
 #endif
 

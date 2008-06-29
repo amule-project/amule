@@ -44,17 +44,16 @@ BEGIN_EVENT_TABLE(COScopeCtrl,wxControl)
 END_EVENT_TABLE()
 
 
-const COLORREF crPreset [ 16 ] = {
-	RGB( 0xFF, 0x00, 0x00 ),  RGB( 0xFF, 0xC0, 0xC0 ),  
-	RGB( 0xFF, 0xFF, 0x00 ),  RGB( 0xFF, 0xA0, 0x00 ),  
-	RGB( 0xA0, 0x60, 0x00 ),  RGB( 0x00, 0xFF, 0x00 ),
-	RGB( 0x00, 0xA0, 0x00 ),  RGB( 0x00, 0x00, 0xFF ),
-	RGB( 0x00, 0xA0, 0xFF ),  RGB( 0x00, 0xFF, 0xFF ),
-	RGB( 0x00, 0xA0, 0xA0 ),  RGB( 0xC0, 0xC0, 0xFF ),
-	RGB( 0xFF, 0x00, 0xFF ),  RGB( 0xA0, 0x00, 0xA0 ),
-	RGB( 0xFF, 0xFF, 0xFF ),  RGB( 0x80, 0x80, 0x80 )
+const wxColour crPreset [ 16 ] = {
+	wxColour( 0xFF, 0x00, 0x00 ),  wxColour( 0xFF, 0xC0, 0xC0 ),  
+	wxColour( 0xFF, 0xFF, 0x00 ),  wxColour( 0xFF, 0xA0, 0x00 ),  
+	wxColour( 0xA0, 0x60, 0x00 ),  wxColour( 0x00, 0xFF, 0x00 ),
+	wxColour( 0x00, 0xA0, 0x00 ),  wxColour( 0x00, 0x00, 0xFF ),
+	wxColour( 0x00, 0xA0, 0xFF ),  wxColour( 0x00, 0xFF, 0xFF ),
+	wxColour( 0x00, 0xA0, 0xA0 ),  wxColour( 0xC0, 0xC0, 0xFF ),
+	wxColour( 0xFF, 0x00, 0xFF ),  wxColour( 0xA0, 0x00, 0xA0 ),
+	wxColour( 0xFF, 0xFF, 0xFF ),  wxColour( 0x80, 0x80, 0x80 )
 };
-
 
 COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWindow* parent)
 	: wxControl(parent, -1, wxDefaultPosition, wxDefaultSize)
@@ -74,8 +73,8 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 
 	PlotData_t* ppds = pdsTrends;
 	for(unsigned i=0; i<nTrends; ++i, ++ppds){
-		ppds->crPlot = (i<15 ? crPreset[i] : RGB(255, 255, 255)); 
-		ppds->penPlot=*(wxThePenList->FindOrCreatePen(WxColourFromCr(ppds->crPlot), 1, wxSOLID));
+		ppds->crPlot = (i<15 ? crPreset[i] : *wxWHITE); 
+		ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
 		ppds->fPrev = ppds->fLowerLimit = ppds->fUpperLimit = 0.0;
 	}
 
@@ -87,7 +86,7 @@ COScopeCtrl::COScopeCtrl(int cntTrends, int nDecimals, StatsGraphType type, wxWi
 	nYDecimals = nDecimals;
 	m_bgColour  = wxColour(  0,   0,   0) ;  // see also SetBackgroundColor
 	m_gridColour  = wxColour(  0, 255, 255) ;  // see also SetGridColor
-	brushBack=*(wxTheBrushList->FindOrCreateBrush(m_bgColour, wxSOLID));
+	brushBack = *(wxTheBrushList->FindOrCreateBrush(m_bgColour, wxSOLID));
 
 	strXUnits = wxT("X");  // can also be set with SetXUnits
 	strYUnits = wxT("Y");  // can also be set with SetYUnits
@@ -143,38 +142,38 @@ void COScopeCtrl::SetYUnits(const wxString& strUnits, const wxString& strMin, co
 }
 
 
-void COScopeCtrl::SetGridColor(COLORREF cr)
+void COScopeCtrl::SetGridColor(const wxColour& cr)
 {
-	wxColour newCol = WxColourFromCr(cr);
-	if (newCol == m_gridColour) {
+
+	if (cr == m_gridColour) {
 		return;
 	}
 	
-	m_gridColour = newCol;
+	m_gridColour = cr;
 	InvalidateGrid() ;
 }
 
 
-void COScopeCtrl::SetPlotColor(COLORREF cr, unsigned iTrend)
+void COScopeCtrl::SetPlotColor(const wxColour& cr, unsigned iTrend)
 {
 	PlotData_t* ppds = pdsTrends+iTrend;
 	if (ppds->crPlot == cr)
 		return;
 	ppds->crPlot = cr;
-	ppds->penPlot=*(wxThePenList->FindOrCreatePen(WxColourFromCr(ppds->crPlot), 1, wxSOLID));
+	ppds->penPlot=*(wxThePenList->FindOrCreatePen(ppds->crPlot, 1, wxSOLID));
 	InvalidateGraph();
 }
 
 
-void COScopeCtrl::SetBackgroundColor(COLORREF cr)
+void COScopeCtrl::SetBackgroundColor(const wxColour& cr)
 {
-	wxColour newCol(WxColourFromCr(cr));
-	if (m_bgColour == newCol) {
+
+	if (m_bgColour == cr) {
 		return;
 	}
 
-	m_bgColour = newCol;
-	brushBack= *(wxTheBrushList->FindOrCreateBrush(newCol, wxSOLID));
+	m_bgColour = cr;
+	brushBack= *(wxTheBrushList->FindOrCreateBrush(cr, wxSOLID));
 	InvalidateCtrl() ;
 }
 
@@ -192,7 +191,7 @@ void COScopeCtrl::RecreateGrid()
 	wxMemoryDC dcGrid(m_bmapGrid);
 
 	int nCharacters ;
-	wxPen solidPen=*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
+	wxPen solidPen = *(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxSOLID));
 	wxString strTemp;
 
 	// fill the grid background
@@ -317,9 +316,8 @@ void COScopeCtrl::OnPaint(wxPaintEvent& WXUNUSED(evt))
 	// This is done last because wxMAC does't support the wxOR logical
 	// operation, preventing us from simply blitting the plot on top of
 	// the grid bitmap.
-	wxColour col(m_gridColour);
-	wxPen grPen(col, 1, wxLONG_DASH);
-	dc.SetPen(grPen);
+
+	dc.SetPen(*(wxThePenList->FindOrCreatePen(m_gridColour, 1, wxLONG_DASH)));
 	for (unsigned j = 1; j < (nYGrids + 1); ++j) {
 		unsigned GridPos = (m_rectPlot.GetHeight())*j/( nYGrids + 1 ) + m_rectPlot.GetTop();
 		

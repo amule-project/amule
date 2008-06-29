@@ -43,12 +43,18 @@
 //-------------------------------------------------------------------
 
 #include "WebSocket.h"		// Needed for StopSockets()
-#include "Color.h"		// Needed for COLORREF and RGB()
 
 #include "php_syntree.h"
 #include "php_core_lib.h"
 
 //-------------------------------------------------------------------
+
+typedef uint32_t COLORTYPE;
+
+inline unsigned long RGB(int r, int g, int b)
+{
+	return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+}
 
 inline void set_rgb_color_val(unsigned char *start, uint32 val, unsigned char mod)
 {
@@ -1060,7 +1066,7 @@ void CProgressImage::CreateSpan()
 		uint32 end = (gap_end / PARTSIZE) + 1;
 
 		for (uint32 i = start; i < end; i++) {
-			COLORREF color = RGB(255, 0, 0);
+			COLORTYPE color = RGB(255, 0, 0);
 			if ( part_info[i] ) {
 				int blue = 210 - ( 22 * ( part_info[i] - 1 ) );
 				color = RGB( 0, ( blue < 0 ? 0 : blue ), 255 );
@@ -1402,7 +1408,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	//
 	// Prepare background
 	//
-	static const COLORREF bg_color = RGB(0x00, 0x00, 0x40);
+	static const COLORTYPE bg_color = RGB(0x00, 0x00, 0x40);
 	for(int i = 0; i < m_height; i++) {
 		png_bytep u_row = m_row_bg_ptrs[i];
 		for(int j = 0; j < m_width; j++) {
@@ -1412,7 +1418,7 @@ CDynStatisticImage::CDynStatisticImage(int height, bool scale1024, CStatsData *d
 	//
 	// draw axis
 	//
-	static const COLORREF axis_color = RGB(0xff, 0xff, 0xff);
+	static const COLORTYPE axis_color = RGB(0xff, 0xff, 0xff);
 	// Y
 	for(int i = m_bottom_margin; i < m_y_axis_size; i++) {
 		png_bytep u_row = m_row_bg_ptrs[i];
@@ -1461,7 +1467,7 @@ void CDynStatisticImage::DrawImage()
 	//
 	// Now graph itself
 	//
-	static const COLORREF graph_color = RGB(0xff, 0x00, 0x00);
+	static const COLORTYPE graph_color = RGB(0xff, 0x00, 0x00);
 	int maxval = m_data->Max();
 	
 	if ( m_scale1024 ) {
