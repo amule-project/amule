@@ -28,6 +28,8 @@ Version 2.2.2 - Whatever comes next.
 	Phoenix:
 		* Removed the dlopen() code from UPnP.cpp.
 		* Added the m4 macro to test for libupnp.
+		* Updated amule_build_install.sh to work with
+		  --with-libupnp-prefix.
 
 	Stu Redman:
 		* scanner fix for MSVC compilation
