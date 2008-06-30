@@ -301,6 +301,17 @@ AS_IF([test ${SYS:-unknown} = win32],
 	MULERCFLAGS=`$WX_CONFIG_WITH_ARGS --cflags | $AWK ['{ for (i = 1; i <= NF; i++) if (index($i, "-I") != 1 && index($i, "-D") != 1) $i = ""; print }']`
 ])
 
+
+# Check for libupnp
+AS_IF([test "${ENABLE_UPNP:-yes}" = yes], [
+	LIBUPNP_CHECK(
+		[1.6.6],
+		[],
+		[AC_MSG_ERROR([Unable to find libupnp.])]
+	)
+])dnl
+
+
 # Check for Crypto++
 MULE_CHECK_CRYPTOPP([5.1], [
 	# Check for CryptoPP >= 5.5
@@ -572,6 +583,9 @@ AS_IF([test $WX_DEBUG -eq 1], [wxinfo="$wxinfo,debug"])
 AS_IF([test $WX_SHARED -eq 1], [wxinfo="$wxinfo,shared"], [wxinfo="$wxinfo,static"])
 echo "                                       wxWidgets             ${WX_VERSION_FULL} ($wxinfo)"
 echo "                                       crypto++              ${CRYPTOPP_VERSION_STRING} (${CRYPTOPP_STYLE}, in ${CRYPTOPP_PREFIX})"
+AS_IF([test x${ENABLE_UPNP} = xyes],[dnl
+echo "                                       libupnp               ${LIBUPNP_VERSION_STRING} (${LIBUPNP_STYLE}, in ${LIBUPNP_PREFIX})"dnl
+])
 if test x${WEB:-no} != xno; then
 AS_IF([test $regex_found = no], 
 	[regex_found="Not detected"],

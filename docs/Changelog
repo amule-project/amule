@@ -25,6 +25,10 @@ Version 2.2.2 - Whatever comes next.
 		* Fix wrong usage of CPath::IsOk which caused an infinite loop on Import
 		* Fix wxTempFile usage for compressed IPFilter files
 
+	Phoenix:
+		* Removed the dlopen() code from UPnP.cpp.
+		* Added the m4 macro to test for libupnp.
+
 	Stu Redman:
 		* scanner fix for MSVC compilation
 		* Sort DownloadListCtrl on startup

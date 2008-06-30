@@ -75,43 +75,6 @@ m_key()
 }
 
 
-CDynamicLibHandle::CDynamicLibHandle(const char *libname)
-:
-m_libname(libname),
-m_LibraryHandle(dlopen(libname, RTLD_LAZY))
-{
-	std::ostringstream msg;
-	if (!m_LibraryHandle) {
-		msg << "error(CDynamicLibHandle): Unable to dlopen " <<
-			m_libname << ". Check PATH and LD_LIBRARY_PATH.";
-		AddLogLineM(true, logUPnP, msg);
-//		throw CUPnPException(msg);
-	} else {
-		msg << "Successfully opened " << m_libname << ".";
-		AddLogLineM(false, logUPnP, msg);
-	}
-}
-
-
-CDynamicLibHandle::~CDynamicLibHandle()
-{
-	if (m_LibraryHandle) {
-		std::ostringstream msg;
-		int err_code = dlclose(m_LibraryHandle);
-		if (err_code) {
-			msg << "error(CDynamicLibHandle): Error closing " <<
-				m_libname << ": " << dlerror() <<
-				".";
-			fprintf(stderr, "%s\n", msg.str().c_str());
-			AddLogLineM(true, logUPnP, msg);
-		} else {
-			msg << "Successfully closed " << m_libname << ".";
-			AddLogLineM(false, logUPnP, msg);
-		}
-	}
-}
-
-
 const std::string &CUPnPLib::UPNP_ROOT_DEVICE =
 	"upnp:rootdevice";
 
@@ -134,187 +97,16 @@ const std::string &CUPnPLib::UPNP_SERVICE_WAN_PPP_CONNECTION =
 	"urn:schemas-upnp-org:service:WANPPPConnection:1";
 
 
-const char *CUPnPLib::s_LibIXMLSymbols[] =
-{
-/* 0*/	"ixmlNode_getFirstChild",
-/* 1*/	"ixmlNode_getNextSibling",
-/* 2*/	"ixmlNode_getNodeName",
-/* 3*/	"ixmlNode_getNodeValue",
-/* 4*/	"ixmlNode_getAttributes",
-/* 5*/	"ixmlDocument_free",
-/* 6*/	"ixmlNamedNodeMap_getNamedItem",
-/* 7*/	"ixmlNamedNodeMap_free",
-};
-
-
-const char *CUPnPLib::s_LibUPnPSymbols[] =
-{
-/* 0*/	"UpnpInit",
-/* 1*/	"UpnpFinish",
-/* 2*/	"UpnpGetServerPort",
-/* 3*/	"UpnpGetServerIpAddress",
-/* 4*/	"UpnpRegisterClient",
-/* 5*/	"UpnpUnRegisterClient",
-/* 6*/	"UpnpSearchAsync",
-/* 7*/	"UpnpGetServiceVarStatus",
-/* 8*/	"UpnpSendAction",
-/* 9*/	"UpnpSendActionAsync",
-/*10*/	"UpnpSubscribe",
-/*11*/	"UpnpUnSubscribe",
-/*12*/	"UpnpDownloadXmlDoc",
-/*13*/	"UpnpResolveURL",
-/*14*/	"UpnpMakeAction",
-/*15*/	"UpnpAddToAction",
-/*16*/	"UpnpGetErrorMessage",
-};
-
-
-#ifdef __DARWIN__
-	#include <CoreFoundation/CoreFoundation.h>
-	#include <sys/param.h>
-
-	// Dynamic libraries have different names in different systems
-	const char *libIXMLName = "libixml.2.dylib";
-	const char *libUPnP2Name = "libupnp.2.dylib";
-	const char *libUPNP3Name = "libupnp.3.dylib";
-#else // Linux and other compatible systems
-	const char *libIXMLName = "libixml.so.2";
-	const char *libUPnP2Name = "libupnp.so.2";
-	const char *libUPNP3Name = "libupnp.so.3";
-#endif
-
-
-const std::string CUPnPLib::addLibraryPath(const char *name)
-{
-#ifdef __DARWIN__
-	CFBundleRef bundle = CFBundleGetMainBundle();
-	CFURLRef frameworkURL = CFBundleCopyPrivateFrameworksURL(bundle);
-	CFStringRef libName = CFStringCreateWithCString(NULL, name, kCFStringEncodingUTF8);
-	CFURLRef libURL = CFURLCreateCopyAppendingPathComponent(
-		NULL, frameworkURL, libName, false);
-	char result[MAXPATHLEN];
-	CFURLGetFileSystemRepresentation(
-		libURL, true, (UInt8 *)result, (CFIndex)MAXPATHLEN);
-	CFRelease(libName);
-	CFRelease(libURL);
-	CFRelease(frameworkURL);
-
-	return static_cast<std::string>(result);
-#else // Linux and other compatible systems
-	return static_cast<std::string>(name);
-#endif
-}
-
-
 CUPnPLib::CUPnPLib(CUPnPControlPoint &ctrlPoint)
 :
-m_ctrlPoint(ctrlPoint),
-m_LibIXMLHandle(addLibraryPath(libIXMLName).c_str()),
-m_LibUPnPHandle2(addLibraryPath(libUPnP2Name).c_str()),
-m_LibUPnPHandle3(addLibraryPath(libUPNP3Name).c_str()),
-m_LibUPnPHandle(NULL)
+m_ctrlPoint(ctrlPoint)
 {
-	// There are two versions of libUPnP in the market,
-	// check for the one that we have in the system.
-	if (m_LibUPnPHandle3.Get()) {
-		m_LibUPnPHandle = &m_LibUPnPHandle3;
-	} else if (m_LibUPnPHandle2.Get()) {
-		m_LibUPnPHandle = &m_LibUPnPHandle2;
-	} else {
-		std::ostringstream msg;
-		msg << "error(CDynamicLibHandle): Unable to dlopen "
-			"one or more UPnP component libraries. "
-			"Check PATH and LD_LIBRARY_PATH.";
-		AddLogLineM(true, logUPnP, msg);
-		throw CUPnPException(msg);
-	}
-	
-	// IXML
-	m_ixmlNode_getFirstChild =
-		REINTERPRET_CAST(IXML_Node *(*)(IXML_Node *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[0]));
-	m_ixmlNode_getNextSibling =
-		REINTERPRET_CAST(IXML_Node *(*)(IXML_Node *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[1]));
-	m_ixmlNode_getNodeName =
-		REINTERPRET_CAST(const DOMString (*)(IXML_Node *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[2]));
-	m_ixmlNode_getNodeValue =
-		REINTERPRET_CAST(const DOMString (*)(IXML_Node *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[3]));
-	m_ixmlNode_getAttributes =
-		REINTERPRET_CAST(IXML_NamedNodeMap *(*)(IXML_Node *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[4]));
-	m_ixmlDocument_free =
-		REINTERPRET_CAST(void (*)(IXML_Document *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[5]));
-	m_ixmlNamedNodeMap_getNamedItem =
-		REINTERPRET_CAST(IXML_Node *(*)(IXML_NamedNodeMap *, const DOMString))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[6]));
-	m_ixmlNamedNodeMap_free =
-		REINTERPRET_CAST(void (*)(IXML_NamedNodeMap *))
-		(dlsym(m_LibIXMLHandle.Get(), s_LibIXMLSymbols[7]));
-	
-	// UPnP
-	m_UpnpInit =
-		REINTERPRET_CAST(int (*)(const char *, int))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[0]));
-	m_UpnpFinish =
-		REINTERPRET_CAST(void (*)())
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[1]));
-	m_UpnpGetServerPort =
-		REINTERPRET_CAST(unsigned short (*)())
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[2]));
-	m_UpnpGetServerIpAddress =
-		REINTERPRET_CAST(char * (*)())
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[3]));
-	m_UpnpRegisterClient =
-		REINTERPRET_CAST(int (*)(Upnp_FunPtr, const void *, UpnpClient_Handle *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[4]));
-	m_UpnpUnRegisterClient =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[5]));
-	m_UpnpSearchAsync =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, int, const char *, const void *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[6]));
-	m_UpnpGetServiceVarStatus =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, DOMString *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[7]));
-	m_UpnpSendAction =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, const char *,
-			IXML_Document *, IXML_Document **))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[8]));
-	m_UpnpSendActionAsync =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, const char *, const char *,
-			IXML_Document *, Upnp_FunPtr, const void *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[9]));
-	m_UpnpSubscribe =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, const char *, int *, Upnp_SID))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[10]));
-	m_UpnpUnSubscribe =
-		REINTERPRET_CAST(int (*)(UpnpClient_Handle, Upnp_SID))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[11]));
-	m_UpnpDownloadXmlDoc =
-		REINTERPRET_CAST(int (*)(const char *, IXML_Document **))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[12]));
-	m_UpnpResolveURL =
-		REINTERPRET_CAST(int (*)(const char *, const char *, char *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[13]));
-	m_UpnpMakeAction =
-		REINTERPRET_CAST(IXML_Document *(*)(const char *, const char *, int, const char *, ...))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[14]));
-	m_UpnpAddToAction =
-		REINTERPRET_CAST(int (*)(IXML_Document **, const char *, const char *, const char *, const char *))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[15]));
-	m_UpnpGetErrorMessage =
-		REINTERPRET_CAST(const char *(*)(int))
-		(dlsym(m_LibUPnPHandle->Get(), s_LibUPnPSymbols[16]));
 }
 
 
 std::string CUPnPLib::GetUPnPErrorMessage(int code) const
 {
-	return m_UpnpGetErrorMessage(code);
+	return UpnpGetErrorMessage(code);
 }
 
 
@@ -383,61 +175,61 @@ void CUPnPLib::ProcessActionResponse(
 }
 
 
-/**
- *  This function returns the root node of a given document.
+/*!
+ * \brief Returns the root node of a given document.
  */
 IXML_Element *CUPnPLib::Element_GetRootElement(
 	IXML_Document *doc) const
 {
 	IXML_Element *root = REINTERPRET_CAST(IXML_Element *)(
-		m_ixmlNode_getFirstChild(
+		ixmlNode_getFirstChild(
 			REINTERPRET_CAST(IXML_Node *)(doc)));
 
 	return root;
 }
 
 
-/**
- *  This function returns the first child of a given element.
+/*!
+ * \brief Returns the first child of a given element.
  */
 IXML_Element *CUPnPLib::Element_GetFirstChild(
 	IXML_Element *parent) const
 {
 	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(parent);
-	IXML_Node *child = m_ixmlNode_getFirstChild(node);
+	IXML_Node *child = ixmlNode_getFirstChild(node);
 
 	return REINTERPRET_CAST(IXML_Element *)(child);
 }
 
 
-/**
- *  This function returns the next sibling of a given child.
+/*!
+ * \brief Returns the next sibling of a given child.
  */
 IXML_Element *CUPnPLib::Element_GetNextSibling(
 	IXML_Element *child) const
 {
 	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(child);
-	IXML_Node *sibling = m_ixmlNode_getNextSibling(node);
+	IXML_Node *sibling = ixmlNode_getNextSibling(node);
 
 	return REINTERPRET_CAST(IXML_Element *)(sibling);
 }
 
 
-/**
- *  This function returns the element tag (name)
+/*!
+ * \brief Returns the element tag (name)
  */
 const DOMString CUPnPLib::Element_GetTag(
 	IXML_Element *element) const
 {
 	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(element);
-	const DOMString tag = m_ixmlNode_getNodeName(node);
+	const DOMString tag = ixmlNode_getNodeName(node);
 
 	return tag;
 }
 
 
-/**
- *  This function returns the TEXT node value of the current node.
+/*!
+ * \brief Returns the TEXT node value of the current node.
  */
 const std::string CUPnPLib::Element_GetTextValue(
 	IXML_Element *element) const
@@ -445,9 +237,9 @@ const std::string CUPnPLib::Element_GetTextValue(
 	if (!element) {
 		return stdEmptyString;
 	}
-	IXML_Node *text = m_ixmlNode_getFirstChild(
+	IXML_Node *text = ixmlNode_getFirstChild(
 		REINTERPRET_CAST(IXML_Node *)(element));
-	const DOMString s = m_ixmlNode_getNodeValue(text);
+	const DOMString s = ixmlNode_getNodeValue(text);
 	std::string ret;
 	if (s) {
 		ret = s;
@@ -457,8 +249,8 @@ const std::string CUPnPLib::Element_GetTextValue(
 }
 
 
-/**
- *  This function returns the TEXT node value of the first child matching tag.
+/*!
+ * \brief Returns the TEXT node value of the first child matching tag.
  */
 const std::string CUPnPLib::Element_GetChildValueByTag(
 	IXML_Element *element,
@@ -471,8 +263,8 @@ const std::string CUPnPLib::Element_GetChildValueByTag(
 }
 
 
-/**
- * Returns the first child element that matches the requested tag or
+/*!
+ * \brief Returns the first child element that matches the requested tag or
  * NULL if not found.
  */
 IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
@@ -484,19 +276,19 @@ IXML_Element *CUPnPLib::Element_GetFirstChildByTag(
 	}
 	
 	IXML_Node *node = REINTERPRET_CAST(IXML_Node *)(element);
-	IXML_Node *child = m_ixmlNode_getFirstChild(node);
-	const DOMString childTag = m_ixmlNode_getNodeName(child);
+	IXML_Node *child = ixmlNode_getFirstChild(node);
+	const DOMString childTag = ixmlNode_getNodeName(child);
 	while(child && childTag && strcmp(tag, childTag)) {
-		child = m_ixmlNode_getNextSibling(child);
-		childTag = m_ixmlNode_getNodeName(child);
+		child = ixmlNode_getNextSibling(child);
+		childTag = ixmlNode_getNodeName(child);
 	}
 
 	return REINTERPRET_CAST(IXML_Element *)(child);
 }
 
 
-/**
- * Returns the next sibling element that matches the requested tag. Should be
+/*!
+ * \brief Returns the next sibling element that matches the requested tag. Should be
  * used with the return value of Element_GetFirstChildByTag().
  */
 IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
@@ -509,8 +301,8 @@ IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
 	IXML_Node *child = REINTERPRET_CAST(IXML_Node *)(element);
 	const DOMString childTag = NULL;
 	do {
-		child = m_ixmlNode_getNextSibling(child);
-		childTag = m_ixmlNode_getNodeName(child);
+		child = ixmlNode_getNextSibling(child);
+		childTag = ixmlNode_getNodeName(child);
 	} while(child && childTag && strcmp(tag, childTag));
 
 	return REINTERPRET_CAST(IXML_Element *)(child);
@@ -520,15 +312,15 @@ IXML_Element *CUPnPLib::Element_GetNextSiblingByTag(
 const std::string CUPnPLib::Element_GetAttributeByTag(
 	IXML_Element *element, const DOMString tag) const
 {
-	IXML_NamedNodeMap *NamedNodeMap = m_ixmlNode_getAttributes(
+	IXML_NamedNodeMap *NamedNodeMap = ixmlNode_getAttributes(
 		REINTERPRET_CAST(IXML_Node *)(element));
-	IXML_Node *attribute = m_ixmlNamedNodeMap_getNamedItem(NamedNodeMap, tag);
-	const DOMString s = m_ixmlNode_getNodeValue(attribute);
+	IXML_Node *attribute = ixmlNamedNodeMap_getNamedItem(NamedNodeMap, tag);
+	const DOMString s = ixmlNode_getNodeValue(attribute);
 	std::string ret;
 	if (s) {
 		ret = s;
 	}
-	m_ixmlNamedNodeMap_free(NamedNodeMap);
+	ixmlNamedNodeMap_free(NamedNodeMap);
 
 	return ret;
 }
@@ -675,7 +467,7 @@ m_SCPD(NULL)
 	
 	std::vector<char> vscpdURL(URLBase.length() + m_SCPDURL.length() + 1);
 	char *scpdURL = &vscpdURL[0];
-	errcode = upnpLib.m_UpnpResolveURL(
+	errcode = UpnpResolveURL(
 		URLBase.c_str(),
 		m_SCPDURL.c_str(),
 		scpdURL);
@@ -691,7 +483,7 @@ m_SCPD(NULL)
 	std::vector<char> vcontrolURL(
 		URLBase.length() + m_controlURL.length() + 1);
 	char *controlURL = &vcontrolURL[0];
-	errcode = upnpLib.m_UpnpResolveURL(
+	errcode = UpnpResolveURL(
 		URLBase.c_str(),
 		m_controlURL.c_str(),
 		controlURL);
@@ -707,7 +499,7 @@ m_SCPD(NULL)
 	std::vector<char> veventURL(
 		URLBase.length() + m_eventSubURL.length() + 1);
 	char *eventURL = &veventURL[0];
-	errcode = upnpLib.m_UpnpResolveURL(
+	errcode = UpnpResolveURL(
 		URLBase.c_str(),
 		m_eventSubURL.c_str(),
 		eventURL);
@@ -854,7 +646,7 @@ bool CUPnPService::Execute(
 	IXML_Document *ActionDoc = NULL;
 	if (ArgValue.size()) {
 		for (unsigned int i = 0; i < ArgValue.size(); ++i) {
-			int ret = m_upnpLib.m_UpnpAddToAction(
+			int ret = UpnpAddToAction(
 				&ActionDoc,
 				action.GetName().c_str(),
 				GetServiceType().c_str(),
@@ -862,24 +654,24 @@ bool CUPnPService::Execute(
 				ArgValue[i].GetValue().c_str());
 			if (ret != UPNP_E_SUCCESS) {
 				m_upnpLib.processUPnPErrorMessage(
-					"m_UpnpAddToAction", ret, NULL, NULL);
+					"UpnpAddToAction", ret, NULL, NULL);
 				return false;
 			}
 		}
 	} else {
-		ActionDoc = m_upnpLib.m_UpnpMakeAction(
+		ActionDoc = UpnpMakeAction(
 			action.GetName().c_str(),
 			GetServiceType().c_str(),
 			0, NULL);
 		if (!ActionDoc) {
-			msg << "Error: m_UpnpMakeAction returned NULL.";
+			msg << "Error: UpnpMakeAction returned NULL.";
 			AddLogLineM(false, logUPnP, msg);
 			return false;
 		}
 	}
 #if 0
 	// Send the action asynchronously
-	m_upnpLib.m_UpnpSendActionAsync(
+	UpnpSendActionAsync(
 		m_UPnPControlPoint.GetUPnPClientHandle(),
 		GetAbsControlURL().c_str(),
 		GetServiceType().c_str(),
@@ -891,26 +683,26 @@ bool CUPnPService::Execute(
 	
 	// Send the action synchronously
 	IXML_Document *RespDoc = NULL;
-	int ret = m_upnpLib.m_UpnpSendAction(
+	int ret = UpnpSendAction(
 		m_UPnPControlPoint.GetUPnPClientHandle(),
 		GetAbsControlURL().c_str(),
 		GetServiceType().c_str(),
 		NULL, ActionDoc, &RespDoc);
 	if (ret != UPNP_E_SUCCESS) {
 		m_upnpLib.processUPnPErrorMessage(
-			"m_UpnpSendAction", ret, NULL, RespDoc);
-		m_upnpLib.m_ixmlDocument_free(ActionDoc);
-		m_upnpLib.m_ixmlDocument_free(RespDoc);
+			"UpnpSendAction", ret, NULL, RespDoc);
+		ixmlDocument_free(ActionDoc);
+		ixmlDocument_free(RespDoc);
 		return false;
 	}
-	m_upnpLib.m_ixmlDocument_free(ActionDoc);
+	ixmlDocument_free(ActionDoc);
 	
 	// Check the response document
 	m_upnpLib.ProcessActionResponse(
 		RespDoc, action.GetName());
 	
 	// Free the response document
-	m_upnpLib.m_ixmlDocument_free(RespDoc);
+	ixmlDocument_free(RespDoc);
 
 	return true;
 }
@@ -921,7 +713,7 @@ const std::string CUPnPService::GetStateVariable(
 {
 	std::ostringstream msg;
 	DOMString StVarVal;
-	int ret = m_upnpLib.m_UpnpGetServiceVarStatus(
+	int ret = UpnpGetServiceVarStatus(
 		m_UPnPControlPoint.GetUPnPClientHandle(),
 		GetAbsControlURL().c_str(),
 		stateVariableName.c_str(),
@@ -929,7 +721,7 @@ const std::string CUPnPService::GetStateVariable(
 	if (ret != UPNP_E_SUCCESS) {
 		msg << "GetStateVariable(\"" <<
 			stateVariableName <<
-			"\"): in a call to m_UpnpGetServiceVarStatus";
+			"\"): in a call to UpnpGetServiceVarStatus";
 		m_upnpLib.processUPnPErrorMessage(
 			msg.str(), ret, StVarVal, NULL);
 		return stdEmptyString;
@@ -971,7 +763,7 @@ m_presentationURL  (upnpLib.Element_GetChildValueByTag(device, "presentationURL"
 		strlen(m_presentationURL.c_str()) + 2;
 	std::vector<char> vpresURL(presURLlen);
 	char* presURL = &vpresURL[0];
-	int errcode = upnpLib.m_UpnpResolveURL(
+	int errcode = UpnpResolveURL(
 		URLBase.c_str(),
 		m_presentationURL.c_str(),
 		presURL);
@@ -1051,18 +843,18 @@ m_WanService(NULL)
 	int ret;
 	char *ipAddress = NULL;
 	unsigned short port = 0;
-	ret = m_upnpLib.m_UpnpInit(ipAddress, udpPort);
+	ret = UpnpInit(ipAddress, udpPort);
 	if (ret != UPNP_E_SUCCESS) {
 		msg << "error(UpnpInit): Error code ";
 		goto error;
 	}
-	port = m_upnpLib.m_UpnpGetServerPort();
-	ipAddress = m_upnpLib.m_UpnpGetServerIpAddress();
+	port = UpnpGetServerPort();
+	ipAddress = UpnpGetServerIpAddress();
 	msg << "bound to " << ipAddress << ":" <<
 		port << ".";
 	AddLogLineM(false, logUPnP, msg);
 	msg.str("");
-	ret = m_upnpLib.m_UpnpRegisterClient(
+	ret = UpnpRegisterClient(
 		static_cast<Upnp_FunPtr>(&CUPnPControlPoint::Callback),
 		&m_UPnPClientHandle,
 		&m_UPnPClientHandle);
@@ -1080,10 +872,10 @@ m_WanService(NULL)
 	// We should not search twice, because this will produce two
 	// UPNP_DISCOVERY_SEARCH_TIMEOUT events, and we might end with problems
 	// on the mutex.
-	ret = m_upnpLib.m_UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_ROOT_DEVICE.c_str(), NULL);
-	//ret = m_upnpLib.m_UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_IGW.c_str(), this);
-	//ret = m_upnpLib.m_UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_LAN.c_str(), this);
-	//ret = m_upnpLib.m_UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_WAN_CONNECTION.c_str(), this);
+	ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_ROOT_DEVICE.c_str(), NULL);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_IGW.c_str(), this);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_LAN.c_str(), this);
+	//ret = UpnpSearchAsync(m_UPnPClientHandle, 3, m_upnpLib.UPNP_DEVICE_WAN_CONNECTION.c_str(), this);
 	if (ret != UPNP_E_SUCCESS) {
 		msg << "error(UpnpSearchAsync): Error sending search request: ";
 		goto error;
@@ -1103,7 +895,7 @@ m_WanService(NULL)
 
 	// Error processing
 error:
-	m_upnpLib.m_UpnpFinish();
+	UpnpFinish();
 	msg << ret << ": " << m_upnpLib.GetUPnPErrorMessage(ret) << ".";
 	throw CUPnPException(msg);
 }
@@ -1118,8 +910,8 @@ CUPnPControlPoint::~CUPnPControlPoint()
 	}
 	// Remove all first
 	// RemoveAll();
-	m_upnpLib.m_UpnpUnRegisterClient(m_UPnPClientHandle);
-	m_upnpLib.m_UpnpFinish();
+	UpnpUnRegisterClient(m_UPnPClientHandle);
+	UpnpFinish();
 }
 
 
@@ -1224,7 +1016,7 @@ bool CUPnPControlPoint::PrivateAddPortMapping(
 	CUPnPPortMapping &upnpPortMapping)
 {
 	// Get an IP address. The UPnP server one must do.
-	std::string ipAddress(m_upnpLib.m_UpnpGetServerIpAddress());
+	std::string ipAddress(UpnpGetServerIpAddress());
 	
 	// Start building the action
 	std::string actionName("AddPortMapping");
@@ -1380,7 +1172,7 @@ upnpDiscovery:
 			AddDebugLogLineM(true, logUPnP, msg);
 		}
 		// Get the XML tree device description in doc
-		ret = upnpCP->m_upnpLib.m_UpnpDownloadXmlDoc(d_event->Location, &doc); 
+		ret = UpnpDownloadXmlDoc(d_event->Location, &doc); 
 		if (ret != UPNP_E_SUCCESS) {
 			msg << "Error retrieving device description from " <<
 				d_event->Location << ": " <<
@@ -1424,7 +1216,7 @@ upnpDiscovery:
 					d_event->Location, d_event->Expires);
 			}
 			// Free the XML doc tree
-			upnpCP->m_upnpLib.m_ixmlDocument_free(doc);
+			ixmlDocument_free(doc);
 		}
 		break;
 	}
@@ -1510,7 +1302,7 @@ upnpEventSubscriptionExpired:
 			(struct Upnp_Event_Subscribe *)Event;
 		Upnp_SID newSID;
 		int TimeOut = 1801;
-		int ret = upnpCP->m_upnpLib.m_UpnpSubscribe(
+		int ret = UpnpSubscribe(
 			upnpCP->m_UPnPClientHandle,
 			es_event->PublisherUrl,
 			&TimeOut,
@@ -1550,14 +1342,14 @@ upnpEventSubscriptionExpired:
 			(struct Upnp_Action_Complete *)Event;
 		if (a_event->ErrCode != UPNP_E_SUCCESS) {
 			upnpCP->m_upnpLib.processUPnPErrorMessage(
-				"m_UpnpSendActionAsync",
+				"UpnpSendActionAsync",
 				a_event->ErrCode, NULL,
 				a_event->ActionResult);
 		} else {
 			// Check the response document
 			upnpCP->m_upnpLib.ProcessActionResponse(
 				a_event->ActionResult,
-				"<m_UpnpSendActionAsync>");
+				"<UpnpSendActionAsync>");
 		}
 		/* No need for any processing here, just print out results.
 		 * Service state table updates are handled by events.
@@ -1652,7 +1444,7 @@ void CUPnPControlPoint::OnEventReceived(
 	}
 	AddDebugLogLineM(true, logUPnP, msg);
 	// Freeing that doc segfaults. Probably should not be freed.
-	//m_upnpLib.m_ixmlDocument_free(ChangedVariablesDoc);
+	//ixmlDocument_free(ChangedVariablesDoc);
 }
 
 
@@ -1706,7 +1498,7 @@ void CUPnPControlPoint::RemoveRootDevice(const char *udn)
 void CUPnPControlPoint::Subscribe(CUPnPService &service)
 {
 	std::ostringstream msg;
-	int errcode = m_upnpLib.m_UpnpSubscribe(m_UPnPClientHandle,
+	int errcode = UpnpSubscribe(m_UPnPClientHandle,
 		service.GetAbsEventSubURL().c_str(),
 		service.GetTimeoutAddr(),
 		service.GetSID());
@@ -1718,7 +1510,7 @@ void CUPnPControlPoint::Subscribe(CUPnPService &service)
 		AddLogLineM(true, logUPnP, msg);
 
 		IXML_Document *scpdDoc = NULL;
-		errcode = m_upnpLib.m_UpnpDownloadXmlDoc(
+		errcode = UpnpDownloadXmlDoc(
 			service.GetAbsSCPDURL().c_str(), &scpdDoc);
 		if (errcode == UPNP_E_SUCCESS) {
 			// Get the root node
@@ -1753,7 +1545,7 @@ void CUPnPControlPoint::Unsubscribe(CUPnPService &service)
 {
 	ServiceMap::iterator it = m_ServiceMap.find(service.GetAbsEventSubURL());
 	m_ServiceMap.erase(it);
-	m_upnpLib.m_UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
+	UpnpUnSubscribe(m_UPnPClientHandle, service.GetSID());
 }
 
 
