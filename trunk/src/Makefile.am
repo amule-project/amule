@@ -226,7 +226,7 @@ common_sources = \
 
 # Libs
 
-core_libs = -L. -lmuleappcore
+core_libs = -L. -lmuleappcore $(LIBUPNP_LDADD)
 gui_libs = -L. -lmuleappgui $(X11LIBS) $(WX_LIBS) $(GEOIP_LDFLAGS) $(GEOIP_LIBS)
 remote_common_libs = -Llibs/common -Llibs/ec/cpp -lmulecommon -lec $(ZLIB_LDFLAGS) $(ZLIB_LIBS) $(RESOLV_LIB) $(BFD_LIBS)
 common_libs = -L. -lmuleappcommon $(remote_common_libs) $(CRYPTOPP_LDFLAGS) $(CRYPTOPP_LIBS)
@@ -245,7 +245,7 @@ endif
 #
 core_flags =
 if ENABLE_UPNP
-core_flags += -DENABLE_UPNP=1
+core_flags += -DENABLE_UPNP=1 $(LIBUPNP_CPPFLAGS) $(LIBUPNP_CFLAGS)
 endif
 
 gui_flags = $(WX_CPPFLAGS) $(GEOIP_CPPFLAGS)
@@ -527,3 +527,4 @@ endif
 
 EXTRA__DIST__SUBDIRS = include kademlia remote-gui.net
 include $(top_srcdir)/automake/dist-hook.am
+
