@@ -26,7 +26,7 @@ dnl --------------------------------------------------------------------------
 dnl
 dnl This macro sets these variables:
 dnl - LIBUPNP_PREFIX
-dnl 	This is the user or system directory where crypto++ is installed or sources
+dnl 	This is the user or system directory where libupnp is installed.
 dnl - LIBUPNP_VERSION_STRING
 dnl 	Something like "1.6.7"
 dnl - LIBUPNP_VERSION_NUMBER
